@@ -6,8 +6,11 @@ Before you begin, you need Qt version 3.3.2 or later to be installed.
 First, download the source tarball from http://ktoon.toonka.com/modules.php?op=modload&name=Downloads.
 
 Unpack it into your desired location and go into the uncompressed directory:
-  $ tar xvfz ktoon-0.7.0.1.tgz
+  $ tar xvfz ktoon-0.7.2.tgz
   $ cd ktoon/
+
+Generate a Makefile that has options according to your Qt distribution:
+  $ qmake ktoon.pro
 
 Compile the KToon's source code:
   $ make
