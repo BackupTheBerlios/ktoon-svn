@@ -25,6 +25,8 @@
 
 #include "glpencil.h"
 
+#include <new>
+
 //-------------- CONSTRUCTOR ---------------
 
 GLPencil::GLPencil( QGLWidget *parent, const QPoint & _origin, const Color & _color, const Brush & _width, const QPoint & _end ) : GLGraphicComponent( parent, _origin, _color, _width ), end( _end )
@@ -34,9 +36,24 @@ GLPencil::GLPencil( QGLWidget *parent, const QPoint & _origin, const Color & _co
 	setKindGraphic( GC_PENCIL );
         id_graphic_component = glGenLists( 1 );
 	QPoint * origin_point = new QPoint( origin.x(), origin.y() );
-	QPoint * end_point = new QPoint( end.x(), end.y() );
-	points.append( origin_point );
-	points.append( end_point );
+	QPoint * end_point = new(std::nothrow) QPoint( end.x(), end.y() );
+	if(!end_point)
+	    {
+	    delete origin_point;
+	    throw std::bad_alloc();
+	    }
+	
+	try {
+	    points.append( origin_point );
+	    points.append( end_point );
+	    }
+	catch(...)
+	    {
+	    delete end_point;
+	    delete origin_point;
+	    throw;
+	    }
+	    
  	stipple_factor = 1;
   	stipple_pattern = 0xFFFF;
   	z = 0.0;
@@ -142,7 +159,15 @@ void GLPencil::setEndPencil( const QPoint & _end )
 	}
    }*/
  QPoint * point = new QPoint( _end.x(), _end.y() );
- points.append( point );
+ try {
+     points.append( point );
+     }
+ catch(...)
+     {
+     delete point;
+     throw;
+     }
+ 
  buildList();
 }
 

@@ -21,6 +21,7 @@
 #include "custompalette.h"
 #include "../ktoon.h"
 
+
 //-------------- CONSTRUCTOR -----------------
 
 CustomPalette::CustomPalette( QWidget *parent ) : QGridView( parent )
@@ -113,8 +114,15 @@ void CustomPalette::slotAddColor( const QColor &new_color, int alpha )
 	QPtrList<Color> cl = k_toon -> document() -> getPalette() -> getColors();
 	Color *n_color = new Color( ( float )new_color.red() / 255.0, ( float )new_color.green() / 255.0,
 	                            ( float )new_color.blue() / 255.0, ( float )alpha / 100.0 );
-	cl.append( n_color );
-	k_toon -> document() -> getPalette() -> setColors( cl );
+	try {
+	  cl.append( n_color );
+	  k_toon -> document() -> getPalette() -> setColors( cl );
+	  }
+	catch(...)
+	   {
+	   delete n_color;
+	   throw;
+	   }
     }
     else
     {
@@ -132,8 +140,15 @@ void CustomPalette::slotAddColor( const QColor &new_color, int alpha )
 	QPtrList<Color> cl = k_toon -> document() -> getPalette() -> getColors();
 	Color *n_color = new Color( ( float )new_color.red() / 255.0, ( float )new_color.green() / 255.0,
 	                            ( float )new_color.blue() / 255.0, ( float )alpha / 100.0 );
-	cl.append( n_color );
-	k_toon -> document() -> getPalette() -> setColors( cl );
+	try {
+	  cl.append( n_color );
+	  k_toon -> document() -> getPalette() -> setColors( cl );
+	  }
+	catch(...)
+	   {
+	   delete n_color;
+	   throw;
+	   }
     }
 }
 

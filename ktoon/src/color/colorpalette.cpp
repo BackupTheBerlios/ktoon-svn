@@ -25,6 +25,9 @@
 #include "../ktoon.h"
 #include "../images/images.h"
 
+#include <new>
+
+
 //--------------- CONSTRUCTOR --------------------
 
 ColorPalette::ColorPalette( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
@@ -47,7 +50,8 @@ ColorPalette::ColorPalette( QWidget *parent, WFlags style, QPopupMenu *in_assign
     assigned_item = id_assigned_item;
     assigned_tb_button = assig_tb_button;
     k_toon = ( Ktoon * )parent_widget;
-    n_color = NULL;
+    new_outline_color = NULL;
+    new_fill_color = NULL;
 
     //Icon initializations
     i_add_color = QPixmap( plussign_xpm );
@@ -224,7 +228,13 @@ ColorPalette::ColorPalette( QWidget *parent, WFlags style, QPopupMenu *in_assign
     makeConnections();
 
     Color *o_color = new Color( 0.0, 0.0, 0.0, 1.0 );
-    Color *f_color = new Color( 1.0, 1.0, 1.0, 1.0 );
+    Color *f_color = new(std::nothrow) Color( 1.0, 1.0, 1.0, 1.0 );
+    if(!f_color)
+        {
+	  delete o_color;
+	  throw std::bad_alloc();
+	  }
+    
     k_toon -> currentStatus() -> setCurrentOutlineColor( o_color );
     k_toon -> currentStatus() -> setCurrentFillColor( f_color );
 
@@ -336,19 +346,22 @@ void ColorPalette::slotSetColor( const QColor &new_color )
     connect( gradient, SIGNAL( gradientChanged( const QColor &, const QColor &, int, int, int, int ) ), grad_viewer, SLOT( slotUpdateGradient( const QColor &, const QColor &, int, int, int, int ) ) );
     connect( value_v, SIGNAL( valueChanged( int ) ), value_selector, SLOT( slotSetValue( int ) ) );
 
-    if ( n_color != NULL )
-       delete n_color;
-    n_color = new Color( new_color.red() / 255.0, new_color.green() / 255.0, new_color.blue() / 255.0, value_alpha -> value() / 100.0 );
     if ( outline_color -> isActive() )
     {
+    	if ( new_outline_color != NULL )
+           delete new_outline_color;
+        new_outline_color = new Color( new_color.red() / 255.0, new_color.green() / 255.0, new_color.blue() / 255.0, value_alpha -> value() / 100.0 );
         outline_color -> slotSetColor( new_color );
-        k_toon -> currentStatus() -> setCurrentOutlineColor( n_color );
+        k_toon -> currentStatus() -> setCurrentOutlineColor( new_outline_color );
 	emit outlineColorChanged();
     }
     else
     {
+    	if ( new_fill_color != NULL )
+           delete new_fill_color;
+    	new_fill_color = new Color( new_color.red() / 255.0, new_color.green() / 255.0, new_color.blue() / 255.0, value_alpha -> value() / 100.0 );
         fill_color -> slotSetColor( new_color );
-        k_toon -> currentStatus() -> setCurrentFillColor( n_color );
+        k_toon -> currentStatus() -> setCurrentFillColor( new_fill_color );
 	emit fillColorChanged();
     }
 

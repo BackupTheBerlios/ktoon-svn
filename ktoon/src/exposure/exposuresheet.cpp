@@ -29,6 +29,8 @@
 #include "../images/images.h"
 #include "../store/scene.h"
 
+#include <memory>
+
 //--------------- CONSTRUCTOR --------------------
 
 ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
@@ -156,7 +158,10 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     current_layer = default_layer;
     connect( default_layer, SIGNAL( clicked() ), SLOT( slotSelectLayer() ) );
     connect( default_layer, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameLayer( const QString & ) ) );
-    ILayer *default_layer_obj = new ILayer( 1, default_layer );
+    
+    std::auto_ptr<ILayer> ap_default_layer_obj(new ILayer( 1, default_layer ) );
+    ILayer *default_layer_obj = ap_default_layer_obj.get();
+    
     list_of_layers.append( default_layer_obj );
     QPtrList<ESFrame> default_layer_frame_list;
     first_layer = default_layer;
@@ -211,6 +216,9 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     QCheckListItem *default_layer_v = new QCheckListItem( visibility_list, tr( "Layer" ) + QString( "1" ), QCheckListItem::CheckBox );
     default_layer_v -> setVisible( true );
     default_layer_v -> setOn( true );
+
+    ap_default_layer_obj.release();
+    
 }
 
 //-------------- DESTRUCTOR -----------------
@@ -299,7 +307,14 @@ void ExposureSheet::loadLayersAndKeyframes( QPtrList<Layer> layers )
 	connect( new_layer, SIGNAL( clicked() ), SLOT( slotSelectLayer() ) );
 	connect( new_layer, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameLayer( const QString & ) ) );
 	ILayer *new_layer_obj = new ILayer( 0, new_layer );
+	try {
 	list_of_layers.append( new_layer_obj );
+	}
+	catch(...)
+	    {
+	    delete new_layer_obj;
+	    throw;
+	    }
 	number_of_layers++;
 
     	QCheckListItem *new_layer_v = new QCheckListItem( visibility_list, visibility_list -> lastItem(), l_it -> nameLayer(), QCheckListItem::CheckBox );
@@ -367,7 +382,15 @@ void ExposureSheet::slotInsertLayer()
     connect( new_layer, SIGNAL( clicked() ), SLOT( slotSelectLayer() ) );
     connect( new_layer, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameLayer( const QString & ) ) );
     ILayer *new_layer_obj = new ILayer( 1, new_layer );
+    try {
     list_of_layers.append( new_layer_obj );
+    }
+    catch(...)
+        {
+	  delete new_layer_obj;
+	  throw;
+	  }
+    
     QPtrList<ESFrame> new_layer_frame_list;
 
     //The only active frame
@@ -393,7 +416,9 @@ void ExposureSheet::slotInsertLayer()
 
     new_layer_obj -> setAvailableFrames( new_layer_frame_list );
 
-    Layer *n_layer = new Layer();
+    std::auto_ptr<Layer> ap_n_layer(new Layer);
+    Layer* n_layer = ap_n_layer.get();
+    
     n_layer -> setIndexLayer( number_of_layers );
     n_layer -> setNameLayer( tr( "Layer" ) + layer_number );
     QPtrList<KeyFrame> kf = n_layer -> keyFrames();
@@ -401,6 +426,8 @@ void ExposureSheet::slotInsertLayer()
     QPtrList<Layer> ly = k_toon -> currentStatus() -> currentScene() -> getLayers();
     ly.append( n_layer );
     k_toon -> currentStatus() -> currentScene() -> setLayers( ly );
+    ap_n_layer.release();
+    
     k_toon -> drawingArea() -> modifyDocument( true );
 
     if ( ( Timeline * )sender() != k_toon -> timeline() )
@@ -412,6 +439,7 @@ void ExposureSheet::slotInsertLayer()
     new_layer_v -> setOn( true );
     visibility_list -> show();
     visibility_list -> hide();
+
 }
 
 void ExposureSheet::slotRemoveLayer()
@@ -839,10 +867,19 @@ void ExposureSheet::slotInsertFrame()
 
     		    QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
 		    KeyFrame *nkf = new KeyFrame();
-    		    nkf -> setNameKeyFrame( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i ) );
-		    kf.append( nkf );
-		    k_toon -> currentStatus() -> currentLayer() -> setKeyFrames( kf );
-		    k_toon -> currentStatus() -> setCurrentKeyFrame( nkf );
+		    try {
+		      nkf -> setNameKeyFrame( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i ) );
+		      kf.append( nkf );
+			// Warning: Layer::~Layer deletes its keyframes (here those in kf), and Status::~Status
+			// deletetes its current keyframe too! This will most likely lead to a double deletion.
+		      k_toon -> currentStatus() -> currentLayer() -> setKeyFrames( kf );
+		      k_toon -> currentStatus() -> setCurrentKeyFrame( nkf );
+		      }
+		    catch(...)
+		        {
+			  delete nkf;
+			  throw;
+			  }
 		}
 
 	        k_toon -> slotActivateCursor();
@@ -880,9 +917,16 @@ void ExposureSheet::slotInsertFrame()
 
     QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
     KeyFrame *nkf = new KeyFrame();
-    nkf -> setNameKeyFrame( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i + 1 ) );
-    kf.append( nkf );
-    k_toon -> currentStatus() -> currentLayer() -> setKeyFrames( kf );
+    try {
+      nkf -> setNameKeyFrame( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i + 1 ) );
+      kf.append( nkf );
+      k_toon -> currentStatus() -> currentLayer() -> setKeyFrames( kf );
+      }
+    catch(...)
+        {
+	  delete nkf;
+	  throw;
+	  }
 
     current_layer_obj -> addFrame();
     emit framesInsertedAtTheEnd( 1 );

@@ -21,6 +21,7 @@
 #include "brushproperties.h"
 #include "../gl/drawingarea.h"
 
+
 //--------------- CONSTRUCTOR --------------------
 
 BrushProperties::BrushProperties( QWidget *parent ) : QDialog( parent, "Brush Properties", true )

@@ -449,6 +449,14 @@
         <source>SVG</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>SVG Exported Successfully</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not Export SVG</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ExposureSheet</name>

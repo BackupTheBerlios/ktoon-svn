@@ -23,14 +23,24 @@
 
 #include "document.h"
 
+#include <new>
+
+
 //-------------- CONSTRUCTOR ---------------
 
 Document::Document()
 {
-    animation = new Animation();
-    custom_palette = new Palette();
-    library = new LibraryData();
     name = "";
+    animation = new Animation();
+    custom_palette = new(std::nothrow) Palette();
+    library = new(std::nothrow) LibraryData();
+    if(!custom_palette || !library)
+        {
+	  delete library;
+	  delete custom_palette;
+	  delete animation;
+	  } 
+    
 }
 
 //------------- DESTRUCTOR ------------------

@@ -149,14 +149,14 @@ void GradientSwitch::paintEvent( QPaintEvent *paint_event )
     	painter.drawRect( 0, 3, width(), width() );
 
     	//Triangle
-    	QPointArray pa( 3 );
-    	pa.putPoints( 0, 3, 3, 0, 0, 3, 6, 3 );
+    	QPointArray point_array( 3 );
+    	point_array.putPoints( 0, 3, 3, 0, 0, 3, 6, 3 );
     	painter.setPen( border_color );
     	if ( is_selected )
             painter.setBrush( border_color );
     	else
     	    painter.setBrush( Qt::NoBrush );
-    	painter.drawPolygon( pa );
+    	painter.drawPolygon( point_array );
 
     	//Color indicator
     	painter.setPen( current_color );

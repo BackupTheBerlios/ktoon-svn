@@ -19,6 +19,8 @@
  ***************************************************************************/
 
  #include "keyframe.h"
+ 
+ #include <new>
 
 //-------------- CONSTRUCTOR ---------------
 
@@ -29,7 +31,12 @@ KeyFrame::KeyFrame()
     motion = false;
     name = "";
     camera = new Camera();
-    drawing = new GLDrawing();
+    drawing = new(std::nothrow) GLDrawing();
+    if(!drawing)
+        {
+	  delete camera;
+	  throw std::bad_alloc();
+	  }
 }
 
 //------------- DESTRUCTOR ------------------

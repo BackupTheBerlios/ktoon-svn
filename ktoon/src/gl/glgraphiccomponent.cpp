@@ -27,6 +27,7 @@
 #include "glbrush.h"
 #include "../ktoon.h"
 
+#define sqr(x) ((x)*(x))
 GLuint GLGraphicComponent::selection_name = 1;
 
 //-------------- CONSTRUCTOR ---------------
@@ -148,10 +149,36 @@ void GLGraphicComponent::setBottomRight( const QPoint & _bottom_right )
    bottom_right = _bottom_right;
 }
 
-void GLGraphicComponent::translateGraphic( const QPoint & origin, const QPoint & _end )
+void GLGraphicComponent::translateGraphic( const QPoint & _origin, const QPoint & _end )
 {
-  translate.setX( translate.x() + ( origin.x() - _end.x() ) );
-  translate.setY( translate.y() + ( origin.y() - _end.y() ) );
+  switch( kindGraphic() )
+	{
+	 case GC_BRUSH:
+	 case GC_PENCIL:
+	 case GC_PEN:
+  		translate.setX( translate.x() + ( _origin.x() - _end.x() ) );
+  		translate.setY( translate.y() + ( _origin.y() - _end.y() ) );
+	      break;
+	 case GC_LINE:
+	 	setOriginPoint( origin + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
+	 	( ( GLLine * ) ( this ) ) -> setEndLine( ( ( GLLine * ) ( this ) ) -> endLine() + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
+	      break;
+	 case GC_RECTANGLE:
+	 	setOriginPoint( origin + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
+	 	( ( GLRectangle * ) ( this ) ) -> setEndRectangle( ( ( GLRectangle * ) ( this ) ) -> endRectangle() + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
+	      break;
+	 case GC_ELLIPSE:
+	 	setOriginPoint( origin + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
+	 	( ( GLEllipse * ) ( this ) ) -> setRadiusEllipse( ( ( GLEllipse * ) ( this ) ) -> radiusEllipse() + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
+	      break;
+	 case GC_IMAGE:
+	 	setOriginPoint( origin + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
+	 	( ( GLImage * ) ( this ) ) -> setEndImage( ( ( GLImage * ) ( this ) ) -> endImage() + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
+	      break;
+	 default:
+	      break;
+	}
+
   buildList();
 }
 
@@ -477,6 +504,112 @@ void GLGraphicComponent::keyReleaseEvent( QKeyEvent * key_event )
 	break;
      }
 
+}
+
+void GLGraphicComponent::lineImpl( const QPoint & origin, const QPoint & end, int lw, int stippleFactor, const Color & outlineColor )
+{
+	GLfloat angulo, longitud;
+	GLfloat xi, yi, xf, yf;
+	xi = origin.x();
+	yi = origin.y();
+	xf = end.x();
+	yf = end.y();
+
+	longitud = sqrt(  sqr(xi-xf) + sqr(yi-yf ) );
+	angulo = atan2( yf-yi, xf-xi ) * 180.0 / M_PI;
+
+	if( outlineColor.colorAlpha() == 255 )
+		glDisable( GL_BLEND );
+
+	glPushMatrix();
+
+	glTranslatef( (xi+xf)/2.0, (yi+yf)/2.0, 0.0 );
+	glRotatef( angulo, 0, 0, 1.0 );
+
+	GLfloat x1, y1, x2, y2;
+	x1 = -0.5 * longitud;
+	y1 = -0.5 * lw;
+	x2 = 0.5 * longitud;
+	y2 = 0.5 * lw;
+
+	glBegin( GL_QUADS );
+		glTexCoord1f( 0.0 );
+		glVertex2f(x1, y2);
+		glVertex2f(x1, y1);
+		glTexCoord1f( longitud / 16.0 / (GLfloat)stippleFactor );
+		glVertex2f(x2, y1);
+		glVertex2f(x2, y2);
+	glEnd();
+
+	if( outlineColor.colorAlpha() == 255 ) {
+		glEnable( GL_BLEND );
+	}
+	else {
+		// se hacen unas lineas con antialiasing con un color mas transparente
+		glColor4f( outlineColor.colorRed(), outlineColor.colorGreen(),
+			outlineColor.colorBlue(), outlineColor.colorAlpha()/2.0 );
+	}
+
+	glLineWidth(1.0);
+	glBegin( GL_LINE_LOOP );
+		glTexCoord1f( 0.0 );
+		glVertex2f(x1, y2);
+		glVertex2f(x1, y1);
+		glTexCoord1f( longitud / 16.0 / (GLfloat)stippleFactor );
+		glVertex2f(x2, y1);
+		glVertex2f(x2, y2);
+	glEnd();
+
+	glPopMatrix();
+}
+
+// implementacion de linea, cuando el patron de stipple es 0xffff
+void GLGraphicComponent::lineImplFast( const QPoint & origin, const QPoint & end, int lw, const Color & outlineColor )
+{
+	GLfloat angulo, longitud;
+	GLfloat xi, yi, xf, yf;
+	xi = origin.x();
+	yi = origin.y();
+	xf = end.x();
+	yf = end.y();
+
+	longitud = sqrt(  sqr(xi-xf) + sqr(yi-yf ) );
+	angulo = atan2( yf-yi, xf-xi ) * 180.0 / M_PI;
+
+	if( outlineColor.colorAlpha() == 255 )
+		glDisable( GL_BLEND );
+
+	glPushMatrix();
+
+	glTranslatef( (xi+xf)/2.0, (yi+yf)/2.0, 0.0 );
+	glRotatef( angulo, 0, 0, 1.0 );
+
+	GLfloat x1, y1, x2, y2;
+	x1 = -0.5 * longitud;
+	y1 = -0.5 * lw;
+	x2 = 0.5 * longitud;
+	y2 = 0.5 * lw;
+
+	glRectf( x1, y1, x2, y2 );
+
+	if( outlineColor.colorAlpha() == 255 ) {
+		glEnable( GL_BLEND );
+	}
+	else {
+		// se hacen unas lineas con antialiasing con un color mas transparente
+		glColor4f( outlineColor.colorRed(), outlineColor.colorGreen(),
+			outlineColor.colorBlue(), outlineColor.colorAlpha()/2.0 );
+	}
+
+	glLineWidth(1.0);
+	glBegin( GL_LINE_LOOP );
+		glVertex2f(x1, y2);
+		glVertex2f(x1, y1);
+		glVertex2f(x2, y1);
+		glVertex2f(x2, y2);
+	glEnd();
+
+	glPopMatrix();
 }
 
 QGLWidget *GLGraphicComponent::parentWidget() const

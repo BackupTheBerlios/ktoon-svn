@@ -28,6 +28,9 @@
 #include "../ktoon.h"
 #include "../images/images.h"
 
+#include <memory>
+
+
 //--------------- CONSTRUCTOR --------------------
 
 Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
@@ -90,12 +93,16 @@ Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
     connect( table_brushes, SIGNAL( selectionChanged() ), SLOT( slotSelectBrush() ) );
 
     QListViewItem *default_brush = new QListViewItem( table_brushes, "2", "5", "2", tr( "Brush" ) + QString( "0" ) );
-    Brush *brush = new Brush( 2, 5, 2 );
-    brush -> setNameBrush( tr( "Brush" ) + QString( "0" ) );
-    k_toon -> currentStatus() -> setCurrentBrush( brush );
+    
+    std::auto_ptr<Brush> ap_brush(new Brush( 2, 5, 2 ) );
+    
+    ap_brush.get() -> setNameBrush( tr( "Brush" ) + QString( "0" ) );
+    k_toon -> currentStatus() -> setCurrentBrush( ap_brush.get() );
     QPtrList<Brush> br;
-    br.append( brush );
+    br.append( ap_brush.get() );
     k_toon -> document() -> setBrushes( br );
+    
+    ap_brush.release();
 
     //------------- Operations on the Textfields -------------
 
@@ -181,19 +188,25 @@ Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
 
     //---------------- Operations on the previsulization area -----------------------
 
-    previsualization = new QCanvas( 99, 99 );
-    previsualization_container = new QCanvasView( previsualization, this );
+    std::auto_ptr<QCanvas> ap_previsualization(new QCanvas( 99, 99 ) );
+    previsualization = ap_previsualization.get(); // DEBUG
+    
+    previsualization_container = new QCanvasView( /*ap_*/previsualization/*.get()*/, this );
     previsualization_container -> resize( 103, 103 );
     previsualization_container -> move( value_name -> x() + value_name -> width() + 5, value_smoothness -> height() + value_smoothness -> y() + 10 );
 
-    circle_max_thickness = new QCanvasEllipse( 5, 5, previsualization );
+    std::auto_ptr<QCanvasEllipse> ap_circle_max_thickness(new QCanvasEllipse( 5, 5, /*ap_*/previsualization/*.get()*/) );
+    circle_max_thickness = ap_circle_max_thickness.get();
+    
     QBrush gray_brush = QBrush( QColor( 200, 200, 200 ) ); //For the circle_max_thickness
     circle_max_thickness -> setBrush( gray_brush );
     circle_max_thickness -> move( 50.0, 50.0 );
     circle_max_thickness -> setZ( 0.0 );
     circle_max_thickness -> show();
 
-    circle_min_thickness = new QCanvasEllipse( 2, 2, previsualization );
+    std::auto_ptr<QCanvasEllipse> ap_circle_min_thickness(new QCanvasEllipse( 2, 2, /*ap_*/previsualization/*.get()*/) );
+    circle_min_thickness = ap_circle_min_thickness.get();
+    
     QBrush black_brush = QBrush( QColor( 0, 0, 0 ), Qt::SolidPattern ); //For the circle_min_thickness
     circle_min_thickness -> setBrush( black_brush );
     circle_min_thickness -> move( 50.0, 50.0 );
@@ -201,6 +214,11 @@ Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
     circle_min_thickness -> show();
 
     table_brushes -> setSelected( default_brush, true ); //Select the default brush
+    
+    ap_previsualization.release();
+    ap_circle_max_thickness.release();
+    ap_circle_min_thickness.release();
+  
 }
 
 //-------------- DESTRUCTOR -----------------
@@ -272,10 +290,19 @@ void Brushes::slotAddBrush()
     new QListViewItem( table_brushes, table_brushes -> lastItem(), "2", "5", "2", tr( "Brush" ) + brush_number );
 
     QPtrList<Brush> br = k_toon -> document() -> getBrushes();
-    Brush *n_brush = new Brush( 2, 5, 2 );
+    
+    Brush* n_brush = new Brush( 2, 5, 2 );
+    try {
     n_brush -> setNameBrush( tr( "Brush" ) + brush_number );
     br.append( n_brush );
     k_toon -> document() -> setBrushes( br );
+    }
+    catch(...)
+      {
+	delete n_brush;
+	throw;
+	}
+    
     k_toon -> drawingArea() -> modifyDocument( true );
 }
 

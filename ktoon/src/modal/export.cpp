@@ -27,6 +27,8 @@
 #include "../ktoon.h"
 #include "../swf/mingpp.h"
 
+#include <new>
+
 //--------------- CONSTRUCTOR --------------------
 
 Export::Export( QWidget *parent ) : QDialog( parent, "Export", true )
@@ -113,7 +115,14 @@ SWFDisplayItem *Export::doAnimation( SWFMovie *movie, const QStringList &images 
         float width  = bitmap -> getWidth();
         float height = bitmap -> getHeight();
 
-	shape[i] = new SWFShape();
+	  SWFShape* p_shape = new(std::nothrow) SWFShape();
+	  if(!p_shape)
+	      {
+		delete bitmap;
+		throw std::bad_alloc();
+		}
+	  shape[i] = p_shape;
+	  
         SWFFill *fill = shape[i] -> addBitmapFill( bitmap );
         shape[i] -> setRightFill( fill );
         shape[i] -> drawLine( width, 0 );
@@ -226,9 +235,9 @@ void Export::slotAccept()
 		painter.end();
 
 		if ( picture.save( fn, "svg" ) )
-		    k_toon -> statusBar() -> message( tr( "Animation Exported Successfully" ), 2000 );
+		    k_toon -> statusBar() -> message( tr( "SVG Exported Successfully" ), 2000 );
 		else
-		    k_toon -> statusBar() -> message( tr( "Could not Export Animation" ), 2000 );
+		    k_toon -> statusBar() -> message( tr( "Could not Export SVG" ), 2000 );
 	    }
 	    break;
 	}

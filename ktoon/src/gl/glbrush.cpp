@@ -25,6 +25,10 @@
 
 #include "glbrush.h"
 
+#include <new>
+
+#include <iostream>
+
 #define sqr(a) ((a)*(a))
 
 //-------------- CONSTRUCTOR ---------------
@@ -36,9 +40,23 @@ GLBrush::GLBrush( QGLWidget *parent, const QPoint & _origin, const Color & _colo
 	setKindGraphic( GC_BRUSH );
         id_graphic_component = glGenLists( 1 );
 	QPoint * origin_point = new QPoint( origin.x(), origin.y() );
-	QPoint * end_point = new QPoint( end.x(), end.y() );
-	points.append( origin_point );
-	points.append( end_point );
+	QPoint * end_point = new(std::nothrow) QPoint( end.x(), end.y() );
+	if(!end_point)
+	    {
+	    delete origin_point;
+	    throw std::bad_alloc();
+	    }
+	try {
+	    points.append( origin_point );
+	    points.append( end_point );
+	    }
+	catch(...)
+	    {
+	    delete end_point;
+	    delete origin_point;
+	    throw;
+	    }
+	    
  	stipple_factor = 1;
   	stipple_pattern = 0xFFFF;
   	z = 0.0;
@@ -268,7 +286,14 @@ void GLBrush::setEndBrush( const QPoint & _end )
 		}
 	}
 	QPoint * point = new QPoint( _end.x(), _end.y() );
-	points.append( point );
+	try {
+	    points.append( point );
+	    }
+	catch(...)
+	    {
+	    delete point;
+	    throw;
+	    }
 	buildList();
 }
 
@@ -278,6 +303,20 @@ void GLBrush::smoothnessBrush( int smooth )
   double theta1, theta2;
   double m1, m2;
   QPtrList<QPoint> aux;
+  
+  // Improving excpetion-safety of this function whithout making design changes with regard
+  // to other code was a relative complex task. The main for-loop in this function inserts
+  // intermixed items into the QPtrList "aux", some created via new and some taken from points.
+  // Later aux is assigned to points.
+  // In case of an exception occuring, we must only delete the newly created objects, so we must 
+  // somehow keep track of them without introducing to much burden on efficiency. I tried to
+  // solve that by looking up which objects were in points previously until the assignment takes
+  // place. Then I changed the simple assignment to a hand-written loop which replaces the items
+  // in points one-by-one, so that no exception is thrown.
+  
+  QPoint dummy;
+  
+  try {
 //  for ( int j = 0; j < smooth; j++ )
 //    {
       for ( unsigned int i = 0; i < points.count() - 2; i+=2 )
@@ -299,10 +338,24 @@ void GLBrush::smoothnessBrush( int smooth )
                 aux.append( p1 );
 		QPoint *aux1 = new QPoint( ( int ) ( ( p1 -> x() + p2 -> x() ) / 2 ),
 		                           ( int ) ( ( p1 -> y() + p2 -> y() ) / 2 ) );
+		try {
+		    aux.append( aux1 );
+		    }
+		catch(...)
+		    {
+		    delete aux1;
+		    throw;
+		    }
 		QPoint *aux2 = new QPoint( ( int ) ( ( p2 -> x() + p3 -> x() ) / 2 ),
 		                           ( int ) ( ( p2 -> y() + p3 -> y() ) / 2 ) );
-                aux.append( aux1 );
+		try {
                 aux.append( aux2 );
+		    }
+		catch(...)
+		    {
+		    delete aux2;
+		    throw;
+		    }
 	     }
            else
              {
@@ -311,9 +364,61 @@ void GLBrush::smoothnessBrush( int smooth )
              }
          }
  //   }
-  points = aux;
-
-buildList();
+  
+  // This and the similar if-block down ensure that both lists have the same size. This is
+  // needed for the special assignment later.
+  if(points.count() < aux.count() )
+      {
+	std::cerr << "\npoints.count() < aux.count()\n";
+	for( uint c_diff = points.count(); c_diff != aux.count(); ++c_diff )
+	    {
+	    points.append( &dummy );
+	    }
+	}
+  
+  
+  } // outer try block
+  catch(...)
+      {
+	if( !aux.isEmpty() )
+	    {
+	    QPtrListIterator<QPoint> iter( aux );
+	     do
+	        {
+	        if(!points.containsRef( *iter ) ) // Only delete items which are not in "points"
+	            {
+		      delete *iter;
+		      }
+	    
+	        ++iter;
+	        } while( !iter.atLast() );
+	    } // if(!aux.isEmpty() )
+      
+	throw;
+	}
+  
+  //points = aux;
+  
+  if( points.count() > aux.count() )
+      {
+	std::cerr << "\npoints.count() > aux.count()\n";
+	for ( uint c_diff = aux.count(); c_diff != points.count(); ++c_diff )
+	    {
+	    points.removeLast();
+	    }
+	} 
+  
+  QPtrListIterator<QPoint> iter( aux );
+  for( uint c = 0; c != points.count(); ++c )
+      {
+	//points.at(c);
+	points.replace( c, *iter );
+	
+	++iter;
+	}
+	
+  
+  buildList();
 }
 
 void GLBrush::setPoints( QPtrList<QPoint> _points )

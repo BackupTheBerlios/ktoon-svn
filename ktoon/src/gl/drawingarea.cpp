@@ -39,6 +39,7 @@
 #include "../properties/imageproperties.h"
 #include "../images/images.h"
 
+
 //--------------- CONSTRUCTOR --------------------
 
 
@@ -62,6 +63,7 @@ DrawingArea::DrawingArea( QWidget *parent, QWidget *grandparent, const char *nam
     light_table = false;
     using_hand = false;
     front_grid = false;
+    selected_all = false;
 
     grid = NULL;
     current_graphic = NULL;
@@ -364,6 +366,7 @@ void DrawingArea::processHits( GLint hits, GLuint buffer[] )
 			selected_graphic = true;
 		}
 	}
+    current_graphic_list.append( current_graphic );
     }
 }
 
@@ -491,6 +494,7 @@ void DrawingArea::drawOnionSkinsAndLightTable()
 void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
 {
     Q_CHECK_PTR( mouse_event );
+    selected_all = false;
 
     if ( k_toon -> currentStatus() -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
     {
@@ -607,10 +611,17 @@ void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
     		  invertMatrix();
 	          if ( !bezier )
 		     {
-			QPoint * new_point = new QPoint( mouse_event -> x(), mouse_event -> y() );
 		      	current_graphic = new GLPen( this, mapPointToMatrix( oldPosition() ), *current_outline_color,
 					             *current_brush, mapPointToMatrix( newPosition() ) );
-			( ( GLPen * )( current_graphic ) ) -> setBezierPoint( *new_point );
+			QPoint * new_point = new QPoint( mouse_event -> x(), mouse_event -> y() );
+			try {
+			  ( ( GLPen * )( current_graphic ) ) -> setBezierPoint( *new_point );
+			  }
+			catch(...)
+			   {
+			   delete new_point;
+			   throw;
+			   }
 	 		addGraphicComponent( current_graphic, false );
 	           	bezier = true;
 		     }
@@ -618,9 +629,18 @@ void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
 		     {
 		  	  mouse_event -> accept();
 			  QPoint new_point1( mouse_event -> x(), mouse_event -> y() );
-			  ( ( GLPen * )( current_graphic ) ) -> setControlPen( *( new QPoint( mapPointToMatrix( new_point1 ) ) ),
-			                                                       *( new QPoint( mapPointToMatrix( new_point1 ) ) ) );
-			  ( ( GLPen * )( current_graphic ) ) -> setBezierPoint( *new QPoint( mapPointToMatrix( new_point1 ) ) );
+			  ( ( GLPen * )( current_graphic ) ) -> setControlPen( QPoint( mapPointToMatrix( new_point1 ) ),
+			                                                       QPoint( mapPointToMatrix( new_point1 )) );
+			  
+			  QPoint* new_bezier_point = new QPoint( mapPointToMatrix( new_point1 ) );
+			  try {
+			    ( ( GLPen * )( current_graphic ) ) -> setBezierPoint( *new_bezier_point );
+			    }
+			  catch(...)
+			    {
+			    delete new_bezier_point;
+			    throw;
+			    }
 		     }
                   break;
 	 case Tools::LINE:
@@ -763,7 +783,7 @@ void DrawingArea::mouseMoveEvent( QMouseEvent *mouse_event )
 		  mouse_event -> accept();
 		  QPoint new_point( mouse_event -> x(),  mouse_event -> y() );
 		  if ( current_graphic != NULL )
-		       current_graphic -> contourSelectionMoveOption( *( new QPoint( mapPointToMatrix( new_point ) ) ) );
+		       current_graphic -> contourSelectionMoveOption( QPoint( mapPointToMatrix( new_point ) ) );
 		  }
                   break;
 	 case Tools::BRUSH:
@@ -780,7 +800,7 @@ void DrawingArea::mouseMoveEvent( QMouseEvent *mouse_event )
 	             invertMatrix();
 		     mouse_event -> accept();
 		     QPoint new_point( mouse_event -> x(),  mouse_event -> y() );
-		     current_graphic -> pencilMoveOption( *( new QPoint( mapPointToMatrix( new_point ) ) ) );
+		     current_graphic -> pencilMoveOption( QPoint( mapPointToMatrix( new_point ) ) );
 		  }
                   break;
 	 case Tools::PEN:
@@ -788,7 +808,7 @@ void DrawingArea::mouseMoveEvent( QMouseEvent *mouse_event )
 	             invertMatrix();
 		     mouse_event -> accept();
 		     QPoint new_point( mouse_event -> x(),  mouse_event -> y() );
-		     current_graphic -> penMoveOption( *( new QPoint( mapPointToMatrix( new_point ) ) ) );
+		     current_graphic -> penMoveOption( QPoint( mapPointToMatrix( new_point ) ) );
 		     ( ( GLPen * )( current_graphic ) ) -> setWidthPoint( *current_brush );
 		  }
 		  break;
@@ -915,6 +935,7 @@ void DrawingArea::mouseDoubleClickEvent( QMouseEvent *mouse_event )
 		  QPoint new_point1( mouse_event -> x(),  mouse_event -> y() );
 		  QPoint new_point2( mouse_event -> x(),  mouse_event -> y() );
 		  ( ( GLPen * )( current_graphic ) ) -> setControlPen( *( new QPoint( mapPointToMatrix( new_point1 ) ) ), *( new QPoint( mapPointToMatrix( new_point2 ) ) ) );
+    		  graphic_list.remove( current_graphic );
   	 	  addGraphicComponent( current_graphic, false );
 	 	  current_graphic = NULL;
 		  selected_graphic = true;
@@ -931,7 +952,20 @@ void DrawingArea::mouseDoubleClickEvent( QMouseEvent *mouse_event )
 void DrawingArea::keyPressEvent( QKeyEvent *key_event )
 {
     Q_CHECK_PTR( key_event );
-    current_graphic = NULL;
+
+    if ( selected_all )
+    {
+	current_graphic_list.clear();
+    	if ( k_toon -> currentStatus() -> currentKeyFrame() != NULL )
+        	current_graphic_list = k_toon -> currentStatus() -> currentKeyFrame() -> getDrawing() -> graphicComponents();
+    	current_graphic = NULL;
+    }
+    else
+    {
+	current_graphic_list.clear();
+    	current_graphic_list.append( current_graphic );
+    }
+    bezier = false;
 
     if ( k_toon -> currentStatus() -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
     {
@@ -1204,8 +1238,7 @@ void DrawingArea::pasteBrush( QString brush )
  	number2 = brush.left( brush.find( ' ', 0 ) );
  	brush.remove( 0, number2.length() + 1 );
 
-        QPoint * new_point = new QPoint( number1.toInt(), number2.toInt() );
-	( ( GLBrush * ) ( current_graphic ) ) -> setEndBrush( *new_point );
+	( ( GLBrush * ) ( current_graphic ) ) -> setEndBrush( QPoint( number1.toInt(), number2.toInt() ) );
     }
 
  addGraphicComponent( current_graphic, false );
@@ -1301,8 +1334,7 @@ void DrawingArea::pastePencil( QString pencil )
  	number2 = pencil.left( pencil.find( ' ', 0 ) );
  	pencil.remove( 0, number2.length() + 1 );
 
-        QPoint * new_point = new QPoint( number1.toInt(), number2.toInt() );
-	( ( GLPencil * ) ( current_graphic ) ) -> setEndPencil( *new_point );
+	( ( GLPencil * ) ( current_graphic ) ) -> setEndPencil( QPoint( number1.toInt(), number2.toInt() ) );
     }
 
  addGraphicComponent( current_graphic, false );
@@ -1400,8 +1432,7 @@ void DrawingArea::pastePen( QString pen )
  	number2 = pen.left( pen.find( ' ', 0 ) );
  	pen.remove( 0, number2.length() + 1 );
 
-	QPoint * new_point = new QPoint( number1.toInt() , number2.toInt() );
-	( ( GLPen * ) ( current_graphic ) ) -> setOneControlPen( *new_point );
+	( ( GLPen * ) ( current_graphic ) ) -> setOneControlPen( QPoint( number1.toInt() , number2.toInt() ) );
     }
 
  //The bezier points
@@ -1414,7 +1445,14 @@ for ( i = 0; i < number_points / 2; i++ )
  	pen.remove( 0, number2.length() + 1 );
 
         QPoint * new_point = new QPoint( number1.toInt(), number2.toInt() );
+	try {
 	( ( GLPen * )( current_graphic ) ) -> setBezierPoint( *new_point );
+	  }
+	catch(...)
+	   {
+	   delete new_point;
+	   throw;
+	   }
     }
 
   addGraphicComponent( current_graphic, false );
@@ -1708,9 +1746,9 @@ void DrawingArea::addGraphicComponent( GLGraphicComponent *graphic_component, bo
     	for ( graphic = graphic_list.first(); graphic; graphic = graphic_list.next() )
             if ( graphic -> getZ() > z )
                  z = graphic -> getZ();
-      }
-    else
-       z = 0.0;
+    }
+ else
+        z = 0.0;
 
  graphic_component -> setZ( z + 0.0001 );
  graphic_list.append( graphic_component );
@@ -1885,7 +1923,6 @@ void DrawingArea::slotOneStepBackward()
 //Aligns the selection to the drawing area's right border
 void DrawingArea::slotAlignRight()
 {
-  current_graphic_list.append( current_graphic );
   if ( current_graphic_list.count() !=0 )
     {
        GLGraphicComponent *graphic;
@@ -1893,11 +1930,11 @@ void DrawingArea::slotAlignRight()
        for ( graphic = current_graphic_list.first(); graphic; graphic = current_graphic_list.next() )
           {
 	    graphic -> calculateBottomRight();
-            QPoint *point = new QPoint( graphic -> bottomRight() );
+            QPoint point = QPoint( graphic -> bottomRight() );
        	    int x = graphic -> getTranslate().x();
             graphic -> translateGraphic( -x, 0 );
             x = maxHorizontal();
-	    graphic -> translateGraphic( ( x - ( point -> x() ) ), 0 );
+	    graphic -> translateGraphic( ( x - ( point.x() ) ), 0 );
 	  }
     }
 }
@@ -1905,7 +1942,6 @@ void DrawingArea::slotAlignRight()
 //Centers the selection vertically into the drawing area
 void DrawingArea::slotCenterVertically()
 {
-  current_graphic_list.append( current_graphic );
   if ( current_graphic_list.count() !=0 )
     {
        GLGraphicComponent *graphic;
@@ -1914,13 +1950,13 @@ void DrawingArea::slotCenterVertically()
           {
 	    graphic -> calculateTopLeft();
 	    graphic -> calculateBottomRight();
-	    QPoint *point_tl = new QPoint( graphic -> topLeft() );
-	    QPoint *point_br = new QPoint( graphic -> bottomRight() );
+	    QPoint point_tl = QPoint( graphic -> topLeft() );
+	    QPoint point_br = QPoint( graphic -> bottomRight() );
             int y = graphic -> getTranslate().y();
             graphic -> translateGraphic( 0, -y );
 	    y = maxVertical();
-	    graphic -> translateGraphic( 0, -( point_tl -> y() ) );
-	    graphic -> translateGraphic( 0, ( int ) ( ( y - ( point_br -> y() - point_tl -> y() ) ) / 2 ) );
+	    graphic -> translateGraphic( 0, -( point_tl.y() ) );
+	    graphic -> translateGraphic( 0, ( int ) ( ( y - ( point_br.y() - point_tl.y() ) ) / 2 ) );
           }
     }
 }
@@ -1928,7 +1964,6 @@ void DrawingArea::slotCenterVertically()
 //Aligns the selection to the drawing area's left border
 void DrawingArea::slotAlignLeft()
 {
-  current_graphic_list.append( current_graphic );
   if ( graphic_list.count() !=0 )
     {
        GLGraphicComponent *graphic;
@@ -1936,10 +1971,10 @@ void DrawingArea::slotAlignLeft()
        for ( graphic = current_graphic_list.first(); graphic; graphic = current_graphic_list.next() )
           {
          graphic -> calculateTopLeft();
-         QPoint *point = new QPoint( graphic -> topLeft() );
+         QPoint point = QPoint( graphic -> topLeft() );
          int x = graphic -> getTranslate().x();
          graphic -> translateGraphic( -x, 0 );
-         graphic -> translateGraphic( -( point -> x() ), 0 );
+         graphic -> translateGraphic( -( point.x() ), 0 );
 	 }
     }
 }
@@ -1947,49 +1982,46 @@ void DrawingArea::slotAlignLeft()
 //Aligns the selection to the drawing area's top border
 void DrawingArea::slotAlignTop()
 {
-  current_graphic_list.append( current_graphic );
   if ( current_graphic_list.count() !=0 )
     {
-       GLGraphicComponent *graphic;
-       modifyDocument( true );
-       for ( graphic = current_graphic_list.first(); graphic; graphic = current_graphic_list.next() )
-          {
-         graphic -> calculateTopLeft();
-	 QPoint *point = new QPoint( current_graphic -> topLeft() );
-         int y = graphic -> getTranslate().y();
-         graphic -> translateGraphic( 0, -y );
-	 graphic -> translateGraphic( 0, - ( point -> y() ) );
-	 }
+       	GLGraphicComponent *graphic;
+       	modifyDocument( true );
+      	for ( graphic = current_graphic_list.first(); graphic; graphic = current_graphic_list.next() )
+      	{
+		graphic -> calculateTopLeft();
+		QPoint point = QPoint( current_graphic -> topLeft() );
+		int y = graphic -> getTranslate().y();
+		graphic -> translateGraphic( 0, -y );
+		graphic -> translateGraphic( 0, - ( point.y() ) );
+	}
      }
 }
 
 //Centers the selection horizontally into the drawing area
 void DrawingArea::slotCenterHorizontally()
 {
-  current_graphic_list.append( current_graphic );
   if ( current_graphic_list.count() !=0 )
     {
        GLGraphicComponent *graphic;
        modifyDocument( true );
        for ( graphic = current_graphic_list.first(); graphic; graphic = current_graphic_list.next() )
           {
-	graphic -> calculateTopLeft();
-	graphic -> calculateBottomRight();
-	QPoint *point_tl = new QPoint( graphic -> topLeft() );
-	QPoint *point_br = new QPoint( graphic -> bottomRight() );
-        int x = graphic -> getTranslate().x();
-        graphic -> translateGraphic( -x, 0 );
-	x = maxHorizontal();
-	graphic -> translateGraphic( -( point_tl -> x() ), 0 );
-	graphic -> translateGraphic( ( int ) ( ( x - ( point_br -> x() - point_tl -> x() ) ) / 2 ), 0 );
-	}
+		graphic -> calculateTopLeft();
+		graphic -> calculateBottomRight();
+		QPoint point_tl = QPoint( graphic -> topLeft() );
+		QPoint point_br = QPoint( graphic -> bottomRight() );
+		int x = graphic -> getTranslate().x();
+		graphic -> translateGraphic( -x, 0 );
+		x = maxHorizontal();
+		graphic -> translateGraphic( -( point_tl.x() ), 0 );
+		graphic -> translateGraphic( ( int ) ( ( x - ( point_br.x() - point_tl.x() ) ) / 2 ), 0 );
+	  }
     }
 }
 
 //Aligns the selection to the drawing area's bottom border
 void DrawingArea::slotAlignBottom()
 {
-  current_graphic_list.append( current_graphic );
   if ( current_graphic_list.count() !=0 )
     {
        GLGraphicComponent *graphic;
@@ -1997,11 +2029,11 @@ void DrawingArea::slotAlignBottom()
        for ( graphic = current_graphic_list.first(); graphic; graphic = current_graphic_list.next() )
           {
 	graphic -> calculateBottomRight();
-	QPoint *point = new QPoint( graphic -> bottomRight() );
+	QPoint point = QPoint( graphic -> bottomRight() );
         int y = graphic -> getTranslate().y();
         graphic -> translateGraphic( 0, -y );
 	y = maxVertical();
-	graphic -> translateGraphic( 0, ( y - ( point -> y() ) ) );
+	graphic -> translateGraphic( 0, ( y - ( point.y() ) ) );
 	}
      }
 }
@@ -2009,7 +2041,6 @@ void DrawingArea::slotAlignBottom()
 //Reflects the selection in the drawing area - horizontal axis
 void DrawingArea::slotFlipHorizontally()
 {
-  current_graphic_list.append( current_graphic );
   if ( current_graphic_list.count() !=0 )
     {
        GLGraphicComponent *graphic;
@@ -2022,7 +2053,6 @@ void DrawingArea::slotFlipHorizontally()
 //Reflects the selection in the drawing area - vertical axis
 void DrawingArea::slotFlipVertically()
 {
-  current_graphic_list.append( current_graphic );
   if ( current_graphic_list.count() !=0 )
     {
        GLGraphicComponent *graphic;
@@ -2035,7 +2065,6 @@ void DrawingArea::slotFlipVertically()
 //Rotates the selected elements 90º to the right
 void DrawingArea::slotRotateCW90()
 {
-  current_graphic_list.append( current_graphic );
   if ( current_graphic_list.count() !=0 )
     {
        GLGraphicComponent *graphic;
@@ -2048,7 +2077,6 @@ void DrawingArea::slotRotateCW90()
 //Rotates the selected elements 90º to the left
 void DrawingArea::slotRotateCCW90()
 {
-  current_graphic_list.append( current_graphic );
   if ( current_graphic_list.count() !=0 )
     {
        GLGraphicComponent *graphic;
@@ -2061,7 +2089,6 @@ void DrawingArea::slotRotateCCW90()
 //Rotates the selected elements 180º
 void DrawingArea::slotRotate180()
 {
-  current_graphic_list.append( current_graphic );
   if ( current_graphic_list.count() !=0 )
     {
        GLGraphicComponent *graphic;
@@ -2484,106 +2511,108 @@ void DrawingArea::slotCut()
 
 void DrawingArea::slotCopy()
 {
-    QClipboard *cb = QApplication::clipboard();
-    if ( current_graphic != NULL )
-	    cb -> setText( current_graphic -> clipboardGraphic(), QClipboard::Clipboard );
+    clipboard.clear();
+    if ( current_graphic_list.count() != 0 )
+    {
+	GLGraphicComponent *graphic;
+        for ( graphic = current_graphic_list.first(); graphic; graphic = current_graphic_list.next() )
+	    clipboard.append( graphic -> clipboardGraphic() );
+    }
 }
 
 void DrawingArea::slotPaste()
 {
-    QClipboard *cb = QApplication::clipboard();
-    QString text;
-
-    QString clipboard = cb -> text( QClipboard::Clipboard );
-    text.insert( 0, clipboard );
-    if ( !text.isNull() && k_toon -> currentStatus() -> currentKeyFrame() != NULL && !( k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() ) )
-      {
-        modifyDocument( true );
-        QString number = text.left( text.find( ' ', 0 ) );
-        text.remove( 0, number.length() + 1 );
-	int i = number.toInt();
-	if ( i > 0 )
-	  {
-            switch( i )
-	       {
-	 	case GLGraphicComponent::GC_BRUSH:
-		     pasteBrush( text );
-		     break;
-		case GLGraphicComponent::GC_PENCIL:
-		     pastePencil( text );
-		     break;
-		case GLGraphicComponent::GC_PEN:
-		     pastePen( text );
-		     break;
-		case GLGraphicComponent::GC_LINE:
-		     pasteLine( text );
-		     break;
-		case GLGraphicComponent::GC_RECTANGLE:
-		     pasteRectangle( text );
-		     break;
-		case GLGraphicComponent::GC_ELLIPSE:
-		     pasteEllipse( text );
-		     break;
-		default:
-		     break;
-	       }
-	    slotCenterHorizontally();
-	    slotCenterVertically();
-          }
-       }
+    for ( QStringList::Iterator it = clipboard.begin(); it != clipboard.end(); ++it )
+    {
+        QString text = *it;
+	if ( !text.isEmpty() && k_toon -> currentStatus() -> currentKeyFrame() != NULL && !( k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() ) )
+	{
+		modifyDocument( true );
+		QString number = text.left( text.find( ' ', 0 ) );
+		text.remove( 0, number.length() + 1 );
+		int i = number.toInt();
+		if ( i > 0 )
+		{
+			switch( i )
+			{
+				case GLGraphicComponent::GC_BRUSH:
+				pasteBrush( text );
+				break;
+				case GLGraphicComponent::GC_PENCIL:
+				pastePencil( text );
+				break;
+				case GLGraphicComponent::GC_PEN:
+				pastePen( text );
+				break;
+				case GLGraphicComponent::GC_LINE:
+				pasteLine( text );
+				break;
+				case GLGraphicComponent::GC_RECTANGLE:
+				pasteRectangle( text );
+				break;
+				case GLGraphicComponent::GC_ELLIPSE:
+				pasteEllipse( text );
+				break;
+				default:
+				break;
+			}
+		slotCenterHorizontally();
+		slotCenterVertically();
+		}
+	}
+    }
   updateGL();
 }
 
 void DrawingArea::slotPasteInPlace()
 {
-    QClipboard *cb = QApplication::clipboard();
-    QString text;
-
-    QString clipboard = cb -> text( QClipboard::Clipboard );
-    text.insert( 0, clipboard );
-    if ( !text.isNull() && k_toon -> currentStatus() -> currentKeyFrame() != NULL && !( k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() ) )
-      {
-        modifyDocument( true );
-        QString number = text.left( text.find( ' ', 0 ) );
-        text.remove( 0, number.length() + 1 );
-	int i = number.toInt();
-        switch( i )
-	  {
-	 	case GLGraphicComponent::GC_BRUSH:
-		     pasteBrush( text );
-		     break;
-		case GLGraphicComponent::GC_PENCIL:
-		     pastePencil( text );
-		     break;
-		case GLGraphicComponent::GC_PEN:
-		     pastePen( text );
-		     break;
-		case GLGraphicComponent::GC_LINE:
-		     pasteLine( text );
-		     break;
-		case GLGraphicComponent::GC_RECTANGLE:
-		     pasteRectangle( text );
-		     break;
-		case GLGraphicComponent::GC_ELLIPSE:
-		     pasteEllipse( text );
-		     break;
-		default:
-		     break;
-	  }
-	if ( current_graphic != NULL )
-	   {
-		float z = -10.0;
-		if ( graphic_list.count() != 0 )
-      	   	  {
-	    	     GLGraphicComponent *graphic;
-    		     for ( graphic = graphic_list.first(); graphic; graphic = graphic_list.next() )
-                	 if ( graphic -> getZ() > z )
-	                    z = graphic -> getZ();
-      		  }
-		else
-       	    	     z = 0.0;
-        	current_graphic ->setZ( z + 0.0001);
-       	    }
+    for ( QStringList::Iterator it = clipboard.begin(); it != clipboard.end(); ++it )
+    {
+        QString text = *it;
+	if ( !text.isEmpty() && k_toon -> currentStatus() -> currentKeyFrame() != NULL && !( k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() ) )
+	{
+		modifyDocument( true );
+		QString number = text.left( text.find( ' ', 0 ) );
+		text.remove( 0, number.length() + 1 );
+		int i = number.toInt();
+		switch( i )
+		{
+			case GLGraphicComponent::GC_BRUSH:
+			pasteBrush( text );
+			break;
+			case GLGraphicComponent::GC_PENCIL:
+			pastePencil( text );
+			break;
+			case GLGraphicComponent::GC_PEN:
+			pastePen( text );
+			break;
+			case GLGraphicComponent::GC_LINE:
+			pasteLine( text );
+			break;
+			case GLGraphicComponent::GC_RECTANGLE:
+			pasteRectangle( text );
+			break;
+			case GLGraphicComponent::GC_ELLIPSE:
+			pasteEllipse( text );
+			break;
+			default:
+			break;
+		}
+		if ( current_graphic != NULL )
+		{
+			float z = -10.0;
+			if ( graphic_list.count() != 0 )
+			{
+			GLGraphicComponent *graphic;
+			for ( graphic = graphic_list.first(); graphic; graphic = graphic_list.next() )
+				if ( graphic -> getZ() > z )
+				z = graphic -> getZ();
+			}
+			else
+			z = 0.0;
+			current_graphic ->setZ( z + 0.0001);
+		}
+	}
     }
   updateGL();
 }
@@ -2609,8 +2638,12 @@ void DrawingArea::slotDelete()
 
 void DrawingArea::slotSelectAll()
 {
+      selected_all = true;
       if ( current_graphic )
+      {
+   	  graphic_list.remove( current_graphic );
       	  addGraphicComponent( current_graphic, false );
+      }
       current_graphic_list.clear();
       GLGraphicComponent *graphic;
       for ( graphic = graphic_list.first(); graphic; graphic = graphic_list.next() )
@@ -2787,10 +2820,9 @@ void DrawingArea::slotNext3OnionSkin()
 
 Color *DrawingArea::grabColor( const QPoint &p )
 {
-    Color *color = new Color();
+    Color* color = 0;
     QPoint point = p;
     point.setY( height() - point.y() );
-    GLfloat * glcolor = new GLfloat[4];
     if ( current_graphic )
        {
 	 switch( current_graphic -> kindGraphic() )
@@ -2817,12 +2849,14 @@ Color *DrawingArea::grabColor( const QPoint &p )
 					   ( ( GLEllipse * )( current_graphic ) ) -> fillColor().colorAlpha() );
 	        	break;
 		default:
-		       	break;
+		       	color = new Color;
+				break;
     	   }
        }
     else
        {
-    	glReadPixels( point.x(), point.y(), 1, 1 , GL_RGBA, GL_FLOAT, glcolor );
+	GLfloat glcolor[4]; 
+    	glReadPixels( point.x(), point.y(), 1, 1 , GL_RGBA, GL_FLOAT, &glcolor );
     	color = new Color( glcolor[0], glcolor[1], glcolor[2], glcolor[3] );
        }
     return color;

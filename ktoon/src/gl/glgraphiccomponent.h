@@ -301,6 +301,9 @@ public:
       * \param ellipse_point The point of the movement with the PENCIL tool
       */
     void ellipseMoveOption( const QPoint & ellipse_point );
+    
+    void lineImplFast( const QPoint & origin, const QPoint & end, int lw, const Color & outlineColor );
+    void lineImpl( const QPoint & origin, const QPoint & end, int lw, int stippleFactor, const Color & outlineColor );
 
      //Get methods
      /*!

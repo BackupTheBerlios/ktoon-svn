@@ -169,6 +169,7 @@ private:
     QPtrList<Brush> brushes;
     LibraryData *library;
     QDomDocument xml_doc;
+    
 
 };
 

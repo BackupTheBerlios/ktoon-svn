@@ -22,6 +22,9 @@
 
 #include "animation.h"
 
+#include <memory>
+
+
 //-------------- CONSTRUCTOR ---------------
 
 Animation::Animation()
@@ -30,9 +33,13 @@ Animation::Animation()
     camera_length = 160;
     camera_width = 120;
 
-    Scene *d_scene = new Scene();
-    d_scene -> setNameScene( QObject::tr( "Scene" ) + QString( "1" ) );
-    scenes.append( d_scene );
+    std::auto_ptr<Scene> ap_d_scene(new Scene);
+    
+    ap_d_scene.get() -> setNameScene( QObject::tr( "Scene" ) + QString( "1" ) );
+    scenes.append( ap_d_scene.get() );
+    
+    ap_d_scene.release();
+        
 }
 
 //------------- DESTRUCTOR ------------------

@@ -30,6 +30,8 @@ cameras/
 	In this directory there are files for camera handling.
 color/
 	Here it is stored the color palette dialog box's files.
+drawqt/
+	Find here the files related to the drawing area's on accelerated implementation.
 exposure/
 	The files for exposure sheet dialog box are included here.
 gl/

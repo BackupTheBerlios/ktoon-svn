@@ -28,6 +28,7 @@
 
 #include <qwmatrix.h>
 #include <qvaluelist.h>
+#include <qstringlist.h>
 
 #include "glcontrol.h"
 #include "glgraphiccomponent.h"
@@ -584,6 +585,9 @@ protected:
     //Variable related to the light Table
     QPtrList<GLGraphicComponent> light_table_list;
 
+    //Variable related to the copy/paste operations.
+    QStringList clipboard;
+
     //Variables related to the texture
     QRgb *texture;
     GLuint id_texture;
@@ -610,6 +614,9 @@ private:
 
     //Variable that indicates that a pen drawing has not been finished
     bool bezier;
+
+    //Variable that indicates that all drawings into the drawing area have been selected
+    bool selected_all;
 
     //Variables related to the temporary activation of the hand tool
     bool using_hand;

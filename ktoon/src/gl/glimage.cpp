@@ -57,7 +57,7 @@ void GLImage::buildList()
 {
 	glNewList( id_graphic_component, GL_COMPILE );
 		glPushName( GLGraphicComponent::selection_name++ );
-		glEnable( GL_TEXTURE_2D );
+ 		glEnable( GL_TEXTURE_2D );
 		glBindTexture( GL_TEXTURE_2D, id_texture );
 		glColor4f( 0.0, 0.0, 0.0, 0.0 );
 

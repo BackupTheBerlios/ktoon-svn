@@ -23,10 +23,13 @@
 
 #include "about.h"
 
+#include <memory> // std::auto_ptr
+
+
 //------------------ CONSTRUCTOR -----------------
 
 About::About( QWidget *parent ) : QTabDialog( parent )
-{
+{ 
     Q_CHECK_PTR( parent );
     
     setCaption( tr( "About" ) + QString( " Ktoon..." ) );
@@ -41,7 +44,11 @@ About::About( QWidget *parent ) : QTabDialog( parent )
 
     credits = new QLabel( this );
     file_id = 1;
-    credits_painter = new QPainter();
+    
+    std::auto_ptr<QPainter> ap_credits_painter(new QPainter);
+    credits_painter = ap_credits_painter.get();
+    
+    
     credits_pixmap = QPixmap();
     credits_pixmap.load( "src/images/ani/credits/credits-image.png" );
     credits -> setPixmap( credits_pixmap );
@@ -138,6 +145,8 @@ About::About( QWidget *parent ) : QTabDialog( parent )
     addTab( scroll_container_gnu, tr( "License Agreement" ) );
 
     connect( this, SIGNAL( currentChanged( QWidget * ) ), SLOT( slotPerformPageChangeActions( QWidget * ) ) );
+
+    ap_credits_painter.release();
 }
 
 //---------------- DESTRUCTOR -------------------

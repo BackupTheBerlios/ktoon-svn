@@ -74,7 +74,7 @@ public:
     /*!
      * \brief Sets the bezier curve order
      *
-     * The order has to do with the polynomial for the NURBS surface.
+     * The order deals with the polynomial for the NURBS surface.
      * \param order_pen The new order
      */
     void setOrderPen( const int & order_pen );

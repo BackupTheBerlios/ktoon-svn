@@ -23,6 +23,8 @@
 
 #include "glpen.h"
 
+#include <new>
+
 //-------------- CONSTRUCTOR ---------------
 
 GLPen::GLPen( QGLWidget *parent, const QPoint & _origin, const Color & _color, const Brush & _width, const QPoint & _end ) : GLGraphicComponent( parent, _origin, _color, _width ), end( _end )
@@ -35,9 +37,32 @@ GLPen::GLPen( QGLWidget *parent, const QPoint & _origin, const Color & _color, c
   	stride_pen = 3;
 	knots_count = 0;
 	QPoint * origin_point = new QPoint( origin.x(), origin.y() );
-	QPoint * end_point = new QPoint( end.x(), end.y() );
-	points.append( origin_point );
-	points.append( end_point );
+	try {
+	    points.append( origin_point );
+	    }
+	catch(...)
+	    {
+	    delete origin_point;
+	    throw;
+	    }
+	
+	QPoint * end_point = new(std::nothrow) QPoint( end.x(), end.y() );
+	if(!end_point)
+	    {
+	    delete origin_point;
+	    throw std::bad_alloc();
+	    }
+	
+	try {
+	    points.append( end_point );
+	    }
+	catch(...)
+	    {
+	    delete end_point;
+	    delete origin_point;
+	    throw;
+	    }
+	
 	bezier_point = origin;
  	stipple_factor = 1;
   	stipple_pattern = 0xFFFF;
@@ -58,10 +83,37 @@ GLPen::GLPen( const GLPen & pen ) : GLGraphicComponent( pen.parentWidget(), pen.
 	 order_pen = 3;
   	 stride_pen = 3;
 	 knots_count = 0;
+	 
+	 bezier = pen.getBezier();
+	 points = pen.getPoints();
+	 
 	 QPoint * origin_point = new QPoint( origin.x(), origin.y() );
-	 QPoint * end_point = new QPoint( end.x(), end.y() );
-	 points.append( origin_point );
-	 points.append( end_point );
+	 try {
+	     points.append( origin_point );
+	     }
+	 catch(...)
+	     {
+	     delete origin_point;
+	     throw;
+	     }
+	
+	 QPoint * end_point = new(std::nothrow) QPoint( end.x(), end.y() );
+	 if(!end_point)
+	     {
+	     delete origin_point;
+	     throw std::bad_alloc();
+	     }
+	 
+	 try {
+	     points.append( end_point );
+	     }
+	 catch(...)
+	     {
+	     delete end_point;
+	     delete origin_point;
+	     throw;
+	     }
+	 
 	 bezier_point = origin;
 	 bezier_point = pen.bezierPoint();
  	 stipple_factor = pen.stippleFactor();
@@ -71,8 +123,7 @@ GLPen::GLPen( const GLPen & pen ) : GLGraphicComponent( pen.parentWidget(), pen.
 	 translate.setY( 0 );
 	 local_selection_name = selection_name;
 	 selection_name++;
-	 bezier = pen.getBezier();
-	 points = pen.getPoints();
+	 
          buildList();
 }
 
@@ -149,13 +200,13 @@ void GLPen::buildList( )
      		  	glVertex2f( point -> x(), point -> y() ) ;
    		glEnd();
 	     }
-
+/*
 	   glColor3f( 1.0, 0.0, 0.0 );
 	   glBegin( GL_POINTS );
 	      for ( point = points.first(); point; point = points.next() )
      		  glVertex2f( point -> x(), point -> y() ) ;
    	   glEnd();
-
+*/
 	   glDisable( GL_LINE_STIPPLE );
    	   glPopMatrix();
         glEndList();
@@ -170,9 +221,25 @@ void GLPen::setEndPen( const QPoint & _end )
 void GLPen::setControlPen( const QPoint & control1, const QPoint & control2 )
 {
  QPoint * control_point1 = new QPoint( control1.x(), control1.y() );
+ try {
+     points.append( control_point1 );
+     }
+ catch(...)
+     {
+     delete control_point1;
+     throw;
+     }
+    
  QPoint * control_point2 = new QPoint( control2.x(), control2.y() );
- points.append( control_point1 );
+ try {
  points.append( control_point2 );
+     }
+ catch(...)
+     {
+     delete control_point2;
+     throw;
+     }    
+ 
  bezier_point = control1;
  buildList();
 }
@@ -180,15 +247,27 @@ void GLPen::setControlPen( const QPoint & control1, const QPoint & control2 )
 void GLPen::setOneControlPen( const QPoint & _end )
 {
  QPoint * end_point = new QPoint( _end.x(), _end.y() );
- points.append( end_point );
+ try {
+     points.append( end_point );
+     }
+ catch(...)
+     {
+     delete end_point;
+     throw;
+     }
  buildList();
 }
 
 void GLPen::replaceControlPen( const QPoint & _end )
 {
  QPoint * end_point = new QPoint( _end.x(), _end.y() );
- QPoint * aux = new QPoint( ( - ( _end.x() - bezier_point.x() ) + bezier_point.x() ),
-                            ( - ( _end.y() - bezier_point.y() ) + bezier_point.y() ) );
+ QPoint * aux = new(std::nothrow) QPoint( ( - ( _end.x() - bezier_point.x() ) + bezier_point.x() ),
+                                          ( - ( _end.y() - bezier_point.y() ) + bezier_point.y() ) );
+ if(!aux)
+     {
+     delete end_point;
+     throw;
+     }
 
  points.replace( points.count() - 2, aux );
  points.replace( points.count() - 1, end_point );
@@ -198,7 +277,13 @@ void GLPen::replaceControlPen( const QPoint & _end )
 void GLPen::replaceControlPen( const QPoint & control1, const QPoint & control2 )
 {
  QPoint * control_point1 = new QPoint( control1.x(), control1.y() );
- QPoint * control_point2 = new QPoint( control2.x(), control2.y() );
+ QPoint * control_point2 = new(std::nothrow) QPoint( control2.x(), control2.y() );
+ if(!control_point2)
+     {
+     delete control_point1;
+     throw;
+     }
+ 
  points.replace( points.count() - 2, control_point1 );
  points.replace( points.count() - 1, control_point2 );
  buildList();
@@ -220,8 +305,14 @@ void GLPen::angleControlPen( const QPoint & _end )
 
  if ( ( fabs( fmod( ( ( 180.0 * theta ) / 3.14159265358979323846 ), 45 ) == 0.0 ) ) )
  {
-   QPoint * aux = new QPoint( ( - ( _end.x() - bezier_point.x() ) + bezier_point.x() ),
-                              ( - ( _end.y() - bezier_point.y() ) + bezier_point.y() ) );
+   QPoint * aux = new(std::nothrow) QPoint( ( - ( _end.x() - bezier_point.x() ) + bezier_point.x() ),
+                                          ( - ( _end.y() - bezier_point.y() ) + bezier_point.y() ) );
+   if(!aux)
+       {
+	 delete end_point;
+	 throw;
+	 }
+   
    points.replace( points.count() - 2, aux );
    points.replace( points.count() - 1, end_point );
  }
@@ -234,8 +325,14 @@ void GLPen::moveControlPen( const QPoint & _end )
  QPoint * last_point = points.at( points.count() - 1 );
  QPoint * reflex_point = points.at( points.count() - 2 );
 
- QPoint * aux = new QPoint( reflex_point -> x() + ( _end.x() - last_point -> x() ) ,
-                            reflex_point -> y() + ( _end.y() - last_point -> y() ) );
+ QPoint * aux = new(std::nothrow) QPoint( reflex_point -> x() + ( _end.x() - last_point -> x() ) ,
+                                          reflex_point -> y() + ( _end.y() - last_point -> y() ) );
+ if(!aux)
+     {
+     delete end_point;
+     throw;
+     }
+ 
  //calculate el new bezier point or mid point of the bezier
  bezier_point.setX( bezier_point.x() + ( _end.x() - last_point -> x() ) );
  bezier_point.setY( bezier_point.y() + ( _end.y() - last_point -> y() ) );
@@ -252,8 +349,14 @@ void GLPen::moveControlPen( int index, const QPoint & _end )
 
  QPoint * aux1 = new QPoint( last_point -> x() + ( _end.x() - last_point -> x() ) ,
                              last_point -> y() + ( _end.y() - last_point -> y() ) );
- QPoint * aux2 = new QPoint( reflex_point -> x() + ( _end.x() - reflex_point -> x() ) ,
-                             reflex_point -> y() + ( _end.y() - reflex_point -> y() ) );
+ QPoint * aux2 = new(std::nothrow) QPoint( reflex_point -> x() + ( _end.x() - reflex_point -> x() ) ,
+                                           reflex_point -> y() + ( _end.y() - reflex_point -> y() ) );
+ if(!aux2)
+     {
+     delete aux1;
+     throw;
+     }
+
 // qDebug("Last (%d, %d) - Reflex (%d, %d), Aux1 (%d, %d) - Aux2 (%d, %d)",last_point -> x(), last_point -> y(), reflex_point -> x(), reflex_point -> y(), aux1 -> x(), aux1 -> y(), aux2 -> x(), aux2 -> y() );
  points.replace( index, aux1 );
  points.replace( index + 1, aux2 );
@@ -280,7 +383,15 @@ void GLPen::moveBezierPoint( const QPoint & _end )
   if ( j != -1 )
     {
      bezier.replace( j, end_point );
-     moveControlPen( j*2, _end );
+     try {
+         moveControlPen( j*2, _end );
+	   }
+     catch(...)
+         {
+	   bezier.remove(j);
+	   delete end_point;
+	   throw;
+	   }
     }
  buildList();
 }

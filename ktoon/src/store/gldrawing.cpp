@@ -44,37 +44,79 @@ GLDrawing::GLDrawing( const GLDrawing &to_copy )
 	    case GLGraphicComponent::GC_BRUSH:
 	    {
 	        GLBrush *new_graphic = new GLBrush( *( ( GLBrush * )graphic_iterator ) );
-		graphic_components.append( new_graphic );
+		  try {
+		  graphic_components.append( new_graphic );
+		  }
+		  catch(...)
+		    {
+		    delete new_graphic;
+		    throw;
+		    }
 	    }
 	        break;
 	    case GLGraphicComponent::GC_PENCIL:
 	    {
 	        GLPencil *new_graphic = new GLPencil( *( ( GLPencil * )graphic_iterator ) );
-		graphic_components.append( new_graphic );
+		  try {
+		  graphic_components.append( new_graphic );
+		  }
+		  catch(...)
+		    {
+		    delete new_graphic;
+		    throw;
+		    }
 	    }
 	        break;
 	    case GLGraphicComponent::GC_PEN:
 	    {
 	        GLPen *new_graphic = new GLPen( *( ( GLPen * )graphic_iterator ) );
-		graphic_components.append( new_graphic );
+		  try {
+		  graphic_components.append( new_graphic );
+		  }
+		  catch(...)
+		    {
+		    delete new_graphic;
+		    throw;
+		    }
 	    }
 	        break;
 	    case GLGraphicComponent::GC_LINE:
 	    {
 	        GLLine *new_graphic = new GLLine( *( ( GLLine * )graphic_iterator ) );
-		graphic_components.append( new_graphic );
+		  try {
+		  graphic_components.append( new_graphic );
+		  }
+		  catch(...)
+		    {
+		    delete new_graphic;
+		    throw;
+		    }
 	    }
 	        break;
 	    case GLGraphicComponent::GC_RECTANGLE:
 	    {
 	        GLRectangle *new_graphic = new GLRectangle( *( ( GLRectangle * )graphic_iterator ) );
-		graphic_components.append( new_graphic );
+		  try {
+		  graphic_components.append( new_graphic );
+		  }
+		  catch(...)
+		    {
+		    delete new_graphic;
+		    throw;
+		    }
 	    }
 	        break;
 	    case GLGraphicComponent::GC_ELLIPSE:
 	    {
 	        GLEllipse *new_graphic = new GLEllipse( *( ( GLEllipse * )graphic_iterator ) );
-		graphic_components.append( new_graphic );
+		  try {
+		  graphic_components.append( new_graphic );
+		  }
+		  catch(...)
+		    {
+		    delete new_graphic;
+		    throw;
+		    }
 	    }
 	        break;
 	}

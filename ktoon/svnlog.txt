@@ -1,4 +1,36 @@
 ------------------------------------------------------------------------
+r370 | simena | 2005-03-04 12:12:45 -0500 (Fri, 04 Mar 2005) | 1 line
+
+Updated the translations files
+------------------------------------------------------------------------
+r369 | simena | 2005-03-04 12:07:39 -0500 (Fri, 04 Mar 2005) | 1 line
+
+Modified the Copy/Paste operations in order to work with several objects
+------------------------------------------------------------------------
+r368 | fer | 2005-03-04 11:35:47 -0500 (Fri, 04 Mar 2005) | 1 line
+
+Added more files
+------------------------------------------------------------------------
+r367 | fer | 2005-03-04 11:34:31 -0500 (Fri, 04 Mar 2005) | 1 line
+
+Added the first files that will deal with the not accelerated mode
+------------------------------------------------------------------------
+r366 | simena | 2005-02-28 04:22:51 -0500 (Mon, 28 Feb 2005) | 1 line
+
+Added the select all operation and the first approach to the SVG exportation
+------------------------------------------------------------------------
+r365 | simena | 2005-02-23 11:54:33 -0500 (Wed, 23 Feb 2005) | 1 line
+
+Implemented alpha transparency on the splash screen image
+------------------------------------------------------------------------
+r364 | simena | 2005-02-23 05:21:46 -0500 (Wed, 23 Feb 2005) | 1 line
+
+Modified the file structure from src directory and updated the developers documentation
+------------------------------------------------------------------------
+r363 | simena | 2005-02-23 05:07:05 -0500 (Wed, 23 Feb 2005) | 1 line
+
+Deleted the src directory
+------------------------------------------------------------------------
 r362 | fer | 2005-02-22 05:36:55 -0500 (Tue, 22 Feb 2005) | 1 line
 
 Improved the Open Recent operation

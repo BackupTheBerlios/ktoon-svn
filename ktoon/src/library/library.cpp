@@ -29,6 +29,8 @@
 #include <qwmatrix.h>
 #include <qmessagebox.h>
 
+#include <memory>
+
 //------------- CONSTRUCTOR ----------------
 
 Library::Library( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QGLWidget *share, QToolButton *assig_tb_button )
@@ -143,7 +145,10 @@ void Library::addSymbol( GLGraphicComponent *graphic, const QString &name )
 
     LibraryData *lib = k_toon -> document() -> getLibrary();
     QPtrList<Item> its = lib -> getItems();
-    Symbol *new_symbol = new Symbol();
+    
+    std::auto_ptr<Symbol> ap_new_symbol(new Symbol);
+    Symbol* new_symbol = ap_new_symbol.get();
+    
     new_symbol -> setName( name );
 
     switch ( graphic -> kindGraphic() )
@@ -199,6 +204,8 @@ void Library::addSymbol( GLGraphicComponent *graphic, const QString &name )
 
     its.prepend( new_symbol );
     lib -> setItems( its );
+    ap_new_symbol.release();
+    
 }
 
 SymbolView *Library::getSymbolView() const
@@ -245,17 +252,25 @@ void Library::loadImageSymbol( const QString &file_name )
     LibraryData *lib = k_toon -> document() -> getLibrary();
     QPtrList<Item> its = lib -> getItems();
     Symbol *new_symbol = new Symbol();
-    new_symbol -> setName( "IMAGE " + QString::number( image_count ) );
+    
+    try {
+        new_symbol -> setName( "IMAGE " + QString::number( image_count ) );
 
-    GLImage *i = new GLImage( symbol_view, file_name, QPoint( 0, 0 ), QPoint() );
-    new_graphic -> setGraphic( i );
-    new_symbol -> setGraphic( i );
+        GLImage *i = new GLImage( symbol_view, file_name, QPoint( 0, 0 ), QPoint() );
+        new_graphic -> setGraphic( i );
+        new_symbol -> setGraphic( i );
 
-    table_symbols -> setSelected( new_graphic, true );
-    k_toon -> drawingArea() -> modifyDocument( true );
+       table_symbols -> setSelected( new_graphic, true );
+       k_toon -> drawingArea() -> modifyDocument( true );
 
-    its.prepend( new_symbol );
-    lib -> setItems( its );
+       its.prepend( new_symbol );
+       lib -> setItems( its );
+       }
+    catch(...)
+        {
+        delete new_symbol;
+        throw;
+        }
 }
 
 //-------------- SLOTS ---------------
@@ -359,9 +374,16 @@ void Library::slotAddFolder()
     LibraryData *lib = k_toon -> document() -> getLibrary();
     QPtrList<Item> its = lib -> getItems();
     Folder *new_fold = new Folder();
-    new_fold -> setName( tr( "New Folder" ) );
-    its.prepend( new_fold );
-    lib -> setItems( its );
+    try {
+        new_fold -> setName( tr( "New Folder" ) );
+        its.prepend( new_fold );
+        lib -> setItems( its );
+	  }
+    catch(...)
+        {
+	  delete new_fold;
+	  throw;
+	  }
 }
 
 void Library::slotStartRename( QListViewItem *to_rename, const QPoint &point, int col )
@@ -390,14 +412,30 @@ void Library::slotUpdateLibraryData()
 	else if ( item -> getKind() == SymbolItem::GRAPHIC )
 	{
 	    Symbol *new_symbol = new Symbol();
-	    new_symbol -> setGraphic( item -> getGraphic() );
-	    new_symbol -> setName( item -> text( 0 ) );
-	    its.append( new_symbol );
+	    try {
+	        new_symbol -> setGraphic( item -> getGraphic() );
+	        new_symbol -> setName( item -> text( 0 ) );
+	        its.append( new_symbol );
+		  }
+	    catch(...)
+	        {
+		  delete new_symbol;
+		  throw;
+		  }
 	}
         item = ( SymbolItem * )item -> nextSibling();
     }
 
+    try {
     lib -> setItems( its );
+    }
+    catch(...)
+        {
+	  // We are in trouble. There is currently no non-throwing method to get the
+	  // items stored in "lib", so we can not reliably delete the objects which
+	  // were created in this funtion.
+	  throw;
+	  }
 
     k_toon -> drawingArea() -> modifyDocument( true );
 }
@@ -428,7 +466,10 @@ void Library::updateNumberOfItems()
 Folder *Library::createFolder( SymbolItem *item )
 {
     Q_CHECK_PTR( item );
-    Folder *folder = new Folder();
+    
+    std::auto_ptr<Folder> ap_folder(new Folder);
+    Folder* folder = ap_folder.get();
+    
     folder -> setName( item -> text( 0 ) );
     QPtrList<Item> its;
 
@@ -443,15 +484,25 @@ Folder *Library::createFolder( SymbolItem *item )
 	else if ( item_child -> getKind() == SymbolItem::GRAPHIC )
 	{
 	    Symbol *new_symbol = new Symbol();
-	    new_symbol -> setGraphic( item_child -> getGraphic() );
-	    new_symbol -> setName( item_child -> text( 0 ) );
-	    its.append( new_symbol );
+	    try {
+	        new_symbol -> setGraphic( item_child -> getGraphic() );
+	        new_symbol -> setName( item_child -> text( 0 ) );
+	        its.append( new_symbol );
+	        }
+	    catch(...)
+	        {
+		  delete new_symbol;
+		  throw;
+		  }
 	}
         item_child = ( SymbolItem * )item_child -> nextSibling();
     }
 
+    // If this operation throws, we do not have a reliable way to delete
+    // the items constructed in this function.  
     folder -> setItems( its );
-    return folder;
+
+    return ap_folder.release();
 }
 
 void Library::createSubItems( SymbolItem *symbol_item, Folder *folder )

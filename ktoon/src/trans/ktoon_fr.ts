@@ -449,6 +449,14 @@
         <source>SVG</source>
         <translation>SVG</translation>
     </message>
+    <message>
+        <source>SVG Exported Successfully</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not Export SVG</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ExposureSheet</name>
@@ -1962,7 +1970,7 @@ Longueur:</translation>
     </message>
     <message>
         <source>No Documents</source>
-        <translation>Non Documents</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Message</source>

@@ -62,113 +62,8 @@ GLLine::~GLLine()
 
 }
 
-#define sqr(x) ((x)*(x))
+//#define sqr(x) ((x)*(x))
 
-void lineImpl( const QPoint & origin, const QPoint & end, int lw, int stippleFactor, const Color & outlineColor )
-{
-	GLfloat angulo, longitud;
-	GLfloat xi, yi, xf, yf;
-	xi = origin.x();
-	yi = origin.y();
-	xf = end.x();
-	yf = end.y();
-
-	longitud = sqrt(  sqr(xi-xf) + sqr(yi-yf ) );
-	angulo = atan2( yf-yi, xf-xi ) * 180.0 / M_PI;
-	
-	if( outlineColor.colorAlpha() == 255 )
-		glDisable( GL_BLEND );
-
-	glPushMatrix();
-
-	glTranslatef( (xi+xf)/2.0, (yi+yf)/2.0, 0.0 );
-	glRotatef( angulo, 0, 0, 1.0 );
-
-	GLfloat x1, y1, x2, y2;
-	x1 = -0.5 * longitud;
-	y1 = -0.5 * lw;
-	x2 = 0.5 * longitud;
-	y2 = 0.5 * lw;
-
-	glBegin( GL_QUADS );
-		glTexCoord1f( 0.0 );
-		glVertex2f(x1, y2);
-		glVertex2f(x1, y1);
-		glTexCoord1f( longitud / 16.0 / (GLfloat)stippleFactor );
-		glVertex2f(x2, y1);
-		glVertex2f(x2, y2);
-	glEnd();
-
-	if( outlineColor.colorAlpha() == 255 ) {
-		glEnable( GL_BLEND );
-	} 
-	else {
-		// se hacen unas lineas con antialiasing con un color mas transparente
-		glColor4f( outlineColor.colorRed(), outlineColor.colorGreen(),
-			outlineColor.colorBlue(), outlineColor.colorAlpha()/2.0 );
-	}
-
-	glLineWidth(1.0);
-	glBegin( GL_LINE_LOOP );
-		glTexCoord1f( 0.0 );
-		glVertex2f(x1, y2);
-		glVertex2f(x1, y1);
-		glTexCoord1f( longitud / 16.0 / (GLfloat)stippleFactor );
-		glVertex2f(x2, y1);
-		glVertex2f(x2, y2);
-	glEnd();
-
-	glPopMatrix();
-}
-
-// implementacion de linea, cuando el patron de stipple es 0xffff
-void lineImplFast( const QPoint & origin, const QPoint & end, int lw, const Color & outlineColor )
-{
-	GLfloat angulo, longitud;
-	GLfloat xi, yi, xf, yf;
-	xi = origin.x();
-	yi = origin.y();
-	xf = end.x();
-	yf = end.y();
-	
-	longitud = sqrt(  sqr(xi-xf) + sqr(yi-yf ) );
-	angulo = atan2( yf-yi, xf-xi ) * 180.0 / M_PI;
-
-	if( outlineColor.colorAlpha() == 255 )
-		glDisable( GL_BLEND );
-
-	glPushMatrix();
-
-	glTranslatef( (xi+xf)/2.0, (yi+yf)/2.0, 0.0 );
-	glRotatef( angulo, 0, 0, 1.0 );
-
-	GLfloat x1, y1, x2, y2;
-	x1 = -0.5 * longitud;
-	y1 = -0.5 * lw;
-	x2 = 0.5 * longitud;
-	y2 = 0.5 * lw;
-
-	glRectf( x1, y1, x2, y2 );
-
-	if( outlineColor.colorAlpha() == 255 ) {
-		glEnable( GL_BLEND );
-	} 
-	else {
-		// se hacen unas lineas con antialiasing con un color mas transparente
-		glColor4f( outlineColor.colorRed(), outlineColor.colorGreen(),
-			outlineColor.colorBlue(), outlineColor.colorAlpha()/2.0 );
-	}
-
-	glLineWidth(1.0);
-	glBegin( GL_LINE_LOOP );
-		glVertex2f(x1, y2);
-		glVertex2f(x1, y1);
-		glVertex2f(x2, y1);
-		glVertex2f(x2, y2);
-	glEnd();
-
-	glPopMatrix();
-}
 
 //implementation of the virtual method buildList to Line
 
@@ -180,11 +75,9 @@ void GLLine::buildList()
 
 	glColor4f( outlineColor().colorRed(), outlineColor().colorGreen(),
 	              outlineColor().colorBlue(), outlineColor().colorAlpha() );
-	
-	if( stipplePattern() != 0xffff ) {
-		//GLint id_texture;
-		//glGenTextures( 1, &id_texture );
-		//glBindTexture( GL_TEXTURE_1D, id_texture );
+
+	if( stipplePattern() != 0xffff )
+	{
 		glPushAttrib( GL_ENABLE_BIT | GL_TEXTURE_BIT );
 		glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
 		glTexParameteri( GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
@@ -195,7 +88,8 @@ void GLLine::buildList()
 		GLubyte texture[16];
 
 		GLushort p = stipplePattern();
-		for( int i=0; i<16; i++ ) {
+		for( int i=0; i<16; i++ )
+		{
 			if( p & 1 )
 				texture[i] = 255;
 			else
@@ -209,12 +103,10 @@ void GLLine::buildList()
 		glDisable( GL_TEXTURE_1D );
 		glPopAttrib();
 	}
-	else {
+	else
+	{
 		lineImplFast( originPoint(), endLine(), widthPoint().thicknessMinBrush(), outlineColor() );
 	}
-
-   //glEnable( GL_LINE_STIPPLE );
-   //glLineStipple( stippleFactor(), stipplePattern() );
 
  glEndList();
 }

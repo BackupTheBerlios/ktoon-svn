@@ -20,6 +20,8 @@
 
 #include "status.h"
 
+#include <iostream>
+
 //-------------- CONSTRUCTOR ---------------
 
 Status::Status()
@@ -34,8 +36,6 @@ Status::Status()
     current_frame_rate = 25;
     current_camera_width = 320;
     current_camera_height = 240;
-    current_outline_color = new Color( 0.0, 0.0, 0.0, 1.0 );
-    current_fill_color = new Color( 1.0, 1.0, 1.0, 1.0 );
     current_background_color = QColor( 255, 255, 255 );
     current_grid_color = QColor( 210, 210, 210 );
     current_ntsc_color = QColor( 255, 0, 0 );
@@ -46,7 +46,15 @@ Status::Status()
 Status::~Status()
 {
     render_camera_frames.clear();
-    delete current_outline_color;
+    if(current_outline_color == current_fill_color)
+       {
+       std::cerr << "\ncurrent_outline_color == current_fill_color!\n";
+       }
+    else
+      {
+      delete current_outline_color;
+      }
+
     delete current_fill_color;
     delete current_scene;
     delete current_layer;
