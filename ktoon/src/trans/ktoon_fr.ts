@@ -3,77 +3,73 @@
     <name>About</name>
     <message>
         <source>About</source>
-        <translation>Acerca de</translation>
+        <translation>À propos de</translation>
     </message>
     <message>
         <source>Credits</source>
-        <translation>Créditos</translation>
+        <translation>Crédits</translation>
     </message>
     <message>
         <source>License Agreement</source>
-        <translation>Acuerdo de Licencia</translation>
+        <translation>Licence</translation>
     </message>
     <message>
         <source>Acknowledgements</source>
-        <translation>Agradecimientos </translation>
+        <translation>Remerciements</translation>
     </message>
     <message>
         <source>SVN Log</source>
-        <translation>Registro SVN</translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t load the credits animation png - </source>
-        <translation type="obsolete">No se pudo cargar el png de la animación de Créditos -</translation>
+        <translation>SVN Log</translation>
     </message>
     <message>
         <source>Couldn&apos;t load the acknowledgements animation png - </source>
-        <translation>No se pudo cargar el png de la animación de Agradecimientos -</translation>
+        <translation>Impossible de charger l&apos;animation png pour les remerciements - </translation>
     </message>
 </context>
 <context>
     <name>BrushProperties</name>
     <message>
         <source>Brush Properties</source>
-        <translation>Propiedades de la Brocha</translation>
+        <translation>Propriétés de la brosse</translation>
     </message>
     <message>
         <source>Origin Point</source>
-        <translation>Punto de Origen</translation>
+        <translation>Point d&apos;origine</translation>
     </message>
     <message>
         <source>Border Style</source>
-        <translation>Estilo de Borde</translation>
+        <translation>Style de la bordure</translation>
     </message>
     <message>
         <source>Stipple Factor</source>
-        <translation>Factor de Borde</translation>
+        <translation>Facteur de pointillé</translation>
     </message>
     <message>
         <source>Rotation Angle</source>
-        <translation>Ángulo de Rotación</translation>
+        <translation>Angle de rotation</translation>
     </message>
     <message>
         <source>Accept</source>
-        <translation>Aceptar</translation>
+        <translation>Accepter</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
     <name>Brushes</name>
     <message>
         <source>Brushes</source>
-        <translation>Brochas</translation>
+        <translation>Brosses</translation>
     </message>
     <message>
         <source>Add Brush</source>
-        <translation>Adicionar Brocha</translation>
+        <translation>Ajouter une brosse</translation>
     </message>
     <message>
         <source>Remove Brush</source>
-        <translation>Eliminar Brocha</translation>
+        <translation>Élimination d&apos;une brosse</translation>
     </message>
     <message>
         <source>Min</source>
@@ -85,78 +81,78 @@
     </message>
     <message>
         <source>Smo</source>
-        <translation>Sua</translation>
+        <translation>Dou</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation>Nombre</translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <source>Brush</source>
-        <translation>Brocha</translation>
+        <translation>Brosse</translation>
     </message>
     <message>
         <source>Brush0</source>
-        <translation>Brocha0</translation>
+        <translation>Brosse0</translation>
     </message>
     <message>
         <source>Minimum Thickness</source>
-        <translation>Grosor Mínimo</translation>
+        <translation>Epaisseur minimal</translation>
     </message>
     <message>
         <source>Maximum Thickness</source>
-        <translation>Grosor Máximo</translation>
+        <translation>Epaisseur maximal</translation>
     </message>
     <message>
         <source>Smoothness</source>
-        <translation>Suavidad</translation>
+        <translation>Douceur</translation>
     </message>
     <message>
         <source>Brush Name</source>
-        <translation>Nombre Brocha</translation>
+        <translation>Nom de la brosse</translation>
     </message>
     <message>
         <source>Confirm Brush Elimination</source>
-        <translation>Confirma Eliminación de una Brocha</translation>
+        <translation>Confirmer l&apos;élimination d&apos;une brosse</translation>
     </message>
     <message>
         <source>Are you sure you want to delete the selected brush?</source>
-        <translation>Está seguro que desea borrar la brocha seleccionada?</translation>
+        <translation>Êtes-vous sûre de vouloir effacer cette brosse?</translation>
     </message>
 </context>
 <context>
     <name>ColorPalette</name>
     <message>
         <source>Color Palette</source>
-        <translation>Paleta de Colores</translation>
+        <translation>Palette de couleur</translation>
     </message>
     <message>
         <source>Standard Palette</source>
-        <translation>Paleta Estándar</translation>
+        <translation>Palette standard</translation>
     </message>
     <message>
         <source>Color Mixer</source>
-        <translation>Mezclador de Colores</translation>
+        <translation>Mixeur de couleurs</translation>
     </message>
     <message>
         <source>Stroke Color</source>
-        <translation>Color de Contorno</translation>
+        <translation>Couleur de contour</translation>
     </message>
     <message>
         <source>Fill Color</source>
-        <translation>Color de Relleno</translation>
+        <translation>Couleur de remplissage</translation>
     </message>
     <message>
         <source>Gradient:</source>
-        <translation>Gradiente:</translation>
+        <translation>Gradient:</translation>
     </message>
     <message>
         <source>None</source>
-        <translation>Ninguno</translation>
+        <translation>Aucun</translation>
     </message>
     <message>
         <source>Linear</source>
-        <translation>Lineal</translation>
+        <translation>Linéaire</translation>
     </message>
     <message>
         <source>Radial</source>
@@ -164,102 +160,102 @@
     </message>
     <message>
         <source>Custom Palette</source>
-        <translation>Paleta Personalizada</translation>
+        <translation>Palette personnalisée</translation>
     </message>
     <message>
         <source>Add Color</source>
-        <translation>Adicionar Color</translation>
+        <translation>Ajouter une couleur</translation>
     </message>
     <message>
         <source>Remove Color</source>
-        <translation>Eliminar Color</translation>
+        <translation>Eliminer une couleur</translation>
     </message>
     <message>
         <source>Color Name:</source>
-        <translation>Nombre Color:</translation>
+        <translation>Nom de la couleur:</translation>
     </message>
 </context>
 <context>
     <name>DrawingArea</name>
     <message>
         <source>&amp;Copy</source>
-        <translation>&amp;Copiar</translation>
+        <translation>&amp;Copier</translation>
     </message>
     <message>
         <source>C&amp;ut</source>
-        <translation>Co&amp;rtar</translation>
+        <translation>Co&amp;uper</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Borrar</translation>
+        <translation>&amp;Effacer</translation>
     </message>
     <message>
         <source>&amp;Bring to Front</source>
-        <translation>&amp;Traer al Frente</translation>
+        <translation>Mettre de l&apos;a&amp;vant</translation>
     </message>
     <message>
         <source>&amp;Send to Back</source>
-        <translation>&amp;Enviar Atras</translation>
+        <translation>Mettre à l&apos;a&amp;rrière</translation>
     </message>
     <message>
         <source>One Step &amp;Forward</source>
-        <translation>&amp;Un Paso Adelante</translation>
+        <translation>&amp;Une étape après</translation>
     </message>
     <message>
         <source>One Step B&amp;ackward</source>
-        <translation>U&amp;n Paso Atras</translation>
+        <translation>U&amp;ne étape avant</translation>
     </message>
     <message>
         <source>&amp;Order</source>
-        <translation>&amp;Ordenar</translation>
+        <translation>&amp;Ordre</translation>
     </message>
     <message>
         <source>&amp;Left</source>
-        <translation>&amp;Izquierda</translation>
+        <translation>&amp;Gauche</translation>
     </message>
     <message>
         <source>&amp;Center Vertically</source>
-        <translation>Centrar &amp;Verticalmente</translation>
+        <translation>Centrer &amp;verticalement</translation>
     </message>
     <message>
         <source>&amp;Right</source>
-        <translation>&amp;Derecha</translation>
+        <translation>D&amp;roite</translation>
     </message>
     <message>
         <source>&amp;Top</source>
-        <translation>&amp;Arriba</translation>
+        <translation>&amp;Haut</translation>
     </message>
     <message>
         <source>Center &amp;Horizontally</source>
-        <translation>Centrar &amp;Horizontalmente</translation>
+        <translation>Centrer &amp;horizontalement</translation>
     </message>
     <message>
         <source>&amp;Bottom</source>
-        <translation>Aba&amp;jo</translation>
+        <translation>&amp;Bas</translation>
     </message>
     <message>
         <source>A&amp;lign</source>
-        <translation>&amp;Alinear</translation>
+        <translation>&amp;Aligner</translation>
     </message>
     <message>
         <source>Flip &amp;Horizontally</source>
-        <translation>Reflejar &amp;Horizontalmente</translation>
+        <translation>Réflection &amp;horizontalement</translation>
     </message>
     <message>
         <source>Flip &amp;Vertically</source>
-        <translation>Reflejar &amp;Verticalmente</translation>
+        <translation>Réflection &amp;verticalement</translation>
     </message>
     <message>
         <source>&amp;Rotate 90 CW</source>
-        <translation>&amp;Rotar 90 CW</translation>
+        <translation>&amp;Rotation 90 CW</translation>
     </message>
     <message>
         <source>R&amp;otate 90 CCW</source>
-        <translation>Ro&amp;tar 90 CCW</translation>
+        <translation>Ro&amp;tation 90 CCW</translation>
     </message>
     <message>
         <source>Rotate &amp;180</source>
-        <translation>Rot&amp;ar 180</translation>
+        <translation>Rot&amp;ation 180</translation>
     </message>
     <message>
         <source>&amp;Perspective</source>
@@ -267,183 +263,183 @@
     </message>
     <message>
         <source>&amp;Transform</source>
-        <translation>&amp;Transformar</translation>
+        <translation>&amp;Transformation</translation>
     </message>
     <message>
         <source>Add to Li&amp;brary</source>
-        <translation>Adicionar a la &amp;Librería</translation>
+        <translation>Ajouter à la &amp;librairie</translation>
     </message>
     <message>
         <source>P&amp;roperties...</source>
-        <translation>&amp;Propiedades...</translation>
+        <translation>&amp;Propriétés...</translation>
     </message>
     <message>
         <source>&amp;Undo</source>
-        <translation>&amp;Deshacer</translation>
+        <translation>&amp;Défaire</translation>
     </message>
     <message>
         <source>&amp;Redo</source>
-        <translation>&amp;Rehacer</translation>
+        <translation>&amp;Refaire</translation>
     </message>
     <message>
         <source>&amp;Paste</source>
-        <translation>&amp;Pegar</translation>
+        <translation>&amp;Coller</translation>
     </message>
     <message>
         <source>P&amp;aste in Place</source>
-        <translation>Pe&amp;gar en su Lugar</translation>
+        <translation>Co&amp;ller sur place</translation>
     </message>
     <message>
         <source>Save changes to %1?</source>
-        <translation>Guardar los cambios de %1?</translation>
+        <translation>Sauvegarder les changements sous %1?</translation>
     </message>
     <message>
         <source>Yes</source>
-        <translation>Si</translation>
+        <translation>Oui</translation>
     </message>
     <message>
         <source>No</source>
-        <translation>No</translation>
+        <translation>Non</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancel</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <source>Add To Library</source>
-        <translation>Adicionar a la librería</translation>
+        <translation>Ajouter à la librairie</translation>
     </message>
     <message>
         <source>Symbol Name: </source>
-        <translation>Nombre Símbolo:</translation>
+        <translation>Nom du symbole:</translation>
     </message>
     <message>
         <source>Save Changes</source>
-        <translation>Guarda los Cambios</translation>
+        <translation>Sauvegarder les changements</translation>
     </message>
 </context>
 <context>
     <name>ESFrame</name>
     <message>
         <source>Rename Frame</source>
-        <translation>Renombrar Fotograma</translation>
+        <translation>Renommer cet frame</translation>
     </message>
     <message>
         <source>Remove this Frame</source>
-        <translation>Elimiar este Fotograma</translation>
+        <translation>Éliminer cet frame</translation>
     </message>
     <message>
         <source>Lock this Frame</source>
-        <translation>Bloquear este Fotograma</translation>
+        <translation>Bloquer cet frame</translation>
     </message>
     <message>
         <source>Copy this Frame</source>
-        <translation>Copiar este Fotograma</translation>
+        <translation>Copier cet frame</translation>
     </message>
     <message>
         <source>Paste into this Frame</source>
-        <translation>Pegar en este Fotograma</translation>
+        <translation>Coller sur cet frame</translation>
     </message>
 </context>
 <context>
     <name>ESLayer</name>
     <message>
         <source>Rename Layer</source>
-        <translation>Renombrar Capa</translation>
+        <translation>Renommer cet couche</translation>
     </message>
     <message>
         <source>Remove this Layer</source>
-        <translation>Eliminar esta Capa</translation>
+        <translation>Éliminer cet couche</translation>
     </message>
     <message>
         <source>Insert Frames</source>
-        <translation>Insertar Fotograma</translation>
+        <translation>Insérer cet frame</translation>
     </message>
     <message>
         <source>Remove Frames</source>
-        <translation>Eliminar Fotograma</translation>
+        <translation>Éliminer cet frame</translation>
     </message>
 </context>
 <context>
     <name>EllipseProperties</name>
     <message>
         <source>Ellipse Properties</source>
-        <translation>Propiedades de la Elipse</translation>
+        <translation>Propriétés de l&apos;ellipse</translation>
     </message>
     <message>
         <source>Origin Point</source>
-        <translation>Punto de Origen</translation>
+        <translation>Point d&apos;origine</translation>
     </message>
     <message>
         <source>Radius</source>
-        <translation>Radio</translation>
+        <translation>Rayon</translation>
     </message>
     <message>
         <source>Border Style</source>
-        <translation>Estilo de Borde</translation>
+        <translation>Style de la bordure</translation>
     </message>
     <message>
         <source>Stipple Factor</source>
-        <translation>Factor de Borde</translation>
+        <translation>Facteur de pointillés</translation>
     </message>
     <message>
         <source>Rotation Angle</source>
-        <translation>Ángulo de Rotación</translation>
+        <translation>Angle de rotation</translation>
     </message>
     <message>
         <source>Perfect</source>
-        <translation>Perfecto</translation>
+        <translation>Perfection</translation>
     </message>
     <message>
         <source>Fill</source>
-        <translation>Relleno</translation>
+        <translation>Remplissage</translation>
     </message>
     <message>
         <source>Accept</source>
-        <translation>Aceptar</translation>
+        <translation>Accepter</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
     <name>Export</name>
     <message>
         <source>Export</source>
-        <translation>Exportar</translation>
+        <translation>Exporter</translation>
     </message>
     <message>
         <source>Select the option to export:</source>
-        <translation>Seleccionar la opción a exportar:</translation>
+        <translation>Sélectionner l&apos;option d&apos;exportation:</translation>
     </message>
     <message>
         <source>Animation</source>
-        <translation>Animación</translation>
+        <translation>Animation</translation>
     </message>
     <message>
         <source>Single Frame</source>
-        <translation>Fotograma simple</translation>
+        <translation>Frame simple</translation>
     </message>
     <message>
         <source>Accept</source>
-        <translation>Aceptar</translation>
+        <translation>Accepter</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <source>Animation Exported Successfully</source>
-        <translation>Animación Exportada Satisfactoriamente</translation>
+        <translation>Animation exporter avec succès</translation>
     </message>
     <message>
         <source>Could not Export Animation</source>
-        <translation>No se pudo Exportar la Animación</translation>
+        <translation>Impossible d&apos;exporter l&apos;animation</translation>
     </message>
     <message>
         <source>Could not save the file: %1</source>
-        <translation>No se pudo guardar el archivo: %1</translation>
+        <translation>Impossible de sauvegarde le fichier: %1</translation>
     </message>
     <message>
         <source>SWF (Macromedia Flash)</source>
@@ -454,51 +450,51 @@
     <name>ExposureSheet</name>
     <message>
         <source>Exposure Sheet</source>
-        <translation>Tabla de Rodaje</translation>
+        <translation>Feuille d&apos;exposition</translation>
     </message>
     <message>
         <source>Insert Layer</source>
-        <translation>Insertar Capa</translation>
+        <translation>Insérer une nouvelle couche</translation>
     </message>
     <message>
         <source>Remove Layer</source>
-        <translation>Eliminar Capa</translation>
+        <translation>Éliminer une couche</translation>
     </message>
     <message>
         <source>Lock Frame</source>
-        <translation>Bloquear Fotograma</translation>
+        <translation>Bloquer cet frame</translation>
     </message>
     <message>
         <source>Insert Keyframes</source>
-        <translation>Insertar Fotograma Clave</translation>
+        <translation>Insérer cet frame clé</translation>
     </message>
     <message>
         <source>Remove Keyframe</source>
-        <translation>Eliminar Fofograma Clave</translation>
+        <translation>Éliminer cet frame clé</translation>
     </message>
     <message>
         <source>Move Keyframe Up</source>
-        <translation>Subir Fotograma Clave</translation>
+        <translation>Déplacer cet frame clé vers le haut</translation>
     </message>
     <message>
         <source>Move Keyframe Down</source>
-        <translation>Bajar Fotograma Clave</translation>
+        <translation>Déplacer cet frame clé vers le bas</translation>
     </message>
     <message>
         <source>Layer</source>
-        <translation>Capa</translation>
+        <translation>Couche</translation>
     </message>
     <message>
         <source>Drawing </source>
-        <translation>Dibujo</translation>
+        <translation>Schéma</translation>
     </message>
     <message>
         <source>Manage the layer visibility</source>
-        <translation>Gestiona la visibilidad de las capas</translation>
+        <translation>Gestion de la visibilité des couches</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation>Nombre</translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <source>Offset: </source>
@@ -508,1995 +504,1989 @@
         <source>
 Length: </source>
         <translation>
-Longitud:</translation>
+Longueur:</translation>
     </message>
 </context>
 <context>
     <name>GLRenderCameraPreview</name>
     <message>
         <source>Render Camera Preview</source>
-        <translation>Cámara de Previsualización</translation>
+        <translation>Caméra de prévisualisation</translation>
     </message>
 </context>
 <context>
     <name>GLSideCameraView</name>
     <message>
         <source>Side Camera View</source>
-        <translation>Cámara de Vista Lateral</translation>
+        <translation>Caméra de vision latéral</translation>
     </message>
 </context>
 <context>
     <name>GLTopCameraView</name>
     <message>
         <source>Top Camera View</source>
-        <translation>Cámara de Vista Superior</translation>
+        <translation>Caméra de vision supérieur</translation>
     </message>
 </context>
 <context>
     <name>ImageProperties</name>
     <message>
         <source>Image Properties</source>
-        <translation>Propiedades de la Imagen</translation>
+        <translation>Propriétés de l&apos;image</translation>
     </message>
     <message>
         <source>Origin Point</source>
-        <translation>Punto de Origen</translation>
+        <translation>Point d&apos;origine</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation>Tamaño</translation>
+        <translation>Grandeur</translation>
     </message>
     <message>
         <source>Rotation Angle</source>
-        <translation>Ángulo de Rotación</translation>
+        <translation>Angle de rotation</translation>
     </message>
     <message>
         <source>Accept</source>
-        <translation>Aceptar</translation>
+        <translation>Accepter</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
     <name>Import</name>
     <message>
         <source>Import</source>
-        <translation>Importar</translation>
+        <translation>Importer</translation>
     </message>
     <message>
         <source>Select the kind of file to import:</source>
-        <translation>Elegir el tipo de archivo a importar:</translation>
+        <translation>Selectionner le type de fichier à importer:</translation>
     </message>
     <message>
         <source>Image</source>
-        <translation>Imagen</translation>
+        <translation>Image</translation>
     </message>
     <message>
         <source>Image Sequence</source>
-        <translation>Secuencia de Imágenes</translation>
+        <translation>Séquence des images</translation>
     </message>
     <message>
         <source>Library</source>
-        <translation>Librería</translation>
+        <translation>Librairie</translation>
     </message>
     <message>
         <source>Palette</source>
-        <translation>Paleta</translation>
+        <translation>Palette</translation>
     </message>
     <message>
         <source>Brushes</source>
-        <translation>Brochas</translation>
+        <translation>Brosses</translation>
     </message>
     <message>
         <source>Sound</source>
-        <translation>Sonido</translation>
+        <translation>Son</translation>
     </message>
     <message>
         <source>Accept</source>
-        <translation>Aceptar</translation>
+        <translation>Accepter</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <source>Import Image</source>
-        <translation>Importar Imagen</translation>
+        <translation>Importer l&apos;image</translation>
     </message>
     <message>
         <source>Choose an image to import</source>
-        <translation>Escoger una imagen a importar</translation>
+        <translation>Choisisser une image à importer</translation>
     </message>
     <message>
         <source>Import Image Sequence</source>
-        <translation>Importar Secuencia de Imágenes </translation>
+        <translation>Importer la séquence d&apos;images</translation>
     </message>
     <message>
         <source>Choose an image Sequence to import</source>
-        <translation>Escoger una secuencia de imágenes a importar</translation>
+        <translation>Choisisser une séquence d&apos;images à importer</translation>
     </message>
     <message>
         <source>Import Library</source>
-        <translation>Importar Librería</translation>
+        <translation>Importer une librairie</translation>
     </message>
     <message>
         <source>Choose a graphic library to import</source>
-        <translation>Escoger una librería gráfica a importar</translation>
+        <translation>Choisisser une librarie graphique à importer</translation>
     </message>
     <message>
         <source>Import Palette</source>
-        <translation>Importar Paleta</translation>
+        <translation>Importer une palette</translation>
     </message>
     <message>
         <source>Choose a color palette to import</source>
-        <translation>Escoger una paleta de colores a importar</translation>
+        <translation>Choisisser une pallette de couleur à importer</translation>
     </message>
     <message>
         <source>Import Brushes</source>
-        <translation>Importar Brochas</translation>
+        <translation>Importer une brosse</translation>
     </message>
     <message>
         <source>Choose a brush file to import</source>
-        <translation>Escoger un archivo de brochas a importar</translation>
+        <translation>Choisisser un fichier de brosses à importer</translation>
     </message>
     <message>
         <source>Import Sound</source>
-        <translation>Importar Sonido</translation>
+        <translation>Importer du son</translation>
     </message>
     <message>
         <source>Choose a sound file to import</source>
-        <translation>Escoger un archivo de sonido a importar</translation>
+        <translation>Choisisser un fichier de son à importer</translation>
     </message>
 </context>
 <context>
     <name>Ktoon</name>
     <message>
         <source>New Document</source>
-        <translation>Documento</translation>
+        <translation>Nouveau document</translation>
     </message>
     <message>
         <source>Open Document</source>
-        <translation>Abrir Documento</translation>
+        <translation>Ouvrir un document</translation>
     </message>
     <message>
         <source>Save Document</source>
-        <translation>Guardar Documento</translation>
+        <translation>Sauvegarder un document</translation>
     </message>
     <message>
         <source>Undo</source>
-        <translation>Deshacer</translation>
+        <translation>Défaire</translation>
     </message>
     <message>
         <source>Redo</source>
-        <translation>Rehacer</translation>
+        <translation>Refaire</translation>
     </message>
     <message>
         <source>Cut</source>
-        <translation>Cortar</translation>
+        <translation>Couper</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation>Copiar</translation>
+        <translation>Copier</translation>
     </message>
     <message>
         <source>Paste</source>
-        <translation>Pegar</translation>
+        <translation>Coller</translation>
     </message>
     <message>
         <source>No Grid</source>
-        <translation>Sin Grilla</translation>
+        <translation>Sans grille</translation>
     </message>
     <message>
         <source>Grid of 12 Fields</source>
-        <translation>Grilla de 12 Campos</translation>
+        <translation>Grille de 12 champs</translation>
     </message>
     <message>
         <source>Grid of 16 Fields</source>
-        <translation>Grilla de 16 Campos</translation>
+        <translation>Grille de 16 champs</translation>
     </message>
     <message>
         <source>Grid with a 3 field Subgrid</source>
-        <translation>Grilla con una Subgrilla de 3 campos</translation>
+        <translation>Grille avec une sous-grille de 3 champs</translation>
     </message>
     <message>
         <source>&amp;File</source>
-        <translation>&amp;Archivo</translation>
+        <translation>&amp;Fichier</translation>
     </message>
     <message>
         <source>&amp;New...</source>
-        <translation>&amp;Nuevo...</translation>
+        <translation>&amp;Nouveau...</translation>
     </message>
     <message>
         <source>&amp;Open...</source>
-        <translation>&amp;Abrir...</translation>
+        <translation>&amp;Ouvrir...</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Guardar</translation>
+        <translation>&amp;Sauvegarder</translation>
     </message>
     <message>
         <source>Save &amp;As...</source>
-        <translation>G&amp;uardar Como...</translation>
+        <translation>S&amp;auvegarder sous...</translation>
     </message>
     <message>
         <source>Cl&amp;ose</source>
-        <translation>&amp;Cerrar</translation>
+        <translation>&amp;Fermer</translation>
     </message>
     <message>
         <source>&amp;Import...</source>
-        <translation>&amp;Importar...</translation>
+        <translation>&amp;Importer...</translation>
     </message>
     <message>
         <source>&amp;Export...</source>
-        <translation>&amp;Exportar...</translation>
+        <translation>&amp;Exporter...</translation>
     </message>
     <message>
         <source>&amp;Properties...</source>
-        <translation>&amp;Propiedades...</translation>
+        <translation>&amp;Propriétés...</translation>
     </message>
     <message>
         <source>E&amp;xit</source>
-        <translation>&amp;Salir</translation>
+        <translation>&amp;Quitter</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Editar</translation>
+        <translation>&amp;Edition</translation>
     </message>
     <message>
         <source>&amp;Undo</source>
-        <translation>&amp;Deshacer</translation>
+        <translation>&amp;Défaire</translation>
     </message>
     <message>
         <source>&amp;Redo</source>
-        <translation>&amp;Rehacer</translation>
+        <translation>&amp;Refaire</translation>
     </message>
     <message>
         <source>&amp;Cut</source>
-        <translation>&amp;Cortar</translation>
+        <translation>&amp;Couper</translation>
     </message>
     <message>
         <source>C&amp;opy</source>
-        <translation>C&amp;opiar</translation>
+        <translation>C&amp;opier</translation>
     </message>
     <message>
         <source>&amp;Paste</source>
-        <translation>&amp;Pegar</translation>
-    </message>
-    <message>
-        <source>&amp;Paste &amp;In Place</source>
-        <translation type="obsolete">Pe&amp;gar en su Lugar</translation>
+        <translation>&amp;Coller</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>&amp;Borrar</translation>
+        <translation>&amp;Effacer</translation>
     </message>
     <message>
         <source>&amp;Select All</source>
-        <translation>&amp;Seleccionar Todo</translation>
+        <translation>&amp;Selectionner tout</translation>
     </message>
     <message>
         <source>Pr&amp;eferences...</source>
-        <translation>Pre&amp;ferencias...</translation>
+        <translation>Pré&amp;férences...</translation>
     </message>
     <message>
         <source>&amp;View</source>
-        <translation>&amp;Ver</translation>
+        <translation>&amp;Affichage</translation>
     </message>
     <message>
         <source>Zoom &amp;In</source>
-        <translation>&amp;Acercar</translation>
+        <translation>Zoom &amp;In</translation>
     </message>
     <message>
         <source>Zoom &amp;Out</source>
-        <translation>A&amp;lejar</translation>
+        <translation>Zoom &amp;Out</translation>
     </message>
     <message>
         <source>&amp;Fit</source>
-        <translation>A&amp;justar</translation>
+        <translation>A&amp;juster</translation>
     </message>
     <message>
         <source>&amp;No Grid</source>
-        <translation>&amp;Sin Grilla</translation>
+        <translation>&amp;Sans Grille</translation>
     </message>
     <message>
         <source>&amp;12 Field Grid</source>
-        <translation>Grilla de 1&amp;2 Campos</translation>
+        <translation>Grille de 1&amp;2 champs</translation>
     </message>
     <message>
         <source>&amp;16 Field Grid</source>
-        <translation>Grilla de 1&amp;6 Campos</translation>
+        <translation>Grille de 1&amp;6 champs</translation>
     </message>
     <message>
         <source>&amp;Subgrid</source>
-        <translation>Su&amp;bgrilla</translation>
+        <translation>So&amp;us grille</translation>
     </message>
     <message>
         <source>&amp;Grid</source>
-        <translation>&amp;Grilla</translation>
+        <translation>&amp;Grille</translation>
     </message>
     <message>
         <source>&amp;NTSC Zone</source>
-        <translation>&amp;Zona NTSC</translation>
+        <translation>&amp;Zone NTSC</translation>
     </message>
     <message>
         <source>&amp;Light Table</source>
-        <translation>&amp;Tabla de Luz</translation>
+        <translation>&amp;Table de lumière</translation>
     </message>
     <message>
         <source>No Previous</source>
-        <translation>Ninguno Previo</translation>
+        <translation>Aucun précédent</translation>
     </message>
     <message>
         <source>Previous One</source>
-        <translation>Un Previo</translation>
+        <translation>Un précédent</translation>
     </message>
     <message>
         <source>Previous Two</source>
-        <translation>Dos Previos</translation>
+        <translation>Deux précédents</translation>
     </message>
     <message>
         <source>Previous Three</source>
-        <translation>Tres Previos</translation>
+        <translation>Trois précédents</translation>
     </message>
     <message>
         <source>No Next</source>
-        <translation>Ningun Siguiente</translation>
+        <translation>Aucun suivant</translation>
     </message>
     <message>
         <source>Next One</source>
-        <translation>Un Siguiente</translation>
+        <translation>Un suivant</translation>
     </message>
     <message>
         <source>Next Two</source>
-        <translation>Dos Siguientes</translation>
+        <translation>Deux suivants</translation>
     </message>
     <message>
         <source>Next Three</source>
-        <translation>Tres Siguientes</translation>
+        <translation>Trois suivants</translation>
     </message>
     <message>
         <source>Onion &amp;Skin</source>
-        <translation>&amp;Papel Cebolla</translation>
+        <translation>&amp;Papier oignon</translation>
     </message>
     <message>
         <source>Rotate &amp;Clockwise</source>
-        <translation>Rotar a la &amp;Derecha</translation>
+        <translation>Rotation vers la &amp;droite</translation>
     </message>
     <message>
         <source>Rotate Counterclock&amp;wise</source>
-        <translation>Rotar a la &amp;Izquierda</translation>
+        <translation>Rotation vers la &amp;gauche</translation>
     </message>
     <message>
         <source>&amp;Restore Rotation</source>
-        <translation>Restaurar &amp;Rotación</translation>
+        <translation>Restaurer la &amp;rotation</translation>
     </message>
     <message>
         <source>&amp;Insert</source>
-        <translation>&amp;Insertar</translation>
+        <translation>&amp;Insérer</translation>
     </message>
     <message>
         <source>&amp;Layer</source>
-        <translation>&amp;Capa</translation>
+        <translation>&amp;couche</translation>
     </message>
     <message>
         <source>&amp;Frame</source>
-        <translation>&amp;Fotograma</translation>
+        <translation>&amp;Frame</translation>
     </message>
     <message>
         <source>&amp;Remove Frame</source>
-        <translation>Eli&amp;minar Fotograma</translation>
+        <translation>Éli&amp;miner cet frame</translation>
     </message>
     <message>
         <source>&amp;KeyFrame</source>
-        <translation>Foto&amp;grama Clave</translation>
+        <translation>Frame &amp;clé</translation>
     </message>
     <message>
         <source>&amp;Scene</source>
-        <translation>&amp;Escena</translation>
+        <translation>&amp;scène</translation>
     </message>
     <message>
         <source>Re&amp;move Scene</source>
-        <translation>&amp;Remover Escena</translation>
+        <translation>&amp;Enlever la scène</translation>
     </message>
     <message>
         <source>&amp;Tools</source>
-        <translation>&amp;Herramientas</translation>
+        <translation>&amp;Outils</translation>
     </message>
     <message>
         <source>Normal &amp;Selection</source>
-        <translation>Selección &amp;Normal</translation>
+        <translation>Sélection &amp;normal</translation>
     </message>
     <message>
         <source>Con&amp;tour Selection</source>
-        <translation>Selección de &amp;Contornos</translation>
+        <translation>Sélection du &amp;contour</translation>
     </message>
     <message>
         <source>&amp;Selection</source>
-        <translation>&amp;Selección</translation>
+        <translation>&amp;Sélection</translation>
     </message>
     <message>
         <source>&amp;Brush</source>
-        <translation>&amp;Brocha</translation>
+        <translation>&amp;Brosse</translation>
     </message>
     <message>
         <source>&amp;Pencil</source>
-        <translation>&amp;Lápiz</translation>
+        <translation>&amp;Crayon</translation>
     </message>
     <message>
         <source>&amp;Pen</source>
-        <translation>&amp;Pluma</translation>
+        <translation>&amp;Plume</translation>
     </message>
     <message>
         <source>&amp;Line</source>
-        <translation>Lí&amp;nea</translation>
+        <translation>Lig&amp;ne</translation>
     </message>
     <message>
         <source>&amp;Rectangle</source>
-        <translation>&amp;Rectángulo</translation>
+        <translation>&amp;Rectangle</translation>
     </message>
     <message>
         <source>&amp;Ellipse</source>
-        <translation>&amp;Elipse</translation>
+        <translation>&amp;Ellipse</translation>
     </message>
     <message>
         <source>D&amp;raw</source>
-        <translation>&amp;Dibujo</translation>
+        <translation>&amp;Dessiner</translation>
     </message>
     <message>
         <source>&amp;Fill</source>
-        <translation>&amp;Relleno</translation>
+        <translation>&amp;Remplissage</translation>
     </message>
     <message>
         <source>&amp;Remove Fill</source>
-        <translation>&amp;Eliminar Relleno</translation>
+        <translation>&amp;Enlever le remplissage</translation>
     </message>
     <message>
         <source>&amp;Contour Fill</source>
-        <translation>Rellenar &amp;Contorno</translation>
+        <translation>Remplir le &amp;contour</translation>
     </message>
     <message>
         <source>&amp;Dropper</source>
-        <translation>&amp;Gotero</translation>
+        <translation>&amp;Compte-gouttes</translation>
     </message>
     <message>
         <source>&amp;Eraser</source>
-        <translation>&amp;Borrador</translation>
+        <translation>&amp;Efface</translation>
     </message>
     <message>
         <source>&amp;Slicer</source>
-        <translation>B&amp;isturí</translation>
+        <translation>B&amp;istouri</translation>
     </message>
     <message>
         <source>&amp;Magnifying Glass</source>
-        <translation>&amp;Lupa</translation>
+        <translation>&amp;Loupe</translation>
     </message>
     <message>
         <source>&amp;Hand</source>
-        <translation>&amp;Mano</translation>
+        <translation>&amp;Main</translation>
     </message>
     <message>
         <source>&amp;Group</source>
-        <translation>A&amp;grupar</translation>
+        <translation>&amp;Grouper</translation>
     </message>
     <message>
         <source>&amp;Ungroup</source>
-        <translation>D&amp;esagrupar</translation>
+        <translation>D&amp;égrouper</translation>
     </message>
     <message>
         <source>&amp;Bring to Front</source>
-        <translation>&amp;Traer al Frente</translation>
+        <translation>&amp;Mettre à l&apos;avant</translation>
     </message>
     <message>
         <source>&amp;Send to Back</source>
-        <translation>&amp;Enviar Atrás</translation>
+        <translation>&amp;Mettre à l&apos;arrière</translation>
     </message>
     <message>
         <source>One Step &amp;Forward</source>
-        <translation>&amp;Un Paso Adelante</translation>
+        <translation>&amp;Un étape Avant</translation>
     </message>
     <message>
         <source>One Step B&amp;ackward</source>
-        <translation>Un &amp;Paso Atrás</translation>
+        <translation>Un &amp;étape arrière</translation>
     </message>
     <message>
         <source>&amp;Order</source>
-        <translation>&amp;Ordenar</translation>
+        <translation>&amp;Ordre</translation>
     </message>
     <message>
         <source>&amp;Left</source>
-        <translation>&amp;Izquierda</translation>
+        <translation>&amp;Gauche</translation>
     </message>
     <message>
         <source>&amp;Center Vertically</source>
-        <translation>Centrar &amp;Verticalmente</translation>
+        <translation>Centrer &amp;Verticalement</translation>
     </message>
     <message>
         <source>&amp;Right</source>
-        <translation>&amp;Derecha</translation>
+        <translation>&amp;Droite</translation>
     </message>
     <message>
         <source>&amp;Top</source>
-        <translation>&amp;Arriba</translation>
+        <translation>&amp;Haut</translation>
     </message>
     <message>
         <source>Center &amp;Horizontally</source>
-        <translation>Centrar &amp;Horizontalmente</translation>
+        <translation>Centrer &amp;Horizontalement</translation>
     </message>
     <message>
         <source>&amp;Bottom</source>
-        <translation>A&amp;bajo</translation>
+        <translation>&amp;Bas</translation>
     </message>
     <message>
         <source>A&amp;lign</source>
-        <translation>&amp;Alinear</translation>
+        <translation>&amp;Aligner</translation>
     </message>
     <message>
         <source>Flip &amp;Horizontally</source>
-        <translation>Reflejar &amp;Horizontalmente</translation>
+        <translation>Réflection &amp;Horizontalement</translation>
     </message>
     <message>
         <source>Flip &amp;Vertically</source>
-        <translation>Reflejar &amp;Verticalmente</translation>
+        <translation>Réflection &amp;Verticalement</translation>
     </message>
     <message>
         <source>&amp;Rotate 90 CW</source>
-        <translation>&amp;Rotar 90 CW</translation>
+        <translation>&amp;Rotation 90 CW</translation>
     </message>
     <message>
         <source>R&amp;otate 90 CCW</source>
-        <translation>R&amp;otar 90 CCW</translation>
+        <translation>R&amp;otation 90 CCW</translation>
     </message>
     <message>
         <source>Rotate &amp;180</source>
-        <translation>Ro&amp;tar 180</translation>
+        <translation>Ro&amp;tation 180</translation>
     </message>
     <message>
         <source>&amp;Perspective</source>
-        <translation>&amp;Perspectiva</translation>
+        <translation>&amp;Perspective</translation>
     </message>
     <message>
         <source>&amp;Transform</source>
-        <translation>&amp;Transformar</translation>
+        <translation>&amp;Transformer</translation>
     </message>
     <message>
         <source>&amp;Control</source>
-        <translation>&amp;Control</translation>
+        <translation>&amp;Controle</translation>
     </message>
     <message>
         <source>&amp;Play/Stop</source>
-        <translation>&amp;Ejecutar/Detener</translation>
+        <translation>&amp;Play/Stop</translation>
     </message>
     <message>
         <source>Step &amp;Forward</source>
-        <translation>&amp;Un Paso Adelante</translation>
+        <translation>&amp;Un étape avant</translation>
     </message>
     <message>
         <source>Step &amp;Backward</source>
-        <translation>Un &amp;Paso Atrás</translation>
+        <translation>Un &amp;étape arrière</translation>
     </message>
     <message>
         <source>&amp;Window</source>
-        <translation>Ve&amp;ntana</translation>
+        <translation>Fe&amp;nêtre</translation>
     </message>
     <message>
         <source>&amp;Illustration Mode</source>
-        <translation>Módulo de &amp;Ilustración</translation>
+        <translation>Mode d&apos;&amp;illustration</translation>
     </message>
     <message>
         <source>&amp;Animation Mode</source>
-        <translation>Módulo de &amp;Animación</translation>
+        <translation>Mode d&apos;&amp;Animation</translation>
     </message>
     <message>
         <source>&amp;Brushes</source>
-        <translation>&amp;Brochas</translation>
+        <translation>&amp;Brosses</translation>
     </message>
     <message>
         <source>&amp;Scenes</source>
-        <translation>&amp;Escenas</translation>
+        <translation>&amp;Scènes</translation>
     </message>
     <message>
         <source>&amp;Color Palette</source>
-        <translation>&amp;Paleta de Colores</translation>
+        <translation>&amp;Palette de couleurs</translation>
     </message>
     <message>
         <source>&amp;Exposure Sheet</source>
-        <translation>Tabla de &amp;Rodaje</translation>
+        <translation>Feuille d&apos;&amp;exposition</translation>
     </message>
     <message>
         <source>&amp;Library</source>
-        <translation>&amp;Librería</translation>
+        <translation>&amp;Librarie</translation>
     </message>
     <message>
         <source>T&amp;imeline</source>
-        <translation>Línea de Tie&amp;mpo</translation>
+        <translation>Ligne de te&amp;mps</translation>
     </message>
     <message>
         <source>&amp;Preview Render</source>
-        <translation>Previsuali&amp;zación</translation>
+        <translation>Prévisuali&amp;sation</translation>
     </message>
     <message>
         <source>T&amp;op Camera View</source>
-        <translation>Cámara de Vista &amp;Superior</translation>
+        <translation>Caméra de vue &amp;supérieur</translation>
     </message>
     <message>
         <source>Si&amp;de Camera View</source>
-        <translation>&amp;Cámara de Vista Lateral</translation>
+        <translation>&amp;Caméra de vue Latéral</translation>
     </message>
     <message>
         <source>&amp;Help</source>
-        <translation>A&amp;yuda</translation>
+        <translation>A&amp;ide</translation>
     </message>
     <message>
         <source>&amp;Contents</source>
-        <translation>&amp;Contenido</translation>
+        <translation>&amp;Contenu</translation>
     </message>
     <message>
         <source>&amp;About K-Toon...</source>
-        <translation>Acerca de &amp;K-Toon...</translation>
+        <translation>A propos de &amp;K-Toon...</translation>
     </message>
     <message>
         <source>About &amp;Qt...</source>
-        <translation>Acerca de &amp;Qt...</translation>
+        <translation>A propos de &amp;Qt...</translation>
     </message>
     <message>
         <source>About &amp;OpenGL...</source>
-        <translation>Acerca de &amp;OpenGL...</translation>
+        <translation>A propos d&apos;&amp;OpenGL...</translation>
     </message>
     <message>
         <source>Ready.</source>
-        <translation>Listo.</translation>
+        <translation>Prêt.</translation>
     </message>
     <message>
         <source>Document</source>
-        <translation>Documento</translation>
+        <translation>Document</translation>
     </message>
     <message>
         <source>Image loaded successfully - </source>
-        <translation>Imagen cargada satisfactoriamente</translation>
+        <translation>Image charger avec succès</translation>
     </message>
     <message>
         <source>Image Sequence loaded successfully - </source>
-        <translation>Secuencia de Imágenes cargada satisfactoriamente</translation>
+        <translation>Séquences d&apos;images charger avec succès</translation>
     </message>
     <message>
         <source>Error</source>
-        <translation>Error</translation>
+        <translation>Erreur</translation>
     </message>
     <message>
         <source>Could not load library - The file might be moved or deleted - %1</source>
-        <translation>No se pudo cargar la librería - El archivo pudo haber sido movido o borrado - %1</translation>
+        <translation>Impossible de charger la librarie - Le fichier a peut-être été déplacer ou effacer - %1</translation>
     </message>
     <message>
         <source>Could not load library - Unrecognized .lbr file - %1</source>
-        <translation>No se pudo cargar la Librería - Archivo .lbr desconocido - %1</translation>
+        <translation>Impossible de charger la Librarie - Le fichier .lbr est inconnu - %1</translation>
     </message>
     <message>
         <source>Library loaded successfully - </source>
-        <translation>Librería cargada satisfactoriamente</translation>
+        <translation>Librarie chargé avec succès</translation>
     </message>
     <message>
         <source>Could not load color palette - The file might be moved or deleted - %1</source>
-        <translation>No se pudo cargar la Paleta de Colores - El Archivo pudo haber sido movido o borrado - %1</translation>
+        <translation>Impossible de charger la Palette de couleurs - Le fichier a peut-être été déplacer ou effacer - %1</translation>
     </message>
     <message>
         <source>Could not load color palette - Unrecognized .cpl file - %1</source>
-        <translation>No se pudo cargar la Paleta de Colores - Archivo .cpl desconocido - %1</translation>
+        <translation>Impossible de charger la Palette de couleurs - Le fichier .cpl est inconnu - %1</translation>
     </message>
     <message>
         <source>Palette loaded successfully - </source>
-        <translation>Paleta cargada satisfactoriamente</translation>
+        <translation>Palettes chargées avec succès</translation>
     </message>
     <message>
         <source>Could not load the brushes - The file might be moved or deleted - %1</source>
-        <translation>No se pudo cargar las Brochas - El Archivo pudo haber sido movido o borrado - %1</translation>
+        <translation>Impossible de charger las Brosses - Le fichier a peut-être été déplacer ou effacer - %1</translation>
     </message>
     <message>
         <source>Could not load the brushes - Unrecognized .bru file - %1</source>
-        <translation>No se pudo cargar las Brochas - Archivo .bru desconocido - %1</translation>
+        <translation>Impossible de charger las Brosses - Le fichier .bru est inconnu - %1</translation>
     </message>
     <message>
         <source>Brushes loaded successfully - </source>
-        <translation>Brochas cargadas satisfactoriamente</translation>
+        <translation>Brosses chargées avec succès</translation>
     </message>
     <message>
         <source>Sound loaded successfully - </source>
-        <translation>Sonido cargado satisfactoriamente</translation>
+        <translation>Sonido chargés avec succès</translation>
     </message>
     <message>
         <source>Unrecognized file format - %1</source>
-        <translation>Formato de archivo desconocido - %1</translation>
+        <translation>Format de fichier inconnu - %1</translation>
     </message>
     <message>
         <source>File Opened Successfully - %1</source>
-        <translation>Archivo Abierto Satisfactoriamente - %1</translation>
+        <translation>Fichier ouvert avec succès - %1</translation>
     </message>
     <message>
         <source>Couldn&apos;t Save - %1</source>
-        <translation>No se pudo Guardar - %1</translation>
+        <translation>Impossible de sauvegarder - %1</translation>
     </message>
     <message>
         <source>File Saved Successfully - %1</source>
-        <translation>Archivo guardado satisfactoriamente - %1</translation>
+        <translation>Fichier sauvegardé avec succès - %1</translation>
     </message>
     <message>
         <source>Import Dialog opened</source>
-        <translation>Diálogo Importar abierto</translation>
+        <translation>Dialogue d&apos;importation ouvert</translation>
     </message>
     <message>
         <source>Properties Dialog opened</source>
-        <translation>Diálogo Propiedades abierto</translation>
+        <translation>Dialogue des propriétés ouvert</translation>
     </message>
     <message>
         <source>Last Action Undone</source>
-        <translation>Última Acción Deshecha</translation>
+        <translation>Dernière action défaite</translation>
     </message>
     <message>
         <source>Last Action Redone</source>
-        <translation>Última Acción Rehecha</translation>
+        <translation>Dernière action refaite</translation>
     </message>
     <message>
         <source>Cut Action</source>
-        <translation>Acción Cortar</translation>
+        <translation>Action couper</translation>
     </message>
     <message>
         <source>Copy Action</source>
-        <translation>Acción Copiar</translation>
+        <translation>Action copier</translation>
     </message>
     <message>
         <source>Paste Action</source>
-        <translation>Acción Pegar</translation>
+        <translation>Action coller</translation>
     </message>
     <message>
         <source>Paste In Place Action</source>
-        <translation>Acción Pegar en su Lugar</translation>
+        <translation>Action coller en place</translation>
     </message>
     <message>
         <source>Delete Action</source>
-        <translation>Acción Borrar</translation>
+        <translation>Action effacer</translation>
     </message>
     <message>
         <source>Select All Action</source>
-        <translation>Acción Seleccionar Todo</translation>
+        <translation>Sélectionner toutes les actions</translation>
     </message>
     <message>
         <source>Preferences Dialog Opened</source>
-        <translation>Diálogo Preferencias abierto</translation>
+        <translation>Dialogue préférences abierto</translation>
     </message>
     <message>
         <source>Zoom In Action</source>
-        <translation>Acción Acercar</translation>
+        <translation>Zoom in action </translation>
     </message>
     <message>
         <source>Zoom Out Action</source>
-        <translation>Acción Alejar</translation>
+        <translation>Zoom out action</translation>
     </message>
     <message>
         <source>Grid Fit Action</source>
-        <translation>Acción Ajustar Grilla</translation>
+        <translation>Action ajuster la grille</translation>
     </message>
     <message>
         <source>12 Field Grid Action</source>
-        <translation>Acción Grilla de 12 Campos</translation>
+        <translation>Action grille de 12 couches</translation>
     </message>
     <message>
         <source>16 Field Grid Action</source>
-        <translation>Acción Grilla de 16 Campos</translation>
+        <translation>Action grille de 16 couches</translation>
     </message>
     <message>
         <source>Subgrid Action</source>
-        <translation>Acción Subgrilla</translation>
+        <translation>Action sous-grille</translation>
     </message>
     <message>
         <source>No Grid Action</source>
-        <translation>Acción sin Grilla</translation>
+        <translation>Action sans grille</translation>
     </message>
     <message>
         <source>No Previous Onion Skin Action</source>
-        <translation>Acción Ningun Papel Cebolla Previo</translation>
+        <translation>Action aucun papier oignon précédent</translation>
     </message>
     <message>
         <source>Previous Onion Skin Action</source>
-        <translation>Acción Un Papel Cebolla Previo</translation>
+        <translation>Action un papier oignon précédent</translation>
     </message>
     <message>
         <source>Previous 2 Onion Skin Action</source>
-        <translation>Acción Dos Papeles Cebolla Previos</translation>
+        <translation>Action deux papiers oignon précédents</translation>
     </message>
     <message>
         <source>Previous 3 Onion Skin Action</source>
-        <translation>Acción Tres Papeles Cebolla Previos</translation>
+        <translation>Action trois papiers oignon précédents</translation>
     </message>
     <message>
         <source>No Next Onion Skin Action</source>
-        <translation>Acción Ningun Papel Cebolla Siguiente</translation>
+        <translation>Action aucun papier oignon suivant</translation>
     </message>
     <message>
         <source>Next Onion Skin Action</source>
-        <translation>Acción Un Papel Cebolla Siguiente</translation>
+        <translation>Action Un papier oignon suivant</translation>
     </message>
     <message>
         <source>Next 2 Onion Skin Action</source>
-        <translation>Acción Dos Papeles Cebolla Siguientes</translation>
+        <translation>Action deux papiers oignon suivants</translation>
     </message>
     <message>
         <source>Next 3 Onion Skin Action</source>
-        <translation>Acción Tres Papeles Cebolla Siguientes</translation>
+        <translation>Action trois papiers oignon suivants</translation>
     </message>
     <message>
         <source>Scene Rotated Clockwise</source>
-        <translation>Escena Rotada a la Derecha</translation>
+        <translation>Scène rotation à vers la droite</translation>
     </message>
     <message>
         <source>Scene Rotated Counter Clockwise</source>
-        <translation>Escena Rotada a la Izquierda</translation>
+        <translation>Scène rotation à vers la gauche</translation>
     </message>
     <message>
         <source>Rotation Restored</source>
-        <translation>Rotación Restaurada</translation>
+        <translation>Rotation restaurer</translation>
     </message>
     <message>
         <source>NTSC Action</source>
-        <translation>Acción NTCS</translation>
+        <translation>Action NTCS</translation>
     </message>
     <message>
         <source>Light Table Action</source>
-        <translation>Acción Tabla de Luz</translation>
+        <translation>Action Feuille de lumière</translation>
     </message>
     <message>
         <source>Group Action</source>
-        <translation>Acción Agrupar</translation>
+        <translation>Action de grouper</translation>
     </message>
     <message>
         <source>Ungroup Action</source>
-        <translation>Acción Desagrupar</translation>
+        <translation>Action de dégrouper</translation>
     </message>
     <message>
         <source>Bring To Front Action</source>
-        <translation>Acción Traer al Frente</translation>
+        <translation>Action Mettre vers l&apos;avant</translation>
     </message>
     <message>
         <source>Send To Back Action</source>
-        <translation>Acción Enviar Atrás</translation>
+        <translation>Action Mettre vers l&apos;arrière</translation>
     </message>
     <message>
         <source>One Step Forward Action</source>
-        <translation>Acción Un Paso Adelante</translation>
+        <translation>Action Une étape vers l&apos;avant</translation>
     </message>
     <message>
         <source>One Step Backward Action</source>
-        <translation>Acción Un Paso Atrás</translation>
+        <translation>action Une étape vers l&apos;arrière</translation>
     </message>
     <message>
         <source>Align Right Action</source>
-        <translation>Acción Alinear a la Derecha</translation>
+        <translation>Action Aligner vers la droite</translation>
     </message>
     <message>
         <source>Center Vertically Action</source>
-        <translation>Acción Centrar Verticalmente</translation>
+        <translation>Action Centrer Verticalement</translation>
     </message>
     <message>
         <source>Align Left Action</source>
-        <translation>Acción Alinear a la Izquierda</translation>
+        <translation>Action Aligner vers la gauche</translation>
     </message>
     <message>
         <source>Align Top Action</source>
-        <translation>Acción Alinear Hacia Arriba</translation>
+        <translation>Action Aligner vers le haut</translation>
     </message>
     <message>
         <source>Center Horizontally Action</source>
-        <translation>Acción Centrar Horizontalmente</translation>
+        <translation>Action Centrer Horizontalement</translation>
     </message>
     <message>
         <source>Align Bottom Action</source>
-        <translation>Acción Alinear Hacia Abajo</translation>
+        <translation>Action Aligner vers le bas</translation>
     </message>
     <message>
         <source>Flip Horizontally Action</source>
-        <translation>Acción Reflejar Horizontalmente</translation>
+        <translation>Action Réflection Horizontalement</translation>
     </message>
     <message>
         <source>Flip Vertically Action</source>
-        <translation>Acción Reflejar Verticalmente</translation>
+        <translation>Action Réflection Verticalement</translation>
     </message>
     <message>
         <source>Rotate Clock Wise 90 Degrees Action</source>
-        <translation>Acción Rotar 90 Grados a la Derecha</translation>
+        <translation>Action Rotation 90 Gradiants vers la droite</translation>
     </message>
     <message>
         <source>Rotate Counter Clock Wise 90 Degrees Action</source>
-        <translation>Acción Rotar 90 Grados a la Izquierda</translation>
+        <translation>Action Rotation 90 Gradiants vers la gauche</translation>
     </message>
     <message>
         <source>Rotate 180 Degrees Action</source>
-        <translation>Acción Rotar 180 Grados</translation>
+        <translation>Action Rotation 180 Gradiants</translation>
     </message>
     <message>
         <source>Perspective Selection Action</source>
-        <translation>Acción Selección de Perspectiva</translation>
+        <translation>Action Sélection de perspective</translation>
     </message>
     <message>
         <source>Animation Stopped</source>
-        <translation>Animación Detenida</translation>
+        <translation>Animation arrêtée</translation>
     </message>
     <message>
         <source>Playing the Animation...</source>
-        <translation>Ejecutando la Animación...</translation>
+        <translation>Jouer l&apos;animation...</translation>
     </message>
     <message>
         <source>About OpenGL</source>
-        <translation>Acerca de OpenGL</translation>
+        <translation>A propos de OpenGL</translation>
     </message>
     <message>
         <source>Opens a new document</source>
-        <translation>Abre un nuevo documento</translation>
+        <translation>Ouvrir un nouveau document</translation>
     </message>
     <message>
         <source>Loads an existent document</source>
-        <translation>Carga un documento existente</translation>
+        <translation>Charger un document existent</translation>
     </message>
     <message>
         <source>Saves the current document in the current location</source>
-        <translation>Guarda el documento activo en la ubicación actual</translation>
+        <translation>Sauvegarder le document courant dans le répertoire actuel</translation>
     </message>
     <message>
         <source>Opens a dialog box to save the current document in any location</source>
-        <translation>Abre una caja de diálogo para guardar el documento activo en cualquier ubicación</translation>
+        <translation>Ouvrir une boite de dialogue pour sauvegarder le document courant dans n&apos;importe quel répertoire</translation>
     </message>
     <message>
         <source>Closes the active document</source>
-        <translation>Cierra el documento activo</translation>
+        <translation>Ferme le document courant</translation>
     </message>
     <message>
         <source>Opens the properties dialog box</source>
-        <translation>Abre la caja de diálogo Propiedades</translation>
+        <translation>Ouvrir la boite de dialogue des Propriétés</translation>
     </message>
     <message>
         <source>Imports a file in the supported format</source>
-        <translation>Importa un archivo en el formato soportado</translation>
+        <translation>Importer un fichier dans un format supporté</translation>
     </message>
     <message>
         <source>Exports this document as a file in the available formats</source>
-        <translation>Exporta este documento como un archivo en los formatos disponibles</translation>
+        <translation>Exporter ce document dans un des formats disponibles</translation>
     </message>
     <message>
         <source>Closes the application</source>
-        <translation>Cierra la aplicación</translation>
+        <translation>Quitter l&apos;aplication</translation>
     </message>
     <message>
         <source>Undoes the last draw action</source>
-        <translation>Deshace la última acción de dibujo</translation>
+        <translation>Défaire la dernière action de dessin</translation>
     </message>
     <message>
         <source>Redoes a previous undone action</source>
-        <translation>Rehace una acción previamente deshecha</translation>
+        <translation>Refaire l&apos;action précédamment défaite</translation>
     </message>
     <message>
         <source>Cuts the selection and puts it onto the clipboard</source>
-        <translation>Corta la selección y la coloca en el portapapeles</translation>
+        <translation>Couper la sélection, puis la coller sur le porte-papiers</translation>
     </message>
     <message>
         <source>Copies the selection and puts it onto the clipboard</source>
-        <translation>Copia la selección y la coloca en el portapapeles</translation>
+        <translation>Copier la sélection, puis la coller sur le porte-papiers</translation>
     </message>
     <message>
         <source>Pastes the clipboard into the current document</source>
-        <translation>Pega el portapapeles en el documento actual</translation>
+        <translation>Coller le porte-papiers sur le document actuel</translation>
     </message>
     <message>
         <source>Pastes the clipboard into the same place as the copy was did</source>
-        <translation>Pega el portapapeles en el mismo lugar que se hizo la copia</translation>
+        <translation>Coller le porte-papiers au même endroit que la copie</translation>
     </message>
     <message>
         <source>Deletes the selected object</source>
-        <translation>Borra el objeto seleccionado</translation>
+        <translation>Effacer l&apos;objet sélectionné</translation>
     </message>
     <message>
         <source>Selects all objects in the document</source>
-        <translation>Selecciona todos los objetos en el documento</translation>
+        <translation>Sélectionner tous les objets du document</translation>
     </message>
     <message>
         <source>Opens the preferences dialog box</source>
-        <translation>Abre la caja de diálogo Preferencias</translation>
+        <translation>Ouvrir le dialogue des préférences</translation>
     </message>
     <message>
         <source>Performs a Zoom In of the drawing area</source>
-        <translation>Ejecuta un acercamiento en el Área de Trabajo</translation>
+        <translation>Exéter un Zoom In sur la table à dessin</translation>
     </message>
     <message>
         <source>Performs a Zoom Out of the drawing area</source>
-        <translation>Ejecuta un alejamiento en el Área de Trabajo</translation>
+        <translation>Exéter un Zoom Out sur la table à dessin</translation>
     </message>
     <message>
         <source>Fits the grid into the drawing area</source>
-        <translation>Ajusta la grilla en el Área de Trabajo</translation>
+        <translation>Ajuster la grille sur la table à dessin</translation>
     </message>
     <message>
         <source>Shows a 12 field grid</source>
-        <translation>Muestra una grilla de 12 campos</translation>
+        <translation>Montrer une grille de 12 couches</translation>
     </message>
     <message>
         <source>Shows a 16 field grid</source>
-        <translation>Muestra una grilla de 16 campos</translation>
+        <translation>Montrer une grille de 16 couches</translation>
     </message>
     <message>
         <source>Shows or hides a 3 field subgrid in the current grid</source>
-        <translation>Muestra u oculta una subgrilla de 3 campos en la actual grilla</translation>
+        <translation>Montrer ou cacher une subgrille de 3 couches en la actual grille</translation>
     </message>
     <message>
         <source>Hides the grid</source>
-        <translation>Oculta la grilla</translation>
+        <translation>Cacher la grille</translation>
     </message>
     <message>
         <source>Shows or hides the NTSC Zone</source>
-        <translation>Muestra u oculta la Zona NTSC</translation>
-    </message>
-    <message>
-        <source>Disables previous onion skin visualization</source>
-        <translation>Deshabilita la previsualización de papel cebolla previo</translation>
-    </message>
-    <message>
-        <source>Shows the previous onion skin</source>
-        <translation>Muestra el papel cebolla previo</translation>
-    </message>
-    <message>
-        <source>Shows the previous 2 onion skins</source>
-        <translation>Muestra 2 papeles cebolla previos</translation>
-    </message>
-    <message>
-        <source>Shows the previous 3 onion skins</source>
-        <translation>Muestra 3 papeles cebolla previos</translation>
-    </message>
-    <message>
-        <source>Disables next onion skin visualization</source>
-        <translation>Deshabilita la previsualización de papel cebolla siguiente</translation>
+        <translation>Montrer ou cacher la Zone NTSC</translation>
     </message>
     <message>
         <source>Shows the next onion skin</source>
-        <translation>Muestra el papel cebolla siguiente</translation>
+        <translation>Montrer le prochain papier oignon</translation>
     </message>
     <message>
         <source>Shows the next 2 onion skins</source>
-        <translation>Muestra 2 papeles cebolla siguientes</translation>
+        <translation>Montrer les 2 prochains papiers oignons</translation>
     </message>
     <message>
         <source>Shows the next 3 onion skins</source>
-        <translation>Muestra 3 papeles cebolla siguientes</translation>
+        <translation>Montrer les 3 prochains papiers oignons</translation>
     </message>
     <message>
         <source>Rotates the scene 30 degrees clockwise</source>
-        <translation>Rota la escena 30 grados a la derecha</translation>
+        <translation>Rotation de la scène de 30 gradiants vers la droite</translation>
     </message>
     <message>
         <source>Rotates the scene 30 degrees counterclockwise</source>
-        <translation>Rota la escena 30 grados a la Izquierda</translation>
+        <translation>Rotation de la scène de 30 gradiants vers la gauche</translation>
     </message>
     <message>
         <source>Restores any rotation performed on the scene</source>
-        <translation>Restaura cualquier rotación ejecutada en la escena</translation>
+        <translation>Restaurer toutes rotations exécutées sur la scène</translation>
     </message>
     <message>
         <source>Inserts a new layer into the Exposure Sheet and Timeline</source>
-        <translation>Inserta una nueva capa en la Tabla de Rodaje y en la Línea de Tiempo</translation>
+        <translation>Insérer une nouvelle couche sur la feuille d&apos;exposition et à la ligne de temps</translation>
     </message>
     <message>
         <source>Inserts a frame into the current layer of the Timeline</source>
-        <translation>Inserta un Nuevo Fotograma en la capa actual de la Línea de Tiempo </translation>
+        <translation>Insérer une nouvelle Frame à la couche actuel;e de la ligne de temps </translation>
     </message>
     <message>
         <source>Removes a frame from the current layer of the Timeline</source>
-        <translation>Elimina un Fotograma en desde la capa actual de la Línea de Tiempo</translation>
+        <translation>Éliminer un Frame de la couche actuelle de la ligne de temps</translation>
     </message>
     <message>
         <source>Inserts a keyframe into the ExposureSheet and Timeline</source>
-        <translation>Inserta un fotograma clave en la Tabla de Rodaje y la Línea de Tiempo</translation>
+        <translation>Insérer un Frame clé sur la feuille d&apos;exposition et à la ligne de temps</translation>
     </message>
     <message>
         <source>Inserts a new scene</source>
-        <translation>Inserta una nueva escena</translation>
+        <translation>Insérer une nouvelle scène</translation>
     </message>
     <message>
         <source>Removes the selected scene</source>
-        <translation>Elimina una escena seleccionada</translation>
+        <translation>Éliminer la scène sélectionné</translation>
     </message>
     <message>
         <source>Activates the Selection tool</source>
-        <translation>Activa la herramienta Selección</translation>
+        <translation>Activer la sélection</translation>
     </message>
     <message>
         <source>Activates the Node Selection tool</source>
-        <translation>Activa la herramienta Selección de Nodos</translation>
+        <translation>Activer la sélection de noeux</translation>
     </message>
     <message>
         <source>Activates the Brush tool</source>
-        <translation>Activa la herramienta Brocha</translation>
+        <translation>Activer la brosse</translation>
     </message>
     <message>
         <source>Activates the Pencil tool</source>
-        <translation>Activa la herramienta Lápiz</translation>
+        <translation>Activer la crayon</translation>
     </message>
     <message>
         <source>Activates the Line tool</source>
-        <translation>Activa la herramienta Línea</translation>
+        <translation>Activer la ligne</translation>
     </message>
     <message>
         <source>Activates the Rectangle tool</source>
-        <translation>Activa la herramienta Rectángulo</translation>
+        <translation>Activer le rectangle</translation>
     </message>
     <message>
         <source>Activates the Ellipse tool</source>
-        <translation>Activa la herramienta Elipse</translation>
+        <translation>Activer le Elipse</translation>
     </message>
     <message>
         <source>Activates the Fill tool</source>
-        <translation>Activa la herramienta Relleno</translation>
+        <translation>Activer le remplissage</translation>
     </message>
     <message>
         <source>Activates the Remove Fill tool</source>
-        <translation>Activa la herramienta Eliminar Relleno</translation>
+        <translation>Activer l&apos;élimination du remplissage</translation>
     </message>
     <message>
         <source>Activates the Contour Fill tool</source>
-        <translation>Activa la herramienta Relleno de Contornos</translation>
+        <translation>Activer le remplissage de contour</translation>
     </message>
     <message>
         <source>Activates the Dropper tool</source>
-        <translation>Activa la herramienta Gotero</translation>
+        <translation>Activer le compte-gouttes</translation>
     </message>
     <message>
         <source>Activates the Eraser tool</source>
-        <translation>Activa la herramienta Borrador</translation>
+        <translation>Activer l&apos;efface</translation>
     </message>
     <message>
         <source>Activates the Slicer tool</source>
-        <translation>Activa la herramienta Bisturí</translation>
+        <translation>Activer le bistouri</translation>
     </message>
     <message>
         <source>Activates the Magnifying Glass tool</source>
-        <translation>Activa la herramienta Lupa</translation>
+        <translation>Activer la loupe</translation>
     </message>
     <message>
         <source>Activates the Hand tool</source>
-        <translation>Activa la herramienta Mano</translation>
+        <translation>Activer la main</translation>
     </message>
     <message>
         <source>Group the selected objects into a single one</source>
-        <translation>Agrupa los objetos seleccionados en uno simple</translation>
+        <translation>Grouper les objets sélectionnés en un seul objet</translation>
     </message>
     <message>
         <source>Ungroups the selected object</source>
-        <translation>Desagrupa el objeto seleccionado</translation>
+        <translation>Dégrouper l&apos;objet sélectionné</translation>
     </message>
     <message>
         <source>Brings the selected object to the front</source>
-        <translation>Trae el objeto seleccionado al frente</translation>
+        <translation>Envoyer l&apos;objet sélectionné en avant</translation>
     </message>
     <message>
         <source>Sends the selected objects to the back</source>
-        <translation>Envía el objeto seleccionado atrás</translation>
+        <translation>Envoyer l&apos;objet sélectionné en arrière</translation>
     </message>
     <message>
         <source>Moves the selected object one step forward</source>
-        <translation>Mueve el objeto seleccionado un paso adelante</translation>
+        <translation>Déplacer l&apos;objet sélectionné un étape en avant</translation>
     </message>
     <message>
         <source>Moves the selected object one step backward</source>
-        <translation>Mueve el objeto seleccionado un paso atrás</translation>
+        <translation>Déplacer l&apos;objet sélectionné un étape en arrière</translation>
     </message>
     <message>
         <source>Aligns the selected object to the left</source>
-        <translation>Alinea el objeto seleccionado a la izquierda</translation>
+        <translation>Aligner l&apos;objet sélectionné vers la gauche</translation>
     </message>
     <message>
         <source>Centers vertically the selected object</source>
-        <translation>Centra verticalmente el objeto seleccionado</translation>
+        <translation>Centrer verticalement l&apos;objet sélectionné</translation>
     </message>
     <message>
         <source>Aligns the selected object to the right</source>
-        <translation>Alinea el objeto seleccionado a la derecha</translation>
+        <translation>Aligner l&apos;objet sélectionné vers la droite</translation>
     </message>
     <message>
         <source>Aligns the selected object to the top</source>
-        <translation>Alinea el objeto seleccionado Hacia arriba</translation>
+        <translation>Aligner l&apos;objet sélectionné ver le haut</translation>
     </message>
     <message>
         <source>Centers horizontally the selected object</source>
-        <translation>Centra horizontalmente el objeto seleccionado</translation>
+        <translation>Centrer horizontalement l&apos;objet sélectionné</translation>
     </message>
     <message>
         <source>Aligns the selected object to the bottom</source>
-        <translation>Alinea el objeto seleccionado hacia abajo</translation>
+        <translation>Aligner l&apos;objet sélectionné vers le bas</translation>
     </message>
     <message>
         <source>Flips the selected object horizontally</source>
-        <translation>Refleja el objeto seleccionado horizontalmente</translation>
+        <translation>Réflection l&apos;objet sélectionné Horizontalement</translation>
     </message>
     <message>
         <source>Flips the selected object vertically</source>
-        <translation>Refleja el objeto seleccionado verticalmente</translation>
+        <translation>Réflection l&apos;objet sélectionné Verticalement</translation>
     </message>
     <message>
         <source>Rotates the selected object 90 degrees clockwise</source>
-        <translation>Rota el objeto seleccionado 90 grados a la derecha</translation>
+        <translation>Rotation de l&apos;objet sélectionné 90 gradiants à groite</translation>
     </message>
     <message>
         <source>Rotates the selected object 90 degrees counterclockwise</source>
-        <translation>Rota el objeto seleccionado 90 grados a la izquierda</translation>
+        <translation>Rotation de l&apos;objet sélectionné 90 gradiants à gauche</translation>
     </message>
     <message>
         <source>Rotates the selected object 180 degrees</source>
-        <translation>Rota el objeto seleccionado 180 grados</translation>
+        <translation>Rotation de l&apos;objet sélectionné 180 gradiants</translation>
     </message>
     <message>
         <source>Activates the perspective tool</source>
-        <translation>Activa la herramienta de perspectiva</translation>
+        <translation>Activer l&apos;outils de perspective</translation>
     </message>
     <message>
         <source>Plays the Animation</source>
-        <translation>Ejecuta la animación</translation>
+        <translation>Jouer l&apos;animation</translation>
     </message>
     <message>
         <source>Steps one frame forward in the animation</source>
-        <translation>Adelanta un fotograma la animación</translation>
+        <translation>Avancer d&apos;un frame d&apos;animation avant</translation>
     </message>
     <message>
         <source>Steps one frame backward in the animation</source>
-        <translation>Atrasa un fotograma la animación</translation>
+        <translation>Retourner un frame d&apos;animation arrière</translation>
     </message>
     <message>
         <source>Turns to the illustration mode</source>
-        <translation>Retorna al módulo de ilustración</translation>
+        <translation>Retourner au mode d&apos;illustration</translation>
     </message>
     <message>
         <source>Turns to the animation mode</source>
-        <translation>Retorna al módulo de animación</translation>
+        <translation>Retourner au mode d&apos;animation</translation>
     </message>
     <message>
         <source>Shows or hides the tools dialog box</source>
-        <translation>Muestra u oculta la caja de de diálogo Herramientas</translation>
+        <translation>Voir ou cacher la boite de dialogue: Outils</translation>
     </message>
     <message>
         <source>Shows or hides the brushes dialog box</source>
-        <translation>Muestra u oculta la caja de de diálogo Brochas</translation>
+        <translation>Voir ou cacher la boite de dialogue: Brosses</translation>
     </message>
     <message>
         <source>Shows or hides the scenes dialog box</source>
-        <translation>Muestra u oculta la caja de de diálogo Escenas</translation>
+        <translation>Voir ou cacher la boite de dialogue: Scènes</translation>
     </message>
     <message>
         <source>Shows or hides the color palette dialog box</source>
-        <translation>Muestra u oculta la caja de de diálogo Paleta de Colores</translation>
+        <translation>Voir ou cacher la boite de dialogue: Palette de couleurs</translation>
     </message>
     <message>
         <source>Shows or hides the exposure sheet dialog box</source>
-        <translation>Muestra u oculta la caja de de diálogo Tabla de Rodaje</translation>
+        <translation>Voir ou cacher la boite de dialogue: Feuille d&apos;exposition</translation>
     </message>
     <message>
         <source>Shows or hides the library dialog box</source>
-        <translation>Muestra u oculta la caja de de diálogo Librería</translation>
+        <translation>Voir ou cacher la boite de dialogue: Librarie</translation>
     </message>
     <message>
         <source>Shows or hides the timeline dialog box</source>
-        <translation>Muestra u oculta la caja de de diálogo Línea de tiempo</translation>
+        <translation>Voir ou cacher la boite de dialogue: Ligne de temps</translation>
     </message>
     <message>
         <source>Shows or hides the render preview widget</source>
-        <translation>Muestra u oculta la caja de de diálogo Previsualización</translation>
+        <translation>Voir ou cacher la boite de dialogue: Prévisualisation</translation>
     </message>
     <message>
         <source>Shows or hides the top camera view widget</source>
-        <translation>Muestra u oculta la caja de de diálogo Visualización Lateral</translation>
+        <translation>Voir ou cacher la boite de dialogue: Visualisation latéral</translation>
     </message>
     <message>
         <source>Shows or hides the side camera view widget</source>
-        <translation>Muestra u oculta la caja de de diálogo Visualización Superior</translation>
+        <translation>Voir ou cacher la boite de dialogue: Visualisation supérieur</translation>
     </message>
     <message>
         <source>Shows the help of the application</source>
-        <translation>Muestra la ayuda de la aplicación</translation>
+        <translation>Montrer l&apos;aide de l&apos;application</translation>
     </message>
     <message>
         <source>Shows information about the authors and another stuff</source>
-        <translation>Muestra información acerca de los autores y otra información</translation>
+        <translation>Montrer l&apos;information A propos des auteurs et autre information</translation>
     </message>
     <message>
         <source>Shows information about Qt</source>
-        <translation>Muestra información acerca de Qt</translation>
+        <translation>Montrer l&apos;information A propos de Qt</translation>
     </message>
     <message>
         <source>Shows information about OpenGL</source>
-        <translation>Muestra información acerca de OpenGL</translation>
+        <translation>Montrer l&apos;information A propos de OpenGL</translation>
     </message>
     <message>
         <source>&amp;Rewind</source>
-        <translation>&amp;Retroceder</translation>
+        <translation>&amp;Rétrocéder</translation>
     </message>
     <message>
         <source>Go to &amp;End</source>
-        <translation>&amp;Ir al Fin</translation>
+        <translation>&amp;Aller à la fin</translation>
     </message>
     <message>
         <source>File and Edit Operations</source>
-        <translation>Operaciones de Archivo y Edición </translation>
+        <translation>Opérations sur les fichiers et éditions </translation>
     </message>
     <message>
         <source>Drawing Area</source>
-        <translation>Área de Trabajo</translation>
+        <translation>Table à dessin</translation>
     </message>
     <message>
         <source>Tools</source>
-        <translation>Herramientas</translation>
+        <translation>Outils</translation>
     </message>
     <message>
         <source>Exposure Sheet</source>
-        <translation>Tabla de Rodaje</translation>
+        <translation>Feuille d&apos;exposition</translation>
     </message>
     <message>
         <source>Color Palette</source>
-        <translation>Paleta de Colores</translation>
+        <translation>Palette de couleurs</translation>
     </message>
     <message>
         <source>Brushes</source>
-        <translation>Brochas</translation>
+        <translation>Brosses</translation>
     </message>
     <message>
         <source>Scenes</source>
-        <translation>Escenas</translation>
+        <translation>Scènes</translation>
     </message>
     <message>
         <source>Library</source>
-        <translation>Librería</translation>
+        <translation>Librarie</translation>
     </message>
     <message>
         <source>Timeline</source>
-        <translation>Línea de Tiempo</translation>
+        <translation>Ligne de temps</translation>
     </message>
     <message>
         <source>Render Camera Preview</source>
-        <translation>Cámara de Previsualización</translation>
+        <translation>Caméra de prévisualisation</translation>
     </message>
     <message>
         <source>Top Camera View</source>
-        <translation>Cámara de Vista Superior</translation>
+        <translation>Caméra de vue supérieur</translation>
     </message>
     <message>
         <source>Side Camera View</source>
-        <translation>Cámara de Vista Lateral</translation>
+        <translation>Caméra de vue latéral</translation>
     </message>
     <message>
         <source>Illustration Mode</source>
-        <translation>Módulo de Ilustración</translation>
+        <translation>Mode d&apos;illustration</translation>
     </message>
     <message>
         <source>Animation Mode</source>
-        <translation>Módulo de Animación</translation>
+        <translation>Mode d&apos;animation</translation>
     </message>
     <message>
         <source>View Operations</source>
-        <translation>Operaciones de Visualización</translation>
+        <translation>Opérations de visualisation</translation>
     </message>
     <message>
         <source>NTSC Zone</source>
-        <translation>Zona NTSC</translation>
+        <translation>Zone NTSC</translation>
     </message>
     <message>
         <source>Light Table</source>
-        <translation>Tabla de Luz</translation>
+        <translation>Feuille de lumière</translation>
     </message>
     <message>
         <source>No Previous Onion Skin</source>
-        <translation>Ningun Papel Cebolla Previo</translation>
+        <translation>Aucun papier oignon précédent</translation>
     </message>
     <message>
         <source>Previous Onion Skin</source>
-        <translation>Un Papel Cebolla Previo</translation>
+        <translation>Le papier oignon précédent</translation>
     </message>
     <message>
         <source>Previous Two Onion Skin</source>
-        <translation>Dos Papeles Cebolla Previos</translation>
+        <translation>Les deux papiers oignons précédents</translation>
     </message>
     <message>
         <source>Previous Three Onion Skin</source>
-        <translation>Tres Papeles Cebolla Previos</translation>
+        <translation>Les trois papiers oignons précédents</translation>
     </message>
     <message>
         <source>No Next Onion Skin</source>
-        <translation>Ningun Papel Cebolla Siguiente</translation>
+        <translation>Aucun papier oignon suivant</translation>
     </message>
     <message>
         <source>Next Onion Skin</source>
-        <translation>Un Papel Cebolla Siguiente</translation>
+        <translation>Le papier oignon suivant</translation>
     </message>
     <message>
         <source>Next Two Onion Skin</source>
-        <translation>Dos Papeles Cebolla Siguientes</translation>
+        <translation>Les deux papiers oignons suivants</translation>
     </message>
     <message>
         <source>Next Three Onion Skin</source>
-        <translation>Tres Papeles Cebolla Siguientes</translation>
+        <translation>Les trois papiers oignons suivants</translation>
     </message>
     <message>
         <source>&amp;Drawing Area</source>
-        <translation>Área de &amp;Trabajo</translation>
+        <translation>Table à dessin</translation>
     </message>
     <message>
         <source>Shows or hides the drawing area widget</source>
-        <translation>Muestra u oculta el Área de Trabajo</translation>
+        <translation>Voir ou cacher la table à dessin</translation>
     </message>
     <message>
         <source>Rewinds the Animation</source>
-        <translation>Reinicia la Animación </translation>
+        <translation>Rebobiner l&apos;animation </translation>
     </message>
     <message>
         <source>Goes to the last frame of the Animation</source>
-        <translation>Va al último fotograma de la Animación</translation>
-    </message>
-    <message>
-        <source>Activates or deactivates the light table</source>
-        <translation>Activa o Desactiva la mesa de luz</translation>
+        <translation>Voir la dernière Frame de l&apos;animation</translation>
     </message>
     <message>
         <source>Sends the grid to the front or to the back</source>
-        <translation>Envía la grilla al frente o atrás</translation>
+        <translation>Envoyer la grille de l&apos;avant vers l&apos;arrière</translation>
     </message>
     <message>
         <source>Grid to Front/Back</source>
-        <translation>Grilla Adelante/Atrás</translation>
+        <translation>Grille avant/arrière</translation>
     </message>
     <message>
         <source>Grid to Front/Back Action</source>
-        <translation>Acción de Grilla Adelante/Atrás</translation>
+        <translation>Action grille avant/arrière</translation>
     </message>
     <message>
         <source>Sends the grid to the front or to the back of the drawing area</source>
-        <translation>Envía la grilla al frente o a la parte posterior del área de trabajo</translation>
+        <translation>Envoyer la grille ver l&apos;avant ou l&apos;arrière de la table à dessin</translation>
     </message>
     <message>
         <source>empty</source>
-        <translation>vacio</translation>
+        <translation>vide</translation>
     </message>
     <message>
         <source>Open Recent</source>
-        <translation>Abrir Trabajos Recientes</translation>
+        <translation>Ouvrier les documents récents</translation>
     </message>
     <message>
         <source>Could not load the file - It might be moved or deleted - %1</source>
-        <translation>No se pudo cargar el archivo - El archivo pudo haber sido movido o borrado - %1</translation>
+        <translation>Impossible de charger le fichier - Le fichier est peut-être déplacé ou effacé - %1</translation>
     </message>
     <message>
         <source>Opens</source>
-        <translation>Abre</translation>
+        <translation>Ouvrir</translation>
+    </message>
+    <message>
+        <source>Activates or deactivates the light table</source>
+        <translation>Activer ou Désactiver la table de lumière</translation>
+    </message>
+    <message>
+        <source>Disables previous onion skin visualization</source>
+        <translation>Désactiver la previsualisation de papier oignon précédente</translation>
+    </message>
+    <message>
+        <source>Shows the previous onion skin</source>
+        <translation>Montrer le papier oignon précédent</translation>
+    </message>
+    <message>
+        <source>Shows the previous 2 onion skins</source>
+        <translation>Montrer les 2 papiers oignons précédents</translation>
+    </message>
+    <message>
+        <source>Shows the previous 3 onion skins</source>
+        <translation>Montrer les 3 papiers oignons précédents</translation>
+    </message>
+    <message>
+        <source>Disables next onion skin visualization</source>
+        <translation>Désactiver la prévisualisation du papier oignon suivant</translation>
     </message>
     <message>
         <source>Paste &amp;In Place</source>
-        <translation>Pegar &amp;en su Lugar</translation>
+        <translation>Co&amp;ller sur place</translation>
     </message>
 </context>
 <context>
     <name>Library</name>
     <message>
         <source>Graphic Library</source>
-        <translation>Librería Gráfica</translation>
+        <translation>Librarie graphique</translation>
     </message>
     <message>
         <source>items</source>
-        <translation>elementos</translation>
+        <translation>items</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation>Nombre</translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <source>Add the current graphic to Library</source>
-        <translation>Adiciona el gráfico actual a la Librería</translation>
+        <translation>Ajouter les graphiques actuels à la librarie</translation>
     </message>
     <message>
         <source>Remove the selected Symbol from Library</source>
-        <translation>Elimina el símbolo seleccionado de la Librería</translation>
+        <translation>Éliminer les symboles sélectionné de la Librarie</translation>
     </message>
     <message>
         <source>Inserts the selected symbol into the drawing area</source>
-        <translation>Inserta el símbolo seleccionado en el área de trabajo</translation>
+        <translation>Insérer les symboles sélectionnés sur la table à dessin</translation>
     </message>
     <message>
         <source>Adds a folder to the symbol list</source>
-        <translation>Adiciona una carpera a la lista de símbolos</translation>
+        <translation>Ajouter une dossier à la liste des symboles</translation>
     </message>
     <message>
         <source>Confirm Symbol Elimination</source>
-        <translation>Confirma la eliminación de un símbolo</translation>
+        <translation>Confirmer l&apos;élimination d&apos;un symbole</translation>
     </message>
     <message>
         <source>Are you sure you want to delete the selected symbol?</source>
-        <translation>Está seguro que desea borrar el símbolo seleccionado?</translation>
+        <translation>Êtes-vous sûre de vouloir effacer le symbol sélectionné?</translation>
     </message>
     <message>
         <source>The folder you are going to remove has some symbols into it.
 Delete it anyway?</source>
-        <translation>El directorio que va a eliminar tiene algunos símbolos en él.
-Eliminarlo de todas formas?</translation>
+        <translation>Le répertoire que vous allez supprimer contients des symboles.
+Continuer la suppression?</translation>
     </message>
     <message>
         <source>New Folder</source>
-        <translation>Nuevo Directorio</translation>
+        <translation>Nouveau répertoire</translation>
     </message>
 </context>
 <context>
     <name>LineProperties</name>
     <message>
         <source>Line Properties</source>
-        <translation>Propiedades de la línea</translation>
+        <translation>Propriétés de la ligne</translation>
     </message>
     <message>
         <source>Origin Point</source>
-        <translation>Punto de Origen</translation>
+        <translation>Point d&apos;origine</translation>
     </message>
     <message>
         <source>End Point</source>
-        <translation>Punto Final</translation>
+        <translation>Point final</translation>
     </message>
     <message>
         <source>Border Style</source>
-        <translation>Estilo de Borde</translation>
+        <translation>Style de bordure</translation>
     </message>
     <message>
         <source>Stipple Factor</source>
-        <translation>Factor de Borde</translation>
+        <translation>Facteur de pointillées</translation>
     </message>
     <message>
         <source>Rotation Angle</source>
-        <translation>Ángulo de Rotación</translation>
+        <translation>Angle de rotation</translation>
     </message>
     <message>
         <source>Accept</source>
-        <translation>Aceptar</translation>
+        <translation>Accepter</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
     <name>PenProperties</name>
     <message>
         <source>Pen Properties</source>
-        <translation>Propiedades de la Pluma</translation>
+        <translation>Propriétés de la plume</translation>
     </message>
     <message>
         <source>Origin Point</source>
-        <translation>Punto de Origen</translation>
+        <translation>Point d&apos;origine</translation>
     </message>
     <message>
         <source>Border Style</source>
-        <translation>Estilo de Borde</translation>
+        <translation>Style de bordure</translation>
     </message>
     <message>
         <source>Stipple Factor</source>
-        <translation>Factor de Borde</translation>
+        <translation>Facteur de pointillées</translation>
     </message>
     <message>
         <source>Rotation Angle</source>
-        <translation>Ángulo de Rotación</translation>
+        <translation>Angle de rotation</translation>
     </message>
     <message>
         <source>Accept</source>
-        <translation>Aceptar</translation>
+        <translation>Accepter</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
     <name>PencilProperties</name>
     <message>
         <source>Pencil Properties</source>
-        <translation>Propiedades del Lapiz</translation>
+        <translation>Propriétés du crayon</translation>
     </message>
     <message>
         <source>Origin Point</source>
-        <translation>Punto de Origen</translation>
+        <translation>Point d&apos;origine</translation>
     </message>
     <message>
         <source>Border Style</source>
-        <translation>Estilo de Borde</translation>
+        <translation>Style de bordure</translation>
     </message>
     <message>
         <source>Stipple Factor</source>
-        <translation>Factor de Borde</translation>
+        <translation>Facteur de pointillées</translation>
     </message>
     <message>
         <source>Rotation Angle</source>
-        <translation>Ángulo de Rotación</translation>
+        <translation>Angle de rotation</translation>
     </message>
     <message>
         <source>Accept</source>
-        <translation>Aceptar</translation>
+        <translation>Accepter</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
     <name>Preferences</name>
     <message>
         <source>Application Preferences</source>
-        <translation>Preferencias de la Aplicación</translation>
+        <translation>Préférences de l&apos;application</translation>
     </message>
     <message>
         <source>English</source>
-        <translation>Inglés </translation>
+        <translation>Anglais</translation>
     </message>
     <message>
         <source>Spanish</source>
-        <translation>Español</translation>
+        <translation>Espagnol</translation>
+    </message>
+    <message>
+        <source>French</source>
+        <translation>Français</translation>
     </message>
     <message>
         <source>Language</source>
-        <translation>Idioma</translation>
+        <translation>Langue</translation>
     </message>
     <message>
         <source>Warning</source>
-        <translation>Advertencia</translation>
+        <translation>Avertissement</translation>
     </message>
     <message>
         <source>Could not write to the settings file</source>
-        <translation>No se pudo escribir en al archivo de configuración</translation>
+        <translation>Impossible d&apos;écrire le fichier de configuration</translation>
     </message>
     <message>
         <source>Information</source>
-        <translation>Información</translation>
+        <translation>Information</translation>
     </message>
     <message>
         <source>You must restart the application in order to
 some changes take effect</source>
-        <translation>Usted debe reiniciar la aplicación con el fin 
-de que algunos cambios se efectúen</translation>
+        <translation>Vous devez redémarrer l&apos;application afin que
+les changements prennent effet</translation>
     </message>
     <message>
         <source>System Default</source>
-        <translation>Predeterminado</translation>
-    </message>
-    <message>
-        <source>French</source>
-        <translation>Francés</translation>
+        <translation>Défaut de Système</translation>
     </message>
 </context>
 <context>
     <name>Properties</name>
     <message>
         <source>Animation Properties</source>
-        <translation>Propiedades de la Animación</translation>
+        <translation>Propriétés de l&apos;animation</translation>
     </message>
     <message>
         <source>Frame Rate:</source>
-        <translation>Tasa de Fotogramas:</translation>
+        <translation>Frame Rate:</translation>
     </message>
     <message>
         <source>Camera Size:</source>
-        <translation>Tamaño de la Cámara:</translation>
+        <translation>Grandeur de la Caméra:</translation>
     </message>
     <message>
         <source>Accept</source>
-        <translation>Aceptar</translation>
+        <translation>Accepter</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancel</translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <source>Background Color:</source>
-        <translation>Color de Fondo:</translation>
+        <translation>Couleur de fond:</translation>
     </message>
     <message>
         <source>Grid Color:</source>
-        <translation>Color de Grilla:</translation>
+        <translation>Couleur de grille:</translation>
     </message>
     <message>
         <source>NTSC Zone Color:</source>
-        <translation>Color de Zona NTSC:</translation>
+        <translation>Couleur de zone NTSC:</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Scene</source>
-        <translation>Escenas</translation>
+        <translation>Scènes</translation>
     </message>
     <message>
         <source>Drawing </source>
-        <translation>Dibujo</translation>
+        <translation>Dessin</translation>
     </message>
     <message>
         <source>Loading Modules</source>
-        <translation>Cargando Módulos</translation>
+        <translation>Charger les modules</translation>
     </message>
     <message>
         <source>Point</source>
-        <translation>Punto</translation>
+        <translation>Point</translation>
     </message>
     <message>
         <source>Layer</source>
-        <translation>Capa</translation>
+        <translation>Couche</translation>
     </message>
 </context>
 <context>
     <name>RectangleProperties</name>
     <message>
         <source>Rectangle Properties</source>
-        <translation>Propiedades del Rectángulo</translation>
+        <translation>Propriétés del Rectangle</translation>
     </message>
     <message>
         <source>Origin Point</source>
-        <translation>Punto de Origen</translation>
+        <translation>Point d&apos;origine</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation>Tamaño</translation>
+        <translation>Grandeur</translation>
     </message>
     <message>
         <source>Border Style</source>
-        <translation>Estilo de Borde</translation>
+        <translation>Style de bordure</translation>
     </message>
     <message>
         <source>Stipple Factor</source>
-        <translation>Factor de Borde</translation>
+        <translation>Facteur de pointillées</translation>
     </message>
     <message>
         <source>Rotation Angle</source>
-        <translation>Ángulo de Rotación</translation>
+        <translation>Angle de rotation</translation>
     </message>
     <message>
         <source>Perfect</source>
-        <translation>Perfecto</translation>
+        <translation>Perfection</translation>
     </message>
     <message>
         <source>Fill</source>
-        <translation>Relleno</translation>
+        <translation>Remplir</translation>
     </message>
     <message>
         <source>Accept</source>
-        <translation>Aceptar</translation>
+        <translation>Accepter</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
     <name>Scenes</name>
     <message>
         <source>Scenes</source>
-        <translation>Escenas</translation>
+        <translation>Scènes</translation>
     </message>
     <message>
         <source>Insert Scene</source>
-        <translation>Insertar Escena</translation>
+        <translation>Insérer scène</translation>
     </message>
     <message>
         <source>Remove Scene</source>
-        <translation>Eliminar Escena</translation>
+        <translation>Éliminer scène</translation>
     </message>
     <message>
         <source>Move Scene Up</source>
-        <translation>Subir Escena</translation>
+        <translation>Déplacer la scène en haut</translation>
     </message>
     <message>
         <source>Move Scene Down</source>
-        <translation>Bajar Escena</translation>
+        <translation>Déplacer la scène en bas</translation>
     </message>
     <message>
         <source>Name</source>
-        <translation>Nombre</translation>
+        <translation>Nom</translation>
     </message>
     <message>
         <source>Scene</source>
-        <translation>Escena</translation>
+        <translation>Scène</translation>
     </message>
     <message>
         <source>Scene1</source>
-        <translation>Escena1</translation>
+        <translation>Scène1</translation>
     </message>
     <message>
         <source>Scene Name</source>
-        <translation>Nombre Escena</translation>
+        <translation>Nom scène</translation>
     </message>
     <message>
         <source>Confirm Scene Elimination</source>
-        <translation>Confirma Eliminación de Escena</translation>
+        <translation>Confirmation de l&apos;élimination de la scène</translation>
     </message>
     <message>
         <source>Are you sure you want to delete the selected scene?</source>
-        <translation>Está seguro que desea borrar la escena seleccionada?</translation>
+        <translation>Êtes-vous sûre de vouloir effacer la scène sélectionnée?</translation>
     </message>
 </context>
 <context>
     <name>TLFrame</name>
     <message>
         <source>Create Motion Tween</source>
-        <translation>Crea Interpolación de Movimiento</translation>
+        <translation>Créer une interpolation du mouvement</translation>
     </message>
     <message>
         <source>Remove Motion Tween</source>
-        <translation>Elimina Interpolación de Movimiento</translation>
+        <translation>Éliminer interpolation du mouvement</translation>
     </message>
     <message>
         <source>Add Frames</source>
-        <translation>Adiciona Fotograma</translation>
+        <translation>Ajouter Frame</translation>
     </message>
     <message>
         <source>Remove Frames</source>
-        <translation>Elimina Fotograma</translation>
+        <translation>Éliminer Frame</translation>
     </message>
 </context>
 <context>
     <name>TLFrameSequenceManager</name>
     <message>
         <source>Shows or hides the sound widget</source>
-        <translation>Muestra u oculta el controlador de sonido</translation>
+        <translation>Montrer ou cacher les outils de son</translation>
     </message>
 </context>
 <context>
     <name>TLLayer</name>
     <message>
         <source>Rename Layer</source>
-        <translation>Renombrar Capa</translation>
+        <translation>Renommer une couche</translation>
     </message>
     <message>
         <source>Insert Layer</source>
-        <translation>Insertar Capa</translation>
+        <translation>Insérer une couche</translation>
     </message>
     <message>
         <source>Delete Layer</source>
-        <translation>Eliminar Capa</translation>
+        <translation>Éliminer une couche</translation>
     </message>
 </context>
 <context>
     <name>TLLayerManager</name>
     <message>
         <source>Show only outlines</source>
-        <translation>Muestra gráficos sin relleno</translation>
+        <translation>Montrer seulement le contour</translation>
     </message>
     <message>
         <source>Lock all Layers</source>
-        <translation>Bloquear todas la Capas</translation>
+        <translation>Bloquer toutes les couches</translation>
     </message>
     <message>
         <source>Show / Hide all Layers</source>
-        <translation>Muestra / Oculta todas las Capas</translation>
+        <translation>Montrer / Cacher toutes les couches</translation>
     </message>
     <message>
         <source>Insert Layer</source>
-        <translation>Insertar Capa</translation>
+        <translation>Insérer une couche</translation>
     </message>
     <message>
         <source>Remove Layer</source>
-        <translation>Eliminar Capa</translation>
+        <translation>Éliminer la couche</translation>
     </message>
     <message>
         <source>Move Layer Up</source>
-        <translation>Subir Capa</translation>
+        <translation>Déplacer la couche en haut</translation>
     </message>
     <message>
         <source>Move Layer Down</source>
-        <translation>Bajar Capa</translation>
+        <translation>Déplacer la couche en bas</translation>
     </message>
 </context>
 <context>
     <name>TLLayerSequence</name>
     <message>
         <source>Layer</source>
-        <translation>Capa</translation>
+        <translation>Couche</translation>
     </message>
 </context>
 <context>
     <name>Timeline</name>
     <message>
         <source>Timeline</source>
-        <translation>Línea de Tiempo</translation>
+        <translation>Ligne de temps</translation>
     </message>
     <message>
         <source>Sound File-name:</source>
-        <translation>Nombre Archivo de Sonido:</translation>
+        <translation>Nom des fichiers de son:</translation>
     </message>
     <message>
         <source>Could not save the file: %1</source>
-        <translation>No se pudo guardar el archivo: %1</translation>
+        <translation>Impossible de sauvegarder le fichier: %1</translation>
     </message>
     <message>
-        <source>Sound File-name:
-</source>
-        <translation>Nombre Archivo de Sonido:
-</translation>
+        <source>Sound File-name:</source>
+        <translation>Nom des fichiers de son:</translation>
     </message>
 </context>
 <context>
     <name>Tools</name>
     <message>
         <source>Normal Selection</source>
-        <translation>Selección Normal</translation>
+        <translation>Selection normal</translation>
     </message>
     <message>
         <source>Contour Selection</source>
-        <translation>Selección de Contornos</translation>
+        <translation>Selection du contour</translation>
     </message>
     <message>
         <source>Brush</source>
-        <translation>Brocha</translation>
+        <translation>Brosse</translation>
     </message>
     <message>
         <source>Pencil</source>
-        <translation>Lápiz</translation>
+        <translation>Crayon</translation>
     </message>
     <message>
         <source>Pen</source>
-        <translation>Pluma</translation>
+        <translation>Plume</translation>
     </message>
     <message>
         <source>Line</source>
-        <translation>Línea</translation>
+        <translation>Ligne</translation>
     </message>
     <message>
         <source>Rectangle</source>
-        <translation>Rectángulo</translation>
+        <translation>Rectangle</translation>
     </message>
     <message>
         <source>Ellipse</source>
-        <translation>Elipse</translation>
+        <translation>Ellipse</translation>
     </message>
     <message>
         <source>Fill</source>
-        <translation>Relleno</translation>
+        <translation>Remplissage</translation>
     </message>
     <message>
         <source>Remove Fill</source>
-        <translation>Eliminar Relleno</translation>
+        <translation>Eliminer le remplissage</translation>
     </message>
     <message>
         <source>Contour Fill</source>
-        <translation>Relleno de Contornos</translation>
+        <translation>Remplir le contour</translation>
     </message>
     <message>
         <source>Dropper</source>
-        <translation>Gotero</translation>
+        <translation>Compte-gouttes</translation>
     </message>
     <message>
         <source>Eraser</source>
-        <translation>Borrador</translation>
+        <translation>Efface</translation>
     </message>
     <message>
         <source>Slicer</source>
-        <translation>Bisturí</translation>
+        <translation>Bistouri</translation>
     </message>
     <message>
         <source>Magnifying Glass</source>
-        <translation>Lupa</translation>
+        <translation>Loupe</translation>
     </message>
     <message>
         <source>Hand</source>
-        <translation>Mano</translation>
+        <translation>Main</translation>
     </message>
     <message>
         <source>Selection Tools</source>
-        <translation>Herramientas de Selección </translation>
+        <translation>Outils de sélection </translation>
     </message>
     <message>
         <source>Draw Tools</source>
-        <translation>Herramientas de Dibujo</translation>
+        <translation>Outils de dessin</translation>
     </message>
     <message>
         <source>Fill Tools</source>
-        <translation>Herramientas de Relleno</translation>
+        <translation>Outils de remplissage</translation>
     </message>
     <message>
         <source>Eraser Tools</source>
-        <translation>Herramientas de Borrado</translation>
+        <translation>Outils d&apos;effacement</translation>
     </message>
     <message>
         <source>View Tools</source>
-        <translation>Herramientas de Visualización</translation>
+        <translation>Outils de visualisation</translation>
     </message>
 </context>
 </TS>

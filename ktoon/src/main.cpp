@@ -22,6 +22,7 @@
 #include <qgl.h>
 #include <qfile.h>
 #include <qtextstream.h>
+#include <qtextcodec.h>
 
 #include "ktoon.h"
 #include "splash.h"
@@ -35,7 +36,9 @@ int main( int argc, char ** argv )
     if ( !settings.open( IO_ReadOnly ) )
     {
         qDebug( "Could not open the settings file. Loaded the default language instead." );
-        language = "LANG=en";
+        language = "LANG=" + QString( QTextCodec::locale() ).left( 2 );
+	if ( language == "LANG=C" )
+	    language = "LANG=en";
     }
     else
     {
@@ -45,12 +48,24 @@ int main( int argc, char ** argv )
     settings.close();
 
     QTranslator translator( 0 );
+
+    if ( language == "LANG=" )
+    {
+        language = "LANG=" + QString( QTextCodec::locale() ).left( 2 );
+	if ( language == "LANG=C" )
+	    language = "LANG=en";
+    }
+
     if ( language == "LANG=es" )
     {
         translator.load( "ktoon_es", "src/trans/" );
         application.installTranslator( &translator );
     }
-    //TODO: else if ( language == "LANG=fr" ), etc.
+    else if ( language == "LANG=fr" )
+    {
+        translator.load( "ktoon_fr", "src/trans/" );
+        application.installTranslator( &translator );
+    }
 
     QGLFormat format;
     format.setAlpha( TRUE );

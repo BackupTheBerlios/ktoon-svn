@@ -64,7 +64,7 @@ private:
     //1:
     QFrame *language;
     QButtonGroup *language_group;
-    QRadioButton *rb_english, *rb_spanish;
+    QRadioButton *rb_system, *rb_english, *rb_spanish, *rb_french;
 
 public slots:
     /*!

@@ -316,7 +316,7 @@ Ktoon::Ktoon()
     id_edit_cut = edit -> insertItem( icon_cut, tr( "&Cut" ), this, SLOT( slotCut() ), CTRL+Key_X );
     id_edit_copy = edit -> insertItem( icon_copy, tr( "C&opy" ), this, SLOT( slotCopy() ), CTRL+Key_C );
     id_edit_paste = edit -> insertItem( icon_paste, tr( "&Paste" ), this, SLOT( slotPaste() ), CTRL+Key_V );
-    id_edit_paste_in_place = edit -> insertItem( tr( "&Paste &In Place" ), this, SLOT( slotPasteInPlace() ), CTRL+SHIFT+Key_V );
+    id_edit_paste_in_place = edit -> insertItem( tr( "Paste &In Place" ), this, SLOT( slotPasteInPlace() ), CTRL+SHIFT+Key_V );
     id_edit_delete = edit -> insertItem( tr( "&Delete" ), this, SLOT( slotDelete() ), Key_Delete );
     edit -> insertSeparator();
     id_edit_select_all = edit -> insertItem( tr( "&Select All" ), this, SLOT( slotSelectAll() ), CTRL+Key_A );

@@ -22,6 +22,7 @@
 #include <qmessagebox.h>
 #include <qfile.h>
 #include <qtextstream.h>
+#include <qtextcodec.h>
 
 #include "preferences.h"
 
@@ -35,7 +36,7 @@ Preferences::Preferences( QWidget *parent ) : QTabDialog( parent, "Application P
     setCaption( tr( "Application Preferences" ) );
     setFont( QFont( "helvetica", 10 ) );
     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-    resize( 220, 170 );
+    resize( 220, 230 );
     parent_widget = parent;
     setCancelButton();
     connect( this, SIGNAL( applyButtonPressed() ), SLOT( slotOK() ) );
@@ -46,13 +47,20 @@ Preferences::Preferences( QWidget *parent ) : QTabDialog( parent, "Application P
 
     language_group = new QButtonGroup( language );
     language_group -> move( 10, 10 );
-    language_group -> resize( 180, 70 );
+    language_group -> resize( 180, 130 );
+
+    rb_system = new QRadioButton( tr( "System Default" ), language_group );
+    rb_system -> move( 5, 5 );
+    rb_system -> resize( 150, rb_system -> height() );
 
     rb_english = new QRadioButton( tr( "English" ), language_group );
-    rb_english -> move( 5, 5 );
+    rb_english -> move( rb_system -> x(), rb_system -> y() + rb_system -> height() );
 
     rb_spanish = new QRadioButton( tr( "Spanish" ), language_group );
     rb_spanish -> move( rb_english -> x(), rb_english -> y() + rb_english -> height() );
+
+    rb_french = new QRadioButton( tr( "French" ), language_group );
+    rb_french -> move( rb_spanish -> x(), rb_spanish -> y() + rb_spanish -> height() );
 
     addTab( language, tr( "Language" ) );
 
@@ -67,10 +75,14 @@ Preferences::Preferences( QWidget *parent ) : QTabDialog( parent, "Application P
     }
     settings.close();
 
-    if ( language == "LANG=es" )
+    if ( language == "LANG=en" )
+	rb_english -> setChecked( true );
+    else if ( language == "LANG=es" )
 	rb_spanish -> setChecked( true );
+    else if ( language == "LANG=fr" )
+	rb_french -> setChecked( true );
     else
-        rb_english -> setChecked( true );
+        rb_system -> setChecked( true );
 }
 
 //-------------- DESTRUCTOR -----------------
@@ -79,6 +91,8 @@ Preferences::~Preferences()
 {
     delete rb_english;
     delete rb_spanish;
+    delete rb_french;
+    delete rb_system;
     delete language_group;
     delete language;
 }
@@ -98,7 +112,7 @@ void Preferences::slotOK()
 	{
     	    if ( settings.open( IO_WriteOnly ) )
 	    {
-        	language = "LANG=en";
+        	language = "LANG=" + QString( QTextCodec::locale() ).left( 2 ) + "\n";
         	QTextStream stream( &settings );
         	stream << language;
     	    }
@@ -110,7 +124,31 @@ void Preferences::slotOK()
 	{
     	    if ( settings.open( IO_WriteOnly ) )
 	    {
-        	language = "LANG=es";
+        	language = "LANG=en\n";
+        	QTextStream stream( &settings );
+        	stream << language;
+    	    }
+	    else
+	        QMessageBox::warning( this, tr( "Warning" ), tr( "Could not write to the settings file" ) );
+	    break;
+	}
+        case 2:
+	{
+    	    if ( settings.open( IO_WriteOnly ) )
+	    {
+        	language = "LANG=es\n";
+        	QTextStream stream( &settings );
+        	stream << language;
+    	    }
+	    else
+	        QMessageBox::warning( this, tr( "Warning" ), tr( "Could not write to the settings file" ) );
+	    break;
+	}
+        case 3:
+	{
+    	    if ( settings.open( IO_WriteOnly ) )
+	    {
+        	language = "LANG=fr\n";
         	QTextStream stream( &settings );
         	stream << language;
     	    }
