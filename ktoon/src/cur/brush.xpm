@@ -1,0 +1,21 @@
+/* XPM */
+const char *cbrush_xpm[]={
+"16 14 4 1",
+"b c None",
+". c None",
+"a c #000000",
+"# c #ffffff",
+"...........####.",
+"..........#aaaa#",
+"........##aaaaa#",
+".......#aaaaaaa#",
+"......#aaaaaaaa#",
+"....b#aaaaaaaa#.",
+".....#a#aaaaaa#.",
+".....#a##aaaa...",
+".....#a###aaa#..",
+"....#aaaa##a#...",
+"....#aaaaaa#....",
+"...#aaaaaaa#....",
+"..#aaaaaa##.....",
+".########bbb...."};

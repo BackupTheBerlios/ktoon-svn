@@ -1,0 +1,22 @@
+/* XPM */
+const char *cpen_xpm[]={
+"16 15 4 1",
+". c None",
+"a c #000000",
+"b c #303030",
+"# c #ffffff",
+".........####...",
+"........#aaaa#..",
+".......#aaaaaa#.",
+"......#aaaaaaaa#",
+".....#aaaaaaaaa#",
+"....#aaaaaaaaaa#",
+"...#aaaaaaaaaa#.",
+"..#a#aaaaaaaa#..",
+".#a###aaaaaa#...",
+".#a#aaaaaaaa#...",
+"#a##aaa#aaa#....",
+"#a#aa####a#.....",
+"#ba#####a#......",
+"#abbbaaa#.......",
+"########........"};
