@@ -29,7 +29,7 @@
 
 #include <iostream>
 
-#define sqr(a) ((a)*(a))
+#define sqr( x ) ( ( x ) * ( x ) )
 
 //-------------- CONSTRUCTOR ---------------
 
@@ -40,8 +40,8 @@ GLBrush::GLBrush( QGLWidget *parent, const QPoint & _origin, const Color & _colo
 	setKindGraphic( GC_BRUSH );
         id_graphic_component = glGenLists( 1 );
 	QPoint * origin_point = new QPoint( origin.x(), origin.y() );
-	QPoint * end_point = new(std::nothrow) QPoint( end.x(), end.y() );
-	if(!end_point)
+	QPoint * end_point = new( std::nothrow ) QPoint( end.x(), end.y() );
+	if( !end_point )
 	    {
 	    delete origin_point;
 	    throw std::bad_alloc();
@@ -91,8 +91,8 @@ GLBrush::~GLBrush()
 
 }
 
-extern void lineImpl( const QPoint & origin, const QPoint & end, int lw, int stippleFactor, const Color & outlineColor );
-extern void lineImplFast( const QPoint & origin, const QPoint & end, int lw, const Color & outlineColor );
+//extern void lineImpl( const QPoint & origin, const QPoint & end, int lw, int stippleFactor, const Color & outlineColor );
+//extern void lineImplFast( const QPoint & origin, const QPoint & end, int lw, const Color & outlineColor );
 
 //------------ PUBLIC MEMBERS ---------------
 
@@ -106,9 +106,6 @@ void GLBrush::buildList()
 	glDisable( GL_LINE_STIPPLE );
 	if( stipplePattern() != 0xffff )
 	{
-		//GLint id_texture;
-		//glGenTextures( 1, &id_texture );
-		//glBindTexture( GL_TEXTURE_1D, id_texture );
 		glPushAttrib( GL_ENABLE_BIT | GL_TEXTURE_BIT );
 		glTexEnvi( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE );
 		glTexParameteri( GL_TEXTURE_1D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
@@ -164,7 +161,7 @@ void GLBrush::buildList()
 
 	   if ( stipplePattern() == 0xFFFF )
 	     {
-	        // TODO: cambiar los puntos por cuadrados con textura de circulos con alpha
+	        // TODO: change the dots to quads with a circle texture with alpha 
 		glPointSize( widthPoint().thicknessMinBrush() );
 	   	glBegin( GL_POINTS );
 	   	for ( unsigned int i = 1; i < points.count() - 1;  i++ )
@@ -219,6 +216,7 @@ void GLBrush::buildList()
        glEndList();
 }
 */
+
 void GLBrush::angleBrush( const QPoint & _end )
 {
  QPoint * point = new QPoint( _end.x(), _end.y() );
@@ -238,7 +236,7 @@ void GLBrush::lineBrush( const QPoint & _end )
 }
 
 GLfloat dist( const QPoint &p1, const QPoint &p2 ) {
-	return sqrt( sqr(p1.x() - p2.x()) + sqr(p1.y() - p2.y()) );
+	return sqrt( sqr( p1.x() - p2.x() ) + sqr( p1.y() - p2.y() ) );
 }
 
 void GLBrush::setEndBrush( const QPoint & _end )

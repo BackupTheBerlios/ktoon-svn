@@ -24,9 +24,9 @@
 
 //--------------- CONSTRUCTOR --------------
 
-QtPencil::QtPencil( QCanvas *canvas ) : QCanvasPolygonalItem( canvas )
+QtPencil::QtPencil( QCanvas *canvas ) : QCanvasPolygonalItem( canvas ), point_array( 0 )
 {
-    point_array = QPointArray( 0 );
+    
 }
 
 //--------------- DESTRUCTOR ---------------
@@ -47,16 +47,41 @@ QPointArray QtPencil::areaPoints() const
 {
     QPointArray point_array_tmp( 4 );
     QRect bounding_rectangle = point_array.boundingRect();
-    point_array_tmp.putPoints( 0, 4, bounding_rectangle.left() - 1, bounding_rectangle.top() - 1, 
-    			       bounding_rectangle.right() + 1, bounding_rectangle.top() - 1,
-			       bounding_rectangle.right() + 1, bounding_rectangle.bottom() + 1,
-			       bounding_rectangle.left() - 1, bounding_rectangle.bottom() + 1 );
+    point_array_tmp.putPoints( 0, 4, ( int )x() + bounding_rectangle.left() - 1, ( int )y() + bounding_rectangle.top() - 1, 
+    			       ( int )x() + bounding_rectangle.right() + 1, ( int )y() + bounding_rectangle.top() - 1,
+			       ( int )x() + bounding_rectangle.right() + 1, ( int )y() + bounding_rectangle.bottom() + 1,
+			       ( int )x() + bounding_rectangle.left() - 1, ( int )y() + bounding_rectangle.bottom() + 1 );
     return point_array_tmp;
+}
+
+QPoint QtPencil::mapToLocal( const QPoint &point ) const
+{
+    if ( point_array.count() > 0 )
+    {
+        QPoint to_return = QPoint( point.x() - ( int )x(), point.y() - ( int )y() );
+        return to_return;
+    }
+    else
+        return QPoint( 0, 0 );
+}
+
+bool QtPencil::hit( const QPoint &point )
+{
+    for ( unsigned int i = 0; i < point_array.count(); i++ )
+    {
+	if ( ( mapToLocal( point ).x() <= point_array[i].x() + ( int )pen().width() + 3 &&
+	       mapToLocal( point ).x() >= point_array[i].x() - ( int )pen().width() - 3 ) &&
+	     ( mapToLocal( point ).y() <= point_array[i].y() + ( int )pen().width() + 3 &&
+	       mapToLocal( point ).y() >= point_array[i].y() - ( int )pen().width() - 3 ) )
+	    return true;
+    }
+    return false;
 }
 
 void QtPencil::addPoint( const QPoint &point )
 {
-    point_array.putPoints( point_array.count(), 1, point.x(), point.y() );
+    QPoint mapped = mapToLocal( point );
+    point_array.putPoints( point_array.count(), 1, mapped.x(), mapped.y() );
     update();
 }
 
@@ -65,5 +90,10 @@ void QtPencil::addPoint( const QPoint &point )
 void QtPencil::drawShape( QPainter &painter )
 {
     if ( point_array.count() > 1 )
-        painter.drawPolyline( point_array );
+    {
+        QPointArray translated_point_array( point_array.count() );
+	for ( unsigned int i = 0; i < point_array.count(); i++ )
+	    translated_point_array[i] = QPoint( ( int )x() + point_array[i].x(), ( int )y() + point_array[i].y() );
+        painter.drawPolyline( translated_point_array );
+    }
 }

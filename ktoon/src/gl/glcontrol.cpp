@@ -173,7 +173,6 @@ void GLControl::mouseReleaseEvent( QMouseEvent *mouse )
   switch ( k_toon -> currentStatus() -> currentCursor() )
   {
 	 case Tools::NORMAL_SELECTION:
-		  setOldPosition ( newPosition() );
 		  setNewPosition ( mouse -> pos() );
                   break;
 	 case Tools::CONTOUR_SELECTION:
@@ -239,7 +238,7 @@ void GLControl::tabletEvent( QTabletEvent *tablet )
   setNewPosition ( tablet -> pos() );
   setPressureTablet( ( int ) tablet -> pressure() );
   QWidget::setEnabled( true );
-  qDebug( "Tablet Move New %d, %d", ( int )tablet -> x(), ( int )tablet -> y() );
+  //qDebug( "Tablet Move New %d, %d", ( int )tablet -> x(), ( int )tablet -> y() );
   setOldPosition ( tablet -> pos() );
  }
 

@@ -62,13 +62,10 @@ GLLine::~GLLine()
 
 }
 
-//#define sqr(x) ((x)*(x))
-
-
-//implementation of the virtual method buildList to Line
 
 //------------ PUBLIC MEMBERS ---------------
 
+//implementation of the virtual method buildList to Lines
 void GLLine::buildList()
 {
    glNewList( id_graphic_component, GL_COMPILE );

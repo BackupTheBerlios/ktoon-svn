@@ -18,55 +18,54 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "qtellipse.h"
-
-#include <qpainter.h>
+#include "rendercamerapreviewqt.h"
 
 //--------------- CONSTRUCTOR --------------
 
-QtEllipse::QtEllipse( QCanvas *canvas ) : QCanvasRectangle( canvas ), selected( false )
+RenderCameraPreviewQt::RenderCameraPreviewQt( QWidget *parent, QWidget *grandparent, QCanvas *share )
+    : QCanvasView( share, parent ), parent_widget( parent ), grandparent_widget( grandparent )
 {
 
 }
 
 //--------------- DESTRUCTOR ---------------
 
-QtEllipse::~QtEllipse()
+RenderCameraPreviewQt::~RenderCameraPreviewQt()
 {
-    hide();
+
 }
 
 //--------------- PUBLIC MEMBERS --------------
 
-int QtEllipse::rtti() const
-{
-    return RTTI;
-}
-
-bool QtEllipse::isSelected() const
-{
-    return selected;
-}
-
-void QtEllipse::setSelected( bool select )
-{
-    selected = select;
-    update();
-}
-
 //-------------- EVENTS AND PROTECTED MEMBERS -------------
 
-void QtEllipse::drawShape( QPainter &painter )
+void RenderCameraPreviewQt::contentsMousePressEvent( QMouseEvent *mouse_event )
 {
-    painter.setBrush( brush() );
-    painter.setPen( pen() );
-    painter.drawEllipse( ( int )x(), ( int )y(), width(), height() );
-    
-    if ( selected )
-        drawSelectionArrows( painter );
+    mouse_event -> accept();
 }
 
-void QtEllipse::drawSelectionArrows( QPainter &painter )
+void RenderCameraPreviewQt::contentsMouseMoveEvent( QMouseEvent *mouse_event )
 {
-    painter.setPen( QPen( QColor( 0, 0, 255 ), 2 ) );
+    mouse_event -> accept();
+}
+
+void RenderCameraPreviewQt::contentsMouseReleaseEvent( QMouseEvent *mouse_event )
+{
+    mouse_event -> accept();
+}
+
+void RenderCameraPreviewQt::contentsMouseDoubleClickEvent( QMouseEvent *mouse_event )
+{
+    mouse_event -> accept();
+}
+
+void RenderCameraPreviewQt::paintEvent( QPaintEvent *paint_event )
+{
+    if ( paint_event -> erased() )
+	updateContents( paint_event -> rect() );
+}
+
+void RenderCameraPreviewQt::keyPressEvent( QKeyEvent *key_event )
+{
+    key_event -> accept();
 }

@@ -186,11 +186,10 @@ public:
       * \brief Calculates the bottom right point of the rectangle that fits outside this graphic component
       */
      virtual void calculateBottomRight() = 0;
-
      /*
       * \brief Draws this graphic component into the drawing area
       *
-      * It simply calls a OpenGL display list, passing the graphic component id.
+      * It simply calls a OpenGL display list, passing the graphic component id. 
       */
      virtual void draw();
      /*!
@@ -301,9 +300,29 @@ public:
       * \param ellipse_point The point of the movement with the PENCIL tool
       */
     void ellipseMoveOption( const QPoint & ellipse_point );
-    
-    void lineImplFast( const QPoint & origin, const QPoint & end, int lw, const Color & outlineColor );
-    void lineImpl( const QPoint & origin, const QPoint & end, int lw, int stippleFactor, const Color & outlineColor );
+     /*!
+      * \brief This function makes a fast line implementation.
+      *
+      * It is neccesary for non accelerated cards or the width of line implementation hardware mode is limited.
+      * \param origin The origin point
+      * \param end The end point
+      * \param line_width The brush which this graphic component was drawn with (to calculate the outline width)
+      * \param outline_color The color of this graphic component
+      * \sa lineImpl()
+      */
+    void lineImplFast( const QPoint & origin, const QPoint & end, int line_width, const Color & outline_color );
+     /*!
+      * \brief This function makes a line implementation with a rectangle, where width is the rectangle base.
+      *
+      * It is neccesary for non accelerated cards or the width of line implementation hardware mode is limited.
+      * \param origin The origin point
+      * \param end The end point
+      * \param line_width The brush which this graphic component was drawn with (to calculate the outline width)
+      * \param stipple_factor The stipple factor value
+      * \param outline_color The color of this graphic component
+      * \sa lineImplFast()
+      */
+    void lineImpl( const QPoint & origin, const QPoint & end, int line_width, int stipple_factor, const Color & outline_color );
 
      //Get methods
      /*!
@@ -424,7 +443,27 @@ public:
       * \sa setSpinPoint()
       */
      QPoint spinPoint();
-     /*!
+      /*!
+      * \brief Gets whether this graphic component is included within the selection rectangle
+      *
+      * \param mouse_press The input event of the mousePressEvent operation
+      * \param mouse_release The input event of the mouseReleaseEvent operation
+      * \return <b>true</b> if the this graphic component is included, otherwise returns <b>false</b>
+      */
+     bool graphicIncluded( QPoint mouse_press, QPoint mouse_release );
+      /*!
+      * \brief Gets the translation value of this graphic
+      *
+      * \return The x translation value
+      */
+     int translationX();
+       /*!
+      * \brief Gets the translation value of this graphic
+      *
+      * \return The y translation value
+      */
+     int translationY();
+    /*!
       * \brief Gets the clipboard representation of this graphic component
       *
       * \return A string that represents this graphic component's properties
@@ -472,6 +511,7 @@ protected:
      //Variable related of the key press event
      bool shift_pressed;
      bool control_pressed;
+     bool included;
 
      /*!
       * \brief Sets this graphic to be of the kind \a kind

@@ -18,52 +18,52 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef QT_PENCIL
-#define QT_PENCIL
+#ifndef QT_PEN
+#define QT_PEN
 
 /*!
- * \file qtpencil.h
- * \brief Include this file if you need the class QtPencil
+ * \file qtpen.h
+ * \brief Include this file if you need the class QtPen
  */
 
 #include <qcanvas.h>
 
 /*!
- * \brief Class that handles the pencil graphic component for the non accelerated implementation
+ * \brief Class that handles the pen graphic component for the non accelerated implementation
  *
- * <b>Date of Creation: Mar 4 - 2005.</b>\n
- * Equivalent to the GLPencil in the OpenGL implementation.
+ * <b>Date of Creation: Mar 8 - 2005.</b>\n
+ * Equivalent to GLPen in the OpenGL implementation.
  */
-class QtPencil : public QCanvasPolygonalItem
+class QtPen : public QCanvasPolygonalItem
 {
 
 public:
-    //! Constants for defining QtPencil properties
-    enum QtPencilProperties
+    //! Constants for defining QtPen properties
+    enum QtPenProperties
     {
-	RTTI = 1005, /*!< See QCanvasItem::rtti() */
+	RTTI = 1008, /*!< See QCanvasItem::rtti() */
     };
     
     /*!
      * \brief Default Constructor
      *
-     * Constructs a QtPencil object
+     * Constructs a QtPen object
      * \param canvas The Canvas where this item will be drawn
      */
-    QtPencil( QCanvas *canvas );
+    QtPen( QCanvas *canvas );
     /*!
      * \brief Default Destructor
      *
-     * Destroys the QtPencil object
+     * Destroys the QtPen object
      */
-    ~QtPencil();
+    ~QtPen();
 
     /*!
-     * \brief Gets the RTTI value (QtPencil::RTTI)
+     * \brief Gets the RTTI value (QtPen::RTTI)
      *
      * Reimplemented from QCanvasPolygonalItem.
      * \sa QCanvasItem::rtti()
-     * \return 1005 (QtPencil::RTTI)
+     * \return 1008 (QtPen::RTTI)
      */
     virtual int rtti() const;
     /*!
@@ -81,31 +81,57 @@ public:
      */
     QPoint mapToLocal( const QPoint &point ) const;
     /*!
-     * \brief Gets whether this pencil was hit or not within the specified point
+     * \brief Gets whether this pen was hit or not within the specified point
      *
      * \param point The point
-     * \return <b>true</b> if this pencil was hit, <b>false</b> otherwise.
+     * \return <b>true</b> if this brush was hit, <b>false</b> otherwise.
      */
     virtual bool hit( const QPoint &point );
     /*!
-     * \brief Appends a point to this pencil
+     * \brief Appends a point to this pen
      *
      * \param point The new point
      */
     void addPoint( const QPoint &point );
+    /*!
+     * \brief Modifies this pen in a way that it makes a bezier curve
+     *
+     * The control points are the last and the last but one from the point array, and the argument point
+     * and its reflection. If there is only one point in the point array, nothing happens.
+     * \param point The main point. It will be reflexed in order to get one more control point
+     * \param spin The spin point. It is used for calculating the reflection from \a point
+     */
+    void addBezier( const QPoint &point, const QPoint &spin );
+    /*!
+     * \brief Modifies this pen in a way that it makes a bezier curve
+     *
+     * It replaces the last control points from the array by the new points.
+     * \param point The main point. It will be reflexed in order to get one more control point
+     * \param spin The spin point. It is used for calculating the reflection from \a point
+     */
+    void replaceBezier( const QPoint &point, const QPoint &spin );
     
 private:
     QPointArray point_array;
+    QPointArray control_points;
+    QValueList<int> indexes;  //Indicates which points will take place as bezier points
 
 protected:
     /*!
-     * \brief Draws the pencil using a painter
+     * \brief Draws the pen using a painter
      *
      * Reimplemented from QCanvasPolygonalItem.
      * \param painter The painter
      */
     virtual void drawShape( QPainter &painter );
-     
+    /*!
+     * \brief Gets wheter this index is into the list of bezier indexes
+     *
+     * \param index The index
+     * \return <b>true</b> if the argument index belongs to the list of bezier indexes. <b>false</b>, otherwise.
+     */
+    bool isBezierIndex( unsigned int index ) const;
+
 };
 
 #endif

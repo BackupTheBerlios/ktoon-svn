@@ -25,17 +25,69 @@
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <qapplication.h>
+#include <memory>
+#include <qwmatrix.h>
+#include <qprocess.h>
 
 #include "ktoon.h"
 #include "images/images.h"
 #include "store/symbol.h"
 #include "store/folder.h"
 
+
 //--------------- CONSTRUCTOR --------------------
 
 Ktoon::Ktoon()
     : QMainWindow( 0, "K-Toon", WDestructiveClose )
 {
+
+    // Zeroing out the pointers before the "real" assignment is ugly, but unless
+    // these colors are not pointers, we have to do something like that in order
+    // to be able to delete all objects safely if an exception is thrown in the
+    // constructor.
+    
+    es_default_color = 0;
+    es_use_color = 0;
+    es_selection_color = 0;
+    es_select_and_use_color = 0;
+    es_text_color_when_selected = 0;
+    es_default_text_color = 0;
+    es_lock_color = 0;
+    es_lock_and_select_color = 0;
+    es_has_drawing_color = 0;
+    tl_default_color = 0;
+    tl_selection_color = 0;
+    tl_special_color = 0;
+    tl_offset_color = 0;
+    tl_drag_offset_color = 0;
+    tl_border_color = 0;
+    tl_use_border_color = 0;
+    tl_motion_color = 0;
+    tl_drawing_color = 0;
+    
+    current_status = 0;
+
+    cursor_line = 0;
+    cursor_selection = 0;
+    cursor_nodes = 0;
+    cursor_brush = 0;
+    cursor_pencil = 0;
+    cursor_pen = 0;
+    cursor_rectangle = 0;
+    cursor_ellipse = 0;
+    cursor_eraser = 0;
+    cursor_slicer = 0;
+    cursor_fill = 0;
+    cursor_remove_fill = 0;
+    cursor_magnifying_glass = 0;
+    cursor_hand = 0;
+    cursor_dropper = 0;
+    cursor_contour_fill = 0;
+    
+    document_ = 0;
+    
+    try {
+    
     //The recent file names
     QString recent1, recent2, recent3, recent4, recent5;
     QFile settings( "settings" );
@@ -61,6 +113,7 @@ Ktoon::Ktoon()
     settings.close();
 
     //ExposureSheet & Timeline Color initializations
+    
     es_default_color = new QColor( 239, 237, 223 );
     es_use_color = new QColor( 200, 200, 200 );
     es_selection_color = new QColor( 0, 0, 0 );
@@ -560,6 +613,23 @@ Ktoon::Ktoon()
     current_drawing_area -> setCursor( QCursor( Qt::ForbiddenCursor ) );
     current_drawing_area -> show();
     current_drawing_area -> setActiveWindow();
+  
+    //*** ---- Test for the non accelerated mode ---
+    
+    /*current_drawing_area_qt = new DrawingAreaQt( main_panel, this, tr( "Document" ) + QString( "1" ) );
+    current_drawing_area_qt -> resize( 641, 481 );
+    current_drawing_area_qt -> move( 146, 8 );
+    current_drawing_area_qt -> show();*/
+    
+    /*render_camera_preview_qt = new RenderCameraPreviewQt( main_panel, this, current_drawing_area_qt -> canvas() );
+    render_camera_preview_qt -> setMinimumSize( 321, 241 );
+    render_camera_preview_qt -> setMaximumSize( 321, 241 );
+    QWMatrix matrix = render_camera_preview_qt -> worldMatrix();
+    matrix.scale( 0.47, 0.47 );
+    render_camera_preview_qt -> setWorldMatrix( matrix );
+    render_camera_preview_qt -> show();*/
+    
+    // ---- ***
 
     //--------------- Dialog Boxes -----------------
 
@@ -664,6 +734,52 @@ Ktoon::Ktoon()
     exposure_sheet_dialog -> updateIndicators( exposure_sheet_dialog -> currentLayerObj() );
     
     updateOpenRecentMenu();
+    }
+    catch(...)
+        {
+	  delete es_default_color;
+        delete es_use_color;
+        delete es_selection_color;
+        delete es_select_and_use_color;
+        delete es_text_color_when_selected;
+        delete es_default_text_color;
+        delete es_lock_color;
+        delete es_lock_and_select_color;
+        delete es_has_drawing_color;
+        delete tl_default_color;
+        delete tl_selection_color;
+        delete tl_special_color;
+        delete tl_offset_color;
+        delete tl_drag_offset_color;
+        delete tl_border_color;
+        delete tl_use_border_color;
+        delete tl_motion_color;
+        delete tl_drawing_color;
+
+        delete current_status;
+
+        delete cursor_line;
+        delete cursor_selection;
+        delete cursor_nodes;
+        delete cursor_brush;
+        delete cursor_pencil;
+        delete cursor_pen;
+        delete cursor_rectangle;
+        delete cursor_ellipse;
+        delete cursor_eraser;
+        delete cursor_slicer;
+        delete cursor_fill;
+        delete cursor_remove_fill;
+        delete cursor_magnifying_glass;
+        delete cursor_hand;
+        delete cursor_dropper;
+        delete cursor_contour_fill;
+
+        delete document_;
+
+        throw;
+        } // catch(...)
+    
 }
 
 //-------------- DESTRUCTOR -----------------
@@ -871,7 +987,10 @@ void Ktoon::loadLibrary( const QString &file_name, bool from_load )
     }
     library_file.close();
     QDomElement library_tag = library_doc.documentElement();
-    LibraryData *library = new LibraryData();
+    
+    std::auto_ptr<LibraryData> ap_library(new LibraryData);
+    LibraryData* library = ap_library.get();
+    
     QDomElement items_tag = library_tag.firstChild().toElement();
     QDomNode n_item = items_tag.firstChild();
     QPtrList<Item> items;
@@ -881,11 +1000,18 @@ void Ktoon::loadLibrary( const QString &file_name, bool from_load )
 	if ( item_tag.tagName() == "Symbol" )
 	{
 	    Symbol *symbol = new Symbol();
+	    try { 
 	    QString s_n = item_tag.attribute( "Name" );
 	    symbol -> setName( s_n );
 	    QDomElement graphic_tag = item_tag.firstChild().toElement();
 	    symbol -> setGraphic( createGraphic( graphic_tag ) );
 	    items.append( symbol );
+	    }
+	    catch(...)
+	        {
+		  delete symbol;
+		  throw;
+		  }
 	}
 	else if ( item_tag.tagName() == "Folder" )
 	{
@@ -895,7 +1021,8 @@ void Ktoon::loadLibrary( const QString &file_name, bool from_load )
 	n_item = n_item.nextSibling();
     }
     library -> setItems( items );
-    document_ -> setLibrary( library );
+    document_ -> setLibrary( ap_library.release() );
+    
     if ( !from_load )
         library_dialog -> loadItems( items );
 
@@ -919,7 +1046,10 @@ void Ktoon::loadPalette( const QString &file_name, bool from_load )
     }
     palette_file.close();
     QDomElement palette_tag = palette_doc.documentElement();
-    Palette *palette = new Palette();
+    
+    std::auto_ptr<Palette> ap_palette(new Palette);
+    Palette* palette = ap_palette.get();
+    
     QDomNode n_color = palette_tag.firstChild();
     QPtrList<Color> colors;
     while ( !n_color.isNull() )
@@ -931,12 +1061,19 @@ void Ktoon::loadPalette( const QString &file_name, bool from_load )
 	QString b = color_tag.attribute( "Blue" );
 	QString a = color_tag.attribute( "Alpha" );
 	Color *color = new Color( r.toFloat(), g.toFloat(), b.toFloat(), a.toFloat() );
-	color -> setNameColor( n );
-	colors.append( color );
+	try {
+	    color -> setNameColor( n );
+	    colors.append( color );
+	    }
+	catch(...)
+	    {
+	    delete color;
+	    throw;
+	    }
 	n_color = n_color.nextSibling();
     }
     palette -> setColors( colors );
-    document_ -> setPalette( palette );
+    document_ -> setPalette( ap_palette.release() );
     if ( !from_load )
         color_palette_dialog -> loadCustomColors( colors );
 
@@ -971,8 +1108,15 @@ void Ktoon::loadBrushes( const QString &file_name, bool from_load )
 	QString s = brush_tag.attribute( "Smoothness" );
 	QString i = brush_tag.attribute( "Id" );
 	Brush *brush = new Brush( mint.toInt(), maxt.toInt(), s.toInt() );
-	brush -> setNameBrush( n );
-	brushes.append( brush );
+	try {
+	    brush -> setNameBrush( n );
+	    brushes.append( brush );
+	    }
+	catch(...)
+	    {
+	    delete brush;
+	    throw;
+	    }
 	n_brush = n_brush.nextSibling();
     }
     document_ -> setBrushes( brushes );
@@ -1014,8 +1158,9 @@ GLGraphicComponent *Ktoon::createGraphic( const QDomElement &graphic_tag )
     QString go = outline_color_tag.attribute( "Green" );
     QString bo = outline_color_tag.attribute( "Blue" );
     QString ao = outline_color_tag.attribute( "Alpha" );
-    Color *outline_color = new Color( ro.toFloat(), go.toFloat(), bo.toFloat(), ao.toFloat() );
-    outline_color -> setNameColor( no );
+    
+    Color outline_color = Color( ro.toFloat(), go.toFloat(), bo.toFloat(), ao.toFloat() );
+    outline_color.setNameColor( no );
 
     //Width Tag
     QDomElement width_tag = outline_color_tag.nextSibling().toElement();
@@ -1024,8 +1169,9 @@ GLGraphicComponent *Ktoon::createGraphic( const QDomElement &graphic_tag )
     QString maxtw = width_tag.attribute( "MaxThickness" );
     QString sw = width_tag.attribute( "Smoothness" );
     QString idw = width_tag.attribute( "Id" );
-    Brush *width = new Brush( mintw.toInt(), maxtw.toInt(), sw.toInt() );
-    width -> setNameBrush( nw );
+    
+    Brush width = Brush( mintw.toInt(), maxtw.toInt(), sw.toInt() );
+    width.setNameBrush( nw );
 
     int kg = k.toInt();
     switch ( kg )
@@ -1047,20 +1193,34 @@ GLGraphicComponent *Ktoon::createGraphic( const QDomElement &graphic_tag )
 		QString _x = point_tag.attribute( "X" );
 		QString _y = point_tag.attribute( "Y" );
 		QPoint *point = new QPoint( _x.toInt(), _y.toInt() );
-		points.append( point );
+		try {
+		    points.append( point );
+		    }
+		catch(...)
+		    {
+		    delete point;
+		    throw;
+		    }
 		n_point = n_point.nextSibling();
 	    }
 
-	    GLBrush *brush = new GLBrush( current_drawing_area, origin, *outline_color, *width, end );
-	    brush -> setFill( fi == "true" );
-	    brush -> setStipplePattern( p.toUInt() );
-	    brush -> setStippleFactor( fa.toUInt() );
-	    brush -> setZ( z.toInt() );
-	    brush -> setPoints( points );
-	    brush -> calculateBottomRight();
-	    brush -> calculateTopLeft();
-	    brush -> setRotationAngle( ang.toFloat() );
-	    brush -> translateGraphic( xt.toInt(), yt.toInt() );
+	    GLBrush *brush = new GLBrush( current_drawing_area, origin, outline_color, width, end );
+	    try {
+	        brush -> setFill( fi == "true" );
+	        brush -> setStipplePattern( p.toUInt() );
+	        brush -> setStippleFactor( fa.toUInt() );
+	        brush -> setZ( z.toInt() );
+	        brush -> setPoints( points );
+	        brush -> calculateBottomRight();
+	        brush -> calculateTopLeft();
+	        brush -> setRotationAngle( ang.toFloat() );
+	        brush -> translateGraphic( xt.toInt(), yt.toInt() );
+	        }
+	    catch(...)
+	        {
+	        delete brush;
+	        throw;
+	        }
 
 	    return brush;
 	    break;
@@ -1082,21 +1242,35 @@ GLGraphicComponent *Ktoon::createGraphic( const QDomElement &graphic_tag )
 		QString _x = point_tag.attribute( "X" );
 		QString _y = point_tag.attribute( "Y" );
 		QPoint *point = new QPoint( _x.toInt(), _y.toInt() );
-		points.append( point );
+		try {
+		    points.append( point );
+		    }
+		catch(...)
+		    {
+		    delete point;
+		    throw;
+		    }
 		n_point = n_point.nextSibling();
 	    }
 
-	    GLPencil *pencil = new GLPencil( current_drawing_area, origin, *outline_color, *width, end );
-	    pencil -> setFill( fi == "true" );
-	    pencil -> setStipplePattern( p.toUInt() );
-	    pencil -> setStippleFactor( fa.toUInt() );
-	    pencil -> setZ( z.toInt() );
-	    pencil -> setPoints( points );
-	    pencil -> calculateBottomRight();
-	    pencil -> calculateTopLeft();
-	    pencil -> setRotationAngle( ang.toFloat() );
-	    pencil -> translateGraphic( xt.toInt(), yt.toInt() );
-
+	    GLPencil *pencil = new GLPencil( current_drawing_area, origin, outline_color, width, end );
+	    try {
+	        pencil -> setFill( fi == "true" );
+	        pencil -> setStipplePattern( p.toUInt() );
+	        pencil -> setStippleFactor( fa.toUInt() );
+	        pencil -> setZ( z.toInt() );
+	        pencil -> setPoints( points );
+	        pencil -> calculateBottomRight();
+	        pencil -> calculateTopLeft();
+	        pencil -> setRotationAngle( ang.toFloat() );
+	        pencil -> translateGraphic( xt.toInt(), yt.toInt() );
+	        }
+	    catch(...)
+	        {
+	        delete pencil;
+	        throw;
+	        }
+	    
 	    return pencil;
 	    break;
 	}
@@ -1124,7 +1298,14 @@ GLGraphicComponent *Ktoon::createGraphic( const QDomElement &graphic_tag )
 		QString _x = point_tag.attribute( "X" );
 		QString _y = point_tag.attribute( "Y" );
 		QPoint *point = new QPoint( _x.toInt(), _y.toInt() );
-		points.append( point );
+		try {
+		    points.append( point );
+		    }
+		catch(...)
+		    {
+		    delete point;
+		    throw;
+		    }
 		n_point = n_point.nextSibling();
 	    }
 
@@ -1139,26 +1320,40 @@ GLGraphicComponent *Ktoon::createGraphic( const QDomElement &graphic_tag )
 		QString _x = bezier_tag.attribute( "X" );
 		QString _y = bezier_tag.attribute( "Y" );
 		QPoint *bezier = new QPoint( _x.toInt(), _y.toInt() );
-		beziers.append( bezier );
+		try {
+		    beziers.append( bezier );
+		    }
+		catch(...)
+		    {
+		    delete bezier;
+		    throw;
+		    }
 		n_bezier = n_bezier.nextSibling();
 	    }
 
-	    GLPen *pen = new GLPen( current_drawing_area, origin, *outline_color, *width, end );
-	    pen -> setFill( fi == "true" );
-	    pen -> setStipplePattern( p.toUInt() );
-	    pen -> setStippleFactor( fa.toUInt() );
-	    pen -> setZ( z.toInt() );
-	    pen -> setPoints( points );
-	    pen -> setBezier( beziers );
-	    pen -> setOrderPen( ord.toInt() );
-	    pen -> setStridePen( str.toInt() );
-	    pen -> setKnotsCount( knt.toInt() );
-	    pen -> setControlPointsPen( ctr.toInt() );
-	    pen -> calculateBottomRight();
-	    pen -> calculateTopLeft();
-	    pen -> setRotationAngle( ang.toFloat() );
-	    pen -> translateGraphic( xt.toInt(), yt.toInt() );
-
+	    GLPen *pen = new GLPen( current_drawing_area, origin, outline_color, width, end );
+	    try {
+	        pen -> setFill( fi == "true" );
+	        pen -> setStipplePattern( p.toUInt() );
+	        pen -> setStippleFactor( fa.toUInt() );
+	        pen -> setZ( z.toInt() );
+	        pen -> setPoints( points );
+	        pen -> setBezier( beziers );
+	        pen -> setOrderPen( ord.toInt() );
+	        pen -> setStridePen( str.toInt() );
+	        pen -> setKnotsCount( knt.toInt() );
+	        pen -> setControlPointsPen( ctr.toInt() );
+	        pen -> calculateBottomRight();
+	        pen -> calculateTopLeft();
+	        pen -> setRotationAngle( ang.toFloat() );
+	        pen -> translateGraphic( xt.toInt(), yt.toInt() );
+	        }
+	    catch(...)
+	        {
+	        delete pen;
+	        throw;
+	        }
+	    
 	    return pen;
 	    break;
 	}
@@ -1170,16 +1365,23 @@ GLGraphicComponent *Ktoon::createGraphic( const QDomElement &graphic_tag )
     	    QString ey = end_tag.attribute( "Y" );
     	    QPoint end = QPoint( ex.toInt(), ey.toInt() );
 
-	    GLLine *line = new GLLine( current_drawing_area, origin, *outline_color, *width, end );
-	    line -> setFill( fi == "true" );
-	    line -> setStipplePattern( p.toUInt() );
-	    line -> setStippleFactor( fa.toUInt() );
-	    line -> setZ( z.toInt() );
-	    line -> calculateBottomRight();
-	    line -> calculateTopLeft();
-	    line -> setRotationAngle( ang.toFloat() );
-	    line -> translateGraphic( xt.toInt(), yt.toInt() );
-
+	    GLLine *line = new GLLine( current_drawing_area, origin, outline_color, width, end );
+	    try {
+	        line -> setFill( fi == "true" );
+	        line -> setStipplePattern( p.toUInt() );
+	        line -> setStippleFactor( fa.toUInt() );
+	        line -> setZ( z.toInt() );
+	        line -> calculateBottomRight();
+	        line -> calculateTopLeft();
+	        line -> setRotationAngle( ang.toFloat() );
+	        line -> translateGraphic( xt.toInt(), yt.toInt() );
+	        }
+	    catch(...)
+	        {
+		  delete line;
+		  throw;
+		  }
+	    
 	    return line;
 	    break;
 	}
@@ -1200,19 +1402,27 @@ GLGraphicComponent *Ktoon::createGraphic( const QDomElement &graphic_tag )
     	    QString gf = fill_color_tag.attribute( "Green" );
     	    QString bf = fill_color_tag.attribute( "Blue" );
     	    QString af = fill_color_tag.attribute( "Alpha" );
-    	    Color *fill_color = new Color( rf.toFloat(), gf.toFloat(), bf.toFloat(), af.toFloat() );
-    	    fill_color -> setNameColor( nf );
+    	    
+	    Color fill_color = Color( rf.toFloat(), gf.toFloat(), bf.toFloat(), af.toFloat() );
+    	    fill_color.setNameColor( nf );
 
-	    GLRectangle *rectangle = new GLRectangle( current_drawing_area, origin, *outline_color, *width, end, *fill_color );
-	    rectangle -> setFill( fi == "true" );
-	    rectangle -> setStipplePattern( p.toUInt() );
-	    rectangle -> setStippleFactor( fa.toUInt() );
-	    rectangle -> setPerfectRectangle( pe == "true" );
-	    rectangle -> setZ( z.toInt() );
-	    rectangle -> calculateBottomRight();
-	    rectangle -> calculateTopLeft();
-	    rectangle -> setRotationAngle( ang.toFloat() );
-	    rectangle -> translateGraphic( xt.toInt(), yt.toInt() );
+	    GLRectangle *rectangle = new GLRectangle( current_drawing_area, origin, outline_color, width, end, fill_color );
+	    try {
+	        rectangle -> setFill( fi == "true" );
+	        rectangle -> setStipplePattern( p.toUInt() );
+	        rectangle -> setStippleFactor( fa.toUInt() );
+	        rectangle -> setPerfectRectangle( pe == "true" );
+	        rectangle -> setZ( z.toInt() );
+	        rectangle -> calculateBottomRight();
+	        rectangle -> calculateTopLeft();
+	        rectangle -> setRotationAngle( ang.toFloat() );
+	        rectangle -> translateGraphic( xt.toInt(), yt.toInt() );
+		  }
+	    catch(...)
+	        {
+		  delete rectangle;
+		  throw;
+		  }
 
 	    return rectangle;
 	    break;
@@ -1234,20 +1444,28 @@ GLGraphicComponent *Ktoon::createGraphic( const QDomElement &graphic_tag )
     	    QString gf = fill_color_tag.attribute( "Green" );
     	    QString bf = fill_color_tag.attribute( "Blue" );
     	    QString af = fill_color_tag.attribute( "Alpha" );
-    	    Color *fill_color = new Color( rf.toFloat(), gf.toFloat(), bf.toFloat(), af.toFloat() );
-    	    fill_color -> setNameColor( nf );
+    	    
+	    Color fill_color = Color( rf.toFloat(), gf.toFloat(), bf.toFloat(), af.toFloat() );
+    	    fill_color.setNameColor( nf );
 
-	    GLEllipse *ellipse = new GLEllipse( current_drawing_area, origin, *outline_color, *width, radius, *fill_color );
-	    ellipse -> setFill( fi == "true" );
-	    ellipse -> setStipplePattern( p.toUInt() );
-	    ellipse -> setStippleFactor( fa.toUInt() );
-	    ellipse -> setPerfectEllipse( pe == "true" );
-	    ellipse -> setZ( z.toInt() );
-	    ellipse -> calculateBottomRight();
-	    ellipse -> calculateTopLeft();
-	    ellipse -> setRotationAngle( ang.toFloat() );
-	    ellipse -> translateGraphic( xt.toInt(), yt.toInt() );
-
+	    GLEllipse *ellipse = new GLEllipse( current_drawing_area, origin, outline_color, width, radius, fill_color );
+	    try {
+	        ellipse -> setFill( fi == "true" );
+	        ellipse -> setStipplePattern( p.toUInt() );
+	        ellipse -> setStippleFactor( fa.toUInt() );
+	        ellipse -> setPerfectEllipse( pe == "true" );
+	        ellipse -> setZ( z.toInt() );
+	        ellipse -> calculateBottomRight();
+	        ellipse -> calculateTopLeft();
+	        ellipse -> setRotationAngle( ang.toFloat() );
+	        ellipse -> translateGraphic( xt.toInt(), yt.toInt() );
+	        }
+	    catch(...)
+	        {
+		  delete ellipse;
+		  throw;
+		  }
+	
 	    return ellipse;
 	    break;
 	}
@@ -1258,7 +1476,10 @@ GLGraphicComponent *Ktoon::createGraphic( const QDomElement &graphic_tag )
 
 Folder *Ktoon::createFolder( const QDomElement &tag )
 {
-    Folder *folder = new Folder();
+    
+    std::auto_ptr<Folder> ap_folder(new Folder);
+    Folder* folder = ap_folder.get();
+    
     folder -> setName( tag.attribute( "Name" ) );
     QDomElement items_tag = tag.firstChild().toElement();
     QPtrList<Item> items;
@@ -1269,11 +1490,18 @@ Folder *Ktoon::createFolder( const QDomElement &tag )
 	if ( item_tag.tagName() == "Symbol" )
 	{
 	    Symbol *symbol = new Symbol();
-	    QString s_n = item_tag.attribute( "Name" );
-	    symbol -> setName( s_n );
-	    QDomElement graphic_tag = item_tag.firstChild().toElement();
-	    symbol -> setGraphic( createGraphic( graphic_tag ) );
-	    items.append( symbol );
+	    try {
+	        QString s_n = item_tag.attribute( "Name" );
+	        symbol -> setName( s_n );
+	        QDomElement graphic_tag = item_tag.firstChild().toElement();
+	        symbol -> setGraphic( createGraphic( graphic_tag ) );
+	        items.append( symbol );
+	        }
+	    catch(...)
+	        {
+		  delete symbol;
+		  throw;
+		  } 
 	}
 	else if ( item_tag.tagName() == "Folder" )
 	{
@@ -1284,7 +1512,7 @@ Folder *Ktoon::createFolder( const QDomElement &tag )
     }
     folder -> setItems( items );
     Q_CHECK_PTR( folder );
-    return folder;
+    return ap_folder.release();
 }
 
 //---------- PUBLIC MEMBERS FOR EXPOSURE SHEET AND TIMELINE ----------------
@@ -1412,6 +1640,10 @@ void Ktoon::slotNewDocument()
     if ( closed )
     {
         file_name = "";
+	  
+	//VL: What happens with old document_? Is it deleted somewhere?	
+	//murakumo: Volker, it is deleted into slotCloseDrawingArea() that is called if it was accepted
+	//          the drawing area's close event (close == true)
     	document_ = new Document();
     	document_ -> setNameDocument( tr( "Document" ) + document_number );
 	setCaption( tr( "Document" ) + document_number );
@@ -1612,6 +1844,9 @@ void Ktoon::slotLoadDocument( const QString &in_file_name )
 
     //1. Document Tag
     QDomElement root = xml_doc.documentElement();
+    
+    //VL: old document_ ?
+    //murakumo: See the comment above (into slotNewDocument()).
     document_ = new Document();
     document_ -> setNameDocument( in_file_name );
 
@@ -1635,7 +1870,9 @@ void Ktoon::slotLoadDocument( const QString &in_file_name )
 
     //1.3. Animation Tag
     QDomElement animation_tag = library_path_tag.nextSibling().toElement();
-    Animation *animation = new Animation();
+    std::auto_ptr<Animation> ap_animation(new Animation);
+    Animation* animation = ap_animation.get();
+    
     QString fr = animation_tag.attribute( "FrameRate" );
     QString cw = animation_tag.attribute( "CameraWidth" );
     QString cl = animation_tag.attribute( "CameraLength" );
@@ -1652,7 +1889,10 @@ void Ktoon::slotLoadDocument( const QString &in_file_name )
         //1.3.1.(1..*). Scene Tag
 	QDomElement scene_tag = n_scene.toElement();
 	QString n = scene_tag.attribute( "Name" );
-	Scene *scene = new Scene();
+	
+	std::auto_ptr<Scene> ap_scene(new Scene);
+	Scene* scene = ap_scene.get();
+	
 	scene -> setNameScene( n );
 
 	//1.3.1.(1..*).1. Layers Tag
@@ -1661,11 +1901,17 @@ void Ktoon::slotLoadDocument( const QString &in_file_name )
 	QPtrList<Layer> layers;
 	while ( !n_layer.isNull() )
 	{
+	    Layer* layer = 0;
+	    KeyFrame* keyframe = 0;
+	    Camera* camera = 0;
+	    GLDrawing* drawing = 0;
+	    
+	    try {
 	    //1.3.1.(1..*).1.(1..*). Layer Tag
 	    QDomElement layer_tag = n_layer.toElement();
 	    QString id = layer_tag.attribute( "Id" );
 	    QString n = layer_tag.attribute( "Name" );
-	    Layer *layer = new Layer();
+	    layer = new Layer();
 	    layer -> setIndexLayer( id.toInt() );
 	    layer -> setNameLayer( n );
 
@@ -1681,7 +1927,9 @@ void Ktoon::slotLoadDocument( const QString &in_file_name )
 		QString o = keyframe_tag.attribute( "Offset" );
 		QString l = keyframe_tag.attribute( "Length" );
 		QString m = keyframe_tag.attribute( "Motion" );
-		KeyFrame *keyframe = new KeyFrame();
+		
+		keyframe = new KeyFrame();
+		
 		keyframe -> setNameKeyFrame( n );
 		keyframe -> setOffsetKeyFrame( o.toInt() );
 		keyframe -> setLengthKeyFrame( l.toInt() );
@@ -1689,7 +1937,7 @@ void Ktoon::slotLoadDocument( const QString &in_file_name )
 
 		//1.3.1.(1..*).1.(1..*).1.(1..*).1. Camera Tag
 		QDomElement camera_tag = keyframe_tag.firstChild().toElement();
-		Camera *camera = new Camera();
+		camera = new Camera();
 
 		//1.3.1.(1..*).1.(1..*).1.(1..*).1.1. Position Tag
 		QDomElement position_tag = camera_tag.firstChild().toElement();
@@ -1699,7 +1947,7 @@ void Ktoon::slotLoadDocument( const QString &in_file_name )
 		QString px = position_point_tag.attribute( "X" );
 		QString py = position_point_tag.attribute( "Y" );
 		QString pz = position_point_tag.attribute( "Z" );
-		Point3D *position_point = new Point3D( px.toInt(), py.toInt(), pz.toInt() );
+		Point3D position_point = Point3D( px.toInt(), py.toInt(), pz.toInt() );
 
 		//1.3.1.(1..*).1.(1..*).1.(1..*).1.2. Center Tag
 		QDomElement center_tag = position_tag.nextSibling().toElement();
@@ -1709,8 +1957,8 @@ void Ktoon::slotLoadDocument( const QString &in_file_name )
 		QString cx = center_point_tag.attribute( "X" );
 		QString cy = center_point_tag.attribute( "Y" );
 		QString cz = center_point_tag.attribute( "Z" );
-		Point3D *center_point = new Point3D( cx.toInt(), cy.toInt(), cz.toInt() );
-
+		Point3D center_point = Point3D( cx.toInt(), cy.toInt(), cz.toInt() );
+		
 		//1.3.1.(1..*).1.(1..*).1.(1..*).1.3. Up Tag
 		QDomElement up_tag = center_tag.nextSibling().toElement();
 
@@ -1719,15 +1967,16 @@ void Ktoon::slotLoadDocument( const QString &in_file_name )
 		QString ux = up_point_tag.attribute( "X" );
 		QString uy = up_point_tag.attribute( "Y" );
 		QString uz = up_point_tag.attribute( "Z" );
-		Point3D *up_point = new Point3D( ux.toInt(), uy.toInt(), uz.toInt() );
+		Point3D up_point = Point3D( ux.toInt(), uy.toInt(), uz.toInt() );
 
-		camera -> setPositionCamera( *position_point );
-		camera -> setCenterCamera( *center_point );
-		camera -> setUpCamera( *up_point );
+		camera -> setPositionCamera( position_point );
+		camera -> setCenterCamera( center_point );
+		camera -> setUpCamera( up_point );
 
 		//1.3.1.(1..*).1.(1..*).1.(1..*).2. Drawing Tag
 		QDomElement drawing_tag = camera_tag.nextSibling().toElement();
-		GLDrawing *drawing = new GLDrawing();
+		drawing = new GLDrawing();
+		
 		QDomNode n_graphic = drawing_tag.firstChild();
 		QPtrList<GLGraphicComponent> graphics;
 		while ( !n_graphic.isNull() )
@@ -1740,23 +1989,47 @@ void Ktoon::slotLoadDocument( const QString &in_file_name )
 		drawing -> setGraphicComponents( graphics );
 
 		keyframe -> setCamera( camera );
+		camera = 0;
+		
 		keyframe -> setDrawing( drawing );
+		drawing = 0;
 
 		keyframes.append( keyframe );
+		keyframe = 0;
+		
 		n_keyframe = n_keyframe.nextSibling();
-	    }
-	    layer -> setKeyFrames( keyframes );
+	     }
+	     layer -> setKeyFrames( keyframes );
 
-	    layers.append( layer );
+	     layers.append( layer );
+	    } // try
+	    catch(...)
+	        {
+		  delete layer;
+		  
+		  // keyframe, camera and drawing are zeroed out after 
+		  // ownership of them is took by another object, so it
+		  // is safe to call delete on all of them here.
+		  delete keyframe;
+		  delete camera ;
+		  delete drawing;
+		  
+		  throw;
+		  }
+	    
 	    n_layer = n_layer.nextSibling();
 	}
+	
+	
 	scene -> setLayers( layers );
 
 	scenes.append( scene );
+	ap_scene.release();
+	
 	n_scene = n_scene.nextSibling();
     }
     animation -> setScenes( scenes );
-    document_ -> setAnimation( animation );
+    document_ -> setAnimation( ap_animation.release() );
 
     //----------- Create the GUI -----------------
 
@@ -1851,12 +2124,14 @@ void Ktoon::slotUndo()
 {
     current_drawing_area -> slotUndo();
     statusBar() -> message( tr( "Last Action Undone" ), 2000 );
+    QMessageBox::information( this, tr( "Info" ), tr( "Undo" ) + " - " + tr( "Coming Soon..." ) );
 }
 
 void Ktoon::slotRedo()
 {
     current_drawing_area -> slotRedo();
     statusBar() -> message( tr( "Last Action Redone" ), 2000 );
+    QMessageBox::information( this, tr( "Info" ), tr( "Redo" ) + " - " + tr( "Coming Soon..." ) );
 }
 
 void Ktoon::slotCut()
@@ -2125,12 +2400,14 @@ void Ktoon::slotGroup()
 {
     current_drawing_area -> slotGroup();
     statusBar() -> message( tr( "Group Action" ), 2000 );
+    QMessageBox::information( this, tr( "Info" ), tr( "Group" ) + " - " + tr( "Coming Soon..." ) );
 }
 
 void Ktoon::slotUngroup()
 {
     current_drawing_area -> slotUngroup();
     statusBar() -> message( tr( "Ungroup Action" ), 2000 );
+    QMessageBox::information( this, tr( "Info" ), tr( "Ungroup" ) + " - " + tr( "Coming Soon..." ) );
 }
 
 void Ktoon::slotBringToFront()
@@ -2227,6 +2504,7 @@ void Ktoon::slotPerspectiveSelection()
 {
     current_drawing_area -> slotPerspectiveSelection();
     statusBar() -> message( tr( "Perspective Selection Action" ), 2000 );
+    QMessageBox::information( this, tr( "Info" ), tr( "Perspective" ) + " - " + tr( "Coming Soon..." ) );
 }
 
 void Ktoon::slotNormalSelection()
@@ -2824,7 +3102,13 @@ void Ktoon::slotWindowSideCameraView()
 
 void Ktoon::slotContents()
 {
-
+    QProcess proc( this );
+    
+    proc.addArgument( "mozilla" );
+    proc.addArgument( "http://ktoon.toonka.com/documentation/index.php?title=Manual_de_Referencia_de_KToon" );
+    
+    if ( !proc.start() )
+        QMessageBox::critical( this, tr( "Error" ), tr( "Could not load documentation" ) );
 }
 
 void Ktoon::slotAbout()
@@ -2871,7 +3155,7 @@ void Ktoon::slotAboutOpenGL()
     opengl_dialog -> show();
 }
 
-//*********************
+//********************* General Slots ********************
 
 void Ktoon::slotCloseDrawingArea()
 {
@@ -2932,6 +3216,7 @@ void Ktoon::slotCloseDrawingArea()
     window_top_camera_view -> hide();
     window_side_camera_view -> hide();
 
+    //murakumo: Here it is, Volker!
     delete document_;
     document_ = NULL;
 

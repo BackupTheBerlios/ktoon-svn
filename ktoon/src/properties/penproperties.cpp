@@ -128,8 +128,8 @@ PenProperties::~PenProperties()
 void PenProperties::loadFromGraphic( GLPen *pen )
 {
    Q_CHECK_PTR( pen );
-   value_origin_x -> setText( QString::number( pen -> originPoint().x() ) );
-   value_origin_y -> setText( QString::number( pen -> originPoint().y() ) );
+   value_origin_x -> setText( QString::number( pen -> originPoint().x() + pen -> translationX() ) );
+   value_origin_y -> setText( QString::number( pen -> originPoint().y() + pen -> translationY() ) );
    switch ( pen -> stipplePattern() )
      {
         case 0xFFFF:
@@ -168,7 +168,8 @@ void PenProperties::loadFromGraphic( GLPen *pen )
 void PenProperties::slotAccept()
 {
    GLPen *pen = ( GLPen * )drawing_area -> currentGraphic();
-   pen -> setOriginPoint( QPoint( ( value_origin_x -> text() ).toInt(), ( value_origin_y -> text() ).toInt() ) );
+   pen -> setOriginPoint( QPoint( ( value_origin_x -> text() ).toInt() - pen -> translationX(),
+   				  ( value_origin_y -> text() ).toInt() + pen -> translationY() ) );
    switch ( value_pattern -> currentItem() )
        {
    	  case 0:

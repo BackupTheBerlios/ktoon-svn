@@ -75,7 +75,7 @@ int Point3D::z() const
 
 QDomElement Point3D::createXML( QDomDocument &doc )
 {
-    QDomElement e = doc.createElement( QObject::tr( "Point" ) + QString( "3D" ) );
+    QDomElement e = doc.createElement( "Point3D" );
 
     e.setAttribute( "X", pos_x );
     e.setAttribute( "Y", pos_y );

@@ -1,4 +1,32 @@
 ------------------------------------------------------------------------
+r377 | fer | 2005-03-11 10:52:38 -0500 (Fri, 11 Mar 2005) | 1 line
+
+Added some documentation and refined the source code
+------------------------------------------------------------------------
+r376 | simena | 2005-03-11 10:27:15 -0500 (Fri, 11 Mar 2005) | 1 line
+
+Refined the source code
+------------------------------------------------------------------------
+r375 | simena | 2005-03-09 12:51:49 -0500 (Wed, 09 Mar 2005) | 1 line
+
+Implemented the selection operation for several graphic components
+------------------------------------------------------------------------
+r374 | fer | 2005-03-09 12:25:02 -0500 (Wed, 09 Mar 2005) | 1 line
+
+Added some user prevention message boxes
+------------------------------------------------------------------------
+r373 | fer | 2005-03-09 09:28:43 -0500 (Wed, 09 Mar 2005) | 1 line
+
+Added the files that will support the non accelerated render camera preview
+------------------------------------------------------------------------
+r372 | fer | 2005-03-09 04:25:49 -0500 (Wed, 09 Mar 2005) | 1 line
+
+Refined some tools and added support for others from the non accelerated mode
+------------------------------------------------------------------------
+r371 | fer | 2005-03-07 13:37:25 -0500 (Mon, 07 Mar 2005) | 1 line
+
+Improved the brush and pencil tool for the non accelerated mode
+------------------------------------------------------------------------
 r370 | simena | 2005-03-04 12:12:45 -0500 (Fri, 04 Mar 2005) | 1 line
 
 Updated the translations files

@@ -127,8 +127,8 @@ PencilProperties::~PencilProperties()
 void PencilProperties::loadFromGraphic( GLPencil *pencil )
 {
    Q_CHECK_PTR( pencil );
-   value_origin_x -> setText( QString::number( pencil -> originPoint().x() ) );
-   value_origin_y -> setText( QString::number( pencil -> originPoint().y() ) );
+   value_origin_x -> setText( QString::number( pencil -> originPoint().x() + pencil -> translationX() ) );
+   value_origin_y -> setText( QString::number( pencil -> originPoint().y() + pencil -> translationY() ) );
    switch ( pencil -> stipplePattern() )
      {
         case 0xFFFF:
@@ -167,7 +167,8 @@ void PencilProperties::loadFromGraphic( GLPencil *pencil )
 void PencilProperties::slotAccept()
 {
    GLPencil *pencil = ( GLPencil * )drawing_area -> currentGraphic();
-   pencil -> setOriginPoint( QPoint( ( value_origin_x -> text() ).toInt(), ( value_origin_y -> text() ).toInt() ) );
+   pencil -> setOriginPoint( QPoint( ( value_origin_x -> text() ).toInt() - pencil -> translationX(),
+   				     ( value_origin_y -> text() ).toInt() - pencil -> translationY() ) );
    switch ( value_pattern -> currentItem() )
        {
    	  case 0:

@@ -357,7 +357,6 @@ void GLPen::moveControlPen( int index, const QPoint & _end )
      throw;
      }
 
-// qDebug("Last (%d, %d) - Reflex (%d, %d), Aux1 (%d, %d) - Aux2 (%d, %d)",last_point -> x(), last_point -> y(), reflex_point -> x(), reflex_point -> y(), aux1 -> x(), aux1 -> y(), aux2 -> x(), aux2 -> y() );
  points.replace( index, aux1 );
  points.replace( index + 1, aux2 );
  buildList();

@@ -18,29 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DRAWING_AREA_QT
-#define DRAWING_AREA_QT
+#ifndef RENDER_CAMERA_PREVIEW_QT
+#define RENDER_CAMERA_PREVIEW_QT
 
 /*!
- * \file drawingareaqt.h
- * \brief Include this file if you need the class DrawingAreaQt
+ * \file rendercamerapreviewqt.h
+ * \brief Include this file if you need the class RenderCameraPreviewQt
  */
 
 #include <qcanvas.h>
 
-class QtGrid;
-class Ktoon;
-
 /*!
- * \brief Class that handles the dialog box with an area where it is possible to make illustrations (For non graphic accelerated machines)
+ * \brief Class that handles the dialog box that displays the render preview (For non graphic accelerated machines)
  *
- * <b>Date of Creation: Feb 28 - 2005.</b>\n
- * This is the most important widget of the illustration mode. Here, the user may create any type of drawing
- * with the help of the tools within the dialog boxes. It is equivalent to the class DrawingArea, except for
- * it is implemented by means of QCanvas instead of OpenGL. The reason is to provide a drawing area that
- * doesn't need to run into accelerated machines.
+ * <b>Date of Creation: Mar 9 - 2005.</b>\n
+ * Equivalent to GlRenderCameraPreview implemented by means of OpenGL.
  */
-class DrawingAreaQt : public QCanvasView
+class RenderCameraPreviewQt : public QCanvasView
 {
     Q_OBJECT
     
@@ -48,32 +42,22 @@ public:
     /*!
      * \brief Default Constructor
      *
-     * Constructs a DrawingAreaQt object
+     * Constructs a RenderCameraPreviewQt object
      * \param parent The parent widget
      * \param grandparent The grandparent widget
-     * \param name The document name
+     * \param share The canvas to be shared
      */
-    DrawingAreaQt( QWidget *parent, QWidget *grandparent, const QString &name );
+    RenderCameraPreviewQt( QWidget *parent, QWidget *grandparent, QCanvas *share );
     /*!
      * \brief Default Destructor
      *
-     * Destroys the DrawingAreaQt object
+     * Destroys the RenderCameraPreviewQt object
      */
-    ~DrawingAreaQt();
+    ~RenderCameraPreviewQt();
 
 private:
     QWidget *parent_widget, *grandparent_widget;
-    QCanvas *_canvas;
-    QtGrid *canvas_grid;
-    Ktoon *k_toon;
-    bool dragging;
-    QCanvasItem *current_graphic;
-    double max_z;
-    QPoint moving_start;
-    QCanvasRectangle *zoom_rectangle;
-    QCanvasRectangle *selection_rectangle;
-    bool drawing_pen, applying_bezier;
-
+    
 protected:
     /*!
      * \brief Event for widget mouse press control
@@ -103,13 +87,6 @@ protected:
      * \param mouse_event The input event
      */
     void contentsMouseDoubleClickEvent( QMouseEvent *mouse_event );
-    /*!
-     * \brief Event for dialog box resizing control
-     *
-     * Reimplemented from QWidget.
-     * \param resize_event The input event
-     */
-    void resizeEvent( QResizeEvent *resize_event );
     /*!
      * \brief Event for dialog box painting control
      *

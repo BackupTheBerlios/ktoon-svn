@@ -456,6 +456,14 @@ protected:
      */
     void drawSelected( QMouseEvent *mouse_event );
     /*!
+     * \brief Allows to select graphic components contained into two mouse events
+     *
+     * \overload
+     * \param mouse_press The input event of the mousePressEvent operation
+     * \param mouse_release The input event of the mouseReleaseEvent operation
+     */
+    void drawSelected( QPoint mouse_press, QPoint mouse_release );
+    /*!
      * \brief Draws previous Onion Skins into the DrawingArea, according to the current onion skin value
      */
     void drawOnionSkinsAndLightTable();
@@ -541,6 +549,14 @@ protected:
      * \brief Marks a selected graphic with arrows
      */
     void markSelected();
+    /*!
+     * \brief Marks a set of selected graphics with a rectangle
+     *
+     * \overload
+     * \param mouse_press The input event of the mousePressEvent operation
+     * \param mouse_release The input event of the mouseReleaseEvent operation
+     */
+    void markSelected( QPoint mouse_press, QPoint mouse_release );
     /*!
      * \brief Creates the matrix inverse related to the accummulated transformations into the OpenGL's projection matrix
      *

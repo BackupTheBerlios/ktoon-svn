@@ -1979,6 +1979,30 @@ Length: </source>
         <source>Shows information about OpenGL</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Coming Soon...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not load documentation</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Library</name>
@@ -2212,10 +2236,6 @@ some changes take effect</source>
     </message>
     <message>
         <source>Drawing </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Point</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

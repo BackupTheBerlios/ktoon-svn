@@ -129,8 +129,8 @@ void BrushProperties::loadFromGraphic( GLBrush *brush )
 {
    Q_CHECK_PTR( brush );
 
-   value_origin_x -> setText( QString::number( brush -> originPoint().x() ) );
-   value_origin_y -> setText( QString::number( brush -> originPoint().y() ) );
+   value_origin_x -> setText( QString::number( brush -> originPoint().x() + brush -> translationX() ) );
+   value_origin_y -> setText( QString::number( brush -> originPoint().y() + brush -> translationY() ) );
    switch ( brush -> stipplePattern() )
      {
         case 0xFFFF:
@@ -169,7 +169,8 @@ void BrushProperties::loadFromGraphic( GLBrush *brush )
 void BrushProperties::slotAccept()
 {
    GLBrush *brush = ( GLBrush * )drawing_area -> currentGraphic();
-   brush -> setOriginPoint( QPoint( ( value_origin_x -> text() ).toInt(), ( value_origin_y -> text() ).toInt() ) );
+   brush -> setOriginPoint( QPoint( ( value_origin_x -> text() ).toInt() - brush -> translationX(),
+   				    ( value_origin_y -> text() ).toInt() - brush -> translationY() ) );
    switch ( value_pattern -> currentItem() )
        {
    	  case 0:

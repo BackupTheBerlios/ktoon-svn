@@ -20,7 +20,6 @@
 
 #include <stdlib.h>
 #include <qimage.h>
-#include <qclipboard.h>
 #include <qapplication.h>
 #include <qcursor.h>
 #include <qpopupmenu.h>
@@ -229,6 +228,10 @@ void DrawingArea::paintGL()
             k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> setHasDrawing( false );
     }
     glEnable( GL_DEPTH_TEST );
+
+    if ( current_graphic == NULL )
+    	markSelected( newPosition(), oldPosition() );
+
 }
 
 //Mark the selected graphic
@@ -252,7 +255,7 @@ void DrawingArea::markSelected()
                 ( topLeft.y() + bottomRight.y() ) / 2, 0.0 );
 
   glRotatef( current_graphic -> rotationAngle(), 0.0, 0.0, 1.0 );
-  
+
   glTranslatef( ( -1 ) * ( topLeft.x() + bottomRight.x() ) / 2,
                 ( -1 ) * ( topLeft.y() + bottomRight.y() ) / 2, 0.0 );
 
@@ -302,6 +305,23 @@ void DrawingArea::markSelected()
 	 glPopName();
       glPopMatrix();
   glPopMatrix();
+}
+
+void DrawingArea::markSelected( QPoint mouse_press, QPoint mouse_release )
+{
+	glPushMatrix();
+	glEnable( GL_LINE_STIPPLE );
+	glLineStipple( 1, 0x0F0F );
+	glColor4f( 0.0, 0.0, 1.0, 1.0 );
+	glLineWidth( 1.0 );
+	glBegin( GL_LINE_LOOP );
+		glVertex2f( mouse_press.x(), mouse_press.y() );
+		glVertex2f( mouse_release.x(), mouse_press.y() );
+		glVertex2f( mouse_release.x(), mouse_release.y() );
+		glVertex2f( mouse_press.x(), mouse_release.y() );
+	glEnd();
+	glDisable( GL_LINE_STIPPLE );
+	glPopMatrix();
 }
 
 //Process the selection buffer
@@ -375,7 +395,7 @@ void DrawingArea::drawSelected( QMouseEvent *mouse_event )
         Q_CHECK_PTR( mouse_event );
 
 	GLint viewport[4];
-	GLdouble delta = 10.0;
+	GLdouble delta = 5.0;
 
 	selected_graphic = true;
 
@@ -401,6 +421,22 @@ void DrawingArea::drawSelected( QMouseEvent *mouse_event )
 	int nSeleccion = glRenderMode( GL_RENDER );
 
 	processHits ( nSeleccion, selectionBuffer );
+}
+
+void DrawingArea::drawSelected( QPoint mouse_press, QPoint mouse_release )
+{
+	GLGraphicComponent *graphic;
+	current_graphic_list.clear();
+	invertMatrix();
+        for ( graphic = graphic_list.first(); graphic; graphic = graphic_list.next() )
+            {
+	        bool included = graphic -> graphicIncluded( mapPointToMatrix( mouse_press ), mapPointToMatrix( mouse_release ) );
+		if ( included )
+		{
+		    current_graphic = NULL;
+		    current_graphic_list.append( graphic );
+		}
+	    }
 }
 
 //Draw the previous and next onion skin
@@ -720,6 +756,14 @@ void DrawingArea::mouseReleaseEvent( QMouseEvent *mouse_event )
 
      switch ( current_cursor )
 	{
+	 case Tools::NORMAL_SELECTION:
+		  if ( newPosition() != oldPosition() )
+	 	  	drawSelected( oldPosition(), newPosition() );
+		  else
+			drawSelected( mouse_event );
+		  //invertMatrix();
+		  bezier = false;
+                  break;
 	 case Tools::BRUSH:
 		     //( ( GLBrush * )( current_graphic ) ) -> smoothnessBrush( current_brush -> smoothnessBrush() );
                  break;
@@ -770,12 +814,19 @@ void DrawingArea::mouseMoveEvent( QMouseEvent *mouse_event )
     switch ( current_cursor )
 	{
 	 case Tools::NORMAL_SELECTION:
+	 	  {
 	          invertMatrix();
 		  mouse_event -> accept();
-		  setOldPosition ( newPosition() );
+		  QPoint old_pos;
+
+		  old_pos.setX( newPosition().x() );
+		  old_pos.setY( newPosition().y() );
+
 		  setNewPosition ( mouse_event -> pos() );
-		  current_graphic -> translateGraphic( mapPointToMatrix( newPosition() ), mapPointToMatrix( oldPosition() ) );
+		  //qDebug("(%d - %d)(%d - %d)", newPosition().x(), newPosition().y(), oldPosition().x(),oldPosition().y() );
+		  current_graphic -> translateGraphic( mapPointToMatrix( newPosition() ), mapPointToMatrix( old_pos ) );
 		  modifyDocument( true );
+		  }
 		  break;
 	 case Tools::CONTOUR_SELECTION:
 	          {
@@ -866,7 +917,7 @@ void DrawingArea::mouseMoveEvent( QMouseEvent *mouse_event )
 	{
 	 case Tools::NORMAL_SELECTION:
 		  mouse_event -> accept();
-		  setOldPosition ( newPosition() );
+		  //setOldPosition ( newPosition() );
 		  setNewPosition ( mouse_event -> pos() );
                   break;
 	 case Tools::CONTOUR_SELECTION:
@@ -960,7 +1011,7 @@ void DrawingArea::keyPressEvent( QKeyEvent *key_event )
         	current_graphic_list = k_toon -> currentStatus() -> currentKeyFrame() -> getDrawing() -> graphicComponents();
     	current_graphic = NULL;
     }
-    else
+    else if ( current_graphic != NULL )
     {
 	current_graphic_list.clear();
     	current_graphic_list.append( current_graphic );
@@ -2643,6 +2694,8 @@ void DrawingArea::slotSelectAll()
       {
    	  graphic_list.remove( current_graphic );
       	  addGraphicComponent( current_graphic, false );
+          current_graphic = NULL;
+	  selected_graphic = false;
       }
       current_graphic_list.clear();
       GLGraphicComponent *graphic;

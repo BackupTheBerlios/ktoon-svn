@@ -53,6 +53,8 @@
 #include "store/document.h"
 #include "modal/import.h"
 #include "modal/export.h"
+#include "drawqt/drawingareaqt.h"
+#include "drawqt/rendercamerapreviewqt.h"
 
 /*!
  * \brief Class that handles the main window with all its elements
@@ -1037,7 +1039,11 @@ private:
     Status *current_status;
 
     //Drawing Area
-    DrawingArea *current_drawing_area;
+    DrawingArea *current_drawing_area; //Implemented by means of OpenGL
+    
+    //Widgets for non accelerated mode
+    DrawingAreaQt *current_drawing_area_qt; //Implemented by means of QCanvas
+    RenderCameraPreviewQt *render_camera_preview_qt;
     
     //Some colors needed by Exposure Sheet and Timeline (They are created here for efficiency)
     QColor *es_default_color, *es_use_color, *es_selection_color, *es_select_and_use_color, 

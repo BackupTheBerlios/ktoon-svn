@@ -37,7 +37,8 @@ class QString;
  * \brief Class that handles the drawing area grid
  *
  * <b>Date of Creation: June 24 - 2004.</b>\n
- * This class contains information about the grid that is drawn into the drawing area.
+ * This class contains information about the grid that is drawn into the drawing area. The grids are created whit 1x1 dimension
+ * and scaled in the paintGL (drawingarea)
  */
 class GLGrid
 {

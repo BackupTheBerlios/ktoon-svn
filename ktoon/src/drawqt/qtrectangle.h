@@ -66,10 +66,36 @@ public:
      * \return 1004 (QtRectangle::RTTI)
      */
     virtual int rtti() const;
+    /*!
+     * \brief Gets whether this rectangle is selected or not
+     *
+     * \return <b>true</b> if this rectangle is selected. <b>false</b>, otherwise.
+     */
+    bool isSelected() const;
+    /*!
+     * \brief Sets the selection state of this rectangle
+     *
+     * \param select The new selection state
+     */
+    void setSelected( bool select );
     
 private:
+    bool selected;
 
 protected:
+    /*!
+     * \brief Draws the rectangle using a painter
+     *
+     * Reimplemented from QCanvasRectangle.
+     * \param painter The painter
+     */
+    virtual void drawShape( QPainter &painter );
+    /*!
+     * \brief Draws arrows bounding this object
+     *
+     * \param painter The painter
+     */
+    void drawSelectionArrows( QPainter &painter );
 
 };
 

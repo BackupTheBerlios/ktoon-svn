@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "../ktoon.h"
 #include "glgraphiccomponent.h"
 #include "glline.h"
 #include "glellipse.h"
@@ -25,10 +26,11 @@
 #include "glpen.h"
 #include "glpencil.h"
 #include "glbrush.h"
-#include "../ktoon.h"
+#include <math.h>
 #include <math.h>
 
-#define sqr(x) ((x)*(x))
+#define sqr( x ) ( ( x ) * ( x ) )
+
 GLuint GLGraphicComponent::selection_name = 1;
 
 //-------------- CONSTRUCTOR ---------------
@@ -161,19 +163,19 @@ void GLGraphicComponent::translateGraphic( const QPoint & _origin, const QPoint 
   		translate.setY( translate.y() + ( _origin.y() - _end.y() ) );
 	      break;
 	 case GC_LINE:
-	 	setOriginPoint( origin + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
+  		setOriginPoint( origin + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
 	 	( ( GLLine * ) ( this ) ) -> setEndLine( ( ( GLLine * ) ( this ) ) -> endLine() + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
 	      break;
 	 case GC_RECTANGLE:
-	 	setOriginPoint( origin + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
+  		setOriginPoint( origin + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
 	 	( ( GLRectangle * ) ( this ) ) -> setEndRectangle( ( ( GLRectangle * ) ( this ) ) -> endRectangle() + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
 	      break;
 	 case GC_ELLIPSE:
-	 	setOriginPoint( origin + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
+  		setOriginPoint( origin + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
 	 	( ( GLEllipse * ) ( this ) ) -> setRadiusEllipse( ( ( GLEllipse * ) ( this ) ) -> radiusEllipse() + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
 	      break;
 	 case GC_IMAGE:
-	 	setOriginPoint( origin + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
+  		setOriginPoint( origin + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
 	 	( ( GLImage * ) ( this ) ) -> setEndImage( ( ( GLImage * ) ( this ) ) -> endImage() + QPoint( ( _origin.x() - _end.x() ), ( _origin.y() - _end.y() ) ) );
 	      break;
 	 default:
@@ -318,6 +320,42 @@ bool GLGraphicComponent::verticalFlip()
   return vertical_flip;
 }
 
+bool GLGraphicComponent::graphicIncluded( QPoint mouse_press, QPoint mouse_release )
+{
+//Supongo que press es menor que release. Falta hacer la conersion de los valores, para que funcione siempre
+  QPoint aux;
+
+  mouse_press.x() < mouse_release.x() ? aux.setX( mouse_press.x() ) : aux.setX( mouse_release.x() );
+  mouse_press.y() < mouse_release.y() ? aux.setY( mouse_press.y() ) : aux.setY( mouse_release.y() );
+
+  mouse_press.x() > mouse_release.x() ? mouse_release.setX( mouse_press.x() ) : mouse_release.setX( mouse_release.x() );
+  mouse_press.y() > mouse_release.y() ? mouse_release.setY( mouse_press.y() ) : mouse_release.setY( mouse_release.y() );
+
+  mouse_press.setX( aux.x() );
+  mouse_press.setY( aux.y() );
+
+  this -> calculateTopLeft();
+  this -> calculateBottomRight();
+  QPoint topLeft = this -> topLeft();
+  QPoint bottomRight = this -> bottomRight();
+
+  if ( topLeft.x() + translate.x() >= mouse_press.x() && bottomRight.x() + translate.x() <= mouse_release.x() &&
+       topLeft.y() + translate.y() >= mouse_press.y() && bottomRight.y() + translate.y() <= mouse_release.y() )
+    return true;
+  else
+    return false;
+}
+
+int GLGraphicComponent::translationX()
+{
+    return translate.x();
+}
+
+int GLGraphicComponent::translationY()
+{
+    return translate.y();
+}
+
 GLuint GLGraphicComponent::selectionName() const
 {
     return local_selection_name;
@@ -346,6 +384,10 @@ void GLGraphicComponent::fillPressOption( const Color & fill_color )
 	 case GC_ELLIPSE:
 	      setFill( true );
 	      ( ( GLEllipse * ) ( this ) ) -> setFillColor( fill_color );
+	      break;
+	 case GC_IMAGE:
+	      setFill( true );
+	      ( ( GLImage * ) ( this ) ) -> setFillColor( fill_color );
 	      break;
 	 default:
 	      break;
@@ -507,7 +549,7 @@ void GLGraphicComponent::keyReleaseEvent( QKeyEvent * key_event )
 
 }
 
-void GLGraphicComponent::lineImpl( const QPoint & origin, const QPoint & end, int lw, int stippleFactor, const Color & outlineColor )
+void GLGraphicComponent::lineImpl( const QPoint & origin, const QPoint & end, int line_width, int stipple_factor, const Color & outline_color )
 {
 	GLfloat angulo, longitud;
 	GLfloat xi, yi, xf, yf;
@@ -516,56 +558,53 @@ void GLGraphicComponent::lineImpl( const QPoint & origin, const QPoint & end, in
 	xf = end.x();
 	yf = end.y();
 
-	longitud = sqrt(  sqr(xi-xf) + sqr(yi-yf ) );
-	angulo = atan2( yf-yi, xf-xi ) * 180.0 / M_PI;
+	longitud = sqrt(  sqr( xi - xf ) + sqr( yi - yf ) );
+	angulo = atan2( yf - yi, xf - xi ) * 180.0 / M_PI;
 
-	if( outlineColor.colorAlpha() == 255 )
+	if( outline_color.colorAlpha() == 255 )
 		glDisable( GL_BLEND );
 
 	glPushMatrix();
 
-	glTranslatef( (xi+xf)/2.0, (yi+yf)/2.0, 0.0 );
+	glTranslatef( ( xi + xf ) / 2.0, ( yi + yf ) / 2.0, 0.0 );
 	glRotatef( angulo, 0, 0, 1.0 );
 
 	GLfloat x1, y1, x2, y2;
 	x1 = -0.5 * longitud;
-	y1 = -0.5 * lw;
+	y1 = -0.5 * line_width;
 	x2 = 0.5 * longitud;
-	y2 = 0.5 * lw;
+	y2 = 0.5 * line_width;
 
 	glBegin( GL_QUADS );
 		glTexCoord1f( 0.0 );
-		glVertex2f(x1, y2);
-		glVertex2f(x1, y1);
-		glTexCoord1f( longitud / 16.0 / (GLfloat)stippleFactor );
-		glVertex2f(x2, y1);
-		glVertex2f(x2, y2);
+		glVertex2f( x1, y2 );
+		glVertex2f( x1, y1 );
+		glTexCoord1f( longitud / 16.0 / ( GLfloat )stipple_factor );
+		glVertex2f (x2, y1 );
+		glVertex2f( x2, y2 );
 	glEnd();
 
-	if( outlineColor.colorAlpha() == 255 ) {
+	if( outline_color.colorAlpha() == 255 )
 		glEnable( GL_BLEND );
-	}
-	else {
-		// se hacen unas lineas con antialiasing con un color mas transparente
-		glColor4f( outlineColor.colorRed(), outlineColor.colorGreen(),
-			outlineColor.colorBlue(), outlineColor.colorAlpha()/2.0 );
-	}
+	else 	//it is done antialiasing lines with a more transparent color
+		glColor4f( outline_color.colorRed(), outline_color.colorGreen(),
+			   outline_color.colorBlue(), outline_color.colorAlpha() / 2.0 );
 
 	glLineWidth(1.0);
 	glBegin( GL_LINE_LOOP );
 		glTexCoord1f( 0.0 );
-		glVertex2f(x1, y2);
-		glVertex2f(x1, y1);
-		glTexCoord1f( longitud / 16.0 / (GLfloat)stippleFactor );
-		glVertex2f(x2, y1);
-		glVertex2f(x2, y2);
+		glVertex2f( x1, y2 );
+		glVertex2f( x1, y1 );
+		glTexCoord1f( longitud / 16.0 / ( GLfloat )stipple_factor );
+		glVertex2f( x2, y1 );
+		glVertex2f( x2, y2 );
 	glEnd();
 
 	glPopMatrix();
 }
 
-// implementacion de linea, cuando el patron de stipple es 0xffff
-void GLGraphicComponent::lineImplFast( const QPoint & origin, const QPoint & end, int lw, const Color & outlineColor )
+// line implementation, when the stipple pattern is 0xFFFF
+void GLGraphicComponent::lineImplFast( const QPoint & origin, const QPoint & end, int line_width, const Color & outlineColor )
 {
 	GLfloat angulo, longitud;
 	GLfloat xi, yi, xf, yf;
@@ -582,32 +621,29 @@ void GLGraphicComponent::lineImplFast( const QPoint & origin, const QPoint & end
 
 	glPushMatrix();
 
-	glTranslatef( (xi+xf)/2.0, (yi+yf)/2.0, 0.0 );
+	glTranslatef( ( xi + xf ) / 2.0, ( yi + yf ) / 2.0, 0.0 );
 	glRotatef( angulo, 0, 0, 1.0 );
 
 	GLfloat x1, y1, x2, y2;
 	x1 = -0.5 * longitud;
-	y1 = -0.5 * lw;
+	y1 = -0.5 * line_width;
 	x2 = 0.5 * longitud;
-	y2 = 0.5 * lw;
+	y2 = 0.5 * line_width;
 
 	glRectf( x1, y1, x2, y2 );
 
-	if( outlineColor.colorAlpha() == 255 ) {
+	if( outlineColor.colorAlpha() == 255 )
 		glEnable( GL_BLEND );
-	}
-	else {
-		// se hacen unas lineas con antialiasing con un color mas transparente
+	else    //it is done antialiasing lines with a more transparent color
 		glColor4f( outlineColor.colorRed(), outlineColor.colorGreen(),
-			outlineColor.colorBlue(), outlineColor.colorAlpha()/2.0 );
-	}
+			   outlineColor.colorBlue(), outlineColor.colorAlpha()/2.0 );
 
-	glLineWidth(1.0);
+	glLineWidth( 1.0 );
 	glBegin( GL_LINE_LOOP );
-		glVertex2f(x1, y2);
-		glVertex2f(x1, y1);
-		glVertex2f(x2, y1);
-		glVertex2f(x2, y2);
+		glVertex2f( x1, y2 );
+		glVertex2f( x1, y1 );
+		glVertex2f( x2, y1 );
+		glVertex2f( x2, y2 );
 	glEnd();
 
 	glPopMatrix();

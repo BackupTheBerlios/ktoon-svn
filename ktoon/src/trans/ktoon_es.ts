@@ -1980,6 +1980,30 @@ Longitud:</translation>
         <source>There is not Document History</source>
         <translation>No hay Historial de Documentos</translation>
     </message>
+    <message>
+        <source>Info</source>
+        <translation>Información</translation>
+    </message>
+    <message>
+        <source>Coming Soon...</source>
+        <translation>Proximamente...</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation>Agrupar</translation>
+    </message>
+    <message>
+        <source>Ungroup</source>
+        <translation>Desagrupar</translation>
+    </message>
+    <message>
+        <source>Perspective</source>
+        <translation>Perspectiva</translation>
+    </message>
+    <message>
+        <source>Could not load documentation</source>
+        <translation>No se pudo cargar la documentación</translation>
+    </message>
 </context>
 <context>
     <name>Library</name>
@@ -2220,10 +2244,6 @@ de que algunos cambios se efectúen</translation>
     <message>
         <source>Loading Modules</source>
         <translation>Cargando Módulos</translation>
-    </message>
-    <message>
-        <source>Point</source>
-        <translation>Punto</translation>
     </message>
     <message>
         <source>Layer</source>

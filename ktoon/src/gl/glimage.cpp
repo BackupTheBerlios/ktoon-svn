@@ -61,18 +61,15 @@ void GLImage::buildList()
 		glBindTexture( GL_TEXTURE_2D, id_texture );
 		glColor4f( 0.0, 0.0, 0.0, 0.0 );
 
-		float h = end.y();
-		float w = end.x();
-
 		glBegin( GL_QUADS );
 			glTexCoord2f( 0, 1 );
 			glVertex2f( origin.x(), origin.y() );
 			glTexCoord2f( 1, 1 );
-			glVertex2f( w, origin.y() );
+			glVertex2f(  end.x(), origin.y() );
 			glTexCoord2f( 1, 0 );
-			glVertex2f( w, h );
+			glVertex2f(  end.x(), end.y() );
 			glTexCoord2f( 0, 0 );
-			glVertex2f( origin.x(), h );
+			glVertex2f( origin.x(), end.y() );
 		glEnd();
 		glDisable( GL_TEXTURE_2D );
 		glPopName();
@@ -83,6 +80,37 @@ void GLImage::setEndImage( const QPoint &_end )
 {
     end = _end;
     buildList();
+}
+
+void GLImage::setFillColor( const Color & _fill_color )
+{
+  fill_color = _fill_color;
+
+//	glPushName( GLGraphicComponent::selection_name++ );
+//	glDisable( GL_TEXTURE_2D );
+	glEnable( GL_POLYGON_OFFSET_FILL );
+	glPolygonOffset( 0, -2 );
+	glEnable( GL_BLEND );
+	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+	glBlendEquation( GL_FUNC_ADD );
+	glColor4f( fillColor().colorRed(), fillColor().colorGreen(),
+		   fillColor().colorBlue(), fillColor().colorAlpha() );
+	glBegin( GL_QUADS );
+		glTexCoord2f( 0, 1 );
+		glVertex2f( origin.x(), origin.y() );
+		glTexCoord2f( 1, 1 );
+		glVertex2f(  end.x(), origin.y() );
+		glTexCoord2f( 1, 0 );
+		glVertex2f(  end.x(), end.y() );
+		glTexCoord2f( 0, 0 );
+		glVertex2f( origin.x(), end.y() );
+	glEnd();
+//	glEnable( GL_TEXTURE_2D );
+	glDisable( GL_POLYGON_OFFSET_FILL );
+	glDisable( GL_BLEND );
+//	glPopName();
+
+  buildList();
 }
 
 void GLImage::calculateTopLeft()
@@ -133,6 +161,11 @@ QString GLImage::clipboardGraphic()
                 graphic.setNum( originPoint().y() ) + " " + graphic.setNum( endImage().x() ) + " " +
 	        graphic.setNum( endImage().y() ) );
     return graphic;
+}
+
+Color GLImage::fillColor() const
+{
+  return fill_color;
 }
 
 QDomElement GLImage::createXML( QDomDocument &doc )

@@ -183,15 +183,13 @@ void GLRenderCameraPreview::processHits( GLint hits, GLuint buffer[] )
     GLuint names, *ptr, aux = 0;
     unsigned long int z1, z2, z = ULONG_MAX;
     GLGraphicComponent *graphic;
-    //qDebug(" number of hits = %d", hits );
+
     ptr = ( GLuint * ) buffer;
     for ( i = 0; i < hits; i++ )
     {           // for each hit
         names = *ptr;
-        //qDebug(" number of names for hit = %d", names);
 	ptr++;
 	z1 = *ptr;
-        //qDebug(" z1 is %u;", *ptr);
 	ptr++;
 	z2 = *ptr;
 	if ( names > 0 )
@@ -208,15 +206,10 @@ void GLRenderCameraPreview::processHits( GLint hits, GLuint buffer[] )
 		}
 	}
 
-       //qDebug(" z is %u", *ptr);
 	ptr++;
-	//ptr += 3;
         for ( j = 0; j < ( int )names; j++)
-	{      // for each name
-              //qDebug( " the name is %d", *ptr );
 	      ptr++;
-        }
-    }
+     }
 
     current_graphic = NULL;
 
@@ -228,11 +221,9 @@ void GLRenderCameraPreview::processHits( GLint hits, GLuint buffer[] )
         graphic_list = kf_it -> getDrawing() -> graphicComponents();
         for ( graphic = graphic_list.first(); graphic; graphic = graphic_list.next() )
         {
-	    //qDebug(" graphics = %d", graphic -> selectionName() );
 	    if ( graphic -> selectionName() == aux )
 	    {
-	        //qDebug("entro el %d", graphic -> selectionName() );
-                current_graphic = graphic_list.at( graphic_list.at() );
+               current_graphic = graphic_list.at( graphic_list.at() );
 		//This a test, delete it later
 	        //current_graphic -> setOutlineColor( Color( 1.0, 0.0, 0.0, 1.0 ) );
 	        return;

@@ -68,8 +68,21 @@ public:
      * \return 1003 (QtEllipse::RTTI)
      */
     virtual int rtti() const;
+    /*!
+     * \brief Gets whether this ellipse is selected or not
+     *
+     * \return <b>true</b> if this ellipse is selected. <b>false</b>, otherwise.
+     */
+    bool isSelected() const;
+    /*!
+     * \brief Sets the selection state of this ellipse
+     *
+     * \param select The new selection state
+     */
+    void setSelected( bool select );
     
 private:
+    bool selected;
 
 protected:
     /*!
@@ -79,6 +92,12 @@ protected:
      * \param painter The painter
      */
     virtual void drawShape( QPainter &painter );
+    /*!
+     * \brief Draws arrows bounding this object
+     *
+     * \param painter The painter
+     */
+    void drawSelectionArrows( QPainter &painter );
 
 };
 

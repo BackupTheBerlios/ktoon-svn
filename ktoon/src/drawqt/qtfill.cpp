@@ -18,55 +18,27 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "qtellipse.h"
-
-#include <qpainter.h>
+#include "qtfill.h"
 
 //--------------- CONSTRUCTOR --------------
 
-QtEllipse::QtEllipse( QCanvas *canvas ) : QCanvasRectangle( canvas ), selected( false )
+QtFill::QtFill( QCanvas *canvas ) : QCanvasPolygon( canvas )
 {
 
 }
 
 //--------------- DESTRUCTOR ---------------
 
-QtEllipse::~QtEllipse()
+QtFill::~QtFill()
 {
     hide();
 }
 
 //--------------- PUBLIC MEMBERS --------------
 
-int QtEllipse::rtti() const
+int QtFill::rtti() const
 {
     return RTTI;
 }
 
-bool QtEllipse::isSelected() const
-{
-    return selected;
-}
-
-void QtEllipse::setSelected( bool select )
-{
-    selected = select;
-    update();
-}
-
 //-------------- EVENTS AND PROTECTED MEMBERS -------------
-
-void QtEllipse::drawShape( QPainter &painter )
-{
-    painter.setBrush( brush() );
-    painter.setPen( pen() );
-    painter.drawEllipse( ( int )x(), ( int )y(), width(), height() );
-    
-    if ( selected )
-        drawSelectionArrows( painter );
-}
-
-void QtEllipse::drawSelectionArrows( QPainter &painter )
-{
-    painter.setPen( QPen( QColor( 0, 0, 255 ), 2 ) );
-}

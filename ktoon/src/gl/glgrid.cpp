@@ -18,8 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#define QT_CLEAN_NAMESPACE
 #include <qgl.h>
 #include <qfont.h>
+#undef QT_CLEAN_NAMESPACE
 #include <GL/glx.h>
 
 #include "glgrid.h"

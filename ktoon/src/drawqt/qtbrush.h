@@ -27,10 +27,9 @@
  */
 
 #include <qcanvas.h>
-#include <qvaluelist.h>
 
 /*!
- * \brief Class that handles the pencil graphic component for the non accelerated implementation
+ * \brief Class that handles the brush graphic component for the non accelerated implementation
  *
  * <b>Date of Creation: Mar 4 - 2005.</b>\n
  * Equivalent to the GLBrush in the OpenGL implementation.
@@ -70,10 +69,24 @@ public:
     /*!
      * \brief Gets the points bounding this item
      *
-     * Reimplemented from QCanvasPolygonalItem
+     * Reimplemented from QCanvasPolygonalItem.s
      * \return A point array with the bounding points
      */
     virtual QPointArray areaPoints() const;
+    /*!
+     * \brief Maps a canvas coordinate point to local coordinates
+     *
+     * \param point The point to map
+     * \return A mapped point
+     */
+    QPoint mapToLocal( const QPoint &point ) const;
+    /*!
+     * \brief Gets whether this brush was hit or not within the specified point
+     *
+     * \param point The point
+     * \return <b>true</b> if this brush was hit, <b>false</b> otherwise.
+     */
+    virtual bool hit( const QPoint &point );
     /*!
      * \brief Appends a point to this brush
      *
@@ -88,11 +101,11 @@ protected:
     /*!
      * \brief Draws the brush using a painter
      *
-     * Reimplemented from QCanvasPolygon.
+     * Reimplemented from QCanvasPolygonalItem.
      * \param painter The painter
      */
     virtual void drawShape( QPainter &painter );
-
+     
 };
 
 #endif

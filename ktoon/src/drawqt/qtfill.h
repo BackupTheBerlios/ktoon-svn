@@ -18,55 +18,58 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "qtellipse.h"
+#ifndef QT_FILL
+#define QT_FILL
 
-#include <qpainter.h>
+/*!
+ * \file qtfill.h
+ * \brief Include this file if you need the class QtFill
+ */
 
-//--------------- CONSTRUCTOR --------------
+#include <qcanvas.h>
 
-QtEllipse::QtEllipse( QCanvas *canvas ) : QCanvasRectangle( canvas ), selected( false )
+/*!
+ * \brief Class that handles the fill graphic component for the non accelerated implementation
+ *
+ * <b>Date of Creation: Mar 7 - 2005.</b>\n
+ */
+class QtFill : public QCanvasPolygon
 {
 
-}
-
-//--------------- DESTRUCTOR ---------------
-
-QtEllipse::~QtEllipse()
-{
-    hide();
-}
-
-//--------------- PUBLIC MEMBERS --------------
-
-int QtEllipse::rtti() const
-{
-    return RTTI;
-}
-
-bool QtEllipse::isSelected() const
-{
-    return selected;
-}
-
-void QtEllipse::setSelected( bool select )
-{
-    selected = select;
-    update();
-}
-
-//-------------- EVENTS AND PROTECTED MEMBERS -------------
-
-void QtEllipse::drawShape( QPainter &painter )
-{
-    painter.setBrush( brush() );
-    painter.setPen( pen() );
-    painter.drawEllipse( ( int )x(), ( int )y(), width(), height() );
+public:
+    //! Constants for defining QtFill properties
+    enum QtFillProperties
+    {
+	RTTI = 1007, /*!< See QCanvasItem::rtti() */
+    };
     
-    if ( selected )
-        drawSelectionArrows( painter );
-}
+    /*!
+     * \brief Default Constructor
+     *
+     * Constructs a QtFill object
+     * \param canvas The Canvas where this item will be drawn
+     */
+    QtFill( QCanvas *canvas );
+    /*!
+     * \brief Default Destructor
+     *
+     * Destroys the QtFill object
+     */
+    ~QtFill();
 
-void QtEllipse::drawSelectionArrows( QPainter &painter )
-{
-    painter.setPen( QPen( QColor( 0, 0, 255 ), 2 ) );
-}
+    /*!
+     * \brief Gets the RTTI value (QtFill::RTTI)
+     *
+     * Reimplemented from QCanvasPolygon.
+     * \sa QCanvasItem::rtti()
+     * \return 1007 (QtFill::RTTI)
+     */
+    virtual int rtti() const;
+    
+private:
+
+protected:
+
+};
+
+#endif

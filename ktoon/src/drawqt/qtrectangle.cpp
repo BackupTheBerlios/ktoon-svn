@@ -20,9 +20,11 @@
 
 #include "qtrectangle.h"
 
+#include <qpainter.h>
+
 //--------------- CONSTRUCTOR --------------
 
-QtRectangle::QtRectangle( QCanvas *canvas ) : QCanvasRectangle( canvas )
+QtRectangle::QtRectangle( QCanvas *canvas ) : QCanvasRectangle( canvas ), selected( false )
 {
 
 }
@@ -41,4 +43,27 @@ int QtRectangle::rtti() const
     return RTTI;
 }
 
+bool QtRectangle::isSelected() const
+{
+    return selected;
+}
+
+void QtRectangle::setSelected( bool select )
+{
+    selected = select;
+    update();
+}
+
 //-------------- EVENTS AND PROTECTED MEMBERS -------------
+
+void QtRectangle::drawShape( QPainter &painter )
+{
+    QCanvasRectangle::drawShape( painter );
+    if ( selected )
+        drawSelectionArrows( painter );
+}
+
+void QtRectangle::drawSelectionArrows( QPainter &painter )
+{
+    painter.setPen( QPen( QColor( 0, 0, 255 ), 2 ) );
+}
