@@ -26,6 +26,7 @@
 #include "glpencil.h"
 #include "glbrush.h"
 #include "../ktoon.h"
+#include <math.h>
 
 #define sqr(x) ((x)*(x))
 GLuint GLGraphicComponent::selection_name = 1;
