@@ -29,8 +29,12 @@
 
 GLuint GLGraphicComponent::selection_name = 1;
 
+//-------------- CONSTRUCTOR ---------------
+
 GLGraphicComponent::GLGraphicComponent( QGLWidget *parent, const QPoint & _origin, const Color & _color, const Brush & _width ) : origin(_origin), color(_color), width(_width)
 {
+  Q_CHECK_PTR( parent );
+
   kind_graphic = -1;
   fill_graphic = true;
   horizontal_flip = false;
@@ -40,6 +44,8 @@ GLGraphicComponent::GLGraphicComponent( QGLWidget *parent, const QPoint & _origi
   parent_widget = parent;
 }
 
+//------------- DESTRUCTOR ------------------
+
 GLGraphicComponent::~GLGraphicComponent()
 {
    if( glIsList( id_graphic_component ) )
@@ -47,6 +53,8 @@ GLGraphicComponent::~GLGraphicComponent()
       glDeleteLists( id_graphic_component, 1 );
     }
 }
+
+//------------ PUBLIC MEMBERS ---------------
 
 GLuint GLGraphicComponent::idGraphicComponent() const
 {
@@ -93,15 +101,6 @@ void GLGraphicComponent::draw()
 	flipGraphic( ( topLeft().x() + bottomRight().x() ) / 2,
 		( topLeft().y() + bottomRight().y() ) / 2 );
 
-	/*		
-	rotateGraphic( ( topLeft().x() + ( bottomRight().x() - topLeft().x() ) / 2 ),
-			( topLeft().y() + ( bottomRight().y() - topLeft().y() ) / 2 ),
-			rotationAngle() );
-	
-	flipGraphic( ( topLeft().x() + ( bottomRight().x() - topLeft().x() ) / 2 ),
-		( topLeft().y() + ( bottomRight().y() - topLeft().y() ) / 2 ) );
-	*/
-	
 	glPushName( local_selection_name );
 	glCallList( idGraphicComponent() );
 	glPopName();
@@ -221,12 +220,12 @@ QPoint GLGraphicComponent::originPoint() const
  return origin;
 }
 
-Color GLGraphicComponent::outlineColor() const
+const Color & GLGraphicComponent::outlineColor() const
 {
  return color;
 }
 
-Brush GLGraphicComponent::widthPoint() const
+const Brush & GLGraphicComponent::widthPoint() const
 {
  return width;
 }
@@ -482,6 +481,7 @@ void GLGraphicComponent::keyReleaseEvent( QKeyEvent * key_event )
 
 QGLWidget *GLGraphicComponent::parentWidget() const
 {
+  Q_CHECK_PTR( parent_widget );
   return parent_widget;
 }
 

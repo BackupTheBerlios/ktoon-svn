@@ -73,7 +73,7 @@ private:
     //Textfields for insert the values of Frame Rate, Camera Width and Camera Height
     QLineEdit *value_frame_rate, *value_camera_size_width, *value_camera_size_height, *value_background_color,
     	      *value_grid_color, *value_ntsc_color;
-
+    
 public slots:
     /*!
      * \brief Opens a dialog box where the user may choose the drawing area's background color

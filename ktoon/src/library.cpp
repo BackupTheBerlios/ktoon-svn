@@ -34,6 +34,11 @@
 Library::Library( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QGLWidget *share, QToolButton *assig_tb_button )
     : QDialog( parent, "Scenes", false, style )
 {
+    Q_CHECK_PTR( parent );
+    Q_CHECK_PTR( in_assigned_menu );
+    Q_CHECK_PTR( share );
+    Q_CHECK_PTR( assig_tb_button );
+
     //Initializations
     setCaption( tr( "Graphic Library" ) );
     setFont( QFont( "helvetica", 8 ) );
@@ -115,13 +120,20 @@ Library::Library( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
 
 Library::~Library()
 {
-
+    delete text_number_of_items;
+    delete table_symbols;
+    delete add_symbol;
+    delete delete_symbol;
+    delete insert_into_drawing_area;
+    delete add_folder;
+    delete symbol_view;
 }
 
 //------------- PUBLIC MEMBERS --------------
 
 void Library::addSymbol( GLGraphicComponent *graphic, const QString &name )
 {
+    Q_CHECK_PTR( graphic );
     number_of_items++;
     text_number_of_items -> setText( QString( "# " ) + tr( "items" ) + QString( ": " ) + QString::number( number_of_items ) );
 
@@ -191,6 +203,7 @@ void Library::addSymbol( GLGraphicComponent *graphic, const QString &name )
 
 SymbolView *Library::getSymbolView() const
 {
+    Q_CHECK_PTR( symbol_view );
     return symbol_view;
 }
 
@@ -353,6 +366,7 @@ void Library::slotAddFolder()
 
 void Library::slotStartRename( QListViewItem *to_rename, const QPoint &point, int col )
 {
+    Q_CHECK_PTR( to_rename );
     if ( to_rename && table_symbols -> mapFromGlobal( point ).x() > 23 )
     {
         to_rename -> setRenameEnabled( col, true );
@@ -392,6 +406,7 @@ void Library::slotUpdateLibraryData()
 
 void Library::closeEvent( QCloseEvent *close_event )
 {
+    Q_CHECK_PTR( close_event );
     assigned_menu -> setItemChecked( assigned_item, false );
     assigned_tb_button -> setDown( false );
     close_event -> accept();
@@ -412,6 +427,7 @@ void Library::updateNumberOfItems()
 
 Folder *Library::createFolder( SymbolItem *item )
 {
+    Q_CHECK_PTR( item );
     Folder *folder = new Folder();
     folder -> setName( item -> text( 0 ) );
     QPtrList<Item> its;
@@ -440,6 +456,8 @@ Folder *Library::createFolder( SymbolItem *item )
 
 void Library::createSubItems( SymbolItem *symbol_item, Folder *folder )
 {
+    Q_CHECK_PTR( symbol_item );
+    Q_CHECK_PTR( folder );
     QPtrList<Item> sub_items = folder -> getItems();
 
     Item *item_iterator;
@@ -465,6 +483,7 @@ void Library::createSubItems( SymbolItem *symbol_item, Folder *folder )
 
 void Library::keyPressEvent( QKeyEvent *key_event )
 {
+    Q_CHECK_PTR( key_event );
     switch( key_event -> key() )
     {
 	case Qt::Key_Delete: slotDeleteSymbol();

@@ -30,6 +30,8 @@
 #include <qpainter.h>
 #include <qpopupmenu.h>
 
+class Ktoon;
+
 /*!
  * \brief Class that handles the timeline frames
  *
@@ -226,8 +228,6 @@ public:
 private:
     QWidget *parent_widget;
     QPainter p;
-    QColor default_color, special_color, selection_color, offset_color, drag_offset_color, border_color,
-           use_border_color, motion_color, drawing_color;
     QPopupMenu *right_click_menu;
     bool is_special;
     bool is_selected;
@@ -239,6 +239,8 @@ private:
     bool is_unknown_motion;
     bool is_motion;
     bool has_drawing;
+    
+    Ktoon *k_toon;
 
 signals:
     /*!

@@ -27,6 +27,8 @@
 TLLayerSequence::TLLayerSequence( QWidget *parent )
     : QScrollView( parent )
 {
+    Q_CHECK_PTR( parent );
+    
     //Initializations
     enableClipper( true );
     setHScrollBarMode( QScrollView::AlwaysOff );
@@ -73,11 +75,13 @@ QPtrList<TLLayer> TLLayerSequence::listOfLayers()
 
 TLLayer *TLLayerSequence::currentLayer()
 {
+    Q_CHECK_PTR( current_layer );
     return current_layer;
 }
 
 TLLayer *TLLayerSequence::lastLayer()
 {
+    Q_CHECK_PTR( last_layer );
     return last_layer;
 }
 
@@ -233,6 +237,8 @@ void TLLayerSequence::slotChangeVisibilityState( bool state )
 
 void TLLayerSequence::slotSelectLayerFromFrameSelected( TLFrameSequence *fs )
 {
+    Q_CHECK_PTR( fs );
+    
     //Find the layer at the position of the frame sequence
     TLLayer *layer_iterator, *layer_to_select;
 
@@ -434,6 +440,7 @@ void TLLayerSequence::slotReleaseLayerBelow( int y )
 
 void TLLayerSequence::resizeEvent( QResizeEvent *resize_event )
 {
+    Q_CHECK_PTR( resize_event );
     QSize new_size = resize_event -> size();
 
     QScrollView::resizeEvent( resize_event );

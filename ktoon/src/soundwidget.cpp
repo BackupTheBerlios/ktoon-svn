@@ -28,6 +28,7 @@
 
 SoundWidget::SoundWidget( QWidget *parent ) : QGridView( parent )
 {
+    Q_CHECK_PTR( parent );
     parent_widget = parent;
     resize( 3000, 25 );
     setCellWidth( 10 );
@@ -87,11 +88,13 @@ void SoundWidget::slotChangeDragOffset( int current_offset )
 
 void SoundWidget::mousePressEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     mouse_event -> accept();
 }
 
 void SoundWidget::paintCell( QPainter *painter, int, int col )
 {
+    Q_CHECK_PTR( painter );
     painter -> setPen( border_color );
     if ( ( col + 1 ) % 5 == 0 )
         painter -> setBrush( special_color );

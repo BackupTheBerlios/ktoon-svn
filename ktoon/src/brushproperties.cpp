@@ -25,6 +25,8 @@
 
 BrushProperties::BrushProperties( QWidget *parent ) : QDialog( parent, "Brush Properties", true )
 {
+    Q_CHECK_PTR( parent );
+
     //Initializations
     setCaption( tr( "Brush Properties" ) );
     setFont( QFont( "helvetica", 10 ) );
@@ -105,13 +107,27 @@ BrushProperties::BrushProperties( QWidget *parent ) : QDialog( parent, "Brush Pr
 
 BrushProperties::~BrushProperties()
 {
-
+    delete accept;
+    delete cancel;
+    delete text_origin;
+    delete text_origin_x;
+    delete text_origin_y;
+    delete text_pattern;
+    delete text_factor;
+    delete text_angle;
+    delete value_origin_x;
+    delete value_origin_y;
+    delete value_factor;
+    delete value_angle;
+    delete value_pattern;
 }
 
 //-------------- PUBLIC MEMBERS ----------------
 
 void BrushProperties::loadFromGraphic( GLBrush *brush )
 {
+   Q_CHECK_PTR( brush );
+
    value_origin_x -> setText( QString::number( brush -> originPoint().x() ) );
    value_origin_y -> setText( QString::number( brush -> originPoint().y() ) );
    switch ( brush -> stipplePattern() )

@@ -23,10 +23,14 @@
 #include "item.h"
 #include "librarydata.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 LibraryData::LibraryData()
 {
 
 }
+
+//------------- DESTRUCTOR ------------------
 
 LibraryData::~LibraryData()
 {
@@ -34,6 +38,8 @@ LibraryData::~LibraryData()
     items.clear();
     items.setAutoDelete( false );
 }
+
+//------------ PUBLIC MEMBERS ---------------
 
 void LibraryData::setItems( QPtrList<Item> new_items )
 {

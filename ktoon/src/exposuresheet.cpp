@@ -34,6 +34,10 @@
 ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
     : QDialog( parent, "Exposure Sheet", false, style )
 {
+    Q_CHECK_PTR( parent );
+    Q_CHECK_PTR( in_assigned_menu );
+    Q_CHECK_PTR( assig_tb_button );
+
     //Initializations
     setCaption( tr( "Exposure Sheet" ) );
     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
@@ -213,13 +217,24 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
 
 ExposureSheet::~ExposureSheet()
 {
-
+    delete insert_layer;
+    delete remove_layer;
+    delete lock_frame;
+    delete insert_frame;
+    delete remove_frame;
+    delete move_frame_up;
+    delete move_frame_down;
+    delete layer_visibility;
+    delete visibility_list;
+    delete scroll_area;
+    delete scroll_area_container;
 }
 
 //------------- PUBLIC MEMBERS ------------------------
 
 ESLayer *ExposureSheet::currentLayer()
 {
+    Q_CHECK_PTR( current_layer );
     return current_layer;
 }
 
@@ -1275,6 +1290,7 @@ void ExposureSheet::slotPasteFrame()
 
 void ExposureSheet::updateIndicators( ILayer *layer )
 {
+    Q_CHECK_PTR( layer );
     QPtrList<ESFrame> list_of_esframes;
     layer -> availableFrames( &list_of_esframes );
     QPtrList<KeyFrame> list_of_keyframes = ( k_toon -> currentStatus() -> currentScene() -> getLayers() ).at( list_of_layers.find( layer ) ) -> keyFrames();
@@ -1298,6 +1314,8 @@ void ExposureSheet::updateIndicators( ILayer *layer )
 
 void ExposureSheet::closeEvent( QCloseEvent* close_event )
 {
+    Q_CHECK_PTR( close_event );
+
     assigned_menu -> setItemChecked( assigned_item, false );
     assigned_tb_button -> setDown( false );
     close_event -> accept();
@@ -1305,6 +1323,8 @@ void ExposureSheet::closeEvent( QCloseEvent* close_event )
 
 void ExposureSheet::resizeEvent( QResizeEvent *resize_event )
 {
+    Q_CHECK_PTR( resize_event );
+
     //Update the size of the scroll area in order to fit into the dialog box
     QSize new_size = resize_event -> size();
     new_size.setWidth( new_size.width() - 10 );
@@ -1314,6 +1334,8 @@ void ExposureSheet::resizeEvent( QResizeEvent *resize_event )
 
 void ExposureSheet::keyPressEvent( QKeyEvent *key_event )
 {
+    Q_CHECK_PTR( key_event );
+
     switch( key_event -> key() )
     {
 	case Qt::Key_F6: slotInsertFrame();
@@ -1353,6 +1375,7 @@ void ExposureSheet::keyPressEvent( QKeyEvent *key_event )
 
 ILayer *ExposureSheet::associatedLayer( ESFrame *f )
 {
+    Q_CHECK_PTR( f );
     ILayer *layer_iterator;
     for ( layer_iterator = list_of_layers.first(); layer_iterator; layer_iterator = list_of_layers.next() )
     {
@@ -1381,6 +1404,7 @@ ILayer *ExposureSheet::findCurrentLayerObj()
 	      current_layer_obj = layer_iterator;
     }
 
+    Q_CHECK_PTR( current_layer_obj );
     return current_layer_obj;
 }
 

@@ -28,6 +28,8 @@
 
 Properties::Properties( QWidget *parent ) : QDialog( parent, "Animation Properties", true )
 {
+    Q_CHECK_PTR( parent );
+    
     //Initializations
     setCaption( tr( "Animation Properties" ) );
     setFont( QFont( "helvetica", 10 ) );
@@ -134,7 +136,22 @@ Properties::Properties( QWidget *parent ) : QDialog( parent, "Animation Properti
 
 Properties::~Properties()
 {
-
+    delete accept;
+    delete cancel;
+    delete background_color;
+    delete grid_color;
+    delete ntsc_color;
+    delete text_frame_rate;
+    delete text_camera_size;
+    delete text_background_color;
+    delete text_grid_color;
+    delete text_ntsc_color;
+    delete value_frame_rate;
+    delete value_camera_size_width;
+    delete value_camera_size_height;
+    delete value_background_color;
+    delete value_grid_color;
+    delete value_ntsc_color;
 }
 
 //------------------- SLOTS -------------------------
@@ -218,6 +235,9 @@ void Properties::slotAccept()
     k_toon -> currentStatus() -> setCurrentBackgroundColor( c_background );
     k_toon -> currentStatus() -> setCurrentGridColor( c_grid );
     k_toon -> currentStatus() -> setCurrentNTSCColor( c_ntsc );
+    
+    k_toon -> drawingArea() -> slotSetGridColor();
+    k_toon -> drawingArea() -> slotSetNTSCColor();
 
     close( true );
 }

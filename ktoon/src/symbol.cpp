@@ -24,24 +24,32 @@
 #include "symbol.h"
 #include "glgraphiccomponent.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 Symbol::Symbol() : Item()
 {
     graphic = NULL;
     item_kind = ITEM_SYMBOL;
 }
 
+//------------- DESTRUCTOR ------------------
+
 Symbol::~Symbol()
 {
 
 }
 
+//------------ PUBLIC MEMBERS ---------------
+
 void Symbol::setGraphic( GLGraphicComponent *graphic_ )
 {
+    Q_CHECK_PTR( graphic_ );
     graphic = graphic_;
 }
 
 GLGraphicComponent *Symbol::getGraphic() const
 {
+    Q_CHECK_PTR( graphic );
     return graphic;
 }
 

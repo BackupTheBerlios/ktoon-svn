@@ -20,18 +20,25 @@
 
  #include "glbitmap.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 GLBitmap::GLBitmap( QGLWidget *parent, const QPoint &  _origin, const Color & _color, const Brush & _width, const QPoint & _end ) : GLGraphicComponent( parent, _origin, _color, _width ), end( _end )
 {
+	 Q_CHECK_PTR( parent );
 	 setKindGraphic( GC_BITMAP );
          id_graphic_component = glGenLists(1);
          buildList();
 }
+
+//------------- DESTRUCTOR ------------------
 
 GLBitmap::~GLBitmap( )
 {
 
 }
  
+//------------ PUBLIC MEMBERS ---------------
+
 void GLBitmap::buildList( )
 {
 	 glNewList( id_graphic_component, GL_COMPILE );

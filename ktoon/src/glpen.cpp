@@ -23,8 +23,12 @@
 
 #include "glpen.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 GLPen::GLPen( QGLWidget *parent, const QPoint & _origin, const Color & _color, const Brush & _width, const QPoint & _end ) : GLGraphicComponent( parent, _origin, _color, _width ), end( _end )
 {
+   	Q_CHECK_PTR( parent );
+
 	setKindGraphic( GC_PEN );
         id_graphic_component = glGenLists( 1 );
 	order_pen = 3;
@@ -72,10 +76,14 @@ GLPen::GLPen( const GLPen & pen ) : GLGraphicComponent( pen.parentWidget(), pen.
          buildList();
 }
 
+//------------- DESTRUCTOR ------------------
+
 GLPen::~GLPen( )
 {
 
 }
+
+//------------ PUBLIC MEMBERS ---------------
 
 //implementation of the virtual method buildList to Bezier curve
 void GLPen::buildList( )
@@ -147,22 +155,7 @@ void GLPen::buildList( )
 	      for ( point = points.first(); point; point = points.next() )
      		  glVertex2f( point -> x(), point -> y() ) ;
    	   glEnd();
-/*
-   	glBegin( GL_POINTS )
-   	  glPointSize( 5.0 );
-	  glColor3f( 0.0, 0.0, 1.0 );
-      	  for ( int i = 0; i < points.count()-1; i++ )
-	    {
-	         glColor3f( 0.0, 0.0, 1.0 );
-        	 glVertex2f( ctrlpoints[ i * 2 ], ctrlpoints[ ( i * 2 ) + 1 ] );
-		 glColor3f( 1.0, 0.0, 0.0 );
-        	 glVertex2f( ctrlpoints[ ( i + 1 ) * 2 ], ctrlpoints[ ( ( i + 1 ) * 2 ) + 1 ] );
-		 //qDebug("controlpoint+ %f. %f, control (%d) = kn (%d) - ord (%d) ",ctrlpoints[ i * 2 ], ctrlpoints[ ( i * 2 ) + 1 ], points.count(), knotsCount(), orderPen());
-  		 //qDebug("controlpoint- %f. %f, %d",ctrlpoints[ ( i + 1 ) * 2 ], ctrlpoints[ ( ( i + 1 ) * 2 ) + 1 ], points.count());
-	    }
-	    //qDebug("---------");
-   	glEnd();
-*/
+
 	   glDisable( GL_LINE_STIPPLE );
    	   glPopMatrix();
         glEndList();

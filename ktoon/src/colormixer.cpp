@@ -24,6 +24,8 @@
 
 ColorMixer::ColorMixer( QWidget *parent ) : QGridView( parent )
 {
+    Q_CHECK_PTR( parent );
+
     parent_widget = parent;
     resize( 94, 89 );
     setCellWidth( 1 );
@@ -97,6 +99,8 @@ void ColorMixer::updateCross( int sat, int hue )
 
 void ColorMixer::mousePressEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
+
     int row_clicked, col_clicked;
     row_clicked = mouse_event -> y();
     col_clicked = mouse_event -> x();
@@ -116,6 +120,8 @@ void ColorMixer::mousePressEvent( QMouseEvent *mouse_event )
 
 void ColorMixer::mouseMoveEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
+
     int row_dragged, col_dragged;
     row_dragged = mouse_event -> y();
     col_dragged = mouse_event -> x();
@@ -137,12 +143,16 @@ void ColorMixer::mouseMoveEvent( QMouseEvent *mouse_event )
 
 void ColorMixer::mouseReleaseEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
+
     dragging = false;
     mouse_event -> accept();
 }
 
 void ColorMixer::paintCell( QPainter *painter, int row, int col )
 {
+    Q_CHECK_PTR( painter );
+
     painter -> setPen( color_matrix[row][col] );
     painter -> drawPoint( 0, 0 );
 

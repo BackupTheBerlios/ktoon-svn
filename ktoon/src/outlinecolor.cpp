@@ -25,6 +25,7 @@
 
 OutlineColor::OutlineColor( QWidget *parent ) : QFrame( parent )
 {
+    Q_CHECK_PTR( parent );
     resize( 47, 30 );
     parent_widget = parent;
     icon = QPixmap( written_pic_xpm );
@@ -39,7 +40,7 @@ OutlineColor::OutlineColor( QWidget *parent ) : QFrame( parent )
 
 //--------------- DESTRUCTOR -------------------
 
-OutlineColor::~ OutlineColor()
+OutlineColor::~OutlineColor()
 {
 
 }
@@ -95,6 +96,7 @@ void OutlineColor::slotChangeAlpha( int new_alpha )
 
 void OutlineColor::drawContents( QPainter *painter )
 {
+    Q_CHECK_PTR( painter );
     QColor intermediate_dark_color, intermediate_light_color;
     intermediate_dark_color = QColor( ( int )( current_color.red() * alpha / 100 + dark_color.red() * ( ( 100 - alpha ) / 100 ) ),
     				      ( int )( current_color.green() * alpha / 100 + dark_color.green() * ( ( 100 - alpha ) / 100 ) ),
@@ -130,6 +132,7 @@ void OutlineColor::drawContents( QPainter *painter )
 
 void OutlineColor::mousePressEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     setActive( true );
     emit activated();
     mouse_event -> accept();

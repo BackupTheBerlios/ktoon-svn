@@ -23,7 +23,7 @@
     </message>
     <message>
         <source>Couldn&apos;t load the credits animation png - </source>
-        <translation>No se pudo cargar el png de la animación de Créditos -</translation>
+        <translation type="obsolete">No se pudo cargar el png de la animación de Créditos -</translation>
     </message>
     <message>
         <source>Couldn&apos;t load the acknowledgements animation png - </source>
@@ -445,6 +445,10 @@
         <source>Could not save the file: %1</source>
         <translation>No se pudo guardar el archivo: %1</translation>
     </message>
+    <message>
+        <source>SWF (Macromedia Flash)</source>
+        <translation>SWF(Macromedia Flash)</translation>
+    </message>
 </context>
 <context>
     <name>ExposureSheet</name>
@@ -526,6 +530,33 @@ Longitud:</translation>
     <message>
         <source>Top Camera View</source>
         <translation>Cámara de Vista Superior</translation>
+    </message>
+</context>
+<context>
+    <name>ImageProperties</name>
+    <message>
+        <source>Image Properties</source>
+        <translation>Propiedades de la Imagen</translation>
+    </message>
+    <message>
+        <source>Origin Point</source>
+        <translation>Punto de Origen</translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation>Tamaño</translation>
+    </message>
+    <message>
+        <source>Rotation Angle</source>
+        <translation>Ángulo de Rotación</translation>
+    </message>
+    <message>
+        <source>Accept</source>
+        <translation>Aceptar</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>
@@ -1921,6 +1952,22 @@ Longitud:</translation>
         <source>Sends the grid to the front or to the back of the drawing area</source>
         <translation>Envía la grilla al frente o a la parte posterior del área de trabajo</translation>
     </message>
+    <message>
+        <source>empty</source>
+        <translation>vacio</translation>
+    </message>
+    <message>
+        <source>Open Recent</source>
+        <translation>Abrir Trabajos Recientes</translation>
+    </message>
+    <message>
+        <source>Could not load the file - It might be moved or deleted - %1</source>
+        <translation>No se pudo cargar el archivo - El archivo pudo haber sido movido o borrado - %1</translation>
+    </message>
+    <message>
+        <source>Opens</source>
+        <translation>Abrir</translation>
+    </message>
 </context>
 <context>
     <name>Library</name>
@@ -2134,6 +2181,10 @@ de que algunos cambios se efectúen</translation>
     <message>
         <source>Grid Color:</source>
         <translation>Color de Grilla:</translation>
+    </message>
+    <message>
+        <source>NTSC Zone Color:</source>
+        <translation>Color de Zona NTSC:</translation>
     </message>
 </context>
 <context>

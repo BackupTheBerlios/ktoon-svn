@@ -25,6 +25,7 @@
 ValueSelector::ValueSelector( QWidget *parent ) : QWidget( parent ), QRangeControl( 0, 255, 1, 15, 0 )
 {
     resize( 22, 95 );
+    Q_CHECK_PTR( parent );
     parent_widget = parent;
     dragging = false;
     highlight = QColor( 255, 255, 255 );
@@ -51,6 +52,7 @@ void ValueSelector::setColor( const QColor &new_color )
 
 void ValueSelector::slotSetValue( int new_value )
 {
+    Q_ASSERT( new_value >= 0 && new_value <= 255 );
     setValue( new_value );
     update();
 }
@@ -59,6 +61,7 @@ void ValueSelector::slotSetValue( int new_value )
 
 void ValueSelector::mousePressEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     if ( mouse_event -> y() > 91 || mouse_event -> y() < 0 )
     {
 	mouse_event -> ignore();
@@ -75,6 +78,7 @@ void ValueSelector::mousePressEvent( QMouseEvent *mouse_event )
 
 void ValueSelector::mouseMoveEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     if ( mouse_event -> y() > 91 || mouse_event -> y() < 0 )
     {
 	mouse_event -> ignore();
@@ -99,6 +103,7 @@ void ValueSelector::mouseReleaseEvent( QMouseEvent *mouse_event )
 
 void ValueSelector::paintEvent( QPaintEvent *paint_event )
 {
+    Q_CHECK_PTR( paint_event );
     if ( paint_event -> erased() )
     {
         painter.begin( this );
@@ -134,6 +139,7 @@ void ValueSelector::paintEvent( QPaintEvent *paint_event )
 
 int ValueSelector::pointFromValue( int value )
 {
+    Q_ASSERT( value >= 0 && value <= 255 );
     int point = value / 3;
     return point;
 }

@@ -31,6 +31,9 @@
 TLLayer::TLLayer( int in_position, QWidget *parent, QWidget *grandparent, const QString &initial_name )
     : QFrame( parent )
 {
+    Q_CHECK_PTR( parent );
+    Q_CHECK_PTR( grandparent );
+    
     //Initializations
     setMinimumSize( 192, 24 );
     setFrameStyle( QFrame::Panel | QFrame::Raised );
@@ -49,6 +52,7 @@ TLLayer::TLLayer( int in_position, QWidget *parent, QWidget *grandparent, const 
     selection_color = QColor( 0, 0, 0 );
     text_selection_color = QColor( 255, 255, 255 );
     drag_color = QColor( 255, 255, 255 );
+    right_click_menu = NULL;
 
     //Icon Initializations
     i_static_layer_image = QPixmap( layer_pic_xpm );
@@ -100,7 +104,16 @@ TLLayer::TLLayer( int in_position, QWidget *parent, QWidget *grandparent, const 
 
 TLLayer::~TLLayer()
 {
-
+    delete static_layer_image;
+    delete layer_name;
+    delete edition_image;
+    delete visibility_image;
+    delete lock_image;
+    delete only_outlines;
+    delete edit_name;
+    
+    if ( right_click_menu != NULL )
+        delete right_click_menu;
 }
 
 //-------------- PUBLIC MEMBERS ----------------
@@ -262,6 +275,7 @@ void TLLayer::slotSendDoubleClickEvent()
 
 void TLLayer::resizeEvent( QResizeEvent *resize_event )
 {
+    Q_CHECK_PTR( resize_event );
     QSize new_size = resize_event -> size();
 
     layer_name -> resize( new_size.width() - 142, layer_name -> height() );
@@ -275,6 +289,7 @@ void TLLayer::resizeEvent( QResizeEvent *resize_event )
 
 void TLLayer::mousePressEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     setSelected( true );
     setEdited( true );
 
@@ -294,6 +309,8 @@ void TLLayer::mousePressEvent( QMouseEvent *mouse_event )
     if ( mouse_event -> button() == Qt::RightButton )
     {
         TLLayerManager *lm = ( TLLayerManager * )( grandparent_widget -> parentWidget() );
+	if ( right_click_menu != NULL )
+	    delete right_click_menu;
         right_click_menu = new QPopupMenu( this );
 	right_click_menu -> setFont( QFont( "helvetica", 10 ) );
         right_click_menu -> insertItem( tr( "Rename Layer" ), this, SLOT( slotSendDoubleClickEvent() ) );
@@ -307,6 +324,7 @@ void TLLayer::mousePressEvent( QMouseEvent *mouse_event )
 
 void TLLayer::mouseMoveEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     if ( dragging )
     {
 	TLLayerSequence *ls_parent = ( TLLayerSequence * )grandparent_widget;
@@ -323,6 +341,7 @@ void TLLayer::mouseMoveEvent( QMouseEvent *mouse_event )
 
 void TLLayer::mouseReleaseEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     dragging = false;
     TLLayerSequence *ls_parent = ( TLLayerSequence * )grandparent_widget;
     ls_parent -> setDragging( false );
@@ -337,6 +356,7 @@ void TLLayer::mouseReleaseEvent( QMouseEvent *mouse_event )
 
 void TLLayer::mouseDoubleClickEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     if ( childAt( mouse_event -> pos() ) == layer_name && mouse_event -> button() == Qt::LeftButton )
     {
     	edit_name -> setText( layer_name -> text() );

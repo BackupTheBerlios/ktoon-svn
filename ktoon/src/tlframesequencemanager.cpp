@@ -29,6 +29,9 @@
 TLFrameSequenceManager::TLFrameSequenceManager( QWidget *parent, QWidget *grandparent )
     : QWidget( parent )
 {
+    Q_CHECK_PTR( parent );
+    Q_CHECK_PTR( grandparent );
+    
     //Initializations
     resize( 590, 150 );
     parent_widget = parent;
@@ -90,7 +93,10 @@ TLFrameSequenceManager::TLFrameSequenceManager( QWidget *parent, QWidget *grandp
 
 TLFrameSequenceManager::~TLFrameSequenceManager()
 {
-
+    delete ruler;
+    delete show_sound_widget;
+    delete utils;
+    delete frame_layout;
 }
 
 //-------------- PUBLIC MEMBERS ----------------

@@ -22,6 +22,8 @@
 
 #include "camera.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 Camera::Camera()
 {
     position = Point3D();
@@ -29,24 +31,28 @@ Camera::Camera()
     up = Point3D();
 }
 
+//------------- DESTRUCTOR ------------------
+
 Camera::~Camera()
 {
 
 }
 
+//------------ PUBLIC MEMBERS ---------------
+
 void Camera::setPositionCamera( const Point3D & _position )
 {
-position = _position;
+ position = _position;
 }
 
 void Camera::setCenterCamera( const Point3D & _center )
 {
-center = _center;
+ center = _center;
 }
 
 void Camera::setUpCamera( const Point3D & _up )
 {
-up = _up;
+ up = _up;
 }
 
 Point3D Camera::positionCamera( ) const

@@ -20,6 +20,8 @@
 
 #include "scene.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 Scene::Scene()
 {
     name = "";
@@ -29,12 +31,16 @@ Scene::Scene()
     layers.append( def_layer );
 }
 
+//------------- DESTRUCTOR ------------------
+
 Scene::~Scene()
 {
     layers.setAutoDelete( true );
     layers.clear();
     layers.setAutoDelete( false );
 }
+
+//------------ PUBLIC MEMBERS ---------------
 
 void Scene::setNameScene( const QString & _name )
 {

@@ -25,6 +25,8 @@
 
 RectangleProperties::RectangleProperties( QWidget *parent ) : QDialog( parent, "Rectangle Properties", true )
 {
+    Q_CHECK_PTR( parent );
+    
     //Initializations
     setCaption( tr( "Rectangle Properties" ) );
     setFont( QFont( "helvetica", 10 ) );
@@ -133,13 +135,33 @@ RectangleProperties::RectangleProperties( QWidget *parent ) : QDialog( parent, "
 
 RectangleProperties::~RectangleProperties()
 {
-
+    delete accept;
+    delete cancel;
+    delete text_origin;
+    delete text_origin_x;
+    delete text_origin_y;
+    delete text_pattern;
+    delete text_factor;
+    delete text_size;
+    delete text_size_w;
+    delete text_size_h;
+    delete text_angle;
+    delete value_origin_x;
+    delete value_origin_y;
+    delete value_factor;
+    delete value_size_w;
+    delete value_size_h;
+    delete value_angle;
+    delete check_fill;
+    delete check_perfect;
+    delete value_pattern;
 }
 
 //-------------- PUBLIC MEMBERS ----------------
 
 void RectangleProperties::loadFromGraphic( GLRectangle *rectangle )
 {
+   Q_CHECK_PTR( rectangle );
    value_origin_x -> setText( QString::number( rectangle -> originPoint().x() ) );
    value_origin_y -> setText( QString::number( rectangle -> originPoint().y() ) );
    QPoint end = rectangle -> endRectangle();

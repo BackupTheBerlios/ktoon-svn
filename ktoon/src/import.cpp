@@ -27,6 +27,8 @@
 
 Import::Import( QWidget *parent ) : QDialog( parent, "Import", true )
 {
+    Q_CHECK_PTR( parent );
+
     //Initializations
     setCaption( tr( "Import" ) );
     setFont( QFont( "helvetica", 10 ) );
@@ -85,7 +87,16 @@ Import::Import( QWidget *parent ) : QDialog( parent, "Import", true )
 
 Import::~Import()
 {
-
+    delete accept;
+    delete cancel;
+    delete main_text;
+    delete rb_image;
+    delete rb_image_sequence;
+    delete rb_library;
+    delete rb_palette;
+    delete rb_brushes;
+    delete rb_sound;
+    delete group;
 }
 
 //--------------- PUBLIC MEMBERS --------------------

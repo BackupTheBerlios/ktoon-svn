@@ -22,10 +22,14 @@
 
 #include "palette.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 Palette::Palette()
 {
 
 }
+
+//------------- DESTRUCTOR ------------------
 
 Palette::~Palette()
 {
@@ -37,10 +41,12 @@ void Palette::setColors( QPtrList<Color> _colors )
     colors = _colors;
 }
 
+
 QPtrList<Color> Palette::getColors() const
 {
     return colors;
 }
+
 
 QDomElement Palette::createXML( QDomDocument &doc )
 {

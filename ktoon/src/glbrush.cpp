@@ -27,8 +27,12 @@
 
 #define sqr(a) ((a)*(a))
 
+//-------------- CONSTRUCTOR ---------------
+
 GLBrush::GLBrush( QGLWidget *parent, const QPoint & _origin, const Color & _color, const Brush & _width, const QPoint & _end ) : GLGraphicComponent( parent, _origin, _color, _width ), end( _end )
 {
+        Q_CHECK_PTR( parent );
+	
 	setKindGraphic( GC_BRUSH );
         id_graphic_component = glGenLists( 1 );
 	QPoint * origin_point = new QPoint( origin.x(), origin.y() );
@@ -62,6 +66,8 @@ GLBrush::GLBrush( const GLBrush & brush ) : GLGraphicComponent( brush.parentWidg
          buildList();
 }
 
+//------------- DESTRUCTOR ------------------
+
 GLBrush::~GLBrush()
 {
 
@@ -69,6 +75,8 @@ GLBrush::~GLBrush()
 
 extern void lineImpl( const QPoint & origin, const QPoint & end, int lw, int stippleFactor, const Color & outlineColor );
 extern void lineImplFast( const QPoint & origin, const QPoint & end, int lw, const Color & outlineColor );
+
+//------------ PUBLIC MEMBERS ---------------
 
 //implementation of the virtual method buildList to Bezier curve
 void GLBrush::buildList()

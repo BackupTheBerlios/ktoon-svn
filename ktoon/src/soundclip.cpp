@@ -20,15 +20,21 @@
 
 #include "soundclip.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 SoundClip::SoundClip() : QSound( "" )
 {
 
 }
  
+//------------- DESTRUCTOR ------------------
+
 SoundClip::~SoundClip()
 {
 
 }
+
+//------------ PUBLIC MEMBERS ---------------
 
 void SoundClip::setNameSoundClip( const QString & _name )
 {

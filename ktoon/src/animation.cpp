@@ -22,6 +22,8 @@
 
 #include "animation.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 Animation::Animation()
 {
     frame_rate = 1;
@@ -33,6 +35,8 @@ Animation::Animation()
     scenes.append( d_scene );
 }
 
+//------------- DESTRUCTOR ------------------
+
 Animation::~Animation()
 {
     scenes.setAutoDelete( true );
@@ -40,18 +44,23 @@ Animation::~Animation()
     scenes.setAutoDelete( false );
 }
 
+//------------ PUBLIC MEMBERS ---------------
+
 void Animation::setFrameRate( const int & _rate )
 {
+ Q_ASSERT( _rate > 0 );
  frame_rate = _rate;
 }
 
 void Animation::setCameraWidth ( const int & _width )
 {
+ Q_ASSERT( _width > 0 );
  camera_width = _width;
 }
 
 void Animation::setCameraLength ( const int & _length )
 {
+ Q_ASSERT( _length > 0 );
  camera_length = _length;
 }
 

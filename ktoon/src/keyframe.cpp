@@ -20,6 +20,8 @@
 
  #include "keyframe.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 KeyFrame::KeyFrame()
 {
     offset = 0;
@@ -30,11 +32,15 @@ KeyFrame::KeyFrame()
     drawing = new GLDrawing();
 }
 
+//------------- DESTRUCTOR ------------------
+
 KeyFrame::~KeyFrame()
 {
     delete camera;
     delete drawing;
 }
+
+//------------ PUBLIC MEMBERS ---------------
 
 void KeyFrame::setOffsetKeyFrame( const int & _offset )
 {
@@ -58,20 +64,22 @@ void KeyFrame::setNameKeyFrame( const QString & _name )
 
 void KeyFrame::setDrawing( GLDrawing *_drawing )
 {
+    Q_CHECK_PTR( _drawing );
     drawing = _drawing;
 }
 
 void KeyFrame::setCamera( Camera *_camera )
 {
+    Q_CHECK_PTR( _camera );
     camera = _camera;
 }
 
-int KeyFrame::offsetKeyFrame( ) const
+int KeyFrame::offsetKeyFrame() const
 {
     return offset;
 }
 
-int KeyFrame::lengthKeyFrame( ) const
+int KeyFrame::lengthKeyFrame() const
 {
     return length;
 }
@@ -81,18 +89,20 @@ bool KeyFrame::motionKeyFrame() const
     return motion;
 }
 
-QString KeyFrame::nameKeyFrame( ) const
+QString KeyFrame::nameKeyFrame() const
 {
     return name;
 }
 
-GLDrawing *KeyFrame::getDrawing( ) const
+GLDrawing *KeyFrame::getDrawing() const
 {
+    Q_CHECK_PTR( drawing );
     return drawing;
 }
 
 Camera *KeyFrame::getCamera() const
 {
+    Q_CHECK_PTR( camera );
     return camera;
 }
 

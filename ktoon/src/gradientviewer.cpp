@@ -26,6 +26,8 @@
 
 GradientViewer::GradientViewer( QWidget *parent ) : QFrame( parent )
 {
+    Q_CHECK_PTR( parent );
+
     resize( 46, 46 );
     setFrameStyle( QFrame::Panel | QFrame::Sunken );
     parent_widget = parent;
@@ -63,6 +65,8 @@ void GradientViewer::slotUpdateGradient( const QColor &color1, const QColor &col
 
 void GradientViewer::drawContents( QPainter *painter )
 {
+    Q_CHECK_PTR( painter );
+
     QColor pen_color, brush_color;
 
     pen_color = Qt::white;

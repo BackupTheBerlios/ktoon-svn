@@ -20,6 +20,8 @@
 
  #include "layer.h"
  
+//-------------- CONSTRUCTOR ---------------
+
 Layer::Layer()
 {
     index = -1;
@@ -31,12 +33,16 @@ Layer::Layer()
     keyframes.append( d_keyframe );
 }
 
+//------------- DESTRUCTOR ------------------
+
 Layer::~Layer()
 {
     keyframes.setAutoDelete( true );
     keyframes.clear();
     keyframes.setAutoDelete( false );
 }
+
+//------------ PUBLIC MEMBERS ---------------
 
 void Layer::setIndexLayer( const int & _index )
 {

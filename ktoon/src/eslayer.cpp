@@ -28,6 +28,9 @@
 ESLayer::ESLayer( const QString &initial_text, QWidget *parent, QWidget *grandparent )
     : QPushButton( initial_text, parent )
 {
+    Q_CHECK_PTR( parent );
+    Q_CHECK_PTR( grandparent );
+
     //Initializations
     resize( 70, 25 );
     setAutoDefault( false );
@@ -58,7 +61,8 @@ ESLayer::ESLayer( const QString &initial_text, QWidget *parent, QWidget *grandpa
 
 ESLayer::~ESLayer()
 {
-
+    delete right_click_menu;
+    delete description;
 }
 
 //-------------- PUBLIC MEMBERS ----------------
@@ -102,6 +106,8 @@ void ESLayer::slotSendDoubleClickEvent()
 
 void ESLayer::mousePressEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
+
     is_selected = true;
     setPaletteBackgroundColor( selection_color );
     description -> setText( text() );
@@ -116,6 +122,8 @@ void ESLayer::mousePressEvent( QMouseEvent *mouse_event )
 
 void ESLayer::mouseDoubleClickEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
+
     if ( mouse_event -> button() == Qt::LeftButton )
     {
         description -> show();

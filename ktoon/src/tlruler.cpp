@@ -29,6 +29,8 @@
 TLRuler::TLRuler( QWidget *parent )
     : QFrame( parent )
 {
+    Q_CHECK_PTR( parent );
+    
     //Initializations
     parent_widget = parent;
     offset = 1;
@@ -79,6 +81,7 @@ bool TLRuler::isAnimationPlaying()
 
 void TLRuler::slotUpdateMaxOffset( int value )
 {
+    Q_ASSERT( value > 0 && value <= TLFrameSequence::TL_MAX_NUMBER_OF_FRAMES );
     int old_max_offset = max_offset;
     max_offset = value;
 
@@ -139,6 +142,7 @@ void TLRuler::slotStepBackward()
 
 void TLRuler::mousePressEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     dragging = true;
 
     int new_x = mouse_event -> x() - ( mouse_event -> x() ) % 10 + 1;
@@ -159,6 +163,7 @@ void TLRuler::mousePressEvent( QMouseEvent *mouse_event )
 
 void TLRuler::mouseMoveEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     if ( dragging && mouse_event -> x() >= 0 )
     {
         int new_x = mouse_event -> x() - ( mouse_event -> x() ) % 10 + 1;
@@ -180,6 +185,7 @@ void TLRuler::mouseMoveEvent( QMouseEvent *mouse_event )
 
 void TLRuler::mouseReleaseEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     dragging = false;
 
     int new_x = mouse_event -> x() - ( mouse_event -> x() ) % 10 + 1;
@@ -205,6 +211,8 @@ void TLRuler::mouseReleaseEvent( QMouseEvent *mouse_event )
 
 void TLRuler::drawContents( QPainter *painter )
 {
+    Q_CHECK_PTR( painter );
+
     //Variables used for iterate
     int i, j;
 

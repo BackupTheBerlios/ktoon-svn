@@ -24,6 +24,8 @@
 
 ColorCells::ColorCells( QWidget *parent ) : QGridView( parent )
 {
+    Q_CHECK_PTR( parent );
+
     parent_widget = parent;
     setCellWidth( 9 );
     setCellHeight( 9 );
@@ -93,6 +95,8 @@ ColorCells::~ColorCells()
 
 void ColorCells::mousePressEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
+
     int row_clicked, col_clicked;
     mapPointToCell( mouse_event -> pos(), &row_clicked, &col_clicked );
 

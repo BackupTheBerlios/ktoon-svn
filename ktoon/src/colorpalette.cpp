@@ -30,6 +30,10 @@
 ColorPalette::ColorPalette( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
     : QDialog( parent, tr( "Color Palette" ), false, style )
 {
+    Q_CHECK_PTR( parent );
+    Q_CHECK_PTR( in_assigned_menu );
+    Q_CHECK_PTR( assig_tb_button );
+
     //Initializations
     setCaption( tr( "Color Palette" ) );
     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
@@ -43,6 +47,7 @@ ColorPalette::ColorPalette( QWidget *parent, WFlags style, QPopupMenu *in_assign
     assigned_item = id_assigned_item;
     assigned_tb_button = assig_tb_button;
     k_toon = ( Ktoon * )parent_widget;
+    n_color = NULL;
 
     //Icon initializations
     i_add_color = QPixmap( plussign_xpm );
@@ -229,7 +234,42 @@ ColorPalette::ColorPalette( QWidget *parent, WFlags style, QPopupMenu *in_assign
 
 ColorPalette::~ColorPalette()
 {
-
+    delete add_color;
+    delete remove_color;
+    delete color_cells;
+    delete color_mixer;
+    delete color_display;
+    delete value_selector;
+    delete outline_color;
+    delete fill_color;
+    delete gradient;
+    delete grad_viewer;
+    delete custom_palette;
+    delete separator1;
+    delete separator2;
+    delete separator3;
+    delete gradient_types;
+    delete text_std_palette;
+    delete text_gradient;
+    delete text_custom_palette;
+    delete text_color_name;
+    delete text_color_mixer;
+    delete text_r;
+    delete text_g;
+    delete text_b;
+    delete text_h;
+    delete text_s;
+    delete text_v;
+    delete text_alpha;
+    delete value_color_name;
+    delete value_rgb;
+    delete value_r;
+    delete value_g;
+    delete value_b;
+    delete value_h;
+    delete value_s;
+    delete value_v;
+    delete value_alpha;
 }
 
 //-------------- PUBLIC MEMBERS -------------------
@@ -291,11 +331,14 @@ void ColorPalette::slotRemoveFromCustomColors()
 
 void ColorPalette::slotSetColor( const QColor &new_color )
 {
+    Q_ASSERT( new_color.isValid() );
     disconnectMembers();
     connect( gradient, SIGNAL( gradientChanged( const QColor &, const QColor &, int, int, int, int ) ), grad_viewer, SLOT( slotUpdateGradient( const QColor &, const QColor &, int, int, int, int ) ) );
     connect( value_v, SIGNAL( valueChanged( int ) ), value_selector, SLOT( slotSetValue( int ) ) );
 
-    Color *n_color = new Color( new_color.red() / 255.0, new_color.green() / 255.0, new_color.blue() / 255.0, value_alpha -> value() / 100.0 );
+    if ( n_color != NULL )
+       delete n_color;
+    n_color = new Color( new_color.red() / 255.0, new_color.green() / 255.0, new_color.blue() / 255.0, value_alpha -> value() / 100.0 );
     if ( outline_color -> isActive() )
     {
         outline_color -> slotSetColor( new_color );
@@ -357,6 +400,7 @@ void ColorPalette::slotSetColor( const QColor &new_color )
 
 void ColorPalette::slotSetColor( Color *new_color )
 {
+    Q_CHECK_PTR( new_color );
     QColor the_color = QColor( ( int )( new_color -> colorRed() * 255.0 ), ( int )( new_color -> colorGreen() * 255.0 ), ( int )( new_color -> colorBlue() * 255.0 ) );
     int the_alpha = ( int )( new_color -> colorAlpha() * 100.0 );
     slotSetColor( the_color );
@@ -597,6 +641,7 @@ void ColorPalette::slotUpdateCurrentAlpha( int new_alpha )
 
 void ColorPalette::closeEvent( QCloseEvent* close_event )
 {
+    Q_ASSERT( close_event );
     assigned_menu -> setItemChecked( assigned_item, false );
     assigned_tb_button -> setDown( false );
     close_event -> accept();

@@ -25,6 +25,8 @@
 
 PenProperties::PenProperties( QWidget *parent ) : QDialog( parent, "Pen Properties", true )
 {
+    Q_CHECK_PTR( parent );
+    
     //Initializations
     setCaption( tr( "Pen Properties" ) );
     setFont( QFont( "helvetica", 10 ) );
@@ -102,10 +104,30 @@ PenProperties::PenProperties( QWidget *parent ) : QDialog( parent, "Pen Properti
     connect( cancel, SIGNAL( clicked() ), SLOT( slotCancel() ) );
 }
 
+//-------------- DESTRUCTOR -----------------
+
+PenProperties::~PenProperties()
+{
+    delete accept;
+    delete cancel;
+    delete text_origin;
+    delete text_origin_x;
+    delete text_origin_y;
+    delete text_pattern;
+    delete text_factor;
+    delete text_angle;
+    delete value_origin_x;
+    delete value_origin_y;
+    delete value_factor;
+    delete value_angle;
+    delete value_pattern;
+}
+
 //-------------- PUBLIC MEMBERS ----------------
 
 void PenProperties::loadFromGraphic( GLPen *pen )
 {
+   Q_CHECK_PTR( pen );
    value_origin_x -> setText( QString::number( pen -> originPoint().x() ) );
    value_origin_y -> setText( QString::number( pen -> originPoint().y() ) );
    switch ( pen -> stipplePattern() )
@@ -139,13 +161,6 @@ void PenProperties::loadFromGraphic( GLPen *pen )
      }
    value_factor -> setText( QString::number( pen -> stippleFactor() ) );
    value_angle -> setText( QString::number( 0 ) );
-}
-
-//-------------- DESTRUCTOR -----------------
-
-PenProperties::~PenProperties()
-{
-
 }
 
 //------------------- SLOTS -------------------------

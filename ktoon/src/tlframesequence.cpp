@@ -29,6 +29,9 @@
 TLFrameSequence::TLFrameSequence( int in_position, QWidget *parent, QWidget *grandparent )
     : QWidget( parent )
 {
+    Q_CHECK_PTR( parent );
+    Q_CHECK_PTR( grandparent );
+    
     //Initializations
     resize( 3000, 24 );
     position_ = in_position;
@@ -156,6 +159,7 @@ void TLFrameSequence::loadFrames( QPtrList<KeyFrame> keyframes )
 
 TLFrame *TLFrameSequence::findPrevKeyframe( TLFrame *frame )
 {
+    Q_CHECK_PTR( frame );
     TLFrame *frame_iterator;
     for ( frame_iterator = list_of_frames.at( list_of_frames.find( frame ) - 1 ); frame_iterator; frame_iterator = list_of_frames.prev() )
     {
@@ -167,6 +171,7 @@ TLFrame *TLFrameSequence::findPrevKeyframe( TLFrame *frame )
 
 TLFrame *TLFrameSequence::findNextKeyframe( TLFrame *frame )
 {
+    Q_CHECK_PTR( frame );
     TLFrame *frame_iterator;
     for ( frame_iterator = list_of_frames.at( list_of_frames.find( frame ) + 1 ); frame_iterator; frame_iterator = list_of_frames.next() )
     {
@@ -178,6 +183,7 @@ TLFrame *TLFrameSequence::findNextKeyframe( TLFrame *frame )
 
 int TLFrameSequence::keyframePosition( TLFrame *frame )
 {
+    Q_CHECK_PTR( frame );
     TLFrame *frame_iterator;
     int res = 0;
     for ( frame_iterator = list_of_frames.first(); frame_iterator != frame; frame_iterator = list_of_frames.next() )
@@ -193,6 +199,7 @@ int TLFrameSequence::keyframePosition( TLFrame *frame )
 
 int TLFrameSequence::framePosition( TLFrame *frame )
 {
+    Q_CHECK_PTR( frame );
     return list_of_frames.find( frame ) + 1;
 }
 
@@ -898,6 +905,7 @@ void TLFrameSequence::slotRemoveMotionTween()
 
 void TLFrameSequence::createUnknownMotionFrames( TLFrame *key )
 {
+    Q_CHECK_PTR( key );
     TLFrame *frame_iterator;
     for ( frame_iterator = list_of_frames.at( list_of_frames.find( key ) ); frame_iterator; frame_iterator = list_of_frames.next() )
     {
@@ -909,6 +917,7 @@ void TLFrameSequence::createUnknownMotionFrames( TLFrame *key )
 
 void TLFrameSequence::createMotionFrames( TLFrame *key )
 {
+    Q_CHECK_PTR( key );
     TLFrame *frame_iterator;
     for ( frame_iterator = list_of_frames.at( list_of_frames.find( key ) ); frame_iterator; frame_iterator = list_of_frames.next() )
     {
@@ -920,6 +929,7 @@ void TLFrameSequence::createMotionFrames( TLFrame *key )
 
 void TLFrameSequence::cleanMotionFrames( TLFrame *key )
 {
+    Q_CHECK_PTR( key );
     TLFrame *frame_iterator;
     for ( frame_iterator = list_of_frames.at( list_of_frames.find( key ) ); frame_iterator; frame_iterator = list_of_frames.next() )
     {
@@ -932,6 +942,7 @@ void TLFrameSequence::cleanMotionFrames( TLFrame *key )
 
 void TLFrameSequence::clearDrawingState( TLFrame *key )
 {
+    Q_CHECK_PTR( key );
     TLFrame *frame_iterator;
     for ( frame_iterator = list_of_frames.at( list_of_frames.find( key ) ); frame_iterator; frame_iterator = list_of_frames.next() )
     {

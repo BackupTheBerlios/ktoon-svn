@@ -898,6 +898,14 @@ public slots:
      * \brief Adds the current graphic component to the object library
      */
     void slotAddToLibrary();
+    /*!
+     * \brief Modifies the Grid color
+     */
+    void slotSetGridColor();
+    /*!
+     * \brief Modifies the NTSC color
+     */
+    void slotSetNTSCColor();
 
 };
 

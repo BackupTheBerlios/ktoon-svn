@@ -23,16 +23,22 @@
 
 #include "item.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 Item::Item()
 {
     name = "";
     item_kind = ITEM_UNDEFINED;
 }
 
+//------------- DESTRUCTOR ------------------
+
 Item::~Item()
 {
 
 }
+
+//------------ PUBLIC MEMBERS ---------------
 
 void Item::setName( const QString &new_name )
 {

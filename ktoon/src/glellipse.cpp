@@ -23,8 +23,12 @@
 
 #include "glellipse.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 GLEllipse::GLEllipse( QGLWidget *parent, const QPoint &  _origin, const Color & _color, const Brush & _width, const QPoint & _radius, Color & _fill_color ) : GLGraphicComponent( parent, _origin, _color, _width ), radius( _radius ), fill_color( _fill_color)
 {
+	 Q_CHECK_PTR( parent );
+
          setKindGraphic( GC_ELLIPSE );
          id_graphic_component = glGenLists( 1 );
 	 setPerfectEllipse( false );
@@ -55,10 +59,14 @@ GLEllipse::GLEllipse( const GLEllipse & ellipse ) : GLGraphicComponent( ellipse.
          buildList();
 }
 
+//------------- DESTRUCTOR ------------------
+
 GLEllipse::~GLEllipse( )
 {
 
 }
+
+//------------ PUBLIC MEMBERS ---------------
 
 //implementation of the virtual method buildList to circle
 void GLEllipse::buildList( )

@@ -22,12 +22,16 @@
 #include <qapplication.h>
 
 #include "esframe.h"
+#include "ktoon.h"
 
 //--------------- CONSTRUCTOR --------------------
 
 ESFrame::ESFrame( const QString &initial_text, QWidget *parent, QWidget *grandparent )
     : QLabel( initial_text, parent )
 {
+    Q_CHECK_PTR( parent );
+    Q_CHECK_PTR( grandparent );
+
     //Initializations
     setFont( QFont( "helvetica", 7 ) );
     setFrameStyle( QFrame::Panel | QFrame::Raised );
@@ -40,15 +44,7 @@ ESFrame::ESFrame( const QString &initial_text, QWidget *parent, QWidget *grandpa
     is_locked = false;
     is_motion = false;
     has_drawing = false;
-    default_color = paletteBackgroundColor();
-    use_color = QColor( 200, 200, 200 );
-    selection_color = QColor( 0, 0, 0 );
-    select_and_use_color = QColor( 255, 255, 255 );
-    text_color_when_selected = QColor( 255, 255, 255 );
-    default_text_color = QColor( 0, 0, 0 );
-    lock_color = QColor( 150, 150, 255 );
-    lock_and_select_color = QColor( 210, 210, 255 );
-    has_drawing_color = QColor( 170, 70, 10 );
+    k_toon = ( Ktoon * )( grandparent_widget -> parentWidget() );
 
     description = new QLineEdit( this );
     description -> resize( 66, 21 );
@@ -70,7 +66,7 @@ ESFrame::ESFrame( const QString &initial_text, QWidget *parent, QWidget *grandpa
 
 ESFrame::~ESFrame()
 {
-
+    delete right_click_menu;
 }
 
 //-------------- PUBLIC MEMBERS ----------------
@@ -106,23 +102,23 @@ void ESFrame::setUsed( bool in_is_used )
 
     if ( is_selected == true && in_is_used == true )
     {
-        setPaletteBackgroundColor( select_and_use_color );
-	setPaletteForegroundColor( default_text_color );
+        setPaletteBackgroundColor( *( k_toon -> esSelectAndUseColor() ) );
+	setPaletteForegroundColor( *( k_toon -> esDefaultTextColor() ) );
     }
     else if ( is_selected == true && in_is_used == false )
     {
-        setPaletteBackgroundColor( selection_color );
-	setPaletteForegroundColor( text_color_when_selected );
+        setPaletteBackgroundColor( *( k_toon -> esSelectionColor() ) );
+	setPaletteForegroundColor( *( k_toon -> esTextColorWhenSelected() ) );
     }
     else if ( is_selected == false && in_is_used == true )
     {
-        setPaletteBackgroundColor( use_color );
-	setPaletteForegroundColor( default_text_color );
+        setPaletteBackgroundColor( *( k_toon -> esUseColor() ) );
+	setPaletteForegroundColor( *( k_toon -> esDefaultTextColor() ) );
     }
     else
     {
-        setPaletteBackgroundColor( default_color );
-	setPaletteForegroundColor( default_text_color );
+        setPaletteBackgroundColor( *( k_toon -> esDefaultColor() ) );
+	setPaletteForegroundColor( *( k_toon -> esDefaultTextColor() ) );
     }
 }
 
@@ -132,33 +128,33 @@ void ESFrame::setSelected( bool in_is_selected )
 
     if ( in_is_selected == true && is_used == true && is_locked == false )
     {
-        setPaletteBackgroundColor( select_and_use_color );
-	setPaletteForegroundColor( default_text_color );
+        setPaletteBackgroundColor( *( k_toon -> esSelectAndUseColor() ) );
+	setPaletteForegroundColor( *( k_toon -> esDefaultTextColor() ) );
     }
     else if ( in_is_selected == true && is_used == false && is_locked == false )
     {
-        setPaletteBackgroundColor( selection_color );
-	setPaletteForegroundColor( text_color_when_selected );
+        setPaletteBackgroundColor( *( k_toon -> esSelectionColor() ) );
+	setPaletteForegroundColor( *( k_toon -> esTextColorWhenSelected() ) );
     }
     else if ( in_is_selected == false && is_used == true && is_locked == false )
     {
-        setPaletteBackgroundColor( use_color );
-	setPaletteForegroundColor( default_text_color );
+        setPaletteBackgroundColor( *( k_toon -> esUseColor() ) );
+	setPaletteForegroundColor( *( k_toon -> esDefaultTextColor() ) );
     }
     else if ( in_is_selected == false && is_used == false && is_locked == false )
     {
-        setPaletteBackgroundColor( default_color );
-	setPaletteForegroundColor( default_text_color );
+        setPaletteBackgroundColor( *( k_toon -> esDefaultColor() ) );
+	setPaletteForegroundColor( *( k_toon -> esDefaultTextColor() ) );
     }
     else if ( is_locked && in_is_selected )
     {
-        setPaletteBackgroundColor( lock_and_select_color );
-	setPaletteForegroundColor( default_text_color );
+        setPaletteBackgroundColor( *( k_toon -> esLockAndSelectColor() ) );
+	setPaletteForegroundColor( *( k_toon -> esDefaultTextColor() ) );
     }
     else if ( is_locked && !in_is_selected )
     {
-        setPaletteBackgroundColor( lock_color );
-	setPaletteForegroundColor( default_text_color );
+        setPaletteBackgroundColor( *( k_toon -> esLockColor() ) );
+	setPaletteForegroundColor( *( k_toon -> esDefaultTextColor() ) );
     }
 }
 
@@ -170,23 +166,23 @@ void ESFrame::setLocked( bool in_is_locked )
 
 	if ( is_selected && is_locked )
 	{
-	    setPaletteBackgroundColor( lock_and_select_color );
-	    setPaletteForegroundColor( default_text_color );
+	    setPaletteBackgroundColor( *( k_toon -> esLockAndSelectColor() ) );
+	    setPaletteForegroundColor( *( k_toon -> esDefaultTextColor() ) );
 	}
 	else if ( is_selected && !is_locked )
 	{
-	    setPaletteBackgroundColor( selection_color );
-	    setPaletteForegroundColor( default_text_color );
+	    setPaletteBackgroundColor( *( k_toon -> esSelectionColor() ) );
+	    setPaletteForegroundColor( *( k_toon -> esDefaultTextColor() ) );
 	}
 	else if ( !is_selected && is_locked )
 	{
-	    setPaletteBackgroundColor( lock_color );
-	    setPaletteForegroundColor( default_text_color );
+	    setPaletteBackgroundColor( *( k_toon -> esLockColor() ) );
+	    setPaletteForegroundColor( *( k_toon -> esDefaultTextColor() ) );
 	}
 	else
 	{
-	    setPaletteBackgroundColor( use_color );
-	    setPaletteForegroundColor( default_text_color );
+	    setPaletteBackgroundColor( *( k_toon -> esUseColor() ) );
+	    setPaletteForegroundColor( *( k_toon -> esDefaultTextColor() ) );
 	}
     }
 }
@@ -243,23 +239,24 @@ void ESFrame::slotSendDoubleClickEvent()
 
 void ESFrame::mousePressEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     if ( !is_used )
     {
         is_selected = true;
-	setPaletteBackgroundColor( selection_color );
-	setPaletteForegroundColor( text_color_when_selected );
+	setPaletteBackgroundColor( *( k_toon -> esSelectionColor() ) );
+	setPaletteForegroundColor( *( k_toon -> esTextColorWhenSelected() ) );
     }
     else if ( is_used && !is_locked )
     {
         is_selected = true;
-	setPaletteBackgroundColor( select_and_use_color );
-	setPaletteForegroundColor( default_text_color );
+	setPaletteBackgroundColor( *( k_toon -> esSelectAndUseColor() ) );
+	setPaletteForegroundColor( *( k_toon -> esDefaultTextColor() ) );
     }
     else if ( is_locked )
     {
         is_selected = true;
-	setPaletteBackgroundColor( lock_and_select_color );
-	setPaletteForegroundColor( default_text_color );
+	setPaletteBackgroundColor( *( k_toon -> esLockAndSelectColor() ) );
+	setPaletteForegroundColor( *( k_toon -> esDefaultTextColor() ) );
     }
 
     emit selected();
@@ -288,7 +285,8 @@ void ESFrame::mousePressEvent( QMouseEvent *mouse_event )
 
 void ESFrame::mouseDoubleClickEvent( QMouseEvent *mouse_event )
 {
-    if ( is_used == true && mouse_event -> button() == Qt::LeftButton )
+   Q_CHECK_PTR( mouse_event );
+   if ( is_used == true && mouse_event -> button() == Qt::LeftButton )
     {
         description -> show();
         description -> setText( text() );
@@ -301,14 +299,15 @@ void ESFrame::mouseDoubleClickEvent( QMouseEvent *mouse_event )
 
 void ESFrame::drawContents( QPainter *painter )
 {
+    Q_CHECK_PTR( painter );
     if ( has_drawing )
-        painter -> setPen( has_drawing_color );
+        painter -> setPen( *( k_toon -> esHasDrawingColor() ) );
     else
-        painter -> setPen( paletteForegroundColor() );
+        painter -> setPen( *( k_toon -> esDefaultTextColor() ) );
     painter -> drawText( 12, 16, text() );
-    painter -> setPen( QPen( QColor( 120, 120, 120 ), 2 ) );
     if ( is_motion )
     {
+    	painter -> setPen( QPen( QColor( 120, 120, 120 ), 2 ) );
 	painter -> drawLine( 4, 14, 4, 24 );
 	painter -> drawLine( 4, 14, 8, 14 );
     }

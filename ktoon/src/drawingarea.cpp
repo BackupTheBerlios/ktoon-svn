@@ -44,6 +44,9 @@
 
 DrawingArea::DrawingArea( QWidget *parent, QWidget *grandparent, const char *name, WFlags f ) : GLControl( parent, grandparent, name, 0, f ), rotation_x( 0.0 ), rotation_y( 0.0 ), rotation_z( 0.0 ), translation_x( 0.0 ), translation_y( 0.0 ), translation_z( -10.0 ), scale_x( 1.0 ), scale_y( 1.0 ), scale_z( 1.0 )
 {
+    Q_CHECK_PTR( parent );
+    Q_CHECK_PTR( grandparent );
+
     number_lines = 32;
     max_vertical = 440;
     max_horizontal = 600;
@@ -63,6 +66,7 @@ DrawingArea::DrawingArea( QWidget *parent, QWidget *grandparent, const char *nam
 
     grid = NULL;
     current_graphic = NULL;
+    right_click_menu = NULL;
 
     shift_pressed = false;
 
@@ -88,6 +92,8 @@ DrawingArea::~DrawingArea()
 {
    if( grid != NULL )
    	delete grid;
+   if ( right_click_menu != NULL )
+	delete right_click_menu;
 }
 
 //--------------------- PUBLIC AND PROTECTED MEMBERS --------------------------------
@@ -133,6 +139,7 @@ void DrawingArea::initializeGL()
 
 void DrawingArea::resizeGL( int w, int h )
 {
+    Q_ASSERT( w > 0 && h > 0 );
     glViewport( 0, 0, ( GLint ) w, ( GLint ) h );
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
@@ -148,12 +155,6 @@ void DrawingArea::paintGL()
 
     QColor b_color = k_toon -> currentStatus() -> currentBackgroundColor();
     glClearColor( ( float )b_color.red() / 255.0, ( float )b_color.green() / 255.0, ( float )b_color.blue() / 255.0, 0.0 );
-
-    QColor g_color = k_toon -> currentStatus() -> currentGridColor();
-    grid -> setGridColor( g_color );
-
-    QColor n_color = k_toon -> currentStatus() -> currentNTSCColor();
-    grid -> setNTSCColor( n_color );
 
     // Clear the elements on the screen.
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
@@ -248,19 +249,12 @@ void DrawingArea::markSelected()
 
   glTranslatef( ( topLeft.x() + bottomRight.x() ) / 2,
                 ( topLeft.y() + bottomRight.y() ) / 2, 0.0 );
-/*
-  glTranslatef( topLeft.x() + ( bottomRight.x() - topLeft.x() ) / 2,
-                topLeft.y() + ( bottomRight.y() - topLeft.y() ) / 2, 0.0 );
-*/
+
   glRotatef( current_graphic -> rotationAngle(), 0.0, 0.0, 1.0 );
   
   glTranslatef( ( -1 ) * ( topLeft.x() + bottomRight.x() ) / 2,
                 ( -1 ) * ( topLeft.y() + bottomRight.y() ) / 2, 0.0 );
-  /*
-  glTranslatef( ( -1 ) * ( topLeft.x() + ( bottomRight.x() - topLeft.x() ) / 2 ),
-                ( -1 ) * ( topLeft.y() + ( bottomRight.y() - topLeft.y() ) / 2 ), 0.0 );
-*/
-		  
+
   for ( int i = 1; i < 9; i++ )
       {
           glPushMatrix();
@@ -366,7 +360,7 @@ void DrawingArea::processHits( GLint hits, GLuint buffer[] )
 	{
 		if( aux == id_arrow_names[i] )
 		{
-			qDebug( "fecha %d seleccionada", i );
+//			qDebug( "fecha %d seleccionada", i );
 			current_graphic = prev_graphic;
 			selected_graphic = true;
 		}
@@ -376,6 +370,8 @@ void DrawingArea::processHits( GLint hits, GLuint buffer[] )
 
 void DrawingArea::drawSelected( QMouseEvent *mouse_event )
 {
+        Q_CHECK_PTR( mouse_event );
+
 	GLint viewport[4];
 	GLdouble delta = 10.0;
 
@@ -497,6 +493,8 @@ void DrawingArea::drawOnionSkinsAndLightTable()
 
 void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
+
     if ( k_toon -> currentStatus() -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
     {
        mouse_event -> ignore();
@@ -511,6 +509,8 @@ void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
         drawSelected( mouse_event );
 	if ( current_graphic != NULL )
 	   {
+	   	if ( right_click_menu != NULL )
+		   delete right_click_menu;
         	right_click_menu = new QPopupMenu( this );
 		right_click_menu -> setFont( QFont( "helvetica", 10 ) );
         	right_click_menu -> insertItem( QPixmap( copy_xpm ), tr( "&Copy" ), grandparent_widget, SLOT( slotCopy() ) );
@@ -691,6 +691,8 @@ void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
 
 void DrawingArea::mouseReleaseEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
+
     if ( k_toon -> currentStatus() -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
     {
        mouse_event -> ignore();
@@ -734,6 +736,8 @@ void DrawingArea::mouseReleaseEvent( QMouseEvent *mouse_event )
 
 void DrawingArea::mouseMoveEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
+
     if ( k_toon -> currentStatus() -> currentKeyFrame() == NULL )
     {
        mouse_event -> ignore();
@@ -891,6 +895,8 @@ void DrawingArea::mouseMoveEvent( QMouseEvent *mouse_event )
 
 void DrawingArea::mouseDoubleClickEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
+
     if ( k_toon -> currentStatus() -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
     {
        mouse_event -> ignore();
@@ -922,6 +928,8 @@ void DrawingArea::mouseDoubleClickEvent( QMouseEvent *mouse_event )
 
 void DrawingArea::keyPressEvent( QKeyEvent *key_event )
 {
+    Q_CHECK_PTR( key_event );
+
     if ( k_toon -> currentStatus() -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
     {
        key_event -> ignore();
@@ -944,6 +952,8 @@ void DrawingArea::keyPressEvent( QKeyEvent *key_event )
 
 void DrawingArea::keyReleaseEvent( QKeyEvent *key_event )
 {
+    Q_CHECK_PTR( key_event );
+
     if ( k_toon -> currentStatus() -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
     {
        key_event -> ignore();
@@ -997,6 +1007,8 @@ void DrawingArea::keyReleaseEvent( QKeyEvent *key_event )
 
 void DrawingArea::closeEvent( QCloseEvent *close_event )
 {
+    Q_CHECK_PTR( close_event );
+
     //If the document has not been saved, display a closing confirmation
     if ( modified )
     {
@@ -1026,39 +1038,53 @@ void DrawingArea::closeEvent( QCloseEvent *close_event )
 
 void DrawingArea::setMaxVertical( const GLuint & max_vert )
 {
+ Q_ASSERT( max_vert > 0 );
+
  max_vertical = max_vert;
  grid -> setMaxHeight( max_vert );
 }
 
 void DrawingArea::setMaxHorizontal( const GLuint & max_hor )
 {
+ Q_ASSERT( max_hor > 0 );
+
  max_horizontal = max_hor;
  grid -> setMaxWidth( max_hor );
 }
 
 void DrawingArea::setNumberLines( const GLuint & num_lines )
 {
+ Q_ASSERT( num_lines > 0 );
+
  number_lines = num_lines;
  grid -> setNumberLines( num_lines );
 }
 
 void DrawingArea::setVerticalMargin( const GLuint & marg_vert )
 {
+ Q_ASSERT( marg_vert > 0 );
+
  vertical_margin = marg_vert;
 }
 
 void DrawingArea::setHorizontalMargin( const GLuint & marg_hor )
 {
+ Q_ASSERT( marg_hor > 0 );
+
  horizontal_margin = marg_hor;
 }
 
 void DrawingArea::setHeight( const GLuint & height )
 {
+ Q_ASSERT( height > 0 );
+
  h = height;
 }
 
 void DrawingArea::setWidth( const GLuint & width )
 {
+ Q_ASSERT( width > 0 );
+
  w = width;
 }
 
@@ -1663,6 +1689,8 @@ void DrawingArea::pasteEllipse( QString ellipse )
 
 void DrawingArea::addGraphicComponent( GLGraphicComponent *graphic_component, bool update )
 {
+ Q_CHECK_PTR( graphic_component );
+
  modifyDocument( true );
  GLfloat z = -10.0;
  if ( graphic_list.count() != 0 )
@@ -3099,3 +3127,16 @@ QPoint DrawingArea::mapPointToMatrix( const QPoint & point )
    return p;
 }
 
+void DrawingArea::slotSetGridColor()
+{
+    QColor g_color = k_toon -> currentStatus() -> currentGridColor();
+    grid -> setGridColor( g_color );
+    updateGL();
+}
+
+void DrawingArea::slotSetNTSCColor()
+{
+    QColor n_color = k_toon -> currentStatus() -> currentNTSCColor();
+    grid -> setNTSCColor( n_color );
+    updateGL();
+}

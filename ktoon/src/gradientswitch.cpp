@@ -26,6 +26,8 @@
 
 GradientSwitch::GradientSwitch( QWidget *parent ) : QWidget( parent )
 {
+    Q_CHECK_PTR( parent );
+
     resize( 7, 10 );
     parent_widget = parent;
     border_color = QColor( 0, 0, 0 );
@@ -96,6 +98,8 @@ void GradientSwitch::slotSetAlpha( int new_alpha )
 
 void GradientSwitch::mousePressEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
+
     if ( mouse_event -> button() == Qt::LeftButton && mouse_event -> state() == Qt::ShiftButton )
     {
 	emit deleted();
@@ -112,6 +116,8 @@ void GradientSwitch::mousePressEvent( QMouseEvent *mouse_event )
 
 void GradientSwitch::mouseMoveEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
+
     if ( dragging )
     {
         if ( mouse_event -> x() < click_point )
@@ -124,12 +130,16 @@ void GradientSwitch::mouseMoveEvent( QMouseEvent *mouse_event )
 
 void GradientSwitch::mouseReleaseEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
+
     dragging = false;
     mouse_event -> accept();
 }
 
 void GradientSwitch::paintEvent( QPaintEvent *paint_event )
 {
+    Q_CHECK_PTR( paint_event );
+
     if ( paint_event -> erased() )
     {
         painter.begin( this );

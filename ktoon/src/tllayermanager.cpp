@@ -30,6 +30,9 @@
 TLLayerManager::TLLayerManager( QWidget *parent, QWidget *grandparent )
     : QWidget( parent )
 {
+    Q_CHECK_PTR( parent );
+    Q_CHECK_PTR( grandparent );
+    
     //Initializations
     resize( 200, 150 );
     parent_widget = parent;
@@ -147,7 +150,19 @@ TLLayerManager::TLLayerManager( QWidget *parent, QWidget *grandparent )
 
 TLLayerManager::~TLLayerManager()
 {
+    delete eye;
+    delete lock;
+    delete square;
+    delete utils;
 
+    delete insert_layer;
+    delete remove_layer;
+    delete move_layer_up;
+    delete move_layer_down;
+    delete time;
+    delete utils2;
+
+    delete layer_sequence;
 }
 
 //-------------- PUBLIC MEMBERS ----------------
@@ -159,16 +174,19 @@ QScrollBar *TLLayerManager::verticalScrollBar()
 
 TLLayerSequence *TLLayerManager::layerSequence()
 {
+    Q_CHECK_PTR( layer_sequence );
     return layer_sequence;
 }
 
 QPushButton *TLLayerManager::insertLayerButton()
 {
+    Q_CHECK_PTR( insert_layer );
     return insert_layer;
 }
 
 QPushButton *TLLayerManager::removeLayerButton()
 {
+    Q_CHECK_PTR( remove_layer );
     return remove_layer;
 }
 
@@ -267,6 +285,8 @@ void TLLayerManager::slotSquare()
 //Event for widget resize control
 void TLLayerManager::resizeEvent( QResizeEvent *resize_event )
 {
+    Q_CHECK_PTR( resize_event );
+    
     QSize new_size = resize_event -> size();
 
     utils -> resize( new_size.width(), utils -> height() );

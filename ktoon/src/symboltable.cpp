@@ -27,6 +27,7 @@
 
 SymbolTable::SymbolTable( QWidget *parent ) : QListView( parent, "", Qt::WStyle_NoBorder )
 {
+    Q_CHECK_PTR( parent );
     parent_widget = parent;
     dragging = false;
     valid_drag = false;
@@ -48,6 +49,7 @@ SymbolTable::~SymbolTable()
 
 void SymbolTable::contentsMousePressEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     QListView::contentsMousePressEvent( mouse_event );
     mouse_event -> accept();
     dragging = true;
@@ -55,6 +57,7 @@ void SymbolTable::contentsMousePressEvent( QMouseEvent *mouse_event )
 
 void SymbolTable::contentsMouseMoveEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     QListView::contentsMouseMoveEvent( mouse_event );
     if ( dragging )
     {
@@ -90,6 +93,7 @@ void SymbolTable::contentsMouseMoveEvent( QMouseEvent *mouse_event )
 
 void SymbolTable::contentsMouseReleaseEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     QListView::contentsMouseReleaseEvent( mouse_event );
     mouse_event -> accept();
     dragging = false;
@@ -106,6 +110,7 @@ void SymbolTable::contentsMouseReleaseEvent( QMouseEvent *mouse_event )
 
 void SymbolTable::keyPressEvent( QKeyEvent *key_event )
 {
+    Q_CHECK_PTR( key_event );
     switch( key_event -> key() )
     {
 	case Qt::Key_Delete: ( ( Library * )parent_widget ) -> slotDeleteSymbol();

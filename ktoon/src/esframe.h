@@ -32,6 +32,8 @@
 #include <qpopupmenu.h>
 #include <qpainter.h>
 
+class Ktoon;
+
 /*!
  * \brief Class that handles the Frame objects belonging to the Exposure Sheet dialog box
  *
@@ -164,13 +166,13 @@ private:
     bool is_locked;
     bool is_motion;
     bool has_drawing;
-    QColor default_color, use_color, selection_color, select_and_use_color, text_color_when_selected,
-           default_text_color, lock_color, lock_and_select_color, has_drawing_color;
     QLineEdit *description;
 
     //The right click menu and its identifiers
     QPopupMenu *right_click_menu;
     int id_rename, id_remove, id_lock, id_copy, id_paste;
+    
+    Ktoon *k_toon;
 
 signals:
     /*!

@@ -60,6 +60,26 @@ Ktoon::Ktoon()
     }
     settings.close();
 
+    //ExposureSheet & Timeline Color initializations
+    es_default_color = new QColor( 239, 237, 223 );
+    es_use_color = new QColor( 200, 200, 200 );
+    es_selection_color = new QColor( 0, 0, 0 );
+    es_select_and_use_color = new QColor( 255, 255, 255 );
+    es_text_color_when_selected = new QColor( 255, 255, 255 );
+    es_default_text_color = new QColor( 0, 0, 0 );
+    es_lock_color = new QColor( 150, 150, 255 );
+    es_lock_and_select_color = new QColor( 210, 210, 255 );
+    es_has_drawing_color = new QColor( 170, 70, 10 );
+    tl_default_color = new QColor( 255, 255, 255 );
+    tl_selection_color = new QColor( 0, 0, 0 );
+    tl_special_color = new QColor( 200, 200, 200 );
+    tl_offset_color = new QColor( 255, 0, 0 );
+    tl_drag_offset_color = new QColor( 0, 0, 0 );
+    tl_border_color = new QColor( 180, 180, 180 );
+    tl_use_border_color = new QColor( 0, 0, 0 );
+    tl_motion_color = new QColor( 220, 220, 255 );
+    tl_drawing_color = new QColor( 230, 230, 230 );
+
     //Current Status Object
     current_status = new Status();
     current_status -> setCurrentCursor( Tools::NORMAL_SELECTION );
@@ -653,73 +673,170 @@ Ktoon::Ktoon()
 
 Ktoon::~Ktoon()
 {
-
+    delete cursor_line;
+    delete cursor_selection;
+    delete cursor_nodes;
+    delete cursor_brush;
+    delete cursor_pencil;
+    delete cursor_pen;
+    delete cursor_rectangle;
+    delete cursor_ellipse;
+    delete cursor_eraser;
+    delete cursor_slicer;
+    delete cursor_fill;
+    delete cursor_remove_fill;
+    delete cursor_magnifying_glass;
+    delete cursor_hand;
+    delete cursor_dropper;
+    delete cursor_contour_fill;
+    delete file;
+    delete open_recent;
+    delete edit;
+    delete view;
+    delete grid;
+    delete onion_skin;
+    delete insert;
+    delete tools;
+    delete control;
+    delete window;
+    delete help;
+    delete file_new;
+    delete file_open;
+    delete file_save;
+    delete edit_undo;
+    delete edit_redo;
+    delete edit_cut;
+    delete edit_copy;
+    delete edit_paste;
+    delete view_no_grid;
+    delete view_grid12;
+    delete view_grid16;
+    delete view_subgrid;
+    delete view_no_previous;
+    delete view_previous;
+    delete view_previous2;
+    delete view_previous3;
+    delete view_no_next;
+    delete view_next;
+    delete view_next2;
+    delete view_next3;
+    delete view_front_back_grid;
+    delete view_ntsc;
+    delete view_light_table;
+    delete window_illustration;
+    delete window_animation;
+    delete window_tools;
+    delete window_brushes;
+    delete window_scenes;
+    delete window_color_palette;
+    delete window_exposure_sheet;
+    delete window_library;
+    delete window_drawing_area;
+    delete window_timeline;
+    delete window_render_camera_preview;
+    delete window_top_camera_view;
+    delete window_side_camera_view;
+    delete main_panel;
+    delete tool_bar;
+    delete tool_bar2;
+    delete current_status;
+    delete es_default_color;
+    delete es_use_color;
+    delete es_selection_color;
+    delete es_select_and_use_color;
+    delete es_text_color_when_selected;
+    delete es_default_text_color;
+    delete es_lock_color;
+    delete es_lock_and_select_color;
+    delete es_has_drawing_color;
+    delete tl_default_color;
+    delete tl_selection_color;
+    delete tl_special_color;
+    delete tl_offset_color;
+    delete tl_drag_offset_color;
+    delete tl_border_color;
+    delete tl_use_border_color;
+    delete tl_motion_color;
+    delete tl_drawing_color;
 }
 
 //------------------- PUBLIC MEMBERS ----------------
 
 Status *Ktoon::currentStatus()
 {
+    Q_CHECK_PTR( current_status );
     return current_status;
 }
 
 Timeline *Ktoon::timeline()
 {
+    Q_CHECK_PTR( timeline_dialog );
     return timeline_dialog;
 }
 
 ExposureSheet *Ktoon::exposureSheet()
 {
+    Q_CHECK_PTR( exposure_sheet_dialog );
     return exposure_sheet_dialog;
 }
 
 Library *Ktoon::library()
 {
+    Q_CHECK_PTR( library_dialog );
     return library_dialog;
 }
 
 ColorPalette *Ktoon::colorPalette()
 {
+    Q_CHECK_PTR( color_palette_dialog );
     return color_palette_dialog;
 }
 
 Brushes *Ktoon::brushes()
 {
+    Q_CHECK_PTR( brushes_dialog );
     return brushes_dialog;
 }
 
 DrawingArea *Ktoon::drawingArea()
 {
+    Q_CHECK_PTR( current_drawing_area );
     return current_drawing_area;
 }
 
 GLRenderCameraPreview *Ktoon::renderCameraPreview()
 {
+    Q_CHECK_PTR( render_camera_preview );
     return render_camera_preview;
 }
 
 Scenes *Ktoon::scenes()
 {
+    Q_CHECK_PTR( scenes_dialog );
     return scenes_dialog;
 }
 
 Tools *Ktoon::toolsDialog()
 {
+    Q_CHECK_PTR( tools_dialog );
     return tools_dialog;
 }
 
 GLTopCameraView *Ktoon::topCameraView()
 {
+    Q_CHECK_PTR( top_camera_view );
     return top_camera_view;
 }
 
 GLSideCameraView *Ktoon::sideCameraView()
 {
+    Q_CHECK_PTR( side_camera_view );
     return side_camera_view;
 }
 
 Document *Ktoon::document()
 {
+    Q_CHECK_PTR( document_ );
     return document_;
 }
 
@@ -1169,7 +1286,118 @@ Folder *Ktoon::createFolder( const QDomElement &tag )
 	n_item = n_item.nextSibling();
     }
     folder -> setItems( items );
+    Q_CHECK_PTR( folder );
     return folder;
+}
+
+//---------- PUBLIC MEMBERS FOR EXPOSURE SHEET AND TIMELINE ----------------
+
+QColor *Ktoon::esDefaultColor()
+{
+    Q_CHECK_PTR( es_default_color );
+    return es_default_color;
+}
+
+QColor *Ktoon::esUseColor()
+{
+    Q_CHECK_PTR( es_use_color );
+    return es_use_color;
+}
+
+QColor *Ktoon::esSelectionColor()
+{
+    Q_CHECK_PTR( es_selection_color );
+    return es_selection_color;
+}
+
+QColor *Ktoon::esSelectAndUseColor()
+{
+    Q_CHECK_PTR( es_select_and_use_color );
+    return es_select_and_use_color;
+}
+
+QColor *Ktoon::esTextColorWhenSelected()
+{
+    Q_CHECK_PTR( es_text_color_when_selected );
+    return es_text_color_when_selected;
+}
+
+QColor *Ktoon::esDefaultTextColor()
+{
+    Q_CHECK_PTR( es_default_text_color );
+    return es_default_text_color;
+}
+
+QColor *Ktoon::esLockColor()
+{
+    Q_CHECK_PTR( es_lock_color );
+    return es_lock_color;
+}
+
+QColor *Ktoon::esLockAndSelectColor()
+{
+    Q_CHECK_PTR( es_lock_and_select_color );
+    return es_lock_and_select_color;
+}
+
+QColor *Ktoon::esHasDrawingColor()
+{
+    Q_CHECK_PTR( es_has_drawing_color );
+    return es_has_drawing_color;
+}
+
+QColor *Ktoon::tlDefaultColor()
+{
+    Q_CHECK_PTR( tl_default_color );
+    return tl_default_color;
+}
+
+QColor *Ktoon::tlSelectionColor()
+{
+    Q_CHECK_PTR( tl_selection_color );
+    return tl_selection_color;
+}
+
+QColor *Ktoon::tlSpecialColor()
+{
+    Q_CHECK_PTR( tl_special_color );
+    return tl_special_color;
+}
+
+QColor *Ktoon::tlOffsetColor()
+{
+    Q_CHECK_PTR( tl_offset_color );
+    return tl_offset_color;
+}
+
+QColor *Ktoon::tlDragOffsetColor()
+{
+    Q_CHECK_PTR( tl_drag_offset_color );
+    return tl_drag_offset_color;
+}
+
+QColor *Ktoon::tlBorderColor()
+{
+    Q_CHECK_PTR( tl_border_color );
+    return tl_border_color;
+}
+
+QColor *Ktoon::tlUseBorderColor()
+{
+    Q_CHECK_PTR( tl_use_border_color );
+    return tl_use_border_color;
+}
+
+QColor *Ktoon::tlMotionColor()
+{
+    Q_CHECK_PTR( tl_motion_color );
+    return tl_motion_color;
+}
+
+QColor *Ktoon::tlDrawingColor()
+{
+    Q_CHECK_PTR( tl_drawing_color );
+    return tl_drawing_color;
 }
 
 //------------------- SLOTS AND FUNCTIONS FILE MENU ----------------------------
@@ -2992,6 +3220,7 @@ void Ktoon::slotMoveDownSync( int sp )
 
 void Ktoon::closeEvent( QCloseEvent *close_event )
 {
+    Q_CHECK_PTR( close_event );
     if ( current_drawing_area )
     {
         if ( !current_drawing_area -> close() )

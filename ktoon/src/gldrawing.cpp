@@ -26,6 +26,8 @@
 #include "glpencil.h"
 #include "glbrush.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 GLDrawing::GLDrawing()
 {
 
@@ -79,10 +81,14 @@ GLDrawing::GLDrawing( const GLDrawing &to_copy )
     }
 }
 
+//------------- DESTRUCTOR ------------------
+
 GLDrawing::~GLDrawing()
 {
     graphic_components.clear();
 }
+
+//------------ PUBLIC MEMBERS ---------------
 
 void GLDrawing::setGraphicComponents( QPtrList<GLGraphicComponent> _graphic_components )
 {

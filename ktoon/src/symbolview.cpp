@@ -28,6 +28,8 @@
 
 SymbolView::SymbolView( QWidget *parent, QGLWidget *share ) : QGLWidget( parent, "", share )
 {
+    Q_CHECK_PTR( parent );
+    Q_CHECK_PTR( share );
     parent_widget = parent;
     share_widget = share;
     displayed_graphic = NULL;
@@ -47,6 +49,7 @@ SymbolView::~SymbolView()
 
 QGLWidget *SymbolView::shareWidget() const
 {
+    Q_CHECK_PTR( share_widget );
     return share_widget;
 }
 
@@ -121,12 +124,14 @@ void SymbolView::paintGL()
 
 void SymbolView::mousePressEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     mouse_event -> accept();
     dragging = true;
 }
 
 void SymbolView::mouseMoveEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     if ( dragging && displayed_graphic != NULL )
     {
         mouse_event -> accept();
@@ -145,6 +150,7 @@ void SymbolView::mouseMoveEvent( QMouseEvent *mouse_event )
 
 void SymbolView::mouseReleaseEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     if ( valid_drag )
     {
         mouse_event -> accept();

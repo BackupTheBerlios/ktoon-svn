@@ -33,7 +33,11 @@
 Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
     : QDialog( parent, "Brushes", false, style )
 {
-    //Inicializaciones
+    Q_CHECK_PTR( parent );
+    Q_CHECK_PTR( in_assigned_menu );
+    Q_CHECK_PTR( assig_tb_button );
+
+    //Initializations
     setCaption( tr( "Brushes" ) );
     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     resize( 200, 360 );
@@ -203,7 +207,24 @@ Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
 
 Brushes::~Brushes()
 {
-
+    delete add_brush;
+    delete remove_brush;
+    delete table_brushes;
+    delete text_min_thickness;
+    delete text_max_thickness;
+    delete text_smoothness;
+    delete text_name;
+    delete value_min_thickness;
+    delete value_max_thickness;
+    delete value_smoothness;
+    delete value_name;
+    delete slider_min_thickness;
+    delete slider_max_thickness;
+    delete slider_smoothness;
+    delete circle_min_thickness;
+    delete circle_max_thickness;
+    delete previsualization;
+    delete previsualization_container;
 }
 
 //--------------- PUBLIC MEMBERS ---------------
@@ -535,6 +556,7 @@ void Brushes::slotSelectBrush()
 
 void Brushes::closeEvent( QCloseEvent* close_event )
 {
+    Q_CHECK_PTR( close_event );
     assigned_menu -> setItemChecked( assigned_item, false );
     assigned_tb_button -> setDown( false );
     close_event -> accept();

@@ -27,6 +27,8 @@
 
 About::About( QWidget *parent ) : QTabDialog( parent )
 {
+    Q_CHECK_PTR( parent );
+    
     setCaption( tr( "About" ) + QString( " Ktoon..." ) );
     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     resize( 580, 400 );
@@ -142,7 +144,19 @@ About::About( QWidget *parent ) : QTabDialog( parent )
 
 About::~About()
 {
-
+    delete credits_timer;
+    delete credits_painter;
+    delete credits;
+    delete ack;
+    delete ack_timer;
+    delete text_log;
+    delete scroll_log;
+    delete scroll_container_log;
+    delete toonka;
+    delete laboratoon;
+    delete text_gnu;
+    delete scroll_gnu;
+    delete scroll_container_gnu;
 }
 
 //-------------- PUBLIC MEMBERS ----------------
@@ -180,6 +194,7 @@ void About::slotDisplayAcknowledgementsPixmap()
 
 void About::slotPerformPageChangeActions( QWidget *page_widget )
 {
+    Q_CHECK_PTR( page_widget );
     if ( ( QLabel * )page_widget == credits )
     {
         ack_timer -> stop();

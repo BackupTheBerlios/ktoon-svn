@@ -25,6 +25,8 @@
 
 PencilProperties::PencilProperties( QWidget *parent ) : QDialog( parent, "Pencil Properties", true )
 {
+    Q_CHECK_PTR( parent );
+    
     //Initializations
     setCaption( tr( "Pencil Properties" ) );
     setFont( QFont( "helvetica", 10 ) );
@@ -105,13 +107,26 @@ PencilProperties::PencilProperties( QWidget *parent ) : QDialog( parent, "Pencil
 
 PencilProperties::~PencilProperties()
 {
-
+    delete accept;
+    delete cancel;
+    delete text_origin;
+    delete text_origin_x;
+    delete text_origin_y;
+    delete text_pattern;
+    delete text_factor;
+    delete text_angle;
+    delete value_origin_x;
+    delete value_origin_y;
+    delete value_factor;
+    delete value_angle;
+    delete value_pattern;
 }
 
 //-------------- PUBLIC MEMBERS ----------------
 
 void PencilProperties::loadFromGraphic( GLPencil *pencil )
 {
+   Q_CHECK_PTR( pencil );
    value_origin_x -> setText( QString::number( pencil -> originPoint().x() ) );
    value_origin_y -> setText( QString::number( pencil -> originPoint().y() ) );
    switch ( pencil -> stipplePattern() )

@@ -24,6 +24,8 @@
 
 ColorDisplay::ColorDisplay( QWidget *parent ) : QFrame( parent )
 {
+    Q_CHECK_PTR( parent );
+
     setFrameStyle( QFrame::Panel | QFrame::Sunken );
     parent_widget = parent;
     current_color = QColor( 0, 0, 0 );
@@ -48,8 +50,9 @@ QColor ColorDisplay::currentColor()
 
 //-------------- SLOTS ----------------
 
-void ColorDisplay::slotSetColor( const QColor &new_color )
+void ColorDisplay::slotSetColor( const QColor & new_color )
 {
+    Q_ASSERT( new_color.isValid() );
     current_color = new_color;
     update();
     emit colorChanged( current_color );
@@ -57,6 +60,7 @@ void ColorDisplay::slotSetColor( const QColor &new_color )
 
 void ColorDisplay::slotChangeR( int value )
 {
+    Q_ASSERT( value > 0 );
     current_color.setRgb( value, current_color.green(), current_color.blue() );
     update();
     emit colorChanged( current_color );
@@ -64,6 +68,7 @@ void ColorDisplay::slotChangeR( int value )
 
 void ColorDisplay::slotChangeG( int value )
 {
+    Q_ASSERT( value > 0 );
     current_color.setRgb( current_color.red(), value, current_color.blue() );
     update();
     emit colorChanged( current_color );
@@ -71,6 +76,7 @@ void ColorDisplay::slotChangeG( int value )
 
 void ColorDisplay::slotChangeB( int value )
 {
+    Q_ASSERT( value > 0 );
     current_color.setRgb( current_color.red(), current_color.green(), value );
     update();
     emit colorChanged( current_color );
@@ -78,6 +84,7 @@ void ColorDisplay::slotChangeB( int value )
 
 void ColorDisplay::slotChangeH( int value )
 {
+    Q_ASSERT( value > 0 );
     int c_h, c_s, c_v;
     current_color.getHsv( &c_h, &c_s, &c_v );
     current_color.setHsv( value, c_s, c_v );
@@ -87,6 +94,7 @@ void ColorDisplay::slotChangeH( int value )
 
 void ColorDisplay::slotChangeS( int value )
 {
+    Q_ASSERT( value > 0 );
     int c_h, c_s, c_v;
     current_color.getHsv( &c_h, &c_s, &c_v );
     current_color.setHsv( c_h, value, c_v );
@@ -96,6 +104,7 @@ void ColorDisplay::slotChangeS( int value )
 
 void ColorDisplay::slotChangeV( int value )
 {
+    Q_ASSERT( value > 0 );
     int c_h, c_s, c_v;
     current_color.getHsv( &c_h, &c_s, &c_v );
     current_color.setHsv( c_h, c_s, value );
@@ -105,6 +114,7 @@ void ColorDisplay::slotChangeV( int value )
 
 void ColorDisplay::slotChangeA( int value )
 {
+    Q_ASSERT( value > 0 );
     alpha = ( float )value / 100.0;
     update();
 }
@@ -113,6 +123,8 @@ void ColorDisplay::slotChangeA( int value )
 
 void ColorDisplay::drawContents( QPainter *painter )
 {
+    Q_CHECK_PTR( painter );
+
     //----- Draw the current color rectangle -----
 
     intermediate_dark_color = QColor( ( int )( current_color.red() * alpha + dark_block_color.red() * ( 1.0 - alpha ) ),

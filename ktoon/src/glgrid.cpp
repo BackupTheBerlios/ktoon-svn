@@ -27,8 +27,12 @@
 
 #define GRID_FONT "fixed"
 
+//-------------- CONSTRUCTOR ---------------
+
 GLGrid::GLGrid( QGLWidget *parent, const GLuint & max_width, const GLuint & max_height, const GLuint & number_lines, const bool & zoom_lines, const bool & ntsc_zone ) : max_width ( max_width ), max_height ( max_height ), number_lines ( number_lines ), zoom_lines( zoom_lines ), ntsc_zone( ntsc_zone )
 {
+    Q_CHECK_PTR( parent );
+
     parent_widget = parent;
     grid_color = QColor( 210, 210, 210 );
     ntsc_color = QColor( 255, 0, 0 );
@@ -72,6 +76,8 @@ GLGrid::GLGrid( QGLWidget *parent, const GLuint & max_width, const GLuint & max_
     buildGrid();
 }
 
+//------------- DESTRUCTOR ------------------
+
 GLGrid::~GLGrid()
 {
    if( glIsList( id_grid ) )
@@ -81,6 +87,8 @@ GLGrid::~GLGrid()
    }
 }
 
+
+//------------ PUBLIC MEMBERS ---------------
 
 void GLGrid::draw()
 {
@@ -290,6 +298,8 @@ void GLGrid::buildFonts()
 
 void GLGrid::drawLine( const QPoint & initial, const QPoint & final, const QColor & color, const GLfloat & line_width )
 {
+     Q_ASSERT( color.isValid() );
+     
      glLineWidth( line_width );
      glColor3f( color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0  );
 
@@ -302,6 +312,8 @@ void GLGrid::drawLine( const QPoint & initial, const QPoint & final, const QColo
 
 void GLGrid::drawLine( GLfloat initial_x, GLfloat initial_y, GLfloat final_x, GLfloat final_y, const QColor & color, const GLfloat & line_width )
 {
+     Q_ASSERT( color.isValid() );
+
      glLineWidth( line_width );
      glColor3f( color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0  );
 
@@ -313,13 +325,17 @@ void GLGrid::drawLine( GLfloat initial_x, GLfloat initial_y, GLfloat final_x, GL
 
 void GLGrid::drawNumber( const QPoint & initial, const QColor & color, const QString & string_number )
 {
+     Q_ASSERT( color.isValid() );
+
      glColor3f(  color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0  );
      parent_widget -> renderText( initial.x() - 10, initial.y() + 10, string_number, QFont( "helvetica", 12, QFont::Bold, TRUE ) );
 }
 
 void GLGrid::drawNumber( GLdouble x, GLdouble y, GLdouble z, const QColor & color, const QString & string_number ) const
 {
-     glColor3f( color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0 );
+    Q_ASSERT( color.isValid() );
+
+    glColor3f( color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0 );
 
     glRasterPos3d(x, y, z);
     glPushAttrib( GL_LIST_BIT | GL_COLOR_BUFFER_BIT );
@@ -331,22 +347,30 @@ void GLGrid::drawNumber( GLdouble x, GLdouble y, GLdouble z, const QColor & colo
 
 void GLGrid::setMinWidth( const GLuint & _min_width )
 {
+ Q_ASSERT( _min_width > 0 );
+
  min_width = _min_width;
 }
 
 void GLGrid::setMinHeight( const GLuint & _min_height )
 {
+ Q_ASSERT( _min_height > 0 );
+
  min_height = _min_height;
 }
 
 void GLGrid::setMaxWidth( const GLuint & _max_width )
 {
+ Q_ASSERT( _max_width > 0 );
+
  max_width = _max_width;
-  buildGrid();
+ buildGrid();
 }
 
 void GLGrid::setMaxHeight( const GLuint & _max_height )
 {
+ Q_ASSERT( _max_height > 0 );
+
  max_height = _max_height;
   buildGrid();
 }
@@ -376,6 +400,8 @@ void GLGrid::setNtscZone( const bool & _ntsc_zone )
 
 void GLGrid::setGridColor( const QColor & _grid_color )
 {
+    Q_ASSERT( _grid_color.isValid() );
+
     grid_color = _grid_color;
     buildGrid( 2, id_grid2 );
     buildGrid( 24, id_grid12 );
@@ -397,6 +423,8 @@ void GLGrid::setGridColor( const QColor & _grid_color )
 
 void GLGrid::setNTSCColor( const QColor & _ntsc_color )
 {
+    Q_ASSERT( _ntsc_color.isValid() );
+
     ntsc_color = _ntsc_color;
     buildNtsc();
 }

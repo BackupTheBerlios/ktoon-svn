@@ -23,20 +23,31 @@
 #include "glcontrol.h"
 #include "ktoon.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 GLControl::GLControl( QWidget *parent, QWidget *grandparent, const char *name, QGLWidget *share, WFlags f ) : QGLWidget( parent, name, share, f )
  {
+    Q_CHECK_PTR( parent );
+    Q_CHECK_PTR( grandparent );
+
     parent_widget = parent;
     grandparent_widget = grandparent;
     k_toon = ( Ktoon * ) grandparent_widget;
  }
 
- GLControl::~GLControl( )
+ //------------- DESTRUCTOR ------------------
+
+GLControl::~GLControl( )
  {
 
  }
 
- void GLControl::mousePressEvent( QMouseEvent *mouse )
+ //------------ PUBLIC MEMBERS ---------------
+
+void GLControl::mousePressEvent( QMouseEvent *mouse )
  {
+ Q_CHECK_PTR( mouse );
+
  mouse -> accept();
  switch ( k_toon -> currentStatus() -> currentCursor() )
   {
@@ -101,6 +112,8 @@ GLControl::GLControl( QWidget *parent, QWidget *grandparent, const char *name, Q
 
 void GLControl::mouseReleaseEvent( QMouseEvent *mouse )
  {
+ Q_CHECK_PTR( mouse );
+
   mouse -> accept();
   switch ( k_toon -> currentStatus() -> currentCursor() )
   {
@@ -154,6 +167,8 @@ void GLControl::mouseReleaseEvent( QMouseEvent *mouse )
 
  void GLControl::mouseMoveEvent( QMouseEvent *mouse )
  {
+ Q_CHECK_PTR( mouse );
+
   mouse -> accept();
   switch ( k_toon -> currentStatus() -> currentCursor() )
   {
@@ -208,12 +223,16 @@ void GLControl::mouseReleaseEvent( QMouseEvent *mouse )
 
    void GLControl::mouseDoubleClickEvent( QMouseEvent *mouse )
  {
+   Q_CHECK_PTR( mouse );
+
    mouse -> accept();
    setOldPosition ( mouse -> pos() );
  }
 
 void GLControl::tabletEvent( QTabletEvent *tablet )
  {
+  Q_CHECK_PTR( tablet );
+
   tablet -> accept();
 
   setOldPosition ( newPosition() );

@@ -25,6 +25,8 @@
 
 LineProperties::LineProperties( QWidget *parent ) : QDialog( parent, "Line Properties", true )
 {
+    Q_CHECK_PTR( parent );
+
     //Initializations
     setCaption( tr( "Line Properties" ) );
     setFont( QFont( "helvetica", 10 ) );
@@ -125,13 +127,32 @@ LineProperties::LineProperties( QWidget *parent ) : QDialog( parent, "Line Prope
 
 LineProperties::~LineProperties()
 {
-
+    delete accept;
+    delete cancel;
+    delete text_origin;
+    delete text_origin_x;
+    delete text_origin_y;
+    delete text_pattern;
+    delete text_factor;
+    delete text_end;
+    delete text_end_x;
+    delete text_end_y;
+    delete text_angle;
+    delete value_origin_x;
+    delete value_origin_y;
+    delete value_factor;
+    delete value_end_x;
+    delete value_end_y;
+    delete value_angle;
+    delete value_pattern;
 }
 
 //-------------- PUBLIC MEMBERS ----------------
 
 void LineProperties::loadFromGraphic( GLLine *line )
 {
+   Q_CHECK_PTR( line );
+
    value_origin_x -> setText( QString::number( line -> originPoint().x() ) );
    value_origin_y -> setText( QString::number( line -> originPoint().y() ) );
    value_end_x -> setText( QString::number( line -> endLine().x() ) );

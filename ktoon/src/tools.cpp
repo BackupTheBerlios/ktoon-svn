@@ -29,6 +29,10 @@
 Tools::Tools( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
     : QDialog( parent, "Tools", false, style )
 {
+    Q_CHECK_PTR( parent );
+    Q_CHECK_PTR( in_assigned_menu );
+    Q_CHECK_PTR( assig_tb_button );
+    
     //Initializations
     setCaption( "" );
     setFont( QFont( "helvetica", 10 ) );
@@ -145,13 +149,24 @@ Tools::Tools( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int i
 
 Tools::~Tools()
 {
-
+    delete menu_button_selection;
+    delete menu_button_draw;
+    delete menu_button_fill;
+    delete menu_button_eraser;
+    delete menu_button_view;
+    
+    delete selection_button;
+    delete draw_button;
+    delete fill_button;
+    delete eraser_button;
+    delete view_button;
 }
 
 //--------------------- EVENTS AND OTHER FUNCTIONS --------------------------------
 
 void Tools::closeEvent( QCloseEvent* close_event )
 {
+    Q_CHECK_PTR( close_event );
     assigned_menu -> setItemChecked( assigned_item, false );
     assigned_tb_button -> setDown( false );
     close_event -> accept();

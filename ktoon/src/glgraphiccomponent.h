@@ -322,14 +322,14 @@ public:
       * \return The outline color. Note that it is of type Color, not QColor
       * \sa setOutlineColor()
       */
-     Color outlineColor() const;
+     const Color & outlineColor() const;
      /*!
       * \brief Gets the brush which this graphic component was drawn with
       *
       * \return The current brush
       * \sa setWidthPoint()
       */
-     Brush widthPoint() const;
+     const Brush & widthPoint() const;
      /*!
       * \brief Gets this graphic component's kind
       *

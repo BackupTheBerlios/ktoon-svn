@@ -32,6 +32,10 @@
 Scenes::Scenes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
     : QDialog( parent, "Scenes", false, style )
 {
+    Q_CHECK_PTR( parent );
+    Q_CHECK_PTR( in_assigned_menu );
+    Q_CHECK_PTR( assig_tb_button );
+    
     //Initializations
     setCaption( tr( "Scenes" ) );
     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
@@ -126,7 +130,13 @@ Scenes::Scenes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int
 
 Scenes::~Scenes()
 {
-
+    delete insert_scene; 
+    delete remove_scene;
+    delete move_scene_up;
+    delete move_scene_down;
+    delete table_scenes;
+    delete text_name;
+    delete value_name;
 }
 
 //--------------- PUBLIC MEMBERS ------------------

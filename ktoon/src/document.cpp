@@ -23,6 +23,8 @@
 
 #include "document.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 Document::Document()
 {
     animation = new Animation();
@@ -30,6 +32,8 @@ Document::Document()
     library = new LibraryData();
     name = "";
 }
+
+//------------- DESTRUCTOR ------------------
 
 Document::~Document()
 {
@@ -41,19 +45,23 @@ Document::~Document()
     brushes.setAutoDelete( false );
 }
 
-void Document::setNameDocument( const QString & _name ) 
+//------------ PUBLIC MEMBERS ---------------
+
+void Document::setNameDocument( const QString & _name )
 {
     name = _name;
 }
 
 void Document::setAnimation( Animation *_animation )
 {
-    animation = _animation;
+   Q_CHECK_PTR( _animation );
+   animation = _animation;
 }
 
 void Document::setPalette( Palette *palette )
 {
-    custom_palette = palette;
+  Q_CHECK_PTR( palette );
+  custom_palette = palette;
 }
 
 void Document::setBrushes( QPtrList<Brush> _brushes )
@@ -63,7 +71,8 @@ void Document::setBrushes( QPtrList<Brush> _brushes )
 
 void Document::setLibrary( LibraryData *_library )
 {
-    library = _library;
+   Q_CHECK_PTR( _library );
+   library = _library;
 }
 
 QString Document::nameDocument() const
@@ -73,11 +82,13 @@ QString Document::nameDocument() const
 
 Animation *Document::getAnimation() const
 {
-    return animation;
+   Q_CHECK_PTR( animation );
+   return animation;
 }
 
 Palette *Document::getPalette() const
 {
+    Q_CHECK_PTR( custom_palette );
     return custom_palette;
 }
 
@@ -88,11 +99,13 @@ QPtrList<Brush> Document::getBrushes() const
 
 LibraryData *Document::getLibrary() const
 {
+    Q_CHECK_PTR( library );
     return library;
 }
 
 void Document::save( QFile *f )
 {
+    Q_CHECK_PTR( f );
     xml_doc = QDomDocument( turnSlashesIntoUnderscores( name ) );
 
     QDomElement root = xml_doc.createElement( "Document" );

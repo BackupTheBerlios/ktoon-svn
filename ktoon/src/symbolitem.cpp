@@ -29,6 +29,7 @@
 
 SymbolItem::SymbolItem( SymbolTable *parent, const QString &text ) : QListViewItem( parent, text )
 {
+    Q_CHECK_PTR( parent );
     kind = UNDEFINED;
     graphic = NULL;
 
@@ -38,6 +39,7 @@ SymbolItem::SymbolItem( SymbolTable *parent, const QString &text ) : QListViewIt
 
 SymbolItem::SymbolItem( SymbolItem *parent, const QString &text ) : QListViewItem( parent, text )
 {
+    Q_CHECK_PTR( parent );
     kind = UNDEFINED;
     graphic = NULL;
 
@@ -80,11 +82,13 @@ void SymbolItem::setKind( int kind_ )
 
 GLGraphicComponent *SymbolItem::getGraphic() const
 {
+    Q_CHECK_PTR( graphic );
     return graphic;
 }
 
 void SymbolItem::setGraphic( GLGraphicComponent *graphic_ )
 {
+    Q_CHECK_PTR( graphic_ );
     graphic = graphic_;
 }
 

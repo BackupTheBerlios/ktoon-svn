@@ -24,6 +24,8 @@
 
 ColorGradientSelector::ColorGradientSelector( QWidget *parent ) : QWidget( parent )
 {
+    Q_CHECK_PTR( parent );
+
     resize( 175, 20 );
     parent_widget = parent;
     highlight = QColor( 255, 255, 255 );
@@ -77,31 +79,35 @@ GradientSwitch *ColorGradientSelector::currentSwitch()
     return current_switch;
 }
 
-GradientSwitch *ColorGradientSelector::switchBefore( GradientSwitch *gs )
+GradientSwitch *ColorGradientSelector::switchBefore( GradientSwitch *gradient_switch )
 {
+    Q_CHECK_PTR( gradient_switch );
+
     GradientSwitch *gs_iterator, *gs_before;
     gs_before = NULL;
     for ( gs_iterator = switches.first(); gs_iterator; gs_iterator = switches.next() )
     {
-	if ( gs_iterator != fake_switch && gs_iterator != gs )
+	if ( gs_iterator != fake_switch && gs_iterator != gradient_switch )
 	    gs_before = gs_iterator;
 
-	if ( gs_iterator == gs )
+	if ( gs_iterator == gradient_switch )
 	    return gs_before;
     }
     return NULL;
 }
 
-GradientSwitch *ColorGradientSelector::switchAfter( GradientSwitch *gs )
+GradientSwitch *ColorGradientSelector::switchAfter( GradientSwitch *gradient_switch )
 {
+    Q_CHECK_PTR( gradient_switch );
+
     GradientSwitch *gs_iterator, *gs_before;
     gs_before = NULL;
     for ( gs_iterator = switches.last(); gs_iterator; gs_iterator = switches.prev() )
     {
-	if ( gs_iterator != fake_switch && gs_iterator != gs )
+	if ( gs_iterator != fake_switch && gs_iterator != gradient_switch )
 	    gs_before = gs_iterator;
 
-	if ( gs_iterator == gs )
+	if ( gs_iterator == gradient_switch )
 	    return gs_before;
     }
     return NULL;
@@ -222,6 +228,8 @@ void ColorGradientSelector::slotDeleteSwitch()
 
 void ColorGradientSelector::mousePressEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
+
     if ( mouse_event -> y() >= 10 && mouse_event -> x() >= 3 && mouse_event -> x() <= 171 && mouse_event -> button() == Qt::LeftButton && mouse_event -> state() == Qt::NoButton )
     {
         if ( fake_switch != switches.at( mouse_event -> x() ) )
@@ -266,6 +274,8 @@ void ColorGradientSelector::mousePressEvent( QMouseEvent *mouse_event )
 
 void ColorGradientSelector::paintEvent( QPaintEvent *paint_event )
 {
+    Q_CHECK_PTR( paint_event );
+
     if ( paint_event -> erased() )
     {
         painter.begin( this );
@@ -294,6 +304,7 @@ void ColorGradientSelector::paintEvent( QPaintEvent *paint_event )
 
 void ColorGradientSelector::interpolateColors( const QColor &color1, const QColor &color2, int pos_color1, int pos_color2 )
 {
+    Q_ASSERT( color1.isValid() && color2.isValid() );
     QColor intermediate;
     int grad_distance = pos_color2 - pos_color1;
 

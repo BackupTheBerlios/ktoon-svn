@@ -23,8 +23,12 @@
 
  #include "glrectangle.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 GLRectangle::GLRectangle( QGLWidget *parent, const QPoint & _origin, const Color & outline_color, const Brush & _width, const QPoint & _end, Color & _fill_color ) : GLGraphicComponent( parent, _origin, outline_color, _width ), end( _end ), fill_color( _fill_color)
 {
+         Q_CHECK_PTR( parent );
+
 	 setKindGraphic( GC_RECTANGLE );
          id_graphic_component = glGenLists( 1 );
 	 setPerfectRectangle( false );
@@ -55,10 +59,14 @@ GLRectangle::GLRectangle( const GLRectangle & rectangle ) : GLGraphicComponent( 
          buildList();
 }
 
+//------------- DESTRUCTOR ------------------
+
 GLRectangle::~GLRectangle( )
 {
 
 }
+
+//------------ PUBLIC MEMBERS ---------------
 
 //implementation of the virtual method buildList for rectangle
 void GLRectangle::buildList( )

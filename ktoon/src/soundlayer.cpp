@@ -20,10 +20,14 @@
 
 #include "soundlayer.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 SoundLayer::SoundLayer()
 {
 
 }
+
+//------------- DESTRUCTOR ------------------
 
 SoundLayer::~SoundLayer()
 {

@@ -30,6 +30,10 @@
 Timeline::Timeline( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
     : QDialog( parent, "Timeline", false, style )
 {
+    Q_CHECK_PTR( parent );
+    Q_CHECK_PTR( in_assigned_menu );
+    Q_CHECK_PTR( assig_tb_button );
+    
     //Initializations
     setCaption( tr( "Timeline" ) );
     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
@@ -92,18 +96,25 @@ Timeline::Timeline( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu,
 
 Timeline::~Timeline()
 {
-
+    delete layer_manager;
+    delete frame_sequence_manager;
+    delete splitter;
+    delete sound_label;
+    delete sound_widget;
+    delete sound_widget_container;
 }
 
 //----------------- PUBLIC MEMBERS -------------------
 
 TLFrameSequenceManager *Timeline::frameSequenceManager()
 {
+    Q_CHECK_PTR( frame_sequence_manager );
     return frame_sequence_manager;
 }
 
 TLLayerManager *Timeline::layerManager()
 {
+    Q_CHECK_PTR( layer_manager );
     return layer_manager;
 }
 
@@ -181,6 +192,7 @@ void Timeline::slotUpdateTotalTime( int max_offset )
 
 void Timeline::closeEvent( QCloseEvent *close_event )
 {
+    Q_CHECK_PTR( close_event );
     assigned_menu -> setItemChecked( assigned_item, false );
     assigned_tb_button -> setDown( false );
     close_event -> accept();
@@ -188,6 +200,7 @@ void Timeline::closeEvent( QCloseEvent *close_event )
 
 void Timeline::resizeEvent( QResizeEvent *resize_event )
 {
+    Q_CHECK_PTR( resize_event );
     //Update the size of the splitter in order to fit into the dialog box
     QSize new_size = resize_event -> size();
     if ( frame_sequence_manager -> soundButton() -> isOn() )
@@ -208,6 +221,7 @@ void Timeline::resizeEvent( QResizeEvent *resize_event )
 
 void Timeline::keyPressEvent( QKeyEvent *key_event )
 {
+    Q_CHECK_PTR( key_event );
     switch( key_event -> key() )
     {
 	case Qt::Key_F5:

@@ -20,9 +20,17 @@
 
  #include "glsidecameraview.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 GLSideCameraView::GLSideCameraView( QWidget* parent, QWidget *grandparent, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button, QGLWidget *share, WFlags f )
     : QGLWidget( parent, "", share, f )
 {
+    Q_CHECK_PTR( parent );
+    Q_CHECK_PTR( grandparent );
+    Q_CHECK_PTR( in_assigned_menu );
+    Q_CHECK_PTR( assig_tb_button );
+    Q_CHECK_PTR( share );
+
     //Initializations
     max_horizontal = 350;
     max_vertical = 200;
@@ -97,21 +105,25 @@ void GLSideCameraView::paintGL()
 
 void GLSideCameraView::mousePressEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     mouse_event -> accept();
 }
 
 void GLSideCameraView::mouseMoveEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     mouse_event -> accept();
 }
 
 void GLSideCameraView::mouseReleaseEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     mouse_event -> accept();
 }
 
 void GLSideCameraView::closeEvent( QCloseEvent *close_event )
 {
+    Q_CHECK_PTR( close_event );
     assigned_menu -> setItemChecked( assigned_item, false );
     assigned_tb_button -> setDown( false );
     close_event -> accept();

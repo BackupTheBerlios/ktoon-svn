@@ -25,6 +25,8 @@
 
 EllipseProperties::EllipseProperties( QWidget *parent ) : QDialog( parent, "Ellipse Properties", true )
 {
+    Q_CHECK_PTR( parent );
+
     //Initializations
     setCaption( tr( "Ellipse Properties" ) );
     setFont( QFont( "helvetica", 10 ) );
@@ -133,13 +135,33 @@ EllipseProperties::EllipseProperties( QWidget *parent ) : QDialog( parent, "Elli
 
 EllipseProperties::~EllipseProperties()
 {
-
+    delete accept;
+    delete cancel;
+    delete text_origin;
+    delete text_origin_x;
+    delete text_origin_y;
+    delete text_pattern;
+    delete text_factor;
+    delete text_radius;
+    delete text_radius_x;
+    delete text_radius_y;
+    delete text_angle;
+    delete value_origin_x;
+    delete value_origin_y;
+    delete value_factor;
+    delete value_radius_x;
+    delete value_radius_y;
+    delete value_angle;
+    delete check_fill;
+    delete check_perfect;
+    delete value_pattern;
 }
 
 //-------------- PUBLIC MEMBERS ----------------
 
 void EllipseProperties::loadFromGraphic( GLEllipse *ellipse )
 {
+    Q_CHECK_PTR( ellipse );
    value_origin_x -> setText( QString::number( ellipse -> originPoint().x() ) );
    value_origin_y -> setText( QString::number( ellipse -> originPoint().y() ) );
    QPoint radius = ellipse -> radiusEllipse();

@@ -23,8 +23,12 @@
 #include <qimage.h>
 #include <math.h>
 
+//-------------- CONSTRUCTOR ---------------
+
 GLImage::GLImage( QGLWidget *parent, const QString &_file_name, const QPoint &_origin, const QPoint &_end ) : GLGraphicComponent( parent, _origin, Color(), Brush() ), file_name( _file_name ), end( _end )
 {
+    Q_CHECK_PTR( parent );
+
     setKindGraphic( GC_IMAGE );
     rotation_angle = 0.0;
     translate.setX( 0 );
@@ -40,10 +44,14 @@ GLImage::GLImage( QGLWidget *parent, const QString &_file_name, const QPoint &_o
     buildList();
 }
 
+//------------- DESTRUCTOR ------------------
+
 GLImage::~GLImage()
 {
 
 }
+
+//------------ PUBLIC MEMBERS ---------------
 
 void GLImage::buildList()
 {

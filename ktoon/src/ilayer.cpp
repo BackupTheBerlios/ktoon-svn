@@ -24,6 +24,8 @@
 
 ILayer::ILayer( int initial_frames, ESLayer *in_interface_element )
 {
+    Q_CHECK_PTR( in_interface_element );
+
     number_of_frames = initial_frames;
     interface_element = in_interface_element;
     last_frame = NULL;
@@ -61,6 +63,8 @@ ESFrame *ILayer::selectedFrame()
 
 void ILayer::availableFrames( QPtrList<ESFrame> *empty_list_to_be_filled )
 {
+    Q_CHECK_PTR( empty_list_to_be_filled );
+
     ESFrame *next_frame;
 
     empty_list_to_be_filled -> clear();
@@ -88,11 +92,13 @@ void ILayer::setNumberOfFrames( int in_number_of_frames )
 
 void ILayer::setInterfaceElement( ESLayer *in_interface_element )
 {
+    Q_CHECK_PTR( in_interface_element );
     interface_element = in_interface_element;
 }
 
 void ILayer::setLastFrame( ESFrame *in_last_frame )
 {
+    Q_CHECK_PTR( in_last_frame );
     last_frame = in_last_frame;
 }
 
@@ -153,6 +159,7 @@ void ILayer::deleteAllFrames()
 
 int ILayer::framePosition( ESFrame *frame )
 {
+    Q_CHECK_PTR( frame );
     ESFrame *frame_iterator;
     int i = 0;
     for ( frame_iterator = available_frames.first(); frame_iterator; frame_iterator = available_frames.next() )

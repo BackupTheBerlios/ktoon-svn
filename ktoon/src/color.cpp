@@ -22,6 +22,8 @@
 
 #include "color.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 Color::Color()
 {
     name = "";
@@ -32,10 +34,14 @@ Color::Color( float r, float g, float b, float a ): red( r ), green( g ), blue (
     name = "";
 }
 
+//------------- DESTRUCTOR ------------------
+
 Color::~Color()
 {
 
 }
+
+//------------ PUBLIC MEMBERS ---------------
 
 void Color::setNameColor( const QString & _name )
 {

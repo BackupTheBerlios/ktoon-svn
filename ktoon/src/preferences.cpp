@@ -29,6 +29,8 @@
 
 Preferences::Preferences( QWidget *parent ) : QTabDialog( parent, "Application Preferences", true )
 {
+    Q_CHECK_PTR( parent );
+    
     //Initializations
     setCaption( tr( "Application Preferences" ) );
     setFont( QFont( "helvetica", 10 ) );
@@ -75,7 +77,10 @@ Preferences::Preferences( QWidget *parent ) : QTabDialog( parent, "Application P
 
 Preferences::~Preferences()
 {
-
+    delete rb_english;
+    delete rb_spanish;
+    delete language_group;
+    delete language;
 }
 
 //------------------- SLOTS -------------------------

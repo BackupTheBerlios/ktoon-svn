@@ -27,6 +27,8 @@
 TLFrameSequenceLayout::TLFrameSequenceLayout( QWidget *parent )
     : QScrollView( parent )
 {
+    Q_CHECK_PTR( parent );
+    
     //Initializations
     enableClipper( true );
     parent_widget = parent;
@@ -80,6 +82,7 @@ TLFrame *TLFrameSequenceLayout::currentFrame()
 
 TLFrameSequence *TLFrameSequenceLayout::currentFrameSequence()
 {
+    Q_CHECK_PTR( current_frame_sequence );
     return current_frame_sequence;
 }
 
@@ -187,6 +190,7 @@ void TLFrameSequenceLayout::slotRemoveFrameSequence()
 
 void TLFrameSequenceLayout::slotConsequencesOfALayerSelection( TLLayer *selected_layer )
 {
+    Q_CHECK_PTR( selected_layer );
     if ( current_frame != NULL && current_frame_sequence -> position() != selected_layer -> position() )
     {
     	current_frame -> setSelected( false );
@@ -311,6 +315,7 @@ void TLFrameSequenceLayout::slotMoveFrameSequenceDown()
 
 void TLFrameSequenceLayout::slotSwapFrameSequences( int c_pos, int r_pos )
 {
+    Q_ASSERT( c_pos > 0 && r_pos > 0 );
     TLFrameSequence *release_frame_sequence;
 
     release_frame_sequence = NULL;
@@ -349,6 +354,7 @@ void TLFrameSequenceLayout::slotSwapFrameSequences( int c_pos, int r_pos )
 
 void TLFrameSequenceLayout::slotInsertKeyframesIntoTheCurrentFS( int number )
 {
+    Q_ASSERT( number > 0 );
     if ( current_frame != NULL )
         current_frame -> setSelected( false );
     current_frame = NULL;
@@ -408,6 +414,7 @@ void TLFrameSequenceLayout::slotFrameHasDrawing( bool state )
 
 void TLFrameSequenceLayout::resizeEvent( QResizeEvent *resize_event )
 {
+    Q_CHECK_PTR( resize_event );
     QSize new_size = resize_event -> size();
 
     QScrollView::resizeEvent( resize_event );

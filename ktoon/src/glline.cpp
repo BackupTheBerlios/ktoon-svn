@@ -22,8 +22,12 @@
 
 #include "glline.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 GLLine::GLLine( QGLWidget *parent, const QPoint & _origin, const Color & _color, const Brush & _width, const QPoint & _end ) : GLGraphicComponent( parent, _origin, _color, _width ), end( _end )
 {
+    	 Q_CHECK_PTR( parent );
+
 	 setKindGraphic( GC_LINE );
          id_graphic_component = glGenLists( 1 );
  	 stipple_factor = 1;
@@ -50,6 +54,8 @@ GLLine::GLLine( const GLLine & line ) : GLGraphicComponent( line.parentWidget(),
 	 selection_name++;
          buildList();
 }
+
+//------------- DESTRUCTOR ------------------
 
 GLLine::~GLLine()
 {
@@ -165,6 +171,8 @@ void lineImplFast( const QPoint & origin, const QPoint & end, int lw, const Colo
 }
 
 //implementation of the virtual method buildList to Line
+
+//------------ PUBLIC MEMBERS ---------------
 
 void GLLine::buildList()
 {

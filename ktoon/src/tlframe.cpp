@@ -22,24 +22,18 @@
 #include <qapplication.h>
 
 #include "tlframe.h"
+#include "ktoon.h"
 
 //--------------- CONSTRUCTOR --------------------
 
 TLFrame::TLFrame( QWidget *parent )
     : QFrame( parent )
 {
+    Q_CHECK_PTR( parent );
+    
     //Initializations
     resize( 10, 24 );
     setFrameStyle( QFrame::MenuBarPanel | QFrame::Plain );
-    default_color = QColor( 255, 255, 255 );
-    selection_color = QColor( 0, 0, 0 );
-    special_color = QColor( 200, 200, 200 );
-    offset_color = QColor( 255, 0, 0 );
-    drag_offset_color = QColor( 0, 0, 0 );
-    border_color = QColor( 180, 180, 180 );
-    use_border_color = QColor( 0, 0, 0 );
-    motion_color = QColor( 220, 220, 255 );
-    drawing_color = QColor( 230, 230, 230 );
     parent_widget = parent;
     is_special = false;
     is_selected = false;
@@ -51,7 +45,9 @@ TLFrame::TLFrame( QWidget *parent )
     is_unknown_motion = false;
     is_motion = false;
     has_drawing = false;
-    setPaletteBackgroundColor( default_color );
+    
+    k_toon = ( Ktoon * )( parent_widget -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() );
+    setPaletteBackgroundColor( *( k_toon -> tlDefaultColor() ) );
 
     right_click_menu = new QPopupMenu( this );
     right_click_menu -> setFont( QFont( "helvetica", 10 ) );
@@ -64,18 +60,11 @@ TLFrame::TLFrame( QWidget *parent )
 
 TLFrame::TLFrame( TLFrame *in_frame )
 {
+    Q_CHECK_PTR( in_frame );
+    
     QFrame( in_frame -> parentWidget() );
     resize( 10, 24 );
     setFrameStyle( QFrame::MenuBarPanel | QFrame::Plain );
-    default_color = QColor( 255, 255, 255 );
-    selection_color = QColor( 0, 0, 0 );
-    special_color = QColor( 200, 200, 200 );
-    offset_color = QColor( 255, 0, 0 );
-    drag_offset_color = QColor( 0, 0, 0 );
-    border_color = QColor( 180, 180, 180 );
-    use_border_color = QColor( 0, 0, 0 );
-    motion_color = QColor( 220, 220, 255 );
-    drawing_color = QColor( 230, 230, 230 );
     parent_widget = in_frame -> parentWidget();
     is_special = in_frame -> isSpecial();
     is_selected = in_frame -> isSelected();
@@ -87,7 +76,9 @@ TLFrame::TLFrame( TLFrame *in_frame )
     is_motion = in_frame -> isMotion();
     is_drag_offset = in_frame -> isDragOffset();
     has_drawing = in_frame -> hasDrawing();
-    setPaletteBackgroundColor( default_color );
+    
+    k_toon = ( Ktoon * )( parent_widget -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() );
+    setPaletteBackgroundColor( *( k_toon -> tlDefaultColor() ) );
 
     right_click_menu = new QPopupMenu( this );
     right_click_menu -> setFont( QFont( "helvetica", 10 ) );
@@ -102,7 +93,7 @@ TLFrame::TLFrame( TLFrame *in_frame )
 
 TLFrame::~TLFrame()
 {
-
+    delete right_click_menu;
 }
 
 //-------------- PUBLIC MEMBERS ----------------
@@ -241,6 +232,7 @@ void TLFrame::setHasDrawing( bool in_has_drawing )
 
 void TLFrame::setUseProperties( TLFrame *in_frame )
 {
+    Q_CHECK_PTR( in_frame );
     setUsed( in_frame -> isUsed() );
     setKey( in_frame -> isKey() );
     setLast( in_frame -> isLast() );
@@ -255,6 +247,7 @@ void TLFrame::setUseProperties( TLFrame *in_frame )
 
 void TLFrame::mousePressEvent( QMouseEvent *mouse_event )
 {
+    Q_CHECK_PTR( mouse_event );
     setSelected( true );
     mouse_event -> accept();
     emit selected();
@@ -264,13 +257,14 @@ void TLFrame::mousePressEvent( QMouseEvent *mouse_event )
 
 void TLFrame::paintEvent( QPaintEvent *paint_event )
 {
+    Q_CHECK_PTR( paint_event );
     if ( paint_event -> erased() )
     {
     	p.begin( this );
-
-    	//Default paint settings
-    	p.setPen( border_color );
-    	p.setBrush( default_color );
+    	
+	//Default paint settings
+    	p.setPen( *( k_toon -> tlBorderColor() ) );
+    	p.setBrush( *( k_toon -> tlDefaultColor() ) );
     	p.drawRect( 0, 0, 10, 24 );
 
     	if ( is_selected )
@@ -281,14 +275,14 @@ void TLFrame::paintEvent( QPaintEvent *paint_event )
     	//Draw the offset line if it applies
     	if ( is_offset )
         {
-	    p.setPen( offset_color );
+	    p.setPen( *( k_toon -> tlOffsetColor() ) );
 	    p.drawLine( width() / 2, 0, width() / 2, 23 );
         }
 
     	//Draw the drag offset line if it applies
     	if ( is_drag_offset )
     	{
-	    p.setPen( drag_offset_color );
+	    p.setPen( *( k_toon -> tlDragOffsetColor() ) );
 	    p.drawLine( width() / 2, 0, width() / 2, 23 );
         }
 
@@ -302,8 +296,8 @@ void TLFrame::paintNotSelected()
     {
         if ( is_special )
 	{
-	    p.setPen( border_color );
-	    p.setBrush( special_color );
+	    p.setPen( *( k_toon -> tlBorderColor() ) );
+	    p.setBrush( *( k_toon -> tlSpecialColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
 	}
     }
@@ -312,113 +306,113 @@ void TLFrame::paintNotSelected()
 	//*** (has_drawing == false)
         if ( !is_key && !is_last && !is_unknown_motion && !is_motion && !has_drawing )
 	{
-	    p.setPen( use_border_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
-	    p.setPen( default_color );
+	    p.setPen( *( k_toon -> tlDefaultColor() ) );
 	    p.drawLine( 0, 1, 0, 22 );
 	    p.drawLine( 9, 1, 9, 22 );
 	}
 	if ( is_key && is_last && !is_unknown_motion && !is_motion && !has_drawing )
 	{
-	    p.setPen( use_border_color );
-	    p.setBrush( default_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setBrush( *( k_toon -> tlDefaultColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
 	    p.drawEllipse( 1, 12, 7, 7 );
 	}
 	if ( is_key && !is_last && !is_unknown_motion && !is_motion && !has_drawing )
 	{
-	    p.setPen( use_border_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 0, 0, 0, 23 );
 	    p.drawEllipse( 1, 12, 7, 7 );
-	    p.setPen( default_color );
+	    p.setPen( *( k_toon -> tlDefaultColor() ) );
 	    p.drawLine( 9, 1, 9, 22 );
 	}
 	if ( !is_key && is_last && !is_unknown_motion && !is_motion && !has_drawing )
 	{
-	    p.setPen( use_border_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 9, 0, 9, 23 );
 	    p.drawRect( 2, 10, 6, 10 );
-	    p.setPen( default_color );
+	    p.setPen( *( k_toon -> tlDefaultColor() ) );
 	    p.drawLine( 0, 1, 0, 22 );
 	}
 	//*** (has_drawing == true)
         if ( !is_key && !is_last && !is_unknown_motion && !is_motion && has_drawing )
 	{
-	    p.setPen( drawing_color );
-	    p.setBrush( drawing_color );
+	    p.setPen( *( k_toon -> tlDrawingColor() ) );
+	    p.setBrush( *( k_toon -> tlDrawingColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( use_border_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	}
 	if ( is_key && is_last && !is_unknown_motion && !is_motion && has_drawing )
 	{
-	    p.setPen( use_border_color );
-	    p.setBrush( drawing_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setBrush( *( k_toon -> tlDrawingColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( use_border_color );
+	    p.setBrush( *( k_toon -> tlUseBorderColor() ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
 	}
 	if ( is_key && !is_last && !is_unknown_motion && !is_motion && has_drawing )
 	{
-	    p.setPen( use_border_color );
-	    p.setBrush( drawing_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setBrush( *( k_toon -> tlDrawingColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( use_border_color );
+	    p.setBrush( *( k_toon -> tlUseBorderColor() ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
-	    p.setPen( drawing_color );
+	    p.setPen( *( k_toon -> tlDrawingColor() ) );
 	    p.drawLine( 9, 1, 9, 22 );
 	}
 	if ( !is_key && is_last && !is_unknown_motion && !is_motion && has_drawing )
 	{
-	    p.setPen( use_border_color );
-	    p.setBrush( drawing_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setBrush( *( k_toon -> tlDrawingColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( drawing_color );
+	    p.setPen( *( k_toon -> tlDrawingColor() ) );
 	    p.drawLine( 0, 1, 0, 22 );
-	    p.setPen( use_border_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
 	    p.drawRect( 2, 10, 6, 10 );
 	}
 	//***
         if ( !is_key && !is_last && is_unknown_motion && !is_motion )
 	{
-	    p.setPen( motion_color );
-	    p.setBrush( motion_color );
+	    p.setPen( *( k_toon -> tlMotionColor() ) );
+	    p.setBrush( *( k_toon -> tlMotionColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( use_border_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 2, 14, 7, 14 );
 	}
 	if ( is_key && is_last && is_unknown_motion && !is_motion )
 	{
-	    p.setPen( use_border_color );
-	    p.setBrush( motion_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setBrush( *( k_toon -> tlMotionColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( use_border_color );
+	    p.setBrush( *( k_toon -> tlUseBorderColor() ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
 	}
 	if ( is_key && !is_last && is_unknown_motion && !is_motion )
 	{
-	    p.setPen( use_border_color );
-	    p.setBrush( motion_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setBrush( *( k_toon -> tlMotionColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( use_border_color );
+	    p.setBrush( *( k_toon -> tlUseBorderColor() ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
-	    p.setPen( motion_color );
+	    p.setPen( *( k_toon -> tlMotionColor() ) );
 	    p.drawLine( 9, 1, 9, 22 );
 	}
 	if ( !is_key && is_last && is_unknown_motion && !is_motion )
 	{
-	    p.setPen( motion_color );
-	    p.setBrush( motion_color );
+	    p.setPen( *( k_toon -> tlMotionColor() ) );
+	    p.setBrush( *( k_toon -> tlMotionColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( use_border_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 9, 0, 9, 23 );
@@ -427,40 +421,40 @@ void TLFrame::paintNotSelected()
 	//***
         if ( !is_key && !is_last && !is_unknown_motion && is_motion )
 	{
-	    p.setPen( motion_color );
-	    p.setBrush( motion_color );
+	    p.setPen( *( k_toon -> tlMotionColor() ) );
+	    p.setBrush( *( k_toon -> tlMotionColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( use_border_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 0, 14, 9, 14 );
 	}
 	if ( is_key && is_last && !is_unknown_motion && is_motion )
 	{
-	    p.setPen( use_border_color );
-	    p.setBrush( motion_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setBrush( *( k_toon -> tlMotionColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( use_border_color );
+	    p.setBrush( *( k_toon -> tlUseBorderColor() ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
 	}
 	if ( is_key && !is_last && !is_unknown_motion && is_motion )
 	{
-	    p.setPen( use_border_color );
-	    p.setBrush( motion_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setBrush( *( k_toon -> tlMotionColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( use_border_color );
+	    p.setBrush( *( k_toon -> tlUseBorderColor() ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
-	    p.setPen( motion_color );
+	    p.setPen( *( k_toon -> tlMotionColor() ) );
 	    p.drawLine( 9, 1, 9, 22 );
 	}
 	if ( !is_key && is_last && !is_unknown_motion && is_motion )
 	{
-	    p.setPen( use_border_color );
-	    p.setBrush( motion_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setBrush( *( k_toon -> tlMotionColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( motion_color );
+	    p.setPen( *( k_toon -> tlMotionColor() ) );
 	    p.drawLine( 0, 1, 0, 22 );
-	    p.setPen( use_border_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
 	    p.drawLine( 0, 14, 7, 14 );
 	    p.drawLine( 7, 14, 5, 12 );
 	    p.drawLine( 7, 14, 5, 16 );
@@ -472,8 +466,8 @@ void TLFrame::paintSelected()
 {
     if ( !is_used )
     {
-	p.setPen( border_color );
-	p.setBrush( selection_color );
+	p.setPen( *( k_toon -> tlBorderColor() ) );
+	p.setBrush( *( k_toon -> tlSelectionColor() ) );
 	p.drawRect( 0, 0, 10, 24 );
     }
     else if ( is_used )
@@ -481,81 +475,81 @@ void TLFrame::paintSelected()
 	//***
         if ( !is_key && !is_last && !is_unknown_motion && !is_motion )
 	{
-	    p.setBrush( selection_color );
+	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( default_color );
+	    p.setPen( *( k_toon -> tlDefaultColor() ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
-	    p.setPen( use_border_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
 	    p.drawLine( 0, 1, 0, 22 );
 	    p.drawLine( 9, 1, 9, 22 );
 	}
 	if ( is_key && is_last && !is_unknown_motion && !is_motion )
 	{
-	    p.setPen( default_color );
-	    p.setBrush( use_border_color );
+	    p.setPen( *( k_toon -> tlDefaultColor() ) );
+	    p.setBrush( *( k_toon -> tlUseBorderColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
 	    p.drawEllipse( 1, 12, 7, 7 );
 	}
 	if ( is_key && !is_last && !is_unknown_motion && !is_motion )
 	{
-	    p.setBrush( selection_color );
+	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( default_color );
+	    p.setPen( *( k_toon -> tlDefaultColor() ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 0, 0, 0, 23 );
 	    p.drawEllipse( 1, 12, 7, 7 );
-	    p.setPen( use_border_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
 	    p.drawLine( 9, 1, 9, 22 );
 	}
 	if ( !is_key && is_last && !is_unknown_motion && !is_motion )
 	{
-	    p.setBrush( selection_color );
+	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( default_color );
+	    p.setPen( *( k_toon -> tlDefaultColor() ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 9, 0, 9, 23 );
 	    p.drawRect( 2, 10, 6, 10 );
-	    p.setPen( use_border_color );
+	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
 	    p.drawLine( 0, 1, 0, 22 );
 	}
 	//***
         if ( !is_key && !is_last && is_unknown_motion && !is_motion )
 	{
-	    p.setPen( selection_color );
-	    p.setBrush( selection_color );
+	    p.setPen( *( k_toon -> tlSelectionColor() ) );
+	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( default_color );
+	    p.setPen( *( k_toon -> tlDefaultColor() ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 2, 14, 7, 14 );
 	}
 	if ( is_key && is_last && ( ( is_unknown_motion && !is_motion ) || has_drawing ) )
 	{
-	    p.setPen( default_color );
-	    p.setBrush( selection_color );
+	    p.setPen( *( k_toon -> tlDefaultColor() ) );
+	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( default_color );
+	    p.setBrush( *( k_toon -> tlDefaultColor() ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
 	}
 	if ( is_key && !is_last && ( ( is_unknown_motion && !is_motion ) || has_drawing ) )
 	{
-	    p.setPen( default_color );
-	    p.setBrush( selection_color );
+	    p.setPen( *( k_toon -> tlDefaultColor() ) );
+	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( default_color );
+	    p.setBrush( *( k_toon -> tlDefaultColor() ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
-	    p.setPen( selection_color );
+	    p.setPen( *( k_toon -> tlSelectionColor() ) );
 	    p.drawLine( 9, 1, 9, 22 );
 	}
 	if ( !is_key && is_last && is_unknown_motion && !is_motion )
 	{
-	    p.setPen( selection_color );
-	    p.setBrush( selection_color );
+	    p.setPen( *( k_toon -> tlSelectionColor() ) );
+	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( default_color );
+	    p.setPen( *( k_toon -> tlDefaultColor() ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 9, 0, 9, 23 );
@@ -564,40 +558,40 @@ void TLFrame::paintSelected()
 	//***
         if ( !is_key && !is_last && !is_unknown_motion && is_motion )
 	{
-	    p.setPen( selection_color );
-	    p.setBrush( selection_color );
+	    p.setPen( *( k_toon -> tlSelectionColor() ) );
+	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( default_color );
+	    p.setPen( *( k_toon -> tlDefaultColor() ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 0, 14, 9, 14 );
 	}
 	if ( is_key && is_last && !is_unknown_motion && is_motion )
 	{
-	    p.setPen( default_color );
-	    p.setBrush( selection_color );
+	    p.setPen( *( k_toon -> tlDefaultColor() ) );
+	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( default_color );
+	    p.setBrush( *( k_toon -> tlDefaultColor() ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
 	}
 	if ( is_key && !is_last && !is_unknown_motion && is_motion )
 	{
-	    p.setPen( default_color );
-	    p.setBrush( selection_color );
+	    p.setPen( *( k_toon -> tlDefaultColor() ) );
+	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( default_color );
+	    p.setBrush( *( k_toon -> tlDefaultColor() ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
-	    p.setPen( selection_color );
+	    p.setPen( *( k_toon -> tlSelectionColor() ) );
 	    p.drawLine( 9, 1, 9, 22 );
 	}
 	if ( !is_key && is_last && !is_unknown_motion && is_motion )
 	{
-	    p.setPen( default_color );
-	    p.setBrush( selection_color );
+	    p.setPen( *( k_toon -> tlDefaultColor() ) );
+	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( selection_color );
+	    p.setPen( *( k_toon -> tlSelectionColor() ) );
 	    p.drawLine( 0, 1, 0, 22 );
-	    p.setPen( default_color );
+	    p.setPen( *( k_toon -> tlDefaultColor() ) );
 	    p.drawLine( 0, 14, 7, 14 );
 	    p.drawLine( 7, 14, 5, 12 );
 	    p.drawLine( 7, 14, 5, 16 );

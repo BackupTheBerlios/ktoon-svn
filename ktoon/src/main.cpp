@@ -61,7 +61,7 @@ int main( int argc, char ** argv )
     splash_screen -> show();
     splash_screen -> message( QObject::tr( "Loading Modules" ) );
     Ktoon *main_window = new Ktoon();
-    main_window -> setCaption( "Ktoon" );
+    main_window -> setCaption( "KToon" );
     application.setMainWidget( main_window );
     main_window -> show();
     splash_screen -> finish( main_window );

@@ -105,6 +105,7 @@ private:
     int assigned_item;
     QToolButton *assigned_tb_button;
     Ktoon *k_toon;
+    Color *n_color;
 
     //Icons
     QPixmap i_add_color, i_remove_color;

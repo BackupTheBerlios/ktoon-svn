@@ -80,13 +80,21 @@ Export::Export( QWidget *parent ) : QDialog( parent, "Export", true )
 
 Export::~Export()
 {
-
+    delete accept;
+    delete cancel;
+    delete main_text;
+    delete group;
+    delete rb_single_frame;
+    delete rb_swf;
+    delete rb_animation;
 }
 
 //--------------- PUBLIC MEMBERS --------------------
 
 SWFDisplayItem *Export::doAnimation( SWFMovie *movie, const QStringList &images )
 {
+    Q_ASSERT( movie );
+    
     int i, image_count;
     QStringList copy = QStringList( images );
     QStringList::Iterator it;

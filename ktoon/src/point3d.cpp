@@ -22,6 +22,8 @@
 
 #include "point3d.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 Point3D::Point3D() : pos_x( 0 ), pos_y( 0 ), pos_z( 0 )
 {
 
@@ -32,10 +34,14 @@ Point3D::Point3D( int _x, int _y , int _z ) : pos_x( _x ), pos_y( _y ), pos_z( _
 
 }
 
+//------------- DESTRUCTOR ------------------
+
 Point3D::~Point3D()
 {
 
 }
+
+//------------ PUBLIC MEMBERS ---------------
 
 void Point3D::setX( const int & x )
 {

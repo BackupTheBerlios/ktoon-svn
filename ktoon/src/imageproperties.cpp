@@ -25,6 +25,8 @@
 
 ImageProperties::ImageProperties( QWidget *parent ) : QDialog( parent, "Image Properties", true )
 {
+    Q_CHECK_PTR( parent );
+
     //Initializations
     setCaption( tr( "Image Properties" ) );
     setFont( QFont( "helvetica", 10 ) );
@@ -103,13 +105,28 @@ ImageProperties::ImageProperties( QWidget *parent ) : QDialog( parent, "Image Pr
 
 ImageProperties::~ImageProperties()
 {
-
+    delete accept;
+    delete cancel;
+    delete text_origin;
+    delete text_origin_x;
+    delete text_origin_y;
+    delete text_size;
+    delete text_size_w;
+    delete text_size_h;
+    delete text_angle;
+    delete value_origin_x;
+    delete value_origin_y;
+    delete value_size_w;
+    delete value_size_h;
+    delete value_angle;
 }
 
 //-------------- PUBLIC MEMBERS ----------------
 
 void ImageProperties::loadFromGraphic( GLImage *image )
 {
+   Q_CHECK_PTR( image );
+
    value_origin_x -> setText( QString::number( image -> originPoint().x() ) );
    value_origin_y -> setText( QString::number( image -> originPoint().y() ) );
    QPoint end = image -> endImage();

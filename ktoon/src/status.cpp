@@ -20,6 +20,8 @@
 
 #include "status.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 Status::Status()
 {
     current_scene = NULL;
@@ -39,10 +41,21 @@ Status::Status()
     current_ntsc_color = QColor( 255, 0, 0 );
 }
 
+//------------- DESTRUCTOR ------------------
+
 Status::~Status()
 {
     render_camera_frames.clear();
+    delete current_outline_color;
+    delete current_fill_color;
+    delete current_scene;
+    delete current_layer;
+    delete current_keyframe;
+    delete current_timeline_keyframe;
+    delete current_soundclip;
 }
+
+//------------ PUBLIC MEMBERS ---------------
 
 void Status::setCurrentPreviousOnionSkin( const int &previous_onion )
 {
@@ -61,16 +74,19 @@ void Status::setCurrentCursor( const int &cursor )
 
 void Status::setCurrentOutlineColor( Color *color )
 {
+    Q_CHECK_PTR( color );
     current_outline_color = color;
 }
 
 void Status::setCurrentFillColor( Color *color )
 {
+    Q_CHECK_PTR( color );
     current_fill_color = color;
 }
 
 void Status::setCurrentBrush( Brush *brush )
 {
+    Q_CHECK_PTR( brush );
     current_brush = brush;
 }
 
@@ -91,11 +107,13 @@ void Status::setCurrentKeyFrame( KeyFrame *keyframe )
 
 void Status::setCurrentTimelineKeyFrame( KeyFrame *t_keyframe )
 {
+    Q_CHECK_PTR( t_keyframe );
     current_timeline_keyframe = t_keyframe;
 }
 
 void Status::setCurrentSoundClip( SoundClip *soundclip )
 {
+    Q_CHECK_PTR( soundclip );
     current_soundclip = soundclip;
 }
 

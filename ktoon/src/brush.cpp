@@ -22,6 +22,8 @@
 
 #include "brush.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 Brush::Brush()
 {
     name = "";
@@ -37,6 +39,8 @@ Brush::Brush( int t_min, int t_max, int smooth ) : thickness_min( t_min ), thick
     id_brush = -1;
 }
 
+//------------- DESTRUCTOR ------------------
+
 Brush::~Brush()
 {
 
@@ -49,16 +53,19 @@ void Brush::setNameBrush( const QString & _name )
 
 void Brush::setThicknessMinBrush( const int & _thickness_min )
 {
+    Q_ASSERT( _thickness_min > 0 );
     thickness_min = _thickness_min;
 }
 
 void Brush::setThicknessMaxBrush( const int & _thickness_max )
 {
+    Q_ASSERT( _thickness_max > 0 );
     thickness_max = _thickness_max;
 }
 
 void Brush::setSmoothnessBrush( const int & _smoothness )
 {
+    Q_ASSERT( _smoothness > 0 );
     smoothness = _smoothness;
 }
 

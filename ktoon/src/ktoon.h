@@ -213,6 +213,117 @@ public:
      * \return A new folder
      */
     Folder *createFolder( const QDomElement &tag );
+    
+    //----- Public Members for exposure sheet and timeline -----
+    
+    /*!
+     * \brief Gets the exposure sheet's default color
+     *
+     * \return The exposure sheet's default color
+     */
+    QColor *esDefaultColor();
+    /*!
+     * \brief Gets the exposure sheet's use color
+     *
+     * \return The exposure sheet's use color
+     */
+    QColor *esUseColor();
+    /*!
+     * \brief Gets the exposure sheet's selection color
+     *
+     * \return The exposure sheet's selection color
+     */
+    QColor *esSelectionColor();
+    /*!
+     * \brief Gets the exposure sheet's select and use color
+     *
+     * \return The exposure sheet's select and use color
+     */
+    QColor *esSelectAndUseColor();
+    /*!
+     * \brief Gets the exposure sheet's text color when selected
+     *
+     * \return The exposure sheet's text color when selected
+     */
+    QColor *esTextColorWhenSelected();
+    /*!
+     * \brief Gets the exposure sheet's default text color
+     *
+     * \return The exposure sheet's default text color
+     */
+    QColor *esDefaultTextColor();
+    /*!
+     * \brief Gets the exposure sheet's lock color
+     *
+     * \return The exposure sheet's lock color
+     */
+    QColor *esLockColor();
+    /*!
+     * \brief Gets the exposure sheet's lock and select color
+     *
+     * \return The exposure sheet's lock and select color
+     */
+    QColor *esLockAndSelectColor();
+    /*!
+     * \brief Gets the exposure sheet's drawing color
+     *
+     * \return The exposure sheet's drawing color
+     */
+    QColor *esHasDrawingColor();
+    /*!
+     * \brief Gets the timeline's default color
+     *
+     * \return The timeline's default color
+     */
+    QColor *tlDefaultColor();
+    /*!
+     * \brief Gets the timeline's selection color
+     *
+     * \return The timeline's selection color
+     */
+    QColor *tlSelectionColor();
+    /*!
+     * \brief Gets the timeline's special color
+     *
+     * \return The timeline's special color
+     */
+    QColor *tlSpecialColor();
+    /*!
+     * \brief Gets the timeline's offset color
+     *
+     * \return The timeline's offset color
+     */
+    QColor *tlOffsetColor();
+    /*!
+     * \brief Gets the timeline's drag offset color
+     *
+     * \return The timeline's drag offset color
+     */
+    QColor *tlDragOffsetColor();
+    /*!
+     * \brief Gets the timeline's border color
+     *
+     * \return The timeline's border color
+     */
+    QColor *tlBorderColor();
+    /*!
+     * \brief Gets the timeline's use border color
+     *
+     * \return The timeline's use border color
+     */
+    QColor *tlUseBorderColor();
+    /*!
+     * \brief Gets the timeline's motion color
+     *
+     * \return The timeline's motion color
+     */
+    QColor *tlMotionColor();
+    /*!
+     * \brief Gets the timeline's drawing color
+     *
+     * \return The timeline's drawing color
+     */
+    QColor *tlDrawingColor();
 
 protected:
     /*!
@@ -701,7 +812,7 @@ private:
     QPtrList<Timeline> list_of_tl;
     Document *document_;
 
-    //Various images
+    //Several images
     QPixmap background_image;
 
     //Icons
@@ -932,6 +1043,13 @@ private:
 
     //Drawing Area
     DrawingArea *current_drawing_area;
+    
+    //Some colors needed by Exposure Sheet and Timeline (They are created here for efficiency)
+    QColor *es_default_color, *es_use_color, *es_selection_color, *es_select_and_use_color, 
+    	   *es_text_color_when_selected, *es_default_text_color, *es_lock_color, *es_lock_and_select_color, 
+	   *es_has_drawing_color;
+    QColor *tl_default_color, *tl_special_color, *tl_selection_color, *tl_offset_color, *tl_drag_offset_color, 
+    	   *tl_border_color, *tl_use_border_color, *tl_motion_color, *tl_drawing_color;
 };
 
 #endif

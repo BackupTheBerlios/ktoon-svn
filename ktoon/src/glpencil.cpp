@@ -25,8 +25,12 @@
 
 #include "glpencil.h"
 
+//-------------- CONSTRUCTOR ---------------
+
 GLPencil::GLPencil( QGLWidget *parent, const QPoint & _origin, const Color & _color, const Brush & _width, const QPoint & _end ) : GLGraphicComponent( parent, _origin, _color, _width ), end( _end )
 {
+  	Q_CHECK_PTR( parent );
+
 	setKindGraphic( GC_PENCIL );
         id_graphic_component = glGenLists( 1 );
 	QPoint * origin_point = new QPoint( origin.x(), origin.y() );
@@ -59,10 +63,14 @@ GLPencil::GLPencil( const GLPencil & pencil ) : GLGraphicComponent( pencil.paren
          buildList();
 }
 
+//------------- DESTRUCTOR ------------------
+
 GLPencil::~GLPencil( )
 {
 
 }
+
+//------------ PUBLIC MEMBERS ---------------
 
 //implementation of the virtual method buildList to Bezier curve
 void GLPencil::buildList( )
