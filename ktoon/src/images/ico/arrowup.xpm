@@ -1,0 +1,20 @@
+/* XPM */
+const char *arrowup_xpm[]={
+"12 12 5 1",
+"c c None",
+". c None",
+"b c #a64a03",
+"a c #e1aa52",
+"# c #ffffc0",
+".....##.....",
+"....#aa#....",
+"...#abba#...",
+"..#abbbba#..",
+".#abbbbbba#.",
+"#abbabbabba#",
+".#aaabbaaa#.",
+"..##abba##..",
+"...#abba#...",
+".c.#abba#...",
+".cc.#aa#....",
+".....##....."};

@@ -1,0 +1,22 @@
+/* XPM */
+const char *frameplus_xpm[]={
+"15 12 7 1",
+". c None",
+"c c #953803",
+"b c #b15306",
+"e c #c56e01",
+"# c #d99119",
+"a c #ecc16c",
+"d c #ffffc0",
+".######.######.",
+"ab#####b#####ba",
+"#cddddacadddd##",
+"##ddddacadddd##",
+"##d#edacadb#d##",
+"###ccbacabcc###",
+"###ccbacabcc###",
+"##d#bdacade#d##",
+"##ddddacadddd##",
+"##ddddacaddddc#",
+"ac#####b#####ba",
+".######.######."};
