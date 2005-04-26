@@ -1,14 +1,7 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="2" >
-  <Doc0 NumberOfViews="1" URL="file:/tmp/dcuadra/ktoon/src/gl/drawingarea.cpp" >
-   <View0 line="629" Type="Source" />
-  </Doc0>
-  <Doc1 NumberOfViews="1" URL="file:/tmp/dcuadra/ktoon/src/gl/glbrush.cpp" >
-   <View0 line="299" Type="Source" />
-  </Doc1>
- </DocsAndViews>
+ <DocsAndViews NumberOfDocuments="0" />
  <pluginList>
   <kdevbookmarks>
    <bookmarks>

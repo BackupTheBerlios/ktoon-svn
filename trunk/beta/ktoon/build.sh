@@ -46,6 +46,17 @@ then
 	fi
 fi
 
+# compile ming
+
+qpinfo "Compiling ming"
+
+if [ ! -s $KTHOME/ming/Makefile ]
+then
+	echo "Removing " $KTHOME/ming/Makefile
+	rm $KTHOME/ming/Makefile 2> /dev/null >/dev/null
+	ln -s $KTHOME/ming/Makefile-real $KTHOME/ming/Makefile
+fi
+
 qpinfo "Update dirs"
 for i in $DIRS
 do
@@ -57,13 +68,6 @@ do
 	fi
 	cd - 2> /dev/null >/dev/null
 done
-
-# compile ming
-if [ ! -s $KTHOME/ming/Makefile ]
-then
-	rm $KTHOME/ming/Makefile 2> /dev/null >/dev/null
-	ln -s $KTHOME/ming/Makefile-real $KTHOME/ming/Makefile
-fi
 
 $QMAKE
 

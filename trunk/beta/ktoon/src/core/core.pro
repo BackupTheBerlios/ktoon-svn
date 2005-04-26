@@ -56,3 +56,6 @@ TEMPLATE = app
 HEADERS += ktoon.h 
 SOURCES += ktoon.cpp \
            main.cpp 
+LIBS += -lpng
+LIBS += -lgif
+LIBS += -lz
