@@ -1,0 +1,6 @@
+Ch is a complete C interpreter and C virtual
+machine.  It runs on Windows/Linux/Solaris/HP-UX/OSX/FreeBSD.  The software
+can be downloaded for free and more information can be found at
+http://www.softintegration.com.  One of the great features of Ch is its
+ability to run code without compilation.  In creating this binding to Ming,
+we would then be able to run your code without compiling.

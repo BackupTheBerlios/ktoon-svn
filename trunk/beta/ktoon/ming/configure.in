@@ -1,0 +1,65 @@
+AC_INIT(ming.i)
+
+AC_PROG_CC
+AC_PROG_CXX
+AC_PATH_PROG(PYTHON, python)
+
+AC_CHECK_LIB(gif, PrintGifError,
+	GIFLIB="-lgif", [
+	AC_CHECK_LIB(ungif, PrintGifError,
+		GIFLIB="-lungif",
+		GIFLIB="")]
+)
+
+AC_CHECK_LIB(png, png_read_image, PNGLIB="-lpng", PNGLIB="")
+
+AC_CHECK_LIB(z, compress2, ZLIB="-lz", ZLIB="")
+
+AC_CHECK_FUNC(sin, MATHLIB="", [
+        AC_CHECK_LIB(m, sin, MATHLIB="-lm", [
+		AC_ERROR([I can't find sin() function !!!])]
+	)]
+)
+
+EXTRA_OBJS=
+EXTRA_BINS=
+
+if test -n "${GIFLIB}"; then
+	EXTRA_OBJS="$EXTRA_OBJS gifdbl.o"
+	AC_DEFINE(USE_GIF)
+	AC_DEFINE(USE_ZLIB)
+fi
+
+if test -n "${PNGLIB}"; then
+	EXTRA_OBJS="$EXTRA_OBJS pngdbl.o"
+	EXTRA_BINS="$EXTRA_BINS png2dbl png2swf"
+	AC_DEFINE(USE_PNG)
+	AC_DEFINE(USE_ZLIB)
+fi
+
+ 
+OS=`uname -s`
+if test "$OS" = "Darwin"; then
+	SHLIBEXT ="\$(MING_VER).dynlib"
+	SHLIBLDFLAGS="-dynamiclib -compatibility_version \$(MINOR_VERSION) \
+		-current_version \$(MAJOR_VERSION)"
+	CFLAGS="$CFLAGS -fno-common"
+else
+	SHLIBLDFLAGS="-shared"
+	SHLIBEXT=".so.\$(MING_VER)"
+fi
+
+AC_SUBST(SHLIBLDFLAGS)
+AC_SUBST(SHLIBEXT)
+AC_SUBST(EXTRA_OBJS)
+AC_SUBST(EXTRA_BINS)
+AC_SUBST(GIFLIB)
+AC_SUBST(PNGLIB)
+AC_SUBST(MATHLIB)
+AC_SUBST(ZLIB)
+
+
+AC_CONFIG_HEADER(src/ming_config.h)
+
+
+AC_OUTPUT(Makefile.config)

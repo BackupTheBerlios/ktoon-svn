@@ -1,0 +1,32 @@
+/.cvsignore/1.2/Thu Nov 14 09:31:49 2002//
+/Makefile/1.28/Fri Apr  1 09:13:17 2005//
+/Makefile.am/1.3/Tue Aug 31 19:35:04 2004//
+/blocklist.c/1.12/Sat Nov  8 18:24:56 2003//
+/blocklist.h/1.8/Sat Nov  8 18:24:56 2003//
+/displaylist.c/1.23/Tue Mar 30 15:07:28 2004//
+/displaylist.h/1.14/Sat Nov  8 18:24:57 2003//
+/fill.c/1.9/Sun Jun 27 07:18:51 2004//
+/fill.h/1.7/Sat Nov  8 18:24:57 2003//
+/font_util.c/1.7/Thu Sep  9 13:53:09 2004//
+/font_util.h/1.5/Sun Dec 14 10:07:14 2003//
+/gc.c/1.5/Sun Jun 27 07:18:51 2004//
+/gc.h/1.3/Sun Jun 27 07:18:51 2004//
+/libming.h/1.12/Wed Oct  6 14:56:20 2004//
+/ming.c/1.18/Thu Apr 29 07:51:17 2004//
+/ming.h/1.31/Wed Oct  6 14:56:20 2004//
+/ming_config.h.in/1.1/Tue Mar 22 07:59:51 2005//
+/movie.c/1.34/Mon Aug  9 22:50:30 2004//
+/movie.h/1.20/Sun Jan 18 19:29:18 2004//
+/movieclip.c/1.17/Sun Jun 27 07:18:51 2004//
+/movieclip.h/1.12/Sat Nov  8 18:24:57 2003//
+/position.c/1.13/Thu Apr 29 09:08:41 2004//
+/position.h/1.9/Sat Nov  8 18:24:57 2003//
+/shape_cubic.c/1.8/Sat Nov  8 18:24:57 2003//
+/shape_cubic.h/1.5/Sun Dec 14 10:07:14 2003//
+/shape_util.c/1.19/Wed Mar 31 12:56:08 2004//
+/shape_util.h/1.16/Sun Dec 14 10:07:14 2003//
+/test.c/1.13/Wed Jul 14 13:43:44 2004//
+/text_util.c/1.10/Tue Mar 30 15:07:28 2004//
+/text_util.h/1.10/Sat Nov  8 18:24:57 2003//
+D/actioncompiler////
+D/blocks////

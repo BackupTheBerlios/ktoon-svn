@@ -1,0 +1,22 @@
+/* XPM */
+const char *cpaint_xpm[]={
+"16 16 3 1",
+". c None",
+"# c #000000",
+"a c #ffffff",
+".............##.",
+".......######a#.",
+".....##aa##a##..",
+"...##a######a#..",
+"..#a#######a##..",
+".########aa###..",
+"####aaaaaaa##a#.",
+"###aaaaaaaa##a#.",
+"###aaaaaaaaaaa#.",
+"#..#aaaaaaaaaaa#",
+"#..#aaaaaaaaaaa#",
+"....#aaaaaaaaaa#",
+"....#aaaaaaaaa##",
+"....#aaaaaaaa#..",
+".....#aaaaa##...",
+".....#######...."};

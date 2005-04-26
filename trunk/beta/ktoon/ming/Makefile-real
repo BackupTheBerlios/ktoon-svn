@@ -1,0 +1,43 @@
+# Modified by krawek for ktoon
+
+# include Makefile.config
+
+DIRS = src util py_ext php_ext 
+
+all: static
+
+static:
+	if [ ! -f config.status ]; then ./configure; fi
+	cd src && $(MAKE) static
+	sh ktoonld.sh
+
+install: install-common install-utils install-static install-man
+
+install-common:
+	install -d $(libdir)
+	install -d $(includedir)
+	install -c -m 0644 src/ming.h $(includedir)
+	install -c -m 0644 src/ming_config.h $(includedir)
+	install -c -m 0644 mingpp.h $(includedir)
+
+install-utils:
+	(cd util && make install)
+
+install-man:
+	(cd man && make install)
+
+install-static: static
+	install -c -m 0644 libming.a $(libdir)/
+
+utils:
+	(cd util && make)
+
+clean:
+	for i in $(DIRS); do (cd $$i && $(MAKE) clean); done
+	if [ -f perl_ext/Makefile ] ; then cd perl_ext; $(MAKE) clean; fi
+	rm -f test.o test test.exe *.core *~
+	rm -f libming.a libming.so*
+
+distclean: clean
+	rm -Rf Rules.make config.make Makefile.config autom4te.cache \
+		config.log config.status src/ming_config.h

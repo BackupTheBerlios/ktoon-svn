@@ -1,0 +1,41 @@
+MAJOR_VERSION = 0
+MINOR_VERSION = 3
+MICRO_VERSION = 0beta1
+MING_VER = $(MAJOR_VERSION).$(MINOR_VERSION).$(MICRO_VERSION)
+
+CC	= @CC@
+CXX	= @CXX@
+PYTHON	= @PYTHON@
+CFLAGS  = @CFLAGS@
+
+INCLUDES       += -I. 
+LDLIBS         = $(LIBS)
+
+SHLIBLDFLAGS   = @SHLIBLDFLAGS@
+SHLIBEXT       = @SHLIBEXT@
+
+STATICLIB      = libming.a
+SHAREDLIB      = libming$(SHLIBEXT)
+
+CFLAGS  += -Wall $(INCLUDES)
+
+
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+bindir = @bindir@
+libdir = @libdir@
+includedir = @includedir@
+mandir = @mandir@
+
+GIFLIB = @GIFLIB@
+PNGLIB = @PNGLIB@
+MATHLIB = @MATHLIB@
+ZLIB = @ZLIB@
+
+# set to your choice of png and / or gif formats
+EXTRA_OBJS = @EXTRA_OBJS@
+EXTRA_BINS = @EXTRA_BINS@
+
+# zlib required for both image formats and for compressed swf6
+LIBS = $(ZLIB) $(MATHLIB) $(GIFLIB) $(PNGLIB)
+EXTRA_LIBS = $(LIBS)

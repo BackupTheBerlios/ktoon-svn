@@ -1,0 +1,19 @@
+/.cvsignore/1.1/Sun Jan 19 16:47:38 2003//
+/Action.pm/1.2/Mon Sep 24 00:49:54 2001//
+/Bitmap.pm/1.3/Mon Sep 24 00:50:36 2001//
+/Button.pm/1.2/Mon Sep 24 00:53:00 2001//
+/Constants.pm/1.3/Sat Sep 13 09:22:20 2003//
+/DisplayItem.pm/1.5/Tue Sep 24 03:00:24 2002//
+/Fill.pm/1.2/Mon Sep 24 00:55:49 2001//
+/Font.pm/1.2/Mon Sep 24 00:56:37 2001//
+/Gradient.pm/1.2/Mon Sep 24 00:57:16 2001//
+/Morph.pm/1.2/Mon Sep 24 00:58:11 2001//
+/Movie.pm/1.4/Tue Jan 21 00:23:01 2003//
+/Shape.pm/1.4/Sat Feb  1 18:30:19 2003//
+/Sound.pm/1.2/Mon Sep 24 02:04:20 2001//
+/SoundInstance.pm/1.1/Wed Jun 18 10:26:57 2003//
+/SoundStream.pm/1.1/Wed Jun 18 10:26:57 2003//
+/Sprite.pm/1.2/Mon Sep 24 01:01:09 2001//
+/Text.pm/1.2/Mon Sep 24 01:01:47 2001//
+/TextField.pm/1.6/Sat Feb  1 18:33:26 2003//
+D

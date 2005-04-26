@@ -1,0 +1,35 @@
+/.cvsignore/1.3/Tue Sep 24 03:10:18 2002//
+/Action.xs/1.1/Mon Sep 24 00:37:41 2001//
+/Bitmap.xs/1.2/Sun Dec 30 20:26:34 2001//
+/Button.xs/1.4/Wed Jun 18 10:26:58 2003//
+/CREDITS/1.1/Mon Jan 20 23:16:43 2003//
+/Changes/1.4/Wed Sep 26 02:33:57 2001//
+/Constants.xs/1.4/Sat Sep 13 09:23:02 2003//
+/DisplayItem.xs/1.4/Tue Nov 12 09:52:59 2002//
+/Exports.c/1.7/Sat Sep 13 09:23:38 2003//
+/Fill.xs/1.1/Mon Sep 24 00:37:41 2001//
+/Font.xs/1.6/Sat Nov  8 18:24:55 2003//
+/Gradient.xs/1.1/Mon Sep 24 00:37:41 2001//
+/MANIFEST/1.4/Wed Aug 25 20:28:14 2004//
+/Makefile.PL/1.14/Wed Dec 29 12:31:19 2004//
+/Morph.xs/1.3/Sat Jan  4 19:44:55 2003//
+/Movie.xs/1.10/Mon Aug  9 22:50:31 2004//
+/MovieClip.xs/1.2/Wed Jun 18 10:26:58 2003//
+/README/1.5/Sat Jan 25 21:35:12 2003//
+/SUPPORT/1.1/Sat Jan 25 21:22:19 2003//
+/SWF.pm/1.7/Mon Feb  2 12:20:26 2004//
+/SWF.xs/1.12/Tue Nov 12 09:52:59 2002//
+/Shape.xs/1.5/Sun Apr  6 13:59:40 2003//
+/Sound.xs/1.2/Wed Jun 18 10:26:58 2003//
+/SoundInstance.xs/1.1/Wed Jun 18 10:26:58 2003//
+/SoundStream.xs/1.2/Sun Dec 14 10:07:14 2003//
+/TODO/1.5/Sat Feb  1 18:36:22 2003//
+/Text.xs/1.3/Tue Nov 12 09:52:59 2002//
+/TextField.xs/1.4/Sat Feb  1 18:26:23 2003//
+/VideoStream.xs/1.1/Sat Jan 17 05:37:05 2004//
+/perl_swf.h/1.5/Sat Jan 17 05:27:03 2004//
+/swf_util.c/1.2/Mon Sep 24 01:24:34 2001//
+/typemap/1.4/Sat Jan 17 05:27:03 2004//
+D/SWF////
+D/examples////
+D/t////

@@ -1,0 +1,19 @@
+
+Installing and Running KToon 2D Animation Toolkit
+
+Before you begin, you need Qt version 3.3.2 or later to be installed.
+
+First, download the source tarball from http://ktoon.toonka.com/modules.php?op=modload&name=Downloads.
+
+Unpack it into your desired location and go into the uncompressed directory:
+  $ tar xvfz ktoon-0.7.2.tgz
+  $ cd ktoon/
+
+Running the build script
+  $ ./build.sh
+
+And finally, run the application from the current directory:
+  $ ./bin/ktoon
+
+If you want to save disk space, remove the object files:
+  $ make clean
