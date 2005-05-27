@@ -29,6 +29,7 @@ then
 fi
 
 shift
+export KTOON_HOME
 
 # Look & feel
 
@@ -66,27 +67,32 @@ function verifyEnv()
 	fi
 }
 
+function buildenv()
+{
+	if [ `whoami` == "root" ]
+	then
+		echo export KTOON_HOME=$KTOON_HOME > $KTOON_GLOBAL_ENV
+		echo export PATH=\$PATH:$KTOON_HOME/bin >> $KTOON_GLOBAL_ENV
+	else
+		echo export KTOON_HOME=$KTOON_HOME > $KTOON_LOCAL_ENV
+		echo export PATH=\$PATH:$KTOON_HOME/bin >> $KTOON_LOCAL_ENV
+	fi
+}
+
 function ktinstall()
 {
 	make install
 	
 	if [ $(basename `echo $SHELL`) == "bash" ]
 	then
+		buildenv
 		if [ `grep -c "source $KTOON_LOCAL_ENV" ~/.bashrc` -eq 0 -a `grep -c "source $KTOON_LOCAL_ENV" ~/.bash_profile` -eq 0 -a `grep -c "source $KTOON_GLOBAL_ENV" /etc/profile` -eq 0 ]
 		then
 			if [ `whoami` == "root" ]
 			then
-				echo export KTOON_HOME=$KTOON_HOME > $KTOON_GLOBAL_ENV
-				echo export PATH=\$PATH:$KTOON_HOME/bin >> $KTOON_GLOBAL_ENV
-				
 				echo "source $KTOON_GLOBAL_ENV" >> /etc/profile
-				. $KTOON_GLOBAL_ENV
 			else
-				echo export KTOON_HOME=$KTOON_HOME > $KTOON_LOCAL_ENV
-				echo export PATH=\$PATH:$KTOON_HOME/bin >> $KTOON_LOCAL_ENV
-				
 				echo "source $KTOON_LOCAL_ENV" >> ~/.bashrc
-				. $KTOON_LOCAL_ENV
 			fi
  		fi
 	fi
@@ -109,7 +115,7 @@ fi
 
 # compile ming
 
-qpinfo "Compiling ming"
+# qpinfo "Compiling ming"
 
 #if [ ! -s $KTHOME/ming/Makefile ]
 #then

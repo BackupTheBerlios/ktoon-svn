@@ -30,6 +30,7 @@ KTApplication::KTApplication(int & argc, char ** argv)
 	m_KTOON_HOME = getenv("HOME")+QString("/")+name()+QString("_")+m_VERSION ;
 	m_KTOON_REPOSITORY = m_KTOON_HOME+QString("/repository");
 	parseArgs(argc, argv);
+	setStyle("plastik");
 }
 
 

@@ -3109,7 +3109,8 @@ GLuint DrawingArea::createSelectionArrows( GLuint id_texture )
      	GLuint id_list = glGenLists( 1 );
         if( id_list <= 0 )
 	{
-                qDebug( "Error en la creacion de la lista" );
+		qDebug( tr("%1:%2 I can't create glList %3").arg(__FILE__).arg(__LINE__).arg(id_list) );
+
 		QApplication::exit(1);
                 exit( 1 ); // TODO: salir de una forma menos machetera!
         }

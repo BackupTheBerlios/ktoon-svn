@@ -92,7 +92,9 @@ void GLImage::setFillColor( const Color & _fill_color )
 	glPolygonOffset( 0, -2 );
 	glEnable( GL_BLEND );
 	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+#ifdef GL_ARB_imaging
 	glBlendEquation( GL_FUNC_ADD );
+#endif
 	glColor4f( fillColor().colorRed(), fillColor().colorGreen(),
 		   fillColor().colorBlue(), fillColor().colorAlpha() );
 	glBegin( GL_QUADS );

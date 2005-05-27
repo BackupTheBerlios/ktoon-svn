@@ -78,7 +78,7 @@ CWSecondPage::CWSecondPage(QWidget *parent, const char *name) : QVBox(parent, na
 {
 	new QLabel(tr("<h3>Step 1<h3>"), this);
 	
-	new QLabel(tr("Choose your KToon directory installation"), this);
+	new QLabel(tr("Choose your KToon install directory"), this);
 	
 	QHBox *hbox1 = new QHBox(this);
 	m_kthome = new QLineEdit(hbox1);
