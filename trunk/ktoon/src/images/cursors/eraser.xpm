@@ -1,0 +1,23 @@
+/* XPM */
+const char *ceraser_xpm[]={
+"16 16 4 1",
+"b c None",
+". c None",
+"a c #000000",
+"# c #ffffff",
+".........####...",
+"........#aaaa#..",
+".......#aaaaaa#.",
+"......#aaaaaaaa#",
+"....##aaaaaaaaa#",
+"...#aaaaaaaaaaa#",
+"..#aaaaaaaaaaa#.",
+".#aaaaaaaaaaa#..",
+".#a##aaaaaaaa#..",
+"#aa###aaaaaa#...",
+"#a#####aaaa#....",
+"#a######aa#.....",
+"#a######aa#.....",
+"#a####aaa#......",
+"b#aaaaa##.......",
+"bb#####........."};
