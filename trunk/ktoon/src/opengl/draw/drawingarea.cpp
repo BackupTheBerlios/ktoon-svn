@@ -81,7 +81,7 @@ DrawingArea::DrawingArea( QWidget *parent, QWidget *grandparent, const char *nam
 	setMinimumSize( 160, 120 );
 	setMaximumSize( 1023, 650 );
 	setCaption( name ); 
-	setFont( QFont( "helvetica", 10 ) );
+// 	setFont( QFont( "helvetica", 10 ) );
 	parent_widget = parent;
 	grandparent_widget = grandparent;
 	
@@ -553,14 +553,14 @@ void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
 			if ( right_click_menu != NULL )
 			delete right_click_menu;
 			right_click_menu = new QPopupMenu( this );
-			right_click_menu -> setFont( QFont( "helvetica", 10 ) );
+// 			right_click_menu -> setFont( QFont( "helvetica", 10 ) );
 			right_click_menu -> insertItem( QPixmap( copy_xpm ), tr( "&Copy" ), grandparent_widget, SLOT( slotCopy() ) );
 			right_click_menu -> insertItem( QPixmap( cut_xpm ), tr( "C&ut" ), grandparent_widget, SLOT( slotCut() ) );
 			right_click_menu -> insertItem( tr( "&Delete" ), grandparent_widget, SLOT( slotDelete() ) );
 			right_click_menu -> insertSeparator();
 			//Order Submenu
 			QPopupMenu * order = new QPopupMenu( this );
-			order -> setFont( QFont( "helvetica", 10 ) );
+// 			order -> setFont( QFont( "helvetica", 10 ) );
 			order -> insertItem( QPixmap( bring_to_front_xpm ), tr( "&Bring to Front" ), grandparent_widget, SLOT( slotBringToFront() ) );
 			order -> insertItem( QPixmap( send_to_back_xpm ), tr( "&Send to Back" ), grandparent_widget, SLOT( slotSendToBack() ) );
 			order -> insertItem( QPixmap( one_forward_xpm ), tr( "One Step &Forward" ), grandparent_widget, SLOT( slotOneStepForward() ) );
@@ -568,7 +568,7 @@ void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
 			right_click_menu -> insertItem( tr( "&Order" ), order );
 			//Align Submenu
 			QPopupMenu * align = new QPopupMenu( this );
-			align -> setFont( QFont( "helvetica", 10 ) );
+// 			align -> setFont( QFont( "helvetica", 10 ) );
 			align -> insertItem( QPixmap( align_l_xpm ), tr( "&Left" ), grandparent_widget, SLOT( slotAlignLeft() ) );
 			align -> insertItem( QPixmap( align_cv_xpm ), tr( "&Center Vertically" ), grandparent_widget, SLOT( slotCenterVertically() ) );
 			align -> insertItem( QPixmap( align_r_xpm ), tr( "&Right" ), grandparent_widget, SLOT( slotAlignRight() ) );
@@ -579,7 +579,7 @@ void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
 			right_click_menu -> insertItem(tr( "A&lign" ), align );
 			//Transform Submenu
 			QPopupMenu * transform = new QPopupMenu( this );
-			transform -> setFont( QFont( "helvetica", 10 ) );
+// 			transform -> setFont( QFont( "helvetica", 10 ) );
 			transform -> insertItem( tr( "Flip &Horizontally" ), grandparent_widget, SLOT( slotFlipHorizontally() ) );
 			transform -> insertItem( tr( "Flip &Vertically" ), grandparent_widget, SLOT( slotFlipVertically() ) );
 			transform -> insertSeparator();
@@ -598,7 +598,7 @@ void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
 		else
 		{
 			right_click_menu = new QPopupMenu( this );
-			right_click_menu -> setFont( QFont( "helvetica", 10 ) );
+// 			right_click_menu -> setFont( QFont( "helvetica", 10 ) );
 			right_click_menu -> insertItem( QPixmap( undo_xpm ), tr( "&Undo" ), grandparent_widget, SLOT( slotUndo() ) );
 			right_click_menu -> insertItem( QPixmap( redo_xpm ), tr( "&Redo" ), grandparent_widget, SLOT( slotRedo() ) );
 			right_click_menu -> insertSeparator();

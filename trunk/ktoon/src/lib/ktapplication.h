@@ -34,6 +34,7 @@ class KTApplication : public QApplication
 {
 	Q_OBJECT
 	public:
+		enum ColorScheme { Default = 0, DarkBlue };
 		KTApplication(int & argc, char ** argv);
 		~KTApplication();
 		QString getHome();
@@ -48,8 +49,12 @@ class KTApplication : public QApplication
 		
 		void parseArgs( int &argc, char **argv);
 		
+		void applyColors(ColorScheme cs);
+		
 		bool isArg(const QString &arg);
 		QString getParam(const QString &arg);
+		
+		void changeFont(const QFont &font); // static?
 		
 	private:
 		QString m_KTOON_HOME;

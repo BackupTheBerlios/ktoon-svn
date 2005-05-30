@@ -36,7 +36,7 @@ Timeline::Timeline( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu,
     
     //Initializations
     setCaption( tr( "Timeline" ) );
-    setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     resize( 800, 150 );
     move( 20, 88 );
     parent_widget = parent;
@@ -62,7 +62,7 @@ Timeline::Timeline( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu,
     splitter -> setResizeMode( frame_sequence_manager, QSplitter::KeepSize );
 
     sound_label = new QLabel( tr( "Sound File-name:" ), this );
-    sound_label -> setFont( QFont( "helvetica", 7 ) );
+    sound_label -> setFont( QFont( font().family(), 7 ) );
     sound_label -> resize( layer_manager -> width(), 25 );
     sound_label -> move( splitter -> x(), splitter -> y() + splitter -> height() + 10 + 125 );
 

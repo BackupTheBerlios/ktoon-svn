@@ -35,8 +35,8 @@ Tools::Tools( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int i
     
     //Initializations
     setCaption( "" );
-    setFont( QFont( "helvetica", 10 ) );
-    setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     setFont( QFont( "helvetica", 10 ) );
+//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     resize( 44, 180 );
     setMinimumSize( 44, 180 );
     setMaximumSize( 44, 180 );
@@ -67,14 +67,14 @@ Tools::Tools( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int i
     //-------- Operations on the Menus associated with every main button --------
 
     menu_button_selection = new QPopupMenu( this );
-    menu_button_selection -> setFont( QFont( "helvetica", 10 ) );
-    menu_button_selection -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     menu_button_selection -> setFont( QFont( "helvetica", 10 ) );
+//     menu_button_selection -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     menu_button_selection -> insertItem( icon_selection, tr( "Normal Selection" ), parent, SLOT( slotNormalSelection() ) );
     menu_button_selection -> insertItem( icon_nodes, tr( "Contour Selection" ), parent, SLOT( slotContourSelection() ) );
 
     menu_button_draw = new QPopupMenu( this );
-    menu_button_draw -> setFont( QFont( "helvetica", 10 ) );
-    menu_button_draw -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     menu_button_draw -> setFont( QFont( "helvetica", 10 ) );
+//     menu_button_draw -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     menu_button_draw -> insertItem( icon_brush, tr( "Brush" ), parent, SLOT( slotBrush() ) );
     menu_button_draw -> insertItem( icon_pencil, tr( "Pencil" ), parent, SLOT( slotPencil() ) );
     menu_button_draw -> insertItem( icon_pen, tr( "Pen" ), parent, SLOT( slotPen() ) );
@@ -83,22 +83,22 @@ Tools::Tools( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int i
     menu_button_draw -> insertItem( icon_ellipse, tr( "Ellipse" ), parent, SLOT( slotEllipse() ) );
 
     menu_button_fill = new QPopupMenu( this );
-    menu_button_fill -> setFont( QFont( "helvetica", 10 ) );
-    menu_button_fill -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     menu_button_fill -> setFont( QFont( "helvetica", 10 ) );
+//     menu_button_fill -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     menu_button_fill -> insertItem( icon_fill, tr( "Fill" ), parent, SLOT( slotFill() ) );
     menu_button_fill -> insertItem( icon_remove_fill, tr( "Remove Fill" ), parent, SLOT( slotRemoveFill() ) );
     menu_button_fill -> insertItem( icon_contour_fill, tr( "Contour Fill" ), parent, SLOT( slotContourFill() ) );
     menu_button_fill -> insertItem( icon_dropper, tr( "Dropper" ), parent, SLOT( slotDropper() ) );
 
     menu_button_eraser = new QPopupMenu( this );
-    menu_button_eraser -> setFont( QFont( "helvetica", 10 ) );
-    menu_button_eraser -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     menu_button_eraser -> setFont( QFont( "helvetica", 10 ) );
+//     menu_button_eraser -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     menu_button_eraser -> insertItem( icon_eraser, tr( "Eraser" ), parent, SLOT( slotEraser() ) );
     menu_button_eraser -> insertItem( icon_slicer, tr( "Slicer" ), parent, SLOT( slotSlicer() ) );
 
     menu_button_view = new QPopupMenu( this );
-    menu_button_view -> setFont( QFont( "helvetica", 10 ) );
-    menu_button_view -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     menu_button_view -> setFont( QFont( "helvetica", 10 ) );
+//     menu_button_view -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     menu_button_view -> insertItem( icon_magnifying_glass, tr( "Magnifying Glass" ), parent, SLOT( slotMagnifyingGlass() ) );
     menu_button_view -> insertItem( icon_hand, tr( "Hand" ), parent, SLOT( slotHand() ) );
 

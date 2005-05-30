@@ -42,7 +42,7 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
 
     //Initializations
     setCaption( tr( "Exposure Sheet" ) );
-    setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     resize( 230, 440 );
     parent_widget = parent;
     assigned_menu = in_assigned_menu;
@@ -206,7 +206,7 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     visibility_list -> resize( 110, 120 );
     visibility_list -> move( layer_visibility -> x(), layer_visibility -> y() + layer_visibility -> height() );
     visibility_list -> setSelectionMode( QListView::Single );
-    visibility_list -> setFont( QFont( "helvetica", 8 ) );
+    visibility_list -> setFont( QFont( font().family(), 8 ) );
     visibility_list -> addColumn( tr( "Name" ), 105 ); //Single column for the name
     visibility_list -> setResizeMode( QListView::NoColumn );
     visibility_list -> setSorting( 10 ); //Not automatic sorting (10 > 1)

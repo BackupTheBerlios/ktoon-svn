@@ -135,13 +135,13 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose )
 	//resize( 1023, 728 ); // FIXME: Revisar esto!!
 	//showMaximized();
 	
-	setFont( QFont( "helvetica", 10 ) );
-	QToolTip::setFont( QFont( "helvetica", 8 ) );
+// 	setFont( QFont( "helvetica", 10 ) );
+// 	QToolTip::setFont( QFont( "helvetica", 8 ) );
 	setCentralWidget( main_panel );
 	document_max_value = 1;
 	file_name = "";
 	recent_names << recent1 << recent2 << recent3 << recent4 << recent5;
-	setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+// 	setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
 	window -> setItemEnabled( id_window_illustration, false );
 	current_status -> setCurrentScene( ( document_ -> getAnimation() -> getScenes() ).first() );
 	current_status -> setCurrentLayer( ( current_status -> currentScene() -> getLayers() ).first() );
@@ -354,7 +354,7 @@ void KToon::setupToolBarActions()
 {
     tool_bar = new QToolBar( this );
     tool_bar -> setLabel( tr( "File and Edit Operations" ) );
-    tool_bar -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     tool_bar -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
 
     file_new = new QToolButton( icon_new, tr( "New Document" ), QString::null, this, SLOT( slotNewDocument() ), tool_bar );
     file_open = new QToolButton( icon_open, tr( "Open Document" ), QString::null, this, SLOT( slotChoose() ), tool_bar );
@@ -395,7 +395,7 @@ void KToon::setupToolBarActions()
 
     tool_bar2 = new QToolBar( this );
     tool_bar2 -> setLabel( tr( "View Operations" ) );
-    tool_bar2 -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     tool_bar2 -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
 
     view_no_grid = new QToolButton( icon_no_grid, tr( "No Grid" ), QString::null, this, SLOT( slotNoGrid() ), tool_bar2 );
     view_grid12 = new QToolButton( icon_grid12, tr( "Grid of 12 Fields" ), QString::null, this, SLOT( slotSeeGrid12() ), tool_bar2 );
@@ -425,20 +425,20 @@ void KToon::setupMenu()
 {
 //-------------------- Operations related with the Menu Bar ----------------------
 
-    menuBar() -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     menuBar() -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
 
     //FILE MENU
     file = new QPopupMenu( this );
-    file -> setFont( QFont( "helvetica", 10 ) );
-    file -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     file -> setFont( QFont( "helvetica", 10 ) );
+//     file -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     id_file = menuBar() -> insertItem( tr("&File"), file );
 
     id_file_new = file -> insertItem( icon_new, tr( "&New..." ), this, SLOT( slotNewDocument() ), CTRL+Key_N );
     id_file_open = file -> insertItem( icon_open, tr( "&Open..." ), this, SLOT( slotChoose() ), CTRL+Key_O );
         //Open Recent Submenu
     open_recent = new QPopupMenu( this );
-    open_recent -> setFont( QFont( "helvetica", 10 ) );
-    open_recent -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     open_recent -> setFont( QFont( "helvetica", 10 ) );
+//     open_recent -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     connect( open_recent, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
     connect( open_recent, SIGNAL( activated( int ) ), SLOT( slotOpenRecent( int ) ) );
     file -> insertItem( tr( "Open Recent" ), open_recent );
@@ -458,8 +458,8 @@ void KToon::setupMenu()
 
     //EDIT MENU
     edit = new QPopupMenu( this );
-    edit -> setFont( QFont( "helvetica", 10 ) );
-    edit -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     edit -> setFont( QFont( "helvetica", 10 ) );
+//     edit -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     id_edit = menuBar() -> insertItem( tr( "&Edit" ), edit );
 
     id_edit_undo = edit -> insertItem( icon_undo, tr( "&Undo" ), this, SLOT( slotUndo() ), CTRL+Key_Z );
@@ -478,8 +478,8 @@ void KToon::setupMenu()
 
     //VIEW MENU
     view = new QPopupMenu( this );
-    view -> setFont( QFont( "helvetica", 10 ) );
-    view -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     view -> setFont( QFont( "helvetica", 10 ) );
+//     view -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     id_view = menuBar() -> insertItem( tr( "&View" ), view );
 
     id_view_zoom_in = view -> insertItem( icon_zoom_in, tr( "Zoom &In" ), this, SLOT( slotZoomIn() ), CTRL+Key_Plus );
@@ -488,8 +488,8 @@ void KToon::setupMenu()
     view -> insertSeparator();
         //Grid Submenu
     grid = new QPopupMenu( this );
-    grid -> setFont( QFont( "helvetica", 10 ) );
-    grid -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     grid -> setFont( QFont( "helvetica", 10 ) );
+//     grid -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     id_view_no_grid = grid -> insertItem( icon_no_grid, tr( "&No Grid" ), this, SLOT( slotNoGrid() ) );
     id_view_grid12 = grid -> insertItem( icon_grid12, tr( "&12 Field Grid" ), this, SLOT( slotSeeGrid12() ) );
     id_view_grid16 = grid -> insertItem( icon_grid16, tr( "&16 Field Grid" ), this, SLOT( slotSeeGrid16() ) );
@@ -501,8 +501,8 @@ void KToon::setupMenu()
     id_view_light_table = view -> insertItem( icon_light_table, tr( "&Light Table" ), this, SLOT( slotLightTable() ) );
     	//Onion Skin Submenu
     onion_skin = new QPopupMenu( this );
-    onion_skin -> setFont( QFont( "helvetica", 10 ) );
-    onion_skin -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     onion_skin -> setFont( QFont( "helvetica", 10 ) );
+//     onion_skin -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     id_view_previous_none = onion_skin -> insertItem( icon_no_previous, tr( "No Previous" ), this, SLOT( slotNoPreviousOnionSkin() ), Key_0 );
     id_view_previous = onion_skin -> insertItem( icon_previous, tr( "Previous One" ), this, SLOT( slotPreviousOnionSkin() ), Key_1 );
     id_view_previous2 = onion_skin -> insertItem( icon_previous2, tr( "Previous Two" ), this, SLOT( slotPrevious2OnionSkin() ), Key_2 );
@@ -525,8 +525,8 @@ void KToon::setupMenu()
 
     //INSERT MENU
     insert = new QPopupMenu( this );
-    insert -> setFont( QFont( "helvetica", 10 ) );
-    insert -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     insert -> setFont( QFont( "helvetica", 10 ) );
+//     insert -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     id_insert = menuBar() -> insertItem( tr( "&Insert" ), insert );
 
     id_insert_layer = insert -> insertItem( tr( "&Layer" ), this, SLOT( slotInsertLayer() ) );
@@ -543,22 +543,22 @@ void KToon::setupMenu()
 
     //TOOLS MENU
     tools = new QPopupMenu( this );
-    tools -> setFont( QFont( "helvetica", 10 ) );
-    tools -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     tools -> setFont( QFont( "helvetica", 10 ) );
+//     tools -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     id_tools = menuBar() -> insertItem( tr( "&Tools" ), tools );
 
        	//Selection Submenu
     QPopupMenu *selection = new QPopupMenu( this );
-    selection -> setFont( QFont( "helvetica", 10 ) );
-    selection -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     selection -> setFont( QFont( "helvetica", 10 ) );
+//     selection -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     id_tools_normal_selection = selection -> insertItem( icon_selection, tr( "Normal &Selection" ), this, SLOT( slotNormalSelection() ), Key_S );
     id_tools_contour_selection = selection -> insertItem( icon_nodes, tr( "Con&tour Selection" ), this, SLOT( slotContourSelection() ), Key_T );
     connect( selection, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
     tools -> insertItem( tr( "&Selection" ), selection );
        	//Draw Submenu
     QPopupMenu *draw = new QPopupMenu( this );
-    draw -> setFont( QFont( "helvetica", 10 ) );
-    draw -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     draw -> setFont( QFont( "helvetica", 10 ) );
+//     draw -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     id_tools_brush = draw -> insertItem( icon_brush, tr( "&Brush" ), this, SLOT( slotBrush() ), Key_B );
     id_tools_pencil = draw -> insertItem( icon_pencil, tr( "&Pencil" ), this, SLOT( slotPencil() ), Key_P );
     id_tools_pen = draw -> insertItem( icon_pen, tr( "&Pen" ), this, SLOT( slotPen() ), Key_N );
@@ -569,8 +569,8 @@ void KToon::setupMenu()
     tools -> insertItem( tr( "D&raw" ), draw );
        	//Fill Submenu
     QPopupMenu *fill = new QPopupMenu( this );
-    fill -> setFont( QFont( "helvetica", 10 ) );
-    fill -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     fill -> setFont( QFont( "helvetica", 10 ) );
+//     fill -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     id_tools_fill = fill -> insertItem( icon_fill, tr( "&Fill" ), this, SLOT( slotFill() ), Key_F );
     id_tools_remove_fill = fill -> insertItem( icon_remove_fill, tr( "&Remove Fill" ), this, SLOT( slotRemoveFill() ), SHIFT+Key_F );
     id_tools_contour_fill = fill -> insertItem( icon_contour_fill, tr( "&Contour Fill" ), this, SLOT( slotContourFill() ), CTRL+Key_F );
@@ -579,16 +579,16 @@ void KToon::setupMenu()
     tools -> insertItem( tr( "&Fill" ), fill );
        	//Eraser Submenu
     QPopupMenu *eraser = new QPopupMenu( this );
-    eraser -> setFont( QFont( "helvetica", 10 ) );
-    eraser -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     eraser -> setFont( QFont( "helvetica", 10 ) );
+//     eraser -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     id_tools_eraser = eraser -> insertItem( icon_eraser, tr( "&Eraser" ), this, SLOT( slotEraser() ), SHIFT+Key_Delete );
     id_tools_slicer = eraser -> insertItem( icon_slicer, tr( "&Slicer" ), this, SLOT( slotSlicer() ), CTRL+Key_Delete );
     connect( eraser, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
     tools -> insertItem( tr( "&Eraser" ), eraser );
        	//View_ Submenu
     QPopupMenu *view_ = new QPopupMenu( this );
-    view_ -> setFont( QFont( "helvetica", 10 ) );
-    view_ -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     view_ -> setFont( QFont( "helvetica", 10 ) );
+//     view_ -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     id_tools_magnifying_glass = view_ -> insertItem( icon_magnifying_glass, tr( "&Magnifying Glass" ), this, SLOT( slotMagnifyingGlass() ), Key_M );
     id_tools_hand = view_ -> insertItem( icon_hand, tr( "&Hand" ), this, SLOT( slotHand() ), Key_H );
     connect( view_, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
@@ -599,8 +599,8 @@ void KToon::setupMenu()
     tools -> insertSeparator();
     	//Order Submenu
     QPopupMenu *order = new QPopupMenu( this );
-    order -> setFont( QFont( "helvetica", 10 ) );
-    order -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     order -> setFont( QFont( "helvetica", 10 ) );
+//     order -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     id_tools_bring_front = order -> insertItem( icon_bring_to_front, tr( "&Bring to Front" ), this, SLOT( slotBringToFront() ), CTRL+SHIFT+Key_Up );
     id_tools_send_back = order -> insertItem( icon_send_to_back, tr( "&Send to Back" ), this, SLOT( slotSendToBack() ), CTRL+SHIFT+Key_Down );
     id_tools_one_step_forward = order -> insertItem( icon_one_forward, tr( "One Step &Forward" ), this, SLOT( slotOneStepForward() ), CTRL+Key_Up );
@@ -609,8 +609,8 @@ void KToon::setupMenu()
     tools -> insertItem( tr( "&Order" ), order );
     	//Align Submenu
     QPopupMenu *align = new QPopupMenu( this );
-    align -> setFont( QFont( "helvetica", 10 ) );
-    align -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     align -> setFont( QFont( "helvetica", 10 ) );
+//     align -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     id_tools_left = align -> insertItem( icon_align_l, tr( "&Left" ), this, SLOT( slotAlignLeft() ) );
     id_tools_center_vertically = align -> insertItem( icon_align_cv, tr( "&Center Vertically" ), this, SLOT( slotCenterVertically() ) );
     id_tools_right = align -> insertItem( icon_align_r, tr( "&Right" ), this, SLOT( slotAlignRight() ) );
@@ -622,8 +622,8 @@ void KToon::setupMenu()
     tools -> insertItem(tr( "A&lign" ), align );
     	//Transform Submenu
     QPopupMenu *transform = new QPopupMenu( this );
-    transform -> setFont( QFont( "helvetica", 10 ) );
-    transform -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     transform -> setFont( QFont( "helvetica", 10 ) );
+//     transform -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     id_tools_flip_horizontally = transform -> insertItem( tr( "Flip &Horizontally" ), this, SLOT( slotFlipHorizontally() ) );
     id_tools_flip_vertically = transform -> insertItem( tr( "Flip &Vertically" ), this, SLOT( slotFlipVertically() ) );
     transform -> insertSeparator();
@@ -638,8 +638,8 @@ void KToon::setupMenu()
 
     //CONTROL MENU
     control = new QPopupMenu( this );
-    control -> setFont( QFont( "helvetica", 10 ) );
-    control -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     control -> setFont( QFont( "helvetica", 10 ) );
+//     control -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     id_control = menuBar() -> insertItem( tr( "&Control" ), control );
 
     id_control_play = control -> insertItem( tr( "&Play/Stop" ), this, SLOT( slotPlayStop() ), Key_Return );
@@ -653,8 +653,8 @@ void KToon::setupMenu()
 
     //WINDOW MENU
     window = new QPopupMenu( this );
-    window -> setFont( QFont( "helvetica", 10 ) );
-    window -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     window -> setFont( QFont( "helvetica", 10 ) );
+//     window -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     id_window = menuBar() -> insertItem( tr( "&Window" ), window );
 
     id_window_illustration = window -> insertItem( icon_illus_mode, tr( "&Illustration Mode" ), this, SLOT( slotSeeIllustration() ), Key_F9 );
@@ -685,8 +685,8 @@ void KToon::setupMenu()
 
     //HELP MENU
     help = new QPopupMenu( this );
-    help -> setFont( QFont( "helvetica", 10 ) );
-    help -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     help -> setFont( QFont( "helvetica", 10 ) );
+//     help -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     id_help = menuBar() -> insertItem( tr( "&Help" ), help );
 
     id_help_contents = help -> insertItem( tr( "&Contents" ), this, SLOT( slotContents() ), Key_F1 );
@@ -3106,7 +3106,7 @@ void KToon::slotAboutOpenGL()
 					"Developers can leverage the power of OpenGL across all popular\n" +
 					"desktop and workstation platforms, ensuring wide application\n" +
 					"deployment.", opengl_dialog );
-    text -> setFont( QFont( "helvetica", 9 ) );
+//     text -> setFont( QFont( "helvetica", 9 ) );
     text -> resize( 380, 200 );
     text -> setAlignment( Qt::AlignJustify );
     text -> move( 10, logo -> height() + logo -> y() + 10 );

@@ -50,7 +50,7 @@ TLFrame::TLFrame( QWidget *parent )
     setPaletteBackgroundColor( *( k_toon -> tlDefaultColor() ) );
 
     right_click_menu = new QPopupMenu( this );
-    right_click_menu -> setFont( QFont( "helvetica", 10 ) );
+//     right_click_menu -> setFont( QFont( "helvetica", 10 ) );
     right_click_menu -> insertItem( tr( "Create Motion Tween" ), parent, SLOT( slotCreateMotionTween() ) );
     right_click_menu -> insertItem( tr( "Remove Motion Tween" ), parent, SLOT( slotRemoveMotionTween() ) );
     right_click_menu -> insertSeparator();
@@ -81,7 +81,7 @@ TLFrame::TLFrame( TLFrame *in_frame )
     setPaletteBackgroundColor( *( k_toon -> tlDefaultColor() ) );
 
     right_click_menu = new QPopupMenu( this );
-    right_click_menu -> setFont( QFont( "helvetica", 10 ) );
+//     right_click_menu -> setFont( QFont( "helvetica", 10 ) );
     right_click_menu -> insertItem( tr( "Create Motion Tween" ), parent_widget, SLOT( slotCreateMotionTween() ) );
     right_click_menu -> insertItem( tr( "Remove Motion Tween" ), parent_widget, SLOT( slotRemoveMotionTween() ) );
     right_click_menu -> insertSeparator();

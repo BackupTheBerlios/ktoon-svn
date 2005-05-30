@@ -140,7 +140,7 @@ TLLayerManager::TLLayerManager( QWidget *parent, QWidget *grandparent )
     QToolTip::add( move_layer_down, tr( "Move Layer Down" ) );
 
     time = new QLabel( QString::number( current_time, 'f', 2 ) + " / " + QString::number( total_time, 'f', 2 ), utils2 );
-    time -> setFont( QFont( "helvetica", 7 ) );
+    time -> setFont( QFont( font().family(), 7 ) );
     time -> setAlignment( Qt::AlignCenter );
     time -> resize( 80, 20 );
     time -> move( utils2 -> width() - time -> width(), 2 );

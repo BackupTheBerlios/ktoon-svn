@@ -69,12 +69,12 @@ TLLayer::TLLayer( int in_position, QWidget *parent, QWidget *grandparent, const 
 
     layer_name = new QLabel( initial_name, this );
     layer_name -> resize( 50, 20 );
-    layer_name -> setFont( QFont( "helvetica", 9 ) );
+    layer_name -> setFont( QFont( font().family(), 9 ) );
     layer_name -> move( static_layer_image -> x() + static_layer_image -> width(), 2 );
 
     edit_name = new QLineEdit( this );
     edit_name -> resize( 50, 20 );
-    edit_name -> setFont( QFont( "helvetica", 9 ) );
+    edit_name -> setFont( QFont( font().family(), 9 ) );
     edit_name -> move( layer_name -> x(), 2 );
     edit_name -> hide();
     connect( edit_name, SIGNAL( lostFocus() ), SLOT( slotEditName() ) );
@@ -312,7 +312,7 @@ void TLLayer::mousePressEvent( QMouseEvent *mouse_event )
 	if ( right_click_menu != NULL )
 	    delete right_click_menu;
         right_click_menu = new QPopupMenu( this );
-	right_click_menu -> setFont( QFont( "helvetica", 10 ) );
+// 	right_click_menu -> setFont( QFont( "helvetica", 10 ) );
         right_click_menu -> insertItem( tr( "Rename Layer" ), this, SLOT( slotSendDoubleClickEvent() ) );
         right_click_menu -> insertSeparator();
         right_click_menu -> insertItem( tr( "Insert Layer" ), lm -> insertLayerButton(), SLOT( animateClick() ) );

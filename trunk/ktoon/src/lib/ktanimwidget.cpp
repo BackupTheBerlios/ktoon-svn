@@ -21,6 +21,7 @@
 #define DEBUG_KTANIMWIDGET 0
 
 #include "ktanimwidget.h"
+#include "ktapplication.h"
 
 KTAnimWidget::KTAnimWidget(const QPixmap &px, const QString &text, QWidget *parent) : QCanvasView(parent, "KTAnimWidgetText"), m_type(AnimText)
 {
@@ -35,13 +36,12 @@ KTAnimWidget::KTAnimWidget(const QPixmap &px, const QString &text, QWidget *pare
 	m_canvas->setBackgroundPixmap(px);
 	m_canvas->setDoubleBuffering(true);
 
-	m_item = new QCanvasText(text, QFont( "helvetica", 12 ), m_canvas);
+	m_item = new QCanvasText(text, QApplication::font(), m_canvas);
 	static_cast<QCanvasText*>(m_item)->setTextFlags (Qt::AlignLeft );
 	
 	setCanvas(m_canvas);
 	resize(px.width()/2, px.height());
 	show();
-	start();
 }
 
 KTAnimWidget::KTAnimWidget(ListOfPixmaps lop, QWidget *parent) : QCanvasView(parent, "KTAnimWidgetPixmap"), m_type(AnimPixmap)
@@ -52,7 +52,7 @@ KTAnimWidget::KTAnimWidget(ListOfPixmaps lop, QWidget *parent) : QCanvasView(par
 	Q_ASSERT(lop.count() > 1);
 	setVScrollBarMode(AlwaysOff);
 	setHScrollBarMode(AlwaysOff);
-	/*px.width(), px.height()*/
+
 	m_canvas = new QCanvas(lop[0].width(), lop[0].height());
 	m_canvas->setAdvancePeriod(5000);
 	m_canvas->setDoubleBuffering(true);
@@ -62,7 +62,8 @@ KTAnimWidget::KTAnimWidget(ListOfPixmaps lop, QWidget *parent) : QCanvasView(par
 	m_item = new QCanvasSprite(pa, m_canvas);
 
 	setCanvas(m_canvas);
-	start();
+	resize(m_canvas->width()/2, m_canvas->height());
+
 	show();
 }
 
@@ -86,7 +87,7 @@ void KTAnimWidget::start()
 	{
 		case AnimText:
 		{
-			m_item->move( width() / 2, canvas()->height());
+			m_item->move( 20, m_canvas->height());
 			m_item->show();
 			m_item->setAnimated(true);
 			m_item->setYVelocity(-0.5);
@@ -112,9 +113,29 @@ void KTAnimWidget::follow()
 	m_item->setAnimated(true);
 }
 
-void KTAnimWidget::showEvent ( QShowEvent * e)
+bool KTAnimWidget::isItemVisible()
 {
-	follow();
+	bool incanvas = false;
+	QRect r = m_item->boundingRect();
+	
+	if ( r.y() < - r.height() || r.x() < - r.width() )
+		incanvas = false;
+	else
+		incanvas = true;
+	
+	return m_item->isVisible() && incanvas;
+}
+
+void KTAnimWidget::showEvent ( QShowEvent * e )
+{
+	if ( isItemVisible() )
+	{
+		follow();
+	}
+	else
+	{
+		start();
+	}
 	QCanvasView::showEvent ( e);
 }
 
@@ -123,4 +144,3 @@ void KTAnimWidget::hideEvent ( QHideEvent * e)
 	stop();
 	QCanvasView::hideEvent ( e);
 }
-

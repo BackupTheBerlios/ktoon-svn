@@ -235,7 +235,7 @@ void TLRuler::drawContents( QPainter *painter )
     }
 
     painter -> setPen( QColor( 0, 0, 0 ) );
-    painter -> setFont( QFont( "helvetica", 7 ) );
+    painter -> setFont( QFont( font().family(), 7 ) );
 
     //Print numbers, stepping 5 frames
     painter -> drawText( QPoint( 1, height() / 2 + 3 ), QString( "1" ) );
@@ -258,7 +258,7 @@ void TLRuler::drawOffsetRectangle( int x )
     p.eraseRect( offset_rectangle );
 
     //Redraw the number if the current offset rectangle erased it
-    p.setFont( QFont( "helvetica", 7 ) );
+    p.setFont( QFont( font().family(), 7 ) );
     p.drawText( QPoint( 1, height() / 2 + 3 ), QString( "1" ) );
     if ( ( offset_rectangle.left() + 9 ) % 50 == 0 )
     {
@@ -284,7 +284,7 @@ void TLRuler::drawOffsetDragRectangle( int x )
     p.eraseRect( offset_drag_rectangle );
 
     //Redraw the number if the current offset drag rectangle erased it
-    p.setFont( QFont( "helvetica", 7 ) );
+    p.setFont( QFont( font().family(), 7 ) );
     p.drawText( QPoint( 1, height() / 2 + 3 ), QString( "1" ) );
     if ( ( offset_drag_rectangle.left() + 9 ) % 50 == 0 )
     {

@@ -32,7 +32,7 @@ Import::Import( QWidget *parent ) : QDialog( parent, "Import", true )
     //Initializations
     setCaption( tr( "Import" ) );
     setFont( QFont( "helvetica", 10 ) );
-    setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     parent_widget = parent;
     k_toon = ( KToon * )parent_widget;
     setMinimumSize( 240, 280 );

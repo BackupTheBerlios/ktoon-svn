@@ -39,12 +39,12 @@ ColorPalette::ColorPalette( QWidget *parent, WFlags style, QPopupMenu *in_assign
 
     //Initializations
     setCaption( tr( "Color Palette" ) );
-    setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     resize( 185, 647 );
     setMinimumSize( 185, 647 );
     setMaximumSize( 185, 647 );
     move( 200, 35 );
-    setFont( QFont( "helvetica", 8 ) );
+//     setFont( QFont( "helvetica", 8 ) );
     parent_widget = parent;
     assigned_menu = in_assigned_menu;
     assigned_item = id_assigned_item;
@@ -214,12 +214,12 @@ ColorPalette::ColorPalette( QWidget *parent, WFlags style, QPopupMenu *in_assign
     QToolTip::add( remove_color, tr( "Remove Color" ) );
 
     text_color_name = new QLabel( tr( "Color Name:" ), this );
-    text_color_name -> setFont( QFont( "helvetica", 7 ) );
+//     text_color_name -> setFont( QFont( "helvetica", 7 ) );
     text_color_name -> resize( 60, 15 );
     text_color_name -> move( remove_color -> x() + remove_color -> width() + 5, remove_color -> y() );
 
     value_color_name = new QLineEdit( "", this );
-    value_color_name -> setFont( QFont( "helvetica", 7 ) );
+    value_color_name -> setFont( QFont( font().family(), 7 ) );
     value_color_name -> resize( 60, 15 );
     value_color_name -> move( text_color_name -> x() + text_color_name -> width() + 5, text_color_name -> y() );
 

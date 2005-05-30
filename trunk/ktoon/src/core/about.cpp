@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Fernando Jose Roldan Correa                     *
- *   froldan@toonka.com                                                    *
+ *   Copyright (C) 2004 by David Cuadrado                                  *
+ *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -28,16 +28,14 @@
 
 #define DEBUG_ABOUT 1
 
-//------------------ CONSTRUCTOR -----------------
-
 About::About( QWidget *parent ) : QTabDialog( parent )
 { 
 	setCaption( tr( "About" ) + QString( " KToon..." ) );
-	setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+// 	setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
 	resize( 580, 400 );
 	setMaximumSize( 580, 400 );
 	setMinimumSize( 580, 400 );
-	setFont( QFont( "helvetica", 10 ) );
+// 	setFont( QFont( "helvetica", 10 ) );
 
     	//1: Credits
 

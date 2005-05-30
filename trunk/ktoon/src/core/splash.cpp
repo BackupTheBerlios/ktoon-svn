@@ -28,7 +28,7 @@
 
 Splash::Splash() : QSplashScreen( QPixmap( splash_xpm ), Qt::WStyle_StaysOnTop )
 {
-	setFont( QFont( "helvetica", 10 ) );
+// 	setFont( QFont( "helvetica", 10 ) );
 	QPixmap pixmap(splash_xpm);
 	
 	QImage img = pixmap.convertToImage();

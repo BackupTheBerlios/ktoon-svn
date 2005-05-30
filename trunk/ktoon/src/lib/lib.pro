@@ -8,13 +8,15 @@ HEADERS += glgraphiccomponent.h \
            configwizard.h \
            ktxmlparser.h \
            ktxmlreader.h \
-           ktanimwidget.h 
+           ktanimwidget.h \
+           ktfontwidget.h 
 SOURCES += glgraphiccomponent.cpp \
            ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
            ktxmlreader.cpp \
-           ktanimwidget.cpp 
+           ktanimwidget.cpp \
+           ktfontwidget.cpp 
 INCLUDEPATH += ../../src/core \
 ../../src/dialogs \
 ../../src/qt/cameras \

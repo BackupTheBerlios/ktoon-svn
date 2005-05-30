@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@toonka.com   *
+ *   Copyright (C) 2005 by David Cuadrado   				   *
+ *   krawek@toonka.com   						   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -40,6 +40,8 @@ class KTAnimWidget : public QCanvasView
 		~KTAnimWidget();
 		
 		void setBackgroundPixmap(const QPixmap &px);
+		
+		bool isItemVisible();
 		
 		void stop();
 		void follow();

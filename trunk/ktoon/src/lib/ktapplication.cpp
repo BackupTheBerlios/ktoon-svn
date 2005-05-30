@@ -23,6 +23,7 @@
 #include <qdir.h>
 #include <qfile.h>
 #include <qfileinfo.h>
+#include <qobjectlist.h> 
 
 KTApplication::KTApplication(int & argc, char ** argv)
 	: QApplication(argc, argv, true), m_VERSION("0.8alpha")
@@ -31,11 +32,89 @@ KTApplication::KTApplication(int & argc, char ** argv)
 	m_KTOON_REPOSITORY = m_KTOON_HOME+QString("/repository");
 	parseArgs(argc, argv);
 	setStyle("plastik");
+	applyColors(Default);
+	setFont( QFont( "helvetica", 10 ) );
 }
 
 
 KTApplication::~KTApplication()
 {
+}
+
+void KTApplication::applyColors(ColorScheme cs)
+{
+	QColorGroup group = QApplication::palette().active();
+	switch (cs)
+	{
+		case Default:
+		{
+			const QColor bg( 239, 237, 223 );
+			const QColor bgAlt( 183, 182, 171 );
+			
+			group.setColor( QColorGroup::Text, Qt::black );
+			group.setColor( QColorGroup::Base, bg );
+			group.setColor( QColorGroup::Foreground, 0x3e3e45);
+			group.setColor( QColorGroup::Background, bg );
+		
+			group.setColor( QColorGroup::Button, bgAlt );
+			group.setColor( QColorGroup::ButtonText,0x3e3e45 );
+		
+			group.setColor( QColorGroup::Highlight, QColor(59,104,134) );
+			group.setColor( QColorGroup::HighlightedText, bg );
+			int h,s,v;
+			bgAlt.getHsv( &h, &s, &v );
+			group.setColor( QColorGroup::Midlight, QColor( h, s/3, (int)(v * 1.2),QColor::Hsv ) );
+		}
+		break;
+		case DarkBlue:
+		{
+			const QColor bg( 32,32,82 );
+			const QColor bgAlt( 57, 64, 98 );
+			
+			group.setColor( QColorGroup::Text, Qt::white );
+			group.setColor( QColorGroup::Base, bg );
+			group.setColor( QColorGroup::Foreground, 0xd7d7ef );
+			group.setColor( QColorGroup::Background, bgAlt );
+		
+			group.setColor( QColorGroup::Button, bgAlt );
+			group.setColor( QColorGroup::ButtonText, 0xd7d7ef );
+		
+			group.setColor( QColorGroup::Highlight, Qt::white );
+			group.setColor( QColorGroup::HighlightedText, bg );
+			int h,s,v;
+			bgAlt.getHsv( &h, &s, &v );
+			group.setColor( QColorGroup::Midlight, QColor( h, s/3, (int)(v * 1.2),QColor::Hsv ) );
+		}
+		break;
+	}
+	QPalette pal(group, group, group);
+	setPalette(pal);
+	
+	if ( mainWidget() )
+	{
+		QObjectList* const list = mainWidget()->queryList("QWidget");
+		for( QObject *o = list->first(); o; o = list->next() )
+		{
+			if ( o )
+				static_cast<QWidget*>(o)->setPalette(pal);
+		}
+		delete list;
+	}
+}
+
+void KTApplication::changeFont(const QFont &font)
+{
+	QApplication::setFont(font, true, "QWidget");
+	if ( mainWidget() )
+	{
+		QObjectList* const list = mainWidget()->queryList("QWidget");
+		for( QObject *o = list->first(); o; o = list->next() )
+		{
+			if ( o )
+				static_cast<QWidget*>(o)->setFont(font);
+		}
+		delete list;
+	}
 }
 
 void KTApplication::parseArgs(int &argc, char **argv)

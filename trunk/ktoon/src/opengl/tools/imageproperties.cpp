@@ -29,7 +29,7 @@ ImageProperties::ImageProperties( QWidget *parent ) : QDialog( parent, "Image Pr
 
     //Initializations
     setCaption( tr( "Image Properties" ) );
-    setFont( QFont( "helvetica", 10 ) );
+//     setFont( QFont( "helvetica", 10 ) );
     parent_widget = parent;
     resize( 235, 130 );
     setMinimumSize( 235, 130 );

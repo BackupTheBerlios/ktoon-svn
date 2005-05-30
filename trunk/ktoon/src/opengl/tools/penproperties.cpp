@@ -29,7 +29,7 @@ PenProperties::PenProperties( QWidget *parent ) : QDialog( parent, "Pen Properti
     
     //Initializations
     setCaption( tr( "Pen Properties" ) );
-    setFont( QFont( "helvetica", 10 ) );
+//     setFont( QFont( "helvetica", 10 ) );
     parent_widget = parent;
 
     resize( 235, 155 );

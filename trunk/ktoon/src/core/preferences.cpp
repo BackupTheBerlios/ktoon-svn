@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Fernando Jose Roldan Correa                     *
- *   froldan@toonka.com                                                    *
+ *   Copyright (C) 2004 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -30,135 +30,65 @@
 
 Preferences::Preferences( QWidget *parent ) : QTabDialog( parent, "Application Preferences", true )
 {
-    Q_CHECK_PTR( parent );
-    
-    //Initializations
-    setCaption( tr( "Application Preferences" ) );
-    setFont( QFont( "helvetica", 10 ) );
-    setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-    resize( 220, 230 );
-    parent_widget = parent;
-    setCancelButton();
-    connect( this, SIGNAL( applyButtonPressed() ), SLOT( slotOK() ) );
+	setCaption( tr( "Application Preferences" ) );
+	resize( 220, 230 );
 
-    //-- 1: LANGUAGE CONFIGURATION --
-
-    language = new QFrame( this );
-
-    language_group = new QButtonGroup( language );
-    language_group -> move( 10, 10 );
-    language_group -> resize( 180, 130 );
-
-    rb_system = new QRadioButton( tr( "System Default" ), language_group );
-    rb_system -> move( 5, 5 );
-    rb_system -> resize( 150, rb_system -> height() );
-
-    rb_english = new QRadioButton( tr( "English" ), language_group );
-    rb_english -> move( rb_system -> x(), rb_system -> y() + rb_system -> height() );
-
-    rb_spanish = new QRadioButton( tr( "Spanish" ), language_group );
-    rb_spanish -> move( rb_english -> x(), rb_english -> y() + rb_english -> height() );
-
-    rb_french = new QRadioButton( tr( "French" ), language_group );
-    rb_french -> move( rb_spanish -> x(), rb_spanish -> y() + rb_spanish -> height() );
-
-    addTab( language, tr( "Language" ) );
-
-    QFile settings( "settings" );
-    QString language;
-    if ( !settings.open( IO_ReadOnly ) )
-        rb_english -> setChecked( true );
-    else
-    {
-        QTextStream stream( &settings );
-        stream >> language;
-    }
-    settings.close();
-
-    if ( language == "LANG=en" )
-	rb_english -> setChecked( true );
-    else if ( language == "LANG=es" )
-	rb_spanish -> setChecked( true );
-    else if ( language == "LANG=fr" )
-	rb_french -> setChecked( true );
-    else
-        rb_system -> setChecked( true );
+	setCancelButton();
+	connect( this, SIGNAL( applyButtonPressed() ), SLOT( applyChanges() ) );
+	
+	m_colorPref = new ColorSchemePref(this);
+	addTab(m_colorPref, tr("Color Preferences"));
+	
+	m_fontWidget = new KTFontWidget(this);
+	m_fontWidget->showXLFDArea(false);
+	addTab(m_fontWidget, tr("Font"));
 }
 
 //-------------- DESTRUCTOR -----------------
 
 Preferences::~Preferences()
 {
-    delete rb_english;
-    delete rb_spanish;
-    delete rb_french;
-    delete rb_system;
-    delete language_group;
-    delete language;
 }
 
 //------------------- SLOTS -------------------------
 
-void Preferences::slotOK()
+void Preferences::applyChanges()
 {
-    // --- LANGUAGE SETTINGS ---
-
-    QFile settings( "settings" );
-    QString language;
-
-    switch ( language_group -> selectedId() )
-    {
-        case 0:
+	if ( static_cast<ColorSchemePref *>(currentPage()) == m_colorPref )
 	{
-    	    if ( settings.open( IO_WriteOnly ) )
-	    {
-        	language = "LANG=" + QString( QTextCodec::locale() ).left( 2 ) + "\n";
-        	QTextStream stream( &settings );
-        	stream << language;
-    	    }
-	    else
-	        QMessageBox::warning( this, tr( "Warning" ), tr( "Could not write to the settings file" ) );
-	    break;
+		switch(m_colorPref->selectedId())
+		{
+			case KTApplication::Default:
+				ktapp->applyColors(KTApplication::Default);
+				break;
+				
+			case KTApplication::DarkBlue:
+				ktapp->applyColors(KTApplication::DarkBlue);
+				break;
+		}
 	}
-        case 1:
+	else if ( static_cast<KTFontWidget *>( currentPage ()) == m_fontWidget )
 	{
-    	    if ( settings.open( IO_WriteOnly ) )
-	    {
-        	language = "LANG=en\n";
-        	QTextStream stream( &settings );
-        	stream << language;
-    	    }
-	    else
-	        QMessageBox::warning( this, tr( "Warning" ), tr( "Could not write to the settings file" ) );
-	    break;
+		ktapp->changeFont(m_fontWidget->font());
 	}
-        case 2:
-	{
-    	    if ( settings.open( IO_WriteOnly ) )
-	    {
-        	language = "LANG=es\n";
-        	QTextStream stream( &settings );
-        	stream << language;
-    	    }
-	    else
-	        QMessageBox::warning( this, tr( "Warning" ), tr( "Could not write to the settings file" ) );
-	    break;
-	}
-        case 3:
-	{
-    	    if ( settings.open( IO_WriteOnly ) )
-	    {
-        	language = "LANG=fr\n";
-        	QTextStream stream( &settings );
-        	stream << language;
-    	    }
-	    else
-	        QMessageBox::warning( this, tr( "Warning" ), tr( "Could not write to the settings file" ) );
-	    break;
-	}
-	default: break;
-    }
-
-    settings.close();
-    QMessageBox::information( this, tr( "Information" ), tr( "You must restart the application in order to\nsome changes take effect" ) );
 }
+
+// ColorSchemePref
+
+ColorSchemePref::ColorSchemePref(QWidget *parent) : QVButtonGroup(parent)
+{
+	addPref(tr("Default Color Scheme"));
+	addPref(tr("Dark blue"));
+}
+
+ColorSchemePref::~ ColorSchemePref()
+{
+}
+
+void ColorSchemePref::addPref(const QString &label)
+{
+	QRadioButton *btmp = new QRadioButton(label, this);
+	insert(btmp);
+}
+
+

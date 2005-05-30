@@ -33,7 +33,7 @@ ESFrame::ESFrame( const QString &initial_text, QWidget *parent, QWidget *grandpa
     Q_CHECK_PTR( grandparent );
 
     //Initializations
-    setFont( QFont( "helvetica", 7 ) );
+//     setFont( QFont( "helvetica", 7 ) );
     setFrameStyle( QFrame::Panel | QFrame::Raised );
     setLineWidth( 2 );
     resize( 70, 25 );
@@ -54,7 +54,7 @@ ESFrame::ESFrame( const QString &initial_text, QWidget *parent, QWidget *grandpa
     connect( description, SIGNAL( returnPressed() ), SLOT( slotSetDescription() ) );
 
     right_click_menu = new QPopupMenu( this );
-    right_click_menu -> setFont( QFont( "helvetica", 10 ) );
+//     right_click_menu -> setFont( QFont( "helvetica", 10 ) );
     id_rename = right_click_menu -> insertItem( tr( "Rename Frame" ), this, SLOT( slotSendDoubleClickEvent() ) );
     id_remove = right_click_menu -> insertItem( tr( "Remove this Frame" ), grandparent, SLOT( slotRemoveFrame() ) );
     id_lock = right_click_menu -> insertItem( tr( "Lock this Frame" ), grandparent, SLOT( slotLockFrame() ) );

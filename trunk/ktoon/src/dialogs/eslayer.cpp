@@ -35,7 +35,7 @@ ESLayer::ESLayer( const QString &initial_text, QWidget *parent, QWidget *grandpa
     resize( 70, 25 );
     setAutoDefault( false );
     setFocusPolicy( QWidget::NoFocus );
-    setFont( QFont( "helvetica", 10 ) );
+//     setFont( QFont( "helvetica", 10 ) );
     parent_widget = parent;
     grandparent_widget = grandparent;
     default_color = paletteBackgroundColor();
@@ -49,7 +49,7 @@ ESLayer::ESLayer( const QString &initial_text, QWidget *parent, QWidget *grandpa
     connect( description, SIGNAL( returnPressed() ), SLOT( slotSetDescription() ) );
 
     right_click_menu = new QPopupMenu( this );
-    right_click_menu -> setFont( QFont( "helvetica", 10 ) );
+//     right_click_menu -> setFont( QFont( "helvetica", 10 ) );
     right_click_menu -> insertItem( tr( "Rename Layer" ), this, SLOT( slotSendDoubleClickEvent() ) );
     right_click_menu -> insertItem( tr( "Remove this Layer" ), grandparent, SLOT( slotRemoveLayer() ) );
     right_click_menu -> insertSeparator();

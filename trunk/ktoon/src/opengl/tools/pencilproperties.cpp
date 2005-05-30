@@ -29,7 +29,7 @@ PencilProperties::PencilProperties( QWidget *parent ) : QDialog( parent, "Pencil
     
     //Initializations
     setCaption( tr( "Pencil Properties" ) );
-    setFont( QFont( "helvetica", 10 ) );
+//     setFont( QFont( "helvetica", 10 ) );
     parent_widget = parent;
     resize( 235, 155 );
     setMinimumSize( 235, 155 );

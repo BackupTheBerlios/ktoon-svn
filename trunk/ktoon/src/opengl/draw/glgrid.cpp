@@ -330,7 +330,7 @@ void GLGrid::drawNumber( const QPoint & initial, const QColor & color, const QSt
      Q_ASSERT( color.isValid() );
 
      glColor3f(  color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0  );
-     parent_widget -> renderText( initial.x() - 10, initial.y() + 10, string_number, QFont( "helvetica", 12, QFont::Bold, TRUE ) );
+     parent_widget -> renderText( initial.x() - 10, initial.y() + 10, string_number, QFont( parent_widget->font().family (), 12, QFont::Bold, TRUE ) );
 }
 
 void GLGrid::drawNumber( GLdouble x, GLdouble y, GLdouble z, const QColor & color, const QString & string_number ) const

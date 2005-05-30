@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Fernando Jose Roldan Correa                     *
- *   froldan@toonka.com                                                    *
+ *   Copyright (C) 2004 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -31,51 +31,42 @@
 #include <qlabel.h>
 #include <qradiobutton.h>
 #include <qbuttongroup.h>
+#include <qvbuttongroup.h>
+#include <qvbox.h>
+#include <qhbox.h>
 
-/**
- * @brief Class that handles the dialog box to set application's preferences
- *
- * <b>Date of Creation: June 9 - 2004.</b>\n
- */
+#include "ktfontwidget.h"
+
+class ColorSchemePref;
+
 class Preferences : public QTabDialog
 {
-    Q_OBJECT
+	Q_OBJECT
+			
+	
+	public:
+		Preferences( QWidget *parent );
+		~Preferences();
+		
+		
+	private:
+		ColorSchemePref *m_colorPref;
+		KTFontWidget *m_fontWidget;
 
-public:
-    /**
-     * @brief Default Constructor
-     *
-     * Constructs a Preferences dialog box.
-     * @param parent The parent widget
-     */
-    Preferences( QWidget *parent );
-    /**
-     * @brief Default Destructor
-     *
-     * Destroys the Preferences dialog box.
-     */
-    ~Preferences();
-
-private:
-    //General Purpose Variables
-    QWidget *parent_widget;
-
-    //Widgets for the tabs:
-    //1:
-    QFrame *language;
-    QButtonGroup *language_group;
-    QRadioButton *rb_system, *rb_english, *rb_spanish, *rb_french;
-
-public slots:
-    /**
-     * @brief Confirms all preferences settings
-     *
-     * This function is called when the user presses the OK button.
-     */
-    void slotOK();
+	public slots:
+		void applyChanges();
     
-protected:
+	protected:
 
+};
+
+class ColorSchemePref : public QVButtonGroup
+{
+	Q_OBJECT
+	public:
+		ColorSchemePref(QWidget *parent);
+		~ColorSchemePref();
+		void addPref(const QString &label);
 };
 
 #endif

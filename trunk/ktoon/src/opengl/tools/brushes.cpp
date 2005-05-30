@@ -44,7 +44,7 @@ Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
 
     //Initializations
     setCaption( tr( "Brushes" ) );
-    setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     resize( 200, 360 );
     setMinimumSize( 200, 360 );
     setMaximumSize( 200, 360 );
@@ -85,7 +85,7 @@ Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
     table_brushes -> resize( 190, 120 );
     table_brushes -> move( 5, 30 );
     table_brushes -> setSelectionMode( QListView::Single );
-    table_brushes -> setFont( QFont( "helvetica", 8 ) );
+    table_brushes -> setFont( QFont( QApplication::font().family(), 8 ) );
     table_brushes -> addColumn( tr( "Min" ), 30 ); //Min Thickness Column
     table_brushes -> addColumn( tr( "Max" ), 30 ); //Min Thickness Column
     table_brushes -> addColumn( tr( "Smo" ), 30 ); //Smoothness Column
@@ -111,7 +111,7 @@ Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
     value_min_thickness = new QLineEdit( "2", this );
     value_min_thickness -> resize( 20, 20 );
     value_min_thickness -> move( 5, table_brushes -> height() + table_brushes -> y() + 10 );
-    value_min_thickness -> setFont( QFont( "helvetica", 6 ) );
+    value_min_thickness -> setFont( QFont( QApplication::font().family(), 6 ) );
     value_min_thickness -> setAlignment( Qt::AlignRight );
     value_min_thickness -> setMaxLength( 2 );
     value_min_thickness -> setValidator( new QIntValidator( THICKNESS_MIN_MIN, THICKNESS_MIN_MAX, this ) );
@@ -121,7 +121,7 @@ Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
     value_max_thickness = new QLineEdit( "5", this );
     value_max_thickness -> resize( 20, 20 );
     value_max_thickness -> move( 5, value_min_thickness -> height() + value_min_thickness -> y() + 10 );
-    value_max_thickness -> setFont(QFont( "helvetica", 6 ) );
+    value_max_thickness -> setFont(QFont( QApplication::font().family(), 6 ) );
     value_max_thickness -> setAlignment( Qt::AlignRight );
     value_max_thickness -> setMaxLength( 2 );
     value_max_thickness -> setValidator( new QIntValidator( THICKNESS_MAX_MIN, THICKNESS_MAX_MAX, this ) );
@@ -131,7 +131,7 @@ Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
     value_smoothness = new QLineEdit( "2", this );
     value_smoothness -> resize( 20, 20 );
     value_smoothness -> move( 5, value_max_thickness -> height() + value_max_thickness -> y() + 10 );
-    value_smoothness -> setFont( QFont( "helvetica", 6 ) );
+    value_smoothness -> setFont( QFont( QApplication::font().family(), 6 ) );
     value_smoothness -> setAlignment( Qt::AlignRight );
     value_smoothness -> setMaxLength( 1 );
     value_smoothness -> setValidator( new QIntValidator( SMOOTHNESS_MIN, SMOOTHNESS_MAX, this ) );
@@ -140,7 +140,7 @@ Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
     value_name = new QLineEdit( tr( "Brush0" ), this );
     value_name -> resize( 80, 20 );
     value_name -> move( 5, value_smoothness -> height() + value_smoothness -> y() + 10 + 30 );
-    value_name -> setFont( QFont( "helvetica", 8) );
+    value_name -> setFont( QFont( font().family(), 8) );
     value_name -> setAlignment( Qt::AlignLeft );
     value_name -> setMaxLength( 10 );
     connect( value_name, SIGNAL( lostFocus() ), SLOT( slotChangeValueName() ) );
@@ -149,7 +149,7 @@ Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
     //------------- Operations on Static Texts ----------
 
     text_min_thickness = new QLabel( tr( "Minimum Thickness" ), this );
-    text_min_thickness -> setFont( QFont( "helvetica", 6 ) );
+    text_min_thickness -> setFont( QFont( font().family(), 6 ) );
     text_min_thickness -> move( value_min_thickness -> width() + value_min_thickness -> x() + 5, value_min_thickness -> y() );
 
     text_max_thickness = new QLabel( tr( "Maximum Thickness" ), this);
@@ -157,11 +157,11 @@ Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
     text_max_thickness -> move( value_max_thickness -> width() + value_max_thickness -> x() + 5, value_max_thickness -> y() );
 
     text_smoothness = new QLabel( tr( "Smoothness" ), this );
-    text_smoothness -> setFont( QFont( "helvetica", 6 ) );
+    text_smoothness -> setFont( QFont( font().family(), 6 ) );
     text_smoothness -> move( value_smoothness -> width() + value_smoothness -> x() + 5, value_smoothness -> y() );
 
     text_name = new QLabel( tr( "Brush Name" ), this );
-    text_name -> setFont( QFont( "helvetica", 7 ) );
+    text_name -> setFont( QFont( font().family(), 7 ) );
     text_name -> resize( 100, 25 );
     text_name -> setAlignment( Qt::AlignTop );
     text_name -> move( 5, value_name -> height() + value_name -> y() + 1 );

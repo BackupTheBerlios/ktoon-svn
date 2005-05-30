@@ -35,8 +35,8 @@ Export::Export( QWidget *parent ) : QDialog( parent, "Export", true )
 {
     //Initializations
     setCaption( tr( "Export" ) );
-    setFont( QFont( "helvetica", 10 ) );
-    setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     setFont( QFont( "helvetica", 10 ) );
+//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     parent_widget = parent;
     k_toon = ( KToon * )parent_widget;
     setMinimumSize( 210, 220 );

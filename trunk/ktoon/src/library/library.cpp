@@ -43,8 +43,8 @@ Library::Library( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
 
     //Initializations
     setCaption( tr( "Graphic Library" ) );
-    setFont( QFont( "helvetica", 8 ) );
-    setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     setFont( QFont( "helvetica", 8 ) );
+//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     parent_widget = parent;
     assigned_menu = in_assigned_menu;
     assigned_item = id_assigned_item;
@@ -76,7 +76,7 @@ Library::Library( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
     table_symbols -> resize( 140, 185 );
     table_symbols -> move( symbol_view -> x(), symbol_view -> y() + symbol_view -> height() + 5 );
     table_symbols -> setSelectionMode( QListView::Single );
-    table_symbols -> setFont( QFont( "helvetica", 8 ) );
+//     table_symbols -> setFont( QFont( "helvetica", 8 ) );
     table_symbols -> addColumn( tr( "Name" ), 135 );
     table_symbols -> setResizeMode( QListView::NoColumn );
     table_symbols -> setSorting( 10 ); //Not automatic sorting (10 > 4)

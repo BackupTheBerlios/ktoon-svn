@@ -98,7 +98,7 @@
       <envvars/>
     </run>
     <general>
-      <activedir>src/core</activedir>
+      <activedir>src/lib</activedir>
     </general>
     <make>
       <abortonerror>true</abortonerror>

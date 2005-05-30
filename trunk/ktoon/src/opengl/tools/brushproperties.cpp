@@ -30,7 +30,7 @@ BrushProperties::BrushProperties( QWidget *parent ) : QDialog( parent, "Brush Pr
 
     //Initializations
     setCaption( tr( "Brush Properties" ) );
-    setFont( QFont( "helvetica", 10 ) );
+//     setFont( QFont( "helvetica", 10 ) );
     parent_widget = parent;
     resize( 235, 155 );
     setMinimumSize( 235, 155 );

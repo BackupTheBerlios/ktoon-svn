@@ -38,7 +38,7 @@ Scenes::Scenes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int
     
     //Initializations
     setCaption( tr( "Scenes" ) );
-    setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     resize( 120, 200 );
     setMinimumSize( 120, 200 );
     setMaximumSize( 120, 200 );
@@ -97,7 +97,7 @@ Scenes::Scenes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int
     table_scenes -> resize( 110, 120 );
     table_scenes -> move( 5, 30 );
     table_scenes -> setSelectionMode( QListView::Single );
-    table_scenes -> setFont( QFont( "helvetica", 8 ) );
+//     table_scenes -> setFont( QFont( "helvetica", 8 ) );
     table_scenes -> addColumn( tr( "Name" ), 105 ); //Single column for the name
     table_scenes -> setResizeMode( QListView::NoColumn );
     table_scenes -> setSorting( 10 ); //Not automatic sorting (10 > 1)
@@ -112,7 +112,7 @@ Scenes::Scenes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int
     value_name = new QLineEdit( tr( "Scene1" ), this );
     value_name -> resize( 80, 20 );
     value_name -> move( 5, table_scenes -> height() + table_scenes -> y() + 10 );
-    value_name -> setFont( QFont( "helvetica", 8 ) );
+//     value_name -> setFont( QFont( "helvetica", 8 ) );
     value_name -> setMaxLength( 10 );
     connect( value_name, SIGNAL( lostFocus() ), SLOT( slotChangeValueName() ) );
     connect( value_name, SIGNAL( returnPressed() ), SLOT( slotChangeValueName() ) );
@@ -120,7 +120,7 @@ Scenes::Scenes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int
     //------------- Operations on the static texts ----------
 
     text_name = new QLabel( tr( "Scene Name" ), this );
-    text_name -> setFont( QFont( "helvetica", 7 ) );
+    text_name -> setFont( QFont( font().family(), 7 ) );
     text_name -> resize( 100, 20 );
     text_name -> setAlignment( Qt::AlignTop );
     text_name -> move( value_name -> x(), value_name -> height() + value_name -> y() + 1 );

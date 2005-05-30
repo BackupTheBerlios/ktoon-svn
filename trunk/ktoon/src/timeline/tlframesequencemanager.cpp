@@ -85,7 +85,7 @@ TLFrameSequenceManager::TLFrameSequenceManager( QWidget *parent, QWidget *grandp
     horizontal_scroll_bar = new QScrollBar( 0, TLFrameSequence::TL_MAX_NUMBER_OF_FRAMES - 59, 1, 5, 0, Qt::Horizontal, utils );
     horizontal_scroll_bar -> resize( 525, 18 );
     horizontal_scroll_bar -> move( 60, 4 );
-    horizontal_scroll_bar -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+//     horizontal_scroll_bar -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     connect( horizontal_scroll_bar, SIGNAL( valueChanged( int ) ), SLOT( slotMoveRulerAndFrames() ) );
 }
 

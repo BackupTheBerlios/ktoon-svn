@@ -29,7 +29,7 @@ RectangleProperties::RectangleProperties( QWidget *parent ) : QDialog( parent, "
     
     //Initializations
     setCaption( tr( "Rectangle Properties" ) );
-    setFont( QFont( "helvetica", 10 ) );
+//     setFont( QFont( "helvetica", 10 ) );
     parent_widget = parent;
     resize( 235, 205 );
     setMinimumSize( 235, 205 );
