@@ -24,210 +24,112 @@
 
 #include "about.h"
 #include "images.h"
+#include "ktapplication.h"
 
-#include <memory> // std::auto_ptr
-
+#define DEBUG_ABOUT 1
 
 //------------------ CONSTRUCTOR -----------------
 
 About::About( QWidget *parent ) : QTabDialog( parent )
 { 
-    Q_CHECK_PTR( parent );
-    
-    setCaption( tr( "About" ) + QString( " KToon..." ) );
-    setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-    resize( 580, 400 );
-    setMaximumSize( 580, 400 );
-    setMinimumSize( 580, 400 );
-    setFont( QFont( "helvetica", 10 ) );
-    parent_widget = parent;
+	setCaption( tr( "About" ) + QString( " KToon..." ) );
+	setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+	resize( 580, 400 );
+	setMaximumSize( 580, 400 );
+	setMinimumSize( 580, 400 );
+	setFont( QFont( "helvetica", 10 ) );
 
-    //-- 1: CREDITS --
+    	//1: Credits
 
-    credits = new QLabel( this );
-    file_id = 1;
-    
-    std::auto_ptr<QPainter> ap_credits_painter(new QPainter);
-    credits_painter = ap_credits_painter.get();
-    
-    
-    credits_pixmap = QPixmap();
-    // TODO: KTOON_HOME
-    credits_pixmap.load( "src/images/images/credits-image.png" );
-    credits -> setPixmap( credits_pixmap );
-
-    QFile credits_file( "src/images/images/credits-text.txt" );
-    
-    if ( credits_file.open( IO_ReadOnly ) )
-    {
-        QTextStream stream( &credits_file );
-        while ( !stream.atEnd() )
-            credits_text = credits_text + stream.readLine() + QString( "\n" );
-        credits_file.close();
-    }
-
-    credits_timer = new QTimer( this );
-    connect( credits_timer, SIGNAL( timeout() ), SLOT( slotDisplayCreditsPixmap() ) );
-    addTab( credits, tr( "Credits" ) );
-
-    //-- 2: ACKNOWLEDGEMENTS --
-
-    ack = new QLabel( this );
-    file_id2 = 1;
-    ack_pixmap = QPixmap();
-
-    // TODO: KTOON_HOME
-
-    ack_pixmap.load( "src/images/sequences/ack-image1.png", "PNG" );
-    ack -> setPixmap( ack_pixmap );
-    ack_timer = new QTimer( this );
-    connect( ack_timer, SIGNAL( timeout() ), SLOT( slotDisplayAcknowledgementsPixmap() ) );
-    addTab( ack, tr( "Acknowledgements" ) );
-
-    //-- 3: SVN LOG FILE --
-
-    scroll_container_log = new QScrollView( this );
-    scroll_log = new QFrame( scroll_container_log -> viewport() );
-    scroll_container_log -> addChild( scroll_log );
-
-    text_log = new QLabel( scroll_log );
-    QString lines;
-    QFile log_file( "svnlog.txt" );
-    int new_height = 12000;
-    if ( log_file.open( IO_ReadOnly ) )
-    {
-        int line_count = 0;
-        QTextStream stream( &log_file );
-        while ( !stream.atEnd() )
+	QFile creditsFile( KTOON_HOME+"/data/credits.txt" );
+	QString creditsText;
+	if ( creditsFile.open( IO_ReadOnly ) )
 	{
-	    QString new_line = stream.readLine();
-	    QString copy = new_line;
-	    if ( !copy.replace( " ", "" ).isEmpty() )
-            {
-	        lines = lines + new_line + QString( "\n" );
-	        line_count++;
-	    }
+		QTextStream stream( &creditsFile );
+		while ( !stream.atEnd() )
+		{
+			QString line = stream.readLine();
+			creditsText += line + "\n";
+		}
+		creditsFile.close();
 	}
-        log_file.close();
-	new_height = line_count * 17;
-    }
-    text_log -> setText( lines );
-    scroll_log -> resize( 600, new_height );
-    text_log -> resize( 600, new_height );
-    addTab( scroll_container_log, tr( "SVN Log" ) );
+    
+	m_credits = new KTAnimWidget( QPixmap(KTOON_HOME+"/images/credits-image.png" ), creditsText, this );
+	addTab( m_credits, tr( "Credits" ) );
 
-    //-- 4: ABOUT TOONKA FILMS --
+    	// 2: Ack
+	ListOfPixmaps lop;
 
-    toonka = new QLabel( this );
-    toonka_pixmap = QPixmap( "src/images/images/toonka.jpg" );
-    toonka -> setPixmap( toonka_pixmap );
-    addTab( toonka, "Toonka Films" );
+	for(uint i = 1; i < 11; i++)
+	{
+		lop << QPixmap(KTOON_HOME+QString("/images/sequences/ack-image%1.png").arg(i));
+	}
+	
+	m_ack = new KTAnimWidget( lop,this );
 
-    //-- 4: ABOUT LABORATOON --
+	addTab( m_ack, tr( "Acknowledgements" ) );
 
-    laboratoon = new QLabel( this );
-    laboratoon_pixmap = QPixmap( "src/images/images/laboratoon.jpg" );
-    laboratoon -> setPixmap( laboratoon_pixmap );
-    addTab( laboratoon, "Laboratoon" );
+    	// 3: Changelog
 
-    //-- 6: GNU PUBLIC LICENSE --
+ 	QScrollView *scroll = new QScrollView( this );
+	
+	QLabel *logText = new QLabel(scroll->viewport());
+	scroll->addChild( logText );
+	
+	QString readText;
+	QFile clFile( KTOON_HOME+"/data/Changelog" );
+	
+	if ( clFile.open( IO_ReadOnly ) )
+	{
+		QTextStream stream( &clFile );
+		while ( ! stream.atEnd() )
+		{
+			QString text;
+			text = stream.readLine();
+			readText += text+"\n";
+		}
+		clFile.close();
+	}
+	logText -> setText( readText );
+	
+	addTab( scroll, tr( "Changelog" ) );
 
-    scroll_container_gnu = new QScrollView( this );
-    scroll_gnu = new QFrame( scroll_container_gnu -> viewport() );
-    scroll_gnu -> resize( 600, 6000 );
-    scroll_container_gnu -> addChild( scroll_gnu );
+    	// 4: Toonka Films
 
-    text_gnu = new QLabel( scroll_gnu );
-    text_gnu -> resize( 600, 6000 );
-    QString lines2;
-    QFile gnu_file( "COPYING" );
-    if ( gnu_file.open( IO_ReadOnly ) )
-    {
-        QTextStream stream( &gnu_file );
-        while ( !stream.atEnd() )
-            lines2 = lines2 + stream.readLine() + QString( "\n" );
-        gnu_file.close();
-    }
-    text_gnu -> setText( lines2 );
-    addTab( scroll_container_gnu, tr( "License Agreement" ) );
+	QLabel *toonka = new QLabel( this );
+	toonka->setPixmap(QPixmap( KTOON_HOME+"/images/toonka.jpg" ));
+	addTab( toonka, "Toonka Films" );
 
-    connect( this, SIGNAL( currentChanged( QWidget * ) ), SLOT( slotPerformPageChangeActions( QWidget * ) ) );
+    	// 5: Laboratoon
 
-    ap_credits_painter.release();
+	QLabel *laboratoon = new QLabel( this );
+	laboratoon->setPixmap( QPixmap( KTOON_HOME+"/images/laboratoon.jpg" ) );
+	addTab( laboratoon, "Laboratoon" );
+
+    	// 6: Licence
+
+	QScrollView *scrollLicence = new QScrollView( this );
+
+	QLabel *licenceText = new QLabel( scrollLicence );
+	scrollLicence->addChild( licenceText );
+	QString licence;
+	QFile licenceFile( KTOON_HOME+"/data/COPYING" );
+	if ( licenceFile.open( IO_ReadOnly ) )
+	{
+		QTextStream stream( &licenceFile );
+		while ( ! stream.atEnd() )
+		{
+			QString line = stream.readLine();
+			licence += line+"\n";
+		}
+		licenceFile.close();
+	}
+	licenceText -> setText( licence );
+	addTab( scrollLicence, tr( "License Agreement" ) );
 }
-
-//---------------- DESTRUCTOR -------------------
 
 About::~About()
 {
-    delete credits_timer;
-    delete credits_painter;
-    delete credits;
-    delete ack;
-    delete ack_timer;
-    delete text_log;
-    delete scroll_log;
-    delete scroll_container_log;
-    delete toonka;
-    delete laboratoon;
-    delete text_gnu;
-    delete scroll_gnu;
-    delete scroll_container_gnu;
 }
 
-//-------------- PUBLIC MEMBERS ----------------
 
-//-------------- SLOTS ------------------
-
-void About::slotDisplayCreditsPixmap()
-{
-    credits_painter -> begin( credits );
-    credits_painter -> setClipping( true );
-    credits_painter -> setClipRect( QRect( 0, 0, credits -> width() / 2, credits -> height() ) );
-    credits_painter -> drawPixmap( 0, 0, credits_pixmap );
-    credits_painter -> setClipping( false );
-    credits_painter -> setPen( QPen( QColor( 0, 0, 0 ), 1 ) );
-    credits_painter -> setFont( QFont( "helvetica", 12 ) );
-    credits_painter -> drawText( 30, credits -> height() - file_id, credits -> width() / 2, 2000, Qt::AlignLeft, credits_text );
-    file_id++;
-    if ( file_id == 2100 )
-        file_id = 1;
-    credits_painter -> end();
-}
-
-void About::slotDisplayAcknowledgementsPixmap()
-{
-    QString png_file_name;
-    png_file_name = QString( "src/images/sequences/ack-image" + QString::number( file_id2 ) + ".png" );
-    if ( !ack_pixmap.load( png_file_name, "PNG" ) )
-	qDebug( tr( "Couldn't load the acknowledgements animation png - " ) + png_file_name );
-    ack -> setPixmap( ack_pixmap );
-    if ( file_id2 == 10 )
-        file_id2 = 1;
-    else
-        file_id2++;
-}
-
-void About::slotPerformPageChangeActions( QWidget *page_widget )
-{
-    Q_CHECK_PTR( page_widget );
-    if ( ( QLabel * )page_widget == credits )
-    {
-        ack_timer -> stop();
-        file_id = 1;
-        credits_timer -> start( 25, false );
-    }
-    else if ( ( QLabel * )page_widget == ack )
-    {
-        credits_timer -> stop();
-	file_id2 = 1;
-        ack_timer -> start( 5000, false );
-    }
-    else
-    {
-	credits_timer -> stop();
-	ack_timer -> stop();
-    }
-}
-
-//----------- EVENTS AND PROTECTED MEMBERS ---------------

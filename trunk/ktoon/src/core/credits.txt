@@ -1,0 +1,86 @@
+Developers
+
+Simena Dinas
+<dsimena@toonka.com>
+<dsimena@gmail.com>
+
+Fernando José Roldán Correa
+<froldan@parquesoft.com>
+<froldan@toonka.com>
+
+David A. Cuadrado
+<krawek@toonka.com>
+
+----------------------------
+Development Advisor
+
+Carlos Andrés Muñoz
+<cmunoz@parquesoft.com>
+
+----------------------------
+Technical Advisor
+
+Gustavo González Girón
+<xtingray@kazak.ws>
+
+----------------------------
+Developers Documentation
+
+Fernando José Roldán Correa
+<froldan@parquesoft.com>
+<froldan@toonka.com>
+
+David A. Cuadrado
+<krawek@toonka.com>
+
+----------------------------
+Translators
+
+(Spanish) Simena Dinas
+<dsimena@toonka.com>
+<dsimena@gmail.com>
+
+(Spanish) David A. Cuadrado
+<krawek@toonka.com>
+
+(French) Fred P.
+<fprog26@hotmail.com>
+
+----------------------------
+User Documentation
+
+Simena Dinas
+<dsimena@toonka.com>
+<dsimena@gmail.com>
+
+----------------------------
+User Documentation Corrected by:
+
+Mónica Ortiz
+<moortiz@toonka.com>
+
+----------------------------
+Iconographic Design
+
+Carlos Andrés Cajigas
+Pablo César Gómez
+Elkin Grueso
+César Hurtado
+
+----------------------------
+Beta Testers
+
+Pablo César Gómez
+Elkin Grueso
+César Hurtado
+Winston Maquillón
+
+----------------------------
+Ktoon Logo Design
+
+Diego Trujillo (Electroboy)
+Atómica - Parquesoft
+
+
+
+November 2004

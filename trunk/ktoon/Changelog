@@ -44,8 +44,14 @@
 	* /
 	Add build.sh for compilation
 	* src/lib/glgraphiccomponent.cpp 
-	Fixed translation problem (Thanks to lauxa)
+	Fixed copy/paste problem (Thanks to lauxa)
 	* src/lib/ktapplication.cpp
 	Implemented a parser for the line-command options
+	
 
+2005-05-30 01:45 krawek
+	* src/core/about.h
+	Class Re-written
+	* src/lib/ktanimwidget.h
+	Created class KTAnimWidget
 

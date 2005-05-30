@@ -6,14 +6,16 @@
 INSTALLS += sequences 
 sequences.files += *.png 
 sequences.path = $(KTOON_HOME)/images/sequences 
-DISTFILES += arrow_rotate.xpm \
-             arrow_selection.xpm \
-             background.xpm \
-             ogllogo.png \
-             spin.xpm \
-             splash.xpm \
-             laboratoon.jpg \
-             toonka.jpg \
+DISTFILES += ack-image0001.png \
+             ack-image0002.png \
+             ack-image0003.png \
+             ack-image0004.png \
+             ack-image0005.png \
+             ack-image0006.png \
+             ack-image0007.png \
+             ack-image0008.png \
+             ack-image0009.png \
+             ack-image0010.png \
              ack-image10.png \
              ack-image1.png \
              ack-image2.png \

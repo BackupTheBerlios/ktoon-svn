@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Copyright (C) 2005 by David Cuadrado   *
+ *   krawek@toonka.com   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,56 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef ABOUT_H
-#define ABOUT_H
+#ifndef KTANIMWIDGET_H
+#define KTANIMWIDGET_H
 
-#include <qscrollview.h>
-#include <qlabel.h>
+#include <qcanvas.h>
 #include <qpixmap.h>
-#include <qtabdialog.h>
 
-#include "ktanimwidget.h"
+typedef QValueList<QPixmap> ListOfPixmaps;
 
 /**
- * @brief Class that handles the about dialog box
- *
- * <b>Date of Creation: July 28 - 2004.</b>\n
- * <b>Rewritten in May 30 - 2005</b>\n
- * This is a dialog box that contains info about the authors of the application,
- * the application itself and another related stuff. It's a subclass of QTabDialog,
- * and provides 6 Tabs:
- * - Copyrights
- * - Credits
- * - Acknowledgements
- * - SVN Log
- * - About Toonka Films
- * - GNU Public License
- *
- * Moreover, it provides an OK Button and a Cancel Button.
+ * @Author David Cuadrado
  */
-
-class About : public QTabDialog
+ 
+class KTAnimWidget : public QCanvasView
 {
-	Q_OBJECT
-
 	public:
-		/**
-		* @brief Default Constructor
-		*
-		* Constructs an About Dialog.
-		* @param parent The parent widget
-		*/
-		About( QWidget *parent );
-		/**
-		* @brief Default Destructor
-		*
-		* Destroys the About Dialog.
-		*/
-		~About();
-	
+		enum Type { AnimText = 0, AnimPixmap };
+		KTAnimWidget(const QPixmap &px, const QString &text, QWidget *parent = 0);
+		KTAnimWidget(ListOfPixmaps lop, QWidget *parent = 0);
+		
+		~KTAnimWidget();
+		
+		void setBackgroundPixmap(const QPixmap &px);
+		
+		void stop();
+		void follow();
+		void start();
+		
+		void showEvent ( QShowEvent * e);
+		void hideEvent ( QHideEvent * e);
+		
 	private:
-		KTAnimWidget *m_credits;
-		KTAnimWidget *m_ack;
+		Type m_type;
+		QCanvas *m_canvas;
+		QCanvasItem *m_item;
 };
 
 #endif
