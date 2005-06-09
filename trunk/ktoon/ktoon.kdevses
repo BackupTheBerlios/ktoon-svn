@@ -1,7 +1,35 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE KDevPrjSession>
 <KDevPrjSession>
- <DocsAndViews NumberOfDocuments="0" />
+ <DocsAndViews NumberOfDocuments="9" >
+  <Doc0 NumberOfViews="1" URL="file:///home/krawek/Proyectos/ktoon/src/store/document.h" >
+   <View0 line="63" Type="Source" />
+  </Doc0>
+  <Doc1 NumberOfViews="1" URL="file:///home/krawek/Proyectos/ktoon/src/store/document.cpp" >
+   <View0 line="37" Type="Source" />
+  </Doc1>
+  <Doc2 NumberOfViews="1" URL="file:///home/krawek/Proyectos/ktoon/src/core/ktoon.h" >
+   <View0 line="158" Type="Source" />
+  </Doc2>
+  <Doc3 NumberOfViews="1" URL="file:///home/krawek/Proyectos/ktoon/src/core/ktoon.cpp" >
+   <View0 line="3174" Type="Source" />
+  </Doc3>
+  <Doc4 NumberOfViews="1" URL="file:///home/krawek/Proyectos/ktoon/src/dialogs/custompalette.cpp" >
+   <View0 line="118" Type="Source" />
+  </Doc4>
+  <Doc5 NumberOfViews="1" URL="file:///home/krawek/Proyectos/ktoon/src/dialogs/scenes.cpp" >
+   <View0 line="278" Type="Source" />
+  </Doc5>
+  <Doc6 NumberOfViews="1" URL="file:///home/krawek/Proyectos/ktoon/src/dialogs/properties.cpp" >
+   <View0 line="227" Type="Source" />
+  </Doc6>
+  <Doc7 NumberOfViews="1" URL="file:///home/krawek/Proyectos/ktoon/src/opengl/tools/brushes.cpp" >
+   <View0 line="293" Type="Source" />
+  </Doc7>
+  <Doc8 NumberOfViews="1" URL="file:///home/krawek/Proyectos/ktoon/src/library/library.cpp" >
+   <View0 line="399" Type="Source" />
+  </Doc8>
+ </DocsAndViews>
  <pluginList>
   <kdevdebugger>
    <breakpointList/>

@@ -156,12 +156,7 @@ class KToon: public QMainWindow
 	* @return A pointer to the side camera view dialog
 	*/
 	GLSideCameraView *sideCameraView();
-	/**
-	* @brief Gets the current document
-	*
-	* @return A pointer to the current document object
-	*/
-	Document *document();
+
 	/**
 	* @brief Loads the specified image into the drawing area
 	*
@@ -845,7 +840,6 @@ private:
     int document_max_value;
     QPtrList<ExposureSheet> list_of_es;
     QPtrList<Timeline> list_of_tl;
-    Document *document_;
 
     //Several images
     QPixmap background_image;

@@ -98,8 +98,7 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose )
 	
 	//--------------- Document Object ---------------
 	
-	document_ = new Document();
-	document_ -> setNameDocument( tr( "Document" ) + QString( "1" ) );
+	KTDoc-> setNameDocument( tr( "Document" ) + QString( "1" ) );
 	
 	//-------------- Drawing Area ------------------
 	
@@ -134,16 +133,14 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose )
 	
 	//resize( 1023, 728 ); // FIXME: Revisar esto!!
 	//showMaximized();
-	
-// 	setFont( QFont( "helvetica", 10 ) );
-// 	QToolTip::setFont( QFont( "helvetica", 8 ) );
+
 	setCentralWidget( main_panel );
 	document_max_value = 1;
 	file_name = "";
 	recent_names << recent1 << recent2 << recent3 << recent4 << recent5;
-// 	setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+
 	window -> setItemEnabled( id_window_illustration, false );
-	current_status -> setCurrentScene( ( document_ -> getAnimation() -> getScenes() ).first() );
+	current_status -> setCurrentScene( ( KTDoc -> getAnimation() -> getScenes() ).first() );
 	current_status -> setCurrentLayer( ( current_status -> currentScene() -> getLayers() ).first() );
 	
 	//------------- Main Connections ----------------
@@ -901,12 +898,6 @@ GLSideCameraView *KToon::sideCameraView()
     return side_camera_view;
 }
 
-Document *KToon::document()
-{
-    Q_CHECK_PTR( document_ );
-    return document_;
-}
-
 void KToon::loadImage( const QString &file_name, bool from_load )
 {
     if ( !from_load )
@@ -976,7 +967,7 @@ void KToon::loadLibrary( const QString &file_name, bool from_load )
 	n_item = n_item.nextSibling();
     }
     library -> setItems( items );
-    document_ -> setLibrary( ap_library.release() );
+    KTDoc -> setLibrary( ap_library.release() );
     
     if ( !from_load )
         library_dialog -> loadItems( items );
@@ -1028,7 +1019,7 @@ void KToon::loadPalette( const QString &file_name, bool from_load )
 	n_color = n_color.nextSibling();
     }
     palette -> setColors( colors );
-    document_ -> setPalette( ap_palette.release() );
+    KTDoc -> setPalette( ap_palette.release() );
     if ( !from_load )
         color_palette_dialog -> loadCustomColors( colors );
 
@@ -1074,7 +1065,7 @@ void KToon::loadBrushes( const QString &file_name, bool from_load )
 	    }
 	n_brush = n_brush.nextSibling();
     }
-    document_ -> setBrushes( brushes );
+    KTDoc -> setBrushes( brushes );
     if ( !from_load )
         brushes_dialog -> loadBrushes( brushes );
 
@@ -1599,11 +1590,11 @@ void KToon::slotNewDocument()
 	//VL: What happens with old document_? Is it deleted somewhere?	
 	//murakumo: Volker, it is deleted into slotCloseDrawingArea() that is called if it was accepted
 	//          the drawing area's close event (close == true)
-    	document_ = new Document();
-    	document_ -> setNameDocument( tr( "Document" ) + document_number );
+// 	document_ = new Document();
+     	KTDoc -> setNameDocument( tr( "Document" ) + document_number );
 	setCaption( tr( "Document" ) + document_number );
 
-    	current_status -> setCurrentScene( ( document_ -> getAnimation() -> getScenes() ).first() );
+    	current_status -> setCurrentScene( ( KTDoc -> getAnimation() -> getScenes() ).first() );
     	current_status -> setCurrentLayer( ( current_status -> currentScene() -> getLayers() ).first() );
     	current_status -> setCurrentKeyFrame( NULL );
     	QPtrList<KeyFrame> empty;
@@ -1809,11 +1800,11 @@ void KToon::slotLoadDocument( const QString &in_file_name )
     
     //VL: old document_ ?
     //murakumo: See the comment above (into slotNewDocument()).
-    document_ = new Document();
-    document_ -> setNameDocument( in_file_name );
+//     document_ = new Document();
+    KTDoc -> setNameDocument( in_file_name );
 
     //Drawing Area Initialization
-    current_drawing_area = new DrawingArea( main_panel, this, document_ -> nameDocument() );
+    current_drawing_area = new DrawingArea( main_panel, this, KTDoc->nameDocument() );
 
     //1.1. Palette Tag
     QDomElement palette_path_tag = root.firstChild().toElement();
@@ -1991,7 +1982,7 @@ void KToon::slotLoadDocument( const QString &in_file_name )
 	n_scene = n_scene.nextSibling();
     }
     animation -> setScenes( scenes );
-    document_ -> setAnimation( ap_animation.release() );
+    KTDoc->setAnimation( ap_animation.release() );
 
     //----------- Create the GUI -----------------
 
@@ -2037,8 +2028,8 @@ void KToon::slotSave()
     current_drawing_area -> setCaption( file_name );
     current_drawing_area -> modifyDocument( false );
 
-    document_ -> setNameDocument( file_name );
-    document_ -> save( &f );
+    KTDoc->setNameDocument( file_name );
+    KTDoc->save( &f );
 
     f.close();
     statusBar() -> message( tr( "File Saved Successfully - %1" ).arg( file_name ), 2000 );
@@ -3180,8 +3171,9 @@ void KToon::slotCloseDrawingArea()
     window_side_camera_view -> hide();
 
     //murakumo: Here it is, Volker!
-    delete document_;
-    document_ = NULL;
+//     delete document_;
+    KTDoc->init();
+//     document_ = NULL;
 
     current_status -> setCurrentScene( NULL );
     current_status -> setCurrentLayer( NULL );
@@ -3505,22 +3497,22 @@ void KToon::closeEvent( QCloseEvent *close_event )
 
 void KToon::createGUI()
 {
-    setCaption( document_ -> nameDocument() );
+    setCaption( KTDoc->nameDocument() );
 
-    QPtrList<Color> custom_colors = document_ -> getPalette() -> getColors();
+    QPtrList<Color> custom_colors = KTDoc->getPalette() -> getColors();
     color_palette_dialog -> enableCustomPalette( true );
     color_palette_dialog -> loadCustomColors( custom_colors );
 
-    QPtrList<Brush> brushes = document_ -> getBrushes();
+    QPtrList<Brush> brushes = KTDoc->getBrushes();
     brushes_dialog = new Brushes( this, Qt::WStyle_Tool, window, id_window_brushes, window_brushes );
     brushes_dialog -> loadBrushes( brushes );
 
-    QPtrList<Scene> scenes = document_ -> getAnimation() -> getScenes();
+    QPtrList<Scene> scenes = KTDoc->getAnimation() -> getScenes();
     scenes_dialog = new Scenes( this, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
     scenes_dialog -> loadScenes( scenes );
 
     library_dialog = new Library( this, Qt::WStyle_Tool, window, id_window_library, current_drawing_area, window_library );
-    library_dialog -> loadItems( document_ -> getLibrary() -> getItems() );
+    library_dialog -> loadItems( KTDoc->getLibrary() -> getItems() );
 
     render_camera_preview = new GLRenderCameraPreview( main_panel, this, window, id_window_render_camera_preview, window_render_camera_preview, current_drawing_area );
     top_camera_view = new GLTopCameraView( main_panel, this, window, id_window_top_camera_view, window_top_camera_view, current_drawing_area );
@@ -3614,7 +3606,7 @@ void KToon::createGUI()
     connect( scenes_dialog, SIGNAL( sceneRemoved( int ) ), SLOT( slotRemoveSync( int ) ) );
     connect( scenes_dialog, SIGNAL( sceneSelected( int ) ), SLOT( slotSelectSync( int ) ) );
 
-    current_status -> setCurrentScene( ( document_ -> getAnimation() -> getScenes() ).first() );
+    current_status -> setCurrentScene( ( KTDoc->getAnimation() -> getScenes() ).first() );
     current_status -> setCurrentLayer( ( current_status -> currentScene() -> getLayers() ).first() );
     current_status -> setCurrentKeyFrame( ( ( current_status -> currentScene() -> getLayers() ).first() -> keyFrames() ).first() );
 

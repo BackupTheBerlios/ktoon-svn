@@ -200,9 +200,9 @@ void Scenes::slotInsertScene()
 
     Scene *n_scene = new Scene();
     n_scene -> setNameScene( tr( "Scene" ) + scene_number );
-    QPtrList<Scene> sc = k_toon -> document() -> getAnimation() -> getScenes();
+    QPtrList<Scene> sc = KTDoc -> getAnimation() -> getScenes();
     sc.append( n_scene );
-    k_toon -> document() -> getAnimation() -> setScenes( sc );
+    KTDoc -> getAnimation() -> setScenes( sc );
     k_toon -> drawingArea() -> modifyDocument( true );
 
     emit sceneInserted();
@@ -225,17 +225,17 @@ void Scenes::slotRemoveScene()
           table_scenes -> triggerUpdate();
           number_of_scenes--;
 
-          QPtrList<Scene> sc = k_toon -> document() -> getAnimation() -> getScenes();
+          QPtrList<Scene> sc = KTDoc -> getAnimation() -> getScenes();
 	  sc.setAutoDelete( true );
    	  sc.remove( scene_pos / 16 );
 	  sc.setAutoDelete( false );
-    	  k_toon -> document() -> getAnimation() -> setScenes( sc );
+    	  KTDoc -> getAnimation() -> setScenes( sc );
 
 	  emit sceneRemoved( scene_pos / 16 );
 
           QCheckListItem *selected_scene = ( QCheckListItem * )table_scenes -> selectedItem();
           scene_pos = table_scenes -> itemPos( selected_scene );
-          QPtrList<Scene> sc1 = k_toon -> document() -> getAnimation() -> getScenes();
+          QPtrList<Scene> sc1 = KTDoc -> getAnimation() -> getScenes();
           k_toon -> currentStatus() -> setCurrentScene( sc1.at( scene_pos / 16 ) );
           k_toon -> drawingArea() -> modifyDocument( true );
       }
@@ -276,7 +276,7 @@ void Scenes::slotSelectScene()
     current_name = selected_scene -> text( 0 );
     value_name -> setText( selected_scene -> text( 0 ) );
 
-    QPtrList<Scene> sc = k_toon -> document() -> getAnimation() -> getScenes();
+    QPtrList<Scene> sc = KTDoc -> getAnimation() -> getScenes();
     k_toon -> currentStatus() -> setCurrentScene( sc.at( scene_pos / 16 ) );
 
     emit sceneSelected( scene_pos / 16 );
@@ -318,13 +318,13 @@ void Scenes::slotMoveSceneUp()
 	table_scenes -> takeItem( selected_scene );
 	table_scenes -> insertItem( selected_scene );
 	table_scenes -> setCurrentItem( selected_scene );
-        QPtrList<Scene> sc = k_toon -> document() -> getAnimation() -> getScenes();
+        QPtrList<Scene> sc = KTDoc -> getAnimation() -> getScenes();
 	Scene *ms = sc.take( scene_pos / 16 );
 	sc.insert( scene_pos / 16 - 1, ms );
     }
     else
     	selected_scene -> moveItem( selected_scene -> itemAbove() -> itemAbove() );
-    QPtrList<Scene> sc = k_toon -> document() -> getAnimation() -> getScenes();
+    QPtrList<Scene> sc = KTDoc -> getAnimation() -> getScenes();
     Scene *ms = sc.take( scene_pos / 16 );
     sc.insert( scene_pos / 16 - 1, ms );
     k_toon -> drawingArea() -> modifyDocument( true );
@@ -340,7 +340,7 @@ void Scenes::slotMoveSceneDown()
     if ( selected_scene != table_scenes -> lastItem() )
     {
     	selected_scene -> moveItem( selected_scene -> itemBelow() );
-        QPtrList<Scene> sc = k_toon -> document() -> getAnimation() -> getScenes();
+        QPtrList<Scene> sc = KTDoc -> getAnimation() -> getScenes();
 	Scene *ms = sc.take( scene_pos / 16 );
 	sc.insert( scene_pos / 16 + 1, ms );
 	emit sceneMovedDown( scene_pos / 16 );

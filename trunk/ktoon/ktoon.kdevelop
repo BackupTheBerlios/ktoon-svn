@@ -98,7 +98,7 @@
       <envvars/>
     </run>
     <general>
-      <activedir>src/lib</activedir>
+      <activedir>src/library</activedir>
     </general>
     <make>
       <abortonerror>true</abortonerror>
@@ -111,6 +111,7 @@
     <subclassing/>
   </kdevtrollproject>
   <kdevfilecreate>
+    <filetypes/>
     <useglobaltypes>
       <type ext="ui" />
       <type ext="cpp" />
@@ -120,8 +121,9 @@
   </kdevfilecreate>
   <kdevdocumentation>
     <projectdoc>
-      <docsystem>Doxygen Documentation Collection</docsystem>
-      <docurl>ktoon.tag</docurl>
+      <docsystem/>
+      <docurl/>
+      <usermanualurl/>
     </projectdoc>
   </kdevdocumentation>
   <substmap>
@@ -166,4 +168,8 @@
       <implementationsuffix>.cpp</implementationsuffix>
     </filetemplates>
   </cppsupportpart>
+  <ctagspart>
+    <customArguments/>
+    <customTagfilePath/>
+  </ctagspart>
 </kdevelop>

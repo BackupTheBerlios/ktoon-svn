@@ -225,7 +225,7 @@ void Properties::slotAccept()
     int new_cw = ( value_camera_size_width -> text() ).toInt();
     int new_ch = ( value_camera_size_height -> text() ).toInt();
 
-    k_toon -> document() -> getAnimation() -> setFrameRate( new_fr );
+    KTDoc -> getAnimation() -> setFrameRate( new_fr );
     k_toon -> currentStatus() -> setCurrentFrameRate( new_fr );
     k_toon -> currentStatus() -> setCurrentCameraWidth( new_cw );
     k_toon -> currentStatus() -> setCurrentCameraHeight( new_ch );

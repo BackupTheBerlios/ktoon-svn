@@ -32,6 +32,11 @@
 
 Document::Document()
 {
+	init();
+}
+
+void Document::init()
+{
 	name = "";
 	animation = new Animation();
 	custom_palette = new(std::nothrow) Palette();
@@ -41,7 +46,7 @@ Document::Document()
 		delete library;
 		delete custom_palette;
 		delete animation;
-	} 
+	}
 }
 
 //------------- DESTRUCTOR ------------------
@@ -54,6 +59,13 @@ Document::~Document()
 	brushes.setAutoDelete( true );
 	brushes.clear();
 	brushes.setAutoDelete( false );
+}
+
+Document *Document::instance()
+{
+	static Document *doc = new Document();
+	
+	return doc;
 }
 
 //------------ PUBLIC MEMBERS ---------------

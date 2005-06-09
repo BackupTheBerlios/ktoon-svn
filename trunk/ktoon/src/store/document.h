@@ -36,6 +36,8 @@
 #include "librarydata.h"
 #include "animation.h"
 
+class Document;
+
 /**
  * @brief Class that encapsulates the concept of document
  *
@@ -43,127 +45,127 @@
  * This is a class that manages the document storing scheme. It provides a document name, an animation,
  * a custom color palette, and a list of brushes.
  */
+
 class Document
 {
+	public:
+		Document();
+		
+		/**
+		 * @brief Default Destructor
+		 * Destroys the document object
+		 * @return 
+		 */
+		~Document();
 
-public:
-    /**
-     * @brief Default Constructor
-     *
-     * Constructs a Document object.
-     */
-    Document();
-    /**
-     * @brief Default Destructor
-     *
-     * Destroys the Document object.
-     */
-    ~Document();
-
-    //Set methods
-    /**
-     * @brief Sets a new name for this document
-     *
-     * @param name The new name
-     * @sa nameDocument()
-     */
-    void setNameDocument( const QString & name );
-    /**
-     * @brief Sets a new Animation for this document
-     *
-     * @param animation The new Animation
-     * @sa getAnimation()
-     */
-    void setAnimation( Animation *animation );
-    /**
-     * @brief Sets a new Palette for this document
-     *
-     * @param palette The new custom palette
-     * @sa getPalette()
-     */
-    void setPalette( Palette *palette );
-    /**
-     * @brief Sets a new list of brushes for this document
-     *
-     * @param brushes The new list of brushes
-     * @sa getBrushes()
-     */
-    void setBrushes( QPtrList<Brush> brushes );
-    /**
-     * @brief Sets a new library for this document
-     *
-     * @param library The new library
-     * @sa getLibrary()
-     */
-    void setLibrary( LibraryData *library );
-
-    //Get methods
-    /**
-     * @brief Gets the current document name
-     *
-     * @return The current name
-     * @sa setNameDocument()
-     */
-    QString nameDocument() const;
-    /**
-     * @brief Gets the current document Animation
-     *
-     * @return The current Animation
-     * @sa setAnimation()
-     */
-    Animation *getAnimation() const;
-    /**
-     * @brief Gets the current document Palette
-     *
-     * @return The current custom palette
-     * @sa setPalette()
-     */
-    Palette *getPalette() const;
-    /**
-     * @brief Gets the current document list of brushes
-     *
-     * @return The current list of brushes
-     * @sa setBrushes()
-     */
-    QPtrList<Brush> getBrushes() const;
-    /**
-     * @brief Gets the current document library
-     *
-     * @return The current library
-     * @sa setLibrary()
-     */
-    LibraryData *getLibrary() const;
-
-    /**
-     * @brief Saves this document into the file \a f
-     *
-     * @param f The file where the document are going to be saved
-     */
-    void save( QFile *f );
-    /**
-     * @brief Parses the argument, converting the '/'s into '_'
-     *
-     * Since the XML specification does not allow the character '/' into attribute names or values because it is
-     * used for a tag end mark, this function is used for transforming that characters into '_'.
-     * @e Example: "/usr/local/bin" turns into "_usr_local_bin"
-     * @param str The string to be converted
-     * @return The converted string
-     * @sa turnUnderscoresIntoSlashes()
-     */
-    static QString turnSlashesIntoUnderscores( const QString &str );
-    /**
-     * @brief Parses the argument, converting the '_'s into '/'
-     *
-     * Function that does the inverse operation than the above function.
-     * @e Example: "_usr_local_bin" turns into "/usr/local/bin"
-     * @param str The string to be converted
-     * @return The converted string
-     * @sa turnSlashesIntoUnderscores()
-     */
-    static QString turnUnderscoresIntoSlashes( const QString &str );
-	      
-	      
-	      static QString getLocalName( const QString &str);
+		static Document * instance();
+		
+		
+		void init();
+		
+		/**
+		* @brief Sets a new name for this document
+		*
+		* @param name The new name
+		* @sa nameDocument()
+		*/
+		void setNameDocument( const QString & name );
+		/**
+		* @brief Sets a new Animation for this document
+		*
+		* @param animation The new Animation
+		* @sa getAnimation()
+		*/
+		void setAnimation( Animation *animation );
+		/**
+		* @brief Sets a new Palette for this document
+		*
+		* @param palette The new custom palette
+		* @sa getPalette()
+		*/
+		void setPalette( Palette *palette );
+		/**
+		* @brief Sets a new list of brushes for this document
+		*
+		* @param brushes The new list of brushes
+		* @sa getBrushes()
+		*/
+		void setBrushes( QPtrList<Brush> brushes );
+		/**
+		* @brief Sets a new library for this document
+		*
+		* @param library The new library
+		* @sa getLibrary()
+		*/
+		void setLibrary( LibraryData *library );
+		
+		//Get methods
+		/**
+		* @brief Gets the current document name
+		*
+		* @return The current name
+		* @sa setNameDocument()
+		*/
+		QString nameDocument() const;
+		/**
+		* @brief Gets the current document Animation
+		*
+		* @return The current Animation
+		* @sa setAnimation()
+		*/
+		Animation *getAnimation() const;
+		/**
+		* @brief Gets the current document Palette
+		*
+		* @return The current custom palette
+		* @sa setPalette()
+		*/
+		Palette *getPalette() const;
+		/**
+		* @brief Gets the current document list of brushes
+		*
+		* @return The current list of brushes
+		* @sa setBrushes()
+		*/
+		QPtrList<Brush> getBrushes() const;
+		/**
+		* @brief Gets the current document library
+		*
+		* @return The current library
+		* @sa setLibrary()
+		*/
+		LibraryData *getLibrary() const;
+		
+		/**
+		* @brief Saves this document into the file \a f
+		*
+		* @param f The file where the document are going to be saved
+		*/
+		void save( QFile *f );
+		/**
+		* @brief Parses the argument, converting the '/'s into '_'
+		*
+		* Since the XML specification does not allow the character '/' into attribute names or values because it is
+		* used for a tag end mark, this function is used for transforming that characters into '_'.
+		* @e Example: "/usr/local/bin" turns into "_usr_local_bin"
+		* @param str The string to be converted
+		* @return The converted string
+		* @sa turnUnderscoresIntoSlashes()
+		*/
+		static QString turnSlashesIntoUnderscores( const QString &str );
+		/**
+		* @brief Parses the argument, converting the '_'s into '/'
+		*
+		* Function that does the inverse operation than the above function.
+		* @e Example: "_usr_local_bin" turns into "/usr/local/bin"
+		* @param str The string to be converted
+		* @return The converted string
+		* @sa turnSlashesIntoUnderscores()
+		*/
+		static QString turnUnderscoresIntoSlashes( const QString &str );
+			 
+			 
+			 static QString getLocalName( const QString &str);
 
 private:
     QString name;
@@ -172,8 +174,9 @@ private:
     QPtrList<Brush> brushes;
     LibraryData *library;
     QDomDocument xml_doc;
-    
 
 };
+
+#define KTDoc static_cast<Document *>(Document::instance())
 
 #endif

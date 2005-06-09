@@ -102,7 +102,7 @@ Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
     k_toon -> currentStatus() -> setCurrentBrush( ap_brush.get() );
     QPtrList<Brush> br;
     br.append( ap_brush.get() );
-    k_toon -> document() -> setBrushes( br );
+    KTDoc -> setBrushes( br );
     
     ap_brush.release();
 
@@ -275,7 +275,7 @@ void Brushes::loadBrushes( QPtrList<Brush> brushes )
         number_of_brushes++;
     }
 
-    k_toon -> document() -> setBrushes( brushes );
+    KTDoc -> setBrushes( brushes );
     table_brushes -> setSelected( b, true );
     k_toon -> currentStatus() -> setCurrentBrush( brushes.getFirst() );
 }
@@ -291,13 +291,13 @@ void Brushes::slotAddBrush()
 
     new QListViewItem( table_brushes, table_brushes -> lastItem(), "2", "5", "2", tr( "Brush" ) + brush_number );
 
-    QPtrList<Brush> br = k_toon -> document() -> getBrushes();
+    QPtrList<Brush> br = KTDoc -> getBrushes();
     
     Brush* n_brush = new Brush( 2, 5, 2 );
     try {
     n_brush -> setNameBrush( tr( "Brush" ) + brush_number );
     br.append( n_brush );
-    k_toon -> document() -> setBrushes( br );
+    KTDoc -> setBrushes( br );
     }
     catch(...)
       {
@@ -323,15 +323,15 @@ void Brushes::slotRemoveBrush()
           table_brushes -> triggerUpdate();
       	  number_of_brushes--;
 
-      	  QPtrList<Brush> br = k_toon -> document() -> getBrushes();
+      	  QPtrList<Brush> br = KTDoc -> getBrushes();
           br.setAutoDelete( true );
           br.remove( brush_pos / 16 );
 	  br.setAutoDelete( false );
-          k_toon -> document() -> setBrushes( br );
+          KTDoc -> setBrushes( br );
 
           QListViewItem *selected_brush = table_brushes -> selectedItem();
           brush_pos = table_brushes -> itemPos( selected_brush );
-          QPtrList<Brush> br1 = k_toon -> document() -> getBrushes();
+          QPtrList<Brush> br1 = KTDoc -> getBrushes();
           k_toon -> currentStatus() -> setCurrentBrush( br1.at( brush_pos / 16 ) );
           k_toon -> drawingArea() -> modifyDocument( true );
       }
@@ -543,7 +543,7 @@ void Brushes::slotSelectBrush()
 	return;
     }
 
-    Brush *s_brush = ( k_toon -> document() -> getBrushes() ).at( brush_pos / 16 );
+    Brush *s_brush = ( KTDoc -> getBrushes() ).at( brush_pos / 16 );
     k_toon -> currentStatus() -> setCurrentBrush( s_brush );
 
     current_name = selected_brush -> text( 3 );
