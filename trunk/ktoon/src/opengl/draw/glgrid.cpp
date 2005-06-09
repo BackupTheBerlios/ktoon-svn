@@ -294,8 +294,8 @@ void GLGrid::buildGrid()
 
 void GLGrid::buildFonts()
 {
-    Font desc = XLoadFont( parent_widget -> x11Display(), GRID_FONT );
-    glXUseXFont( desc, 0, 256, id_fonts );
+	//     Font desc = XLoadFont( parent_widget -> x11Display(), GRID_FONT ); // FIXME: Remove this dependence
+//     glXUseXFont( desc, 0, 256, id_fonts );
 }
 
 void GLGrid::drawLine( const QPoint & initial, const QPoint & final, const QColor & color, const GLfloat & line_width )
