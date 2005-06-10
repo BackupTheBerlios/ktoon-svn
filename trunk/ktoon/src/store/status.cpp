@@ -21,38 +21,81 @@
 #include "status.h"
 
 #include <iostream>
+#include <qworkspace.h>
+#include <qcursor.h>
 
 //-------------- CONSTRUCTOR ---------------
 
-Status::Status()
+Status::Status() : m_currentDrawingArea(0)
 {
-    current_scene = NULL;
-    current_layer = NULL;
-    current_keyframe = NULL;
-    current_timeline_keyframe = NULL;
-    current_soundclip = NULL;
-    current_previous_onion_skin = 0;
-    current_next_onion_skin = 0;
-    current_frame_rate = 25;
-    current_camera_width = 320;
-    current_camera_height = 240;
-    current_background_color = QColor( 255, 255, 255 );
-    current_grid_color = QColor( 210, 210, 210 );
-    current_ntsc_color = QColor( 255, 0, 0 );
+	qDebug("[Initializing Status]");
+	current_scene = NULL;
+	current_layer = NULL;
+	current_keyframe = NULL;
+	current_timeline_keyframe = NULL;
+	current_soundclip = NULL;
+	current_previous_onion_skin = 0;
+	current_next_onion_skin = 0;
+	current_frame_rate = 25;
+	current_camera_width = 320;
+	current_camera_height = 240;
+	current_background_color = QColor( 255, 255, 255 );
+	current_grid_color = QColor( 210, 210, 210 );
+	current_ntsc_color = QColor( 255, 0, 0 );
     
-    m_document = new Document();
+	m_document = new Document();
 }
 
-void Status::init()		
+void Status::init()
 {
+	if ( m_document )
+	{
+		delete m_document;
+		m_document = 0;
+	}
 	m_document->init();
 	m_document->setNameDocument(tr("Document"));
+}
+
+void Status::setupDrawingArea(QWorkspace *ws)
+{
+	qDebug("Setup drawing area...");
+	KTStatus -> setCurrentScene( (m_document-> getAnimation()->getScenes() ).first() );
+	KTStatus -> setCurrentLayer( ( KTStatus -> currentScene() -> getLayers() ).first() );
+	setCurrentKeyFrame( NULL );
+	QPtrList<KeyFrame> empty;
+	KTStatus -> setRenderKeyframes( empty );
+	
+// 	if ( m_currentDrawingArea )
+// 	{
+// 		if ( ! m_currentDrawingArea -> close( true ) )
+// 			return;
+// 	}
+	
+#ifndef NO_OPENGL
+	m_currentDrawingArea = new DrawingArea( ws, tr( "Document" ) + QString( "1" ) );
+	m_currentDrawingArea -> setCursor( QCursor( Qt::ForbiddenCursor ) );
+	m_currentDrawingArea -> show();
+	m_currentDrawingArea -> setActiveWindow();
+#else
+	m_currentDrawingArea = new DrawingAreaQt(ws)
+	
+	m_currentDrawingArea = new DrawingAreaQt( ws, tr( "Document" ) + QString( "1" ) );
+	m_currentDrawingArea -> resize( 641, 481 );
+	m_currentDrawingArea -> move( 146, 8 );
+	m_currentDrawingArea -> show();
+
+	m_currentDrawingArea -> setMinimumSize( 321, 241 );
+	m_currentDrawingArea -> setMaximumSize( 321, 241 );
+#endif
+	qDebug("end");
 }
 
 //------------- DESTRUCTOR ------------------
 
 Status::~Status()
 {
+	qDebug("[Destroying Status]");
     render_camera_frames.clear();
     if(current_outline_color == current_fill_color)
        {
@@ -79,6 +122,32 @@ Status *Status::instance()
 	
 	return status;
 }
+
+#ifndef NO_OPENGL
+DrawingArea *
+#else
+DrawingAreaQt *
+#endif
+Status::currentDrawingArea()
+{
+	return m_currentDrawingArea;
+}
+
+
+bool Status::closeCurrent()
+{
+	bool yes = false;
+	if ( m_currentDrawingArea )
+	{
+		yes = m_currentDrawingArea->close(true);
+// 		delete m_currentDrawingArea;
+// 		m_currentDrawingArea = 0;
+	}
+	
+	
+	return yes;
+}
+
 
 Document *Status::currentDocument()
 {

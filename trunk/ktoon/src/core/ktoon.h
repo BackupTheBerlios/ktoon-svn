@@ -115,12 +115,7 @@ class KToon: public QMainWindow
 		* @return A pointer to the brushes dialog
 		*/
 		Brushes *brushes();
-		/**
-		* @brief Gets the drawing area
-		*
-		* @return A pointer to the current drawing area
-		*/
-		DrawingArea *drawingArea();
+
 		/**
 		* @brief Gets the render camera preview dialog
 		*
@@ -1059,12 +1054,7 @@ class KToon: public QMainWindow
 	
 	    //Current Status
 // 	    Status *current_status;
-	
-	    //Drawing Area
-	    DrawingArea *current_drawing_area; //Implemented by means of OpenGL
-	    
-	    //Widgets for non accelerated mode
-	    DrawingAreaQt *current_drawing_area_qt; //Implemented by means of QCanvas
+
 	    RenderCameraPreviewQt *render_camera_preview_qt;
 	    
 	    //Some colors needed by Exposure Sheet and Timeline (They are created here for efficiency)

@@ -55,3 +55,15 @@
 	* src/lib/ktanimwidget.h
 	Created class KTAnimWidget
 
+
+2005-05-30 14:20 krawek
+	* src/lib/kaniwidget.h
+	Made animation cycle
+	* src/core/preferences.h
+	Class rewritten
+	* src/lib/ktfontwidget.h
+	Class adapted from KDE KFontChooser
+	* src/lib/ktapplication.h
+	Initial theme support
+	
+

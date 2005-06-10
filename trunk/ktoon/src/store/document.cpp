@@ -32,6 +32,7 @@
 
 Document::Document()
 {
+	qDebug("[Initializing Document]");
 	init();
 }
 
@@ -53,6 +54,7 @@ void Document::init()
 
 Document::~Document()
 {
+	qDebug("[Destroying Document]");
 	delete animation;
 	delete custom_palette;
 	delete library;

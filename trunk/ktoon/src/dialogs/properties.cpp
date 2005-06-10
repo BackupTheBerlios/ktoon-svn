@@ -236,8 +236,8 @@ void Properties::slotAccept()
     KTStatus -> setCurrentGridColor( c_grid );
     KTStatus -> setCurrentNTSCColor( c_ntsc );
     
-    k_toon -> drawingArea() -> slotSetGridColor();
-    k_toon -> drawingArea() -> slotSetNTSCColor();
+    KTStatus->currentDrawingArea() -> slotSetGridColor();
+    KTStatus->currentDrawingArea() -> slotSetNTSCColor();
 
     close( true );
 }

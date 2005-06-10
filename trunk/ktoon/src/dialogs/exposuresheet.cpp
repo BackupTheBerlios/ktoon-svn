@@ -428,7 +428,7 @@ void ExposureSheet::slotInsertLayer()
     KTStatus -> currentScene() -> setLayers( ly );
     ap_n_layer.release();
     
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 
     if ( ( Timeline * )sender() != k_toon -> timeline() )
         emit layerInserted();
@@ -498,7 +498,7 @@ void ExposureSheet::slotRemoveLayer()
           l_it -> setIndexLayer( ly.find( l_it ) + 1 );
       }
       KTStatus -> currentScene() -> setLayers( ly );
-      k_toon -> drawingArea() -> modifyDocument( true );
+      KTStatus->currentDrawingArea() -> modifyDocument( true );
 
       if ( ( Timeline * )sender() != k_toon -> timeline() )
           emit layerRemoved();
@@ -604,7 +604,7 @@ void ExposureSheet::slotRenameLayer( const QString &name )
     QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
     Layer *rl = ly.at( pos );
     rl -> setNameLayer( name );
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 
     QListViewItem *to_rename = visibility_list -> itemAt( QPoint( 0, pos * 16 ) );
     to_rename -> setText( 0, name );
@@ -616,7 +616,7 @@ void ExposureSheet::slotRenameLayerFromTL( int pos, const QString &name )
 {
     ESLayer *renamed_layer = list_of_layers.at( pos ) -> interfaceElement();
     renamed_layer -> setText( name );
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 
     QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
     Layer *rl = ly.at( pos );
@@ -656,7 +656,7 @@ void ExposureSheet::slotMoveLayerLeft()
     for ( l_it = ly.first(); l_it; l_it = ly.next() )
         l_it -> setIndexLayer( ly.find( l_it ) + 1 );
     KTStatus -> currentScene() -> setLayers( ly );
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 
     if ( current_layer_obj -> interfaceElement() == last_layer )
         last_layer = prev_layer_obj -> interfaceElement();
@@ -698,7 +698,7 @@ void ExposureSheet::slotMoveLayerRight()
     for ( l_it = ly.first(); l_it; l_it = ly.next() )
         l_it -> setIndexLayer( ly.find( l_it ) + 1 );
     KTStatus -> currentScene() -> setLayers( ly );
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 
     if ( next_layer_obj -> interfaceElement() == last_layer )
         last_layer = current_layer_obj -> interfaceElement();
@@ -737,7 +737,7 @@ void ExposureSheet::slotSwapWithLeftLayer( int cur_pos, int rel_pos )
     for ( l_it = ly.first(); l_it; l_it = ly.next() )
         l_it -> setIndexLayer( ly.find( l_it ) + 1 );
     KTStatus -> currentScene() -> setLayers( ly );
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 
     if ( current_layer_obj -> interfaceElement() == last_layer )
         last_layer = release_layer_obj -> interfaceElement();
@@ -791,7 +791,7 @@ void ExposureSheet::slotSwapWithRightLayer( int cur_pos, int rel_pos )
         l_it -> setIndexLayer( ly.find( l_it ) + 1 );
     }
     KTStatus -> currentScene() -> setLayers( ly );
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 
     if ( release_layer_obj -> interfaceElement() == last_layer )
         last_layer = current_layer_obj -> interfaceElement();
@@ -883,7 +883,7 @@ void ExposureSheet::slotInsertFrame()
 		}
 
 	        k_toon -> slotActivateCursor();
-	        k_toon -> drawingArea() -> modifyDocument( true );
+	        KTStatus->currentDrawingArea() -> modifyDocument( true );
 		emit framesInsertedAtTheEnd( number_of_insertions );
 		updateIndicators( current_layer_obj );
 	        return;
@@ -934,7 +934,7 @@ void ExposureSheet::slotInsertFrame()
     new_last_frame -> setText( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i + 1 ) );
     current_layer_obj -> setLastFrame( new_last_frame );
 
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 
     //-------------- Insert a frame after the selected frame ----------------------
 
@@ -1070,8 +1070,8 @@ void ExposureSheet::slotRemoveFrame()
      	    QMouseEvent mouse_event2( QEvent::MouseButtonRelease, QPoint( 10, 10 ), Qt::LeftButton, 0 );
      	    QApplication::sendEvent( current_layer_obj -> selectedFrame(), &mouse_event2 );
  	}
-        k_toon -> drawingArea() -> modifyDocument( true );
-	k_toon -> drawingArea() -> updateGL();
+        KTStatus->currentDrawingArea() -> modifyDocument( true );
+	KTStatus->currentDrawingArea() -> updateGL();
 	k_toon -> slotActivateCursor();
 	updateIndicators( current_layer_obj );
     }
@@ -1128,7 +1128,7 @@ void ExposureSheet::slotRenameFrame( const QString &new_name )
     Layer *l = ly.at( list_of_layers.find( current_layer_obj ) );
     QPtrList<KeyFrame> kf = l -> keyFrames();
     kf.at( current_list_of_frames.find( renamed_frame ) ) -> setNameKeyFrame( new_name );
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 }
 
 void ExposureSheet::slotMoveFrameUp()
@@ -1179,7 +1179,7 @@ void ExposureSheet::slotMoveFrameUp()
     delete bridge_frame;
     emit frameMovedUp( i );
 
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
     updateIndicators( current_layer_obj );
 }
 
@@ -1230,7 +1230,7 @@ void ExposureSheet::slotMoveFrameDown()
     delete bridge_frame;
     emit frameMovedDown( i );
 
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
     updateIndicators( current_layer_obj );
 }
 
@@ -1268,7 +1268,7 @@ void ExposureSheet::slotRemoveFrameFromTL( int key )
 	current_layer_obj -> setSelectedFrame( NULL );
     }
 
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 }
 
 void ExposureSheet::slotCreateMotionTween( int key )
@@ -1288,7 +1288,7 @@ void ExposureSheet::slotCreateMotionTween( int key )
 	    frame_iterator -> setMotion( true );
     }
 
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 }
 
 void ExposureSheet::slotRemoveMotionTween( int key )
@@ -1308,7 +1308,7 @@ void ExposureSheet::slotRemoveMotionTween( int key )
 	    frame_iterator -> setMotion( false );
     }
 
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 }
 
 void ExposureSheet::slotCopyFrame() // FIXME
@@ -1331,7 +1331,7 @@ void ExposureSheet::slotPasteFrame() // FIXME
 
 	KeyFrame *current_kf = KTStatus -> currentKeyFrame();
 	current_kf -> setDrawing( new GLDrawing( *to_copy ) );
-	k_toon -> drawingArea() -> updateGL();
+	KTStatus->currentDrawingArea() -> updateGL();
 }
 
 void ExposureSheet::updateIndicators( ILayer *layer )

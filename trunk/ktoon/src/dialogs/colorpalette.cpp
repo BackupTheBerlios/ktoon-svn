@@ -22,8 +22,9 @@
 #include <qstringlist.h>
 
 #include "colorpalette.h"
-#include "ktoon.h"
 #include "images.h"
+#include "tools.h"
+#include "status.h"
 
 #include <new>
 
@@ -33,10 +34,6 @@
 ColorPalette::ColorPalette( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
     : QDialog( parent, tr( "Color Palette" ), false, style )
 {
-    Q_CHECK_PTR( parent );
-    Q_CHECK_PTR( in_assigned_menu );
-    Q_CHECK_PTR( assig_tb_button );
-
     //Initializations
     setCaption( tr( "Color Palette" ) );
 //     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
@@ -49,7 +46,6 @@ ColorPalette::ColorPalette( QWidget *parent, WFlags style, QPopupMenu *in_assign
     assigned_menu = in_assigned_menu;
     assigned_item = id_assigned_item;
     assigned_tb_button = assig_tb_button;
-    k_toon = ( KToon * )parent_widget;
     new_outline_color = NULL;
     new_fill_color = NULL;
 
@@ -330,13 +326,14 @@ void ColorPalette::slotAddToCustomColors()
 {
     custom_palette -> slotAddColor( color_display -> currentColor(), value_alpha -> value() );
     value_color_name -> setText( "" );
-    k_toon -> drawingArea() -> modifyDocument( true );
+    //k_toon -> drawingArea() -> modifyDocument( true );
+    emit documentModified(true);
 }
 
 void ColorPalette::slotRemoveFromCustomColors()
 {
     custom_palette -> slotRemoveColor();
-    k_toon -> drawingArea() -> modifyDocument( true );
+    emit documentModified(true);
 }
 
 void ColorPalette::slotSetColor( const QColor &new_color )
@@ -424,7 +421,7 @@ void ColorPalette::slotSetColor( Color *new_color )
     else
        KTStatus -> setCurrentCursor( Tools::FILL );
 
-    k_toon -> slotActivateCursor();
+//     k_toon -> slotActivateCursor(); FIXME:
 }
 
 void ColorPalette::slotActivateOutlineColor()
@@ -662,6 +659,7 @@ void ColorPalette::closeEvent( QCloseEvent* close_event )
 
 void ColorPalette::makeConnections()
 {
+	// TODO: Utilizar QSignalMapper
     connect( color_cells, SIGNAL( colorSelected( const QColor & ) ), SLOT( slotSetColor( const QColor & ) ) );
     connect( outline_color, SIGNAL( activated() ), SLOT( slotActivateOutlineColor() ) );
     connect( fill_color, SIGNAL( activated() ), SLOT( slotActivateFillColor() ) );

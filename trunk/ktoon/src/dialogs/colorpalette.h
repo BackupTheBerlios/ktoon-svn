@@ -47,7 +47,6 @@
 
 #include "color.h"
 
-class KToon;
 class Color;
 
 /**
@@ -106,7 +105,6 @@ class ColorPalette : public QDialog
 	QPopupMenu *assigned_menu;
 	int assigned_item;
 	QToolButton *assigned_tb_button;
-	KToon *k_toon;
 	Color *new_outline_color;
 	Color *new_fill_color;
 	
@@ -144,14 +142,15 @@ class ColorPalette : public QDialog
 	QSpinBox *value_r, *value_g, *value_b, *value_h, *value_s, *value_v, *value_alpha;
 	
 	signals:
-	/**
-	* This signal is emitted when the outline color has changed.
-	*/
-	void outlineColorChanged();
-	/**
-	* This signal is emitted when the fill color has changed.
-	*/
-	void fillColorChanged();
+		/**
+		* This signal is emitted when the outline color has changed.
+		*/
+		void outlineColorChanged();
+		/**
+		* This signal is emitted when the fill color has changed.
+		*/
+		void fillColorChanged();
+		void documentModified(bool);
 	
 	public slots:
 	/**

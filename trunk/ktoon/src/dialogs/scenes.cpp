@@ -203,7 +203,7 @@ void Scenes::slotInsertScene()
     QPtrList<Scene> sc = KTStatus->currentDocument() -> getAnimation() -> getScenes();
     sc.append( n_scene );
     KTStatus->currentDocument() -> getAnimation() -> setScenes( sc );
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 
     emit sceneInserted();
 
@@ -237,7 +237,7 @@ void Scenes::slotRemoveScene()
           scene_pos = table_scenes -> itemPos( selected_scene );
           QPtrList<Scene> sc1 = KTStatus->currentDocument() -> getAnimation() -> getScenes();
           KTStatus -> setCurrentScene( sc1.at( scene_pos / 16 ) );
-          k_toon -> drawingArea() -> modifyDocument( true );
+          KTStatus->currentDrawingArea() -> modifyDocument( true );
       }
    }
 }
@@ -258,7 +258,7 @@ void Scenes::slotChangeValueName()
         selected_scene -> setText( 0, value_name -> text() );
 	KTStatus -> currentScene() -> setNameScene( value_name -> text() );
     }
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 }
 
 void Scenes::slotSelectScene()
@@ -300,7 +300,7 @@ void Scenes::slotSelectScene()
         KTStatus -> setCurrentKeyFrame( NULL );
 
     k_toon -> slotActivateCursor();
-    k_toon -> drawingArea() -> updateGL();
+    KTStatus->currentDrawingArea() -> updateGL();
     k_toon -> timeline() -> frameSequenceManager() -> getRuler() -> slotSetOffset( 1 );
     k_toon -> renderCameraPreview() -> updateGL();
 }
@@ -327,7 +327,7 @@ void Scenes::slotMoveSceneUp()
     QPtrList<Scene> sc = KTStatus->currentDocument() -> getAnimation() -> getScenes();
     Scene *ms = sc.take( scene_pos / 16 );
     sc.insert( scene_pos / 16 - 1, ms );
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 
     emit sceneMovedUp( scene_pos / 16 );
 }
@@ -344,7 +344,7 @@ void Scenes::slotMoveSceneDown()
 	Scene *ms = sc.take( scene_pos / 16 );
 	sc.insert( scene_pos / 16 + 1, ms );
 	emit sceneMovedDown( scene_pos / 16 );
-        k_toon -> drawingArea() -> modifyDocument( true );
+        KTStatus->currentDrawingArea() -> modifyDocument( true );
     }
 }
 

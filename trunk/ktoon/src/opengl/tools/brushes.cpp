@@ -305,7 +305,7 @@ void Brushes::slotAddBrush()
 	throw;
 	}
     
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 }
 
 void Brushes::slotRemoveBrush()
@@ -333,7 +333,7 @@ void Brushes::slotRemoveBrush()
           brush_pos = table_brushes -> itemPos( selected_brush );
           QPtrList<Brush> br1 = KTStatus->currentDocument() -> getBrushes();
           KTStatus -> setCurrentBrush( br1.at( brush_pos / 16 ) );
-          k_toon -> drawingArea() -> modifyDocument( true );
+          KTStatus->currentDrawingArea() -> modifyDocument( true );
       }
    }
 }
@@ -361,7 +361,7 @@ void Brushes::slotChangeValueMinThickness()
     mint = ( current_brush -> text( 0 ) ).toInt();
     Brush *s_brush = KTStatus -> currentBrush();
     s_brush -> setThicknessMinBrush( mint );
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 
     emit minThicknessChanged();
 }
@@ -389,7 +389,7 @@ void Brushes::slotChangeValueMaxThickness()
     maxt = ( current_brush -> text( 1 ) ).toInt();
     Brush *s_brush = KTStatus -> currentBrush();
     s_brush -> setThicknessMaxBrush( maxt );
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 
     emit maxThicknessChanged();
 }
@@ -407,7 +407,7 @@ void Brushes::slotChangeValueSmoothness()
     smo = ( current_brush -> text( 2 ) ).toInt();
     Brush *s_brush = KTStatus -> currentBrush();
     s_brush -> setSmoothnessBrush( smo );
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 
     emit smoothnessChanged();
 #ifdef DEBUG_BRUSHES
@@ -432,7 +432,7 @@ void Brushes::slotChangeValueName()
         Brush *s_brush = KTStatus -> currentBrush();
         s_brush -> setNameBrush( value_name -> text() );
     }
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 }
 
 void Brushes::slotChangeSliderMinThickness()
@@ -465,7 +465,7 @@ void Brushes::slotChangeSliderMinThickness()
     mint = ( current_brush -> text( 0 ) ).toInt();
     Brush *s_brush = KTStatus -> currentBrush();
     s_brush -> setThicknessMinBrush( mint );
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 
     emit minThicknessChanged();
 }
@@ -500,7 +500,7 @@ void Brushes::slotChangeSliderMaxThickness()
     maxt = ( current_brush -> text( 1 ) ).toInt();
     Brush *s_brush = KTStatus -> currentBrush();
     s_brush -> setThicknessMaxBrush( maxt );
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 
     emit maxThicknessChanged();
 }
@@ -526,7 +526,7 @@ void Brushes::slotChangeSliderSmoothness()
     smo = ( current_brush -> text( 2 ) ).toInt();
     Brush *s_brush = KTStatus -> currentBrush();
     s_brush -> setSmoothnessBrush( smo );
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 
     emit smoothnessChanged();
 }

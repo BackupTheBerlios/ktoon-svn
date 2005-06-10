@@ -45,7 +45,6 @@
 #include "gldrawing.h"
 #include "color.h"
 
-class KToon;
 class QPopupMenu;
 class GLDrawing;
 class Color;
@@ -71,7 +70,7 @@ class DrawingArea : public GLControl
         * @param name This object name. It is passed to the GLControl constructor
         * @param f Flags passed to the GLControl constructor
         */
-        DrawingArea( QWidget* parent, QWidget *grandparent, const char* name, WFlags f = 0 );
+        DrawingArea( QWidget* parent, const char* name = 0, WFlags f = 0 );
         /**
         * @brief Default destructor
         *
@@ -426,6 +425,8 @@ class DrawingArea : public GLControl
         * @return The currently displayed list of graphics
         */
         QPtrList<GLGraphicComponent> graphicList() const;
+		 
+	bool isModified();
 
     protected:
         /**
@@ -651,10 +652,6 @@ class DrawingArea : public GLControl
         GLuint h;
         GLuint w;
     
-        //General Purpose Variables
-        QWidget *parent_widget;
-        QWidget *grandparent_widget;
-    
         //The grid
         GLGrid *grid;
     
@@ -662,9 +659,6 @@ class DrawingArea : public GLControl
         GLfloat rotation_x, rotation_y, rotation_z;
         GLfloat translation_x, translation_y, translation_z;
         GLfloat scale_x, scale_y, scale_z;
-    
-        //Special
-        KToon *k_toon;
     
         //Variable for handling the selection buffer
         GLuint selectionBuffer[1024];

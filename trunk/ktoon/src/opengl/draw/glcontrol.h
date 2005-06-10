@@ -29,7 +29,6 @@
 #include <qgl.h>
 #include <qcolor.h>
 
-class KToon;
 
 /**
  * @brief Class that has some drawing area's input events
@@ -52,7 +51,7 @@ class GLControl : public QGLWidget
         * @param share A widget for context sharing. It is passed to the QGLWidget constructor
         * @param f Flags passed to the QGLWidget constructor
         */
-        GLControl( QWidget *parent, QWidget *grandparent, const char *name = 0, QGLWidget *share = 0, WFlags f = 0 );
+        GLControl( QWidget *parent, const char *name = 0, QGLWidget *share = 0, WFlags f = 0 );
         /**
         * @brief Default Destructor
         *
@@ -147,8 +146,6 @@ class GLControl : public QGLWidget
         QPoint old_position;
         QPoint new_position;
         int pressure_tablet;
-        QWidget *parent_widget, *grandparent_widget;
-        KToon *k_toon;
 
 };
 

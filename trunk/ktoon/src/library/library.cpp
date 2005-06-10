@@ -200,7 +200,7 @@ void Library::addSymbol( GLGraphicComponent *graphic, const QString &name )
 		break;
     }
     table_symbols -> setSelected( new_graphic, true );
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 
     its.prepend( new_symbol );
     lib -> setItems( its );
@@ -261,7 +261,7 @@ void Library::loadImageSymbol( const QString &file_name )
         new_symbol -> setGraphic( i );
 
        table_symbols -> setSelected( new_graphic, true );
-       k_toon -> drawingArea() -> modifyDocument( true );
+       KTStatus->currentDrawingArea() -> modifyDocument( true );
 
        its.prepend( new_symbol );
        lib -> setItems( its );
@@ -277,7 +277,7 @@ void Library::loadImageSymbol( const QString &file_name )
 
 void Library::slotAddSymbol()
 {
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 }
 
 void Library::slotDeleteSymbol()
@@ -369,7 +369,7 @@ void Library::slotAddFolder()
     new_folder -> setKind( SymbolItem::FOLDER );
     new_folder -> setDragEnabled( true );
     table_symbols -> setSelected( new_folder, true );
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 
     LibraryData *lib = KTStatus->currentDocument() -> getLibrary();
     QPtrList<Item> its = lib -> getItems();
@@ -437,7 +437,7 @@ void Library::slotUpdateLibraryData()
 	  throw;
 	  }
 
-    k_toon -> drawingArea() -> modifyDocument( true );
+    KTStatus->currentDrawingArea() -> modifyDocument( true );
 }
 
 //----------- EVENTS AND PROTECTED MEMBERS ---------------

@@ -18,21 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <stdio.h>
-
 #include "glcontrol.h"
-#include "ktoon.h"
+#include "status.h"
 
 //-------------- CONSTRUCTOR ---------------
 
-GLControl::GLControl( QWidget *parent, QWidget *grandparent, const char *name, QGLWidget *share, WFlags f ) : QGLWidget( parent, name, share, f )
+GLControl::GLControl( QWidget *parent, const char *name, QGLWidget *share, WFlags f ) : QGLWidget( parent, name, share, f )
  {
 	 qDebug("[Initializing GLControl]");
-	 Q_CHECK_PTR( parent );
-	 Q_CHECK_PTR( grandparent );
-	 parent_widget = parent;
-	 grandparent_widget = grandparent;
-	 k_toon = ( KToon * ) grandparent_widget;
  }
 
  //------------- DESTRUCTOR ------------------

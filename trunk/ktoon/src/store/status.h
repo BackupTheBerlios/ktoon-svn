@@ -36,10 +36,18 @@
 #include "keyframe.h"
 #include "soundclip.h"
 #include "glgraphiccomponent.h"
+#include "tools.h"
 
 #include "document.h"
 
+#ifndef NO_OPENGL
+	#include "drawingarea.h"
+#else
+	#include "drawingareaqt.h"
+#endif
+
 class Status;
+class QWorkspace;
 
 /**
  * @brief Class that handles the application's general status
@@ -47,7 +55,7 @@ class Status;
  * <b>Date of Creation: June 24 - 2004.</b>\n
  * This class contains some useful information about the current status of the application, such as
  * current cursor, outline color, fill color, brush, etc. It is used in order to synchronize some actions
- * among application's widgets. You must use only an instance of this class declared in the main window.
+ * among application's widgets.
 */
 class Status : public QObject
 {
@@ -292,7 +300,16 @@ class Status : public QObject
 		* @return The current NTSC color
 		*/
 		QColor currentNTSCColor();
-	      
+			 
+#ifndef NO_OPENGL
+		DrawingArea *currentDrawingArea();
+#else
+		DrawingAreaQt *currentDrawingArea();
+#endif
+		 
+		void setupDrawingArea(QWorkspace *ws);
+		
+		bool closeCurrent();
 
 	private:
 		short int current_tool;
@@ -314,6 +331,11 @@ class Status : public QObject
 		QColor current_background_color, current_grid_color, current_ntsc_color;
 		
 		Document *m_document;
+#ifndef NO_OPENGL
+		DrawingArea *m_currentDrawingArea;
+#else
+		DrawingAreaQt *m_currentDrawingArea;
+#endif
 };
 
 #define KTStatus static_cast<Status *>(Status::instance())
