@@ -76,12 +76,12 @@ void DrawingAreaQt::contentsMousePressEvent( QMouseEvent *mouse_event )
     mouse_event -> accept();
     dragging = true;
     
-    int current_cursor = k_toon -> currentStatus() -> currentCursor();
-    Color::Color *current_outline_color = k_toon -> currentStatus() -> currentOutlineColor();
-    Color::Color *current_fill_color = k_toon -> currentStatus() -> currentFillColor();
+    int current_cursor = KTStatus-> currentCursor();
+    Color::Color *current_outline_color = KTStatus-> currentOutlineColor();
+    Color::Color *current_fill_color = KTStatus-> currentFillColor();
     QColor co_color = QColor( ( int )( current_outline_color -> colorRed() * 255.0 ), ( int )( current_outline_color -> colorGreen() * 255.0 ), ( int )( current_outline_color -> colorBlue() * 255.0 ) );
     QColor cf_color = QColor( ( int )( current_fill_color -> colorRed() * 255.0 ), ( int )( current_fill_color -> colorGreen() * 255.0 ), ( int )( current_fill_color -> colorBlue() * 255.0 ) );
-    Brush *current_brush = k_toon -> currentStatus() -> currentBrush();
+    Brush *current_brush = KTStatus-> currentBrush();
     QPoint mapped_point = inverseWorldMatrix().map( mouse_event -> pos() );
     
     switch( current_cursor )
@@ -267,7 +267,7 @@ void DrawingAreaQt::contentsMousePressEvent( QMouseEvent *mouse_event )
 void DrawingAreaQt::contentsMouseMoveEvent( QMouseEvent *mouse_event )
 {
     mouse_event -> accept();
-    int current_cursor = k_toon -> currentStatus() -> currentCursor();
+    int current_cursor = KTStatus-> currentCursor();
     
     if ( dragging )
     {
@@ -346,7 +346,7 @@ void DrawingAreaQt::contentsMouseReleaseEvent( QMouseEvent *mouse_event )
     mouse_event -> accept();
     dragging = false;
     
-    int current_cursor = k_toon -> currentStatus() -> currentCursor();
+    int current_cursor = KTStatus-> currentCursor();
     
     switch ( current_cursor )
     {
@@ -376,7 +376,7 @@ void DrawingAreaQt::contentsMouseReleaseEvent( QMouseEvent *mouse_event )
 void DrawingAreaQt::contentsMouseDoubleClickEvent( QMouseEvent *mouse_event )
 {
     mouse_event -> accept();
-    int current_cursor = k_toon -> currentStatus() -> currentCursor();
+    int current_cursor = KTStatus-> currentCursor();
 
     if ( current_cursor == Tools::PEN )
     {

@@ -49,7 +49,7 @@ void GLControl::mousePressEvent( QMouseEvent *mouse )
  Q_CHECK_PTR( mouse );
 
  mouse -> accept();
- switch ( k_toon -> currentStatus() -> currentCursor() )
+ switch ( KTStatus -> currentCursor() )
   {
 	 case Tools::NORMAL_SELECTION:
 		  setNewPosition ( mouse -> pos() );
@@ -115,7 +115,7 @@ void GLControl::mouseReleaseEvent( QMouseEvent *mouse )
  Q_CHECK_PTR( mouse );
 
   mouse -> accept();
-  switch ( k_toon -> currentStatus() -> currentCursor() )
+  switch ( KTStatus -> currentCursor() )
   {
 	 case Tools::NORMAL_SELECTION:
 		  setNewPosition ( mouse -> pos() );
@@ -170,7 +170,7 @@ void GLControl::mouseReleaseEvent( QMouseEvent *mouse )
  Q_CHECK_PTR( mouse );
 
   mouse -> accept();
-  switch ( k_toon -> currentStatus() -> currentCursor() )
+  switch ( KTStatus -> currentCursor() )
   {
 	 case Tools::NORMAL_SELECTION:
 		  setNewPosition ( mouse -> pos() );

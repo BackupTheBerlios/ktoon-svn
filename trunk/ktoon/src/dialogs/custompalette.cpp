@@ -50,7 +50,7 @@ void CustomPalette::loadColors( QPtrList<Color> colors )
 {
     clear();
     QPtrList<Color> empty;
-    KTDoc-> getPalette() -> setColors( empty );
+    KTStatus->currentDocument()-> getPalette() -> setColors( empty );
 
     Color *c_it;
     for ( c_it = colors.first(); c_it; c_it = colors.next() )
@@ -111,12 +111,12 @@ void CustomPalette::slotAddColor( const QColor &new_color, int alpha )
 	cur_col = 0;
 	cur_row++;
 
-	QPtrList<Color> cl = KTDoc -> getPalette() -> getColors();
+	QPtrList<Color> cl = KTStatus->currentDocument() -> getPalette() -> getColors();
 	Color *n_color = new Color( ( float )new_color.red() / 255.0, ( float )new_color.green() / 255.0,
 	                            ( float )new_color.blue() / 255.0, ( float )alpha / 100.0 );
 	try {
 	  cl.append( n_color );
-	  KTDoc-> getPalette() -> setColors( cl );
+	  KTStatus->currentDocument()-> getPalette() -> setColors( cl );
 	  }
 	catch(...)
 	   {
@@ -137,12 +137,12 @@ void CustomPalette::slotAddColor( const QColor &new_color, int alpha )
 	updateCell( cur_row, cur_col );
 	cur_col++;
 
-	QPtrList<Color> cl = KTDoc-> getPalette() -> getColors();
+	QPtrList<Color> cl = KTStatus->currentDocument()-> getPalette() -> getColors();
 	Color *n_color = new Color( ( float )new_color.red() / 255.0, ( float )new_color.green() / 255.0,
 	                            ( float )new_color.blue() / 255.0, ( float )alpha / 100.0 );
 	try {
 	  cl.append( n_color );
-	  KTDoc-> getPalette() -> setColors( cl );
+	  KTStatus->currentDocument()-> getPalette() -> setColors( cl );
 	  }
 	catch(...)
 	   {
@@ -174,11 +174,11 @@ void CustomPalette::slotRemoveColor()
 	alpha_matrix[sel_row][sel_col] = -1;
 	updateCell( sel_row, sel_col );
 
-	QPtrList<Color> cl = KTDoc -> getPalette() -> getColors();
+	QPtrList<Color> cl = KTStatus->currentDocument() -> getPalette() -> getColors();
 	cl.setAutoDelete( true );
 	cl.remove( map2Dto1D( sel_row, sel_col ) );
 	cl.setAutoDelete( false );
-	KTDoc-> getPalette() -> setColors( cl );
+	KTStatus->currentDocument()-> getPalette() -> setColors( cl );
 
 	for ( i = sel_row; i < numRows(); i++ )
 	{
@@ -252,7 +252,7 @@ void CustomPalette::slotChangeColorName( const QString &new_name )
     {
         color_names[sel_row][sel_col] = new_name;
 
-	QPtrList<Color> cl = KTDoc -> getPalette() -> getColors();
+	QPtrList<Color> cl = KTStatus->currentDocument() -> getPalette() -> getColors();
 	Color *s_color = cl.at( map2Dto1D( sel_row, sel_col ) );
 	s_color -> setNameColor( new_name );
     }

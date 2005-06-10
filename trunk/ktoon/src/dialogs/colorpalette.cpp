@@ -235,8 +235,8 @@ ColorPalette::ColorPalette( QWidget *parent, WFlags style, QPopupMenu *in_assign
 	  throw std::bad_alloc();
 	  }
     
-    k_toon -> currentStatus() -> setCurrentOutlineColor( o_color );
-    k_toon -> currentStatus() -> setCurrentFillColor( f_color );
+    KTStatus -> setCurrentOutlineColor( o_color );
+    KTStatus -> setCurrentFillColor( f_color );
 
 }
 
@@ -352,7 +352,7 @@ void ColorPalette::slotSetColor( const QColor &new_color )
            delete new_outline_color;
         new_outline_color = new Color( new_color.red() / 255.0, new_color.green() / 255.0, new_color.blue() / 255.0, value_alpha -> value() / 100.0 );
         outline_color -> slotSetColor( new_color );
-        k_toon -> currentStatus() -> setCurrentOutlineColor( new_outline_color );
+        KTStatus -> setCurrentOutlineColor( new_outline_color );
 	emit outlineColorChanged();
     }
     else
@@ -361,7 +361,7 @@ void ColorPalette::slotSetColor( const QColor &new_color )
            delete new_fill_color;
     	new_fill_color = new Color( new_color.red() / 255.0, new_color.green() / 255.0, new_color.blue() / 255.0, value_alpha -> value() / 100.0 );
         fill_color -> slotSetColor( new_color );
-        k_toon -> currentStatus() -> setCurrentFillColor( new_fill_color );
+        KTStatus -> setCurrentFillColor( new_fill_color );
 	emit fillColorChanged();
     }
 
@@ -420,9 +420,9 @@ void ColorPalette::slotSetColor( Color *new_color )
     value_alpha -> setValue( the_alpha );
 
     if ( outline_color -> isActive() )
-       k_toon -> currentStatus() -> setCurrentCursor( Tools::CONTOUR_FILL );
+       KTStatus -> setCurrentCursor( Tools::CONTOUR_FILL );
     else
-       k_toon -> currentStatus() -> setCurrentCursor( Tools::FILL );
+       KTStatus -> setCurrentCursor( Tools::FILL );
 
     k_toon -> slotActivateCursor();
 }
@@ -489,12 +489,12 @@ void ColorPalette::slotSyncRGB()
     Color *n_color = new Color( new_color.red() / 255.0, new_color.green() / 255.0, new_color.blue() / 255.0, value_alpha -> value() / 100.0 );
     if ( outline_color -> isActive() )
     {
-        k_toon -> currentStatus() -> setCurrentOutlineColor( n_color );
+        KTStatus -> setCurrentOutlineColor( n_color );
 	emit outlineColorChanged();
     }
     else
     {
-        k_toon -> currentStatus() -> setCurrentFillColor( n_color );
+        KTStatus -> setCurrentFillColor( n_color );
 	emit fillColorChanged();
     }
 
@@ -531,12 +531,12 @@ void ColorPalette::slotSyncHSV()
     Color *n_color = new Color( new_color.red() / 255.0, new_color.green() / 255.0, new_color.blue() / 255.0, value_alpha -> value() / 100.0 );
     if ( outline_color -> isActive() )
     {
-        k_toon -> currentStatus() -> setCurrentOutlineColor( n_color );
+        KTStatus -> setCurrentOutlineColor( n_color );
 	emit outlineColorChanged();
     }
     else
     {
-        k_toon -> currentStatus() -> setCurrentFillColor( n_color );
+        KTStatus -> setCurrentFillColor( n_color );
 	emit fillColorChanged();
     }
 
@@ -597,12 +597,12 @@ void ColorPalette::slotChangeRGB( const QString &rgb )
         Color *n_color = new Color( intermediate.red() / 255.0, intermediate.green() / 255.0, intermediate.blue() / 255.0, value_alpha -> value() / 100.0 );
     	if ( outline_color -> isActive() )
     	{
-            k_toon -> currentStatus() -> setCurrentOutlineColor( n_color );
+            KTStatus -> setCurrentOutlineColor( n_color );
 	    emit outlineColorChanged();
     	}
     	else
     	{
-            k_toon -> currentStatus() -> setCurrentFillColor( n_color );
+            KTStatus -> setCurrentFillColor( n_color );
 	    emit fillColorChanged();
         }
 
@@ -629,16 +629,16 @@ void ColorPalette::slotUpdateCurrentAlpha( int new_alpha )
 {
     if ( outline_color -> isActive() )
     {
-        Color *o_color = k_toon -> currentStatus() -> currentOutlineColor();
+        Color *o_color = KTStatus -> currentOutlineColor();
 	o_color -> setColorAlpha( new_alpha / 100.0 );
-        k_toon -> currentStatus() -> setCurrentOutlineColor( o_color );
+        KTStatus -> setCurrentOutlineColor( o_color );
 	emit outlineColorChanged();
     }
     else
     {
-        Color *f_color = k_toon -> currentStatus() -> currentFillColor();
+        Color *f_color = KTStatus -> currentFillColor();
 	f_color -> setColorAlpha( new_alpha / 100.0 );
-        k_toon -> currentStatus() -> setCurrentFillColor( f_color );
+        KTStatus -> setCurrentFillColor( f_color );
 	emit fillColorChanged();
     }
 

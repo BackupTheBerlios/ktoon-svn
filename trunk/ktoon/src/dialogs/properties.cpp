@@ -36,9 +36,9 @@ Properties::Properties( QWidget *parent ) : QDialog( parent, "Animation Properti
 //     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     parent_widget = parent;
     k_toon = ( KToon * )parent_widget;
-    c_background = k_toon -> currentStatus() -> currentBackgroundColor();
-    c_grid = k_toon -> currentStatus() -> currentGridColor();
-    c_ntsc = k_toon -> currentStatus() -> currentNTSCColor();
+    c_background = KTStatus -> currentBackgroundColor();
+    c_grid = KTStatus -> currentGridColor();
+    c_ntsc = KTStatus -> currentNTSCColor();
 
     //------------- Operations on the static texts ----------
 
@@ -68,19 +68,19 @@ Properties::Properties( QWidget *parent ) : QDialog( parent, "Animation Properti
     value_frame_rate -> resize( 60, 20 );
     value_frame_rate -> move( text_frame_rate -> x() + text_frame_rate -> width() + 10, text_frame_rate -> y() );
     value_frame_rate -> setValidator( new QIntValidator( 1, 999, this ) );
-    value_frame_rate -> setText( QString::number( k_toon -> currentStatus() -> currentFrameRate() ) );
+    value_frame_rate -> setText( QString::number( KTStatus -> currentFrameRate() ) );
 
     value_camera_size_width = new QLineEdit( "", this );
     value_camera_size_width -> resize( 60, 20 );
     value_camera_size_width -> move( text_camera_size -> x() + text_camera_size -> width() + 10, text_camera_size -> y() );
     value_camera_size_width -> setValidator( new QIntValidator( 1, 9999, this ) );
-    value_camera_size_width -> setText( QString::number( k_toon -> currentStatus() -> currentCameraWidth() ) );
+    value_camera_size_width -> setText( QString::number( KTStatus -> currentCameraWidth() ) );
 
     value_camera_size_height = new QLineEdit( "", this );
     value_camera_size_height -> resize( 60, 20 );
     value_camera_size_height -> move( value_camera_size_width -> x() + value_camera_size_width -> width() + 10, value_camera_size_width -> y() );
     value_camera_size_height -> setValidator( new QIntValidator( 1, 9999, this ) );
-    value_camera_size_height -> setText( QString::number( k_toon -> currentStatus() -> currentCameraHeight() ) );
+    value_camera_size_height -> setText( QString::number( KTStatus -> currentCameraHeight() ) );
 
     value_background_color = new QLineEdit( c_background.name(), this );
     value_background_color -> resize( 60, 20 );
@@ -158,7 +158,7 @@ Properties::~Properties()
 
 void Properties::slotBackgroundColor()
 {
-    c_background = QColorDialog::getColor( k_toon -> currentStatus() -> currentBackgroundColor(), this );
+    c_background = QColorDialog::getColor( KTStatus -> currentBackgroundColor(), this );
     if ( c_background.isValid() )
     {
         background_color -> setPaletteBackgroundColor( c_background );
@@ -168,7 +168,7 @@ void Properties::slotBackgroundColor()
 
 void Properties::slotGridColor()
 {
-    c_grid = QColorDialog::getColor( k_toon -> currentStatus() -> currentGridColor(), this );
+    c_grid = QColorDialog::getColor( KTStatus -> currentGridColor(), this );
     if ( c_grid.isValid() )
     {
         grid_color -> setPaletteBackgroundColor( c_grid );
@@ -178,7 +178,7 @@ void Properties::slotGridColor()
 
 void Properties::slotNTSCColor()
 {
-    c_ntsc = QColorDialog::getColor( k_toon -> currentStatus() -> currentNTSCColor(), this );
+    c_ntsc = QColorDialog::getColor( KTStatus -> currentNTSCColor(), this );
     if ( c_ntsc.isValid() )
     {
         ntsc_color -> setPaletteBackgroundColor( c_ntsc );
@@ -225,16 +225,16 @@ void Properties::slotAccept()
     int new_cw = ( value_camera_size_width -> text() ).toInt();
     int new_ch = ( value_camera_size_height -> text() ).toInt();
 
-    KTDoc -> getAnimation() -> setFrameRate( new_fr );
-    k_toon -> currentStatus() -> setCurrentFrameRate( new_fr );
-    k_toon -> currentStatus() -> setCurrentCameraWidth( new_cw );
-    k_toon -> currentStatus() -> setCurrentCameraHeight( new_ch );
+    KTStatus->currentDocument() -> getAnimation() -> setFrameRate( new_fr );
+    KTStatus -> setCurrentFrameRate( new_fr );
+    KTStatus -> setCurrentCameraWidth( new_cw );
+    KTStatus -> setCurrentCameraHeight( new_ch );
     k_toon -> renderCameraPreview() -> updateGL();
     k_toon -> timeline() -> slotUpdateCurrentTime( k_toon -> timeline() -> frameSequenceManager() -> getRuler() -> getOffset() );
     k_toon -> timeline() -> slotUpdateTotalTime( k_toon -> timeline() -> frameSequenceManager() -> getRuler() -> getMaxOffset() );
-    k_toon -> currentStatus() -> setCurrentBackgroundColor( c_background );
-    k_toon -> currentStatus() -> setCurrentGridColor( c_grid );
-    k_toon -> currentStatus() -> setCurrentNTSCColor( c_ntsc );
+    KTStatus -> setCurrentBackgroundColor( c_background );
+    KTStatus -> setCurrentGridColor( c_grid );
+    KTStatus -> setCurrentNTSCColor( c_ntsc );
     
     k_toon -> drawingArea() -> slotSetGridColor();
     k_toon -> drawingArea() -> slotSetNTSCColor();

@@ -177,14 +177,14 @@ void Timeline::changeSoundContainerWidth( int width )
 
 void Timeline::slotUpdateCurrentTime( int offset )
 {
-    int frame_rate = k_toon -> currentStatus() -> currentFrameRate();
+    int frame_rate = KTStatus -> currentFrameRate();
     float new_time = ( float )( offset - 1 ) / ( float )frame_rate;
     layer_manager -> slotSetCurrentTime( new_time );
 }
 
 void Timeline::slotUpdateTotalTime( int max_offset )
 {
-    int frame_rate = k_toon -> currentStatus() -> currentFrameRate();
+    int frame_rate = KTStatus -> currentFrameRate();
     float new_time = ( float )( max_offset ) / ( float )frame_rate;
     layer_manager -> slotSetTotalTime( new_time );
 }

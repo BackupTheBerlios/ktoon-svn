@@ -58,7 +58,7 @@ class Document
 		 */
 		~Document();
 
-		static Document * instance();
+// 		static Document * instance();
 		
 		
 		void init();
@@ -177,6 +177,6 @@ private:
 
 };
 
-#define KTDoc static_cast<Document *>(Document::instance())
+// #define KTDoc static_cast<Document *>(Document::instance())
 
 #endif

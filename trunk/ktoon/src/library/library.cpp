@@ -143,7 +143,7 @@ void Library::addSymbol( GLGraphicComponent *graphic, const QString &name )
     new_graphic -> setDragEnabled( true );
     new_graphic -> setKind( SymbolItem::GRAPHIC );
 
-    LibraryData *lib = KTDoc -> getLibrary();
+    LibraryData *lib = KTStatus->currentDocument() -> getLibrary();
     QPtrList<Item> its = lib -> getItems();
     
     std::auto_ptr<Symbol> ap_new_symbol(new Symbol);
@@ -249,7 +249,7 @@ void Library::loadImageSymbol( const QString &file_name )
     new_graphic -> setDragEnabled( true );
     new_graphic -> setKind( SymbolItem::GRAPHIC );
 
-    LibraryData *lib = KTDoc -> getLibrary();
+    LibraryData *lib = KTStatus->currentDocument() -> getLibrary();
     QPtrList<Item> its = lib -> getItems();
     Symbol *new_symbol = new Symbol();
     
@@ -371,7 +371,7 @@ void Library::slotAddFolder()
     table_symbols -> setSelected( new_folder, true );
     k_toon -> drawingArea() -> modifyDocument( true );
 
-    LibraryData *lib = KTDoc -> getLibrary();
+    LibraryData *lib = KTStatus->currentDocument() -> getLibrary();
     QPtrList<Item> its = lib -> getItems();
     Folder *new_fold = new Folder();
     try {
@@ -398,7 +398,7 @@ void Library::slotStartRename( QListViewItem *to_rename, const QPoint &point, in
 
 void Library::slotUpdateLibraryData()
 {
-    LibraryData *lib = KTDoc -> getLibrary();
+    LibraryData *lib = KTStatus->currentDocument() -> getLibrary();
     QPtrList<Item> its;
 
     SymbolItem *item = ( SymbolItem * )table_symbols -> firstChild();

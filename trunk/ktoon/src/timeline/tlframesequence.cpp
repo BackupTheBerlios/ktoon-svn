@@ -256,7 +256,7 @@ void TLFrameSequence::slotInsertFrame()
 	last_used_frame -> setLast( true );
 	number_of_used_frames++;
 
-    	QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
+    	QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
 	KeyFrame *ckf = kf.getLast();
 	ckf -> setLengthKeyFrame( ckf -> lengthKeyFrame() + 1 );
 
@@ -277,7 +277,7 @@ void TLFrameSequence::slotInsertFrame()
 	last_used_frame -> setLast( true );
 	number_of_used_frames++;
 
-    	QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
+    	QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
 	KeyFrame *ckf = kf.getLast();
 	ckf -> setLengthKeyFrame( ckf -> lengthKeyFrame() + 1 );
 	updateKeyframeOffsets();
@@ -310,7 +310,7 @@ void TLFrameSequence::slotInsertFrame()
 	new_frame -> setKey( false );
 	number_of_used_frames++;
 
-    	QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
+    	QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
         //Get the position of the keyframe into the variable "i"
         i = 0;
 	if ( selected_frame -> isKey() )
@@ -349,7 +349,7 @@ void TLFrameSequence::slotInsertFrame()
 	new_frame -> setUsed( true );
 	number_of_used_frames++;
 
-    	QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
+    	QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
         //Get the position of the keyframe into the variable "i"
         i = 0;
 	if ( selected_frame -> isKey() )
@@ -375,7 +375,7 @@ void TLFrameSequence::slotInsertFrame()
         TLFrame *frame_iterator, *bridge_frame;
 	bridge_frame = list_of_frames.at( list_of_frames.find( last_used_frame ) + 1 );
 
-	QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
+	QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
 	KeyFrame *ckf = kf.getLast();
 
 	for( frame_iterator = bridge_frame; frame_iterator != selected_frame; frame_iterator = list_of_frames.next() )
@@ -494,7 +494,7 @@ void TLFrameSequence::slotRemoveFrame()
 	last_used_frame -> setLast( true );
 	number_of_used_frames--;
 
-    	QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
+    	QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
 	KeyFrame *ckf = kf.getLast();
 	ckf -> setLengthKeyFrame( ckf -> lengthKeyFrame() - 1 );
 
@@ -520,7 +520,7 @@ void TLFrameSequence::slotRemoveFrame()
 	last_used_frame = list_of_frames.at( list_of_frames.find( last_used_frame ) - 1 );
 	number_of_used_frames--;
 
-	QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
+	QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
         //Get the position of the keyframe into the variable "i"
         i = 0;
 	TLFrame *frame_iterator;
@@ -574,7 +574,7 @@ void TLFrameSequence::slotRemoveFrame()
 	last_used_frame = list_of_frames.at( list_of_frames.find( last_used_frame ) - 1 );
 	number_of_used_frames--;
 
-	QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
+	QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
         //Get the position of the keyframe into the variable "i"
         i = 0;
 	TLFrame *frame_iterator;
@@ -613,7 +613,7 @@ void TLFrameSequence::slotRemoveFrame()
 	last_used_frame = list_of_frames.at( list_of_frames.find( last_used_frame ) - 1 );
 	number_of_used_frames--;
 
-	QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
+	QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
         //Get the position of the keyframe into the variable "i"
         i = 1;
 	TLFrame *frame_iterator;
@@ -861,7 +861,7 @@ void TLFrameSequence::slotCreateMotionTween()
             createMotionFrames( findPrevKeyframe( selected_frame ) );
     }
 
-    QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
+    QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
     KeyFrame *ckf = kf.at( i - 1 );
     ckf -> setMotionKeyFrame( true );
 
@@ -894,7 +894,7 @@ void TLFrameSequence::slotRemoveMotionTween()
     else
         cleanMotionFrames( findPrevKeyframe( selected_frame ) );
 
-    QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
+    QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
     KeyFrame *ckf = kf.at( i - 1 );
     ckf -> setMotionKeyFrame( false );
 
@@ -954,7 +954,7 @@ void TLFrameSequence::clearDrawingState( TLFrame *key )
 
 void TLFrameSequence::updateKeyframeOffsets()
 {
-    QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
+    QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
     KeyFrame *f_it;
     int accum = 1;
     for ( f_it = kf.first(); f_it; f_it = kf.next() )

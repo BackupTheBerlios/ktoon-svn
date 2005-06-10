@@ -231,7 +231,7 @@ void TLFrameSequenceLayout::slotChangeOffset( int current_offset )
     Layer *l_it;
     KeyFrame *to_add;
     QPtrList<KeyFrame> kf, to_display;
-    QPtrList<Layer> ly = k_toon -> currentStatus() -> currentScene() -> getLayers();
+    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
     Timeline *tl = ( Timeline * )( parent_widget -> parentWidget() -> parentWidget() );
     QPtrList<TLLayer> layers = tl -> layerManager() -> layerSequence() -> listOfLayers();
     TLLayer *tll_it;
@@ -245,7 +245,7 @@ void TLFrameSequenceLayout::slotChangeOffset( int current_offset )
 	    to_display.append( to_add );
 	}
     }
-    k_toon -> currentStatus() -> setRenderKeyframes( to_display );
+    KTStatus -> setRenderKeyframes( to_display );
     k_toon -> renderCameraPreview() -> updateGL();
 }
 
@@ -255,7 +255,7 @@ void TLFrameSequenceLayout::slotChangeDragOffset( int current_offset )
     Layer *l_it;
     KeyFrame *to_add;
     QPtrList<KeyFrame> kf, to_display;
-    QPtrList<Layer> ly = k_toon -> currentStatus() -> currentScene() -> getLayers();
+    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
     Timeline *tl = ( Timeline * )( parent_widget -> parentWidget() -> parentWidget() );
     QPtrList<TLLayer> layers = tl -> layerManager() -> layerSequence() -> listOfLayers();
     TLLayer *tll_it;
@@ -269,7 +269,7 @@ void TLFrameSequenceLayout::slotChangeDragOffset( int current_offset )
 	    to_display.append( to_add );
 	}
     }
-    k_toon -> currentStatus() -> setRenderKeyframes( to_display );
+    KTStatus -> setRenderKeyframes( to_display );
     k_toon -> renderCameraPreview() -> updateGL();
 }
 
@@ -384,7 +384,7 @@ void TLFrameSequenceLayout::slotChangeLayerVisibility( int, bool )
     Layer *l_it;
     KeyFrame *to_add;
     QPtrList<KeyFrame> kf, to_display;
-    QPtrList<Layer> ly = k_toon -> currentStatus() -> currentScene() -> getLayers();
+    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
     Timeline *tl = ( Timeline * )( parent_widget -> parentWidget() -> parentWidget() );
     QPtrList<TLLayer> layers = tl -> layerManager() -> layerSequence() -> listOfLayers();
     TLLayer *tll_it;
@@ -397,14 +397,14 @@ void TLFrameSequenceLayout::slotChangeLayerVisibility( int, bool )
 	    to_display.append( to_add );
 	}
     }
-    k_toon -> currentStatus() -> setRenderKeyframes( to_display );
+    KTStatus -> setRenderKeyframes( to_display );
     k_toon -> renderCameraPreview() -> updateGL();
 }
 
 void TLFrameSequenceLayout::slotFrameHasDrawing( bool state )
 {
-    KeyFrame *ckf = k_toon -> currentStatus() -> currentKeyFrame();
-    Layer *cl = k_toon -> currentStatus() -> currentLayer();
+    KeyFrame *ckf = KTStatus -> currentKeyFrame();
+    Layer *cl = KTStatus -> currentLayer();
     QPtrList<KeyFrame> kf = cl -> keyFrames();
     int kf_pos = kf.find( ckf ) + 1;
     current_frame_sequence -> setKeyframeHasDrawing( kf_pos, state );

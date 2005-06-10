@@ -107,7 +107,7 @@ void GLRenderCameraPreview::paintGL()
     glTranslatef( translate_factor, translate_factor, 0.0 );
     glScalef( scale_factor, scale_factor, 1.0 );
 
-    QPtrList<KeyFrame> keyframes_to_display = k_toon -> currentStatus() -> renderKeyframes();
+    QPtrList<KeyFrame> keyframes_to_display = KTStatus -> renderKeyframes();
     int n_keyframes = keyframes_to_display.count();
     float n_translate =  10.0 / ( float )( n_keyframes );
     float position = 9.0;
@@ -130,8 +130,8 @@ void GLRenderCameraPreview::drawFrame()
 {
     glLineWidth( 2.0 );
     glColor3f( 0.0, 0.0, 0.0 );
-    int w = k_toon -> currentStatus() -> currentCameraWidth();
-    int h = k_toon -> currentStatus() -> currentCameraHeight();
+    int w = KTStatus -> currentCameraWidth();
+    int h = KTStatus -> currentCameraHeight();
 
     glBegin( GL_LINE_LOOP );
        glVertex2i( 20, 20 );
@@ -213,7 +213,7 @@ void GLRenderCameraPreview::processHits( GLint hits, GLuint buffer[] )
 
     current_graphic = NULL;
 
-    QPtrList<KeyFrame> displayed_keyframes = k_toon -> currentStatus() -> renderKeyframes();
+    QPtrList<KeyFrame> displayed_keyframes = KTStatus -> renderKeyframes();
     QPtrList<GLGraphicComponent> graphic_list;
     KeyFrame *kf_it;
     for ( kf_it = displayed_keyframes.first(); kf_it; kf_it = displayed_keyframes.next() )

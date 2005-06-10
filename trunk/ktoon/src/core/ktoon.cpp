@@ -77,9 +77,7 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose )
 	setupToolBarActions();
 	setupMenu();
 	
-	//Current Status Object
-	current_status = new Status();
-	current_status -> setCurrentCursor( Tools::NORMAL_SELECTION );
+	KTStatus -> setCurrentCursor( Tools::NORMAL_SELECTION );
 	
 	//Image Initializations
 	background_image = QPixmap( background_xpm );
@@ -98,7 +96,7 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose )
 	
 	//--------------- Document Object ---------------
 	
-	KTDoc-> setNameDocument( tr( "Document" ) + QString( "1" ) );
+	KTStatus->currentDocument()-> setNameDocument( tr( "Document" ) + QString( "1" ) );
 	
 	//-------------- Drawing Area ------------------
 	
@@ -140,8 +138,8 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose )
 	recent_names << recent1 << recent2 << recent3 << recent4 << recent5;
 
 	window -> setItemEnabled( id_window_illustration, false );
-	current_status -> setCurrentScene( ( KTDoc -> getAnimation() -> getScenes() ).first() );
-	current_status -> setCurrentLayer( ( current_status -> currentScene() -> getLayers() ).first() );
+	KTStatus -> setCurrentScene( ( KTStatus->currentDocument() -> getAnimation() -> getScenes() ).first() );
+	KTStatus -> setCurrentLayer( ( KTStatus -> currentScene() -> getLayers() ).first() );
 	
 	//------------- Main Connections ----------------
 
@@ -803,7 +801,7 @@ KToon::~KToon()
     delete main_panel;
     delete tool_bar;
     delete tool_bar2;
-    delete current_status;
+    delete KTStatus;
     delete es_default_color;
     delete es_use_color;
     delete es_selection_color;
@@ -825,12 +823,6 @@ KToon::~KToon()
 }
 
 //------------------- PUBLIC MEMBERS ----------------
-
-Status *KToon::currentStatus()
-{
-    Q_CHECK_PTR( current_status );
-    return current_status;
-}
 
 Timeline *KToon::timeline()
 {
@@ -967,7 +959,7 @@ void KToon::loadLibrary( const QString &file_name, bool from_load )
 	n_item = n_item.nextSibling();
     }
     library -> setItems( items );
-    KTDoc -> setLibrary( ap_library.release() );
+    KTStatus->currentDocument() -> setLibrary( ap_library.release() );
     
     if ( !from_load )
         library_dialog -> loadItems( items );
@@ -1019,7 +1011,7 @@ void KToon::loadPalette( const QString &file_name, bool from_load )
 	n_color = n_color.nextSibling();
     }
     palette -> setColors( colors );
-    KTDoc -> setPalette( ap_palette.release() );
+    KTStatus->currentDocument() -> setPalette( ap_palette.release() );
     if ( !from_load )
         color_palette_dialog -> loadCustomColors( colors );
 
@@ -1065,7 +1057,7 @@ void KToon::loadBrushes( const QString &file_name, bool from_load )
 	    }
 	n_brush = n_brush.nextSibling();
     }
-    KTDoc -> setBrushes( brushes );
+    KTStatus->currentDocument() -> setBrushes( brushes );
     if ( !from_load )
         brushes_dialog -> loadBrushes( brushes );
 
@@ -1591,14 +1583,14 @@ void KToon::slotNewDocument()
 	//murakumo: Volker, it is deleted into slotCloseDrawingArea() that is called if it was accepted
 	//          the drawing area's close event (close == true)
 // 	document_ = new Document();
-     	KTDoc -> setNameDocument( tr( "Document" ) + document_number );
+     	KTStatus->currentDocument() -> setNameDocument( tr( "Document" ) + document_number );
 	setCaption( tr( "Document" ) + document_number );
 
-    	current_status -> setCurrentScene( ( KTDoc -> getAnimation() -> getScenes() ).first() );
-    	current_status -> setCurrentLayer( ( current_status -> currentScene() -> getLayers() ).first() );
-    	current_status -> setCurrentKeyFrame( NULL );
+    	KTStatus -> setCurrentScene( ( KTStatus->currentDocument() -> getAnimation() -> getScenes() ).first() );
+    	KTStatus -> setCurrentLayer( ( KTStatus -> currentScene() -> getLayers() ).first() );
+    	KTStatus -> setCurrentKeyFrame( NULL );
     	QPtrList<KeyFrame> empty;
-    	current_status -> setRenderKeyframes( empty );
+    	KTStatus -> setRenderKeyframes( empty );
 
     	current_drawing_area = new DrawingArea( main_panel, this, tr( "Document" ) + document_number );
     	exposure_sheet_dialog = new ExposureSheet( this, Qt::WStyle_Tool, window, id_window_exposure_sheet, window_exposure_sheet );
@@ -1801,10 +1793,10 @@ void KToon::slotLoadDocument( const QString &in_file_name )
     //VL: old document_ ?
     //murakumo: See the comment above (into slotNewDocument()).
 //     document_ = new Document();
-    KTDoc -> setNameDocument( in_file_name );
+    KTStatus->currentDocument() -> setNameDocument( in_file_name );
 
     //Drawing Area Initialization
-    current_drawing_area = new DrawingArea( main_panel, this, KTDoc->nameDocument() );
+    current_drawing_area = new DrawingArea( main_panel, this, KTStatus->currentDocument()->nameDocument() );
 
     //1.1. Palette Tag
     QDomElement palette_path_tag = root.firstChild().toElement();
@@ -1982,7 +1974,7 @@ void KToon::slotLoadDocument( const QString &in_file_name )
 	n_scene = n_scene.nextSibling();
     }
     animation -> setScenes( scenes );
-    KTDoc->setAnimation( ap_animation.release() );
+    KTStatus->currentDocument()->setAnimation( ap_animation.release() );
 
     //----------- Create the GUI -----------------
 
@@ -2028,8 +2020,8 @@ void KToon::slotSave()
     current_drawing_area -> setCaption( file_name );
     current_drawing_area -> modifyDocument( false );
 
-    KTDoc->setNameDocument( file_name );
-    KTDoc->save( &f );
+    KTStatus->currentDocument()->setNameDocument( file_name );
+    KTStatus->currentDocument()->save( &f );
 
     f.close();
     statusBar() -> message( tr( "File Saved Successfully - %1" ).arg( file_name ), 2000 );
@@ -2178,7 +2170,7 @@ void KToon::slotNoGrid()
 void KToon::slotNoPreviousOnionSkin()
 {
     current_drawing_area -> slotNoPreviousOnionSkin();
-    current_status -> setCurrentPreviousOnionSkin( 0 );
+    KTStatus -> setCurrentPreviousOnionSkin( 0 );
     onion_skin -> setItemChecked( previous_checked, false );
     onion_skin -> setItemChecked( id_view_previous_none, true );
     previous_toggled -> setDown( false );
@@ -2192,7 +2184,7 @@ void KToon::slotNoPreviousOnionSkin()
 void KToon::slotPreviousOnionSkin()
 {
     current_drawing_area -> slotPreviousOnionSkin();
-    current_status -> setCurrentPreviousOnionSkin( 1 );
+    KTStatus -> setCurrentPreviousOnionSkin( 1 );
     onion_skin -> setItemChecked( previous_checked, false );
     onion_skin -> setItemChecked( id_view_previous, true );
     previous_toggled -> setDown( false );
@@ -2206,7 +2198,7 @@ void KToon::slotPreviousOnionSkin()
 void KToon::slotPrevious2OnionSkin()
 {
     current_drawing_area -> slotPrevious2OnionSkin();
-    current_status -> setCurrentPreviousOnionSkin( 2 );
+    KTStatus -> setCurrentPreviousOnionSkin( 2 );
     onion_skin -> setItemChecked( previous_checked, false );
     onion_skin -> setItemChecked( id_view_previous2, true );
     previous_toggled -> setDown( false );
@@ -2220,7 +2212,7 @@ void KToon::slotPrevious2OnionSkin()
 void KToon::slotPrevious3OnionSkin()
 {
     current_drawing_area -> slotPrevious3OnionSkin();
-    current_status -> setCurrentPreviousOnionSkin( 3 );
+    KTStatus -> setCurrentPreviousOnionSkin( 3 );
     onion_skin -> setItemChecked( previous_checked, false );
     onion_skin -> setItemChecked( id_view_previous3, true );
     previous_toggled -> setDown( false );
@@ -2234,7 +2226,7 @@ void KToon::slotPrevious3OnionSkin()
 void KToon::slotNoNextOnionSkin()
 {
     current_drawing_area -> slotNoNextOnionSkin();
-    current_status -> setCurrentNextOnionSkin( 0 );
+    KTStatus -> setCurrentNextOnionSkin( 0 );
     onion_skin -> setItemChecked( next_checked, false );
     onion_skin -> setItemChecked( id_view_next_none, true );
     next_toggled -> setDown( false );
@@ -2248,7 +2240,7 @@ void KToon::slotNoNextOnionSkin()
 void KToon::slotNextOnionSkin()
 {
     current_drawing_area -> slotNextOnionSkin();
-    current_status -> setCurrentNextOnionSkin( 1 );
+    KTStatus -> setCurrentNextOnionSkin( 1 );
     onion_skin -> setItemChecked( next_checked, false );
     onion_skin -> setItemChecked( id_view_next, true );
     next_toggled -> setDown( false );
@@ -2262,7 +2254,7 @@ void KToon::slotNextOnionSkin()
 void KToon::slotNext2OnionSkin()
 {
     current_drawing_area -> slotNext2OnionSkin();
-    current_status -> setCurrentNextOnionSkin( 2 );
+    KTStatus -> setCurrentNextOnionSkin( 2 );
     onion_skin -> setItemChecked( next_checked, false );
     onion_skin -> setItemChecked( id_view_next2, true );
     next_toggled -> setDown( false );
@@ -2276,7 +2268,7 @@ void KToon::slotNext2OnionSkin()
 void KToon::slotNext3OnionSkin()
 {
     current_drawing_area -> slotNext3OnionSkin();
-    current_status -> setCurrentNextOnionSkin( 3 );
+    KTStatus -> setCurrentNextOnionSkin( 3 );
     onion_skin -> setItemChecked( next_checked, false );
     onion_skin -> setItemChecked( id_view_next3, true );
     next_toggled -> setDown( false );
@@ -2464,21 +2456,21 @@ void KToon::slotPerspectiveSelection()
 void KToon::slotNormalSelection()
 {
     tools_dialog -> changeButtonImage( Tools::NORMAL_SELECTION );
-    current_status -> setCurrentCursor( Tools::NORMAL_SELECTION );
+    KTStatus -> setCurrentCursor( Tools::NORMAL_SELECTION );
     slotActivateCursor();
 }
 
 void KToon::slotContourSelection()
 {
     tools_dialog -> changeButtonImage( Tools::CONTOUR_SELECTION );
-    current_status -> setCurrentCursor( Tools::CONTOUR_SELECTION );
+    KTStatus -> setCurrentCursor( Tools::CONTOUR_SELECTION );
     slotActivateCursor();
 }
 
 void KToon::slotBrush()
 {
     tools_dialog -> changeButtonImage( Tools::BRUSH );
-    current_status -> setCurrentCursor( Tools::BRUSH );
+    KTStatus -> setCurrentCursor( Tools::BRUSH );
     color_palette_dialog -> slotActivateOutlineColor();
     slotActivateCursor();
 }
@@ -2486,7 +2478,7 @@ void KToon::slotBrush()
 void KToon::slotPencil()
 {
     tools_dialog -> changeButtonImage( Tools::PENCIL );
-    current_status -> setCurrentCursor( Tools::PENCIL );
+    KTStatus -> setCurrentCursor( Tools::PENCIL );
     color_palette_dialog -> slotActivateOutlineColor();
     slotActivateCursor();
 }
@@ -2494,7 +2486,7 @@ void KToon::slotPencil()
 void KToon::slotPen()
 {
     tools_dialog -> changeButtonImage( Tools::PEN );
-    current_status -> setCurrentCursor( Tools::PEN );
+    KTStatus -> setCurrentCursor( Tools::PEN );
     color_palette_dialog -> slotActivateOutlineColor();
     slotActivateCursor();
 }
@@ -2502,7 +2494,7 @@ void KToon::slotPen()
 void KToon::slotLine()
 {
     tools_dialog -> changeButtonImage( Tools::LINE );
-    current_status -> setCurrentCursor( Tools::LINE );
+    KTStatus -> setCurrentCursor( Tools::LINE );
     color_palette_dialog -> slotActivateOutlineColor();
     slotActivateCursor();
 }
@@ -2510,7 +2502,7 @@ void KToon::slotLine()
 void KToon::slotRectangle()
 {
     tools_dialog -> changeButtonImage( Tools::RECTANGLE );
-    current_status -> setCurrentCursor( Tools::RECTANGLE );
+    KTStatus -> setCurrentCursor( Tools::RECTANGLE );
     color_palette_dialog -> slotActivateOutlineColor();
     slotActivateCursor();
 }
@@ -2518,7 +2510,7 @@ void KToon::slotRectangle()
 void KToon::slotEllipse()
 {
     tools_dialog -> changeButtonImage( Tools::ELLIPSE );
-    current_status -> setCurrentCursor( Tools::ELLIPSE );
+    KTStatus -> setCurrentCursor( Tools::ELLIPSE );
     color_palette_dialog -> slotActivateOutlineColor();
     slotActivateCursor();
 }
@@ -2526,7 +2518,7 @@ void KToon::slotEllipse()
 void KToon::slotContourFill()
 {
     tools_dialog -> changeButtonImage( Tools::CONTOUR_FILL );
-    current_status -> setCurrentCursor( Tools::CONTOUR_FILL );
+    KTStatus -> setCurrentCursor( Tools::CONTOUR_FILL );
     color_palette_dialog -> slotActivateOutlineColor();
     slotActivateCursor();
 }
@@ -2534,7 +2526,7 @@ void KToon::slotContourFill()
 void KToon::slotFill()
 {
     tools_dialog -> changeButtonImage( Tools::FILL );
-    current_status -> setCurrentCursor( Tools::FILL );
+    KTStatus -> setCurrentCursor( Tools::FILL );
     color_palette_dialog -> slotActivateFillColor();
     slotActivateCursor();
 }
@@ -2542,42 +2534,42 @@ void KToon::slotFill()
 void KToon::slotRemoveFill()
 {
     tools_dialog -> changeButtonImage( Tools::REMOVE_FILL );
-    current_status -> setCurrentCursor( Tools::REMOVE_FILL );
+    KTStatus -> setCurrentCursor( Tools::REMOVE_FILL );
     slotActivateCursor();
 }
 
 void KToon::slotDropper()
 {
     tools_dialog -> changeButtonImage( Tools::DROPPER );
-    current_status -> setCurrentCursor( Tools::DROPPER );
+    KTStatus -> setCurrentCursor( Tools::DROPPER );
     slotActivateCursor();
 }
 
 void KToon::slotEraser()
 {
     tools_dialog -> changeButtonImage( Tools::ERASER );
-    current_status -> setCurrentCursor( Tools::ERASER );
+    KTStatus -> setCurrentCursor( Tools::ERASER );
     slotActivateCursor();
 }
 
 void KToon::slotSlicer()
 {
     tools_dialog -> changeButtonImage( Tools::SLICER );
-    current_status -> setCurrentCursor( Tools::SLICER );
+    KTStatus -> setCurrentCursor( Tools::SLICER );
     slotActivateCursor();
 }
 
 void KToon::slotMagnifyingGlass()
 {
     tools_dialog -> changeButtonImage( Tools::MAGNIFYING_GLASS );
-    current_status -> setCurrentCursor( Tools::MAGNIFYING_GLASS );
+    KTStatus -> setCurrentCursor( Tools::MAGNIFYING_GLASS );
     slotActivateCursor();
 }
 
 void KToon::slotHand()
 {
     tools_dialog -> changeButtonImage( Tools::HAND );
-    current_status -> setCurrentCursor( Tools::HAND );
+    KTStatus -> setCurrentCursor( Tools::HAND );
     slotActivateCursor();
 }
 
@@ -3172,14 +3164,14 @@ void KToon::slotCloseDrawingArea()
 
     //murakumo: Here it is, Volker!
 //     delete document_;
-    KTDoc->init();
+    KTStatus->currentDocument()->init();
 //     document_ = NULL;
 
-    current_status -> setCurrentScene( NULL );
-    current_status -> setCurrentLayer( NULL );
-    current_status -> setCurrentKeyFrame( NULL );
+    KTStatus -> setCurrentScene( NULL );
+    KTStatus -> setCurrentLayer( NULL );
+    KTStatus -> setCurrentKeyFrame( NULL );
     QPtrList<KeyFrame> empty;
-    current_status -> setRenderKeyframes( empty );
+    KTStatus -> setRenderKeyframes( empty );
 
     menuBar() -> setItemVisible( id_insert, false );
     menuBar() -> setItemVisible( id_control, false );
@@ -3314,9 +3306,9 @@ void KToon::slotActivateCursor()
     bool locked = false;
     if ( sf != NULL )
 	locked = sf -> isLocked();
-    if ( current_status -> currentKeyFrame() != NULL && !locked )
+    if ( KTStatus -> currentKeyFrame() != NULL && !locked )
     {
-        switch ( current_status -> currentCursor() )
+        switch ( KTStatus -> currentCursor() )
 	{
  	    case Tools::NORMAL_SELECTION: current_drawing_area -> setCursor( *cursor_selection );
 			break;
@@ -3497,22 +3489,22 @@ void KToon::closeEvent( QCloseEvent *close_event )
 
 void KToon::createGUI()
 {
-    setCaption( KTDoc->nameDocument() );
+    setCaption( KTStatus->currentDocument()->nameDocument() );
 
-    QPtrList<Color> custom_colors = KTDoc->getPalette() -> getColors();
+    QPtrList<Color> custom_colors = KTStatus->currentDocument()->getPalette() -> getColors();
     color_palette_dialog -> enableCustomPalette( true );
     color_palette_dialog -> loadCustomColors( custom_colors );
 
-    QPtrList<Brush> brushes = KTDoc->getBrushes();
+    QPtrList<Brush> brushes = KTStatus->currentDocument()->getBrushes();
     brushes_dialog = new Brushes( this, Qt::WStyle_Tool, window, id_window_brushes, window_brushes );
     brushes_dialog -> loadBrushes( brushes );
 
-    QPtrList<Scene> scenes = KTDoc->getAnimation() -> getScenes();
+    QPtrList<Scene> scenes = KTStatus->currentDocument()->getAnimation() -> getScenes();
     scenes_dialog = new Scenes( this, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
     scenes_dialog -> loadScenes( scenes );
 
     library_dialog = new Library( this, Qt::WStyle_Tool, window, id_window_library, current_drawing_area, window_library );
-    library_dialog -> loadItems( KTDoc->getLibrary() -> getItems() );
+    library_dialog -> loadItems( KTStatus->currentDocument()->getLibrary() -> getItems() );
 
     render_camera_preview = new GLRenderCameraPreview( main_panel, this, window, id_window_render_camera_preview, window_render_camera_preview, current_drawing_area );
     top_camera_view = new GLTopCameraView( main_panel, this, window, id_window_top_camera_view, window_top_camera_view, current_drawing_area );
@@ -3606,9 +3598,9 @@ void KToon::createGUI()
     connect( scenes_dialog, SIGNAL( sceneRemoved( int ) ), SLOT( slotRemoveSync( int ) ) );
     connect( scenes_dialog, SIGNAL( sceneSelected( int ) ), SLOT( slotSelectSync( int ) ) );
 
-    current_status -> setCurrentScene( ( KTDoc->getAnimation() -> getScenes() ).first() );
-    current_status -> setCurrentLayer( ( current_status -> currentScene() -> getLayers() ).first() );
-    current_status -> setCurrentKeyFrame( ( ( current_status -> currentScene() -> getLayers() ).first() -> keyFrames() ).first() );
+    KTStatus -> setCurrentScene( ( KTStatus->currentDocument()->getAnimation() -> getScenes() ).first() );
+    KTStatus -> setCurrentLayer( ( KTStatus -> currentScene() -> getLayers() ).first() );
+    KTStatus -> setCurrentKeyFrame( ( ( KTStatus -> currentScene() -> getLayers() ).first() -> keyFrames() ).first() );
 
     exposure_sheet_dialog -> touchFirstFrame();
     scenes_dialog -> selectFirstScene();

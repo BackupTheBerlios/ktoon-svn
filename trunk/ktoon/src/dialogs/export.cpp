@@ -186,7 +186,7 @@ void Export::slotAccept()
 	        int number_of_images = k_toon -> scenes() -> exportAnimation( fn, "JPEG" );
         	if ( number_of_images > 0 )
 		{
-		    int frame_rate = k_toon -> currentStatus() -> currentFrameRate();
+		    int frame_rate = KTStatus -> currentFrameRate();
 
 		    SWFMovie *movie = doMovie( 360, 280 );
   		    movie -> setRate( ( float )frame_rate );

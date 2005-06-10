@@ -61,12 +61,12 @@ Document::~Document()
 	brushes.setAutoDelete( false );
 }
 
-Document *Document::instance()
-{
-	static Document *doc = new Document();
-	
-	return doc;
-}
+// Document *Document::instance()
+// {
+// 	static Document *doc = new Document();
+// 	
+// 	return doc;
+// }
 
 //------------ PUBLIC MEMBERS ---------------
 

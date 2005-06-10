@@ -155,7 +155,7 @@ void DrawingArea::paintGL()
 {
 	GLGraphicComponent *graphic;
 	
-	QColor b_color = k_toon -> currentStatus() -> currentBackgroundColor();
+	QColor b_color = KTStatus -> currentBackgroundColor();
 	glClearColor( ( float )b_color.red() / 255.0, ( float )b_color.green() / 255.0, ( float )b_color.blue() / 255.0, 0.0 );
 	
 	// Clear the elements on the screen.
@@ -173,10 +173,10 @@ void DrawingArea::paintGL()
 	glRotatef( rotationZ(), 0.0, 0.0, 1.0 );
 	glTranslatef( -1.0 * maxHorizontal() / 2.0, -1.0 * maxVertical() / 2.0, 0.0 );
 	
-	current_cursor = k_toon -> currentStatus() -> currentCursor();
+	current_cursor = KTStatus -> currentCursor();
 	
 	//----------- Draw the onion skin and Light Table---------------
-	if( k_toon -> currentStatus() -> currentPreviousOnionSkin() != 0 || k_toon -> currentStatus() -> currentNextOnionSkin() != 0 || light_table )
+	if( KTStatus -> currentPreviousOnionSkin() != 0 || KTStatus -> currentNextOnionSkin() != 0 || light_table )
 		drawOnionSkinsAndLightTable();
 	
 	//----------- Draw the grid ---------------
@@ -195,15 +195,15 @@ void DrawingArea::paintGL()
 	glDisable( GL_DEPTH_TEST );
 	
 	//----------- Draw the graphic components ---------------
-	if ( k_toon -> currentStatus() -> currentKeyFrame() != NULL )
-		graphic_list = k_toon -> currentStatus() -> currentKeyFrame() -> getDrawing() -> graphicComponents();
+	if ( KTStatus -> currentKeyFrame() != NULL )
+		graphic_list = KTStatus -> currentKeyFrame() -> getDrawing() -> graphicComponents();
 	else
 		graphic_list.clear();
 	
 	for ( graphic = graphic_list.first(); graphic; graphic = graphic_list.next() )
 		graphic -> draw();
 	
-	if ( selected_graphic && current_graphic != NULL && k_toon -> currentStatus() -> currentKeyFrame() != NULL )
+	if ( selected_graphic && current_graphic != NULL && KTStatus -> currentKeyFrame() != NULL )
 		markSelected();
 	
 	//----------- Draw the grid ---------------
@@ -447,10 +447,10 @@ void DrawingArea::drawOnionSkinsAndLightTable()
 	GLGraphicComponent *onion;
 	GLGraphicComponent *graphic;
 	
-	int previous = k_toon -> currentStatus() -> currentPreviousOnionSkin();
-	int next = k_toon -> currentStatus() -> currentNextOnionSkin();
+	int previous = KTStatus -> currentPreviousOnionSkin();
+	int next = KTStatus -> currentNextOnionSkin();
 	
-	QColor b_color = k_toon -> currentStatus() -> currentBackgroundColor();
+	QColor b_color = KTStatus -> currentBackgroundColor();
 	
 	previous_onion_skin_1.clear();
 	previous_onion_skin_2.clear();
@@ -535,7 +535,7 @@ void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
 	Q_CHECK_PTR( mouse_event );
 	selected_all = false;
 	
-	if ( k_toon -> currentStatus() -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
+	if ( KTStatus -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
 	{
 	mouse_event -> ignore();
 	return;
@@ -609,9 +609,9 @@ void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
 	}
 	else
 	{
-	current_outline_color = k_toon -> currentStatus() -> currentOutlineColor();
-	current_fill_color = k_toon -> currentStatus() -> currentFillColor();
-	current_brush = k_toon -> currentStatus() -> currentBrush();
+	current_outline_color = KTStatus -> currentOutlineColor();
+	current_fill_color = KTStatus -> currentFillColor();
+	current_brush = KTStatus -> currentBrush();
 	
 	switch ( current_cursor )
 		{
@@ -752,7 +752,7 @@ void DrawingArea::mouseReleaseEvent( QMouseEvent *mouse_event )
 {
 	Q_CHECK_PTR( mouse_event );
 	
-	if ( k_toon -> currentStatus() -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
+	if ( KTStatus -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
 	{
 	mouse_event -> ignore();
 	return;
@@ -806,12 +806,12 @@ void DrawingArea::mouseMoveEvent( QMouseEvent *mouse_event )
 {
 	Q_CHECK_PTR( mouse_event );
 	
-	if ( k_toon -> currentStatus() -> currentKeyFrame() == NULL )
+	if ( KTStatus -> currentKeyFrame() == NULL )
 	{
 	mouse_event -> ignore();
 	return;
 	}
-	current_brush = k_toon -> currentStatus() -> currentBrush();
+	current_brush = KTStatus -> currentBrush();
 	current_graphic_list.clear();
 	
 	if( current_graphic )
@@ -974,7 +974,7 @@ void DrawingArea::mouseDoubleClickEvent( QMouseEvent *mouse_event )
 {
 	Q_CHECK_PTR( mouse_event );
 	
-	if ( k_toon -> currentStatus() -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
+	if ( KTStatus -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
 	{
 	mouse_event -> ignore();
 	return;
@@ -1012,8 +1012,8 @@ void DrawingArea::keyPressEvent( QKeyEvent *key_event )
 	if ( selected_all )
 	{
 		current_graphic_list.clear();
-		if ( k_toon -> currentStatus() -> currentKeyFrame() != NULL )
-			current_graphic_list = k_toon -> currentStatus() -> currentKeyFrame() -> getDrawing() -> graphicComponents();
+		if ( KTStatus -> currentKeyFrame() != NULL )
+			current_graphic_list = KTStatus -> currentKeyFrame() -> getDrawing() -> graphicComponents();
 		current_graphic = NULL;
 	}
 	else if ( current_graphic != NULL )
@@ -1023,7 +1023,7 @@ void DrawingArea::keyPressEvent( QKeyEvent *key_event )
 	}
 	bezier = false;
 	
-	if ( k_toon -> currentStatus() -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
+	if ( KTStatus -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
 	{
 	key_event -> ignore();
 	return;
@@ -1031,7 +1031,7 @@ void DrawingArea::keyPressEvent( QKeyEvent *key_event )
 	if ( key_event -> key() == Qt::Key_Space )
 	{
 		using_hand = true;
-		previous_cursor = k_toon -> currentStatus() -> currentCursor();
+		previous_cursor = KTStatus -> currentCursor();
 		k_toon -> slotHand();
 	}
 	if ( key_event -> key() == Qt::Key_Shift )
@@ -1053,7 +1053,7 @@ void DrawingArea::keyReleaseEvent( QKeyEvent *key_event )
 {
 	Q_CHECK_PTR( key_event );
 	
-	if ( k_toon -> currentStatus() -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
+	if ( KTStatus -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
 	{
 	key_event -> ignore();
 	return;
@@ -1820,7 +1820,7 @@ void DrawingArea::addGraphicComponent( GLGraphicComponent *graphic_component, bo
 	
 	graphic_component -> setZ( z + 0.0001 );
 	graphic_list.append( graphic_component );
-	GLDrawing *drawing = k_toon -> currentStatus() -> currentKeyFrame() -> getDrawing();
+	GLDrawing *drawing = KTStatus -> currentKeyFrame() -> getDrawing();
 	drawing -> setGraphicComponents( graphic_list );
 	
 	//drawing_list.append(drawing);
@@ -1891,7 +1891,7 @@ void DrawingArea::slotBringToFront()
 	if ( z != current_graphic -> getZ() )
 		current_graphic -> setZ( z + 0.0001 );
 	graphic_list.append( current_graphic );
-	k_toon -> currentStatus() -> currentKeyFrame() -> getDrawing() -> setGraphicComponents( graphic_list );
+	KTStatus -> currentKeyFrame() -> getDrawing() -> setGraphicComponents( graphic_list );
 	}
 	
 	updateGL();
@@ -1915,7 +1915,7 @@ void DrawingArea::slotSendToBack()
 		if ( z != current_graphic -> getZ() )
 			current_graphic -> setZ( z - 0.0001 );
 		graphic_list.prepend( current_graphic );
-		k_toon -> currentStatus() -> currentKeyFrame() -> getDrawing() -> setGraphicComponents( graphic_list );
+		KTStatus -> currentKeyFrame() -> getDrawing() -> setGraphicComponents( graphic_list );
 	}
 	updateGL();
 }
@@ -1950,7 +1950,7 @@ void DrawingArea::slotOneStepForward()
 		}
 		current_graphic -> setZ( z + 0.0001 );
 		graphic_list.insert( index + 1,  current_graphic );
-		k_toon -> currentStatus() -> currentKeyFrame() -> getDrawing() -> setGraphicComponents( graphic_list );
+		KTStatus -> currentKeyFrame() -> getDrawing() -> setGraphicComponents( graphic_list );
 	}
 	updateGL();
 }
@@ -1986,7 +1986,7 @@ void DrawingArea::slotOneStepBackward()
 		}
 	current_graphic -> setZ( z - 0.0001 );
 	graphic_list.insert( index - 1,  current_graphic );
-	k_toon -> currentStatus() -> currentKeyFrame() -> getDrawing() -> setGraphicComponents( graphic_list );
+	KTStatus -> currentKeyFrame() -> getDrawing() -> setGraphicComponents( graphic_list );
 	}
 	updateGL();
 }
@@ -2356,7 +2356,7 @@ void DrawingArea::gridPosition( )
 
 void DrawingArea::slotChangeOutlineColor()
 {
-	current_outline_color = k_toon -> currentStatus() -> currentOutlineColor();
+	current_outline_color = KTStatus -> currentOutlineColor();
 	current_graphic_list.append( current_graphic );
 	if ( current_graphic_list.count() !=0 )
 	{
@@ -2371,7 +2371,7 @@ void DrawingArea::slotChangeOutlineColor()
 
 void DrawingArea::slotChangeFillColor()
 {
-	current_fill_color = k_toon -> currentStatus() -> currentFillColor();
+	current_fill_color = KTStatus -> currentFillColor();
 	current_graphic_list.append( current_graphic );
 	if ( current_graphic_list.count() !=0 )
 	{
@@ -2398,7 +2398,7 @@ void DrawingArea::slotChangeFillColor()
 
 void DrawingArea::slotChangeMinThicknessBrush()
 {
-	current_brush = k_toon -> currentStatus() -> currentBrush();
+	current_brush = KTStatus -> currentBrush();
 	current_graphic_list.append( current_graphic );
 	if ( current_graphic_list.count() !=0 )
 	{
@@ -2413,7 +2413,7 @@ void DrawingArea::slotChangeMinThicknessBrush()
 
 void DrawingArea::slotChangeMaxThicknessBrush()
 {
-	current_brush = k_toon -> currentStatus() -> currentBrush();
+	current_brush = KTStatus -> currentBrush();
 	current_graphic_list.append( current_graphic );
 	if ( current_graphic_list.count() !=0 )
 	{
@@ -2437,7 +2437,7 @@ void DrawingArea::slotChangeMaxThicknessBrush()
 
 void DrawingArea::slotChangeSmoothnessBrush()
 {
-	current_brush = k_toon -> currentStatus() -> currentBrush();
+	current_brush = KTStatus -> currentBrush();
 	current_graphic_list.append( current_graphic );
 	if ( current_graphic_list.count() !=0 )
 	{
@@ -2569,7 +2569,7 @@ void DrawingArea::slotUndo()
 	{
 		modifyDocument( true );
 		
-		GLDrawing *main_drawing = k_toon -> currentStatus() -> currentKeyFrame() -> getDrawing();
+		GLDrawing *main_drawing = KTStatus -> currentKeyFrame() -> getDrawing();
 	
 		current_graphic_list.clear();
 		
@@ -2595,7 +2595,7 @@ void DrawingArea::slotRedo()
 		
 		current_graphic_list = graphic_list;
 	
-		k_toon -> currentStatus() -> currentKeyFrame() -> getDrawing()->setGraphicComponents(current_graphic_list);
+		KTStatus -> currentKeyFrame() -> getDrawing()->setGraphicComponents(current_graphic_list);
 		updateGL();
 	}
 }
@@ -2627,7 +2627,7 @@ void DrawingArea::slotPaste()
 	for ( QStringList::Iterator it = clipboard.begin(); it != clipboard.end(); ++it )
 	{
 		QString text = *it;
-		if ( !text.isEmpty() && k_toon -> currentStatus() -> currentKeyFrame() != NULL && !( k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() ) )
+		if ( !text.isEmpty() && KTStatus -> currentKeyFrame() != NULL && !( k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() ) )
 		{
 			modifyDocument( true );
 			QString number = text.left( text.find( ' ', 0 ) );
@@ -2671,7 +2671,7 @@ void DrawingArea::slotPasteInPlace()
 	for ( QStringList::Iterator it = clipboard.begin(); it != clipboard.end(); ++it )
 	{
 		QString text = *it;
-		if ( !text.isEmpty() && k_toon -> currentStatus() -> currentKeyFrame() != NULL && !( k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() ) )
+		if ( !text.isEmpty() && KTStatus -> currentKeyFrame() != NULL && !( k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() ) )
 		{
 			modifyDocument( true );
 			QString number = text.left( text.find( ' ', 0 ) );
@@ -2729,7 +2729,7 @@ void DrawingArea::slotDelete()
 		for ( graphic = current_graphic_list.first(); graphic; graphic = current_graphic_list.next() )
 		graphic_list.remove( graphic );
 	}
-	GLDrawing *drawing = k_toon -> currentStatus() -> currentKeyFrame() -> getDrawing();
+	GLDrawing *drawing = KTStatus -> currentKeyFrame() -> getDrawing();
 	drawing -> setGraphicComponents( graphic_list );
 	current_graphic = NULL;
 	selected_graphic = false;
@@ -2764,16 +2764,16 @@ void DrawingArea::slotSelectFrame()
 	
 	current_graphic = NULL;
 	
-	if ( k_toon -> currentStatus() -> currentKeyFrame() != NULL )
+	if ( KTStatus -> currentKeyFrame() != NULL )
 	{
 		light_table_list.clear();
 		QPtrList<KeyFrame> keyframes_to_display;
-		QPtrList<KeyFrame> keyframe_list = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
+		QPtrList<KeyFrame> keyframe_list = KTStatus -> currentLayer() -> keyFrames();
 	
 		QPtrList<Layer> layer_list = k_toon -> exposureSheet() -> visibleLayers();
 		Layer *layer_iterator;
-		KeyFrame *ckf = k_toon -> currentStatus() -> currentKeyFrame();
-		Layer *cly = k_toon -> currentStatus() -> currentLayer();
+		KeyFrame *ckf = KTStatus -> currentKeyFrame();
+		Layer *cly = KTStatus -> currentLayer();
 		for ( layer_iterator = layer_list.first(); layer_iterator; layer_iterator = layer_list.next() )
 		{
 		if ( layer_iterator != cly )
@@ -2814,11 +2814,11 @@ void DrawingArea::slotNoPreviousOnionSkin()
 void DrawingArea::slotPreviousOnionSkin()
 {
 	int i = 0;
-	if ( k_toon -> currentStatus() -> currentKeyFrame() != NULL )
-		i = k_toon -> currentStatus() -> currentLayer() -> keyFrames().find( k_toon -> currentStatus() -> currentKeyFrame() );
+	if ( KTStatus -> currentKeyFrame() != NULL )
+		i = KTStatus -> currentLayer() -> keyFrames().find( KTStatus -> currentKeyFrame() );
 	if ( i > 0 )
 	{
-		QPtrList<KeyFrame> onion_skin = k_toon -> currentStatus() -> currentLayer() -> keyFrames() ;
+		QPtrList<KeyFrame> onion_skin = KTStatus -> currentLayer() -> keyFrames() ;
 		previous_onion_skin_1 = ( onion_skin.at( i - 1 ) ) -> getDrawing() -> graphicComponents();
 	}
 	else
@@ -2832,11 +2832,11 @@ void DrawingArea::slotPreviousOnionSkin()
 void DrawingArea::slotPrevious2OnionSkin()
 {
 	int i = 0;
-	if ( k_toon -> currentStatus() -> currentKeyFrame() != NULL )
-		i = k_toon -> currentStatus() -> currentLayer() -> keyFrames().find( k_toon -> currentStatus() -> currentKeyFrame() );
+	if ( KTStatus -> currentKeyFrame() != NULL )
+		i = KTStatus -> currentLayer() -> keyFrames().find( KTStatus -> currentKeyFrame() );
 	if ( i > 1 )
 	{
-		QPtrList<KeyFrame> onion_skin = k_toon -> currentStatus() -> currentLayer() -> keyFrames() ;
+		QPtrList<KeyFrame> onion_skin = KTStatus -> currentLayer() -> keyFrames() ;
 		previous_onion_skin_2 = ( onion_skin.at( i - 2 ) ) -> getDrawing() -> graphicComponents();
 	}
 	else
@@ -2848,11 +2848,11 @@ void DrawingArea::slotPrevious2OnionSkin()
 void DrawingArea::slotPrevious3OnionSkin()
 {
 	int i = 0;
-	if ( k_toon -> currentStatus() -> currentKeyFrame() != NULL )
-		i = k_toon -> currentStatus() -> currentLayer() -> keyFrames().find( k_toon -> currentStatus() -> currentKeyFrame() );
+	if ( KTStatus -> currentKeyFrame() != NULL )
+		i = KTStatus -> currentLayer() -> keyFrames().find( KTStatus -> currentKeyFrame() );
 	if ( i > 2 )
 	{
-		QPtrList<KeyFrame> onion_skin = k_toon -> currentStatus() -> currentLayer() -> keyFrames() ;
+		QPtrList<KeyFrame> onion_skin = KTStatus -> currentLayer() -> keyFrames() ;
 		previous_onion_skin_3 = ( onion_skin.at( i - 3 ) ) -> getDrawing() -> graphicComponents();
 	}
 	else
@@ -2872,14 +2872,14 @@ void DrawingArea::slotNextOnionSkin()
 {
 	int i = 0, j = 0;
 	
-	if ( k_toon -> currentStatus() -> currentKeyFrame() != NULL )
+	if ( KTStatus -> currentKeyFrame() != NULL )
 	{
-		i = k_toon -> currentStatus() -> currentLayer() -> keyFrames().find( k_toon -> currentStatus() -> currentKeyFrame() );
-		j = k_toon -> currentStatus() -> currentLayer() -> keyFrames().count();
+		i = KTStatus -> currentLayer() -> keyFrames().find( KTStatus -> currentKeyFrame() );
+		j = KTStatus -> currentLayer() -> keyFrames().count();
 	}
 	if ( i < j - 1 )
 	{
-		QPtrList<KeyFrame> onion_skin = k_toon -> currentStatus() -> currentLayer() -> keyFrames() ;
+		QPtrList<KeyFrame> onion_skin = KTStatus -> currentLayer() -> keyFrames() ;
 		next_onion_skin_1 = ( onion_skin.at( i + 1 ) ) -> getDrawing() -> graphicComponents();
 	}
 	else
@@ -2893,14 +2893,14 @@ void DrawingArea::slotNextOnionSkin()
 void DrawingArea::slotNext2OnionSkin()
 {
 	int i = 0, j = 0;
-	if ( k_toon -> currentStatus() -> currentKeyFrame() != NULL )
+	if ( KTStatus -> currentKeyFrame() != NULL )
 	{
-		i = k_toon -> currentStatus() -> currentLayer() -> keyFrames().find( k_toon -> currentStatus() -> currentKeyFrame() );
-		j = k_toon -> currentStatus() -> currentLayer() -> keyFrames().count();
+		i = KTStatus -> currentLayer() -> keyFrames().find( KTStatus -> currentKeyFrame() );
+		j = KTStatus -> currentLayer() -> keyFrames().count();
 	}
 	if ( i < j - 2 )
 	{
-		QPtrList<KeyFrame> onion_skin = k_toon -> currentStatus() -> currentLayer() -> keyFrames() ;
+		QPtrList<KeyFrame> onion_skin = KTStatus -> currentLayer() -> keyFrames() ;
 		next_onion_skin_2 = ( onion_skin.at( i + 2 ) ) -> getDrawing() -> graphicComponents();
 	}
 	else
@@ -2912,14 +2912,14 @@ void DrawingArea::slotNext2OnionSkin()
 void DrawingArea::slotNext3OnionSkin()
 {
 	int i = 0, j = 0;
-	if ( k_toon -> currentStatus() -> currentKeyFrame() != NULL )
+	if ( KTStatus -> currentKeyFrame() != NULL )
 	{
-		i = k_toon -> currentStatus() -> currentLayer() -> keyFrames().find( k_toon -> currentStatus() -> currentKeyFrame() );
-		j = k_toon -> currentStatus() -> currentLayer() -> keyFrames().count();
+		i = KTStatus -> currentLayer() -> keyFrames().find( KTStatus -> currentKeyFrame() );
+		j = KTStatus -> currentLayer() -> keyFrames().count();
 	}
 	if ( i < j - 3 )
 	{
-		QPtrList<KeyFrame> onion_skin = k_toon -> currentStatus() -> currentLayer() -> keyFrames() ;
+		QPtrList<KeyFrame> onion_skin = KTStatus -> currentLayer() -> keyFrames() ;
 		next_onion_skin_3 = ( onion_skin.at( i + 3 ) ) -> getDrawing() -> graphicComponents();
 	}
 	else
@@ -3202,14 +3202,14 @@ QPoint DrawingArea::mapPointToMatrix( const QPoint & point )
 
 void DrawingArea::slotSetGridColor()
 {
-	QColor g_color = k_toon -> currentStatus() -> currentGridColor();
+	QColor g_color = KTStatus -> currentGridColor();
 	grid -> setGridColor( g_color );
 	updateGL();
 }
 
 void DrawingArea::slotSetNTSCColor()
 {
-	QColor n_color = k_toon -> currentStatus() -> currentNTSCColor();
+	QColor n_color = KTStatus -> currentNTSCColor();
 	grid -> setNTSCColor( n_color );
 	updateGL();
 }

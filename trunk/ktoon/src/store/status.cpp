@@ -39,6 +39,14 @@ Status::Status()
     current_background_color = QColor( 255, 255, 255 );
     current_grid_color = QColor( 210, 210, 210 );
     current_ntsc_color = QColor( 255, 0, 0 );
+    
+    m_document = new Document();
+}
+
+void Status::init()		
+{
+	m_document->init();
+	m_document->setNameDocument(tr("Document"));
 }
 
 //------------- DESTRUCTOR ------------------
@@ -64,6 +72,18 @@ Status::~Status()
 }
 
 //------------ PUBLIC MEMBERS ---------------
+
+Status *Status::instance()
+{
+	static Status *status = new Status();
+	
+	return status;
+}
+
+Document *Status::currentDocument()
+{
+	return m_document;
+}
 
 void Status::setCurrentPreviousOnionSkin( const int &previous_onion )
 {

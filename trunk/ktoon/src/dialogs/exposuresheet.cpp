@@ -352,7 +352,7 @@ void ExposureSheet::loadLayersAndKeyframes( QPtrList<Layer> layers )
 
 QPtrList<Layer> ExposureSheet::visibleLayers()
 {
-    QPtrList<Layer> whole = k_toon -> currentStatus() -> currentScene() -> getLayers();
+    QPtrList<Layer> whole = KTStatus -> currentScene() -> getLayers();
     QPtrList<Layer> to_return;
     Layer *layer_iterator;
     QListViewItemIterator it( visibility_list );
@@ -423,9 +423,9 @@ void ExposureSheet::slotInsertLayer()
     n_layer -> setNameLayer( tr( "Layer" ) + layer_number );
     QPtrList<KeyFrame> kf = n_layer -> keyFrames();
     kf.first() -> setNameKeyFrame( tr( "Drawing " ) + QString::number( number_of_layers ) + QString( "-1" ) );
-    QPtrList<Layer> ly = k_toon -> currentStatus() -> currentScene() -> getLayers();
+    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
     ly.append( n_layer );
-    k_toon -> currentStatus() -> currentScene() -> setLayers( ly );
+    KTStatus -> currentScene() -> setLayers( ly );
     ap_n_layer.release();
     
     k_toon -> drawingArea() -> modifyDocument( true );
@@ -485,7 +485,7 @@ void ExposureSheet::slotRemoveLayer()
 	  }
       }
 
-      QPtrList<Layer> ly = k_toon -> currentStatus() -> currentScene() -> getLayers();
+      QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
       ly.setAutoDelete( true );
       ly.remove( r_pos );
       ly.setAutoDelete( false );
@@ -497,7 +497,7 @@ void ExposureSheet::slotRemoveLayer()
       {
           l_it -> setIndexLayer( ly.find( l_it ) + 1 );
       }
-      k_toon -> currentStatus() -> currentScene() -> setLayers( ly );
+      KTStatus -> currentScene() -> setLayers( ly );
       k_toon -> drawingArea() -> modifyDocument( true );
 
       if ( ( Timeline * )sender() != k_toon -> timeline() )
@@ -543,9 +543,9 @@ void ExposureSheet::slotSelectLayer()
         if ( current_layer == layer_iterator -> interfaceElement() )
 	{
 	    sel_layer = layer_iterator;
-	    QPtrList<Layer> ly = k_toon -> currentStatus() -> currentScene() -> getLayers();
+	    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
 	    Layer *sl = ly.at( list_of_layers.find( sel_layer ) );
-	    k_toon -> currentStatus() -> setCurrentLayer( sl );
+	    KTStatus -> setCurrentLayer( sl );
 	}
         layer_iterator -> availableFrames( &current_list_of_frames );
 	for ( frame_iterator = current_list_of_frames.first(); frame_iterator; frame_iterator = current_list_of_frames.next() )
@@ -566,11 +566,11 @@ void ExposureSheet::slotSelectLayer()
     {
         QPtrList<ESFrame> ef;
 	sel_layer -> availableFrames( &ef );
-	QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
-	k_toon -> currentStatus() -> setCurrentKeyFrame( kf.at( ef.find( sel_layer -> selectedFrame() ) ) );
+	QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
+	KTStatus -> setCurrentKeyFrame( kf.at( ef.find( sel_layer -> selectedFrame() ) ) );
     }
     else
-	k_toon -> currentStatus() -> setCurrentKeyFrame( NULL );
+	KTStatus -> setCurrentKeyFrame( NULL );
 
     emit layerSelected( list_of_layers.find( sel_layer ) + 1 );
     emit frameSelected();
@@ -601,7 +601,7 @@ void ExposureSheet::slotRenameLayer( const QString &name )
 
     pos = list_of_layers.find( renamed_layer_obj );
 
-    QPtrList<Layer> ly = k_toon -> currentStatus() -> currentScene() -> getLayers();
+    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
     Layer *rl = ly.at( pos );
     rl -> setNameLayer( name );
     k_toon -> drawingArea() -> modifyDocument( true );
@@ -618,7 +618,7 @@ void ExposureSheet::slotRenameLayerFromTL( int pos, const QString &name )
     renamed_layer -> setText( name );
     k_toon -> drawingArea() -> modifyDocument( true );
 
-    QPtrList<Layer> ly = k_toon -> currentStatus() -> currentScene() -> getLayers();
+    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
     Layer *rl = ly.at( pos );
     rl -> setNameLayer( name );
 
@@ -646,7 +646,7 @@ void ExposureSheet::slotMoveLayerLeft()
     list_of_layers.insert( pos_pl, current_layer_obj );
     list_of_layers.insert( pos_cl, prev_layer_obj );
 
-    QPtrList<Layer> ly = k_toon -> currentStatus() -> currentScene() -> getLayers();
+    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
     Layer *cl = ly.take( pos_cl );
     ly.insert( pos_pl, cl );
     /* This is a brute-force way to set the layer indexes after a layer deletion but i am lazy to think of
@@ -655,7 +655,7 @@ void ExposureSheet::slotMoveLayerLeft()
     Layer *l_it;
     for ( l_it = ly.first(); l_it; l_it = ly.next() )
         l_it -> setIndexLayer( ly.find( l_it ) + 1 );
-    k_toon -> currentStatus() -> currentScene() -> setLayers( ly );
+    KTStatus -> currentScene() -> setLayers( ly );
     k_toon -> drawingArea() -> modifyDocument( true );
 
     if ( current_layer_obj -> interfaceElement() == last_layer )
@@ -688,7 +688,7 @@ void ExposureSheet::slotMoveLayerRight()
     list_of_layers.insert( pos_cl, next_layer_obj );
     list_of_layers.insert( pos_nl, current_layer_obj );
 
-    QPtrList<Layer> ly = k_toon -> currentStatus() -> currentScene() -> getLayers();
+    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
     Layer *cl = ly.take( pos_cl );
     ly.insert( pos_nl, cl );
     /* This is a brute-force way to set the layer indexes after a layer deletion but i am lazy to think of
@@ -697,7 +697,7 @@ void ExposureSheet::slotMoveLayerRight()
     Layer *l_it;
     for ( l_it = ly.first(); l_it; l_it = ly.next() )
         l_it -> setIndexLayer( ly.find( l_it ) + 1 );
-    k_toon -> currentStatus() -> currentScene() -> setLayers( ly );
+    KTStatus -> currentScene() -> setLayers( ly );
     k_toon -> drawingArea() -> modifyDocument( true );
 
     if ( next_layer_obj -> interfaceElement() == last_layer )
@@ -725,7 +725,7 @@ void ExposureSheet::slotSwapWithLeftLayer( int cur_pos, int rel_pos )
     list_of_layers.insert( rel_pos - 1, current_layer_obj );
     list_of_layers.insert( cur_pos - 1, release_layer_obj );
 
-    QPtrList<Layer> ly = k_toon -> currentStatus() -> currentScene() -> getLayers();
+    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
     Layer *cl = ly.take( cur_pos - 1 );
     Layer *rl = ly.take( rel_pos - 1 );
     ly.insert( rel_pos - 1, cl );
@@ -736,7 +736,7 @@ void ExposureSheet::slotSwapWithLeftLayer( int cur_pos, int rel_pos )
     Layer *l_it;
     for ( l_it = ly.first(); l_it; l_it = ly.next() )
         l_it -> setIndexLayer( ly.find( l_it ) + 1 );
-    k_toon -> currentStatus() -> currentScene() -> setLayers( ly );
+    KTStatus -> currentScene() -> setLayers( ly );
     k_toon -> drawingArea() -> modifyDocument( true );
 
     if ( current_layer_obj -> interfaceElement() == last_layer )
@@ -777,7 +777,7 @@ void ExposureSheet::slotSwapWithRightLayer( int cur_pos, int rel_pos )
     list_of_layers.insert( cur_pos - 1, release_layer_obj );
     list_of_layers.insert( rel_pos - 1, current_layer_obj );
 
-    QPtrList<Layer> ly = k_toon -> currentStatus() -> currentScene() -> getLayers();
+    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
     Layer *rl = ly.take( rel_pos - 1 );
     Layer *cl = ly.take( cur_pos - 1 );
     ly.insert( cur_pos - 1, rl );
@@ -790,7 +790,7 @@ void ExposureSheet::slotSwapWithRightLayer( int cur_pos, int rel_pos )
     {
         l_it -> setIndexLayer( ly.find( l_it ) + 1 );
     }
-    k_toon -> currentStatus() -> currentScene() -> setLayers( ly );
+    KTStatus -> currentScene() -> setLayers( ly );
     k_toon -> drawingArea() -> modifyDocument( true );
 
     if ( release_layer_obj -> interfaceElement() == last_layer )
@@ -865,15 +865,15 @@ void ExposureSheet::slotInsertFrame()
     		    new_last_frame -> setText( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i ) );
 		    current_layer_obj -> setLastFrame( new_last_frame );
 
-    		    QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
+    		    QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
 		    KeyFrame *nkf = new KeyFrame();
 		    try {
 		      nkf -> setNameKeyFrame( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i ) );
 		      kf.append( nkf );
 			// Warning: Layer::~Layer deletes its keyframes (here those in kf), and Status::~Status
 			// deletetes its current keyframe too! This will most likely lead to a double deletion.
-		      k_toon -> currentStatus() -> currentLayer() -> setKeyFrames( kf );
-		      k_toon -> currentStatus() -> setCurrentKeyFrame( nkf );
+		      KTStatus -> currentLayer() -> setKeyFrames( kf );
+		      KTStatus -> setCurrentKeyFrame( nkf );
 		      }
 		    catch(...)
 		        {
@@ -915,12 +915,12 @@ void ExposureSheet::slotInsertFrame()
 	}
     }
 
-    QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
+    QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
     KeyFrame *nkf = new KeyFrame();
     try {
       nkf -> setNameKeyFrame( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i + 1 ) );
       kf.append( nkf );
-      k_toon -> currentStatus() -> currentLayer() -> setKeyFrames( kf );
+      KTStatus -> currentLayer() -> setKeyFrames( kf );
       }
     catch(...)
         {
@@ -974,7 +974,7 @@ void ExposureSheet::slotRemoveFrame()
 	    ( current_layer_obj -> lastFrame() ) -> setMotion( false );
 	    ( current_layer_obj -> lastFrame() ) -> setName( "" );
 
-	    QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
+	    QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
 	    KeyFrame *lkf = kf.last();
 	    if ( ( QPushButton * )sender() == remove_frame )
 	    {
@@ -985,7 +985,7 @@ void ExposureSheet::slotRemoveFrame()
 	    kf.setAutoDelete( true );
 	    kf.remove( lkf );
 	    kf.setAutoDelete( false );
-	    k_toon -> currentStatus() -> currentLayer() -> setKeyFrames( kf );
+	    KTStatus -> currentLayer() -> setKeyFrames( kf );
 
 	    //Iterate over this layer's list of frames in order to find the previous frame to the last frame and set it as the last frame
 	    QPtrList<ESFrame> current_layer_frame_list;
@@ -1035,7 +1035,7 @@ void ExposureSheet::slotRemoveFrame()
 	        }
     	    }
 
-	    QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
+	    QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
             KeyFrame *pkf = kf.at( i - 2 );
 	    KeyFrame *tkf = kf.at( i - 1 );
 	    KeyFrame *nkf = kf.at( i );
@@ -1059,7 +1059,7 @@ void ExposureSheet::slotRemoveFrame()
 	    kf.setAutoDelete( true );
 	    kf.remove( i - 1 );
 	    kf.setAutoDelete( false );
-	    k_toon -> currentStatus() -> currentLayer() -> setKeyFrames( kf );
+	    KTStatus -> currentLayer() -> setKeyFrames( kf );
 
 	    ( current_layer_obj -> lastFrame() ) -> setUsed( false );
 	    ( current_layer_obj -> lastFrame() ) -> setName( "" );
@@ -1098,16 +1098,16 @@ void ExposureSheet::slotSelectFrame()
 		selected_layer -> animateClick();
 		layer_iterator -> setSelectedFrame( frame_iterator );
 
-		QPtrList<Layer> ly = k_toon -> currentStatus() -> currentScene() -> getLayers();
-		k_toon -> currentStatus() -> setCurrentLayer( ly.at( list_of_layers.find( layer_iterator ) ) );
+		QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
+		KTStatus -> setCurrentLayer( ly.at( list_of_layers.find( layer_iterator ) ) );
 
 		if ( frame_iterator -> isUsed() )
 		{
-		    QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
-		    k_toon -> currentStatus() -> setCurrentKeyFrame( kf.at( current_list_of_frames.find( frame_iterator ) ) );
+		    QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
+		    KTStatus -> setCurrentKeyFrame( kf.at( current_list_of_frames.find( frame_iterator ) ) );
 		}
 		else
-		    k_toon -> currentStatus() -> setCurrentKeyFrame( NULL );
+		    KTStatus -> setCurrentKeyFrame( NULL );
 	    }
 	    frame_iterator -> clearTextfieldFocus();
 	}
@@ -1124,7 +1124,7 @@ void ExposureSheet::slotRenameFrame( const QString &new_name )
     QPtrList<ESFrame> current_list_of_frames;
     current_layer_obj -> availableFrames( &current_list_of_frames );
 
-    QPtrList<Layer> ly = k_toon -> currentStatus() -> currentScene() -> getLayers();
+    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
     Layer *l = ly.at( list_of_layers.find( current_layer_obj ) );
     QPtrList<KeyFrame> kf = l -> keyFrames();
     kf.at( current_list_of_frames.find( renamed_frame ) ) -> setNameKeyFrame( new_name );
@@ -1165,10 +1165,10 @@ void ExposureSheet::slotMoveFrameUp()
     }
 
 
-    QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
+    QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
     KeyFrame *ck = kf.take( i - 1 );
     kf.insert( i - 2, ck );
-    k_toon -> currentStatus() -> currentLayer() -> setKeyFrames( kf );
+    KTStatus -> currentLayer() -> setKeyFrames( kf );
 
     //Swap both frames
     bridge_frame = new ESFrame( "", scroll_area, this );
@@ -1216,10 +1216,10 @@ void ExposureSheet::slotMoveFrameDown()
 	}
     }
 
-    QPtrList<KeyFrame> kf = k_toon -> currentStatus() -> currentLayer() -> keyFrames();
+    QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
     KeyFrame *ck = kf.take( i - 1 );
     kf.insert( i, ck );
-    k_toon -> currentStatus() -> currentLayer() -> setKeyFrames( kf );
+    KTStatus -> currentLayer() -> setKeyFrames( kf );
 
     //Swap both frames
     bridge_frame = new ESFrame( "", scroll_area, this );
@@ -1316,7 +1316,7 @@ void ExposureSheet::slotCopyFrame() // FIXME
 	qDebug("Copy Frame");
 	if ( to_copy != NULL )
 		delete to_copy;
-	KeyFrame *current_kf = k_toon -> currentStatus() -> currentKeyFrame();
+	KeyFrame *current_kf = KTStatus -> currentKeyFrame();
 	to_copy = new GLDrawing( *( current_kf -> getDrawing() ) );
 }
 
@@ -1329,7 +1329,7 @@ void ExposureSheet::slotPasteFrame() // FIXME
 	if ( !( findCurrentLayerObj() -> selectedFrame() -> isUsed() ) )
 		slotInsertFrame();
 
-	KeyFrame *current_kf = k_toon -> currentStatus() -> currentKeyFrame();
+	KeyFrame *current_kf = KTStatus -> currentKeyFrame();
 	current_kf -> setDrawing( new GLDrawing( *to_copy ) );
 	k_toon -> drawingArea() -> updateGL();
 }
@@ -1339,7 +1339,7 @@ void ExposureSheet::updateIndicators( ILayer *layer )
     Q_CHECK_PTR( layer );
     QPtrList<ESFrame> list_of_esframes;
     layer -> availableFrames( &list_of_esframes );
-    QPtrList<KeyFrame> list_of_keyframes = ( k_toon -> currentStatus() -> currentScene() -> getLayers() ).at( list_of_layers.find( layer ) ) -> keyFrames();
+    QPtrList<KeyFrame> list_of_keyframes = ( KTStatus -> currentScene() -> getLayers() ).at( list_of_layers.find( layer ) ) -> keyFrames();
 
     ESFrame *esframe_iterator;
     KeyFrame *keyframe_iterator;

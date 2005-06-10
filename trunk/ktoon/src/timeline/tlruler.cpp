@@ -108,7 +108,7 @@ void TLRuler::slotSetOffset( int offset_ )
 
 void TLRuler::slotPlay()
 {
-    int msec = 1000 / ( k_toon -> currentStatus() -> currentFrameRate() );
+    int msec = 1000 / ( KTStatus -> currentFrameRate() );
     playing = true;
     animation_timer -> start( msec, false );
 }
