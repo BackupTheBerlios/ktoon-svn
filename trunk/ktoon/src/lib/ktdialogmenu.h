@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Copyright (C) 2005 by David Cuadrado   *
+ *   krawek@toonka.com   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,44 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTDIALOGBASE_H
-#define KTDIALOGBASE_H
+#ifndef KTDIALOGMENU_H
+#define KTDIALOGMENU_H
 
-#include <qdockwindow.h>
-#include <qlayout.h>
-#include <qsizepolicy.h> 
-#include <qobjectlist.h>
-#include <qevent.h>
-
-#include "ktdialogtitle.h"
+#include <ktdialogbase.h>
+#include <qdockarea.h>
+#include <qtoolbox.h>
 
 /**
-@author Jorge Cuadrado
+@author David Cuadrado
 */
-class KTDialogBase : public QDockWindow
+
+class KTDialogMenu : public KTDialogBase
 {
-	Q_OBJECT
 	public:
-		KTDialogBase(Place p = InDock, QWidget *parent = 0, const char *name = 0);
-		~KTDialogBase();
-		virtual void addChild(QWidget * child);
+		KTDialogMenu(QWidget *parent);
+		~KTDialogMenu();
+		void addMenuEntry(QWidget * child, const QString &title);
+		void mouseDoubleClickEvent(QMouseEvent * e );
+		
+		void enterEvent(QEvent *e);
+		
+		void dropEvent(QDropEvent* event);
+		void dragEnterEvent( QDragEnterEvent * ) ;
 		
 	private:
-		QBoxLayout *container;
-		QObjectList *childs;
-		bool m_isChildHidden;
-		
-	protected:
-		KTDialogTitle *m_title;
-		
-	public slots:
-		void toggleView();
-		void setCaption(const QString &text);
-		void fixPosition(QDockWindow::Place);
-		
-	signals:
-		void documentModified(bool);
-
+		QToolBox *m_bar;
 };
 
 #endif

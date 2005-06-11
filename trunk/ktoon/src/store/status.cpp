@@ -68,8 +68,7 @@ void Status::setupDrawingArea(QWorkspace *ws)
 	
 // 	if ( m_currentDrawingArea )
 // 	{
-// 		if ( ! m_currentDrawingArea -> close( true ) )
-// 			return;
+// 		delete m_currentDrawingArea;
 // 	}
 	
 #ifndef NO_OPENGL
@@ -140,7 +139,7 @@ bool Status::closeCurrent()
 	if ( m_currentDrawingArea )
 	{
 		yes = m_currentDrawingArea->close(true);
-// 		delete m_currentDrawingArea;
+// 		delete m_currentDrawingArea; // this produce a crash
 // 		m_currentDrawingArea = 0;
 	}
 	

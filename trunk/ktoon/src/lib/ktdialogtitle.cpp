@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,44 +18,27 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTDIALOGBASE_H
-#define KTDIALOGBASE_H
-
-#include <qdockwindow.h>
-#include <qlayout.h>
-#include <qsizepolicy.h> 
-#include <qobjectlist.h>
-#include <qevent.h>
-
 #include "ktdialogtitle.h"
 
-/**
-@author Jorge Cuadrado
-*/
-class KTDialogBase : public QDockWindow
+KTDialogTitle::KTDialogTitle(const QString &title, QWidget *parent, const char *name)
+ : QLabel(parent, name)
 {
-	Q_OBJECT
-	public:
-		KTDialogBase(Place p = InDock, QWidget *parent = 0, const char *name = 0);
-		~KTDialogBase();
-		virtual void addChild(QWidget * child);
-		
-	private:
-		QBoxLayout *container;
-		QObjectList *childs;
-		bool m_isChildHidden;
-		
-	protected:
-		KTDialogTitle *m_title;
-		
-	public slots:
-		void toggleView();
-		void setCaption(const QString &text);
-		void fixPosition(QDockWindow::Place);
-		
-	signals:
-		void documentModified(bool);
+	setFrameStyle( QFrame::Box | QFrame::Raised );
+	setText(title);
+}
 
-};
 
-#endif
+KTDialogTitle::~KTDialogTitle()
+{
+}
+
+void KTDialogTitle::mouseDoubleClickEvent(QMouseEvent *e)
+{
+	emit doubleClicked();
+}
+
+void KTDialogTitle::setText( const QString &text)
+{
+	QLabel::setText("<div align=center>"+text+"</div>");
+}
+

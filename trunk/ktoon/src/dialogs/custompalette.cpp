@@ -35,7 +35,8 @@ CustomPalette::CustomPalette( QWidget *parent ) : QGridView( parent )
     k_toon = ( KToon * )( parent_widget -> parentWidget() );
 
     clear();
-    setMinimumSize(sizeHint());
+    setMaximumSize(175, 113);
+    adjustSize();
 }
 
 //-------------- DESTRUCTOR -----------------

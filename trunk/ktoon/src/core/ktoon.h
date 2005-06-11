@@ -58,6 +58,7 @@
 #include "export.h"
 #include "drawingareaqt.h"
 #include "rendercamerapreviewqt.h"
+#include "ktdialogmenu.h"
 
 /**
  * @brief Class that handles the main window with all its elements

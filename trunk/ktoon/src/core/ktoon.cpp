@@ -91,6 +91,7 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose )
 	//--------------- Main Panel ----------------
 	
 	main_panel = new QWorkspace( this );
+	main_panel->setScrollBarsEnabled ( true );
 	main_panel -> setPaletteBackgroundPixmap( background_image );
 	main_panel -> show();
 	
@@ -667,40 +668,57 @@ void KToon::setupMenu()
 
 void KToon::setupDialogs()
 {
-    //--------------- Dialog Boxes -----------------
+	    //--------------- Dialog Boxes -----------------
+	
+	KTDialogMenu *m_menu = new KTDialogMenu(this);
+	
+	setDockEnabled(Qt::DockLeft, true);
+	setDockEnabled(Qt::DockRight, true);
+	setDockEnabled(Qt::DockBottom, true);
+	setDockEnabled(Qt::DockTop, true);
+	
+	leftDock ()->setMinimumSize(main_panel->height(), 30 );
+// 	leftDock ()->setBackgroundColor( Qt::green);
+	
 
     //For Illustration
-    exposure_sheet_dialog = new ExposureSheet( this, Qt::WStyle_Tool, window, id_window_exposure_sheet, window_exposure_sheet );
-    exposure_sheet_dialog -> show();
-    list_of_es.append( exposure_sheet_dialog );
+	exposure_sheet_dialog = new ExposureSheet( this, Qt::WStyle_Tool, window, id_window_exposure_sheet, window_exposure_sheet );
+	exposure_sheet_dialog -> show();
+	list_of_es.append( exposure_sheet_dialog );
+    
+	moveDockWindow(exposure_sheet_dialog, Qt::DockRight);
+	exposure_sheet_dialog->undock();
 
-    tools_dialog = new Tools( this, Qt::WStyle_Tool, window, id_window_tools, window_tools );
-    tools_dialog -> show();
+	tools_dialog = new Tools( this, Qt::WStyle_Tool, window, id_window_tools, window_tools );
+	tools_dialog -> show();
 
-    scenes_dialog = new Scenes( this, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
-    scenes_dialog -> show();
+	scenes_dialog = new Scenes( this, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
+	scenes_dialog -> show();
 
-    color_palette_dialog = new ColorPalette( this, Qt::WStyle_Tool, window, id_window_color_palette, window_color_palette );
-    color_palette_dialog -> show();
-
-    brushes_dialog = new Brushes( this, Qt::WStyle_Tool, window, id_window_brushes, window_brushes );
-    brushes_dialog -> show();
+	color_palette_dialog = new ColorPalette( this, Qt::WStyle_Tool, window, id_window_color_palette, window_color_palette );
+	color_palette_dialog -> show();
+    
+	moveDockWindow(color_palette_dialog, Qt::DockLeft);
+	color_palette_dialog->undock();
+    
+	brushes_dialog = new Brushes( this, Qt::WStyle_Tool, window, id_window_brushes, window_brushes );
+	brushes_dialog -> show();
 
 #ifndef USE_QT
-    library_dialog = new Library( this, Qt::WStyle_Tool, window, id_window_library, KTStatus->currentDrawingArea(), window_library );
+	library_dialog = new Library( this, Qt::WStyle_Tool, window, id_window_library, KTStatus->currentDrawingArea(), window_library );
 #endif
-    //For animation
-    timeline_dialog = new Timeline( this, Qt::WStyle_Tool, window, id_window_timeline, window_timeline );
-    list_of_tl.append( timeline_dialog );
+	//For animation
+	timeline_dialog = new Timeline( this, Qt::WStyle_Tool, window, id_window_timeline, window_timeline );
+	list_of_tl.append( timeline_dialog );
 #ifndef USE_QT
-    render_camera_preview = new GLRenderCameraPreview( main_panel, this, window, id_window_render_camera_preview, window_render_camera_preview, KTStatus->currentDrawingArea() );
-    render_camera_preview -> hide();
-
-    top_camera_view = new GLTopCameraView( main_panel, this, window, id_window_top_camera_view, window_top_camera_view, KTStatus->currentDrawingArea() );
-    top_camera_view -> hide();
-
-    side_camera_view = new GLSideCameraView( main_panel, this, window, id_window_side_camera_view, window_side_camera_view, KTStatus->currentDrawingArea() );
-    side_camera_view -> hide();
+	render_camera_preview = new GLRenderCameraPreview( main_panel, this, window, id_window_render_camera_preview, window_render_camera_preview, KTStatus->currentDrawingArea() );
+	render_camera_preview -> hide();
+	
+	top_camera_view = new GLTopCameraView( main_panel, this, window, id_window_top_camera_view, window_top_camera_view, KTStatus->currentDrawingArea() );
+	top_camera_view -> hide();
+	
+	side_camera_view = new GLSideCameraView( main_panel, this, window, id_window_side_camera_view, window_side_camera_view, KTStatus->currentDrawingArea() );
+	side_camera_view -> hide();
 #endif
 }
 
@@ -708,90 +726,90 @@ void KToon::setupDialogs()
 
 KToon::~KToon()
 {
-    delete cursor_line;
-    delete cursor_selection;
-    delete cursor_nodes;
-    delete cursor_brush;
-    delete cursor_pencil;
-    delete cursor_pen;
-    delete cursor_rectangle;
-    delete cursor_ellipse;
-    delete cursor_eraser;
-    delete cursor_slicer;
-    delete cursor_fill;
-    delete cursor_remove_fill;
-    delete cursor_magnifying_glass;
-    delete cursor_hand;
-    delete cursor_dropper;
-    delete cursor_contour_fill;
-    delete file;
-    delete open_recent;
-    delete edit;
-    delete view;
-    delete grid;
-    delete onion_skin;
-    delete insert;
-    delete tools;
-    delete control;
-    delete window;
-    delete help;
-    delete file_new;
-    delete file_open;
-    delete file_save;
-    delete edit_undo;
-    delete edit_redo;
-    delete edit_cut;
-    delete edit_copy;
-    delete edit_paste;
-    delete view_no_grid;
-    delete view_grid12;
-    delete view_grid16;
-    delete view_subgrid;
-    delete view_no_previous;
-    delete view_previous;
-    delete view_previous2;
-    delete view_previous3;
-    delete view_no_next;
-    delete view_next;
-    delete view_next2;
-    delete view_next3;
-    delete view_front_back_grid;
-    delete view_ntsc;
-    delete view_light_table;
-    delete window_illustration;
-    delete window_animation;
-    delete window_tools;
-    delete window_brushes;
-    delete window_scenes;
-    delete window_color_palette;
-    delete window_exposure_sheet;
-    delete window_library;
-    delete window_drawing_area;
-    delete window_timeline;
-    delete window_render_camera_preview;
-    delete window_top_camera_view;
-    delete window_side_camera_view;
-    delete main_panel;
-    delete tool_bar;
-    delete tool_bar2;
-    delete es_default_color;
-    delete es_use_color;
-    delete es_selection_color;
-    delete es_select_and_use_color;
-    delete es_text_color_when_selected;
-    delete es_default_text_color;
-    delete es_lock_color;
-    delete es_lock_and_select_color;
-    delete es_has_drawing_color;
-    delete tl_default_color;
-    delete tl_selection_color;
-    delete tl_special_color;
-    delete tl_offset_color;
-    delete tl_drag_offset_color;
-    delete tl_border_color;
-    delete tl_use_border_color;
-    delete tl_motion_color;
-    delete tl_drawing_color;
+//     delete cursor_line;
+//     delete cursor_selection;
+//     delete cursor_nodes;
+//     delete cursor_brush;
+//     delete cursor_pencil;
+//     delete cursor_pen;
+//     delete cursor_rectangle;
+//     delete cursor_ellipse;
+//     delete cursor_eraser;
+//     delete cursor_slicer;
+//     delete cursor_fill;
+//     delete cursor_remove_fill;
+//     delete cursor_magnifying_glass;
+//     delete cursor_hand;
+//     delete cursor_dropper;
+//     delete cursor_contour_fill;
+//     delete file;
+//     delete open_recent;
+//     delete edit;
+//     delete view;
+//     delete grid;
+//     delete onion_skin;
+//     delete insert;
+//     delete tools;
+//     delete control;
+//     delete window;
+//     delete help;
+//     delete file_new;
+//     delete file_open;
+//     delete file_save;
+//     delete edit_undo;
+//     delete edit_redo;
+//     delete edit_cut;
+//     delete edit_copy;
+//     delete edit_paste;
+//     delete view_no_grid;
+//     delete view_grid12;
+//     delete view_grid16;
+//     delete view_subgrid;
+//     delete view_no_previous;
+//     delete view_previous;
+//     delete view_previous2;
+//     delete view_previous3;
+//     delete view_no_next;
+//     delete view_next;
+//     delete view_next2;
+//     delete view_next3;
+//     delete view_front_back_grid;
+//     delete view_ntsc;
+//     delete view_light_table;
+//     delete window_illustration;
+//     delete window_animation;
+//     delete window_tools;
+//     delete window_brushes;
+//     delete window_scenes;
+//     delete window_color_palette;
+//     delete window_exposure_sheet;
+//     delete window_library;
+//     delete window_drawing_area;
+//     delete window_timeline;
+//     delete window_render_camera_preview;
+//     delete window_top_camera_view;
+//     delete window_side_camera_view;
+//     delete main_panel;
+//     delete tool_bar;
+//     delete tool_bar2;
+//     delete es_default_color;
+//     delete es_use_color;
+//     delete es_selection_color;
+//     delete es_select_and_use_color;
+//     delete es_text_color_when_selected;
+//     delete es_default_text_color;
+//     delete es_lock_color;
+//     delete es_lock_and_select_color;
+//     delete es_has_drawing_color;
+//     delete tl_default_color;
+//     delete tl_selection_color;
+//     delete tl_special_color;
+//     delete tl_offset_color;
+//     delete tl_drag_offset_color;
+//     delete tl_border_color;
+//     delete tl_use_border_color;
+//     delete tl_motion_color;
+//     delete tl_drawing_color;
 }
 
 //------------------- PUBLIC MEMBERS ----------------
@@ -1542,7 +1560,7 @@ void KToon::slotNewDocument()
 	if ( ! KTStatus->currentDrawingArea()->isHidden() )
 	{
 		KTStatus->closeCurrent();
-	} else
+	} //else
 	{
 		file_name = "";
 	  
@@ -1554,36 +1572,44 @@ void KToon::slotNewDocument()
 		setCaption( tr( "Document" ) + document_number );
 		
 		KTStatus->setupDrawingArea(main_panel);
-	
+
 		exposure_sheet_dialog = new ExposureSheet( this, Qt::WStyle_Tool, window, id_window_exposure_sheet, window_exposure_sheet );
 		scenes_dialog = new Scenes( this, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
+		
 		timeline_dialog = new Timeline( this, Qt::WStyle_Tool, window, id_window_timeline, window_timeline );
+		timeline_dialog->hide();
+		
 		brushes_dialog = new Brushes( this, Qt::WStyle_Tool, window, id_window_brushes, window_brushes );
 	
 		library_dialog = new Library( this, Qt::WStyle_Tool, window, id_window_library, KTStatus->currentDrawingArea(), window_library );
 	
 		render_camera_preview = new GLRenderCameraPreview( main_panel, this, window, id_window_render_camera_preview, window_render_camera_preview, KTStatus->currentDrawingArea() );
+		render_camera_preview->hide();
+		
 		top_camera_view = new GLTopCameraView( main_panel, this, window, id_window_top_camera_view, window_top_camera_view, KTStatus->currentDrawingArea() );
+		top_camera_view->hide();
+		
 		side_camera_view = new GLSideCameraView( main_panel, this, window, id_window_side_camera_view, window_side_camera_view, KTStatus->currentDrawingArea() );
+		side_camera_view->hide();
 
 		list_of_es.append( exposure_sheet_dialog );
 		list_of_tl.append( timeline_dialog );
 
-		if ( window -> isItemEnabled( id_window_animation ) )
-		{
-			KTStatus->currentDrawingArea() -> show();
-			exposure_sheet_dialog -> show();
-			scenes_dialog -> show();
-			tools_dialog -> show();
-			brushes_dialog -> show();
-		}
-		else if ( window -> isItemEnabled( id_window_illustration ) )
-		{
-			timeline_dialog -> show();
-			render_camera_preview -> show();
-			top_camera_view -> show();
-			side_camera_view -> show();
-		}
+// 		if ( window -> isItemEnabled( id_window_animation ) )
+// 		{
+// 			timeline_dialog -> hide();
+// 			render_camera_preview -> hide();
+// 			top_camera_view -> hide();
+// 			side_camera_view -> hide();
+// 		}
+// 		else if ( window -> isItemEnabled( id_window_illustration ) )
+// 		{
+// 			KTStatus->currentDrawingArea() -> hide();
+// 			exposure_sheet_dialog -> hide();
+// 			scenes_dialog -> hide();
+// 			tools_dialog -> hide();
+// 			brushes_dialog -> hide();
+// 		}
 
 		KTStatus->currentDrawingArea() -> setCursor( QCursor( Qt::ForbiddenCursor ) );
 
@@ -1639,53 +1665,53 @@ void KToon::slotNewDocument()
 		scenes_dialog -> selectFirstScene();
 		exposure_sheet_dialog -> touchFirstFrame();
 
-		file -> setItemEnabled( id_file_save, true );
-		file -> setItemEnabled( id_file_save_as, true );
-		file -> setItemEnabled( id_file_close, true );
-		file -> setItemEnabled( id_file_import, true );
-		file -> setItemEnabled( id_file_export, true );
-		file -> setItemEnabled( id_file_properties, true );
+// 		file -> setItemEnabled( id_file_save, true );
+// 		file -> setItemEnabled( id_file_save_as, true );
+// 		file -> setItemEnabled( id_file_close, true );
+// 		file -> setItemEnabled( id_file_import, true );
+// 		file -> setItemEnabled( id_file_export, true );
+// 		file -> setItemEnabled( id_file_properties, true );
 
-		menuBar() -> setItemVisible( id_insert, true );
-		if ( window -> isItemEnabled( id_window_animation ) )
-		{
-			menuBar() -> setItemVisible( id_edit, true );
-			menuBar() -> setItemVisible( id_view, true );
-			menuBar() -> setItemVisible( id_tools, true );
-			window -> setItemVisible( id_window_exposure_sheet, true );
-			window -> setItemVisible( id_window_scenes, true );
-			window -> setItemVisible( id_window_tools, true );
-			window -> setItemVisible( id_window_brushes, true );
-			window -> setItemVisible( id_window_library, true );
-			window -> setItemVisible( id_window_drawing_area, true );
+// 		menuBar() -> setItemVisible( id_insert, true );
+// 		if ( window -> isItemEnabled( id_window_animation ) )
+// 		{
+// 			menuBar() -> setItemVisible( id_edit, true );
+// 			menuBar() -> setItemVisible( id_view, true );
+// 			menuBar() -> setItemVisible( id_tools, true );
+// 			window -> setItemVisible( id_window_exposure_sheet, true );
+// 			window -> setItemVisible( id_window_scenes, true );
+// 			window -> setItemVisible( id_window_tools, true );
+// 			window -> setItemVisible( id_window_brushes, true );
+// 			window -> setItemVisible( id_window_library, true );
+// 			window -> setItemVisible( id_window_drawing_area, true );
+// 
+// 			window_drawing_area -> show();
+// 			window_exposure_sheet -> show();
+// 			window_tools -> show();
+// 			window_brushes -> show();
+// 			window_scenes -> show();
+// 			window_library -> show();
+// 
+// 			edit_undo -> show();
+// 			edit_redo -> show();
+// 			edit_cut -> show();
+// 			edit_copy -> show();
+// 			edit_paste -> show();
+// 			tool_bar2 -> show();
+// 		}
+// 		else
+// 		{
+// 			menuBar() -> setItemVisible( id_control, true );
+// 			window -> setItemVisible( id_window_timeline, true );
+// 			window -> setItemVisible( id_window_render_camera_preview, true );
+// 			window -> setItemVisible( id_window_top_camera_view, true );
+// 			window -> setItemVisible( id_window_side_camera_view, true );
 
-			window_drawing_area -> show();
-			window_exposure_sheet -> show();
-			window_tools -> show();
-			window_brushes -> show();
-			window_scenes -> show();
-			window_library -> show();
-
-			edit_undo -> show();
-			edit_redo -> show();
-			edit_cut -> show();
-			edit_copy -> show();
-			edit_paste -> show();
-			tool_bar2 -> show();
-		}
-		else
-		{
-			menuBar() -> setItemVisible( id_control, true );
-			window -> setItemVisible( id_window_timeline, true );
-			window -> setItemVisible( id_window_render_camera_preview, true );
-			window -> setItemVisible( id_window_top_camera_view, true );
-			window -> setItemVisible( id_window_side_camera_view, true );
-
-			window_timeline -> show();
-			window_render_camera_preview -> show();
-			window_top_camera_view -> show();
-			window_side_camera_view -> show();
-		}
+// 			window_timeline -> show();
+// 			window_render_camera_preview -> show();
+// 			window_top_camera_view -> show();
+// 			window_side_camera_view -> show();
+// 		}
 		file_save -> show();
 
 		color_palette_dialog -> enableCustomPalette( true );

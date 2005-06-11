@@ -44,9 +44,9 @@ ColorPalette::ColorPalette( QWidget *parent, WFlags style, QPopupMenu *in_assign
 	
 	setCaption( tr( "Color Palette" ) );
 	//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-	resize( 185, 640 );
-	setMinimumSize( 185, 640 );
-	setMaximumSize( 185, 640 );
+// 	resize( 185, 640 );
+// 	setMinimumSize( 185, 640 );
+// 	setMaximumSize( 185, 640 );
 	move( 200, 35 );
 	//     setFont( QFont( "helvetica", 8 ) );
 	assigned_menu = in_assigned_menu;
@@ -87,6 +87,7 @@ ColorPalette::ColorPalette( QWidget *parent, WFlags style, QPopupMenu *in_assign
     KTStatus -> setCurrentOutlineColor( o_color );
     KTStatus -> setCurrentFillColor( f_color );
 
+    adjustSize();
 }
 
 //-------------- DESTRUCTOR -----------------

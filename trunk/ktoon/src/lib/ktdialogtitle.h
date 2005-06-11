@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,43 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTDIALOGBASE_H
-#define KTDIALOGBASE_H
+#ifndef KTDIALOGTITLE_H
+#define KTDIALOGTITLE_H
 
-#include <qdockwindow.h>
-#include <qlayout.h>
-#include <qsizepolicy.h> 
-#include <qobjectlist.h>
-#include <qevent.h>
-
-#include "ktdialogtitle.h"
+#include <qlabel.h>
 
 /**
-@author Jorge Cuadrado
+@author David Cuadrado
 */
-class KTDialogBase : public QDockWindow
+class KTDialogTitle : public QLabel
 {
 	Q_OBJECT
 	public:
-		KTDialogBase(Place p = InDock, QWidget *parent = 0, const char *name = 0);
-		~KTDialogBase();
-		virtual void addChild(QWidget * child);
+		KTDialogTitle(const QString &title, QWidget *parent = 0, const char *name = 0);
+		~KTDialogTitle();
 		
-	private:
-		QBoxLayout *container;
-		QObjectList *childs;
-		bool m_isChildHidden;
-		
-	protected:
-		KTDialogTitle *m_title;
 		
 	public slots:
-		void toggleView();
-		void setCaption(const QString &text);
-		void fixPosition(QDockWindow::Place);
+		void setText(const QString &text);
 		
 	signals:
-		void documentModified(bool);
+		void doubleClicked();
+		
+	protected:
+		void mouseDoubleClickEvent(QMouseEvent * e );
 
 };
 

@@ -80,7 +80,9 @@ ColorCells::ColorCells( QWidget *parent ) : QGridView( parent )
 	    color_matrix[i][j] = QColor( 255, ( j - 13 ) * 51, ( i - 6 ) * 51 );
     
     this->setSizePolicy(QSizePolicy::Expanding ,QSizePolicy::Expanding, false);
-    setMinimumSize(175, 113);
+    setMaximumSize(175, 113);
+    
+    adjustSize();
 }
 
 //-------------- DESTRUCTOR -----------------

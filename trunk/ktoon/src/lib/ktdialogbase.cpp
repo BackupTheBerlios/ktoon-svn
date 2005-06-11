@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@toonka.com   *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,17 +17,36 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "ktdialogbase.h"
+#include <qtooltip.h>
+#include <qdockarea.h>
+
 KTDialogBase::KTDialogBase(Place p, QWidget *parent, const char *name)
- : QDockWindow(p, parent, name)
+	: QDockWindow(p, parent, name), m_isChildHidden(false)
 {
 	container = boxLayout();
 	setCloseMode(Undocked);
-	first = true;
+
 	childs = new QObjectList();
 	//container->setResizeMode (  QBoxLayout::Minimum);
 	//container->setAutoAdd (true);
 	
+	m_title = new KTDialogTitle("the title", this, "DialogTitle");
+	
+	QToolTip::add(m_title, tr("Double click for roll up"));
+	
+	container->addWidget(m_title);
+	container->setDirection ( QBoxLayout::TopToBottom);
+	container->setMargin(5);
+	
+	connect(m_title, SIGNAL(doubleClicked()), SLOT(toggleView()));
+	
+	connect(this, SIGNAL(placeChanged(QDockWindow::Place)), SLOT(fixPosition(QDockWindow::Place)));
+	
+	setOrientation( Qt::Vertical );
+	
+	hide();
 }
 
 
@@ -36,67 +55,50 @@ KTDialogBase::~KTDialogBase()
 	delete childs;
 }
 
+void KTDialogBase::fixPosition(QDockWindow::Place p)
+{	
+	switch(p)
+	{
+		case InDock:
+		{
+			area()->setMinimumSize(sizeHint());
+			setOrientation(Qt::Vertical);
+		}
+		break;
+		case OutsideDock:
+		{
+		}
+		break;
+	}
+ 	adjustSize();
+	show();
+}
+
 void KTDialogBase::addChild(QWidget* child)
 {
 	childs->append(child);
 	container->addWidget(child);
-	container->setDirection ( QBoxLayout::TopToBottom);
-	container->setMargin(5);
 }
 
-void KTDialogBase::hideComponets(bool ok)
+void KTDialogBase::toggleView()
 {
 	for( QObject *o = childs->first(); o; o = childs->next() )
 	{
-			
-		if ( o )
+		if ( o && ! m_isChildHidden )
 			static_cast<QWidget*>(o)->hide();
+		else if ( o && m_isChildHidden )
+			static_cast<QWidget*>(o)->show();
 	}
 	
-	/*if(ok)
-	{
-		QObjectList* const list = this->queryList("QFrame");
-		for( QObject *o = list->first(); o; o = list->next() )
-		{
-			
-			if ( o )
-				static_cast<QWidget*>(o)->hide();
-		}
-		delete list;
-	}
-	else
-	{
-		QObjectList* const list = this->queryList("QFrame");
-		for( QObject *o = list->first(); o; o = list->next() )
-		{
-			if ( o )
-			{
-				static_cast<QWidget*>(o)->show();
-				static_cast<QWidget*>(o)->setSizePolicy( QSizePolicy::Minimum ,QSizePolicy::Minimum ,false);
-				
-			}
-		}
-		delete list;
-}*/
-	setMinimumWidth( sizeHint().width());
+	m_isChildHidden = !m_isChildHidden;
+	
 	adjustSize ();
 }
 
-void KTDialogBase::mouseDoubleClickEvent(QMouseEvent* e)
+void KTDialogBase::setCaption(const QString &text)
 {
-	qDebug("mouseDoubleClickEvent");
-	
-	if(first)
-	{
-		
-		hideComponets(true);
-		first = false;
-		
-	}
-	else
-	{
-		hideComponets(false);
-		first = true;
-        }
-
+// 	QDockWindow::setCaption(text);
+ 	m_title->setText(text);
 }
+
+
