@@ -26,7 +26,8 @@ ColorGradientSelector::ColorGradientSelector( QWidget *parent ) : QWidget( paren
 {
     Q_CHECK_PTR( parent );
 
-    resize( 175, 20 );
+    //resize( 175, 20 );
+    setMinimumSize(175,20);
     parent_widget = parent;
     highlight = QColor( 255, 255, 255 );
     shadow = QColor( 0, 0, 0 );
@@ -322,3 +323,5 @@ void ColorGradientSelector::interpolateColors( const QColor &color1, const QColo
 	}
     }
 }
+
+

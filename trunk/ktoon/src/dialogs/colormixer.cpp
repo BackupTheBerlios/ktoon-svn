@@ -26,8 +26,7 @@ ColorMixer::ColorMixer( QWidget *parent ) : QGridView( parent )
 {
     Q_CHECK_PTR( parent );
 
-    parent_widget = parent;
-    resize( 94, 89 );
+    //resize( 94, 89 );
     setCellWidth( 1 );
     setCellHeight( 1 );
     setNumRows( 85 );
@@ -49,6 +48,7 @@ ColorMixer::ColorMixer( QWidget *parent ) : QGridView( parent )
 	    tmp_color.setHsv( 360 - j * 4, 255 - i * 3, 255 );
             color_matrix[i][j] = tmp_color;
         }
+	setMinimumSize(70, 90);
 }
 
 //-------------- DESTRUCTOR -----------------

@@ -123,8 +123,6 @@ void ColorDisplay::slotChangeA( int value )
 
 void ColorDisplay::drawContents( QPainter *painter )
 {
-    Q_CHECK_PTR( painter );
-
     //----- Draw the current color rectangle -----
 
     intermediate_dark_color = QColor( ( int )( current_color.red() * alpha + dark_block_color.red() * ( 1.0 - alpha ) ),
@@ -132,19 +130,31 @@ void ColorDisplay::drawContents( QPainter *painter )
 				      ( int )( current_color.blue() * alpha + dark_block_color.blue() * ( 1.0 - alpha ) ) );
     painter -> setPen( intermediate_dark_color );
     painter -> setBrush( intermediate_dark_color );
-    painter -> drawRect( 0, 0, 15, 15 );
-    painter -> drawRect( 30, 0, 15, 15 );
-    painter -> drawRect( 15, 15, 15, 15 );
-    painter -> drawRect( 0, 30, 15, 15 );
-    painter -> drawRect( 30, 30, 15, 15 );
+//     painter -> drawRect( 0, 0, 15, 15 );
+//     painter -> drawRect( 30, 0, 15, 15 );
+//     painter -> drawRect( 15, 15, 15, 15 );
+//     painter -> drawRect( 0, 30, 15, 15 );
+//     painter -> drawRect( 30, 30, 15, 15 );
+    
+    painter -> drawRect( 0, 0, height(), height() );
+    painter -> drawRect( height()*2, 0, height(), height() );
+    painter -> drawRect( height(), height(), height(), height() );
+    painter -> drawRect( 0, height()*2, height(), height() );
+    painter -> drawRect( height()*2, height()*2, height(), height() );
 
     intermediate_light_color = QColor( ( int )( current_color.red() * alpha + light_block_color.red() * ( 1.0 - alpha ) ),
     				       ( int )( current_color.green() * alpha + light_block_color.green() * ( 1.0 - alpha ) ),
 				       ( int )( current_color.blue() * alpha + light_block_color.blue() * ( 1.0 - alpha ) ) );
     painter -> setPen( intermediate_light_color );
     painter -> setBrush( intermediate_light_color );
-    painter -> drawRect( 15, 0, 15, 15 );
-    painter -> drawRect( 0, 15, 15, 15 );
-    painter -> drawRect( 30, 15, 15, 15 );
-    painter -> drawRect( 15, 30, 15, 15 );
+    
+    painter -> drawRect( height(), 0, height(), height() );
+    painter -> drawRect( 0, height(), height(), height() );
+    painter -> drawRect( height()*2, height(), height(), height() );
+    painter -> drawRect( height(), height()*2, height(), height() );
+    
+//     painter -> drawRect( 15, 0, 15, 15 );
+//     painter -> drawRect( 0, 15, 15, 15 );
+//     painter -> drawRect( 30, 15, 15, 15 );
+//     painter -> drawRect( 15, 30, 15, 15 );
 }

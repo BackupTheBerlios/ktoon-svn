@@ -27,122 +27,128 @@
 //--------------- CONSTRUCTOR --------------------
 
 Tools::Tools( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
-    : QDialog( parent, "Tools", false, style )
+	: KTDialogBase(QDockWindow::OutsideDock,parent, "Tools")
 {
-    Q_CHECK_PTR( parent );
-    Q_CHECK_PTR( in_assigned_menu );
-    Q_CHECK_PTR( assig_tb_button );
+	
+	Q_CHECK_PTR( parent );
+	Q_CHECK_PTR( in_assigned_menu );
+	Q_CHECK_PTR( assig_tb_button );
     
     //Initializations
-    setCaption( "" );
+	setCaption( "tools" );
 //     setFont( QFont( "helvetica", 10 ) );
 //     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-    resize( 44, 180 );
-    setMinimumSize( 44, 180 );
-    setMaximumSize( 44, 180 );
-    move( 13, 88 );
-    parent_widget = parent;
-    assigned_menu = in_assigned_menu;
-    assigned_item = id_assigned_item;
-    assigned_tb_button = assig_tb_button;
+//	resize( 44, 180 );
+//	setMinimumSize( 44, 180 );
+// 	setMaximumSize( 44, 180 );
+	move( 13, 88 );
+	parent_widget = parent;
+	assigned_menu = in_assigned_menu;
+	assigned_item = id_assigned_item;
+	assigned_tb_button = assig_tb_button;
 
     //Icon Initializations
-    icon_selection = QPixmap( selection_xpm );
-    icon_nodes = QPixmap( nodes_xpm );
-    icon_brush = QPixmap( brush_xpm );
-    icon_pencil = QPixmap( pencil_xpm );
-    icon_line = QPixmap( line_xpm );
-    icon_pen = QPixmap( bezier_xpm );
-    icon_rectangle = QPixmap( square_xpm );
-    icon_ellipse = QPixmap( ellipse_xpm );
-    icon_eraser = QPixmap( eraser_xpm );
-    icon_slicer = QPixmap( slicer_xpm );
-    icon_fill = QPixmap( fill_xpm );
-    icon_contour_fill = QPixmap( contour_xpm );
-    icon_remove_fill = QPixmap( removefill_xpm );
-    icon_dropper = QPixmap( dropper_xpm );
-    icon_magnifying_glass = QPixmap( magnifying_xpm );
-    icon_hand = QPixmap( hand_xpm );
+	icon_selection = QPixmap( selection_xpm );
+	icon_nodes = QPixmap( nodes_xpm );
+	icon_brush = QPixmap( brush_xpm );
+	icon_pencil = QPixmap( pencil_xpm );
+	icon_line = QPixmap( line_xpm );
+	icon_pen = QPixmap( bezier_xpm );
+	icon_rectangle = QPixmap( square_xpm );
+	icon_ellipse = QPixmap( ellipse_xpm );
+	icon_eraser = QPixmap( eraser_xpm );
+	icon_slicer = QPixmap( slicer_xpm );
+	icon_fill = QPixmap( fill_xpm );
+	icon_contour_fill = QPixmap( contour_xpm );
+	icon_remove_fill = QPixmap( removefill_xpm );
+	icon_dropper = QPixmap( dropper_xpm );
+	icon_magnifying_glass = QPixmap( magnifying_xpm );
+	icon_hand = QPixmap( hand_xpm );
 
     //-------- Operations on the Menus associated with every main button --------
 
-    menu_button_selection = new QPopupMenu( this );
+	menu_button_selection = new QPopupMenu( this );
 //     menu_button_selection -> setFont( QFont( "helvetica", 10 ) );
 //     menu_button_selection -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-    menu_button_selection -> insertItem( icon_selection, tr( "Normal Selection" ), parent, SLOT( slotNormalSelection() ) );
-    menu_button_selection -> insertItem( icon_nodes, tr( "Contour Selection" ), parent, SLOT( slotContourSelection() ) );
+	menu_button_selection -> insertItem( icon_selection, tr( "Normal Selection" ), parent, SLOT( slotNormalSelection() ) );
+	menu_button_selection -> insertItem( icon_nodes, tr( "Contour Selection" ), parent, SLOT( slotContourSelection() ) );
 
-    menu_button_draw = new QPopupMenu( this );
+	menu_button_draw = new QPopupMenu( this );
 //     menu_button_draw -> setFont( QFont( "helvetica", 10 ) );
 //     menu_button_draw -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-    menu_button_draw -> insertItem( icon_brush, tr( "Brush" ), parent, SLOT( slotBrush() ) );
-    menu_button_draw -> insertItem( icon_pencil, tr( "Pencil" ), parent, SLOT( slotPencil() ) );
-    menu_button_draw -> insertItem( icon_pen, tr( "Pen" ), parent, SLOT( slotPen() ) );
-    menu_button_draw -> insertItem( icon_line, tr( "Line" ), parent, SLOT( slotLine() ) );
-    menu_button_draw -> insertItem( icon_rectangle, tr( "Rectangle" ), parent, SLOT( slotRectangle() ) );
-    menu_button_draw -> insertItem( icon_ellipse, tr( "Ellipse" ), parent, SLOT( slotEllipse() ) );
+	menu_button_draw -> insertItem( icon_brush, tr( "Brush" ), parent, SLOT( slotBrush() ) );
+	menu_button_draw -> insertItem( icon_pencil, tr( "Pencil" ), parent, SLOT( slotPencil() ) );
+	menu_button_draw -> insertItem( icon_pen, tr( "Pen" ), parent, SLOT( slotPen() ) );
+	menu_button_draw -> insertItem( icon_line, tr( "Line" ), parent, SLOT( slotLine() ) );
+	menu_button_draw -> insertItem( icon_rectangle, tr( "Rectangle" ), parent, SLOT( slotRectangle() ) );
+	menu_button_draw -> insertItem( icon_ellipse, tr( "Ellipse" ), parent, SLOT( slotEllipse() ) );
 
-    menu_button_fill = new QPopupMenu( this );
+	menu_button_fill = new QPopupMenu( this );
 //     menu_button_fill -> setFont( QFont( "helvetica", 10 ) );
 //     menu_button_fill -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-    menu_button_fill -> insertItem( icon_fill, tr( "Fill" ), parent, SLOT( slotFill() ) );
-    menu_button_fill -> insertItem( icon_remove_fill, tr( "Remove Fill" ), parent, SLOT( slotRemoveFill() ) );
-    menu_button_fill -> insertItem( icon_contour_fill, tr( "Contour Fill" ), parent, SLOT( slotContourFill() ) );
-    menu_button_fill -> insertItem( icon_dropper, tr( "Dropper" ), parent, SLOT( slotDropper() ) );
+	menu_button_fill -> insertItem( icon_fill, tr( "Fill" ), parent, SLOT( slotFill() ) );
+	menu_button_fill -> insertItem( icon_remove_fill, tr( "Remove Fill" ), parent, SLOT( slotRemoveFill() ) );
+	menu_button_fill -> insertItem( icon_contour_fill, tr( "Contour Fill" ), parent, SLOT( slotContourFill() ) );
+	menu_button_fill -> insertItem( icon_dropper, tr( "Dropper" ), parent, SLOT( slotDropper() ) );
 
-    menu_button_eraser = new QPopupMenu( this );
+	menu_button_eraser = new QPopupMenu( this );
 //     menu_button_eraser -> setFont( QFont( "helvetica", 10 ) );
 //     menu_button_eraser -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-    menu_button_eraser -> insertItem( icon_eraser, tr( "Eraser" ), parent, SLOT( slotEraser() ) );
-    menu_button_eraser -> insertItem( icon_slicer, tr( "Slicer" ), parent, SLOT( slotSlicer() ) );
+	menu_button_eraser -> insertItem( icon_eraser, tr( "Eraser" ), parent, SLOT( slotEraser() ) );
+	menu_button_eraser -> insertItem( icon_slicer, tr( "Slicer" ), parent, SLOT( slotSlicer() ) );
 
-    menu_button_view = new QPopupMenu( this );
+	menu_button_view = new QPopupMenu( this );
 //     menu_button_view -> setFont( QFont( "helvetica", 10 ) );
 //     menu_button_view -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-    menu_button_view -> insertItem( icon_magnifying_glass, tr( "Magnifying Glass" ), parent, SLOT( slotMagnifyingGlass() ) );
-    menu_button_view -> insertItem( icon_hand, tr( "Hand" ), parent, SLOT( slotHand() ) );
+	menu_button_view -> insertItem( icon_magnifying_glass, tr( "Magnifying Glass" ), parent, SLOT( slotMagnifyingGlass() ) );
+	menu_button_view -> insertItem( icon_hand, tr( "Hand" ), parent, SLOT( slotHand() ) );
 
     //-------- Operations on the Main Buttons -------------
 
-    selection_button = new QToolButton( this );
-    selection_button -> setIconSet( icon_selection );
-    selection_button -> resize( 32, 32 );
-    selection_button -> move( 6, 3 );
-    selection_button -> setPopup( menu_button_selection );
-    selection_button -> setPopupDelay( 1 );
-    QToolTip::add( selection_button, tr( "Selection Tools" ) );
+	selection_button = new QToolButton( this );
+	selection_button -> setIconSet( icon_selection );
+	addChild(selection_button);
+	//selection_button -> resize( 32, 32 );
+	//selection_button -> move( 6, 3 );
+	selection_button -> setPopup( menu_button_selection );
+	selection_button -> setPopupDelay( 1 );
+	QToolTip::add( selection_button, tr( "Selection Tools" ) );
 
-    draw_button = new QToolButton( this );
-    draw_button -> setIconSet( icon_brush );
-    draw_button -> resize( 32, 32 );
-    draw_button -> move( 6, 38 );
-    draw_button -> setPopup( menu_button_draw );
-    draw_button -> setPopupDelay( 1 );
-    QToolTip::add( draw_button, tr( "Draw Tools" ) );
+	draw_button = new QToolButton( this );
+	draw_button -> setIconSet( icon_brush );
+	addChild(draw_button);
+	//draw_button -> resize( 32, 32 );
+	//draw_button -> move( 6, 38 );
+	draw_button -> setPopup( menu_button_draw );
+	draw_button -> setPopupDelay( 1 );
+	QToolTip::add( draw_button, tr( "Draw Tools" ) );
 
-    fill_button = new QToolButton( this );
-    fill_button -> setIconSet( icon_fill );
-    fill_button -> resize( 32, 32 );
-    fill_button -> move( 6, 73 );
-    fill_button -> setPopup( menu_button_fill );
-    fill_button -> setPopupDelay( 1 );
-    QToolTip::add( fill_button, tr( "Fill Tools" ) );
+	fill_button = new QToolButton( this );
+	fill_button -> setIconSet( icon_fill );
+	addChild(fill_button);
+// 	fill_button -> resize( 32, 32 );
+// 	fill_button -> move( 6, 73 );
+	fill_button -> setPopup( menu_button_fill );
+	fill_button -> setPopupDelay( 1 );
+	QToolTip::add( fill_button, tr( "Fill Tools" ) );
 
-    eraser_button = new QToolButton( this );
-    eraser_button -> setIconSet( icon_eraser );
-    eraser_button -> resize( 32, 32 );
-    eraser_button -> move( 6, 108 );
-    eraser_button -> setPopup( menu_button_eraser );
-    eraser_button -> setPopupDelay( 1 );
-    QToolTip::add( eraser_button, tr( "Eraser Tools" ) );
+	eraser_button = new QToolButton( this );
+	eraser_button -> setIconSet( icon_eraser );
+	addChild(eraser_button);
+// 	eraser_button -> resize( 32, 32 );
+// 	eraser_button -> move( 6, 108 );
+	eraser_button -> setPopup( menu_button_eraser );
+	eraser_button -> setPopupDelay( 1 );
+	QToolTip::add( eraser_button, tr( "Eraser Tools" ) );
 
-    view_button = new QToolButton( this );
-    view_button -> setIconSet( icon_magnifying_glass );
-    view_button -> resize( 32, 32 );
-    view_button -> move( 6, 143 );
-    view_button -> setPopup( menu_button_view );
-    view_button -> setPopupDelay( 1 );
-    QToolTip::add( view_button, tr( "View Tools" ) );
+	view_button = new QToolButton( this );
+	view_button -> setIconSet( icon_magnifying_glass );
+	addChild(view_button);
+// 	view_button -> resize( 32, 32 );
+// 	view_button -> move( 6, 143 );
+	view_button -> setPopup( menu_button_view );
+	view_button -> setPopupDelay( 1 );
+	QToolTip::add( view_button, tr( "View Tools" ) );
 }
 
 //-------------- DESTRUCTOR -----------------

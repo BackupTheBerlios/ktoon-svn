@@ -26,7 +26,7 @@
  * @brief Include this file if you need the class ColorPalette
  */
 
-#include <qdialog.h>
+#include <qlayout.h>
 #include <qpopupmenu.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
@@ -35,6 +35,10 @@
 #include <qcombobox.h>
 #include <qtoolbutton.h>
 
+#include <qvbox.h>
+#include <qhbox.h>
+
+#include "ktdialogbase.h"
 #include "colorcells.h"
 #include "colormixer.h"
 #include "outlinecolor.h"
@@ -59,7 +63,7 @@ class Color;
  * manipulation zone and finally a palette where the user can add custom colors.
  * See each widget documentation for more info.
  */
-class ColorPalette : public QDialog
+class ColorPalette : public KTDialogBase
 {
     Q_OBJECT
     
@@ -107,7 +111,10 @@ class ColorPalette : public QDialog
 	QToolButton *assigned_tb_button;
 	Color *new_outline_color;
 	Color *new_fill_color;
-	
+	void setupBlockStandardPalette();
+	void setupBlockColorMixer();
+	void setupBlockGradient();
+	void setupBlockCustomPalette();
 	//Icons
 	QPixmap i_add_color, i_remove_color;
 	
@@ -116,24 +123,29 @@ class ColorPalette : public QDialog
 	
 	//Color palette components
 	ColorCells *color_cells;
+	
 	ColorMixer *color_mixer;
+	
 	ColorDisplay *color_display;
+	
 	ValueSelector *value_selector;
+	
 	OutlineColor *outline_color;
+	
 	FillColor *fill_color;
+	
 	ColorGradientSelector *gradient;
+	
 	GradientViewer *grad_viewer;
+	
 	CustomPalette *custom_palette;
 	
-	//Separators
-	QFrame *separator1, *separator2, *separator3;
 	
 	//Combo box for gradient types
 	QComboBox *gradient_types;
 	
 	//Static Text
 	QLabel *text_std_palette, *text_gradient, *text_custom_palette, *text_color_name, *text_color_mixer;
-	QLabel *text_r, *text_g, *text_b, *text_h, *text_s, *text_v, *text_alpha;
 	
 	//Textfields
 	QLineEdit *value_color_name, *value_rgb;

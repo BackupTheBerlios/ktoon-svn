@@ -34,6 +34,7 @@
 
 #include "tllayermanager.h"
 #include "soundwidget.h"
+#include "ktdialogbase.h"
 
 class Layer;
 class KeyFrame;
@@ -46,7 +47,7 @@ class KToon;
  * This is a class that manages the timeline as it is in applications such as Flash. It has two main components:
  * The Layer Manager and the Frame Sequence Manager. See the documentation of each one for a further description.
  */
-class Timeline : public QDialog
+class Timeline : public KTDialogBase
 {
     Q_OBJECT
 

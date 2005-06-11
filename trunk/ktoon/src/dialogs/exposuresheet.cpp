@@ -34,7 +34,7 @@
 //--------------- CONSTRUCTOR --------------------
 
 ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
-    : QDialog( parent, "Exposure Sheet", false, style )
+	: KTDialogBase( QDockWindow::OutsideDock, parent, "Exposure Sheet" )
 {
     Q_CHECK_PTR( parent );
     Q_CHECK_PTR( in_assigned_menu );

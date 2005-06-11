@@ -34,6 +34,7 @@
 #include <qptrlist.h>
 #include <qtoolbutton.h>
 
+#include "ktdialogbase.h"
 #include "ilayer.h"
 
 class KToon;
@@ -49,7 +50,7 @@ class GLDrawing;
  * This is a class that manages the exposure sheet as it is used in ToonBoom. It shows basically a list of layers,
  * each one with its list of keyframes. It provides also some buttons for operating the components.
  */
-class ExposureSheet : public QDialog
+class ExposureSheet : public KTDialogBase
 {
     Q_OBJECT
 

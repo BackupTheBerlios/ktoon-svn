@@ -26,11 +26,13 @@
  * @brief Include this file if you need the class Tools
  */
 
-#include <qdialog.h>
+
 #include <qtoolbutton.h>
 #include <qpopupmenu.h>
 #include <qpixmap.h>
 #include <qaction.h>
+
+#include "ktdialogbase.h"
 
 class KToon;
 
@@ -41,7 +43,7 @@ class KToon;
  * Contains buttons and menu items where the user may choose a tool that he wants such as the brush, the pencil,
  * the eraser, etc.
  */
-class Tools : public QDialog
+class Tools : public KTDialogBase
 {
     Q_OBJECT
 

@@ -25,6 +25,7 @@
 ValueSelector::ValueSelector( QWidget *parent ) : QWidget( parent ), QRangeControl( 0, 255, 1, 15, 0 )
 {
     resize( 22, 95 );
+    setMinimumSize(22, 95);
     Q_CHECK_PTR( parent );
     parent_widget = parent;
     dragging = false;
@@ -32,6 +33,7 @@ ValueSelector::ValueSelector( QWidget *parent ) : QWidget( parent ), QRangeContr
     shadow = QColor( 70, 70, 70 );
     triangle_color = QColor( 0, 0, 0 );
     current_color = QColor( 255, 255, 255 );
+    
 }
 
 //------------- DESTRUCTOR ----------------

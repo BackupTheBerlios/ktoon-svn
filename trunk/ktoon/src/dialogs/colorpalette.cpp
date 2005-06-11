@@ -32,205 +32,58 @@
 //--------------- CONSTRUCTOR --------------------
 
 ColorPalette::ColorPalette( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
-    : QDialog( parent, tr( "Color Palette" ), false, style )
+	: KTDialogBase(QDockWindow::OutsideDock, parent, tr( "Color Palette" ))
 {
-    //Initializations
-    setCaption( tr( "Color Palette" ) );
-//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-    resize( 185, 647 );
-    setMinimumSize( 185, 647 );
-    setMaximumSize( 185, 647 );
-    move( 200, 35 );
-//     setFont( QFont( "helvetica", 8 ) );
-    parent_widget = parent;
-    assigned_menu = in_assigned_menu;
-    assigned_item = id_assigned_item;
-    assigned_tb_button = assig_tb_button;
-    new_outline_color = NULL;
-    new_fill_color = NULL;
+	Q_CHECK_PTR( parent );
+	Q_CHECK_PTR( in_assigned_menu );
+	Q_CHECK_PTR( assig_tb_button );
 
-    //Icon initializations
-    i_add_color = QPixmap( plussign_xpm );
-    i_remove_color = QPixmap( minussign_xpm );
+	setHorizontallyStretchable(true);
+			
+	//Initializations
+	
+	setCaption( tr( "Color Palette" ) );
+	//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+	resize( 185, 640 );
+	setMinimumSize( 185, 640 );
+	setMaximumSize( 185, 640 );
+	move( 200, 35 );
+	//     setFont( QFont( "helvetica", 8 ) );
+	assigned_menu = in_assigned_menu;
+	assigned_item = id_assigned_item;
+	assigned_tb_button = assig_tb_button;
+	new_outline_color = NULL;
+	new_fill_color = NULL;
+	
+	//Icon initializations
+	i_add_color = QPixmap( plussign_xpm );
+	i_remove_color = QPixmap( minussign_xpm );
 
-    //------------ Standard Palette Block --------------
-
-    text_std_palette = new QLabel( tr( "Standard Palette" ), this );
-    text_std_palette -> move( 5, 5 );
-    text_std_palette -> resize( 170, text_std_palette -> height() );
-
-    color_cells = new ColorCells( this );
-    color_cells -> resize( 175, 113 );
-    color_cells -> move( 5, text_std_palette -> y() + text_std_palette -> height() - 3 );
-
-    separator1 = new QFrame( this );
-    separator1 -> resize( width(), 2 );
-    separator1 -> move( 0, color_cells -> y() + color_cells -> height() + 5 );
-    separator1 -> setFrameStyle( QFrame::Panel | QFrame::Sunken );
-
-    //------------ Color Mixer Block --------------
-
-    text_color_mixer = new QLabel( tr( "Color Mixer" ), this );
-    text_color_mixer -> move( 5, separator1 -> y() + separator1 -> height() );
-    text_color_mixer -> resize( 170, text_color_mixer -> height() );
-
-    outline_color = new OutlineColor( this );
-    outline_color -> move( 5, text_color_mixer -> y() + text_color_mixer -> height() );
-    outline_color -> setActive( true );
-    QToolTip::add( outline_color, tr( "Stroke Color" ) );
-
-    fill_color = new FillColor( this );
-    fill_color -> move( 5, outline_color -> y() + outline_color -> height() + 5 );
-    QToolTip::add( fill_color, tr( "Fill Color" ) );
-
-    text_r = new QLabel( "R:", this );
-    text_r -> resize( 10, 20 );
-    text_r -> move( outline_color -> x() + outline_color -> width() + 10, outline_color -> y() );
-
-    text_g = new QLabel( "G:", this );
-    text_g -> resize( 10, 20 );
-    text_g -> move( text_r -> x(), text_r -> y() + text_r -> height() + 5 );
-
-    text_b = new QLabel( "B:", this );
-    text_b -> resize( 10, 20 );
-    text_b -> move( text_g -> x(), text_g -> y() + text_g -> height() + 5 );
-
-    text_alpha = new QLabel( "A:", this );
-    text_alpha -> resize( 10, 20 );
-    text_alpha -> move( text_b -> x(), text_b -> y() + text_b -> height() + 5 );
-
-    value_r = new QSpinBox( 0, 255, 1, this );
-    value_r -> resize( 40, 20 );
-    value_r -> move( text_r -> x() + text_r -> width() + 5, text_r -> y() );
-
-    value_g = new QSpinBox( 0, 255, 1, this );
-    value_g -> resize( 40, 20 );
-    value_g -> move( text_g -> x() + text_g -> width() + 5, text_g -> y() );
-
-    value_b = new QSpinBox( 0, 255, 1, this );
-    value_b -> resize( 40, 20 );
-    value_b -> move( text_b -> x() + text_b -> width() + 5, text_b -> y() );
-
-    value_alpha = new QSpinBox( 0, 100, 1, this );
-    value_alpha -> setValue( 100 );
-    value_alpha -> resize( 40, 20 );
-    value_alpha -> move( text_alpha -> x() + text_alpha -> width() + 5, text_alpha -> y() );
-
-    text_h = new QLabel( "H:", this );
-    text_h -> resize( 10, 20 );
-    text_h -> move( value_r -> x() + value_r -> width() + 10, value_r -> y() );
-
-    text_s = new QLabel( "S:", this );
-    text_s -> resize( 10, 20 );
-    text_s -> move( text_h -> x(), text_h -> y() + text_h -> height() + 5 );
-
-    text_v = new QLabel( "V:", this );
-    text_v -> resize( 10, 20 );
-    text_v -> move( text_s -> x(), text_s -> y() + text_s -> height() + 5 );
-
-    value_h = new QSpinBox( 0, 360, 1, this );
-    value_h -> resize( 40, 20 );
-    value_h -> move( text_h -> x() + text_h -> width() + 5, text_h -> y() );
-
-    value_s = new QSpinBox( 0, 255, 1, this );
-    value_s -> resize( 40, 20 );
-    value_s -> move( text_s -> x() + text_s -> width() + 5, text_s -> y() );
-
-    value_v = new QSpinBox( 0, 255, 1, this );
-    value_v -> resize( 40, 20 );
-    value_v -> move( text_v -> x() + text_v -> width() + 5, text_v -> y() );
-
-    color_display = new ColorDisplay( this );
-    color_display -> resize( 47, 47 );
-    color_display -> move( 5, text_alpha -> y() + text_alpha -> height() + 5 );
-
-    value_rgb = new QLineEdit( "#000000", this );
-    value_rgb -> resize( color_display -> width(), 20 );
-    value_rgb -> move( color_display -> x(), color_display -> y() + color_display -> height() + 5 );
-
-    color_mixer = new ColorMixer( this );
-    color_mixer -> move( color_display -> x() + color_display -> width() + 5, color_display -> y() );
-
-    value_selector = new ValueSelector( this );
-    value_selector -> move( color_mixer -> x() + color_mixer -> width() + 5, color_mixer -> y() - 3 );
-
-    separator2 = new QFrame( this );
-    separator2 -> resize( width(), 2 );
-    separator2 -> move( 0, color_mixer -> y() + color_mixer -> height() + 5 );
-    separator2 -> setFrameStyle( QFrame::Panel | QFrame::Sunken );
-
-    //------------ Gradient Block --------------
-
-    text_gradient = new QLabel( tr( "Gradient:" ), this );
-    text_gradient -> resize( 50, 20 );
-    text_gradient -> move( 5, separator2 -> y() + separator2 -> height() + 10 );
-
-    QStringList str_list;
-    str_list << tr( "None" ) << tr( "Linear" ) << tr( "Radial" );
-    gradient_types = new QComboBox( this );
-    gradient_types -> insertStringList( str_list );
-    gradient_types -> resize( 60, 20 );
-    gradient_types -> move( text_gradient -> x() + text_gradient -> width() + 5, text_gradient -> y() );
-
-    grad_viewer = new GradientViewer( this );
-    grad_viewer -> move( gradient_types -> x() + gradient_types -> width() + 10, gradient_types -> y() );
-    grad_viewer -> hide();
-
-    gradient = new ColorGradientSelector( this );
-    gradient -> move( 5, grad_viewer -> y() + grad_viewer -> height() + 10 );
-    gradient -> hide();
-
-    separator3 = new QFrame( this );
-    separator3 -> resize( width(), 2 );
-    separator3 -> move( 0, gradient -> y() + gradient -> height() + 10 );
-    separator3 -> setFrameStyle( QFrame::Panel | QFrame::Sunken );
-
-    //------------ Custom Palette Block ------------------
-
-    text_custom_palette = new QLabel( tr( "Custom Palette" ), this );
-    text_custom_palette -> move( 5, separator3 -> y() + separator3 -> height() );
-    text_custom_palette -> resize( 170, text_custom_palette -> height() );
-
-    custom_palette = new CustomPalette( this );
-    custom_palette -> resize( 175, 113 );
-    custom_palette -> move( 5, text_custom_palette -> y() + text_custom_palette -> height() - 3 );
-
-    add_color = new QPushButton( i_add_color, tr( "" ), this );
-    add_color -> resize( 20, 20 );
-    add_color -> move( 5, custom_palette -> y() + custom_palette -> height() + 5 );
-    add_color -> setAutoDefault( false );
-    add_color -> setFlat( true );
-    QToolTip::add( add_color, tr( "Add Color" ) );
-
-    remove_color = new QPushButton( i_remove_color, tr( "" ), this );
-    remove_color -> resize( 20, 20 );
-    remove_color -> move( add_color -> x() + add_color -> width() + 5, add_color -> y() );
-    remove_color -> setAutoDefault( false );
-    remove_color -> setFlat( true );
-    QToolTip::add( remove_color, tr( "Remove Color" ) );
-
-    text_color_name = new QLabel( tr( "Color Name:" ), this );
-//     text_color_name -> setFont( QFont( "helvetica", 7 ) );
-    text_color_name -> resize( 60, 15 );
-    text_color_name -> move( remove_color -> x() + remove_color -> width() + 5, remove_color -> y() );
-
-    value_color_name = new QLineEdit( "", this );
-    value_color_name -> setFont( QFont( font().family(), 7 ) );
-    value_color_name -> resize( 60, 15 );
-    value_color_name -> move( text_color_name -> x() + text_color_name -> width() + 5, text_color_name -> y() );
+	setOrientation (Qt::Vertical );
+	setupBlockStandardPalette();
+    
+	setupBlockColorMixer();
+   
+	setupBlockGradient();
+ 
+	setupBlockCustomPalette();
+    
+    
 
     //-------------- Status Update -----------------
 
-    makeConnections();
-
-    Color *o_color = new Color( 0.0, 0.0, 0.0, 1.0 );
-    Color *f_color = new(std::nothrow) Color( 1.0, 1.0, 1.0, 1.0 );
-    if(!f_color)
-        {
-	  delete o_color;
-	  throw std::bad_alloc();
-	  }
+	makeConnections();
     
+
+	Color *o_color = new Color( 0.0, 0.0, 0.0, 1.0 );
+	Color *f_color = new(std::nothrow) Color( 1.0, 1.0, 1.0, 1.0 );
+	if(!f_color)
+	{
+		delete o_color;
+		throw std::bad_alloc();
+	}
+    
+	
     KTStatus -> setCurrentOutlineColor( o_color );
     KTStatus -> setCurrentFillColor( f_color );
 
@@ -251,22 +104,12 @@ ColorPalette::~ColorPalette()
     delete gradient;
     delete grad_viewer;
     delete custom_palette;
-    delete separator1;
-    delete separator2;
-    delete separator3;
     delete gradient_types;
     delete text_std_palette;
     delete text_gradient;
     delete text_custom_palette;
     delete text_color_name;
     delete text_color_mixer;
-    delete text_r;
-    delete text_g;
-    delete text_b;
-    delete text_h;
-    delete text_s;
-    delete text_v;
-    delete text_alpha;
     delete value_color_name;
     delete value_rgb;
     delete value_r;
@@ -278,8 +121,136 @@ ColorPalette::~ColorPalette()
     delete value_alpha;
 }
 
-//-------------- PUBLIC MEMBERS -------------------
+void ColorPalette::setupBlockStandardPalette()
+{
+	//------------ Standard Palette Block --------------
+	QVBox *blockStandardPalette = new QVBox(this);
+	text_std_palette = new QLabel( tr( "Standard Palette" ), blockStandardPalette );
+	
+	color_cells = new ColorCells( blockStandardPalette );
+	addChild(blockStandardPalette);
+	color_cells->setVScrollBarMode(QScrollView::AlwaysOff);
+	color_cells->setHScrollBarMode(QScrollView::AlwaysOff);
+}
 
+void ColorPalette::setupBlockColorMixer()
+{
+	 //------------ Color Mixer Block --------------
+	text_color_mixer = new QLabel( tr( "Color Mixer" ), this );
+	addChild(text_color_mixer);
+	
+	QHBox *lineOrfill = new QHBox(this);
+	
+	outline_color = new OutlineColor( lineOrfill );
+	outline_color->setActive( true );
+	QToolTip::add( outline_color, tr( "Stroke Color" ) );
+
+	fill_color = new FillColor( lineOrfill);
+	QToolTip::add( fill_color, tr( "Fill Color" ) );
+	addChild(lineOrfill);
+	QHBox *colorMixerBlock = new QHBox(this);
+	addChild(colorMixerBlock);
+	QVBox *textRGBA = new QVBox(colorMixerBlock);
+	QString rgba("RGBA");
+	
+	for(int i  = 0; i < 4; i++)
+	{
+		QLabel *tmpLabel = new QLabel( QString(rgba[i]) + ":",  textRGBA);
+	}
+	QVBox *spinsRGBA = new QVBox(colorMixerBlock);
+	value_r = new QSpinBox( 0, 255, 1, spinsRGBA );
+	
+	value_g = new QSpinBox( 0, 255, 1, spinsRGBA );
+	
+	value_b = new QSpinBox( 0, 255, 1, spinsRGBA );
+
+	value_alpha = new QSpinBox( 0, 100, 1, spinsRGBA);
+	value_alpha -> setValue( 100 );
+	
+	QVBox *textHSV= new QVBox(colorMixerBlock);
+	QString hsv("HSV");
+	for(int i  = 0; i < 3; i++)
+	{
+		QLabel *tmpLabels = new QLabel( QString(hsv[i]) + ":", textHSV );
+		
+	}
+	
+	QVBox *spinsHSV= new QVBox(colorMixerBlock);
+	value_h = new QSpinBox( 0, 360, 1, spinsHSV );
+
+	value_s = new QSpinBox( 0, 255, 1, spinsHSV );
+
+	value_v = new QSpinBox( 0, 255, 1, spinsHSV );
+
+	QHBox *tmpBox = new QHBox(this);
+	QVBox *displayColor = new QVBox(tmpBox);
+	
+	color_display = new ColorDisplay( displayColor );
+	
+	color_display->setSizePolicy(QSizePolicy::Expanding  ,QSizePolicy::Expanding , false);
+	
+	value_rgb = new QLineEdit( "#000000", displayColor );
+	value_rgb -> resize( color_display -> width(), 20 );
+	color_mixer = new ColorMixer( tmpBox );
+	value_selector = new ValueSelector( tmpBox );
+	addChild(tmpBox);
+}
+
+void ColorPalette::setupBlockGradient()
+{
+	//------------ Gradient Block --------------
+	QHBox *blockGradient = new QHBox(this);
+	
+	text_gradient = new QLabel( tr( "Gradient:" ), blockGradient );
+
+	QStringList str_list;
+	str_list << tr( "None" ) << tr( "Linear" ) << tr( "Radial" );
+	gradient_types = new QComboBox( blockGradient );
+	gradient_types -> insertStringList( str_list );
+	gradient_types -> resize( 60, 20 );
+	addChild(blockGradient);
+	
+	QHBox *blockgGradViewer = new QHBox(this);
+	
+	grad_viewer = new GradientViewer( blockgGradViewer );
+	grad_viewer -> hide();
+	
+
+	gradient = new ColorGradientSelector( blockgGradViewer );
+	gradient -> hide();
+	
+	addChild(blockgGradViewer);
+
+}
+
+
+void ColorPalette::setupBlockCustomPalette()
+{
+	//------------ Custom Palette Block ------------------
+	QVBox *customPaletteV = new QVBox(this);
+	text_custom_palette = new QLabel( tr( "Custom Palette" ),  customPaletteV);
+
+	custom_palette = new CustomPalette( customPaletteV );
+
+	QHBox *customPaletteH = new QHBox(customPaletteV);
+	add_color = new QPushButton( i_add_color, tr( "" ), customPaletteH );
+	add_color -> setAutoDefault( false );
+	add_color -> setFlat( true );
+	QToolTip::add( add_color, tr( "Add Color" ) );
+
+	remove_color = new QPushButton( i_remove_color, tr( "" ), customPaletteH );
+	remove_color -> setAutoDefault( false );
+	remove_color -> setFlat( true );
+	QToolTip::add( remove_color, tr( "Remove Color" ) );
+
+	text_color_name = new QLabel( tr( "Color Name:" ), customPaletteH );
+
+	value_color_name = new QLineEdit( "", customPaletteH );
+	value_color_name -> setFont( QFont( font().family(), 7 ) );
+
+	addChild(customPaletteV);
+}
+//-------------- PUBLIC MEMBERS -------------------
 void ColorPalette::enableCustomPalette( bool state )
 {
     if ( state )
@@ -293,7 +264,6 @@ void ColorPalette::enableCustomPalette( bool state )
 	text_custom_palette -> show();
 	text_color_name -> show();
 	value_color_name -> show();
-	separator3 -> show();
     }
     else
     {
@@ -306,7 +276,6 @@ void ColorPalette::enableCustomPalette( bool state )
 	text_custom_palette -> hide();
 	text_color_name -> hide();
 	value_color_name -> hide();
-	separator3 -> hide();
     }
 }
 
@@ -328,11 +297,13 @@ void ColorPalette::slotAddToCustomColors()
     value_color_name -> setText( "" );
     //k_toon -> drawingArea() -> modifyDocument( true );
     emit documentModified(true);
+    emit documentModified(true);
 }
 
 void ColorPalette::slotRemoveFromCustomColors()
 {
     custom_palette -> slotRemoveColor();
+    emit documentModified(true);
     emit documentModified(true);
 }
 
@@ -727,3 +698,4 @@ void ColorPalette::disconnectMembers()
     disconnect( add_color, 0, 0, 0 );
     disconnect( remove_color, 0, 0, 0 );
 }
+

@@ -26,11 +26,12 @@
 #include "images.h"
 #include "ktoon.h"
 #include "scene.h"
+#include "qdockwindow.h"
 
 //--------------- CONSTRUCTOR --------------------
 
 Scenes::Scenes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
-    : QDialog( parent, "Scenes", false, style )
+	: KTDialogBase( QDockWindow::OutsideDock, parent, "Scenes"/*, false, style*/ )
 {
     Q_CHECK_PTR( parent );
     Q_CHECK_PTR( in_assigned_menu );
@@ -43,6 +44,7 @@ Scenes::Scenes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int
     setMinimumSize( 120, 200 );
     setMaximumSize( 120, 200 );
     move( 13, 300 );
+    //FIXME:Remove this
     parent_widget = parent;
     assigned_menu = in_assigned_menu;
     assigned_item = id_assigned_item;
@@ -57,73 +59,10 @@ Scenes::Scenes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int
     i_move_scene_up = QPixmap( arrowup_xpm );
     i_move_scene_down = QPixmap( arrowdown_xpm );
 
-    //------------- Operations on the Buttons -----------------
+    setupButtons();
+    setupTableScens();
 
-    insert_scene = new QPushButton( i_insert_scene, tr( "" ), this );
-    insert_scene -> resize( 20, 20 );
-    insert_scene -> move( 5, 5 );
-    insert_scene -> setAutoDefault( false );
-    insert_scene -> setFlat( true );
-    connect( insert_scene, SIGNAL( clicked() ), SLOT( slotInsertScene() ) );
-    QToolTip::add( insert_scene, tr( "Insert Scene" ) );
 
-    remove_scene = new QPushButton( i_remove_scene, tr( "" ), this );
-    remove_scene -> resize( 20, 20 );
-    remove_scene -> move( 30, 5 );
-    remove_scene -> setAutoDefault( false );
-    remove_scene -> setFlat( true );
-    connect( remove_scene, SIGNAL( clicked() ), SLOT( slotRemoveScene() ) );
-    QToolTip::add( remove_scene, tr( "Remove Scene" ) );
-
-    move_scene_up = new QPushButton( i_move_scene_up, tr( "" ), this );
-    move_scene_up -> resize( 20, 20 );
-    move_scene_up -> move( 55, 5 );
-    move_scene_up -> setAutoDefault( false );
-    move_scene_up -> setFlat( true );
-    connect( move_scene_up, SIGNAL( clicked() ), SLOT( slotMoveSceneUp() ) );
-    QToolTip::add( move_scene_up, tr( "Move Scene Up" ) );
-
-    move_scene_down = new QPushButton( i_move_scene_down, tr( "" ), this );
-    move_scene_down -> resize( 20, 20 );
-    move_scene_down -> move( 80, 5 );
-    move_scene_down -> setAutoDefault( false );
-    move_scene_down -> setFlat( true );
-    connect( move_scene_down, SIGNAL( clicked() ), SLOT( slotMoveSceneDown() ) );
-    QToolTip::add( move_scene_down, tr( "Move Scene Down" ) );
-
-    //------------ Operations on the scene table -------------
-
-    table_scenes = new QListView( this, "", Qt::WStyle_NoBorder );
-    table_scenes -> resize( 110, 120 );
-    table_scenes -> move( 5, 30 );
-    table_scenes -> setSelectionMode( QListView::Single );
-//     table_scenes -> setFont( QFont( "helvetica", 8 ) );
-    table_scenes -> addColumn( tr( "Name" ), 105 ); //Single column for the name
-    table_scenes -> setResizeMode( QListView::NoColumn );
-    table_scenes -> setSorting( 10 ); //Not automatic sorting (10 > 1)
-    table_scenes -> header() -> hide();
-    connect( table_scenes, SIGNAL( selectionChanged() ), SLOT( slotSelectScene() ) );
-
-    QCheckListItem *default_scene = new QCheckListItem( table_scenes, tr( "Scene" ) + QString( "1" ), QCheckListItem::CheckBox );
-    default_scene -> setOn( true );
-
-   //------------- Operations on the Textfields -------------
-
-    value_name = new QLineEdit( tr( "Scene1" ), this );
-    value_name -> resize( 80, 20 );
-    value_name -> move( 5, table_scenes -> height() + table_scenes -> y() + 10 );
-//     value_name -> setFont( QFont( "helvetica", 8 ) );
-    value_name -> setMaxLength( 10 );
-    connect( value_name, SIGNAL( lostFocus() ), SLOT( slotChangeValueName() ) );
-    connect( value_name, SIGNAL( returnPressed() ), SLOT( slotChangeValueName() ) );
-
-    //------------- Operations on the static texts ----------
-
-    text_name = new QLabel( tr( "Scene Name" ), this );
-    text_name -> setFont( QFont( font().family(), 7 ) );
-    text_name -> resize( 100, 20 );
-    text_name -> setAlignment( Qt::AlignTop );
-    text_name -> move( value_name -> x(), value_name -> height() + value_name -> y() + 1 );
 }
 
 //-------------- DESTRUCTOR -----------------
@@ -139,6 +78,71 @@ Scenes::~Scenes()
     delete value_name;
 }
 
+void Scenes::setupButtons()
+{
+	    //------------- Operations on the Buttons -----------------
+
+	containerButtons = new QHBox(this);
+	insert_scene = new QPushButton( i_insert_scene, tr( "" ), containerButtons );
+	insert_scene -> setAutoDefault( false );
+	insert_scene -> setFlat( true );
+	connect( insert_scene, SIGNAL( clicked() ), SLOT( slotInsertScene() ) );
+	QToolTip::add( insert_scene, tr( "Insert Scene" ) );
+
+	remove_scene = new QPushButton( i_remove_scene, tr( "" ), containerButtons );
+	remove_scene -> setAutoDefault( false );
+	remove_scene -> setFlat( true );
+	connect( remove_scene, SIGNAL( clicked() ), SLOT( slotRemoveScene() ) );
+	QToolTip::add( remove_scene, tr( "Remove Scene" ) );
+
+	move_scene_up = new QPushButton( i_move_scene_up, tr( "" ), containerButtons );
+	move_scene_up -> setAutoDefault( false );
+	move_scene_up -> setFlat( true );
+	connect( move_scene_up, SIGNAL( clicked() ), SLOT( slotMoveSceneUp() ) );
+	QToolTip::add( move_scene_up, tr( "Move Scene Up" ) );
+
+	move_scene_down = new QPushButton( i_move_scene_down, tr( "" ), containerButtons );
+	move_scene_down -> setAutoDefault( false );
+	move_scene_down -> setFlat( true );
+	connect( move_scene_down, SIGNAL( clicked() ), SLOT( slotMoveSceneDown() ) );
+	QToolTip::add( move_scene_down, tr( "Move Scene Down" ) );
+
+	addChild(containerButtons);
+}
+
+void Scenes::setupTableScens()
+{
+	    //------------ Operations on the scene table -------------
+	containerTableScens = new QVBox(this);
+	table_scenes = new QListView( containerTableScens, "", Qt::WStyle_NoBorder );
+	table_scenes -> setSelectionMode( QListView::Single );
+	table_scenes -> addColumn( tr( "Name" ), 105 ); //Single column for the name
+	table_scenes -> setResizeMode( QListView::NoColumn );
+	table_scenes -> setSorting( 10 ); //Not automatic sorting (10 > 1)
+	table_scenes -> header() -> hide();
+	connect( table_scenes, SIGNAL( selectionChanged() ), SLOT( slotSelectScene() ) );
+
+	QCheckListItem *default_scene = new QCheckListItem( table_scenes, tr( "Scene" ) + QString( "1" ), QCheckListItem::CheckBox );
+	default_scene -> setOn( true );
+	
+	
+	   //------------- Operations on the Textfields -------------
+
+	value_name = new QLineEdit( tr( "Scene1" ), containerTableScens );
+    //value_name -> resize( 80, 20 );
+    //value_name -> move( 5, table_scenes -> height() + table_scenes -> y() + 10 );
+	value_name -> setMaxLength( 10 );
+	connect( value_name, SIGNAL( lostFocus() ), SLOT( slotChangeValueName() ) );
+	connect( value_name, SIGNAL( returnPressed() ), SLOT( slotChangeValueName() ) );
+
+    //------------- Operations on the static texts ----------
+	text_name = new QLabel( tr( "Scene Name" ), containerTableScens );
+	text_name -> setFont( QFont( font().family(), 7 ) );
+	text_name -> resize( 100, 20 );
+	text_name -> setAlignment( Qt::AlignTop );
+	text_name -> move( value_name -> x(), value_name -> height() + value_name -> y() + 1 );
+	addChild(containerTableScens);
+}
 //--------------- PUBLIC MEMBERS ------------------
 
 void Scenes::loadScenes( QPtrList<Scene> scenes )

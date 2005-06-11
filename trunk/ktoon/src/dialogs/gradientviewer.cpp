@@ -28,7 +28,7 @@ GradientViewer::GradientViewer( QWidget *parent ) : QFrame( parent )
 {
     Q_CHECK_PTR( parent );
 
-    resize( 46, 46 );
+    setMinimumSize( 46, 46 );
     setFrameStyle( QFrame::Panel | QFrame::Sunken );
     parent_widget = parent;
     dark_color = QColor( 135, 135, 135 );

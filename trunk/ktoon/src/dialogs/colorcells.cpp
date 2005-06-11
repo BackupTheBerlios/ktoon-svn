@@ -19,13 +19,13 @@
  ***************************************************************************/
 
 #include "colorcells.h"
-
+#include <qsizepolicy.h> 
 //-------------- CONSTRUCTOR -----------------
 
 ColorCells::ColorCells( QWidget *parent ) : QGridView( parent )
 {
     Q_CHECK_PTR( parent );
-
+    
     parent_widget = parent;
     setCellWidth( 9 );
     setCellHeight( 9 );
@@ -78,6 +78,9 @@ ColorCells::ColorCells( QWidget *parent ) : QGridView( parent )
     for ( i = 6; i <= 11; i++ )
         for ( j = 13; j <= 18; j++ )
 	    color_matrix[i][j] = QColor( 255, ( j - 13 ) * 51, ( i - 6 ) * 51 );
+    
+    this->setSizePolicy(QSizePolicy::Expanding ,QSizePolicy::Expanding, false);
+    setMinimumSize(175, 113);
 }
 
 //-------------- DESTRUCTOR -----------------

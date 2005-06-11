@@ -36,6 +36,8 @@ OutlineColor::OutlineColor( QWidget *parent ) : QFrame( parent )
     dark_color = QColor( 135, 135, 135 );
     light_color = paletteBackgroundColor();
     alpha = 100;
+    
+    setMinimumSize(30, 30);
 }
 
 //--------------- DESTRUCTOR -------------------

@@ -28,7 +28,7 @@
 //--------------- CONSTRUCTOR --------------------
 
 Timeline::Timeline( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
-    : QDialog( parent, "Timeline", false, style )
+	: KTDialogBase( QDockWindow::OutsideDock, parent, "Timeline")
 {
     Q_CHECK_PTR( parent );
     Q_CHECK_PTR( in_assigned_menu );

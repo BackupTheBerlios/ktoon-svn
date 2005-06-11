@@ -65,7 +65,6 @@ public:
     void updateCross( int sat, int hue );
 
 private:
-    QWidget *parent_widget;
     QColor color_matrix[85][90];
     QColor cross_color;
     int cur_row, cur_col;

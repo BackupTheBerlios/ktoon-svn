@@ -29,198 +29,45 @@
 #include "brushes.h"
 #include "ktoon.h"
 #include "images.h"
-
+#include <qdockwindow.h>
 #include <memory>
 
 
 //--------------- CONSTRUCTOR --------------------
 
 Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
-    : QDialog( parent, "Brushes", false, style )
+	: KTDialogBase( QDockWindow::OutsideDock, parent, "Brushes" )
 {
-    Q_CHECK_PTR( parent );
-    Q_CHECK_PTR( in_assigned_menu );
-    Q_CHECK_PTR( assig_tb_button );
+	
+	Q_CHECK_PTR( parent );
+	Q_CHECK_PTR( in_assigned_menu );
+	Q_CHECK_PTR( assig_tb_button );
 
     //Initializations
-    setCaption( tr( "Brushes" ) );
+	setCaption( tr( "Brushes" ) );
 //     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-    resize( 200, 360 );
-    setMinimumSize( 200, 360 );
-    setMaximumSize( 200, 360 );
-    move( 800, 88 );
-    parent_widget = parent;
-    assigned_menu = in_assigned_menu;
-    assigned_item = id_assigned_item;
-    assigned_tb_button = assig_tb_button;
-    brush_max_value = 0;
-    number_of_brushes = 1;
-    k_toon = ( KToon * )parent_widget;
+	resize( 200, 360 );
+	setMinimumSize( 205, 430 );
+	setMaximumSize( 205, 430 );
+	move( 800, 88 );
+	parent_widget = parent;
+	assigned_menu = in_assigned_menu;
+	assigned_item = id_assigned_item;
+	assigned_tb_button = assig_tb_button;
+	brush_max_value = 0;
+	number_of_brushes = 1;
+	k_toon = ( KToon * )parent_widget;
 
     //Icon Initializations
-    i_add_brush = QPixmap( plussign_xpm );
-    i_remove_brush = QPixmap( minussign_xpm );
+	i_add_brush = QPixmap( plussign_xpm );
+	i_remove_brush = QPixmap( minussign_xpm );
 
-    //----------- Operations on the Buttons -----------------
 
-    add_brush = new QPushButton( i_add_brush, tr( "" ), this );
-    add_brush -> resize( 20, 20 );
-    add_brush -> move( 5, 5 );
-    add_brush -> setAutoDefault( false );
-    add_brush -> setFlat( true );
-    connect( add_brush, SIGNAL( clicked() ), SLOT( slotAddBrush() ) );
-    QToolTip::add( add_brush, tr( "Add Brush" ) );
-
-    remove_brush = new QPushButton( i_remove_brush, tr( "" ), this );
-    remove_brush -> resize( 20, 20 );
-    remove_brush -> move( 30, 5 );
-    remove_brush -> setAutoDefault( false );
-    remove_brush -> setFlat( true );
-    connect( remove_brush, SIGNAL( clicked() ), SLOT( slotRemoveBrush() ) );
-    QToolTip::add( remove_brush, tr( "Remove Brush" ) );
-
-    //------------ Operations on the Table of Brushes -------------
-
-    table_brushes = new QListView( this, "", Qt::WStyle_NoBorder );
-    table_brushes -> resize( 190, 120 );
-    table_brushes -> move( 5, 30 );
-    table_brushes -> setSelectionMode( QListView::Single );
-    table_brushes -> setFont( QFont( QApplication::font().family(), 8 ) );
-    table_brushes -> addColumn( tr( "Min" ), 30 ); //Min Thickness Column
-    table_brushes -> addColumn( tr( "Max" ), 30 ); //Min Thickness Column
-    table_brushes -> addColumn( tr( "Smo" ), 30 ); //Smoothness Column
-    table_brushes -> addColumn( tr( "Name" ), 95 ); //Name Column
-    table_brushes -> setResizeMode( QListView::NoColumn );
-    table_brushes -> setSorting( 10 ); //Not automatic sorting (10 > 4)
-    connect( table_brushes, SIGNAL( selectionChanged() ), SLOT( slotSelectBrush() ) );
-
-    QListViewItem *default_brush = new QListViewItem( table_brushes, "2", "5", "2", tr( "Brush" ) + QString( "0" ) );
-    
-    std::auto_ptr<Brush> ap_brush(new Brush( 2, 5, 2 ) );
-    
-    ap_brush.get() -> setNameBrush( tr( "Brush" ) + QString( "0" ) );
-    KTStatus -> setCurrentBrush( ap_brush.get() );
-    QPtrList<Brush> br;
-    br.append( ap_brush.get() );
-    KTStatus->currentDocument() -> setBrushes( br );
-    
-    ap_brush.release();
-
+	setupButtons();
+	setupTableBruches();
+	setupStaticText();
+	setupPrevisualizationArea();
     //------------- Operations on the Textfields -------------
-
-    value_min_thickness = new QLineEdit( "2", this );
-    value_min_thickness -> resize( 20, 20 );
-    value_min_thickness -> move( 5, table_brushes -> height() + table_brushes -> y() + 10 );
-    value_min_thickness -> setFont( QFont( QApplication::font().family(), 6 ) );
-    value_min_thickness -> setAlignment( Qt::AlignRight );
-    value_min_thickness -> setMaxLength( 2 );
-    value_min_thickness -> setValidator( new QIntValidator( THICKNESS_MIN_MIN, THICKNESS_MIN_MAX, this ) );
-    connect( value_min_thickness, SIGNAL( lostFocus() ), SLOT( slotChangeSliderMinThickness() ) );
-    connect( value_min_thickness, SIGNAL( returnPressed() ), SLOT( slotChangeSliderMinThickness() ) );
-
-    value_max_thickness = new QLineEdit( "5", this );
-    value_max_thickness -> resize( 20, 20 );
-    value_max_thickness -> move( 5, value_min_thickness -> height() + value_min_thickness -> y() + 10 );
-    value_max_thickness -> setFont(QFont( QApplication::font().family(), 6 ) );
-    value_max_thickness -> setAlignment( Qt::AlignRight );
-    value_max_thickness -> setMaxLength( 2 );
-    value_max_thickness -> setValidator( new QIntValidator( THICKNESS_MAX_MIN, THICKNESS_MAX_MAX, this ) );
-    connect( value_max_thickness, SIGNAL( lostFocus() ), SLOT( slotChangeSliderMaxThickness() ) );
-    connect( value_max_thickness, SIGNAL( returnPressed() ), SLOT( slotChangeSliderMaxThickness() ) );
-
-    value_smoothness = new QLineEdit( "2", this );
-    value_smoothness -> resize( 20, 20 );
-    value_smoothness -> move( 5, value_max_thickness -> height() + value_max_thickness -> y() + 10 );
-    value_smoothness -> setFont( QFont( QApplication::font().family(), 6 ) );
-    value_smoothness -> setAlignment( Qt::AlignRight );
-    value_smoothness -> setMaxLength( 1 );
-    value_smoothness -> setValidator( new QIntValidator( SMOOTHNESS_MIN, SMOOTHNESS_MAX, this ) );
-    connect( value_smoothness, SIGNAL( textChanged( const QString & ) ), SLOT( slotChangeSliderSmoothness() ) );
-
-    value_name = new QLineEdit( tr( "Brush0" ), this );
-    value_name -> resize( 80, 20 );
-    value_name -> move( 5, value_smoothness -> height() + value_smoothness -> y() + 10 + 30 );
-    value_name -> setFont( QFont( font().family(), 8) );
-    value_name -> setAlignment( Qt::AlignLeft );
-    value_name -> setMaxLength( 10 );
-    connect( value_name, SIGNAL( lostFocus() ), SLOT( slotChangeValueName() ) );
-    connect( value_name, SIGNAL( returnPressed() ), SLOT( slotChangeValueName() ) );
-
-    //------------- Operations on Static Texts ----------
-
-    text_min_thickness = new QLabel( tr( "Minimum Thickness" ), this );
-    text_min_thickness -> setFont( QFont( font().family(), 6 ) );
-    text_min_thickness -> move( value_min_thickness -> width() + value_min_thickness -> x() + 5, value_min_thickness -> y() );
-
-    text_max_thickness = new QLabel( tr( "Maximum Thickness" ), this);
-    text_max_thickness -> setFont( QFont( "helvetica", 6 ) );
-    text_max_thickness -> move( value_max_thickness -> width() + value_max_thickness -> x() + 5, value_max_thickness -> y() );
-
-    text_smoothness = new QLabel( tr( "Smoothness" ), this );
-    text_smoothness -> setFont( QFont( font().family(), 6 ) );
-    text_smoothness -> move( value_smoothness -> width() + value_smoothness -> x() + 5, value_smoothness -> y() );
-
-    text_name = new QLabel( tr( "Brush Name" ), this );
-    text_name -> setFont( QFont( font().family(), 7 ) );
-    text_name -> resize( 100, 25 );
-    text_name -> setAlignment( Qt::AlignTop );
-    text_name -> move( 5, value_name -> height() + value_name -> y() + 1 );
-
-    //------------- Operations on the Sliders -------------
-
-    slider_min_thickness = new QSlider( THICKNESS_MIN_MIN, THICKNESS_MIN_MAX, 1, 2, Qt::Horizontal, this );
-    slider_min_thickness -> setTickmarks( QSlider::Below );
-    slider_min_thickness -> setTickInterval( 10 );
-    slider_min_thickness -> resize(165, 10);
-    slider_min_thickness -> move( text_min_thickness -> x(), text_min_thickness -> y() - 2 );
-    connect( slider_min_thickness, SIGNAL( valueChanged( int ) ), SLOT( slotChangeValueMinThickness() ) );
-
-    slider_max_thickness = new QSlider( THICKNESS_MAX_MIN, THICKNESS_MAX_MAX, 1, 5, Qt::Horizontal, this );
-    slider_max_thickness -> setTickmarks( QSlider::Below );
-    slider_max_thickness -> setTickInterval( 10 );
-    slider_max_thickness -> resize( 165, 10 );
-    slider_max_thickness -> move( text_max_thickness -> x(), text_max_thickness -> y() - 2) ;
-    connect( slider_max_thickness, SIGNAL( valueChanged( int ) ), SLOT( slotChangeValueMaxThickness() ) );
-
-    slider_smoothness = new QSlider( SMOOTHNESS_MIN, SMOOTHNESS_MAX, 1, 2, Qt::Horizontal, this );
-    slider_smoothness -> setTickmarks( QSlider::Below );
-    slider_smoothness -> resize( 165, 10 );
-    slider_smoothness -> move( text_smoothness -> x(), text_smoothness -> y() - 2 );
-    connect( slider_smoothness, SIGNAL( valueChanged( int ) ), SLOT( slotChangeValueSmoothness() ) );
-
-    //---------------- Operations on the previsulization area -----------------------
-
-    std::auto_ptr<QCanvas> ap_previsualization(new QCanvas( 99, 99 ) );
-    previsualization = ap_previsualization.get(); // DEBUG
-    
-    previsualization_container = new QCanvasView( /*ap_*/previsualization/*.get()*/, this );
-    previsualization_container -> resize( 103, 103 );
-    previsualization_container -> move( value_name -> x() + value_name -> width() + 5, value_smoothness -> height() + value_smoothness -> y() + 10 );
-
-    std::auto_ptr<QCanvasEllipse> ap_circle_max_thickness(new QCanvasEllipse( 5, 5, /*ap_*/previsualization/*.get()*/) );
-    circle_max_thickness = ap_circle_max_thickness.get();
-    
-    QBrush gray_brush = QBrush( QColor( 200, 200, 200 ) ); //For the circle_max_thickness
-    circle_max_thickness -> setBrush( gray_brush );
-    circle_max_thickness -> move( 50.0, 50.0 );
-    circle_max_thickness -> setZ( 0.0 );
-    circle_max_thickness -> show();
-
-    std::auto_ptr<QCanvasEllipse> ap_circle_min_thickness(new QCanvasEllipse( 2, 2, /*ap_*/previsualization/*.get()*/) );
-    circle_min_thickness = ap_circle_min_thickness.get();
-    
-    QBrush black_brush = QBrush( QColor( 0, 0, 0 ), Qt::SolidPattern ); //For the circle_min_thickness
-    circle_min_thickness -> setBrush( black_brush );
-    circle_min_thickness -> move( 50.0, 50.0 );
-    circle_min_thickness -> setZ( 0.5 );
-    circle_min_thickness -> show();
-
-    table_brushes -> setSelected( default_brush, true ); //Select the default brush
-    
-    ap_previsualization.release();
-    ap_circle_max_thickness.release();
-    ap_circle_min_thickness.release();
-  
 }
 
 //-------------- DESTRUCTOR -----------------
@@ -245,6 +92,196 @@ Brushes::~Brushes()
     delete circle_max_thickness;
     delete previsualization;
     delete previsualization_container;
+}
+
+
+
+void Brushes::setupButtons()
+{
+    //----------- Operations on the Buttons -----------------
+	QHBox *containerButtons = new QHBox(this);
+	add_brush = new QPushButton( i_add_brush, tr( "" ), containerButtons );
+// 	add_brush -> resize( 20, 20 );
+// 	add_brush -> move( 5, 5 );
+	add_brush -> setAutoDefault( false );
+	add_brush -> setFlat( true );
+	connect( add_brush, SIGNAL( clicked() ), SLOT( slotAddBrush() ) );
+	QToolTip::add( add_brush, tr( "Add Brush" ) );
+
+	remove_brush = new QPushButton( i_remove_brush, tr( "" ), containerButtons );
+// 	remove_brush -> resize( 20, 20 );
+// 	remove_brush -> move( 30, 5 );
+	remove_brush -> setAutoDefault( false );
+	remove_brush -> setFlat( true );
+	connect( remove_brush, SIGNAL( clicked() ), SLOT( slotRemoveBrush() ) );
+	QToolTip::add( remove_brush, tr( "Remove Brush" ) );
+	addChild(containerButtons);
+}
+
+void Brushes::setupTableBruches()
+{
+	    //------------ Operations on the Table of Brushes -------------
+	QVBox *containerTableBruches = new QVBox(this);
+	table_brushes = new QListView( containerTableBruches, "", Qt::WStyle_NoBorder );
+// // 	table_brushes -> resize( 190, 120 );
+// 	table_brushes -> move( 5, 30 );
+	table_brushes -> setSelectionMode( QListView::Single );
+	table_brushes -> setFont( QFont( QApplication::font().family(), 8 ) );
+	table_brushes -> addColumn( tr( "Min" ), 30 ); //Min Thickness Column
+	table_brushes -> addColumn( tr( "Max" ), 30 ); //Min Thickness Column
+	table_brushes -> addColumn( tr( "Smo" ), 30 ); //Smoothness Column
+	table_brushes -> addColumn( tr( "Name" ), 95 ); //Name Column
+	table_brushes -> setResizeMode( QListView::NoColumn );
+	table_brushes -> setSorting( 10 ); //Not automatic sorting (10 > 4)
+	connect( table_brushes, SIGNAL( selectionChanged() ), SLOT( slotSelectBrush() ) );
+	//FIXME: porque esto debe de ser local?
+	default_brush = new QListViewItem( table_brushes, "2", "5", "2", tr( "Brush" ) + QString( "0" ) );
+    
+	std::auto_ptr<Brush> ap_brush(new Brush( 2, 5, 2 ) );
+    
+	ap_brush.get() -> setNameBrush( tr( "Brush" ) + QString( "0" ) );
+	KTStatus -> setCurrentBrush( ap_brush.get() );
+	QPtrList<Brush> br;
+	br.append( ap_brush.get() );
+	KTStatus->currentDocument() -> setBrushes( br );
+    
+	ap_brush.release();
+	addChild(containerTableBruches);
+}
+
+void Brushes::setupStaticText()
+{
+	QHBox *containerStaticText = new QHBox(this);
+	containerStaticText->setSpacing(5);
+	QVBox *containerLineEdits = new QVBox(containerStaticText);
+	
+	value_min_thickness = new QLineEdit( "2", containerLineEdits );
+// 	value_min_thickness -> resize( 20, 20 );
+// 	value_min_thickness -> move( 5, table_brushes -> height() + table_brushes -> y() + 10 );
+	value_min_thickness -> setFont( QFont( QApplication::font().family(), 6 ) );
+	value_min_thickness -> setAlignment( Qt::AlignRight );
+	value_min_thickness -> setMaxLength( 2 );
+	value_min_thickness -> setValidator( new QIntValidator( THICKNESS_MIN_MIN, THICKNESS_MIN_MAX, this ) );
+	connect( value_min_thickness, SIGNAL( lostFocus() ), SLOT( slotChangeSliderMinThickness() ) );
+	connect( value_min_thickness, SIGNAL( returnPressed() ), SLOT( slotChangeSliderMinThickness() ) );
+
+	value_max_thickness = new QLineEdit( "5", containerLineEdits );
+// 	value_max_thickness -> resize( 20, 20 );
+// 	value_max_thickness -> move( 5, value_min_thickness -> height() + value_min_thickness -> y() + 10 );
+	value_max_thickness -> setFont(QFont( QApplication::font().family(), 6 ) );
+	value_max_thickness -> setAlignment( Qt::AlignRight );
+	value_max_thickness -> setMaxLength( 2 );
+	value_max_thickness -> setValidator( new QIntValidator( THICKNESS_MAX_MIN, THICKNESS_MAX_MAX, this ) );
+	connect( value_max_thickness, SIGNAL( lostFocus() ), SLOT( slotChangeSliderMaxThickness() ) );
+	connect( value_max_thickness, SIGNAL( returnPressed() ), SLOT( slotChangeSliderMaxThickness() ) );
+
+	value_smoothness = new QLineEdit( "2", containerLineEdits );
+// 	value_smoothness -> resize( 20, 20 );
+// 	value_smoothness -> move( 5, value_max_thickness -> height() + value_max_thickness -> y() + 10 );
+	value_smoothness -> setFont( QFont( QApplication::font().family(), 6 ) );
+	value_smoothness -> setAlignment( Qt::AlignRight );
+	value_smoothness -> setMaxLength( 1 );
+	value_smoothness -> setValidator( new QIntValidator( SMOOTHNESS_MIN, SMOOTHNESS_MAX, this ) );
+	connect( value_smoothness, SIGNAL( textChanged( const QString & ) ), SLOT( slotChangeSliderSmoothness() ) );
+
+
+	
+	
+	
+	 //------------- Operations on Static Texts ----------
+
+	QVBox *containerSlider = new QVBox(containerStaticText);
+	
+	slider_min_thickness = new QSlider( THICKNESS_MIN_MIN, THICKNESS_MIN_MAX, 1, 2, Qt::Horizontal, containerSlider );
+	slider_min_thickness -> setTickmarks( QSlider::Below );
+	slider_min_thickness -> setTickInterval( 10 );
+	connect( slider_min_thickness, SIGNAL( valueChanged( int ) ), SLOT( slotChangeValueMinThickness() ) );
+	text_min_thickness = new QLabel( tr( "Minimum Thickness" ), containerSlider );
+	text_min_thickness -> setFont( QFont( font().family(), 6 ) );
+
+
+	slider_max_thickness = new QSlider( THICKNESS_MAX_MIN, THICKNESS_MAX_MAX, 1, 5, Qt::Horizontal, containerSlider );
+	slider_max_thickness -> setTickmarks( QSlider::Below );
+	slider_max_thickness -> setTickInterval( 10 );
+// 	slider_max_thickness -> resize( 165, 10 );
+// 	slider_max_thickness -> move( text_max_thickness -> x(), text_max_thickness -> y() - 2) ;
+	connect( slider_max_thickness, SIGNAL( valueChanged( int ) ), SLOT( slotChangeValueMaxThickness() ) );
+
+	text_max_thickness = new QLabel( tr( "Maximum Thickness" ), containerSlider);
+	text_max_thickness -> setFont( QFont( "helvetica", 6 ) );
+// 	text_max_thickness -> move( value_max_thickness -> width() + value_max_thickness -> x() + 5, value_max_thickness -> y() );
+
+	
+	
+	slider_smoothness = new QSlider( SMOOTHNESS_MIN, SMOOTHNESS_MAX, 1, 2, Qt::Horizontal, containerSlider );
+	slider_smoothness -> setTickmarks( QSlider::Below );
+// 	slider_smoothness -> resize( 165, 10 );
+// 	slider_smoothness -> move( text_smoothness -> x(), text_smoothness -> y() - 2 );
+	connect( slider_smoothness, SIGNAL( valueChanged( int ) ), SLOT( slotChangeValueSmoothness() ) );
+	text_smoothness = new QLabel( tr( "Smoothness" ), containerSlider );
+	text_smoothness -> setFont( QFont( font().family(), 6 ) );
+// 	text_smoothness -> move( value_smoothness -> width() + value_smoothness -> x() + 5, value_smoothness -> y() );
+
+	
+// 	text_name -> move( 5, value_name -> height() + value_name -> y() + 1 );
+	
+	//------------- Operations on the Sliders -------------
+
+	addChild(containerStaticText);
+}
+
+void Brushes::setupPrevisualizationArea()
+{
+    //---------------- Operations on the  -----------------------
+
+	QHBox *containerPrevisualizationArea = new QHBox(this);
+	QVBox *containerNameBrush = new QVBox(containerPrevisualizationArea);
+	value_name = new QLineEdit( tr( "Brush0" ),  containerNameBrush);
+// 	value_name -> resize( 80, 20 );
+// 	value_name -> move( 5, value_smoothness -> height() + value_smoothness -> y() + 10 + 30 );
+	value_name -> setFont( QFont( font().family(), 8) );
+	value_name -> setAlignment( Qt::AlignLeft );
+	value_name -> setMaxLength( 10 );
+	connect( value_name, SIGNAL( lostFocus() ), SLOT( slotChangeValueName() ) );
+	connect( value_name, SIGNAL( returnPressed() ), SLOT( slotChangeValueName() ) );
+	
+	text_name = new QLabel( tr( "Brush Name" ), containerNameBrush );
+	text_name -> setFont( QFont( font().family(), 7 ) );
+// 	text_name -> resize( 100, 25 );
+	text_name -> setAlignment( Qt::AlignTop );
+	
+	std::auto_ptr<QCanvas> ap_previsualization(new QCanvas( 99, 99 ) );
+	previsualization = ap_previsualization.get(); // DEBUG
+    
+	previsualization_container = new QCanvasView( /*ap_*/previsualization/*.get()*/, containerPrevisualizationArea );
+	previsualization_container -> resize( 103, 103 );
+	previsualization_container -> move( value_name -> x() + value_name -> width() + 5, value_smoothness -> height() + value_smoothness -> y() + 10 );
+	previsualization_container->adjustSize();
+	std::auto_ptr<QCanvasEllipse> ap_circle_max_thickness(new QCanvasEllipse( 5, 5, /*ap_*/previsualization/*.get()*/) );
+	circle_max_thickness = ap_circle_max_thickness.get();
+    
+	QBrush gray_brush = QBrush( QColor( 200, 200, 200 ) ); //For the circle_max_thickness
+	circle_max_thickness -> setBrush( gray_brush );
+	circle_max_thickness -> move( 50.0, 50.0 );
+	circle_max_thickness -> setZ( 0.0 );
+	circle_max_thickness -> show();
+
+	std::auto_ptr<QCanvasEllipse> ap_circle_min_thickness(new QCanvasEllipse( 2, 2, /*ap_*/previsualization/*.get()*/) );
+	circle_min_thickness = ap_circle_min_thickness.get();
+    
+	QBrush black_brush = QBrush( QColor( 0, 0, 0 ), Qt::SolidPattern ); //For the circle_min_thickness
+	circle_min_thickness -> setBrush( black_brush );
+	circle_min_thickness -> move( 50.0, 50.0 );
+	circle_min_thickness -> setZ( 0.5 );
+	circle_min_thickness -> show();
+
+	table_brushes -> setSelected( default_brush, true ); //Select the default brush
+    
+	ap_previsualization.release();
+	ap_circle_max_thickness.release();
+	ap_circle_min_thickness.release();
+	
+	addChild(containerPrevisualizationArea);
 }
 
 //--------------- PUBLIC MEMBERS ---------------

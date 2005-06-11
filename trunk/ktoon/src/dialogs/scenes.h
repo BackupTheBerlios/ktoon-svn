@@ -33,6 +33,11 @@
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qtoolbutton.h>
+#include <qvbox.h>
+#include <qhbox.h>
+
+#include "ktdialogbase.h"
+
 
 class KToon;
 class Scene;
@@ -44,7 +49,7 @@ class Scene;
  * This is a class that contains a QListView that shows the available scenes and provides
  * mechanisms for adding, editing, and removing the scenes or their attributes.
  */
-class Scenes : public QDialog
+class Scenes : public KTDialogBase
 {
     Q_OBJECT
 
@@ -100,9 +105,13 @@ private:
     //Icons
     QPixmap i_insert_scene, i_remove_scene, i_move_scene_up, i_move_scene_down;
 
+    void setupButtons();
+    QHBox *containerButtons;
     //Buttons
     QPushButton *insert_scene, *remove_scene, *move_scene_up, *move_scene_down;
 
+    void setupTableScens();
+    QVBox *containerTableScens;
     //Table that shows the available scenes
     QListView *table_scenes;
 

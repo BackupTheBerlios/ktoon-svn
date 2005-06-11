@@ -1114,6 +1114,7 @@ void DrawingArea::closeEvent( QCloseEvent *close_event )
 			break;
 		case 1:
 			close_event -> accept();
+			modified = false;
 			emit closed();
 			break;
 		default:
