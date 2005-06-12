@@ -28,6 +28,7 @@
 //--------------- CONSTRUCTOR --------------------
 
 Timeline::Timeline( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
+
 	: KTDialogBase( QDockWindow::OutsideDock, parent, "Timeline")
 {
     Q_CHECK_PTR( parent );
@@ -49,7 +50,7 @@ Timeline::Timeline( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu,
 
     splitter = new QSplitter( this );
     splitter -> resize( 790, 130 );
-    splitter -> move( 5, 5 );
+    splitter -> move( 10, 5 );
     QValueList<int> sizes;
     sizes.append( 200 );
     sizes.append( 590 );

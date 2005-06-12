@@ -26,13 +26,15 @@
  * @brief Include this file if you need the class ExposureSheet
  */
 
-#include <qdialog.h>
 #include <qpopupmenu.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
 #include <qlistview.h>
 #include <qptrlist.h>
 #include <qtoolbutton.h>
+#include <qvbox.h>
+#include <qhbox.h>
+
 
 #include "ktdialogbase.h"
 #include "ilayer.h"

@@ -233,22 +233,25 @@ void ColorPalette::setupBlockCustomPalette()
 
 	custom_palette = new CustomPalette( customPaletteV );
 
-	QHBox *customPaletteH = new QHBox(customPaletteV);
-	add_color = new QPushButton( i_add_color, tr( "" ), customPaletteH );
+	QHBox *customPaletteButtons = new QHBox(customPaletteV);
+	
+	
+	add_color = new QPushButton( i_add_color, tr( "" ), customPaletteButtons );
 	add_color -> setAutoDefault( false );
 	add_color -> setFlat( true );
 	QToolTip::add( add_color, tr( "Add Color" ) );
-
-	remove_color = new QPushButton( i_remove_color, tr( "" ), customPaletteH );
+	
+	
+	remove_color = new QPushButton( i_remove_color, tr( "" ), customPaletteButtons );
 	remove_color -> setAutoDefault( false );
 	remove_color -> setFlat( true );
 	QToolTip::add( remove_color, tr( "Remove Color" ) );
 
+	QHBox *customPaletteH = new QHBox(customPaletteV);
 	text_color_name = new QLabel( tr( "Color Name:" ), customPaletteH );
 
 	value_color_name = new QLineEdit( "", customPaletteH );
-	value_color_name -> setFont( QFont( font().family(), 7 ) );
-
+	value_color_name -> setFont( QFont( font().family(), 7 ));
 	addChild(customPaletteV);
 }
 //-------------- PUBLIC MEMBERS -------------------

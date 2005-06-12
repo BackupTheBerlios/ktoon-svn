@@ -48,7 +48,7 @@ ColorMixer::ColorMixer( QWidget *parent ) : QGridView( parent )
 	    tmp_color.setHsv( 360 - j * 4, 255 - i * 3, 255 );
             color_matrix[i][j] = tmp_color;
         }
-	setMaximumSize(90, 70);
+	setMaximumSize(100, 100);
 	adjustSize();
 }
 

@@ -43,7 +43,7 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     //Initializations
     setCaption( tr( "Exposure Sheet" ) );
 //     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-    resize( 230, 440 );
+    setMaximumSize( 230, 500 );
     parent_widget = parent;
     assigned_menu = in_assigned_menu;
     assigned_item = id_assigned_item;
@@ -64,28 +64,30 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     i_layer_visibility = QPixmap( show_hide_all_layers_xpm );
 
     //------------- Operations on the Buttons -----------------
-
-    insert_layer = new QPushButton( i_insert_layer, tr( "" ), this );
-    insert_layer -> resize( 20, 20 );
-    insert_layer -> move( 5, 5 );
+    QHBox *containerButtons = new QHBox(this);
+    insert_layer = new QPushButton( i_insert_layer, tr( "" ), containerButtons );
+    insert_layer -> setMaximumSize( 20, 20 );
+//     insert_layer -> move( 5, 5 );
     insert_layer -> setAutoDefault( false );
     insert_layer -> setFlat( true );
     insert_layer -> setFocusPolicy( QWidget::NoFocus );
     connect( insert_layer, SIGNAL( clicked() ), SLOT( slotInsertLayer() ) );
     QToolTip::add( insert_layer, tr( "Insert Layer" ) );
 
-    remove_layer = new QPushButton( i_remove_layer, tr( "" ), this );
-    remove_layer -> resize( 20, 20 );
-    remove_layer -> move( 30, 5 );
+    remove_layer = new QPushButton( i_remove_layer, tr( "" ), containerButtons );
+    //FIXME: Take size pixmap for this
+    remove_layer ->  setMaximumSize( 20, 20 );
+    
+//     remove_layer -> move( 30, 5 );
     remove_layer -> setAutoDefault( false );
     remove_layer -> setFlat( true );
     remove_layer -> setFocusPolicy( QWidget::NoFocus );
     connect( remove_layer, SIGNAL( clicked() ), SLOT( slotRemoveLayer() ) );
     QToolTip::add( remove_layer, tr( "Remove Layer" ) );
 
-    layer_visibility = new QPushButton( i_layer_visibility, tr( "" ), this );
-    layer_visibility -> resize( 20, 20 );
-    layer_visibility -> move( 55, 5 );
+    layer_visibility = new QPushButton( i_layer_visibility, tr( "" ), containerButtons );
+    layer_visibility ->  setMaximumSize( 20, 20 );
+//     layer_visibility -> move( 55, 5 );
     layer_visibility -> setAutoDefault( false );
     layer_visibility -> setFlat( true );
     layer_visibility -> setAutoRepeat( false );
@@ -94,36 +96,36 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     connect( layer_visibility, SIGNAL( toggled( bool ) ), SLOT( slotLayerVisibility( bool ) ) );
     QToolTip::add( layer_visibility, tr( "Manage the layer visibility" ) );
 
-    insert_frame = new QPushButton( i_insert_frame, tr( "" ), this );
-    insert_frame -> resize( 20, 20 );
-    insert_frame -> move( 80, 5 );
+    insert_frame = new QPushButton( i_insert_frame, tr( "" ), containerButtons );
+    insert_frame ->  setMaximumSize( 20, 20 );
+//     insert_frame -> move( 80, 5 );
     insert_frame -> setAutoDefault( false );
     insert_frame -> setFlat( true );
     insert_frame -> setFocusPolicy( QWidget::NoFocus );
     connect( insert_frame, SIGNAL( clicked() ), SLOT( slotInsertFrame() ) );
     QToolTip::add( insert_frame, tr( "Insert Keyframes" ) );
 
-    remove_frame = new QPushButton( i_remove_frame, tr( "" ), this );
-    remove_frame -> resize( 20, 20 );
-    remove_frame -> move( 105, 5 );
+    remove_frame = new QPushButton( i_remove_frame, tr( "" ), containerButtons );
+    remove_frame ->  setMaximumSize( 20, 20 );
+//     remove_frame -> move( 105, 5 );
     remove_frame -> setAutoDefault( false );
     remove_frame -> setFlat( true );
     remove_frame -> setFocusPolicy( QWidget::NoFocus );
     connect( remove_frame, SIGNAL( clicked() ), SLOT( slotRemoveFrame() ) );
     QToolTip::add( remove_frame, tr( "Remove Keyframe" ) );
 
-    lock_frame = new QPushButton( i_lock_frame, tr( "" ), this );
-    lock_frame -> resize( 20, 20 );
-    lock_frame -> move( 130, 5 );
+    lock_frame = new QPushButton( i_lock_frame, tr( "" ), containerButtons );
+    lock_frame ->  setMaximumSize( 20, 20 );
+//     lock_frame -> move( 130, 5 );
     lock_frame -> setAutoDefault( false );
     lock_frame -> setFlat( true );
     lock_frame -> setFocusPolicy( QWidget::NoFocus );
     connect( lock_frame, SIGNAL( clicked() ), SLOT( slotLockFrame() ) );
     QToolTip::add( lock_frame, tr( "Lock Frame" ) );
 
-    move_frame_up = new QPushButton( i_move_frame_up, tr( "" ), this );
-    move_frame_up -> resize( 20, 20 );
-    move_frame_up -> move( 155, 5 );
+    move_frame_up = new QPushButton( i_move_frame_up, tr( "" ), containerButtons );
+    move_frame_up ->  setMaximumSize( 20, 20 );
+//     move_frame_up -> move( 155, 5 );
     move_frame_up -> setAutoDefault( false );
     move_frame_up -> setFlat( true );
     move_frame_up -> setAutoRepeat( true );
@@ -131,25 +133,29 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     connect( move_frame_up, SIGNAL( clicked() ), SLOT( slotMoveFrameUp() ) );
     QToolTip::add( move_frame_up, tr( "Move Keyframe Up" ) );
 
-    move_frame_down = new QPushButton( i_move_frame_down, tr( "" ), this );
-    move_frame_down -> resize( 20, 20 );
-    move_frame_down -> move( 180, 5 );
+    move_frame_down = new QPushButton( i_move_frame_down, tr( "" ), containerButtons );
+    move_frame_down ->  setMaximumSize( 20, 20 );
+//     move_frame_down -> move( 180, 5 );
     move_frame_down -> setAutoDefault( false );
     move_frame_down -> setFlat( true );
     move_frame_down -> setAutoRepeat( true );
     move_frame_down -> setFocusPolicy( QWidget::NoFocus );
     connect( move_frame_down, SIGNAL( clicked() ), SLOT( slotMoveFrameDown() ) );
     QToolTip::add( move_frame_down, tr( "Move Keyframe Down" ) );
-
+    containerButtons->adjustSize();
+    addChild(containerButtons);
+    
+    
+    
     //--------------- Operations on the Scroll Area -------------------------
 
     scroll_area_container = new QScrollView( this );
     scroll_area = new QFrame( scroll_area_container -> viewport() );
     scroll_area -> resize( 2000, ( MAX_NUMBER_OF_FRAMES * 25 ) + 50 );
     scroll_area_container -> addChild( scroll_area );
-    scroll_area_container -> resize( 190, 400 );
-    scroll_area_container -> move( 5, remove_layer -> y() + remove_layer -> height() + 5 );
-
+//     scroll_area_container -> resize( 190, 400 );
+//     scroll_area_container -> move( 5, remove_layer -> y() + remove_layer -> height() + 5 );
+    addChild(scroll_area_container);
     //--------------- Operations on the Default Components ----------------------
 
     ESLayer *default_layer = new ESLayer( tr( "Layer" ) + QString( "1" ), scroll_area, this );
