@@ -215,14 +215,14 @@ void DrawingArea::paintGL()
 	if ( !graphic_list.isEmpty() /*&& k_toon -> timeline() != NULL && k_toon -> exposureSheet() != NULL*/ )
 	{
 		emit wasDrawn( true );
-// 		if ( k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() != NULL )
-// 			k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> setHasDrawing( true );
+		if ( KTStatus -> currentILayer() -> selectedFrame() != NULL )
+			KTStatus -> currentILayer() -> selectedFrame() -> setHasDrawing( true );
 	}
 	else if ( graphic_list.isEmpty() /*&& k_toon -> timeline() != NULL && k_toon -> exposureSheet() != NULL*/ )
 	{
 		emit wasDrawn( false );
-// 		if ( k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() != NULL )
-// 			k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> setHasDrawing( false );
+		if ( KTStatus -> currentILayer() -> selectedFrame() != NULL )
+			KTStatus -> currentILayer() -> selectedFrame() -> setHasDrawing( false );
 	}
 	glEnable( GL_DEPTH_TEST );
 	

@@ -27,21 +27,21 @@
 
 GLImage::GLImage( QGLWidget *parent, const QString &_file_name, const QPoint &_origin, const QPoint &_end ) : GLGraphicComponent( parent, _origin, Color(), Brush() ), file_name( _file_name ), end( _end )
 {
-    Q_CHECK_PTR( parent );
+	Q_CHECK_PTR( parent );
 
-    setKindGraphic( GC_IMAGE );
-    rotation_angle = 0.0;
-    translate.setX( 0 );
-    translate.setY( 0 );
-    local_selection_name = selection_name;
+	setKindGraphic( GC_IMAGE );
+	rotation_angle = 0.0;
+	translate.setX( 0 );
+	translate.setY( 0 );
+	local_selection_name = selection_name;
 
-    glEnable( GL_TEXTURE_2D );
-    id_texture = loadTexture( file_name );
-    glDisable( GL_TEXTURE_2D );
+	glEnable( GL_TEXTURE_2D );
+	id_texture = loadTexture( file_name );
+	glDisable( GL_TEXTURE_2D );
 
-    id_graphic_component = glGenLists( 1 );
+	id_graphic_component = glGenLists( 1 );
 
-    buildList();
+	buildList();
 }
 
 //------------- DESTRUCTOR ------------------
@@ -56,23 +56,23 @@ GLImage::~GLImage()
 void GLImage::buildList()
 {
 	glNewList( id_graphic_component, GL_COMPILE );
-		glPushName( GLGraphicComponent::selection_name++ );
- 		glEnable( GL_TEXTURE_2D );
-		glBindTexture( GL_TEXTURE_2D, id_texture );
-		glColor4f( 0.0, 0.0, 0.0, 0.0 );
+	glPushName( GLGraphicComponent::selection_name++ );
+	glEnable( GL_TEXTURE_2D );
+	glBindTexture( GL_TEXTURE_2D, id_texture );
+	glColor4f( 0.0, 0.0, 0.0, 0.0 );
 
-		glBegin( GL_QUADS );
-			glTexCoord2f( 0, 1 );
-			glVertex2f( origin.x(), origin.y() );
-			glTexCoord2f( 1, 1 );
-			glVertex2f(  end.x(), origin.y() );
-			glTexCoord2f( 1, 0 );
-			glVertex2f(  end.x(), end.y() );
-			glTexCoord2f( 0, 0 );
-			glVertex2f( origin.x(), end.y() );
-		glEnd();
-		glDisable( GL_TEXTURE_2D );
-		glPopName();
+	glBegin( GL_QUADS );
+	glTexCoord2f( 0, 1 );
+	glVertex2f( origin.x(), origin.y() );
+	glTexCoord2f( 1, 1 );
+	glVertex2f(  end.x(), origin.y() );
+	glTexCoord2f( 1, 0 );
+	glVertex2f(  end.x(), end.y() );
+	glTexCoord2f( 0, 0 );
+	glVertex2f( origin.x(), end.y() );
+	glEnd();
+	glDisable( GL_TEXTURE_2D );
+	glPopName();
 	glEndList();
 }
 
@@ -84,7 +84,7 @@ void GLImage::setEndImage( const QPoint &_end )
 
 void GLImage::setFillColor( const Color & _fill_color )
 {
-  fill_color = _fill_color;
+	fill_color = _fill_color;
 
 //	glPushName( GLGraphicComponent::selection_name++ );
 //	glDisable( GL_TEXTURE_2D );
@@ -92,63 +92,65 @@ void GLImage::setFillColor( const Color & _fill_color )
 	glPolygonOffset( 0, -2 );
 	glEnable( GL_BLEND );
 	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+	
 #ifdef GL_ARB_imaging
 	glBlendEquation( GL_FUNC_ADD );
 #endif
+
 	glColor4f( fillColor().colorRed(), fillColor().colorGreen(),
-		   fillColor().colorBlue(), fillColor().colorAlpha() );
+	fillColor().colorBlue(), fillColor().colorAlpha() );
 	glBegin( GL_QUADS );
-		glTexCoord2f( 0, 1 );
-		glVertex2f( origin.x(), origin.y() );
-		glTexCoord2f( 1, 1 );
-		glVertex2f(  end.x(), origin.y() );
-		glTexCoord2f( 1, 0 );
-		glVertex2f(  end.x(), end.y() );
-		glTexCoord2f( 0, 0 );
-		glVertex2f( origin.x(), end.y() );
+	glTexCoord2f( 0, 1 );
+	glVertex2f( origin.x(), origin.y() );
+	glTexCoord2f( 1, 1 );
+	glVertex2f(  end.x(), origin.y() );
+	glTexCoord2f( 1, 0 );
+	glVertex2f(  end.x(), end.y() );
+	glTexCoord2f( 0, 0 );
+	glVertex2f( origin.x(), end.y() );
 	glEnd();
 //	glEnable( GL_TEXTURE_2D );
 	glDisable( GL_POLYGON_OFFSET_FILL );
 	glDisable( GL_BLEND );
 //	glPopName();
 
-  buildList();
+	buildList();
 }
 
 void GLImage::calculateTopLeft()
 {
-   if ( originPoint().x() < endImage().x() )
-     {
-       	if ( originPoint().y() < endImage().y() )
-            setTopLeft( originPoint() );
+	if ( originPoint().x() < endImage().x() )
+	{
+		if ( originPoint().y() < endImage().y() )
+			setTopLeft( originPoint() );
+		else
+			setTopLeft( QPoint( originPoint().x(), endImage().y() ) );
+	}
 	else
-	    setTopLeft( QPoint( originPoint().x(), endImage().y() ) );
-     }
-   else
-     {
-       	if ( originPoint().y() > endImage().y() )
-	    setTopLeft( endImage() );
-	else
-            setTopLeft( QPoint( endImage().x(), originPoint().y() ) );
-     }
+	{
+		if ( originPoint().y() > endImage().y() )
+			setTopLeft( endImage() );
+		else
+			setTopLeft( QPoint( endImage().x(), originPoint().y() ) );
+	}
 }
 
 void GLImage::calculateBottomRight()
 {
-   if ( originPoint().x() > endImage().x() )
-     {
-       	if ( originPoint().y() > endImage().y() )
-            setBottomRight( originPoint() );
+	if ( originPoint().x() > endImage().x() )
+	{
+		if ( originPoint().y() > endImage().y() )
+			setBottomRight( originPoint() );
+		else
+			setBottomRight( QPoint( originPoint().x(), endImage().y()) );
+	}
 	else
-	    setBottomRight( QPoint( originPoint().x(), endImage().y()) );
-     }
-   else
-     {
-       	if ( originPoint().y() < endImage().y() )
- 	    setBottomRight( endImage() );
- 	else
-            setBottomRight( QPoint( endImage().x(), originPoint().y() ) );
-     }
+	{
+		if ( originPoint().y() < endImage().y() )
+			setBottomRight( endImage() );
+		else
+			setBottomRight( QPoint( endImage().x(), originPoint().y() ) );
+	}
 }
 
 QPoint GLImage::endImage() const
@@ -158,11 +160,11 @@ QPoint GLImage::endImage() const
 
 QString GLImage::clipboardGraphic()
 {
-    QString graphic;
-    graphic = ( graphic.setNum( kindGraphic() ) + " " + graphic.setNum( originPoint().x() ) + " " +
-                graphic.setNum( originPoint().y() ) + " " + graphic.setNum( endImage().x() ) + " " +
-	        graphic.setNum( endImage().y() ) );
-    return graphic;
+	QString graphic;
+	graphic = ( graphic.setNum( kindGraphic() ) + " " + graphic.setNum( originPoint().x() ) + " " +
+			graphic.setNum( originPoint().y() ) + " " + graphic.setNum( endImage().x() ) + " " +
+			graphic.setNum( endImage().y() ) );
+	return graphic;
 }
 
 Color GLImage::fillColor() const
@@ -172,26 +174,26 @@ Color GLImage::fillColor() const
 
 QDomElement GLImage::createXML( QDomDocument &doc )
 {
-    QDomElement e = doc.createElement( "Image" );
+	QDomElement e = doc.createElement( "Image" );
 
     //----------- Properties inherited from GLGraphicComponent ----------
 
-    e.setAttribute( "Kind", kind_graphic );
-    e.setAttribute( "Id", id_graphic_component );
+	e.setAttribute( "Kind", kind_graphic );
+	e.setAttribute( "Id", id_graphic_component );
 
-    QDomElement origin_tag = doc.createElement( "Origin" );
-    origin_tag.setAttribute( "X", origin.x() );
-    origin_tag.setAttribute( "Y", origin.y() );
-    e.appendChild( origin_tag );
+	QDomElement origin_tag = doc.createElement( "Origin" );
+	origin_tag.setAttribute( "X", origin.x() );
+	origin_tag.setAttribute( "Y", origin.y() );
+	e.appendChild( origin_tag );
 
     //----------- Special Properties ----------------
 
-    QDomElement end_tag = doc.createElement( "End" );
-    end_tag.setAttribute( "X", end.x() );
-    end_tag.setAttribute( "Y", end.y() );
-    e.appendChild( end_tag );
+	QDomElement end_tag = doc.createElement( "End" );
+	end_tag.setAttribute( "X", end.x() );
+	end_tag.setAttribute( "Y", end.y() );
+	e.appendChild( end_tag );
 
-    return e;
+	return e;
 }
 
 GLuint GLImage::loadTexture( const QString & filename )
@@ -200,7 +202,7 @@ GLuint GLImage::loadTexture( const QString & filename )
 
 	QImage image, image2;
 	if ( image.load( filename.latin1() ) == false )
-	     qDebug( "Can't load the image" + filename );
+		qDebug( "Can't load the image" + filename );
 
 	end = image.rect().bottomRight();
 
@@ -230,5 +232,5 @@ GLuint GLImage::loadTexture( const QString & filename )
 
 	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, image2.width(), image2.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, texture );
 
-        return _id_texture;
+	return _id_texture;
 }

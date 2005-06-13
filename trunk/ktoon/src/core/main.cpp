@@ -115,6 +115,15 @@ int main( int argc, char ** argv )
 	
 	application.connect( &application, SIGNAL( lastWindowClosed() ), &application, SLOT( quit()) );
 	
+	if ( QGLFormat::hasOpenGLOverlays () )
+	{
+		std::cout << "OpenGL detected :)" << std::endl;
+	}
+	else
+	{
+		std::cout << "OpenGL not detected" << std::endl;
+	}
+	
 	return application.exec();
 }
 

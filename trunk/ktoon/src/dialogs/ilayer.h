@@ -37,7 +37,7 @@
  * <b>Date of Creation: June 7 - 2004.</b>\n
  * See the Public Members for an idea of what this class is done for.
  */
-class ILayer
+class ILayer : public QObject
 {
 
 public:

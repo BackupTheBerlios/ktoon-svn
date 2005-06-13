@@ -92,7 +92,7 @@ class KToon: public QMainWindow
 		*/
 		Timeline *timeline();
 	
-		/**2
+		/**
 		*  Gets the current exposure sheet dialog
 		*
 		* @return A pointer to the current exposure sheet dialog

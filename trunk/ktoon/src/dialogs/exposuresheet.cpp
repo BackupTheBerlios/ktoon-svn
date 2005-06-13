@@ -168,12 +168,14 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     std::auto_ptr<ILayer> ap_default_layer_obj(new ILayer( 1, default_layer ) );
     ILayer *default_layer_obj = ap_default_layer_obj.get();
     
+    KTStatus->setCurrentILayer(default_layer_obj);
+    
     list_of_layers.append( default_layer_obj );
     QPtrList<ESFrame> default_layer_frame_list;
     first_layer = default_layer;
 
     QLabel *frame_enumeration = new QLabel( "1", scroll_area );
-    frame_enumeration -> setFont( QFont( "Helvetica", 10, QFont::Bold ) );
+    frame_enumeration -> setFont( QFont( "Helvetica", 6, QFont::Bold ) );
     frame_enumeration -> setAlignment( Qt::AlignCenter );
     frame_enumeration -> resize( 25, 25 );
     frame_enumeration -> move( insert_layer -> x(), default_layer -> y() + default_layer -> height() );
@@ -188,10 +190,8 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
 
     for ( int i = 2; i <= MAX_NUMBER_OF_FRAMES; i++ )
     {
-        QString frame_number;
-	frame_number.setNum( i );
-    	QLabel *frame_enumeration = new QLabel( frame_number, scroll_area );
-    	frame_enumeration -> setFont( QFont( "Helvetica", 10, QFont::Bold ) );
+	QLabel *frame_enumeration = new QLabel( QString::number(i), scroll_area );
+    	frame_enumeration -> setFont( QFont( "Helvetica", 6, QFont::Bold ) );
     	frame_enumeration -> setAlignment( Qt::AlignCenter );
     	frame_enumeration -> resize( 25, 25 );
     	frame_enumeration -> move( insert_layer -> x(), default_layer -> y() + default_layer -> height() * i );
@@ -313,14 +313,14 @@ void ExposureSheet::loadLayersAndKeyframes( QPtrList<Layer> layers )
 	connect( new_layer, SIGNAL( clicked() ), SLOT( slotSelectLayer() ) );
 	connect( new_layer, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameLayer( const QString & ) ) );
 	ILayer *new_layer_obj = new ILayer( 0, new_layer );
-	try {
+	// 	try { // bullshit, QPtrList never throw exceptions...
 	list_of_layers.append( new_layer_obj );
-	}
-	catch(...)
-	    {
-	    delete new_layer_obj;
-	    throw;
-	    }
+// 	}
+// 	catch(...)
+// 	    {
+// 	    delete new_layer_obj;
+// 	    throw;
+// 	    }
 	number_of_layers++;
 
     	QCheckListItem *new_layer_v = new QCheckListItem( visibility_list, visibility_list -> lastItem(), l_it -> nameLayer(), QCheckListItem::CheckBox );
@@ -1455,6 +1455,8 @@ ILayer *ExposureSheet::findCurrentLayerObj()
 	if ( layer_iterator -> interfaceElement() == current_layer )
 	      current_layer_obj = layer_iterator;
     }
+    
+    KTStatus->setCurrentILayer(current_layer_obj);
 
     Q_CHECK_PTR( current_layer_obj );
     return current_layer_obj;

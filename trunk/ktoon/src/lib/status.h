@@ -33,6 +33,7 @@
 #include "color.h"
 #include "scene.h"
 #include "layer.h"
+#include "ilayer.h"
 #include "keyframe.h"
 #include "soundclip.h"
 #include "glgraphiccomponent.h"
@@ -129,6 +130,9 @@ class Status : public QObject
 		* @param layer The new current layer
 		*/
 		void setCurrentLayer( Layer *layer );
+			 
+			 
+		void setCurrentILayer (ILayer *ilayer);
 		/**
 		* @brief Sets a new current keyframe
 		*
@@ -239,6 +243,13 @@ class Status : public QObject
 		* @return The current layer
 		*/
 		Layer *currentLayer();
+			 
+			 
+		/**
+		 *  Gets the current ilayer
+		 * @return 
+		 */
+		ILayer *currentILayer();
 		/**
 		* @brief Gets the current keyframe
 		*
@@ -321,6 +332,7 @@ class Status : public QObject
 		Brush *current_brush;
 		Scene *current_scene;
 		Layer *current_layer;
+		ILayer *m_currentILayer;
 		KeyFrame *current_keyframe;
 		KeyFrame *current_timeline_keyframe;
 		SoundClip *current_soundclip;

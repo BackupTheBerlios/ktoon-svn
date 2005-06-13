@@ -77,8 +77,6 @@ void Status::setupDrawingArea(QWorkspace *ws)
 	m_currentDrawingArea -> show();
 	m_currentDrawingArea -> setActiveWindow();
 #else
-	m_currentDrawingArea = new DrawingAreaQt(ws)
-	
 	m_currentDrawingArea = new DrawingAreaQt( ws, tr( "Document" ) + QString( "1" ) );
 	m_currentDrawingArea -> resize( 641, 481 );
 	m_currentDrawingArea -> move( 146, 8 );
@@ -195,6 +193,11 @@ void Status::setCurrentLayer( Layer *layer )
     current_layer = layer;
 }
 
+void Status::setCurrentILayer(ILayer *ilayer)
+{
+	m_currentILayer = ilayer;
+}
+
 void Status::setCurrentKeyFrame( KeyFrame *keyframe )
 {
     current_keyframe = keyframe;
@@ -285,6 +288,11 @@ Scene* Status::currentScene()
 Layer* Status::currentLayer()
 {
     return current_layer;
+}
+
+ILayer *Status::currentILayer()
+{
+	return m_currentILayer;
 }
 
 KeyFrame* Status::currentKeyFrame()

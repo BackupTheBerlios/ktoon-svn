@@ -53,7 +53,7 @@ public:
      * @param grandparent The grandparent widget
      * @param name The document name
      */
-    DrawingAreaQt( QWidget *parent, QWidget *grandparent, const QString &name );
+    DrawingAreaQt( QWidget *parent, const QString &name );
     /**
      * @brief Default Destructor
      *
@@ -62,7 +62,7 @@ public:
     ~DrawingAreaQt();
 
 private:
-    QWidget *parent_widget, *grandparent_widget;
+    QWidget *parent_widget;
     QCanvas *_canvas;
     QtGrid *canvas_grid;
     KToon *k_toon;

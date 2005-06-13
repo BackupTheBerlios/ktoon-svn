@@ -53,7 +53,6 @@ INCLUDEPATH += ../../src/dialogs \
                ../../src/images/icons \
                ../../src/images/cursors \
                ../../src/images/images 
-DEFINES = KTHOME=\"$(KTOON_HOME)\" 
 TARGET = ../../bin/ktoon 
 CONFIG += release \
           warn_on \

@@ -31,13 +31,12 @@
 
 //--------------- CONSTRUCTOR --------------
 
-DrawingAreaQt::DrawingAreaQt( QWidget *parent, QWidget *grandparent, const QString &name ) 
+DrawingAreaQt::DrawingAreaQt( QWidget *parent, const QString &name ) 
 	: QCanvasView( parent )
 {
     parent_widget = parent;
-    grandparent_widget = grandparent;
     setMinimumSize( 160, 120 );
-    k_toon = ( KToon * )grandparent_widget;
+
     dragging = false;
     drawing_pen = false;
     applying_bezier = false;

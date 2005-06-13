@@ -38,7 +38,7 @@
  * <b>Date of Creation: June 24 - 2004.</b>\n
  * This is a class that manages the Layer storing scheme. It provides a list of KeyFrames.
  */
-class Layer
+class Layer : public QObject
 {
 
 public:
