@@ -31,6 +31,8 @@
 class Item;
 class QDomDocument;
 class QDomElement;
+class GLGraphicComponent;
+
 
 /**
  * @brief Class that contains information about the graphic library
@@ -72,6 +74,8 @@ public:
      * @sa setItems()
      */
     QPtrList<Item> getItems() const;
+	     
+    void addSymbol( GLGraphicComponent *graphic, const QString &name );
 
     /**
      * @brief Creates an XML tag for this object

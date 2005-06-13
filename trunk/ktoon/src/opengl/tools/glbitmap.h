@@ -30,7 +30,7 @@
 #include <qgl.h>
 
 #include "glgraphiccomponent.h"
-#include "color.h"
+#include "ktcolor.h"
 
 /**
  * @brief Class that represents the drawing area's bitmap object

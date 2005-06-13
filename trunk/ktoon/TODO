@@ -3,5 +3,13 @@ This file contains the task
 * Add a limit for history (undo/redo)
 * Add a standar Changelog
 * Write a codification standar
+* Reformatting the code
+* Make separation between GUI and Logic
 * Split the class Ktoon and friends
+* Add a debug framework, with log option
+* to Improve the preferences
+* Improve the illustration mode
+* Make a framework for extend ktoon easyly
+* Change the splash and background pixmap
+* Complete the 2d illustration mode
 

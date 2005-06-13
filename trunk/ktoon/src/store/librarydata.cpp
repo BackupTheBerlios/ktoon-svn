@@ -22,6 +22,9 @@
 
 #include "item.h"
 #include "librarydata.h"
+#include "glgraphiccomponent.h"
+#include "symbol.h"
+#include "status.h"
 
 //-------------- CONSTRUCTOR ---------------
 
@@ -51,6 +54,68 @@ QPtrList<Item> LibraryData::getItems() const
     return items;
 }
 
+void LibraryData::addSymbol( GLGraphicComponent *graphic, const QString &name )
+{
+	Q_CHECK_PTR( graphic );
+	
+	QPtrList<Item> its = getItems();
+    
+	std::auto_ptr<Symbol> ap_new_symbol(new Symbol);
+	Symbol* new_symbol = ap_new_symbol.get();
+    
+	new_symbol -> setName( name );
+
+	switch ( graphic -> kindGraphic() )
+	{
+		case GLGraphicComponent::GC_BRUSH:
+		{
+			GLBrush *b = new GLBrush( *( ( GLBrush * )graphic ) );
+			new_symbol -> setGraphic( b );
+		}
+		break;
+		case GLGraphicComponent::GC_PENCIL:
+		{
+			GLPencil *pc = new GLPencil( *( ( GLPencil * )graphic ) );
+			new_symbol -> setGraphic( pc );
+		}
+		break;
+		case GLGraphicComponent::GC_LINE:
+		{
+			GLLine *l = new GLLine( *( ( GLLine * )graphic ) );
+			new_symbol -> setGraphic( l );
+		}
+		break;
+		case GLGraphicComponent::GC_PEN:
+		{
+			GLPen *p = new GLPen( *( ( GLPen * )graphic ) );
+			new_symbol -> setGraphic( p );
+		}
+		break;
+		case GLGraphicComponent::GC_RECTANGLE:
+		{
+			GLRectangle *r = new GLRectangle( *( ( GLRectangle * )graphic ) );
+			new_symbol -> setGraphic( r );
+		}
+		break;
+		case GLGraphicComponent::GC_ELLIPSE:
+		{
+			GLEllipse *e = new GLEllipse( *( ( GLEllipse * )graphic ) );
+			new_symbol -> setGraphic( e );
+		}
+		break;
+		default:
+		new_symbol -> setGraphic( NULL );
+		break;
+	}
+
+// 	KTStatus->currentDrawingArea() -> modifyDocument( true );
+
+	its.prepend( new_symbol );
+	
+	setItems( its );
+	ap_new_symbol.release();
+}
+
 QDomElement LibraryData::createXML( QDomDocument &doc )
 {
     QDomElement e = doc.createElement( "Library" );
@@ -66,3 +131,6 @@ QDomElement LibraryData::createXML( QDomDocument &doc )
 
     return e;
 }
+
+
+

@@ -30,7 +30,7 @@
 #include <qcolor.h>
 #include <qdom.h>
 
-#include "color.h"
+#include "ktcolor.h"
 #include "brush.h"
 
 /**

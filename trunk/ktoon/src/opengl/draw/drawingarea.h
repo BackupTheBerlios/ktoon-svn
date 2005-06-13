@@ -43,7 +43,7 @@
 #include "glbrush.h"
 #include "glimage.h"
 #include "gldrawing.h"
-#include "color.h"
+#include "ktcolor.h"
 
 class QPopupMenu;
 class GLDrawing;

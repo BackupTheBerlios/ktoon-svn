@@ -92,22 +92,22 @@ void Status::setupDrawingArea(QWorkspace *ws)
 Status::~Status()
 {
 	qDebug("[Destroying Status]");
-    render_camera_frames.clear();
-    if(current_outline_color == current_fill_color)
-       {
-       std::cerr << "\ncurrent_outline_color == current_fill_color!\n";
-       }
-    else
-      {
-      delete current_outline_color;
-      }
+	render_camera_frames.clear();
+	if(current_outline_color == current_fill_color)
+	{
+		std::cerr << "\ncurrent_outline_color == current_fill_color!\n";
+	}
+	else
+	{
+		delete current_outline_color;
+	}
 
-    delete current_fill_color;
-    delete current_scene;
-    delete current_layer;
-    delete current_keyframe;
-    delete current_timeline_keyframe;
-    delete current_soundclip;
+	delete current_fill_color;
+	delete current_scene;
+	delete current_layer;
+	delete current_keyframe;
+	delete current_timeline_keyframe;
+	delete current_soundclip;
 }
 
 //------------ PUBLIC MEMBERS ---------------

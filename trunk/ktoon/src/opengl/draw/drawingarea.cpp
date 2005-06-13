@@ -1027,7 +1027,7 @@ void DrawingArea::keyPressEvent( QKeyEvent *key_event )
 	{
 		using_hand = true;
 		previous_cursor = KTStatus -> currentCursor();
-// 		k_toon -> slotHand();
+// 		k_toon -> slotHand(); //FIXME: krawek
 	}
 	if ( key_event -> key() == Qt::Key_Shift )
 	{
@@ -1840,20 +1840,20 @@ void DrawingArea::slotBringToFront()
 {
 	if( current_graphic )
 	{
-	modifyDocument( true );
-	GLGraphicComponent *graphic;
+		modifyDocument( true );
+		GLGraphicComponent *graphic;
 		GLfloat z = current_graphic -> getZ();
-	for ( graphic = graphic_list.first(); graphic; graphic = graphic_list.next() )
+		for ( graphic = graphic_list.first(); graphic; graphic = graphic_list.next() )
 		{
-		if ( graphic -> getZ() > z)
-			z = graphic -> getZ();
-		if ( graphic == current_graphic )
-			current_graphic = graphic_list.take();
+			if ( graphic -> getZ() > z)
+				z = graphic -> getZ();
+			if ( graphic == current_graphic )
+				current_graphic = graphic_list.take();
 		}
-	if ( z != current_graphic -> getZ() )
-		current_graphic -> setZ( z + 0.0001 );
-	graphic_list.append( current_graphic );
-	KTStatus -> currentKeyFrame() -> getDrawing() -> setGraphicComponents( graphic_list );
+		if ( z != current_graphic -> getZ() )
+			current_graphic -> setZ( z + 0.0001 );
+		graphic_list.append( current_graphic );
+		KTStatus -> currentKeyFrame() -> getDrawing() -> setGraphicComponents( graphic_list );
 	}
 	
 	updateGL();
@@ -1958,16 +1958,16 @@ void DrawingArea::slotAlignRight()
 {
 	if ( current_graphic_list.count() !=0 )
 	{
-	GLGraphicComponent *graphic;
-	modifyDocument( true );
-	for ( graphic = current_graphic_list.first(); graphic; graphic = current_graphic_list.next() )
+		GLGraphicComponent *graphic;
+		modifyDocument( true );
+		for ( graphic = current_graphic_list.first(); graphic; graphic = current_graphic_list.next() )
 		{
-		graphic -> calculateBottomRight();
-		QPoint point = QPoint( graphic -> bottomRight() );
-		int x = graphic -> getTranslate().x();
-		graphic -> translateGraphic( -x, 0 );
-		x = maxHorizontal();
-		graphic -> translateGraphic( ( x - ( point.x() ) ), 0 );
+			graphic -> calculateBottomRight();
+			QPoint point = QPoint( graphic -> bottomRight() );
+			int x = graphic -> getTranslate().x();
+			graphic -> translateGraphic( -x, 0 );
+			x = maxHorizontal();
+			graphic -> translateGraphic( ( x - ( point.x() ) ), 0 );
 		}
 	}
 }
@@ -1999,15 +1999,15 @@ void DrawingArea::slotAlignLeft()
 {
 	if ( graphic_list.count() !=0 )
 	{
-	GLGraphicComponent *graphic;
-	modifyDocument( true );
-	for ( graphic = current_graphic_list.first(); graphic; graphic = current_graphic_list.next() )
+		GLGraphicComponent *graphic;
+		modifyDocument( true );
+		for ( graphic = current_graphic_list.first(); graphic; graphic = current_graphic_list.next() )
 		{
-		graphic -> calculateTopLeft();
-		QPoint point = QPoint( graphic -> topLeft() );
-		int x = graphic -> getTranslate().x();
-		graphic -> translateGraphic( -x, 0 );
-		graphic -> translateGraphic( -( point.x() ), 0 );
+			graphic -> calculateTopLeft();
+			QPoint point = QPoint( graphic -> topLeft() );
+			int x = graphic -> getTranslate().x();
+			graphic -> translateGraphic( -x, 0 );
+			graphic -> translateGraphic( -( point.x() ), 0 );
 		}
 	}
 }
@@ -2035,9 +2035,9 @@ void DrawingArea::slotCenterHorizontally()
 {
 	if ( current_graphic_list.count() !=0 )
 	{
-	GLGraphicComponent *graphic;
-	modifyDocument( true );
-	for ( graphic = current_graphic_list.first(); graphic; graphic = current_graphic_list.next() )
+		GLGraphicComponent *graphic;
+		modifyDocument( true );
+		for ( graphic = current_graphic_list.first(); graphic; graphic = current_graphic_list.next() )
 		{
 			graphic -> calculateTopLeft();
 			graphic -> calculateBottomRight();
@@ -2057,16 +2057,16 @@ void DrawingArea::slotAlignBottom()
 {
 	if ( current_graphic_list.count() !=0 )
 	{
-	GLGraphicComponent *graphic;
-	modifyDocument( true );
-	for ( graphic = current_graphic_list.first(); graphic; graphic = current_graphic_list.next() )
+		GLGraphicComponent *graphic;
+		modifyDocument( true );
+		for ( graphic = current_graphic_list.first(); graphic; graphic = current_graphic_list.next() )
 		{
-		graphic -> calculateBottomRight();
-		QPoint point = QPoint( graphic -> bottomRight() );
-		int y = graphic -> getTranslate().y();
-		graphic -> translateGraphic( 0, -y );
-		y = maxVertical();
-		graphic -> translateGraphic( 0, ( y - ( point.y() ) ) );
+			graphic -> calculateBottomRight();
+			QPoint point = QPoint( graphic -> bottomRight() );
+			int y = graphic -> getTranslate().y();
+			graphic -> translateGraphic( 0, -y );
+			y = maxVertical();
+			graphic -> translateGraphic( 0, ( y - ( point.y() ) ) );
 		}
 	}
 }
@@ -2079,7 +2079,7 @@ void DrawingArea::slotFlipHorizontally()
 		GLGraphicComponent *graphic;
 		modifyDocument( true );
 		for ( graphic = current_graphic_list.first(); graphic; graphic = current_graphic_list.next() )
-				graphic -> toggleHorizontalFlip();
+			graphic -> toggleHorizontalFlip();
 	}
 }
 
@@ -2141,58 +2141,58 @@ void DrawingArea::slotProperties()
 {
 	if ( current_graphic != NULL )
 	{
-	switch ( current_graphic -> kindGraphic() )
+		switch ( current_graphic -> kindGraphic() )
 		{
-		case GLGraphicComponent::GC_BRUSH:
-		{
-			BrushProperties *brush_properties = new BrushProperties( this );
-			brush_properties -> loadFromGraphic( ( GLBrush * )current_graphic );
-			brush_properties -> show();
-			break;
-		}
-		case GLGraphicComponent::GC_PENCIL:
-		{
-			PencilProperties *pencil_properties = new PencilProperties( this );
-			pencil_properties -> loadFromGraphic( ( GLPencil * )current_graphic );
-			pencil_properties -> show();
-			break;
-		}
-		case GLGraphicComponent::GC_PEN:
-		{
-			PenProperties *pen_properties = new PenProperties( this );
-			pen_properties -> loadFromGraphic( ( GLPen * )current_graphic );
-			pen_properties -> show();
-			break;
-		}
-		case GLGraphicComponent::GC_LINE:
-		{
-			LineProperties *line_properties = new LineProperties( this );
-			line_properties -> loadFromGraphic( ( GLLine * )current_graphic );
-			line_properties -> show();
-			break;
-		}
-		case GLGraphicComponent::GC_RECTANGLE:
-		{
-			RectangleProperties *rectangle_properties = new RectangleProperties( this );
-			rectangle_properties -> loadFromGraphic( ( GLRectangle * )current_graphic );
-			rectangle_properties -> show();
-			break;
-		}
-		case GLGraphicComponent::GC_ELLIPSE:
-		{
-			EllipseProperties *ellipse_properties = new EllipseProperties( this );
-			ellipse_properties -> loadFromGraphic( ( GLEllipse * )current_graphic );
-			ellipse_properties -> show();
-			break;
-		}
-		case GLGraphicComponent::GC_IMAGE:
-		{
-			ImageProperties *image_properties = new ImageProperties( this );
-			image_properties -> loadFromGraphic( ( GLImage * )current_graphic );
-			image_properties -> show();
-			break;
-		}
-		default: break;
+			case GLGraphicComponent::GC_BRUSH:
+			{
+				BrushProperties *brush_properties = new BrushProperties( this );
+				brush_properties -> loadFromGraphic( ( GLBrush * )current_graphic );
+				brush_properties -> show();
+				break;
+			}
+			case GLGraphicComponent::GC_PENCIL:
+			{
+				PencilProperties *pencil_properties = new PencilProperties( this );
+				pencil_properties -> loadFromGraphic( ( GLPencil * )current_graphic );
+				pencil_properties -> show();
+				break;
+			}
+			case GLGraphicComponent::GC_PEN:
+			{
+				PenProperties *pen_properties = new PenProperties( this );
+				pen_properties -> loadFromGraphic( ( GLPen * )current_graphic );
+				pen_properties -> show();
+				break;
+			}
+			case GLGraphicComponent::GC_LINE:
+			{
+				LineProperties *line_properties = new LineProperties( this );
+				line_properties -> loadFromGraphic( ( GLLine * )current_graphic );
+				line_properties -> show();
+				break;
+			}
+			case GLGraphicComponent::GC_RECTANGLE:
+			{
+				RectangleProperties *rectangle_properties = new RectangleProperties( this );
+				rectangle_properties -> loadFromGraphic( ( GLRectangle * )current_graphic );
+				rectangle_properties -> show();
+				break;
+			}
+			case GLGraphicComponent::GC_ELLIPSE:
+			{
+				EllipseProperties *ellipse_properties = new EllipseProperties( this );
+				ellipse_properties -> loadFromGraphic( ( GLEllipse * )current_graphic );
+				ellipse_properties -> show();
+				break;
+			}
+			case GLGraphicComponent::GC_IMAGE:
+			{
+				ImageProperties *image_properties = new ImageProperties( this );
+				image_properties -> loadFromGraphic( ( GLImage * )current_graphic );
+				image_properties -> show();
+				break;
+			}
+			default: break;
 		}
 	}
 }

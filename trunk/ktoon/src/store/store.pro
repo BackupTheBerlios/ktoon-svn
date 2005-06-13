@@ -4,6 +4,7 @@
 # Target is a library:  
 
 INCLUDEPATH += ../../src/core \
+               ../../src/exposure \
                ../../src/dialogs \
                ../../src/qt/cameras \
                ../../src/qt/tools \
@@ -42,7 +43,7 @@ HEADERS += animation.h \
            soundclip.h \
            soundlayer.h \
            symbol.h \
-           color.h 
+           ktcolor.h 
 SOURCES += animation.cpp \
            brush.cpp \
            camera.cpp \
@@ -58,5 +59,5 @@ SOURCES += animation.cpp \
            soundclip.cpp \
            soundlayer.cpp \
            symbol.cpp \
-           color.cpp \
-           document.cpp 
+           document.cpp \
+           ktcolor.cpp 

@@ -28,7 +28,7 @@
 
 #include <qdom.h>
 
-#include "color.h"
+#include "ktcolor.h"
 
 /**
  * @brief Class that encapsulates the concept of color palette

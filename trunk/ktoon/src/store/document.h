@@ -57,9 +57,6 @@ class Document
 		 * @return 
 		 */
 		~Document();
-
-// 		static Document * instance();
-		
 		
 		void init();
 		
@@ -165,15 +162,15 @@ class Document
 		static QString turnUnderscoresIntoSlashes( const QString &str );
 			 
 			 
-			 static QString getLocalName( const QString &str);
+		static QString getLocalName( const QString &str);
 
-private:
-    QString name;
-    Animation *animation;
-    Palette *custom_palette;
-    QPtrList<Brush> brushes;
-    LibraryData *library;
-    QDomDocument xml_doc;
+	private:
+		QString name;
+		Animation *animation;
+		Palette *custom_palette;
+		QPtrList<Brush> brushes;
+		LibraryData *library;
+		QDomDocument xml_doc;
 
 };
 

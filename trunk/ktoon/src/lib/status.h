@@ -30,7 +30,7 @@
 #include <qcolor.h>
 
 #include "brush.h"
-#include "color.h"
+#include "ktcolor.h"
 #include "scene.h"
 #include "layer.h"
 #include "ilayer.h"
@@ -132,7 +132,7 @@ class Status : public QObject
 		void setCurrentLayer( Layer *layer );
 			 
 			 
-		void setCurrentILayer (ILayer *ilayer);
+		void setCurrentILayer (ILayer *ilayer); // FIXME
 		/**
 		* @brief Sets a new current keyframe
 		*

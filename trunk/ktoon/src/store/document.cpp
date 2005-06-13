@@ -63,69 +63,62 @@ Document::~Document()
 	brushes.setAutoDelete( false );
 }
 
-// Document *Document::instance()
-// {
-// 	static Document *doc = new Document();
-// 	
-// 	return doc;
-// }
-
 //------------ PUBLIC MEMBERS ---------------
 
 void Document::setNameDocument( const QString & _name )
 {
-    name = _name;
+	name = _name;
 }
 
 void Document::setAnimation( Animation *_animation )
 {
-   Q_CHECK_PTR( _animation );
-   animation = _animation;
+	Q_CHECK_PTR( _animation );
+	animation = _animation;
 }
 
 void Document::setPalette( Palette *palette )
 {
-  Q_CHECK_PTR( palette );
-  custom_palette = palette;
+	Q_CHECK_PTR( palette );
+	custom_palette = palette;
 }
 
 void Document::setBrushes( QPtrList<Brush> _brushes )
 {
-    brushes = _brushes;
+	brushes = _brushes;
 }
 
 void Document::setLibrary( LibraryData *_library )
 {
-   Q_CHECK_PTR( _library );
-   library = _library;
+	Q_CHECK_PTR( _library );
+	library = _library;
 }
 
 QString Document::nameDocument() const
 {
-    return name;
+	return name;
 }
 
 Animation *Document::getAnimation() const
 {
-   Q_CHECK_PTR( animation );
-   return animation;
+	Q_CHECK_PTR( animation );
+	return animation;
 }
 
 Palette *Document::getPalette() const
 {
-    Q_CHECK_PTR( custom_palette );
-    return custom_palette;
+	Q_CHECK_PTR( custom_palette );
+	return custom_palette;
 }
 
 QPtrList<Brush> Document::getBrushes() const
 {
-    return brushes;
+	return brushes;
 }
 
 LibraryData *Document::getLibrary() const
 {
-    Q_CHECK_PTR( library );
-    return library;
+	Q_CHECK_PTR( library );
+	return library;
 }
 
 void Document::save( QFile *f )
@@ -222,34 +215,34 @@ void Document::save( QFile *f )
 
 QString Document::turnSlashesIntoUnderscores( const QString &str )
 {
-    QString ans;
+	QString ans;
 
-    for ( int i = 0; i < ( int )str.length(); i++ )
-    {
-	QChar cur_c = str.at( i );
-	if ( cur_c == QChar( '/' ) )
-	    ans.append( QChar( '_' ) );
-	else
-	    ans.append( cur_c );
-    }
+	for ( int i = 0; i < ( int )str.length(); i++ )
+	{
+		QChar cur_c = str.at( i );
+		if ( cur_c == QChar( '/' ) )
+			ans.append( QChar( '_' ) );
+		else
+			ans.append( cur_c );
+	}
 
-    return ans;
+	return ans;
 }
 
 QString Document::turnUnderscoresIntoSlashes( const QString &str )
 {
-    QString ans;
+	QString ans;
 
-    for ( int i = 0; i < ( int )str.length(); i++ )
-    {
-	QChar cur_c = str.at( i );
-	if ( cur_c == QChar( '_' ) )
-	    ans.append( QChar( '/' ) );
-	else
-	    ans.append( cur_c );
-    }
+	for ( int i = 0; i < ( int )str.length(); i++ )
+	{
+		QChar cur_c = str.at( i );
+		if ( cur_c == QChar( '_' ) )
+			ans.append( QChar( '/' ) );
+		else
+			ans.append( cur_c );
+	}
 
-    return ans;
+	return ans;
 }
 
 QString Document::getLocalName(const QString &str)

@@ -49,7 +49,7 @@
 #include "custompalette.h"
 #include "gradientviewer.h"
 
-#include "color.h"
+#include "ktcolor.h"
 
 class KTColor;
 
