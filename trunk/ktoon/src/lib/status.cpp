@@ -87,7 +87,6 @@ void Status::setupDrawingArea(QWorkspace *ws)
 	m_currentDrawingArea -> setMinimumSize( 321, 241 );
 	m_currentDrawingArea -> setMaximumSize( 321, 241 );
 #endif
-	qDebug("end");
 }
 
 //------------- DESTRUCTOR ------------------

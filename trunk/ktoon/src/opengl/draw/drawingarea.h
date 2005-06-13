@@ -56,6 +56,7 @@ class Color;
  * This is the most important widget of the illustration mode. Here, the user may create any type of drawing
  * with the help of the tools within the dialog boxes.
  */
+
 class DrawingArea : public GLControl
 {
     Q_OBJECT
@@ -697,11 +698,14 @@ class DrawingArea : public GLControl
         * This signal is emitted when paintGL is called
         */
         void updated();
+	
         /**
         * This signal is emitted when the graphic list is not empty
         * @param state It is <b>true</b> if the current keyframe has graphics, otherwise  it is <b>false</b>
         */
         void wasDrawn( bool state );
+			     
+	void useTool(int);
     
     
     public slots:

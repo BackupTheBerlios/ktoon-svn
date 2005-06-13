@@ -100,6 +100,7 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose )
 	KTStatus->currentDocument()-> setNameDocument( tr( "Document" ) + QString( "1" ) );
 
 	KTStatus->setupDrawingArea(main_panel);
+	connect(KTStatus->currentDrawingArea(), SIGNAL(useTool(int)), this, SLOT(slotSelectTool(int )));
 
 	setupDialogs();
 	
@@ -1572,7 +1573,7 @@ void KToon::slotNewDocument()
 		setCaption( tr( "Document" ) + document_number );
 		
 		KTStatus->setupDrawingArea(main_panel);
-
+		connect(KTStatus->currentDrawingArea(), SIGNAL(useTool(int)), this, SLOT(slotSelectTool(int )));
 		exposure_sheet_dialog = new ExposureSheet( this, Qt::WStyle_Tool, window, id_window_exposure_sheet, window_exposure_sheet );
 		scenes_dialog = new Scenes( this, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
 		
@@ -1787,6 +1788,7 @@ void KToon::slotLoadDocument( const QString &in_file_name )
 
     //Drawing Area Initialization
     KTStatus->setupDrawingArea(main_panel);
+    connect(KTStatus->currentDrawingArea(), SIGNAL(useTool(int)), this, SLOT(slotSelectTool(int )));
 //     KTStatus->currentDrawingArea() = new DrawingArea( main_panel, this, KTStatus->currentDocument()->nameDocument() );
 
     //1.1. Palette Tag
@@ -2457,6 +2459,63 @@ void KToon::slotContourSelection()
     KTStatus -> setCurrentCursor( Tools::CONTOUR_SELECTION );
     slotActivateCursor();
 }
+
+void KToon::slotSelectTool(int toolId)
+{
+	switch (toolId )
+	{
+		case Tools::NORMAL_SELECTION: 
+			slotNormalSelection();
+		break;
+		case Tools::CONTOUR_SELECTION: 
+			slotContourSelection();
+		break;
+		case Tools::BRUSH: 
+			slotBrush();
+		break;
+		case Tools::PENCIL: 
+			slotPencil();
+		break;
+		case Tools::PEN: 
+			slotPen();
+		break;
+		case Tools::LINE: 
+			slotLine();
+		break;
+		case Tools::RECTANGLE: 
+			slotRectangle();
+		break;
+		case Tools::ELLIPSE: 
+			slotEllipse();
+		break;
+		case Tools::CONTOUR_FILL: 
+			slotContourFill();
+		break;
+		case Tools::FILL: 
+			slotFill();
+		break;
+		case Tools::REMOVE_FILL: 
+			slotRemoveFill();
+		break;
+		case Tools::DROPPER: 
+			slotDropper();
+		break;
+		case Tools::ERASER: 
+			slotEraser();
+		break;
+		case Tools::SLICER: 
+			slotSlicer();
+		break;
+		case Tools::MAGNIFYING_GLASS: 
+			slotMagnifyingGlass();
+		break;
+		case Tools::HAND: 
+			slotHand();
+		break;
+		default: break;
+	}
+}
+
 
 void KToon::slotBrush()
 {

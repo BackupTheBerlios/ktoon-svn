@@ -17,7 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "configwizard.h"
+#include <qtooltip.h>
 
 ConfigWizard::ConfigWizard() : QWizard()
 {	
@@ -82,6 +84,9 @@ CWSecondPage::CWSecondPage(QWidget *parent, const char *name) : QVBox(parent, na
 	
 	QHBox *hbox1 = new QHBox(this);
 	m_kthome = new QLineEdit(hbox1);
+	
+	QToolTip::add(m_kthome, tr("Choose your KTOON_HOME directory"));
+	
 	QPushButton *button = new QPushButton(tr("browse..."), hbox1);
 	QFileDialog *fd = new QFileDialog(hbox1);
 	connect(fd, SIGNAL(dirEntered( const QString & )), m_kthome, SLOT(setText(const QString &)));
@@ -94,6 +99,9 @@ CWSecondPage::CWSecondPage(QWidget *parent, const char *name) : QVBox(parent, na
 	
 	QHBox *hbox2 = new QHBox(this);
 	m_ktrepos = new QLineEdit(hbox2);
+	
+	QToolTip::add(m_ktrepos, tr("In this directory will be save your projects"));
+	
 	QFileDialog *fd2 = new QFileDialog(hbox2);
 	connect(fd2, SIGNAL(dirEntered( const QString & )), m_ktrepos, SLOT(setText(const QString &)));
 	

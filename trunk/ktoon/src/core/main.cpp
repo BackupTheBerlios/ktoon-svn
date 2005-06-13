@@ -62,7 +62,7 @@ int main( int argc, char ** argv )
 			return -1;
 		}
 	}
-	else
+// 	else
 	{
 		// Analizamos el documento XML de configuracion y ponemos las variables en application
 		KTXmlReader reader;

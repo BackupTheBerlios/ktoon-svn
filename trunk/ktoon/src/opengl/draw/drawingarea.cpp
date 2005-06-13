@@ -212,18 +212,18 @@ void DrawingArea::paintGL()
 	
 	glPopMatrix();
 	
-// 	if ( !graphic_list.isEmpty() && k_toon -> timeline() != NULL && k_toon -> exposureSheet() != NULL )
-// 	{
-// 		emit wasDrawn( true );
+	if ( !graphic_list.isEmpty() /*&& k_toon -> timeline() != NULL && k_toon -> exposureSheet() != NULL*/ )
+	{
+		emit wasDrawn( true );
 // 		if ( k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() != NULL )
 // 			k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> setHasDrawing( true );
-// 	}
-// 	else if ( graphic_list.isEmpty() && k_toon -> timeline() != NULL && k_toon -> exposureSheet() != NULL )
-// 	{
-// 		emit wasDrawn( false );
+	}
+	else if ( graphic_list.isEmpty() /*&& k_toon -> timeline() != NULL && k_toon -> exposureSheet() != NULL*/ )
+	{
+		emit wasDrawn( false );
 // 		if ( k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() != NULL )
 // 			k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> setHasDrawing( false );
-// 	}
+	}
 	glEnable( GL_DEPTH_TEST );
 	
 	if ( current_graphic == NULL )
@@ -358,7 +358,7 @@ void DrawingArea::processHits( GLint hits, GLuint buffer[] )
 	
 	// poner estas variables en NULL o falso, SOLO si no se ha seleccionado un objeto o una flecha
 	
-	current_graphic = NULL;
+	current_graphic = 0;
 	selected_graphic = false;
 	
 	if( hits > 0 )
@@ -530,11 +530,11 @@ void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
 	Q_CHECK_PTR( mouse_event );
 	selected_all = false;
 	
-// 	if ( KTStatus -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
-// 	{
-// 	mouse_event -> ignore();
-// 	return;
-// 	}
+	if ( KTStatus -> currentKeyFrame() == NULL /*|| k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked()*/ )
+	{
+		mouse_event -> ignore();
+		return;
+	}
 	emit selected();
 	GLControl::mousePressEvent( mouse_event );
 	selected_graphic = false;
@@ -545,60 +545,61 @@ void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
 		drawSelected( mouse_event );
 		if ( current_graphic != NULL )
 		{
-// 			if ( right_click_menu != NULL )
-// 			delete right_click_menu;
-// 			right_click_menu = new QPopupMenu( this );
-// 			right_click_menu -> setFont( QFont( "helvetica", 10 ) );
-// 			right_click_menu -> insertItem( QPixmap( copy_xpm ), tr( "&Copy" ), grandparent_widget, SLOT( slotCopy() ) );
-// 			right_click_menu -> insertItem( QPixmap( cut_xpm ), tr( "C&ut" ), grandparent_widget, SLOT( slotCut() ) );
-// 			right_click_menu -> insertItem( tr( "&Delete" ), grandparent_widget, SLOT( slotDelete() ) );
-// 			right_click_menu -> insertSeparator();
+			if ( right_click_menu != NULL )
+				delete right_click_menu;
+			right_click_menu = new QPopupMenu( this );
+			right_click_menu -> setFont( QFont( "helvetica", 10 ) );
+			right_click_menu -> insertItem( QPixmap( copy_xpm ), tr( "&Copy" ), this, SLOT( slotCopy() ) );
+
+			right_click_menu -> insertItem( QPixmap( cut_xpm ), tr( "C&ut" ), this, SLOT( slotCut() ) );
+			right_click_menu -> insertItem( tr( "&Delete" ), this, SLOT( slotDelete() ) );
+			right_click_menu -> insertSeparator();
 			//Order Submenu
-// 			QPopupMenu * order = new QPopupMenu( this );
-// 			order -> setFont( QFont( "helvetica", 10 ) );
-// 			order -> insertItem( QPixmap( bring_to_front_xpm ), tr( "&Bring to Front" ), grandparent_widget, SLOT( slotBringToFront() ) );
-// 			order -> insertItem( QPixmap( send_to_back_xpm ), tr( "&Send to Back" ), grandparent_widget, SLOT( slotSendToBack() ) );
-// 			order -> insertItem( QPixmap( one_forward_xpm ), tr( "One Step &Forward" ), grandparent_widget, SLOT( slotOneStepForward() ) );
-// 			order -> insertItem( QPixmap( one_backward_xpm ), tr( "One Step B&ackward" ), grandparent_widget, SLOT( slotOneStepBackward() ) );
-// 			right_click_menu -> insertItem( tr( "&Order" ), order );
-// 			//Align Submenu
-// 			QPopupMenu * align = new QPopupMenu( this );
-// // 			align -> setFont( QFont( "helvetica", 10 ) );
-// 			align -> insertItem( QPixmap( align_l_xpm ), tr( "&Left" ), grandparent_widget, SLOT( slotAlignLeft() ) );
-// 			align -> insertItem( QPixmap( align_cv_xpm ), tr( "&Center Vertically" ), grandparent_widget, SLOT( slotCenterVertically() ) );
-// 			align -> insertItem( QPixmap( align_r_xpm ), tr( "&Right" ), grandparent_widget, SLOT( slotAlignRight() ) );
-// 			align -> insertSeparator();
-// 			align -> insertItem( QPixmap( align_t_xpm ), tr( "&Top" ), grandparent_widget, SLOT( slotAlignTop() ) );
-// 			align -> insertItem( QPixmap( align_ch_xpm ), tr( "Center &Horizontally" ), grandparent_widget, SLOT( slotCenterHorizontally() ) );
-// 			align -> insertItem( QPixmap( align_b_xpm ), tr( "&Bottom" ), grandparent_widget, SLOT( slotAlignBottom() ) );
-// 			right_click_menu -> insertItem(tr( "A&lign" ), align );
-			//Transform Submenu
-// 			QPopupMenu * transform = new QPopupMenu( this );
-// 			transform -> setFont( QFont( "helvetica", 10 ) );
-// 			transform -> insertItem( tr( "Flip &Horizontally" ), grandparent_widget, SLOT( slotFlipHorizontally() ) );
-// 			transform -> insertItem( tr( "Flip &Vertically" ), grandparent_widget, SLOT( slotFlipVertically() ) );
-// 			transform -> insertSeparator();
-// 			transform -> insertItem( tr( "&Rotate 90 CW" ), grandparent_widget, SLOT( slotRotateCW90() ) );
-// 			transform -> insertItem( tr( "R&otate 90 CCW" ), grandparent_widget, SLOT( slotRotateCCW90() ) );
-// 			transform -> insertItem( tr( "Rotate &180" ), grandparent_widget, SLOT( slotRotate180() ) );
-// 			transform -> insertSeparator();
-// 			transform -> insertItem( QPixmap( perspective_xpm ), tr( "&Perspective" ), grandparent_widget, SLOT( slotPerspectiveSelection() ) );
-// 			right_click_menu -> insertItem( tr( "&Transform" ), transform );
-// 			right_click_menu -> insertSeparator();
-// 			right_click_menu -> insertItem( tr( "Add to Li&brary" ), this, SLOT( slotAddToLibrary() ) );
-// 			right_click_menu -> insertSeparator();
-// 			right_click_menu -> insertItem( QPixmap( properties_xpm ), tr( "P&roperties..." ), this, SLOT( slotProperties() ) );
-// 			right_click_menu -> exec( QCursor::pos() );
+			QPopupMenu * order = new QPopupMenu( this );
+			order -> setFont( QFont( "helvetica", 10 ) );
+			order -> insertItem( QPixmap( bring_to_front_xpm ), tr( "&Bring to Front" ), this, SLOT( slotBringToFront() ) );
+			order -> insertItem( QPixmap( send_to_back_xpm ), tr( "&Send to Back" ), this, SLOT( slotSendToBack() ) );
+			order -> insertItem( QPixmap( one_forward_xpm ), tr( "One Step &Forward" ), this, SLOT( slotOneStepForward() ) );
+			order -> insertItem( QPixmap( one_backward_xpm ), tr( "One Step B&ackward" ), this, SLOT( slotOneStepBackward() ) );
+			right_click_menu -> insertItem( tr( "&Order" ), order );
+			//Align Submenu
+			QPopupMenu * align = new QPopupMenu( this );
+// 			align -> setFont( QFont( "helvetica", 10 ) );
+			align -> insertItem( QPixmap( align_l_xpm ), tr( "&Left" ), this, SLOT( slotAlignLeft() ) );
+			align -> insertItem( QPixmap( align_cv_xpm ), tr( "&Center Vertically" ), this, SLOT( slotCenterVertically() ) );
+			align -> insertItem( QPixmap( align_r_xpm ), tr( "&Right" ), this, SLOT( slotAlignRight() ) );
+			align -> insertSeparator();
+			align -> insertItem( QPixmap( align_t_xpm ), tr( "&Top" ), this, SLOT( slotAlignTop() ) );
+			align -> insertItem( QPixmap( align_ch_xpm ), tr( "Center &Horizontally" ), this, SLOT( slotCenterHorizontally() ) );
+			align -> insertItem( QPixmap( align_b_xpm ), tr( "&Bottom" ), this, SLOT( slotAlignBottom() ) );
+			right_click_menu -> insertItem(tr( "A&lign" ), align );
+			// Transform Submenu
+			QPopupMenu * transform = new QPopupMenu( this );
+			transform -> setFont( QFont( "helvetica", 10 ) );
+			transform -> insertItem( tr( "Flip &Horizontally" ), this, SLOT( slotFlipHorizontally() ) );
+			transform -> insertItem( tr( "Flip &Vertically" ), this, SLOT( slotFlipVertically() ) );
+			transform -> insertSeparator();
+			transform -> insertItem( tr( "&Rotate 90 CW" ), this, SLOT( slotRotateCW90() ) );
+			transform -> insertItem( tr( "R&otate 90 CCW" ), this, SLOT( slotRotateCCW90() ) );
+			transform -> insertItem( tr( "Rotate &180" ), this, SLOT( slotRotate180() ) );
+			transform -> insertSeparator();
+			transform -> insertItem( QPixmap( perspective_xpm ), tr( "&Perspective" ), this, SLOT( slotPerspectiveSelection() ) );
+			right_click_menu -> insertItem( tr( "&Transform" ), transform );
+			right_click_menu -> insertSeparator();
+			right_click_menu -> insertItem( tr( "Add to Li&brary" ), this, SLOT( slotAddToLibrary() ) );
+			right_click_menu -> insertSeparator();
+			right_click_menu -> insertItem( QPixmap( properties_xpm ), tr( "P&roperties..." ), this, SLOT( slotProperties() ) );
+			right_click_menu -> exec( QCursor::pos() );
 		}
 		else
 		{
-// 			right_click_menu = new QPopupMenu( this );
-// 			right_click_menu -> insertItem( QPixmap( undo_xpm ), tr( "&Undo" ), grandparent_widget, SLOT( slotUndo() ) );
-// 			right_click_menu -> insertItem( QPixmap( redo_xpm ), tr( "&Redo" ), grandparent_widget, SLOT( slotRedo() ) );
-// 			right_click_menu -> insertSeparator();
-// 			right_click_menu -> insertItem( QPixmap( paste_xpm ), tr( "&Paste" ), grandparent_widget, SLOT( slotPaste() ) );
-// 			right_click_menu -> insertItem( tr( "P&aste in Place" ), grandparent_widget, SLOT( slotPasteInPlace() ) );
-// 			right_click_menu -> exec( QCursor::pos() );
+			right_click_menu = new QPopupMenu( this );
+			right_click_menu -> insertItem( QPixmap( undo_xpm ), tr( "&Undo" ), this, SLOT( slotUndo() ) );
+			right_click_menu -> insertItem( QPixmap( redo_xpm ), tr( "&Redo" ), this, SLOT( slotRedo() ) );
+			right_click_menu -> insertSeparator();
+			right_click_menu -> insertItem( QPixmap( paste_xpm ), tr( "&Paste" ), this, SLOT( slotPaste() ) );
+			right_click_menu -> insertItem( tr( "P&aste in Place" ), this, SLOT( slotPasteInPlace() ) );
+			right_click_menu -> exec( QCursor::pos() );
 		}
 	}
 	else
@@ -746,11 +747,11 @@ void DrawingArea::mouseReleaseEvent( QMouseEvent *mouse_event )
 {
 	Q_CHECK_PTR( mouse_event );
 	
-// 	if ( KTStatus -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
-// 	{
-// 	mouse_event -> ignore();
-// 	return;
-// 	}
+	if ( KTStatus -> currentKeyFrame() == NULL/* || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked()*/ )
+	{
+	mouse_event -> ignore();
+	return;
+	}
 	current_graphic_list.clear();
 	
 	switch ( current_cursor )
@@ -968,11 +969,11 @@ void DrawingArea::mouseDoubleClickEvent( QMouseEvent *mouse_event )
 {
 	Q_CHECK_PTR( mouse_event );
 	
-// 	if ( KTStatus -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
-// 	{
-// 	mouse_event -> ignore();
-// 	return;
-// 	}
+	if ( KTStatus -> currentKeyFrame() == NULL /*|| k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked()*/ )
+	{
+	mouse_event -> ignore();
+	return;
+	}
 	current_graphic_list.clear();
 	
 	if( current_graphic )
@@ -1017,11 +1018,11 @@ void DrawingArea::keyPressEvent( QKeyEvent *key_event )
 	}
 	bezier = false;
 	
-// 	if ( KTStatus -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
-// 	{
-// 	key_event -> ignore();
-// 	return;
-// 	}
+	if ( KTStatus -> currentKeyFrame() == NULL /*|| k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked()*/ )
+	{
+	key_event -> ignore();
+	return;
+	}
 	if ( key_event -> key() == Qt::Key_Space )
 	{
 		using_hand = true;
@@ -1047,50 +1048,17 @@ void DrawingArea::keyReleaseEvent( QKeyEvent *key_event )
 {
 	Q_CHECK_PTR( key_event );
 	
-// 	if ( KTStatus -> currentKeyFrame() == NULL || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )
-// 	{
-// 	key_event -> ignore();
-// 	return;
-// 	}
-// 	if ( using_hand )
-// 	{
-// 		switch ( previous_cursor )
-// 		{
-// 		case Tools::NORMAL_SELECTION: k_toon -> slotNormalSelection();
-// 				break;
-// 		case Tools::CONTOUR_SELECTION: k_toon -> slotContourSelection();
-// 					break;
-// 		case Tools::BRUSH: k_toon -> slotBrush();
-// 			break;
-// 		case Tools::PENCIL: k_toon -> slotPencil();
-// 			break;
-// 		case Tools::PEN: k_toon -> slotPen();
-// 			break;
-// 		case Tools::LINE: k_toon -> slotLine();
-// 			break;
-// 		case Tools::RECTANGLE: k_toon -> slotRectangle();
-// 				break;
-// 		case Tools::ELLIPSE: k_toon -> slotEllipse();
-// 			break;
-// 		case Tools::CONTOUR_FILL: k_toon -> slotContourFill();
-// 				break;
-// 		case Tools::FILL: k_toon -> slotFill();
-// 			break;
-// 		case Tools::REMOVE_FILL: k_toon -> slotRemoveFill();
-// 				break;
-// 		case Tools::DROPPER: k_toon -> slotDropper();
-// 			break;
-// 		case Tools::ERASER: k_toon -> slotEraser();
-// 			break;
-// 		case Tools::SLICER: k_toon -> slotSlicer();
-// 			break;
-// 		case Tools::MAGNIFYING_GLASS: k_toon -> slotMagnifyingGlass();
-// 				break;
-// 		case Tools::HAND: k_toon -> slotHand();
-// 			break;
-// 		default: break;
-// 		}
-// 	}
+	if ( KTStatus -> currentKeyFrame() == NULL/* || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked()*/ )
+	{
+	key_event -> ignore();
+	return;
+	}
+	
+	if ( using_hand )
+	{
+		emit useTool(previous_cursor);
+	}
+	
 	using_hand = false;
 	shift_pressed = false;
 	if ( current_graphic )
@@ -2234,6 +2202,7 @@ void DrawingArea::slotAddToLibrary()
 	bool ok;
 	QString answer;
 	answer = QInputDialog::getText( tr( "Add To Library" ), tr( "Symbol Name: " ), QLineEdit::Normal, QString::null, &ok, this );
+	// FIXME: krawek
 // 	if ( ok )
 // 	k_toon -> library() -> addSymbol( current_graphic, answer );
 }
@@ -2623,98 +2592,98 @@ void DrawingArea::slotPaste()
 {
 	qDebug("Paste");
 	std::cout << QApplication::clipboard()->text() << std::endl;
-// 	for ( QStringList::Iterator it = clipboard.begin(); it != clipboard.end(); ++it )
-// 	{
-// 		QString text = *it;
-// 		if ( !text.isEmpty() && KTStatus -> currentKeyFrame() != NULL && !( k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() ) )
-// 		{
-// 			modifyDocument( true );
-// 			QString number = text.left( text.find( ' ', 0 ) );
-// 			text.remove( 0, number.length() + 1 );
-// 			int i = number.toInt();
-// 			if ( i > 0 )
-// 			{
-// 				switch( i )
-// 				{
-// 					case GLGraphicComponent::GC_BRUSH:
-// 						pasteBrush( text );
-// 						break;
-// 					case GLGraphicComponent::GC_PENCIL:
-// 						pastePencil( text );
-// 						break;
-// 					case GLGraphicComponent::GC_PEN:
-// 						pastePen( text );
-// 						break;
-// 					case GLGraphicComponent::GC_LINE:
-// 						pasteLine( text );
-// 						break;
-// 					case GLGraphicComponent::GC_RECTANGLE:
-// 						pasteRectangle( text );
-// 						break;
-// 					case GLGraphicComponent::GC_ELLIPSE:
-// 						pasteEllipse( text );
-// 						break;
-// 					default:
-// 						break;
-// 				}
-// 				slotCenterHorizontally();
-// 				slotCenterVertically();
-// 			}
-// 		}
-// 	}
+	for ( QStringList::Iterator it = clipboard.begin(); it != clipboard.end(); ++it )
+	{
+		QString text = *it;
+		if ( !text.isEmpty() && KTStatus -> currentKeyFrame() != NULL/* && !( k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )*/ )
+		{
+			modifyDocument( true );
+			QString number = text.left( text.find( ' ', 0 ) );
+			text.remove( 0, number.length() + 1 );
+			int i = number.toInt();
+			if ( i > 0 )
+			{
+				switch( i )
+				{
+					case GLGraphicComponent::GC_BRUSH:
+						pasteBrush( text );
+						break;
+					case GLGraphicComponent::GC_PENCIL:
+						pastePencil( text );
+						break;
+					case GLGraphicComponent::GC_PEN:
+						pastePen( text );
+						break;
+					case GLGraphicComponent::GC_LINE:
+						pasteLine( text );
+						break;
+					case GLGraphicComponent::GC_RECTANGLE:
+						pasteRectangle( text );
+						break;
+					case GLGraphicComponent::GC_ELLIPSE:
+						pasteEllipse( text );
+						break;
+					default:
+						break;
+				}
+				slotCenterHorizontally();
+				slotCenterVertically();
+			}
+		}
+	}
 	updateGL();
 }
 
 void DrawingArea::slotPasteInPlace()
 {
-// 	for ( QStringList::Iterator it = clipboard.begin(); it != clipboard.end(); ++it )
-// 	{
-// 		QString text = *it;
-// 		if ( !text.isEmpty() && KTStatus -> currentKeyFrame() != NULL && !( k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() ) )
-// 		{
-// 			modifyDocument( true );
-// 			QString number = text.left( text.find( ' ', 0 ) );
-// 			text.remove( 0, number.length() + 1 );
-// 			int i = number.toInt();
-// 			switch( i )
-// 			{
-// 				case GLGraphicComponent::GC_BRUSH:
-// 				pasteBrush( text );
-// 				break;
-// 				case GLGraphicComponent::GC_PENCIL:
-// 				pastePencil( text );
-// 				break;
-// 				case GLGraphicComponent::GC_PEN:
-// 				pastePen( text );
-// 				break;
-// 				case GLGraphicComponent::GC_LINE:
-// 				pasteLine( text );
-// 				break;
-// 				case GLGraphicComponent::GC_RECTANGLE:
-// 				pasteRectangle( text );
-// 				break;
-// 				case GLGraphicComponent::GC_ELLIPSE:
-// 				pasteEllipse( text );
-// 				break;
-// 				default:
-// 				break;
-// 			}
-// 			if ( current_graphic != NULL )
-// 			{
-// 				float z = -10.0;
-// 				if ( graphic_list.count() != 0 )
-// 				{
-// 				GLGraphicComponent *graphic;
-// 				for ( graphic = graphic_list.first(); graphic; graphic = graphic_list.next() )
-// 					if ( graphic -> getZ() > z )
-// 					z = graphic -> getZ();
-// 				}
-// 				else
-// 				z = 0.0;
-// 				current_graphic ->setZ( z + 0.0001);
-// 			}
-// 		}
-// 	}
+	for ( QStringList::Iterator it = clipboard.begin(); it != clipboard.end(); ++it )
+	{
+		QString text = *it;
+		if ( !text.isEmpty() /*&& KTStatus -> currentKeyFrame() != NULL && !( k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked() )*/ )
+		{
+			modifyDocument( true );
+			QString number = text.left( text.find( ' ', 0 ) );
+			text.remove( 0, number.length() + 1 );
+			int i = number.toInt();
+			switch( i )
+			{
+				case GLGraphicComponent::GC_BRUSH:
+				pasteBrush( text );
+				break;
+				case GLGraphicComponent::GC_PENCIL:
+				pastePencil( text );
+				break;
+				case GLGraphicComponent::GC_PEN:
+				pastePen( text );
+				break;
+				case GLGraphicComponent::GC_LINE:
+				pasteLine( text );
+				break;
+				case GLGraphicComponent::GC_RECTANGLE:
+				pasteRectangle( text );
+				break;
+				case GLGraphicComponent::GC_ELLIPSE:
+				pasteEllipse( text );
+				break;
+				default:
+				break;
+			}
+			if ( current_graphic != NULL )
+			{
+				float z = -10.0;
+				if ( graphic_list.count() != 0 )
+				{
+				GLGraphicComponent *graphic;
+				for ( graphic = graphic_list.first(); graphic; graphic = graphic_list.next() )
+					if ( graphic -> getZ() > z )
+					z = graphic -> getZ();
+				}
+				else
+				z = 0.0;
+				current_graphic ->setZ( z + 0.0001);
+			}
+		}
+	}
 	updateGL();
 }
 
@@ -2769,6 +2738,7 @@ void DrawingArea::slotSelectFrame()
 		QPtrList<KeyFrame> keyframes_to_display;
 		QPtrList<KeyFrame> keyframe_list = KTStatus -> currentLayer() -> keyFrames();
 	
+		// FIXME: krawek
 // 		QPtrList<Layer> layer_list = k_toon -> exposureSheet() -> visibleLayers();
 		Layer *layer_iterator;
 		KeyFrame *ckf = KTStatus -> currentKeyFrame();
