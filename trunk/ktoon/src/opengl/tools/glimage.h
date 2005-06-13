@@ -70,7 +70,7 @@ public:
      * @param fill_color The new fill color
      * @sa fillColor()
      */
-    void setFillColor( const Color & fill_color );
+    void setFillColor( const KTColor & fill_color );
     /**
      * @brief Calculates the top left point of the rectangle that fits outside this image
      */
@@ -84,10 +84,10 @@ public:
     /**
      * @brief Gets this image's fill color
      *
-     * @return The fill color. Note that it is of type Color, not QColor
+     * @return The fill color. Note that it is of type KTColor, not QColor
      * @sa setFillColor()
      */
-    Color fillColor() const;
+    KTColor fillColor() const;
     /**
      * @brief Gets this image's end point
      *
@@ -114,7 +114,7 @@ protected:
     QString file_name;
     QPoint end;
     GLuint id_texture;
-    Color fill_color;
+    KTColor fill_color;
 
     /**
      * @brief Constructs an openGL display list with instructions for drawing this image

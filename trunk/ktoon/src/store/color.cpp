@@ -18,95 +18,92 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qobject.h>
-
 #include "color.h"
 
 //-------------- CONSTRUCTOR ---------------
 
-Color::Color()
+KTColor::KTColor()
 {
-    name = "";
+	name = "";
 }
 
-Color::Color( float r, float g, float b, float a ): red( r ), green( g ), blue ( b ), alpha( a )
+KTColor::KTColor( float r, float g, float b, float a ): red( r ), green( g ), blue ( b ), alpha( a )
 {
-    name = "";
+	name = "";
 }
 
 //------------- DESTRUCTOR ------------------
 
-Color::~Color()
+KTColor::~KTColor()
 {
-
 }
 
 //------------ PUBLIC MEMBERS ---------------
 
-void Color::setNameColor( const QString & _name )
+void KTColor::setNameColor( const QString & _name )
 {
-    name = _name;
+	name = _name;
 }
 
-void Color::setColorRed( const float & _red )
+void KTColor::setColorRed( const float & _red )
 {
-    red = _red;
+	red = _red;
 }
 
-void Color::setColorGreen( const float & _green )
+void KTColor::setColorGreen( const float & _green )
 {
-    green = _green;
+	green = _green;
 }
 
-void Color::setColorBlue( const float & _blue )
+void KTColor::setColorBlue( const float & _blue )
 {
-    blue = _blue;
+	blue = _blue;
 }
 
-void Color::setColorAlpha( const float & _alpha )
+void KTColor::setColorAlpha( const float & _alpha )
 {
-    alpha = _alpha;
+	alpha = _alpha;
 }
 
-QString Color::nameColor() const
+QString KTColor::nameColor() const
 {
-    return name;
+	return name;
 }
 
-float Color::colorRed() const
+float KTColor::colorRed() const
 {
-    return red;
+	return red;
 }
 
-float Color::colorGreen() const
+float KTColor::colorGreen() const
 {
-    return green;
+	return green;
 }
 
-float Color::colorBlue() const
+float KTColor::colorBlue() const
 {
-    return blue;
+	return blue;
 }
 
-float Color::colorAlpha() const
+float KTColor::colorAlpha() const
 {
-    return alpha;
+	return alpha;
 }
 
-int Color::idColor() const
+int KTColor::idColor() const
 {
-    return id_color;
+	return id_color;
 }
 
-QDomElement Color::createXML( QDomDocument &doc )
+QDomElement KTColor::createXML( QDomDocument &doc )
 {
-    QDomElement e = doc.createElement( "Color" );
+	QDomElement e = doc.createElement( "Color" );
 
-    e.setAttribute( "Name", name );
-    e.setAttribute( "Red", ( double )red );
-    e.setAttribute( "Green", ( double )green );
-    e.setAttribute( "Blue", ( double )blue );
-    e.setAttribute( "Alpha", ( double )alpha );
+	e.setAttribute( "Name", name );
+	e.setAttribute( "Red", ( double )red );
+	e.setAttribute( "Green", ( double )green );
+	e.setAttribute( "Blue", ( double )blue );
+	e.setAttribute( "Alpha", ( double )alpha );
 
-    return e;
+	return e;
 }

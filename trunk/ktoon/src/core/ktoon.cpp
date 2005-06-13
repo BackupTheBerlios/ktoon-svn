@@ -69,7 +69,7 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose )
 	
 	settings.close();
 	
-	//ExposureSheet & Timeline Color initializations
+	//ExposureSheet & Timeline KTColor initializations
 	
 	setupColors();
 	setupIcons();
@@ -170,7 +170,7 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose )
 	connect( scenes_dialog, SIGNAL( sceneSelected( int ) ), SLOT( slotSelectSync( int ) ) );
 	
 #ifndef USE_QT
-	connect( KTStatus->currentDrawingArea(), SIGNAL( colorGrabbed( Color::Color * ) ), color_palette_dialog, SLOT( slotSetColor( Color::Color * ) ) );
+	connect( KTStatus->currentDrawingArea(), SIGNAL( colorGrabbed( KTColor * ) ), color_palette_dialog, SLOT( slotSetColor( KTColor * ) ) );
 	connect( KTStatus->currentDrawingArea(), SIGNAL( updated() ), library_dialog -> getSymbolView(), SLOT( updateGL() ) );
 	connect( KTStatus->currentDrawingArea(), SIGNAL( wasDrawn( bool ) ), timeline_dialog -> frameSequenceManager() -> frameLayout(), SLOT( slotFrameHasDrawing( bool ) ) );
 #endif
@@ -974,7 +974,7 @@ void KToon::loadPalette( const QString &file_name, bool from_load )
     Palette* palette = ap_palette.get();
     
     QDomNode n_color = palette_tag.firstChild();
-    QPtrList<Color> colors;
+    QPtrList<KTColor> colors;
     while ( !n_color.isNull() )
     {
 	QDomElement color_tag = n_color.toElement();
@@ -983,7 +983,7 @@ void KToon::loadPalette( const QString &file_name, bool from_load )
 	QString g = color_tag.attribute( "Green" );
 	QString b = color_tag.attribute( "Blue" );
 	QString a = color_tag.attribute( "Alpha" );
-	Color *color = new Color( r.toFloat(), g.toFloat(), b.toFloat(), a.toFloat() );
+	KTColor *color = new KTColor( r.toFloat(), g.toFloat(), b.toFloat(), a.toFloat() );
 	try {
 	    color -> setNameColor( n );
 	    colors.append( color );
@@ -1074,7 +1074,7 @@ GLGraphicComponent *KToon::createGraphic( const QDomElement &graphic_tag )
     QString oy = origin_tag.attribute( "Y" );
     QPoint origin = QPoint( ox.toInt(), oy.toInt() );
 
-    //Outline Color Tag
+    //Outline KTColor Tag
     QDomElement outline_color_tag = origin_tag.nextSibling().toElement();
     QString no = outline_color_tag.attribute( "Name" );
     QString ro = outline_color_tag.attribute( "Red" );
@@ -1082,7 +1082,7 @@ GLGraphicComponent *KToon::createGraphic( const QDomElement &graphic_tag )
     QString bo = outline_color_tag.attribute( "Blue" );
     QString ao = outline_color_tag.attribute( "Alpha" );
     
-    Color outline_color = Color( ro.toFloat(), go.toFloat(), bo.toFloat(), ao.toFloat() );
+    KTColor outline_color( ro.toFloat(), go.toFloat(), bo.toFloat(), ao.toFloat() );
     outline_color.setNameColor( no );
 
     //Width Tag
@@ -1318,7 +1318,7 @@ GLGraphicComponent *KToon::createGraphic( const QDomElement &graphic_tag )
     	    QString ey = end_tag.attribute( "Y" );
     	    QPoint end = QPoint( ex.toInt(), ey.toInt() );
 
-	    //Fill Color Tag
+	    //Fill KTColor Tag
     	    QDomElement fill_color_tag = end_tag.nextSibling().toElement();
     	    QString nf = fill_color_tag.attribute( "Name" );
     	    QString rf = fill_color_tag.attribute( "Red" );
@@ -1326,7 +1326,7 @@ GLGraphicComponent *KToon::createGraphic( const QDomElement &graphic_tag )
     	    QString bf = fill_color_tag.attribute( "Blue" );
     	    QString af = fill_color_tag.attribute( "Alpha" );
     	    
-	    Color fill_color = Color( rf.toFloat(), gf.toFloat(), bf.toFloat(), af.toFloat() );
+	    KTColor fill_color( rf.toFloat(), gf.toFloat(), bf.toFloat(), af.toFloat() );
     	    fill_color.setNameColor( nf );
 
 	    GLRectangle *rectangle = new GLRectangle( KTStatus->currentDrawingArea(), origin, outline_color, width, end, fill_color );
@@ -1360,7 +1360,7 @@ GLGraphicComponent *KToon::createGraphic( const QDomElement &graphic_tag )
     	    QString ry = radius_tag.attribute( "Y" );
     	    QPoint radius = QPoint( rx.toInt(), ry.toInt() );
 
-            //Fill Color Tag
+            //Fill KTColor Tag
     	    QDomElement fill_color_tag = radius_tag.nextSibling().toElement();
     	    QString nf = fill_color_tag.attribute( "Name" );
     	    QString rf = fill_color_tag.attribute( "Red" );
@@ -1368,7 +1368,7 @@ GLGraphicComponent *KToon::createGraphic( const QDomElement &graphic_tag )
     	    QString bf = fill_color_tag.attribute( "Blue" );
     	    QString af = fill_color_tag.attribute( "Alpha" );
     	    
-	    Color fill_color = Color( rf.toFloat(), gf.toFloat(), bf.toFloat(), af.toFloat() );
+	    KTColor fill_color( rf.toFloat(), gf.toFloat(), bf.toFloat(), af.toFloat() );
     	    fill_color.setNameColor( nf );
 
 	    GLEllipse *ellipse = new GLEllipse( KTStatus->currentDrawingArea(), origin, outline_color, width, radius, fill_color );
@@ -1659,7 +1659,7 @@ void KToon::slotNewDocument()
 		connect( scenes_dialog, SIGNAL( sceneRemoved( int ) ), SLOT( slotRemoveSync( int ) ) );
 		connect( scenes_dialog, SIGNAL( sceneSelected( int ) ), SLOT( slotSelectSync( int ) ) );
 
-		connect( KTStatus->currentDrawingArea(), SIGNAL( colorGrabbed( Color::Color * ) ), color_palette_dialog, SLOT( slotSetColor( Color::Color * ) ) );
+		connect( KTStatus->currentDrawingArea(), SIGNAL( colorGrabbed( KTColor::KTColor * ) ), color_palette_dialog, SLOT( slotSetColor( KTColor::KTColor * ) ) );
 		connect( KTStatus->currentDrawingArea(), SIGNAL( updated() ), library_dialog -> getSymbolView(), SLOT( updateGL() ) );
 		connect( KTStatus->currentDrawingArea(), SIGNAL( wasDrawn( bool ) ), timeline_dialog -> frameSequenceManager() -> frameLayout(), SLOT( slotFrameHasDrawing( bool ) ) );
 
@@ -3542,7 +3542,7 @@ void KToon::createGUI()
 {
     setCaption( KTStatus->currentDocument()->nameDocument() );
 
-    QPtrList<Color> custom_colors = KTStatus->currentDocument()->getPalette() -> getColors();
+    QPtrList<KTColor> custom_colors = KTStatus->currentDocument()->getPalette() -> getColors();
     color_palette_dialog -> enableCustomPalette( true );
     color_palette_dialog -> loadCustomColors( custom_colors );
 
@@ -3639,7 +3639,7 @@ void KToon::createGUI()
     connect( brushes_dialog, SIGNAL( minThicknessChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeMinThicknessBrush() ) );
     connect( brushes_dialog, SIGNAL( maxThicknessChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeMaxThicknessBrush() ) );
     connect( brushes_dialog, SIGNAL( smoothnessChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeSmoothnessBrush() ) );
-    connect( KTStatus->currentDrawingArea(), SIGNAL( colorGrabbed( Color::Color * ) ), color_palette_dialog, SLOT( slotSetColor( Color::Color * ) ) );
+    connect( KTStatus->currentDrawingArea(), SIGNAL( colorGrabbed( KTColor * ) ), color_palette_dialog, SLOT( slotSetColor( KTColor * ) ) );
     insert -> connectItem( id_insert_scene, scenes_dialog, SLOT( slotInsertScene() ) );
     insert -> connectItem( id_insert_remove_scene, scenes_dialog, SLOT( slotRemoveScene() ) );
     file -> connectItem( id_file_close, KTStatus->currentDrawingArea(), SLOT( close() ) );

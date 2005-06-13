@@ -40,7 +40,7 @@ class QString;
  * This class contains information about the grid that is drawn into the drawing area. The grids are created whit 1x1 dimension
  * and scaled in the paintGL (drawingarea)
  */
-class GLGrid
+class GLGrid : public QObject
 {
 
 public:

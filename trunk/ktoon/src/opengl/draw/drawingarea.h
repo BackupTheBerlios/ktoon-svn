@@ -538,7 +538,7 @@ class DrawingArea : public GLControl
         * @param pick_point A pick point into the drawing area
         * @return The color of the graphic at that point
         */
-	Color::Color *grabColor( const QPoint & pick_point );
+	KTColor *grabColor( const QPoint & pick_point );
         /**
         * @brief Load the Texture to select the current graphic in selection mode
         *
@@ -595,8 +595,8 @@ class DrawingArea : public GLControl
         GLGraphicComponent *current_graphic;
     
         int current_cursor;
-	Color::Color *current_outline_color;
-	Color::Color *current_fill_color;
+	KTColor *current_outline_color;
+	KTColor *current_fill_color;
         Brush *current_brush;
     
         //Variables related to the previous onion skin
@@ -693,7 +693,7 @@ class DrawingArea : public GLControl
         * This signal is emitted when a color has been picked from the screen.
         * @param c The picked color
         */
-	void colorGrabbed( Color::Color *c );
+	void colorGrabbed( KTColor *c );
         /**
         * This signal is emitted when paintGL is called
         */

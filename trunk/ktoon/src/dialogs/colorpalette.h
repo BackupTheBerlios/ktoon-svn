@@ -51,7 +51,7 @@
 
 #include "color.h"
 
-class Color;
+class KTColor;
 
 /**
  * @brief Class that handles the dialog box with the color palette
@@ -97,7 +97,7 @@ class ColorPalette : public KTDialogBase
 	*
 	* @param colors The colors
 	*/
-	void loadCustomColors( QPtrList<Color> colors );
+	void loadCustomColors( QPtrList<KTColor> colors );
 	/**
 	* @brief Deletes every color from the custom palette
 	*/
@@ -109,8 +109,8 @@ class ColorPalette : public KTDialogBase
 	QPopupMenu *assigned_menu;
 	int assigned_item;
 	QToolButton *assigned_tb_button;
-	Color *new_outline_color;
-	Color *new_fill_color;
+	KTColor *new_outline_color;
+	KTColor *new_fill_color;
 	void setupBlockStandardPalette();
 	void setupBlockColorMixer();
 	void setupBlockGradient();
@@ -121,7 +121,7 @@ class ColorPalette : public KTDialogBase
 	//Buttons
 	QPushButton *add_color, *remove_color;
 	
-	//Color palette components
+	//KTColor palette components
 	ColorCells *color_cells;
 	
 	ColorMixer *color_mixer;
@@ -190,7 +190,7 @@ class ColorPalette : public KTDialogBase
 	* is that the argument of this slot contains the alpha component inside.
 	* @param new_color The new color
 	*/
-		void slotSetColor( Color::Color *new_color );
+		void slotSetColor( KTColor *new_color );
 	/**
 	* @brief Sets the outline color widget to be active
 	*

@@ -51,7 +51,7 @@ public:
      * @param width The brush which this line was drawn with (to calculate the line width)
      * @param end The end point
      */
-    GLBrush( QGLWidget *parent, const QPoint & origin, const Color & color, const Brush & width, const QPoint & end );
+    GLBrush( QGLWidget *parent, const QPoint & origin, const KTColor & color, const Brush & width, const QPoint & end );
     /**
      * @brief Copy constructor
      *

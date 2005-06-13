@@ -36,13 +36,13 @@ Palette::~Palette()
 
 }
 
-void Palette::setColors( QPtrList<Color> _colors )
+void Palette::setColors( QPtrList<KTColor> _colors )
 {
     colors = _colors;
 }
 
 
-QPtrList<Color> Palette::getColors() const
+QPtrList<KTColor> Palette::getColors() const
 {
     return colors;
 }
@@ -52,7 +52,7 @@ QDomElement Palette::createXML( QDomDocument &doc )
 {
     QDomElement e = doc.createElement( "Palette" );
 
-    Color *c_it;
+    KTColor *c_it;
     for ( c_it = colors.first(); c_it; c_it = colors.next() )
     {
 	QDomElement color_tag = c_it -> createXML( doc );

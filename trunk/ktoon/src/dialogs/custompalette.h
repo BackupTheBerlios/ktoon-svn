@@ -31,7 +31,7 @@
 #include <qpainter.h>
 
 class KToon;
-class Color;
+class KTColor;
 
 /**
  * @brief Class that handles the user custom palette
@@ -62,7 +62,7 @@ public:
      *
      * @param colors The colors
      */
-    void loadColors( QPtrList<Color> colors );
+    void loadColors( QPtrList<KTColor> colors );
     /**
      * @brief Clears this custom palette
      */

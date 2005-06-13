@@ -34,7 +34,7 @@ GLuint GLGraphicComponent::selection_name = 1;
 
 //-------------- CONSTRUCTOR ---------------
 
-GLGraphicComponent::GLGraphicComponent( QGLWidget *parent, const QPoint & _origin, const Color & _color, const Brush & _width ) : origin(_origin), color(_color), width(_width)
+GLGraphicComponent::GLGraphicComponent( QGLWidget *parent, const QPoint & _origin, const KTColor & _color, const Brush & _width ) : origin(_origin), color(_color), width(_width)
 {
   Q_CHECK_PTR( parent );
 
@@ -69,7 +69,7 @@ void GLGraphicComponent::setOriginPoint( const QPoint & _origin )
  origin = _origin;
 }
 
-void GLGraphicComponent::setOutlineColor( const Color & _color )
+void GLGraphicComponent::setOutlineColor( const KTColor & _color )
 {
  color = _color;
  buildList();
@@ -249,7 +249,7 @@ QPoint GLGraphicComponent::originPoint() const
  return origin;
 }
 
-const Color & GLGraphicComponent::outlineColor() const
+const KTColor & GLGraphicComponent::outlineColor() const
 {
  return color;
 }
@@ -372,7 +372,7 @@ void GLGraphicComponent::contourSelectionPressOption()
 	}
 }
 
-void GLGraphicComponent::fillPressOption( const Color & fill_color )
+void GLGraphicComponent::fillPressOption( const KTColor & fill_color )
 {
    switch( kindGraphic() )
 	{
@@ -573,7 +573,7 @@ void GLGraphicComponent::keyReleaseEvent( QKeyEvent * key_event )
 
 }
 
-void GLGraphicComponent::lineImpl( const QPoint & origin, const QPoint & end, int line_width, int stipple_factor, const Color & outline_color )
+void GLGraphicComponent::lineImpl( const QPoint & origin, const QPoint & end, int line_width, int stipple_factor, const KTColor & outline_color )
 {
 	GLfloat angulo, longitud;
 	GLfloat xi, yi, xf, yf;
@@ -628,7 +628,7 @@ void GLGraphicComponent::lineImpl( const QPoint & origin, const QPoint & end, in
 }
 
 // line implementation, when the stipple pattern is 0xFFFF
-void GLGraphicComponent::lineImplFast( const QPoint & origin, const QPoint & end, int line_width, const Color & outlineColor )
+void GLGraphicComponent::lineImplFast( const QPoint & origin, const QPoint & end, int line_width, const KTColor & outlineColor )
 {
 	GLfloat angulo, longitud;
 	GLfloat xi, yi, xf, yf;

@@ -69,7 +69,7 @@ public:
       * @param color The color of this graphic component
       * @param width The brush which this graphic component was drawn with (to calculate the outline width)
       */
-     GLGraphicComponent( QGLWidget *parent, const QPoint & origin, const Color & color, const Brush & width );
+     GLGraphicComponent( QGLWidget *parent, const QPoint & origin, const KTColor & color, const Brush & width );
      /**
       * @brief Default destructor
       *
@@ -100,7 +100,7 @@ public:
       * @param color The new outline color
       * @sa outlineColor()
       */
-     void setOutlineColor( const Color & color );
+     void setOutlineColor( const KTColor & color );
      /**
       * @brief Sets a new width to the outline of this graphic component, according to the argument brush
       *
@@ -253,7 +253,7 @@ public:
       *
       * @param fill_color The fill color
       */
-     void fillPressOption( const Color & fill_color );
+     void fillPressOption( const KTColor & fill_color );
      /**
       * @brief This function performs all operations of the current graphic related to the REMOVE_FILL tool in the mouse press event
       */
@@ -310,7 +310,7 @@ public:
       * @param outline_color The color of this graphic component
       * @sa lineImpl()
       */
-    void lineImplFast( const QPoint & origin, const QPoint & end, int line_width, const Color & outline_color );
+    void lineImplFast( const QPoint & origin, const QPoint & end, int line_width, const KTColor & outline_color );
      /**
       * @brief This function makes a line implementation with a rectangle, where width is the rectangle base.
       *
@@ -322,7 +322,7 @@ public:
       * @param outline_color The color of this graphic component
       * @sa lineImplFast()
       */
-    void lineImpl( const QPoint & origin, const QPoint & end, int line_width, int stipple_factor, const Color & outline_color );
+    void lineImpl( const QPoint & origin, const QPoint & end, int line_width, int stipple_factor, const KTColor & outline_color );
 
      //Get methods
      /**
@@ -341,10 +341,10 @@ public:
      /**
       * @brief Gets this graphic component's outline color
       *
-      * @return The outline color. Note that it is of type Color, not QColor
+      * @return The outline color. Note that it is of type KTColor, not QColor
       * @sa setOutlineColor()
       */
-     const Color & outlineColor() const;
+     const KTColor & outlineColor() const;
      /**
       * @brief Gets the brush which this graphic component was drawn with
       *
@@ -492,7 +492,7 @@ public:
 
 protected:
      QPoint origin;
-     Color color;
+     KTColor color;
      Brush width;
      int kind_graphic;
      GLuint id_graphic_component;

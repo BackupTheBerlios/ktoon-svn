@@ -25,7 +25,7 @@
 
 //-------------- CONSTRUCTOR ---------------
 
-GLEllipse::GLEllipse( QGLWidget *parent, const QPoint &  _origin, const Color & _color, const Brush & _width, const QPoint & _radius, Color & _fill_color ) : GLGraphicComponent( parent, _origin, _color, _width ), radius( _radius ), fill_color( _fill_color)
+GLEllipse::GLEllipse( QGLWidget *parent, const QPoint &  _origin, const KTColor & _color, const Brush & _width, const QPoint & _radius, KTColor & _fill_color ) : GLGraphicComponent( parent, _origin, _color, _width ), radius( _radius ), fill_color( _fill_color)
 {
 	 Q_CHECK_PTR( parent );
 
@@ -157,7 +157,7 @@ void GLEllipse::setRadiusEllipse( const QPoint & _radius )
   buildList();
 }
 
-void GLEllipse::setFillColor( const Color & _fill_color )
+void GLEllipse::setFillColor( const KTColor & _fill_color )
 {
   fill_color = _fill_color;
   buildList();
@@ -217,7 +217,7 @@ QPoint GLEllipse::radiusEllipse() const
   return radius;
 }
 
-Color GLEllipse::fillColor() const
+KTColor GLEllipse::fillColor() const
 {
   return fill_color;
 }

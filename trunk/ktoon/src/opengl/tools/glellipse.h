@@ -50,7 +50,7 @@ public:
      * @param end The end point
      * @param fill_color The fill color
      */
-    GLEllipse( QGLWidget *parent, const QPoint & origin, const Color & outline_color, const Brush & width, const QPoint & end, Color & fill_color );
+    GLEllipse( QGLWidget *parent, const QPoint & origin, const KTColor & outline_color, const Brush & width, const QPoint & end, KTColor & fill_color );
     /**
      * @brief Copy constructor
      *
@@ -83,7 +83,7 @@ public:
      * @param fill_color The new fill color
      * @sa fillColor()
      */
-    void setFillColor( const Color & fill_color );
+    void setFillColor( const KTColor & fill_color );
     /**
      * @brief Sets to true or false the perfect_ellipse property
      *
@@ -112,10 +112,10 @@ public:
     /**
      * @brief Gets this ellipse's fill color
      *
-     * @return The fill color. Note that it is of type Color, not QColor
+     * @return The fill color. Note that it is of type KTColor, not QColor
      * @sa setFillColor()
      */
-    Color fillColor() const;
+    KTColor fillColor() const;
     /**
      * @brief Returns the perfect_ellipse property
      *
@@ -141,7 +141,7 @@ public:
 
 protected:
     QPoint radius;
-    Color fill_color;
+    KTColor fill_color;
     bool perfect_ellipse;
 
     /**

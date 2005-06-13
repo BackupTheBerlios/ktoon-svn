@@ -42,7 +42,7 @@ class GLBitmap : public GLGraphicComponent
 {
 
 public:
-        GLBitmap( QGLWidget *parent, const QPoint & _origin, const Color & _color, const Brush & _width, const QPoint & _end );
+        GLBitmap( QGLWidget *parent, const QPoint & _origin, const KTColor & _color, const Brush & _width, const QPoint & _end );
 	~GLBitmap();
 
 	//Set methods

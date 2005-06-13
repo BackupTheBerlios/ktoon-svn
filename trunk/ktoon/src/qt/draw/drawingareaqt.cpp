@@ -76,8 +76,8 @@ void DrawingAreaQt::contentsMousePressEvent( QMouseEvent *mouse_event )
     dragging = true;
     
     int current_cursor = KTStatus-> currentCursor();
-    Color::Color *current_outline_color = KTStatus-> currentOutlineColor();
-    Color::Color *current_fill_color = KTStatus-> currentFillColor();
+    KTColor *current_outline_color = KTStatus-> currentOutlineColor();
+    KTColor *current_fill_color = KTStatus-> currentFillColor();
     QColor co_color = QColor( ( int )( current_outline_color -> colorRed() * 255.0 ), ( int )( current_outline_color -> colorGreen() * 255.0 ), ( int )( current_outline_color -> colorBlue() * 255.0 ) );
     QColor cf_color = QColor( ( int )( current_fill_color -> colorRed() * 255.0 ), ( int )( current_fill_color -> colorGreen() * 255.0 ), ( int )( current_fill_color -> colorBlue() * 255.0 ) );
     Brush *current_brush = KTStatus-> currentBrush();

@@ -32,7 +32,7 @@
  * @brief Class that represents the drawing area's rectangle object
  *
  * <b>Date of Creation: June 24 - 2004.</b>\n
- * This class contains relevant information about the rectangle such as its end point and its fill color. It implements
+ * This class contains relevant information about the rectangle such as its end KTColor and its fill color. It implements
  * the graphic component's virtual function buildList() for the creation of this object's OpenGL display list.
  */
 class GLRectangle : public GLGraphicComponent
@@ -44,13 +44,13 @@ public:
      *
      * Constructs a GLRectangle object
      * @param parent The parent widget
-     * @param origin The origin point
+     * @param origin The origin KTColor
      * @param outline_color The outline color
      * @param width The brush which this rectangle was drawn with (to calculate the outline width)
-     * @param end The end point
+     * @param end The end KTColor
      * @param fill_color The fill color
      */
-    GLRectangle( QGLWidget *parent, const QPoint & origin, const Color & outline_color, const Brush & width, const QPoint & end, Color & fill_color );
+    GLRectangle( QGLWidget *parent, const QPoint & origin, const KTColor & outline_color, const Brush & width, const QPoint & end, KTColor & fill_color );
     /**
      * @brief Copy constructor
      *
@@ -66,9 +66,9 @@ public:
 
     //Set methods
     /**
-     * @brief Sets a new end point to this rectangle
+     * @brief Sets a new end KTColor to this rectangle
      *
-     * @param end The new end point
+     * @param end The new end KTColor
      * @sa endRectangle()
      */
     void setEndRectangle( const QPoint & end );
@@ -78,7 +78,7 @@ public:
      * @param fill_color The new fill color
      * @sa fillColor()
      */
-    void setFillColor( const Color & fill_color );
+    void setFillColor( const KTColor & fill_color );
     /**
      * @brief Sets to true or false the perfect_rectangle property
      *
@@ -88,29 +88,29 @@ public:
      */
     void setPerfectRectangle( const bool & perfect );
     /**
-     * @brief Calculates the top left point of the rectangle that fits outside this rectangle
+     * @brief Calculates the top left KTColor of the rectangle that fits outside this rectangle
      */
     void calculateTopLeft();
     /**
-     * @brief Calculates the bottom right point of the rectangle that fits outside this rectangle
+     * @brief Calculates the bottom right KTColor of the rectangle that fits outside this rectangle
      */
     void calculateBottomRight();
 
     //Get methods
     /**
-     * @brief Gets this rectangle's end point
+     * @brief Gets this rectangle's end KTColor
      *
-     * @return The current end point
+     * @return The current end KTColor
      * @sa setEndRectangle()
      */
     QPoint endRectangle() const;
     /**
      * @brief Gets this rectangle's fill color
      *
-     * @return The fill color. Note that it is of type Color, not QColor
+     * @return The fill color. Note that it is of type KTColor, not QColor
      * @sa setFillColor()
      */
-    Color fillColor() const;
+    KTColor fillColor() const;
     /**
      * @brief Returns the perfect_rectangle property
      *
@@ -136,7 +136,7 @@ public:
 
 protected:
     QPoint end;
-    Color fill_color;
+    KTColor fill_color;
     bool perfect_rectangle;
 
     /**

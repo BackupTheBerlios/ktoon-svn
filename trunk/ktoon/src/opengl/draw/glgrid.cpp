@@ -106,41 +106,41 @@ void GLGrid::buildGrid( int nLines, GLuint list )
 	GLfloat width  = 1.0;
 	QColor color = grid_color;
 	glNewList( list, GL_COMPILE );
-		glColor3f( color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0 );
+	glColor3f( color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0 );
+	glLineWidth( width );
+	glBegin( GL_LINES );
+
+	for ( int x = 0; x <= nLines; x++ )
+	{
+		float fraccion = ( float )x / ( float )nLines;
+		if ( x == nLines / 2 )
+			continue;
+
+		if ( nLines >= 2  )
+		{
+			glVertex2f( 0, fraccion );
+			glVertex2f( 1, fraccion );
+			glVertex2f( fraccion, 0 );
+			glVertex2f( fraccion, 1 );
+		}
+	}
+
+	glEnd();
+
+	// grid axes!
+
+	if ( ( nLines % 2 == 0 ) && ( nLines > 2 ) )
+	{
+		float fraccion = 0.5;
+		width = 2.0;
 		glLineWidth( width );
 		glBegin( GL_LINES );
-
-		for ( int x = 0; x <= nLines; x++ )
-		{
-			float fraccion = ( float )x / ( float )nLines;
-			if ( x == nLines / 2 )
-				continue;
-
-			if ( nLines >= 2  )
-			{
-					glVertex2f( 0, fraccion );
-					glVertex2f( 1, fraccion );
-					glVertex2f( fraccion, 0 );
-					glVertex2f( fraccion, 1 );
-			}
-		}
-
+		glVertex2f( 0, fraccion );
+		glVertex2f( 1, fraccion );
+		glVertex2f( fraccion, 0 );
+		glVertex2f( fraccion, 1 );
 		glEnd();
-
-		// grid axes!
-
-		if ( ( nLines % 2 == 0 ) && ( nLines > 2 ) )
-		{
-			float fraccion = 0.5;
-			width = 2.0;
-			glLineWidth( width );
-			glBegin( GL_LINES );
-				glVertex2f( 0, fraccion );
-				glVertex2f( 1, fraccion );
-				glVertex2f( fraccion, 0 );
-				glVertex2f( fraccion, 1 );
-			glEnd();
-		}
+	}
 
 	glEndList();
 }

@@ -25,7 +25,7 @@
 
 //-------------- CONSTRUCTOR ---------------
 
-GLRectangle::GLRectangle( QGLWidget *parent, const QPoint & _origin, const Color & outline_color, const Brush & _width, const QPoint & _end, Color & _fill_color ) : GLGraphicComponent( parent, _origin, outline_color, _width ), end( _end ), fill_color( _fill_color)
+GLRectangle::GLRectangle( QGLWidget *parent, const QPoint & _origin, const KTColor & outline_color, const Brush & _width, const QPoint & _end, KTColor & _fill_color ) : GLGraphicComponent( parent, _origin, outline_color, _width ), end( _end ), fill_color( _fill_color)
 {
          Q_CHECK_PTR( parent );
 
@@ -171,7 +171,7 @@ void GLRectangle::setEndRectangle( const QPoint & _end )
   buildList();
 }
 
-void GLRectangle::setFillColor( const Color & _fill_color )
+void GLRectangle::setFillColor( const KTColor & _fill_color )
 {
   fill_color = _fill_color;
   buildList();
@@ -223,7 +223,7 @@ QPoint GLRectangle::endRectangle() const
   return end;
 }
 
-Color GLRectangle::fillColor() const
+KTColor GLRectangle::fillColor() const
 {
   return fill_color;
 }

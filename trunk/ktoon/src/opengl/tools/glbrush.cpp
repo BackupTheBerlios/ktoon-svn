@@ -35,7 +35,7 @@
 
 //-------------- CONSTRUCTOR ---------------
 
-GLBrush::GLBrush( QGLWidget *parent, const QPoint & _origin, const Color & _color, const Brush & _width, const QPoint & _end ) : GLGraphicComponent( parent, _origin, _color, _width ), end( _end )
+GLBrush::GLBrush( QGLWidget *parent, const QPoint & _origin, const KTColor & _color, const Brush & _width, const QPoint & _end ) : GLGraphicComponent( parent, _origin, _color, _width ), end( _end )
 {
         Q_CHECK_PTR( parent );
 	
@@ -93,8 +93,8 @@ GLBrush::~GLBrush()
 
 }
 
-//extern void lineImpl( const QPoint & origin, const QPoint & end, int lw, int stippleFactor, const Color & outlineColor );
-//extern void lineImplFast( const QPoint & origin, const QPoint & end, int lw, const Color & outlineColor );
+//extern void lineImpl( const QPoint & origin, const QPoint & end, int lw, int stippleFactor, const KTColor & outlineColor );
+//extern void lineImplFast( const QPoint & origin, const QPoint & end, int lw, const KTColor & outlineColor );
 
 //------------ PUBLIC MEMBERS ---------------
 

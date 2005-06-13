@@ -1170,7 +1170,7 @@ void DrawingArea::pasteBrush( QString brush )
 {
 	QString number1, number2, count;
 	QPoint point;
-	Color::Color o_color;
+	KTColor o_color;
 	Brush br;
 	int i, number_points;
 	
@@ -1267,7 +1267,7 @@ void DrawingArea::pastePencil( QString pencil )
 {
 	QString number1, number2, count;
 	QPoint point;
-	Color::Color o_color;
+	KTColor o_color;
 	Brush brush;
 	int i, number_points;
 	
@@ -1363,7 +1363,7 @@ void DrawingArea::pastePen( QString pen )
 {
 	QString number1, number2, count;
 	QPoint point;
-	Color::Color o_color;
+	KTColor o_color;
 	Brush brush;
 	int i, number_points;
 	
@@ -1480,7 +1480,7 @@ void DrawingArea::pastePen( QString pen )
 void DrawingArea::pasteLine( QString line )
 {
 	QString number1, number2;
-	Color::Color o_color;
+	KTColor o_color;
 	Brush brush;
 	
 	number1 = line.left( line.find( ' ', 0 ) );
@@ -1558,7 +1558,7 @@ void DrawingArea::pasteLine( QString line )
 void DrawingArea::pasteRectangle( QString rectangle )
 {
 	QString number1, number2;
-	Color::Color o_color, f_color;
+	KTColor o_color, f_color;
 	Brush brush;
 	
 	number1 = rectangle.left( rectangle.find( ' ', 0 ) );
@@ -1657,7 +1657,7 @@ void DrawingArea::pasteRectangle( QString rectangle )
 void DrawingArea::pasteEllipse( QString ellipse )
 {
 	QString number1, number2;
-	Color::Color o_color, f_color;
+	KTColor o_color, f_color;
 	Brush brush;
 	
 	number1 = ellipse.left( ellipse.find( ' ', 0 ) );
@@ -2895,9 +2895,9 @@ void DrawingArea::slotNext3OnionSkin()
 		next_onion_skin_3.clear();
 }
 
-Color::Color *DrawingArea::grabColor( const QPoint &p )
+KTColor *DrawingArea::grabColor( const QPoint &p )
 {
-	Color::Color* color = 0;
+	KTColor* color = 0;
 	QPoint point = p;
 	point.setY( height() - point.y() );
 	if ( current_graphic )
@@ -2908,25 +2908,25 @@ Color::Color *DrawingArea::grabColor( const QPoint &p )
 			case GLGraphicComponent::GC_PENCIL:
 			case GLGraphicComponent::GC_PEN:
 			case GLGraphicComponent::GC_LINE:
-				color = new Color::Color( current_graphic -> outlineColor().colorRed(),
+				color = new KTColor( current_graphic -> outlineColor().colorRed(),
 						current_graphic -> outlineColor().colorGreen(),
 						current_graphic -> outlineColor().colorBlue(),
 						current_graphic -> outlineColor().colorAlpha() );
 				break;
 			case GLGraphicComponent::GC_RECTANGLE:
-				color = new Color::Color( ( ( GLRectangle * )( current_graphic ) ) -> fillColor().colorRed(),
+				color = new KTColor( ( ( GLRectangle * )( current_graphic ) ) -> fillColor().colorRed(),
 						( ( GLRectangle * )( current_graphic ) ) -> fillColor().colorGreen(),
 						( ( GLRectangle * )( current_graphic ) ) -> fillColor().colorBlue(),
 						( ( GLRectangle * )( current_graphic ) ) -> fillColor().colorAlpha() );
 				break;
 			case GLGraphicComponent::GC_ELLIPSE:
-				color = new Color::Color( ( ( GLEllipse * )( current_graphic ) ) -> fillColor().colorRed(),
+				color = new KTColor( ( ( GLEllipse * )( current_graphic ) ) -> fillColor().colorRed(),
 						( ( GLEllipse * )( current_graphic ) ) -> fillColor().colorGreen(),
 						( ( GLEllipse * )( current_graphic ) ) -> fillColor().colorBlue(),
 						( ( GLEllipse * )( current_graphic ) ) -> fillColor().colorAlpha() );
 				break;
 			default:
-				color = new Color::Color;
+				color = new KTColor;
 					break;
 		}
 	}
@@ -2934,7 +2934,7 @@ Color::Color *DrawingArea::grabColor( const QPoint &p )
 	{
 		GLfloat glcolor[4]; 
 		glReadPixels( point.x(), point.y(), 1, 1 , GL_RGBA, GL_FLOAT, &glcolor );
-		color = new Color::Color( glcolor[0], glcolor[1], glcolor[2], glcolor[3] );
+		color = new KTColor( glcolor[0], glcolor[1], glcolor[2], glcolor[3] );
 	}
 	return color;
 }

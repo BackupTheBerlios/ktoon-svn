@@ -59,7 +59,7 @@ public:
      * @param colors The new list of colors
      * @sa getColors()
      */
-    void setColors( QPtrList<Color> colors );
+    void setColors( QPtrList<KTColor> colors );
 
     /**
      * @brief Gets the list of colors
@@ -67,7 +67,7 @@ public:
      * @return The current list of colors
      * @sa setColors()
      */
-    QPtrList<Color> getColors() const;
+    QPtrList<KTColor> getColors() const;
 
     /**
      * @brief Creates an XML tag for this object
@@ -78,7 +78,7 @@ public:
     QDomElement createXML( QDomDocument &doc );
 
 private:
-    QPtrList<Color> colors;
+    QPtrList<KTColor> colors;
 
 };
 

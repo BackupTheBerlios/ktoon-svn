@@ -105,13 +105,13 @@ class Status : public QObject
 		*
 		* @param color The new current outline color
 		*/
-		void setCurrentOutlineColor( Color *color );
+		void setCurrentOutlineColor( KTColor *color );
 		/**
 		* @brief Sets a new current fill color
 		*
 		* @param color The new current fill color
 		*/
-		void setCurrentFillColor( Color *color );
+		void setCurrentFillColor( KTColor *color );
 		/**
 		* @brief Sets a new current brush
 		*
@@ -218,13 +218,13 @@ class Status : public QObject
 		*
 		* @return The current outline color
 		*/
-		Color *currentOutlineColor();
+		KTColor *currentOutlineColor();
 		/**
 		* @brief Gets the current fill color
 		*
 		* @return The current fill color
 		*/
-		Color *currentFillColor();
+		KTColor *currentFillColor();
 		/**
 		* @brief Gets the current brush
 		*
@@ -327,8 +327,8 @@ class Status : public QObject
 		int current_cursor;
 		int current_previous_onion_skin;
 		int current_next_onion_skin;
-		Color *current_outline_color;
-		Color *current_fill_color;
+		KTColor *current_outline_color;
+		KTColor *current_fill_color;
 		Brush *current_brush;
 		Scene *current_scene;
 		Layer *current_layer;

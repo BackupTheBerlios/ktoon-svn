@@ -165,13 +165,13 @@ void Status::setCurrentCursor( const int &cursor )
     current_cursor = cursor;
 }
 
-void Status::setCurrentOutlineColor( Color *color )
+void Status::setCurrentOutlineColor( KTColor *color )
 {
     Q_CHECK_PTR( color );
     current_outline_color = color;
 }
 
-void Status::setCurrentFillColor( Color *color )
+void Status::setCurrentFillColor( KTColor *color )
 {
     Q_CHECK_PTR( color );
     current_fill_color = color;
@@ -265,12 +265,12 @@ int Status::currentCursor() const
     return current_cursor;
 }
 
-Color* Status::currentOutlineColor()
+KTColor* Status::currentOutlineColor()
 {
     return current_outline_color;
 }
 
-Color* Status::currentFillColor()
+KTColor* Status::currentFillColor()
 {
     return current_fill_color;
 }

@@ -25,7 +25,7 @@
 
 //-------------- CONSTRUCTOR ---------------
 
-GLImage::GLImage( QGLWidget *parent, const QString &_file_name, const QPoint &_origin, const QPoint &_end ) : GLGraphicComponent( parent, _origin, Color(), Brush() ), file_name( _file_name ), end( _end )
+GLImage::GLImage( QGLWidget *parent, const QString &_file_name, const QPoint &_origin, const QPoint &_end ) : GLGraphicComponent( parent, _origin, KTColor(), Brush() ), file_name( _file_name ), end( _end )
 {
 	Q_CHECK_PTR( parent );
 
@@ -82,7 +82,7 @@ void GLImage::setEndImage( const QPoint &_end )
     buildList();
 }
 
-void GLImage::setFillColor( const Color & _fill_color )
+void GLImage::setFillColor( const KTColor & _fill_color )
 {
 	fill_color = _fill_color;
 
@@ -167,7 +167,7 @@ QString GLImage::clipboardGraphic()
 	return graphic;
 }
 
-Color GLImage::fillColor() const
+KTColor GLImage::fillColor() const
 {
   return fill_color;
 }

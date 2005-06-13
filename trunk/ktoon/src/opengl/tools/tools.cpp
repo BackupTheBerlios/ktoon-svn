@@ -29,7 +29,7 @@
 Tools::Tools( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
 	: KTDialogBase(QDockWindow::OutsideDock,parent, "Tools")
 {
-	
+		
 	Q_CHECK_PTR( parent );
 	Q_CHECK_PTR( in_assigned_menu );
 	Q_CHECK_PTR( assig_tb_button );
@@ -155,83 +155,81 @@ Tools::Tools( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int i
 
 Tools::~Tools()
 {
-    delete menu_button_selection;
-    delete menu_button_draw;
-    delete menu_button_fill;
-    delete menu_button_eraser;
-    delete menu_button_view;
+	delete menu_button_selection;
+	delete menu_button_draw;
+	delete menu_button_fill;
+	delete menu_button_eraser;
+	delete menu_button_view;
     
-    delete selection_button;
-    delete draw_button;
-    delete fill_button;
-    delete eraser_button;
-    delete view_button;
+	delete selection_button;
+	delete draw_button;
+	delete fill_button;
+	delete eraser_button;
+	delete view_button;
 }
 
 //--------------------- EVENTS AND OTHER FUNCTIONS --------------------------------
 
 void Tools::closeEvent( QCloseEvent* close_event )
 {
-    Q_CHECK_PTR( close_event );
-    assigned_menu -> setItemChecked( assigned_item, false );
-    assigned_tb_button -> setDown( false );
-    close_event -> accept();
+	Q_CHECK_PTR( close_event );
+	assigned_menu -> setItemChecked( assigned_item, false );
+	assigned_tb_button -> setDown( false );
+	close_event -> accept();
 }
 
 void Tools::changeButtonImage( int id_button )
 {
-    KToon *k_toon = ( KToon * )parent_widget;
-//     Status *KTStatus = k_toon -> currentStatus();
-    switch ( id_button )
-    {
-	case NORMAL_SELECTION: selection_button -> setIconSet( icon_selection );
-			       KTStatus -> setCurrentCursor( NORMAL_SELECTION );
-			       break;
-	case CONTOUR_SELECTION: selection_button -> setIconSet( icon_nodes );
-				KTStatus -> setCurrentCursor( CONTOUR_SELECTION );
-				break;
-	case BRUSH: draw_button -> setIconSet( icon_brush );
-		    KTStatus -> setCurrentCursor( BRUSH );
-		    break;
-	case PENCIL: draw_button -> setIconSet( icon_pencil );
-		     KTStatus -> setCurrentCursor( PENCIL );
-		     break;
-	case PEN: draw_button -> setIconSet( icon_pen );
-		  KTStatus -> setCurrentCursor( PEN );
-		  break;
-	case LINE: draw_button -> setIconSet( icon_line );
-		   KTStatus -> setCurrentCursor( LINE );
-		   break;
-	case RECTANGLE: draw_button -> setIconSet( icon_rectangle );
-			KTStatus -> setCurrentCursor( RECTANGLE );
-		        break;
-	case ELLIPSE: draw_button -> setIconSet( icon_ellipse );
-		      KTStatus -> setCurrentCursor( ELLIPSE );
-		      break;
-	case CONTOUR_FILL: fill_button -> setIconSet( icon_contour_fill );
-			   KTStatus -> setCurrentCursor( CONTOUR_FILL );
-		           break;
-	case FILL: fill_button -> setIconSet( icon_fill );
-		   KTStatus -> setCurrentCursor( FILL );
-		   break;
-	case REMOVE_FILL: fill_button -> setIconSet( icon_remove_fill );
-			  KTStatus -> setCurrentCursor( REMOVE_FILL );
-			  break;
-	case DROPPER: fill_button -> setIconSet( icon_dropper );
-		      KTStatus -> setCurrentCursor( DROPPER );
-		      break;
-	case ERASER: eraser_button -> setIconSet( icon_eraser );
-		     KTStatus -> setCurrentCursor( ERASER );
-		     break;
-	case SLICER: eraser_button -> setIconSet( icon_slicer );
-		     KTStatus -> setCurrentCursor( SLICER );
-		     break;
-	case MAGNIFYING_GLASS: view_button -> setIconSet( icon_magnifying_glass );
-			       KTStatus -> setCurrentCursor( MAGNIFYING_GLASS );
-		               break;
-	case HAND: view_button -> setIconSet( icon_hand );
-		   KTStatus -> setCurrentCursor( HAND );
-		   break;
-	default: break;
-    }
+	switch ( id_button )
+	{
+		case NORMAL_SELECTION: selection_button -> setIconSet( icon_selection );
+		KTStatus -> setCurrentCursor( NORMAL_SELECTION );
+		break;
+		case CONTOUR_SELECTION: selection_button -> setIconSet( icon_nodes );
+		KTStatus -> setCurrentCursor( CONTOUR_SELECTION );
+		break;
+		case BRUSH: draw_button -> setIconSet( icon_brush );
+		KTStatus -> setCurrentCursor( BRUSH );
+		break;
+		case PENCIL: draw_button -> setIconSet( icon_pencil );
+		KTStatus -> setCurrentCursor( PENCIL );
+		break;
+		case PEN: draw_button -> setIconSet( icon_pen );
+		KTStatus -> setCurrentCursor( PEN );
+		break;
+		case LINE: draw_button -> setIconSet( icon_line );
+		KTStatus -> setCurrentCursor( LINE );
+		break;
+		case RECTANGLE: draw_button -> setIconSet( icon_rectangle );
+		KTStatus -> setCurrentCursor( RECTANGLE );
+		break;
+		case ELLIPSE: draw_button -> setIconSet( icon_ellipse );
+		KTStatus -> setCurrentCursor( ELLIPSE );
+		break;
+		case CONTOUR_FILL: fill_button -> setIconSet( icon_contour_fill );
+		KTStatus -> setCurrentCursor( CONTOUR_FILL );
+		break;
+		case FILL: fill_button -> setIconSet( icon_fill );
+		KTStatus -> setCurrentCursor( FILL );
+		break;
+		case REMOVE_FILL: fill_button -> setIconSet( icon_remove_fill );
+		KTStatus -> setCurrentCursor( REMOVE_FILL );
+		break;
+		case DROPPER: fill_button -> setIconSet( icon_dropper );
+		KTStatus -> setCurrentCursor( DROPPER );
+		break;
+		case ERASER: eraser_button -> setIconSet( icon_eraser );
+		KTStatus -> setCurrentCursor( ERASER );
+		break;
+		case SLICER: eraser_button -> setIconSet( icon_slicer );
+		KTStatus -> setCurrentCursor( SLICER );
+		break;
+		case MAGNIFYING_GLASS: view_button -> setIconSet( icon_magnifying_glass );
+		KTStatus -> setCurrentCursor( MAGNIFYING_GLASS );
+		break;
+		case HAND: view_button -> setIconSet( icon_hand );
+		KTStatus -> setCurrentCursor( HAND );
+		break;
+		default: break;
+	}
 }

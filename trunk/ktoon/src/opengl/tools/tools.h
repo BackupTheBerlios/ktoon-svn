@@ -94,31 +94,31 @@ public:
      */
     void changeButtonImage( int id_button );
 
-private:
+	private:
     //General purpose variables
-    QWidget * parent_widget;
-    QPopupMenu * assigned_menu;
-    int assigned_item;
-    QToolButton *assigned_tb_button;
+		QWidget * parent_widget;
+		QPopupMenu * assigned_menu;
+		int assigned_item;
+		QToolButton *assigned_tb_button;
 
     //Icons
-    QPixmap icon_selection, icon_nodes, icon_brush, icon_pencil, icon_line, icon_pen, icon_rectangle,
-            icon_ellipse, icon_eraser, icon_slicer, icon_fill, icon_contour_fill, icon_remove_fill,
-            icon_dropper, icon_magnifying_glass, icon_hand;
+		QPixmap icon_selection, icon_nodes, icon_brush, icon_pencil, icon_line, icon_pen, icon_rectangle,
+		icon_ellipse, icon_eraser, icon_slicer, icon_fill, icon_contour_fill, icon_remove_fill,
+		icon_dropper, icon_magnifying_glass, icon_hand;
 
     //Main Buttons
-    QToolButton * selection_button;
-    QToolButton * draw_button;
-    QToolButton * fill_button;
-    QToolButton * eraser_button;
-    QToolButton * view_button;
+		QToolButton * selection_button;
+		QToolButton * draw_button;
+		QToolButton * fill_button;
+		QToolButton * eraser_button;
+		QToolButton * view_button;
 
     //Menus associated with every main button
-    QPopupMenu * menu_button_selection;
-    QPopupMenu * menu_button_draw;
-    QPopupMenu * menu_button_fill;
-    QPopupMenu * menu_button_eraser;
-    QPopupMenu * menu_button_view;
+		QPopupMenu * menu_button_selection;
+		QPopupMenu * menu_button_draw;
+		QPopupMenu * menu_button_fill;
+		QPopupMenu * menu_button_eraser;
+		QPopupMenu * menu_button_view;
 
 protected:
     /**
