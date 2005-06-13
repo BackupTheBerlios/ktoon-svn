@@ -3,6 +3,29 @@
 # Subdir relative project main directory: ./src/store
 # Target is a library:  
 
+INCLUDEPATH += ../../src/core \
+               ../../src/dialogs \
+               ../../src/qt/cameras \
+               ../../src/qt/tools \
+               ../../src/qt/draw \
+               ../../src/opengl/draw \
+               ../../src/opengl/tools \
+               ../../src/opengl/cameras \
+               ../../src/store \
+               ../../src/library \
+               ../../src/timeline \
+               ../../src/lib \
+               ../../src/images/sequences \
+               ../../src/images/icons \
+               ../../src/images/cursors \
+               ../../src/images/images 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+CONFIG += release \
+          warn_on \
+          staticlib 
+TEMPLATE = lib 
 HEADERS += animation.h \
            brush.h \
            camera.h \
@@ -37,23 +60,3 @@ SOURCES += animation.cpp \
            symbol.cpp \
            color.cpp \
            document.cpp 
-INCLUDEPATH += ../../src/core \
-../../src/dialogs \
-../../src/qt/cameras \
-../../src/qt/tools \
-../../src/qt/draw \
-../../src/opengl/draw \
-../../src/opengl/tools \
-../../src/opengl/cameras \
-../../src/store \
-../../src/library \
-../../src/timeline \
-../../src/lib \
-../../src/images/sequences \
-../../src/images/icons \
-../../src/images/cursors \
-../../src/images/images
-CONFIG += release \
-warn_on \
-staticlib
-TEMPLATE = lib

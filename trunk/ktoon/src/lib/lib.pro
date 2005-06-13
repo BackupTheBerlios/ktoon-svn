@@ -4,6 +4,7 @@
 # Target is a library:  
 
 INCLUDEPATH += ../../src/core \
+               ../../src/exposure \
                ../../src/dialogs \
                ../../src/qt/cameras \
                ../../src/qt/tools \

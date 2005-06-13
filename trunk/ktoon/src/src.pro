@@ -3,6 +3,9 @@
 # Subdir relative project main directory: ./src
 # Target is a subdirs project 
 
+CONFIG += release \
+          warn_on 
+TEMPLATE = subdirs 
 SUBDIRS += images \
            lib \
            timeline \
@@ -11,8 +14,5 @@ SUBDIRS += images \
            opengl \
            qt \
            dialogs \
-           core \
-           exposure 
-CONFIG += release \
-          warn_on 
-TEMPLATE = subdirs 
+           exposure \
+           core

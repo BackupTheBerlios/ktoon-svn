@@ -25,7 +25,8 @@ TARGETDEPS += ../../src/dialogs/libdialogs.a \
               ../../src/library/liblibrary.a \
               ../../src/timeline/libtimeline.a \
               ../../src/lib/liblib.a \
-              ../../src/images/images/libimages.a 
+              ../../src/images/images/libimages.a \
+              ../../src/exposure/libexposure.a 
 LIBS += ../../src/dialogs/libdialogs.a \
         ../../src/lib/liblib.a \
         ../../src/images/images/libimages.a \
@@ -37,8 +38,10 @@ LIBS += ../../src/dialogs/libdialogs.a \
         ../../src/qt/cameras/libcameras.a \
         ../../src/store/libstore.a \
         ../../src/library/liblibrary.a \
-        ../../src/timeline/libtimeline.a 
-INCLUDEPATH += ../../src/dialogs \
+        ../../src/timeline/libtimeline.a \
+        ../../src/exposure/libexposure.a 
+INCLUDEPATH += ../../src/exposure \
+               ../../src/dialogs \
                ../../src/qt/cameras \
                ../../src/qt/tools \
                ../../src/qt/draw \
@@ -53,6 +56,9 @@ INCLUDEPATH += ../../src/dialogs \
                ../../src/images/icons \
                ../../src/images/cursors \
                ../../src/images/images 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
 TARGET = ../../bin/ktoon 
 CONFIG += release \
           warn_on \

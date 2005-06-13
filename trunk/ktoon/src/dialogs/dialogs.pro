@@ -3,6 +3,27 @@
 # Subdir relative project main directory: ./src/dialogs
 # Target is a library:  
 
+INCLUDEPATH += ../../src/core \
+               ../../src/exposure \
+               ../../src/dialogs \
+               ../../src/qt/cameras \
+               ../../src/qt/tools \
+               ../../src/qt/draw \
+               ../../src/opengl/draw \
+               ../../src/opengl/tools \
+               ../../src/opengl/cameras \
+               ../../src/store \
+               ../../src/library \
+               ../../src/timeline \
+               ../../src/lib \
+               ../../src/images/images 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+CONFIG += release \
+          warn_on \
+          staticlib 
+TEMPLATE = lib 
 HEADERS += colorcells.h \
            colordisplay.h \
            colorgradientselector.h \
@@ -15,9 +36,6 @@ HEADERS += colorcells.h \
            outlinecolor.h \
            scenes.h \
            valueselector.h \
-           esframe.h \
-           eslayer.h \
-           ilayer.h \
            about.h \
            export.h \
            import.h \
@@ -35,29 +53,8 @@ SOURCES += colorcells.cpp \
            outlinecolor.cpp \
            scenes.cpp \
            valueselector.cpp \
-           esframe.cpp \
-           eslayer.cpp \
-           exposuresheet.cpp \
-           ilayer.cpp \
            about.cpp \
            export.cpp \
            import.cpp \
            preferences.cpp \
            properties.cpp 
-INCLUDEPATH += ../../src/core \
-../../src/dialogs \
-../../src/qt/cameras \
-../../src/qt/tools \
-../../src/qt/draw \
-../../src/opengl/draw \
-../../src/opengl/tools \
-../../src/opengl/cameras \
-../../src/store \
-../../src/library \
-../../src/timeline \
-../../src/lib \
-../../src/images/images
-CONFIG += release \
-warn_on \
-staticlib
-TEMPLATE = lib

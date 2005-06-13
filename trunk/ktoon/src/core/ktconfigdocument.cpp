@@ -129,7 +129,7 @@ void KTConfigDocument::saveConfig(const QString &file)
 	}
 	else
 	{
-		QFile f( file );
+		f = new QFile(file);
 	}			
 	if ( f->open(IO_WriteOnly) )
 	{
