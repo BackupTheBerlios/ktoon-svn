@@ -36,7 +36,7 @@ class KTDialogBase : public QDockWindow
 {
 	Q_OBJECT
 	public:
-		KTDialogBase(Place p = InDock, QWidget *parent = 0, const char *name = 0);
+		KTDialogBase(Place p = InDock, QWidget *parent = 0, const char *name = 0, WFlags style = 0);
 		~KTDialogBase();
 		virtual void addChild(QWidget * child);
 		

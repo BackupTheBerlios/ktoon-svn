@@ -31,7 +31,7 @@
 //--------------- CONSTRUCTOR --------------------
 
 Scenes::Scenes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
-	: KTDialogBase( QDockWindow::OutsideDock, parent, "Scenes"/*, false, style*/ )
+	: KTDialogBase( QDockWindow::OutsideDock, parent, "Scenes", style )
 {
     Q_CHECK_PTR( parent );
     Q_CHECK_PTR( in_assigned_menu );
@@ -40,9 +40,9 @@ Scenes::Scenes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int
     //Initializations
     setCaption( tr( "Scenes" ) );
 //     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-    resize( 120, 200 );
-    setMinimumSize( 120, 200 );
-    setMaximumSize( 120, 200 );
+//     resize( 120, 200 );
+//     setMinimumSize( 120, 200 );
+//     setMaximumSize( 120, 200 );
     move( 13, 300 );
     //FIXME:Remove this
     parent_widget = parent;
@@ -61,8 +61,7 @@ Scenes::Scenes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int
 
     setupButtons();
     setupTableScens();
-
-
+    adjustSize();
 }
 
 //-------------- DESTRUCTOR -----------------
@@ -170,7 +169,11 @@ void Scenes::loadScenes( QPtrList<Scene> scenes )
 
 void Scenes::selectFirstScene()
 {
-    	table_scenes -> setSelected( table_scenes -> firstChild(), true );
+	Q_CHECK_PTR(table_scenes);
+	Q_CHECK_PTR(table_scenes -> firstChild());
+	
+	if ( table_scenes -> firstChild() )
+    		table_scenes -> setSelected( table_scenes -> firstChild(), true );
 }
 
 int Scenes::exportAnimation( const QString &file_name, const QString &format )

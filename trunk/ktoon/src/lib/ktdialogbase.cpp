@@ -22,8 +22,8 @@
 #include <qtooltip.h>
 #include <qdockarea.h>
 
-KTDialogBase::KTDialogBase(Place p, QWidget *parent, const char *name)
-	: QDockWindow(p, parent, name), m_isChildHidden(false)
+KTDialogBase::KTDialogBase(Place p, QWidget *parent, const char *name, WFlags style)
+	: QDockWindow(p, parent, name, style), m_isChildHidden(false)
 {
 	container = boxLayout();
 	setCloseMode(Undocked);
@@ -39,6 +39,7 @@ KTDialogBase::KTDialogBase(Place p, QWidget *parent, const char *name)
 	container->addWidget(m_title);
 	container->setDirection ( QBoxLayout::TopToBottom);
 	container->setMargin(5);
+	container->setSpacing(3);
 	
 	connect(m_title, SIGNAL(doubleClicked()), SLOT(toggleView()));
 	
@@ -47,6 +48,7 @@ KTDialogBase::KTDialogBase(Place p, QWidget *parent, const char *name)
 	setOrientation( Qt::Vertical );
 	
 	hide();
+	adjustSize();
 }
 
 

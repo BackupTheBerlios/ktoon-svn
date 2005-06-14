@@ -57,12 +57,29 @@ void Status::init()
 	m_document->setNameDocument(tr("Document"));
 }
 
+bool Status::isValid()
+{
+	bool valid = true;
+	if ( ! m_currentDrawingArea )
+	{
+		valid = valid && false;
+	}
+	
+	if ( ! m_document )
+	{
+		valid = valid && false;
+	}
+	
+	return valid;
+}
+
 void Status::setupDrawingArea(QWorkspace *ws)
 {
 	qDebug("Setup drawing area...");
+	closeCurrent();
 	KTStatus -> setCurrentScene( (m_document-> getAnimation()->getScenes() ).first() );
 	KTStatus -> setCurrentLayer( ( KTStatus -> currentScene() -> getLayers() ).first() );
-	setCurrentKeyFrame( NULL );
+	setCurrentKeyFrame( 0 );
 	QPtrList<KeyFrame> empty;
 	KTStatus -> setRenderKeyframes( empty );
 	
@@ -132,12 +149,12 @@ Status::currentDrawingArea()
 
 bool Status::closeCurrent()
 {
+	std::cout << "Close current project" << std::endl;
 	bool yes = false;
 	if ( m_currentDrawingArea )
 	{
+		m_currentDrawingArea->hide();
 		yes = m_currentDrawingArea->close(true);
-// 		delete m_currentDrawingArea; // this produce a crash
-// 		m_currentDrawingArea = 0;
 	}
 	
 	

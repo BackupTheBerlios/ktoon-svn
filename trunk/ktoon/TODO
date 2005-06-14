@@ -1,4 +1,4 @@
-This file contains the task
+This file contains the task to-do
 
 * Add a limit for history (undo/redo)
 * Add a standar Changelog
@@ -12,4 +12,9 @@ This file contains the task
 * Make a framework for extend ktoon easyly
 * Change the splash and background pixmap
 * Complete the 2d illustration mode
+* Give a option for create projects (with a wizard)
+* Tips when ktoon is launched
+* (Un)Package the project
+* Save configuration (theme, font, color, grid color)
+* Port currents themes to XML
 

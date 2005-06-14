@@ -140,7 +140,6 @@ class ColorPalette : public KTDialogBase
 	
 	CustomPalette *custom_palette;
 	
-	
 	//Combo box for gradient types
 	QComboBox *gradient_types;
 	

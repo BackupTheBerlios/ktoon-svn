@@ -46,9 +46,9 @@ Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
     //Initializations
 	setCaption( tr( "Brushes" ) );
 //     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-	resize( 200, 360 );
-	setMinimumSize( 205, 430 );
-	setMaximumSize( 205, 430 );
+	//resize( 200, 360 );
+	//setMinimumSize( 205, 430 );
+	//setMaximumSize( 205, 430 );
 	move( 800, 88 );
 	parent_widget = parent;
 	assigned_menu = in_assigned_menu;
@@ -67,6 +67,7 @@ Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
 	setupTableBruches();
 	setupStaticText();
 	setupPrevisualizationArea();
+	adjustSize();
     //------------- Operations on the Textfields -------------
 }
 

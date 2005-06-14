@@ -46,31 +46,60 @@ bool KTXmlParser::startElement( const QString& , const QString& , const QString&
 		if ( qname == "KTHome" )
 		{
 			m_results.insert(qname, atts.value("path"));
+			m_tempList << atts.value("path");
 		}
 		else if ( qname == "Repository")
 		{
 			m_results.insert(qname, atts.value("path"));
+			m_tempList << atts.value("path");
 		}
 		else if (qname == "file" )
 		{
 			fileNumber++;
 			m_results.insert(qname+QString::number(fileNumber), atts.value("name"));
+			m_tempList << atts.value("name");
 		}
 	}
 	return true;
 }
 
 bool KTXmlParser::endElement(const QString& ns, const QString& localname, const QString& qname)
-{	
+{
+	if ( m_root == "KTConfig" ) // Configuration document
+	{
+		if ( qname == "KTHome" )
+		{
+			m_resultsList.insert(qname, m_tempList);
+			m_tempList.clear();
+		}
+		else if ( qname == "Repository")
+		{
+			m_resultsList.insert(qname, m_tempList);
+			m_tempList.clear();
+		}
+		else if ( qname == "Recent" )
+		{
+			m_resultsList.insert(qname,m_tempList);
+			m_tempList.clear();
+		}
+	}
+	
 	return true;
 }
 
 bool KTXmlParser::characters(const QString &ch)
-{	
+{
 	return true;
 }
 
-XMLResults KTXmlParser::getResults()
+XMLSingleResult KTXmlParser::getResult()
 {
 	return m_results;
 }
+
+XMLTotalResults KTXmlParser::getResults()
+{
+	return m_resultsList;
+}
+
+

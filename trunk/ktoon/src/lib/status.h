@@ -28,6 +28,7 @@
 
 #include <qptrlist.h>
 #include <qcolor.h>
+#include <qguardedptr.h> 
 
 #include "brush.h"
 #include "ktcolor.h"
@@ -321,6 +322,8 @@ class Status : public QObject
 		void setupDrawingArea(QWorkspace *ws);
 		
 		bool closeCurrent();
+		
+		bool isValid();
 
 	private:
 		short int current_tool;
@@ -344,9 +347,9 @@ class Status : public QObject
 		
 		Document *m_document;
 #ifndef NO_OPENGL
-		DrawingArea *m_currentDrawingArea;
+		QGuardedPtr<DrawingArea> m_currentDrawingArea;
 #else
-		DrawingAreaQt *m_currentDrawingArea;
+		QGuardedPtr<DrawingAreaQt> m_currentDrawingArea;
 #endif
 };
 

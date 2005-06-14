@@ -149,6 +149,7 @@ Tools::Tools( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int i
 	view_button -> setPopup( menu_button_view );
 	view_button -> setPopupDelay( 1 );
 	QToolTip::add( view_button, tr( "View Tools" ) );
+	adjustSize();
 }
 
 //-------------- DESTRUCTOR -----------------

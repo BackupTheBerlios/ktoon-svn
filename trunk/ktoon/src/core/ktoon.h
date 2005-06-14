@@ -835,9 +835,6 @@ class KToon: public QMainWindow
 	    QPtrList<ExposureSheet> list_of_es;
 	    QPtrList<Timeline> list_of_tl;
 	
-	    //Several images
-	    QPixmap background_image;
-	
 	    //Icons
 	    QPixmap icon_new, icon_open, icon_save, icon_import, icon_export, icon_undo, icon_redo, icon_zoom_in,
 		    icon_zoom_out, icon_fit, icon_grid12, icon_grid16, icon_subgrid, icon_no_grid, icon_close,
@@ -1055,9 +1052,6 @@ class KToon: public QMainWindow
 	    Preferences *preferences_dialog;
 	    Import *import_dialog;
 	    Export *export_dialog;
-	
-	    //Current Status
-// 	    Status *current_status;
 
 	    RenderCameraPreviewQt *render_camera_preview_qt;
 	    

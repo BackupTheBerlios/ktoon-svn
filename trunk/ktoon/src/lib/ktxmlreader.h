@@ -34,7 +34,8 @@ class KTXmlReader : public QXmlSimpleReader
 
 		bool parseXml(const QXmlInputSource * input);
 		
-		XMLResults getResults();
+		XMLSingleResult getResult();
+		XMLTotalResults getResults();
 
 	private:
 		KTXmlParser *m_parser;

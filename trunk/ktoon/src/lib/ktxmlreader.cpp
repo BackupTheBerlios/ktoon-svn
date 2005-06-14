@@ -36,7 +36,13 @@ bool KTXmlReader::parseXml(const QXmlInputSource * input)
 	return QXmlSimpleReader::parse(input);
 }
 
-XMLResults KTXmlReader::getResults()
+XMLSingleResult KTXmlReader::getResult()
+{
+	return m_parser->getResult();
+}
+
+XMLTotalResults KTXmlReader::getResults()
 {
 	return m_parser->getResults();
 }
+

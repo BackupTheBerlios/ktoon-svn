@@ -79,7 +79,7 @@ DrawingArea::DrawingArea( QWidget *parent, const char *name, WFlags f ) : GLCont
 	move( 146, 8 );
 	setMinimumSize( 160, 120 );
 	setMaximumSize( 1023, 650 );
-	setCaption( name ); 
+	setCaption( name );
 }
 
 //-------------- DESTRUCTOR -----------------
@@ -214,15 +214,15 @@ void DrawingArea::paintGL()
 	
 	if ( !graphic_list.isEmpty() /*&& k_toon -> timeline() != NULL && k_toon -> exposureSheet() != NULL*/ )
 	{
-		emit wasDrawn( true );
-		if ( KTStatus -> currentILayer() -> selectedFrame() != NULL )
-			KTStatus -> currentILayer() -> selectedFrame() -> setHasDrawing( true );
+		emit wasDrawn( true ); // FIXME: krawek
+// 		if ( KTStatus -> currentILayer() -> selectedFrame() != NULL )
+// 			KTStatus->currentILayer()->selectedFrame()->setHasDrawing( true );
 	}
 	else if ( graphic_list.isEmpty() /*&& k_toon -> timeline() != NULL && k_toon -> exposureSheet() != NULL*/ )
 	{
 		emit wasDrawn( false );
-		if ( KTStatus -> currentILayer() -> selectedFrame() != NULL )
-			KTStatus -> currentILayer() -> selectedFrame() -> setHasDrawing( false );
+// 		if ( KTStatus -> currentILayer() -> selectedFrame() != NULL )
+// 			KTStatus -> currentILayer() -> selectedFrame() -> setHasDrawing( false );
 	}
 	glEnable( GL_DEPTH_TEST );
 	
@@ -1068,7 +1068,7 @@ void DrawingArea::keyReleaseEvent( QKeyEvent *key_event )
 
 void DrawingArea::closeEvent( QCloseEvent *close_event )
 {
-	Q_CHECK_PTR( close_event );
+	std::cout << __FILE__ << " : " << __LINE__ << "Auto-closing..." << std::endl;
 	
 	//If the document has not been saved, display a closing confirmation
 	if ( modified )
@@ -1077,13 +1077,13 @@ void DrawingArea::closeEvent( QCloseEvent *close_event )
 			tr( "Yes" ), tr( "No" ), tr( "Cancel" ) ) )
 		{
 		case 0:
-			close_event -> accept();
 			emit closed();
+			close_event -> accept();
 			break;
 		case 1:
-			close_event -> accept();
 			modified = false;
 			emit closed();
+			close_event -> accept();
 			break;
 		default:
 			close_event -> ignore();
@@ -1092,8 +1092,8 @@ void DrawingArea::closeEvent( QCloseEvent *close_event )
 	}
 	else
 	{
-		close_event -> accept();
 		emit closed();
+		close_event -> accept();
 	}
 }
 
@@ -2730,14 +2730,14 @@ void DrawingArea::slotSelectFrame()
 		bezier = false;
 	}
 	
-	current_graphic = NULL;
+	delete current_graphic; // Missing ¬¬
+	current_graphic = 0;
 	
-	if ( KTStatus -> currentKeyFrame() != NULL )
+	if ( KTStatus -> currentKeyFrame() != 0 )
 	{
 		light_table_list.clear();
 		QPtrList<KeyFrame> keyframes_to_display;
 		QPtrList<KeyFrame> keyframe_list = KTStatus -> currentLayer() -> keyFrames();
-	
 		// FIXME: krawek
 // 		QPtrList<Layer> layer_list = k_toon -> exposureSheet() -> visibleLayers();
 		Layer *layer_iterator;
@@ -2745,28 +2745,27 @@ void DrawingArea::slotSelectFrame()
 		Layer *cly = KTStatus -> currentLayer();
 // 		for ( layer_iterator = layer_list.first(); layer_iterator; layer_iterator = layer_list.next() )
 // 		{
-// 		if ( layer_iterator != cly )
-// 		{
-// 			int ckf_offset = ckf -> offsetKeyFrame();
-// 			int ckf_length = ckf -> lengthKeyFrame();
-// 			int limit = ckf_offset + ckf_length - 1;
-// 			KeyFrame *to_append = layer_iterator -> keyFrameAt( ckf_offset, limit );
-// 			if ( to_append != NULL )
-// 			keyframes_to_display.append( to_append );
+	// 		if ( layer_iterator != cly )
+	// 		{
+	// 			int ckf_offset = ckf -> offsetKeyFrame();
+	// 			int ckf_length = ckf -> lengthKeyFrame();
+	// 			int limit = ckf_offset + ckf_length - 1;
+	// 			KeyFrame *to_append = layer_iterator -> keyFrameAt( ckf_offset, limit );
+	// 			if ( to_append != NULL )
+	// 			keyframes_to_display.append( to_append );
+	// 		}
 // 		}
-// 		}
-	
-		KeyFrame *k_it;
+		KeyFrame *k_it = 0;
 		for ( k_it = keyframes_to_display.first(); k_it; k_it = keyframes_to_display.next() )
 		{
-		QPtrList<GLGraphicComponent> gl = k_it -> getDrawing() -> graphicComponents();
-		GLGraphicComponent *graphic;
-		for ( graphic = gl.first(); graphic; graphic = gl.next() )
-			light_table_list.append( graphic );
+			QPtrList<GLGraphicComponent> gl = k_it -> getDrawing() -> graphicComponents();
+			GLGraphicComponent *graphic;
+			for ( graphic = gl.first(); graphic; graphic = gl.next() )
+				light_table_list.append( graphic );
 		}
 	}
 	else
-	light_table_list.clear();
+		light_table_list.clear();
 	
 	updateGL();
 }

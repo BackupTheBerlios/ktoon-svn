@@ -136,18 +136,18 @@ void ColorPalette::setupBlockStandardPalette()
 
 void ColorPalette::setupBlockColorMixer()
 {
-	 //------------ KTColor Mixer Block --------------
-	text_color_mixer = new QLabel( tr( "KTColor Mixer" ), this );
+	 //------------ Color Mixer Block --------------
+	text_color_mixer = new QLabel( tr( "Color Mixer" ), this );
 	addChild(text_color_mixer);
 	
 	QHBox *lineOrfill = new QHBox(this);
 	
 	outline_color = new OutlineColor( lineOrfill );
 	outline_color->setActive( true );
-	QToolTip::add( outline_color, tr( "Stroke KTColor" ) );
+	QToolTip::add( outline_color, tr( "Stroke Color" ) );
 
 	fill_color = new FillColor( lineOrfill);
-	QToolTip::add( fill_color, tr( "Fill KTColor" ) );
+	QToolTip::add( fill_color, tr( "Fill Color" ) );
 	addChild(lineOrfill);
 	QHBox *colorMixerBlock = new QHBox(this);
 	addChild(colorMixerBlock);
@@ -184,6 +184,7 @@ void ColorPalette::setupBlockColorMixer()
 	value_v = new QSpinBox( 0, 255, 1, spinsHSV );
 
 	QHBox *tmpBox = new QHBox(this);
+	tmpBox->setSpacing(3);
 	QVBox *displayColor = new QVBox(tmpBox);
 	
 	color_display = new ColorDisplay( displayColor );
@@ -191,7 +192,9 @@ void ColorPalette::setupBlockColorMixer()
 	color_display->setSizePolicy(QSizePolicy::Expanding  ,QSizePolicy::Expanding , false);
 	
 	value_rgb = new QLineEdit( "#000000", displayColor );
-	value_rgb -> resize( color_display -> width(), 20 );
+	//FIXME: kuadrosx: hacer una expresion regular para validar la entrada de colores.
+	value_rgb->setMaxLength(7);
+	value_rgb ->setMaximumSize( color_display -> width()+20, 20 );
 	color_mixer = new ColorMixer( tmpBox );
 	value_selector = new ValueSelector( tmpBox );
 	addChild(tmpBox);
@@ -216,7 +219,6 @@ void ColorPalette::setupBlockGradient()
 	grad_viewer = new GradientViewer( blockgGradViewer );
 	grad_viewer -> hide();
 	
-
 	gradient = new ColorGradientSelector( blockgGradViewer );
 	gradient -> hide();
 	
@@ -235,23 +237,23 @@ void ColorPalette::setupBlockCustomPalette()
 
 	QHBox *customPaletteButtons = new QHBox(customPaletteV);
 	
-	
 	add_color = new QPushButton( i_add_color, tr( "" ), customPaletteButtons );
 	add_color -> setAutoDefault( false );
 	add_color -> setFlat( true );
-	QToolTip::add( add_color, tr( "Add KTColor" ) );
+	QToolTip::add( add_color, tr( "Add Color" ) );
 	
 	
 	remove_color = new QPushButton( i_remove_color, tr( "" ), customPaletteButtons );
 	remove_color -> setAutoDefault( false );
 	remove_color -> setFlat( true );
-	QToolTip::add( remove_color, tr( "Remove KTColor" ) );
+	QToolTip::add( remove_color, tr( "Remove Color" ) );
 
 	QHBox *customPaletteH = new QHBox(customPaletteV);
-	text_color_name = new QLabel( tr( "KTColor Name:" ), customPaletteH );
+	text_color_name = new QLabel( tr( "Color Name:" ), customPaletteH );
 
 	value_color_name = new QLineEdit( "", customPaletteH );
 	value_color_name -> setFont( QFont( font().family(), 7 ));
+	value_color_name->adjustSize();
 	addChild(customPaletteV);
 }
 //-------------- PUBLIC MEMBERS -------------------
@@ -259,27 +261,30 @@ void ColorPalette::enableCustomPalette( bool state )
 {
     if ( state )
     {
-        setMinimumSize( 185, 647 );
-        setMaximumSize( 185, 647 );
-        resize( 185, 647 );
+        //setMinimumSize( 185, 647 );
+        //setMaximumSize( 185, 647 );
+        //resize( 185, 647 );
+	    adjustSize();
 	custom_palette -> show();
 	add_color -> show();
 	remove_color -> show();
 	text_custom_palette -> show();
 	text_color_name -> show();
 	value_color_name -> show();
+	adjustSize();
     }
     else
     {
-        setMinimumSize( 185, 647 - custom_palette -> height() - add_color -> height() - text_custom_palette -> height() - 5 );
-        setMaximumSize( 185, 647 - custom_palette -> height() - add_color -> height() - text_custom_palette -> height() - 5 );
-        resize( 185, 647 - custom_palette -> height() - add_color -> height() - text_custom_palette -> height() - 5 );
+        //setMinimumSize( 185, 647 - custom_palette -> height() - add_color -> height() - text_custom_palette -> height() - 5 );
+        //setMaximumSize( 185, 647 - custom_palette -> height() - add_color -> height() - text_custom_palette -> height() - 5 );
+        //resize( 185, 647 - custom_palette -> height() - add_color -> height() - text_custom_palette -> height() - 5 );
 	custom_palette -> hide();
 	add_color -> hide();
 	remove_color -> hide();
 	text_custom_palette -> hide();
 	text_color_name -> hide();
 	value_color_name -> hide();
+	adjustSize();
     }
 }
 
@@ -545,17 +550,20 @@ void ColorPalette::slotActivateGradientType( const QString &value )
 	gradient -> show();
 	grad_viewer -> show();
 	grad_viewer -> slotSetType( GradientViewer::LINEAR );
+	adjustSize();
     }
     else if ( value == tr( "Radial" ) )
     {
 	gradient -> show();
 	grad_viewer -> show();
 	grad_viewer -> slotSetType( GradientViewer::RADIAL );
+	adjustSize();
     }
     else
     {
 	gradient -> hide();
 	grad_viewer -> hide();
+	adjustSize();
     }
 }
 

@@ -23,8 +23,8 @@
 #include <qxml.h>
 #include <qmap.h>
 
-typedef QMap<QString, QString> XMLResults;
-
+typedef QMap<QString, QString> XMLSingleResult;
+typedef QMap<QString, QStringList> XMLTotalResults;
 
 /**
 @author David Cuadrado
@@ -41,11 +41,14 @@ class KTXmlParser : public QXmlDefaultHandler
 
 		bool characters ( const QString & ch );
 		
-		XMLResults getResults();
+		XMLSingleResult getResult();
+		XMLTotalResults getResults();
 		
 	private:
 		QString m_root,m_qname;
-		XMLResults m_results;
+		XMLSingleResult m_results;
+		XMLTotalResults m_resultsList;
+		QStringList m_tempList;
 		int fileNumber;
 };
 

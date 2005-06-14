@@ -34,7 +34,7 @@
 //--------------- CONSTRUCTOR --------------------
 
 ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
-	: KTDialogBase( QDockWindow::OutsideDock, parent, "Exposure Sheet" )
+	: KTDialogBase( QDockWindow::OutsideDock, parent, "Exposure Sheet" , style | WDestructiveClose)
 {
     Q_CHECK_PTR( parent );
     Q_CHECK_PTR( in_assigned_menu );
@@ -45,8 +45,10 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
 //     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
     setMaximumSize( 230, 500 );
     parent_widget = parent;
+    
     assigned_menu = in_assigned_menu;
     assigned_item = id_assigned_item;
+    
     assigned_tb_button = assig_tb_button;
     layer_max_value = 1;
     number_of_layers = 1;
@@ -224,13 +226,14 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     default_layer_v -> setOn( true );
 
     ap_default_layer_obj.release();
-    
+    adjustSize();
 }
 
 //-------------- DESTRUCTOR -----------------
 
 ExposureSheet::~ExposureSheet()
 {
+	qDebug("[Destroying ExposureSheet]");
     delete insert_layer;
     delete remove_layer;
     delete lock_frame;

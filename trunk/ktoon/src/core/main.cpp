@@ -70,7 +70,7 @@ int main( int argc, char ** argv )
 		QXmlInputSource xmlsource(&f);
 		if ( reader.parse(&xmlsource))
 		{
-			XMLResults results = reader.getResults();
+			XMLSingleResult results = reader.getResult();
 			
 			application.setHome(results["KTHome"]);
 			application.setRepository(results["Repository"]);

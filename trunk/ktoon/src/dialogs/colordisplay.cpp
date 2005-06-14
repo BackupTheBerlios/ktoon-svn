@@ -32,7 +32,7 @@ ColorDisplay::ColorDisplay( QWidget *parent ) : QFrame( parent )
     dark_block_color = QColor( 135, 135, 135 );
     light_block_color = paletteBackgroundColor();
     alpha = 1.0;
-//     setMaximumSize(47, 47 );
+    setMaximumSize(47, 47 );
 //     adjustSize();
 }
 
