@@ -26,107 +26,112 @@
 #include "glpencil.h"
 #include "glbrush.h"
 
+#include <iostream>
+
 //-------------- CONSTRUCTOR ---------------
 
 GLDrawing::GLDrawing(QObject *parent) : QObject(parent)
 {
-
+	qDebug("[Initialized GLDrawing]");
 }
 
 GLDrawing::GLDrawing( const GLDrawing &to_copy, QObject *parent ) : QObject(parent)
 {
-    QPtrList<GLGraphicComponent> list_of_graphics = to_copy.graphicComponents();
-    GLGraphicComponent *graphic_iterator;
-    for ( graphic_iterator = list_of_graphics.first(); graphic_iterator; graphic_iterator = list_of_graphics.next() )
-    {
-	switch ( graphic_iterator -> kindGraphic() )
+	qDebug("[Initialized GLDrawing CopyConstructor]");
+	QPtrList<GLGraphicComponent> list_of_graphics = to_copy.graphicComponents();
+	GLGraphicComponent *graphic_iterator = 0;
+	for ( graphic_iterator = list_of_graphics.first(); graphic_iterator; graphic_iterator = list_of_graphics.next() )
 	{
-	    case GLGraphicComponent::GC_BRUSH:
-	    {
-	        GLBrush *new_graphic = new GLBrush( *( ( GLBrush * )graphic_iterator ) );
-		  try {
-		  graphic_components.append( new_graphic );
-		  }
-		  catch(...)
-		    {
-		    delete new_graphic;
-		    throw;
-		    }
-	    }
-	        break;
-	    case GLGraphicComponent::GC_PENCIL:
-	    {
-	        GLPencil *new_graphic = new GLPencil( *( ( GLPencil * )graphic_iterator ) );
-		  try {
-		  graphic_components.append( new_graphic );
-		  }
-		  catch(...)
-		    {
-		    delete new_graphic;
-		    throw;
-		    }
-	    }
-	        break;
-	    case GLGraphicComponent::GC_PEN:
-	    {
-	        GLPen *new_graphic = new GLPen( *( ( GLPen * )graphic_iterator ) );
-		  try {
-		  graphic_components.append( new_graphic );
-		  }
-		  catch(...)
-		    {
-		    delete new_graphic;
-		    throw;
-		    }
-	    }
-	        break;
-	    case GLGraphicComponent::GC_LINE:
-	    {
-	        GLLine *new_graphic = new GLLine( *( ( GLLine * )graphic_iterator ) );
-		  try {
-		  graphic_components.append( new_graphic );
-		  }
-		  catch(...)
-		    {
-		    delete new_graphic;
-		    throw;
-		    }
-	    }
-	        break;
-	    case GLGraphicComponent::GC_RECTANGLE:
-	    {
-	        GLRectangle *new_graphic = new GLRectangle( *( ( GLRectangle * )graphic_iterator ) );
-		  try {
-		  graphic_components.append( new_graphic );
-		  }
-		  catch(...)
-		    {
-		    delete new_graphic;
-		    throw;
-		    }
-	    }
-	        break;
-	    case GLGraphicComponent::GC_ELLIPSE:
-	    {
-	        GLEllipse *new_graphic = new GLEllipse( *( ( GLEllipse * )graphic_iterator ) );
-		  try {
-		  graphic_components.append( new_graphic );
-		  }
-		  catch(...)
-		    {
-		    delete new_graphic;
-		    throw;
-		    }
-	    }
-	        break;
+		switch ( graphic_iterator -> kindGraphic() )
+		{
+			case GLGraphicComponent::GC_BRUSH:
+			{
+				GLBrush *new_graphic = new GLBrush( *( ( GLBrush * )graphic_iterator ) );
+				try {
+					graphic_components.append( new_graphic );
+				}
+				catch(...)
+				{
+					delete new_graphic;
+					throw;
+				}
+			}
+			break;
+			case GLGraphicComponent::GC_PENCIL:
+			{
+				GLPencil *new_graphic = new GLPencil( *( static_cast<GLPencil *> (graphic_iterator) ) );
+				try {
+					graphic_components.append( new_graphic );
+				}
+				catch(...)
+				{
+					delete new_graphic;
+					throw;
+				}
+			}
+			break;
+			case GLGraphicComponent::GC_PEN:
+			{
+				GLPen *new_graphic = new GLPen( *( ( GLPen * )graphic_iterator ) );
+				try {
+					graphic_components.append( new_graphic );
+				}
+				catch(...)
+				{
+					delete new_graphic;
+					throw;
+				}
+			}
+			break;
+			case GLGraphicComponent::GC_LINE:
+			{
+				GLLine *new_graphic = new GLLine( *( ( GLLine * )graphic_iterator ) );
+				try {
+					graphic_components.append( new_graphic );
+				}
+				catch(...)
+				{
+					delete new_graphic;
+					throw;
+				}
+			}
+			break;
+			case GLGraphicComponent::GC_RECTANGLE:
+			{
+				GLRectangle *new_graphic = new GLRectangle( *( ( GLRectangle * )graphic_iterator ) );
+				try {
+					graphic_components.append( new_graphic );
+				}
+				catch(...)
+				{
+					delete new_graphic;
+					throw;
+				}
+			}
+			break;
+			case GLGraphicComponent::GC_ELLIPSE:
+			{
+				GLEllipse *new_graphic = new GLEllipse( *( ( GLEllipse * )graphic_iterator ) );
+				try {
+					graphic_components.append( new_graphic );
+				}
+				catch(...)
+				{
+					delete new_graphic;
+					throw;
+				}
+			}
+			break;
+		}
 	}
-    }
+	std::cout << "Copying " << graphic_components.count() << " components" << std::endl;
 }
 
 //------------- DESTRUCTOR ------------------
 
 GLDrawing::~GLDrawing()
 {
+	qDebug("[Destroying GLDrawing]");
     graphic_components.clear();
 }
 

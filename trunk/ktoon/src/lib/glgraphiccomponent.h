@@ -40,7 +40,7 @@
  * This class contains information about a generic graphic component. It declares some virtual functions
  * to reimplement them into its subclasses.
  */
-class GLGraphicComponent
+class GLGraphicComponent : public QObject
 {
 
 public:

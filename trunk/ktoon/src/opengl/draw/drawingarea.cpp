@@ -430,7 +430,7 @@ void DrawingArea::drawSelected( QPoint mouse_press, QPoint mouse_release )
 	        bool included = graphic -> graphicIncluded( mapPointToMatrix( mouse_press ), mapPointToMatrix( mouse_release ) );
 		if ( included )
 		{
-		    current_graphic = NULL;
+// 		    current_graphic = NULL;
 		    current_graphic_list.append( graphic );
 		}
 	}
@@ -988,7 +988,7 @@ void DrawingArea::mouseDoubleClickEvent( QMouseEvent *mouse_event )
 				( ( GLPen * )( current_graphic ) ) -> setControlPen( *( new QPoint( mapPointToMatrix( new_point1 ) ) ), *( new QPoint( mapPointToMatrix( new_point2 ) ) ) );
 				graphic_list.remove( current_graphic );
 				addGraphicComponent( current_graphic, false );
-				current_graphic = NULL;
+// 				current_graphic = NULL;
 				selected_graphic = true;
 				bezier = false;
 				break;
@@ -1009,7 +1009,7 @@ void DrawingArea::keyPressEvent( QKeyEvent *key_event )
 		current_graphic_list.clear();
 		if ( KTStatus -> currentKeyFrame() != NULL )
 			current_graphic_list = KTStatus -> currentKeyFrame() -> getDrawing() -> graphicComponents();
-		current_graphic = NULL;
+// 		current_graphic = NULL;
 	}
 	else if ( current_graphic != NULL )
 	{
@@ -2699,7 +2699,8 @@ void DrawingArea::slotDelete()
 	}
 	GLDrawing *drawing = KTStatus -> currentKeyFrame() -> getDrawing();
 	drawing -> setGraphicComponents( graphic_list );
-	current_graphic = NULL;
+	
+// 	current_graphic = NULL;
 	selected_graphic = false;
 	bezier = false;
 
@@ -2713,7 +2714,7 @@ void DrawingArea::slotSelectAll()
 	{
 		graphic_list.remove( current_graphic );
 		addGraphicComponent( current_graphic, false );
-		current_graphic = NULL;
+// 		current_graphic = NULL;
 		selected_graphic = false;
 	}
 	current_graphic_list.clear();
@@ -2725,48 +2726,55 @@ void DrawingArea::slotSelectAll()
 void DrawingArea::slotSelectFrame()
 {
 	qDebug("Select frame");
+
 	if ( current_graphic && current_graphic -> kindGraphic() == GLGraphicComponent::GC_PEN && bezier )
 	{
 		bezier = false;
 	}
 	
-	delete current_graphic; // Missing ¬¬
-	current_graphic = 0;
+	//delete current_graphic; // Missing ¬¬
+	//current_graphic = 0;
 	
-	if ( KTStatus -> currentKeyFrame() != 0 )
+	KeyFrame *ckf = KTStatus->currentKeyFrame() ;
+	Layer *cly = KTStatus -> currentLayer();
+	
+	if ( ckf && cly )
 	{
 		light_table_list.clear();
 		QPtrList<KeyFrame> keyframes_to_display;
 		QPtrList<KeyFrame> keyframe_list = KTStatus -> currentLayer() -> keyFrames();
-		// FIXME: krawek
-// 		QPtrList<Layer> layer_list = k_toon -> exposureSheet() -> visibleLayers();
+// 		QPtrList<Layer> layer_list = k_toon -> exposureSheet() -> visibleLayers(); // FIXME: krawek
+		QPtrList<Layer> layer_list = KTStatus -> currentScene() -> getLayers();
 		Layer *layer_iterator;
-		KeyFrame *ckf = KTStatus -> currentKeyFrame();
-		Layer *cly = KTStatus -> currentLayer();
-// 		for ( layer_iterator = layer_list.first(); layer_iterator; layer_iterator = layer_list.next() )
-// 		{
-	// 		if ( layer_iterator != cly )
-	// 		{
-	// 			int ckf_offset = ckf -> offsetKeyFrame();
-	// 			int ckf_length = ckf -> lengthKeyFrame();
-	// 			int limit = ckf_offset + ckf_length - 1;
-	// 			KeyFrame *to_append = layer_iterator -> keyFrameAt( ckf_offset, limit );
-	// 			if ( to_append != NULL )
-	// 			keyframes_to_display.append( to_append );
-	// 		}
-// 		}
+		
+		for ( layer_iterator = layer_list.first(); layer_iterator; layer_iterator = layer_list.next() )
+		{
+			if ( layer_iterator != cly )
+			{
+				int ckf_offset = ckf -> offsetKeyFrame();
+				int ckf_length = ckf -> lengthKeyFrame();
+				int limit = ckf_offset + ckf_length - 1;
+				KeyFrame *to_append = layer_iterator -> keyFrameAt( ckf_offset, limit );
+				if ( to_append != 0 )
+					keyframes_to_display.append( to_append );
+			}
+		}
 		KeyFrame *k_it = 0;
 		for ( k_it = keyframes_to_display.first(); k_it; k_it = keyframes_to_display.next() )
 		{
 			QPtrList<GLGraphicComponent> gl = k_it -> getDrawing() -> graphicComponents();
 			GLGraphicComponent *graphic;
 			for ( graphic = gl.first(); graphic; graphic = gl.next() )
+			{
 				light_table_list.append( graphic );
+			}
 		}
 	}
 	else
+	{
 		light_table_list.clear();
-	
+	}
+
 	updateGL();
 }
 
@@ -3079,7 +3087,6 @@ GLuint DrawingArea::createSelectionArrows( GLuint id_texture )
 	{
 		qDebug( tr("%1:%2 I can't create glList %3").arg(__FILE__).arg(__LINE__).arg(id_list) );
 
-		QApplication::exit(1);
                 exit( 1 ); // TODO: salir de una forma menos machetera!
         }
 	glNewList( id_list, GL_COMPILE );

@@ -827,144 +827,146 @@ void ExposureSheet::slotSwapWithRightLayer( int cur_pos, int rel_pos )
 
 void ExposureSheet::slotInsertFrame()
 {
-    ILayer *current_layer_obj = findCurrentLayerObj();
-    int l_pos = list_of_layers.find( current_layer_obj ) + 1;
+	qDebug("Inserting frame");
+	ILayer *current_layer_obj = findCurrentLayerObj();
+	int l_pos = list_of_layers.find( current_layer_obj ) + 1;
 
     //---------- Insert frames until the selected frame slot --------------
 
-    if ( current_layer_obj -> selectedFrame() != NULL )
-    {
-        QPtrList<ESFrame> tmp_list_of_frames;
-	current_layer_obj -> availableFrames( &tmp_list_of_frames );
-	ESFrame *tmp_frame;
-
-	for ( tmp_frame = tmp_list_of_frames.first(); tmp_frame; tmp_frame = tmp_list_of_frames.next() )
+	if ( current_layer_obj -> selectedFrame() != NULL )
 	{
-	    //Performs this action only if the selected frame isn't one of the used frames
-            if ( tmp_frame -> isSelected() && !( tmp_frame -> isUsed() ) )
-	    {
-	        ESFrame *current_layer_last_frame = current_layer_obj -> lastFrame();
-		int number_of_insertions = 0;
-	        while ( current_layer_last_frame != tmp_frame && !( tmp_frame -> isUsed() ) )
+		QPtrList<ESFrame> tmp_list_of_frames;
+		current_layer_obj -> availableFrames( &tmp_list_of_frames );
+		ESFrame *tmp_frame;
+
+		for ( tmp_frame = tmp_list_of_frames.first(); tmp_frame; tmp_frame = tmp_list_of_frames.next() )
 		{
-		    current_layer_obj -> addFrame();
-		    number_of_insertions++;
+	    //Performs this action only if the selected frame isn't one of the used frames
+			if ( tmp_frame -> isSelected() && !( tmp_frame -> isUsed() ) )
+			{
+				ESFrame *current_layer_last_frame = current_layer_obj -> lastFrame();
+				int number_of_insertions = 0;
+				while ( current_layer_last_frame != tmp_frame && !( tmp_frame -> isUsed() ) )
+				{
+					current_layer_obj -> addFrame();
+					number_of_insertions++;
 
 		    //Get the list of frames available and the last frame used
-		    QPtrList<ESFrame> current_layer_frame_list;
-		    current_layer_obj -> availableFrames( &current_layer_frame_list );
-		    current_layer_last_frame = current_layer_obj -> lastFrame();
+					QPtrList<ESFrame> current_layer_frame_list;
+					current_layer_obj -> availableFrames( &current_layer_frame_list );
+					current_layer_last_frame = current_layer_obj -> lastFrame();
 
 		    //Iterate over the list in order to find the next frame to the last frame and set it as the last frame
-		    ESFrame *frame_iterator, *new_last_frame;
+					ESFrame *frame_iterator, *new_last_frame;
 
-     	            new_last_frame = NULL;
+					new_last_frame = NULL;
 
-		    for ( frame_iterator = current_layer_frame_list.first(); frame_iterator; frame_iterator = current_layer_frame_list.next() )
-		    {
-        		if ( frame_iterator == current_layer_last_frame )
-			{
-		            new_last_frame = current_layer_frame_list.next();
-			    break;
-			}
-    		    }
+					for ( frame_iterator = current_layer_frame_list.first(); frame_iterator; frame_iterator = current_layer_frame_list.next() )
+					{
+						if ( frame_iterator == current_layer_last_frame )
+						{
+							new_last_frame = current_layer_frame_list.next();
+							break;
+						}
+					}
 
-		    int i = current_layer_frame_list.find( new_last_frame ) + 1;
-		    new_last_frame -> setUsed( true );
-    		    new_last_frame -> setText( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i ) );
-		    current_layer_obj -> setLastFrame( new_last_frame );
+					int i = current_layer_frame_list.find( new_last_frame ) + 1;
+					new_last_frame -> setUsed( true );
+					new_last_frame -> setText( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i ) );
+					current_layer_obj -> setLastFrame( new_last_frame );
 
-    		    QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
-		    KeyFrame *nkf = new KeyFrame();
-		    try {
-		      nkf -> setNameKeyFrame( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i ) );
-		      kf.append( nkf );
+					QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
+					KeyFrame *nkf = new KeyFrame();
+					try {
+						nkf -> setNameKeyFrame( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i ) );
+						kf.append( nkf );
 			// Warning: Layer::~Layer deletes its keyframes (here those in kf), and Status::~Status
 			// deletetes its current keyframe too! This will most likely lead to a double deletion.
-		      KTStatus -> currentLayer() -> setKeyFrames( kf );
-		      KTStatus -> setCurrentKeyFrame( nkf );
-		      }
-		    catch(...)
-		        {
-			  delete nkf;
-			  throw;
-			  }
-		}
+						KTStatus -> currentLayer() -> setKeyFrames( kf );
+						KTStatus -> setCurrentKeyFrame( nkf );
+					}
+					catch(...)
+					{
+						delete nkf;
+						throw;
+					}
+				}
 
-	        k_toon -> slotActivateCursor();
-	        KTStatus->currentDrawingArea() -> modifyDocument( true );
-		emit framesInsertedAtTheEnd( number_of_insertions );
-		updateIndicators( current_layer_obj );
-	        return;
-	    }
+				k_toon -> slotActivateCursor();
+				KTStatus->currentDrawingArea() -> modifyDocument( true );
+				emit framesInsertedAtTheEnd( number_of_insertions );
+				updateIndicators( current_layer_obj );
+				return;
+			}
+		}
 	}
-    }
 
     //---------- Insert a single frame at the end ------------------
 
     //Get the list of frames available and the last frame used
-    QPtrList<ESFrame> current_layer_frame_list;
-    current_layer_obj -> availableFrames( &current_layer_frame_list );
-    ESFrame *current_layer_last_frame = current_layer_obj -> lastFrame();
-    int i;
+	QPtrList<ESFrame> current_layer_frame_list;
+	current_layer_obj -> availableFrames( &current_layer_frame_list );
+	ESFrame *current_layer_last_frame = current_layer_obj -> lastFrame();
+	int i;
 
-    ESFrame *frame_iterator, *new_last_frame;
-    new_last_frame = NULL;
+	ESFrame *frame_iterator, *new_last_frame;
+	new_last_frame = NULL;
 
     //Iterate over the list in order to find the next frame to the last frame and set it as the last frame
-    for ( i = 1, frame_iterator = current_layer_frame_list.first(); frame_iterator; i++, frame_iterator = current_layer_frame_list.next() )
-    {
-        if ( i == MAX_NUMBER_OF_FRAMES )
-	    return;
-
-        if ( frame_iterator == current_layer_last_frame )
+	for ( i = 1, frame_iterator = current_layer_frame_list.first(); frame_iterator; i++, frame_iterator = current_layer_frame_list.next() )
 	{
-            new_last_frame = current_layer_frame_list.next();
-	    break;
+		if ( i == MAX_NUMBER_OF_FRAMES )
+			return;
+
+		if ( frame_iterator == current_layer_last_frame )
+		{
+			new_last_frame = current_layer_frame_list.next();
+			break;
+		}
 	}
-    }
 
-    QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
-    KeyFrame *nkf = new KeyFrame();
-    try {
-      nkf -> setNameKeyFrame( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i + 1 ) );
-      kf.append( nkf );
-      KTStatus -> currentLayer() -> setKeyFrames( kf );
-      }
-    catch(...)
-        {
-	  delete nkf;
-	  throw;
-	  }
+	QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
+	KeyFrame *nkf = new KeyFrame();
+	try {
+		nkf -> setNameKeyFrame( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i + 1 ) );
+		kf.append( nkf );
+		KTStatus -> currentLayer() -> setKeyFrames( kf );
+	}
+	catch(...)
+	{
+		delete nkf;
+		throw;
+	}
 
-    current_layer_obj -> addFrame();
-    emit framesInsertedAtTheEnd( 1 );
-    new_last_frame -> setUsed( true );
-    new_last_frame -> setText( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i + 1 ) );
-    current_layer_obj -> setLastFrame( new_last_frame );
+	current_layer_obj -> addFrame();
+	emit framesInsertedAtTheEnd( 1 );
+	new_last_frame -> setUsed( true );
+	new_last_frame -> setText( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i + 1 ) );
+	current_layer_obj -> setLastFrame( new_last_frame );
 
-    KTStatus->currentDrawingArea() -> modifyDocument( true );
+	KTStatus->currentDrawingArea() -> modifyDocument( true );
 
     //-------------- Insert a frame after the selected frame ----------------------
 
-    if ( current_layer_obj -> selectedFrame() != NULL && current_layer_obj -> selectedFrame() -> isUsed() )
-    {
-	ESFrame *old_selected_frame = current_layer_obj -> selectedFrame();
+	if ( current_layer_obj -> selectedFrame() != NULL && current_layer_obj -> selectedFrame() -> isUsed() )
+	{
+		ESFrame *old_selected_frame = current_layer_obj -> selectedFrame();
 
-    	QMouseEvent mouse_event( QEvent::MouseButtonPress, QPoint( 10, 10 ), Qt::LeftButton, 0 );
-    	QApplication::sendEvent( new_last_frame, &mouse_event );
-    	QMouseEvent mouse_event2( QEvent::MouseButtonRelease, QPoint( 10, 10 ), Qt::LeftButton, 0 );
-    	QApplication::sendEvent( new_last_frame, &mouse_event2 );
+		QMouseEvent mouse_event( QEvent::MouseButtonPress, QPoint( 10, 10 ), Qt::LeftButton, 0 );
+		QApplication::sendEvent( new_last_frame, &mouse_event );
+		QMouseEvent mouse_event2( QEvent::MouseButtonRelease, QPoint( 10, 10 ), Qt::LeftButton, 0 );
+		QApplication::sendEvent( new_last_frame, &mouse_event2 );
 
-	QPtrList<ESFrame> keyframe_list;
-	current_layer_obj -> availableFrames( &keyframe_list );
-	int distance = keyframe_list.find( new_last_frame ) - keyframe_list.find( old_selected_frame );
+		QPtrList<ESFrame> keyframe_list;
+		current_layer_obj -> availableFrames( &keyframe_list );
+		int distance = keyframe_list.find( new_last_frame ) - keyframe_list.find( old_selected_frame );
 
-	for ( int j = 1; j < distance; j++ )
-	    slotMoveFrameUp();
-    }
+		for ( int j = 1; j < distance; j++ )
+			slotMoveFrameUp();
+	}
 
-    updateIndicators( current_layer_obj );
+	updateIndicators( current_layer_obj );
+	sleep(4);
 }
 
 void ExposureSheet::slotRemoveFrame()
@@ -1323,8 +1325,11 @@ void ExposureSheet::slotRemoveMotionTween( int key )
 void ExposureSheet::slotCopyFrame() // FIXME
 {
 	qDebug("Copy Frame");
-	if ( to_copy != NULL )
+	
+	if ( to_copy != 0 )
+	{
 		delete to_copy;
+	}
 	KeyFrame *current_kf = KTStatus -> currentKeyFrame();
 	to_copy = new GLDrawing( *( current_kf -> getDrawing() ) );
 }
@@ -1332,13 +1337,16 @@ void ExposureSheet::slotCopyFrame() // FIXME
 void ExposureSheet::slotPasteFrame() // FIXME
 {
 	qDebug("Paste Frame");
-	if ( to_copy == NULL )
+	if ( to_copy == 0 )
 		return;
 
 	if ( !( findCurrentLayerObj() -> selectedFrame() -> isUsed() ) )
 		slotInsertFrame();
 
 	KeyFrame *current_kf = KTStatus -> currentKeyFrame();
+	if ( !current_kf )
+		return;
+	
 	current_kf -> setDrawing( new GLDrawing( *to_copy ) );
 	KTStatus->currentDrawingArea() -> updateGL();
 }
