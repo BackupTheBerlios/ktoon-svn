@@ -1,0 +1,19 @@
+/* XPM */
+const char *chand_xpm[]={
+"16 12 4 1",
+"# c None",
+". c None",
+"a c #000000",
+"b c #ffffff",
+"......#aaaa#....",
+".....#abbbaa#.##",
+"....#abbaa###aaa",
+"..##abbba.aaabba",
+"##aabbbbaabbbaaa",
+"aabbbbbbbbbaaaba",
+"abbbbbbbbbbbbbaa",
+"abbbbbbbbbbbaaba",
+"abbbbbbbbbbbbbba",
+"abbbbbbbbbbbbaa#",
+"#aabbbbbbbbaa##.",
+"###aaaaaaaa##..."};

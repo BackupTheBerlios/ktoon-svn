@@ -1,0 +1,21 @@
+/* XPM */
+const char *cslicer_xpm[]={
+"16 14 4 1",
+". c None",
+"a c #000000",
+"b c #303030",
+"# c #ffffff",
+"..........###...",
+".........#aaa##.",
+"........#aaaaaa#",
+"......##aaaaaaa#",
+".....#aaaaaaaaa#",
+"....#aaaaaaaaaa#",
+"...#aaaaaaaaaa#.",
+"...#a#aaaaaaa#..",
+"..#a###aaaaa#...",
+"..#a####aaaa#...",
+".#a##a###aa#....",
+"#a#aa#a##a#.....",
+"#aabbaaaa#......",
+"#########......."};

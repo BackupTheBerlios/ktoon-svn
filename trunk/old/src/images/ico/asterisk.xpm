@@ -1,0 +1,22 @@
+/* XPM */
+const char *asterisk_xpm[]={
+"16 16 3 1",
+"# c None",
+". c None",
+"a c #000000",
+"....#.##.....#..",
+".######aa#...##.",
+".#aa#.#aa...aa##",
+"..aaa##aa..aaa..",
+"...aaa#aa.aaa...",
+"....aaaaaaaa....",
+"..###aaaaaa.....",
+".aaaaaa##aaaaaa.",
+".aaaaaa##aaaaaa.",
+"....#aaaaaa.....",
+"...#aaaaaaaa....",
+".#.aaa.aa.aaa...",
+".#aaa..aa..aaa..",
+".#aa...aa...aa#.",
+".##....aa....##.",
+"................"};
