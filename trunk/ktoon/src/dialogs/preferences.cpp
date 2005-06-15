@@ -36,10 +36,13 @@ Preferences::Preferences( QWidget *parent ) : QTabDialog( parent, "Application P
 	setCancelButton();
 	connect( this, SIGNAL( applyButtonPressed() ), SLOT( applyChanges() ) );
 	
-	m_colorPref = new ColorSchemePref(this);
-	addTab(m_colorPref, tr("Color Preferences"));
+	m_themeSelector = new KTThemeSelector(this);
+	addTab(m_themeSelector, tr("Theme preferences"));
+// 	m_colorPref = new ColorSchemePref(this);
+// 	addTab(m_colorPref, tr("Color Preferences"));
 	
 	m_fontWidget = new KTFontWidget(this);
+	m_fontWidget->setFont( QFont("helvetica", 10));
 	m_fontWidget->showXLFDArea(false);
 	addTab(m_fontWidget, tr("Font"));
 }
@@ -54,17 +57,12 @@ Preferences::~Preferences()
 
 void Preferences::applyChanges()
 {
-	if ( static_cast<ColorSchemePref *>(currentPage()) == m_colorPref )
+	if ( static_cast<KTThemeSelector *>(currentPage()) ==  m_themeSelector)
 	{
-		switch(m_colorPref->selectedId())
+		if(m_themeSelector->iWantApplyColors() )
 		{
-			case KTApplication::Default:
-				ktapp->applyColors(KTApplication::Default);
-				break;
-				
-			case KTApplication::DarkBlue:
-				ktapp->applyColors(KTApplication::DarkBlue);
-				break;
+			ktapp->applyTheme(m_themeSelector->document());
+			// TODO: guardar en el .ktoonrc la ruta al theme
 		}
 	}
 	else if ( static_cast<KTFontWidget *>( currentPage ()) == m_fontWidget )
@@ -72,23 +70,4 @@ void Preferences::applyChanges()
 		ktapp->changeFont(m_fontWidget->font());
 	}
 }
-
-// ColorSchemePref
-
-ColorSchemePref::ColorSchemePref(QWidget *parent) : QVButtonGroup(parent)
-{
-	addPref(tr("Default Color Scheme"));
-	addPref(tr("Dark blue"));
-}
-
-ColorSchemePref::~ ColorSchemePref()
-{
-}
-
-void ColorSchemePref::addPref(const QString &label)
-{
-	QRadioButton *btmp = new QRadioButton(label, this);
-	insert(btmp);
-}
-
 

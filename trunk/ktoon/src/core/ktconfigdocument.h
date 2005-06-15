@@ -37,6 +37,7 @@ class KTConfigDocument : public QDomDocument
 		void setHome(const QString &home);
 		void setRepository(const QString &repository);
 		void addRecentFiles(const QStringList &names);
+		void setThemePath(const QString &theme);
 		
 		QString path();
 		

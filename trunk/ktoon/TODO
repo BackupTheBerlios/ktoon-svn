@@ -17,4 +17,5 @@ This file contains the task to-do
 * (Un)Package the project
 * Save configuration (theme, font, color, grid color)
 * Port currents themes to XML
+* Load themes in preferences
 

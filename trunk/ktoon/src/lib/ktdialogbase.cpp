@@ -103,4 +103,8 @@ void KTDialogBase::setCaption(const QString &text)
  	m_title->setText(text);
 }
 
-
+void KTDialogBase::setFont( const QFont &f)
+{
+	QDockWindow::setFont(f);
+	adjustSize();
+}

@@ -17,62 +17,57 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTAPPLICATION_H
-#define KTAPPLICATION_H
+#ifndef KTTHEMEDOCUMENT_H
+#define KTTHEMEDOCUMENT_H
 
-#include <qapplication.h>
-#include <qstring.h>
+#include <qdom.h>
 #include <qmap.h>
-#include "ktthememanager.h"
-#include "ktconfigdocument.h"
+#include <qstringlist.h>
 
-typedef QMap<QString, QString> ParseArgs;
+typedef QMap<QString, QString> ThemeKey;
 
 /**
- * 
  * @author David Cuadrado
+ * <?xml version = '1.0' encoding = 'UTF-8'?>
+ * @verbatim
+ * <KTTheme name="" version="" >
+ * <General>
+ * <Text color="#000000" />
+ * 	<Base color="#EFF0FF" />
+ * 	<Foreground color="#3e3e45" />
+ * 	<Background color="#556202" />
+ * 	<Button color="#B7B6AB" />
+ * 	<ButtonText color="#3e3e45" />
+ * </General>
+ * <Effects>
+ * 	<Light color="" /> <!--QColorGroup::Light - lighter than Button color. -->
+ * 	<Midlight color="#070707" /> <!-- QColorGroup::Midlight - between Button and Light.--> 
+ * 	<Dark color="" />
+ * 	<Mid color="" />
+ * </Effects>
+ * <Selections>
+ * 	<Highlight color="#3B6886" />
+ * 	<HighlightedText color="#EFEDDF" />
+ * </Selections>
+ * <TextEffects>
+ * 	<BrightText color="" />
+ * 	<Link color="" />
+ * 	<LinkVisited color="" />
+ * </TextEffects>
+ * </KTTheme>
+ * @endverbatim
 */
-class KTApplication : public QApplication
+
+class KTThemeDocument : public QDomDocument
 {
-	Q_OBJECT
 	public:
-		enum ColorScheme { Default = 0, DarkBlue };
-		KTApplication(int & argc, char ** argv);
-		~KTApplication();
-		QString getHome();
-		void setHome(const QString &home);
-		QString getRepository();
-		void setRepository(const QString &repos);
-		QString getVersion();
-
-		bool firstRun();
-		
-		void initRepository();
-		
-		void parseArgs( int &argc, char **argv);
-		
-		void applyColors(ColorScheme cs);
-		void applyPalette( const QPalette &p );
-		void applyTheme(const QString &file);
-		void applyTheme(const KTThemeDocument &ktd);
-		
-		bool isArg(const QString &arg);
-		QString getParam(const QString &arg);
-		
-		void changeFont(const QFont &font); // static?
-		
-	private:
-		QString m_KTOON_HOME;
-		QString m_KTOON_REPOSITORY;
-		const QString m_VERSION;
-		ParseArgs m_parseArgs;
-		KTThemeManager m_themeManager;
-		KTConfigDocument *ktconfig;
+		KTThemeDocument();
+		KTThemeDocument(const QString &name, const QString &version);
+		~KTThemeDocument();
+		void addGeneralSection(ThemeKey tk);
+		void addEffectsSection(ThemeKey tk);
+		void addSelections(ThemeKey tk);
+		void addTextEffect(ThemeKey tk);
 };
-
-#define ktapp static_cast<KTApplication*>(qApp)
-#define KTOON_HOME (static_cast<KTApplication*>(qApp))->getHome()
-
-#define KTOON_REPOSITORY (static_cast<KTApplication*>(qApp))->getRepository()
 
 #endif

@@ -17,62 +17,41 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTAPPLICATION_H
-#define KTAPPLICATION_H
 
-#include <qapplication.h>
-#include <qstring.h>
-#include <qmap.h>
-#include "ktthememanager.h"
-#include "ktconfigdocument.h"
+#ifndef KTTHEMEMANAGER_H
+#define KTTHEMEMANAGER_H
 
-typedef QMap<QString, QString> ParseArgs;
+#include <qxml.h>
+#include <qpalette.h>
+
+class KTThemeDocument;
 
 /**
- * 
  * @author David Cuadrado
 */
-class KTApplication : public QApplication
+class KTThemeManager : public QXmlDefaultHandler
 {
-	Q_OBJECT
 	public:
-		enum ColorScheme { Default = 0, DarkBlue };
-		KTApplication(int & argc, char ** argv);
-		~KTApplication();
-		QString getHome();
-		void setHome(const QString &home);
-		QString getRepository();
-		void setRepository(const QString &repos);
-		QString getVersion();
+		KTThemeManager();
+		~KTThemeManager();
+		
+		bool applyTheme(const QString &file);
+		bool applyTheme(const KTThemeDocument &ktd);
+		
+		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
+		
+		bool endElement( const QString& ns, const QString& localname, const QString& qname);
+		
+		bool error ( const QXmlParseException & exception );
+		bool fatalError ( const QXmlParseException & exception );
 
-		bool firstRun();
+		bool characters ( const QString & ch );
 		
-		void initRepository();
-		
-		void parseArgs( int &argc, char **argv);
-		
-		void applyColors(ColorScheme cs);
-		void applyPalette( const QPalette &p );
-		void applyTheme(const QString &file);
-		void applyTheme(const KTThemeDocument &ktd);
-		
-		bool isArg(const QString &arg);
-		QString getParam(const QString &arg);
-		
-		void changeFont(const QFont &font); // static?
+		QColor getColor(const QXmlAttributes& atts);
 		
 	private:
-		QString m_KTOON_HOME;
-		QString m_KTOON_REPOSITORY;
-		const QString m_VERSION;
-		ParseArgs m_parseArgs;
-		KTThemeManager m_themeManager;
-		KTConfigDocument *ktconfig;
+		QString m_root,m_qname;
+		QColorGroup m_colorGroup;
 };
-
-#define ktapp static_cast<KTApplication*>(qApp)
-#define KTOON_HOME (static_cast<KTApplication*>(qApp))->getHome()
-
-#define KTOON_REPOSITORY (static_cast<KTApplication*>(qApp))->getRepository()
 
 #endif

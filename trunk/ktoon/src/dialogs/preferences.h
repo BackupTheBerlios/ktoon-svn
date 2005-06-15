@@ -36,6 +36,7 @@
 #include <qhbox.h>
 
 #include "ktfontwidget.h"
+#include "ktthemeselector.h"
 
 class ColorSchemePref;
 
@@ -50,7 +51,7 @@ class Preferences : public QTabDialog
 		
 		
 	private:
-		ColorSchemePref *m_colorPref;
+		KTThemeSelector *m_themeSelector;
 		KTFontWidget *m_fontWidget;
 
 	public slots:
@@ -58,15 +59,6 @@ class Preferences : public QTabDialog
     
 	protected:
 
-};
-
-class ColorSchemePref : public QVButtonGroup
-{
-	Q_OBJECT
-	public:
-		ColorSchemePref(QWidget *parent);
-		~ColorSchemePref();
-		void addPref(const QString &label);
 };
 
 #endif

@@ -74,6 +74,11 @@ int main( int argc, char ** argv )
 			
 			application.setHome(results["KTHome"]);
 			application.setRepository(results["Repository"]);
+			
+			QString themeFile = results["KTTheme"];
+			if (! themeFile.isEmpty() )
+				application.applyTheme(themeFile);
+			
 		}
 		else
 		{

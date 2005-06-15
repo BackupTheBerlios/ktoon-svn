@@ -39,6 +39,7 @@ class KTDialogBase : public QDockWindow
 		KTDialogBase(Place p = InDock, QWidget *parent = 0, const char *name = 0, WFlags style = 0);
 		~KTDialogBase();
 		virtual void addChild(QWidget * child);
+		void setFont(const QFont &);
 		
 	private:
 		QBoxLayout *container;

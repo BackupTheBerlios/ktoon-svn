@@ -32,13 +32,26 @@ KTApplication::KTApplication(int & argc, char ** argv)
 	m_KTOON_REPOSITORY = m_KTOON_HOME+QString("/repository");
 	parseArgs(argc, argv);
 	setStyle("plastik");
-	applyColors(Default);
+ 	applyColors(Default);
 	setFont( QFont( "helvetica", 10 ) );
+	
+	ktconfig = new KTConfigDocument(QDir::homeDirPath()+QString("/.ktoonrc"));
 }
 
 
 KTApplication::~KTApplication()
 {
+	delete ktconfig;
+}
+
+void KTApplication::applyTheme(const QString &file)
+{
+	m_themeManager.applyTheme(file);
+}
+
+void KTApplication::applyTheme(const KTThemeDocument &ktd)
+{
+	m_themeManager.applyTheme(ktd);
 }
 
 void KTApplication::applyColors(ColorScheme cs)
@@ -88,6 +101,11 @@ void KTApplication::applyColors(ColorScheme cs)
 		break;
 	}
 	QPalette pal(group, group, group);
+	applyPalette(pal);
+}
+
+void KTApplication::applyPalette(const QPalette &pal)
+{
 	setPalette(pal);
 	
 	if ( mainWidget() )
@@ -105,16 +123,19 @@ void KTApplication::applyColors(ColorScheme cs)
 void KTApplication::changeFont(const QFont &font)
 {
 	QApplication::setFont(font, true, "QWidget");
-	if ( mainWidget() )
-	{
-		QObjectList* const list = mainWidget()->queryList("QWidget");
-		for( QObject *o = list->first(); o; o = list->next() )
-		{
-			if ( o )
-				static_cast<QWidget*>(o)->setFont(font);
-		}
-		delete list;
-	}
+// 	if ( mainWidget() )
+// 	{
+// 		QObjectList* const list = mainWidget()->queryList("QWidget");
+// 		for( QObject *o = list->first(); o; o = list->next() )
+// 		{
+// 			if ( o )
+// 			{
+// 				QWidget *widget = static_cast<QWidget*>(o);
+// 				widget->setFont(font);
+// 			}
+// 		}
+// 		delete list;
+// 	}
 }
 
 void KTApplication::parseArgs(int &argc, char **argv)

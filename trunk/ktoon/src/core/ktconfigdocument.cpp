@@ -60,6 +60,13 @@ void KTConfigDocument::setRepository(const QString &repository)
 	documentElement ().appendChild(ktrepository);
 }
 
+void KTConfigDocument::setThemePath(const QString &theme)
+{
+	QDomElement kttheme = createElement("KTTheme");
+	kttheme.setAttribute("path", theme);
+	documentElement ().appendChild(kttheme);
+}
+
 void KTConfigDocument::addRecentFiles(const QStringList &names)
 {
 	QDomElement root = documentElement();

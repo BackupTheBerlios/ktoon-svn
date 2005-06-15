@@ -1,47 +1,50 @@
 Developers
 
+David A. Cuadrado
+<krawek@toonka.com>
+
+Jorge H. Cuadrado
+<kuadrosxx@gmail.com>
+
 Simena Dinas
 <dsimena@toonka.com>
 <dsimena@gmail.com>
 
-Fernando José Roldán Correa
+Fernando Jose Roldan Correa
 <froldan@parquesoft.com>
 <froldan@toonka.com>
-
-David A. Cuadrado
-<krawek@toonka.com>
 
 ----------------------------
 Development Advisor
 
-Carlos Andrés Muñoz
+Carlos Andres Mu�oz
 <cmunoz@parquesoft.com>
 
 ----------------------------
 Technical Advisor
 
-Gustavo González Girón
+Gustavo Gonzalez Giron
 <xtingray@kazak.ws>
 
 ----------------------------
 Developers Documentation
 
-Fernando José Roldán Correa
-<froldan@parquesoft.com>
-<froldan@toonka.com>
-
 David A. Cuadrado
 <krawek@toonka.com>
+
+Fernando Jose Roldan Correa
+<froldan@parquesoft.com>
+<froldan@toonka.com>
 
 ----------------------------
 Translators
 
+(Spanish) David A. Cuadrado
+<krawek@toonka.com>
+
 (Spanish) Simena Dinas
 <dsimena@toonka.com>
 <dsimena@gmail.com>
-
-(Spanish) David A. Cuadrado
-<krawek@toonka.com>
 
 (French) Fred P.
 <fprog26@hotmail.com>
@@ -56,30 +59,30 @@ Simena Dinas
 ----------------------------
 User Documentation Corrected by:
 
-Mónica Ortiz
+Monica Ortiz
 <moortiz@toonka.com>
 
 ----------------------------
 Iconographic Design
 
-Carlos Andrés Cajigas
-Pablo César Gómez
+Carlos Andres Cajigas
+Pablo Cesar Gomez
 Elkin Grueso
-César Hurtado
+Cesar Hurtado
 
 ----------------------------
 Beta Testers
 
-Pablo César Gómez
+Pablo Cesar Gomez
 Elkin Grueso
-César Hurtado
-Winston Maquillón
+Cesar Hurtado
+Winston Maquillan
 
 ----------------------------
 Ktoon Logo Design
 
 Diego Trujillo (Electroboy)
-Atómica - Parquesoft
+Atomica - Parquesoft
 
 
 
