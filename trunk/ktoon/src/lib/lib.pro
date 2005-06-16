@@ -15,7 +15,8 @@ HEADERS += glgraphiccomponent.h \
            ktdialogmenu.h \
            status.h \
            ktthememanager.h \
-           ktthemedocument.h 
+           ktthemedocument.h \
+           kteditspinbox.h 
 SOURCES += glgraphiccomponent.cpp \
            ktapplication.cpp \
            configwizard.cpp \
@@ -28,7 +29,8 @@ SOURCES += glgraphiccomponent.cpp \
            ktdialogmenu.cpp \
            status.cpp \
            ktthememanager.cpp \
-           ktthemedocument.cpp 
+           ktthemedocument.cpp \
+           kteditspinbox.cpp 
 INCLUDEPATH += ../../src/core \
 ../../src/exposure \
 ../../src/dialogs \

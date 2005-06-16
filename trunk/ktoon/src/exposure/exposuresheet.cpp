@@ -43,7 +43,6 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     //Initializations
     setCaption( tr( "Exposure Sheet" ) );
 //     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-    setMaximumSize( 230, 500 );
     parent_widget = parent;
     
     assigned_menu = in_assigned_menu;
@@ -68,8 +67,6 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     //------------- Operations on the Buttons -----------------
     QHBox *containerButtons = new QHBox(this);
     insert_layer = new QPushButton( i_insert_layer, tr( "" ), containerButtons );
-    insert_layer -> setMaximumSize( 20, 20 );
-//     insert_layer -> move( 5, 5 );
     insert_layer -> setAutoDefault( false );
     insert_layer -> setFlat( true );
     insert_layer -> setFocusPolicy( QWidget::NoFocus );
@@ -77,10 +74,7 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     QToolTip::add( insert_layer, tr( "Insert Layer" ) );
 
     remove_layer = new QPushButton( i_remove_layer, tr( "" ), containerButtons );
-    //FIXME: Take size pixmap for this
-    remove_layer ->  setMaximumSize( 20, 20 );
-    
-//     remove_layer -> move( 30, 5 );
+
     remove_layer -> setAutoDefault( false );
     remove_layer -> setFlat( true );
     remove_layer -> setFocusPolicy( QWidget::NoFocus );
@@ -88,8 +82,6 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     QToolTip::add( remove_layer, tr( "Remove Layer" ) );
 
     layer_visibility = new QPushButton( i_layer_visibility, tr( "" ), containerButtons );
-    layer_visibility ->  setMaximumSize( 20, 20 );
-//     layer_visibility -> move( 55, 5 );
     layer_visibility -> setAutoDefault( false );
     layer_visibility -> setFlat( true );
     layer_visibility -> setAutoRepeat( false );
@@ -99,8 +91,6 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     QToolTip::add( layer_visibility, tr( "Manage the layer visibility" ) );
 
     insert_frame = new QPushButton( i_insert_frame, tr( "" ), containerButtons );
-    insert_frame ->  setMaximumSize( 20, 20 );
-//     insert_frame -> move( 80, 5 );
     insert_frame -> setAutoDefault( false );
     insert_frame -> setFlat( true );
     insert_frame -> setFocusPolicy( QWidget::NoFocus );
@@ -108,8 +98,6 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     QToolTip::add( insert_frame, tr( "Insert Keyframes" ) );
 
     remove_frame = new QPushButton( i_remove_frame, tr( "" ), containerButtons );
-    remove_frame ->  setMaximumSize( 20, 20 );
-//     remove_frame -> move( 105, 5 );
     remove_frame -> setAutoDefault( false );
     remove_frame -> setFlat( true );
     remove_frame -> setFocusPolicy( QWidget::NoFocus );
@@ -117,8 +105,6 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     QToolTip::add( remove_frame, tr( "Remove Keyframe" ) );
 
     lock_frame = new QPushButton( i_lock_frame, tr( "" ), containerButtons );
-    lock_frame ->  setMaximumSize( 20, 20 );
-//     lock_frame -> move( 130, 5 );
     lock_frame -> setAutoDefault( false );
     lock_frame -> setFlat( true );
     lock_frame -> setFocusPolicy( QWidget::NoFocus );
@@ -126,8 +112,7 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     QToolTip::add( lock_frame, tr( "Lock Frame" ) );
 
     move_frame_up = new QPushButton( i_move_frame_up, tr( "" ), containerButtons );
-    move_frame_up ->  setMaximumSize( 20, 20 );
-//     move_frame_up -> move( 155, 5 );
+
     move_frame_up -> setAutoDefault( false );
     move_frame_up -> setFlat( true );
     move_frame_up -> setAutoRepeat( true );
@@ -136,8 +121,7 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     QToolTip::add( move_frame_up, tr( "Move Keyframe Up" ) );
 
     move_frame_down = new QPushButton( i_move_frame_down, tr( "" ), containerButtons );
-    move_frame_down ->  setMaximumSize( 20, 20 );
-//     move_frame_down -> move( 180, 5 );
+
     move_frame_down -> setAutoDefault( false );
     move_frame_down -> setFlat( true );
     move_frame_down -> setAutoRepeat( true );
@@ -155,7 +139,9 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     scroll_area = new QFrame( scroll_area_container -> viewport() );
     scroll_area -> resize( 2000, ( MAX_NUMBER_OF_FRAMES * 25 ) + 50 );
     scroll_area_container -> addChild( scroll_area );
-//     scroll_area_container -> resize( 190, 400 );
+    
+    scroll_area_container -> setMaximumSize( 190, 800 );
+    //setMaximumWidth (190);
 //     scroll_area_container -> move( 5, remove_layer -> y() + remove_layer -> height() + 5 );
     addChild(scroll_area_container);
     //--------------- Operations on the Default Components ----------------------
@@ -209,10 +195,10 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     f_frame = first_frame;
 
     //------------ Operations on the visibility list -------------
-
-    visibility_list = new QListView( this, "", Qt::WStyle_NoBorder );
-    visibility_list -> resize( 110, 120 );
-    visibility_list -> move( layer_visibility -> x(), layer_visibility -> y() + layer_visibility -> height() );
+    //FIXME: buscar de mostrar la lista de capas de una mejor manera
+    visibility_list = new QListView( this, ""/*, Qt::WStyle_NoBorder*/ );
+    //visibility_list -> resize( 110, 120 );
+    //visibility_list -> move( layer_visibility -> x(), layer_visibility -> y() + layer_visibility -> height() );
     visibility_list -> setSelectionMode( QListView::Single );
     visibility_list -> setFont( QFont( font().family(), 8 ) );
     visibility_list -> addColumn( tr( "Name" ), 105 ); //Single column for the name

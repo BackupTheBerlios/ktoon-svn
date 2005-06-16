@@ -29,15 +29,21 @@
 #include <qpushbutton.h>
 #include <qpopupmenu.h>
 #include <qlistview.h>
+
+
 #include <qlineedit.h>
 #include <qslider.h>
 #include <qlabel.h>
+
+
 #include <qcanvas.h>
 #include <qpixmap.h>
 #include <qtoolbutton.h>
 #include <qvbox.h>
 #include <qhbox.h>
 #include "ktdialogbase.h"
+
+#include "kteditspinbox.h"
 
 class KToon;
 class Brush;
@@ -113,15 +119,14 @@ class Brushes : public KTDialogBase
 	QListViewItem *default_brush;
 	
 	void setupStaticText();
-	//Static Text
-	QLabel *text_min_thickness, *text_max_thickness, *text_smoothness, *text_name;
+	//Static Text name
+	QLabel *text_name;
 	
-	//Textfields for insert the values of minimum and maximum thickness, smoothness and name
-	QLineEdit *value_min_thickness, *value_max_thickness, *value_smoothness, *value_name;
+	//Textfields for insert the values of name
+	QLineEdit  *value_name;
 	
-	//Sliders for set the values of minimum and maximum thickness, smoothness and name
-	QSlider *slider_min_thickness, *slider_max_thickness, *slider_smoothness;
 	
+	KTEditSpinBox *m_displayMinThickness, *m_displayMaxThickness, *m_displaySmoothness;
 	
 	//Previsualization area
 	void setupPrevisualizationArea();
@@ -195,30 +200,7 @@ class Brushes : public KTDialogBase
 	* The value is modified after the user presses enter or clicks outside the corresponding textfield.
 	*/
 	void slotChangeValueName();
-	/**
-	* @brief Changes the minimimum thickness slider value
-	*
-	* The value is modified after the user presses enter or clicks outside the corresponding textfield.
-	* It also modifies the current brush minimum thickness.
-	* @sa slotChangeSliderMaxThickness(), slotChangeSliderSmoothness()
-	*/
-	void slotChangeSliderMinThickness();
-	/**
-	* @brief Changes the maximimum thickness slider value
-	*
-	* The value is modified after the user presses enter or clicks outside the corresponding textfield.
-	* It also modifies the current brush maximum thickness.
-	* @sa slotChangeSliderMinThickness(), slotChangeSliderSmoothness()
-	*/
-	void slotChangeSliderMaxThickness();
-	/**
-	* @brief Changes the smoothness slider value
-	*
-	* The value is modified after the user presses enter or clicks outside the corresponding textfield.
-	* It also modifies the current brush smoothness.
-	* @sa slotChangeSliderMinThickness(), slotChangeSliderMaxThickness()
-	*/
-	void slotChangeSliderSmoothness();
+
 	
 	protected:
 	/**

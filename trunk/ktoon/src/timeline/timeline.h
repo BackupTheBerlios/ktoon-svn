@@ -26,15 +26,17 @@
  * @brief Includethis file if you need the class Timeline
  */
 
-#include <qdialog.h>
 #include <qpopupmenu.h>
 #include <qsplitter.h>
 #include <qlabel.h>
 #include <qtoolbutton.h>
+#include <qvbox.h>
 
 #include "tllayermanager.h"
 #include "soundwidget.h"
 #include "ktdialogbase.h"
+
+
 
 class Layer;
 class KeyFrame;

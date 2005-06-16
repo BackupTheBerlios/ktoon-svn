@@ -20,7 +20,8 @@ HEADERS += colorcells.h \
            import.h \
            preferences.h \
            properties.h \
-           ktthemeselector.h 
+           ktthemeselector.h \
+           brushes.h 
 SOURCES += colorcells.cpp \
            colordisplay.cpp \
            colorgradientselector.cpp \
@@ -38,7 +39,8 @@ SOURCES += colorcells.cpp \
            import.cpp \
            preferences.cpp \
            properties.cpp \
-           ktthemeselector.cpp 
+           ktthemeselector.cpp \
+           brushes.cpp 
 INCLUDEPATH += ../../src/core \
 ../../src/exposure \
 ../../src/dialogs \
