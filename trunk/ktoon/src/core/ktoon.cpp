@@ -759,72 +759,34 @@ KToon::~KToon()
 
 Timeline *KToon::timeline()
 {
-    Q_CHECK_PTR( timeline_dialog );
-    return timeline_dialog;
+	//FIXME:usada en exposuresheet, scenes, properties, drawingarea
+	Q_CHECK_PTR( timeline_dialog );
+	return timeline_dialog;
 }
 
 ExposureSheet *KToon::exposureSheet()
 {
-    Q_CHECK_PTR( exposure_sheet_dialog );
-    return exposure_sheet_dialog;
+	//FIXME: usada en scenes, drawngarea, tlframesequence
+	Q_CHECK_PTR( exposure_sheet_dialog );
+	return exposure_sheet_dialog;
 }
 
-Library *KToon::library()
-{
-    Q_CHECK_PTR( library_dialog );
-    return library_dialog;
-}
-
-ColorPalette *KToon::colorPalette()
-{
-    Q_CHECK_PTR( color_palette_dialog );
-    return color_palette_dialog;
-}
-
-Brushes *KToon::brushes()
-{
-    Q_CHECK_PTR( brushes_dialog );
-    return brushes_dialog;
-}
 
 GLRenderCameraPreview *KToon::renderCameraPreview()
 {
-    Q_CHECK_PTR( render_camera_preview );
-    return render_camera_preview;
-}
-
-Scenes *KToon::scenes()
-{
-    Q_CHECK_PTR( scenes_dialog );
-    return scenes_dialog;
-}
-
-Tools *KToon::toolsDialog()
-{
-    Q_CHECK_PTR( tools_dialog );
-    return tools_dialog;
-}
-
-GLTopCameraView *KToon::topCameraView()
-{
-    Q_CHECK_PTR( top_camera_view );
-    return top_camera_view;
-}
-
-GLSideCameraView *KToon::sideCameraView()
-{
-    Q_CHECK_PTR( side_camera_view );
-    return side_camera_view;
+	//FIXME: usada en timeline y en export para exportar la animacion
+	Q_CHECK_PTR( render_camera_preview );
+	return render_camera_preview;
 }
 
 void KToon::loadImage( const QString &file_name, bool from_load )
 {
-    if ( !from_load )
-    {
-       KTStatus->currentDrawingArea() -> loadImage( file_name );
-       library_dialog -> loadImageSymbol( file_name );
-    }
-    statusBar() -> message( tr( "Image loaded successfully - " ) + file_name, 2000 );
+	if ( !from_load )
+	{
+		KTStatus->currentDrawingArea() -> loadImage( file_name );
+		library_dialog -> loadImageSymbol( file_name );
+	}
+	statusBar() -> message( tr( "Image loaded successfully - " ) + file_name, 2000 );
 }
 
 void KToon::loadImageSequence( const QString &file_name, bool from_load )

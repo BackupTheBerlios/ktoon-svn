@@ -172,6 +172,7 @@ void Export::slotAccept()
 	    {
 		QPixmap exp;
 		fn = fn + ".png";
+		//FIXME:kuadrosx
 		exp.convertFromImage( k_toon -> renderCameraPreview() -> grabFrameBuffer() );
 		if ( !exp.save( fn, "PNG" ) )
 		     k_toon -> statusBar() -> message( tr( "Could not save the file: %1" ).arg( fn ), 2000 );
@@ -226,6 +227,7 @@ void Export::slotAccept()
 	    {
 		QPixmap exp;
 		fn = fn + ".svg";
+		//FIXME:kuadrosx
 		exp.convertFromImage( k_toon -> renderCameraPreview() -> grabFrameBuffer() );
 
 		QPainter painter;

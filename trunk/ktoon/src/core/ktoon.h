@@ -98,24 +98,6 @@ class KToon: public QMainWindow
 		* @return A pointer to the current exposure sheet dialog
 		*/
 		ExposureSheet *exposureSheet();
-		/**
-		*  Gets the library dialog
-		*
-		* @return A pointer to the library dialog
-		*/
-		Library *library();
-		/**
-		*  Gets the color palette dialog
-		*
-		* @return A pointer to the color palette dialog
-		*/
-		ColorPalette *colorPalette();
-		/**
-		*  Gets the brushes dialog
-		*
-		* @return A pointer to the brushes dialog
-		*/
-		Brushes *brushes();
 
 		/**
 		*  Gets the render camera preview dialog
@@ -123,31 +105,7 @@ class KToon: public QMainWindow
 		* @return A pointer to the render camera preview dialog
 		*/
 		GLRenderCameraPreview *renderCameraPreview();
-		/**
-		*  Gets the scenes dialog
-		*
-		* @return A pointer to the scenes dialog
-		*/
-		Scenes *scenes();
-		/**
-		*  Gets the tools dialog
-		*
-		* @return A pointer to the tools dialog
-		*/
-		Tools *toolsDialog();
-		/**
-		*  Gets the top camera view dialog
-		*
-		* @return A pointer to the top camera view dialog
-		*/
-		GLTopCameraView *topCameraView();
-		/**
-		*  Gets the side camera view dialog
-		*
-		* @return A pointer to the side camera view dialog
-		*/
-		GLSideCameraView *sideCameraView();
-	
+		
 		/**
 		*  Loads the specified image into the drawing area
 		*

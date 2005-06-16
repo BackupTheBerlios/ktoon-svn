@@ -46,7 +46,7 @@ Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
     //Initializations
 	setCaption( tr( "Brushes" ) );
 //     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-	//resize( 200, 360 );
+// 	//resize( 200, 360 );
 	//setMinimumSize( 205, 430 );
 	//setMaximumSize( 205, 430 );
 	move( 800, 88 );
@@ -78,7 +78,7 @@ Brushes::~Brushes()
     delete remove_brush;
     delete table_brushes;
     delete m_displayMinThickness;
-    delete m_displayMinThickness;
+    delete m_displayMaxThickness;
     delete m_displaySmoothness;
     delete text_name;
     delete value_name;
@@ -172,10 +172,7 @@ void Brushes::setupPrevisualizationArea()
 	std::auto_ptr<QCanvas> ap_previsualization(new QCanvas( 99, 99 ) );
 	previsualization = ap_previsualization.get(); // DEBUG
     
-	//FIXME:kuadrosx quitar previsualization_container -> resize( 103, 103 ); y previsualization_container -> move( 
 	previsualization_container = new QCanvasView( /*ap_*/previsualization/*.get()*/, containerPrevisualizationArea );
-	previsualization_container -> resize( 103, 103 );
-	previsualization_container -> move( value_name -> x() + value_name -> width() + 5, m_displaySmoothness-> height() + m_displaySmoothness-> y() + 10 );
 	previsualization_container->adjustSize();
 	std::auto_ptr<QCanvasEllipse> ap_circle_max_thickness(new QCanvasEllipse( 5, 5, /*ap_*/previsualization/*.get()*/) );
 	circle_max_thickness = ap_circle_max_thickness.get();
@@ -296,8 +293,6 @@ void Brushes::slotRemoveBrush()
 }
 
 
-
-
 void Brushes::slotChangeValueMinThickness()
 {
 	int mint;
@@ -381,104 +376,6 @@ void Brushes::slotChangeValueName()
     }
     KTStatus->currentDrawingArea() -> modifyDocument( true );
 }
-
-
-
-// void Brushes::slotChangeSliderMinThickness()
-// {
-// 	int conversion;
-// 	int mint;
-// 	conversion = m_displayMinThickness->value(); //( value_min_thickness -> text() ).toInt();
-// 
-//     //Validate that value is not zero or the empty string
-// 	if ( conversion == 0 )
-// 	{
-// 		conversion = 1;
-// 		m_displayMinThickness->setValue( 1 );
-// 	}
-// 
-//     //Validate that min is not greater than max
-// 	if ( conversion > m_displayMaxThickness->value()) 
-// 	{
-// 		m_displayMaxThickness->setValue(m_displayMinThickness->value());
-// 	}
-// 
-// 	//slider_min_thickness -> setValue( conversion );
-// 	m_displayMinThickness->setValue(conversion);
-// 	circle_min_thickness -> setSize( conversion, conversion );
-// 	previsualization -> update();
-// 
-// 	QListViewItem *current_brush = table_brushes -> selectedItem();
-// 	current_brush -> setText( 0, QString::number(m_displayMinThickness->value()));//value_min_thickness -> text() );
-// 	mint = ( current_brush -> text( 0 ) ).toInt();
-// 	Brush *s_brush = KTStatus -> currentBrush();
-// 	s_brush -> setThicknessMinBrush( mint );
-// 	KTStatus->currentDrawingArea() -> modifyDocument( true );
-// 
-// 	emit minThicknessChanged();
-// }
-// 
-// void Brushes::slotChangeSliderMaxThickness()
-// {
-// 	int conversion;
-// 	int maxt;
-// 	conversion = m_displayMaxThickness->value(); //( value_max_thickness -> text() ).toInt();
-// 
-//     //Validate that value is not zero or the empty string
-// 	if ( conversion == 0 )//|| ( value_max_thickness -> text() ).isEmpty() )
-// 	{
-// 		conversion = 1;
-// 		m_displayMaxThickness->setValue(1);// value_max_thickness -> setText( "1" );
-// 	}
-// 
-//     //Validate that max is not less than min
-// 	if ( conversion <  m_displayMinThickness->value())//( value_min_thickness -> text() ).toInt() )
-// 	{
-// 		//value_min_thickness -> setText( value_max_thickness -> text() );
-// 		m_displayMinThickness-> setValue( conversion );
-// 	}
-// 
-// 	//slider_max_thickness -> setValue( conversion );
-// 	m_displayMaxThickness->setValue(conversion);
-// 	circle_max_thickness -> setSize( conversion, conversion );
-// 	previsualization -> update();
-// 
-// 	QListViewItem *current_brush = table_brushes -> selectedItem();
-// 	current_brush -> setText( 1, QString::number(m_displayMaxThickness->value() ));//value_max_thickness -> text() );
-// 
-// 	maxt = ( current_brush -> text( 1 ) ).toInt();
-// 	Brush *s_brush = KTStatus -> currentBrush();
-// 	s_brush -> setThicknessMaxBrush( maxt );
-// 	KTStatus->currentDrawingArea() -> modifyDocument( true );
-// 
-// 	emit maxThicknessChanged();
-// }
-// 
-// void Brushes::slotChangeSliderSmoothness()
-// {
-// 	int conversion;
-// 	int smo;
-// 	conversion = m_displaySmoothness->value(); //( value_smoothness -> text() ).toInt();
-// 
-//     //Validate that value is not the empty string
-// // 	if ( m_displaySmoothness->value() )// ( value_smoothness -> text() ).isEmpty() )
-// // 	{
-// // 		conversion = 0;
-// // 		value_smoothness -> setText( "0" );
-// // 	}
-// 
-// 	m_displaySmoothness-> setValue( conversion );
-// 
-// 	QListViewItem *current_brush = table_brushes -> selectedItem();
-// 	current_brush -> setText( 2, QString::number(m_displaySmoothness->value())); //value_smoothness -> text() );
-// 
-// 	smo = ( current_brush -> text( 2 ) ).toInt();
-// 	Brush *s_brush = KTStatus -> currentBrush();
-// 	s_brush -> setSmoothnessBrush( smo );
-// 	KTStatus->currentDrawingArea() -> modifyDocument( true );
-// 
-// 	emit smoothnessChanged();
-// }
 
 
 void Brushes::slotSelectBrush()

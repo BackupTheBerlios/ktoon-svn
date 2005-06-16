@@ -139,8 +139,8 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     scroll_area = new QFrame( scroll_area_container -> viewport() );
     scroll_area -> resize( 2000, ( MAX_NUMBER_OF_FRAMES * 25 ) + 50 );
     scroll_area_container -> addChild( scroll_area );
-    
-    scroll_area_container -> setMaximumSize( 190, 800 );
+    //FIXME:kuadrosx
+    scroll_area_container-> setMaximumSize( 190, 800 );
     //setMaximumWidth (190);
 //     scroll_area_container -> move( 5, remove_layer -> y() + remove_layer -> height() + 5 );
     addChild(scroll_area_container);
@@ -196,9 +196,10 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
 
     //------------ Operations on the visibility list -------------
     //FIXME: buscar de mostrar la lista de capas de una mejor manera
-    visibility_list = new QListView( this, ""/*, Qt::WStyle_NoBorder*/ );
-    //visibility_list -> resize( 110, 120 );
-    //visibility_list -> move( layer_visibility -> x(), layer_visibility -> y() + layer_visibility -> height() );
+    visibility_list = new QListView( this, "", Qt::WStyle_NoBorder );
+    visibility_list -> resize( 110, 120 );
+    qDebug( QString::number(layer_visibility->y()));
+    visibility_list -> move( layer_visibility->x(), layer_visibility->y()+50 + layer_visibility -> height() );
     visibility_list -> setSelectionMode( QListView::Single );
     visibility_list -> setFont( QFont( font().family(), 8 ) );
     visibility_list -> addColumn( tr( "Name" ), 105 ); //Single column for the name
@@ -952,7 +953,6 @@ void ExposureSheet::slotInsertFrame()
 	}
 
 	updateIndicators( current_layer_obj );
-	sleep(4);
 }
 
 void ExposureSheet::slotRemoveFrame()
@@ -1330,6 +1330,7 @@ void ExposureSheet::slotPasteFrame() // FIXME
 		slotInsertFrame();
 
 	KeyFrame *current_kf = KTStatus -> currentKeyFrame();
+	
 	if ( !current_kf )
 		return;
 	

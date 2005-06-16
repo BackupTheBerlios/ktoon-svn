@@ -152,6 +152,7 @@ int Timeline::exportAnimation( const QString &file_name, int iter_begin, const Q
 	QString new_file_name = file_name + iterator + extension;
 	frame_sequence_manager -> getRuler() -> slotSetOffset( j );
 	QPixmap exp;
+	//FIXME:kuadrosx
 	exp.convertFromImage( k_toon -> renderCameraPreview() -> grabFrameBuffer() );
 	if ( !exp.save( new_file_name, format.latin1() ) )
 	{

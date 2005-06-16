@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2005 by Jorge Cuadrado                                  *
  *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -29,8 +29,6 @@ KTDialogBase::KTDialogBase(Place p, QWidget *parent, const char *name, WFlags st
 	setCloseMode(Undocked);
 
 	childs = new QObjectList();
-	//container->setResizeMode (  QBoxLayout::Minimum);
-	//container->setAutoAdd (true);
 	
 	m_title = new KTDialogTitle("the title", this, "DialogTitle");
 	
@@ -84,6 +82,7 @@ void KTDialogBase::addChild(QWidget* child)
 
 void KTDialogBase::toggleView()
 {
+	m_title->setMinimumWidth(m_title->width());
 	for( QObject *o = childs->first(); o; o = childs->next() )
 	{
 		if ( o && ! m_isChildHidden )

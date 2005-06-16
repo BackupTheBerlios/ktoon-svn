@@ -56,6 +56,7 @@ class KTDialogBase : public QDockWindow
 		
 	signals:
 		void documentModified(bool);
+		void sendMessage(QString);
 
 };
 

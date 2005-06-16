@@ -28,13 +28,14 @@
 #include <qtooltip.h>
 #include <qwmatrix.h>
 #include <qmessagebox.h>
+#include <qhbox.h>
 
 #include <memory>
 
 //------------- CONSTRUCTOR ----------------
 
 Library::Library( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QGLWidget *share, QToolButton *assig_tb_button )
-	: QDialog( parent, "Scenes", false, style )
+	: KTDialogBase( QDockWindow::OutsideDock, parent, "Scenes"/*, false, style */)
 {
 	Q_CHECK_PTR( parent );
 	Q_CHECK_PTR( in_assigned_menu );
@@ -51,9 +52,9 @@ Library::Library( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
 	assigned_tb_button = assig_tb_button;
 	number_of_items = 0;
 	image_count = 0;
-	resize( 150, 350 );
-	setMinimumSize( 150, 350 );
-	setMaximumSize( 150, 350 );
+// 	resize( 150, 350 );
+// 	setMinimumSize( 150, 350 );
+// 	setMaximumSize( 150, 350 );
 	k_toon = ( KToon * )parent_widget;
 
     //Icon initializations
@@ -65,16 +66,19 @@ Library::Library( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
     //----------- Component Initializations -----------------
 
 	text_number_of_items = new QLabel( QString( "# " ) + tr( "items" ) + QString( ": " ) + QString::number( number_of_items ), this );
-	text_number_of_items -> resize( 100, 20 );
-	text_number_of_items -> move( 5, 5 );
+	addChild(text_number_of_items);
+// 	text_number_of_items -> resize( 100, 20 );
+// 	text_number_of_items -> move( 5, 5 );
 
 	symbol_view = new SymbolView( this, share );
-	symbol_view -> resize( 140, 100 );
-	symbol_view -> move( text_number_of_items -> x(), text_number_of_items -> y() + text_number_of_items -> height() + 5 );
+	addChild(symbol_view);
+// 	symbol_view -> resize( 140, 100 );
+// 	symbol_view -> move( text_number_of_items -> x(), text_number_of_items -> y() + text_number_of_items -> height() + 5 );
 
 	table_symbols = new SymbolTable( this );
-	table_symbols -> resize( 140, 185 );
-	table_symbols -> move( symbol_view -> x(), symbol_view -> y() + symbol_view -> height() + 5 );
+	addChild(table_symbols);
+// 	table_symbols -> resize( 140, 185 );
+// 	table_symbols -> move( symbol_view -> x(), symbol_view -> y() + symbol_view -> height() + 5 );
 	table_symbols -> setSelectionMode( QListView::Single );
 //     table_symbols -> setFont( QFont( "helvetica", 8 ) );
 	table_symbols -> addColumn( tr( "Name" ), 135 );
@@ -85,37 +89,33 @@ Library::Library( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
 	connect( table_symbols, SIGNAL( itemRenamed( QListViewItem *, int, const QString & ) ), SLOT( slotUpdateLibraryData() ) );
 	connect( table_symbols, SIGNAL( released( SymbolItem * ) ), SLOT( slotUpdateLibraryData() ) );
 
-	add_symbol = new QPushButton( i_add_symbol, "", this );
-	add_symbol -> resize( 20, 20 );
-	add_symbol -> move( table_symbols -> x(), table_symbols -> y() + table_symbols -> height() + 5 );
+	QHBox *containerButtons = new QHBox(this);
+	addChild(containerButtons);
+	
+	add_symbol = new QPushButton( i_add_symbol, "", containerButtons );
 	add_symbol -> setAutoDefault( false );
 	add_symbol -> setFlat( true );
 	connect( add_symbol, SIGNAL( clicked() ), SLOT( slotAddSymbol() ) );
 	QToolTip::add( add_symbol, tr( "Add the current graphic to Library" ) );
 
-	delete_symbol = new QPushButton( i_delete_symbol, "", this );
-	delete_symbol -> resize( 20, 20 );
-	delete_symbol -> move( add_symbol -> x() + add_symbol -> width() + 5, add_symbol -> y() );
+	delete_symbol = new QPushButton( i_delete_symbol, "", containerButtons );
 	delete_symbol -> setAutoDefault( false );
 	delete_symbol -> setFlat( true );
 	connect( delete_symbol, SIGNAL( clicked() ), SLOT( slotDeleteSymbol() ) );
 	QToolTip::add( delete_symbol, tr( "Remove the selected Symbol from Library" ) );
 
-	insert_into_drawing_area = new QPushButton( i_insert_into_drawing_area, "", this );
-	insert_into_drawing_area -> resize( 20, 20 );
-	insert_into_drawing_area -> move( delete_symbol -> x() + delete_symbol -> width() + 5, delete_symbol -> y() );
+	insert_into_drawing_area = new QPushButton( i_insert_into_drawing_area, "", containerButtons );
 	insert_into_drawing_area -> setAutoDefault( false );
 	insert_into_drawing_area -> setFlat( true );
 	connect( insert_into_drawing_area, SIGNAL( clicked() ), SLOT( slotInsertIntoDrawingArea() ) );
 	QToolTip::add( insert_into_drawing_area, tr( "Inserts the selected symbol into the drawing area" ) );
 
-	add_folder = new QPushButton( i_add_folder, "", this );
-	add_folder -> resize( 20, 20 );
-	add_folder -> move( insert_into_drawing_area -> x() + insert_into_drawing_area -> width() + 5, insert_into_drawing_area -> y() );
+	add_folder = new QPushButton( i_add_folder, "", containerButtons );
 	add_folder -> setAutoDefault( false );
 	add_folder -> setFlat( true );
 	connect( add_folder, SIGNAL( clicked() ), SLOT( slotAddFolder() ) );
 	QToolTip::add( add_folder, tr( "Adds a folder to the symbol list" ) );
+	adjustSize();
 }
 
 //------------- DESTRUCTOR ----------------
