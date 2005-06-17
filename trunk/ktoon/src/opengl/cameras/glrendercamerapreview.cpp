@@ -18,18 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
- #include "glrendercamerapreview.h"
- #include "ktoon.h"
+#include "glrendercamerapreview.h"
+#include "status.h"
+//  #include "ktoon.h"
+#include <qimage.h>
 
 //-------------- CONSTRUCTOR -----------------
 
-GLRenderCameraPreview::GLRenderCameraPreview( QWidget* parent, QWidget *grandparent, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button, QGLWidget *share, WFlags f )
+GLRenderCameraPreview::GLRenderCameraPreview( QWidget* parent, /*QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button, */QGLWidget *share, WFlags f )
     : QGLWidget( parent, "", share, f )
 {
     Q_CHECK_PTR( parent );
-    Q_CHECK_PTR( grandparent );
-    Q_CHECK_PTR( in_assigned_menu );
-    Q_CHECK_PTR( assig_tb_button );
     Q_CHECK_PTR( share );
 
     //Initializations
@@ -37,19 +36,14 @@ GLRenderCameraPreview::GLRenderCameraPreview( QWidget* parent, QWidget *grandpar
     max_vertical = 280;
 
     resize( max_horizontal, max_vertical );
-    move( 20, 220 );
+
     setMinimumSize( max_horizontal, max_vertical );
-    setMaximumSize( max_horizontal, max_vertical );
+//     setMaximumSize( max_horizontal, max_vertical );
+    
+
     setCaption( tr( "Render Camera Preview" ) );
 
-    parent_widget = parent;
-    grandparent_widget = grandparent;
-    share_widget = share;
-    assigned_menu = in_assigned_menu;
-    assigned_item = id_assigned_item;
-    assigned_tb_button = assig_tb_button;
-    k_toon = ( KToon * )grandparent_widget;
-    current_graphic = NULL;
+    current_graphic = 0;
     dragging = false;
 }
 
@@ -57,7 +51,6 @@ GLRenderCameraPreview::GLRenderCameraPreview( QWidget* parent, QWidget *grandpar
 
 GLRenderCameraPreview::~GLRenderCameraPreview()
 {
-
 }
 
 //--------------------- PROTECTED MEMBERS -------------------------
@@ -119,7 +112,9 @@ void GLRenderCameraPreview::paintGL()
         QPtrList<GLGraphicComponent> gl = k_it -> getDrawing() -> graphicComponents();
 	GLGraphicComponent *graphic;
         for ( graphic = gl.first(); graphic; graphic = gl.next() )
+	{
             graphic -> draw();
+	}
 	glTranslatef( 0.0, 0.0, -position );
     }
 
@@ -172,9 +167,9 @@ void GLRenderCameraPreview::mouseReleaseEvent( QMouseEvent *mouse_event )
 
 void GLRenderCameraPreview::closeEvent( QCloseEvent *close_event )
 {
-    assigned_menu -> setItemChecked( assigned_item, false );
-    assigned_tb_button -> setDown( false );
-    close_event -> accept();
+//     assigned_menu -> setItemChecked( assigned_item, false );
+//     assigned_tb_button -> setDown( false );
+//     close_event -> accept();
 }
 
 void GLRenderCameraPreview::processHits( GLint hits, GLuint buffer[] )
@@ -260,3 +255,29 @@ void GLRenderCameraPreview::drawSelected( QMouseEvent *mouse_event )
 
 	processHits ( nSeleccion, selectionBuffer );
 }
+
+QValueList<QImage> GLRenderCameraPreview::imageList()
+{
+	QValueList<QImage> images;
+	
+	return images;
+}
+
+void GLRenderCameraPreview::exportTo(int)
+{
+	QValueList<QImage> imgs = imageList();
+	
+	std::cout << "Images: " << imgs.count() << std::endl;
+	for(uint i = 0; i < imgs.count(); i++)
+	{
+		imgs[i].save(QString("file%1.png").arg(i), "PNG");
+	}
+}
+
+void GLRenderCameraPreview::resizeEvent(QResizeEvent *e)
+{
+// 	KTStatus->setCurrentCameraWidth(e->size().width());
+// 	KTStatus->setCurrentCameraHeight(e->size().height());
+	QGLWidget::resizeEvent(e);
+}
+

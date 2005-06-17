@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Copyright (C) 2005 by David Cuadrado   				   *
+ *   krawek@toonka.com   						   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,46 +18,38 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTDIALOGBASE_H
-#define KTDIALOGBASE_H
+#ifndef KTEXPORTER_H
+#define KTEXPORTER_H
 
-#include <qdockwindow.h>
-#include <qlayout.h>
-#include <qsizepolicy.h> 
-#include <qobjectlist.h>
-#include <qevent.h>
+#include <qobject.h>
 
-#include "ktdialogtitle.h"
+#ifdef USE_MING
+#include "mingpp.h"
+#endif
 
 /**
- * @author Jorge Cuadrado
+ * This class is used for export animations to others formats like SVG, PNG, SWF, etc...
+ * @author David Cuadrado
 */
-class KTDialogBase : public QDockWindow
+
+class KTExporter : public QObject
 {
 	Q_OBJECT
 	public:
-		KTDialogBase(Place p = InDock, QWidget *parent = 0, const char *name = 0, WFlags style = 0);
-		~KTDialogBase();
-		virtual void addChild(QWidget * child);
-		void setFont(const QFont &);
+		enum Format { PNG = 0, SWF, SVG, JPEG  };
 		
-	private:
-		QBoxLayout *container;
-		QObjectList *childs;
-		bool m_isChildHidden;
+		KTExporter(QObject *parent = 0, const char *name = 0);
+		~KTExporter();
 		
-	protected:
-		KTDialogTitle *m_title;
+		bool exportAnimation(const QString &filename, Format format);
 		
-	public slots:
-		void toggleView();
-		void setCaption(const QString &text);
-		void fixPosition(QDockWindow::Place);
-		
-	signals:
-		void documentModified(bool);
-		void sendMessage(const QString &);
+#ifdef USE_MING	
+		SWFMovie *doMovie( int width, int height );
+		SWFDisplayItem *doAnimation( SWFMovie *movie, const QStringList &images );
+#endif
 
+	private:
+		QString m_filename;
 };
 
 #endif

@@ -24,7 +24,10 @@
 #include <qpicture.h>
 
 #include "export.h"
-#include "ktoon.h"
+#include "status.h"
+#include "ktapplication.h"
+#include "ktexporter.h"
+// #include "ktoon.h"
 //#include "mingpp.h"
 
 #include <new>
@@ -35,10 +38,9 @@ Export::Export( QWidget *parent ) : QDialog( parent, "Export", true )
 {
     //Initializations
     setCaption( tr( "Export" ) );
-//     setFont( QFont( "helvetica", 10 ) );
-//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-    parent_widget = parent;
-    k_toon = ( KToon * )parent_widget;
+    
+//     parent_widget = parent;
+//     k_toon = ( KToon * )parent_widget;
     setMinimumSize( 210, 220 );
     setMaximumSize( 210, 220 );
 
@@ -150,7 +152,7 @@ Export::~Export()
 
 void Export::slotAccept()
 {
-#ifdef USE_MING
+#ifdef USE_MING // FIXME: 
     switch ( group -> selectedId() )
     {
         case 0:
@@ -158,10 +160,13 @@ void Export::slotAccept()
             QString fn = QFileDialog::getSaveFileName( KTOON_REPOSITORY + "/output/", "PNG sequence ( *.png )", this );
             if ( !fn.isEmpty() )
 	    {
-        	if ( k_toon -> scenes() -> exportAnimation( fn, "PNG" ) > 0 )
-        	    k_toon -> statusBar() -> message( tr( "Animation Exported Successfully" ), 2000 );
-        	else
-        	    k_toon -> statusBar() -> message( tr( "Could not Export Animation" ), 2000 );
+		    QString message = "";
+// 		    if ( k_toon -> scenes() -> exportAnimation( fn, "PNG" ) > 0 ) // FIXME
+//         	    message = tr( "Animation Exported Successfully" );
+//         	else
+//         	    message = tr( "Could not Export Animation" );
+		
+		emit sendMessage (message);
 	    }
 	    break;
 	}
@@ -173,9 +178,9 @@ void Export::slotAccept()
 		QPixmap exp;
 		fn = fn + ".png";
 		//FIXME:kuadrosx
-		exp.convertFromImage( k_toon -> renderCameraPreview() -> grabFrameBuffer() );
+// 		exp.convertFromImage( k_toon -> renderCameraPreview() -> grabFrameBuffer() );
 		if ( !exp.save( fn, "PNG" ) )
-		     k_toon -> statusBar() -> message( tr( "Could not save the file: %1" ).arg( fn ), 2000 );
+			emit sendMessage( tr( "Could not save the file: %1" ).arg( fn ) );
 	    }
 	    break;
 	}
@@ -204,9 +209,9 @@ void Export::slotAccept()
 		    frame -> addColor( 255, 0, 0 );
 
   		    if ( movie -> save( ( char * )( fn + ".swf" ).latin1() ) < 0 )
-        	        k_toon -> statusBar() -> message( tr( "Could not Export Animation" ), 2000 );
+			    emit sendMessage( tr( "Could not Export Animation" ) );
 		    else
-		        k_toon -> statusBar() -> message( tr( "Animation Exported Successfully" ), 2000 );
+			    emit sendMessage( tr( "Animation Exported Successfully" ) );
 
 		    for ( int i = 1; i < number_of_images; i++ )
   		    {
@@ -216,7 +221,7 @@ void Export::slotAccept()
   		    }
 		}
         	else
-        	    k_toon -> statusBar() -> message( tr( "Could not Export Animation" ), 2000 );
+        	    emit sendMessage( tr( "Could not Export Animation" ) );
 	    }
 	    break;
 	}
@@ -238,17 +243,23 @@ void Export::slotAccept()
 		painter.end();
 
 		if ( picture.save( fn, "svg" ) )
-		    k_toon -> statusBar() -> message( tr( "SVG Exported Successfully" ), 2000 );
+		    emit sendMessage( tr( "SVG Exported Successfully" ));
 		else
-		    k_toon -> statusBar() -> message( tr( "Could not Export SVG" ), 2000 );
+			emit sendMessage( tr( "Could not Export SVG" ));
 	    }
 	    break;
 	}
 	default: break;
     }
-
-    close( true );
 #endif
+
+qDebug("Testing export");
+
+emit selectToExport(0);
+
+qDebug("End teting export");
+
+	close( true );
 }
 
 void Export::slotCancel()

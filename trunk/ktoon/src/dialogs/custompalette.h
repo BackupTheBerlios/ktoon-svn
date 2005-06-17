@@ -30,7 +30,6 @@
 #include <qcolor.h>
 #include <qpainter.h>
 
-class KToon;
 class KTColor;
 
 /**
@@ -69,7 +68,6 @@ public:
     void clear();
 
 private:
-    QWidget *parent_widget;
     QColor cell_border_color;
     QColor color_matrix[12][19];
     QString color_names[12][19];
@@ -77,7 +75,6 @@ private:
     QColor invalid_color;
     int cur_row, cur_col;
     int sel_row, sel_col;
-    KToon *k_toon;
 
 signals:
     /**

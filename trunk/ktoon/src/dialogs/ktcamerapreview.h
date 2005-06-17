@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Copyright (C) 2005 by David Cuadrado   *
+ *   krawek@toonka.com   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,46 +17,43 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTCAMERAPREVIEW_H
+#define KTCAMERAPREVIEW_H
 
-#ifndef KTDIALOGBASE_H
-#define KTDIALOGBASE_H
+#include "ktmdiwindow.h"
 
-#include <qdockwindow.h>
-#include <qlayout.h>
-#include <qsizepolicy.h> 
-#include <qobjectlist.h>
-#include <qevent.h>
-
-#include "ktdialogtitle.h"
+#ifndef NO_OPENGL
+#include "glrendercamerapreview.h"
+#else
+#include "rendercamerapreviewqt.h"
+#endif
 
 /**
- * @author Jorge Cuadrado
+@author David Cuadrado
 */
-class KTDialogBase : public QDockWindow
+class KTCameraPreview : public KTMdiWindow
 {
 	Q_OBJECT
 	public:
-		KTDialogBase(Place p = InDock, QWidget *parent = 0, const char *name = 0, WFlags style = 0);
-		~KTDialogBase();
-		virtual void addChild(QWidget * child);
-		void setFont(const QFont &);
+		KTCameraPreview(QWidget* parent, const char* name = 0);
+		~KTCameraPreview();
+#ifndef NO_OPENGL
+		GLRenderCameraPreview *cameraPreview();
+#else
+		RenderCameraPreviewQt *cameraPreview();
+#endif
 		
 	private:
-		QBoxLayout *container;
-		QObjectList *childs;
-		bool m_isChildHidden;
+		#ifndef NO_OPENGL
+		GLRenderCameraPreview *m_cameraPreview;
+		#else
+		RenderCameraPreviewQt *m_cameraPreview;
+		#endif
+		
 		
 	protected:
-		KTDialogTitle *m_title;
-		
-	public slots:
-		void toggleView();
-		void setCaption(const QString &text);
-		void fixPosition(QDockWindow::Place);
-		
-	signals:
-		void documentModified(bool);
-		void sendMessage(const QString &);
+		void resizeEvent(QResizeEvent *e);
+
 
 };
 

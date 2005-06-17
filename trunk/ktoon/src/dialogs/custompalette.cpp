@@ -19,20 +19,18 @@
  ***************************************************************************/
 
 #include "custompalette.h"
-#include "ktoon.h"
+#include "status.h"
 
 
 //-------------- CONSTRUCTOR -----------------
 
 CustomPalette::CustomPalette( QWidget *parent ) : QGridView( parent )
 {
-    parent_widget = parent;
     setCellWidth( 9 );
     setCellHeight( 9 );
     setNumRows( 12 );
     setNumCols( 19 );
     cell_border_color = QColor( 0, 0, 0 );
-    k_toon = ( KToon * )( parent_widget -> parentWidget() );
 
     clear();
     setMaximumSize(175, 113);

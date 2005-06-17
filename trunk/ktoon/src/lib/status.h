@@ -318,7 +318,7 @@ class Status : public QObject
 #else
 		DrawingAreaQt *currentDrawingArea();
 #endif
-		 
+		
 		void setupDrawingArea(QWorkspace *ws);
 		
 		bool closeCurrent();

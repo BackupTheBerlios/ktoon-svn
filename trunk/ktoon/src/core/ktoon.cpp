@@ -671,8 +671,8 @@ void KToon::setupDialogs()
 	timeline_dialog = new Timeline( this, Qt::WStyle_Tool, window, id_window_timeline, window_timeline );
 	list_of_tl.append( timeline_dialog );
 	
-	render_camera_preview = new GLRenderCameraPreview( main_panel, this, window, id_window_render_camera_preview, window_render_camera_preview, KTStatus->currentDrawingArea() );
-	render_camera_preview -> hide();
+	m_cameraPreview = new KTCameraPreview(main_panel);
+ 	m_cameraPreview -> hide();
 	
 	top_camera_view = new GLTopCameraView( main_panel, this, window, id_window_top_camera_view, window_top_camera_view, KTStatus->currentDrawingArea() );
 	top_camera_view -> hide();
@@ -775,8 +775,9 @@ ExposureSheet *KToon::exposureSheet()
 GLRenderCameraPreview *KToon::renderCameraPreview()
 {
 	//FIXME: usada en timeline y en export para exportar la animacion
-	Q_CHECK_PTR( render_camera_preview );
-	return render_camera_preview;
+	//Q_CHECK_PTR( render_camera_preview );
+	//return render_camera_preview;
+	return m_cameraPreview->cameraPreview();
 }
 
 void KToon::loadImage( const QString &file_name, bool from_load )
@@ -1486,8 +1487,9 @@ void KToon::slotNewDocument()
 	
 		library_dialog = new Library( this, Qt::WStyle_Tool, window, id_window_library, KTStatus->currentDrawingArea(), window_library );
 	
-		render_camera_preview = new GLRenderCameraPreview( main_panel, this, window, id_window_render_camera_preview, window_render_camera_preview, KTStatus->currentDrawingArea() );
-		render_camera_preview->hide();
+		m_cameraPreview = new KTCameraPreview(main_panel);
+// 		render_camera_preview = new GLRenderCameraPreview( main_panel, this, window, id_window_render_camera_preview, window_render_camera_preview, KTStatus->currentDrawingArea() );
+// 		render_camera_preview->hide();
 		
 		top_camera_view = new GLTopCameraView( main_panel, this, window, id_window_top_camera_view, window_top_camera_view, KTStatus->currentDrawingArea() );
 		top_camera_view->hide();
@@ -1509,7 +1511,8 @@ void KToon::slotNewDocument()
 		else if ( window -> isItemEnabled( id_window_illustration ) )
 		{
 			timeline_dialog -> show();
-			render_camera_preview -> show();
+// 			render_camera_preview -> show();
+			m_cameraPreview->show();
 			top_camera_view -> show();
 			side_camera_view -> show();
 		}
@@ -1959,6 +1962,7 @@ void KToon::slotExport()
 {
     export_dialog = new Export( this );
     export_dialog -> show();
+    connect( export_dialog, SIGNAL(selectToExport(int)), m_cameraPreview->cameraPreview() , SLOT(exportTo(int)));
     statusBar() -> message( tr( "Import Dialog opened" ), 2000 );
 }
 
@@ -2661,14 +2665,14 @@ void KToon::slotSeeIllustration()
     file -> setItemVisible( id_file_export, false );
 
     //-------------- Hide all animation dialog boxes and update the window menu items -------------
-
-    if ( render_camera_preview != NULL )
+    
+    if ( m_cameraPreview != NULL )
     {
-        render_camera_preview -> hide();
-        window -> setItemChecked( id_window_render_camera_preview, false );
-        window -> setItemVisible( id_window_render_camera_preview, false );
-	window_render_camera_preview -> hide();
-	window_render_camera_preview -> setDown( false );
+	    m_cameraPreview -> hide();
+	    window -> setItemChecked( id_window_render_camera_preview, false );
+	    window -> setItemVisible( id_window_render_camera_preview, false );
+	    window_render_camera_preview -> hide();
+	    window_render_camera_preview -> setDown( false );
     }
 
     if ( side_camera_view != NULL )
@@ -2785,9 +2789,9 @@ void KToon::slotSeeAnimation()
 
     //-------------- Show all animation dialog boxes and update the window menu items -----------
 
-    if ( render_camera_preview != NULL )
+    if ( m_cameraPreview != NULL )
     {
-        render_camera_preview -> show();
+        m_cameraPreview -> show();
         window -> setItemChecked( id_window_render_camera_preview, true );
         window -> setItemVisible( id_window_render_camera_preview, true );
 	window_render_camera_preview -> show();
@@ -2963,15 +2967,15 @@ void KToon::slotWindowTimeline()
 
 void KToon::slotWindowRenderCameraPreview()
 {
-    if ( render_camera_preview -> isVisible() )
+    if ( m_cameraPreview -> isVisible() )
     {
-    	render_camera_preview -> hide();
+    	m_cameraPreview -> hide();
 	window -> setItemChecked( id_window_render_camera_preview, false );
 	window_render_camera_preview -> setDown( false );
     }
     else
     {
-    	render_camera_preview -> show();
+    	m_cameraPreview -> show();
 	window -> setItemChecked( id_window_render_camera_preview, true );
 	window_render_camera_preview -> setDown( true );
     }
@@ -3108,7 +3112,8 @@ void KToon::slotCloseDrawingArea()
 	delete scenes_dialog;
 	delete brushes_dialog;
 	delete library_dialog;
-	delete render_camera_preview;
+// 	delete render_camera_preview;
+	delete m_cameraPreview;
 	delete top_camera_view;
 	delete side_camera_view;
 
@@ -3117,7 +3122,7 @@ void KToon::slotCloseDrawingArea()
 	tools_dialog -> hide();
 	library_dialog = 0;
 	brushes_dialog = 0;
-	render_camera_preview = 0;
+	m_cameraPreview = 0;
 	top_camera_view = 0;
 	side_camera_view = 0;
 
@@ -3494,7 +3499,8 @@ void KToon::createGUI()
     library_dialog = new Library( this, Qt::WStyle_Tool, window, id_window_library, KTStatus->currentDrawingArea(), window_library );
     library_dialog -> loadItems( KTStatus->currentDocument()->getLibrary() -> getItems() );
 
-    render_camera_preview = new GLRenderCameraPreview( main_panel, this, window, id_window_render_camera_preview, window_render_camera_preview, KTStatus->currentDrawingArea() );
+    m_cameraPreview = new KTCameraPreview(main_panel);
+//     render_camera_preview = new GLRenderCameraPreview( main_panel, this, window, id_window_render_camera_preview, window_render_camera_preview, KTStatus->currentDrawingArea() );
     top_camera_view = new GLTopCameraView( main_panel, this, window, id_window_top_camera_view, window_top_camera_view, KTStatus->currentDrawingArea() );
     side_camera_view = new GLSideCameraView( main_panel, this, window, id_window_side_camera_view, window_side_camera_view, KTStatus->currentDrawingArea() );
 
@@ -3555,7 +3561,7 @@ void KToon::createGUI()
 	window -> setItemChecked( id_window_render_camera_preview, true );
 	window_render_camera_preview -> show();
 	window_render_camera_preview -> setDown( true );
-        render_camera_preview -> show();
+        m_cameraPreview -> show();
         window -> setItemVisible( id_window_side_camera_view, true );
 	window -> setItemChecked( id_window_side_camera_view, true );
 	window_side_camera_view -> show();

@@ -45,7 +45,6 @@
 
 #include "kteditspinbox.h"
 
-class KToon;
 class Brush;
 
 /**
@@ -96,44 +95,42 @@ class Brushes : public KTDialogBase
 	void loadBrushes( QPtrList<Brush> brushes );
 	
 	private:
-	//General Purpose Variables
-	QWidget *parent_widget;
-	QPopupMenu *assigned_menu;
-	int assigned_item;
-	QToolButton *assigned_tb_button;
-	int brush_max_value;
-	int number_of_brushes;
-	QString current_name;
-	KToon *k_toon;
-	
-	//Icons
-	QPixmap i_add_brush, i_remove_brush;
-	
-	//Buttons
-	void setupButtons();
-	QPushButton *add_brush, *remove_brush;
-	
-	//Table that shows the available brushes with their attributes
-	void setupTableBruches();
-	QListView *table_brushes;
-	QListViewItem *default_brush;
-	
-	void setupStaticText();
-	//Static Text name
-	QLabel *text_name;
-	
-	//Textfields for insert the values of name
-	QLineEdit  *value_name;
-	
-	
-	KTEditSpinBox *m_displayMinThickness, *m_displayMaxThickness, *m_displaySmoothness;
-	
-	//Previsualization area
-	void setupPrevisualizationArea();
-	QCanvasView *previsualization_container;
-	QCanvas *previsualization;
-	QCanvasEllipse *circle_min_thickness;
-	QCanvasEllipse *circle_max_thickness;
+		//General Purpose Variables
+		QPopupMenu *assigned_menu;
+		int assigned_item;
+		QToolButton *assigned_tb_button;
+		int brush_max_value;
+		int number_of_brushes;
+		QString current_name;
+		
+		//Icons
+		QPixmap i_add_brush, i_remove_brush;
+		
+		//Buttons
+		void setupButtons();
+		QPushButton *add_brush, *remove_brush;
+		
+		//Table that shows the available brushes with their attributes
+		void setupTableBruches();
+		QListView *table_brushes;
+		QListViewItem *default_brush;
+		
+		void setupStaticText();
+		//Static Text name
+		QLabel *text_name;
+		
+		//Textfields for insert the values of name
+		QLineEdit  *value_name;
+		
+		
+		KTEditSpinBox *m_displayMinThickness, *m_displayMaxThickness, *m_displaySmoothness;
+		
+		//Previsualization area
+		void setupPrevisualizationArea();
+		QCanvasView *previsualization_container;
+		QCanvas *previsualization;
+		QCanvasEllipse *circle_min_thickness;
+		QCanvasEllipse *circle_max_thickness;
 	
 	signals:
 	/**

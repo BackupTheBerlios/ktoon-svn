@@ -39,7 +39,7 @@
 #include "ktapplication.h"
 
 #include "tools.h"
-#include "drawingarea.h"
+// #include "drawingarea.h"
 #include "properties.h"
 #include "preferences.h"
 #include "scenes.h"
@@ -48,7 +48,7 @@
 #include "exposuresheet.h"
 #include "library.h"
 #include "timeline.h"
-#include "glrendercamerapreview.h"
+// #include "glrendercamerapreview.h"
 #include "gltopcameraview.h"
 #include "glsidecameraview.h"
 #include "status.h"
@@ -56,9 +56,11 @@
 #include "document.h"
 #include "import.h"
 #include "export.h"
-#include "drawingareaqt.h"
-#include "rendercamerapreviewqt.h"
+// #include "drawingareaqt.h"
+// #include "rendercamerapreviewqt.h"
 #include "ktdialogmenu.h"
+
+#include "ktcamerapreview.h"
 
 /**
  *  Class that handles the main window with all its elements
@@ -1000,7 +1002,8 @@ class KToon: public QMainWindow
 	    ExposureSheet *exposure_sheet_dialog;
 	    Library *library_dialog;
 	    Timeline *timeline_dialog;
-	    GLRenderCameraPreview *render_camera_preview;
+// 	    GLRenderCameraPreview *render_camera_preview;
+	    KTCameraPreview *m_cameraPreview;
 	    GLSideCameraView *side_camera_view;
 	    GLTopCameraView *top_camera_view;
 	    About *about_dialog;
@@ -1011,7 +1014,7 @@ class KToon: public QMainWindow
 	    Import *import_dialog;
 	    Export *export_dialog;
 
-	    RenderCameraPreviewQt *render_camera_preview_qt;
+// 	    RenderCameraPreviewQt *render_camera_preview_qt;
 	    
 	    //Some colors needed by Exposure Sheet and Timeline (They are created here for efficiency)
 	    QColor *es_default_color, *es_use_color, *es_selection_color, *es_select_and_use_color, 

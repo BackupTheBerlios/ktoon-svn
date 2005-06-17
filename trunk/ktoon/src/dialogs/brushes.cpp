@@ -27,9 +27,11 @@
 #include <qmessagebox.h>
 
 #include "brushes.h"
-#include "ktoon.h"
 #include "images.h"
- #include <qdockwindow.h>
+#include "ktapplication.h"
+#include "status.h"
+
+#include <qdockwindow.h>
 #include <memory>
 
 
@@ -38,25 +40,19 @@
 Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
 	: KTDialogBase( QDockWindow::OutsideDock, parent, "Brushes" )
 {
-	
 	Q_CHECK_PTR( parent );
 	Q_CHECK_PTR( in_assigned_menu );
 	Q_CHECK_PTR( assig_tb_button );
 
-    //Initializations
 	setCaption( tr( "Brushes" ) );
-//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-// 	//resize( 200, 360 );
-	//setMinimumSize( 205, 430 );
-	//setMaximumSize( 205, 430 );
+
 	move( 800, 88 );
-	parent_widget = parent;
+	
 	assigned_menu = in_assigned_menu;
 	assigned_item = id_assigned_item;
 	assigned_tb_button = assig_tb_button;
 	brush_max_value = 0;
 	number_of_brushes = 1;
-	k_toon = ( KToon * )parent_widget;
 
     //Icon Initializations
 	i_add_brush = QPixmap( plussign_xpm );

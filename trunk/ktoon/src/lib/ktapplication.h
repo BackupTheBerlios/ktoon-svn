@@ -29,8 +29,9 @@
 typedef QMap<QString, QString> ParseArgs;
 
 /**
- * 
  * @author David Cuadrado
+ * @TODO:
+ * - We need have a cache directory (like /tmp in un*x)
 */
 class KTApplication : public QApplication
 {

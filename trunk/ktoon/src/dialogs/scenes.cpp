@@ -26,7 +26,6 @@
 #include "images.h"
 #include "ktoon.h"
 #include "scene.h"
-#include "qdockwindow.h"
 
 //--------------- CONSTRUCTOR --------------------
 
@@ -159,8 +158,7 @@ void Scenes::loadScenes( QPtrList<Scene> scenes )
     number_of_scenes++;
     for ( ; s_it; s_it = scenes.next() )
     {
-        QCheckListItem *s1 = new QCheckListItem( table_scenes, table_scenes -> lastItem(),
-	                                         s_it -> nameScene(), QCheckListItem::CheckBox );
+        QCheckListItem *s1 = new QCheckListItem( table_scenes, table_scenes -> lastItem(),s_it -> nameScene(), QCheckListItem::CheckBox );
 	s1 -> setOn( true );
         scene_max_value++;
         number_of_scenes++;

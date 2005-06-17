@@ -27,7 +27,7 @@
 #include "qtbrush.h"
 #include "qtfill.h"
 #include "qtpen.h"
-#include "ktoon.h"
+#include "status.h"
 
 //--------------- CONSTRUCTOR --------------
 

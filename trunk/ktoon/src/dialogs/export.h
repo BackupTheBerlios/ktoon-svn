@@ -32,7 +32,6 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 
-class KToon;
 class QStringList;
 class SWFDisplayItem;
 class SWFMovie;
@@ -83,8 +82,8 @@ class Export : public QDialog
 	
 	private:
 		//General Purpose Variables
-		QWidget *parent_widget;
-		KToon *k_toon;
+// 		QWidget *parent_widget;
+// 		KToon *k_toon;
 		
 		//Buttons
 		QPushButton *accept, *cancel;
@@ -110,6 +109,10 @@ class Export : public QDialog
 		*/
 		void slotCancel();
 	
+	signals:
+		void sendMessage(const QString &message);
+		void selectToExport(int);
+			 
 	protected:
 
 };

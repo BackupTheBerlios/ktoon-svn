@@ -231,7 +231,7 @@ void DrawingArea::paintGL()
 
 }
 
-//Mark the selected graphic
+//Mark the selected graphic , dibuja las flechitas
 void DrawingArea::markSelected()
 {
 	current_graphic -> calculateTopLeft();
@@ -261,34 +261,34 @@ void DrawingArea::markSelected()
 		glPushMatrix();
 		glTranslatef( x, y, current_graphic -> getZ() );
 		glRotatef( 45 * ( i - 2 ), 0.0, 0.0, 1.0 );
-		//glPushName( id_arrow_texture[i] );
-			glScalef( 1/scaleX(), 1/scaleY(), 1.0 );
-			glCallList( id_arrow_texture[i] );
-			glScalef( scaleX(), scaleY(), 1.0 );
+		glPushName( id_arrow_texture[i] );
+		glScalef( 1/scaleX(), 1/scaleY(), 1.0 );
+		glCallList( id_arrow_texture[i] );
+		glScalef( scaleX(), scaleY(), 1.0 );
 		//glPopName();
 		glPopMatrix();
 		if ( i == 1 || i == 2 )
 		{
-		x += ( bottomRight.x() - topLeft.x() ) / 2;
-		if ( i == 1 )
-			y -= 10;
-		}
+			x += ( bottomRight.x() - topLeft.x() ) / 2;
+			if ( i == 1 )
+				y -= 15;
+		} else
 		if ( i == 3 || i == 4 )
 		{
-		y += ( bottomRight.y() - topLeft.y() ) / 2;
-		if ( i == 3 )
-			x += 10;
-		}
+			y += ( bottomRight.y() - topLeft.y() ) / 2;
+			if ( i == 3 )
+				x += 15;
+		} else
 		if ( i == 5 || i == 6 )
 		{
-		x -= ( bottomRight.x() - topLeft.x() ) / 2;
-		if ( i == 5 )
-			y += 10;
-		}
+			x -= ( bottomRight.x() - topLeft.x() ) / 2;
+			if ( i == 5 )
+				y += 15;
+		} else
 		if ( i == 7 )
 		{
-		y -= ( bottomRight.y() - topLeft.y() ) / 2;
-		x -= 10;
+			y -= ( bottomRight.y() - topLeft.y() ) / 2;
+			x -= 15;
 		}
 	}
 	x = topLeft.x() + ( bottomRight.x() - topLeft.x() ) / 2;
@@ -749,13 +749,13 @@ void DrawingArea::mouseReleaseEvent( QMouseEvent *mouse_event )
 	
 	if ( KTStatus -> currentKeyFrame() == NULL/* || k_toon -> exposureSheet() -> currentLayerObj() -> selectedFrame() -> isLocked()*/ )
 	{
-	mouse_event -> ignore();
-	return;
+		mouse_event -> ignore();
+		return;
 	}
 	current_graphic_list.clear();
 	
 	switch ( current_cursor )
-		{
+	{
 		case Tools::NORMAL_SELECTION:
 			if ( newPosition() != oldPosition() )
 				drawSelected( oldPosition(), newPosition() );
@@ -770,23 +770,23 @@ void DrawingArea::mouseReleaseEvent( QMouseEvent *mouse_event )
 		case Tools::MAGNIFYING_GLASS:
 			if ( newPosition() == oldPosition() )
 			{
-			if ( shift_pressed )
-				slotZoomOut();
-			else
-				slotZoomIn();
+				if ( shift_pressed )
+					slotZoomOut();
+				else
+					slotZoomIn();
 			}
 			else
 			{
-			float x = newPosition().x() < oldPosition().x() ? newPosition().x() : oldPosition().x();
-			float y = newPosition().y() < oldPosition().y() ? newPosition().y() : oldPosition().y();
-			glTranslatef(-x, -y, 0);
+				float x = newPosition().x() < oldPosition().x() ? newPosition().x() : oldPosition().x();
+				float y = newPosition().y() < oldPosition().y() ? newPosition().y() : oldPosition().y();
+				glTranslatef(-x, -y, 0);
 			//setScaleX( newPosition().x() / 10 - oldPosition().x() / 10 );
 			//setScaleY( newPosition().y() / 10 - oldPosition().y() / 10 );
 			}
 			break;
 		default:
-		break;
-		}
+			break;
+	}
 	
 	if ( current_graphic != NULL && current_graphic -> kindGraphic() != GLGraphicComponent::GC_PEN )
 		selected_graphic = true;

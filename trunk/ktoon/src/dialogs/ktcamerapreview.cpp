@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,46 +18,47 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTDIALOGBASE_H
-#define KTDIALOGBASE_H
+#include "ktcamerapreview.h"
+#include "status.h"
 
-#include <qdockwindow.h>
-#include <qlayout.h>
-#include <qsizepolicy.h> 
-#include <qobjectlist.h>
-#include <qevent.h>
-
-#include "ktdialogtitle.h"
-
-/**
- * @author Jorge Cuadrado
-*/
-class KTDialogBase : public QDockWindow
+KTCameraPreview::KTCameraPreview(QWidget* parent, const char* name): KTMdiWindow(parent, name, 0)
 {
-	Q_OBJECT
-	public:
-		KTDialogBase(Place p = InDock, QWidget *parent = 0, const char *name = 0, WFlags style = 0);
-		~KTDialogBase();
-		virtual void addChild(QWidget * child);
-		void setFont(const QFont &);
-		
-	private:
-		QBoxLayout *container;
-		QObjectList *childs;
-		bool m_isChildHidden;
-		
-	protected:
-		KTDialogTitle *m_title;
-		
-	public slots:
-		void toggleView();
-		void setCaption(const QString &text);
-		void fixPosition(QDockWindow::Place);
-		
-	signals:
-		void documentModified(bool);
-		void sendMessage(const QString &);
-
-};
-
+#ifndef NO_OPENGL
+		m_cameraPreview = new GLRenderCameraPreview(this, KTStatus->currentDrawingArea());
+#else
+// 		m_cameraPreview; // FIXME
 #endif
+
+	setCentralWidget(m_cameraPreview);
+	
+	move( 20, 220 );
+	
+	show();
+}
+
+
+KTCameraPreview::~KTCameraPreview()
+{
+	
+}
+
+#ifndef NO_OPENGL
+GLRenderCameraPreview
+#else
+RenderCameraPreviewQt 
+#endif	
+*KTCameraPreview::cameraPreview()
+{
+	return m_cameraPreview;
+}
+
+void KTCameraPreview::resizeEvent(QResizeEvent *e)
+{
+#ifndef NO_OPENGL
+	m_cameraPreview->resize(e->size().width(), e->size().height());
+#else
+	m_cameraPreview->resize(e->size().width(), e->size().height());
+#endif
+	QMainWindow::resizeEvent(e);
+}
+

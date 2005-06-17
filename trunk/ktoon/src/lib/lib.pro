@@ -16,7 +16,9 @@ HEADERS += glgraphiccomponent.h \
            status.h \
            ktthememanager.h \
            ktthemedocument.h \
-           kteditspinbox.h 
+           kteditspinbox.h \
+           ktexporter.h \
+           ktmdiwindow.h 
 SOURCES += glgraphiccomponent.cpp \
            ktapplication.cpp \
            configwizard.cpp \
@@ -30,25 +32,27 @@ SOURCES += glgraphiccomponent.cpp \
            status.cpp \
            ktthememanager.cpp \
            ktthemedocument.cpp \
-           kteditspinbox.cpp 
+           kteditspinbox.cpp \
+           ktexporter.cpp \
+           ktmdiwindow.cpp 
 INCLUDEPATH += ../../src/core \
-../../src/exposure \
-../../src/dialogs \
-../../src/qt/cameras \
-../../src/qt/tools \
-../../src/qt/draw \
-../../src/opengl/draw \
-../../src/opengl/tools \
-../../src/opengl/cameras \
-../../src/store \
-../../src/library \
-../../src/timeline \
-../../src/lib \
-../../src/images/images
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
+               ../../src/exposure \
+               ../../src/dialogs \
+               ../../src/qt/cameras \
+               ../../src/qt/tools \
+               ../../src/qt/draw \
+               ../../src/opengl/draw \
+               ../../src/opengl/tools \
+               ../../src/opengl/cameras \
+               ../../src/store \
+               ../../src/library \
+               ../../src/timeline \
+               ../../src/lib \
+               ../../src/images/images 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
 CONFIG += release \
-warn_on \
-staticlib
-TEMPLATE = lib
+          warn_on \
+          staticlib 
+TEMPLATE = lib 

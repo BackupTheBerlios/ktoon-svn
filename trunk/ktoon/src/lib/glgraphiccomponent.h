@@ -331,6 +331,7 @@ public:
       * @return A pointer to the parent widget
       */
      QGLWidget *parentWidget() const;
+
       /**
       * @brief Gets this graphic component's origin point
       *
