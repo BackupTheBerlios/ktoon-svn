@@ -21,6 +21,7 @@
 #include "ktdialogbase.h"
 #include <qtooltip.h>
 #include <qdockarea.h>
+#include <iostream>
 
 KTDialogBase::KTDialogBase(Place p, QWidget *parent, const char *name, WFlags style)
 	: QDockWindow(p, parent, name, style), m_isChildHidden(false)
@@ -107,3 +108,29 @@ void KTDialogBase::setFont( const QFont &f)
 	QDockWindow::setFont(f);
 	adjustSize();
 }
+
+bool KTDialogBase::event( QEvent * e )
+{
+	if ( e->type() == QEvent::Close )
+	{
+		emit activate(false);
+		qDebug("This Closed");
+	}
+	else if ( e->type() == QEvent::Show )
+	{
+		emit activate(true);
+		qDebug("Showed");
+	}
+	else if (e->type() == QEvent::Quit)
+	{
+		qDebug("Quited");
+	}
+	else if (e->type() == QEvent::Hide )
+	{
+		qDebug("Hided");
+	}
+	
+// 	std::cout << "Event id: " << e->type() << std::endl;;
+	QDockWindow::event(e );
+}
+

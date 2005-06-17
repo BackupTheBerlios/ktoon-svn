@@ -49,6 +49,9 @@ class KTDialogBase : public QDockWindow
 	protected:
 		KTDialogTitle *m_title;
 		
+	protected:
+		virtual bool event( QEvent * e );
+		
 	public slots:
 		void toggleView();
 		void setCaption(const QString &text);
@@ -57,7 +60,7 @@ class KTDialogBase : public QDockWindow
 	signals:
 		void documentModified(bool);
 		void sendMessage(const QString &);
-
+		void activate(bool);
 };
 
 #endif

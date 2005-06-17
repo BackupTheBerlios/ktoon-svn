@@ -55,7 +55,8 @@ class Brush;
  * mechanisms for adding, editing, removing and previewing the brushes or their attributes.
  */
 class Brushes : public KTDialogBase
-{    Q_OBJECT
+{
+	Q_OBJECT
 	
 	public:
 	//! Constants for defining brush attribute's ranges
@@ -79,7 +80,7 @@ class Brushes : public KTDialogBase
 	* @param id_assigned_item The assigned menu item from the assigned menu
 	* @param assig_tb_button The assigned tool bar button
 	*/
-	Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button );
+	Brushes( QWidget *parent=0, WFlags style=0/*, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button */);
 	/**
 	* @brief Default Destructor
 	*
@@ -96,9 +97,9 @@ class Brushes : public KTDialogBase
 	
 	private:
 		//General Purpose Variables
-		QPopupMenu *assigned_menu;
-		int assigned_item;
-		QToolButton *assigned_tb_button;
+// 		QPopupMenu *assigned_menu;
+// 		int assigned_item;
+// 		QToolButton *assigned_tb_button;
 		int brush_max_value;
 		int number_of_brushes;
 		QString current_name;
@@ -207,9 +208,8 @@ class Brushes : public KTDialogBase
 	* Reimplemented from QWidget.
 	* @param close_event The input event
 	*/
-	void closeEvent( QCloseEvent *close_event );
-
-
+// 	void closeEvent( QCloseEvent *close_event );
+		 
 };
 
 #endif

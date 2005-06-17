@@ -298,72 +298,85 @@ void KToon::setupCursors()
 
 void KToon::setupToolBarActions()
 {
-    tool_bar = new QToolBar( this );
-    tool_bar -> setLabel( tr( "File and Edit Operations" ) );
+	
+	tool_bar = new QToolBar( this );
+	tool_bar -> setLabel( tr( "File and Edit Operations" ) );
 
-    file_new = new QToolButton( icon_new, tr( "New Document" ), QString::null, this, SLOT( slotNewDocument() ), tool_bar );
-    file_open = new QToolButton( icon_open, tr( "Open Document" ), QString::null, this, SLOT( slotChoose() ), tool_bar );
-    file_save = new QToolButton( icon_save, tr( "Save Document" ), QString::null, this, SLOT( slotSave() ), tool_bar );
-    tool_bar -> addSeparator();
-    edit_undo = new QToolButton( icon_undo, tr( "Undo" ), QString::null, this, SLOT( slotUndo() ), tool_bar );
-    edit_redo = new QToolButton( icon_redo, tr( "Redo" ), QString::null, this, SLOT( slotRedo() ), tool_bar );
-    tool_bar -> addSeparator();
-    edit_cut = new QToolButton( icon_cut, tr( "Cut" ), QString::null, this, SLOT( slotCut() ), tool_bar );
-    edit_copy = new QToolButton( icon_copy, tr( "Copy" ), QString::null, this, SLOT( slotCopy() ), tool_bar );
-    edit_paste = new QToolButton( icon_paste, tr( "Paste" ), QString::null, this, SLOT( slotPaste() ), tool_bar );
-    tool_bar -> addSeparator();
-    window_drawing_area = new QToolButton( icon_drawing_area, tr( "Drawing Area" ), QString::null, this, SLOT( slotWindowDrawingArea() ), tool_bar );
-    window_drawing_area -> setDown( true );
-    window_tools = new QToolButton( icon_tools, tr( "Tools" ), QString::null, this, SLOT( slotWindowTools() ), tool_bar );
-    window_tools -> setDown( true );
-    window_exposure_sheet = new QToolButton( icon_exposure_sheet, tr( "Exposure Sheet" ), QString::null, this, SLOT( slotWindowExposureSheet() ), tool_bar );
-    window_exposure_sheet -> setDown( true );
-    window_color_palette = new QToolButton( icon_color_palette, tr( "Color Palette" ), QString::null, this, SLOT( slotWindowColorPalette() ), tool_bar );
-    window_color_palette -> setDown( true );
-    window_brushes = new QToolButton( icon_brushes, tr( "Brushes" ), QString::null, this, SLOT( slotWindowBrushes() ), tool_bar );
-    window_brushes -> setDown( true );
-    window_scenes = new QToolButton( icon_scenes, tr( "Scenes" ), QString::null, this, SLOT( slotWindowScenes() ), tool_bar );
-    window_scenes -> setDown( true );
-    window_library = new QToolButton( icon_library, tr( "Library" ), QString::null, this, SLOT( slotWindowLibrary() ), tool_bar );
-    window_timeline = new QToolButton( icon_time_line, tr( "Timeline" ), QString::null, this, SLOT( slotWindowTimeline() ), tool_bar );
-    window_timeline -> hide();
-    window_render_camera_preview = new QToolButton( icon_camera_preview, tr( "Render Camera Preview" ), QString::null, this, SLOT( slotWindowRenderCameraPreview() ), tool_bar );
-    window_render_camera_preview -> hide();
-    window_top_camera_view = new QToolButton( icon_top_camera, tr( "Top Camera View" ), QString::null, this, SLOT( slotWindowTopCameraView() ), tool_bar );
-    window_top_camera_view -> hide();
-    window_side_camera_view = new QToolButton( icon_side_camera, tr( "Side Camera View" ), QString::null, this, SLOT( slotWindowSideCameraView() ), tool_bar );
-    window_side_camera_view -> hide();
-    tool_bar -> addSeparator();
-    window_illustration = new QToolButton( icon_illus_mode, tr( "Illustration Mode" ), QString::null, this, SLOT( slotSeeIllustration() ), tool_bar );
-    window_illustration -> hide();
-    window_animation = new QToolButton( icon_ani_mode, tr( "Animation Mode" ), QString::null, this, SLOT( slotSeeAnimation() ), tool_bar );
+	file_new = new QToolButton( icon_new, tr( "New Document" ), QString::null, this, SLOT( slotNewDocument() ), tool_bar );
+	file_open = new QToolButton( icon_open, tr( "Open Document" ), QString::null, this, SLOT( slotChoose() ), tool_bar );
+	file_save = new QToolButton( icon_save, tr( "Save Document" ), QString::null, this, SLOT( slotSave() ), tool_bar );
+	tool_bar -> addSeparator();
+	edit_undo = new QToolButton( icon_undo, tr( "Undo" ), QString::null, this, SLOT( slotUndo() ), tool_bar );
+	edit_redo = new QToolButton( icon_redo, tr( "Redo" ), QString::null, this, SLOT( slotRedo() ), tool_bar );
+	tool_bar -> addSeparator();
+	edit_cut = new QToolButton( icon_cut, tr( "Cut" ), QString::null, this, SLOT( slotCut() ), tool_bar );
+	edit_copy = new QToolButton( icon_copy, tr( "Copy" ), QString::null, this, SLOT( slotCopy() ), tool_bar );
+	edit_paste = new QToolButton( icon_paste, tr( "Paste" ), QString::null, this, SLOT( slotPaste() ), tool_bar );
+	tool_bar -> addSeparator();
+	window_drawing_area = new QToolButton( icon_drawing_area, tr( "Drawing Area" ), QString::null, this, SLOT( slotWindowDrawingArea() ), tool_bar );
+	window_drawing_area -> setDown( true );
+	window_tools = new QToolButton( icon_tools, tr( "Tools" ), QString::null, this, SLOT( slotWindowTools() ), tool_bar );
+	window_tools -> setDown( true );
+	window_exposure_sheet = new QToolButton( icon_exposure_sheet, tr( "Exposure Sheet" ), QString::null, this, SLOT( slotWindowExposureSheet() ), tool_bar );
+	window_exposure_sheet -> setDown( true );
+	window_color_palette = new QToolButton( icon_color_palette, tr( "Color Palette" ), QString::null, this, SLOT( slotWindowColorPalette() ), tool_bar );
+	window_color_palette -> setDown( true );
+    
+//     window_brushes = new QToolButton( icon_brushes, tr( "Brushes" ), QString::null, this, SLOT( slotWindowBrushes() ), tool_bar );
+// 	newAct = new QAction(tr("&New"), tr("Ctrl+N"), this);
+// 	newAct->setIconSet(QPixmap::fromMimeSource("new.png"));
+// 	newAct->setStatusTip(tr("Create a new spreadsheet file"));
+// 	connect(newAct, SIGNAL(activated()), this, SLOT(newFile()));
 
-    tool_bar2 = new QToolBar( this );
-    tool_bar2 -> setLabel( tr( "View Operations" ) );
+	window_brushes = new QAction( icon_brushes, tr( "Brushes" ),tr("Ctrl+B") , this);//, SLOT( slotWindowBrushes() ), tool_bar );
+	connect(window_brushes, SIGNAL(activated()), this, SLOT(slotWindowBrushes()));
+	window_brushes->addTo(tool_bar);
+	//window_brushes->addTo(window);
+	window_brushes->setToggleAction ( true ); 
+	window_brushes->setOn ( true );
+	//window_brushes -> setDown( true );
+	window_scenes = new QToolButton( icon_scenes, tr( "Scenes" ), QString::null, this, SLOT( slotWindowScenes() ), tool_bar );
+	window_scenes -> setDown( true );
+	window_library = new QToolButton( icon_library, tr( "Library" ), QString::null, this, SLOT( slotWindowLibrary() ), tool_bar );
+	window_timeline = new QToolButton( icon_time_line, tr( "Timeline" ), QString::null, this, SLOT( slotWindowTimeline() ), tool_bar );
+	window_timeline -> hide();
+	window_render_camera_preview = new QToolButton( icon_camera_preview, tr( "Render Camera Preview" ), QString::null, this, SLOT( slotWindowRenderCameraPreview() ), tool_bar );
+	window_render_camera_preview -> hide();
+	window_top_camera_view = new QToolButton( icon_top_camera, tr( "Top Camera View" ), QString::null, this, SLOT( slotWindowTopCameraView() ), tool_bar );
+	window_top_camera_view -> hide();
+	window_side_camera_view = new QToolButton( icon_side_camera, tr( "Side Camera View" ), QString::null, this, SLOT( slotWindowSideCameraView() ), tool_bar );
+	window_side_camera_view -> hide();
+	tool_bar -> addSeparator();
+	window_illustration = new QToolButton( icon_illus_mode, tr( "Illustration Mode" ), QString::null, this, SLOT( slotSeeIllustration() ), tool_bar );
+	window_illustration -> hide();
+	window_animation = new QToolButton( icon_ani_mode, tr( "Animation Mode" ), QString::null, this, SLOT( slotSeeAnimation() ), tool_bar );
+
+	tool_bar2 = new QToolBar( this );
+	tool_bar2 -> setLabel( tr( "View Operations" ) );
 //     tool_bar2 -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
 
-    view_no_grid = new QToolButton( icon_no_grid, tr( "No Grid" ), QString::null, this, SLOT( slotNoGrid() ), tool_bar2 );
-    view_grid12 = new QToolButton( icon_grid12, tr( "Grid of 12 Fields" ), QString::null, this, SLOT( slotSeeGrid12() ), tool_bar2 );
-    view_grid16 = new QToolButton( icon_grid16, tr( "Grid of 16 Fields" ), QString::null, this, SLOT( slotSeeGrid16() ), tool_bar2 );
-    view_subgrid = new QToolButton( icon_subgrid, tr( "Grid with a 3 field Subgrid" ), QString::null, this, SLOT( slotSeeSubgrid() ), tool_bar2 );
-    tool_bar2 -> addSeparator();
-    view_front_back_grid = new QToolButton( icon_front_back_grid, tr( "Sends the grid to the front or to the back" ), QString::null, this, SLOT( slotFrontBackGrid() ), tool_bar2 );
-    view_ntsc = new QToolButton( icon_ntsc, tr( "NTSC Zone" ), QString::null, this, SLOT( slotSeeNTSC() ), tool_bar2 );
-    view_light_table = new QToolButton( icon_light_table, tr( "Light Table" ), QString::null, this, SLOT( slotLightTable() ), tool_bar2 );
-    tool_bar2 -> addSeparator();
-    view_no_previous = new QToolButton( icon_no_previous, tr( "No Previous Onion Skin" ), QString::null, this, SLOT( slotNoPreviousOnionSkin() ), tool_bar2 );
-    view_previous = new QToolButton( icon_previous, tr( "Previous Onion Skin" ), QString::null, this, SLOT( slotPreviousOnionSkin() ), tool_bar2 );
-    view_previous2 = new QToolButton( icon_previous2, tr( "Previous Two Onion Skin" ), QString::null, this, SLOT( slotPrevious2OnionSkin() ), tool_bar2 );
-    view_previous3 = new QToolButton( icon_previous3, tr( "Previous Three Onion Skin" ), QString::null, this, SLOT( slotPrevious3OnionSkin() ), tool_bar2 );
-    view_no_previous -> setDown( true );
-    previous_toggled = view_no_previous;
-    tool_bar2 -> addSeparator();
-    view_no_next = new QToolButton( icon_no_next, tr( "No Next Onion Skin" ), QString::null, this, SLOT( slotNoNextOnionSkin() ), tool_bar2 );
-    view_next = new QToolButton( icon_next, tr( "Next Onion Skin" ), QString::null, this, SLOT( slotNextOnionSkin() ), tool_bar2 );
-    view_next2 = new QToolButton( icon_next2, tr( "Next Two Onion Skin" ), QString::null, this, SLOT( slotNext2OnionSkin() ), tool_bar2 );
-    view_next3 = new QToolButton( icon_next3, tr( "Next Three Onion Skin" ), QString::null, this, SLOT( slotNext3OnionSkin() ), tool_bar2 );
-    view_no_next -> setDown( true );
-    next_toggled = view_no_next; 
+	view_no_grid = new QToolButton( icon_no_grid, tr( "No Grid" ), QString::null, this, SLOT( slotNoGrid() ), tool_bar2 );
+	view_grid12 = new QToolButton( icon_grid12, tr( "Grid of 12 Fields" ), QString::null, this, SLOT( slotSeeGrid12() ), tool_bar2 );
+	view_grid16 = new QToolButton( icon_grid16, tr( "Grid of 16 Fields" ), QString::null, this, SLOT( slotSeeGrid16() ), tool_bar2 );
+	view_subgrid = new QToolButton( icon_subgrid, tr( "Grid with a 3 field Subgrid" ), QString::null, this, SLOT( slotSeeSubgrid() ), tool_bar2 );
+	tool_bar2 -> addSeparator();
+	view_front_back_grid = new QToolButton( icon_front_back_grid, tr( "Sends the grid to the front or to the back" ), QString::null, this, SLOT( slotFrontBackGrid() ), tool_bar2 );
+	view_ntsc = new QToolButton( icon_ntsc, tr( "NTSC Zone" ), QString::null, this, SLOT( slotSeeNTSC() ), tool_bar2 );
+	view_light_table = new QToolButton( icon_light_table, tr( "Light Table" ), QString::null, this, SLOT( slotLightTable() ), tool_bar2 );
+	tool_bar2 -> addSeparator();
+	view_no_previous = new QToolButton( icon_no_previous, tr( "No Previous Onion Skin" ), QString::null, this, SLOT( slotNoPreviousOnionSkin() ), tool_bar2 );
+	view_previous = new QToolButton( icon_previous, tr( "Previous Onion Skin" ), QString::null, this, SLOT( slotPreviousOnionSkin() ), tool_bar2 );
+	view_previous2 = new QToolButton( icon_previous2, tr( "Previous Two Onion Skin" ), QString::null, this, SLOT( slotPrevious2OnionSkin() ), tool_bar2 );
+	view_previous3 = new QToolButton( icon_previous3, tr( "Previous Three Onion Skin" ), QString::null, this, SLOT( slotPrevious3OnionSkin() ), tool_bar2 );
+	view_no_previous -> setDown( true );
+	previous_toggled = view_no_previous;
+	tool_bar2 -> addSeparator();
+	view_no_next = new QToolButton( icon_no_next, tr( "No Next Onion Skin" ), QString::null, this, SLOT( slotNoNextOnionSkin() ), tool_bar2 );
+	view_next = new QToolButton( icon_next, tr( "Next Onion Skin" ), QString::null, this, SLOT( slotNextOnionSkin() ), tool_bar2 );
+	view_next2 = new QToolButton( icon_next2, tr( "Next Two Onion Skin" ), QString::null, this, SLOT( slotNext2OnionSkin() ), tool_bar2 );
+	view_next3 = new QToolButton( icon_next3, tr( "Next Three Onion Skin" ), QString::null, this, SLOT( slotNext3OnionSkin() ), tool_bar2 );
+	view_no_next -> setDown( true );
+	next_toggled = view_no_next; 
 }
 
 void KToon::setupMenu()
@@ -588,7 +601,7 @@ void KToon::setupMenu()
 //     window -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
 	id_window = menuBar() -> insertItem( tr( "&Window" ), window );
 
-	id_window_illustration = window -> insertItem( icon_illus_mode, tr( "&Illustration Mode" ), this, SLOT( slotSeeIllustration() ), Key_F9 );
+	id_window_illustration = window ->insertItem( icon_illus_mode, tr( "&Illustration Mode" ), this, SLOT( slotSeeIllustration() ), Key_F9 );
 	id_window_animation = window -> insertItem( icon_ani_mode, tr( "&Animation Mode" ), this, SLOT( slotSeeAnimation() ), Key_F10 );
 	window -> insertSeparator();
 	id_window_drawing_area = window -> insertItem( icon_drawing_area, tr( "&Drawing Area" ), this, SLOT( slotWindowDrawingArea() ), CTRL+Key_D );
@@ -599,8 +612,11 @@ void KToon::setupMenu()
 	window -> setItemChecked( id_window_exposure_sheet, true );
 	id_window_color_palette = window -> insertItem( icon_color_palette, tr( "&Color Palette" ), this, SLOT( slotWindowColorPalette() ), CTRL+Key_P );
 	window -> setItemChecked( id_window_color_palette, true );
-	id_window_brushes = window -> insertItem( icon_brushes, tr( "&Brushes" ), this, SLOT( slotWindowBrushes() ), CTRL+Key_B );
-	window -> setItemChecked( id_window_brushes, true );
+	window_brushes->addTo(window);	
+// 	id_window_brushes = window -> insertItem( icon_brushes, tr( "&Brushes" ), this, SLOT( slotWindowBrushes() ), CTRL+Key_B );
+	
+	
+	//window -> setItemChecked( id_window_brushes, true );
 	id_window_scenes = window -> insertItem( icon_scenes, tr( "&Scenes" ), this, SLOT( slotWindowScenes() ), CTRL+Key_Y );
 	window -> setItemChecked( id_window_scenes, true );
 	id_window_library = window -> insertItem( icon_library, tr( "&Library" ), this, SLOT( slotWindowLibrary() ), CTRL+Key_L );
@@ -662,7 +678,7 @@ void KToon::setupDialogs()
 	moveDockWindow(color_palette_dialog, Qt::DockLeft);
 	color_palette_dialog->undock();
     
-	brushes_dialog = new Brushes( this, Qt::WStyle_Tool, window, id_window_brushes, window_brushes );
+	brushes_dialog = new Brushes( this);//, Qt::WStyle_Tool/*, window, id_window_brushes, window_brushes */);
 	brushes_dialog -> show();
 
 	library_dialog = new Library( this, Qt::WStyle_Tool, window, id_window_library, KTStatus->currentDrawingArea(), window_library );
@@ -1483,7 +1499,7 @@ void KToon::slotNewDocument()
 		timeline_dialog = new Timeline( this, Qt::WStyle_Tool, window, id_window_timeline, window_timeline );
 		timeline_dialog->hide();
 		
-		brushes_dialog = new Brushes( this, Qt::WStyle_Tool, window, id_window_brushes, window_brushes );
+		brushes_dialog = new Brushes( this, Qt::WStyle_Tool/*, window, id_window_brushes, window_brushes*/ );
 	
 		library_dialog = new Library( this, Qt::WStyle_Tool, window, id_window_library, KTStatus->currentDrawingArea(), window_library );
 	
@@ -1594,7 +1610,7 @@ void KToon::slotNewDocument()
 			window_drawing_area -> show();
 			window_exposure_sheet -> show();
 			window_tools -> show();
-			window_brushes -> show();
+			//window_brushes -> show();
 			window_scenes -> show();
 			window_library -> show();
 
@@ -2605,8 +2621,8 @@ void KToon::slotSeeIllustration()
         brushes_dialog -> show();
         window -> setItemChecked( id_window_brushes, true );
         window -> setItemVisible( id_window_brushes, true );
-	window_brushes -> show();
-	window_brushes -> setDown( true );
+	window_brushes -> setVisible ( true );
+//	window_brushes -> setDown( true );
     }
 
     if ( scenes_dialog != NULL )
@@ -2723,8 +2739,9 @@ void KToon::slotSeeAnimation()
         brushes_dialog -> hide();
         window -> setItemChecked( id_window_brushes, false );
         window -> setItemVisible( id_window_brushes, false );
-	window_brushes -> hide();
-	window_brushes -> setDown( false );
+	//window_brushes -> hide();
+	window_brushes ->setVisible ( false);
+	//window_brushes -> setDown( false );
     }
 
     if ( scenes_dialog != NULL )
@@ -2859,13 +2876,13 @@ void KToon::slotWindowBrushes()
     {
     	brushes_dialog -> hide();
 	window -> setItemChecked( id_window_brushes, false );
-	window_brushes -> setDown( false );
+//	window_brushes -> setDown( false );
     }
     else
     {
     	brushes_dialog -> show();
 	window -> setItemChecked( id_window_brushes, true );
-	window_brushes -> setDown( true );
+	//window_brushes -> setDown( true );
     }
 }
 
@@ -3152,7 +3169,8 @@ void KToon::slotCloseDrawingArea()
 	window_drawing_area -> hide();
 	window_timeline -> hide();
 	window_tools -> hide();
-	window_brushes -> hide();
+	//window_brushes -> hide();
+	window_brushes->setVisible(false);
 	window_render_camera_preview -> hide();
 	window_top_camera_view -> hide();
 	window_side_camera_view -> hide();
@@ -3489,7 +3507,7 @@ void KToon::createGUI()
     color_palette_dialog -> loadCustomColors( custom_colors );
 
     QPtrList<Brush> brushes = KTStatus->currentDocument()->getBrushes();
-    brushes_dialog = new Brushes( this, Qt::WStyle_Tool, window, id_window_brushes, window_brushes );
+    brushes_dialog = new Brushes( this, Qt::WStyle_Tool/*, window, id_window_brushes, window_brushes */);
     brushes_dialog -> loadBrushes( brushes );
 
     QPtrList<Scene> scenes = KTStatus->currentDocument()->getAnimation() -> getScenes();
@@ -3546,8 +3564,9 @@ void KToon::createGUI()
 	window_library -> setDown( false );
         window -> setItemVisible( id_window_brushes, true );
 	window -> setItemChecked( id_window_brushes, true );
-	window_brushes -> show();
-	window_brushes -> setDown( true );
+	//window_brushes -> show();
+	window_brushes->setVisible(true);
+// 	window_brushes -> setDown( true );
         brushes_dialog -> show();
     }
     else if ( window -> isItemEnabled( id_window_illustration ) )

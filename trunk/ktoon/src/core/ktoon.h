@@ -35,6 +35,7 @@
 #include <qworkspace.h>
 #include <qcursor.h>
 #include <qpixmap.h>
+#include <qaction.h>
 
 #include "ktapplication.h"
 
@@ -61,6 +62,7 @@
 #include "ktdialogmenu.h"
 
 #include "ktcamerapreview.h"
+
 
 /**
  *  Class that handles the main window with all its elements
@@ -980,7 +982,10 @@ class KToon: public QMainWindow
 	    QToolButton *window_illustration;
 	    QToolButton *window_animation;
 	    QToolButton *window_tools;
-	    QToolButton *window_brushes;
+	    
+	    //QToolButton *window_brushes;
+	    QAction *window_brushes;
+	    
 	    QToolButton *window_scenes;
 	    QToolButton *window_color_palette;
 	    QToolButton *window_exposure_sheet;

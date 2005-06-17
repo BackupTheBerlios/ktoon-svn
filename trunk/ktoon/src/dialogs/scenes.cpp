@@ -360,4 +360,5 @@ void Scenes::closeEvent( QCloseEvent *close_event )
     assigned_menu -> setItemChecked( assigned_item, false );
     assigned_tb_button -> setDown( false );
     close_event -> accept();
+    KTDialogBase::closeEvent(close_event);
 }

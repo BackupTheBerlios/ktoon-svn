@@ -37,20 +37,21 @@
 
 //--------------- CONSTRUCTOR --------------------
 
-Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
+Brushes::Brushes( QWidget *parent, WFlags style/*, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button*/ )
 	: KTDialogBase( QDockWindow::OutsideDock, parent, "Brushes" )
 {
 	Q_CHECK_PTR( parent );
-	Q_CHECK_PTR( in_assigned_menu );
-	Q_CHECK_PTR( assig_tb_button );
+// 	Q_CHECK_PTR( in_assigned_menu );
+// 	Q_CHECK_PTR( assig_tb_button );
 
 	setCaption( tr( "Brushes" ) );
 
 	move( 800, 88 );
 	
-	assigned_menu = in_assigned_menu;
-	assigned_item = id_assigned_item;
-	assigned_tb_button = assig_tb_button;
+// 	assigned_menu = in_assigned_menu;
+// 	assigned_item = id_assigned_item;
+// 	assigned_tb_button = assig_tb_button;
+	
 	brush_max_value = 0;
 	number_of_brushes = 1;
 
@@ -63,7 +64,7 @@ Brushes::Brushes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, i
 	setupStaticText();
 	setupPrevisualizationArea();
 	adjustSize();
-    //------------- Operations on the Textfields -------------
+    
 }
 
 //-------------- DESTRUCTOR -----------------
@@ -162,7 +163,6 @@ void Brushes::setupPrevisualizationArea()
 	
 	text_name = new QLabel( tr( "Brush Name" ), containerNameBrush );
 	text_name -> setFont( QFont( font().family(), 7 ) );
-// 	text_name -> resize( 100, 25 );
 	text_name -> setAlignment( Qt::AlignTop );
 	
 	std::auto_ptr<QCanvas> ap_previsualization(new QCanvas( 99, 99 ) );
@@ -416,10 +416,12 @@ void Brushes::slotSelectBrush()
 
 //--------------------- EVENTS AND OTHER FUNCTIONS --------------------------------
 
-void Brushes::closeEvent( QCloseEvent* close_event )
-{
-    Q_CHECK_PTR( close_event );
-    assigned_menu -> setItemChecked( assigned_item, false );
-    assigned_tb_button -> setDown( false );
-    close_event -> accept();
-}
+// void Brushes::closeEvent( QCloseEvent* close_event )
+// {
+// 	qDebug("This Closed");
+//     Q_CHECK_PTR( close_event );
+// //     assigned_menu -> setItemChecked( assigned_item, false );
+// //     assigned_tb_button -> setDown( false );
+//      close_event -> accept();
+// }
+
