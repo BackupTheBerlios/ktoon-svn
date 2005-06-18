@@ -26,13 +26,13 @@
 
 //--------------- CONSTRUCTOR --------------------
 
-Tools::Tools( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
+Tools::Tools( QWidget *parent)//, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
 	: KTDialogBase(QDockWindow::OutsideDock,parent, "Tools")
 {
 		
 	Q_CHECK_PTR( parent );
-	Q_CHECK_PTR( in_assigned_menu );
-	Q_CHECK_PTR( assig_tb_button );
+// 	Q_CHECK_PTR( in_assigned_menu );
+// 	Q_CHECK_PTR( assig_tb_button );
     
     //Initializations
 	setCaption( "tools" );
@@ -42,10 +42,10 @@ Tools::Tools( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int i
 //	setMinimumSize( 44, 180 );
 // 	setMaximumSize( 44, 180 );
 	move( 13, 88 );
-	parent_widget = parent;
-	assigned_menu = in_assigned_menu;
-	assigned_item = id_assigned_item;
-	assigned_tb_button = assig_tb_button;
+// 	parent_widget = parent;
+// 	assigned_menu = in_assigned_menu;
+// 	assigned_item = id_assigned_item;
+// 	assigned_tb_button = assig_tb_button;
 
     //Icon Initializations
 	icon_selection = QPixmap( selection_xpm );
@@ -171,13 +171,13 @@ Tools::~Tools()
 
 //--------------------- EVENTS AND OTHER FUNCTIONS --------------------------------
 
-void Tools::closeEvent( QCloseEvent* close_event )
-{
-	Q_CHECK_PTR( close_event );
-	assigned_menu -> setItemChecked( assigned_item, false );
-	assigned_tb_button -> setDown( false );
-	KTDialogBase::closeEvent(close_event);
-}
+// void Tools::closeEvent( QCloseEvent* close_event )
+// {
+// 	Q_CHECK_PTR( close_event );
+// 	assigned_menu -> setItemChecked( assigned_item, false );
+// 	assigned_tb_button -> setDown( false );
+// 	KTDialogBase::closeEvent(close_event);
+// }
 
 void Tools::changeButtonImage( int id_button )
 {

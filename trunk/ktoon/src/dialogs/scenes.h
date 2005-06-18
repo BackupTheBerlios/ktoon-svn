@@ -64,7 +64,7 @@ public:
      * @param id_assigned_item The assigned menu item from the assigned menu
      * @param assig_tb_button The assigned tool bar button
      */
-    Scenes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button );
+      Scenes( QWidget *parent);//, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button );
     /**
      * @brief Default Destructor
      *
@@ -93,9 +93,9 @@ public:
 
 private:
     //General Purpose Variables
-    QWidget *parent_widget;
-    QPopupMenu *assigned_menu;
-    int assigned_item;
+//      QWidget *parent_widget;
+//     QPopupMenu *assigned_menu;
+//     int assigned_item;
     QToolButton *assigned_tb_button;
     int scene_max_value;
     int number_of_scenes;
@@ -185,7 +185,7 @@ protected:
      * Reimplemented from QWidget.
      * @param close_event The input event
      */
-    void closeEvent( QCloseEvent *close_event );
+//     void closeEvent( QCloseEvent *close_event );
 
 };
 

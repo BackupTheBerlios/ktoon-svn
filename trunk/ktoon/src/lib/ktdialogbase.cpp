@@ -111,26 +111,18 @@ void KTDialogBase::setFont( const QFont &f)
 
 bool KTDialogBase::event( QEvent * e )
 {
-	if ( e->type() == QEvent::Close )
+	if ( e->type() == QEvent::Hide )
 	{
+		
+		qDebug("hide");
 		emit activate(false);
-		qDebug("This Closed");
 	}
 	else if ( e->type() == QEvent::Show )
 	{
+		qDebug("show");
 		emit activate(true);
-		qDebug("Showed");
 	}
-	else if (e->type() == QEvent::Quit)
-	{
-		qDebug("Quited");
-	}
-	else if (e->type() == QEvent::Hide )
-	{
-		qDebug("Hided");
-	}
-	
-// 	std::cout << "Event id: " << e->type() << std::endl;;
+	;
 	QDockWindow::event(e );
 }
 

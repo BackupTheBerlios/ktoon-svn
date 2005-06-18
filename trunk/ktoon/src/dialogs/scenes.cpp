@@ -29,12 +29,12 @@
 
 //--------------- CONSTRUCTOR --------------------
 
-Scenes::Scenes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
-	: KTDialogBase( QDockWindow::OutsideDock, parent, "Scenes", style )
+Scenes::Scenes( QWidget *parent)//, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
+	: KTDialogBase( QDockWindow::OutsideDock, parent, "Scenes")//, style )
 {
     Q_CHECK_PTR( parent );
-    Q_CHECK_PTR( in_assigned_menu );
-    Q_CHECK_PTR( assig_tb_button );
+//     Q_CHECK_PTR( in_assigned_menu );
+//     Q_CHECK_PTR( assig_tb_button );
     
     //Initializations
     setCaption( tr( "Scenes" ) );
@@ -43,13 +43,14 @@ Scenes::Scenes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int
 //     setMaximumSize( 120, 200 );
     move( 13, 300 );
     //FIXME:Remove this
-    parent_widget = parent;
-    assigned_menu = in_assigned_menu;
-    assigned_item = id_assigned_item;
-    assigned_tb_button = assig_tb_button;
+//     parent_widget = parent;
+//     assigned_menu = in_assigned_menu;
+//     assigned_item = id_assigned_item;
+//     assigned_tb_button = assig_tb_button;
     scene_max_value = 1;
     number_of_scenes = 1;
-    k_toon = ( KToon * )parent_widget;
+    
+    k_toon = ( KToon * )parent;
 
     //Icon Initializations
     i_insert_scene = QPixmap( plussign_xpm );
@@ -353,11 +354,11 @@ void Scenes::slotMoveSceneDown()
 }
 
 //--------------------- EVENTS AND OTHER FUNCTIONS --------------------------------
-
+/*
 void Scenes::closeEvent( QCloseEvent *close_event )
 {
     assigned_menu -> setItemChecked( assigned_item, false );
     assigned_tb_button -> setDown( false );
     close_event -> accept();
     KTDialogBase::closeEvent(close_event);
-}
+}*/

@@ -79,7 +79,7 @@ public:
      * @param id_assigned_item The assigned menu item from the assigned menu
      * @param assig_tb_button The assigned tool bar button
      */
-    Tools( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button );
+      Tools( QWidget *parent);//, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button );
     /**
      * @brief Default Destructor
      *
@@ -96,10 +96,10 @@ public:
 
 	private:
     //General purpose variables
-		QWidget * parent_widget;
-		QPopupMenu * assigned_menu;
-		int assigned_item;
-		QToolButton *assigned_tb_button;
+// 		QWidget * parent_widget;
+// 		QPopupMenu * assigned_menu;
+// 		int assigned_item;
+// 		QToolButton *assigned_tb_button;
 
     //Icons
 		QPixmap icon_selection, icon_nodes, icon_brush, icon_pencil, icon_line, icon_pen, icon_rectangle,
@@ -128,7 +128,7 @@ protected:
      * Reimplemented from QWidget.
      * @param close_event The input event
      */
-    void closeEvent( QCloseEvent *close_event );
+//     void closeEvent( QCloseEvent *close_event );
 
 };
 

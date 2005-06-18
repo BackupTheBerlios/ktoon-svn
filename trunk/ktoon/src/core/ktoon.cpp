@@ -315,8 +315,16 @@ void KToon::setupToolBarActions()
 	tool_bar -> addSeparator();
 	window_drawing_area = new QToolButton( icon_drawing_area, tr( "Drawing Area" ), QString::null, this, SLOT( slotWindowDrawingArea() ), tool_bar );
 	window_drawing_area -> setDown( true );
-	window_tools = new QToolButton( icon_tools, tr( "Tools" ), QString::null, this, SLOT( slotWindowTools() ), tool_bar );
-	window_tools -> setDown( true );
+	
+	
+	
+	window_tools = new QAction( icon_tools, tr( "&Tools" ), tr("Ctrl+T"), this);//, SLOT( slotWindowTools() ), tool_bar );
+	connect(window_tools, SIGNAL(activated()), this, SLOT(slotWindowTools()));
+	window_tools->setStatusTip(tr("Shows or hides the tools dialog box"));
+	window_tools->addTo(tool_bar);
+	window_tools->setToggleAction ( true ); 
+	window_tools->setOn ( true );
+	
 	window_exposure_sheet = new QToolButton( icon_exposure_sheet, tr( "Exposure Sheet" ), QString::null, this, SLOT( slotWindowExposureSheet() ), tool_bar );
 	window_exposure_sheet -> setDown( true );
 	window_color_palette = new QToolButton( icon_color_palette, tr( "Color Palette" ), QString::null, this, SLOT( slotWindowColorPalette() ), tool_bar );
@@ -332,12 +340,18 @@ void KToon::setupToolBarActions()
 	connect(window_brushes, SIGNAL(activated()), this, SLOT(slotWindowBrushes()));
 	window_brushes->setStatusTip(tr("Shows or hides the brushes dialog box"));
 	window_brushes->addTo(tool_bar);
-	//window_brushes->addTo(window);
 	window_brushes->setToggleAction ( true ); 
 	window_brushes->setOn ( true );
 	//window_brushes -> setDown( true );
-	window_scenes = new QToolButton( icon_scenes, tr( "Scenes" ), QString::null, this, SLOT( slotWindowScenes() ), tool_bar );
-	window_scenes -> setDown( true );
+	window_scenes = new QAction( icon_scenes, tr( "Scenes" ), tr("Ctrl+Y"), this);//, SLOT( slotWindowScenes() ), tool_bar );
+	connect(window_scenes, SIGNAL(activated()), this, SLOT(slotWindowScenes()));
+	window_scenes->setStatusTip(tr("Shows or hides the scenes dialog box"));
+	window_scenes->addTo(tool_bar);
+	window_scenes->setToggleAction ( true ); 
+	window_scenes->setOn ( true );
+// 	window_scenes -> setDown( true );
+	
+	
 	window_library = new QToolButton( icon_library, tr( "Library" ), QString::null, this, SLOT( slotWindowLibrary() ), tool_bar );
 	window_timeline = new QToolButton( icon_time_line, tr( "Timeline" ), QString::null, this, SLOT( slotWindowTimeline() ), tool_bar );
 	window_timeline -> hide();
@@ -349,15 +363,18 @@ void KToon::setupToolBarActions()
 	window_side_camera_view -> hide();
 	tool_bar -> addSeparator();
 	
-	window_illustration = new QAction( icon_illus_mode, tr( "Illustration Mode" ), tr("F10") , this);
-	
-	connect(window_illustration, SIGNAL(activated()), this, SLOT(slotWindowBrushes()));
+	window_illustration = new QAction( icon_illus_mode, tr( "&Illustration Mode" ), tr("F9") , this);
+	connect(window_illustration, SIGNAL(activated()), this, SLOT(slotSeeIllustration()));
 	window_illustration->setStatusTip(tr("Turns to the illustration mode" ));
+	//FIXME:
 	window_illustration->addTo(tool_bar);
-	window_illustration->setVisible(false); 
-			
-	window_animation = new QToolButton( icon_ani_mode, tr( "Animation Mode" ), QString::null, this, SLOT( slotSeeAnimation() ), tool_bar );
-
+ 	window_illustration->setVisible(false); 
+	
+	window_animation = new QAction( icon_ani_mode, tr( "&Animation Mode" ), tr("F10"), this);
+	connect(window_animation, SIGNAL(activated()), this, SLOT(slotSeeAnimation()));
+	window_animation->addTo(tool_bar);
+	window_animation->setStatusTip(tr("Turns to the animation mode"));
+	
 	tool_bar2 = new QToolBar( this );
 	tool_bar2 -> setLabel( tr( "View Operations" ) );
 //     tool_bar2 -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
@@ -610,12 +627,14 @@ void KToon::setupMenu()
 
 	//id_window_illustration = window ->insertItem( icon_illus_mode, tr( "&Illustration Mode" ), this, SLOT( slotSeeIllustration() ), Key_F9 );
 	window_illustration->addTo(window);
-	id_window_animation = window -> insertItem( icon_ani_mode, tr( "&Animation Mode" ), this, SLOT( slotSeeAnimation() ), Key_F10 );
+	window_animation->addTo(window);
+// 	id_window_animation = window -> insertItem( icon_ani_mode, tr( "&Animation Mode" ), this, SLOT( slotSeeAnimation() ), Key_F10 );
 	window -> insertSeparator();
 	id_window_drawing_area = window -> insertItem( icon_drawing_area, tr( "&Drawing Area" ), this, SLOT( slotWindowDrawingArea() ), CTRL+Key_D );
 	window -> setItemChecked( id_window_drawing_area, true );
-	id_window_tools = window -> insertItem( icon_tools, tr( "&Tools" ), this, SLOT( slotWindowTools() ), CTRL+Key_T );
-	window -> setItemChecked( id_window_tools, true );
+	window_tools->addTo(window);
+	//id_window_tools = window -> insertItem( icon_tools, tr( "&Tools" ), this, SLOT( slotWindowTools() ), CTRL+Key_T );
+	//window -> setItemChecked( id_window_tools, true );
 	id_window_exposure_sheet = window -> insertItem( icon_exposure_sheet, tr( "&Exposure Sheet" ), this, SLOT( slotWindowExposureSheet() ), CTRL+Key_H );
 	window -> setItemChecked( id_window_exposure_sheet, true );
 	id_window_color_palette = window -> insertItem( icon_color_palette, tr( "&Color Palette" ), this, SLOT( slotWindowColorPalette() ), CTRL+Key_P );
@@ -625,8 +644,9 @@ void KToon::setupMenu()
 	
 	
 	//window -> setItemChecked( id_window_brushes, true );
-	id_window_scenes = window -> insertItem( icon_scenes, tr( "&Scenes" ), this, SLOT( slotWindowScenes() ), CTRL+Key_Y );
-	window -> setItemChecked( id_window_scenes, true );
+	window_scenes->addTo(window);
+	//id_window_scenes = window -> insertItem( icon_scenes, tr( "&Scenes" ), this, SLOT( slotWindowScenes() ), CTRL+Key_Y );
+	//window -> setItemChecked( id_window_scenes, true );
 	id_window_library = window -> insertItem( icon_library, tr( "&Library" ), this, SLOT( slotWindowLibrary() ), CTRL+Key_L );
 	id_window_timeline = window -> insertItem( icon_time_line, tr( "T&imeline" ), this, SLOT( slotWindowTimeline() ), CTRL+Key_K );
 	window -> setItemVisible( id_window_timeline, false );
@@ -669,17 +689,22 @@ void KToon::setupDialogs()
     //For Illustration
 	exposure_sheet_dialog = new ExposureSheet( this, Qt::WStyle_Tool, window, id_window_exposure_sheet, window_exposure_sheet );
 	exposure_sheet_dialog -> show();
+	
 	list_of_es.append( exposure_sheet_dialog );
     
 	moveDockWindow(exposure_sheet_dialog, Qt::DockRight);
 	exposure_sheet_dialog->undock();
-
-	tools_dialog = new Tools( this, Qt::WStyle_Tool, window, id_window_tools, window_tools );
+	exposure_sheet_dialog->move(600,50);
+	tools_dialog = new Tools( this);//, Qt::WStyle_Tool, window, id_window_tools, window_tools );
 	tools_dialog -> show();
-
-	scenes_dialog = new Scenes( this, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
+	QObject::connect(tools_dialog, SIGNAL(activate(bool)),
+			   window_tools, SLOT(setOn(bool)));
+	
+	scenes_dialog = new Scenes( this);//, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
 	scenes_dialog -> show();
-
+	QObject::connect(scenes_dialog, SIGNAL(activate(bool)),
+			 window_scenes, SLOT(setOn(bool)));
+	
 	color_palette_dialog = new ColorPalette( this, Qt::WStyle_Tool, window, id_window_color_palette, window_color_palette );
 	color_palette_dialog -> show();
     
@@ -689,8 +714,7 @@ void KToon::setupDialogs()
 	brushes_dialog = new Brushes( this);//, Qt::WStyle_Tool/*, window, id_window_brushes, window_brushes */);
 	brushes_dialog -> show();
 	QObject::connect(brushes_dialog, SIGNAL(activate(bool)),
-			 window_brushes, SLOT(toggle()));
-	
+ 			 window_brushes, SLOT(setOn(bool)));
 	library_dialog = new Library( this, Qt::WStyle_Tool, window, id_window_library, KTStatus->currentDrawingArea(), window_library );
 
 	//For animation
@@ -1504,7 +1528,7 @@ void KToon::slotNewDocument()
 		connect(KTStatus->currentDrawingArea(), SIGNAL(useTool(int)), this, SLOT(slotSelectTool(int )));
 		
 		exposure_sheet_dialog = new ExposureSheet( this, Qt::WStyle_Tool, window, id_window_exposure_sheet, window_exposure_sheet );
-		scenes_dialog = new Scenes( this, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
+		scenes_dialog = new Scenes( this);//, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
 		
 		timeline_dialog = new Timeline( this, Qt::WStyle_Tool, window, id_window_timeline, window_timeline );
 		timeline_dialog->hide();
@@ -1526,7 +1550,7 @@ void KToon::slotNewDocument()
 		list_of_es.append( exposure_sheet_dialog );
 		list_of_tl.append( timeline_dialog );
 
-		if ( window -> isItemEnabled( id_window_animation ) )
+		if ( window_animation->isEnabled())//window -> isItemEnabled( id_window_animation ) )
 		{
 			KTStatus->currentDrawingArea() -> show();
 			exposure_sheet_dialog -> show();
@@ -1605,14 +1629,16 @@ void KToon::slotNewDocument()
 		file -> setItemEnabled( id_file_properties, true );
 		
 		menuBar() -> setItemVisible( id_insert, true );
-		if ( window -> isItemEnabled( id_window_animation ) )
+		if ( window_animation->isEnabled())//window -> isItemEnabled( id_window_animation ) )
 		{
 			menuBar() -> setItemVisible( id_edit, true );
 			menuBar() -> setItemVisible( id_view, true );
 			menuBar() -> setItemVisible( id_tools, true );
 			window -> setItemVisible( id_window_exposure_sheet, true );
-			window -> setItemVisible( id_window_scenes, true );
-			window -> setItemVisible( id_window_tools, true );
+			window_scenes->setVisible(true);
+			//window -> setItemVisible( id_window_scenes, true );
+			window_tools->setVisible(true);
+// 			window -> setItemVisible( id_window_tools, true );
 			window_brushes->setVisible(true);
 			//window -> setItemVisible( id_window_brushes, true );
 			window -> setItemVisible( id_window_library, true );
@@ -1620,10 +1646,11 @@ void KToon::slotNewDocument()
 
 			window_drawing_area -> show();
 			window_exposure_sheet -> show();
-			window_tools -> show();
+			
+			//window_tools -> show();
 			//window_brushes -> show();
-			window_scenes -> show();
-			window_library -> show();
+// 			window_scenes -> show();
+// 			window_library -> show();
 
 			edit_undo -> show();
 			edit_redo -> show();
@@ -2275,7 +2302,7 @@ void KToon::slotRemoveFrame()
 
 void KToon::slotInsertKeyFrame()
 {
-    if ( window -> isItemEnabled( id_window_animation ) )
+	if ( window_animation->isEnabled()) // window -> isItemEnabled( id_window_animation ) )
         exposure_sheet_dialog -> slotInsertFrame();
 }
 
@@ -2617,10 +2644,11 @@ void KToon::slotSeeIllustration()
     {
         KTStatus->currentDrawingArea() -> show();
         tools_dialog -> show();
-        window -> setItemChecked( id_window_tools, true );
-        window -> setItemVisible( id_window_tools, true );
-	window_tools -> show();
-	window_tools -> setDown( true );
+//         window -> setItemChecked( id_window_tools, true );
+//         window -> setItemVisible( id_window_tools, true );
+// 	window_tools -> show();
+	window_tools->setVisible ( true );
+// 	window_tools->setDown( true );
         window -> setItemChecked( id_window_drawing_area, true );
         window -> setItemVisible( id_window_drawing_area, true );
 	window_drawing_area -> show();
@@ -2639,10 +2667,10 @@ void KToon::slotSeeIllustration()
     if ( scenes_dialog != NULL )
     {
         scenes_dialog -> show();
-        window -> setItemChecked( id_window_scenes, true );
-        window -> setItemVisible( id_window_scenes, true );
-	window_scenes -> show();
-	window_scenes -> setDown( true );
+//         window -> setItemChecked( id_window_scenes, true );
+//         window -> setItemVisible( id_window_scenes, true );
+	window_scenes->setVisible(true);
+// 	window_scenes -> setDown( true );
     }
 
     if ( exposure_sheet_dialog != NULL )
@@ -2732,8 +2760,10 @@ void KToon::slotSeeIllustration()
     //Enable the animation menu item and disable the illustration menu item
     //window -> setItemEnabled( id_window_illustration, false );
     window_illustration->setVisible(false);
-    window -> setItemEnabled( id_window_animation, true );
-    window_animation -> show();
+    //window -> setItemEnabled( id_window_animation, true );
+    window_animation->setEnabled(true);
+    window_animation->setVisible(true);
+    //window_animation -> show();
 }
 
 void KToon::slotSeeAnimation()
@@ -2741,9 +2771,10 @@ void KToon::slotSeeAnimation()
     //---------- Hide all illustration dialog boxes and update the window menu items ---------
 
     tools_dialog -> hide();
-    window -> setItemChecked( id_window_tools, false );
-    window -> setItemVisible( id_window_tools, false );
-    window_tools -> hide();
+    window_tools->setVisible(false);
+    //window -> setItemChecked( id_window_tools, false );
+    //window -> setItemVisible( id_window_tools, false );
+//     window_tools -> hide();
 
     if ( brushes_dialog != 0 )
     {
@@ -2751,17 +2782,18 @@ void KToon::slotSeeAnimation()
         //window -> setItemChecked( id_window_brushes, false );
         //window -> setItemVisible( id_window_brushes, false );
 	//window_brushes -> hide();
-	window_brushes ->setVisible ( false);
+	window_brushes->setVisible ( false);
 	//window_brushes -> setDown( false );
     }
 
     if ( scenes_dialog != 0 )
     {
     	scenes_dialog -> hide();
-        window -> setItemChecked( id_window_scenes, false );
-        window -> setItemVisible( id_window_scenes, false );
-	window_scenes -> hide();
-	window_scenes -> setDown( false );
+//         window -> setItemChecked( id_window_scenes, false );
+//         window -> setItemVisible( id_window_scenes, false );
+// 	window_scenes -> hide();
+	window_scenes->setVisible ( false);
+// 	window_scenes -> setDown( false );
     }
 
     if ( exposure_sheet_dialog != 0 )
@@ -2859,9 +2891,11 @@ void KToon::slotSeeAnimation()
     //window -> setItemEnabled( id_window_illustration, true );
     window_illustration->setEnabled(true);
     window_illustration->setVisible(true);
+    window_animation->setEnabled(false);
+    window_animation->setVisible(false);
 //     window_illustration -> show();
-    window -> setItemEnabled( id_window_animation, false );
-    window_animation -> hide();
+//     window -> setItemEnabled( id_window_animation, false );
+//     window_animation -> hide();
 
     if ( timeline_dialog != 0 )
         timeline_dialog -> frameSequenceManager() -> getRuler() -> slotSetOffset( timeline_dialog -> frameSequenceManager() -> getRuler() -> getOffset() );
@@ -2872,14 +2906,14 @@ void KToon::slotWindowTools()
     if ( tools_dialog -> isVisible() )
     {
     	tools_dialog -> hide();
-	window -> setItemChecked( id_window_tools, false );
-	window_tools -> setDown( false );
+	//window -> setItemChecked( id_window_tools, false );
+// 	window_tools -> setDown( false );
     }
     else
     {
     	tools_dialog -> show();
-	window -> setItemChecked( id_window_tools, true );
-	window_tools -> setDown( true );
+// 	window -> setItemChecked( id_window_tools, true );
+// 	window_tools -> setDown( true );
     }
 }
 
@@ -2904,14 +2938,14 @@ void KToon::slotWindowScenes()
     if ( scenes_dialog -> isVisible() )
     {
     	scenes_dialog -> hide();
-	window -> setItemChecked( id_window_scenes, false );
-	window_scenes -> setDown( false );
+// 	window -> setItemChecked( id_window_scenes, false );
+// 	window_scenes -> setDown( false );
     }
     else
     {
     	scenes_dialog -> show();
-	window -> setItemChecked( id_window_scenes, true );
-	window_scenes -> setDown( true );
+// 	window -> setItemChecked( id_window_scenes, true );
+// 	window_scenes -> setDown( true );
     }
 }
 
@@ -3166,10 +3200,12 @@ void KToon::slotCloseDrawingArea()
 	window -> setItemVisible( id_window_exposure_sheet, false );
 	window -> setItemVisible( id_window_library, false );
 	window -> setItemChecked( id_window_library, false );
-	window -> setItemVisible( id_window_scenes, false );
+	//window -> setItemVisible( id_window_scenes, false );
+	window_scenes->setVisible(false);
 	window -> setItemVisible( id_window_drawing_area, false );
 	window -> setItemVisible( id_window_timeline, false );
-	window -> setItemVisible( id_window_tools, false );
+// 	window -> setItemVisible( id_window_tools, false );
+	window_tools->setVisible(false);
 	//window -> setItemVisible( id_window_brushes, false );
 	window_brushes->setVisible(false);
 	window -> setItemVisible( id_window_render_camera_preview, false );
@@ -3179,10 +3215,12 @@ void KToon::slotCloseDrawingArea()
 	window_exposure_sheet -> hide();
 	window_library -> hide();
 	window_library -> setDown( false );
-	window_scenes -> hide();
+	//window_scenes -> hide();
+	window_scenes->setVisible(false);
 	window_drawing_area -> hide();
 	window_timeline -> hide();
-	window_tools -> hide();
+// 	window_tools -> hide();
+	window_tools->setVisible(false);
 	//window_brushes -> hide();
 	window_brushes->setVisible(false);
 	window_render_camera_preview -> hide();
@@ -3199,7 +3237,7 @@ void KToon::slotCloseDrawingArea()
 
 	menuBar() -> setItemVisible( id_insert, false );
 	menuBar() -> setItemVisible( id_control, false );
-	if ( window -> isItemEnabled( id_window_animation ) )
+	if ( window_animation->isEnabled())//window -> isItemEnabled( id_window_animation ) )
 	{
 		menuBar() -> setItemVisible( id_edit, false );
 		menuBar() -> setItemVisible( id_view, false );
@@ -3306,11 +3344,11 @@ void KToon::slotStatusBarMessage( int mi )
     else if( id_control_rewind == mi ) statusBar() -> message( tr( "Rewinds the Animation" ), 2000 );
     else if( id_control_go_to_end == mi ) statusBar() -> message( tr( "Goes to the last frame of the Animation" ), 2000 );
     //else if( id_window_illustration == mi ) statusBar() -> message( tr( "Turns to the illustration mode" ), 2000 );
-    else if( id_window_animation == mi ) statusBar() -> message( tr( "Turns to the animation mode" ), 2000 );
-    else if( id_window_tools == mi ) statusBar() -> message( tr( "Shows or hides the tools dialog box" ), 2000 );
+    //else if( id_window_animation == mi ) statusBar() -> message( tr( "Turns to the animation mode" ), 2000 );
+//     else if( id_window_tools == mi ) statusBar() -> message( tr( "Shows or hides the tools dialog box" ), 2000 );
     //FIXME:kuadrosx
     //else if( id_window_brushes == mi ) statusBar() -> message( tr( "Shows or hides the brushes dialog box" ), 2000 );
-    else if( id_window_scenes == mi ) statusBar() -> message( tr( "Shows or hides the scenes dialog box" ), 2000 );
+//     else if( id_window_scenes == mi ) statusBar() -> message( tr( "Shows or hides the scenes dialog box" ), 2000 );
     else if( id_window_color_palette == mi ) statusBar() -> message( tr( "Shows or hides the color palette dialog box" ), 2000 );
     else if( id_window_exposure_sheet == mi ) statusBar() -> message( tr( "Shows or hides the exposure sheet dialog box" ), 2000 );
     else if( id_window_library == mi ) statusBar() -> message( tr( "Shows or hides the library dialog box" ), 2000 );
@@ -3381,7 +3419,7 @@ void KToon::slotSelectSync( int sp )
 {
     exposure_sheet_dialog -> hide();
     exposure_sheet_dialog = list_of_es.at( sp );
-    if ( window -> isItemChecked( id_window_exposure_sheet ) && window -> isItemEnabled( id_window_animation ) )
+    if ( window -> isItemChecked( id_window_exposure_sheet ) && window_animation->isEnabled())//window -> isItemEnabled( id_window_animation ) )
         exposure_sheet_dialog -> show();
 
     timeline_dialog = list_of_tl.at( sp );
@@ -3433,13 +3471,13 @@ void KToon::slotRemoveSync( int sp )
     if ( sp == ( int )list_of_es.count() )
     {
         exposure_sheet_dialog = list_of_es.getLast();
-	if ( window -> isItemChecked( id_window_exposure_sheet ) && window -> isItemEnabled( id_window_animation ) )
+	if ( window -> isItemChecked( id_window_exposure_sheet ) && window_animation->isEnabled() )//window -> isItemEnabled( id_window_animation ) )
 	    exposure_sheet_dialog -> show();
     }
     else
     {
         exposure_sheet_dialog = list_of_es.at( sp );
-	if ( window -> isItemChecked( id_window_exposure_sheet ) && window -> isItemEnabled( id_window_animation ) )
+	if ( window -> isItemChecked( id_window_exposure_sheet ) && window_animation->isEnabled() )//window -> isItemEnabled( id_window_animation ) )
 	    exposure_sheet_dialog -> show();
     }
 
@@ -3526,7 +3564,7 @@ void KToon::createGUI()
     brushes_dialog -> loadBrushes( brushes );
 
     QPtrList<Scene> scenes = KTStatus->currentDocument()->getAnimation() -> getScenes();
-    scenes_dialog = new Scenes( this, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
+    scenes_dialog = new Scenes( this);//, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
     scenes_dialog -> loadScenes( scenes );
 
     library_dialog = new Library( this, Qt::WStyle_Tool, window, id_window_library, KTStatus->currentDrawingArea(), window_library );
@@ -3551,7 +3589,7 @@ void KToon::createGUI()
 
     exposure_sheet_dialog = list_of_es.at( 0 );
     timeline_dialog = list_of_tl.at( 0 );
-    if ( window -> isItemEnabled( id_window_animation ) )
+    if ( window_animation->isEnabled() )//window -> isItemEnabled( id_window_animation ) )
     {
         window -> setItemVisible( id_window_exposure_sheet, true );
 	window -> setItemChecked( id_window_exposure_sheet, true );
@@ -3563,15 +3601,17 @@ void KToon::createGUI()
 	window_drawing_area -> show();
 	window_drawing_area -> setDown( true );
         KTStatus->currentDrawingArea() -> show();
-        window -> setItemVisible( id_window_scenes, true );
-	window -> setItemChecked( id_window_scenes, true );
-	window_scenes -> show();
-	window_scenes -> setDown( true );
+//         window -> setItemVisible( id_window_scenes, true );
+// 	window -> setItemChecked( id_window_scenes, true );
+	window_scenes->setVisible(true);
+// 	window_scenes -> show();
+// 	window_scenes -> setDown( true );
         scenes_dialog -> show();
-        window -> setItemVisible( id_window_tools, true );
-	window -> setItemChecked( id_window_tools, true );
-	window_tools -> show();
-	window_tools -> setDown( true );
+//         window -> setItemVisible( id_window_tools, true );
+// 	window -> setItemChecked( id_window_tools, true );
+	window_tools->setVisible(true);
+	//window_tools -> show();
+	//window_tools -> setDown( true );
         tools_dialog -> show();
         window -> setItemVisible( id_window_library, true );
 	window -> setItemChecked( id_window_library, false );
@@ -3644,7 +3684,7 @@ void KToon::createGUI()
     file -> setItemEnabled( id_file_properties, true );
 
     menuBar() -> setItemVisible( id_insert, true );
-    if ( window -> isItemEnabled( id_window_animation ) )
+    if (window_animation->isEnabled() )// window -> isItemEnabled( id_window_animation ) )
     {
     	menuBar() -> setItemVisible( id_edit, true );
     	menuBar() -> setItemVisible( id_view, true );
