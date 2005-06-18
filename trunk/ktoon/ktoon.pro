@@ -8,3 +8,6 @@ CONFIG += release \
           warn_on 
 TEMPLATE = subdirs 
 SUBDIRS += src 
+
+include ( "config.ktoon" )
+

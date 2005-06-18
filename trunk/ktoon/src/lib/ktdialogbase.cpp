@@ -113,16 +113,13 @@ bool KTDialogBase::event( QEvent * e )
 {
 	if ( e->type() == QEvent::Hide )
 	{
-		
-		qDebug("hide");
 		emit activate(false);
 	}
 	else if ( e->type() == QEvent::Show )
 	{
-		qDebug("show");
 		emit activate(true);
 	}
-	;
+
 	QDockWindow::event(e );
 }
 

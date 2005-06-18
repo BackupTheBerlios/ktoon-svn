@@ -3,8 +3,7 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/opengl/tools
 # Destiono es una biblioteca:  
 
-HEADERS += tools.h \
-           brushproperties.h \
+HEADERS += brushproperties.h \
            ellipseproperties.h \
            imageproperties.h \
            lineproperties.h \
@@ -20,8 +19,7 @@ HEADERS += tools.h \
            glpen.h \
            glrectangle.h \
            brush.h 
-SOURCES += tools.cpp \
-           brushproperties.cpp \
+SOURCES += brushproperties.cpp \
            ellipseproperties.cpp \
            imageproperties.cpp \
            lineproperties.cpp \

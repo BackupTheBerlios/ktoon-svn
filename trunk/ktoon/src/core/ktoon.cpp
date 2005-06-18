@@ -42,8 +42,8 @@
 KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose ), document_max_value(1), file_name("")
 {
 	qDebug("[Initializing KToon]");
-	QString recent1, recent2, recent3, recent4, recent5;
-	QFile settings( QDir::homeDirPath()+QString("/.ktoonrc"));
+
+	QFile settings( KTCONFIG->configDocument()->path() );
 	
 	KTXmlReader reader;
 	QXmlInputSource xmlsource(&settings);
@@ -1754,9 +1754,6 @@ void KToon::slotLoadDocument( const QString &in_file_name )
 		//Drawing Area Initialization
 		KTStatus->setupDrawingArea(main_panel);
 
-		//VL: old document_ ?
-		//murakumo: See the comment above (into slotNewDocument()).
-		//     document_ = new Document();
 		KTStatus->currentDocument() -> setNameDocument( in_file_name );
 		
 		connect(KTStatus->currentDrawingArea(), SIGNAL(useTool(int)), this, SLOT(slotSelectTool(int )));
@@ -1764,12 +1761,12 @@ void KToon::slotLoadDocument( const QString &in_file_name )
 		//1.1. Palette Tag
 		QDomElement palette_path_tag = root.firstChild().toElement();
 		QString palette_path = KTOON_REPOSITORY + "/"+palette_path_tag.attribute( "PATH" );
-		loadPalette( /*Document::turnUnderscoresIntoSlashes(*/ palette_path /*)*/, true );
+		loadPalette( palette_path, true );
 
 		//1.2. Brushes Tag
 		QDomElement brushes_path_tag = palette_path_tag.nextSibling().toElement();
 		QString brushes_path = KTOON_REPOSITORY + "/"+brushes_path_tag.attribute( "PATH" );
-		loadBrushes( /*Document::turnUnderscoresIntoSlashes(*/ brushes_path, true );
+		loadBrushes( brushes_path, true );
 
 		//1.2A. Library Tag
 		QDomElement library_path_tag = brushes_path_tag.nextSibling().toElement();
@@ -2638,6 +2635,7 @@ void KToon::slotStepBackward()
 
 void KToon::slotSeeIllustration()
 {
+	qDebug("-> Illustration Mode");
     //-------------- Show all illustration dialog boxes and update the window menu items -----------
 
     if ( KTStatus->currentDrawingArea() != NULL )
@@ -2768,8 +2766,9 @@ void KToon::slotSeeIllustration()
 
 void KToon::slotSeeAnimation()
 {
+	qDebug("-> Animation Mode");
     //---------- Hide all illustration dialog boxes and update the window menu items ---------
-
+	
     tools_dialog -> hide();
     window_tools->setVisible(false);
     //window -> setItemChecked( id_window_tools, false );
@@ -2779,24 +2778,16 @@ void KToon::slotSeeAnimation()
     if ( brushes_dialog != 0 )
     {
         brushes_dialog -> hide();
-        //window -> setItemChecked( id_window_brushes, false );
-        //window -> setItemVisible( id_window_brushes, false );
-	//window_brushes -> hide();
 	window_brushes->setVisible ( false);
-	//window_brushes -> setDown( false );
     }
 
     if ( scenes_dialog != 0 )
     {
     	scenes_dialog -> hide();
-//         window -> setItemChecked( id_window_scenes, false );
-//         window -> setItemVisible( id_window_scenes, false );
-// 	window_scenes -> hide();
 	window_scenes->setVisible ( false);
-// 	window_scenes -> setDown( false );
     }
-
-    if ( exposure_sheet_dialog != 0 )
+    qDebug("showing exposure");
+    if ( exposure_sheet_dialog )
     {
         exposure_sheet_dialog -> hide();
         window -> setItemChecked( id_window_exposure_sheet, false );
@@ -2804,7 +2795,8 @@ void KToon::slotSeeAnimation()
 	window_exposure_sheet -> hide();
 	window_exposure_sheet -> setDown( false );
     }
-
+    
+    qDebug("HERE");
     if ( library_dialog != 0 )
     {
         library_dialog -> hide();
@@ -2813,13 +2805,14 @@ void KToon::slotSeeAnimation()
 	window_library -> hide();
 	window_library -> setDown( false );
     }
-
+    qDebug("HERE");
     color_palette_dialog -> hide();
     window -> setItemChecked( id_window_color_palette, false );
     window -> setItemVisible( id_window_color_palette, false );
     window_color_palette -> hide();
     window_color_palette -> setDown( false );
 
+    qDebug("HERE");
     if ( KTStatus->currentDrawingArea() != 0 )
     {
         KTStatus->currentDrawingArea() -> hide();
@@ -2828,6 +2821,7 @@ void KToon::slotSeeAnimation()
 	window_drawing_area -> hide();
 	window_drawing_area -> setDown( false );
     }
+    qDebug("PASS");
 
     insert -> setItemVisible( id_insert_frame, true );
     insert -> setItemVisible( id_insert_remove_frame, true );
@@ -3189,6 +3183,8 @@ void KToon::slotCloseDrawingArea()
 	m_cameraPreview = 0;
 	top_camera_view = 0;
 	side_camera_view = 0;
+	exposure_sheet_dialog = 0;
+	timeline_dialog = 0;
 
 	file -> setItemEnabled( id_file_save, false );
 	file -> setItemEnabled( id_file_save_as, false );
@@ -3523,30 +3519,10 @@ void KToon::closeEvent( QCloseEvent *close_event )
 		}
 		else
 		{
-			KTConfigDocument config( QDir::homeDirPath()+QString("/.ktoonrc") );
-		
-			QFile settings( config.path() );
-			
-			if ( config.setContent(&settings) )
-			{
-				settings.close();
-				config.addRecentFiles(recent_names);
-			
-				if ( settings.open( IO_WriteOnly ) )
-				{
-					QTextStream ts(&settings);
-					ts << config.toString() << endl;
-				}
-				else
-				{
-					qDebug("Could not open the settings file. Impossible to save the recent file names.");
-				}
-			}
-			
-			settings.close();
+			KTCONFIG->configDocument()->addRecentFiles(recent_names);
+			KTCONFIG->sync();
 		}
 	}
-    
 	close_event -> accept();
 }
 
@@ -3560,7 +3536,7 @@ void KToon::createGUI()
     color_palette_dialog -> loadCustomColors( custom_colors );
 
     QPtrList<Brush> brushes = KTStatus->currentDocument()->getBrushes();
-    brushes_dialog = new Brushes( this, Qt::WStyle_Tool/*, window, id_window_brushes, window_brushes */);
+    brushes_dialog = new Brushes( this, Qt::WStyle_Tool);
     brushes_dialog -> loadBrushes( brushes );
 
     QPtrList<Scene> scenes = KTStatus->currentDocument()->getAnimation() -> getScenes();
@@ -3572,6 +3548,7 @@ void KToon::createGUI()
 
     m_cameraPreview = new KTCameraPreview(main_panel);
 //     render_camera_preview = new GLRenderCameraPreview( main_panel, this, window, id_window_render_camera_preview, window_render_camera_preview, KTStatus->currentDrawingArea() );
+    m_cameraPreview->hide();
     top_camera_view = new GLTopCameraView( main_panel, this, window, id_window_top_camera_view, window_top_camera_view, KTStatus->currentDrawingArea() );
     side_camera_view = new GLSideCameraView( main_panel, this, window, id_window_side_camera_view, window_side_camera_view, KTStatus->currentDrawingArea() );
 

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@toonka.com   *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -23,25 +23,41 @@
 #include <qdir.h>
 #include <qfile.h>
 #include <qfileinfo.h>
+#include <qmessagebox.h>
 #include <qobjectlist.h> 
 
 KTApplication::KTApplication(int & argc, char ** argv)
 	: QApplication(argc, argv, true), m_VERSION("0.8alpha")
 {
-	m_KTOON_HOME = getenv("HOME")+QString("/")+name()+QString("_")+m_VERSION ;
-	m_KTOON_REPOSITORY = m_KTOON_HOME+QString("/repository");
 	parseArgs(argc, argv);
+	
+#ifdef Q_WS_X11
 	setStyle("plastik");
+#endif
+
  	applyColors(Default);
 	setFont( QFont( "helvetica", 10 ) );
 	
-	ktconfig = new KTConfigDocument(QDir::homeDirPath()+QString("/.ktoonrc"));
+	KTCONFIG->init();
+	
+	m_KTOON_HOME = KTCONFIG->read("KTHome");
+	m_KTOON_REPOSITORY = KTCONFIG->read("Repository");
+	QString themefile = KTCONFIG->read("KTTheme");
+	if ( ! themefile.isEmpty() )
+		applyTheme(themefile);
+	
+	if ( ! KTCONFIG->isOk() || isArg("r") || isArg("reconfigure") )
+	{
+		if ( ! firstRun() && ! (isArg("r") || isArg("reconfigure")) )
+		{
+			QMessageBox::critical(0, QObject::tr("Missing..."), QObject::tr("You need configure the application"));
+		}
+	}
 }
 
 
 KTApplication::~KTApplication()
 {
-	delete ktconfig;
 }
 
 void KTApplication::applyTheme(const QString &file)
@@ -209,6 +225,12 @@ bool KTApplication::firstRun()
 	{
 		m_KTOON_HOME = firstDialog.getHome();
 		m_KTOON_REPOSITORY = firstDialog.getRepos();
+		
+		KTCONFIG->configDocument()->setHome( m_KTOON_HOME );
+		KTCONFIG->configDocument()->setRepository( m_KTOON_REPOSITORY );
+		
+// 		KTCONFIG->sync();
+		
 		return true;
 	}
 	
@@ -234,7 +256,5 @@ void KTApplication::initRepository()
 		}
 	}
 }
-
-
 
 

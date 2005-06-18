@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@toonka.com   *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,67 +18,74 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTTHEMESELECTOR_H
-#define KTTHEMESELECTOR_H
+#include "ktconfig.h"
+#include <qdir.h>
 
-#include <qvbox.h>
-#include <qcolordialog.h>
-#include <qpushbutton.h>
-#include <qlayout.h>
-#include <qbuttongroup.h>
-#include <qscrollview.h>
-
-#include <qmap.h>
-
-#include "ktthemedocument.h"
-
-class QListView;
-class QCheckBox;
-
-/**
- * @author David Cuadrado
-*/
-class KTThemeSelector : public QVBox
+KTConfig::KTConfig() : QObject()
 {
-	Q_OBJECT
-	public:
-		KTThemeSelector(QWidget *parent = 0, const char *name = 0);
-		~KTThemeSelector();
-		
-		KTThemeDocument document();
-		QString lastFile();
-		
-		bool iWantApplyColors();
-		
-		
-	private slots:
-		void chooseGeneralColor(int );
-		void chooseEffectsColor(int );
-		void chooseSelectionsColor(int );
-		void chooseTextEffectsColor(int );
-		void saveSchema();
-		
-	private:
-		void setupChooseColor();
-		void loadSchemes();
-		
-	private:
-		QButtonGroup *m_general;
-		ThemeKey m_generalSection;
-		
-		QButtonGroup *m_effects;
-		ThemeKey m_effectsSection;
-		
-		QButtonGroup *m_selections;
-		ThemeKey m_selectionsSection;
-		
-		QButtonGroup *m_textEffects;
-		ThemeKey m_textEffectsSection;
-		
-		QListView *m_allSchemes;
-		QCheckBox *m_useColors;
-		
-		QString m_lastFile;
-};
-
+	
+	QString defpath = "";
+#ifdef Q_WS_X11
+	defpath = QDir::homeDirPath()+QString("/.ktoonrc");
+#elif Q_WS_WIN
+	defpath = QDir::homeDirPath()+QString("/ktoon.ini");
+#elif Q_WS_MAC
+	defpath = QDir::homeDirPath()+QString("/.ktoonrc");
 #endif
+	
+	m_ktconfig = new KTConfigDocument(defpath);
+}
+
+
+KTConfig::~KTConfig()
+{
+}
+
+KTConfig *KTConfig::instance()
+{
+	static KTConfig *config = new KTConfig;
+	
+	return config;
+}
+
+void KTConfig::init()
+{
+	m_isOk = m_ktconfig->isOk();
+	
+	KTXmlReader configreader;
+	QFile f(m_ktconfig->path());
+	QXmlInputSource xmlsource(&f);
+	if ( configreader.parse(&xmlsource))
+	{
+		m_isOk = m_isOk && true;
+		m_configKeys = configreader.getResult();
+	}
+	else
+	{
+		qDebug("Error parsing config document");
+		m_isOk = m_isOk && false;
+	}
+}
+
+QString KTConfig::read(const QString &sec)
+{
+	return m_configKeys[sec];
+}
+
+bool KTConfig::isOk()
+{
+	return m_isOk;
+}
+
+KTConfigDocument *KTConfig::configDocument()
+{
+	return m_ktconfig;
+}
+
+void KTConfig::sync()
+{
+	m_ktconfig->saveConfig();
+	init();
+	m_isOk = m_isOk && m_ktconfig->isOk();
+}
+

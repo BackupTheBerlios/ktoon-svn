@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@toonka.com   *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,67 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTTHEMESELECTOR_H
-#define KTTHEMESELECTOR_H
+#ifndef KTCONFIGDOCUMENT_H
+#define KTCONFIGDOCUMENT_H
 
-#include <qvbox.h>
-#include <qcolordialog.h>
-#include <qpushbutton.h>
-#include <qlayout.h>
-#include <qbuttongroup.h>
-#include <qscrollview.h>
-
-#include <qmap.h>
-
-#include "ktthemedocument.h"
-
-class QListView;
-class QCheckBox;
+#include <qdom.h>
+#include <qstringlist.h>
 
 /**
+ * This class represents the ktoon configuration xml document
  * @author David Cuadrado
 */
-class KTThemeSelector : public QVBox
+class KTConfigDocument : public QDomDocument
 {
-	Q_OBJECT
 	public:
-		KTThemeSelector(QWidget *parent = 0, const char *name = 0);
-		~KTThemeSelector();
+    		KTConfigDocument(const QString &path);
+    		~KTConfigDocument();
+		void setLang(const QString &lang);
+		void setHome(const QString &home);
+		void setRepository(const QString &repository);
+		void addRecentFiles(const QStringList &names);
+		void setThemePath(const QString &theme);
 		
-		KTThemeDocument document();
-		QString lastFile();
+		QString path();
 		
-		bool iWantApplyColors();
+		void saveConfig(const QString &file = QString::null);
+		bool exists(const QString &key);
 		
-		
-	private slots:
-		void chooseGeneralColor(int );
-		void chooseEffectsColor(int );
-		void chooseSelectionsColor(int );
-		void chooseTextEffectsColor(int );
-		void saveSchema();
-		
-	private:
-		void setupChooseColor();
-		void loadSchemes();
+		bool isOk();
 		
 	private:
-		QButtonGroup *m_general;
-		ThemeKey m_generalSection;
-		
-		QButtonGroup *m_effects;
-		ThemeKey m_effectsSection;
-		
-		QButtonGroup *m_selections;
-		ThemeKey m_selectionsSection;
-		
-		QButtonGroup *m_textEffects;
-		ThemeKey m_textEffectsSection;
-		
-		QListView *m_allSchemes;
-		QCheckBox *m_useColors;
-		
-		QString m_lastFile;
+		QString m_path;
+		const int MAXRECENTS;
+		bool m_isOk;
 };
 
 #endif
+
+

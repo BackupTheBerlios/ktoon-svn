@@ -1,4 +1,7 @@
-2005-04-04 01:00  krawek
+
+Version KToon-0.8a+svn
+
+2005-04-04 01:00 krawek
 	* src/ 
 	Change the directories and libraries structure
 	* lib/
@@ -29,7 +32,7 @@
 	Change stdlib.h for cstdlib (standar)
 
 
-2005-04-11 01:30  krawek
+2005-04-11 01:30 krawek
 	* src/store/gldrawing.h
 	Added base class QObject
 	* src/core/ktoon.h
@@ -41,8 +44,8 @@
 	
 
 2005-05-27 13:52 krawek
-	* /
-	Add build.sh for compilation
+	* build.sh
+	Added
 	* src/lib/glgraphiccomponent.cpp 
 	Fixed copy/paste problem (Thanks to lauxa)
 	* src/lib/ktapplication.cpp
@@ -66,4 +69,43 @@
 	* src/lib/ktapplication.h
 	Initial theme support
 	
-
+	
+2005-06-17 22:20 kuadrosx
+	* src/core/ktoon.h
+		Use QAction instead QToolButton
+	* src/core/ktoon.cpp
+		Use QAction instead QToolButton
+	
+	* src/dialogs/scenes.h
+		Change constructor for no use QToolButton
+	* src/opengl/tools/tools.h
+		Change constructor for no use QToolButton
+	
+		
+2005-06-18 10:20 krawek
+	* src/dialogs/ktthemeselector.cpp
+		Capture colors from active color group
+	* src/lib/ktconfigdocument.cpp
+		move from core to lib
+	* src/lib/ktconfigdocument.h
+		move from core to lib
+	* src/dialogs/tools.h
+		move from opengl/tools/ to dialogs
+	* src/dialogs/tools.cpp
+		move from opengl/tools/ to dialogs
+	* src/lib/ktconfig.h
+		Added for manage configuration
+	* src/lib/ktconfig.cpp
+		Added for manage configuration	
+	* src/lib/ktapplication.cpp
+		Changed for use the new config handler
+	* src/core/main.cpp
+		Changed for use the new config handler
+	* src/core/ktoon.cpp
+		- Fixed crash when change mode
+		- Changed for use the new config handler
+	* src/dialogs/preferences.cpp
+		- Save theme in configuration file
+	* build.sh
+		option compile without opengl
+		

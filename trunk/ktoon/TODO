@@ -18,4 +18,5 @@ This file contains the task to-do
 * Save configuration (theme, font, color, grid color)
 * Port currents themes to XML
 * Load themes in preferences
+* Write a dialog for save files
 

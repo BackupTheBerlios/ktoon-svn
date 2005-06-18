@@ -18,13 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <ktapplication.h>
 #include <qmessagebox.h>
 #include <qfile.h>
 #include <qtextstream.h>
 #include <qtextcodec.h>
 
 #include "preferences.h"
+#include "ktapplication.h"
 
 //--------------- CONSTRUCTOR --------------------
 
@@ -62,7 +62,12 @@ void Preferences::applyChanges()
 		if(m_themeSelector->iWantApplyColors() )
 		{
 			ktapp->applyTheme(m_themeSelector->document());
-			// TODO: guardar en el .ktoonrc la ruta al theme
+			QString filepath = m_themeSelector->lastFile();
+			
+			if ( ! filepath.isEmpty() )
+			{
+				KTCONFIG->configDocument()->setThemePath(filepath);
+			}
 		}
 	}
 	else if ( static_cast<KTFontWidget *>( currentPage ()) == m_fontWidget )

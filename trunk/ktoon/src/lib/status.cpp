@@ -143,6 +143,8 @@ DrawingAreaQt *
 #endif
 Status::currentDrawingArea()
 {
+	if ( m_currentDrawingArea.isNull() )
+		qDebug("No drawing area");
 	return m_currentDrawingArea;
 }
 

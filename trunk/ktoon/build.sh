@@ -13,12 +13,15 @@ QMAKE=`which qmake`
 KTOON_GLOBAL_ENV=/etc/ktoon.env
 KTOON_LOCAL_ENV=~/.ktoon.env
 
-KTOON_HOME=""
+# KTOON_HOME=""
 
 if [ $# -eq 0 ]
 then
-	echo "Usage: `basename $0` -p [prefix]"
-	exit 0
+	if [ ! $KTOON_HOME ]
+	then
+		echo "Usage: `basename $0` -p [prefix]"
+		exit 0
+	fi
 fi
 
 set - `getopt ":p" "$@"`
@@ -65,6 +68,18 @@ function verifyEnv()
 		qperror "You doesn't have installed \"make\" tool"
 		exit -1
 	fi
+}
+
+function openglCC
+{
+	touch ktoon.config
+}
+
+function qtCC
+{
+	cat << _EOF_ > ktoon.config
+DEFINES += NO_OPENGL
+_EOF_
 }
 
 function buildenv()
@@ -135,6 +150,17 @@ do
 	fi
 	cd - 2> /dev/null >/dev/null
 done
+
+qpelec '-' "Do you wants use opengl (y/n)? " -n
+read UOG
+
+case $UOG in
+	y) openglCC;;
+	yes )openglCC;;
+	si) openglCC;;
+	s) openglCC;;
+	*) qtcc;;
+esac
 
 $QMAKE
 

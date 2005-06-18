@@ -44,48 +44,6 @@ int main( int argc, char ** argv )
 		application.exit(0);
 		return 0;
 	}
-		
-	KTConfigDocument ktconfig(QDir::homeDirPath()+QString("/.ktoonrc"));
-	
-	if ( ! QFile::exists( ktconfig.path() ) || application.isArg("r") || application.isArg("reconfigure") )
-	{
-		if ( application.firstRun() )
-		{
-			ktconfig.setHome(application.getHome());
-			ktconfig.setRepository(application.getRepository());
-			
-			ktconfig.saveConfig();
-		}
-		else if ( ! (application.isArg("r") || application.isArg("reconfigure")) )
-		{
-			QMessageBox::critical(0, QObject::tr("Missing..."), QObject::tr("You need configure the application"));
-			return -1;
-		}
-	}
-// 	else
-	{
-		// Analizamos el documento XML de configuracion y ponemos las variables en application
-		KTXmlReader reader;
-		QFile f(ktconfig.path());
-		QXmlInputSource xmlsource(&f);
-		if ( reader.parse(&xmlsource))
-		{
-			XMLSingleResult results = reader.getResult();
-			
-			application.setHome(results["KTHome"]);
-			application.setRepository(results["Repository"]);
-			
-			QString themeFile = results["KTTheme"];
-			if (! themeFile.isEmpty() )
-				application.applyTheme(themeFile);
-			
-		}
-		else
-		{
-			QMessageBox::critical(0, QObject::tr("Failed..."), QObject::tr("Sorry, your configuration file is corrupted, please remove and try again."));
-			return -1;
-		}
-	}
 	
 	application.initRepository();
 	

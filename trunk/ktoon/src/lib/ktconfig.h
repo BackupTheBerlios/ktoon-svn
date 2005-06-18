@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@toonka.com   *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,37 +17,41 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTCONFIG_H
+#define KTCONFIG_H
 
-#ifndef KTCONFIGDOCUMENT_H
-#define KTCONFIGDOCUMENT_H
+#include <qobject.h>
+#include "ktconfigdocument.h"
+#include "ktxmlreader.h"
 
-#include <qdom.h>
-#include <qstringlist.h>
+class KTConfig;
 
 /**
- * This class represents the ktoon configuration xml document
  * @author David Cuadrado
+ * this is a ktoon config handler
 */
-class KTConfigDocument : public QDomDocument
+
+class KTConfig : public QObject
 {
 	public:
-    		KTConfigDocument(const QString &path);
-    		~KTConfigDocument();
-		void setLang(const QString &lang);
-		void setHome(const QString &home);
-		void setRepository(const QString &repository);
-		void addRecentFiles(const QStringList &names);
-		void setThemePath(const QString &theme);
+		KTConfig();
+		~KTConfig();
+		void init();
+		QString read(const QString &sec);
+		static KTConfig *instance();
 		
-		QString path();
+		bool isOk();
+		KTConfigDocument *configDocument();
 		
-		void saveConfig(const QString &file = QString::null);
+		void sync();
 		
 	private:
-		QString m_path;
-		const int MAXRECENTS;
+		KTConfigDocument *m_ktconfig;
+		XMLSingleResult m_configKeys;
+		bool m_isOk;
+
 };
 
+#define KTCONFIG static_cast<KTConfig*>(KTConfig::instance())
+
 #endif
-
-

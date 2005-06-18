@@ -195,10 +195,10 @@ ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assi
     f_frame = first_frame;
 
     //------------ Operations on the visibility list -------------
-    //FIXME: buscar de mostrar la lista de capas de una mejor manera
+    //FIXME: <kuadrosx> buscar una mejor forma de mostrar la lista de capas 
     visibility_list = new QListView( this, "", Qt::WStyle_NoBorder );
     visibility_list -> resize( 110, 120 );
-    qDebug( QString::number(layer_visibility->y()));
+
     visibility_list -> move( layer_visibility->x(), layer_visibility->y()+50 + layer_visibility -> height() );
     visibility_list -> setSelectionMode( QListView::Single );
     visibility_list -> setFont( QFont( font().family(), 8 ) );

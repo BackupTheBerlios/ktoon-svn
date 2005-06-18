@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@toonka.com   *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef KTAPPLICATION_H
 #define KTAPPLICATION_H
 
@@ -24,7 +25,7 @@
 #include <qstring.h>
 #include <qmap.h>
 #include "ktthememanager.h"
-#include "ktconfigdocument.h"
+#include "ktconfig.h"
 
 typedef QMap<QString, QString> ParseArgs;
 
@@ -68,7 +69,6 @@ class KTApplication : public QApplication
 		const QString m_VERSION;
 		ParseArgs m_parseArgs;
 		KTThemeManager m_themeManager;
-		KTConfigDocument *ktconfig;
 };
 
 #define ktapp static_cast<KTApplication*>(qApp)
