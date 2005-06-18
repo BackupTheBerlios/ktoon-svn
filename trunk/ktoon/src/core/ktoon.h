@@ -931,10 +931,9 @@ class KToon: public QMainWindow
 	
 	    QPopupMenu *window;
 	    int id_window;
-	    int id_window_illustration;
+// 	    int id_window_illustration;
 	    int id_window_animation;
 	    int id_window_tools;
-	    int id_window_brushes;
 	    int id_window_scenes;
 	    int id_window_color_palette;
 	    int id_window_exposure_sheet;
@@ -979,7 +978,8 @@ class KToon: public QMainWindow
 	    QToolButton *view_front_back_grid;
 	    QToolButton *view_ntsc;
 	    QToolButton *view_light_table;
-	    QToolButton *window_illustration;
+	    
+	    QAction *window_illustration;
 	    QToolButton *window_animation;
 	    QToolButton *window_tools;
 	    

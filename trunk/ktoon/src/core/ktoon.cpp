@@ -94,8 +94,8 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose ), document_max_valu
 	//showMaximized();
 
 	setCentralWidget( main_panel );
-
-	window -> setItemEnabled( id_window_illustration, false );
+//FIXME:kuadrosx 
+	//window -> setItemEnabled( id_window_illustration, false );
 	
 	//------------- Main Connections ----------------
 
@@ -330,6 +330,7 @@ void KToon::setupToolBarActions()
 
 	window_brushes = new QAction( icon_brushes, tr( "Brushes" ),tr("Ctrl+B") , this);//, SLOT( slotWindowBrushes() ), tool_bar );
 	connect(window_brushes, SIGNAL(activated()), this, SLOT(slotWindowBrushes()));
+	window_brushes->setStatusTip(tr("Shows or hides the brushes dialog box"));
 	window_brushes->addTo(tool_bar);
 	//window_brushes->addTo(window);
 	window_brushes->setToggleAction ( true ); 
@@ -347,8 +348,14 @@ void KToon::setupToolBarActions()
 	window_side_camera_view = new QToolButton( icon_side_camera, tr( "Side Camera View" ), QString::null, this, SLOT( slotWindowSideCameraView() ), tool_bar );
 	window_side_camera_view -> hide();
 	tool_bar -> addSeparator();
-	window_illustration = new QToolButton( icon_illus_mode, tr( "Illustration Mode" ), QString::null, this, SLOT( slotSeeIllustration() ), tool_bar );
-	window_illustration -> hide();
+	
+	window_illustration = new QAction( icon_illus_mode, tr( "Illustration Mode" ), tr("F10") , this);
+	
+	connect(window_illustration, SIGNAL(activated()), this, SLOT(slotWindowBrushes()));
+	window_illustration->setStatusTip(tr("Turns to the illustration mode" ));
+	window_illustration->addTo(tool_bar);
+	window_illustration->setVisible(false); 
+			
 	window_animation = new QToolButton( icon_ani_mode, tr( "Animation Mode" ), QString::null, this, SLOT( slotSeeAnimation() ), tool_bar );
 
 	tool_bar2 = new QToolBar( this );
@@ -389,8 +396,8 @@ void KToon::setupMenu()
 	id_file_open = file -> insertItem( icon_open, tr( "&Open..." ), this, SLOT( slotChoose() ), CTRL+Key_O );
 
 	open_recent = new QPopupMenu( this );
-    
-	connect( open_recent, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
+
+	//connect( open_recent, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
 	connect( open_recent, SIGNAL( activated( int ) ), SLOT( slotOpenRecent( int ) ) );
 	file -> insertItem( tr( "Open Recent" ), open_recent );
 	id_file_save = file -> insertItem( icon_save, tr( "&Save" ), this, SLOT( slotSave() ), CTRL+Key_S );
@@ -601,7 +608,8 @@ void KToon::setupMenu()
 //     window -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
 	id_window = menuBar() -> insertItem( tr( "&Window" ), window );
 
-	id_window_illustration = window ->insertItem( icon_illus_mode, tr( "&Illustration Mode" ), this, SLOT( slotSeeIllustration() ), Key_F9 );
+	//id_window_illustration = window ->insertItem( icon_illus_mode, tr( "&Illustration Mode" ), this, SLOT( slotSeeIllustration() ), Key_F9 );
+	window_illustration->addTo(window);
 	id_window_animation = window -> insertItem( icon_ani_mode, tr( "&Animation Mode" ), this, SLOT( slotSeeAnimation() ), Key_F10 );
 	window -> insertSeparator();
 	id_window_drawing_area = window -> insertItem( icon_drawing_area, tr( "&Drawing Area" ), this, SLOT( slotWindowDrawingArea() ), CTRL+Key_D );
@@ -680,7 +688,9 @@ void KToon::setupDialogs()
     
 	brushes_dialog = new Brushes( this);//, Qt::WStyle_Tool/*, window, id_window_brushes, window_brushes */);
 	brushes_dialog -> show();
-
+	QObject::connect(brushes_dialog, SIGNAL(activate(bool)),
+			 window_brushes, SLOT(toogle()));
+	
 	library_dialog = new Library( this, Qt::WStyle_Tool, window, id_window_library, KTStatus->currentDrawingArea(), window_library );
 
 	//For animation
@@ -1524,7 +1534,7 @@ void KToon::slotNewDocument()
 			tools_dialog -> show();
 			brushes_dialog -> show();
 		}
-		else if ( window -> isItemEnabled( id_window_illustration ) )
+		else if (window_illustration->isEnabled() )// window -> isItemEnabled( id_window_illustration ) )
 		{
 			timeline_dialog -> show();
 // 			render_camera_preview -> show();
@@ -1603,7 +1613,8 @@ void KToon::slotNewDocument()
 			window -> setItemVisible( id_window_exposure_sheet, true );
 			window -> setItemVisible( id_window_scenes, true );
 			window -> setItemVisible( id_window_tools, true );
-			window -> setItemVisible( id_window_brushes, true );
+			window_brushes->setVisible(true);
+			//window -> setItemVisible( id_window_brushes, true );
 			window -> setItemVisible( id_window_library, true );
 			window -> setItemVisible( id_window_drawing_area, true );
 
@@ -2252,13 +2263,13 @@ void KToon::slotInsertLayer()
 
 void KToon::slotInsertFrame()
 {
-    if ( window -> isItemEnabled( id_window_illustration ) )
+    if ( window_illustration->isEnabled())//window -> isItemEnabled( id_window_illustration ) )
         timeline_dialog -> frameSequenceManager() -> frameLayout() -> currentFrameSequence() -> slotInsertFrame();
 }
 
 void KToon::slotRemoveFrame()
 {
-    if ( window -> isItemEnabled( id_window_illustration ) )
+    if ( window_illustration->isEnabled())//window -> isItemEnabled( id_window_illustration ) )
         timeline_dialog -> frameSequenceManager() -> frameLayout() -> currentFrameSequence() -> slotRemoveFrame();
 }
 
@@ -2619,9 +2630,9 @@ void KToon::slotSeeIllustration()
     if ( brushes_dialog != NULL )
     {
         brushes_dialog -> show();
-        window -> setItemChecked( id_window_brushes, true );
-        window -> setItemVisible( id_window_brushes, true );
-	window_brushes -> setVisible ( true );
+        //window->setItemChecked( id_window_brushes, true );
+	//window -> setItemVisible( id_window_brushes, true );
+	window_brushes->setVisible ( true );
 //	window_brushes -> setDown( true );
     }
 
@@ -2719,8 +2730,8 @@ void KToon::slotSeeIllustration()
     }
 
     //Enable the animation menu item and disable the illustration menu item
-    window -> setItemEnabled( id_window_illustration, false );
-    window_illustration -> hide();
+    //window -> setItemEnabled( id_window_illustration, false );
+    window_illustration->setVisible(false);
     window -> setItemEnabled( id_window_animation, true );
     window_animation -> show();
 }
@@ -2737,8 +2748,8 @@ void KToon::slotSeeAnimation()
     if ( brushes_dialog != NULL )
     {
         brushes_dialog -> hide();
-        window -> setItemChecked( id_window_brushes, false );
-        window -> setItemVisible( id_window_brushes, false );
+        //window -> setItemChecked( id_window_brushes, false );
+        //window -> setItemVisible( id_window_brushes, false );
 	//window_brushes -> hide();
 	window_brushes ->setVisible ( false);
 	//window_brushes -> setDown( false );
@@ -2845,8 +2856,10 @@ void KToon::slotSeeAnimation()
     }
 
     //Enable the illustration menu item and disable the animation menu item
-    window -> setItemEnabled( id_window_illustration, true );
-    window_illustration -> show();
+    //window -> setItemEnabled( id_window_illustration, true );
+    window_illustration->setEnabled(true);
+    window_illustration->setVisible(true);
+//     window_illustration -> show();
     window -> setItemEnabled( id_window_animation, false );
     window_animation -> hide();
 
@@ -2874,14 +2887,14 @@ void KToon::slotWindowBrushes()
 {
     if ( brushes_dialog -> isVisible() )
     {
-    	brushes_dialog -> hide();
-	window -> setItemChecked( id_window_brushes, false );
+    	brushes_dialog->hide();
+	//window->setItemChecked( id_window_brushes, false );
 //	window_brushes -> setDown( false );
     }
     else
     {
     	brushes_dialog -> show();
-	window -> setItemChecked( id_window_brushes, true );
+	//window -> setItemChecked( id_window_brushes, true );
 	//window_brushes -> setDown( true );
     }
 }
@@ -3157,7 +3170,8 @@ void KToon::slotCloseDrawingArea()
 	window -> setItemVisible( id_window_drawing_area, false );
 	window -> setItemVisible( id_window_timeline, false );
 	window -> setItemVisible( id_window_tools, false );
-	window -> setItemVisible( id_window_brushes, false );
+	//window -> setItemVisible( id_window_brushes, false );
+	window_brushes->setVisible(false);
 	window -> setItemVisible( id_window_render_camera_preview, false );
 	window -> setItemVisible( id_window_top_camera_view, false );
 	window -> setItemVisible( id_window_side_camera_view, false );
@@ -3291,10 +3305,11 @@ void KToon::slotStatusBarMessage( int mi )
     else if( id_control_step_backward == mi ) statusBar() -> message( tr( "Steps one frame backward in the animation" ), 2000 );
     else if( id_control_rewind == mi ) statusBar() -> message( tr( "Rewinds the Animation" ), 2000 );
     else if( id_control_go_to_end == mi ) statusBar() -> message( tr( "Goes to the last frame of the Animation" ), 2000 );
-    else if( id_window_illustration == mi ) statusBar() -> message( tr( "Turns to the illustration mode" ), 2000 );
+    //else if( id_window_illustration == mi ) statusBar() -> message( tr( "Turns to the illustration mode" ), 2000 );
     else if( id_window_animation == mi ) statusBar() -> message( tr( "Turns to the animation mode" ), 2000 );
     else if( id_window_tools == mi ) statusBar() -> message( tr( "Shows or hides the tools dialog box" ), 2000 );
-    else if( id_window_brushes == mi ) statusBar() -> message( tr( "Shows or hides the brushes dialog box" ), 2000 );
+    //FIXME:kuadrosx
+    //else if( id_window_brushes == mi ) statusBar() -> message( tr( "Shows or hides the brushes dialog box" ), 2000 );
     else if( id_window_scenes == mi ) statusBar() -> message( tr( "Shows or hides the scenes dialog box" ), 2000 );
     else if( id_window_color_palette == mi ) statusBar() -> message( tr( "Shows or hides the color palette dialog box" ), 2000 );
     else if( id_window_exposure_sheet == mi ) statusBar() -> message( tr( "Shows or hides the exposure sheet dialog box" ), 2000 );
@@ -3562,14 +3577,14 @@ void KToon::createGUI()
 	window -> setItemChecked( id_window_library, false );
 	window_library -> show();
 	window_library -> setDown( false );
-        window -> setItemVisible( id_window_brushes, true );
-	window -> setItemChecked( id_window_brushes, true );
+        //window -> setItemVisible( id_window_brushes, true );
+	//window -> setItemChecked( id_window_brushes, true );
 	//window_brushes -> show();
 	window_brushes->setVisible(true);
 // 	window_brushes -> setDown( true );
         brushes_dialog -> show();
     }
-    else if ( window -> isItemEnabled( id_window_illustration ) )
+    else if ( window_illustration->isEnabled() )//window -> isItemEnabled( id_window_illustration ) )
     {
         window -> setItemVisible( id_window_timeline, true );
 	window -> setItemChecked( id_window_timeline, true );
