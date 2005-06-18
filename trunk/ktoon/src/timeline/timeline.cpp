@@ -37,7 +37,7 @@ Timeline::Timeline( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu,
     
     //Initializations
     setCaption( tr( "Timeline" ) );
-//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+
     resize( 800, 150 );
     move( 20, 88 );
     parent_widget = parent;
@@ -151,14 +151,17 @@ int Timeline::exportAnimation( const QString &file_name, int iter_begin, const Q
         QString iterator = ( QString::number( i ) ).rightJustify( 3, '0' );
 	QString new_file_name = file_name + iterator + extension;
 	frame_sequence_manager -> getRuler() -> slotSetOffset( j );
-	QPixmap exp;
-	//FIXME:kuadrosx
-	exp.convertFromImage( k_toon -> renderCameraPreview() -> grabFrameBuffer() );
-	if ( !exp.save( new_file_name, format.latin1() ) )
-	{
-	    qDebug( tr( "Could not save the file: %1" ).arg( new_file_name ) );
-	    return 0;
-	}
+	
+	emit saveImage(new_file_name);
+	
+// 	QPixmap exp;
+	//FIXME: Emitir el nombre del archivo y la extension y conectarlo con render camera para grabar
+// 	exp.convertFromImage( k_toon -> renderCameraPreview() -> grabFrameBuffer() );
+// 	if ( !exp.save( new_file_name, format.latin1() ) )
+// 	{
+// 	    qDebug( tr( "Could not save the file: %1" ).arg( new_file_name ) );
+// 	    return 0;
+// 	}
     }
 
     return i;

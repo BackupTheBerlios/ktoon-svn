@@ -90,7 +90,7 @@ class Status : public QObject
 		void setCurrentPreviousOnionSkin( const int &previous_onion );
 		/**
 		* @brief Sets a new current drawing area's next onion skin
-		*
+			  *m_currentDrawingArea
 		* @param next_onion The new number of next onion skins.
 		*/
 		void setCurrentNextOnionSkin( const int &next_onion );

@@ -23,7 +23,7 @@
 #include <qwmatrix.h>
 
 #include "tllayermanager.h"
-#include "../images/images.h"
+#include "images.h"
 
 //--------------- CONSTRUCTOR --------------------
 

@@ -23,6 +23,11 @@
 #include "import.h"
 #include "ktoon.h"
 
+/**
+ * @todo 
+ * - remove k_toon dependence
+ */
+
 //--------------- CONSTRUCTOR --------------------
 
 Import::Import( QWidget *parent ) : QDialog( parent, "Import", true )
@@ -31,10 +36,8 @@ Import::Import( QWidget *parent ) : QDialog( parent, "Import", true )
 
     //Initializations
     setCaption( tr( "Import" ) );
-    setFont( QFont( "helvetica", 10 ) );
-//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-    parent_widget = parent;
-    k_toon = ( KToon * )parent_widget;
+    
+    k_toon = ( KToon * ) parent;
     setMinimumSize( 240, 280 );
     setMaximumSize( 240, 280 );
 

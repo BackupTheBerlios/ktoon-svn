@@ -689,7 +689,7 @@ void KToon::setupDialogs()
 	brushes_dialog = new Brushes( this);//, Qt::WStyle_Tool/*, window, id_window_brushes, window_brushes */);
 	brushes_dialog -> show();
 	QObject::connect(brushes_dialog, SIGNAL(activate(bool)),
-			 window_brushes, SLOT(toogle()));
+			 window_brushes, SLOT(toggle()));
 	
 	library_dialog = new Library( this, Qt::WStyle_Tool, window, id_window_library, KTStatus->currentDrawingArea(), window_library );
 
@@ -2745,7 +2745,7 @@ void KToon::slotSeeAnimation()
     window -> setItemVisible( id_window_tools, false );
     window_tools -> hide();
 
-    if ( brushes_dialog != NULL )
+    if ( brushes_dialog != 0 )
     {
         brushes_dialog -> hide();
         //window -> setItemChecked( id_window_brushes, false );
@@ -2755,7 +2755,7 @@ void KToon::slotSeeAnimation()
 	//window_brushes -> setDown( false );
     }
 
-    if ( scenes_dialog != NULL )
+    if ( scenes_dialog != 0 )
     {
     	scenes_dialog -> hide();
         window -> setItemChecked( id_window_scenes, false );
@@ -2764,7 +2764,7 @@ void KToon::slotSeeAnimation()
 	window_scenes -> setDown( false );
     }
 
-    if ( exposure_sheet_dialog != NULL )
+    if ( exposure_sheet_dialog != 0 )
     {
         exposure_sheet_dialog -> hide();
         window -> setItemChecked( id_window_exposure_sheet, false );
@@ -2773,7 +2773,7 @@ void KToon::slotSeeAnimation()
 	window_exposure_sheet -> setDown( false );
     }
 
-    if ( library_dialog != NULL )
+    if ( library_dialog != 0 )
     {
         library_dialog -> hide();
         window -> setItemChecked( id_window_library, false );
@@ -2788,7 +2788,7 @@ void KToon::slotSeeAnimation()
     window_color_palette -> hide();
     window_color_palette -> setDown( false );
 
-    if ( KTStatus->currentDrawingArea() != NULL )
+    if ( KTStatus->currentDrawingArea() != 0 )
     {
         KTStatus->currentDrawingArea() -> hide();
         window -> setItemChecked( id_window_drawing_area, false );
@@ -2817,7 +2817,7 @@ void KToon::slotSeeAnimation()
 
     //-------------- Show all animation dialog boxes and update the window menu items -----------
 
-    if ( m_cameraPreview != NULL )
+    if ( m_cameraPreview != 0 )
     {
         m_cameraPreview -> show();
         window -> setItemChecked( id_window_render_camera_preview, true );
@@ -2826,7 +2826,7 @@ void KToon::slotSeeAnimation()
 	window_render_camera_preview -> setDown( true );
     }
 
-    if ( side_camera_view != NULL )
+    if ( side_camera_view != 0 )
     {
         side_camera_view -> show();
         window -> setItemChecked( id_window_side_camera_view, true );
@@ -2835,7 +2835,7 @@ void KToon::slotSeeAnimation()
 	window_side_camera_view -> setDown( true );
     }
 
-    if ( top_camera_view != NULL )
+    if ( top_camera_view != 0 )
     {
         top_camera_view -> show();
         window -> setItemChecked( id_window_top_camera_view, true );
@@ -2844,7 +2844,7 @@ void KToon::slotSeeAnimation()
 	window_top_camera_view -> setDown( true );
     }
 
-    if ( timeline_dialog != NULL )
+    if ( timeline_dialog != 0 )
     {
     	timeline_dialog -> show();
         window -> setItemChecked( id_window_timeline, true );
@@ -2863,7 +2863,7 @@ void KToon::slotSeeAnimation()
     window -> setItemEnabled( id_window_animation, false );
     window_animation -> hide();
 
-    if ( timeline_dialog != NULL )
+    if ( timeline_dialog != 0 )
         timeline_dialog -> frameSequenceManager() -> getRuler() -> slotSetOffset( timeline_dialog -> frameSequenceManager() -> getRuler() -> getOffset() );
 }
 

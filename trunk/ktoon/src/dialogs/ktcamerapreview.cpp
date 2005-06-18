@@ -39,7 +39,6 @@ KTCameraPreview::KTCameraPreview(QWidget* parent, const char* name): KTMdiWindow
 
 KTCameraPreview::~KTCameraPreview()
 {
-	
 }
 
 #ifndef NO_OPENGL

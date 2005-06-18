@@ -29,6 +29,7 @@
 #include <qpopupmenu.h>
 #include <qgl.h>
 #include <qtoolbutton.h>
+#include "ktexporter.h"
 
 class KToon;
 class GLGraphicComponent;
@@ -115,7 +116,7 @@ protected:
      * Reimplemented from QWidget.
      * @param close_event The input event
      */
-    void closeEvent( QCloseEvent *close_event );
+//     void closeEvent( QCloseEvent *close_event );
 	      
 	      void resizeEvent(QResizeEvent *e);
     /**
@@ -138,6 +139,7 @@ QValueList<QImage> imageList();
 
 	public slots:
 		void exportTo(int);
+		void saveImage(const QString &filename/*, KTExporter::Format f*/);
 
 
 private:

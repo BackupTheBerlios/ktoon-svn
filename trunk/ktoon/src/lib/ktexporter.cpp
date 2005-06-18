@@ -74,11 +74,8 @@ bool KTExporter::exportAnimation(const QString &filename, Format format)
 		}
 		break;
 	}
-	
 	return true;
 }
-
-
 
 #ifdef USE_MING
 SWFDisplayItem *KTExporter::doAnimation( SWFMovie *movie, const QStringList &images )

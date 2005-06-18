@@ -140,6 +140,8 @@ signals:
      * This signal is emitted when a layer has been moved down.
      */
     void layerMovedDown();
+    
+    void saveImage(const QString &filename); // TODO: conectar a glrendercamera <krawek>
 
 protected slots:
     /**

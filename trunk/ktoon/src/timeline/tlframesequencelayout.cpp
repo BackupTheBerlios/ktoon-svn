@@ -227,6 +227,7 @@ void TLFrameSequenceLayout::slotUpdateMaxUsedFrames()
 
 void TLFrameSequenceLayout::slotChangeOffset( int current_offset )
 {
+	qDebug(tr("Changing offset to %1").arg(current_offset));
     TLFrameSequence *fs_iterator;
     Layer *l_it;
     KeyFrame *to_add;

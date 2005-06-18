@@ -61,7 +61,6 @@ public:
 
 private:
     //General Purpose Variables
-    QWidget *parent_widget;
     KToon *k_toon;
 
     //Buttons

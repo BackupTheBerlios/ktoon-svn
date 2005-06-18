@@ -38,8 +38,7 @@ Scenes::Scenes( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int
     
     //Initializations
     setCaption( tr( "Scenes" ) );
-//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-//     resize( 120, 200 );
+
 //     setMinimumSize( 120, 200 );
 //     setMaximumSize( 120, 200 );
     move( 13, 300 );

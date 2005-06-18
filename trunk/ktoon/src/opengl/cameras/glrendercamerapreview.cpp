@@ -20,7 +20,6 @@
 
 #include "glrendercamerapreview.h"
 #include "status.h"
-//  #include "ktoon.h"
 #include <qimage.h>
 
 //-------------- CONSTRUCTOR -----------------
@@ -89,6 +88,7 @@ void GLRenderCameraPreview::resizeGL( int w, int h )
 
 void GLRenderCameraPreview::paintGL()
 {
+	qDebug("paintGL");
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     glPushMatrix();
 
@@ -165,15 +165,16 @@ void GLRenderCameraPreview::mouseReleaseEvent( QMouseEvent *mouse_event )
     dragging = false;
 }
 
-void GLRenderCameraPreview::closeEvent( QCloseEvent *close_event )
-{
+// void GLRenderCameraPreview::closeEvent( QCloseEvent *close_event )
+// {
 //     assigned_menu -> setItemChecked( assigned_item, false );
 //     assigned_tb_button -> setDown( false );
 //     close_event -> accept();
-}
+// }
 
 void GLRenderCameraPreview::processHits( GLint hits, GLuint buffer[] )
 {
+	qDebug("processHits");
     int i, j;
     GLuint names, *ptr, aux = 0;
     unsigned long int z1, z2, z = ULONG_MAX;
@@ -259,6 +260,7 @@ void GLRenderCameraPreview::drawSelected( QMouseEvent *mouse_event )
 QValueList<QImage> GLRenderCameraPreview::imageList()
 {
 	QValueList<QImage> images;
+
 	
 	return images;
 }
@@ -273,6 +275,19 @@ void GLRenderCameraPreview::exportTo(int)
 		imgs[i].save(QString("file%1.png").arg(i), "PNG");
 	}
 }
+
+void GLRenderCameraPreview::saveImage(const QString &filename/*, KTExporter::Format f*/)
+{
+	QPixmap exp;
+
+	exp.convertFromImage( grabFrameBuffer() );
+	
+	if ( !exp.save( filename, "PNG" ) )
+	{
+		qDebug( tr( "Could not save the file: %1" ).arg( filename ) );
+	}
+}
+		
 
 void GLRenderCameraPreview::resizeEvent(QResizeEvent *e)
 {

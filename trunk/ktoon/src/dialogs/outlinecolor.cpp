@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "outlinecolor.h"
-#include "../images/images.h"
+#include "images.h"
 
 //--------------- CONSTRUCTOR --------------------
 

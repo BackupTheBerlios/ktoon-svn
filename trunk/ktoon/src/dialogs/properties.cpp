@@ -24,6 +24,11 @@
 #include "properties.h"
 #include "ktoon.h"
 
+/**
+ * @todo:
+ * - Remove k_toon dependence
+ */
+
 //--------------- CONSTRUCTOR --------------------
 
 Properties::Properties( QWidget *parent ) : QDialog( parent, "Animation Properties", true )
@@ -32,8 +37,7 @@ Properties::Properties( QWidget *parent ) : QDialog( parent, "Animation Properti
     
     //Initializations
     setCaption( tr( "Animation Properties" ) );
-//     setFont( QFont( "helvetica", 10 ) );
-//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
+
     parent_widget = parent;
     k_toon = ( KToon * )parent_widget;
     c_background = KTStatus -> currentBackgroundColor();
@@ -229,9 +233,11 @@ void Properties::slotAccept()
     KTStatus -> setCurrentFrameRate( new_fr );
     KTStatus -> setCurrentCameraWidth( new_cw );
     KTStatus -> setCurrentCameraHeight( new_ch );
+    
     k_toon -> renderCameraPreview() -> updateGL();
     k_toon -> timeline() -> slotUpdateCurrentTime( k_toon -> timeline() -> frameSequenceManager() -> getRuler() -> getOffset() );
     k_toon -> timeline() -> slotUpdateTotalTime( k_toon -> timeline() -> frameSequenceManager() -> getRuler() -> getMaxOffset() );
+    
     KTStatus -> setCurrentBackgroundColor( c_background );
     KTStatus -> setCurrentGridColor( c_grid );
     KTStatus -> setCurrentNTSCColor( c_ntsc );
