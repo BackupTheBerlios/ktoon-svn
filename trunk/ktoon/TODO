@@ -9,6 +9,7 @@ This file contains the task to-do
 * Add a debug framework, with log option
 * to Improve the preferences
 * Improve the illustration mode
+* Fix "brush" algorithm
 * Make a framework for extend ktoon easyly
 * Change the splash and background pixmap
 * Complete the 2d illustration mode
@@ -18,5 +19,5 @@ This file contains the task to-do
 * Save configuration (theme, font, color, grid color)
 * Port currents themes to XML
 * Load themes in preferences
-* Write a dialog for save files
+* Write a standar dialog for save files
 

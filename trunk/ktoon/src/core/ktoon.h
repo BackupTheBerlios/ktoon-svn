@@ -71,7 +71,7 @@
  * The most important class. It manages all the dialog boxes within the illustration and animation modes, and it
  * provides a menu bar and a tool bar for special operations.
  */
-class KToon: public QMainWindow
+class KToon : public QMainWindow
 {
 	Q_OBJECT
 
@@ -792,8 +792,8 @@ class KToon: public QMainWindow
 
 	private:
 	    //General purpose variables
+		int document_max_value;
 	    QString file_name;
-	    int document_max_value;
 	    QPtrList<ExposureSheet> list_of_es;
 	    QPtrList<Timeline> list_of_tl;
 	

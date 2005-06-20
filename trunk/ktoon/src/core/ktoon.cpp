@@ -151,6 +151,8 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose ), document_max_valu
 	connect( KTStatus->currentDrawingArea(), SIGNAL( updated() ), library_dialog -> getSymbolView(), SLOT( updateGL() ) );
 	connect( KTStatus->currentDrawingArea(), SIGNAL( wasDrawn( bool ) ), timeline_dialog -> frameSequenceManager() -> frameLayout(), SLOT( slotFrameHasDrawing( bool ) ) );
 	
+	connect(timeline_dialog, SIGNAL(saveImage(const QString& )), m_cameraPreview, SLOT(grabImage(const QString& )));
+	
 	scenes_dialog -> selectFirstScene();
 	exposure_sheet_dialog -> touchFirstFrame();
 	exposure_sheet_dialog -> updateIndicators( exposure_sheet_dialog -> currentLayerObj() );
@@ -1512,7 +1514,6 @@ void KToon::slotNewDocument()
 	document_max_value++;
 	document_number.setNum( document_max_value );
 
-	bool closed = true;
 	if ( KTStatus->currentDrawingArea() && ! KTStatus->currentDrawingArea()->isHidden() )
 	{
 		//KTStatus->closeCurrent();
@@ -2013,7 +2014,12 @@ void KToon::slotExport()
 {
     export_dialog = new Export( this );
     export_dialog -> show();
-    connect( export_dialog, SIGNAL(selectToExport(int)), m_cameraPreview->cameraPreview() , SLOT(exportTo(int)));
+    
+    if ( export_dialog->exec() != QDialog::Rejected )
+    {
+	    qDebug(QString("***************Exporting %1***************").arg(KTStatus->currentDocument()->nameDocument()) );
+	    scenes_dialog->exportAnimation(KTStatus->currentDocument()->nameDocument(), "PNG");
+    }
     statusBar() -> message( tr( "Import Dialog opened" ), 2000 );
 }
 
@@ -2786,7 +2792,7 @@ void KToon::slotSeeAnimation()
     	scenes_dialog -> hide();
 	window_scenes->setVisible ( false);
     }
-    qDebug("showing exposure");
+
     if ( exposure_sheet_dialog )
     {
         exposure_sheet_dialog -> hide();
@@ -2796,7 +2802,7 @@ void KToon::slotSeeAnimation()
 	window_exposure_sheet -> setDown( false );
     }
     
-    qDebug("HERE");
+
     if ( library_dialog != 0 )
     {
         library_dialog -> hide();
@@ -2805,14 +2811,14 @@ void KToon::slotSeeAnimation()
 	window_library -> hide();
 	window_library -> setDown( false );
     }
-    qDebug("HERE");
+
     color_palette_dialog -> hide();
     window -> setItemChecked( id_window_color_palette, false );
     window -> setItemVisible( id_window_color_palette, false );
     window_color_palette -> hide();
     window_color_palette -> setDown( false );
 
-    qDebug("HERE");
+
     if ( KTStatus->currentDrawingArea() != 0 )
     {
         KTStatus->currentDrawingArea() -> hide();
@@ -2821,7 +2827,7 @@ void KToon::slotSeeAnimation()
 	window_drawing_area -> hide();
 	window_drawing_area -> setDown( false );
     }
-    qDebug("PASS");
+
 
     insert -> setItemVisible( id_insert_frame, true );
     insert -> setItemVisible( id_insert_remove_frame, true );

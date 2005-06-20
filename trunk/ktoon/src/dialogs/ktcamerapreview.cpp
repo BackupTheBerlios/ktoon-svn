@@ -26,7 +26,7 @@ KTCameraPreview::KTCameraPreview(QWidget* parent, const char* name): KTMdiWindow
 #ifndef NO_OPENGL
 		m_cameraPreview = new GLRenderCameraPreview(this, KTStatus->currentDrawingArea());
 #else
-// 		m_cameraPreview; // FIXME
+// 		m_cameraPreview = new QtRenderCameraPreview(this); // FIXME
 #endif
 
 	setCentralWidget(m_cameraPreview);
@@ -60,4 +60,16 @@ void KTCameraPreview::resizeEvent(QResizeEvent *e)
 #endif
 	QMainWindow::resizeEvent(e);
 }
+
+void KTCameraPreview::grabImage(const QString &filename)
+{
+#ifndef NO_OPENGL
+	m_cameraPreview->saveImage(filename);
+#else
+	m_cameraPreview->saveImage(filename);
+#endif
+}
+
+
+
 

@@ -133,6 +133,7 @@ void Timeline::loadSound( const QString &file_name )
 
 int Timeline::exportAnimation( const QString &file_name, int iter_begin, const QString &format )
 {
+	qDebug("Exporting animation");
     int i, j;
     QString extension;
 
@@ -149,7 +150,7 @@ int Timeline::exportAnimation( const QString &file_name, int iter_begin, const Q
     for ( i = iter_begin, j = 1; j <= frame_sequence_manager -> getRuler() -> getMaxOffset(); i++, j++ )
     {
         QString iterator = ( QString::number( i ) ).rightJustify( 3, '0' );
-	QString new_file_name = file_name + iterator + extension;
+	QString new_file_name = file_name+ "-" + iterator + extension;
 	frame_sequence_manager -> getRuler() -> slotSetOffset( j );
 	
 	emit saveImage(new_file_name);

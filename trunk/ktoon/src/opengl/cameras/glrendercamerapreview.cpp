@@ -278,11 +278,12 @@ void GLRenderCameraPreview::exportTo(int)
 
 void GLRenderCameraPreview::saveImage(const QString &filename/*, KTExporter::Format f*/)
 {
+	std::cout << "Saving image: " << filename << std::endl;
 	QPixmap exp;
 
 	exp.convertFromImage( grabFrameBuffer() );
 	
-	if ( !exp.save( filename, "PNG" ) )
+	if ( !exp.save( filename, "PNG" ) ) // TODO: remover las imagenes
 	{
 		qDebug( tr( "Could not save the file: %1" ).arg( filename ) );
 	}

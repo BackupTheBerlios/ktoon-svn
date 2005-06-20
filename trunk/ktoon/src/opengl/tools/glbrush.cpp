@@ -101,11 +101,11 @@ GLBrush::~GLBrush()
 //implementation of the virtual method buildList to Bezier curve
 void GLBrush::buildList()
 {
-  	QPoint *initial_point, *final_point;
+	QPoint *initial_point, *final_point;
 	glNewList( id_graphic_component, GL_COMPILE );
-   	   glPushMatrix();
+	glPushMatrix();
 	      
-	glDisable( GL_LINE_STIPPLE );
+// 	glDisable( GL_LINE_STIPPLE );
 	if( stipplePattern() != 0xffff )
 	{
 		glPushAttrib( GL_ENABLE_BIT | GL_TEXTURE_BIT );
@@ -134,10 +134,10 @@ void GLBrush::buildList()
 			initial_point = points.at( i );
 			final_point = points.at( i+1 );
 			glColor4f( outlineColor().colorRed(), outlineColor().colorGreen(),
-				outlineColor().colorBlue(), outlineColor().colorAlpha() );
+				   outlineColor().colorBlue(), outlineColor().colorAlpha() );
 
 			lineImpl( *initial_point, *final_point, 
-				widthPoint().thicknessMinBrush(), stippleFactor(), outlineColor() );
+				   widthPoint().thicknessMinBrush(), stippleFactor(), outlineColor() );
 		}
 		
 		glDisable( GL_TEXTURE_1D );
@@ -151,31 +151,31 @@ void GLBrush::buildList()
 			final_point = points.at( i+1 );
 			
 			glColor4f( outlineColor().colorRed(), outlineColor().colorGreen(),
-				outlineColor().colorBlue(), outlineColor().colorAlpha() );
+				   outlineColor().colorBlue(), outlineColor().colorAlpha() );
 
 			lineImplFast( *initial_point, *final_point, 
-				widthPoint().thicknessMinBrush(), outlineColor() );
+				       widthPoint().thicknessMinBrush(), outlineColor() );
 		}
 	}
 
 	glColor4f( outlineColor().colorRed(), outlineColor().colorGreen(),
-			outlineColor().colorBlue(), outlineColor().colorAlpha() );
+		   outlineColor().colorBlue(), outlineColor().colorAlpha() );
 
-	   if ( stipplePattern() == 0xFFFF )
-	     {
+	if ( stipplePattern() == 0xFFFF )
+	{
 	        // TODO: change the dots to quads with a circle texture with alpha 
 		glPointSize( widthPoint().thicknessMinBrush() );
-	   	glBegin( GL_POINTS );
-	   	for ( unsigned int i = 1; i < points.count() - 1;  i++ )
+		glBegin( GL_POINTS );
+		for ( unsigned int i = 1; i < points.count() - 1;  i++ )
 		{
 			initial_point = points.at( i );
 			glVertex2f( initial_point -> x(), initial_point -> y() );
 		}
-           	glEnd();
-	     }
+		glEnd();
+	}
 
-   	   glPopMatrix();
-       glEndList();
+	glPopMatrix();
+	glEndList();
 }
 
 /*
@@ -221,13 +221,16 @@ void GLBrush::buildList()
 
 void GLBrush::angleBrush( const QPoint & _end )
 {
- QPoint * point = new QPoint( _end.x(), _end.y() );
- double theta = asin( ( originPoint().y() - _end.y() ) / sqrt( pow ( (originPoint().x() - _end.x() ), 2 ) +
-                        pow ( ( originPoint().y() - _end.y() ), 2 ) ) );
+	qDebug("ANGLE");
+	QPoint * point = new QPoint( _end.x(), _end.y() );
+	double theta = asin( ( originPoint().y() - _end.y() ) / sqrt( pow ( (originPoint().x() - _end.x() ), 2 ) +
+				pow ( ( originPoint().y() - _end.y() ), 2 ) ) );
 
- if ( ( fabs( fmod( ( ( 180.0 * theta ) / 3.14159265358979323846 ), 45 ) == 0.0 ) ) )
-     points.replace( points.count() - 1, point );
- buildList();
+	if ( ( fabs( fmod( ( ( 180.0 * theta ) / 3.14159265358979323846 ), 45 ) == 0.0 ) ) )
+	{
+		points.replace( points.count() - 1, point );
+	}
+	buildList();
 }
 
 void GLBrush::lineBrush( const QPoint & _end )
@@ -237,7 +240,8 @@ void GLBrush::lineBrush( const QPoint & _end )
      buildList();
 }
 
-GLfloat dist( const QPoint &p1, const QPoint &p2 ) {
+GLfloat dist( const QPoint &p1, const QPoint &p2 ) 
+{
 	return sqrt( sqr( p1.x() - p2.x() ) + sqr( p1.y() - p2.y() ) );
 }
 
@@ -606,3 +610,5 @@ QDomElement GLBrush::createXML( QDomDocument &doc )
 
     return e;
 }
+
+

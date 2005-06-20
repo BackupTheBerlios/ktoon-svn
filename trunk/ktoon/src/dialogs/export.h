@@ -44,7 +44,8 @@ class SWFFill;
  * It is possible to export the whole animation to a sequence of PNGs or export a single frame to a PNG.
  * <b>Date of Creation: November 24 - 2004.</b>\n
  */
-class Export : public QDialog
+
+class Export : public QDialog // Este debe ser QDialog, no cambiar
 {
 	Q_OBJECT
 
@@ -81,20 +82,12 @@ class Export : public QDialog
 		//     SWFMovie *doMovie( int width, int height );
 	
 	private:
-		//General Purpose Variables
-// 		QWidget *parent_widget;
-// 		KToon *k_toon;
-		
-		//Buttons
 		QPushButton *accept, *cancel;
-		
-		//Static Text
 		QLabel *main_text;
-		
-		//Radio buttons
+
 		QButtonGroup *group;
 		QRadioButton *rb_animation, *rb_single_frame, *rb_swf, *rb_svg;
-	
+
 	protected slots:
 		/**
 		* @brief Shows a file chooser dialog box according to the selected kind of export option
@@ -108,13 +101,6 @@ class Export : public QDialog
 		* This function is called when the user presses the Cancel button.
 		*/
 		void slotCancel();
-	
-	signals:
-		void sendMessage(const QString &message);
-		void selectToExport(int);
-			 
-	protected:
-
 };
 
 #endif

@@ -40,6 +40,8 @@
 #include "ktapplication.h"
 #include "status.h"
 
+#define DEBUG_DRAWINGAREA 1
+
 
 //--------------- CONSTRUCTOR --------------------
 
@@ -1757,12 +1759,9 @@ void DrawingArea::pasteEllipse( QString ellipse )
 
 void DrawingArea::addGraphicComponent( GLGraphicComponent *graphic_component, bool update )
 {
-#ifdef DEBUG_ADDGRAPHIC
+#if DEBUG_DRAWINGAREA
     qDebug("Adding graphic component!!");
     Q_CHECK_PTR( graphic_component );
-
-    if ( graphic_component->kindGraphic() == GLGraphicComponent::GC_BRUSH )
-        qDebug("Brush");
     
 #endif
 
@@ -1770,25 +1769,32 @@ void DrawingArea::addGraphicComponent( GLGraphicComponent *graphic_component, bo
 	
 	modifyDocument( true );
 	GLfloat z = -10.0;
-	if ( graphic_list.count() != 0 )
-		{
-		GLGraphicComponent *graphic;
+
+	if ( graphic_list.count() > 0 )
+	{
+		GLGraphicComponent *graphic = 0;
 		for ( graphic = graphic_list.first(); graphic; graphic = graphic_list.next() )
-			if ( graphic -> getZ() > z )
-			z = graphic -> getZ();
+		{
+			if ( graphic->getZ() > z )
+			{
+				z = graphic -> getZ();
+			}
 		}
+	}
 	else
+	{
 		z = 0.0;
-	
+	}
+
 	graphic_component -> setZ( z + 0.0001 );
+
 	graphic_list.append( graphic_component );
 	GLDrawing *drawing = KTStatus -> currentKeyFrame() -> getDrawing();
 	drawing -> setGraphicComponents( graphic_list );
-	
 	//drawing_list.append(drawing);
 	
 	current_graphic = graphic_component;
-	
+
 	if ( update )
 		updateGL();
 }
@@ -2732,7 +2738,7 @@ void DrawingArea::slotSelectFrame()
 		bezier = false;
 	}
 	
-	//delete current_graphic; // Missing ¬¬
+	//delete current_graphic; // Missing 
 	//current_graphic = 0;
 	
 	KeyFrame *ckf = KTStatus->currentKeyFrame() ;

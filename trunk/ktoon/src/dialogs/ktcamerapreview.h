@@ -43,6 +43,9 @@ class KTCameraPreview : public KTMdiWindow
 #else
 		RenderCameraPreviewQt *cameraPreview();
 #endif
+
+	public slots:
+		void grabImage(const QString &filename);
 		
 	private:
 		#ifndef NO_OPENGL

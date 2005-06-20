@@ -76,12 +76,12 @@ Export::Export( QWidget *parent ) : QDialog( parent, "Export", true )
     accept = new QPushButton( tr( "Accept" ), this );
     accept -> resize( 60, 30 );
     accept -> move( group -> x() + 50, group -> y() + group -> height() + 10 );
-    connect( accept, SIGNAL( clicked() ), SLOT( slotAccept() ) );
+    connect( accept, SIGNAL( clicked() ), SLOT( accept() ) );
 
     cancel = new QPushButton( tr( "Cancel" ), this );
     cancel -> resize( 60, 30 );
     cancel -> move( accept -> x() + accept -> width() + 10, accept -> y() );
-    connect( cancel, SIGNAL( clicked() ), SLOT( slotCancel() ) );
+    connect( cancel, SIGNAL( clicked() ), SLOT( reject() ) );
 }
 
 //-------------- DESTRUCTOR -----------------
@@ -252,14 +252,8 @@ void Export::slotAccept()
 	default: break;
     }
 #endif
-
-qDebug("Testing export");
-
-emit selectToExport(0);
-
-qDebug("End teting export");
-
-	close( true );
+	
+	QDialog::accept ();
 }
 
 void Export::slotCancel()
