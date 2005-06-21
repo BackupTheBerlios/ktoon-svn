@@ -73,7 +73,7 @@ public:
      * @param id_assigned_item The assigned menu item from the assigned menu
      * @param assig_tb_button The assigned tool bar button
      */
-    ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button );
+      ExposureSheet( QWidget *parent);//, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button );
     /**
      * @brief Default Destructor
      *
@@ -130,10 +130,10 @@ public:
 
 private:
     //General Purpose Variables
-    QWidget *parent_widget;
-    QPopupMenu *assigned_menu;
-    int assigned_item;
-    QToolButton *assigned_tb_button;
+//     QWidget *parent_widget;
+//     QPopupMenu *assigned_menu;
+//     int assigned_item;
+//     QToolButton *assigned_tb_button;
     int layer_max_value;
     int number_of_layers;
     QString current_name;
@@ -388,7 +388,7 @@ protected:
      * Reimplemented from QWidget.
      * @param close_event The input event
      */
-    void closeEvent( QCloseEvent *close_event );
+//     void closeEvent( QCloseEvent *close_event );
     /**
      * @brief Event for dialog box resizing control
      *

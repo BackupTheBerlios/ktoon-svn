@@ -31,12 +31,12 @@
 
 //--------------- CONSTRUCTOR --------------------
 
-ColorPalette::ColorPalette( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
+ColorPalette::ColorPalette( QWidget *parent)//, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
 	: KTDialogBase(QDockWindow::OutsideDock, parent, tr( "Color Palette" ))
 {
 	Q_CHECK_PTR( parent );
-	Q_CHECK_PTR( in_assigned_menu );
-	Q_CHECK_PTR( assig_tb_button );
+// 	Q_CHECK_PTR( in_assigned_menu );
+// 	Q_CHECK_PTR( assig_tb_button );
 
 	setHorizontallyStretchable(true);
 			
@@ -49,9 +49,9 @@ ColorPalette::ColorPalette( QWidget *parent, WFlags style, QPopupMenu *in_assign
 // 	setMaximumSize( 185, 640 );
 	move( 200, 35 );
 	//     setFont( QFont( "helvetica", 8 ) );
-	assigned_menu = in_assigned_menu;
-	assigned_item = id_assigned_item;
-	assigned_tb_button = assig_tb_button;
+// 	assigned_menu = in_assigned_menu;
+// 	assigned_item = id_assigned_item;
+// 	assigned_tb_button = assig_tb_button;
 	new_outline_color = NULL;
 	new_fill_color = NULL;
 	
@@ -632,13 +632,13 @@ void ColorPalette::slotUpdateCurrentAlpha( int new_alpha )
 
 //--------------------- EVENTS AND OTHER FUNCTIONS --------------------------------
 
-void ColorPalette::closeEvent( QCloseEvent* close_event )
-{
-    Q_ASSERT( close_event );
-    assigned_menu -> setItemChecked( assigned_item, false );
-    assigned_tb_button -> setDown( false );
-    close_event -> accept();
-}
+// void ColorPalette::closeEvent( QCloseEvent* close_event )
+// {
+//     Q_ASSERT( close_event );
+//     assigned_menu -> setItemChecked( assigned_item, false );
+//     assigned_tb_button -> setDown( false );
+//     close_event -> accept();
+// }
 
 void ColorPalette::makeConnections()
 {

@@ -33,25 +33,25 @@
 
 //--------------- CONSTRUCTOR --------------------
 
-ExposureSheet::ExposureSheet( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
-	: KTDialogBase( QDockWindow::OutsideDock, parent, "Exposure Sheet" , style | WDestructiveClose)
+ExposureSheet::ExposureSheet( QWidget *parent)//, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
+	: KTDialogBase( QDockWindow::OutsideDock, parent, "Exposure Sheet")// , style | WDestructiveClose)
 {
     Q_CHECK_PTR( parent );
-    Q_CHECK_PTR( in_assigned_menu );
-    Q_CHECK_PTR( assig_tb_button );
+//     Q_CHECK_PTR( in_assigned_menu );
+//     Q_CHECK_PTR( assig_tb_button );
 
     //Initializations
     setCaption( tr( "Exposure Sheet" ) );
 //     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-    parent_widget = parent;
+//     parent_widget = parent;
     
-    assigned_menu = in_assigned_menu;
-    assigned_item = id_assigned_item;
+//     assigned_menu = in_assigned_menu;
+//     assigned_item = id_assigned_item;
     
-    assigned_tb_button = assig_tb_button;
+//     assigned_tb_button = assig_tb_button;
     layer_max_value = 1;
     number_of_layers = 1;
-    k_toon = ( KToon * )parent_widget;
+    k_toon = ( KToon * )parent;
     to_copy = NULL;
 
     //Icon Initializations
@@ -1362,15 +1362,15 @@ void ExposureSheet::updateIndicators( ILayer *layer )
 
 //--------------------- EVENTS AND PROTECTED MEMBERS --------------------------------
 
-void ExposureSheet::closeEvent( QCloseEvent* close_event )
-{
-    Q_CHECK_PTR( close_event );
-
-    assigned_menu -> setItemChecked( assigned_item, false );
-    assigned_tb_button -> setDown( false );
-    close_event -> accept();
-    KTDialogBase::closeEvent(close_event);
-}
+// // void ExposureSheet::closeEvent( QCloseEvent* close_event )
+// // {
+// //     Q_CHECK_PTR( close_event );
+// // 
+// //     assigned_menu -> setItemChecked( assigned_item, false );
+// //     assigned_tb_button -> setDown( false );
+// //     close_event -> accept();
+// //     KTDialogBase::closeEvent(close_event);
+// // }
 
 void ExposureSheet::resizeEvent( QResizeEvent *resize_event )
 {

@@ -327,11 +327,25 @@ void KToon::setupToolBarActions()
 	window_tools->setToggleAction ( true ); 
 	window_tools->setOn ( true );
 	
-	window_exposure_sheet = new QToolButton( icon_exposure_sheet, tr( "Exposure Sheet" ), QString::null, this, SLOT( slotWindowExposureSheet() ), tool_bar );
-	window_exposure_sheet -> setDown( true );
-	window_color_palette = new QToolButton( icon_color_palette, tr( "Color Palette" ), QString::null, this, SLOT( slotWindowColorPalette() ), tool_bar );
-	window_color_palette -> setDown( true );
+	
+	
+	window_exposure_sheet = new QAction( icon_exposure_sheet, tr( "&Exposure Sheet" ), tr("Ctrl+H"), this);//, SLOT( slotWindowExposureSheet() ), tool_bar );
+// 	window_exposure_sheet -> setDown( true );
+	connect(window_exposure_sheet, SIGNAL(activated()), this, SLOT(slotWindowExposureSheet()));
+	window_exposure_sheet->setStatusTip(tr("Shows or hides the exposure sheet dialog box"));
+	window_exposure_sheet->addTo(tool_bar);
+	window_exposure_sheet->setToggleAction ( true );
+	window_exposure_sheet->setOn ( true );
+	
+	window_color_palette = new QAction( icon_color_palette, tr( "&Color Palette" ), CTRL+Key_P, this);///, SLOT( slotWindowColorPalette() ), tool_bar );
+	window_color_palette->setStatusTip(tr("Shows or hides the color palette dialog box"));
+	connect(window_color_palette, SIGNAL(activated()), this, SLOT(slotWindowColorPalette()));
+	window_color_palette->addTo(tool_bar);
+	window_color_palette->setToggleAction ( true );
+	window_color_palette->setOn ( true );
+// 	window_color_palette -> setDown( true );
     
+	
 //     window_brushes = new QToolButton( icon_brushes, tr( "Brushes" ), QString::null, this, SLOT( slotWindowBrushes() ), tool_bar );
 // 	newAct = new QAction(tr("&New"), tr("Ctrl+N"), this);
 // 	newAct->setIconSet(QPixmap::fromMimeSource("new.png"));
@@ -637,10 +651,12 @@ void KToon::setupMenu()
 	window_tools->addTo(window);
 	//id_window_tools = window -> insertItem( icon_tools, tr( "&Tools" ), this, SLOT( slotWindowTools() ), CTRL+Key_T );
 	//window -> setItemChecked( id_window_tools, true );
-	id_window_exposure_sheet = window -> insertItem( icon_exposure_sheet, tr( "&Exposure Sheet" ), this, SLOT( slotWindowExposureSheet() ), CTRL+Key_H );
-	window -> setItemChecked( id_window_exposure_sheet, true );
-	id_window_color_palette = window -> insertItem( icon_color_palette, tr( "&Color Palette" ), this, SLOT( slotWindowColorPalette() ), CTRL+Key_P );
-	window -> setItemChecked( id_window_color_palette, true );
+	window_exposure_sheet->addTo(window);
+	//id_window_exposure_sheet = window -> insertItem( icon_exposure_sheet, tr( "&Exposure Sheet" ), this, SLOT( slotWindowExposureSheet() ), CTRL+Key_H );
+	//window -> setItemChecked( id_window_exposure_sheet, true );
+	window_color_palette->addTo(window);
+	// 	id_window_color_palette = window -> insertItem( icon_color_palette, tr( "&Color Palette" ), this, SLOT( slotWindowColorPalette() ), CTRL+Key_P );
+// 	window -> setItemChecked( id_window_color_palette, true );
 	window_brushes->addTo(window);	
 // 	id_window_brushes = window -> insertItem( icon_brushes, tr( "&Brushes" ), this, SLOT( slotWindowBrushes() ), CTRL+Key_B );
 	
@@ -687,16 +703,20 @@ void KToon::setupDialogs()
 	leftDock ()->setMinimumSize(main_panel->height(), 30 );
 // 	leftDock ()->setBackgroundColor( Qt::green);
 	
-
     //For Illustration
-	exposure_sheet_dialog = new ExposureSheet( this, Qt::WStyle_Tool, window, id_window_exposure_sheet, window_exposure_sheet );
-	exposure_sheet_dialog -> show();
+	exposure_sheet_dialog = new ExposureSheet( this);//, Qt::WStyle_Tool, window, id_window_exposure_sheet, window_exposure_sheet );
+	exposure_sheet_dialog-> show();
+	QObject::connect(exposure_sheet_dialog, SIGNAL(activate(bool)),
+			 window_exposure_sheet, SLOT(setOn(bool)));
+	
 	
 	list_of_es.append( exposure_sheet_dialog );
     
 	moveDockWindow(exposure_sheet_dialog, Qt::DockRight);
 	exposure_sheet_dialog->undock();
 	exposure_sheet_dialog->move(600,50);
+	
+	
 	tools_dialog = new Tools( this);//, Qt::WStyle_Tool, window, id_window_tools, window_tools );
 	tools_dialog -> show();
 	QObject::connect(tools_dialog, SIGNAL(activate(bool)),
@@ -707,8 +727,10 @@ void KToon::setupDialogs()
 	QObject::connect(scenes_dialog, SIGNAL(activate(bool)),
 			 window_scenes, SLOT(setOn(bool)));
 	
-	color_palette_dialog = new ColorPalette( this, Qt::WStyle_Tool, window, id_window_color_palette, window_color_palette );
+	color_palette_dialog = new ColorPalette( this);//, Qt::WStyle_Tool, window, id_window_color_palette, window_color_palette );
 	color_palette_dialog -> show();
+	QObject::connect(color_palette_dialog, SIGNAL(activate(bool)),
+			 window_color_palette, SLOT(setOn(bool)));
     
 	moveDockWindow(color_palette_dialog, Qt::DockLeft);
 	color_palette_dialog->undock();
@@ -1528,7 +1550,8 @@ void KToon::slotNewDocument()
 		
 		connect(KTStatus->currentDrawingArea(), SIGNAL(useTool(int)), this, SLOT(slotSelectTool(int )));
 		
-		exposure_sheet_dialog = new ExposureSheet( this, Qt::WStyle_Tool, window, id_window_exposure_sheet, window_exposure_sheet );
+		exposure_sheet_dialog = new ExposureSheet( this);//, Qt::WStyle_Tool, window, id_window_exposure_sheet, window_exposure_sheet );
+		show();
 		scenes_dialog = new Scenes( this);//, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
 		
 		timeline_dialog = new Timeline( this, Qt::WStyle_Tool, window, id_window_timeline, window_timeline );
@@ -1635,7 +1658,8 @@ void KToon::slotNewDocument()
 			menuBar() -> setItemVisible( id_edit, true );
 			menuBar() -> setItemVisible( id_view, true );
 			menuBar() -> setItemVisible( id_tools, true );
-			window -> setItemVisible( id_window_exposure_sheet, true );
+			window_exposure_sheet->setVisible(true);
+			//window -> setItemVisible( id_window_exposure_sheet, true );
 			window_scenes->setVisible(true);
 			//window -> setItemVisible( id_window_scenes, true );
 			window_tools->setVisible(true);
@@ -1646,7 +1670,7 @@ void KToon::slotNewDocument()
 			window -> setItemVisible( id_window_drawing_area, true );
 
 			window_drawing_area -> show();
-			window_exposure_sheet -> show();
+// 			window_exposure_sheet -> show();
 			
 			//window_tools -> show();
 			//window_brushes -> show();
@@ -2680,10 +2704,11 @@ void KToon::slotSeeIllustration()
     if ( exposure_sheet_dialog != NULL )
     {
     	exposure_sheet_dialog -> show();
-        window -> setItemChecked( id_window_exposure_sheet, true );
-        window -> setItemVisible( id_window_exposure_sheet, true );
-	window_exposure_sheet -> show();
-	window_exposure_sheet -> setDown( true );
+//         window -> setItemChecked( id_window_exposure_sheet, true );
+//         window -> setItemVisible( id_window_exposure_sheet, true );
+	window_exposure_sheet->setVisible(true);
+// 	window_exposure_sheet -> show();
+// 	window_exposure_sheet -> setDown( true );
     }
 
     if ( library_dialog != NULL )
@@ -2696,10 +2721,11 @@ void KToon::slotSeeIllustration()
     }
 
     color_palette_dialog -> show();
-    window -> setItemChecked( id_window_color_palette, true );
-    window -> setItemVisible( id_window_color_palette, true );
-    window_color_palette -> show();
-    window_color_palette -> setDown( true );
+//     window -> setItemChecked( id_window_color_palette, true );
+//     window -> setItemVisible( id_window_color_palette, true );
+    //window_color_palette -> show();
+    window_color_palette->setVisible(true);
+//     window_color_palette -> setDown( true );
 
     if ( KTStatus->currentDrawingArea() != NULL )
     {
@@ -2796,10 +2822,11 @@ void KToon::slotSeeAnimation()
     if ( exposure_sheet_dialog )
     {
         exposure_sheet_dialog -> hide();
-        window -> setItemChecked( id_window_exposure_sheet, false );
-        window -> setItemVisible( id_window_exposure_sheet, false );
-	window_exposure_sheet -> hide();
-	window_exposure_sheet -> setDown( false );
+	window_exposure_sheet->setVisible ( false);
+//         window -> setItemChecked( id_window_exposure_sheet, false );
+//         window -> setItemVisible( id_window_exposure_sheet, false );
+// 	window_exposure_sheet -> hide();
+// 	window_exposure_sheet -> setDown( false );
     }
     
 
@@ -2812,11 +2839,14 @@ void KToon::slotSeeAnimation()
 	window_library -> setDown( false );
     }
 
-    color_palette_dialog -> hide();
-    window -> setItemChecked( id_window_color_palette, false );
-    window -> setItemVisible( id_window_color_palette, false );
-    window_color_palette -> hide();
-    window_color_palette -> setDown( false );
+     color_palette_dialog -> hide();
+    
+//     window -> setItemChecked( id_window_color_palette, false );
+//     window -> setItemVisible( id_window_color_palette, false );
+//     window_color_palette -> hide();
+//     window_color_palette -> setDown( false );
+    
+    window_color_palette->setVisible(false);
 
 
     if ( KTStatus->currentDrawingArea() != 0 )
@@ -2954,14 +2984,14 @@ void KToon::slotWindowColorPalette()
     if ( color_palette_dialog -> isVisible() )
     {
     	color_palette_dialog -> hide();
-	window -> setItemChecked( id_window_color_palette, false );
-	window_color_palette -> setDown( false );
+// 	window -> setItemChecked( id_window_color_palette, false );
+// 	window_color_palette -> setDown( false );
     }
     else
     {
     	color_palette_dialog -> show();
-	window -> setItemChecked( id_window_color_palette, true );
-	window_color_palette -> setDown( true );
+// 	window -> setItemChecked( id_window_color_palette, true );
+// 	window_color_palette -> setDown( true );
     }
 }
 
@@ -2970,14 +3000,14 @@ void KToon::slotWindowExposureSheet()
     if ( exposure_sheet_dialog -> isVisible() )
     {
     	exposure_sheet_dialog -> hide();
-	window -> setItemChecked( id_window_exposure_sheet, false );
-	window_exposure_sheet -> setDown( false );
+// 	window -> setItemChecked( id_window_exposure_sheet, false );
+// 	window_exposure_sheet -> setDown( false );
     }
     else
     {
     	exposure_sheet_dialog -> show();
-	window -> setItemChecked( id_window_exposure_sheet, true );
-	window_exposure_sheet -> setDown( true );
+// 	window -> setItemChecked( id_window_exposure_sheet, true );
+// 	window_exposure_sheet -> setDown( true );
     }
 }
 
@@ -3198,8 +3228,8 @@ void KToon::slotCloseDrawingArea()
 	file -> setItemEnabled( id_file_import, false );
 	file -> setItemEnabled( id_file_export, false );
 	file -> setItemEnabled( id_file_properties, false );
-
-	window -> setItemVisible( id_window_exposure_sheet, false );
+	window_exposure_sheet->setVisible(false);
+// 	window -> setItemVisible( id_window_exposure_sheet, false );
 	window -> setItemVisible( id_window_library, false );
 	window -> setItemChecked( id_window_library, false );
 	//window -> setItemVisible( id_window_scenes, false );
@@ -3213,8 +3243,8 @@ void KToon::slotCloseDrawingArea()
 	window -> setItemVisible( id_window_render_camera_preview, false );
 	window -> setItemVisible( id_window_top_camera_view, false );
 	window -> setItemVisible( id_window_side_camera_view, false );
-
-	window_exposure_sheet -> hide();
+	
+// 	window_exposure_sheet -> hide();
 	window_library -> hide();
 	window_library -> setDown( false );
 	//window_scenes -> hide();
@@ -3351,8 +3381,8 @@ void KToon::slotStatusBarMessage( int mi )
     //FIXME:kuadrosx
     //else if( id_window_brushes == mi ) statusBar() -> message( tr( "Shows or hides the brushes dialog box" ), 2000 );
 //     else if( id_window_scenes == mi ) statusBar() -> message( tr( "Shows or hides the scenes dialog box" ), 2000 );
-    else if( id_window_color_palette == mi ) statusBar() -> message( tr( "Shows or hides the color palette dialog box" ), 2000 );
-    else if( id_window_exposure_sheet == mi ) statusBar() -> message( tr( "Shows or hides the exposure sheet dialog box" ), 2000 );
+//     else if( id_window_color_palette == mi ) statusBar() -> message( tr( "Shows or hides the color palette dialog box" ), 2000 );
+//     else if( id_window_exposure_sheet == mi ) statusBar() -> message( tr( "Shows or hides the exposure sheet dialog box" ), 2000 );
     else if( id_window_library == mi ) statusBar() -> message( tr( "Shows or hides the library dialog box" ), 2000 );
     else if( id_window_drawing_area == mi ) statusBar() -> message( tr( "Shows or hides the drawing area widget" ), 2000 );
     else if( id_window_timeline == mi ) statusBar() -> message( tr( "Shows or hides the timeline dialog box" ), 2000 );
@@ -3421,7 +3451,7 @@ void KToon::slotSelectSync( int sp )
 {
     exposure_sheet_dialog -> hide();
     exposure_sheet_dialog = list_of_es.at( sp );
-    if ( window -> isItemChecked( id_window_exposure_sheet ) && window_animation->isEnabled())//window -> isItemEnabled( id_window_animation ) )
+    if ( /*window_exposure_sheet->isOn() &&*/ window_animation->isEnabled())//window -> isItemChecked( id_window_exposure_sheet ) && window_animation->isEnabled())//window -> isItemEnabled( id_window_animation ) )
         exposure_sheet_dialog -> show();
 
     timeline_dialog = list_of_tl.at( sp );
@@ -3431,7 +3461,7 @@ void KToon::slotSelectSync( int sp )
 
 void KToon::slotInsertSync()
 {
-    ExposureSheet *new_exposure_sheet = new ExposureSheet( this, Qt::WStyle_Tool, window, id_window_exposure_sheet, window_exposure_sheet );
+	ExposureSheet *new_exposure_sheet = new ExposureSheet( this);//, Qt::WStyle_Tool, window, id_window_exposure_sheet, window_exposure_sheet );
     list_of_es.append( new_exposure_sheet );
     Timeline *new_timeline = new Timeline( this, Qt::WStyle_Tool, window, id_window_timeline, window_timeline );
     list_of_tl.append( new_timeline );
@@ -3473,13 +3503,13 @@ void KToon::slotRemoveSync( int sp )
     if ( sp == ( int )list_of_es.count() )
     {
         exposure_sheet_dialog = list_of_es.getLast();
-	if ( window -> isItemChecked( id_window_exposure_sheet ) && window_animation->isEnabled() )//window -> isItemEnabled( id_window_animation ) )
+	if ( /*window_exposure_sheet->isOn() &&*/ window_animation->isEnabled() )//window -> isItemEnabled( id_window_animation ) )
 	    exposure_sheet_dialog -> show();
     }
     else
     {
         exposure_sheet_dialog = list_of_es.at( sp );
-	if ( window -> isItemChecked( id_window_exposure_sheet ) && window_animation->isEnabled() )//window -> isItemEnabled( id_window_animation ) )
+	if ( /* window_exposure_sheet->isOn() &&*/ window_animation->isEnabled() )//window -> isItemEnabled( id_window_animation ) )
 	    exposure_sheet_dialog -> show();
     }
 
@@ -3574,11 +3604,12 @@ void KToon::createGUI()
     timeline_dialog = list_of_tl.at( 0 );
     if ( window_animation->isEnabled() )//window -> isItemEnabled( id_window_animation ) )
     {
-        window -> setItemVisible( id_window_exposure_sheet, true );
-	window -> setItemChecked( id_window_exposure_sheet, true );
-	window_exposure_sheet -> show();
-	window_exposure_sheet -> setDown( true );
-        exposure_sheet_dialog -> show();
+	    window_exposure_sheet->setVisible(true);
+//         window -> setItemVisible( id_window_exposure_sheet, true );
+// 	window -> setItemChecked( id_window_exposure_sheet, true );
+// 	window_exposure_sheet -> show();
+// 	window_exposure_sheet -> setDown( true );
+         exposure_sheet_dialog -> show();
         window -> setItemVisible( id_window_drawing_area, true );
 	window -> setItemChecked( id_window_drawing_area, true );
 	window_drawing_area -> show();

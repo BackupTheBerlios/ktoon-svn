@@ -935,8 +935,8 @@ class KToon : public QMainWindow
 // 	    int id_window_animation;
 // 	    int id_window_tools;
 // 	    int id_window_scenes;
-	    int id_window_color_palette;
-	    int id_window_exposure_sheet;
+// 	    int id_window_color_palette;
+// 	    int id_window_exposure_sheet;
 	    int id_window_library;
 	    int id_window_drawing_area;
 	    int id_window_timeline;
@@ -987,8 +987,8 @@ class KToon : public QMainWindow
 	    QAction *window_brushes;
 	    
 	    QAction *window_scenes;
-	    QToolButton *window_color_palette;
-	    QToolButton *window_exposure_sheet;
+	    QAction *window_color_palette;
+	    QAction *window_exposure_sheet;
 	    QToolButton *window_library;
 	    QToolButton *window_drawing_area;
 	    QToolButton *window_timeline;

@@ -78,7 +78,7 @@ class ColorPalette : public KTDialogBase
 	* @param id_assigned_item The assigned menu item from the assigned menu
 	* @param assig_tb_button The assigned tool bar button
 	*/
-	ColorPalette( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button );
+	ColorPalette( QWidget *parent);
 	/**
 	* @brief Default Destructor
 	*
@@ -105,10 +105,10 @@ class ColorPalette : public KTDialogBase
 	
 	private:
 	//General Purpose Variables
-	QWidget *parent_widget;
-	QPopupMenu *assigned_menu;
-	int assigned_item;
-	QToolButton *assigned_tb_button;
+// 	QWidget *parent_widget;
+// 	QPopupMenu *assigned_menu;
+// 	int assigned_item;
+// 	QToolButton *assigned_tb_button;
 	KTColor *new_outline_color;
 	KTColor *new_fill_color;
 	void setupBlockStandardPalette();
@@ -247,7 +247,7 @@ class ColorPalette : public KTDialogBase
 	* Reimplemented from QWidget.
 	* @param close_event The input event
 	*/
-	void closeEvent( QCloseEvent *close_event );
+// 	void closeEvent( QCloseEvent *close_event );
 	/**
 	* @brief Connects all members with all receivers
 	*/

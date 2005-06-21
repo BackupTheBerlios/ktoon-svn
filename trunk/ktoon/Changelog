@@ -108,4 +108,15 @@ Version KToon-0.8a+svn
 		- Save theme in configuration file
 	* build.sh
 		option compile without opengl
-		
+
+
+2005-06-21 12:55 kuadrosx
+	* src/core/ktoon.h
+		Use QAction instead QToolButton
+	* src/core/ktoon.cpp
+		Use QAction instead QToolButton
+	* src/dialogs/colorpalette.cpp
+		Change constructor for no use QToolButton
+	* src/exposure/exposuresheet.cpp
+		Change constructor for no use QToolButton
+
