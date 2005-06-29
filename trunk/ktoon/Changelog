@@ -1,15 +1,24 @@
 
 Version KToon-0.8a+svn
 
+2005-05-29 10:00 krawek
+	* src/core/ktoon.h
+		Removed time line default colors 
+	* src/core/ktoon.cpp
+		Removed time line default colors
+	* src/exposure/esframe.h
+		Removed ktoon.h dependence
+
+
 2005-04-04 01:00 krawek
 	* src/ 
-	Change the directories and libraries structure
+		Change the directories and libraries structure
 	* lib/
-	deleted from the project
+		deleted from the project
 	* ming/
-	added the ming source code from cvs (0.3beta+cvs)
+		added the ming source code from cvs (0.3beta+cvs)
 	* src/swf
-	Deleted from the project
+		Deleted from the project
 	* src/gl/glgraphiccomponent.cpp
 	Change math.h for cmath (standar)
 	* src/gl/glline.cpp

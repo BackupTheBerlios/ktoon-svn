@@ -31,6 +31,7 @@
 #include <qlabel.h>
 #include <qtoolbutton.h>
 #include <qvbox.h>
+#include <qdialog.h>
 
 #include "tllayermanager.h"
 #include "soundwidget.h"
@@ -49,7 +50,7 @@ class KToon;
  * This is a class that manages the timeline as it is in applications such as Flash. It has two main components:
  * The Layer Manager and the Frame Sequence Manager. See the documentation of each one for a further description.
  */
-class Timeline : public KTDialogBase
+class Timeline : public QDialog//KTDialogBase
 {
     Q_OBJECT
 

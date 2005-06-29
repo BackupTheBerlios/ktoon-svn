@@ -168,61 +168,7 @@ class KToon : public QMainWindow
 		Folder *createFolder( const QDomElement &tag );
 		
 		//----- Public Members for exposure sheet and timeline -----
-		
-		/**
-		*  Gets the exposure sheet's default color
-		*
-		* @return The exposure sheet's default color
-		*/
-		QColor *esDefaultColor();
-		/**
-		*  Gets the exposure sheet's use color
-		*
-		* @return The exposure sheet's use color
-		*/
-		QColor *esUseColor();
-		/**
-		*  Gets the exposure sheet's selection color
-		*
-		* @return The exposure sheet's selection color
-		*/
-		QColor *esSelectionColor();
-		/**
-		*  Gets the exposure sheet's select and use color
-		*
-		* @return The exposure sheet's select and use color
-		*/
-		QColor *esSelectAndUseColor();
-		/**
-		*  Gets the exposure sheet's text color when selected
-		*
-		* @return The exposure sheet's text color when selected
-		*/
-		QColor *esTextColorWhenSelected();
-		/**
-		*  Gets the exposure sheet's default text color
-		*
-		* @return The exposure sheet's default text color
-		*/
-		QColor *esDefaultTextColor();
-		/**
-		*  Gets the exposure sheet's lock color
-		*
-		* @return The exposure sheet's lock color
-		*/
-		QColor *esLockColor();
-		/**
-		*  Gets the exposure sheet's lock and select color
-		*
-		* @return The exposure sheet's lock and select color
-		*/
-		QColor *esLockAndSelectColor();
-		/**
-		*  Gets the exposure sheet's drawing color
-		*
-		* @return The exposure sheet's drawing color
-		*/
-		QColor *esHasDrawingColor();
+
 		/**
 		*  Gets the timeline's default color
 		*
@@ -1022,9 +968,10 @@ class KToon : public QMainWindow
 // 	    RenderCameraPreviewQt *render_camera_preview_qt;
 	    
 	    //Some colors needed by Exposure Sheet and Timeline (They are created here for efficiency)
-	    QColor *es_default_color, *es_use_color, *es_selection_color, *es_select_and_use_color, 
-		   *es_text_color_when_selected, *es_default_text_color, *es_lock_color, *es_lock_and_select_color, 
-		   *es_has_drawing_color;
+	    
+// 	    QColor *es_default_color, *es_use_color, *es_selection_color, *es_select_and_use_color, 
+// 		   *es_text_color_when_selected, *es_default_text_color, *es_lock_color, *es_lock_and_select_color, 
+// 		   *es_has_drawing_color;
 	    QColor *tl_default_color, *tl_special_color, *tl_selection_color, *tl_offset_color, *tl_drag_offset_color, 
 		   *tl_border_color, *tl_use_border_color, *tl_motion_color, *tl_drawing_color;
 };

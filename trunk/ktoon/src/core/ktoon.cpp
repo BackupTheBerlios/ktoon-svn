@@ -28,6 +28,7 @@
 #include <memory>
 #include <qwmatrix.h>
 #include <qprocess.h>
+#include <qstylesheet.h>
 
 #include "ktoon.h"
 #include "images.h"
@@ -53,7 +54,7 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose ), document_max_valu
 		qDebug( "Could not open the settings file. Loaded empty recent file names." );
 		for(uint i = 0; i < 6; i++)
 		{
-			recent_names << "<empty>";
+			recent_names << "<" + QStyleSheet::escape(tr("empty")) + ">";
 		}
 	}
 	else
@@ -162,15 +163,15 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose ), document_max_valu
 
 void KToon::setupColors()
 {
-    es_default_color = new QColor( 239, 237, 223 );
-    es_use_color = new QColor( 200, 200, 200 );
-    es_selection_color = new QColor( 0, 0, 0 );
-    es_select_and_use_color = new QColor( 255, 255, 255 );
-    es_text_color_when_selected = new QColor( 255, 255, 255 );
-    es_default_text_color = new QColor( 0, 0, 0 );
-    es_lock_color = new QColor( 150, 150, 255 );
-    es_lock_and_select_color = new QColor( 210, 210, 255 );
-    es_has_drawing_color = new QColor( 170, 70, 10 );
+//     es_default_color = new QColor( 239, 237, 223 );
+//     es_use_color = new QColor( 200, 200, 200 ); //
+//     es_selection_color = new QColor( 0, 0, 0 ); // 
+//     es_select_and_use_color = new QColor( 255, 255, 255 ); //
+//     es_text_color_when_selected = new QColor( 255, 255, 255 ); // 
+//     es_default_text_color = new QColor( 0, 0, 0 ); // 
+//     es_lock_color = new QColor( 150, 150, 255 );
+//     es_lock_and_select_color = new QColor( 210, 210, 255 );
+//     es_has_drawing_color = new QColor( 170, 70, 10 );
     
     tl_default_color = new QColor( 255, 255, 255 );
     tl_selection_color = new QColor( 0, 0, 0 );
@@ -1418,7 +1419,7 @@ Folder *KToon::createFolder( const QDomElement &tag )
 }
 
 //---------- PUBLIC MEMBERS FOR EXPOSURE SHEET AND TIMELINE ----------------
-
+/*
 QColor *KToon::esDefaultColor()
 {
     Q_CHECK_PTR( es_default_color );
@@ -1471,7 +1472,7 @@ QColor *KToon::esHasDrawingColor()
 {
     Q_CHECK_PTR( es_has_drawing_color );
     return es_has_drawing_color;
-}
+}*/
 
 QColor *KToon::tlDefaultColor()
 {

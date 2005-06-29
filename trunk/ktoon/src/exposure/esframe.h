@@ -32,8 +32,6 @@
 #include <qpopupmenu.h>
 #include <qpainter.h>
 
-class KToon;
-
 /**
  * @brief Class that handles the Frame objects belonging to the Exposure Sheet dialog box
  *
@@ -171,8 +169,6 @@ private:
     //The right click menu and its identifiers
     QPopupMenu *right_click_menu;
     int id_rename, id_remove, id_lock, id_copy, id_paste;
-    
-    KToon *k_toon;
 
 signals:
     /**
