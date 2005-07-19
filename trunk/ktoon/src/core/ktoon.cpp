@@ -68,7 +68,8 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose ), document_max_valu
 	setupColors();
 	setupIcons();
 	setupCursors();
-	setupToolBarActions();
+	createActions();
+	setupToolBar();
 	setupMenu();
 	
 	KTStatus -> setCurrentCursor( Tools::NORMAL_SELECTION );
@@ -130,10 +131,11 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose ), document_max_valu
 	connect( timeline_dialog -> frameSequenceManager() -> frameLayout(), SIGNAL( motionTweenCreatedToES( int ) ), exposure_sheet_dialog, SLOT( slotCreateMotionTween( int ) ) );
 	connect( timeline_dialog -> frameSequenceManager() -> frameLayout(), SIGNAL( motionTweenRemovedToES( int ) ), exposure_sheet_dialog, SLOT( slotRemoveMotionTween( int ) ) );
 
-	insert -> connectItem( id_insert_scene, scenes_dialog, SLOT( slotInsertScene() ) );
-	insert -> connectItem( id_insert_remove_scene, scenes_dialog, SLOT( slotRemoveScene() ) );
-
-	file -> connectItem( id_file_close, KTStatus->currentDrawingArea(), SLOT( close() ) );
+	connect(insert_scene, SIGNAL(activated()), scenes_dialog, SLOT(slotInsertScene()));
+	connect(insert_remove_scene, SIGNAL(activated()), scenes_dialog, SLOT(slotRemoveScene()));
+	
+	connect(file_close, SIGNAL(activated()), KTStatus->currentDrawingArea(), SLOT(close()));
+	
 	connect( KTStatus->currentDrawingArea(), SIGNAL( closed() ), SLOT( slotCloseDrawingArea() ) );
 	connect( color_palette_dialog, SIGNAL( outlineColorChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeOutlineColor() ) );
 	connect( color_palette_dialog, SIGNAL( fillColorChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeFillColor() ) );
@@ -299,395 +301,705 @@ void KToon::setupCursors()
     cursor_contour_fill = new QCursor( i_cursor_contour_fill, 0, 15 );
 }
 
-void KToon::setupToolBarActions()
+void KToon::createActions()
 {
+	file_new = new QAction( icon_new, tr( "New Document" ), tr("Ctrl+N"), this);
 	
-	tool_bar = new QToolBar( this );
-	tool_bar -> setLabel( tr( "File and Edit Operations" ) );
+	connect(file_new, SIGNAL(activated()), this, SLOT(slotNewDocument()));
+	file_new->setStatusTip(tr( "Opens a new document"));
+	
+	file_open = new QAction( icon_open, tr( "Open Document" ), tr("Ctrl+O"), this);
+	connect(file_open, SIGNAL(activated()), this, SLOT(slotChoose()));
+	file_open->setStatusTip(tr("Loads an existent document"));	
 
-	file_new = new QToolButton( icon_new, tr( "New Document" ), QString::null, this, SLOT( slotNewDocument() ), tool_bar );
-	file_open = new QToolButton( icon_open, tr( "Open Document" ), QString::null, this, SLOT( slotChoose() ), tool_bar );
-	file_save = new QToolButton( icon_save, tr( "Save Document" ), QString::null, this, SLOT( slotSave() ), tool_bar );
-	tool_bar -> addSeparator();
-	edit_undo = new QToolButton( icon_undo, tr( "Undo" ), QString::null, this, SLOT( slotUndo() ), tool_bar );
-	edit_redo = new QToolButton( icon_redo, tr( "Redo" ), QString::null, this, SLOT( slotRedo() ), tool_bar );
-	tool_bar -> addSeparator();
-	edit_cut = new QToolButton( icon_cut, tr( "Cut" ), QString::null, this, SLOT( slotCut() ), tool_bar );
-	edit_copy = new QToolButton( icon_copy, tr( "Copy" ), QString::null, this, SLOT( slotCopy() ), tool_bar );
-	edit_paste = new QToolButton( icon_paste, tr( "Paste" ), QString::null, this, SLOT( slotPaste() ), tool_bar );
-	tool_bar -> addSeparator();
-	window_drawing_area = new QToolButton( icon_drawing_area, tr( "Drawing Area" ), QString::null, this, SLOT( slotWindowDrawingArea() ), tool_bar );
-	window_drawing_area -> setDown( true );
+	file_save = new QAction( icon_save, tr( "Save Document" ),tr("Ctrl+O") , this);
+	connect(file_save, SIGNAL(activated()), this, SLOT(slotSave()));
+	file_save->setStatusTip(tr("Saves the current document in the current location"));
 	
+	edit_undo = new QAction( icon_undo, tr( "Undo" ),tr("Ctrl+Z") , this);
+	connect(edit_undo, SIGNAL(activated()), this, SLOT(slotUndo()));
+	edit_undo->setStatusTip(tr("Undoes the last draw action"));
 	
+	edit_redo = new QAction( icon_redo, tr( "Redo" ), tr("CTRL+SHIFT+Z"), this);
+	connect(edit_redo, SIGNAL(activated()), this, SLOT(slotRedo()));
+	edit_redo->setStatusTip(tr("Redoes a previous undone action"));
 	
-	window_tools = new QAction( icon_tools, tr( "&Tools" ), tr("Ctrl+T"), this);//, SLOT( slotWindowTools() ), tool_bar );
+	edit_cut = new QAction( icon_cut, tr( "&Cut" ), tr("Ctrl+X"), this);
+	connect(edit_cut, SIGNAL(activated()), this, SLOT(slotCut()));
+	edit_cut->setStatusTip(tr("Cuts the selection and puts it onto the clipboard"));
+	
+	edit_copy = new QAction( icon_copy, tr( "C&opy" ), tr("Ctrl+C"), this);
+	connect(edit_copy, SIGNAL(activated()), this, SLOT(slotCopy()));
+	edit_copy->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
+	
+	edit_paste = new QAction( icon_paste, tr( "&Paste" ), tr("Ctrl+V"), this);
+	connect(edit_paste, SIGNAL(activated()), this, SLOT(slotPaste()));
+	edit_paste->setStatusTip(tr("Pastes the clipboard into the current document"));
+	
+	window_drawing_area = new QAction ( icon_drawing_area, tr( "&Drawing Area" ), tr("Ctrl+D"), this);
+	connect(window_drawing_area, SIGNAL(activated()), this, SLOT(slotWindowDrawingArea()));
+	window_drawing_area->setToggleAction ( true );
+	window_drawing_area->setStatusTip(tr("Shows or hides the drawing area widget"));
+	window_drawing_area->setOn( true );
+	
+	window_tools = new QAction( icon_tools, tr( "&Tools" ), tr("Ctrl+T"), this);
 	connect(window_tools, SIGNAL(activated()), this, SLOT(slotWindowTools()));
 	window_tools->setStatusTip(tr("Shows or hides the tools dialog box"));
-	window_tools->addTo(tool_bar);
 	window_tools->setToggleAction ( true ); 
 	window_tools->setOn ( true );
 	
-	
-	
-	window_exposure_sheet = new QAction( icon_exposure_sheet, tr( "&Exposure Sheet" ), tr("Ctrl+H"), this);//, SLOT( slotWindowExposureSheet() ), tool_bar );
-// 	window_exposure_sheet -> setDown( true );
+	window_exposure_sheet = new QAction( icon_exposure_sheet, tr( "&Exposure Sheet" ), tr("Ctrl+H"), this);
 	connect(window_exposure_sheet, SIGNAL(activated()), this, SLOT(slotWindowExposureSheet()));
 	window_exposure_sheet->setStatusTip(tr("Shows or hides the exposure sheet dialog box"));
-	window_exposure_sheet->addTo(tool_bar);
 	window_exposure_sheet->setToggleAction ( true );
 	window_exposure_sheet->setOn ( true );
 	
-	window_color_palette = new QAction( icon_color_palette, tr( "&Color Palette" ), CTRL+Key_P, this);///, SLOT( slotWindowColorPalette() ), tool_bar );
+	window_color_palette = new QAction( icon_color_palette, tr( "&Color Palette" ), CTRL+Key_P, this);
 	window_color_palette->setStatusTip(tr("Shows or hides the color palette dialog box"));
 	connect(window_color_palette, SIGNAL(activated()), this, SLOT(slotWindowColorPalette()));
-	window_color_palette->addTo(tool_bar);
 	window_color_palette->setToggleAction ( true );
 	window_color_palette->setOn ( true );
-// 	window_color_palette -> setDown( true );
-    
-	
-//     window_brushes = new QToolButton( icon_brushes, tr( "Brushes" ), QString::null, this, SLOT( slotWindowBrushes() ), tool_bar );
-// 	newAct = new QAction(tr("&New"), tr("Ctrl+N"), this);
-// 	newAct->setIconSet(QPixmap::fromMimeSource("new.png"));
-// 	newAct->setStatusTip(tr("Create a new spreadsheet file"));
-// 	connect(newAct, SIGNAL(activated()), this, SLOT(newFile()));
 
-	window_brushes = new QAction( icon_brushes, tr( "Brushes" ),tr("Ctrl+B") , this);//, SLOT( slotWindowBrushes() ), tool_bar );
+	window_brushes = new QAction( icon_brushes, tr( "Brushes" ),tr("Ctrl+B") , this);
 	connect(window_brushes, SIGNAL(activated()), this, SLOT(slotWindowBrushes()));
 	window_brushes->setStatusTip(tr("Shows or hides the brushes dialog box"));
-	window_brushes->addTo(tool_bar);
 	window_brushes->setToggleAction ( true ); 
 	window_brushes->setOn ( true );
-	//window_brushes -> setDown( true );
-	window_scenes = new QAction( icon_scenes, tr( "Scenes" ), tr("Ctrl+Y"), this);//, SLOT( slotWindowScenes() ), tool_bar );
+	window_scenes = new QAction( icon_scenes, tr( "Scenes" ), tr("Ctrl+Y"), this);
 	connect(window_scenes, SIGNAL(activated()), this, SLOT(slotWindowScenes()));
 	window_scenes->setStatusTip(tr("Shows or hides the scenes dialog box"));
-	window_scenes->addTo(tool_bar);
 	window_scenes->setToggleAction ( true ); 
 	window_scenes->setOn ( true );
-// 	window_scenes -> setDown( true );
 	
+	window_library = new QAction( icon_library, tr( "Library" ), tr("Ctrl+L"), this);
+	connect(window_library, SIGNAL(activated()), this, SLOT(slotWindowLibrary()));
+	window_library->setStatusTip(tr("Shows or hides the library dialog box"));
+	window_library->setToggleAction(true);
+		
+	window_render_camera_preview = new QAction( icon_camera_preview, tr( "&Preview Render" ), tr("Ctrl+R"), this);
+	window_render_camera_preview->setVisible(false);
+	connect(window_render_camera_preview, SIGNAL(activated()), this, SLOT(slotWindowRenderCameraPreview()));
+	window_render_camera_preview->setStatusTip(tr("Shows or hides the render preview widget"));
+	window_render_camera_preview->setToggleAction(true);
+	window_render_camera_preview->setOn(true);
 	
-	window_library = new QToolButton( icon_library, tr( "Library" ), QString::null, this, SLOT( slotWindowLibrary() ), tool_bar );
-	window_timeline = new QToolButton( icon_time_line, tr( "Timeline" ), QString::null, this, SLOT( slotWindowTimeline() ), tool_bar );
-	window_timeline -> hide();
-	window_render_camera_preview = new QToolButton( icon_camera_preview, tr( "Render Camera Preview" ), QString::null, this, SLOT( slotWindowRenderCameraPreview() ), tool_bar );
-	window_render_camera_preview -> hide();
-	window_top_camera_view = new QToolButton( icon_top_camera, tr( "Top Camera View" ), QString::null, this, SLOT( slotWindowTopCameraView() ), tool_bar );
-	window_top_camera_view -> hide();
-	window_side_camera_view = new QToolButton( icon_side_camera, tr( "Side Camera View" ), QString::null, this, SLOT( slotWindowSideCameraView() ), tool_bar );
-	window_side_camera_view -> hide();
-	tool_bar -> addSeparator();
+	window_top_camera_view = new QAction( icon_top_camera, tr( "&Top Camera View" ), CTRL+Key_Slash, this);
+	window_top_camera_view->setVisible(false);
+	connect(window_top_camera_view, SIGNAL(activated()), this, SLOT(slotWindowTopCameraView()));
+	window_top_camera_view->setStatusTip(tr("Shows or hides the top camera view widget"));
+	window_top_camera_view->setToggleAction(true);
+	window_top_camera_view->setOn(true);
+	
+	window_side_camera_view = new QAction( icon_side_camera, tr( "Si&de Camera View" ), CTRL+Key_Asterisk, this);
+	window_side_camera_view->setVisible(false);
+	connect(window_side_camera_view, SIGNAL(activated()), this, SLOT(slotWindowSideCameraView()));
+	window_side_camera_view->setStatusTip(tr("Shows or hides the side camera view widget"));
+	window_side_camera_view->setToggleAction(true);
+	window_side_camera_view->setOn(true);
+	
 	
 	window_illustration = new QAction( icon_illus_mode, tr( "&Illustration Mode" ), tr("F9") , this);
 	connect(window_illustration, SIGNAL(activated()), this, SLOT(slotSeeIllustration()));
 	window_illustration->setStatusTip(tr("Turns to the illustration mode" ));
 	//FIXME:
-	window_illustration->addTo(tool_bar);
  	window_illustration->setVisible(false); 
 	
 	window_animation = new QAction( icon_ani_mode, tr( "&Animation Mode" ), tr("F10"), this);
 	connect(window_animation, SIGNAL(activated()), this, SLOT(slotSeeAnimation()));
-	window_animation->addTo(tool_bar);
 	window_animation->setStatusTip(tr("Turns to the animation mode"));
 	
+	//porque no poner teclas aceleradoras para estas acciones
+	QActionGroup *gridGroup = new QActionGroup( this );
+	gridGroup->setExclusive( true ); 
+	
+	view_no_grid = new QAction( icon_no_grid, tr( "&No Grid" ), QString::null, gridGroup);
+	connect(view_no_grid, SIGNAL(activated()), this, SLOT(slotNoGrid()));
+	view_no_grid->setToggleAction ( true );
+	view_no_grid->setStatusTip(tr("Hides the grid" ));
+	
+	view_grid12 = new QAction( icon_grid12, tr( "&12 Field Grid" ), QString::null, gridGroup);
+	view_grid12->setToggleAction ( true );
+	connect(view_grid12, SIGNAL(activated()), this, SLOT(slotSeeGrid12()));
+	view_grid12->setStatusTip(tr("Shows a 12 field grid" ));
+	
+	view_grid16 = new QAction( icon_grid16, tr( "&16 Field Grid" ), QString::null, gridGroup);
+	view_grid16->setToggleAction ( true );
+	connect(view_grid16, SIGNAL(activated()), this, SLOT(slotSeeGrid16()));
+	view_grid16->setStatusTip(tr("Shows a 16 field grid" ));
+	view_grid16->setOn(true);
+	
+	view_subgrid = new QAction( icon_subgrid, tr( "&Subgrid" ), QString::null, this),
+	view_subgrid->setToggleAction ( true );
+	connect(view_subgrid, SIGNAL(activated()), this, SLOT(slotSeeSubgrid()));
+	view_subgrid->setStatusTip(tr("Shows or hides a 3 field subgrid in the current grid" ));
+	
+	
+	//FIXME: porque no colocarle teclas aceleradoras a estas acciones
+	view_front_back_grid = new QAction( icon_front_back_grid, tr( "Grid to Front/Back" ), QString::null, this);
+	view_front_back_grid->setToggleAction ( true );
+	view_front_back_grid->setOn(true);
+	connect(view_front_back_grid, SIGNAL(activated()), this, SLOT(slotFrontBackGrid()));
+	view_front_back_grid->setStatusTip(tr("Sends the grid to the front or to the back of the drawing area" ));
+	
+	view_ntsc = new QAction( icon_ntsc, tr( "&NTSC Zone" ), QString::null, this);
+	view_ntsc->setToggleAction ( true );
+	connect(view_ntsc, SIGNAL(activated()), this, SLOT(slotSeeNTSC()));
+	view_ntsc->setStatusTip(tr("Shows or hides the NTSC Zone" ));
+	
+	view_light_table = new QAction( icon_light_table, tr( "&Light Table" ), QString::null, this);
+	connect(view_light_table, SIGNAL(activated()), this, SLOT(slotLightTable()));
+	view_light_table->setStatusTip(tr("Activates or deactivates the light table" ));
+	
+	QActionGroup *viewPreviousGroup = new QActionGroup( this );
+	viewPreviousGroup->setExclusive( true );
+	
+	view_no_previous = new QAction( icon_no_previous, tr( "No Previous" ), Key_0, viewPreviousGroup);
+	connect(view_no_previous, SIGNAL(activated()), this, SLOT(slotNoPreviousOnionSkin()));
+	view_no_previous->setToggleAction ( true );
+	view_no_previous->setStatusTip(tr("Disables previous onion skin visualization"));
+	
+	view_previous = new QAction( icon_previous, tr( "Previous One" ), Key_1, viewPreviousGroup);
+	connect(view_previous, SIGNAL(activated()), this, SLOT(slotPreviousOnionSkin()));
+	view_previous->setStatusTip(tr("Shows the previous onion skin" ));
+	view_previous->setToggleAction ( true );
+	
+	view_previous2 = new QAction( icon_previous2, tr( "Previous Two" ), Key_2, viewPreviousGroup);
+	connect(view_previous2, SIGNAL(activated()), this, SLOT(slotPrevious2OnionSkin()));
+	view_previous2->setStatusTip(tr("Shows the previous 2 onion skins" ));
+	view_previous2->setToggleAction ( true );
+	
+	view_previous3 = new QAction( icon_previous3, tr( "Previous Three" ), Key_3, viewPreviousGroup);
+	view_previous3->setToggleAction ( true );
+	connect(view_previous3, SIGNAL(activated()), this, SLOT(slotPrevious3OnionSkin()));
+	view_previous3->setStatusTip(tr("Shows the previous 3 onion skins" ));
+	
+	view_no_previous->setOn( true );
+	QActionGroup *viewNextGroup = new QActionGroup( this );
+	viewNextGroup->setExclusive( true );
+	
+	
+	view_no_next = new QAction( icon_no_next, tr( "No Next" ), CTRL+Key_0, viewNextGroup);
+	view_no_next->setToggleAction ( true );
+	connect(view_no_next, SIGNAL(activated()), this, SLOT(slotNoNextOnionSkin()));
+	view_no_next->setStatusTip(tr("Disables next onion skin visualization" ));
+	
+	view_next = new QAction( icon_next, tr( "Next One" ), CTRL+Key_1, viewNextGroup);
+	view_next->setToggleAction ( true );
+	connect(view_next, SIGNAL(activated()), this, SLOT(slotNextOnionSkin()));
+	view_next->setStatusTip(tr("Shows the next onion skin"));
+	
+	view_next2 = new QAction( icon_next2, tr( "Next Two" ), CTRL+Key_2, viewNextGroup);
+	view_next2->setToggleAction(true );
+	connect(view_next2, SIGNAL(activated()), this, SLOT(slotNext2OnionSkin()));
+	view_next2->setStatusTip(tr("Shows the next 2 onion skins"));
+	
+	view_next3 = new QAction( icon_next3, tr( "Next Three" ), CTRL+Key_3, viewNextGroup);
+	view_next3->setToggleAction(true );
+	connect(view_next3, SIGNAL(activated()), this, SLOT(slotNext3OnionSkin()));
+	view_next3->setStatusTip(tr("Shows the next 3 onion skins"));
+	view_no_next->setOn( true );
+	
+	
+	//create action to menu
+	file_save_as = new QAction( tr( "Save &As..." ), QString::null, this);
+	connect(file_save_as, SIGNAL(activated()), this, SLOT(slotSaveAs()));
+	file_save_as->setStatusTip(tr("Opens a dialog box to save the current document in any location"));
+
+	
+	file_close = new QAction(icon_close, tr( "Cl&ose" ), tr("Ctrl+W"), this);
+	file_close->setStatusTip(tr("Closes the active document"));
+	
+	file_import = new QAction(icon_import, tr( "&Import..." ),  tr("Ctrl+I"), this);
+	connect(file_import, SIGNAL(activated()), this, SLOT(slotImport()));
+	file_import->setStatusTip(tr("Imports a file in the supported format"));
+	
+	file_export = new QAction(icon_export, tr( "&Export..." ),  tr("Ctrl+E"), this);
+	connect(file_export, SIGNAL(activated()), this, SLOT(slotExport()));
+	file_export->setStatusTip(tr("Exports this document as a file in the available formats"));
+
+	file_export->setVisible(false);
+	file_properties = new QAction( tr( "&Properties..." ),  QString::null, this);
+	connect(file_properties, SIGNAL(activated()), this, SLOT(slotProperties()));
+	file_properties->setStatusTip(tr("Opens the properties dialog box"));
+	
+	file_exit = new QAction(icon_export, tr( "E&xit" ),  tr("Ctrl+Q"), this);
+	connect(file_exit, SIGNAL(activated()), this, SLOT(close()));
+	file_exit->setStatusTip(tr("Closes the application"));
+	
+	edit_paste_in_place = new QAction( tr(  "Paste &In Place" ),  tr("Ctrl+Shift+V"), this);
+	connect(edit_paste_in_place, SIGNAL(activated()), this, SLOT(slotPasteInPlace()));
+	edit_paste_in_place->setStatusTip(tr("Pastes the clipboard into the same place as the copy was did"));
+	
+	edit_delete = new QAction( tr(  "&Delete" ), Key_Delete , this);
+	connect(edit_delete, SIGNAL(activated()), this, SLOT(slotDelete()));
+	edit_delete->setStatusTip(tr("Deletes the selected object"));
+	
+	edit_select_all = new QAction( tr(  "&Select All" ),  tr("Ctrl+A"), this);
+	connect(edit_select_all, SIGNAL(activated()), this, SLOT(slotSelectAll()));
+	edit_select_all->setStatusTip(tr("Selects all objects in the document"));
+	
+	edit_preferences = new QAction( tr( "Pr&eferences..." ), QString::null, this);
+	connect(edit_preferences, SIGNAL(activated()), this, SLOT( slotPreferences()));
+	edit_preferences->setStatusTip(tr("Opens the preferences dialog box"));
+	
+	view_zoom_in = new QAction(icon_zoom_in, tr( "Zoom &In" ),tr("Ctrl++") , this);
+	connect(view_zoom_in, SIGNAL(activated()), this, SLOT( slotZoomIn()));
+	view_zoom_in->setStatusTip(tr("Performs a Zoom In of the drawing area"));
+	
+	view_zoom_out = new QAction(icon_zoom_out, tr( "Zoom &Out" ),tr("Ctrl+-") , this);
+	connect(view_zoom_out, SIGNAL(activated()), this, SLOT( slotZoomOut()));
+	view_zoom_out->setStatusTip(tr("Performs a Zoom Out of the drawing area"));
+	
+	view_fit = new QAction(icon_fit, tr( "&Fit" ), QString::null, this);
+	connect(view_fit, SIGNAL(activated()), this, SLOT( slotFit()));
+	view_fit->setStatusTip(tr("Fits the grid into the drawing area"));
+	
+	view_rotate_clockwise = new QAction( tr( "Rotate &Clockwise" ), tr("V"), this);
+	connect(view_rotate_clockwise, SIGNAL(activated()), this, SLOT( slotRotateClockwise()));
+	view_rotate_clockwise->setStatusTip(tr("Rotates the scene 30 degrees clockwise"));
+	
+	view_rotate_counterclockwise = new QAction( tr( "Rotate Counterclock&wise" ), tr("C"), this);
+	connect(view_rotate_counterclockwise, SIGNAL(activated()), this, SLOT( slotRotateCounterClockwise()));
+	view_rotate_counterclockwise->setStatusTip(tr("Rotates the scene 30 degrees counterclockwise"));
+	
+	view_restore_rotation = new QAction( tr( "&Restore Rotation" ), tr("Shift+C"), this);
+	connect(view_restore_rotation, SIGNAL(activated()), this, SLOT( slotRestoreRotation()));
+	view_restore_rotation->setStatusTip(tr("Restores any rotation performed on the scene"));
+	
+	insert_layer = new QAction( tr( "&Layer" ), QString::null, this);
+	connect(insert_layer, SIGNAL(activated()), this, SLOT( slotInsertLayer()));
+	insert_layer->setStatusTip(tr("Inserts a new layer into the Exposure Sheet and Timeline"));
+	
+	insert_frame = new QAction( tr( "&Frame" ), tr("F5"), this);
+	connect(insert_frame, SIGNAL(activated()), this, SLOT( slotInsertFrame()));
+	insert_frame->setStatusTip(tr("Inserts a frame into the current layer of the Timeline"));
+	insert_frame->setVisible(false);
+	
+	insert_remove_frame = new QAction( tr( "&Remove Frame" ), tr("Shift+F5"), this);
+	connect(insert_frame, SIGNAL(activated()), this, SLOT( slotRemoveFrame()));
+	insert_remove_frame->setStatusTip(tr("Removes a frame from the current layer of the Timeline"));
+	insert_remove_frame->setVisible(false);
+	
+	insert_keyframe = new QAction( tr( "&KeyFrame" ), tr("F6"), this);
+	connect(insert_frame, SIGNAL(activated()), this, SLOT( slotInsertKeyFrame()));
+	insert_keyframe->setStatusTip(tr("Inserts a keyframe into the ExposureSheet and Timeline"));
+	
+	insert_scene = new QAction( tr( "&Scene" ), QString::null, this);
+	insert_scene->setStatusTip(tr("Inserts a new scene"));
+	
+	insert_remove_scene = new QAction( tr( "Re&move  Scene" ), QString::null, this);
+	insert_remove_scene->setStatusTip(tr("Removes the selected scene"));
+
+	tools_normal_selection = new QAction(icon_selection, tr( "Normal &Selection" ), tr("S"), this);
+	connect(tools_normal_selection, SIGNAL(activated()), this, SLOT( slotNormalSelection()));
+	tools_normal_selection->setStatusTip(tr("Activates the Selection tool"));
+	
+	tools_contour_selection = new QAction(icon_nodes, tr( "Con&tour Selection" ), tr("T"), this);
+	connect(tools_contour_selection, SIGNAL(activated()), this, SLOT( slotContourSelection()));
+	tools_contour_selection->setStatusTip(tr("Activates the Node Selection tool"));
+	
+	tools_brush = new QAction(icon_brush, tr( "Con&tour Selection" ), tr("B"), this);
+	connect(tools_brush, SIGNAL(activated()), this, SLOT( slotBrush()));
+	tools_brush->setStatusTip(tr("Activates the Brush tool"));
+	
+	tools_pencil = new QAction(icon_pencil, tr( "&Pencil" ), tr("P"), this);
+	connect(tools_pencil, SIGNAL(activated()), this, SLOT( slotPencil()));
+	tools_pencil->setStatusTip(tr("Activates the Pencil tool"));
+	
+	tools_pen = new QAction(icon_pen, tr( "&Pen" ), tr("N"), this);
+	connect(tools_pen, SIGNAL(activated()), this, SLOT( slotPen()));
+	tools_pen->setStatusTip(tr("Activates the Pen tool"));
+	
+	tools_line = new QAction(icon_line, tr( "&Pen" ), tr("L"), this);
+	connect(tools_line, SIGNAL(activated()), this, SLOT( slotLine()));
+	tools_line->setStatusTip(tr("Activates the Line tool"));
+	
+	tools_rectangle = new QAction(icon_rectangle, tr( "&Rectangle" ), tr("R"), this);
+	connect(tools_rectangle, SIGNAL(activated()), this, SLOT( slotRectangle()));
+	tools_rectangle->setStatusTip(tr("Activates the Rectangle tool"));
+	
+	tools_ellipse = new QAction(icon_ellipse, tr( "&Ellipse" ), tr("E"), this);
+	connect(tools_ellipse, SIGNAL(activated()), this, SLOT( slotEllipse()));
+	tools_ellipse->setStatusTip(tr("Activates the Ellipse tool"));
+	
+	tools_fill = new QAction(icon_fill, tr( "&Fill" ), tr("F"), this);
+	connect(tools_fill, SIGNAL(activated()), this, SLOT( slotFill()));
+	tools_fill->setStatusTip(tr("Activates the Fill tool"));
+	
+	tools_remove_fill = new QAction(icon_remove_fill, tr( "&Remove Fill" ), tr("Shift+F"), this);
+	connect(tools_remove_fill, SIGNAL(activated()), this, SLOT( slotRemoveFill()));
+	tools_remove_fill->setStatusTip(tr("Activates the Remove Fill tool"));
+	
+	tools_contour_fill = new QAction(icon_contour_fill, tr( "&Contour Fill" ), tr("Ctrl+F"), this);
+	connect(tools_contour_fill, SIGNAL(activated()), this, SLOT( slotContourFill()));
+	tools_contour_fill->setStatusTip(tr("Activates the Contour Fill tool"));
+	
+	tools_dropper = new QAction(icon_dropper, tr( "&Dropper" ), tr("D"), this);
+	connect(tools_dropper, SIGNAL(activated()), this, SLOT( slotDropper()));
+	tools_dropper->setStatusTip(tr("Activates the Dropper tool"));
+	
+	tools_eraser = new QAction(icon_eraser, tr( "&Eraser" ) , CTRL+Key_Delete, this);
+	connect(tools_eraser, SIGNAL(activated()), this, SLOT( slotEraser()));
+	tools_eraser->setStatusTip(tr("Activates the Eraser tool"));
+	
+	tools_slicer = new QAction(icon_dropper, tr( "&Slicer" ), CTRL+Key_Delete, this);
+	connect(tools_slicer, SIGNAL(activated()), this, SLOT( slotSlicer()));
+	tools_slicer->setStatusTip(tr("Activates the Slicer tool"));
+	
+	tools_magnifying_glass = new QAction(icon_magnifying_glass, tr( "&Magnifying Glass" ), tr("M"), this);
+	connect(tools_magnifying_glass, SIGNAL(activated()), this, SLOT( slotMagnifyingGlass()));
+	tools_magnifying_glass->setStatusTip(tr("Activates the Magnifying Glass tool"));
+	
+	tools_hand = new QAction(icon_hand, tr( "&Hand" ), tr("H"), this);
+	connect(tools_hand, SIGNAL(activated()), this, SLOT( slotHand()));
+	tools_hand->setStatusTip(tr("Activates the Hand tool"));
+	
+	tools_group = new QAction(icon_group, tr( "&Group" ), QString::null, this);
+	connect(tools_group, SIGNAL(activated()), this, SLOT( slotGroup()));
+	tools_group->setStatusTip(tr("Group the selected objects into a single one"));
+	
+	tools_ungroup = new QAction(icon_ungroup, tr( "&Ungroup" ), QString::null, this);
+	connect(tools_ungroup, SIGNAL(activated()), this, SLOT( slotUngroup()));
+	tools_ungroup->setStatusTip(tr("Ungroups the selected object"));
+	
+	tools_bring_front = new QAction(icon_bring_to_front, tr( "&Bring to Front" ), CTRL+SHIFT+Key_Up, this);
+	connect(tools_bring_front, SIGNAL(activated()), this, SLOT( slotBringToFront()));
+	tools_bring_front->setStatusTip(tr("Brings the selected object to the front"));
+	
+	tools_send_back = new QAction(icon_send_to_back, tr( "&Send to Back" ), CTRL+SHIFT+Key_Down, this);
+	connect(tools_send_back, SIGNAL(activated()), this, SLOT( slotSendToBack()));
+	
+	tools_send_back->setStatusTip(tr("Sends the selected objects to the back"));
+	tools_one_step_forward = new QAction(icon_one_forward, tr( "One Step &Forward" ), CTRL+Key_Up, this);
+	connect(tools_one_step_forward, SIGNAL(activated()), this, SLOT( slotOneStepForward()));
+	tools_one_step_forward->setStatusTip(tr("Moves the selected object one step forward"));
+	
+	tools_one_step_backward = new QAction(icon_one_backward, tr( "One Step B&ackward" ), CTRL+Key_Down, this);
+	connect(tools_one_step_backward, SIGNAL(activated()), this, SLOT( slotOneStepBackward()));
+	tools_one_step_backward->setStatusTip(tr("Moves the selected object one step backward"));
+	
+	tools_left = new QAction(icon_align_l, tr( "&Left" ),  QString::null, this);
+	connect(tools_left, SIGNAL(activated()), this, SLOT( slotAlignLeft()));
+	tools_left->setStatusTip(tr("Aligns the selected object to the left"));
+	
+	tools_center_vertically = new QAction(icon_align_cv, tr( "&Center Vertically" ),  QString::null, this);
+	connect(tools_center_vertically, SIGNAL(activated()), this, SLOT( slotCenterVertically()));
+	tools_center_vertically->setStatusTip(tr("Centers vertically the selected object"));
+	
+	tools_right = new QAction(icon_align_r, tr( "&Right" ),  QString::null, this);
+	connect(tools_right, SIGNAL(activated()), this, SLOT( slotAlignRight()));
+	tools_right->setStatusTip(tr("Aligns the selected object to the right"));
+	
+	tools_top = new QAction(icon_align_t, tr( "&Top" ),  QString::null, this);
+	connect(tools_top, SIGNAL(activated()), this, SLOT( slotAlignTop()));
+	tools_top->setStatusTip(tr("Aligns the selected object to the top"));
+	
+	tools_center_horizontally = new QAction(icon_align_ch, tr( "Center &Horizontally" ),  QString::null, this);
+	connect(tools_center_horizontally, SIGNAL(activated()), this, SLOT( slotCenterHorizontally()));
+	tools_center_horizontally->setStatusTip(tr("Centers horizontally the selected object"));
+	
+	tools_bottom = new QAction(icon_align_b, tr( "&Bottom" ),  QString::null, this);
+	connect(tools_bottom, SIGNAL(activated()), this, SLOT( slotAlignBottom()));
+	tools_bottom->setStatusTip(tr("Aligns the selected object to the bottom"));
+	
+	tools_flip_horizontally = new QAction(tr( "Flip &Horizontally" ),  QString::null, this);
+	connect(tools_flip_horizontally, SIGNAL(activated()), this, SLOT( slotFlipHorizontally()));
+	tools_flip_horizontally->setStatusTip(tr("Flips the selected object horizontally"));
+	
+	tools_flip_vertically = new QAction(tr( "Flip &Vertically" ),  QString::null, this);
+	connect(tools_flip_vertically, SIGNAL(activated()), this, SLOT( slotFlipVertically()));
+	tools_flip_vertically->setStatusTip(tr("Flips the selected object vertically"));
+	
+	tools_rotate_cw90 = new QAction(tr( "&Rotate 90 CW" ),  QString::null, this);
+	connect(tools_rotate_cw90, SIGNAL(activated()), this, SLOT( slotRotateCW90()));
+	tools_rotate_cw90->setStatusTip(tr("Rotates the selected object 90 degrees clockwise"));
+	
+	tools_rotate_ccw90 = new QAction(tr( "&Rotate 90 CCW" ),  QString::null, this);
+	connect(tools_rotate_ccw90, SIGNAL(activated()), this, SLOT( slotRotateCCW90()));
+	tools_rotate_ccw90->setStatusTip(tr("Rotates the selected object 90 degrees counterclockwise"));
+	
+	tools_rotate180 = new QAction(tr( "&Rotate &180" ),  QString::null, this);
+	connect(tools_rotate180, SIGNAL(activated()), this, SLOT( slotRotate180()));
+	tools_rotate180->setStatusTip(tr("Rotates the selected object 180 degrees"));
+	
+	tools_perspective = new QAction(icon_perspective, tr( "&Perspective" ),  QString::null, this);
+	connect(tools_perspective, SIGNAL(activated()), this, SLOT( slotPerspectiveSelection()));
+	tools_perspective->setStatusTip(tr("Activates the perspective tool"));
+	
+	control_play = new QAction(tr( "&Play/Stop" ),  Key_Return, this);
+	connect(control_play, SIGNAL(activated()), this, SLOT( slotPlayStop()));
+	control_play->setStatusTip(tr("Plays the Animation"));
+	
+	control_rewind = new QAction(tr( "&Rewind" ),  CTRL+Key_Comma, this);
+	connect(control_rewind, SIGNAL(activated()), this, SLOT( slotRewind()));
+	control_rewind->setStatusTip(tr("Rewinds the Animation"));
+	
+	control_go_to_end = new QAction(tr( "Go to &End" ),  CTRL+Key_Period, this);
+	connect(control_go_to_end, SIGNAL(activated()), this, SLOT( slotGoToEnd()));
+	control_go_to_end->setStatusTip(tr("Goes to the last frame of the Animation"));
+	
+	control_step_forward = new QAction(tr( "Step &Forward" ),  Key_Period, this);
+	connect(control_step_forward, SIGNAL(activated()), this, SLOT( slotStepForward()));
+	control_step_forward->setStatusTip(tr("Steps one frame forward in the animation"));
+	
+	control_step_backward = new QAction(tr( "Step &Backward" ), Key_Comma, this);
+	connect(control_step_backward, SIGNAL(activated()), this, SLOT( slotStepBackward()));
+	control_step_backward->setStatusTip(tr("Goes to the last frame of the Animation"));
+	help_contents = new QAction(tr( "&Contents" ),  tr("F1"), this);
+	connect(help_contents, SIGNAL(activated()), this, SLOT( slotContents()));
+	help_contents->setStatusTip(tr("Shows the help of the application"));
+	
+	help_about = new QAction(tr( "&About K-Toon..." ), QString::null, this);
+	connect(help_about, SIGNAL(activated()), this, SLOT( slotAbout()));
+	help_about->setStatusTip(tr("Shows information about the authors and another stuff"));
+	
+	help_about_qt = new QAction(tr( "About &Qt..." ), QString::null, this);
+	connect(help_about_qt, SIGNAL(activated()), qApp, SLOT( aboutQt()));
+	help_about_qt->setStatusTip(tr("Shows information about Qt"));
+	
+	help_about_opengl = new QAction(tr( "About &OpenGL..." ), QString::null, this);
+	connect(help_about_opengl, SIGNAL(activated()), this, SLOT( slotAboutOpenGL()));
+	help_about_opengl->setStatusTip(tr("Shows information about OpenGL"));
+}
+
+void KToon::setupToolBar()
+{
+	tool_bar = new QToolBar( this );
+	tool_bar -> setLabel( tr( "File and Edit Operations" ) );
+	file_new->addTo(tool_bar);
+	file_open->addTo(tool_bar);
+	file_save->addTo(tool_bar);
+	tool_bar -> addSeparator();
+	edit_undo->addTo(tool_bar);
+	edit_redo->addTo(tool_bar);
+	tool_bar -> addSeparator();
+	edit_cut->addTo(tool_bar);
+	edit_copy->addTo(tool_bar);
+	edit_paste->addTo(tool_bar);
+	window_drawing_area->addTo(tool_bar);
+	tool_bar -> addSeparator();
+	window_tools->addTo(tool_bar);
+	window_exposure_sheet->addTo(tool_bar);
+	window_color_palette->addTo(tool_bar);
+	window_brushes->addTo(tool_bar);
+	window_scenes->addTo(tool_bar);
+	window_library->addTo(tool_bar);
+	
+	window_timeline = new QToolButton( icon_time_line, tr( "Timeline" ), QString::null, this, SLOT( slotWindowTimeline() ), tool_bar );
+	window_timeline -> hide();
+	window_render_camera_preview->addTo(tool_bar);
+	window_top_camera_view->addTo(tool_bar);
+	window_side_camera_view->addTo(tool_bar);
+	tool_bar -> addSeparator();
+	window_illustration->addTo(tool_bar);
+	window_animation->addTo(tool_bar);
+
 	tool_bar2 = new QToolBar( this );
 	tool_bar2 -> setLabel( tr( "View Operations" ) );
-//     tool_bar2 -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
 
-	view_no_grid = new QToolButton( icon_no_grid, tr( "No Grid" ), QString::null, this, SLOT( slotNoGrid() ), tool_bar2 );
-	view_grid12 = new QToolButton( icon_grid12, tr( "Grid of 12 Fields" ), QString::null, this, SLOT( slotSeeGrid12() ), tool_bar2 );
-	view_grid16 = new QToolButton( icon_grid16, tr( "Grid of 16 Fields" ), QString::null, this, SLOT( slotSeeGrid16() ), tool_bar2 );
-	view_subgrid = new QToolButton( icon_subgrid, tr( "Grid with a 3 field Subgrid" ), QString::null, this, SLOT( slotSeeSubgrid() ), tool_bar2 );
+	view_no_grid->addTo(tool_bar2);
+	view_grid12->addTo(tool_bar2);
+	view_grid16->addTo(tool_bar2);
+	view_subgrid->addTo(tool_bar2);
+	view_front_back_grid->addTo(tool_bar2);
 	tool_bar2 -> addSeparator();
-	view_front_back_grid = new QToolButton( icon_front_back_grid, tr( "Sends the grid to the front or to the back" ), QString::null, this, SLOT( slotFrontBackGrid() ), tool_bar2 );
-	view_ntsc = new QToolButton( icon_ntsc, tr( "NTSC Zone" ), QString::null, this, SLOT( slotSeeNTSC() ), tool_bar2 );
-	view_light_table = new QToolButton( icon_light_table, tr( "Light Table" ), QString::null, this, SLOT( slotLightTable() ), tool_bar2 );
+	view_ntsc->addTo(tool_bar2);
+	view_light_table->addTo(tool_bar2);
 	tool_bar2 -> addSeparator();
-	view_no_previous = new QToolButton( icon_no_previous, tr( "No Previous Onion Skin" ), QString::null, this, SLOT( slotNoPreviousOnionSkin() ), tool_bar2 );
-	view_previous = new QToolButton( icon_previous, tr( "Previous Onion Skin" ), QString::null, this, SLOT( slotPreviousOnionSkin() ), tool_bar2 );
-	view_previous2 = new QToolButton( icon_previous2, tr( "Previous Two Onion Skin" ), QString::null, this, SLOT( slotPrevious2OnionSkin() ), tool_bar2 );
-	view_previous3 = new QToolButton( icon_previous3, tr( "Previous Three Onion Skin" ), QString::null, this, SLOT( slotPrevious3OnionSkin() ), tool_bar2 );
-	view_no_previous -> setDown( true );
-	previous_toggled = view_no_previous;
-	tool_bar2 -> addSeparator();
-	view_no_next = new QToolButton( icon_no_next, tr( "No Next Onion Skin" ), QString::null, this, SLOT( slotNoNextOnionSkin() ), tool_bar2 );
-	view_next = new QToolButton( icon_next, tr( "Next Onion Skin" ), QString::null, this, SLOT( slotNextOnionSkin() ), tool_bar2 );
-	view_next2 = new QToolButton( icon_next2, tr( "Next Two Onion Skin" ), QString::null, this, SLOT( slotNext2OnionSkin() ), tool_bar2 );
-	view_next3 = new QToolButton( icon_next3, tr( "Next Three Onion Skin" ), QString::null, this, SLOT( slotNext3OnionSkin() ), tool_bar2 );
-	view_no_next -> setDown( true );
-	next_toggled = view_no_next; 
+	view_no_previous->addTo(tool_bar2);
+	view_previous->addTo(tool_bar2);
+	view_previous2->addTo(tool_bar2);
+	view_previous3->addTo(tool_bar2);
+	tool_bar2->addSeparator();
+	view_no_next->addTo(tool_bar2);
+	view_next->addTo(tool_bar2);
+	view_next2->addTo(tool_bar2);
+	view_next3->addTo(tool_bar2);
 }
 
 void KToon::setupMenu()
 {
-	    //FILE MENU
+	//FILE MENU
 	file = new QPopupMenu( this );
 	id_file = menuBar() -> insertItem( tr("&File"), file );
-
-	id_file_new = file -> insertItem( icon_new, tr( "&New..." ), this, SLOT( slotNewDocument() ), CTRL+Key_N );
-	id_file_open = file -> insertItem( icon_open, tr( "&Open..." ), this, SLOT( slotChoose() ), CTRL+Key_O );
-
+	file_new->addTo(file);
+	file_open->addTo(file);
 	open_recent = new QPopupMenu( this );
-
-	//connect( open_recent, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
 	connect( open_recent, SIGNAL( activated( int ) ), SLOT( slotOpenRecent( int ) ) );
-	file -> insertItem( tr( "Open Recent" ), open_recent );
-	id_file_save = file -> insertItem( icon_save, tr( "&Save" ), this, SLOT( slotSave() ), CTRL+Key_S );
-	id_file_save_as = file -> insertItem( tr( "Save &As..." ), this, SLOT( slotSaveAs() ) );
-	id_file_close = file -> insertItem( icon_close, tr( "Cl&ose" ) );
-	file -> setAccel( CTRL+Key_W, id_file_close );
+	file->insertItem( tr( "Open Recent" ), open_recent );
+	file_save->addTo(file);
+	file_save_as->addTo(file);
+	file_close->addTo(file);
+	file->insertSeparator();
+	file_import->addTo(file);
+	file_export->addTo(file);
+	file->insertSeparator();
+	file_properties->addTo(file);
+	file->insertSeparator();
+	file_exit->addTo(file);
 	file -> insertSeparator();
-	id_file_import = file -> insertItem( icon_import, tr( "&Import..." ), this, SLOT( slotImport() ), CTRL+Key_I );
-	id_file_export = file -> insertItem( icon_export, tr( "&Export..." ), this, SLOT( slotExport() ), CTRL+Key_E );
-	file -> setItemVisible( id_file_export, false );
-	file -> insertSeparator();
-	id_file_properties = file -> insertItem( tr( "&Properties..." ), this, SLOT( slotProperties() ) );
-	file -> insertSeparator();
-	id_file_exit = file -> insertItem( tr( "E&xit" ), this, SLOT( close() ), CTRL+Key_Q );
-	connect( file, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
-
-    //EDIT MENU
+	//EDIT MENU
 	edit = new QPopupMenu( this );
 	id_edit = menuBar() -> insertItem( tr( "&Edit" ), edit );
-
-	id_edit_undo = edit -> insertItem( icon_undo, tr( "&Undo" ), this, SLOT( slotUndo() ), CTRL+Key_Z );
-	id_edit_redo = edit -> insertItem( icon_redo, tr( "&Redo" ), this, SLOT( slotRedo() ), CTRL+SHIFT+Key_Z );
 	edit -> insertSeparator();
-	id_edit_cut = edit -> insertItem( icon_cut, tr( "&Cut" ), this, SLOT( slotCut() ), CTRL+Key_X );
-	id_edit_copy = edit -> insertItem( icon_copy, tr( "C&opy" ), this, SLOT( slotCopy() ), CTRL+Key_C );
-	id_edit_paste = edit -> insertItem( icon_paste, tr( "&Paste" ), this, SLOT( slotPaste() ), CTRL+Key_V );
-	id_edit_paste_in_place = edit -> insertItem( tr( "Paste &In Place" ), this, SLOT( slotPasteInPlace() ), CTRL+SHIFT+Key_V );
-	id_edit_delete = edit -> insertItem( tr( "&Delete" ), this, SLOT( slotDelete() ), Key_Delete );
+	edit_cut->addTo(edit);
+	edit_copy->addTo(edit);
+	edit_paste->addTo(edit);
+	edit_paste_in_place->addTo(edit);
+	edit_delete->addTo(edit);
+	edit->insertSeparator();
+	edit_select_all->addTo(edit);
 	edit -> insertSeparator();
-	id_edit_select_all = edit -> insertItem( tr( "&Select All" ), this, SLOT( slotSelectAll() ), CTRL+Key_A );
-	edit -> insertSeparator();
-	id_edit_preferences = edit -> insertItem( tr( "Pr&eferences..." ), this, SLOT( slotPreferences() ) );
-	connect( edit, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
-
-    //VIEW MENU
+	edit_preferences->addTo(edit);
+	//VIEW MENU
 	view = new QPopupMenu( this );
 	id_view = menuBar() -> insertItem( tr( "&View" ), view );
-
-	id_view_zoom_in = view -> insertItem( icon_zoom_in, tr( "Zoom &In" ), this, SLOT( slotZoomIn() ), CTRL+Key_Plus );
-	id_view_zoom_out = view -> insertItem( icon_zoom_out, tr( "Zoom &Out" ), this, SLOT( slotZoomOut() ), CTRL+Key_Minus );
-	id_view_fit = view -> insertItem( icon_fit, tr( "&Fit" ), this, SLOT( slotFit() ) );
-	view -> insertSeparator();
+	view_zoom_in->addTo(view);
+	view_zoom_out->addTo(view);
+	view_fit->addTo(view);
+	view->insertSeparator();
 	//Grid Submenu
 	grid = new QPopupMenu( this );
-	id_view_no_grid = grid -> insertItem( icon_no_grid, tr( "&No Grid" ), this, SLOT( slotNoGrid() ) );
-	id_view_grid12 = grid -> insertItem( icon_grid12, tr( "&12 Field Grid" ), this, SLOT( slotSeeGrid12() ) );
-	id_view_grid16 = grid -> insertItem( icon_grid16, tr( "&16 Field Grid" ), this, SLOT( slotSeeGrid16() ) );
-	id_view_subgrid = grid -> insertItem( icon_subgrid, tr( "&Subgrid" ), this, SLOT( slotSeeSubgrid() ) );
-	connect( grid, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
+	view_no_grid->addTo(grid);
+	view_grid12->addTo(grid);
+	view_grid16->addTo(grid);
+	view_subgrid->addTo(grid);
+	
 	view -> insertItem( tr( "&Grid" ), grid );
-	id_view_front_back_grid = view -> insertItem ( icon_front_back_grid, tr( "Grid to Front/Back" ), this, SLOT( slotFrontBackGrid() ) );
-	id_view_NTSC_zone = view -> insertItem( icon_ntsc, tr( "&NTSC Zone" ), this, SLOT( slotSeeNTSC() ) );
-	id_view_light_table = view -> insertItem( icon_light_table, tr( "&Light Table" ), this, SLOT( slotLightTable() ) );
-    	//Onion Skin Submenu
+	view_front_back_grid->addTo(view);
+	view_ntsc->addTo(view);
+	view_light_table->addTo(view);
 	onion_skin = new QPopupMenu( this );
 
-	id_view_previous_none = onion_skin -> insertItem( icon_no_previous, tr( "No Previous" ), this, SLOT( slotNoPreviousOnionSkin() ), Key_0 );
-	id_view_previous = onion_skin -> insertItem( icon_previous, tr( "Previous One" ), this, SLOT( slotPreviousOnionSkin() ), Key_1 );
-	id_view_previous2 = onion_skin -> insertItem( icon_previous2, tr( "Previous Two" ), this, SLOT( slotPrevious2OnionSkin() ), Key_2 );
-	id_view_previous3 = onion_skin -> insertItem( icon_previous3, tr( "Previous Three" ), this, SLOT( slotPrevious3OnionSkin() ), Key_3 );
-	onion_skin -> setItemChecked( id_view_previous_none, true );
-	previous_checked = id_view_previous_none;
-	id_view_next_none = onion_skin -> insertItem( icon_no_next, tr( "No Next" ), this, SLOT( slotNoNextOnionSkin() ), CTRL + Key_0 );
-	id_view_next = onion_skin -> insertItem( icon_next, tr( "Next One" ), this, SLOT( slotNextOnionSkin() ), CTRL + Key_1 );
-	id_view_next2 = onion_skin -> insertItem( icon_next2, tr( "Next Two" ), this, SLOT( slotNext2OnionSkin() ), CTRL + Key_2 );
-	id_view_next3 = onion_skin -> insertItem( icon_next3, tr( "Next Three" ), this, SLOT( slotNext3OnionSkin() ), CTRL + Key_3 );
-	onion_skin -> setItemChecked( id_view_next_none, true );
-	next_checked = id_view_next_none;
-	connect( onion_skin, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
-	view -> insertItem( tr( "Onion &Skin" ), onion_skin );
-	view -> insertSeparator();
-	id_view_rotate_clockwise = view -> insertItem( tr( "Rotate &Clockwise" ), this, SLOT( slotRotateClockwise() ), Key_V );
-	id_view_rotate_counterclockwise = view -> insertItem( tr( "Rotate Counterclock&wise" ), this, SLOT( slotRotateCounterClockwise() ), Key_C );
-	id_view_restore_rotation = view -> insertItem( tr( "&Restore Rotation" ), this, SLOT( slotRestoreRotation() ), SHIFT + Key_C );
-	connect( view, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
-
+	view_no_previous->addTo(onion_skin);
+	view_previous->addTo(onion_skin);
+	view_previous2->addTo(onion_skin);
+	view_previous3->addTo(onion_skin);
+	view_no_next->addTo(onion_skin);
+	view_next->addTo(onion_skin);
+	view_next2->addTo(onion_skin);
+	view_next3->addTo(onion_skin);
+	
+	view->insertItem( tr( "Onion &Skin" ), onion_skin );
+	view->insertSeparator();
+	view_rotate_clockwise->addTo(view);
+	view_rotate_counterclockwise->addTo(view);
+	view_restore_rotation->addTo(view);
     //INSERT MENU
 	insert = new QPopupMenu( this );
-//     insert -> setFont( QFont( "helvetica", 10 ) );
-//     insert -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
 	id_insert = menuBar() -> insertItem( tr( "&Insert" ), insert );
-
-	id_insert_layer = insert -> insertItem( tr( "&Layer" ), this, SLOT( slotInsertLayer() ) );
+	insert_layer->addTo(insert);
 	insert -> insertSeparator();
-	id_insert_frame = insert -> insertItem( tr( "&Frame" ), this, SLOT( slotInsertFrame() ), Key_F5 );
-	insert -> setItemVisible( id_insert_frame, false );
-	id_insert_remove_frame = insert -> insertItem( tr( "&Remove Frame" ), this, SLOT( slotRemoveFrame() ), SHIFT+Key_F5 );
-	insert -> setItemVisible( id_insert_remove_frame, false );
-	id_insert_keyframe = insert -> insertItem( tr("&KeyFrame"), this, SLOT( slotInsertKeyFrame() ), Key_F6 );
-	insert -> insertSeparator();
-	id_insert_scene = insert -> insertItem( tr("&Scene") );
-	id_insert_remove_scene = insert -> insertItem( tr( "Re&move Scene" ) );
-	connect( insert, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
-
+	insert_frame->addTo(insert);
+	insert_remove_frame->addTo(insert);
+	insert_keyframe->addTo(insert);
+	insert->insertSeparator();
+	insert_scene->addTo(insert);
+	insert_remove_scene->addTo(insert);
     //TOOLS MENU
 	tools = new QPopupMenu( this );
-//     tools -> setFont( QFont( "helvetica", 10 ) );
-//     tools -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
 	id_tools = menuBar() -> insertItem( tr( "&Tools" ), tools );
-
        	//Selection Submenu
 	QPopupMenu *selection = new QPopupMenu( this );
-//     selection -> setFont( QFont( "helvetica", 10 ) );
-//     selection -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-	id_tools_normal_selection = selection -> insertItem( icon_selection, tr( "Normal &Selection" ), this, SLOT( slotNormalSelection() ), Key_S );
-	id_tools_contour_selection = selection -> insertItem( icon_nodes, tr( "Con&tour Selection" ), this, SLOT( slotContourSelection() ), Key_T );
-	connect( selection, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
+	tools_normal_selection->addTo(selection);
+	tools_contour_selection->addTo(selection);
 	tools -> insertItem( tr( "&Selection" ), selection );
        	//Draw Submenu
 	QPopupMenu *draw = new QPopupMenu( this );
-//     draw -> setFont( QFont( "helvetica", 10 ) );
-//     draw -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-	id_tools_brush = draw -> insertItem( icon_brush, tr( "&Brush" ), this, SLOT( slotBrush() ), Key_B );
-	id_tools_pencil = draw -> insertItem( icon_pencil, tr( "&Pencil" ), this, SLOT( slotPencil() ), Key_P );
-	id_tools_pen = draw -> insertItem( icon_pen, tr( "&Pen" ), this, SLOT( slotPen() ), Key_N );
-	id_tools_line = draw -> insertItem( icon_line, tr( "&Line" ), this, SLOT( slotLine() ), Key_L );
-	id_tools_rectangle = draw -> insertItem( icon_rectangle, tr( "&Rectangle" ), this, SLOT( slotRectangle() ), Key_R );
-	id_tools_ellipse = draw -> insertItem( icon_ellipse, tr( "&Ellipse" ), this, SLOT( slotEllipse() ), Key_E );
-	connect( draw, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
+	tools_brush->addTo(draw);
+	tools_pencil->addTo(draw);
+	tools_pen->addTo(draw);
+	tools_line->addTo(draw);
+	tools_rectangle->addTo(draw);
+	tools_ellipse->addTo(draw);
 	tools -> insertItem( tr( "D&raw" ), draw );
        	//Fill Submenu
 	QPopupMenu *fill = new QPopupMenu( this );
-//     fill -> setFont( QFont( "helvetica", 10 ) );
-//     fill -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-	id_tools_fill = fill -> insertItem( icon_fill, tr( "&Fill" ), this, SLOT( slotFill() ), Key_F );
-	id_tools_remove_fill = fill -> insertItem( icon_remove_fill, tr( "&Remove Fill" ), this, SLOT( slotRemoveFill() ), SHIFT+Key_F );
-	id_tools_contour_fill = fill -> insertItem( icon_contour_fill, tr( "&Contour Fill" ), this, SLOT( slotContourFill() ), CTRL+Key_F );
-	id_tools_dropper = fill -> insertItem( icon_dropper, tr( "&Dropper" ), this, SLOT( slotDropper() ), Key_D );
-	connect( fill, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
-	tools -> insertItem( tr( "&Fill" ), fill );
+	tools_fill->addTo(fill);
+	tools_remove_fill->addTo(fill);
+	tools_contour_fill->addTo(fill);
+	tools_dropper->addTo(fill);
+	tools->insertItem( tr( "&Fill" ), fill );
        	//Eraser Submenu
 	QPopupMenu *eraser = new QPopupMenu( this );
-//     eraser -> setFont( QFont( "helvetica", 10 ) );
-//     eraser -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-	id_tools_eraser = eraser -> insertItem( icon_eraser, tr( "&Eraser" ), this, SLOT( slotEraser() ), SHIFT+Key_Delete );
-	id_tools_slicer = eraser -> insertItem( icon_slicer, tr( "&Slicer" ), this, SLOT( slotSlicer() ), CTRL+Key_Delete );
-	connect( eraser, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
+	tools_eraser->addTo(eraser);
+	tools_slicer->addTo(eraser);
 	tools -> insertItem( tr( "&Eraser" ), eraser );
        	//View_ Submenu
 	QPopupMenu *view_ = new QPopupMenu( this );
-//     view_ -> setFont( QFont( "helvetica", 10 ) );
-//     view_ -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-	id_tools_magnifying_glass = view_ -> insertItem( icon_magnifying_glass, tr( "&Magnifying Glass" ), this, SLOT( slotMagnifyingGlass() ), Key_M );
-	id_tools_hand = view_ -> insertItem( icon_hand, tr( "&Hand" ), this, SLOT( slotHand() ), Key_H );
-	connect( view_, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
-	tools -> insertItem( tr("&View"), view_ );
-	tools -> insertSeparator();
-	id_tools_group = tools -> insertItem( icon_group, tr( "&Group" ), this, SLOT( slotGroup() ) );
-	id_tools_ungroup = tools -> insertItem( icon_ungroup, tr( "&Ungroup" ), this, SLOT( slotUngroup() ) );
+	tools_magnifying_glass->addTo(view_);
+	tools_hand->addTo(view_);
+	tools->insertItem( tr("&View"), view_ );
+	tools->insertSeparator();
+	tools_group->addTo(tools);
+	tools_ungroup->addTo(tools);
 	tools -> insertSeparator();
     	//Order Submenu
 	QPopupMenu *order = new QPopupMenu( this );
-//     order -> setFont( QFont( "helvetica", 10 ) );
-//     order -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-	id_tools_bring_front = order -> insertItem( icon_bring_to_front, tr( "&Bring to Front" ), this, SLOT( slotBringToFront() ), CTRL+SHIFT+Key_Up );
-	id_tools_send_back = order -> insertItem( icon_send_to_back, tr( "&Send to Back" ), this, SLOT( slotSendToBack() ), CTRL+SHIFT+Key_Down );
-	id_tools_one_step_forward = order -> insertItem( icon_one_forward, tr( "One Step &Forward" ), this, SLOT( slotOneStepForward() ), CTRL+Key_Up );
-	id_tools_one_step_backward = order -> insertItem( icon_one_backward, tr( "One Step B&ackward" ), this, SLOT( slotOneStepBackward() ), CTRL+Key_Down );
-	connect( order, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
+	tools_bring_front->addTo(order);
+	tools_send_back->addTo(order);
+	tools_one_step_forward->addTo(order);
+	tools_one_step_backward->addTo(order);
 	tools -> insertItem( tr( "&Order" ), order );
     	//Align Submenu
 	QPopupMenu *align = new QPopupMenu( this );
-//     align -> setFont( QFont( "helvetica", 10 ) );
-//     align -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-	id_tools_left = align -> insertItem( icon_align_l, tr( "&Left" ), this, SLOT( slotAlignLeft() ) );
-	id_tools_center_vertically = align -> insertItem( icon_align_cv, tr( "&Center Vertically" ), this, SLOT( slotCenterVertically() ) );
-	id_tools_right = align -> insertItem( icon_align_r, tr( "&Right" ), this, SLOT( slotAlignRight() ) );
-	align -> insertSeparator();
-	id_tools_top = align -> insertItem( icon_align_t, tr( "&Top" ), this, SLOT( slotAlignTop() ) );
-	id_tools_center_horizontally = align -> insertItem( icon_align_ch, tr( "Center &Horizontally" ), this, SLOT( slotCenterHorizontally() ) );
-	id_tools_bottom = align -> insertItem( icon_align_b, tr( "&Bottom" ), this, SLOT( slotAlignBottom() ) );
-	connect( align, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
+	tools_left->addTo(align);
+	tools_center_vertically->addTo(align);
+	tools_right->addTo(align);
+	align->insertSeparator();
+	tools_top->addTo(align);
+	tools_center_horizontally->addTo(align);
+	tools_bottom->addTo(align);
 	tools -> insertItem(tr( "A&lign" ), align );
     	//Transform Submenu
 	QPopupMenu *transform = new QPopupMenu( this );
-//     transform -> setFont( QFont( "helvetica", 10 ) );
-//     transform -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-	id_tools_flip_horizontally = transform -> insertItem( tr( "Flip &Horizontally" ), this, SLOT( slotFlipHorizontally() ) );
-	id_tools_flip_vertically = transform -> insertItem( tr( "Flip &Vertically" ), this, SLOT( slotFlipVertically() ) );
+	tools_flip_horizontally->addTo(transform);
+	tools_flip_vertically->addTo(transform);
 	transform -> insertSeparator();
-	id_tools_rotate_cw90 = transform -> insertItem( tr( "&Rotate 90 CW" ), this, SLOT( slotRotateCW90() ) );
-	id_tools_rotate_ccw90 = transform -> insertItem( tr( "R&otate 90 CCW" ), this, SLOT( slotRotateCCW90() ) );
-	id_tools_rotate180 = transform -> insertItem( tr( "Rotate &180" ), this, SLOT( slotRotate180() ) );
+	tools_rotate_cw90->addTo(transform);
+	tools_rotate_ccw90->addTo(transform);
 	transform -> insertSeparator();
-	id_tools_perspective = transform -> insertItem( icon_perspective, tr( "&Perspective" ), this, SLOT( slotPerspectiveSelection() ) );
-	connect( transform, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
+	tools_rotate180->addTo(transform);
+	tools_perspective->addTo(transform);
 	tools -> insertItem( tr( "&Transform" ), transform );
-	connect( tools, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
-
     //CONTROL MENU
 	control = new QPopupMenu( this );
-//     control -> setFont( QFont( "helvetica", 10 ) );
-//     control -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
 	id_control = menuBar() -> insertItem( tr( "&Control" ), control );
-
-	id_control_play = control -> insertItem( tr( "&Play/Stop" ), this, SLOT( slotPlayStop() ), Key_Return );
-	id_control_rewind = control -> insertItem( tr( "&Rewind" ), this, SLOT( slotRewind() ), CTRL+Key_Comma );
-	id_control_go_to_end = control -> insertItem( tr( "Go to &End" ), this, SLOT( slotGoToEnd() ), CTRL+Key_Period );
+	control_play->addTo(control);
+	control_rewind->addTo(control);
+	control_go_to_end->addTo(control);
 	control -> insertSeparator();
-	id_control_step_forward = control -> insertItem( tr( "Step &Forward" ), this, SLOT( slotStepForward() ), Key_Period );
-	id_control_step_backward = control -> insertItem( tr( "Step &Backward" ), this, SLOT( slotStepBackward() ), Key_Comma );
+	control_step_forward->addTo(control);
+	control_step_backward->addTo(control);
 	menuBar() -> setItemVisible( id_control, false );
-	connect( control, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
-
     //WINDOW MENU
 	window = new QPopupMenu( this );
-//     window -> setFont( QFont( "helvetica", 10 ) );
-//     window -> setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
 	id_window = menuBar() -> insertItem( tr( "&Window" ), window );
-
-	//id_window_illustration = window ->insertItem( icon_illus_mode, tr( "&Illustration Mode" ), this, SLOT( slotSeeIllustration() ), Key_F9 );
 	window_illustration->addTo(window);
 	window_animation->addTo(window);
-// 	id_window_animation = window -> insertItem( icon_ani_mode, tr( "&Animation Mode" ), this, SLOT( slotSeeAnimation() ), Key_F10 );
 	window -> insertSeparator();
-	id_window_drawing_area = window -> insertItem( icon_drawing_area, tr( "&Drawing Area" ), this, SLOT( slotWindowDrawingArea() ), CTRL+Key_D );
-	window -> setItemChecked( id_window_drawing_area, true );
+	window_drawing_area->addTo(window);
 	window_tools->addTo(window);
-	//id_window_tools = window -> insertItem( icon_tools, tr( "&Tools" ), this, SLOT( slotWindowTools() ), CTRL+Key_T );
-	//window -> setItemChecked( id_window_tools, true );
 	window_exposure_sheet->addTo(window);
-	//id_window_exposure_sheet = window -> insertItem( icon_exposure_sheet, tr( "&Exposure Sheet" ), this, SLOT( slotWindowExposureSheet() ), CTRL+Key_H );
-	//window -> setItemChecked( id_window_exposure_sheet, true );
 	window_color_palette->addTo(window);
-	// 	id_window_color_palette = window -> insertItem( icon_color_palette, tr( "&Color Palette" ), this, SLOT( slotWindowColorPalette() ), CTRL+Key_P );
-// 	window -> setItemChecked( id_window_color_palette, true );
 	window_brushes->addTo(window);	
-// 	id_window_brushes = window -> insertItem( icon_brushes, tr( "&Brushes" ), this, SLOT( slotWindowBrushes() ), CTRL+Key_B );
-	
-	
-	//window -> setItemChecked( id_window_brushes, true );
 	window_scenes->addTo(window);
-	//id_window_scenes = window -> insertItem( icon_scenes, tr( "&Scenes" ), this, SLOT( slotWindowScenes() ), CTRL+Key_Y );
-	//window -> setItemChecked( id_window_scenes, true );
-	id_window_library = window -> insertItem( icon_library, tr( "&Library" ), this, SLOT( slotWindowLibrary() ), CTRL+Key_L );
+	window_library->addTo(window);
 	id_window_timeline = window -> insertItem( icon_time_line, tr( "T&imeline" ), this, SLOT( slotWindowTimeline() ), CTRL+Key_K );
 	window -> setItemVisible( id_window_timeline, false );
-	id_window_render_camera_preview = window -> insertItem( icon_camera_preview, tr( "&Preview Render" ), this, SLOT( slotWindowRenderCameraPreview() ), CTRL+Key_R );
-	window -> setItemVisible( id_window_render_camera_preview, false );
-	id_window_top_camera_view = window -> insertItem( icon_top_camera, tr( "T&op Camera View" ), this, SLOT( slotWindowTopCameraView() ), CTRL+Key_Slash );
-	window -> setItemVisible( id_window_top_camera_view, false );
-	id_window_side_camera_view = window -> insertItem( icon_side_camera, tr( "Si&de Camera View" ), this, SLOT( slotWindowSideCameraView() ), CTRL+Key_Asterisk );
-	window -> setItemVisible( id_window_side_camera_view, false );
-	connect( window, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
-
+	
+	window_render_camera_preview->addTo(window);
+	window_top_camera_view->addTo(window);
+	window_side_camera_view->addTo(window);
     //HELP MENU
 	help = new QPopupMenu( this );
-
 	id_help = menuBar() -> insertItem( tr( "&Help" ), help );
-
-	id_help_contents = help -> insertItem( tr( "&Contents" ), this, SLOT( slotContents() ), Key_F1 );
+	help_contents->addTo(help);	
 	help -> insertSeparator();
-	id_help_about = help -> insertItem( tr( "&About K-Toon..." ), this, SLOT( slotAbout() ) );
-	id_help_about_qt = help -> insertItem( tr( "About &Qt..." ), qApp, SLOT( aboutQt() ) );
-	id_help_about_opengl = help -> insertItem( tr( "About &OpenGL..." ), this, SLOT( slotAboutOpenGL() ) );
-	connect( help, SIGNAL( highlighted( int ) ), SLOT( slotStatusBarMessage( int ) ) );
+	help_about->addTo(help);
+	help_about_qt->addTo(help);
+	help_about_opengl->addTo(help);
+
 }
 
 void KToon::setupDialogs()
@@ -740,20 +1052,30 @@ void KToon::setupDialogs()
 	brushes_dialog -> show();
 	QObject::connect(brushes_dialog, SIGNAL(activate(bool)),
  			 window_brushes, SLOT(setOn(bool)));
-	library_dialog = new Library( this, Qt::WStyle_Tool, window, id_window_library, KTStatus->currentDrawingArea(), window_library );
-
+	
+	library_dialog = new Library( this, KTStatus->currentDrawingArea());
+	QObject::connect(library_dialog, SIGNAL(activate(bool)),
+			 window_library , SLOT(setOn(bool)));
+	
 	//For animation
 	timeline_dialog = new Timeline( this, Qt::WStyle_Tool, window, id_window_timeline, window_timeline );
 	list_of_tl.append( timeline_dialog );
 	
 	m_cameraPreview = new KTCameraPreview(main_panel);
  	m_cameraPreview -> hide();
-	
-	top_camera_view = new GLTopCameraView( main_panel, this, window, id_window_top_camera_view, window_top_camera_view, KTStatus->currentDrawingArea() );
+	QObject::connect(m_cameraPreview, SIGNAL(activate(bool)),
+			 window_render_camera_preview, SLOT(setOn(bool)));
+
+	//FIXME: kuadrosx
+	top_camera_view = new GLTopCameraView( main_panel, KTStatus->currentDrawingArea() );
 	top_camera_view -> hide();
+	QObject::connect(top_camera_view, SIGNAL(activate(bool)),
+			 window_top_camera_view , SLOT(setOn(bool)));
 	
-	side_camera_view = new GLSideCameraView( main_panel, this, window, id_window_side_camera_view, window_side_camera_view, KTStatus->currentDrawingArea() );
+ 	side_camera_view = new GLSideCameraView( main_panel, KTStatus->currentDrawingArea() );
 	side_camera_view -> hide();
+	QObject::connect(side_camera_view, SIGNAL(activate(bool)),
+			 window_side_camera_view , SLOT(setOn(bool)));
 }
 
 //-------------- DESTRUCTOR -----------------
@@ -1560,16 +1882,16 @@ void KToon::slotNewDocument()
 		
 		brushes_dialog = new Brushes( this, Qt::WStyle_Tool/*, window, id_window_brushes, window_brushes*/ );
 	
-		library_dialog = new Library( this, Qt::WStyle_Tool, window, id_window_library, KTStatus->currentDrawingArea(), window_library );
+		library_dialog = new Library( this, KTStatus->currentDrawingArea());
 	
 		m_cameraPreview = new KTCameraPreview(main_panel);
 // 		render_camera_preview = new GLRenderCameraPreview( main_panel, this, window, id_window_render_camera_preview, window_render_camera_preview, KTStatus->currentDrawingArea() );
 // 		render_camera_preview->hide();
 		
-		top_camera_view = new GLTopCameraView( main_panel, this, window, id_window_top_camera_view, window_top_camera_view, KTStatus->currentDrawingArea() );
+		top_camera_view = new GLTopCameraView( main_panel, KTStatus->currentDrawingArea() );
 		top_camera_view->hide();
 		
-		side_camera_view = new GLSideCameraView( main_panel, this, window, id_window_side_camera_view, window_side_camera_view, KTStatus->currentDrawingArea() );
+		side_camera_view = new GLSideCameraView( main_panel, KTStatus->currentDrawingArea() );
 		side_camera_view->hide();
 
 		list_of_es.append( exposure_sheet_dialog );
@@ -1622,9 +1944,11 @@ void KToon::slotNewDocument()
 		connect( timeline_dialog -> frameSequenceManager() -> frameLayout(), SIGNAL( motionTweenCreatedToES( int ) ), exposure_sheet_dialog, SLOT( slotCreateMotionTween( int ) ) );
 		connect( timeline_dialog -> frameSequenceManager() -> frameLayout(), SIGNAL( motionTweenRemovedToES( int ) ), exposure_sheet_dialog, SLOT( slotRemoveMotionTween( int ) ) );
 
-		insert -> connectItem( id_insert_scene, scenes_dialog, SLOT( slotInsertScene() ) );
-		insert -> connectItem( id_insert_remove_scene, scenes_dialog, SLOT( slotRemoveScene() ) );
-		file -> connectItem( id_file_close, KTStatus->currentDrawingArea(), SLOT( close() ) );
+		connect(insert_scene, SIGNAL(activated()), scenes_dialog, SLOT(slotInsertScene()));
+		connect(insert_remove_scene, SIGNAL(activated()), scenes_dialog, SLOT(slotRemoveScene()));
+		
+		connect(file_close, SIGNAL(activated()), KTStatus->currentDrawingArea(), SLOT(close()));
+		
 		connect( KTStatus->currentDrawingArea(), SIGNAL( closed() ), SLOT( slotCloseDrawingArea() ) );
 
 		connect( color_palette_dialog, SIGNAL( outlineColorChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeOutlineColor() ) );
@@ -1645,13 +1969,13 @@ void KToon::slotNewDocument()
 		
 		scenes_dialog -> selectFirstScene();
 		exposure_sheet_dialog -> touchFirstFrame();
-		
-		file -> setItemEnabled( id_file_save, true );
-		file -> setItemEnabled( id_file_save_as, true );
-		file -> setItemEnabled( id_file_close, true );
-		file -> setItemEnabled( id_file_import, true );
-		file -> setItemEnabled( id_file_export, true );
-		file -> setItemEnabled( id_file_properties, true );
+		file_save->setEnabled ( true );
+// 		file -> setItemEnabled( id_file_save, true );
+		file_save_as->setEnabled(true);
+		file_close->setEnabled(true);
+		file_import->setEnabled(true);
+		file_export->setEnabled(true);
+		file_properties->setEnabled(true);
 		
 		menuBar() -> setItemVisible( id_insert, true );
 		if ( window_animation->isEnabled())//window -> isItemEnabled( id_window_animation ) )
@@ -1667,10 +1991,12 @@ void KToon::slotNewDocument()
 // 			window -> setItemVisible( id_window_tools, true );
 			window_brushes->setVisible(true);
 			//window -> setItemVisible( id_window_brushes, true );
-			window -> setItemVisible( id_window_library, true );
-			window -> setItemVisible( id_window_drawing_area, true );
+// 			window -> setItemVisible( id_window_library, true );
+			window_library->setVisible(true);
+			//window -> setItemVisible( id_window_drawing_area, true );
+			window_drawing_area->setVisible(true);
 
-			window_drawing_area -> show();
+// 			window_drawing_area -> show();
 // 			window_exposure_sheet -> show();
 			
 			//window_tools -> show();
@@ -1678,27 +2004,28 @@ void KToon::slotNewDocument()
 // 			window_scenes -> show();
 // 			window_library -> show();
 
-			edit_undo -> show();
-			edit_redo -> show();
-			edit_cut -> show();
-			edit_copy -> show();
-			edit_paste -> show();
+			edit_undo->setVisible(true);
+			edit_redo->setVisible(true);
+			edit_cut->setVisible(true);
+			edit_copy->setVisible(true);
+			edit_paste->setVisible(true);
 			tool_bar2 -> show();
 		}
 		else
 		{
 			menuBar() -> setItemVisible( id_control, true );
+			//FIXME:
 			window -> setItemVisible( id_window_timeline, true );
-			window -> setItemVisible( id_window_render_camera_preview, true );
-			window -> setItemVisible( id_window_top_camera_view, true );
-			window -> setItemVisible( id_window_side_camera_view, true );
-
+			
+			window_render_camera_preview->setVisible(true);
+			window_top_camera_view->setVisible(true);
+			window_side_camera_view->setVisible(true);
+			
+			//FIXME:
 			window_timeline -> show();
-			window_render_camera_preview -> show();
-			window_top_camera_view -> show();
-			window_side_camera_view -> show();
 		}
-		file_save -> show();
+		file_save->setVisible (true);
+		
 
 		color_palette_dialog -> enableCustomPalette( true );
 		color_palette_dialog -> clearCustomPalette();
@@ -2165,12 +2492,12 @@ void KToon::slotNoPreviousOnionSkin()
 {
     KTStatus->currentDrawingArea() -> slotNoPreviousOnionSkin();
     KTStatus -> setCurrentPreviousOnionSkin( 0 );
-    onion_skin -> setItemChecked( previous_checked, false );
-    onion_skin -> setItemChecked( id_view_previous_none, true );
-    previous_toggled -> setDown( false );
-    view_no_previous -> setDown( true );
-    previous_toggled = view_no_previous;
-    previous_checked = id_view_previous_none;
+//     onion_skin -> setItemChecked( previous_checked, false );
+//     onion_skin -> setItemChecked( id_view_previous_none, true );
+    //previous_toggled -> setDown( false );
+    //view_no_previous -> setOn( true );
+//     previous_toggled = view_no_previous;
+//     previous_checked = id_view_previous_none;
     KTStatus->currentDrawingArea() -> updateGL();
     statusBar() -> message( tr( "No Previous Onion Skin Action" ), 2000 );
 }
@@ -2179,12 +2506,12 @@ void KToon::slotPreviousOnionSkin()
 {
     KTStatus->currentDrawingArea() -> slotPreviousOnionSkin();
     KTStatus -> setCurrentPreviousOnionSkin( 1 );
-    onion_skin -> setItemChecked( previous_checked, false );
-    onion_skin -> setItemChecked( id_view_previous, true );
-    previous_toggled -> setDown( false );
-    view_previous -> setDown( true );
-    previous_toggled = view_previous;
-    previous_checked = id_view_previous;
+//     onion_skin -> setItemChecked( previous_checked, false );
+//     onion_skin -> setItemChecked( id_view_previous, true );
+//     previous_toggled -> setDown( false );
+//     view_previous -> setDown( true );
+//     previous_toggled = view_previous;
+//     previous_checked = id_view_previous;
     KTStatus->currentDrawingArea() -> updateGL();
     statusBar() -> message( tr( "Previous Onion Skin Action" ), 2000 );
 }
@@ -2193,12 +2520,12 @@ void KToon::slotPrevious2OnionSkin()
 {
     KTStatus->currentDrawingArea() -> slotPrevious2OnionSkin();
     KTStatus -> setCurrentPreviousOnionSkin( 2 );
-    onion_skin -> setItemChecked( previous_checked, false );
-    onion_skin -> setItemChecked( id_view_previous2, true );
-    previous_toggled -> setDown( false );
-    view_previous2 -> setDown( true );
-    previous_toggled = view_previous2;
-    previous_checked = id_view_previous2;
+//     onion_skin -> setItemChecked( previous_checked, false );
+//     onion_skin -> setItemChecked( id_view_previous2, true );
+//     previous_toggled -> setDown( false );
+//     view_previous2 -> setDown( true );
+//     previous_toggled = view_previous2;
+//     previous_checked = id_view_previous2;
     KTStatus->currentDrawingArea() -> updateGL();
     statusBar() -> message( tr( "Previous 2 Onion Skin Action" ), 2000 );
 }
@@ -2207,12 +2534,12 @@ void KToon::slotPrevious3OnionSkin()
 {
     KTStatus->currentDrawingArea() -> slotPrevious3OnionSkin();
     KTStatus -> setCurrentPreviousOnionSkin( 3 );
-    onion_skin -> setItemChecked( previous_checked, false );
-    onion_skin -> setItemChecked( id_view_previous3, true );
-    previous_toggled -> setDown( false );
-    view_previous3 -> setDown( true );
-    previous_toggled = view_previous3;
-    previous_checked = id_view_previous3;
+//     onion_skin -> setItemChecked( previous_checked, false );
+//     onion_skin -> setItemChecked( id_view_previous3, true );
+//     previous_toggled -> setDown( false );
+//     view_previous3 -> setDown( true );
+//     previous_toggled = view_previous3;
+//     previous_checked = id_view_previous3;
     KTStatus->currentDrawingArea() -> updateGL();
     statusBar() -> message( tr( "Previous 3 Onion Skin Action" ), 2000 );
 }
@@ -2221,12 +2548,12 @@ void KToon::slotNoNextOnionSkin()
 {
     KTStatus->currentDrawingArea() -> slotNoNextOnionSkin();
     KTStatus -> setCurrentNextOnionSkin( 0 );
-    onion_skin -> setItemChecked( next_checked, false );
-    onion_skin -> setItemChecked( id_view_next_none, true );
-    next_toggled -> setDown( false );
-    view_no_next -> setDown( true );
-    next_toggled = view_no_next;
-    next_checked = id_view_next_none;
+//     onion_skin -> setItemChecked( next_checked, false );
+//     onion_skin -> setItemChecked( id_view_next_none, true );
+//     next_toggled -> setDown( false );
+//     view_no_next -> setDown( true );
+//     next_toggled = view_no_next;
+//     next_checked = id_view_next_none;
     KTStatus->currentDrawingArea() -> updateGL();
     statusBar() -> message( tr( "No Next Onion Skin Action" ), 2000 );
 }
@@ -2235,12 +2562,12 @@ void KToon::slotNextOnionSkin()
 {
     KTStatus->currentDrawingArea() -> slotNextOnionSkin();
     KTStatus -> setCurrentNextOnionSkin( 1 );
-    onion_skin -> setItemChecked( next_checked, false );
-    onion_skin -> setItemChecked( id_view_next, true );
-    next_toggled -> setDown( false );
-    view_next -> setDown( true );
-    next_toggled = view_next;
-    next_checked = id_view_next;
+//     onion_skin -> setItemChecked( next_checked, false );
+//     onion_skin -> setItemChecked( id_view_next, true );
+//     next_toggled -> setDown( false );
+//     view_next -> setDown( true );
+//     next_toggled = view_next;
+//     next_checked = id_view_next;
     KTStatus->currentDrawingArea() -> updateGL();
     statusBar() -> message( tr( "Next Onion Skin Action" ), 2000 );
 }
@@ -2249,12 +2576,12 @@ void KToon::slotNext2OnionSkin()
 {
     KTStatus->currentDrawingArea() -> slotNext2OnionSkin();
     KTStatus -> setCurrentNextOnionSkin( 2 );
-    onion_skin -> setItemChecked( next_checked, false );
-    onion_skin -> setItemChecked( id_view_next2, true );
-    next_toggled -> setDown( false );
-    view_next2 -> setDown( true );
-    next_toggled = view_next2;
-    next_checked = id_view_next2;
+//     onion_skin -> setItemChecked( next_checked, false );
+//     onion_skin -> setItemChecked( id_view_next2, true );
+//     next_toggled -> setDown( false );
+//     view_next2 -> setDown( true );
+//     next_toggled = view_next2;
+//     next_checked = id_view_next2;
     KTStatus->currentDrawingArea() -> updateGL();
     statusBar() -> message( tr( "Next 2 Onion Skin Action" ), 2000 );
 }
@@ -2263,12 +2590,12 @@ void KToon::slotNext3OnionSkin()
 {
     KTStatus->currentDrawingArea() -> slotNext3OnionSkin();
     KTStatus -> setCurrentNextOnionSkin( 3 );
-    onion_skin -> setItemChecked( next_checked, false );
-    onion_skin -> setItemChecked( id_view_next3, true );
-    next_toggled -> setDown( false );
-    view_next3 -> setDown( true );
-    next_toggled = view_next3;
-    next_checked = id_view_next3;
+//     onion_skin -> setItemChecked( next_checked, false );
+//     onion_skin -> setItemChecked( id_view_next3, true );
+//     next_toggled -> setDown( false );
+//     view_next3 -> setDown( true );
+//     next_toggled = view_next3;
+//     next_checked = id_view_next3;
     KTStatus->currentDrawingArea() -> updateGL();
     statusBar() -> message( tr( "Next 3 Onion Skin Action" ), 2000 );
 }
@@ -2436,7 +2763,7 @@ void KToon::slotRotateCCW90()
 
 void KToon::slotRotate180()
 {
-    KTStatus->currentDrawingArea() -> slotRotate180();
+    KTStatus->currentDrawingArea()->slotRotate180();
     statusBar() -> message( tr( "Rotate 180 Degrees Action" ), 2000 );
 }
 
@@ -2676,12 +3003,13 @@ void KToon::slotSeeIllustration()
 //         window -> setItemChecked( id_window_tools, true );
 //         window -> setItemVisible( id_window_tools, true );
 // 	window_tools -> show();
-	window_tools->setVisible ( true );
+	window_tools->setVisible (true);
 // 	window_tools->setDown( true );
-        window -> setItemChecked( id_window_drawing_area, true );
-        window -> setItemVisible( id_window_drawing_area, true );
-	window_drawing_area -> show();
-	window_drawing_area -> setDown( true );
+//         window -> setItemChecked( id_window_drawing_area, true );
+//         window -> setItemVisible( id_window_drawing_area, true );
+	
+	window_drawing_area->setVisible(true);
+	window_drawing_area->setOn(true);
     }
 
     if ( brushes_dialog != NULL )
@@ -2715,10 +3043,10 @@ void KToon::slotSeeIllustration()
     if ( library_dialog != NULL )
     {
         library_dialog -> hide();
-        window -> setItemChecked( id_window_library, false );
-        window -> setItemVisible( id_window_library, true );
-	window_library -> show();
-	window_library -> setDown( false );
+//         window -> setItemChecked( id_window_library, false );
+//         window -> setItemVisible( id_window_library, true );
+	window_library->setVisible(true);
+	window_library->setOn(false);
     }
 
     color_palette_dialog -> show();
@@ -2734,49 +3062,49 @@ void KToon::slotSeeIllustration()
         menuBar() -> setItemVisible( id_view, true );
         menuBar() -> setItemVisible( id_tools, true );
 
-        insert -> setItemVisible( id_insert_frame, false );
-        insert -> setItemVisible( id_insert_remove_frame, false );
-        insert -> setItemVisible( id_insert_keyframe, true );
-        insert -> setItemVisible( id_insert_scene, true );
-        insert -> setItemVisible( id_insert_remove_scene, true );
+	insert_frame->setVisible(false);
+	insert_remove_frame->setVisible(false);
+	insert_keyframe->setVisible(true);
+	insert_scene->setVisible(true);
+	insert_remove_scene->setVisible(true);
 
-	edit_undo -> show();
-    	edit_redo -> show();
-    	edit_cut -> show();
-    	edit_copy -> show();
-    	edit_paste -> show();
+	edit_undo->setVisible(true);
+	edit_redo->setVisible(true);
+	edit_cut->setVisible(true);
+	edit_copy->setVisible(true);
+	edit_paste->setVisible(true);
 	tool_bar2 -> show();
     }
     menuBar() -> setItemVisible( id_control, false );
-    file -> setItemVisible( id_file_export, false );
+    file_export->setVisible(false);
 
     //-------------- Hide all animation dialog boxes and update the window menu items -------------
     
     if ( m_cameraPreview != NULL )
     {
 	    m_cameraPreview -> hide();
-	    window -> setItemChecked( id_window_render_camera_preview, false );
-	    window -> setItemVisible( id_window_render_camera_preview, false );
-	    window_render_camera_preview -> hide();
-	    window_render_camera_preview -> setDown( false );
+// 	    window -> setItemChecked( id_window_render_camera_preview, false );
+// 	    window -> setItemVisible( id_window_render_camera_preview, false );
+	    window_render_camera_preview->setVisible(false);
+// 	    window_render_camera_preview -> setDown( false );
     }
 
     if ( side_camera_view != NULL )
     {
         side_camera_view -> hide();
-        window -> setItemChecked( id_window_side_camera_view, false );
-        window -> setItemVisible( id_window_side_camera_view, false );
-	window_side_camera_view -> hide();
-	window_side_camera_view -> setDown( false );
+//         window -> setItemChecked( id_window_side_camera_view, false );
+//         window -> setItemVisible( id_window_side_camera_view, false );
+	window_side_camera_view->setVisible(false);
+// 	window_side_camera_view -> setDown( false );
     }
 
     if ( top_camera_view != NULL )
     {
         top_camera_view -> hide();
-        window -> setItemChecked( id_window_top_camera_view, false );
-        window -> setItemVisible( id_window_top_camera_view, false );
-	window_top_camera_view -> hide();
-	window_top_camera_view -> setDown( false );
+//         window -> setItemChecked( id_window_top_camera_view, false );
+//         window -> setItemVisible( id_window_top_camera_view, false );
+	window_top_camera_view->setVisible(false);
+// 	window_top_camera_view -> setDown( false );
     }
 
     if ( timeline_dialog != NULL )
@@ -2834,10 +3162,10 @@ void KToon::slotSeeAnimation()
     if ( library_dialog != 0 )
     {
         library_dialog -> hide();
-        window -> setItemChecked( id_window_library, false );
-        window -> setItemVisible( id_window_library, false );
-	window_library -> hide();
-	window_library -> setDown( false );
+//         window -> setItemChecked( id_window_library, false );
+//         window -> setItemVisible( id_window_library, false );
+	window_library->setVisible(false);
+	window_library->setOn(false);
     }
 
      color_palette_dialog -> hide();
@@ -2853,29 +3181,28 @@ void KToon::slotSeeAnimation()
     if ( KTStatus->currentDrawingArea() != 0 )
     {
         KTStatus->currentDrawingArea() -> hide();
-        window -> setItemChecked( id_window_drawing_area, false );
-        window -> setItemVisible( id_window_drawing_area, false );
-	window_drawing_area -> hide();
-	window_drawing_area -> setDown( false );
+//         window -> setItemChecked( id_window_drawing_area, false );
+//         window -> setItemVisible( id_window_drawing_area, false );
+	window_drawing_area->setVisible(false);
+	window_drawing_area ->setOn(false);
     }
 
-
-    insert -> setItemVisible( id_insert_frame, true );
-    insert -> setItemVisible( id_insert_remove_frame, true );
-    insert -> setItemVisible( id_insert_keyframe, false );
-    insert -> setItemVisible( id_insert_scene, false );
-    insert -> setItemVisible( id_insert_remove_scene, false );
-    file -> setItemVisible( id_file_export, true );
+    insert_frame->setVisible(true);
+    insert_remove_frame->setVisible(true);
+    insert_keyframe->setVisible(false);
+    insert_scene->setVisible(false);
+    insert_remove_scene->setVisible(false);
+    file_export->setVisible(true);
 
     menuBar() -> setItemVisible( id_edit, false );
     menuBar() -> setItemVisible( id_view, false );
     menuBar() -> setItemVisible( id_tools, false );
 
-    edit_undo -> hide();
-    edit_redo -> hide();
-    edit_cut -> hide();
-    edit_copy -> hide();
-    edit_paste -> hide();
+    edit_undo->setVisible(false);
+    edit_redo->setVisible(false);
+    edit_cut->setVisible(false);
+    edit_copy->setVisible(false);
+    edit_paste->setVisible(false);
     tool_bar2 -> hide();
 
     //-------------- Show all animation dialog boxes and update the window menu items -----------
@@ -2883,28 +3210,28 @@ void KToon::slotSeeAnimation()
     if ( m_cameraPreview != 0 )
     {
         m_cameraPreview -> show();
-        window -> setItemChecked( id_window_render_camera_preview, true );
-        window -> setItemVisible( id_window_render_camera_preview, true );
-	window_render_camera_preview -> show();
-	window_render_camera_preview -> setDown( true );
+//         window -> setItemChecked( id_window_render_camera_preview, true );
+//         window -> setItemVisible( id_window_render_camera_preview, true );
+	window_render_camera_preview->setVisible(true);
+// 	window_render_camera_preview -> setDown( true );
     }
 
     if ( side_camera_view != 0 )
     {
         side_camera_view -> show();
-        window -> setItemChecked( id_window_side_camera_view, true );
-        window -> setItemVisible( id_window_side_camera_view, true );
-	window_side_camera_view -> show();
-	window_side_camera_view -> setDown( true );
+//         window -> setItemChecked( id_window_side_camera_view, true );
+//         window -> setItemVisible( id_window_side_camera_view, true );
+	window_side_camera_view->setVisible(true);
+// 	window_side_camera_view -> setDown( true );
     }
 
     if ( top_camera_view != 0 )
     {
         top_camera_view -> show();
-        window -> setItemChecked( id_window_top_camera_view, true );
-        window -> setItemVisible( id_window_top_camera_view, true );
-	window_top_camera_view -> show();
-	window_top_camera_view -> setDown( true );
+//         window -> setItemChecked( id_window_top_camera_view, true );
+//         window -> setItemVisible( id_window_top_camera_view, true );
+	window_top_camera_view->setVisible(true);
+// 	window_top_camera_view -> setDown( true );
     }
 
     if ( timeline_dialog != 0 )
@@ -3017,31 +3344,31 @@ void KToon::slotWindowLibrary()
     if ( library_dialog -> isVisible() )
     {
     	library_dialog -> hide();
-	window -> setItemChecked( id_window_library, false );
-	window_library -> setDown( false );
+// 	window -> setItemChecked( id_window_library, false );
+// 	window_library -> setDown( false );
     }
     else
     {
     	library_dialog -> show();
-	window -> setItemChecked( id_window_library, true );
-	window_library -> setDown( true );
+// 	window -> setItemChecked( id_window_library, true );
+// 	window_library -> setDown( true );
     }
 }
 
 void KToon::slotWindowDrawingArea()
 {
-    if ( KTStatus->currentDrawingArea() -> isVisible() )
-    {
-    	KTStatus->currentDrawingArea() -> hide();
-	window -> setItemChecked( id_window_drawing_area, false );
-	window_drawing_area -> setDown( false );
-    }
-    else
-    {
-    	KTStatus->currentDrawingArea() -> show();
-	window -> setItemChecked( id_window_drawing_area, true );
-	window_drawing_area -> setDown( true );
-    }
+	if ( KTStatus->currentDrawingArea()->isVisible() )
+	{
+		KTStatus->currentDrawingArea()->hide();
+	//window -> setItemChecked( id_window_drawing_area, false );
+		window_drawing_area->setOn(false);
+	}
+	else
+	{
+		KTStatus->currentDrawingArea()->show();
+// 	window -> setItemChecked( id_window_drawing_area, true );
+		window_drawing_area->setOn(true);
+	}
 }
 
 void KToon::slotWindowTimeline()
@@ -3065,14 +3392,14 @@ void KToon::slotWindowRenderCameraPreview()
     if ( m_cameraPreview -> isVisible() )
     {
     	m_cameraPreview -> hide();
-	window -> setItemChecked( id_window_render_camera_preview, false );
-	window_render_camera_preview -> setDown( false );
+// 	window -> setItemChecked( id_window_render_camera_preview, false );
+	window_render_camera_preview->setOn( false );
     }
     else
     {
     	m_cameraPreview -> show();
-	window -> setItemChecked( id_window_render_camera_preview, true );
-	window_render_camera_preview -> setDown( true );
+// 	window -> setItemChecked( id_window_render_camera_preview, true );
+	window_render_camera_preview->setOn( true );
     }
 }
 
@@ -3081,14 +3408,14 @@ void KToon::slotWindowTopCameraView()
     if ( top_camera_view -> isVisible() )
     {
     	top_camera_view -> hide();
-	window -> setItemChecked( id_window_top_camera_view, false );
-	window_top_camera_view -> setDown( false );
+// 	window -> setItemChecked( id_window_top_camera_view, false );
+	window_top_camera_view->setOn( false );
     }
     else
     {
     	top_camera_view -> show();
-	window -> setItemChecked( id_window_top_camera_view, true );
-	window_top_camera_view -> setDown( true );
+// 	window -> setItemChecked( id_window_top_camera_view, true );
+	window_top_camera_view->setOn(true );
     }
 }
 
@@ -3097,14 +3424,14 @@ void KToon::slotWindowSideCameraView()
     if ( side_camera_view -> isVisible() )
     {
     	side_camera_view -> hide();
-	window -> setItemChecked( id_window_side_camera_view, false );
-	window_side_camera_view -> setDown( false );
+// 	window -> setItemChecked( id_window_side_camera_view, false );
+	window_side_camera_view->setOn( false );
     }
     else
     {
     	side_camera_view -> show();
-	window -> setItemChecked( id_window_side_camera_view, true );
-	window_side_camera_view -> setDown( true );
+// 	window -> setItemChecked( id_window_side_camera_view, true );
+	window_side_camera_view->setOn( true );
     }
 }
 
@@ -3223,42 +3550,44 @@ void KToon::slotCloseDrawingArea()
 	exposure_sheet_dialog = 0;
 	timeline_dialog = 0;
 
-	file -> setItemEnabled( id_file_save, false );
-	file -> setItemEnabled( id_file_save_as, false );
-	file -> setItemEnabled( id_file_close, false );
-	file -> setItemEnabled( id_file_import, false );
-	file -> setItemEnabled( id_file_export, false );
-	file -> setItemEnabled( id_file_properties, false );
+	//file -> setItemEnabled( id_file_save, false );
+	file_save->setEnabled(false);
+	file_save_as->setEnabled(false);
+	file_close->setEnabled(false);
+	file_import->setEnabled(false);
+	file_export->setEnabled(false);
+	file_properties->setEnabled(false);
 	window_exposure_sheet->setVisible(false);
 // 	window -> setItemVisible( id_window_exposure_sheet, false );
-	window -> setItemVisible( id_window_library, false );
-	window -> setItemChecked( id_window_library, false );
+// 	window -> setItemVisible( id_window_library, false );
+// 	window -> setItemChecked( id_window_library, false );
 	//window -> setItemVisible( id_window_scenes, false );
+	window_library->setVisible(false);
 	window_scenes->setVisible(false);
-	window -> setItemVisible( id_window_drawing_area, false );
+// 	window -> setItemVisible( id_window_drawing_area, false );
 	window -> setItemVisible( id_window_timeline, false );
 // 	window -> setItemVisible( id_window_tools, false );
 	window_tools->setVisible(false);
 	//window -> setItemVisible( id_window_brushes, false );
 	window_brushes->setVisible(false);
-	window -> setItemVisible( id_window_render_camera_preview, false );
-	window -> setItemVisible( id_window_top_camera_view, false );
-	window -> setItemVisible( id_window_side_camera_view, false );
+// 	window->setItemVisible( id_window_render_camera_preview, false );
+// 	window->setItemVisible( id_window_top_camera_view, false );
+// 	window->setItemVisible( id_window_side_camera_view, false );
 	
 // 	window_exposure_sheet -> hide();
-	window_library -> hide();
-	window_library -> setDown( false );
+// 	window_library -> hide();
+	window_library->setOn(false);
 	//window_scenes -> hide();
-	window_scenes->setVisible(false);
-	window_drawing_area -> hide();
+// 	window_scenes->setVisible(false);
+	window_drawing_area->setVisible(false);
 	window_timeline -> hide();
 // 	window_tools -> hide();
 	window_tools->setVisible(false);
 	//window_brushes -> hide();
 	window_brushes->setVisible(false);
-	window_render_camera_preview -> hide();
-	window_top_camera_view -> hide();
-	window_side_camera_view -> hide();
+	window_render_camera_preview->setVisible(false);
+	window_top_camera_view ->setVisible(false);
+	window_side_camera_view->setVisible(false);
 
 	KTStatus->currentDocument()->init();
 
@@ -3276,15 +3605,15 @@ void KToon::slotCloseDrawingArea()
 		menuBar() -> setItemVisible( id_view, false );
 		menuBar() -> setItemVisible( id_tools, false );
 
-		edit_undo -> hide();
-		edit_redo -> hide();
-		edit_cut -> hide();
-		edit_copy -> hide();
-		edit_paste -> hide();
+		edit_undo->setVisible(false);
+		edit_redo->setVisible(false);
+		edit_cut->setVisible(false);
+		edit_copy->setVisible(false);
+		edit_paste->setVisible(false);
 		tool_bar2 -> hide();
 	}
-	file_save -> hide();
-
+	file_save->setVisible(false);
+	
 	color_palette_dialog -> enableCustomPalette( false );
 	color_palette_dialog -> clearCustomPalette();
 	std::cout << "Closed" << std::endl;
@@ -3292,85 +3621,20 @@ void KToon::slotCloseDrawingArea()
 
 void KToon::slotStatusBarMessage( int mi )
 {
-    if ( id_file_new == mi ) statusBar() -> message( tr( "Opens a new document" ), 2000 );
+    /*if ( id_file_new == mi ) statusBar() -> message( tr( "Opens a new document" ), 2000 );
     else if( id_file_open == mi ) statusBar() -> message( tr( "Loads an existent document" ), 2000 );
     else if( id_file_save == mi ) statusBar() -> message( tr( "Saves the current document in the current location" ), 2000 );
     else if( id_file_save_as == mi ) statusBar() -> message( tr( "Opens a dialog box to save the current document in any location" ), 2000 );
-    else if( id_file_close == mi ) statusBar() -> message( tr( "Closes the active document" ), 2000 );
-    else if( id_file_properties == mi ) statusBar() -> message( tr( "Opens the properties dialog box" ), 2000 );
-    else if( id_file_import == mi ) statusBar() -> message( tr( "Imports a file in the supported format" ), 2000 );
-    else if( id_file_export == mi ) statusBar() -> message( tr( "Exports this document as a file in the available formats" ), 2000 );
-    else if( id_file_exit == mi ) statusBar() -> message( tr( "Closes the application" ), 2000 );
-    else if( id_edit_undo == mi ) statusBar() -> message( tr( "Undoes the last draw action" ), 2000 );
-    else if( id_edit_redo == mi ) statusBar() -> message( tr( "Redoes a previous undone action" ), 2000 );
-    else if( id_edit_cut == mi ) statusBar() -> message( tr( "Cuts the selection and puts it onto the clipboard" ), 2000 );
-    else if( id_edit_copy == mi ) statusBar() -> message( tr( "Copies the selection and puts it onto the clipboard" ), 2000 );
-    else if( id_edit_paste == mi ) statusBar() -> message( tr( "Pastes the clipboard into the current document" ), 2000 );
-    else if( id_edit_paste_in_place == mi ) statusBar() -> message( tr( "Pastes the clipboard into the same place as the copy was did" ), 2000 );
-    else if( id_edit_delete == mi ) statusBar() -> message( tr( "Deletes the selected object" ), 2000 );
-    else if( id_edit_select_all == mi ) statusBar() -> message( tr( "Selects all objects in the document" ), 2000 );
-    else if( id_edit_preferences == mi ) statusBar() -> message( tr( "Opens the preferences dialog box" ), 2000 );
-    else if( id_view_zoom_in == mi ) statusBar() -> message( tr( "Performs a Zoom In of the drawing area" ), 2000 );
-    else if( id_view_zoom_out == mi ) statusBar() -> message( tr( "Performs a Zoom Out of the drawing area" ), 2000 );
-    else if( id_view_fit == mi ) statusBar() -> message( tr( "Fits the grid into the drawing area" ), 2000 );
+
+   
     else if( id_view_grid12 == mi ) statusBar() -> message( tr( "Shows a 12 field grid" ), 2000 );
     else if( id_view_grid16 == mi ) statusBar() -> message( tr( "Shows a 16 field grid" ), 2000 );
     else if( id_view_subgrid == mi ) statusBar() -> message( tr( "Shows or hides a 3 field subgrid in the current grid" ), 2000 );
     else if( id_view_no_grid == mi ) statusBar() -> message( tr( "Hides the grid" ), 2000 );
-    else if( id_view_front_back_grid == mi ) statusBar() -> message( tr( "Sends the grid to the front or to the back of the drawing area" ), 2000 );
-    else if( id_view_NTSC_zone == mi ) statusBar() -> message( tr( "Shows or hides the NTSC Zone" ), 2000 );
-    else if( id_view_light_table == mi ) statusBar() -> message( tr( "Activates or deactivates the light table" ), 2000 );
-    else if( id_view_previous_none == mi ) statusBar() -> message( tr( "Disables previous onion skin visualization" ), 2000 );
-    else if( id_view_previous == mi ) statusBar() -> message( tr( "Shows the previous onion skin" ), 2000 );
-    else if( id_view_previous2 == mi ) statusBar() -> message( tr( "Shows the previous 2 onion skins" ), 2000 );
-    else if( id_view_previous3 == mi ) statusBar() -> message( tr( "Shows the previous 3 onion skins" ), 2000 );
-    else if( id_view_next_none == mi ) statusBar() -> message( tr( "Disables next onion skin visualization" ), 2000 );
-    else if( id_view_next == mi ) statusBar() -> message( tr( "Shows the next onion skin" ), 2000 );
-    else if( id_view_next2 == mi ) statusBar() -> message( tr( "Shows the next 2 onion skins" ), 2000 );
-    else if( id_view_next3 == mi ) statusBar() -> message( tr( "Shows the next 3 onion skins" ), 2000 );
-    else if( id_view_rotate_clockwise == mi ) statusBar() -> message( tr( "Rotates the scene 30 degrees clockwise" ), 2000 );
-    else if( id_view_rotate_counterclockwise == mi ) statusBar() -> message( tr( "Rotates the scene 30 degrees counterclockwise" ), 2000 );
-    else if( id_view_restore_rotation == mi ) statusBar() -> message( tr( "Restores any rotation performed on the scene" ), 2000 );
-    else if( id_insert_layer == mi ) statusBar() -> message( tr( "Inserts a new layer into the Exposure Sheet and Timeline" ), 2000 );
-    else if( id_insert_frame == mi ) statusBar() -> message( tr( "Inserts a frame into the current layer of the Timeline" ), 2000 );
-    else if( id_insert_remove_frame == mi ) statusBar() -> message( tr( "Removes a frame from the current layer of the Timeline" ), 2000 );
-    else if( id_insert_keyframe == mi ) statusBar() -> message( tr( "Inserts a keyframe into the ExposureSheet and Timeline" ), 2000 );
-    else if( id_insert_scene == mi ) statusBar() -> message( tr( "Inserts a new scene" ), 2000 );
-    else if( id_insert_remove_scene == mi ) statusBar() -> message( tr( "Removes the selected scene" ), 2000 );
-    else if( id_tools_normal_selection == mi ) statusBar() -> message( tr( "Activates the Selection tool" ), 2000 );
-    else if( id_tools_contour_selection == mi ) statusBar() -> message( tr( "Activates the Node Selection tool" ), 2000 );
-    else if( id_tools_brush == mi ) statusBar() -> message( tr( "Activates the Brush tool" ), 2000 );
-    else if( id_tools_pencil == mi ) statusBar() -> message( tr( "Activates the Pencil tool" ), 2000 );
-    else if( id_tools_pen == mi ) statusBar() -> message( tr( "Activates the Selection tool" ), 2000 );
-    else if( id_tools_line == mi ) statusBar() -> message( tr( "Activates the Line tool" ), 2000 );
-    else if( id_tools_rectangle == mi ) statusBar() -> message( tr( "Activates the Rectangle tool" ), 2000 );
-    else if( id_tools_ellipse == mi ) statusBar() -> message( tr( "Activates the Ellipse tool" ), 2000 );
-    else if( id_tools_fill == mi ) statusBar() -> message( tr( "Activates the Fill tool" ), 2000 );
-    else if( id_tools_remove_fill == mi ) statusBar() -> message( tr( "Activates the Remove Fill tool" ), 2000 );
-    else if( id_tools_contour_fill == mi ) statusBar() -> message( tr( "Activates the Contour Fill tool" ), 2000 );
-    else if( id_tools_dropper == mi ) statusBar() -> message( tr( "Activates the Dropper tool" ), 2000 );
-    else if( id_tools_eraser == mi ) statusBar() -> message( tr( "Activates the Eraser tool" ), 2000 );
-    else if( id_tools_slicer == mi ) statusBar() -> message( tr( "Activates the Slicer tool" ), 2000 );
-    else if( id_tools_magnifying_glass == mi ) statusBar() -> message( tr( "Activates the Magnifying Glass tool" ), 2000 );
-    else if( id_tools_hand == mi ) statusBar() -> message( tr( "Activates the Hand tool" ), 2000 );
-    else if( id_tools_group == mi ) statusBar() -> message( tr( "Group the selected objects into a single one" ), 2000 );
-    else if( id_tools_ungroup == mi ) statusBar() -> message( tr( "Ungroups the selected object" ), 2000 );
-    else if( id_tools_bring_front == mi ) statusBar() -> message( tr( "Brings the selected object to the front" ), 2000 );
-    else if( id_tools_send_back == mi ) statusBar() -> message( tr( "Sends the selected objects to the back" ), 2000 );
-    else if( id_tools_one_step_forward == mi ) statusBar() -> message( tr( "Moves the selected object one step forward" ), 2000 );
-    else if( id_tools_one_step_backward == mi ) statusBar() -> message( tr( "Moves the selected object one step backward" ), 2000 );
-    else if( id_tools_left == mi ) statusBar() -> message( tr( "Aligns the selected object to the left" ), 2000 );
-    else if( id_tools_center_vertically == mi ) statusBar() -> message( tr( "Centers vertically the selected object" ), 2000 );
-    else if( id_tools_right == mi ) statusBar() -> message( tr( "Aligns the selected object to the right" ), 2000 );
-    else if( id_tools_top == mi ) statusBar() -> message( tr( "Aligns the selected object to the top" ), 2000 );
-    else if( id_tools_center_horizontally == mi ) statusBar() -> message( tr( "Centers horizontally the selected object" ), 2000 );
-    else if( id_tools_bottom == mi ) statusBar() -> message( tr( "Aligns the selected object to the bottom" ), 2000 );
-    else if( id_tools_flip_horizontally == mi ) statusBar() -> message( tr( "Flips the selected object horizontally" ), 2000 );
-    else if( id_tools_flip_vertically == mi ) statusBar() -> message( tr( "Flips the selected object vertically" ), 2000 );
-    else if( id_tools_rotate_cw90 == mi ) statusBar() -> message( tr( "Rotates the selected object 90 degrees clockwise" ), 2000 );
-    else if( id_tools_rotate_ccw90 == mi ) statusBar() -> message( tr( "Rotates the selected object 90 degrees counterclockwise" ), 2000 );
-    else if( id_tools_rotate180 == mi ) statusBar() -> message( tr( "Rotates the selected object 180 degrees" ), 2000 );
-    else if( id_tools_perspective == mi ) statusBar() -> message( tr( "Activates the perspective tool" ), 2000 );
+   
+    
+    
+
     else if( id_control_play == mi ) statusBar() -> message( tr( "Plays the Animation" ), 2000 );
     else if( id_control_step_forward == mi ) statusBar() -> message( tr( "Steps one frame forward in the animation" ), 2000 );
     else if( id_control_step_backward == mi ) statusBar() -> message( tr( "Steps one frame backward in the animation" ), 2000 );
@@ -3379,7 +3643,6 @@ void KToon::slotStatusBarMessage( int mi )
     //else if( id_window_illustration == mi ) statusBar() -> message( tr( "Turns to the illustration mode" ), 2000 );
     //else if( id_window_animation == mi ) statusBar() -> message( tr( "Turns to the animation mode" ), 2000 );
 //     else if( id_window_tools == mi ) statusBar() -> message( tr( "Shows or hides the tools dialog box" ), 2000 );
-    //FIXME:kuadrosx
     //else if( id_window_brushes == mi ) statusBar() -> message( tr( "Shows or hides the brushes dialog box" ), 2000 );
 //     else if( id_window_scenes == mi ) statusBar() -> message( tr( "Shows or hides the scenes dialog box" ), 2000 );
 //     else if( id_window_color_palette == mi ) statusBar() -> message( tr( "Shows or hides the color palette dialog box" ), 2000 );
@@ -3387,13 +3650,11 @@ void KToon::slotStatusBarMessage( int mi )
     else if( id_window_library == mi ) statusBar() -> message( tr( "Shows or hides the library dialog box" ), 2000 );
     else if( id_window_drawing_area == mi ) statusBar() -> message( tr( "Shows or hides the drawing area widget" ), 2000 );
     else if( id_window_timeline == mi ) statusBar() -> message( tr( "Shows or hides the timeline dialog box" ), 2000 );
-    else if( id_window_render_camera_preview == mi ) statusBar() -> message( tr( "Shows or hides the render preview widget" ), 2000 );
-    else if( id_window_top_camera_view == mi ) statusBar() -> message( tr( "Shows or hides the top camera view widget" ), 2000 );
-    else if( id_window_side_camera_view == mi ) statusBar() -> message( tr( "Shows or hides the side camera view widget" ), 2000 );
+    
     else if( id_help_contents == mi )  statusBar() -> message( tr( "Shows the help of the application" ), 2000 );
     else if( id_help_about == mi ) statusBar() -> message( tr( "Shows information about the authors and another stuff" ), 2000 );
     else if( id_help_about_qt == mi ) statusBar() -> message( tr( "Shows information about Qt" ), 2000 );
-    else if( id_help_about_opengl == mi ) statusBar() -> message( tr( "Shows information about OpenGL" ), 2000 );
+	else if( id_help_about_opengl == mi ) statusBar() -> message( tr( "Shows information about OpenGL" ), 2000 );*/
 }
 
 void KToon::slotActivateCursor()
@@ -3450,50 +3711,50 @@ void KToon::slotActivateCursor()
 
 void KToon::slotSelectSync( int sp )
 {
-    exposure_sheet_dialog -> hide();
-    exposure_sheet_dialog = list_of_es.at( sp );
-    if ( /*window_exposure_sheet->isOn() &&*/ window_animation->isEnabled())//window -> isItemChecked( id_window_exposure_sheet ) && window_animation->isEnabled())//window -> isItemEnabled( id_window_animation ) )
-        exposure_sheet_dialog -> show();
+	exposure_sheet_dialog -> hide();
+	exposure_sheet_dialog = list_of_es.at( sp );
+	if ( /*window_exposure_sheet->isOn() &&*/ window_animation->isEnabled())//window -> isItemChecked( id_window_exposure_sheet ) && window_animation->isEnabled())//window -> isItemEnabled( id_window_animation ) )
+		exposure_sheet_dialog -> show();
 
-    timeline_dialog = list_of_tl.at( sp );
+	timeline_dialog = list_of_tl.at( sp );
 
-    slotActivateCursor();
+	slotActivateCursor();
 }
 
 void KToon::slotInsertSync()
 {
 	ExposureSheet *new_exposure_sheet = new ExposureSheet( this);//, Qt::WStyle_Tool, window, id_window_exposure_sheet, window_exposure_sheet );
-    list_of_es.append( new_exposure_sheet );
-    Timeline *new_timeline = new Timeline( this, Qt::WStyle_Tool, window, id_window_timeline, window_timeline );
-    list_of_tl.append( new_timeline );
+	list_of_es.append( new_exposure_sheet );
+	Timeline *new_timeline = new Timeline( this, Qt::WStyle_Tool, window, id_window_timeline, window_timeline );
+	list_of_tl.append( new_timeline );
 
     //--------- Main Connections Again --------------
 
-    connect( new_exposure_sheet, SIGNAL( layerInserted() ), new_timeline -> layerManager() -> layerSequence(), SLOT( slotInsertLayer() ) );
-    connect( new_exposure_sheet, SIGNAL( layerInserted() ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotInsertFrameSequence() ) );
-    connect( new_exposure_sheet, SIGNAL( layerRemoved() ), new_timeline -> layerManager() -> layerSequence(), SLOT( slotRemoveLayer() ) );
-    connect( new_exposure_sheet, SIGNAL( layerRemoved() ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotRemoveFrameSequence() ) );
-    connect( new_exposure_sheet, SIGNAL( layerRemoved() ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotUpdateMaxUsedFrames() ) );
-    connect( new_exposure_sheet, SIGNAL( layerSelected( int ) ), new_timeline -> layerManager() -> layerSequence(), SLOT( slotSelectLayerFromES( int ) ) );
-    connect( new_exposure_sheet, SIGNAL( layerRenamed( int, const QString & ) ), new_timeline -> layerManager() -> layerSequence(), SLOT( slotRenameLayerFromES( int, const QString & ) ) );
-    connect( new_exposure_sheet, SIGNAL( framesInsertedAtTheEnd( int ) ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotInsertKeyframesIntoTheCurrentFS( int ) ) );
-    connect( new_exposure_sheet, SIGNAL( frameRemoved( int ) ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotRemoveKeyframeBlockFromTheCurrentFS( int ) ) );
-    connect( new_exposure_sheet, SIGNAL( frameMovedUp( int ) ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotMoveKeyframeLeftInTheCurrentFS( int ) ) );
-    connect( new_exposure_sheet, SIGNAL( frameMovedDown( int ) ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotMoveKeyframeRightInTheCurrentFS( int ) ) );
-    connect( new_exposure_sheet, SIGNAL( frameSelected() ), KTStatus->currentDrawingArea(), SLOT( slotSelectFrame() ) );
-    connect( new_exposure_sheet, SIGNAL( frameSelected() ), SLOT( slotActivateCursor() ) );
+	connect( new_exposure_sheet, SIGNAL( layerInserted() ), new_timeline -> layerManager() -> layerSequence(), SLOT( slotInsertLayer() ) );
+	connect( new_exposure_sheet, SIGNAL( layerInserted() ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotInsertFrameSequence() ) );
+	connect( new_exposure_sheet, SIGNAL( layerRemoved() ), new_timeline -> layerManager() -> layerSequence(), SLOT( slotRemoveLayer() ) );
+	connect( new_exposure_sheet, SIGNAL( layerRemoved() ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotRemoveFrameSequence() ) );
+	connect( new_exposure_sheet, SIGNAL( layerRemoved() ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotUpdateMaxUsedFrames() ) );
+	connect( new_exposure_sheet, SIGNAL( layerSelected( int ) ), new_timeline -> layerManager() -> layerSequence(), SLOT( slotSelectLayerFromES( int ) ) );
+	connect( new_exposure_sheet, SIGNAL( layerRenamed( int, const QString & ) ), new_timeline -> layerManager() -> layerSequence(), SLOT( slotRenameLayerFromES( int, const QString & ) ) );
+	connect( new_exposure_sheet, SIGNAL( framesInsertedAtTheEnd( int ) ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotInsertKeyframesIntoTheCurrentFS( int ) ) );
+	connect( new_exposure_sheet, SIGNAL( frameRemoved( int ) ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotRemoveKeyframeBlockFromTheCurrentFS( int ) ) );
+	connect( new_exposure_sheet, SIGNAL( frameMovedUp( int ) ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotMoveKeyframeLeftInTheCurrentFS( int ) ) );
+	connect( new_exposure_sheet, SIGNAL( frameMovedDown( int ) ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotMoveKeyframeRightInTheCurrentFS( int ) ) );
+	connect( new_exposure_sheet, SIGNAL( frameSelected() ), KTStatus->currentDrawingArea(), SLOT( slotSelectFrame() ) );
+	connect( new_exposure_sheet, SIGNAL( frameSelected() ), SLOT( slotActivateCursor() ) );
 
-    connect( new_timeline, SIGNAL( insertLayerClicked() ), new_exposure_sheet, SLOT( slotInsertLayer() ) );
-    connect( new_timeline, SIGNAL( removeLayerClicked() ), new_exposure_sheet, SLOT( slotRemoveLayer() ) );
-    connect( new_timeline -> layerManager() -> layerSequence(), SIGNAL( layerSelectedToES( int ) ), new_exposure_sheet, SLOT( slotSelectLayerFromTL( int ) ) );
-    connect( new_timeline -> layerManager() -> layerSequence(), SIGNAL( layerRenamed( int, const QString & ) ), new_exposure_sheet, SLOT( slotRenameLayerFromTL( int, const QString & ) ) );
-    connect( new_timeline -> frameSequenceManager() -> frameLayout(), SIGNAL( keyframeRemovedToES( int ) ), new_exposure_sheet, SLOT( slotRemoveFrameFromTL( int ) ) );
-    connect( new_timeline, SIGNAL( layerMovedUp() ), new_exposure_sheet, SLOT( slotMoveLayerLeft() ) );
-    connect( new_timeline, SIGNAL( layerMovedDown() ), new_exposure_sheet, SLOT( slotMoveLayerRight() ) );
-    connect( new_timeline -> layerManager() -> layerSequence(), SIGNAL( layerReleasedAbove( int, int ) ), new_exposure_sheet, SLOT( slotSwapWithLeftLayer( int, int ) ) );
-    connect( new_timeline -> layerManager() -> layerSequence(), SIGNAL( layerReleasedBelow( int, int ) ), new_exposure_sheet, SLOT( slotSwapWithRightLayer( int, int ) ) );
+	connect( new_timeline, SIGNAL( insertLayerClicked() ), new_exposure_sheet, SLOT( slotInsertLayer() ) );
+	connect( new_timeline, SIGNAL( removeLayerClicked() ), new_exposure_sheet, SLOT( slotRemoveLayer() ) );
+	connect( new_timeline -> layerManager() -> layerSequence(), SIGNAL( layerSelectedToES( int ) ), new_exposure_sheet, SLOT( slotSelectLayerFromTL( int ) ) );
+	connect( new_timeline -> layerManager() -> layerSequence(), SIGNAL( layerRenamed( int, const QString & ) ), new_exposure_sheet, SLOT( slotRenameLayerFromTL( int, const QString & ) ) );
+	connect( new_timeline -> frameSequenceManager() -> frameLayout(), SIGNAL( keyframeRemovedToES( int ) ), new_exposure_sheet, SLOT( slotRemoveFrameFromTL( int ) ) );
+	connect( new_timeline, SIGNAL( layerMovedUp() ), new_exposure_sheet, SLOT( slotMoveLayerLeft() ) );
+	connect( new_timeline, SIGNAL( layerMovedDown() ), new_exposure_sheet, SLOT( slotMoveLayerRight() ) );
+	connect( new_timeline -> layerManager() -> layerSequence(), SIGNAL( layerReleasedAbove( int, int ) ), new_exposure_sheet, SLOT( slotSwapWithLeftLayer( int, int ) ) );
+	connect( new_timeline -> layerManager() -> layerSequence(), SIGNAL( layerReleasedBelow( int, int ) ), new_exposure_sheet, SLOT( slotSwapWithRightLayer( int, int ) ) );
 
-    connect( KTStatus->currentDrawingArea(), SIGNAL( wasDrawn( bool ) ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotFrameHasDrawing( bool ) ) );
+	connect( KTStatus->currentDrawingArea(), SIGNAL( wasDrawn( bool ) ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotFrameHasDrawing( bool ) ) );
 }
 
 void KToon::slotRemoveSync( int sp )
@@ -3580,14 +3841,15 @@ void KToon::createGUI()
     scenes_dialog = new Scenes( this);//, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
     scenes_dialog -> loadScenes( scenes );
 
-    library_dialog = new Library( this, Qt::WStyle_Tool, window, id_window_library, KTStatus->currentDrawingArea(), window_library );
+    library_dialog = new Library( this, KTStatus->
+		    currentDrawingArea());
     library_dialog -> loadItems( KTStatus->currentDocument()->getLibrary() -> getItems() );
 
     m_cameraPreview = new KTCameraPreview(main_panel);
 //     render_camera_preview = new GLRenderCameraPreview( main_panel, this, window, id_window_render_camera_preview, window_render_camera_preview, KTStatus->currentDrawingArea() );
     m_cameraPreview->hide();
-    top_camera_view = new GLTopCameraView( main_panel, this, window, id_window_top_camera_view, window_top_camera_view, KTStatus->currentDrawingArea() );
-    side_camera_view = new GLSideCameraView( main_panel, this, window, id_window_side_camera_view, window_side_camera_view, KTStatus->currentDrawingArea() );
+    top_camera_view = new GLTopCameraView( main_panel, KTStatus->currentDrawingArea() );
+    side_camera_view = new GLSideCameraView( main_panel, KTStatus->currentDrawingArea() );
 
     Scene *s_it;
     for ( s_it = scenes.first(); s_it; s_it = scenes.next() )
@@ -3611,10 +3873,10 @@ void KToon::createGUI()
 // 	window_exposure_sheet -> show();
 // 	window_exposure_sheet -> setDown( true );
          exposure_sheet_dialog -> show();
-        window -> setItemVisible( id_window_drawing_area, true );
-	window -> setItemChecked( id_window_drawing_area, true );
-	window_drawing_area -> show();
-	window_drawing_area -> setDown( true );
+//         window -> setItemVisible( id_window_drawing_area, true );
+// 	window -> setItemChecked( id_window_drawing_area, true );
+	window_drawing_area->setVisible(true);
+	window_drawing_area->setOn(true);
         KTStatus->currentDrawingArea() -> show();
 //         window -> setItemVisible( id_window_scenes, true );
 // 	window -> setItemChecked( id_window_scenes, true );
@@ -3628,10 +3890,10 @@ void KToon::createGUI()
 	//window_tools -> show();
 	//window_tools -> setDown( true );
         tools_dialog -> show();
-        window -> setItemVisible( id_window_library, true );
-	window -> setItemChecked( id_window_library, false );
-	window_library -> show();
-	window_library -> setDown( false );
+//         window -> setItemVisible( id_window_library, true );
+// 	window -> setItemChecked( id_window_library, false );
+	window_library->setVisible(true);
+	window_library->setOn( false );
         //window -> setItemVisible( id_window_brushes, true );
 	//window -> setItemChecked( id_window_brushes, true );
 	//window_brushes -> show();
@@ -3646,20 +3908,20 @@ void KToon::createGUI()
 	window_timeline -> show();
 	window_timeline -> setDown( true );
         timeline_dialog -> show();
-        window -> setItemVisible( id_window_render_camera_preview, true );
-	window -> setItemChecked( id_window_render_camera_preview, true );
-	window_render_camera_preview -> show();
-	window_render_camera_preview -> setDown( true );
-        m_cameraPreview -> show();
-        window -> setItemVisible( id_window_side_camera_view, true );
-	window -> setItemChecked( id_window_side_camera_view, true );
-	window_side_camera_view -> show();
-	window_side_camera_view -> setDown( true );
+//         window -> setItemVisible( id_window_render_camera_preview, true );
+// 	window -> setItemChecked( id_window_render_camera_preview, true );
+	window_render_camera_preview->setVisible(true);
+// 	window_render_camera_preview -> setDown( true );
+        m_cameraPreview->show();
+//         window -> setItemVisible( id_window_side_camera_view, true );
+// 	window -> setItemChecked( id_window_side_camera_view, true );
+	window_side_camera_view->setVisible(true);
+// 	window_side_camera_view -> setDown( true );
         side_camera_view-> show();
-        window -> setItemVisible( id_window_top_camera_view, true );
-	window -> setItemChecked( id_window_top_camera_view, true );
-	window_top_camera_view -> show();
-	window_top_camera_view -> setDown( true );
+//         window -> setItemVisible( id_window_top_camera_view, true );
+// 	window -> setItemChecked( id_window_top_camera_view, true );
+	window_top_camera_view->setVisible(true);
+// 	window_top_camera_view -> setDown( true );
         top_camera_view -> show();
     }
 
@@ -3672,9 +3934,10 @@ void KToon::createGUI()
     connect( brushes_dialog, SIGNAL( maxThicknessChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeMaxThicknessBrush() ) );
     connect( brushes_dialog, SIGNAL( smoothnessChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeSmoothnessBrush() ) );
     connect( KTStatus->currentDrawingArea(), SIGNAL( colorGrabbed( KTColor * ) ), color_palette_dialog, SLOT( slotSetColor( KTColor * ) ) );
-    insert -> connectItem( id_insert_scene, scenes_dialog, SLOT( slotInsertScene() ) );
-    insert -> connectItem( id_insert_remove_scene, scenes_dialog, SLOT( slotRemoveScene() ) );
-    file -> connectItem( id_file_close, KTStatus->currentDrawingArea(), SLOT( close() ) );
+    connect(insert_scene, SIGNAL(activated()), scenes_dialog, SLOT(slotInsertScene()));
+    connect(insert_remove_scene, SIGNAL(activated()), scenes_dialog, SLOT(slotRemoveScene()));
+    
+    connect(file_close, SIGNAL(activated()), KTStatus->currentDrawingArea(), SLOT(close()));
     connect( scenes_dialog, SIGNAL( sceneInserted() ), SLOT( slotInsertSync() ) );
     connect( scenes_dialog, SIGNAL( sceneMovedDown( int ) ), SLOT( slotMoveDownSync( int ) ) );
     connect( scenes_dialog, SIGNAL( sceneMovedUp( int ) ), SLOT( slotMoveUpSync( int ) ) );
@@ -3691,12 +3954,14 @@ void KToon::createGUI()
     timeline_dialog -> frameSequenceManager() -> frameLayout() -> slotUpdateMaxUsedFrames();
     exposure_sheet_dialog -> updateIndicators( exposure_sheet_dialog -> currentLayerObj() );
 
-    file -> setItemEnabled( id_file_save, true );
-    file -> setItemEnabled( id_file_save_as, true );
-    file -> setItemEnabled( id_file_close, true );
-    file -> setItemEnabled( id_file_import, true );
-    file -> setItemEnabled( id_file_export, true );
-    file -> setItemEnabled( id_file_properties, true );
+    //file -> setItemEnabled( id_file_save, true );
+    file_save->setEnabled(true);
+    file_save_as->setEnabled(true);
+    file_close->setEnabled(true);
+    file_import->setEnabled(true);
+    file_export->setEnabled(true);
+    file_properties->setEnabled(true);
+    
 
     menuBar() -> setItemVisible( id_insert, true );
     if (window_animation->isEnabled() )// window -> isItemEnabled( id_window_animation ) )
@@ -3705,16 +3970,16 @@ void KToon::createGUI()
     	menuBar() -> setItemVisible( id_view, true );
     	menuBar() -> setItemVisible( id_tools, true );
 
-    	edit_undo -> show();
-    	edit_redo -> show();
-    	edit_cut -> show();
-    	edit_copy -> show();
-    	edit_paste -> show();
+    	edit_undo->setVisible(true);
+	edit_redo->setVisible(true);
+	edit_cut->setVisible(true);
+	edit_copy->setVisible(true);
+	edit_paste->setVisible(true);
 	tool_bar2 -> show();
     }
     else
         menuBar() -> setItemVisible( id_control, true );
-    file_save -> show();
+    file_save->setVisible(true);
 }
 
 void KToon::updateOpenRecentMenu()

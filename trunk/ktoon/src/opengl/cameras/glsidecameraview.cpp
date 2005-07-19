@@ -22,109 +22,105 @@
 
 //-------------- CONSTRUCTOR ---------------
 
-GLSideCameraView::GLSideCameraView( QWidget* parent, QWidget *grandparent, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button, QGLWidget *share, WFlags f )
+GLSideCameraView::GLSideCameraView( QWidget* parent, QGLWidget *share, WFlags f )
     : QGLWidget( parent, "", share, f )
 {
-    Q_CHECK_PTR( parent );
-    Q_CHECK_PTR( grandparent );
-    Q_CHECK_PTR( in_assigned_menu );
-    Q_CHECK_PTR( assig_tb_button );
-    Q_CHECK_PTR( share );
+	Q_CHECK_PTR( parent );
+	Q_CHECK_PTR( share );
 
     //Initializations
-    max_horizontal = 350;
-    max_vertical = 200;
+	max_horizontal = 350;
+	max_vertical = 200;
 
-    resize( max_horizontal, max_vertical );
-    move( 620, 220 );
-    setMinimumSize( max_horizontal, max_vertical );
-    setMaximumSize( max_horizontal, max_vertical );
-    setCaption( tr( "Side Camera View" ) );
+	resize( max_horizontal, max_vertical );
+	move( 620, 220 );
+	setMinimumSize( max_horizontal, max_vertical );
+	setMaximumSize( max_horizontal, max_vertical );
+	setCaption( tr( "Side Camera View" ) );
 
-    parent_widget = parent;
-    grandparent_widget = grandparent;
-    share_widget = share;
-    assigned_menu = in_assigned_menu;
-    assigned_item = id_assigned_item;
-    assigned_tb_button = assig_tb_button;
+// 	share_widget = share;
 }
 
 //-------------- DESTRUCTOR -----------------
 
 GLSideCameraView::~GLSideCameraView()
 {
-
 }
 
 //--------------------- PROTECTED MEMBERS -------------------------
 
 void GLSideCameraView::initializeGL()
 {
-    glClearColor( 0.7, 0.9, 1.0, 0.0 );
-    glShadeModel( GL_SMOOTH );
+	glClearColor( 0.7, 0.9, 1.0, 0.0 );
+	glShadeModel( GL_SMOOTH );
 }
 
 void GLSideCameraView::resizeGL( int w, int h )
 {
-    glViewport( 0, 0, ( GLint )w, ( GLint )h );
-    glMatrixMode( GL_PROJECTION );
-    glLoadIdentity();
-    glOrtho( 0.0, w, h, 0.0, 0.0, 1.0 );
+	glViewport( 0, 0, ( GLint )w, ( GLint )h );
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+	glOrtho( 0.0, w, h, 0.0, 0.0, 1.0 );
 }
 
 void GLSideCameraView::paintGL()
 {
-    // Clean the color of the screen.
-    glClear( GL_COLOR_BUFFER_BIT );
-    glPushMatrix();
-    drawFrame();
-    glScalef( 0.5, 0.5, 0.0 );
-    glPopMatrix();
+	// Clean the color of the screen.
+	glClear( GL_COLOR_BUFFER_BIT );
+	glPushMatrix();
+	drawFrame();
+	glScalef( 0.5, 0.5, 0.0 );
+	glPopMatrix();
  }
 
  void GLSideCameraView::drawFrame( )
 {
-     glLineWidth( 2.0 );
-     glColor3f( 0.0, 0.5, 1.0 );
+	glLineWidth( 2.0 );
+	glColor3f( 0.0, 0.5, 1.0 );
+	
+	glBegin( GL_LINE_LOOP );
+		glVertex2i( 20, 20 );
+		glVertex2i( max_horizontal - 20, 20 );
+		glVertex2i( max_horizontal - 20, max_vertical - 20 );
+		glVertex2i( 20, max_vertical - 20 );
+	glEnd();
 
-     glBegin( GL_LINE_LOOP );
-      glVertex2i( 20, 20 );
-      glVertex2i( max_horizontal - 20, 20 );
-      glVertex2i( max_horizontal - 20, max_vertical - 20 );
-      glVertex2i( 20, max_vertical - 20 );
-     glEnd();
-
-     glLineWidth( 1.0 );
-     glColor3f( 0.5, 0.5, 0.5 );
-     glBegin( GL_LINE_STRIP );
-      glVertex2i( 20, 20 );
-      glVertex2i( max_horizontal - 20, max_vertical / 2  );
-      glVertex2i( 20, max_vertical - 20 );
-     glEnd();
+	glLineWidth( 1.0 );
+	glColor3f( 0.5, 0.5, 0.5 );
+	glBegin( GL_LINE_STRIP );
+		glVertex2i( 20, 20 );
+		glVertex2i( max_horizontal - 20, max_vertical / 2  );
+		glVertex2i( 20, max_vertical - 20 );
+	glEnd();
 }
 
 void GLSideCameraView::mousePressEvent( QMouseEvent *mouse_event )
 {
-    Q_CHECK_PTR( mouse_event );
-    mouse_event -> accept();
+	Q_CHECK_PTR( mouse_event );
+	mouse_event -> accept();
 }
 
 void GLSideCameraView::mouseMoveEvent( QMouseEvent *mouse_event )
 {
-    Q_CHECK_PTR( mouse_event );
-    mouse_event -> accept();
+	Q_CHECK_PTR( mouse_event );
+	mouse_event -> accept();
 }
 
 void GLSideCameraView::mouseReleaseEvent( QMouseEvent *mouse_event )
 {
-    Q_CHECK_PTR( mouse_event );
-    mouse_event -> accept();
+	Q_CHECK_PTR( mouse_event );
+	mouse_event -> accept();
 }
 
-void GLSideCameraView::closeEvent( QCloseEvent *close_event )
+bool GLSideCameraView::event( QEvent * e )
 {
-    Q_CHECK_PTR( close_event );
-    assigned_menu -> setItemChecked( assigned_item, false );
-    assigned_tb_button -> setDown( false );
-    close_event -> accept();
+	if ( e->type() == QEvent::Hide )
+	{
+		emit activate(false);
+	}
+	else if ( e->type() == QEvent::Show )
+	{
+		emit activate(true);
+	}
+	QGLWidget::event(e);
 }

@@ -28,11 +28,8 @@ KTCameraPreview::KTCameraPreview(QWidget* parent, const char* name): KTMdiWindow
 #else
 // 		m_cameraPreview = new QtRenderCameraPreview(this); // FIXME
 #endif
-
 	setCentralWidget(m_cameraPreview);
-	
 	move( 20, 220 );
-	
 	show();
 }
 

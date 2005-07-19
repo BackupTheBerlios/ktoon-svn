@@ -67,7 +67,7 @@ public:
      * @param share The QGLWidget which the SymbolView is going to share display lists with
      * @param assig_tb_button The assigned tool bar button
      */
-    Library( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QGLWidget *share, QToolButton *assig_tb_button );
+			      Library( QWidget *parent,QGLWidget *share);//, WFlags style);//, QPopupMenu *in_assigned_menu, int id_assigned_item, QGLWidget *share, QToolButton *assig_tb_button );
     /**
      * @brief Default Destructor
      *
@@ -102,12 +102,7 @@ public:
     void loadImageSymbol( const QString &file_name );
 
 private:
-    QWidget *parent_widget;
-    QPopupMenu *assigned_menu;
-    int assigned_item;
-    QToolButton *assigned_tb_button;
-    int number_of_items;
-    int image_count;
+	int image_count ,number_of_items;
     KToon *k_toon;
 
     //Icons
@@ -162,13 +157,7 @@ public slots:
     void slotUpdateLibraryData();
 
 protected:
-    /**
-     * @brief Event for dialog box closing control
-     *
-     * Reimplemented from QWidget.
-     * @param close_event The input event
-     */
-    void closeEvent( QCloseEvent *close_event );
+
     /**
      * @brief Updates the number of items label after an item deletion
      */

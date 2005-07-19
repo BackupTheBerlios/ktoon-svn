@@ -52,7 +52,7 @@ public:
      * @param share The object which this widget is going to share display lists with
      * @param f Flags passed to the DrawingArea constructor
      */
-    GLTopCameraView( QWidget *parent, QWidget *grandparent, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button, QGLWidget *share = 0, WFlags f = 0 );
+    GLTopCameraView( QWidget *parent, QGLWidget *share = 0, WFlags f = 0 );
      /**
       * @brief Default destructor
       *
@@ -106,21 +106,12 @@ protected:
      * @param mouse_event The input event
      */
     void mouseReleaseEvent( QMouseEvent *mouse_event );
-    /**
-     * @brief Event for dialog box closing control
-     *
-     * Reimplemented from QWidget.
-     * @param close_event The input event
-     */
-    void closeEvent( QCloseEvent *close_event );
-
+	      //FIXME: eliminar esto de aqui
+    bool event(QEvent * e );
+	signals:
+		void activate(bool);
 private:
     //General Purpose Variables
-    QWidget *parent_widget, *grandparent_widget;
-    QGLWidget *share_widget;
-    QPopupMenu *assigned_menu;
-    int assigned_item;
-    QToolButton *assigned_tb_button;
     GLuint max_vertical;
     GLuint max_horizontal;
 

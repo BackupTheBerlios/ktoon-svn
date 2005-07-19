@@ -34,28 +34,28 @@
 
 //------------- CONSTRUCTOR ----------------
 
-Library::Library( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QGLWidget *share, QToolButton *assig_tb_button )
-	: KTDialogBase( QDockWindow::OutsideDock, parent, "Scenes"/*, false, style */)
+Library::Library( QWidget *parent, QGLWidget *share)//, WFlags style)
+	: KTDialogBase( QDockWindow::OutsideDock, parent, "Scenes"/*, false, style */) , number_of_items(0)
 {
 	Q_CHECK_PTR( parent );
-	Q_CHECK_PTR( in_assigned_menu );
-	Q_CHECK_PTR( share );
-	Q_CHECK_PTR( assig_tb_button );
+// 	Q_CHECK_PTR( in_assigned_menu );
+ 	Q_CHECK_PTR( share );
+// 	Q_CHECK_PTR( assig_tb_button );
 
     //Initializations
 	setCaption( tr( "Graphic Library" ) );
 //     setFont( QFont( "helvetica", 8 ) );
 //     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-	parent_widget = parent;
-	assigned_menu = in_assigned_menu;
-	assigned_item = id_assigned_item;
-	assigned_tb_button = assig_tb_button;
-	number_of_items = 0;
+// 	parent_widget = parent;
+// 	assigned_menu = in_assigned_menu;
+// 	assigned_item = id_assigned_item;
+// 	assigned_tb_button = assig_tb_button;
+// 	number_of_items = 0;
 	image_count = 0;
 // 	resize( 150, 350 );
 // 	setMinimumSize( 150, 350 );
 // 	setMaximumSize( 150, 350 );
-	k_toon = ( KToon * )parent_widget;
+	k_toon = ( KToon * )parent;
 
     //Icon initializations
 	i_add_symbol = QPixmap( plussign_xpm );
@@ -441,13 +441,6 @@ void Library::slotUpdateLibraryData()
 
 //----------- EVENTS AND PROTECTED MEMBERS ---------------
 
-void Library::closeEvent( QCloseEvent *close_event )
-{
-	Q_CHECK_PTR( close_event );
-	assigned_menu -> setItemChecked( assigned_item, false );
-	assigned_tb_button -> setDown( false );
-	close_event -> accept();
-}
 
 void Library::updateNumberOfItems()
 {

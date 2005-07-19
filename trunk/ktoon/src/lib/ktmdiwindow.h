@@ -31,9 +31,13 @@ class KTMdiWindow : public QMainWindow
 	public:
 		KTMdiWindow(QWidget* parent, const char* name, WFlags f);
 		~KTMdiWindow();
+	
+	protected:
+		virtual bool event( QEvent * e );
+	
 	signals:
 		void sendMessage(const QString &);
-
+		void activate(bool);
 };
 
 #endif

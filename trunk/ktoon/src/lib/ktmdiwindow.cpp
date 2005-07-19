@@ -30,4 +30,16 @@ KTMdiWindow::~KTMdiWindow()
 	
 }
 
+bool  KTMdiWindow::event( QEvent * e )
+{
+	if ( e->type() == QEvent::Hide )
+	{
+		emit activate(false);
+	}
+	else if ( e->type() == QEvent::Show )
+	{
+		emit activate(true);
+	}
 
+	QMainWindow::event(e );
+}

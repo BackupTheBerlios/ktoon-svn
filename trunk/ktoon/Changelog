@@ -129,3 +129,14 @@ Version KToon-0.8a+svn
 	* src/exposure/exposuresheet.cpp
 		Change constructor for no use QToolButton
 
+2005-07-18 12:47
+	* src/core/ktoon.cpp
+		Finish use QAction instead QToolButton
+	* src/library/library.cpp
+		Change constructor for no use QToolButton
+	* src/opengl/cameras/gltopcameraview.cpp
+		Change constructor for no use QToolButton
+	* src/opengl/cameras/glsidecameraview.cpp
+		Change constructor for no use QToolButton
+	* src/lib/ktmdiwindow.h
+		add signal activate
