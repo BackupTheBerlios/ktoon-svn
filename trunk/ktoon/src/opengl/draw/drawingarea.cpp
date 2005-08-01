@@ -2588,9 +2588,11 @@ void DrawingArea::slotCopy()
 	{
 		GLGraphicComponent *graphic;
 		for ( graphic = current_graphic_list.first(); graphic; graphic = current_graphic_list.next() )
-		clipboard.append( graphic -> clipboardGraphic() );
-		//--
-		QApplication::clipboard()->setText(graphic -> clipboardGraphic());
+		{
+			clipboard.append( graphic -> clipboardGraphic() );
+			//QApplication::clipboard()->setText(graphic -> clipboardGraphic());
+			//-
+		}
 	}
 }
 

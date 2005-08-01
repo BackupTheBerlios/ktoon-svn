@@ -707,12 +707,7 @@ class KToon : public QMainWindow
 		*  Performs a drawing area close operation
 		*/
 		void slotCloseDrawingArea();
-		/**
-		*  Show a status bar message after a menu item highlight
-		*
-		* @param mi The highlighted menu item identifier
-		*/
-		void slotStatusBarMessage( int mi );
+
 		/**
 		*  Sets the drawing area's cursor to be the current cursor
 		*/
@@ -847,6 +842,15 @@ class KToon : public QMainWindow
 		QAction *tools_rotate180;
 		QAction *tools_perspective;
 		
+		QActionGroup *tools_selection;
+		QActionGroup *tools_draw;
+		QActionGroup *tools_fills;
+		QActionGroup *tools_erasers;
+		QActionGroup *tools_view;
+		QActionGroup *tools_order;
+		QActionGroup *tools_align;
+		QActionGroup *tools_transform;
+		
 		QPopupMenu *control;
 		int id_control;
 		QAction *control_play;
@@ -867,7 +871,7 @@ class KToon : public QMainWindow
 		QAction *help_about_opengl;
 		
 		//Tool Bar and Tool Bar buttons
-		QToolBar *tool_bar, *tool_bar2;
+		QToolBar *tool_bar, *tool_bar2, *tool_bar3;
 		
 		QAction *file_new;
 		QAction *file_open;

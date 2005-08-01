@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
 
 #include <qtooltip.h>
 #include <qtoolbutton.h>
@@ -474,6 +475,7 @@ void KToon::createActions()
 	view_previous3->setStatusTip(tr("Shows the previous 3 onion skins" ));
 	
 	view_no_previous->setOn( true );
+	
 	QActionGroup *viewNextGroup = new QActionGroup( this );
 	viewNextGroup->setExclusive( true );
 	
@@ -504,7 +506,6 @@ void KToon::createActions()
 	file_save_as = new QAction( tr( "Save &As..." ), QString::null, this);
 	connect(file_save_as, SIGNAL(activated()), this, SLOT(slotSaveAs()));
 	file_save_as->setStatusTip(tr("Opens a dialog box to save the current document in any location"));
-
 	
 	file_close = new QAction(icon_close, tr( "Cl&ose" ), tr("Ctrl+W"), this);
 	file_close->setStatusTip(tr("Closes the active document"));
@@ -590,67 +591,99 @@ void KToon::createActions()
 	insert_remove_scene = new QAction( tr( "Re&move  Scene" ), QString::null, this);
 	insert_remove_scene->setStatusTip(tr("Removes the selected scene"));
 
-	tools_normal_selection = new QAction(icon_selection, tr( "Normal &Selection" ), tr("S"), this);
+	tools_selection = new QActionGroup( this );
+	tools_selection->setText(tr( "Selection" ));
+	tools_selection->setMenuText( tr( "&Selection" ) );
+	tools_selection->setExclusive( FALSE );
+	tools_selection->setUsesDropDown( TRUE );
+	
+	tools_normal_selection = new QAction(icon_selection, tr( "Normal &Selection" ), tr("S"), tools_selection);
 	connect(tools_normal_selection, SIGNAL(activated()), this, SLOT( slotNormalSelection()));
 	tools_normal_selection->setStatusTip(tr("Activates the Selection tool"));
 	
-	tools_contour_selection = new QAction(icon_nodes, tr( "Con&tour Selection" ), tr("T"), this);
+	tools_contour_selection = new QAction(icon_nodes, tr( "Con&tour Selection" ), tr("T"), tools_selection);
 	connect(tools_contour_selection, SIGNAL(activated()), this, SLOT( slotContourSelection()));
 	tools_contour_selection->setStatusTip(tr("Activates the Node Selection tool"));
 	
-	tools_brush = new QAction(icon_brush, tr( "Con&tour Selection" ), tr("B"), this);
+	tools_draw = new QActionGroup( this );
+	tools_draw->setText(tr( "Draw" ));
+	tools_draw->setMenuText( tr( "D&raw" ) );
+	tools_draw->setExclusive( FALSE );
+	tools_draw->setUsesDropDown( TRUE );
+	
+	tools_brush = new QAction(icon_brush, tr( "Con&tour Selection" ), tr("B"), tools_draw);
 	connect(tools_brush, SIGNAL(activated()), this, SLOT( slotBrush()));
 	tools_brush->setStatusTip(tr("Activates the Brush tool"));
 	
-	tools_pencil = new QAction(icon_pencil, tr( "&Pencil" ), tr("P"), this);
+	tools_pencil = new QAction(icon_pencil, tr( "&Pencil" ), tr("P"), tools_draw);
 	connect(tools_pencil, SIGNAL(activated()), this, SLOT( slotPencil()));
 	tools_pencil->setStatusTip(tr("Activates the Pencil tool"));
 	
-	tools_pen = new QAction(icon_pen, tr( "&Pen" ), tr("N"), this);
+	tools_pen = new QAction(icon_pen, tr( "&Pen" ), tr("N"), tools_draw);
 	connect(tools_pen, SIGNAL(activated()), this, SLOT( slotPen()));
 	tools_pen->setStatusTip(tr("Activates the Pen tool"));
 	
-	tools_line = new QAction(icon_line, tr( "&Pen" ), tr("L"), this);
+	tools_line = new QAction(icon_line, tr( "&Pen" ), tr("L"), tools_draw);
 	connect(tools_line, SIGNAL(activated()), this, SLOT( slotLine()));
 	tools_line->setStatusTip(tr("Activates the Line tool"));
 	
-	tools_rectangle = new QAction(icon_rectangle, tr( "&Rectangle" ), tr("R"), this);
+	tools_rectangle = new QAction(icon_rectangle, tr( "&Rectangle" ), tr("R"), tools_draw);
 	connect(tools_rectangle, SIGNAL(activated()), this, SLOT( slotRectangle()));
 	tools_rectangle->setStatusTip(tr("Activates the Rectangle tool"));
 	
-	tools_ellipse = new QAction(icon_ellipse, tr( "&Ellipse" ), tr("E"), this);
+	tools_ellipse = new QAction(icon_ellipse, tr( "&Ellipse" ), tr("E"), tools_draw);
 	connect(tools_ellipse, SIGNAL(activated()), this, SLOT( slotEllipse()));
 	tools_ellipse->setStatusTip(tr("Activates the Ellipse tool"));
 	
-	tools_fill = new QAction(icon_fill, tr( "&Fill" ), tr("F"), this);
+	tools_fills = new QActionGroup( this );
+	tools_fills->setText(tr( "Fill" ));
+	tools_fills->setMenuText( tr( "&Fill" ) );
+	tools_fills->setExclusive( FALSE );
+	tools_fills->setUsesDropDown( TRUE );
+	
+	tools_fill = new QAction(icon_fill, tr( "&Fill" ), tr("F"), tools_fills);
 	connect(tools_fill, SIGNAL(activated()), this, SLOT( slotFill()));
 	tools_fill->setStatusTip(tr("Activates the Fill tool"));
 	
-	tools_remove_fill = new QAction(icon_remove_fill, tr( "&Remove Fill" ), tr("Shift+F"), this);
+	tools_remove_fill = new QAction(icon_remove_fill, tr( "&Remove Fill" ), tr("Shift+F"), tools_fills);
 	connect(tools_remove_fill, SIGNAL(activated()), this, SLOT( slotRemoveFill()));
 	tools_remove_fill->setStatusTip(tr("Activates the Remove Fill tool"));
 	
-	tools_contour_fill = new QAction(icon_contour_fill, tr( "&Contour Fill" ), tr("Ctrl+F"), this);
+	tools_contour_fill = new QAction(icon_contour_fill, tr( "&Contour Fill" ), tr("Ctrl+F"), tools_fills);
 	connect(tools_contour_fill, SIGNAL(activated()), this, SLOT( slotContourFill()));
 	tools_contour_fill->setStatusTip(tr("Activates the Contour Fill tool"));
 	
-	tools_dropper = new QAction(icon_dropper, tr( "&Dropper" ), tr("D"), this);
+	tools_dropper = new QAction(icon_dropper, tr( "&Dropper" ), tr("D"), tools_fills);
 	connect(tools_dropper, SIGNAL(activated()), this, SLOT( slotDropper()));
 	tools_dropper->setStatusTip(tr("Activates the Dropper tool"));
 	
-	tools_eraser = new QAction(icon_eraser, tr( "&Eraser" ) , CTRL+Key_Delete, this);
+	tools_erasers = new QActionGroup( this );
+	tools_erasers->setText(tr( "Eraser" ));
+	tools_erasers->setMenuText( tr( "&Eraser" ) );
+	tools_erasers->setExclusive( FALSE );
+	tools_erasers->setUsesDropDown( TRUE );
+	
+	tools_eraser = new QAction(icon_eraser, tr( "&Eraser" ) , CTRL+Key_Delete, tools_erasers);
 	connect(tools_eraser, SIGNAL(activated()), this, SLOT( slotEraser()));
 	tools_eraser->setStatusTip(tr("Activates the Eraser tool"));
 	
-	tools_slicer = new QAction(icon_dropper, tr( "&Slicer" ), CTRL+Key_Delete, this);
+	tools_slicer = new QAction(icon_dropper, tr( "&Slicer" ), CTRL+Key_Delete, tools_erasers);
 	connect(tools_slicer, SIGNAL(activated()), this, SLOT( slotSlicer()));
 	tools_slicer->setStatusTip(tr("Activates the Slicer tool"));
 	
-	tools_magnifying_glass = new QAction(icon_magnifying_glass, tr( "&Magnifying Glass" ), tr("M"), this);
+	
+	tools_view = new QActionGroup( this );
+	tools_view->setText(tr( "View" ));
+	tools_view->setMenuText( tr( "&View" ) );
+	tools_view->setExclusive( FALSE );
+	tools_view->setUsesDropDown( TRUE );
+ 	
+	tools_magnifying_glass = new QAction(icon_magnifying_glass, tr( "&Magnifying Glass" ), tr("M"), tools_view);
+	
 	connect(tools_magnifying_glass, SIGNAL(activated()), this, SLOT( slotMagnifyingGlass()));
 	tools_magnifying_glass->setStatusTip(tr("Activates the Magnifying Glass tool"));
 	
-	tools_hand = new QAction(icon_hand, tr( "&Hand" ), tr("H"), this);
+	tools_hand = new QAction(icon_hand, tr( "&Hand" ), tr("H"), tools_view);
 	connect(tools_hand, SIGNAL(activated()), this, SLOT( slotHand()));
 	tools_hand->setStatusTip(tr("Activates the Hand tool"));
 	
@@ -662,67 +695,92 @@ void KToon::createActions()
 	connect(tools_ungroup, SIGNAL(activated()), this, SLOT( slotUngroup()));
 	tools_ungroup->setStatusTip(tr("Ungroups the selected object"));
 	
-	tools_bring_front = new QAction(icon_bring_to_front, tr( "&Bring to Front" ), CTRL+SHIFT+Key_Up, this);
+	tools_order = new QActionGroup( this );
+	tools_order->setText(tr( "Order" ));
+	tools_order->setMenuText( tr( "&Order" ) );
+	tools_order->setExclusive( FALSE );
+	tools_order->setUsesDropDown( TRUE );
+	
+	tools_bring_front = new QAction(icon_bring_to_front, tr( "&Bring to Front" ), CTRL+SHIFT+Key_Up, tools_order);
 	connect(tools_bring_front, SIGNAL(activated()), this, SLOT( slotBringToFront()));
 	tools_bring_front->setStatusTip(tr("Brings the selected object to the front"));
-	
-	tools_send_back = new QAction(icon_send_to_back, tr( "&Send to Back" ), CTRL+SHIFT+Key_Down, this);
+
+	tools_send_back = new QAction(icon_send_to_back, tr( "&Send to Back" ), CTRL+SHIFT+Key_Down, tools_order);
 	connect(tools_send_back, SIGNAL(activated()), this, SLOT( slotSendToBack()));
 	
 	tools_send_back->setStatusTip(tr("Sends the selected objects to the back"));
-	tools_one_step_forward = new QAction(icon_one_forward, tr( "One Step &Forward" ), CTRL+Key_Up, this);
+	tools_one_step_forward = new QAction(icon_one_forward, tr( "One Step &Forward" ), CTRL+Key_Up, tools_order);
 	connect(tools_one_step_forward, SIGNAL(activated()), this, SLOT( slotOneStepForward()));
 	tools_one_step_forward->setStatusTip(tr("Moves the selected object one step forward"));
 	
-	tools_one_step_backward = new QAction(icon_one_backward, tr( "One Step B&ackward" ), CTRL+Key_Down, this);
+	tools_one_step_backward = new QAction(icon_one_backward, tr( "One Step B&ackward" ), CTRL+Key_Down, tools_order);
 	connect(tools_one_step_backward, SIGNAL(activated()), this, SLOT( slotOneStepBackward()));
 	tools_one_step_backward->setStatusTip(tr("Moves the selected object one step backward"));
 	
-	tools_left = new QAction(icon_align_l, tr( "&Left" ),  QString::null, this);
+	
+	tools_align = new QActionGroup( this );
+	tools_align->setText(tr( "Align" ));
+	tools_align->setMenuText( tr( "A&lign" ) );
+	tools_align->setExclusive( FALSE );
+	tools_align->setUsesDropDown( TRUE );
+	
+	tools_left = new QAction(icon_align_l, tr( "&Left" ),  QString::null, tools_align);
 	connect(tools_left, SIGNAL(activated()), this, SLOT( slotAlignLeft()));
 	tools_left->setStatusTip(tr("Aligns the selected object to the left"));
 	
-	tools_center_vertically = new QAction(icon_align_cv, tr( "&Center Vertically" ),  QString::null, this);
+	tools_center_vertically = new QAction(icon_align_cv, tr( "&Center Vertically" ),  QString::null, tools_align);
 	connect(tools_center_vertically, SIGNAL(activated()), this, SLOT( slotCenterVertically()));
 	tools_center_vertically->setStatusTip(tr("Centers vertically the selected object"));
 	
-	tools_right = new QAction(icon_align_r, tr( "&Right" ),  QString::null, this);
+	tools_right = new QAction(icon_align_r, tr( "&Right" ),  QString::null, tools_align);
 	connect(tools_right, SIGNAL(activated()), this, SLOT( slotAlignRight()));
 	tools_right->setStatusTip(tr("Aligns the selected object to the right"));
 	
-	tools_top = new QAction(icon_align_t, tr( "&Top" ),  QString::null, this);
+	tools_align->addSeparator();
+	
+	tools_top = new QAction(icon_align_t, tr( "&Top" ),  QString::null, tools_align);
 	connect(tools_top, SIGNAL(activated()), this, SLOT( slotAlignTop()));
 	tools_top->setStatusTip(tr("Aligns the selected object to the top"));
 	
-	tools_center_horizontally = new QAction(icon_align_ch, tr( "Center &Horizontally" ),  QString::null, this);
+	tools_center_horizontally = new QAction(icon_align_ch, tr( "Center &Horizontally" ),  QString::null, tools_align);
 	connect(tools_center_horizontally, SIGNAL(activated()), this, SLOT( slotCenterHorizontally()));
 	tools_center_horizontally->setStatusTip(tr("Centers horizontally the selected object"));
 	
-	tools_bottom = new QAction(icon_align_b, tr( "&Bottom" ),  QString::null, this);
+	tools_bottom = new QAction(icon_align_b, tr( "&Bottom" ),  QString::null, tools_align);
 	connect(tools_bottom, SIGNAL(activated()), this, SLOT( slotAlignBottom()));
 	tools_bottom->setStatusTip(tr("Aligns the selected object to the bottom"));
 	
-	tools_flip_horizontally = new QAction(tr( "Flip &Horizontally" ),  QString::null, this);
+	tools_transform = new QActionGroup( this );
+	tools_transform->setText(tr( "Transform " ));
+	tools_transform->setMenuText( tr( "&Transform" ) );
+	tools_transform->setExclusive( FALSE );
+	tools_transform->setUsesDropDown( TRUE );
+	
+	tools_flip_horizontally = new QAction(tr( "Flip &Horizontally" ),  QString::null, tools_transform);
 	connect(tools_flip_horizontally, SIGNAL(activated()), this, SLOT( slotFlipHorizontally()));
 	tools_flip_horizontally->setStatusTip(tr("Flips the selected object horizontally"));
 	
-	tools_flip_vertically = new QAction(tr( "Flip &Vertically" ),  QString::null, this);
+	tools_flip_vertically = new QAction(tr( "Flip &Vertically" ),  QString::null, tools_transform );
 	connect(tools_flip_vertically, SIGNAL(activated()), this, SLOT( slotFlipVertically()));
 	tools_flip_vertically->setStatusTip(tr("Flips the selected object vertically"));
 	
-	tools_rotate_cw90 = new QAction(tr( "&Rotate 90 CW" ),  QString::null, this);
+	tools_transform->addSeparator();
+	
+	tools_rotate_cw90 = new QAction(tr( "&Rotate 90 CW" ),  QString::null, tools_transform);
 	connect(tools_rotate_cw90, SIGNAL(activated()), this, SLOT( slotRotateCW90()));
 	tools_rotate_cw90->setStatusTip(tr("Rotates the selected object 90 degrees clockwise"));
 	
-	tools_rotate_ccw90 = new QAction(tr( "&Rotate 90 CCW" ),  QString::null, this);
+	tools_rotate_ccw90 = new QAction(tr( "&Rotate 90 CCW" ),  QString::null, tools_transform);
 	connect(tools_rotate_ccw90, SIGNAL(activated()), this, SLOT( slotRotateCCW90()));
 	tools_rotate_ccw90->setStatusTip(tr("Rotates the selected object 90 degrees counterclockwise"));
 	
-	tools_rotate180 = new QAction(tr( "&Rotate &180" ),  QString::null, this);
+	tools_transform->addSeparator();
+	
+	tools_rotate180 = new QAction(tr( "&Rotate &180" ),  QString::null, tools_transform);
 	connect(tools_rotate180, SIGNAL(activated()), this, SLOT( slotRotate180()));
 	tools_rotate180->setStatusTip(tr("Rotates the selected object 180 degrees"));
 	
-	tools_perspective = new QAction(icon_perspective, tr( "&Perspective" ),  QString::null, this);
+	tools_perspective = new QAction(icon_perspective, tr( "&Perspective" ),  QString::null, tools_transform);
 	connect(tools_perspective, SIGNAL(activated()), this, SLOT( slotPerspectiveSelection()));
 	tools_perspective->setStatusTip(tr("Activates the perspective tool"));
 	
@@ -815,6 +873,14 @@ void KToon::setupToolBar()
 	view_next->addTo(tool_bar2);
 	view_next2->addTo(tool_bar2);
 	view_next3->addTo(tool_bar2);
+	
+	tool_bar3 = new QToolBar( this );
+	tool_bar3-> setLabel( tr( "Tools Operations" ) );
+	tools_selection->addTo(tool_bar3);
+	tools_draw->addTo(tool_bar3);
+	tools_fills->addTo(tool_bar3);
+	tools_erasers->addTo(tool_bar3);
+	tools_view->addTo(tool_bar3);
 }
 
 void KToon::setupMenu()
@@ -898,70 +964,22 @@ void KToon::setupMenu()
 	insert_remove_scene->addTo(insert);
     //TOOLS MENU
 	tools = new QPopupMenu( this );
-	id_tools = menuBar() -> insertItem( tr( "&Tools" ), tools );
-       	//Selection Submenu
-	QPopupMenu *selection = new QPopupMenu( this );
-	tools_normal_selection->addTo(selection);
-	tools_contour_selection->addTo(selection);
-	tools -> insertItem( tr( "&Selection" ), selection );
-       	//Draw Submenu
-	QPopupMenu *draw = new QPopupMenu( this );
-	tools_brush->addTo(draw);
-	tools_pencil->addTo(draw);
-	tools_pen->addTo(draw);
-	tools_line->addTo(draw);
-	tools_rectangle->addTo(draw);
-	tools_ellipse->addTo(draw);
-	tools -> insertItem( tr( "D&raw" ), draw );
-       	//Fill Submenu
-	QPopupMenu *fill = new QPopupMenu( this );
-	tools_fill->addTo(fill);
-	tools_remove_fill->addTo(fill);
-	tools_contour_fill->addTo(fill);
-	tools_dropper->addTo(fill);
-	tools->insertItem( tr( "&Fill" ), fill );
-       	//Eraser Submenu
-	QPopupMenu *eraser = new QPopupMenu( this );
-	tools_eraser->addTo(eraser);
-	tools_slicer->addTo(eraser);
-	tools -> insertItem( tr( "&Eraser" ), eraser );
-       	//View_ Submenu
-	QPopupMenu *view_ = new QPopupMenu( this );
-	tools_magnifying_glass->addTo(view_);
-	tools_hand->addTo(view_);
-	tools->insertItem( tr("&View"), view_ );
+	tools_selection->addTo(tools);
+	tools_draw->addTo(tools);
+	tools_fills->addTo(tools);
+	tools_erasers->addTo(tools);
+	tools_view->addTo(tools);
 	tools->insertSeparator();
 	tools_group->addTo(tools);
 	tools_ungroup->addTo(tools);
-	tools -> insertSeparator();
-    	//Order Submenu
+	tools->insertSeparator();
+	
+	id_tools = menuBar() -> insertItem( tr( "&Tools" ), tools );
 	QPopupMenu *order = new QPopupMenu( this );
-	tools_bring_front->addTo(order);
-	tools_send_back->addTo(order);
-	tools_one_step_forward->addTo(order);
-	tools_one_step_backward->addTo(order);
-	tools -> insertItem( tr( "&Order" ), order );
-    	//Align Submenu
-	QPopupMenu *align = new QPopupMenu( this );
-	tools_left->addTo(align);
-	tools_center_vertically->addTo(align);
-	tools_right->addTo(align);
-	align->insertSeparator();
-	tools_top->addTo(align);
-	tools_center_horizontally->addTo(align);
-	tools_bottom->addTo(align);
-	tools -> insertItem(tr( "A&lign" ), align );
-    	//Transform Submenu
-	QPopupMenu *transform = new QPopupMenu( this );
-	tools_flip_horizontally->addTo(transform);
-	tools_flip_vertically->addTo(transform);
-	transform -> insertSeparator();
-	tools_rotate_cw90->addTo(transform);
-	tools_rotate_ccw90->addTo(transform);
-	transform -> insertSeparator();
-	tools_rotate180->addTo(transform);
-	tools_perspective->addTo(transform);
-	tools -> insertItem( tr( "&Transform" ), transform );
+	
+	tools_order->addTo(tools);
+	tools_align->addTo(tools);
+	tools_transform->addTo(tools);
     //CONTROL MENU
 	control = new QPopupMenu( this );
 	id_control = menuBar() -> insertItem( tr( "&Control" ), control );
@@ -2849,7 +2867,7 @@ void KToon::slotBrush()
 {
     tools_dialog -> changeButtonImage( Tools::BRUSH );
     KTStatus -> setCurrentCursor( Tools::BRUSH );
-    color_palette_dialog -> slotActivateOutlineColor();
+    color_palette_dialog->slotActivateOutlineColor();
     slotActivateCursor();
 }
 
@@ -3619,43 +3637,6 @@ void KToon::slotCloseDrawingArea()
 	std::cout << "Closed" << std::endl;
 }
 
-void KToon::slotStatusBarMessage( int mi )
-{
-    /*if ( id_file_new == mi ) statusBar() -> message( tr( "Opens a new document" ), 2000 );
-    else if( id_file_open == mi ) statusBar() -> message( tr( "Loads an existent document" ), 2000 );
-    else if( id_file_save == mi ) statusBar() -> message( tr( "Saves the current document in the current location" ), 2000 );
-    else if( id_file_save_as == mi ) statusBar() -> message( tr( "Opens a dialog box to save the current document in any location" ), 2000 );
-
-   
-    else if( id_view_grid12 == mi ) statusBar() -> message( tr( "Shows a 12 field grid" ), 2000 );
-    else if( id_view_grid16 == mi ) statusBar() -> message( tr( "Shows a 16 field grid" ), 2000 );
-    else if( id_view_subgrid == mi ) statusBar() -> message( tr( "Shows or hides a 3 field subgrid in the current grid" ), 2000 );
-    else if( id_view_no_grid == mi ) statusBar() -> message( tr( "Hides the grid" ), 2000 );
-   
-    
-    
-
-    else if( id_control_play == mi ) statusBar() -> message( tr( "Plays the Animation" ), 2000 );
-    else if( id_control_step_forward == mi ) statusBar() -> message( tr( "Steps one frame forward in the animation" ), 2000 );
-    else if( id_control_step_backward == mi ) statusBar() -> message( tr( "Steps one frame backward in the animation" ), 2000 );
-    else if( id_control_rewind == mi ) statusBar() -> message( tr( "Rewinds the Animation" ), 2000 );
-    else if( id_control_go_to_end == mi ) statusBar() -> message( tr( "Goes to the last frame of the Animation" ), 2000 );
-    //else if( id_window_illustration == mi ) statusBar() -> message( tr( "Turns to the illustration mode" ), 2000 );
-    //else if( id_window_animation == mi ) statusBar() -> message( tr( "Turns to the animation mode" ), 2000 );
-//     else if( id_window_tools == mi ) statusBar() -> message( tr( "Shows or hides the tools dialog box" ), 2000 );
-    //else if( id_window_brushes == mi ) statusBar() -> message( tr( "Shows or hides the brushes dialog box" ), 2000 );
-//     else if( id_window_scenes == mi ) statusBar() -> message( tr( "Shows or hides the scenes dialog box" ), 2000 );
-//     else if( id_window_color_palette == mi ) statusBar() -> message( tr( "Shows or hides the color palette dialog box" ), 2000 );
-//     else if( id_window_exposure_sheet == mi ) statusBar() -> message( tr( "Shows or hides the exposure sheet dialog box" ), 2000 );
-    else if( id_window_library == mi ) statusBar() -> message( tr( "Shows or hides the library dialog box" ), 2000 );
-    else if( id_window_drawing_area == mi ) statusBar() -> message( tr( "Shows or hides the drawing area widget" ), 2000 );
-    else if( id_window_timeline == mi ) statusBar() -> message( tr( "Shows or hides the timeline dialog box" ), 2000 );
-    
-    else if( id_help_contents == mi )  statusBar() -> message( tr( "Shows the help of the application" ), 2000 );
-    else if( id_help_about == mi ) statusBar() -> message( tr( "Shows information about the authors and another stuff" ), 2000 );
-    else if( id_help_about_qt == mi ) statusBar() -> message( tr( "Shows information about Qt" ), 2000 );
-	else if( id_help_about_opengl == mi ) statusBar() -> message( tr( "Shows information about OpenGL" ), 2000 );*/
-}
 
 void KToon::slotActivateCursor()
 {
@@ -3711,7 +3692,7 @@ void KToon::slotActivateCursor()
 
 void KToon::slotSelectSync( int sp )
 {
-	exposure_sheet_dialog -> hide();
+	exposure_sheet_dialog->hide();
 	exposure_sheet_dialog = list_of_es.at( sp );
 	if ( /*window_exposure_sheet->isOn() &&*/ window_animation->isEnabled())//window -> isItemChecked( id_window_exposure_sheet ) && window_animation->isEnabled())//window -> isItemEnabled( id_window_animation ) )
 		exposure_sheet_dialog -> show();

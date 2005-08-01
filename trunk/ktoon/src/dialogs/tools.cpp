@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "tools.h"
-#include "ktoon.h"
+#include "status.h"
 #include "images.h"
 
 #include <qtooltip.h>

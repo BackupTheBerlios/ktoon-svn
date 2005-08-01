@@ -101,7 +101,6 @@ int Brush::idBrush() const
 QDomElement Brush::createXML( QDomDocument &doc )
 {
     QDomElement e = doc.createElement( "Brush" );
-
     e.setAttribute( "Name", name );
     e.setAttribute( "MinThickness", thickness_min );
     e.setAttribute( "MaxThickness", thickness_max );
