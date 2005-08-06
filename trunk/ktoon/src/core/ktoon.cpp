@@ -39,6 +39,9 @@
 #include "ktxmlreader.h"
 #include "ktconfigdocument.h"
 
+// Borrar
+#include "kttimeline.h"
+
 //--------------- CONSTRUCTOR --------------------
 
 KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose ), document_max_value(1), file_name("")
@@ -1076,6 +1079,9 @@ void KToon::setupDialogs()
 			 window_library , SLOT(setOn(bool)));
 	
 	//For animation
+	
+ 	/*KTTimeLine *kttimeLine = */new KTTimeLine(this);
+	
 	timeline_dialog = new Timeline( this, Qt::WStyle_Tool, window, id_window_timeline, window_timeline );
 	list_of_tl.append( timeline_dialog );
 	
@@ -1100,6 +1106,7 @@ void KToon::setupDialogs()
 
 KToon::~KToon()
 {
+	qDebug("[Destroying KToon]");
 //     delete file;
 //     delete open_recent;
 //     delete edit;

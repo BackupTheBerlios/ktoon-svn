@@ -17,3 +17,36 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTIMAGEBUTTON_H
+#define KTIMAGEBUTTON_H
+
+#include <qpushbutton.h>
+#include <qimage.h>
+
+
+/**
+ * A image pressable
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+
+class KTImageButton : public QPushButton
+{
+	Q_OBJECT
+
+	public:
+		KTImageButton(const QImage &image, QWidget *parent = 0);
+		~KTImageButton();
+		
+		
+	protected:
+		void resizeEvent(QResizeEvent *e);
+		void paintEvent(QPaintEvent *e);
+		QPixmap getPixmap();
+		
+	private:
+		QImage m_image;
+		QPixmap m_drawer;
+		int m_buttonSize;
+};
+
+#endif

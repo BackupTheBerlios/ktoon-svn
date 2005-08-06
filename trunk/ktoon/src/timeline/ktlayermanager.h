@@ -17,3 +17,31 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTLAYERMANAGER_H
+#define KTLAYERMANAGER_H
+
+#include <qvbox.h>
+#include <qpushbutton.h>
+#include <qtooltip.h>
+
+#include "ktimagebutton.h"
+
+/**
+	@author David Cuadrado <krawek@toonka.com>
+*/
+
+class KTLayerManager : public QVBox
+{
+	Q_OBJECT
+	public:
+		KTLayerManager(QWidget *parent = 0);
+		~KTLayerManager();
+		
+		
+	private:
+		QHBox *utilsInTop/*, *utilsInBottom*/;
+		QPushButton *lockButton, *eyeButton;
+		QPushButton *outlineButton;
+};
+
+#endif

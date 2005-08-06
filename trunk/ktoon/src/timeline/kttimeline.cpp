@@ -17,3 +17,38 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#include "kttimeline.h"
+#include "ktapplication.h"
+
+KTTimeLine::KTTimeLine(QWidget *parent) : KTDialogBase(QDockWindow::OutsideDock, parent, "KTTimeLine")
+{
+	qDebug("[Initializing KTTimeLine]");
+// 	this->setPaletteBackgroundColor(Qt::blue);
+	setCaption(tr("The Time line"));
+	
+	m_container = new QHBox(this);
+	addChild(m_container);
+	
+	m_splitter = new QSplitter( m_container );
+	
+	m_layerManager = new KTLayerManager( m_splitter );
+	
+	/*show*/hide();
+	setResizeEnabled (true);
+// 	adjustSize();
+}
+
+
+KTTimeLine::~KTTimeLine()
+{
+	qDebug("[Destroying KTTimeLine]");
+	
+	
+	
+}
+
+
+
+
+

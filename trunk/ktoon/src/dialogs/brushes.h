@@ -80,7 +80,7 @@ class Brushes : public KTDialogBase
 	* @param id_assigned_item The assigned menu item from the assigned menu
 	* @param assig_tb_button The assigned tool bar button
 	*/
-	Brushes( QWidget *parent=0, WFlags style=0/*, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button */);
+	Brushes( QWidget *parent=0, WFlags style=0);
 	/**
 	* @brief Default Destructor
 	*

@@ -57,9 +57,11 @@ Timeline::Timeline( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu,
     splitter -> setSizes( sizes );
 
     layer_manager = new TLLayerManager( splitter, this );
+    layer_manager->setPaletteBackgroundColor(Qt::red);
     splitter -> setResizeMode( layer_manager, QSplitter::KeepSize );
 
     frame_sequence_manager =  new TLFrameSequenceManager( splitter, this );
+    frame_sequence_manager->setPaletteBackgroundColor(Qt::green);
     splitter -> setResizeMode( frame_sequence_manager, QSplitter::KeepSize );
 
     sound_label = new QLabel( tr( "Sound File-name:" ), this );

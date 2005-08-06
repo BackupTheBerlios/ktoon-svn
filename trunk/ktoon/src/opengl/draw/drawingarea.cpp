@@ -844,7 +844,7 @@ void DrawingArea::mouseMoveEvent( QMouseEvent *mouse_event )
 			invertMatrix();
 			mouse_event -> accept();
 			QPoint new_point( mouse_event -> x(),  mouse_event -> y() );
-			current_graphic -> brushMoveOption( *( new QPoint( mapPointToMatrix( new_point ) ) ) );
+			current_graphic -> brushMoveOption( /**( new */QPoint( mapPointToMatrix( new_point ) ) /*)*/ );
 			}
 			( ( GLBrush * )( current_graphic ) ) -> setPressureBrush( ( int )( ( pressureTablet() * 100 ) / 255 ) );
 			break;

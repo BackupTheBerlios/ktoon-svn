@@ -17,3 +17,31 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#ifndef KTTIMELINE_H
+#define KTTIMELINE_H
+
+#include <ktdialogbase.h>
+#include <qsplitter.h>
+#include <qhbox.h>
+
+#include "ktlayermanager.h"
+
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+
+class KTTimeLine : public KTDialogBase
+{
+	Q_OBJECT
+	public:
+		KTTimeLine(QWidget *parent = 0);
+		~KTTimeLine();
+		
+	private:
+		QHBox *m_container;
+		QSplitter *m_splitter;
+		KTLayerManager *m_layerManager;
+};
+
+#endif

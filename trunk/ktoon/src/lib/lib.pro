@@ -20,7 +20,8 @@ HEADERS += glgraphiccomponent.h \
            ktexporter.h \
            ktmdiwindow.h \
            ktconfigdocument.h \
-           ktconfig.h 
+           ktconfig.h \
+           ktimagebutton.h 
 SOURCES += glgraphiccomponent.cpp \
            ktapplication.cpp \
            configwizard.cpp \
@@ -38,7 +39,8 @@ SOURCES += glgraphiccomponent.cpp \
            ktexporter.cpp \
            ktmdiwindow.cpp \
            ktconfigdocument.cpp \
-           ktconfig.cpp 
+           ktconfig.cpp \
+           ktimagebutton.cpp 
 INCLUDEPATH += ../../src/core \
 ../../src/exposure \
 ../../src/dialogs \

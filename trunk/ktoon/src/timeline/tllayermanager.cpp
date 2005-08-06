@@ -56,6 +56,7 @@ TLLayerManager::TLLayerManager( QWidget *parent, QWidget *grandparent )
     //---------- Top Panel ---------------
 
     utils = new QFrame( this );
+
     utils -> setFrameStyle( QFrame::Box | QFrame::Plain );
     utils -> resize( 192, 24 );
     utils -> setMinimumSize( 192, 24 );
