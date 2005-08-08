@@ -88,6 +88,9 @@ TLLayerManager::TLLayerManager( QWidget *parent, QWidget *grandparent )
 
     //Layer Sequence Initialization
     layer_sequence = new TLLayerSequence( this );
+    
+//     layer_sequence->setPaletteBackgroundColor(Qt::blue);
+    
     layer_sequence -> move( 0, utils -> height() );
     layer_sequence -> resize( 200, 90 );
     layer_sequence -> resizeContents( 200, 90 );

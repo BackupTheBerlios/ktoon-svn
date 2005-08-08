@@ -18,41 +18,44 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTLAYERMANAGER_H
-#define KTLAYERMANAGER_H
-
-#include <qvbox.h>
-#include <qpushbutton.h>
-#include <qtooltip.h>
-#include <qlabel.h>
-
-#include "ktimagebutton.h"
 #include "ktlayersequence.h"
 
-/**
-	@author David Cuadrado <krawek@toonka.com>
-*/
-
-class KTLayerManager : public QVBox
+KTLayerSequence::KTLayerSequence(QWidget *parent) : QVBox(parent, "KTLayerSequence")
 {
-	Q_OBJECT
-	public:
-		KTLayerManager(QWidget *parent = 0);
-		~KTLayerManager();
-		
-		
-	private:
-		double m_currentTime, m_totalTime;
-		
-		QHBox *m_utilsInTop;
-		QPushButton *m_lockButton, *m_eyeButton, *m_outlineButton;
-		
-		QHBox *m_utilsInBottom;
-		QPushButton *m_insertButton, *m_removeButton, *m_moveUpButton, *m_moveDownButton;
-		
-		QLabel *m_time;
-		
-		KTLayerSequence *m_sequence;
-};
+// 	enableClipper( true );
+// 	setHScrollBarMode( QScrollView::AlwaysOff );
 
-#endif
+// 	viewport() -> setMouseTracking( true );
+
+	setPaletteBackgroundColor(Qt::black);
+	setPaletteForegroundColor(Qt::gray );
+	
+	m_defaultLayer = new KTTimeLineLayer (tr("Layer %1").arg("1"), 1, this);
+	
+    	//Add a default layer
+// 	TLLayer *default_layer = new TLLayer( 1, viewport(), this, tr( "Layer" ) + QString( "1" ) );
+	
+// 	default_layer -> resize( width(), 24 );
+// 	connect( default_layer, SIGNAL( selected() ), SLOT( slotSelectLayer() ) );
+// 	connect( default_layer, SIGNAL( draggedAbove( int ) ), SLOT( slotDragLayerAbove( int ) ) );
+// 	connect( default_layer, SIGNAL( draggedBelow( int ) ), SLOT( slotDragLayerBelow( int ) ) );
+// 	connect( default_layer, SIGNAL( releasedAbove( int ) ), SLOT( slotReleaseLayerAbove( int ) ) );
+// 	connect( default_layer, SIGNAL( releasedBelow( int ) ), SLOT( slotReleaseLayerBelow( int ) ) );
+// 	connect( default_layer, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameLayer( const QString & ) ) );
+// 	connect( default_layer, SIGNAL( visibilityChanged( bool ) ), SLOT( slotChangeVisibilityState( bool ) ) );
+// 	addChild( default_layer );
+// 	list_of_layers.append( default_layer );
+
+// 	current_layer = default_layer;
+// 	last_layer = current_layer;
+// 	current_layer -> setSelected( true );
+// 	current_layer -> setEdited( true );
+
+}
+
+
+KTLayerSequence::~KTLayerSequence()
+{
+}
+
+

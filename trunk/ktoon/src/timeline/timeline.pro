@@ -3,31 +3,6 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/timeline
 # Destiono es una biblioteca:  
 
-INCLUDEPATH += ../../src/core \
-               ../../src/exposure \
-               ../../src/dialogs \
-               ../../src/qt/cameras \
-               ../../src/qt/tools \
-               ../../src/qt/draw \
-               ../../src/opengl/draw \
-               ../../src/opengl/tools \
-               ../../src/opengl/cameras \
-               ../../src/store \
-               ../../src/library \
-               ../../src/timeline \
-               ../../src/lib \
-               ../../src/images/sequences \
-               ../../src/images/icons \
-               ../../src/images/cursors \
-               ../../src/images/images 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-CONFIG += release \
-          warn_on \
-          qt \
-          staticlib 
-TEMPLATE = lib 
 HEADERS += soundwidget.h \
            timeline.h \
            tlframe.h \
@@ -39,7 +14,9 @@ HEADERS += soundwidget.h \
            tllayersequence.h \
            tlruler.h \
            kttimeline.h \
-           ktlayermanager.h 
+           ktlayermanager.h \
+           ktlayersequence.h \
+           kttimelinelayer.h 
 SOURCES += soundwidget.cpp \
            timeline.cpp \
            tlframe.cpp \
@@ -51,4 +28,31 @@ SOURCES += soundwidget.cpp \
            tllayersequence.cpp \
            tlruler.cpp \
            kttimeline.cpp \
-           ktlayermanager.cpp 
+           ktlayermanager.cpp \
+           ktlayersequence.cpp \
+           kttimelinelayer.cpp 
+INCLUDEPATH += ../../src/core \
+../../src/exposure \
+../../src/dialogs \
+../../src/qt/cameras \
+../../src/qt/tools \
+../../src/qt/draw \
+../../src/opengl/draw \
+../../src/opengl/tools \
+../../src/opengl/cameras \
+../../src/store \
+../../src/library \
+../../src/timeline \
+../../src/lib \
+../../src/images/sequences \
+../../src/images/icons \
+../../src/images/cursors \
+../../src/images/images
+MOC_DIR = .moc
+UI_DIR = .ui
+OBJECTS_DIR = .obj
+CONFIG += release \
+warn_on \
+qt \
+staticlib
+TEMPLATE = lib

@@ -46,8 +46,8 @@ KTDialogBase::KTDialogBase(Place p, QWidget *parent, const char *name, WFlags st
 	
 	setOrientation( Qt::Vertical );
 	
-	hide();
 	adjustSize();
+	hide();
 }
 
 
@@ -117,6 +117,7 @@ bool KTDialogBase::event( QEvent * e )
 	}
 	else if ( e->type() == QEvent::Show )
 	{
+		adjustSize();
 		emit activate(true);
 	}
 

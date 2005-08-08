@@ -24,7 +24,7 @@
 #include "tllayer.h"
 #include "tllayersequence.h"
 #include "tllayermanager.h"
-#include "../images/images.h"
+#include "images.h"
 
 //--------------- CONSTRUCTOR --------------------
 
