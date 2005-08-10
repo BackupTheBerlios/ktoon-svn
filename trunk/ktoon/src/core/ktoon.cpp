@@ -614,7 +614,7 @@ void KToon::createActions()
 	tools_draw->setExclusive( FALSE );
 	tools_draw->setUsesDropDown( TRUE );
 	
-	tools_brush = new QAction(icon_brush, tr( "Con&tour Selection" ), tr("B"), tools_draw);
+	tools_brush = new QAction(icon_brush, tr( "&Brush" ), tr("B"), tools_draw);
 	connect(tools_brush, SIGNAL(activated()), this, SLOT( slotBrush()));
 	tools_brush->setStatusTip(tr("Activates the Brush tool"));
 	
@@ -626,7 +626,7 @@ void KToon::createActions()
 	connect(tools_pen, SIGNAL(activated()), this, SLOT( slotPen()));
 	tools_pen->setStatusTip(tr("Activates the Pen tool"));
 	
-	tools_line = new QAction(icon_line, tr( "&Pen" ), tr("L"), tools_draw);
+	tools_line = new QAction(icon_line, tr( "&line" ), tr("L"), tools_draw);
 	connect(tools_line, SIGNAL(activated()), this, SLOT( slotLine()));
 	tools_line->setStatusTip(tr("Activates the Line tool"));
 	
@@ -1039,11 +1039,15 @@ void KToon::setupDialogs()
 	
     //For Illustration
 	exposure_sheet_dialog = new ExposureSheet( this);//, Qt::WStyle_Tool, window, id_window_exposure_sheet, window_exposure_sheet );
-	exposure_sheet_dialog-> show();
+	exposure_sheet_dialog->show();
 	QObject::connect(exposure_sheet_dialog, SIGNAL(activate(bool)),
 			 window_exposure_sheet, SLOT(setOn(bool)));
 	
-	
+	m_ExposureSheetDialog =  new KTExposureSheet( this);
+	m_ExposureSheetDialog->show();
+	QObject::connect(m_ExposureSheetDialog, SIGNAL(activate(bool)),
+			 window_exposure_sheet, SLOT(setOn(bool)));
+			
 	list_of_es.append( exposure_sheet_dialog );
     
 	moveDockWindow(exposure_sheet_dialog, Qt::DockRight);

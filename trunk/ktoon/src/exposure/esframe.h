@@ -51,7 +51,7 @@ public:
      * @param parent The parent widget
      * @param grandparent The grandparent widget. It is used for slot connections or function calls
      */
-    ESFrame( const QString &initial_text, QWidget *parent, QWidget *grandparent );
+    ESFrame( const QString &initial_text, int id, QWidget *parent);
     /**
      * @brief Default Destructor
      *
@@ -156,9 +156,11 @@ public:
      * @param in_esframe The argument frame
      */
     void setAllProperties( ESFrame *in_esframe );
+	      void setId(int id);
 
 private:
-    QWidget *parent_widget, *grandparent_widget;
+//     QWidget *parent_widget, *grandparent_widget;
+	QString m_initialText;
     bool is_used;
     bool is_selected;
     bool is_locked;
@@ -166,6 +168,7 @@ private:
     bool has_drawing;
     QLineEdit *description;
 
+    int m_id;
     //The right click menu and its identifiers
     QPopupMenu *right_click_menu;
     int id_rename, id_remove, id_lock, id_copy, id_paste;
@@ -175,6 +178,10 @@ signals:
      * This signal is emitted when the ESFrame is selected.
      */
     void selected();
+    
+    
+    void clicked(int , int, int, int );
+    
     /**
      * This signal is emitted when the ESFrame is renamed
      *
@@ -195,7 +202,8 @@ public slots:
      * You should never use it from ouside.
      */
     void slotSendDoubleClickEvent();
-
+	
+	void otherSelected(int id);
 protected:
     /**
      * @brief Event for widget mouse press control
@@ -218,6 +226,8 @@ protected:
      * @param painter The painter
      */
     void drawContents( QPainter *painter );
+	void resizeEvent ( QResizeEvent * e );
+			      
 
 };
 

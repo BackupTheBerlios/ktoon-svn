@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Copyright (C) 2005 by Jorge Cuadrado   *
+ *   kuadrosx@toonka.com   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,50 +17,55 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTEXPOSURESHEET_H
+#define KTEXPOSURESHEET_H
 
-#ifndef KTDIALOGBASE_H
-#define KTDIALOGBASE_H
+#include "ktdialogbase.h"
 
-#include <qdockwindow.h>
-#include <qlayout.h>
-#include <qsizepolicy.h> 
-#include <qobjectlist.h>
-#include <qevent.h>
 
-#include "ktdialogtitle.h"
+#include <qhbuttongroup.h>
+#include <qpushbutton.h>
+#include <qaction.h>
+#include <qvaluelist.h>
+#include <qstringlist.h>
+
+
+#include "kttableexposure.h"
+#include <qtable.h>
+#include <qlistbox.h>
+#include <qgridview.h> 
 
 /**
- * @author Jorge Cuadrado
+* @author Jorge Cuadrado
 */
-class KTDialogBase : public QDockWindow
+
+typedef QValueList<QPixmap> imgs;
+
+class KTExposureSheet : public KTDialogBase
 {
+	
 	Q_OBJECT
 	public:
-		KTDialogBase(Place p = InDock, QWidget *parent = 0, const char *name = 0, WFlags style = 0);
-		~KTDialogBase();
-		virtual void addChild(QWidget * child);
-		void setFont(const QFont &);
+		KTExposureSheet(QWidget *parent = 0, const char *name = 0);
+		~KTExposureSheet();
+		enum Actions { InsertLayer = 0, RemoveLayer, ShowManageLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
+	
+	private:
+
+		imgs m_imgs;
+		QHButtonGroup *buttonsPanel;
+		QActionGroup *m_actions;
+		KTTableExposure *m_viewLayer;
 		
 	private:
-		QBoxLayout *container;
-		QObjectList *childs;
-		bool m_isChildHidden;
-		
-	protected:
-		KTDialogTitle *m_title;
-		
-	protected:
-		virtual bool event( QEvent * e );
+		void setupButtons();
 		
 	public slots:
-		void toggleView();
-		void setCaption(const QString &text);
+		void applyAction(int action);
+		void slotInsertLayer();
 		
 	signals:
-		void documentModified(bool);
-		void sendMessage(const QString &);
-		void toggle();
-		void activate(bool);
+		void applyedAction(Actions action);
 };
 
 #endif

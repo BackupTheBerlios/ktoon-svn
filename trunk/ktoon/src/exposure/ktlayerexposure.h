@@ -17,50 +17,49 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTLAYEREXPOSURE_H
+#define KTLAYEREXPOSURE_H
 
-#ifndef KTDIALOGBASE_H
-#define KTDIALOGBASE_H
+#include "esframe.h"
+#include "eslayer.h"
 
-#include <qdockwindow.h>
+#include <qvaluelist.h>
+#include <qframe.h> 
 #include <qlayout.h>
-#include <qsizepolicy.h> 
-#include <qobjectlist.h>
-#include <qevent.h>
 
-#include "ktdialogtitle.h"
+typedef QValueList<ESFrame*> listOfFrames;
 
 /**
- * @author Jorge Cuadrado
+@author Jorge Cuadrado
 */
-class KTDialogBase : public QDockWindow
+class KTLayerExposure : public QFrame
 {
 	Q_OBJECT
 	public:
-		KTDialogBase(Place p = InDock, QWidget *parent = 0, const char *name = 0, WFlags style = 0);
-		~KTDialogBase();
-		virtual void addChild(QWidget * child);
-		void setFont(const QFont &);
+		KTLayerExposure(const QString &initial_text, int id,int numFrame, QWidget *parent = 0, const char *name = 0);
+		~KTLayerExposure();
+		void insertFrame(int id );
+		bool isSelected();
 		
 	private:
-		QBoxLayout *container;
-		QObjectList *childs;
-		bool m_isChildHidden;
-		
-	protected:
-		KTDialogTitle *m_title;
-		
-	protected:
-		virtual bool event( QEvent * e );
+		bool m_selected;
+		int m_currentFrame, m_id, m_useFrame;
+		ESLayer *m_header;
+		listOfFrames m_frames;
 		
 	public slots:
-		void toggleView();
-		void setCaption(const QString &text);
+		void setSelected(bool selected = true);
+		void frameSelect(int id, int button, int x, int y);
+		void otherSelected(int id);
+		void setUseFrames(int id);
 		
 	signals:
-		void documentModified(bool);
-		void sendMessage(const QString &);
-		void toggle();
-		void activate(bool);
+		void selected(int id);
+		void clicked( int row, int col, int button,int x, int y);
+		void frameSelected(int id);
+		
+	protected:
+		QBoxLayout *m_layout;
 };
 
 #endif

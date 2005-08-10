@@ -33,187 +33,184 @@
 
 //--------------- CONSTRUCTOR --------------------
 
-ExposureSheet::ExposureSheet( QWidget *parent)//, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
-	: KTDialogBase( QDockWindow::OutsideDock, parent, "Exposure Sheet")// , style | WDestructiveClose)
+ExposureSheet::ExposureSheet( QWidget *parent)
+	: KTDialogBase( QDockWindow::OutsideDock, parent, "Exposure Sheet")
 {
-    Q_CHECK_PTR( parent );
-//     Q_CHECK_PTR( in_assigned_menu );
-//     Q_CHECK_PTR( assig_tb_button );
+	Q_CHECK_PTR( parent );
 
     //Initializations
-    setCaption( tr( "Exposure Sheet" ) );
-//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-//     parent_widget = parent;
-    
-//     assigned_menu = in_assigned_menu;
-//     assigned_item = id_assigned_item;
-    
-//     assigned_tb_button = assig_tb_button;
-    layer_max_value = 1;
-    number_of_layers = 1;
-    k_toon = ( KToon * )parent;
-    to_copy = NULL;
+	setCaption( tr( "Exposure Sheet" ) );
+	layer_max_value = 1;
+	number_of_layers = 1;
+			
+	
+			
+	k_toon = ( KToon * )parent;
+	to_copy = NULL;
+	
+	
 
     //Icon Initializations
-    i_insert_layer = QPixmap( layerplus_xpm );
-    i_remove_layer = QPixmap( layerminus_xpm );
-    i_lock_frame = QPixmap( lock_xpm );
-    i_insert_frame = QPixmap( frameplus_xpm );
-    i_remove_frame = QPixmap( frameminus_xpm );
-    i_move_frame_up = QPixmap( arrowup_xpm );
-    i_move_frame_down = QPixmap( arrowdown_xpm );
-    i_layer_visibility = QPixmap( show_hide_all_layers_xpm );
+	i_insert_layer = QPixmap( layerplus_xpm );
+	i_remove_layer = QPixmap( layerminus_xpm );
+	i_lock_frame = QPixmap( lock_xpm );
+	i_insert_frame = QPixmap( frameplus_xpm );
+	i_remove_frame = QPixmap( frameminus_xpm );
+	i_move_frame_up = QPixmap( arrowup_xpm );
+	i_move_frame_down = QPixmap( arrowdown_xpm );
+	i_layer_visibility = QPixmap( show_hide_all_layers_xpm );
 
+	
+	
     //------------- Operations on the Buttons -----------------
-    QHBox *containerButtons = new QHBox(this);
-    insert_layer = new QPushButton( i_insert_layer, tr( "" ), containerButtons );
-    insert_layer -> setAutoDefault( false );
-    insert_layer -> setFlat( true );
-    insert_layer -> setFocusPolicy( QWidget::NoFocus );
-    connect( insert_layer, SIGNAL( clicked() ), SLOT( slotInsertLayer() ) );
-    QToolTip::add( insert_layer, tr( "Insert Layer" ) );
+	QHBox *containerButtons = new QHBox(this);
+	
+	insert_layer = new QPushButton( i_insert_layer, tr( "" ), containerButtons );
+	insert_layer -> setAutoDefault( false );
+	insert_layer -> setFlat( true );
+	insert_layer -> setFocusPolicy( QWidget::NoFocus );
+	connect( insert_layer, SIGNAL( clicked() ), SLOT( slotInsertLayer() ) );
+	QToolTip::add( insert_layer, tr( "Insert Layer" ) );
+	
+	remove_layer = new QPushButton( i_remove_layer, tr( "" ), containerButtons );
+	remove_layer -> setAutoDefault( false );
+	remove_layer -> setFlat( true );
+	remove_layer -> setFocusPolicy( QWidget::NoFocus );
+	connect( remove_layer, SIGNAL( clicked() ), SLOT( slotRemoveLayer() ) );
+	QToolTip::add( remove_layer, tr( "Remove Layer" ) );
 
-    remove_layer = new QPushButton( i_remove_layer, tr( "" ), containerButtons );
+	layer_visibility = new QPushButton( i_layer_visibility, tr( "" ), containerButtons );
+	layer_visibility -> setAutoDefault( false );
+	layer_visibility -> setFlat( true );
+	layer_visibility -> setAutoRepeat( false );
+	layer_visibility -> setFocusPolicy( QWidget::NoFocus );
+	layer_visibility -> setToggleButton( true );
+	connect( layer_visibility, SIGNAL( toggled( bool ) ), SLOT( slotLayerVisibility( bool ) ) );
+	QToolTip::add( layer_visibility, tr( "Manage the layer visibility" ) );
 
-    remove_layer -> setAutoDefault( false );
-    remove_layer -> setFlat( true );
-    remove_layer -> setFocusPolicy( QWidget::NoFocus );
-    connect( remove_layer, SIGNAL( clicked() ), SLOT( slotRemoveLayer() ) );
-    QToolTip::add( remove_layer, tr( "Remove Layer" ) );
+	insert_frame = new QPushButton( i_insert_frame, tr( "" ), containerButtons );
+	insert_frame -> setAutoDefault( false );
+	insert_frame -> setFlat( true );
+	insert_frame -> setFocusPolicy( QWidget::NoFocus );
+	connect( insert_frame, SIGNAL( clicked() ), SLOT( slotInsertFrame() ) );
+	QToolTip::add( insert_frame, tr( "Insert Keyframes" ) );
 
-    layer_visibility = new QPushButton( i_layer_visibility, tr( "" ), containerButtons );
-    layer_visibility -> setAutoDefault( false );
-    layer_visibility -> setFlat( true );
-    layer_visibility -> setAutoRepeat( false );
-    layer_visibility -> setFocusPolicy( QWidget::NoFocus );
-    layer_visibility -> setToggleButton( true );
-    connect( layer_visibility, SIGNAL( toggled( bool ) ), SLOT( slotLayerVisibility( bool ) ) );
-    QToolTip::add( layer_visibility, tr( "Manage the layer visibility" ) );
+	remove_frame = new QPushButton( i_remove_frame, tr( "" ), containerButtons );
+	remove_frame -> setAutoDefault( false );
+	remove_frame -> setFlat( true );
+	remove_frame -> setFocusPolicy( QWidget::NoFocus );
+	connect( remove_frame, SIGNAL( clicked() ), SLOT( slotRemoveFrame() ) );
+	QToolTip::add( remove_frame, tr( "Remove Keyframe" ) );
 
-    insert_frame = new QPushButton( i_insert_frame, tr( "" ), containerButtons );
-    insert_frame -> setAutoDefault( false );
-    insert_frame -> setFlat( true );
-    insert_frame -> setFocusPolicy( QWidget::NoFocus );
-    connect( insert_frame, SIGNAL( clicked() ), SLOT( slotInsertFrame() ) );
-    QToolTip::add( insert_frame, tr( "Insert Keyframes" ) );
+	lock_frame = new QPushButton( i_lock_frame, tr( "" ), containerButtons );
+	lock_frame -> setAutoDefault( false );
+	lock_frame -> setFlat( true );
+	lock_frame -> setFocusPolicy( QWidget::NoFocus );
+	connect( lock_frame, SIGNAL( clicked() ), SLOT( slotLockFrame() ) );
+	QToolTip::add( lock_frame, tr( "Lock Frame" ) );
 
-    remove_frame = new QPushButton( i_remove_frame, tr( "" ), containerButtons );
-    remove_frame -> setAutoDefault( false );
-    remove_frame -> setFlat( true );
-    remove_frame -> setFocusPolicy( QWidget::NoFocus );
-    connect( remove_frame, SIGNAL( clicked() ), SLOT( slotRemoveFrame() ) );
-    QToolTip::add( remove_frame, tr( "Remove Keyframe" ) );
+	move_frame_up = new QPushButton( i_move_frame_up, tr( "" ), containerButtons );
+	move_frame_up -> setAutoDefault( false );
+	move_frame_up -> setFlat( true );
+	move_frame_up -> setAutoRepeat( true );
+	move_frame_up -> setFocusPolicy( QWidget::NoFocus );
+	connect( move_frame_up, SIGNAL( clicked() ), SLOT( slotMoveFrameUp() ) );
+	QToolTip::add( move_frame_up, tr( "Move Keyframe Up" ) );
 
-    lock_frame = new QPushButton( i_lock_frame, tr( "" ), containerButtons );
-    lock_frame -> setAutoDefault( false );
-    lock_frame -> setFlat( true );
-    lock_frame -> setFocusPolicy( QWidget::NoFocus );
-    connect( lock_frame, SIGNAL( clicked() ), SLOT( slotLockFrame() ) );
-    QToolTip::add( lock_frame, tr( "Lock Frame" ) );
+	move_frame_down = new QPushButton( i_move_frame_down, tr( "" ), containerButtons );
 
-    move_frame_up = new QPushButton( i_move_frame_up, tr( "" ), containerButtons );
-
-    move_frame_up -> setAutoDefault( false );
-    move_frame_up -> setFlat( true );
-    move_frame_up -> setAutoRepeat( true );
-    move_frame_up -> setFocusPolicy( QWidget::NoFocus );
-    connect( move_frame_up, SIGNAL( clicked() ), SLOT( slotMoveFrameUp() ) );
-    QToolTip::add( move_frame_up, tr( "Move Keyframe Up" ) );
-
-    move_frame_down = new QPushButton( i_move_frame_down, tr( "" ), containerButtons );
-
-    move_frame_down -> setAutoDefault( false );
-    move_frame_down -> setFlat( true );
-    move_frame_down -> setAutoRepeat( true );
-    move_frame_down -> setFocusPolicy( QWidget::NoFocus );
-    connect( move_frame_down, SIGNAL( clicked() ), SLOT( slotMoveFrameDown() ) );
-    QToolTip::add( move_frame_down, tr( "Move Keyframe Down" ) );
-    containerButtons->adjustSize();
-    addChild(containerButtons);
+	move_frame_down -> setAutoDefault( false );
+	move_frame_down -> setFlat( true );
+	move_frame_down -> setAutoRepeat( true );
+	move_frame_down -> setFocusPolicy( QWidget::NoFocus );
+	connect( move_frame_down, SIGNAL( clicked() ), SLOT( slotMoveFrameDown() ) );
+	QToolTip::add( move_frame_down, tr( "Move Keyframe Down" ) );
+	containerButtons->adjustSize();
+	addChild(containerButtons);
     
     
     
     //--------------- Operations on the Scroll Area -------------------------
 
-    scroll_area_container = new QScrollView( this );
-    scroll_area = new QFrame( scroll_area_container -> viewport() );
-    scroll_area -> resize( 2000, ( MAX_NUMBER_OF_FRAMES * 25 ) + 50 );
-    scroll_area_container -> addChild( scroll_area );
+	scroll_area_container = new QScrollView( this );
+	scroll_area = new QFrame( scroll_area_container -> viewport() );
+	scroll_area -> resize( 2000, ( MAX_NUMBER_OF_FRAMES * 25 ) + 50 );
+	scroll_area_container -> addChild( scroll_area );
     //FIXME:kuadrosx
-    scroll_area_container-> setMaximumSize( 190, 800 );
+	scroll_area_container-> setMaximumSize( 190, 800 );
     //setMaximumWidth (190);
 //     scroll_area_container -> move( 5, remove_layer -> y() + remove_layer -> height() + 5 );
-    addChild(scroll_area_container);
+	addChild(scroll_area_container);
     //--------------- Operations on the Default Components ----------------------
 
-    ESLayer *default_layer = new ESLayer( tr( "Layer" ) + QString( "1" ), scroll_area, this );
-    default_layer -> move( remove_layer -> x(), 10 );
-    last_layer = default_layer;
-    current_layer = default_layer;
-    connect( default_layer, SIGNAL( clicked() ), SLOT( slotSelectLayer() ) );
-    connect( default_layer, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameLayer( const QString & ) ) );
+	ESLayer *default_layer = new ESLayer( tr( "Layer" ) + QString( "1" ), scroll_area );
+	default_layer -> move( remove_layer -> x(), 10 );
+	last_layer = default_layer;
+	current_layer = default_layer;
+	connect( default_layer, SIGNAL( clicked() ), SLOT( slotSelectLayer() ) );
+	connect( default_layer, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameLayer( const QString & ) ) );
     
-    std::auto_ptr<ILayer> ap_default_layer_obj(new ILayer( 1, default_layer ) );
-    ILayer *default_layer_obj = ap_default_layer_obj.get();
+	std::auto_ptr<ILayer> ap_default_layer_obj(new ILayer( 1, default_layer ) );
+	ILayer *default_layer_obj = ap_default_layer_obj.get();
     
-    KTStatus->setCurrentILayer(default_layer_obj);
+	KTStatus->setCurrentILayer(default_layer_obj);
     
-    list_of_layers.append( default_layer_obj );
-    QPtrList<ESFrame> default_layer_frame_list;
-    first_layer = default_layer;
+	list_of_layers.append( default_layer_obj );
+	QPtrList<ESFrame> default_layer_frame_list;
+	first_layer = default_layer;
 
-    QLabel *frame_enumeration = new QLabel( "1", scroll_area );
-    frame_enumeration -> setFont( QFont( "Helvetica", 6, QFont::Bold ) );
-    frame_enumeration -> setAlignment( Qt::AlignCenter );
-    frame_enumeration -> resize( 25, 25 );
-    frame_enumeration -> move( insert_layer -> x(), default_layer -> y() + default_layer -> height() );
+	QLabel *frame_enumeration = new QLabel( "1", scroll_area );
+	frame_enumeration -> setFont( QFont( "Helvetica", 6, QFont::Bold ) );
+	frame_enumeration -> setAlignment( Qt::AlignCenter );
+	frame_enumeration -> resize( 25, 25 );
+	frame_enumeration -> move( insert_layer -> x(), default_layer -> y() + default_layer -> height() );
 
-    ESFrame *first_frame = new ESFrame( tr( "Drawing " ) + QString( "1-1" ), scroll_area, this );
-    first_frame -> move( default_layer -> x(), default_layer -> y() + default_layer -> height() );
-    first_frame -> setUsed( true );
-    connect( first_frame, SIGNAL( selected() ), SLOT( slotSelectFrame() ) );
-    connect( first_frame, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameFrame( const QString & ) ) );
-    default_layer_obj -> setLastFrame( first_frame );
-    default_layer_frame_list.append( first_frame );
+	ESFrame *first_frame = new ESFrame( tr( "Drawing " ) + QString( "1-1" ), 1,scroll_area );
+	first_frame -> move( default_layer -> x(), default_layer -> y() + default_layer -> height() );
+	first_frame -> setUsed( true );
+	connect( first_frame, SIGNAL( selected() ), SLOT( slotSelectFrame() ) );
+	connect( first_frame, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameFrame( const QString & ) ) );
+	default_layer_obj -> setLastFrame( first_frame );
+	default_layer_frame_list.append( first_frame );
 
-    for ( int i = 2; i <= MAX_NUMBER_OF_FRAMES; i++ )
-    {
-	QLabel *frame_enumeration = new QLabel( QString::number(i), scroll_area );
-    	frame_enumeration -> setFont( QFont( "Helvetica", 6, QFont::Bold ) );
-    	frame_enumeration -> setAlignment( Qt::AlignCenter );
-    	frame_enumeration -> resize( 25, 25 );
-    	frame_enumeration -> move( insert_layer -> x(), default_layer -> y() + default_layer -> height() * i );
+	for ( int i = 2; i <= MAX_NUMBER_OF_FRAMES; i++ )
+	{
+		QLabel *frame_enumeration = new QLabel( QString::number(i), scroll_area );
+		frame_enumeration -> setFont( QFont( "Helvetica", 6, QFont::Bold ) );
+		frame_enumeration -> setAlignment( Qt::AlignCenter );
+		frame_enumeration -> resize( 25, 25 );
+		frame_enumeration -> move( insert_layer -> x(), default_layer -> y() + default_layer -> height() * i );
 
-    	ESFrame *next_frame = new ESFrame( "", scroll_area, this );
-    	next_frame -> move( default_layer -> x(), default_layer -> y() + default_layer -> height() * i );
-	connect( next_frame, SIGNAL( selected() ), SLOT( slotSelectFrame() ) );
-        connect( next_frame, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameFrame( const QString & ) ) );
-	default_layer_frame_list.append( next_frame );
-    }
+		ESFrame *next_frame = new ESFrame( "", 1,scroll_area);
+		next_frame -> move( default_layer -> x(), default_layer -> y() + default_layer -> height() * i );
+		connect( next_frame, SIGNAL( selected() ), SLOT( slotSelectFrame() ) );
+		connect( next_frame, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameFrame( const QString & ) ) );
+		default_layer_frame_list.append( next_frame );
+	}
 
-    default_layer_obj -> setAvailableFrames( default_layer_frame_list );
-    f_frame = first_frame;
+	default_layer_obj -> setAvailableFrames( default_layer_frame_list );
+	f_frame = first_frame;
 
     //------------ Operations on the visibility list -------------
     //FIXME: <kuadrosx> buscar una mejor forma de mostrar la lista de capas 
-    visibility_list = new QListView( this, "", Qt::WStyle_NoBorder );
-    visibility_list -> resize( 110, 120 );
+	visibility_list = new QListView( this, "", Qt::WStyle_NoBorder );
+	visibility_list -> resize( 110, 120 );
 
-    visibility_list -> move( layer_visibility->x(), layer_visibility->y()+50 + layer_visibility -> height() );
-    visibility_list -> setSelectionMode( QListView::Single );
-    visibility_list -> setFont( QFont( font().family(), 8 ) );
-    visibility_list -> addColumn( tr( "Name" ), 105 ); //Single column for the name
-    visibility_list -> setResizeMode( QListView::NoColumn );
-    visibility_list -> setSorting( 10 ); //Not automatic sorting (10 > 1)
-    visibility_list -> header() -> hide();
-    visibility_list -> hide();
+	visibility_list -> move( layer_visibility->x(), layer_visibility->y()+50 + layer_visibility -> height() );
+	visibility_list -> setSelectionMode( QListView::Single );
+	visibility_list -> setFont( QFont( font().family(), 8 ) );
+	visibility_list -> addColumn( tr( "Name" ), 105 ); //Single column for the name
+	visibility_list -> setResizeMode( QListView::NoColumn );
+	visibility_list -> setSorting( 10 ); //Not automatic sorting (10 > 1)
+	visibility_list -> header() -> hide();
+	visibility_list -> hide();
 
-    QCheckListItem *default_layer_v = new QCheckListItem( visibility_list, tr( "Layer" ) + QString( "1" ), QCheckListItem::CheckBox );
-    default_layer_v -> setVisible( true );
-    default_layer_v -> setOn( true );
+	QCheckListItem *default_layer_v = new QCheckListItem( visibility_list, tr( "Layer" ) + QString( "1" ), QCheckListItem::CheckBox );
+	default_layer_v -> setVisible( true );
+	default_layer_v -> setOn( true );
 
-    ap_default_layer_obj.release();
-    adjustSize();
+	ap_default_layer_obj.release();
+	adjustSize();
 }
 
 //-------------- DESTRUCTOR -----------------
@@ -290,7 +287,7 @@ void ExposureSheet::loadLayersAndKeyframes( QPtrList<Layer> layers )
         layer_max_value++;
         QPtrList<ESFrame> frame_list;
 
-        ESLayer *new_layer = new ESLayer( l_it -> nameLayer(), scroll_area, this );
+        ESLayer *new_layer = new ESLayer( l_it -> nameLayer(), scroll_area );
         if ( l_it == layers.getFirst() )
 	{
 	    new_layer -> move( remove_layer -> x(), 10 );
@@ -318,7 +315,7 @@ void ExposureSheet::loadLayersAndKeyframes( QPtrList<Layer> layers )
 
 	for ( int i = 1; i <= MAX_NUMBER_OF_FRAMES; i++ )
 	{
-    	    ESFrame *next_frame = new ESFrame( "", scroll_area, this );
+    	    ESFrame *next_frame = new ESFrame( "", 1,scroll_area  );
 	    if ( i == 1 && l_it == layers.getFirst() )
 	        f_frame = next_frame;
 	    next_frame -> move( new_layer -> x(), new_layer -> y() + new_layer -> height() * i );
@@ -371,7 +368,7 @@ void ExposureSheet::slotInsertLayer()
     layer_number.setNum( layer_max_value );
     number_of_layers++;
 
-    ESLayer *new_layer = new ESLayer( tr( "Layer" ) + layer_number, scroll_area, this );
+    ESLayer *new_layer = new ESLayer( tr( "Layer" ) + layer_number, scroll_area );
     new_layer -> move( last_layer -> x() + last_layer -> width(), last_layer -> y() );
     new_layer -> show();
     last_layer = new_layer;
@@ -390,7 +387,7 @@ void ExposureSheet::slotInsertLayer()
     QPtrList<ESFrame> new_layer_frame_list;
 
     //The only active frame
-    ESFrame *associated_frame = new ESFrame( tr( "Drawing " ) + QString::number( number_of_layers ) + QString( "-1" ), scroll_area, this );
+    ESFrame *associated_frame = new ESFrame( tr( "Drawing " ) + QString::number( number_of_layers ) + QString( "-1" ), 1, scroll_area  );
     associated_frame -> move( new_layer -> x(), new_layer -> y() + new_layer -> height() );
     associated_frame -> show();
     associated_frame -> setUsed( true );
@@ -402,7 +399,7 @@ void ExposureSheet::slotInsertLayer()
     //Loop for creation of the default zones that will enclose frames of the layer
     for ( int i = 2; i <= MAX_NUMBER_OF_FRAMES; i++ )
     {
-    	ESFrame *next_frame = new ESFrame( "", scroll_area, this );
+    	ESFrame *next_frame = new ESFrame( "", 1,scroll_area  );
     	next_frame -> move( new_layer -> x(), new_layer -> y() + new_layer -> height() * i );
     	next_frame -> show();
 	connect( next_frame, SIGNAL( selected() ), SLOT( slotSelectFrame() ) );
@@ -435,7 +432,6 @@ void ExposureSheet::slotInsertLayer()
     new_layer_v -> setOn( true );
     visibility_list -> show();
     visibility_list -> hide();
-
 }
 
 void ExposureSheet::slotRemoveLayer()
@@ -1168,7 +1164,7 @@ void ExposureSheet::slotMoveFrameUp()
     KTStatus -> currentLayer() -> setKeyFrames( kf );
 
     //Swap both frames
-    bridge_frame = new ESFrame( "", scroll_area, this );
+    bridge_frame = new ESFrame( "", 1, scroll_area  );
     bridge_frame -> setAllProperties( frame_above );
     frame_above -> setAllProperties( selected_frame );
     selected_frame -> setAllProperties( bridge_frame );
@@ -1219,7 +1215,7 @@ void ExposureSheet::slotMoveFrameDown()
     KTStatus -> currentLayer() -> setKeyFrames( kf );
 
     //Swap both frames
-    bridge_frame = new ESFrame( "", scroll_area, this );
+    bridge_frame = new ESFrame( "", 1,scroll_area  );
     bridge_frame -> setAllProperties( frame_below );
     frame_below -> setAllProperties( selected_frame );
     selected_frame -> setAllProperties( bridge_frame );

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Copyright (C) 2005 by Jorge Cuadrado   *
+ *   kuadrosx@toonka.com   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,50 +17,40 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTTABLEEXPOSURE_H
+#define KTTABLEEXPOSURE_H
 
-#ifndef KTDIALOGBASE_H
-#define KTDIALOGBASE_H
-
-#include <qdockwindow.h>
-#include <qlayout.h>
-#include <qsizepolicy.h> 
-#include <qobjectlist.h>
-#include <qevent.h>
-
-#include "ktdialogtitle.h"
-
+#include <qscrollview.h> 
+#include <qlayout.h> 
+#include <qlabel.h>
+#include "ktlayerexposure.h"
 /**
- * @author Jorge Cuadrado
+@author Jorge Cuadrado
 */
-class KTDialogBase : public QDockWindow
+
+typedef QValueList<KTLayerExposure*> listOfLayers;
+
+class KTTableExposure : public QScrollView
 {
 	Q_OBJECT
 	public:
-		KTDialogBase(Place p = InDock, QWidget *parent = 0, const char *name = 0, WFlags style = 0);
-		~KTDialogBase();
-		virtual void addChild(QWidget * child);
-		void setFont(const QFont &);
+		KTTableExposure(int rows, int cols, QWidget *parent = 0, const char *name = 0);
+		~KTTableExposure();
+		void setUseFrame();
 		
 	private:
-		QBoxLayout *container;
-		QObjectList *childs;
-		bool m_isChildHidden;
-		
-	protected:
-		KTDialogTitle *m_title;
-		
-	protected:
-		virtual bool event( QEvent * e );
+		QBoxLayout *m_layout;
+		QWidget *m_port;
+		int m_numLayer;
+		int m_currentLayer, m_currentFrame;
+		listOfLayers m_layers;
 		
 	public slots:
-		void toggleView();
-		void setCaption(const QString &text);
+		void insertLayer(int rows);
+		void clickedCell(int row, int col, int button, int gx, int gy);
 		
 	signals:
-		void documentModified(bool);
-		void sendMessage(const QString &);
-		void toggle();
-		void activate(bool);
+		void layerSelected(int id);
 };
 
 #endif

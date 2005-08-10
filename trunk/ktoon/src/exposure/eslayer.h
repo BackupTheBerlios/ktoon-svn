@@ -49,7 +49,7 @@ public:
      * @param parent The parent widget
      * @param grandparent The grandparent widget. It is used for slot connections or function calls
      */
-    ESLayer( const QString &initial_text, QWidget *parent, QWidget *grandparent );
+    ESLayer( const QString &initial_text, QWidget *parent );
     /**
      * @brief Default Destructor
      *
@@ -80,7 +80,6 @@ public:
     void clearTextfieldFocus();
 
 private:
-    QWidget *parent_widget, *grandparent_widget;
     QColor default_color, selection_color;
     QLineEdit *description;
     QPopupMenu *right_click_menu;
@@ -122,7 +121,7 @@ protected:
      * @param mouse_event The input event
      */
     void mouseDoubleClickEvent( QMouseEvent *mouse_event );
-
+	      void resizeEvent ( QResizeEvent * e );
 };
 
 #endif

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Copyright (C) 2005 by David Cuadrado                                        *
+ *   krawek@gmail.com                                        	   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,49 +18,38 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTDIALOGBASE_H
-#define KTDIALOGBASE_H
+#ifndef KLTABLE_H
+#define KLTABLE_H
 
-#include <qdockwindow.h>
-#include <qlayout.h>
-#include <qsizepolicy.h> 
-#include <qobjectlist.h>
-#include <qevent.h>
-
-#include "ktdialogtitle.h"
+#include <qtable.h>
 
 /**
- * @author Jorge Cuadrado
+* @author CetiSoft
 */
-class KTDialogBase : public QDockWindow
+
+class KLTable : public QTable
 {
 	Q_OBJECT
 	public:
-		KTDialogBase(Place p = InDock, QWidget *parent = 0, const char *name = 0, WFlags style = 0);
-		~KTDialogBase();
-		virtual void addChild(QWidget * child);
-		void setFont(const QFont &);
+		KLTable(int rows, int cols, QWidget *parent = 0, const char *name = 0);
+		~KLTable();
+
+		void resizeEvent ( QResizeEvent * e );
+		void setHeaderHText(int col, const QString &text);
+		void drawContents ( QPainter * p, int cx, int cy, int cw, int ch );
+		void paintEvent ( QPaintEvent * event );
+// 		void viewportPaintEvent(QPaintEvent * pe );
+				
+	public slots:
+		void fixSize();
+		void expandTableSize();
+		void redimensionTable(int rows);
+		void insertRowData(const QStringList &data, int row = -1);
+		void setViewportText(const QString &text, int size = 70);
 		
 	private:
-		QBoxLayout *container;
-		QObjectList *childs;
-		bool m_isChildHidden;
-		
-	protected:
-		KTDialogTitle *m_title;
-		
-	protected:
-		virtual bool event( QEvent * e );
-		
-	public slots:
-		void toggleView();
-		void setCaption(const QString &text);
-		
-	signals:
-		void documentModified(bool);
-		void sendMessage(const QString &);
-		void toggle();
-		void activate(bool);
+		QString m_text;
+		int m_textSize;
 };
 
 #endif

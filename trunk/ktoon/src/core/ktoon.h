@@ -47,6 +47,7 @@
 #include "brushes.h"
 #include "colorpalette.h"
 #include "exposuresheet.h"
+#include "ktexposuresheet.h"
 #include "library.h"
 #include "timeline.h"
 // #include "glrendercamerapreview.h"
@@ -929,7 +930,9 @@ class KToon : public QMainWindow
 		Brushes *brushes_dialog;
 		Scenes *scenes_dialog;
 		ColorPalette *color_palette_dialog;
+		
 		ExposureSheet *exposure_sheet_dialog;
+		KTExposureSheet *m_ExposureSheetDialog;
 		Library *library_dialog;
 		Timeline *timeline_dialog;
 	// 	GLRenderCameraPreview *render_camera_preview;

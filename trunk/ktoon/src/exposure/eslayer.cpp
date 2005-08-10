@@ -20,41 +20,39 @@
 
 #include <qapplication.h>
 #include <qcursor.h>
-
 #include "eslayer.h"
 
 //--------------- CONSTRUCTOR --------------------
 
-ESLayer::ESLayer( const QString &initial_text, QWidget *parent, QWidget *grandparent )
+ESLayer::ESLayer( const QString &initial_text, QWidget *parent  )
     : QPushButton( initial_text, parent )
 {
     Q_CHECK_PTR( parent );
-    Q_CHECK_PTR( grandparent );
 
     //Initializations
-    resize( 70, 25 );
+//     resize( 70, 25 );
     setAutoDefault( false );
     setFocusPolicy( QWidget::NoFocus );
 //     setFont( QFont( "helvetica", 10 ) );
-    parent_widget = parent;
-    grandparent_widget = grandparent;
+//     parent_widget = parent;
+//     grandparent_widget = grandparent;
     default_color = paletteBackgroundColor();
     selection_color = QColor( 210, 210, 255 );
 
-    description = new QLineEdit( this );
-    description -> resize( 66, 21 );
-    description -> move( 2, 2 );
+    description = new QLineEdit( initial_text,this );
+//     description -> resize( 66, 21 );
+//     description -> move( 2, 2 );
     description -> hide();
     connect( description, SIGNAL( lostFocus() ), SLOT( slotSetDescription() ) );
     connect( description, SIGNAL( returnPressed() ), SLOT( slotSetDescription() ) );
 
     right_click_menu = new QPopupMenu( this );
 //     right_click_menu -> setFont( QFont( "helvetica", 10 ) );
-    right_click_menu -> insertItem( tr( "Rename Layer" ), this, SLOT( slotSendDoubleClickEvent() ) );
+    /*right_click_menu -> insertItem( tr( "Rename Layer" ), this, SLOT( slotSendDoubleClickEvent() ) );
     right_click_menu -> insertItem( tr( "Remove this Layer" ), grandparent, SLOT( slotRemoveLayer() ) );
     right_click_menu -> insertSeparator();
     right_click_menu -> insertItem( tr( "Insert Frames" ), grandparent, SLOT( slotInsertFrame() ) );
-    right_click_menu -> insertItem( tr( "Remove Frames" ), grandparent, SLOT( slotRemoveFrame() ) );
+    right_click_menu -> insertItem( tr( "Remove Frames" ), grandparent, SLOT( slotRemoveFrame() ) );*/
 }
 
 //--------------- DESTRUCTOR --------------------
@@ -107,9 +105,10 @@ void ESLayer::slotSendDoubleClickEvent()
 void ESLayer::mousePressEvent( QMouseEvent *mouse_event )
 {
     Q_CHECK_PTR( mouse_event );
-
-    is_selected = true;
-    setPaletteBackgroundColor( selection_color );
+    setSelected( true );
+    /*is_selected = true;
+    setPaletteBackgroundColor( selection_color );*/
+    
     description -> setText( text() );
 
     emit clicked();
@@ -133,4 +132,9 @@ void ESLayer::mouseDoubleClickEvent( QMouseEvent *mouse_event )
     }
     else
         mouse_event -> ignore();
+}
+
+void ESLayer::resizeEvent ( QResizeEvent * e )
+{
+	description -> resize( width(), height() );
 }

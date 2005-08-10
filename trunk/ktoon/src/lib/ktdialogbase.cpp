@@ -42,7 +42,7 @@ KTDialogBase::KTDialogBase(Place p, QWidget *parent, const char *name, WFlags st
 	
 	connect(m_title, SIGNAL(doubleClicked()), SLOT(toggleView()));
 	
-	connect(this, SIGNAL(placeChanged(QDockWindow::Place)), SLOT(fixPosition(QDockWindow::Place)));
+// 	connect(this, SIGNAL(placeChanged(QDockWindow::Place)), SLOT(fixPosition(QDockWindow::Place)));
 	
 	setOrientation( Qt::Vertical );
 	
@@ -56,24 +56,6 @@ KTDialogBase::~KTDialogBase()
 	delete childs;
 }
 
-void KTDialogBase::fixPosition(QDockWindow::Place p)
-{	
-	switch(p)
-	{
-		case InDock:
-		{
-			area()->setMinimumSize(sizeHint());
-			setOrientation(Qt::Vertical);
-		}
-		break;
-		case OutsideDock:
-		{
-		}
-		break;
-	}
- 	adjustSize();
-	show();
-}
 
 void KTDialogBase::addChild(QWidget* child)
 {

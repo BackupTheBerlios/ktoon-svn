@@ -32,7 +32,7 @@
 #include "eslayer.h"
 
 /**
- * @brief Intermediate Class that is used for store some exposure sheet layer information
+ Geton* @brief Intermediate Class that is used for store some exposure sheet layer information
  *
  * <b>Date of Creation: June 7 - 2004.</b>\n
  * See the Public Members for an idea of what this class is done for.
