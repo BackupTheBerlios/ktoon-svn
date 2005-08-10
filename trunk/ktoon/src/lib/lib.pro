@@ -21,7 +21,8 @@ HEADERS += glgraphiccomponent.h \
            ktmdiwindow.h \
            ktconfigdocument.h \
            ktconfig.h \
-           ktimagebutton.h 
+           ktimagebutton.h \
+           ktdebug.h 
 SOURCES += glgraphiccomponent.cpp \
            ktapplication.cpp \
            configwizard.cpp \
@@ -40,7 +41,8 @@ SOURCES += glgraphiccomponent.cpp \
            ktmdiwindow.cpp \
            ktconfigdocument.cpp \
            ktconfig.cpp \
-           ktimagebutton.cpp 
+           ktimagebutton.cpp \
+           ktdebug.cpp 
 INCLUDEPATH += ../../src/core \
 ../../src/exposure \
 ../../src/dialogs \

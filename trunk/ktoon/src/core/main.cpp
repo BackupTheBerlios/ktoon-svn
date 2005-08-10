@@ -31,6 +31,7 @@
 #include "splash.h"
 #include "ktconfigdocument.h"
 #include "ktxmlreader.h"
+#include "ktdebug.h"
 
 void usage();
 
@@ -104,10 +105,10 @@ void usage()
 	std::cout << std::endl;
 	
 	std::cout << QObject::tr("Usage: %1 [option]").arg(ktapp->argv()[0]) << std::endl;
-	
+	 
 	std::cout << std::endl;
 	std::cout << QObject::tr("Options: ") << std::endl;
 	
 	std::cout << "-r, --reconfigure" << std::endl;
-	std::cout << QObject::tr("\t\tReconfigure %1").arg(ktapp->name()) << std::endl;
+	std::cout << QObject::tr("\t\tReconfigure %1").arg(ktapp->name()) << std::endl; 
 }

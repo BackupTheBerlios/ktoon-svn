@@ -26,6 +26,7 @@
 #include <qlabel.h>
 #include <qcheckbox.h>
 
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */

@@ -20,10 +20,11 @@
 
 #include "kttimeline.h"
 #include "ktapplication.h"
+#include "ktdebug.h"
 
 KTTimeLine::KTTimeLine(QWidget *parent) : KTDialogBase(QDockWindow::OutsideDock, parent, "KTTimeLine")
 {
-	qDebug("[Initializing KTTimeLine]");
+	ktDebug() << "[Initializing KTTimeLine]" << endl;
 // 	this->setPaletteBackgroundColor(Qt::blue);
 	setCaption(tr("The Time line"));
 	

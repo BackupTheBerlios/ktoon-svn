@@ -17,8 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "ktapplication.h"
-#include "configwizard.h"
+#include "configwizard.h" 
 #include <iostream>
 #include <qdir.h>
 #include <qfile.h>
