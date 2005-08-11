@@ -81,19 +81,19 @@ int main( int argc, char ** argv )
 	
 	if ( QGLFormat::hasOpenGL() )
 	{
-		std::cout << "-> OpenGL detected :)" << std::endl;
+		ktDebug() << "-> OpenGL detected :)" << endl;
 		if ( QGLFormat::hasOpenGLOverlays() )
 		{
-			std::cout << "-> OpenGL Overlays detected :)" << std::endl;
+			ktDebug() << "-> OpenGL Overlays detected :)" << endl;
 		}
 		else
 		{
-			std::cout << "-> No OpenGL overlays detected" << std::endl;
+			ktDebug() << "-> No OpenGL overlays detected" << endl;
 		}
 	}
 	else
 	{
-		std::cout << "-> OpenGL not detected" << std::endl;
+		ktDebug() << "-> OpenGL not detected" << endl;
 	}
 	
 	return application.exec();

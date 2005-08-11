@@ -38,12 +38,9 @@
     Boston, MA 02111-1307, USA.
 */
 
-#include "ktdebug.h"
+// NOTE: Adapted to KToon from KDE for David Cuadrado.
 
-// #ifdef NDEBUG
-// #undef ktDebug
-// #undef kdBacktrace
-// #endif
+#include "ktdebug.h"
 
 #include "ktapplication.h"
 
@@ -105,7 +102,7 @@ unsigned long strlcpy(char* d, const char* s, unsigned long bufsize)
 }
 #endif
 
-static void kDebugBackend( unsigned short nLevel, unsigned int nArea, const char *data)
+static void kDebugBackend( unsigned short nLevel, int nOutput, const char *data)
 {
 	int nPriority = 0;
 	QString aCaption;
@@ -139,13 +136,45 @@ static void kDebugBackend( unsigned short nLevel, unsigned int nArea, const char
 			break;
 	}
 
+	/* Determine output */
+
+	switch( nLevel )
+	{
+		case KTDEBUG_INFO:
+			aCaption = "Info";
+			nPriority = LOG_INFO;
+			break;
+		case KTDEBUG_WARN:
+			aCaption = "Warning";
+			nPriority = LOG_WARNING;
+			break;
+		case KTDEBUG_FATAL:
+			aCaption = "Fatal Error";
+			nPriority = LOG_CRIT;
+			break;
+		case KTDEBUG_ERROR:
+		default:
+			/* Programmer error, use "Error" as default */
+			aCaption = "Error";
+			nPriority = LOG_ERR;
+			break;
+	}
+
+  // If the application doesn't have a QApplication object it can't use
+  // a messagebox.
+	if (!qApp && (nOutput == 1))
+		nOutput = 2;
+	else if ( nOutput == 4 && nLevel != KTDEBUG_FATAL )
+		return;
+	
+	///////////
 
 	const int BUFSIZE = 4096;
 	char buf[BUFSIZE];
 	int nSize = strlcpy( buf, data, BUFSIZE );
 
   // Output
-	switch( 2 ) // TODO: FIXME
+	switch( nOutput ) // TODO: FIXME
 	{
 		case 0: // File
 		{
@@ -166,7 +195,7 @@ static void kDebugBackend( unsigned short nLevel, unsigned int nArea, const char
 					aKey = "ErrorFilename";
 					break;
 			}
-			QFile aOutputFile( "kdebug.dbg" );
+			QFile aOutputFile( "ktoon.dbg" );
 			aOutputFile.open( IO_WriteOnly | IO_Append | IO_Raw );
 			if ( ( nSize == -1 ) || ( nSize >= BUFSIZE ) )
 				aOutputFile.writeBlock( buf, BUFSIZE-1 );
@@ -197,17 +226,17 @@ static void kDebugBackend( unsigned short nLevel, unsigned int nArea, const char
 
 
 kdbgstream &perror( kdbgstream &s) { return s <<  QString::fromLocal8Bit(strerror(errno)); }
-kdbgstream ktDebug(int area) { return kdbgstream(area, KTDEBUG_INFO); }
-kdbgstream ktDebug(bool cond, int area) { if (cond) return kdbgstream(area, KTDEBUG_INFO); else return kdbgstream(0, 0, false); }
+kdbgstream ktDebug(int nOutput) { return kdbgstream(nOutput, KTDEBUG_INFO); }
+kdbgstream ktDebug(bool cond, int nOutput) { if (cond) return kdbgstream(nOutput, KTDEBUG_INFO); else return kdbgstream(0, 0, false); }
 
-kdbgstream kdError(int area) { return kdbgstream("ERROR: ", area, KTDEBUG_ERROR); }
-kdbgstream kdError(bool cond, int area) { if (cond) return kdbgstream("ERROR: ", area, KTDEBUG_ERROR); else return kdbgstream(0,0,false); }
-kdbgstream kdWarning(int area) { return kdbgstream("WARNING: ", area, KTDEBUG_WARN); }
-kdbgstream kdWarning(bool cond, int area) { if (cond) return kdbgstream("WARNING: ", area, KTDEBUG_WARN); else return kdbgstream(0,0,false); }
-kdbgstream kdFatal(int area) { return kdbgstream("FATAL: ", area, KTDEBUG_FATAL); }
-kdbgstream kdFatal(bool cond, int area) { if (cond) return kdbgstream("FATAL: ", area, KTDEBUG_FATAL); else return kdbgstream(0,0,false); }
+kdbgstream ktError(int nOutput) { return kdbgstream("ERROR: ", nOutput, KTDEBUG_ERROR); }
+kdbgstream ktError(bool cond, int nOutput) { if (cond) return kdbgstream("ERROR: ", nOutput, KTDEBUG_ERROR); else return kdbgstream(0,0,false); }
+kdbgstream ktWarning(int nOutput) { return kdbgstream("WARNING: ", nOutput, KTDEBUG_WARN); }
+kdbgstream ktWarning(bool cond, int nOutput) { if (cond) return kdbgstream("WARNING: ", nOutput, KTDEBUG_WARN); else return kdbgstream(0,0,false); }
+kdbgstream ktFatal(int nOutput) { return kdbgstream("FATAL: ", nOutput, KTDEBUG_FATAL); }
+kdbgstream ktFatal(bool cond, int nOutput) { if (cond) return kdbgstream("FATAL: ", nOutput, KTDEBUG_FATAL); else return kdbgstream(0,0,false); }
 
-kdbgstream::kdbgstream(kdbgstream &str) : output(str.output), area(str.area), level(str.level), print(str.print) 
+kdbgstream::kdbgstream(kdbgstream &str) : output(str.output), nOutput(str.nOutput), level(str.level), print(str.print) 
 {
 	str.output.truncate(0); 
 }
@@ -217,7 +246,7 @@ void kdbgstream::flush() {
 	if (output.isEmpty() || !print)
 		return;
 
-	kDebugBackend( level, area, output.local8Bit().data());
+	kDebugBackend( level, nOutput, output.local8Bit().data());
 // 	qDebug(output);	
 	output = QString::null;
 }

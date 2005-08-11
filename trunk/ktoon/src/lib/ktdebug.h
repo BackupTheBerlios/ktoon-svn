@@ -85,7 +85,7 @@ class kdbgstreamprivate;
  * kdbgstream is a text stream that allows you to print debug messages.
  * Using the overloaded "<<" operator you can send messages. Usually
  * you do not create the kdbgstream yourself, but use ktDebug()
- * kdWarning(), kdError() or kdFatal to obtain one.
+ * ktWarning(), ktError() or ktFatal to obtain one.
  *
  * Example:
  * \code
@@ -99,14 +99,14 @@ class kdbgstream {
   /**
    * @internal
    */
-    kdbgstream(unsigned int _area, unsigned int _level, bool _print = true) :
-      area(_area), level(_level),  print(_print) { }
-    kdbgstream(const char * initialString, unsigned int _area, unsigned int _level, bool _print = true) :
-      output(QString::fromLatin1(initialString)), area(_area), level(_level),  print(_print) { }
+    kdbgstream(unsigned int _nOutput, unsigned int _level, bool _print = true) :
+      nOutput(_nOutput), level(_level),  print(_print) { }
+    kdbgstream(const char * initialString, unsigned int _nOutput, unsigned int _level, bool _print = true) :
+      output(QString::fromLatin1(initialString)), nOutput(_nOutput), level(_level),  print(_print) { }
     /// Copy constructor
     kdbgstream(kdbgstream &str);
     kdbgstream(const kdbgstream &str) :
-      output(str.output), area(str.area), level(str.level), print(str.print) {}
+      output(str.output), nOutput(str.nOutput), level(str.level), print(str.print) {}
     ~kdbgstream();
     /**
      * Prints the given value.
@@ -419,7 +419,7 @@ class kdbgstream {
 
  private:
     QString output;
-    unsigned int area, level;
+    unsigned int nOutput, level;
     bool print;
     kdbgstreamprivate* d;
 };
@@ -610,11 +610,11 @@ inline kndbgstream &perror( kndbgstream & s) { return s; }
  * \relates KGlobal
  * Returns a debug stream. You can use it to print debug
  * information.
- * @param area an id to identify the output, 0 for default
+ * @param nOutput an id to identify the output, 0 for default
  * @see kndDebug()
  */
-kdbgstream ktDebug(int area = 0);
-kdbgstream ktDebug(bool cond, int area = 0);
+kdbgstream ktDebug(int nOutput = 2);
+kdbgstream ktDebug(bool cond, int nOutput = 2);
 /**
  * \relates KGlobal
  * Returns a backtrace.
@@ -631,11 +631,11 @@ QString kdBacktrace();
 QString kdBacktrace(int levels);
 /**
  * Returns a dummy debug stream. The stream does not print anything.
- * @param area an id to identify the output, 0 for default
+ * @param nOutput an id to identify the output, 0 for default
  * @see ktDebug()
  */
-inline kndbgstream kndDebug(int area = 0) { Q_UNUSED(area); return kndbgstream(); }
-inline kndbgstream kndDebug(bool , int  = 0) { return kndbgstream(); }
+inline kndbgstream kndDebug(int nOutput = 2) { Q_UNUSED(nOutput); return kndbgstream(); }
+inline kndbgstream kndDebug(bool , int  = 2) { return kndbgstream(); }
 inline QString kndBacktrace() { return QString::null; }
 inline QString kndBacktrace(int) { return QString::null; }
 
@@ -643,26 +643,26 @@ inline QString kndBacktrace(int) { return QString::null; }
  * \relates KGlobal
  * Returns a warning stream. You can use it to print warning
  * information.
- * @param area an id to identify the output, 0 for default
+ * @param nOutput an id to identify the output, 0 for default
  */
-kdbgstream kdWarning(int area = 0);
-kdbgstream kdWarning(bool cond, int area = 0);
+kdbgstream ktWarning(int nOutput = 2);
+kdbgstream ktWarning(bool cond, int nOutput = 2);
 /**
  * \relates KGlobal
  * Returns an error stream. You can use it to print error
  * information.
- * @param area an id to identify the output, 0 for default
+ * @param nOutput an id to identify the output, 0 for default
  */
-kdbgstream kdError(int area = 0);
-kdbgstream kdError(bool cond, int area = 0);
+kdbgstream ktError(int nOutput = 2);
+kdbgstream ktError(bool cond, int nOutput = 2);
 /**
  * \relates KGlobal
  * Returns a fatal error stream. You can use it to print fatal error
  * information.
- * @param area an id to identify the output, 0 for default
+ * @param nOutput an id to identify the output, 0 for default
  */
-kdbgstream kdFatal(int area = 0);
-kdbgstream kdFatal(bool cond, int area = 0);
+kdbgstream ktFatal(int nOutput = 2);
+kdbgstream ktFatal(bool cond, int nOutput = 2);
 
 /**
  * \relates KGlobal
@@ -673,9 +673,7 @@ void kdClearDebugConfig();
 
 /** @} */
 
-// #ifdef NDEBUG
-// #define ktDebug kndDebug
-// #define kdBacktrace kndBacktrace
-// #endif
+#define KTINIT ktDebug() << "[Initializing "<< className() <<"]" << endl;
+#define KTEND ktDebug() << "[Destroying "<< className() <<"]" << endl;
 
 #endif

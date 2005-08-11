@@ -24,7 +24,8 @@
 
 KTTimeLine::KTTimeLine(QWidget *parent) : KTDialogBase(QDockWindow::OutsideDock, parent, "KTTimeLine")
 {
-	ktDebug() << "[Initializing KTTimeLine]" << endl;
+// 	ktDebug() << "[Initializing KTTimeLine]" << endl;
+	KTINIT;
 // 	this->setPaletteBackgroundColor(Qt::blue);
 	setCaption(tr("The Time line"));
 	
@@ -45,8 +46,8 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTDialogBase(QDockWindow::OutsideDock,
 
 KTTimeLine::~KTTimeLine()
 {
-	qDebug("[Destroying KTTimeLine]");
-
+// 	qDebug("[Destroying KTTimeLine]");
+	KTEND;
 }
 
 
