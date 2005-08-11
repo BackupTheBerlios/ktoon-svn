@@ -45,10 +45,10 @@ class KTLayerManager : public QVBox
 		double m_currentTime, m_totalTime;
 		
 		QHBox *m_utilsInTop;
-		QPushButton *m_lockButton, *m_eyeButton, *m_outlineButton;
+		KTImageButton *m_lockButton, *m_eyeButton, *m_outlineButton;
 		
 		QHBox *m_utilsInBottom;
-		QPushButton *m_insertButton, *m_removeButton, *m_moveUpButton, *m_moveDownButton;
+		KTImageButton *m_insertButton, *m_removeButton, *m_moveUpButton, *m_moveDownButton;
 		
 		QLabel *m_time;
 		

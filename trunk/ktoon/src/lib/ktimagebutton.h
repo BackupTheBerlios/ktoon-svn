@@ -23,7 +23,6 @@
 #include <qpushbutton.h>
 #include <qimage.h>
 
-
 /**
  * A image pressable
  * @author David Cuadrado <krawek@toonka.com>
@@ -34,19 +33,20 @@ class KTImageButton : public QPushButton
 	Q_OBJECT
 
 	public:
-		KTImageButton(const QImage &image, QWidget *parent = 0);
+		KTImageButton(const QPixmap &image, int size, QWidget *parent = 0);
 		~KTImageButton();
-		
-		
-	protected:
-		void resizeEvent(QResizeEvent *e);
-		void paintEvent(QPaintEvent *e);
-		QPixmap getPixmap();
+		virtual void setPixmap ( const QPixmap & pix);
 		
 	private:
-		QImage m_image;
-		QPixmap m_drawer;
-		int m_buttonSize;
+		void setup();
+		
+	private:
+		int m_imageSize;
+		
+// 	protected:
+// 		void resizeEvent(QResizeEvent *e);
+// 		void paintEvent(QPaintEvent *e);
+// 		QPixmap getPixmap();
 };
 
 #endif

@@ -22,15 +22,12 @@
 #include <qpainter.h>
 #include <iostream>
 
-KTImageButton::KTImageButton(const QImage &image, QWidget *parent)
-	: QPushButton(parent), m_image(image)
+KTImageButton::KTImageButton(const QPixmap &image, int size, QWidget *parent)
+	: QPushButton(parent), m_imageSize(size)
 {
-	m_drawer.setOptimization( QPixmap::BestOptim );
-	m_drawer.resize( size().width(), size().height() );
-	m_drawer.fill();
+	setup();
 	
-	
-	setMaximumSize( 45, 45 );
+	setPixmap(image);
 }
 
 
@@ -38,39 +35,38 @@ KTImageButton::~KTImageButton()
 {
 }
 
-
-void KTImageButton::resizeEvent(QResizeEvent *e)
+void KTImageButton::setup()
 {
-	QPainter painter( &m_drawer );
+	setFlat( true );
+	setAutoDefault( false );
+	setMaximumSize(m_imageSize, m_imageSize);
+}
 
-	painter.setBackgroundColor( paletteBackgroundColor() );
-	painter.eraseRect( m_drawer.rect() );
 
-	painter.end();
+// void KTImageButton::resizeEvent(QResizeEvent *e)
+// {
+// 	QPainter painter( &m_drawer );
+// 
+// 	painter.setBackgroundColor( paletteBackgroundColor() );
+// 	painter.eraseRect( m_drawer.rect() );
+// 
+// 	painter.end();
+// 	
+// 
+// 	QPixmap buffer = getPixmap();
+// 
+// 	bitBlt( &m_drawer, size().width(), size().height(), &buffer, 0, 0, buffer.width(), buffer.height(), Qt::CopyROP );
+// 
+// 	repaint( false );
+// }
+
+
+void KTImageButton::setPixmap ( const QPixmap & pix)
+{
+	QImage imgTmp(pix.convertToImage () );
+	QPixmap newPixmap(imgTmp.smoothScale(m_imageSize,m_imageSize));
 	
-
-	QPixmap buffer = getPixmap();
-
-	bitBlt( &m_drawer, size().width(), size().height(), &buffer, 0, 0, buffer.width(), buffer.height(), Qt::CopyROP );
-
-	repaint( false );
+	QPushButton::setPixmap(newPixmap);
 }
 
-QPixmap KTImageButton::getPixmap()
-{
-	return QPixmap( m_image.smoothScale(44, 44) );
-}
-
-void KTImageButton::paintEvent(QPaintEvent *ev)
-{
-	QRegion reg = ev->region();
-
-	QPainter painter( this );
-	painter.setClipRegion( reg );
-	painter.drawPixmap( 0, 0, m_drawer );
-
-	painter.end();
-	
-	QPushButton::paintEvent(ev);
-}
 
