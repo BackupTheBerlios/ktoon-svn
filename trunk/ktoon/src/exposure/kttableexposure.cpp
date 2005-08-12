@@ -19,12 +19,12 @@
  ***************************************************************************/
 #include "kttableexposure.h"
 #include <qvbox.h> 
-
+#include "ktdebug.h"
 
 KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent, const char *name)
 	: QScrollView (parent, name),m_numLayer(0), m_currentLayer(0), m_currentFrame(0)
 {
-	qDebug("[Initializing KTTableExposure]");
+	KTINIT;
 	
 	setDragAutoScroll ( true ) ;
 	viewport ()->setPaletteBackgroundColor ( paletteBackgroundColor() );
@@ -52,8 +52,7 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent, const char
 
 KTTableExposure::~KTTableExposure()
 {
-	qDebug("[Destroying KTTableExposure]");
-	
+	KTEND;
 }
 
 void KTTableExposure::clickedCell(int row,int col,int button,int gx,int gy)
@@ -74,12 +73,46 @@ void KTTableExposure::insertLayer(int rows)
 	m_layers.append(newLayer);
 	connect(newLayer, SIGNAL(selected(int)), this, SIGNAL(layerSelected(int)));
 	connect(this, SIGNAL(layerSelected(int)), newLayer, SLOT(otherSelected(int)));
-	connect(newLayer, SIGNAL(clicked(int,int,int,int,int)), this, SLOT(clickedCell(int,int,int,int,int)));	m_layout->addWidget(newLayer);
+	connect(newLayer, SIGNAL(clicked(int,int,int,int,int)), this, SLOT(clickedCell(int,int,int,int,int)));
+	m_layout->addWidget(newLayer);
 	m_numLayer++;
+	newLayer->show();
 }
 
 void KTTableExposure::setUseFrame()
 {
-	qDebug("KTTableExposure::setUseFrame()");
 	m_layers[m_currentLayer]->setUseFrames(m_currentFrame);
+}
+
+void KTTableExposure::removeFrameSelected()
+{
+	m_layers[m_currentLayer]->removeFrame(m_currentFrame);
+}
+
+void KTTableExposure::moveCurrentFrame(Direction d)
+{
+	if(d == Up)
+	{
+		m_layers[m_currentLayer]->moveCurrentFrameUp();
+	}
+	else if(d == Down)
+	{
+		m_layers[m_currentLayer]->moveCurrentFrameDown();
+	}
+}
+
+void KTTableExposure::lockCurrentFrame()
+{
+	m_layers[m_currentLayer]->lockCurrentFrame(m_currentFrame);
+}
+
+void KTTableExposure::removeCurrentLayer()
+{
+	ktDebug(1) << m_currentLayer;
+	if(m_numLayer != 1 && m_layers[m_currentLayer]->isSelected())
+	{
+		m_layout->remove(m_layers[m_currentLayer]);
+		m_layers.remove(m_layers[m_currentLayer]);
+		m_numLayer--;
+	}
 }

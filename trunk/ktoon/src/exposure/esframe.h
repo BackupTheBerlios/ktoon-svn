@@ -156,7 +156,8 @@ public:
      * @param in_esframe The argument frame
      */
     void setAllProperties( ESFrame *in_esframe );
-	      void setId(int id);
+// 	      void setId(int id);
+	      int id();
 
 private:
 //     QWidget *parent_widget, *grandparent_widget;

@@ -34,9 +34,14 @@ class KTTableExposure : public QScrollView
 {
 	Q_OBJECT
 	public:
+		enum Direction {Up = 0, Down};
 		KTTableExposure(int rows, int cols, QWidget *parent = 0, const char *name = 0);
 		~KTTableExposure();
 		void setUseFrame();
+		void removeFrameSelected();
+		void moveCurrentFrame(Direction d);
+		void lockCurrentFrame();
+		void removeCurrentLayer();
 		
 	private:
 		QBoxLayout *m_layout;

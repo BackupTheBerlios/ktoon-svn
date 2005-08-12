@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado   *
- *   kuadrosx@toonka.com   *
+ *   Copyright (C) 2005 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "ktexposuresheet.h"
 #include <qtooltip.h>
 #include "ktapplication.h"
@@ -79,11 +80,13 @@ void KTExposureSheet::applyAction(int action)
 	{
 		case InsertLayer:
 		{
+			m_viewLayer->insertLayer(100);
 			slotInsertLayer();
 			break;
 		}
 		case RemoveLayer:
 		{
+			m_viewLayer->removeCurrentLayer();
 			break;
 		}
 		case ShowManageLayer:
@@ -97,18 +100,22 @@ void KTExposureSheet::applyAction(int action)
 		}
 		case RemoveFrame:
 		{
+			m_viewLayer->removeFrameSelected();
 			break;
 		}
 		case LockFrame:
 		{
+			m_viewLayer->lockCurrentFrame();
 			break;
 		}
 		case MoveFrameUp:
 		{
+			m_viewLayer->moveCurrentFrame(KTTableExposure::Up );
 			break;
 		}
 		case MoveFrameDown:
 		{
+			m_viewLayer->moveCurrentFrame(KTTableExposure::Down );
 			break;
 		}
 	}

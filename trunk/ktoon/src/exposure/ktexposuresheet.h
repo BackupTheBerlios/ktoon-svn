@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado   *
- *   kuadrosx@toonka.com   *
+ *   Copyright (C) 2005 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -21,16 +21,13 @@
 #define KTEXPOSURESHEET_H
 
 #include "ktdialogbase.h"
-
+#include "kttableexposure.h"
 
 #include <qhbuttongroup.h>
 #include <qpushbutton.h>
 #include <qaction.h>
 #include <qvaluelist.h>
 #include <qstringlist.h>
-
-
-#include "kttableexposure.h"
 #include <qtable.h>
 #include <qlistbox.h>
 #include <qgridview.h> 
@@ -38,6 +35,7 @@
 /**
 * @author Jorge Cuadrado
 */
+
 
 typedef QValueList<QPixmap> imgs;
 

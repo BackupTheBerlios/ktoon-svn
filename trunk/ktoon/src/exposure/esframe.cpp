@@ -20,7 +20,7 @@
 
 #include <qcursor.h>
 #include <qapplication.h>
-
+#include "ktdebug.h"
 #include "esframe.h"
 
 //--------------- CONSTRUCTOR --------------------
@@ -28,7 +28,6 @@
 ESFrame::ESFrame( const QString &initial_text,int id, QWidget *parent )
 	: QLabel( parent )  ,  is_used(false), is_selected(false), is_locked(false),  is_motion(false), has_drawing(false), m_id(id), m_initialText(initial_text)
 {
-	
     //Initializations
 	setFrameStyle( QFrame::Panel | QFrame::Raised );
 	setLineWidth( 2 );
@@ -87,13 +86,14 @@ bool ESFrame::hasDrawing()
 	return has_drawing;
 }
 
-void ESFrame::setId(int id)
+int ESFrame::id()
 {
-	m_id = id;
+	return m_id;
 }
 
 void ESFrame::setUsed( bool in_is_used )
 {
+// 	ktDebug(1)  << in_is_used  << endl;
 	is_used = in_is_used;
 
 	setName(m_initialText);

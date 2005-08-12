@@ -40,6 +40,7 @@ class KTLayerExposure : public QFrame
 		~KTLayerExposure();
 		void insertFrame(int id );
 		bool isSelected();
+		void invertFrames(int id1, int id2);
 		
 	private:
 		bool m_selected;
@@ -52,6 +53,10 @@ class KTLayerExposure : public QFrame
 		void frameSelect(int id, int button, int x, int y);
 		void otherSelected(int id);
 		void setUseFrames(int id);
+		void removeFrame(int id);
+		void moveCurrentFrameUp();
+		void moveCurrentFrameDown();
+		void lockCurrentFrame(int id);
 		
 	signals:
 		void selected(int id);
