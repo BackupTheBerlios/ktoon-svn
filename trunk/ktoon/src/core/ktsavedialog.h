@@ -18,37 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "kttimeline.h"
-#include "ktapplication.h"
-#include "ktdebug.h"
+#ifndef KTSAVEDIALOG_H
+#define KTSAVEDIALOG_H
 
-KTTimeLine::KTTimeLine(QWidget *parent) : KTDialogBase(QDockWindow::OutsideDock, parent, "KTTimeLine")
+#include <qdialog.h>
+#include <qlineedit.h>
+#include <qlistview.h>
+#include <qpushbutton.h>
+#include <qlayout.h>
+#include <qlabel.h>
+
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+
+class KTFileDialog : public QDialog
 {
-	KTINIT;
-	
-	setCaption(tr("The Time line"));
-	
-	m_container = new QHBox(this);
-	addChild(m_container);
-	
-	m_splitter = new QSplitter( m_container );
-	
-	m_layerManager = new KTLayerManager( m_splitter );
-	
-// 	show();
-	hide();
-	
-	setResizeEnabled (true);
-// 	adjustSize();
-}
+	Q_OBJECT
+	public:
+		KTFileDialog(QWidget *parent = 0);
+		~KTFileDialog();
+		QString fileName() const;
+		void readFiles();
+		
+	private slots:
+		void accept();
+		void select(QListViewItem *);
+// 		void reject();
+		
+	private:
+		QLineEdit *m_fileNameLE;
+		QListView *m_listView;
+		QPushButton *m_accept, *m_cancel;
+		QString m_fileName;
+		
+};
 
-
-KTTimeLine::~KTTimeLine()
-{
-	KTEND;
-}
-
-
-
-
-
+#endif

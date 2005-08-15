@@ -2371,17 +2371,27 @@ void KToon::slotSave()
     statusBar() -> message( tr( "File Saved Successfully - %1" ).arg( file_name ), 2000 );
 }
 
+#include "ktsavedialog.h" 
+// TODO: FIXME (krawek)
 void KToon::slotSaveAs()
 {
-    QString fn = QFileDialog::getSaveFileName( KTOON_REPOSITORY, "KToon Project ( *.ktn )", this );
-    if ( !fn.isEmpty() )
-    {
-	file_name = fn + ".ktn";
-	recent_names.prepend( file_name );
-	recent_names.pop_back();
-	updateOpenRecentMenu();
-	slotSave();
-    }
+	KTFileDialog save(this);
+	
+	if ( save.exec() == QDialog::Rejected )
+	{
+		return;
+	}
+	
+	QString fn = save.fileName();; // = QFileDialog::getSaveFileName( KTOON_REPOSITORY, "KToon Project ( *.ktn )", this );
+	
+	if ( !fn.isEmpty() )
+	{
+		file_name = fn + ".ktn";
+		recent_names.prepend( file_name );
+		recent_names.pop_back();
+		updateOpenRecentMenu();
+		slotSave();
+	}
 }
 
 void KToon::slotImport()
@@ -3527,8 +3537,9 @@ void KToon::slotCloseDrawingArea()
 {
 	std::cout << "Closing..." << std::endl;
 	if ( KTStatus->isValid() && KTStatus->currentDrawingArea()->isModified() )
+	{
 		slotSave();
-	
+	}
 // 	ExposureSheet * loe;
 	
 // 	for(loe = list_of_es.first(); loe ; loe = list_of_es.next() )
