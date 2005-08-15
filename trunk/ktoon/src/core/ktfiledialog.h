@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTSAVEDIALOG_H
-#define KTSAVEDIALOG_H
+#ifndef KTFILEDIALOG_H
+#define KTFILEDIALOG_H
 
 #include <qdialog.h>
 #include <qlineedit.h>

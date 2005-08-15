@@ -20,11 +20,11 @@ TRANSLATIONS += ktoon_es.ts \
                 qt_es.ts 
 HEADERS += ktoon.h \
            splash.h \
-           ktsavedialog.h 
+           ktfiledialog.h 
 SOURCES += ktoon.cpp \
            main.cpp \
            splash.cpp \
-           ktsavedialog.cpp 
+           ktfiledialog.cpp 
 TARGETDEPS += ../../src/dialogs/libdialogs.a \
 ../../src/qt/draw/libdraw.a \
 ../../src/qt/tools/libtools.a \

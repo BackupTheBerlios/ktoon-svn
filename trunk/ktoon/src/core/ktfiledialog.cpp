@@ -18,9 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktsavedialog.h"
+#include "ktfiledialog.h"
 #include "ktapplication.h"
 #include "ktdebug.h"
+#include "kseparator.h"
+
 #include <qhbox.h>
 #include <qfileinfo.h>
 #include <qdir.h>
@@ -28,17 +30,22 @@
 KTFileDialog::KTFileDialog(QWidget *parent) : QDialog(parent, "KTFileDialog")
 {
 	KTINIT;
-	setCaption("Choose your save location");
+	setCaption("Choose your file...");
 	setModal(true);
 	
 	(new QVBoxLayout(this))->setAutoAdd(true);
+	
+	QHBox *title = new QHBox(this);
+	new QLabel("<br>"+tr("Repository ")+KTOON_REPOSITORY+"<br>", this);
+	
+	new KSeparator(this);
 	
 	new QLabel(tr("File name: "), this);
 	m_fileNameLE = new QLineEdit(this);
 	
 	m_listView = new QListView(this);
 	m_listView->addColumn(tr("Filename"));
-	m_listView->addColumn(tr("Name"));
+	m_listView->addColumn(tr("Owner"));
 	m_listView->addColumn(tr("Date"));
 	
 	connect(m_listView, SIGNAL(clicked(QListViewItem *)), this, SLOT(select(QListViewItem *)));
@@ -91,6 +98,8 @@ void KTFileDialog::readFiles()
 	{
 		QListViewItem *item = new QListViewItem(m_listView);
 		item->setText(0, iterator->fileName());
+		item->setText(1, iterator->owner());
+		item->setText(2, iterator->created().toString());
 	}
 }
 

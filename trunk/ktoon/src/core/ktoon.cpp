@@ -38,6 +38,8 @@
 
 #include "ktxmlreader.h"
 #include "ktconfigdocument.h"
+#include "ktfiledialog.h"
+#include "ktdebug.h"
 
 // Borrar
 #include "kttimeline.h"
@@ -2067,7 +2069,17 @@ void KToon::slotNewDocument()
 
 void KToon::slotChoose()
 {
-	QString fn = QFileDialog::getOpenFileName( KTOON_REPOSITORY, "KToon Project ( *.ktn )", this );
+	//QString fn = QFileDialog::getOpenFileName( KTOON_REPOSITORY, "KToon Project ( *.ktn )", this );
+	
+	KTFileDialog choose(this);
+	
+	if ( choose.exec() == QDialog::Rejected)
+	{
+		return;
+	}
+	
+	QString fn = choose.fileName();
+	
 	if ( !fn.isEmpty() )
 	{
 		bool is_recent = false;
@@ -2090,8 +2102,16 @@ void KToon::slotChoose()
 
 void KToon::slotLoadDocument( const QString &in_file_name )
 {
-	std::cout << "Opening file : " << in_file_name << std::endl;
-	QFile f( in_file_name );
+	QString filetmp(in_file_name);
+
+	if ( ! filetmp.startsWith( KTOON_REPOSITORY ))
+	{
+		filetmp = KTOON_REPOSITORY + "/"+filetmp;
+	}
+	
+	std::cout << "Opening file : " << filetmp << std::endl;
+	
+	QFile f( filetmp );
 	if ( !f.open( IO_ReadOnly ) )
 		return;
 
@@ -2352,8 +2372,15 @@ void KToon::slotSave()
 	slotSaveAs();
 	return;
     }
+    
+    QString filetmp(file_name);
+    
+    if ( ! filetmp.startsWith( KTOON_REPOSITORY ))
+    {
+	    filetmp = KTOON_REPOSITORY + "/"+filetmp;
+    }
 
-    QFile f( file_name );
+    QFile f( filetmp );
     if ( !f.open( IO_WriteOnly ) )
     {
 	statusBar() -> message( tr( "Couldn't Save - %1" ).arg( file_name ), 2000 );
@@ -2371,8 +2398,6 @@ void KToon::slotSave()
     statusBar() -> message( tr( "File Saved Successfully - %1" ).arg( file_name ), 2000 );
 }
 
-#include "ktsavedialog.h" 
-// TODO: FIXME (krawek)
 void KToon::slotSaveAs()
 {
 	KTFileDialog save(this);
@@ -2386,7 +2411,7 @@ void KToon::slotSaveAs()
 	
 	if ( !fn.isEmpty() )
 	{
-		file_name = fn + ".ktn";
+		file_name = fn;
 		recent_names.prepend( file_name );
 		recent_names.pop_back();
 		updateOpenRecentMenu();
