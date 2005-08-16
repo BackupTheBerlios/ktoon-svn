@@ -22,11 +22,12 @@
 #include <qtooltip.h>
 #include "ktapplication.h"
 #include <qlistview.h>
+#include <ktdebug.h>
 
 KTExposureSheet::KTExposureSheet( QWidget *parent, const char *name)
 	: KTDialogBase(QDockWindow::OutsideDock, parent, "Exposure Sheet")
 {
-	qDebug("[Initializing KTExposureSheet]");
+	KTINIT;
 	setCaption( tr( "Exposure Sheet" ) );
 	
 	m_imgs <<  
@@ -42,6 +43,7 @@ KTExposureSheet::KTExposureSheet( QWidget *parent, const char *name)
 	
 	m_viewLayer = new KTTableExposure(100, 1,this,"table");
 	addChild(m_viewLayer);
+	hide();
 // 	repaint();
 	
 }
@@ -49,7 +51,7 @@ KTExposureSheet::KTExposureSheet( QWidget *parent, const char *name)
 
 KTExposureSheet::~KTExposureSheet()
 {
-	qDebug("[Destroying KTExposureSheet]");
+	KTEND;
 }
 
 void KTExposureSheet::setupButtons()

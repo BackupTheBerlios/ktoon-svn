@@ -24,11 +24,12 @@
 #include <qlayout.h> 
 #include <qlabel.h>
 #include "ktlayerexposure.h"
+
 /**
 @author Jorge Cuadrado
 */
 
-typedef QValueList<KTLayerExposure*> listOfLayers;
+typedef QPtrList<KTLayerExposure> listOfLayers;
 
 class KTTableExposure : public QScrollView
 {

@@ -31,6 +31,7 @@
 #include <qcolor.h>
 #include <qpopupmenu.h>
 #include <qpainter.h>
+#include <qaction.h>
 
 /**
  * @brief Class that handles the Frame objects belonging to the Exposure Sheet dialog box
@@ -49,7 +50,6 @@ public:
      * Constructs an ESFrame object.
      * @param initial_text The text that this object will display
      * @param parent The parent widget
-     * @param grandparent The grandparent widget. It is used for slot connections or function calls
      */
     ESFrame( const QString &initial_text, int id, QWidget *parent);
     /**
@@ -156,8 +156,9 @@ public:
      * @param in_esframe The argument frame
      */
     void setAllProperties( ESFrame *in_esframe );
-// 	      void setId(int id);
+	      void setId(int id);
 	      int id();
+	      
 
 private:
 //     QWidget *parent_widget, *grandparent_widget;
@@ -171,8 +172,8 @@ private:
 
     int m_id;
     //The right click menu and its identifiers
-    QPopupMenu *right_click_menu;
-    int id_rename, id_remove, id_lock, id_copy, id_paste;
+//     QPopupMenu *right_click_menu;
+//     int id_rename, id_remove, id_lock, id_copy, id_paste;
 
 signals:
     /**

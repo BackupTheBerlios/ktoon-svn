@@ -23,11 +23,13 @@
 #include "esframe.h"
 #include "eslayer.h"
 
-#include <qvaluelist.h>
+// #include <qvaluelist.h>
+#include <qptrlist.h> 
 #include <qframe.h> 
-#include <qlayout.h>
+#include <qlayout.h>            
+#include <qpopupmenu.h>
 
-typedef QValueList<ESFrame*> listOfFrames;
+typedef QPtrList<ESFrame> listOfFrames;
 
 /**
 @author Jorge Cuadrado
@@ -41,12 +43,14 @@ class KTLayerExposure : public QFrame
 		void insertFrame(int id );
 		bool isSelected();
 		void invertFrames(int id1, int id2);
+		void setId(int id);
 		
 	private:
 		bool m_selected;
 		int m_currentFrame, m_id, m_useFrame;
 		ESLayer *m_header;
 		listOfFrames m_frames;
+		QPopupMenu *menuFrame;
 		
 	public slots:
 		void setSelected(bool selected = true);
@@ -56,7 +60,13 @@ class KTLayerExposure : public QFrame
 		void removeFrame(int id);
 		void moveCurrentFrameUp();
 		void moveCurrentFrameDown();
-		void lockCurrentFrame(int id);
+		void lockFrame(int id);
+		
+		void renameCurrentFrame();
+		void removeCurrentFrame();
+		void lockCurrentFrame();
+		void copyCurrentFrame();
+		void pasteCurrentFrame();
 		
 	signals:
 		void selected(int id);

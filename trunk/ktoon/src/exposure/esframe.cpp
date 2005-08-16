@@ -43,7 +43,7 @@ ESFrame::ESFrame( const QString &initial_text,int id, QWidget *parent )
 	connect( description, SIGNAL( lostFocus() ), SLOT( slotSetDescription() ) );
 	connect( description, SIGNAL( returnPressed() ), SLOT( slotSetDescription() ) );
 
-	right_click_menu = new QPopupMenu( this );
+// 	right_click_menu = new QPopupMenu( this );
 //     right_click_menu -> setFont( QFont( "helvetica", 10 ) );
 //     id_rename = right_click_menu -> insertItem( tr( "Rename Frame" ), this, SLOT( slotSendDoubleClickEvent() ) );
 //     id_remove = right_click_menu -> insertItem( tr( "Remove this Frame" ), grandparent, SLOT( slotRemoveFrame() ) );
@@ -56,7 +56,7 @@ ESFrame::ESFrame( const QString &initial_text,int id, QWidget *parent )
 
 ESFrame::~ESFrame()
 {
-	delete right_click_menu;
+// 	delete right_click_menu;
 }
 
 //-------------- PUBLIC MEMBERS ----------------
@@ -89,6 +89,11 @@ bool ESFrame::hasDrawing()
 int ESFrame::id()
 {
 	return m_id;
+}
+
+void ESFrame::setId(int id)
+{
+	m_id = id;
 }
 
 void ESFrame::setUsed( bool in_is_used )

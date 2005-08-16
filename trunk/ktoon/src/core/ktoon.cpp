@@ -1046,7 +1046,7 @@ void KToon::setupDialogs()
 			 window_exposure_sheet, SLOT(setOn(bool)));
 	
 	m_ExposureSheetDialog =  new KTExposureSheet( this);
-	m_ExposureSheetDialog->show();
+// 	m_ExposureSheetDialog->show();
 	QObject::connect(m_ExposureSheetDialog, SIGNAL(activate(bool)),
 			 window_exposure_sheet, SLOT(setOn(bool)));
 			
