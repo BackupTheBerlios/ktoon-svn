@@ -17,34 +17,29 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTFRAMESEQUENCEMANAGER_H
+#define KTFRAMESEQUENCEMANAGER_H
 
-#ifndef KTTIMELINELAYER_H
-#define KTTIMELINELAYER_H
+#include <qvbox.h>
+#include <qscrollview.h>
 
-#include <qhbox.h>
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qcheckbox.h>
-
+#include "kttlruler.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTTimeLineLayer : public QHBox
+class KTFrameSequenceManager : public QVBox
 {
 	Q_OBJECT
 	public:
-		KTTimeLineLayer(const QString &name = "Layer", int position = 0, QWidget *parent = 0);
-		~KTTimeLineLayer();
+		KTFrameSequenceManager(QWidget *parent);
+		~KTFrameSequenceManager();
 		
 	private:
-		QLineEdit *m_nameEditor;
-		QCheckBox *m_onlyOutlines;
-		int m_position;
-		QLabel *m_editionImage, *m_visibilityImage, *m_lockImage, *m_layerName;
-		
-		QHBox *m_utils;
+		QScrollView *m_sequenceLayout;
+		QVBox *m_rulerBox;
+		KTTLRuler *m_ruler;
 
 };
 

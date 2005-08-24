@@ -53,6 +53,9 @@ TLFrameSequenceManager::TLFrameSequenceManager( QWidget *parent, QWidget *grandp
     frame_layout -> move( 0, ruler -> height() );
     frame_layout -> resize( 590, 90 );
     frame_layout -> resizeContents( 590, 90 );
+    
+    frame_layout->setPaletteBackgroundColor(Qt::blue); // FIXME: remove this
+    
     connect( frame_layout, SIGNAL( frameSelected( TLFrameSequence * ) ), SIGNAL( frameSelected( TLFrameSequence * ) ) );
     connect( this, SIGNAL( layerSelected( TLLayer* ) ), frame_layout, SLOT( slotConsequencesOfALayerSelection( TLLayer* ) ) );
     connect( this, SIGNAL( layerReleasedAbove( int, int ) ), frame_layout, SLOT( slotSwapFrameSequences( int, int ) ) );

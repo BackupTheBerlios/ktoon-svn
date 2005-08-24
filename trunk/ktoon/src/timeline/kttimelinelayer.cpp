@@ -21,6 +21,7 @@
 #include "kttimelinelayer.h"
 #include "ktapplication.h"
 #include <qpixmap.h>
+#include <qlayout.h>
 
 KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, QWidget *parent) : QHBox(parent, "KTTimeLineLayer")
 {
@@ -44,6 +45,11 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, QWidget *par
 	m_layerName -> resize( 50, 20 );
 	m_layerName -> setFont( QFont( font().family(), 9 ) );
 // 	m_layerName -> move( static_layer_image -> x() + static_layer_image -> width(), 2 );
+	
+	m_editionImage = new QLabel( this );
+	m_editionImage -> resize( 20, 20 );
+// 	edition_image -> move( visibility_image -> x() - edition_image -> width() - 2, 2 );
+
 
 	m_nameEditor = new QLineEdit( this );
 	m_nameEditor->resize( 50, 20 );
@@ -52,25 +58,26 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, QWidget *par
 	m_nameEditor->hide();
 // 	connect( edit_name, SIGNAL( lostFocus() ), SLOT( slotEditName() ) );
 // 	connect( edit_name, SIGNAL( returnPressed() ), SLOT( slotEditName() ) );
-
-	m_onlyOutlines = new QCheckBox( this );
-	m_onlyOutlines -> resize( 20, 20 );
-// 	m_onlyOutlines -> move( width() - m_onlyOutlines -> width() - 22, 2 );
-// 	connect( m_onlyOutlines, SIGNAL( clicked() ), SLOT( slotOnlyOutlines() ) );
-
-	m_lockImage = new QLabel( this );
-	m_lockImage -> setPixmap( QPixmap( KTOON_HOME+"/images/icons/disable.xpm" ) );
-	m_lockImage -> resize( 20, 20 );
-// 	lock_image -> move( m_onlyOutlines -> x() - lock_image -> width() - 2, 2 );
-
-	m_visibilityImage = new QLabel( this );
+	
+	m_utils = new QHBox(this);
+	m_utils->layout()->setAlignment(Qt::AlignRight );
+	
+	m_utils->setSpacing(5);
+	
+	m_visibilityImage = new QLabel( m_utils );
 	m_visibilityImage -> setPixmap( QPixmap( KTOON_HOME+"/images/icons/enable.xpm" ) );
 	m_visibilityImage -> resize( 20, 20 );
 // 	visibility_image -> move( lock_image -> x() - visibility_image -> width() - 2, 2 );
-
-	m_editionImage = new QLabel( this );
-	m_editionImage -> resize( 20, 20 );
-// 	edition_image -> move( visibility_image -> x() - edition_image -> width() - 2, 2 );
+	
+	m_lockImage = new QLabel( m_utils );
+	m_lockImage -> setPixmap( QPixmap( KTOON_HOME+"/images/icons/disable.xpm" ) );
+	m_lockImage -> resize( 20, 20 );
+// 	lock_image -> move( m_onlyOutlines -> x() - lock_image -> width() - 2, 2 );
+	
+	m_onlyOutlines = new QCheckBox( m_utils );
+	m_onlyOutlines -> resize( 20, 20 );
+// 	m_onlyOutlines -> move( width() - m_onlyOutlines -> width() - 22, 2 );
+// 	connect( m_onlyOutlines, SIGNAL( clicked() ), SLOT( slotOnlyOutlines() ) );
 
 	show();
 }

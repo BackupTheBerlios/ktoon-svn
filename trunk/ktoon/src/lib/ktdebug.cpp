@@ -229,7 +229,7 @@ kdbgstream &perror( kdbgstream &s) { return s <<  QString::fromLocal8Bit(strerro
 kdbgstream ktDebug(int nOutput) { return kdbgstream(nOutput, KTDEBUG_INFO); }
 kdbgstream ktDebug(bool cond, int nOutput) { if (cond) return kdbgstream(nOutput, KTDEBUG_INFO); else return kdbgstream(0, 0, false); }
 
-kdbgstream ktError(int nOutput) { return kdbgstream("ERROR: ", nOutput, KTDEBUG_ERROR); }
+kdbgstream ktError(int nOutput) { return kdbgstream(QString("ERROR: %1::%2: ").arg(__FILE__).arg(__LINE__), nOutput, KTDEBUG_ERROR); }
 kdbgstream ktError(bool cond, int nOutput) { if (cond) return kdbgstream("ERROR: ", nOutput, KTDEBUG_ERROR); else return kdbgstream(0,0,false); }
 kdbgstream ktWarning(int nOutput) { return kdbgstream("WARNING: ", nOutput, KTDEBUG_WARN); }
 kdbgstream ktWarning(bool cond, int nOutput) { if (cond) return kdbgstream("WARNING: ", nOutput, KTDEBUG_WARN); else return kdbgstream(0,0,false); }

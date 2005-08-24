@@ -30,7 +30,7 @@
 #include "ktlayersequence.h"
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@toonka.com>
 */
 
 class KTLayerManager : public QVBox

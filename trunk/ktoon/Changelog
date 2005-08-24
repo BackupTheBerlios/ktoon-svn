@@ -4,6 +4,7 @@ Kt00n ChangeLog
 ===============
 
 KToon-0.8a
+	* New ruler
 	* New debug framework
 	* FIX crash on copy
 	* new config handler

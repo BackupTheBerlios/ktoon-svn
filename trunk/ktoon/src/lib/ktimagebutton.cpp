@@ -22,8 +22,7 @@
 #include <qpainter.h>
 #include <iostream>
 
-KTImageButton::KTImageButton(const QPixmap &image, int size, QWidget *parent)
-	: QPushButton(parent), m_imageSize(size)
+KTImageButton::KTImageButton(const QPixmap &image, int size, QWidget *parent) : QPushButton(parent), m_imageSize(44)
 {
 	setup();
 	
@@ -63,10 +62,16 @@ void KTImageButton::setup()
 
 void KTImageButton::setPixmap ( const QPixmap & pix)
 {
-	QImage imgTmp(pix.convertToImage () );
-	QPixmap newPixmap(imgTmp.smoothScale(m_imageSize,m_imageSize));
-	
-	QPushButton::setPixmap(newPixmap);
+	if ( pix.width() > m_imageSize || pix.height() > m_imageSize )
+	{
+		QImage imgTmp(pix.convertToImage () );
+		QPixmap newPixmap(imgTmp.smoothScale(m_imageSize,m_imageSize));
+		QPushButton::setPixmap(newPixmap);
+	}
+	else
+	{
+		QPushButton::setPixmap(pix);
+	}
 }
 
 

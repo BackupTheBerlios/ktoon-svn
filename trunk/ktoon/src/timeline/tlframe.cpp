@@ -56,6 +56,8 @@ TLFrame::TLFrame( QWidget *parent )
     right_click_menu -> insertSeparator();
     right_click_menu -> insertItem( tr( "Add Frames" ), parent, SLOT( slotInsertFrame() ) );
     right_click_menu -> insertItem( tr( "Remove Frames" ), parent, SLOT( slotRemoveFrame() ) );
+    
+    setPaletteBackgroundColor(Qt::yellow);
 }
 
 TLFrame::TLFrame( TLFrame *in_frame )

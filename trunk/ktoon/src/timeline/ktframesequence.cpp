@@ -18,34 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTTIMELINELAYER_H
-#define KTTIMELINELAYER_H
+#include "ktframesequence.h"
 
-#include <qhbox.h>
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qcheckbox.h>
-
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-
-class KTTimeLineLayer : public QHBox
+KTFrameSequence::KTFrameSequence(QWidget *parent) : QHBox(parent)
 {
-	Q_OBJECT
-	public:
-		KTTimeLineLayer(const QString &name = "Layer", int position = 0, QWidget *parent = 0);
-		~KTTimeLineLayer();
-		
-	private:
-		QLineEdit *m_nameEditor;
-		QCheckBox *m_onlyOutlines;
-		int m_position;
-		QLabel *m_editionImage, *m_visibilityImage, *m_lockImage, *m_layerName;
-		
-		QHBox *m_utils;
+}
 
-};
 
-#endif
+KTFrameSequence::~KTFrameSequence()
+{
+}
+
+

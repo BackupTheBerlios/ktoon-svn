@@ -23,7 +23,8 @@ HEADERS += glgraphiccomponent.h \
            ktconfig.h \
            ktimagebutton.h \
            ktdebug.h \
-           kseparator.h 
+           kseparator.h \
+           ktrulerbase.h 
 SOURCES += glgraphiccomponent.cpp \
            ktapplication.cpp \
            configwizard.cpp \
@@ -44,7 +45,8 @@ SOURCES += glgraphiccomponent.cpp \
            ktconfig.cpp \
            ktimagebutton.cpp \
            ktdebug.cpp \
-           kseparator.cpp 
+           kseparator.cpp \
+           ktrulerbase.cpp 
 INCLUDEPATH += ../../src/core \
 ../../src/exposure \
 ../../src/dialogs \

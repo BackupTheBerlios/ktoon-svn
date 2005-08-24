@@ -26,6 +26,7 @@
 #include <qhbox.h>
 
 #include "ktlayermanager.h"
+#include "ktframesequencemanager.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -42,6 +43,7 @@ class KTTimeLine : public KTDialogBase
 		QHBox *m_container;
 		QSplitter *m_splitter;
 		KTLayerManager *m_layerManager;
+		KTFrameSequenceManager *m_sequenceManager;
 };
 
 #endif

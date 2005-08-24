@@ -18,10 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include <qlayout.h>
+ 
 #include "ktlayersequence.h"
+#include "ktdebug.h"
 
 KTLayerSequence::KTLayerSequence(QWidget *parent) : QVBox(parent, "KTLayerSequence")
 {
+	KTINIT;
+	layout()->setAlignment(Qt::AlignTop );
+	setMargin(4);
+	
 // 	enableClipper( true );
 // 	setHScrollBarMode( QScrollView::AlwaysOff );
 
@@ -30,7 +37,12 @@ KTLayerSequence::KTLayerSequence(QWidget *parent) : QVBox(parent, "KTLayerSequen
 	setPaletteBackgroundColor(Qt::black);
 	setPaletteForegroundColor(Qt::gray );
 	
+// 	m_layerContainer = new QVBox(viewport());
+// 	addChild(m_layerContainer);
+	
 	m_defaultLayer = new KTTimeLineLayer (tr("Layer %1").arg("1"), 1, this);
+	
+// 	new QLabel("hola como estan?????????????????????????", this);
 	
     	//Add a default layer
 // 	TLLayer *default_layer = new TLLayer( 1, viewport(), this, tr( "Layer" ) + QString( "1" ) );
@@ -50,12 +62,16 @@ KTLayerSequence::KTLayerSequence(QWidget *parent) : QVBox(parent, "KTLayerSequen
 // 	last_layer = current_layer;
 // 	current_layer -> setSelected( true );
 // 	current_layer -> setEdited( true );
-
 }
 
 
 KTLayerSequence::~KTLayerSequence()
 {
+	KTEND;
 }
+
+
+
+
 
 

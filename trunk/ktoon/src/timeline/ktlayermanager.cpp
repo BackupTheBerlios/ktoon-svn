@@ -24,13 +24,17 @@
 #include <qlabel.h>
 #include <qlayout.h>
 
+#include "kseparator.h"
+
+#include "ktdebug.h"
+
 KTLayerManager::KTLayerManager(QWidget *parent) : QVBox(parent, "KTLayerManager"), m_currentTime(0.0), m_totalTime(0.04)
 {
-	qDebug("[Initializing KTLayerManager]");
+	KTINIT;
 	
 	m_utilsInTop = new QHBox( this );
 	
-	m_utilsInTop->layout()->setAlignment(Qt::AlignRight);
+	m_utilsInTop->layout()->setAlignment(Qt::AlignRight | Qt::AlignTop | Qt::AlignVCenter );
 	
 	m_utilsInTop -> setFrameStyle( QFrame::Box | QFrame::Plain );
 	
@@ -62,9 +66,17 @@ KTLayerManager::KTLayerManager(QWidget *parent) : QVBox(parent, "KTLayerManager"
 	
 	QToolTip::add( m_eyeButton, tr( "Show / Hide all Layers" ) );
 	
+	m_utilsInTop->setMaximumHeight( m_eyeButton->height()+2);
+	
 	//------------------------------------------------------
 	
-	m_sequence = new KTLayerSequence(this);
+	QScrollView *scroll = new QScrollView(this);
+	scroll->enableClipper( true );
+	m_sequence = new KTLayerSequence(scroll->viewport());
+	scroll->addChild(m_sequence);
+	scroll->setHScrollBarMode( QScrollView::AlwaysOff );
+// 	scroll->viewport()->setMouseTracking( true );
+	scroll->setMaximumWidth(m_sequence->width());
 	
 	//------------------------------------------------------
 	
@@ -72,6 +84,8 @@ KTLayerManager::KTLayerManager(QWidget *parent) : QVBox(parent, "KTLayerManager"
 	m_utilsInBottom -> setFrameStyle( QFrame::Box | QFrame::Plain );
 	m_utilsInBottom -> resize( 192, 24 );
 	m_utilsInBottom -> setMinimumSize( 192, 24 );
+	m_utilsInBottom->layout()->setAlignment(Qt::AlignLeft | Qt::AlignCenter);
+	
 // 	m_utilsInBottom -> move( 0, layer_sequence -> height() + layer_sequence -> y() );
 
 	m_insertButton = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/layer+.xpm") , 20,  m_utilsInBottom );
@@ -107,12 +121,21 @@ KTLayerManager::KTLayerManager(QWidget *parent) : QVBox(parent, "KTLayerManager"
 // 	connect( m_moveDownButton, SIGNAL( clicked() ), layer_sequence, SLOT( slotMoveLayerDown() ) );
 // 	connect( m_moveDownButton, SIGNAL( clicked() ), grandparent, SIGNAL( layerMovedDown() ) );
 	QToolTip::add( m_moveDownButton, tr( "Move Layer Down" ) );
-
+	
+	new KSeparator( Qt::Vertical, m_utilsInBottom);
+	
 	m_time = new QLabel( QString::number( m_currentTime, 'f', 2 ) + " / " + QString::number( m_totalTime, 'f', 2 ), m_utilsInBottom );
+	
+	
+// 	static_cast<QBoxLayout *>(m_utilsInBottom->layout())->insertWidget(4, m_time, 0, Qt::AlignRight);
+	
 	m_time -> setFont( QFont( font().family(), 7 ) );
 	m_time -> setAlignment( Qt::AlignCenter );
 	m_time -> resize( 80, 20 );
 // 	time -> move( m_utilsInBottom -> width() - time -> width(), 2 );
+	new KSeparator( Qt::Vertical, m_utilsInBottom);
+	
+	m_utilsInBottom->setMaximumHeight(m_moveUpButton->height());
 	
 	show();
 }
@@ -120,7 +143,7 @@ KTLayerManager::KTLayerManager(QWidget *parent) : QVBox(parent, "KTLayerManager"
 
 KTLayerManager::~KTLayerManager()
 {
-	qDebug("[Destroying KTLayerManager]");
+	KTEND;
 }
 
 

@@ -36,7 +36,10 @@ class KTLayerSequence : public QVBox
 		KTLayerSequence(QWidget *parent);
 		~KTLayerSequence();
 		
+	public slots:
+		
 	private:
+// 		QVBox *m_layerContainer;
 		KTTimeLineLayer *m_defaultLayer;
 
 };

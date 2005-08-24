@@ -18,34 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTTIMELINELAYER_H
-#define KTTIMELINELAYER_H
+#include "ktframesequencemanager.h"
+#include "ktdebug.h"
 
-#include <qhbox.h>
-#include <qlineedit.h>
 #include <qlabel.h>
-#include <qcheckbox.h>
 
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-
-class KTTimeLineLayer : public QHBox
+KTFrameSequenceManager::KTFrameSequenceManager(QWidget *parent) : QVBox(parent, "KTFrameSequenceManager")
 {
-	Q_OBJECT
-	public:
-		KTTimeLineLayer(const QString &name = "Layer", int position = 0, QWidget *parent = 0);
-		~KTTimeLineLayer();
-		
-	private:
-		QLineEdit *m_nameEditor;
-		QCheckBox *m_onlyOutlines;
-		int m_position;
-		QLabel *m_editionImage, *m_visibilityImage, *m_lockImage, *m_layerName;
-		
-		QHBox *m_utils;
+	KTINIT;
+	
+	m_ruler = new KTTLRuler(this);
+	m_ruler->setMinimumSize(300, m_ruler->height());
+	
+	m_sequenceLayout = new QScrollView(this);
+	m_sequenceLayout->enableClipper( true );
+	
+	m_rulerBox = new QVBox(m_sequenceLayout->viewport());
+	m_sequenceLayout->addChild(m_rulerBox);
+}
 
-};
 
-#endif
+KTFrameSequenceManager::~KTFrameSequenceManager()
+{
+	KTEND;
+}
+
