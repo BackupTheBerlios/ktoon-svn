@@ -57,7 +57,7 @@ KTRulerBase::KTRulerBase(Orientation orientation, QWidget *parent, const char *n
 
 KTRulerBase::~KTRulerBase()
 {
-	delete m_arrow;
+// 	delete m_arrow;
 // 	delete m_scale;
 }
 

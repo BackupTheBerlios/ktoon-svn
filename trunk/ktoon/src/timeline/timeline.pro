@@ -17,9 +17,8 @@ HEADERS += soundwidget.h \
            ktlayermanager.h \
            ktlayersequence.h \
            kttimelinelayer.h \
-           ktframesequencemanager.h \
-           ktframesequence.h \
-           kttlruler.h 
+           kttlruler.h \
+           ktframesequencemanager.h 
 SOURCES += soundwidget.cpp \
            timeline.cpp \
            tlframe.cpp \
@@ -34,9 +33,8 @@ SOURCES += soundwidget.cpp \
            ktlayermanager.cpp \
            ktlayersequence.cpp \
            kttimelinelayer.cpp \
-           ktframesequencemanager.cpp \
-           ktframesequence.cpp \
-           kttlruler.cpp 
+           kttlruler.cpp \
+           ktframesequencemanager.cpp 
 INCLUDEPATH += ../../src/core \
 ../../src/exposure \
 ../../src/dialogs \

@@ -40,14 +40,16 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent, const char
 	m_layout = new QBoxLayout (  m_port, QBoxLayout::LeftToRight,4,1);
 	m_layout->addWidget ( gridNumber );
 	
-	m_layers.setAutoDelete( true ) ;
+	m_layers.setAutoDelete( true );
 	for(int i = 0; i < cols; i++)
 	{
 		insertLayer(rows);
 	}
 	
 	addChild(m_port);
+	
 	adjustSize();
+	setMinimumHeight(sizeHint().height());
 }
 
 

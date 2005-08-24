@@ -411,25 +411,25 @@ protected:
      * @return The ILayer associated with the selected ESLayer
      */
     ILayer *findCurrentLayerObj();
-    /*
+    /**
      * @brief Selects the keyframe that is inmediately up from the current keyframe
      *
      * If no keyframe is selected or there is no more space to the top, this function does nothing.
      */
     void selectUp();
-    /*
+    /**
      * @brief Selects the keyframe that is inmediately down from the current keyframe
      *
      * If no keyframe is selected or there is no more space to the bottom, this function does nothing.
      */
     void selectDown();
-    /*
+    /**
      * @brief Selects the keyframe that is inmediately right from the current keyframe
      *
      * If no keyframe is selected or there is no more space to the right, this function does nothing.
      */
     void selectRight();
-    /*
+    /**
      * @brief Selects the keyframe that is inmediately left from the current keyframe
      *
      * If no keyframe is selected or there is no more space to the left, this function does nothing.

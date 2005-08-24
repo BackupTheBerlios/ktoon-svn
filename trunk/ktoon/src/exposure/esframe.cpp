@@ -28,6 +28,7 @@
 ESFrame::ESFrame( const QString &initial_text,int id, QWidget *parent )
 	: QLabel( parent )  ,  is_used(false), is_selected(false), is_locked(false),  is_motion(false), has_drawing(false), m_id(id), m_initialText(initial_text)
 {
+// 	KTINIT;
     //Initializations
 	setFrameStyle( QFrame::Panel | QFrame::Raised );
 	setLineWidth( 2 );
@@ -56,6 +57,7 @@ ESFrame::ESFrame( const QString &initial_text,int id, QWidget *parent )
 
 ESFrame::~ESFrame()
 {
+// 	KTEND;
 // 	delete right_click_menu;
 }
 

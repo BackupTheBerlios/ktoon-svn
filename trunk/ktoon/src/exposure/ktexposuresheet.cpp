@@ -44,7 +44,9 @@ KTExposureSheet::KTExposureSheet( QWidget *parent, const char *name)
 	m_viewLayer = new KTTableExposure(100, 1,this,"table");
 	addChild(m_viewLayer);
 	hide();
+// 	show();
 // 	repaint();
+	setResizeEnabled ( true );
 	
 }
 
@@ -64,20 +66,21 @@ void KTExposureSheet::setupButtons()
 	for(int i = 0; i < 8; i++)
 	{
 		QPushButton *tmpButton;
+// 		tmpButton = new KTImageButton(m_imgs[i], 25, buttonsPanel);
 		tmpButton = new QPushButton(m_imgs[i], QString::null, buttonsPanel);
 		tmpButton-> setAutoDefault( false );
 		tmpButton-> setFlat( true );
 		tmpButton-> setFocusPolicy( QWidget::NoFocus );
 		tmpButton->adjustSize();
-		tmpButton->setSizePolicy (QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
+		tmpButton->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
 		QToolTip::add( tmpButton, toolTips[i]  );
 	}
+	buttonsPanel->setMaximumHeight( buttonsPanel->sizeHint().height());
 	addChild(buttonsPanel);
 }
 
 void KTExposureSheet::applyAction(int action)
 {
-	qDebug( "action" + QString::number(action));
 	switch(action)
 	{
 		case InsertLayer:
@@ -122,7 +125,7 @@ void KTExposureSheet::applyAction(int action)
 		}
 	}
 }
-		
+
 void KTExposureSheet::slotInsertLayer()
 {
 	

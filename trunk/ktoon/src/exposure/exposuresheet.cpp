@@ -191,8 +191,8 @@ ExposureSheet::ExposureSheet( QWidget *parent)
 	default_layer_obj -> setAvailableFrames( default_layer_frame_list );
 	f_frame = first_frame;
 
-    //------------ Operations on the visibility list -------------
-    //FIXME: <kuadrosx> buscar una mejor forma de mostrar la lista de capas 
+        //------------ Operations on the visibility list -------------
+        //FIXME: <kuadrosx> buscar una mejor forma de mostrar la lista de capas 
 	visibility_list = new QListView( this, "", Qt::WStyle_NoBorder );
 	visibility_list -> resize( 110, 120 );
 
@@ -218,856 +218,859 @@ ExposureSheet::ExposureSheet( QWidget *parent)
 ExposureSheet::~ExposureSheet()
 {
 	qDebug("[Destroying ExposureSheet]");
-    delete insert_layer;
-    delete remove_layer;
-    delete lock_frame;
-    delete insert_frame;
-    delete remove_frame;
-    delete move_frame_up;
-    delete move_frame_down;
-    delete layer_visibility;
-    delete visibility_list;
-    delete scroll_area;
-    delete scroll_area_container;
+	delete insert_layer;
+	delete remove_layer;
+	delete lock_frame;
+	delete insert_frame;
+	delete remove_frame;
+	delete move_frame_up;
+	delete move_frame_down;
+	delete layer_visibility;
+	delete visibility_list;
+	delete scroll_area;
+	delete scroll_area_container;
 }
 
 //------------- PUBLIC MEMBERS ------------------------
 
 ESLayer *ExposureSheet::currentLayer()
 {
-    Q_CHECK_PTR( current_layer );
-    return current_layer;
+	Q_CHECK_PTR( current_layer );
+	return current_layer;
 }
 
 ILayer *ExposureSheet::currentLayerObj()
 {
-    return findCurrentLayerObj();
+	return findCurrentLayerObj();
 }
 
 QPtrList<ESLayer> ExposureSheet::getLayers()
 {
-    QPtrList<ESLayer> res;
-    ILayer *it;
-    for ( it = list_of_layers.first(); it; it = list_of_layers.next() )
-        res.append( it -> interfaceElement() );
-    return res;
+	QPtrList<ESLayer> res;
+	ILayer *it;
+	for ( it = list_of_layers.first(); it; it = list_of_layers.next() )
+		res.append( it -> interfaceElement() );
+	return res;
 }
 
 QPtrList<ILayer> ExposureSheet::getILayers()
 {
-    return list_of_layers;
+	return list_of_layers;
 }
 
 void ExposureSheet::touchFirstFrame()
 {
-    QMouseEvent mouse_event( QEvent::MouseButtonPress, QPoint( 10, 10 ), Qt::LeftButton, 0 );
-    QApplication::sendEvent( f_frame, &mouse_event );
-    QMouseEvent mouse_event2( QEvent::MouseButtonRelease, QPoint( 10, 10 ), Qt::LeftButton, 0 );
-    QApplication::sendEvent( f_frame, &mouse_event2 );
+	QMouseEvent mouse_event( QEvent::MouseButtonPress, QPoint( 10, 10 ), Qt::LeftButton, 0 );
+	QApplication::sendEvent( f_frame, &mouse_event );
+	QMouseEvent mouse_event2( QEvent::MouseButtonRelease, QPoint( 10, 10 ), Qt::LeftButton, 0 );
+	QApplication::sendEvent( f_frame, &mouse_event2 );
 }
 
 void ExposureSheet::touchFirstLayer()
 {
-    first_layer -> animateClick();
+	first_layer->animateClick();
 }
 
 void ExposureSheet::loadLayersAndKeyframes( QPtrList<Layer> layers )
 {
-    layer_max_value = 0;
-    number_of_layers = 0;
-    delete first_layer;
-    list_of_layers.setAutoDelete( true );
-    list_of_layers.clear();
-    list_of_layers.setAutoDelete( false );
-    visibility_list -> clear();
+	layer_max_value = 0;
+	number_of_layers = 0;
+	delete first_layer;
+	list_of_layers.setAutoDelete( true );
+	list_of_layers.clear();
+	list_of_layers.setAutoDelete( false );
+	visibility_list -> clear();
 
-    Layer *l_it;
-    for ( l_it = layers.first(); l_it; l_it = layers.next() )
-    {
-        layer_max_value++;
-        QPtrList<ESFrame> frame_list;
-
-        ESLayer *new_layer = new ESLayer( l_it -> nameLayer(), scroll_area );
-        if ( l_it == layers.getFirst() )
+	Layer *l_it;
+	for ( l_it = layers.first(); l_it; l_it = layers.next() )
 	{
-	    new_layer -> move( remove_layer -> x(), 10 );
-	    first_layer = new_layer;
-	    current_layer = new_layer;
-	}
-	else
-	    new_layer -> move( last_layer -> x() + last_layer -> width(), last_layer -> y() );
-        last_layer = new_layer;
-	connect( new_layer, SIGNAL( clicked() ), SLOT( slotSelectLayer() ) );
-	connect( new_layer, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameLayer( const QString & ) ) );
-	ILayer *new_layer_obj = new ILayer( 0, new_layer );
+		layer_max_value++;
+		QPtrList<ESFrame> frame_list;
+
+		ESLayer *new_layer = new ESLayer( l_it -> nameLayer(), scroll_area );
+		if ( l_it == layers.getFirst() )
+		{
+			new_layer->move( remove_layer -> x(), 10 );
+			first_layer = new_layer;
+			current_layer = new_layer;
+		}
+		else
+			new_layer -> move( last_layer -> x() + last_layer -> width(), last_layer -> y() );
+		last_layer = new_layer;
+		connect( new_layer, SIGNAL( clicked() ), SLOT( slotSelectLayer() ) );
+		connect( new_layer, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameLayer( const QString & ) ) );
+		ILayer *new_layer_obj = new ILayer( 0, new_layer );
 	// 	try { // bullshit, QPtrList never throw exceptions...
-	list_of_layers.append( new_layer_obj );
+		list_of_layers.append( new_layer_obj );
 // 	}
 // 	catch(...)
 // 	    {
 // 	    delete new_layer_obj;
 // 	    throw;
 // 	    }
-	number_of_layers++;
+		number_of_layers++;
 
-    	QCheckListItem *new_layer_v = new QCheckListItem( visibility_list, visibility_list -> lastItem(), l_it -> nameLayer(), QCheckListItem::CheckBox );
-    	new_layer_v -> setOn( true );
+		QCheckListItem *new_layer_v = new QCheckListItem( visibility_list, visibility_list -> lastItem(), l_it -> nameLayer(), QCheckListItem::CheckBox );
+		new_layer_v -> setOn( true );
 
-	for ( int i = 1; i <= MAX_NUMBER_OF_FRAMES; i++ )
-	{
-    	    ESFrame *next_frame = new ESFrame( "", 1,scroll_area  );
-	    if ( i == 1 && l_it == layers.getFirst() )
-	        f_frame = next_frame;
-	    next_frame -> move( new_layer -> x(), new_layer -> y() + new_layer -> height() * i );
-	    connect( next_frame, SIGNAL( selected() ), SLOT( slotSelectFrame() ) );
-	    connect( next_frame, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameFrame( const QString & ) ) );
-	    frame_list.append( next_frame );
-	}
+		for ( int i = 1; i <= MAX_NUMBER_OF_FRAMES; i++ )
+		{
+			ESFrame *next_frame = new ESFrame( "", 1,scroll_area  );
+			if ( i == 1 && l_it == layers.getFirst() )
+				f_frame = next_frame;
+			next_frame -> move( new_layer -> x(), new_layer -> y() + new_layer -> height() * i );
+			connect( next_frame, SIGNAL( selected() ), SLOT( slotSelectFrame() ) );
+			connect( next_frame, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameFrame( const QString & ) ) );
+			frame_list.append( next_frame );
+		}
 
-	new_layer_obj -> setAvailableFrames( frame_list );
+		new_layer_obj -> setAvailableFrames( frame_list );
 
 	//Load Keyframes
-	QPtrList<KeyFrame> keyframes = l_it -> keyFrames();
-	ESFrame *f_it;
-	KeyFrame *k_it;
-	for ( k_it = keyframes.first(), f_it = frame_list.first(); k_it; k_it = keyframes.next(), f_it = frame_list.next() )
-	{
-	    new_layer_obj -> addFrame();
-	    new_layer_obj -> setLastFrame( f_it );
-	    f_it -> setName( k_it -> nameKeyFrame() );
-	    f_it -> setUsed( true );
-	    f_it -> setMotion( k_it -> motionKeyFrame() );
+		QPtrList<KeyFrame> keyframes = l_it -> keyFrames();
+		ESFrame *f_it;
+		KeyFrame *k_it;
+		for ( k_it = keyframes.first(), f_it = frame_list.first(); k_it; k_it = keyframes.next(), f_it = frame_list.next() )
+		{
+			new_layer_obj -> addFrame();
+			new_layer_obj -> setLastFrame( f_it );
+			f_it -> setName( k_it -> nameKeyFrame() );
+			f_it -> setUsed( true );
+			f_it -> setMotion( k_it -> motionKeyFrame() );
+		}
 	}
-    }
-    visibility_list -> show();
-    visibility_list -> hide();
+	visibility_list -> show();
+	visibility_list -> hide();
 }
 
 QPtrList<Layer> ExposureSheet::visibleLayers()
 {
-    QPtrList<Layer> whole = KTStatus -> currentScene() -> getLayers();
-    QPtrList<Layer> to_return;
-    Layer *layer_iterator;
-    QListViewItemIterator it( visibility_list );
+	
+	QPtrList<Layer> whole = KTStatus -> currentScene() -> getLayers();
+	QPtrList<Layer> to_return;
+	Layer *layer_iterator;
+	QListViewItemIterator it( visibility_list );
 
-    for ( layer_iterator = whole.first(); it.current() && layer_iterator; layer_iterator = whole.next(), it++ )
-    {
-	if ( ( ( QCheckListItem * )it.current() ) -> isOn() )
-	    to_return.append( layer_iterator );
-    }
+	for ( layer_iterator = whole.first(); it.current() && layer_iterator; layer_iterator = whole.next(), it++ )
+	{
+		if ( ( ( QCheckListItem * )it.current() ) -> isOn() )
+			to_return.append( layer_iterator );
+	}
 
-    return to_return;
+	return to_return;
+	
+	
 }
 
 //------------------- SLOTS ----------------------------
 
 void ExposureSheet::slotInsertLayer()
 {
-    QString layer_number;
-    layer_max_value++;
-    layer_number.setNum( layer_max_value );
-    number_of_layers++;
+	QString layer_number;
+	layer_max_value++;
+	layer_number.setNum( layer_max_value );
+	number_of_layers++;
 
-    ESLayer *new_layer = new ESLayer( tr( "Layer" ) + layer_number, scroll_area );
-    new_layer -> move( last_layer -> x() + last_layer -> width(), last_layer -> y() );
-    new_layer -> show();
-    last_layer = new_layer;
-    connect( new_layer, SIGNAL( clicked() ), SLOT( slotSelectLayer() ) );
-    connect( new_layer, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameLayer( const QString & ) ) );
-    ILayer *new_layer_obj = new ILayer( 1, new_layer );
-    try {
-    list_of_layers.append( new_layer_obj );
-    }
-    catch(...)
-        {
-	  delete new_layer_obj;
-	  throw;
-	  }
+	ESLayer *new_layer = new ESLayer( tr( "Layer" ) + layer_number, scroll_area );
+	new_layer -> move( last_layer -> x() + last_layer -> width(), last_layer -> y() );
+	new_layer -> show();
+	last_layer = new_layer;
+	connect( new_layer, SIGNAL( clicked() ), SLOT( slotSelectLayer() ) );
+	connect( new_layer, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameLayer( const QString & ) ) );
+	ILayer *new_layer_obj = new ILayer( 1, new_layer );
+	try {
+		list_of_layers.append( new_layer_obj );
+	}
+	catch(...)
+	{
+		delete new_layer_obj;
+		throw;
+	}
     
-    QPtrList<ESFrame> new_layer_frame_list;
+	QPtrList<ESFrame> new_layer_frame_list;
 
     //The only active frame
-    ESFrame *associated_frame = new ESFrame( tr( "Drawing " ) + QString::number( number_of_layers ) + QString( "-1" ), 1, scroll_area  );
-    associated_frame -> move( new_layer -> x(), new_layer -> y() + new_layer -> height() );
-    associated_frame -> show();
-    associated_frame -> setUsed( true );
-    connect( associated_frame, SIGNAL( selected() ), SLOT( slotSelectFrame() ) );
-    connect( associated_frame, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameFrame( const QString & ) ) );
-    new_layer_obj -> setLastFrame( associated_frame );
-    new_layer_frame_list.append( associated_frame );
+	ESFrame *associated_frame = new ESFrame( tr( "Drawing " ) + QString::number( number_of_layers ) + QString( "-1" ), 1, scroll_area  );
+	associated_frame -> move( new_layer -> x(), new_layer -> y() + new_layer -> height() );
+	associated_frame -> show();
+	associated_frame -> setUsed( true );
+	connect( associated_frame, SIGNAL( selected() ), SLOT( slotSelectFrame() ) );
+	connect( associated_frame, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameFrame( const QString & ) ) );
+	new_layer_obj -> setLastFrame( associated_frame );
+	new_layer_frame_list.append( associated_frame );
 
     //Loop for creation of the default zones that will enclose frames of the layer
-    for ( int i = 2; i <= MAX_NUMBER_OF_FRAMES; i++ )
-    {
-    	ESFrame *next_frame = new ESFrame( "", 1,scroll_area  );
-    	next_frame -> move( new_layer -> x(), new_layer -> y() + new_layer -> height() * i );
-    	next_frame -> show();
-	connect( next_frame, SIGNAL( selected() ), SLOT( slotSelectFrame() ) );
-        connect( next_frame, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameFrame( const QString & ) ) );
-	new_layer_frame_list.append( next_frame );
-    }
+	for ( int i = 2; i <= MAX_NUMBER_OF_FRAMES; i++ )
+	{
+		ESFrame *next_frame = new ESFrame( "", 1,scroll_area  );
+		next_frame -> move( new_layer -> x(), new_layer -> y() + new_layer -> height() * i );
+		next_frame -> show();
+		connect( next_frame, SIGNAL( selected() ), SLOT( slotSelectFrame() ) );
+		connect( next_frame, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameFrame( const QString & ) ) );
+		new_layer_frame_list.append( next_frame );
+	}
 
-    new_layer_obj -> setAvailableFrames( new_layer_frame_list );
+	new_layer_obj -> setAvailableFrames( new_layer_frame_list );
 
-    std::auto_ptr<Layer> ap_n_layer(new Layer);
-    Layer* n_layer = ap_n_layer.get();
+	std::auto_ptr<Layer> ap_n_layer(new Layer);
+	Layer* n_layer = ap_n_layer.get();
     
-    n_layer -> setIndexLayer( number_of_layers );
-    n_layer -> setNameLayer( tr( "Layer" ) + layer_number );
-    QPtrList<KeyFrame> kf = n_layer -> keyFrames();
-    kf.first() -> setNameKeyFrame( tr( "Drawing " ) + QString::number( number_of_layers ) + QString( "-1" ) );
-    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
-    ly.append( n_layer );
-    KTStatus -> currentScene() -> setLayers( ly );
-    ap_n_layer.release();
+	n_layer -> setIndexLayer( number_of_layers );
+	n_layer -> setNameLayer( tr( "Layer" ) + layer_number );
+	QPtrList<KeyFrame> kf = n_layer -> keyFrames();
+	kf.first() -> setNameKeyFrame( tr( "Drawing " ) + QString::number( number_of_layers ) + QString( "-1" ) );
+	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
+	ly.append( n_layer );
+	KTStatus -> currentScene() -> setLayers( ly );
+	ap_n_layer.release();
     
-    KTStatus->currentDrawingArea() -> modifyDocument( true );
+	KTStatus->currentDrawingArea() -> modifyDocument( true );
 
-    if ( ( Timeline * )sender() != k_toon -> timeline() )
-        emit layerInserted();
+	if ( ( Timeline * )sender() != k_toon -> timeline() )
+		emit layerInserted();
 
-    updateIndicators( new_layer_obj );
+	updateIndicators( new_layer_obj );
 
-    QCheckListItem *new_layer_v = new QCheckListItem( visibility_list, visibility_list -> lastItem(), tr( "Layer" ) + layer_number, QCheckListItem::CheckBox );
-    new_layer_v -> setOn( true );
-    visibility_list -> show();
-    visibility_list -> hide();
+	QCheckListItem *new_layer_v = new QCheckListItem( visibility_list, visibility_list -> lastItem(), tr( "Layer" ) + layer_number, QCheckListItem::CheckBox );
+	new_layer_v -> setOn( true );
+	visibility_list -> show();
+	visibility_list -> hide();
 }
 
 void ExposureSheet::slotRemoveLayer()
 {
-   if ( number_of_layers > 1 )
-   {
-      ILayer *current_layer_obj;
-      ESLayer *another_layer;
+	if ( number_of_layers > 1 )
+	{
+		ILayer *current_layer_obj;
+		ESLayer *another_layer;
 
-      current_layer_obj = findCurrentLayerObj();
+		current_layer_obj = findCurrentLayerObj();
 
-      number_of_layers--;
-      current_layer_obj -> deleteAllFrames();
+		number_of_layers--;
+		current_layer_obj -> deleteAllFrames();
 
-      int r_pos = list_of_layers.find( current_layer_obj );
+		int r_pos = list_of_layers.find( current_layer_obj );
 
       //Case 1: When the layer is the last within the list of layers
-      if ( current_layer_obj == list_of_layers.getLast() )
-      {
-	  list_of_layers.remove( current_layer_obj );
-	  another_layer = list_of_layers.getLast() -> interfaceElement();
-	  delete current_layer;
-	  current_layer = another_layer;
-	  last_layer = current_layer;
+		if ( current_layer_obj == list_of_layers.getLast() )
+		{
+			list_of_layers.remove( current_layer_obj );
+			another_layer = list_of_layers.getLast() -> interfaceElement();
+			delete current_layer;
+			current_layer = another_layer;
+			last_layer = current_layer;
 
-	  current_layer -> animateClick();
-      }
+			current_layer -> animateClick();
+		}
       //Case 2: When the layer is any except the last
-      else
-      {
-	  another_layer = list_of_layers.at( list_of_layers.find( current_layer_obj ) + 1 ) -> interfaceElement();
-	  list_of_layers.remove( current_layer_obj );
-	  delete current_layer;
-	  current_layer = another_layer;
-	  current_layer -> animateClick();
+		else
+		{
+			another_layer = list_of_layers.at( list_of_layers.find( current_layer_obj ) + 1 ) -> interfaceElement();
+			list_of_layers.remove( current_layer_obj );
+			delete current_layer;
+			current_layer = another_layer;
+			current_layer -> animateClick();
 
 	  //Reaccomodate every layer next to the deleted layer
-	  ILayer *layer_iterator;
-	  for ( layer_iterator = list_of_layers.first(); current_layer != layer_iterator -> interfaceElement(); layer_iterator = list_of_layers.next() );
-	  for ( ; layer_iterator; layer_iterator = list_of_layers.next() )
-	  {
-	      layer_iterator -> reacommodate( ILayer::LEFT );
-	  }
-      }
+			ILayer *layer_iterator;
+			for ( layer_iterator = list_of_layers.first(); current_layer != layer_iterator -> interfaceElement(); layer_iterator = list_of_layers.next() );
+			for ( ; layer_iterator; layer_iterator = list_of_layers.next() )
+			{
+				layer_iterator -> reacommodate( ILayer::LEFT );
+			}
+		}
 
-      QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
-      ly.setAutoDelete( true );
-      ly.remove( r_pos );
-      ly.setAutoDelete( false );
+		QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
+		ly.setAutoDelete( true );
+		ly.remove( r_pos );
+		ly.setAutoDelete( false );
       /* This is a brute-force way to set the layer indexes after a layer deletion but i am lazy to think of
-       * another way. Moreover, the iterations over a QPtrList are very efficient.
-       */
-      Layer *l_it;
-      for ( l_it = ly.first(); l_it; l_it = ly.next() )
-      {
-          l_it -> setIndexLayer( ly.find( l_it ) + 1 );
-      }
-      KTStatus -> currentScene() -> setLayers( ly );
-      KTStatus->currentDrawingArea() -> modifyDocument( true );
+		* another way. Moreover, the iterations over a QPtrList are very efficient.
+      */
+		Layer *l_it;
+		for ( l_it = ly.first(); l_it; l_it = ly.next() )
+		{
+			l_it -> setIndexLayer( ly.find( l_it ) + 1 );
+		}
+		KTStatus -> currentScene() -> setLayers( ly );
+		KTStatus->currentDrawingArea() -> modifyDocument( true );
 
-      if ( ( Timeline * )sender() != k_toon -> timeline() )
-          emit layerRemoved();
+		if ( ( Timeline * )sender() != k_toon -> timeline() )
+			emit layerRemoved();
 
-      QListViewItem *to_delete = visibility_list -> itemAt( QPoint( 0, r_pos * 16 ) );
-      delete to_delete;
-   }
+		QListViewItem *to_delete = visibility_list -> itemAt( QPoint( 0, r_pos * 16 ) );
+		delete to_delete;
+	}
 }
 
 void ExposureSheet::slotLockFrame()
 {
-    ILayer *current_layer_obj;
+	ILayer *current_layer_obj;
 
-    current_layer_obj = findCurrentLayerObj();
+	current_layer_obj = findCurrentLayerObj();
 
-    ESFrame *selected_frame = current_layer_obj -> selectedFrame();
-    if ( selected_frame != NULL )
-    {
-        if ( selected_frame -> isLocked() )
-	    selected_frame -> setLocked( false );
-	else
-	    selected_frame -> setLocked( true );
-    }
+	ESFrame *selected_frame = current_layer_obj -> selectedFrame();
+	if ( selected_frame != NULL )
+	{
+		if ( selected_frame -> isLocked() )
+			selected_frame -> setLocked( false );
+		else
+			selected_frame -> setLocked( true );
+	}
 }
 
 void ExposureSheet::slotSelectLayer()
 {
-    ESLayer *selected_layer = ( ESLayer * )sender(); //Button that emitted the signal
-    current_layer -> setSelected( false );
-    current_layer = selected_layer;
-    current_layer -> setSelected( true );
-
-    //Deselect all frames that don't belong to the current layer
-    ILayer *layer_iterator, *sel_layer;
-    ESFrame *frame_iterator;
-    QPtrList<ESFrame> current_list_of_frames;
-
-    sel_layer = NULL;
-
-    for ( layer_iterator = list_of_layers.first(); layer_iterator; layer_iterator = list_of_layers.next() )
-    {
-        if ( current_layer == layer_iterator -> interfaceElement() )
+	ESLayer *selected_layer = ( ESLayer * )sender(); //Button that emitted the signal
+	current_layer -> setSelected( false );
+	current_layer = selected_layer;
+	current_layer -> setSelected( true );
+	
+	//Deselect all frames that don't belong to the current layer
+	ILayer *layer_iterator, *sel_layer;
+	ESFrame *frame_iterator;
+	QPtrList<ESFrame> current_list_of_frames;
+	
+	sel_layer = NULL;
+	
+	for ( layer_iterator = list_of_layers.first(); layer_iterator; layer_iterator = list_of_layers.next() )
 	{
-	    sel_layer = layer_iterator;
-	    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
-	    Layer *sl = ly.at( list_of_layers.find( sel_layer ) );
-	    KTStatus -> setCurrentLayer( sl );
+		if ( current_layer == layer_iterator -> interfaceElement() )
+		{
+		sel_layer = layer_iterator;
+		QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
+		Layer *sl = ly.at( list_of_layers.find( sel_layer ) );
+		KTStatus -> setCurrentLayer( sl );
+		}
+		layer_iterator -> availableFrames( &current_list_of_frames );
+		for ( frame_iterator = current_list_of_frames.first(); frame_iterator; frame_iterator = current_list_of_frames.next() )
+		{
+		if ( selected_layer != layer_iterator -> interfaceElement() )
+		{
+			frame_iterator -> setSelected( false );
+			frame_iterator -> clearTextfieldFocus();
+			layer_iterator -> setSelectedFrame( NULL );
+		}
+		else if ( frame_iterator -> isSelected() )
+			layer_iterator -> setSelectedFrame( frame_iterator );
+		}
+		( layer_iterator -> interfaceElement() ) -> clearTextfieldFocus();
 	}
-        layer_iterator -> availableFrames( &current_list_of_frames );
-	for ( frame_iterator = current_list_of_frames.first(); frame_iterator; frame_iterator = current_list_of_frames.next() )
+	
+	if ( sel_layer -> selectedFrame() != NULL )
 	{
-	    if ( selected_layer != layer_iterator -> interfaceElement() )
-	    {
-	        frame_iterator -> setSelected( false );
-	        frame_iterator -> clearTextfieldFocus();
-		layer_iterator -> setSelectedFrame( NULL );
-	    }
-	    else if ( frame_iterator -> isSelected() )
-	        layer_iterator -> setSelectedFrame( frame_iterator );
+		QPtrList<ESFrame> ef;
+		sel_layer -> availableFrames( &ef );
+		QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
+		KTStatus -> setCurrentKeyFrame( kf.at( ef.find( sel_layer -> selectedFrame() ) ) );
 	}
-	( layer_iterator -> interfaceElement() ) -> clearTextfieldFocus();
-    }
-
-    if ( sel_layer -> selectedFrame() != NULL )
-    {
-        QPtrList<ESFrame> ef;
-	sel_layer -> availableFrames( &ef );
-	QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
-	KTStatus -> setCurrentKeyFrame( kf.at( ef.find( sel_layer -> selectedFrame() ) ) );
-    }
-    else
-	KTStatus -> setCurrentKeyFrame( NULL );
-
-    emit layerSelected( list_of_layers.find( sel_layer ) + 1 );
-    emit frameSelected();
+	else
+		KTStatus -> setCurrentKeyFrame( NULL );
+	
+	emit layerSelected( list_of_layers.find( sel_layer ) + 1 );
+	emit frameSelected();
 }
 
 void ExposureSheet::slotSelectLayerFromTL( int pos )
-{
-    ESLayer *selected_layer = list_of_layers.at( pos ) -> interfaceElement();
-    selected_layer -> animateClick();
+	{
+	ESLayer *selected_layer = list_of_layers.at( pos ) -> interfaceElement();
+	selected_layer -> animateClick();
 }
 
 void ExposureSheet::slotRenameLayer( const QString &name )
 {
-    ESLayer *renamed_layer = ( ESLayer * )sender();
-    ILayer *layer_iterator, *renamed_layer_obj;
-    int pos;
-
-    renamed_layer_obj = NULL;
-
-    for ( layer_iterator = list_of_layers.first(); layer_iterator; layer_iterator = list_of_layers.next() )
-    {
-        if ( layer_iterator -> interfaceElement() == renamed_layer )
+	ESLayer *renamed_layer = ( ESLayer * )sender();
+	ILayer *layer_iterator, *renamed_layer_obj;
+	int pos;
+	
+	renamed_layer_obj = NULL;
+	
+	for ( layer_iterator = list_of_layers.first(); layer_iterator; layer_iterator = list_of_layers.next() )
 	{
-	    renamed_layer_obj = layer_iterator;
-	    break;
+		if ( layer_iterator -> interfaceElement() == renamed_layer )
+		{
+		renamed_layer_obj = layer_iterator;
+		break;
+		}
 	}
-    }
-
-    pos = list_of_layers.find( renamed_layer_obj );
-
-    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
-    Layer *rl = ly.at( pos );
-    rl -> setNameLayer( name );
-    KTStatus->currentDrawingArea() -> modifyDocument( true );
-
-    QListViewItem *to_rename = visibility_list -> itemAt( QPoint( 0, pos * 16 ) );
-    to_rename -> setText( 0, name );
-
-    emit layerRenamed( pos, name );
+	
+	pos = list_of_layers.find( renamed_layer_obj );
+	
+	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
+	Layer *rl = ly.at( pos );
+	rl -> setNameLayer( name );
+	KTStatus->currentDrawingArea() -> modifyDocument( true );
+	
+	QListViewItem *to_rename = visibility_list -> itemAt( QPoint( 0, pos * 16 ) );
+	to_rename -> setText( 0, name );
+	
+	emit layerRenamed( pos, name );
 }
 
 void ExposureSheet::slotRenameLayerFromTL( int pos, const QString &name )
 {
-    ESLayer *renamed_layer = list_of_layers.at( pos ) -> interfaceElement();
-    renamed_layer -> setText( name );
-    KTStatus->currentDrawingArea() -> modifyDocument( true );
-
-    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
-    Layer *rl = ly.at( pos );
-    rl -> setNameLayer( name );
-
-    QListViewItem *to_rename = visibility_list -> itemAt( QPoint( 0, pos * 16 ) );
-    to_rename -> setText( 0, name );
+	ESLayer *renamed_layer = list_of_layers.at( pos ) -> interfaceElement();
+	renamed_layer -> setText( name );
+	KTStatus->currentDrawingArea() -> modifyDocument( true );
+	
+	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
+	Layer *rl = ly.at( pos );
+	rl -> setNameLayer( name );
+	
+	QListViewItem *to_rename = visibility_list -> itemAt( QPoint( 0, pos * 16 ) );
+	to_rename -> setText( 0, name );
 }
 
 void ExposureSheet::slotMoveLayerLeft()
 {
-    ILayer *current_layer_obj, *prev_layer_obj;
-
-    current_layer_obj = findCurrentLayerObj();
-
-    if ( current_layer_obj == list_of_layers.getFirst() )
-        return;
-
-    int pos_cl, pos_pl;
-    pos_cl = list_of_layers.find( current_layer_obj );
-    pos_pl = pos_cl - 1;
-    current_layer_obj = list_of_layers.take( pos_cl );
-    prev_layer_obj = list_of_layers.take( pos_pl );
-
-    current_layer_obj -> reacommodate( ILayer::LEFT );
-    prev_layer_obj -> reacommodate( ILayer::RIGHT );
-    list_of_layers.insert( pos_pl, current_layer_obj );
-    list_of_layers.insert( pos_cl, prev_layer_obj );
-
-    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
-    Layer *cl = ly.take( pos_cl );
-    ly.insert( pos_pl, cl );
-    /* This is a brute-force way to set the layer indexes after a layer deletion but i am lazy to think of
-     * another way. Moreover, the iterations over a QPtrList are very efficient.
-     */
-    Layer *l_it;
-    for ( l_it = ly.first(); l_it; l_it = ly.next() )
-        l_it -> setIndexLayer( ly.find( l_it ) + 1 );
-    KTStatus -> currentScene() -> setLayers( ly );
-    KTStatus->currentDrawingArea() -> modifyDocument( true );
-
-    if ( current_layer_obj -> interfaceElement() == last_layer )
-        last_layer = prev_layer_obj -> interfaceElement();
-
-    visibility_list -> show();
-    visibility_list -> hide();
-    QListViewItem *v_current = visibility_list -> itemAt( QPoint( 0, pos_cl * 16 ) );
-    QListViewItem *v_prev = visibility_list -> itemAt( QPoint( 0, pos_pl * 16 ) );
-    v_prev -> moveItem( v_current );
+	ILayer *current_layer_obj, *prev_layer_obj;
+	
+	current_layer_obj = findCurrentLayerObj();
+	
+	if ( current_layer_obj == list_of_layers.getFirst() )
+		return;
+	
+	int pos_cl, pos_pl;
+	pos_cl = list_of_layers.find( current_layer_obj );
+	pos_pl = pos_cl - 1;
+	current_layer_obj = list_of_layers.take( pos_cl );
+	prev_layer_obj = list_of_layers.take( pos_pl );
+	
+	current_layer_obj -> reacommodate( ILayer::LEFT );
+	prev_layer_obj -> reacommodate( ILayer::RIGHT );
+	list_of_layers.insert( pos_pl, current_layer_obj );
+	list_of_layers.insert( pos_cl, prev_layer_obj );
+	
+	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
+	Layer *cl = ly.take( pos_cl );
+	ly.insert( pos_pl, cl );
+	/* This is a brute-force way to set the layer indexes after a layer deletion but i am lazy to think of
+	* another way. Moreover, the iterations over a QPtrList are very efficient.
+	*/
+	Layer *l_it;
+	for ( l_it = ly.first(); l_it; l_it = ly.next() )
+		l_it -> setIndexLayer( ly.find( l_it ) + 1 );
+	KTStatus -> currentScene() -> setLayers( ly );
+	KTStatus->currentDrawingArea() -> modifyDocument( true );
+	
+	if ( current_layer_obj -> interfaceElement() == last_layer )
+		last_layer = prev_layer_obj -> interfaceElement();
+	
+	visibility_list -> show();
+	visibility_list -> hide();
+	QListViewItem *v_current = visibility_list -> itemAt( QPoint( 0, pos_cl * 16 ) );
+	QListViewItem *v_prev = visibility_list -> itemAt( QPoint( 0, pos_pl * 16 ) );
+	v_prev -> moveItem( v_current );
 }
 
 void ExposureSheet::slotMoveLayerRight()
 {
-    ILayer *current_layer_obj, *next_layer_obj;
-
-    current_layer_obj = findCurrentLayerObj();
-
-    if ( current_layer_obj == list_of_layers.getLast() )
-        return;
-
-    int pos_cl, pos_nl;
-    pos_cl = list_of_layers.find( current_layer_obj );
-    pos_nl = pos_cl + 1;
-    next_layer_obj = list_of_layers.take( pos_nl );
-    current_layer_obj = list_of_layers.take( pos_cl );
-
-    current_layer_obj -> reacommodate( ILayer::RIGHT );
-    next_layer_obj -> reacommodate( ILayer::LEFT );
-    list_of_layers.insert( pos_cl, next_layer_obj );
-    list_of_layers.insert( pos_nl, current_layer_obj );
-
-    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
-    Layer *cl = ly.take( pos_cl );
-    ly.insert( pos_nl, cl );
-    /* This is a brute-force way to set the layer indexes after a layer deletion but i am lazy to think of
-     * another way. Moreover, the iterations over a QPtrList are very efficient.
-     */
-    Layer *l_it;
-    for ( l_it = ly.first(); l_it; l_it = ly.next() )
-        l_it -> setIndexLayer( ly.find( l_it ) + 1 );
-    KTStatus -> currentScene() -> setLayers( ly );
-    KTStatus->currentDrawingArea() -> modifyDocument( true );
-
-    if ( next_layer_obj -> interfaceElement() == last_layer )
-        last_layer = current_layer_obj -> interfaceElement();
-
-    visibility_list -> show();
-    visibility_list -> hide();
-    QListViewItem *v_current = visibility_list -> itemAt( QPoint( 0, pos_cl * 16 ) );
-    QListViewItem *v_next = visibility_list -> itemAt( QPoint( 0, pos_nl * 16 ) );
-    v_current -> moveItem( v_next );
+	ILayer *current_layer_obj, *next_layer_obj;
+	
+	current_layer_obj = findCurrentLayerObj();
+	
+	if ( current_layer_obj == list_of_layers.getLast() )
+		return;
+	
+	int pos_cl, pos_nl;
+	pos_cl = list_of_layers.find( current_layer_obj );
+	pos_nl = pos_cl + 1;
+	next_layer_obj = list_of_layers.take( pos_nl );
+	current_layer_obj = list_of_layers.take( pos_cl );
+	
+	current_layer_obj -> reacommodate( ILayer::RIGHT );
+	next_layer_obj -> reacommodate( ILayer::LEFT );
+	list_of_layers.insert( pos_cl, next_layer_obj );
+	list_of_layers.insert( pos_nl, current_layer_obj );
+	
+	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
+	Layer *cl = ly.take( pos_cl );
+	ly.insert( pos_nl, cl );
+	/* This is a brute-force way to set the layer indexes after a layer deletion but i am lazy to think of
+	* another way. Moreover, the iterations over a QPtrList are very efficient.
+	*/
+	Layer *l_it;
+	for ( l_it = ly.first(); l_it; l_it = ly.next() )
+		l_it -> setIndexLayer( ly.find( l_it ) + 1 );
+	KTStatus -> currentScene() -> setLayers( ly );
+	KTStatus->currentDrawingArea() -> modifyDocument( true );
+	
+	if ( next_layer_obj -> interfaceElement() == last_layer )
+		last_layer = current_layer_obj -> interfaceElement();
+	
+	visibility_list -> show();
+	visibility_list -> hide();
+	QListViewItem *v_current = visibility_list -> itemAt( QPoint( 0, pos_cl * 16 ) );
+	QListViewItem *v_next = visibility_list -> itemAt( QPoint( 0, pos_nl * 16 ) );
+	v_current -> moveItem( v_next );
 }
 
 void ExposureSheet::slotSwapWithLeftLayer( int cur_pos, int rel_pos )
 {
-    ILayer *current_layer_obj, *release_layer_obj;
-    current_layer_obj = list_of_layers.take( cur_pos - 1 );
-    release_layer_obj = list_of_layers.take( rel_pos - 1 );
-
-    int distance = cur_pos - rel_pos;
-    for ( int i = 1; i <= distance; i++ )
-    {
-	current_layer_obj -> reacommodate( ILayer::LEFT );
-	release_layer_obj -> reacommodate( ILayer::RIGHT );
-    }
-    list_of_layers.insert( rel_pos - 1, current_layer_obj );
-    list_of_layers.insert( cur_pos - 1, release_layer_obj );
-
-    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
-    Layer *cl = ly.take( cur_pos - 1 );
-    Layer *rl = ly.take( rel_pos - 1 );
-    ly.insert( rel_pos - 1, cl );
-    ly.insert( cur_pos - 1, rl );
-    /* This is a brute-force way to set the layer indexes after a layer deletion but i am lazy to think of
-     * another way. Moreover, the iterations over a QPtrList are very efficient.
-     */
-    Layer *l_it;
-    for ( l_it = ly.first(); l_it; l_it = ly.next() )
-        l_it -> setIndexLayer( ly.find( l_it ) + 1 );
-    KTStatus -> currentScene() -> setLayers( ly );
-    KTStatus->currentDrawingArea() -> modifyDocument( true );
-
-    if ( current_layer_obj -> interfaceElement() == last_layer )
-        last_layer = release_layer_obj -> interfaceElement();
-
-    visibility_list -> show();
-    visibility_list -> hide();
-    QListViewItem *v_cur = visibility_list -> itemAt( QPoint( 0, ( cur_pos - 1 ) * 16 ) );
-    QListViewItem *v_rel = visibility_list -> itemAt( QPoint( 0, ( rel_pos - 1 ) * 16 ) );
-    QListViewItem *v_cur_prev = visibility_list -> itemAt( QPoint( 0, ( cur_pos - 2 ) * 16 ) );
-    QListViewItem *v_rel_prev;
-    if ( rel_pos - 1 > 0 )
-        v_rel_prev = visibility_list -> itemAt( QPoint( 0, ( rel_pos - 2 ) * 16 ) );
-    else
-        v_rel_prev = 0;
-    if ( v_rel_prev == 0 )
-    {
-        visibility_list -> takeItem( v_cur );
-        visibility_list -> insertItem( v_cur );
-    }
-    else
-        v_cur -> moveItem( v_rel_prev );
-    v_rel -> moveItem( v_cur_prev );
+	ILayer *current_layer_obj, *release_layer_obj;
+	current_layer_obj = list_of_layers.take( cur_pos - 1 );
+	release_layer_obj = list_of_layers.take( rel_pos - 1 );
+	
+	int distance = cur_pos - rel_pos;
+	for ( int i = 1; i <= distance; i++ )
+	{
+		current_layer_obj -> reacommodate( ILayer::LEFT );
+		release_layer_obj -> reacommodate( ILayer::RIGHT );
+	}
+	list_of_layers.insert( rel_pos - 1, current_layer_obj );
+	list_of_layers.insert( cur_pos - 1, release_layer_obj );
+	
+	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
+	Layer *cl = ly.take( cur_pos - 1 );
+	Layer *rl = ly.take( rel_pos - 1 );
+	ly.insert( rel_pos - 1, cl );
+	ly.insert( cur_pos - 1, rl );
+	/* This is a brute-force way to set the layer indexes after a layer deletion but i am lazy to think of
+	* another way. Moreover, the iterations over a QPtrList are very efficient.
+	*/
+	Layer *l_it;
+	for ( l_it = ly.first(); l_it; l_it = ly.next() )
+		l_it -> setIndexLayer( ly.find( l_it ) + 1 );
+	KTStatus -> currentScene() -> setLayers( ly );
+	KTStatus->currentDrawingArea() -> modifyDocument( true );
+	
+	if ( current_layer_obj -> interfaceElement() == last_layer )
+		last_layer = release_layer_obj -> interfaceElement();
+	
+	visibility_list -> show();
+	visibility_list -> hide();
+	QListViewItem *v_cur = visibility_list -> itemAt( QPoint( 0, ( cur_pos - 1 ) * 16 ) );
+	QListViewItem *v_rel = visibility_list -> itemAt( QPoint( 0, ( rel_pos - 1 ) * 16 ) );
+	QListViewItem *v_cur_prev = visibility_list -> itemAt( QPoint( 0, ( cur_pos - 2 ) * 16 ) );
+	QListViewItem *v_rel_prev;
+	if ( rel_pos - 1 > 0 )
+		v_rel_prev = visibility_list -> itemAt( QPoint( 0, ( rel_pos - 2 ) * 16 ) );
+	else
+		v_rel_prev = 0;
+	if ( v_rel_prev == 0 )
+	{
+		visibility_list -> takeItem( v_cur );
+		visibility_list -> insertItem( v_cur );
+	}
+	else
+		v_cur -> moveItem( v_rel_prev );
+	v_rel -> moveItem( v_cur_prev );
 }
 
 void ExposureSheet::slotSwapWithRightLayer( int cur_pos, int rel_pos )
 {
-    ILayer *current_layer_obj, *release_layer_obj;
-    release_layer_obj = list_of_layers.take( rel_pos - 1 );
-    current_layer_obj = list_of_layers.take( cur_pos - 1 );
-
-    int distance = rel_pos - cur_pos;
-    for ( int i = 1; i <= distance; i++ )
-    {
-	current_layer_obj -> reacommodate( ILayer::RIGHT );
-	release_layer_obj -> reacommodate( ILayer::LEFT );
-    }
-    list_of_layers.insert( cur_pos - 1, release_layer_obj );
-    list_of_layers.insert( rel_pos - 1, current_layer_obj );
-
-    QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
-    Layer *rl = ly.take( rel_pos - 1 );
-    Layer *cl = ly.take( cur_pos - 1 );
-    ly.insert( cur_pos - 1, rl );
-    ly.insert( rel_pos - 1, cl );
-    /* This is a brute-force way to set the layer indexes after a layer deletion but i am lazy to think of
-     * another way. Moreover, the iterations over a QPtrList are very efficient.
-     */
-    Layer *l_it;
-    for ( l_it = ly.first(); l_it; l_it = ly.next() )
-    {
-        l_it -> setIndexLayer( ly.find( l_it ) + 1 );
-    }
-    KTStatus -> currentScene() -> setLayers( ly );
-    KTStatus->currentDrawingArea() -> modifyDocument( true );
-
-    if ( release_layer_obj -> interfaceElement() == last_layer )
-        last_layer = current_layer_obj -> interfaceElement();
-
-    visibility_list -> show();
-    visibility_list -> hide();
-    QListViewItem *v_cur = visibility_list -> itemAt( QPoint( 0, ( cur_pos - 1 ) * 16 ) );
-    QListViewItem *v_rel = visibility_list -> itemAt( QPoint( 0, ( rel_pos - 1 ) * 16 ) );
-    QListViewItem *v_rel_prev = visibility_list -> itemAt( QPoint( 0, ( rel_pos - 2 ) * 16 ) );
-    QListViewItem *v_cur_prev;
-    if ( cur_pos - 1 > 0 )
-        v_cur_prev = visibility_list -> itemAt( QPoint( 0, ( cur_pos - 2 ) * 16 ) );
-    else
-        v_cur_prev = 0;
-    if ( v_cur_prev == 0 )
-    {
-        visibility_list -> takeItem( v_rel );
-        visibility_list -> insertItem( v_rel );
-    }
-    else
-        v_rel -> moveItem( v_cur_prev );
-    v_cur -> moveItem( v_rel_prev );
+	ILayer *current_layer_obj, *release_layer_obj;
+	release_layer_obj = list_of_layers.take( rel_pos - 1 );
+	current_layer_obj = list_of_layers.take( cur_pos - 1 );
+	
+	int distance = rel_pos - cur_pos;
+	for ( int i = 1; i <= distance; i++ )
+	{
+		current_layer_obj -> reacommodate( ILayer::RIGHT );
+		release_layer_obj -> reacommodate( ILayer::LEFT );
+	}
+	list_of_layers.insert( cur_pos - 1, release_layer_obj );
+	list_of_layers.insert( rel_pos - 1, current_layer_obj );
+	
+	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
+	Layer *rl = ly.take( rel_pos - 1 );
+	Layer *cl = ly.take( cur_pos - 1 );
+	ly.insert( cur_pos - 1, rl );
+	ly.insert( rel_pos - 1, cl );
+	/* This is a brute-force way to set the layer indexes after a layer deletion but i am lazy to think of
+	* another way. Moreover, the iterations over a QPtrList are very efficient.
+	*/
+	Layer *l_it;
+	for ( l_it = ly.first(); l_it; l_it = ly.next() )
+	{
+		l_it -> setIndexLayer( ly.find( l_it ) + 1 );
+	}
+	KTStatus -> currentScene() -> setLayers( ly );
+	KTStatus->currentDrawingArea() -> modifyDocument( true );
+	
+	if ( release_layer_obj -> interfaceElement() == last_layer )
+		last_layer = current_layer_obj -> interfaceElement();
+	
+	visibility_list -> show();
+	visibility_list -> hide();
+	QListViewItem *v_cur = visibility_list -> itemAt( QPoint( 0, ( cur_pos - 1 ) * 16 ) );
+	QListViewItem *v_rel = visibility_list -> itemAt( QPoint( 0, ( rel_pos - 1 ) * 16 ) );
+	QListViewItem *v_rel_prev = visibility_list -> itemAt( QPoint( 0, ( rel_pos - 2 ) * 16 ) );
+	QListViewItem *v_cur_prev;
+	if ( cur_pos - 1 > 0 )
+		v_cur_prev = visibility_list -> itemAt( QPoint( 0, ( cur_pos - 2 ) * 16 ) );
+	else
+		v_cur_prev = 0;
+	if ( v_cur_prev == 0 )
+	{
+		visibility_list -> takeItem( v_rel );
+		visibility_list -> insertItem( v_rel );
+	}
+	else
+		v_rel -> moveItem( v_cur_prev );
+	v_cur -> moveItem( v_rel_prev );
 }
 
 void ExposureSheet::slotInsertFrame()
 {
-	qDebug("Inserting frame");
-	ILayer *current_layer_obj = findCurrentLayerObj();
-	int l_pos = list_of_layers.find( current_layer_obj ) + 1;
-
-    //---------- Insert frames until the selected frame slot --------------
-
-	if ( current_layer_obj -> selectedFrame() != NULL )
-	{
-		QPtrList<ESFrame> tmp_list_of_frames;
-		current_layer_obj -> availableFrames( &tmp_list_of_frames );
-		ESFrame *tmp_frame;
-
-		for ( tmp_frame = tmp_list_of_frames.first(); tmp_frame; tmp_frame = tmp_list_of_frames.next() )
+		qDebug("Inserting frame");
+		ILayer *current_layer_obj = findCurrentLayerObj();
+		int l_pos = list_of_layers.find( current_layer_obj ) + 1;
+	
+	//---------- Insert frames until the selected frame slot --------------
+	
+		if ( current_layer_obj -> selectedFrame() != NULL )
 		{
-	    //Performs this action only if the selected frame isn't one of the used frames
-			if ( tmp_frame -> isSelected() && !( tmp_frame -> isUsed() ) )
+			QPtrList<ESFrame> tmp_list_of_frames;
+			current_layer_obj -> availableFrames( &tmp_list_of_frames );
+			ESFrame *tmp_frame;
+	
+			for ( tmp_frame = tmp_list_of_frames.first(); tmp_frame; tmp_frame = tmp_list_of_frames.next() )
 			{
-				ESFrame *current_layer_last_frame = current_layer_obj -> lastFrame();
-				int number_of_insertions = 0;
-				while ( current_layer_last_frame != tmp_frame && !( tmp_frame -> isUsed() ) )
+		//Performs this action only if the selected frame isn't one of the used frames
+				if ( tmp_frame -> isSelected() && !( tmp_frame -> isUsed() ) )
 				{
-					current_layer_obj -> addFrame();
-					number_of_insertions++;
-
-		    //Get the list of frames available and the last frame used
-					QPtrList<ESFrame> current_layer_frame_list;
-					current_layer_obj -> availableFrames( &current_layer_frame_list );
-					current_layer_last_frame = current_layer_obj -> lastFrame();
-
-		    //Iterate over the list in order to find the next frame to the last frame and set it as the last frame
-					ESFrame *frame_iterator, *new_last_frame;
-
-					new_last_frame = NULL;
-
-					for ( frame_iterator = current_layer_frame_list.first(); frame_iterator; frame_iterator = current_layer_frame_list.next() )
+					ESFrame *current_layer_last_frame = current_layer_obj -> lastFrame();
+					int number_of_insertions = 0;
+					while ( current_layer_last_frame != tmp_frame && !( tmp_frame -> isUsed() ) )
 					{
-						if ( frame_iterator == current_layer_last_frame )
+						current_layer_obj -> addFrame();
+						number_of_insertions++;
+	
+			//Get the list of frames available and the last frame used
+						QPtrList<ESFrame> current_layer_frame_list;
+						current_layer_obj -> availableFrames( &current_layer_frame_list );
+						current_layer_last_frame = current_layer_obj -> lastFrame();
+	
+			//Iterate over the list in order to find the next frame to the last frame and set it as the last frame
+						ESFrame *frame_iterator, *new_last_frame;
+	
+						new_last_frame = NULL;
+	
+						for ( frame_iterator = current_layer_frame_list.first(); frame_iterator; frame_iterator = current_layer_frame_list.next() )
 						{
-							new_last_frame = current_layer_frame_list.next();
-							break;
+							if ( frame_iterator == current_layer_last_frame )
+							{
+								new_last_frame = current_layer_frame_list.next();
+								break;
+							}
+						}
+	
+						int i = current_layer_frame_list.find( new_last_frame ) + 1;
+						new_last_frame -> setUsed( true );
+						new_last_frame -> setText( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i ) );
+						current_layer_obj -> setLastFrame( new_last_frame );
+	
+						QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
+						KeyFrame *nkf = new KeyFrame();
+						try {
+							nkf -> setNameKeyFrame( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i ) );
+							kf.append( nkf );
+				// Warning: Layer::~Layer deletes its keyframes (here those in kf), and Status::~Status
+				// deletetes its current keyframe too! This will most likely lead to a double deletion.
+							KTStatus -> currentLayer() -> setKeyFrames( kf );
+							KTStatus -> setCurrentKeyFrame( nkf );
+						}
+						catch(...)
+						{
+							delete nkf;
+							throw;
 						}
 					}
-
-					int i = current_layer_frame_list.find( new_last_frame ) + 1;
-					new_last_frame -> setUsed( true );
-					new_last_frame -> setText( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i ) );
-					current_layer_obj -> setLastFrame( new_last_frame );
-
-					QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
-					KeyFrame *nkf = new KeyFrame();
-					try {
-						nkf -> setNameKeyFrame( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i ) );
-						kf.append( nkf );
-			// Warning: Layer::~Layer deletes its keyframes (here those in kf), and Status::~Status
-			// deletetes its current keyframe too! This will most likely lead to a double deletion.
-						KTStatus -> currentLayer() -> setKeyFrames( kf );
-						KTStatus -> setCurrentKeyFrame( nkf );
-					}
-					catch(...)
-					{
-						delete nkf;
-						throw;
-					}
+	
+					k_toon -> slotActivateCursor();
+					KTStatus->currentDrawingArea() -> modifyDocument( true );
+					emit framesInsertedAtTheEnd( number_of_insertions );
+					updateIndicators( current_layer_obj );
+					return;
 				}
-
-				k_toon -> slotActivateCursor();
-				KTStatus->currentDrawingArea() -> modifyDocument( true );
-				emit framesInsertedAtTheEnd( number_of_insertions );
-				updateIndicators( current_layer_obj );
-				return;
 			}
 		}
-	}
-
-    //---------- Insert a single frame at the end ------------------
-
-    //Get the list of frames available and the last frame used
-	QPtrList<ESFrame> current_layer_frame_list;
-	current_layer_obj -> availableFrames( &current_layer_frame_list );
-	ESFrame *current_layer_last_frame = current_layer_obj -> lastFrame();
-	int i;
-
-	ESFrame *frame_iterator, *new_last_frame;
-	new_last_frame = NULL;
-
-    //Iterate over the list in order to find the next frame to the last frame and set it as the last frame
-	for ( i = 1, frame_iterator = current_layer_frame_list.first(); frame_iterator; i++, frame_iterator = current_layer_frame_list.next() )
-	{
-		if ( i == MAX_NUMBER_OF_FRAMES )
-			return;
-
-		if ( frame_iterator == current_layer_last_frame )
+	
+	//---------- Insert a single frame at the end ------------------
+	
+	//Get the list of frames available and the last frame used
+		QPtrList<ESFrame> current_layer_frame_list;
+		current_layer_obj -> availableFrames( &current_layer_frame_list );
+		ESFrame *current_layer_last_frame = current_layer_obj -> lastFrame();
+		int i;
+	
+		ESFrame *frame_iterator, *new_last_frame;
+		new_last_frame = NULL;
+	
+	//Iterate over the list in order to find the next frame to the last frame and set it as the last frame
+		for ( i = 1, frame_iterator = current_layer_frame_list.first(); frame_iterator; i++, frame_iterator = current_layer_frame_list.next() )
 		{
-			new_last_frame = current_layer_frame_list.next();
-			break;
+			if ( i == MAX_NUMBER_OF_FRAMES )
+				return;
+	
+			if ( frame_iterator == current_layer_last_frame )
+			{
+				new_last_frame = current_layer_frame_list.next();
+				break;
+			}
 		}
-	}
-
-	QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
-	KeyFrame *nkf = new KeyFrame();
-	try {
-		nkf -> setNameKeyFrame( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i + 1 ) );
-		kf.append( nkf );
-		KTStatus -> currentLayer() -> setKeyFrames( kf );
-	}
-	catch(...)
-	{
-		delete nkf;
-		throw;
-	}
-
-	current_layer_obj -> addFrame();
-	emit framesInsertedAtTheEnd( 1 );
-	new_last_frame -> setUsed( true );
-	new_last_frame -> setText( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i + 1 ) );
-	current_layer_obj -> setLastFrame( new_last_frame );
-
-	KTStatus->currentDrawingArea() -> modifyDocument( true );
-
-    //-------------- Insert a frame after the selected frame ----------------------
-
-	if ( current_layer_obj -> selectedFrame() != NULL && current_layer_obj -> selectedFrame() -> isUsed() )
-	{
-		ESFrame *old_selected_frame = current_layer_obj -> selectedFrame();
-
-		QMouseEvent mouse_event( QEvent::MouseButtonPress, QPoint( 10, 10 ), Qt::LeftButton, 0 );
-		QApplication::sendEvent( new_last_frame, &mouse_event );
-		QMouseEvent mouse_event2( QEvent::MouseButtonRelease, QPoint( 10, 10 ), Qt::LeftButton, 0 );
-		QApplication::sendEvent( new_last_frame, &mouse_event2 );
-
-		QPtrList<ESFrame> keyframe_list;
-		current_layer_obj -> availableFrames( &keyframe_list );
-		int distance = keyframe_list.find( new_last_frame ) - keyframe_list.find( old_selected_frame );
-
-		for ( int j = 1; j < distance; j++ )
-			slotMoveFrameUp();
-	}
-
-	updateIndicators( current_layer_obj );
+	
+		QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
+		KeyFrame *nkf = new KeyFrame();
+		try {
+			nkf -> setNameKeyFrame( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i + 1 ) );
+			kf.append( nkf );
+			KTStatus -> currentLayer() -> setKeyFrames( kf );
+		}
+		catch(...)
+		{
+			delete nkf;
+			throw;
+		}
+	
+		current_layer_obj -> addFrame();
+		emit framesInsertedAtTheEnd( 1 );
+		new_last_frame -> setUsed( true );
+		new_last_frame -> setText( tr( "Drawing " ) + QString::number( l_pos ) + QString( "-" ) + QString::number( i + 1 ) );
+		current_layer_obj -> setLastFrame( new_last_frame );
+	
+		KTStatus->currentDrawingArea() -> modifyDocument( true );
+	
+	//-------------- Insert a frame after the selected frame ----------------------
+	
+		if ( current_layer_obj -> selectedFrame() != NULL && current_layer_obj -> selectedFrame() -> isUsed() )
+		{
+			ESFrame *old_selected_frame = current_layer_obj -> selectedFrame();
+	
+			QMouseEvent mouse_event( QEvent::MouseButtonPress, QPoint( 10, 10 ), Qt::LeftButton, 0 );
+			QApplication::sendEvent( new_last_frame, &mouse_event );
+			QMouseEvent mouse_event2( QEvent::MouseButtonRelease, QPoint( 10, 10 ), Qt::LeftButton, 0 );
+			QApplication::sendEvent( new_last_frame, &mouse_event2 );
+	
+			QPtrList<ESFrame> keyframe_list;
+			current_layer_obj -> availableFrames( &keyframe_list );
+			int distance = keyframe_list.find( new_last_frame ) - keyframe_list.find( old_selected_frame );
+	
+			for ( int j = 1; j < distance; j++ )
+				slotMoveFrameUp();
+		}
+	
+		updateIndicators( current_layer_obj );
 }
 
 void ExposureSheet::slotRemoveFrame()
 {
-    ILayer *current_layer_obj;
-
-    current_layer_obj = findCurrentLayerObj();
-
-    if ( current_layer_obj -> numberOfFrames() > 1 )
-    {
-    	//Case 1: if no frame is selected or it's selected an unused frame remove the last frame used
-    	if ( current_layer_obj -> selectedFrame() == NULL || !( ( current_layer_obj -> selectedFrame() ) -> isUsed() ) )
-    	{
-    	    current_layer_obj -> removeFrame();
-	    ( current_layer_obj -> lastFrame() ) -> setUsed( false );
-	    ( current_layer_obj -> lastFrame() ) -> setMotion( false );
-	    ( current_layer_obj -> lastFrame() ) -> setName( "" );
-
-	    QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
-	    KeyFrame *lkf = kf.last();
-	    if ( ( QPushButton * )sender() == remove_frame )
-	    {
-	        KeyFrame *pkf = kf.prev();
-	        pkf -> setLengthKeyFrame( pkf -> lengthKeyFrame() + lkf -> lengthKeyFrame() );
-	        emit frameRemoved( current_layer_obj -> numberOfFrames() );
-	    }
-	    kf.setAutoDelete( true );
-	    kf.remove( lkf );
-	    kf.setAutoDelete( false );
-	    KTStatus -> currentLayer() -> setKeyFrames( kf );
-
-	    //Iterate over this layer's list of frames in order to find the previous frame to the last frame and set it as the last frame
-	    QPtrList<ESFrame> current_layer_frame_list;
-	    current_layer_obj -> availableFrames( &current_layer_frame_list );
-    	    ESFrame *frame_iterator, *new_last_frame;
-
-	    new_last_frame = NULL;
-
-    	    for ( frame_iterator = current_layer_frame_list.first(); frame_iterator; frame_iterator = current_layer_frame_list.next() )
-    	    {
-                if ( frame_iterator == current_layer_obj -> lastFrame() )
-	        {
-                    new_last_frame = current_layer_frame_list.prev();
-	            break;
-	        }
-    	    }
-
-            current_layer_obj -> setLastFrame( new_last_frame );
-	}
-    	//Case 2: if it's selected an used frame remove it (Is not a physical removing, but logical by reacommodating the frames)
-    	else if ( current_layer_obj -> selectedFrame() -> isUsed() )
-    	{
-	    current_layer_obj -> removeFrame();
-	    int i;
-
-	    //Another frame iteration
-	    QPtrList<ESFrame> current_layer_frame_list, current_layer_frame_list2;
-	    current_layer_obj -> availableFrames( &current_layer_frame_list );
-	    current_layer_obj -> availableFrames( &current_layer_frame_list2 );
-    	    ESFrame *frame_iterator, *frame_iterator2, *new_last_frame;
-
-	    new_last_frame = NULL;
-
-	    for ( i = 1, frame_iterator = current_layer_frame_list.first(), frame_iterator2 = current_layer_frame_list2.first();
-	          frame_iterator != current_layer_obj -> selectedFrame();
-		  i++, frame_iterator = current_layer_frame_list.next(), frame_iterator2 = current_layer_frame_list2.next() );
-	    frame_iterator2 = current_layer_frame_list2.next();
-	    for ( ; frame_iterator2; frame_iterator = current_layer_frame_list.next(), frame_iterator2 = current_layer_frame_list2.next() )
-	    {
-	        //Set all the properties of the next frame to the current frame
-	        frame_iterator -> setAllProperties( frame_iterator2 );
-
-                if ( frame_iterator == current_layer_obj -> lastFrame() )
-	        {
-                    new_last_frame = current_layer_frame_list.prev();
-	            break;
-	        }
-    	    }
-
-	    QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
-            KeyFrame *pkf = kf.at( i - 2 );
-	    KeyFrame *tkf = kf.at( i - 1 );
-	    KeyFrame *nkf = kf.at( i );
-	    if ( ( QPushButton * )sender() == remove_frame )
-	    {
-	        if ( pkf != 0 )
-	            pkf -> setLengthKeyFrame( pkf -> lengthKeyFrame() + tkf -> lengthKeyFrame() );
-	        else
+	ILayer *current_layer_obj;
+	
+	current_layer_obj = findCurrentLayerObj();
+	
+	if ( current_layer_obj -> numberOfFrames() > 1 )
+	{
+		//Case 1: if no frame is selected or it's selected an unused frame remove the last frame used
+		if ( current_layer_obj -> selectedFrame() == NULL || !( ( current_layer_obj -> selectedFrame() ) -> isUsed() ) )
 		{
-	            nkf -> setLengthKeyFrame( tkf -> lengthKeyFrame() + nkf -> lengthKeyFrame() );
-		    nkf -> setOffsetKeyFrame( 1 );
+		current_layer_obj -> removeFrame();
+		( current_layer_obj -> lastFrame() ) -> setUsed( false );
+		( current_layer_obj -> lastFrame() ) -> setMotion( false );
+		( current_layer_obj -> lastFrame() ) -> setName( "" );
+	
+		QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
+		KeyFrame *lkf = kf.last();
+		if ( ( QPushButton * )sender() == remove_frame )
+		{
+			KeyFrame *pkf = kf.prev();
+			pkf -> setLengthKeyFrame( pkf -> lengthKeyFrame() + lkf -> lengthKeyFrame() );
+			emit frameRemoved( current_layer_obj -> numberOfFrames() );
 		}
-		emit frameRemoved( i );
-	    }
-	    else
-	    {
-	        KeyFrame *kf_iter;
-		for ( kf_iter = kf.at( kf.find( nkf ) ); kf_iter; kf_iter = kf.next() )
-		    kf_iter -> setOffsetKeyFrame( kf_iter -> offsetKeyFrame() - 1 );
-	    }
-	    kf.setAutoDelete( true );
-	    kf.remove( i - 1 );
-	    kf.setAutoDelete( false );
-	    KTStatus -> currentLayer() -> setKeyFrames( kf );
-
-	    ( current_layer_obj -> lastFrame() ) -> setUsed( false );
-	    ( current_layer_obj -> lastFrame() ) -> setName( "" );
-            current_layer_obj -> setLastFrame( new_last_frame );
-
-    	    QMouseEvent mouse_event( QEvent::MouseButtonPress, QPoint( 10, 10 ), Qt::LeftButton, 0 );
-    	    QApplication::sendEvent( current_layer_obj -> selectedFrame(), &mouse_event );
-     	    QMouseEvent mouse_event2( QEvent::MouseButtonRelease, QPoint( 10, 10 ), Qt::LeftButton, 0 );
-     	    QApplication::sendEvent( current_layer_obj -> selectedFrame(), &mouse_event2 );
- 	}
-        KTStatus->currentDrawingArea() -> modifyDocument( true );
-	KTStatus->currentDrawingArea() -> updateGL();
-	k_toon -> slotActivateCursor();
-	updateIndicators( current_layer_obj );
-    }
+		kf.setAutoDelete( true );
+		kf.remove( lkf );
+		kf.setAutoDelete( false );
+		KTStatus -> currentLayer() -> setKeyFrames( kf );
+	
+		//Iterate over this layer's list of frames in order to find the previous frame to the last frame and set it as the last frame
+		QPtrList<ESFrame> current_layer_frame_list;
+		current_layer_obj -> availableFrames( &current_layer_frame_list );
+		ESFrame *frame_iterator, *new_last_frame;
+	
+		new_last_frame = NULL;
+	
+		for ( frame_iterator = current_layer_frame_list.first(); frame_iterator; frame_iterator = current_layer_frame_list.next() )
+		{
+			if ( frame_iterator == current_layer_obj -> lastFrame() )
+			{
+			new_last_frame = current_layer_frame_list.prev();
+			break;
+			}
+		}
+	
+		current_layer_obj -> setLastFrame( new_last_frame );
+		}
+		//Case 2: if it's selected an used frame remove it (Is not a physical removing, but logical by reacommodating the frames)
+		else if ( current_layer_obj -> selectedFrame() -> isUsed() )
+		{
+		current_layer_obj -> removeFrame();
+		int i;
+	
+		//Another frame iteration
+		QPtrList<ESFrame> current_layer_frame_list, current_layer_frame_list2;
+		current_layer_obj -> availableFrames( &current_layer_frame_list );
+		current_layer_obj -> availableFrames( &current_layer_frame_list2 );
+		ESFrame *frame_iterator, *frame_iterator2, *new_last_frame;
+	
+		new_last_frame = NULL;
+	
+		for ( i = 1, frame_iterator = current_layer_frame_list.first(), frame_iterator2 = current_layer_frame_list2.first();
+			frame_iterator != current_layer_obj -> selectedFrame();
+			i++, frame_iterator = current_layer_frame_list.next(), frame_iterator2 = current_layer_frame_list2.next() );
+		frame_iterator2 = current_layer_frame_list2.next();
+		for ( ; frame_iterator2; frame_iterator = current_layer_frame_list.next(), frame_iterator2 = current_layer_frame_list2.next() )
+		{
+			//Set all the properties of the next frame to the current frame
+			frame_iterator -> setAllProperties( frame_iterator2 );
+	
+			if ( frame_iterator == current_layer_obj -> lastFrame() )
+			{
+			new_last_frame = current_layer_frame_list.prev();
+			break;
+			}
+		}
+	
+		QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
+		KeyFrame *pkf = kf.at( i - 2 );
+		KeyFrame *tkf = kf.at( i - 1 );
+		KeyFrame *nkf = kf.at( i );
+		if ( ( QPushButton * )sender() == remove_frame )
+		{
+			if ( pkf != 0 )
+			pkf -> setLengthKeyFrame( pkf -> lengthKeyFrame() + tkf -> lengthKeyFrame() );
+			else
+			{
+			nkf -> setLengthKeyFrame( tkf -> lengthKeyFrame() + nkf -> lengthKeyFrame() );
+			nkf -> setOffsetKeyFrame( 1 );
+			}
+			emit frameRemoved( i );
+		}
+		else
+		{
+			KeyFrame *kf_iter;
+			for ( kf_iter = kf.at( kf.find( nkf ) ); kf_iter; kf_iter = kf.next() )
+			kf_iter -> setOffsetKeyFrame( kf_iter -> offsetKeyFrame() - 1 );
+		}
+		kf.setAutoDelete( true );
+		kf.remove( i - 1 );
+		kf.setAutoDelete( false );
+		KTStatus -> currentLayer() -> setKeyFrames( kf );
+	
+		( current_layer_obj -> lastFrame() ) -> setUsed( false );
+		( current_layer_obj -> lastFrame() ) -> setName( "" );
+		current_layer_obj -> setLastFrame( new_last_frame );
+	
+		QMouseEvent mouse_event( QEvent::MouseButtonPress, QPoint( 10, 10 ), Qt::LeftButton, 0 );
+		QApplication::sendEvent( current_layer_obj -> selectedFrame(), &mouse_event );
+		QMouseEvent mouse_event2( QEvent::MouseButtonRelease, QPoint( 10, 10 ), Qt::LeftButton, 0 );
+		QApplication::sendEvent( current_layer_obj -> selectedFrame(), &mouse_event2 );
+		}
+		KTStatus->currentDrawingArea() -> modifyDocument( true );
+		KTStatus->currentDrawingArea() -> updateGL();
+		k_toon -> slotActivateCursor();
+		updateIndicators( current_layer_obj );
+	}
 }
 
 void ExposureSheet::slotSelectFrame()
@@ -1312,7 +1315,7 @@ void ExposureSheet::slotCopyFrame() // FIXME
 	{
 		delete to_copy;
 	}
-	KeyFrame *current_kf = KTStatus -> currentKeyFrame();
+	KeyFrame *current_kf = KTStatus->currentKeyFrame();
 	to_copy = new GLDrawing( *( current_kf -> getDrawing() ) );
 }
 

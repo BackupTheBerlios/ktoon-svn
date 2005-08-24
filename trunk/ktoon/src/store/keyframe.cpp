@@ -26,17 +26,17 @@
 
 KeyFrame::KeyFrame()
 {
-    offset = 0;
-    length = 1;
-    motion = false;
-    name = "";
-    camera = new Camera();
-    drawing = new(std::nothrow) GLDrawing();
-    if(!drawing)
-        {
-	  delete camera;
-	  throw std::bad_alloc();
-	  }
+	offset = 0;
+	length = 1;
+	motion = false;
+	name = "";
+	camera = new Camera();
+	drawing = new(std::nothrow) GLDrawing();
+	if(!drawing)
+	{
+		delete camera;
+		throw std::bad_alloc();
+	}
 }
 
 //------------- DESTRUCTOR ------------------

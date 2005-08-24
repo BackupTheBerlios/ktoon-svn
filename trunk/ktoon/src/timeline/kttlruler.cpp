@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,54 +17,64 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTEXPOSURESHEET_H
-#define KTEXPOSURESHEET_H
 
-#include "ktdialogbase.h"
-#include "kttableexposure.h"
+#include "kttlruler.h"
+#include "ktdebug.h"
 
-#include <qhbuttongroup.h>
-#include <qpushbutton.h>
-#include <qaction.h>
-#include <qvaluelist.h>
-#include <qstringlist.h>
-#include <qtable.h>
-#include <qlistbox.h>
-#include <qgridview.h> 
-#include "ktimagebutton.h"
-
-/**
-* @author Jorge Cuadrado
-*/
-
-
-typedef QValueList<QPixmap> imgs;
-
-class KTExposureSheet : public KTDialogBase
+KTTLRuler::KTTLRuler(QWidget *parent) : KTRulerBase(KTRulerBase::Horizontal, parent, "KTTLRuler")
 {
+	KTINIT;
 	
-	Q_OBJECT
-	public:
-		KTExposureSheet(QWidget *parent = 0, const char *name = 0);
-		~KTExposureSheet();
-		enum Actions { InsertLayer = 0, RemoveLayer, ShowManageLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
+	setSeparation(5);
+	show();
 	
-	private:
+	connect(this, SIGNAL(displayMenu(KTRulerBase *, QPoint)), this, SLOT(showMenu(KTRulerBase *, QPoint)));
+	
+	m_menu = new QPopupMenu(this);
+	m_menu->insertItem( tr("Change scale to 5..."), ChangeScaleToFive);
+	m_menu->insertItem( tr("Change scale to 10..."), ChangeScaleToTen);
+	
+	connect(m_menu, SIGNAL(activated(int)), this, SLOT(chooseOption(int)));
+}
 
-		imgs m_imgs;
-		QHButtonGroup *buttonsPanel;
-		QActionGroup *m_actions;
-		KTTableExposure *m_viewLayer;
-		
-	private:
-		void setupButtons();
-		
-	public slots:
-		void applyAction(int action);
-		void slotInsertLayer();
-		
-	signals:
-		void applyedAction(Actions action);
-};
 
-#endif
+KTTLRuler::~KTTLRuler()
+{
+	KTEND;
+}
+
+void KTTLRuler::movePointers(QPoint pos)
+{
+	ktDebug() << "movePointers" << endl;
+}
+
+void KTTLRuler::showMenu(KTRulerBase *ruler, QPoint pos)
+{
+	if(ruler)
+	{
+		m_menu->popup(pos);
+	}
+}
+
+void KTTLRuler::chooseOption(int opt)
+{
+	switch(opt)
+	{
+		case ChangeScaleToFive:
+		{
+			setSeparation(5);
+		}
+		break;
+		case ChangeScaleToTen:
+		{
+			setSeparation(10);
+		}
+		break;
+		default:
+		{
+		}
+		break;
+	}
+}
+
+
