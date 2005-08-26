@@ -17,8 +17,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "kttableexposure.h"
-#include <qvbox.h> 
+#include <qvgroupbox.h>
+
 #include "ktdebug.h"
 
 KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent, const char *name)
@@ -28,12 +30,20 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent, const char
 	
 	setDragAutoScroll ( true ) ;
 	viewport ()->setPaletteBackgroundColor ( paletteBackgroundColor() );
+	
 	m_port = new QWidget(this);
+	
 	setHScrollBarMode ( Auto );
-	QVBox *gridNumber = new QVBox( m_port);
+	
+	QVGroupBox *gridNumber = new QVGroupBox( m_port);
+	gridNumber->setInsideSpacing( 4);
+	gridNumber->setInsideMargin ( 4 );
+	
+	QLabel *tmp = new QLabel(gridNumber);
+	tmp->setText(" ");
 	for(int i = 0; i < rows; i++)
 	{
-		QLabel *tmp = new QLabel(gridNumber);
+		tmp = new QLabel(gridNumber);
 		tmp->setText(QString::number(i));
 	}
 	
@@ -60,8 +70,6 @@ KTTableExposure::~KTTableExposure()
 
 void KTTableExposure::clickedCell(int row,int col,int button,int gx,int gy)
 {
-// 	qDebug(QString::number(row) + " " + QString::number(col));
-// 	ktDebug(1) << row << " "<< col << " " << endl ;
 	m_currentLayer = col;
 	m_currentFrame = row;
 	if(button == Qt::RightButton)
@@ -78,24 +86,21 @@ void KTTableExposure::insertLayer(int rows)
 	connect(newLayer, SIGNAL(selected(int)), this, SIGNAL(layerSelected(int)));
 	connect(this, SIGNAL(layerSelected(int)), newLayer, SLOT(otherSelected(int)));
 	connect(newLayer, SIGNAL(clicked(int,int,int,int,int)), this, SLOT(clickedCell(int,int,int,int,int)));
-	m_layout->addWidget(newLayer);
+	
+	m_layout->addWidget( newLayer, 0, Qt::AlignTop | Qt::AlignCenter);
 	
 	m_numLayer++;
 	newLayer->show();
-	
-	
 }
 
 void KTTableExposure::setUseFrame()
 {
 	m_layers.at(m_currentLayer)->setUseFrames(m_currentFrame);
-// 	m_layers[m_currentLayer]->setUseFrames(m_currentFrame);
 }
 
 void KTTableExposure::removeFrameSelected()
 {
 	m_layers.at(m_currentLayer)->removeFrame(m_currentFrame);
-// 	m_layers[m_currentLayer]->removeFrame(m_currentFrame);
 }
 
 void KTTableExposure::moveCurrentFrame(Direction d)
@@ -103,40 +108,30 @@ void KTTableExposure::moveCurrentFrame(Direction d)
 	if(d == Up)
 	{
 		m_layers.at(m_currentLayer)->moveCurrentFrameUp();
-// 		m_layers[m_currentLayer]->moveCurrentFrameUp();
 	}
 	else if(d == Down)
 	{
 		m_layers.at(m_currentLayer)->moveCurrentFrameDown();
-// 		m_layers[m_currentLayer]->moveCurrentFrameDown();
 	}
 }
 
 void KTTableExposure::lockCurrentFrame()
 {
 	m_layers.at(m_currentLayer)->lockFrame(m_currentFrame);
-// 	m_layers[m_currentLayer]->lockCurrentFrame(m_currentFrame);
 }
 
 void KTTableExposure::removeCurrentLayer()
 {
 	if(m_numLayer > 1 && m_layers.at(m_currentLayer)->isSelected()) //m_layers[m_currentLayer]->isSelected())
 	{
-		m_layout->remove( m_layers.at(m_currentLayer) );//m_layers[m_currentLayer]);
-// 		delete m_layers[m_currentLayer];
+		m_layout->remove( m_layers.at(m_currentLayer) );
 		m_layers.remove(m_currentLayer);
-// 		QPtrListIterator<KTLayerExposure> it(m_layers);
-// 
-// 		for ( ; it.current(); ++it )
-// 		{
-// 			
-// 		}
 		for( int i = m_currentLayer; i < m_layers.count(); i++)
 		{
 			m_layers.at(i)->setId(i);
-// 			m_layers[i]->setId(i);
 		}
 		m_numLayer--;
 	}
 	ktDebug(1) << m_layers.count();
 }
+

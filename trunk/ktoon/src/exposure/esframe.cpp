@@ -207,8 +207,9 @@ void ESFrame::setHasDrawing( bool in_has_drawing )
 
 void ESFrame::setName( const QString &new_name )
 {
-	description -> setText( new_name );
-	setText( new_name );
+	description -> setText( new_name);
+	setText( new_name +"  " );
+// 	resize(sizeHint());
 }
 
 void ESFrame::clearTextfieldFocus()
@@ -316,7 +317,9 @@ void ESFrame::mouseDoubleClickEvent( QMouseEvent *mouse_event )
 		mouse_event -> accept();
 	}
 	else
+	{
 		mouse_event -> ignore();
+	}
 }
 
 void ESFrame::drawContents( QPainter *painter )
@@ -338,4 +341,8 @@ void ESFrame::drawContents( QPainter *painter )
 void ESFrame::resizeEvent ( QResizeEvent * e )
 {
 	description -> resize( width(), height() );
+}
+
+void ESFrame::keyPressEvent(QKeyEvent *e)
+{
 }

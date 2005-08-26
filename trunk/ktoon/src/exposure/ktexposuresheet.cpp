@@ -43,8 +43,8 @@ KTExposureSheet::KTExposureSheet( QWidget *parent, const char *name)
 	
 	m_viewLayer = new KTTableExposure(100, 1,this,"table");
 	addChild(m_viewLayer);
-	hide();
-// 	show();
+ 	hide();
+	//show();
 // 	repaint();
 	setResizeEnabled ( true );
 	

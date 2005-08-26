@@ -229,6 +229,8 @@ protected:
      */
     void drawContents( QPainter *painter );
 	void resizeEvent ( QResizeEvent * e );
+	
+	void keyPressEvent(QKeyEvent *e);
 			      
 
 };
