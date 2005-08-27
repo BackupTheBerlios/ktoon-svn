@@ -22,7 +22,6 @@
 #include <qapplication.h>
 
 #include "tlframe.h"
-#include "ktoon.h"
 
 //--------------- CONSTRUCTOR --------------------
 
@@ -45,17 +44,16 @@ TLFrame::TLFrame( QWidget *parent )
     is_unknown_motion = false;
     is_motion = false;
     has_drawing = false;
-    
-    k_toon = ( KToon * )( parent_widget -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() );
-    setPaletteBackgroundColor( *( k_toon -> tlDefaultColor() ) );
+
+    setPaletteBackgroundColor( QColor( 255, 255, 255 ) );
 
     right_click_menu = new QPopupMenu( this );
-//     right_click_menu -> setFont( QFont( "helvetica", 10 ) );
-    right_click_menu -> insertItem( tr( "Create Motion Tween" ), parent, SLOT( slotCreateMotionTween() ) );
-    right_click_menu -> insertItem( tr( "Remove Motion Tween" ), parent, SLOT( slotRemoveMotionTween() ) );
-    right_click_menu -> insertSeparator();
-    right_click_menu -> insertItem( tr( "Add Frames" ), parent, SLOT( slotInsertFrame() ) );
-    right_click_menu -> insertItem( tr( "Remove Frames" ), parent, SLOT( slotRemoveFrame() ) );
+
+//     right_click_menu -> insertItem( tr( "Create Motion Tween" ), parent, SLOT( slotCreateMotionTween() ) );
+//     right_click_menu -> insertItem( tr( "Remove Motion Tween" ), parent, SLOT( slotRemoveMotionTween() ) );
+//     right_click_menu -> insertSeparator();
+//     right_click_menu -> insertItem( tr( "Add Frames" ), parent, SLOT( slotInsertFrame() ) );
+//     right_click_menu -> insertItem( tr( "Remove Frames" ), parent, SLOT( slotRemoveFrame() ) );
     
     setPaletteBackgroundColor(Qt::yellow);
 }
@@ -79,8 +77,8 @@ TLFrame::TLFrame( TLFrame *in_frame )
     is_drag_offset = in_frame -> isDragOffset();
     has_drawing = in_frame -> hasDrawing();
     
-    k_toon = ( KToon * )( parent_widget -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() );
-    setPaletteBackgroundColor( *( k_toon -> tlDefaultColor() ) );
+//     k_toon = ( KToon * )( parent_widget -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() -> parentWidget() );
+    setPaletteBackgroundColor( QColor( 255, 255, 255 ) );
 
     right_click_menu = new QPopupMenu( this );
 //     right_click_menu -> setFont( QFont( "helvetica", 10 ) );
@@ -265,8 +263,8 @@ void TLFrame::paintEvent( QPaintEvent *paint_event )
     	p.begin( this );
     	
 	//Default paint settings
-    	p.setPen( *( k_toon -> tlBorderColor() ) );
-    	p.setBrush( *( k_toon -> tlDefaultColor() ) );
+    	p.setPen( QColor( 180, 180, 180 ) );
+    	p.setBrush( QColor( 255, 255, 255 ) );
     	p.drawRect( 0, 0, 10, 24 );
 
     	if ( is_selected )
@@ -277,14 +275,14 @@ void TLFrame::paintEvent( QPaintEvent *paint_event )
     	//Draw the offset line if it applies
     	if ( is_offset )
         {
-	    p.setPen( *( k_toon -> tlOffsetColor() ) );
+		p.setPen( QColor( 0, 0, 0 ) );
 	    p.drawLine( width() / 2, 0, width() / 2, 23 );
         }
 
     	//Draw the drag offset line if it applies
     	if ( is_drag_offset )
     	{
-	    p.setPen( *( k_toon -> tlDragOffsetColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
 	    p.drawLine( width() / 2, 0, width() / 2, 23 );
         }
 
@@ -298,8 +296,8 @@ void TLFrame::paintNotSelected()
     {
         if ( is_special )
 	{
-	    p.setPen( *( k_toon -> tlBorderColor() ) );
-	    p.setBrush( *( k_toon -> tlSpecialColor() ) );
+	    p.setPen( QColor( 180, 180, 180 ) );
+	    p.setBrush( QColor( 200, 200, 200 ) );
 	    p.drawRect( 0, 0, 10, 24 );
 	}
     }
@@ -308,113 +306,113 @@ void TLFrame::paintNotSelected()
 	//*** (has_drawing == false)
         if ( !is_key && !is_last && !is_unknown_motion && !is_motion && !has_drawing )
 	{
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
-	    p.setPen( *( k_toon -> tlDefaultColor() ) );
+	    p.setPen( QColor( 255, 255, 255 ) );
 	    p.drawLine( 0, 1, 0, 22 );
 	    p.drawLine( 9, 1, 9, 22 );
 	}
 	if ( is_key && is_last && !is_unknown_motion && !is_motion && !has_drawing )
 	{
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
-	    p.setBrush( *( k_toon -> tlDefaultColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
+	    p.setBrush( QColor( 255, 255, 255 ) );
 	    p.drawRect( 0, 0, 10, 24 );
 	    p.drawEllipse( 1, 12, 7, 7 );
 	}
 	if ( is_key && !is_last && !is_unknown_motion && !is_motion && !has_drawing )
 	{
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 0, 0, 0, 23 );
 	    p.drawEllipse( 1, 12, 7, 7 );
-	    p.setPen( *( k_toon -> tlDefaultColor() ) );
+	    p.setPen( QColor( 255, 255, 255 ) );
 	    p.drawLine( 9, 1, 9, 22 );
 	}
 	if ( !is_key && is_last && !is_unknown_motion && !is_motion && !has_drawing )
 	{
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 9, 0, 9, 23 );
 	    p.drawRect( 2, 10, 6, 10 );
-	    p.setPen( *( k_toon -> tlDefaultColor() ) );
+	    p.setPen( QColor( 255, 255, 255 ) );
 	    p.drawLine( 0, 1, 0, 22 );
 	}
 	//*** (has_drawing == true)
         if ( !is_key && !is_last && !is_unknown_motion && !is_motion && has_drawing )
 	{
-	    p.setPen( *( k_toon -> tlDrawingColor() ) );
-	    p.setBrush( *( k_toon -> tlDrawingColor() ) );
+	    p.setPen( QColor( 230, 230, 230 ) );
+	    p.setBrush( QColor( 230, 230, 230 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	}
 	if ( is_key && is_last && !is_unknown_motion && !is_motion && has_drawing )
 	{
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
-	    p.setBrush( *( k_toon -> tlDrawingColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
+	    p.setBrush( QColor( 230, 230, 230 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( *( k_toon -> tlUseBorderColor() ) );
+	    p.setBrush( QColor( 0, 0, 0 ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
 	}
 	if ( is_key && !is_last && !is_unknown_motion && !is_motion && has_drawing )
 	{
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
-	    p.setBrush( *( k_toon -> tlDrawingColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
+	    p.setBrush( QColor( 230, 230, 230 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( *( k_toon -> tlUseBorderColor() ) );
+	    p.setBrush( QColor( 0, 0, 0 ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
-	    p.setPen( *( k_toon -> tlDrawingColor() ) );
+	    p.setPen( QColor( 230, 230, 230 ) );
 	    p.drawLine( 9, 1, 9, 22 );
 	}
 	if ( !is_key && is_last && !is_unknown_motion && !is_motion && has_drawing )
 	{
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
-	    p.setBrush( *( k_toon -> tlDrawingColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
+	    p.setBrush( QColor( 230, 230, 230 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( *( k_toon -> tlDrawingColor() ) );
+	    p.setPen( QColor( 230, 230, 230 ) );
 	    p.drawLine( 0, 1, 0, 22 );
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
 	    p.drawRect( 2, 10, 6, 10 );
 	}
 	//***
         if ( !is_key && !is_last && is_unknown_motion && !is_motion )
 	{
-	    p.setPen( *( k_toon -> tlMotionColor() ) );
-	    p.setBrush( *( k_toon -> tlMotionColor() ) );
+	    p.setPen( QColor( 220, 220, 255 ) );
+	    p.setBrush( QColor( 220, 220, 255 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 2, 14, 7, 14 );
 	}
 	if ( is_key && is_last && is_unknown_motion && !is_motion )
 	{
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
-	    p.setBrush( *( k_toon -> tlMotionColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
+	    p.setBrush( QColor( 220, 220, 255 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( *( k_toon -> tlUseBorderColor() ) );
+	    p.setBrush( QColor( 0, 0, 0 ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
 	}
 	if ( is_key && !is_last && is_unknown_motion && !is_motion )
 	{
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
-	    p.setBrush( *( k_toon -> tlMotionColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
+	    p.setBrush( QColor( 220, 220, 255 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( *( k_toon -> tlUseBorderColor() ) );
+	    p.setBrush( QColor( 0, 0, 0 ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
-	    p.setPen( *( k_toon -> tlMotionColor() ) );
+	    p.setPen( QColor( 220, 220, 255 ) );
 	    p.drawLine( 9, 1, 9, 22 );
 	}
 	if ( !is_key && is_last && is_unknown_motion && !is_motion )
 	{
-	    p.setPen( *( k_toon -> tlMotionColor() ) );
-	    p.setBrush( *( k_toon -> tlMotionColor() ) );
+	    p.setPen( QColor( 220, 220, 255 ) );
+	    p.setBrush( QColor( 220, 220, 255 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 9, 0, 9, 23 );
@@ -423,40 +421,40 @@ void TLFrame::paintNotSelected()
 	//***
         if ( !is_key && !is_last && !is_unknown_motion && is_motion )
 	{
-	    p.setPen( *( k_toon -> tlMotionColor() ) );
-	    p.setBrush( *( k_toon -> tlMotionColor() ) );
+	    p.setPen( QColor( 220, 220, 255 ) );
+	    p.setBrush( QColor( 220, 220, 255 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 0, 14, 9, 14 );
 	}
 	if ( is_key && is_last && !is_unknown_motion && is_motion )
 	{
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
-	    p.setBrush( *( k_toon -> tlMotionColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
+	    p.setBrush( QColor( 220, 220, 255 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( *( k_toon -> tlUseBorderColor() ) );
+	    p.setBrush( QColor( 0, 0, 0 ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
 	}
 	if ( is_key && !is_last && !is_unknown_motion && is_motion )
 	{
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
-	    p.setBrush( *( k_toon -> tlMotionColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
+	    p.setBrush( QColor( 220, 220, 255 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( *( k_toon -> tlUseBorderColor() ) );
+	    p.setBrush( QColor( 0, 0, 0 ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
-	    p.setPen( *( k_toon -> tlMotionColor() ) );
+	    p.setPen( QColor( 220, 220, 255 ) );
 	    p.drawLine( 9, 1, 9, 22 );
 	}
 	if ( !is_key && is_last && !is_unknown_motion && is_motion )
 	{
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
-	    p.setBrush( *( k_toon -> tlMotionColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
+	    p.setBrush( QColor( 220, 220, 255 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( *( k_toon -> tlMotionColor() ) );
+	    p.setPen( QColor( 220, 220, 255 ) );
 	    p.drawLine( 0, 1, 0, 22 );
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
 	    p.drawLine( 0, 14, 7, 14 );
 	    p.drawLine( 7, 14, 5, 12 );
 	    p.drawLine( 7, 14, 5, 16 );
@@ -468,8 +466,8 @@ void TLFrame::paintSelected()
 {
     if ( !is_used )
     {
-	p.setPen( *( k_toon -> tlBorderColor() ) );
-	p.setBrush( *( k_toon -> tlSelectionColor() ) );
+	p.setPen( QColor( 180, 180, 180 ) );
+	p.setBrush( QColor( 0, 0, 0 ) );
 	p.drawRect( 0, 0, 10, 24 );
     }
     else if ( is_used )
@@ -477,81 +475,81 @@ void TLFrame::paintSelected()
 	//***
         if ( !is_key && !is_last && !is_unknown_motion && !is_motion )
 	{
-	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
+	    p.setBrush( QColor( 0, 0, 0 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( *( k_toon -> tlDefaultColor() ) );
+	    p.setPen( QColor( 255, 255, 255 ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
 	    p.drawLine( 0, 1, 0, 22 );
 	    p.drawLine( 9, 1, 9, 22 );
 	}
 	if ( is_key && is_last && !is_unknown_motion && !is_motion )
 	{
-	    p.setPen( *( k_toon -> tlDefaultColor() ) );
-	    p.setBrush( *( k_toon -> tlUseBorderColor() ) );
+	    p.setPen( QColor( 255, 255, 255 ) );
+	    p.setBrush( QColor( 0, 0, 0 ) );
 	    p.drawRect( 0, 0, 10, 24 );
 	    p.drawEllipse( 1, 12, 7, 7 );
 	}
 	if ( is_key && !is_last && !is_unknown_motion && !is_motion )
 	{
-	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
+	    p.setBrush( QColor( 0, 0, 0 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( *( k_toon -> tlDefaultColor() ) );
+	    p.setPen( QColor( 255, 255, 255 ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 0, 0, 0, 23 );
 	    p.drawEllipse( 1, 12, 7, 7 );
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
 	    p.drawLine( 9, 1, 9, 22 );
 	}
 	if ( !is_key && is_last && !is_unknown_motion && !is_motion )
 	{
-	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
+	    p.setBrush( QColor( 0, 0, 0 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( *( k_toon -> tlDefaultColor() ) );
+	    p.setPen( QColor( 255, 255, 255 ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 9, 0, 9, 23 );
 	    p.drawRect( 2, 10, 6, 10 );
-	    p.setPen( *( k_toon -> tlUseBorderColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
 	    p.drawLine( 0, 1, 0, 22 );
 	}
 	//***
         if ( !is_key && !is_last && is_unknown_motion && !is_motion )
 	{
-	    p.setPen( *( k_toon -> tlSelectionColor() ) );
-	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
+	    p.setBrush( QColor( 0, 0, 0 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( *( k_toon -> tlDefaultColor() ) );
+	    p.setPen( QColor( 255, 255, 255 ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 2, 14, 7, 14 );
 	}
 	if ( is_key && is_last && ( ( is_unknown_motion && !is_motion ) || has_drawing ) )
 	{
-	    p.setPen( *( k_toon -> tlDefaultColor() ) );
-	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
+	    p.setPen( QColor( 255, 255, 255 ) );
+	    p.setBrush( QColor( 0, 0, 0 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( *( k_toon -> tlDefaultColor() ) );
+	    p.setBrush( QColor( 255, 255, 255 ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
 	}
 	if ( is_key && !is_last && ( ( is_unknown_motion && !is_motion ) || has_drawing ) )
 	{
-	    p.setPen( *( k_toon -> tlDefaultColor() ) );
-	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
+	    p.setPen( QColor( 255, 255, 255 ) );
+	    p.setBrush( QColor( 0, 0, 0 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( *( k_toon -> tlDefaultColor() ) );
+	    p.setBrush( QColor( 255, 255, 255 ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
-	    p.setPen( *( k_toon -> tlSelectionColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
 	    p.drawLine( 9, 1, 9, 22 );
 	}
 	if ( !is_key && is_last && is_unknown_motion && !is_motion )
 	{
-	    p.setPen( *( k_toon -> tlSelectionColor() ) );
-	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
+	    p.setBrush( QColor( 0, 0, 0 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( *( k_toon -> tlDefaultColor() ) );
+	    p.setPen( QColor( 255, 255, 255 ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 9, 0, 9, 23 );
@@ -560,40 +558,40 @@ void TLFrame::paintSelected()
 	//***
         if ( !is_key && !is_last && !is_unknown_motion && is_motion )
 	{
-	    p.setPen( *( k_toon -> tlSelectionColor() ) );
-	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
+	    p.setBrush( QColor( 0, 0, 0 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( *( k_toon -> tlDefaultColor() ) );
+	    p.setPen( QColor( 255, 255, 255 ) );
 	    p.drawLine( 0, 0, 9, 0 );
 	    p.drawLine( 0, 23, 9, 23 );
 	    p.drawLine( 0, 14, 9, 14 );
 	}
 	if ( is_key && is_last && !is_unknown_motion && is_motion )
 	{
-	    p.setPen( *( k_toon -> tlDefaultColor() ) );
-	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
+	    p.setPen( QColor( 255, 255, 255 ) );
+	    p.setBrush( QColor( 0, 0, 0 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( *( k_toon -> tlDefaultColor() ) );
+	    p.setBrush( QColor( 255, 255, 255 ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
 	}
 	if ( is_key && !is_last && !is_unknown_motion && is_motion )
 	{
-	    p.setPen( *( k_toon -> tlDefaultColor() ) );
-	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
+	    p.setPen( QColor( 255, 255, 255 ) );
+	    p.setBrush( QColor( 0, 0, 0 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setBrush( *( k_toon -> tlDefaultColor() ) );
+	    p.setBrush( QColor( 255, 255, 255 ) );
 	    p.drawEllipse( 1, 12, 7, 7 );
-	    p.setPen( *( k_toon -> tlSelectionColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
 	    p.drawLine( 9, 1, 9, 22 );
 	}
 	if ( !is_key && is_last && !is_unknown_motion && is_motion )
 	{
-	    p.setPen( *( k_toon -> tlDefaultColor() ) );
-	    p.setBrush( *( k_toon -> tlSelectionColor() ) );
+	    p.setPen( QColor( 255, 255, 255 ) );
+	    p.setBrush( QColor( 0, 0, 0 ) );
 	    p.drawRect( 0, 0, 10, 24 );
-	    p.setPen( *( k_toon -> tlSelectionColor() ) );
+	    p.setPen( QColor( 0, 0, 0 ) );
 	    p.drawLine( 0, 1, 0, 22 );
-	    p.setPen( *( k_toon -> tlDefaultColor() ) );
+	    p.setPen( QColor( 255, 255, 255 ) );
 	    p.drawLine( 0, 14, 7, 14 );
 	    p.drawLine( 7, 14, 5, 12 );
 	    p.drawLine( 7, 14, 5, 16 );

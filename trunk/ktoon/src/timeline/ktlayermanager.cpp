@@ -32,6 +32,8 @@ KTLayerManager::KTLayerManager(QWidget *parent) : QVBox(parent, "KTLayerManager"
 {
 	KTINIT;
 	
+	layout()->setAlignment(Qt::AlignTop);
+	
 	m_utilsInTop = new QHBox( this );
 	
 	m_utilsInTop->layout()->setAlignment(Qt::AlignRight | Qt::AlignTop | Qt::AlignVCenter );
@@ -68,15 +70,20 @@ KTLayerManager::KTLayerManager(QWidget *parent) : QVBox(parent, "KTLayerManager"
 	
 	m_utilsInTop->setMaximumHeight( m_eyeButton->height()+2);
 	
+	QWidget *spacer = new QWidget(m_utilsInTop);
+	spacer->setMinimumWidth(20);
+	
+	
 	//------------------------------------------------------
 	
-	QScrollView *scroll = new QScrollView(this);
-	scroll->enableClipper( true );
-	m_sequence = new KTLayerSequence(scroll->viewport());
-	scroll->addChild(m_sequence);
-	scroll->setHScrollBarMode( QScrollView::AlwaysOff );
+// 	QScrollView *scroll = new QScrollView(this);
+// 	scroll->enableClipper( true );
+	m_sequence = new KTLayerSequence(this);
+// 	scroll->addChild(m_sequence);
+// 	scroll->setHScrollBarMode( QScrollView::AlwaysOff );
 // 	scroll->viewport()->setMouseTracking( true );
-	scroll->setMaximumWidth(m_sequence->width());
+// 	scroll->setMaximumWidth(m_sequence->width());
+// 	scroll->setSizePolicy( QSizePolicy::Expanding, QSizePolicy::Expanding, true);
 	
 	//------------------------------------------------------
 	
@@ -138,6 +145,10 @@ KTLayerManager::KTLayerManager(QWidget *parent) : QVBox(parent, "KTLayerManager"
 	m_utilsInBottom->setMaximumHeight(m_moveUpButton->height());
 	
 	show();
+	
+// 	m_utilsInBottom->setMaximumSize(m_utilsInBottom->size());
+// 	m_utilsInTop->setMaximumSize(m_utilsInBottom->size());
+// 	m_sequence->setMaximumWidth(m_utilsInBottom->width()+30);
 }
 
 

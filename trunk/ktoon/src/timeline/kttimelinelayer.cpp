@@ -78,7 +78,10 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, QWidget *par
 	m_onlyOutlines -> resize( 20, 20 );
 // 	m_onlyOutlines -> move( width() - m_onlyOutlines -> width() - 22, 2 );
 // 	connect( m_onlyOutlines, SIGNAL( clicked() ), SLOT( slotOnlyOutlines() ) );
-
+	
+	QWidget *spacer = new QWidget(m_utils);
+	spacer->setMinimumWidth(20);
+	
 	show();
 }
 

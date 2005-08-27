@@ -30,8 +30,6 @@
 #include <qpainter.h>
 #include <qpopupmenu.h>
 
-class KToon;
-
 /**
  * @brief Class that handles the timeline frames
  *
@@ -239,8 +237,6 @@ private:
     bool is_unknown_motion;
     bool is_motion;
     bool has_drawing;
-    
-    KToon *k_toon;
 
 signals:
     /**

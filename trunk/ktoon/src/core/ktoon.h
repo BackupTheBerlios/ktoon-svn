@@ -739,7 +739,7 @@ class KToon : public QMainWindow
 
 	private:
 		//General purpose variables
-			int document_max_value;
+		int document_max_value;
 		QString file_name;
 		QPtrList<ExposureSheet> list_of_es;
 		QPtrList<Timeline> list_of_tl;
@@ -872,7 +872,7 @@ class KToon : public QMainWindow
 		QAction *help_about_opengl;
 		
 		//Tool Bar and Tool Bar buttons
-		QToolBar *tool_bar, *tool_bar2, *tool_bar3;
+		QToolBar *tool_bar, *tool_bar2/*, *tool_bar3*/;
 		
 		QAction *file_new;
 		QAction *file_open;

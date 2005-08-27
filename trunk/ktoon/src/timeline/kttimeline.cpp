@@ -32,7 +32,6 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTDialogBase(QDockWindow::OutsideDock,
 	addChild(m_container);
 	
 	m_splitter = new QSplitter( m_container );
-	
 	m_layerManager = new KTLayerManager( m_splitter );
 	m_sequenceManager = new KTFrameSequenceManager(m_splitter);
 	
@@ -40,7 +39,8 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTDialogBase(QDockWindow::OutsideDock,
 	hide();
 	
 	setResizeEnabled (true);
-// 	adjustSize();
+
+	m_container->setMinimumHeight( m_container->sizeHint().height() );
 }
 
 

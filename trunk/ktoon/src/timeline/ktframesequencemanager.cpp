@@ -33,8 +33,12 @@ KTFrameSequenceManager::KTFrameSequenceManager(QWidget *parent) : QVBox(parent, 
 	m_sequenceLayout = new QScrollView(this);
 	m_sequenceLayout->enableClipper( true );
 	
-	m_rulerBox = new QVBox(m_sequenceLayout->viewport());
-	m_sequenceLayout->addChild(m_rulerBox);
+	m_vBox = new QVBox(m_sequenceLayout->viewport());
+	m_sequenceLayout->addChild(m_vBox);
+	
+	m_frameSequence = new KTFrameSequence(m_vBox);
+	m_frameSequence->show();
+
 }
 
 

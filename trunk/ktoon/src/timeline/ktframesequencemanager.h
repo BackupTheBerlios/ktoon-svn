@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef KTFRAMESEQUENCEMANAGER_H
 #define KTFRAMESEQUENCEMANAGER_H
 
@@ -24,6 +25,7 @@
 #include <qscrollview.h>
 
 #include "kttlruler.h"
+#include "ktframesequence.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -38,8 +40,9 @@ class KTFrameSequenceManager : public QVBox
 		
 	private:
 		QScrollView *m_sequenceLayout;
-		QVBox *m_rulerBox;
+		QVBox *m_vBox;
 		KTTLRuler *m_ruler;
+		KTFrameSequence *m_frameSequence;
 
 };
 

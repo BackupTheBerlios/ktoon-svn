@@ -23,31 +23,35 @@
 #include "ktlayersequence.h"
 #include "ktdebug.h"
 
-KTLayerSequence::KTLayerSequence(QWidget *parent) : QVBox(parent, "KTLayerSequence")
+KTLayerSequence::KTLayerSequence(QWidget *parent) : QScrollView(parent, "KTLayerSequence")
 {
 	KTINIT;
-	layout()->setAlignment(Qt::AlignTop );
-	setMargin(4);
-	
-// 	enableClipper( true );
-// 	setHScrollBarMode( QScrollView::AlwaysOff );
+
+	enableClipper( true );
+	setHScrollBarMode( QScrollView::AlwaysOff );
 
 // 	viewport() -> setMouseTracking( true );
 
 	setPaletteBackgroundColor(Qt::black);
 	setPaletteForegroundColor(Qt::gray );
 	
-// 	m_layerContainer = new QVBox(viewport());
-// 	addChild(m_layerContainer);
+	m_layerContainer = new QVBox(viewport());
+	addChild(m_layerContainer);
+	m_layerContainer->layout()->setAlignment(Qt::AlignTop );
 	
-	m_defaultLayer = new KTTimeLineLayer (tr("Layer %1").arg("1"), 1, this);
+	m_defaultLayer = new KTTimeLineLayer (tr("Layer %1").arg("1"), 1, m_layerContainer);
+	m_layers.append( m_defaultLayer );
 	
-// 	new QLabel("hola como estan?????????????????????????", this);
+	setMaximumHeight( sizeHint().height() ); // IMPORTANT
 	
-    	//Add a default layer
-// 	TLLayer *default_layer = new TLLayer( 1, viewport(), this, tr( "Layer" ) + QString( "1" ) );
+	// TEST CODE
+// 	for(uint i = 0; i < 30; i++)
+// 	{
+// 		KTTimeLineLayer *tmp = new KTTimeLineLayer (tr("Layer %1").arg("1"), 1, m_layerContainer);
+// 		m_layers.append(tmp);
+// 	}
+	////
 	
-// 	default_layer -> resize( width(), 24 );
 // 	connect( default_layer, SIGNAL( selected() ), SLOT( slotSelectLayer() ) );
 // 	connect( default_layer, SIGNAL( draggedAbove( int ) ), SLOT( slotDragLayerAbove( int ) ) );
 // 	connect( default_layer, SIGNAL( draggedBelow( int ) ), SLOT( slotDragLayerBelow( int ) ) );
@@ -55,8 +59,6 @@ KTLayerSequence::KTLayerSequence(QWidget *parent) : QVBox(parent, "KTLayerSequen
 // 	connect( default_layer, SIGNAL( releasedBelow( int ) ), SLOT( slotReleaseLayerBelow( int ) ) );
 // 	connect( default_layer, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameLayer( const QString & ) ) );
 // 	connect( default_layer, SIGNAL( visibilityChanged( bool ) ), SLOT( slotChangeVisibilityState( bool ) ) );
-// 	addChild( default_layer );
-// 	list_of_layers.append( default_layer );
 
 // 	current_layer = default_layer;
 // 	last_layer = current_layer;
@@ -71,7 +73,11 @@ KTLayerSequence::~KTLayerSequence()
 }
 
 
-
-
+void KTLayerSequence::resizeEvent(QResizeEvent *e)
+{
+	QSize new_size = e->size();
+	QWidget::resizeEvent( e );
+	m_layerContainer->resize( new_size.width(), m_layerContainer->height() );
+}
 
 

@@ -879,13 +879,13 @@ void KToon::setupToolBar()
 	view_next2->addTo(tool_bar2);
 	view_next3->addTo(tool_bar2);
 	
-	tool_bar3 = new QToolBar( this );
-	tool_bar3-> setLabel( tr( "Tools Operations" ) );
-	tools_selection->addTo(tool_bar3);
-	tools_draw->addTo(tool_bar3);
-	tools_fills->addTo(tool_bar3);
-	tools_erasers->addTo(tool_bar3);
-	tools_view->addTo(tool_bar3);
+// 	tool_bar3 = new QToolBar( this );
+// 	tool_bar3-> setLabel( tr( "Tools Operations" ) );
+// 	tools_selection->addTo(tool_bar3);
+// 	tools_draw->addTo(tool_bar3);
+// 	tools_fills->addTo(tool_bar3);
+// 	tools_erasers->addTo(tool_bar3);
+// 	tools_view->addTo(tool_bar3);
 }
 
 void KToon::setupMenu()
@@ -1163,24 +1163,16 @@ KToon::~KToon()
 //     delete main_panel;
 //     delete tool_bar;
 //     delete tool_bar2;
-//     delete es_default_color;
-//     delete es_use_color;
-//     delete es_selection_color;
-//     delete es_select_and_use_color;
-//     delete es_text_color_when_selected;
-//     delete es_default_text_color;
-//     delete es_lock_color;
-//     delete es_lock_and_select_color;
-//     delete es_has_drawing_color;
-//     delete tl_default_color;
-//     delete tl_selection_color;
-//     delete tl_special_color;
-//     delete tl_offset_color;
-//     delete tl_drag_offset_color;
-//     delete tl_border_color;
-//     delete tl_use_border_color;
-//     delete tl_motion_color;
-//     delete tl_drawing_color;
+	
+	delete tl_default_color;
+	delete tl_selection_color;
+	delete tl_special_color;
+	delete tl_offset_color;
+	delete tl_drag_offset_color;
+	delete tl_border_color;
+	delete tl_use_border_color;
+	delete tl_motion_color;
+	delete tl_drawing_color;
 }
 
 //------------------- PUBLIC MEMBERS ----------------

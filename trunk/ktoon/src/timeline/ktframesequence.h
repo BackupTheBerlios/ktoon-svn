@@ -24,6 +24,8 @@
 #include <qwidget.h>
 #include <qhbox.h>
 
+#include "tlframe.h"
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
@@ -34,6 +36,9 @@ class KTFrameSequence : public QHBox
 	public:
 		KTFrameSequence(QWidget *parent);
 		~KTFrameSequence();
+		
+	private:
+		void createFrames();
 
 };
 

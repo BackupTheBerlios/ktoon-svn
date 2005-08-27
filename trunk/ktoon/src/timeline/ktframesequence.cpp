@@ -19,9 +19,17 @@
  ***************************************************************************/
 
 #include "ktframesequence.h"
+#include "ktdebug.h"
+
+#include <qlayout.h>
 
 KTFrameSequence::KTFrameSequence(QWidget *parent) : QHBox(parent)
 {
+	static_cast<QBoxLayout *>(layout())->setAlignment(Qt::AlignLeft);
+	
+	resize( 3000, 24 );
+	
+	createFrames();
 }
 
 
@@ -30,3 +38,19 @@ KTFrameSequence::~KTFrameSequence()
 }
 
 
+void KTFrameSequence::createFrames()
+{
+	for(uint i = 0; i < 100; i++)
+	{
+		TLFrame *nextFrame = new TLFrame( this );
+		if ( i % 5 == 0 )
+		{
+			nextFrame->setSpecial( true );
+		}
+		if ( i == 1 )
+		{
+			nextFrame->setKey( true );
+			nextFrame->setLast( true );
+		}
+	}
+}

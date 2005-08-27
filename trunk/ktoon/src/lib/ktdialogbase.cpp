@@ -27,6 +27,7 @@ KTDialogBase::KTDialogBase(Place p, QWidget *parent, const char *name, WFlags st
 	: QDockWindow(p, parent, name, style), m_isChildHidden(false)
 {
 	container = boxLayout();
+
 	setCloseMode(Undocked);
 
 	childs = new QObjectList();
@@ -35,7 +36,7 @@ KTDialogBase::KTDialogBase(Place p, QWidget *parent, const char *name, WFlags st
 	
 	QToolTip::add(m_title, tr("Double click for roll up"));
 	
-	container->addWidget(m_title);
+	container->addWidget(m_title, 0, Qt::AlignTop);
 	container->setDirection ( QBoxLayout::TopToBottom);
 	container->setMargin(5);
 	container->setSpacing(3);

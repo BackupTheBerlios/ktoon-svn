@@ -46,7 +46,7 @@ class Document;
  * a custom color palette, and a list of brushes.
  */
 
-class Document
+class Document : public QObject
 {
 	public:
 		Document();

@@ -29,7 +29,7 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTLayerSequence : public QVBox
+class KTLayerSequence : public QScrollView
 {
 	Q_OBJECT
 	public:
@@ -39,8 +39,12 @@ class KTLayerSequence : public QVBox
 	public slots:
 		
 	private:
-// 		QVBox *m_layerContainer;
+		QVBox *m_layerContainer;
 		KTTimeLineLayer *m_defaultLayer;
+		QPtrList<KTTimeLineLayer> m_layers;
+	
+	protected:
+		void resizeEvent(QResizeEvent *e);
 
 };
 
