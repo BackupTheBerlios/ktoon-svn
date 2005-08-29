@@ -27,14 +27,14 @@ KTFrameSequenceManager::KTFrameSequenceManager(QWidget *parent) : QVBox(parent, 
 {
 	KTINIT;
 	
-	m_ruler = new KTTLRuler(this);
-	m_ruler->setMinimumSize(300, m_ruler->height());
-	
 	m_sequenceLayout = new QScrollView(this);
 	m_sequenceLayout->enableClipper( true );
 	
 	m_vBox = new QVBox(m_sequenceLayout->viewport());
 	m_sequenceLayout->addChild(m_vBox);
+	
+	m_ruler = new KTTLRuler(m_vBox);
+	m_ruler->setMinimumSize(300, m_ruler->height());
 	
 	setMaximumHeight( sizeHint().height() );
 	

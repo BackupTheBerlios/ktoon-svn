@@ -26,7 +26,12 @@
  * @brief Include this file if you need the class GLBitmap
  */
 
+#ifdef Q_WS_MAC
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
+
 #include <qgl.h>
 
 #include "glgraphiccomponent.h"

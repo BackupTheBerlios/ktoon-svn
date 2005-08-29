@@ -26,7 +26,11 @@
  * @brief Include this file if you need the class GLGrid
  */
 
+#ifdef Q_WS_MAC
+#include <OpenGL/gl.h>
+#else
 #include <GL/gl.h>
+#endif
 
 class QGLWidget;
 class QPoint;

@@ -22,8 +22,13 @@
 
 #include <cmath>
 #include <cstdlib>
+
+#ifdef Q_WS_MAC
+#include <OpenGL/glu.h>
+#else
 #include <GL/gl.h>
 #include <GL/glu.h>
+#endif
 
 #include "glbrush.h"
 

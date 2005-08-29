@@ -31,7 +31,7 @@ TLFrame::TLFrame( QWidget *parent )
 	Q_CHECK_PTR( parent );
     
     //Initializations
-	setMinimumSize( 10, 23 );
+	setMinimumSize( 10, 24 );
 	
 	setFrameStyle( QFrame::MenuBarPanel | QFrame::Plain );
 

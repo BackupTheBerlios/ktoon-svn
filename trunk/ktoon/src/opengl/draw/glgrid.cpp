@@ -22,7 +22,12 @@
 #include <qgl.h>
 #include <qfont.h>
 #undef QT_CLEAN_NAMESPACE
+
+#ifdef Q_WS_MAC
+#include <AGL/agl.h>
+#else
 #include <GL/glx.h>
+#endif
 
 #include "glgrid.h"
 #include "drawingarea.h"
@@ -297,6 +302,8 @@ void GLGrid::buildFonts()
 #ifdef Q_WS_X11
 	Font desc = XLoadFont( parent_widget -> x11Display(), GRID_FONT );
 	glXUseXFont( desc, 0, 256, id_fonts );
+#elif Q_WS_MAC
+	aglUseFont( aglGetCurrentContext(), 0, 0, 10, 0, 256, id_fonts);
 #endif
 }
 
