@@ -27,8 +27,10 @@
  */
 
 #include <qptrlist.h>
+#include <qhbox.h>
 
 #include "tlframe.h"
+
 
 class TLFrameSequenceLayout;
 class TLRuler;
@@ -42,7 +44,7 @@ class KeyFrame;
  * <b>Date of Creation: June 22 - 2004.</b>\n
  * A frame sequence contains a fixed number of frames, denoted by the only constant of this class.
  */
-class TLFrameSequence : public QWidget
+class TLFrameSequence : public QHBox
 {
     Q_OBJECT
 

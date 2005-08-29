@@ -224,7 +224,6 @@ public:
     void setUseProperties( TLFrame *in_frame );
 
 private:
-    QWidget *parent_widget;
     QPainter p;
     QPopupMenu *right_click_menu;
     bool is_special;

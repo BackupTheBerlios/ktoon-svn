@@ -36,9 +36,16 @@ KTFrameSequenceManager::KTFrameSequenceManager(QWidget *parent) : QVBox(parent, 
 	m_vBox = new QVBox(m_sequenceLayout->viewport());
 	m_sequenceLayout->addChild(m_vBox);
 	
+	setMaximumHeight( sizeHint().height() );
+	
 	m_frameSequence = new KTFrameSequence(m_vBox);
 	m_frameSequence->show();
-
+#if 0
+	for(uint i =0; i < 30; i++)
+	{
+		new KTFrameSequence(m_vBox);
+	}
+#endif
 }
 
 

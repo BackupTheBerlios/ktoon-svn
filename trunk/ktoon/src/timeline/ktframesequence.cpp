@@ -22,13 +22,10 @@
 #include "ktdebug.h"
 
 #include <qlayout.h>
+#include <qlabel.h>
 
-KTFrameSequence::KTFrameSequence(QWidget *parent) : QHBox(parent)
+KTFrameSequence::KTFrameSequence(QWidget *parent) : QHBox(parent, "KTFrameSequence")
 {
-	static_cast<QBoxLayout *>(layout())->setAlignment(Qt::AlignLeft);
-	
-	resize( 3000, 24 );
-	
 	createFrames();
 }
 
@@ -43,11 +40,12 @@ void KTFrameSequence::createFrames()
 	for(uint i = 0; i < 100; i++)
 	{
 		TLFrame *nextFrame = new TLFrame( this );
+
 		if ( i % 5 == 0 )
 		{
 			nextFrame->setSpecial( true );
 		}
-		if ( i == 1 )
+		if ( i == 0 )
 		{
 			nextFrame->setKey( true );
 			nextFrame->setLast( true );

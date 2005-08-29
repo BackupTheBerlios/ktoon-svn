@@ -44,13 +44,15 @@ KTLayerSequence::KTLayerSequence(QWidget *parent) : QScrollView(parent, "KTLayer
 	
 	setMaximumHeight( sizeHint().height() ); // IMPORTANT
 	
+#if 0
 	// TEST CODE
-// 	for(uint i = 0; i < 30; i++)
-// 	{
-// 		KTTimeLineLayer *tmp = new KTTimeLineLayer (tr("Layer %1").arg("1"), 1, m_layerContainer);
-// 		m_layers.append(tmp);
-// 	}
+	for(uint i = 0; i < 30; i++)
+	{
+		KTTimeLineLayer *tmp = new KTTimeLineLayer (tr("Layer %1").arg("1"), 1, m_layerContainer);
+		m_layers.append(tmp);
+	}
 	////
+#endif
 	
 // 	connect( default_layer, SIGNAL( selected() ), SLOT( slotSelectLayer() ) );
 // 	connect( default_layer, SIGNAL( draggedAbove( int ) ), SLOT( slotDragLayerAbove( int ) ) );
@@ -75,9 +77,9 @@ KTLayerSequence::~KTLayerSequence()
 
 void KTLayerSequence::resizeEvent(QResizeEvent *e)
 {
-	QSize new_size = e->size();
+	QSize nSize = e->size();
 	QWidget::resizeEvent( e );
-	m_layerContainer->resize( new_size.width(), m_layerContainer->height() );
+	m_layerContainer->resize( nSize.width(), m_layerContainer->height() );
 }
 
 

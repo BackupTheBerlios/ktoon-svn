@@ -27,8 +27,9 @@
 //--------------- CONSTRUCTOR --------------------
 
 TLFrameSequence::TLFrameSequence( int in_position, QWidget *parent, QWidget *grandparent )
-    : QWidget( parent )
+    : QHBox( parent )
 {
+// 	static_cast<QBoxLayout *>(layout())->setAlignment(Qt::AlignLeft);
     Q_CHECK_PTR( parent );
     Q_CHECK_PTR( grandparent );
     
@@ -46,7 +47,7 @@ TLFrameSequence::TLFrameSequence( int in_position, QWidget *parent, QWidget *gra
     for ( int i = 1; i <= TL_MAX_NUMBER_OF_FRAMES; i++ )
     {
 	next_frame = new TLFrame( this );
-	next_frame -> move( list_of_frames.count() * next_frame -> width(), 0 );
+// 	next_frame -> move( list_of_frames.count() * next_frame -> width(), 0 );
 	if ( i % 5 == 0 )
 	    next_frame -> setSpecial( true );
 	if ( i == 1 )
