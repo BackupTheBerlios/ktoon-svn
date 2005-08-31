@@ -27,6 +27,8 @@
 #include "kttlruler.h"
 #include "ktframesequence.h"
 
+typedef QPtrList<KTFrameSequence> ListOfFrameSequences;
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
@@ -37,12 +39,26 @@ class KTFrameSequenceManager : public QVBox
 	public:
 		KTFrameSequenceManager(QWidget *parent);
 		~KTFrameSequenceManager();
+		QScrollBar *verticalScrollBar();
+		
+	public slots:
+		void insertFrameSequence();
+		void removeFrameSequence();
+		
+	private slots:
+		void moveRuler(int);
 		
 	private:
+		ListOfFrameSequences m_sequences;
+		
 		QScrollView *m_sequenceLayout;
 		QVBox *m_vBox;
 		KTTLRuler *m_ruler;
-		KTFrameSequence *m_frameSequence;
+		KTFrameSequence *m_lastSequence, *m_currentFrameSequence;
+		
+// 		QHBox *m_utils;
+		
+		QScrollBar *m_scroll;
 
 };
 

@@ -39,6 +39,9 @@ class KTTimeLine : public KTDialogBase
 		KTTimeLine(QWidget *parent = 0);
 		~KTTimeLine();
 		
+	public slots:
+		void execAction(int action);
+		
 	private:
 		QHBox *m_container;
 		QSplitter *m_splitter;

@@ -21,7 +21,7 @@
 #ifndef RULER_H
 #define RULER_H
 
-#include <qwidget.h>
+#include <qframe.h>
 #include <qpixmap.h>
 #include <qpointarray.h>
 
@@ -33,7 +33,7 @@ class KTRulerBase;
  * @author Jorge Cuadrado
 */
 
-class KTRulerBase : public QWidget
+class KTRulerBase : public QFrame
 {
 	Q_OBJECT
 	
@@ -73,8 +73,10 @@ class KTRulerBase : public QWidget
 		int m_separation;
 		QPixmap m_scale;
 		Orientation orientation;
-		QPointArray m_arrow;
 		bool m_drawPointer;
+		
+	protected:
+		QPointArray m_pArrow;
 		
 	signals:
 		void displayMenu(KTRulerBase *, QPoint pos);

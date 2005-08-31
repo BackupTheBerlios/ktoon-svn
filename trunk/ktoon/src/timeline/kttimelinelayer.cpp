@@ -22,10 +22,12 @@
 #include "ktapplication.h"
 #include <qpixmap.h>
 #include <qlayout.h>
+#include <qtooltip.h>
 
-KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, QWidget *parent) : QHBox(parent, "KTTimeLineLayer")
+#include "ktdebug.h"
+
+KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, QWidget *parent) : QHBox(parent, "KTTimeLineLayer"), m_isLocked(false), m_isVisible(true), m_onlySeeOutlines(false), m_isSelected(false), m_isEdited(false)
 {
-;
 	setMinimumSize( 192, 24 );
 	setFrameStyle( QFrame::Panel | QFrame::Raised );
 	setLineWidth( 2 );
@@ -36,28 +38,26 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, QWidget *par
 	
 	//----------- Main Component Initializations -------------
 	
-	QLabel *static_layer_image = new QLabel( this );
-	static_layer_image -> setPixmap( QPixmap( KTOON_HOME+"/images/icons/layer_pic.xpm" ) );
-	static_layer_image->resize( 20, 20 );
-// 	static_layer_image->move( 2, 2 );
+	QLabel *staticLayerImage = new QLabel( this );
+	staticLayerImage -> setPixmap( QPixmap( KTOON_HOME+"/images/icons/layer_pic.xpm" ) );
+	staticLayerImage->resize( 20, 20 );
 
-	m_layerName = new QLabel( name, this );
-	m_layerName -> resize( 50, 20 );
-	m_layerName -> setFont( QFont( font().family(), 9 ) );
-// 	m_layerName -> move( static_layer_image -> x() + static_layer_image -> width(), 2 );
+	m_layerName = new KTSqueezeLabel( name, this );
+	m_layerName->setMargin(1);
+	m_layerName->resize( 50, 20 );
+	m_layerName->setFont( QFont( font().family(), 9 ) );
 	
 	m_editionImage = new QLabel( this );
-	m_editionImage -> resize( 20, 20 );
-// 	edition_image -> move( visibility_image -> x() - edition_image -> width() - 2, 2 );
+	m_editionImage -> setMinimumSize( 19, 19 );
+	m_editionImage -> setMaximumSize( 19, 19 );
 
-
-	m_nameEditor = new QLineEdit( this );
-	m_nameEditor->resize( 50, 20 );
+	m_nameEditor = new QLineEdit( m_layerName );
+	
 	m_nameEditor->setFont( QFont( font().family(), 9 ) );
-// 	m_nameEditor->move( layer_name -> x(), 2 );
+
 	m_nameEditor->hide();
-// 	connect( edit_name, SIGNAL( lostFocus() ), SLOT( slotEditName() ) );
-// 	connect( edit_name, SIGNAL( returnPressed() ), SLOT( slotEditName() ) );
+	connect( m_nameEditor, SIGNAL( lostFocus() ), SLOT( editName() ) );
+	connect( m_nameEditor, SIGNAL( returnPressed() ), SLOT( editName() ) );
 	
 	m_utils = new QHBox(this);
 	m_utils->layout()->setAlignment(Qt::AlignRight );
@@ -67,17 +67,17 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, QWidget *par
 	m_visibilityImage = new QLabel( m_utils );
 	m_visibilityImage -> setPixmap( QPixmap( KTOON_HOME+"/images/icons/enable.xpm" ) );
 	m_visibilityImage -> resize( 20, 20 );
-// 	visibility_image -> move( lock_image -> x() - visibility_image -> width() - 2, 2 );
+
 	
 	m_lockImage = new QLabel( m_utils );
 	m_lockImage -> setPixmap( QPixmap( KTOON_HOME+"/images/icons/disable.xpm" ) );
 	m_lockImage -> resize( 20, 20 );
-// 	lock_image -> move( m_onlyOutlines -> x() - lock_image -> width() - 2, 2 );
-	
+
 	m_onlyOutlines = new QCheckBox( m_utils );
+	m_onlyOutlines->setPaletteForegroundColor(Qt::black); // FIXME
 	m_onlyOutlines -> resize( 20, 20 );
-// 	m_onlyOutlines -> move( width() - m_onlyOutlines -> width() - 22, 2 );
-// 	connect( m_onlyOutlines, SIGNAL( clicked() ), SLOT( slotOnlyOutlines() ) );
+
+	connect( m_onlyOutlines, SIGNAL( clicked() ), this, SLOT( toggleOutlines() ) );
 	
 	QWidget *spacer = new QWidget(m_utils);
 	spacer->setMinimumWidth(20);
@@ -90,4 +90,129 @@ KTTimeLineLayer::~KTTimeLineLayer()
 {
 }
 
+void KTTimeLineLayer::setSelected( bool selected )
+{
+	m_isSelected = selected;
+
+	if ( m_isSelected )
+	{
+		m_layerName->setPaletteForegroundColor( palette().color(QPalette::Active , QColorGroup::HighlightedText) );
+		m_layerName->setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight) );
+		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight) );
+	}
+	else
+	{
+		m_layerName->setPaletteForegroundColor( parentWidget()->paletteForegroundColor() );
+		m_layerName->setPaletteBackgroundColor( parentWidget()->paletteBackgroundColor() );
+		setPaletteBackgroundColor( parentWidget()->paletteBackgroundColor() );
+	}
+}
+
+void KTTimeLineLayer::setEdited( bool isEdited )
+{
+	m_isEdited = isEdited;
+	
+	if ( m_isEdited )
+	{
+		m_editionImage -> setPixmap( QPixmap( KTOON_HOME+"/images/icons/written_pic.xpm" ) );
+	}
+	else
+	{
+		m_editionImage->setPixmap( QString::null );
+	}
+}
+
+void KTTimeLineLayer::setOnlyOutlines( bool yes )
+{
+	m_onlyOutlines->setChecked(yes);
+}
+
+void KTTimeLineLayer::toggleOutlines()
+{
+// 	m_onlyOutlines->toggle();
+	
+	m_onlySeeOutlines = !m_onlySeeOutlines;	
+	m_onlyOutlines->setChecked(m_onlySeeOutlines);
+	
+	setSelected( true );
+	setEdited( true );
+
+// 	emit selected();
+}
+
+void KTTimeLineLayer::setLock(bool yes)
+{
+	if ( !yes )
+	{
+		m_lockImage->setPixmap( QPixmap( KTOON_HOME+"/images/icons/enable.xpm" ) );
+	}
+	else
+	{
+		m_lockImage->setPixmap( QPixmap( KTOON_HOME+"/images/icons/disable.xpm" ) );
+	}
+	m_isLocked = yes;
+}
+
+void KTTimeLineLayer::toggleLock()
+{
+	if ( !m_isLocked )
+	{
+		m_lockImage->setPixmap( QPixmap( KTOON_HOME+"/images/icons/enable.xpm" ) );
+	}
+	else
+	{
+		m_lockImage->setPixmap( QPixmap( KTOON_HOME+"/images/icons/disable.xpm" ) );
+	}
+	m_isLocked = !m_isLocked;
+}
+
+void KTTimeLineLayer::setView(bool yes)
+{
+	if ( !yes )
+	{
+		m_visibilityImage -> setPixmap( QPixmap( KTOON_HOME+"/images/icons/enable.xpm" ) );
+	}
+	else
+	{
+		m_visibilityImage->setPixmap( QPixmap( KTOON_HOME+"/images/icons/disable.xpm" ) );
+	}
+	m_isVisible = yes;
+}
+
+void KTTimeLineLayer::toggleView()
+{
+	if ( !m_isVisible )
+	{
+		m_visibilityImage -> setPixmap( QPixmap( KTOON_HOME+"/images/icons/enable.xpm" ) );
+	}
+	else
+	{
+		m_visibilityImage->setPixmap( QPixmap( KTOON_HOME+"/images/icons/disable.xpm" ) );
+	}
+	m_isVisible = !m_isVisible;
+}
+
+void KTTimeLineLayer::editName()
+{
+	m_layerName->setText( m_nameEditor->text() );
+	m_nameEditor-> hide();
+
+// 	emit renamed( layer_name -> text() );
+}
+
+void KTTimeLineLayer::mouseDoubleClickEvent( QMouseEvent *e )
+{
+	if ( childAt( e->pos() ) == m_layerName && e->button() == Qt::LeftButton )
+	{
+		m_nameEditor->setText( m_layerName->completeText() );
+		m_nameEditor->resize( m_layerName->size() );
+		m_nameEditor->show();
+		m_nameEditor->setFocus();
+		e-> accept();
+	}
+	else
+	{
+		e->ignore();
+	}
+}
 

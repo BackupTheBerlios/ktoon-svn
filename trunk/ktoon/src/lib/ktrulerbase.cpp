@@ -25,7 +25,7 @@
 #include <qpixmap.h>
 
 KTRulerBase::KTRulerBase(Orientation orientation, QWidget *parent, const char *name)
-	: QWidget(parent, name), m_position(0), orientation(orientation),m_arrow(3), m_drawPointer(false), m_separation(100)
+	: QFrame(parent, name), m_position(0), orientation(orientation),m_pArrow(3), m_drawPointer(false), m_separation(100)
 {
 	m_scale.setOptimization( QPixmap::BestOptim );
 	m_scale.resize( width(),height());
@@ -33,19 +33,19 @@ KTRulerBase::KTRulerBase(Orientation orientation, QWidget *parent, const char *n
 	
 	if(orientation == Horizontal)
 	{
-// 		m_arrow.setPoints(3, 20, 0, 0, 0+2, 0, 0-2);
-// 		m_arrow.setPoints(3,9,0,0,5,10,10,0);
-		m_arrow.setPoint ( 0, 0, 0);
-		m_arrow.setPoint ( 1, 5, 10);
-		m_arrow.setPoint ( 2, 10, 0);
+// 		m_pArrow.setPoints(3, 20, 0, 0, 0+2, 0, 0-2);
+// 		m_pArrow.setPoints(3,9,0,0,5,10,10,0);
+		m_pArrow.setPoint ( 0, 0, 0);
+		m_pArrow.setPoint ( 1, 5, 10);
+		m_pArrow.setPoint ( 2, 10, 0);
 		setMaximumHeight ( 25 );
 		setMinimumHeight (25);
 	}
 	else if(orientation == Vertical)
 	{
-		m_arrow.setPoint ( 0, 0, 0);
-		m_arrow.setPoint ( 1, 10, 5);
-		m_arrow.setPoint ( 2, 0, 10);
+		m_pArrow.setPoint ( 0, 0, 0);
+		m_pArrow.setPoint ( 1, 10, 5);
+		m_pArrow.setPoint ( 2, 0, 10);
 		setMaximumWidth(25);
 		setMinimumWidth(25);
 	}
@@ -57,7 +57,7 @@ KTRulerBase::KTRulerBase(Orientation orientation, QWidget *parent, const char *n
 
 KTRulerBase::~KTRulerBase()
 {
-// 	delete m_arrow;
+// 	delete m_pArrow;
 // 	delete m_scale;
 }
 
@@ -65,14 +65,14 @@ void KTRulerBase::paintEvent ( QPaintEvent * e)
 {
 	QPainter p(this);
 	p.drawPixmap ( 0, 0, m_scale);
-// 	p.drawPolygon (m_arrow,true,0,3);
+// 	p.drawPolygon (m_pArrow,true,0,3);
 	if ( m_drawPointer )
 	{
 		p.setPen(foregroundColor ());
 		p.setBrush(foregroundColor () );
-		p.drawConvexPolygon(m_arrow);//,true,0,3);
+		p.drawConvexPolygon(m_pArrow);//,true,0,3);
 	}
-// 	p.drawCubicBezier (m_arrow) ;
+// 	p.drawCubicBezier (m_pArrow) ;
 	p.end();
 }
 
@@ -83,24 +83,24 @@ void KTRulerBase::paintEvent ( QPaintEvent * e)
 // 		if(orientation == Horizontal)
 // 		{
 // // 			if(pos < width())
-// // 				m_arrow.translate( pos - newPos , 0 );
+// // 				m_pArrow.translate( pos - newPos , 0 );
 // 			if(newPos.x() > 0)
 // 			{
-// 				m_arrow[0].setX ( newPos.x()-5 );
-// 				m_arrow[1].setX ( newPos.x() );
-// 				m_arrow[2].setX ( newPos.x()+5 ); //25.4/72.0
+// 				m_pArrow[0].setX ( newPos.x()-5 );
+// 				m_pArrow[1].setX ( newPos.x() );
+// 				m_pArrow[2].setX ( newPos.x()+5 ); //25.4/72.0
 // 			}
 // 		}
 // 		else if(orientation == Vertical)
 // 		{
 // 			if(newPos.x() > 0)
 // 			{
-// 				m_arrow[0].setY ( newPos.y()-5 );
-// 				m_arrow[1].setY ( newPos.y() );
-// 				m_arrow[2].setY ( newPos.y()+5);
+// 				m_pArrow[0].setY ( newPos.y()-5 );
+// 				m_pArrow[1].setY ( newPos.y() );
+// 				m_pArrow[2].setY ( newPos.y()+5);
 // 			}
 // // 			if(pos < height())
-// // 				m_arrow.translate( 0 , pos -newPos );
+// // 				m_pArrow.translate( 0 , pos -newPos );
 // 		}
 // 		repaint();
 // // 	}

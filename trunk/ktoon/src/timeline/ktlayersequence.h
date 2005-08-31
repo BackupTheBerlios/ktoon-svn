@@ -25,6 +25,8 @@
 #include <qscrollview.h>
 #include <qvbox.h>
 
+typedef QPtrList<KTTimeLineLayer>  ListOfTLLayers;
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
@@ -35,13 +37,20 @@ class KTLayerSequence : public QScrollView
 	public:
 		KTLayerSequence(QWidget *parent);
 		~KTLayerSequence();
+		ListOfTLLayers layers();
+		void setPalette(const QPalette &);
 		
 	public slots:
+		void createNewLayer();
+		void removeLayer();
 		
 	private:
 		QVBox *m_layerContainer;
 		KTTimeLineLayer *m_defaultLayer;
-		QPtrList<KTTimeLineLayer> m_layers;
+		ListOfTLLayers m_layers;
+		
+	protected:
+		KTTimeLineLayer *m_pCurrentLayer, *m_pLastLayer;
 	
 	protected:
 		void resizeEvent(QResizeEvent *e);

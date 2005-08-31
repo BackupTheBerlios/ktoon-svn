@@ -90,7 +90,7 @@ public:
      * @return A pointer to the layer in that position
      */
     TLLayer *layerAt( int pos );
-    /*
+    /**
      * @brief Sets all layers to the state "no dragged"
      */
     void clearDraggedLayers();

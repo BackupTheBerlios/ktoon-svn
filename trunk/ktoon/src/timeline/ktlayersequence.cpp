@@ -62,10 +62,10 @@ KTLayerSequence::KTLayerSequence(QWidget *parent) : QScrollView(parent, "KTLayer
 // 	connect( default_layer, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameLayer( const QString & ) ) );
 // 	connect( default_layer, SIGNAL( visibilityChanged( bool ) ), SLOT( slotChangeVisibilityState( bool ) ) );
 
-// 	current_layer = default_layer;
-// 	last_layer = current_layer;
-// 	current_layer -> setSelected( true );
-// 	current_layer -> setEdited( true );
+	m_pCurrentLayer = m_defaultLayer;
+	m_pLastLayer = m_pCurrentLayer;
+	m_pCurrentLayer -> setSelected( true );
+	m_pCurrentLayer -> setEdited( true );
 }
 
 
@@ -82,4 +82,68 @@ void KTLayerSequence::resizeEvent(QResizeEvent *e)
 	m_layerContainer->resize( nSize.width(), m_layerContainer->height() );
 }
 
+ListOfTLLayers KTLayerSequence::layers()
+{
+	return m_layers;
+}
 
+void KTLayerSequence::setPalette(const QPalette &)
+{
+}
+
+void KTLayerSequence::createNewLayer()
+{
+	KTTimeLineLayer *newLayer = new KTTimeLineLayer( tr( "New Layer %1").arg( m_layers.count()), m_layers.count(), m_layerContainer);
+	newLayer -> resize( width(), 24 );
+// 	connect( newLayer, SIGNAL( selected() ), SLOT( slotSelectLayer() ) );
+// 	connect( newLayer, SIGNAL( draggedAbove( int ) ), SLOT( slotDragLayerAbove( int ) ) );
+// 	connect( newLayer, SIGNAL( draggedBelow( int ) ), SLOT( slotDragLayerBelow( int ) ) );
+// 	connect( newLayer, SIGNAL( releasedAbove( int ) ), SLOT( slotReleaseLayerAbove( int ) ) );
+// 	connect( newLayer, SIGNAL( releasedBelow( int ) ), SLOT( slotReleaseLayerBelow( int ) ) );
+// 	connect( newLayer, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameLayer( const QString & ) ) );
+// 	connect( newLayer, SIGNAL( visibilityChanged( bool ) ), SLOT( slotChangeVisibilityState( bool ) ) );
+	
+	newLayer -> show();
+	m_layers.append( newLayer );
+}
+
+void KTLayerSequence::removeLayer()
+{
+	if ( m_layers.count() > 1 )
+	{
+		KTTimeLineLayer *bridgeLayer;
+		
+		//Case 1: When the layer is the last within the list of layers
+		if ( m_pCurrentLayer == m_pLastLayer )
+		{
+			m_layers.remove( m_pCurrentLayer );
+			bridgeLayer = m_layers.getLast();
+			delete m_pCurrentLayer;
+			m_pCurrentLayer = bridgeLayer;
+			m_pLastLayer = m_pCurrentLayer;
+			m_pCurrentLayer -> setSelected( true );
+			m_pCurrentLayer -> setEdited( true );
+		}
+		
+		//Case 2: When the layer is any except the last
+		else
+		{
+			bridgeLayer = m_layers.at( m_layers.find( m_pCurrentLayer ) + 1 );
+			
+			//Reaccomodate every layer next to the layer that is going to be deleted
+// 			KTTimeLineLayer *iterator;
+// 			for ( iterator = bridgeLayer; iterator; layer_iterator = m_layers.next() )
+// 			{
+// 				moveChild( iterator, childX( iterator ), childY( iterator ) - iterator -> height() );
+// 				iterator -> setPosition( iterator->position() - 1 );
+// 			}
+
+			m_layerContainer->layout()->remove(m_pCurrentLayer);
+			m_layers.remove( m_pCurrentLayer );
+			delete m_pCurrentLayer;
+			m_pCurrentLayer = bridgeLayer;
+			m_pCurrentLayer->setSelected( true );
+			m_pCurrentLayer->setEdited( true );
+		}
+	}
+}

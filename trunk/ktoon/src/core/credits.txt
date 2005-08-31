@@ -14,6 +14,12 @@ Fernando Jose Roldan Correa
 <froldan@parquesoft.com>
 <froldan@toonka.com>
 
+
+Patch for compiling on Mac
+--------------------------
+"Daniel Lurie" <dl1021@optonline.net>
+
+
 ----------------------------
 Development Advisor
 

@@ -26,6 +26,7 @@
 #include <qlabel.h>
 #include <qcheckbox.h>
 
+#include "ktsqueezelabel.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -38,13 +39,35 @@ class KTTimeLineLayer : public QHBox
 		KTTimeLineLayer(const QString &name = "Layer", int position = 0, QWidget *parent = 0);
 		~KTTimeLineLayer();
 		
+	public slots:
+		void setSelected( bool selected );
+		void setEdited( bool isEdited );
+		
+		void setOnlyOutlines( bool yes = true);
+		void toggleOutlines();
+		
+		void setLock(bool yes = true);
+		void toggleLock();
+		
+		void setView(bool yes = true);
+		void toggleView();
+		
+		void editName();
+		
+	protected:
+		void mouseDoubleClickEvent( QMouseEvent *e );
+		
+		
 	private:
 		QLineEdit *m_nameEditor;
 		QCheckBox *m_onlyOutlines;
 		int m_position;
-		QLabel *m_editionImage, *m_visibilityImage, *m_lockImage, *m_layerName;
+		KTSqueezeLabel *m_layerName;
+		QLabel *m_editionImage, *m_visibilityImage, *m_lockImage;
 		
 		QHBox *m_utils;
+		
+		bool m_isLocked, m_isVisible, m_onlySeeOutlines, m_isSelected, m_isEdited;
 
 };
 

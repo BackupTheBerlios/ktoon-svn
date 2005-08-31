@@ -36,7 +36,7 @@ class KTFrameSequence : public QHBox
 	public:
 		KTFrameSequence(QWidget *parent);
 		~KTFrameSequence();
-		
+
 	private:
 		void createFrames();
 

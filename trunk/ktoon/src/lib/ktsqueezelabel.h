@@ -18,67 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qvaluelist.h>
+#ifndef KTSQUEEZELABEL_H
+#define KTSQUEEZELABEL_H
 
-#include "kttimeline.h"
-#include "ktapplication.h"
-#include "ktdebug.h"
+#include <qlabel.h>
 
-KTTimeLine::KTTimeLine(QWidget *parent) : KTDialogBase(QDockWindow::OutsideDock, parent, "KTTimeLine")
+/**
+ * Class based in KSqueezedTextLabel from kde libraries
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+
+class KTSqueezeLabel : public QLabel
 {
-	KTINIT;
-	
-	setCaption(tr("The Time line"));
-	
-	m_container = new QHBox(this);
-	addChild(m_container);
-	
-	m_splitter = new QSplitter( m_container );
-	
-	m_layerManager = new KTLayerManager( m_splitter );
-	m_layerManager->resize( m_layerManager->minimumSize() );
-	
-	m_sequenceManager = new KTFrameSequenceManager(m_splitter);
-	
-	connect(m_layerManager, SIGNAL(actionSelected(int)), this, SLOT(execAction(int)));
-	
-	// Mover scrolls simetricamente
-	connect( m_sequenceManager->verticalScrollBar(), SIGNAL( valueChanged( int ) ), m_layerManager->verticalScrollBar(), SLOT( setValue( int ) ) );
-	connect( m_layerManager->verticalScrollBar(), SIGNAL( valueChanged( int ) ), m_sequenceManager->verticalScrollBar(), SLOT( setValue( int ) ) );
-	
-	show();
-// 	hide();
-	
-	setResizeEnabled (true);
-
-	m_container->setMinimumHeight( m_container->sizeHint().height() );
-	
-	m_splitter->setSizes( QValueList<int>() << 190 << 590 );
-}
-
-
-KTTimeLine::~KTTimeLine()
-{
-	KTEND;
-}
-
-void KTTimeLine::execAction(int action)
-{
-	switch(action)
-	{
-		case KTLayerManager::InsertLayer:
-		{
-			m_sequenceManager->insertFrameSequence();
-		}
-		break;
-		case KTLayerManager::RemoveLayer:
-		{
-			m_sequenceManager->removeFrameSequence();
-		}
-		break;
+	public:
+		KTSqueezeLabel(const QString &text, QWidget *parent, const char *name=0);
+		~KTSqueezeLabel();
 		
-	}
-}
+		QSize sizeHint() const;
+		QSize minimumSizeHint() const;
+		void setText( const QString &text );
+		void setAlignment( int alignment );
+		QString completeText() const;
+		
+	protected:
+		virtual void squeezeText();
+		void resizeEvent(QResizeEvent *);
+		
+	private:
+		QString squeezer(const QString &s, const QFontMetrics& fm, uint width);
+		QString m_text;
+};
 
-
-
+#endif

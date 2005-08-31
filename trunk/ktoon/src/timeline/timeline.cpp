@@ -32,7 +32,7 @@ Timeline::Timeline( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu,
     Q_CHECK_PTR( parent );
     Q_CHECK_PTR( in_assigned_menu );
     Q_CHECK_PTR( assig_tb_button );
-    
+
     //Initializations
     setCaption( tr( "Timeline" ) );
 
@@ -91,7 +91,7 @@ Timeline::Timeline( QWidget *parent, WFlags style, QPopupMenu *in_assigned_menu,
     connect( frame_sequence_manager -> getRuler(), SIGNAL( offsetDragged( int ) ), SLOT( slotUpdateCurrentTime( int ) ) );
     connect( frame_sequence_manager -> getRuler(), SIGNAL( offsetChanged( int ) ), SLOT( slotUpdateCurrentTime( int ) ) );
     connect( frame_sequence_manager -> getRuler(), SIGNAL( maxOffsetChanged( int ) ), SLOT( slotUpdateTotalTime( int ) ) );
-    
+
 }
 
 //-------------- DESTRUCTOR -----------------

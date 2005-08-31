@@ -25,6 +25,8 @@
 #include <qpushbutton.h>
 #include <qtooltip.h>
 #include <qlabel.h>
+#include <qscrollbar.h>
+#include <qhbuttongroup.h>
 
 #include "ktimagebutton.h"
 #include "ktlayersequence.h"
@@ -37,22 +39,57 @@ class KTLayerManager : public QVBox
 {
 	Q_OBJECT
 	public:
+		enum Actions
+		{
+			NoAction = 0,
+			ShowOutlines,
+			LockLayers,
+			ToggleLayerView,
+			InsertLayer,
+			RemoveLayer,
+			MoveLayerUp,
+			MoveLayerDown
+		};
+		
+		/**
+		 * Default constructor
+		 * @param parent 
+		 * @return 
+		 */
 		KTLayerManager(QWidget *parent = 0);
 		~KTLayerManager();
+		QScrollBar *verticalScrollBar();
 		
+	private slots:
+		/**
+		 * Toggle the layer state
+		 * @param  state
+		 */
+		void changeLayersState(int state);
+		
+		/**
+		 * Select a layer action (Insert, remove, move up, move down...)
+		 * @param action 
+		 */
+		void selectLayerAction(int action);
+		
+	signals:
+		void actionSelected(int);
 		
 	private:
 		double m_currentTime, m_totalTime;
 		
-		QHBox *m_utilsInTop;
+		QHButtonGroup *m_utilsInTop;
 		KTImageButton *m_lockButton, *m_eyeButton, *m_outlineButton;
 		
-		QHBox *m_utilsInBottom;
+		QHButtonGroup *m_utilsInBottom;
 		KTImageButton *m_insertButton, *m_removeButton, *m_moveUpButton, *m_moveDownButton;
 		
 		QLabel *m_time;
 		
 		KTLayerSequence *m_sequence;
+		
+		bool m_allSelected, m_allVisible, m_allLock;
 };
 
 #endif

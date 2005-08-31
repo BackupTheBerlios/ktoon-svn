@@ -302,7 +302,7 @@
     <name>QAquaStyle</name>
     <message>
         <source>OK</source>
-        <translation>Vale</translation>
+        <translation>Aceptar</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -353,7 +353,7 @@
     </message>
     <message>
         <source>OK</source>
-        <translation>Vale</translation>
+        <translation>Aceptar</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -406,7 +406,7 @@
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Vale</translation>
+        <translation>&amp;Aceptar</translation>
     </message>
     <message>
         <source>Debug Message:</source>
@@ -465,7 +465,7 @@
     </message>
     <message>
         <source>OK</source>
-        <translation>Vale</translation>
+        <translation>Aceptar</translation>
     </message>
     <message>
         <source>Look &amp;in:</source>
@@ -907,7 +907,7 @@ Comprueba la ruta y el nombre del fichero.</translation>
     </message>
     <message>
         <source>OK</source>
-        <translation>Vale</translation>
+        <translation>Aceptar</translation>
     </message>
     <message>
         <source>Apply</source>
@@ -1105,7 +1105,7 @@ Comprueba la ruta y el nombre del fichero.</translation>
     <name>QInputDialog</name>
     <message>
         <source>OK</source>
-        <translation>Vale</translation>
+        <translation>Aceptar</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1236,7 +1236,7 @@ a
     <name>QMessageBox</name>
     <message>
         <source>OK</source>
-        <translation>Vale</translation>
+        <translation>Aceptar</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1294,7 +1294,7 @@ a
     </message>
     <message>
         <source>OK</source>
-        <translation>Vale</translation>
+        <translation>Aceptar</translation>
     </message>
     <message>
         <source>Cancel</source>
@@ -1606,7 +1606,7 @@ a
     <name>QTabDialog</name>
     <message>
         <source>OK</source>
-        <translation>Vale</translation>
+        <translation>Aceptar</translation>
     </message>
     <message>
         <source>Apply</source>
