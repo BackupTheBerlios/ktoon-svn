@@ -63,7 +63,11 @@
 #include <unistd.h>	// getpid
 #include <stdarg.h>	// vararg stuff
 #include <ctype.h>      // isprint
+
+#ifndef Q_WS_WIN
 #include <syslog.h>
+#endif
+
 #include <errno.h>
 #include <cstring>
 
@@ -218,7 +222,11 @@ static void kDebugBackend( unsigned short nLevel, int nOutput, const char *data)
 		}
 		case 3: // syslog
 		{
+#ifndef Q_WS_WIN
 			syslog( nPriority, "%s", buf);
+#else
+			write( 2, buf, nSize );
+#endif
 			break;
 		}
 	}

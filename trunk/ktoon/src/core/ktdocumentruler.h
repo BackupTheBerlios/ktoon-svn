@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   kuadrosx@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,54 +17,23 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTEXPOSURESHEET_H
-#define KTEXPOSURESHEET_H
+#ifndef KTDOCUMENTRULER_H
+#define KTDOCUMENTRULER_H
 
-#include "ktdialogbase.h"
-#include "kttableexposure.h"
-
-#include <qhbuttongroup.h>
-#include <qpushbutton.h>
-#include <qaction.h>
-#include <qvaluelist.h>
-#include <qstringlist.h>
-#include <qtable.h>
-#include <qlistbox.h>
-#include <qgridview.h> 
-#include "ktimagebutton.h"
+#include <ktrulerbase.h>
 
 /**
-* @author Jorge Cuadrado
+@author Jorge Cuadrado
 */
-
-
-typedef QValueList<QPixmap> imgs;
-
-class KTExposureSheet : public KTDialogBase
+class KTDocumentRuler : public KTRulerBase
 {
-	
 	Q_OBJECT
 	public:
-		KTExposureSheet(QWidget *parent = 0, const char *name = 0);
-		~KTExposureSheet();
-		enum Actions { NoAction = 0, InsertLayer, RemoveLayer, ShowManageLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
+		KTDocumentRuler(Orientation orientation=Horizontal, QWidget *parent = 0, const char *name = 0);
+		~KTDocumentRuler();
 	
-	private:
-
-		imgs m_imgs;
-		QHButtonGroup *buttonsPanel;
-		QActionGroup *m_actions;
-		KTTableExposure *m_viewLayer;
-		
-	private:
-		void setupButtons();
-		
 	public slots:
-		void applyAction(int action);
-		void slotInsertLayer();
-		
-	signals:
-		void applyedAction(Actions action);
+		void movePointers(QPoint pos);
 };
 
 #endif

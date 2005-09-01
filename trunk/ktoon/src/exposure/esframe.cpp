@@ -26,12 +26,13 @@
 //--------------- CONSTRUCTOR --------------------
 
 ESFrame::ESFrame( const QString &initial_text,int id, QWidget *parent )
-	: QLabel( parent )  ,  is_used(false), is_selected(false), is_locked(false),  is_motion(false), has_drawing(false), m_id(id), m_initialText(initial_text)
+	: KTSqueezeLabel( parent )  ,  is_used(false), is_selected(false), is_locked(false),  is_motion(false), has_drawing(false), m_id(id), m_initialText(initial_text)
 {
 // 	KTINIT;
     //Initializations
 	setFrameStyle( QFrame::Panel | QFrame::Raised );
 	setLineWidth( 2 );
+
 // 	is_used = false;
 // 	is_selected = false;
 // 	is_locked = false;
@@ -200,7 +201,6 @@ void ESFrame::setMotion( bool in_is_motion )
 
 void ESFrame::setHasDrawing( bool in_has_drawing )
 {
-	
 	has_drawing = in_has_drawing;
 	update();
 }
@@ -208,8 +208,7 @@ void ESFrame::setHasDrawing( bool in_has_drawing )
 void ESFrame::setName( const QString &new_name )
 {
 	description -> setText( new_name);
-	setText( new_name +"  " );
-// 	resize(sizeHint());
+	setText( new_name );
 }
 
 void ESFrame::clearTextfieldFocus()
@@ -312,7 +311,7 @@ void ESFrame::mouseDoubleClickEvent( QMouseEvent *mouse_event )
 	if ( is_used == true && mouse_event -> button() == Qt::LeftButton )
 	{
 		description -> show();
-		description -> setText( text() );
+		description -> setText( completeText());
 		description -> setFocus();
 		mouse_event -> accept();
 	}
@@ -327,9 +326,14 @@ void ESFrame::drawContents( QPainter *painter )
 	
 	Q_CHECK_PTR( painter );
 	if ( has_drawing )
+	{
 		painter -> setPen( QColor( 170, 70, 10 ) );
+	}
 	else
+	{
 		painter -> setPen( QColor( 0, 0, 0 ) );
+	}
+	
 	painter -> drawText( 12, 16, text() );
 	if ( is_motion )
 	{
@@ -341,6 +345,7 @@ void ESFrame::drawContents( QPainter *painter )
 void ESFrame::resizeEvent ( QResizeEvent * e )
 {
 	description -> resize( width(), height() );
+	KTSqueezeLabel::resizeEvent(e);
 }
 
 void ESFrame::keyPressEvent(QKeyEvent *e)

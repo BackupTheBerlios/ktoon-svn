@@ -20,6 +20,7 @@
 
 #include "kttableexposure.h"
 #include <qvgroupbox.h>
+#include <qlayout.h>
 
 #include "ktdebug.h"
 
@@ -35,7 +36,9 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent, const char
 	
 	setHScrollBarMode ( Auto );
 	
-	QVGroupBox *gridNumber = new QVGroupBox( m_port);
+	QVGroupBox *gridNumber = new QVGroupBox( m_port );
+// 	gridNumber->layout()->setAlignment( Qt::AlignBottom | Qt::AlignHCenter);
+// 	gridNumber->setInsideSpacing( 2 );
 	gridNumber->setInsideSpacing( 4);
 	gridNumber->setInsideMargin ( 4 );
 	

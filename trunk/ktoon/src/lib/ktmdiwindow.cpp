@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "ktmdiwindow.h"
+#include "ktdebug.h"
+#include <qmenubar.h>
 
 KTMdiWindow::KTMdiWindow(QWidget* parent, const char* name, WFlags f): QMainWindow(parent, name, f)
 {
@@ -38,8 +40,20 @@ bool  KTMdiWindow::event( QEvent * e )
 	}
 	else if ( e->type() == QEvent::Show )
 	{
+		adjustSize();
 		emit activate(true);
+	}
+	else if( e->type() == QEvent::ShowMaximized )
+	{
+		if(menuBar())
+			menuBar()->hide();
+	}
+	else if(e->type() == QEvent::ShowNormal )
+	{
+		if(menuBar())
+			menuBar()->show();
 	}
 
 	QMainWindow::event(e );
+	
 }

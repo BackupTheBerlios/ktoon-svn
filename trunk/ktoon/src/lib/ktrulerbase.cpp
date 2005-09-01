@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+ *   kuadrosxx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -25,13 +25,13 @@
 #include <qpixmap.h>
 
 KTRulerBase::KTRulerBase(Orientation orientation, QWidget *parent, const char *name)
-	: QFrame(parent, name), m_position(0), orientation(orientation),m_pArrow(3), m_drawPointer(false), m_separation(100)
+	: QFrame(parent, name), m_position(0), m_orientation(orientation),m_pArrow(3), m_drawPointer(false), m_separation(100)
 {
 	m_scale.setOptimization( QPixmap::BestOptim );
 	m_scale.resize( width(),height());
 	m_scale.fill(paletteBackgroundColor ());
 	
-	if(orientation == Horizontal)
+	if(m_orientation == Horizontal)
 	{
 // 		m_pArrow.setPoints(3, 20, 0, 0, 0+2, 0, 0-2);
 // 		m_pArrow.setPoints(3,9,0,0,5,10,10,0);
@@ -41,7 +41,7 @@ KTRulerBase::KTRulerBase(Orientation orientation, QWidget *parent, const char *n
 		setMaximumHeight ( 25 );
 		setMinimumHeight (25);
 	}
-	else if(orientation == Vertical)
+	else if(m_orientation == Vertical)
 	{
 		m_pArrow.setPoint ( 0, 0, 0);
 		m_pArrow.setPoint ( 1, 10, 5);
@@ -109,7 +109,7 @@ void KTRulerBase::paintEvent ( QPaintEvent * e)
 
 void KTRulerBase::drawScale()
 {
-	ktDebug() << "Drawing Scale" << endl;
+// 	ktDebug() << "Drawing Scale" << endl;
 	m_scale.fill(paletteBackgroundColor ());
 
 	QPainter p(&m_scale,this);
@@ -127,7 +127,7 @@ void KTRulerBase::drawScale()
 		advance = 10;
 	}
 	
-	if(orientation == Horizontal)
+	if(m_orientation == Horizontal)
 	{
 		p.drawLine( 0, height()-1, width(), height()-1);
 		
@@ -146,14 +146,14 @@ void KTRulerBase::drawScale()
 			}
 		}
 	}
-	else if(orientation == Vertical)
+	else if(m_orientation == Vertical)
 	{
 		p.drawLine( width()-1, 0, width()-1, height());
 		for(int i =0; i < height();i += advance)
 		{
 			if( i % m_separation == 0 )
 			{
-				qDebug(QString::number(i));
+// 				qDebug(QString::number(i));
 				p.drawLine ( width(), i*range, 0, i*range );
 				p.save();
 // 				p.rotate(40);
@@ -235,4 +235,7 @@ void KTRulerBase::mousePressEvent (QMouseEvent *e)
 	}
 }
 
-
+int KTRulerBase::orientation()
+{
+	return m_orientation;
+}

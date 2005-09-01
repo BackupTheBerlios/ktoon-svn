@@ -207,6 +207,7 @@ public slots:
      * @brief Inserts a layer into the exposure sheet
      */
     void slotInsertLayer();
+	      
     /**
      * @brief Removes a layer from the exposure sheet
      */

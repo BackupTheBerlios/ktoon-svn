@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -67,12 +67,13 @@ class KTRulerBase : public QFrame
 // 		const double pts2mm(double pts);
 // 		const double mm2pts(double mm);
 		void drawScale();
+		int orientation();
 		
 	private:
 		int m_position;
 		int m_separation;
 		QPixmap m_scale;
-		Orientation orientation;
+		Orientation m_orientation;
 		bool m_drawPointer;
 		
 	protected:

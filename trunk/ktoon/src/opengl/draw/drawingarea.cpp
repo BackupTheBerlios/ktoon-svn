@@ -82,6 +82,7 @@ DrawingArea::DrawingArea( QWidget *parent, const char *name, WFlags f ) : GLCont
 	setMinimumSize( 160, 120 );
 	setMaximumSize( 1023, 650 );
 	setCaption( name );
+	setMouseTracking ( true );
 }
 
 //-------------- DESTRUCTOR -----------------
@@ -558,7 +559,7 @@ void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
 			right_click_menu -> insertSeparator();
 			//Order Submenu
 			QPopupMenu * order = new QPopupMenu( this );
-			order -> setFont( QFont( "helvetica", 10 ) );
+// 			order -> setFont( QFont( "helvetica", 10 ) );
 			order -> insertItem( QPixmap( bring_to_front_xpm ), tr( "&Bring to Front" ), this, SLOT( slotBringToFront() ) );
 			order -> insertItem( QPixmap( send_to_back_xpm ), tr( "&Send to Back" ), this, SLOT( slotSendToBack() ) );
 			order -> insertItem( QPixmap( one_forward_xpm ), tr( "One Step &Forward" ), this, SLOT( slotOneStepForward() ) );
@@ -577,7 +578,7 @@ void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
 			right_click_menu -> insertItem(tr( "A&lign" ), align );
 			// Transform Submenu
 			QPopupMenu * transform = new QPopupMenu( this );
-			transform -> setFont( QFont( "helvetica", 10 ) );
+// 			transform -> setFont( QFont( "helvetica", 10 ) );
 			transform -> insertItem( tr( "Flip &Horizontally" ), this, SLOT( slotFlipHorizontally() ) );
 			transform -> insertItem( tr( "Flip &Vertically" ), this, SLOT( slotFlipVertically() ) );
 			transform -> insertSeparator();
@@ -803,168 +804,175 @@ void DrawingArea::mouseMoveEvent( QMouseEvent *mouse_event )
 {
 	Q_CHECK_PTR( mouse_event );
 	
-	if ( KTStatus -> currentKeyFrame() == NULL )
+	if(Qt::NoButton == mouse_event->state())
 	{
-	mouse_event -> ignore();
-	return;
 	}
-	current_brush = KTStatus -> currentBrush();
-	current_graphic_list.clear();
-	
-	if( current_graphic )
+	else if(Qt::LeftButton == mouse_event->state())
 	{
-	switch ( current_cursor )
+		if ( KTStatus -> currentKeyFrame() == NULL )
 		{
-		case Tools::NORMAL_SELECTION:
-			{
-			invertMatrix();
-			mouse_event -> accept();
-			QPoint old_pos;
-	
-			old_pos.setX( newPosition().x() );
-			old_pos.setY( newPosition().y() );
-	
-			setNewPosition ( mouse_event -> pos() );
-			//qDebug("(%d - %d)(%d - %d)", newPosition().x(), newPosition().y(), oldPosition().x(),oldPosition().y() );
-			current_graphic -> translateGraphic( mapPointToMatrix( newPosition() ), mapPointToMatrix( old_pos ) );
-			modifyDocument( true );
-			}
-			break;
-		case Tools::CONTOUR_SELECTION:
-			{
-			drawSelected( mouse_event );
-			mouse_event -> accept();
-			QPoint new_point( mouse_event -> x(),  mouse_event -> y() );
-			if ( current_graphic != NULL )
-			current_graphic -> contourSelectionMoveOption( QPoint( mapPointToMatrix( new_point ) ) );
-			}
-			break;
-		case Tools::BRUSH:
-			{
-			invertMatrix();
-			mouse_event -> accept();
-			QPoint new_point( mouse_event -> x(),  mouse_event -> y() );
-			current_graphic -> brushMoveOption( /**( new */QPoint( mapPointToMatrix( new_point ) ) /*)*/ );
-			}
-			( ( GLBrush * )( current_graphic ) ) -> setPressureBrush( ( int )( ( pressureTablet() * 100 ) / 255 ) );
-			break;
-		case Tools::PENCIL:
-			{
-			invertMatrix();
-			mouse_event -> accept();
-			QPoint new_point( mouse_event -> x(),  mouse_event -> y() );
-			current_graphic -> pencilMoveOption( QPoint( mapPointToMatrix( new_point ) ) );
-			}
-			break;
-		case Tools::PEN:
-			{
-			invertMatrix();
-			mouse_event -> accept();
-			QPoint new_point( mouse_event -> x(),  mouse_event -> y() );
-			current_graphic -> penMoveOption( QPoint( mapPointToMatrix( new_point ) ) );
-			( ( GLPen * )( current_graphic ) ) -> setWidthPoint( *current_brush );
-			}
-			break;
-		case Tools::LINE:
-			{
-			invertMatrix();
-			mouse_event -> accept();
-			setNewPosition ( mouse_event -> pos() );
-			current_graphic -> lineMoveOption( mapPointToMatrix( newPosition() ) );
-			}
-			break;
-		case Tools::RECTANGLE:
-			{
-			invertMatrix();
-			mouse_event -> accept();
-			setNewPosition ( mouse_event -> pos() );
-			current_graphic -> rectangleMoveOption( mapPointToMatrix( newPosition() ) );
-			}
-			break;
-		case Tools::ELLIPSE:
-			{
-			invertMatrix();
-			mouse_event -> accept();
-			setNewPosition ( mouse_event -> pos() );
-			current_graphic -> ellipseMoveOption( mapPointToMatrix( newPosition() ) );
-			}
-			break;
-		case Tools::REMOVE_FILL:
-			break;
-		case Tools::DROPPER:
-			break;
-		case Tools::ERASER:
-			break;
-		case Tools::SLICER:
-			break;
-		case Tools::MAGNIFYING_GLASS:
-			mouse_event -> accept();
-			setNewPosition ( mouse_event -> pos() );
-			break;
-		case Tools::HAND:
-			mouse_event -> accept();
-			setOldPosition ( newPosition() );
-			setNewPosition ( mouse_event -> pos() );
-			setTranslationX( newPosition().x() - oldPosition().x() );
-			setTranslationY( newPosition().y() - oldPosition().y() );
-			glTranslatef( translationX(), translationY(), 0.0 );
-			break;
-		default:
-			break;
+		mouse_event -> ignore();
+		return;
 		}
-	}
-	else
-	{
-	switch ( current_cursor )
+		current_brush = KTStatus -> currentBrush();
+		current_graphic_list.clear();
+		
+		if( current_graphic )
 		{
-		case Tools::NORMAL_SELECTION:
-			mouse_event -> accept();
-			//setOldPosition ( newPosition() );
-			setNewPosition ( mouse_event -> pos() );
-			break;
-		case Tools::CONTOUR_SELECTION:
-			break;
-		case Tools::BRUSH:
-			break;
-		case Tools::PENCIL:
-			break;
-		case Tools::PEN:
-			break;
-		case Tools::LINE:
-			break;
-		case Tools::RECTANGLE:
-			break;
-		case Tools::ELLIPSE:
-			break;
-		case Tools::CONTOUR_FILL:
-			break;
-		case Tools::FILL:
-			break;
-		case Tools::REMOVE_FILL:
-			break;
-		case Tools::DROPPER:
-			break;
-		case Tools::ERASER:
-			break;
-		case Tools::SLICER:
-			break;
-		case Tools::MAGNIFYING_GLASS:
-			mouse_event -> accept();
-			setNewPosition ( mouse_event -> pos() );
-			break;
-		case Tools::HAND:
-			mouse_event -> accept();
-			setOldPosition ( newPosition() );
-			setNewPosition ( mouse_event -> pos() );
-			setTranslationX( newPosition().x() - oldPosition().x() );
-			setTranslationY( newPosition().y() - oldPosition().y() );
-			glTranslatef( translationX(), translationY(), 0.0 );
-			break;
-		default: break;
+		switch ( current_cursor )
+			{
+			case Tools::NORMAL_SELECTION:
+				{
+				invertMatrix();
+				mouse_event -> accept();
+				QPoint old_pos;
+		
+				old_pos.setX( newPosition().x() );
+				old_pos.setY( newPosition().y() );
+		
+				setNewPosition ( mouse_event -> pos() );
+				//qDebug("(%d - %d)(%d - %d)", newPosition().x(), newPosition().y(), oldPosition().x(),oldPosition().y() );
+				current_graphic -> translateGraphic( mapPointToMatrix( newPosition() ), mapPointToMatrix( old_pos ) );
+				modifyDocument( true );
+				}
+				break;
+			case Tools::CONTOUR_SELECTION:
+				{
+				drawSelected( mouse_event );
+				mouse_event -> accept();
+				QPoint new_point( mouse_event -> x(),  mouse_event -> y() );
+				if ( current_graphic != NULL )
+				current_graphic -> contourSelectionMoveOption( QPoint( mapPointToMatrix( new_point ) ) );
+				}
+				break;
+			case Tools::BRUSH:
+				{
+				invertMatrix();
+				mouse_event -> accept();
+				QPoint new_point( mouse_event -> x(),  mouse_event -> y() );
+				current_graphic -> brushMoveOption( /**( new */QPoint( mapPointToMatrix( new_point ) ) /*)*/ );
+				}
+				( ( GLBrush * )( current_graphic ) ) -> setPressureBrush( ( int )( ( pressureTablet() * 100 ) / 255 ) );
+				break;
+			case Tools::PENCIL:
+				{
+				invertMatrix();
+				mouse_event -> accept();
+				QPoint new_point( mouse_event -> x(),  mouse_event -> y() );
+				current_graphic -> pencilMoveOption( QPoint( mapPointToMatrix( new_point ) ) );
+				}
+				break;
+			case Tools::PEN:
+				{
+				invertMatrix();
+				mouse_event -> accept();
+				QPoint new_point( mouse_event -> x(),  mouse_event -> y() );
+				current_graphic -> penMoveOption( QPoint( mapPointToMatrix( new_point ) ) );
+				( ( GLPen * )( current_graphic ) ) -> setWidthPoint( *current_brush );
+				}
+				break;
+			case Tools::LINE:
+				{
+				invertMatrix();
+				mouse_event -> accept();
+				setNewPosition ( mouse_event -> pos() );
+				current_graphic -> lineMoveOption( mapPointToMatrix( newPosition() ) );
+				}
+				break;
+			case Tools::RECTANGLE:
+				{
+				invertMatrix();
+				mouse_event -> accept();
+				setNewPosition ( mouse_event -> pos() );
+				current_graphic -> rectangleMoveOption( mapPointToMatrix( newPosition() ) );
+				}
+				break;
+			case Tools::ELLIPSE:
+				{
+				invertMatrix();
+				mouse_event -> accept();
+				setNewPosition ( mouse_event -> pos() );
+				current_graphic -> ellipseMoveOption( mapPointToMatrix( newPosition() ) );
+				}
+				break;
+			case Tools::REMOVE_FILL:
+				break;
+			case Tools::DROPPER:
+				break;
+			case Tools::ERASER:
+				break;
+			case Tools::SLICER:
+				break;
+			case Tools::MAGNIFYING_GLASS:
+				mouse_event -> accept();
+				setNewPosition ( mouse_event -> pos() );
+				break;
+			case Tools::HAND:
+				mouse_event -> accept();
+				setOldPosition ( newPosition() );
+				setNewPosition ( mouse_event -> pos() );
+				setTranslationX( newPosition().x() - oldPosition().x() );
+				setTranslationY( newPosition().y() - oldPosition().y() );
+				glTranslatef( translationX(), translationY(), 0.0 );
+				break;
+			default:
+				break;
+			}
 		}
+		else
+		{
+		switch ( current_cursor )
+			{
+			case Tools::NORMAL_SELECTION:
+				mouse_event -> accept();
+				//setOldPosition ( newPosition() );
+				setNewPosition ( mouse_event -> pos() );
+				break;
+			case Tools::CONTOUR_SELECTION:
+				break;
+			case Tools::BRUSH:
+				break;
+			case Tools::PENCIL:
+				break;
+			case Tools::PEN:
+				break;
+			case Tools::LINE:
+				break;
+			case Tools::RECTANGLE:
+				break;
+			case Tools::ELLIPSE:
+				break;
+			case Tools::CONTOUR_FILL:
+				break;
+			case Tools::FILL:
+				break;
+			case Tools::REMOVE_FILL:
+				break;
+			case Tools::DROPPER:
+				break;
+			case Tools::ERASER:
+				break;
+			case Tools::SLICER:
+				break;
+			case Tools::MAGNIFYING_GLASS:
+				mouse_event -> accept();
+				setNewPosition ( mouse_event -> pos() );
+				break;
+			case Tools::HAND:
+				mouse_event -> accept();
+				setOldPosition ( newPosition() );
+				setNewPosition ( mouse_event -> pos() );
+				setTranslationX( newPosition().x() - oldPosition().x() );
+				setTranslationY( newPosition().y() - oldPosition().y() );
+				glTranslatef( translationX(), translationY(), 0.0 );
+				break;
+			default: break;
+			}
+		}
+		GLControl::mouseMoveEvent( mouse_event );
+		updateGL();
 	}
-	GLControl::mouseMoveEvent( mouse_event );
-	updateGL();
+	emit mousePos(mouse_event->pos ());
 }
 
 void DrawingArea::mouseDoubleClickEvent( QMouseEvent *mouse_event )

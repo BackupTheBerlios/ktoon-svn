@@ -23,8 +23,7 @@
 #include <qdockarea.h>
 #include <iostream>
 
-KTDialogBase::KTDialogBase(Place p, QWidget *parent, const char *name, WFlags style)
-	: QDockWindow(p, parent, name, style), m_isChildHidden(false)
+KTDialogBase::KTDialogBase(Place p, QWidget *parent, const char *name, WFlags style) : QDockWindow(p, parent, name, style), m_isChildHidden(false)
 {
 	container = boxLayout();
 

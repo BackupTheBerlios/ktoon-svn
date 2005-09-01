@@ -24,6 +24,11 @@
 
 #include "ktdebug.h"
 
+KTSqueezeLabel::KTSqueezeLabel(QWidget *parent, const char *name) : QLabel(parent, name)
+{
+	setSizePolicy(QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed ));
+}
+
 KTSqueezeLabel::KTSqueezeLabel( const QString &text , QWidget *parent, const char *name)
 	: QLabel(parent, name )
 {

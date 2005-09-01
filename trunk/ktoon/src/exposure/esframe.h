@@ -33,13 +33,15 @@
 #include <qpainter.h>
 #include <qaction.h>
 
+#include "ktsqueezelabel.h"
+
 /**
  * @brief Class that handles the Frame objects belonging to the Exposure Sheet dialog box
  *
  * <b>Date of Creation: June 7 - 2004.</b>\n
  * This is a widget that represents the exposure sheet keyframes, as they are used in ToonBoom.
  */
-class ESFrame : public QLabel
+class ESFrame : public KTSqueezeLabel
 {
     Q_OBJECT
 

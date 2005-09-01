@@ -46,8 +46,10 @@
 #include "scenes.h"
 #include "brushes.h"
 #include "colorpalette.h"
+
 #include "exposuresheet.h"
 #include "ktexposuresheet.h"
+
 #include "library.h"
 #include "timeline.h"
 // #include "glrendercamerapreview.h"
@@ -63,7 +65,7 @@
 #include "ktdialogmenu.h"
 
 #include "ktcamerapreview.h"
-
+#include "ktviewdocument.h"
 
 /**
  *  Class that handles the main window with all its elements
@@ -933,6 +935,9 @@ class KToon : public QMainWindow
 		
 		ExposureSheet *exposure_sheet_dialog;
 		KTExposureSheet *m_ExposureSheetDialog;
+#if 0
+		KTViewDocument *m_viewDocument;
+#endif	
 		Library *library_dialog;
 		Timeline *timeline_dialog;
 	// 	GLRenderCameraPreview *render_camera_preview;
@@ -956,6 +961,9 @@ class KToon : public QMainWindow
 	// 		   *es_has_drawing_color;
 		QColor *tl_default_color, *tl_special_color, *tl_selection_color, *tl_offset_color, *tl_drag_offset_color, 
 			*tl_border_color, *tl_use_border_color, *tl_motion_color, *tl_drawing_color;
+			
+	signals:
+		void changedCursor(QCursor);
 };
 
 #endif

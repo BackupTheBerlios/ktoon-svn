@@ -706,7 +706,8 @@ class DrawingArea : public GLControl
         void wasDrawn( bool state );
 			     
 	void useTool(int);
-    
+    	
+	void mousePos(QPoint);
     
     public slots:
         /**

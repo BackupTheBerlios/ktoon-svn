@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   kuadrosx@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,54 +17,38 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTEXPOSURESHEET_H
-#define KTEXPOSURESHEET_H
+#include "ktdocumentruler.h"
 
-#include "ktdialogbase.h"
-#include "kttableexposure.h"
-
-#include <qhbuttongroup.h>
-#include <qpushbutton.h>
-#include <qaction.h>
-#include <qvaluelist.h>
-#include <qstringlist.h>
-#include <qtable.h>
-#include <qlistbox.h>
-#include <qgridview.h> 
-#include "ktimagebutton.h"
-
-/**
-* @author Jorge Cuadrado
-*/
-
-
-typedef QValueList<QPixmap> imgs;
-
-class KTExposureSheet : public KTDialogBase
+KTDocumentRuler::KTDocumentRuler(Orientation orientation, QWidget *parent, const char *name)
+	: KTRulerBase(orientation, parent, name)
 {
-	
-	Q_OBJECT
-	public:
-		KTExposureSheet(QWidget *parent = 0, const char *name = 0);
-		~KTExposureSheet();
-		enum Actions { NoAction = 0, InsertLayer, RemoveLayer, ShowManageLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
-	
-	private:
+	setDrawPointer(true);
+}
 
-		imgs m_imgs;
-		QHButtonGroup *buttonsPanel;
-		QActionGroup *m_actions;
-		KTTableExposure *m_viewLayer;
-		
-	private:
-		void setupButtons();
-		
-	public slots:
-		void applyAction(int action);
-		void slotInsertLayer();
-		
-	signals:
-		void applyedAction(Actions action);
-};
 
-#endif
+KTDocumentRuler::~KTDocumentRuler()
+{
+}
+
+void KTDocumentRuler::movePointers(QPoint pos)
+{
+	if(orientation() == Horizontal)
+	{
+		if(pos.x() > 0)
+		{
+			m_pArrow[0].setX ( pos.x()-5 );
+			m_pArrow[1].setX ( pos.x() );
+			m_pArrow[2].setX ( pos.x()+5 ); 
+		}
+	}
+	else if(orientation() == Vertical)
+	{
+		if(pos.x() > 0)
+		{
+			m_pArrow[0].setY ( pos.y()-5 );
+			m_pArrow[1].setY ( pos.y() );
+			m_pArrow[2].setY ( pos.y()+5);
+		}
+	}
+	repaint();
+}

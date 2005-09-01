@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   kuadrosx@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,54 +17,50 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTEXPOSURESHEET_H
-#define KTEXPOSURESHEET_H
+#ifndef KTVIEWDOCUMENT_H
+#define KTVIEWDOCUMENT_H
 
-#include "ktdialogbase.h"
-#include "kttableexposure.h"
-
-#include <qhbuttongroup.h>
-#include <qpushbutton.h>
-#include <qaction.h>
-#include <qvaluelist.h>
-#include <qstringlist.h>
-#include <qtable.h>
-#include <qlistbox.h>
-#include <qgridview.h> 
-#include "ktimagebutton.h"
+#include "ktmdiwindow.h"
+#include "ktdocumentruler.h"
+#include "drawingarea.h"
+#include "qaction.h"
+#include "qmainwindow.h"
+#include <qcursor.h>
 
 /**
-* @author Jorge Cuadrado
+ *@author Jorge Cuadrado
 */
-
-
-typedef QValueList<QPixmap> imgs;
-
-class KTExposureSheet : public KTDialogBase
+class KTViewDocument : public KTMdiWindow
 {
-	
 	Q_OBJECT
 	public:
-		KTExposureSheet(QWidget *parent = 0, const char *name = 0);
-		~KTExposureSheet();
-		enum Actions { NoAction = 0, InsertLayer, RemoveLayer, ShowManageLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
+		KTViewDocument( QWidget *parent = 0, const char *name = 0, WFlags f = 0);
+		~KTViewDocument();
+		void close();
+	private:
+		DrawingArea *m_drawArea;
+		QWidget *m_container;
+		KTDocumentRuler *m_HRuler;
+		KTDocumentRuler *m_VRuler;
+		QActionGroup *gridGroup, *editGroup, *editGroup2, *viewNextGroup, *viewPreviousGroup;
+		QAction *m_aSubGrid, *m_aNtsc, *m_aLightTable,*m_aUndo, *m_aRedo, *m_aClose, *m_aFrontBackGrid;
+		QPopupMenu *m_menuGrid, *m_menuFile;
+		QToolBar *m_barGrid;
 	
 	private:
+		void createActions();
+		void createToolbar();
+		void createMenu();
 
-		imgs m_imgs;
-		QHButtonGroup *buttonsPanel;
-		QActionGroup *m_actions;
-		KTTableExposure *m_viewLayer;
+	private slots:
+		void showPos(QPoint p);	
+		void setCursor(QCursor c);
+	
+	protected:
+		virtual QSize sizeHint () const ;
 		
-	private:
-		void setupButtons();
 		
-	public slots:
-		void applyAction(int action);
-		void slotInsertLayer();
-		
-	signals:
-		void applyedAction(Actions action);
+
 };
 
 #endif

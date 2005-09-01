@@ -322,6 +322,7 @@ void KToon::createActions()
 	connect(file_save, SIGNAL(activated()), this, SLOT(slotSave()));
 	file_save->setStatusTip(tr("Saves the current document in the current location"));
 	
+	//
 	edit_undo = new QAction( icon_undo, tr( "Undo" ),tr("Ctrl+Z") , this);
 	connect(edit_undo, SIGNAL(activated()), this, SLOT(slotUndo()));
 	edit_undo->setStatusTip(tr("Undoes the last draw action"));
@@ -459,22 +460,22 @@ void KToon::createActions()
 	QActionGroup *viewPreviousGroup = new QActionGroup( this );
 	viewPreviousGroup->setExclusive( true );
 	
-	view_no_previous = new QAction( icon_no_previous, tr( "No Previous" ), Key_0, viewPreviousGroup);
+	view_no_previous = new QAction( icon_no_previous, tr( "No Previous" ), Key_1, viewPreviousGroup);
 	connect(view_no_previous, SIGNAL(activated()), this, SLOT(slotNoPreviousOnionSkin()));
 	view_no_previous->setToggleAction ( true );
 	view_no_previous->setStatusTip(tr("Disables previous onion skin visualization"));
 	
-	view_previous = new QAction( icon_previous, tr( "Previous One" ), Key_1, viewPreviousGroup);
+	view_previous = new QAction( icon_previous, tr( "Previous One" ), Key_2, viewPreviousGroup);
 	connect(view_previous, SIGNAL(activated()), this, SLOT(slotPreviousOnionSkin()));
 	view_previous->setStatusTip(tr("Shows the previous onion skin" ));
 	view_previous->setToggleAction ( true );
 	
-	view_previous2 = new QAction( icon_previous2, tr( "Previous Two" ), Key_2, viewPreviousGroup);
+	view_previous2 = new QAction( icon_previous2, tr( "Previous Two" ), Key_3, viewPreviousGroup);
 	connect(view_previous2, SIGNAL(activated()), this, SLOT(slotPrevious2OnionSkin()));
 	view_previous2->setStatusTip(tr("Shows the previous 2 onion skins" ));
 	view_previous2->setToggleAction ( true );
 	
-	view_previous3 = new QAction( icon_previous3, tr( "Previous Three" ), Key_3, viewPreviousGroup);
+	view_previous3 = new QAction( icon_previous3, tr( "Previous Three" ), Key_4, viewPreviousGroup);
 	view_previous3->setToggleAction ( true );
 	connect(view_previous3, SIGNAL(activated()), this, SLOT(slotPrevious3OnionSkin()));
 	view_previous3->setStatusTip(tr("Shows the previous 3 onion skins" ));
@@ -485,22 +486,22 @@ void KToon::createActions()
 	viewNextGroup->setExclusive( true );
 	
 	
-	view_no_next = new QAction( icon_no_next, tr( "No Next" ), CTRL+Key_0, viewNextGroup);
+	view_no_next = new QAction( icon_no_next, tr( "No Next" ), CTRL+Key_1, viewNextGroup);
 	view_no_next->setToggleAction ( true );
 	connect(view_no_next, SIGNAL(activated()), this, SLOT(slotNoNextOnionSkin()));
 	view_no_next->setStatusTip(tr("Disables next onion skin visualization" ));
 	
-	view_next = new QAction( icon_next, tr( "Next One" ), CTRL+Key_1, viewNextGroup);
+	view_next = new QAction( icon_next, tr( "Next One" ), CTRL+Key_2, viewNextGroup);
 	view_next->setToggleAction ( true );
 	connect(view_next, SIGNAL(activated()), this, SLOT(slotNextOnionSkin()));
 	view_next->setStatusTip(tr("Shows the next onion skin"));
 	
-	view_next2 = new QAction( icon_next2, tr( "Next Two" ), CTRL+Key_2, viewNextGroup);
+	view_next2 = new QAction( icon_next2, tr( "Next Two" ), CTRL+Key_3, viewNextGroup);
 	view_next2->setToggleAction(true );
 	connect(view_next2, SIGNAL(activated()), this, SLOT(slotNext2OnionSkin()));
 	view_next2->setStatusTip(tr("Shows the next 2 onion skins"));
 	
-	view_next3 = new QAction( icon_next3, tr( "Next Three" ), CTRL+Key_3, viewNextGroup);
+	view_next3 = new QAction( icon_next3, tr( "Next Three" ), CTRL+Key_4, viewNextGroup);
 	view_next3->setToggleAction(true );
 	connect(view_next3, SIGNAL(activated()), this, SLOT(slotNext3OnionSkin()));
 	view_next3->setStatusTip(tr("Shows the next 3 onion skins"));
@@ -1068,12 +1069,13 @@ void KToon::setupDialogs()
 			 window_scenes, SLOT(setOn(bool)));
 	
 	color_palette_dialog = new ColorPalette( this);//, Qt::WStyle_Tool, window, id_window_color_palette, window_color_palette );
-	color_palette_dialog -> show();
+
 	QObject::connect(color_palette_dialog, SIGNAL(activate(bool)),
 			 window_color_palette, SLOT(setOn(bool)));
     
 	moveDockWindow(color_palette_dialog, Qt::DockLeft);
 	color_palette_dialog->undock();
+	color_palette_dialog -> show();
     
 	brushes_dialog = new Brushes( this);//, Qt::WStyle_Tool/*, window, id_window_brushes, window_brushes */);
 	brushes_dialog -> show();
@@ -1084,6 +1086,18 @@ void KToon::setupDialogs()
 	QObject::connect(library_dialog, SIGNAL(activate(bool)),
 			 window_library , SLOT(setOn(bool)));
 	
+#if 0
+	m_viewDocument = new KTViewDocument(main_panel);
+
+	QObject::connect(this, SIGNAL(changedCursor(QCursor)),
+			 m_viewDocument , SLOT(setCursor(QCursor)));
+#endif
+
+	m_cameraPreview = new KTCameraPreview(main_panel);
+	m_cameraPreview -> hide();
+	QObject::connect(m_cameraPreview, SIGNAL(activate(bool)),
+			 window_render_camera_preview, SLOT(setOn(bool)));
+	
 	//For animation
 	
  	/*KTTimeLine *kttimeLine = */new KTTimeLine(this);
@@ -1091,10 +1105,7 @@ void KToon::setupDialogs()
 	timeline_dialog = new Timeline( this, Qt::WStyle_Tool, window, id_window_timeline, window_timeline );
 	list_of_tl.append( timeline_dialog );
 	
-	m_cameraPreview = new KTCameraPreview(main_panel);
- 	m_cameraPreview -> hide();
-	QObject::connect(m_cameraPreview, SIGNAL(activate(bool)),
-			 window_render_camera_preview, SLOT(setOn(bool)));
+
 
 	//FIXME: kuadrosx
 	top_camera_view = new GLTopCameraView( main_panel, KTStatus->currentDrawingArea() );
@@ -1173,6 +1184,22 @@ KToon::~KToon()
 	delete tl_use_border_color;
 	delete tl_motion_color;
 	delete tl_drawing_color;
+	delete cursor_line ;
+	delete cursor_selection ;
+	delete cursor_nodes;
+	delete cursor_brush;
+	delete cursor_pencil;
+	delete cursor_pen;
+	delete cursor_rectangle;
+	delete cursor_ellipse;
+	delete cursor_eraser;
+	delete cursor_slicer;
+	delete cursor_fill;
+	delete cursor_remove_fill;
+	delete cursor_magnifying_glass;
+	delete cursor_hand;
+	delete cursor_dropper;
+	delete cursor_contour_fill;
 }
 
 //------------------- PUBLIC MEMBERS ----------------
@@ -1216,7 +1243,7 @@ void KToon::loadImageSequence( const QString &file_name, bool from_load )
 		KTStatus->currentDrawingArea() -> loadImageSequence( file_name );
 	statusBar() -> message( tr( "Image Sequence loaded successfully - " ) + file_name, 2000 );
 }
-
+ 
 void KToon::loadLibrary( const QString &file_name, bool from_load )
 {
     QFile library_file( file_name );
@@ -3679,58 +3706,127 @@ void KToon::slotCloseDrawingArea()
 
 void KToon::slotActivateCursor()
 {
-    ILayer *il = exposure_sheet_dialog -> currentLayerObj();
-    ESFrame *sf = il -> selectedFrame();
-    bool locked = false;
-    if ( sf != NULL )
-	locked = sf -> isLocked();
-    if ( KTStatus -> currentKeyFrame() != NULL && !locked )
-    {
-        switch ( KTStatus -> currentCursor() )
+	ILayer *il = exposure_sheet_dialog -> currentLayerObj();
+	ESFrame *sf = il -> selectedFrame();
+	bool locked = false;
+	if ( sf != NULL )
+		locked = sf -> isLocked();
+	if ( KTStatus -> currentKeyFrame() != NULL && !locked )
 	{
- 	    case Tools::NORMAL_SELECTION: KTStatus->currentDrawingArea() -> setCursor( *cursor_selection );
-			break;
-	    case Tools::CONTOUR_SELECTION: KTStatus->currentDrawingArea() -> setCursor( *cursor_nodes );
-			break;
-	    case Tools::BRUSH: KTStatus->currentDrawingArea() -> setCursor( *cursor_brush );
-		        break;
-	    case Tools::PENCIL: KTStatus->currentDrawingArea() -> setCursor( *cursor_pencil );
-		        break;
-	    case Tools::PEN: KTStatus->currentDrawingArea() -> setCursor( *cursor_pen );
-		        break;
-	    case Tools::LINE: KTStatus->currentDrawingArea() -> setCursor( *cursor_line );
-	    		break;
-	    case Tools::RECTANGLE: KTStatus->currentDrawingArea() -> setCursor( *cursor_rectangle );
-		        break;
-	    case Tools::ELLIPSE: KTStatus->currentDrawingArea() -> setCursor( *cursor_ellipse );
-		        break;
-	    case Tools::CONTOUR_FILL: KTStatus->currentDrawingArea() -> setCursor( *cursor_contour_fill );
-		        break;
-	    case Tools::FILL: KTStatus->currentDrawingArea() -> setCursor( *cursor_fill );
-		        break;
-	    case Tools::REMOVE_FILL: KTStatus->currentDrawingArea() -> setCursor( *cursor_remove_fill );
-			break;
-	    case Tools::DROPPER: KTStatus->currentDrawingArea() -> setCursor( *cursor_dropper );
-		        break;
-	    case Tools::ERASER: KTStatus->currentDrawingArea() -> setCursor( *cursor_eraser );
-		        break;
-	    case Tools::SLICER: KTStatus->currentDrawingArea() -> setCursor( *cursor_slicer );
-		        break;
-	    case Tools::MAGNIFYING_GLASS: KTStatus->currentDrawingArea() -> setCursor( *cursor_magnifying_glass );
-		        break;
-	    case Tools::HAND: KTStatus->currentDrawingArea() -> setCursor( *cursor_hand );
-		        break;
-	    default:    break;
-        }
-    }
-    else
-        KTStatus->currentDrawingArea() -> setCursor( QCursor( Qt::ForbiddenCursor ) );
+		switch ( KTStatus -> currentCursor() )
+		{
+			case Tools::NORMAL_SELECTION:
+			{
+				KTStatus->currentDrawingArea() -> setCursor( *cursor_selection );
+				emit(changedCursor(*cursor_selection));
+				break;
+			}
+			case Tools::CONTOUR_SELECTION:
+			{
+				KTStatus->currentDrawingArea() -> setCursor( *cursor_nodes );
+				emit(changedCursor(*cursor_nodes));
+				break;
+			}
+			case Tools::BRUSH: 
+			{
+				KTStatus->currentDrawingArea() -> setCursor( *cursor_brush );
+				emit(changedCursor(*cursor_brush));
+				break;
+			}
+			case Tools::PENCIL: 
+			{
+				KTStatus->currentDrawingArea() -> setCursor( *cursor_pencil );
+				emit(changedCursor(*cursor_pencil));
+				break;
+			}
+			case Tools::PEN:
+			{
+				KTStatus->currentDrawingArea() -> setCursor( *cursor_pen );
+				emit(changedCursor(*cursor_pen));
+				break;
+			}
+			case Tools::LINE: 
+			{
+				KTStatus->currentDrawingArea() -> setCursor( *cursor_line );
+				emit(changedCursor(*cursor_line));
+				break;
+			}
+			case Tools::RECTANGLE: 
+			{
+				KTStatus->currentDrawingArea() -> setCursor( *cursor_rectangle );
+				emit(changedCursor(*cursor_rectangle));
+				break;
+			}
+			case Tools::ELLIPSE: 
+			{
+				KTStatus->currentDrawingArea() -> setCursor( *cursor_ellipse );
+				emit(changedCursor(*cursor_ellipse));
+				break;
+			}
+			case Tools::CONTOUR_FILL: 
+			{
+				KTStatus->currentDrawingArea() -> setCursor( *cursor_contour_fill );
+				emit(changedCursor(*cursor_contour_fill));
+				break;
+			}
+			case Tools::FILL: 
+			{
+				KTStatus->currentDrawingArea() -> setCursor( *cursor_fill );
+				emit(changedCursor(*cursor_fill));
+				break;
+			}
+			case Tools::REMOVE_FILL: 
+			{
+				KTStatus->currentDrawingArea() -> setCursor( *cursor_remove_fill );
+				emit(changedCursor(*cursor_remove_fill));
+				break;
+			}
+			case Tools::DROPPER: 
+			{
+				KTStatus->currentDrawingArea() -> setCursor( *cursor_dropper );
+				emit(changedCursor(*cursor_dropper));
+				break;
+			}
+			case Tools::ERASER: 
+			{
+				KTStatus->currentDrawingArea() -> setCursor( *cursor_eraser );
+				emit(changedCursor(*cursor_eraser));
+				break;
+			}
+			case Tools::SLICER: 
+			{
+				KTStatus->currentDrawingArea() -> setCursor( *cursor_slicer );
+				emit(changedCursor(*cursor_slicer));
+				break;
+			}
+			case Tools::MAGNIFYING_GLASS:
+			{
+				KTStatus->currentDrawingArea() -> setCursor( *cursor_magnifying_glass );
+				emit(changedCursor(*cursor_magnifying_glass));
+				break;
+			}
+			case Tools::HAND: 
+			{
+				KTStatus->currentDrawingArea() -> setCursor( *cursor_hand );
+				emit(changedCursor(*cursor_hand));
+				break;
+			}
+			default:
+			{
+				    break;
+			}
+		}
+	}
+	else
+		KTStatus->currentDrawingArea() -> setCursor( QCursor( Qt::ForbiddenCursor ) );
+
 }
 
 //**************
 
 void KToon::slotSelectSync( int sp )
 {
+	//FIXME:
 	exposure_sheet_dialog->hide();
 	exposure_sheet_dialog = list_of_es.at( sp );
 	if ( /*window_exposure_sheet->isOn() &&*/ window_animation->isEnabled())//window -> isItemChecked( id_window_exposure_sheet ) && window_animation->isEnabled())//window -> isItemEnabled( id_window_animation ) )

@@ -23,7 +23,6 @@
 KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFrame, QWidget *parent, const char *name)
 	: QFrame(parent, name) , m_id(id), m_currentFrame(0)
 {
-	
 	KTINIT;
 	m_layout = new QBoxLayout(this, QBoxLayout::TopToBottom);
 	m_header = new ESLayer(initial_text,this);
@@ -38,7 +37,7 @@ KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFra
 		m_frames.append(frame);
 		connect( frame, SIGNAL(clicked(int, int, int, int )), this, SLOT(frameSelect(int, int, int, int)));
 		connect(this, SIGNAL(frameSelected(int )), frame, SLOT(otherSelected(int)));
-		frame->resize(frame->sizeHint());
+// 		frame->resize(frame->sizeHint());
 	}
 	m_useFrame = 0;
 	m_frames.at(0)->setUsed( true );

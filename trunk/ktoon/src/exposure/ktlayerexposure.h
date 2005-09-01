@@ -26,10 +26,10 @@
 // #include <qvaluelist.h>
 #include <qptrlist.h> 
 #include <qframe.h> 
-#include <qlayout.h>            
+#include <qlayout.h>
 #include <qpopupmenu.h>
 
-typedef QPtrList<ESFrame> listOfFrames;
+typedef QPtrList<ESFrame> ListOfFrames;
 
 /**
 @author Jorge Cuadrado
@@ -49,7 +49,7 @@ class KTLayerExposure : public QFrame
 		bool m_selected;
 		int m_currentFrame, m_id, m_useFrame;
 		ESLayer *m_header;
-		listOfFrames m_frames;
+		ListOfFrames m_frames;
 		QPopupMenu *menuFrame;
 		
 	public slots:

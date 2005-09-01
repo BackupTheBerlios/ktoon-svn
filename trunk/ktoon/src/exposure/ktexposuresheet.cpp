@@ -41,11 +41,11 @@ KTExposureSheet::KTExposureSheet( QWidget *parent, const char *name)
 		QPixmap::fromMimeSource(KTOON_HOME+"/images/icons/arrowdown.xpm" );
 	setupButtons();
 	
-	m_viewLayer = new KTTableExposure(100, 1,this,"table");
+	m_viewLayer = new KTTableExposure(100, 1,this,"KTExposureTable");
 	addChild(m_viewLayer);
  	hide();
-	//show();
-// 	repaint();
+// 	show();
+
 	setResizeEnabled ( true );
 	
 }
@@ -53,6 +53,7 @@ KTExposureSheet::KTExposureSheet( QWidget *parent, const char *name)
 
 KTExposureSheet::~KTExposureSheet()
 {
+	m_imgs.clear();
 	KTEND;
 }
 

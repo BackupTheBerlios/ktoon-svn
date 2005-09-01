@@ -31,6 +31,7 @@
 class KTSqueezeLabel : public QLabel
 {
 	public:
+		KTSqueezeLabel(QWidget *parent, const char *name=0);
 		KTSqueezeLabel(const QString &text, QWidget *parent, const char *name=0);
 		~KTSqueezeLabel();
 		
