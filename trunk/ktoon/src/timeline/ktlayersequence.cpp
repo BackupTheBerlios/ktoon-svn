@@ -23,7 +23,7 @@
 #include "ktlayersequence.h"
 #include "ktdebug.h"
 
-KTLayerSequence::KTLayerSequence(QWidget *parent) : QScrollView(parent, "KTLayerSequence")
+KTLayerSequence::KTLayerSequence(QWidget *parent) : QScrollView(parent, "KTLayerSequence"), m_layerCount(0)
 {
 	KTINIT;
 
@@ -39,28 +39,12 @@ KTLayerSequence::KTLayerSequence(QWidget *parent) : QScrollView(parent, "KTLayer
 	addChild(m_layerContainer);
 	m_layerContainer->layout()->setAlignment(Qt::AlignTop );
 	
-	m_defaultLayer = new KTTimeLineLayer (tr("Layer %1").arg("1"), 1, m_layerContainer);
-	m_layers.append( m_defaultLayer );
+	m_defaultLayer = createNewLayer();
+			
+	/*new KTTimeLineLayer (tr("Layer %1").arg("1"), 1, m_layerContainer);
+	m_layers.append( m_defaultLayer );*/
 	
 	setMaximumHeight( sizeHint().height() ); // IMPORTANT
-	
-#if 0
-	// TEST CODE
-	for(uint i = 0; i < 30; i++)
-	{
-		KTTimeLineLayer *tmp = new KTTimeLineLayer (tr("Layer %1").arg("1"), 1, m_layerContainer);
-		m_layers.append(tmp);
-	}
-	////
-#endif
-	
-// 	connect( default_layer, SIGNAL( selected() ), SLOT( slotSelectLayer() ) );
-// 	connect( default_layer, SIGNAL( draggedAbove( int ) ), SLOT( slotDragLayerAbove( int ) ) );
-// 	connect( default_layer, SIGNAL( draggedBelow( int ) ), SLOT( slotDragLayerBelow( int ) ) );
-// 	connect( default_layer, SIGNAL( releasedAbove( int ) ), SLOT( slotReleaseLayerAbove( int ) ) );
-// 	connect( default_layer, SIGNAL( releasedBelow( int ) ), SLOT( slotReleaseLayerBelow( int ) ) );
-// 	connect( default_layer, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameLayer( const QString & ) ) );
-// 	connect( default_layer, SIGNAL( visibilityChanged( bool ) ), SLOT( slotChangeVisibilityState( bool ) ) );
 
 	m_pCurrentLayer = m_defaultLayer;
 	m_pLastLayer = m_pCurrentLayer;
@@ -91,11 +75,11 @@ void KTLayerSequence::setPalette(const QPalette &)
 {
 }
 
-void KTLayerSequence::createNewLayer()
-{
-	KTTimeLineLayer *newLayer = new KTTimeLineLayer( tr( "New Layer %1").arg( m_layers.count()), m_layers.count(), m_layerContainer);
+KTTimeLineLayer * KTLayerSequence::createNewLayer()
+{	
+	KTTimeLineLayer *newLayer = new KTTimeLineLayer( tr( "New Layer %1").arg( m_layerCount ), m_layers.count(), m_layerContainer);
 	newLayer -> resize( width(), 24 );
-// 	connect( newLayer, SIGNAL( selected() ), SLOT( slotSelectLayer() ) );
+	connect( newLayer, SIGNAL( selected(int) ), SLOT( selectLayer(int) ) );
 // 	connect( newLayer, SIGNAL( draggedAbove( int ) ), SLOT( slotDragLayerAbove( int ) ) );
 // 	connect( newLayer, SIGNAL( draggedBelow( int ) ), SLOT( slotDragLayerBelow( int ) ) );
 // 	connect( newLayer, SIGNAL( releasedAbove( int ) ), SLOT( slotReleaseLayerAbove( int ) ) );
@@ -103,8 +87,12 @@ void KTLayerSequence::createNewLayer()
 // 	connect( newLayer, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameLayer( const QString & ) ) );
 // 	connect( newLayer, SIGNAL( visibilityChanged( bool ) ), SLOT( slotChangeVisibilityState( bool ) ) );
 	
-	newLayer -> show();
+	newLayer->show();
 	m_layers.append( newLayer );
+	
+	m_layerCount++;
+	
+	return newLayer;
 }
 
 void KTLayerSequence::removeLayer()
@@ -131,12 +119,11 @@ void KTLayerSequence::removeLayer()
 			bridgeLayer = m_layers.at( m_layers.find( m_pCurrentLayer ) + 1 );
 			
 			//Reaccomodate every layer next to the layer that is going to be deleted
-// 			KTTimeLineLayer *iterator;
-// 			for ( iterator = bridgeLayer; iterator; layer_iterator = m_layers.next() )
-// 			{
-// 				moveChild( iterator, childX( iterator ), childY( iterator ) - iterator -> height() );
-// 				iterator -> setPosition( iterator->position() - 1 );
-// 			}
+			KTTimeLineLayer *iterator;
+			for ( iterator = bridgeLayer; iterator; iterator = m_layers.next() )
+			{
+				iterator -> setPosition( iterator->position() - 1 );
+			}
 
 			m_layerContainer->layout()->remove(m_pCurrentLayer);
 			m_layers.remove( m_pCurrentLayer );
@@ -147,3 +134,28 @@ void KTLayerSequence::removeLayer()
 		}
 	}
 }
+
+void KTLayerSequence::selectLayer(int id)
+{
+	KTTimeLineLayer *selected = m_layers.at(id);
+	
+	if ( !selected )
+	{
+		ktError(1) << "Layer not exists" << endl;
+		return;
+	}
+	
+	m_pCurrentLayer->clearEditFocus();
+	m_pCurrentLayer->setSelected( false );
+	m_pCurrentLayer->setEdited( false );
+	
+	m_pCurrentLayer = selected;
+	m_pCurrentLayer->setSelected( true );
+	m_pCurrentLayer->setEdited( true );
+
+// 	emit layerSelectedToES( list_of_layers.find( current_layer ) );
+// 	emit layerSelected( current_layer );
+}
+
+
+

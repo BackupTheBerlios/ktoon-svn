@@ -57,12 +57,6 @@ KTFrameSequenceManager::KTFrameSequenceManager(QWidget *parent) : QVBox(parent, 
 // 	m_scroll = new QScrollBar(0, 3000, 1, 5, 0, Qt::Horizontal, m_utils);
 // 	connect( m_scroll, SIGNAL(valueChanged(int)), this, SLOT(moveRuler(int)));
 	
-#if 0
-	for(uint i =0; i < 30; i++)
-	{
-		new KTFrameSequence(m_vBox);
-	}
-#endif
 }
 
 

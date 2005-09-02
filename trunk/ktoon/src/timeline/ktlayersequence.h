@@ -41,13 +41,16 @@ class KTLayerSequence : public QScrollView
 		void setPalette(const QPalette &);
 		
 	public slots:
-		void createNewLayer();
+		KTTimeLineLayer *createNewLayer();
 		void removeLayer();
+		
+		void selectLayer(int id);
 		
 	private:
 		QVBox *m_layerContainer;
 		KTTimeLineLayer *m_defaultLayer;
 		ListOfTLLayers m_layers;
+		int m_layerCount;
 		
 	protected:
 		KTTimeLineLayer *m_pCurrentLayer, *m_pLastLayer;

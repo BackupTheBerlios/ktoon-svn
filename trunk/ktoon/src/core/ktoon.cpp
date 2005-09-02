@@ -167,6 +167,16 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose ), document_max_valu
 	exposure_sheet_dialog -> updateIndicators( exposure_sheet_dialog -> currentLayerObj() );
 	
 	updateOpenRecentMenu();
+	
+#if 0
+	QFile file( QDir::homeDirPath()+"/.ktmainwindow" );
+	if ( file.open( IO_ReadOnly ) ) 
+	{
+		QTextStream stream( &file );
+		stream >> *this;
+		file.close();
+	}
+#endif
 }
 
 void KToon::setupColors()
@@ -1124,6 +1134,18 @@ void KToon::setupDialogs()
 KToon::~KToon()
 {
 	qDebug("[Destroying KToon]");
+
+#if 0
+	// Guardamos la poscicion de los widgets
+	QFile file( QDir::homeDirPath()+"/.ktmainwindow" );
+	if ( file.open( IO_WriteOnly ) ) 
+	{
+		QTextStream stream( &file );
+		stream << *this;
+		file.close();
+	}
+#endif
+	
 //     delete file;
 //     delete open_recent;
 //     delete edit;

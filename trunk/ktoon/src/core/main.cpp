@@ -81,14 +81,17 @@ int main( int argc, char ** argv )
 	
 	if ( QGLFormat::hasOpenGL() )
 	{
+		QGLWidget gl((QWidget *) 0);
+		gl.makeCurrent();
+		
 		ktDebug() << "-> OpenGL detected :)" << endl;
-		if ( QGLFormat::hasOpenGLOverlays() )
+		if ( gl.format().directRendering() )
 		{
-			ktDebug() << "-> OpenGL Overlays detected :)" << endl;
+			ktDebug() << "-> Using direct rendering :)" << endl;
 		}
 		else
 		{
-			ktDebug() << "-> No OpenGL overlays detected" << endl;
+			ktDebug() << "-> No direct rendering" << endl;
 		}
 	}
 	else

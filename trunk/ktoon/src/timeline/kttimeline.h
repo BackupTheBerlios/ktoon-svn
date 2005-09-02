@@ -42,6 +42,10 @@ class KTTimeLine : public KTDialogBase
 	public slots:
 		void execAction(int action);
 		
+	signals:
+		void layerInserted();
+		void layerRemoved();
+		
 	private:
 		QHBox *m_container;
 		QSplitter *m_splitter;

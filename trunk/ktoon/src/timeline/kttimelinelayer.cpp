@@ -137,7 +137,7 @@ void KTTimeLineLayer::toggleOutlines()
 	setSelected( true );
 	setEdited( true );
 
-// 	emit selected();
+	emit selected(m_position);
 }
 
 void KTTimeLineLayer::setLock(bool yes)
@@ -197,7 +197,48 @@ void KTTimeLineLayer::editName()
 	m_layerName->setText( m_nameEditor->text() );
 	m_nameEditor-> hide();
 
-// 	emit renamed( layer_name -> text() );
+	emit renamed( m_nameEditor->text() );
+}
+
+void KTTimeLineLayer::mousePressEvent( QMouseEvent *me )
+{
+	setSelected( true );
+	setEdited( true );
+
+	if ( childAt( me -> pos() ) == m_visibilityImage )
+	{
+		setView( !m_isVisible );
+	}
+	else if ( childAt( me -> pos() ) == m_lockImage )
+	{
+		setLock( !m_isLocked );
+	}
+	
+	if ( me -> button() == Qt::LeftButton )
+	{
+// 		dragging = true;
+// 		TLLayerSequence *ls_parent = ( TLLayerSequence * )grandparent_widget;
+// 		ls_parent -> setDragging( true );
+	}
+	
+	emit selected(m_position);
+
+	if ( me -> button() == Qt::RightButton )
+	{
+// 		TLLayerManager *lm = ( TLLayerManager * )( grandparent_widget -> parentWidget() );
+// 		if ( right_click_menu )
+// 		{
+// 			delete right_click_menu;
+// 		}
+// 		right_click_menu = new QPopupMenu( this );
+// 		// 	right_click_menu -> setFont( QFont( "helvetica", 10 ) );
+// 		right_click_menu -> insertItem( tr( "Rename Layer" ), this, SLOT( slotSendDoubleClickEvent() ) );
+// 		right_click_menu -> insertSeparator();
+// 		right_click_menu -> insertItem( tr( "Insert Layer" ), lm -> insertLayerButton(), SLOT( animateClick() ) );
+// 		right_click_menu -> insertItem( tr( "Delete Layer" ), lm -> removeLayerButton(), SLOT( animateClick() ) );
+// 		right_click_menu -> exec( QCursor::pos() );
+	}
+	me -> accept();
 }
 
 void KTTimeLineLayer::mouseDoubleClickEvent( QMouseEvent *e )
@@ -214,5 +255,20 @@ void KTTimeLineLayer::mouseDoubleClickEvent( QMouseEvent *e )
 	{
 		e->ignore();
 	}
+}
+
+void KTTimeLineLayer::clearEditFocus()
+{
+	m_nameEditor->clearFocus();
+}
+
+int KTTimeLineLayer::position()
+{
+	return m_position;
+}
+
+void KTTimeLineLayer::setPosition(int pos)
+{
+	m_position = pos;
 }
 

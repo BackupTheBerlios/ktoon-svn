@@ -69,11 +69,13 @@ void KTTimeLine::execAction(int action)
 		case KTLayerManager::InsertLayer:
 		{
 			m_sequenceManager->insertFrameSequence();
+			emit layerInserted();
 		}
 		break;
 		case KTLayerManager::RemoveLayer:
 		{
 			m_sequenceManager->removeFrameSequence();
+			emit layerRemoved();
 		}
 		break;
 		

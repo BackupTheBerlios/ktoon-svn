@@ -50,5 +50,13 @@ void KTFrameSequence::createFrames()
 			nextFrame->setKey( true );
 			nextFrame->setLast( true );
 		}
+		
+		m_frames.append(nextFrame);
+		
+		connect(nextFrame, SIGNAL(selected(int)), this, SIGNAL(selectFrame(int))); // FIXME
 	}
+}
+
+void KTFrameSequence::selectFrame(int position)
+{
 }

@@ -242,6 +242,9 @@ signals:
      * This signal is emitted when the TLFrame is selected.
      */
     void selected();
+    
+    //FIXME
+    void selected(int);
 
 public slots:
 

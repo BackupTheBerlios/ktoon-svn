@@ -26,6 +26,8 @@
 
 #include "tlframe.h"
 
+typedef QPtrList<TLFrame> ListOfTimeLineFrames;
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
@@ -36,6 +38,12 @@ class KTFrameSequence : public QHBox
 	public:
 		KTFrameSequence(QWidget *parent);
 		~KTFrameSequence();
+		
+	public slots:
+		void selectFrame(int position);
+		
+	private:
+		ListOfTimeLineFrames m_frames;
 
 	private:
 		void createFrames();

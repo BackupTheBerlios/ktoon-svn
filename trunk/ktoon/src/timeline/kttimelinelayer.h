@@ -38,6 +38,9 @@ class KTTimeLineLayer : public QHBox
 	public:
 		KTTimeLineLayer(const QString &name = "Layer", int position = 0, QWidget *parent = 0);
 		~KTTimeLineLayer();
+		void clearEditFocus();
+		int position();
+		void setPosition(int pos);
 		
 	public slots:
 		void setSelected( bool selected );
@@ -56,6 +59,11 @@ class KTTimeLineLayer : public QHBox
 		
 	protected:
 		void mouseDoubleClickEvent( QMouseEvent *e );
+		void mousePressEvent( QMouseEvent *me );
+		
+	signals:
+		void selected(int pos);
+		void renamed(const QString &);
 		
 		
 	private:

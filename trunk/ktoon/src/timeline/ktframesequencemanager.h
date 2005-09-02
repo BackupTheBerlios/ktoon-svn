@@ -55,9 +55,7 @@ class KTFrameSequenceManager : public QVBox
 		QVBox *m_vBox;
 		KTTLRuler *m_ruler;
 		KTFrameSequence *m_lastSequence, *m_currentFrameSequence;
-		
-// 		QHBox *m_utils;
-		
+
 		QScrollBar *m_scroll;
 
 };
