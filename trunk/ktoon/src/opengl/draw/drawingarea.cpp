@@ -40,6 +40,8 @@
 #include "ktapplication.h"
 #include "status.h"
 
+#include "ktdebug.h"
+
 #define DEBUG_DRAWINGAREA 1
 
 
@@ -2744,7 +2746,7 @@ void DrawingArea::slotSelectAll()
 void DrawingArea::slotSelectFrame()
 {
 	qDebug("Select frame");
-
+	ktDebug(1) << "Select frame";
 	if ( current_graphic && current_graphic -> kindGraphic() == GLGraphicComponent::GC_PEN && bezier )
 	{
 		bezier = false;

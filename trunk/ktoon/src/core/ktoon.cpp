@@ -110,54 +110,87 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose ), document_max_valu
 	connect( exposure_sheet_dialog, SIGNAL( layerInserted() ), timeline_dialog -> layerManager() -> layerSequence(), SLOT( slotInsertLayer() ) );
 	
 	connect( exposure_sheet_dialog, SIGNAL( layerInserted() ), timeline_dialog -> frameSequenceManager() -> frameLayout(), SLOT( slotInsertFrameSequence() ) );
+	
 	connect( exposure_sheet_dialog, SIGNAL( layerRemoved() ), timeline_dialog -> layerManager() -> layerSequence(), SLOT( slotRemoveLayer() ) );
+	
 	connect( exposure_sheet_dialog, SIGNAL( layerRemoved() ), timeline_dialog -> frameSequenceManager() -> frameLayout(), SLOT( slotRemoveFrameSequence() ) );
 
 	connect( exposure_sheet_dialog, SIGNAL( layerRemoved() ), timeline_dialog -> frameSequenceManager() -> frameLayout(), SLOT( slotUpdateMaxUsedFrames() ) );
+	
 	connect( exposure_sheet_dialog, SIGNAL( layerSelected( int ) ), timeline_dialog -> layerManager() -> layerSequence(), SLOT( slotSelectLayerFromES( int ) ) );
+	
+// 	connect( m_ExposureSheetDialog, SIGNAL( layerSelected( int ) ), timeline_dialog -> layerManager() -> layerSequence(), SLOT( slotSelectLayerFromES( int ) ) );
+	
+	
 	connect( exposure_sheet_dialog, SIGNAL( layerRenamed( int, const QString & ) ), timeline_dialog -> layerManager() -> layerSequence(), SLOT( slotRenameLayerFromES( int, const QString & ) ) );
 
 	connect( exposure_sheet_dialog, SIGNAL( framesInsertedAtTheEnd( int ) ), timeline_dialog -> frameSequenceManager() -> frameLayout(), SLOT( slotInsertKeyframesIntoTheCurrentFS( int ) ) );
+	
 	connect( exposure_sheet_dialog, SIGNAL( frameRemoved( int ) ), timeline_dialog -> frameSequenceManager() -> frameLayout(), SLOT( slotRemoveKeyframeBlockFromTheCurrentFS( int ) ) );
+	
 	connect( exposure_sheet_dialog, SIGNAL( frameMovedUp( int ) ), timeline_dialog -> frameSequenceManager() -> frameLayout(), SLOT( slotMoveKeyframeLeftInTheCurrentFS( int ) ) );
+	
 	connect( exposure_sheet_dialog, SIGNAL( frameMovedDown( int ) ), timeline_dialog -> frameSequenceManager() -> frameLayout(), SLOT( slotMoveKeyframeRightInTheCurrentFS( int ) ) );
 	
 	connect( exposure_sheet_dialog, SIGNAL( frameSelected() ), SLOT( slotActivateCursor() ) );
-
+	
+	connect(m_ExposureSheetDialog, SIGNAL(frameSelected()), this, SLOT(slotActivateCursor()));
+	
 	connect( timeline_dialog, SIGNAL( insertLayerClicked() ), exposure_sheet_dialog, SLOT( slotInsertLayer() ) );
+	
 	connect( timeline_dialog, SIGNAL( removeLayerClicked() ), exposure_sheet_dialog, SLOT( slotRemoveLayer() ) );
+	
 	connect( timeline_dialog -> layerManager() -> layerSequence(), SIGNAL( layerSelectedToES( int ) ), exposure_sheet_dialog, SLOT( slotSelectLayerFromTL( int ) ) );
+	
 	connect( timeline_dialog -> layerManager() -> layerSequence(), SIGNAL( layerRenamed( int, const QString & ) ), exposure_sheet_dialog, SLOT( slotRenameLayerFromTL( int, const QString & ) ) );
 
 	connect( timeline_dialog -> frameSequenceManager() -> frameLayout(), SIGNAL( keyframeRemovedToES( int ) ), exposure_sheet_dialog, SLOT( slotRemoveFrameFromTL( int ) ) );
+	
 	connect( timeline_dialog, SIGNAL( layerMovedUp() ), exposure_sheet_dialog, SLOT( slotMoveLayerLeft() ) );
+	
 	connect( timeline_dialog, SIGNAL( layerMovedDown() ), exposure_sheet_dialog, SLOT( slotMoveLayerRight() ) );
+	
 	connect( timeline_dialog -> layerManager() -> layerSequence(), SIGNAL( layerReleasedAbove( int, int ) ), exposure_sheet_dialog, SLOT( slotSwapWithLeftLayer( int, int ) ) );
+	
 	connect( timeline_dialog -> layerManager() -> layerSequence(), SIGNAL( layerReleasedBelow( int, int ) ), exposure_sheet_dialog, SLOT( slotSwapWithRightLayer( int, int ) ) );
+	
 	connect( timeline_dialog -> frameSequenceManager() -> frameLayout(), SIGNAL( motionTweenCreatedToES( int ) ), exposure_sheet_dialog, SLOT( slotCreateMotionTween( int ) ) );
+	
 	connect( timeline_dialog -> frameSequenceManager() -> frameLayout(), SIGNAL( motionTweenRemovedToES( int ) ), exposure_sheet_dialog, SLOT( slotRemoveMotionTween( int ) ) );
 
 	connect(insert_scene, SIGNAL(activated()), scenes_dialog, SLOT(slotInsertScene()));
+	
 	connect(insert_remove_scene, SIGNAL(activated()), scenes_dialog, SLOT(slotRemoveScene()));
 	
 	connect(file_close, SIGNAL(activated()), KTStatus->currentDrawingArea(), SLOT(close()));
 	
 	connect( KTStatus->currentDrawingArea(), SIGNAL( closed() ), SLOT( slotCloseDrawingArea() ) );
+	
 	connect( color_palette_dialog, SIGNAL( outlineColorChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeOutlineColor() ) );
+	
 	connect( color_palette_dialog, SIGNAL( fillColorChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeFillColor() ) );
+	
 	connect( brushes_dialog, SIGNAL( minThicknessChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeMinThicknessBrush() ) );
+	
 	connect( brushes_dialog, SIGNAL( maxThicknessChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeMaxThicknessBrush() ) );
+	
 	connect( brushes_dialog, SIGNAL( smoothnessChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeSmoothnessBrush() ) );
 
 
 	connect( scenes_dialog, SIGNAL( sceneInserted() ), SLOT( slotInsertSync() ) );
+	
 	connect( scenes_dialog, SIGNAL( sceneMovedDown( int ) ), SLOT( slotMoveDownSync( int ) ) );
+	
 	connect( scenes_dialog, SIGNAL( sceneMovedUp( int ) ), SLOT( slotMoveUpSync( int ) ) );
+	
 	connect( scenes_dialog, SIGNAL( sceneRemoved( int ) ), SLOT( slotRemoveSync( int ) ) );
+	
 	connect( scenes_dialog, SIGNAL( sceneSelected( int ) ), SLOT( slotSelectSync( int ) ) );
 	
 	connect( KTStatus->currentDrawingArea(), SIGNAL( colorGrabbed( KTColor * ) ), color_palette_dialog, SLOT( slotSetColor( KTColor * ) ) );
+	
 	connect( KTStatus->currentDrawingArea(), SIGNAL( updated() ), library_dialog -> getSymbolView(), SLOT( updateGL() ) );
+	
 	connect( KTStatus->currentDrawingArea(), SIGNAL( wasDrawn( bool ) ), timeline_dialog -> frameSequenceManager() -> frameLayout(), SLOT( slotFrameHasDrawing( bool ) ) );
 	
 	connect(timeline_dialog, SIGNAL(saveImage(const QString& )), m_cameraPreview, SLOT(grabImage(const QString& )));
@@ -2001,7 +2034,13 @@ void KToon::slotNewDocument()
 		connect( exposure_sheet_dialog, SIGNAL( frameRemoved( int ) ), timeline_dialog -> frameSequenceManager() -> frameLayout(), SLOT( slotRemoveKeyframeBlockFromTheCurrentFS( int ) ) );
 		connect( exposure_sheet_dialog, SIGNAL( frameMovedUp( int ) ), timeline_dialog -> frameSequenceManager() -> frameLayout(), SLOT( slotMoveKeyframeLeftInTheCurrentFS( int ) ) );
 		connect( exposure_sheet_dialog, SIGNAL( frameMovedDown( int ) ), timeline_dialog -> frameSequenceManager() -> frameLayout(), SLOT( slotMoveKeyframeRightInTheCurrentFS( int ) ) );
+		//FIXME:kuadrosx ktexposure
+		connect( m_ExposureSheetDialog, SIGNAL( frameSelected() ), KTStatus->currentDrawingArea(), SLOT( slotSelectFrame() ) );
+		
+		connect(m_ExposureSheetDialog, SIGNAL(activateCursor()), this, SLOT(slotActivateCursor()));
+
 		connect( exposure_sheet_dialog, SIGNAL( frameSelected() ), KTStatus->currentDrawingArea(), SLOT( slotSelectFrame() ) );
+		
 		connect( exposure_sheet_dialog, SIGNAL( frameSelected() ), SLOT( slotActivateCursor() ) );
 
 		connect( timeline_dialog, SIGNAL( insertLayerClicked() ), exposure_sheet_dialog, SLOT( slotInsertLayer() ) );
@@ -3875,7 +3914,9 @@ void KToon::slotInsertSync()
 	connect( new_exposure_sheet, SIGNAL( layerRemoved() ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotUpdateMaxUsedFrames() ) );
 	connect( new_exposure_sheet, SIGNAL( layerSelected( int ) ), new_timeline -> layerManager() -> layerSequence(), SLOT( slotSelectLayerFromES( int ) ) );
 	connect( new_exposure_sheet, SIGNAL( layerRenamed( int, const QString & ) ), new_timeline -> layerManager() -> layerSequence(), SLOT( slotRenameLayerFromES( int, const QString & ) ) );
+	
 	connect( new_exposure_sheet, SIGNAL( framesInsertedAtTheEnd( int ) ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotInsertKeyframesIntoTheCurrentFS( int ) ) );
+	
 	connect( new_exposure_sheet, SIGNAL( frameRemoved( int ) ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotRemoveKeyframeBlockFromTheCurrentFS( int ) ) );
 	connect( new_exposure_sheet, SIGNAL( frameMovedUp( int ) ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotMoveKeyframeLeftInTheCurrentFS( int ) ) );
 	connect( new_exposure_sheet, SIGNAL( frameMovedDown( int ) ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotMoveKeyframeRightInTheCurrentFS( int ) ) );
@@ -3965,159 +4006,159 @@ void KToon::closeEvent( QCloseEvent *close_event )
 void KToon::createGUI()
 {
 	std::cout << "Creating GUI" << std::endl;
-    setCaption( KTStatus->currentDocument()->nameDocument() );
-
-    QPtrList<KTColor> custom_colors = KTStatus->currentDocument()->getPalette() -> getColors();
-    color_palette_dialog -> enableCustomPalette( true );
-    color_palette_dialog -> loadCustomColors( custom_colors );
-
-    QPtrList<Brush> brushes = KTStatus->currentDocument()->getBrushes();
-    brushes_dialog = new Brushes( this, Qt::WStyle_Tool);
-    brushes_dialog -> loadBrushes( brushes );
-
-    QPtrList<Scene> scenes = KTStatus->currentDocument()->getAnimation() -> getScenes();
-    scenes_dialog = new Scenes( this);//, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
-    scenes_dialog -> loadScenes( scenes );
-
-    library_dialog = new Library( this, KTStatus->
-		    currentDrawingArea());
-    library_dialog -> loadItems( KTStatus->currentDocument()->getLibrary() -> getItems() );
-
-    m_cameraPreview = new KTCameraPreview(main_panel);
-//     render_camera_preview = new GLRenderCameraPreview( main_panel, this, window, id_window_render_camera_preview, window_render_camera_preview, KTStatus->currentDrawingArea() );
-    m_cameraPreview->hide();
-    top_camera_view = new GLTopCameraView( main_panel, KTStatus->currentDrawingArea() );
-    side_camera_view = new GLSideCameraView( main_panel, KTStatus->currentDrawingArea() );
-
-    Scene *s_it;
-    for ( s_it = scenes.first(); s_it; s_it = scenes.next() )
-    {
-        slotInsertSync();
-    	QPtrList<Layer> layers = s_it -> getLayers();
-	ExposureSheet *es = list_of_es.at( scenes.find( s_it ) );
-	es -> loadLayersAndKeyframes( layers );
-	Timeline *tl = list_of_tl.at( scenes.find( s_it ) );
-	tl -> loadLayersAndKeyframes( layers );
-	QPtrList<ILayer> layer_list = es -> getILayers();
-    }
-
-    exposure_sheet_dialog = list_of_es.at( 0 );
-    timeline_dialog = list_of_tl.at( 0 );
-    if ( window_animation->isEnabled() )//window -> isItemEnabled( id_window_animation ) )
-    {
-	    window_exposure_sheet->setVisible(true);
-//         window -> setItemVisible( id_window_exposure_sheet, true );
-// 	window -> setItemChecked( id_window_exposure_sheet, true );
-// 	window_exposure_sheet -> show();
-// 	window_exposure_sheet -> setDown( true );
-         exposure_sheet_dialog -> show();
-//         window -> setItemVisible( id_window_drawing_area, true );
-// 	window -> setItemChecked( id_window_drawing_area, true );
-	window_drawing_area->setVisible(true);
-	window_drawing_area->setOn(true);
-        KTStatus->currentDrawingArea() -> show();
-//         window -> setItemVisible( id_window_scenes, true );
-// 	window -> setItemChecked( id_window_scenes, true );
-	window_scenes->setVisible(true);
-// 	window_scenes -> show();
-// 	window_scenes -> setDown( true );
-        scenes_dialog -> show();
-//         window -> setItemVisible( id_window_tools, true );
-// 	window -> setItemChecked( id_window_tools, true );
-	window_tools->setVisible(true);
-	//window_tools -> show();
-	//window_tools -> setDown( true );
-        tools_dialog -> show();
-//         window -> setItemVisible( id_window_library, true );
-// 	window -> setItemChecked( id_window_library, false );
-	window_library->setVisible(true);
-	window_library->setOn( false );
-        //window -> setItemVisible( id_window_brushes, true );
-	//window -> setItemChecked( id_window_brushes, true );
-	//window_brushes -> show();
-	window_brushes->setVisible(true);
-// 	window_brushes -> setDown( true );
-        brushes_dialog -> show();
-    }
-    else if ( window_illustration->isEnabled() )//window -> isItemEnabled( id_window_illustration ) )
-    {
-        window -> setItemVisible( id_window_timeline, true );
-	window -> setItemChecked( id_window_timeline, true );
-	window_timeline -> show();
-	window_timeline -> setDown( true );
-        timeline_dialog -> show();
-//         window -> setItemVisible( id_window_render_camera_preview, true );
-// 	window -> setItemChecked( id_window_render_camera_preview, true );
-	window_render_camera_preview->setVisible(true);
-// 	window_render_camera_preview -> setDown( true );
-        m_cameraPreview->show();
-//         window -> setItemVisible( id_window_side_camera_view, true );
-// 	window -> setItemChecked( id_window_side_camera_view, true );
-	window_side_camera_view->setVisible(true);
-// 	window_side_camera_view -> setDown( true );
-        side_camera_view-> show();
-//         window -> setItemVisible( id_window_top_camera_view, true );
-// 	window -> setItemChecked( id_window_top_camera_view, true );
-	window_top_camera_view->setVisible(true);
-// 	window_top_camera_view -> setDown( true );
-        top_camera_view -> show();
-    }
-
-    KTStatus->currentDrawingArea() -> setCursor( QCursor( Qt::ForbiddenCursor ) );
-
-    connect( KTStatus->currentDrawingArea(), SIGNAL( closed() ), SLOT( slotCloseDrawingArea() ) );
-    connect( color_palette_dialog, SIGNAL( outlineColorChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeOutlineColor() ) );
-    connect( color_palette_dialog, SIGNAL( fillColorChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeFillColor() ) );
-    connect( brushes_dialog, SIGNAL( minThicknessChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeMinThicknessBrush() ) );
-    connect( brushes_dialog, SIGNAL( maxThicknessChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeMaxThicknessBrush() ) );
-    connect( brushes_dialog, SIGNAL( smoothnessChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeSmoothnessBrush() ) );
-    connect( KTStatus->currentDrawingArea(), SIGNAL( colorGrabbed( KTColor * ) ), color_palette_dialog, SLOT( slotSetColor( KTColor * ) ) );
-    connect(insert_scene, SIGNAL(activated()), scenes_dialog, SLOT(slotInsertScene()));
-    connect(insert_remove_scene, SIGNAL(activated()), scenes_dialog, SLOT(slotRemoveScene()));
-    
-    connect(file_close, SIGNAL(activated()), KTStatus->currentDrawingArea(), SLOT(close()));
-    connect( scenes_dialog, SIGNAL( sceneInserted() ), SLOT( slotInsertSync() ) );
-    connect( scenes_dialog, SIGNAL( sceneMovedDown( int ) ), SLOT( slotMoveDownSync( int ) ) );
-    connect( scenes_dialog, SIGNAL( sceneMovedUp( int ) ), SLOT( slotMoveUpSync( int ) ) );
-    connect( scenes_dialog, SIGNAL( sceneRemoved( int ) ), SLOT( slotRemoveSync( int ) ) );
-    connect( scenes_dialog, SIGNAL( sceneSelected( int ) ), SLOT( slotSelectSync( int ) ) );
-
-    KTStatus -> setCurrentScene( ( KTStatus->currentDocument()->getAnimation() -> getScenes() ).first() );
-    KTStatus -> setCurrentLayer( ( KTStatus -> currentScene() -> getLayers() ).first() );
-    KTStatus -> setCurrentKeyFrame( ( ( KTStatus -> currentScene() -> getLayers() ).first() -> keyFrames() ).first() );
-
-    exposure_sheet_dialog -> touchFirstFrame();
-    scenes_dialog -> selectFirstScene();
-
-    timeline_dialog -> frameSequenceManager() -> frameLayout() -> slotUpdateMaxUsedFrames();
-    exposure_sheet_dialog -> updateIndicators( exposure_sheet_dialog -> currentLayerObj() );
-
-    //file -> setItemEnabled( id_file_save, true );
-    file_save->setEnabled(true);
-    file_save_as->setEnabled(true);
-    file_close->setEnabled(true);
-    file_import->setEnabled(true);
-    file_export->setEnabled(true);
-    file_properties->setEnabled(true);
-    
-
-    menuBar() -> setItemVisible( id_insert, true );
-    if (window_animation->isEnabled() )// window -> isItemEnabled( id_window_animation ) )
-    {
-    	menuBar() -> setItemVisible( id_edit, true );
-    	menuBar() -> setItemVisible( id_view, true );
-    	menuBar() -> setItemVisible( id_tools, true );
-
-    	edit_undo->setVisible(true);
-	edit_redo->setVisible(true);
-	edit_cut->setVisible(true);
-	edit_copy->setVisible(true);
-	edit_paste->setVisible(true);
-	tool_bar2 -> show();
-    }
-    else
-        menuBar() -> setItemVisible( id_control, true );
-    file_save->setVisible(true);
+	setCaption( KTStatus->currentDocument()->nameDocument() );
+	
+	QPtrList<KTColor> custom_colors = KTStatus->currentDocument()->getPalette() -> getColors();
+	color_palette_dialog -> enableCustomPalette( true );
+	color_palette_dialog -> loadCustomColors( custom_colors );
+	
+	QPtrList<Brush> brushes = KTStatus->currentDocument()->getBrushes();
+	brushes_dialog = new Brushes( this, Qt::WStyle_Tool);
+	brushes_dialog -> loadBrushes( brushes );
+	
+	QPtrList<Scene> scenes = KTStatus->currentDocument()->getAnimation() -> getScenes();
+	scenes_dialog = new Scenes( this);//, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
+	scenes_dialog -> loadScenes( scenes );
+	
+	library_dialog = new Library( this, KTStatus->
+			currentDrawingArea());
+	library_dialog -> loadItems( KTStatus->currentDocument()->getLibrary() -> getItems() );
+	
+	m_cameraPreview = new KTCameraPreview(main_panel);
+	//     render_camera_preview = new GLRenderCameraPreview( main_panel, this, window, id_window_render_camera_preview, window_render_camera_preview, KTStatus->currentDrawingArea() );
+	m_cameraPreview->hide();
+	top_camera_view = new GLTopCameraView( main_panel, KTStatus->currentDrawingArea() );
+	side_camera_view = new GLSideCameraView( main_panel, KTStatus->currentDrawingArea() );
+	
+	Scene *s_it;
+	for ( s_it = scenes.first(); s_it; s_it = scenes.next() )
+	{
+		slotInsertSync();
+		QPtrList<Layer> layers = s_it -> getLayers();
+		ExposureSheet *es = list_of_es.at( scenes.find( s_it ) );
+		es -> loadLayersAndKeyframes( layers );
+		Timeline *tl = list_of_tl.at( scenes.find( s_it ) );
+		tl -> loadLayersAndKeyframes( layers );
+		QPtrList<ILayer> layer_list = es -> getILayers();
+	}
+	
+	exposure_sheet_dialog = list_of_es.at( 0 );
+	timeline_dialog = list_of_tl.at( 0 );
+	if ( window_animation->isEnabled() )//window -> isItemEnabled( id_window_animation ) )
+	{
+		window_exposure_sheet->setVisible(true);
+	//         window -> setItemVisible( id_window_exposure_sheet, true );
+	// 	window -> setItemChecked( id_window_exposure_sheet, true );
+	// 	window_exposure_sheet -> show();
+	// 	window_exposure_sheet -> setDown( true );
+		exposure_sheet_dialog -> show();
+	//         window -> setItemVisible( id_window_drawing_area, true );
+	// 	window -> setItemChecked( id_window_drawing_area, true );
+		window_drawing_area->setVisible(true);
+		window_drawing_area->setOn(true);
+		KTStatus->currentDrawingArea() -> show();
+	//         window -> setItemVisible( id_window_scenes, true );
+	// 	window -> setItemChecked( id_window_scenes, true );
+		window_scenes->setVisible(true);
+	// 	window_scenes -> show();
+	// 	window_scenes -> setDown( true );
+		scenes_dialog -> show();
+	//         window -> setItemVisible( id_window_tools, true );
+	// 	window -> setItemChecked( id_window_tools, true );
+		window_tools->setVisible(true);
+		//window_tools -> show();
+		//window_tools -> setDown( true );
+		tools_dialog -> show();
+	//         window -> setItemVisible( id_window_library, true );
+	// 	window -> setItemChecked( id_window_library, false );
+		window_library->setVisible(true);
+		window_library->setOn( false );
+		//window -> setItemVisible( id_window_brushes, true );
+		//window -> setItemChecked( id_window_brushes, true );
+		//window_brushes -> show();
+		window_brushes->setVisible(true);
+	// 	window_brushes -> setDown( true );
+		brushes_dialog -> show();
+	}
+	else if ( window_illustration->isEnabled() )//window -> isItemEnabled( id_window_illustration ) )
+	{
+		window -> setItemVisible( id_window_timeline, true );
+		window -> setItemChecked( id_window_timeline, true );
+		window_timeline -> show();
+		window_timeline -> setDown( true );
+		timeline_dialog -> show();
+	//         window -> setItemVisible( id_window_render_camera_preview, true );
+	// 	window -> setItemChecked( id_window_render_camera_preview, true );
+		window_render_camera_preview->setVisible(true);
+	// 	window_render_camera_preview -> setDown( true );
+		m_cameraPreview->show();
+	//         window -> setItemVisible( id_window_side_camera_view, true );
+	// 	window -> setItemChecked( id_window_side_camera_view, true );
+		window_side_camera_view->setVisible(true);
+	// 	window_side_camera_view -> setDown( true );
+		side_camera_view-> show();
+	//         window -> setItemVisible( id_window_top_camera_view, true );
+	// 	window -> setItemChecked( id_window_top_camera_view, true );
+		window_top_camera_view->setVisible(true);
+	// 	window_top_camera_view -> setDown( true );
+		top_camera_view -> show();
+	}
+	
+	KTStatus->currentDrawingArea() -> setCursor( QCursor( Qt::ForbiddenCursor ) );
+	
+	connect( KTStatus->currentDrawingArea(), SIGNAL( closed() ), SLOT( slotCloseDrawingArea() ) );
+	connect( color_palette_dialog, SIGNAL( outlineColorChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeOutlineColor() ) );
+	connect( color_palette_dialog, SIGNAL( fillColorChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeFillColor() ) );
+	connect( brushes_dialog, SIGNAL( minThicknessChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeMinThicknessBrush() ) );
+	connect( brushes_dialog, SIGNAL( maxThicknessChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeMaxThicknessBrush() ) );
+	connect( brushes_dialog, SIGNAL( smoothnessChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeSmoothnessBrush() ) );
+	connect( KTStatus->currentDrawingArea(), SIGNAL( colorGrabbed( KTColor * ) ), color_palette_dialog, SLOT( slotSetColor( KTColor * ) ) );
+	connect(insert_scene, SIGNAL(activated()), scenes_dialog, SLOT(slotInsertScene()));
+	connect(insert_remove_scene, SIGNAL(activated()), scenes_dialog, SLOT(slotRemoveScene()));
+	
+	connect(file_close, SIGNAL(activated()), KTStatus->currentDrawingArea(), SLOT(close()));
+	connect( scenes_dialog, SIGNAL( sceneInserted() ), SLOT( slotInsertSync() ) );
+	connect( scenes_dialog, SIGNAL( sceneMovedDown( int ) ), SLOT( slotMoveDownSync( int ) ) );
+	connect( scenes_dialog, SIGNAL( sceneMovedUp( int ) ), SLOT( slotMoveUpSync( int ) ) );
+	connect( scenes_dialog, SIGNAL( sceneRemoved( int ) ), SLOT( slotRemoveSync( int ) ) );
+	connect( scenes_dialog, SIGNAL( sceneSelected( int ) ), SLOT( slotSelectSync( int ) ) );
+	
+	KTStatus -> setCurrentScene( ( KTStatus->currentDocument()->getAnimation() -> getScenes() ).first() );
+	KTStatus -> setCurrentLayer( ( KTStatus -> currentScene() -> getLayers() ).first() );
+	KTStatus -> setCurrentKeyFrame( ( ( KTStatus -> currentScene() -> getLayers() ).first() -> keyFrames() ).first() );
+	
+	exposure_sheet_dialog -> touchFirstFrame();
+	scenes_dialog -> selectFirstScene();
+	
+	timeline_dialog -> frameSequenceManager() -> frameLayout() -> slotUpdateMaxUsedFrames();
+	exposure_sheet_dialog -> updateIndicators( exposure_sheet_dialog -> currentLayerObj() );
+	
+	//file -> setItemEnabled( id_file_save, true );
+	file_save->setEnabled(true);
+	file_save_as->setEnabled(true);
+	file_close->setEnabled(true);
+	file_import->setEnabled(true);
+	file_export->setEnabled(true);
+	file_properties->setEnabled(true);
+	
+	
+	menuBar() -> setItemVisible( id_insert, true );
+	if (window_animation->isEnabled() )// window -> isItemEnabled( id_window_animation ) )
+	{
+		menuBar() -> setItemVisible( id_edit, true );
+		menuBar() -> setItemVisible( id_view, true );
+		menuBar() -> setItemVisible( id_tools, true );
+	
+		edit_undo->setVisible(true);
+		edit_redo->setVisible(true);
+		edit_cut->setVisible(true);
+		edit_copy->setVisible(true);
+		edit_paste->setVisible(true);
+		tool_bar2 -> show();
+	}
+	else
+		menuBar() -> setItemVisible( id_control, true );
+	file_save->setVisible(true);
 }
 
 void KToon::updateOpenRecentMenu()

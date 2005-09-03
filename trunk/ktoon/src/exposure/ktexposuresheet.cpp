@@ -22,6 +22,7 @@
 #include <qtooltip.h>
 #include "ktapplication.h"
 #include <qlistview.h>
+#include "status.h"
 #include <ktdebug.h>
 
 KTExposureSheet::KTExposureSheet( QWidget *parent, const char *name)
@@ -47,7 +48,9 @@ KTExposureSheet::KTExposureSheet( QWidget *parent, const char *name)
 // 	show();
 
 	setResizeEnabled ( true );
-	
+	connect(m_viewLayer, SIGNAL(cellSelected(int,int)), this, SLOT(select(int,int)));
+	connect(m_viewLayer, SIGNAL(frameSelected()), this, SIGNAL(frameSelected()));
+	connect(m_viewLayer, SIGNAL(layerSelected(int)), this, SIGNAL(layerSelected(int)));
 }
 
 
@@ -82,12 +85,13 @@ void KTExposureSheet::setupButtons()
 
 void KTExposureSheet::applyAction(int action)
 {
+// 	ktDebug(1) << action;
 	switch(action)
 	{
 		case InsertLayer:
 		{
 			m_viewLayer->insertLayer(100);
-			slotInsertLayer();
+// 			slotInsertLayer();
 			break;
 		}
 		case RemoveLayer:
@@ -127,7 +131,21 @@ void KTExposureSheet::applyAction(int action)
 	}
 }
 
-void KTExposureSheet::slotInsertLayer()
+void KTExposureSheet::select(int idLayer, int idFrame)
 {
+// 	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
+// 	Layer *sl = ly.at( idLayer );
+// 	KTStatus -> setCurrentLayer( sl );
+// 	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
+// 	KTStatus -> setCurrentLayer( ly.at( list_of_layers.find( layer_iterator ) ) );
+
+// 	if ( frame_iterator -> isUsed() )
+// 	{
+// 		QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
+// 		KTStatus -> setCurrentKeyFrame( kf.at( current_list_of_frames.find( frame_iterator ) ) );
+// 	}
+// 	else
+// 		KTStatus -> setCurrentKeyFrame( NULL );
 	
+// 	emit(frameSelected());
 }

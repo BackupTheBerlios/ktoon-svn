@@ -28,6 +28,7 @@
 #include "timeline.h"
 #include "images.h"
 #include "scene.h"
+#include "ktdebug.h"
 
 #include <memory>
 
@@ -158,13 +159,14 @@ ExposureSheet::ExposureSheet( QWidget *parent)
 	list_of_layers.append( default_layer_obj );
 	QPtrList<ESFrame> default_layer_frame_list;
 	first_layer = default_layer;
-
+	
+	//se crean la enumeracion
 	QLabel *frame_enumeration = new QLabel( "1", scroll_area );
 	frame_enumeration -> setFont( QFont( "Helvetica", 6, QFont::Bold ) );
 	frame_enumeration -> setAlignment( Qt::AlignCenter );
 	frame_enumeration -> resize( 25, 25 );
 	frame_enumeration -> move( insert_layer -> x(), default_layer -> y() + default_layer -> height() );
-
+	//se crea un el primer frame, se ubica y conecta. y se añade a default_layer_obj default_layer_frame_list
 	ESFrame *first_frame = new ESFrame( tr( "Drawing " ) + QString( "1-1" ), 1,scroll_area );
 	first_frame -> move( default_layer -> x(), default_layer -> y() + default_layer -> height() );
 	first_frame -> setUsed( true );
@@ -535,6 +537,7 @@ void ExposureSheet::slotSelectLayer()
 	
 	for ( layer_iterator = list_of_layers.first(); layer_iterator; layer_iterator = list_of_layers.next() )
 	{
+		//si el actual layer esta seleccionado entonces obtenemos la lista de layers y obtenemos el layer seleccionado y le decimos ktstatus que es el layer actual
 		if ( current_layer == layer_iterator -> interfaceElement() )
 		{
 		sel_layer = layer_iterator;
@@ -542,6 +545,7 @@ void ExposureSheet::slotSelectLayer()
 		Layer *sl = ly.at( list_of_layers.find( sel_layer ) );
 		KTStatus -> setCurrentLayer( sl );
 		}
+		
 		layer_iterator -> availableFrames( &current_list_of_frames );
 		for ( frame_iterator = current_list_of_frames.first(); frame_iterator; frame_iterator = current_list_of_frames.next() )
 		{
@@ -556,7 +560,6 @@ void ExposureSheet::slotSelectLayer()
 		}
 		( layer_iterator -> interfaceElement() ) -> clearTextfieldFocus();
 	}
-	
 	if ( sel_layer -> selectedFrame() != NULL )
 	{
 		QPtrList<ESFrame> ef;
@@ -572,7 +575,7 @@ void ExposureSheet::slotSelectLayer()
 }
 
 void ExposureSheet::slotSelectLayerFromTL( int pos )
-	{
+{
 	ESLayer *selected_layer = list_of_layers.at( pos ) -> interfaceElement();
 	selected_layer -> animateClick();
 }

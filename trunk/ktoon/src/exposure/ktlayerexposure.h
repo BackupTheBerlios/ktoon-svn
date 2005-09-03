@@ -45,6 +45,9 @@ class KTLayerExposure : public QFrame
 		void invertFrames(int id1, int id2);
 		void setId(int id);
 		
+		bool currentFrameIsUsed();
+		int  useFrame();
+		
 	private:
 		bool m_selected;
 		int m_currentFrame, m_id, m_useFrame;

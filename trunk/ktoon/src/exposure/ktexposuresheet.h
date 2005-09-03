@@ -47,7 +47,7 @@ class KTExposureSheet : public KTDialogBase
 	public:
 		KTExposureSheet(QWidget *parent = 0, const char *name = 0);
 		~KTExposureSheet();
-		enum Actions { NoAction = 0, InsertLayer, RemoveLayer, ShowManageLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
+		enum Actions { /*NoAction = 0,*/ InsertLayer = 0, RemoveLayer, ShowManageLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
 	
 	private:
 
@@ -61,10 +61,12 @@ class KTExposureSheet : public KTDialogBase
 		
 	public slots:
 		void applyAction(int action);
-		void slotInsertLayer();
+		void select(int idLayer, int idFrame);
 		
 	signals:
 		void applyedAction(Actions action);
+		void frameSelected();
+		void layerSelected(int);
 };
 
 #endif

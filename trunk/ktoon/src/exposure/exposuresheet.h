@@ -129,33 +129,33 @@ public:
     QPtrList<Layer> visibleLayers();
 
 private:
-    int layer_max_value;
-    int number_of_layers;
-    QString current_name;
-    ESLayer *first_layer;
-    ESLayer *last_layer;
-    ESLayer *current_layer;
-    ESFrame *f_frame;
-    KToon *k_toon;
-    GLDrawing *to_copy;
-
-    //Icons
-    QPixmap i_insert_layer, i_remove_layer, i_lock_frame, i_insert_frame, i_remove_frame, i_move_frame_up,
-            i_move_frame_down, i_layer_visibility;
-
-    //Buttons
-    QPushButton *insert_layer, *remove_layer, *lock_frame, *insert_frame, *remove_frame, *move_frame_up,
-                *move_frame_down, *layer_visibility;
-
-    //List of Layers
-    QPtrList<ILayer> list_of_layers;
-
-    //Scroll Area
-    QScrollView *scroll_area_container;
-    QFrame *scroll_area;
-
-    //Widget for handling the layer visibility
-    QListView *visibility_list;
+	int layer_max_value;
+	int number_of_layers;
+	QString current_name;
+	ESLayer *first_layer;
+	ESLayer *last_layer;
+	ESLayer *current_layer;
+	ESFrame *f_frame;
+	KToon *k_toon;
+	GLDrawing *to_copy;
+	
+	//Icons
+	QPixmap i_insert_layer, i_remove_layer, i_lock_frame, i_insert_frame, i_remove_frame, i_move_frame_up,
+		i_move_frame_down, i_layer_visibility;
+	
+	//Buttons
+	QPushButton *insert_layer, *remove_layer, *lock_frame, *insert_frame, *remove_frame, *move_frame_up,
+			*move_frame_down, *layer_visibility;
+	
+	//List of Layers
+	QPtrList<ILayer> list_of_layers;
+	
+	//Scroll Area
+	QScrollView *scroll_area_container;
+	QFrame *scroll_area;
+	
+	//Widget for handling the layer visibility
+	QListView *visibility_list;
 
 signals:
     /**
@@ -296,6 +296,7 @@ public slots:
      * @note Inserting a frame is a logical operation since it does not inserts physically the frame object.
      * @note There are a fixed number of frames so this operation only sets used the frames inserted.
      */
+			      
     void slotInsertFrame();
     /**
      * @brief Removes a frame from the current layer

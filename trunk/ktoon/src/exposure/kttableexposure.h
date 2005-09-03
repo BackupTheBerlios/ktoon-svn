@@ -54,9 +54,15 @@ class KTTableExposure : public QScrollView
 	public slots:
 		void insertLayer(int rows);
 		void clickedCell(int row, int col, int button, int gx, int gy);
+		void changeCurrentLayer(int idLayer);
 		
 	signals:
 		void layerSelected(int id);
+		void frameSelected();
+		void cellSelected(int idLayer, int idFrame);
+		void activateCursor();
+		void layerInserted();
+		void frameRemoved(int idFrame);
 };
 
 #endif

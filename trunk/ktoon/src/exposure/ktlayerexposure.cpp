@@ -27,7 +27,6 @@ KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFra
 	m_layout = new QBoxLayout(this, QBoxLayout::TopToBottom);
 	m_header = new ESLayer(initial_text,this);
 	connect( m_header, SIGNAL(clicked()), this, SLOT(setSelected()));
-
 	m_layout->addWidget(m_header);
 	m_frames.setAutoDelete(true);
 	for(int i = 0; i < numFrame; i++)
@@ -57,13 +56,18 @@ KTLayerExposure::~KTLayerExposure()
 
 void KTLayerExposure::frameSelect(int id, int button, int x, int y)
 {
+	if(id < 0)
+		id = 0;
+	
 	m_currentFrame = id;
+	
 	if(m_useFrame + 1 == id && !(m_frames.at(id)->isUsed()))
 	{
 		m_frames.at(id)->setUsed( true );
 		m_useFrame++;
 	}
 	setSelected(true);
+	m_header->animateClick();
 	emit frameSelected(id);
 	emit clicked(id, m_id, button, x, y);
 
@@ -112,7 +116,6 @@ void KTLayerExposure::insertFrame(int id)
 
 void KTLayerExposure::invertFrames(int id1, int id2)
 {
-	
 	m_layout->remove(m_frames.at(id1));
 	m_layout->remove(m_frames.at(id2));
 	m_layout->insertWidget(id1+1, m_frames.at(id2), 10);
@@ -122,50 +125,80 @@ void KTLayerExposure::invertFrames(int id1, int id2)
 
 void KTLayerExposure::setUseFrames(int id)
 {
-	if(id == m_useFrame)
+	//FIXME:
+	if(m_currentFrame == m_useFrame )
 	{
 		m_useFrame++;
-		m_frames.at(m_useFrame)->setUsed( true );
-		frameSelect( m_useFrame, 0, 0, 0);
+		if(m_useFrame <= m_frames.count()-1)
+		{
+			m_frames.at(m_useFrame)->setUsed( true );
+			frameSelect( m_useFrame, 0, 0, 0);
+		}
 	}
 	else if(m_frames.at(m_currentFrame)->isUsed() && m_useFrame != m_frames.count() )
 	{
 		m_useFrame++;
 		m_layout->remove(m_frames.at(m_useFrame));
-		m_layout->insertWidget( id+2, m_frames.at(m_useFrame), 10);
+		m_layout->insertWidget( m_currentFrame+2, m_frames.at(m_useFrame), 10);
 		m_frames.at(m_useFrame)->setUsed( true );
 	}
 	else
 	{
-		for(int i = m_useFrame; i <= id; i++)
+// 		ktDebug(1) << "else " << m_useFrame << " " << m_currentFrame;
+		for(int i = m_useFrame; i <= m_currentFrame; i++)
 		{
 			m_frames.at(i)->setUsed( true );
-// 			m_frames[i]->setUsed( true );
 		}
-		m_useFrame = id;
+		m_useFrame = m_currentFrame;
 	}
 }
 
 void KTLayerExposure::removeFrame(int id)
 {
 	int pos = m_layout->findWidget(m_frames.at(id));
-// 	ktDebug(1) << m_frames.count();
+	//FIXME:
 	if(m_useFrame > 0)
 	{
-// 		ktDebug(1) << "removeFrame " << id << endl;
-		if(m_frames.at(id)->isUsed())
+		if(m_frames.at(m_currentFrame)->isUsed() && m_frames.at(m_currentFrame)->isSelected())
 		{
-			m_layout->remove(m_frames.at(id));
-			m_frames.remove(id);
-			for( int i = id; i < m_frames.count(); i++)
+			m_layout->remove(m_frames.at(m_currentFrame));
+			m_frames.remove(m_currentFrame);
+			for( int i = m_currentFrame; i < m_frames.count(); i++)
 			{
 				m_frames.at(i)->setId(i);
 			}
 			m_useFrame--;
-// 			ktDebug(1) << " m_frames.getLast()->id()+1 " << (m_frames.getLast()->id()+1);
 			insertFrame(m_frames.getLast()->id()+1);
-			frameSelect(id-1,0,0,0);
-	 	}
+// 			int pos = m_layout->findWidget(m_frames.at(id+1));
+// 			ktDebug(1) << m_frames.at(pos)->id();
+// 			frameSelect( m_frames.at(pos)->id() ,0,0,0);
+		}
+		else if(m_selected)
+		{
+			
+			m_layout->remove(m_frames.at(m_useFrame));
+			m_frames.remove(m_useFrame);
+			for( int i = m_useFrame; i < m_frames.count(); i++)
+			{
+				m_frames.at(i)->setId(i);
+			}
+			ktDebug(1) << "else " << m_useFrame << " " << m_currentFrame;
+// 			m_frames.at(m_currentFrame)->setSelected(true);
+			frameSelect( m_currentFrame ,0,0,0);
+			
+			m_useFrame--;
+			insertFrame(m_frames.getLast()->id()+1);
+			
+// 			frameSelect( m_frames.at()->id() ,0,0,0);
+		}
+		
+// 			pos = m_layout->findWidget(m_frames.at(id));
+// 			/*int */pos = m_layout->findWidget(m_frames.at(m_currentFrame));
+// 				if(pos > 0)
+// 				{
+// 			ktDebug(1) << m_frames.at(pos)->id();
+// 			frameSelect( m_frames.at(pos-1)->id() ,0,0,0);}
+// 	 	}
 	}
 }
 
@@ -196,13 +229,13 @@ void KTLayerExposure::moveCurrentFrameDown()
 
 void KTLayerExposure::lockFrame(int id)
 {
-	if(m_frames.at(id)->isLocked())
+	if(m_frames.at(m_currentFrame)->isLocked())
 	{
-		m_frames.at(id)->setLocked(false);
+		m_frames.at(m_currentFrame)->setLocked(false);
 	}
 	else
 	{
-		m_frames.at(id)->setLocked(true);
+		m_frames.at(m_currentFrame)->setLocked(true);
 	}
 }
 
@@ -241,4 +274,13 @@ void KTLayerExposure::pasteCurrentFrame()
 	
 }
 
+bool KTLayerExposure::currentFrameIsUsed()
+{
+	return m_frames.at(m_currentFrame)->isUsed();
+}
+
+int KTLayerExposure::useFrame()
+{
+	return m_useFrame;
+}
 

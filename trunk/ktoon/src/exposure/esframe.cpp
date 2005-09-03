@@ -52,6 +52,7 @@ ESFrame::ESFrame( const QString &initial_text,int id, QWidget *parent )
 //     id_lock = right_click_menu -> insertItem( tr( "Lock this Frame" ), grandparent, SLOT( slotLockFrame() ) );
 //     id_copy = right_click_menu -> insertItem( tr( "Copy this Frame" ), grandparent, SLOT( slotCopyFrame() ) );
 //     id_paste = right_click_menu -> insertItem( tr( "Paste into this Frame" ), grandparent, SLOT( slotPasteFrame() ) );
+	setMinimumSize(sizeHint());
 }
 
 //--------------- DESTRUCTOR --------------------
@@ -201,6 +202,7 @@ void ESFrame::setMotion( bool in_is_motion )
 
 void ESFrame::setHasDrawing( bool in_has_drawing )
 {
+// 	ktDebug(1) << "void ESFrame::setHasDrawing(" << in_has_drawing << ")";
 	has_drawing = in_has_drawing;
 	update();
 }

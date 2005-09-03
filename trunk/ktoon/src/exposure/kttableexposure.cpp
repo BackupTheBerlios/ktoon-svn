@@ -22,7 +22,10 @@
 #include <qvgroupbox.h>
 #include <qlayout.h>
 
+#include "status.h"
 #include "ktdebug.h"
+#include "layer.h"
+#include <memory>
 
 KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent, const char *name)
 	: QScrollView (parent, name),m_numLayer(0), m_currentLayer(0), m_currentFrame(0)
@@ -75,6 +78,28 @@ void KTTableExposure::clickedCell(int row,int col,int button,int gx,int gy)
 {
 	m_currentLayer = col;
 	m_currentFrame = row;
+	emit(cellSelected(col, row));
+	
+	
+	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
+	Layer *sl = ly.at( m_currentLayer );
+
+// 	ktDebug() << sl;
+	KTStatus -> setCurrentLayer( sl );
+// 	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
+// 	KTStatus -> setCurrentLayer( ly.at( list_of_layers.find( layer_iterator ) ) );
+
+	ktDebug() << "id_m_currentLayer " << m_currentLayer << " " << "id_m_currentFrame" << m_currentFrame ;
+	if ( m_layers.at(m_currentLayer)->currentFrameIsUsed() )
+	{
+		QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
+		KTStatus -> setCurrentKeyFrame( kf.at(  m_currentFrame) );
+	}
+	else
+		KTStatus -> setCurrentKeyFrame( NULL );
+	
+	emit(frameSelected());
+	
 	if(button == Qt::RightButton)
 	{
 		//show pupo gx, gy
@@ -83,10 +108,11 @@ void KTTableExposure::clickedCell(int row,int col,int button,int gx,int gy)
 
 void KTTableExposure::insertLayer(int rows)
 {
-
-	KTLayerExposure *newLayer = new KTLayerExposure("Layer"+ QString::number(m_numLayer), m_numLayer, 100, m_port);
+	QString text = "Layer"+ QString::number(m_numLayer);
+	
+	KTLayerExposure *newLayer = new KTLayerExposure(text, m_numLayer, 100, m_port);
 	m_layers.append(newLayer);
-	connect(newLayer, SIGNAL(selected(int)), this, SIGNAL(layerSelected(int)));
+	connect(newLayer, SIGNAL(selected(int)), this, SLOT(changeCurrentLayer(int)));
 	connect(this, SIGNAL(layerSelected(int)), newLayer, SLOT(otherSelected(int)));
 	connect(newLayer, SIGNAL(clicked(int,int,int,int,int)), this, SLOT(clickedCell(int,int,int,int,int)));
 	
@@ -94,16 +120,54 @@ void KTTableExposure::insertLayer(int rows)
 	
 	m_numLayer++;
 	newLayer->show();
+	
+	std::auto_ptr<Layer> ap_n_layer(new Layer);
+	Layer* n_layer = ap_n_layer.get();
+    
+	n_layer->setIndexLayer( m_layers.count() );
+	n_layer->setNameLayer( tr( "Layer" ) + m_numLayer );
+	QPtrList<KeyFrame> kf = n_layer -> keyFrames();
+	kf.first() -> setNameKeyFrame( text);
+	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
+	ly.append( n_layer );
+	KTStatus -> currentScene() -> setLayers( ly );
+	ap_n_layer.release();
+    
+	KTStatus->currentDrawingArea() -> modifyDocument( true );
+
+// 	if ( ( Timeline * )sender() != k_toon -> timeline() )
+		emit layerInserted();
+	
+	
+}
+
+void KTTableExposure::changeCurrentLayer(int idLayer)
+{
+	m_currentLayer = idLayer;
+	m_currentFrame = m_layers.at(m_currentLayer)->useFrame();
+	emit layerSelected(idLayer);
 }
 
 void KTTableExposure::setUseFrame()
 {
 	m_layers.at(m_currentLayer)->setUseFrames(m_currentFrame);
+	emit(activateCursor());
+// 	KTStatus->currentDrawingArea()->modifyDocument( true );
 }
 
 void KTTableExposure::removeFrameSelected()
 {
 	m_layers.at(m_currentLayer)->removeFrame(m_currentFrame);
+	QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
+	KeyFrame *lkf = kf.at(m_currentFrame);
+// 		KeyFrame *pkf = kf.prev();
+// 		pkf -> setLengthKeyFrame( pkf -> lengthKeyFrame() + lkf -> lengthKeyFrame() );
+		emit frameRemoved( m_currentFrame );
+	kf.setAutoDelete( true );
+	kf.remove( lkf );
+	kf.setAutoDelete( false );
+	KTStatus -> currentLayer() -> setKeyFrames( kf );
+	
 }
 
 void KTTableExposure::moveCurrentFrame(Direction d)
@@ -125,7 +189,7 @@ void KTTableExposure::lockCurrentFrame()
 
 void KTTableExposure::removeCurrentLayer()
 {
-	if(m_numLayer > 1 && m_layers.at(m_currentLayer)->isSelected()) //m_layers[m_currentLayer]->isSelected())
+	if(m_numLayer > 1 && m_layers.at(m_currentLayer)->isSelected())
 	{
 		m_layout->remove( m_layers.at(m_currentLayer) );
 		m_layers.remove(m_currentLayer);
@@ -135,6 +199,6 @@ void KTTableExposure::removeCurrentLayer()
 		}
 		m_numLayer--;
 	}
-	ktDebug(1) << m_layers.count();
+// 	ktDebug(1) << m_layers.count();
 }
 
