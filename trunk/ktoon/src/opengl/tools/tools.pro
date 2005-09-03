@@ -18,7 +18,8 @@ HEADERS += brushproperties.h \
            glpencil.h \
            glpen.h \
            glrectangle.h \
-           brush.h 
+           brush.h \
+           gltext.h 
 SOURCES += brushproperties.cpp \
            ellipseproperties.cpp \
            imageproperties.cpp \
@@ -34,7 +35,8 @@ SOURCES += brushproperties.cpp \
            glpencil.cpp \
            glpen.cpp \
            glrectangle.cpp \
-           brush.cpp 
+           brush.cpp \
+           gltext.cpp 
 TARGETDEPS += ../../../src/lib/liblib.a
 LIBS += ../../../src/lib/liblib.a
 INCLUDEPATH += ../../../src/core \

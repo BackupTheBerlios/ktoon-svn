@@ -627,12 +627,12 @@ void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
 			break;
 		case Tools::BRUSH:
 			{
-			qDebug("Brush");
 			invertMatrix();
 			current_graphic = new GLBrush( this, mapPointToMatrix( oldPosition() ), *current_outline_color,*current_brush, mapPointToMatrix( newPosition() ) );
 			( ( GLBrush * )( current_graphic ) ) -> smoothnessBrush( 2 );
 			
 			( ( GLBrush * )( current_graphic ) ) -> setPressureBrush( ( int )( ( pressureTablet() * 100 ) / 255 ) );
+			
 			addGraphicComponent( current_graphic, false );
 			bezier = false;
 			break;
@@ -685,8 +685,10 @@ void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
 		case Tools::LINE:
 			{
 			invertMatrix();
-			current_graphic = new GLLine( this, mapPointToMatrix( oldPosition() ), *current_outline_color,
-						*current_brush, mapPointToMatrix( newPosition() ) );
+
+			current_graphic = new GLLine( this, mapPointToMatrix( oldPosition() ), *current_outline_color, *current_brush, mapPointToMatrix( newPosition() ) );
+			
+			
 			addGraphicComponent( current_graphic, false );
 			bezier = false;
 			break;

@@ -54,7 +54,8 @@ public:
 	 GC_RECTANGLE = 5, /**< A graphic that was created by the rectangle tool */
 	 GC_ELLIPSE = 6, /**< A graphic that was created by the ellipse tool */
 	 GC_BITMAP = 7, /**< A graphic that represents a bitmap */
-	 GC_IMAGE = 8 /**< A graphic that represents an image imported from outside */
+	 GC_IMAGE = 8, /**< A graphic that represents an image imported from outside */
+	 GC_TEXT = 9
      };
 
      //! Static variable to define names for identifying graphics when a selection operation is performed

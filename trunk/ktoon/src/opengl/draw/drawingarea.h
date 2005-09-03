@@ -44,6 +44,7 @@
 #include "glimage.h"
 #include "gldrawing.h"
 #include "ktcolor.h"
+#include "gltext.h"
 
 class QPopupMenu;
 class GLDrawing;
