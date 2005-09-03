@@ -25,17 +25,13 @@
 #include "about.h"
 #include "images.h"
 #include "ktapplication.h"
+#include "kimageeffect.h"
 
 #define DEBUG_ABOUT 1
 
 About::About( QWidget *parent ) : QTabDialog( parent )
 { 
 	setCaption( tr( "About" ) + QString( " KToon..." ) );
-// 	setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-	resize( 580, 400 );
-	setMaximumSize( 580, 400 );
-	setMinimumSize( 580, 400 );
-// 	setFont( QFont( "helvetica", 10 ) );
 
     	//1: Credits
 
@@ -51,8 +47,12 @@ About::About( QWidget *parent ) : QTabDialog( parent )
 		}
 		creditsFile.close();
 	}
+	
+	QImage credits = QImage(KTOON_HOME+"/images/credits-image.png" );
+	
+	KImageEffect::fade(credits, 0.25, paletteBackgroundColor());
     
-	m_credits = new KTAnimWidget( QPixmap(KTOON_HOME+"/images/credits-image.png" ), creditsText, this );
+	m_credits = new KTAnimWidget( QPixmap(credits), creditsText, this );
 	addTab( m_credits, tr( "Credits" ) );
 
     	// 2: Ack
@@ -60,7 +60,9 @@ About::About( QWidget *parent ) : QTabDialog( parent )
 
 	for(uint i = 1; i < 11; i++)
 	{
-		lop << QPixmap(KTOON_HOME+QString("/images/sequences/ack-image%1.png").arg(i));
+		QImage tmp(KTOON_HOME+QString("/images/sequences/ack-image%1.png").arg(i));
+		KImageEffect::fade(tmp, 0.2, paletteBackgroundColor());
+		lop << QPixmap(tmp);
 	}
 	
 	m_ack = new KTAnimWidget( lop,this );
@@ -95,13 +97,21 @@ About::About( QWidget *parent ) : QTabDialog( parent )
     	// 4: Toonka Films
 
 	QLabel *toonka = new QLabel( this );
-	toonka->setPixmap(QPixmap( KTOON_HOME+"/images/toonka.jpg" ));
+	
+	QImage toonkaImg( KTOON_HOME+"/images/toonka.jpg" );
+	KImageEffect::fade( toonkaImg,0.2,paletteBackgroundColor()); 
+	
+	toonka->setPixmap(QPixmap(toonkaImg));
 	addTab( toonka, "Toonka Films" );
 
     	// 5: Laboratoon
 
 	QLabel *laboratoon = new QLabel( this );
-	laboratoon->setPixmap( QPixmap( KTOON_HOME+"/images/laboratoon.jpg" ) );
+	
+	QImage laboratoonImg( KTOON_HOME+"/images/laboratoon.jpg" );
+	KImageEffect::fade( laboratoonImg,0.2,paletteBackgroundColor()); 
+	
+	laboratoon->setPixmap( QPixmap(laboratoonImg  ) );
 	addTab( laboratoon, "Laboratoon" );
 
     	// 6: Licence
@@ -124,6 +134,8 @@ About::About( QWidget *parent ) : QTabDialog( parent )
 	}
 	licenceText -> setText( licence );
 	addTab( scrollLicence, tr( "License Agreement" ) );
+	
+	setMaximumSize( m_credits->size() );
 }
 
 About::~About()

@@ -24,9 +24,9 @@
 #include <qlayout.h>
 #include <qlabel.h>
 
-KTFrameSequence::KTFrameSequence(QWidget *parent) : QHBox(parent, "KTFrameSequence")
+KTFrameSequence::KTFrameSequence( int ID, int count, QWidget *parent) : QHBox(parent, "KTFrameSequence"), m_ID(ID)
 {
-	createFrames();
+	createFrames(count);
 }
 
 
@@ -35,11 +35,11 @@ KTFrameSequence::~KTFrameSequence()
 }
 
 
-void KTFrameSequence::createFrames()
+void KTFrameSequence::createFrames(int count)
 {
-	for(uint i = 0; i < 100; i++)
+	for(uint i = 0; i < count; i++)
 	{
-		TLFrame *nextFrame = new TLFrame( this );
+		TLFrame *nextFrame = new TLFrame( i, this );
 
 		if ( i % 5 == 0 )
 		{
@@ -53,10 +53,39 @@ void KTFrameSequence::createFrames()
 		
 		m_frames.append(nextFrame);
 		
-		connect(nextFrame, SIGNAL(selected(int)), this, SIGNAL(selectFrame(int))); // FIXME
+		connect(nextFrame, SIGNAL(selected(int)), this, SLOT(selectFrame(int))); // FIXME
 	}
 }
 
 void KTFrameSequence::selectFrame(int position)
 {
+	TLFrame *selected = m_frames.at(position);
+	
+	if ( !selected )
+	{
+		ktError() << "Invalid TLFrame" << endl;
+		return;
+	}
+	selected->setSelected( true );
+
+// 	TLFrameSequenceManager *fsm = ( TLFrameSequenceManager * )( parent_widget );
+// 	fsm -> getRuler() -> slotSetOffset( current_frame_sequence -> framePosition( selected_frame ) );
+	
+	emit frameSelected(selected);
 }
+
+void KTFrameSequence::setPosition(int pos)
+{
+	m_ID = pos;
+}
+
+int KTFrameSequence::position()
+{
+	return m_ID;
+}
+
+TLFrame *KTFrameSequence::frameAt(int pos)
+{
+	return m_frames.at(pos);
+}
+

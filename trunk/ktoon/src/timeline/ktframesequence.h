@@ -36,17 +36,24 @@ class KTFrameSequence : public QHBox
 {
 	Q_OBJECT
 	public:
-		KTFrameSequence(QWidget *parent);
+		KTFrameSequence(int ID, int count = 100,  QWidget *parent = 0);
 		~KTFrameSequence();
+		void setPosition(int pos);
+		int position();
+		TLFrame *frameAt(int pos);
+		
+	signals:
+		void frameSelected(TLFrame *);
 		
 	public slots:
 		void selectFrame(int position);
 		
 	private:
 		ListOfTimeLineFrames m_frames;
+		int m_ID;
 
 	private:
-		void createFrames();
+		void createFrames(int count);
 
 };
 

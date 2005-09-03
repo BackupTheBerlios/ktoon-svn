@@ -24,7 +24,7 @@
 #include <qlabel.h>
 #include <qlayout.h>
 
-KTFrameSequenceManager::KTFrameSequenceManager(QWidget *parent) : QVBox(parent, "KTFrameSequenceManager")
+KTFrameSequenceManager::KTFrameSequenceManager(QWidget *parent) : QVBox(parent, "KTFrameSequenceManager"), m_currentFrame(0)
 {
 	KTINIT;
 	
@@ -46,12 +46,11 @@ KTFrameSequenceManager::KTFrameSequenceManager(QWidget *parent) : QVBox(parent, 
 	
 	setMaximumHeight( sizeHint().height() );
 	
-	KTFrameSequence *m_frameSequence = new KTFrameSequence(m_vBox);
-	m_frameSequence->show();
+	insertFrameSequence();
 	
-	m_sequences.append(m_frameSequence);
-	m_currentFrameSequence = m_frameSequence;
-	m_lastSequence = m_frameSequence;
+	m_currentFrameSequence = m_lastSequence;
+	
+	m_currentFrame = m_lastSequence->frameAt(0);
 	
 // 	m_utils = new QHBox(this);
 // 	m_scroll = new QScrollBar(0, 3000, 1, 5, 0, Qt::Horizontal, m_utils);
@@ -67,7 +66,9 @@ KTFrameSequenceManager::~KTFrameSequenceManager()
 
 void KTFrameSequenceManager::insertFrameSequence()
 {
-	KTFrameSequence *newFrameSequence = new KTFrameSequence(m_vBox );
+	KTFrameSequence *newFrameSequence = new KTFrameSequence(m_sequences.count(),100, m_vBox );
+	
+	connect(newFrameSequence, SIGNAL(frameSelected(TLFrame *)), this, SLOT(setCurrentFrame(TLFrame *)));
 
 // 	connect( newFrameSequence, SIGNAL( frameInserted() ), SLOT( slotUpdateMaxUsedFrames() ) );
 // 	connect( newFrameSequence, SIGNAL( frameRemoved() ), SLOT( slotUpdateMaxUsedFrames() ) );
@@ -102,12 +103,11 @@ void KTFrameSequenceManager::removeFrameSequence()
 			bridgeFrameSequence = m_sequences.at( m_sequences.find( m_currentFrameSequence ) + 1 );
 
 	  		//Reaccomodate every frame_sequence next to the frame_sequence that is going to be deleted
-// 			TLFrameSequence *frame_sequence_iterator;
-// 			for ( frame_sequence_iterator = bridgeFrameSequence; frame_sequence_iterator; frame_sequence_iterator = m_sequences.next() )
-// 			{
-// 				moveChild( frame_sequence_iterator, childX( frame_sequence_iterator ), childY( frame_sequence_iterator ) - frame_sequence_iterator -> height() );
-// 				frame_sequence_iterator -> setPosition( frame_sequence_iterator -> position() - 1 );
-// 			}
+			KTFrameSequence *iterator;
+			for ( iterator = bridgeFrameSequence; iterator; iterator = m_sequences.next() )
+			{
+				iterator->setPosition(iterator->position() - 1);
+			}
 			
 			m_vBox->layout()->remove(m_currentFrameSequence);
 			m_sequences.remove( m_currentFrameSequence );
@@ -118,11 +118,19 @@ void KTFrameSequenceManager::removeFrameSequence()
 	}
 }
 
-void KTFrameSequenceManager::moveRuler(int pos)
+void KTFrameSequenceManager::setCurrentFrame(TLFrame *frame)
 {
-	m_ruler->resize(m_sequenceLayout->width(), m_ruler->height());
-	m_ruler->move( pos*-1, m_ruler->y() );
+	if (!frame)
+	{
+		ktError() << "Invalid Frame" << endl;
+		return;
+	}
+	
+	m_currentFrame->setSelected(false);
+	m_currentFrame = frame;
+	m_currentFrame->setSelected(true);
 }
+
 
 QScrollBar *KTFrameSequenceManager::verticalScrollBar()
 {

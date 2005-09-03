@@ -36,15 +36,13 @@ class KTTLRuler : public KTRulerBase
 		~KTTLRuler();
 		
 	private slots:
-		void showMenu(KTRulerBase *, QPoint pos);
-		void chooseOption(int);
+// 		void showMenu(KTRulerBase *, QPoint pos);
+// 		void chooseOption(int);
 		
 	public slots:
 		virtual void movePointers(QPoint pos);
 		
 	private:
-		QPopupMenu *m_menu;
-		enum { ChangeScaleToFive, ChangeScaleToTen  };
 
 };
 

@@ -47,7 +47,10 @@ public:
      * Constructs a TLFrame object.
      * @param parent The parent widget
      */
-    TLFrame( QWidget *parent );
+     TLFrame( QWidget *parent ); // DEPRECATED
+	      
+	      
+    TLFrame( int ID, QWidget *parent );
     /**
      * @brief Alternative Constructor
      *
@@ -236,12 +239,13 @@ private:
     bool is_unknown_motion;
     bool is_motion;
     bool has_drawing;
+    int m_ID;
 
 signals:
     /**
      * This signal is emitted when the TLFrame is selected.
      */
-    void selected();
+	void selected();// DEPRECATED
     
     //FIXME
     void selected(int);

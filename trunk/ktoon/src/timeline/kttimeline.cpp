@@ -46,8 +46,8 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTDialogBase(QDockWindow::OutsideDock,
 	connect( m_sequenceManager->verticalScrollBar(), SIGNAL( valueChanged( int ) ), m_layerManager->verticalScrollBar(), SLOT( setValue( int ) ) );
 	connect( m_layerManager->verticalScrollBar(), SIGNAL( valueChanged( int ) ), m_sequenceManager->verticalScrollBar(), SLOT( setValue( int ) ) );
 	
-// 	show();
-	hide();
+	show();
+// 	hide();
 	
 	setResizeEnabled (true);
 

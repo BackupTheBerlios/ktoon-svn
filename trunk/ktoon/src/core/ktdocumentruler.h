@@ -23,8 +23,9 @@
 #include <ktrulerbase.h>
 
 /**
-@author Jorge Cuadrado
+ * @author Jorge Cuadrado
 */
+
 class KTDocumentRuler : public KTRulerBase
 {
 	Q_OBJECT

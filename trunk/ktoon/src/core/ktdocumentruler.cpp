@@ -17,10 +17,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "ktdocumentruler.h"
 
-KTDocumentRuler::KTDocumentRuler(Orientation orientation, QWidget *parent, const char *name)
-	: KTRulerBase(orientation, parent, name)
+KTDocumentRuler::KTDocumentRuler(Orientation orientation, QWidget *parent, const char *name) : KTRulerBase(orientation, parent, name)
 {
 	setDrawPointer(true);
 }

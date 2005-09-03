@@ -24,6 +24,7 @@
 #include <qframe.h>
 #include <qpixmap.h>
 #include <qpointarray.h>
+#include <qpopupmenu.h>
 
 #define UNITCOUNT 5
 
@@ -69,12 +70,15 @@ class KTRulerBase : public QFrame
 		void drawScale();
 		int orientation();
 		
+		
 	private:
 		int m_position;
 		int m_separation;
 		QPixmap m_scale;
 		Orientation m_orientation;
 		bool m_drawPointer;
+		QPopupMenu *m_menu;
+		enum { ChangeScaleToFive, ChangeScaleToTen  };
 		
 	protected:
 		QPointArray m_pArrow;
@@ -92,6 +96,9 @@ class KTRulerBase : public QFrame
  		virtual void movePointers(QPoint pos) = 0;
 		void setSeparation(int sep);
 		void setDrawPointer(bool yes = true);
+		
+		virtual void showMenu(KTRulerBase *, QPoint pos);
+		virtual void chooseOption(int);
 };
 
 #endif

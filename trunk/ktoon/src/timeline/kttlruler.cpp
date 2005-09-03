@@ -27,14 +27,6 @@ KTTLRuler::KTTLRuler(QWidget *parent) : KTRulerBase(KTRulerBase::Horizontal, par
 	
 	setSeparation(5);
 	show();
-	
-	connect(this, SIGNAL(displayMenu(KTRulerBase *, QPoint)), this, SLOT(showMenu(KTRulerBase *, QPoint)));
-	
-	m_menu = new QPopupMenu(this);
-	m_menu->insertItem( tr("Change scale to 5..."), ChangeScaleToFive);
-	m_menu->insertItem( tr("Change scale to 10..."), ChangeScaleToTen);
-	
-	connect(m_menu, SIGNAL(activated(int)), this, SLOT(chooseOption(int)));
 }
 
 
@@ -48,33 +40,33 @@ void KTTLRuler::movePointers(QPoint pos)
 	ktDebug() << "movePointers" << endl;
 }
 
-void KTTLRuler::showMenu(KTRulerBase *ruler, QPoint pos)
-{
-	if(ruler)
-	{
-		m_menu->popup(pos);
-	}
-}
-
-void KTTLRuler::chooseOption(int opt)
-{
-	switch(opt)
-	{
-		case ChangeScaleToFive:
-		{
-			setSeparation(5);
-		}
-		break;
-		case ChangeScaleToTen:
-		{
-			setSeparation(10);
-		}
-		break;
-		default:
-		{
-		}
-		break;
-	}
-}
+// void KTTLRuler::showMenu(KTRulerBase *ruler, QPoint pos)
+// {
+// 	if(ruler)
+// 	{
+// 		m_menu->popup(pos);
+// 	}
+// }
+// 
+// void KTTLRuler::chooseOption(int opt)
+// {
+// 	switch(opt)
+// 	{
+// 		case ChangeScaleToFive:
+// 		{
+// 			setSeparation(5);
+// 		}
+// 		break;
+// 		case ChangeScaleToTen:
+// 		{
+// 			setSeparation(10);
+// 		}
+// 		break;
+// 		default:
+// 		{
+// 		}
+// 		break;
+// 	}
+// }
 
 

@@ -44,9 +44,9 @@ class KTFrameSequenceManager : public QVBox
 	public slots:
 		void insertFrameSequence();
 		void removeFrameSequence();
+		void setCurrentFrame(TLFrame *);
 		
 	private slots:
-		void moveRuler(int);
 		
 	private:
 		ListOfFrameSequences m_sequences;
@@ -57,6 +57,8 @@ class KTFrameSequenceManager : public QVBox
 		KTFrameSequence *m_lastSequence, *m_currentFrameSequence;
 
 		QScrollBar *m_scroll;
+		
+		TLFrame *m_currentFrame;
 
 };
 

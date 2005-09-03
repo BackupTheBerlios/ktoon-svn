@@ -59,6 +59,36 @@ TLFrame::TLFrame( QWidget *parent )
 // 	setPaletteBackgroundColor(Qt::yellow);
 }
 
+TLFrame::TLFrame( int ID, QWidget *parent ) : QFrame( parent ), m_ID(ID)
+{
+	setMinimumSize( 10, 24 );
+	
+	setFrameStyle( QFrame::MenuBarPanel | QFrame::Plain );
+
+	is_special = false;
+	is_selected = false;
+	is_used = false;
+	is_last = false;
+	is_key = false;
+	is_offset = false;
+	is_drag_offset = false;
+	is_unknown_motion = false;
+	is_motion = false;
+	has_drawing = false;
+
+	setPaletteBackgroundColor( QColor( 255, 255, 255 ) );
+
+	right_click_menu = new QPopupMenu( this );
+
+//     right_click_menu -> insertItem( tr( "Create Motion Tween" ), parent, SLOT( slotCreateMotionTween() ) );
+//     right_click_menu -> insertItem( tr( "Remove Motion Tween" ), parent, SLOT( slotRemoveMotionTween() ) );
+//     right_click_menu -> insertSeparator();
+//     right_click_menu -> insertItem( tr( "Add Frames" ), parent, SLOT( slotInsertFrame() ) );
+//     right_click_menu -> insertItem( tr( "Remove Frames" ), parent, SLOT( slotRemoveFrame() ) );
+
+// 	setPaletteBackgroundColor(Qt::yellow);
+}
+
 TLFrame::TLFrame( TLFrame *in_frame ) : QFrame( in_frame->parentWidget() )
 {
 	Q_CHECK_PTR( in_frame );
@@ -249,7 +279,9 @@ void TLFrame::mousePressEvent( QMouseEvent *mouse_event )
 	Q_CHECK_PTR( mouse_event );
 	setSelected( true );
 	mouse_event -> accept();
-	emit selected();
+	emit selected(); // DEPRECATED
+	
+	emit selected(m_ID);
 	if ( mouse_event -> button() == Qt::RightButton )
 	{
 		right_click_menu -> exec( QCursor::pos() );

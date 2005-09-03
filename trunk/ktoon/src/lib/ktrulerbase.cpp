@@ -52,6 +52,14 @@ KTRulerBase::KTRulerBase(Orientation orientation, QWidget *parent, const char *n
 	//draw scale
 	drawScale();
 	setMouseTracking ( true );
+	
+	connect(this, SIGNAL(displayMenu(KTRulerBase *, QPoint)), this, SLOT(showMenu(KTRulerBase *, QPoint)));
+	
+	m_menu = new QPopupMenu(this);
+	m_menu->insertItem( tr("Change scale to 5..."), ChangeScaleToFive);
+	m_menu->insertItem( tr("Change scale to 10..."), ChangeScaleToTen);
+	
+	connect(m_menu, SIGNAL(activated(int)), this, SLOT(chooseOption(int)));
 }
 
 
@@ -75,37 +83,6 @@ void KTRulerBase::paintEvent ( QPaintEvent * e)
 // 	p.drawCubicBezier (m_pArrow) ;
 	p.end();
 }
-
-// void KTRulerBase::movePointers(QPoint newPos)
-// {
-// // 	qDebug(QString::number(pos - newPos));
-// 	
-// 		if(orientation == Horizontal)
-// 		{
-// // 			if(pos < width())
-// // 				m_pArrow.translate( pos - newPos , 0 );
-// 			if(newPos.x() > 0)
-// 			{
-// 				m_pArrow[0].setX ( newPos.x()-5 );
-// 				m_pArrow[1].setX ( newPos.x() );
-// 				m_pArrow[2].setX ( newPos.x()+5 ); //25.4/72.0
-// 			}
-// 		}
-// 		else if(orientation == Vertical)
-// 		{
-// 			if(newPos.x() > 0)
-// 			{
-// 				m_pArrow[0].setY ( newPos.y()-5 );
-// 				m_pArrow[1].setY ( newPos.y() );
-// 				m_pArrow[2].setY ( newPos.y()+5);
-// 			}
-// // 			if(pos < height())
-// // 				m_pArrow.translate( 0 , pos -newPos );
-// 		}
-// 		repaint();
-// // 	}
-// // 	this->pos = newPos;
-// }
 
 void KTRulerBase::drawScale()
 {
@@ -239,3 +216,35 @@ int KTRulerBase::orientation()
 {
 	return m_orientation;
 }
+
+void KTRulerBase::showMenu(KTRulerBase *ruler, QPoint pos)
+{
+	if(ruler)
+	{
+		m_menu->popup(pos);
+	}
+}
+
+
+void KTRulerBase::chooseOption(int opt)
+{
+	switch(opt)
+	{
+		case ChangeScaleToFive:
+		{
+			setSeparation(5);
+		}
+		break;
+		case ChangeScaleToTen:
+		{
+			setSeparation(10);
+		}
+		break;
+		default:
+		{
+		}
+		break;
+	}
+}
+
+
