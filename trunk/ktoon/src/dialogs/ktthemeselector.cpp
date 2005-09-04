@@ -26,11 +26,15 @@
 #include <qfiledialog.h>
 #include <iostream>
 #include "ktapplication.h"
+#include "ktfiledialog.h"
+
+#include "ktdebug.h"
 
 
 KTThemeSelector::KTThemeSelector(QWidget *parent, const char *name) : QVBox(parent, name)
 {
 	setupChooseColor();
+	loadSchemes();
 }
 
 
@@ -63,6 +67,7 @@ void KTThemeSelector::setupChooseColor()
 		button->setPaletteBackgroundColor(colors[i]);
 		m_general->insert(button, i);
 		layout1->addWidget(button, i, 1);
+		m_generalSection.insert(names[i], colors[i].name());
 	}
 	
 	m_effects = new QButtonGroup(tr("Effects"), box1);
@@ -82,6 +87,7 @@ void KTThemeSelector::setupChooseColor()
 		button->setPaletteBackgroundColor(colors[i]);
 		m_effects->insert(button, i);
 		layout2->addWidget(button, i, 1);
+		m_effectsSection.insert(names2[i], colors[i].name());
 	}
 	////////////
 	
@@ -103,6 +109,7 @@ void KTThemeSelector::setupChooseColor()
 		button->setPaletteBackgroundColor(colors[i]);
 		m_selections->insert(button, i);
 		layout3->addWidget(button, i, 1);
+		m_selectionsSection.insert(names3[i], colors[i].name());
 	}
 	
 	m_textEffects = new QButtonGroup(tr("Text effects"), box2);
@@ -121,12 +128,17 @@ void KTThemeSelector::setupChooseColor()
 		button->setPaletteBackgroundColor(colors[i]);
 		m_textEffects->insert(button, i);
 		layout4->addWidget(button, i, 1);
+		m_textEffectsSection.insert(names4[i], colors[i].name());
 	}
 	
 	QVGroupBox *schemeWidget = new QVGroupBox(tr("Schema"), box2);
 	
 	m_allSchemes = new QListView(schemeWidget);
-	m_allSchemes->addColumn(tr("Schema"), m_allSchemes->width());
+	m_allSchemes->addColumn(tr("Schema"));
+	m_allSchemes->addColumn(tr("Owner"));
+	m_allSchemes->addColumn(tr("Date"));
+	
+	connect(m_allSchemes, SIGNAL(doubleClicked ( QListViewItem *, const QPoint &, int )), this, SLOT(loadSchemaFromListView( QListViewItem *, const QPoint &, int )));
 	
 	QPushButton *saveSchemeButton = new QPushButton(tr("Save schema"), schemeWidget);
 	connect(saveSchemeButton, SIGNAL(clicked()), SLOT(saveSchema()));
@@ -206,7 +218,26 @@ KTThemeDocument KTThemeSelector::document()
 
 void KTThemeSelector::loadSchemes()
 {
-	// Reviso en el directorio por defecto de themes y tomo los nombres
+	QFileInfo *iterator;
+	
+	QDir themeDir(ktapp->configDir()+"/themes");
+	
+	if ( themeDir.exists() )
+	{
+		m_allSchemes->clear();
+		QFileInfoList *files = new QFileInfoList(*themeDir.entryInfoList("*.ktt"));
+		
+		for(iterator = files->first(); iterator; iterator = files->next() )
+		{
+			if ( iterator )
+			{
+				QListViewItem *item = new QListViewItem(m_allSchemes);
+				item->setText(0, iterator->fileName());
+				item->setText(1, iterator->owner());
+				item->setText(2, iterator->created().toString());
+			}
+		}
+	}
 }
 
 bool KTThemeSelector::iWantApplyColors()
@@ -216,25 +247,29 @@ bool KTThemeSelector::iWantApplyColors()
 
 void KTThemeSelector::saveSchema()
 {
-	// por ahora lo hago con QFontDialog, la idea es utilizar un widget propio para darle nombre y version al theme
-	
-	QString filepath = QFileDialog::getSaveFileName(QDir::homeDirPath(),"KToon Themes (*.ktheme)",this, tr("save file"), tr("Choose a file") );
-	
-	if ( ! filepath.contains(".ktheme",false) )
+	QDir themeDir(ktapp->configDir()+"/themes");
+	if ( ! themeDir.exists() )
 	{
-		filepath += ".ktheme";
+		themeDir.mkdir(themeDir.path());
 	}
 	
-	QFile file(filepath);
+	KTFileDialog saveDialog(KTFileDialog::Themes, this);
+	
+	if ( saveDialog.exec() == QDialog::Rejected )
+	{
+		return;
+	}
+	
+	QFile file(themeDir.path()+"/"+saveDialog.fileName());
 	
 	if (file.open(IO_WriteOnly ) )
 	{
 		QTextStream stream( &file );
 		stream << document().toString() << endl;
 		file.close();
-		m_lastFile = filepath;
+		m_lastFile = saveDialog.fileName();
 	}
-
+	loadSchemes();
 }
 
 QString KTThemeSelector::lastFile()
@@ -242,3 +277,10 @@ QString KTThemeSelector::lastFile()
 	return m_lastFile;
 }
 
+void KTThemeSelector::loadSchemaFromListView(QListViewItem *item, const QPoint &, int )
+{
+	if ( item )
+	{
+		ktapp->applyTheme(ktapp->configDir()+"/themes/"+item->text(0));
+	}
+}

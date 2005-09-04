@@ -23,6 +23,8 @@
 #include "ktthemedocument.h"
 #include <iostream>
 
+#include "ktdebug.h"
+
 KTThemeManager::KTThemeManager() : QXmlDefaultHandler()
 {
 	m_colorGroup = QApplication::palette().active();
@@ -48,7 +50,7 @@ bool KTThemeManager::applyTheme(const QString &file)
 	}
 	else
 	{
-		qDebug(QString("I can't analize the theme file: %1").arg(file));
+		ktError() <<  QObject::tr("I can't analize the theme file: %1").arg(file) << endl;
 		ok = false;
 	}
 	
@@ -70,7 +72,7 @@ bool KTThemeManager::applyTheme(const KTThemeDocument &ktd)
 	}
 	else
 	{
-		qDebug(QString("I can't analize the theme document"));
+		ktDebug() << QObject::tr("I can't analize the theme document") << endl;
 		ok = false;
 	}
 	
@@ -216,7 +218,7 @@ bool KTThemeManager::startElement( const QString& , const QString& , const QStri
 	return true;
 }
 
-bool KTThemeManager::endElement(const QString& ns, const QString& localname, const QString& qname)
+bool KTThemeManager::endElement(const QString&, const QString&, const QString& qname)
 {
 	if ( qname == "KTTheme" ) // Configuration document
 	{
@@ -228,20 +230,22 @@ bool KTThemeManager::endElement(const QString& ns, const QString& localname, con
 	return true;
 }
 
-bool KTThemeManager::characters(const QString &ch)
+bool KTThemeManager::characters(const QString &)
 {
 	return true;
 }
 
 bool KTThemeManager::error ( const QXmlParseException & exception )
 {
-	std::cerr << "Error analizing theme: " << exception.message() << std::endl;
+	ktError() << "Error analizing theme: " << exception.message() << endl;
+	return false;
 }
 
 bool KTThemeManager::fatalError ( const QXmlParseException & exception )
 {
-	std::cerr << "FATAL Error analizing theme: " << std::endl;
-	std::cerr << "Line: " << exception.lineNumber() << " Column: " << exception.columnNumber() << " " << exception.message() << std::endl;
+	ktError() << "FATAL Error analizing theme: " << endl;
+	ktError() << "Line: " << exception.lineNumber() << " Column: " << exception.columnNumber() << " " << exception.message() << endl;
+	return false;
 }
 
 QColor KTThemeManager::getColor(const QXmlAttributes& atts)

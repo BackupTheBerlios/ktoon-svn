@@ -24,12 +24,14 @@
 
 #include <qtooltip.h>
 
+#include "ktdebug.h"
+
 //--------------- CONSTRUCTOR --------------------
 
 Tools::Tools( QWidget *parent)//, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
 	: KTDialogBase(QDockWindow::OutsideDock,parent, "Tools")
 {
-		
+	KTINIT;
 	Q_CHECK_PTR( parent );
     //Initializations
 	setCaption( "tools" );
@@ -124,6 +126,7 @@ Tools::Tools( QWidget *parent)//, WFlags style, QPopupMenu *in_assigned_menu, in
 
 Tools::~Tools()
 {
+	KTEND;
 	delete menu_button_selection;
 	delete menu_button_draw;
 	delete menu_button_fill;

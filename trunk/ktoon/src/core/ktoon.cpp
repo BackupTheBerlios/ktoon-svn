@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
 
 #include <qtooltip.h>
 #include <qtoolbutton.h>
@@ -40,6 +39,8 @@
 #include "ktconfigdocument.h"
 #include "ktfiledialog.h"
 #include "ktdebug.h"
+
+#include "kimageeffect.h"
 
 // Borrar
 #include "kttimeline.h"
@@ -84,7 +85,11 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose ), document_max_valu
 	
 	main_panel = new QWorkspace( this );
 	main_panel->setScrollBarsEnabled ( true );
-	main_panel -> setPaletteBackgroundPixmap( QPixmap( background_xpm ) );
+	
+	QImage bgImg(background_xpm );
+	KImageEffect::fade(bgImg, 0.2, paletteBackgroundColor());
+	
+	main_panel -> setPaletteBackgroundPixmap( bgImg );
 	main_panel -> show();
 	
 	//--------------- Document Object ---------------
@@ -1099,7 +1104,6 @@ void KToon::setupDialogs()
 	moveDockWindow(exposure_sheet_dialog, Qt::DockRight);
 	exposure_sheet_dialog->undock();
 	exposure_sheet_dialog->move(600,50);
-	
 	
 	tools_dialog = new Tools( this);//, Qt::WStyle_Tool, window, id_window_tools, window_tools );
 	tools_dialog -> show();
@@ -2151,7 +2155,7 @@ void KToon::slotChoose()
 {
 	//QString fn = QFileDialog::getOpenFileName( KTOON_REPOSITORY, "KToon Project ( *.ktn )", this );
 	
-	KTFileDialog choose(this);
+	KTFileDialog choose( KTFileDialog::Repository, this);
 	
 	if ( choose.exec() == QDialog::Rejected)
 	{
@@ -2480,7 +2484,7 @@ void KToon::slotSave()
 
 void KToon::slotSaveAs()
 {
-	KTFileDialog save(this);
+	KTFileDialog save(KTFileDialog::Repository,this);
 	
 	if ( save.exec() == QDialog::Rejected )
 	{
@@ -4177,3 +4181,14 @@ void KToon::updateOpenRecentMenu()
     if ( open_recent -> count() == 0 )
         open_recent -> insertItem( tr( "No Documents" ) );
 }
+
+void KToon::setPalette(const QPalette &pal)
+{
+	QMainWindow::setPalette(pal);
+	
+	QImage bgImg(background_xpm );
+	KImageEffect::fade(bgImg, 0.2, pal.color(QPalette::Active , QColorGroup::Background) );
+	
+	main_panel -> setPaletteBackgroundPixmap( bgImg );
+}
+

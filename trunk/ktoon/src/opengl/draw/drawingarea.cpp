@@ -2561,7 +2561,7 @@ void DrawingArea::slotUndo()
 		
 		history_graphic_list.append(graphic_list.last());
 	
-		for ( int component = 0; component < graphic_list.count() - 1; component++ )
+		for ( uint component = 0; component < graphic_list.count() - 1; component++ )
 		{
 		current_graphic_list.append(graphic_list.at(component));
 		}

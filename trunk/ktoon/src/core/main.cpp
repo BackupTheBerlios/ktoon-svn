@@ -46,7 +46,7 @@ int main( int argc, char ** argv )
 		return 0;
 	}
 	
-	application.initRepository();
+// 	application.initDirectories();
 	
 	QTranslator *qttranslator = new QTranslator( 0 );
 	

@@ -27,6 +27,8 @@
 #include <qmessagebox.h>
 #include <qobjectlist.h> 
 
+#include "ktdebug.h"
+
 KTApplication::KTApplication(int & argc, char ** argv)
 	: QApplication(argc, argv, true), m_VERSION("0.8alpha")
 {
@@ -34,6 +36,11 @@ KTApplication::KTApplication(int & argc, char ** argv)
 	
 #ifdef Q_WS_X11
 	setStyle("plastik");
+	m_configDir = QDir::homeDirPath()+"/.ktoon";
+#elif defined(Q_WS_WIN)
+	m_configDir = QDir::homeDirPath()+"/KToon";
+#elif defined(Q_WS_MAC)
+	m_configDir = QDir::homeDirPath()+"/.ktoon";
 #endif
 
  	applyColors(Default);
@@ -45,7 +52,9 @@ KTApplication::KTApplication(int & argc, char ** argv)
 	m_KTOON_REPOSITORY = KTCONFIG->read("Repository");
 	QString themefile = KTCONFIG->read("KTTheme");
 	if ( ! themefile.isEmpty() )
+	{
 		applyTheme(themefile);
+	}
 	
 	if ( ! KTCONFIG->isOk() || isArg("r") || isArg("reconfigure") )
 	{
@@ -131,9 +140,13 @@ void KTApplication::applyPalette(const QPalette &pal)
 		for( QObject *o = list->first(); o; o = list->next() )
 		{
 			if ( o )
+			{
 				static_cast<QWidget*>(o)->setPalette(pal);
+			}
 		}
 		delete list;
+		
+		mainWidget()->setPalette(pal);
 	}
 }
 
@@ -157,7 +170,7 @@ void KTApplication::changeFont(const QFont &font)
 
 void KTApplication::parseArgs(int &argc, char **argv)
 {
-	for(uint i = 0; i < argc; i++)
+	for(int i = 0; i < argc; i++)
 	{
 		QString opt = QString(argv[i]).simplifyWhiteSpace();
 		if ( opt.startsWith("--") )
@@ -210,6 +223,11 @@ void KTApplication::setRepository(const QString &repos)
 	m_KTOON_REPOSITORY = repos;
 }
 
+QString KTApplication::configDir()
+{
+	return m_configDir;
+}
+
 
 QString KTApplication::getVersion()
 {
@@ -219,13 +237,17 @@ QString KTApplication::getVersion()
 bool KTApplication::firstRun()
 {
 	ConfigWizard firstDialog;
+	
 #ifdef KTHOME
 	firstDialog.setInitialData(KTHOME, QString(KTHOME)+"/projects");
 #endif
+
 	if ( firstDialog.exec() != QDialog::Rejected )
 	{
 		m_KTOON_HOME = firstDialog.getHome();
 		m_KTOON_REPOSITORY = firstDialog.getRepos();
+		
+		initDirectories();
 		
 		KTCONFIG->configDocument()->setHome( m_KTOON_HOME );
 		KTCONFIG->configDocument()->setRepository( m_KTOON_REPOSITORY );
@@ -238,13 +260,29 @@ bool KTApplication::firstRun()
 	return false;
 }
 
-void KTApplication::initRepository()
+void KTApplication::initDirectories()
 {
+	QDir home(m_KTOON_HOME);
+	
+	if ( ! home.exists() )
+	{
+		ktDebug() << tr("Initializing ktoon home") << endl;
+		if ( ! home.mkdir(m_KTOON_HOME) )
+		{
+			ktError() << tr("I cannot create ktoon home %1").arg(m_KTOON_HOME) << endl;
+		}
+	}
+	
+	home.mkdir(m_configDir);
+	
 	QDir repos (m_KTOON_REPOSITORY);
 	if ( ! repos.exists() )
 	{
+		ktDebug() << tr("Initializing repository %1").arg(m_KTOON_REPOSITORY) << endl;
 		if ( ! repos.mkdir(m_KTOON_REPOSITORY) )
-			std::cerr << "Error: I cannot create the repository" << std::endl;
+		{
+			ktError() << tr("I cannot create the repository") << endl;
+		}
 		
 		QStringList files = QStringList() << "bru" << "cpl" << "output" << "lbr" << "components";
 		
@@ -253,7 +291,9 @@ void KTApplication::initRepository()
 			QDir tmp(m_KTOON_REPOSITORY+"/"+files[i]+"/");
 			
 			if ( ! tmp.exists() )
+			{
 				tmp.mkdir(m_KTOON_REPOSITORY+"/"+files[i]+"/");
+			}
 		}
 	}
 }

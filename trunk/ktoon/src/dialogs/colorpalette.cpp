@@ -156,7 +156,7 @@ void ColorPalette::setupBlockColorMixer()
 	
 	for(int i  = 0; i < 4; i++)
 	{
-		QLabel *tmpLabel = new QLabel( QString(rgba[i]) + ":",  textRGBA);
+		/*QLabel *tmpLabel = */new QLabel( QString(rgba[i]) + ":",  textRGBA);
 	}
 	QVBox *spinsRGBA = new QVBox(colorMixerBlock);
 	value_r = new QSpinBox( 0, 255, 1, spinsRGBA );
@@ -172,7 +172,7 @@ void ColorPalette::setupBlockColorMixer()
 	QString hsv("HSV");
 	for(int i  = 0; i < 3; i++)
 	{
-		QLabel *tmpLabels = new QLabel( QString(hsv[i]) + ":", textHSV );
+		/*QLabel *tmpLabels = */new QLabel( QString(hsv[i]) + ":", textHSV );
 		
 	}
 	

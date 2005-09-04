@@ -98,6 +98,9 @@ class KToon : public QMainWindow
 		* @return A pointer to the current timeline dialog
 		*/
 		Timeline *timeline();
+		
+		
+		void setPalette(const QPalette &);
 	
 		/**
 		*  Gets the current exposure sheet dialog

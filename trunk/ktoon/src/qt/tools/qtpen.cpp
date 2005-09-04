@@ -65,7 +65,7 @@ QPoint QtPen::mapToLocal( const QPoint &point ) const
         return QPoint( 0, 0 );
 }
 
-bool QtPen::hit( const QPoint &point )
+bool QtPen::hit( const QPoint & )
 {
     return false;
 }

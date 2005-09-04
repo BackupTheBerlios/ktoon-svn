@@ -33,6 +33,7 @@
 #include "ktthemedocument.h"
 
 class QListView;
+class QListViewItem;
 class QCheckBox;
 
 /**
@@ -57,6 +58,7 @@ class KTThemeSelector : public QVBox
 		void chooseSelectionsColor(int );
 		void chooseTextEffectsColor(int );
 		void saveSchema();
+		void loadSchemaFromListView(QListViewItem *, const QPoint &, int );
 		
 	private:
 		void setupChooseColor();

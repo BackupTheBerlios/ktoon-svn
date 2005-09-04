@@ -21,6 +21,7 @@
 #define KTCONFIG_H
 
 #include <qobject.h>
+#include <qdir.h>
 #include "ktconfigdocument.h"
 #include "ktxmlreader.h"
 
@@ -49,6 +50,7 @@ class KTConfig : public QObject
 		KTConfigDocument *m_ktconfig;
 		XMLSingleResult m_configKeys;
 		bool m_isOk;
+		QDir configDirectory;
 
 };
 

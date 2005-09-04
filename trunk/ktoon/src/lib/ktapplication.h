@@ -49,8 +49,6 @@ class KTApplication : public QApplication
 
 		bool firstRun();
 		
-		void initRepository();
-		
 		void parseArgs( int &argc, char **argv);
 		
 		void applyColors(ColorScheme cs);
@@ -63,9 +61,15 @@ class KTApplication : public QApplication
 		
 		void changeFont(const QFont &font); // static?
 		
+		QString configDir();
+		
+	protected:
+		void initDirectories();
+		
 	private:
 		QString m_KTOON_HOME;
 		QString m_KTOON_REPOSITORY;
+		QString m_configDir;
 		const QString m_VERSION;
 		ParseArgs m_parseArgs;
 		KTThemeManager m_themeManager;

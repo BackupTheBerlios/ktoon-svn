@@ -27,7 +27,7 @@
 #include <qfileinfo.h>
 #include <qdir.h>
 
-KTFileDialog::KTFileDialog(QWidget *parent) : QDialog(parent, "KTFileDialog")
+KTFileDialog::KTFileDialog(Type t, QWidget *parent) : QDialog(parent, "KTFileDialog"), m_type(t)
 {
 	KTINIT;
 	setCaption("Choose your file...");
@@ -36,7 +36,15 @@ KTFileDialog::KTFileDialog(QWidget *parent) : QDialog(parent, "KTFileDialog")
 	(new QVBoxLayout(this))->setAutoAdd(true);
 	
 	QHBox *title = new QHBox(this);
-	new QLabel("<br>"+tr("Repository ")+KTOON_REPOSITORY+"<br>", this);
+	
+	if ( t == Repository )
+	{
+		new QLabel("<br>"+tr("Repository ")+KTOON_REPOSITORY+"<br>", this);
+	}
+	else if ( t == Themes )
+	{
+		new QLabel("<br>"+tr("Theme dir ")+ktapp->configDir()+"/themes/<br>", this);
+	}
 	
 	new KSeparator(this);
 	
@@ -70,9 +78,19 @@ void KTFileDialog::accept()
 	{
 		m_fileName = m_fileNameLE->text();
 		
-		if( ! m_fileName.endsWith(".ktn") )
+		if ( m_type == Repository )
 		{
-			m_fileName+=".ktn";
+			if( ! m_fileName.endsWith(".ktn") )
+			{
+				m_fileName+=".ktn";
+			}
+		}
+		else if ( m_type == Themes )
+		{
+			if( ! m_fileName.endsWith(".ktt") )
+			{
+				m_fileName+=".ktt";
+			}
 		}
 		
 		QDialog::accept();
@@ -89,17 +107,36 @@ QString KTFileDialog::fileName() const
 
 void KTFileDialog::readFiles()
 {
-	QDir m_dir(KTOON_REPOSITORY);
+	QDir m_dir;
+	QString extension = "";	
 	
-	QFileInfo *iterator;
-	QFileInfoList *files = new QFileInfoList(*m_dir.entryInfoList("*.ktn"));
-	
-	for(iterator = files->first(); iterator; iterator = files->next() )
+	if ( m_type == Repository )
 	{
-		QListViewItem *item = new QListViewItem(m_listView);
-		item->setText(0, iterator->fileName());
-		item->setText(1, iterator->owner());
-		item->setText(2, iterator->created().toString());
+		m_dir.setPath(KTOON_REPOSITORY);
+		extension = "ktn";
+	}
+	else if (m_type == Themes )
+	{
+		m_dir.setPath(ktapp->configDir()+"/themes/");
+		extension = "ktt";
+	}
+	
+	
+	if ( m_dir.exists() )
+	{
+		QFileInfo *iterator;
+		
+		QFileInfoList *files = new QFileInfoList(*m_dir.entryInfoList(QString("*.")+extension));
+	
+		Q_CHECK_PTR(files);
+		
+		for(iterator = files->first(); iterator; iterator = files->next() )
+		{
+			QListViewItem *item = new QListViewItem(m_listView);
+			item->setText(0, iterator->fileName());
+			item->setText(1, iterator->owner());
+			item->setText(2, iterator->created().toString());
+		}
 	}
 }
 

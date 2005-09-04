@@ -36,7 +36,13 @@ class KTFileDialog : public QDialog
 {
 	Q_OBJECT
 	public:
-		KTFileDialog(QWidget *parent = 0);
+		enum Type
+		{
+			Repository = 0,
+			Themes
+		};
+		
+		KTFileDialog(Type t, QWidget *parent = 0);
 		~KTFileDialog();
 		QString fileName() const;
 		void readFiles();
@@ -51,6 +57,7 @@ class KTFileDialog : public QDialog
 		QListView *m_listView;
 		QPushButton *m_accept, *m_cancel;
 		QString m_fileName;
+		Type m_type;
 		
 };
 

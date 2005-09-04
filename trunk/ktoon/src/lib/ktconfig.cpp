@@ -21,19 +21,28 @@
 #include "ktconfig.h"
 #include <qdir.h>
 
+#include "ktdebug.h"
+
 KTConfig::KTConfig() : QObject()
-{
-	
-	QString defpath = "";
+{	
 #ifdef Q_WS_X11
-	defpath = QDir::homeDirPath()+QString("/.ktoonrc");
-#elif Q_WS_WIN
-	defpath = QDir::homeDirPath()+QString("/ktoon.ini");
-#elif Q_WS_MAC
-	defpath = QDir::homeDirPath()+QString("/.ktoonrc");
+	configDirectory.setPath(QDir::homeDirPath()+"/.ktoon");
+#elif defined(Q_WS_WIN)
+	configDirectory.setPath(QDir::homeDirPath()+"/KToon");
+#elif defined(Q_WS_MAC)
+	configDirectory.setPath(QDir::homeDirPath()+"/.ktoon");
 #endif
-	
-	m_ktconfig = new KTConfigDocument(defpath);
+
+	if ( !configDirectory.exists() )
+	{
+		ktDebug() << tr("%1 not exists... creating...").arg(configDirectory.path()) << endl;
+		if(!configDirectory.mkdir(configDirectory.path()))
+		{
+			ktError() << tr("I can't create %1").arg(configDirectory.path()) << endl;
+		}
+	}
+
+	m_ktconfig = new KTConfigDocument( configDirectory.path() + "/ktoon.cfg" );
 }
 
 

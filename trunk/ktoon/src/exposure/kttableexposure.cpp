@@ -125,7 +125,7 @@ void KTTableExposure::insertLayer(int rows)
 	Layer* n_layer = ap_n_layer.get();
     
 	n_layer->setIndexLayer( m_layers.count() );
-	n_layer->setNameLayer( tr( "Layer" ) + m_numLayer );
+	n_layer->setNameLayer( tr( "Layer" ) + QString::number(m_numLayer) );
 	QPtrList<KeyFrame> kf = n_layer -> keyFrames();
 	kf.first() -> setNameKeyFrame( text);
 	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
