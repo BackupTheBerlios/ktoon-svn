@@ -23,6 +23,10 @@
 #include <qdockarea.h>
 #include <iostream>
 
+#include "ktdebug.h"
+
+#include <qobjectlist.h>
+
 KTDialogBase::KTDialogBase(Place p, QWidget *parent, const char *name, WFlags style) : QDockWindow(p, parent, name, style), m_isChildHidden(false)
 {
 	container = boxLayout();
@@ -103,6 +107,6 @@ bool KTDialogBase::event( QEvent * e )
 		emit activate(true);
 	}
 
-	QDockWindow::event(e );
+	return QDockWindow::event(e );
 }
 

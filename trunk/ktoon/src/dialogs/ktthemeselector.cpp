@@ -267,7 +267,7 @@ void KTThemeSelector::saveSchema()
 		QTextStream stream( &file );
 		stream << document().toString() << endl;
 		file.close();
-		m_lastFile = saveDialog.fileName();
+		m_lastFile = themeDir.path()+"/"+saveDialog.fileName();
 	}
 	loadSchemes();
 }
@@ -282,5 +282,12 @@ void KTThemeSelector::loadSchemaFromListView(QListViewItem *item, const QPoint &
 	if ( item )
 	{
 		ktapp->applyTheme(ktapp->configDir()+"/themes/"+item->text(0));
+		
+		if ( ! item->text(0).isEmpty() )
+		{
+			KTCONFIG->configDocument()->setThemePath(ktapp->configDir()+"/themes/"+item->text(0));
+			
+			m_lastFile = ktapp->configDir()+"/themes/"+item->text(0);
+		}
 	}
 }
