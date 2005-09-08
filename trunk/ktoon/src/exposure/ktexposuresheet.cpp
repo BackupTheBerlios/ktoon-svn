@@ -24,6 +24,7 @@
 #include <qlistview.h>
 #include "status.h"
 #include <ktdebug.h>
+// #include <qchecklistitem.h>
 
 KTExposureSheet::KTExposureSheet( QWidget *parent, const char *name)
 	: KTDialogBase(QDockWindow::OutsideDock, parent, "Exposure Sheet")
@@ -43,14 +44,15 @@ KTExposureSheet::KTExposureSheet( QWidget *parent, const char *name)
 	setupButtons();
 	
 	m_viewLayer = new KTTableExposure(100, 1,this,"KTExposureTable");
+	m_viewLayer->touchFirstFrame();
 	addChild(m_viewLayer);
- 	hide();
-// 	show();
+//  	hide();
+	show();
 
 	setResizeEnabled ( true );
-	connect(m_viewLayer, SIGNAL(cellSelected(int,int)), this, SLOT(select(int,int)));
-	connect(m_viewLayer, SIGNAL(frameSelected()), this, SIGNAL(frameSelected()));
+	connect(m_viewLayer, SIGNAL(clickedFrame()), this, SIGNAL(frameSelected()));
 	connect(m_viewLayer, SIGNAL(layerSelected(int)), this, SIGNAL(layerSelected(int)));
+	createManageLayer();
 }
 
 
@@ -59,6 +61,7 @@ KTExposureSheet::~KTExposureSheet()
 	m_imgs.clear();
 	KTEND;
 }
+
 
 void KTExposureSheet::setupButtons()
 {
@@ -83,6 +86,25 @@ void KTExposureSheet::setupButtons()
 	addChild(buttonsPanel);
 }
 
+void KTExposureSheet::createManageLayer()
+{
+	m_manageLayer = new QListView(0,"", WType_Popup);
+	
+	m_manageLayer->addColumn( tr( "Name" ), 105 );
+	m_manageLayer->setFrameStyle( WinPanel|Raised );
+	QStringList list = m_viewLayer->textHeaders();
+	
+	for(int i = 0; i < list.count(); i++)
+	{
+		QCheckListItem *checkItem = new QCheckListItem( m_manageLayer, list[i], QCheckListItem::CheckBox );
+		checkItem->setVisible( true );
+		checkItem->setOn( true );
+		m_manageLayer->insertItem ( checkItem);
+	}
+
+	m_manageLayer->resize(150,100);
+}
+
 void KTExposureSheet::applyAction(int action)
 {
 // 	ktDebug(1) << action;
@@ -101,6 +123,10 @@ void KTExposureSheet::applyAction(int action)
 		}
 		case ShowManageLayer:
 		{
+			QButton *p = buttonsPanel->find(ShowManageLayer);
+			m_manageLayer->move( mapToGlobal( p->geometry().bottomLeft() ) );
+// 			m_manageLayer->move(mapToParent(p->geometry().bottomLeft() ) );
+// 			m_manageLayer->show();
 			break;
 		}
 		case InsertFrames:
@@ -110,7 +136,7 @@ void KTExposureSheet::applyAction(int action)
 		}
 		case RemoveFrame:
 		{
-			m_viewLayer->removeFrameSelected();
+			m_viewLayer->removeFrame();
 			break;
 		}
 		case LockFrame:
@@ -131,21 +157,3 @@ void KTExposureSheet::applyAction(int action)
 	}
 }
 
-void KTExposureSheet::select(int idLayer, int idFrame)
-{
-// 	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
-// 	Layer *sl = ly.at( idLayer );
-// 	KTStatus -> setCurrentLayer( sl );
-// 	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
-// 	KTStatus -> setCurrentLayer( ly.at( list_of_layers.find( layer_iterator ) ) );
-
-// 	if ( frame_iterator -> isUsed() )
-// 	{
-// 		QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
-// 		KTStatus -> setCurrentKeyFrame( kf.at( current_list_of_frames.find( frame_iterator ) ) );
-// 	}
-// 	else
-// 		KTStatus -> setCurrentKeyFrame( NULL );
-	
-// 	emit(frameSelected());
-}

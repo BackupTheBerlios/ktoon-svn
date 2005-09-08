@@ -40,8 +40,6 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent, const char
 	setHScrollBarMode ( Auto );
 	
 	QVGroupBox *gridNumber = new QVGroupBox( m_port );
-// 	gridNumber->layout()->setAlignment( Qt::AlignBottom | Qt::AlignHCenter);
-// 	gridNumber->setInsideSpacing( 2 );
 	gridNumber->setInsideSpacing( 4);
 	gridNumber->setInsideMargin ( 4 );
 	
@@ -66,12 +64,20 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent, const char
 	
 	adjustSize();
 	setMinimumHeight(sizeHint().height());
+	
+	
 }
 
 
 KTTableExposure::~KTTableExposure()
 {
 	KTEND;
+// 	delete toCopy;
+}
+
+void KTTableExposure::touchFirstFrame()
+{
+	m_layers.at(0)->frameSelect(0,0,0,0);
 }
 
 void KTTableExposure::clickedCell(int row,int col,int button,int gx,int gy)
@@ -80,30 +86,18 @@ void KTTableExposure::clickedCell(int row,int col,int button,int gx,int gy)
 	m_currentFrame = row;
 	emit(cellSelected(col, row));
 	
-	
-	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
-	Layer *sl = ly.at( m_currentLayer );
 
-// 	ktDebug() << sl;
-	KTStatus -> setCurrentLayer( sl );
-// 	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
-// 	KTStatus -> setCurrentLayer( ly.at( list_of_layers.find( layer_iterator ) ) );
-
-	ktDebug() << "id_m_currentLayer " << m_currentLayer << " " << "id_m_currentFrame" << m_currentFrame ;
+// 	ktDebug() << "id_m_currentLayer " << m_currentLayer << " " << "id_m_currentFrame" << m_currentFrame <<  m_layers.at(m_currentLayer)->currentFrameIsUsed() << endl;
 	if ( m_layers.at(m_currentLayer)->currentFrameIsUsed() )
 	{
-		QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
-		KTStatus -> setCurrentKeyFrame( kf.at(  m_currentFrame) );
+		QPtrList<KeyFrame> kf = KTStatus->currentLayer()->keyFrames();
+		KTStatus->setCurrentKeyFrame( kf.at(m_currentFrame) );
 	}
-	else
-		KTStatus -> setCurrentKeyFrame( NULL );
-	
-	emit(frameSelected());
-	
-	if(button == Qt::RightButton)
+	else  
 	{
-		//show pupo gx, gy
+		KTStatus -> setCurrentKeyFrame( NULL );
 	}
+	emit(clickedFrame());
 }
 
 void KTTableExposure::insertLayer(int rows)
@@ -115,7 +109,12 @@ void KTTableExposure::insertLayer(int rows)
 	connect(newLayer, SIGNAL(selected(int)), this, SLOT(changeCurrentLayer(int)));
 	connect(this, SIGNAL(layerSelected(int)), newLayer, SLOT(otherSelected(int)));
 	connect(newLayer, SIGNAL(clicked(int,int,int,int,int)), this, SLOT(clickedCell(int,int,int,int,int)));
-	
+	connect(newLayer, SIGNAL(setUsedFrame(int)), this, SLOT(useFrame(int)));
+	connect(newLayer, SIGNAL(copyFrame()), this, SLOT(copyCurrentFrame()));
+	connect(newLayer, SIGNAL(pasteFrame()), this, SLOT(pasteCurrentFrame()));
+	connect(newLayer, SIGNAL(removed(int)), this, SLOT(removeLayer(int)));
+	connect(newLayer, SIGNAL(removedFrame(int)), this, SLOT(removeKeyFrame(int)));
+
 	m_layout->addWidget( newLayer, 0, Qt::AlignTop | Qt::AlignCenter);
 	
 	m_numLayer++;
@@ -145,29 +144,37 @@ void KTTableExposure::changeCurrentLayer(int idLayer)
 {
 	m_currentLayer = idLayer;
 	m_currentFrame = m_layers.at(m_currentLayer)->useFrame();
+	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
+	Layer *sl = ly.at( m_currentLayer );
+
+// 	ktDebug() << sl;
+	KTStatus -> setCurrentLayer( sl );
 	emit layerSelected(idLayer);
 }
 
 void KTTableExposure::setUseFrame()
 {
 	m_layers.at(m_currentLayer)->setUseFrames(m_currentFrame);
-	emit(activateCursor());
-// 	KTStatus->currentDrawingArea()->modifyDocument( true );
 }
 
-void KTTableExposure::removeFrameSelected()
+void KTTableExposure::useFrame(int id)
 {
-	m_layers.at(m_currentLayer)->removeFrame(m_currentFrame);
-	QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
-	KeyFrame *lkf = kf.at(m_currentFrame);
-// 		KeyFrame *pkf = kf.prev();
-// 		pkf -> setLengthKeyFrame( pkf -> lengthKeyFrame() + lkf -> lengthKeyFrame() );
-		emit frameRemoved( m_currentFrame );
-	kf.setAutoDelete( true );
-	kf.remove( lkf );
-	kf.setAutoDelete( false );
-	KTStatus -> currentLayer() -> setKeyFrames( kf );
-	
+// 	ktDebug(1) << id;
+	//FIXME: cuando se crea otro layer se pierde la secuencia de los keyFrame usados
+	QPtrList<KeyFrame> kf = KTStatus->currentLayer()->keyFrames();
+	KeyFrame *nkf = new KeyFrame();
+
+	kf.append( nkf );
+			// Warning: Layer::~Layer deletes its keyframes (here those in kf), and Status::~Status
+			// deletetes its current keyframe too! This will most likely lead to a double deletion.
+	KTStatus->currentLayer()->setKeyFrames( kf );
+	KTStatus->setCurrentKeyFrame( nkf );
+}
+
+void KTTableExposure::removeFrame()
+{
+// 	m_layers.at(idLayer)->removeFrame(idLayer);
+	m_layers.at(m_currentLayer)->removeCurrentFrame();
 }
 
 void KTTableExposure::moveCurrentFrame(Direction d)
@@ -193,12 +200,53 @@ void KTTableExposure::removeCurrentLayer()
 	{
 		m_layout->remove( m_layers.at(m_currentLayer) );
 		m_layers.remove(m_currentLayer);
-		for( int i = m_currentLayer; i < m_layers.count(); i++)
+		for( uint i = m_currentLayer; i < m_layers.count(); i++)
 		{
 			m_layers.at(i)->setId(i);
 		}
 		m_numLayer--;
 	}
-// 	ktDebug(1) << m_layers.count();
 }
 
+void KTTableExposure::copyCurrentFrame()
+{
+	KTStatus->currentDrawingArea()->slotSelectAll();
+	KTStatus->currentDrawingArea()->slotCopy();
+}
+
+void KTTableExposure::pasteCurrentFrame()
+{
+	KTStatus->currentDrawingArea()->slotPasteInPlace();
+
+}
+
+void KTTableExposure::removeKeyFrame(int idLayer)
+{
+	QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
+	KeyFrame *lkf = kf.at(idLayer);
+	kf.setAutoDelete( true );
+	kf.remove( lkf );
+	kf.setAutoDelete( false );
+	KTStatus->currentLayer()->setKeyFrames( kf );
+}
+
+void KTTableExposure::removeLayer(int idLayer)
+{
+	m_layout->remove( m_layers.at(idLayer) );
+	m_layers.remove(idLayer);
+	for( int i = idLayer; i < m_layers.count(); i++)
+	{
+		m_layers.at(i)->setId(i);
+	}
+	m_numLayer--;
+}
+
+QStringList KTTableExposure::textHeaders()
+{
+	QStringList list;
+	for( uint i = 0; i < m_layers.count(); i++)
+	{
+		list << m_layers.at(i)->textHeader();
+	}
+	return list;
+}

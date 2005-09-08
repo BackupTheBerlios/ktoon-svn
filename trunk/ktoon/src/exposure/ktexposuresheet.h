@@ -29,8 +29,10 @@
 #include <qvaluelist.h>
 #include <qstringlist.h>
 #include <qtable.h>
-#include <qlistbox.h>
-#include <qgridview.h> 
+#include <qgridview.h>
+
+#include <qlistview.h>
+
 #include "ktimagebutton.h"
 
 /**
@@ -47,21 +49,24 @@ class KTExposureSheet : public KTDialogBase
 	public:
 		KTExposureSheet(QWidget *parent = 0, const char *name = 0);
 		~KTExposureSheet();
-		enum Actions { /*NoAction = 0,*/ InsertLayer = 0, RemoveLayer, ShowManageLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
+
 	
 	private:
-
+		enum Actions { /*NoAction = 0,*/ InsertLayer = 0, RemoveLayer, ShowManageLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
 		imgs m_imgs;
 		QHButtonGroup *buttonsPanel;
 		QActionGroup *m_actions;
 		KTTableExposure *m_viewLayer;
-		
+// 		//Widget for handling the layer visibility
+		QListView *m_manageLayer;
+
 	private:
 		void setupButtons();
 		
+		void createManageLayer();
+		
 	public slots:
 		void applyAction(int action);
-		void select(int idLayer, int idFrame);
 		
 	signals:
 		void applyedAction(Actions action);

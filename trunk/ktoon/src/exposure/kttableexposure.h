@@ -23,7 +23,11 @@
 #include <qscrollview.h> 
 #include <qlayout.h> 
 #include <qlabel.h>
+#include <qstringlist.h>
+
 #include "ktlayerexposure.h"
+#include "gldrawing.h"
+#include "keyframe.h"
 
 /**
 @author Jorge Cuadrado
@@ -39,26 +43,36 @@ class KTTableExposure : public QScrollView
 		KTTableExposure(int rows, int cols, QWidget *parent = 0, const char *name = 0);
 		~KTTableExposure();
 		void setUseFrame();
-		void removeFrameSelected();
+// 		void removeFrameSelected();
+		void removeFrame();
 		void moveCurrentFrame(Direction d);
 		void lockCurrentFrame();
 		void removeCurrentLayer();
+		QStringList textHeaders();
 		
 	private:
 		QBoxLayout *m_layout;
 		QWidget *m_port;
-		int m_numLayer;
-		int m_currentLayer, m_currentFrame;
+		uint m_numLayer;
+		uint m_currentLayer, m_currentFrame;
 		listOfLayers m_layers;
+// 		GLDrawing *toCopy;
 		
 	public slots:
 		void insertLayer(int rows);
 		void clickedCell(int row, int col, int button, int gx, int gy);
 		void changeCurrentLayer(int idLayer);
+		void useFrame(int id);
+		void removeKeyFrame(int id);
+		void touchFirstFrame();
+		void copyCurrentFrame();
+		void pasteCurrentFrame();
+		void removeLayer(int idLayer);
 		
+
 	signals:
 		void layerSelected(int id);
-		void frameSelected();
+		void clickedFrame();
 		void cellSelected(int idLayer, int idFrame);
 		void activateCursor();
 		void layerInserted();

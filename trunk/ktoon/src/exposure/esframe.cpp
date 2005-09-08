@@ -350,6 +350,6 @@ void ESFrame::resizeEvent ( QResizeEvent * e )
 	KTSqueezeLabel::resizeEvent(e);
 }
 
-void ESFrame::keyPressEvent(QKeyEvent *e)
+void ESFrame::keyPressEvent(QKeyEvent *)
 {
 }

@@ -65,6 +65,7 @@ ESLayer::~ESLayer()
 
 //-------------- PUBLIC MEMBERS ----------------
 
+
 bool ESLayer::isSelected()
 {
     return is_selected;
@@ -91,6 +92,7 @@ void ESLayer::slotSetDescription()
 {
     setText( description -> text() );
     description -> hide();
+    
     emit renamed( text() );
 }
 
@@ -111,8 +113,9 @@ void ESLayer::mousePressEvent( QMouseEvent *mouse_event )
     
     description -> setText( text() );
 
-    emit clicked();
+    emit clicked(true, mouse_event );
 
+//     emit clicked();
     if ( mouse_event -> button() == Qt::RightButton )
         right_click_menu -> exec( QCursor::pos() );
 
@@ -134,7 +137,9 @@ void ESLayer::mouseDoubleClickEvent( QMouseEvent *mouse_event )
         mouse_event -> ignore();
 }
 
-void ESLayer::resizeEvent ( QResizeEvent * e )
+void ESLayer::resizeEvent ( QResizeEvent *  )
 {
 	description -> resize( width(), height() );
 }
+
+	

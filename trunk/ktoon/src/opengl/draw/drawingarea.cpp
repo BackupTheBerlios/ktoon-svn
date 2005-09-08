@@ -96,6 +96,7 @@ DrawingArea::~DrawingArea()
 		delete grid;
 	if ( right_click_menu != NULL )
 		delete right_click_menu;
+	
 }
 
 //--------------------- PUBLIC AND PROTECTED MEMBERS --------------------------------
@@ -2746,21 +2747,26 @@ void DrawingArea::slotSelectAll()
 void DrawingArea::slotSelectFrame()
 {
 	qDebug("Select frame");
-	ktDebug(1) << "Select frame";
+	ktDebug(1) << " 1 " ;
 	if ( current_graphic && current_graphic -> kindGraphic() == GLGraphicComponent::GC_PEN && bezier )
 	{
+		ktDebug(1) << " 1 " ;
 		bezier = false;
+		ktDebug(1) << " 1 " ;
 	}
-	
+	ktDebug(1) << " 1 " ;
 	//delete current_graphic; // Missing 
 	//current_graphic = 0;
-	
+	ktDebug(1) << " 1 " ;
 	KeyFrame *ckf = KTStatus->currentKeyFrame() ;
+	ktDebug(1) << " 1 " ;
 	Layer *cly = KTStatus -> currentLayer();
-	
+	ktDebug(1) << " 1 " ;
 	if ( ckf && cly )
 	{
+		ktDebug(1) << " 1 " ;
 		light_table_list.clear();
+		ktDebug(1) << " 1 " ;
 		QPtrList<KeyFrame> keyframes_to_display;
 		QPtrList<KeyFrame> keyframe_list = KTStatus -> currentLayer() -> keyFrames();
 // 		QPtrList<Layer> layer_list = k_toon -> exposureSheet() -> visibleLayers(); // FIXME: krawek

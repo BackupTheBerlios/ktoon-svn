@@ -91,6 +91,7 @@ signals:
      * @param n The new name
      */
     void renamed( const QString &n );
+    void clicked( bool , QMouseEvent *e);
 
 public slots:
     /**
@@ -105,6 +106,7 @@ public slots:
      * You should never use it from ouside.
      */
     void slotSendDoubleClickEvent();
+	      
 
 protected:
     /**

@@ -2043,6 +2043,8 @@ void KToon::slotNewDocument()
 		
 		connect(m_ExposureSheetDialog, SIGNAL(activateCursor()), this, SLOT(slotActivateCursor()));
 
+		connect( m_ExposureSheetDialog, SIGNAL( frameSelected() ), KTStatus->currentDrawingArea(), SLOT( slotSelectFrame() ) );
+		
 		connect( exposure_sheet_dialog, SIGNAL( frameSelected() ), KTStatus->currentDrawingArea(), SLOT( slotSelectFrame() ) );
 		
 		connect( exposure_sheet_dialog, SIGNAL( frameSelected() ), SLOT( slotActivateCursor() ) );
@@ -2458,7 +2460,7 @@ void KToon::slotSave()
     }
     
     QString filetmp(file_name);
-    
+
     if ( ! filetmp.startsWith( KTOON_REPOSITORY ))
     {
 	    filetmp = KTOON_REPOSITORY + "/"+filetmp;
@@ -3771,6 +3773,7 @@ void KToon::slotCloseDrawingArea()
 
 void KToon::slotActivateCursor()
 {
+	KTStatus->currentDrawingArea() ->update(); // FIXME: esto se hace para que el drawingArea se actualize despues de seleccionar un frame cosa que no se debe hacer en esta funcion
 	ILayer *il = exposure_sheet_dialog -> currentLayerObj();
 	ESFrame *sf = il -> selectedFrame();
 	bool locked = false;
