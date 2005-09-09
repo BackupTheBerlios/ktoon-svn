@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include <qlayout.h>
- 
+
 #include "ktlayersequence.h"
 #include "ktdebug.h"
 
@@ -35,7 +35,8 @@ KTLayerSequence::KTLayerSequence(QWidget *parent) : QScrollView(parent, "KTLayer
 	setPaletteBackgroundColor(Qt::black);
 	setPaletteForegroundColor(Qt::gray );
 	
-	m_layerContainer = new QVBox(viewport());
+	m_layerContainer = new KTVBox(viewport());
+	m_layerContainer->resize(590, m_layerContainer->height());
 	addChild(m_layerContainer);
 	m_layerContainer->layout()->setAlignment(Qt::AlignTop );
 	
@@ -90,6 +91,8 @@ KTTimeLineLayer * KTLayerSequence::createNewLayer()
 	newLayer->show();
 	m_layers.append( newLayer );
 	
+	m_pLastLayer = newLayer;
+	
 	m_layerCount++;
 	
 	return newLayer;
@@ -137,11 +140,12 @@ void KTLayerSequence::removeLayer()
 
 void KTLayerSequence::selectLayer(int id)
 {
+	ktDebug() << "SELECT LAYER WITH ID: " << id << endl;
 	KTTimeLineLayer *selected = m_layers.at(id);
 	
 	if ( !selected )
 	{
-		ktError(1) << "Layer not exists" << endl;
+		ktError(1) << "Layer not exists " << id << endl;
 		return;
 	}
 	
@@ -153,9 +157,59 @@ void KTLayerSequence::selectLayer(int id)
 	m_pCurrentLayer->setSelected( true );
 	m_pCurrentLayer->setEdited( true );
 
-// 	emit layerSelectedToES( list_of_layers.find( current_layer ) );
-// 	emit layerSelected( current_layer );
+// 	emit layerSelectedToES( m_layers.find( m_pCurrentLayer ) );
+// 	emit layerSelected( m_pCurrentLayer );
 }
 
+void KTLayerSequence::moveLayerUp()
+{
+	ktDebug() << "KTLayerSequence::moveLayerUp()" << endl;
+	//If the current layer is the first, do nothing
+	if ( m_pCurrentLayer == m_layers.getFirst() )
+	{
+		return;
+	}
+    
+	//Find the layer above the current and reinsert it into the list in its new position
+	KTTimeLineLayer *layerAbove = m_layers.take( m_layers.find( m_pCurrentLayer ) - 1 );
+	
+	m_pCurrentLayer -> setPosition(m_pCurrentLayer->position()-1);
+	
+	layerAbove -> setPosition(layerAbove->position()+1);
+	
+	m_layers.insert( layerAbove -> position() , layerAbove );
+	
+	if ( m_pCurrentLayer == m_pLastLayer )
+	{
+		m_pLastLayer = layerAbove;
+	}
+	
+	//Swap both layers
+	m_layerContainer->moveWidgetUp(m_pCurrentLayer);
+	
+// 	k_toon -> renderCameraPreview() -> updateGL();
+}
 
+void KTLayerSequence::moveLayerDown()
+{
+	//If the m_pCurrentLayer is the last, do nothing
+	if ( m_pCurrentLayer == m_pLastLayer )
+	{
+		return;
+	}
+	
+	//Find the layer above the current and reinsert it into the list in its new position
+	KTTimeLineLayer *layerBelow = m_layers.take( m_layers.find( m_pCurrentLayer ) + 1 );
+	m_pCurrentLayer -> setPosition( m_pCurrentLayer -> position() + 1 );
+	layerBelow -> setPosition( layerBelow -> position() - 1 );
+	m_layers.insert( layerBelow -> position(), layerBelow );
+	if ( layerBelow == m_pLastLayer )
+	{
+		m_pLastLayer = m_pCurrentLayer;
+	}
+
+	m_layerContainer->moveWidgetDown(m_pCurrentLayer);
+	
+// 	k_toon -> renderCameraPreview() -> updateGL();
+}
 

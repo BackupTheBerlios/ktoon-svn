@@ -67,14 +67,13 @@ class KTRulerBase : public QFrame
 // 		const double unitGetRatioFromIndex(const int index);
 // 		const double pts2mm(double pts);
 // 		const double mm2pts(double mm);
-		void drawScale();
+		virtual void drawScale();
 		int orientation();
 		
 		
 	private:
 		int m_position;
 		int m_separation;
-		QPixmap m_scale;
 		Orientation m_orientation;
 		bool m_drawPointer;
 		QPopupMenu *m_menu;
@@ -82,6 +81,7 @@ class KTRulerBase : public QFrame
 		
 	protected:
 		QPointArray m_pArrow;
+		QPixmap m_pScale;
 		
 	signals:
 		void displayMenu(KTRulerBase *, QPoint pos);

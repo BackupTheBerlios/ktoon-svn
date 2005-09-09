@@ -269,6 +269,7 @@ int KTTimeLineLayer::position()
 
 void KTTimeLineLayer::setPosition(int pos)
 {
+	ktDebug() << "Setting position " << pos << " to layer: " << m_layerName->completeText() << endl;
 	m_position = pos;
 }
 

@@ -49,7 +49,7 @@
 
 
 DrawingArea::DrawingArea( QWidget *parent, const char *name, WFlags f ) : GLControl( parent, name, 0, f | WDestructiveClose), rotation_x( 0.0 ), rotation_y( 0.0 ), rotation_z( 0.0 ), translation_x( 0.0 ), translation_y( 0.0 ), translation_z( -10.0 ), scale_x( 1.0 ), scale_y( 1.0 ), scale_z( 1.0 )
-{	
+{
 	qDebug("[Initializing DrawingArea]");
 	
 	number_lines = 32;
@@ -138,6 +138,7 @@ void DrawingArea::initializeGL()
 	id_spin_texture = createSelectionArrows( id_spin );
 	
 	grid = new GLGrid( this, maxHorizontal(), maxVertical(), numberLines(), zoomLines(), ntscZone() );
+// 	grid = new GLGrid( this, width(), width(), width()/10, zoomLines(), ntscZone() );
 }
 
 void DrawingArea::resizeGL( int w, int h )
@@ -1809,7 +1810,9 @@ void DrawingArea::addGraphicComponent( GLGraphicComponent *graphic_component, bo
 	current_graphic = graphic_component;
 
 	if ( update )
+	{
 		updateGL();
+	}
 }
 	
 void DrawingArea::modifyDocument( bool modify )
@@ -2747,26 +2750,24 @@ void DrawingArea::slotSelectAll()
 void DrawingArea::slotSelectFrame()
 {
 	qDebug("Select frame");
-	ktDebug(1) << " 1 " ;
+
 	if ( current_graphic && current_graphic -> kindGraphic() == GLGraphicComponent::GC_PEN && bezier )
 	{
-		ktDebug(1) << " 1 " ;
 		bezier = false;
-		ktDebug(1) << " 1 " ;
 	}
-	ktDebug(1) << " 1 " ;
+
 	//delete current_graphic; // Missing 
 	//current_graphic = 0;
-	ktDebug(1) << " 1 " ;
+
 	KeyFrame *ckf = KTStatus->currentKeyFrame() ;
-	ktDebug(1) << " 1 " ;
+
 	Layer *cly = KTStatus -> currentLayer();
-	ktDebug(1) << " 1 " ;
+
 	if ( ckf && cly )
 	{
-		ktDebug(1) << " 1 " ;
+
 		light_table_list.clear();
-		ktDebug(1) << " 1 " ;
+
 		QPtrList<KeyFrame> keyframes_to_display;
 		QPtrList<KeyFrame> keyframe_list = KTStatus -> currentLayer() -> keyFrames();
 // 		QPtrList<Layer> layer_list = k_toon -> exposureSheet() -> visibleLayers(); // FIXME: krawek

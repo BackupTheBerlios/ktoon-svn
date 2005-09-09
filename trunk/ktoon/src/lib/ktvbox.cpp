@@ -18,48 +18,69 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTFRAMESEQUENCEMANAGER_H
-#define KTFRAMESEQUENCEMANAGER_H
-
 #include "ktvbox.h"
-#include <qscrollview.h>
+#include "ktdebug.h"
 
-#include "kttlruler.h"
-#include "ktframesequence.h"
+#include <qobjectlist.h>
 
-typedef QPtrList<KTFrameSequence> ListOfFrameSequences;
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-
-class KTFrameSequenceManager : public KTVBox
+KTVBox::KTVBox(QWidget *parent, const char *name) : QFrame(parent, name)
 {
-	Q_OBJECT
-	public:
-		KTFrameSequenceManager(QWidget *parent);
-		~KTFrameSequenceManager();
-		QScrollBar *verticalScrollBar();
-		
-	public slots:
-		void insertFrameSequence();
-		void removeFrameSequence();
-		void setCurrentFrame(TLFrame *);
-		
-	private slots:
-		
-	private:
-		ListOfFrameSequences m_sequences;
-		
-		QScrollView *m_sequenceLayout;
-		KTVBox *m_vBox;
-		KTTLRuler *m_ruler;
-		KTFrameSequence *m_lastSequence, *m_currentFrameSequence;
+	m_pLayout = new QVBoxLayout(this);
+	m_pLayout->setAutoAdd(true);
+}
 
-		QScrollBar *m_scroll;
+
+KTVBox::~KTVBox()
+{
+}
+
+void KTVBox::moveWidgetUp(QWidget *widget)
+{
+	ktDebug() << "Childs " << children ()->count() << endl;
+	int position = m_pLayout->findWidget(widget);
+	
+	
+	ktDebug() << "Position: " << position << endl;
+	
+	if (position > 0 )
+	{
+		m_pLayout->setAutoAdd(false);
 		
-		TLFrame *m_currentFrame;
+		m_pLayout->remove(widget);
+		m_pLayout->insertWidget(position-1, widget);
+		
+		m_pLayout->setAutoAdd(true);
+	}
+	else
+	{
+		ktDebug() << "The widget isn't in the layout" << endl;
+	}
+}
 
-};
+void KTVBox::moveWidgetDown(QWidget *widget)
+{
+	int position = m_pLayout->findWidget(widget);
+	
+	if (position >= 0 )
+	{
+		m_pLayout->setAutoAdd(false);
+		
+		m_pLayout->remove(widget);
+		m_pLayout->insertWidget(position+1, widget);
+		
+		m_pLayout->setAutoAdd(true);
+	}
+}
 
-#endif
+void KTVBox::switchWidgetsPosition(QWidget *widget1, QWidget *widget2)
+{
+	int position1 = m_pLayout->findWidget(widget1);
+	int position2 = m_pLayout->findWidget(widget2);
+	
+	if (position1 > 0 && position2 > 0 )
+	{
+		m_pLayout->setAutoAdd(false);
+		
+		m_pLayout->setAutoAdd(true);
+	}
+}

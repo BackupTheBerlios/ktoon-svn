@@ -32,6 +32,8 @@
 #include "glgrid.h"
 #include "drawingarea.h"
 
+#include "ktdebug.h"
+
 #define GRID_FONT "fixed"
 
 //-------------- CONSTRUCTOR ---------------
@@ -39,6 +41,10 @@
 GLGrid::GLGrid( QGLWidget *parent, const GLuint & max_width, const GLuint & max_height, const GLuint & number_lines, const bool & zoom_lines, const bool & ntsc_zone ) : max_width ( max_width ), max_height ( max_height ), number_lines ( number_lines ), zoom_lines( zoom_lines ), ntsc_zone( ntsc_zone )
 {
     Q_CHECK_PTR( parent );
+    
+//     ktDebug() << "MAX WIDTH: " << max_width << endl;
+//     ktDebug() << "LINES: " << number_lines << endl;
+//     ktDebug() << "MAX HEIGHT: " << max_height << endl;
 
     parent_widget = parent;
     grid_color = QColor( 210, 210, 210 );
@@ -100,10 +106,13 @@ GLGrid::~GLGrid()
 void GLGrid::draw()
 {
 	if( glIsList( id_grid ) )
+	{
 		glCallList( id_grid );
+	}
 	else
+	{
 		qDebug( "invalid id_grid %d", id_grid );
-
+	}
 }
 
 void GLGrid::buildGrid( int nLines, GLuint list )
@@ -114,7 +123,10 @@ void GLGrid::buildGrid( int nLines, GLuint list )
 	glColor3f( color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0 );
 	glLineWidth( width );
 	glBegin( GL_LINES );
-
+	
+// 	nLines = parent_widget->width()/10;
+// 	ktDebug() << "Grid with " << nLines << " Lines " << endl;
+	
 	for ( int x = 0; x <= nLines; x++ )
 	{
 		float fraccion = ( float )x / ( float )nLines;
@@ -268,6 +280,7 @@ void GLGrid::buildGrid()
 		case 32: glCallList( id_grid16 ); glCallList( id_diagonals ); break;
 		default:
 			qDebug("Error en el numero de lineas" );
+			glCallList(id_grid16);
 			break;
 	}
 

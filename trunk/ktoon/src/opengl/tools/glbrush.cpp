@@ -170,10 +170,11 @@ void GLBrush::buildList()
 	{
 	        // TODO: change the dots to quads with a circle texture with alpha 
 		glPointSize( widthPoint().thicknessMinBrush() );
-		glBegin( GL_POINTS );
+		glBegin( GL_POINTS   );
 		for ( unsigned int i = 1; i < points.count() - 1;  i++ )
 		{
 			initial_point = points.at( i );
+			
 			glVertex2f( initial_point -> x(), initial_point -> y() );
 		}
 		glEnd();

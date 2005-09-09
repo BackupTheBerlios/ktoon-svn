@@ -18,47 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTFRAMESEQUENCEMANAGER_H
-#define KTFRAMESEQUENCEMANAGER_H
+#ifndef KTVBOX_H
+#define KTVBOX_H
 
-#include "ktvbox.h"
-#include <qscrollview.h>
-
-#include "kttlruler.h"
-#include "ktframesequence.h"
-
-typedef QPtrList<KTFrameSequence> ListOfFrameSequences;
+#include <qframe.h>
+#include <qlayout.h>
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
-class KTFrameSequenceManager : public KTVBox
+class KTVBox : public QFrame
 {
 	Q_OBJECT
 	public:
-		KTFrameSequenceManager(QWidget *parent);
-		~KTFrameSequenceManager();
-		QScrollBar *verticalScrollBar();
+		KTVBox(QWidget *parent = 0, const char *name = 0);
+		~KTVBox();
+		void moveWidgetUp(QWidget *);
+		void moveWidgetDown(QWidget *);
+		void switchWidgetsPosition(QWidget *first, QWidget *second);
 		
-	public slots:
-		void insertFrameSequence();
-		void removeFrameSequence();
-		void setCurrentFrame(TLFrame *);
-		
-	private slots:
-		
-	private:
-		ListOfFrameSequences m_sequences;
-		
-		QScrollView *m_sequenceLayout;
-		KTVBox *m_vBox;
-		KTTLRuler *m_ruler;
-		KTFrameSequence *m_lastSequence, *m_currentFrameSequence;
-
-		QScrollBar *m_scroll;
-		
-		TLFrame *m_currentFrame;
+	protected:
+		QVBoxLayout *m_pLayout;
 
 };
 

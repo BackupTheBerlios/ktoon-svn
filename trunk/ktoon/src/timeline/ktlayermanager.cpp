@@ -209,12 +209,12 @@ void KTLayerManager::selectLayerAction(int opt)
 		break;
 		case MoveLayerUp:
 		{
-			
+			m_sequence->moveLayerUp();
 		}
 		break;
 		case MoveLayerDown:
 		{
-			
+			m_sequence->moveLayerDown();
 		}
 		break;
 		case NoAction:

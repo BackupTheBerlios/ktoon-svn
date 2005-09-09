@@ -47,7 +47,7 @@ KTExposureSheet::KTExposureSheet( QWidget *parent, const char *name)
 	m_viewLayer->touchFirstFrame();
 	addChild(m_viewLayer);
 //  	hide();
-	show();
+// 	show();
 
 	setResizeEnabled ( true );
 	connect(m_viewLayer, SIGNAL(clickedFrame()), this, SIGNAL(frameSelected()));

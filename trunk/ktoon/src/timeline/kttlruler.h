@@ -34,6 +34,7 @@ class KTTLRuler : public KTRulerBase
 	public:
 		KTTLRuler(QWidget *parent);
 		~KTTLRuler();
+// 		virtual void drawScale();
 		
 	private slots:
 // 		void showMenu(KTRulerBase *, QPoint pos);

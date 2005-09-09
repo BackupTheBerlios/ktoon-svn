@@ -24,7 +24,7 @@
 #include <qlabel.h>
 #include <qlayout.h>
 
-KTFrameSequenceManager::KTFrameSequenceManager(QWidget *parent) : QVBox(parent, "KTFrameSequenceManager"), m_currentFrame(0)
+KTFrameSequenceManager::KTFrameSequenceManager(QWidget *parent) : KTVBox(parent, "KTFrameSequenceManager"), m_currentFrame(0)
 {
 	KTINIT;
 	
@@ -36,13 +36,12 @@ KTFrameSequenceManager::KTFrameSequenceManager(QWidget *parent) : QVBox(parent, 
 	m_sequenceLayout->horizontalScrollBar()->setPageStep (5);
 // 	connect( m_sequenceLayout->horizontalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(moveRuler(int)));
 	
-	m_vBox = new QVBox(m_sequenceLayout->viewport());
+	m_vBox = new KTVBox(m_sequenceLayout->viewport());
 	m_sequenceLayout->addChild(m_vBox);
 	
 	m_ruler = new KTTLRuler(m_vBox);
 	m_ruler->setMargin(1);
 	m_ruler->setMinimumSize(300, m_ruler->height());
-	m_ruler->setBackgroundColor(Qt::yellow);
 	
 	setMaximumHeight( sizeHint().height() );
 	
@@ -113,14 +112,13 @@ void KTFrameSequenceManager::removeFrameSequence()
 			m_sequences.remove( m_currentFrameSequence );
 			delete m_currentFrameSequence;
 			m_currentFrameSequence = bridgeFrameSequence;
-// 			m_currentFrame = 0
 		}
 	}
 }
 
 void KTFrameSequenceManager::setCurrentFrame(TLFrame *frame)
 {
-	if (!frame)
+	if (!frame|| m_currentFrame == frame)
 	{
 		ktError() << "Invalid Frame" << endl;
 		return;

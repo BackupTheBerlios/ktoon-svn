@@ -27,9 +27,9 @@
 KTRulerBase::KTRulerBase(Orientation orientation, QWidget *parent, const char *name)
 	: QFrame(parent, name), m_position(0), m_orientation(orientation),m_pArrow(3), m_drawPointer(false), m_separation(100)
 {
-	m_scale.setOptimization( QPixmap::BestOptim );
-	m_scale.resize( width(),height());
-	m_scale.fill(paletteBackgroundColor ());
+	m_pScale.setOptimization( QPixmap::BestOptim );
+	m_pScale.resize( width(),height());
+	m_pScale.fill(paletteBackgroundColor ());
 	
 	if(m_orientation == Horizontal)
 	{
@@ -66,13 +66,13 @@ KTRulerBase::KTRulerBase(Orientation orientation, QWidget *parent, const char *n
 KTRulerBase::~KTRulerBase()
 {
 // 	delete m_pArrow;
-// 	delete m_scale;
+// 	delete m_pScale;
 }
 
 void KTRulerBase::paintEvent ( QPaintEvent * e)
 {
 	QPainter p(this);
-	p.drawPixmap ( 0, 0, m_scale);
+	p.drawPixmap ( 0, 0, m_pScale);
 // 	p.drawPolygon (m_pArrow,true,0,3);
 	if ( m_drawPointer )
 	{
@@ -87,12 +87,11 @@ void KTRulerBase::paintEvent ( QPaintEvent * e)
 void KTRulerBase::drawScale()
 {
 // 	ktDebug() << "Drawing Scale" << endl;
-	m_scale.fill(paletteBackgroundColor ());
+	m_pScale.fill(paletteBackgroundColor ());
 
-	QPainter p(&m_scale,this);
-	QWMatrix m;                      // our transformation matrix
+	QPainter p(&m_pScale,this);
+	QWMatrix m;
 	m.rotate( 0.0 );
-// 	m.scale( 25.4/72.0, 25.4/72.0);
 	p.setWorldMatrix( m );
 	
 	int range = 10;
@@ -152,7 +151,7 @@ void KTRulerBase::drawScale()
 
 void KTRulerBase::resizeEvent ( QResizeEvent * e)
 {
-	m_scale.resize( width(), height());
+	m_pScale.resize( width(), height());
 	drawScale();
 }
 

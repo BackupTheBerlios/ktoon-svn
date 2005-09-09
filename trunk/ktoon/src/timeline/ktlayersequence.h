@@ -23,7 +23,7 @@
 
 #include "kttimelinelayer.h"
 #include <qscrollview.h>
-#include <qvbox.h>
+#include "ktvbox.h"
 
 typedef QPtrList<KTTimeLineLayer>  ListOfTLLayers;
 
@@ -46,8 +46,11 @@ class KTLayerSequence : public QScrollView
 		
 		void selectLayer(int id);
 		
+		void moveLayerUp();
+		void moveLayerDown();
+		
 	private:
-		QVBox *m_layerContainer;
+		KTVBox *m_layerContainer;
 		KTTimeLineLayer *m_defaultLayer;
 		ListOfTLLayers m_layers;
 		int m_layerCount;

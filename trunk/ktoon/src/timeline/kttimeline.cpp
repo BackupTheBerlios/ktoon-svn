@@ -27,7 +27,7 @@
 KTTimeLine::KTTimeLine(QWidget *parent) : KTDialogBase(QDockWindow::OutsideDock, parent, "KTTimeLine")
 {
 	KTINIT;
-	
+
 	setCaption(tr("The Time line"));
 	
 	m_container = new QHBox(this);
@@ -36,7 +36,7 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTDialogBase(QDockWindow::OutsideDock,
 	m_splitter = new QSplitter( m_container );
 	
 	m_layerManager = new KTLayerManager( m_splitter );
-	m_layerManager->resize( m_layerManager->minimumSize() );
+	m_layerManager->resize( 590, m_layerManager->height() );
 	
 	m_sequenceManager = new KTFrameSequenceManager(m_splitter);
 	
@@ -47,12 +47,12 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTDialogBase(QDockWindow::OutsideDock,
 	connect( m_layerManager->verticalScrollBar(), SIGNAL( valueChanged( int ) ), m_sequenceManager->verticalScrollBar(), SLOT( setValue( int ) ) );
 	
 // 	show();
-	hide();
+// 	hide();
 	
 	setResizeEnabled (true);
 
 	m_container->setMinimumHeight( m_container->sizeHint().height() );
-	
+
 	m_splitter->setSizes( QValueList<int>() << 190 << 590 );
 }
 
