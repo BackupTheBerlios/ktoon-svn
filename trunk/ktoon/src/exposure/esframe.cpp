@@ -65,6 +65,11 @@ ESFrame::~ESFrame()
 
 //-------------- PUBLIC MEMBERS ----------------
 
+QString ESFrame::name()
+{
+	return m_initialText;
+}
+
 bool ESFrame::isUsed()
 {
 	return is_used;	
@@ -106,6 +111,7 @@ void ESFrame::setUsed( bool in_is_used )
 	is_used = in_is_used;
 
 	setName(m_initialText);
+	
 	if ( is_selected == true && in_is_used == true )
 	{
 		setPaletteBackgroundColor( QColor( 255, 255, 255 ) );
@@ -209,6 +215,7 @@ void ESFrame::setHasDrawing( bool in_has_drawing )
 
 void ESFrame::setName( const QString &new_name )
 {
+	m_initialText = new_name;
 	description -> setText( new_name);
 	setText( new_name );
 }
@@ -305,6 +312,7 @@ void ESFrame::mousePressEvent( QMouseEvent *mouse_event )
 // 	}
 
 	mouse_event -> accept();
+
 }
 
 void ESFrame::mouseDoubleClickEvent( QMouseEvent *mouse_event )
@@ -336,7 +344,7 @@ void ESFrame::drawContents( QPainter *painter )
 		painter -> setPen( QColor( 0, 0, 0 ) );
 	}
 	
-	painter -> drawText( 12, 16, text() );
+	painter -> drawText( 5, 16, text() );
 	if ( is_motion )
 	{
 		painter -> setPen( QPen( QColor( 120, 120, 120 ), 2 ) );

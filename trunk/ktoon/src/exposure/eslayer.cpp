@@ -142,4 +142,3 @@ void ESLayer::resizeEvent ( QResizeEvent *  )
 	description -> resize( width(), height() );
 }
 
-	

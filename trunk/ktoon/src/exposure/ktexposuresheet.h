@@ -36,6 +36,7 @@
 
 #include "ktimagebutton.h"
 
+// #include "layer.h"
 /**
 * @author Jorge Cuadrado
 */
@@ -50,7 +51,7 @@ class KTExposureSheet : public KTDialogBase
 	public:
 		KTExposureSheet(QWidget *parent = 0, const char *name = 0);
 		~KTExposureSheet();
-
+		void loadLayersAndKeyframes( QPtrList<Layer> layers );
 	
 	private:
 		enum Actions { /*NoAction = 0,*/ InsertLayer = 0, RemoveLayer, ShowManageLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
@@ -59,12 +60,12 @@ class KTExposureSheet : public KTDialogBase
 		QActionGroup *m_actions;
 		KTTableExposure *m_viewLayer;
 // 		//Widget for handling the layer visibility
-		QListView *m_manageLayer;
+		QListView *m_layerManager;
 
 	private:
 		void setupButtons();
 		
-		void createManageLayer();
+		void createLayerManager();
 		
 	public slots:
 		void applyAction(int action);
@@ -73,6 +74,21 @@ class KTExposureSheet : public KTDialogBase
 		void applyedAction(Actions action);
 		void frameSelected();
 		void layerSelected(int);
+		
+		
+		void layerInserted();
+		
+		void layerRemoved();
+		
+		
+		
+		void layerRenamed( int pos, const QString &name );
+		void framesInsertedAtTheEnd( int number );
+		void frameRemoved( int pos );
+		void frameMovedUp( int pos );
+		void frameMovedDown( int pos );
+		
+		
 };
 
 #endif

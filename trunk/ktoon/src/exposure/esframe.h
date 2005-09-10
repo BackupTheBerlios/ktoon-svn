@@ -160,19 +160,21 @@ public:
     void setAllProperties( ESFrame *in_esframe );
 	      void setId(int id);
 	      int id();
-	      
+	      QString name();
 
 private:
 //     QWidget *parent_widget, *grandparent_widget;
-	QString m_initialText;
+
     bool is_used;
     bool is_selected;
     bool is_locked;
     bool is_motion;
     bool has_drawing;
+    int m_id;
+    QString m_initialText;
     QLineEdit *description;
 
-    int m_id;
+   
     //The right click menu and its identifiers
 //     QPopupMenu *right_click_menu;
 //     int id_rename, id_remove, id_lock, id_copy, id_paste;

@@ -1984,6 +1984,8 @@ void KToon::slotNewDocument()
 		
 		exposure_sheet_dialog = new ExposureSheet( this);//, Qt::WStyle_Tool, window, id_window_exposure_sheet, window_exposure_sheet );
 		show();
+		
+		m_ExposureSheetDialog = new KTExposureSheet( this);
 		scenes_dialog = new Scenes( this);//, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
 		
 		timeline_dialog = new Timeline( this, Qt::WStyle_Tool, window, id_window_timeline, window_timeline );
@@ -4043,7 +4045,10 @@ void KToon::createGUI()
 		slotInsertSync();
 		QPtrList<Layer> layers = s_it -> getLayers();
 		ExposureSheet *es = list_of_es.at( scenes.find( s_it ) );
+		//FIXME:
+// 		KTExposureSheet *m_es = list_of_es.at( scenes.find( s_it ) );
 		es -> loadLayersAndKeyframes( layers );
+		m_ExposureSheetDialog-> loadLayersAndKeyframes( layers );
 		Timeline *tl = list_of_tl.at( scenes.find( s_it ) );
 		tl -> loadLayersAndKeyframes( layers );
 		QPtrList<ILayer> layer_list = es -> getILayers();

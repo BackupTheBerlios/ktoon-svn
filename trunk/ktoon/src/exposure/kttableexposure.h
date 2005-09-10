@@ -28,6 +28,7 @@
 #include "ktlayerexposure.h"
 #include "gldrawing.h"
 #include "keyframe.h"
+#include "layer.h"
 
 /**
 @author Jorge Cuadrado
@@ -43,11 +44,13 @@ class KTTableExposure : public QScrollView
 		KTTableExposure(int rows, int cols, QWidget *parent = 0, const char *name = 0);
 		~KTTableExposure();
 		void setUseFrame();
-// 		void removeFrameSelected();
 		void removeFrame();
 		void moveCurrentFrame(Direction d);
 		void lockCurrentFrame();
 		void removeCurrentLayer();
+		
+		void loadLayers(QPtrList<Layer> layers);
+		
 		QStringList textHeaders();
 		
 	private:
@@ -56,20 +59,21 @@ class KTTableExposure : public QScrollView
 		uint m_numLayer;
 		uint m_currentLayer, m_currentFrame;
 		listOfLayers m_layers;
-// 		GLDrawing *toCopy;
 		
 	public slots:
-		void insertLayer(int rows);
+		void insertLayer(int rows, QString text = QString::null);
 		void clickedCell(int row, int col, int button, int gx, int gy);
 		void changeCurrentLayer(int idLayer);
-		void useFrame(int id);
+		void useFrame( const QString &newName);
 		void removeKeyFrame(int id);
 		void touchFirstFrame();
 		void copyCurrentFrame();
 		void pasteCurrentFrame();
 		void removeLayer(int idLayer);
+// 		void changedName(const QString &);
+		void layerRename(int, const QString &);
+		void frameRename(int idFrame, int idLayer, const QString  &newName);
 		
-
 	signals:
 		void layerSelected(int id);
 		void clickedFrame();
@@ -77,6 +81,19 @@ class KTTableExposure : public QScrollView
 		void activateCursor();
 		void layerInserted();
 		void frameRemoved(int idFrame);
+		
+// 		void layerInserted();
+		//FIXME:evitar todos estos signals haciendo una funcion como setBody que me permita tener un puntero a timeline.
+		void layerRemoved();
+		
+		void layerRenamed( int , const QString & );
+		void framesInsertedAtTheEnd( int number );
+		
+// 		void frameRemoved( int pos );
+		void frameMovedUp( int pos );
+		void frameMovedDown( int pos );
+		
+		
 };
 
 #endif

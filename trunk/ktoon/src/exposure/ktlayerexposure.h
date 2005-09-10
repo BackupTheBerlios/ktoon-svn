@@ -27,6 +27,7 @@
 #include <qframe.h> 
 #include <qlayout.h>
 #include <qpopupmenu.h>
+#include "layer.h"
 
 typedef QPtrList<ESFrame> ListOfFrames;
 
@@ -41,50 +42,54 @@ class KTLayerExposure : public QFrame
 		KTLayerExposure(const QString &initial_text, int id,int numFrame, QWidget *parent = 0, const char *name = 0);
 		~KTLayerExposure();
 		QString textHeader();
-		void insertFrame(int id );
+		void insertFrame(int id, QString text = QString::null );
 		bool isSelected();
 		void invertFrames(int id1, int id2);
 		void setId(int id);
 		bool currentFrameIsUsed();
 		int  useFrame();
-		
+		void loadFrames(Layer *layer);
 		
 	private:
 		enum KTLActions { RenameFrame = 0, RemoveThisFrame, LockThisFrame, InsertFrames, CopyThisFrame, PasteIntoFrame, RenameLayer, RemoveThisLayer};
 		bool m_selected;
-		uint m_currentFrame, m_id, m_useFrame;
+		uint m_id, m_currentFrame,  m_useFrame;
 		ESLayer *m_header;
 		ListOfFrames m_frames;
 		QPopupMenu *menuFrame, *menuLayer;
 		void createMenuRight();
+
+		
 		
 	public slots:
 		void setSelected(bool selected = true, QMouseEvent *e = 0);
 		void frameSelect(int id, int button =0 , int x = 0, int y = 0);
 		void otherSelected(int id);
-		void setUseFrames(int id);
+		void setUseFrames();
 		void removeFrame(int id);
 		void moveCurrentFrameUp();
 		void moveCurrentFrameDown();
-		void lockFrame(int id);
+		void lockFrame();
 		
 		void renameCurrentFrame();
+		
 		void removeCurrentFrame();
-		void lockCurrentFrame();
-		
+		void changedName(const QString  &newName);
 		void applyAction(int action);
-		
+		void frameRename(int, const QString&);
 		
 	signals:
 		void selected(int id);
 		void clicked( int row, int col, int button,int x, int y);
 		void frameSelected(int id);
-		void setUsedFrame(int id);
+		void setUsedFrame(const QString &);
 		void clickedMenuFrame(int action, int idFrame, int idLayer);
 		void copyFrame();
 		void pasteFrame();
 		void removed(int);
 		void removedFrame(int id);
+		void layerRenamed( int idLayer, const QString &name );
+		void frameRenamed( int idFrame, int idLayer, const QString &name );
 		
 	protected:
 		QBoxLayout *m_layout;

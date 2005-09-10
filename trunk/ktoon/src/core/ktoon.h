@@ -747,6 +747,7 @@ class KToon : public QMainWindow
 		int document_max_value;
 		QString file_name;
 		QPtrList<ExposureSheet> list_of_es;
+		
 		QPtrList<Timeline> list_of_tl;
 		
 		//Icons

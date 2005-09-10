@@ -28,7 +28,10 @@ KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFra
 	m_layout = new QBoxLayout(this, QBoxLayout::TopToBottom);
 	m_header = new ESLayer(initial_text,this);
 	connect( m_header, SIGNAL(clicked(bool, QMouseEvent*)), this, SLOT(setSelected(bool, QMouseEvent*)));
+	connect( m_header, SIGNAL(renamed( const QString & )), this, SLOT(changedName(const QString &)));
+	
 	m_layout->addWidget(m_header);
+	
 	m_frames.setAutoDelete(true);
 	for(int i = 0; i < numFrame; i++)
 	{
@@ -87,18 +90,16 @@ void KTLayerExposure::frameSelect(int id, int button, int x, int y)
 	if(id < 0)
 		id = 0;
 	m_currentFrame = id;
-	//FIXME: cuando se selecciona inserta el frame del lado del que esta seleccionado, el drawing area no deja escribir sobre el.<kuadrosx>
-	if(m_useFrame + 1 == id && !(m_frames.at(id)->isUsed()))
-	{
-		m_frames.at(id)->setUsed( true );
-		m_useFrame++;
-		emit(setUsedFrame(m_frames.at(id)->id()));
-	}
 	setSelected(true);
 	m_header->animateClick();
 	emit frameSelected(id);
 	emit clicked(id, m_id, button, x, y);
-	
+	if(m_useFrame + 1 == id && !(m_frames.at(id)->isUsed()))
+	{
+		m_frames.at(id)->setUsed( true );
+		m_useFrame++;
+		emit(setUsedFrame(m_frames.at(id)->name()));
+	}
 	if(button == Qt::RightButton)
 	{
 		
@@ -138,16 +139,22 @@ void KTLayerExposure::otherSelected(int id)
 	}
 }
 
-void KTLayerExposure::insertFrame(int id)
+void KTLayerExposure::insertFrame(int id, QString text)
 {
-	
-	ESFrame *frame = new ESFrame( tr( "Drawing " ) + QString::number( m_id ) + QString( "-" ) + QString::number( m_useFrame + 1 ), id , this);
+	if(text == QString::null)
+	{
+		text = tr( "Drawing " ) + QString::number( m_id ) + QString( "-" ) + QString::number( m_useFrame + 1 );
+	}
+	ESFrame *frame = new ESFrame( text, id , this);
 	m_layout->insertWidget(id+1,frame, 10);
 	
 	m_frames.insert(id, frame);//m_currentFrame, frame ) ;
 	connect( frame, SIGNAL(clicked(int, int, int, int )), this, SLOT(frameSelect(int, int, int, int)));
 	connect(this, SIGNAL(frameSelected(int )), frame, SLOT(otherSelected(int)));
+	
+	connect(this, SLOT(frameRename(int, const QString&)), frame, SIGNAL(renamed( int, const QString&)));
 	frame->show();
+	
 }
 
 void KTLayerExposure::invertFrames(int id1, int id2)
@@ -158,7 +165,7 @@ void KTLayerExposure::invertFrames(int id1, int id2)
 	m_layout->insertWidget(id2+1, m_frames.at(id1), 10);
 }
 
-void KTLayerExposure::setUseFrames(int id)
+void KTLayerExposure::setUseFrames()
 {
 	//FIXME:
 	if(m_currentFrame == m_useFrame )
@@ -168,7 +175,7 @@ void KTLayerExposure::setUseFrames(int id)
 		{
 			m_frames.at(m_useFrame)->setUsed( true );
 			frameSelect( m_useFrame, 0, 0, 0);
-			emit(setUsedFrame(m_frames.at(m_useFrame)->id()));
+			emit(setUsedFrame(m_frames.at(m_useFrame)->name()));
 		}
 	}
 	else if(m_frames.at(m_currentFrame)->isUsed() && m_useFrame != m_frames.count() )
@@ -177,7 +184,7 @@ void KTLayerExposure::setUseFrames(int id)
 		m_layout->remove(m_frames.at(m_useFrame));
 		m_layout->insertWidget( m_currentFrame+2, m_frames.at(m_useFrame), 10);
 		m_frames.at(m_useFrame)->setUsed( true );
-		emit(setUsedFrame(m_frames.at(m_useFrame)->id()));
+		emit(setUsedFrame(m_frames.at(m_useFrame)->name()));
 	}
 	else
 	{
@@ -185,7 +192,7 @@ void KTLayerExposure::setUseFrames(int id)
 		for(uint i = m_useFrame; i <= m_currentFrame; i++)
 		{
 			m_frames.at(i)->setUsed( true );
-			emit(setUsedFrame(m_frames.at(i)->id()));
+			emit(setUsedFrame(m_frames.at(i)->name()));
 		}
 		m_useFrame = m_currentFrame;
 	}
@@ -257,7 +264,7 @@ void KTLayerExposure::moveCurrentFrameDown()
 	}
 }
 
-void KTLayerExposure::lockFrame(int id)
+void KTLayerExposure::lockFrame()
 {
 	if(m_frames.at(m_currentFrame)->isLocked())
 	{
@@ -289,12 +296,6 @@ void KTLayerExposure::removeCurrentFrame()
 	removeFrame(m_currentFrame);
 }
 
-void KTLayerExposure::lockCurrentFrame()
-{
-	lockFrame(m_currentFrame);
-}
-
-
 bool KTLayerExposure::currentFrameIsUsed()
 {
 	return m_frames.at(m_currentFrame)->isUsed();
@@ -321,7 +322,7 @@ void KTLayerExposure::applyAction(int action)
 		}
 		case LockThisFrame:
 		{
-			lockCurrentFrame();
+			lockFrame();
 			break;
 		}
 		case InsertFrames:
@@ -357,4 +358,34 @@ void KTLayerExposure::applyAction(int action)
 QString KTLayerExposure::textHeader()
 {
 	return m_header->text();
+}
+
+void KTLayerExposure::loadFrames(Layer *layer)
+{
+	ktDebug() << "KTLayerExposure::loadFrames" << endl;
+	QPtrList<KeyFrame> keyframes = layer->keyFrames();
+	for(int i = 0 ; i < keyframes.count(); i++)
+	{
+
+// 		ktDebug(1) << i;
+		m_frames.at(i)->setUsed(true);
+		m_frames.at(i)->setText(keyframes.at(i)->nameKeyFrame());
+		
+		
+	}
+	
+	
+	m_currentFrame = keyframes.count();
+
+	ktDebug() << "KTLayerExposure::loadFrames finish load " << keyframes.count() << " frames" << endl;
+}
+
+void KTLayerExposure::changedName(const QString  &newName)
+{
+	emit(layerRenamed(m_id, newName));
+}
+
+void KTLayerExposure::frameRename(int idFrame, const QString&newName)
+{
+	emit(frameRenamed(idFrame, m_id, newName));
 }
