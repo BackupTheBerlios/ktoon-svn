@@ -152,7 +152,7 @@ void KTLayerExposure::insertFrame(int id, QString text)
 	connect( frame, SIGNAL(clicked(int, int, int, int )), this, SLOT(frameSelect(int, int, int, int)));
 	connect(this, SIGNAL(frameSelected(int )), frame, SLOT(otherSelected(int)));
 	
-	connect(this, SLOT(frameRename(int, const QString&)), frame, SIGNAL(renamed( int, const QString&)));
+	connect( frame, SIGNAL(renamed( int, const QString&)), this, SLOT(frameRename(int, const QString&)));
 	frame->show();
 	
 }
@@ -369,7 +369,7 @@ void KTLayerExposure::loadFrames(Layer *layer)
 
 // 		ktDebug(1) << i;
 		m_frames.at(i)->setUsed(true);
-		m_frames.at(i)->setText(keyframes.at(i)->nameKeyFrame());
+		m_frames.at(i)->setName(keyframes.at(i)->nameKeyFrame());
 		
 		
 	}

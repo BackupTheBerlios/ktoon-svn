@@ -218,6 +218,7 @@ void ESFrame::setName( const QString &new_name )
 	m_initialText = new_name;
 	description -> setText( new_name);
 	setText( new_name );
+// 	emit renamed( text() );
 }
 
 void ESFrame::clearTextfieldFocus()
@@ -240,7 +241,7 @@ void ESFrame::setAllProperties( ESFrame *in_esframe )
 void ESFrame::slotSetDescription()
 {
 	setText( description -> text() );
-	description -> hide();
+	description->hide();
 // 	description->setReadOnly(true);
 	emit renamed( text() );
 }

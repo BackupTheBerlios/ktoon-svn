@@ -90,8 +90,7 @@ class KTLayerExposure : public QFrame
 		void removedFrame(int id);
 		void layerRenamed( int idLayer, const QString &name );
 		void frameRenamed( int idFrame, int idLayer, const QString &name );
-		
-	protected:
+		protected:
 		QBoxLayout *m_layout;
 };
 

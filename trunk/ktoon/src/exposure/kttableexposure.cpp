@@ -285,6 +285,7 @@ void KTTableExposure::layerRename(int idLayer, const QString  &newName)
 
 void KTTableExposure::frameRename(int idFrame, int idLayer, const QString  &newName)
 {
+	ktDebug() << " KTTableExposure::frameRename " << newName << endl;
 	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
 	ly.at(idLayer)->keyFrames().at(idLayer)->setNameKeyFrame(newName);
 }
