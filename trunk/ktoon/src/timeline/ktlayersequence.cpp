@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <qlayout.h>
+#include <qpopupmenu.h>
 
 #include "ktlayersequence.h"
 #include "ktdebug.h"
@@ -80,6 +81,8 @@ KTTimeLineLayer * KTLayerSequence::createNewLayer()
 {	
 	KTTimeLineLayer *newLayer = new KTTimeLineLayer( tr( "New Layer %1").arg( m_layerCount ), m_layers.count(), m_layerContainer);
 	newLayer -> resize( width(), 24 );
+	
+	connect(newLayer, SIGNAL(rightClicked(KTTimeLineLayer *,const QPoint &)), this, SLOT(displayMenu(KTTimeLineLayer *,const QPoint &)));
 	connect( newLayer, SIGNAL( selected(int) ), SLOT( selectLayer(int) ) );
 // 	connect( newLayer, SIGNAL( draggedAbove( int ) ), SLOT( slotDragLayerAbove( int ) ) );
 // 	connect( newLayer, SIGNAL( draggedBelow( int ) ), SLOT( slotDragLayerBelow( int ) ) );
@@ -211,5 +214,18 @@ void KTLayerSequence::moveLayerDown()
 	m_layerContainer->moveWidgetDown(m_pCurrentLayer);
 	
 // 	k_toon -> renderCameraPreview() -> updateGL();
+}
+
+void KTLayerSequence::displayMenu(KTTimeLineLayer *ly, const QPoint &pos)
+{
+	if ( ly )
+	{
+		QPopupMenu *menu = new QPopupMenu( this );
+		menu -> insertItem( tr( "Rename Layer" ), ly, SLOT( rename() ) );
+		menu -> insertSeparator();
+		menu -> insertItem( tr( "Insert Layer" ), this, SLOT( createNewLayer() ) );
+		menu -> insertItem( tr( "Delete Layer" ), this, SLOT( removeLayer() ) );
+		menu -> exec( pos );
+	}
 }
 

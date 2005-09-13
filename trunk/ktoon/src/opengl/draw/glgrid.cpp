@@ -122,14 +122,16 @@ void GLGrid::buildGrid( int nLines, GLuint list )
 	glNewList( list, GL_COMPILE );
 	glColor3f( color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0 );
 	glLineWidth( width );
+	glEnable (GL_LINE_STIPPLE);
 	glBegin( GL_LINES );
-	
-// 	nLines = parent_widget->width()/10;
-// 	ktDebug() << "Grid with " << nLines << " Lines " << endl;
+
+	ktDebug() << "Grid with " << nLines << " Lines " << endl;
 	
 	for ( int x = 0; x <= nLines; x++ )
 	{
 		float fraccion = ( float )x / ( float )nLines;
+		
+		ktDebug() << "FRAccion: " << fraccion << endl;
 		if ( x == nLines / 2 )
 			continue;
 
@@ -143,6 +145,8 @@ void GLGrid::buildGrid( int nLines, GLuint list )
 	}
 
 	glEnd();
+	
+	glDisable (GL_LINE_STIPPLE);
 
 	// grid axes!
 
@@ -168,28 +172,30 @@ void GLGrid::buildSubGrid( int nLines, GLuint list )
 	int h, s, v;
 	color.getHsv( &h, &s, &v );
 	if ( v <= 230 )
-	    color.setRgb( color.red() + 25, color.green() + 25, color.blue() + 25 );
-
+	{
+		color.setRgb( color.red() + 25, color.green() + 25, color.blue() + 25 );
+	}
 	glNewList( list, GL_COMPILE );
-		GLfloat width = 0.5;
-		glLineWidth( width );
-		glColor3f( color.red()/255.0, color.green()/255.0, color.blue() / 255.0 );
-		glBegin( GL_LINES );
-		for ( int x = 0; x < nLines; x++ )
+	GLfloat width = 0.5;
+	glLineWidth( width );
+	glColor3f( color.red()/255.0, color.green()/255.0, color.blue() / 255.0 );
+	glBegin( GL_LINES );
+	
+	for ( int x = 0; x < nLines; x++ )
+	{
+		float fraccion = (float)x / (float)nLines;
+		for ( int i = 0; i < 2; i++ )
 		{
-			float fraccion = (float)x / (float)nLines;
-			for ( int i = 0; i < 2; i++ )
-			{
-				float x2 =  fraccion + ((float)( i + 1 ) / nLines / 3.0) ;
-				float y2 =  fraccion + ((float)( i + 1 ) / nLines / 3.0) ;
+			float x2 =  fraccion + ((float)( i + 1 ) / nLines / 3.0) ;
+			float y2 =  fraccion + ((float)( i + 1 ) / nLines / 3.0) ;
 
-				glVertex2f( 0, y2 );
-				glVertex2f( 1, y2 );
-				glVertex2f( x2, 0 );
-				glVertex2f( x2, 1 );
-			}
+			glVertex2f( 0, y2 );
+			glVertex2f( 1, y2 );
+			glVertex2f( x2, 0 );
+			glVertex2f( x2, 1 );
 		}
-		glEnd();
+	}
+	glEnd();
 	glEndList();
 }
 
@@ -216,27 +222,27 @@ void GLGrid::buildNtsc( )
 {
 	QColor color = ntsc_color;
 	glNewList( id_ntsc, GL_COMPILE );
-		float width = 1;
-		glLineWidth( width );
-		glColor3f( color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0 );
+	float width = 1;
+	glLineWidth( width );
+	glColor3f( color.red() / 255.0, color.green() / 255.0, color.blue() / 255.0 );
 
-		for ( int i = 1; i < 3; i++ )
-		{
-			float w = 1.0 / (float)( 10 * i);
-			float h = 1.0 / (float)( 10 * i);
+	for ( int i = 1; i < 3; i++ )
+	{
+		float w = 1.0 / (float)( 10 * i);
+		float h = 1.0 / (float)( 10 * i);
 
 			//Inside Line
 
-			float x2 = 1.0 - w;
-			float y2 = 1.0 - h;
+		float x2 = 1.0 - w;
+		float y2 = 1.0 - h;
 
-			glBegin( GL_LINE_LOOP );
-				glVertex2f( w, h );
-				glVertex2f( x2, h );
-				glVertex2f( x2, y2 );
-				glVertex2f( w, y2 );
-			glEnd();
-		}
+		glBegin( GL_LINE_LOOP );
+		glVertex2f( w, h );
+		glVertex2f( x2, h );
+		glVertex2f( x2, y2 );
+		glVertex2f( w, y2 );
+		glEnd();
+	}
 	glEndList();
 }
 
@@ -263,12 +269,12 @@ void GLGrid::buildDiagonals()
 
 void GLGrid::buildGrid()
 {
-    //Draw the lines of the Grid
-    QString string;
-
-    //generates a display list of the Grid
-    glNewList( id_grid, GL_COMPILE );
-    glPushMatrix();
+	//Draw the lines of the Grid
+	QString string;
+	
+	//generates a display list of the Grid
+	glNewList( id_grid, GL_COMPILE );
+	glPushMatrix();
 
 	glTranslatef( min_width, min_height, 0.0 );
 	glScalef( max_width, max_height, 1.0 );
@@ -306,8 +312,8 @@ void GLGrid::buildGrid()
 		glCallList( id_ntsc );
 	}
 
-   glPopMatrix();
-   glEndList();
+	glPopMatrix();
+	glEndList();
 }
 
 void GLGrid::buildFonts()

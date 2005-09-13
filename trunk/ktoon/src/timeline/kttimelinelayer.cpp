@@ -225,6 +225,7 @@ void KTTimeLineLayer::mousePressEvent( QMouseEvent *me )
 
 	if ( me -> button() == Qt::RightButton )
 	{
+		emit rightClicked(this, me->globalPos());
 // 		TLLayerManager *lm = ( TLLayerManager * )( grandparent_widget -> parentWidget() );
 // 		if ( right_click_menu )
 // 		{
@@ -245,16 +246,21 @@ void KTTimeLineLayer::mouseDoubleClickEvent( QMouseEvent *e )
 {
 	if ( childAt( e->pos() ) == m_layerName && e->button() == Qt::LeftButton )
 	{
-		m_nameEditor->setText( m_layerName->completeText() );
-		m_nameEditor->resize( m_layerName->size() );
-		m_nameEditor->show();
-		m_nameEditor->setFocus();
+		rename();
 		e-> accept();
 	}
 	else
 	{
 		e->ignore();
 	}
+}
+
+void KTTimeLineLayer::rename()
+{
+	m_nameEditor->setText( m_layerName->completeText() );
+	m_nameEditor->resize( m_layerName->size() );
+	m_nameEditor->show();
+	m_nameEditor->setFocus();
 }
 
 void KTTimeLineLayer::clearEditFocus()

@@ -32,6 +32,8 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
+class KTTimeLineLayer;
+
 class KTTimeLineLayer : public QHBox
 {
 	Q_OBJECT
@@ -57,6 +59,8 @@ class KTTimeLineLayer : public QHBox
 		
 		void editName();
 		
+		void rename();
+		
 	protected:
 		void mouseDoubleClickEvent( QMouseEvent *e );
 		void mousePressEvent( QMouseEvent *me );
@@ -64,6 +68,7 @@ class KTTimeLineLayer : public QHBox
 	signals:
 		void selected(int pos);
 		void renamed(const QString &);
+		void rightClicked(KTTimeLineLayer *ly, const QPoint &pos);
 		
 		
 	private:
@@ -76,7 +81,6 @@ class KTTimeLineLayer : public QHBox
 		QHBox *m_utils;
 		
 		bool m_isLocked, m_isVisible, m_onlySeeOutlines, m_isSelected, m_isEdited;
-
 };
 
 #endif

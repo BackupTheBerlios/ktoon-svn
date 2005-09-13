@@ -82,29 +82,22 @@ KTLayerManager::KTLayerManager(QWidget *parent) : QVBox(parent, "KTLayerManager"
 
 	m_insertButton = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/layer+.xpm") , 20,  m_utilsInBottom );
 	m_utilsInBottom->insert(m_insertButton, InsertLayer);
-	
-// 	connect( m_insertButton, SIGNAL( clicked() ), layer_sequence, SLOT( slotInsertLayer() ) );
-// 	connect( m_insertButton, SIGNAL( clicked() ), grandparent, SIGNAL( insertLayerClicked() ) );
+
 	QToolTip::add( m_insertButton, tr( "Insert Layer" ) );
 
 	m_removeButton = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/layer-.xpm"),  20, m_utilsInBottom );
 	m_utilsInBottom->insert(m_removeButton, RemoveLayer);
 	
-// 	connect( m_removeButton, SIGNAL( clicked() ), layer_sequence, SLOT( slotRemoveLayer() ) );
-// 	connect( m_removeButton, SIGNAL( clicked() ), grandparent, SIGNAL( removeLayerClicked() ) );
 	QToolTip::add( m_removeButton, tr( "Remove Layer" ) );
 
 	m_moveUpButton = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/arrowup.xpm"),  20, m_utilsInBottom );
 	m_utilsInBottom->insert(m_moveUpButton, MoveLayerUp);
 
-// 	connect( m_moveUpButton, SIGNAL( clicked() ), layer_sequence, SLOT( slotMoveLayerUp() ) );
-// 	connect( m_moveUpButton, SIGNAL( clicked() ), grandparent, SIGNAL( layerMovedUp() ) );
 	QToolTip::add( m_moveUpButton, tr( "Move Layer Up" ) );
 
 	m_moveDownButton = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/arrowdown.xpm"), 20,  m_utilsInBottom );
 	m_utilsInBottom->insert(m_moveDownButton, MoveLayerDown);
-// 	connect( m_moveDownButton, SIGNAL( clicked() ), layer_sequence, SLOT( slotMoveLayerDown() ) );
-// 	connect( m_moveDownButton, SIGNAL( clicked() ), grandparent, SIGNAL( layerMovedDown() ) );
+
 	QToolTip::add( m_moveDownButton, tr( "Move Layer Down" ) );
 	
 	new KSeparator( Qt::Vertical, m_utilsInBottom);

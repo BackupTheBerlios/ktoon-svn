@@ -66,7 +66,7 @@ void KTSqueezeLabel::squeezeText()
 
 QString KTSqueezeLabel::squeezer(const QString &s, const QFontMetrics& fm, uint width)
 {
-	if ( s.isEmpty() || uint( fm.width( s ) ) <= width ) 
+	if ( s.isEmpty() || uint( fm.width( s ) ) <= width )
 	{
 		return s;
 	}
@@ -129,7 +129,7 @@ void KTSqueezeLabel::setAlignment( int alignment )
 
 QSize KTSqueezeLabel::sizeHint() const
 {
-	return QSize(contentsRect().width(), QLabel::sizeHint().height());
+	return QSize(/*contentsRect().*/width(), QLabel::sizeHint().height());
 }
 
 QSize KTSqueezeLabel::minimumSizeHint() const

@@ -40,6 +40,9 @@ class KTLayerSequence : public QScrollView
 		ListOfTLLayers layers();
 		void setPalette(const QPalette &);
 		
+	private slots:
+		void displayMenu(KTTimeLineLayer *ly,const QPoint &pos);
+		
 	public slots:
 		KTTimeLineLayer *createNewLayer();
 		void removeLayer();

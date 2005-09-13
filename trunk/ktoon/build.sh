@@ -101,13 +101,30 @@ function ktinstall()
 	if [ $(basename `echo $SHELL`) == "bash" ]
 	then
 		buildenv
-		if [ `grep -c "source $KTOON_LOCAL_ENV" ~/.bashrc` -eq 0 -a `grep -c "source $KTOON_LOCAL_ENV" ~/.bash_profile` -eq 0 -a `grep -c "source $KTOON_GLOBAL_ENV" /etc/profile` -eq 0 ]
+		if [ `whoami` == "root" ]
 		then
-			if [ `whoami` == "root" ]
+			if [ `grep -c "source $KTOON_GLOBAL_ENV" /etc/profile` -eq 0 ]
 			then
 				echo "source $KTOON_GLOBAL_ENV" >> /etc/profile
+			fi
+		else
+			if [ -f ~/.bashrc ]
+			then
+				if [ `grep -c "source $KTOON_LOCAL_ENV" ~/.bashrc` -eq 0 ]
+				then
+					echo "source $KTOON_LOCAL_ENV" >> ~/.bashrc
+				fi
+				
 			else
-				echo "source $KTOON_LOCAL_ENV" >> ~/.bashrc
+				if [ -f ~/.bash_profile ]
+				then
+					if [ `grep -c "source $KTOON_LOCAL_ENV" ~/.bash_profile` -eq 0 ]
+					then
+						echo "source $KTOON_LOCAL_ENV" >> ~/.bash_profile
+					fi
+				else
+					echo "source $KTOON_LOCAL_ENV" >> ~/.bashrc
+				fi
 			fi
  		fi
 	fi
@@ -159,7 +176,7 @@ case $UOG in
 	yes )openglCC;;
 	si) openglCC;;
 	s) openglCC;;
-	*) qtcc;;
+	*) qtCC;;
 esac
 
 $QMAKE
