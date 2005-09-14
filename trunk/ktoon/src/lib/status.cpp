@@ -212,10 +212,10 @@ void Status::setCurrentLayer( Layer *layer )
     current_layer = layer;
 }
 
-void Status::setCurrentILayer(ILayer *ilayer)
-{
-	m_currentILayer = ilayer;
-}
+// void Status::setCurrentILayer(ILayer *ilayer)
+// {
+// 	m_currentILayer = ilayer;
+// }
 
 void Status::setCurrentKeyFrame( KeyFrame *keyframe )
 {
@@ -309,10 +309,10 @@ Layer* Status::currentLayer()
     return current_layer;
 }
 
-ILayer *Status::currentILayer()
-{
-	return m_currentILayer;
-}
+// ILayer *Status::currentILayer()
+// {
+// 	return m_currentILayer;
+// }
 
 KeyFrame* Status::currentKeyFrame()
 {

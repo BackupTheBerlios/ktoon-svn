@@ -262,7 +262,7 @@ void TLFrameSequence::slotInsertFrame()
 	ckf -> setLengthKeyFrame( ckf -> lengthKeyFrame() + 1 );
 
 	emit frameInserted();
-	k_toon -> exposureSheet() -> updateIndicators( k_toon -> exposureSheet() -> currentLayerObj() );
+// 	k_toon -> exposureSheet() -> updateIndicators( k_toon -> exposureSheet() -> currentLayerObj() );
 	return;
     }
 
@@ -284,7 +284,7 @@ void TLFrameSequence::slotInsertFrame()
 	updateKeyframeOffsets();
 
 	emit frameInserted();
-	k_toon -> exposureSheet() -> updateIndicators( k_toon -> exposureSheet() -> currentLayerObj() );
+// 	k_toon -> exposureSheet() -> updateIndicators( k_toon -> exposureSheet() -> currentLayerObj() );
 	return;
     }
     else if ( selected_frame -> isLast() && selected_frame != last_used_frame )
@@ -327,7 +327,7 @@ void TLFrameSequence::slotInsertFrame()
 	updateKeyframeOffsets();
 
 	emit frameInserted();
-	k_toon -> exposureSheet() -> updateIndicators( k_toon -> exposureSheet() -> currentLayerObj() );
+// 	k_toon -> exposureSheet() -> updateIndicators( k_toon -> exposureSheet() -> currentLayerObj() );
 	return;
     }
     else if ( !( selected_frame -> isLast() ) && selected_frame -> isUsed() )
@@ -366,7 +366,7 @@ void TLFrameSequence::slotInsertFrame()
 	updateKeyframeOffsets();
 
 	emit frameInserted();
-	k_toon -> exposureSheet() -> updateIndicators( k_toon -> exposureSheet() -> currentLayerObj() );
+// 	k_toon -> exposureSheet() -> updateIndicators( k_toon -> exposureSheet() -> currentLayerObj() );
 	return;
     }
 
@@ -403,7 +403,7 @@ void TLFrameSequence::slotInsertFrame()
 	updateKeyframeOffsets();
 
 	emit frameInserted();
-	k_toon -> exposureSheet() -> updateIndicators( k_toon -> exposureSheet() -> currentLayerObj() );
+// 	k_toon -> exposureSheet() -> updateIndicators( k_toon -> exposureSheet() -> currentLayerObj() );
 	return;
     }
 }
@@ -500,7 +500,7 @@ void TLFrameSequence::slotRemoveFrame()
 	ckf -> setLengthKeyFrame( ckf -> lengthKeyFrame() - 1 );
 
 	emit frameRemoved();
-	k_toon -> exposureSheet() -> updateIndicators( k_toon -> exposureSheet() -> currentLayerObj() );
+// 	k_toon -> exposureSheet() -> updateIndicators( k_toon -> exposureSheet() -> currentLayerObj() );
 	return;
     }
 
@@ -535,7 +535,7 @@ void TLFrameSequence::slotRemoveFrame()
 	updateKeyframeOffsets();
 
 	emit frameRemoved();
-	k_toon -> exposureSheet() -> updateIndicators( k_toon -> exposureSheet() -> currentLayerObj() );
+// 	k_toon -> exposureSheet() -> updateIndicators( k_toon -> exposureSheet() -> currentLayerObj() );
 	return;
     }
 
@@ -591,7 +591,7 @@ void TLFrameSequence::slotRemoveFrame()
 	updateKeyframeOffsets();
 
 	emit frameRemoved();
-	k_toon -> exposureSheet() -> updateIndicators( k_toon -> exposureSheet() -> currentLayerObj() );
+// 	k_toon -> exposureSheet() -> updateIndicators( k_toon -> exposureSheet() -> currentLayerObj() );
 	return;
     }
 
@@ -628,7 +628,7 @@ void TLFrameSequence::slotRemoveFrame()
 	updateKeyframeOffsets();
 
 	emit frameRemoved();
-	k_toon -> exposureSheet() -> updateIndicators( k_toon -> exposureSheet() -> currentLayerObj() );
+// 	k_toon -> exposureSheet() -> updateIndicators( k_toon -> exposureSheet() -> currentLayerObj() );
 	return;
     }
 }

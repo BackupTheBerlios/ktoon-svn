@@ -54,11 +54,6 @@ KTExposureSheet::KTExposureSheet( QWidget *parent, const char *name)
 	connect(m_viewLayer, SIGNAL(layerSelected(int)), this, SIGNAL(layerSelected(int)));
 	connect(m_viewLayer, SIGNAL(layerInserted()), this, SIGNAL(layerInserted()));
 	connect(m_viewLayer, SIGNAL(layerRemoved()), this, SIGNAL(layerRemoved()));
-	
-	
-	
-	
-	
 	createLayerManager();
 }
 

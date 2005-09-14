@@ -19,6 +19,7 @@
  ***************************************************************************/
  
 #include "ktlayerexposure.h"
+#include "status.h"
 #include "ktdebug.h"
 
 KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFrame, QWidget *parent, const char *name)
@@ -40,6 +41,7 @@ KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFra
 		m_frames.append(frame);
 		connect( frame, SIGNAL(clicked(int, int, int, int )), this, SLOT(frameSelect(int, int, int, int)));
 		connect(this, SIGNAL(frameSelected(int )), frame, SLOT(otherSelected(int)));
+		connect( frame, SIGNAL(renamed( int, const QString&)), this, SLOT(frameRename(int, const QString&)));
 	}
 	m_useFrame = 0;
 	m_frames.at(0)->setUsed( true );
@@ -65,9 +67,6 @@ void KTLayerExposure::createMenuRight()
 	menuFrame->insertItem( tr( "Copy this Frame" ), CopyThisFrame, CopyThisFrame);
 	menuFrame->insertItem( tr( "Paste into this Frame" ), PasteIntoFrame, PasteIntoFrame);
 	connect(menuFrame, SIGNAL(activated ( int )), this, SLOT(applyAction(int)));
-	
-	
-	
 	
 	menuLayer = new QPopupMenu(this);
 	menuLayer->insertItem( tr( "Rename Layer" ), RenameLayer);
@@ -138,6 +137,7 @@ void KTLayerExposure::otherSelected(int id)
 		setSelected(false);
 	}
 }
+
 
 void KTLayerExposure::insertFrame(int id, QString text)
 {
@@ -366,16 +366,14 @@ void KTLayerExposure::loadFrames(Layer *layer)
 	QPtrList<KeyFrame> keyframes = layer->keyFrames();
 	for(int i = 0 ; i < keyframes.count(); i++)
 	{
-
-// 		ktDebug(1) << i;
 		m_frames.at(i)->setUsed(true);
 		m_frames.at(i)->setName(keyframes.at(i)->nameKeyFrame());
-		
-		
 	}
 	
+	m_currentFrame = keyframes.count()-1;
+// 	select(keyframes.count());
+	m_useFrame = keyframes.count()-1;
 	
-	m_currentFrame = keyframes.count();
 
 	ktDebug() << "KTLayerExposure::loadFrames finish load " << keyframes.count() << " frames" << endl;
 }
@@ -387,5 +385,7 @@ void KTLayerExposure::changedName(const QString  &newName)
 
 void KTLayerExposure::frameRename(int idFrame, const QString&newName)
 {
-	emit(frameRenamed(idFrame, m_id, newName));
+	ktDebug() << " KTLayerExposure::frameRename " << newName << endl;
+	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
+	ly.at(m_id)->keyFrames().at(idFrame)->setNameKeyFrame(newName);
 }

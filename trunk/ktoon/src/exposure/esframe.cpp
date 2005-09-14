@@ -32,26 +32,11 @@ ESFrame::ESFrame( const QString &initial_text,int id, QWidget *parent )
     //Initializations
 	setFrameStyle( QFrame::Panel | QFrame::Raised );
 	setLineWidth( 2 );
-
-// 	is_used = false;
-// 	is_selected = false;
-// 	is_locked = false;
-// 	is_motion = false;
-// 	has_drawing = false;
-
-	description = new QLineEdit( this );
-//     description -> move( 2, 2 );
+	description = new QLineEdit( initial_text , this );
 	description->hide();
 	connect( description, SIGNAL( lostFocus() ), SLOT( slotSetDescription() ) );
 	connect( description, SIGNAL( returnPressed() ), SLOT( slotSetDescription() ) );
 
-// 	right_click_menu = new QPopupMenu( this );
-//     right_click_menu -> setFont( QFont( "helvetica", 10 ) );
-//     id_rename = right_click_menu -> insertItem( tr( "Rename Frame" ), this, SLOT( slotSendDoubleClickEvent() ) );
-//     id_remove = right_click_menu -> insertItem( tr( "Remove this Frame" ), grandparent, SLOT( slotRemoveFrame() ) );
-//     id_lock = right_click_menu -> insertItem( tr( "Lock this Frame" ), grandparent, SLOT( slotLockFrame() ) );
-//     id_copy = right_click_menu -> insertItem( tr( "Copy this Frame" ), grandparent, SLOT( slotCopyFrame() ) );
-//     id_paste = right_click_menu -> insertItem( tr( "Paste into this Frame" ), grandparent, SLOT( slotPasteFrame() ) );
 	setMinimumSize(sizeHint());
 }
 
@@ -60,7 +45,6 @@ ESFrame::ESFrame( const QString &initial_text,int id, QWidget *parent )
 ESFrame::~ESFrame()
 {
 // 	KTEND;
-// 	delete right_click_menu;
 }
 
 //-------------- PUBLIC MEMBERS ----------------
@@ -107,15 +91,13 @@ void ESFrame::setId(int id)
 
 void ESFrame::setUsed( bool in_is_used )
 {
-// 	ktDebug(1)  << in_is_used  << endl;
 	is_used = in_is_used;
-
 	setName(m_initialText);
-	
 	if ( is_selected == true && in_is_used == true )
 	{
 		setPaletteBackgroundColor( QColor( 255, 255, 255 ) );
 		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
+		setName(m_initialText);
 	}
 	else if ( is_selected == true && in_is_used == false )
 	{
@@ -137,8 +119,7 @@ void ESFrame::setUsed( bool in_is_used )
 void ESFrame::setSelected( bool in_is_selected )
 {
 	is_selected = in_is_selected;
-
-
+	
 	if ( in_is_selected == true && is_used == true && is_locked == false )
 	{
 		setPaletteBackgroundColor( QColor( 255, 255, 255 ) );
@@ -215,9 +196,12 @@ void ESFrame::setHasDrawing( bool in_has_drawing )
 
 void ESFrame::setName( const QString &new_name )
 {
+	ktDebug() << "ESFrame::setName( const QString & " << new_name << " )" <<  endl;
 	m_initialText = new_name;
-	description -> setText( new_name);
+	description->setText(new_name);
 	setText( new_name );
+// 	emit renamed(m_id, new_name);
+	ktDebug() << "finish ESFrame::setName( const QString & " << text() << " )"  << endl;
 // 	emit renamed( text() );
 }
 
@@ -240,10 +224,19 @@ void ESFrame::setAllProperties( ESFrame *in_esframe )
 
 void ESFrame::slotSetDescription()
 {
-	setText( description -> text() );
+// 	ktDebug() << "ESFrame::slotSetDescription()" << endl;
+	if(m_initialText != description->text())
+	{
+		ktDebug() << "ESFrame" <<  description -> text() <<  endl;
+		setText( description -> text() );
+		emit renamed( m_id, description->text() );
+		m_initialText = description -> text();
+	}
+// 	else
+// 	{
+// 		setText( description -> text() );
+// 	}
 	description->hide();
-// 	description->setReadOnly(true);
-	emit renamed( text() );
 }
 
 void ESFrame::slotSendDoubleClickEvent()

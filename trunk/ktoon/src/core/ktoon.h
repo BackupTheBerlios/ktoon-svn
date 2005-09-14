@@ -47,7 +47,7 @@
 #include "brushes.h"
 #include "colorpalette.h"
 
-#include "exposuresheet.h"
+// #include "exposuresheet.h"
 #include "ktexposuresheet.h"
 
 #include "library.h"
@@ -102,13 +102,6 @@ class KToon : public QMainWindow
 		
 		void setPalette(const QPalette &);
 	
-		/**
-		*  Gets the current exposure sheet dialog
-		*
-		* @return A pointer to the current exposure sheet dialog
-		*/
-		ExposureSheet *exposureSheet();
-
 		/**
 		*  Gets the render camera preview dialog
 		*
@@ -746,7 +739,7 @@ class KToon : public QMainWindow
 		//General purpose variables
 		int document_max_value;
 		QString file_name;
-		QPtrList<ExposureSheet> list_of_es;
+// 		QPtrList<ExposureSheet> list_of_es;
 		
 		QPtrList<Timeline> list_of_tl;
 		
@@ -937,7 +930,7 @@ class KToon : public QMainWindow
 		Scenes *scenes_dialog;
 		ColorPalette *color_palette_dialog;
 		
-		ExposureSheet *exposure_sheet_dialog;
+// 		ExposureSheet *exposure_sheet_dialog;
 		KTExposureSheet *m_ExposureSheetDialog;
 #if 0
 		KTViewDocument *m_viewDocument;

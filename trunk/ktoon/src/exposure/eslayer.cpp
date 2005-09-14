@@ -90,10 +90,12 @@ void ESLayer::clearTextfieldFocus()
 
 void ESLayer::slotSetDescription()
 {
-    setText( description -> text() );
-    description -> hide();
-    
-    emit renamed( text() );
+	if(description -> text() != text())
+	{
+		setText( description -> text() );
+		emit renamed(text());
+	}
+	description -> hide();
 }
 
 void ESLayer::slotSendDoubleClickEvent()

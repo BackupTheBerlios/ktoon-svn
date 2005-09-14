@@ -3,17 +3,13 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/exposure
 # Destiono es una biblioteca:  
 
-HEADERS += exposuresheet.h \
-           esframe.h \
+HEADERS += esframe.h \
            eslayer.h \
-           ilayer.h \
            ktexposuresheet.h \
            kttableexposure.h \
            ktlayerexposure.h 
 SOURCES += esframe.cpp \
            eslayer.cpp \
-           exposuresheet.cpp \
-           ilayer.cpp \
            ktexposuresheet.cpp \
            kttableexposure.cpp \
            ktlayerexposure.cpp 

@@ -52,9 +52,9 @@ class KTExposureSheet : public KTDialogBase
 		KTExposureSheet(QWidget *parent = 0, const char *name = 0);
 		~KTExposureSheet();
 		void loadLayersAndKeyframes( QPtrList<Layer> layers );
-	
-	private:
 		enum Actions { /*NoAction = 0,*/ InsertLayer = 0, RemoveLayer, ShowManageLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
+	private:
+
 		imgs m_imgs;
 		QHButtonGroup *buttonsPanel;
 		QActionGroup *m_actions;

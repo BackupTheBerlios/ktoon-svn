@@ -285,24 +285,24 @@ void Scenes::slotSelectScene()
     KTStatus -> setCurrentScene( sc.at( scene_pos / 16 ) );
 
     emit sceneSelected( scene_pos / 16 );
-
-    QPtrList<ESLayer> esly = k_toon -> exposureSheet() -> getLayers();
-    ESLayer *escl = k_toon -> exposureSheet() -> currentLayer();
-    int l_pos = esly.find( escl );
+    //FIXME:
+//     QPtrList<ESLayer> esly = k_toon -> exposureSheet() -> getLayers();
+//     ESLayer *escl = k_toon -> exposureSheet() -> currentLayer();
+//     int l_pos = esly.find( escl );
     QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
-    Layer *cl = ly.at( l_pos );
-    KTStatus -> setCurrentLayer( cl );
+//     Layer *cl = ly.at( l_pos );
+//     KTStatus -> setCurrentLayer( cl );
 
-    ILayer *il = k_toon -> exposureSheet() -> currentLayerObj();
-    if ( il -> selectedFrame() != NULL && il -> selectedFrame() -> isUsed() )
-    {
-	QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
-	QPtrList<ESFrame> esf;
-	il -> availableFrames( &esf );
-	KTStatus -> setCurrentKeyFrame( kf.at( esf.find( il -> selectedFrame() ) ) );
-    }
-    else
-        KTStatus -> setCurrentKeyFrame( NULL );
+//     ILayer *il = k_toon -> exposureSheet() -> currentLayerObj();
+//     if ( il -> selectedFrame() != NULL && il -> selectedFrame() -> isUsed() )
+//     {
+// 	QPtrList<KeyFrame> kf = KTStatus -> currentLayer() -> keyFrames();
+// 	QPtrList<ESFrame> esf;
+// 	il -> availableFrames( &esf );
+// 	KTStatus -> setCurrentKeyFrame( kf.at( esf.find( il -> selectedFrame() ) ) );
+//     }
+//     else
+//         KTStatus -> setCurrentKeyFrame( NULL );
 
     k_toon -> slotActivateCursor();
     KTStatus->currentDrawingArea() -> updateGL();

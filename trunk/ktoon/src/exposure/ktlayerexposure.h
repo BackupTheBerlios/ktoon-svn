@@ -58,8 +58,6 @@ class KTLayerExposure : public QFrame
 		ListOfFrames m_frames;
 		QPopupMenu *menuFrame, *menuLayer;
 		void createMenuRight();
-
-		
 		
 	public slots:
 		void setSelected(bool selected = true, QMouseEvent *e = 0);
@@ -90,7 +88,8 @@ class KTLayerExposure : public QFrame
 		void removedFrame(int id);
 		void layerRenamed( int idLayer, const QString &name );
 		void frameRenamed( int idFrame, int idLayer, const QString &name );
-		protected:
+	
+	protected:
 		QBoxLayout *m_layout;
 };
 

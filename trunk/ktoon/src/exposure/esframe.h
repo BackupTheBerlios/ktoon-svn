@@ -193,7 +193,7 @@ signals:
      *
      * @param name The new frame name
      */
-    void renamed( const QString &name );
+    void renamed( int id, const QString &name );
 
 public slots:
     /**
