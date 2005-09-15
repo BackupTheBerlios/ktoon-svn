@@ -17,66 +17,39 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTELABEL_H
+#define KTELABEL_H
 
-#ifndef KTTIMELINELAYER_H
-#define KTTIMELINELAYER_H
-
-#include <qhbox.h>
+#include <ktsqueezelabel.h>
 #include <qlineedit.h>
-#include <qlabel.h>
-#include <qcheckbox.h>
-
-#include "ktelabel.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTTimeLineLayer;
-
-class KTTimeLineLayer : public QHBox
+class KTELabel : public KTSqueezeLabel
 {
 	Q_OBJECT
+
 	public:
-		KTTimeLineLayer(const QString &name = "Layer", int position = 0, QWidget *parent = 0);
-		~KTTimeLineLayer();
-		void clearEditFocus();
-		int position();
-		void setPosition(int pos);
+		KTELabel(const QString &text, QWidget *parent);
+		~KTELabel();
 		
 	public slots:
-		void setSelected( bool selected );
-		void setEdited( bool isEdited );
-		
-		void setOnlyOutlines( bool yes = true);
-		void toggleOutlines();
-		
-		void setLock(bool yes = true);
-		void toggleLock();
-		
-		void setView(bool yes = true);
-		void toggleView();
-		
 		void rename();
+		void clearFocus();
 		
-	protected:
-		void mousePressEvent( QMouseEvent *me );
+	private slots:
+		void applyText();
 		
 	signals:
-		void selected(int pos);
 		void renamed(const QString &);
-		void rightClicked(KTTimeLineLayer *ly, const QPoint &pos);
 		
+	protected:
+		virtual void mouseDoubleClickEvent( QMouseEvent *mouse_event );
 		
 	private:
-		QCheckBox *m_onlyOutlines;
-		int m_position;
-		KTELabel *m_layerName;
-		QLabel *m_editionImage, *m_visibilityImage, *m_lockImage;
-		
-		QHBox *m_utils;
-		
-		bool m_isLocked, m_isVisible, m_onlySeeOutlines, m_isSelected, m_isEdited;
+		QLineEdit *m_editor;
 };
 
 #endif

@@ -42,7 +42,8 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, QWidget *par
 	staticLayerImage -> setPixmap( QPixmap( KTOON_HOME+"/images/icons/layer_pic.xpm" ) );
 	staticLayerImage->resize( 20, 20 );
 
-	m_layerName = new KTSqueezeLabel( name, this );
+	m_layerName = new KTELabel( name, this );
+	connect(m_layerName, SIGNAL(renamed(const QString &)), this, SIGNAL(renamed(const QString &)));
 	m_layerName->setMargin(1);
 	m_layerName->resize( 50, 20 );
 	m_layerName->setFont( QFont( font().family(), 9 ) );
@@ -50,14 +51,6 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, QWidget *par
 	m_editionImage = new QLabel( this );
 	m_editionImage -> setMinimumSize( 19, 19 );
 	m_editionImage -> setMaximumSize( 19, 19 );
-
-	m_nameEditor = new QLineEdit( m_layerName );
-	
-	m_nameEditor->setFont( QFont( font().family(), 9 ) );
-
-	m_nameEditor->hide();
-	connect( m_nameEditor, SIGNAL( lostFocus() ), SLOT( editName() ) );
-	connect( m_nameEditor, SIGNAL( returnPressed() ), SLOT( editName() ) );
 	
 	m_utils = new QHBox(this);
 	m_utils->layout()->setAlignment(Qt::AlignRight );
@@ -192,14 +185,6 @@ void KTTimeLineLayer::toggleView()
 	m_isVisible = !m_isVisible;
 }
 
-void KTTimeLineLayer::editName()
-{
-	m_layerName->setText( m_nameEditor->text() );
-	m_nameEditor-> hide();
-
-	emit renamed( m_nameEditor->text() );
-}
-
 void KTTimeLineLayer::mousePressEvent( QMouseEvent *me )
 {
 	setSelected( true );
@@ -242,30 +227,14 @@ void KTTimeLineLayer::mousePressEvent( QMouseEvent *me )
 	me -> accept();
 }
 
-void KTTimeLineLayer::mouseDoubleClickEvent( QMouseEvent *e )
-{
-	if ( childAt( e->pos() ) == m_layerName && e->button() == Qt::LeftButton )
-	{
-		rename();
-		e-> accept();
-	}
-	else
-	{
-		e->ignore();
-	}
-}
-
 void KTTimeLineLayer::rename()
 {
-	m_nameEditor->setText( m_layerName->completeText() );
-	m_nameEditor->resize( m_layerName->size() );
-	m_nameEditor->show();
-	m_nameEditor->setFocus();
+	m_layerName->rename();
 }
 
 void KTTimeLineLayer::clearEditFocus()
 {
-	m_nameEditor->clearFocus();
+	m_layerName->clearFocus();
 }
 
 int KTTimeLineLayer::position()

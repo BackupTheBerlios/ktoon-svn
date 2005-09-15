@@ -41,7 +41,9 @@
 #include "ktdialogbase.h"
 
 
-// class KToon;
+typedef QValueList<QPixmap> imgs;
+
+
 class Scene;
 
 /**
@@ -51,7 +53,7 @@ class Scene;
  * This is a class that contains a QListView that shows the available scenes and provides
  * mechanisms for adding, editing, and removing the scenes or their attributes.
  */
-typedef QValueList<QPixmap> imgs;
+
 class Scenes : public KTDialogBase
 {
 Q_OBJECT

@@ -152,7 +152,9 @@ void KTLayerSequence::selectLayer(int id)
 		return;
 	}
 	
+
 	m_pCurrentLayer->clearEditFocus();
+
 	m_pCurrentLayer->setSelected( false );
 	m_pCurrentLayer->setEdited( false );
 	

@@ -18,65 +18,59 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTTIMELINELAYER_H
-#define KTTIMELINELAYER_H
-
-#include <qhbox.h>
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qcheckbox.h>
-
 #include "ktelabel.h"
 
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-
-class KTTimeLineLayer;
-
-class KTTimeLineLayer : public QHBox
+KTELabel::KTELabel(const QString &text, QWidget *parent) : KTSqueezeLabel(text, parent)
 {
-	Q_OBJECT
-	public:
-		KTTimeLineLayer(const QString &name = "Layer", int position = 0, QWidget *parent = 0);
-		~KTTimeLineLayer();
-		void clearEditFocus();
-		int position();
-		void setPosition(int pos);
-		
-	public slots:
-		void setSelected( bool selected );
-		void setEdited( bool isEdited );
-		
-		void setOnlyOutlines( bool yes = true);
-		void toggleOutlines();
-		
-		void setLock(bool yes = true);
-		void toggleLock();
-		
-		void setView(bool yes = true);
-		void toggleView();
-		
-		void rename();
-		
-	protected:
-		void mousePressEvent( QMouseEvent *me );
-		
-	signals:
-		void selected(int pos);
-		void renamed(const QString &);
-		void rightClicked(KTTimeLineLayer *ly, const QPoint &pos);
-		
-		
-	private:
-		QCheckBox *m_onlyOutlines;
-		int m_position;
-		KTELabel *m_layerName;
-		QLabel *m_editionImage, *m_visibilityImage, *m_lockImage;
-		
-		QHBox *m_utils;
-		
-		bool m_isLocked, m_isVisible, m_onlySeeOutlines, m_isSelected, m_isEdited;
-};
+	m_editor = new QLineEdit(text, this);
+	m_editor->setFont( QFont( font().family(), 9 ) );
+	m_editor->hide();
+	
+	m_editor->setFocusPolicy(QWidget::ClickFocus);
+	
+	connect( m_editor, SIGNAL( returnPressed() ), SLOT( applyText() ) );
+	connect( m_editor, SIGNAL( lostFocus() ), SLOT( applyText() ) );
+}
 
-#endif
+
+KTELabel::~KTELabel()
+{
+}
+
+void KTELabel::mouseDoubleClickEvent( QMouseEvent *event )
+{
+	if ( event->button() == Qt::LeftButton )
+	{
+		rename();
+		event->accept();
+	}
+	else
+	{
+		event->ignore();
+	}
+}
+
+void KTELabel::applyText()
+{
+	if(completeText() != m_editor->text())
+	{
+		setText( m_editor -> text() );
+		emit renamed( m_editor->text() );
+	}
+	
+	m_editor->hide();
+}
+
+void KTELabel::rename()
+{
+	m_editor->setText( completeText() );
+	m_editor->selectAll();
+	m_editor->resize( size() );
+	m_editor->show();
+	m_editor->setFocus();
+}
+
+void KTELabel::clearFocus()
+{
+	m_editor->clearFocus();
+}

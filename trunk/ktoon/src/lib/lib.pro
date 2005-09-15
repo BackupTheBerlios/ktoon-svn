@@ -29,7 +29,8 @@ HEADERS += glgraphiccomponent.h \
            kcpuinfo.h \
            kimageeffect.h \
            ktfiledialog.h \
-           ktvbox.h 
+           ktvbox.h \
+           ktelabel.h 
 SOURCES += glgraphiccomponent.cpp \
            ktapplication.cpp \
            configwizard.cpp \
@@ -56,7 +57,8 @@ SOURCES += glgraphiccomponent.cpp \
            kcpuinfo.cpp \
            kimageeffect.cpp \
            ktfiledialog.cpp \
-           ktvbox.cpp 
+           ktvbox.cpp \
+           ktelabel.cpp 
 INCLUDEPATH += ../../src/core \
 ../../src/exposure \
 ../../src/dialogs \

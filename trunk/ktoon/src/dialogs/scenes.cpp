@@ -62,6 +62,7 @@ Scenes::Scenes( QWidget *parent)
 
 Scenes::~Scenes()
 {
+	KTEND;
 //     delete insert_scene; 
 //     delete remove_scene;
 //     delete move_scene_up;
@@ -70,7 +71,6 @@ Scenes::~Scenes()
 	delete table_scenes;
 	delete text_name;
 	delete value_name;
-	KTEND;
 }
 
 void Scenes::setupButtons()
