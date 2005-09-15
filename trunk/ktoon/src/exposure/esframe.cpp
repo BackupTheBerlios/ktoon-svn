@@ -95,19 +95,18 @@ void ESFrame::setUsed( bool in_is_used )
 	setName(m_initialText);
 	if ( is_selected == true && in_is_used == true )
 	{
-		setPaletteBackgroundColor( QColor( 255, 255, 255 ) );
-		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
+		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight).light(200) );
 		setName(m_initialText);
 	}
 	else if ( is_selected == true && in_is_used == false )
 	{
-		setPaletteBackgroundColor( QColor( 0, 0, 0 ) );
+		setPaletteBackgroundColor( colorGroup().dark() );
 		setPaletteForegroundColor( QColor( 255, 255, 255 ) );
+		
 	}
 	else if ( is_selected == false && in_is_used == true )
 	{
-		setPaletteBackgroundColor( QColor( 200, 200, 200 ) );
-		setPaletteForegroundColor( QColor( 0, 0, 0 )  );
+		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight) );
 	}
 	else
 	{
@@ -122,32 +121,33 @@ void ESFrame::setSelected( bool in_is_selected )
 	
 	if ( in_is_selected == true && is_used == true && is_locked == false )
 	{
-		setPaletteBackgroundColor( QColor( 255, 255, 255 ) );
+		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight).light(200) );
 		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
 	}
 	else if ( in_is_selected == true && is_used == false && is_locked == false )
 	{
-		setPaletteBackgroundColor( QColor( 0, 0, 0 ) );
-		setPaletteForegroundColor( QColor( 255, 255, 255 ) );
+		
+// 		setPaletteBackgroundColor( QColor( 0, 0, 0 ) );
+// 		setPaletteForegroundColor( QColor( 255, 255, 255 ) );
 	}
 	else if ( in_is_selected == false && is_used == true && is_locked == false )
 	{
-		setPaletteBackgroundColor( QColor( 200, 200, 200 ) );
+		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight).light(130) );
 		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
 	}
 	else if ( in_is_selected == false && is_used == false && is_locked == false )
 	{
-		setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
+		setPaletteForegroundColor( parentWidget()->paletteForegroundColor() );
+		setPaletteBackgroundColor( parentWidget()->paletteBackgroundColor() );
 	}
 	else if ( is_locked && in_is_selected )
 	{
-		setPaletteBackgroundColor( QColor( 210, 210, 255 ) );
+		setPaletteBackgroundColor( colorGroup().link());
 		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
 	}
 	else if ( is_locked && !in_is_selected )
 	{
-		setPaletteBackgroundColor( QColor( 150, 150, 255 ) );
+		setPaletteBackgroundColor( colorGroup().linkVisited());
 		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
 	}
 }
@@ -157,20 +157,18 @@ void ESFrame::setLocked( bool in_is_locked )
 	if ( is_used )
 	{
 		is_locked = in_is_locked;
-
 		if ( is_selected && is_locked )
 		{
-			setPaletteBackgroundColor( QColor( 210, 210, 255 ) );
+			setPaletteBackgroundColor( colorGroup().link());
 			setPaletteForegroundColor( QColor( 0, 0, 0 ) );
 		}
 		else if ( is_selected && !is_locked )
 		{
-			setPaletteBackgroundColor( QColor( 0, 0, 0 ) );
-			setPaletteForegroundColor( QColor( 0, 0, 0 ) );
+			setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight).light(200) );
 		}
 		else if ( !is_selected && is_locked )
 		{
-			setPaletteBackgroundColor( QColor( 150, 150, 255 ) );
+			setPaletteBackgroundColor( colorGroup().linkVisited());
 			setPaletteForegroundColor( QColor( 0, 0, 0 ) );
 		}
 		else
@@ -335,7 +333,8 @@ void ESFrame::drawContents( QPainter *painter )
 	}
 	else
 	{
-		painter -> setPen( QColor( 0, 0, 0 ) );
+		painter -> setPen(parentWidget()->paletteForegroundColor());
+// 		painter -> setPen( QColor( 0, 0, 0 ) );
 	}
 	
 	painter -> drawText( 5, 16, text() );

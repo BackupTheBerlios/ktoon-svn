@@ -163,6 +163,8 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose ), document_max_valu
 	
 // 	connect( timeline_dialog -> frameSequenceManager() -> frameLayout(), SIGNAL( motionTweenRemovedToES( int ) ), exposure_sheet_dialog, SLOT( slotRemoveMotionTween( int ) ) );
 
+// 	connect(scenes_dialog, SIGNAL(changedScene()),  m_ExposureSheetDialog ,SLOT(updateLayersAndKeyframes()));
+	
 	connect(insert_scene, SIGNAL(activated()), scenes_dialog, SLOT(slotInsertScene()));
 	
 	connect(insert_remove_scene, SIGNAL(activated()), scenes_dialog, SLOT(slotRemoveScene()));
@@ -366,7 +368,7 @@ void KToon::createActions()
 	connect(file_open, SIGNAL(activated()), this, SLOT(slotChoose()));
 	file_open->setStatusTip(tr("Loads an existent document"));	
 
-	file_save = new QAction( icon_save, tr( "Save Document" ),tr("Ctrl+O") , this);
+	file_save = new QAction( icon_save, tr( "Save Document" ),tr("Ctrl+S") , this);
 	connect(file_save, SIGNAL(activated()), this, SLOT(slotSave()));
 	file_save->setStatusTip(tr("Saves the current document in the current location"));
 	
@@ -3547,15 +3549,14 @@ void KToon::slotCloseDrawingArea()
 	file_import->setEnabled(false);
 	file_export->setEnabled(false);
 	file_properties->setEnabled(false);
-	window_exposure_sheet->setVisible(false);
-
+	
 	window_library->setVisible(false);
 	window_scenes->setVisible(false);
 	window -> setItemVisible( id_window_timeline, false );
 	window_tools->setVisible(false);
 	window_brushes->setVisible(false);
 	window_library->setOn(false);
-	
+	window_exposure_sheet->setVisible(false);
 	window_drawing_area->setVisible(false);
 	window_timeline -> hide();
 	window_tools->setVisible(false);
@@ -3718,6 +3719,7 @@ void KToon::slotActivateCursor()
 void KToon::slotSelectSync( int sp )
 {
 	//FIXME:
+	
 // 	exposure_sheet_dialog->hide();
 // 	exposure_sheet_dialog = list_of_es.at( sp );
 	if ( /*window_exposure_sheet->isOn() &&*/ window_animation->isEnabled())//window -> isItemChecked( id_window_exposure_sheet ) && window_animation->isEnabled())//window -> isItemEnabled( id_window_animation ) )

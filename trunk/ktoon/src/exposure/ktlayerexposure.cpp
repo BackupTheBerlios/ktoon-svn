@@ -93,6 +93,14 @@ void KTLayerExposure::frameSelect(int id, int button, int x, int y)
 	m_header->animateClick();
 	emit frameSelected(id);
 	emit clicked(id, m_id, button, x, y);
+	ktDebug() 
+			<< "KTLayerExposure:: " 
+			<< m_useFrame   
+			<< " == "  
+			<< id 
+			<< " && " 
+			<<  !(m_frames.at(id)->isUsed()) 
+			<< endl;
 	if(m_useFrame + 1 == id && !(m_frames.at(id)->isUsed()))
 	{
 		m_frames.at(id)->setUsed( true );
@@ -233,7 +241,6 @@ void KTLayerExposure::removeFrame(int id)
 			insertFrame(m_frames.getLast()->id()+1);
 			
 		}
-		
 	}
 	
 
@@ -362,7 +369,7 @@ QString KTLayerExposure::textHeader()
 
 void KTLayerExposure::loadFrames(Layer *layer)
 {
-	ktDebug() << "KTLayerExposure::loadFrames" << endl;
+// 	ktDebug() << "KTLayerExposure::loadFrames" << endl;
 	QPtrList<KeyFrame> keyframes = layer->keyFrames();
 	for(int i = 0 ; i < keyframes.count(); i++)
 	{
@@ -375,7 +382,7 @@ void KTLayerExposure::loadFrames(Layer *layer)
 	m_useFrame = keyframes.count()-1;
 	
 
-	ktDebug() << "KTLayerExposure::loadFrames finish load " << keyframes.count() << " frames" << endl;
+// 	ktDebug() << "KTLayerExposure::loadFrames finish load " << keyframes.count() << " frames" << endl;
 }
 
 void KTLayerExposure::changedName(const QString  &newName)
@@ -385,7 +392,7 @@ void KTLayerExposure::changedName(const QString  &newName)
 
 void KTLayerExposure::frameRename(int idFrame, const QString&newName)
 {
-	ktDebug() << " KTLayerExposure::frameRename " << newName << endl;
+// 	ktDebug() << " KTLayerExposure::frameRename " << newName << endl;
 	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
 	ly.at(m_id)->keyFrames().at(idFrame)->setNameKeyFrame(newName);
 }

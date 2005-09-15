@@ -51,12 +51,12 @@ class KTExposureSheet : public KTDialogBase
 	public:
 		KTExposureSheet(QWidget *parent = 0, const char *name = 0);
 		~KTExposureSheet();
-		void loadLayersAndKeyframes( QPtrList<Layer> layers );
-		enum Actions { /*NoAction = 0,*/ InsertLayer = 0, RemoveLayer, ShowManageLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
-	private:
 
+		enum Actions { /*NoAction = 0,*/ InsertLayer = 0, RemoveLayer, ShowManageLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
+		
+	private:
 		imgs m_imgs;
-		QHButtonGroup *buttonsPanel;
+		QButtonGroup *buttonsPanel;
 		QActionGroup *m_actions;
 		KTTableExposure *m_viewLayer;
 // 		//Widget for handling the layer visibility
@@ -69,6 +69,8 @@ class KTExposureSheet : public KTDialogBase
 		
 	public slots:
 		void applyAction(int action);
+		void loadLayersAndKeyframes( QPtrList<Layer> layers );
+		void updateLayersAndKeyframes();
 		
 	signals:
 		void applyedAction(Actions action);

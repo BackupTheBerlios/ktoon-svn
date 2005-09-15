@@ -28,7 +28,7 @@
 
 #include <qpushbutton.h>
 #include <qlineedit.h>
-#include <qpopupmenu.h>
+// #include <qpopupmenu.h>
 
 /**
  * @brief Class that handles the Layer objects belonging to the Exposure Sheet dialog box
@@ -82,7 +82,7 @@ public:
 private:
     QColor default_color, selection_color;
     QLineEdit *description;
-    QPopupMenu *right_click_menu;
+//     QPopupMenu *right_click_menu;
     bool is_selected;
 
 signals:

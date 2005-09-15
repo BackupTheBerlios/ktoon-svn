@@ -98,7 +98,7 @@ void KTTimeLineLayer::setSelected( bool selected )
 	{
 		m_layerName->setPaletteForegroundColor( palette().color(QPalette::Active , QColorGroup::HighlightedText) );
 		m_layerName->setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight) );
-		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight) );
+		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight));
 	}
 	else
 	{

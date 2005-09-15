@@ -50,7 +50,7 @@ class KTTableExposure : public QScrollView
 		void removeCurrentLayer();
 		
 		void loadLayers(QPtrList<Layer> layers);
-		
+		void updateLayers();
 		QStringList textHeaders();
 		
 	private:

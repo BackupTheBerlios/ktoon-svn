@@ -25,10 +25,10 @@
 Scene::Scene()
 {
     name = "";
-    Layer *def_layer = new Layer();
-    def_layer -> setIndexLayer( 1 );
-    def_layer -> setNameLayer( QObject::tr( "Layer" ) + QString( "1" ) );
-    layers.append( def_layer );
+//     Layer *def_layer = new Layer();
+//     def_layer -> setIndexLayer( 1 );
+//     def_layer -> setNameLayer( QObject::tr( "Layer" ) + QString( "1" ) );
+//     layers.append( def_layer );
 }
 
 //------------- DESTRUCTOR ------------------

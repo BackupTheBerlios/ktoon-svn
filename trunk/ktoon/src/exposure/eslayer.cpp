@@ -46,7 +46,7 @@ ESLayer::ESLayer( const QString &initial_text, QWidget *parent  )
     connect( description, SIGNAL( lostFocus() ), SLOT( slotSetDescription() ) );
     connect( description, SIGNAL( returnPressed() ), SLOT( slotSetDescription() ) );
 
-    right_click_menu = new QPopupMenu( this );
+//     right_click_menu = new QPopupMenu( this );
 //     right_click_menu -> setFont( QFont( "helvetica", 10 ) );
     /*right_click_menu -> insertItem( tr( "Rename Layer" ), this, SLOT( slotSendDoubleClickEvent() ) );
     right_click_menu -> insertItem( tr( "Remove this Layer" ), grandparent, SLOT( slotRemoveLayer() ) );
@@ -59,7 +59,7 @@ ESLayer::ESLayer( const QString &initial_text, QWidget *parent  )
 
 ESLayer::~ESLayer()
 {
-    delete right_click_menu;
+//     delete right_click_menu;
     delete description;
 }
 
@@ -73,12 +73,18 @@ bool ESLayer::isSelected()
 
 void ESLayer::setSelected( bool in_is_selected )
 {
-    is_selected = in_is_selected;
-
-    if ( is_selected )
-        setPaletteBackgroundColor( selection_color );
-    else
-        setPaletteBackgroundColor( default_color );
+	is_selected = in_is_selected;
+	if ( is_selected )
+	{
+		setPaletteBackgroundColor( colorGroup ().highlight().light ( 100 ) );
+		setPaletteForegroundColor( colorGroup ().highlightedText ());
+	}
+    		
+	else
+	{
+		setPaletteBackgroundColor( colorGroup ().background() );
+		setPaletteForegroundColor( colorGroup ().text ());
+	}
 }
 
 void ESLayer::clearTextfieldFocus()
@@ -118,8 +124,8 @@ void ESLayer::mousePressEvent( QMouseEvent *mouse_event )
     emit clicked(true, mouse_event );
 
 //     emit clicked();
-    if ( mouse_event -> button() == Qt::RightButton )
-        right_click_menu -> exec( QCursor::pos() );
+//     if ( mouse_event -> button() == Qt::RightButton )
+//         right_click_menu -> exec( QCursor::pos() );
 
     mouse_event -> accept();
 }

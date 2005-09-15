@@ -26,18 +26,18 @@ Layer::Layer()
 {
     index = -1;
     name = "";
-    KeyFrame *d_keyframe = new KeyFrame();
-    try {
-        d_keyframe -> setLengthKeyFrame( 1 );
-        d_keyframe -> setOffsetKeyFrame( 1 );
-        d_keyframe -> setNameKeyFrame( QObject::tr( "Drawing " ) + QString( "1-1" ) );
-        keyframes.append( d_keyframe );
-        }
-    catch(...)
-        {
-	  delete d_keyframe;
-	  throw;
-	  }
+//     KeyFrame *d_keyframe = new KeyFrame();
+//     try {
+//         d_keyframe -> setLengthKeyFrame( 1 );
+//         d_keyframe -> setOffsetKeyFrame( 1 );
+//         d_keyframe -> setNameKeyFrame( QObject::tr( "Drawing " ) + QString( "1-1" ) );
+//         keyframes.append( d_keyframe );
+//         }
+//     catch(...)
+//         {
+// 	  delete d_keyframe;
+// 	  throw;
+// 	  }
 }
 
 //------------- DESTRUCTOR ------------------
