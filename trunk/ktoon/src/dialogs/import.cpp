@@ -154,8 +154,8 @@ void Import::slotAccept()
 	{
             QString fn = QFileDialog::getOpenFileName( QString::null, "Sound File ( *.wav )", this,
 	                                               tr( "Import Sound" ), tr( "Choose a sound file to import" ) );
-            if ( !fn.isEmpty() )
-	        k_toon -> loadSound( fn );
+//             if ( !fn.isEmpty() )
+// 	        k_toon -> loadSound( fn );
 	    break;
 	}
 	default: break;

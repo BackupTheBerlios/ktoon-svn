@@ -124,14 +124,11 @@ void GLGrid::buildGrid( int nLines, GLuint list )
 	glLineWidth( width );
 	glEnable (GL_LINE_STIPPLE);
 	glBegin( GL_LINES );
-
-	ktDebug() << "Grid with " << nLines << " Lines " << endl;
 	
 	for ( int x = 0; x <= nLines; x++ )
 	{
 		float fraccion = ( float )x / ( float )nLines;
 		
-		ktDebug() << "FRAccion: " << fraccion << endl;
 		if ( x == nLines / 2 )
 			continue;
 
@@ -285,7 +282,7 @@ void GLGrid::buildGrid()
 		case 24: glCallList( id_grid12 ); glCallList( id_diagonals ); break;
 		case 32: glCallList( id_grid16 ); glCallList( id_diagonals ); break;
 		default:
-			qDebug("Error en el numero de lineas" );
+			qDebug("Error in line number" );
 			glCallList(id_grid16);
 			break;
 	}

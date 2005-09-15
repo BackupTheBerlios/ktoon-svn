@@ -235,8 +235,8 @@ void Properties::slotAccept()
     KTStatus -> setCurrentCameraHeight( new_ch );
     
     k_toon -> renderCameraPreview() -> updateGL();
-    k_toon -> timeline() -> slotUpdateCurrentTime( k_toon -> timeline() -> frameSequenceManager() -> getRuler() -> getOffset() );
-    k_toon -> timeline() -> slotUpdateTotalTime( k_toon -> timeline() -> frameSequenceManager() -> getRuler() -> getMaxOffset() );
+//     k_toon -> timeline() -> slotUpdateCurrentTime( k_toon -> timeline() -> frameSequenceManager() -> getRuler() -> getOffset() );
+//     k_toon -> timeline() -> slotUpdateTotalTime( k_toon -> timeline() -> frameSequenceManager() -> getRuler() -> getMaxOffset() );
     
     KTStatus -> setCurrentBackgroundColor( c_background );
     KTStatus -> setCurrentGridColor( c_grid );

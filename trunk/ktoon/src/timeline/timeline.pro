@@ -3,16 +3,7 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/timeline
 # Destiono es una biblioteca:  
 
-HEADERS += soundwidget.h \
-           timeline.h \
-           tlframe.h \
-           tlframesequence.h \
-           tlframesequencelayout.h \
-           tlframesequencemanager.h \
-           tllayer.h \
-           tllayermanager.h \
-           tllayersequence.h \
-           tlruler.h \
+HEADERS += tlframe.h \
            kttimeline.h \
            ktlayermanager.h \
            ktlayersequence.h \
@@ -20,16 +11,7 @@ HEADERS += soundwidget.h \
            kttlruler.h \
            ktframesequencemanager.h \
            ktframesequence.h 
-SOURCES += soundwidget.cpp \
-           timeline.cpp \
-           tlframe.cpp \
-           tlframesequence.cpp \
-           tlframesequencelayout.cpp \
-           tlframesequencemanager.cpp \
-           tllayer.cpp \
-           tllayermanager.cpp \
-           tllayersequence.cpp \
-           tlruler.cpp \
+SOURCES += tlframe.cpp \
            kttimeline.cpp \
            ktlayermanager.cpp \
            ktlayersequence.cpp \

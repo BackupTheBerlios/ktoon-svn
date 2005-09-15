@@ -45,8 +45,9 @@ class KTFrameSequenceManager : public KTVBox
 		void insertFrameSequence();
 		void removeFrameSequence();
 		void setCurrentFrame(TLFrame *);
-		
-	private slots:
+			
+	protected:
+		QSize sizeHint() const;
 		
 	private:
 		ListOfFrameSequences m_sequences;

@@ -42,9 +42,6 @@
 
 #include "kimageeffect.h"
 
-// Borrar
-#include "kttimeline.h"
-
 //--------------- CONSTRUCTOR --------------------
 
 KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose ), document_max_value(1), file_name("")
@@ -198,9 +195,9 @@ KToon::KToon() : QMainWindow( 0, "KToon", WDestructiveClose ), document_max_valu
 	
 	connect( KTStatus->currentDrawingArea(), SIGNAL( updated() ), library_dialog -> getSymbolView(), SLOT( updateGL() ) );
 	
-	connect( KTStatus->currentDrawingArea(), SIGNAL( wasDrawn( bool ) ), timeline_dialog -> frameSequenceManager() -> frameLayout(), SLOT( slotFrameHasDrawing( bool ) ) );
+// 	connect( KTStatus->currentDrawingArea(), SIGNAL( wasDrawn( bool ) ), timeline_dialog -> frameSequenceManager() -> frameLayout(), SLOT( slotFrameHasDrawing( bool ) ) );
 	
-	connect(timeline_dialog, SIGNAL(saveImage(const QString& )), m_cameraPreview, SLOT(grabImage(const QString& )));
+// 	connect(timeline_dialog, SIGNAL(saveImage(const QString& )), m_cameraPreview, SLOT(grabImage(const QString& )));
 	
 	scenes_dialog -> selectFirstScene();
 // 	exposure_sheet_dialog -> touchFirstFrame();
@@ -1150,10 +1147,10 @@ void KToon::setupDialogs()
 	
 	//For animation
 	
- 	/*KTTimeLine *kttimeLine = */new KTTimeLine(this);
+	m_timeLine = new KTTimeLine(this);
+	m_timeLine->hide();
 	
-	timeline_dialog = new Timeline( this, Qt::WStyle_Tool, window, id_window_timeline, window_timeline );
-	list_of_tl.append( timeline_dialog );
+	m_timeLineList.append(m_timeLine);
 
 	top_camera_view = new GLTopCameraView( main_panel, KTStatus->currentDrawingArea() );
 	top_camera_view -> hide();
@@ -1262,21 +1259,6 @@ KToon::~KToon()
 }
 
 //------------------- PUBLIC MEMBERS ----------------
-
-Timeline *KToon::timeline()
-{
-	//FIXME:usada en exposuresheet, scenes, properties, drawingarea
-	Q_CHECK_PTR( timeline_dialog );
-	return timeline_dialog;
-}
-/*
-ExposureSheet *KToon::exposureSheet()
-{
-	//FIXME: usada en scenes, drawngarea, tlframesequence
-// 	Q_CHECK_PTR( exposure_sheet_dialog );
-	return exposure_sheet_dialog;
-}*/
-
 
 GLRenderCameraPreview *KToon::renderCameraPreview()
 {
@@ -1458,13 +1440,6 @@ void KToon::loadBrushes( const QString &file_name, bool from_load )
 		brushes_dialog -> loadBrushes( brushes );
 
 	statusBar() -> message( tr( "Brushes loaded successfully - " ) + file_name, 2000 );
-}
-
-void KToon::loadSound( const QString &file_name, bool from_load )
-{
-	if ( !from_load )
-		timeline_dialog -> loadSound( file_name );
-	statusBar() -> message( tr( "Sound loaded successfully - " ) + file_name, 2000 );
 }
 
 GLGraphicComponent *KToon::createGraphic( const QDomElement &graphic_tag )
@@ -1985,8 +1960,8 @@ void KToon::slotNewDocument()
 		m_ExposureSheetDialog = new KTExposureSheet( this);
 		scenes_dialog = new Scenes( this);
 		
-		timeline_dialog = new Timeline( this, Qt::WStyle_Tool, window, id_window_timeline, window_timeline );
-		timeline_dialog->hide();
+		m_timeLine = new KTTimeLine( this );
+		m_timeLine->hide();
 		
 		brushes_dialog = new Brushes( this, Qt::WStyle_Tool );
 	
@@ -2002,7 +1977,7 @@ void KToon::slotNewDocument()
 		side_camera_view->hide();
 
 // 		list_of_es.append( exposure_sheet_dialog );
-		list_of_tl.append( timeline_dialog );
+		m_timeLineList.append( m_timeLine );
 
 		if ( window_animation->isEnabled())//window -> isItemEnabled( id_window_animation ) )
 		{
@@ -2014,7 +1989,7 @@ void KToon::slotNewDocument()
 		}
 		else if (window_illustration->isEnabled() )// window -> isItemEnabled( id_window_illustration ) )
 		{
-			timeline_dialog -> show();
+			m_timeLine -> show();
 // 			render_camera_preview -> show();
 			m_cameraPreview->show();
 			top_camera_view -> show();
@@ -2080,7 +2055,8 @@ void KToon::slotNewDocument()
 
 		connect( KTStatus->currentDrawingArea(), SIGNAL( colorGrabbed( KTColor * ) ), color_palette_dialog, SLOT( slotSetColor( KTColor * ) ) );
 		connect( KTStatus->currentDrawingArea(), SIGNAL( updated() ), library_dialog -> getSymbolView(), SLOT( updateGL() ) );
-		connect( KTStatus->currentDrawingArea(), SIGNAL( wasDrawn( bool ) ), timeline_dialog -> frameSequenceManager() -> frameLayout(), SLOT( slotFrameHasDrawing( bool ) ) );
+		
+// 		connect( KTStatus->currentDrawingArea(), SIGNAL( wasDrawn( bool ) ), timeline_dialog -> frameSequenceManager() -> frameLayout(), SLOT( slotFrameHasDrawing( bool ) ) );
 		
 		scenes_dialog -> selectFirstScene();
 		//FIXME: implementar KTExposureShee::touchFirstFrame();
@@ -2729,14 +2705,18 @@ void KToon::slotInsertLayer()
 
 void KToon::slotInsertFrame()
 {
-    if ( window_illustration->isEnabled())//window -> isItemEnabled( id_window_illustration ) )
-        timeline_dialog -> frameSequenceManager() -> frameLayout() -> currentFrameSequence() -> slotInsertFrame();
+	if ( window_illustration->isEnabled())
+	{
+		m_timeLine->execAction(KTLayerManager::InsertLayer);
+	}
 }
 
 void KToon::slotRemoveFrame()
 {
-	if ( window_illustration->isEnabled())//window -> isItemEnabled( id_window_illustration ) )
-		timeline_dialog -> frameSequenceManager() -> frameLayout() -> currentFrameSequence() -> slotRemoveFrame();
+	if ( window_illustration->isEnabled())
+	{
+		m_timeLine->execAction(KTLayerManager::RemoveLayer);
+	}
 }
 
 void KToon::slotInsertKeyFrame()
@@ -3039,38 +3019,38 @@ void KToon::slotHand()
 
 void KToon::slotPlayStop()
 {
-	if ( timeline_dialog -> frameSequenceManager() -> getRuler() -> isAnimationPlaying() )
-	{
-		timeline_dialog -> frameSequenceManager() -> getRuler() -> slotStop();
-		statusBar() -> message( tr( "Animation Stopped" ), 2000 );
-	}
-	else
-	{
-		if ( timeline_dialog -> frameSequenceManager() -> getRuler() -> getOffset() == timeline_dialog -> frameSequenceManager() -> getRuler() -> getMaxOffset() )
-		timeline_dialog -> frameSequenceManager() -> getRuler() -> slotSetOffset( 1 );
-		timeline_dialog -> frameSequenceManager() -> getRuler() -> slotPlay();
-		statusBar() -> message( tr( "Playing the Animation..." ), 2000 );
-	}
+// 	if ( timeline_dialog -> frameSequenceManager() -> getRuler() -> isAnimationPlaying() )
+// 	{
+// 		timeline_dialog -> frameSequenceManager() -> getRuler() -> slotStop();
+// 		statusBar() -> message( tr( "Animation Stopped" ), 2000 );
+// 	}
+// 	else
+// 	{
+// 		if ( timeline_dialog -> frameSequenceManager() -> getRuler() -> getOffset() == timeline_dialog -> frameSequenceManager() -> getRuler() -> getMaxOffset() )
+// 		timeline_dialog -> frameSequenceManager() -> getRuler() -> slotSetOffset( 1 );
+// 		timeline_dialog -> frameSequenceManager() -> getRuler() -> slotPlay();
+// 		statusBar() -> message( tr( "Playing the Animation..." ), 2000 );
+// 	}
 }
 
 void KToon::slotRewind()
 {
-	timeline_dialog -> frameSequenceManager() -> getRuler() -> slotSetOffset( 1 );
+// 	timeline_dialog -> frameSequenceManager() -> getRuler() -> slotSetOffset( 1 );
 }
 
 void KToon::slotGoToEnd()
 {
-	timeline_dialog -> frameSequenceManager() -> getRuler() -> slotSetOffset( timeline_dialog -> frameSequenceManager() -> getRuler() -> getMaxOffset() );
+// 	timeline_dialog -> frameSequenceManager() -> getRuler() -> slotSetOffset( timeline_dialog -> frameSequenceManager() -> getRuler() -> getMaxOffset() );
 }
 
 void KToon::slotStepForward()
 {
-	timeline_dialog -> frameSequenceManager() -> getRuler() -> slotStepForward();
+// 	timeline_dialog -> frameSequenceManager() -> getRuler() -> slotStepForward();
 }
 
 void KToon::slotStepBackward()
 {
-	timeline_dialog -> frameSequenceManager() -> getRuler() -> slotStepBackward();
+// 	timeline_dialog -> frameSequenceManager() -> getRuler() -> slotStepBackward();
 }
 
 //------------------- SLOTS AND FUNCTIONS WINDOW MENU ----------------------------
@@ -3160,9 +3140,9 @@ void KToon::slotSeeIllustration()
 		window_top_camera_view->setVisible(false);
 	}
 
-	if ( timeline_dialog != NULL )
+	if ( m_timeLine != NULL )
 	{
-		timeline_dialog -> hide();
+		m_timeLine -> hide();
 		window -> setItemChecked( id_window_timeline, false );
 		window -> setItemVisible( id_window_timeline, false );
 		window_timeline -> hide();
@@ -3261,15 +3241,19 @@ void KToon::slotSeeAnimation()
 		window_top_camera_view->setVisible(true);
 	}
 
-	if ( timeline_dialog != 0 )
+	if ( m_timeLine != 0 )
 	{
-		timeline_dialog -> show();
+		m_timeLine -> show();
 		window -> setItemChecked( id_window_timeline, true );
 		window -> setItemVisible( id_window_timeline, true );
 		window_timeline -> show();
 		window_timeline -> setDown( true );
 
 		menuBar() -> setItemVisible( id_control, true );
+	}
+	else
+	{
+		ktFatal() << "TimeLine not exists!!!" << endl;
 	}
 
     //Enable the illustration menu item and disable the animation menu item
@@ -3278,8 +3262,10 @@ void KToon::slotSeeAnimation()
 	window_animation->setEnabled(false);
 	window_animation->setVisible(false);
 
-	if ( timeline_dialog != 0 )
-		timeline_dialog -> frameSequenceManager() -> getRuler() -> slotSetOffset( timeline_dialog -> frameSequenceManager() -> getRuler() -> getOffset() );
+	if ( m_timeLine != 0 )
+	{
+// 		timeline_dialog -> frameSequenceManager() -> getRuler() -> slotSetOffset( timeline_dialog -> frameSequenceManager() -> getRuler() -> getOffset() );
+	}
 }
 
 void KToon::slotWindowTools()
@@ -3370,15 +3356,15 @@ void KToon::slotWindowDrawingArea()
 
 void KToon::slotWindowTimeline()
 {
-	if ( timeline_dialog -> isVisible() )
+	if ( m_timeLine -> isVisible() )
 	{
-		timeline_dialog -> hide();
+		m_timeLine -> hide();
 		window -> setItemChecked( id_window_timeline, false );
 		window_timeline -> setDown( false );
 	}
 	else
 	{
-		timeline_dialog -> show();
+		m_timeLine -> show();
 		window -> setItemChecked( id_window_timeline, true );
 		window_timeline -> setDown( true );
 	}
@@ -3506,22 +3492,22 @@ void KToon::slotCloseDrawingArea()
 // 	}
 	
 // 	Timeline *tl = 0;
-// 	for(tl = list_of_tl.first(); tl ; tl = list_of_tl.next() )
+// 	for(tl = m_timeLineList.first(); tl ; tl = m_timeLineList.next() )
 // 	{
 // 		if( tl )
 // 		{
 // 			tl->close();
-// 			list_of_tl.remove(tl);
+// 			m_timeLineList.remove(tl);
 // // 			delete loe;
 // 		}
 // 	}
 	
 // 	list_of_es.setAutoDelete( true );
-	list_of_tl.setAutoDelete( true );
+	m_timeLineList.setAutoDelete( true );
 // 	list_of_es.clear();
-	list_of_tl.clear();
+	m_timeLineList.clear();
 // 	list_of_es.setAutoDelete( false );
-	list_of_tl.setAutoDelete( false );
+	m_timeLineList.setAutoDelete( false );
 
 	
 	delete scenes_dialog;
@@ -3530,6 +3516,12 @@ void KToon::slotCloseDrawingArea()
 	delete m_cameraPreview;
 	delete top_camera_view;
 	delete side_camera_view;
+	
+	if ( m_timeLine )
+	{
+		delete m_timeLine;
+		m_timeLine = 0;
+	}
 
 	//FIXME: scenes_dialog = 0 !!! ¿?
 	scenes_dialog = 0;
@@ -3540,8 +3532,6 @@ void KToon::slotCloseDrawingArea()
 	top_camera_view = 0;
 	side_camera_view = 0;
 // 	exposure_sheet_dialog = 0;
-	timeline_dialog = 0;
-
 
 	file_save->setEnabled(false);
 	file_save_as->setEnabled(false);
@@ -3720,13 +3710,14 @@ void KToon::slotSelectSync( int sp )
 {
 	//FIXME:
 	
-// 	exposure_sheet_dialog->hide();
-// 	exposure_sheet_dialog = list_of_es.at( sp );
+// 	m_ExposureSheetDialog->hide();
+// 	m_ExposureSheetDialog = list_of_es.at( sp );
 	if ( /*window_exposure_sheet->isOn() &&*/ window_animation->isEnabled())//window -> isItemChecked( id_window_exposure_sheet ) && window_animation->isEnabled())//window -> isItemEnabled( id_window_animation ) )
-// 		exposure_sheet_dialog -> show();
-
-		timeline_dialog = list_of_tl.at( sp );
-
+	{
+		m_ExposureSheetDialog -> show();
+	}
+	
+	m_timeLine = m_timeLineList.at( sp );
 	slotActivateCursor();
 }
 
@@ -3734,8 +3725,9 @@ void KToon::slotInsertSync()
 {
 // 	ExposureSheet *new_exposure_sheet = new ExposureSheet( this);//, Qt::WStyle_Tool, window, id_window_exposure_sheet, window_exposure_sheet );
 // 	list_of_es.append( new_exposure_sheet );
-	Timeline *new_timeline = new Timeline( this, Qt::WStyle_Tool, window, id_window_timeline, window_timeline );
-	list_of_tl.append( new_timeline );
+	KTTimeLine *newTimeline = new KTTimeLine( this );
+	newTimeline->hide();
+	m_timeLineList.append( newTimeline );
 
     //--------- Main Connections Again --------------
 
@@ -3765,7 +3757,7 @@ void KToon::slotInsertSync()
 // 	connect( new_timeline -> layerManager() -> layerSequence(), SIGNAL( layerReleasedAbove( int, int ) ), new_exposure_sheet, SLOT( slotSwapWithLeftLayer( int, int ) ) );
 // 	connect( new_timeline -> layerManager() -> layerSequence(), SIGNAL( layerReleasedBelow( int, int ) ), new_exposure_sheet, SLOT( slotSwapWithRightLayer( int, int ) ) );
 
-	connect( KTStatus->currentDrawingArea(), SIGNAL( wasDrawn( bool ) ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotFrameHasDrawing( bool ) ) );
+// 	connect( KTStatus->currentDrawingArea(), SIGNAL( wasDrawn( bool ) ), new_timeline -> frameSequenceManager() -> frameLayout(), SLOT( slotFrameHasDrawing( bool ) ) );
 }
 
 void KToon::slotRemoveSync( int sp )
@@ -3786,33 +3778,37 @@ void KToon::slotRemoveSync( int sp )
 	// 	    exposure_sheet_dialog -> show();
 	//     }
 	
-	Timeline *tl_to_remove = list_of_tl.at( sp );
-	list_of_tl.remove( tl_to_remove );
+	KTTimeLine *tl_to_remove = m_timeLineList.take( sp );
+// 	m_timeLineList.remove( tl_to_remove );
 	delete tl_to_remove;
-	if ( sp == ( int )list_of_tl.count() )
-		timeline_dialog = list_of_tl.getLast();
+	if ( sp == ( int )m_timeLineList.count() )
+	{
+		m_timeLine = m_timeLineList.getLast();
+	}
 	else
-		timeline_dialog = list_of_tl.at( sp );
+	{
+		m_timeLine = m_timeLineList.at( sp );
+	}
 }
 
 void KToon::slotMoveUpSync( int sp )
 {
 	//     ExposureSheet *es_to_move = list_of_es.take( sp );
-	Timeline *tl_to_move = list_of_tl.take( sp );
+	KTTimeLine *tl_to_move = m_timeLineList.take( sp );
 	//     list_of_es.insert( sp - 1, es_to_move );
-	list_of_tl.insert( sp - 1, tl_to_move );
+	m_timeLineList.insert( sp - 1, tl_to_move );
 	//     exposure_sheet_dialog = es_to_move;
-	timeline_dialog = tl_to_move;
+	m_timeLine = tl_to_move;
 }
 
 void KToon::slotMoveDownSync( int sp )
 {
 	//     ExposureSheet *es_to_move = list_of_es.take( sp );
-	Timeline *tl_to_move = list_of_tl.take( sp );
+	KTTimeLine *tl_to_move = m_timeLineList.take( sp );
 	//     list_of_es.insert( sp + 1, es_to_move );
-	list_of_tl.insert( sp + 1, tl_to_move );
+	m_timeLineList.insert( sp + 1, tl_to_move );
 	//     exposure_sheet_dialog = es_to_move;
-	timeline_dialog = tl_to_move;
+	m_timeLine = tl_to_move;
 }
 
 //--------------------- EVENTS AND OTHER FUNCTIONS --------------------------------
@@ -3875,13 +3871,13 @@ void KToon::createGUI()
 // 		delete m_ExposureSheetDialog;
 // 		m_ExposureSheetDialog = new KTExposureSheet(this);
 		m_ExposureSheetDialog-> loadLayersAndKeyframes( layers );
-		Timeline *tl = list_of_tl.at( scenes.find( s_it ) );
-		tl -> loadLayersAndKeyframes( layers );
+		KTTimeLine *tl = m_timeLineList.at( scenes.find( s_it ) );
+		// 		tl -> loadLayersAndKeyframes( layers ); // FIXME
 // 		QPtrList<ILayer> layer_list = es -> getILayers();
 // 	}
 	
 // 	exposure_sheet_dialog = list_of_es.at( 0 );
-	timeline_dialog = list_of_tl.at( 0 );
+		m_timeLine = m_timeLineList.at( 0 );
 	if ( window_animation->isEnabled() )//window -> isItemEnabled( id_window_animation ) )
 	{
 		window_exposure_sheet->setVisible(true);
@@ -3924,7 +3920,7 @@ void KToon::createGUI()
 		window -> setItemChecked( id_window_timeline, true );
 		window_timeline -> show();
 		window_timeline -> setDown( true );
-		timeline_dialog -> show();
+		m_timeLine->show();
 	//         window -> setItemVisible( id_window_render_camera_preview, true );
 	// 	window -> setItemChecked( id_window_render_camera_preview, true );
 		window_render_camera_preview->setVisible(true);
@@ -3968,7 +3964,7 @@ void KToon::createGUI()
 // 	exposure_sheet_dialog -> touchFirstFrame();
 	scenes_dialog -> selectFirstScene();
 	
-	timeline_dialog -> frameSequenceManager() -> frameLayout() -> slotUpdateMaxUsedFrames();
+// 	timeline_dialog -> frameSequenceManager() -> frameLayout() -> slotUpdateMaxUsedFrames();
 // 	exposure_sheet_dialog -> updateIndicators( exposure_sheet_dialog -> currentLayerObj() );
 	
 	//file -> setItemEnabled( id_file_save, true );

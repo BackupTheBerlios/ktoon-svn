@@ -40,19 +40,17 @@
 #include "ktapplication.h"
 
 #include "tools.h"
-// #include "drawingarea.h"
 #include "properties.h"
 #include "preferences.h"
 #include "scenes.h"
 #include "brushes.h"
 #include "colorpalette.h"
 
-// #include "exposuresheet.h"
 #include "ktexposuresheet.h"
 
 #include "library.h"
-#include "timeline.h"
-// #include "glrendercamerapreview.h"
+#include "kttimeline.h"
+
 #include "gltopcameraview.h"
 #include "glsidecameraview.h"
 #include "status.h"
@@ -60,8 +58,7 @@
 #include "document.h"
 #include "import.h"
 #include "export.h"
-// #include "drawingareaqt.h"
-// #include "rendercamerapreviewqt.h"
+
 #include "ktdialogmenu.h"
 
 #include "ktcamerapreview.h"
@@ -91,14 +88,6 @@ class KToon : public QMainWindow
 		* Destroys the ValueSelector object.
 		*/
 		~KToon();
-
-		/**
-		*  Gets the current timeline dialog
-		*
-		* @return A pointer to the current timeline dialog
-		*/
-		Timeline *timeline();
-		
 		
 		void setPalette(const QPalette &);
 	
@@ -144,13 +133,7 @@ class KToon : public QMainWindow
 		* @param from_load A boolean value that indicates if this function was called from a load operation
 		*/
 		void loadBrushes( const QString &file_name, bool from_load = false );
-		/**
-		*  Loads the specified sound into a timeline's special widget
-		*
-		* @param file_name The sound file name
-		* @param from_load A boolean value that indicates if this function was called from a load operation
-		*/
-		void loadSound( const QString &file_name, bool from_load = false );
+
 		/**
 		*  Creates a graphic component from an XML tag
 		*
@@ -741,7 +724,7 @@ class KToon : public QMainWindow
 		QString file_name;
 // 		QPtrList<ExposureSheet> list_of_es;
 		
-		QPtrList<Timeline> list_of_tl;
+		QPtrList<KTTimeLine> m_timeLineList;
 		
 		//Icons
 		QPixmap icon_new, icon_open, icon_save, icon_import, icon_export, icon_undo, icon_redo, icon_zoom_in,
@@ -935,8 +918,9 @@ class KToon : public QMainWindow
 #if 0
 		KTViewDocument *m_viewDocument;
 #endif	
+		KTTimeLine *m_timeLine;
+		
 		Library *library_dialog;
-		Timeline *timeline_dialog;
 	// 	GLRenderCameraPreview *render_camera_preview;
 		KTCameraPreview *m_cameraPreview;
 		GLSideCameraView *side_camera_view;
