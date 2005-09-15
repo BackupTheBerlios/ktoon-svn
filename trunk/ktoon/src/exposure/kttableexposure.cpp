@@ -56,14 +56,12 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent, const char
 	m_layout->addWidget ( gridNumber );
 	
 	m_layers.setAutoDelete( true );
-	ktDebug() << "KTTableExposure 1" ;
 
 	for(int i = 0; i < cols; i++)
 	{
 		
 		insertLayer(rows);
 	}
-// 	ktDebug() << "KTTableExposure " << ly.count() << endl ;
 	
 	addChild(m_port);
 	adjustSize();
@@ -99,12 +97,9 @@ void KTTableExposure::touchFirstFrame()
 
 void KTTableExposure::clickedCell(int row,int col,int button,int gx,int gy)
 {
-	ktDebug() << "KTTableExposure::clickedCell(" << row << "," <<col << ")" << endl;
 	m_currentLayer = col;
 	m_currentFrame = row;
 	emit(cellSelected(col, row));
-	
-	ktDebug() << "id_m_currentLayer " << m_currentLayer << " " << "id_m_currentFrame" << m_currentFrame <<  m_layers.at(m_currentLayer)->currentFrameIsUsed() << endl;
 	
 	if ( m_layers.at(m_currentLayer)->currentFrameIsUsed() )
 	{
@@ -116,7 +111,6 @@ void KTTableExposure::clickedCell(int row,int col,int button,int gx,int gy)
 		KTStatus -> setCurrentKeyFrame( NULL );
 	}
 	emit(clickedFrame());
-	ktDebug() << "KTTableExposure::clickedCell finish" << endl;
 }
 
 void KTTableExposure::insertLayer(int rows, QString text)
@@ -151,8 +145,10 @@ void KTTableExposure::insertLayer(int rows, QString text)
 	n_layer->setIndexLayer( m_layers.count() );
 	n_layer->setNameLayer( tr( "Layer " ) + QString::number(m_numLayer) );
 	QPtrList<KeyFrame> kf = n_layer -> keyFrames();
-	//FIXME:kf.first()->setNameKeyFrame(  )
-// 	kf.first()->setNameKeyFrame(  );
+	KeyFrame *nkf = new KeyFrame();
+	nkf->setNameKeyFrame(QObject::tr( "Drawing " ) + QString::number(m_numLayer) + QString( "-1" ));
+	kf.append( nkf );
+	n_layer->setKeyFrames(kf);
 	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
 	ly.append( n_layer );
 	KTStatus -> currentScene() -> setLayers( ly );
@@ -168,11 +164,9 @@ void KTTableExposure::insertLayer(int rows, QString text)
 
 void KTTableExposure::changeCurrentLayer(int idLayer)
 {
-	if(idLayer != 0)
-	ktDebug() << "changeCurrentLayer(int " << idLayer << " ) " <<endl;
 	m_currentLayer = idLayer;
 	m_currentFrame = m_layers.at(m_currentLayer)->useFrame();
-	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
+	QPtrList<Layer> ly = KTStatus->currentScene()->getLayers();
 	Layer *sl = ly.at( m_currentLayer );
 
 	KTStatus -> setCurrentLayer( sl );
@@ -186,13 +180,14 @@ void KTTableExposure::setUseFrame()
 
 void KTTableExposure::useFrame(const QString &newName)
 {
-
 	QPtrList<KeyFrame> kf = KTStatus->currentLayer()->keyFrames();
 	KeyFrame *nkf = new KeyFrame();
 	nkf->setNameKeyFrame(newName);
 	kf.append( nkf );
-	
-	KTStatus->currentLayer()->setKeyFrames( kf );
+	if(KTStatus->currentLayer())
+	{
+		KTStatus->currentLayer()->setKeyFrames( kf );
+	}
 	KTStatus->setCurrentKeyFrame( nkf );
 		// Warning: Layer::~Layer deletes its keyframes (here those in kf), and Status::~Status
 			// deletetes its current keyframe too! This will most likely lead to a double deletion.
@@ -223,6 +218,7 @@ void KTTableExposure::lockCurrentFrame()
 
 void KTTableExposure::removeCurrentLayer()
 {
+	ktDebug() << "KTTableExposure::ly.count()" <<  "m_numLayer > 1 && m_layers.at(m_currentLayer)->isSelected() " << (m_numLayer > 1) << " && "  << m_layers.at(m_currentLayer)->isSelected() << endl;
 	if(m_numLayer > 1 && m_layers.at(m_currentLayer)->isSelected())
 	{
 		m_layout->remove( m_layers.at(m_currentLayer) );
@@ -232,12 +228,18 @@ void KTTableExposure::removeCurrentLayer()
 			m_layers.at(i)->setId(i);
 		}
 		m_numLayer--;
+	
+		QPtrList<Layer> ly = KTStatus->currentScene()->getLayers();
+		ktDebug() << "KTTableExposure::ly.count()" << ly.count() << endl;
+		ktDebug() << "KTTableExposure::removeCurrentLayer()" << m_currentLayer;
+		ly.setAutoDelete( true );
+		ly.remove(m_currentLayer);
+		ly.setAutoDelete( false );
+		KTStatus->currentScene()->setLayers(ly);
+		ktDebug() << "KTTableExposure::ly.count()" << ly.count() << endl;
+		
+		emit (layerRemoved());
 	}
-	QPtrList<Layer> ly = KTStatus->currentScene()->getLayers();
-	ly.setAutoDelete( true );
-	ly.remove( m_currentLayer );
-	ly.setAutoDelete( false );
-	emit (layerRemoved());
 }
 
 void KTTableExposure::copyCurrentFrame()

@@ -106,6 +106,7 @@ void KTLayerExposure::frameSelect(int id, int button, int x, int y)
 		m_frames.at(id)->setUsed( true );
 		m_useFrame++;
 		emit(setUsedFrame(m_frames.at(id)->name()));
+
 	}
 	if(button == Qt::RightButton)
 	{
@@ -395,4 +396,9 @@ void KTLayerExposure::frameRename(int idFrame, const QString&newName)
 // 	ktDebug() << " KTLayerExposure::frameRename " << newName << endl;
 	QPtrList<Layer> ly = KTStatus -> currentScene() -> getLayers();
 	ly.at(m_id)->keyFrames().at(idFrame)->setNameKeyFrame(newName);
+}
+
+int KTLayerExposure::id()
+{
+	return m_id;
 }

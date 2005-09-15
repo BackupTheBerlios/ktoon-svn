@@ -341,11 +341,11 @@ void Scenes::slotSelectScene()
 	
 	
 	//se optiene la posiscion de la escena seleccionada, y se coloca como la currentScene em KTStatus
-	if(sc.at( scene_pos / 16 ))
-	{
-		KTStatus -> setCurrentScene( sc.at( scene_pos / 16 ) );
-		ktDebug() << "Scenes KTStatus -> setCurrentScene( sc.at( scene_pos / 16 ) );" ;
-	}
+// 	if(sc.at( scene_pos / 16 ))
+// 	{
+// 		KTStatus -> setCurrentScene( sc.at( scene_pos / 16 ) );
+// 		ktDebug() << "Scenes KTStatus -> setCurrentScene( sc.at( scene_pos / 16 ) );" ;
+// 	}
 
 
 	emit sceneSelected( scene_pos / 16 );
