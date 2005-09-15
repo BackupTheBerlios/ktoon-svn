@@ -33,6 +33,8 @@
 #include "ktxmlreader.h"
 #include "ktdebug.h"
 
+#include "ktmainwindow.h"
+
 void usage();
 
 int main( int argc, char ** argv )
@@ -76,6 +78,8 @@ int main( int argc, char ** argv )
 	
 	splash_screen -> finish( main_window );
 	delete splash_screen;
+	
+	KTMainWindow mainWindow;
 	
 	application.connect( &application, SIGNAL( lastWindowClosed() ), &application, SLOT( quit()) );
 	

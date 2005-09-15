@@ -28,7 +28,6 @@
 
 Splash::Splash() : QSplashScreen( QPixmap( splash_xpm ), Qt::WStyle_StaysOnTop )
 {
-// 	setFont( QFont( "helvetica", 10 ) );
 	QPixmap pixmap(splash_xpm);
 	
 	QImage img = pixmap.convertToImage();
@@ -37,19 +36,21 @@ Splash::Splash() : QSplashScreen( QPixmap( splash_xpm ), Qt::WStyle_StaysOnTop )
 	{
 		if ( img.hasAlphaBuffer() )
 		{
-		QBitmap bitmap;
-		bitmap = img.createAlphaMask();
-		pixmap.setMask( bitmap );
+			QBitmap bitmap;
+			bitmap = img.createAlphaMask();
+			pixmap.setMask( bitmap );
 		}
 		else
 		{
-		QBitmap bitmap;
-		bitmap = img.createHeuristicMask();
-		pixmap.setMask( bitmap );
+			QBitmap bitmap;
+			bitmap = img.createHeuristicMask();
+			pixmap.setMask( bitmap );
 		}
 	}
 	if ( pixmap.mask() )
+	{
 		this -> setMask( *pixmap.mask() );
+	}
 }
 
 Splash::~Splash()
