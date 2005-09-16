@@ -18,78 +18,41 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTMAINWINDOW_H
-#define KTMAINWINDOW_H
+#ifndef KTACTIONMANAGER_H
+#define KTACTIONMANAGER_H
 
-#include <qmainwindow.h>
-#include <qworkspace.h>
-#include <qpopupmenu.h>
-#include <qmenubar.h>
-#include <qstatusbar.h>
+#include <qobject.h>
+#include <qaction.h>
+#include <qwidget.h>
+#include <qaccel.h>
+#include <qvaluelist.h>
+#include <qdict.h>
 
-#include "ktactionmanager.h"
-#include "ktviewdocument.h"
+typedef QValueList<QAction *> QActionPtrList;
+typedef QDict<QAction> QActionDict;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTMainWindow : public QMainWindow
+class KTActionManager : public QObject
 {
 	Q_OBJECT
+
 	public:
-		KTMainWindow();
-		~KTMainWindow();
-		virtual void setPalette(const QPalette &);
-		
+		KTActionManager(QWidget *parent = 0L, const char *name = 0L);
+		~KTActionManager();
+		void setWidget(QWidget *w);
+		void insert(QAction *action);
+		void remove( QAction* action );
+		QAction *take( QAction* action );
+		QAction *find(const QString &name) const;
+		QAction *operator[](const QString &) const;
+
 	private:
-		void setupBackground();
-		/**
-		 * Create the action
-		 */
-		void setupFileActions();
-		
-		/**
-		 * Setup the actions in the toolbar
-		 */
-		void setupToolBar();
-		
-		/**
-		 * Setup he actions in the menu
-		 */
-		void setupMenu();
-		
-		/**
-		 * Setup dialogs
-		 */
-		void setupDialogs();
-		
-	protected:
-		/**
-	 	 *  Event for main window closing control
-	 	 *
-	 	 * Reimplemented from QWidget.
-	 	 * @param close_event The input event
-		 */
-		void closeEvent( QCloseEvent *event );
-		void resizeEvent(QResizeEvent *event);
-		
-		/**
-		 *  Creates the application GUI according to the information of the data classes
-		 */
-		virtual void createGUI();
-		/**
-		 *  Updates the open recent menu item names according to the @a recent_names list of file names
-		 */
-		void updateOpenRecentMenu();
-		
-	private slots:
-		void newDocument();
-		
-	private:
-		QWorkspace *m_workSpace;
-		KTActionManager *m_actionManager;
-		QPopupMenu *m_fileMenu,*m_editMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
+		QAccel *m_accel;
+		QWidget *m_widget;
+		QActionDict m_actionDict;
 };
 
 #endif

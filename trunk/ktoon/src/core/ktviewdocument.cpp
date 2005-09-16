@@ -29,8 +29,7 @@
 #include <qcursor.h>
 
 
-KTViewDocument::KTViewDocument(QWidget *parent , const char *name, WFlags f)
-	: KTMdiWindow(parent, name, f)
+KTViewDocument::KTViewDocument(QWidget *parent , const char *name, WFlags f) : KTMdiWindow(parent, name, f)
 {
 	m_container = new QWidget(this);
 	m_HRuler = new KTDocumentRuler(KTDocumentRuler::Horizontal, m_container);

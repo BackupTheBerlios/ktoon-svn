@@ -18,78 +18,76 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTMAINWINDOW_H
-#define KTMAINWINDOW_H
-
-#include <qmainwindow.h>
-#include <qworkspace.h>
-#include <qpopupmenu.h>
-#include <qmenubar.h>
-#include <qstatusbar.h>
-
 #include "ktactionmanager.h"
-#include "ktviewdocument.h"
 
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-
-class KTMainWindow : public QMainWindow
+KTActionManager::KTActionManager(QWidget *parent, const char *name) : QObject(parent, name), m_accel(0), m_widget(0)
 {
-	Q_OBJECT
-	public:
-		KTMainWindow();
-		~KTMainWindow();
-		virtual void setPalette(const QPalette &);
-		
-	private:
-		void setupBackground();
-		/**
-		 * Create the action
-		 */
-		void setupFileActions();
-		
-		/**
-		 * Setup the actions in the toolbar
-		 */
-		void setupToolBar();
-		
-		/**
-		 * Setup he actions in the menu
-		 */
-		void setupMenu();
-		
-		/**
-		 * Setup dialogs
-		 */
-		void setupDialogs();
-		
-	protected:
-		/**
-	 	 *  Event for main window closing control
-	 	 *
-	 	 * Reimplemented from QWidget.
-	 	 * @param close_event The input event
-		 */
-		void closeEvent( QCloseEvent *event );
-		void resizeEvent(QResizeEvent *event);
-		
-		/**
-		 *  Creates the application GUI according to the information of the data classes
-		 */
-		virtual void createGUI();
-		/**
-		 *  Updates the open recent menu item names according to the @a recent_names list of file names
-		 */
-		void updateOpenRecentMenu();
-		
-	private slots:
-		void newDocument();
-		
-	private:
-		QWorkspace *m_workSpace;
-		KTActionManager *m_actionManager;
-		QPopupMenu *m_fileMenu,*m_editMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
-};
+	setWidget(parent);
+}
 
-#endif
+KTActionManager::~KTActionManager()
+{
+}
+
+void KTActionManager::setWidget(QWidget *w)
+{
+	if ( ! m_widget )
+	{
+		m_widget = w;
+		m_accel = new QAccel(w, this, "KTActionManager_QAccel");
+	}
+}
+
+void KTActionManager::insert(QAction *action)
+{
+	char uname[100];
+	const char *name = action->name();
+	if( !qstrcmp( name, "unnamed" ) )
+	{
+		sprintf(uname, "unnamed-%p", (void *)action);
+		name = uname;
+	}
+	
+	QAction *a = m_actionDict[ name ];
+	if ( a == action )
+	{
+		return;
+	}
+
+	m_actionDict.insert( name, action );
+}
+
+void KTActionManager::remove( QAction* action )
+{
+	delete take( action );
+}
+
+QAction *KTActionManager::take( QAction* action )
+{
+	char unnamed_name[100];
+	const char *name = action->name();
+	
+	if( !qstrcmp( name, "unnamed" ) )
+	{
+		sprintf(unnamed_name, "unnamed-%p", (void *) action);
+		name = unnamed_name;
+	}
+	
+	QAction *a = m_actionDict.take( name );
+	if ( !a || a != action )
+	{
+		return 0;
+	}
+	
+	return a;
+}
+
+QAction *KTActionManager::find(const QString &name) const
+{
+	return m_actionDict[name];
+}
+
+QAction *KTActionManager::operator[](const QString &name) const
+{
+	return find(name);
+}

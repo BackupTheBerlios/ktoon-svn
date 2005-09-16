@@ -22,13 +22,15 @@ HEADERS += ktoon.h \
            splash.h \
            ktdocumentruler.h \
            ktviewdocument.h \
-           ktmainwindow.h 
+           ktmainwindow.h \
+           ktactionmanager.h 
 SOURCES += ktoon.cpp \
            main.cpp \
            splash.cpp \
            ktdocumentruler.cpp \
            ktviewdocument.cpp \
-           ktmainwindow.cpp 
+           ktmainwindow.cpp \
+           ktactionmanager.cpp 
 TARGETDEPS += ../../src/dialogs/libdialogs.a \
 ../../src/qt/draw/libdraw.a \
 ../../src/qt/tools/libtools.a \
