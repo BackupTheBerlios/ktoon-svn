@@ -38,7 +38,7 @@
 //--------------- CONSTRUCTOR --------------------
 
 Brushes::Brushes( QWidget *parent, WFlags style/*, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button*/ )
-	: KTDialogBase( QDockWindow::OutsideDock, parent, "Brushes" )
+	: KTDialogBase( parent, "Brushes" )
 {
 	Q_CHECK_PTR( parent );
 // 	Q_CHECK_PTR( in_assigned_menu );

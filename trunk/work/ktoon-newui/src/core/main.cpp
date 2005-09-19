@@ -27,7 +27,6 @@
 #include <qdir.h>
 
 #include "ktapplication.h"
-#include "ktoon.h"
 #include "splash.h"
 #include "ktconfigdocument.h"
 #include "ktxmlreader.h"
@@ -70,39 +69,16 @@ int main( int argc, char ** argv )
 	splash_screen -> show();
 	splash_screen -> message( QObject::tr( "Loading Modules" ) );
 	
-	KToon *main_window = new KToon();
-	
-	main_window -> setCaption( "KToon" );
-	application.setMainWidget( main_window );
-	main_window -> showMaximized();
-	
-	splash_screen -> finish( main_window );
-	delete splash_screen;
-	
 	KTMainWindow mainWindow;
 	mainWindow.show();
 	
-	application.connect( &application, SIGNAL( lastWindowClosed() ), &application, SLOT( quit()) );
+	application.setMainWidget( &mainWindow );
+	mainWindow.showMaximized();
 	
-	if ( QGLFormat::hasOpenGL() )
-	{
-		QGLWidget gl((QWidget *) 0);
-		gl.makeCurrent();
-		
-		ktDebug() << "-> OpenGL detected :)" << endl;
-		if ( gl.format().directRendering() )
-		{
-			ktDebug() << "-> Using direct rendering :)" << endl;
-		}
-		else
-		{
-			ktDebug() << "-> No direct rendering" << endl;
-		}
-	}
-	else
-	{
-		ktDebug() << "-> OpenGL not detected" << endl;
-	}
+	splash_screen -> finish( &mainWindow );
+	delete splash_screen;
+	
+	application.connect( &application, SIGNAL( lastWindowClosed() ), &application, SLOT( quit()) );
 	
 	return application.exec();
 }

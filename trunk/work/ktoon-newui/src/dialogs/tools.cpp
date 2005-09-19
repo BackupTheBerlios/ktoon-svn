@@ -29,7 +29,7 @@
 //--------------- CONSTRUCTOR --------------------
 
 Tools::Tools( QWidget *parent)//, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
-	: KTDialogBase(QDockWindow::OutsideDock,parent, "Tools")
+	: KTDialogBase(parent, "Tools")
 {
 	KTINIT;
 	Q_CHECK_PTR( parent );

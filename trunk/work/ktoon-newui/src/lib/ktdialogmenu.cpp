@@ -22,7 +22,7 @@
 #include <qapplication.h>
 #include <qcursor.h>
 
-KTDialogMenu::KTDialogMenu(QWidget *parent) : KTDialogBase(QDockWindow::OutsideDock, parent)
+KTDialogMenu::KTDialogMenu(QWidget *parent) : KTDialogBase(parent)
 {
 	setCaption(tr("Menu"));
 	
@@ -32,8 +32,8 @@ KTDialogMenu::KTDialogMenu(QWidget *parent) : KTDialogBase(QDockWindow::OutsideD
 	
 	addMenuEntry(new QWidget(0), "gsgfas");
 	
-	boxLayout()->addWidget(m_bar);
-	boxLayout()->setDirection ( QBoxLayout::TopToBottom);
+// 	boxLayout()->addWidget(m_bar);
+// 	boxLayout()->setDirection ( QBoxLayout::TopToBottom);
 	
 	hide();
 	

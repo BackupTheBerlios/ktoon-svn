@@ -27,28 +27,19 @@
 
 #include <qobjectlist.h>
 
-KTDialogBase::KTDialogBase(Place p, QWidget *parent, const char *name, WFlags style) : QDockWindow(p, parent, name, style), m_isChildHidden(false)
+KTDialogBase::KTDialogBase(QWidget *parent, const char *name) : KTVBox( parent, name), m_isChildHidden(false)
 {
-	container = boxLayout();
-
-	setCloseMode(Undocked);
-
 	childs = new QObjectList();
 	
 	m_title = new KTDialogTitle("the title", this, "DialogTitle");
 	
 	QToolTip::add(m_title, tr("Double click for roll up"));
 	
-	container->addWidget(m_title, 0, Qt::AlignTop);
-	container->setDirection ( QBoxLayout::TopToBottom);
-	container->setMargin(5);
-	container->setSpacing(3);
-	
 	connect(m_title, SIGNAL(doubleClicked()), SLOT(toggleView()));
 	
 // 	connect(this, SIGNAL(placeChanged(QDockWindow::Place)), SLOT(fixPosition(QDockWindow::Place)));
 	
-	setOrientation( Qt::Vertical );
+// 	setOrientation( Qt::Vertical );
 	
 	adjustSize();
 	hide();
@@ -91,7 +82,7 @@ void KTDialogBase::setCaption(const QString &text)
 
 void KTDialogBase::setFont( const QFont &f)
 {
-	QDockWindow::setFont(f);
+	KTVBox::setFont(f);
 	adjustSize();
 }
 
@@ -107,6 +98,6 @@ bool KTDialogBase::event( QEvent * e )
 		emit activate(true);
 	}
 
-	return QDockWindow::event(e );
+	return KTVBox::event(e );
 }
 

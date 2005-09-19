@@ -31,6 +31,24 @@
 #include "ktviewdocument.h"
 
 #include "ktexposuresheet.h"
+#include "properties.h"
+#include "preferences.h"
+#include "scenes.h"
+#include "brushes.h"
+#include "colorpalette.h"
+#include "tools.h"
+#include "library.h"
+#include "kttimeline.h"
+#include "gltopcameraview.h"
+#include "glsidecameraview.h"
+#include "status.h"
+#include "about.h"
+#include "document.h"
+#include "import.h"
+#include "export.h"
+#include "ktcamerapreview.h"
+#include "ktviewdocument.h"
+
 
 #include "dmainwindow.h"
 

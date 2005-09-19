@@ -34,7 +34,7 @@
 //--------------- CONSTRUCTOR --------------------
 
 Scenes::Scenes( QWidget *parent)
-	: KTDialogBase( QDockWindow::OutsideDock, parent, "Scenes")
+	: KTDialogBase( parent, "Scenes")
 {
     Q_CHECK_PTR( parent );
     KTINIT;

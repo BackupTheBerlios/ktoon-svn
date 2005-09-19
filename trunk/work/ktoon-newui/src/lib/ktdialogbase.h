@@ -28,15 +28,16 @@
 #include <qevent.h>
 
 #include "ktdialogtitle.h"
+#include "ktvbox.h"
 
 /**
  * @author Jorge Cuadrado
 */
-class KTDialogBase : public QDockWindow
+class KTDialogBase : public KTVBox
 {
 	Q_OBJECT
 	public:
-		KTDialogBase(Place p = InDock, QWidget *parent = 0, const char *name = 0, WFlags style = 0);
+		KTDialogBase(QWidget *parent = 0, const char *name = 0);
 		~KTDialogBase();
 		virtual void addChild(QWidget * child);
 		void setFont(const QFont &);

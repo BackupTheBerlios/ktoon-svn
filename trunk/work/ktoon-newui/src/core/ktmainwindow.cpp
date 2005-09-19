@@ -113,10 +113,32 @@ void KTMainWindow::setupMenu()
 
 void KTMainWindow::createGUI()
 {
+	ColorPalette *m_colorPalette = new ColorPalette( this);
+	m_colorPalette->show();
+	toolWindow(DDockWindow::Left)->addWidget(tr("Time Line"),m_colorPalette);
+	
+	Brushes *m_brushesDialog = new Brushes( this);
+	m_brushesDialog->show();
+	toolWindow(DDockWindow::Left)->addWidget(tr("Brushes"),m_brushesDialog);
+	
+// 	library_dialog = new Library( this, KTStatus->currentDrawingArea());
+// 	library_dialog->show();
+// 	toolWindow(DDockWindow::Left)->addWidget(tr("Library"),library_dialog);
+	
+	Scenes *m_scenes = new Scenes( this);
+	m_scenes->show();
+	toolWindow(DDockWindow::Right)->addWidget(tr("Scenes"),m_scenes);
+	
 	KTExposureSheet *m_exposureSheet = new KTExposureSheet(this);
 	m_exposureSheet->show();
 	
-	toolWindow(DDockWindow::Left)->addWidget("Exposure Sheet",m_exposureSheet);
+	toolWindow(DDockWindow::Right)->addWidget(tr("Exposure Sheet"),m_exposureSheet);
+	
+	KTTimeLine *m_timeLine = new KTTimeLine(this);
+	m_timeLine->show();
+	toolWindow(DDockWindow::Bottom)->addWidget(tr("Time Line"),m_timeLine);
+	
+	
 }
 
 void KTMainWindow::setupFileActions()
