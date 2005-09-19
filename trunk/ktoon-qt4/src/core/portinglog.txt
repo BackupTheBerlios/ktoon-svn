@@ -1,0 +1,15 @@
+Number of log entries: 14
+User skipped file /home/krawek/Proyectos/ktoon/src/core/ktoon.cpp
+No changes made to file /home/krawek/Proyectos/ktoon/src/core/main.cpp
+No changes made to file /home/krawek/Proyectos/ktoon/src/core/splash.cpp
+User skipped file /home/krawek/Proyectos/ktoon/src/core/ktdocumentruler.cpp
+User skipped file /home/krawek/Proyectos/ktoon/src/core/ktviewdocument.cpp
+User skipped file /home/krawek/Proyectos/ktoon/src/core/ktmainwindow.cpp
+User skipped file /home/krawek/Proyectos/ktoon/src/core/ktactionmanager.cpp
+User skipped file /home/krawek/Proyectos/ktoon/src/core/ktoon.h
+No changes made to file /home/krawek/Proyectos/ktoon/src/core/splash.h
+User skipped file /home/krawek/Proyectos/ktoon/src/core/ktdocumentruler.h
+No changes made to file /home/krawek/Proyectos/ktoon/src/core/ktviewdocument.h
+No changes made to file /home/krawek/Proyectos/ktoon/src/core/ktmainwindow.h
+No changes made to file /home/krawek/Proyectos/ktoon/src/core/ktactionmanager.h
+User skipped file /home/krawek/Proyectos/ktoon/src/core/core.pro

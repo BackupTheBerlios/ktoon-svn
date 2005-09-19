@@ -1,0 +1,20 @@
+/* XPM */
+const char *arrowdown_xpm[]={
+"12 12 5 1",
+". c None",
+"# c None",
+"c c #a64a03",
+"b c #e1aa52",
+"a c #ffffc0",
+"...##aa#####",
+"####abba####",
+"###abccba###",
+"###abccba###",
+"##aabccbaa##",
+"#abbbccbbba#",
+"abccbccbccba",
+"#abccccccba#",
+"##abccccba##",
+"###abccba###",
+"...#abba####",
+"...##aa#####"};
