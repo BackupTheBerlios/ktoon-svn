@@ -52,6 +52,8 @@
 
 #include "dmainwindow.h"
 
+#include "ktstatusbar.h"
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */

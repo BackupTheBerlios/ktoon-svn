@@ -82,8 +82,14 @@ public:
     /**Restores the size of button bar buttons.*/
     virtual void unshrink();
     
+	public slots:
+		void onlyIcons();
+		void onlyText();
+		void textAndIcons();
+    
 protected:
     virtual void resizeEvent ( QResizeEvent *ev );
+    virtual void mousePressEvent(QMouseEvent *e);
     
     int originalDimension();
    

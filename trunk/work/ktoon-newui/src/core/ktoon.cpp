@@ -1099,9 +1099,7 @@ void KToon::setupDialogs()
 			 window_exposure_sheet, SLOT(setOn(bool)));
 			
 // 	list_of_es.append( exposure_sheet_dialog );
-    
-	moveDockWindow(m_ExposureSheetDialog, Qt::DockRight);
-	m_ExposureSheetDialog->undock();
+
 	m_ExposureSheetDialog->move(600,50);
 	m_ExposureSheetDialog->show();
 	
@@ -1119,9 +1117,7 @@ void KToon::setupDialogs()
 
 	QObject::connect(color_palette_dialog, SIGNAL(activate(bool)),
 			 window_color_palette, SLOT(setOn(bool)));
-    
-	moveDockWindow(color_palette_dialog, Qt::DockLeft);
-	color_palette_dialog->undock();
+	
 	color_palette_dialog -> show();
     
 	brushes_dialog = new Brushes( this);

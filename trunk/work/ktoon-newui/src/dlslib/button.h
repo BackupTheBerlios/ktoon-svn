@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef IDEALBUTTON_H
 #define IDEALBUTTON_H
 
@@ -28,6 +29,7 @@
 namespace Ideal {
 
 class ButtonBar;
+class Button;
 
 /**
 @short A button to place onto the ButtonBar

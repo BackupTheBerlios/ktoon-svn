@@ -24,6 +24,9 @@
 #ifdef USE_KDE
 #include <kdebug.h>
 #include <kstringhandler.h>
+#include <kpopupmenu.h>
+#else
+#include <qpopupmenu.h>
 #endif
 
 #include "button.h"
@@ -109,7 +112,9 @@ void ButtonBar::setMode(ButtonMode mode)
 {
     m_mode = mode;
     for (ButtonList::iterator it = m_buttons.begin(); it != m_buttons.end(); ++it)
+    {
         (*it)->setMode(mode);
+    }
 }
 
 ButtonMode ButtonBar::mode() const
@@ -144,7 +149,9 @@ void ButtonBar::fixDimensions()
 void ButtonBar::setButtonsPlace(Ideal::Place place)
 {
     for (ButtonList::iterator it = m_buttons.begin(); it != m_buttons.end(); ++it)
+    {
         (*it)->setPlace(place);
+    }
 }
 
 void ButtonBar::resizeEvent(QResizeEvent *ev)
@@ -180,6 +187,7 @@ void ButtonBar::resizeEvent(QResizeEvent *ev)
 
 void ButtonBar::shrink(int preferredDimension, int actualDimension)
 {
+	qDebug("shrink");
     if (!preferredDimension)
         return;
     
@@ -330,6 +338,38 @@ bool ButtonBar::autoResize() const
 void ButtonBar::setAutoResize(bool b)
 {
     m_autoResize = b;
+}
+
+void ButtonBar::mousePressEvent(QMouseEvent *e)
+{
+	if (e->button() == Qt::RightButton)
+	{
+#ifdef USE_KDE
+		KPopupMenu *menu = new KPopupMenu(this);
+#else
+		QPopupMenu *menu = new QPopupMenu(this);
+#endif
+		menu->insertItem(tr("Only text"), this, SLOT(onlyText()));
+		menu->insertItem(tr("Only icons"), this, SLOT(onlyIcons()));
+		menu->insertItem(tr("Icons and text"), this, SLOT(textAndIcons()));
+		
+		menu->exec(e->globalPos());
+	}
+}
+
+void ButtonBar::onlyIcons()
+{
+	setMode(Icons);
+}
+
+void ButtonBar::onlyText()
+{
+	setMode(Text);
+}
+
+void ButtonBar::textAndIcons()
+{
+	setMode(IconsAndText);
 }
 
 }

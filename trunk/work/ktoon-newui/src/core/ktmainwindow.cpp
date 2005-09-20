@@ -23,6 +23,8 @@
 #include "ktdebug.h"
 #include "kimageeffect.h"
 
+#include "status.h"
+
 // Qt
 #include <qimage.h>
 //
@@ -32,10 +34,14 @@ KTMainWindow::KTMainWindow() : DMainWindow(0, "KToon-MainWindow")
 {
 	KTINIT;
 	
+	new KTStatusBar(this);
+	
 	setCaption(tr("KToon: 2D animation tool kit"));
 	
 	m_workSpace = new QWorkspace(this);
 	m_workSpace->setScrollBarsEnabled ( true );
+	
+	KTStatus->setupDrawingArea(m_workSpace);
 	
 	addWidget(m_workSpace, tr("Scene 1"));
 	
@@ -111,19 +117,22 @@ void KTMainWindow::setupMenu()
 	menuBar()->insertItem( tr( "&Help" ), m_helpMenu );
 }
 
+/**
+ * 
+ */
 void KTMainWindow::createGUI()
 {
 	ColorPalette *m_colorPalette = new ColorPalette( this);
 	m_colorPalette->show();
-	toolWindow(DDockWindow::Left)->addWidget(tr("Time Line"),m_colorPalette);
+	toolWindow(DDockWindow::Left)->addWidget(tr("Palette"),m_colorPalette);
 	
 	Brushes *m_brushesDialog = new Brushes( this);
 	m_brushesDialog->show();
 	toolWindow(DDockWindow::Left)->addWidget(tr("Brushes"),m_brushesDialog);
 	
-// 	library_dialog = new Library( this, KTStatus->currentDrawingArea());
-// 	library_dialog->show();
-// 	toolWindow(DDockWindow::Left)->addWidget(tr("Library"),library_dialog);
+	Library *m_libraryDialog = new Library( this, KTStatus->currentDrawingArea());
+	m_libraryDialog->show();
+	toolWindow(DDockWindow::Left)->addWidget(tr("Library"),m_libraryDialog);
 	
 	Scenes *m_scenes = new Scenes( this);
 	m_scenes->show();
@@ -131,7 +140,6 @@ void KTMainWindow::createGUI()
 	
 	KTExposureSheet *m_exposureSheet = new KTExposureSheet(this);
 	m_exposureSheet->show();
-	
 	toolWindow(DDockWindow::Right)->addWidget(tr("Exposure Sheet"),m_exposureSheet);
 	
 	KTTimeLine *m_timeLine = new KTTimeLine(this);
@@ -228,8 +236,13 @@ void KTMainWindow::setPalette(const QPalette &pal)
 
 void KTMainWindow::newDocument()
 {
+	static_cast<KTStatusBar*>(statusBar())->setStatus(tr("Opening a new document..."));
 	KTViewDocument *viewDocument = new KTViewDocument(m_workSpace);
+	static_cast<KTStatusBar*>(statusBar())->advance(4);
 	viewDocument->setActiveWindow();
+	static_cast<KTStatusBar*>(statusBar())->advance(7);
 	viewDocument->show();
+	static_cast<KTStatusBar*>(statusBar())->advance(10);
+	static_cast<KTStatusBar*>(statusBar())->setStatus(tr("Opened."));
 }
 

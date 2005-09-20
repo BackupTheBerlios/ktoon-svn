@@ -31,11 +31,11 @@ KTDialogBase::KTDialogBase(QWidget *parent, const char *name) : KTVBox( parent, 
 {
 	childs = new QObjectList();
 	
-	m_title = new KTDialogTitle("the title", this, "DialogTitle");
+// 	m_title = new KTDialogTitle("the title", this, "DialogTitle");
 	
-	QToolTip::add(m_title, tr("Double click for roll up"));
+// 	QToolTip::add(m_title, tr("Double click for roll up"));
 	
-	connect(m_title, SIGNAL(doubleClicked()), SLOT(toggleView()));
+// 	connect(m_title, SIGNAL(doubleClicked()), SLOT(toggleView()));
 	
 // 	connect(this, SIGNAL(placeChanged(QDockWindow::Place)), SLOT(fixPosition(QDockWindow::Place)));
 	
@@ -55,7 +55,7 @@ KTDialogBase::~KTDialogBase()
 void KTDialogBase::addChild(QWidget* child)
 {
 	childs->append(child);
-	container->addWidget(child);
+// 	container->addWidget(child);
 }
 
 void KTDialogBase::toggleView()
@@ -77,7 +77,7 @@ void KTDialogBase::toggleView()
 void KTDialogBase::setCaption(const QString &text)
 {
 // 	QDockWindow::setCaption(text);
- 	m_title->setText(text);
+//  	m_title->setText(text);
 }
 
 void KTDialogBase::setFont( const QFont &f)
@@ -88,15 +88,15 @@ void KTDialogBase::setFont( const QFont &f)
 
 bool KTDialogBase::event( QEvent * e )
 {
-	if ( e->type() == QEvent::Hide )
-	{
-		emit activate(false);
-	}
-	else if ( e->type() == QEvent::Show )
-	{
-		adjustSize();
-		emit activate(true);
-	}
+// 	if ( e->type() == QEvent::Hide )
+// 	{
+// 		emit activate(false);
+// 	}
+// 	else if ( e->type() == QEvent::Show )
+// 	{
+// 		adjustSize();
+// 		emit activate(true);
+// 	}
 
 	return KTVBox::event(e );
 }
