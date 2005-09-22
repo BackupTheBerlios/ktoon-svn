@@ -26,7 +26,8 @@ TARGETDEPS += ../../src/dialogs/libdialogs.a \
               ../../src/timeline/libtimeline.a \
               ../../src/lib/liblib.a \
               ../../src/images/images/libimages.a \
-              ../../src/exposure/libexposure.a 
+              ../../src/exposure/libexposure.a \
+              ../../src/dlslib/libdlslib.a 
 LIBS += ../../src/dialogs/libdialogs.a \
         ../../src/images/images/libimages.a \
         ../../src/opengl/draw/libdraw.a \
@@ -39,7 +40,8 @@ LIBS += ../../src/dialogs/libdialogs.a \
         ../../src/library/liblibrary.a \
         ../../src/timeline/libtimeline.a \
         ../../src/exposure/libexposure.a \
-        ../../src/lib/liblib.a 
+        ../../src/lib/liblib.a \
+        ../../src/dlslib/libdlslib.a 
 INCLUDEPATH += ../../src/exposure \
                ../../src/dialogs \
                ../../src/qt/cameras \
@@ -51,6 +53,7 @@ INCLUDEPATH += ../../src/exposure \
                ../../src/store \
                ../../src/library \
                ../../src/timeline \
+               ../../src/dlslib \
                ../../src/lib \
                ../../src/images/sequences \
                ../../src/images/icons \
@@ -74,13 +77,15 @@ HEADERS += ktoon.h \
            ktdocumentruler.h \
            ktviewdocument.h \
            ktmainwindow.h \
-           ktactionmanager.h 
+           ktactionmanager.h \
+           ktstatusbar.h 
 SOURCES += ktoon.cpp \
            main.cpp \
            splash.cpp \
            ktdocumentruler.cpp \
            ktviewdocument.cpp \
            ktmainwindow.cpp \
-           ktactionmanager.cpp 
+           ktactionmanager.cpp \
+           ktstatusbar.cpp 
 #The following line was inserted by qt3to4
 QT +=  xml opengl qt3support 

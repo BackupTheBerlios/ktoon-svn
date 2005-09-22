@@ -21,9 +21,9 @@
 #ifndef KTAPPLICATION_H
 #define KTAPPLICATION_H
 
-#include <qapplication.h>
-#include <qstring.h>
-#include <qmap.h>
+#include <QApplication>
+#include <QString>
+#include <QMap>
 #include "ktthememanager.h"
 #include "ktconfig.h"
 

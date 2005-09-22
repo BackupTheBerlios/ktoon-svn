@@ -20,7 +20,7 @@
 #ifndef __KSEPARATOR_H__
 #define __KSEPARATOR_H__
 
-#include <q3frame.h>
+#include <QFrame>
 
 /**
  * Standard horizontal or vertical separator.
@@ -28,7 +28,7 @@
  * @author Michael Roth <mroth@wirlweb.de>
  * @version $Id: kseparator.h,v 1.12 2004/03/18 02:59:35 bmeyer Exp $
 */
-class KSeparator : public Q3Frame
+class KSeparator : public QFrame
 {
   Q_OBJECT
   Q_PROPERTY( int orientation READ orientation WRITE setOrientation )

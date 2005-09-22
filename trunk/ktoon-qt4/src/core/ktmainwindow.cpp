@@ -23,26 +23,32 @@
 #include "ktdebug.h"
 #include "kimageeffect.h"
 
+#include "status.h"
+
 // Qt
-#include <qimage.h>
-//Added by qt3to4:
+#include <QImage>
 #include <QPixmap>
 #include <QResizeEvent>
-#include <Q3PopupMenu>
+#include <QMenu>
 #include <QCloseEvent>
 //
 
-
-KTMainWindow::KTMainWindow() : Q3MainWindow(0, "KToon-MainWindow", Qt::WDestructiveClose)
+KTMainWindow::KTMainWindow() : DMainWindow(0, "KToon-MainWindow")
 {
 	KTINIT;
+	new KTStatusBar(this);
+// 	setStatusBar(new KTStatusBar(this));
 	
 	setCaption(tr("KToon: 2D animation tool kit"));
 	
 	m_workSpace = new QWorkspace(this);
 	m_workSpace->setScrollBarsEnabled ( true );
 	
-	Q3MainWindow::setCentralWidget(m_workSpace);
+	KTStatus->setupDrawingArea(m_workSpace);
+	
+	addWidget(m_workSpace, tr("Scene 1"));
+	
+	DMainWindow::setCentralWidget(m_workSpace);
 	setupBackground();
 	
 	m_actionManager = new KTActionManager(this, "KTMainWindow-ACTMngr");
@@ -51,7 +57,11 @@ KTMainWindow::KTMainWindow() : Q3MainWindow(0, "KToon-MainWindow", Qt::WDestruct
 	setupFileActions();
 	setupMenu();
 	
-// 	show();
+	statusBar()->message("Ready to play!");
+	
+	createGUI();
+	
+	show();
 }
 
 
@@ -63,13 +73,13 @@ KTMainWindow::~KTMainWindow()
 void KTMainWindow::setupMenu()
 {
 	// Setup the file menu
-	m_fileMenu = new Q3PopupMenu(this);
+	m_fileMenu = new QMenu(this);
 	menuBar()->insertItem(tr("&File"), m_fileMenu);
 	
 	m_actionManager->find("NewFile")->addTo(m_fileMenu);
 	m_actionManager->find("OpenFile")->addTo(m_fileMenu);
 	
-	Q3PopupMenu *recents = new Q3PopupMenu( this );
+	QMenu *recents = new QMenu( this );
 	connect( recents, SIGNAL( activated( int ) ), SLOT( openRecent( int ) ) );
 	m_fileMenu->insertItem( tr( "Open Recent" ), recents );
 
@@ -86,77 +96,100 @@ void KTMainWindow::setupMenu()
 	m_fileMenu->insertSeparator();
 	
 	// Setup the edit menu
-	m_editMenu = new Q3PopupMenu(this);
+	m_editMenu = new QMenu(this);
 	menuBar()->insertItem( tr( "&Edit" ), m_editMenu );
 	
 	// Setup the view menu
-	m_viewMenu = new Q3PopupMenu(this);
+	m_viewMenu = new QMenu(this);
 	menuBar()->insertItem( tr( "&View" ), m_viewMenu );
 	
 	// Setup the insert menu
-	m_insertMenu = new Q3PopupMenu(this);
+	m_insertMenu = new QMenu(this);
 	menuBar()->insertItem( tr( "&Insert" ), m_insertMenu );
 	
 	// Setup the tools menu
-	m_toolsMenu = new Q3PopupMenu(this);
+	m_toolsMenu = new QMenu(this);
 	menuBar()->insertItem( tr( "&Tools" ), m_toolsMenu );
 	
 	// Setup the window menu
-	m_windowMenu = new Q3PopupMenu(this);
+	m_windowMenu = new QMenu(this);
 	menuBar()->insertItem( tr( "&Window" ), m_windowMenu );
 	
 	// Setup the help menu
-	m_helpMenu = new Q3PopupMenu(this);
+	m_helpMenu = new QMenu(this);
 	menuBar()->insertItem( tr( "&Help" ), m_helpMenu );
 }
 
 void KTMainWindow::createGUI()
 {
+	ColorPalette *m_colorPalette = new ColorPalette(this);
+	m_colorPalette->show();
+	toolWindow(DDockWindow::Left)->addWidget(tr("Palette"),m_colorPalette);
+	
+	Brushes *m_brushesDialog = new Brushes( this);
+	m_brushesDialog->show();
+	toolWindow(DDockWindow::Left)->addWidget(tr("Brushes"),m_brushesDialog);
+	
+	Library *m_libraryDialog = new Library( this, KTStatus->currentDrawingArea());
+	m_libraryDialog->show();
+	toolWindow(DDockWindow::Left)->addWidget(tr("Library"),m_libraryDialog);
+	
+	Scenes *m_scenes = new Scenes( this);
+	m_scenes->show();
+	toolWindow(DDockWindow::Right)->addWidget(tr("Scenes"),m_scenes);
+	
+	KTExposureSheet *m_exposureSheet = new KTExposureSheet(this);
+	m_exposureSheet->show();
+	toolWindow(DDockWindow::Right)->addWidget(tr("Exposure Sheet"),m_exposureSheet);
+	
+	KTTimeLine *m_timeLine = new KTTimeLine(this);
+	m_timeLine->show();
+	toolWindow(DDockWindow::Bottom)->addWidget(tr("Time Line"),m_timeLine);
 }
 
 void KTMainWindow::setupFileActions()
 {
-	Q3Action *newFile = new Q3Action( QPixmap( new_xpm ), tr( "New Document" ), tr("Ctrl+N"), this, "NewFile");
+	QAction *newFile = new QAction( QPixmap( new_xpm ), tr( "New Document" ), tr("Ctrl+N"), this, "NewFile");
 	connect(newFile, SIGNAL(activated()), this, SLOT(newDocument()));
 	newFile->setStatusTip(tr( "Opens a new document"));
 	m_actionManager->insert(newFile);
 	
-	Q3Action *openFile = new Q3Action( QPixmap(open_xpm), tr( "Open Document" ), tr("Ctrl+O"), this, "OpenFile");
+	QAction *openFile = new QAction( QPixmap(open_xpm), tr( "Open Document" ), tr("Ctrl+O"), this, "OpenFile");
 	connect(openFile, SIGNAL(activated()), this, SLOT(chooseFile()));
 	openFile->setStatusTip(tr("Loads an existent document"));
 	m_actionManager->insert(openFile);
 	
-	Q3Action *save = new Q3Action( QPixmap(save_xpm), tr( "Save Document" ),tr("Ctrl+S") , this, "Save");
+	QAction *save = new QAction( QPixmap(save_xpm), tr( "Save Document" ),tr("Ctrl+S") , this, "Save");
 	connect(save, SIGNAL(activated()), this, SLOT(save()));
 	save->setStatusTip(tr("Saves the current document in the current location"));
 	m_actionManager->insert(save);
 	
-	Q3Action *saveAs = new Q3Action( tr( "Save &As..." ), QKeySequence(), this, "SaveAs");
+	QAction *saveAs = new QAction( tr( "Save &As..." ), QKeySequence(), this, "SaveAs");
 	connect(saveAs, SIGNAL(activated()), this, SLOT(saveAs()));
 	saveAs->setStatusTip(tr("Opens a dialog box to save the current document in any location"));
 	m_actionManager->insert(saveAs);
 	
-	Q3Action *close = new Q3Action(QPixmap(close_xpm), tr( "Cl&ose" ), tr("Ctrl+W"), this, "Close");
+	QAction *close = new QAction(QPixmap(close_xpm), tr( "Cl&ose" ), tr("Ctrl+W"), this, "Close");
 	close->setStatusTip(tr("Closes the active document"));
 	m_actionManager->insert(close);
 	
-	Q3Action *import = new Q3Action( QPixmap(import_xpm), tr( "&Import..." ),  tr("Ctrl+I"), this, "Import");
+	QAction *import = new QAction( QPixmap(import_xpm), tr( "&Import..." ),  tr("Ctrl+I"), this, "Import");
 	connect(import, SIGNAL(activated()), this, SLOT(import()));
 	import->setStatusTip(tr("Imports a file in the supported format"));
 	m_actionManager->insert(import);
 	
-	Q3Action *exptr = new Q3Action(QPixmap(export_xpm), tr( "&Export..." ),  tr("Ctrl+E"), this, "Export");
+	QAction *exptr = new QAction(QPixmap(export_xpm), tr( "&Export..." ),  tr("Ctrl+E"), this, "Export");
 	connect(exptr, SIGNAL(activated()), this, SLOT(export()));
 	exptr->setStatusTip(tr("Exports this document as a file in the available formats"));
 	exptr->setVisible(false);
 	m_actionManager->insert(exptr);
 	
-	Q3Action *properties = new Q3Action( tr( "&Properties..." ),  QKeySequence(), this, "Properties");
+	QAction *properties = new QAction( tr( "&Properties..." ),  QKeySequence(), this, "Properties");
 	connect(properties, SIGNAL(activated()), this, SLOT(properties()));
 	properties->setStatusTip(tr("Opens the properties dialog box"));
 	m_actionManager->insert(properties);
 	
-	Q3Action *exit = new Q3Action(QPixmap(export_xpm), tr( "E&xit" ),  tr("Ctrl+Q"), this, "Exit");
+	QAction *exit = new QAction(QPixmap(export_xpm), tr( "E&xit" ),  tr("Ctrl+Q"), this, "Exit");
 	connect(exit, SIGNAL(activated()), this, SLOT(close()));
 	exit->setStatusTip(tr("Closes the application"));
 	m_actionManager->insert(exit);
@@ -172,12 +205,12 @@ void KTMainWindow::setupDialogs()
 
 void KTMainWindow::closeEvent( QCloseEvent *event )
 {
-	Q3MainWindow::closeEvent(event);
+	DMainWindow::closeEvent(event);
 }
 
 void KTMainWindow::resizeEvent(QResizeEvent *event)
 {
-	Q3MainWindow::resizeEvent(event);
+	DMainWindow::resizeEvent(event);
 }
 
 void KTMainWindow::updateOpenRecentMenu()
@@ -186,23 +219,29 @@ void KTMainWindow::updateOpenRecentMenu()
 
 void KTMainWindow::setupBackground()
 {
-	QImage bgImg(background_xpm );
-	KImageEffect::fade(bgImg, 0.2, palette().color(QPalette::Active , QColorGroup::Background) );
-	bgImg.smoothScale(m_workSpace->size());
+// 	QImage bgImg(background_xpm );
+// 	KImageEffect::fade(bgImg, 0.2, palette().color(QPalette::Active , QColorGroup::Background) );
+// 	bgImg.smoothScale(m_workSpace->size());
 	
-	m_workSpace->setPaletteBackgroundPixmap( QPixmap(bgImg) );
+// 	m_workSpace->setPaletteBackgroundPixmap( bgImg );
 }
 
 void KTMainWindow::setPalette(const QPalette &pal)
 {
-	Q3MainWindow::setPalette(pal);
+	DMainWindow::setPalette(pal);
 	setupBackground();
 }
 
 void KTMainWindow::newDocument()
 {
+	static_cast<KTStatusBar*>(statusBar())->setStatus(tr("Opening a new document..."));
 	KTViewDocument *viewDocument = new KTViewDocument(m_workSpace);
+	m_workSpace->addWindow(viewDocument);
+	static_cast<KTStatusBar*>(statusBar())->advance(4);
 	viewDocument->setActiveWindow();
+	static_cast<KTStatusBar*>(statusBar())->advance(7);
 	viewDocument->show();
+	static_cast<KTStatusBar*>(statusBar())->advance(10);
+	static_cast<KTStatusBar*>(statusBar())->setStatus(tr("Opened."));
 }
 

@@ -21,15 +21,14 @@
 #ifndef KTACTIONMANAGER_H
 #define KTACTIONMANAGER_H
 
-#include <qobject.h>
-#include <q3action.h>
-#include <qwidget.h>
-#include <q3accel.h>
-#include <q3valuelist.h>
-#include <q3dict.h>
+#include <QObject>
+#include <QAction>
+#include <QWidget>
+#include <QList>
+#include <QHash>
 
-typedef Q3ValueList<Q3Action *> QActionPtrList;
-typedef Q3Dict<Q3Action> QActionDict;
+typedef QList<QAction *> QActionList;
+typedef QHash<QString, QAction *> QActionDict;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -43,14 +42,13 @@ class KTActionManager : public QObject
 		KTActionManager(QWidget *parent = 0L, const char *name = 0L);
 		~KTActionManager();
 		void setWidget(QWidget *w);
-		void insert(Q3Action *action);
-		void remove( Q3Action* action );
-		Q3Action *take( Q3Action* action );
-		Q3Action *find(const QString &name) const;
-		Q3Action *operator[](const QString &) const;
+		void insert(QAction *action);
+		void remove( QAction* action );
+		QAction *take( QAction* action );
+		QAction *find(const QString &name) const;
+		QAction *operator[](const QString &) const;
 
 	private:
-		Q3Accel *m_accel;
 		QWidget *m_widget;
 		QActionDict m_actionDict;
 };

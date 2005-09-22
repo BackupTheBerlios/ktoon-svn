@@ -20,12 +20,12 @@
 
 #include "ktapplication.h"
 #include "configwizard.h" 
-#include <iostream>
-#include <qdir.h>
-#include <qfile.h>
-#include <qfileinfo.h>
-#include <qmessagebox.h>
-#include <qobject.h> 
+
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QMessageBox>
+#include <QObject> 
 
 #include "ktdebug.h"
 
@@ -44,7 +44,7 @@ KTApplication::KTApplication(int & argc, char ** argv)
 #endif
 
  	applyColors(Default);
-	setFont( QFont( "helvetica", 10 ) );
+// 	setFont( QFont( "helvetica", 10 ) );
 	
 	KTCONFIG->init();
 	
@@ -137,7 +137,7 @@ void KTApplication::applyPalette(const QPalette &pal)
 	if ( mainWidget() )
 	{
 		QObjectList list = mainWidget()->queryList("QWidget");
-		for( uint i = 0; i < list.count(); i++ )
+		for( int i = 0; i < list.count(); i++ )
 		{
 			QObject *o = list[i];
 			if ( o )
@@ -286,7 +286,7 @@ void KTApplication::initDirectories()
 		
 		QStringList files = QStringList() << "bru" << "cpl" << "output" << "lbr" << "components";
 		
-		for (uint i = 0; i < files.count(); i++)
+		for (int i = 0; i < files.count(); i++)
 		{
 			QDir tmp(m_KTOON_REPOSITORY+"/"+files[i]+"/");
 			

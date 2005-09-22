@@ -20,7 +20,7 @@
 
 #include "ktactionmanager.h"
 
-KTActionManager::KTActionManager(QWidget *parent, const char *name) : QObject(parent, name), m_accel(0), m_widget(0)
+KTActionManager::KTActionManager(QWidget *parent, const char *name) : QObject(parent, name), m_widget(0)
 {
 	setWidget(parent);
 }
@@ -34,11 +34,10 @@ void KTActionManager::setWidget(QWidget *w)
 	if ( ! m_widget )
 	{
 		m_widget = w;
-		m_accel = new Q3Accel(w, this, "KTActionManager_QAccel");
 	}
 }
 
-void KTActionManager::insert(Q3Action *action)
+void KTActionManager::insert(QAction *action)
 {
 	char uname[100];
 	const char *name = action->name();
@@ -48,7 +47,7 @@ void KTActionManager::insert(Q3Action *action)
 		name = uname;
 	}
 	
-	Q3Action *a = m_actionDict[ name ];
+	QAction *a = m_actionDict[ name ];
 	if ( a == action )
 	{
 		return;
@@ -57,12 +56,12 @@ void KTActionManager::insert(Q3Action *action)
 	m_actionDict.insert( name, action );
 }
 
-void KTActionManager::remove( Q3Action* action )
+void KTActionManager::remove( QAction* action )
 {
 	delete take( action );
 }
 
-Q3Action *KTActionManager::take( Q3Action* action )
+QAction *KTActionManager::take( QAction* action )
 {
 	char unnamed_name[100];
 	const char *name = action->name();
@@ -73,7 +72,7 @@ Q3Action *KTActionManager::take( Q3Action* action )
 		name = unnamed_name;
 	}
 	
-	Q3Action *a = m_actionDict.take( name );
+	QAction *a = m_actionDict.take( name );
 	if ( !a || a != action )
 	{
 		return 0;
@@ -82,12 +81,12 @@ Q3Action *KTActionManager::take( Q3Action* action )
 	return a;
 }
 
-Q3Action *KTActionManager::find(const QString &name) const
+QAction *KTActionManager::find(const QString &name) const
 {
 	return m_actionDict[name];
 }
 
-Q3Action *KTActionManager::operator[](const QString &name) const
+QAction *KTActionManager::operator[](const QString &name) const
 {
 	return find(name);
 }

@@ -28,7 +28,7 @@
 
 
 KSeparator::KSeparator(QWidget* parent, const char* name, Qt::WFlags f)
-   : Q3Frame(parent, name, f)
+   : QFrame(parent, name, f)
 {
    setLineWidth(1);
    setMidLineWidth(0);
@@ -38,7 +38,7 @@ KSeparator::KSeparator(QWidget* parent, const char* name, Qt::WFlags f)
 
 
 KSeparator::KSeparator(int orientation, QWidget* parent, const char* name, Qt::WFlags f)
-   : Q3Frame(parent, name, f)
+   : QFrame(parent, name, f)
 {
    setLineWidth(1);
    setMidLineWidth(0);
@@ -97,6 +97,7 @@ void KSeparator::drawFrame(QPainter *p)
    }
 
    QStyleOption opt( lineWidth(), midLineWidth() );
+   style()->drawPrimitive( QStyle::PE_Q3Separator, &opt,  p, this );
 //    style().drawPrimitive( QStyle::PE_Q3Separator, p, QRect( p1, p2 ), g,
 // 		          QStyle::State_Sunken, opt );
 }

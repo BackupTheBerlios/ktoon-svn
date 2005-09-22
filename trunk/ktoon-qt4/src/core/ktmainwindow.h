@@ -21,25 +21,45 @@
 #ifndef KTMAINWINDOW_H
 #define KTMAINWINDOW_H
 
-#include <q3mainwindow.h>
-#include <qworkspace.h>
-#include <q3popupmenu.h>
-#include <qmenubar.h>
-#include <qstatusbar.h>
-//Added by qt3to4:
+#include <QMainWindow>
+#include <QWorkspace>
+#include <QMenu>
+#include <QMenuBar>
+#include <QStatusBar>
+
 #include <QResizeEvent>
 #include <QCloseEvent>
 
-#include <Q3Action>
-
 #include "ktactionmanager.h"
 #include "ktviewdocument.h"
+
+#include "ktexposuresheet.h"
+#include "properties.h"
+#include "preferences.h"
+#include "scenes.h"
+#include "brushes.h"
+#include "colorpalette.h"
+#include "tools.h"
+#include "library.h"
+#include "kttimeline.h"
+#include "gltopcameraview.h"
+#include "glsidecameraview.h"
+#include "status.h"
+#include "about.h"
+#include "document.h"
+#include "import.h"
+#include "export.h"
+#include "ktcamerapreview.h"
+#include "ktviewdocument.h"
+
+#include "dmainwindow.h"
+#include "ktstatusbar.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTMainWindow : public Q3MainWindow
+class KTMainWindow : public DMainWindow
 {
 	Q_OBJECT
 	public:
@@ -94,7 +114,7 @@ class KTMainWindow : public Q3MainWindow
 	private:
 		QWorkspace *m_workSpace;
 		KTActionManager *m_actionManager;
-		Q3PopupMenu *m_fileMenu,*m_editMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
+		QMenu *m_fileMenu,*m_editMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
 };
 
 #endif

@@ -25,7 +25,7 @@
 #include <qtextcodec.h>
 #include <qmessagebox.h>
 #include <qdir.h>
-//Added by qt3to4:
+
 #include <QTranslator>
 
 #include "ktapplication.h"
@@ -81,7 +81,7 @@ int main( int argc, char ** argv )
 	splash_screen -> finish( main_window );
 	delete splash_screen;
 	
-	KTMainWindow mainWindow;
+// 	KTMainWindow mainWindow;
 	
 	application.connect( &application, SIGNAL( lastWindowClosed() ), &application, SLOT( quit()) );
 	

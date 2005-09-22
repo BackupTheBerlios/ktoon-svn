@@ -21,12 +21,15 @@
 #ifndef CONFIGWIZARD_H
 #define CONFIGWIZARD_H
 
-#include <q3wizard.h>
-#include <q3vbox.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <q3filedialog.h>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QLabel>
+#include <QFileDialog>
+#include <QDialog>
+
+#include "ktvbox.h"
+
+#include "q3wizard.h"
 
 class CWFirstPage;
 class CWSecondPage;
@@ -59,7 +62,7 @@ class ConfigWizard : public Q3Wizard
 		QString ktrepos;
 };
 
-class CWFirstPage : public Q3VBox
+class CWFirstPage : public KTVBox
 {
 	Q_OBJECT
 	public:
@@ -67,7 +70,7 @@ class CWFirstPage : public Q3VBox
 		~CWFirstPage();
 };
 
-class CWSecondPage : public Q3VBox
+class CWSecondPage : public KTVBox
 {
 	Q_OBJECT
 	public:
