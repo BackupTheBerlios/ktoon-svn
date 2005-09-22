@@ -2776,13 +2776,13 @@ void DrawingArea::slotSelectFrame()
 		light_table_list.clear();
 
 		Q3PtrList<KeyFrame> keyframes_to_display;
-		Q3PtrList<KeyFrame> keyframe_list = KTStatus -> currentLayer() -> keyFrames();
+		QList<KeyFrame*> keyframe_list = KTStatus -> currentLayer() -> keyFrames();
 // 		QPtrList<Layer> layer_list = k_toon -> exposureSheet() -> visibleLayers(); // FIXME: krawek
-		Q3PtrList<Layer> layer_list = KTStatus -> currentScene() -> getLayers();
-		Layer *layer_iterator;
-		
-		for ( layer_iterator = layer_list.first(); layer_iterator; layer_iterator = layer_list.next() )
+		QList<Layer*> layer_list = KTStatus -> currentScene() -> getLayers();
+// 		for ( layer_iterator = layer_list.first(); layer_iterator; layer_iterator = layer_list.next() )
+		for( int i = 0; layer_list.count(); i++)
 		{
+			Layer *layer_iterator = layer_list[i];
 			if ( layer_iterator != cly )
 			{
 				int ckf_offset = ckf -> offsetKeyFrame();
@@ -2825,10 +2825,10 @@ void DrawingArea::slotPreviousOnionSkin()
 {
 	int i = 0;
 	if ( KTStatus -> currentKeyFrame() != NULL )
-		i = KTStatus -> currentLayer() -> keyFrames().find( KTStatus -> currentKeyFrame() );
+		i = KTStatus->currentLayer()->keyFrames().indexOf(KTStatus-> currentKeyFrame());
 	if ( i > 0 )
 	{
-		Q3PtrList<KeyFrame> onion_skin = KTStatus -> currentLayer() -> keyFrames() ;
+		QList<KeyFrame*> onion_skin = KTStatus -> currentLayer() -> keyFrames() ;
 		previous_onion_skin_1 = ( onion_skin.at( i - 1 ) ) -> getDrawing() -> graphicComponents();
 	}
 	else
@@ -2843,10 +2843,10 @@ void DrawingArea::slotPrevious2OnionSkin()
 {
 	int i = 0;
 	if ( KTStatus -> currentKeyFrame() != NULL )
-		i = KTStatus -> currentLayer() -> keyFrames().find( KTStatus -> currentKeyFrame() );
+		i = KTStatus -> currentLayer() -> keyFrames().indexOf( KTStatus -> currentKeyFrame() );
 	if ( i > 1 )
 	{
-		Q3PtrList<KeyFrame> onion_skin = KTStatus -> currentLayer() -> keyFrames() ;
+		QList<KeyFrame*> onion_skin = KTStatus -> currentLayer() -> keyFrames() ;
 		previous_onion_skin_2 = ( onion_skin.at( i - 2 ) ) -> getDrawing() -> graphicComponents();
 	}
 	else
@@ -2859,10 +2859,10 @@ void DrawingArea::slotPrevious3OnionSkin()
 {
 	int i = 0;
 	if ( KTStatus -> currentKeyFrame() != NULL )
-		i = KTStatus -> currentLayer() -> keyFrames().find( KTStatus -> currentKeyFrame() );
+		i = KTStatus -> currentLayer() -> keyFrames().indexOf( KTStatus -> currentKeyFrame() );
 	if ( i > 2 )
 	{
-		Q3PtrList<KeyFrame> onion_skin = KTStatus -> currentLayer() -> keyFrames() ;
+		QList<KeyFrame*> onion_skin = KTStatus -> currentLayer() -> keyFrames() ;
 		previous_onion_skin_3 = ( onion_skin.at( i - 3 ) ) -> getDrawing() -> graphicComponents();
 	}
 	else
@@ -2884,12 +2884,12 @@ void DrawingArea::slotNextOnionSkin()
 	
 	if ( KTStatus -> currentKeyFrame() != NULL )
 	{
-		i = KTStatus -> currentLayer() -> keyFrames().find( KTStatus -> currentKeyFrame() );
+		i = KTStatus -> currentLayer() -> keyFrames().indexOf( KTStatus -> currentKeyFrame() );
 		j = KTStatus -> currentLayer() -> keyFrames().count();
 	}
 	if ( i < j - 1 )
 	{
-		Q3PtrList<KeyFrame> onion_skin = KTStatus -> currentLayer() -> keyFrames() ;
+		QList<KeyFrame*> onion_skin = KTStatus -> currentLayer() -> keyFrames() ;
 		next_onion_skin_1 = ( onion_skin.at( i + 1 ) ) -> getDrawing() -> graphicComponents();
 	}
 	else
@@ -2905,12 +2905,12 @@ void DrawingArea::slotNext2OnionSkin()
 	int i = 0, j = 0;
 	if ( KTStatus -> currentKeyFrame() != NULL )
 	{
-		i = KTStatus -> currentLayer() -> keyFrames().find( KTStatus -> currentKeyFrame() );
+		i = KTStatus -> currentLayer() -> keyFrames().indexOf( KTStatus -> currentKeyFrame() );
 		j = KTStatus -> currentLayer() -> keyFrames().count();
 	}
 	if ( i < j - 2 )
 	{
-		Q3PtrList<KeyFrame> onion_skin = KTStatus -> currentLayer() -> keyFrames() ;
+		QList<KeyFrame*> onion_skin = KTStatus -> currentLayer() -> keyFrames() ;
 		next_onion_skin_2 = ( onion_skin.at( i + 2 ) ) -> getDrawing() -> graphicComponents();
 	}
 	else
@@ -2924,12 +2924,12 @@ void DrawingArea::slotNext3OnionSkin()
 	int i = 0, j = 0;
 	if ( KTStatus -> currentKeyFrame() != NULL )
 	{
-		i = KTStatus -> currentLayer() -> keyFrames().find( KTStatus -> currentKeyFrame() );
+		i = KTStatus -> currentLayer() -> keyFrames().indexOf( KTStatus -> currentKeyFrame() );
 		j = KTStatus -> currentLayer() -> keyFrames().count();
 	}
 	if ( i < j - 3 )
 	{
-		Q3PtrList<KeyFrame> onion_skin = KTStatus -> currentLayer() -> keyFrames() ;
+		QList<KeyFrame*> onion_skin = KTStatus -> currentLayer() -> keyFrames() ;
 		next_onion_skin_3 = ( onion_skin.at( i + 3 ) ) -> getDrawing() -> graphicComponents();
 	}
 	else

@@ -38,6 +38,7 @@
 #include <q3buttongroup.h>
 //Added by qt3to4:
 #include <QPixmap>
+#include <QList>
 #include <Q3ValueList>
 #include <Q3PtrList>
 #include "layer.h"
@@ -45,7 +46,7 @@
 #include "ktdialogbase.h"
 
 
-typedef Q3ValueList<QPixmap> imgs;
+// typedef Q3ValueList<QPixmap> imgs;
 
 
 class Scene;
@@ -109,7 +110,7 @@ Q_OBJECT
 		QString current_name;
 // 		KToon *k_toon;
 
-		imgs m_imgs;
+		Q3ValueList<QPixmap> m_imgs;
 		Q3ButtonGroup *buttonsPanel;
 
 		Q3VBox *containerTableScens;

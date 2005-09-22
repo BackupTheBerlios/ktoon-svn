@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qapplication.h>
-#include <qcursor.h>
+#include <QApplication>
+#include <QCursor>
 //Added by qt3to4:
 #include <QMouseEvent>
 #include <QResizeEvent>
@@ -80,8 +80,9 @@ void ESLayer::setSelected( bool in_is_selected )
 	is_selected = in_is_selected;
 	if ( is_selected )
 	{
-		setPaletteBackgroundColor( colorGroup ().highlight().light ( 100 ) );
-		setPaletteForegroundColor( colorGroup ().highlightedText ());
+		setPaletteBackgroundColor( colorGroup().dark() );
+// 		setPaletteBackgroundColor( colorGroup ().highlight().light ( 100 ) );
+// 		setPaletteForegroundColor( colorGroup ().highlightedText ());
 	}
     		
 	else

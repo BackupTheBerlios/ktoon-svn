@@ -26,8 +26,8 @@
  * @brief Include this file if you need the class Scene
  */
 
-#include <qstring.h>
-#include <q3ptrlist.h>
+#include <QString>
+#include <QList>
 #include <qdom.h>
 
 #include "layer.h"
@@ -68,7 +68,7 @@ public:
      * @param layers The Layers
      * @sa getLayers()
      */
-    void setLayers( Q3PtrList<Layer> layers );
+    void setLayers( QList<Layer*> layers );
 
     /**
      * @brief Gets this scene's name
@@ -82,7 +82,7 @@ public:
      *
      * @return A list of layers
      */
-    Q3PtrList<Layer> getLayers();
+    QList<Layer*> getLayers();
 
     /**
      * @brief Creates an XML tag for this object
@@ -93,8 +93,8 @@ public:
     QDomElement createXML( QDomDocument &doc );
 
 private:
-    QString name;
-    Q3PtrList<Layer> layers;
+    QString m_name;
+    QList<Layer*> m_layers;
 
 };
 

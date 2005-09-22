@@ -37,7 +37,7 @@
 #include <qmatrix.h>
 #include <q3process.h>
 #include <q3stylesheet.h>
-
+#include <QList>
 #include "ktoon.h"
 #include "images.h"
 #include "symbol.h"
@@ -2259,7 +2259,7 @@ void KToon::slotLoadDocument( const QString &in_file_name )
 			//1.3.1.(1..*).1. Layers Tag
 			QDomElement layers_tag = scene_tag.firstChild().toElement();
 			QDomNode n_layer = layers_tag.firstChild();
-			Q3PtrList<Layer> layers;
+			QList<Layer*> layers;
 			
 			while ( !n_layer.isNull() )
 			{
@@ -2280,7 +2280,7 @@ void KToon::slotLoadDocument( const QString &in_file_name )
 					//1.3.1.(1..*).1.(1..*).1. Keyframes Tag
 					QDomElement keyframes_tag = layer_tag.firstChild().toElement();
 					QDomNode n_keyframe = keyframes_tag.firstChild();
-					Q3PtrList<KeyFrame> keyframes;
+					QList<KeyFrame*> keyframes;
 					while ( !n_keyframe.isNull() )
 					{
 						//1.3.1.(1..*).1.(1..*).1.(1..*). Keyframe Tag
@@ -3871,7 +3871,7 @@ void KToon::createGUI()
 // 	for ( s_it = scenes.first(); s_it; s_it = scenes.next() )
 // 	{
 		slotInsertSync();
-		Q3PtrList<Layer> layers = s_it -> getLayers();
+		QList<Layer*> layers = s_it -> getLayers();
 // 		ExposureSheet *es = list_of_es.at( scenes.find( s_it ) );
 		//FIXME:
 // 		KTExposureSheet *m_es = list_of_es.at( scenes.find( s_it ) );

@@ -26,13 +26,10 @@
  * @brief Include this file if you need the class ESLayer
  */
 
-#include <qpushbutton.h>
-#include <qlineedit.h>
-//Added by qt3to4:
+#include <QPushButton>
+#include <QLineEdit>
 #include <QMouseEvent>
 #include <QResizeEvent>
-// #include <qpopupmenu.h>
-
 /**
  * @brief Class that handles the Layer objects belonging to the Exposure Sheet dialog box
  *
@@ -85,7 +82,6 @@ public:
 private:
     QColor default_color, selection_color;
     QLineEdit *description;
-//     QPopupMenu *right_click_menu;
     bool is_selected;
 
 signals:

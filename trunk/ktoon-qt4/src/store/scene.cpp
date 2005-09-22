@@ -19,14 +19,12 @@
  ***************************************************************************/
 
 #include "scene.h"
-//Added by qt3to4:
-#include <Q3PtrList>
 
 //-------------- CONSTRUCTOR ---------------
 
 Scene::Scene()
 {
-    name = "";
+	m_name = "";
 //     Layer *def_layer = new Layer();
 //     def_layer -> setIndexLayer( 1 );
 //     def_layer -> setNameLayer( QObject::tr( "Layer" ) + QString( "1" ) );
@@ -37,47 +35,47 @@ Scene::Scene()
 
 Scene::~Scene()
 {
-    layers.setAutoDelete( true );
-    layers.clear();
-    layers.setAutoDelete( false );
+//     layers.setAutoDelete( true );
+	qDeleteAll(m_layers);
+//     layers.setAutoDelete( false );
 }
 
 //------------ PUBLIC MEMBERS ---------------
 
-void Scene::setNameScene( const QString & _name )
+void Scene::setNameScene( const QString & name )
 {
-    name = _name;
+	m_name = name;
 }
 
-void Scene::setLayers( Q3PtrList<Layer> _layers )
+void Scene::setLayers( QList<Layer*> layers )
 {
-    layers = _layers;
+	m_layers = layers;
 }
 
 QString Scene::nameScene() const
 {
-    return name;
+	return m_name;
 }
 
-Q3PtrList<Layer> Scene::getLayers()
+QList<Layer*> Scene::getLayers()
 {
-    return layers;
+	return m_layers;
 }
 
 QDomElement Scene::createXML( QDomDocument &doc )
 {
-    QDomElement e = doc.createElement( "Scene" );
+	QDomElement e = doc.createElement( "Scene" );
 
-    e.setAttribute( "Name", name );
+	e.setAttribute( "Name", m_name );
 
-    QDomElement l_tag = doc.createElement( "Layers" );
-    e.appendChild( l_tag );
-    Layer *l_it;
-    for ( l_it = layers.first(); l_it; l_it = layers.next() )
-    {
-	QDomElement layer_tag = l_it -> createXML( doc );
-	l_tag.appendChild( layer_tag );
-    }
-
-    return e;
+	QDomElement lTag = doc.createElement( "Layers" );
+	e.appendChild( lTag );
+	
+	for(int i = 0; i < m_layers.count() ; i++)
+	{
+		Layer *lIt = m_layers[i];
+		QDomElement layerTag = lIt -> createXML( doc );
+		lTag.appendChild( layerTag );
+	}
+	return e;
 }

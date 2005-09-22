@@ -24,30 +24,23 @@
 #include "ktdialogbase.h"
 #include "kttableexposure.h"
 
-#include <Q3HButtonGroup>
-#include <qpushbutton.h>
-#include <qaction.h>
-#include <q3valuelist.h>
-#include <qstringlist.h>
-#include <q3table.h>
-#include <q3gridview.h>
-#include <Q3Button>
+#include <QButtonGroup>
 
-#include <q3listview.h>
-//Added by qt3to4:
-#include <QPixmap>
-#include <Q3ActionGroup>
-#include <Q3PtrList>
-
+#include <QGroupBox>
+#include <QPushButton>
+#include <QStringList>
+#include <QListWidget>
+#include <QList>
+#include <QListView>
+#include <QActionGroup>
 #include "ktimagebutton.h"
 
-// #include "layer.h"
 /**
 * @author Jorge Cuadrado
 */
 
 
-typedef Q3ValueList<QPixmap> imgs;
+// typedef QList<QPixmap> imgs;
 
 class KTExposureSheet : public KTDialogBase
 {
@@ -60,12 +53,12 @@ class KTExposureSheet : public KTDialogBase
 		enum Actions { /*NoAction = 0,*/ InsertLayer = 0, RemoveLayer, ShowManageLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
 		
 	private:
-		imgs m_imgs;
-		Q3ButtonGroup *buttonsPanel;
-		Q3ActionGroup *m_actions;
+		QList<QPixmap> m_imgs;
+		QGroupBox /*QButtonGroup*/ *m_buttonsPanel;
+		QButtonGroup *m_buttonGroup;
 		KTTableExposure *m_viewLayer;
 // 		//Widget for handling the layer visibility
-		Q3ListView *m_layerManager;
+		QListView/*QListWidget*/ /*QListView*/ *m_layerManager;
 
 	private:
 		void setupButtons();
@@ -74,8 +67,12 @@ class KTExposureSheet : public KTDialogBase
 		
 	public slots:
 		void applyAction(int action);
-		void loadLayersAndKeyframes( Q3PtrList<Layer> layers );
+		
+		void loadLayersAndKeyframes( QList<Layer*> layers );
 		void updateLayersAndKeyframes();
+		
+	private slots:
+		void actionButton(QAbstractButton *);
 		
 	signals:
 		void applyedAction(Actions action);

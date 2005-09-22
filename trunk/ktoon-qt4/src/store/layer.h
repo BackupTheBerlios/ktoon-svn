@@ -26,8 +26,9 @@
  * @brief Include this file if you need the class Layer
  */
 
-#include <qstring.h>
-#include <q3ptrlist.h>
+#include <QList>
+#include <QString>
+
 #include <qdom.h>
 
 #include "keyframe.h"
@@ -76,7 +77,7 @@ public:
      * @param frames The KeyFrames
      * @sa keyFrames()
      */
-    void setKeyFrames( Q3PtrList<KeyFrame> frames );
+    void setKeyFrames( QList<KeyFrame*> frames );
 
     /**
      * @brief Gets this layer's index
@@ -99,7 +100,7 @@ public:
      * @return A list with the KeyFrames
      * @sa setKeyFrames()
      */
-    Q3PtrList<KeyFrame> keyFrames() const;
+    QList<KeyFrame*> keyFrames() const;
     /**
      * @brief Gets the keyframe at an animation offset range
      *
@@ -118,9 +119,9 @@ public:
     QDomElement createXML( QDomDocument &doc );
 
 private:
-    int index;
-    QString name;
-    Q3PtrList<KeyFrame> keyframes;
+    int m_index;
+    QString m_name;
+    QList<KeyFrame*> m_keyframes;
 
 };
 

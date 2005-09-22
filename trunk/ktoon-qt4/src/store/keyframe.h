@@ -26,8 +26,8 @@
  * @brief Include this file if you need the class KeyFrame
  */
 
-#include <qstring.h>
-#include <q3ptrlist.h>
+#include <QString>
+// #include <QList>
 #include <qdom.h>
 
 #include "camera.h"
@@ -155,12 +155,12 @@ public:
     QDomElement createXML( QDomDocument &doc );
 
 private:
-    int offset;
-    int length;
-    bool motion;
-    QString name;
-    Camera *camera;
-    GLDrawing *drawing;
+    int m_offset;
+    int m_length;
+    bool m_motion;
+    QString m_name;
+    Camera *m_camera;
+    GLDrawing *m_drawing;
 };
 
 #endif

@@ -26,13 +26,10 @@
  * @brief Include this file if you need the class ESFrame
  */
 
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qcolor.h>
-#include <q3popupmenu.h>
-#include <qpainter.h>
-#include <qaction.h>
-//Added by qt3to4:
+#include <QLabel>
+#include <QLineEdit>
+#include <QColor>
+#include <QPainter>
 #include <QMouseEvent>
 #include <QResizeEvent>
 #include <QKeyEvent>

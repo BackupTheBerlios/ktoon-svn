@@ -39,6 +39,8 @@
 #include <iostream>
 #include <qobject.h>
 
+#include <QList>
+
 #include "glcontrol.h"
 #include "glgraphiccomponent.h"
 #include "glline.h"

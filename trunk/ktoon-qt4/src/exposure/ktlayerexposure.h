@@ -20,29 +20,29 @@
 #ifndef KTLAYEREXPOSURE_H
 #define KTLAYEREXPOSURE_H
 
-#include "esframe.h"
-#include "eslayer.h"
-// #include <qvaluelist.h>
-#include <q3ptrlist.h> 
-#include <q3frame.h> 
-#include <qlayout.h>
-#include <q3popupmenu.h>
-//Added by qt3to4:
+
+#include <QList>
+#include <QFrame>
+#include <QLayout>
+#include <QMenu>
 #include <QMouseEvent>
 #include <QBoxLayout>
-#include "layer.h"
 
-typedef Q3PtrList<ESFrame> ListOfFrames;
+#include "layer.h"
+#include "esframe.h"
+#include "eslayer.h"
+
+typedef QList<ESFrame*> ListOfFrames;
 
 /**
 @author Jorge Cuadrado
 */
-class KTLayerExposure : public Q3Frame
+class KTLayerExposure : public QFrame
 {
 	Q_OBJECT
 	public:
 		
-		KTLayerExposure(const QString &initial_text, int id,int numFrame, QWidget *parent = 0, const char *name = 0);
+		KTLayerExposure(const QString &initial_text, int id,int numFrame, QWidget *parent = 0);
 		~KTLayerExposure();
 		QString textHeader();
 		void insertFrame(int id, QString text = QString::null );
@@ -57,10 +57,10 @@ class KTLayerExposure : public Q3Frame
 	private:
 		enum KTLActions { RenameFrame = 0, RemoveThisFrame, LockThisFrame, InsertFrames, CopyThisFrame, PasteIntoFrame, RenameLayer, RemoveThisLayer};
 		bool m_selected;
-		uint m_id, m_currentFrame,  m_useFrame;
+		int m_id, m_currentFrame,  m_useFrame;
 		ESLayer *m_header;
 		ListOfFrames m_frames;
-		Q3PopupMenu *menuFrame, *menuLayer;
+		QMenu *menuFrame, *menuLayer;
 		void createMenuRight();
 		
 	public slots:

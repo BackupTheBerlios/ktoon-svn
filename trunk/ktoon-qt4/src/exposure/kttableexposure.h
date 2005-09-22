@@ -20,12 +20,11 @@
 #ifndef KTTABLEEXPOSURE_H
 #define KTTABLEEXPOSURE_H
 
-#include <q3scrollview.h> 
-#include <qlayout.h> 
-#include <qlabel.h>
-#include <qstringlist.h>
-//Added by qt3to4:
-#include <Q3PtrList>
+#include <QStringList>
+#include <QScrollArea>
+#include <QLayout>
+#include <QLabel>
+#include <QList>
 #include <QBoxLayout>
 
 #include "ktlayerexposure.h"
@@ -37,9 +36,9 @@
 @author Jorge Cuadrado
 */
 
-typedef Q3PtrList<KTLayerExposure> listOfLayers;
+typedef QList<KTLayerExposure*> listOfLayers;
 
-class KTTableExposure : public Q3ScrollView
+class KTTableExposure : public QScrollArea //Q3ScrollView
 {
 	Q_OBJECT
 	public:
@@ -52,15 +51,15 @@ class KTTableExposure : public Q3ScrollView
 		void lockCurrentFrame();
 		void removeCurrentLayer();
 		
-		void loadLayers(Q3PtrList<Layer> layers);
+		void loadLayers(QList<Layer*> layers);
 		void updateLayers();
 		QStringList textHeaders();
 		
 	private:
 		QBoxLayout *m_layout;
 		QWidget *m_port;
-		uint m_numLayer;
-		uint m_currentLayer, m_currentFrame;
+		int m_numLayer;
+		int m_currentLayer, m_currentFrame;
 		listOfLayers m_layers;
 		
 	public slots:

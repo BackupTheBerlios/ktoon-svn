@@ -20,14 +20,14 @@
 
  #include "layer.h"
 //Added by qt3to4:
-#include <Q3PtrList>
+#include <QList>
  
 //-------------- CONSTRUCTOR ---------------
 
 Layer::Layer()
 {
-    index = -1;
-    name = "";
+	m_index = -1;
+	m_name = "";
 //     KeyFrame *d_keyframe = new KeyFrame();
 //     try {
 //         d_keyframe -> setLengthKeyFrame( 1 );
@@ -46,73 +46,70 @@ Layer::Layer()
 
 Layer::~Layer()
 {
-    keyframes.setAutoDelete( true );
-    keyframes.clear();
-    keyframes.setAutoDelete( false );
+	qDeleteAll(m_keyframes);
+//     keyframes.setAutoDelete( true );
+//     keyframes.clear();
+//     keyframes.setAutoDelete( false );
 }
 
 //------------ PUBLIC MEMBERS ---------------
 
-void Layer::setIndexLayer( const int & _index )
+void Layer::setIndexLayer( const int & index )
 {
- index = _index;
+	m_index = index;
 }
 
-void Layer::setNameLayer( const QString & _name )
+void Layer::setNameLayer( const QString & name )
 {
- name = _name;
+	m_name = name;
 }
 
-void Layer::setKeyFrames( Q3PtrList<KeyFrame> frames )
+void Layer::setKeyFrames( QList<KeyFrame*> frames )
 {
-  keyframes = frames;
+	m_keyframes = frames;
 }
 
 int Layer::indexLayer() const
 {
- return index;
+	return m_index;
 }
 
 QString Layer::nameLayer() const
 {
- return name;
+	return m_name;
 }
 
-Q3PtrList<KeyFrame> Layer::keyFrames() const
+QList<KeyFrame*> Layer::keyFrames() const
 {
- return keyframes;
+	return m_keyframes;
 }
 
 KeyFrame *Layer::keyFrameAt( int start, int end )
 {
-    KeyFrame *kf_it;
-    for ( kf_it = keyframes.first(); kf_it; kf_it = keyframes.next() )
-    {
-	int kf_offset = kf_it -> offsetKeyFrame();
-	int kf_length = kf_it -> lengthKeyFrame();
-	int limit = kf_offset + kf_length - 1;
-	if ( limit >= start && kf_offset <= end )
-	    return kf_it;
-    }
-
-    return NULL;
+	for( int i = 0; i < m_keyframes.count(); i++)
+	{
+		KeyFrame *kfIt = m_keyframes[i];
+		int kfOffset = kfIt->offsetKeyFrame();
+		int kfLength = kfIt->lengthKeyFrame();
+		int limit = kfOffset + kfLength - 1;
+		if ( limit >= start && kfOffset <= end )
+			return kfIt;
+	}
+	return NULL;
 }
 
 QDomElement Layer::createXML( QDomDocument &doc )
 {
-    QDomElement e = doc.createElement( "Layer" );
-
-    e.setAttribute( "Id", index );
-    e.setAttribute( "Name", name );
-
-    QDomElement k_tag = doc.createElement( "Keyframes" );
-    e.appendChild( k_tag );
-    KeyFrame *k_it;
-    for ( k_it = keyframes.first(); k_it; k_it = keyframes.next() )
-    {
-	QDomElement keyframe_tag = k_it -> createXML( doc );
-	k_tag.appendChild( keyframe_tag );
-    }
-
-    return e;
+	QDomElement e = doc.createElement( "Layer" );
+	e.setAttribute( "Id", m_index );
+	e.setAttribute( "Name", m_name );
+	QDomElement kTag = doc.createElement( "Keyframes" );
+	e.appendChild( kTag );
+	for( int i = 0; i < m_keyframes.count(); i++)
+	{
+		KeyFrame *kIt = m_keyframes [i];
+		QDomElement keyframeTag = kIt -> createXML( doc );
+		kTag.appendChild( keyframeTag );
+	}
+	return e;
 }

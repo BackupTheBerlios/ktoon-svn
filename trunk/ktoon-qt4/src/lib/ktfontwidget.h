@@ -121,7 +121,7 @@ class KTFontWidget : public QWidget
 		Q3ListBox     *familyListBox;
 		Q3ListBox     *styleListBox;
 		Q3ListBox     *sizeListBox;
-		QComboBox    *charsetsCombo; // BIC: remove in KDE4
+// 		QComboBox    *charsetsCombo; // BIC: remove in KDE4
 		QCheckBox    *sizeIsRelativeCheckBox;
  
 		QFont        selFont;

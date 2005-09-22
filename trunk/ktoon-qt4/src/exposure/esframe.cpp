@@ -18,11 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qcursor.h>
-#include <qapplication.h>
-//Added by qt3to4:
+#include <QCursor>
+#include <QApplication>
 #include <QMouseEvent>
-#include <Q3Frame>
+// #include <Q3Frame>
 #include <QResizeEvent>
 #include <QKeyEvent>
 #include <QEvent>
@@ -36,7 +35,8 @@ ESFrame::ESFrame( const QString &initial_text,int id, QWidget *parent )
 {
 // 	KTINIT;
     //Initializations
-	setFrameStyle( Q3Frame::Panel | Q3Frame::Raised );
+	setFrameShadow ( QFrame::Raised  );
+	setFrameShape ( QFrame::Panel );
 	setLineWidth( 2 );
 	description = new QLineEdit( initial_text , this );
 	description->hide();

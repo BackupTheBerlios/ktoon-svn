@@ -19,15 +19,14 @@
  ***************************************************************************/
 
 #include "ktexposuresheet.h"
-#include <qtooltip.h>
-//Added by qt3to4:
+#include "ktapplication.h"
+#include "status.h"
+#include "ktdebug.h"
+
+#include <QToolTip>
 #include <QPixmap>
 #include <QHBoxLayout>
-#include <Q3PtrList>
-#include "ktapplication.h"
-#include <q3listview.h>
-#include "status.h"
-#include <ktdebug.h>
+#include <QList>
 
 
 KTExposureSheet::KTExposureSheet( QWidget *parent, const char *name)
@@ -71,44 +70,77 @@ KTExposureSheet::~KTExposureSheet()
 
 void KTExposureSheet::setupButtons()
 {
-	buttonsPanel = new Q3ButtonGroup(this);
-	QHBoxLayout *layout = new QHBoxLayout(buttonsPanel);
+	m_buttonsPanel = new QGroupBox/*QButtonGroup*/(this);
+	QHBoxLayout *layout = new QHBoxLayout(m_buttonsPanel);
 	layout->setAutoAdd(true);
-	connect(buttonsPanel, SIGNAL(clicked(int )), this, SLOT(applyAction(int)));
+	layout->setMargin(0);
+	layout->setSpacing(0);
+	m_buttonGroup = new QButtonGroup(m_buttonsPanel);
+	connect(m_buttonGroup, SIGNAL(buttonClicked ( QAbstractButton *)), this, SLOT(actionButton( QAbstractButton *)));
 	QStringList toolTips;
 	toolTips << tr("Insert Layer") << tr("Remove Layer") << tr("Manage the layer visibility") << tr("Insert Keyframes") << tr("Remove Keyframe") << tr("Lock Frame") << tr("Move Keyframe Up") << tr("Move Keyframe Down");
 	
 	for(int i = 0; i < toolTips.count(); i++)
 	{
 		QPushButton *tmpButton;
-// 		tmpButton = new KTImageButton(m_imgs[i], 25, buttonsPanel);
-		tmpButton = new QPushButton(m_imgs[i], QString::null, buttonsPanel);
+// 		tmpButton = new KTImageButton(m_imgs[i], 25, m_buttonsPanel);
+		tmpButton = new QPushButton(QIcon(m_imgs[i]), QString::null, m_buttonsPanel);
+		m_buttonGroup->addButton (tmpButton);
 		tmpButton-> setAutoDefault( false );
-		tmpButton-> setFlat( true );
+// 		tmpButton-> setFlat( true );
 		tmpButton-> setFocusPolicy( Qt::NoFocus );
-		tmpButton->adjustSize();
+
 		tmpButton->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
+		tmpButton->adjustSize();
 		QToolTip::add( tmpButton, toolTips[i]  );
 	}
-	buttonsPanel->setMaximumHeight( buttonsPanel->sizeHint().height());
-	addChild(buttonsPanel);
+	m_buttonsPanel->setMaximumHeight( m_buttonsPanel->sizeHint().height());
+
+	addChild(m_buttonsPanel);
 }
 
 void KTExposureSheet::createLayerManager()
 {
-	m_layerManager = new Q3ListView(0,"", Qt::WType_Popup);
+	//FIXME:kuadrosx crear una clase que me permita visualizar los items y seleccionarlos unQCheckBox
+	m_layerManager = new QListView/*QListView*/(0/*,"", Qt::WType_Popup*/);
+	m_layerManager->setMovement ( QListView::Static  );
 	
-	m_layerManager->addColumn( tr( "Name" ), 105 );
-	m_layerManager->setFrameStyle( WinPanel|Raised );
-	QStringList list = m_viewLayer->textHeaders();
+// 	m_layerManager->setViewMode ( QListView::ListMode );
+// 	m_layerManager = new QListWidget/*QListView*/(0/*,"", Qt::WType_Popup*/);
+// // 	m_layerManager->setColumnCount(1);
+// // 	m_layerManager->addColumn( tr( "Name" ), 105 );
+// 	m_layerManager->setFrameStyle( WinPanel|Raised );
+// 	QStringList list = m_viewLayer->textHeaders();
+// 	QListWidgetItem * item = new QListWidgetItem (m_layerManager );
+// 
+// 	item->setText(list[0] );
+// 	item->setFlags(Qt::ItemIsUserCheckable);
+// 	m_layerManager->addItem ( item );
+// 	m_layerManager->addItems ( list );
 	
-	for(int i = 0; i < list.count(); i++)
-	{
-		Q3CheckListItem *checkItem = new Q3CheckListItem( m_layerManager, list[i], Q3CheckListItem::CheckBox );
-		checkItem->setVisible( true );
-		checkItem->setOn( true );
-		m_layerManager->insertItem ( checkItem);
-	}
+// 	for(int i = 0; i < list.count(); i++)
+// 	{
+// 		ktDebug() << "KTExposureSheet " << i;
+// 		QList<QListWidgetItem *> items = m_layerManager->findItems(list[i], Qt::MatchCaseSensitive);
+// 		ktDebug() << "KTExposureSheet::items.count() " << items.count();
+// 		for(int j = 0; j < items.count(); j++)
+// 		{
+// 			items[j]->setFlags(Qt::ItemIsUserCheckable);
+// 		}
+// 	}
+// 	QTreeWidgetItem * item = new QTreeWidgetItem(0);
+// 	item->setText(0, list[0] );
+// 	m_layerManager->setHeaderItem (item )	;
+// 			>addTopLevelItem(  item );
+	
+// 	for(int i = 0; i < list.count(); i++)
+// 	{
+// 	m_layerManager->addItems ( list );
+// 		QCheckListItem *checkItem = new QCheckListItem( m_layerManager, list[i], Q3CheckListItem::CheckBox );
+// 		checkItem->setVisible( true );
+// 		checkItem->setOn( true );
+// 		m_layerManager->insertItem ( checkItem);
+// 	}
 
 	m_layerManager->resize(150,100);
 }
@@ -131,10 +163,11 @@ void KTExposureSheet::applyAction(int action)
 		}
 		case ShowManageLayer:
 		{
-			QAbstractButton *p = buttonsPanel->find(ShowManageLayer);
-			m_layerManager->move( mapToGlobal( p->geometry().bottomLeft() ) );
-// 			m_layerManager->move(mapToParent(p->geometry().bottomLeft() ) );
-// 			m_layerManager->show();
+// 			QAbstractButton *p = m_buttonsPanel->find(ShowManageLayer);
+			QAbstractButton *p = m_buttonGroup->buttons()[ShowManageLayer];
+// 			m_layerManager->move( mapToGlobal( p->geometry().bottomLeft() ) );
+			m_layerManager->move(mapToParent(p->geometry().bottomLeft() ) );
+			m_layerManager->show();
 			break;
 		}
 		case InsertFrames:
@@ -165,7 +198,12 @@ void KTExposureSheet::applyAction(int action)
 	}
 }
 
-void KTExposureSheet::loadLayersAndKeyframes( Q3PtrList<Layer> layers )
+void KTExposureSheet::actionButton( QAbstractButton *b)
+{
+	applyAction(m_buttonGroup->buttons().indexOf(b));
+}
+
+void KTExposureSheet::loadLayersAndKeyframes( QList<Layer*> layers )
 {
 	ktDebug() << "KTExposureSheet::loadLayersAndKeyframes";
 	m_viewLayer->loadLayers(layers);
