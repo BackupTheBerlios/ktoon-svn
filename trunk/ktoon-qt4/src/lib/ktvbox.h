@@ -21,16 +21,18 @@
 #ifndef KTVBOX_H
 #define KTVBOX_H
 
-#include <q3frame.h>
-#include <qlayout.h>
-//Added by qt3to4:
+class KTVBox;
+
+#include <QFrame>
+#include <QLayout>
 #include <QVBoxLayout>
+#include <QEvent>
 
 /**
  * @author David Cuadrado
 */
 
-class KTVBox : public Q3Frame
+class KTVBox : public QFrame
 {
 	Q_OBJECT
 	public:
@@ -39,6 +41,12 @@ class KTVBox : public Q3Frame
 		void moveWidgetUp(QWidget *);
 		void moveWidgetDown(QWidget *);
 		void switchWidgetsPosition(QWidget *first, QWidget *second);
+		virtual QSize sizeHint() const;
+		void setSpacing( int space );
+		void setStretchFactor( QWidget* w, int stretch );
+		
+	protected:
+		virtual bool event( QEvent *e );
 		
 	protected:
 		QVBoxLayout *m_pLayout;

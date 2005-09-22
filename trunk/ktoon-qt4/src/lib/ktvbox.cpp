@@ -21,12 +21,10 @@
 #include "ktvbox.h"
 #include "ktdebug.h"
 
-#include <qobject.h>
-//Added by qt3to4:
 #include <QVBoxLayout>
-#include <Q3Frame>
+#include <QApplication>
 
-KTVBox::KTVBox(QWidget *parent, const char *name) : Q3Frame(parent, name)
+KTVBox::KTVBox(QWidget *parent, const char *name) : QFrame(parent, name)
 {
 	m_pLayout = new QVBoxLayout(this);
 	m_pLayout->setAutoAdd(true);
@@ -74,6 +72,50 @@ void KTVBox::moveWidgetDown(QWidget *widget)
 		m_pLayout->setAutoAdd(true);
 	}
 }
+
+bool KTVBox::event( QEvent* ev )
+{
+	switch ( ev->type() ) {
+		case QEvent::ChildAdded:
+		{
+			QChildEvent* childEv = static_cast<QChildEvent *>( ev );
+			if ( childEv->child()->isWidgetType() ) {
+				QWidget* w = static_cast<QWidget *>( childEv->child() );
+				static_cast<QBoxLayout *>( layout() )->addWidget( w );
+			}
+			return QWidget::event( ev );
+		}
+		case QEvent::ChildRemoved:
+		{
+			QChildEvent* childEv = static_cast<QChildEvent *>( ev );
+			if ( childEv->child()->isWidgetType() ) {
+				QWidget* w = static_cast<QWidget *>( childEv->child() );
+				static_cast<QBoxLayout *>( layout() )->removeWidget( w );
+			}
+			return QWidget::event( ev );
+		}
+		default:
+			return QWidget::event( ev );
+	}
+}
+
+QSize KTVBox::sizeHint() const
+{
+	KTVBox* that = const_cast<KTVBox *>( this );
+	QApplication::sendPostedEvents( that, QEvent::ChildAdded );
+	return QWidget::sizeHint();
+}
+
+void KTVBox::setSpacing( int sp )
+{
+	layout()->setSpacing( sp );
+}
+
+void KTVBox::setStretchFactor( QWidget* w, int stretch )
+{
+	static_cast<QBoxLayout *>( layout() )->setStretchFactor( w, stretch );
+}
+
 
 void KTVBox::switchWidgetsPosition(QWidget *widget1, QWidget *widget2)
 {
