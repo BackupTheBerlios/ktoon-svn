@@ -26,10 +26,10 @@
  * @brief Include this file if you need the class Document
  */
 
-#include <qstring.h>
-#include <q3ptrlist.h>
+#include <QString>
+#include <QList>
 #include <qdom.h>
-#include <qfile.h>
+#include <QFile>
 
 #include "palette.h"
 #include "brush.h"
@@ -87,7 +87,7 @@ class Document : public QObject
 		* @param brushes The new list of brushes
 		* @sa getBrushes()
 		*/
-		void setBrushes( Q3PtrList<Brush> brushes );
+		void setBrushes( QList<Brush*> brushes );
 		/**
 		* @brief Sets a new library for this document
 		*
@@ -124,7 +124,7 @@ class Document : public QObject
 		* @return The current list of brushes
 		* @sa setBrushes()
 		*/
-		Q3PtrList<Brush> getBrushes() const;
+		QList<Brush*> getBrushes() const;
 		/**
 		* @brief Gets the current document library
 		*
@@ -168,7 +168,7 @@ class Document : public QObject
 		QString name;
 		Animation *animation;
 		Palette *custom_palette;
-		Q3PtrList<Brush> brushes;
+		QList<Brush*> brushes;
 		LibraryData *library;
 		QDomDocument xml_doc;
 

@@ -38,6 +38,7 @@ KTEditSpinBox::KTEditSpinBox( int value, int minValue, int maxValue, int step, Q
 	m_label = new QLabel(text, this);
 	Q3HBox *hbox = new Q3HBox(this);
 	m_spin = new QSpinBox(minValue, maxValue, step, hbox);
+	m_spin->setValue(value);
 	m_slider = new QSlider ( minValue,  maxValue, step, value, Qt::Horizontal  ,hbox);
 	setupConnects();
 }
@@ -53,6 +54,7 @@ void KTEditSpinBox::setupConnects()
 	QObject::connect(m_slider, SIGNAL(valueChanged(int)),
 			 m_spin, SLOT(setValue(int)));
 	QObject::connect(m_slider,  SIGNAL(valueChanged(int)),this, SIGNAL(valueChanged(int)));
+	QObject::connect(m_spin,  SIGNAL(valueChanged(int)),this, SIGNAL(valueChanged(int)));
 }
 
 void KTEditSpinBox::setRange(int min, int max)
@@ -71,5 +73,5 @@ void KTEditSpinBox::setValue(int value)
 
 int KTEditSpinBox::value()
 {
-	return m_spin->value();
+	return m_slider->value();
 }

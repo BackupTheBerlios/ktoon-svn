@@ -30,7 +30,8 @@ HEADERS += glgraphiccomponent.h \
            ktfiledialog.h \
            ktvbox.h \
            ktelabel.h \
-           ktmodulewidgetbase.h 
+           ktmodulewidgetbase.h \
+           ktdisplaybrush.h 
 SOURCES += glgraphiccomponent.cpp \
            ktapplication.cpp \
            configwizard.cpp \
@@ -58,7 +59,8 @@ SOURCES += glgraphiccomponent.cpp \
            ktfiledialog.cpp \
            ktvbox.cpp \
            ktelabel.cpp \
-           ktmodulewidgetbase.cpp 
+           ktmodulewidgetbase.cpp \
+           ktdisplaybrush.cpp 
 INCLUDEPATH += ../../src/core \
 ../../src/exposure \
 ../../src/dialogs \

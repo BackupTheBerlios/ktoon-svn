@@ -62,9 +62,7 @@ Document::~Document()
 	delete animation;
 	delete custom_palette;
 	delete library;
-	brushes.setAutoDelete( true );
 	brushes.clear();
-	brushes.setAutoDelete( false );
 }
 
 //------------ PUBLIC MEMBERS ---------------
@@ -86,7 +84,7 @@ void Document::setPalette( Palette *palette )
 	custom_palette = palette;
 }
 
-void Document::setBrushes( Q3PtrList<Brush> _brushes )
+void Document::setBrushes( QList<Brush*> _brushes )
 {
 	brushes = _brushes;
 }
@@ -114,7 +112,7 @@ Palette *Document::getPalette() const
 	return custom_palette;
 }
 
-Q3PtrList<Brush> Document::getBrushes() const
+QList<Brush*> Document::getBrushes() const
 {
 	return brushes;
 }
@@ -170,11 +168,12 @@ void Document::save( QFile *f )
 	QDomDocument brushes_document( "_bru_" + local_name + ".bru" );
 	QDomElement b_tag = brushes_document.createElement( "Brushes" );
 	brushes_document.appendChild( b_tag );
-	Brush *b_it;
-	for ( b_it = brushes.first(); b_it; b_it = brushes.next() )
+	for(int i = 0; i < brushes.count(); i++)
 	{
+		Brush *b_it = brushes[i];
 		QDomElement brush_tag = b_it -> createXML( brushes_document );
 		b_tag.appendChild( brush_tag );
+		
 	}
 	QDomElement brushes_path_tag = xml_doc.createElement( "Brushes" );
 	//brushes_path_tag.setAttribute( "PATH", turnSlashesIntoUnderscores( KTOON_REPOSITORY ) + "_bru_" + local_name + ".bru" );

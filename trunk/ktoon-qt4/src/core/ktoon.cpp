@@ -1417,7 +1417,7 @@ void KToon::loadBrushes( const QString &file_name, bool from_load )
 	brushes_file.close();
 	QDomElement brushes_tag = brushes_doc.documentElement();
 	QDomNode n_brush = brushes_tag.firstChild();
-	Q3PtrList<Brush> brushes;
+	QList<Brush*> brushes;
 	while ( !n_brush.isNull() )
 	{
 		QDomElement brush_tag = n_brush.toElement();
@@ -3843,7 +3843,7 @@ void KToon::createGUI()
 	color_palette_dialog -> enableCustomPalette( true );
 	color_palette_dialog -> loadCustomColors( custom_colors );
 	
-	Q3PtrList<Brush> brushes = KTStatus->currentDocument()->getBrushes();
+	QList<Brush*> brushes = KTStatus->currentDocument()->getBrushes();
 	brushes_dialog = new Brushes( this, Qt::WStyle_Tool);
 	brushes_dialog -> loadBrushes( brushes );
 	

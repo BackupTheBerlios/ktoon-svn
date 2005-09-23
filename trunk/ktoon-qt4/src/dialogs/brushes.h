@@ -26,26 +26,26 @@
  * @brief Include this file if you need the class Brushes
  */
 
-#include <qpushbutton.h>
-#include <q3popupmenu.h>
+#include <QPushButton>
+#include <QLineEdit>
+#include <QSlider>
+#include <QLabel>
+#include <QPixmap>
+
 #include <q3listview.h>
+// #include <qtoolbutton.h>
+// #include <q3vbox.h>
+// #include <q3hbox.h>
+#include <QGroupBox>
 
-
-#include <qlineedit.h>
-#include <qslider.h>
-#include <qlabel.h>
-
-
-#include <q3canvas.h>
-#include <qpixmap.h>
-#include <qtoolbutton.h>
-#include <q3vbox.h>
-#include <q3hbox.h>
 //Added by qt3to4:
-#include <Q3PtrList>
+#include <QList>
 #include "ktmodulewidgetbase.h"
 
 #include "kteditspinbox.h"
+
+#include "ktdisplaybrush.h"
+#include <QTableWidget>
 
 class Brush;
 
@@ -95,13 +95,10 @@ class Brushes : public KTModuleWidgetBase
 	*
 	* @param brushes The list of brushes
 	*/
-	void loadBrushes( Q3PtrList<Brush> brushes );
+	void loadBrushes( QList<Brush*> brushes );
 	
 	private:
 		//General Purpose Variables
-// 		QPopupMenu *assigned_menu;
-// 		int assigned_item;
-// 		QToolButton *assigned_tb_button;
 		int brush_max_value;
 		int number_of_brushes;
 		QString current_name;
@@ -111,30 +108,27 @@ class Brushes : public KTModuleWidgetBase
 		
 		//Buttons
 		void setupButtons();
-		QPushButton *add_brush, *remove_brush;
+		QPushButton *m_addBrush, *m_removeBrush;
 		
 		//Table that shows the available brushes with their attributes
 		void setupTableBruches();
+		QTableWidget *m_tableBrushes;
 		Q3ListView *table_brushes;
 		Q3ListViewItem *default_brush;
 		
 		void setupStaticText();
 		//Static Text name
-		QLabel *text_name;
+		QLabel *m_textName;
 		
 		//Textfields for insert the values of name
-		QLineEdit  *value_name;
+		QLineEdit  *m_valueName;
 		
 		
 		KTEditSpinBox *m_displayMinThickness, *m_displayMaxThickness, *m_displaySmoothness;
 		
 		//Previsualization area
+		KTDisplayBrush *m_displayBrush;
 		void setupPrevisualizationArea();
-		Q3CanvasView *previsualization_container;
-		Q3Canvas *previsualization;
-		Q3CanvasEllipse *circle_min_thickness;
-		Q3CanvasEllipse *circle_max_thickness;
-	
 	signals:
 	/**
 	* This signal is emitted when the minimum thickness has changed.
@@ -177,7 +171,7 @@ class Brushes : public KTModuleWidgetBase
 	* It also modifies the current brush minimum thickness.
 	* @sa slotChangeValueMaxThickness(), slotChangeValueSmoothness()
 	*/
-	void slotChangeValueMinThickness();
+	void slotChangeValueMinThickness(int value);
 	/**
 	* @brief Changes the maximimum thickness textfield value
 	*
@@ -185,7 +179,7 @@ class Brushes : public KTModuleWidgetBase
 	* It also modifies the current brush maximum thickness.
 	* @sa slotChangeValueMinThickness(), slotChangeValueSmoothness()
 	*/
-	void slotChangeValueMaxThickness();
+	void slotChangeValueMaxThickness(int value);
 	/**
 	* @brief Changes the smoothness textfield value
 	*
