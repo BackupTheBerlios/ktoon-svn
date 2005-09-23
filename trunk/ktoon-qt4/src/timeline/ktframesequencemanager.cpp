@@ -139,7 +139,7 @@ QScrollBar *KTFrameSequenceManager::verticalScrollBar()
 
 QSize KTFrameSequenceManager::sizeHint() const
 {
-	const QSize sh(499, Q3Frame::sizeHint().height() );
+	const QSize sh(499, KTVBox::sizeHint().height() );
 	
 	return sh;
 }

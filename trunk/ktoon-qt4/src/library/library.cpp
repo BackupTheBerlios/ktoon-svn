@@ -40,7 +40,7 @@
 //------------- CONSTRUCTOR ----------------
 
 Library::Library( QWidget *parent, QGLWidget *share)//, WFlags style)
-	: KTDialogBase( Q3DockWindow::OutsideDock, parent, "Scenes"/*, false, style */) , number_of_items(0)
+	: KTModuleWidgetBase( parent, "Scenes"/*, false, style */) , number_of_items(0)
 {
 	Q_CHECK_PTR( parent );
 // 	Q_CHECK_PTR( in_assigned_menu );

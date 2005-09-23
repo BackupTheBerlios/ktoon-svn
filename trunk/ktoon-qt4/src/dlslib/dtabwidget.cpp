@@ -52,8 +52,9 @@ static char * closeTab_xpm[] = {
 #include "comdefs.h"
 
 DTabWidget::DTabWidget(QWidget *parent, const char *name)
-    :KTWCLASS(parent, name), m_closeButton(0)
+    :KTWCLASS(parent), m_closeButton(0)
 {
+	setObjectName(name);
 	setFocusPolicy(Qt::NoFocus);
     setMargin(0);
 
@@ -112,11 +113,12 @@ void DTabWidget::setFocus(QWidget *w)
 
 void DTabWidget::insertTab(QWidget *child, const QString &label, int index)
 {
+	child->setParent(0);
     if (m_closeButton && m_closeButtonShown)
     {
         m_closeButton->show();
     }
-    KTWCLASS::insertTab(child, label, index);
+    KTWCLASS::insertTab(index, child, label);
     if (index != -1) tabBar()->repaint();
 }
 
@@ -127,7 +129,7 @@ void DTabWidget::insertTab(QWidget *child, const QIcon &iconset,
     {
         m_closeButton->show();
     }
-    KTWCLASS::insertTab(child, iconset, label, index);
+    KTWCLASS::insertTab(index, child, iconset, label );
     if (index != -1) tabBar()->repaint();
 }
 

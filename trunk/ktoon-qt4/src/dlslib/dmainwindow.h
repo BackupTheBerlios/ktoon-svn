@@ -22,8 +22,8 @@
 
 #include <QSettings>
 
-#include <Q3MainWindow>
-#define MWCLASS Q3MainWindow
+#include <QMainWindow>
+#define MWCLASS QMainWindow
 #endif
 
 #include "ddockwindow.h"

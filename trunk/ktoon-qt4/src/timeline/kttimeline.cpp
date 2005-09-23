@@ -24,7 +24,7 @@
 #include "ktapplication.h"
 #include "ktdebug.h"
 
-KTTimeLine::KTTimeLine(QWidget *parent) : KTDialogBase(Q3DockWindow::OutsideDock, parent, "KTTimeLine")
+KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine")
 {
 	KTINIT;
 
@@ -49,7 +49,7 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTDialogBase(Q3DockWindow::OutsideDock
 	show();
 // 	hide();
 	
-	setResizeEnabled(true);
+// 	setResizeEnabled(true);
 
 	m_container->setMinimumHeight( m_container->sizeHint().height() );
 

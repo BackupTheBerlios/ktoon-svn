@@ -36,13 +36,13 @@
 //--------------- CONSTRUCTOR --------------------
 
 ColorPalette::ColorPalette( QWidget *parent)//, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
-	: KTDialogBase(Q3DockWindow::OutsideDock, parent, tr( "Color Palette" ))
+	: KTModuleWidgetBase(parent, tr( "Color Palette" ))
 {
 	Q_CHECK_PTR( parent );
 // 	Q_CHECK_PTR( in_assigned_menu );
 // 	Q_CHECK_PTR( assig_tb_button );
 
-	setHorizontallyStretchable(true);
+// 	setHorizontallyStretchable(true);
 			
 	//Initializations
 	
@@ -63,7 +63,7 @@ ColorPalette::ColorPalette( QWidget *parent)//, WFlags style, QPopupMenu *in_ass
 	i_add_color = QPixmap( plussign_xpm );
 	i_remove_color = QPixmap( minussign_xpm );
 
-	setOrientation (Qt::Vertical );
+// 	setOrientation (Qt::Vertical );
 	setupBlockStandardPalette();
     
 	setupBlockColorMixer();

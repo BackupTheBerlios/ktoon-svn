@@ -43,7 +43,7 @@
 #include <q3hbox.h>
 //Added by qt3to4:
 #include <Q3PtrList>
-#include "ktdialogbase.h"
+#include "ktmodulewidgetbase.h"
 
 #include "kteditspinbox.h"
 
@@ -56,7 +56,7 @@ class Brush;
  * This is a class that contains a QListView that shows the available brushes and provides
  * mechanisms for adding, editing, removing and previewing the brushes or their attributes.
  */
-class Brushes : public KTDialogBase
+class Brushes : public KTModuleWidgetBase
 {
 	Q_OBJECT
 	

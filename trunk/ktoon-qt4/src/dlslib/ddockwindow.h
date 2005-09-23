@@ -27,7 +27,8 @@
 #include <QMap>
 #include <QVBoxLayout>
 
-#include <Q3DockWindow>
+#include <QDockWidget>
+#include <QPushButton>
 
 class QBoxLayout;
 class QToolButton;
@@ -36,22 +37,49 @@ class QStackedWidget;
 class QComboBox;
 class QSettings;
 
+class DDockWindow;
+class DDockInternalWidget;
+class DDockWidgetLayout;
+
 namespace Ideal {
     class Button;
     class ButtonBar;
 }
 
-class DDockWindow : public Q3DockWindow {
+class DDockWindow : public QDockWidget
+{
+	Q_OBJECT
+	public:
+		enum Position { Bottom, Left, Right };
+		
+		DDockWindow(QWidget *parent, Position position);
+		virtual ~DDockWindow();
+		void addWidget(const QString &title, QWidget *widget);
+		
+// 		QSize sizeHint() const;
+// 		QSize minimumSize() const;
+// 		QSize minimumSizeHint() const;
+		QSize fixedExtent() const;
+		
+	public slots:
+		void setFixedExtentHeight(int);
+		void setFixedExtentWidth(int);
+		
+	private:
+		DDockInternalWidget *m_centralWidget;
+		QSize m_fixedSize;
+		
+};
+
+class DDockInternalWidget : public QWidget {
     Q_OBJECT
 public:
-    enum Position { Bottom, Left, Right };
     
-    DDockWindow(QWidget *parent, Position position);
-    virtual ~DDockWindow();
+	DDockInternalWidget(QWidget *parent, DDockWindow::Position position);
+    virtual ~DDockInternalWidget();
     
-    virtual void setVisible(bool v);
+    virtual void setExpanded(bool v);
     bool visible() const { return m_visible; }
-    Position position() const { return m_position; }
     
     virtual void addWidget(const QString &title, QWidget *widget);
     virtual void raiseWidget(QWidget *widget);
@@ -63,7 +91,11 @@ public:
     
     virtual QWidget *currentWidget() const;
     
-    virtual void setMovingEnabled(bool b);
+    DDockWindow::Position position() const { return m_position; }
+    
+	signals:
+    void fixedExtentHeight(int);
+    void fixedExtentWidth(int);
 
 private slots:
     void selectWidget();
@@ -80,12 +112,13 @@ protected:
     QMap<QWidget*, Ideal::Button*> m_buttons;
 
 private:
-    Position m_position;
-    bool m_visible;
-    QString m_name;    
-
+	DDockWindow::Position m_position;
+	bool m_visible;
+	QString m_name;
+	
     Ideal::Button *m_toggledButton;
     QBoxLayout *m_internalLayout;
+    QWidget *m_container;
 };
 
 #endif

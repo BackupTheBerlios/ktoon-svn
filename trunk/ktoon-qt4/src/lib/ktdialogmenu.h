@@ -21,7 +21,7 @@
 #ifndef KTDIALOGMENU_H
 #define KTDIALOGMENU_H
 
-#include <ktdialogbase.h>
+#include <ktmodulewidgetbase.h>
 #include <q3dockarea.h>
 #include <qtoolbox.h>
 //Added by qt3to4:

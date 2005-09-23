@@ -40,7 +40,7 @@
 #include "drawingarea.h"
 #include "symbolview.h"
 #include "symboltable.h"
-#include "ktdialogbase.h"
+#include "ktmodulewidgetbase.h"
 
 class KToon;
 class Folder;
@@ -54,7 +54,7 @@ class Item;
  * It provides a drag and drop operation where the user can drag the current displayed symbol and drop it into the
  * drawing area.
  */
-class Library : public KTDialogBase
+class Library : public KTModuleWidgetBase
 {
     Q_OBJECT
 

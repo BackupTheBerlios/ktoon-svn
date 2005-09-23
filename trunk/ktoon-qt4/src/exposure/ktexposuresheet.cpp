@@ -29,8 +29,8 @@
 #include <QList>
 
 
-KTExposureSheet::KTExposureSheet( QWidget *parent, const char *name)
-	: KTDialogBase(Q3DockWindow::OutsideDock, parent, "Exposure Sheet")
+KTExposureSheet::KTExposureSheet( QWidget *parent)
+	: KTModuleWidgetBase(parent, "Exposure Sheet")
 {
 	KTINIT;
 	setCaption( tr( "Exposure Sheet" ) );
@@ -52,7 +52,7 @@ KTExposureSheet::KTExposureSheet( QWidget *parent, const char *name)
 //  	hide();
 	show();
 
-	setResizeEnabled ( true );
+// 	setResizeEnabled ( true );
 	connect(m_viewLayer, SIGNAL(clickedFrame()), this, SIGNAL(frameSelected()));
 	connect(m_viewLayer, SIGNAL(layerSelected(int)), this, SIGNAL(layerSelected(int)));
 	connect(m_viewLayer, SIGNAL(layerInserted()), this, SIGNAL(layerInserted()));

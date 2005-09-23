@@ -21,7 +21,7 @@
 #ifndef KTTIMELINE_H
 #define KTTIMELINE_H
 
-#include <ktdialogbase.h>
+#include <ktmodulewidgetbase.h>
 #include <qsplitter.h>
 #include <q3hbox.h>
 
@@ -32,7 +32,7 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTTimeLine : public KTDialogBase
+class KTTimeLine : public KTModuleWidgetBase
 {
 	Q_OBJECT
 	public:

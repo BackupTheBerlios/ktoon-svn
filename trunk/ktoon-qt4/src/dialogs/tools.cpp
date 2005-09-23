@@ -32,7 +32,7 @@
 //--------------- CONSTRUCTOR --------------------
 
 Tools::Tools( QWidget *parent)//, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
-	: KTDialogBase(Q3DockWindow::OutsideDock,parent, "Tools")
+	: KTModuleWidgetBase(parent, "Tools")
 {
 	KTINIT;
 	Q_CHECK_PTR( parent );
@@ -150,7 +150,7 @@ Tools::~Tools()
 // 	Q_CHECK_PTR( close_event );
 // 	assigned_menu -> setItemChecked( assigned_item, false );
 // 	assigned_tb_button -> setDown( false );
-// 	KTDialogBase::closeEvent(close_event);
+// 	KTModuleWidgetBase::closeEvent(close_event);
 // }
 
 void Tools::changeButtonImage( int id_button )

@@ -43,7 +43,7 @@
 #include <Q3PtrList>
 #include "layer.h"
 
-#include "ktdialogbase.h"
+#include "ktmodulewidgetbase.h"
 
 
 // typedef Q3ValueList<QPixmap> imgs;
@@ -59,7 +59,7 @@ class Scene;
  * mechanisms for adding, editing, and removing the scenes or their attributes.
  */
 
-class Scenes : public KTDialogBase
+class Scenes : public KTModuleWidgetBase
 {
 Q_OBJECT
 	public:

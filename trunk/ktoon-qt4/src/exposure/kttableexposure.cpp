@@ -38,23 +38,23 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent, const char
 	
 	m_port = new QWidget(this);
 	
-	QGroupBox *gridNumber = new QGroupBox( m_port );
-
-	QVBoxLayout *gridLayout = new QVBoxLayout(gridNumber); gridLayout->setAutoAdd(true);/*
-	gridLayout->setInsideSpacing( 4);
-	gridLayout->setInsideMargin ( 4 );*/
+// 	QGroupBox *gridNumber = new QGroupBox( m_port );
+// 
+// 	QVBoxLayout *gridLayout = new QVBoxLayout(gridNumber);
+// 	gridLayout->setMargin(0);
+// 	gridLayout->setSpacing(0);
 	
-	QLabel *tmp = new QLabel(gridNumber);
-	tmp->setText(" ");
-	for(int i = 0; i < rows; i++)
-	{
-		tmp = new QLabel(gridNumber);
-		tmp->setText(QString::number(i));
-	}
-	gridNumber->setMaximumWidth(tmp->width());
-	gridNumber->setMinimumWidth(tmp->width());
+// 	QLabel *tmp = new QLabel(gridNumber);
+// 	tmp->setText(" ");
+// 	for(int i = 0; i < rows; i++)
+// 	{
+// 		tmp = new QLabel(gridNumber);
+// 		tmp->setText(QString::number(i));
+// 	}
+// 	gridNumber->setMaximumWidth(tmp->width());
+// 	gridNumber->setMinimumWidth(tmp->width());
 	m_layout = new QBoxLayout (  m_port, QBoxLayout::LeftToRight,4,1);
-	m_layout->addWidget ( gridNumber );
+// 	m_layout->addWidget ( gridNumber );
 	
 
 	for(int i = 0; i < cols; i++)

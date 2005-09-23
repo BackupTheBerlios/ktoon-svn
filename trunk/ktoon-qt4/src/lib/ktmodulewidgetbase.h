@@ -18,10 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTDIALOGBASE_H
-#define KTDIALOGBASE_H
+#ifndef KTMODULEWIDGETBASE_H
+#define KTMODULEWIDGETBASE_H
 
-#include <q3dockwindow.h>
 #include <qlayout.h>
 #include <qsizepolicy.h> 
 #include <qobject.h>
@@ -35,18 +34,18 @@
 /**
  * @author Jorge Cuadrado
 */
-class KTDialogBase : public Q3DockWindow
+class KTModuleWidgetBase : public QWidget
 {
 	Q_OBJECT
 	public:
-		KTDialogBase(Place p = InDock, QWidget *parent = 0, const char *name = 0, Qt::WFlags style = 0);
-		~KTDialogBase();
+		KTModuleWidgetBase(QWidget *parent, const char *name = 0);
+		~KTModuleWidgetBase();
 		virtual void addChild(QWidget * child);
 		void setFont(const QFont &);
 		
 	private:
-		QBoxLayout *container;
-		QObjectList childs;
+		QBoxLayout *m_container;
+		QObjectList m_childs;
 		bool m_isChildHidden;
 		
 	protected:

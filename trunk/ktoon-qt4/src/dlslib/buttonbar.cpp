@@ -82,6 +82,8 @@ ButtonBar::ButtonBar(Place place, ButtonMode mode, QWidget *parent, const char *
     setMode(mode);
     
     l->insertStretch(-1);
+    l->setMargin(0);
+    l->setSpacing(0);
 }
 
 ButtonBar::~ButtonBar()
@@ -90,6 +92,7 @@ ButtonBar::~ButtonBar()
 
 void ButtonBar::addButton(Button *button)
 {
+	qDebug("Adding button to bar");
     int buttonCount = m_buttons.count();
     
     button->setMode(m_mode);

@@ -68,20 +68,22 @@ int main( int argc, char ** argv )
 	format.setDepth( TRUE );
 	QGLFormat::setDefaultFormat( format );
 	
-	Splash *splash_screen = new Splash();
-	splash_screen -> show();
-	splash_screen -> message( QObject::tr( "Loading Modules" ) );
+// 	Splash *splash_screen = new Splash();
+// 	splash_screen -> show();
+// 	splash_screen -> message( QObject::tr( "Loading Modules" ) );
+// 	
+// 	KToon *main_window = new KToon();
+// 	
+// 	main_window -> setCaption( "KToon" );
+// 	application.setMainWidget( main_window );
+// 	main_window -> showMaximized();
+// 	
+// 	splash_screen -> finish( main_window );
+// 	delete splash_screen;
 	
-	KToon *main_window = new KToon();
-	
-	main_window -> setCaption( "KToon" );
-	application.setMainWidget( main_window );
-	main_window -> showMaximized();
-	
-	splash_screen -> finish( main_window );
-	delete splash_screen;
-	
-// 	KTMainWindow mainWindow;
+	KTMainWindow mainWindow;
+	application.setMainWidget( &mainWindow );
+	mainWindow.show();
 	
 	application.connect( &application, SIGNAL( lastWindowClosed() ), &application, SLOT( quit()) );
 	

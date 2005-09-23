@@ -78,14 +78,14 @@ DDockWindow *DMainWindow::toolWindow(DDockWindow::Position position) const
 void DMainWindow::createToolWindows()
 {
     m_pBottomDock = new DDockWindow(this, DDockWindow::Bottom);
-//     addDockWidget( Qt::BottomDockWidgetArea, m_pBottomDock );
-    moveDockWindow(m_pBottomDock, Qt::DockBottom);
+    addDockWidget( Qt::BottomDockWidgetArea, m_pBottomDock );
+
     m_pLeftDock = new DDockWindow(this, DDockWindow::Left);
-//     addDockWidget( Qt::LeftDockWidgetArea, m_pLeftDock );
-    moveDockWindow(m_pLeftDock, Qt::DockLeft);
+    addDockWidget( Qt::LeftDockWidgetArea, m_pLeftDock );
+
     m_pRightDock = new DDockWindow(this, DDockWindow::Right);
-//     addDockWidget( Qt::RightDockWidgetArea, m_pRightDock );
-    moveDockWindow(m_pRightDock, Qt::DockRight);
+    addDockWidget( Qt::RightDockWidgetArea, m_pRightDock );
+
 }
 
 void DMainWindow::addWidget(QWidget *widget, const QString &title)
@@ -97,6 +97,8 @@ void DMainWindow::addWidget(QWidget *widget, const QString &title)
         m_pFirstRemoved = false;
     }
     
+//     widget->setParent(this);
+    
     addWidget(m_pActiveTabWidget, widget, title);
 }
 
@@ -107,6 +109,7 @@ void DMainWindow::addWidget(DTabWidget *tab, QWidget *widget, const QString &tit
     {
         idx = tab->currentPageIndex() + 1;
     }
+
     if (m_pShowIconsOnTabs)
     {
         const QPixmap *pixmap = widget->icon();
@@ -146,7 +149,7 @@ void DMainWindow::removeWidget(QWidget *widget)
                 //remove and delete tabwidget if it is not the first one
                 if (tab != m_pTabs.first())
                 {
-                    QPair<uint, uint> idx = m_pCentral->indexOf(tab);
+                    QPair<int, int> idx = m_pCentral->indexOf(tab);
                     m_pTabs.remove(tab);
                     m_pActiveTabWidget = m_pTabs.first();
                     m_pCentral->removeDock(idx.first, idx.second, true);

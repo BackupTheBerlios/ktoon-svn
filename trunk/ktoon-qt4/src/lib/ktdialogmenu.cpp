@@ -81,7 +81,7 @@ void  KTDialogMenu::enterEvent(QEvent *e)
 	if( !curr)
 		return;
 	
-	if (curr && curr != this && curr->inherits("KTDialogBase") )
+	if (curr && curr != this && curr->inherits("KTModuleWidgetBase") )
 	{
 		qDebug("I have it");
 		curr->reparent(m_bar, curr->pos(), true);

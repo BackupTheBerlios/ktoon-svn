@@ -18,85 +18,93 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktdialogbase.h"
+#include "ktmodulewidgetbase.h"
 #include <qtooltip.h>
 #include <q3dockarea.h>
 //Added by qt3to4:
 #include <QEvent>
 #include <QBoxLayout>
-#include <iostream>
 
 #include "ktdebug.h"
 
 #include <qobject.h>
 
-KTDialogBase::KTDialogBase(Place p, QWidget *parent, const char *name, Qt::WFlags style) : Q3DockWindow(p, parent, name, style), m_isChildHidden(false)
+KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent), m_isChildHidden(false)
 {
-	container = boxLayout();
-
-	setCloseMode(Undocked);
+	setName(name);
+	m_container = new QVBoxLayout(this);
 	
 	m_title = new KTDialogTitle("the title", this, "DialogTitle");
 	
 	QToolTip::add(m_title, tr("Double click for roll up"));
 	
-	container->addWidget(m_title, 0, Qt::AlignTop);
-	container->setDirection ( QBoxLayout::TopToBottom);
-	container->setMargin(5);
-	container->setSpacing(3);
+	m_container->addWidget(m_title, 0, Qt::AlignTop);
+	m_container->setDirection ( QBoxLayout::TopToBottom);
+	m_container->setMargin(5);
+	m_container->setSpacing(3);
 	
 	connect(m_title, SIGNAL(doubleClicked()), SLOT(toggleView()));
 	
 // 	connect(this, SIGNAL(placeChanged(QDockWindow::Place)), SLOT(fixPosition(QDockWindow::Place)));
-	
-	setOrientation( Qt::Vertical );
 	
 	adjustSize();
 	hide();
 }
 
 
-KTDialogBase::~KTDialogBase()
+KTModuleWidgetBase::~KTModuleWidgetBase()
 {
 }
 
 
-void KTDialogBase::addChild(QWidget* child)
+void KTModuleWidgetBase::addChild(QWidget* child)
 {
-	childs.append(child);
-	container->addWidget(child);
+	m_childs.append(child);
+	m_container->addWidget(child);
 }
 
-void KTDialogBase::toggleView()
+void KTModuleWidgetBase::toggleView()
 {
 	m_title->setMinimumWidth(m_title->width());
-	for( int i = 0; i < childs.count(); i++)
+	for( int i = 0; i < m_childs.count(); i++)
 	{
-		QObject *o = childs[i];
+		QObject *o = m_childs[i];
 		if ( o && ! m_isChildHidden )
+		{
 			static_cast<QWidget*>(o)->hide();
+		}
 		else if ( o && m_isChildHidden )
+		{
 			static_cast<QWidget*>(o)->show();
+		}
+	}
+	
+	if ( ! m_isChildHidden )
+	{
+		setMinimumSize(m_title->size());
+		resize(m_title->size());
+	}
+	else
+	{
+		adjustSize();
 	}
 	
 	m_isChildHidden = !m_isChildHidden;
-	
-	adjustSize ();
 }
 
-void KTDialogBase::setCaption(const QString &text)
+void KTModuleWidgetBase::setCaption(const QString &text)
 {
 // 	QDockWindow::setCaption(text);
  	m_title->setText(text);
 }
 
-void KTDialogBase::setFont( const QFont &f)
+void KTModuleWidgetBase::setFont( const QFont &f)
 {
-	Q3DockWindow::setFont(f);
+	QWidget::setFont(f);
 	adjustSize();
 }
 
-bool KTDialogBase::event( QEvent * e )
+bool KTModuleWidgetBase::event( QEvent * e )
 {
 	if ( e->type() == QEvent::Hide )
 	{
@@ -108,6 +116,6 @@ bool KTDialogBase::event( QEvent * e )
 		emit activate(true);
 	}
 
-	return Q3DockWindow::event(e );
+	return QWidget::event(e );
 }
 

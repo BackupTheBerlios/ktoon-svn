@@ -32,7 +32,7 @@
 #include <qpixmap.h>
 #include <qaction.h>
 
-#include "ktdialogbase.h"
+#include "ktmodulewidgetbase.h"
 
 class KToon;
 
@@ -43,7 +43,7 @@ class KToon;
  * Contains buttons and menu items where the user may choose a tool that he wants such as the brush, the pencil,
  * the eraser, etc.
  */
-class Tools : public KTDialogBase
+class Tools : public KTModuleWidgetBase
 {
     Q_OBJECT
 

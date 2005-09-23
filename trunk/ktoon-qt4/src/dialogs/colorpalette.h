@@ -41,7 +41,7 @@
 #include <QPixmap>
 #include <Q3PtrList>
 
-#include "ktdialogbase.h"
+#include "ktmodulewidgetbase.h"
 #include "colorcells.h"
 #include "colormixer.h"
 #include "outlinecolor.h"
@@ -66,7 +66,7 @@ class KTColor;
  * manipulation zone and finally a palette where the user can add custom colors.
  * See each widget documentation for more info.
  */
-class ColorPalette : public KTDialogBase
+class ColorPalette : public KTModuleWidgetBase
 {
     Q_OBJECT
     

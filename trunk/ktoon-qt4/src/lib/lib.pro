@@ -10,7 +10,6 @@ HEADERS += glgraphiccomponent.h \
            ktxmlreader.h \
            ktanimwidget.h \
            ktfontwidget.h \
-           ktdialogbase.h \
            ktdialogtitle.h \
            ktdialogmenu.h \
            status.h \
@@ -30,7 +29,8 @@ HEADERS += glgraphiccomponent.h \
            kimageeffect.h \
            ktfiledialog.h \
            ktvbox.h \
-           ktelabel.h 
+           ktelabel.h \
+           ktmodulewidgetbase.h 
 SOURCES += glgraphiccomponent.cpp \
            ktapplication.cpp \
            configwizard.cpp \
@@ -38,7 +38,6 @@ SOURCES += glgraphiccomponent.cpp \
            ktxmlreader.cpp \
            ktanimwidget.cpp \
            ktfontwidget.cpp \
-           ktdialogbase.cpp \
            ktdialogtitle.cpp \
            ktdialogmenu.cpp \
            status.cpp \
@@ -58,7 +57,8 @@ SOURCES += glgraphiccomponent.cpp \
            kimageeffect.cpp \
            ktfiledialog.cpp \
            ktvbox.cpp \
-           ktelabel.cpp 
+           ktelabel.cpp \
+           ktmodulewidgetbase.cpp 
 INCLUDEPATH += ../../src/core \
 ../../src/exposure \
 ../../src/dialogs \
@@ -80,5 +80,4 @@ CONFIG += release \
 warn_on \
 staticlib
 TEMPLATE = lib
-#The following line was inserted by qt3to4
-QT += xml  opengl qt3support 
+QT += xml opengl qt3support

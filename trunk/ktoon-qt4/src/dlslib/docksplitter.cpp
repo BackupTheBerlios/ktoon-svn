@@ -23,182 +23,147 @@
 namespace Ideal {
 
 DockSplitter::DockSplitter(Qt::Orientation orientation, QWidget *parent, const char *name)
-    :QSplitter(parent, name), m_orientation(orientation)
-{
-    switch (m_orientation)
-    {
-	    case Qt::Horizontal:
-		    setOrientation(Qt::Vertical);
-            break;
-	    case Qt::Vertical:
-		    setOrientation(Qt::Horizontal);
-            break;
-    }
-    setOpaqueResize(true);
-    appendSplitter();
-}
-
-DockSplitter::~DockSplitter()
-{
-}
-
-void DockSplitter::addDock(uint row, uint col, QWidget *dock)
-{
-	qDebug(QString("Adding dock with name %1").arg(dock->name()));
-	if (m_docks.count() <= row)
+	:QSplitter(parent, name), m_orientation(orientation)
 	{
-		for (int i = m_docks.count(); i <= row ; ++i)
+		switch (m_orientation)
 		{
-			m_docks.append(QList<QWidget*>());
+			case Qt::Horizontal:
+				setOrientation(Qt::Vertical);
+				break;
+			case Qt::Vertical:
+				setOrientation(Qt::Horizontal);
+				break;
+		}
+		setOpaqueResize(true);
+		appendSplitter();
+	}
+
+	DockSplitter::~DockSplitter()
+	{
+	}
+
+	void DockSplitter::addDock(int row, int col, QWidget *dock)
+	{
+		if (m_docks.count() <= row)
+		{
+			for (int i = m_docks.count(); i <= row ; ++i)
+			{
+				m_docks.append(QList<QWidget*>());
+			}
+		}
+		if (m_docks.at(row).count() <= col)
+		{
+			for (int i = m_docks.at(row).count(); i <= col ; ++i)
+			{
+				m_docks[row].append(0);
+			}
+			m_docks[row][col] = dock;
+		}
+		else if (m_docks.at(row).at(col) == 0)
+		{
+			m_docks[row][col] = dock;
+		}
+		else
+		{
+			m_docks[row].insert(col, dock);
+		}
+		
+		if (m_splitters.count() <= row)
+		{
+			createSplitters(row);
+		}
+		QSplitter *splitter = m_splitters.at(row);
+
+		dock->reparent(splitter, QPoint(0,0), true);
+		
+		if (col < m_docks.at(row).count()-1)
+		{
+			shiftWidgets(splitter, row, col+1);
 		}
 	}
-	if (m_docks.at(row).count() <= col)
+
+	void DockSplitter::appendSplitter()
 	{
-		for (int i = m_docks.at(row).count(); i <= col ; ++i)
+		QSplitter *splitter = new QSplitter(m_orientation, this);
+		splitter->setOpaqueResize(true);
+		splitter->show();
+		m_splitters.append(splitter);
+	}
+
+	void DockSplitter::createSplitters(int index)
+	{;
+		for (int i = m_splitters.count(); i <= index; ++i)
 		{
-			m_docks[row].append(0);
+			appendSplitter();
 		}
-		m_docks[row][col] = dock;
 	}
-	else if (m_docks.at(row).at(col) == 0)
+
+	void DockSplitter::removeDock(int row, int col, bool alsoDelete)
 	{
-		m_docks[row][col] = dock;
+		if ((row >= m_docks.count()) || (col >= m_docks[row].count()))
+			return;
+
+		QWidget *w = m_docks.at(row).at(col);
+		m_docks[row].removeAll(m_docks.at(row).at(col));
+
+		if (alsoDelete)
+		{
+			delete w;
+			w = 0;
+		}
+		else
+		{
+			w->reparent(0, QPoint(0,0), false);
+			w->hide();
+		}
+
+		QSplitter *splitter = m_splitters.at(row);
+		splitter->setMinimumSize(splitter->minimumSizeHint());
+
+		if (isRowEmpty(row))
+		{
+			m_docks.removeAt(row);
+			delete m_splitters.takeAt(row);
+		}
 	}
-	else
+
+	bool DockSplitter::isRowEmpty(int row)
 	{
-		m_docks[row].insert(col, dock);
+		for (int i = 0; i < m_docks.at(row).count(); ++i) {
+			if (m_docks.at(row).at(i) != 0)
+				return false;
+		}
+		return true;
 	}
-	
-	if (m_splitters.count() <= row)
+
+	void DockSplitter::shiftWidgets(QSplitter *splitter, int row, int fromCol)
 	{
-		createSplitters(row);
+		for (int i = fromCol; i < m_docks.at(row).count(); ++i)
+		{
+			if (m_docks[row][i])
+				splitter->moveToLast(m_docks[row][i]);
+		}
 	}
-	QSplitter *splitter = m_splitters.at(row);
 
-	dock->reparent(splitter, QPoint(0,0), true);
-	if (col < m_docks.at(row).count()-1)
+	int DockSplitter::numRows() const
 	{
-		shiftWidgets(splitter, row, col+1);
+		return m_docks.count();
 	}
-}
 
-void DockSplitter::appendSplitter()
-{
-    switch (m_orientation)
-    {
-	    case Qt::Horizontal:
-        {
-		m_splitters.append(new QSplitter(Qt::Horizontal, this));
-            break;
-        }
-	    case Qt::Vertical:
-        {
-		m_splitters.append(new QSplitter(Qt::Vertical, this));
-            break;
-        }
-    }
-    m_splitters[m_splitters.size()-1]->setOpaqueResize(true);
-    m_splitters[m_splitters.size()-1]->show();
-}
+	int DockSplitter::numCols(int row) const
+	{
+		if (row < numRows())
+			return m_docks[row].count();
+		return 0;
+	}
 
-void DockSplitter::createSplitters(uint index)
-{
-    for (uint i = m_splitters.count(); i <= index; ++i)
-    {
-        appendSplitter();
-    }
-}
-
-void DockSplitter::removeDock(uint row, uint col, bool alsoDelete)
-{
-    if ((row >= m_docks.count()) || (col >= m_docks[row].count()))
-    {
-        return;
-    }
-    
-    QWidget *w = m_docks[row][col];
-    m_docks[row].remove(m_docks[row].at(col));
-    
-    if (alsoDelete)
-    {
-        delete w;
-        w = 0;
-    }
-    else
-    {
-        w->reparent(0, QPoint(0,0), false);
-        w->hide();
-    }
-
-    m_splitters[row]->setMinimumSize(m_splitters[row]->minimumSizeHint());
-
-    if (isRowEmpty(row))
-    {
-        m_docks.remove(m_docks.at(row));
-        delete m_splitters[row];
-        m_splitters[row] = 0;
-        m_splitters.remove(m_splitters.at(row));
-    }
-}
-
-bool DockSplitter::isRowEmpty(int row)
-{
-    if (m_docks[row].count() == 0)
-    {
-        return true;
-    }
-    for (uint i = 0; i < m_docks[row].count(); ++i)
-    {
-        if (m_docks[row][i] != 0)
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
-void DockSplitter::shiftWidgets(QSplitter *splitter, uint row, uint fromCol)
-{
-    for (uint i = fromCol; i < m_docks[row].count(); ++i)
-    {
-        if (m_docks[row][i])
-        {
-            splitter->moveToLast(m_docks[row][i]);
-        }
-        else
-        {
-        }
-    }
-}
-
-int DockSplitter::numRows() const
-{
-    return m_docks.count();
-}
-
-int DockSplitter::numCols(int row) const
-{
-    if (row < numRows())
-    {
-        return m_docks[row].count();
-    }
-    return 0;
-}
-
-QPair<uint, uint> DockSplitter::indexOf(QWidget *dock)
-{
-    for (uint i = 0; i < m_docks.count(); ++i)
-    {
-        for (uint j = 0; j < m_docks[i].count(); ++j)
-        {
-            if (dock == m_docks[i][j])
-            {
-                return qMakePair(i, j);
-            }
-        }
-    }
-    return qMakePair(0u, 0u);
-}
+	QPair<int, int> DockSplitter::indexOf(QWidget *dock)
+	{
+		for (int i = 0; i < m_docks.count(); ++i)
+			for (int j = 0; j < m_docks.at(i).count(); ++j)
+				if (dock == m_docks.at(i).at(j))
+					return qMakePair(i, j);
+		return qMakePair(0, 0);
+	}
 
 }
-

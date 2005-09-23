@@ -21,7 +21,7 @@
 #ifndef KTEXPOSURESHEET_H
 #define KTEXPOSURESHEET_H
 
-#include "ktdialogbase.h"
+#include "ktmodulewidgetbase.h"
 #include "kttableexposure.h"
 
 #include <QButtonGroup>
@@ -42,12 +42,12 @@
 
 // typedef QList<QPixmap> imgs;
 
-class KTExposureSheet : public KTDialogBase
+class KTExposureSheet : public KTModuleWidgetBase
 {
 	
 	Q_OBJECT
 	public:
-		KTExposureSheet(QWidget *parent = 0, const char *name = 0);
+		KTExposureSheet(QWidget *parent = 0);
 		~KTExposureSheet();
 
 		enum Actions { /*NoAction = 0,*/ InsertLayer = 0, RemoveLayer, ShowManageLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
