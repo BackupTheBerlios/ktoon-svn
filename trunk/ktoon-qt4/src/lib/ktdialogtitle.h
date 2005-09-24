@@ -21,9 +21,7 @@
 #ifndef KTDIALOGTITLE_H
 #define KTDIALOGTITLE_H
 
-#include <qlabel.h>
-//Added by qt3to4:
-#include <QMouseEvent>
+#include "ktsqueezelabel.h"
 
 /**
 @author David Cuadrado

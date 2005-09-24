@@ -20,5 +20,4 @@ CONFIG += release \
 warn_on \
 staticlib
 TEMPLATE = lib
-#The following line was inserted by qt3to4
 QT +=  qt3support 

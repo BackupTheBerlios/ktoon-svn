@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <q3valuelist.h>
+#include <QList>
 
 #include "kttimeline.h"
 #include "ktapplication.h"
@@ -36,9 +36,11 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine
 	m_splitter = new QSplitter( m_container );
 	
 	m_layerManager = new KTLayerManager( m_splitter );
+	m_splitter->addWidget(m_layerManager);
 	m_layerManager->resize( 590, m_layerManager->height() );
 	
 	m_sequenceManager = new KTFrameSequenceManager(m_splitter);
+	m_splitter->addWidget(m_sequenceManager);
 	
 	connect(m_layerManager, SIGNAL(actionSelected(int)), this, SLOT(execAction(int)));
 	
@@ -53,7 +55,7 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine
 
 	m_container->setMinimumHeight( m_container->sizeHint().height() );
 
-	m_splitter->setSizes( Q3ValueList<int>() << 190 << 590 );
+	m_splitter->setSizes( QList<int>() << 190 << 590 );
 }
 
 

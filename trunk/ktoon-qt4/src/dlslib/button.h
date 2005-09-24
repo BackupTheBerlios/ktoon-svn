@@ -1,6 +1,8 @@
 /***************************************************************************
  *   Copyright (C) 2004 by Alexander Dymo                                  *
  *   adymo@kdevelop.org                                                    *
+ *   David Cuadrado (C) 2005 						   *
+ *   krawek@gmail.com							   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Library General Public License as       *
@@ -24,6 +26,7 @@
 #include <QPushButton>
 #include <QIcon>
 #include <QStyleOptionButton>
+#include <QTimer>
 
 #include "comdefs.h"
 
@@ -31,6 +34,42 @@ namespace Ideal {
 
 class ButtonBar;
 class Button;
+
+class Animation
+{
+	public:
+		Animation(QObject *parent) : count(0), MAXCOUNT(20), INTERVAL(15), isEnter(false)
+		{
+			timer = new QTimer(parent);
+		}
+		~Animation() {}
+		void start()
+		{
+			timer->start(INTERVAL);
+		}
+		
+		QColor blendColors( const QColor& color1, const QColor& color2, int percent )
+		{
+			const float factor1 = ( 100 - ( float ) percent ) / 100;
+			const float factor2 = ( float ) percent / 100;
+
+			const int r = static_cast<int>( color1.red() * factor1 + color2.red() * factor2 );
+			const int g = static_cast<int>( color1.green() * factor1 + color2.green() * factor2 );
+			const int b = static_cast<int>( color1.blue() * factor1 + color2.blue() * factor2 );
+
+			QColor result;
+			result.setRgb( r, g, b );
+
+			return result;
+		}
+			
+		QTimer *timer;
+		int count;
+		const int MAXCOUNT;
+		const int INTERVAL;
+			
+		bool isEnter;
+};
 
 /**
 @short A button to place onto the ButtonBar
@@ -65,10 +104,17 @@ public:
     /**Returns the real (i.e. not squeezed) text of a button.*/
     QString realText() const;
     
+	protected slots:
+		virtual void anime();
+    
 protected:
     ButtonMode mode();
     
     virtual void paintEvent(QPaintEvent *e);
+    virtual void enterEvent( QEvent* );
+    virtual void leaveEvent( QEvent* );
+    
+    virtual void drawEffect( QPainter *paint );
 
 private:
     virtual ~Button();
@@ -87,6 +133,8 @@ private:
     
     QString m_realText;
     QIcon m_realIconSet;
+    
+    Animation *m_animation;
     
 friend class ButtonBar;
 };

@@ -96,9 +96,7 @@ void DMainWindow::addWidget(QWidget *widget, const QString &title)
         m_pCentral->addDock(0, 0, m_pActiveTabWidget);
         m_pFirstRemoved = false;
     }
-    
-//     widget->setParent(this);
-    
+
     addWidget(m_pActiveTabWidget, widget, title);
 }
 

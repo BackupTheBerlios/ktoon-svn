@@ -19,15 +19,14 @@
  ***************************************************************************/
 
 #include "ktdialogtitle.h"
-//Added by qt3to4:
-#include <QMouseEvent>
+
 #include <QLabel>
-#include <Q3Frame>
+#include <QFrame>
 
 KTDialogTitle::KTDialogTitle(const QString &title, QWidget *parent, const char *name)
  : QLabel(parent, name)
 {
-	setFrameStyle( Q3Frame::Box | Q3Frame::Raised );
+	setFrameStyle( QFrame::Box | QFrame::Raised );
 	setText(title);
 }
 
@@ -36,7 +35,7 @@ KTDialogTitle::~KTDialogTitle()
 {
 }
 
-void KTDialogTitle::mouseDoubleClickEvent(QMouseEvent *e)
+void KTDialogTitle::mouseDoubleClickEvent(QMouseEvent *)
 {
 	emit doubleClicked();
 }

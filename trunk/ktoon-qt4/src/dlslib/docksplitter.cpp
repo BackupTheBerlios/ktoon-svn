@@ -36,6 +36,7 @@ DockSplitter::DockSplitter(Qt::Orientation orientation, QWidget *parent, const c
 		}
 		setOpaqueResize(true);
 		appendSplitter();
+		
 	}
 
 	DockSplitter::~DockSplitter()
@@ -44,6 +45,7 @@ DockSplitter::DockSplitter(Qt::Orientation orientation, QWidget *parent, const c
 
 	void DockSplitter::addDock(int row, int col, QWidget *dock)
 	{
+		qDebug("*****Adding dock with name: " +QString( dock->name() ));
 		if (m_docks.count() <= row)
 		{
 			for (int i = m_docks.count(); i <= row ; ++i)
@@ -80,6 +82,16 @@ DockSplitter::DockSplitter(Qt::Orientation orientation, QWidget *parent, const c
 		{
 			shiftWidgets(splitter, row, col+1);
 		}
+		
+// 		QSizePolicy policy = dock->sizePolicy();
+// 		policy.setHorizontalStretch(80);
+// 		policy.setVerticalStretch(80);
+// 		policy.setHorizontalPolicy (QSizePolicy::Maximum);
+// 		policy.setVerticalPolicy (QSizePolicy::Maximum);
+// 		
+// 		dock->setSizePolicy(policy);
+		
+// 		qDebug("Handle width: "+QString::number(handleWidth ()));
 	}
 
 	void DockSplitter::appendSplitter()
@@ -141,7 +153,9 @@ DockSplitter::DockSplitter(Qt::Orientation orientation, QWidget *parent, const c
 		for (int i = fromCol; i < m_docks.at(row).count(); ++i)
 		{
 			if (m_docks[row][i])
+			{
 				splitter->moveToLast(m_docks[row][i]);
+			}
 		}
 	}
 
@@ -160,10 +174,22 @@ DockSplitter::DockSplitter(Qt::Orientation orientation, QWidget *parent, const c
 	QPair<int, int> DockSplitter::indexOf(QWidget *dock)
 	{
 		for (int i = 0; i < m_docks.count(); ++i)
+		{
 			for (int j = 0; j < m_docks.at(i).count(); ++j)
+			{
 				if (dock == m_docks.at(i).at(j))
+				{
 					return qMakePair(i, j);
+				}
+			}
+		}
 		return qMakePair(0, 0);
+	}
+	
+	void DockSplitter::resizeEvent(QResizeEvent *e)
+	{
+// 		qDebug(QString("Resized to %1 , %2").arg(e->size().width()).arg(e->size().height()));
+		QSplitter::resizeEvent(e);
 	}
 
 }

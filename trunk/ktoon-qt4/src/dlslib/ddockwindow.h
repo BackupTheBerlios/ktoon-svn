@@ -56,7 +56,7 @@ class DDockWindow : public QDockWidget
 		virtual ~DDockWindow();
 		void addWidget(const QString &title, QWidget *widget);
 		
-// 		QSize sizeHint() const;
+		QSize sizeHint() const;
 // 		QSize minimumSize() const;
 // 		QSize minimumSizeHint() const;
 		QSize fixedExtent() const;
@@ -64,6 +64,9 @@ class DDockWindow : public QDockWidget
 	public slots:
 		void setFixedExtentHeight(int);
 		void setFixedExtentWidth(int);
+		
+	protected:
+		void resizeEvent(QResizeEvent *e);
 		
 	private:
 		DDockInternalWidget *m_centralWidget;

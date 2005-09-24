@@ -25,6 +25,8 @@
 
 #include "status.h"
 
+#include "ktapplication.h"
+
 // Qt
 #include <QImage>
 #include <QPixmap>
@@ -43,6 +45,8 @@ KTMainWindow::KTMainWindow() : DMainWindow(0, "KToon-MainWindow")
 	
 	m_workSpace = new QWorkspace/*(this)*/;
 	m_workSpace->setScrollBarsEnabled ( true );
+	
+// 	m_workSpace->setBackground(QBrush(QPixmap(background_xpm))); 
 	
 	KTStatus->setupDrawingArea(m_workSpace);
 
@@ -117,33 +121,38 @@ void KTMainWindow::setupMenu()
 	// Setup the help menu
 	m_helpMenu = new QMenu(this);
 	menuBar()->insertItem( tr( "&Help" ), m_helpMenu );
+	m_helpMenu->addAction(m_actionManager->find("Resize") );
 }
 
 void KTMainWindow::createGUI()
 {
+	// TODO: put setIcon in each class
 	ColorPalette *m_colorPalette = new ColorPalette(this);
-// 	m_colorPalette->show();
+	m_colorPalette->setIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.xpm") );
 	toolWindow(DDockWindow::Left)->addWidget(tr("Palette"),m_colorPalette);
 	
 	Brushes *m_brushesDialog = new Brushes( this);
-// 	m_brushesDialog->show();
+	m_brushesDialog->setIcon(QPixmap(KTOON_HOME+"/images/icons/brushes.xpm"));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Brushes"),m_brushesDialog);
 	
 	Library *m_libraryDialog = new Library( this, KTStatus->currentDrawingArea());
-// 	m_libraryDialog->show();
+	m_libraryDialog->setIcon(QPixmap(KTOON_HOME+"/images/icons/library.xpm"));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Library"),m_libraryDialog);
 	
 // 	Scenes *m_scenes = new Scenes( this);
-// 	m_scenes->show();
 // 	toolWindow(DDockWindow::Right)->addWidget(tr("Scenes"),m_scenes);
 	
 	KTExposureSheet *m_exposureSheet = new KTExposureSheet(this);
-// 	m_exposureSheet->show();
+	m_exposureSheet->setIcon(QPixmap(KTOON_HOME+"/images/icons/exposure_sheet.xpm"));
 	toolWindow(DDockWindow::Right)->addWidget(tr("Exposure Sheet"),m_exposureSheet);
 	
 	KTTimeLine *m_timeLine = new KTTimeLine(this);
-// 	m_timeLine->show();
+	m_timeLine->setIcon(QPixmap(KTOON_HOME+"/images/icons/time_line.xpm"));
 	toolWindow(DDockWindow::Bottom)->addWidget(tr("Time Line"),m_timeLine);
+	
+	ColorPalette *m_colorPalette2 = new ColorPalette(this);
+	m_colorPalette2->setIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.xpm") );
+	toolWindow(DDockWindow::Bottom)->addWidget(tr("Palette"),m_colorPalette2);
 }
 
 void KTMainWindow::setupFileActions()
@@ -192,6 +201,20 @@ void KTMainWindow::setupFileActions()
 	connect(exit, SIGNAL(activated()), this, SLOT(close()));
 	exit->setStatusTip(tr("Closes the application"));
 	m_actionManager->insert(exit);
+	
+	QAction *resize  = new QAction("Resize", this);
+	resize->setObjectName("Resize");
+	connect(resize, SIGNAL(activated()), this, SLOT(resize()));
+	m_actionManager->insert(resize);
+	
+}
+
+#include "docksplitter.h"
+
+void KTMainWindow::resize()
+{
+// 	QMainWindow::resize(1024,770);
+	m_pCentral->resize(1024,770);
 }
 
 void KTMainWindow::setupToolBar()

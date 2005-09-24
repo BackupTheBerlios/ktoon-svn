@@ -33,7 +33,7 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent, const char
 	: QScrollArea(parent),m_numLayer(0), m_currentLayer(0), m_currentFrame(0)
 {
 	KTINIT;
-
+	setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOn);
 	viewport ()->setPaletteBackgroundColor ( paletteBackgroundColor() );
 	
 	m_port = new QWidget(this);
@@ -54,6 +54,8 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent, const char
 // 	gridNumber->setMaximumWidth(tmp->width());
 // 	gridNumber->setMinimumWidth(tmp->width());
 	m_layout = new QBoxLayout (  m_port, QBoxLayout::LeftToRight,4,1);
+	m_layout->setSpacing(0);
+	m_layout->setMargin(0);
 // 	m_layout->addWidget ( gridNumber );
 	
 
@@ -64,7 +66,7 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent, const char
 	
 	setWidget(m_port);
 	setWidgetResizable (true);
-	setMinimumHeight(sizeHint().height());
+// 	setMinimumHeight(sizeHint().height());
 	QList<Layer*> ly = KTStatus->currentScene()->getLayers();
 	KTStatus->setCurrentLayer(ly.at(0));
 	QList<KeyFrame*> kf =  KTStatus->currentLayer()->keyFrames();
@@ -114,6 +116,7 @@ void KTTableExposure::insertLayer(int rows, QString text)
 	}
 	
 	KTLayerExposure *newLayer = new KTLayerExposure(text, m_numLayer, rows, m_port);
+
 	m_layers.append(newLayer);
 	connect(newLayer, SIGNAL(selected(int)), this, SLOT(changeCurrentLayer(int)));
 	connect(this, SIGNAL(layerSelected(int)), newLayer, SLOT(otherSelected(int)));
@@ -126,10 +129,12 @@ void KTTableExposure::insertLayer(int rows, QString text)
 	connect(newLayer, SIGNAL(layerRenamed(int, const QString &)), this, SLOT(layerRename(int, const QString &)));
 	connect(newLayer, SIGNAL(frameRenamed(int, int, const QString &)), this, SLOT(frameRename(int, int, const QString &)));
 	
-	m_layout->addWidget( newLayer, 0, Qt::AlignTop | Qt::AlignCenter);
+	m_layout->addWidget( newLayer, 0, /*Qt::AlignTop | */Qt::AlignLeft);
 	
 	m_numLayer++;
 	newLayer->show();
+	
+	m_port->adjustSize();
 	
 	std::auto_ptr<Layer> ap_n_layer(new Layer);
 	Layer* n_layer = ap_n_layer.get();

@@ -1,6 +1,8 @@
 /***************************************************************************
  *   Copyright (C) 2004 by Alexander Dymo                                  *
  *   adymo@kdevelop.org                                                    *
+ *   David Cuadrado (C) 2005 						   *
+ *   krawek@gmail.com							   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Library General Public License as       *
@@ -58,12 +60,12 @@ static char * new_xpm[] = {
 #include "buttonbar.h"
 
 namespace Ideal {
-
+	
 	Button::Button(ButtonBar *parent, const QString text, const QIcon &icon,
 		       const QString &description)
 	: QPushButton(icon, text, parent), m_buttonBar(parent), m_description(description),
 	m_place(parent->place()), m_realText(text), m_realIconSet(icon)
-	{	
+	{
 		hide();
 		setFlat(true);
 		setToggleButton(true);
@@ -74,11 +76,54 @@ namespace Ideal {
 		fixDimensions(Ideal::Bottom);
     
 		QToolTip::add(this, m_realText);
+		
+		m_animation = new Animation(this);
+		
+		connect( m_animation->timer, SIGNAL( timeout() ), this, SLOT( anime() ) );	
 	}
 
 	Button::~Button()
 	{
-//     m_buttonBar->removeButton(this);
+		delete m_animation;
+	}
+	
+	void Button::enterEvent( QEvent* )
+	{
+		m_animation->isEnter = true;
+		m_animation->count = 0;
+
+		m_animation->timer->start();
+	}
+
+	void Button::leaveEvent( QEvent* )
+	{
+		if ( m_animation->count == 0 )
+		{
+			m_animation->count = 1;
+		}
+		m_animation->isEnter = false;
+		m_animation->timer->start();
+	}
+	
+	void Button::anime()
+	{
+		if ( m_animation->isEnter ) 
+		{
+			m_animation->isEnter += 1;
+			repaint( false );
+			if ( m_animation->isEnter > m_animation->MAXCOUNT )
+			{
+				m_animation->timer->stop();
+			}
+		} else 
+		{
+			m_animation->isEnter -= 1;
+			repaint( false );
+			if ( m_animation->isEnter < 0 )
+			{
+				m_animation->timer->stop();
+			}
+		}
 	}
 
 	void Button::setDescription(const QString &description)
@@ -126,6 +171,8 @@ namespace Ideal {
 
 	void Button::paintEvent(QPaintEvent *)
 	{
+		QPainter p(this);
+		
 		QStyleOptionButton opt = styleOption();
 		QRect r = opt.rect;
 
@@ -134,9 +181,7 @@ namespace Ideal {
 
 		QStylePainter p2(&pm, this);
 		p2.drawControl(QStyle::CE_PushButton, opt);
-
-		QPainter p(this);
-
+		
 		switch (m_place)
 		{
 			case Ideal::Left:
@@ -151,6 +196,13 @@ namespace Ideal {
 				p.drawPixmap(0, 0, pm);
 				break;
 		}
+		
+		drawEffect(&p);
+	}
+	
+	void Button::drawEffect( QPainter *paint)
+	{
+		// TODO: do this
 	}
 
 	ButtonMode Button::mode()

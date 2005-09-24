@@ -22,6 +22,7 @@
 
 #include <QSplitter>
 #include <QList>
+#include <QResizeEvent>
 
 namespace Ideal {
 
@@ -51,6 +52,7 @@ class DockWidget;
 			void shiftWidgets(QSplitter *splitter, int row, int fromCol);
 
 			bool isRowEmpty(int row);
+			void resizeEvent(QResizeEvent *e);
 
 		private:
 			Qt::Orientation m_orientation;
