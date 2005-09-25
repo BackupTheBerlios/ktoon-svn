@@ -3,17 +3,14 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/core
 # Destiono es una aplicaci??n: ../../bin/ktoon
 
-INSTALLS += ktbin \
-            kttrans \
-            ktdata 
 ktdata.files += credits.txt \
                 ../../COPYING \
                 ../../Changelog 
-ktdata.path = $(KTOON_HOME)/data 
+ktdata.path = /data 
 kttrans.files += *.qm 
-kttrans.path = $(KTOON_HOME)/data/translations 
+kttrans.path = /data/translations 
 ktbin.files += ../../bin/ktoon 
-ktbin.path = $(KTOON_HOME)/bin 
+ktbin.path = /bin 
 TARGETDEPS += ../../src/dialogs/libdialogs.a \
               ../../src/qt/draw/libdraw.a \
               ../../src/qt/tools/libtools.a \
@@ -87,5 +84,9 @@ SOURCES += ktoon.cpp \
            ktmainwindow.cpp \
            ktactionmanager.cpp \
            ktstatusbar.cpp 
+
+INSTALLS += ktbin \
+            kttrans \
+            ktdata 
 #The following line was inserted by qt3to4
 QT +=  xml opengl qt3support 

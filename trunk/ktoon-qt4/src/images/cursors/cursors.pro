@@ -5,7 +5,7 @@
 
 INSTALLS += klcursors 
 klcursors.files += *.xpm 
-klcursors.path = $(KTOON_HOME)/images/cursors 
+klcursors.path = /images/cursors 
 IMAGES += brush.xpm \
           circle.xpm \
           contour.xpm \

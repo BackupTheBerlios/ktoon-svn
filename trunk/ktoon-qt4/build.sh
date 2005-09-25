@@ -2,7 +2,7 @@
 
 # Script for update the .pro files && build the app
 # Author: Krawek
-# Version: 0.0.2
+# Version: 0.0.4
 
 APPNAME="KToon"
 APPVER="0.8alpha-svn"
@@ -12,8 +12,6 @@ QMAKE=`which qmake`
 
 KTOON_GLOBAL_ENV=/etc/ktoon.env
 KTOON_LOCAL_ENV=~/.ktoon.env
-
-# KTOON_HOME=""
 
 if [ $# -eq 0 ]
 then
@@ -33,6 +31,7 @@ fi
 
 shift
 export KTOON_HOME
+export INSTALL_ROOT=$KTOON_HOME
 
 # Look & feel
 
@@ -69,6 +68,19 @@ function verifyEnv()
 		exit -1
 	fi
 }
+
+function detectQtVersion()
+{
+	LINE=`$QMAKE -v | grep "Using Qt"`
+	if [ "$LINE" != "" ]
+	then
+		echo "Using Qt4"
+	else
+		echo "Using Qt3"
+	fi
+}
+
+detectQtVersion
 
 function openglCC
 {

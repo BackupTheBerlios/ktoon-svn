@@ -5,7 +5,7 @@
 
 INSTALLS += klicons 
 klicons.files += *.xpm 
-klicons.path = $(KTOON_HOME)/images/icons 
+klicons.path = /images/icons 
 IMAGES += addfolder.xpm \
           align_b.xpm \
           align_ch.xpm \

@@ -5,7 +5,7 @@
 
 INSTALLS += sequences 
 sequences.files += *.png 
-sequences.path = $(KTOON_HOME)/images/sequences 
+sequences.path = /images/sequences 
 DISTFILES += ack-image0001.png \
              ack-image0002.png \
              ack-image0003.png \

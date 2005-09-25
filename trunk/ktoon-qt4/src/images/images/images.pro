@@ -5,7 +5,7 @@
 
 INSTALLS += klimages 
 klimages.files += *.png *.jpg *.xpm 
-klimages.path = $(KTOON_HOME)/images 
+klimages.path = /images 
 IMAGES += arrow_rotate.xpm \
           arrow_selection.xpm \
           background.xpm \
