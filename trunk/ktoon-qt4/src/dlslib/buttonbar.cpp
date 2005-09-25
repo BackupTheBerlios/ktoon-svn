@@ -36,6 +36,8 @@ namespace Ideal {
 ButtonLayout::ButtonLayout(Direction d, ButtonBar *parent)
     : QBoxLayout(d, parent), m_buttonBar(parent)
 {
+	setMargin(0);
+	setSpacing(0);
 }
 
 QSize ButtonLayout::minimumSize() const
@@ -78,12 +80,12 @@ ButtonBar::ButtonBar(Place place, ButtonMode mode, QWidget *parent, const char *
             break;
     }
     
-    l->setResizeMode(QLayout::Minimum);
+    l->setSizeConstraint( QLayout::SetMaximumSize );
+    
+//     l->setResizeMode(QLayout::Minimum);
     setMode(mode);
     
     l->insertStretch(-1);
-    l->setMargin(0);
-    l->setSpacing(0);
 }
 
 ButtonBar::~ButtonBar()
@@ -98,6 +100,8 @@ void ButtonBar::addButton(Button *button)
     button->setMode(m_mode);
     m_buttons.append(button);
     l->insertWidget(buttonCount, button);
+    
+    l->setAlignment(button, Qt::AlignTop);
     button->show();
     fixDimensions();
 }

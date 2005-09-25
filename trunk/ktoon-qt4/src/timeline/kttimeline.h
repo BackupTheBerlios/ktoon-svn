@@ -47,7 +47,7 @@ class KTTimeLine : public KTModuleWidgetBase
 		void layerRemoved();
 		
 	private:
-		Q3HBox *m_container;
+		KTVHBox *m_container;
 		QSplitter *m_splitter;
 		KTLayerManager *m_layerManager;
 		KTFrameSequenceManager *m_sequenceManager;

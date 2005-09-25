@@ -33,17 +33,18 @@
 #include <QResizeEvent>
 #include <QMenu>
 #include <QCloseEvent>
+#include <QTextEdit>
 //
 
 KTMainWindow::KTMainWindow() : DMainWindow(0, "KToon-MainWindow")
 {
 	KTINIT;
 
-	setStatusBar(new KTStatusBar(this));
+	setStatusBar( new KTStatusBar(this) );
 	
-	setCaption(tr("KToon: 2D animation tool kit"));
+	setWindowTitle(tr("KToon: 2D animation tool kit"));
 	
-	m_workSpace = new QWorkspace/*(this)*/;
+	m_workSpace = new QWorkspace;
 	m_workSpace->setScrollBarsEnabled ( true );
 	
 // 	m_workSpace->setBackground(QBrush(QPixmap(background_xpm))); 
@@ -150,9 +151,9 @@ void KTMainWindow::createGUI()
 	m_timeLine->setIcon(QPixmap(KTOON_HOME+"/images/icons/time_line.xpm"));
 	toolWindow(DDockWindow::Bottom)->addWidget(tr("Time Line"),m_timeLine);
 	
-	ColorPalette *m_colorPalette2 = new ColorPalette(this);
-	m_colorPalette2->setIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.xpm") );
-	toolWindow(DDockWindow::Bottom)->addWidget(tr("Palette"),m_colorPalette2);
+	QTextEdit *m_scriptEditor = new QTextEdit("Soon...", this);
+	m_scriptEditor->setIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.xpm") );
+	toolWindow(DDockWindow::Bottom)->addWidget(tr("KToonScript"), m_scriptEditor);
 }
 
 void KTMainWindow::setupFileActions()

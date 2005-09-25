@@ -66,7 +66,7 @@ QString ConfigWizard::getRepos()
 }
 
 // CWFirstPage
-CWFirstPage::CWFirstPage(QWidget *parent, const char *name) : KTVBox(parent, name)
+CWFirstPage::CWFirstPage(QWidget *parent, const char *name) : KTVHBox(parent, name)
 {
 	new QLabel(tr("<h3>KToon</h3>"
 			"In this wizard you need set a values for proper configuration of ktoon<br><br>"
@@ -79,7 +79,7 @@ CWFirstPage::~ CWFirstPage()
 
 
 // CWFSecondPage
-CWSecondPage::CWSecondPage(QWidget *parent, const char *name) : KTVBox(parent, name)
+CWSecondPage::CWSecondPage(QWidget *parent, const char *name) : KTVHBox(parent, name)
 {
 	new QLabel(tr("<h3>Step 1<h3>"), this);
 	

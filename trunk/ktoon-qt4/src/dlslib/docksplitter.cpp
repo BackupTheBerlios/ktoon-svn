@@ -19,24 +19,26 @@
  ***************************************************************************/
 #include "docksplitter.h"
 #include <QApplication>
+#include <QLayout>
 
 namespace Ideal {
 
 DockSplitter::DockSplitter(Qt::Orientation orientation, QWidget *parent, const char *name)
-	:QSplitter(parent, name), m_orientation(orientation)
+	:QFrame(parent), m_orientation(orientation)
 	{
+		setObjectName(name);
+		
 		switch (m_orientation)
 		{
 			case Qt::Horizontal:
-				setOrientation(Qt::Vertical);
+				new QHBoxLayout(this);
 				break;
 			case Qt::Vertical:
-				setOrientation(Qt::Horizontal);
+				new QVBoxLayout(this);
 				break;
 		}
-		setOpaqueResize(true);
+// 		setOpaqueResize(true);
 		appendSplitter();
-		
 	}
 
 	DockSplitter::~DockSplitter()
@@ -75,31 +77,22 @@ DockSplitter::DockSplitter(Qt::Orientation orientation, QWidget *parent, const c
 			createSplitters(row);
 		}
 		QSplitter *splitter = m_splitters.at(row);
-
-		dock->reparent(splitter, QPoint(0,0), true);
+		splitter->addWidget(dock);
 		
 		if (col < m_docks.at(row).count()-1)
 		{
 			shiftWidgets(splitter, row, col+1);
 		}
-		
-// 		QSizePolicy policy = dock->sizePolicy();
-// 		policy.setHorizontalStretch(80);
-// 		policy.setVerticalStretch(80);
-// 		policy.setHorizontalPolicy (QSizePolicy::Maximum);
-// 		policy.setVerticalPolicy (QSizePolicy::Maximum);
-// 		
-// 		dock->setSizePolicy(policy);
-		
-// 		qDebug("Handle width: "+QString::number(handleWidth ()));
 	}
 
 	void DockSplitter::appendSplitter()
 	{
 		QSplitter *splitter = new QSplitter(m_orientation, this);
+		
 		splitter->setOpaqueResize(true);
 		splitter->show();
 		m_splitters.append(splitter);
+		layout()->addWidget(splitter);
 	}
 
 	void DockSplitter::createSplitters(int index)
@@ -185,11 +178,4 @@ DockSplitter::DockSplitter(Qt::Orientation orientation, QWidget *parent, const c
 		}
 		return qMakePair(0, 0);
 	}
-	
-	void DockSplitter::resizeEvent(QResizeEvent *e)
-	{
-// 		qDebug(QString("Resized to %1 , %2").arg(e->size().width()).arg(e->size().height()));
-		QSplitter::resizeEvent(e);
-	}
-
 }

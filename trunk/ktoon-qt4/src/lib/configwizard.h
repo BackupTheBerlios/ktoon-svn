@@ -27,7 +27,7 @@
 #include <QFileDialog>
 #include <QDialog>
 
-#include "ktvbox.h"
+#include "ktvhbox.h"
 
 #include "q3wizard.h"
 
@@ -62,7 +62,7 @@ class ConfigWizard : public Q3Wizard
 		QString ktrepos;
 };
 
-class CWFirstPage : public KTVBox
+class CWFirstPage : public KTVHBox
 {
 	Q_OBJECT
 	public:
@@ -70,7 +70,7 @@ class CWFirstPage : public KTVBox
 		~CWFirstPage();
 };
 
-class CWSecondPage : public KTVBox
+class CWSecondPage : public KTVHBox
 {
 	Q_OBJECT
 	public:

@@ -30,10 +30,10 @@
 
 #include "ktdebug.h"
 
-KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, QWidget *parent) : Q3HBox(parent, "KTTimeLineLayer"), m_isLocked(false), m_isVisible(true), m_onlySeeOutlines(false), m_isSelected(false), m_isEdited(false)
+KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, QWidget *parent) : KTVHBox(parent, false), m_isLocked(false), m_isVisible(true), m_onlySeeOutlines(false), m_isSelected(false), m_isEdited(false)
 {
-	setMinimumSize( 192, 24 );
-	setFrameStyle( Q3Frame::Panel | Q3Frame::Raised );
+// 	setMinimumSize( 192, 24 );
+	setFrameStyle( QFrame::Panel | QFrame::Raised );
 	setLineWidth( 2 );
 	
 	m_position = position;
@@ -53,10 +53,10 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, QWidget *par
 	m_layerName->setFont( QFont( font().family(), 9 ) );
 	
 	m_editionImage = new QLabel( this );
-	m_editionImage -> setMinimumSize( 19, 19 );
-	m_editionImage -> setMaximumSize( 19, 19 );
+// 	m_editionImage -> setMinimumSize( 19, 19 );
+// 	m_editionImage -> setMaximumSize( 19, 19 );
 	
-	m_utils = new Q3HBox(this);
+	m_utils = new KTVHBox(this, false);
 	m_utils->layout()->setAlignment(Qt::AlignRight );
 	
 	m_utils->setSpacing(5);
@@ -76,7 +76,7 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, QWidget *par
 
 	connect( m_onlyOutlines, SIGNAL( clicked() ), this, SLOT( toggleOutlines() ) );
 	
-	QWidget *spacer = new QWidget(m_utils);
+	QWidget *spacer = new QWidget(m_utils); // A little hack, FIXME
 	spacer->setMinimumWidth(20);
 	
 	show();

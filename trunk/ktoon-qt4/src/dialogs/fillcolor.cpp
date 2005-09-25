@@ -19,22 +19,22 @@
  ***************************************************************************/
 
 #include "fillcolor.h"
-#include "../images/images.h"
+#include "images.h"
+
 //Added by qt3to4:
 #include <QPixmap>
 #include <QMouseEvent>
-#include <Q3Frame>
 
 //--------------- CONSTRUCTOR --------------------
 
-FillColor::FillColor( QWidget *parent ) : Q3Frame( parent )
+FillColor::FillColor( QWidget *parent ) : QFrame( parent )
 {
     Q_CHECK_PTR( parent );
 
     resize( 47, 30 );
     parent_widget = parent;
     icon = QPixmap( fillcolor_xpm );
-    setFrameStyle( Q3Frame::Panel | Q3Frame::Raised );
+    setFrameStyle( QFrame::Panel | QFrame::Raised );
     active = false;
     current_color = QColor( 255, 255, 255 );
     square_border_color = QColor( 150, 150, 150 );
@@ -72,9 +72,9 @@ void FillColor::setActive( bool state )
     active = state;
 
     if ( active )
-        setFrameStyle( Q3Frame::Panel | Q3Frame::Sunken );
+        setFrameStyle( QFrame::Panel | QFrame::Sunken );
     else
-        setFrameStyle( Q3Frame::Panel | Q3Frame::Raised );
+        setFrameStyle( QFrame::Panel | QFrame::Raised );
 }
 
 //------------ SLOTS ----------------

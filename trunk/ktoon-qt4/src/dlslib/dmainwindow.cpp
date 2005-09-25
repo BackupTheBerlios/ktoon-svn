@@ -43,12 +43,14 @@ static const char* const icon_xpm[]={
 DMainWindow::DMainWindow(QWidget *parent, const char *name)
     :MWCLASS(parent, name), m_pFirstRemoved(false), m_pCurrentWidget(0)
 {
+// 	layout()->setSizeConstraint( QLayout::SetFixedSize );
     loadSettings();
     createToolWindows();
-    m_pCentral = new Ideal::DockSplitter(Qt::Horizontal, this);
+    m_pCentral = new Ideal::DockSplitter(Qt::Horizontal, 0);
     m_pActiveTabWidget = createTab();
     m_pCentral->addDock(0, 0, m_pActiveTabWidget);
     setCentralWidget(m_pCentral);
+    
 }
 
 void DMainWindow::loadSettings()
@@ -67,7 +69,8 @@ DMainWindow::~DMainWindow()
 
 DDockWindow *DMainWindow::toolWindow(DDockWindow::Position position) const
 {
-    switch (position) {
+    switch (position) 
+    {
         case DDockWindow::Bottom: return m_pBottomDock;
         case DDockWindow::Left: return m_pLeftDock;
         case DDockWindow::Right: return m_pRightDock;

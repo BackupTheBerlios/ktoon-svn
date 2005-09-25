@@ -18,38 +18,39 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTVBOX_H
-#define KTVBOX_H
+#ifndef KTVHBOX_H
+#define KTVHBOX_H
 
-class KTVBox;
+class KTVHBox;
 
 #include <QFrame>
 #include <QLayout>
-#include <QVBoxLayout>
+#include <QBoxLayout>
 #include <QEvent>
 
 /**
  * @author David Cuadrado
 */
 
-class KTVBox : public QFrame
+class KTVHBox : public QFrame
 {
 	Q_OBJECT
 	public:
-		KTVBox(QWidget *parent = 0, const char *name = 0);
-		~KTVBox();
+		KTVHBox(QWidget *parent = 0, bool isVertical = true);
+		~KTVHBox();
 		void moveWidgetUp(QWidget *);
 		void moveWidgetDown(QWidget *);
 		void switchWidgetsPosition(QWidget *first, QWidget *second);
 		virtual QSize sizeHint() const;
 		void setSpacing( int space );
 		void setStretchFactor( QWidget* w, int stretch );
+		void addWidget(QWidget *child, Qt::Alignment alignment = Qt::AlignCenter); 
 		
 	protected:
 		virtual bool event( QEvent *e );
 		
 	protected:
-		QVBoxLayout *m_pLayout;
+		QBoxLayout *m_pLayout;
 
 };
 

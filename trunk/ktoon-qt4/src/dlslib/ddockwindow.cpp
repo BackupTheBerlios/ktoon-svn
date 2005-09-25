@@ -38,16 +38,20 @@
 #include "buttonbar.h"
 #include "button.h"
 
-DDockWindow::DDockWindow(QWidget *parent, Position position) : QDockWidget( parent), m_fixedSize(-1,-1)
+DDockWindow::DDockWindow(QWidget *parent, Position position) : QDockWidget( parent)
 {
 	setFeatures(QDockWidget::NoDockWidgetFeatures);
-	m_centralWidget = new DDockInternalWidget(this, position);
-	m_centralWidget->show();
 	
-	connect(m_centralWidget, SIGNAL(fixedExtentHeight(int)), this, SLOT(setFixedExtendHeight(int)));
-	connect(m_centralWidget, SIGNAL(fixedExtentWidth(int)), this, SLOT(setFixedExtentWidth(int)));
+	layout()->setSizeConstraint( QLayout::SetMinimumSize );
+	m_centralWidget = new DDockInternalWidget(this, position);
+
+	updateGeometry();
+	update();
 	
 	setWidget(m_centralWidget);
+	m_centralWidget->show();
+	
+	resize(minimumSize());
 	
 // 	QPalette pal = QApplication::palette();
 // 	pal.setColor(QPalette::Background, Qt::blue);
@@ -63,103 +67,10 @@ DDockWindow::DDockWindow(QWidget *parent, Position position) : QDockWidget( pare
 
 DDockWindow::~DDockWindow() {}
 
-void DDockWindow::setFixedExtentHeight(int h)
-{
-// 	qDebug(QString("seFixedExtentHeigth: %1").arg(h));
-	m_fixedSize.setHeight(h);
-}
-
-void DDockWindow::setFixedExtentWidth(int w)
-{
-// 	qDebug(QString("seFixedExtentWidth: %1").arg(w));
-	m_fixedSize.setWidth(w);
-}
-
 void DDockWindow::addWidget(const QString &title, QWidget *widget)
 {
 	m_centralWidget->addWidget(title, widget);
 }
-
-void DDockWindow::resizeEvent(QResizeEvent *e)
-{
-// 	qDebug(QString("DDockWindow resized to w: %1 h: %2 de %3").arg(e->size().width()).arg(e->size().height()).arg(m_centralWidget->name()));
-	QDockWidget::resizeEvent(e);
-}
-
-QSize DDockWindow::sizeHint() const
-{
-	QSize sh(QDockWidget::sizeHint());
-	
-	sh = sh.expandedTo(fixedExtent());
-	
-// 	qDebug(QString(">>>\nWidth: %1 Height: %2\n<<<").arg(sh.width()).arg(sh.height()));
-
-	if (m_centralWidget)
-	{
-		if (m_centralWidget->position() == Bottom )
-		{
-			sh.setWidth(sh.width() + 2 * style()->pixelMetric(QStyle::PM_SplitterWidth, 0, this) / 3);
-		}
-		else if (m_centralWidget->position() == Right || m_centralWidget->position() == Left)
-		{
-			sh.setHeight(sh.height() + 2 * style()->pixelMetric(QStyle::PM_SplitterWidth, 0, this) / 3);
-		}
-	}
-	
-// 	qDebug(QString("retornando sh: w: %1 h: %2").arg(sh.width()).arg(sh.height()));
-	
-	return sh;
-}
-
-// QSize DDockWindow::minimumSize() const
-// {
-// 	QSize ms(QDockWidget::minimumSize());
-// 
-// 	ms = ms.expandedTo(fixedExtent());
-// 
-// 	if (m_centralWidget)
-// 	{
-// 		if (m_centralWidget->position() == Bottom)
-// 		{
-// 			ms.setWidth(ms.width() + 2 * style()->pixelMetric(QStyle::PM_SplitterWidth, 0, this) / 3);
-// 		}
-// 		else if (m_centralWidget->position() == Right || m_centralWidget->position() == Left)
-// 		{
-// 			ms.setHeight(ms.height() + 2 * style()->pixelMetric(QStyle::PM_SplitterWidth, 0, this) / 3);
-// 		}
-// 	}
-// 	return ms;
-// }
-// 
-// QSize DDockWindow::minimumSizeHint() const
-// {
-// 	QSize msh(QDockWidget::minimumSize());
-// 
-// 	msh = msh.expandedTo(fixedExtent());
-// 
-// 	if (m_centralWidget)
-// 	{
-// 		if (m_centralWidget->position() == Bottom)
-// 		{
-// 			msh.setWidth(msh.width() + 2 * style()->pixelMetric(QStyle::PM_SplitterWidth, 0, this) / 3);
-// 		}
-// 		else if (m_centralWidget->position() == Right || m_centralWidget->position() == Left)
-// 		{
-// 			msh.setHeight(msh.height() + 2 * style()->pixelMetric(QStyle::PM_SplitterWidth, 0, this) / 3);
-// 		}
-// 	}
-// 	
-// 	qDebug(QString("retornando minsh: w: %1 h: %2").arg(msh.width()).arg(msh.height()));
-// 	
-// 	return msh;
-// }
-
-QSize DDockWindow::fixedExtent() const
-{
-// 	qDebug(QString("retornando fe: w: %1 h: %2 de %3").arg(m_fixedSize.width()).arg(m_fixedSize.height()).arg(m_centralWidget->name()));
-	return m_fixedSize;
-}
-
 
 // DDockInternalWidget
 
@@ -201,6 +112,7 @@ DDockInternalWidget::DDockInternalWidget(QWidget *parent, DDockWindow::Position 
 	
 	setObjectName(m_name);
 
+	m_internalLayout->setSizeConstraint(QLayout::SetMaximumSize);
 	m_internalLayout->setMargin(0);
 	m_internalLayout->setSpacing(0);
 	
@@ -219,6 +131,10 @@ DDockInternalWidget::DDockInternalWidget(QWidget *parent, DDockWindow::Position 
 	m_bar = new Ideal::ButtonBar(place, buttonMode, this);
 	m_internalLayout->addWidget(m_bar);
 	
+	m_bar->setMaximumWidth(m_bar->width());
+			
+	m_bar->setMinimumHeight(width());
+
 	m_bar->show();
     
 	m_widgetStack = new QStackedWidget(this);
@@ -232,23 +148,25 @@ DDockInternalWidget::DDockInternalWidget(QWidget *parent, DDockWindow::Position 
 	{
 		case DDockWindow::Bottom:
 		{
-			m_internalLayout->setAlignment( m_bar,Qt::AlignBottom );
+			m_internalLayout->setAlignment( m_bar, Qt::AlignBottom | Qt::AlignLeft );
 			break;
 		}
 		case DDockWindow::Left:
 		{
-			m_internalLayout->setAlignment( m_bar,Qt::AlignLeft );
+			m_internalLayout->setAlignment( m_bar,Qt::AlignTop | Qt::AlignLeft );
 			break;
 		}
 		case DDockWindow::Right:
 		{
-			m_internalLayout->setAlignment( m_bar,Qt::AlignRight );
+			m_internalLayout->setAlignment( m_bar,Qt::AlignTop | Qt::AlignRight );
 			break;
 		}
 	}
 
-	loadSettings();
+	setExpanded(false);
+	//loadSettings(); // FIXME
 
+	setBaseSize(m_bar->size());
 	show();	
 }
 
@@ -269,40 +187,41 @@ void DDockInternalWidget::setExpanded(bool v)
 	}
 	
 	m_widgetStack->setVisible(v);
-	m_visible = v;
 
+#if 0
 	m_internalLayout->invalidate();
-	parentWidget()->layout()->invalidate();
-	
 	if (!m_visible)
 	{
 		if (m_position == DDockWindow::Bottom)
 		{
-			emit fixedExtentHeight(m_internalLayout->sizeHint().height());
+			parentWidget()->setFixedHeight(m_internalLayout->sizeHint().height());
 		}
 		else
 		{
-// 			qDebug("HEREEEEEEEE");
-			emit fixedExtentWidth(m_internalLayout->sizeHint().width());
+			parentWidget()->setFixedWidth(m_internalLayout->sizeHint().width());
 		}
 	}
 	else
 	{
-        //restore widget size from the config
+        	//restore widget size from the config
 		int size = 0;
 		if (m_position == DDockWindow::Bottom)
 		{
-			size = config.readNumEntry(SETTINGSPATH+"/"+m_name+"/ViewWidth", m_internalLayout->sizeHint().height());
-			emit fixedExtentHeight(size);
+// 			size = config.readNumEntry(SETTINGSPATH+"/"+m_name+"/ViewWidth", m_internalLayout->sizeHint().height());
+			size = m_internalLayout->sizeHint().height();
+
+			parentWidget()->setFixedHeight(size);
 		}
 		else
 		{
-			size = config.readNumEntry(SETTINGSPATH+"/"+m_name+"/ViewWidth", m_internalLayout->sizeHint().width());
-			emit fixedExtentWidth(size);
+// 			size = config.readNumEntry(SETTINGSPATH+"/"+m_name+"/ViewWidth", m_internalLayout->sizeHint().width());
+			size = m_internalLayout->sizeHint().width();
+			parentWidget()->setFixedWidth(size);
 		}
 	}
+#endif
 	
-	layout()->invalidate();
+	m_visible = v;
 }
 
 void DDockInternalWidget::loadSettings()
@@ -370,6 +289,7 @@ void DDockInternalWidget::addWidget(const QString &title, QWidget *widget)
     //if the widget was selected last time the dock is deleted 
     //we need to show it
     
+#if 0
 	QSettings config;
 	config.setPath("NewMDI", qApp->name(), QSettings::User );
     
@@ -378,6 +298,8 @@ void DDockInternalWidget::addWidget(const QString &title, QWidget *widget)
 		button->setOn(true);
 		selectWidget(button);
 	}
+#endif
+
 	widget->show();
 }
 

@@ -21,7 +21,7 @@
 #ifndef KTTIMELINELAYER_H
 #define KTTIMELINELAYER_H
 
-#include <q3hbox.h>
+
 #include <qlineedit.h>
 #include <qlabel.h>
 #include <qcheckbox.h>
@@ -29,6 +29,7 @@
 #include <QMouseEvent>
 
 #include "ktelabel.h"
+#include "ktvhbox.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -36,7 +37,7 @@
 
 class KTTimeLineLayer;
 
-class KTTimeLineLayer : public Q3HBox
+class KTTimeLineLayer : public KTVHBox
 {
 	Q_OBJECT
 	public:
@@ -76,7 +77,7 @@ class KTTimeLineLayer : public Q3HBox
 		KTELabel *m_layerName;
 		QLabel *m_editionImage, *m_visibilityImage, *m_lockImage;
 		
-		Q3HBox *m_utils;
+		KTVHBox *m_utils;
 		
 		bool m_isLocked, m_isVisible, m_onlySeeOutlines, m_isSelected, m_isEdited;
 };

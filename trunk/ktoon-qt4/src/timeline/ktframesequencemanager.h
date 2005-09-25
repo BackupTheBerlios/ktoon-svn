@@ -21,21 +21,22 @@
 #ifndef KTFRAMESEQUENCEMANAGER_H
 #define KTFRAMESEQUENCEMANAGER_H
 
-#include "ktvbox.h"
-#include <q3scrollview.h>
+#include "ktvhbox.h"
 //Added by qt3to4:
-#include <Q3PtrList>
+#include <QList>
+
+#include <QScrollArea>
 
 #include "kttlruler.h"
 #include "ktframesequence.h"
 
-typedef Q3PtrList<KTFrameSequence> ListOfFrameSequences;
+typedef QList<KTFrameSequence *> ListOfFrameSequences;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTFrameSequenceManager : public KTVBox
+class KTFrameSequenceManager : public KTVHBox
 {
 	Q_OBJECT
 	public:
@@ -54,8 +55,8 @@ class KTFrameSequenceManager : public KTVBox
 	private:
 		ListOfFrameSequences m_sequences;
 		
-		Q3ScrollView *m_sequenceLayout;
-		KTVBox *m_vBox;
+		QScrollArea *m_sequenceLayout;
+		KTVHBox *m_vBox;
 		KTTLRuler *m_ruler;
 		KTFrameSequence *m_lastSequence, *m_currentFrameSequence;
 

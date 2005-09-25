@@ -28,7 +28,7 @@ HEADERS += glgraphiccomponent.h \
            kcpuinfo.h \
            kimageeffect.h \
            ktfiledialog.h \
-           ktvbox.h \
+           ktvhbox.h \
            ktelabel.h \
            ktmodulewidgetbase.h \
            ktdisplaybrush.h 
@@ -57,7 +57,7 @@ SOURCES += glgraphiccomponent.cpp \
            kcpuinfo.cpp \
            kimageeffect.cpp \
            ktfiledialog.cpp \
-           ktvbox.cpp \
+           ktvhbox.cpp \
            ktelabel.cpp \
            ktmodulewidgetbase.cpp \
            ktdisplaybrush.cpp 

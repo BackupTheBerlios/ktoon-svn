@@ -26,21 +26,22 @@
 #include "ktlayersequence.h"
 #include "ktdebug.h"
 
-KTLayerSequence::KTLayerSequence(QWidget *parent) : Q3ScrollView(parent, "KTLayerSequence"), m_layerCount(0)
+KTLayerSequence::KTLayerSequence(QWidget *parent) : QScrollArea(parent), m_layerCount(0)
 {
 	KTINIT;
-
-	enableClipper( true );
-	setHScrollBarMode( Q3ScrollView::AlwaysOff );
+	setWidgetResizable(true);
+	setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
 
 // 	viewport() -> setMouseTracking( true );
 
-	setPaletteBackgroundColor(Qt::black);
-	setPaletteForegroundColor(Qt::gray );
+// 	setPaletteBackgroundColor(Qt::black);
+// 	setPaletteForegroundColor(Qt::gray );
 	
-	m_layerContainer = new KTVBox(viewport());
-	m_layerContainer->resize(590, m_layerContainer->height());
-	addChild(m_layerContainer);
+	m_layerContainer = new KTVHBox(this);
+// 	m_layerContainer->resize(590, m_layerContainer->height());
+	m_layerContainer->setMinimumSize(590, 300);
+	setWidget(m_layerContainer);
+	
 	m_layerContainer->layout()->setAlignment(Qt::AlignTop );
 	
 	m_defaultLayer = createNewLayer();
@@ -48,7 +49,7 @@ KTLayerSequence::KTLayerSequence(QWidget *parent) : Q3ScrollView(parent, "KTLaye
 	/*new KTTimeLineLayer (tr("Layer %1").arg("1"), 1, m_layerContainer);
 	m_layers.append( m_defaultLayer );*/
 	
-	setMaximumHeight( sizeHint().height() ); // IMPORTANT
+// 	setMaximumHeight( sizeHint().height() ); // IMPORTANT
 
 	m_pCurrentLayer = m_defaultLayer;
 	m_pLastLayer = m_pCurrentLayer;
@@ -80,7 +81,7 @@ void KTLayerSequence::setPalette(const QPalette &)
 }
 
 KTTimeLineLayer * KTLayerSequence::createNewLayer()
-{	
+{
 	KTTimeLineLayer *newLayer = new KTTimeLineLayer( tr( "New Layer %1").arg( m_layerCount ), m_layers.count(), m_layerContainer);
 	newLayer -> resize( width(), 24 );
 	
@@ -99,6 +100,8 @@ KTTimeLineLayer * KTLayerSequence::createNewLayer()
 	m_pLastLayer = newLayer;
 	
 	m_layerCount++;
+	
+	adjustSize();
 	
 	return newLayer;
 }

@@ -42,8 +42,8 @@ class DDockInternalWidget;
 class DDockWidgetLayout;
 
 namespace Ideal {
-    class Button;
-    class ButtonBar;
+	class Button;
+	class ButtonBar;
 }
 
 class DDockWindow : public QDockWidget
@@ -56,72 +56,64 @@ class DDockWindow : public QDockWidget
 		virtual ~DDockWindow();
 		void addWidget(const QString &title, QWidget *widget);
 		
-		QSize sizeHint() const;
+// 		QSize sizeHint() const;
 // 		QSize minimumSize() const;
 // 		QSize minimumSizeHint() const;
-		QSize fixedExtent() const;
-		
-	public slots:
-		void setFixedExtentHeight(int);
-		void setFixedExtentWidth(int);
 		
 	protected:
-		void resizeEvent(QResizeEvent *e);
 		
 	private:
-		DDockInternalWidget *m_centralWidget;
-		QSize m_fixedSize;
-		
+		DDockInternalWidget *m_centralWidget;		
 };
 
 class DDockInternalWidget : public QWidget {
-    Q_OBJECT
-public:
+	Q_OBJECT
+	public:
     
-	DDockInternalWidget(QWidget *parent, DDockWindow::Position position);
-    virtual ~DDockInternalWidget();
+		DDockInternalWidget(QWidget *parent, DDockWindow::Position position);
+		virtual ~DDockInternalWidget();
     
-    virtual void setExpanded(bool v);
-    bool visible() const { return m_visible; }
+		virtual void setExpanded(bool v);
+		bool visible() const { return m_visible; }
     
-    virtual void addWidget(const QString &title, QWidget *widget);
-    virtual void raiseWidget(QWidget *widget);
-    /**Removes the widget from dock. Does not delete it.*/
-    virtual void removeWidget(QWidget *widget);
+		virtual void addWidget(const QString &title, QWidget *widget);
+		virtual void raiseWidget(QWidget *widget);
+		/**Removes the widget from dock. Does not delete it.*/
+		virtual void removeWidget(QWidget *widget);
     
-    virtual void hideWidget(QWidget *widget);
-    virtual void showWidget(QWidget *widget);
+		virtual void hideWidget(QWidget *widget);
+		virtual void showWidget(QWidget *widget);
     
-    virtual QWidget *currentWidget() const;
+		virtual QWidget *currentWidget() const;
     
-    DDockWindow::Position position() const { return m_position; }
+		DDockWindow::Position position() const { return m_position; }
     
 	signals:
-    void fixedExtentHeight(int);
-    void fixedExtentWidth(int);
+		void fixedExtentHeight(int);
+		void fixedExtentWidth(int);
 
-private slots:
-    void selectWidget();
-    void selectWidget(Ideal::Button *button);
+	private slots:
+		void selectWidget();
+		void selectWidget(Ideal::Button *button);
 
-protected:
-    virtual void loadSettings();
-    virtual void saveSettings();
+	protected:
+		virtual void loadSettings();
+		virtual void saveSettings();
     
-    Ideal::ButtonBar *m_bar;
-    QStackedWidget *m_widgetStack;
+		Ideal::ButtonBar *m_bar;
+		QStackedWidget *m_widgetStack;
     
-    QMap<Ideal::Button*, QWidget*> m_widgets;
-    QMap<QWidget*, Ideal::Button*> m_buttons;
+		QMap<Ideal::Button*, QWidget*> m_widgets;
+		QMap<QWidget*, Ideal::Button*> m_buttons;
 
-private:
-	DDockWindow::Position m_position;
-	bool m_visible;
-	QString m_name;
+	private:
+		DDockWindow::Position m_position;
+		bool m_visible;
+		QString m_name;
 	
-    Ideal::Button *m_toggledButton;
-    QBoxLayout *m_internalLayout;
-    QWidget *m_container;
+		Ideal::Button *m_toggledButton;
+		QBoxLayout *m_internalLayout;
+		QWidget *m_container;
 };
 
 #endif

@@ -31,36 +31,41 @@
 
 #include "ktdebug.h"
 
-KTLayerManager::KTLayerManager(QWidget *parent) : Q3VBox(parent, "KTLayerManager"), m_currentTime(0.0), m_totalTime(0.04), m_allSelected(false), m_allVisible(true), m_allLock(false)
+KTLayerManager::KTLayerManager(QWidget *parent) : KTVHBox(parent), m_currentTime(0.0), m_totalTime(0.04), m_allSelected(false), m_allVisible(true), m_allLock(false)
 {
 	KTINIT;
-	
+	setMinimumHeight(80);
 	layout()->setAlignment(Qt::AlignTop);
+	layout()->setMargin(0);
+	layout()->setSpacing(0);
 	
-	m_utilsInTop = new Q3HButtonGroup( this );
+	m_utilsInTop = new KTVHBox( this , false);
+// 	addWidget(m_utilsInTop);
+	
 	connect(m_utilsInTop, SIGNAL(clicked(int)), this, SLOT(changeLayersState(int)));
-	m_utilsInTop->setInsideSpacing(0); 
-	m_utilsInTop->setInsideMargin(1);
+	m_utilsInTop->setSpacing(0); 
+	m_utilsInTop->layout()->setMargin(1);
+	
 	m_utilsInTop->layout()->setAlignment(Qt::AlignRight | Qt::AlignCenter );
 	
 // 	m_utilsInTop -> setFrameStyle( QFrame::Box | QFrame::Plain );
 	
 	m_eyeButton = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/show_hide_all_layers.xpm"), 20,  m_utilsInTop );
-	m_utilsInTop->insert(m_eyeButton, ToggleLayerView);
+// 	m_utilsInTop->insert(m_eyeButton, ToggleLayerView);
 
 	QToolTip::add( m_eyeButton, tr( "Show / Hide all Layers" ) );
 	
 	m_lockButton = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/kilit_pic.xpm"),  20, m_utilsInTop );
-	m_utilsInTop->insert(m_lockButton, LockLayers);
+// 	m_utilsInTop->insert(m_lockButton, LockLayers);
 	
 	QToolTip::add( m_lockButton, tr( "Lock all Layers" ) );
 
 	m_outlineButton = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/outline_pic.xpm"), 20, m_utilsInTop );
-	m_utilsInTop->insert(m_outlineButton, ShowOutlines);
+// 	m_utilsInTop->insert(m_outlineButton, ShowOutlines);
 
 	QToolTip::add( m_outlineButton, tr( "Show only outlines" ) );
 	
-	m_utilsInTop->setMaximumHeight(m_eyeButton->height()+2);
+// 	m_utilsInTop->setMaximumHeight(m_eyeButton->height()+2);
 	
 	QWidget *spacer = new QWidget(m_utilsInTop);
 	spacer->setMinimumWidth(20);
@@ -69,14 +74,17 @@ KTLayerManager::KTLayerManager(QWidget *parent) : Q3VBox(parent, "KTLayerManager
 	//------------------------------------------------------
 	
 	m_sequence = new KTLayerSequence(this);
+// 	addWidget(m_sequence);
 	
 	//------------------------------------------------------
 	
-	m_utilsInBottom = new Q3HButtonGroup( this );
+	m_utilsInBottom = new KTVHBox( this, false );
+// 	addWidget(m_utilsInBottom);
+	
 	connect(m_utilsInBottom, SIGNAL(clicked(int)), this, SLOT(selectLayerAction(int)));
 	
-	m_utilsInBottom->setInsideSpacing(0); 
-	m_utilsInBottom->setInsideMargin(1);
+	m_utilsInBottom->setSpacing(0); 
+	m_utilsInBottom->layout()->setMargin(1);
 	
 // 	m_utilsInBottom -> setFrameStyle( Q3Frame::Box | Q3Frame::Plain );
 	m_utilsInBottom -> resize( 192, 24 );
@@ -84,22 +92,22 @@ KTLayerManager::KTLayerManager(QWidget *parent) : Q3VBox(parent, "KTLayerManager
 	m_utilsInBottom->layout()->setAlignment(Qt::AlignLeft | Qt::AlignCenter);
 
 	m_insertButton = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/layer+.xpm") , 20,  m_utilsInBottom );
-	m_utilsInBottom->insert(m_insertButton, InsertLayer);
+// 	m_utilsInBottom->insert(m_insertButton, InsertLayer);
 
 	QToolTip::add( m_insertButton, tr( "Insert Layer" ) );
 
 	m_removeButton = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/layer-.xpm"),  20, m_utilsInBottom );
-	m_utilsInBottom->insert(m_removeButton, RemoveLayer);
+// 	m_utilsInBottom->insert(m_removeButton, RemoveLayer);
 	
 	QToolTip::add( m_removeButton, tr( "Remove Layer" ) );
 
 	m_moveUpButton = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/arrowup.xpm"),  20, m_utilsInBottom );
-	m_utilsInBottom->insert(m_moveUpButton, MoveLayerUp);
+// 	m_utilsInBottom->insert(m_moveUpButton, MoveLayerUp);
 
 	QToolTip::add( m_moveUpButton, tr( "Move Layer Up" ) );
 
 	m_moveDownButton = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/arrowdown.xpm"), 20,  m_utilsInBottom );
-	m_utilsInBottom->insert(m_moveDownButton, MoveLayerDown);
+// 	m_utilsInBottom->insert(m_moveDownButton, MoveLayerDown);
 
 	QToolTip::add( m_moveDownButton, tr( "Move Layer Down" ) );
 	
@@ -113,7 +121,7 @@ KTLayerManager::KTLayerManager(QWidget *parent) : Q3VBox(parent, "KTLayerManager
 
 	new KSeparator( Qt::Vertical, m_utilsInBottom);
 	
-	m_utilsInBottom->setMaximumHeight(m_moveUpButton->height());
+// 	m_utilsInBottom->setMaximumHeight(m_moveUpButton->height());
 	
 	show();
 }

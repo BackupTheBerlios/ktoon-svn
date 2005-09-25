@@ -26,7 +26,7 @@
  * @brief Include this file if you need the class FillColor
  */
 
-#include <q3frame.h>
+#include <QFrame>
 #include <qpainter.h>
 #include <qpixmap.h>
 //Added by qt3to4:
@@ -38,7 +38,7 @@
  * <b>Date of Creation: July 6 - 2004.</b>\n
  * This is a widget that shows the current fill color.
  */
-class FillColor : public Q3Frame
+class FillColor : public QFrame
 {
     Q_OBJECT
 

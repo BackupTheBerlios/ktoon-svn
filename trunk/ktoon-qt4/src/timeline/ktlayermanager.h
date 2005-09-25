@@ -21,12 +21,13 @@
 #ifndef KTLAYERMANAGER_H
 #define KTLAYERMANAGER_H
 
-#include <q3vbox.h>
 #include <qpushbutton.h>
 #include <qtooltip.h>
 #include <qlabel.h>
 #include <qscrollbar.h>
 #include <Q3HButtonGroup>
+
+#include "ktvhbox.h"
 
 #include "ktimagebutton.h"
 #include "ktlayersequence.h"
@@ -35,7 +36,7 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTLayerManager : public Q3VBox
+class KTLayerManager : public KTVHBox
 {
 	Q_OBJECT
 	public:
@@ -79,10 +80,10 @@ class KTLayerManager : public Q3VBox
 	private:
 		double m_currentTime, m_totalTime;
 		
-		Q3HButtonGroup *m_utilsInTop;
+		KTVHBox *m_utilsInTop;
 		KTImageButton *m_lockButton, *m_eyeButton, *m_outlineButton;
 		
-		Q3HButtonGroup *m_utilsInBottom;
+		KTVHBox *m_utilsInBottom;
 		KTImageButton *m_insertButton, *m_removeButton, *m_moveUpButton, *m_moveDownButton;
 		
 		QLabel *m_time;

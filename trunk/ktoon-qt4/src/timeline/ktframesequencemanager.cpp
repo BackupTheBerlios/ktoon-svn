@@ -26,26 +26,33 @@
 //Added by qt3to4:
 #include <Q3Frame>
 
-KTFrameSequenceManager::KTFrameSequenceManager(QWidget *parent) : KTVBox(parent, "KTFrameSequenceManager"), m_currentFrame(0)
+KTFrameSequenceManager::KTFrameSequenceManager(QWidget *parent) : KTVHBox(parent, "KTFrameSequenceManager"), m_currentFrame(0)
 {
 	KTINIT;
 	
-	m_sequenceLayout = new Q3ScrollView(this);
-	m_sequenceLayout->enableClipper( true );
-// 	m_sequenceLayout->setHScrollBarMode( QScrollView::AlwaysOff );
-
-	m_sequenceLayout->horizontalScrollBar()->setLineStep(1);
-	m_sequenceLayout->horizontalScrollBar()->setPageStep (5);
-// 	connect( m_sequenceLayout->horizontalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(moveRuler(int)));
 	
-	m_vBox = new KTVBox(m_sequenceLayout->viewport());
-	m_sequenceLayout->addChild(m_vBox);
+	setMinimumHeight(80);
+	
+// 	KTVHBox *spacer = new KTVHBox(this);// FIXME
+// 	spacer->setMinimumHeight(25); 
+	
+	m_sequenceLayout = new QScrollArea(this);
+	m_sequenceLayout->setWidgetResizable(true);
+// 	addWidget(m_sequenceLayout);
+	
+// 	m_sequenceLayout->enableClipper( true );
+
+// 	m_sequenceLayout->horizontalScrollBar()->setLineStep(1);
+// 	m_sequenceLayout->horizontalScrollBar()->setPageStep (5);
+	
+	m_vBox = new KTVHBox(m_sequenceLayout);
+	m_sequenceLayout->setWidget(m_vBox);
 	
 	m_ruler = new KTTLRuler(m_vBox);
 	m_ruler->setMargin(1);
-	m_ruler->setMinimumSize(300, m_ruler->height());
+	m_ruler->setMinimumSize(100, m_ruler->height());
 	
-	setMaximumHeight( sizeHint().height() );
+// 	setMaximumHeight( sizeHint().height() );
 	
 	insertFrameSequence();
 	
@@ -56,6 +63,9 @@ KTFrameSequenceManager::KTFrameSequenceManager(QWidget *parent) : KTVBox(parent,
 // 	m_utils = new QHBox(this);
 // 	m_scroll = new QScrollBar(0, 3000, 1, 5, 0, Qt::Horizontal, m_utils);
 // 	connect( m_scroll, SIGNAL(valueChanged(int)), this, SLOT(moveRuler(int)));
+	
+	KTVHBox *spacer2 = new KTVHBox(this);// FIXME
+	spacer2->setMinimumHeight(25); 
 	
 }
 
@@ -80,6 +90,8 @@ void KTFrameSequenceManager::insertFrameSequence()
 	newFrameSequence -> show();
 	m_sequences.append( newFrameSequence );
 	m_lastSequence = newFrameSequence;
+	
+	adjustSize();
 }
 
 void KTFrameSequenceManager::removeFrameSequence()
@@ -91,8 +103,12 @@ void KTFrameSequenceManager::removeFrameSequence()
       		//Case 1: When the sequence of frames is the last within the list
 		if ( m_currentFrameSequence == m_lastSequence )
 		{
-			m_sequences.remove( m_currentFrameSequence );
-			bridgeFrameSequence = m_sequences.getLast();
+			QListIterator<KTFrameSequence*> iterator(m_sequences);
+			
+			
+			m_sequences.removeAt(m_currentFrameSequence->position());
+			
+			bridgeFrameSequence = m_sequences.last();
 			delete m_currentFrameSequence;
 			m_currentFrameSequence = bridgeFrameSequence;
 			m_lastSequence = m_currentFrameSequence;
@@ -101,17 +117,21 @@ void KTFrameSequenceManager::removeFrameSequence()
       		//Case 2: When the sequence of frames is any except the last
 		else
 		{
-			bridgeFrameSequence = m_sequences.at( m_sequences.find( m_currentFrameSequence ) + 1 );
+			bridgeFrameSequence = m_sequences.at( m_currentFrameSequence->position() );
 
 	  		//Reaccomodate every frame_sequence next to the frame_sequence that is going to be deleted
-			KTFrameSequence *iterator;
-			for ( iterator = bridgeFrameSequence; iterator; iterator = m_sequences.next() )
-			{
-				iterator->setPosition(iterator->position() - 1);
-			}
 			
+			
+			QListIterator<KTFrameSequence*> iterator(m_sequences);
+			
+			while ( iterator.hasNext() )
+			{
+				KTFrameSequence *next = iterator.next();
+				next->setPosition( next->position() - 1 );
+			}
+
 			m_vBox->layout()->remove(m_currentFrameSequence);
-			m_sequences.remove( m_currentFrameSequence );
+			m_sequences.removeAt( m_currentFrameSequence->position()+1 );
 			delete m_currentFrameSequence;
 			m_currentFrameSequence = bridgeFrameSequence;
 		}
@@ -139,7 +159,7 @@ QScrollBar *KTFrameSequenceManager::verticalScrollBar()
 
 QSize KTFrameSequenceManager::sizeHint() const
 {
-	const QSize sh(499, KTVBox::sizeHint().height() );
+	const QSize sh(499, KTVHBox::sizeHint().height() );
 	
 	return sh;
 }

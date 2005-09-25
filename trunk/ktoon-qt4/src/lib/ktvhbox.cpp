@@ -18,24 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktvbox.h"
+#include "ktvhbox.h"
 #include "ktdebug.h"
 
-#include <QVBoxLayout>
 #include <QApplication>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 
-KTVBox::KTVBox(QWidget *parent, const char *name) : QFrame(parent, name)
+KTVHBox::KTVHBox(QWidget *parent, bool isVertical) : QFrame(parent)
 {
-	m_pLayout = new QVBoxLayout(this);
-	m_pLayout->setAutoAdd(true);
+	if ( isVertical )
+	{
+		m_pLayout = new QVBoxLayout(this);
+	}
+	else
+	{
+		m_pLayout = new QHBoxLayout(this);
+	}
+	
+	m_pLayout->setMargin(1);
+	m_pLayout->setSpacing(1);
 }
 
 
-KTVBox::~KTVBox()
+KTVHBox::~KTVHBox()
 {
 }
 
-void KTVBox::moveWidgetUp(QWidget *widget)
+void KTVHBox::addWidget(QWidget *child, Qt::Alignment alignment)
+{
+	m_pLayout->addWidget(child);
+	m_pLayout->setAlignment(child, alignment);
+}
+
+void KTVHBox::moveWidgetUp(QWidget *widget)
 {
 	ktDebug() << "Childs " << children ().count() << endl;
 	int position = m_pLayout->findWidget(widget);
@@ -45,12 +61,8 @@ void KTVBox::moveWidgetUp(QWidget *widget)
 	
 	if (position > 0 )
 	{
-		m_pLayout->setAutoAdd(false);
-		
 		m_pLayout->remove(widget);
 		m_pLayout->insertWidget(position-1, widget);
-		
-		m_pLayout->setAutoAdd(true);
 	}
 	else
 	{
@@ -58,22 +70,18 @@ void KTVBox::moveWidgetUp(QWidget *widget)
 	}
 }
 
-void KTVBox::moveWidgetDown(QWidget *widget)
+void KTVHBox::moveWidgetDown(QWidget *widget)
 {
 	int position = m_pLayout->findWidget(widget);
 	
 	if (position >= 0 )
 	{
-		m_pLayout->setAutoAdd(false);
-		
 		m_pLayout->remove(widget);
 		m_pLayout->insertWidget(position+1, widget);
-		
-		m_pLayout->setAutoAdd(true);
 	}
 }
 
-bool KTVBox::event( QEvent* ev )
+bool KTVHBox::event( QEvent* ev )
 {
 	switch ( ev->type() ) {
 		case QEvent::ChildAdded:
@@ -99,33 +107,30 @@ bool KTVBox::event( QEvent* ev )
 	}
 }
 
-QSize KTVBox::sizeHint() const
+QSize KTVHBox::sizeHint() const
 {
-	KTVBox* that = const_cast<KTVBox *>( this );
+	KTVHBox* that = const_cast<KTVHBox *>( this );
 	QApplication::sendPostedEvents( that, QEvent::ChildAdded );
 	return QWidget::sizeHint();
 }
 
-void KTVBox::setSpacing( int sp )
+void KTVHBox::setSpacing( int sp )
 {
 	layout()->setSpacing( sp );
 }
 
-void KTVBox::setStretchFactor( QWidget* w, int stretch )
+void KTVHBox::setStretchFactor( QWidget* w, int stretch )
 {
 	static_cast<QBoxLayout *>( layout() )->setStretchFactor( w, stretch );
 }
 
 
-void KTVBox::switchWidgetsPosition(QWidget *widget1, QWidget *widget2)
+void KTVHBox::switchWidgetsPosition(QWidget *widget1, QWidget *widget2)
 {
 	int position1 = m_pLayout->findWidget(widget1);
 	int position2 = m_pLayout->findWidget(widget2);
 	
 	if (position1 > 0 && position2 > 0 )
 	{
-		m_pLayout->setAutoAdd(false);
-		
-		m_pLayout->setAutoAdd(true);
 	}
 }
