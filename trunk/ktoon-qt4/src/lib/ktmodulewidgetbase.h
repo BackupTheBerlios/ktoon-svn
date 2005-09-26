@@ -47,6 +47,7 @@ class KTModuleWidgetBase : public QWidget
 		QBoxLayout *m_container;
 		QObjectList m_childs;
 		bool m_isChildHidden;
+		QWidget *m_originalParent;
 		
 	protected:
 		KTDialogTitle *m_title;

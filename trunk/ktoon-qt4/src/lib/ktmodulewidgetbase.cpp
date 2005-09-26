@@ -24,12 +24,13 @@
 //Added by qt3to4:
 #include <QEvent>
 #include <QBoxLayout>
+#include <QDialog>
 
 #include "ktdebug.h"
 
 #include <qobject.h>
 
-KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent), m_isChildHidden(false)
+KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent), m_isChildHidden(false), m_originalParent(parent)
 {
 	setObjectName(name);
 	m_container = new QVBoxLayout(this);
@@ -60,7 +61,6 @@ KTModuleWidgetBase::~KTModuleWidgetBase()
 {
 }
 
-
 void KTModuleWidgetBase::addChild(QWidget* child)
 {
 	m_childs.append(child);
@@ -69,29 +69,49 @@ void KTModuleWidgetBase::addChild(QWidget* child)
 
 void KTModuleWidgetBase::toggleView()
 {
-	m_title->setMinimumWidth(m_title->width());
-	for( int i = 0; i < m_childs.count(); i++)
-	{
-		QObject *o = m_childs[i];
-		if ( o && ! m_isChildHidden )
-		{
-			static_cast<QWidget*>(o)->hide();
-		}
-		else if ( o && m_isChildHidden )
-		{
-			static_cast<QWidget*>(o)->show();
-		}
-	}
-	
+#if 1
 	if ( ! m_isChildHidden )
 	{
-		setMinimumSize(m_title->size());
-		resize(m_title->size());
+		QDialog *dialog = new QDialog(m_originalParent);
+		setParent(dialog, Qt::WindowStaysOnTopHint );
+		dialog->setWindowTitle(objectName());
+		dialog->show();
 	}
 	else
 	{
-		adjustSize();
+#if 0
+		QWidget *dialog = parentWidget();
+		setParent(m_originalParent, Qt::Widget);
+		dialog->close();
+		delete dialog;
+		show();
+#endif
 	}
+#endif
+	
+// 	m_title->setMinimumWidth(m_title->width());
+// 	for( int i = 0; i < m_childs.count(); i++)
+// 	{
+// 		QObject *o = m_childs[i];
+// 		if ( o && ! m_isChildHidden )
+// 		{
+// 			static_cast<QWidget*>(o)->hide();
+// 		}
+// 		else if ( o && m_isChildHidden )
+// 		{
+// 			static_cast<QWidget*>(o)->show();
+// 		}
+// 	}
+// 	
+// 	if ( ! m_isChildHidden )
+// 	{
+// 		setMinimumSize(m_title->size());
+// 		resize(m_title->size());
+// 	}
+// 	else
+// 	{
+// 		adjustSize();
+// 	}
 	
 	m_isChildHidden = !m_isChildHidden;
 }
@@ -125,6 +145,7 @@ void KTModuleWidgetBase::enterEvent(QEvent *e)
 {
 	QPalette pal = palette();
 	pal.setColor(QPalette::Background, pal.highlight ());
+	pal.setColor(QPalette::Text, pal.base ());
 	m_title->setPalette(pal);
 }
 

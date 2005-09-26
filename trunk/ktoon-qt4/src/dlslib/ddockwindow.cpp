@@ -36,6 +36,7 @@
 #include <QDesktopWidget>
 #include <QLabel>
 #include <QScrollArea>
+#include <QDialog>
 
 #include "buttonbar.h"
 #include "button.h"
@@ -299,14 +300,12 @@ void DDockInternalWidget::addWidget(const QString &title, QWidget *widget)
 	{
 		button = new Ideal::Button(m_bar, title);
 	}
-    
-	
-	m_buttons[widget] = button;
+
 	m_bar->addButton(button);
-    
+
 	QDesktopWidget *desktop = new QDesktopWidget();
 	
-	if (widget->height() > desktop->screen(0)->height()-230)
+	if (widget->height() > desktop->screen(desktop->primaryScreen ())->height()-230)
 	{
 		QScrollArea *area = new QScrollArea(m_widgetStack);
 		widget->adjustSize();
@@ -314,7 +313,7 @@ void DDockInternalWidget::addWidget(const QString &title, QWidget *widget)
 		area->setWidgetResizable(true);
 		m_widgetStack->addWidget(area);
 		m_widgets[button] = area;
-		
+		m_buttons[area] = button;
 // 		area->setVerticalScrollBarPolicy ( Qt::ScrollBarAlwaysOn );
 	}
 	else
@@ -322,6 +321,7 @@ void DDockInternalWidget::addWidget(const QString &title, QWidget *widget)
 		m_widgets[button] = widget;
 		widget->setParent(m_widgetStack);
 		m_widgetStack->addWidget(widget);
+		m_buttons[widget] = button;
 	}
     
 	connect(button, SIGNAL(clicked()), this, SLOT(selectWidget()));
@@ -394,7 +394,29 @@ void DDockInternalWidget::selectWidget(Ideal::Button *button)
 	}
 	m_toggledButton = button;
 	setExpanded(true);
+	
+		
+	if ( m_visible )
+	{
+		QDialog *dialog = qobject_cast<QDialog *>(m_widgets[button]->parentWidget());
+		
+		if ( dialog )
+		{
+			m_widgets[button]->setParent(m_widgetStack, Qt::Widget);
+			dialog->close();
+			delete dialog;
+			
+			m_widgets[button]->show();
+			m_widgetStack->addWidget(m_widgets[button]);
+		}
+		else
+		{
+			// FIXME: Fails with QScrollArea
+		}
+	}
+	
 	m_widgetStack->setCurrentWidget(m_widgets[button]);
+	m_widgets[button]->show();
 }
 
 void DDockInternalWidget::selectWidget()

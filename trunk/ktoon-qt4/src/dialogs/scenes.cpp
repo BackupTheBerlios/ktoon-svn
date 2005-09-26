@@ -308,21 +308,36 @@ void Scenes::slotRemoveScene()
 
 void Scenes::slotChangeValueName()
 {
-	Q3CheckListItem *selected_scene = ( Q3CheckListItem * )table_scenes -> selectedItem();
+	Q3CheckListItem *selected_scene = dynamic_cast<Q3CheckListItem *>(table_scenes -> selectedItem());
+	
+	if( ! selected_scene )
+	{
+		return;
+	}
 
     //If the new name is the empty string, leave the value that it had before
+
 	if ( value_name -> text() == "" )
 	{
 		selected_scene -> setText( 0, current_name );
 		value_name -> setText( current_name );
-		KTStatus -> currentScene() -> setNameScene( current_name );
+		if ( KTStatus -> currentScene() )
+		{
+			KTStatus -> currentScene() -> setNameScene( current_name );
+		}
 	}
 	else
 	{
 		selected_scene -> setText( 0, value_name -> text() );
-		KTStatus -> currentScene() -> setNameScene( value_name -> text() );
+		if ( KTStatus -> currentScene() )
+		{
+			KTStatus -> currentScene() -> setNameScene( value_name -> text() );
+		}
 	}
-	KTStatus->currentDrawingArea() -> modifyDocument( true );
+	if ( KTStatus->currentDrawingArea() )
+	{
+		KTStatus->currentDrawingArea() -> modifyDocument( true );
+	}
 }
 
 void Scenes::slotSelectScene()

@@ -25,7 +25,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QMessageBox>
-#include <QObject> 
+#include <QObject>
 
 #include "ktdebug.h"
 
@@ -98,7 +98,7 @@ void KTApplication::applyColors(ColorScheme cs)
 			group.setColor( QColorGroup::Button, bgAlt );
 			group.setColor( QColorGroup::ButtonText,0x3e3e45 );
 		
-			group.setColor( QColorGroup::Highlight, 0x77867F );
+			group.setColor( QColorGroup::Highlight, 0x8f8368 );
 			group.setColor( QColorGroup::HighlightedText, bg );
 			int h,s,v;
 			bgAlt.getHsv( &h, &s, &v );
