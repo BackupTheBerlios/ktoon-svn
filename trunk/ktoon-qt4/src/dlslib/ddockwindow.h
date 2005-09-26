@@ -56,9 +56,11 @@ class DDockWindow : public QDockWidget
 		virtual ~DDockWindow();
 		void addWidget(const QString &title, QWidget *widget);
 		
-// 		QSize sizeHint() const;
-// 		QSize minimumSize() const;
-// 		QSize minimumSizeHint() const;
+		QSize sizeHint() const;
+		QSize minimumSizeHint() const;
+		
+	private slots:
+		void addFloatingOption(bool);
 		
 	protected:
 		

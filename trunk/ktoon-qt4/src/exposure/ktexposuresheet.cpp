@@ -82,16 +82,10 @@ void KTExposureSheet::setupButtons()
 	
 	for(int i = 0; i < toolTips.count(); i++)
 	{
-		QPushButton *tmpButton;
-// 		tmpButton = new KTImageButton(m_imgs[i], 25, m_buttonsPanel);
-		tmpButton = new QPushButton(QIcon(m_imgs[i]), QString::null, m_buttonsPanel);
+		QPushButton * tmpButton = new KTImageButton(m_imgs[i], 25, m_buttonsPanel);
 		m_buttonGroup->addButton (tmpButton);
-		tmpButton-> setAutoDefault( false );
-// 		tmpButton-> setFlat( true );
-		tmpButton-> setFocusPolicy( Qt::NoFocus );
 
-		tmpButton->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
-		tmpButton->adjustSize();
+// 		tmpButton->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
 		QToolTip::add( tmpButton, toolTips[i]  );
 	}
 	m_buttonsPanel->setMaximumHeight( m_buttonsPanel->sizeHint().height());

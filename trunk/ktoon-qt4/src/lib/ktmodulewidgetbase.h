@@ -58,6 +58,10 @@ class KTModuleWidgetBase : public QWidget
 		void toggleView();
 		void setCaption(const QString &text);
 		
+	protected:
+		void enterEvent(QEvent *e);
+		void leaveEvent(QEvent *e);
+		
 	signals:
 		void documentModified(bool);
 		void sendMessage(const QString &);

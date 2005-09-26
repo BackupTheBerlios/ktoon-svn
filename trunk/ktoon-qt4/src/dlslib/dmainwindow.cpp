@@ -129,7 +129,7 @@ void DMainWindow::addWidget(DTabWidget *tab, QWidget *widget, const QString &tit
 
 void DMainWindow::removeWidget(QWidget *widget)
 {
-    if (!m_pWidgets.contains(widget))
+	if (!m_pWidgets.contains(widget))
     {
         return; //not a widget in main window
     }
@@ -137,7 +137,7 @@ void DMainWindow::removeWidget(QWidget *widget)
     if (m_pWidgetTabs.contains(widget))
     {
         DTabWidget *tab = m_pWidgetTabs[widget];
-        if (tab->indexOf(widget) >= 0)
+	if (tab->indexOf(widget) >= 0 && m_pActiveTabWidget->count() > 1)
         {
             tab->removePage(widget);
             widget->reparent(0,QPoint(0,0),false);

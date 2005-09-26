@@ -19,15 +19,14 @@
  ***************************************************************************/
  
 #include "ktimagebutton.h"
-#include <qpainter.h>
-//Added by qt3to4:
-#include <QPixmap>
-#include <iostream>
 
-KTImageButton::KTImageButton(const QPixmap &image, int size, QWidget *parent) : QPushButton(parent), m_imageSize(44)
+#include <QPainter>
+#include <QPixmap>
+#include <QLayout>
+
+KTImageButton::KTImageButton(const QPixmap &image, int size, QWidget *parent) : QPushButton(parent), m_imageSize(/*44*/22)
 {
 	setup();
-	
 	setPixmap(image);
 }
 
@@ -43,6 +42,15 @@ void KTImageButton::setup()
 	setMaximumSize(m_imageSize, m_imageSize);
 }
 
+void KTImageButton::enterEvent(QEvent *e)
+{
+	setFlat(false);
+}
+
+void KTImageButton::leaveEvent(QEvent *e)
+{
+	setFlat(true);
+}
 
 // void KTImageButton::resizeEvent(QResizeEvent *e)
 // {

@@ -35,10 +35,12 @@ KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWid
 	m_container = new QVBoxLayout(this);
 	
 	m_title = new KTDialogTitle("...", this, "DialogTitle");
+	setMinimumSize(m_title->size());
 	
 	QToolTip::add(m_title, tr("Double click for roll up"));
 	
-	m_container->addWidget(m_title, 0, Qt::AlignTop);
+	m_container->addWidget(m_title);
+	m_container->setAlignment(m_title, Qt::AlignTop);
 	m_container->setDirection ( QBoxLayout::TopToBottom);
 	m_container->setMargin(5);
 	m_container->setSpacing(1);
@@ -96,7 +98,6 @@ void KTModuleWidgetBase::toggleView()
 
 void KTModuleWidgetBase::setCaption(const QString &text)
 {
-// 	QDockWindow::setCaption(text);
  	m_title->setText(text);
 }
 
@@ -114,10 +115,22 @@ bool KTModuleWidgetBase::event( QEvent * e )
 	}
 	else if ( e->type() == QEvent::Show )
 	{
-// 		adjustSize();
 		emit activate(true);
 	}
 
 	return QWidget::event(e );
+}
+
+void KTModuleWidgetBase::enterEvent(QEvent *e)
+{
+	QPalette pal = palette();
+	pal.setColor(QPalette::Background, pal.highlight ());
+	m_title->setPalette(pal);
+}
+
+void KTModuleWidgetBase::leaveEvent(QEvent *e)
+{
+	QPalette pal = palette();
+	m_title->setPalette(pal);
 }
 

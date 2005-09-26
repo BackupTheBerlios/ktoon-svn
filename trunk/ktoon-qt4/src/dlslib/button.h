@@ -38,7 +38,7 @@ class Button;
 class Animation
 {
 	public:
-		Animation(QObject *parent) : count(0), MAXCOUNT(20), INTERVAL(15), isEnter(false)
+		Animation(QObject *parent) : count(0), MAXCOUNT(20), INTERVAL(18), isEnter(false)
 		{
 			timer = new QTimer(parent);
 		}
@@ -58,7 +58,7 @@ class Animation
 			const int b = static_cast<int>( color1.blue() * factor1 + color2.blue() * factor2 );
 
 			QColor result;
-			result.setRgb( r, g, b );
+			result.setRgb( r % 256, g% 256, b% 256 );
 
 			return result;
 		}
@@ -113,8 +113,6 @@ protected:
     virtual void paintEvent(QPaintEvent *e);
     virtual void enterEvent( QEvent* );
     virtual void leaveEvent( QEvent* );
-    
-    virtual void drawEffect( QPainter *paint );
 
 private:
     virtual ~Button();

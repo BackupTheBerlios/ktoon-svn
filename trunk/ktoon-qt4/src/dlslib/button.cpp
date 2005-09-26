@@ -79,7 +79,7 @@ namespace Ideal {
 		
 		m_animation = new Animation(this);
 		
-		// 		connect( m_animation->timer, SIGNAL( timeout() ), this, SLOT( anime() ) ); // TODO; Animate ;)
+		connect( m_animation->timer, SIGNAL( timeout() ), this, SLOT( anime() ) ); // TODO; Animate ;)
 	}
 
 	Button::~Button()
@@ -90,9 +90,9 @@ namespace Ideal {
 	void Button::enterEvent( QEvent* )
 	{
 		m_animation->isEnter = true;
-		m_animation->count = 0;
+		m_animation->count = 1;
 
-		m_animation->timer->start();
+		m_animation->start();
 	}
 
 	void Button::leaveEvent( QEvent* )
@@ -109,17 +109,17 @@ namespace Ideal {
 	{
 		if ( m_animation->isEnter ) 
 		{
-			m_animation->isEnter += 1;
+			m_animation->count += 1;
 			repaint( false );
-			if ( m_animation->isEnter > m_animation->MAXCOUNT )
+			if ( m_animation->count > m_animation->MAXCOUNT )
 			{
 				m_animation->timer->stop();
 			}
 		} else 
 		{
-			m_animation->isEnter -= 1;
+			m_animation->count -= 1;
 			repaint( false );
-			if ( m_animation->isEnter < 0 )
+			if ( m_animation->count < 1 )
 			{
 				m_animation->timer->stop();
 			}
@@ -173,14 +173,34 @@ namespace Ideal {
 	{
 		QPainter p(this);
 		
+		/////
+		QColor fillColor, textColor;
+		
+		if ( isDown() || isChecked() )
+		{
+			fillColor = m_animation->blendColors( colorGroup().highlight(), colorGroup().background(), static_cast<int>( m_animation->count * 3.5 ) );
+			textColor = m_animation->blendColors( colorGroup().highlightedText(), colorGroup().text(), static_cast<int>( m_animation->count * 4.5 ) );
+		}
+		else
+		{
+			fillColor = m_animation->blendColors( colorGroup().background(), colorGroup().highlight(), static_cast<int>( m_animation->count * 3.5 ) );
+			textColor = m_animation->blendColors( colorGroup().text(), colorGroup().highlightedText(), static_cast<int>( m_animation->count * 4.5 ) );
+		}
+		////
+		
 		QStyleOptionButton opt = styleOption();
 		QRect r = opt.rect;
 
 		QPixmap pm(r.width(), r.height());
-		pm.fill(eraseColor());
+		pm.fill(fillColor);
+		p.setPen( colorGroup().mid() );
+		
+		opt.palette.setColor(QPalette::Button, fillColor);
+		opt.palette.setColor(QPalette::ButtonText, textColor);
 
 		QStylePainter p2(&pm, this);
 		p2.drawControl(QStyle::CE_PushButton, opt);
+		
 		
 		switch (m_place)
 		{
@@ -197,14 +217,9 @@ namespace Ideal {
 				break;
 		}
 		
-		drawEffect(&p);
+		p.end();
 	}
 	
-	void Button::drawEffect( QPainter *paint)
-	{
-		// TODO: do this
-	}
-
 	ButtonMode Button::mode()
 	{
 		return m_buttonBar->mode();

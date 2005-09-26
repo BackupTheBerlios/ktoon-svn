@@ -27,6 +27,9 @@
 
 #include "ktapplication.h"
 
+// dlslib
+#include "dtabwidget.h"
+
 // Qt
 #include <QImage>
 #include <QPixmap>
@@ -140,8 +143,8 @@ void KTMainWindow::createGUI()
 	m_libraryDialog->setIcon(QPixmap(KTOON_HOME+"/images/icons/library.xpm"));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Library"),m_libraryDialog);
 	
-// 	Scenes *m_scenes = new Scenes( this);
-// 	toolWindow(DDockWindow::Right)->addWidget(tr("Scenes"),m_scenes);
+	Scenes *m_scenes = new Scenes( this);
+	toolWindow(DDockWindow::Right)->addWidget(tr("Scenes"),m_scenes);
 	
 	KTExposureSheet *m_exposureSheet = new KTExposureSheet(this);
 	m_exposureSheet->setIcon(QPixmap(KTOON_HOME+"/images/icons/exposure_sheet.xpm"));
@@ -214,8 +217,6 @@ void KTMainWindow::setupFileActions()
 
 void KTMainWindow::resize()
 {
-// 	QMainWindow::resize(1024,770);
-	m_pCentral->resize(1024,770);
 }
 
 void KTMainWindow::setupToolBar()
@@ -258,6 +259,7 @@ void KTMainWindow::setPalette(const QPalette &pal)
 void KTMainWindow::newDocument()
 {
 	static_cast<KTStatusBar*>(statusBar())->setStatus(tr("Opening a new document..."));
+	
 	KTViewDocument *viewDocument = new KTViewDocument(m_workSpace);
 	m_workSpace->addWindow(viewDocument);
 	static_cast<KTStatusBar*>(statusBar())->advance(4);

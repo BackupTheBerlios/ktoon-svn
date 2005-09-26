@@ -28,7 +28,7 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine
 {
 	KTINIT;
 
-	setWindowTitle(tr("The Time line"));
+	setCaption(tr("The Time line"));
 	
 	m_container = new KTVHBox(this, false);
 	addChild(m_container);

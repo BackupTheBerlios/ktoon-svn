@@ -33,7 +33,9 @@
 #include <QComboBox>
 #include <QApplication>
 #include <QSettings>
+#include <QDesktopWidget>
 #include <QLabel>
+#include <QScrollArea>
 
 #include "buttonbar.h"
 #include "button.h"
@@ -45,9 +47,6 @@ DDockWindow::DDockWindow(QWidget *parent, Position position) : QDockWidget( pare
 	layout()->setSizeConstraint( QLayout::SetMinimumSize );
 	m_centralWidget = new DDockInternalWidget(this, position);
 
-	updateGeometry();
-	update();
-	
 	setWidget(m_centralWidget);
 	m_centralWidget->show();
 	
@@ -63,13 +62,38 @@ DDockWindow::DDockWindow(QWidget *parent, Position position) : QDockWidget( pare
 	
 	layout()->setSpacing(0);
 	layout()->setMargin(0);
+	
+	connect(this, SIGNAL(topLevelChanged ( bool)), this, SLOT(addFloatingOption(bool)));
 }
 
 DDockWindow::~DDockWindow() {}
 
+void DDockWindow::addFloatingOption(bool opt)
+{
+	if ( opt )
+	{
+		setFeatures(QDockWidget::AllDockWidgetFeatures);
+	}
+	else
+	{
+		setFeatures(QDockWidget::NoDockWidgetFeatures);
+	}
+}
+
 void DDockWindow::addWidget(const QString &title, QWidget *widget)
 {
 	m_centralWidget->addWidget(title, widget);
+}
+
+QSize DDockWindow::sizeHint() const
+{
+	return m_centralWidget->layout()->sizeHint();
+}
+
+QSize DDockWindow::minimumSizeHint() const
+{
+	return QSize(1,1);
+	return m_centralWidget->minimumSizeHint();
 }
 
 // DDockInternalWidget
@@ -112,7 +136,7 @@ DDockInternalWidget::DDockInternalWidget(QWidget *parent, DDockWindow::Position 
 	
 	setObjectName(m_name);
 
-	m_internalLayout->setSizeConstraint(QLayout::SetMaximumSize);
+// 	m_internalLayout->setSizeConstraint(QLayout::SetMaximumSize);
 	m_internalLayout->setMargin(0);
 	m_internalLayout->setSpacing(0);
 	
@@ -130,10 +154,6 @@ DDockInternalWidget::DDockInternalWidget(QWidget *parent, DDockWindow::Position 
 
 	m_bar = new Ideal::ButtonBar(place, buttonMode, this);
 	m_internalLayout->addWidget(m_bar);
-	
-	m_bar->setMaximumWidth(m_bar->width());
-			
-	m_bar->setMinimumHeight(width());
 
 	m_bar->show();
     
@@ -149,16 +169,19 @@ DDockInternalWidget::DDockInternalWidget(QWidget *parent, DDockWindow::Position 
 		case DDockWindow::Bottom:
 		{
 			m_internalLayout->setAlignment( m_bar, Qt::AlignBottom | Qt::AlignLeft );
+			static_cast<QDockWidget *>(parentWidget())->setAllowedAreas (Qt::BottomDockWidgetArea | Qt::TopDockWidgetArea);
 			break;
 		}
 		case DDockWindow::Left:
 		{
 			m_internalLayout->setAlignment( m_bar,Qt::AlignTop | Qt::AlignLeft );
+			static_cast<QDockWidget *>(parentWidget())->setAllowedAreas (Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
 			break;
 		}
 		case DDockWindow::Right:
 		{
 			m_internalLayout->setAlignment( m_bar,Qt::AlignTop | Qt::AlignRight );
+			static_cast<QDockWidget *>(parentWidget())->setAllowedAreas (Qt::RightDockWidgetArea | Qt::LeftDockWidgetArea );
 			break;
 		}
 	}
@@ -166,7 +189,7 @@ DDockInternalWidget::DDockInternalWidget(QWidget *parent, DDockWindow::Position 
 	setExpanded(false);
 	//loadSettings(); // FIXME
 
-	setBaseSize(m_bar->size());
+// 	setBaseSize(m_bar->size());
 	show();	
 }
 
@@ -277,13 +300,30 @@ void DDockInternalWidget::addWidget(const QString &title, QWidget *widget)
 		button = new Ideal::Button(m_bar, title);
 	}
     
-	m_widgets[button] = widget;
+	
 	m_buttons[widget] = button;
 	m_bar->addButton(button);
     
-	widget->setParent(m_widgetStack);
+	QDesktopWidget *desktop = new QDesktopWidget();
+	
+	if (widget->height() > desktop->screen(0)->height()-230)
+	{
+		QScrollArea *area = new QScrollArea(m_widgetStack);
+		widget->adjustSize();
+		area->setWidget(widget);
+		area->setWidgetResizable(true);
+		m_widgetStack->addWidget(area);
+		m_widgets[button] = area;
+		
+// 		area->setVerticalScrollBarPolicy ( Qt::ScrollBarAlwaysOn );
+	}
+	else
+	{
+		m_widgets[button] = widget;
+		widget->setParent(m_widgetStack);
+		m_widgetStack->addWidget(widget);
+	}
     
-	m_widgetStack->addWidget(widget);
 	connect(button, SIGNAL(clicked()), this, SLOT(selectWidget()));
     
     //if the widget was selected last time the dock is deleted 

@@ -40,6 +40,10 @@ class KTImageButton : public QPushButton
 		~KTImageButton();
 		virtual void setPixmap ( const QPixmap & pix);
 		
+	protected:
+		void enterEvent(QEvent *e);
+		void leaveEvent(QEvent *e);
+		
 	private:
 		void setup();
 		

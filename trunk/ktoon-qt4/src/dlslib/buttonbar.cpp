@@ -80,7 +80,7 @@ ButtonBar::ButtonBar(Place place, ButtonMode mode, QWidget *parent, const char *
             break;
     }
     
-    l->setSizeConstraint( QLayout::SetMaximumSize );
+    l->setSizeConstraint( QLayout::SetMinimumSize );
     
 //     l->setResizeMode(QLayout::Minimum);
     setMode(mode);
