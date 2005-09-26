@@ -12,13 +12,15 @@
 #ifndef KTSTATUSBAR_H
 #define KTSTATUSBAR_H
 
-#include <q3progressbar.h>
-#include <qstatusbar.h>
-#include <qlabel.h>
+#include <QProgressBar>
+#include <QLabel>
+
+#include <QStatusBar>
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@toonka.com>
 */
+
 class KTStatusBar : public QStatusBar
 {
 	Q_OBJECT
@@ -33,7 +35,7 @@ class KTStatusBar : public QStatusBar
 		
 	private:
 		QLabel *m_status;
-		Q3ProgressBar *m_progressBar;
+		QProgressBar *m_progressBar;
 
 };
 

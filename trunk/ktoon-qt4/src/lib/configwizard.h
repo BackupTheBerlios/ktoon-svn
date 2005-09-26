@@ -66,7 +66,7 @@ class CWFirstPage : public KTVHBox
 {
 	Q_OBJECT
 	public:
-		CWFirstPage(QWidget *parent = 0, const char *name = 0);
+		CWFirstPage(QWidget *parent = 0);
 		~CWFirstPage();
 };
 
@@ -74,7 +74,7 @@ class CWSecondPage : public KTVHBox
 {
 	Q_OBJECT
 	public:
-		CWSecondPage(QWidget *parent = 0, const char *name = 0);
+		CWSecondPage(QWidget *parent = 0);
 		~CWSecondPage();
 		void setData(const QString &home, const QString &repos);
 		QString getHome();

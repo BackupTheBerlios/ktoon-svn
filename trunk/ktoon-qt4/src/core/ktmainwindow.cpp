@@ -42,6 +42,9 @@
 KTMainWindow::KTMainWindow() : DMainWindow(0, "KToon-MainWindow")
 {
 	KTINIT;
+	
+	ktDebug() << "KTHOME" << KTCONFIG->read("KTHome") << endl;
+	ktDebug() << "OTRO: " << KTOON_HOME << endl;
 
 	setStatusBar( new KTStatusBar(this) );
 	

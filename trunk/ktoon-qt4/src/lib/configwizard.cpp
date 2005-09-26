@@ -25,7 +25,7 @@
 #include <QHBoxLayout>
 
 ConfigWizard::ConfigWizard() : Q3Wizard(0)
-{	
+{
 	m_firstPage = new CWFirstPage(this);
 	addPage(m_firstPage, tr("Welcome"));
 	
@@ -66,9 +66,9 @@ QString ConfigWizard::getRepos()
 }
 
 // CWFirstPage
-CWFirstPage::CWFirstPage(QWidget *parent, const char *name) : KTVHBox(parent, name)
+CWFirstPage::CWFirstPage(QWidget *parent) : KTVHBox(parent)
 {
-	new QLabel(tr("<h3>KToon</h3>"
+	new QLabel(tr("<h3>KToon</h3><br>"
 			"In this wizard you need set a values for proper configuration of ktoon<br><br>"
 			"<em>--The KToon Team</em>"), this);
 }
@@ -79,23 +79,26 @@ CWFirstPage::~ CWFirstPage()
 
 
 // CWFSecondPage
-CWSecondPage::CWSecondPage(QWidget *parent, const char *name) : KTVHBox(parent, name)
+CWSecondPage::CWSecondPage(QWidget *parent) : KTVHBox(parent)
 {
 	new QLabel(tr("<h3>Step 1<h3>"), this);
 	
 	new QLabel(tr("Choose your KToon install directory"), this);
 	
 	QWidget *hbox1 = new QWidget(this);
-	(new QHBoxLayout(hbox1))->setAutoAdd(true);
+	QHBoxLayout *lyhbox1 = new QHBoxLayout(hbox1);
 	
 	
 	m_kthome = new QLineEdit(hbox1);
-	
+	lyhbox1->addWidget(m_kthome);
+
 	QToolTip::add(m_kthome, tr("Choose your KTOON_HOME directory"));
 	
 	QPushButton *button = new QPushButton(tr("browse..."), hbox1);
+	lyhbox1->addWidget(button);
+	
 	QFileDialog *fd = new QFileDialog(hbox1);
-	connect(fd, SIGNAL(dirEntered( const QString & )), m_kthome, SLOT(setText(const QString &)));
+	connect(fd, SIGNAL(currentChanged ( const QString & )), m_kthome, SLOT(setText(const QString &)));
 	fd->setMode(QFileDialog::Directory);
 	fd->setModal(true);
 	fd->hide();
@@ -104,21 +107,22 @@ CWSecondPage::CWSecondPage(QWidget *parent, const char *name) : KTVHBox(parent, 
 	new QLabel(tr("Choose your project directory"), this);
 	
 	QWidget *hbox2 = new QWidget(this);
-	(new QHBoxLayout(hbox2))->setAutoAdd(true);
-	
-	m_kthome = new QLineEdit(hbox2);
+	QHBoxLayout *lyhbox2 = new QHBoxLayout(hbox2);
 	
 	m_ktrepos = new QLineEdit(hbox2);
+	lyhbox2->addWidget(m_ktrepos);
 	
 	QToolTip::add(m_ktrepos, tr("In this directory will be save your projects"));
 	
 	QFileDialog *fd2 = new QFileDialog(hbox2);
-	connect(fd2, SIGNAL(dirEntered( const QString & )), m_ktrepos, SLOT(setText(const QString &)));
+	connect(fd2, SIGNAL(currentChanged ( const QString & )), m_ktrepos, SLOT(setText(const QString &)));
 	
 	fd2->hide();
 	fd2->setMode(QFileDialog::Directory);
 	fd2->setModal(true);
 	QPushButton *button2 = new QPushButton(tr("browse..."), hbox2);
+	lyhbox2->addWidget(button2);
+	
 	connect(button2, SIGNAL(clicked()), fd2, SLOT(show()));
 }
 

@@ -81,11 +81,8 @@ int main( int argc, char ** argv )
 // 	splash_screen -> finish( main_window );
 // 	delete splash_screen;
 	
-	KTMainWindow mainWindow;
-	application.setMainWidget( &mainWindow );
-	mainWindow.show();
-	
-	application.connect( &application, SIGNAL( lastWindowClosed() ), &application, SLOT( quit()) );
+	KTMainWindow *mainWindow = new KTMainWindow;
+	mainWindow->show();
 	
 	if ( QGLFormat::hasOpenGL() )
 	{

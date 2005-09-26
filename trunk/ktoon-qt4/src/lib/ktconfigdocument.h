@@ -45,6 +45,8 @@ class KTConfigDocument : public QDomDocument
 		bool exists(const QString &key);
 		
 		bool isOk();
+
+		void setup();
 		
 	private:
 		QString m_path;

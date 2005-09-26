@@ -32,6 +32,7 @@
 KTApplication::KTApplication(int & argc, char ** argv)
 	: QApplication(argc, argv, true), m_VERSION("0.8alpha")
 {
+	KTINIT;
 	parseArgs(argc, argv);
 	
 #ifdef Q_WS_X11
@@ -44,9 +45,17 @@ KTApplication::KTApplication(int & argc, char ** argv)
 #endif
 
  	applyColors(Default);
-// 	setFont( QFont( "helvetica", 10 ) );
 	
 	KTCONFIG->init();
+
+	if ( ! KTCONFIG->isOk() || isArg("r") || isArg("reconfigure") )
+	{
+		qDebug("RECONFIGURING");
+		if ( ! firstRun() && ! (isArg("r") || isArg("reconfigure")) )
+		{
+			QMessageBox::critical(0, QObject::tr("Missing..."), QObject::tr("You need configure the application"));
+		}
+	}
 	
 	m_KTOON_HOME = KTCONFIG->read("KTHome");
 	m_KTOON_REPOSITORY = KTCONFIG->read("Repository");
@@ -55,19 +64,12 @@ KTApplication::KTApplication(int & argc, char ** argv)
 	{
 		applyTheme(themefile);
 	}
-	
-	if ( ! KTCONFIG->isOk() || isArg("r") || isArg("reconfigure") )
-	{
-		if ( ! firstRun() && ! (isArg("r") || isArg("reconfigure")) )
-		{
-			QMessageBox::critical(0, QObject::tr("Missing..."), QObject::tr("You need configure the application"));
-		}
-	}
 }
 
 
 KTApplication::~KTApplication()
 {
+	KTEND;
 }
 
 void KTApplication::applyTheme(const QString &file)
@@ -237,10 +239,6 @@ QString KTApplication::getVersion()
 bool KTApplication::firstRun()
 {
 	ConfigWizard firstDialog;
-	
-#ifdef KTHOME
-	firstDialog.setInitialData(KTHOME, QString(KTHOME)+"/projects");
-#endif
 
 	if ( firstDialog.exec() != QDialog::Rejected )
 	{
@@ -252,7 +250,8 @@ bool KTApplication::firstRun()
 		KTCONFIG->configDocument()->setHome( m_KTOON_HOME );
 		KTCONFIG->configDocument()->setRepository( m_KTOON_REPOSITORY );
 		
-// 		KTCONFIG->sync();
+		KTCONFIG->sync();
+		KTCONFIG->init();
 		
 		return true;
 	}

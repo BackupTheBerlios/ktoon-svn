@@ -10,22 +10,21 @@
 //
 //
 #include "ktstatusbar.h"
-//Added by qt3to4:
-#include <QLabel>
 
 KTStatusBar::KTStatusBar(QWidget *parent)
  : QStatusBar(parent)
 {
-	m_progressBar = new Q3ProgressBar(this);
+	m_progressBar = new QProgressBar(this);
 	m_progressBar->setMaximumSize(100, m_progressBar->height()/2);
+	m_progressBar->setMinimumWidth(100);
 	
-	m_progressBar->setTotalSteps(10);
+	m_progressBar->setMaximum(10);
 	
 	m_status = new QLabel( "<b></b>",this );
-	m_status->setMaximumWidth(180);
+// 	m_status->setMaximumWidth(180);
 	
-	addWidget(m_status, 1, true);
-	addWidget(m_progressBar, 0, true);
+	addPermanentWidget(m_status, 1);
+	addPermanentWidget(m_progressBar, 0);
 }
 
 
@@ -50,5 +49,5 @@ void KTStatusBar::addWidget ( QWidget *widget, int stretch, bool permanent)
 
 void KTStatusBar::advance(int step)
 {
-	m_progressBar->setProgress(step);
+	m_progressBar->setValue(step);
 }

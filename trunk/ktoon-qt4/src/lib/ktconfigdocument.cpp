@@ -30,8 +30,21 @@
 KTConfigDocument::KTConfigDocument(const QString &path) : QDomDocument(), m_path(path), MAXRECENTS(6)
 {
 	qDebug("[Initializing KTConfigDocument]");
-	
-	QFile config( path );
+	setup();
+
+	if ( !m_isOk )
+	{
+		QDomProcessingInstruction header = this->createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\"");
+		this->appendChild(header);
+		
+		QDomElement root = createElement( "KTConfig" );
+		appendChild( root );
+	}
+}
+
+void KTConfigDocument::setup()
+{
+	QFile config( m_path );
 	m_isOk = false;
 	
 	if ( config.exists() )
@@ -49,15 +62,6 @@ KTConfigDocument::KTConfigDocument(const QString &path) : QDomDocument(), m_path
 			m_isOk = false;
 		}
 		config.close();
-	}
-	
-	if ( !m_isOk )
-	{
-		QDomProcessingInstruction header = this->createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\"");
-		this->appendChild(header);
-		
-		QDomElement root = createElement( "KTConfig" );
-		appendChild( root );
 	}
 }
 

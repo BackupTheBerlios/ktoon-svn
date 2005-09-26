@@ -24,7 +24,8 @@
 #include "ktdebug.h"
 
 KTConfig::KTConfig() : QObject()
-{	
+{
+	KTINIT;
 #ifdef Q_WS_X11
 	configDirectory.setPath(QDir::homeDirPath()+"/.ktoon");
 #elif defined(Q_WS_WIN)
@@ -48,6 +49,7 @@ KTConfig::KTConfig() : QObject()
 
 KTConfig::~KTConfig()
 {
+	KTEND;
 }
 
 KTConfig *KTConfig::instance()
@@ -59,6 +61,8 @@ KTConfig *KTConfig::instance()
 
 void KTConfig::init()
 {
+	ktDebug() << "*********Init configuration file : " << m_ktconfig->path() << endl;
+	m_ktconfig->setup();
 	m_isOk = m_ktconfig->isOk();
 	
 	KTXmlReader configreader;
