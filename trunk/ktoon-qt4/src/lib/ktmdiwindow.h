@@ -20,14 +20,15 @@
 #ifndef KTMDIWINDOW_H
 #define KTMDIWINDOW_H
 
-#include <q3mainwindow.h>
+// #include <q3mainwindow.h>
 //Added by qt3to4:
+#include <QMainWindow>
 #include <QEvent>
 
 /**
 @author Jorge Cuadrado
 */
-class KTMdiWindow : public Q3MainWindow
+class KTMdiWindow : public QMainWindow
 {
 	Q_OBJECT
 	public:

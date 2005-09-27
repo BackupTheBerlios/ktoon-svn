@@ -29,6 +29,7 @@
 
 // dlslib
 #include "dtabwidget.h"
+#include "docksplitter.h"
 
 // Qt
 #include <QImage>
@@ -208,18 +209,6 @@ void KTMainWindow::setupFileActions()
 	connect(exit, SIGNAL(activated()), this, SLOT(close()));
 	exit->setStatusTip(tr("Closes the application"));
 	m_actionManager->insert(exit);
-	
-	QAction *resize  = new QAction("Resize", this);
-	resize->setObjectName("Resize");
-	connect(resize, SIGNAL(activated()), this, SLOT(resize()));
-	m_actionManager->insert(resize);
-	
-}
-
-#include "docksplitter.h"
-
-void KTMainWindow::resize()
-{
 }
 
 void KTMainWindow::setupToolBar()

@@ -94,6 +94,7 @@ protected:
     QList<QWidget*> m_pWidgets;
     QMap<QWidget*, DTabWidget*> m_pWidgetTabs;
     QWidget *m_pCurrentWidget;
+    QList<QWidget *> m_separators;
 
 private slots:
     void invalidateActiveTabWidget();

@@ -37,6 +37,7 @@
 #include <QLabel>
 #include <QScrollArea>
 #include <QDialog>
+#include <QMainWindow>
 
 #include "buttonbar.h"
 #include "button.h"
@@ -51,7 +52,7 @@ DDockWindow::DDockWindow(QWidget *parent, Position position) : QDockWidget( pare
 	setWidget(m_centralWidget);
 	m_centralWidget->show();
 	
-	resize(minimumSize());
+// 	resize(minimumSize());
 	
 // 	QPalette pal = QApplication::palette();
 // 	pal.setColor(QPalette::Background, Qt::blue);
@@ -211,6 +212,8 @@ void DDockInternalWidget::setExpanded(bool v)
 	}
 	
 	m_widgetStack->setVisible(v);
+	
+	m_internalLayout->invalidate();
 
 #if 0
 	m_internalLayout->invalidate();
@@ -246,6 +249,15 @@ void DDockInternalWidget::setExpanded(bool v)
 #endif
 	
 	m_visible = v;
+	
+	// HACK: update dock separator
+	QMainWindow *window = dynamic_cast<QMainWindow*>(QApplication::activeWindow());
+
+	if ( window && !m_visible)
+	{
+		window->layout()->setGeometry( QRect() );
+		window->layout()->invalidate();
+	}
 }
 
 void DDockInternalWidget::loadSettings()
@@ -382,6 +394,23 @@ void DDockInternalWidget::removeWidget(QWidget *widget)
 
 void DDockInternalWidget::selectWidget(Ideal::Button *button)
 {
+	if ( m_visible )
+	{
+		QWidget *dialog = qobject_cast<QDialog *>(m_widgets[button]->parentWidget());
+		
+		if ( dialog == 0 )
+		{
+			m_widgets[button]->setParent(m_widgetStack, Qt::Widget);
+			
+			m_widgets[button]->show();
+			m_widgetStack->addWidget(m_widgets[button]);
+		}
+		else
+		{
+			// FIXME: Fails with QScrollArea
+		}
+	}
+	
 	if (m_toggledButton == button)
 	{
 		setExpanded(!m_visible);
@@ -394,26 +423,6 @@ void DDockInternalWidget::selectWidget(Ideal::Button *button)
 	}
 	m_toggledButton = button;
 	setExpanded(true);
-	
-		
-	if ( m_visible )
-	{
-		QDialog *dialog = qobject_cast<QDialog *>(m_widgets[button]->parentWidget());
-		
-		if ( dialog )
-		{
-			m_widgets[button]->setParent(m_widgetStack, Qt::Widget);
-			dialog->close();
-			delete dialog;
-			
-			m_widgets[button]->show();
-			m_widgetStack->addWidget(m_widgets[button]);
-		}
-		else
-		{
-			// FIXME: Fails with QScrollArea
-		}
-	}
 	
 	m_widgetStack->setCurrentWidget(m_widgets[button]);
 	m_widgets[button]->show();

@@ -65,7 +65,7 @@ class DDockWindow : public QDockWidget
 	protected:
 		
 	private:
-		DDockInternalWidget *m_centralWidget;		
+		DDockInternalWidget *m_centralWidget;
 };
 
 class DDockInternalWidget : public QWidget {

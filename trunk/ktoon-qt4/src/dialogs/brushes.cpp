@@ -110,6 +110,10 @@ void Brushes::setupTableBruches()
 	    //------------ Operations on the Table of Brushes -------------
 	QGroupBox *containerTableBrushes = new QGroupBox(this);
 // 	m_tableBrushes = new QTableWidget(1,4,this);
+// 	QStringList labels;
+// 	labels << tr("Min") << tr( "Max" ) << tr( "Smo" ) << tr( "Name" );
+// 	m_tableBrushes->setHorizontalHeaderLabels ( labels );
+// 	m_tableBrushes->adjustSize ();
 // 	addChild(m_tableBrushes);
 	QVBoxLayout *layout = new QVBoxLayout(containerTableBrushes);
 	table_brushes = new Q3ListView( containerTableBrushes, "", Qt::WStyle_NoBorder );

@@ -23,7 +23,7 @@
 //Added by qt3to4:
 #include <QEvent>
 
-KTMdiWindow::KTMdiWindow(QWidget* parent, const char* name, Qt::WFlags f): Q3MainWindow(parent, name, f)
+KTMdiWindow::KTMdiWindow(QWidget* parent, const char* name, Qt::WFlags f): QMainWindow(parent, name, f)
 {
 	
 }
@@ -56,6 +56,7 @@ bool  KTMdiWindow::event( QEvent * e )
 // 			menuBar()->show();
 // 	}
 
-	Q3MainWindow::event(e );
+	return QMainWindow::event(e );
+	
 	
 }

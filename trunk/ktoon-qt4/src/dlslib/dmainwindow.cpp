@@ -1,4 +1,3 @@
-
 /***************************************************************************
  *   Copyright (C) 2005 by Alexander Dymo                                  *
  *   adymo@kdevelop.org                                                    *
@@ -43,14 +42,12 @@ static const char* const icon_xpm[]={
 DMainWindow::DMainWindow(QWidget *parent, const char *name)
     :MWCLASS(parent, name), m_pFirstRemoved(false), m_pCurrentWidget(0)
 {
-// 	layout()->setSizeConstraint( QLayout::SetFixedSize );
     loadSettings();
     createToolWindows();
     m_pCentral = new Ideal::DockSplitter(Qt::Horizontal, 0);
     m_pActiveTabWidget = createTab();
     m_pCentral->addDock(0, 0, m_pActiveTabWidget);
     setCentralWidget(m_pCentral);
-    
 }
 
 void DMainWindow::loadSettings()
@@ -88,6 +85,7 @@ void DMainWindow::createToolWindows()
 
     m_pRightDock = new DDockWindow(this, DDockWindow::Right);
     addDockWidget( Qt::RightDockWidgetArea, m_pRightDock );
+
 
 }
 

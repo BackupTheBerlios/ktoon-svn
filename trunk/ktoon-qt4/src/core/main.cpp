@@ -84,6 +84,8 @@ int main( int argc, char ** argv )
 	KTMainWindow *mainWindow = new KTMainWindow;
 	mainWindow->show();
 	
+	QApplication::setActiveWindow(mainWindow);
+	
 	if ( QGLFormat::hasOpenGL() )
 	{
 		QGLWidget gl((QWidget *) 0);

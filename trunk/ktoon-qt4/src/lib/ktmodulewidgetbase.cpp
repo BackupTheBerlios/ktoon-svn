@@ -72,20 +72,11 @@ void KTModuleWidgetBase::toggleView()
 #if 1
 	if ( ! m_isChildHidden )
 	{
-		QDialog *dialog = new QDialog(m_originalParent);
-		setParent(dialog, Qt::WindowStaysOnTopHint );
-		dialog->setWindowTitle(objectName());
-		dialog->show();
-	}
-	else
-	{
-#if 0
-		QWidget *dialog = parentWidget();
-		setParent(m_originalParent, Qt::Widget);
-		dialog->close();
-		delete dialog;
+// 		QDialog *dialog = new QDialog(m_originalParent);
+		setParent(0, Qt::WindowStaysOnTopHint );
+// 		dialog->setWindowTitle(objectName());
+// 		dialog->show();
 		show();
-#endif
 	}
 #endif
 	
@@ -113,7 +104,7 @@ void KTModuleWidgetBase::toggleView()
 // 		adjustSize();
 // 	}
 	
-	m_isChildHidden = !m_isChildHidden;
+// 	m_isChildHidden = !m_isChildHidden;
 }
 
 void KTModuleWidgetBase::setCaption(const QString &text)
