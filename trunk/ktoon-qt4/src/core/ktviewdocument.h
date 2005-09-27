@@ -23,12 +23,11 @@
 #include "ktmdiwindow.h"
 #include "ktdocumentruler.h"
 #include "drawingarea.h"
-#include "q3action.h"
-#include "q3mainwindow.h"
-#include <qcursor.h>
-//Added by qt3to4:
-#include <Q3ActionGroup>
-#include <Q3PopupMenu>
+#include <QCursor>
+#include <QAction>
+#include <QActionGroup>
+#include <QToolBar>
+#include <QMenu>
 
 /**
  *@author Jorge Cuadrado
@@ -37,7 +36,7 @@ class KTViewDocument : public KTMdiWindow
 {
 	Q_OBJECT
 	public:
-		KTViewDocument( QWidget *parent = 0, const char *name = 0, Qt::WFlags f = 0);
+		KTViewDocument( QWidget *parent = 0);
 		~KTViewDocument();
 		void close();
 	private:
@@ -45,19 +44,20 @@ class KTViewDocument : public KTMdiWindow
 		QWidget *m_container;
 		KTDocumentRuler *m_HRuler;
 		KTDocumentRuler *m_VRuler;
-		Q3ActionGroup *gridGroup, *editGroup, *editGroup2, *viewNextGroup, *viewPreviousGroup;
-		Q3Action *m_aSubGrid, *m_aNtsc, *m_aLightTable,*m_aUndo, *m_aRedo, *m_aClose, *m_aFrontBackGrid;
-		Q3PopupMenu *m_menuGrid, *m_menuFile;
-		Q3ToolBar *m_barGrid;
-	
+		QActionGroup *gridGroup, *editGroup, *editGroup2, *viewNextGroup, *viewPreviousGroup;
+		QMenu *m_toolsSelection, *m_toolsDraw, *m_toolsFills, *m_toolsErasers, *m_toolsView, *m_toolsOrder,*m_toolsAlign, *m_toolsTransform;
+		QAction *m_aSubGrid, *m_aNtsc, *m_aLightTable,*m_aUndo, *m_aRedo, *m_aClose, *m_aFrontBackGrid;
+		QToolBar *m_barGrid, *m_toolbar;
 	private:
 		void createActions();
 		void createToolbar();
 		void createMenu();
+		void createTools();
 
 	private slots:
 		void showPos(QPoint p);	
 		void setCursor(QCursor c);
+		void changeTool(QAction *a);
 	
 	protected:
 		virtual QSize sizeHint () const ;
