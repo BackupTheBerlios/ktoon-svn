@@ -64,11 +64,11 @@ namespace Ideal {
 	Button::Button(ButtonBar *parent, const QString text, const QIcon &icon,
 		       const QString &description)
 	: QPushButton(icon, text, parent), m_buttonBar(parent), m_description(description),
-	m_place(parent->place()), m_realText(text), m_realIconSet(icon)
+	m_place(parent->place()), m_realText(text), m_realIconSet(icon), m_isSensible(false)
 	{
 		hide();
 		setFlat(true);
-		setToggleButton(true);
+		setCheckable(true);
 		setFocusPolicy(Qt::NoFocus);
 		setDescription(m_description);
 		setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
@@ -79,7 +79,7 @@ namespace Ideal {
 		
 		m_animation = new Animation(this);
 		
-		connect( m_animation->timer, SIGNAL( timeout() ), this, SLOT( anime() ) ); // TODO; Animate ;)
+		connect( m_animation->timer, SIGNAL( timeout() ), this, SLOT( animate() ) ); // TODO; Animate ;)
 	}
 
 	Button::~Button()
@@ -89,6 +89,17 @@ namespace Ideal {
 	
 	void Button::enterEvent( QEvent* )
 	{
+		if ( m_isSensible && !isChecked() && ! isDown())
+		{
+			m_isSensible = false;
+			
+			setChecked(true);
+			setDown(true);
+			emit click();
+			
+			QTimer::singleShot(300, this, SLOT(toggleSensibility()));
+		}
+		
 		m_animation->isEnter = true;
 		m_animation->count = 1;
 
@@ -105,7 +116,7 @@ namespace Ideal {
 		m_animation->timer->start();
 	}
 	
-	void Button::anime()
+	void Button::animate()
 	{
 		if ( m_animation->isEnter ) 
 		{
@@ -366,6 +377,11 @@ namespace Ideal {
 	void Button::enableText()
 	{
 		setText(m_realText);
+	}
+	
+	void Button::toggleSensibility()
+	{
+		m_isSensible = !m_isSensible;
 	}
 }
 

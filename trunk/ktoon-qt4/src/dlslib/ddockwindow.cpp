@@ -362,7 +362,7 @@ void DDockInternalWidget::addWidget(const QString &title, QWidget *widget)
     
 	if ( config.readEntry(SETTINGSPATH+"/"+m_name+"/ViewLastWidget") == title)
 	{
-		button->setOn(true);
+		button->setChecked(true);
 		selectWidget(button);
 	}
 #endif
@@ -373,9 +373,9 @@ void DDockInternalWidget::addWidget(const QString &title, QWidget *widget)
 void DDockInternalWidget::raiseWidget(QWidget *widget)
 {
 	Ideal::Button *button = m_buttons[widget];
-	if ((button != 0) && (!button->isOn()))
+	if ((button != 0) && (!button->isChecked()))
 	{
-		button->setOn(true);
+		button->setChecked(true);
 		selectWidget(button);
 	}
 }
@@ -402,6 +402,7 @@ void DDockInternalWidget::removeWidget(QWidget *widget)
     
 	if (changeVisibility)
 	{
+		delete m_toggledButton;
 		m_toggledButton = 0;
 		setExpanded(false);
 	}
@@ -409,6 +410,23 @@ void DDockInternalWidget::removeWidget(QWidget *widget)
 
 void DDockInternalWidget::selectWidget(Ideal::Button *button)
 {
+	if (m_toggledButton == button)
+	{
+		setExpanded(!m_visible);
+		return;
+	}
+
+	if (m_toggledButton)
+	{
+		m_toggledButton->setChecked(false);
+	}
+	
+	m_toggledButton = button;
+	setExpanded(true);
+
+	m_widgetStack->setCurrentWidget(m_widgets[button]);
+	m_widgets[button]->show();
+	
 	if ( m_visible )
 	{
 		QWidget *parent = qobject_cast<QWidget *>(m_widgets[button]->parentWidget());
@@ -420,26 +438,15 @@ void DDockInternalWidget::selectWidget(Ideal::Button *button)
 		m_widgets[button]->show();
 	}
 	
-	if (m_toggledButton == button)
-	{
-		setExpanded(!m_visible);
-		return;
-	}
-
-	if (m_toggledButton)
-	{
-		m_toggledButton->setOn(false);
-	}
-	m_toggledButton = button;
-	setExpanded(true);
-	
-	m_widgetStack->setCurrentWidget(m_widgets[button]);
-	m_widgets[button]->show();
 }
 
 void DDockInternalWidget::selectWidget()
 {
-	selectWidget((Ideal::Button*)sender());
+	Ideal::Button* bTmp = qobject_cast<Ideal::Button *>(sender());
+	if  (bTmp )
+	{
+		selectWidget(bTmp);
+	}
 }
 
 void DDockInternalWidget::hideWidget(QWidget *widget)
@@ -447,7 +454,7 @@ void DDockInternalWidget::hideWidget(QWidget *widget)
 	Ideal::Button *button = m_buttons[widget];
 	if (button != 0)
 	{
-		button->setOn(false);
+		button->setChecked(false);
 		button->hide();
 	}
 	widget->hide();

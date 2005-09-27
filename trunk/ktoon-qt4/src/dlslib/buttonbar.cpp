@@ -342,9 +342,19 @@ void ButtonBar::mousePressEvent(QMouseEvent *e)
 	if (e->button() == Qt::RightButton)
 	{
 		QMenu *menu = new QMenu(this);
-		menu->insertItem(tr("Only text"), this, SLOT(onlyText()));
-		menu->insertItem(tr("Only icons"), this, SLOT(onlyIcons()));
-		menu->insertItem(tr("Icons and text"), this, SLOT(textAndIcons()));
+		menu->addAction(tr("Only text"), this, SLOT(onlyText()));
+		menu->addAction(tr("Only icons"), this, SLOT(onlyIcons()));
+		menu->addAction(tr("Icons and text"), this, SLOT(textAndIcons()));
+		menu->addSeparator();
+		
+		Button *bTmp = qobject_cast<Button *>(childAt(e->pos()));
+		
+		if ( bTmp )
+		{
+			QAction *act = menu->addAction(tr("Mouse sensibility"), bTmp, SLOT(toggleSensibility()));
+			act->setCheckable(true);
+			act->setChecked(bTmp->isSensible());
+		}
 		
 		menu->exec(e->globalPos());
 	}

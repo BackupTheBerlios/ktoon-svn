@@ -82,6 +82,7 @@ class Button : public QPushButton {
 public:
     Button(ButtonBar *parent, const QString text, const QIcon &icon = QIcon(),
         const QString &description = QString::null);
+    virtual ~Button();
     
     /**Sets the description used as a tooltip.*/
     void setDescription(const QString &description);
@@ -103,9 +104,18 @@ public:
     
     /**Returns the real (i.e. not squeezed) text of a button.*/
     QString realText() const;
+    bool isSensible() const
+    {
+	    return m_isSensible;
+    }
     
 	protected slots:
-		virtual void anime();
+		virtual void animate();
+		void toggleSensibility();
+		
+	signals:
+		void selected();
+		void deselected();
     
 protected:
     ButtonMode mode();
@@ -115,7 +125,6 @@ protected:
     virtual void leaveEvent( QEvent* );
 
 private:
-    virtual ~Button();
     
     void fixDimensions(Place oldPlace);
     
@@ -131,6 +140,8 @@ private:
     
     QString m_realText;
     QIcon m_realIconSet;
+    
+    bool m_isSensible;
     
     Animation *m_animation;
     
