@@ -43,9 +43,6 @@
 KTMainWindow::KTMainWindow() : DMainWindow(0, "KToon-MainWindow")
 {
 	KTINIT;
-	
-	ktDebug() << "KTHOME" << KTCONFIG->read("KTHome") << endl;
-	ktDebug() << "OTRO: " << KTOON_HOME << endl;
 
 	setStatusBar( new KTStatusBar(this) );
 	
@@ -56,8 +53,8 @@ KTMainWindow::KTMainWindow() : DMainWindow(0, "KToon-MainWindow")
 	
 // 	m_workSpace->setBackground(QBrush(QPixmap(background_xpm))); 
 	
-	KTStatus->setupDrawingArea(m_workSpace);
-
+	newDocument();
+	
 	addWidget(m_workSpace, tr("Scene 1"));
 
 	setupBackground();
@@ -206,7 +203,7 @@ void KTMainWindow::setupFileActions()
 	m_actionManager->insert(properties);
 	
 	QAction *exit = new QAction(QPixmap(export_xpm), tr( "E&xit" ),  tr("Ctrl+Q"), this, "Exit");
-	connect(exit, SIGNAL(activated()), this, SLOT(close()));
+	connect(exit, SIGNAL(activated()), qApp, SLOT(closeAllWindows ()));
 	exit->setStatusTip(tr("Closes the application"));
 	m_actionManager->insert(exit);
 }
@@ -222,6 +219,10 @@ void KTMainWindow::setupDialogs()
 void KTMainWindow::closeEvent( QCloseEvent *event )
 {
 	DMainWindow::closeEvent(event);
+	
+	delete m_pBottomDock;
+	delete m_pLeftDock;
+	delete m_pRightDock;
 }
 
 void KTMainWindow::resizeEvent(QResizeEvent *event)
@@ -254,6 +255,7 @@ void KTMainWindow::newDocument()
 	
 	KTViewDocument *viewDocument = new KTViewDocument(m_workSpace);
 	m_workSpace->addWindow(viewDocument);
+	
 	static_cast<KTStatusBar*>(statusBar())->advance(4);
 	viewDocument->setActiveWindow();
 	static_cast<KTStatusBar*>(statusBar())->advance(7);

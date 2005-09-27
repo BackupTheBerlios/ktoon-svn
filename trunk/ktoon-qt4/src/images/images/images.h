@@ -292,10 +292,7 @@ extern const char *zoomout_xpm[];
  * The background image <img src="../../src/images/ima/background.xpm" width="320" height="240">
  */
 extern const char *background_xpm[];
-/**
- * The Splash Screen image <img src="../../src/images/ima/splash.xpm">
- */
-extern const char *splash_xpm[];
+
 /**
  * Button or menu item icon that represents the 12 Field Grid operation <img src="../../src/images/ico/grid12.xpm">
  */

@@ -110,7 +110,6 @@ class KTMainWindow : public DMainWindow
 		
 	private slots:
 		void newDocument();
-		void resize(); // TODO: delete me
 		
 	private:
 		QWorkspace *m_workSpace;

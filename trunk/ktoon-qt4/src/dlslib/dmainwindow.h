@@ -32,72 +32,72 @@
 
 class DTabWidget;
 namespace Ideal {
-    class DockSplitter;
+	class DockSplitter;
 }
 
 /**Main window which provides simplified IDEA mode.*/
-class DMainWindow: public MWCLASS {
-    Q_OBJECT
-public:
-    DMainWindow(QWidget *parent = 0, const char *name = 0);
-    virtual ~DMainWindow();
+class DMainWindow: public MWCLASS 
+{
+	Q_OBJECT
+	public:
+		DMainWindow(QWidget *parent = 0, const char *name = 0);
+		virtual ~DMainWindow();
     
-    /**@return The tool window in given @p position.*/
-    DDockWindow *toolWindow(DDockWindow::Position position) const;
+		/**@return The tool window in given @p position.*/
+		DDockWindow *toolWindow(DDockWindow::Position position) const;
     
     /**Adds a tabbed widget into the active (focused) tab widget. 
-    If @p widget is null then only tab is created.*/
-    virtual void addWidget(QWidget *widget, const QString &title);
-    virtual void addWidget(DTabWidget *tab, QWidget *widget, const QString &title);
-    /**Removes widget. Does not delete it.*/
-    virtual void removeWidget(QWidget *widget);
+		If @p widget is null then only tab is created.*/
+		virtual void addWidget(QWidget *widget, const QString &title);
+		virtual void addWidget(DTabWidget *tab, QWidget *widget, const QString &title);
+		/**Removes widget. Does not delete it.*/
+		virtual void removeWidget(QWidget *widget);
     
-public slots:
-    DTabWidget *splitHorizontal();
-    DTabWidget *splitVertical();
+	public slots:
+		DTabWidget *splitHorizontal();
+		DTabWidget *splitVertical();
     
-protected slots:
+	protected slots:
     /**This does nothing. Reimplement in subclass to close the tab 
-    when corner close button is pressed.*/
-    virtual void closeTab();
+		when corner close button is pressed.*/
+		virtual void closeTab();
     /**This does nothing. Reimplement in subclass to close the tab
-    when hover close button is pressed.*/
-    virtual void closeTab(QWidget*);
-    /**This does nothing. Reimplement in subclass to show tab context menu.*/
-    virtual void tabContext(QWidget*,const QPoint &);
+		when hover close button is pressed.*/
+		virtual void closeTab(QWidget*);
+		/**This does nothing. Reimplement in subclass to show tab context menu.*/
+		virtual void tabContext(QWidget*,const QPoint &);
 
-signals:
-    void widgetChanged(QWidget *);
+	signals:
+		void widgetChanged(QWidget *);
     
-protected:
-    bool eventFilter(QObject *obj, QEvent *ev);
-    
-    virtual void loadSettings();
+	protected:
+		bool eventFilter(QObject *obj, QEvent *ev);
+		virtual void loadSettings();
         
-    virtual void createToolWindows();
-    virtual DTabWidget *createTab();
+		virtual void createToolWindows();
+		virtual DTabWidget *createTab();
     
-protected:
-    DDockWindow *m_pLeftDock;
-    DDockWindow *m_pRightDock;
-    DDockWindow *m_pBottomDock;
+	protected:
+		DDockWindow *m_pLeftDock;
+		DDockWindow *m_pRightDock;
+		DDockWindow *m_pBottomDock;
 
-    Ideal::DockSplitter *m_pCentral;
-    DTabWidget *m_pActiveTabWidget;
+		Ideal::DockSplitter *m_pCentral;
+		DTabWidget *m_pActiveTabWidget;
     
-    QList<DTabWidget*> m_pTabs;
+		QList<DTabWidget*> m_pTabs;
     
-    bool m_pOpenTabAfterCurrent;
-    bool m_pShowIconsOnTabs;
-    bool m_pFirstRemoved;
+		bool m_pOpenTabAfterCurrent;
+		bool m_pShowIconsOnTabs;
+		bool m_pFirstRemoved;
     
-    QList<QWidget*> m_pWidgets;
-    QMap<QWidget*, DTabWidget*> m_pWidgetTabs;
-    QWidget *m_pCurrentWidget;
-    QList<QWidget *> m_separators;
+		QList<QWidget*> m_pWidgets;
+		QMap<QWidget*, DTabWidget*> m_pWidgetTabs;
+		QWidget *m_pCurrentWidget;
+		QList<QWidget *> m_separators;
 
-private slots:
-    void invalidateActiveTabWidget();
+	private slots:
+		void invalidateActiveTabWidget();
 
 };
 

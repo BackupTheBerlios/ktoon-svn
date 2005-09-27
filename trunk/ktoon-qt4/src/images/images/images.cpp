@@ -132,4 +132,4 @@
 #include "../icons/align_ch.xpm"
 
 #include "background.xpm"
-#include "splash.xpm"
+

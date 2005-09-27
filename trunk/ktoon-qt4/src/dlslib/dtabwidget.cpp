@@ -19,26 +19,7 @@
  ***************************************************************************/
  
 #ifndef USE_KDE
-static char * closeTab_xpm[] = {
-"16 16 2 1",
-" 	c None",
-".	c #B33838",
-"                ",
-"   ...     ...  ",
-"    ..     ..   ",
-"     ..   ..    ",
-"     ... ...    ",
-"      .. ..     ",
-"       ...      ",
-"       ...      ",
-"       ...      ",
-"      .....     ",
-"     ... ..     ",
-"     ..  ...    ",
-"    ..    ..    ",
-"   ...     ..   ",
-"  ...      ...  ",
-"                "};
+#include "close.xpm"
 #endif
 
 #include "dtabwidget.h"
@@ -67,7 +48,7 @@ DTabWidget::DTabWidget(QWidget *parent, const char *name)
     else {
         m_closeButton = new QToolButton(this);
 
-        m_closeButton->setIconSet(QIcon( (const char **) closeTab_xpm));
+        m_closeButton->setIconSet(QIcon( (const char **) close_xpm));
 
         m_closeButton->adjustSize();
         m_closeButton->hide();

@@ -21,6 +21,7 @@ KTStatusBar::KTStatusBar(QWidget *parent)
 	m_progressBar->setMaximum(10);
 	
 	m_status = new QLabel( "<b></b>",this );
+	m_status->setIndent(10);
 // 	m_status->setMaximumWidth(180);
 	
 	addPermanentWidget(m_status, 1);

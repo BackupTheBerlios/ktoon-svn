@@ -315,8 +315,10 @@ class Status : public QObject
 			 
 #ifndef NO_OPENGL
 		DrawingArea *currentDrawingArea();
+		void setDrawingArea(DrawingArea *);
 #else
 		DrawingAreaQt *currentDrawingArea();
+		void setDrawingArea(DrawingAreaQt *);
 #endif
 		
 		void setupDrawingArea(QWorkspace *ws);

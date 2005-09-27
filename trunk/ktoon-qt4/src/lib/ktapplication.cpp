@@ -205,7 +205,7 @@ QString KTApplication::getParam(const QString &arg)
 	return m_parseArgs[arg];
 }
 
-QString KTApplication::getHome()
+QString KTApplication::home()
 {
 	return m_KTOON_HOME;
 }
@@ -215,7 +215,7 @@ void KTApplication::setHome(const QString &home)
 	m_KTOON_HOME = home;
 }
 
-QString KTApplication::getRepository()
+QString KTApplication::repository()
 {
 	return m_KTOON_REPOSITORY;
 }
@@ -231,7 +231,7 @@ QString KTApplication::configDir()
 }
 
 
-QString KTApplication::getVersion()
+QString KTApplication::version()
 {
 	return m_VERSION;
 }

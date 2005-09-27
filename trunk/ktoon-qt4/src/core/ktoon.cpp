@@ -2164,7 +2164,7 @@ void KToon::slotLoadDocument( const QString &in_file_name )
 	if ( !f.open( QIODevice::ReadOnly ) )
 		return;
 
-	QDomDocument xml_doc( "KTProject"+ktapp->getVersion() );
+	QDomDocument xml_doc( "KTProject"/*+ktapp->version()*/ ); // FIXME: version compatibility
     
 	QString parseerror = "";
 	int errorLine = 0;

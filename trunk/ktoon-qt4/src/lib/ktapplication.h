@@ -41,11 +41,11 @@ class KTApplication : public QApplication
 		enum ColorScheme { Default = 0, DarkBlue };
 		KTApplication(int & argc, char ** argv);
 		~KTApplication();
-		QString getHome();
+		QString home();
 		void setHome(const QString &home);
-		QString getRepository();
+		QString repository();
 		void setRepository(const QString &repos);
-		QString getVersion();
+		QString version();
 
 		bool firstRun();
 		
@@ -76,8 +76,8 @@ class KTApplication : public QApplication
 };
 
 #define ktapp static_cast<KTApplication*>(qApp)
-#define KTOON_HOME (static_cast<KTApplication*>(qApp))->getHome()
+#define KTOON_HOME (static_cast<KTApplication*>(qApp))->home()
 
-#define KTOON_REPOSITORY (static_cast<KTApplication*>(qApp))->getRepository()
+#define KTOON_REPOSITORY (static_cast<KTApplication*>(qApp))->repository()
 
 #endif

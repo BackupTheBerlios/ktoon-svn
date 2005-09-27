@@ -49,7 +49,7 @@ KTFrameSequenceManager::KTFrameSequenceManager(QWidget *parent) : KTVHBox(parent
 	m_sequenceLayout->setWidget(m_vBox);
 	
 	m_ruler = new KTTLRuler(m_vBox);
-	m_ruler->setMargin(1);
+// 	m_ruler->layout()->setMargin(1);
 	m_ruler->setMinimumSize(100, m_ruler->height());
 	
 // 	setMaximumHeight( sizeHint().height() );

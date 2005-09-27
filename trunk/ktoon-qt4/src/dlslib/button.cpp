@@ -110,7 +110,7 @@ namespace Ideal {
 		if ( m_animation->isEnter ) 
 		{
 			m_animation->count += 1;
-			repaint( false );
+			update( );
 			if ( m_animation->count > m_animation->MAXCOUNT )
 			{
 				m_animation->timer->stop();
@@ -118,7 +118,7 @@ namespace Ideal {
 		} else 
 		{
 			m_animation->count -= 1;
-			repaint( false );
+			update( );
 			if ( m_animation->count < 1 )
 			{
 				m_animation->timer->stop();

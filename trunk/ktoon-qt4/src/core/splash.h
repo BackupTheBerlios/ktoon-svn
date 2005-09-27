@@ -53,6 +53,19 @@ class Splash : public QSplashScreen
 		* Destroys the Splash object.
 		*/
 		~Splash();
+			 
+		void setMessage(const QString &msg);
+		
+	private slots:
+		void animate();
+
+	private:
+		QString m_message, m_version;
+		int m_state;
+		int m_size;
+	
+	protected:
+		void drawContents ( QPainter * painter );
 };
 
 #endif

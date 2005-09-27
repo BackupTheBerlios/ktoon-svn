@@ -57,7 +57,7 @@ void KTCameraPreview::resizeEvent(QResizeEvent *e)
 #else
 	m_cameraPreview->resize(e->size().width(), e->size().height());
 #endif
-	Q3MainWindow::resizeEvent(e);
+	QMainWindow::resizeEvent(e);
 }
 
 void KTCameraPreview::grabImage(const QString &filename)

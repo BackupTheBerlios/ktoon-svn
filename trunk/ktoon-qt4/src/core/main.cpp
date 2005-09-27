@@ -68,21 +68,19 @@ int main( int argc, char ** argv )
 	format.setDepth( TRUE );
 	QGLFormat::setDefaultFormat( format );
 	
-// 	Splash *splash_screen = new Splash();
-// 	splash_screen -> show();
-// 	splash_screen -> message( QObject::tr( "Loading Modules" ) );
-// 	
-// 	KToon *main_window = new KToon();
-// 	
-// 	main_window -> setCaption( "KToon" );
-// 	application.setMainWidget( main_window );
-// 	main_window -> showMaximized();
-// 	
-// 	splash_screen -> finish( main_window );
-// 	delete splash_screen;
+	Splash *splash = new Splash();
+	splash->show();
+	splash->setMessage( QObject::tr( "Initializing..." ) );
 	
 	KTMainWindow *mainWindow = new KTMainWindow;
+	splash->setMessage( QObject::tr( "Loading Modules" ) );
+
 	mainWindow->show();
+
+	splash->setMessage( QObject::tr( "Loaded!" ) );
+	
+	splash->finish( mainWindow );
+	delete splash;
 	
 	QApplication::setActiveWindow(mainWindow);
 	

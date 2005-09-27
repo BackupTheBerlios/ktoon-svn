@@ -367,3 +367,24 @@ QColor Status::currentNTSCColor()
 {
     return current_ntsc_color;
 }
+
+#ifndef NO_OPENGL
+void Status::setDrawingArea(DrawingArea *area)
+{
+	m_currentDrawingArea = area;
+	
+	KTStatus -> setCurrentScene( (m_document-> getAnimation()->getScenes() ).first() );
+	KTStatus -> setCurrentLayer( ( KTStatus -> currentScene() -> getLayers() ).first() );
+	setCurrentKeyFrame( 0 );
+	Q3PtrList<KeyFrame> empty;
+	KTStatus -> setRenderKeyframes( empty );
+}
+#else
+
+void Status::setDrawingArea(DrawingAreaQt *area)
+{
+	m_currentDrawingArea = area;
+}
+
+#endif
+

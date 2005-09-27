@@ -68,7 +68,9 @@ DDockWindow::DDockWindow(QWidget *parent, Position position) : QDockWidget( pare
 	connect(this, SIGNAL(topLevelChanged ( bool)), this, SLOT(addFloatingOption(bool)));
 }
 
-DDockWindow::~DDockWindow() {}
+DDockWindow::~DDockWindow()
+{
+}
 
 void DDockWindow::addFloatingOption(bool opt)
 {
@@ -96,6 +98,12 @@ QSize DDockWindow::minimumSizeHint() const
 {
 	return QSize(1,1);
 	return m_centralWidget->minimumSizeHint();
+}
+
+void DDockWindow::closeEvent(QCloseEvent *e)
+{
+	delete m_centralWidget;
+	QDockWidget::closeEvent(e);
 }
 
 // DDockInternalWidget
@@ -189,7 +197,7 @@ DDockInternalWidget::DDockInternalWidget(QWidget *parent, DDockWindow::Position 
 	}
 
 	setExpanded(false);
-	//loadSettings(); // FIXME
+	loadSettings(); // FIXME
 
 // 	setBaseSize(m_bar->size());
 	show();	
@@ -199,6 +207,13 @@ DDockInternalWidget::~DDockInternalWidget()
 {
 	qDebug("[Destroying DDockInternalWidget]");
 	saveSettings();
+	
+	QListIterator<QWidget *> iterator( m_widgets.values() );
+	
+	while( iterator.hasNext() )
+	{
+		iterator.next()->close();
+	}
 }
 
 void DDockInternalWidget::setExpanded(bool v)
@@ -214,9 +229,19 @@ void DDockInternalWidget::setExpanded(bool v)
 	m_widgetStack->setVisible(v);
 	
 	m_internalLayout->invalidate();
+	
+	m_visible = v;
+	
+	// HACK: update dock separator
+	QMainWindow *window = dynamic_cast<QMainWindow*>(QApplication::activeWindow());
 
+	if ( window && !m_visible)
+	{
+		window->layout()->setGeometry( QRect() );
+		window->layout()->invalidate();
+	}
+	
 #if 0
-	m_internalLayout->invalidate();
 	if (!m_visible)
 	{
 		if (m_position == DDockWindow::Bottom)
@@ -234,30 +259,20 @@ void DDockInternalWidget::setExpanded(bool v)
 		int size = 0;
 		if (m_position == DDockWindow::Bottom)
 		{
-// 			size = config.readNumEntry(SETTINGSPATH+"/"+m_name+"/ViewWidth", m_internalLayout->sizeHint().height());
-			size = m_internalLayout->sizeHint().height();
+			size = config.readNumEntry(SETTINGSPATH+"/"+m_name+"/ViewWidth", m_internalLayout->sizeHint().height());
+// 			size = m_internalLayout->sizeHint().height();
 
 			parentWidget()->setFixedHeight(size);
 		}
 		else
 		{
-// 			size = config.readNumEntry(SETTINGSPATH+"/"+m_name+"/ViewWidth", m_internalLayout->sizeHint().width());
-			size = m_internalLayout->sizeHint().width();
+			size = config.readNumEntry(SETTINGSPATH+"/"+m_name+"/ViewWidth", m_internalLayout->sizeHint().width());
+// 			size = m_internalLayout->sizeHint().width();
 			parentWidget()->setFixedWidth(size);
 		}
 	}
+	
 #endif
-	
-	m_visible = v;
-	
-	// HACK: update dock separator
-	QMainWindow *window = dynamic_cast<QMainWindow*>(QApplication::activeWindow());
-
-	if ( window && !m_visible)
-	{
-		window->layout()->setGeometry( QRect() );
-		window->layout()->invalidate();
-	}
 }
 
 void DDockInternalWidget::loadSettings()
@@ -341,7 +356,7 @@ void DDockInternalWidget::addWidget(const QString &title, QWidget *widget)
     //if the widget was selected last time the dock is deleted 
     //we need to show it
     
-#if 0
+#if 1
 	QSettings config;
 	config.setPath("NewMDI", qApp->name(), QSettings::User );
     
@@ -396,19 +411,13 @@ void DDockInternalWidget::selectWidget(Ideal::Button *button)
 {
 	if ( m_visible )
 	{
-		QWidget *dialog = qobject_cast<QDialog *>(m_widgets[button]->parentWidget());
-		
-		if ( dialog == 0 )
+		QWidget *parent = qobject_cast<QWidget *>(m_widgets[button]->parentWidget());
+		if ( parent == 0 )
 		{
 			m_widgets[button]->setParent(m_widgetStack, Qt::Widget);
-			
-			m_widgets[button]->show();
 			m_widgetStack->addWidget(m_widgets[button]);
 		}
-		else
-		{
-			// FIXME: Fails with QScrollArea
-		}
+		m_widgets[button]->show();
 	}
 	
 	if (m_toggledButton == button)

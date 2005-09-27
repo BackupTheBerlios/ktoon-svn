@@ -38,7 +38,7 @@ class KTRulerBase;
  * @author Jorge Cuadrado
 */
 
-class KTRulerBase : public Q3Frame
+class KTRulerBase : public QFrame
 {
 	Q_OBJECT
 	

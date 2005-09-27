@@ -127,7 +127,7 @@ void Document::save( QFile *f )
 {
 	ktDebug() << "Saving in KTOON_REPOSITORY= " << KTOON_REPOSITORY << endl;
 	Q_CHECK_PTR( f );
-	xml_doc = QDomDocument( "KTProject"+ktapp->getVersion() );
+	xml_doc = QDomDocument( "KTProject"/*+ktapp->version()*/ ); // FIXME: Version compatibility
 
 	QDomElement root = xml_doc.createElement( "Document" );
 	xml_doc.appendChild( root );

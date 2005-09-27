@@ -55,8 +55,8 @@ class KTViewDocument : public KTMdiWindow
 		void createTools();
 
 	private slots:
-		void showPos(QPoint p);	
-		void setCursor(QCursor c);
+		void showPos(const QPoint &p);	
+		void setCursor(const QCursor &c);
 		void changeTool(QAction *a);
 	
 	protected:

@@ -29,6 +29,8 @@
 #include <QGridLayout>
 #include <QActionGroup>
 
+// TODO: DELETE THIS
+#include "status.h"
 
 
 KTViewDocument::KTViewDocument(QWidget *parent ) : KTMdiWindow(parent)
@@ -42,7 +44,7 @@ KTViewDocument::KTViewDocument(QWidget *parent ) : KTMdiWindow(parent)
 	grid->addWidget (m_HRuler,0,1);
 	grid->addWidget (m_VRuler,1,0);
 	m_drawArea  = new DrawingArea(m_container);
-
+	KTStatus->setDrawingArea(m_drawArea);
 
 	QObject::connect( m_drawArea, SIGNAL(mousePos(QPoint)),  m_HRuler,  SLOT(movePointers(QPoint)) );
 	QObject::connect( m_drawArea, SIGNAL(mousePos(QPoint)),  m_VRuler,  SLOT(movePointers(QPoint)) );
@@ -63,7 +65,7 @@ KTViewDocument::~KTViewDocument()
 	
 }
 
-void KTViewDocument::showPos(QPoint p)
+void KTViewDocument::showPos(const QPoint &p)
 {
 	QString messages =  "x: " +  QString::number(p.x()) +  " y: " + QString::number(p.y());
 	statusBar()->message ( messages ) ;
@@ -350,7 +352,7 @@ void KTViewDocument::createTools()
 	m_toolbar->addAction(m_toolsView->menuAction());
 	m_toolbar->addAction(m_toolsOrder->menuAction());
 	m_toolbar->addAction(m_toolsAlign->menuAction());
-	m_toolbar->addAction(m_toolsTransform->menuAction());
+// 	m_toolbar->addAction(m_toolsTransform->menuAction());
 }
 
 void KTViewDocument::changeTool( QAction *a)
@@ -425,7 +427,7 @@ void KTViewDocument::close()
 	m_drawArea->close();
 }
 
-void KTViewDocument::setCursor(QCursor c)
+void KTViewDocument::setCursor(const QCursor &c)
 {
 	m_drawArea->setCursor(c);
 }

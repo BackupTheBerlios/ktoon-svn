@@ -25,14 +25,15 @@
 #include <qpixmap.h>
 //Added by qt3to4:
 #include <QMouseEvent>
-#include <Q3Frame>
+#include <QFrame>
 #include <QResizeEvent>
 #include <Q3PopupMenu>
 #include <QPaintEvent>
 
 KTRulerBase::KTRulerBase(Orientation orientation, QWidget *parent, const char *name)
-	: Q3Frame(parent, name), m_position(0), m_orientation(orientation),m_pArrow(3), m_drawPointer(false), m_separation(100)
+	: QFrame(parent), m_position(0), m_orientation(orientation),m_pArrow(3), m_drawPointer(false), m_separation(100)
 {
+	setObjectName(name);
 // 	m_pScale.setOptimization( QPixmap::BestOptim );
 	m_pScale.resize( width(),height());
 	m_pScale.fill(paletteBackgroundColor ());
