@@ -27,6 +27,4 @@ namespace Ideal {
 
 }
 
-#define SETTINGSPATH "/"+QString(qApp->name())
-
 #endif

@@ -132,7 +132,7 @@ void KTSqueezeLabel::setAlignment( int alignment )
 
 QSize KTSqueezeLabel::sizeHint() const
 {
-	return QSize(/*contentsRect().*/width(), QLabel::sizeHint().height());
+	return QSize(contentsRect().width(), QLabel::sizeHint().height());
 }
 
 QSize KTSqueezeLabel::minimumSizeHint() const

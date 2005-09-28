@@ -34,6 +34,7 @@
 #include "ktviewdocument.h"
 
 #include "ktexposuresheet.h"
+#include "ktoonscript.h"
 #include "properties.h"
 #include "preferences.h"
 #include "scenes.h"

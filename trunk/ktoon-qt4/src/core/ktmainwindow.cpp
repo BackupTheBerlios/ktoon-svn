@@ -155,8 +155,8 @@ void KTMainWindow::createGUI()
 	m_timeLine->setIcon(QPixmap(KTOON_HOME+"/images/icons/time_line.xpm"));
 	toolWindow(DDockWindow::Bottom)->addWidget(tr("Time Line"),m_timeLine);
 	
-	QTextEdit *m_scriptEditor = new QTextEdit("Soon...", this);
-	m_scriptEditor->setIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.xpm") );
+	KToonScript *m_scriptEditor = new KToonScript(this);
+// 	m_scriptEditor->setIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.xpm") );
 	toolWindow(DDockWindow::Bottom)->addWidget(tr("KToonScript"), m_scriptEditor);
 }
 
@@ -219,7 +219,6 @@ void KTMainWindow::setupDialogs()
 void KTMainWindow::closeEvent( QCloseEvent *event )
 {
 	DMainWindow::closeEvent(event);
-	
 	delete m_pBottomDock;
 	delete m_pLeftDock;
 	delete m_pRightDock;

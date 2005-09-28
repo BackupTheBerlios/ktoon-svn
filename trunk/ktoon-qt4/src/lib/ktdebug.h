@@ -44,8 +44,8 @@
 
 #include <qstring.h>
 //Added by qt3to4:
-#include <Q3CString>
-#include <Q3ValueList>
+#include <QByteArray>
+#include <QList>
 
 class QWidget;
 class QDateTime;
@@ -60,7 +60,7 @@ class QColor;
 class QPen;
 class QBrush;
 class QVariant;
-template <class T> class Q3ValueList;
+template <class T> class QList;
 
 class kdbgstream;
 class kndbgstream;
@@ -265,10 +265,10 @@ class kdbgstream {
      * @param string the string to print
      * @return this stream
      */
-    kdbgstream &operator<<(const Q3CString& string) {
-        *this << string.data();
-        return *this;
-    }
+//     kdbgstream &operator<<(const QByteArray& string) {
+//         *this << string.data();
+//         return *this;
+//     }
     /**
      * Prints the given value.
      * @param p a pointer to print (in number form)
@@ -409,7 +409,7 @@ class kdbgstream {
      * @return this stream
      * @since 3.3
      */
-    kdbgstream& operator << ( const QByteArray& data );
+//     kdbgstream& operator << ( const QByteArray& data );
 
     /**
      * Prints the given value
@@ -418,7 +418,7 @@ class kdbgstream {
      * @since 3.3
      */
     template <class T>
-    kdbgstream& operator << ( const Q3ValueList<T> &list );
+    kdbgstream& operator << ( const QList<T> &list );
 
  private:
     QString output;
@@ -428,10 +428,10 @@ class kdbgstream {
 };
 
 template <class T>
-kdbgstream &kdbgstream::operator<<( const Q3ValueList<T> &list )
+kdbgstream &kdbgstream::operator<<( const QList<T> &list )
 {
     *this << "(";
-    typename Q3ValueList<T>::ConstIterator it = list.begin();
+    typename QList<T>::ConstIterator it = list.begin();
     if ( !list.isEmpty() ) {
       *this << *it++;
     }
@@ -519,7 +519,7 @@ class kndbgstream {
      * Does nothing.
      * @return this stream
      */
-    kndbgstream &operator<<(const Q3CString& ) { return *this; }
+//     kndbgstream &operator<<(const QByteArray& ) { return *this; }
     /**
      * Does nothing.
      * @return this stream
@@ -589,10 +589,10 @@ class kndbgstream {
     kndbgstream& operator<<( const QPen & ) { return *this; }
     kndbgstream& operator<<( const QBrush & ) { return *this; }
     kndbgstream& operator<<( const QVariant & ) { return *this; }
-    kndbgstream& operator<<( const QByteArray & ) { return *this; }
+//     kndbgstream& operator<<( const QByteArray & ) { return *this; }
 
     template <class T>
-    kndbgstream& operator<<( const Q3ValueList<T> & ) { return *this; }
+    kndbgstream& operator<<( const QList<T> & ) { return *this; }
 };
 
 /**
@@ -676,7 +676,7 @@ void kdClearDebugConfig();
 
 /** @} */
 
-#define KTINIT ktDebug() << "[Initializing "<< className() <<"]" << endl;
-#define KTEND ktDebug() << "[Destroying "<< className() <<"]" << endl;
+#define KTINIT ktDebug() << "[Initializing "<< metaObject()->className() <<"]" << endl;
+#define KTEND ktDebug() << "[Destroying "<< metaObject()->className() <<"]" << endl;
 
 #endif

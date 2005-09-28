@@ -48,14 +48,17 @@ DMainWindow::DMainWindow(QWidget *parent, const char *name)
     m_pActiveTabWidget = createTab();
     m_pCentral->addDock(0, 0, m_pActiveTabWidget);
     setCentralWidget(m_pCentral);
+    
+    m_pCentral->setMaximumSize(maximumSize());
 }
 
 void DMainWindow::loadSettings()
 {
     QSettings config;
-    config.setPath("NewMDI", qApp->name(), QSettings::User );
-    m_pOpenTabAfterCurrent = config.readBoolEntry(SETTINGSPATH+"/UI/OpenNewTabAfterCurrent", true);
-    m_pShowIconsOnTabs = config.readBoolEntry(SETTINGSPATH+"/UI/ShowTabIcons", false);
+    config.beginGroup("DLSLib");
+//     config.setPath("NewMDI", qApp->name(), QSettings::User );
+    m_pOpenTabAfterCurrent = config.value("OpenNewTabAfterCurrent", true).toBool();
+    m_pShowIconsOnTabs = config.value("ShowTabIcons", false).toBool();
 }
 
 DMainWindow::~DMainWindow()

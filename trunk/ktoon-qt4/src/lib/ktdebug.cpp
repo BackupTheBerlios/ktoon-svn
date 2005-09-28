@@ -59,7 +59,7 @@
 #include <qsize.h>
 #include <qvariant.h>
 //Added by qt3to4:
-#include <Q3CString>
+#include <QByteArray>
 #include <Q3MemArray>
 
 #include <stdlib.h>	// abort
@@ -79,9 +79,9 @@ class KTDebugEntry;
 class KTDebugEntry
 {
 	public:
-		KTDebugEntry (int n, const Q3CString& d) {number=n; descr=d;}
+		KTDebugEntry (int n, const QByteArray& d) {number=n; descr=d;}
 		unsigned int number;
-		Q3CString descr;
+		QByteArray descr;
 };
 
 enum DebugLevels {
@@ -455,21 +455,21 @@ kdbgstream& kdbgstream::operator<<( const QVariant& v) {
 	return *this;
 }
 
-kdbgstream& kdbgstream::operator<<( const QByteArray& data) {
-	if (!print) return *this;
-	output += '[';
-	unsigned int i = 0;
-	unsigned int sz = QMIN( data.size(), 64 );
-	for ( ; i < sz ; ++i ) {
-		output += QString::number( data[i], 16 ).rightJustify(2, '0');
-		if ( i < sz )
-			output += ' ';
-	}
-	if ( sz < data.size() )
-		output += "...";
-	output += ']';
-	return *this;
-}
+// kdbgstream& kdbgstream::operator<<( const QByteArray& data) {
+// 	if (!print) return *this;
+// 	output += '[';
+// 	unsigned int i = 0;
+// 	unsigned int sz = QMIN( data.size(), 64 );
+// 	for ( ; i < sz ; ++i ) {
+// 		output += QString::number( data[i], 16 ).rightJustify(2, '0');
+// 		if ( i < sz )
+// 			output += ' ';
+// 	}
+// 	if ( sz < data.size() )
+// 		output += "...";
+// 	output += ']';
+// 	return *this;
+// }
 
 QString kdBacktrace(int levels)
 {

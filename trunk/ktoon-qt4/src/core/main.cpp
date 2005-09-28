@@ -40,7 +40,7 @@
 void usage();
 
 int main( int argc, char ** argv )
-{
+{	
 	KTApplication application( argc, argv );
 	
 	if ( application.isArg("help") || application.isArg("h") )
@@ -50,7 +50,24 @@ int main( int argc, char ** argv )
 		return 0;
 	}
 	
-// 	application.initDirectories();
+	KTCONFIG->init();
+
+	if ( ! KTCONFIG->isOk() || application.isArg("r") || application.isArg("reconfigure") )
+	{
+		qDebug("RECONFIGURING");
+		if ( ! application.firstRun() && ! (application.isArg("r") || application.isArg("reconfigure")) )
+		{
+			QMessageBox::critical(0, QObject::tr("Missing..."), QObject::tr("You need configure the application"));
+		}
+	}
+	
+	application.setHome(KTCONFIG->read("KTHome"));
+	application.setRepository(KTCONFIG->read("Repository"));
+	QString themefile = KTCONFIG->read("KTTheme");
+	if ( ! themefile.isEmpty() )
+	{
+		application.applyTheme(themefile);
+	}
 	
 	QTranslator *qttranslator = new QTranslator( 0 );
 	
@@ -103,20 +120,36 @@ int main( int argc, char ** argv )
 	{
 		ktDebug() << "-> OpenGL not detected" << endl;
 	}
+	QApplication::setEffectEnabled ( Qt::UI_AnimateMenu, true);
+	QApplication::setEffectEnabled ( Qt::UI_AnimateCombo, true);
+	QApplication::setEffectEnabled ( Qt::UI_FadeMenu, true);
+	QApplication::setEffectEnabled ( Qt::UI_FadeTooltip, true);
 	
 	return application.exec();
 }
 
 void usage()
 {
-// 	std::cout << ktapp->name() << " " << ktapp->getVersion() << std::endl;
-// 	std::cout << std::endl;
+#if defined(Q_WS_X11)
+	puts("\033[1;33m"+ktapp->objectName() + ktapp->version());
+	puts(QObject::tr("2D Animation tool kit")+"\033[0;0m" );
+
+	puts("\033[1;34m"+QObject::tr("Usage: %1 [option]").arg(ktapp->argv()[0])+"\033[0;0m");
 	
-// 	std::cout << QObject::tr("Usage: %1 [option]").arg(ktapp->argv()[0]) << std::endl;
-// 	 
-// 	std::cout << std::endl;
-// 	std::cout << QObject::tr("Options: ") << std::endl;
-// 	
-// 	std::cout << "-r, --reconfigure" << std::endl;
-// 	std::cout << QObject::tr("\t\tReconfigure %1").arg(ktapp->name()) << std::endl; 
+	puts("\033[1;31m"+QObject::tr("Options: "));
+	
+	puts("-r, --reconfigure");
+	puts(QObject::tr("\t\tReconfigure %1").arg(ktapp->name()));
+	
+	puts("\033[0;0m");
+#else
+	puts(ktapp->objectName() + ktapp->version());
+
+	puts(QObject::tr("Usage: %1 [option]").arg(ktapp->argv()[0]));
+	
+	puts(QObject::tr("Options: "));
+	
+	puts("-r, --reconfigure");
+	puts(QObject::tr("\t\tReconfigure %1").arg(ktapp->name())); 
+#endif
 }

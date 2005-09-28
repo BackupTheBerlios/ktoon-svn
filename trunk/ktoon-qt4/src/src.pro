@@ -5,7 +5,7 @@
 
 SUBDIRS += images \
            lib \
-	   dlslib \
+           dlslib \
            timeline \
            library \
            store \
@@ -13,6 +13,7 @@ SUBDIRS += images \
            qt \
            dialogs \
            exposure \
+           ktoonscript \
            core
 CONFIG += release \
 warn_on

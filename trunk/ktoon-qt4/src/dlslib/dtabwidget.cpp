@@ -67,11 +67,11 @@ DTabWidget::DTabWidget(QWidget *parent, const char *name)
 void DTabWidget::loadSettings()
 {
     QSettings config;
-    config.setPath("NewMDI", qApp->name(), QSettings::User );
+    config.beginGroup("DLSLib");
     
-    m_tabBarShown = !config.readNumEntry(SETTINGSPATH+"/UI/TabWidgetVisibility", 0);
-    m_closeOnHover = config.readBoolEntry(SETTINGSPATH+"/UI/CloseOnHover", false);
-    m_closeButtonShown = config.readBoolEntry(SETTINGSPATH+"/UI/ShowCloseTabsButton", true);
+    m_tabBarShown = !config.value("TabWidgetVisibility", 0).toBool();
+    m_closeOnHover = config.value("CloseOnHover", false).toBool();
+    m_closeButtonShown = config.value("ShowCloseTabsButton", true).toBool();
 
 }
 

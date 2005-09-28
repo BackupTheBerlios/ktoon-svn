@@ -30,10 +30,13 @@
 #include "ktdebug.h"
 
 KTApplication::KTApplication(int & argc, char ** argv)
-	: QApplication(argc, argv, true), m_VERSION("0.8alpha")
+	: QApplication(argc, argv/*, true*/), m_VERSION("0.8alpha")
 {
 	KTINIT;
 	parseArgs(argc, argv);
+	
+	setApplicationName("KToon");
+	setOrganizationName ("toonka.com");
 	
 #ifdef Q_WS_X11
 	setStyle("plastik");
@@ -43,27 +46,8 @@ KTApplication::KTApplication(int & argc, char ** argv)
 #elif defined(Q_WS_MAC)
 	m_configDir = QDir::homeDirPath()+"/.ktoon";
 #endif
-
+	
  	applyColors(Default);
-	
-	KTCONFIG->init();
-
-	if ( ! KTCONFIG->isOk() || isArg("r") || isArg("reconfigure") )
-	{
-		qDebug("RECONFIGURING");
-		if ( ! firstRun() && ! (isArg("r") || isArg("reconfigure")) )
-		{
-			QMessageBox::critical(0, QObject::tr("Missing..."), QObject::tr("You need configure the application"));
-		}
-	}
-	
-	m_KTOON_HOME = KTCONFIG->read("KTHome");
-	m_KTOON_REPOSITORY = KTCONFIG->read("Repository");
-	QString themefile = KTCONFIG->read("KTTheme");
-	if ( ! themefile.isEmpty() )
-	{
-		applyTheme(themefile);
-	}
 }
 
 
@@ -238,12 +222,13 @@ QString KTApplication::version()
 
 bool KTApplication::firstRun()
 {
-	ConfigWizard firstDialog;
+	ConfigWizard *firstDialog = new ConfigWizard;
+	QApplication::setActiveWindow(firstDialog);
 
-	if ( firstDialog.exec() != QDialog::Rejected )
+	if ( firstDialog->exec() != QDialog::Rejected )
 	{
-		m_KTOON_HOME = firstDialog.getHome();
-		m_KTOON_REPOSITORY = firstDialog.getRepos();
+		m_KTOON_HOME = firstDialog->getHome();
+		m_KTOON_REPOSITORY = firstDialog->getRepos();
 		
 		initDirectories();
 		
@@ -253,8 +238,12 @@ bool KTApplication::firstRun()
 		KTCONFIG->sync();
 		KTCONFIG->init();
 		
+		delete firstDialog;
+		
 		return true;
 	}
+	
+	delete firstDialog;
 	
 	return false;
 }

@@ -3,6 +3,9 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/core
 # Destiono es una aplicaci??n: ../../bin/ktoon
 
+INSTALLS += ktbin \
+            kttrans \
+            ktdata 
 ktdata.files += credits.txt \
                 ../../COPYING \
                 ../../Changelog 
@@ -24,7 +27,8 @@ TARGETDEPS += ../../src/dialogs/libdialogs.a \
               ../../src/lib/liblib.a \
               ../../src/images/images/libimages.a \
               ../../src/exposure/libexposure.a \
-              ../../src/dlslib/libdlslib.a 
+              ../../src/dlslib/libdlslib.a \
+              ../../src/ktoonscript/libktoonscript.a 
 LIBS += ../../src/dialogs/libdialogs.a \
         ../../src/images/images/libimages.a \
         ../../src/opengl/draw/libdraw.a \
@@ -38,8 +42,10 @@ LIBS += ../../src/dialogs/libdialogs.a \
         ../../src/timeline/libtimeline.a \
         ../../src/exposure/libexposure.a \
         ../../src/lib/liblib.a \
-        ../../src/dlslib/libdlslib.a 
-INCLUDEPATH += ../../src/exposure \
+        ../../src/dlslib/libdlslib.a \
+        ../../src/ktoonscript/libktoonscript.a 
+INCLUDEPATH += ../../src/ktoonscript \
+               ../../src/exposure \
                ../../src/dialogs \
                ../../src/qt/cameras \
                ../../src/qt/tools \
@@ -84,9 +90,4 @@ SOURCES += ktoon.cpp \
            ktmainwindow.cpp \
            ktactionmanager.cpp \
            ktstatusbar.cpp 
-
-INSTALLS += ktbin \
-            kttrans \
-            ktdata 
-#The following line was inserted by qt3to4
-QT +=  xml opengl qt3support 
+QT += xml gui opengl qt3support 

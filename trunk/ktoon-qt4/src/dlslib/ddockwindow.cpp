@@ -151,8 +151,8 @@ DDockInternalWidget::DDockInternalWidget(QWidget *parent, DDockWindow::Position 
 	m_internalLayout->setSpacing(0);
 	
 	QSettings config;
-// 	config.setPath("NewMDI", qApp->objectName());
-	int mode = config.readNumEntry( SETTINGSPATH+"/UI/MDIStyle", 3 );
+	config.beginGroup("DLSLib-"+objectName());
+	int mode = config.value( "MDIStyle", 3 ).toInt();
 
 	Ideal::ButtonMode buttonMode = Ideal::Text;
 	if (mode == 0)
@@ -219,11 +219,11 @@ DDockInternalWidget::~DDockInternalWidget()
 void DDockInternalWidget::setExpanded(bool v)
 {
 	QSettings config;
-	config.setPath("NewMDI", qApp->name(), QSettings::User );
+	config.beginGroup("DLSLib-"+objectName());
 	
 	if (m_visible)
 	{
-		config.writeEntry( SETTINGSPATH+"/"+m_name+"/ViewWidth", m_position == DDockWindow::Bottom ? height() : width() );
+		config.setValue( "ViewWidth", m_position == DDockWindow::Bottom ? height() : width() );
 	}
 	
 	m_widgetStack->setVisible(v);
@@ -232,7 +232,7 @@ void DDockInternalWidget::setExpanded(bool v)
 	
 	m_visible = v;
 	
-	// HACK: update dock separator
+	// HACK: update dock separator, this hack causes 'flickr'
 	QMainWindow *window = dynamic_cast<QMainWindow*>(QApplication::activeWindow());
 
 	if ( window && !m_visible)
@@ -246,11 +246,13 @@ void DDockInternalWidget::setExpanded(bool v)
 	{
 		if (m_position == DDockWindow::Bottom)
 		{
-			parentWidget()->setFixedHeight(m_internalLayout->sizeHint().height());
+			// height
+			parentWidget()->resize(-1,m_internalLayout->sizeHint().height());
 		}
 		else
 		{
-			parentWidget()->setFixedWidth(m_internalLayout->sizeHint().width());
+			// width
+			parentWidget()->resize(m_internalLayout->sizeHint().width(),-1);
 		}
 	}
 	else
@@ -259,16 +261,17 @@ void DDockInternalWidget::setExpanded(bool v)
 		int size = 0;
 		if (m_position == DDockWindow::Bottom)
 		{
-			size = config.readNumEntry(SETTINGSPATH+"/"+m_name+"/ViewWidth", m_internalLayout->sizeHint().height());
-// 			size = m_internalLayout->sizeHint().height();
+			size = config.value("ViewWidth", m_internalLayout->sizeHint().height()).toInt();
 
-			parentWidget()->setFixedHeight(size);
+			resize(-1,size);
+			parentWidget()->resize(-1,size);
 		}
 		else
 		{
-			size = config.readNumEntry(SETTINGSPATH+"/"+m_name+"/ViewWidth", m_internalLayout->sizeHint().width());
-// 			size = m_internalLayout->sizeHint().width();
-			parentWidget()->setFixedWidth(size);
+			size = config.value("ViewWidth", m_internalLayout->sizeHint().width()).toInt();
+
+			resize(size,-1);
+			parentWidget()->resize(size,-1);
 		}
 	}
 	
@@ -282,22 +285,21 @@ void DDockInternalWidget::loadSettings()
 void DDockInternalWidget::saveSettings()
 {
 	QSettings config;
-	config.setPath("NewMDI", qApp->name(), QSettings::User );
+	config.beginGroup("DLSLib-"+objectName());
     
 	int invisibleWidth = 0;
    
-	invisibleWidth = config.readNumEntry(SETTINGSPATH+"/"+m_name+"/ViewWidth");
-    
-	config.removeEntry(SETTINGSPATH+"/"+m_name+"/ViewWidth");
-	config.removeEntry(SETTINGSPATH+"/"+m_name+"/ViewLastWidget");
+	invisibleWidth = config.value("ViewWidth").toInt();
+	
 	if (m_toggledButton && m_visible)
 	{
-		config.writeEntry(SETTINGSPATH+"/"+m_name+"/ViewWidth", m_position == DDockWindow::Bottom ? height() : width());
-		config.writeEntry(SETTINGSPATH+"/"+m_name+"/ViewLastWidget", m_toggledButton->realText());
+		config.setValue("ViewWidth", m_position == DDockWindow::Bottom ? height() : width());
+		config.setValue("ViewLastWidget", m_toggledButton->realText());
 	}
 	else if (invisibleWidth != 0)
 	{
-		config.writeEntry(SETTINGSPATH+"/"+m_name+"/ViewWidth", invisibleWidth);
+		config.setValue("ViewWidth", invisibleWidth);
+		config.remove("ViewLastWidget");
 	}
 }
 
@@ -358,9 +360,9 @@ void DDockInternalWidget::addWidget(const QString &title, QWidget *widget)
     
 #if 1
 	QSettings config;
-	config.setPath("NewMDI", qApp->name(), QSettings::User );
+	config.beginGroup("DLSLib-"+objectName());
     
-	if ( config.readEntry(SETTINGSPATH+"/"+m_name+"/ViewLastWidget") == title)
+	if ( config.value("ViewLastWidget").toString() == title)
 	{
 		button->setChecked(true);
 		selectWidget(button);

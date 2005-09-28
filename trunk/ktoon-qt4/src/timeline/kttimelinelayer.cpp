@@ -34,6 +34,10 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, QWidget *par
 {
 // 	setMinimumSize( 192, 24 );
 	setFrameStyle( QFrame::Panel | QFrame::Raised );
+	layout()->setAlignment(Qt::AlignLeft);
+	layout()->setSpacing(25);
+// 	layout()->setMargin(0);
+	
 	setLineWidth( 2 );
 	
 	m_position = position;
@@ -45,21 +49,30 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, QWidget *par
 	QLabel *staticLayerImage = new QLabel( this );
 	staticLayerImage -> setPixmap( QPixmap( KTOON_HOME+"/images/icons/layer_pic.xpm" ) );
 	staticLayerImage->resize( 20, 20 );
+	layout()->setAlignment(staticLayerImage, Qt::AlignLeft);
 
 	m_layerName = new KTELabel( name, this );
+	layout()->setAlignment(m_layerName, Qt::AlignLeft);
 	connect(m_layerName, SIGNAL(renamed(const QString &)), this, SIGNAL(renamed(const QString &)));
+
 	m_layerName->setMargin(1);
-	m_layerName->resize( 50, 20 );
+	m_layerName->resize( 70, 20 );
 	m_layerName->setFont( QFont( font().family(), 9 ) );
 	
-	m_editionImage = new QLabel( this );
 // 	m_editionImage -> setMinimumSize( 19, 19 );
 // 	m_editionImage -> setMaximumSize( 19, 19 );
 	
 	m_utils = new KTVHBox(this, false);
+	layout()->setAlignment(m_utils, Qt::AlignRight);
 	m_utils->layout()->setAlignment(Qt::AlignRight );
 	
-	m_utils->setSpacing(5);
+	m_editionImage = new QLabel( m_utils );
+	
+	QPalette pal = palette();
+	pal.setColor(QPalette::Background, Qt::red);
+	m_layerName->setPalette(pal);
+	
+	m_utils->layout()->setSpacing(6);
 	
 	m_visibilityImage = new QLabel( m_utils );
 	m_visibilityImage -> setPixmap( QPixmap( KTOON_HOME+"/images/icons/enable.xpm" ) );
