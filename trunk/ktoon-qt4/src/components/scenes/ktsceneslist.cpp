@@ -16,6 +16,7 @@ KTScenesList::KTScenesList(QWidget *parent)
  : QTreeWidget(parent)
 {
 	setHeaderLabels ( QStringList() << "name" );
+	hide();
 }
 
 

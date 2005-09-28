@@ -53,6 +53,8 @@ class DMainWindow: public MWCLASS
 		virtual void addWidget(DTabWidget *tab, QWidget *widget, const QString &title);
 		/**Removes widget. Does not delete it.*/
 		virtual void removeWidget(QWidget *widget);
+		QWidget *findCorrectSeparator();
+		void addDockWidget(Qt::DockWidgetArea area, DDockWindow * dockwidget );
     
 	public slots:
 		DTabWidget *splitHorizontal();

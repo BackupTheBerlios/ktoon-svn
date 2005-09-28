@@ -56,8 +56,9 @@ class DDockWindow : public QDockWidget
 		virtual ~DDockWindow();
 		void addWidget(const QString &title, QWidget *widget);
 		
-		QSize sizeHint() const;
-		QSize minimumSizeHint() const;
+// 		QSize sizeHint() const;
+// 		QSize minimumSizeHint() const;
+		DDockInternalWidget *centralWidget();
 		
 	private slots:
 		void addFloatingOption(bool);
@@ -90,6 +91,8 @@ class DDockInternalWidget : public QWidget {
 		virtual QWidget *currentWidget() const;
     
 		DDockWindow::Position position() const { return m_position; }
+		
+		void setSeparator(QWidget *separator);
     
 	signals:
 		void fixedExtentHeight(int);
@@ -98,16 +101,24 @@ class DDockInternalWidget : public QWidget {
 	private slots:
 		void selectWidget();
 		void selectWidget(Ideal::Button *button);
+		void dialoged(int );
 
+	private:
+		void shrink();
+		
 	protected:
 		virtual void loadSettings();
 		virtual void saveSettings();
+		
+	protected:
     
 		Ideal::ButtonBar *m_bar;
 		QStackedWidget *m_widgetStack;
     
 		QMap<Ideal::Button*, QWidget*> m_widgets;
 		QMap<QWidget*, Ideal::Button*> m_buttons;
+		
+		QWidget * m_separator;
 
 	private:
 		DDockWindow::Position m_position;

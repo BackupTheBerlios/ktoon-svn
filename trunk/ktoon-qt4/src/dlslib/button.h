@@ -72,10 +72,10 @@ class Animation
 };
 
 /**
-@short A button to place onto the ButtonBar
-
-A QPushButton derivative with a size of a QToolBar. Button can be rotated 
+ * @short A button to place onto the ButtonBar
+ * A QPushButton derivative with a size of a QToolBar. Button can be rotated 
 (placed onto different places in ideal mode).
+ * @TODO: remember mouse sensibility
 */
 class Button : public QPushButton {
     Q_OBJECT

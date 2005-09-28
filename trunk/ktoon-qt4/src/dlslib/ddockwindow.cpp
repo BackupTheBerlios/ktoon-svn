@@ -46,7 +46,7 @@ DDockWindow::DDockWindow(QWidget *parent, Position position) : QDockWidget( pare
 {
 	setFeatures(QDockWidget::NoDockWidgetFeatures);
 	
-	layout()->setSizeConstraint( QLayout::SetMinimumSize );
+// 	layout()->setSizeConstraint( QLayout::SetMinimumSize );
 	m_centralWidget = new DDockInternalWidget(this, position);
 
 	setWidget(m_centralWidget);
@@ -88,17 +88,16 @@ void DDockWindow::addWidget(const QString &title, QWidget *widget)
 {
 	m_centralWidget->addWidget(title, widget);
 }
+// 
+// QSize DDockWindow::sizeHint() const
+// {
+// 	return m_centralWidget->layout()->sizeHint();
+// }
 
-QSize DDockWindow::sizeHint() const
-{
-	return m_centralWidget->layout()->sizeHint();
-}
-
-QSize DDockWindow::minimumSizeHint() const
-{
-	return QSize(1,1);
-	return m_centralWidget->minimumSizeHint();
-}
+// QSize DDockWindow::minimumSizeHint() const
+// {
+// 	return m_centralWidget->minimumSizeHint();
+// }
 
 void DDockWindow::closeEvent(QCloseEvent *e)
 {
@@ -106,9 +105,14 @@ void DDockWindow::closeEvent(QCloseEvent *e)
 	QDockWidget::closeEvent(e);
 }
 
+DDockInternalWidget *DDockWindow::centralWidget()
+{
+	return m_centralWidget;
+}
+
 // DDockInternalWidget
 
-DDockInternalWidget::DDockInternalWidget(QWidget *parent, DDockWindow::Position position) : QWidget(parent), m_position(position), m_visible(false), m_toggledButton(0)
+DDockInternalWidget::DDockInternalWidget(QWidget *parent, DDockWindow::Position position) : QWidget(parent), m_position(position), m_visible(false), m_toggledButton(0), m_separator(0)
 {
 	qDebug("[Initializing DDockInternalWidget]");
 	
@@ -169,6 +173,7 @@ DDockInternalWidget::DDockInternalWidget(QWidget *parent, DDockWindow::Position 
     
 	m_widgetStack = new QStackedWidget(this);
 	m_internalLayout->addWidget(m_widgetStack);
+	connect(m_widgetStack, SIGNAL(widgetRemoved (int)), this, SLOT(dialoged(int )));
 	
 // 	QPalette pal2 = QApplication::palette();
 // 	pal2.setColor(QPalette::Background, Qt::magenta);
@@ -233,12 +238,19 @@ void DDockInternalWidget::setExpanded(bool v)
 	m_visible = v;
 	
 	// HACK: update dock separator, this hack causes 'flickr'
-	QMainWindow *window = dynamic_cast<QMainWindow*>(QApplication::activeWindow());
-
-	if ( window && !m_visible)
+// 	QMainWindow *window = dynamic_cast<QMainWindow*>(QApplication::activeWindow());
+// 
+// 	if ( window && !m_visible)
+// 	{
+// 		window->layout()->setGeometry( QRect() );
+// 		window->layout()->invalidate();
+// 	}
+	
+	if ( ! v)
 	{
-		window->layout()->setGeometry( QRect() );
-		window->layout()->invalidate();
+		for (int i = 0; i < 2; ++i)
+			qApp->processEvents();
+		shrink();
 	}
 	
 #if 0
@@ -357,8 +369,7 @@ void DDockInternalWidget::addWidget(const QString &title, QWidget *widget)
     
     //if the widget was selected last time the dock is deleted 
     //we need to show it
-    
-#if 1
+
 	QSettings config;
 	config.beginGroup("DLSLib-"+objectName());
     
@@ -367,7 +378,6 @@ void DDockInternalWidget::addWidget(const QString &title, QWidget *widget)
 		button->setChecked(true);
 		selectWidget(button);
 	}
-#endif
 
 	widget->show();
 }
@@ -412,6 +422,18 @@ void DDockInternalWidget::removeWidget(QWidget *widget)
 
 void DDockInternalWidget::selectWidget(Ideal::Button *button)
 {
+	if ( m_visible )
+	{
+		QWidget *parent = qobject_cast<QWidget *>(m_widgets[button]->parentWidget());
+		if ( parent == 0 )
+		{
+			m_widgets[button]->setParent(m_widgetStack, Qt::Widget);
+			m_widgetStack->addWidget(m_widgets[button]);
+			m_widgetStack->setCurrentWidget(m_widgets[button]);
+		}
+		m_widgets[button]->show();
+	}
+	
 	if (m_toggledButton == button)
 	{
 		setExpanded(!m_visible);
@@ -428,17 +450,6 @@ void DDockInternalWidget::selectWidget(Ideal::Button *button)
 
 	m_widgetStack->setCurrentWidget(m_widgets[button]);
 	m_widgets[button]->show();
-	
-	if ( m_visible )
-	{
-		QWidget *parent = qobject_cast<QWidget *>(m_widgets[button]->parentWidget());
-		if ( parent == 0 )
-		{
-			m_widgets[button]->setParent(m_widgetStack, Qt::Widget);
-			m_widgetStack->addWidget(m_widgets[button]);
-		}
-		m_widgets[button]->show();
-	}
 	
 }
 
@@ -474,5 +485,87 @@ void DDockInternalWidget::showWidget(QWidget *widget)
 		button->show();
 	}
 	widget->show();
+}
+
+
+void DDockInternalWidget::shrink()
+{
+	if ( ! m_separator )
+	{
+		return;
+	}
+	
+	bool hmt = m_separator->hasMouseTracking();
+	
+	m_separator->setMouseTracking(true);
+	QMouseEvent press(QEvent::MouseButtonPress,
+			  QPoint(m_separator->x(), m_separator->y()),
+			  Qt::LeftButton, 0, 0);
+	QApplication::sendEvent(m_separator, &press);
+	
+	int df = 0;
+	int x1 = 0, x2= 0, y1= 0, y2= 0, xRelease= 0, yRelease= 0;
+	
+	if ( m_position == DDockWindow::Bottom )
+	{
+		df = m_widgetStack->height();
+		x1 = press.pos().x();
+		y1 = press.pos().y() + df;
+		
+		x2 = press.globalPos().x();
+		y2 = press.globalPos().y() + df;
+		
+		xRelease = m_separator->x();
+		yRelease = 10;
+	}
+	else if ( m_position == DDockWindow::Left )
+	{
+		df = m_widgetStack->width();
+		x1 = press.pos().x() - df;
+		y1 = press.pos().y();
+		
+		x2 = press.globalPos().x() - df;
+		y2 = press.globalPos().y();
+		
+		xRelease = 10;
+		yRelease = m_separator->y();
+	}
+	else if (m_position == DDockWindow::Right )
+	{
+		df = m_widgetStack->width();
+		x1 = press.pos().x() + df;
+		y1 = press.pos().y();
+		
+		x2 = press.globalPos().x() + df;
+		y2 = press.globalPos().y();
+		
+		xRelease = QApplication::activeWindow()->width();
+		yRelease = m_separator->y();
+	}
+	
+	QMouseEvent move(QEvent::MouseMove,
+			 QPoint(x1, y1),
+			 QPoint(x2, y2),
+			 Qt::LeftButton, 0, 0);
+	QApplication::sendEvent(m_separator, &move);
+
+	QMouseEvent release(QEvent::MouseButtonRelease,
+			    QPoint(xRelease, yRelease),
+			    Qt::LeftButton, 0, 0);
+	QApplication::sendEvent(m_separator, &release);
+	
+	m_separator->setMouseTracking(hmt);
+}
+
+void DDockInternalWidget::setSeparator(QWidget *separator)
+{
+	Q_CHECK_PTR(separator);
+	m_separator = separator;
+}
+
+void DDockInternalWidget::dialoged(int index)
+{
+	qDebug("Removed %d", index);
+	setExpanded(false);
 }
 

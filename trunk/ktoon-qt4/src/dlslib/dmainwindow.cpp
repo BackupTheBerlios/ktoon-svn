@@ -78,18 +78,43 @@ DDockWindow *DMainWindow::toolWindow(DDockWindow::Position position) const
     return 0;
 }
 
+QWidget *DMainWindow::findCorrectSeparator()
+{
+	QList<QWidget*> widgets = findChildren<QWidget*>();
+	QList<QWidget*>::ConstIterator it = widgets.begin();
+	
+	while (it != widgets.end())
+	{
+		if ((*it)->metaObject()->className() == QString("QDockSeparator"))
+		{
+			m_separators << (*it);
+		}
+		++it;
+	}
+	
+	return m_separators[m_separators.count()-1];
+}
+
 void DMainWindow::createToolWindows()
 {
     m_pBottomDock = new DDockWindow(this, DDockWindow::Bottom);
     addDockWidget( Qt::BottomDockWidgetArea, m_pBottomDock );
-
+    
     m_pLeftDock = new DDockWindow(this, DDockWindow::Left);
     addDockWidget( Qt::LeftDockWidgetArea, m_pLeftDock );
-
+    
     m_pRightDock = new DDockWindow(this, DDockWindow::Right);
     addDockWidget( Qt::RightDockWidgetArea, m_pRightDock );
+}
 
-
+void DMainWindow::addDockWidget(Qt::DockWidgetArea area, DDockWindow * dockwidget )
+{
+	QMainWindow::addDockWidget(area, dockwidget );
+	QWidget *separator = findCorrectSeparator();
+	if (separator)
+	{
+		dockwidget->centralWidget()->setSeparator( separator );
+	}
 }
 
 void DMainWindow::addWidget(QWidget *widget, const QString &title)
