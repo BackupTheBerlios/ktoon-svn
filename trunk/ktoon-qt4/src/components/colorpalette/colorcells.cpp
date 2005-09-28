@@ -20,7 +20,6 @@
 
 #include "colorcells.h"
 #include <qsizepolicy.h> 
-//Added by qt3to4:
 #include <QMouseEvent>
 //-------------- CONSTRUCTOR -----------------
 
@@ -28,7 +27,7 @@ ColorCells::ColorCells( QWidget *parent ) : Q3GridView( parent )
 {
     Q_CHECK_PTR( parent );
     
-    parent_widget = parent;
+//     parent_widget = parent;
     setCellWidth( 9 );
     setCellHeight( 9 );
     setNumRows( 12 );

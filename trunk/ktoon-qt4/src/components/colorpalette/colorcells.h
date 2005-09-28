@@ -58,7 +58,7 @@ public:
     ~ColorCells();
 
 private:
-    QWidget *parent_widget;
+//     QWidget *parent_widget;
     QColor cell_border_color;
     QColor color_matrix[12][19];
 

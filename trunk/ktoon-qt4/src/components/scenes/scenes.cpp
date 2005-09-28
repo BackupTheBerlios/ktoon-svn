@@ -29,11 +29,10 @@
 #include <QLabel>
 
 #include "scenes.h"
-// #include "images.h"
-// #include "ktoon.h"
 #include "scene.h"
 #include "ktapplication.h"
 #include "ktdebug.h"
+#include "ktimagebutton.h"
 #include "status.h"
 
 //--------------- CONSTRUCTOR --------------------
@@ -51,7 +50,6 @@ Scenes::Scenes( QWidget *parent)
     scene_max_value = 1;
     number_of_scenes = 1;
     
-//     k_toon = ( KToon * )parent;
 
     //Icon Initializations
     m_imgs <<	QPixmap(KTOON_HOME+"/images/icons/plussign.xpm" ) <<
@@ -59,7 +57,7 @@ Scenes::Scenes( QWidget *parent)
 		QPixmap(KTOON_HOME+"/images/icons/arrowup.xpm" ) <<
 		QPixmap(KTOON_HOME+"/images/icons/arrowdown.xpm" );
     setupButtons();
-    setupTableScens();
+    setupTableScenes();
     adjustSize();
 }
 
@@ -68,10 +66,6 @@ Scenes::Scenes( QWidget *parent)
 Scenes::~Scenes()
 {
 	KTEND;
-//     delete insert_scene; 
-//     delete remove_scene;
-//     delete move_scene_up;
-//     delete move_scene_down;
 	m_imgs.clear();
 	delete table_scenes;
 	delete text_name;
@@ -81,26 +75,26 @@ Scenes::~Scenes()
 void Scenes::setupButtons()
 {
 	//------------- Operations on the Buttons -----------------
-	buttonsPanel = new Q3ButtonGroup(this);
-	QHBoxLayout *layout = new QHBoxLayout(buttonsPanel);
-	layout->setAutoAdd(true);
-	connect(buttonsPanel, SIGNAL(clicked(int )), this, SLOT(applyAction(int)));
+	m_buttonsPanel = new QGroupBox(this);
+	m_buttonGroup = new QButtonGroup(m_buttonsPanel);
+	connect(m_buttonGroup, SIGNAL(buttonClicked ( QAbstractButton *)), this, SLOT(actionButton( QAbstractButton *)));
+	
+	QHBoxLayout *layout = new QHBoxLayout(m_buttonsPanel);
+	layout->setMargin(0);
+	connect(m_buttonsPanel, SIGNAL(clicked(int )), this, SLOT(applyAction(int)));
 	QStringList toolTips;
 	toolTips << tr("Insert Scene") << tr("Remove Scene") << tr("Move Scene Up") << tr("Move Scene Down");
 	
 	for(int i = 0; i < toolTips.count(); i++)
 	{
 		QPushButton *tmpButton;
-		tmpButton = new QPushButton(m_imgs[i], QString::null, buttonsPanel);
-		tmpButton-> setAutoDefault( false );
-		tmpButton-> setFlat( true );
-		tmpButton-> setFocusPolicy( Qt::NoFocus );
-		tmpButton->adjustSize();
-		tmpButton->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
+		tmpButton = new KTImageButton(m_imgs[i], 22, m_buttonsPanel);
+		layout->addWidget(tmpButton);
+		m_buttonGroup->addButton(tmpButton);
 		QToolTip::add( tmpButton, toolTips[i]  );
 	}
-	buttonsPanel->setMaximumHeight( buttonsPanel->sizeHint().height());
-	addChild(buttonsPanel);
+	m_buttonsPanel->setMaximumHeight( m_buttonsPanel->sizeHint().height());
+	addChild(m_buttonsPanel);
 }
 
 void Scenes::applyAction(int action)
@@ -110,16 +104,17 @@ void Scenes::applyAction(int action)
 		case InsertScene:
 		{
 			ktDebug() << "Scenes::applyAction(int InsertScene) init" << endl;
+			
 			QString scene_number;
 			scene_max_value++;
+
 			scene_number.setNum( scene_max_value );
+			m_tableScenes->addScenes(tr( "Scene" ) + scene_number);
 			number_of_scenes++;
 			Q3CheckListItem *new_scene = new Q3CheckListItem( table_scenes, table_scenes -> lastItem(), tr( "Scene" ) + scene_number, Q3CheckListItem::CheckBox );
 			new_scene -> setOn( true );
 			
 			Scene *n_scene = new Scene();
-
-			
 			n_scene -> setNameScene( tr( "Scene" ) + scene_number );
 			Q3PtrList<Scene> sc = KTStatus->currentDocument() -> getAnimation() -> getScenes();
 			sc.append( n_scene );
@@ -214,9 +209,14 @@ void Scenes::applyAction(int action)
 	}
 }
 
-void Scenes::setupTableScens()
+void Scenes::setupTableScenes()
 {
 	//------------ Operations on the scene table -------------
+	
+	m_tableScenes = new KTScenesList(this);
+	m_tableScenes->addScenes(tr( "Scene" ) + QString( "1" ));
+	addChild( m_tableScenes);
+	
 	containerTableScens = new Q3VBox(this);
 	table_scenes = new Q3ListView( containerTableScens, "", Qt::WStyle_NoBorder );
 	table_scenes->setSelectionMode( Q3ListView::Single );
@@ -411,4 +411,9 @@ void Scenes::slotMoveSceneUp()
 void Scenes::slotMoveSceneDown()
 {
 	applyAction(MoveSceneDown);
+}
+
+void Scenes::actionButton( QAbstractButton *b)
+{
+	applyAction(m_buttonGroup->buttons().indexOf(b));
 }

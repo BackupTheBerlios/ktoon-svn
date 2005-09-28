@@ -1966,7 +1966,7 @@ void KToon::slotNewDocument()
 		m_timeLine = new KTTimeLine( this );
 		m_timeLine->hide();
 		
-		brushes_dialog = new Brushes( this, Qt::WStyle_Tool );
+		brushes_dialog = new Brushes( this);
 	
 		library_dialog = new Library( this, KTStatus->currentDrawingArea());
 	
@@ -3844,7 +3844,7 @@ void KToon::createGUI()
 	color_palette_dialog -> loadCustomColors( custom_colors );
 	
 	QList<Brush*> brushes = KTStatus->currentDocument()->getBrushes();
-	brushes_dialog = new Brushes( this, Qt::WStyle_Tool);
+	brushes_dialog = new Brushes( this);
 	brushes_dialog -> loadBrushes( brushes );
 	
 	Q3PtrList<Scene> scenes = KTStatus->currentDocument()->getAnimation() -> getScenes();

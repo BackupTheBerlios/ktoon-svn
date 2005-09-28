@@ -20,27 +20,23 @@
 #ifndef KTEDITSPINBOX_H
 #define KTEDITSPINBOX_H
 
-#include <q3hbox.h>
-#include <q3vbox.h>
-#include <qspinbox.h>
-#include <qslider.h> 
-#include <qlabel.h>
+#include <QGroupBox>
+#include <QSpinBox>
+#include <QSlider>
 
 /**
  * @author Jorge Cuadrado
 */
-class KTEditSpinBox : public Q3VBox
+class KTEditSpinBox : public QGroupBox
 {
 	Q_OBJECT
 	public:
-		KTEditSpinBox(QString text,QWidget *parent = 0, const char *name = 0);
 		KTEditSpinBox(int value, int valueMin, int valueMax, int step, QString text, QWidget *parent = 0, const char *name = 0);
 		~KTEditSpinBox();
 		void setRange(int min, int max);
 		int value();
 		
 	private:
-		QLabel *m_label;
 		QSlider *m_slider;
 		QSpinBox *m_spin;
 		void setupConnects();

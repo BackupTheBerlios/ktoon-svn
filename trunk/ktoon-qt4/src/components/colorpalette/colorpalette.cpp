@@ -36,35 +36,21 @@
 
 //--------------- CONSTRUCTOR --------------------
 
-ColorPalette::ColorPalette( QWidget *parent)//, WFlags style, QPopupMenu *in_assigned_menu, int id_assigned_item, QToolButton *assig_tb_button )
+ColorPalette::ColorPalette( QWidget *parent)
 	: KTModuleWidgetBase(parent, tr( "Color Palette" ))
 {
 	Q_CHECK_PTR( parent );
-// 	Q_CHECK_PTR( in_assigned_menu );
-// 	Q_CHECK_PTR( assig_tb_button );
 
-// 	setHorizontallyStretchable(true);
-			
 	//Initializations
 	
 	setCaption( tr( "Color Palette" ) );
-	//     setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-// 	resize( 185, 640 );
-// 	setMinimumSize( 185, 640 );
-// 	setMaximumSize( 185, 640 );
-	move( 200, 35 );
-	//     setFont( QFont( "helvetica", 8 ) );
-// 	assigned_menu = in_assigned_menu;
-// 	assigned_item = id_assigned_item;
-// 	assigned_tb_button = assig_tb_button;
 	new_outline_color = NULL;
 	new_fill_color = NULL;
 	
 	//Icon initializations
-	i_add_color = QPixmap( KTOON_HOME+"/images/icons/plussign,xpm" );
+	i_add_color = QPixmap( KTOON_HOME+"/images/icons/plussign.xpm" );
 	i_remove_color = QPixmap( KTOON_HOME+"/images/icons/minussign.xpm" );
 
-// 	setOrientation (Qt::Vertical );
 	setupBlockStandardPalette();
     
 	setupBlockColorMixer();
@@ -135,8 +121,8 @@ void ColorPalette::setupBlockStandardPalette()
 	
 	color_cells = new ColorCells( blockStandardPalette );
 	addChild(blockStandardPalette);
-	color_cells->setVScrollBarMode(Q3ScrollView::AlwaysOff);
-	color_cells->setHScrollBarMode(Q3ScrollView::AlwaysOff);
+// 	color_cells->setVScrollBarMode(Q3ScrollView::AlwaysOff);
+// 	color_cells->setHScrollBarMode(Q3ScrollView::AlwaysOff);
 }
 
 void ColorPalette::setupBlockColorMixer()

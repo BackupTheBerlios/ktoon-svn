@@ -18,29 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "kteditspinbox.h"
-//Added by qt3to4:
-#include <QLabel>
+#include <QHBoxLayout>
 
-KTEditSpinBox::KTEditSpinBox(QString text, QWidget *parent, const char *name ) :Q3VBox(parent, name)
-{
-	
-	m_label = new QLabel(text, this);
-	Q3HBox *hbox = new Q3HBox(this);
-	hbox->setSpacing ( 10 );
-	m_spin = new QSpinBox(hbox);
-	m_slider = new QSlider(hbox);
-	
-	setupConnects();
-}
 
-KTEditSpinBox::KTEditSpinBox( int value, int minValue, int maxValue, int step, QString text, QWidget *parent, const char *name) :Q3VBox(parent, name)
+
+KTEditSpinBox::KTEditSpinBox( int value, int minValue, int maxValue, int step, QString text, QWidget *parent, const char *name) :QGroupBox(parent)
 {
-	m_label = new QLabel(text, this);
-	Q3HBox *hbox = new Q3HBox(this);
-	m_spin = new QSpinBox(minValue, maxValue, step, hbox);
+	setObjectName(name);
+	QHBoxLayout *layout = new QHBoxLayout;
+	layout->setMargin(2);
+	layout->setSpacing(0);
+	setTitle(text);
+	setLayout(layout);
+	m_spin = new QSpinBox(minValue, maxValue, step, this);
 	m_spin->setValue(value);
-	m_slider = new QSlider ( minValue,  maxValue, step, value, Qt::Horizontal  ,hbox);
+	layout->addWidget(m_spin);
+	m_slider = new QSlider ( minValue,  maxValue, step, value, Qt::Horizontal  ,this);
+	
+	layout->addWidget(m_slider );
 	setupConnects();
+	setMinimumHeight(sizeHint().height());
 }
 
 KTEditSpinBox::~KTEditSpinBox()

@@ -26,7 +26,9 @@
  *   Include this file if you need the class Scenes
  */
 
-#include <qdialog.h>
+#include <QGroupBox>
+
+
 #include <qpushbutton.h>
 #include <q3popupmenu.h>
 #include <q3listview.h>
@@ -36,12 +38,14 @@
 #include <q3vbox.h>
 #include <q3hbox.h>
 #include <q3buttongroup.h>
-//Added by qt3to4:
+
+
 #include <QPixmap>
 #include <QList>
 #include <Q3ValueList>
 #include <Q3PtrList>
 #include "layer.h"
+#include "ktsceneslist.h"
 
 #include "ktmodulewidgetbase.h"
 
@@ -108,15 +112,14 @@ Q_OBJECT
 		int scene_max_value;
 		int number_of_scenes;
 		QString current_name;
-// 		KToon *k_toon;
 
-		Q3ValueList<QPixmap> m_imgs;
-		Q3ButtonGroup *buttonsPanel;
-
+		QList<QPixmap> m_imgs;
+		QGroupBox *m_buttonsPanel;
+		QButtonGroup *m_buttonGroup;
 		Q3VBox *containerTableScens;
     //Table that shows the available scenes
 		Q3ListView *table_scenes;
-
+		KTScenesList *m_tableScenes;
     //Static Text
 		QLabel *text_name;
 
@@ -125,7 +128,10 @@ Q_OBJECT
 
 	private:
 		void setupButtons();
-		void setupTableScens();
+		void setupTableScenes();
+		
+	private slots:
+		void actionButton(QAbstractButton *);
 		
 	signals:
 		/**

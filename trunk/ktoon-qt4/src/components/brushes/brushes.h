@@ -32,21 +32,16 @@
 #include <QLabel>
 #include <QPixmap>
 
-#include <q3listview.h>
-// #include <qtoolbutton.h>
-// #include <q3vbox.h>
-// #include <q3hbox.h>
+// #include <q3listview.h>
 #include <QGroupBox>
-
-//Added by qt3to4:
 #include <QList>
 #include "ktmodulewidgetbase.h"
 
 #include "kteditspinbox.h"
 
 #include "ktdisplaybrush.h"
+#include "ktbrusheslist.h"
 #include <QTableWidget>
-
 class Brush;
 
 /**
@@ -77,12 +72,8 @@ class Brushes : public KTModuleWidgetBase
 	*
 	* Constructs a Brushes dialog box.
 	* @param parent The parent widget
-	* @param style Flags passed to the QDialog constructor
-	* @param in_assigned_menu The assigned menu bar popup menu
-	* @param id_assigned_item The assigned menu item from the assigned menu
-	* @param assig_tb_button The assigned tool bar button
 	*/
-	Brushes( QWidget *parent=0, Qt::WFlags style=0);
+	Brushes( QWidget *parent=0);
 	/**
 	* @brief Default Destructor
 	*
@@ -99,8 +90,8 @@ class Brushes : public KTModuleWidgetBase
 	
 	private:
 		//General Purpose Variables
-		int brush_max_value;
-		int number_of_brushes;
+		int m_brushMaxValue;
+		int m_numberOfBrushes;
 		QString current_name;
 		
 		//Icons
@@ -111,10 +102,8 @@ class Brushes : public KTModuleWidgetBase
 		QPushButton *m_addBrush, *m_removeBrush;
 		
 		//Table that shows the available brushes with their attributes
-		void setupTableBruches();
-		QTableWidget *m_tableBrushes;
-		Q3ListView *table_brushes;
-		Q3ListViewItem *default_brush;
+		void setupTableBrushes();
+		KTBrushesList *m_tableBrushes;
 		
 		void setupStaticText();
 		//Static Text name
@@ -143,6 +132,8 @@ class Brushes : public KTModuleWidgetBase
 	*/
 	void smoothnessChanged();
 	
+	void changedBrush(int index);
+	
 	public slots:
 	/**
 	* @brief Adds a new default Brush
@@ -150,20 +141,20 @@ class Brushes : public KTModuleWidgetBase
 	* The default brush has a minimum thickness of 2, a maximum thickness of 5, and a smoothness of 2.
 	* @sa slotRemoveBrush(), slotSelectBrush()
 	*/
-	void slotAddBrush();
+	void addBrush();
 	/**
 	* @brief Removes the selected Brush
 	*
 	* @sa slotAddBrush(), slotSelectBrush()
 	*/
-	void slotRemoveBrush();
+	void removeBrush();
 	/**
 	* @brief Performs a selection on the clicked Brush
 	*
 	* This slot displays all the properties values of the selected brush into the dialog box.
 	* @sa slotAddBrush(), slotRemoveBrush()
 	*/
-	void slotSelectBrush();
+	 void selectBrush(int min, int max, int smooth, QString name);
 	/**
 	* @brief Changes the minimimum thickness textfield value
 	*
@@ -171,7 +162,7 @@ class Brushes : public KTModuleWidgetBase
 	* It also modifies the current brush minimum thickness.
 	* @sa slotChangeValueMaxThickness(), slotChangeValueSmoothness()
 	*/
-	void slotChangeValueMinThickness(int value);
+	void changeValueMinThickness(int value);
 	/**
 	* @brief Changes the maximimum thickness textfield value
 	*
@@ -179,7 +170,7 @@ class Brushes : public KTModuleWidgetBase
 	* It also modifies the current brush maximum thickness.
 	* @sa slotChangeValueMinThickness(), slotChangeValueSmoothness()
 	*/
-	void slotChangeValueMaxThickness(int value);
+	void changeValueMaxThickness(int value);
 	/**
 	* @brief Changes the smoothness textfield value
 	*
@@ -187,25 +178,13 @@ class Brushes : public KTModuleWidgetBase
 	* It also modifies the current brush maximum smoothness.
 	* @sa slotChangeValueMinThickness(), slotChangeValueMaxThickness()
 	*/
-	void slotChangeValueSmoothness();
+	void changeValueSmoothness();
 	/**
 	* @brief Changes the current brush name
 	*
 	* The value is modified after the user presses enter or clicks outside the corresponding textfield.
 	*/
-	void slotChangeValueName();
-
-	
-	protected:
-	/**
-	* @brief Event for dialog box closing control
-	*
-	* It updates some main window features as the assigned menu item from the assigned menu.
-	* Reimplemented from QWidget.
-	* @param close_event The input event
-	*/
-// 	void closeEvent( QCloseEvent *close_event );
-		 
+	void changeValueName();
 };
 
 #endif

@@ -108,10 +108,6 @@ class ColorPalette : public KTModuleWidgetBase
 	
 	private:
 	//General Purpose Variables
-// 	QWidget *parent_widget;
-// 	QPopupMenu *assigned_menu;
-// 	int assigned_item;
-// 	QToolButton *assigned_tb_button;
 	KTColor *new_outline_color;
 	KTColor *new_fill_color;
 	void setupBlockStandardPalette();
