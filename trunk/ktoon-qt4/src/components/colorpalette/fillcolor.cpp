@@ -19,11 +19,12 @@
  ***************************************************************************/
 
 #include "fillcolor.h"
-#include "images.h"
+// #include "images.h"
 
 //Added by qt3to4:
 #include <QPixmap>
 #include <QMouseEvent>
+#include "ktapplication.h"
 
 //--------------- CONSTRUCTOR --------------------
 
@@ -33,7 +34,7 @@ FillColor::FillColor( QWidget *parent ) : QFrame( parent )
 
     resize( 47, 30 );
     parent_widget = parent;
-    icon = QPixmap( fillcolor_xpm );
+    icon = QPixmap( KTOON_HOME+"/images/icons/fillcolor.xpm" );
     setFrameStyle( QFrame::Panel | QFrame::Raised );
     active = false;
     current_color = QColor( 255, 255, 255 );

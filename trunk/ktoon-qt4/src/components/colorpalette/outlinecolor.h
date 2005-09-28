@@ -38,7 +38,7 @@
  * <b>Date of Creation: July 6 - 2004.</b>\n
  * This is a widget that shows the current outline color.
  */
-class OutlineColor : public Q3Frame
+class OutlineColor : public QFrame
 {
     Q_OBJECT
 

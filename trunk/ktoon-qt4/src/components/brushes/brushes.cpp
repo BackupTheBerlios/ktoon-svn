@@ -31,7 +31,7 @@
 #include <QLabel>
 
 #include "brushes.h"
-#include "images.h"
+// #include "images.h"
 #include "ktapplication.h"
 #include "status.h"
 
@@ -56,8 +56,8 @@ Brushes::Brushes( QWidget *parent, Qt::WFlags style/*, QPopupMenu *in_assigned_m
 	number_of_brushes = 1;
 
     //Icon Initializations
-	i_add_brush = QPixmap( plussign_xpm );
-	i_remove_brush = QPixmap( minussign_xpm );
+	i_add_brush = QPixmap( KTOON_HOME+"/images/icons/plussign.xpm" );
+	i_remove_brush = QPixmap( KTOON_HOME+"/images/icons/minussign.xpm" );
 	
 	setupButtons();
 	setupTableBruches();

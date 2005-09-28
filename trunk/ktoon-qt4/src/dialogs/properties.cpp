@@ -24,7 +24,8 @@
 #include <QLabel>
 
 #include "properties.h"
-#include "ktoon.h"
+#include "status.h"
+// #include "ktoon.h"
 
 /**
  * @todo:
@@ -41,7 +42,7 @@ Properties::Properties( QWidget *parent ) : QDialog( parent, "Animation Properti
     setCaption( tr( "Animation Properties" ) );
 
     parent_widget = parent;
-    k_toon = ( KToon * )parent_widget;
+//     k_toon = ( KToon * )parent_widget;
     c_background = KTStatus -> currentBackgroundColor();
     c_grid = KTStatus -> currentGridColor();
     c_ntsc = KTStatus -> currentNTSCColor();
@@ -236,7 +237,7 @@ void Properties::slotAccept()
     KTStatus -> setCurrentCameraWidth( new_cw );
     KTStatus -> setCurrentCameraHeight( new_ch );
     
-    k_toon -> renderCameraPreview() -> updateGL();
+//     k_toon -> renderCameraPreview() -> updateGL();
 //     k_toon -> timeline() -> slotUpdateCurrentTime( k_toon -> timeline() -> frameSequenceManager() -> getRuler() -> getOffset() );
 //     k_toon -> timeline() -> slotUpdateTotalTime( k_toon -> timeline() -> frameSequenceManager() -> getRuler() -> getMaxOffset() );
     

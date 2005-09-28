@@ -6,15 +6,12 @@
 SUBDIRS += images \
            lib \
            dlslib \
-           timeline \
-           library \
            store \
            opengl \
            qt \
            dialogs \
-           exposure \
-           ktoonscript \
-           core
+           components \
+           core 
 CONFIG += release \
 warn_on
 TEMPLATE = subdirs

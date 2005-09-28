@@ -38,7 +38,6 @@
 #include "keyframe.h"
 #include "soundclip.h"
 #include "glgraphiccomponent.h"
-#include "tools.h"
 
 #include "document.h"
 

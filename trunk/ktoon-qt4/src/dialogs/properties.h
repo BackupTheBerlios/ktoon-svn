@@ -31,7 +31,7 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 
-class KToon;
+// class KToon;
 
 /**
  * @brief Class that handles the dialog box to set animation's properties
@@ -61,7 +61,7 @@ public:
 private:
     //General Purpose Variables
     QWidget *parent_widget;
-    KToon *k_toon;
+//     KToon *k_toon;
     QColor c_grid, c_background, c_ntsc;
 
     //Buttons

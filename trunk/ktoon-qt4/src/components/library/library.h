@@ -42,7 +42,9 @@
 #include "symboltable.h"
 #include "ktmodulewidgetbase.h"
 
-class KToon;
+#include "status.h"
+
+// class KToon;
 class Folder;
 class Item;
 
@@ -106,7 +108,7 @@ public:
 
 private:
 	int image_count ,number_of_items;
-    KToon *k_toon;
+//     KToon *k_toon;
 
     //Icons
     QPixmap i_add_symbol, i_delete_symbol, i_insert_into_drawing_area, i_add_folder;

@@ -20,7 +20,7 @@
 
 #include "symbolview.h"
 #include "drawingarea.h"
-#include "ktoon.h"
+#include "status.h"
 
 #include <qcursor.h>
 //Added by qt3to4:
@@ -37,7 +37,6 @@ SymbolView::SymbolView( QWidget *parent, QGLWidget *share ) : QGLWidget( parent,
     displayed_graphic = NULL;
     dragging = false;
     valid_drag = false;
-    k_toon = ( KToon * )( parent_widget -> parentWidget() );
 }
 
 //------------- DESTRUCTOR ----------------
@@ -137,16 +136,16 @@ void SymbolView::mouseMoveEvent( QMouseEvent *mouse_event )
     if ( dragging && displayed_graphic != NULL )
     {
         mouse_event -> accept();
-	if ( parent_widget -> childAt( mapToParent( mouse_event -> pos() ) ) == this ||
-	     k_toon -> childAt( mouse_event -> globalPos() ) == KTStatus->currentDrawingArea() )
+	if ( parent_widget -> childAt( mapToParent( mouse_event -> pos() ) ) == this /*||
+	     k_toon -> childAt( mouse_event -> globalPos() ) == KTStatus->currentDrawingArea()*/ )
 	    setCursor( QCursor( Qt::PointingHandCursor ) );
 	else
 	    setCursor( QCursor( Qt::ForbiddenCursor ) );
 
-	if ( k_toon -> childAt( mouse_event -> globalPos() ) == KTStatus->currentDrawingArea() )
-	    valid_drag = true;
-	else
-	    valid_drag = false;
+// 	if ( k_toon -> childAt( mouse_event -> globalPos() ) == KTStatus->currentDrawingArea() )
+// 	    valid_drag = true;
+// 	else
+// 	    valid_drag = false;
     }
 }
 

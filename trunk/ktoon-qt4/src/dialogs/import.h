@@ -32,7 +32,7 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 
-class KToon;
+// class KToon;
 
 /**
  * @brief Class that handles the dialog box to import files of known types
@@ -61,7 +61,7 @@ public:
 
 private:
     //General Purpose Variables
-    KToon *k_toon;
+//     KToon *k_toon;
 
     //Buttons
     QPushButton *accept, *cancel;

@@ -19,21 +19,23 @@
  ***************************************************************************/
 
 #include "outlinecolor.h"
-#include "images.h"
+// #include "images.h"
 //Added by qt3to4:
 #include <QPixmap>
 #include <QMouseEvent>
-#include <Q3Frame>
+#include <QFrame>
+
+#include "ktapplication.h"
 
 //--------------- CONSTRUCTOR --------------------
 
-OutlineColor::OutlineColor( QWidget *parent ) : Q3Frame( parent )
+OutlineColor::OutlineColor( QWidget *parent ) : QFrame( parent )
 {
     Q_CHECK_PTR( parent );
     resize( 47, 30 );
     parent_widget = parent;
-    icon = QPixmap( written_pic_xpm );
-    setFrameStyle( Q3Frame::Panel | Q3Frame::Raised );
+    icon = QPixmap( KTOON_HOME+"/images/icons/written_pic.xpm" );
+    setFrameStyle( QFrame::Panel | QFrame::Raised );
     active = false;
     current_color = QColor( 0, 0, 0 );
     square_border_color = QColor( 150, 150, 150 );
@@ -73,9 +75,9 @@ void OutlineColor::setActive( bool state )
     active = state;
 
     if ( active )
-        setFrameStyle( Q3Frame::Panel | Q3Frame::Sunken );
+        setFrameStyle( QFrame::Panel | QFrame::Sunken );
     else
-        setFrameStyle( Q3Frame::Panel | Q3Frame::Raised );
+        setFrameStyle( QFrame::Panel | QFrame::Raised );
 }
 
 //------------ SLOTS ----------------

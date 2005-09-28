@@ -34,6 +34,8 @@
 #include <QMouseEvent>
 #include "status.h"
 
+#include "tools.h"
+
 //--------------- CONSTRUCTOR --------------
 
 DrawingAreaQt::DrawingAreaQt( QWidget *parent, const QString &name ) 

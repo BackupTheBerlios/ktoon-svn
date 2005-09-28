@@ -26,9 +26,10 @@
 #include <QLabel>
 
 #include "colorpalette.h"
-#include "images.h"
+// #include "images.h"
 #include "tools.h"
 #include "status.h"
+#include "ktapplication.h"
 
 #include <new>
 
@@ -60,8 +61,8 @@ ColorPalette::ColorPalette( QWidget *parent)//, WFlags style, QPopupMenu *in_ass
 	new_fill_color = NULL;
 	
 	//Icon initializations
-	i_add_color = QPixmap( plussign_xpm );
-	i_remove_color = QPixmap( minussign_xpm );
+	i_add_color = QPixmap( KTOON_HOME+"/images/icons/plussign,xpm" );
+	i_remove_color = QPixmap( KTOON_HOME+"/images/icons/minussign.xpm" );
 
 // 	setOrientation (Qt::Vertical );
 	setupBlockStandardPalette();

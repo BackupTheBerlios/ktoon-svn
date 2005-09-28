@@ -47,6 +47,8 @@
 #include "ktapplication.h"
 #include "status.h"
 
+#include "tools.h"
+
 #include "ktdebug.h"
 
 #define DEBUG_DRAWINGAREA 1

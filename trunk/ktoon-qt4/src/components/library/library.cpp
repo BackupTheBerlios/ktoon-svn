@@ -20,7 +20,7 @@
 
 #include "library.h"
 #include "images.h"
-#include "ktoon.h"
+// #include "ktoon.h"
 #include "librarydata.h"
 #include "symbol.h"
 #include "folder.h"
@@ -60,7 +60,7 @@ Library::Library( QWidget *parent, QGLWidget *share)//, WFlags style)
 // 	resize( 150, 350 );
 // 	setMinimumSize( 150, 350 );
 // 	setMaximumSize( 150, 350 );
-	k_toon = ( KToon * )parent;
+// 	k_toon = ( KToon * )parent;
 
     //Icon initializations
 	i_add_symbol = QPixmap( plussign_xpm );

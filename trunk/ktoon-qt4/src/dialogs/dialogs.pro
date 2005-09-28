@@ -3,46 +3,20 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/dialogs
 # Destiono es una biblioteca:  
 
-HEADERS += colorcells.h \
-           colordisplay.h \
-           colorgradientselector.h \
-           colormixer.h \
-           colorpalette.h \
-           custompalette.h \
-           fillcolor.h \
-           gradientswitch.h \
-           gradientviewer.h \
-           outlinecolor.h \
-           scenes.h \
-           valueselector.h \
-           about.h \
+HEADERS += about.h \
            export.h \
            import.h \
            preferences.h \
            properties.h \
            ktthemeselector.h \
-           brushes.h \
            ktcamerapreview.h \
            tools.h 
-SOURCES += colorcells.cpp \
-           colordisplay.cpp \
-           colorgradientselector.cpp \
-           colormixer.cpp \
-           colorpalette.cpp \
-           custompalette.cpp \
-           fillcolor.cpp \
-           gradientswitch.cpp \
-           gradientviewer.cpp \
-           outlinecolor.cpp \
-           scenes.cpp \
-           valueselector.cpp \
-           about.cpp \
+SOURCES += about.cpp \
            export.cpp \
            import.cpp \
            preferences.cpp \
            properties.cpp \
            ktthemeselector.cpp \
-           brushes.cpp \
            ktcamerapreview.cpp \
            tools.cpp 
 INCLUDEPATH += ../../src/core \
@@ -66,5 +40,4 @@ CONFIG += release \
 warn_on \
 staticlib
 TEMPLATE = lib
-#The following line was inserted by qt3to4
-QT += xml  opengl qt3support 
+QT += xml opengl qt3support

@@ -24,6 +24,8 @@
 #include <QMouseEvent>
 #include <QTabletEvent>
 
+#include "tools.h"
+
 //-------------- CONSTRUCTOR ---------------
 
 GLControl::GLControl( QWidget *parent, const char *name, QGLWidget *share, Qt::WFlags f ) : QGLWidget( parent, name, share, f )

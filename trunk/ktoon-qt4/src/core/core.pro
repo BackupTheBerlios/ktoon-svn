@@ -3,6 +3,7 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/core
 # Destiono es una aplicaci??n: ../../bin/ktoon
 
+QT += qt3support opengl xml 
 INSTALLS += ktbin \
             kttrans \
             ktdata 
@@ -22,30 +23,41 @@ TARGETDEPS += ../../src/dialogs/libdialogs.a \
               ../../src/opengl/cameras/libcameras.a \
               ../../src/opengl/draw/libdraw.a \
               ../../src/store/libstore.a \
-              ../../src/library/liblibrary.a \
-              ../../src/timeline/libtimeline.a \
               ../../src/lib/liblib.a \
               ../../src/images/images/libimages.a \
-              ../../src/exposure/libexposure.a \
               ../../src/dlslib/libdlslib.a \
-              ../../src/ktoonscript/libktoonscript.a 
+              ../../src/components/colorpalette/libcolorpalette.a \
+              ../../src/components/scenes/libscenes.a \
+              ../../src/components/brushes/libbrushes.a \
+              ../../src/components/ktoonscript/libktoonscript.a \
+              ../../src/components/exposure/libexposure.a \
+              ../../src/components/timeline/libtimeline.a \
+              ../../src/components/library/liblibrary.a 
 LIBS += ../../src/dialogs/libdialogs.a \
-        ../../src/images/images/libimages.a \
-        ../../src/opengl/draw/libdraw.a \
+	../../src/components/brushes/libbrushes.a \
+        ../../src/components/colorpalette/libcolorpalette.a \
+        ../../src/components/scenes/libscenes.a \
+        ../../src/components/ktoonscript/libktoonscript.a \
+        ../../src/components/exposure/libexposure.a \
+        ../../src/components/timeline/libtimeline.a \
+        ../../src/components/library/liblibrary.a \
+	../../src/opengl/draw/libdraw.a \
         ../../src/opengl/tools/libtools.a \
         ../../src/opengl/cameras/libcameras.a \
         ../../src/qt/draw/libdraw.a \
         ../../src/qt/tools/libtools.a \
         ../../src/qt/cameras/libcameras.a \
         ../../src/store/libstore.a \
-        ../../src/library/liblibrary.a \
-        ../../src/timeline/libtimeline.a \
-        ../../src/exposure/libexposure.a \
-        ../../src/lib/liblib.a \
         ../../src/dlslib/libdlslib.a \
-        ../../src/ktoonscript/libktoonscript.a 
-INCLUDEPATH += ../../src/ktoonscript \
-               ../../src/exposure \
+        ../../src/lib/liblib.a \
+        ../../src/images/images/libimages.a 
+INCLUDEPATH += ../../src/components/ktoonscript \
+               ../../src/components/exposure \
+               ../../src/components/timeline \
+               ../../src/components/library \
+               ../../src/components/colorpalette \
+               ../../src/components/scenes \
+               ../../src/components/brushes \
                ../../src/dialogs \
                ../../src/qt/cameras \
                ../../src/qt/tools \
@@ -54,8 +66,6 @@ INCLUDEPATH += ../../src/ktoonscript \
                ../../src/opengl/tools \
                ../../src/opengl/cameras \
                ../../src/store \
-               ../../src/library \
-               ../../src/timeline \
                ../../src/dlslib \
                ../../src/lib \
                ../../src/images/sequences \
@@ -90,4 +100,3 @@ SOURCES += ktoon.cpp \
            ktmainwindow.cpp \
            ktactionmanager.cpp \
            ktstatusbar.cpp 
-QT += xml gui opengl qt3support 

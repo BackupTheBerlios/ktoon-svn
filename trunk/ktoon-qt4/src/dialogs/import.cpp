@@ -23,7 +23,8 @@
 #include <QLabel>
 
 #include "import.h"
-#include "ktoon.h"
+// #include "ktoon.h"
+#include "ktapplication.h"
 
 /**
  * @todo 
@@ -39,7 +40,7 @@ Import::Import( QWidget *parent ) : QDialog( parent, "Import", true )
     //Initializations
     setCaption( tr( "Import" ) );
     
-    k_toon = ( KToon * ) parent;
+//     k_toon = ( KToon * ) parent;
     setMinimumSize( 240, 280 );
     setMaximumSize( 240, 280 );
 
@@ -116,40 +117,40 @@ void Import::slotAccept()
 	{
             QString fn = Q3FileDialog::getOpenFileName( QString::null, "Image ( *.png *.jpg *.xpm )", this,
 	                                               tr( "Import Image" ), tr( "Choose an image to import" ) );
-            if ( !fn.isEmpty() )
-	        k_toon -> loadImage( fn );
+//             if ( !fn.isEmpty() )
+// 	        k_toon -> loadImage( fn );
 	    break;
 	}
         case 1:
 	{
             QString fn = Q3FileDialog::getOpenFileName( QString::null, "Image Sequence ( *.png *.jpg *.xpm )", this,
 	                                               tr( "Import Image Sequence" ), tr( "Choose an image Sequence to import" ) );
-            if ( !fn.isEmpty() )
-	        k_toon -> loadImageSequence( fn );
+//             if ( !fn.isEmpty() )
+// 	        k_toon -> loadImageSequence( fn );
 	    break;
 	}
         case 2:
 	{
             QString fn = Q3FileDialog::getOpenFileName( KTOON_REPOSITORY + "/lbr/", "Graphic Library ( *.lbr )", this,
 	                                               tr( "Import Library" ), tr( "Choose a graphic library to import" ) );
-            if ( !fn.isEmpty() )
-	        k_toon -> loadLibrary( fn );
+//             if ( !fn.isEmpty() )
+// 	        k_toon -> loadLibrary( fn );
 	    break;
 	}
         case 3:
 	{
             QString fn = Q3FileDialog::getOpenFileName( KTOON_REPOSITORY + "/cpl/", "Palette ( *.cpl )", this,
 	                                               tr( "Import Palette" ), tr( "Choose a color palette to import" ) );
-            if ( !fn.isEmpty() )
-	        k_toon -> loadPalette( fn );
+//             if ( !fn.isEmpty() )
+// 	        k_toon -> loadPalette( fn );
 	    break;
 	}
         case 4:
 	{
             QString fn = Q3FileDialog::getOpenFileName( KTOON_REPOSITORY + "/bru/", "Brushes File ( *.bru )", this,
 	                                               tr( "Import Brushes" ), tr( "Choose a brush file to import" ) );
-            if ( !fn.isEmpty() )
-	        k_toon -> loadBrushes( fn );
+//             if ( !fn.isEmpty() )
+// 	        k_toon -> loadBrushes( fn );
 	    break;
 	}
 	case 5:
