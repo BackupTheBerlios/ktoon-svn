@@ -65,6 +65,7 @@ class KTApplication : public QApplication
 		
 	protected:
 		void initDirectories();
+		virtual void detectOpengl();
 		
 	private:
 		QString m_KTOON_HOME;
@@ -73,6 +74,7 @@ class KTApplication : public QApplication
 		const QString m_VERSION;
 		ParseArgs m_parseArgs;
 		KTThemeManager m_themeManager;
+		bool m_haveDri;
 };
 
 #define ktapp static_cast<KTApplication*>(qApp)

@@ -3,31 +3,6 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/lib
 # Destiono es una biblioteca:  
 
-QT += opengl xml qt3support 
-INCLUDEPATH += ../../src/core \
-               ../../src/components/exposure \
-               ../../src/components/timeline \
-               ../../src/components/library \
-               ../../src/components/colorpalette \
-               ../../src/components/scenes \
-               ../../src/components/brushes \
-               ../../src/dialogs \
-               ../../src/qt/cameras \
-               ../../src/qt/tools \
-               ../../src/qt/draw \
-               ../../src/opengl/draw \
-               ../../src/opengl/tools \
-               ../../src/opengl/cameras \
-               ../../src/store \
-               ../../src/lib \
-               ../../src/images/images 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-CONFIG += release \
-          warn_on \
-          staticlib 
-TEMPLATE = lib 
 HEADERS += glgraphiccomponent.h \
            ktapplication.h \
            configwizard.h \
@@ -55,7 +30,9 @@ HEADERS += glgraphiccomponent.h \
            ktfiledialog.h \
            ktvhbox.h \
            ktelabel.h \
-           ktmodulewidgetbase.h 
+           ktmodulewidgetbase.h \
+           ktactionmanager.h \
+           ktaction.h 
 SOURCES += glgraphiccomponent.cpp \
            ktapplication.cpp \
            configwizard.cpp \
@@ -83,4 +60,31 @@ SOURCES += glgraphiccomponent.cpp \
            ktfiledialog.cpp \
            ktvhbox.cpp \
            ktelabel.cpp \
-           ktmodulewidgetbase.cpp 
+           ktmodulewidgetbase.cpp \
+           ktactionmanager.cpp \
+           ktaction.cpp 
+QT += opengl xml qt3support
+INCLUDEPATH += ../../src/core \
+../../src/components/exposure \
+../../src/components/timeline \
+../../src/components/library \
+../../src/components/colorpalette \
+../../src/components/scenes \
+../../src/components/brushes \
+../../src/dialogs \
+../../src/qt/cameras \
+../../src/qt/tools \
+../../src/qt/draw \
+../../src/opengl/draw \
+../../src/opengl/tools \
+../../src/opengl/cameras \
+../../src/store \
+../../src/lib \
+../../src/images/images
+MOC_DIR = .moc
+UI_DIR = .ui
+OBJECTS_DIR = .obj
+CONFIG += release \
+warn_on \
+staticlib
+TEMPLATE = lib

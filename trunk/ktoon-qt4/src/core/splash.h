@@ -61,8 +61,8 @@ class Splash : public QSplashScreen
 
 	private:
 		QString m_message, m_version;
-		int m_state;
 		int m_size;
+		int m_state;
 	
 	protected:
 		void drawContents ( QPainter * painter );

@@ -18,39 +18,63 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTACTIONMANAGER_H
-#define KTACTIONMANAGER_H
+#include "ktactionmanager.h"
 
-#include <QObject>
-#include <QAction>
-#include <QWidget>
-#include <QList>
-#include <QHash>
-
-typedef QList<QAction *> QActionList;
-typedef QHash<QString, QAction *> QActionDict;
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-
-class KTActionManager : public QObject
+KTActionManager::KTActionManager(QWidget *parent) : QObject(parent), m_widget(0)
 {
-	Q_OBJECT
+	setObjectName( "KTActionManager"+parent->objectName() );
+	setWidget(parent);
+}
 
-	public:
-		KTActionManager(QWidget *parent = 0L, const char *name = 0L);
-		~KTActionManager();
-		void setWidget(QWidget *w);
-		void insert(QAction *action);
-		void remove( QAction* action );
-		QAction *take( QAction* action );
-		QAction *find(const QString &name) const;
-		QAction *operator[](const QString &) const;
+KTActionManager::~KTActionManager()
+{
+}
 
-	private:
-		QWidget *m_widget;
-		QActionDict m_actionDict;
-};
+void KTActionManager::setWidget(QWidget *w)
+{
+	if ( ! m_widget )
+	{
+		m_widget = w;
+	}
+}
 
-#endif
+bool KTActionManager::insert(KTAction *action)
+{
+	QString id = action->id();
+	
+	KTAction *a = m_actionDict[ id ];
+	if ( a == action )
+	{
+		return false;
+	}
+
+	return m_actionDict.insert( id, action );
+}
+
+void KTActionManager::remove( KTAction* action )
+{
+	delete take( action );
+}
+
+QAction *KTActionManager::take( KTAction* action )
+{
+	QString id = action->id();
+	
+	QAction *a = m_actionDict.take( id );
+	if ( !a || a != action )
+	{
+		return 0;
+	}
+	
+	return a;
+}
+
+QAction *KTActionManager::find(const QString &id) const
+{
+	return m_actionDict[id.toLower()];
+}
+
+QAction *KTActionManager::operator[](const QString &id) const
+{
+	return find(id);
+}

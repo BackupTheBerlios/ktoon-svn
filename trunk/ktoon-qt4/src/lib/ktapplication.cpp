@@ -27,12 +27,20 @@
 #include <QMessageBox>
 #include <QObject>
 
+#include <QGLWidget>
+
 #include "ktdebug.h"
 
 KTApplication::KTApplication(int & argc, char ** argv)
 	: QApplication(argc, argv/*, true*/), m_VERSION("0.8alpha")
 {
 	KTINIT;
+	
+	QApplication::setEffectEnabled ( Qt::UI_AnimateMenu, true);
+	QApplication::setEffectEnabled ( Qt::UI_AnimateCombo, true);
+	QApplication::setEffectEnabled ( Qt::UI_FadeMenu, true);
+	QApplication::setEffectEnabled ( Qt::UI_FadeTooltip, true);
+	
 	parseArgs(argc, argv);
 	
 	setApplicationName("KToon");
@@ -48,6 +56,8 @@ KTApplication::KTApplication(int & argc, char ** argv)
 #endif
 	
  	applyColors(Default);
+ 	
+ 	detectOpengl();
 }
 
 
@@ -286,4 +296,26 @@ void KTApplication::initDirectories()
 	}
 }
 
+void KTApplication::detectOpengl()
+{
+	if ( QGLFormat::hasOpenGL() )
+	{
+		QGLWidget gl((QWidget *) 0);
+		gl.makeCurrent();
+		
+		ktDebug() << "-> OpenGL detected :)" << endl;
+		if ( gl.format().directRendering() )
+		{
+			ktDebug() << "-> Using direct rendering :)" << endl;
+		}
+		else
+		{
+			ktDebug() << "-> No direct rendering" << endl;
+		}
+	}
+	else
+	{
+		ktDebug() << "-> OpenGL not detected" << endl;
+	}
+}
 

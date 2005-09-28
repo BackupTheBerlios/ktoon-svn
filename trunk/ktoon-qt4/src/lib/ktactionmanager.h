@@ -18,75 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktactionmanager.h"
+#ifndef KTACTIONMANAGER_H
+#define KTACTIONMANAGER_H
 
-KTActionManager::KTActionManager(QWidget *parent, const char *name) : QObject(parent, name), m_widget(0)
+#include <QObject>
+#include <QWidget>
+#include <QList>
+#include <QHash>
+
+#include "ktaction.h"
+
+typedef QList<KTAction *> QActionList;
+typedef QHash<QString, KTAction *> QActionDict;
+
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+
+class KTActionManager : public QObject
 {
-	setWidget(parent);
-}
+	Q_OBJECT
 
-KTActionManager::~KTActionManager()
-{
-}
+	public:
+		KTActionManager(QWidget *parent = 0L);
+		~KTActionManager();
+		void setWidget(QWidget *w);
+		bool insert(KTAction *action);
+		void remove( KTAction* action );
+		QAction *take( KTAction* action );
+		QAction *find(const QString &id) const;
+		QAction *operator[](const QString &id) const;
 
-void KTActionManager::setWidget(QWidget *w)
-{
-	if ( ! m_widget )
-	{
-		m_widget = w;
-	}
-}
+	private:
+		QWidget *m_widget;
+		QActionDict m_actionDict;
+};
 
-void KTActionManager::insert(QAction *action)
-{
-	char uname[100];
-	const char *name = action->name();
-	if( !qstrcmp( name, "unnamed" ) )
-	{
-		sprintf(uname, "unnamed-%p", (void *)action);
-		name = uname;
-	}
-	
-	QAction *a = m_actionDict[ name ];
-	if ( a == action )
-	{
-		return;
-	}
-
-	m_actionDict.insert( name, action );
-}
-
-void KTActionManager::remove( QAction* action )
-{
-	delete take( action );
-}
-
-QAction *KTActionManager::take( QAction* action )
-{
-	char unnamed_name[100];
-	const char *name = action->name();
-	
-	if( !qstrcmp( name, "unnamed" ) )
-	{
-		sprintf(unnamed_name, "unnamed-%p", (void *) action);
-		name = unnamed_name;
-	}
-	
-	QAction *a = m_actionDict.take( name );
-	if ( !a || a != action )
-	{
-		return 0;
-	}
-	
-	return a;
-}
-
-QAction *KTActionManager::find(const QString &name) const
-{
-	return m_actionDict[name];
-}
-
-QAction *KTActionManager::operator[](const QString &name) const
-{
-	return find(name);
-}
+#endif

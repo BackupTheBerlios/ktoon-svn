@@ -101,30 +101,6 @@ int main( int argc, char ** argv )
 	
 	QApplication::setActiveWindow(mainWindow);
 	
-	if ( QGLFormat::hasOpenGL() )
-	{
-		QGLWidget gl((QWidget *) 0);
-		gl.makeCurrent();
-		
-		ktDebug() << "-> OpenGL detected :)" << endl;
-		if ( gl.format().directRendering() )
-		{
-			ktDebug() << "-> Using direct rendering :)" << endl;
-		}
-		else
-		{
-			ktDebug() << "-> No direct rendering" << endl;
-		}
-	}
-	else
-	{
-		ktDebug() << "-> OpenGL not detected" << endl;
-	}
-	QApplication::setEffectEnabled ( Qt::UI_AnimateMenu, true);
-	QApplication::setEffectEnabled ( Qt::UI_AnimateCombo, true);
-	QApplication::setEffectEnabled ( Qt::UI_FadeMenu, true);
-	QApplication::setEffectEnabled ( Qt::UI_FadeTooltip, true);
-	
 	return application.exec();
 }
 

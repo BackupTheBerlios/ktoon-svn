@@ -59,7 +59,7 @@ KTMainWindow::KTMainWindow() : DMainWindow(0, "KToon-MainWindow")
 
 	setupBackground();
 	
-	m_actionManager = new KTActionManager(this, "KTMainWindow-ACTMngr");
+	m_actionManager = new KTActionManager(this);
 	
 	// Create the menubar;
 	setupFileActions();
@@ -162,50 +162,41 @@ void KTMainWindow::createGUI()
 
 void KTMainWindow::setupFileActions()
 {
-	QAction *newFile = new QAction( QPixmap( new_xpm ), tr( "New Document" ), tr("Ctrl+N"), this, "NewFile");
-	connect(newFile, SIGNAL(activated()), this, SLOT(newDocument()));
+	KTAction *newFile = new KTAction( QPixmap( new_xpm ), tr( "New Document" ), QKeySequence(tr("Ctrl+N")), this, SLOT(newDocument()), m_actionManager, "NewFile");
+	
+// 	connect(newFile, SIGNAL(activated()), this, SLOT(newDocument()));
 	newFile->setStatusTip(tr( "Opens a new document"));
-	m_actionManager->insert(newFile);
 	
-	QAction *openFile = new QAction( QPixmap(open_xpm), tr( "Open Document" ), tr("Ctrl+O"), this, "OpenFile");
-	connect(openFile, SIGNAL(activated()), this, SLOT(chooseFile()));
+	KTAction *openFile = new KTAction( QPixmap(open_xpm), tr( "Open Document" ), tr("Ctrl+O"), this, SLOT(chooseFile()), m_actionManager, "OpenFile");
+// 	connect(openFile, SIGNAL(activated()), this, SLOT(chooseFile()));
 	openFile->setStatusTip(tr("Loads an existent document"));
-	m_actionManager->insert(openFile);
 	
-	QAction *save = new QAction( QPixmap(save_xpm), tr( "Save Document" ),tr("Ctrl+S") , this, "Save");
-	connect(save, SIGNAL(activated()), this, SLOT(save()));
+	KTAction *save = new KTAction( QPixmap(save_xpm), tr( "Save Document" ),QKeySequence(tr("Ctrl+S")), this, SLOT(save()), m_actionManager, "Save");
+// 	connect(save, SIGNAL(activated()), this, SLOT(save()));
 	save->setStatusTip(tr("Saves the current document in the current location"));
-	m_actionManager->insert(save);
 	
-	QAction *saveAs = new QAction( tr( "Save &As..." ), QKeySequence(), this, "SaveAs");
+	KTAction *saveAs = new KTAction( tr( "Save &As..." ), m_actionManager, "SaveAs");
 	connect(saveAs, SIGNAL(activated()), this, SLOT(saveAs()));
 	saveAs->setStatusTip(tr("Opens a dialog box to save the current document in any location"));
-	m_actionManager->insert(saveAs);
 	
-	QAction *close = new QAction(QPixmap(close_xpm), tr( "Cl&ose" ), tr("Ctrl+W"), this, "Close");
+	KTAction *close = new KTAction(QPixmap(close_xpm), tr( "Cl&ose" ), QKeySequence(tr("Ctrl+W")), m_actionManager, "Close");
 	close->setStatusTip(tr("Closes the active document"));
-	m_actionManager->insert(close);
 	
-	QAction *import = new QAction( QPixmap(import_xpm), tr( "&Import..." ),  tr("Ctrl+I"), this, "Import");
-	connect(import, SIGNAL(activated()), this, SLOT(import()));
+	KTAction *import = new KTAction( QPixmap(import_xpm), tr( "&Import..." ),  QKeySequence(tr("Ctrl+I")), this, SLOT(import()), m_actionManager, "Import");
+// 	connect(import, SIGNAL(activated()), this, SLOT(import()));
 	import->setStatusTip(tr("Imports a file in the supported format"));
-	m_actionManager->insert(import);
 	
-	QAction *exptr = new QAction(QPixmap(export_xpm), tr( "&Export..." ),  tr("Ctrl+E"), this, "Export");
-	connect(exptr, SIGNAL(activated()), this, SLOT(export()));
+	KTAction *exptr = new KTAction(QPixmap(export_xpm), tr( "&Export..." ),  QKeySequence(tr("Ctrl+E")), this, SLOT(export()), m_actionManager, "Export");
+// 	connect(exptr, SIGNAL(activated()), this, SLOT(export()));
 	exptr->setStatusTip(tr("Exports this document as a file in the available formats"));
 	exptr->setVisible(false);
-	m_actionManager->insert(exptr);
 	
-	QAction *properties = new QAction( tr( "&Properties..." ),  QKeySequence(), this, "Properties");
+	KTAction *properties = new KTAction( tr( "&Properties..." ), m_actionManager, "Properties");
 	connect(properties, SIGNAL(activated()), this, SLOT(properties()));
 	properties->setStatusTip(tr("Opens the properties dialog box"));
-	m_actionManager->insert(properties);
 	
-	QAction *exit = new QAction(QPixmap(export_xpm), tr( "E&xit" ),  tr("Ctrl+Q"), this, "Exit");
-	connect(exit, SIGNAL(activated()), qApp, SLOT(closeAllWindows ()));
+	KTAction *exit = new KTAction(QPixmap(export_xpm), tr( "E&xit" ),  QKeySequence(tr("Ctrl+Q")), qApp, SLOT(closeAllWindows ()),m_actionManager, "Exit");
 	exit->setStatusTip(tr("Closes the application"));
-	m_actionManager->insert(exit);
 }
 
 void KTMainWindow::setupToolBar()
