@@ -23,7 +23,7 @@
 //Added by qt3to4:
 #include <QResizeEvent>
 
-KTCameraPreview::KTCameraPreview(QWidget* parent, const char* name): KTMdiWindow(parent, name, 0)
+KTCameraPreview::KTCameraPreview(QWidget* parent, const char* name): KTMdiWindow(parent)
 {
 #ifndef NO_OPENGL
 		m_cameraPreview = new GLRenderCameraPreview(this, KTStatus->currentDrawingArea());

@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "ktexporter.h"
 
-KTExporter::KTExporter(QObject *parent, const char *name) : QObject(parent, name), m_filename(QString::null)
+KTExporter::KTExporter(QObject *parent) : QObject(parent), m_filename(QString::null)
 {
 	qDebug("[Initializing KTExporter]");
 }

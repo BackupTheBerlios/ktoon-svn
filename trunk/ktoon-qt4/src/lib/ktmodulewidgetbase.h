@@ -29,7 +29,7 @@
 #include <QBoxLayout>
 #include <QDockWidget>
 
-#include "ktdialogtitle.h"
+#include "ktmodulewidgettitle.h"
 
 /**
  * @author Jorge Cuadrado
@@ -50,7 +50,7 @@ class KTModuleWidgetBase : public QWidget
 		QWidget *m_originalParent;
 		
 	protected:
-		KTDialogTitle *m_title;
+		KTModuleWidgetTitle *m_title;
 		
 	protected:
 		virtual bool event( QEvent * e );

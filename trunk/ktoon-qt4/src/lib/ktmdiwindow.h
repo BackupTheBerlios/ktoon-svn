@@ -32,7 +32,7 @@ class KTMdiWindow : public QMainWindow
 {
 	Q_OBJECT
 	public:
-		KTMdiWindow(QWidget* parent = 0, const char* name = 0, Qt::WFlags f  = 0);
+		KTMdiWindow(QWidget* parent = 0, const char* name = 0);
 		~KTMdiWindow();
 	
 	protected:

@@ -35,7 +35,7 @@ KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWid
 	setObjectName(name);
 	m_container = new QVBoxLayout(this);
 	
-	m_title = new KTDialogTitle("...", this, "DialogTitle");
+	m_title = new KTModuleWidgetTitle("...", this, "DialogTitle");
 	setMinimumSize(m_title->size());
 	
 	QToolTip::add(m_title, tr("Double click for roll up"));

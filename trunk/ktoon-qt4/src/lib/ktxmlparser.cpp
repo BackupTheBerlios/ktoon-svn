@@ -65,7 +65,7 @@ bool KTXmlParser::startElement( const QString& , const QString& , const QString&
 	return true;
 }
 
-bool KTXmlParser::endElement(const QString& ns, const QString& localname, const QString& qname)
+bool KTXmlParser::endElement(const QString&, const QString& , const QString& qname)
 {
 	if ( m_root == "KTConfig" ) // Configuration document
 	{
@@ -79,7 +79,7 @@ bool KTXmlParser::endElement(const QString& ns, const QString& localname, const 
 	return true;
 }
 
-bool KTXmlParser::characters(const QString &ch)
+bool KTXmlParser::characters(const QString &)
 {
 	return true;
 }

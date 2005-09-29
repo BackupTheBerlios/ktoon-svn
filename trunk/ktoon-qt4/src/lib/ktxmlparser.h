@@ -20,8 +20,8 @@
 #ifndef KTXMLPARSER_H
 #define KTXMLPARSER_H
 
-#include <qxml.h>
-#include <qmap.h>
+#include <QMap>
+#include <QXmlDefaultHandler>
 
 typedef QMap<QString, QString> XMLSingleResult;
 typedef QMap<QString, QStringList> XMLTotalResults;

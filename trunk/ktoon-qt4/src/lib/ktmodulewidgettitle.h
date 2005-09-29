@@ -18,30 +18,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktdialogtitle.h"
+#ifndef KTMODULEWIDGETTITLE_H
+#define KTMODULEWIDGETTITLE_H
 
-#include <QLabel>
-#include <QFrame>
+#include "ktsqueezelabel.h"
 
-KTDialogTitle::KTDialogTitle(const QString &title, QWidget *parent, const char *name)
- : QLabel(parent, name)
+/**
+@author David Cuadrado
+*/
+class KTModuleWidgetTitle : public QLabel
 {
-	setFrameStyle( QFrame::Box | QFrame::Raised );
-	setText(title);
-}
+	Q_OBJECT
+	public:
+		KTModuleWidgetTitle(const QString &title, QWidget *parent = 0, const char *name = 0);
+		~KTModuleWidgetTitle();
+		
+		
+	public slots:
+		void setText(const QString &text);
+		
+	signals:
+		void doubleClicked();
+		
+	protected:
+		void mouseDoubleClickEvent(QMouseEvent * e );
 
+};
 
-KTDialogTitle::~KTDialogTitle()
-{
-}
-
-void KTDialogTitle::mouseDoubleClickEvent(QMouseEvent *)
-{
-	emit doubleClicked();
-}
-
-void KTDialogTitle::setText( const QString &text)
-{
-	QLabel::setText("<div align=center>"+text+"</div>");
-}
-
+#endif

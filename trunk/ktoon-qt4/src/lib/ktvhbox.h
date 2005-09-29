@@ -36,6 +36,7 @@ class KTVHBox : public QFrame
 {
 	Q_OBJECT
 	public:
+		KTVHBox(QWidget *parent, Qt::Orientation o);
 		KTVHBox(QWidget *parent = 0, bool isVertical = true);
 		~KTVHBox();
 		void moveWidgetUp(QWidget *);

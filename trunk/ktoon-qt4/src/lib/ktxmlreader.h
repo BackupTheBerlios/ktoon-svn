@@ -20,7 +20,7 @@
 #ifndef KTXMLREADER_H
 #define KTXMLREADER_H
 
-#include <qxml.h>
+#include <QXmlSimpleReader>
 #include "ktxmlparser.h"
 
 /**

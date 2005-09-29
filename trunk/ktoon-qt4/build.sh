@@ -39,6 +39,7 @@ export INSTALL_ROOT=$KTOON_HOME
 
 GREEN='\033[1;32m'
 RED='\033[9;31m'
+YELLOW='\033[1;33m'
 NULLC='\033[0;0m'
 
 function qpinfo ()
@@ -53,7 +54,7 @@ function qperror ()
 
 function qpelec ()
 {
-	echo -en "$RED $1 $NULLC $2 "
+	echo -en "$YELLOW * $NULLC $1 "
 }
 
 function verifyEnv()
@@ -73,12 +74,13 @@ function verifyEnv()
 
 function detectQtVersion()
 {
-	LINE=`$QMAKE -v | grep "Using Qt"`
-	if [ "$LINE" != "" ]
+	QT_VERSION=`$QMAKE -query QT_VERSION | grep -o "^\\w"`
+	if [ "$QT_VERSION" != "4" ]
 	then
-		echo "Using Qt4"
+		qperror "Please install Qt4 or set QTDIR to Qt4 installation path"
+		exit -1
 	else
-		echo "Using Qt3"
+		qpinfo "Using Qt: `$QMAKE -query QT_VERSION `"
 	fi
 }
 
@@ -112,15 +114,16 @@ function addMenuEntry()
 {
 	if [ `whoami` == "root" ]
 	then
-		if [ -d /usr/share/applications ]
+		mkdir -p /usr/share/applications/Graphics
+		if [ -d /usr/share/applications/Graphics ]
 		then
-			echo "Add menu entry to /usr/share/applications"
-			cp ktoon.desktop /usr/share/applications
+			cp ktoon.desktop /usr/share/applications/Graphics &&
+			qpinfo "Added menu entry to /usr/share/applications"
 		fi
 	else
-		mkdir -p $HOME/.kde/share/applnk/Graphics
-		echo "Add menu entry to $HOME/.kde/share/applnk/Graphics/ktoon.desktop"
-		cp ktoon.desktop $HOME/.kde/share/applnk/Graphics/ktoon.desktop
+		mkdir -p $HOME/.local/share/applications/Graphics/
+		cp ktoon.desktop $HOME/.local/share/applications/Graphics/ktoon.desktop && 
+		qpinfo "Added menu entry to $HOME/.local/share/applications/Graphics/ktoon.desktop"
 	fi
 }
 
@@ -201,7 +204,7 @@ do
 	cd - 2> /dev/null >/dev/null
 done
 
-qpelec '-' "Do you wants use opengl (y/n)? "
+qpelec "Do you wants use opengl (y/n)? "
 read UOG
 
 case $UOG in
@@ -224,7 +227,7 @@ $MAKE || exit 1
 
 qpinfo "Compiling successful!"
 
-qpelec '-' "Do you wants install ktoon in \"$KTOON_HOME\" (y/n)? "
+qpelec "Do you wants install ktoon in \"$KTOON_HOME\" (y/n)? "
 read SN
 
 case $SN in

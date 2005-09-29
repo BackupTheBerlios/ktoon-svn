@@ -133,7 +133,6 @@ class KTFontWidget : public QWidget
 		bool usingFixed;
  
 	protected:
-		virtual void virtual_hook( int id, void* data );
 		class KTFontWidgetPrivate;
 		KTFontWidgetPrivate *d;
 };

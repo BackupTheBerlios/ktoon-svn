@@ -21,7 +21,6 @@
 #include "ktthememanager.h"
 #include "ktapplication.h"
 #include "ktthemedocument.h"
-#include <iostream>
 
 #include "ktdebug.h"
 
@@ -37,7 +36,7 @@ KTThemeManager::~KTThemeManager()
 
 bool KTThemeManager::applyTheme(const QString &file)
 {
-	qDebug("Applying theme");
+	ktDebug() << "Applying theme" << endl;
 	bool ok = false;
 	QXmlSimpleReader reader;
 	reader.setContentHandler(this);
@@ -59,7 +58,7 @@ bool KTThemeManager::applyTheme(const QString &file)
 
 bool KTThemeManager::applyTheme(const KTThemeDocument &ktd)
 {
-	qDebug("Applying theme");
+	ktDebug() << "Applying theme" << endl;;
 	bool ok = false;
 	QXmlSimpleReader reader;
 	reader.setContentHandler(this);

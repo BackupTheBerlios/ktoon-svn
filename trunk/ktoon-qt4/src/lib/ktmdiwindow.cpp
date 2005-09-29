@@ -23,9 +23,9 @@
 //Added by qt3to4:
 #include <QEvent>
 
-KTMdiWindow::KTMdiWindow(QWidget* parent, const char* name, Qt::WFlags f): QMainWindow(parent, name, f)
+KTMdiWindow::KTMdiWindow(QWidget* parent, const char* name): QMainWindow(parent)
 {
-	
+	setObjectName(name);
 }
 
 
@@ -57,6 +57,4 @@ bool  KTMdiWindow::event( QEvent * e )
 // 	}
 
 	return QMainWindow::event(e );
-	
-	
 }

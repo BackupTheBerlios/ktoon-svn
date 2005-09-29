@@ -27,14 +27,16 @@
 
 #include "ktdebug.h"
 
-KTSqueezeLabel::KTSqueezeLabel(QWidget *parent, const char *name) : QLabel(parent, name)
+KTSqueezeLabel::KTSqueezeLabel(QWidget *parent, const char *name) : QLabel(parent)
 {
+	setObjectName(name);
 	setSizePolicy(QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed ));
 }
 
 KTSqueezeLabel::KTSqueezeLabel( const QString &text , QWidget *parent, const char *name)
-	: QLabel(parent, name )
+	: QLabel(parent)
 {
+	setObjectName(name);
 	setSizePolicy(QSizePolicy( QSizePolicy::Expanding, QSizePolicy::Fixed ));
 	m_text = text;
 	squeezeText();

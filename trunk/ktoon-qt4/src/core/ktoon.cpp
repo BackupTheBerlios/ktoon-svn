@@ -38,6 +38,7 @@
 #include <q3process.h>
 #include <q3stylesheet.h>
 #include <QList>
+#include <q3dockarea.h>
 #include "ktoon.h"
 #include "images.h"
 #include "symbol.h"
@@ -1084,8 +1085,6 @@ void KToon::setupMenu()
 void KToon::setupDialogs()
 {
 	    //--------------- Dialog Boxes -----------------
-	
-	KTDialogMenu *m_menu = new KTDialogMenu(this);
 	
 	setDockEnabled(Qt::DockLeft, true);
 	setDockEnabled(Qt::DockRight, true);

@@ -23,11 +23,20 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QLayout>
+#include <QBitmap>
 
-KTImageButton::KTImageButton(const QPixmap &image, int size, QWidget *parent) : QPushButton(parent), m_imageSize(/*44*/22)
+KTImageButton::KTImageButton(const QPixmap &image, int size, QWidget *parent) : QPushButton(parent), m_imageSize(size)
 {
 	setup();
 	setPixmap(image);
+}
+
+KTImageButton::KTImageButton(const QPixmap &image, int size, QObject *reciever, const char *method, QWidget *parent) : QPushButton(parent), m_imageSize(size)
+{
+	setup();
+	setPixmap(image);
+	
+	connect(this, SIGNAL(clicked()), reciever, method);
 }
 
 
@@ -42,12 +51,12 @@ void KTImageButton::setup()
 	setMaximumSize(m_imageSize, m_imageSize);
 }
 
-void KTImageButton::enterEvent(QEvent *e)
+void KTImageButton::enterEvent(QEvent *)
 {
 	setFlat(false);
 }
 
-void KTImageButton::leaveEvent(QEvent *e)
+void KTImageButton::leaveEvent(QEvent *)
 {
 	setFlat(true);
 }

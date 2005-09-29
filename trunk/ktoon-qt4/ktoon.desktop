@@ -1,9 +1,9 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=KToon
-Name[xx]=KToon
+Name=KToon: A 2D Animation toolkit
+Name[es]=KToon: Herramienta para animacion 2D
 Exec=ktoon
-Icon=ktoon
+Icon=ktoon.png
 Type=Application
 #MimeType=
 #DocPath=

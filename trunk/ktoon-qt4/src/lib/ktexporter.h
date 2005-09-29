@@ -38,7 +38,7 @@ class KTExporter : public QObject
 	public:
 		enum Format { PNG = 0, SWF, SVG, JPEG  };
 		
-		KTExporter(QObject *parent = 0, const char *name = 0);
+		KTExporter(QObject *parent = 0);
 		~KTExporter();
 		
 		bool exportAnimation(const QString &filename, Format format);

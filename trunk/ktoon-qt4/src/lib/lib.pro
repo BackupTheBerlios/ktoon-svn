@@ -10,8 +10,6 @@ HEADERS += glgraphiccomponent.h \
            ktxmlreader.h \
            ktanimwidget.h \
            ktfontwidget.h \
-           ktdialogtitle.h \
-           ktdialogmenu.h \
            status.h \
            ktthememanager.h \
            ktthemedocument.h \
@@ -32,7 +30,9 @@ HEADERS += glgraphiccomponent.h \
            ktelabel.h \
            ktmodulewidgetbase.h \
            ktactionmanager.h \
-           ktaction.h 
+           ktaction.h \
+           ktmodulewidgettitle.h \
+           kttabdialog.h 
 SOURCES += glgraphiccomponent.cpp \
            ktapplication.cpp \
            configwizard.cpp \
@@ -40,8 +40,6 @@ SOURCES += glgraphiccomponent.cpp \
            ktxmlreader.cpp \
            ktanimwidget.cpp \
            ktfontwidget.cpp \
-           ktdialogtitle.cpp \
-           ktdialogmenu.cpp \
            status.cpp \
            ktthememanager.cpp \
            ktthemedocument.cpp \
@@ -62,7 +60,9 @@ SOURCES += glgraphiccomponent.cpp \
            ktelabel.cpp \
            ktmodulewidgetbase.cpp \
            ktactionmanager.cpp \
-           ktaction.cpp 
+           ktaction.cpp \
+           ktmodulewidgettitle.cpp \
+           kttabdialog.cpp 
 QT += opengl xml qt3support
 INCLUDEPATH += ../../src/core \
 ../../src/components/exposure \

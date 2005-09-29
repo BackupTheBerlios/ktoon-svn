@@ -25,6 +25,21 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 
+KTVHBox::KTVHBox(QWidget *parent, Qt::Orientation o) : QFrame(parent)
+{
+	if ( o == Qt::Vertical )
+	{
+		m_pLayout = new QVBoxLayout(this);
+	}
+	else
+	{
+		m_pLayout = new QHBoxLayout(this);
+	}
+	
+	m_pLayout->setMargin(1);
+	m_pLayout->setSpacing(1);
+}
+
 KTVHBox::KTVHBox(QWidget *parent, bool isVertical) : QFrame(parent)
 {
 	if ( isVertical )

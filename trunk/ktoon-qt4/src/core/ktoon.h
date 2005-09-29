@@ -63,8 +63,6 @@
 #include "import.h"
 #include "export.h"
 
-#include "ktdialogmenu.h"
-
 #include "ktcamerapreview.h"
 #include "ktviewdocument.h"
 

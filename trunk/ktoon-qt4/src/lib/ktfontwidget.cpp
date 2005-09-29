@@ -686,5 +686,3 @@ void KTFontWidget::showXLFDArea(bool show)
 	}
 }
 
-void KTFontWidget::virtual_hook( int, void* )
-{ /*BASE::virtual_hook( id, data );*/ }

@@ -37,6 +37,7 @@ class KTImageButton : public QPushButton
 
 	public:
 		KTImageButton(const QPixmap &image, int size, QWidget *parent = 0);
+		KTImageButton(const QPixmap &image, int size, QObject *reciever, const  char *slot, QWidget *parent = 0);
 		~KTImageButton();
 		virtual void setPixmap ( const QPixmap & pix);
 		

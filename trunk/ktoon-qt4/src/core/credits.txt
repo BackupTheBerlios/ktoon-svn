@@ -1,6 +1,6 @@
 Developers
 
-KToon 0.8
+Version 0.8
 
 David A. Cuadrado
 <krawek@toonka.com>
@@ -8,7 +8,7 @@ David A. Cuadrado
 Jorge H. Cuadrado
 <kuadrosx@toonka.com>
 
-KToon 0.7
+Old versions
 
 Simena Dinas
 <dsimena@toonka.com>
@@ -96,4 +96,4 @@ Atomica - Parquesoft
 
 
 
-November 2004
+2005

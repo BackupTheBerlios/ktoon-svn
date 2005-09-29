@@ -37,7 +37,6 @@
 // #include "ilayer.h"
 #include "keyframe.h"
 #include "soundclip.h"
-#include "glgraphiccomponent.h"
 
 #include "document.h"
 
