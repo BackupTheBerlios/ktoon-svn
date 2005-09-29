@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 #include "symbolview.h"
-#include "drawingarea.h"
-#include "status.h"
+// #include "drawingarea.h"
+// #include "status.h"
 
 #include <qcursor.h>
 //Added by qt3to4:
@@ -34,7 +34,7 @@ SymbolView::SymbolView( QWidget *parent, QGLWidget *share ) : QGLWidget( parent,
     Q_CHECK_PTR( share );
     parent_widget = parent;
     share_widget = share;
-    displayed_graphic = NULL;
+//     displayed_graphic = NULL;
     dragging = false;
     valid_drag = false;
 }
@@ -56,7 +56,7 @@ QGLWidget *SymbolView::shareWidget() const
 
 void SymbolView::display( GLGraphicComponent *graphic )
 {
-    displayed_graphic = graphic;
+//     displayed_graphic = graphic;
     updateGL();
 }
 
@@ -85,42 +85,42 @@ void SymbolView::resizeGL( int w, int h )
 
 void SymbolView::paintGL()
 {
-    glClear( GL_COLOR_BUFFER_BIT );
-    glPushMatrix();
-
-    drawFrame();
-    if ( displayed_graphic != NULL )
-    {
-	glPushMatrix();
-	displayed_graphic -> calculateTopLeft();
-	displayed_graphic -> calculateBottomRight();
-	QPoint ptl = displayed_graphic -> topLeft();
-	QPoint pbr = displayed_graphic -> bottomRight();
-	//140x100
-	int w = pbr.x() - ptl.x();
-	int h = pbr.y() - ptl.y();
-	float scale_factor;
-	int y = 5, x = 5;
-
-	if ( w >= h )
-	{
-	    scale_factor = 130.0 / ( float )w;
-	    y = ( int )( 100 - h * ( int )( scale_factor ) ) / 2;
-	}
-	else
-	{
-	    scale_factor = 90.0 / ( float )h;
-	    x = ( int )( 140 - w * ( int )( scale_factor ) ) / 2;
-	}
-	glScalef( scale_factor, scale_factor, 1.0 );
-	glTranslatef( ( float )ptl.x() * -1.0 + x, ( float )ptl.y() * -1.0 + y, 0.0 );
-	displayed_graphic -> draw();
-	glPopMatrix();
-    }
-    else
-        drawDisabled();
-
-    glPopMatrix();
+//     glClear( GL_COLOR_BUFFER_BIT );
+//     glPushMatrix();
+// 
+//     drawFrame();
+// //     if ( displayed_graphic != NULL )
+//     {
+// 	glPushMatrix();
+// 	displayed_graphic -> calculateTopLeft();
+// 	displayed_graphic -> calculateBottomRight();
+// 	QPoint ptl = displayed_graphic -> topLeft();
+// 	QPoint pbr = displayed_graphic -> bottomRight();
+// 	//140x100
+// 	int w = pbr.x() - ptl.x();
+// 	int h = pbr.y() - ptl.y();
+// 	float scale_factor;
+// 	int y = 5, x = 5;
+// 
+// 	if ( w >= h )
+// 	{
+// 	    scale_factor = 130.0 / ( float )w;
+// 	    y = ( int )( 100 - h * ( int )( scale_factor ) ) / 2;
+// 	}
+// 	else
+// 	{
+// 	    scale_factor = 90.0 / ( float )h;
+// 	    x = ( int )( 140 - w * ( int )( scale_factor ) ) / 2;
+// 	}
+// 	glScalef( scale_factor, scale_factor, 1.0 );
+// 	glTranslatef( ( float )ptl.x() * -1.0 + x, ( float )ptl.y() * -1.0 + y, 0.0 );
+// 	displayed_graphic -> draw();
+// 	glPopMatrix();
+//     }
+//     else
+//         drawDisabled();
+// 
+//     glPopMatrix();
 }
 
 void SymbolView::mousePressEvent( QMouseEvent *mouse_event )
@@ -133,7 +133,7 @@ void SymbolView::mousePressEvent( QMouseEvent *mouse_event )
 void SymbolView::mouseMoveEvent( QMouseEvent *mouse_event )
 {
     Q_CHECK_PTR( mouse_event );
-    if ( dragging && displayed_graphic != NULL )
+//     if ( dragging && displayed_graphic != NULL )
     {
         mouse_event -> accept();
 	if ( parent_widget -> childAt( mapToParent( mouse_event -> pos() ) ) == this /*||
@@ -151,75 +151,75 @@ void SymbolView::mouseMoveEvent( QMouseEvent *mouse_event )
 
 void SymbolView::mouseReleaseEvent( QMouseEvent *mouse_event )
 {
-    Q_CHECK_PTR( mouse_event );
-    if ( valid_drag )
-    {
-        mouse_event -> accept();
-	switch ( displayed_graphic -> kindGraphic() )
-        {
-            case GLGraphicComponent::GC_BRUSH:
-	    {
-	    	    GLBrush *b = new GLBrush( *( ( GLBrush * )displayed_graphic ) );
-		    QPoint global( mouse_event -> globalX(), mouse_event -> globalY() );
-		    QPoint da_local( KTStatus->currentDrawingArea() -> mapFromGlobal( global ) );
-		    b -> translateGraphic( ( b -> originPoint().x() ) * -1, ( b -> originPoint().y() ) * -1 );
-		    b -> translateGraphic( da_local.x(), da_local.y() );
-	            KTStatus->currentDrawingArea() -> addGraphicComponent( b );
-	    }
-		    break;
-	    case GLGraphicComponent::GC_PENCIL:
-	    {
-	    	    GLPencil *pc = new GLPencil( *( ( GLPencil * )displayed_graphic ) );
-		    QPoint global( mouse_event -> globalX(), mouse_event -> globalY() );
-		    QPoint da_local( KTStatus->currentDrawingArea() -> mapFromGlobal( global ) );
-		    pc -> translateGraphic( ( pc -> originPoint().x() ) * -1, ( pc -> originPoint().y() ) * -1 );
-		    pc -> translateGraphic( da_local.x(), da_local.y() );
-	            KTStatus->currentDrawingArea() -> addGraphicComponent( pc );
-	    }
-		    break;
-	    case GLGraphicComponent::GC_LINE:
-	    {
-	    	    GLLine *l = new GLLine( *( ( GLLine * )displayed_graphic ) );
-		    QPoint global( mouse_event -> globalX(), mouse_event -> globalY() );
-		    QPoint da_local( KTStatus->currentDrawingArea() -> mapFromGlobal( global ) );
-		    l -> translateGraphic( ( l -> originPoint().x() ) * -1, ( l -> originPoint().y() ) * -1 );
-		    l -> translateGraphic( da_local.x(), da_local.y() );
-	            KTStatus->currentDrawingArea() -> addGraphicComponent( l );
-	    }
-		    break;
-	    case GLGraphicComponent::GC_PEN:
-	    {
-	    	    GLPen *p = new GLPen( *( ( GLPen * )displayed_graphic ) );
-		    QPoint global( mouse_event -> globalX(), mouse_event -> globalY() );
-		    QPoint da_local( KTStatus->currentDrawingArea() -> mapFromGlobal( global ) );
-		    p -> translateGraphic( ( p -> originPoint().x() ) * -1, ( p -> originPoint().y() ) * -1 );
-		    p -> translateGraphic( da_local.x(), da_local.y() );
-	            KTStatus->currentDrawingArea() -> addGraphicComponent( p );
-	    }
-		    break;
-	    case GLGraphicComponent::GC_RECTANGLE:
-	    {
-	    	    GLRectangle *r = new GLRectangle( *( ( GLRectangle * )displayed_graphic ) );
-		    QPoint global( mouse_event -> globalX(), mouse_event -> globalY() );
-		    QPoint da_local( KTStatus->currentDrawingArea() -> mapFromGlobal( global ) );
-		    r -> translateGraphic( ( r -> originPoint().x() ) * -1, ( r -> originPoint().y() ) * -1 );
-		    r -> translateGraphic( da_local.x(), da_local.y() );
-	            KTStatus->currentDrawingArea() -> addGraphicComponent( r );
-	    }
-		    break;
-	    case GLGraphicComponent::GC_ELLIPSE:
-	    {
-		    GLEllipse *e = new GLEllipse( *( ( GLEllipse * )displayed_graphic ) );
-		    QPoint global( mouse_event -> globalX(), mouse_event -> globalY() );
-		    QPoint da_local( KTStatus->currentDrawingArea() -> mapFromGlobal( global ) );
-		    e -> translateGraphic( ( e -> originPoint().x() ) * -1, ( e -> originPoint().y() ) * -1 );
-		    e -> translateGraphic( da_local.x(), da_local.y() );
-	            KTStatus->currentDrawingArea() -> addGraphicComponent( e );
-	    }
-		    break;
-	    default: break;
-        }
-    }
+//     Q_CHECK_PTR( mouse_event );
+//     if ( valid_drag )
+//     {
+//         mouse_event -> accept();
+// 	switch ( displayed_graphic -> kindGraphic() )
+//         {
+//             case GLGraphicComponent::GC_BRUSH:
+// 	    {
+// 	    	    GLBrush *b = new GLBrush( *( ( GLBrush * )displayed_graphic ) );
+// 		    QPoint global( mouse_event -> globalX(), mouse_event -> globalY() );
+// 		    QPoint da_local( KTStatus->currentDrawingArea() -> mapFromGlobal( global ) );
+// 		    b -> translateGraphic( ( b -> originPoint().x() ) * -1, ( b -> originPoint().y() ) * -1 );
+// 		    b -> translateGraphic( da_local.x(), da_local.y() );
+// 	            KTStatus->currentDrawingArea() -> addGraphicComponent( b );
+// 	    }
+// 		    break;
+// 	    case GLGraphicComponent::GC_PENCIL:
+// 	    {
+// 	    	    GLPencil *pc = new GLPencil( *( ( GLPencil * )displayed_graphic ) );
+// 		    QPoint global( mouse_event -> globalX(), mouse_event -> globalY() );
+// 		    QPoint da_local( KTStatus->currentDrawingArea() -> mapFromGlobal( global ) );
+// 		    pc -> translateGraphic( ( pc -> originPoint().x() ) * -1, ( pc -> originPoint().y() ) * -1 );
+// 		    pc -> translateGraphic( da_local.x(), da_local.y() );
+// 	            KTStatus->currentDrawingArea() -> addGraphicComponent( pc );
+// 	    }
+// 		    break;
+// 	    case GLGraphicComponent::GC_LINE:
+// 	    {
+// 	    	    GLLine *l = new GLLine( *( ( GLLine * )displayed_graphic ) );
+// 		    QPoint global( mouse_event -> globalX(), mouse_event -> globalY() );
+// 		    QPoint da_local( KTStatus->currentDrawingArea() -> mapFromGlobal( global ) );
+// 		    l -> translateGraphic( ( l -> originPoint().x() ) * -1, ( l -> originPoint().y() ) * -1 );
+// 		    l -> translateGraphic( da_local.x(), da_local.y() );
+// 	            KTStatus->currentDrawingArea() -> addGraphicComponent( l );
+// 	    }
+// 		    break;
+// 	    case GLGraphicComponent::GC_PEN:
+// 	    {
+// 	    	    GLPen *p = new GLPen( *( ( GLPen * )displayed_graphic ) );
+// 		    QPoint global( mouse_event -> globalX(), mouse_event -> globalY() );
+// 		    QPoint da_local( KTStatus->currentDrawingArea() -> mapFromGlobal( global ) );
+// 		    p -> translateGraphic( ( p -> originPoint().x() ) * -1, ( p -> originPoint().y() ) * -1 );
+// 		    p -> translateGraphic( da_local.x(), da_local.y() );
+// 	            KTStatus->currentDrawingArea() -> addGraphicComponent( p );
+// 	    }
+// 		    break;
+// 	    case GLGraphicComponent::GC_RECTANGLE:
+// 	    {
+// 	    	    GLRectangle *r = new GLRectangle( *( ( GLRectangle * )displayed_graphic ) );
+// 		    QPoint global( mouse_event -> globalX(), mouse_event -> globalY() );
+// 		    QPoint da_local( KTStatus->currentDrawingArea() -> mapFromGlobal( global ) );
+// 		    r -> translateGraphic( ( r -> originPoint().x() ) * -1, ( r -> originPoint().y() ) * -1 );
+// 		    r -> translateGraphic( da_local.x(), da_local.y() );
+// 	            KTStatus->currentDrawingArea() -> addGraphicComponent( r );
+// 	    }
+// 		    break;
+// 	    case GLGraphicComponent::GC_ELLIPSE:
+// 	    {
+// // 		    GLEllipse *e = new GLEllipse( *( ( GLEllipse * )displayed_graphic ) );
+// // 		    QPoint global( mouse_event -> globalX(), mouse_event -> globalY() );
+// // 		    QPoint da_local( KTStatus->currentDrawingArea() -> mapFromGlobal( global ) );
+// // 		    e -> translateGraphic( ( e -> originPoint().x() ) * -1, ( e -> originPoint().y() ) * -1 );
+// // 		    e -> translateGraphic( da_local.x(), da_local.y() );
+// // 	            KTStatus->currentDrawingArea() -> addGraphicComponent( e );
+// 	    }
+// 		    break;
+// 	    default: break;
+//         }
+//     }
     dragging = false;
     valid_drag = false;
     setCursor( QCursor( Qt::ArrowCursor ) );

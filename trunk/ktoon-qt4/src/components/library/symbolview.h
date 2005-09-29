@@ -31,7 +31,6 @@
 #include <QMouseEvent>
 
 class GLGraphicComponent;
-class KToon;
 
 /**
  * @brief Class that handles the graphic symbol view into the library dialog box
@@ -74,10 +73,9 @@ public:
 private:
     QWidget *parent_widget;
     QGLWidget *share_widget;
-    GLGraphicComponent *displayed_graphic;
+//     GLGraphicComponent *displayed_graphic;
     bool dragging;
     bool valid_drag;
-    KToon *k_toon;
 
 signals:
 

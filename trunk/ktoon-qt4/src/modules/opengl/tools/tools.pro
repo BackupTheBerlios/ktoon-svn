@@ -1,6 +1,6 @@
 # Archivo generado por el gestor qmake de kdevelop. 
 # ------------------------------------------- 
-# Subdirectorio relativo al directorio principal del proyecto: ./src/opengl/tools
+# Subdirectorio relativo al directorio principal del proyecto: ./src/modules/opengl/tools
 # Destiono es una biblioteca:  
 
 HEADERS += brushproperties.h \
@@ -19,7 +19,8 @@ HEADERS += brushproperties.h \
            glpen.h \
            glrectangle.h \
            brush.h \
-           gltext.h 
+           gltext.h \
+           glgraphiccomponent.h 
 SOURCES += brushproperties.cpp \
            ellipseproperties.cpp \
            imageproperties.cpp \
@@ -36,29 +37,17 @@ SOURCES += brushproperties.cpp \
            glpen.cpp \
            glrectangle.cpp \
            brush.cpp \
-           gltext.cpp 
-TARGETDEPS += ../../../src/lib/liblib.a
-LIBS += ../../../src/lib/liblib.a
-INCLUDEPATH += ../../../src/core \
-../../../src/exposure \
-../../../src/dialogs \
-../../../src/qt/cameras \
-../../../src/qt/tools \
-../../../src/qt/draw \
-../../../src/opengl/draw \
-../../../src/opengl/tools \
-../../../src/opengl/cameras \
-../../../src/store \
-../../../src/library \
-../../../src/timeline \
-../../../src/lib \
-../../../src/images/images
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
+           gltext.cpp \
+           glgraphiccomponent.cpp 
+INCLUDEPATH += ../../../../src/modules/opengl/draw \
+               ../../../../src/modules/opengl/cameras \
+               ../../../../src/store \
+               ../../../../src/lib 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
 CONFIG += release \
-warn_on \
-staticlib
-TEMPLATE = lib
-#The following line was inserted by qt3to4
-QT += xml  opengl qt3support 
+          warn_on \
+          staticlib 
+TEMPLATE = lib 
+QT += qt3support xml opengl

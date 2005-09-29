@@ -20,8 +20,8 @@
 
 #include "symboltable.h"
 #include "symbolitem.h"
-#include "drawingarea.h"
-#include "../images/images.h"
+// #include "drawingarea.h"
+#include "images.h"
 
 #include <qmatrix.h>
 //Added by qt3to4:

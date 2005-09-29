@@ -14,6 +14,69 @@ kttrans.files += *.qm
 kttrans.path = /data/translations 
 ktbin.files += ../../bin/ktoon 
 ktbin.path = /bin 
+TARGETDEPS += ../../src/dialogs/libdialogs.a \
+              ../../src/store/libstore.a \
+              ../../src/lib/liblib.a \
+              ../../src/images/images/libimages.a \
+              ../../src/dlslib/libdlslib.a \
+              ../../src/components/colorpalette/libcolorpalette.a \
+              ../../src/components/scenes/libscenes.a \
+              ../../src/components/brushes/libbrushes.a \
+              ../../src/components/ktoonscript/libktoonscript.a \
+              ../../src/components/exposure/libexposure.a \
+              ../../src/components/timeline/libtimeline.a \
+              ../../src/components/library/liblibrary.a \
+              ../../src/modules/opengl/draw/libdraw.a \
+              ../../src/modules/opengl/tools/libtools.a \
+              ../../src/modules/opengl/cameras/libcameras.a \
+              ../../src/modules/arthury/animation/libanimation.a \
+              ../../src/modules/arthury/illustration/libillustration.a 
+LIBS += ../../src/dialogs/libdialogs.a \
+        ../../src/components/brushes/libbrushes.a \
+        ../../src/components/colorpalette/libcolorpalette.a \
+        ../../src/components/scenes/libscenes.a \
+        ../../src/components/ktoonscript/libktoonscript.a \
+        ../../src/components/exposure/libexposure.a \
+        ../../src/components/timeline/libtimeline.a \
+        ../../src/components/library/liblibrary.a \
+        ../../src/store/libstore.a \
+        ../../src/dlslib/libdlslib.a \
+        ../../src/lib/liblib.a \
+        ../../src/images/images/libimages.a \
+        ../../src/modules/opengl/draw/libdraw.a \
+        ../../src/modules/opengl/tools/libtools.a \
+        ../../src/modules/opengl/cameras/libcameras.a \
+        ../../src/modules/arthury/animation/libanimation.a \
+        ../../src/modules/arthury/illustration/libillustration.a 
+INCLUDEPATH += ../../src/modules/opengl/draw \
+               ../../src/modules/opengl/tools \
+               ../../src/modules/opengl/cameras \
+               ../../src/modules/arthury/animation \
+               ../../src/modules/arthury/illustration \
+               ../../src/components/ktoonscript \
+               ../../src/components/exposure \
+               ../../src/components/timeline \
+               ../../src/components/library \
+               ../../src/components/colorpalette \
+               ../../src/components/scenes \
+               ../../src/components/brushes \
+               ../../src/dialogs \
+               ../../src/store \
+               ../../src/dlslib \
+               ../../src/lib \
+               ../../src/images/sequences \
+               ../../src/images/icons \
+               ../../src/images/cursors \
+               ../../src/images/images 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+TARGET = ../../bin/ktoon 
+CONFIG += release \
+          warn_on \
+          qt \
+          opengl 
+TEMPLATE = app 
 TRANSLATIONS += ktoon_es.ts \
                 ktoon_fr.ts \
                 ktoon_ru.ts \
@@ -31,70 +94,4 @@ SOURCES += ktoon.cpp \
            ktviewdocument.cpp \
            ktmainwindow.cpp \
            ktstatusbar.cpp 
-QT += qt3support opengl xml
-TARGETDEPS += ../../src/dialogs/libdialogs.a \
-../../src/qt/draw/libdraw.a \
-../../src/qt/tools/libtools.a \
-../../src/qt/cameras/libcameras.a \
-../../src/opengl/tools/libtools.a \
-../../src/opengl/cameras/libcameras.a \
-../../src/opengl/draw/libdraw.a \
-../../src/store/libstore.a \
-../../src/lib/liblib.a \
-../../src/images/images/libimages.a \
-../../src/dlslib/libdlslib.a \
-../../src/components/colorpalette/libcolorpalette.a \
-../../src/components/scenes/libscenes.a \
-../../src/components/brushes/libbrushes.a \
-../../src/components/ktoonscript/libktoonscript.a \
-../../src/components/exposure/libexposure.a \
-../../src/components/timeline/libtimeline.a \
-../../src/components/library/liblibrary.a
-LIBS += ../../src/dialogs/libdialogs.a \
-../../src/components/brushes/libbrushes.a \
-../../src/components/colorpalette/libcolorpalette.a \
-../../src/components/scenes/libscenes.a \
-../../src/components/ktoonscript/libktoonscript.a \
-../../src/components/exposure/libexposure.a \
-../../src/components/timeline/libtimeline.a \
-../../src/components/library/liblibrary.a \
-../../src/opengl/draw/libdraw.a \
-../../src/opengl/tools/libtools.a \
-../../src/opengl/cameras/libcameras.a \
-../../src/qt/draw/libdraw.a \
-../../src/qt/tools/libtools.a \
-../../src/qt/cameras/libcameras.a \
-../../src/store/libstore.a \
-../../src/dlslib/libdlslib.a \
-../../src/lib/liblib.a \
-../../src/images/images/libimages.a
-INCLUDEPATH += ../../src/components/ktoonscript \
-../../src/components/exposure \
-../../src/components/timeline \
-../../src/components/library \
-../../src/components/colorpalette \
-../../src/components/scenes \
-../../src/components/brushes \
-../../src/dialogs \
-../../src/qt/cameras \
-../../src/qt/tools \
-../../src/qt/draw \
-../../src/opengl/draw \
-../../src/opengl/tools \
-../../src/opengl/cameras \
-../../src/store \
-../../src/dlslib \
-../../src/lib \
-../../src/images/sequences \
-../../src/images/icons \
-../../src/images/cursors \
-../../src/images/images
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-TARGET = ../../bin/ktoon
-CONFIG += release \
-warn_on \
-qt \
-opengl
-TEMPLATE = app
+QT += qt3support xml opengl

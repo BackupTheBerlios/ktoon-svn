@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktoon.h"
 #include "glgraphiccomponent.h"
 #include "glline.h"
 #include "glellipse.h"
@@ -26,6 +25,9 @@
 #include "glpen.h"
 #include "glpencil.h"
 #include "glbrush.h"
+#include "glimage.h"
+#include "drawingarea.h"
+
 #include <cmath>
 //Added by qt3to4:
 #include <QKeyEvent>

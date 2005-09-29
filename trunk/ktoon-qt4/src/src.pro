@@ -7,11 +7,11 @@ SUBDIRS += images \
            lib \
            dlslib \
            store \
-           opengl \
-           qt \
            dialogs \
            components \
-           core 
+           modules \
+           core
 CONFIG += release \
 warn_on
 TEMPLATE = subdirs
+QT += qt3support xml opengl

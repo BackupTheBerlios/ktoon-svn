@@ -22,7 +22,7 @@
 
 #include "brushes.h"
 #include "ktapplication.h"
-#include "status.h"
+// #include "status.h"
 #include "ktdebug.h"
 #include "ktimagebutton.h"
 
@@ -112,14 +112,14 @@ void Brushes::setupTableBrushes()
 	connect(m_tableBrushes, SIGNAL(changeCurrentBrush(int , int , int , QString )), this, SLOT(selectBrush(int , int , int , QString )));
 	addChild(m_tableBrushes);
 	
-	//FIXME: removere este codigo pare reducir el acoplamiento con los demos modulos
-	std::auto_ptr<Brush> ap_brush(new Brush( 2, 5, 2 ) );
-	ap_brush.get()->setNameBrush( tr( "Brush" ) + QString( "0" ) );
-	KTStatus -> setCurrentBrush( ap_brush.get() );
-	QList<Brush*> br;
-	br.append( ap_brush.get() );
-	KTStatus->currentDocument()->setBrushes( br );
-	ap_brush.release();
+	//FIXME: removere este codigo pare reducir el acoplamiento con los demas modulos
+// 	std::auto_ptr<Brush> ap_brush(new Brush( 2, 5, 2 ) );
+// 	ap_brush.get()->setNameBrush( tr( "Brush" ) + QString( "0" ) );
+// 	KTStatus -> setCurrentBrush( ap_brush.get() );
+// 	QList<Brush*> br;
+// 	br.append( ap_brush.get() );
+// 	KTStatus->currentDocument()->setBrushes( br );
+// 	ap_brush.release();
 	//
 }
 
@@ -325,7 +325,7 @@ void Brushes::changeValueSmoothness(int value)
 
 	emit smoothnessChanged(m_tableBrushes->indexCurrentBrush(), value);
 #ifdef DEBUG_BRUSHES
-std::cout << "smoothnessChanged()" << std::endl;
+ktDebug() << "smoothnessChanged()" << endl;
 #endif
 }
 

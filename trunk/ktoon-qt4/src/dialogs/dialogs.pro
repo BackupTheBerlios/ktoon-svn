@@ -3,6 +3,20 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/dialogs
 # Destiono es una biblioteca:  
 
+INCLUDEPATH += ../../src/modules/opengl/draw \
+               ../../src/modules/opengl/tools \
+               ../../src/modules/opengl/cameras \
+               ../../src/core \
+               ../../src/store \
+               ../../src/lib \
+               ../../src/images/images 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+CONFIG += release \
+          warn_on \
+          staticlib 
+TEMPLATE = lib 
 HEADERS += about.h \
            export.h \
            import.h \
@@ -19,25 +33,4 @@ SOURCES += about.cpp \
            ktthemeselector.cpp \
            ktcamerapreview.cpp \
            tools.cpp 
-INCLUDEPATH += ../../src/core \
-../../src/exposure \
-../../src/dialogs \
-../../src/qt/cameras \
-../../src/qt/tools \
-../../src/qt/draw \
-../../src/opengl/draw \
-../../src/opengl/tools \
-../../src/opengl/cameras \
-../../src/store \
-../../src/library \
-../../src/timeline \
-../../src/lib \
-../../src/images/images
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-CONFIG += release \
-warn_on \
-staticlib
-TEMPLATE = lib
-QT += xml opengl qt3support
+QT += qt3support xml opengl

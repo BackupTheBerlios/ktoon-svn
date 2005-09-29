@@ -27,7 +27,7 @@
  */
 
 #include "ktmodulewidgetbase.h"
-#include "layer.h"
+
 #include "ktsceneslist.h"
 
 #include <QGroupBox>

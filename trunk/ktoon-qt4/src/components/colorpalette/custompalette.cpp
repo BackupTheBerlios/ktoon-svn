@@ -19,10 +19,11 @@
  ***************************************************************************/
 
 #include "custompalette.h"
-#include "status.h"
+// #include "status.h"
 //Added by qt3to4:
 #include <QMouseEvent>
 #include <Q3PtrList>
+#include "ktcolor.h"
 
 
 //-------------- CONSTRUCTOR -----------------
@@ -53,7 +54,7 @@ void CustomPalette::loadColors( Q3PtrList<KTColor> colors )
 {
     clear();
     Q3PtrList<KTColor> empty;
-    KTStatus->currentDocument()-> getPalette() -> setColors( empty );
+//     KTStatus->currentDocument()-> getPalette() -> setColors( empty );
 
     KTColor *c_it;
     for ( c_it = colors.first(); c_it; c_it = colors.next() )
@@ -114,12 +115,12 @@ void CustomPalette::slotAddColor( const QColor &new_color, int alpha )
 	cur_col = 0;
 	cur_row++;
 
-	Q3PtrList<KTColor> cl = KTStatus->currentDocument() -> getPalette() -> getColors();
+// 	Q3PtrList<KTColor> cl = KTStatus->currentDocument() -> getPalette() -> getColors();
 	KTColor *n_color = new KTColor( ( float )new_color.red() / 255.0, ( float )new_color.green() / 255.0,
 	                            ( float )new_color.blue() / 255.0, ( float )alpha / 100.0 );
 	try {
-	  cl.append( n_color );
-	  KTStatus->currentDocument()-> getPalette() -> setColors( cl );
+// 	  cl.append( n_color );
+// 	  KTStatus->currentDocument()-> getPalette() -> setColors( cl );
 	  }
 	catch(...)
 	   {
@@ -140,12 +141,12 @@ void CustomPalette::slotAddColor( const QColor &new_color, int alpha )
 	updateCell( cur_row, cur_col );
 	cur_col++;
 
-	Q3PtrList<KTColor> cl = KTStatus->currentDocument()-> getPalette() -> getColors();
+// 	Q3PtrList<KTColor> cl = KTStatus->currentDocument()-> getPalette() -> getColors();
 	KTColor *n_color = new KTColor( ( float )new_color.red() / 255.0, ( float )new_color.green() / 255.0,
 	                            ( float )new_color.blue() / 255.0, ( float )alpha / 100.0 );
 	try {
-	  cl.append( n_color );
-	  KTStatus->currentDocument()-> getPalette() -> setColors( cl );
+// 	  cl.append( n_color );
+// 	  KTStatus->currentDocument()-> getPalette() -> setColors( cl );
 	  }
 	catch(...)
 	   {
@@ -177,11 +178,11 @@ void CustomPalette::slotRemoveColor()
 	alpha_matrix[sel_row][sel_col] = -1;
 	updateCell( sel_row, sel_col );
 
-	Q3PtrList<KTColor> cl = KTStatus->currentDocument() -> getPalette() -> getColors();
-	cl.setAutoDelete( true );
-	cl.remove( map2Dto1D( sel_row, sel_col ) );
-	cl.setAutoDelete( false );
-	KTStatus->currentDocument()-> getPalette() -> setColors( cl );
+// 	Q3PtrList<KTColor> cl = KTStatus->currentDocument() -> getPalette() -> getColors();
+// 	cl.setAutoDelete( true );
+// 	cl.remove( map2Dto1D( sel_row, sel_col ) );
+// 	cl.setAutoDelete( false );
+// 	KTStatus->currentDocument()-> getPalette() -> setColors( cl );
 
 	for ( i = sel_row; i < numRows(); i++ )
 	{
@@ -255,9 +256,9 @@ void CustomPalette::slotChangeColorName( const QString &new_name )
     {
         color_names[sel_row][sel_col] = new_name;
 
-	Q3PtrList<KTColor> cl = KTStatus->currentDocument() -> getPalette() -> getColors();
-	KTColor *s_color = cl.at( map2Dto1D( sel_row, sel_col ) );
-	s_color -> setNameColor( new_name );
+// 	Q3PtrList<KTColor> cl = KTStatus->currentDocument() -> getPalette() -> getColors();
+// 	KTColor *s_color = cl.at( map2Dto1D( sel_row, sel_col ) );
+// 	s_color -> setNameColor( new_name );
     }
 }
 

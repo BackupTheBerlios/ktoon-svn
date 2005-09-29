@@ -3,14 +3,8 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/components/colorpalette
 # Destiono es una biblioteca:  
 
-INCLUDEPATH += ../../../src/dialogs \
-               ../../../src/qt/cameras \
-               ../../../src/qt/tools \
-               ../../../src/qt/draw \
-               ../../../src/opengl/draw \
-               ../../../src/opengl/tools \
-               ../../../src/opengl/cameras \
-               ../../../src/store \
+INCLUDEPATH += ../../../src/store \
+               ../../../src/dialogs \
                ../../../src/lib 
 CONFIG += release \
           warn_on \
@@ -38,5 +32,4 @@ SOURCES += colorcells.cpp \
            gradientviewer.cpp \
            outlinecolor.cpp \
            valueselector.cpp 
-
-QT += xml opengl qt3support
+QT += qt3support xml opengl

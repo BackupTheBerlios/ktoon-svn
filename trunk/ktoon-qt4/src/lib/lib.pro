@@ -3,14 +3,19 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/lib
 # Destiono es una biblioteca:  
 
-HEADERS += glgraphiccomponent.h \
-           ktapplication.h \
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+CONFIG += release \
+          warn_on \
+          staticlib 
+TEMPLATE = lib 
+HEADERS += ktapplication.h \
            configwizard.h \
            ktxmlparser.h \
            ktxmlreader.h \
            ktanimwidget.h \
            ktfontwidget.h \
-           status.h \
            ktthememanager.h \
            ktthemedocument.h \
            kteditspinbox.h \
@@ -33,14 +38,12 @@ HEADERS += glgraphiccomponent.h \
            ktaction.h \
            ktmodulewidgettitle.h \
            kttabdialog.h 
-SOURCES += glgraphiccomponent.cpp \
-           ktapplication.cpp \
+SOURCES += ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
            ktxmlreader.cpp \
            ktanimwidget.cpp \
            ktfontwidget.cpp \
-           status.cpp \
            ktthememanager.cpp \
            ktthemedocument.cpp \
            kteditspinbox.cpp \
@@ -63,28 +66,4 @@ SOURCES += glgraphiccomponent.cpp \
            ktaction.cpp \
            ktmodulewidgettitle.cpp \
            kttabdialog.cpp 
-QT += opengl xml qt3support
-INCLUDEPATH += ../../src/core \
-../../src/components/exposure \
-../../src/components/timeline \
-../../src/components/library \
-../../src/components/colorpalette \
-../../src/components/scenes \
-../../src/components/brushes \
-../../src/dialogs \
-../../src/qt/cameras \
-../../src/qt/tools \
-../../src/qt/draw \
-../../src/opengl/draw \
-../../src/opengl/tools \
-../../src/opengl/cameras \
-../../src/store \
-../../src/lib \
-../../src/images/images
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-CONFIG += release \
-warn_on \
-staticlib
-TEMPLATE = lib
+QT += qt3support xml opengl

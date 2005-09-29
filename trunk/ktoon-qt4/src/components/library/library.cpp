@@ -25,6 +25,8 @@
 #include "symbol.h"
 #include "folder.h"
 
+// #include "glgraphiccomponent"
+
 #include <qtooltip.h>
 #include <qmatrix.h>
 #include <qmessagebox.h>
@@ -140,76 +142,76 @@ Library::~Library()
 
 void Library::addSymbol( GLGraphicComponent *graphic, const QString &name )
 {
-	Q_CHECK_PTR( graphic );
-	number_of_items++;
-	text_number_of_items -> setText( QString( "# " ) + tr( "items" ) + QString( ": " ) + QString::number( number_of_items ) );
-
-	SymbolItem *new_graphic = new SymbolItem( table_symbols, name );
-	new_graphic -> setDragEnabled( true );
-	new_graphic -> setKind( SymbolItem::GRAPHIC );
-
-	LibraryData *lib = KTStatus->currentDocument() -> getLibrary();
-	Q3PtrList<Item> its = lib -> getItems();
-    
-	std::auto_ptr<Symbol> ap_new_symbol(new Symbol);
-	Symbol* new_symbol = ap_new_symbol.get();
-    
-	new_symbol -> setName( name );
-
-	switch ( graphic -> kindGraphic() )
-	{
-		case GLGraphicComponent::GC_BRUSH:
-		{
-			GLBrush *b = new GLBrush( *( ( GLBrush * )graphic ) );
-			new_graphic -> setGraphic( b );
-			new_symbol -> setGraphic( b );
-		}
-		break;
-		case GLGraphicComponent::GC_PENCIL:
-		{
-			GLPencil *pc = new GLPencil( *( ( GLPencil * )graphic ) );
-			new_graphic -> setGraphic( pc );
-			new_symbol -> setGraphic( pc );
-		}
-		break;
-		case GLGraphicComponent::GC_LINE:
-		{
-			GLLine *l = new GLLine( *( ( GLLine * )graphic ) );
-			new_graphic -> setGraphic( l );
-			new_symbol -> setGraphic( l );
-		}
-		break;
-		case GLGraphicComponent::GC_PEN:
-		{
-			GLPen *p = new GLPen( *( ( GLPen * )graphic ) );
-			new_graphic -> setGraphic( p );
-			new_symbol -> setGraphic( p );
-		}
-		break;
-		case GLGraphicComponent::GC_RECTANGLE:
-		{
-			GLRectangle *r = new GLRectangle( *( ( GLRectangle * )graphic ) );
-			new_graphic -> setGraphic( r );
-			new_symbol -> setGraphic( r );
-		}
-		break;
-		case GLGraphicComponent::GC_ELLIPSE:
-		{
-			GLEllipse *e = new GLEllipse( *( ( GLEllipse * )graphic ) );
-			new_graphic -> setGraphic( e );
-			new_symbol -> setGraphic( e );
-		}
-		break;
-		default: new_graphic -> setGraphic( NULL );
-		new_symbol -> setGraphic( NULL );
-		break;
-	}
-	table_symbols -> setSelected( new_graphic, true );
-	KTStatus->currentDrawingArea() -> modifyDocument( true );
-
-	its.prepend( new_symbol );
-	lib -> setItems( its );
-	ap_new_symbol.release();
+// 	Q_CHECK_PTR( graphic );
+// 	number_of_items++;
+// 	text_number_of_items -> setText( QString( "# " ) + tr( "items" ) + QString( ": " ) + QString::number( number_of_items ) );
+// 
+// 	SymbolItem *new_graphic = new SymbolItem( table_symbols, name );
+// 	new_graphic -> setDragEnabled( true );
+// 	new_graphic -> setKind( SymbolItem::GRAPHIC );
+// 
+// // 	LibraryData *lib = KTStatus->currentDocument() -> getLibrary();
+// // 	Q3PtrList<Item> its = lib -> getItems();
+//     
+// 	std::auto_ptr<Symbol> ap_new_symbol(new Symbol);
+// 	Symbol* new_symbol = ap_new_symbol.get();
+//     
+// 	new_symbol -> setName( name );
+// 
+// 	switch ( graphic -> kindGraphic() )
+// 	{
+// 		case GLGraphicComponent::GC_BRUSH:
+// 		{
+// 			GLBrush *b = new GLBrush( *( ( GLBrush * )graphic ) );
+// 			new_graphic -> setGraphic( b );
+// 			new_symbol -> setGraphic( b );
+// 		}
+// 		break;
+// 		case GLGraphicComponent::GC_PENCIL:
+// 		{
+// 			GLPencil *pc = new GLPencil( *( ( GLPencil * )graphic ) );
+// 			new_graphic -> setGraphic( pc );
+// 			new_symbol -> setGraphic( pc );
+// 		}
+// 		break;
+// 		case GLGraphicComponent::GC_LINE:
+// 		{
+// 			GLLine *l = new GLLine( *( ( GLLine * )graphic ) );
+// 			new_graphic -> setGraphic( l );
+// 			new_symbol -> setGraphic( l );
+// 		}
+// 		break;
+// 		case GLGraphicComponent::GC_PEN:
+// 		{
+// 			GLPen *p = new GLPen( *( ( GLPen * )graphic ) );
+// 			new_graphic -> setGraphic( p );
+// 			new_symbol -> setGraphic( p );
+// 		}
+// 		break;
+// 		case GLGraphicComponent::GC_RECTANGLE:
+// 		{
+// 			GLRectangle *r = new GLRectangle( *( ( GLRectangle * )graphic ) );
+// 			new_graphic -> setGraphic( r );
+// 			new_symbol -> setGraphic( r );
+// 		}
+// 		break;
+// 		case GLGraphicComponent::GC_ELLIPSE:
+// 		{
+// 			GLEllipse *e = new GLEllipse( *( ( GLEllipse * )graphic ) );
+// 			new_graphic -> setGraphic( e );
+// 			new_symbol -> setGraphic( e );
+// 		}
+// 		break;
+// 		default: new_graphic -> setGraphic( NULL );
+// 		new_symbol -> setGraphic( NULL );
+// 		break;
+// 	}
+// 	table_symbols -> setSelected( new_graphic, true );
+// // 	KTStatus->currentDrawingArea() -> modifyDocument( true );
+// 
+// 	its.prepend( new_symbol );
+// 	lib -> setItems( its );
+// 	ap_new_symbol.release();
 }
 
 SymbolView *Library::getSymbolView() const
@@ -245,43 +247,43 @@ void Library::loadItems( Q3PtrList<Item> items )
 
 void Library::loadImageSymbol( const QString &file_name )
 {
-	number_of_items++;
-	image_count++;
-	text_number_of_items -> setText( QString( "# " ) + tr( "items" ) + QString( ": " ) + QString::number( number_of_items ) );
-
-	SymbolItem *new_graphic = new SymbolItem( table_symbols, "IMAGE " + QString::number( image_count ) );
-	new_graphic -> setDragEnabled( true );
-	new_graphic -> setKind( SymbolItem::GRAPHIC );
-
-	LibraryData *lib = KTStatus->currentDocument() -> getLibrary();
-	Q3PtrList<Item> its = lib -> getItems();
-	Symbol *new_symbol = new Symbol();
-    
-	try {
-		new_symbol -> setName( "IMAGE " + QString::number( image_count ) );
-
-		GLImage *i = new GLImage( symbol_view, file_name, QPoint( 0, 0 ), QPoint() );
-		new_graphic -> setGraphic( i );
-		new_symbol -> setGraphic( i );
-
-		table_symbols -> setSelected( new_graphic, true );
-		KTStatus->currentDrawingArea() -> modifyDocument( true );
-
-		its.prepend( new_symbol );
-		lib -> setItems( its );
-	}
-	catch(...)
-	{
-		delete new_symbol;
-		throw;
-	}
+// 	number_of_items++;
+// 	image_count++;
+// 	text_number_of_items -> setText( QString( "# " ) + tr( "items" ) + QString( ": " ) + QString::number( number_of_items ) );
+// 
+// 	SymbolItem *new_graphic = new SymbolItem( table_symbols, "IMAGE " + QString::number( image_count ) );
+// 	new_graphic -> setDragEnabled( true );
+// 	new_graphic -> setKind( SymbolItem::GRAPHIC );
+// 
+// // 	LibraryData *lib = KTStatus->currentDocument() -> getLibrary();
+// // 	Q3PtrList<Item> its = lib -> getItems();
+// 	Symbol *new_symbol = new Symbol();
+//     
+// 	try {
+// 		new_symbol -> setName( "IMAGE " + QString::number( image_count ) );
+// 
+// 		GLImage *i = new GLImage( symbol_view, file_name, QPoint( 0, 0 ), QPoint() );
+// 		new_graphic -> setGraphic( i );
+// 		new_symbol -> setGraphic( i );
+// 
+// 		table_symbols -> setSelected( new_graphic, true );
+// // 		KTStatus->currentDrawingArea() -> modifyDocument( true );
+// 
+// // 		its.prepend( new_symbol );
+// // 		lib -> setItems( its );
+// 	}
+// 	catch(...)
+// 	{
+// 		delete new_symbol;
+// 		throw;
+// 	}
 }
 
 //-------------- SLOTS ---------------
 
 void Library::slotAddSymbol()
 {
-	KTStatus->currentDrawingArea() -> modifyDocument( true );
+// 	KTStatus->currentDrawingArea() -> modifyDocument( true );
 }
 
 void Library::slotDeleteSymbol()
@@ -336,33 +338,33 @@ void Library::slotSelectSymbol()
 
 void Library::slotInsertIntoDrawingArea()
 {
-	DrawingArea *drawing_area = ( DrawingArea * )symbol_view -> shareWidget();
-	SymbolItem * selected_item = ( SymbolItem * )table_symbols -> selectedItem();
-	if ( selected_item != 0 )
-	{
-		switch ( selected_item -> getGraphic() -> kindGraphic() )
-		{
-			case GLGraphicComponent::GC_BRUSH:
-				drawing_area -> addGraphicComponent( new GLBrush( *( ( GLBrush * )selected_item -> getGraphic() ) ) );
-				break;
-			case GLGraphicComponent::GC_PENCIL:
-				drawing_area -> addGraphicComponent( new GLPencil( *( ( GLPencil * )selected_item -> getGraphic() ) ) );
-				break;
-			case GLGraphicComponent::GC_LINE:
-				drawing_area -> addGraphicComponent( new GLLine( *( ( GLLine * )selected_item -> getGraphic() ) ) );
-				break;
-			case GLGraphicComponent::GC_PEN:
-				drawing_area -> addGraphicComponent( new GLPen( *( ( GLPen * )selected_item -> getGraphic() ) ) );
-				break;
-			case GLGraphicComponent::GC_RECTANGLE:
-				drawing_area -> addGraphicComponent( new GLRectangle( *( ( GLRectangle * )selected_item -> getGraphic() ) ) );
-				break;
-			case GLGraphicComponent::GC_ELLIPSE:
-				drawing_area -> addGraphicComponent( new GLEllipse( *( ( GLEllipse * )selected_item -> getGraphic() ) ) );
-				break;
-				default: break;
-		}
-	}
+// 	DrawingArea *drawing_area = ( DrawingArea * )symbol_view -> shareWidget();
+// 	SymbolItem * selected_item = ( SymbolItem * )table_symbols -> selectedItem();
+// 	if ( selected_item != 0 )
+// 	{
+// 		switch ( selected_item -> getGraphic() -> kindGraphic() )
+// 		{
+// 			case GLGraphicComponent::GC_BRUSH:
+// 				drawing_area -> addGraphicComponent( new GLBrush( *( ( GLBrush * )selected_item -> getGraphic() ) ) );
+// 				break;
+// 			case GLGraphicComponent::GC_PENCIL:
+// 				drawing_area -> addGraphicComponent( new GLPencil( *( ( GLPencil * )selected_item -> getGraphic() ) ) );
+// 				break;
+// 			case GLGraphicComponent::GC_LINE:
+// 				drawing_area -> addGraphicComponent( new GLLine( *( ( GLLine * )selected_item -> getGraphic() ) ) );
+// 				break;
+// 			case GLGraphicComponent::GC_PEN:
+// 				drawing_area -> addGraphicComponent( new GLPen( *( ( GLPen * )selected_item -> getGraphic() ) ) );
+// 				break;
+// 			case GLGraphicComponent::GC_RECTANGLE:
+// 				drawing_area -> addGraphicComponent( new GLRectangle( *( ( GLRectangle * )selected_item -> getGraphic() ) ) );
+// 				break;
+// 			case GLGraphicComponent::GC_ELLIPSE:
+// 				drawing_area -> addGraphicComponent( new GLEllipse( *( ( GLEllipse * )selected_item -> getGraphic() ) ) );
+// 				break;
+// 				default: break;
+// 		}
+// 	}
 }
 
 void Library::slotAddFolder()
@@ -373,15 +375,15 @@ void Library::slotAddFolder()
 	new_folder -> setKind( SymbolItem::FOLDER );
 	new_folder -> setDragEnabled( true );
 	table_symbols -> setSelected( new_folder, true );
-	KTStatus->currentDrawingArea() -> modifyDocument( true );
+// 	KTStatus->currentDrawingArea() -> modifyDocument( true );
 
-	LibraryData *lib = KTStatus->currentDocument() -> getLibrary();
-	Q3PtrList<Item> its = lib -> getItems();
+// 	LibraryData *lib = KTStatus->currentDocument() -> getLibrary();
+// 	Q3PtrList<Item> its = lib -> getItems();
 	Folder *new_fold = new Folder();
 	try {
 		new_fold -> setName( tr( "New Folder" ) );
-		its.prepend( new_fold );
-		lib -> setItems( its );
+// 		its.prepend( new_fold );
+// 		lib -> setItems( its );
 	}
 	catch(...)
 	{
@@ -402,7 +404,7 @@ void Library::slotStartRename( Q3ListViewItem *to_rename, const QPoint &point, i
 
 void Library::slotUpdateLibraryData()
 {
-	LibraryData *lib = KTStatus->currentDocument() -> getLibrary();
+// 	LibraryData *lib = KTStatus->currentDocument() -> getLibrary();
 	Q3PtrList<Item> its;
 
 	SymbolItem *item = ( SymbolItem * )table_symbols -> firstChild();
@@ -431,7 +433,7 @@ void Library::slotUpdateLibraryData()
 	}
 
 	try {
-		lib -> setItems( its );
+// 		lib -> setItems( its );
 	}
 	catch(...)
 	{
@@ -441,7 +443,7 @@ void Library::slotUpdateLibraryData()
 		throw;
 	}
 
-	KTStatus->currentDrawingArea() -> modifyDocument( true );
+// 	KTStatus->currentDrawingArea() -> modifyDocument( true );
 }
 
 //----------- EVENTS AND PROTECTED MEMBERS ---------------

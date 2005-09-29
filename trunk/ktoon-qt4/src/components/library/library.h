@@ -37,12 +37,12 @@
 #include <QKeyEvent>
 #include <Q3PtrList>
 
-#include "drawingarea.h"
+// #include "drawingarea.h"
 #include "symbolview.h"
 #include "symboltable.h"
 #include "ktmodulewidgetbase.h"
 
-#include "status.h"
+// #include "status.h"
 
 // class KToon;
 class Folder;

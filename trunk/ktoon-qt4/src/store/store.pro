@@ -3,6 +3,24 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/store
 # Destiono es una biblioteca:  
 
+INCLUDEPATH += ../../src/modules/opengl/draw \
+               ../../src/modules/opengl/tools \
+               ../../src/modules/opengl/cameras \
+               ../../src/core \
+               ../../src/dialogs \
+               ../../src/store \
+               ../../src/lib \
+               ../../src/images/sequences \
+               ../../src/images/icons \
+               ../../src/images/cursors \
+               ../../src/images/images 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+CONFIG += release \
+          warn_on \
+          staticlib 
+TEMPLATE = lib 
 HEADERS += animation.h \
            camera.h \
            document.h \
@@ -18,7 +36,8 @@ HEADERS += animation.h \
            soundclip.h \
            soundlayer.h \
            symbol.h \
-           ktcolor.h 
+           ktcolor.h \
+           status.h 
 SOURCES += animation.cpp \
            camera.cpp \
            folder.cpp \
@@ -34,30 +53,6 @@ SOURCES += animation.cpp \
            soundlayer.cpp \
            symbol.cpp \
            document.cpp \
-           ktcolor.cpp 
-INCLUDEPATH += ../../src/core \
-../../src/exposure \
-../../src/dialogs \
-../../src/qt/cameras \
-../../src/qt/tools \
-../../src/qt/draw \
-../../src/opengl/draw \
-../../src/opengl/tools \
-../../src/opengl/cameras \
-../../src/store \
-../../src/library \
-../../src/timeline \
-../../src/lib \
-../../src/images/sequences \
-../../src/images/icons \
-../../src/images/cursors \
-../../src/images/images
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-CONFIG += release \
-warn_on \
-staticlib
-TEMPLATE = lib
-#The following line was inserted by qt3to4
-QT += xml  opengl qt3support 
+           ktcolor.cpp \
+           status.cpp 
+QT += qt3support xml opengl
