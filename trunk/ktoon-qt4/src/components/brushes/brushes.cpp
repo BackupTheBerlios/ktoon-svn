@@ -76,7 +76,7 @@ Brushes::~Brushes()
 	delete m_displayMinThickness;
 	delete m_displayMaxThickness;
 	delete m_displaySmoothness;
-	delete m_textName;
+	// 	delete m_textName; // Causes SIGSEGV
 	delete m_valueName;
 }
 

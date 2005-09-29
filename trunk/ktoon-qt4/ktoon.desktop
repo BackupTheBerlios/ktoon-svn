@@ -1,0 +1,14 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=KToon
+Name[xx]=KToon
+Exec=ktoon
+Icon=ktoon
+Type=Application
+#MimeType=
+#DocPath=
+Categories=Application;Graphics;2DGraphics;RasterGraphics;
+Comment=A 2D animation toolkit
+Comment[es]=Herramienta para animacion 2D
+Terminal=false
+

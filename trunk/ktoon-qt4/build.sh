@@ -13,6 +13,8 @@ QMAKE=`which qmake`
 KTOON_GLOBAL_ENV=/etc/ktoon.env
 KTOON_LOCAL_ENV=~/.ktoon.env
 
+export PATH=/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin
+
 if [ $# -eq 0 ]
 then
 	if [ ! $KTOON_HOME ]
@@ -51,7 +53,7 @@ function qperror ()
 
 function qpelec ()
 {
-	echo -e $3 $RED $1 $NULLC $2 
+	echo -en "$RED $1 $NULLC $2 "
 }
 
 function verifyEnv()
@@ -106,6 +108,22 @@ function buildenv()
 	fi
 }
 
+function addMenuEntry()
+{
+	if [ `whoami` == "root" ]
+	then
+		if [ -d /usr/share/applications ]
+		then
+			echo "Add menu entry to /usr/share/applications"
+			cp ktoon.desktop /usr/share/applications
+		fi
+	else
+		mkdir -p $HOME/.kde/share/applnk/Graphics
+		echo "Add menu entry to $HOME/.kde/share/applnk/Graphics/ktoon.desktop"
+		cp ktoon.desktop $HOME/.kde/share/applnk/Graphics/ktoon.desktop
+	fi
+}
+
 function ktinstall()
 {
 	make install
@@ -119,6 +137,7 @@ function ktinstall()
 			then
 				echo "source $KTOON_GLOBAL_ENV" >> /etc/profile
 			fi
+#install menu entry
 		else
 			if [ -f ~/.bashrc ]
 			then
@@ -139,6 +158,8 @@ function ktinstall()
 				fi
 			fi
  		fi
+ 		
+ 		addMenuEntry
 	fi
 }
 
@@ -180,15 +201,17 @@ do
 	cd - 2> /dev/null >/dev/null
 done
 
-qpelec '-' "Do you wants use opengl (y/n)? " -n
+qpelec '-' "Do you wants use opengl (y/n)? "
 read UOG
 
 case $UOG in
-	y) openglCC;;
-	yes )openglCC;;
-	si) openglCC;;
-	s) openglCC;;
-	*) qtCC;;
+	y) openglCC ;;
+	yes) openglCC ;;
+	si) openglCC ;;
+	s) openglCC ;;
+	Y) openglCC ;;
+	S) openglCC ;;
+	*) qtCC ;;
 esac
 
 $QMAKE
@@ -201,7 +224,7 @@ $MAKE || exit 1
 
 qpinfo "Compiling successful!"
 
-qpelec '-' "Do you wants install ktoon in \"$KTOON_HOME\" (y/n)? " -n
+qpelec '-' "Do you wants install ktoon in \"$KTOON_HOME\" (y/n)? "
 read SN
 
 case $SN in
