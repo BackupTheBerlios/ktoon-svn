@@ -15,7 +15,7 @@
 #include <QTreeWidget>
 
 /**
-	@author Jorge Cuadrado <kuadrosx@toonka.com>
+*	@author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 class KTScenesList : public QTreeWidget
 {
@@ -23,7 +23,21 @@ class KTScenesList : public QTreeWidget
 	public:
 		KTScenesList(QWidget *parent = 0);
 		~KTScenesList();
-		void addScenes(QString name);
+		void addScene(QString name);
+		int removeCurrentScene();
+		int indexCurrentScene();
+		QString nameCurrentScene();
+		
+	private slots:
+		void changeCurrentScene();
+		
+	public slots:
+		int moveCurrentSceneUp();
+		int moveCurrentSceneDown();
+		void changeCurrentName(QString name);
+		
+	signals:
+		void changeCurrent(QString name, int index);
 };
 
 #endif

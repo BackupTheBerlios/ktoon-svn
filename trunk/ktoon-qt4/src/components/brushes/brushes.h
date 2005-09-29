@@ -122,17 +122,19 @@ class Brushes : public KTModuleWidgetBase
 	/**
 	* This signal is emitted when the minimum thickness has changed.
 	*/
-	void minThicknessChanged();
+	void minThicknessChanged(int index , int value);
 	/**
 	* This signal is emitted when the maximum thickness has changed.
 	*/
-	void maxThicknessChanged();
+	void maxThicknessChanged(int index , int value);
 	/**
 	* This signal is emitted when the smoothness has changed.
 	*/
-	void smoothnessChanged();
-	
+	void smoothnessChanged(int index , int value);
+	void nameChanged(int index , QString value);
 	void changedBrush(int index);
+	void addedBrush(int min, int max, int smooth, QString name);
+	void removedBrush(int index);
 	
 	public slots:
 	/**
@@ -178,7 +180,7 @@ class Brushes : public KTModuleWidgetBase
 	* It also modifies the current brush maximum smoothness.
 	* @sa slotChangeValueMinThickness(), slotChangeValueMaxThickness()
 	*/
-	void changeValueSmoothness();
+	void changeValueSmoothness(int value);
 	/**
 	* @brief Changes the current brush name
 	*

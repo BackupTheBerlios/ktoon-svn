@@ -26,31 +26,17 @@
  *   Include this file if you need the class Scenes
  */
 
-#include <QGroupBox>
-
-
-#include <qpushbutton.h>
-#include <q3popupmenu.h>
-#include <q3listview.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qtoolbutton.h>
-#include <q3vbox.h>
-#include <q3hbox.h>
-#include <q3buttongroup.h>
-
-
-#include <QPixmap>
-#include <QList>
-#include <Q3ValueList>
-#include <Q3PtrList>
+#include "ktmodulewidgetbase.h"
 #include "layer.h"
 #include "ktsceneslist.h"
 
-#include "ktmodulewidgetbase.h"
-
-
-// typedef Q3ValueList<QPixmap> imgs;
+#include <QGroupBox>
+#include <QPushButton>
+#include <QButtonGroup>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPixmap>
+#include <QList>
 
 
 class Scene;
@@ -73,10 +59,7 @@ Q_OBJECT
 		*
 		* Constructs a Scenes dialog box.
 		* @param parent The parent widget
-		* @param style Flags passed to the QDialog constructor
-		* @param in_assigned_menu The assigned menu bar popup menu
-		* @param id_assigned_item The assigned menu item from the assigned menu
-		* @param assig_tb_button The assigned tool bar button
+		*
 		*/
 		Scenes( QWidget *parent);
 		/**
@@ -91,7 +74,7 @@ Q_OBJECT
 		*
 		* @param scenes The list of scenes
 		*/
-		void loadScenes( Q3PtrList<Scene> scenes );
+		void loadScenes( QList<Scene*> scenes );
 		/**
 		*   Selects the first scene
 		*/
@@ -116,15 +99,15 @@ Q_OBJECT
 		QList<QPixmap> m_imgs;
 		QGroupBox *m_buttonsPanel;
 		QButtonGroup *m_buttonGroup;
-		Q3VBox *containerTableScens;
+// 		Q3VBox *containerTableScens;
     //Table that shows the available scenes
-		Q3ListView *table_scenes;
+// 		Q3ListView *table_scenes;
 		KTScenesList *m_tableScenes;
     //Static Text
-		QLabel *text_name;
+		QLabel *m_textName;
 
     //Textfields
-		QLineEdit *value_name;
+		QLineEdit *m_valueName;
 
 	private:
 		void setupButtons();
@@ -132,6 +115,7 @@ Q_OBJECT
 		
 	private slots:
 		void actionButton(QAbstractButton *);
+		void sceneDobleClick(QTreeWidgetItem * item, int col );
 		
 	signals:
 		/**
@@ -142,7 +126,7 @@ Q_OBJECT
 		/**
 		* This signal is emitted when a scene has been inserted.
 		*/
-		void sceneInserted();
+		void sceneInserted(QString name, int index);
 		/**
 		* This signal is emitted when a scene has been removed.
 		* @param scene The scene position
@@ -158,40 +142,43 @@ Q_OBJECT
 		* @param scene The scene position
 		*/
 		void sceneMovedDown( int scene );
-		
+		void sceneChangeName( QString newName, int index);
+		void esceneDobleClicked(int scenes);
 // 		void changedScene();
 		
 	public slots:
 		/**
 		*   Inserts a new scene
 		*
-		* @sa slotRemoveScene()
+		* @sa removeScene()
 		*/
-		void slotInsertScene();
+		void insertScene();
 		/**
 		*   Removes the selected scene
 		*
-		* @sa slotInsertScene()
+		* @sa insertScene()
 		*/
-		void slotRemoveScene();
+		void removeScene();
 		/**
 		*   Changes the selected scene name according to the textfield's text
 		*/
-		void slotChangeValueName();
+		void changeValueName();
 		/**
 		*   Updates the visualization values when a scene is selected
 		*/
-		void slotSelectScene();
+		void selectScene(QString name, int index);
 		/**
 		*   Moves the selected scene one step up
 		*/
-		void slotMoveSceneUp();
+		void moveSceneUp();
 		/**
 		*   Moves the selected scene one step down
 		*/
-		void slotMoveSceneDown();
+		void moveSceneDown();
 		
 		void applyAction(int action);
+
+		
 
 };
 

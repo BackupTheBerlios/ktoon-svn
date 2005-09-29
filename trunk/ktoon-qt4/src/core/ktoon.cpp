@@ -2239,7 +2239,7 @@ void KToon::slotLoadDocument( const QString &in_file_name )
 		//1.3.1. Scenes Tag
 		QDomElement scenes_tag = animation_tag.firstChild().toElement();
 		QDomNode n_scene = scenes_tag.firstChild();
-		Q3PtrList<Scene> scenes;
+		QList<Scene*> scenes;
 		while ( !n_scene.isNull() )
 		{
 			//1.3.1.(1..*). Scene Tag
@@ -3847,7 +3847,7 @@ void KToon::createGUI()
 	brushes_dialog = new Brushes( this);
 	brushes_dialog -> loadBrushes( brushes );
 	
-	Q3PtrList<Scene> scenes = KTStatus->currentDocument()->getAnimation() -> getScenes();
+	QList<Scene*> scenes = KTStatus->currentDocument()->getAnimation() -> getScenes();
 	scenes_dialog = new Scenes( this);//, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
 	scenes_dialog -> loadScenes( scenes );
 	
@@ -3874,7 +3874,7 @@ void KToon::createGUI()
 // 		delete m_ExposureSheetDialog;
 // 		m_ExposureSheetDialog = new KTExposureSheet(this);
 		m_ExposureSheetDialog-> loadLayersAndKeyframes( layers );
-		KTTimeLine *tl = m_timeLineList.at( scenes.find( s_it ) );
+		KTTimeLine *tl = m_timeLineList.at( scenes.indexOf( s_it ) );
 		// 		tl -> loadLayersAndKeyframes( layers ); // FIXME
 // 		QPtrList<ILayer> layer_list = es -> getILayers();
 // 	}

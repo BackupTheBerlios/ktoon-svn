@@ -31,16 +31,16 @@
 
 Animation::Animation()
 {
-    frame_rate = 1;
-    camera_length = 160;
-    camera_width = 120;
+	frame_rate = 1;
+	camera_length = 160;
+	camera_width = 120;
 
-    std::auto_ptr<Scene> ap_d_scene(new Scene);
+	std::auto_ptr<Scene> ap_d_scene(new Scene);
     
-    ap_d_scene.get() -> setNameScene( QObject::tr( "Scene" ) + QString( "1" ) );
-    scenes.append( ap_d_scene.get() );
+	ap_d_scene.get() -> setNameScene( QObject::tr( "Scene" ) + QString( "1" ) );
+	scenes.append( ap_d_scene.get() );
     
-    ap_d_scene.release();
+	ap_d_scene.release();
         
 }
 
@@ -48,72 +48,80 @@ Animation::Animation()
 
 Animation::~Animation()
 {
-    scenes.setAutoDelete( true );
-    scenes.clear();
-    scenes.setAutoDelete( false );
+	qDeleteAll(scenes);
+//     scenes.setAutoDelete( true );
+//     scenes.clear();
+//     scenes.setAutoDelete( false );
 }
 
 //------------ PUBLIC MEMBERS ---------------
 
 void Animation::setFrameRate( const int & _rate )
 {
- Q_ASSERT( _rate > 0 );
- frame_rate = _rate;
+	Q_ASSERT( _rate > 0 );
+	frame_rate = _rate;
 }
 
 void Animation::setCameraWidth ( const int & _width )
 {
- Q_ASSERT( _width > 0 );
- camera_width = _width;
+	Q_ASSERT( _width > 0 );
+	camera_width = _width;
 }
 
 void Animation::setCameraLength ( const int & _length )
 {
- Q_ASSERT( _length > 0 );
- camera_length = _length;
+	Q_ASSERT( _length > 0 );
+	camera_length = _length;
 }
 
-void Animation::setScenes( Q3PtrList<Scene> _scenes )
+void Animation::setScenes( QList<Scene*> _scenes )
 {
-  scenes = _scenes;
+	scenes = _scenes;
 }
 
 int Animation::frameRate() const
 {
- return frame_rate;
+	return frame_rate;
 }
 
 int Animation::cameraWidth() const
 {
- return camera_width;
+	return camera_width;
 }
 
 int Animation::cameraLength() const
 {
- return camera_length;
+	return camera_length;
 }
 
-Q3PtrList<Scene> Animation::getScenes() const
+QList<Scene*> Animation::getScenes() const
 {
-  return scenes;
+	return scenes;
 }
 
 QDomElement Animation::createXML( QDomDocument &doc )
 {
-    QDomElement e = doc.createElement( "Animation" );
+	QDomElement e = doc.createElement( "Animation" );
 
-    e.setAttribute( "FrameRate", frame_rate );
-    e.setAttribute( "CameraWidth", camera_width );
-    e.setAttribute( "CameraLength", camera_length );
+	e.setAttribute( "FrameRate", frame_rate );
+	e.setAttribute( "CameraWidth", camera_width );
+	e.setAttribute( "CameraLength", camera_length );
 
-    QDomElement s_tag = doc.createElement( "Scenes" );
-    e.appendChild( s_tag );
-    Scene *s_it;
-    for ( s_it = scenes.first(); s_it; s_it = scenes.next() )
-    {
-	QDomElement scene_tag = s_it -> createXML( doc );
-	s_tag.appendChild( scene_tag );
-    }
+	QDomElement s_tag = doc.createElement( "Scenes" );
+	e.appendChild( s_tag );
+	
+	for(int i = 0 ; i < scenes.count(); i++)
+	{
+		Scene *s_it = scenes[i];
+		QDomElement scene_tag = s_it -> createXML( doc );
+		s_tag.appendChild( scene_tag );
+	}
+	/*Scene *s_it;
+	for ( s_it = scenes.first(); s_it; s_it = scenes.next() )
+	{
+		QDomElement scene_tag = s_it -> createXML( doc );
+		s_tag.appendChild( scene_tag );
+}*/
 
-    return e;
+	return e;
 }

@@ -1,10 +1,14 @@
 Developers
 
+KToon 0.8
+
 David A. Cuadrado
 <krawek@toonka.com>
 
 Jorge H. Cuadrado
-<kuadrosxx@gmail.com>
+<kuadrosx@toonka.com>
+
+KToon 0.7
 
 Simena Dinas
 <dsimena@toonka.com>

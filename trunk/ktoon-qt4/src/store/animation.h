@@ -26,7 +26,7 @@
  * @brief Include this file if you need the class Animation
  */
 
-#include <q3ptrlist.h>
+#include <QList>
 #include <qdom.h>
 
 #include "scene.h"
@@ -84,7 +84,7 @@ public:
      * @param scenes The Scene
      * @sa getScenes()
      */
-    void setScenes( Q3PtrList<Scene> scenes );
+    void setScenes( QList<Scene*> scenes );
 
     //Get methods
     /**
@@ -117,7 +117,7 @@ public:
      * @return The current list of Scenes
      * @sa setScenes()
      */
-    Q3PtrList<Scene> getScenes() const;
+    QList<Scene*> getScenes() const;
 
     /**
      * @brief Creates an XML tag for this object
@@ -130,7 +130,7 @@ public:
 private:
     int frame_rate;
     int camera_width, camera_length;
-    Q3PtrList<Scene> scenes;
+    QList<Scene*> scenes;
 
 };
 

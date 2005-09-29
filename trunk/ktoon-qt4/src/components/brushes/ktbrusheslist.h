@@ -26,7 +26,7 @@ class KTBrushesList : public QTreeWidget
 		KTBrushesList(QWidget *parent = 0);
 		~KTBrushesList();
 		void addBrush(int min, int max, int smooth, QString name);
-		void removeCurrentBrush();
+		int removeCurrentBrush();
 		int indexCurrentBrush();
 		
 	public slots:

@@ -72,12 +72,25 @@ void KTBrushesList::changeCurrentValueName( QString name)
 	}
 }
 
-void KTBrushesList::removeCurrentBrush()
+int KTBrushesList::removeCurrentBrush()
 {
-	QPoint p = visualItemRect ( currentItem()).topRight();
+// 	QPoint p = visualItemRect ( currentItem()).topRight();
+// 	delete currentItem();
+// 	QTreeWidgetItem *item = itemAt( p -= QPoint(2,2) );
+// 	setCurrentItem( item );
+	
+	int index = indexCurrentBrush();
 	delete currentItem();
-	QTreeWidgetItem *item = itemAt( p -= QPoint(2,2) );
-	setCurrentItem( item );
+	if(index < 1)
+	{
+		setCurrentItem( topLevelItem ( 0 ) );
+	}
+	else
+	{
+		setCurrentItem( topLevelItem ( index -1 ) );
+	}
+	return index;
+	
 }
 
 void KTBrushesList::changeCurrentBrush()
