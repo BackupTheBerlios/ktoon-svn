@@ -3,10 +3,12 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/modules/arthury/illustration
 # Destiono es una biblioteca:  
 
-INCLUDEPATH += ../../../../src/lib 
+HEADERS += apaintarea.h \
+           agrid.h 
+SOURCES += apaintarea.cpp \
+           agrid.cpp 
+INCLUDEPATH += ../../../../src/lib
 CONFIG += release \
-          warn_on \
-          staticlib 
-TEMPLATE = lib 
-HEADERS += apaintarea.h 
-SOURCES += apaintarea.cpp 
+warn_on \
+staticlib
+TEMPLATE = lib

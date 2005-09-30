@@ -17,6 +17,7 @@
 #include <QMouseEvent>
 #include <QImage>
 #include <QPainterPath>
+#include "agrid.h"
 
 /**
 	@author David Cuadrado <krawek@toonka.com>
@@ -37,9 +38,11 @@ class APaintArea : public QWidget
 		
 	private:
 		QImage m_paintDevice;
+		AGrid m_grid;
 		QPainterPath m_path;
 		int m_xpos, m_ypos;
 		int m_zero;
+		bool m_drawGrid;
 		
 	protected:
 		void mouseMoveEvent(QMouseEvent *e);

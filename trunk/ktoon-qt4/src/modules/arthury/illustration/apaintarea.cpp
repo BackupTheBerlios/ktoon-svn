@@ -18,7 +18,7 @@
 
 
 
-APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0)
+APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0), m_drawGrid(true)
 {
 	KTINIT;
 	setAttribute(Qt::WA_StaticContents);
@@ -27,6 +27,7 @@ APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0),
 	m_paintDevice.fill(qRgb(255, 255, 255));
 	
 	setMouseTracking(true);
+	m_grid.createGrid(m_paintDevice);
 }
 
 
@@ -49,6 +50,13 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 	painter.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 	painter.setRenderHint(QPainter::Antialiasing, true);
 	painter.drawPath(m_path);
+	
+	if(m_drawGrid)
+	{
+		painter.setPen(Qt::gray);
+		painter.drawPath(m_grid.pathGrid());
+	}
+
 	painter.end();
 	
 // 	m_path = QPainterPath();
@@ -68,10 +76,11 @@ QSize APaintArea::minimumSizeHint () const
 
 void APaintArea::paintEvent(QPaintEvent *)
 {
+
 	QPainter painter(this);
-	
 	painter.drawImage(QPoint(m_xpos, m_ypos), m_paintDevice);
 	painter.end();
+
 }
 
 void APaintArea::resizeEvent ( QResizeEvent * event )
