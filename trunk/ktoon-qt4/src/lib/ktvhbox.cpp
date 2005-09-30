@@ -24,6 +24,7 @@
 #include <QApplication>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QPoint>
 
 KTVHBox::KTVHBox(QWidget *parent, Qt::Orientation o) : QFrame(parent)
 {
@@ -147,5 +148,13 @@ void KTVHBox::switchWidgetsPosition(QWidget *widget1, QWidget *widget2)
 	
 	if (position1 > 0 && position2 > 0 )
 	{
+	}
+}
+
+void KTVHBox::mouseMoveEvent(QMouseEvent *e)
+{
+	if ( hasMouseTracking() )
+	{
+		emit mouseAt(e->pos());
 	}
 }

@@ -8,4 +8,4 @@ SUBDIRS += illustration \
 CONFIG += release \
           warn_on 
 TEMPLATE = subdirs 
-QT += qt3support xml opengl
+

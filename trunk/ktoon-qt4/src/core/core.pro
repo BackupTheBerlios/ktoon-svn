@@ -14,6 +14,25 @@ kttrans.files += *.qm
 kttrans.path = /data/translations 
 ktbin.files += ../../bin/ktoon 
 ktbin.path = /bin 
+TRANSLATIONS += ktoon_es.ts \
+                ktoon_fr.ts \
+                ktoon_ru.ts \
+                qt_es.ts 
+HEADERS += ktoon.h \
+           splash.h \
+           ktdocumentruler.h \
+           ktviewdocument.h \
+           ktmainwindow.h \
+           ktstatusbar.h \
+           ktpaintareacontainer.h 
+SOURCES += ktoon.cpp \
+           main.cpp \
+           splash.cpp \
+           ktdocumentruler.cpp \
+           ktviewdocument.cpp \
+           ktmainwindow.cpp \
+           ktstatusbar.cpp \
+           ktpaintareacontainer.cpp 
 TARGETDEPS += ../../src/dialogs/libdialogs.a \
               ../../src/store/libstore.a \
               ../../src/lib/liblib.a \
@@ -77,21 +96,4 @@ CONFIG += release \
           qt \
           opengl 
 TEMPLATE = app 
-TRANSLATIONS += ktoon_es.ts \
-                ktoon_fr.ts \
-                ktoon_ru.ts \
-                qt_es.ts 
-HEADERS += ktoon.h \
-           splash.h \
-           ktdocumentruler.h \
-           ktviewdocument.h \
-           ktmainwindow.h \
-           ktstatusbar.h 
-SOURCES += ktoon.cpp \
-           main.cpp \
-           splash.cpp \
-           ktdocumentruler.cpp \
-           ktviewdocument.cpp \
-           ktmainwindow.cpp \
-           ktstatusbar.cpp 
 QT += qt3support xml opengl

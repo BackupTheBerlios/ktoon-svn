@@ -22,12 +22,13 @@
 
 #include "ktmdiwindow.h"
 #include "ktdocumentruler.h"
-#include "drawingarea.h"
 #include <QCursor>
 #include <QAction>
 #include <QActionGroup>
 #include <QToolBar>
 #include <QMenu>
+
+#include "ktpaintareacontainer.h"
 
 /**
  *@author Jorge Cuadrado
@@ -40,14 +41,12 @@ class KTViewDocument : public KTMdiWindow
 		~KTViewDocument();
 		void close();
 	private:
-		DrawingArea *m_drawArea;
-		QWidget *m_container;
-		KTDocumentRuler *m_HRuler;
-		KTDocumentRuler *m_VRuler;
 		QActionGroup *gridGroup, *editGroup, *editGroup2, *viewNextGroup, *viewPreviousGroup;
 		QMenu *m_toolsSelection, *m_toolsDraw, *m_toolsFills, *m_toolsErasers, *m_toolsView, *m_toolsOrder,*m_toolsAlign, *m_toolsTransform;
 		QAction *m_aSubGrid, *m_aNtsc, *m_aLightTable,*m_aUndo, *m_aRedo, *m_aClose, *m_aFrontBackGrid;
 		QToolBar *m_barGrid, *m_toolbar;
+		
+		KTPaintAreaContainer *m_paintAreaContainer;
 	private:
 		void createActions();
 		void createToolbar();
@@ -60,9 +59,6 @@ class KTViewDocument : public KTMdiWindow
 		void changeTool(QAction *a);
 	
 	protected:
-		virtual QSize sizeHint () const ;
-		
-		
 
 };
 

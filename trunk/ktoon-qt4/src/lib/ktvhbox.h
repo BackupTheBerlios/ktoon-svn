@@ -27,6 +27,7 @@ class KTVHBox;
 #include <QLayout>
 #include <QBoxLayout>
 #include <QEvent>
+#include <QMouseEvent>
 
 /**
  * @author David Cuadrado
@@ -47,8 +48,12 @@ class KTVHBox : public QFrame
 		void setStretchFactor( QWidget* w, int stretch );
 		void addWidget(QWidget *child, Qt::Alignment alignment = Qt::AlignCenter); 
 		
+	signals:
+		void mouseAt(const QPoint &);
+		
 	protected:
 		virtual bool event( QEvent *e );
+		virtual void mouseMoveEvent(QMouseEvent *e);
 		
 	protected:
 		QBoxLayout *m_pLayout;

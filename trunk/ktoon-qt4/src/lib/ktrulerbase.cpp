@@ -21,24 +21,17 @@
 #include "ktrulerbase.h"
 #include "ktdebug.h"
 
-#include <qpainter.h>
-#include <qpixmap.h>
-//Added by qt3to4:
 #include <QMouseEvent>
 #include <QFrame>
 #include <QResizeEvent>
-#include <Q3PopupMenu>
-#include <QPaintEvent>
+#include <QPaintEvent> 
+#include <QPainter>
 
-KTRulerBase::KTRulerBase(Orientation orientation, QWidget *parent, const char *name)
-	: QFrame(parent), m_position(0), m_orientation(orientation),m_pArrow(3), m_drawPointer(false), m_separation(100)
+KTRulerBase::KTRulerBase(Qt::Orientation m_orientation, QWidget *parent, const char *name) : QFrame(parent), m_position(0), m_orientation(m_orientation), m_drawPointer(false), m_separation(100), m_zero(0), m_pArrow(3)
 {
 	setObjectName(name);
-// 	m_pScale.setOptimization( QPixmap::BestOptim );
-	m_pScale.resize( width(),height());
-	m_pScale.fill(paletteBackgroundColor ());
 	
-	if(m_orientation == Horizontal)
+	if(m_orientation == Qt::Horizontal)
 	{
 // 		m_pArrow.setPoints(3, 20, 0, 0, 0+2, 0, 0-2);
 // 		m_pArrow.setPoints(3,9,0,0,5,10,10,0);
@@ -46,23 +39,36 @@ KTRulerBase::KTRulerBase(Orientation orientation, QWidget *parent, const char *n
 		m_pArrow.setPoint ( 1, 5, 10);
 		m_pArrow.setPoint ( 2, 10, 0);
 		setMaximumHeight ( 25 );
-		setMinimumHeight (25);
+		setMinimumHeight ( 25 );
+// 		setMinimumWidth( parent->width()+1000);
+		
+		m_width = width();
+		m_height = height();
 	}
-	else if(m_orientation == Vertical)
+	else if(m_orientation == Qt::Vertical)
 	{
 		m_pArrow.setPoint ( 0, 0, 0);
 		m_pArrow.setPoint ( 1, 10, 5);
 		m_pArrow.setPoint ( 2, 0, 10);
 		setMaximumWidth(25);
 		setMinimumWidth(25);
+		
+// 		setMinimumHeight ( parent->height()+1000 );
+		
+		m_width = height();
+		m_height =  width();
 	}
+	
+	m_pScale = QImage(m_width, m_height, QImage::Format_RGB32);
+	m_pScale.fill(qRgb(255, 255, 255));
+	
 	//draw scale
 	drawScale();
 	setMouseTracking ( true );
 	
 	connect(this, SIGNAL(displayMenu(KTRulerBase *, QPoint)), this, SLOT(showMenu(KTRulerBase *, QPoint)));
 	
-	m_menu = new Q3PopupMenu(this);
+	m_menu = new QMenu(this);
 	m_menu->insertItem( tr("Change scale to 5..."), ChangeScaleToFive);
 	m_menu->insertItem( tr("Change scale to 10..."), ChangeScaleToTen);
 	
@@ -76,89 +82,117 @@ KTRulerBase::~KTRulerBase()
 // 	delete m_pScale;
 }
 
-void KTRulerBase::paintEvent ( QPaintEvent * e)
+void KTRulerBase::paintEvent ( QPaintEvent * )
 {
 	QPainter p(this);
-	p.drawPixmap ( 0, 0, m_pScale);
-// 	p.drawPolygon (m_pArrow,true,0,3);
-	if ( m_drawPointer )
-	{
-		p.setPen(foregroundColor ());
-		p.setBrush(foregroundColor () );
-		p.drawConvexPolygon(m_pArrow);//,true,0,3);
-	}
-// 	p.drawCubicBezier (m_pArrow) ;
+
+//  	p.setRenderHint( QPainter::TextAntialiasing/*QPainter::Antialiasing*/);
+// 	m_pScale
+
+	p.drawImage(QPoint(0, 0), m_pScale);
+	p.setBrush(palette ().color(QPalette::Foreground));
+	p.drawConvexPolygon(m_pArrow);
 	p.end();
 }
 
 void KTRulerBase::drawScale()
 {
-// 	ktDebug() << "Drawing Scale" << endl;
-	m_pScale.fill(paletteBackgroundColor ());
-
+	QFontMetrics fm(font());
+	
+	m_pScale = QImage(width(), height(), QImage::Format_RGB32);
+	QPalette m_palette = palette ();
+	QColor aColor = m_palette.color(  QPalette::Background);
+	
+	m_pScale.fill(aColor.rgb ());
+	
+	int fact = 1;
+	if( m_orientation == Qt::Vertical )
+	{
+		fact = -1;
+	}
+	drawLine( 0-m_zero, 0, m_width, 0);
+	drawLine( 0-m_zero, m_height*fact, m_width, m_height*fact);
+	
+	for(int i = 0; i < m_width; i +=10)
+	{
+		QSize sizeFont = fm.size (Qt::TextSingleLine, QString::number(i));
+		if( i % 100  == 0 )
+		{
+			drawLine ( i, m_height*fact, i, 0 );
+			if(m_orientation == Qt::Vertical)
+			{
+				m_path.addText( i, m_height/2 -sizeFont.height()  , font(), QString::number(i));
+			}
+			else
+			{
+				m_path.addText( i, m_height/2, font(), QString::number(i));
+			}
+		}
+		else
+		{
+			drawLine ( i, m_height*fact, i, m_height*fact - m_height/4*fact );
+		}
+	}
+	
+	for(int i = m_zero; i > 0 ; i -=10)
+	{
+// 		ktDebug() << "aki" << i << endl;
+		QSize sizeFont = fm.size (Qt::TextSingleLine, QString::number(i));
+		if( i % 100  == 0 )
+		{
+			drawLine ( -i, m_height*fact, -i, 0 );
+			if(m_orientation == Qt::Vertical)
+			{
+				m_path.addText( -i, m_height/2 -sizeFont.height()  , font(), QString::number(-i));
+			}
+			else
+			{
+				m_path.addText( -i, m_height/2, font(), QString::number(-i));
+			}
+		}
+		else
+		{
+			drawLine ( -i, m_height*fact, -i, m_height*fact - m_height/4*fact );
+		}
+	}
+	
 	QPainter p(&m_pScale);
-	QMatrix m;
-	m.rotate( 0.0 );
-	p.setWorldMatrix( m );
+	p.setRenderHint(QPainter::Antialiasing, true);
+	p.setPen(palette().color(QPalette::Foreground));
 	
-	int range = 10;
-	int advance = 1;
+	if(m_orientation == Qt::Horizontal)
+	{
+		p.translate(m_zero,0);
+		p.drawPath(m_path);
+	}
+	else
+	{
 		
-	if (m_separation > 10)
-	{
-		range = 1;
-		advance = 10;
+		p.save();
+		p.translate(0,m_zero);
+		p.rotate(90);
+		p.drawPath(m_path);
+		p.restore();
 	}
 	
-	if(m_orientation == Horizontal)
-	{
-		p.drawLine( 0, height()-1, width(), height()-1);
-		
-		for( int i =0; i < width(); i += advance )
-		{
-			if( i % m_separation == 0 )
-			{
-// 				qDebug(QString::number(i));
-				p.drawLine ( i*range, height(), i*range, 0 );
-				p.drawText ( (i*range)+1, height()/2, QString::number(i));
-				//, -1, TextDirection dir = Auto );
-			}
-			else
-			{
-				p.drawLine ( i*range, height(), i*range, height()-10 );
-			}
-		}
-	}
-	else if(m_orientation == Vertical)
-	{
-		p.drawLine( width()-1, 0, width()-1, height());
-		for(int i =0; i < height();i += advance)
-		{
-			if( i % m_separation == 0 )
-			{
-// 				qDebug(QString::number(i));
-				p.drawLine ( width(), i*range, 0, i*range );
-				p.save();
-// 				p.rotate(40);
-				p.translate( 0,i*range);
-				p.rotate(90);
-				p.drawText ( 1, 0, QString::number(i));
-				p.restore();
-			}
-			else
-			{
-				p.drawLine ( width() , i*range, width()-10, i*range );
-			}
-		}
-	}
-	p.end();
-	
-	update();
+	m_path = QPainterPath();
 }
 
-void KTRulerBase::resizeEvent ( QResizeEvent * e)
+void KTRulerBase::resizeEvent ( QResizeEvent * )
 {
-	m_pScale.resize( width(), height());
+	if(m_orientation == Qt::Horizontal)
+	{
+		m_width = width();
+		m_height = height();
+// 		m_pScale = QImage(m_width, m_height, QImage::Format_RGB32);
+	}
+	else if(m_orientation == Qt::Vertical)
+	{
+		m_width = height();
+		m_height =  width();
+// 		m_pScale = QImage(m_height, m_width , QImage::Format_RGB32);
+	}
+
 	drawScale();
 }
 
@@ -166,7 +200,7 @@ void KTRulerBase::mouseMoveEvent ( QMouseEvent * e )
 {
 	if ( m_drawPointer )
 	{
-		movePointers(e->pos());
+		movePointers(e->pos()/*-QPoint(m_zero, m_zero)*/);
 	}
 }
 
@@ -218,7 +252,7 @@ void KTRulerBase::mousePressEvent (QMouseEvent *e)
 	}
 }
 
-int KTRulerBase::orientation()
+Qt::Orientation KTRulerBase::orientation()
 {
 	return m_orientation;
 }
@@ -251,6 +285,41 @@ void KTRulerBase::chooseOption(int opt)
 		}
 		break;
 	}
+}
+
+void KTRulerBase::drawLine(int x1 , int y1, int x2, int y2)
+{
+	m_path.moveTo(x1, y1);
+	m_path.lineTo(x2, y2);
+}
+
+void KTRulerBase::slide(int value)
+{
+	ktDebug() << "SLIDE" << endl;
+	if ( m_orientation == Qt::Horizontal )
+	{
+		move(-value+m_height, pos().y());
+	}
+	else
+	{
+		move(pos().x(), -value+m_height);
+	}
+}
+
+void KTRulerBase::setZeroAt(int pos)
+{
+	m_zero = pos;
+	drawScale();
+}
+
+QSize KTRulerBase::sizeHint() const
+{
+	if ( m_orientation == Qt::Horizontal )
+	{
+		return QSize(m_width/3, height());
+	}
+	
+	return QSize( width(), m_height/3 );
 }
 
 

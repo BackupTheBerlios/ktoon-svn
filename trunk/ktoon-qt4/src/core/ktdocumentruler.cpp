@@ -20,7 +20,7 @@
 
 #include "ktdocumentruler.h"
 
-KTDocumentRuler::KTDocumentRuler(Orientation orientation, QWidget *parent, const char *name) : KTRulerBase(orientation, parent, name)
+KTDocumentRuler::KTDocumentRuler(Qt::Orientation orientation, QWidget *parent, const char *name) : KTRulerBase(orientation, parent, name)
 {
 	setDrawPointer(true);
 }
@@ -30,9 +30,9 @@ KTDocumentRuler::~KTDocumentRuler()
 {
 }
 
-void KTDocumentRuler::movePointers(QPoint pos)
+void KTDocumentRuler::movePointers(const QPoint &pos)
 {
-	if(orientation() == Horizontal)
+	if(orientation() == Qt::Horizontal)
 	{
 		if(pos.x() > 0)
 		{
@@ -41,7 +41,7 @@ void KTDocumentRuler::movePointers(QPoint pos)
 			m_pArrow[2].setX ( pos.x()+5 ); 
 		}
 	}
-	else if(orientation() == Vertical)
+	else if(orientation() == Qt::Vertical)
 	{
 		if(pos.x() > 0)
 		{

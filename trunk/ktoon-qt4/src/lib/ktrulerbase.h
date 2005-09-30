@@ -21,14 +21,14 @@
 #ifndef RULER_H
 #define RULER_H
 
-#include <q3frame.h>
-#include <qpixmap.h>
-#include <q3pointarray.h>
-#include <q3popupmenu.h>
-//Added by qt3to4:
 #include <QMouseEvent>
 #include <QResizeEvent>
 #include <QPaintEvent>
+#include <QMenu>
+#include <QPolygon>
+#include <QFrame>
+#include <QPainterPath>
+#include <QImage>
 
 #define UNITCOUNT 5
 
@@ -43,13 +43,6 @@ class KTRulerBase : public QFrame
 	Q_OBJECT
 	
 	public:
-		enum Orientation
-		{
-			Horizontal,
-			Vertical
-		};
-
-
 // 		enum Unit {
 // 			SC_POINTS      = 0,
 // 			SC_PT          = 0,
@@ -65,27 +58,35 @@ class KTRulerBase : public QFrame
 // 			SC_C           = 5
 // 		};
 		
-		KTRulerBase(Orientation orientation=Horizontal, QWidget *parent = 0, const char *name = 0);
-		~KTRulerBase();
+		KTRulerBase(Qt::Orientation orientation=Qt::Horizontal, QWidget *parent = 0, const char *name = 0);
+		virtual ~KTRulerBase();
 		
 // 		const double unitGetRatioFromIndex(const int index);
 // 		const double pts2mm(double pts);
 // 		const double mm2pts(double mm);
 		virtual void drawScale();
-		int orientation();
+		Qt::Orientation orientation();
+		void setZeroAt(int pos);
 		
 		
 	private:
 		int m_position;
-		int m_separation;
-		Orientation m_orientation;
+		Qt::Orientation m_orientation;
 		bool m_drawPointer;
-		Q3PopupMenu *m_menu;
+		
+		QPainterPath m_path;
+		int m_separation;
+		QMenu *m_menu;
 		enum { ChangeScaleToFive, ChangeScaleToTen  };
 		
+		void drawLine(int x1 , int y1, int x2, int y2);
+		int m_width, m_height;
+		
+		int m_zero;
+
 	protected:
-		Q3PointArray m_pArrow;
-		QPixmap m_pScale;
+		QImage m_pScale;
+		QPolygon m_pArrow;
 		
 	signals:
 		void displayMenu(KTRulerBase *, QPoint pos);
@@ -95,11 +96,13 @@ class KTRulerBase : public QFrame
 		virtual void resizeEvent ( QResizeEvent * );
 		virtual void mouseMoveEvent ( QMouseEvent * e );
 		virtual void mousePressEvent (QMouseEvent *e);
+		virtual QSize sizeHint() const;
 		
 	public slots:
- 		virtual void movePointers(QPoint pos) = 0;
+ 		virtual void movePointers(const QPoint &pos) = 0;
 		void setSeparation(int sep);
 		void setDrawPointer(bool yes = true);
+		void slide(int value);
 		
 		virtual void showMenu(KTRulerBase *, QPoint pos);
 		virtual void chooseOption(int);

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,24 +17,40 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTDOCUMENTRULER_H
-#define KTDOCUMENTRULER_H
 
-#include <ktrulerbase.h>
+#ifndef KTPAINTAREACONTAINER_H
+#define KTPAINTAREACONTAINER_H
+
+#include <ktvhbox.h>
+
+#include "ktdocumentruler.h"
+#include "apaintarea.h"
 
 /**
- * @author Jorge Cuadrado
+	@author David Cuadrado <krawek@toonka.com>
 */
-
-class KTDocumentRuler : public KTRulerBase
+class KTPaintAreaContainer : public QWidget
 {
 	Q_OBJECT
 	public:
-		KTDocumentRuler(Qt::Orientation orientation=Qt::Horizontal, QWidget *parent = 0, const char *name = 0);
-		~KTDocumentRuler();
-	
+		KTPaintAreaContainer(QWidget *parent = 0);
+		~KTPaintAreaContainer();
+		APaintArea *drawArea() const;
+		
 	public slots:
-		void movePointers(const QPoint &pos);
+		void moveRulerPointers(const QPoint &);
+		
+	protected:
+// 		void resizeEvent ( QResizeEvent * event );
+// 		void mouseMoveEvent(QMouseEvent *e);
+// 		QSize sizeHint() const;
+		
+	private:
+		APaintArea *m_drawArea;
+		KTDocumentRuler *m_HRuler;
+		KTDocumentRuler *m_VRuler;
+		
+		int m_drawAreaDelta;
 };
 
 #endif

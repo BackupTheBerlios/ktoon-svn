@@ -21,7 +21,7 @@
 #include "kttlruler.h"
 #include "ktdebug.h"
 
-KTTLRuler::KTTLRuler(QWidget *parent) : KTRulerBase(KTRulerBase::Horizontal, parent, "KTTLRuler")
+KTTLRuler::KTTLRuler(QWidget *parent) : KTRulerBase(Qt::Horizontal, parent, "KTTLRuler")
 {
 	KTINIT;
 	
