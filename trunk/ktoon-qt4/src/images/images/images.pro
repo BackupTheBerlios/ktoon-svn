@@ -19,9 +19,7 @@ IMAGES += arrow_rotate.xpm \
           laboratoon.jpg \
           toonka.jpg \
           credits-image.png \
-          splash.png \
-          wizard1.png \
-          wizard2.png 
+          splash.png 
 HEADERS += images.h 
 SOURCES += images.cpp 
 INCLUDEPATH += ../../../src/images/sequences \

@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "ktmainwindow.h"
+#include "ktnewproject.h"
 #include "images.h"
 #include "ktdebug.h"
 #include "kimageeffect.h"
@@ -63,6 +64,7 @@ KTMainWindow::KTMainWindow() : DMainWindow(0, "KToon-MainWindow")
 	
 	// Create the menubar;
 	setupFileActions();
+	setupProjectActions();
 	setupMenu();
 	
 	statusBar()->message("Ready to play!");
@@ -110,6 +112,13 @@ void KTMainWindow::setupMenu()
 	// Setup the view menu
 	m_viewMenu = new QMenu(this);
 	menuBar()->insertItem( tr( "&View" ), m_viewMenu );
+	
+	// Setup the proyect menu
+	m_proyectMenu = new QMenu(this);
+	menuBar()->insertItem( tr( "&Project" ), m_proyectMenu );
+	m_proyectMenu->addAction(m_actionManager->find("NewProject"));
+	m_proyectMenu->addAction(m_actionManager->find("CloseProject"));
+	m_proyectMenu->addAction(m_actionManager->find("OpenProject"));
 	
 	// Setup the insert menu
 	m_insertMenu = new QMenu(this);
@@ -199,6 +208,17 @@ void KTMainWindow::setupFileActions()
 	exit->setStatusTip(tr("Closes the application"));
 }
 
+void KTMainWindow::setupProjectActions()
+{
+	KTAction *newProject = new KTAction( QPixmap(), tr( "New Project" ), QKeySequence(), this, SLOT(newProject()), m_actionManager, "NewProject");
+	
+	KTAction *closeProject = new KTAction( QPixmap(), tr( "Close Project" ), QKeySequence(), this, SLOT(currentProject()), m_actionManager, "CloseProject");
+// 	newProject->setStatusTip(tr("create new project"));
+	
+	KTAction *openProject = new KTAction( QPixmap(), tr( "Open Project" ), QKeySequence(), this, SLOT(openProject()), m_actionManager, "OpenProject");
+	
+}
+
 void KTMainWindow::setupToolBar()
 {
 }
@@ -239,12 +259,13 @@ void KTMainWindow::setPalette(const QPalette &pal)
 	setupBackground();
 }
 
-void KTMainWindow::newDocument()
+void KTMainWindow::newDocument(const QString &name, const QSize &size)
 {
 	static_cast<KTStatusBar*>(statusBar())->setStatus(tr("Opening a new document..."));
 	
 	KTViewDocument *viewDocument = new KTViewDocument(m_workSpace);
 	m_workSpace->addWindow(viewDocument);
+	viewDocument->setWindowTitle(name);
 	
 	static_cast<KTStatusBar*>(statusBar())->advance(4);
 	viewDocument->setActiveWindow();
@@ -254,3 +275,22 @@ void KTMainWindow::newDocument()
 	static_cast<KTStatusBar*>(statusBar())->setStatus(tr("Opened."));
 }
 
+void KTMainWindow::newProject()
+{
+	KTNewProject *wizard = new KTNewProject;
+	if ( wizard->exec() != QDialog::Rejected )
+	{
+		newDocument( wizard->projectName() );
+	}
+	delete wizard;
+}
+
+void KTMainWindow::closeProject()
+{
+	
+}
+
+void KTMainWindow::openProject()
+{
+	
+}

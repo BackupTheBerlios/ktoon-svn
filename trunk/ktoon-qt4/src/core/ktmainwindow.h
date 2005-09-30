@@ -71,9 +71,14 @@ class KTMainWindow : public DMainWindow
 	private:
 		void setupBackground();
 		/**
-		 * Create the action
+		 * Create the file action 
 		 */
 		void setupFileActions();
+		
+		/**
+		 * Create the proyect action
+		 */
+		void setupProjectActions();
 		
 		/**
 		 * Setup the actions in the toolbar
@@ -110,12 +115,15 @@ class KTMainWindow : public DMainWindow
 		void updateOpenRecentMenu();
 		
 	private slots:
-		void newDocument();
+		void newDocument(const QString &name = QString::null, const QSize &size = QSize(-1,-1) );
+		void newProject();
+		void closeProject();
+		void openProject();
 		
 	private:
 		QWorkspace *m_workSpace;
 		KTActionManager *m_actionManager;
-		QMenu *m_fileMenu,*m_editMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
+		QMenu *m_fileMenu,*m_editMenu, *m_proyectMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
 };
 
 #endif

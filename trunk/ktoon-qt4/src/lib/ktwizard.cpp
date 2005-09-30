@@ -69,7 +69,7 @@ KTWizardPage *KTWizard::addPage(KTWizardPage *newPage)
 		newPage->setFocus();
 		m_backButton->setEnabled(false);
 		m_nextButton->setDefault(true);
-		m_finishButton->setEnabled(false);
+// 		m_finishButton->setEnabled(false);
 	}
 
 	connect(newPage, SIGNAL(completed()), this, SLOT(pageCompleted()));
