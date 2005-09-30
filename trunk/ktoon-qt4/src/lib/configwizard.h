@@ -29,7 +29,7 @@
 
 #include "ktvhbox.h"
 
-#include "q3wizard.h"
+#include "ktwizard.h"
 
 class CWFirstPage;
 class CWSecondPage;
@@ -39,7 +39,7 @@ This class helps to config KToon!
 
 @author David Cuadrado
 */
-class ConfigWizard : public Q3Wizard
+class ConfigWizard : public KTWizard
 {
 	Q_OBJECT
 	public:
@@ -47,12 +47,8 @@ class ConfigWizard : public Q3Wizard
     		~ConfigWizard();
 		
 		void setInitialData(const QString &home, const QString &repos);
-		QString getHome();
-		QString getRepos();
-		
-	private slots:
-		void next();
-		void finished();
+		QString home();
+		QString repository();
 
 	private:
 		CWFirstPage *m_firstPage;
@@ -62,23 +58,32 @@ class ConfigWizard : public Q3Wizard
 		QString ktrepos;
 };
 
-class CWFirstPage : public KTVHBox
+class CWFirstPage : public KTWizardPage
 {
 	Q_OBJECT
 	public:
 		CWFirstPage(QWidget *parent = 0);
 		~CWFirstPage();
+
+		bool isComplete() { return true; };
+		void reset() { };
 };
 
-class CWSecondPage : public KTVHBox
+class CWSecondPage : public KTWizardPage
 {
 	Q_OBJECT
 	public:
 		CWSecondPage(QWidget *parent = 0);
 		~CWSecondPage();
 		void setData(const QString &home, const QString &repos);
-		QString getHome();
-		QString getRepos();
+		QString home();
+		QString repository();
+		
+		bool isComplete();
+		void reset();
+		
+	private slots:
+		void verify(const QString &);
 		
 	private:
 		QLineEdit *m_kthome;

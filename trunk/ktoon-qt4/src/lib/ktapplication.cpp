@@ -237,8 +237,8 @@ bool KTApplication::firstRun()
 
 	if ( firstDialog->exec() != QDialog::Rejected )
 	{
-		m_KTOON_HOME = firstDialog->getHome();
-		m_KTOON_REPOSITORY = firstDialog->getRepos();
+		m_KTOON_HOME = firstDialog->home();
+		m_KTOON_REPOSITORY = firstDialog->repository();
 		
 		initDirectories();
 		

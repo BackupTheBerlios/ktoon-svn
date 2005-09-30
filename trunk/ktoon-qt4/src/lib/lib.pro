@@ -3,13 +3,8 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/lib
 # Destiono es una biblioteca:  
 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-CONFIG += release \
-          warn_on \
-          staticlib 
-TEMPLATE = lib 
+IMAGES += wizard1.xpm \
+          wizard2.xpm 
 HEADERS += ktapplication.h \
            configwizard.h \
            ktxmlparser.h \
@@ -37,7 +32,8 @@ HEADERS += ktapplication.h \
            ktactionmanager.h \
            ktaction.h \
            ktmodulewidgettitle.h \
-           kttabdialog.h 
+           kttabdialog.h \
+           ktwizard.h 
 SOURCES += ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
@@ -65,5 +61,13 @@ SOURCES += ktapplication.cpp \
            ktactionmanager.cpp \
            ktaction.cpp \
            ktmodulewidgettitle.cpp \
-           kttabdialog.cpp 
+           kttabdialog.cpp \
+           ktwizard.cpp 
+MOC_DIR = .moc
+UI_DIR = .ui
+OBJECTS_DIR = .obj
+CONFIG += release \
+warn_on \
+staticlib
+TEMPLATE = lib
 QT += qt3support xml opengl

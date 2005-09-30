@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@toonka.com   *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,48 +17,75 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTWIZARD_H
+#define KTWIZARD_H
 
-#include "kttabdialog.h"
-#include <QVBoxLayout>
+#include <QDialog>
 #include <QPushButton>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QStackedWidget>
 
-KTTabDialog::KTTabDialog(QWidget *parent)
- : QDialog(parent)
+#include "ktvhbox.h"
+
+class KTWizardPage;
+
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+
+class KTWizard : public QDialog
 {
-	QVBoxLayout *mainLayout = new QVBoxLayout;
+	Q_OBJECT
 
-	m_tabWidget = new QTabWidget(this);
-	
-	
-	QPushButton *okButton = new QPushButton(tr("OK"));
-	QPushButton *cancelButton = new QPushButton(tr("Cancel"));
+	public:
+		KTWizard(QWidget *parent = 0);
+		~KTWizard();
+		KTWizardPage *addPage(KTWizardPage *KTWizardPage);
+		void showPage(int index);
+		void showPage(KTWizardPage *page);
+		
+	private slots:
+		void back();
+		void next();
+		void pageCompleted();
+		
+	private:
+		QStackedWidget m_history;
+		QPushButton *m_cancelButton;
+		QPushButton *m_backButton;
+		QPushButton *m_nextButton;
+		QPushButton *m_finishButton;
+		QHBoxLayout *m_buttonLayout;
+		QVBoxLayout *m_mainLayout;
 
-	connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 
-	QHBoxLayout *buttonLayout = new QHBoxLayout;
-	buttonLayout->addStretch(1);
-	buttonLayout->addWidget(okButton);
-	buttonLayout->addWidget(cancelButton);
+};
 
-	mainLayout->addWidget(m_tabWidget);
-	mainLayout->addLayout(buttonLayout);
-	setLayout(mainLayout);
-}
+#include <QFrame>
+#include <QGridLayout>
+#include <QLabel>
 
-
-KTTabDialog::~KTTabDialog()
+class KTWizardPage : public KTVHBox
 {
-}
+	Q_OBJECT
+	public:
+		KTWizardPage(const QString &title, QWidget *parent );
+		virtual ~KTWizardPage();
+		
+		virtual bool isComplete() = 0;
+		virtual void reset() = 0;
+		
+		void setPixmap(const QPixmap &px);
+		void setWidget(QWidget *w);
+		
+	private:
+		QFrame *m_container;
+		QGridLayout *m_layout;
+		QLabel *m_image;
 
-void KTTabDialog::addTab ( QWidget * child, const QString & label )
-{
-	m_tabWidget->addTab(child, label);
-}
+	signals:
+		void completed();
+};
 
-void KTTabDialog::addTab ( QWidget * child, const QIcon & iconset, const QString & label )
-{
-	m_tabWidget->addTab(child, iconset, label);
-}
-
+#endif

@@ -23,30 +23,26 @@
 #include <QLabel>
 #include <QLayout>
 #include <QHBoxLayout>
+#include <QBitmap>
 
-ConfigWizard::ConfigWizard() : Q3Wizard(0)
+#include "wizard1.xpm"
+#include "wizard2.xpm"
+
+#include "ktdebug.h"
+#include "kimageeffect.h"
+
+ConfigWizard::ConfigWizard() : KTWizard(0)
 {
-	m_firstPage = new CWFirstPage(this);
-	addPage(m_firstPage, tr("Welcome"));
+	setModal(true);
 	
-	m_secondPage = new CWSecondPage(this);
-	addPage(m_secondPage, tr("Configure KToon"));
+	m_firstPage = new CWFirstPage;
+	addPage(m_firstPage);
 	
-	setFinishEnabled(m_secondPage, true);
-	
-	connect( finishButton (), SIGNAL(clicked()), this, SLOT(finished()));
+	m_secondPage = new CWSecondPage;
+	addPage(m_secondPage);
 }
 
 ConfigWizard::~ConfigWizard()
-{
-}
-
-void ConfigWizard::next()
-{
-	Q3Wizard::next();
-}
-
-void ConfigWizard::finished()
 {
 }
 
@@ -55,22 +51,28 @@ void ConfigWizard::setInitialData(const QString &home, const QString &repos)
 	m_secondPage->setData(home, repos);
 }
 
-QString ConfigWizard::getHome()
+QString ConfigWizard::home()
 {
-	return m_secondPage->getHome();
+	return m_secondPage->home();
 }
 
-QString ConfigWizard::getRepos()
+QString ConfigWizard::repository()
 {
-	return m_secondPage->getRepos();
+	return m_secondPage->repository();
 }
 
 // CWFirstPage
-CWFirstPage::CWFirstPage(QWidget *parent) : KTVHBox(parent)
+CWFirstPage::CWFirstPage(QWidget *parent) : KTWizardPage(tr("Welcome"), parent)
 {
-	new QLabel(tr("<h3>KToon</h3><br>"
+	QImage img(wizard1_xpm);
+	
+	setPixmap( QPixmap(KImageEffect::blend(img, 0.1f, palette().color(QPalette::Background), KImageEffect::DiagonalGradient, true)) );
+
+	QLabel *msg = new QLabel(tr("<h3>KToon</h3><br>"
 			"In this wizard you need set a values for proper configuration of ktoon<br><br>"
-			"<em>--The KToon Team</em>"), this);
+			"<em>--The KToon Team</em>"));
+	
+	setWidget(msg);
 }
 
 CWFirstPage::~ CWFirstPage()
@@ -79,23 +81,25 @@ CWFirstPage::~ CWFirstPage()
 
 
 // CWFSecondPage
-CWSecondPage::CWSecondPage(QWidget *parent) : KTVHBox(parent)
+CWSecondPage::CWSecondPage(QWidget *parent) : KTWizardPage(tr("Configure KToon"), parent)
 {
-	new QLabel(tr("<h3>Step 1<h3>"), this);
+	setPixmap( QPixmap(wizard2_xpm) );
 	
-	new QLabel(tr("Choose your KToon install directory"), this);
+	KTVHBox *container = new KTVHBox(0, Qt::Vertical);
+	container->boxLayout()->setAlignment(Qt::AlignTop);
 	
-	QWidget *hbox1 = new QWidget(this);
-	QHBoxLayout *lyhbox1 = new QHBoxLayout(hbox1);
+	new QLabel(tr("<h3>Step 1<h3>"), container);
 	
+	new QLabel(tr("Choose your KToon install directory"), container);
 	
-	m_kthome = new QLineEdit(hbox1);
-	lyhbox1->addWidget(m_kthome);
+	KTVHBox *hbox1 = new KTVHBox(container, Qt::Horizontal);
+	
+	m_kthome = new QLineEdit("", hbox1);
+	connect(m_kthome, SIGNAL(textChanged(const QString &)), this, SLOT(verify(const QString &)));
 
 	QToolTip::add(m_kthome, tr("Choose your KTOON_HOME directory"));
 	
 	QPushButton *button = new QPushButton(tr("browse..."), hbox1);
-	lyhbox1->addWidget(button);
 	
 	QFileDialog *fd = new QFileDialog(hbox1);
 	connect(fd, SIGNAL(currentChanged ( const QString & )), m_kthome, SLOT(setText(const QString &)));
@@ -104,13 +108,12 @@ CWSecondPage::CWSecondPage(QWidget *parent) : KTVHBox(parent)
 	fd->hide();
 	connect(button, SIGNAL(clicked()), fd, SLOT(show()));
 	
-	new QLabel(tr("Choose your project directory"), this);
+// 	new QLabel(tr("Choose your project directory"), container);
 	
-	QWidget *hbox2 = new QWidget(this);
-	QHBoxLayout *lyhbox2 = new QHBoxLayout(hbox2);
+	KTVHBox *hbox2 = new KTVHBox(container, Qt::Horizontal);
 	
-	m_ktrepos = new QLineEdit(hbox2);
-	lyhbox2->addWidget(m_ktrepos);
+	m_ktrepos = new QLineEdit("",hbox2);
+	connect(m_ktrepos, SIGNAL(textChanged(const QString &)), this, SLOT(verify(const QString &)));
 	
 	QToolTip::add(m_ktrepos, tr("In this directory will be save your projects"));
 	
@@ -121,9 +124,10 @@ CWSecondPage::CWSecondPage(QWidget *parent) : KTVHBox(parent)
 	fd2->setMode(QFileDialog::Directory);
 	fd2->setModal(true);
 	QPushButton *button2 = new QPushButton(tr("browse..."), hbox2);
-	lyhbox2->addWidget(button2);
 	
 	connect(button2, SIGNAL(clicked()), fd2, SLOT(show()));
+	
+	setWidget(container);
 }
 
 CWSecondPage::~ CWSecondPage()
@@ -136,12 +140,35 @@ void CWSecondPage::setData(const QString &home, const QString &repos)
 	m_ktrepos->setText(repos);
 }
 
-QString CWSecondPage::getHome()
+QString CWSecondPage::home()
 {
 	return m_kthome->text();
 }
 
-QString CWSecondPage::getRepos()
+QString CWSecondPage::repository()
 {
 	return m_ktrepos->text();
 }
+
+bool CWSecondPage::isComplete()
+{
+	bool isOk = false;
+	
+	if ( m_kthome->text() != "" && m_ktrepos->text() != "" )
+	{
+		isOk= true;
+	}
+	return isOk;
+};
+
+void CWSecondPage::reset() 
+{
+	m_kthome->clear();
+	m_ktrepos->clear();
+}
+
+void CWSecondPage::verify(const QString &)
+{
+	emit completed();
+}
+

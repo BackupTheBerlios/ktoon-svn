@@ -55,9 +55,13 @@ int main( int argc, char ** argv )
 	if ( ! KTCONFIG->isOk() || application.isArg("r") || application.isArg("reconfigure") )
 	{
 		qDebug("RECONFIGURING");
-		if ( ! application.firstRun() && ! (application.isArg("r") || application.isArg("reconfigure")) )
+		if ( ! application.firstRun() /*&& ! (application.isArg("r") || application.isArg("reconfigure"))*/ )
 		{
+			ktFatal () << "**********************You need configure the application" << endl;
 			QMessageBox::critical(0, QObject::tr("Missing..."), QObject::tr("You need configure the application"));
+			application.exit(-1);
+			return -1;
+			
 		}
 	}
 	

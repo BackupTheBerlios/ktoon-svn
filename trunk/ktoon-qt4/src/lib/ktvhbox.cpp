@@ -158,3 +158,9 @@ void KTVHBox::mouseMoveEvent(QMouseEvent *e)
 		emit mouseAt(e->pos());
 	}
 }
+
+QBoxLayout *KTVHBox::boxLayout()
+{
+	return m_pLayout;
+}
+

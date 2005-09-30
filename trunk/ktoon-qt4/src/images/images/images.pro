@@ -8,7 +8,9 @@ klimages.files += *.png \
                   *.jpg \
                   *.xpm 
 klimages.path = /images 
-DISTFILES += splash.png 
+DISTFILES += splash.png \
+             wizard1.png \
+             wizard2.png 
 IMAGES += arrow_rotate.xpm \
           arrow_selection.xpm \
           background.xpm \
@@ -17,7 +19,9 @@ IMAGES += arrow_rotate.xpm \
           laboratoon.jpg \
           toonka.jpg \
           credits-image.png \
-          splash.png 
+          splash.png \
+          wizard1.png \
+          wizard2.png 
 HEADERS += images.h 
 SOURCES += images.cpp 
 INCLUDEPATH += ../../../src/images/sequences \
