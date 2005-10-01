@@ -30,7 +30,6 @@ class APaintArea : public QWidget
 		~APaintArea();
 		QSize sizeHint() const;
 		QSize minimumSizeHint () const;
-		
 		QPoint paintDevicePosition() const;
 		QImage paintDevice() const;
 		void setZeroAt(int zero);

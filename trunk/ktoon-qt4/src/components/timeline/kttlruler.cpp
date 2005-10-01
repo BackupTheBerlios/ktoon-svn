@@ -35,9 +35,9 @@ KTTLRuler::~KTTLRuler()
 	KTEND;
 }
 
-void KTTLRuler::movePointers(QPoint pos)
+void KTTLRuler::movePointers(const QPoint &pos)
 {
-	ktDebug() << "movePointers" << endl;
+	ktDebug() << "movePointers" << pos << endl;
 }
 
 // void KTTLRuler::showMenu(KTRulerBase *ruler, QPoint pos)

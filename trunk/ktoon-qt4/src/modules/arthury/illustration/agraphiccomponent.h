@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2004 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,34 +17,50 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef AGRAPHICCOMPONENT_H
+#define AGRAPHICCOMPONENT_H
 
-#ifndef KTTLRULER_H
-#define KTTLRULER_H
+#include <QObject>
+#include <QPainterPath>
+#include <QBrush>
+#include <QPen>
 
-#include <ktrulerbase.h>
-#include <q3popupmenu.h>
+#include <QDomElement>
+#include <QDomDocument>
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+	@author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-
-class KTTLRuler : public KTRulerBase
+class AGraphicComponent : public QObject
 {
 	Q_OBJECT
 	public:
-		KTTLRuler(QWidget *parent);
-		~KTTLRuler();
-// 		virtual void drawScale();
+		AGraphicComponent(QObject *parent = 0);
+		virtual ~AGraphicComponent();
 		
-	private slots:
-// 		void showMenu(KTRulerBase *, QPoint pos);
-// 		void chooseOption(int);
+		virtual QDomElement createXML( QDomDocument &doc ) = 0;
+		virtual QString key() const = 0;
 		
-	public slots:
-		virtual void movePointers(const QPoint &pos);
+		QRectF boundingRect() const;
+		QColor color() const;
+		QPainterPath path() const;
+		QBrush brush() const;
+		QPen pen() const;
 		
-	private:
+		virtual void setPath(const QPainterPath &path );
+		virtual void setColor(const QColor &color);
+		virtual void setBrush(const QBrush &brush);
+		virtual void setPen(const QPen &pen);
 
+		
+	protected:
+		QPainterPath m_path;
+		QColor m_color;
+		QBrush m_brush;
+		QPen m_pen;
+
+		
 };
 
 #endif
