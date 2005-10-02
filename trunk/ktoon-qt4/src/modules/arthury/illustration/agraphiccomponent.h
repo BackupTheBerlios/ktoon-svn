@@ -30,7 +30,7 @@
 #include <QDomDocument>
 
 /**
-	@author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 class AGraphicComponent : public QObject
 {
@@ -52,15 +52,13 @@ class AGraphicComponent : public QObject
 		virtual void setColor(const QColor &color);
 		virtual void setBrush(const QBrush &brush);
 		virtual void setPen(const QPen &pen);
-
+		virtual void setPen(const QColor &color);
 		
 	protected:
-		QPainterPath m_path;
-		QColor m_color;
-		QBrush m_brush;
-		QPen m_pen;
-
-		
+		QPainterPath m_pPath;
+		QColor m_pColor;
+		QBrush m_pBrush;
+		QPen m_pPen;
 };
 
 #endif

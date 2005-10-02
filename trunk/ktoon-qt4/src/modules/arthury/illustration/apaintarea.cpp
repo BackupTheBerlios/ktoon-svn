@@ -28,6 +28,14 @@ APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0),
 	
 	setMouseTracking(true);
 	m_grid.createGrid(m_paintDevice);
+
+	QPainter painter(&m_paintDevice);
+	
+	if(m_drawGrid)
+	{
+		painter.setPen(Qt::gray);
+		painter.drawPath(m_grid.pathGrid());
+	}
 }
 
 
@@ -51,11 +59,6 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 	painter.setRenderHint(QPainter::Antialiasing, true);
 	painter.drawPath(m_path);
 	
-	if(m_drawGrid)
-	{
-		painter.setPen(Qt::gray);
-		painter.drawPath(m_grid.pathGrid());
-	}
 
 	painter.end();
 	

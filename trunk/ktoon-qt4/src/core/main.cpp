@@ -89,19 +89,20 @@ int main( int argc, char ** argv )
 	format.setDepth( TRUE );
 	QGLFormat::setDefaultFormat( format );
 	
-	Splash *splash = new Splash();
+	Splash *splash = new Splash;
 	splash->show();
 	splash->setMessage( QObject::tr( "Initializing..." ) );
 	
 	KTMainWindow *mainWindow = new KTMainWindow;
 	splash->setMessage( QObject::tr( "Loading Modules" ) );
 
-	mainWindow->show();
 
 	splash->setMessage( QObject::tr( "Loaded!" ) );
 	
 	splash->finish( mainWindow );
 	delete splash;
+
+	mainWindow->show();
 	
 	QApplication::setActiveWindow(mainWindow);
 	

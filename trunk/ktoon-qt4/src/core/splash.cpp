@@ -28,10 +28,13 @@
 #include "ktapplication.h"
 #include "kimageeffect.h"
 
+#include "ktdebug.h"
+
 //------------------ CONSTRUCTOR -----------------
 
 Splash::Splash() : QSplashScreen( 0, QPixmap(), Qt::WStyle_StaysOnTop ), m_size(3), m_state(0)
 {
+	KTINIT;
 	QTimer *timer = new QTimer( this );
 	QObject::connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
 	timer->start(150);
@@ -44,6 +47,7 @@ Splash::Splash() : QSplashScreen( 0, QPixmap(), Qt::WStyle_StaysOnTop ), m_size(
 
 Splash::~Splash()
 {
+	KTEND;
 }
 
 void Splash::animate()
@@ -61,6 +65,7 @@ void Splash::setMessage(const QString &msg)
 
 void Splash::drawContents ( QPainter * painter )
 {
+	//QSplashScreen::drawContents(painter);
 	int position;
 
 	// Draw background circles

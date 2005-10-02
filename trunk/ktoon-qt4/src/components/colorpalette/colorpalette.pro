@@ -20,7 +20,8 @@ HEADERS += colorcells.h \
            gradientswitch.h \
            gradientviewer.h \
            outlinecolor.h \
-           valueselector.h 
+           valueselector.h \ 
+	   ktcolorpicker.h
 SOURCES += colorcells.cpp \
            colordisplay.cpp \
            colorgradientselector.cpp \
@@ -31,5 +32,6 @@ SOURCES += colorcells.cpp \
            gradientswitch.cpp \
            gradientviewer.cpp \
            outlinecolor.cpp \
-           valueselector.cpp 
+           valueselector.cpp \
+	   ktcolorpicker.cpp 
 QT += qt3support xml opengl
