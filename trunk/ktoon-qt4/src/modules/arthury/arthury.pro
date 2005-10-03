@@ -4,8 +4,9 @@
 # Destiono es un subdirectorio de proyecto 
 
 SUBDIRS += illustration \
-           animation 
+           animation \
+           interfaces \
+           plugins 
 CONFIG += release \
-          warn_on 
-TEMPLATE = subdirs 
-
+warn_on
+TEMPLATE = subdirs

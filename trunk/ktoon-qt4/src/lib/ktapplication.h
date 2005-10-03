@@ -22,10 +22,16 @@
 #define KTAPPLICATION_H
 
 #include <QApplication>
-#include <QString>
 #include <QMap>
+#include <QColorGroup>
+
 #include "ktthememanager.h"
 #include "ktconfig.h"
+
+class QApplication;
+class QString;
+class KTThemeDocument;
+class QPalette;
 
 typedef QMap<QString, QString> ParseArgs;
 

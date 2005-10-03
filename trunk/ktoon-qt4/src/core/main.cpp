@@ -105,6 +105,7 @@ int main( int argc, char ** argv )
 	mainWindow->show();
 	
 	QApplication::setActiveWindow(mainWindow);
+	QApplication::addLibraryPath (KTOON_HOME+"/plugins");
 	
 	return application.exec();
 }

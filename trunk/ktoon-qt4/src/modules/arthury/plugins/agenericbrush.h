@@ -17,65 +17,30 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef AGENERICBRUSH_H
+#define AGENERICBRUSH_H
 
-#ifndef APAINTAREA_H
-#define APAINTAREA_H
+#include <QObject>
 
-#include <QWidget>
-#include <QMouseEvent>
-#include <QImage>
-#include <QPainterPath>
-#include "agrid.h"
-
-#include "../interfaces/abrushinterface.h"
+#include <abrushinterface.h>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class APaintArea : public QWidget
+class AGenericBrush : public QObject, public ABrushInterface
 {
-	Q_OBJECT
+	Q_OBJECT;
+	Q_INTERFACES(ABrushInterface);
+	
 	public:
-		APaintArea(QWidget *parent = 0);
-		~APaintArea();
-		QSize sizeHint() const;
-		QSize minimumSizeHint () const;
-		QPoint paintDevicePosition() const;
-		QImage paintDevice() const;
-		void setZeroAt(int zero);
+		virtual QStringList keys() const;
+		virtual QRect press(const QString &brush, QPainter &painter, const QPoint &pos);
+		virtual QRect move(const QString &brush, QPainter &painter, const QPoint &oldPos, const QPoint &newPos);
+		virtual QRect release(const QString &brush, QPainter &painter,const QPoint &pos);
 		
-		
-	private:
-		QImage m_paintDevice;
-		AGrid m_grid;
-		QPainterPath m_path;
-		int m_xpos, m_ypos;
-		int m_zero;
-		bool m_drawGrid;
-		
-		// <FIXME>
-		ABrushInterface *m_brushInterface;
-		QPoint m_lastPosition;
-		QString m_brush;
-		QColor m_color;
-		
-	public:
-		void setBrush(ABrushInterface *brushIface, const QString &brush);
-		
-	private:
-		void setupPainter(QPainter &painter);
-		
-		// </FIXME>
-	protected:
-		void mouseMoveEvent(QMouseEvent *e);
-		void mousePressEvent ( QMouseEvent * e );
-		void mouseReleaseEvent(QMouseEvent *e);
-		void paintEvent(QPaintEvent *);
-		void resizeEvent(QResizeEvent * event );
-		
-	signals:
-		void mousePos(const QPoint& p);
+		virtual QPixmap pixmap() const;
+
 };
 
 #endif

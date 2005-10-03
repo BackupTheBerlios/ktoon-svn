@@ -18,64 +18,48 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef APAINTAREA_H
-#define APAINTAREA_H
+#include "agenericbrush.h"
+#include "../../../images/icons/brush.xpm"
 
-#include <QWidget>
-#include <QMouseEvent>
-#include <QImage>
-#include <QPainterPath>
-#include "agrid.h"
-
-#include "../interfaces/abrushinterface.h"
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-
-class APaintArea : public QWidget
+QStringList AGenericBrush::keys() const
 {
-	Q_OBJECT
-	public:
-		APaintArea(QWidget *parent = 0);
-		~APaintArea();
-		QSize sizeHint() const;
-		QSize minimumSizeHint () const;
-		QPoint paintDevicePosition() const;
-		QImage paintDevice() const;
-		void setZeroAt(int zero);
-		
-		
-	private:
-		QImage m_paintDevice;
-		AGrid m_grid;
-		QPainterPath m_path;
-		int m_xpos, m_ypos;
-		int m_zero;
-		bool m_drawGrid;
-		
-		// <FIXME>
-		ABrushInterface *m_brushInterface;
-		QPoint m_lastPosition;
-		QString m_brush;
-		QColor m_color;
-		
-	public:
-		void setBrush(ABrushInterface *brushIface, const QString &brush);
-		
-	private:
-		void setupPainter(QPainter &painter);
-		
-		// </FIXME>
-	protected:
-		void mouseMoveEvent(QMouseEvent *e);
-		void mousePressEvent ( QMouseEvent * e );
-		void mouseReleaseEvent(QMouseEvent *e);
-		void paintEvent(QPaintEvent *);
-		void resizeEvent(QResizeEvent * event );
-		
-	signals:
-		void mousePos(const QPoint& p);
-};
+	return QStringList() << tr("Generic Brush");
+}
 
-#endif
+QRect AGenericBrush::press(const QString &brush, QPainter &painter, const QPoint &pos)
+{
+	return move(brush, painter, pos, pos);
+}
+
+QRect AGenericBrush::move(const QString &brush, QPainter &painter,const QPoint &oldPos, const QPoint &newPos)
+{
+	painter.save();
+
+	int rad = painter.pen().width() / 2;
+	QRect boundingRect = QRect(oldPos, newPos).normalized()
+			.adjusted(-rad, -rad, +rad, +rad);
+	QColor color = painter.pen().color();
+	int thickness = painter.pen().width();
+	QColor transparentColor(color.red(), color.green(), color.blue(), 0);
+
+	if (brush == tr("Generic Brush") ) 
+	{
+		painter.drawLine(oldPos, newPos);
+	}
+	
+	painter.restore();
+	return boundingRect;
+}
+
+QRect AGenericBrush::release(const QString & /* brush */,QPainter & /* painter */, const QPoint & /* pos */)
+{
+	return QRect(0, 0, 0, 0);
+}
+
+QPixmap AGenericBrush::pixmap() const
+{
+	return QPixmap(brush_xpm);
+}
+
+Q_EXPORT_PLUGIN( AGenericBrush )
+

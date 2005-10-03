@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef KTVIEWDOCUMENT_H
 #define KTVIEWDOCUMENT_H
 
@@ -27,6 +28,10 @@
 #include <QActionGroup>
 #include <QToolBar>
 #include <QMenu>
+#include <QDir>
+#include <QPluginLoader>
+
+#include "abrushinterface.h"
 
 #include "ktpaintareacontainer.h"
 
@@ -37,7 +42,7 @@ class KTViewDocument : public KTMdiWindow
 {
 	Q_OBJECT
 	public:
-		KTViewDocument( QWidget *parent = 0);
+		KTViewDocument( QWidget *parent = 0 );
 		~KTViewDocument();
 		void close();
 	private:
@@ -52,11 +57,20 @@ class KTViewDocument : public KTMdiWindow
 		void createToolbar();
 		void createMenu();
 		void createTools();
+		
+	private: 
+		// Plugins
+		void loadPlugins();
+		void addToolToMenu(QObject *plugin, const QStringList &texts, QMenu *menu, const char *member, const QPixmap &pixmap = QPixmap(), QActionGroup *actionGroup = 0);
+		
+	private:
+		QDir m_pluginDirectory;
 
 	private slots:
 		void showPos(const QPoint &p);	
 		void setCursor(const QCursor &c);
 		void changeTool(QAction *a);
+		void changeBrush();
 	
 	protected:
 

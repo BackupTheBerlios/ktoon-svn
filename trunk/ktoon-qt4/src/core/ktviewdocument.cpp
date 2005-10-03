@@ -34,8 +34,6 @@
 #include "status.h"
 #include "drawingarea.h"
 
-
-
 KTViewDocument::KTViewDocument(QWidget *parent ) : KTMdiWindow(parent)
 {
 	m_paintAreaContainer = new KTPaintAreaContainer(this);
@@ -51,10 +49,13 @@ KTViewDocument::KTViewDocument(QWidget *parent ) : KTMdiWindow(parent)
 	createTools();
 // 	createMenu();
 	
+	/**************************************/
 	// FIXME: delete this
 	DrawingArea *area  = new DrawingArea(0);
 	area->hide();
 	KTStatus->setDrawingArea(area);
+	/**************************************/
+	loadPlugins();
 }
 
 
@@ -351,6 +352,59 @@ void KTViewDocument::createTools()
 	m_toolbar->addAction(m_toolsOrder->menuAction());
 	m_toolbar->addAction(m_toolsAlign->menuAction());
 // 	m_toolbar->addAction(m_toolsTransform->menuAction());
+}
+
+void KTViewDocument::loadPlugins()
+{
+	m_pluginDirectory = QDir(KTOON_HOME+"/plugins/");
+
+	foreach (QString fileName, m_pluginDirectory.entryList(QDir::Files))
+	{
+		QPluginLoader loader(m_pluginDirectory.absoluteFilePath(fileName));
+		QObject *plugin = loader.instance();
+		
+		if (plugin)
+		{
+			ABrushInterface *iBrush = qobject_cast<ABrushInterface *>(plugin);
+			if (iBrush)
+			{
+				ktDebug() << "*******Loaded: " << iBrush->keys()[0] << endl;
+// 				addToolToMenu(plugin, iBrush->keys(), brushMenu, iBrush->pixmap(), SLOT(changeBrush()), brushActionGroup);
+				addToolToMenu(plugin, iBrush->keys(), m_toolsDraw, SLOT(changeBrush()), iBrush->pixmap());
+				
+				m_paintAreaContainer->drawArea()->setBrush(iBrush, "Generic Brush");
+			}
+		}
+	}
+}
+
+void KTViewDocument::addToolToMenu(QObject *plugin, const QStringList &texts, QMenu *menu, const char *member, const QPixmap &pixmap, QActionGroup *actionGroup )
+{
+	foreach (QString text, texts)
+	{
+		QAction *action = new QAction(text, plugin);
+		connect(action, SIGNAL(triggered()), this, member);
+		menu->addAction(action);
+
+		if (actionGroup) 
+		{
+			action->setCheckable(true);
+			actionGroup->addAction(action);
+		}
+	}
+}
+
+void KTViewDocument::changeBrush()
+{
+	QAction *action = qobject_cast<QAction *>(sender());
+	
+	if ( action )
+	{
+		ABrushInterface *iBrush = qobject_cast<ABrushInterface *>(action->parent());
+		QString brush = action->text();
+	
+		m_paintAreaContainer->drawArea()->setBrush(iBrush, brush);
+	}
 }
 
 void KTViewDocument::changeTool( QAction *a)

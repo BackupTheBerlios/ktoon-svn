@@ -29,6 +29,9 @@
 
 #include <QGLWidget>
 
+#include <QApplication>
+#include <QMap>
+
 #include "ktdebug.h"
 
 KTApplication::KTApplication(int & argc, char ** argv)

@@ -18,64 +18,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef APAINTAREA_H
-#define APAINTAREA_H
+#ifndef ABRUSHINTERFACE_H
+#define ABRUSHINTERFACE_H
 
-#include <QWidget>
-#include <QMouseEvent>
-#include <QImage>
+#include <QStringList>
+#include <QRect>
+#include <QPoint>
+#include <QPainter>
+#include <QBrush>
+#include <QPen>
 #include <QPainterPath>
-#include "agrid.h"
+#include <QImage>
 
-#include "../interfaces/abrushinterface.h"
+#include "qplugin.h" // Q_EXPORT_PLUGIN
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-
-class APaintArea : public QWidget
+class ABrushInterface
 {
-	Q_OBJECT
 	public:
-		APaintArea(QWidget *parent = 0);
-		~APaintArea();
-		QSize sizeHint() const;
-		QSize minimumSizeHint () const;
-		QPoint paintDevicePosition() const;
-		QImage paintDevice() const;
-		void setZeroAt(int zero);
+		virtual ~ABrushInterface() {};
 		
+		virtual QStringList keys() const = 0;
+		virtual QRect press(const QString &brush, QPainter &painter,const QPoint &pos) = 0;
+		virtual QRect move(const QString &brush, QPainter &painter, const QPoint &oldPos, const QPoint &newPos) = 0;
+		virtual QRect release(const QString &brush, QPainter &painter, const QPoint &pos) = 0;
 		
-	private:
-		QImage m_paintDevice;
-		AGrid m_grid;
-		QPainterPath m_path;
-		int m_xpos, m_ypos;
-		int m_zero;
-		bool m_drawGrid;
-		
-		// <FIXME>
-		ABrushInterface *m_brushInterface;
-		QPoint m_lastPosition;
-		QString m_brush;
-		QColor m_color;
-		
-	public:
-		void setBrush(ABrushInterface *brushIface, const QString &brush);
-		
-	private:
-		void setupPainter(QPainter &painter);
-		
-		// </FIXME>
-	protected:
-		void mouseMoveEvent(QMouseEvent *e);
-		void mousePressEvent ( QMouseEvent * e );
-		void mouseReleaseEvent(QMouseEvent *e);
-		void paintEvent(QPaintEvent *);
-		void resizeEvent(QResizeEvent * event );
-		
-	signals:
-		void mousePos(const QPoint& p);
+		virtual QPixmap pixmap() const = 0;
 };
+
+Q_DECLARE_INTERFACE(ABrushInterface, "com.toonka.ktoon.ABrushInterface/0.1");
 
 #endif

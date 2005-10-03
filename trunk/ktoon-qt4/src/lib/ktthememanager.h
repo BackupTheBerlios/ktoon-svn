@@ -21,8 +21,8 @@
 #ifndef KTTHEMEMANAGER_H
 #define KTTHEMEMANAGER_H
 
-#include <qxml.h>
-#include <qpalette.h>
+#include <QXmlDefaultHandler>
+#include <QPalette>
 
 class KTThemeDocument;
 
@@ -51,7 +51,7 @@ class KTThemeManager : public QXmlDefaultHandler
 		
 	private:
 		QString m_root,m_qname;
-		QColorGroup m_colorGroup;
+		QPalette m_colorGroup;
 };
 
 #endif
