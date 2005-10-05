@@ -22,6 +22,8 @@
 #include <qlabel.h>
 #include <qmap.h>
 
+#include <QListWidget>
+
 /**
  * @class KTFontWidget
  * This class is based on KDE KFontChooser, I adapted for use in only-qt applications
@@ -118,9 +120,9 @@ class KTFontWidget : public QWidget
 		QCheckBox    *styleCheckbox;
 		QCheckBox    *sizeCheckbox;
 		QLabel       *sizeLabel;
-		Q3ListBox     *familyListBox;
-		Q3ListBox     *styleListBox;
-		Q3ListBox     *sizeListBox;
+		QListWidget     *familyListBox;
+		QListWidget     *styleListBox;
+		QListWidget     *sizeListBox;
 // 		QComboBox    *charsetsCombo; // BIC: remove in KDE4
 		QCheckBox    *sizeIsRelativeCheckBox;
  

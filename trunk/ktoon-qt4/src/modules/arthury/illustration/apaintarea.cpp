@@ -122,11 +122,11 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 		} 
 		else 
 		{
-			if (m_brushInterface) 
+			if (m_tool) 
 			{
 				QPainter painter(&m_paintDevice);
 				setupPainter(painter);
-				QRect rect = m_brushInterface->press(m_brush, painter, event->pos());
+				QRect rect = m_tool->press(m_brush, painter, event->pos());
 				rect.translate(m_xpos, m_ypos);
 				update(rect);
 			}
@@ -143,11 +143,11 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 	
 	if ((event->buttons() & Qt::LeftButton) && m_lastPosition != QPoint(-1, -1))
 	{
-		if (m_brushInterface) 
+		if (m_tool) 
 		{
 			QPainter painter(&m_paintDevice);
 			setupPainter(painter);
-			QRect rect = m_brushInterface->move(m_brush, painter, m_lastPosition, event->pos());
+			QRect rect = m_tool->move(m_brush, painter, m_lastPosition, event->pos());
 			rect.translate(m_xpos, m_ypos);
 			update(rect);
 		}
@@ -162,11 +162,11 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 	
 	if (event->button() == Qt::LeftButton && m_lastPosition != QPoint(-1, -1)) 
 	{
-		if (m_brushInterface) 
+		if (m_tool)
 		{
 			QPainter painter(&m_paintDevice);
 			setupPainter(painter);
-			QRect rect = m_brushInterface->release(m_brush, painter, event->pos());
+			QRect rect = m_tool->release(m_brush, painter, event->pos());
 			rect.translate(m_xpos, m_ypos);
 			update(rect);
 		}
@@ -175,15 +175,16 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 	}
 }
 
-void APaintArea::setBrush(ABrushInterface *brushIface, const QString &brush)
+void APaintArea::setBrush(ADrawingToolInterface *toolIface, const QString &brush)
 {
-	m_brushInterface = brushIface;
+	m_tool = toolIface;
 	m_brush = brush;
 }
 
 void APaintArea::setupPainter(QPainter &painter)
 {
 	painter.setRenderHint(QPainter::Antialiasing, true);
-	painter.setPen(QPen(m_color, 3, Qt::SolidLine, Qt::RoundCap,
-		       Qt::RoundJoin));
+	painter.setPen(QPen(m_color, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 }
+
+

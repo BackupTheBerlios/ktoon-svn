@@ -90,6 +90,13 @@ KTAction::KTAction(const QIcon & icon, const QString &text, const QKeySequence &
 	initWithManager(parent);
 }
 
+KTAction::KTAction(const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, KTActionManager * parent, const QString &id) : QAction(text, parent), m_id(id.toLower())
+{
+	setShortcut(key);
+	connect(this, SIGNAL(triggered()), reciever, slot);
+	initWithManager(parent);
+}
+
 KTAction::~KTAction()
 {
 }

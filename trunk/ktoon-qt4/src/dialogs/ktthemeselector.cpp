@@ -19,25 +19,24 @@
  ***************************************************************************/
 
 #include "ktthemeselector.h"
-#include <Q3VButtonGroup>
-#include <qcheckbox.h>
-#include <qlabel.h>
-#include <q3listview.h>
-#include <q3filedialog.h>
-//Added by qt3to4:
+
+// Qt
+#include <QFileDialog>
 #include <QTextStream>
 #include <QGridLayout>
-#include <Q3ValueList>
+#include <QList>
+#include <QDateTime>
+#include <QHeaderView>
+#include <QCheckBox>
 
+// KToon
 #include "ktapplication.h"
 #include "ktfiledialog.h"
 
-#include <QDateTime>
-
 #include "ktdebug.h"
+#include "kseparator.h"
 
-
-KTThemeSelector::KTThemeSelector(QWidget *parent, const char *name) : Q3VBox(parent, name)
+KTThemeSelector::KTThemeSelector(QWidget *parent) : KTVHBox(parent, Qt::Vertical)
 {
 	setupChooseColor();
 	loadSchemes();
@@ -50,10 +49,10 @@ KTThemeSelector::~KTThemeSelector()
 
 void KTThemeSelector::setupChooseColor()
 {
-	Q3HBox *hbox = new Q3HBox(this);
-	Q3VBox *box1 = new Q3VBox(hbox);
-	box1->setMargin(10);
-	m_general = new Q3ButtonGroup(tr("General"), box1);
+	KTVHBox *hbox = new KTVHBox(this, Qt::Horizontal);
+	KTVHBox *box1 = new KTVHBox(hbox, Qt::Vertical);
+	box1->boxLayout()->setMargin(10);
+	m_general = new QGroupBox(tr("General"), box1);
 	
 	QGridLayout *layout1 = new QGridLayout(m_general, 4, 2, 15, 5);
 	
@@ -64,19 +63,19 @@ void KTThemeSelector::setupChooseColor()
 	QColorGroup colorGroup = QApplication::palette().active();
 	
 	
-	Q3ValueList<QColor> colors = Q3ValueList<QColor>() << colorGroup.text () << colorGroup.base() << colorGroup.foreground() << colorGroup.background() << colorGroup.button() << colorGroup.buttonText();
+	QList<QColor> colors = QList<QColor>() << colorGroup.text () << colorGroup.base() << colorGroup.foreground() << colorGroup.background() << colorGroup.button() << colorGroup.buttonText();
 	
 	for(uint i = 0; i < labels1.count(); i++)
 	{
 		layout1->addWidget(new QLabel(labels1[i], m_general), i, 0 );
 		QPushButton *button = new QPushButton(m_general, names[i]);
 		button->setPaletteBackgroundColor(colors[i]);
-		m_general->insert(button, i);
+// 		m_general->insert(button, i);
 		layout1->addWidget(button, i, 1);
 		m_generalSection.insert(names[i], colors[i].name());
 	}
 	
-	m_effects = new Q3ButtonGroup(tr("Effects"), box1);
+	m_effects = new QGroupBox(tr("Effects"), box1);
 	
 	QGridLayout *layout2 = new QGridLayout(m_effects, 4, 2, 15, 5);
 	
@@ -91,15 +90,15 @@ void KTThemeSelector::setupChooseColor()
 		layout2->addWidget(new QLabel(labels2[i], m_effects), i, 0 );
 		QPushButton *button = new QPushButton(m_effects, names2[i]);
 		button->setPaletteBackgroundColor(colors[i]);
-		m_effects->insert(button, i);
+// 		m_effects->insert(button, i);
 		layout2->addWidget(button, i, 1);
 		m_effectsSection.insert(names2[i], colors[i].name());
 	}
 	////////////
 	
-	Q3VBox *box2 = new Q3VBox(hbox);
-	box2->setMargin(10);
-	m_selections = new Q3ButtonGroup(tr("Selections"), box2);
+	KTVHBox *box2 = new KTVHBox(hbox, Qt::Vertical);
+	box2->boxLayout()->setMargin(10);
+	m_selections = new QGroupBox(tr("Selections"), box2);
 	
 	QGridLayout *layout3 = new QGridLayout(m_selections, 4, 2, 15, 5);
 	
@@ -113,12 +112,12 @@ void KTThemeSelector::setupChooseColor()
 		layout3->addWidget(new QLabel(labels3[i], m_selections), i, 0 );
 		QPushButton *button = new QPushButton(m_selections, names3[i]);
 		button->setPaletteBackgroundColor(colors[i]);
-		m_selections->insert(button, i);
+// 		m_selections->insert(button, i);
 		layout3->addWidget(button, i, 1);
 		m_selectionsSection.insert(names3[i], colors[i].name());
 	}
 	
-	m_textEffects = new Q3ButtonGroup(tr("Text effects"), box2);
+	m_textEffects = new QGroupBox(tr("Text effects"), box2);
 	
 	QGridLayout *layout4 = new QGridLayout(m_textEffects, 4, 2, 15, 5);
 	QStringList labels4 = QStringList() << tr("Bright Text") << tr("Link") << tr("Link Visited");
@@ -132,24 +131,31 @@ void KTThemeSelector::setupChooseColor()
 		layout4->addWidget(new QLabel(labels4[i], m_textEffects), i, 0 );
 		QPushButton *button = new QPushButton(m_textEffects, names4[i]);
 		button->setPaletteBackgroundColor(colors[i]);
-		m_textEffects->insert(button, i);
+// 		m_textEffects->insert(button, i);
 		layout4->addWidget(button, i, 1);
 		m_textEffectsSection.insert(names4[i], colors[i].name());
 	}
 	
 	QGroupBox *schemeWidget = new QGroupBox(tr("Schema"), box2); // FIXME: add vertical layout
+	QVBoxLayout *schemaLayout = new QVBoxLayout;
 	
-	m_allSchemes = new Q3ListView(schemeWidget);
-	m_allSchemes->addColumn(tr("Schema"));
-	m_allSchemes->addColumn(tr("Owner"));
-	m_allSchemes->addColumn(tr("Date"));
+	m_allSchemes = new QTreeWidget;
+	m_allSchemes->setHeaderLabels ( QStringList() << tr("Schema") << tr( "Owner" ) << tr( "Date" ) );
+	m_allSchemes->header()->setResizeMode(QHeaderView::Stretch);
 	
-	connect(m_allSchemes, SIGNAL(doubleClicked ( Q3ListViewItem *, const QPoint &, int )), this, SLOT(loadSchemaFromListView( Q3ListViewItem *, const QPoint &, int )));
+	schemaLayout->addWidget(m_allSchemes);
 	
-	QPushButton *saveSchemeButton = new QPushButton(tr("Save schema"), schemeWidget);
+	connect(m_allSchemes, SIGNAL(itemDoubleClicked (QTreeWidgetItem *, int )), this, SLOT(loadSchemaFromListView( QTreeWidgetItem *, int )));
+	
+	QPushButton *saveSchemeButton = new QPushButton(tr("Save schema"));
 	connect(saveSchemeButton, SIGNAL(clicked()), SLOT(saveSchema()));
 	
-	m_useColors = new QCheckBox(tr("Use this colors"), schemeWidget);
+	schemaLayout->addWidget(saveSchemeButton);
+	
+	schemeWidget->setLayout(schemaLayout);
+	
+	new KSeparator(this);
+	m_useColors = new QCheckBox(tr("Use this colors"), this);
 	
 	connect(m_general, SIGNAL(clicked(int)), SLOT(chooseGeneralColor(int)));
 	connect(m_effects, SIGNAL(clicked(int)), SLOT(chooseEffectsColor(int)));
@@ -234,7 +240,7 @@ void KTThemeSelector::loadSchemes()
 		for(int i = 0; i < files.count(); i++ )
 		{
 			QFileInfo iterator = files[i];
-			Q3ListViewItem *item = new Q3ListViewItem(m_allSchemes);
+			QTreeWidgetItem *item = new QTreeWidgetItem(m_allSchemes);
 			item->setText(0, iterator.fileName());
 			item->setText(1, iterator.owner());
 			item->setText(2, iterator.created().toString());
@@ -279,7 +285,7 @@ QString KTThemeSelector::lastFile()
 	return m_lastFile;
 }
 
-void KTThemeSelector::loadSchemaFromListView(Q3ListViewItem *item, const QPoint &, int )
+void KTThemeSelector::loadSchemaFromListView(QTreeWidgetItem *item, int /*column*/)
 {
 	if ( item )
 	{

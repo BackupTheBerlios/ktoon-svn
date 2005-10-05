@@ -228,6 +228,15 @@ void KTViewDocument::createTools()
 	m_toolbar->setIconSize( QSize(22,22) );
 	addToolBar ( Qt::LeftToolBarArea, m_toolbar );
 	
+	// Brushes menu
+	m_brushesMenu = new QMenu(tr("Brushes"), m_toolbar);
+	m_brushesMenu->setIcon( QPixmap(KTOON_HOME+"/images/icons/brush.xpm") );
+	connect( m_brushesMenu, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
+	
+	m_toolbar->addAction(m_brushesMenu->menuAction());
+	
+	// Selection menu
+	
 	m_toolsSelection = new QMenu( tr("selection"), m_toolbar );
 	m_toolsSelection->setIcon(QPixmap(KTOON_HOME+"/images/icons/selection.xpm"));
 	connect( m_toolsSelection, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
@@ -365,34 +374,31 @@ void KTViewDocument::loadPlugins()
 		
 		if (plugin)
 		{
-			ABrushInterface *iBrush = qobject_cast<ABrushInterface *>(plugin);
+			ADrawingToolInterface *iBrush = qobject_cast<ADrawingToolInterface *>(plugin);
+			
 			if (iBrush)
 			{
-				ktDebug() << "*******Loaded: " << iBrush->keys()[0] << endl;
-// 				addToolToMenu(plugin, iBrush->keys(), brushMenu, iBrush->pixmap(), SLOT(changeBrush()), brushActionGroup);
-				addToolToMenu(plugin, iBrush->keys(), m_toolsDraw, SLOT(changeBrush()), iBrush->pixmap());
+				QStringList::iterator it;
+				QStringList keys = iBrush->keys();
 				
-				m_paintAreaContainer->drawArea()->setBrush(iBrush, "Generic Brush");
+				
+				for (it = keys.begin(); it != keys.end(); ++it)
+				{
+					ktDebug() << "*******Loaded: " << *it << endl;
+					
+					QAction *act = iBrush->actions()[*it];
+					if ( act )
+					{
+						connect(act, SIGNAL(triggered()), this, SLOT(changeBrush()));
+						m_brushesMenu->addAction(act);
+						m_paintAreaContainer->drawArea()->setBrush(iBrush, *it);
+					}
+				}
 			}
 		}
 	}
 }
 
-void KTViewDocument::addToolToMenu(QObject *plugin, const QStringList &texts, QMenu *menu, const char *member, const QPixmap &pixmap, QActionGroup *actionGroup )
-{
-	foreach (QString text, texts)
-	{
-		QAction *action = new QAction(text, plugin);
-		connect(action, SIGNAL(triggered()), this, member);
-		menu->addAction(action);
-
-		if (actionGroup) 
-		{
-			action->setCheckable(true);
-			actionGroup->addAction(action);
-		}
-	}
-}
 
 void KTViewDocument::changeBrush()
 {
@@ -400,7 +406,7 @@ void KTViewDocument::changeBrush()
 	
 	if ( action )
 	{
-		ABrushInterface *iBrush = qobject_cast<ABrushInterface *>(action->parent());
+		ADrawingToolInterface *iBrush = qobject_cast<ADrawingToolInterface *>(action->parent());
 		QString brush = action->text();
 	
 		m_paintAreaContainer->drawArea()->setBrush(iBrush, brush);

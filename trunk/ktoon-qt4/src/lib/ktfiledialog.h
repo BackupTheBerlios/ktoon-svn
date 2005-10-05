@@ -21,12 +21,12 @@
 #ifndef KTFILEDIALOG_H
 #define KTFILEDIALOG_H
 
-#include <qdialog.h>
-#include <qlineedit.h>
-#include <q3listview.h>
-#include <qpushbutton.h>
-#include <qlayout.h>
-#include <qlabel.h>
+#include <QTreeWidget>
+#include <QLabel>
+#include <QLayout>
+#include <QPushButton>
+#include <QLineEdit>
+#include <QDialog>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -49,12 +49,12 @@ class KTFileDialog : public QDialog
 		
 	private slots:
 		void accept();
-		void select(Q3ListViewItem *);
+		void select(QTreeWidgetItem *);
 // 		void reject();
 		
 	private:
 		QLineEdit *m_fileNameLE;
-		Q3ListView *m_listView;
+		QTreeWidget *m_treeWidget;
 		QPushButton *m_accept, *m_cancel;
 		QString m_fileName;
 		Type m_type;

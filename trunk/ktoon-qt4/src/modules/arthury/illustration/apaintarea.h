@@ -55,13 +55,13 @@ class APaintArea : public QWidget
 		bool m_drawGrid;
 		
 		// <FIXME>
-		ABrushInterface *m_brushInterface;
+		ADrawingToolInterface *m_tool;
 		QPoint m_lastPosition;
 		QString m_brush;
 		QColor m_color;
 		
 	public:
-		void setBrush(ABrushInterface *brushIface, const QString &brush);
+		void setBrush(ADrawingToolInterface *brushIface, const QString &brush);
 		
 	private:
 		void setupPainter(QPainter &painter);

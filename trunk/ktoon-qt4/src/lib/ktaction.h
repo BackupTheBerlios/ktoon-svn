@@ -43,6 +43,8 @@ class KTAction : public QAction
 		
 		KTAction(const QIcon & icon, const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, KTActionManager * parent, const QString &id);
 		
+		KTAction(const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, KTActionManager * parent, const QString &id);
+		
 		~KTAction();
 		
 		QString id() { return m_id; };

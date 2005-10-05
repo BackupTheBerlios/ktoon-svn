@@ -23,51 +23,70 @@
 #include "ktdebug.h"
 #include "kseparator.h"
 
-#include <q3hbox.h>
-#include <qfileinfo.h>
-#include <qdir.h>
+#include <QFileInfo>
+#include <QDir>
 
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QDateTime>
+#include <QHeaderView>
 
-KTFileDialog::KTFileDialog(Type t, QWidget *parent) : QDialog(parent, "KTFileDialog"), m_type(t)
+#include "ktvhbox.h"
+
+KTFileDialog::KTFileDialog(Type t, QWidget *parent) : QDialog(parent), m_type(t)
 {
 	KTINIT;
 	setCaption("Choose your file...");
 	setModal(true);
 	
-	(new QVBoxLayout(this))->setAutoAdd(true);
+	QVBoxLayout *m_mainLayout = new QVBoxLayout;
 	
-	Q3HBox *title = new Q3HBox(this);
-	
+	KTVHBox *title = new KTVHBox(this, Qt::Horizontal);
+	title->show();
+	m_mainLayout->addWidget(title);
+
 	if ( t == Repository )
 	{
-		new QLabel("<br>"+tr("Repository ")+KTOON_REPOSITORY+"<br>", this);
+		QLabel *explain = new QLabel("<br>"+tr("Repository ")+KTOON_REPOSITORY+"<br>", this);
+		explain->show();
+		m_mainLayout->addWidget(explain);
 	}
 	else if ( t == Themes )
 	{
-		new QLabel("<br>"+tr("Theme dir ")+ktapp->configDir()+"/themes/<br>", this);
+		QLabel *explain = new QLabel("<br>"+tr("Theme dir ")+ktapp->configDir()+"/themes/<br>", this);
+		explain->show();
+		m_mainLayout->addWidget(explain);
 	}
 	
-	new KSeparator(this);
+	KSeparator *sep1 = new KSeparator(this);
+	m_mainLayout->addWidget(sep1);
 	
-	new QLabel(tr("File name: "), this);
+	m_mainLayout->addWidget(new QLabel(tr("File name: "), this));
 	m_fileNameLE = new QLineEdit(this);
+	m_fileNameLE->show();
+	m_mainLayout->addWidget(m_fileNameLE);
 	
-	m_listView = new Q3ListView(this);
-	m_listView->addColumn(tr("Filename"));
-	m_listView->addColumn(tr("Owner"));
-	m_listView->addColumn(tr("Date"));
+	m_treeWidget = new QTreeWidget(this);
+	m_treeWidget->show();
 	
-	connect(m_listView, SIGNAL(clicked(Q3ListViewItem *)), this, SLOT(select(Q3ListViewItem *)));
+	m_mainLayout->addWidget(m_treeWidget);
+	m_treeWidget->setHeaderLabels ( QStringList() << tr("Filename") << tr( "Owner" ) << tr( "Date" ) );
+	m_treeWidget->header()->setResizeMode(QHeaderView::Stretch);
 	
-	Q3HBox *buttonBox= new Q3HBox(this);
+	connect(m_treeWidget, SIGNAL(clicked(QTreeWidgetItem *)), this, SLOT(select(QTreeWidgetItem *)));
+	
+	KTVHBox *buttonBox= new KTVHBox(this, Qt::Horizontal);
+	buttonBox->show();
+	m_mainLayout->addWidget(buttonBox);
 	m_accept = new QPushButton(tr("Accept"), buttonBox);
 	connect(m_accept, SIGNAL(clicked()), this, SLOT(accept()));
 	m_cancel = new QPushButton(tr("Cancel"), buttonBox);
 	connect(m_cancel, SIGNAL(clicked()), this, SLOT(reject()));
 	readFiles();
+	
+	setLayout(m_mainLayout);
+	
+	show();
 }
 
 
@@ -135,7 +154,7 @@ void KTFileDialog::readFiles()
 		for(int i = 0; i < files.count(); i++ )
 		{
 			QFileInfo iterator = files[i];
-			Q3ListViewItem *item = new Q3ListViewItem(m_listView);
+			QTreeWidgetItem *item = new QTreeWidgetItem(m_treeWidget);
 			item->setText(0, iterator.fileName());
 			item->setText(1, iterator.owner());
 			item->setText(2, iterator.created().toString());
@@ -143,7 +162,7 @@ void KTFileDialog::readFiles()
 	}
 }
 
-void KTFileDialog::select(Q3ListViewItem *item)
+void KTFileDialog::select(QTreeWidgetItem *item)
 {
 	if ( ! item )
 	{

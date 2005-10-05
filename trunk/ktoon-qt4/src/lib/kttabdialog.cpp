@@ -23,7 +23,7 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 
-KTTabDialog::KTTabDialog(QWidget *parent)
+KTTabDialog::KTTabDialog(QWidget *parent, bool modal)
  : QDialog(parent)
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -45,6 +45,8 @@ KTTabDialog::KTTabDialog(QWidget *parent)
 	mainLayout->addWidget(m_tabWidget);
 	mainLayout->addLayout(buttonLayout);
 	setLayout(mainLayout);
+	
+	setModal(modal);
 }
 
 
@@ -60,5 +62,10 @@ void KTTabDialog::addTab ( QWidget * child, const QString & label )
 void KTTabDialog::addTab ( QWidget * child, const QIcon & iconset, const QString & label )
 {
 	m_tabWidget->addTab(child, iconset, label);
+}
+
+QWidget *KTTabDialog::currentTab()
+{
+	return m_tabWidget->currentWidget();
 }
 

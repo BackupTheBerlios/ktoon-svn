@@ -21,29 +21,31 @@
 #ifndef KTTHEMESELECTOR_H
 #define KTTHEMESELECTOR_H
 
-#include <q3vbox.h>
-#include <qcolordialog.h>
-#include <qpushbutton.h>
-#include <qlayout.h>
-#include <q3buttongroup.h>
-#include <q3scrollview.h>
-
 #include <qmap.h>
 
-#include "ktthemedocument.h"
+#include <QTreeWidget>
+#include <QGroupBox>
+#include <QPushButton>
+#include <QColorDialog>
+#include <QLayout>
+#include <QVBoxLayout>
+#include <QScrollArea>
+#include <QLabel>
+#include <QGridLayout>
 
-class Q3ListView;
-class Q3ListViewItem;
+#include "ktthemedocument.h"
+#include "ktvhbox.h"
+
 class QCheckBox;
 
 /**
  * @author David Cuadrado
 */
-class KTThemeSelector : public Q3VBox
+class KTThemeSelector : public KTVHBox
 {
 	Q_OBJECT
 	public:
-		KTThemeSelector(QWidget *parent = 0, const char *name = 0);
+		KTThemeSelector(QWidget *parent = 0);
 		~KTThemeSelector();
 		
 		KTThemeDocument document();
@@ -58,26 +60,26 @@ class KTThemeSelector : public Q3VBox
 		void chooseSelectionsColor(int );
 		void chooseTextEffectsColor(int );
 		void saveSchema();
-		void loadSchemaFromListView(Q3ListViewItem *, const QPoint &, int );
+		void loadSchemaFromListView(QTreeWidgetItem *, int column );
 		
 	private:
 		void setupChooseColor();
 		void loadSchemes();
 		
 	private:
-		Q3ButtonGroup *m_general;
+		QGroupBox *m_general;
 		ThemeKey m_generalSection;
 		
-		Q3ButtonGroup *m_effects;
+		QGroupBox *m_effects;
 		ThemeKey m_effectsSection;
 		
-		Q3ButtonGroup *m_selections;
+		QGroupBox *m_selections;
 		ThemeKey m_selectionsSection;
 		
-		Q3ButtonGroup *m_textEffects;
+		QGroupBox *m_textEffects;
 		ThemeKey m_textEffectsSection;
 		
-		Q3ListView *m_allSchemes;
+		QTreeWidget *m_allSchemes;
 		QCheckBox *m_useColors;
 		
 		QString m_lastFile;

@@ -26,7 +26,6 @@
  * @brief Include this file if you need the class Preferences
  */
 
-#include <q3tabdialog.h>
 #include <qlineedit.h>
 #include <qlabel.h>
 #include <qradiobutton.h>
@@ -38,9 +37,11 @@
 #include "ktfontwidget.h"
 #include "ktthemeselector.h"
 
+#include "kttabdialog.h"
+
 class ColorSchemePref;
 
-class Preferences : public Q3TabDialog
+class Preferences : public KTTabDialog
 {
 	Q_OBJECT
 			

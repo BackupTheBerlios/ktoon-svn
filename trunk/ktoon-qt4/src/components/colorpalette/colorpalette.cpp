@@ -36,8 +36,7 @@
 
 //--------------- CONSTRUCTOR --------------------
 
-ColorPalette::ColorPalette( QWidget *parent)
-	: KTModuleWidgetBase(parent, tr( "Color Palette" ))
+ColorPalette::ColorPalette( QWidget *parent) : KTModuleWidgetBase(parent, tr( "Color Palette" ))
 {
 	Q_CHECK_PTR( parent );
 
@@ -177,6 +176,8 @@ void ColorPalette::setupBlockColorMixer()
 	Q3HBox *tmpBox = new Q3HBox(this);
 	tmpBox->setSpacing(3);
 	Q3VBox *displayColor = new Q3VBox(tmpBox);
+	
+// 	m_colorPicker = new KTColorPicker(displayColor);
 	
 	color_display = new ColorDisplay( displayColor );
 	

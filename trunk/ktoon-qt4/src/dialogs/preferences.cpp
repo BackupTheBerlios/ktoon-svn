@@ -28,20 +28,20 @@
 
 //--------------- CONSTRUCTOR --------------------
 
-Preferences::Preferences( QWidget *parent ) : Q3TabDialog( parent, "Application Preferences", true )
+Preferences::Preferences( QWidget *parent ) : KTTabDialog( parent )
 {
 	setCaption( tr( "Application Preferences" ) );
 	resize( 220, 230 );
 
-	setCancelButton();
+// 	setCancelButton();
 	connect( this, SIGNAL( applyButtonPressed() ), SLOT( applyChanges() ) );
 	
-	m_themeSelector = new KTThemeSelector(this);
+	m_themeSelector = new KTThemeSelector;
 	addTab(m_themeSelector, tr("Theme preferences"));
 // 	m_colorPref = new ColorSchemePref(this);
 // 	addTab(m_colorPref, tr("Color Preferences"));
 	
-	m_fontWidget = new KTFontWidget(this);
+	m_fontWidget = new KTFontWidget;
 	m_fontWidget->setFont( QFont("helvetica", 10));
 	m_fontWidget->showXLFDArea(false);
 	addTab(m_fontWidget, tr("Font"));
@@ -57,7 +57,7 @@ Preferences::~Preferences()
 
 void Preferences::applyChanges()
 {
-	if ( static_cast<KTThemeSelector *>(currentPage()) ==  m_themeSelector)
+	if ( static_cast<KTThemeSelector *>(currentTab()) ==  m_themeSelector)
 	{
 		if(m_themeSelector->iWantApplyColors() )
 		{
@@ -70,7 +70,7 @@ void Preferences::applyChanges()
 			}
 		}
 	}
-	else if ( static_cast<KTFontWidget *>( currentPage ()) == m_fontWidget )
+	else if ( static_cast<KTFontWidget *>( currentTab ()) == m_fontWidget )
 	{
 		ktapp->changeFont(m_fontWidget->font());
 	}

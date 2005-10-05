@@ -47,6 +47,7 @@ class KTViewDocument : public KTMdiWindow
 		void close();
 	private:
 		QActionGroup *gridGroup, *editGroup, *editGroup2, *viewNextGroup, *viewPreviousGroup;
+		QMenu *m_brushesMenu;
 		QMenu *m_toolsSelection, *m_toolsDraw, *m_toolsFills, *m_toolsErasers, *m_toolsView, *m_toolsOrder,*m_toolsAlign, *m_toolsTransform;
 		QAction *m_aSubGrid, *m_aNtsc, *m_aLightTable,*m_aUndo, *m_aRedo, *m_aClose, *m_aFrontBackGrid;
 		QToolBar *m_barGrid, *m_toolbar;
@@ -61,7 +62,6 @@ class KTViewDocument : public KTMdiWindow
 	private: 
 		// Plugins
 		void loadPlugins();
-		void addToolToMenu(QObject *plugin, const QStringList &texts, QMenu *menu, const char *member, const QPixmap &pixmap = QPixmap(), QActionGroup *actionGroup = 0);
 		
 	private:
 		QDir m_pluginDirectory;

@@ -31,11 +31,13 @@ class KTTabDialog : public QDialog
 {
 	Q_OBJECT
 	public:
-		KTTabDialog(QWidget *parent = 0);
+		KTTabDialog(QWidget *parent = 0, bool modal = true);
 		~KTTabDialog();
 		
 		void addTab ( QWidget * child, const QString & label );
 		void addTab ( QWidget * child, const QIcon & iconset, const QString & label );
+		
+		QWidget *currentTab();
 		
 	private:
 		QTabWidget *m_tabWidget;

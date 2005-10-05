@@ -74,6 +74,7 @@ class KTMainWindow : public DMainWindow
 		 * Create the file action 
 		 */
 		void setupFileActions();
+		void setupEditActions();
 		
 		/**
 		 * Create the proyect action
@@ -119,6 +120,8 @@ class KTMainWindow : public DMainWindow
 		void newProject();
 		void closeProject();
 		void openProject();
+		
+		void preferences();
 		
 	private:
 		QWorkspace *m_workSpace;

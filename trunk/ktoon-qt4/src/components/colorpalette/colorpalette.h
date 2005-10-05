@@ -52,6 +52,8 @@
 #include "custompalette.h"
 #include "gradientviewer.h"
 
+#include "ktcolorpicker.h"
+
 #include "ktcolor.h"
 
 class KTColor;
@@ -123,6 +125,7 @@ class ColorPalette : public KTModuleWidgetBase
 	//KTColor palette components
 	ColorCells *color_cells;
 	
+// 	KTColorPicker *m_colorPicker;
 	ColorMixer *color_mixer;
 	
 	ColorDisplay *color_display;

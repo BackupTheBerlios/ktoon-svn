@@ -21,9 +21,11 @@
 #include "agenericbrush.h"
 #include "../../../images/icons/brush.xpm"
 
+#include <QKeySequence>
+
 QStringList AGenericBrush::keys() const
 {
-	return QStringList() << tr("Generic Brush");
+	return QStringList() << tr("Pencil") << tr("Air Brush") << tr("Quad Brush");
 }
 
 QRect AGenericBrush::press(const QString &brush, QPainter &painter, const QPoint &pos)
@@ -36,15 +38,39 @@ QRect AGenericBrush::move(const QString &brush, QPainter &painter,const QPoint &
 	painter.save();
 
 	int rad = painter.pen().width() / 2;
-	QRect boundingRect = QRect(oldPos, newPos).normalized()
-			.adjusted(-rad, -rad, +rad, +rad);
+	QRect boundingRect = QRect(oldPos, newPos).normalized().adjusted(-rad, -rad, +rad, +rad);
 	QColor color = painter.pen().color();
 	int thickness = painter.pen().width();
 	QColor transparentColor(color.red(), color.green(), color.blue(), 0);
 
-	if (brush == tr("Generic Brush") ) 
+	if (brush == tr("Pencil") ) 
 	{
-		painter.drawLine(oldPos, newPos);
+		QPainterPath path;
+		path.moveTo(oldPos);
+		path.lineTo(newPos);
+// 		painter.drawLine(oldPos, newPos);
+		painter.drawPath(path);
+	}
+	else if ( brush == tr("Air Brush"))
+	{
+		int numSteps = 2 + (newPos - oldPos).manhattanLength() / 2;
+
+		painter.setBrush(QBrush(color, Qt::Dense6Pattern));
+		painter.setPen(Qt::NoPen);
+
+		for (int i = 0; i < numSteps; ++i)
+		{
+			int x = oldPos.x() + i * (newPos.x() - oldPos.x()) / (numSteps - 1);
+			int y = oldPos.y() + i * (newPos.y() - oldPos.y()) / (numSteps - 1);
+
+			painter.drawEllipse(x - (thickness / 2), y - (thickness / 2),thickness, thickness);
+		}
+	}
+	else if ( brush == tr("Quad Brush"))
+	{
+		painter.drawRect(newPos.x(), newPos.y(), 20, 20);
+		
+		boundingRect = QRect(oldPos.x(), newPos.y(), 20, 20); 
 	}
 	
 	painter.restore();
@@ -56,9 +82,24 @@ QRect AGenericBrush::release(const QString & /* brush */,QPainter & /* painter *
 	return QRect(0, 0, 0, 0);
 }
 
-QPixmap AGenericBrush::pixmap() const
+QHash<QString, QAction *> AGenericBrush::actions()
 {
-	return QPixmap(brush_xpm);
+	QHash<QString, QAction *> hash;
+	
+	QAction *pencil = new QAction( QIcon(brush_xpm), tr("Pencil"), this);
+	pencil->setShortcut( QKeySequence(tr("P")) );
+	
+	hash.insert( tr("Pencil"), pencil );
+	
+	QAction *airBrush = new QAction( QIcon(), tr("Air Brush"), this);
+	airBrush->setShortcut( QKeySequence(tr("A")) );
+	hash.insert(tr("Air Brush"), airBrush);
+	
+	QAction *quadBrush = new QAction( QIcon(), tr("Quad Brush"), this);
+	quadBrush->setShortcut( QKeySequence(tr("Q")) );
+	hash.insert(tr("Quad Brush"), quadBrush);
+	
+	return hash;
 }
 
 Q_EXPORT_PLUGIN( AGenericBrush )

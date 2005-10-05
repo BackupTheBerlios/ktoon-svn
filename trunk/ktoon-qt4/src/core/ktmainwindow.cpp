@@ -64,7 +64,9 @@ KTMainWindow::KTMainWindow() : DMainWindow(0, "KToon-MainWindow")
 	
 	// Create the menubar;
 	setupFileActions();
+	setupEditActions();
 	setupProjectActions();
+	
 	setupMenu();
 	
 	statusBar()->message("Ready to play!");
@@ -108,6 +110,18 @@ void KTMainWindow::setupMenu()
 	// Setup the edit menu
 	m_editMenu = new QMenu(this);
 	menuBar()->insertItem( tr( "&Edit" ), m_editMenu );
+
+	m_editMenu->insertSeparator();
+	
+	m_editMenu->addAction(m_actionManager->find("cut"));
+	m_editMenu->addAction(m_actionManager->find("copy"));
+	m_editMenu->addAction(m_actionManager->find("paste"));
+	m_editMenu->addAction(m_actionManager->find("paste in place"));
+	m_editMenu->addAction(m_actionManager->find("delete"));
+	m_editMenu->insertSeparator();
+	m_editMenu->addAction(m_actionManager->find("select all"));
+	m_editMenu -> insertSeparator();
+	m_editMenu->addAction(m_actionManager->find("preferences"));
 	
 	// Setup the view menu
 	m_viewMenu = new QMenu(this);
@@ -208,6 +222,36 @@ void KTMainWindow::setupFileActions()
 	exit->setStatusTip(tr("Closes the application"));
 }
 
+void KTMainWindow::setupEditActions()
+{
+	KTAction * undo = new KTAction( QPixmap(undo_xpm), tr( "Undo" ), QKeySequence("Ctrl+Z"), this, SLOT(slotUndo()), m_actionManager, "undo");
+	undo->setStatusTip(tr("Undoes the last draw action"));
+	
+	KTAction *redo = new KTAction( QPixmap(redo_xpm), tr( "Redo" ), QKeySequence("CTRL+SHIFT+Z"), this, SLOT(slotRedo()), m_actionManager, "redo");
+	redo->setStatusTip(tr("Redoes a previous undone action"));
+	
+	KTAction *cut = new KTAction( QPixmap(cut_xpm), tr( "&Cut" ), QKeySequence("Ctrl+X"), this, SLOT(slotCut()), m_actionManager, "cut");
+	cut->setStatusTip(tr("Cuts the selection and puts it onto the clipboard"));
+	
+	KTAction *copy = new KTAction( QPixmap(copy_xpm), tr( "C&opy" ), QKeySequence("Ctrl+C"), this, SLOT(slotCopy()), m_actionManager, "copy");
+	copy->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
+	
+	KTAction *paste = new KTAction( QPixmap(paste_xpm), tr( "&Paste" ), QKeySequence("Ctrl+V"), this, SLOT(slotPaste()), m_actionManager, "paste");
+	paste->setStatusTip(tr("Pastes the clipboard into the current document"));
+	
+	KTAction *pasteInPlace = new KTAction( tr(  "Paste &In Place" ),  QKeySequence("Ctrl+Shift+V"), this, SLOT(slotPasteInPlace()), m_actionManager, "paste in place");
+	pasteInPlace->setStatusTip(tr("Pastes the clipboard into the same place as the copy was did"));
+	
+	KTAction * adelete = new KTAction( tr(  "&Delete" ), Qt::Key_Delete , this, SLOT(slotDelete()), m_actionManager, "delete");
+	adelete->setStatusTip(tr("Deletes the selected object"));
+	
+	KTAction * selectAll = new KTAction( tr(  "&Select All" ),  tr("Ctrl+A"), this, SLOT(slotSelectAll()), m_actionManager, "select all");
+	selectAll->setStatusTip(tr("Selects all objects in the document"));
+	
+	KTAction * preferences = new KTAction( tr( "Pr&eferences..." ), QKeySequence(), this, SLOT( preferences()), m_actionManager, "preferences");
+	preferences->setStatusTip(tr("Opens the preferences dialog box"));
+}
+
 void KTMainWindow::setupProjectActions()
 {
 	KTAction *newProject = new KTAction( QPixmap(), tr( "New Project" ), QKeySequence(), this, SLOT(newProject()), m_actionManager, "NewProject");
@@ -216,7 +260,6 @@ void KTMainWindow::setupProjectActions()
 // 	newProject->setStatusTip(tr("create new project"));
 	
 	KTAction *openProject = new KTAction( QPixmap(), tr( "Open Project" ), QKeySequence(), this, SLOT(openProject()), m_actionManager, "OpenProject");
-	
 }
 
 void KTMainWindow::setupToolBar()
@@ -294,3 +337,13 @@ void KTMainWindow::openProject()
 {
 	
 }
+
+
+void KTMainWindow::preferences()
+{
+	Preferences *preferences = new Preferences( this );
+	preferences->exec();
+	statusBar() -> message( tr( "Preferences Dialog Opened" ), 2000 );
+}
+
+

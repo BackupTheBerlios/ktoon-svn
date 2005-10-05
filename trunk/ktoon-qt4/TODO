@@ -1,5 +1,12 @@
 This file contains the task to-do
 
+* Independizar los componentes de los demas modulos, Ej. El componente de brochas SOLO debe servir como interfaz para obtener los valores para construir brochas y no manipular directamente las herramientas de dibujo.
+* Completar "Nuevo proyecto", faltan muchas cosas como el tamaño de la imagen.
+* Eliminar el Q3Canvas del dialog de about, dibujar sobre un QImage
+* Modularizar en funciones KTViewDocument
+* Modernizar los componentes de la interfaz grafica, necesitamos darle un lavado de cara al 'bebe'
+
+================
 * Add a limit for history (undo/redo)
 * Add a standar Changelog
 * Write a codification standar
