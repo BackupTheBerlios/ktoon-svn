@@ -21,7 +21,7 @@
 #define AGENERICBRUSH_H
 
 #include <QObject>
-#include <abrushinterface.h>
+#include <adrawingtoolinterface.h>
 
 class QKeySequence;
 

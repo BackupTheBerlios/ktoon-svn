@@ -27,7 +27,7 @@
 #include <QPainterPath>
 #include "agrid.h"
 
-#include "../interfaces/abrushinterface.h"
+#include "adrawingtoolinterface.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>

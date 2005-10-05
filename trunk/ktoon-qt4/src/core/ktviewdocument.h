@@ -31,7 +31,7 @@
 #include <QDir>
 #include <QPluginLoader>
 
-#include "abrushinterface.h"
+#include "adrawingtoolinterface.h"
 
 #include "ktpaintareacontainer.h"
 
