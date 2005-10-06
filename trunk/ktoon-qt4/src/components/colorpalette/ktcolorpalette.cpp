@@ -40,7 +40,8 @@ KTColorPalette::KTColorPalette(QWidget *parent)
 	setCaption( tr( "Color Palette" ) );
 	layout()->setSpacing(0);
 	m_containerPalette = new KTViewColorCells(this);
-	addChild( m_containerPalette, Qt::AlignTop );
+	addChild( m_containerPalette); //, Qt::AlignTop );
+	layout()->setAlignment(m_containerPalette, Qt::AlignTop);
 	setupButtons();
 
 	setupChooserTypeColor();
@@ -146,7 +147,8 @@ void KTColorPalette::setupChooserTypeColor()
 	
 	layoutColorPicker->addWidget(selector);
 	layout->addLayout(layoutColorPicker);
-	addChild( chooserTypeColor, Qt::AlignTop );
+	addChild( chooserTypeColor );
+	this->layout()->setAlignment( chooserTypeColor, Qt::AlignTop);
 	connect(m_displayValueColor, SIGNAL(colorChanged(QColor)), this, SLOT(setColor(QColor)));
 	setColor(m_currentOutlineColor);
 	
