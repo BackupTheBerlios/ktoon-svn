@@ -12,6 +12,8 @@ class KTColorPicker : public QFrame
 
 	public slots:
 		void setCol(int h, int s);
+		void setH(int h);
+		void setS(int s);
 
 	signals:
 		void newCol(int h, int s);

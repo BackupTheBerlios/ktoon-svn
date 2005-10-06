@@ -80,6 +80,33 @@ void KTColorPicker::setCol(int h, int s)
 	repaint(r);
 }
 
+void KTColorPicker::setH(int h)
+{
+	int nhue = qMin(qMax(0,h), 359);
+	if (nhue == m_hue )
+		return;
+	QRect r(colPt(), QSize(20,20));
+	m_hue = nhue;
+	r = r.unite(QRect(colPt(), QSize(20,20)));
+	r.translate(contentsRect().x()-9, contentsRect().y()-9);
+	repaint(r);
+	
+}
+
+void KTColorPicker::setS(int s)
+{
+	int nsat = qMin(qMax(0,s), 255);
+	if ( nsat == m_sat)
+		return;
+	QRect r(colPt(), QSize(20,20));
+	m_sat = nsat;
+	r = r.unite(QRect(colPt(), QSize(20,20)));
+	r.translate(contentsRect().x()-9, contentsRect().y()-9);
+    //    update(r);
+	repaint(r);
+}
+
+
 void KTColorPicker::mouseMoveEvent(QMouseEvent *m)
 {
 	QPoint p = m->pos() - contentsRect().topLeft();
@@ -106,5 +133,4 @@ void KTColorPicker::paintEvent(QPaintEvent* )
 
 	p.fillRect(pt.x()-9, pt.y(), 20, 2, Qt::black);
 	p.fillRect(pt.x(), pt.y()-9, 2, 20, Qt::black);
-
 }

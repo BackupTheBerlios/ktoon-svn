@@ -29,7 +29,7 @@
 ValueSelector::ValueSelector( QWidget *parent ) : QWidget( parent ), Q3RangeControl( 0, 255, 1, 15, 0 )
 {
     resize( 22, 95 );
-    setMinimumSize(22, 95);
+    setMinimumSize(22, 100);
     Q_CHECK_PTR( parent );
     parent_widget = parent;
     dragging = false;

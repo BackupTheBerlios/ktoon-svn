@@ -28,7 +28,7 @@
 
 #include <QFrame>
 #include <qpainter.h>
-#include <qpixmap.h>
+#include <QPixmap>
 //Added by qt3to4:
 #include <QMouseEvent>
 
@@ -49,7 +49,8 @@ public:
      * Constructs a FillColor object.
      * @param parent The parent widget
      */
-    FillColor( QWidget *parent );
+    FillColor( QPixmap icon, QWidget *parent );
+	      FillColor( QWidget *parent );
     /**
      * @brief Default Destructor
      *
@@ -88,7 +89,7 @@ public:
 
 private:
     QWidget *parent_widget;
-    QPixmap icon;
+    QPixmap m_icon;
     bool active;
     QColor current_color;
     QColor square_border_color, dark_color, light_color;
@@ -117,13 +118,8 @@ public slots:
     void slotChangeAlpha( int new_alpha );
 
 protected:
-    /**
-     * @brief Draw the contents of the FillColor
-     *
-     * Reimplemented from QFrame.
-     * @param painter The frame painter
-     */
-    void drawContents( QPainter *painter );
+	
+	void paintEvent ( QPaintEvent * event );
     /**
      * @brief Event for widget mouse press control
      *

@@ -25,25 +25,37 @@
 #include <QPixmap>
 #include <QMouseEvent>
 #include "ktapplication.h"
+#include "ktdebug.h"
 
 //--------------- CONSTRUCTOR --------------------
 
-FillColor::FillColor( QWidget *parent ) : QFrame( parent )
+FillColor::FillColor( QPixmap icon, QWidget *parent ) : QFrame( parent ), m_icon(icon)
 {
-    Q_CHECK_PTR( parent );
-
-    resize( 47, 30 );
-    parent_widget = parent;
-    icon = QPixmap( KTOON_HOME+"/images/icons/fillcolor.xpm" );
-    setFrameStyle( QFrame::Panel | QFrame::Raised );
-    active = false;
-    current_color = QColor( 255, 255, 255 );
-    square_border_color = QColor( 150, 150, 150 );
-    dark_color = QColor( 135, 135, 135 );
-    light_color = paletteBackgroundColor();
-    alpha = 100;
+	Q_CHECK_PTR( parent );
+	setFrameStyle( QFrame::Panel | QFrame::Raised );
+	active = false;
+	current_color = QColor( 255, 255, 255 );
+	square_border_color = QColor( 150, 150, 150 );
+	dark_color = QColor( 135, 135, 135 );
+	light_color = paletteBackgroundColor();
+	alpha = 100;
+	setMinimumSize(width(), m_icon.height()+10);
 }
 
+FillColor::FillColor(  QWidget *parent ) : QFrame( parent )
+{
+	Q_CHECK_PTR( parent );
+// 	resize( 47, 30 );
+	
+	m_icon = QPixmap( KTOON_HOME+"/images/icons/fillcolor.xpm" );
+	setFrameStyle( QFrame::Panel | QFrame::Raised );
+	active = false;
+	current_color = QColor( 255, 255, 255 );
+	square_border_color = QColor( 150, 150, 150 );
+	dark_color = QColor( 135, 135, 135 );
+	light_color = paletteBackgroundColor();
+	alpha = 100;
+}
 //--------------- DESTRUCTOR -------------------
 
 FillColor::~ FillColor()
@@ -55,91 +67,94 @@ FillColor::~ FillColor()
 
 bool FillColor::isActive()
 {
-    return active;
+	return active;
 }
 
 QColor FillColor::currentColor()
 {
-    return current_color;
+	return current_color;
 }
 
 short int FillColor::getAlpha()
 {
-    return alpha;
+	return alpha;
 }
 
 void FillColor::setActive( bool state )
 {
-    active = state;
-
-    if ( active )
-        setFrameStyle( QFrame::Panel | QFrame::Sunken );
-    else
-        setFrameStyle( QFrame::Panel | QFrame::Raised );
+	active = state;
+	
+	if ( active )
+		setFrameStyle( QFrame::Panel | QFrame::Sunken );
+	else
+		setFrameStyle( QFrame::Panel | QFrame::Raised );
 }
 
 //------------ SLOTS ----------------
 
 void FillColor::slotSetColor( const QColor &new_color )
 {
-    if ( active )
-    {
-        current_color = new_color;
-        update();
-    }
+// 	if ( active )
+// 	{
+		current_color = new_color;
+		alpha = new_color.alpha();
+		update();
+// 	}
 }
 
 void FillColor::slotChangeAlpha( int new_alpha )
 {
-    if ( active )
-    {
-        alpha = new_alpha;
-	update();
-    }
+	if ( active )
+	{
+		alpha = new_alpha;
+		update();
+	}
 }
 
 //------------ EVENTS AND PROTECTED MEMBERS ------------
 
-void FillColor::drawContents( QPainter *painter )
+void FillColor::paintEvent ( QPaintEvent * event )
 {
-    Q_CHECK_PTR( painter );
-    QColor intermediate_dark_color, intermediate_light_color;
-    intermediate_dark_color = QColor( ( int )( current_color.red() * alpha / 100 + dark_color.red() * ( ( 100 - alpha ) / 100 ) ),
-    				      ( int )( current_color.green() * alpha / 100 + dark_color.green() * ( ( 100 - alpha ) / 100 ) ),
-				      ( int )( current_color.blue() * alpha / 100 + dark_color.blue() * ( ( 100 - alpha ) ) / 100 ) );
-    intermediate_light_color = QColor( ( int )( current_color.red() * alpha / 100 + light_color.red() * ( 100 - alpha ) / 100 ),
-    				       ( int )( current_color.green() * alpha / 100 + light_color.green() * ( 100 - alpha ) / 100 ),
-				       ( int )( current_color.blue() * alpha / 100 + light_color.blue() * ( 100 - alpha ) / 100 ) );
-
-    if ( active )
-    {
-        QBrush b( Qt::white, Qt::Dense5Pattern );
-        painter -> setPen( Qt::white );
-        painter -> setBrush( b );
-        painter -> drawRect( 0, 0, width(), height() );
-    }
-
-    painter -> drawPixmap( 1, 6, icon );
-
-    painter -> setPen( square_border_color );
-    painter -> setBrush( Qt::NoBrush );
-    painter -> drawRect( 22, 4, 20, 20 );
-    painter -> setPen( square_border_color );
-    painter -> setBrush( intermediate_light_color );
-    painter -> drawRect( 24, 6, 16, 16 );
-    painter -> setPen( intermediate_dark_color );
-    painter -> drawLine( 27, 7, 27, 20 );
-    painter -> drawLine( 31, 7, 31, 20 );
-    painter -> drawLine( 35, 7, 35, 20 );
-    painter -> drawLine( 25, 10, 38, 10 );
-    painter -> drawLine( 25, 14, 38, 14 );
-    painter -> drawLine( 25, 18, 38, 18 );
+	QPainter painter(this);
+// 	QColor intermediate_dark_color, intermediate_light_color;
+// 	
+// 	intermediate_dark_color = QColor( ( int )( current_color.red() * alpha / 100 + dark_color.red() * ( ( 100 - alpha ) / 100 ) ),
+// 	( int )( current_color.green() * alpha / 100 + dark_color.green() * ( ( 100 - alpha ) / 100 ) ),
+// 	( int )( current_color.blue() * alpha / 100 + dark_color.blue() * ( ( 100 - alpha ) ) / 100 ) );
+// 	intermediate_light_color = QColor( ( int )( current_color.red() * alpha / 100 + light_color.red() * ( 100 - alpha ) / 100 ),
+// 	( int )( current_color.green() * alpha / 100 + light_color.green() * ( 100 - alpha ) / 100 ),
+// 	( int )( current_color.blue() * alpha / 100 + light_color.blue() * ( 100 - alpha ) / 100 ) );
+	
+	if ( active )
+	{
+		QBrush b( Qt::white, Qt::Dense5Pattern );
+		painter.setPen( Qt::white );
+		painter.setBrush( b );
+		painter.drawRect( 0, 0, width(), height() );
+	}
+	
+	painter.drawPixmap( 1, 6, m_icon );
+	
+	painter.setPen( square_border_color );
+	painter.setBrush( Qt::NoBrush );
+	painter.drawRect( 22, 4, 20, 20 );
+	painter.setPen( square_border_color );
+	painter.setBrush( current_color );
+	painter.drawRect( 24, 6, 16, 16 );
+	painter.setPen( current_color );
+	painter.drawLine( 27, 7, 27, 20 );
+	painter.drawLine( 31, 7, 31, 20 );
+	painter.drawLine( 35, 7, 35, 20 );
+	painter.drawLine( 25, 10, 38, 10 );
+	painter.drawLine( 25, 14, 38, 14 );
+	painter.drawLine( 25, 18, 38, 18 );
+	painter.end();
 }
 
 void FillColor::mousePressEvent( QMouseEvent *mouse_event )
 {
-    Q_CHECK_PTR( mouse_event );
-    setActive( true );
-    emit activated();
-    mouse_event -> accept();
+	Q_CHECK_PTR( mouse_event );
+	setActive( true );
+	emit activated();
+	mouse_event -> accept();
 }
