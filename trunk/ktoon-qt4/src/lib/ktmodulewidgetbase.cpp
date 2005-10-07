@@ -61,10 +61,10 @@ KTModuleWidgetBase::~KTModuleWidgetBase()
 {
 }
 
-void KTModuleWidgetBase::addChild(QWidget* child)
+void KTModuleWidgetBase::addChild(QWidget* child, Qt::Alignment alignment)
 {
 	m_childs.append(child);
-	m_container->addWidget(child);
+	m_container->addWidget(child, 0,alignment);
 }
 
 void KTModuleWidgetBase::toggleView()

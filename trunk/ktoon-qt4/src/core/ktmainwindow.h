@@ -33,13 +33,17 @@
 #include "ktactionmanager.h"
 #include "ktviewdocument.h"
 
+
 #include "ktexposuresheet.h"
 #include "ktoonscript.h"
 #include "properties.h"
 #include "preferences.h"
 #include "scenes.h"
 #include "brushes.h"
+
 #include "colorpalette.h"
+#include "ktcolorpalette.h"
+
 #include "tools.h"
 #include "library.h"
 #include "kttimeline.h"

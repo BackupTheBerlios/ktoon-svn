@@ -95,7 +95,7 @@ void KTValueColor::setupForm()
 	m_valueV = new KTItemValueColor("V", this);
 	connect(m_valueV, SIGNAL(valueChanged(int)), this, SIGNAL(valueChanged( int)));
 	m_valueA = new KTItemValueColor("A", this);
-// 	connect(m_valueA, SIGNAL(valueChanged(int)), this, SLOT(syncValuesHsv( int)));
+	connect(m_valueA, SIGNAL(valueChanged(int)), this, SLOT(syncValuesRgb( int)));
 	m_layout->addWidget(m_valueR, 0, 0,Qt::AlignTop);
 	m_layout->addWidget(m_valueG, 0, 1,Qt::AlignTop);
 	m_layout->addWidget(m_valueB, 0, 2,Qt::AlignTop);
@@ -131,4 +131,19 @@ void KTValueColor::syncValuesRgb(int)
 	m_valueV->setValue( tmp.value ());
 	
 	emit colorChanged(QColor::fromRgb(r,g,b,a));
+}
+
+int KTValueColor::hue()
+{
+	return m_valueH->value();
+}
+
+int KTValueColor::saturation()
+{
+	return m_valueS->value();
+}
+
+int KTValueColor::value()
+{
+	return m_valueV->value();
 }

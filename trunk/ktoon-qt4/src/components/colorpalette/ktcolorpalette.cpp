@@ -48,6 +48,7 @@ KTColorPalette::KTColorPalette(QWidget *parent)
 	setupChooserGradient();
 
 // 	setColor(QColor(10,10,10));
+	setColor(m_currentOutlineColor);
 	
 }
 
@@ -134,18 +135,20 @@ void KTColorPalette::setupChooserTypeColor()
 	layout->addWidget(container);
 	
 	QBoxLayout * layoutColorPicker= new QBoxLayout(QBoxLayout::LeftToRight);
-
 	m_colorPicker = new KTColorPicker(chooserTypeColor);
-	
+	connect( m_colorPicker, SIGNAL(newCol(int, int)), this, SLOT(setHS(int, int)));
 	connect(m_displayValueColor, SIGNAL(hueChanged(int)), m_colorPicker, SLOT(setH(int)));
 	
 	connect(m_displayValueColor, SIGNAL(saturationChanged(int)), m_colorPicker, SLOT(setS(int)));
 	
 	layoutColorPicker->addWidget(m_colorPicker);
-	ValueSelector *selector = new ValueSelector( chooserTypeColor );
-	connect(m_displayValueColor, SIGNAL(valueChanged(int)), selector, SLOT(slotSetValue( int )));
+	m_valueSelector = new ValueSelector( chooserTypeColor );
+	connect( m_valueSelector, SIGNAL(valueChanged(int)), this, SLOT(setV(int)));
 	
-	layoutColorPicker->addWidget(selector);
+	connect(m_displayValueColor, SIGNAL(valueChanged(int)), m_valueSelector, SLOT(setValue( int )));
+
+	layoutColorPicker->addWidget(m_valueSelector);
+	
 	layout->addLayout(layoutColorPicker);
 	addChild( chooserTypeColor );
 	this->layout()->setAlignment( chooserTypeColor, Qt::AlignTop);
@@ -174,27 +177,42 @@ void KTColorPalette::setupChooserGradient()
 
 }
 
-void KTColorPalette::setColor(QColor color)
+void KTColorPalette::setColor(const QColor& color)
 {
-// 	ktDebug() << "aki" << endl;
+	if(m_outlineColor->isActive())
+	{
+// 		if(color != m_currentOutlineColor)
+// 		{
+			m_outlineColor->slotSetColor(color);
+			m_currentOutlineColor = color;
+// 		}
+// 		else
+// 		{
+// 			return;
+// 		}
+	}
+	else
+	{
+// 		if(color != m_currentFillColor)
+// 		{
+			m_fillColor->slotSetColor(color);
+			m_currentFillColor = color;
+// 		}
+// 		else
+// 		{
+// 			return;
+// 		}
+	}
+	
 	if(m_displayValueColor != sender())
 	{
 		m_displayValueColor->setColor(color);
 	}
-// 	if(
-// 		m_colorPicker->setCol(color.hue(), color.saturation ());
+		m_colorPicker->setCol(color.hue(), color.saturation ());
 	
 	nameColor->setText(color.name ());
-	if(m_outlineColor->isActive())
-	{
-		m_outlineColor->slotSetColor(color);
-		m_currentOutlineColor = color;
-	}
-	else
-	{
-		m_currentFillColor = color;
-		m_fillColor->slotSetColor(color);
-	}
+
+	m_valueSelector->setColor(color);
 }
 
 void KTColorPalette::changeTypeColor()
@@ -211,7 +229,60 @@ void KTColorPalette::changeTypeColor()
 		m_fillColor ->setActive(true);
 		setColor(m_fillColor->currentColor());
 	}
-	
-	
-	
+}
+
+// void KTColorPalette::syncHsv(int , int , int)
+// {
+// 	if(m_outlineColor->isActive())
+// 	{
+// // 		m_outlineColor->slotSetColor(color);
+// // 		m_currentOutlineColor = color;
+// 		m_currentOutlineColor.setHsv(m_colorPicker->hue(), m_colorPicker->sat() , m_valueSelector->value());
+// 		setColor( m_currentOutlineColor);
+// 	}
+// 	else
+// 	{
+// // 		m_currentFillColor = color;
+// // 		m_fillColor->slotSetColor(color);
+// 		m_currentFillColor.setHsv(m_colorPicker->hue(), m_colorPicker->sat() , m_valueSelector->value());
+// 		setColor( m_currentOutlineColor);
+// 	}
+// 	
+// // 	m_currentFillColor.setHsv( h, s, 255 - mouse_event->y() );
+// }
+
+
+void KTColorPalette::setHS(int h , int s)
+{
+	int th, ts, tv;
+	QColor tmpColor;
+	if(m_outlineColor->isActive())
+	{
+		tmpColor = m_currentOutlineColor;
+	}
+	else
+	{
+		tmpColor = m_currentFillColor;
+	}
+	tmpColor.getHsv( &th, &ts, &tv );
+	tmpColor.setHsv( h, s, tv, tmpColor.alpha() );
+// 	tmpColor.setHsv(h, s , m_valueSelector->value());
+	setColor(tmpColor);
+}
+
+void KTColorPalette::setV(int v)
+{
+// 	int th, ts, tv;
+	QColor tmpColor;
+	if(m_outlineColor->isActive())
+	{
+		tmpColor = m_currentOutlineColor;
+	}
+	else
+	{
+		tmpColor = m_currentFillColor;
+	}
+// 	tmpColor.getHsv( &th, &ts, &tv );
+	tmpColor.setHsv( m_colorPicker->hue(), m_colorPicker->sat(), v, tmpColor.alpha() );
+	setColor(tmpColor);
 }

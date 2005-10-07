@@ -155,7 +155,7 @@ void KTMainWindow::setupMenu()
 void KTMainWindow::createGUI()
 {
 	// TODO: put setIcon in each class
-	ColorPalette *m_colorPalette = new ColorPalette(this);
+	KTColorPalette *m_colorPalette = new KTColorPalette(this);
 	m_colorPalette->setIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.xpm") );
 	toolWindow(DDockWindow::Left)->addWidget(tr("Palette"),m_colorPalette);
 	

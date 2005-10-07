@@ -134,3 +134,13 @@ void KTColorPicker::paintEvent(QPaintEvent* )
 	p.fillRect(pt.x()-9, pt.y(), 20, 2, Qt::black);
 	p.fillRect(pt.x(), pt.y()-9, 2, 20, Qt::black);
 }
+
+int KTColorPicker::hue()
+{
+	return m_hue;
+}
+
+int KTColorPicker::sat()
+{
+	return m_sat;
+}

@@ -56,6 +56,10 @@ class KTValueColor : public QFrame
 	public:
 		KTValueColor(QWidget *parent = 0);
 		~KTValueColor();
+		int hue();
+		int saturation();
+		int value();
+		
 		
 	private:
 		KTItemValueColor *m_valueR, *m_valueG, *m_valueB, *m_valueH, *m_valueS, *m_valueV, *m_valueA;

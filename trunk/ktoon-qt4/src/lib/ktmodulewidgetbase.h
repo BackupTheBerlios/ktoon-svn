@@ -40,7 +40,7 @@ class KTModuleWidgetBase : public QWidget
 	public:
 		KTModuleWidgetBase(QWidget *parent, const char *name = 0);
 		~KTModuleWidgetBase();
-		virtual void addChild(QWidget * child);
+		virtual void addChild(QWidget * child, Qt::Alignment alignment = 0);
 		void setFont(const QFont &);
 		
 	private:

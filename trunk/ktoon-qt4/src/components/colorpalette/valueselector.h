@@ -26,12 +26,10 @@
  * @brief Include this file if you need the class ValueSelector
  */
 
-#include <qwidget.h>
-#include <q3rangecontrol.h>
-#include <qpainter.h>
-//Added by qt3to4:
+#include <QPainter>
 #include <QMouseEvent>
 #include <QPaintEvent>
+#include  <QAbstractSlider>
 
 /**
  * @brief Class that handles the color palette's value selector
@@ -39,7 +37,7 @@
  * <b>Date of Creation: July 7 - 2004.</b>\n
  * This widget manages the V (Value) component of the HSV color representation.
  */
-class ValueSelector: public QWidget, public Q3RangeControl
+class ValueSelector: public QAbstractSlider
 {
     Q_OBJECT
 
@@ -64,30 +62,18 @@ public:
      * @param new_color The new color
      */
     void setColor( const QColor &new_color );
+	      
+	void setValue(int v);
 
 private:
-    QWidget *parent_widget;
-    QPainter painter;
-    QColor highlight, shadow, triangle_color;
-    QColor current_color;
-    bool dragging;
+	QPainter painter;
+	QColor highlight;
+	QColor current_color;
+	bool dragging;
 
-signals:
-    /**
-     * This signal is emitted when the current value has changed.
-     * @param value The value which the ValueSelector changed to
-     */
-    void valueChanged( int value );
-
-public slots:
-    /**
-     * @brief Sets a new value to this widget
-     *
-     * @param new_value The new value
-     */
-    void slotSetValue( int new_value );
-
+    
 protected:
+	QSize sizeHint() const;
     /**
      * @brief Event for widget mouse press control
      *

@@ -39,8 +39,6 @@
 #include "outlinecolor.h"
 
 //FIXME: protar estas Clases
-
-// #include "colormixer.h" // cambiar  esta clase por ktcolorpicker.h
 #include "valueselector.h"
 #include "colorgradientselector.h"
 #include "gradientviewer.h"
@@ -69,7 +67,7 @@ class KTColorPalette : public KTModuleWidgetBase
 		QComboBox *m_gradientTypes;
 		QLineEdit *nameColor;
 		FillColor *m_outlineColor, *m_fillColor;
-		
+		ValueSelector *m_valueSelector;
 		QColor m_currentOutlineColor, m_currentFillColor;
 		
 	private:
@@ -78,8 +76,11 @@ class KTColorPalette : public KTModuleWidgetBase
 		void setupChooserGradient();
 		
 	public slots:
-		void setColor(QColor color);
+		void setColor(const QColor &color);
 		void changeTypeColor();
+// 		void syncHsv(int h = 0, int s = 0, int v= 0);
+		void setHS(int h, int s);
+		void setV(int v);
 };
 
 #endif

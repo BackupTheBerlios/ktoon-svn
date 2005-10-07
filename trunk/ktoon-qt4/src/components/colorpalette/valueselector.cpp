@@ -19,25 +19,23 @@
  ***************************************************************************/
 
 #include "valueselector.h"
-//Added by qt3to4:
 #include <QMouseEvent>
-#include <Q3PointArray>
+#include <QPolygon>
 #include <QPaintEvent>
+#include "ktdebug.h"
 
 //------------- CONSTRUCTOR ----------------
 
-ValueSelector::ValueSelector( QWidget *parent ) : QWidget( parent ), Q3RangeControl( 0, 255, 1, 15, 0 )
+ValueSelector::ValueSelector( QWidget *parent ) : QAbstractSlider( parent )
 {
-    resize( 22, 95 );
-    setMinimumSize(22, 100);
-    Q_CHECK_PTR( parent );
-    parent_widget = parent;
-    dragging = false;
-    highlight = QColor( 255, 255, 255 );
-    shadow = QColor( 70, 70, 70 );
-    triangle_color = QColor( 0, 0, 0 );
-    current_color = QColor( 255, 255, 255 );
+	Q_CHECK_PTR( parent );
+	setRange( 0, 255 );
     
+	dragging = false;
+	highlight = QColor( 255, 255, 255 );
+	QPalette pal = palette();
+	current_color = QColor( 255, 255, 255 );
+	setMinimumSize(sizeHint());
 }
 
 //------------- DESTRUCTOR ----------------
@@ -51,41 +49,32 @@ ValueSelector::~ ValueSelector()
 
 void ValueSelector::setColor( const QColor &new_color )
 {
-    current_color = new_color;
-    update();
+	current_color = new_color;
+	update();
 }
-//-------------- SLOTS --------------
 
-void ValueSelector::slotSetValue( int new_value )
-{
-    Q_ASSERT( new_value >= 0 && new_value <= 255 );
-    setValue( new_value );
-    update();
-}
 
 //------------ EVENTS AND PROTECTED MEMBERS ---------------
 
 void ValueSelector::mousePressEvent( QMouseEvent *mouse_event )
 {
-    Q_CHECK_PTR( mouse_event );
-    if ( mouse_event -> y() > 91 || mouse_event -> y() < 0 )
-    {
-	mouse_event -> ignore();
-	return;
-    }
-
-    dragging = true;
-    int new_value = 255 - valueFromPoint( mouse_event -> y() );
-    setValue( new_value );
-    update();
-    emit valueChanged( new_value );
-    mouse_event -> accept();
+	Q_CHECK_PTR( mouse_event );
+	if ( mouse_event -> y() > height() || mouse_event -> y() < 0 )
+	{
+		mouse_event -> ignore();
+		return;
+	}
+	setValue( mouse_event -> y() );
+	update();
+	dragging = true;
+	update();
+	mouse_event -> accept();
 }
 
 void ValueSelector::mouseMoveEvent( QMouseEvent *mouse_event )
 {
     Q_CHECK_PTR( mouse_event );
-    if ( mouse_event -> y() > 91 || mouse_event -> y() < 0 )
+    if ( mouse_event ->y() > height() || mouse_event -> y() < 0 )
     {
 	mouse_event -> ignore();
 	return;
@@ -93,10 +82,9 @@ void ValueSelector::mouseMoveEvent( QMouseEvent *mouse_event )
 
     if ( dragging )
     {
-    	int new_value = 255 - valueFromPoint( mouse_event -> y() );
-    	setValue( new_value );
+	    
+	    setValue( mouse_event -> y() );
     	update();
-    	emit valueChanged( new_value );
         mouse_event -> accept();
     }
 }
@@ -107,6 +95,7 @@ void ValueSelector::mouseReleaseEvent( QMouseEvent *mouse_event )
     mouse_event -> accept();
 }
 
+
 void ValueSelector::paintEvent( QPaintEvent *paint_event )
 {
     Q_CHECK_PTR( paint_event );
@@ -114,29 +103,36 @@ void ValueSelector::paintEvent( QPaintEvent *paint_event )
     {
         painter.begin( this );
 
-    	painter.setPen( shadow );
-    	painter.drawLine( 0, 3, 0, 91 );
-    	painter.drawLine( 0, 3, 17, 3 );
+// 	painter.setPen(  palette().color( QPalette::Base) );
+//     	painter.drawLine( 0, 3, 0, 91 );
+//     	painter.drawLine( 0, 3, 17, 3 );
+// 
+//     	painter.setPen( highlight );
+//     	painter.drawLine( 17, 4, 17, 91 );
+//     	painter.drawLine( 1, 91, 17, 91 );
 
-    	painter.setPen( highlight );
-    	painter.drawLine( 17, 4, 17, 91 );
-    	painter.drawLine( 1, 91, 17, 91 );
-
-    	//Draw the triangle
-    	Q3PointArray pa( 3 );
-    	pa.putPoints( 0, 3, 18, 91 - pointFromValue( value() ), 21, 91 - pointFromValue( value() ) - 3, 21, 91 - pointFromValue( value() ) + 3 );
-    	painter.setPen( triangle_color );
-    	painter.setBrush( triangle_color );
+//     	Draw the triangle
+    	QPolygon pa( 3 );
+	pa.setPoint ( 0, 10, 255-value());
+	pa.setPoint ( 2, 15, 255-value()+5);
+	pa.setPoint ( 1, 15,  255-value() -5);
+	
+// 	pa.putPoints(
+// 	pa.putPoints( 3, 3, 18, 91 - pointFromValue( value() ), 21, 91 - pointFromValue( value() ) - 3, 21, 91 - value()/*- pointFromValue( value() )*/ + 3 );
+	painter.setPen( palette().color(QPalette::Foreground));
+	painter.setBrush( palette().color(QPalette::Foreground));
     	painter.drawPolygon( pa );
 
     	int h, s, v;
     	QColor tmp_color = current_color;
+// 	QColor tmp_color = Qt::red;
     	tmp_color.getHsv( &h, &s, &v );
+	
     	for ( int i = 0; i <= 255; i++ )
     	{
             tmp_color.setHsv( h, s, 255 - i );
 	    painter.setPen( tmp_color );
-	    painter.drawLine( 1, pointFromValue( i ) + 4, 16, pointFromValue( i ) + 4 );
+	    painter.drawLine( 1, /*pointFromValue( i )*/ i , 10, /*pointFromValue( i )*/i  );
     	}
 
     	painter.end();
@@ -154,4 +150,19 @@ int ValueSelector::valueFromPoint( int point )
 {
     int value = point * 3;
     return value;
+}
+
+QSize ValueSelector::sizeHint() const
+{
+	return QSize(20, 255 );
+}
+
+void ValueSelector::setValue(int value)
+{
+	int h, s, v;
+	QColor tmpColor = current_color;
+	tmpColor.getHsv( &h, &s, &v );
+	tmpColor.setHsv( h, s, value );
+	QAbstractSlider::setValue( 255-tmpColor.value());
+	emit valueChanged(  255-tmpColor.value());
 }

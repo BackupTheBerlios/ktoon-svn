@@ -313,7 +313,7 @@ void ColorPalette::slotSetColor( const QColor &new_color )
     Q_ASSERT( new_color.isValid() );
     disconnectMembers();
     connect( gradient, SIGNAL( gradientChanged( const QColor &, const QColor &, int, int, int, int ) ), grad_viewer, SLOT( slotUpdateGradient( const QColor &, const QColor &, int, int, int, int ) ) );
-    connect( value_v, SIGNAL( valueChanged( int ) ), value_selector, SLOT( slotSetValue( int ) ) );
+//     connect( value_v, SIGNAL( valueChanged( int ) ), value_selector, SLOT( slotSetValue( int ) ) );
 
     if ( outline_color -> isActive() )
     {
@@ -334,7 +334,7 @@ void ColorPalette::slotSetColor( const QColor &new_color )
 	emit fillColorChanged();
     }
 
-    int old_value = value_selector -> value();
+//     int old_value = value_selector -> value();
 
     color_display -> slotSetColor( new_color );
     value_rgb -> setText( new_color.name() );
@@ -364,8 +364,8 @@ void ColorPalette::slotSetColor( const QColor &new_color )
     bool test = false;
     if ( ( ColorMixer * )sender() == color_mixer )
     {
-        value_selector -> slotSetValue( old_value );
-        value_selector -> setColor( new_color );
+//         value_selector -> slotSetValue( old_value );
+//         value_selector -> setColor( new_color );
 	test = true;
     }
     /*
@@ -375,7 +375,7 @@ void ColorPalette::slotSetColor( const QColor &new_color )
     if ( test )
     {
         disconnectMembers();
-	value_v -> setValue( old_value );
+// 	value_v -> setValue( old_value );
         makeConnections();
     }
 }
@@ -453,7 +453,7 @@ void ColorPalette::slotSyncRGB()
     QColor new_color;
     new_color.setHsv( value_h -> value(), value_s -> value(), value_v -> value() );
     value_rgb -> setText( new_color.name() );
-    value_selector -> slotSetValue( value_v -> value() );
+    value_selector->setValue( value_v -> value() );
 
     KTColor *n_color = new KTColor( new_color.red() / 255.0, new_color.green() / 255.0, new_color.blue() / 255.0, value_alpha -> value() / 100.0 );
     if ( outline_color -> isActive() )
@@ -484,7 +484,7 @@ void ColorPalette::slotSyncRGB()
     value_r -> setValue( new_color.red() );
     value_g -> setValue( new_color.green() );
     value_b -> setValue( new_color.blue() );
-    value_selector -> slotSetValue( value_v -> value() );
+    value_selector -> setValue( value_v -> value() );
 
     disconnect( add_color, 0, 0, 0 );
     disconnect( remove_color, 0, 0, 0 );
@@ -528,7 +528,7 @@ void ColorPalette::slotSyncHSV()
     value_h -> setValue( h );
     value_s -> setValue( s );
     value_v -> setValue( v );
-    value_selector -> slotSetValue( value_v -> value() );
+    value_selector -> setValue( value_v -> value() );
 
     disconnect( add_color, 0, 0, 0 );
     disconnect( remove_color, 0, 0, 0 );
@@ -591,7 +591,7 @@ void ColorPalette::slotChangeRGB( const QString &rgb )
         value_r -> setValue( intermediate.red() );
         value_g -> setValue( intermediate.green() );
         value_b -> setValue( intermediate.blue() );
-	value_selector -> slotSetValue( value_v -> value() );
+	value_selector -> setValue( value_v -> value() );
         color_mixer -> updateCross( value_s -> value(), value_h -> value() );
     }
     connect( value_rgb, SIGNAL( textChanged( const QString & ) ), SLOT( slotChangeRGB( const QString & ) ) );
@@ -640,8 +640,8 @@ void ColorPalette::makeConnections()
     connect( fill_color, SIGNAL( activated() ), SLOT( slotActivateFillColor() ) );
     connect( value_rgb, SIGNAL( textChanged( const QString & ) ), SLOT( slotChangeRGB( const QString & ) ) );
     connect( color_mixer, SIGNAL( colorSelected( const QColor & ) ), SLOT( slotSetColor( const QColor & ) ) );
-    connect( value_selector, SIGNAL( valueChanged( int ) ), value_v, SLOT( setValue( int ) ) );
-    connect( value_v, SIGNAL( valueChanged( int ) ), value_selector, SLOT( slotSetValue( int ) ) );
+//     connect( value_selector, SIGNAL( valueChanged( int ) ), value_v, SLOT( setValue( int ) ) );
+//     connect( value_v, SIGNAL( valueChanged( int ) ), value_selector, SLOT( slotSetValue( int ) ) );
     connect( gradient_types, SIGNAL( activated( const QString & ) ), SLOT( slotActivateGradientType( const QString & ) ) );
     connect( custom_palette, SIGNAL( colorSelected( const QColor & ) ), SLOT( slotSetColor( const QColor & ) ) );
     connect( add_color, SIGNAL( clicked() ), SLOT( slotAddToCustomColors() ) );
@@ -694,7 +694,7 @@ void ColorPalette::disconnectMembers()
     disconnect( value_v, 0, 0, 0 );
     disconnect( value_alpha, 0, 0, 0 );
     disconnect( value_color_name, 0, 0, 0 );
-    disconnect( value_selector, 0, 0, 0 );
+//     disconnect( value_selector, 0, 0, 0 );
     disconnect( grad_viewer, 0, 0, 0 );
     disconnect( gradient, 0, 0, 0 );
     disconnect( gradient_types, 0, 0, 0 );

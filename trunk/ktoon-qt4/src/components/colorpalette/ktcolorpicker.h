@@ -9,6 +9,9 @@ class KTColorPicker : public QFrame
 	public:
 		KTColorPicker(QWidget* parent);
 		~KTColorPicker();
+		int hue();
+		int sat();
+		
 
 	public slots:
 		void setCol(int h, int s);
