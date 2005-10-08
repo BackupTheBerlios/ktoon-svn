@@ -147,3 +147,9 @@ int KTValueColor::value()
 {
 	return m_valueV->value();
 }
+
+int KTValueColor::alpha()
+{
+	return m_valueA->value();
+}
+

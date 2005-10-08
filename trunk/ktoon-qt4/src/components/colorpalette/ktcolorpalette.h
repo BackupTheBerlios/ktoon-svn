@@ -33,12 +33,13 @@
 
 #include "ktvhbox.h"
 #include "ktcolorpicker.h"
+#include "ktluminancepicker.h"
 
 //FIXME: unificar estas clases
 #include "fillcolor.h"
 #include "outlinecolor.h"
 
-//FIXME: protar estas Clases
+//FIXME: portar estas Clases
 #include "valueselector.h"
 #include "colorgradientselector.h"
 #include "gradientviewer.h"
@@ -60,14 +61,15 @@ class KTColorPalette : public KTModuleWidgetBase
 		
 		KTValueColor *m_displayValueColor;
 		KTColorPicker *m_colorPicker;
+		KTLuminancePicker *m_luminancePicker;
 // 		QColor m_currentLineColor, m_currentFillColor;
 // 		ColorMixer *m_colorPicker;
 		GradientViewer *m_gradientViewer;
 		ColorGradientSelector *m_gradient;
 		QComboBox *m_gradientTypes;
-		QLineEdit *nameColor;
+		QLineEdit *m_nameColor;
 		FillColor *m_outlineColor, *m_fillColor;
-		ValueSelector *m_valueSelector;
+// 		ValueSelector *m_valueSelector;
 		QColor m_currentOutlineColor, m_currentFillColor;
 		
 	private:
@@ -77,10 +79,13 @@ class KTColorPalette : public KTModuleWidgetBase
 		
 	public slots:
 		void setColor(const QColor &color);
+		void updateColor();
 		void changeTypeColor();
-// 		void syncHsv(int h = 0, int s = 0, int v= 0);
+		void syncHsv(int h , int s , int v);
 		void setHS(int h, int s);
-		void setV(int v);
+		
+	signals:
+		void colorChanged(const QColor &color);
 };
 
 #endif

@@ -19,16 +19,17 @@
 
 #include <qstyle.h>
 
-#include <Q3Frame>
+#include <QFrame>
 #include <QStyleOption>
+#include <QPainter>
 
 #include "kseparator.h"
 #include "ktdebug.h"
 #include "ktapplication.h"
 
 
-KSeparator::KSeparator(QWidget* parent, const char* name, Qt::WFlags f)
-   : QFrame(parent, name, f)
+KSeparator::KSeparator(QWidget* parent)
+   : QFrame(parent)
 {
    setLineWidth(1);
    setMidLineWidth(0);
@@ -37,8 +38,8 @@ KSeparator::KSeparator(QWidget* parent, const char* name, Qt::WFlags f)
 
 
 
-KSeparator::KSeparator(int orientation, QWidget* parent, const char* name, Qt::WFlags f)
-   : QFrame(parent, name, f)
+KSeparator::KSeparator(int orientation, QWidget* parent)
+   : QFrame(parent)
 {
    setLineWidth(1);
    setMidLineWidth(0);
@@ -49,23 +50,26 @@ KSeparator::KSeparator(int orientation, QWidget* parent, const char* name, Qt::W
 
 void KSeparator::setOrientation(int orientation)
 {
-   switch(orientation)
-   {
-	   case Qt::Vertical:
-	   case QFrame::VLine:
-         setFrameStyle( QFrame::VLine | QFrame::Sunken );
-         setMinimumSize(2, 0);
-         break;
-      
-      default:
-         ktWarning() << "KSeparator::setOrientation(): invalid orientation, using default orientation HLine" << endl;
-         
-	   case Qt::Horizontal:
-	   case QFrame::HLine:
-	      setFrameStyle( QFrame::HLine | QFrame::Sunken );
-         setMinimumSize(0, 2);
-         break;
-   }
+	switch(orientation)
+	{
+		case Qt::Vertical:
+		case VLine:
+			setFrameShape ( QFrame::VLine);
+			setFrameShadow( QFrame::Sunken );
+			setMinimumSize(2, 0);
+			break;
+
+		default:
+			ktWarning() << "KSeparator::setOrientation(): invalid orientation, using default orientation HLine" << endl;
+
+		case Qt::Horizontal:
+		case HLine:
+			setFrameStyle ( QFrame::HLine  );
+			setFrameShadow( QFrame::Sunken );
+			setMinimumSize(0, 2);
+			break;
+	}
+
 }
 
 
@@ -81,25 +85,30 @@ int KSeparator::orientation() const
    return 0;
 }
 
-void KSeparator::drawFrame(QPainter *p)
+void KSeparator::paintEvent(QPaintEvent *)
 {
-   QPoint	p1, p2;
-   QRect	r     = frameRect();
-   const QColorGroup & g = colorGroup();
+	QPainter p(this);
 
-   if ( frameStyle() & HLine ) {
-      p1 = QPoint( r.x(), r.height()/2 );
-      p2 = QPoint( r.x()+r.width(), p1.y() );
-   }
-   else {
-      p1 = QPoint( r.x()+r.width()/2, 0 );
-      p2 = QPoint( p1.x(), r.height() );
-   }
+	QStyleOption opt;
+	opt.init(this);
 
-   QStyleOption opt( lineWidth(), midLineWidth() );
-   style()->drawPrimitive( QStyle::PE_Q3Separator, &opt,  p, this );
-//    style().drawPrimitive( QStyle::PE_Q3Separator, p, QRect( p1, p2 ), g,
-// 		          QStyle::State_Sunken, opt );
+	QPoint p1, p2;
+	QRect r = frameRect();
+	if ( frameStyle() & HLine )
+	{
+		p1 = QPoint( r.x(), r.height()/2 );
+		p2 = QPoint( r.x()+r.width(), p1.y() );
+	}
+	else 
+	{
+		p1 = QPoint( r.x()+r.width()/2, 0 );
+		p2 = QPoint( p1.x(), r.height() );
+	}
+
+	opt.rect = QRect(p1, p2);
+	opt.palette.setBrush(QPalette::Background, palette().dark() );
+
+	style()->drawPrimitive( QStyle::PE_Q3Separator, &opt, &p);
 }
 
 

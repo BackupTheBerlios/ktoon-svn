@@ -33,11 +33,11 @@
 #include "ktapplication.h"
 #include "colordisplay.h"
 
-KTColorPalette::KTColorPalette(QWidget *parent)
-	: KTModuleWidgetBase(parent), m_currentOutlineColor(Qt::black), m_currentFillColor(Qt::white)
+KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_currentOutlineColor(Qt::black), m_currentFillColor(Qt::white)
 {
 	KTINIT;
 	setCaption( tr( "Color Palette" ) );
+	
 	layout()->setSpacing(0);
 	m_containerPalette = new KTViewColorCells(this);
 	addChild( m_containerPalette); //, Qt::AlignTop );
@@ -102,7 +102,6 @@ void KTColorPalette::setupChooserTypeColor()
 	m_displayValueColor = new KTValueColor(chooserTypeColor);
 	layout->addWidget(m_displayValueColor);
 
-	
 	QFrame *container = new QFrame(chooserTypeColor);
 	
 	QBoxLayout *layoutContiner = new QBoxLayout(QBoxLayout::TopToBottom);
@@ -127,9 +126,10 @@ void KTColorPalette::setupChooserTypeColor()
 	
 	QBoxLayout *layoutName = new  QBoxLayout(QBoxLayout::LeftToRight);
 	layoutName->addWidget(new QLabel("HTML", container));
-	nameColor = new QLineEdit(container);
+	m_nameColor = new QLineEdit(container);
+	connect( m_nameColor, SIGNAL(editingFinished()), this, SLOT(updateColor()));
 	
-	layoutName->addWidget(nameColor);
+	layoutName->addWidget(m_nameColor);
 	layoutContiner->addLayout(layoutName);
 	
 	layout->addWidget(container);
@@ -142,12 +142,13 @@ void KTColorPalette::setupChooserTypeColor()
 	connect(m_displayValueColor, SIGNAL(saturationChanged(int)), m_colorPicker, SLOT(setS(int)));
 	
 	layoutColorPicker->addWidget(m_colorPicker);
-	m_valueSelector = new ValueSelector( chooserTypeColor );
-	connect( m_valueSelector, SIGNAL(valueChanged(int)), this, SLOT(setV(int)));
-	
-	connect(m_displayValueColor, SIGNAL(valueChanged(int)), m_valueSelector, SLOT(setValue( int )));
+	m_luminancePicker = new KTLuminancePicker( chooserTypeColor );
+	connect( m_luminancePicker, SIGNAL( newHsv(int, int, int )), this, SLOT (syncHsv(int, int, int)));
+	m_luminancePicker->setMaximumWidth(15);
 
-	layoutColorPicker->addWidget(m_valueSelector);
+	connect(m_displayValueColor, SIGNAL(valueChanged(int)), m_luminancePicker, SLOT(setVal( int )));
+	
+	layoutColorPicker->addWidget(m_luminancePicker);
 	
 	layout->addLayout(layoutColorPicker);
 	addChild( chooserTypeColor );
@@ -181,38 +182,23 @@ void KTColorPalette::setColor(const QColor& color)
 {
 	if(m_outlineColor->isActive())
 	{
-// 		if(color != m_currentOutlineColor)
-// 		{
-			m_outlineColor->slotSetColor(color);
-			m_currentOutlineColor = color;
-// 		}
-// 		else
-// 		{
-// 			return;
-// 		}
+		m_outlineColor->slotSetColor(color);
+		m_currentOutlineColor = color;
 	}
 	else
 	{
-// 		if(color != m_currentFillColor)
-// 		{
-			m_fillColor->slotSetColor(color);
-			m_currentFillColor = color;
-// 		}
-// 		else
-// 		{
-// 			return;
-// 		}
+		m_fillColor->slotSetColor(color);
+		m_currentFillColor = color;
 	}
 	
 	if(m_displayValueColor != sender())
 	{
 		m_displayValueColor->setColor(color);
 	}
-		m_colorPicker->setCol(color.hue(), color.saturation ());
-	
-	nameColor->setText(color.name ());
-
-	m_valueSelector->setColor(color);
+	m_colorPicker->setCol(color.hue(), color.saturation ());
+	m_nameColor->setText(color.name ());
+	m_luminancePicker->setCol(color.hue(), color.saturation(), color.value());
+	emit colorChanged(color);
 }
 
 void KTColorPalette::changeTypeColor()
@@ -231,25 +217,21 @@ void KTColorPalette::changeTypeColor()
 	}
 }
 
-// void KTColorPalette::syncHsv(int , int , int)
-// {
-// 	if(m_outlineColor->isActive())
-// 	{
-// // 		m_outlineColor->slotSetColor(color);
-// // 		m_currentOutlineColor = color;
-// 		m_currentOutlineColor.setHsv(m_colorPicker->hue(), m_colorPicker->sat() , m_valueSelector->value());
-// 		setColor( m_currentOutlineColor);
-// 	}
-// 	else
-// 	{
-// // 		m_currentFillColor = color;
-// // 		m_fillColor->slotSetColor(color);
-// 		m_currentFillColor.setHsv(m_colorPicker->hue(), m_colorPicker->sat() , m_valueSelector->value());
-// 		setColor( m_currentOutlineColor);
-// 	}
-// 	
-// // 	m_currentFillColor.setHsv( h, s, 255 - mouse_event->y() );
-// }
+void KTColorPalette::syncHsv(int h, int s, int v)
+{
+	int th, ts, tv;
+	QColor tmpColor;
+	if(m_outlineColor->isActive())
+	{
+		tmpColor = m_currentOutlineColor;
+	}
+	else
+	{
+		tmpColor = m_currentFillColor;
+	}
+	tmpColor.setHsv( h, s, v, tmpColor.alpha() );
+	setColor(tmpColor);
+}
 
 
 void KTColorPalette::setHS(int h , int s)
@@ -266,23 +248,12 @@ void KTColorPalette::setHS(int h , int s)
 	}
 	tmpColor.getHsv( &th, &ts, &tv );
 	tmpColor.setHsv( h, s, tv, tmpColor.alpha() );
-// 	tmpColor.setHsv(h, s , m_valueSelector->value());
 	setColor(tmpColor);
 }
 
-void KTColorPalette::setV(int v)
+void KTColorPalette::updateColor()
 {
-// 	int th, ts, tv;
-	QColor tmpColor;
-	if(m_outlineColor->isActive())
-	{
-		tmpColor = m_currentOutlineColor;
-	}
-	else
-	{
-		tmpColor = m_currentFillColor;
-	}
-// 	tmpColor.getHsv( &th, &ts, &tv );
-	tmpColor.setHsv( m_colorPicker->hue(), m_colorPicker->sat(), v, tmpColor.alpha() );
+	QColor tmpColor(m_nameColor->text());
+	tmpColor.setAlpha(m_displayValueColor->alpha());
 	setColor(tmpColor);
 }

@@ -24,7 +24,7 @@
 #include <QPalette>
 #include <QPainter>
 
-APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0), m_drawGrid(true), m_lastPosition(-1,-1)
+APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0), m_drawGrid(true), m_tool(0), m_lastPosition(-1,-1)
 {
 	KTINIT;
 	setAttribute(Qt::WA_StaticContents);
@@ -143,7 +143,7 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 	
 	if ((event->buttons() & Qt::LeftButton) && m_lastPosition != QPoint(-1, -1))
 	{
-		if (m_tool) 
+		if (m_tool)
 		{
 			QPainter painter(&m_paintDevice);
 			setupPainter(painter);
@@ -187,4 +187,8 @@ void APaintArea::setupPainter(QPainter &painter)
 	painter.setPen(QPen(m_color, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 }
 
+void APaintArea::setColor(const QColor& color)
+{
+	m_color = color;
+}
 

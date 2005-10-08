@@ -158,6 +158,8 @@ void KTMainWindow::createGUI()
 	KTColorPalette *m_colorPalette = new KTColorPalette(this);
 	m_colorPalette->setIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.xpm") );
 	toolWindow(DDockWindow::Left)->addWidget(tr("Palette"),m_colorPalette);
+// 	connect(m_colorPalette, SIGNAL(colorChanged(QColor)), 
+	
 	
 	Brushes *m_brushesDialog = new Brushes( this);
 	m_brushesDialog->setIcon(QPixmap(KTOON_HOME+"/images/icons/brushes.xpm"));

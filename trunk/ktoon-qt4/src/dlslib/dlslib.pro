@@ -3,6 +3,13 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/dlslib
 # Destiono es una biblioteca:  
 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+CONFIG += release \
+          warn_on \
+          staticlib 
+TEMPLATE = lib 
 IMAGES += close.xpm 
 HEADERS += buttonbar.h \
            button.h \
@@ -17,8 +24,4 @@ SOURCES += buttonbar.cpp \
            docksplitter.cpp \
            dtabwidget.cpp \
            dmainwindow.cpp 
-CONFIG += release \
-warn_on \
-staticlib
-TEMPLATE = lib
-QT += qt3support
+QT += qt3support xml opengl

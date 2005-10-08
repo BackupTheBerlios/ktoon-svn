@@ -39,7 +39,7 @@ class KSeparator : public QFrame
    * @param name name of the new object.
    * @param f extra QWidget flags.
    **/
-  KSeparator(QWidget* parent=0, const char* name=0, Qt::WFlags f=0);
+  KSeparator(QWidget* parent=0);
 
   /**
    * Constructor.
@@ -49,8 +49,7 @@ class KSeparator : public QFrame
    * @param name name of the new object.
    * @param f extra QWidget flags.
    **/
-  KSeparator(int orientation, QWidget* parent=0, const char* name=0, 
-	     Qt::WFlags f=0);
+  KSeparator(int orientation, QWidget* parent=0);
   
   /**
    * Returns the orientation of the separator.
@@ -74,7 +73,7 @@ protected:
   /**
    * @param p pointer to painter
    */
-  virtual void drawFrame( QPainter *p );
+	virtual void paintEvent( QPaintEvent *p );
 protected:
   virtual void virtual_hook( int id, void* data );
 private:

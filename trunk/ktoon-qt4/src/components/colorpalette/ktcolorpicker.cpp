@@ -10,8 +10,10 @@
 
 #include "ktcolorpicker.h"
 
-static int pWidth = 220;
-static int pHeight = 200;
+// static int pWidth = 220;
+// static int pHeight = 200;
+static int pWidth = 100;
+static int pHeight = 80;
 
 QPoint KTColorPicker::colPt()
 { 

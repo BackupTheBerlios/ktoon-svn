@@ -59,6 +59,7 @@ class KTValueColor : public QFrame
 		int hue();
 		int saturation();
 		int value();
+		int alpha();
 		
 		
 	private:

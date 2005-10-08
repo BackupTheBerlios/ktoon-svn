@@ -3,6 +3,20 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/components/colorpalette
 # Destiono es una biblioteca:  
 
+INCLUDEPATH += ../../../src/dialogs \
+               ../../../src/store \
+               ../../../src/lib 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+CONFIG += release \
+          warn_on \
+          staticlib 
+TEMPLATE = lib 
+DISTFILES += dcolorarrow.xpm \
+             dcolorreset.xpm 
+IMAGES += dcolorarrow.xpm \
+          dcolorreset.xpm 
 HEADERS += colorcells.h \
            colordisplay.h \
            colorgradientselector.h \
@@ -18,7 +32,9 @@ HEADERS += colorcells.h \
            ktcolorpalette.h \
            ktvaluecolor.h \
            ktviewcolorcells.h \
-           ktcolorcells.h 
+           ktcolorcells.h \
+           ktluminancepicker.h \
+           ktdualcolorbutton.h 
 SOURCES += colorcells.cpp \
            colordisplay.cpp \
            colorgradientselector.cpp \
@@ -34,12 +50,7 @@ SOURCES += colorcells.cpp \
            ktcolorpalette.cpp \
            ktvaluecolor.cpp \
            ktviewcolorcells.cpp \
-           ktcolorcells.cpp 
-INCLUDEPATH += ../../../src/store \
-../../../src/dialogs \
-../../../src/lib
-CONFIG += release \
-warn_on \
-staticlib
-TEMPLATE = lib
+           ktcolorcells.cpp \
+           ktluminancepicker.cpp \
+           ktdualcolorbutton.cpp 
 QT += qt3support xml opengl

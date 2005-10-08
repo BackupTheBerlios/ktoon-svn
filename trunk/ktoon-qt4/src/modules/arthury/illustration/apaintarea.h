@@ -63,6 +63,9 @@ class APaintArea : public QWidget
 	public:
 		void setBrush(ADrawingToolInterface *brushIface, const QString &brush);
 		
+	public slots:
+		void setColor( const QColor&);
+		
 	private:
 		void setupPainter(QPainter &painter);
 		
@@ -73,6 +76,7 @@ class APaintArea : public QWidget
 		void mouseReleaseEvent(QMouseEvent *e);
 		void paintEvent(QPaintEvent *);
 		void resizeEvent(QResizeEvent * event );
+		
 		
 	signals:
 		void mousePos(const QPoint& p);

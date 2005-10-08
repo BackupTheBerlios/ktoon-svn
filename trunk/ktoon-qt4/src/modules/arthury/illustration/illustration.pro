@@ -3,9 +3,11 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/modules/arthury/illustration
 # Destiono es una biblioteca:  
 
-QT += gui xml 
 INCLUDEPATH += ../../../../src/modules/arthury/interfaces \
                ../../../../src/lib 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
 CONFIG += release \
           warn_on \
           staticlib 
@@ -16,3 +18,5 @@ HEADERS += apaintarea.h \
 SOURCES += apaintarea.cpp \
            agrid.cpp \
            agraphiccomponent.cpp 
+
+QT += xml

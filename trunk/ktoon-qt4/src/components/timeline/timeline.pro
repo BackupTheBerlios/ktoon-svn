@@ -3,7 +3,6 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/components/timeline
 # Destiono es una biblioteca:  
 
-QT += xml opengl qt3support 
 INCLUDEPATH += ../../../src/lib \
                ../../../src/images/images 
 MOC_DIR = .moc 
@@ -30,3 +29,4 @@ SOURCES += tlframe.cpp \
            kttlruler.cpp \
            ktframesequencemanager.cpp \
            ktframesequence.cpp 
+QT += qt3support xml opengl

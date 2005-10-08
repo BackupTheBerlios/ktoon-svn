@@ -3,21 +3,24 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/components/scenes
 # Destiono es una biblioteca:  
 
+INCLUDEPATH += ../../../src/dialogs \
+               ../../../src/store \
+               ../../../src/lib \
+               ../../../src/qt/cameras \
+               ../../../src/qt/tools \
+               ../../../src/qt/draw \
+               ../../../src/opengl/draw \
+               ../../../src/opengl/tools \
+               ../../../src/opengl/cameras 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+CONFIG += release \
+          warn_on \
+          staticlib 
+TEMPLATE = lib 
 HEADERS += scenes.h \
            ktsceneslist.h 
 SOURCES += scenes.cpp \
            ktsceneslist.cpp 
-INCLUDEPATH += ../../../src/dialogs \
-../../../src/qt/cameras \
-../../../src/qt/tools \
-../../../src/qt/draw \
-../../../src/opengl/draw \
-../../../src/opengl/tools \
-../../../src/opengl/cameras \
-../../../src/store \
-../../../src/lib
-CONFIG += release \
-warn_on \
-staticlib
-TEMPLATE = lib
-QT += xml opengl qt3support
+QT += qt3support xml opengl

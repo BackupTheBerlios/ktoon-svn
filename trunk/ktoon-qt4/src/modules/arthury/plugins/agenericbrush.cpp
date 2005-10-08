@@ -68,9 +68,9 @@ QRect AGenericBrush::move(const QString &brush, QPainter &painter,const QPoint &
 	}
 	else if ( brush == tr("Quad Brush"))
 	{
-		painter.drawRect(newPos.x(), newPos.y(), 20, 20);
+		painter.drawRect(newPos.x(), oldPos.y(), 20, 20);
 		
-		boundingRect = QRect(oldPos.x(), newPos.y(), 20, 20); 
+		boundingRect = QRect(newPos.x(), oldPos.y(), 40, 40); 
 	}
 	
 	painter.restore();
