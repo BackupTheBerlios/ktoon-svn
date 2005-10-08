@@ -394,7 +394,7 @@ kdbgstream& kdbgstream::operator<<( const QStringList& l ) {
 }
 kdbgstream& kdbgstream::operator<<( const QColor& c ) {
 	if ( c.isValid() )
-		*this <<c.name();
+		*this << c.name();
 	else
 		*this << "(invalid/default)";
 	return *this;

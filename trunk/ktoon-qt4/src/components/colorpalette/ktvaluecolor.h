@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef KTVALUECOLOR_H
 #define KTVALUECOLOR_H
 
@@ -34,7 +35,7 @@ class KTItemValueColor : public QFrame
 {
 	Q_OBJECT
 	public:
-		KTItemValueColor( QString text = 0, QWidget *parent = 0);
+		KTItemValueColor( const QString &text = QString::null, QWidget *parent = 0);
 		~KTItemValueColor();
 		int  value();
 		void setMax(int);
@@ -70,13 +71,13 @@ class KTValueColor : public QFrame
 		void setupForm();
 		
 	public slots:
-		void setColor(QColor color);
+		void setColor(const QColor & color);
 		
 	private slots:
 		void syncValuesRgb(int value);
 		
 	signals:
-		void colorChanged(QColor);
+		void colorChanged(const QColor &);
 		void hueChanged(int);
 		void saturationChanged(int);
 		void valueChanged(int);

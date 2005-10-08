@@ -33,14 +33,11 @@ KTRulerBase::KTRulerBase(Qt::Orientation m_orientation, QWidget *parent, const c
 	
 	if(m_orientation == Qt::Horizontal)
 	{
-// 		m_pArrow.setPoints(3, 20, 0, 0, 0+2, 0, 0-2);
-// 		m_pArrow.setPoints(3,9,0,0,5,10,10,0);
 		m_pArrow.setPoint ( 0, 0, 0);
 		m_pArrow.setPoint ( 1, 5, 10);
 		m_pArrow.setPoint ( 2, 10, 0);
 		setMaximumHeight ( 25 );
 		setMinimumHeight ( 25 );
-// 		setMinimumWidth( parent->width()+1000);
 		
 		m_width = width();
 		m_height = height();

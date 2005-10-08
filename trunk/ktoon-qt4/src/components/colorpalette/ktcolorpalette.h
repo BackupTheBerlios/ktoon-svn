@@ -27,13 +27,14 @@
 #include "ktviewcolorcells.h"
 
 #include <QComboBox>
-#include <QStackedWidget>
 
 #include <QGroupBox>
+#include <QToolBox>
 
 #include "ktvhbox.h"
 #include "ktcolorpicker.h"
 #include "ktluminancepicker.h"
+#include "ktdualcolorbutton.h"
 
 //FIXME: unificar estas clases
 #include "fillcolor.h"
@@ -54,8 +55,15 @@ class KTColorPalette : public KTModuleWidgetBase
 		KTColorPalette(QWidget *parent = 0);
 		~KTColorPalette();
 		
+	private:
+		void createIcon();
+		
+	private slots:
+		void changeIcon(int);
 		
 	private:
+		QToolBox *m_centralWidget;
+		
 		KTViewColorCells *m_containerPalette;
 		QGroupBox *containerButtons;
 		
@@ -68,9 +76,13 @@ class KTColorPalette : public KTModuleWidgetBase
 		ColorGradientSelector *m_gradient;
 		QComboBox *m_gradientTypes;
 		QLineEdit *m_nameColor;
-		FillColor *m_outlineColor, *m_fillColor;
+// 		FillColor *m_outlineColor, *m_fillColor;
+		KTDualColorButton *m_outlineAndFillColors;
 // 		ValueSelector *m_valueSelector;
 		QColor m_currentOutlineColor, m_currentFillColor;
+		
+		QIcon m_icon;
+		int m_lastIndex;
 		
 	private:
 		void setupButtons();

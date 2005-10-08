@@ -1,5 +1,6 @@
 /* This file is part of the KDE libraries
    Copyright (C) 1999 Daniel M. Duley <mosfet@kde.org>
+   David Cuadrado 2005 <krawek@gmail.com>
  
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public
@@ -46,14 +47,13 @@ KTDualColorButton::KTDualColorButton( QWidget *parent ) : QWidget( parent )
 	if(sizeHint().isValid())
 	{
 		setMinimumSize(sizeHint());
-		setMaximumSize(sizeHint()); // FIXME: Remove if is necessary
+// 		setMaximumSize(sizeHint()); // FIXME: Remove if is necessary
 	}
 	
 	setAcceptDrops(true);
 }
 
-KTDualColorButton::KTDualColorButton(const QColor &fgColor, const QColor &bgColor,
-				     QWidget *parent) : QWidget(parent)
+KTDualColorButton::KTDualColorButton(const QColor &fgColor, const QColor &bgColor, QWidget *parent) : QWidget(parent)
 {
 	arrowBitmap = new QBitmap(dcolorarrow_width, dcolorarrow_height,
 				  (const unsigned char *)dcolorarrow_bits, true);
@@ -65,7 +65,10 @@ KTDualColorButton::KTDualColorButton(const QColor &fgColor, const QColor &bgColo
 	dragFlag = false;
 	miniCtlFlag = false;
 	if(sizeHint().isValid())
+	{
 		setMinimumSize(sizeHint());
+// 		setMaximumSize(sizeHint());
+	}
 	setAcceptDrops(true);
 }
 

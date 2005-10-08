@@ -39,7 +39,7 @@ FillColor::FillColor( QPixmap icon, QWidget *parent ) : QFrame( parent ), m_icon
 	dark_color = QColor( 135, 135, 135 );
 	light_color = paletteBackgroundColor();
 	alpha = 100;
-	setMinimumSize(width(), m_icon.height()+10);
+// 	setMinimumSize(width(), m_icon.height()+10);
 }
 
 FillColor::FillColor(  QWidget *parent ) : QFrame( parent )

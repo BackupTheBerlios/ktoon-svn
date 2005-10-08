@@ -20,6 +20,8 @@
 
 #include "agenericbrush.h"
 #include "../../../images/icons/brush.xpm"
+// #include "ktdebug.h"
+#include <QDebug>
 
 #include <QKeySequence>
 
@@ -68,9 +70,8 @@ QRect AGenericBrush::move(const QString &brush, QPainter &painter,const QPoint &
 	}
 	else if ( brush == tr("Quad Brush"))
 	{
-		painter.drawRect(newPos.x(), oldPos.y(), 20, 20);
-		
-		boundingRect = QRect(newPos.x(), oldPos.y(), 40, 40); 
+		painter.drawRect(newPos.x(), newPos.y(), 20, 20);
+		boundingRect = QRect( newPos.x()-rad*2, newPos.y()-rad*2, 20+painter.pen().width()*2, 20+painter.pen().width()*2);
 	}
 	
 	painter.restore();
