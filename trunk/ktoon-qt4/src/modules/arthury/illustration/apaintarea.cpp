@@ -64,7 +64,6 @@ void APaintArea::paintEvent(QPaintEvent *)
 {
 	QPainter painter(this);
 	painter.drawImage(QPoint(m_xpos, m_ypos), m_paintDevice);
-// 	painter.end();
 }
 
 void APaintArea::resizeEvent ( QResizeEvent * event )
@@ -91,6 +90,13 @@ void APaintArea::setZeroAt(int zero)
 QImage APaintArea::paintDevice() const
 {
 	return m_paintDevice;
+}
+
+void APaintArea::setPaintDevice(const QImage &image)
+{
+	m_paintDevice = image.convertToFormat(QImage::Format_RGB32);
+	update();
+	updateGeometry();
 }
 
 void APaintArea::mousePressEvent ( QMouseEvent * e )

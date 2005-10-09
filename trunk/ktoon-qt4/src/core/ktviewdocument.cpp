@@ -49,7 +49,7 @@ KTViewDocument::KTViewDocument(QWidget *parent ) : KTMdiWindow(parent)
 	createActions();
 	createToolbar();
 	createTools();
-// 	createMenu();
+	createMenu();
 	
 	/**************************************/
 	// FIXME: delete this
@@ -63,7 +63,6 @@ KTViewDocument::KTViewDocument(QWidget *parent ) : KTMdiWindow(parent)
 
 KTViewDocument::~KTViewDocument()
 {
-	
 }
 
 void KTViewDocument::showPos(const QPoint &p)
@@ -377,6 +376,7 @@ void KTViewDocument::loadPlugins()
 		if (plugin)
 		{
 			ADrawingToolInterface *iBrush = qobject_cast<ADrawingToolInterface *>(plugin);
+			AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(plugin);
 			
 			if (iBrush)
 			{
@@ -386,7 +386,7 @@ void KTViewDocument::loadPlugins()
 				
 				for (it = keys.begin(); it != keys.end(); ++it)
 				{
-					ktDebug() << "*******Loaded: " << *it << endl;
+					ktDebug() << "*******Tool Loaded: " << *it << endl;
 					
 					QAction *act = iBrush->actions()[*it];
 					if ( act )
@@ -394,6 +394,24 @@ void KTViewDocument::loadPlugins()
 						connect(act, SIGNAL(triggered()), this, SLOT(changeBrush()));
 						m_brushesMenu->addAction(act);
 						m_paintAreaContainer->drawArea()->setBrush(iBrush, *it);
+					}
+				}
+			}
+			else if ( aFilter )
+			{
+				QStringList::iterator it;
+				QStringList keys = aFilter->keys();
+				
+								
+				for (it = keys.begin(); it != keys.end(); ++it)
+				{
+					ktDebug() << "*******Filter Loaded: " << *it << endl;
+					
+					QAction *act = aFilter->actions()[*it];
+					if ( act )
+					{
+						connect(act, SIGNAL(triggered()), this, SLOT(applyFilter()));
+						m_filterMenu->addAction(act);
 					}
 				}
 			}
@@ -412,6 +430,21 @@ void KTViewDocument::changeBrush()
 		QString brush = action->text();
 	
 		m_paintAreaContainer->drawArea()->setBrush(iBrush, brush);
+	}
+}
+
+void KTViewDocument::applyFilter()
+{
+	QAction *action = qobject_cast<QAction *>(sender());
+	
+	if ( action )
+	{
+		AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(action->parent());
+		QString filter = action->text();
+		
+		QImage image = aFilter->filter(action->text(), m_paintAreaContainer->drawArea()->paintDevice(), this);
+		
+		m_paintAreaContainer->drawArea()->setPaintDevice(image);
 	}
 }
 
@@ -458,6 +491,9 @@ void KTViewDocument::createToolbar()
 
 void KTViewDocument::createMenu()
 {
+	m_filterMenu = new QMenu(this);
+	menuBar()->insertItem(tr("&Filters"), m_filterMenu);
+	
 	//FIXME:crear el menu
 // 	m_menuFile = new Q3PopupMenu( this );
 // 	menuBar()->insertItem( tr("&File"), m_menuFile );

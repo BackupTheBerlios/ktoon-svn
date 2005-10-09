@@ -17,70 +17,26 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef ATRANSFORMFILTER_H
+#define ATRANSFORMFILTER_H
 
-#ifndef APAINTAREA_H
-#define APAINTAREA_H
-
-#include <QWidget>
-#include <QMouseEvent>
-#include <QImage>
-#include <QPainterPath>
-#include "agrid.h"
-
-#include "adrawingtoolinterface.h"
+#include <QObject>
+#include <afilterinterface.h>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-
-class APaintArea : public QWidget
+class ATransformFilter : public QObject, public AFilterInterface
 {
-	Q_OBJECT
+	Q_OBJECT;
+	Q_INTERFACES(AFilterInterface);
 	public:
-		APaintArea(QWidget *parent = 0);
-		~APaintArea();
-		QSize sizeHint() const;
-		QSize minimumSizeHint () const;
-		QPoint paintDevicePosition() const;
-		QImage paintDevice() const;
-		void setPaintDevice(const QImage &image);
-		void setZeroAt(int zero);
+		virtual QStringList keys() const;
+		virtual QImage filter(const QString &filter, const QImage &image, QWidget *parent);
 		
-		
-	private:
-		QImage m_paintDevice;
-		AGrid m_grid;
-		QPainterPath m_path;
-		int m_xpos, m_ypos;
-		int m_zero;
-		bool m_drawGrid;
-		
-		// <FIXME>
-		ADrawingToolInterface *m_tool;
-		QPoint m_lastPosition;
-		QString m_brush;
-		QColor m_color;
-		
-	public:
-		void setBrush(ADrawingToolInterface *brushIface, const QString &brush);
-		
-	public slots:
-		void setColor( const QColor&);
-		
-	private:
-		void setupPainter(QPainter &painter);
-		
-		// </FIXME>
-	protected:
-		void mouseMoveEvent(QMouseEvent *e);
-		void mousePressEvent ( QMouseEvent * e );
-		void mouseReleaseEvent(QMouseEvent *e);
-		void paintEvent(QPaintEvent *);
-		void resizeEvent(QResizeEvent * event );
-		
-		
-	signals:
-		void mousePos(const QPoint& p);
+		virtual QHash<QString, QAction *>actions();
+
 };
 
 #endif

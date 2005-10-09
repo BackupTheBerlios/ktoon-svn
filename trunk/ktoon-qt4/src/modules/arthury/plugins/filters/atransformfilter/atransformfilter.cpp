@@ -17,70 +17,59 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#include "atransformfilter.h"
 
-#ifndef APAINTAREA_H
-#define APAINTAREA_H
 
-#include <QWidget>
-#include <QMouseEvent>
-#include <QImage>
-#include <QPainterPath>
-#include "agrid.h"
-
-#include "adrawingtoolinterface.h"
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-
-class APaintArea : public QWidget
+QStringList ATransformFilter::keys() const
 {
-	Q_OBJECT
-	public:
-		APaintArea(QWidget *parent = 0);
-		~APaintArea();
-		QSize sizeHint() const;
-		QSize minimumSizeHint () const;
-		QPoint paintDevicePosition() const;
-		QImage paintDevice() const;
-		void setPaintDevice(const QImage &image);
-		void setZeroAt(int zero);
-		
-		
-	private:
-		QImage m_paintDevice;
-		AGrid m_grid;
-		QPainterPath m_path;
-		int m_xpos, m_ypos;
-		int m_zero;
-		bool m_drawGrid;
-		
-		// <FIXME>
-		ADrawingToolInterface *m_tool;
-		QPoint m_lastPosition;
-		QString m_brush;
-		QColor m_color;
-		
-	public:
-		void setBrush(ADrawingToolInterface *brushIface, const QString &brush);
-		
-	public slots:
-		void setColor( const QColor&);
-		
-	private:
-		void setupPainter(QPainter &painter);
-		
-		// </FIXME>
-	protected:
-		void mouseMoveEvent(QMouseEvent *e);
-		void mousePressEvent ( QMouseEvent * e );
-		void mouseReleaseEvent(QMouseEvent *e);
-		void paintEvent(QPaintEvent *);
-		void resizeEvent(QResizeEvent * event );
-		
-		
-	signals:
-		void mousePos(const QPoint& p);
-};
+	return QStringList() << tr("Flip Horizontally") << tr("Flip Vertically");
+}
 
-#endif
+QImage ATransformFilter::filter(const QString &filter, const QImage &image, QWidget *parent)
+{
+	QImage original = image.convertToFormat(QImage::Format_RGB32);
+	QImage result = original;
+
+	if (filter == tr("Flip Horizontally")) 
+	{
+		for (int y = 0; y < original.height(); ++y) 
+		{
+			for (int x = 0; x < original.width(); ++x) 
+			{
+				int pixel = original.pixel(original.width() - x - 1, y);
+				result.setPixel(x, y, pixel);
+			}
+		}
+	} else if (filter == tr("Flip Vertically")) 
+	{
+		for (int y = 0; y < original.height(); ++y) 
+		{
+			for (int x = 0; x < original.width(); ++x) 
+			{
+				int pixel = original.pixel(x, original.height() - y - 1);
+				result.setPixel(x, y, pixel);
+			}
+		}
+	}
+	
+	return result;
+}
+
+QHash<QString, QAction *> ATransformFilter::actions()
+{
+	QHash<QString, QAction *> hash;
+	
+	QAction *flipH = new QAction( tr("Flip Horizontally"), this);
+	
+	hash.insert( tr("Flip Horizontally"), flipH );
+	
+	QAction *flipV = new QAction( tr("Flip Vertically"), this);
+	hash.insert(tr("Flip Vertically"), flipV);
+	
+	return hash;
+}
+
+
+
+Q_EXPORT_PLUGIN( ATransformFilter )
