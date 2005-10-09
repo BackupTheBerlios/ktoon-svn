@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado   *
- *   kuadrosx@toonka.com   *
+ *   Copyright (C) 2005 by Jorge Cuadrado   				   *
+ *   kuadrosx@toonka.com  	   					   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,11 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "ktmdiwindow.h"
 #include "ktdebug.h"
-#include <qmenubar.h>
-//Added by qt3to4:
+#include <QMenu>
 #include <QEvent>
+#include <QMenuBar>
 
 KTMdiWindow::KTMdiWindow(QWidget* parent, const char* name): QMainWindow(parent)
 {
@@ -45,16 +46,20 @@ bool  KTMdiWindow::event( QEvent * e )
 		adjustSize();
 		emit activate(true);
 	}
-// 	else if( e->type() == QEvent::ShowMaximized )
-// 	{
-// 		if(menuBar())
-// 			menuBar()->hide();
-// 	}
-// 	else if(e->type() == QEvent::ShowNormal )
-// 	{
-// 		if(menuBar())
-// 			menuBar()->show();
-// 	}
+	else if( e->type() == QEvent::Show )
+	{
+		if(menuBar())
+		{
+			if ( isMaximized() )
+			{
+				menuBar()->hide();
+			}
+			else
+			{
+				menuBar()->show();
+			}
+		}
+	}
 
 	return QMainWindow::event(e );
 }

@@ -72,10 +72,10 @@ void KTModuleWidgetBase::toggleView()
 #if 1
 	if ( ! m_isChildHidden )
 	{
-// 		QDialog *dialog = new QDialog(m_originalParent);
+		QPoint position = m_title->pos();
 		setParent(0, Qt::WindowStaysOnTopHint );
-// 		dialog->setWindowTitle(objectName());
-// 		dialog->show();
+		move(mapToGlobal(position));
+		
 		show();
 	}
 #endif

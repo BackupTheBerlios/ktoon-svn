@@ -36,7 +36,10 @@ KTPaintAreaContainer::KTPaintAreaContainer(QWidget *parent) : QWidget(parent), m
 	grid->setSpacing(0);
 	
 	m_HRuler = new KTDocumentRuler(Qt::Horizontal, 0);
+	grid->addWidget (m_HRuler,0,1);
+	
 	m_VRuler = new KTDocumentRuler(Qt::Vertical, 0);
+	grid->addWidget (m_VRuler,1,0);
 	
 	QScrollArea *m_scroller = new QScrollArea(this);
 // 	m_scroller->setBackgroundRole(QPalette::Mid);
@@ -60,11 +63,10 @@ KTPaintAreaContainer::KTPaintAreaContainer(QWidget *parent) : QWidget(parent), m
 	vBar->setSingleStep(10);
 	connect(vBar, SIGNAL(sliderMoved(int)), m_VRuler, SLOT(slide(int)));
 	
-	QWidget *corner = new QWidget(this);
+	QPushButton *corner = new QPushButton(this);
+	corner->setMaximumSize(m_VRuler->width(), m_HRuler->height() );
 	
-	grid->addWidget(corner, 0, 0);
-	grid->addWidget (m_HRuler,0,1);
-	grid->addWidget (m_VRuler,1,0);
+	grid->addWidget(corner, 0, 0, Qt::AlignCenter);
 	
 	grid->addWidget(m_scroller,1,1);
 	

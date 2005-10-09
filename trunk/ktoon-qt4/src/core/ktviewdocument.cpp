@@ -36,6 +36,8 @@
 
 KTViewDocument::KTViewDocument(QWidget *parent ) : KTMdiWindow(parent)
 {
+	setIcon(QPixmap(KTOON_HOME+"/images/icons/layer_pic.xpm") ); // FIXME: new image for documents
+	
 	m_paintAreaContainer = new KTPaintAreaContainer(this);
 	
 	setCentralWidget ( m_paintAreaContainer );

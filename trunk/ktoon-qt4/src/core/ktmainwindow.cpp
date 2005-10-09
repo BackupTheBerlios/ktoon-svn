@@ -168,6 +168,7 @@ void KTMainWindow::createGUI()
 	toolWindow(DDockWindow::Left)->addWidget(tr("Library"),m_libraryDialog);
 	
 	Scenes *m_scenes = new Scenes( this);
+	m_scenes->setIcon(QPixmap(KTOON_HOME+"/images/icons/scenes.xpm"));
 	toolWindow(DDockWindow::Right)->addWidget(tr("Scenes"),m_scenes);
 	
 	KTExposureSheet *m_exposureSheet = new KTExposureSheet(this);
