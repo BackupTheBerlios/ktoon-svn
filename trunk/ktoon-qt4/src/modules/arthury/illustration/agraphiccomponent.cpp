@@ -11,7 +11,7 @@
 //
 #include "agraphiccomponent.h"
 
-AGraphicComponent::AGraphicComponent(QObject *parent) : QObject(parent), m_pPath(), m_pColor(Qt::black), m_pPen(m_pColor, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin)
+AGraphicComponent::AGraphicComponent() : QObject(), m_pPath(), m_pColor(Qt::black), m_pPen(m_pColor, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin)
 {	
 }
 
@@ -63,7 +63,7 @@ void AGraphicComponent::setPen(const QPen &pen)
 void AGraphicComponent::setPen(const QColor &color)
 {
 	m_pColor = color;
-	m_pPen = QPen(color, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+	m_pPen = QPen(color, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 }
 
 void AGraphicComponent::setColor(const QColor &color)

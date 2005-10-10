@@ -108,12 +108,12 @@ void KTViewDocument::createActions()
 	m_aUndo = new QAction( QPixmap(KTOON_HOME+"/images/icons/undo.xpm" ), tr( "Undo" ), parent());
 	m_aUndo->setShortcut(tr("Ctrl+Z"));
 	
-	connect(m_aUndo, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotUndo()));
+	connect(m_aUndo, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(undo()));
 	m_aUndo->setStatusTip(tr("Undoes the last draw action"));
 	
 	m_aRedo = new QAction( QPixmap(KTOON_HOME+"/images/icons/redo.xpm" ), tr( "Redo" ),  parent());
 	m_aRedo->setShortcut(tr("CTRL+SHIFT+Z"));
-	connect(m_aRedo, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotRedo()));
+	connect(m_aRedo, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(redo()));
 	m_aRedo->setStatusTip(tr("Redoes a previous undone action"));
 	
 	

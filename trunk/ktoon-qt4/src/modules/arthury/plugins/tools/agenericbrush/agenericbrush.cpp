@@ -32,6 +32,9 @@ QStringList AGenericBrush::keys() const
 
 QRect AGenericBrush::press(const QString &brush, QPainter &painter, const QPoint &pos)
 {
+	m_path = QPainterPath();
+	m_path.moveTo(pos);
+	
 	return move(brush, painter, pos, pos);
 }
 
@@ -45,13 +48,12 @@ QRect AGenericBrush::move(const QString &brush, QPainter &painter,const QPoint &
 	int thickness = painter.pen().width();
 	QColor transparentColor(color.red(), color.green(), color.blue(), 0);
 
-	if (brush == tr("Pencil") ) 
+	QPainterPath path;
+	
+	if (brush == tr("Pencil") )
 	{
-		QPainterPath path;
 		path.moveTo(oldPos);
 		path.lineTo(newPos);
-// 		painter.drawLine(oldPos, newPos);
-		painter.drawPath(path);
 	}
 	else if ( brush == tr("Air Brush"))
 	{
@@ -65,14 +67,18 @@ QRect AGenericBrush::move(const QString &brush, QPainter &painter,const QPoint &
 			int x = oldPos.x() + i * (newPos.x() - oldPos.x()) / (numSteps - 1);
 			int y = oldPos.y() + i * (newPos.y() - oldPos.y()) / (numSteps - 1);
 
-			painter.drawEllipse(x - (thickness / 2), y - (thickness / 2),thickness, thickness);
+			path.addEllipse(x - (thickness / 2), y - (thickness / 2),thickness, thickness);
 		}
 	}
 	else if ( brush == tr("Quad Brush"))
 	{
-		painter.drawRect(newPos.x(), newPos.y(), 20, 20);
+		path.addRect(newPos.x(), newPos.y(), 20, 20);
 		boundingRect = QRect( newPos.x()-rad*2, newPos.y()-rad*2, 20+painter.pen().width()*2, 20+painter.pen().width()*2);
 	}
+	
+	painter.drawPath(path);
+	m_path.addPath ( path );
+// 	m_path.connectPath ( path );
 	
 	painter.restore();
 	return boundingRect;
@@ -81,6 +87,11 @@ QRect AGenericBrush::move(const QString &brush, QPainter &painter,const QPoint &
 QRect AGenericBrush::release(const QString & /* brush */,QPainter & /* painter */, const QPoint & /* pos */)
 {
 	return QRect(0, 0, 0, 0);
+}
+
+QPainterPath AGenericBrush::path() const
+{
+	return m_path;
 }
 
 QHash<QString, QAction *> AGenericBrush::actions()

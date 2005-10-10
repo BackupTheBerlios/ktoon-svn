@@ -32,15 +32,16 @@
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
+
 class AGraphicComponent : public QObject
 {
 	Q_OBJECT
 	public:
-		AGraphicComponent(QObject *parent = 0);
+		AGraphicComponent();
 		virtual ~AGraphicComponent();
 		
-		virtual QDomElement createXML( QDomDocument &doc ) = 0;
-		virtual QString key() const = 0;
+		virtual QDomElement createXML( QDomDocument &doc ) {};
+		virtual QString key() const {};
 		
 		QRectF boundingRect() const;
 		QColor color() const;

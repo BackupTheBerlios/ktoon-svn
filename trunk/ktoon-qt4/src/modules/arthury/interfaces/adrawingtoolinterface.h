@@ -51,6 +51,8 @@ class ADrawingToolInterface
 		virtual QRect release(const QString &brush, QPainter &painter, const QPoint &pos) = 0;
 		
 		virtual QHash<QString, QAction *>actions() = 0;
+		
+		virtual QPainterPath path() const = 0;
 };
 
 Q_DECLARE_INTERFACE(ADrawingToolInterface, "com.toonka.ktoon.ADrawingToolInterface/0.1");

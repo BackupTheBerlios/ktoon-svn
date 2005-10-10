@@ -26,6 +26,8 @@
 
 APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0), m_drawGrid(true), m_tool(0), m_lastPosition(-1,-1)
 {
+	m_redrawAll = true;
+	
 	KTINIT;
 	setAttribute(Qt::WA_StaticContents);
 	
@@ -35,13 +37,17 @@ APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0),
 	setMouseTracking(true);
 	m_grid.createGrid(m_paintDevice);
 
-	QPainter painter(&m_paintDevice);
+// 	QPainter painter(&m_paintDevice);
 	
-	if(m_drawGrid)
-	{
-		painter.setPen(Qt::gray);
-		painter.drawPath(m_grid.pathGrid());
-	}
+// 	if(m_drawGrid)
+// 	{
+// 		painter.setPen(Qt::gray);
+// 		painter.drawPath(m_grid.pathGrid());
+// 	}
+	
+	m_path = QPainterPath();
+	
+	show();
 }
 
 
@@ -60,19 +66,77 @@ QSize APaintArea::minimumSizeHint () const
 	return QSize(m_zero,m_zero);
 }
 
-void APaintArea::paintEvent(QPaintEvent *)
+void APaintArea::paintEvent(QPaintEvent *e)
 {
-	QPainter painter(this);
+	QPainter painter;
+	
+	if ( m_redrawAll )
+	{
+		m_paintDevice.fill(qRgb(255, 255, 255));
+		
+		painter.begin(&m_paintDevice);
+	// 	painter.setClipRect(e->rect());
+		painter.setRenderHint(QPainter::Antialiasing);
+		
+		if(m_drawGrid)
+		{
+			painter.save();
+			painter.setPen(Qt::gray);
+			painter.drawPath(m_grid.pathGrid());
+			painter.restore();
+		}
+		
+		painter.save();
+		
+		draw(&painter);
+		
+		painter.restore();
+		painter.end();
+		
+		m_redrawAll = false;
+	}
+	
+	painter.begin(this);
 	painter.drawImage(QPoint(m_xpos, m_ypos), m_paintDevice);
 }
 
-void APaintArea::resizeEvent ( QResizeEvent * event )
+void APaintArea::draw(QPainter *painter)
 {
-	m_xpos = width()/2 -m_paintDevice.width()/2;
-	m_ypos = height()/2-m_paintDevice.height()/2;
+// 	ktDebug() << "DRAW " << m_graphicComponents.count() << endl;
+	
+	if ( m_graphicComponents.count() > 0)
+	{
+		QList<AGraphicComponent *>::iterator it = m_graphicComponents.begin();
+		
+		while ( it != m_graphicComponents.end() )
+		{
+// 			ktDebug() << "Drawing PATH" << endl;
+			painter->save();
+			
+// 			painter->setPen((*it)->pen());
+// 			painter->setBrush((*it)->brush());
+			setupPainter(*painter);
+			painter->drawPath((*it)->path());
+
+			
+			painter->restore();
+			++it;
+		}
+	}
+}
+
+void APaintArea::redrawAll()
+{
+	m_redrawAll = true;
+	update();
+}
+
+void APaintArea::resizeEvent( QResizeEvent * event )
+{
+	m_xpos = width() / 2 - m_paintDevice.width() / 2;
+	m_ypos = height() / 2 - m_paintDevice.height() / 2;
 	repaint();
 	QWidget::resizeEvent(event);
-	
 }
 
 QPoint APaintArea::paintDevicePosition() const
@@ -105,6 +169,8 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 	
 	if (event->button() == Qt::LeftButton)
 	{
+		m_currentGraphic = new AGraphicComponent;
+		
 		if ( ! m_path.isEmpty() )
 		{
 			QPainter painter(&m_paintDevice);
@@ -112,10 +178,8 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 
 			QRectF boundingRect = m_path.boundingRect();
 			QLinearGradient gradient(boundingRect.topRight(), boundingRect.bottomLeft());
-			gradient.setColorAt(0.0, QColor(m_color.red(), m_color.green(),
-					    m_color.blue(), 63));
-			gradient.setColorAt(1.0, QColor(m_color.red(), m_color.green(),
-					    m_color.blue(), 191));
+			gradient.setColorAt(0.0, QColor(m_color.red(), m_color.green(),m_color.blue(), 63));
+			gradient.setColorAt(1.0, QColor(m_color.red(), m_color.green(),m_color.blue(), 191));
 			painter.setBrush(gradient);
 			
 			painter.translate(event->pos() - boundingRect.center());
@@ -128,7 +192,7 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 		} 
 		else 
 		{
-			if (m_tool) 
+			if (m_tool)
 			{
 				QPainter painter(&m_paintDevice);
 				setupPainter(painter);
@@ -175,6 +239,16 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 			QRect rect = m_tool->release(m_brush, painter, event->pos());
 			rect.translate(m_xpos, m_ypos);
 			update(rect);
+			
+			ktDebug() << "Adding component" << endl;
+			
+			m_currentGraphic->setPath(m_tool->path());
+			
+			m_graphicComponents << m_currentGraphic;
+			
+			ktDebug() << "Components count: " << m_graphicComponents.count() << endl;
+			
+			m_undoComponents.clear();
 		}
 		
 		m_lastPosition = QPoint(-1, -1);
@@ -197,4 +271,27 @@ void APaintArea::setColor(const QColor& color)
 {
 	m_color = color;
 }
+
+void APaintArea::undo()
+{
+	if ( m_graphicComponents.count() > 0 )
+	{
+		m_undoComponents << m_graphicComponents.takeLast();
+		
+		redrawAll();
+	}
+}
+
+void APaintArea::redo()
+{
+	if ( m_undoComponents.count() > 0 )
+	{
+		m_graphicComponents << m_undoComponents.takeLast();
+		
+		redrawAll();
+	}
+}
+
+
+
 

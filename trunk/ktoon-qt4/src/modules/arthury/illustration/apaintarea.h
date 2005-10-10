@@ -25,9 +25,14 @@
 #include <QMouseEvent>
 #include <QImage>
 #include <QPainterPath>
+#include <QList>
+
 #include "agrid.h"
 
 #include "adrawingtoolinterface.h"
+#include "afilterinterface.h"
+
+#include "agraphiccomponent.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -61,11 +66,19 @@ class APaintArea : public QWidget
 		QString m_brush;
 		QColor m_color;
 		
+		QList<AGraphicComponent *> m_graphicComponents;
+		QList<AGraphicComponent *> m_undoComponents;
+		
+		AGraphicComponent *m_currentGraphic;
+		bool m_redrawAll;
+		
 	public:
 		void setBrush(ADrawingToolInterface *brushIface, const QString &brush);
 		
 	public slots:
 		void setColor( const QColor&);
+		void undo();
+		void redo();
 		
 	private:
 		void setupPainter(QPainter &painter);
@@ -76,7 +89,9 @@ class APaintArea : public QWidget
 		void mousePressEvent ( QMouseEvent * e );
 		void mouseReleaseEvent(QMouseEvent *e);
 		void paintEvent(QPaintEvent *);
+		virtual void draw(QPainter *p);
 		void resizeEvent(QResizeEvent * event );
+		virtual void redrawAll();
 		
 		
 	signals:

@@ -39,8 +39,12 @@ class AGenericBrush : public QObject, public ADrawingToolInterface
 		virtual QRect press(const QString &brush, QPainter &painter, const QPoint &pos);
 		virtual QRect move(const QString &brush, QPainter &painter, const QPoint &oldPos, const QPoint &newPos);
 		virtual QRect release(const QString &brush, QPainter &painter,const QPoint &pos);
+		virtual QPainterPath path() const;
 
 		virtual QHash<QString, QAction *>actions();
+		
+	private:
+		QPainterPath m_path;
 };
 
 #endif
