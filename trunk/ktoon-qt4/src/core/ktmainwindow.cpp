@@ -157,6 +157,7 @@ void KTMainWindow::createGUI()
 	// TODO: put setIcon in each class
 	KTColorPalette *m_colorPalette = new KTColorPalette(this);
 	m_colorPalette->setIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.xpm") );
+	connect(m_colorPalette, SIGNAL(colorChanged(const QColor &, const QColor &)), this, SLOT(changeCurrentColors(const QColor &, const QColor &)));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Palette"),m_colorPalette);
 	
 	Brushes *m_brushesDialog = new Brushes( this);
@@ -346,5 +347,17 @@ void KTMainWindow::preferences()
 	preferences->exec();
 	statusBar() -> message( tr( "Preferences Dialog Opened" ), 2000 );
 }
+
+void KTMainWindow::changeCurrentColors(const QColor &foreground, const QColor &background)
+{
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_workSpace->activeWindow ());
+	
+	if ( doc )
+	{
+		doc->drawArea()->setPenColor(foreground);
+		doc->drawArea()->setBrushColor(background);
+	}
+}
+
 
 

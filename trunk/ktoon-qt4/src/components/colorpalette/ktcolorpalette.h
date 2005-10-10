@@ -45,8 +45,11 @@
 #include "colorgradientselector.h"
 #include "gradientviewer.h"
 // #include <QColor>
+
+class KTColorPalette;
+
 /**
-	@author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 class KTColorPalette : public KTModuleWidgetBase
 {
@@ -54,6 +57,7 @@ class KTColorPalette : public KTModuleWidgetBase
 	public:
 		KTColorPalette(QWidget *parent = 0);
 		~KTColorPalette();
+		QPair<QColor, QColor> color();
 		
 	private:
 		void createIcon();
@@ -97,7 +101,7 @@ class KTColorPalette : public KTModuleWidgetBase
 		void setHS(int h, int s);
 		
 	signals:
-		void colorChanged(const QColor &color);
+		void colorChanged(const QColor &foreground, const QColor &background);
 };
 
 #endif

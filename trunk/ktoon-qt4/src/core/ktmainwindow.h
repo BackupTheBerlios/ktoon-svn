@@ -127,6 +127,9 @@ class KTMainWindow : public DMainWindow
 		
 		void preferences();
 		
+	private slots:
+		void changeCurrentColors(const QColor &, const QColor &);
+		
 	private:
 		QWorkspace *m_workSpace;
 		KTActionManager *m_actionManager;

@@ -517,7 +517,14 @@ void KTViewDocument::close()
 	m_paintAreaContainer->drawArea()->close();
 }
 
+APaintArea *KTViewDocument::drawArea()
+{
+	return m_paintAreaContainer->drawArea();
+}
+
 void KTViewDocument::setCursor(const QCursor &c)
 {
 	m_paintAreaContainer->drawArea()->setCursor(c);
 }
+
+

@@ -46,6 +46,8 @@ class KTViewDocument : public KTMdiWindow
 		KTViewDocument( QWidget *parent = 0 );
 		~KTViewDocument();
 		void close();
+		APaintArea *drawArea();
+		
 	private:
 		QActionGroup *gridGroup, *editGroup, *editGroup2, *viewNextGroup, *viewPreviousGroup;
 		QMenu *m_brushesMenu, *m_filterMenu;

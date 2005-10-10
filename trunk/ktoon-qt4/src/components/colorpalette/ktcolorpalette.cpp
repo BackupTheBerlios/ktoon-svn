@@ -35,7 +35,7 @@
 
 #include "ktgradientselector.h"
 
-KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_currentOutlineColor(Qt::black), m_currentFillColor(Qt::white), m_lastIndex(0)
+KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_currentOutlineColor(Qt::black), m_currentFillColor(Qt::transparent), m_lastIndex(0)
 {
 	KTINIT;
 	setCaption( tr( "Color Palette" ) );
@@ -276,7 +276,7 @@ void KTColorPalette::setColor(const QColor& color)
 	m_nameColor->setText(color.name ());
 	m_luminancePicker->setCol(color.hue(), color.saturation(), color.value());
 	
-	emit colorChanged(color);
+	emit colorChanged( m_outlineAndFillColors->foreground(),m_outlineAndFillColors->background() );
 }
 
 void KTColorPalette::changeTypeColor()
@@ -337,3 +337,14 @@ void KTColorPalette::updateColor()
 	tmpColor.setAlpha(m_displayValueColor->alpha());
 	setColor(tmpColor);
 }
+
+QPair<QColor, QColor> KTColorPalette::color()
+{
+	QPair<QColor, QColor> colors;
+	colors.first = m_outlineAndFillColors->foreground();
+	colors.first = m_outlineAndFillColors->background();
+	
+	return colors;
+}
+
+

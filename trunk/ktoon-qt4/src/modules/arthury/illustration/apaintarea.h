@@ -64,7 +64,7 @@ class APaintArea : public QWidget
 		ADrawingToolInterface *m_tool;
 		QPoint m_lastPosition;
 		QString m_brush;
-		QColor m_color;
+		QColor m_brushColor, m_penColor;
 		
 		QList<AGraphicComponent *> m_graphicComponents;
 		QList<AGraphicComponent *> m_undoComponents;
@@ -76,7 +76,8 @@ class APaintArea : public QWidget
 		void setBrush(ADrawingToolInterface *brushIface, const QString &brush);
 		
 	public slots:
-		void setColor( const QColor&);
+		void setPenColor( const QColor&);
+		void setBrushColor( const QColor&);
 		void undo();
 		void redo();
 		

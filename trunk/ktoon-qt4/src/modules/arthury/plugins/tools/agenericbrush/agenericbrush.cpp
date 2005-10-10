@@ -49,7 +49,7 @@ QRect AGenericBrush::move(const QString &brush, QPainter &painter,const QPoint &
 	QColor transparentColor(color.red(), color.green(), color.blue(), 0);
 
 	QPainterPath path;
-	
+
 	if (brush == tr("Pencil") )
 	{
 		path.moveTo(oldPos);

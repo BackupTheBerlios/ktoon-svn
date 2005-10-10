@@ -24,7 +24,7 @@
 #include <QPalette>
 #include <QPainter>
 
-APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0), m_drawGrid(true), m_tool(0), m_lastPosition(-1,-1)
+APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0), m_drawGrid(true), m_tool(0), m_lastPosition(-1,-1), m_brushColor(Qt::transparent)
 {
 	m_redrawAll = true;
 	
@@ -113,9 +113,9 @@ void APaintArea::draw(QPainter *painter)
 // 			ktDebug() << "Drawing PATH" << endl;
 			painter->save();
 			
-// 			painter->setPen((*it)->pen());
-// 			painter->setBrush((*it)->brush());
-			setupPainter(*painter);
+			painter->setPen((*it)->pen());
+			painter->setBrush((*it)->brush());
+			
 			painter->drawPath((*it)->path());
 
 			
@@ -170,7 +170,7 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 	if (event->button() == Qt::LeftButton)
 	{
 		m_currentGraphic = new AGraphicComponent;
-		
+
 		if ( ! m_path.isEmpty() )
 		{
 			QPainter painter(&m_paintDevice);
@@ -178,8 +178,8 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 
 			QRectF boundingRect = m_path.boundingRect();
 			QLinearGradient gradient(boundingRect.topRight(), boundingRect.bottomLeft());
-			gradient.setColorAt(0.0, QColor(m_color.red(), m_color.green(),m_color.blue(), 63));
-			gradient.setColorAt(1.0, QColor(m_color.red(), m_color.green(),m_color.blue(), 191));
+			gradient.setColorAt(0.0, QColor(m_brushColor.red(), m_brushColor.green(),m_brushColor.blue(), 63));
+			gradient.setColorAt(1.0, QColor(m_brushColor.red(), m_brushColor.green(),m_brushColor.blue(), 191));
 			painter.setBrush(gradient);
 			
 			painter.translate(event->pos() - boundingRect.center());
@@ -243,6 +243,8 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 			ktDebug() << "Adding component" << endl;
 			
 			m_currentGraphic->setPath(m_tool->path());
+			m_currentGraphic->setPen(painter.pen());
+			m_currentGraphic->setBrush(painter.brush());
 			
 			m_graphicComponents << m_currentGraphic;
 			
@@ -264,12 +266,19 @@ void APaintArea::setBrush(ADrawingToolInterface *toolIface, const QString &brush
 void APaintArea::setupPainter(QPainter &painter)
 {
 	painter.setRenderHint(QPainter::Antialiasing, true);
-	painter.setPen(QPen(m_color, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+	painter.setPen(QPen(m_penColor, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+
+	painter.setBrush(QBrush(m_brushColor));
 }
 
-void APaintArea::setColor(const QColor& color)
+void APaintArea::setPenColor(const QColor& color)
 {
-	m_color = color;
+	m_penColor = color;
+}
+
+void APaintArea::setBrushColor(const QColor& color)
+{
+	m_brushColor = color;
 }
 
 void APaintArea::undo()
