@@ -160,7 +160,7 @@ void KTMainWindow::createGUI()
 	connect(m_colorPalette, SIGNAL(colorChanged(const QColor &, const QColor &)), this, SLOT(changeCurrentColors(const QColor &, const QColor &)));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Palette"),m_colorPalette);
 	
-	Brushes *m_brushesDialog = new Brushes( this);
+	KTBrushWidget *m_brushesDialog = new KTBrushWidget( this);
 	m_brushesDialog->setIcon(QPixmap(KTOON_HOME+"/images/icons/brushes.xpm"));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Brushes"),m_brushesDialog);
 	

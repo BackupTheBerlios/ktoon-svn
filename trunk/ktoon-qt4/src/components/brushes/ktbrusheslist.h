@@ -12,20 +12,24 @@
 #ifndef KTBRUSHESLIST_H
 #define KTBRUSHESLIST_H
 
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
+// #include <QTreeWidget>
+// #include <QTreeWidgetItem>
+
+#include <QListWidget>
+#include <QListWidgetItem>
+#include <QPainterPath>
 
 /**
 *	@author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
-class KTBrushesList : public QTreeWidget
+class KTBrushesList : public QListWidget
 {
 	Q_OBJECT
 	public:
 		KTBrushesList(QWidget *parent = 0);
 		~KTBrushesList();
-		void addBrush(int min, int max, int smooth, QString name);
+		void addBrush(int thickness, int smooth, QPainterPath form, QString name);
 		int removeCurrentBrush();
 		int indexCurrentBrush();
 		
@@ -37,7 +41,7 @@ class KTBrushesList : public QTreeWidget
 		void changeCurrentBrush();
 		
 	signals:
-		void changeCurrentBrush(int min, int max, int smooth, QString name);
+		void changeCurrentBrush( QListWidgetItem*);
 
 };
 

@@ -18,11 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-
 #ifndef KTDISPLAYBRUSH_H
 #define KTDISPLAYBRUSH_H
 
 #include <QWidget>
+#include <QPixmap>
 
 /**
 * @author Jorge Cuadrado <kuadrosx@toonka.com>
@@ -34,13 +34,16 @@ Q_OBJECT
 	public:
 		KTDisplayBrush(int minThickness, int maxThickness,QWidget *parent = 0);
 		~KTDisplayBrush();
+		void setForm(QPixmap form);
 		
 	private:
 		int m_minThickness, m_maxThickness;
+		QPixmap m_form;
 		
 	public slots:
 		void changeMinThickness(int);
 		void changeMaxThickness(int);
+		
 		
 	protected:
 		virtual void paintEvent ( QPaintEvent * event );

@@ -10,15 +10,18 @@
 //
 //
 #include "ktbrusheslist.h"
-#include <QHeaderView>
+#include <QPainter>
+// #include <QHeaderView>
 #include <QStringList>
 #include "ktdebug.h"
 
 KTBrushesList::KTBrushesList(QWidget *parent)
- : QTreeWidget(parent)
+	: QListWidget(parent)
 {
-	setHeaderLabels ( QStringList() << tr("Min") << tr( "Max" ) << tr( "Smo" ) << tr( "Name" ) );
-	header()->setResizeMode(QHeaderView::Stretch);
+// 	setHeaderLabels ( QStringList() << tr("Min") << tr( "Max" ) << tr( "Smo" ) << tr( "Name" ) );
+	QListView::setViewMode(QListView::IconMode);
+	setDragEnabled ( false );
+// 	header()->setResizeMode(QHeaderView::Stretch);
 	connect(this, SIGNAL( itemSelectionChanged ()), this, SLOT(changeCurrentBrush()));
 }
 
@@ -27,49 +30,59 @@ KTBrushesList::~KTBrushesList()
 {
 }
 
-void KTBrushesList::addBrush(int min, int max, int smooth, QString name)
+void KTBrushesList::addBrush(int thickness, int smooth, QPainterPath form, QString name)
 {
-	QTreeWidgetItem *newBrush = new QTreeWidgetItem(this);
-	QStringList valuesBrush;
-	valuesBrush << QString::number(min) << QString::number(max) << QString::number(smooth) << name;
+	QListWidgetItem *newBrush = new QListWidgetItem(this);
 	
-	for(int i = 0; i < valuesBrush.count() ; i++)
-	{
-		newBrush->setText(i, valuesBrush[i]);
-	}
+	
+// 	newBrush->setToolTip ( tr("Thickness: %1\nSmooth: %1").arg(thickness).arg(smooth) );
+	
+	QPixmap px(form.boundingRect().width(), form.boundingRect().height());
+	
+	px.fill(QColor(0,0,0,0));
+	QPainter p;
+	p.begin(&px);
+// 	p.setPen(Qt::NoPen);
+	p.setBrush( QBrush( foregroundColor (), Qt::SolidPattern));
+	p.setRenderHint(QPainter::Antialiasing);
+	p.drawPath(form);
+	newBrush->setIcon ( QIcon(px) );
+	newBrush->setText(name);
+	
 	setCurrentItem ( newBrush );
+	
 }
 
 void KTBrushesList::changeCurrentValueMin( int min)
 {
-	if(currentItem() )
-	{
-		currentItem()->setText(0,QString::number(min));
-	}
+// 	if(currentItem() )
+// 	{
+// 		currentItem()->setText(0,QString::number(min));
+// 	}
 }
 
 void KTBrushesList::changeCurrentValueMax( int max)
 {
-	if(currentItem() )
-	{
-		currentItem()->setText(1,QString::number(max));
-	}
+// 	if(currentItem() )
+// 	{
+// 		currentItem()->setText(1,QString::number(max));
+// 	}
 }
 
 void KTBrushesList::changeCurrentValueSmooth( int smooth)
 {
-	if(currentItem() )
-	{
-		currentItem()->setText(2,QString::number(smooth));
-	}
+// 	if(currentItem() )
+// 	{
+// 		currentItem()->setText(2,QString::number(smooth));
+// 	}
 }
 
 void KTBrushesList::changeCurrentValueName( QString name)
 {
-	if(currentItem() )
-	{
-		currentItem()->setText(3, name);
-	}
+// 	if(currentItem() )
+// 	{
+// 		currentItem()->setText(3, name);
+// 	}
 }
 
 int KTBrushesList::removeCurrentBrush()
@@ -79,30 +92,31 @@ int KTBrushesList::removeCurrentBrush()
 // 	QTreeWidgetItem *item = itemAt( p -= QPoint(2,2) );
 // 	setCurrentItem( item );
 	
-	int index = indexCurrentBrush();
-	delete currentItem();
-	if(index < 1)
-	{
-		setCurrentItem( topLevelItem ( 0 ) );
-	}
-	else
-	{
-		setCurrentItem( topLevelItem ( index -1 ) );
-	}
-	return index;
+// 	int index = indexCurrentBrush();
+// 	delete currentItem();
+// 	if(index < 1)
+// 	{
+// 		setCurrentItem( topLevelItem ( 0 ) );
+// 	}
+// 	else
+// 	{
+// 		setCurrentItem( topLevelItem ( index -1 ) );
+// 	}
+// 	return index;
 	
 }
 
 void KTBrushesList::changeCurrentBrush()
 {
-	int min = QString(currentItem()->text(0)).toInt();
-	int max = QString(currentItem()->text(1)).toInt();
-	int smooth = QString(currentItem()->text(2)).toInt();
-	QString name = currentItem()->text(3);
-	emit( changeCurrentBrush( min, max,  smooth, name));
+// 	int min = QString(currentItem()->text(0)).toInt();
+// 	int max = QString(currentItem()->text(1)).toInt();
+// 	int smooth = QString(currentItem()->text(2)).toInt();
+// 	QString name = currentItem()->text(3);
+	emit( changeCurrentBrush(currentItem()));
 }
 
 int KTBrushesList::indexCurrentBrush()
 {
-	return indexOfTopLevelItem(currentItem());
+	return 0;
+// 	return indexOfTopLevelItem(currentItem());
 }

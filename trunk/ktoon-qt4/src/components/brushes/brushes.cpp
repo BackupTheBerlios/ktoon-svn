@@ -108,7 +108,7 @@ void Brushes::setupTableBrushes()
 	    //------------ Operations on the Table of Brushes -------------
 // 	QGroupBox *containerTableBrushes = new QGroupBox(this);
 	m_tableBrushes = new KTBrushesList(this);
-	m_tableBrushes->addBrush(2,5,2, tr("Brush")+QString( "0" ));
+// 	m_tableBrushes->addBrush(2,5,2, tr("Brush")+QString( "0" ));
 	connect(m_tableBrushes, SIGNAL(changeCurrentBrush(int , int , int , QString )), this, SLOT(selectBrush(int , int , int , QString )));
 	addChild(m_tableBrushes);
 	
@@ -219,7 +219,7 @@ void Brushes::addBrush()
 	m_numberOfBrushes++;
 
 //     new Q3ListViewItem( table_brushes, table_brushes -> lastItem(), "2", "5", "2", tr( "Brush" ) + brush_number );
-	m_tableBrushes->addBrush( 2,5,2, tr( "Brush" ) + brush_number );
+// 	m_tableBrushes->addBrush( 2,5,2, tr( "Brush" ) + brush_number );
 	
 	emit(addedBrush(2,5,2, tr( "Brush" ) + brush_number));
 // 	QList<Brush*> br = KTStatus->currentDocument() -> getBrushes();

@@ -39,9 +39,11 @@
 #include "properties.h"
 #include "preferences.h"
 #include "scenes.h"
-#include "brushes.h"
 
-#include "colorpalette.h"
+#include "ktbrushwidget.h"
+// #include "brushes.h"
+
+// #include "colorpalette.h"
 #include "ktcolorpalette.h"
 
 #include "tools.h"

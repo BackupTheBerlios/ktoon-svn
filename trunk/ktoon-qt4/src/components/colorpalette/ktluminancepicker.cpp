@@ -33,6 +33,7 @@ KTLuminancePicker::~KTLuminancePicker()
 void KTLuminancePicker::mouseMoveEvent(QMouseEvent *m)
 {
 	setVal(y2val(m->y()));
+	
 }
 void KTLuminancePicker::mousePressEvent(QMouseEvent *m)
 {

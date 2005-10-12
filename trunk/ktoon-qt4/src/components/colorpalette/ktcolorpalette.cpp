@@ -255,6 +255,7 @@ void KTColorPalette::setupChooserGradient()
 
 void KTColorPalette::setColor(const QColor& color)
 {
+
 	m_outlineAndFillColors->setCurrentColor(color);
 // 	if( m_outlineColor->isActive() )
 // 	{
@@ -269,12 +270,16 @@ void KTColorPalette::setColor(const QColor& color)
 	
 	if(m_displayValueColor != sender())
 	{
+// 		ktDebug( ) << "KTColorPalette0 "<< color << endl;
 		m_displayValueColor->setColor(color);
 	}
 	
 	m_colorPicker->setCol(color.hue(), color.saturation ());
+
 	m_nameColor->setText(color.name ());
+
 	m_luminancePicker->setCol(color.hue(), color.saturation(), color.value());
+	
 	
 	emit colorChanged( m_outlineAndFillColors->foreground(),m_outlineAndFillColors->background() );
 }
@@ -307,8 +312,10 @@ void KTColorPalette::syncHsv(int h, int s, int v)
 // 	{
 // 		tmpColor = m_currentFillColor;
 // 	}
+// 	tmpColor.getHsv( &th, &ts, &tv );
 	tmpColor.setHsv( h, s, v, tmpColor.alpha() );
-	setColor(tmpColor);
+	if(m_luminancePicker == sender())
+		setColor(tmpColor);
 }
 
 

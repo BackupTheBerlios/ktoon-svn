@@ -32,7 +32,6 @@
 #include <QLabel>
 #include <QPixmap>
 
-// #include <q3listview.h>
 #include <QGroupBox>
 #include <QList>
 #include "ktmodulewidgetbase.h"
@@ -42,6 +41,7 @@
 #include "ktdisplaybrush.h"
 #include "ktbrusheslist.h"
 #include <QTableWidget>
+
 class Brush;
 
 /**

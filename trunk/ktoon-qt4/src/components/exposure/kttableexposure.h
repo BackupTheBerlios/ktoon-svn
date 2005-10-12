@@ -84,14 +84,8 @@ class KTTableExposure : public QScrollArea //Q3ScrollView
 		void layerInserted();
 		void frameRemoved(int idFrame);
 		
-// 		void layerInserted();
-		//FIXME:evitar todos estos signals haciendo una funcion como setBody que me permita tener un puntero a timeline.
 		void layerRemoved();
-		
 		void layerRenamed( int , const QString & );
-		void framesInsertedAtTheEnd( int number );
-		
-// 		void frameRemoved( int pos );
 		void frameMovedUp( int pos );
 		void frameMovedDown( int pos );
 		
