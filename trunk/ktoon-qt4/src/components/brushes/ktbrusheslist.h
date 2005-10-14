@@ -20,7 +20,7 @@
 #include <QPainterPath>
 
 /**
-*	@author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
 class KTBrushesList : public QListWidget
@@ -29,9 +29,10 @@ class KTBrushesList : public QListWidget
 	public:
 		KTBrushesList(QWidget *parent = 0);
 		~KTBrushesList();
-		void addBrush(int thickness, int smooth, QPainterPath form, QString name);
+		void addBrush(int thickness, int smooth, const QPainterPath &form, QString name);
 		int removeCurrentBrush();
 		int indexCurrentBrush();
+		QPainterPath path(int);
 		
 	public slots:
 		void changeCurrentValueMin(int min);
@@ -42,6 +43,9 @@ class KTBrushesList : public QListWidget
 		
 	signals:
 		void changeCurrentBrush( QListWidgetItem*);
+		
+	private:
+		QList<QPainterPath> m_forms;
 
 };
 

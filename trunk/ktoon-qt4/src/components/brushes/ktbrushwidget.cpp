@@ -118,21 +118,28 @@ void KTBrushWidget::changeValueSmoothness(int value)
 // 	emit smoothnessChanged(m_tableBrushes->indexCurrentBrush(), value);
 }
 
-void KTBrushWidget::selectBrush(QListWidgetItem * item)
+void KTBrushWidget::selectBrush(QListWidgetItem *item)
 {
 		m_displayBrush->setForm( item->icon().pixmap ( 100, 100));
-		//TODO: crear una clase que contenga la informacion de la brocha, como la brocha, el tamaño 
+		//TODO: crear una clase que contenga la informacion de la brocha, como la brocha, el tamaño
+		
+		KTBrush *brush = new KTBrush(m_defaultBrushesList->path( m_defaultBrushesList->currentRow()));
+		
+		ktDebug() << m_defaultBrushesList->currentRow() << endl;
+		
+		emit brushSelected( brush);
 }
 
 void KTBrushWidget::createDefaultBrushes()
 {
 	m_defaultBrushesList = new KTBrushesList(m_brushManager);
 	QPainterPath form;
-	connect(m_defaultBrushesList, SIGNAL(changeCurrentBrush ( QListWidgetItem * )), this,   SLOT(selectBrush( QListWidgetItem * )));
+	connect(m_defaultBrushesList, SIGNAL(changeCurrentBrush ( QListWidgetItem * )), this,SLOT(selectBrush( QListWidgetItem * )));
 	
-	int thickness = 500;
+	int thickness = 10;
 	QRect boundingRect = QRect( 0, 0, thickness , thickness);
-	form.moveTo(boundingRect.center());
+	
+	form.moveTo( boundingRect.center() );
 	form.addEllipse(boundingRect);
 	m_defaultBrushesList->addBrush( thickness, m_displaySmoothness->value(), form, tr("normal"));
 	
@@ -153,14 +160,12 @@ void KTBrushWidget::createDefaultBrushes()
 // 	f.setPixelSize ( 50);
 // 	form.addText( 0, 50, f, "text" );
 // 	m_defaultBrushesList->addBrush( thickness, thickness, form, tr("text"));
-	
-	
+
 	form = QPainterPath();
 	boundingRect = QRect( 0, 0, thickness , thickness);
 	form.moveTo(boundingRect.center());
 	form.arcTo(boundingRect,0,180);
 	m_defaultBrushesList->addBrush( thickness, m_displaySmoothness->value(), form, tr("arc"));
-	
 }
 
 

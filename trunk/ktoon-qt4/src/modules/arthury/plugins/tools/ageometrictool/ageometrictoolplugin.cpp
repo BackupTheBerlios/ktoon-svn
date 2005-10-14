@@ -50,7 +50,8 @@ QRect AGeometricToolPlugin::move(const QString &brush, QPainter &painter,const Q
 	QColor transparentColor(color.red(), color.green(), color.blue(), 0);
 
 	QPainterPath path;
-	path.setFillRule( Qt::WindingFill );
+// 	path.setFillRule( Qt::WindingFill );
+	m_path.setFillRule( Qt::WindingFill );
 	
 	m_rect.setBottomRight(newPos);
 	

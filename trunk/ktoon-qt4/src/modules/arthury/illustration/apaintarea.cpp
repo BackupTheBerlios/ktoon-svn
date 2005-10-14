@@ -49,6 +49,7 @@ APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0),
 	m_path = QPainterPath();
 	
 	QPainterPath removeMe;
+
 	removeMe.moveTo(40, 0);
 	for (int i = 1; i < 5; ++i)
 	{
@@ -114,22 +115,18 @@ void APaintArea::paintEvent(QPaintEvent *e)
 
 void APaintArea::draw(QPainter *painter)
 {
-// 	ktDebug() << "DRAW " << m_graphicComponents.count() << endl;
-	
 	if ( m_graphicComponents.count() > 0)
 	{
 		QList<AGraphicComponent *>::iterator it = m_graphicComponents.begin();
 		
 		while ( it != m_graphicComponents.end() )
 		{
-// 			ktDebug() << "Drawing PATH" << endl;
 			painter->save();
 			
 			painter->setPen((*it)->pen());
 			painter->setBrush((*it)->brush());
 			
 			painter->drawPath((*it)->path());
-
 			
 			painter->restore();
 			++it;
@@ -263,6 +260,9 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 			ktDebug() << "Components count: " << m_graphicComponents.count() << endl;
 			
 			m_undoComponents.clear();
+#if 0
+			redrawAll();
+#endif
 		}
 		
 		m_lastPosition = QPoint(-1, -1);

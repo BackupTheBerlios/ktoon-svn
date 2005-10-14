@@ -32,6 +32,8 @@
 #include <QTabWidget>
 #include <QLineEdit>
 
+#include "ktbrush.h"
+
 
 
 /**
@@ -77,6 +79,7 @@ class KTBrushWidget : public KTModuleWidgetBase
 		void selectBrush(QListWidgetItem * item);
 		
 	signals:
+		void brushSelected(KTBrush *);
 		/**
 		* This signal is emitted when the minimum thickness has changed.
 		*/

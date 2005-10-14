@@ -9,9 +9,9 @@
 // Copyright: See COPYING file that comes with this distribution
 //
 //
+
 #include "ktbrusheslist.h"
 #include <QPainter>
-// #include <QHeaderView>
 #include <QStringList>
 #include "ktdebug.h"
 
@@ -30,11 +30,11 @@ KTBrushesList::~KTBrushesList()
 {
 }
 
-void KTBrushesList::addBrush(int thickness, int smooth, QPainterPath form, QString name)
+void KTBrushesList::addBrush(int thickness, int smooth, const QPainterPath &form, QString name)
 {
 	QListWidgetItem *newBrush = new QListWidgetItem(this);
 	
-	
+	m_forms << form;
 // 	newBrush->setToolTip ( tr("Thickness: %1\nSmooth: %1").arg(thickness).arg(smooth) );
 	
 	QPixmap px(form.boundingRect().width(), form.boundingRect().height());
@@ -51,6 +51,11 @@ void KTBrushesList::addBrush(int thickness, int smooth, QPainterPath form, QStri
 	
 	setCurrentItem ( newBrush );
 	
+}
+
+QPainterPath KTBrushesList::path(int index)
+{
+	return m_forms[index];
 }
 
 void KTBrushesList::changeCurrentValueMin( int min)

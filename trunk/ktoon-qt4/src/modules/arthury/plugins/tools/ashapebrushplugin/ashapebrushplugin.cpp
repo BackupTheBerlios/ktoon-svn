@@ -54,6 +54,8 @@ QRect AShapeBrushPlugin::move(const QString &brush, QPainter &painter,const QPai
 		path.addPath(form);
 	}
 	
+	m_path.addPath(path);
+	
 	painter.drawPath(path);
 	
 	boundingRect = path.boundingRect().toRect();
