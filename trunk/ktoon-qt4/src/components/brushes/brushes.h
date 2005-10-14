@@ -40,6 +40,8 @@
 
 #include "ktdisplaybrush.h"
 #include "ktbrusheslist.h"
+#include "ktbrush.h"
+
 #include <QTableWidget>
 
 class Brush;
@@ -135,6 +137,7 @@ class Brushes : public KTModuleWidgetBase
 	void changedBrush(int index);
 	void addedBrush(int min, int max, int smooth, QString name);
 	void removedBrush(int index);
+	void brushSelected(KTBrush *);
 	
 	public slots:
 	/**

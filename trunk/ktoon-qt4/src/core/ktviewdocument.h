@@ -31,13 +31,13 @@
 #include <QDir>
 #include <QPluginLoader>
 
-#include "adrawingtoolinterface.h"
 #include "afilterinterface.h"
+#include "atoolinterface.h"
 
 #include "ktpaintareacontainer.h"
 
 /**
- *@author Jorge Cuadrado
+ * @author Jorge Cuadrado
 */
 class KTViewDocument : public KTMdiWindow
 {
@@ -75,8 +75,7 @@ class KTViewDocument : public KTMdiWindow
 		void setCursor(const QCursor &c);
 		void changeTool(QAction *a);
 		
-		
-		void changeBrush();
+		void selectTool();
 		void applyFilter();
 		
 	protected:

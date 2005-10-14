@@ -131,6 +131,7 @@ class KTMainWindow : public DMainWindow
 		
 	private slots:
 		void changeCurrentColors(const QColor &, const QColor &);
+		void changeCurrentBrush(KTBrush *);
 		
 	private:
 		QWorkspace *m_workSpace;

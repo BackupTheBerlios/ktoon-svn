@@ -41,8 +41,7 @@
 #include <memory>
 //--------------- CONSTRUCTOR --------------------
 
-Brushes::Brushes( QWidget *parent )
-	: KTModuleWidgetBase( parent, "Brushes" )
+Brushes::Brushes( QWidget *parent ) : KTModuleWidgetBase( parent, "Brushes" )
 {
 	Q_CHECK_PTR( parent );
 

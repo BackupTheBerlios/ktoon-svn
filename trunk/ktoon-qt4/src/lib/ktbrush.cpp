@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                    *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,49 +17,36 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef AGRAPHICCOMPONENT_H
-#define AGRAPHICCOMPONENT_H
 
-#include <QObject>
-#include <QPainterPath>
-#include <QBrush>
-#include <QPen>
+#include "ktbrush.h"
+#include <ktdebug.h>
 
-#include <QDomElement>
-#include <QDomDocument>
-
-/**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
-*/
-
-class AGraphicComponent : public QObject
+KTBrush::KTBrush(): QObject()
 {
-	Q_OBJECT
-	public:
-		AGraphicComponent();
-		virtual ~AGraphicComponent();
-		
-		virtual QDomElement createXML( QDomDocument &doc ) { return QDomElement(); }; // TODO: Implement me
-		virtual QString key() const { return ""; }; // TODO: Implement me
-		
-		QRectF boundingRect() const;
-		QColor color() const;
-		QPainterPath path() const;
-		QBrush brush() const;
-		QPen pen() const;
-		
-		virtual void setPath(const QPainterPath &path );
-		virtual void setColor(const QColor &color);
-		virtual void setBrush(const QBrush &brush);
-		virtual void setPen(const QPen &pen);
-		virtual void setPen(const QColor &color);
-		
-	protected:
-		QPainterPath m_pPath;
-		QColor m_pColor;
-		QBrush m_pBrush;
-		QPen m_pPen;
-};
+	KTINIT;
+}
 
-#endif
+KTBrush::KTBrush(const QPainterPath &brushForm) : QObject(), m_brushForm(brushForm)
+{
+	KTINIT;
+}
+
+
+KTBrush::~KTBrush()
+{
+	KTEND;
+}
+
+
+QPainterPath KTBrush::brushForm() const
+{
+	return m_brushForm;
+}
+
+void KTBrush::setBrushForm(const QPainterPath &form)
+{
+	m_brushForm = form;
+}
+
+
+

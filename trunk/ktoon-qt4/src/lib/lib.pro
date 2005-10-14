@@ -33,7 +33,8 @@ HEADERS += ktapplication.h \
            ktaction.h \
            ktmodulewidgettitle.h \
            kttabdialog.h \
-           ktwizard.h 
+           ktwizard.h \
+           ktbrush.h 
 SOURCES += ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
@@ -62,7 +63,8 @@ SOURCES += ktapplication.cpp \
            ktaction.cpp \
            ktmodulewidgettitle.cpp \
            kttabdialog.cpp \
-           ktwizard.cpp 
+           ktwizard.cpp \
+           ktbrush.cpp 
 MOC_DIR = .moc
 UI_DIR = .ui
 OBJECTS_DIR = .obj

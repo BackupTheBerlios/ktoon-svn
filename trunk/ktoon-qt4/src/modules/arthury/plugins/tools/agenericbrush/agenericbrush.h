@@ -21,7 +21,7 @@
 #define AGENERICBRUSH_H
 
 #include <QObject>
-#include <adrawingtoolinterface.h>
+#include <atoolinterface.h>
 
 class QKeySequence;
 
@@ -29,16 +29,16 @@ class QKeySequence;
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class AGenericBrush : public QObject, public ADrawingToolInterface
+class AGenericBrush : public QObject, public AToolInterface
 {
 	Q_OBJECT;
-	Q_INTERFACES(ADrawingToolInterface);
+	Q_INTERFACES(AToolInterface);
 	
 	public:
 		virtual QStringList keys() const;
-		virtual QRect press(const QString &brush, QPainter &painter, const QPoint &pos);
-		virtual QRect move(const QString &brush, QPainter &painter, const QPoint &oldPos, const QPoint &newPos);
-		virtual QRect release(const QString &brush, QPainter &painter,const QPoint &pos);
+		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos);
+		virtual QRect move(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos);
+		virtual QRect release(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &pos);
 		virtual QPainterPath path() const;
 
 		virtual QHash<QString, QAction *>actions();

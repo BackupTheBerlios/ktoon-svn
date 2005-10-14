@@ -29,10 +29,12 @@
 
 #include "agrid.h"
 
-#include "adrawingtoolinterface.h"
 #include "afilterinterface.h"
+#include "atoolinterface.h"
 
 #include "agraphiccomponent.h"
+
+#include "ktbrush.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -61,28 +63,33 @@ class APaintArea : public QWidget
 		bool m_drawGrid;
 		
 		// <FIXME>
-		ADrawingToolInterface *m_tool;
-		QPoint m_lastPosition;
-		QString m_brush;
-		QColor m_brushColor, m_penColor;
+		KTBrush *m_currentBrush;
+		AToolInterface *m_currentTool;
+		QString m_currentKeyTool;
 		
-		QList<AGraphicComponent *> m_graphicComponents;
+		QPoint m_lastPosition;
+		
+		QColor m_brushColor, m_penColor; // TODO: move to KTBrush
+		
+		QList<AGraphicComponent *> m_graphicComponents; // TODO: move to  KTKeyFrame
 		QList<AGraphicComponent *> m_undoComponents;
 		
 		AGraphicComponent *m_currentGraphic;
 		bool m_redrawAll;
-		
+
 	public:
-		void setBrush(ADrawingToolInterface *brushIface, const QString &brush);
+		void setTool( AToolInterface *toolIface, const QString &tool);
+		QPainterPath translatePath(const QPainterPath &path, const QPoint &pos);
 		
 	public slots:
-		void setPenColor( const QColor&);
-		void setBrushColor( const QColor&);
+		void setBrush( KTBrush *brush );
+		void setPenColor( const QColor&); // TODO: move to KTBrush
+		void setBrushColor( const QColor&); // TODO: move to KTBrush
 		void undo();
 		void redo();
 		
 	private:
-		void setupPainter(QPainter &painter);
+		void setupPainter(QPainter &painter); // TODO: move to KTBrush
 		
 		// </FIXME>
 	protected:

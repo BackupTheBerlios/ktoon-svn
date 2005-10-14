@@ -18,43 +18,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef ADRAWINGTOOLINTERFACE_H
-#define ADRAWINGTOOLINTERFACE_H
+#ifndef ASHAPEBRUSHPLUGIN_H
+#define ASHAPEBRUSHPLUGIN_H
 
-#include <QStringList>
-#include <QRect>
-#include <QPoint>
-#include <QPainter>
-#include <QBrush>
-#include <QPen>
-#include <QPainterPath>
-#include <QImage>
-#include <QAction>
-#include <QHash>
-
-#include "qplugin.h" // Q_EXPORT_PLUGIN
-
-class QKeySequence;
+#include <atoolinterface.h>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class ADrawingToolInterface
+class AShapeBrushPlugin : public QObject, public AToolInterface
 {
+	Q_OBJECT;
+	Q_INTERFACES(AToolInterface);
+	
 	public:
-		virtual ~ADrawingToolInterface() {};
-		
-		virtual QStringList keys() const = 0;
-		virtual QRect press(const QString &brush, QPainter &painter,const QPoint &pos) = 0;
-		virtual QRect move(const QString &brush, QPainter &painter, const QPoint &oldPos, const QPoint &newPos) = 0;
-		virtual QRect release(const QString &brush, QPainter &painter, const QPoint &pos) = 0;
-		
-		virtual QHash<QString, QAction *>actions() = 0;
-		
-		virtual QPainterPath path() const = 0;
-};
+		virtual QStringList keys() const;
+		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form, const QPoint &pos);
+		virtual QRect move(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos);
+		virtual QRect release(const QString &brush, QPainter &painter, const QPainterPath &form, const QPoint &pos);
+		virtual QPainterPath path() const;
 
-Q_DECLARE_INTERFACE(ADrawingToolInterface, "com.toonka.ktoon.ADrawingToolInterface/0.1");
+		virtual QHash<QString, QAction *>actions();
+		
+	private:
+		QPainterPath m_path;
+};
 
 #endif

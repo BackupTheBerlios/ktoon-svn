@@ -676,7 +676,10 @@ void kdClearDebugConfig();
 
 /** @} */
 
-#define KTINIT ktDebug() << "[Initializing "<< metaObject()->className() <<"]" << endl;
-#define KTEND ktDebug() << "[Destroying "<< metaObject()->className() <<"]" << endl;
+// #define KTINIT ktDebug() << "[Initializing "<< metaObject()->className() << "]" << endl;
+// #define KTEND ktDebug() << "[Destroying "<< metaObject()->className() <<"]" << endl;
+
+#define KTINIT ktDebug() << "[Initializing "<< k_funcinfo << "]" << endl;
+#define KTEND ktDebug() << "[Destroying "<< k_funcinfo <<"]" << endl;
 
 #endif

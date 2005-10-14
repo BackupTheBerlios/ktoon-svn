@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                    *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,49 +17,41 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef AGRAPHICCOMPONENT_H
-#define AGRAPHICCOMPONENT_H
 
-#include <QObject>
-#include <QPainterPath>
+#ifndef ATOOLINTERFACE_H
+#define ATOOLINTERFACE_H
+
+#include <QStringList>
+#include <QRect>
+#include <QPoint>
+#include <QPainter>
 #include <QBrush>
 #include <QPen>
+#include <QPainterPath>
+#include <QImage>
+#include <QAction>
+#include <QHash>
 
-#include <QDomElement>
-#include <QDomDocument>
+#include "qplugin.h" // Q_EXPORT_PLUGIN
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author David Cuadrado <krawek@toonka.com>
 */
 
-class AGraphicComponent : public QObject
+class AToolInterface
 {
-	Q_OBJECT
 	public:
-		AGraphicComponent();
-		virtual ~AGraphicComponent();
+		virtual ~AToolInterface() {};
+		virtual QStringList keys() const = 0;
+		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos) = 0;
+		virtual QRect move(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos) = 0;
+		virtual QRect release(const QString &brush, QPainter &painter,const QPainterPath &form, const QPoint &pos) = 0;
 		
-		virtual QDomElement createXML( QDomDocument &doc ) { return QDomElement(); }; // TODO: Implement me
-		virtual QString key() const { return ""; }; // TODO: Implement me
+		virtual QHash<QString, QAction *>actions() = 0;
 		
-		QRectF boundingRect() const;
-		QColor color() const;
-		QPainterPath path() const;
-		QBrush brush() const;
-		QPen pen() const;
-		
-		virtual void setPath(const QPainterPath &path );
-		virtual void setColor(const QColor &color);
-		virtual void setBrush(const QBrush &brush);
-		virtual void setPen(const QPen &pen);
-		virtual void setPen(const QColor &color);
-		
-	protected:
-		QPainterPath m_pPath;
-		QColor m_pColor;
-		QBrush m_pBrush;
-		QPen m_pPen;
+		virtual QPainterPath path() const = 0;
 };
+
+Q_DECLARE_INTERFACE( AToolInterface, "com.toonka.ktoon.AToolInterface/0.1" );
 
 #endif

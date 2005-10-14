@@ -23,8 +23,9 @@
 
 #include <QPalette>
 #include <QPainter>
+#include <cmath>
 
-APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0), m_drawGrid(true), m_tool(0), m_lastPosition(-1,-1), m_brushColor(Qt::transparent)
+APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_brushColor(Qt::transparent)
 {
 	m_redrawAll = true;
 	
@@ -46,6 +47,17 @@ APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0),
 // 	}
 	
 	m_path = QPainterPath();
+	
+	QPainterPath removeMe;
+	removeMe.moveTo(40, 0);
+	for (int i = 1; i < 5; ++i)
+	{
+		removeMe.lineTo(40 * cos(0.8 * i * 3.14159f), 40 * sin(0.8 * i * 3.14159f));
+	}
+	removeMe.closeSubpath();
+	
+	m_currentBrush = new KTBrush;
+	m_currentBrush->setBrushForm(removeMe);
 	
 	show();
 }
@@ -189,14 +201,14 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 			
 			unsetCursor();
 			update();
-		} 
+		}
 		else 
 		{
-			if (m_tool)
+			if (m_currentTool)
 			{
 				QPainter painter(&m_paintDevice);
 				setupPainter(painter);
-				QRect rect = m_tool->press(m_brush, painter, event->pos());
+				QRect rect = m_currentTool->press(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), event->pos());
 				rect.translate(m_xpos, m_ypos);
 				update(rect);
 			}
@@ -213,11 +225,11 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 	
 	if ((event->buttons() & Qt::LeftButton) && m_lastPosition != QPoint(-1, -1))
 	{
-		if (m_tool)
+		if (m_currentTool)
 		{
 			QPainter painter(&m_paintDevice);
 			setupPainter(painter);
-			QRect rect = m_tool->move(m_brush, painter, m_lastPosition, event->pos());
+			QRect rect = m_currentTool->move(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), m_lastPosition, event->pos());
 			rect.translate(m_xpos, m_ypos);
 			update(rect);
 		}
@@ -232,17 +244,17 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 	
 	if (event->button() == Qt::LeftButton && m_lastPosition != QPoint(-1, -1)) 
 	{
-		if (m_tool)
+		if (m_currentTool)
 		{
 			QPainter painter(&m_paintDevice);
 			setupPainter(painter);
-			QRect rect = m_tool->release(m_brush, painter, event->pos());
+			QRect rect = m_currentTool->release(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(), event->pos()), event->pos());
 			rect.translate(m_xpos, m_ypos);
 			update(rect);
 			
 			ktDebug() << "Adding component" << endl;
 			
-			m_currentGraphic->setPath(m_tool->path());
+			m_currentGraphic->setPath(m_currentTool->path());
 			m_currentGraphic->setPen(painter.pen());
 			m_currentGraphic->setBrush(painter.brush());
 			
@@ -257,10 +269,29 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 	}
 }
 
-void APaintArea::setBrush(ADrawingToolInterface *toolIface, const QString &brush)
+void APaintArea::setTool( AToolInterface *toolIface, const QString &tool)
 {
-	m_tool = toolIface;
-	m_brush = brush;
+	m_currentTool = toolIface;
+	m_currentKeyTool = tool;
+}
+
+void APaintArea::setBrush( KTBrush *brush )
+{
+	m_currentBrush = brush;
+}
+
+QPainterPath APaintArea::translatePath(const QPainterPath &path, const QPoint &pos)
+{
+	QPainterPath result;
+	QList<QPolygonF> polygons = path.toSubpathPolygons();
+
+	for(int i = 0; i < polygons.count(); i++)
+	{
+		polygons[i].translate( pos );
+		result.addPolygon(polygons[i]);
+	}
+	
+	return result;
 }
 
 void APaintArea::setupPainter(QPainter &painter)

@@ -160,9 +160,11 @@ void KTMainWindow::createGUI()
 	connect(m_colorPalette, SIGNAL(colorChanged(const QColor &, const QColor &)), this, SLOT(changeCurrentColors(const QColor &, const QColor &)));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Palette"),m_colorPalette);
 	
-	KTBrushWidget *m_brushesDialog = new KTBrushWidget( this);
-	m_brushesDialog->setIcon(QPixmap(KTOON_HOME+"/images/icons/brushes.xpm"));
-	toolWindow(DDockWindow::Left)->addWidget(tr("Brushes"),m_brushesDialog);
+	KTBrushWidget *m_brushWidget = new KTBrushWidget( this);
+	m_brushWidget->setIcon(QPixmap(KTOON_HOME+"/images/icons/brushes.xpm"));
+	toolWindow(DDockWindow::Left)->addWidget(tr("Brushes"),m_brushWidget);
+	
+	connect(m_brushWidget, SIGNAL(brushSelected(KTBrush *)), this, SLOT(changeCurrentBrush(KTBrush *)));
 	
 	Library *m_libraryDialog = new Library( this, KTStatus->currentDrawingArea());
 	m_libraryDialog->setIcon(QPixmap(KTOON_HOME+"/images/icons/library.xpm"));
@@ -337,7 +339,6 @@ void KTMainWindow::closeProject()
 
 void KTMainWindow::openProject()
 {
-	
 }
 
 
@@ -359,5 +360,13 @@ void KTMainWindow::changeCurrentColors(const QColor &foreground, const QColor &b
 	}
 }
 
-
+void KTMainWindow::changeCurrentBrush(KTBrush *brush)
+{
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_workSpace->activeWindow ());
+	
+	if ( doc )
+	{
+		doc->drawArea()->setBrush(brush);
+	}
+}
 

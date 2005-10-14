@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                    *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,49 +17,29 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef AGRAPHICCOMPONENT_H
-#define AGRAPHICCOMPONENT_H
+#ifndef KTBRUSH_H
+#define KTBRUSH_H
 
 #include <QObject>
 #include <QPainterPath>
-#include <QBrush>
-#include <QPen>
-
-#include <QDomElement>
-#include <QDomDocument>
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author David Cuadrado <krawek@toonka.com>
 */
-
-class AGraphicComponent : public QObject
+class KTBrush : public QObject
 {
-	Q_OBJECT
 	public:
-		AGraphicComponent();
-		virtual ~AGraphicComponent();
+		KTBrush();
+		KTBrush(const QPainterPath &);
+		~KTBrush();
+		QPainterPath brushForm() const;
+		void setBrushForm(const QPainterPath &);
 		
-		virtual QDomElement createXML( QDomDocument &doc ) { return QDomElement(); }; // TODO: Implement me
-		virtual QString key() const { return ""; }; // TODO: Implement me
-		
-		QRectF boundingRect() const;
-		QColor color() const;
-		QPainterPath path() const;
-		QBrush brush() const;
-		QPen pen() const;
-		
-		virtual void setPath(const QPainterPath &path );
-		virtual void setColor(const QColor &color);
-		virtual void setBrush(const QBrush &brush);
-		virtual void setPen(const QPen &pen);
-		virtual void setPen(const QColor &color);
-		
-	protected:
-		QPainterPath m_pPath;
-		QColor m_pColor;
-		QBrush m_pBrush;
-		QPen m_pPen;
+	private:
+		QPainterPath m_brushForm;
+		int m_thickness;
+		QString m_brushName; // TODO: Use-me
+		// TODO: Add QPen and QBrush??
 };
 
 #endif

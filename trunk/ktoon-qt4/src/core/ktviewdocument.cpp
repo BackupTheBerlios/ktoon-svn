@@ -373,31 +373,14 @@ void KTViewDocument::loadPlugins()
 		QPluginLoader loader(m_pluginDirectory.absoluteFilePath(fileName));
 		QObject *plugin = loader.instance();
 		
+		ktDebug() << "******FILE: " << fileName << endl;
+		
 		if (plugin)
 		{
-			ADrawingToolInterface *iBrush = qobject_cast<ADrawingToolInterface *>(plugin);
 			AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(plugin);
+			AToolInterface *aTool = qobject_cast<AToolInterface *>(plugin);
 			
-			if (iBrush)
-			{
-				QStringList::iterator it;
-				QStringList keys = iBrush->keys();
-				
-				
-				for (it = keys.begin(); it != keys.end(); ++it)
-				{
-					ktDebug() << "*******Tool Loaded: " << *it << endl;
-					
-					QAction *act = iBrush->actions()[*it];
-					if ( act )
-					{
-						connect(act, SIGNAL(triggered()), this, SLOT(changeBrush()));
-						m_brushesMenu->addAction(act);
-						m_paintAreaContainer->drawArea()->setBrush(iBrush, *it);
-					}
-				}
-			}
-			else if ( aFilter )
+			if ( aFilter )
 			{
 				QStringList::iterator it;
 				QStringList keys = aFilter->keys();
@@ -415,23 +398,46 @@ void KTViewDocument::loadPlugins()
 					}
 				}
 			}
+			else if (aTool)
+			{
+				QStringList::iterator it;
+				QStringList keys = aTool->keys();
+				
+				
+				for (it = keys.begin(); it != keys.end(); ++it)
+				{
+					ktDebug() << "*******Tool Loaded: " << *it << endl;
+					
+					QAction *act = aTool->actions()[*it];
+					if ( act )
+					{
+						connect(act, SIGNAL(triggered()), this, SLOT(selectTool()));
+						m_brushesMenu->addAction(act);
+						m_paintAreaContainer->drawArea()->setTool(aTool, *it);
+					}
+				}
+			}
+		}
+		else
+		{
+			ktError() << "NOT LOAD" << endl;
 		}
 	}
 }
 
-
-void KTViewDocument::changeBrush()
+void KTViewDocument::selectTool()
 {
 	QAction *action = qobject_cast<QAction *>(sender());
 	
 	if ( action )
 	{
-		ADrawingToolInterface *iBrush = qobject_cast<ADrawingToolInterface *>(action->parent());
-		QString brush = action->text();
+		AToolInterface *aTool = qobject_cast<AToolInterface *>(action->parent());
+		QString tool = action->text();
 	
-		m_paintAreaContainer->drawArea()->setBrush(iBrush, brush);
+		m_paintAreaContainer->drawArea()->setTool(aTool, tool);
 	}
 }
+
 
 void KTViewDocument::applyFilter()
 {
