@@ -3,6 +3,7 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/core
 # Destiono es una aplicaci??n: ../../bin/ktoon
 
+QT += xml opengl qt3support 
 INSTALLS += ktbin \
             kttrans \
             ktdata 
@@ -39,7 +40,6 @@ LIBS += ../../src/dialogs/libdialogs.a \
         ../../src/components/exposure/libexposure.a \
         ../../src/components/timeline/libtimeline.a \
         ../../src/components/library/liblibrary.a \
-        ../../src/store/libstore.a \
         ../../src/images/images/libimages.a \
         ../../src/modules/opengl/draw/libdraw.a \
         ../../src/modules/opengl/tools/libtools.a \
@@ -47,6 +47,7 @@ LIBS += ../../src/dialogs/libdialogs.a \
         ../../src/modules/arthury/animation/libanimation.a \
         ../../src/modules/arthury/illustration/libillustration.a \
         ../../src/dlslib/libdlslib.a \
+        ../../src/store/libstore.a \
         ../../src/lib/liblib.a 
 INCLUDEPATH += ../../src/modules/opengl/draw \
                ../../src/modules/opengl/tools \
@@ -99,6 +100,3 @@ SOURCES += ktoon.cpp \
            ktstatusbar.cpp \
            ktpaintareacontainer.cpp \
            ktnewproject.cpp 
-
-
-QT += qt3support xml opengl

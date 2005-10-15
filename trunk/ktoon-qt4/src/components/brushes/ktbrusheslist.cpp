@@ -43,7 +43,7 @@ void KTBrushesList::addBrush(int thickness, int smooth, const QPainterPath &form
 	QPainter p;
 	p.begin(&px);
 // 	p.setPen(Qt::NoPen);
-	p.setBrush( QBrush( foregroundColor (), Qt::SolidPattern));
+// 	p.setBrush( QBrush( foregroundColor (), Qt::SolidPattern));
 	p.setRenderHint(QPainter::Antialiasing);
 	p.drawPath(form);
 	newBrush->setIcon ( QIcon(px) );

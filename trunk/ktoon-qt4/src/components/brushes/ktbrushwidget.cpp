@@ -26,6 +26,8 @@
 #include <QFrame>
 #include <QPainterPath>
 
+#include <cmath>
+
 KTBrushWidget::KTBrushWidget(QWidget *parent)
 	:  KTModuleWidgetBase( parent )
 {
@@ -121,7 +123,7 @@ void KTBrushWidget::changeValueSmoothness(int value)
 void KTBrushWidget::selectBrush(QListWidgetItem *item)
 {
 		m_displayBrush->setForm( item->icon().pixmap ( 100, 100));
-		//TODO: crear una clase que contenga la informacion de la brocha, como la brocha, el tamaño
+		//TODO: crear una clase que contenga la informacion de la brocha, como la brocha, el tamaï¿½
 		
 		KTBrush *brush = new KTBrush(m_defaultBrushesList->path( m_defaultBrushesList->currentRow()));
 		
@@ -136,7 +138,7 @@ void KTBrushWidget::createDefaultBrushes()
 	QPainterPath form;
 	connect(m_defaultBrushesList, SIGNAL(changeCurrentBrush ( QListWidgetItem * )), this,SLOT(selectBrush( QListWidgetItem * )));
 	
-	int thickness = 10;
+	int thickness = 40; // FIXME
 	QRect boundingRect = QRect( 0, 0, thickness , thickness);
 	
 	form.moveTo( boundingRect.center() );
@@ -165,7 +167,28 @@ void KTBrushWidget::createDefaultBrushes()
 	boundingRect = QRect( 0, 0, thickness , thickness);
 	form.moveTo(boundingRect.center());
 	form.arcTo(boundingRect,0,180);
+	form.closeSubpath();
+	
 	m_defaultBrushesList->addBrush( thickness, m_displaySmoothness->value(), form, tr("arc"));
+	
+	form = QPainterPath();
+// 	boundingRect = QRect( 0, 0, thickness , thickness);
+	
+	form.moveTo(0,0);
+	form.cubicTo(thickness*2, 0, thickness+10, thickness+10, thickness*2, thickness*2);
+	
+	m_defaultBrushesList->addBrush( thickness, m_displaySmoothness->value(), form, tr("bezier"));
+	
+	form = QPainterPath();
+// 	boundingRect = QRect( 0, 0, thickness*2 , thickness*2);
+	form.moveTo(thickness/2, 0);
+	for (int i = 1; i < 5; ++i)
+	{
+		form.lineTo(thickness/2 * cos(0.8 * i * 3.14159f), thickness/2 * sin(0.8 * i * 3.14159f));
+	}
+	form.closeSubpath();
+	
+	m_defaultBrushesList->addBrush( thickness, m_displaySmoothness->value(), form, tr("star"));
 }
 
 

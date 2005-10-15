@@ -37,28 +37,12 @@ APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0),
 	
 	setMouseTracking(true);
 	m_grid.createGrid(m_paintDevice);
-
-// 	QPainter painter(&m_paintDevice);
-	
-// 	if(m_drawGrid)
-// 	{
-// 		painter.setPen(Qt::gray);
-// 		painter.drawPath(m_grid.pathGrid());
-// 	}
 	
 	m_path = QPainterPath();
 	
-	QPainterPath removeMe;
-
-	removeMe.moveTo(40, 0);
-	for (int i = 1; i < 5; ++i)
-	{
-		removeMe.lineTo(40 * cos(0.8 * i * 3.14159f), 40 * sin(0.8 * i * 3.14159f));
-	}
-	removeMe.closeSubpath();
-	
 	m_currentBrush = new KTBrush;
-	m_currentBrush->setBrushForm(removeMe);
+	
+	m_currentFrame = new KTKeyFrame; // TODO: delete me
 	
 	show();
 }
@@ -113,22 +97,33 @@ void APaintArea::paintEvent(QPaintEvent *e)
 	painter.drawImage(QPoint(m_xpos, m_ypos), m_paintDevice);
 }
 
+void APaintArea::setKeyFrame(KTKeyFrame *keyFrame)
+{
+	m_currentFrame = keyFrame;
+	redrawAll();
+}
+
 void APaintArea::draw(QPainter *painter)
 {
-	if ( m_graphicComponents.count() > 0)
+	QList<AGraphicComponent *> componentList = m_currentFrame->components();
+	
+	if ( componentList.count() > 0)
 	{
-		QList<AGraphicComponent *>::iterator it = m_graphicComponents.begin();
+		QList<AGraphicComponent *>::iterator it = componentList.begin();
 		
-		while ( it != m_graphicComponents.end() )
+		while ( it != componentList.end() )
 		{
-			painter->save();
-			
-			painter->setPen((*it)->pen());
-			painter->setBrush((*it)->brush());
-			
-			painter->drawPath((*it)->path());
-			
-			painter->restore();
+			if ( *it )
+			{
+				painter->save();
+				
+				painter->setPen((*it)->pen());
+				painter->setBrush((*it)->brush());
+				
+				painter->drawPath((*it)->path());
+				
+				painter->restore();
+			}
 			++it;
 		}
 	}
@@ -255,9 +250,9 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 			m_currentGraphic->setPen(painter.pen());
 			m_currentGraphic->setBrush(painter.brush());
 			
-			m_graphicComponents << m_currentGraphic;
+			m_currentFrame->addComponent(  m_currentGraphic );
 			
-			ktDebug() << "Components count: " << m_graphicComponents.count() << endl;
+			ktDebug() << "Components count: " << m_currentFrame->components().count() << endl;
 			
 			m_undoComponents.clear();
 #if 0
@@ -314,10 +309,9 @@ void APaintArea::setBrushColor(const QColor& color)
 
 void APaintArea::undo()
 {
-	if ( m_graphicComponents.count() > 0 )
+	if ( m_currentFrame->components().count() > 0 )
 	{
-		m_undoComponents << m_graphicComponents.takeLast();
-		
+		m_undoComponents << m_currentFrame->takeLastComponent();
 		redrawAll();
 	}
 }
@@ -326,8 +320,7 @@ void APaintArea::redo()
 {
 	if ( m_undoComponents.count() > 0 )
 	{
-		m_graphicComponents << m_undoComponents.takeLast();
-		
+		m_currentFrame->addComponent(  m_undoComponents.takeLast() );
 		redrawAll();
 	}
 }
