@@ -26,15 +26,14 @@
 #include "preferences.h"
 #include "ktapplication.h"
 
+#include "ktdebug.h"
+
 //--------------- CONSTRUCTOR --------------------
 
 Preferences::Preferences( QWidget *parent ) : KTTabDialog( parent )
 {
 	setCaption( tr( "Application Preferences" ) );
 	resize( 220, 230 );
-
-// 	setCancelButton();
-	connect( this, SIGNAL( applyButtonPressed() ), SLOT( applyChanges() ) );
 	
 	m_themeSelector = new KTThemeSelector;
 	addTab(m_themeSelector, tr("Theme preferences"));
@@ -53,9 +52,13 @@ Preferences::~Preferences()
 {
 }
 
-//------------------- SLOTS -------------------------
+void Preferences::ok()
+{
+	apply();
+	KTTabDialog::ok();
+}
 
-void Preferences::applyChanges()
+void Preferences::apply()
 {
 	if ( static_cast<KTThemeSelector *>(currentTab()) ==  m_themeSelector)
 	{

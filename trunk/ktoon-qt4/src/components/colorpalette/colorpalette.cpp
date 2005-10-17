@@ -27,7 +27,7 @@
 
 #include "colorpalette.h"
 // #include "images.h"
-#include "tools.h"
+// #include "tools.h"
 // #include "status.h"
 #include "ktapplication.h"
 

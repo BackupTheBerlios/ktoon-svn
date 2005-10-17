@@ -56,7 +56,8 @@ class Preferences : public KTTabDialog
 		KTFontWidget *m_fontWidget;
 
 	public slots:
-		void applyChanges();
+		void apply();
+		void ok();
     
 	protected:
 

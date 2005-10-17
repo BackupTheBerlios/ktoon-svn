@@ -39,6 +39,11 @@ class KTTabDialog : public QDialog
 		
 		QWidget *currentTab();
 		
+	public slots:
+		virtual void ok();
+		virtual void cancel();
+		virtual void apply();
+		
 	private:
 		QTabWidget *m_tabWidget;
 };

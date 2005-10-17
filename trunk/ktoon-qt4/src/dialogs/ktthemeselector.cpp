@@ -69,8 +69,12 @@ void KTThemeSelector::setupChooseColor()
 	{
 		layout1->addWidget(new QLabel(labels1[i], m_general), i, 0 );
 		QPushButton *button = new QPushButton(m_general, names[i]);
-		button->setPaletteBackgroundColor(colors[i]);
-// 		m_general->insert(button, i);
+		
+		QPalette pal = button->palette();
+		pal.setColor(QPalette::Button, colors[i]);
+		button->setPalette(pal);
+		
+		m_generalButtonGroup.addButton(button);
 		layout1->addWidget(button, i, 1);
 		m_generalSection.insert(names[i], colors[i].name());
 	}
@@ -89,8 +93,10 @@ void KTThemeSelector::setupChooseColor()
 	{
 		layout2->addWidget(new QLabel(labels2[i], m_effects), i, 0 );
 		QPushButton *button = new QPushButton(m_effects, names2[i]);
-		button->setPaletteBackgroundColor(colors[i]);
-// 		m_effects->insert(button, i);
+		QPalette pal = button->palette();
+		pal.setColor(QPalette::Button, colors[i]);
+		button->setPalette(pal);
+		m_effectsButtonGroup.addButton(button);
 		layout2->addWidget(button, i, 1);
 		m_effectsSection.insert(names2[i], colors[i].name());
 	}
@@ -111,8 +117,10 @@ void KTThemeSelector::setupChooseColor()
 	{
 		layout3->addWidget(new QLabel(labels3[i], m_selections), i, 0 );
 		QPushButton *button = new QPushButton(m_selections, names3[i]);
-		button->setPaletteBackgroundColor(colors[i]);
-// 		m_selections->insert(button, i);
+		QPalette pal = button->palette();
+		pal.setColor(QPalette::Button, colors[i]);
+		button->setPalette(pal);
+		m_selectionsButtonGroup.addButton(button);
 		layout3->addWidget(button, i, 1);
 		m_selectionsSection.insert(names3[i], colors[i].name());
 	}
@@ -130,8 +138,10 @@ void KTThemeSelector::setupChooseColor()
 	{
 		layout4->addWidget(new QLabel(labels4[i], m_textEffects), i, 0 );
 		QPushButton *button = new QPushButton(m_textEffects, names4[i]);
-		button->setPaletteBackgroundColor(colors[i]);
-// 		m_textEffects->insert(button, i);
+		QPalette pal = button->palette();
+		pal.setColor(QPalette::Button, colors[i]);
+		button->setPalette(pal);
+		m_textEffectsButtonGroup.addButton(button);
 		layout4->addWidget(button, i, 1);
 		m_textEffectsSection.insert(names4[i], colors[i].name());
 	}
@@ -157,62 +167,64 @@ void KTThemeSelector::setupChooseColor()
 	new KSeparator(this);
 	m_useColors = new QCheckBox(tr("Use this colors"), this);
 	
-	connect(m_general, SIGNAL(clicked(int)), SLOT(chooseGeneralColor(int)));
-	connect(m_effects, SIGNAL(clicked(int)), SLOT(chooseEffectsColor(int)));
-	connect(m_selections, SIGNAL(clicked(int)), SLOT(chooseSelectionsColor(int)));
-	connect(m_textEffects, SIGNAL(clicked(int)), SLOT(chooseTextEffectsColor(int)));
+	connect(&m_generalButtonGroup, SIGNAL(buttonClicked(QAbstractButton * )), SLOT(chooseGeneralColor(QAbstractButton * )));
+	connect(&m_effectsButtonGroup, SIGNAL(buttonClicked(QAbstractButton * )), SLOT(chooseEffectsColor(QAbstractButton * )));
+	connect(&m_selectionsButtonGroup, SIGNAL(buttonClicked(QAbstractButton * )), SLOT(chooseSelectionsColor(QAbstractButton * )));
+	connect(&m_textEffectsButtonGroup, SIGNAL(buttonClicked(QAbstractButton * )), SLOT(chooseTextEffectsColor(QAbstractButton * )));
 }
 
-void KTThemeSelector::chooseGeneralColor(int id)
+void KTThemeSelector::chooseGeneralColor(QAbstractButton *  button)
 {
-	QPushButton *btmp = static_cast<QPushButton *>(m_general->find(id)) ;
-
-	QColor c = QColorDialog::getColor(btmp->paletteBackgroundColor(), this);
+	QColor c = QColorDialog::getColor(button->palette().color(QPalette::Button), this);
 	
 	if ( c.isValid() )
 	{
-		btmp->setPaletteBackgroundColor(c);
+		QPalette pal = button->palette();
+		pal.setColor(QPalette::Button, c);
+		button->setPalette(pal);
 		
-		m_generalSection.insert(btmp->name(), c.name());
+		m_generalSection.insert(button->name(), c.name());
 	}
 }
 
-void KTThemeSelector::chooseEffectsColor(int id)
+void KTThemeSelector::chooseEffectsColor(QAbstractButton *  button)
 {
-	QPushButton *btmp = static_cast<QPushButton *>(m_effects->find(id)) ;
-
-	QColor c = QColorDialog::getColor(btmp->paletteBackgroundColor(), this);
+	QColor c = QColorDialog::getColor(button->palette().color(QPalette::Button), this);
 	
 	if ( c.isValid() )
 	{
-		btmp->setPaletteBackgroundColor(c);
+		QPalette pal = button->palette();
+		pal.setColor(QPalette::Button, c);
+		button->setPalette(pal);
 		
-		m_effectsSection.insert(btmp->name(), c.name());
+		m_effectsSection.insert(button->name(), c.name());
 	}
 }
 
-void KTThemeSelector::chooseSelectionsColor(int id)
+void KTThemeSelector::chooseSelectionsColor(QAbstractButton *  button)
 {
-	QPushButton *btmp = static_cast<QPushButton *>(m_selections->find(id)) ;
-
-	QColor c = QColorDialog::getColor(btmp->paletteBackgroundColor(), this);
-	if ( c.isValid() )
-	{
-		btmp->setPaletteBackgroundColor(c);
-		
-		m_selectionsSection.insert(btmp->name(), c.name());
-	}
-}
-
-void KTThemeSelector::chooseTextEffectsColor(int id)
-{
-	QPushButton *btmp = static_cast<QPushButton *>(m_textEffects->find(id));
-	QColor c = QColorDialog::getColor(btmp->paletteBackgroundColor(), this);
-	if ( c.isValid() )
-	{
-		btmp->setPaletteBackgroundColor(c);
+	QColor c = QColorDialog::getColor(button->palette().color(QPalette::Button), this);
 	
-		m_textEffectsSection.insert(btmp->name(), c.name());
+	if ( c.isValid() )
+	{
+		QPalette pal = button->palette();
+		pal.setColor(QPalette::Button, c);
+		button->setPalette(pal);
+		
+		m_selectionsSection.insert(button->name(), c.name());
+	}
+}
+
+void KTThemeSelector::chooseTextEffectsColor(QAbstractButton *  button)
+{
+	QColor c = QColorDialog::getColor(button->palette().color(QPalette::Button), this);
+	if ( c.isValid() )
+	{
+		QPalette pal = button->palette();
+		pal.setColor(QPalette::Button, c);
+		button->setPalette(pal);
+		
+		m_textEffectsSection.insert(button->name(), c.name());
 	}
 }
 

@@ -31,14 +31,17 @@ KTTabDialog::KTTabDialog(QWidget *parent, bool modal)
 	m_tabWidget = new QTabWidget(this);
 	
 	
+	QPushButton *applyButton = new QPushButton(tr("Apply"));
 	QPushButton *okButton = new QPushButton(tr("OK"));
 	QPushButton *cancelButton = new QPushButton(tr("Cancel"));
 
-	connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
+	connect(applyButton, SIGNAL(clicked()), this, SLOT(apply()));
+	connect(okButton, SIGNAL(clicked()), this, SLOT(ok()));
+	connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
 
 	QHBoxLayout *buttonLayout = new QHBoxLayout;
 	buttonLayout->addStretch(1);
+	buttonLayout->addWidget(applyButton);
 	buttonLayout->addWidget(okButton);
 	buttonLayout->addWidget(cancelButton);
 
@@ -67,5 +70,19 @@ void KTTabDialog::addTab ( QWidget * child, const QIcon & iconset, const QString
 QWidget *KTTabDialog::currentTab()
 {
 	return m_tabWidget->currentWidget();
+}
+
+void KTTabDialog::ok()
+{
+	accept();
+}
+
+void KTTabDialog::cancel()
+{
+	reject();
+}
+
+void KTTabDialog::apply()
+{
 }
 

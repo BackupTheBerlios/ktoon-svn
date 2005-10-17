@@ -32,6 +32,7 @@
 #include <QScrollArea>
 #include <QLabel>
 #include <QGridLayout>
+#include <QButtonGroup>
 
 #include "ktthemedocument.h"
 #include "ktvhbox.h"
@@ -53,12 +54,14 @@ class KTThemeSelector : public KTVHBox
 		
 		bool iWantApplyColors();
 		
+		void setPalette(const QPalette &pal) {}; 
+		
 		
 	private slots:
-		void chooseGeneralColor(int );
-		void chooseEffectsColor(int );
-		void chooseSelectionsColor(int );
-		void chooseTextEffectsColor(int );
+		void chooseGeneralColor(QAbstractButton *  );
+		void chooseEffectsColor(QAbstractButton *  );
+		void chooseSelectionsColor(QAbstractButton *  );
+		void chooseTextEffectsColor(QAbstractButton *  );
 		void saveSchema();
 		void loadSchemaFromListView(QTreeWidgetItem *, int column );
 		
@@ -69,15 +72,19 @@ class KTThemeSelector : public KTVHBox
 	private:
 		QGroupBox *m_general;
 		ThemeKey m_generalSection;
+		QButtonGroup m_generalButtonGroup;
 		
 		QGroupBox *m_effects;
 		ThemeKey m_effectsSection;
+		QButtonGroup m_effectsButtonGroup;
 		
 		QGroupBox *m_selections;
 		ThemeKey m_selectionsSection;
+		QButtonGroup m_selectionsButtonGroup;
 		
 		QGroupBox *m_textEffects;
 		ThemeKey m_textEffectsSection;
+		QButtonGroup m_textEffectsButtonGroup;
 		
 		QTreeWidget *m_allSchemes;
 		QCheckBox *m_useColors;
