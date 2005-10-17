@@ -51,7 +51,7 @@ class Scene;
 
 class KTScenesWidget : public KTModuleWidgetBase
 {
-Q_OBJECT
+	Q_OBJECT
 	public:
 		enum Actions{InsertScene = 0 , RemoveScene, MoveSceneUp , MoveSceneDown};
 		/**
@@ -68,26 +68,6 @@ Q_OBJECT
 		* Destroys the KTScenesWidget dialog box.
 		*/
 		~KTScenesWidget();
-	
-		/**
-		*   Loads the specified scenes
-		*
-		* @param scenes The list of scenes
-		*/
-		void loadScenes( QList<Scene*> scenes );
-		/**
-		*   Selects the first scene
-		*/
-		void selectFirstScene();
-		
-		/**
-		*   Exports the timeline frames to a secuence of images of format \a format
-		*
-		* @param file_name The file name to export
-		* @param format The image format
-		* @return The number of images generated if the animation was exported successfully, otherwise returns 0
-		*/
-		int exportAnimation( const QString &file_name, const QString &format );
 
 	private:
     //General Purpose Variables
@@ -126,7 +106,7 @@ Q_OBJECT
 		/**
 		* This signal is emitted when a scene has been inserted.
 		*/
-		void sceneInserted(QString name, int index);
+		void sceneInserted(const QString &name, int index);
 		/**
 		* This signal is emitted when a scene has been removed.
 		* @param scene The scene position
@@ -142,7 +122,7 @@ Q_OBJECT
 		* @param scene The scene position
 		*/
 		void sceneMovedDown( int scene );
-		void sceneChangeName( QString newName, int index);
+		void sceneRenamed( const QString &newName, int index);
 		void esceneDobleClicked(int scenes);
 // 		void changedScene();
 		
@@ -166,7 +146,7 @@ Q_OBJECT
 		/**
 		*   Updates the visualization values when a scene is selected
 		*/
-		void selectScene(QString name, int index);
+		void selectScene(const QString & name, int index);
 		/**
 		*   Moves the selected scene one step up
 		*/

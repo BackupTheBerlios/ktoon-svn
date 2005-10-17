@@ -35,6 +35,9 @@ KTStatusBar::KTStatusBar(QWidget *parent)
 	
 	addPermanentWidget(m_status, 1);
 	addPermanentWidget(m_progressBar, 0);
+	
+	m_timer = new QTimer(this);
+	connect(m_timer, SIGNAL(timeout()), this, SLOT(clear()));
 }
 
 
@@ -42,9 +45,20 @@ KTStatusBar::~KTStatusBar()
 {
 }
 
-void KTStatusBar::setStatus(const QString &status)
+void KTStatusBar::clear()
+{
+	m_status->setText("<b></b>");
+	advance(0);
+}
+
+void KTStatusBar::setStatus(const QString &status, int ms )
 {
 	m_status->setText("<b>"+status+"</b>");
+	
+	if ( ms > 0)
+	{
+		m_timer->start(ms);
+	}
 }
 
 void KTStatusBar::addWidget ( QWidget *widget, int stretch, bool permanent)

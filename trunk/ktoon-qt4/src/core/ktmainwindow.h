@@ -52,7 +52,6 @@
 #include "gltopcameraview.h"
 #include "glsidecameraview.h"
 #include "status.h"
-#include "about.h"
 #include "document.h"
 #include "import.h"
 #include "export.h"
@@ -100,10 +99,7 @@ class KTMainWindow : public DMainWindow
 		 */
 		void setupMenu();
 		
-		/**
-		 * Setup dialogs
-		 */
-		void setupDialogs();
+		void setupHelpActions();
 		
 	protected:
 		/**
@@ -125,14 +121,19 @@ class KTMainWindow : public DMainWindow
 		void updateOpenRecentMenu();
 		
 	private slots:
-		void newDocument(const QString &name = QString::null, const QSize &size = QSize(-1,-1) );
+		void createNewProject(const QString &name, const QSize &size = QSize(-1,-1) );
+		void newViewDocument(const QString &name = QString::null );
 		void newProject();
 		void closeProject();
 		void openProject();
+				
+		void save();
 		
 		void preferences();
+		void aboutKToon();
 		
 	private slots:
+		void selectFrame(int layer, int frame);
 		void changeCurrentColors(const QColor &, const QColor &);
 		void changeCurrentBrush(KTBrush *);
 		
@@ -141,6 +142,7 @@ class KTMainWindow : public DMainWindow
 		
 	private:
 		QWorkspace *m_workSpace;
+		KTStatusBar *m_statusBar;
 		KTActionManager *m_actionManager;
 		QMenu *m_fileMenu,*m_editMenu, *m_proyectMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
 };

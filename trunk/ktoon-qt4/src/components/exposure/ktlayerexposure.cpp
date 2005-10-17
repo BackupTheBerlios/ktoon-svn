@@ -316,7 +316,7 @@ int KTLayerExposure::useFrame()
 
 void KTLayerExposure::applyAction(int action)
 {
-	ktDebug(1) << action ;
+// 	ktDebug(1) << action ;
 	switch(action)
 	{
 		case RenameFrame:

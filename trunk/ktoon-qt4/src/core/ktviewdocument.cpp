@@ -34,7 +34,7 @@
 #include "status.h"
 #include "drawingarea.h"
 
-KTViewDocument::KTViewDocument(KTDocument *doc, QWidget *parent ) : KTMdiWindow(parent), m_document(doc)
+KTViewDocument::KTViewDocument(KTScene *scene, QWidget *parent ) : KTMdiWindow(parent), m_scene(scene)
 {
 	setIcon(QPixmap(KTOON_HOME+"/images/icons/layer_pic.xpm") ); // FIXME: new image for documents
 	
@@ -48,11 +48,8 @@ KTViewDocument::KTViewDocument(KTDocument *doc, QWidget *parent ) : KTMdiWindow(
 	
 	connect( m_paintAreaContainer->drawArea(), SIGNAL(mousePos(const QPoint &)),  this,  SLOT(showPos(const QPoint &)) );
 	
-	KTScene *scene  = m_document->createScene();
-	KTLayer *layer = scene->createLayer();
-	KTKeyFrame *keyFrame = layer->createFrame();
 	
-	m_paintAreaContainer->drawArea()->setKeyFrame( keyFrame );
+	m_paintAreaContainer->drawArea()->setLayer( m_scene->layers()[0] );
 	
 	createActions();
 	createToolbar();

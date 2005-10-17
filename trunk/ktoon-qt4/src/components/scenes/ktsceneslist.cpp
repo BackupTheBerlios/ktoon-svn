@@ -100,3 +100,9 @@ QString KTScenesList::nameCurrentScene()
 {
 	return currentItem()->text(0);
 }
+
+int KTScenesList::scenesCount()
+{
+	return topLevelItemCount();
+}
+

@@ -20,10 +20,13 @@
 
 #include "ktkeyframe.h"
 
-KTKeyFrame::KTKeyFrame(QObject *parent) : QObject(parent)
+KTKeyFrame::KTKeyFrame(QObject *parent) : QObject(parent), m_name("Frame"), m_isLocked(false)
 {
 }
 
+KTKeyFrame::KTKeyFrame(const QString &frameName, QObject * parent) : QObject(parent), m_name(frameName), m_isLocked(false)
+{
+}
 
 KTKeyFrame::~KTKeyFrame()
 {
@@ -45,5 +48,23 @@ QList<AGraphicComponent *> KTKeyFrame::components() const
 }
 
 
+void KTKeyFrame::setFrameName(const QString &name)
+{
+	m_name = name;
+}
 
+void KTKeyFrame::setLocked(bool isLocked)
+{
+	m_isLocked = isLocked;
+}
+
+QString KTKeyFrame::frameName() const
+{
+	return m_name;
+}
+
+bool KTKeyFrame::isLocked()
+{
+	return m_isLocked;
+}
 

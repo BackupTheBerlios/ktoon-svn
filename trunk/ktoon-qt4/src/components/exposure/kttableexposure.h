@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado   *
- *   kuadrosx@toonka.com   *
+ *   Copyright (C) 2005 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef KTTABLEEXPOSURE_H
 #define KTTABLEEXPOSURE_H
 
@@ -33,17 +34,17 @@
 #include "layer.h"
 
 /**
-@author Jorge Cuadrado
+ * @author Jorge Cuadrado
 */
 
-typedef QList<KTLayerExposure*> listOfLayers;
+typedef QList<KTLayerExposure*> ListOfLayers;
 
 class KTTableExposure : public QScrollArea //Q3ScrollView
 {
 	Q_OBJECT
 	public:
 		enum Direction {Up = 0, Down};
-		KTTableExposure(int rows, int cols, QWidget *parent = 0, const char *name = 0);
+		KTTableExposure(int rows, int cols, QWidget *parent = 0);
 		~KTTableExposure();
 		void setUseFrame();
 		void removeFrame();
@@ -60,7 +61,7 @@ class KTTableExposure : public QScrollArea //Q3ScrollView
 		QWidget *m_port;
 		int m_numLayer;
 		int m_currentLayer, m_currentFrame;
-		listOfLayers m_layers;
+		ListOfLayers m_layers;
 		
 	public slots:
 		void insertLayer(int rows, QString text = QString::null);

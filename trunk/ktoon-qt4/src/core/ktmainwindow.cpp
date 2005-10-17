@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "ktmainwindow.h"
+
 #include "ktnewproject.h"
 #include "images.h"
 #include "ktdebug.h"
@@ -27,6 +28,7 @@
 #include "status.h"
 
 #include "ktapplication.h"
+#include "ktabout.h"
 
 // dlslib
 #include "dtabwidget.h"
@@ -44,8 +46,8 @@
 KTMainWindow::KTMainWindow() : DMainWindow()
 {
 	KTINIT;
-
-	setStatusBar( new KTStatusBar(this) );
+	m_statusBar = new KTStatusBar(this);
+	setStatusBar( m_statusBar );
 	
 	setWindowTitle(tr("KToon: 2D animation toolkit"));
 	
@@ -56,7 +58,7 @@ KTMainWindow::KTMainWindow() : DMainWindow()
 	
 // 	m_workSpace->setBackground(QBrush(QPixmap(background_xpm))); 
 	
-	newDocument();
+	createNewProject("test");
 	
 	addWidget(m_workSpace, tr("Illustration"));
 
@@ -68,11 +70,9 @@ KTMainWindow::KTMainWindow() : DMainWindow()
 	setupFileActions();
 	setupEditActions();
 	setupProjectActions();
+	setupHelpActions();
 	
 	setupMenu();
-	
-	statusBar()->message("Ready to play!");
-	
 	createGUI();
 	
 	showMaximized();
@@ -90,23 +90,23 @@ void KTMainWindow::setupMenu()
 	m_fileMenu = new QMenu(this);
 	menuBar()->insertItem(tr("&File"), m_fileMenu);
 	
-	m_actionManager->find("NewFile")->addTo(m_fileMenu);
-	m_actionManager->find("OpenFile")->addTo(m_fileMenu);
+	m_fileMenu->addAction(m_actionManager->find("NewFile"));
+	m_fileMenu->addAction(m_actionManager->find("OpenFile"));
 	
 	QMenu *recents = new QMenu( this );
 	connect( recents, SIGNAL( activated( int ) ), SLOT( openRecent( int ) ) );
 	m_fileMenu->insertItem( tr( "Open Recent" ), recents );
 
-	m_actionManager->find("Save")->addTo(m_fileMenu);
-	m_actionManager->find("SaveAs")->addTo(m_fileMenu);
-	m_actionManager->find("Close")->addTo(m_fileMenu);
+	m_fileMenu->addAction(m_actionManager->find("Save"));
+	m_fileMenu->addAction(m_actionManager->find("SaveAs"));
+	m_fileMenu->addAction(m_actionManager->find("Close"));
 	m_fileMenu->insertSeparator();
-	m_actionManager->find("Import")->addTo(m_fileMenu);
-	m_actionManager->find("Export")->addTo(m_fileMenu);
+	m_fileMenu->addAction(m_actionManager->find("Import"));
+	m_fileMenu->addAction(m_actionManager->find("Export"));
 	m_fileMenu->insertSeparator();
-	m_actionManager->find("Properties")->addTo(m_fileMenu);
+	m_fileMenu->addAction(m_actionManager->find("Properties"));
 	m_fileMenu->insertSeparator();
-	m_actionManager->find("Exit")->addTo(m_fileMenu);
+	m_fileMenu->addAction(m_actionManager->find("Exit"));
 	m_fileMenu->insertSeparator();
 	
 	// Setup the edit menu
@@ -151,7 +151,8 @@ void KTMainWindow::setupMenu()
 	// Setup the help menu
 	m_helpMenu = new QMenu(this);
 	menuBar()->insertItem( tr( "&Help" ), m_helpMenu );
-	m_helpMenu->addAction(m_actionManager->find("Resize") );
+	m_helpMenu->addAction(m_actionManager->find("about ktoon") );
+	
 }
 
 void KTMainWindow::createGUI()
@@ -162,28 +163,43 @@ void KTMainWindow::createGUI()
 	connect(m_colorPalette, SIGNAL(colorChanged(const QColor &, const QColor &)), this, SLOT(changeCurrentColors(const QColor &, const QColor &)));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Palette"),m_colorPalette);
 	
+	////////////////
 	KTBrushWidget *m_brushWidget = new KTBrushWidget( this);
 	m_brushWidget->setIcon(QPixmap(KTOON_HOME+"/images/icons/brushes.xpm"));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Brushes"),m_brushWidget);
 	
 	connect(m_brushWidget, SIGNAL(brushSelected(KTBrush *)), this, SLOT(changeCurrentBrush(KTBrush *)));
 	
+	////////////////////
 	Library *m_libraryDialog = new Library( this, KTStatus->currentDrawingArea());
 	m_libraryDialog->setIcon(QPixmap(KTOON_HOME+"/images/icons/library.xpm"));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Library"),m_libraryDialog);
 	
+	/////////////////
 	KTScenesWidget *m_scenes = new KTScenesWidget( this);
 	m_scenes->setIcon(QPixmap(KTOON_HOME+"/images/icons/scenes.xpm"));
 	toolWindow(DDockWindow::Right)->addWidget(tr("Scenes"),m_scenes);
 	
+	connect(m_scenes, SIGNAL(sceneInserted(const QString &, int)), m_projectManager, SLOT(insertScene(const QString &, int)));
+	
+	/////////////////////
 	KTExposureSheet *m_exposureSheet = new KTExposureSheet(this);
 	m_exposureSheet->setIcon(QPixmap(KTOON_HOME+"/images/icons/exposure_sheet.xpm"));
 	toolWindow(DDockWindow::Right)->addWidget(tr("Exposure Sheet"),m_exposureSheet);
 	
+	connect(m_exposureSheet, SIGNAL(frameSelected( int, int )), this, SLOT(selectFrame(int,int)));
+	
+	connect(m_projectManager, SIGNAL(sceneInserted(const QString &, int)), m_exposureSheet, SLOT(addScene(const QString &, int)));
+	
+// 	connect(m_scenes, SIGNAL(sceneInserted( const QString &, int )), m_exposureSheet, SLOT(addScene( const QString &, int )));
+// 	connect(m_scenes, SIGNAL(sceneRenamed( const QString &, int )), m_exposureSheet, SLOT(renameScene(const QString &, int)));
+	
+	//////////////////////
 	KTTimeLine *m_timeLine = new KTTimeLine(this);
 	m_timeLine->setIcon(QPixmap(KTOON_HOME+"/images/icons/time_line.xpm"));
 	toolWindow(DDockWindow::Bottom)->addWidget(tr("Time Line"),m_timeLine);
 	
+	//////////////////
 	KToonScript *m_scriptEditor = new KToonScript(this);
 // 	m_scriptEditor->setIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.xpm") );
 	toolWindow(DDockWindow::Bottom)->addWidget(tr("KToonScript"), m_scriptEditor);
@@ -191,7 +207,7 @@ void KTMainWindow::createGUI()
 
 void KTMainWindow::setupFileActions()
 {
-	KTAction *newFile = new KTAction( QPixmap( new_xpm ), tr( "New Document" ), QKeySequence(tr("Ctrl+N")), this, SLOT(newDocument()), m_actionManager, "NewFile");
+	KTAction *newFile = new KTAction( QPixmap( new_xpm ), tr( "New Document" ), QKeySequence(tr("Ctrl+N")), this, SLOT(newViewDocument()), m_actionManager, "NewFile");
 	
 // 	connect(newFile, SIGNAL(activated()), this, SLOT(newDocument()));
 	newFile->setStatusTip(tr( "Opens a new document"));
@@ -268,11 +284,12 @@ void KTMainWindow::setupProjectActions()
 	KTAction *openProject = new KTAction( QPixmap(), tr( "Open Project" ), QKeySequence(), this, SLOT(openProject()), m_actionManager, "OpenProject");
 }
 
-void KTMainWindow::setupToolBar()
+void KTMainWindow::setupHelpActions()
 {
+	new KTAction(QPixmap(), tr("About KToon"), QKeySequence(), this, SLOT(aboutKToon()), m_actionManager, "about ktoon");
 }
 
-void KTMainWindow::setupDialogs()
+void KTMainWindow::setupToolBar()
 {
 }
 
@@ -308,22 +325,40 @@ void KTMainWindow::setPalette(const QPalette &pal)
 	setupBackground();
 }
 
-void KTMainWindow::newDocument(const QString &name, const QSize &size)
+// Modal
+
+void KTMainWindow::createNewProject(const QString &name, const QSize &size)
 {
 	KTDocument *document = m_projectManager->createDocument(name);
+	m_projectManager->setCurrentDocument(0);
 	
-	static_cast<KTStatusBar*>(statusBar())->setStatus(tr("Opening a new document..."));
+	newViewDocument(name);
+}
+
+void KTMainWindow::newViewDocument(const QString &name)
+{
+	m_statusBar->setStatus(tr("Opening a new document..."));
 	
-	KTViewDocument *viewDocument = new KTViewDocument(document, m_workSpace);
-	m_workSpace->addWindow(viewDocument);
-	viewDocument->setWindowTitle(name);
+	KTScene *scene = m_projectManager->currentScene();
 	
-	static_cast<KTStatusBar*>(statusBar())->advance(4);
-	viewDocument->setActiveWindow();
-	static_cast<KTStatusBar*>(statusBar())->advance(7);
-	viewDocument->show();
-	static_cast<KTStatusBar*>(statusBar())->advance(10);
-	static_cast<KTStatusBar*>(statusBar())->setStatus(tr("Opened."));
+	if ( scene )
+	{
+		KTViewDocument *viewDocument = new KTViewDocument(scene, m_workSpace);
+		m_workSpace->addWindow(viewDocument);
+		viewDocument->setWindowTitle(name);
+		
+		m_statusBar->advance(4);
+		viewDocument->setActiveWindow();
+		m_statusBar->advance(7);
+		viewDocument->show();
+		m_statusBar->advance(10);
+		m_statusBar->setStatus(tr("Opened."));
+	}
+	else
+	{
+		m_statusBar->advance(0);
+		m_statusBar->setStatus(tr("Project not open."));
+	}
 }
 
 void KTMainWindow::newProject()
@@ -331,7 +366,7 @@ void KTMainWindow::newProject()
 	KTNewProject *wizard = new KTNewProject;
 	if ( wizard->exec() != QDialog::Rejected )
 	{
-		newDocument( wizard->projectName() );
+		createNewProject( wizard->projectName() );
 	}
 	delete wizard;
 }
@@ -345,14 +380,40 @@ void KTMainWindow::openProject()
 {
 }
 
+void KTMainWindow::save()
+{
+	ktDebug() << "Saving.." << endl;
+	
+	qobject_cast<KTViewDocument *>(m_workSpace->activeWindow ())->drawArea()->paintDevice().save("test.png", "PNG"); // only for test
+}
 
 void KTMainWindow::preferences()
 {
+	m_statusBar->setStatus( tr( "Preferences Dialog Opened" ), 2000 );
 	Preferences *preferences = new Preferences( this );
 	preferences->exec();
-	statusBar() -> message( tr( "Preferences Dialog Opened" ), 2000 );
 }
 
+void KTMainWindow::aboutKToon()
+{
+	KTAbout *about = new KTAbout(this);
+	about->exec();
+	
+	delete about;
+}
+
+// Animation
+void KTMainWindow::selectFrame(int layer, int frame)
+{
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_workSpace->activeWindow ());
+	
+	if ( doc )
+	{
+// 		doc->drawArea()
+	}
+}
+
+// Drawing
 void KTMainWindow::changeCurrentColors(const QColor &foreground, const QColor &background)
 {
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_workSpace->activeWindow ());

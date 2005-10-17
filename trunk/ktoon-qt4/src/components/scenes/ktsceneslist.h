@@ -28,6 +28,8 @@ class KTScenesList : public QTreeWidget
 		int indexCurrentScene();
 		QString nameCurrentScene();
 		
+		int scenesCount();
+		
 	private slots:
 		void changeCurrentScene();
 		

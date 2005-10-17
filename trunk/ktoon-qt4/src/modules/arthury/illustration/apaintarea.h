@@ -32,7 +32,7 @@
 #include "afilterinterface.h"
 #include "atoolinterface.h"
 
-#include "ktkeyframe.h"
+#include "ktlayer.h"
 
 #include "ktbrush.h"
 
@@ -54,7 +54,8 @@ class APaintArea : public QWidget
 		void setZeroAt(int zero);
 		
 	public slots:
-		void setKeyFrame(KTKeyFrame *);
+		void setKeyFrame(int index);
+		void setLayer(KTLayer *layer);
 		
 	private:
 		QImage m_paintDevice;
@@ -73,13 +74,13 @@ class APaintArea : public QWidget
 		
 		QColor m_brushColor, m_penColor; // TODO: move to KTBrush
 		
-// 		QList<AGraphicComponent *> m_graphicComponents; // TODO: move to  KTKeyFrame
 		QList<AGraphicComponent *> m_undoComponents;
 		
 		AGraphicComponent *m_currentGraphic;
 		bool m_redrawAll;
 
 		KTKeyFrame *m_currentFrame;
+		KTLayer *m_layer;
 
 	public:
 		void setTool( AToolInterface *toolIface, const QString &tool);

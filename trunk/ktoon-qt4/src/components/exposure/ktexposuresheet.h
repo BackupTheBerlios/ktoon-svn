@@ -24,8 +24,8 @@
 #include "ktmodulewidgetbase.h"
 #include "kttableexposure.h"
 
+// Qt
 #include <QButtonGroup>
-
 #include <QGroupBox>
 #include <QPushButton>
 #include <QStringList>
@@ -33,18 +33,16 @@
 #include <QList>
 #include <QListView>
 #include <QActionGroup>
+#include <QTabWidget>
+
 #include "ktimagebutton.h"
 
 /**
 * @author Jorge Cuadrado
 */
 
-
-// typedef QList<QPixmap> imgs;
-
 class KTExposureSheet : public KTModuleWidgetBase
 {
-	
 	Q_OBJECT
 	public:
 		KTExposureSheet(QWidget *parent = 0);
@@ -54,11 +52,12 @@ class KTExposureSheet : public KTModuleWidgetBase
 		
 	private:
 		QList<QPixmap> m_imgs;
-		QGroupBox /*QButtonGroup*/ *m_buttonsPanel;
+		QGroupBox *m_buttonsPanel;
 		QButtonGroup *m_buttonGroup;
 		KTTableExposure *m_viewLayer;
-// 		//Widget for handling the layer visibility
-		QListView/*QListWidget*/ /*QListView*/ *m_layerManager;
+// 		Widget for handling the layer visibility
+		QListView *m_layerManager;
+		QTabWidget *m_scenes;
 
 	private:
 		void setupButtons();
@@ -71,12 +70,17 @@ class KTExposureSheet : public KTModuleWidgetBase
 		void loadLayersAndKeyframes( QList<Layer*> layers );
 		void updateLayersAndKeyframes();
 		
+		void addScene(const QString &name, int id);
+		void renameScene(const QString &name, int id);
+		
 	private slots:
 		void actionButton(QAbstractButton *);
 		
 	signals:
 		void applyedAction(Actions action);
-		void frameSelected();
+		
+		void frameSelected(int idLayer, int idFrame);
+		
 		void layerSelected(int);
 		
 		
@@ -84,15 +88,11 @@ class KTExposureSheet : public KTModuleWidgetBase
 		
 		void layerRemoved();
 		
-		
-		
 		void layerRenamed( int pos, const QString &name );
 		void framesInsertedAtTheEnd( int number );
 		void frameRemoved( int pos );
 		void frameMovedUp( int pos );
 		void frameMovedDown( int pos );
-		
-		
 };
 
 #endif

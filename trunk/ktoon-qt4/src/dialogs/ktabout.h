@@ -24,7 +24,8 @@
 #include <q3scrollview.h>
 #include <qlabel.h>
 #include <qpixmap.h>
-#include <q3tabdialog.h>
+
+#include "kttabdialog.h"
 
 #include "ktanimwidget.h"
 
@@ -40,13 +41,13 @@
  * - Credits
  * - Acknowledgements
  * - SVN Log
- * - About Toonka Films
+ * - KTAbout Toonka Films
  * - GNU Public License
  *
  * Moreover, it provides an OK Button and a Cancel Button.
  */
 
-class About : public Q3TabDialog
+class KTAbout : public KTTabDialog
 {
 	Q_OBJECT
 
@@ -54,16 +55,16 @@ class About : public Q3TabDialog
 		/**
 		* @brief Default Constructor
 		*
-		* Constructs an About Dialog.
+		* Constructs an KTAbout Dialog.
 		* @param parent The parent widget
 		*/
-		About( QWidget *parent );
+		KTAbout( QWidget *parent );
 		/**
 		* @brief Default Destructor
 		*
-		* Destroys the About Dialog.
+		* Destroys the KTAbout Dialog.
 		*/
-		~About();
+		~KTAbout();
 	
 	private:
 		KTAnimWidget *m_credits;

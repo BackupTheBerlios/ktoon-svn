@@ -35,14 +35,24 @@ class KTKeyFrame : public QObject
 {
 	public:
 		KTKeyFrame(QObject *parent = 0);
+		KTKeyFrame(const QString &frameName, QObject * parent = 0);
+		
 		~KTKeyFrame();
 		void addComponent(AGraphicComponent *comp);
 		AGraphicComponent *takeLastComponent();
 		
 		QList<AGraphicComponent *> components() const;
 		
+		void setFrameName(const QString &name);
+		void setLocked(bool isLocked);
+		
+		QString frameName() const;
+		bool isLocked();
+		
 	private:
 		QList<AGraphicComponent *> m_components;
+		QString m_name;
+		bool m_isLocked;
 };
 
 #endif

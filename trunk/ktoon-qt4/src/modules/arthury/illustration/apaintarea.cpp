@@ -97,10 +97,17 @@ void APaintArea::paintEvent(QPaintEvent *e)
 	painter.drawImage(QPoint(m_xpos, m_ypos), m_paintDevice);
 }
 
-void APaintArea::setKeyFrame(KTKeyFrame *keyFrame)
+void APaintArea::setKeyFrame(int index)
 {
-	m_currentFrame = keyFrame;
+	m_currentFrame = m_layer->frames()[index];
 	redrawAll();
+}
+
+void APaintArea::setLayer(KTLayer *layer)
+{
+	m_layer = layer;
+	
+	setKeyFrame( 0 );// FIXME
 }
 
 void APaintArea::draw(QPainter *painter)

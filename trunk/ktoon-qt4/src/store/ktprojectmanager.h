@@ -42,8 +42,29 @@ class KTProjectManager : public QObject
 		
 		KTDocument *createDocument(const QString &name);
 		
+		KTDocument *currentDocument();
+		KTScene *currentScene();
+		KTLayer *currentLayer();
+		KTKeyFrame *currentKeyFrame();
+		
+		void setCurrentDocument(int index);
+		
+	public slots:
+		void insertScene(const QString &name, int index);
+		void renameScene(const QString &name, int index);
+		
+	signals:
+		void sceneInserted(const QString &name, int docId, int sceneId);
+		void sceneRenamed(const QString &name, int docId, int sceneId);
+		
+		void documentInserted();
+		void frameInserted();
+		void LayerInserted();
+		
 	private:
 		Documents m_documents;
+		
+		KTDocument *m_currentDocument;
 };
 
 #endif

@@ -23,6 +23,7 @@
 
 #include <QProgressBar>
 #include <QLabel>
+#include <QTimer>
 
 #include <QStatusBar>
 
@@ -39,10 +40,12 @@ class KTStatusBar : public QStatusBar
 		void addWidget ( QWidget *widget, int stretch = 0, bool permanent = FALSE );
 		
 	public slots:
-		void setStatus(const QString &status);
+		void setStatus(const QString &status, int ms = 0);
 		void advance(int step);
+		void clear();
 		
 	private:
+		QTimer *m_timer;
 		QLabel *m_status;
 		QProgressBar *m_progressBar;
 

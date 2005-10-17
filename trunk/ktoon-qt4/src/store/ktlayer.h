@@ -35,17 +35,32 @@ class KTLayer : public QObject
 	Q_OBJECT
 	public:
 		KTLayer(QObject *parent = 0);
+		KTLayer(const QString &layerName, QObject * parent = 0);
+		
 		~KTLayer();
 		Frames frames();
 		void setFrames(const Frames &frames);
 		
 		KTKeyFrame *createFrame();
+		
+		KTKeyFrame *currentFrame();
+		void setCurrentFrame(int index);
+		
+		void setLayerName(const QString &name);
+		void setVisible(bool isVisible);
+		
+		QString layerName() const;
+		bool isVisible();
 	
 	signals: // TODO: add more signals
 		void frameInserted();
 	
 	private:
 		Frames m_frames;
+		bool m_isVisible;
+		QString m_name;
+		
+		KTKeyFrame *m_currentFrame;
 
 };
 

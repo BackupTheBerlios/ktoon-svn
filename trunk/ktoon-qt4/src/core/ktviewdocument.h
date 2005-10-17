@@ -45,7 +45,7 @@ class KTViewDocument : public KTMdiWindow
 {
 	Q_OBJECT
 	public:
-		KTViewDocument( KTDocument *doc, QWidget *parent = 0 );
+		KTViewDocument( KTScene *scene, QWidget *parent = 0 );
 		~KTViewDocument();
 		void close();
 		APaintArea *drawArea();
@@ -60,7 +60,7 @@ class KTViewDocument : public KTMdiWindow
 		
 		KTPaintAreaContainer *m_paintAreaContainer;
 		
-		KTDocument *m_document;
+		KTScene *m_scene;
 		
 	private:
 		void createActions();

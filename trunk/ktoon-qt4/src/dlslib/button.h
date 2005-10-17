@@ -38,7 +38,7 @@ class Button;
 class Animation
 {
 	public:
-		Animation(QObject *parent) : count(0), MAXCOUNT(20), INTERVAL(18), isEnter(false)
+		Animation(QObject *parent) : count(0), MAXCOUNT(20), INTERVAL(30), isEnter(false)
 		{
 			timer = new QTimer(parent);
 		}

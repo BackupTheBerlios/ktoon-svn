@@ -34,7 +34,7 @@
 
 #include "ktmodulewidgetbase.h"
 
-class KToon;
+// class KToon;
 
 /**
  * @brief Class that handles the dialog box where the special tools are found

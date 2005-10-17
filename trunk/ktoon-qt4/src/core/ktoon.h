@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#if 1
 #ifndef KTOON_H
 #define KTOON_H
 
@@ -58,13 +59,13 @@
 #include "gltopcameraview.h"
 #include "glsidecameraview.h"
 #include "status.h"
-#include "about.h"
+#include "ktabout.h"
 #include "document.h"
 #include "import.h"
 #include "export.h"
 
 #include "ktcamerapreview.h"
-#include "ktviewdocument.h"
+// #include "ktviewdocument.h"
 
 /**
  *  Class that handles the main window with all its elements
@@ -927,7 +928,7 @@ class KToon : public Q3MainWindow
 		KTCameraPreview *m_cameraPreview;
 		GLSideCameraView *side_camera_view;
 		GLTopCameraView *top_camera_view;
-		About *about_dialog;
+		KTAbout *about_dialog;
 		
 		//Modal Dialog Boxes for several settings
 		Properties *properties_dialog;
@@ -948,5 +949,7 @@ class KToon : public Q3MainWindow
 	signals:
 		void changedCursor(QCursor);
 };
+
+#endif
 
 #endif

@@ -40,9 +40,17 @@ class KTDocument : public QObject
 		void setScenes(const Scenes &);
 		KTScene *createScene();
 		
+		KTScene *currentScene();
+		void setCurrentScene(int index);
+		
+	signals:
+		void sceneCreated(const QString &name, int index);
+		
 	private:
 		Scenes m_scenes;
-
+		KTScene *m_currentScene;
+		
+		int m_sceneCount;
 };
 
 #endif

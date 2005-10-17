@@ -20,8 +20,14 @@
 
 #include "ktlayer.h"
 
-KTLayer::KTLayer(QObject *parent) : QObject(parent)
+KTLayer::KTLayer(QObject *parent) : QObject(parent), m_isVisible(true), m_name(tr("Layer")), m_currentFrame(0)
 {
+	m_currentFrame = createFrame();
+}
+
+KTLayer::KTLayer(const QString &layerName, QObject * parent)  : QObject(parent), m_isVisible(true), m_name(layerName), m_currentFrame(0)
+{
+	m_currentFrame = createFrame();
 }
 
 
@@ -46,5 +52,40 @@ KTKeyFrame *KTLayer::createFrame()
 	m_frames << keyFrame;
 	
 	return keyFrame;
+}
+
+KTKeyFrame *KTLayer::currentFrame()
+{
+	return m_currentFrame;
+}
+
+void KTLayer::setCurrentFrame(int index)
+{
+	KTKeyFrame *frame = m_frames[index];
+	
+	if ( frame )
+	{
+		m_currentFrame = frame;
+	}
+}
+
+void KTLayer::setLayerName(const QString &name)
+{
+	m_name = name;
+}
+
+void KTLayer::setVisible(bool isVisible)
+{
+	m_isVisible = isVisible;
+}
+
+QString KTLayer::layerName() const
+{
+	return m_name;
+}
+
+bool KTLayer::isVisible()
+{
+	return m_isVisible;
 }
 

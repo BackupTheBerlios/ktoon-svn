@@ -20,8 +20,9 @@
 
 #include "ktscene.h"
 
-KTScene::KTScene(QObject *parent) : QObject(parent)
+KTScene::KTScene(QObject *parent) : QObject(parent), m_currentLayer(0)
 {
+	m_currentLayer = createLayer();
 }
 
 
@@ -46,5 +47,20 @@ KTLayer *KTScene::createLayer()
 	m_layers << layer;
 	
 	return layer;
+}
+
+KTLayer *KTScene::currentLayer()
+{
+	return m_currentLayer;
+}
+
+void KTScene::setCurrentLayer(int index)
+{
+	KTLayer *layer = m_layers[index];
+	
+	if ( layer )
+	{
+		m_currentLayer = layer;
+	}
 }
 

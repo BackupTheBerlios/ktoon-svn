@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#if 1
 #include <qtooltip.h>
 #include <qtoolbutton.h>
 #include <q3accel.h>
@@ -208,7 +209,7 @@ KToon::KToon() : Q3MainWindow( 0, "KToon", Qt::WDestructiveClose ), document_max
 	
 // 	connect(timeline_dialog, SIGNAL(saveImage(const QString& )), m_cameraPreview, SLOT(grabImage(const QString& )));
 	
-	scenes_dialog -> selectFirstScene();
+// 	scenes_dialog -> selectFirstScene();
 // 	exposure_sheet_dialog -> touchFirstFrame();
 // 	exposure_sheet_dialog -> updateIndicators( exposure_sheet_dialog -> currentLayerObj() );
 	
@@ -2046,6 +2047,8 @@ void KToon::slotNewDocument()
 		connect( color_palette_dialog, SIGNAL( outlineColorChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeOutlineColor() ) );
 		connect( color_palette_dialog, SIGNAL( fillColorChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeFillColor() ) );
 		connect( brushes_dialog, SIGNAL( minThicknessChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeMinThicknessBrush() ) );
+		
+		
 		connect( brushes_dialog, SIGNAL( maxThicknessChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeMaxThicknessBrush() ) );
 		connect( brushes_dialog, SIGNAL( smoothnessChanged() ), KTStatus->currentDrawingArea(), SLOT( slotChangeSmoothnessBrush() ) );
 
@@ -2060,7 +2063,7 @@ void KToon::slotNewDocument()
 		
 // 		connect( KTStatus->currentDrawingArea(), SIGNAL( wasDrawn( bool ) ), timeline_dialog -> frameSequenceManager() -> frameLayout(), SLOT( slotFrameHasDrawing( bool ) ) );
 		
-		scenes_dialog -> selectFirstScene();
+// 		scenes_dialog -> selectFirstScene();
 		//FIXME: implementar KTExposureShee::touchFirstFrame();
 // 		m_ExposureSheetDialog -> touchFirstFrame();
 		file_save->setEnabled ( true );
@@ -2482,7 +2485,7 @@ void KToon::slotExport()
 	if ( export_dialog->exec() != QDialog::Rejected )
 	{
 		qDebug(QString("***************Exporting %1***************").arg(KTStatus->currentDocument()->nameDocument()) );
-		scenes_dialog->exportAnimation(KTStatus->currentDocument()->nameDocument(), "PNG");
+// 		scenes_dialog->exportAnimation(KTStatus->currentDocument()->nameDocument(), "PNG");
 	}
 	statusBar() -> message( tr( "Import Dialog opened" ), 2000 );
 }
@@ -3429,7 +3432,7 @@ void KToon::slotContents()
 
 void KToon::slotAbout()
 {
-	about_dialog = new About( this );
+	about_dialog = new KTAbout( this );
 	about_dialog -> move( 100, 100 );
 	about_dialog -> show();
 }
@@ -3848,7 +3851,7 @@ void KToon::createGUI()
 	
 	QList<Scene*> scenes = KTStatus->currentDocument()->getAnimation() -> getScenes();
 	scenes_dialog = new KTScenesWidget( this);//, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
-	scenes_dialog -> loadScenes( scenes );
+// 	scenes_dialog -> loadScenes( scenes );
 	
 	library_dialog = new Library( this, KTStatus->
 			currentDrawingArea());
@@ -3964,7 +3967,7 @@ void KToon::createGUI()
 	KTStatus -> setCurrentKeyFrame( ( ( KTStatus -> currentScene() -> getLayers() ).first() -> keyFrames() ).first() );
 	
 // 	exposure_sheet_dialog -> touchFirstFrame();
-	scenes_dialog -> selectFirstScene();
+// 	scenes_dialog -> selectFirstScene();
 	
 // 	timeline_dialog -> frameSequenceManager() -> frameLayout() -> slotUpdateMaxUsedFrames();
 // 	exposure_sheet_dialog -> updateIndicators( exposure_sheet_dialog -> currentLayerObj() );
@@ -4024,3 +4027,4 @@ void KToon::setPalette(const QPalette &pal)
 	main_panel -> setPaletteBackgroundPixmap( QPixmap(bgImg) );
 }
 
+#endif

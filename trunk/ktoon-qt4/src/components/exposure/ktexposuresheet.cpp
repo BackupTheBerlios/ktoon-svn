@@ -29,8 +29,7 @@
 #include <QList>
 
 
-KTExposureSheet::KTExposureSheet( QWidget *parent)
-	: KTModuleWidgetBase(parent, "Exposure Sheet")
+KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, "Exposure Sheet")
 {
 	KTINIT;
 	setCaption( tr( "Exposure Sheet" ) );
@@ -46,17 +45,14 @@ KTExposureSheet::KTExposureSheet( QWidget *parent)
 		QPixmap(KTOON_HOME+"/images/icons/arrowdown.xpm" );
 	setupButtons();
 	
-	m_viewLayer = new KTTableExposure(100, 1,this,"KTExposureTable");
-	m_viewLayer->touchFirstFrame();
-	addChild(m_viewLayer);
+	m_scenes = new QTabWidget(this);
+	
+	addChild(m_scenes);
 //  	hide();
 	show();
 
 // 	setResizeEnabled ( true );
-	connect(m_viewLayer, SIGNAL(clickedFrame()), this, SIGNAL(frameSelected()));
-	connect(m_viewLayer, SIGNAL(layerSelected(int)), this, SIGNAL(layerSelected(int)));
-	connect(m_viewLayer, SIGNAL(layerInserted()), this, SIGNAL(layerInserted()));
-	connect(m_viewLayer, SIGNAL(layerRemoved()), this, SIGNAL(layerRemoved()));
+
 	createLayerManager();
 }
 
@@ -96,7 +92,7 @@ void KTExposureSheet::setupButtons()
 void KTExposureSheet::createLayerManager()
 {
 	//FIXME:kuadrosx crear una clase que me permita visualizar los items y seleccionarlos unQCheckBox
-	m_layerManager = new QListView/*QListView*/(0/*,"", Qt::WType_Popup*/);
+	m_layerManager = new QListView;
 	m_layerManager->setMovement ( QListView::Static  );
 	
 // 	m_layerManager->setViewMode ( QListView::ListMode );
@@ -137,6 +133,27 @@ void KTExposureSheet::createLayerManager()
 // 	}
 
 	m_layerManager->resize(150,100);
+}
+
+void KTExposureSheet::addScene(const QString &name, int id)
+{
+	m_viewLayer = new KTTableExposure(100, 1,m_scenes);
+	m_viewLayer->touchFirstFrame();
+	
+	m_scenes->addTab(m_viewLayer, name); // TODO: Necesitamos una forma facil de identificar scenas, puede ser por el indice de insersion
+	
+	// 	connect(m_viewLayer, SIGNAL(clickedFrame()), this, SIGNAL(frameSelected()));
+	
+	connect(m_viewLayer, SIGNAL(cellSelected( int, int )), this, SIGNAL(frameSelected(int, int)));
+	
+	connect(m_viewLayer, SIGNAL(layerSelected(int)), this, SIGNAL(layerSelected(int)));
+	connect(m_viewLayer, SIGNAL(layerInserted()), this, SIGNAL(layerInserted()));
+	connect(m_viewLayer, SIGNAL(layerRemoved()), this, SIGNAL(layerRemoved()));
+}
+
+void KTExposureSheet::renameScene(const QString &name, int id)
+{
+	m_scenes->setTabText(id, name);
 }
 
 void KTExposureSheet::applyAction(int action)

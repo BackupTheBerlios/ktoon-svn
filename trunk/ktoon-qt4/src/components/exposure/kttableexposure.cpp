@@ -29,7 +29,7 @@
 #include "layer.h"
 #include <memory>
 
-KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent, const char *name)
+KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent)
 	: QScrollArea(parent),m_numLayer(0), m_currentLayer(0), m_currentFrame(0)
 {
 	KTINIT;

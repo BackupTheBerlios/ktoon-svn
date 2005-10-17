@@ -25,16 +25,16 @@
 #include <QPixmap>
 #include <QLabel>
 
-#include "about.h"
+#include "ktabout.h"
 #include "images.h"
 #include "ktapplication.h"
 #include "kimageeffect.h"
 
 #define DEBUG_ABOUT 1
 
-About::About( QWidget *parent ) : Q3TabDialog( parent )
+KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( parent )
 { 
-	setCaption( tr( "About" ) + QString( " KToon..." ) );
+	setCaption( tr( "KTAbout" ) + QString( " KToon..." ) );
 
     	//1: Credits
 
@@ -55,7 +55,7 @@ About::About( QWidget *parent ) : Q3TabDialog( parent )
 	
 	KImageEffect::fade(credits, 0.25, paletteBackgroundColor());
     
-	m_credits = new KTAnimWidget( QPixmap(credits), creditsText, this );
+	m_credits = new KTAnimWidget( QPixmap(credits), creditsText );
 	addTab( m_credits, tr( "Credits" ) );
 
     	// 2: Ack
@@ -68,7 +68,7 @@ About::About( QWidget *parent ) : Q3TabDialog( parent )
 		lop << QPixmap(tmp);
 	}
 	
-	m_ack = new KTAnimWidget( lop,this );
+	m_ack = new KTAnimWidget( lop );
 
 	addTab( m_ack, tr( "Acknowledgements" ) );
 
@@ -141,7 +141,7 @@ About::About( QWidget *parent ) : Q3TabDialog( parent )
 	setMaximumSize( m_credits->size() );
 }
 
-About::~About()
+KTAbout::~KTAbout()
 {
 }
 

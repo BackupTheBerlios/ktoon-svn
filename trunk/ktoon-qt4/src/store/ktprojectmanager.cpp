@@ -21,9 +21,10 @@
 #include "ktprojectmanager.h"
 #include "ktdebug.h"
 
-KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent)
+KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_currentDocument(0)
 {
 	KTINIT;
+
 }
 
 
@@ -47,8 +48,59 @@ KTDocument *KTProjectManager::createDocument(const QString &name)
 	KTDocument *doc = new KTDocument(this);
 	m_documents << doc;
 	
-	
 	return doc;
 }
 
+KTDocument *KTProjectManager::currentDocument()
+{
+	return m_currentDocument;
+}
+
+KTScene *KTProjectManager::currentScene()
+{
+	if ( ! m_currentDocument )
+	{
+		return 0;
+	}
+	
+	return m_currentDocument->currentScene();
+}
+
+KTLayer *KTProjectManager::currentLayer()
+{
+	if ( ! currentScene() )
+	{
+		return 0;
+	}
+	return currentScene()->currentLayer();
+}
+
+KTKeyFrame *KTProjectManager::currentKeyFrame()
+{
+	if ( ! currentLayer() )
+	{
+		return 0;
+	}
+	return currentLayer()->currentFrame();
+}
+
+void KTProjectManager::setCurrentDocument(int index)
+{
+	KTDocument *doc = m_documents[index];
+	if ( doc )
+	{
+		m_currentDocument = doc;
+	}
+}
+
+void KTProjectManager::insertScene(const QString &name, int index)
+{
+	
+// 	emit sceneInserted(name, index);
+}
+
+void KTProjectManager::renameScene(const QString &name, int index)
+{
+// 	emit sceneRenamed(name, index);
+}
 
