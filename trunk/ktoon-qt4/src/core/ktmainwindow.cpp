@@ -41,13 +41,15 @@
 #include <QTextEdit>
 //
 
-KTMainWindow::KTMainWindow() : DMainWindow(0, "KToon-MainWindow")
+KTMainWindow::KTMainWindow() : DMainWindow()
 {
 	KTINIT;
 
 	setStatusBar( new KTStatusBar(this) );
 	
-	setWindowTitle(tr("KToon: 2D animation tool kit"));
+	setWindowTitle(tr("KToon: 2D animation toolkit"));
+	
+	m_projectManager = new KTProjectManager(this);
 	
 	m_workSpace = new QWorkspace;
 	m_workSpace->setScrollBarsEnabled ( true );
@@ -56,7 +58,7 @@ KTMainWindow::KTMainWindow() : DMainWindow(0, "KToon-MainWindow")
 	
 	newDocument();
 	
-	addWidget(m_workSpace, tr("Scene 1"));
+	addWidget(m_workSpace, tr("Illustration"));
 
 	setupBackground();
 	
@@ -170,7 +172,7 @@ void KTMainWindow::createGUI()
 	m_libraryDialog->setIcon(QPixmap(KTOON_HOME+"/images/icons/library.xpm"));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Library"),m_libraryDialog);
 	
-	Scenes *m_scenes = new Scenes( this);
+	KTScenesWidget *m_scenes = new KTScenesWidget( this);
 	m_scenes->setIcon(QPixmap(KTOON_HOME+"/images/icons/scenes.xpm"));
 	toolWindow(DDockWindow::Right)->addWidget(tr("Scenes"),m_scenes);
 	
@@ -308,9 +310,11 @@ void KTMainWindow::setPalette(const QPalette &pal)
 
 void KTMainWindow::newDocument(const QString &name, const QSize &size)
 {
+	KTDocument *document = m_projectManager->createDocument(name);
+	
 	static_cast<KTStatusBar*>(statusBar())->setStatus(tr("Opening a new document..."));
 	
-	KTViewDocument *viewDocument = new KTViewDocument(m_workSpace);
+	KTViewDocument *viewDocument = new KTViewDocument(document, m_workSpace);
 	m_workSpace->addWindow(viewDocument);
 	viewDocument->setWindowTitle(name);
 	

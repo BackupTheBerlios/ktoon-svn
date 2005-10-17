@@ -38,7 +38,7 @@
 #include "ktoonscript.h"
 #include "properties.h"
 #include "preferences.h"
-#include "scenes.h"
+#include "ktsceneswidget.h"
 
 #include "ktbrushwidget.h"
 // #include "brushes.h"
@@ -61,6 +61,9 @@
 
 #include "dmainwindow.h"
 #include "ktstatusbar.h"
+
+// Projects
+#include "ktprojectmanager.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -132,6 +135,9 @@ class KTMainWindow : public DMainWindow
 	private slots:
 		void changeCurrentColors(const QColor &, const QColor &);
 		void changeCurrentBrush(KTBrush *);
+		
+	private:
+		KTProjectManager *m_projectManager;
 		
 	private:
 		QWorkspace *m_workSpace;

@@ -18,34 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTSTATUSBAR_H
-#define KTSTATUSBAR_H
+#include "ktlayer.h"
 
-#include <QProgressBar>
-#include <QLabel>
-
-#include <QStatusBar>
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-
-class KTStatusBar : public QStatusBar
+KTLayer::KTLayer(QObject *parent) : QObject(parent)
 {
-	Q_OBJECT
-	public:
-		KTStatusBar(QWidget *parent);
-		~KTStatusBar();
-		void addWidget ( QWidget *widget, int stretch = 0, bool permanent = FALSE );
-		
-	public slots:
-		void setStatus(const QString &status);
-		void advance(int step);
-		
-	private:
-		QLabel *m_status;
-		QProgressBar *m_progressBar;
+}
 
-};
 
-#endif
+KTLayer::~KTLayer()
+{
+}
+
+Frames KTLayer::frames()
+{
+	return m_frames;
+}
+
+void KTLayer::setFrames(const Frames &frames)
+{
+	m_frames = frames;
+}
+
+KTKeyFrame *KTLayer::createFrame()
+{
+	KTKeyFrame *keyFrame = new KTKeyFrame(this);
+	
+	m_frames << keyFrame;
+	
+	return keyFrame;
+}
+

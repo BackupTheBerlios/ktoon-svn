@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   krawek@toonka.com                                          	   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,33 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTSTATUSBAR_H
-#define KTSTATUSBAR_H
+#ifndef KTDOCUMENT_H
+#define KTDOCUMENT_H
 
-#include <QProgressBar>
-#include <QLabel>
+#include <QObject>
+#include "ktscene.h"
 
-#include <QStatusBar>
+typedef QList<KTScene *> Scenes;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTStatusBar : public QStatusBar
+class KTDocument : public QObject
 {
 	Q_OBJECT
 	public:
-		KTStatusBar(QWidget *parent);
-		~KTStatusBar();
-		void addWidget ( QWidget *widget, int stretch = 0, bool permanent = FALSE );
-		
-	public slots:
-		void setStatus(const QString &status);
-		void advance(int step);
+		KTDocument(QObject *parent = 0);
+		~KTDocument();
+		Scenes scenes() const;
+		void setScenes(const Scenes &);
+		KTScene *createScene();
 		
 	private:
-		QLabel *m_status;
-		QProgressBar *m_progressBar;
+		Scenes m_scenes;
 
 };
 

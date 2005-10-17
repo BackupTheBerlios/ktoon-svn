@@ -46,7 +46,7 @@
 #include "tools.h"
 #include "properties.h"
 #include "preferences.h"
-#include "scenes.h"
+#include "ktsceneswidget.h"
 #include "brushes.h"
 #include "colorpalette.h"
 
@@ -912,7 +912,7 @@ class KToon : public Q3MainWindow
 		//Non Modal Dialog Boxes for environment interaction
 		Tools *tools_dialog;
 		Brushes *brushes_dialog;
-		Scenes *scenes_dialog;
+		KTScenesWidget *scenes_dialog;
 		ColorPalette *color_palette_dialog;
 		
 // 		ExposureSheet *exposure_sheet_dialog;

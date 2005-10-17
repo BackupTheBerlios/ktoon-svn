@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "scenes.h"
+#include "ktsceneswidget.h"
 
 #include "ktapplication.h"
 #include "ktdebug.h"
@@ -35,13 +35,13 @@
 
 //--------------- CONSTRUCTOR --------------------
 
-Scenes::Scenes( QWidget *parent)
-	: KTModuleWidgetBase( parent, "Scenes")
+KTScenesWidget::KTScenesWidget( QWidget *parent)
+	: KTModuleWidgetBase( parent, "KTScenesWidget")
 {
     Q_CHECK_PTR( parent );
     KTINIT;
     //Initializations
-    setCaption( tr( "Scenes" ) );
+    setCaption( tr( "KTScenesWidget" ) );
 
     move( 13, 300 );
 
@@ -61,7 +61,7 @@ Scenes::Scenes( QWidget *parent)
 
 //-------------- DESTRUCTOR -----------------
 
-Scenes::~Scenes()
+KTScenesWidget::~KTScenesWidget()
 {
 	KTEND;
 	m_imgs.clear();
@@ -69,7 +69,7 @@ Scenes::~Scenes()
 	delete m_valueName;
 }
 
-void Scenes::setupButtons()
+void KTScenesWidget::setupButtons()
 {
 	//------------- Operations on the Buttons -----------------
 	m_buttonsPanel = new QGroupBox(this);
@@ -94,13 +94,13 @@ void Scenes::setupButtons()
 	addChild(m_buttonsPanel);
 }
 
-void Scenes::applyAction(int action)
+void KTScenesWidget::applyAction(int action)
 {
 	switch(action)
 	{
 		case InsertScene:
 		{
-			ktDebug() << "Scenes::applyAction(int InsertScene) init" << endl;
+			ktDebug() << "KTScenesWidget::applyAction(int InsertScene) init" << endl;
 			
 			QString scene_number;
 			scene_max_value++;
@@ -122,7 +122,7 @@ void Scenes::applyAction(int action)
 // 			KTStatus->currentDrawingArea()->modifyDocument( true );
 // 			emit sceneInserted();
 // 			table_scenes->setSelected( new_scene, true );
-			ktDebug() << "Scenes::applyAction(int InsertScene) finished" << endl;
+			ktDebug() << "KTScenesWidget::applyAction(int InsertScene) finished" << endl;
 			break;
 			
 		}
@@ -217,7 +217,7 @@ void Scenes::applyAction(int action)
 	}
 }
 
-void Scenes::setupTableScenes()
+void KTScenesWidget::setupTableScenes()
 {
 	//------------ Operations on the scene table -------------
 	
@@ -259,9 +259,9 @@ void Scenes::setupTableScenes()
 }
 //--------------- PUBLIC MEMBERS ------------------
 
-void Scenes::loadScenes( QList<Scene*> scenes )
+void KTScenesWidget::loadScenes( QList<Scene*> scenes )
 {
-	ktDebug() << "Scenes::loadScenes init" << endl;
+	ktDebug() << "KTScenesWidget::loadScenes init" << endl;
 	scene_max_value = 0;
 	number_of_scenes = 0;
 	
@@ -280,10 +280,10 @@ void Scenes::loadScenes( QList<Scene*> scenes )
 		scene_max_value++;
 		number_of_scenes++;
 // 	}
-// 	ktDebug() << "Scenes::loadScenes( ) finished" << endl;
+// 	ktDebug() << "KTScenesWidget::loadScenes( ) finished" << endl;
 }
 
-void Scenes::selectFirstScene()
+void KTScenesWidget::selectFirstScene()
 {
 // 	Q_CHECK_PTR(table_scenes);
 // 	Q_CHECK_PTR(table_scenes -> firstChild());
@@ -292,7 +292,7 @@ void Scenes::selectFirstScene()
 //     		table_scenes -> setSelected( table_scenes -> firstChild(), true );
 }
 
-int Scenes::exportAnimation( const QString &file_name, const QString &format )
+int KTScenesWidget::exportAnimation( const QString &file_name, const QString &format )
 {
 //     Q3ListViewItemIterator it( table_scenes, Q3ListViewItemIterator::Checked );
     int acc = 1, flag = 0;
@@ -311,17 +311,17 @@ int Scenes::exportAnimation( const QString &file_name, const QString &format )
 
 //------------------- SLOTS ----------------------------
 
-void Scenes::insertScene()
+void KTScenesWidget::insertScene()
 {
 	applyAction(InsertScene);
 }
 
-void Scenes::removeScene()
+void KTScenesWidget::removeScene()
 {
 	applyAction(RemoveScene);
 }
 
-void Scenes::changeValueName()
+void KTScenesWidget::changeValueName()
 {
 // 	
 	
@@ -363,9 +363,9 @@ void Scenes::changeValueName()
 // 	}
 }
 
-void Scenes::selectScene(QString name, int index)
+void KTScenesWidget::selectScene(QString name, int index)
 {
-	ktDebug() << "Scenes::selectScene() Init" <<  endl;
+	ktDebug() << "KTScenesWidget::selectScene() Init" <<  endl;
 	m_valueName->setText(name);
 	emit sceneSelected(index);
 	
@@ -379,19 +379,19 @@ void Scenes::selectScene(QString name, int index)
 // 	}
 // 	
 // 	int scene_pos = table_scenes -> itemPos( selected_scene );
-// 	ktDebug() << "Scenes::scene_pos " << scene_pos/16  << endl;
+// 	ktDebug() << "KTScenesWidget::scene_pos " << scene_pos/16  << endl;
 // 	current_name = selected_scene->text( 0 );
 // 	m_valueName -> setText( selected_scene -> text( 0 ) );
 // 
 // 	Q3PtrList<Scene> sc = KTStatus->currentDocument()->getAnimation() -> getScenes();
-// 	ktDebug() << "Scenes::sc.count() " << sc.count()  << endl;
+// 	ktDebug() << "KTScenesWidget::sc.count() " << sc.count()  << endl;
 // 	
 	
 	//se optiene la posiscion de la escena seleccionada, y se coloca como la currentScene em KTStatus
 // 	if(sc.at( scene_pos / 16 ))
 // 	{
 // 		KTStatus -> setCurrentScene( sc.at( scene_pos / 16 ) );
-// 		ktDebug() << "Scenes KTStatus -> setCurrentScene( sc.at( scene_pos / 16 ) );" ;
+// 		ktDebug() << "KTScenesWidget KTStatus -> setCurrentScene( sc.at( scene_pos / 16 ) );" ;
 // 	}
 
 
@@ -427,25 +427,25 @@ void Scenes::selectScene(QString name, int index)
 // 	KTStatus->currentDrawingArea() -> updateGL();
 // 	k_toon -> timeline() -> frameSequenceManager() -> getRuler() -> slotSetOffset( 1 );
 // 	k_toon -> renderCameraPreview() -> updateGL();
-	ktDebug() << "Scenes::selectScene() finished" <<  endl;
+	ktDebug() << "KTScenesWidget::selectScene() finished" <<  endl;
 }
 
-void Scenes::moveSceneUp()
+void KTScenesWidget::moveSceneUp()
 {
 	applyAction(MoveSceneUp);
 }
 
-void Scenes::moveSceneDown()
+void KTScenesWidget::moveSceneDown()
 {
 	applyAction(MoveSceneDown);
 }
 
-void Scenes::actionButton( QAbstractButton *b)
+void KTScenesWidget::actionButton( QAbstractButton *b)
 {
 	applyAction(m_buttonGroup->buttons().indexOf(b));
 }
 
-void Scenes::sceneDobleClick(QTreeWidgetItem * item, int )
+void KTScenesWidget::sceneDobleClick(QTreeWidgetItem * item, int )
 {
 	int index = m_tableScenes->indexOfTopLevelItem(item);
 	emit( esceneDobleClicked(index));

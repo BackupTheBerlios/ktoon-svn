@@ -34,17 +34,15 @@ class KTKeyFrame;
 class KTKeyFrame : public QObject
 {
 	public:
-		KTKeyFrame();
+		KTKeyFrame(QObject *parent = 0);
 		~KTKeyFrame();
 		void addComponent(AGraphicComponent *comp);
 		AGraphicComponent *takeLastComponent();
 		
-		QList<AGraphicComponent *> components();
+		QList<AGraphicComponent *> components() const;
 		
 	private:
 		QList<AGraphicComponent *> m_components;
 };
-
-typedef QList<KTKeyFrame> Frames;
 
 #endif

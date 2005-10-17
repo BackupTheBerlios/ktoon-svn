@@ -23,7 +23,7 @@
 
 /**
  * @file scenes.h
- *   Include this file if you need the class Scenes
+ *   Include this file if you need the class KTScenesWidget
  */
 
 #include "ktmodulewidgetbase.h"
@@ -49,7 +49,7 @@ class Scene;
  * mechanisms for adding, editing, and removing the scenes or their attributes.
  */
 
-class Scenes : public KTModuleWidgetBase
+class KTScenesWidget : public KTModuleWidgetBase
 {
 Q_OBJECT
 	public:
@@ -57,17 +57,17 @@ Q_OBJECT
 		/**
 		* Default Constructor
 		*
-		* Constructs a Scenes dialog box.
+		* Constructs a KTScenesWidget dialog box.
 		* @param parent The parent widget
 		*
 		*/
-		Scenes( QWidget *parent);
+		KTScenesWidget( QWidget *parent);
 		/**
 		*   Default Destructor
 		*
-		* Destroys the Scenes dialog box.
+		* Destroys the KTScenesWidget dialog box.
 		*/
-		~Scenes();
+		~KTScenesWidget();
 	
 		/**
 		*   Loads the specified scenes

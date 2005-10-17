@@ -42,7 +42,7 @@ APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0),
 	
 	m_currentBrush = new KTBrush;
 	
-	m_currentFrame = new KTKeyFrame; // TODO: delete me
+	m_currentFrame = new KTKeyFrame;
 	
 	show();
 }

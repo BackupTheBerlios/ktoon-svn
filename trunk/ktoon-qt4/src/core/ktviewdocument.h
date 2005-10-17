@@ -36,6 +36,8 @@
 
 #include "ktpaintareacontainer.h"
 
+#include "ktdocument.h"
+
 /**
  * @author Jorge Cuadrado
 */
@@ -43,7 +45,7 @@ class KTViewDocument : public KTMdiWindow
 {
 	Q_OBJECT
 	public:
-		KTViewDocument( QWidget *parent = 0 );
+		KTViewDocument( KTDocument *doc, QWidget *parent = 0 );
 		~KTViewDocument();
 		void close();
 		APaintArea *drawArea();
@@ -57,6 +59,9 @@ class KTViewDocument : public KTMdiWindow
 		QToolBar *m_barGrid, *m_toolbar;
 		
 		KTPaintAreaContainer *m_paintAreaContainer;
+		
+		KTDocument *m_document;
+		
 	private:
 		void createActions();
 		void createToolbar();

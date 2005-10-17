@@ -39,8 +39,8 @@ static const char* const icon_xpm[]={
 #include "docksplitter.h"
 #include "comdefs.h"
 
-DMainWindow::DMainWindow(QWidget *parent, const char *name)
-    :MWCLASS(parent, name), m_pFirstRemoved(false), m_pCurrentWidget(0)
+DMainWindow::DMainWindow(QWidget *parent)
+    :MWCLASS(parent), m_pFirstRemoved(false), m_pCurrentWidget(0)
 {
     loadSettings();
     createToolWindows();

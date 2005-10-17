@@ -20,7 +20,7 @@
 
 #include "ktkeyframe.h"
 
-KTKeyFrame::KTKeyFrame() : QObject()
+KTKeyFrame::KTKeyFrame(QObject *parent) : QObject(parent)
 {
 }
 
@@ -39,7 +39,7 @@ AGraphicComponent *KTKeyFrame::takeLastComponent()
 	return m_components.takeLast();
 }
 
-QList<AGraphicComponent *> KTKeyFrame::components()
+QList<AGraphicComponent *> KTKeyFrame::components() const
 {
 	return m_components;
 }

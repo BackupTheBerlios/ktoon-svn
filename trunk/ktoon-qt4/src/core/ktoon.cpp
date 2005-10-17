@@ -1115,7 +1115,7 @@ void KToon::setupDialogs()
 	QObject::connect(tools_dialog, SIGNAL(activate(bool)),
 			   window_tools, SLOT(setOn(bool)));
 	
-	scenes_dialog = new Scenes( this);
+	scenes_dialog = new KTScenesWidget( this);
 	scenes_dialog -> show();
 	QObject::connect(scenes_dialog, SIGNAL(activate(bool)),
 			 window_scenes, SLOT(setOn(bool)));
@@ -1960,7 +1960,7 @@ void KToon::slotNewDocument()
 		show();
 		//FIXME: hacer una funcion que permita reiniciar la tabla sin tener nesecidad de volver a crear m_ExposureSheetDialog
 		m_ExposureSheetDialog = new KTExposureSheet( this);
-		scenes_dialog = new Scenes( this);
+		scenes_dialog = new KTScenesWidget( this);
 		
 		m_timeLine = new KTTimeLine( this );
 		m_timeLine->hide();
@@ -3525,7 +3525,7 @@ void KToon::slotCloseDrawingArea()
 		m_timeLine = 0;
 	}
 
-	//FIXME: scenes_dialog = 0 !!! ¿?
+	//FIXME: scenes_dialog = 0 !!! ?
 	scenes_dialog = 0;
 	tools_dialog -> hide();
 	library_dialog = 0;
@@ -3847,7 +3847,7 @@ void KToon::createGUI()
 	brushes_dialog -> loadBrushes( brushes );
 	
 	QList<Scene*> scenes = KTStatus->currentDocument()->getAnimation() -> getScenes();
-	scenes_dialog = new Scenes( this);//, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
+	scenes_dialog = new KTScenesWidget( this);//, Qt::WStyle_Tool, window, id_window_scenes, window_scenes );
 	scenes_dialog -> loadScenes( scenes );
 	
 	library_dialog = new Library( this, KTStatus->

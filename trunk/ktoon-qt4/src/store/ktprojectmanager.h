@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   krawek@toonka.com                                          	   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,34 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTSTATUSBAR_H
-#define KTSTATUSBAR_H
+#ifndef KTPROJECTMANAGER_H
+#define KTPROJECTMANAGER_H
 
-#include <QProgressBar>
-#include <QLabel>
+#include <QObject>
+#include "ktdocument.h"
 
-#include <QStatusBar>
+typedef QList<KTDocument *> Documents;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTStatusBar : public QStatusBar
+class KTProjectManager : public QObject
 {
 	Q_OBJECT
 	public:
-		KTStatusBar(QWidget *parent);
-		~KTStatusBar();
-		void addWidget ( QWidget *widget, int stretch = 0, bool permanent = FALSE );
+		KTProjectManager(QObject *parent = 0);
+		~KTProjectManager();
 		
-	public slots:
-		void setStatus(const QString &status);
-		void advance(int step);
+		Documents documents() const;
+		void setDocuments(const Documents &);
+		
+		KTDocument *createDocument(const QString &name);
 		
 	private:
-		QLabel *m_status;
-		QProgressBar *m_progressBar;
-
+		Documents m_documents;
 };
 
 #endif

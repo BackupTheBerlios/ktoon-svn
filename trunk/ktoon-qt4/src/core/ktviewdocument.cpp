@@ -34,9 +34,11 @@
 #include "status.h"
 #include "drawingarea.h"
 
-KTViewDocument::KTViewDocument(QWidget *parent ) : KTMdiWindow(parent)
+KTViewDocument::KTViewDocument(KTDocument *doc, QWidget *parent ) : KTMdiWindow(parent), m_document(doc)
 {
 	setIcon(QPixmap(KTOON_HOME+"/images/icons/layer_pic.xpm") ); // FIXME: new image for documents
+	
+	
 	
 	m_paintAreaContainer = new KTPaintAreaContainer(this);
 	
@@ -46,6 +48,12 @@ KTViewDocument::KTViewDocument(QWidget *parent ) : KTMdiWindow(parent)
 	
 	connect( m_paintAreaContainer->drawArea(), SIGNAL(mousePos(const QPoint &)),  this,  SLOT(showPos(const QPoint &)) );
 	
+	KTScene *scene  = m_document->createScene();
+	KTLayer *layer = scene->createLayer();
+	KTKeyFrame *keyFrame = layer->createFrame();
+	
+	m_paintAreaContainer->drawArea()->setKeyFrame( keyFrame );
+	
 	createActions();
 	createToolbar();
 	createTools();
@@ -53,9 +61,9 @@ KTViewDocument::KTViewDocument(QWidget *parent ) : KTMdiWindow(parent)
 	
 	/**************************************/
 	// FIXME: delete this
-	DrawingArea *area  = new DrawingArea(0);
-	area->hide();
-	KTStatus->setDrawingArea(area);
+// 	DrawingArea *area  = new DrawingArea(0);
+// 	area->hide();
+// 	KTStatus->setDrawingArea(area);
 	/**************************************/
 	loadPlugins();
 }
@@ -420,7 +428,7 @@ void KTViewDocument::loadPlugins()
 		}
 		else
 		{
-			ktError() << "NOT LOAD" << endl;
+			ktError() << tr("Not load, please try to rebuild from the scratch") << endl;
 		}
 	}
 }
@@ -490,9 +498,7 @@ void KTViewDocument::createToolbar()
 	m_barGrid->addActions(viewPreviousGroup->actions());
 	m_barGrid->addSeparator();
 	m_barGrid->addActions(viewNextGroup->actions());
-
 	
-
 }
 
 void KTViewDocument::createMenu()

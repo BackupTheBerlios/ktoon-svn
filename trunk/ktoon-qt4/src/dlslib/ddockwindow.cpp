@@ -112,7 +112,7 @@ DDockInternalWidget *DDockWindow::centralWidget()
 
 // DDockInternalWidget
 
-DDockInternalWidget::DDockInternalWidget(QWidget *parent, DDockWindow::Position position) : QWidget(parent), m_position(position), m_visible(false), m_toggledButton(0), m_separator(0)
+DDockInternalWidget::DDockInternalWidget(QWidget *parent, DDockWindow::Position position) : QWidget(parent), m_separator(0), m_position(position), m_visible(false), m_toggledButton(0)
 {
 	qDebug("[Initializing DDockInternalWidget]");
 	

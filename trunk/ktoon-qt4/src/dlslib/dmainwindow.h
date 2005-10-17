@@ -25,7 +25,6 @@
 
 #include <QMainWindow>
 #define MWCLASS QMainWindow
-#endif
 
 #include "ddockwindow.h"
 #include <QList>
@@ -41,7 +40,7 @@ class DMainWindow: public MWCLASS
 {
 	Q_OBJECT
 	public:
-		DMainWindow(QWidget *parent = 0, const char *name = 0);
+		DMainWindow(QWidget *parent = 0);
 		virtual ~DMainWindow();
     
 		/**@return The tool window in given @p position.*/
@@ -103,4 +102,6 @@ class DMainWindow: public MWCLASS
 		void invalidateActiveTabWidget();
 
 };
+
+#endif
 
