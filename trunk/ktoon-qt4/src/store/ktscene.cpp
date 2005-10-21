@@ -19,6 +19,8 @@
  ***************************************************************************/
 
 #include "ktscene.h"
+#include "ktdebug.h"
+
 
 KTScene::KTScene(QObject *parent) : QObject(parent), m_currentLayer(0)
 {
@@ -67,7 +69,6 @@ KTLayer *KTScene::currentLayer()
 void KTScene::setCurrentLayer(int index)
 {
 	KTLayer *layer = m_layers[index];
-	
 	if ( layer )
 	{
 		m_currentLayer = layer;

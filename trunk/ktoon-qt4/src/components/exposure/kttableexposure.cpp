@@ -37,28 +37,9 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent)
 	viewport ()->setPaletteBackgroundColor ( paletteBackgroundColor() );
 	
 	m_port = new QWidget(this);
-	
-// 	QGroupBox *gridNumber = new QGroupBox( m_port );
-// 
-// 	QVBoxLayout *gridLayout = new QVBoxLayout(gridNumber);
-// 	gridLayout->setMargin(0);
-// 	gridLayout->setSpacing(0);
-	
-// 	QLabel *tmp = new QLabel(gridNumber);
-// 	tmp->setText(" ");
-// 	for(int i = 0; i < rows; i++)
-// 	{
-// 		tmp = new QLabel(gridNumber);
-// 		tmp->setText(QString::number(i));
-// 	}
-// 	gridNumber->setMaximumWidth(tmp->width());
-// 	gridNumber->setMinimumWidth(tmp->width());
 	m_layout = new QBoxLayout (  m_port, QBoxLayout::LeftToRight,4,1);
 	m_layout->setSpacing(0);
 	m_layout->setMargin(0);
-// 	m_layout->addWidget ( gridNumber );
-	
-
 	for(int i = 0; i < cols; i++)
 	{
 		insertLayer(rows);
@@ -66,16 +47,6 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent)
 	
 	setWidget(m_port);
 	setWidgetResizable (true);
-// 	setMinimumHeight(sizeHint().height());
-// 	QList<Layer*> ly = KTStatus->currentScene()->getLayers();
-// 	KTStatus->setCurrentLayer(ly.at(0));
-// // 	QList<KeyFrame*> kf =  KTStatus->currentLayer()->keyFrames();
-// 	KeyFrame *nkf = new KeyFrame();
-// 	nkf->setNameKeyFrame(QObject::tr( "Drawing " ) + QString( "1-1" ));
-// 	kf.append( nkf );
-// 	KTStatus->currentLayer()->setKeyFrames( kf );
-// 	KTStatus->setCurrentKeyFrame( nkf );
-	
 }
 
 
@@ -91,12 +62,15 @@ void KTTableExposure::touchFirstFrame()
 
 void KTTableExposure::clickedCell(int row,int col,int button,int gx,int gy)
 {
+	
 	m_currentLayer = col;
 	m_currentFrame = row;
-	emit(cellSelected(col, row));
+	
+	
 	
 	if ( m_layers.at(m_currentLayer)->currentFrameIsUsed() )
 	{
+		emit(cellSelected(col, row));
 // 		QList<KeyFrame*> kf = KTStatus->currentLayer()->keyFrames();
 // 		KTStatus->setCurrentKeyFrame( kf.at(m_currentFrame) );
 	}
@@ -109,7 +83,6 @@ void KTTableExposure::clickedCell(int row,int col,int button,int gx,int gy)
 
 void KTTableExposure::insertLayer(int rows, QString text)
 {
-// 	ktDebug() << "KTTableExposure::insertLayer(int " <<  rows << ", QString" <<  text << ")" << endl;
 	if(text == QString::null)
 	{
 		text = tr("Layer ")+ QString::number(m_numLayer);
@@ -129,32 +102,16 @@ void KTTableExposure::insertLayer(int rows, QString text)
 	connect(newLayer, SIGNAL(layerRenamed(int, const QString &)), this, SLOT(layerRename(int, const QString &)));
 	connect(newLayer, SIGNAL(frameRenamed(int, int, const QString &)), this, SLOT(frameRename(int, int, const QString &)));
 	
+	connect(newLayer, SIGNAL(requestInsertLayer()), this, SIGNAL(requestInsertLayer()));
+	
+	
 	m_layout->addWidget( newLayer, 0, /*Qt::AlignTop | */Qt::AlignLeft);
 	
 	m_numLayer++;
 	newLayer->show();
 	
 	m_port->adjustSize();
-	
-	std::auto_ptr<Layer> ap_n_layer(new Layer);
-	Layer* n_layer = ap_n_layer.get();
-    
-	n_layer->setIndexLayer( m_layers.count() );
-	n_layer->setNameLayer( tr( "Layer " ) + QString::number(m_numLayer) );
-	QList<KeyFrame*> kf = n_layer -> keyFrames();
-	KeyFrame *nkf = new KeyFrame();
-	nkf->setNameKeyFrame(QObject::tr( "Drawing " ) + QString::number(m_numLayer) + QString( "-1" ));
-	kf.append( nkf );
-	n_layer->setKeyFrames(kf);
-// 	QList<Layer*> ly = KTStatus -> currentScene() -> getLayers();
-// 	ly.append( n_layer );
-// 	KTStatus -> currentScene() -> setLayers( ly );
-	ap_n_layer.release();
-    
-// 	KTStatus->currentDrawingArea() -> modifyDocument( true );
-
-// 	if ( ( Timeline * )sender() != k_toon -> timeline() )
-		emit layerInserted();
+// 	emit layerInserted();
 	
 	
 }
@@ -162,11 +119,7 @@ void KTTableExposure::insertLayer(int rows, QString text)
 void KTTableExposure::changeCurrentLayer(int idLayer)
 {
 	m_currentLayer = idLayer;
-	m_currentFrame = m_layers.at(m_currentLayer)->useFrame();
-// 	QList<Layer*> ly = KTStatus->currentScene()->getLayers();
-// 	Layer *sl = ly.at( m_currentLayer );
-
-// 	KTStatus -> setCurrentLayer( sl );
+	m_currentFrame = m_layers.at(m_currentLayer)->frameUsed();
 	emit layerSelected(idLayer);
 }
 
@@ -175,24 +128,18 @@ void KTTableExposure::setUseFrame()
 	m_layers.at(m_currentLayer)->setUseFrames();
 }
 
+void KTTableExposure::requestInsertFrames()
+{
+	m_layers.at(m_currentLayer)->requestInsertFrames();
+}
+		
 void KTTableExposure::useFrame(const QString &newName)
 {
-// 	QList<KeyFrame*> kf = KTStatus->currentLayer()->keyFrames();
-// 	KeyFrame *nkf = new KeyFrame();
-// 	nkf->setNameKeyFrame(newName);
-// 	kf.append( nkf );
-// 	if(KTStatus->currentLayer())
-// 	{
-// 		KTStatus->currentLayer()->setKeyFrames( kf );
-// 	}
-// 	KTStatus->setCurrentKeyFrame( nkf );
-		// Warning: Layer::~Layer deletes its keyframes (here those in kf), and Status::~Status
-			// deletetes its current keyframe too! This will most likely lead to a double deletion.
+// 	emit requestInsertFrame();
 }
 
 void KTTableExposure::removeFrame()
 {
-// 	m_layers.at(idLayer)->removeFrame(idLayer);
 	m_layers.at(m_currentLayer)->removeCurrentFrame();
 }
 
@@ -201,10 +148,12 @@ void KTTableExposure::moveCurrentFrame(Direction dir)
 	if(dir == Up)
 	{
 		m_layers.at(m_currentLayer)->moveCurrentFrameUp();
+// 		emit requestMoveUpFrame();
 	}
 	else if(dir == Down)
 	{
 		m_layers.at(m_currentLayer)->moveCurrentFrameDown();
+// 		emit requestMoveDownFrame();
 	}
 }
 
@@ -215,7 +164,6 @@ void KTTableExposure::lockCurrentFrame()
 
 void KTTableExposure::removeCurrentLayer()
 {
-// 	ktDebug() << "KTTableExposure::ly.count()" <<  "m_numLayer > 1 && m_layers.at(m_currentLayer)->isSelected() " << (m_numLayer > 1) << " && "  << m_layers.at(m_currentLayer)->isSelected() << endl;
 	if(m_numLayer > 1 && m_layers.at(m_currentLayer)->isSelected())
 	{
 		m_layout->remove( m_layers.at(m_currentLayer) );
@@ -225,17 +173,7 @@ void KTTableExposure::removeCurrentLayer()
 			m_layers.at(i)->setId(i);
 		}
 		m_numLayer--;
-	
-// 		QList<Layer*> ly = KTStatus->currentScene()->getLayers();
-// 		ktDebug() << "KTTableExposure::ly.count()" << ly.count() << endl;
-// 		ktDebug() << "KTTableExposure::removeCurrentLayer()" << m_currentLayer;
-// 		ly.setAutoDelete( true );
-// 		ly.removeAt(m_currentLayer);
-// 		ly.setAutoDelete( false );
-// 		KTStatus->currentScene()->setLayers(ly);
-// 		ktDebug() << "KTTableExposure::ly.count()" << ly.count() << endl;
-		
-		emit (layerRemoved());
+// 		emit (layerRemoved());
 	}
 }
 
@@ -249,17 +187,11 @@ void KTTableExposure::pasteCurrentFrame()
 {
 // 	KTStatus->currentDrawingArea()->clear();
 // 	KTStatus->currentDrawingArea()->slotPasteInPlace();
-
 }
 
 void KTTableExposure::removeKeyFrame(int idLayer)
 {
-// 	QList<KeyFrame*> kf = KTStatus -> currentLayer() -> keyFrames();
-// 	KeyFrame *lkf = kf.at(idLayer);
-// 	kf.setAutoDelete( true );
-// 	kf.remove( lkf );
-// 	kf.setAutoDelete( false );
-// 	KTStatus->currentLayer()->setKeyFrames( kf );
+// 	emit requestRemoveFrame();
 }
 
 void KTTableExposure::removeLayer(int idLayer)
@@ -270,6 +202,7 @@ void KTTableExposure::removeLayer(int idLayer)
 	{
 		m_layers.at(i)->setId(i);
 	}
+// 	emit (layerRemoved());
 	m_numLayer--;
 }
 

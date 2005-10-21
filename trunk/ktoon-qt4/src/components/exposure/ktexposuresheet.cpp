@@ -91,7 +91,7 @@ void KTExposureSheet::setupButtons()
 
 void KTExposureSheet::createLayerManager()
 {
-	//FIXME:kuadrosx crear una clase que me permita visualizar los items y seleccionarlos unQCheckBox
+	//FIXME:kuadrosx crear una clase que me permita visualizar los items y seleccionarlos un QCheckBox
 	m_layerManager = new QListView;
 	m_layerManager->setMovement ( QListView::Static  );
 	
@@ -137,18 +137,24 @@ void KTExposureSheet::createLayerManager()
 
 void KTExposureSheet::addScene(const QString &name)
 {
-	m_viewLayer = new KTTableExposure(100, 1,m_scenes);
+	m_viewLayer = new KTTableExposure(100, 1, m_scenes);
 	m_viewLayer->touchFirstFrame();
 	
 	m_scenes->addTab(m_viewLayer, name); // TODO: Necesitamos una forma facil de identificar scenas, puede ser por el indice de insersion
 	
-	// 	connect(m_viewLayer, SIGNAL(clickedFrame()), this, SIGNAL(frameSelected()));
-	
+	connect(m_viewLayer, SIGNAL(clickedFrame()), this, SIGNAL(frameSelected()));
 	connect(m_viewLayer, SIGNAL(cellSelected( int, int )), this, SIGNAL(frameSelected(int, int)));
-	
 	connect(m_viewLayer, SIGNAL(layerSelected(int)), this, SIGNAL(layerSelected(int)));
-	connect(m_viewLayer, SIGNAL(layerInserted()), this, SIGNAL(layerInserted()));
-	connect(m_viewLayer, SIGNAL(layerRemoved()), this, SIGNAL(layerRemoved()));
+	
+	connect(m_viewLayer, SIGNAL(requestInsertFrame()), this, SIGNAL(requestInsertFrame()));
+	
+// 	connect(m_viewLayer, SIGNAL(layerInserted()), this, SIGNAL(requestInsertLayer()));
+// 	connect(m_viewLayer, SIGNAL(layerRemoved()), this, SIGNAL(requestRemoveLayer()));
+// 	
+// 	connect(m_viewLayer,  SIGNAL(requestInsertFrame()), this, SIGNAL(requestInsertFrame()));
+// 	connect(m_viewLayer,  SIGNAL(requestRemoveFrame()), this, SIGNAL(requestRemoveFrame()));
+// 	connect(m_viewLayer,  SIGNAL(requestMoveUpFrame()), this, SIGNAL(requestMoveUpFrame()));
+// 	connect(m_viewLayer,  SIGNAL(requestMoveDownFrame()), this, SIGNAL(requestMoveDownFrame()));
 }
 
 void KTExposureSheet::renameScene(const QString &name, int id)
@@ -163,13 +169,16 @@ void KTExposureSheet::applyAction(int action)
 	{
 		case InsertLayer:
 		{
-			m_viewLayer->insertLayer(100);
+			emit requestInsertLayer();
+// 			m_viewLayer->insertLayer(100);
+			
 // 			slotInsertLayer();
 			break;
 		}
 		case RemoveLayer:
 		{
-			m_viewLayer->removeCurrentLayer();
+			emit requestRemoveLayer();
+// 			m_viewLayer->removeCurrentLayer();
 			break;
 		}
 		case ShowManageLayer:
@@ -183,28 +192,33 @@ void KTExposureSheet::applyAction(int action)
 		}
 		case InsertFrames:
 		{
-			m_viewLayer->setUseFrame();
-			emit requestInsertFrame();
+// 			m_viewLayer->setUseFrame();
+			m_viewLayer->requestInsertFrames();
+// 			emit requestInsertFrame();
 			break;
 		}
 		case RemoveFrame:
 		{
-			m_viewLayer->removeFrame();
+// 			m_viewLayer->removeFrame();
+			emit requestRemoveFrame();
 			break;
 		}
 		case LockFrame:
 		{
+			
 			m_viewLayer->lockCurrentFrame();
 			break;
 		}
 		case MoveFrameUp:
 		{
-			m_viewLayer->moveCurrentFrame(KTTableExposure::Up );
+			emit requestMoveUpFrame();
+// 			m_viewLayer->moveCurrentFrame(KTTableExposure::Up );
 			break;
 		}
 		case MoveFrameDown:
 		{
-			m_viewLayer->moveCurrentFrame(KTTableExposure::Down );
+			emit requestMoveDownFrame();
+// 			m_viewLayer->moveCurrentFrame(KTTableExposure::Down );
 			break;
 		}
 	}
@@ -217,7 +231,6 @@ void KTExposureSheet::actionButton( QAbstractButton *b)
 
 void KTExposureSheet::loadLayersAndKeyframes( QList<Layer*> layers )
 {
-// 	ktDebug() << "KTExposureSheet::loadLayersAndKeyframes";
 	m_viewLayer->loadLayers(layers);
 }
 
@@ -225,3 +238,31 @@ void KTExposureSheet::updateLayersAndKeyframes()
 {
 	m_viewLayer->updateLayers();
 }
+
+void KTExposureSheet::insertCurrentLayer()
+{
+	//change m_viewLayer for currentTable
+	m_viewLayer->insertLayer(100);
+}
+
+void KTExposureSheet::removeCurrentLayer()
+{
+	//change m_viewLayer for currentTable
+	m_viewLayer->removeCurrentLayer();
+}
+
+void KTExposureSheet::removeCurrentFrame()
+{
+	m_viewLayer->removeFrame();
+}
+
+void KTExposureSheet::moveUpFrame()
+{
+	m_viewLayer->moveCurrentFrame(KTTableExposure::Up );
+}
+
+void KTExposureSheet::moveDownFrame()
+{
+	m_viewLayer->moveCurrentFrame(KTTableExposure::Down );
+}
+

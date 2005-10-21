@@ -51,7 +51,7 @@ class KTTableExposure : public QScrollArea //Q3ScrollView
 		void moveCurrentFrame(Direction dir);
 		void lockCurrentFrame();
 		void removeCurrentLayer();
-		
+		void requestInsertFrames();
 		void loadLayers(QList<Layer*> layers);
 		void updateLayers();
 		QStringList textHeaders();
@@ -78,17 +78,9 @@ class KTTableExposure : public QScrollArea //Q3ScrollView
 		void frameRename(int idFrame, int idLayer, const QString  &newName);
 		
 	signals:
-		void layerSelected(int id);
-		void clickedFrame();
 		void cellSelected(int idLayer, int idFrame);
-		void activateCursor();
-		void layerInserted();
-		void frameRemoved(int idFrame);
-		
-		void layerRemoved();
-		void layerRenamed( int , const QString & );
-		void frameMovedUp( int pos );
-		void frameMovedDown( int pos );
+		void clickedFrame();
+		void layerSelected(int id);
 		
 		
 };

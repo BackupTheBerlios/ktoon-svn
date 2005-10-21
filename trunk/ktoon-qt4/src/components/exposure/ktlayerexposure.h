@@ -28,9 +28,11 @@
 #include <QMouseEvent>
 #include <QBoxLayout>
 
-#include "layer.h"
 #include "esframe.h"
 #include "eslayer.h"
+
+
+#include "layer.h"
 
 typedef QList<ESFrame*> ListOfFrames;
 
@@ -41,7 +43,6 @@ class KTLayerExposure : public QFrame
 {
 	Q_OBJECT
 	public:
-		
 		KTLayerExposure(const QString &initial_text, int id,int numFrame, QWidget *parent = 0);
 		~KTLayerExposure();
 		QString textHeader();
@@ -51,8 +52,9 @@ class KTLayerExposure : public QFrame
 		void setId(int id);
 		int id();
 		bool currentFrameIsUsed();
-		int  useFrame();
+		int  frameUsed();
 		void loadFrames(Layer *layer);
+		void requestInsertFrames();
 		
 	private:
 		enum KTLActions { RenameFrame = 0, RemoveThisFrame, LockThisFrame, InsertFrames, CopyThisFrame, PasteIntoFrame, RenameLayer, RemoveThisLayer};
@@ -84,14 +86,21 @@ class KTLayerExposure : public QFrame
 		void selected(int id);
 		void clicked( int row, int col, int button,int x, int y);
 		void frameSelected(int id);
-		void setUsedFrame(const QString &);
+		
+		
+		void requestInsertFrame();
+// 		void setUsedFrame(const QString &);
+		
 		void clickedMenuFrame(int action, int idFrame, int idLayer);
 		void copyFrame();
 		void pasteFrame();
 		void removed(int);
-		void removedFrame(int id);
+// 		void removedFrame(int id);
 		void layerRenamed( int idLayer, const QString &name );
 		void frameRenamed( int idFrame, int idLayer, const QString &name );
+		
+		
+		
 	
 	protected:
 		QBoxLayout *m_layout;

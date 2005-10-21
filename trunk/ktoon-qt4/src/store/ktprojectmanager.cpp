@@ -117,6 +117,8 @@ void KTProjectManager::insertFrame()
 {
 	ktDebug() << "Inserting frame" << endl;
 	KTKeyFrame *keyFrame = currentLayer()->createFrame();
-	
 	emit frameInserted();
 }
+
+
+

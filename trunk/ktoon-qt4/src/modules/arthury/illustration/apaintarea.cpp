@@ -106,7 +106,6 @@ void APaintArea::setKeyFrame(int index)
 void APaintArea::setLayer(KTLayer *layer)
 {
 	m_layer = layer;
-	
 	setKeyFrame( 0 );// FIXME
 }
 

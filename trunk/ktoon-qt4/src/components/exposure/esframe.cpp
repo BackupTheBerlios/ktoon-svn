@@ -25,6 +25,7 @@
 #include <QResizeEvent>
 #include <QKeyEvent>
 #include <QEvent>
+#include <QPalette>
 #include "ktdebug.h"
 #include "esframe.h"
 
@@ -99,20 +100,30 @@ void ESFrame::setUsed( bool in_is_used )
 {
 	is_used = in_is_used;
 	setName(m_initialText);
+	QPalette pal = palette();
 	if ( is_selected == true && in_is_used == true )
 	{
-		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight).light(200) );
+		pal.setColor( QPalette::Background, palette().color( QPalette::Highlight).light(200)) ; 
+		setPalette(pal);
+// 		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight).light(200) );
 		setName(m_initialText);
 	}
 	else if ( is_selected == true && in_is_used == false )
 	{
+// 		pal.setColor( QPalette::Background,  palette().color(QPalette::dark ));
+		pal.setColor( QPalette::Foreground, QColor( 255, 255, 255 ));
+		setPalette(pal);
 		setPaletteBackgroundColor( colorGroup().dark() );
-		setPaletteForegroundColor( QColor( 255, 255, 255 ) );
+// 		setPaletteForegroundColor( QColor( 255, 255, 255 ) );
 		
 	}
 	else if ( is_selected == false && in_is_used == true )
 	{
-		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight) );
+		pal.setColor( QPalette::Background, palette().color(QPalette::Active , QColorGroup::Highlight));
+		pal.setColor( QPalette::Foreground, QColor( 255, 255, 255 ));
+		setPalette(pal);
+		
+// 		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight) );
 	}
 	else
 	{

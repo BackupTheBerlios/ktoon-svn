@@ -64,6 +64,12 @@ class KTExposureSheet : public KTModuleWidgetBase
 		void createLayerManager();
 		
 	public slots:
+		void insertCurrentLayer();
+		void removeCurrentLayer();
+		void removeCurrentFrame();
+		void moveUpFrame();
+		void moveDownFrame();
+		
 		void applyAction(int action);
 		
 		void loadLayersAndKeyframes( QList<Layer*> layers );
@@ -75,26 +81,25 @@ class KTExposureSheet : public KTModuleWidgetBase
 	private slots:
 		void actionButton(QAbstractButton *);
 		
+		
+		
 	signals:
+// 		void requestInsertFrame();
+		
+		void requestInsertLayer();
+		void requestRemoveLayer();
+		
 		void requestInsertFrame();
 		
+		void requestRemoveFrame();
+		void requestMoveUpFrame();
+		void requestMoveDownFrame();
 		
-		void applyedAction(Actions action);
-		
+// 		void applyedAction(Actions action);
 		void frameSelected(int idLayer, int idFrame);
-		
 		void layerSelected(int);
-		
-		
-		void layerInserted();
-		
-		void layerRemoved();
-		
-		void layerRenamed( int pos, const QString &name );
-		void framesInsertedAtTheEnd( int number );
-		void frameRemoved( int pos );
-		void frameMovedUp( int pos );
-		void frameMovedDown( int pos );
+// 		void layerInserted();
+// 		void layerRemoved();
 };
 
 #endif

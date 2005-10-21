@@ -19,7 +19,7 @@
  ***************************************************************************/
  
 #include "ktlayerexposure.h"
-#include "status.h"
+// #include "status.h"
 #include "ktdebug.h"
 
 KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFrame, QWidget *parent)
@@ -93,19 +93,13 @@ void KTLayerExposure::frameSelect(int id, int button, int x, int y)
 	m_header->animateClick();
 	emit frameSelected(id);
 	emit clicked(id, m_id, button, x, y);
-	ktDebug() 
-			<< "KTLayerExposure:: " 
-			<< m_useFrame   
-			<< " == "  
-			<< id 
-			<< " && " 
-			<<  !(m_frames[id]->isUsed()) 
-			<< endl;
+	ktDebug() << "KTLayerExposure: id layer " << m_id << " id frame " <<  id << endl;
 	if(m_useFrame + 1 == id && !(m_frames[id]->isUsed()))
 	{
-		m_frames[id]->setUsed( true );
-		m_useFrame++;
-		emit(setUsedFrame(m_frames[id]->name()));
+		emit requestInsertFrame();
+// 		m_frames[id]->setUsed( true );
+// 		m_useFrame++;
+// 		emit(setUsedFrame(m_frames[id]->name()));
 
 	}
 	if(button == Qt::RightButton)
@@ -113,7 +107,6 @@ void KTLayerExposure::frameSelect(int id, int button, int x, int y)
 		
 		menuFrame->exec(QPoint(x,y));
 	}
-	
 }
 
 void KTLayerExposure::setSelected(bool select, QMouseEvent *e)
@@ -163,7 +156,6 @@ void KTLayerExposure::insertFrame(int id, QString text)
 	
 	connect( frame, SIGNAL(renamed( int, const QString&)), this, SLOT(frameRename(int, const QString&)));
 	frame->show();
-	
 }
 
 void KTLayerExposure::invertFrames(int id1, int id2)
@@ -176,81 +168,115 @@ void KTLayerExposure::invertFrames(int id1, int id2)
 
 void KTLayerExposure::setUseFrames()
 {
-	//FIXME:
 	if(m_currentFrame == m_useFrame )
 	{
 		m_useFrame++;
-		if(m_useFrame <= m_frames.count()-1)
+		if(m_useFrame < m_frames.count())
 		{
 			m_frames[m_useFrame]->setUsed( true );
 			frameSelect( m_useFrame, 0, 0, 0);
-			emit(setUsedFrame(m_frames[m_useFrame]->name()));
+// 			emit(setUsedFrame(m_frames[m_useFrame]->name()));
 		}
 	}
+	//FIXME:
 	else if(m_frames[m_currentFrame]->isUsed() && m_useFrame != m_frames.count() )
 	{
 		m_useFrame++;
-		m_layout->remove(m_frames[m_useFrame]);
-		m_layout->insertWidget( m_currentFrame+2, m_frames[m_useFrame], 10);
+		m_layout->removeWidget(m_frames[m_useFrame]);
+		m_layout->insertWidget( m_layout->indexOf(m_frames[m_currentFrame])+1, m_frames[m_useFrame], 10);
 		m_frames[m_useFrame]->setUsed( true );
-		emit(setUsedFrame(m_frames[m_useFrame]->name()));
+// 		emit(setUsedFrame(m_frames[m_useFrame]->name()));
 	}
 	else
 	{
-// 		ktDebug(1) << "else " << m_useFrame << " " << m_currentFrame;
 		for(int i = m_useFrame; i <= m_currentFrame; i++)
 		{
 			m_frames[i]->setUsed( true );
-			emit(setUsedFrame(m_frames[i]->name()));
+// 			emit(setUsedFrame(m_frames[i]->name()));
 		}
 		m_useFrame = m_currentFrame;
 	}
 }
 
+void KTLayerExposure::requestInsertFrames()
+{
+	if(m_currentFrame == m_useFrame )
+	{
+// 		m_useFrame++;
+		if(m_useFrame+1 < m_frames.count())
+		{
+			emit requestInsertFrame();
+// 			m_frames[m_useFrame]->setUsed( true );
+// 			frameSelect( m_useFrame, 0, 0, 0);
+// 			emit(setUsedFrame(m_frames[m_useFrame]->name()));
+		}
+	}
+	//FIXME:
+	else if(m_frames[m_currentFrame]->isUsed() && m_useFrame != m_frames.count() )
+	{
+// 		m_useFrame++;
+// 		m_layout->removeWidget(m_frames[m_useFrame]);
+// 		m_layout->insertWidget( m_layout->indexOf(m_frames[m_currentFrame])+1, m_frames[m_useFrame], 10);
+// 		m_frames[m_useFrame]->setUsed( true );
+// 		emit(setUsedFrame(m_frames[m_useFrame]->name()));
+		emit requestInsertFrame();
+	}
+	else
+	{
+		for(int i = m_useFrame; i <= m_currentFrame; i++)
+		{
+			emit requestInsertFrame();
+// 			m_frames[i]->setUsed( true );
+// 			emit(setUsedFrame(m_frames[i]->name()));
+		}
+// 		m_useFrame = m_currentFrame;
+	}
+}
+
+
 void KTLayerExposure::removeFrame(int id)
 {
-// 	int pos = m_layout->findWidget(m_frames[id));
+	int pos = m_layout->indexOf(m_frames[id]);
 	//FIXME:
 	
 	if(m_useFrame > 0 && m_frames[id]->isUsed())
 	{
 		if(m_frames[id]->isUsed() && m_frames[id]->isSelected())
 		{
-			emit removedFrame(id);
 			m_layout->remove(m_frames[id]);
-			m_frames.removeAt ( id);
+			m_frames.removeAt(id);
 			for( int i = id; i < m_frames.count(); i++)
 			{
-				m_frames[i]->setId(i);
+// 				ktDebug() << "new id for " << m_frames[i]->id() << " is " << m_frames[i]->id() -1<< endl;
+				m_frames[i]->setId(m_frames[i]->id()-1);
+				
 			}
-			
 			frameSelect(id);
 			m_useFrame--;
 			insertFrame(m_frames.last()->id()+1);
+			
+// 			emit removedFrame(id);
 		}
 		else if(m_selected)
 		{
-			emit removedFrame(id);
+// 			emit removedFrame(id);
 			m_layout->remove(m_frames[m_useFrame]);
 			m_frames.removeAt(m_useFrame);
 			for( int i = m_useFrame; i < m_frames.count(); i++)
 			{
 				m_frames[i]->setId(i);
 			}
-// 			frameSelect(m_currentFrame);
-			m_useFrame--;
-			insertFrame(m_frames.last()->id()+1);
 			
+			m_useFrame--;
+			frameSelect(m_useFrame);
+			insertFrame(m_frames.last()->id()+1);
 		}
 	}
-	
-
 }
 
 void KTLayerExposure::moveCurrentFrameUp()
 {
-	int pos = m_layout->findWidget(m_frames[m_currentFrame]);
-// 	ktDebug(1) << "moverCurrentFrameUp " << pos << " " << m_currentFrame ;
+	int pos = m_layout->indexOf(m_frames[m_currentFrame]);
 	if(pos != 1)
 	{
 		if(m_frames[m_currentFrame]->isUsed())
@@ -263,7 +289,7 @@ void KTLayerExposure::moveCurrentFrameUp()
 
 void KTLayerExposure::moveCurrentFrameDown()
 {
-	int pos = m_layout->findWidget(m_frames[m_currentFrame]);
+	int pos = m_layout->indexOf(m_frames[m_currentFrame]);
 	int idFrame = m_frames[pos+1]->id();
 	if( m_frames[idFrame-1]->isUsed())
 	{
@@ -309,14 +335,13 @@ bool KTLayerExposure::currentFrameIsUsed()
 	return m_frames[m_currentFrame]->isUsed();
 }
 
-int KTLayerExposure::useFrame()
+int KTLayerExposure::frameUsed()
 {
 	return m_useFrame;
 }
 
 void KTLayerExposure::applyAction(int action)
 {
-// 	ktDebug(1) << action ;
 	switch(action)
 	{
 		case RenameFrame:
@@ -344,6 +369,7 @@ void KTLayerExposure::applyAction(int action)
 			emit copyFrame();
 			break;
 		}
+		
 		case PasteIntoFrame:
 		{
 			emit pasteFrame();
@@ -371,7 +397,6 @@ QString KTLayerExposure::textHeader()
 
 void KTLayerExposure::loadFrames(Layer *layer)
 {
-// 	ktDebug() << "KTLayerExposure::loadFrames" << endl;
 	QList<KeyFrame*> keyframes = layer->keyFrames();
 	for(int i = 0 ; i < keyframes.count(); i++)
 	{
@@ -380,11 +405,7 @@ void KTLayerExposure::loadFrames(Layer *layer)
 	}
 	
 	m_currentFrame = keyframes.count()-1;
-// 	select(keyframes.count());
 	m_useFrame = keyframes.count()-1;
-	
-
-// 	ktDebug() << "KTLayerExposure::loadFrames finish load " << keyframes.count() << " frames" << endl;
 }
 
 void KTLayerExposure::changedName(const QString  &newName)
@@ -394,9 +415,8 @@ void KTLayerExposure::changedName(const QString  &newName)
 
 void KTLayerExposure::frameRename(int idFrame, const QString&newName)
 {
-// 	ktDebug() << " KTLayerExposure::frameRename " << newName << endl;
-	QList<Layer*> ly = KTStatus -> currentScene() -> getLayers();
-	ly.at(m_id)->keyFrames().at(idFrame)->setNameKeyFrame(newName);
+// 	QList<Layer*> ly = KTStatus -> currentScene() -> getLayers();
+// 	ly.at(m_id)->keyFrames().at(idFrame)->setNameKeyFrame(newName);
 }
 
 int KTLayerExposure::id()
