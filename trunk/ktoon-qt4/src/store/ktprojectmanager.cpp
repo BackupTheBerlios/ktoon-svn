@@ -48,6 +48,10 @@ KTDocument *KTProjectManager::createDocument(const QString &name)
 	KTDocument *doc = new KTDocument(this);
 	m_documents << doc;
 	
+	connect(doc, SIGNAL(sceneCreated(const QString &)), this, SIGNAL(sceneInserted(const QString &)));
+	
+	doc->createScene();
+	
 	return doc;
 }
 
@@ -93,10 +97,13 @@ void KTProjectManager::setCurrentDocument(int index)
 	}
 }
 
-void KTProjectManager::insertScene(const QString &name, int index)
+void KTProjectManager::insertScene()
 {
-	
-// 	emit sceneInserted(name, index);
+	KTScene *scene = m_currentDocument->createScene();
+}
+
+void KTProjectManager::removeScene()
+{
 }
 
 void KTProjectManager::renameScene(const QString &name, int index)
@@ -104,3 +111,12 @@ void KTProjectManager::renameScene(const QString &name, int index)
 // 	emit sceneRenamed(name, index);
 }
 
+// Frames
+
+void KTProjectManager::insertFrame()
+{
+	ktDebug() << "Inserting frame" << endl;
+	KTKeyFrame *keyFrame = currentLayer()->createFrame();
+	
+	emit frameInserted();
+}

@@ -109,7 +109,7 @@ void KTTableExposure::clickedCell(int row,int col,int button,int gx,int gy)
 
 void KTTableExposure::insertLayer(int rows, QString text)
 {
-	ktDebug() << "KTTableExposure::insertLayer(int " <<  rows << ", QString" <<  text << ")" << endl;
+// 	ktDebug() << "KTTableExposure::insertLayer(int " <<  rows << ", QString" <<  text << ")" << endl;
 	if(text == QString::null)
 	{
 		text = tr("Layer ")+ QString::number(m_numLayer);
@@ -215,7 +215,7 @@ void KTTableExposure::lockCurrentFrame()
 
 void KTTableExposure::removeCurrentLayer()
 {
-	ktDebug() << "KTTableExposure::ly.count()" <<  "m_numLayer > 1 && m_layers.at(m_currentLayer)->isSelected() " << (m_numLayer > 1) << " && "  << m_layers.at(m_currentLayer)->isSelected() << endl;
+// 	ktDebug() << "KTTableExposure::ly.count()" <<  "m_numLayer > 1 && m_layers.at(m_currentLayer)->isSelected() " << (m_numLayer > 1) << " && "  << m_layers.at(m_currentLayer)->isSelected() << endl;
 	if(m_numLayer > 1 && m_layers.at(m_currentLayer)->isSelected())
 	{
 		m_layout->remove( m_layers.at(m_currentLayer) );

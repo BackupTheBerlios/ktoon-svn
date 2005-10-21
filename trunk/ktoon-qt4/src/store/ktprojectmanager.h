@@ -50,12 +50,16 @@ class KTProjectManager : public QObject
 		void setCurrentDocument(int index);
 		
 	public slots:
-		void insertScene(const QString &name, int index);
+		//Scenes
+		void insertScene();
+		void removeScene();
 		void renameScene(const QString &name, int index);
 		
+		// Frames
+		void insertFrame();
 	signals:
-		void sceneInserted(const QString &name, int docId, int sceneId);
-		void sceneRenamed(const QString &name, int docId, int sceneId);
+		void sceneInserted(const QString &name);
+		void sceneRenamed(const QString &name, int id);
 		
 		void documentInserted();
 		void frameInserted();

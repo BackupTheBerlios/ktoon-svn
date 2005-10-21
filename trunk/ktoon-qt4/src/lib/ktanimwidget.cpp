@@ -45,7 +45,7 @@ KTAnimWidget::KTAnimWidget(const QPixmap &px, const QString &text, QWidget *pare
 	
 	setCanvas(m_canvas);
 	resize(px.width()/2, px.height());
-	show();
+// 	show();
 }
 
 KTAnimWidget::KTAnimWidget(ListOfPixmaps lop, QWidget *parent) : Q3CanvasView(parent, "KTAnimWidgetPixmap"), m_type(AnimPixmap)

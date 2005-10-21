@@ -30,26 +30,83 @@ KTTabDialog::KTTabDialog(QWidget *parent, bool modal)
 
 	m_tabWidget = new QTabWidget(this);
 	
-	
-	QPushButton *applyButton = new QPushButton(tr("Apply"));
-	QPushButton *okButton = new QPushButton(tr("OK"));
-	QPushButton *cancelButton = new QPushButton(tr("Cancel"));
-
-	connect(applyButton, SIGNAL(clicked()), this, SLOT(apply()));
-	connect(okButton, SIGNAL(clicked()), this, SLOT(ok()));
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
-
-	QHBoxLayout *buttonLayout = new QHBoxLayout;
-	buttonLayout->addStretch(1);
-	buttonLayout->addWidget(applyButton);
-	buttonLayout->addWidget(okButton);
-	buttonLayout->addWidget(cancelButton);
-
 	mainLayout->addWidget(m_tabWidget);
-	mainLayout->addLayout(buttonLayout);
 	setLayout(mainLayout);
 	
+	setupButtons(Ok|Cancel);
+	
 	setModal(modal);
+}
+
+KTTabDialog::KTTabDialog(int buttons, QWidget *parent, bool modal)
+{
+	QVBoxLayout *mainLayout = new QVBoxLayout;
+	setLayout(mainLayout);
+	
+	m_tabWidget = new QTabWidget(this);
+	
+	mainLayout->addWidget(m_tabWidget);
+	
+	setupButtons(buttons);
+	
+	setModal(modal);
+}
+
+void KTTabDialog::setupButtons(int buttons)
+{
+	QHBoxLayout *buttonLayout = new QHBoxLayout;
+	buttonLayout->addStretch(1);
+	
+	if ( buttons & Custom1)
+	{
+		QPushButton *customButton = new QPushButton(tr("Help"));
+		connect(customButton, SIGNAL(clicked()), this, SLOT(custom1()));
+		buttonLayout->addWidget(customButton);
+	}
+	
+	if ( buttons & Custom2)
+	{
+		QPushButton *customButton = new QPushButton(tr("Help"));
+		connect(customButton, SIGNAL(clicked()), this, SLOT(custom2()));
+		buttonLayout->addWidget(customButton);
+	}
+	
+	if ( buttons & Custom3)
+	{
+		QPushButton *customButton = new QPushButton(tr("Help"));
+		connect(customButton, SIGNAL(clicked()), this, SLOT(custom3()));
+		buttonLayout->addWidget(customButton);
+	}
+	
+	if ( buttons & Help )
+	{
+		QPushButton *helpButton = new QPushButton(tr("Help"));
+		connect(helpButton, SIGNAL(clicked()), this, SLOT(help()));
+		buttonLayout->addWidget(helpButton);
+	}
+	
+	if ( buttons & Apply )
+	{
+		QPushButton *applyButton = new QPushButton(tr("Apply"));
+		connect(applyButton, SIGNAL(clicked()), this, SLOT(apply()));
+		buttonLayout->addWidget(applyButton);
+	}
+	
+	if ( buttons & Ok )
+	{
+		QPushButton *okButton = new QPushButton(tr("OK"));
+		connect(okButton, SIGNAL(clicked()), this, SLOT(ok()));
+		buttonLayout->addWidget(okButton);
+	}
+	
+	if ( buttons & Cancel)
+	{
+		QPushButton *cancelButton = new QPushButton(tr("Cancel"));
+		connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
+		buttonLayout->addWidget(cancelButton);
+	}
+	
+	static_cast<QVBoxLayout *>(layout())->addLayout(buttonLayout);
 }
 
 

@@ -20,9 +20,11 @@
 
 #include "ktdocument.h"
 
+#include "ktdebug.h"
+
 KTDocument::KTDocument(QObject *parent) : QObject(parent), m_currentScene(0), m_sceneCount(0)
 {
-	m_currentScene = createScene();
+// 	m_currentScene = createScene();
 }
 
 
@@ -43,10 +45,15 @@ void KTDocument::setScenes(const Scenes &scenes)
 KTScene *KTDocument::createScene()
 {
 	KTScene *scene = new KTScene(this);
+	scene->setSceneName( tr("Scene %1").arg(m_sceneCount++));
 	
 	m_scenes << scene;
 	
-	emit sceneCreated(tr("Scene %1").arg(m_sceneCount++), m_scenes.count()-1 ); // FIXME: Scene id incorrect
+	emit sceneCreated(scene->sceneName());
+	
+	m_currentScene = scene;
+	
+	ktDebug() << "Scene create: " << m_scenes.count() << endl;
 	
 	return scene;
 }

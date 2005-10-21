@@ -31,7 +31,19 @@ class KTTabDialog : public QDialog
 {
 	Q_OBJECT
 	public:
+		enum Button
+		{
+			Help    = 0x00000001,
+			Ok      = 0x00000004,
+			Apply   = 0x00000008,
+			Cancel  = 0x00000020,
+			Custom1 = 0x00000080,
+			Custom2 = 0x00000100,
+			Custom3 = 0x00000200
+		};
 		KTTabDialog(QWidget *parent = 0, bool modal = true);
+		KTTabDialog(int buttons = Ok|Cancel, QWidget *parent = 0, bool modal = true);
+		
 		~KTTabDialog();
 		
 		void addTab ( QWidget * child, const QString & label );
@@ -39,10 +51,17 @@ class KTTabDialog : public QDialog
 		
 		QWidget *currentTab();
 		
+	private:
+		void setupButtons(int buttons);
+		
 	public slots:
 		virtual void ok();
 		virtual void cancel();
 		virtual void apply();
+		virtual void help(){};
+		virtual void custom1() {};
+		virtual void custom2() {};
+		virtual void custom3() {};
 		
 	private:
 		QTabWidget *m_tabWidget;

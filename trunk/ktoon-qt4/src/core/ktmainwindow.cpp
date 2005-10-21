@@ -58,8 +58,6 @@ KTMainWindow::KTMainWindow() : DMainWindow()
 	
 // 	m_workSpace->setBackground(QBrush(QPixmap(background_xpm))); 
 	
-	createNewProject("test");
-	
 	addWidget(m_workSpace, tr("Illustration"));
 
 	setupBackground();
@@ -76,6 +74,8 @@ KTMainWindow::KTMainWindow() : DMainWindow()
 	createGUI();
 	
 	showMaximized();
+	
+	createNewProject("test");
 }
 
 
@@ -180,16 +180,17 @@ void KTMainWindow::createGUI()
 	m_scenes->setIcon(QPixmap(KTOON_HOME+"/images/icons/scenes.xpm"));
 	toolWindow(DDockWindow::Right)->addWidget(tr("Scenes"),m_scenes);
 	
-	connect(m_scenes, SIGNAL(sceneInserted(const QString &, int)), m_projectManager, SLOT(insertScene(const QString &, int)));
+	connect(m_scenes, SIGNAL(requestInsertScene()), m_projectManager, SLOT(insertScene()));
+	connect(m_scenes, SIGNAL(requestRemoveScene()), m_projectManager, SLOT(removeScene()));
 	
 	/////////////////////
 	KTExposureSheet *m_exposureSheet = new KTExposureSheet(this);
 	m_exposureSheet->setIcon(QPixmap(KTOON_HOME+"/images/icons/exposure_sheet.xpm"));
 	toolWindow(DDockWindow::Right)->addWidget(tr("Exposure Sheet"),m_exposureSheet);
 	
-	connect(m_exposureSheet, SIGNAL(frameSelected( int, int )), this, SLOT(selectFrame(int,int)));
+	connect(m_exposureSheet, SIGNAL(requestInsertFrame()), m_projectManager, SLOT(insertFrame()));
 	
-	connect(m_projectManager, SIGNAL(sceneInserted(const QString &, int)), m_exposureSheet, SLOT(addScene(const QString &, int)));
+	connect(m_exposureSheet, SIGNAL(frameSelected( int, int )), this, SLOT(selectFrame(int,int)));
 	
 // 	connect(m_scenes, SIGNAL(sceneInserted( const QString &, int )), m_exposureSheet, SLOT(addScene( const QString &, int )));
 // 	connect(m_scenes, SIGNAL(sceneRenamed( const QString &, int )), m_exposureSheet, SLOT(renameScene(const QString &, int)));
@@ -203,6 +204,13 @@ void KTMainWindow::createGUI()
 	KToonScript *m_scriptEditor = new KToonScript(this);
 // 	m_scriptEditor->setIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.xpm") );
 	toolWindow(DDockWindow::Bottom)->addWidget(tr("KToonScript"), m_scriptEditor);
+	
+	
+	// Connect the project manager with the components...
+	connect(m_projectManager, SIGNAL(sceneInserted(const QString &)), m_scenes, SLOT( insertScene(const QString &)));
+	connect(m_projectManager, SIGNAL(sceneInserted(const QString &)), m_exposureSheet, SLOT(addScene(const QString &)));
+	
+	connect(m_projectManager, SIGNAL(frameInserted()), this, SLOT(insertFrame()));
 }
 
 void KTMainWindow::setupFileActions()
@@ -361,6 +369,9 @@ void KTMainWindow::newViewDocument(const QString &name)
 	}
 }
 
+/**
+ * @todo close current project
+ */
 void KTMainWindow::newProject()
 {
 	KTNewProject *wizard = new KTNewProject;
@@ -403,13 +414,28 @@ void KTMainWindow::aboutKToon()
 }
 
 // Animation
+
+void KTMainWindow::insertFrame()
+{
+	ktDebug() << k_funcinfo << endl;
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_workSpace->activeWindow ());
+	
+	if ( doc )
+	{
+		doc->drawArea()->setKeyFrame( m_projectManager->currentLayer()->frames().count()-1);
+	}
+}
+
 void KTMainWindow::selectFrame(int layer, int frame)
 {
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_workSpace->activeWindow ());
 	
 	if ( doc )
 	{
-// 		doc->drawArea()
+		ktDebug() << "SELECT LAYER: " << layer << " FRAME: " << frame << endl;
+		m_projectManager->currentScene()->setCurrentLayer(layer);
+		doc->drawArea()->setLayer( m_projectManager->currentLayer());
+		doc->drawArea()->setKeyFrame( frame );
 	}
 }
 

@@ -36,6 +36,9 @@ class KTScene : public QObject
 	public:
 		KTScene(QObject *parent = 0);
 		~KTScene();
+		
+		void setSceneName(const QString &name);
+		QString sceneName();
 		Layers layers() const;
 		void setLayers(const Layers &);
 		KTLayer *createLayer();
@@ -46,6 +49,7 @@ class KTScene : public QObject
 	private:
 		Layers m_layers;
 		KTLayer *m_currentLayer;
+		QString m_name;
 };
 
 #endif

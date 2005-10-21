@@ -135,7 +135,7 @@ void KTExposureSheet::createLayerManager()
 	m_layerManager->resize(150,100);
 }
 
-void KTExposureSheet::addScene(const QString &name, int id)
+void KTExposureSheet::addScene(const QString &name)
 {
 	m_viewLayer = new KTTableExposure(100, 1,m_scenes);
 	m_viewLayer->touchFirstFrame();
@@ -184,6 +184,7 @@ void KTExposureSheet::applyAction(int action)
 		case InsertFrames:
 		{
 			m_viewLayer->setUseFrame();
+			emit requestInsertFrame();
 			break;
 		}
 		case RemoveFrame:
@@ -216,7 +217,7 @@ void KTExposureSheet::actionButton( QAbstractButton *b)
 
 void KTExposureSheet::loadLayersAndKeyframes( QList<Layer*> layers )
 {
-	ktDebug() << "KTExposureSheet::loadLayersAndKeyframes";
+// 	ktDebug() << "KTExposureSheet::loadLayersAndKeyframes";
 	m_viewLayer->loadLayers(layers);
 }
 

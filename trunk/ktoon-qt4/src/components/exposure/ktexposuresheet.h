@@ -55,7 +55,6 @@ class KTExposureSheet : public KTModuleWidgetBase
 		QGroupBox *m_buttonsPanel;
 		QButtonGroup *m_buttonGroup;
 		KTTableExposure *m_viewLayer;
-// 		Widget for handling the layer visibility
 		QListView *m_layerManager;
 		QTabWidget *m_scenes;
 
@@ -70,13 +69,16 @@ class KTExposureSheet : public KTModuleWidgetBase
 		void loadLayersAndKeyframes( QList<Layer*> layers );
 		void updateLayersAndKeyframes();
 		
-		void addScene(const QString &name, int id);
+		void addScene(const QString &name);
 		void renameScene(const QString &name, int id);
 		
 	private slots:
 		void actionButton(QAbstractButton *);
 		
 	signals:
+		void requestInsertFrame();
+		
+		
 		void applyedAction(Actions action);
 		
 		void frameSelected(int idLayer, int idFrame);

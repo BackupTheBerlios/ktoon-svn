@@ -133,6 +133,7 @@ class KTMainWindow : public DMainWindow
 		void aboutKToon();
 		
 	private slots:
+		void insertFrame();
 		void selectFrame(int layer, int frame);
 		void changeCurrentColors(const QColor &, const QColor &);
 		void changeCurrentBrush(KTBrush *);

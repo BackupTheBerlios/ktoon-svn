@@ -44,7 +44,7 @@ class KTDocument : public QObject
 		void setCurrentScene(int index);
 		
 	signals:
-		void sceneCreated(const QString &name, int index);
+		void sceneCreated(const QString &name);
 		
 	private:
 		Scenes m_scenes;

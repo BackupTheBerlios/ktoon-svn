@@ -30,7 +30,7 @@
 
 //--------------- CONSTRUCTOR --------------------
 
-Preferences::Preferences( QWidget *parent ) : KTTabDialog( parent )
+Preferences::Preferences( QWidget *parent ) : KTTabDialog( KTTabDialog::Apply|KTTabDialog::Ok|KTTabDialog::Cancel, parent )
 {
 	setCaption( tr( "Application Preferences" ) );
 	resize( 220, 230 );

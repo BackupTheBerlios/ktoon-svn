@@ -30,6 +30,16 @@ KTScene::~KTScene()
 {
 }
 
+void KTScene::setSceneName(const QString &name)
+{
+	m_name = name;
+}
+
+QString KTScene::sceneName()
+{
+	return m_name;
+}
+
 Layers KTScene::layers() const
 {
 	return m_layers;
