@@ -59,6 +59,9 @@ KTMainWindow::KTMainWindow() : DMainWindow()
 // 	m_workSpace->setBackground(QBrush(QPixmap(background_xpm))); 
 	
 	addWidget(m_workSpace, tr("Illustration"));
+	
+	m_viewCamera = new KTViewCamera();
+	addWidget(m_viewCamera, tr("Animation"));
 
 	setupBackground();
 	
@@ -92,6 +95,11 @@ void KTMainWindow::setupMenu()
 	
 	m_fileMenu->addAction(m_actionManager->find("NewFile"));
 	m_fileMenu->addAction(m_actionManager->find("OpenFile"));
+
+	// <TEST>
+	KTAction *act = new KTAction(QIcon(), "Play (test)", QKeySequence(), m_viewCamera->animationArea(), SLOT(play()), m_actionManager, "play");
+	m_fileMenu->addAction(act);
+	// </TEST>
 	
 	QMenu *recents = new QMenu( this );
 	connect( recents, SIGNAL( activated( int ) ), SLOT( openRecent( int ) ) );
@@ -341,6 +349,8 @@ void KTMainWindow::createNewProject(const QString &name, const QSize &size)
 	m_projectManager->setCurrentDocument(0);
 	
 	newViewDocument(name);
+	
+	m_viewCamera->animationArea()->setLayer(m_projectManager->currentLayer());
 }
 
 void KTMainWindow::newViewDocument(const QString &name)
