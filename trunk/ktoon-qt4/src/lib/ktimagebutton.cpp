@@ -25,16 +25,48 @@
 #include <QLayout>
 #include <QBitmap>
 
-KTImageButton::KTImageButton(const QPixmap &image, int size, QWidget *parent) : QPushButton(parent), m_imageSize(size)
+#include <QStyle>
+#include <QStyleOptionButton>
+#include <QStylePainter>
+
+#include "ktdebug.h"
+
+class KTImageButton::Animation
+{
+	public:
+		Animation(int initialSize) : aSize(initialSize), m_interval(80), aBeginning(true)
+		{
+			aTimer = new QTimer;
+		}
+		~Animation() {};
+		
+		void begin()
+		{
+			aTimer->start(m_interval);
+		}
+		void end()
+		{
+			aTimer->stop();
+		}
+		
+		QTimer *aTimer;
+		int aSize;
+		bool aBeginning;
+		
+	private:
+		int m_interval;
+};
+
+KTImageButton::KTImageButton(const QIcon &icon, int size, QWidget *parent, bool animate ) : QPushButton(parent), m_imageSize(size), m_animator(0), m_isAnimated(animate)
 {
 	setup();
-	setPixmap(image);
+	setImage(icon);
 }
 
-KTImageButton::KTImageButton(const QPixmap &image, int size, QObject *reciever, const char *method, QWidget *parent) : QPushButton(parent), m_imageSize(size)
+KTImageButton::KTImageButton(const QIcon &icon, int size, QObject *reciever, const char *method, QWidget *parent, bool animate ) : QPushButton(parent), m_imageSize(size), m_animator(0), m_isAnimated(animate)
 {
 	setup();
-	setPixmap(image);
+	setImage(icon);
 	
 	connect(this, SIGNAL(clicked()), reciever, method);
 }
@@ -49,16 +81,78 @@ void KTImageButton::setup()
 	setFlat( true );
 	setAutoDefault( false );
 	setMaximumSize(m_imageSize, m_imageSize);
+	setMinimumSize(m_imageSize, m_imageSize);
+	
+	if ( m_isAnimated )
+	{
+		m_animator = new Animation(m_imageSize);
+		connect(m_animator->aTimer, SIGNAL(timeout()), this, SLOT(animate()));
+	}
 }
 
 void KTImageButton::enterEvent(QEvent *)
 {
-	setFlat(false);
+// 	setIconSize( QSize(m_imageSize-10,m_imageSize-10) );
+	
+	if ( m_isAnimated )
+	{
+		m_animator->begin();
+		m_animator->aBeginning = true;
+		
+		if ( m_animator->aSize >= m_imageSize + 10 )
+		{
+			m_animator->aSize = m_imageSize;
+		}
+	}
+	else
+	{
+		setFlat(false);
+	}
 }
 
 void KTImageButton::leaveEvent(QEvent *)
 {
-	setFlat(true);
+	if ( m_isAnimated && !isDown() )
+	{
+		m_animator->aBeginning = false;
+		m_animator->aSize = m_imageSize;
+		m_animator->end();
+		
+		setIconSize( QSize(m_imageSize,m_imageSize));
+	}
+	else
+	{
+		setFlat(true);
+	}
+}
+
+void KTImageButton::animate()
+{
+	if ( m_isAnimated )
+	{
+		if ( isDown() )
+		{
+			m_animator->end();
+		}
+		
+		if ( m_animator->aBeginning ) // Icon grow up
+		{
+			m_animator->aSize-=1;
+			
+			setIconSize( QSize(m_animator->aSize,m_animator->aSize));
+		}
+		else
+		{
+			m_animator->aSize+=1;
+			
+			setIconSize( QSize(m_animator->aSize,m_animator->aSize));
+		}
+		
+		if ( m_animator->aSize > m_imageSize+4 || m_animator->aSize < m_imageSize-4 )
+		{
+			m_animator->aBeginning = !m_animator->aBeginning;
+		}
+	}
 }
 
 // void KTImageButton::resizeEvent(QResizeEvent *e)
@@ -79,18 +173,20 @@ void KTImageButton::leaveEvent(QEvent *)
 // }
 
 
-void KTImageButton::setPixmap ( const QPixmap & pix)
+void KTImageButton::setImage ( const QIcon & icon)
 {
-	if ( pix.width() > m_imageSize || pix.height() > m_imageSize )
-	{
-		QImage imgTmp(pix.convertToImage () );
-		QPixmap newPixmap(imgTmp.smoothScale(m_imageSize,m_imageSize));
-		QPushButton::setPixmap(newPixmap);
-	}
-	else
-	{
-		QPushButton::setPixmap(pix);
-	}
+	setIconSize( QSize(m_imageSize,m_imageSize) );
+	QPushButton::setIcon(icon);
 }
 
-
+// void KTImageButton::paintEvent(QPaintEvent *e)
+// {
+// 	QPushButton::paintEvent(e);
+// 	
+// 	QStyleOptionButton opt;
+// 	opt.init(this);
+// 	opt.iconSize = QSize(m_imageSize,m_imageSize);
+// 	
+// 	QStylePainter p(this);
+// 	p.drawControl(QStyle::CE_PushButton, opt);
+// }

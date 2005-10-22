@@ -60,6 +60,9 @@ class QColor;
 class QPen;
 class QBrush;
 class QVariant;
+class QPixmap;
+class QIcon;
+class QImage;
 template <class T> class QList;
 
 class kdbgstream;
@@ -350,6 +353,10 @@ class kdbgstream {
      * @return this stream
      */
     kdbgstream& operator << ( const QSize& size );
+    
+    kdbgstream& operator << ( const QPixmap& pixmap );
+    kdbgstream& operator << ( const QIcon& icon );
+    kdbgstream& operator << ( const QImage& img );
 
     /**
      * Prints the given value.

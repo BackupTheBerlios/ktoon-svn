@@ -36,7 +36,7 @@
 
 KTViewDocument::KTViewDocument(KTScene *scene, QWidget *parent ) : KTMdiWindow(parent), m_scene(scene)
 {
-	setIcon(QPixmap(KTOON_HOME+"/images/icons/layer_pic.xpm") ); // FIXME: new image for documents
+	setWindowIcon(QPixmap(KTOON_HOME+"/images/icons/layer_pic.xpm") ); // FIXME: new image for documents
 	
 	
 	

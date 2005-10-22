@@ -39,7 +39,7 @@
 
 typedef QList<KTLayerExposure*> ListOfLayers;
 
-class KTTableExposure : public QScrollArea //Q3ScrollView
+class KTTableExposure : public QScrollArea
 {
 	Q_OBJECT
 	public:
@@ -51,10 +51,12 @@ class KTTableExposure : public QScrollArea //Q3ScrollView
 		void moveCurrentFrame(Direction dir);
 		void lockCurrentFrame();
 		void removeCurrentLayer();
-		void requestInsertFrames();
+		void insertFrames();
 		void loadLayers(QList<Layer*> layers);
 		void updateLayers();
 		QStringList textHeaders();
+		
+		KTLayerExposure *currentLayerExposure();
 		
 	private:
 		QBoxLayout *m_layout;
@@ -82,6 +84,8 @@ class KTTableExposure : public QScrollArea //Q3ScrollView
 		void clickedFrame();
 		void layerSelected(int id);
 		
+		// TODO: <krawek> FALTAN SIGNALS
+		void requestInsertFrame();
 		
 };
 

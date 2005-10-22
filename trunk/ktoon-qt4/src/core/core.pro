@@ -26,7 +26,8 @@ HEADERS += ktoon.h \
            ktstatusbar.h \
            ktpaintareacontainer.h \
            ktnewproject.h \
-           ktviewcamera.h 
+           ktviewcamera.h \
+           ktcamerabar.h 
 SOURCES += ktoon.cpp \
            main.cpp \
            splash.cpp \
@@ -36,7 +37,8 @@ SOURCES += ktoon.cpp \
            ktstatusbar.cpp \
            ktpaintareacontainer.cpp \
            ktnewproject.cpp \
-           ktviewcamera.cpp 
+           ktviewcamera.cpp \
+           ktcamerabar.cpp 
 QT += xml opengl qt3support
 TARGETDEPS += ../../src/dialogs/libdialogs.a \
 ../../src/store/libstore.a \

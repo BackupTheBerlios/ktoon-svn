@@ -18,52 +18,38 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTIMAGEBUTTON_H
-#define KTIMAGEBUTTON_H
+#ifndef KTCAMERABAR_H
+#define KTCAMERABAR_H
 
+#include <QFrame>
+#include <QPainter>
 #include <QPushButton>
-#include <QImage>
-#include <QPixmap>
-#include <QIcon>
-#include <QTimer>
+
+#include "ktimagebutton.h"
 
 /**
- * A image pressable
  * @author David Cuadrado <krawek@toonka.com>
 */
-
-class KTImageButton : public QPushButton
+class KTCameraBar : public QFrame
 {
 	Q_OBJECT
-
 	public:
-		KTImageButton(const QIcon &icon, int size, QWidget *parent = 0, bool animate = false);
-		KTImageButton(const QIcon &icon, int size, QObject *reciever, const  char *slot, QWidget *parent = 0, bool animate = false);
-		~KTImageButton();
-		virtual void setImage( const QIcon &icon);
+		KTCameraBar(QWidget *parent = 0);
+		~KTCameraBar();
+		void setPalette(const QPalette &);
+		
+	private:
+		KTImageButton *m_rew, *m_play, *m_stop, *m_ff;
+		
+	signals:
+		void play();
+		void stop();
+		void ff();
+		void rew();
+		
 		
 	protected:
-		void enterEvent(QEvent *e);
-		void leaveEvent(QEvent *e);
 // 		void paintEvent(QPaintEvent *e);
-		
-	private slots:
-		void animate();
-		
-	private:
-		void setup();
-		
-	private:
-		int m_imageSize;
-		class Animation;
-		Animation *m_animator;
-		
-		bool m_isAnimated;
-		
-// 	protected:
-// 		void resizeEvent(QResizeEvent *e);
-// 		void paintEvent(QPaintEvent *e);
-// 		QPixmap getPixmap();
 };
 
 #endif

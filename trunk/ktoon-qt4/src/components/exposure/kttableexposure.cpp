@@ -104,6 +104,8 @@ void KTTableExposure::insertLayer(int rows, QString text)
 	
 	connect(newLayer, SIGNAL(requestInsertLayer()), this, SIGNAL(requestInsertLayer()));
 	
+	connect(newLayer, SIGNAL(requestInsertFrame()), this, SIGNAL(requestInsertFrame()));
+	
 	
 	m_layout->addWidget( newLayer, 0, /*Qt::AlignTop | */Qt::AlignLeft);
 	
@@ -128,9 +130,9 @@ void KTTableExposure::setUseFrame()
 	m_layers.at(m_currentLayer)->setUseFrames();
 }
 
-void KTTableExposure::requestInsertFrames()
+void KTTableExposure::insertFrames()
 {
-	m_layers.at(m_currentLayer)->requestInsertFrames();
+	m_layers.at(m_currentLayer)->insertFrames();
 }
 		
 void KTTableExposure::useFrame(const QString &newName)
@@ -141,6 +143,11 @@ void KTTableExposure::useFrame(const QString &newName)
 void KTTableExposure::removeFrame()
 {
 	m_layers.at(m_currentLayer)->removeCurrentFrame();
+}
+
+KTLayerExposure *KTTableExposure::currentLayerExposure()
+{
+	return m_layers.at(m_currentLayer);
 }
 
 void KTTableExposure::moveCurrentFrame(Direction dir)

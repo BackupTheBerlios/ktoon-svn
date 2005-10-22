@@ -58,6 +58,10 @@
 #include <qbrush.h>
 #include <qsize.h>
 #include <qvariant.h>
+#include <QImage>
+#include <QIcon>
+#include <QPixmap>
+
 //Added by qt3to4:
 #include <QByteArray>
 #include <Q3MemArray>
@@ -367,6 +371,24 @@ kdbgstream& kdbgstream::operator<<( const QPoint& p ) {
 	*this << "(" << p.x() << ", " << p.y() << ")";
 	return *this;
 }
+
+kdbgstream& kdbgstream::operator<<( const QPixmap& p ) {
+	*this << "(" << p.width() << ", " << p.height() << ")";
+	return *this;
+}
+
+kdbgstream& kdbgstream::operator<<( const QIcon& p ) {
+	*this << "(" << p.pixmap().width() << ", " << p.pixmap().height() << ")";
+	return *this;
+}
+
+kdbgstream& kdbgstream::operator<<( const QImage& p ) {
+	*this << "(" << p.width() << ", " << p.height() << ")";
+	return *this;
+}
+
+
+
 kdbgstream& kdbgstream::operator<<( const QSize& s ) {
 	*this << "[" << s.width() << "x" << s.height() << "]";
 	return *this;

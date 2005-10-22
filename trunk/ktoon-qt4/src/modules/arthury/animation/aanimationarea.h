@@ -24,20 +24,22 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QTimer>
+#include <QFrame>
 
-#include "ktvhbox.h"
 #include "ktlayer.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class AAnimationArea : public KTVHBox
+class AAnimationArea : public QFrame
 {
 	Q_OBJECT
 	public:
 		AAnimationArea(QWidget *parent = 0);
 		~AAnimationArea();
 		void setLayer(KTLayer *layer);
+		
+		QSize sizeHint() const;
 		
 	public slots:
 		virtual void play();
@@ -51,6 +53,7 @@ class AAnimationArea : public KTVHBox
 		virtual void drawFrames(QPainter *painter);
 		
 	private:
+		QFrame *m_container;
 		QImage m_renderCamera;
 		
 		KTKeyFrame *m_currentFrame;

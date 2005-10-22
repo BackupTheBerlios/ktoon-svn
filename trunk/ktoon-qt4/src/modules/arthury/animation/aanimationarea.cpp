@@ -21,16 +21,17 @@
 #include "aanimationarea.h"
 #include "ktdebug.h"
 
-AAnimationArea::AAnimationArea(QWidget *parent) : KTVHBox(parent), m_layer(0), m_currentFrame(0), m_draw(false), m_ciclicAnimation(true), m_fps(14), m_currentFramePosition(0)
+AAnimationArea::AAnimationArea(QWidget *parent) : QFrame(parent), m_layer(0), m_currentFrame(0), m_draw(false), m_ciclicAnimation(false), m_fps(24), m_currentFramePosition(0)
 {
 	setAttribute(Qt::WA_StaticContents);
-	
+
 	m_renderCamera = QImage(520, 340, QImage::Format_RGB32);
 	m_renderCamera.fill(qRgb(255, 255, 255));
 	
 	m_timer = new QTimer(this);
 	
 	connect(m_timer, SIGNAL(timeout()), this, SLOT(advance()));
+	
 }
 
 
@@ -101,7 +102,7 @@ void AAnimationArea::play()
 {
 	ktDebug() << "Playing!" << endl;
 	m_draw = true;
-	if ( m_layer )
+	if ( m_layer && !m_timer->isActive() )
 	{
 		m_timer->start(1000/m_fps);
 	}
@@ -112,8 +113,10 @@ void AAnimationArea::stop()
 {
 	ktDebug() << "Stopping" << endl;
 	m_timer->stop();
-	m_draw = false;
+// 	m_draw = false;
 	m_currentFramePosition = 0;
+// 	m_currentFrame = 0;
+	repaint();
 }
 
 
@@ -145,3 +148,9 @@ void AAnimationArea::advance()
 		}
 	}
 }
+
+QSize AAnimationArea::sizeHint() const
+{
+	return m_renderCamera.size();
+}
+

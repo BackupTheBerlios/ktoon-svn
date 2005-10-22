@@ -29,7 +29,7 @@
 #include <QList>
 
 
-KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, "Exposure Sheet")
+KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, "Exposure Sheet"), m_viewLayer(0)
 {
 	KTINIT;
 	setCaption( tr( "Exposure Sheet" ) );
@@ -137,16 +137,16 @@ void KTExposureSheet::createLayerManager()
 
 void KTExposureSheet::addScene(const QString &name)
 {
-	m_viewLayer = new KTTableExposure(100, 1, m_scenes);
-	m_viewLayer->touchFirstFrame();
+	KTTableExposure *newLayer = new KTTableExposure(100, 1, m_scenes);
+	newLayer->touchFirstFrame();
 	
-	m_scenes->addTab(m_viewLayer, name); // TODO: Necesitamos una forma facil de identificar scenas, puede ser por el indice de insersion
+	m_scenes->addTab(newLayer, name); // TODO: Necesitamos una forma facil de identificar scenas, puede ser por el indice de insersion
 	
-	connect(m_viewLayer, SIGNAL(clickedFrame()), this, SIGNAL(frameSelected()));
-	connect(m_viewLayer, SIGNAL(cellSelected( int, int )), this, SIGNAL(frameSelected(int, int)));
-	connect(m_viewLayer, SIGNAL(layerSelected(int)), this, SIGNAL(layerSelected(int)));
+	connect(newLayer, SIGNAL(clickedFrame()), this, SIGNAL(frameSelected()));
+	connect(newLayer, SIGNAL(cellSelected( int, int )), this, SIGNAL(frameSelected(int, int)));
+	connect(newLayer, SIGNAL(layerSelected(int)), this, SIGNAL(layerSelected(int)));
 	
-	connect(m_viewLayer, SIGNAL(requestInsertFrame()), this, SIGNAL(requestInsertFrame()));
+	connect(newLayer, SIGNAL(requestInsertFrame()), this, SIGNAL(requestInsertFrame()));
 	
 // 	connect(m_viewLayer, SIGNAL(layerInserted()), this, SIGNAL(requestInsertLayer()));
 // 	connect(m_viewLayer, SIGNAL(layerRemoved()), this, SIGNAL(requestRemoveLayer()));
@@ -155,6 +155,8 @@ void KTExposureSheet::addScene(const QString &name)
 // 	connect(m_viewLayer,  SIGNAL(requestRemoveFrame()), this, SIGNAL(requestRemoveFrame()));
 // 	connect(m_viewLayer,  SIGNAL(requestMoveUpFrame()), this, SIGNAL(requestMoveUpFrame()));
 // 	connect(m_viewLayer,  SIGNAL(requestMoveDownFrame()), this, SIGNAL(requestMoveDownFrame()));
+	
+	m_viewLayer = newLayer;
 }
 
 void KTExposureSheet::renameScene(const QString &name, int id)
@@ -165,6 +167,7 @@ void KTExposureSheet::renameScene(const QString &name, int id)
 void KTExposureSheet::applyAction(int action)
 {
 // 	ktDebug(1) << action;
+	ktDebug( ) << k_funcinfo << endl;
 	switch(action)
 	{
 		case InsertLayer:
@@ -193,7 +196,7 @@ void KTExposureSheet::applyAction(int action)
 		case InsertFrames:
 		{
 // 			m_viewLayer->setUseFrame();
-			m_viewLayer->requestInsertFrames();
+			m_viewLayer->insertFrames();
 // 			emit requestInsertFrame();
 			break;
 		}
@@ -222,6 +225,11 @@ void KTExposureSheet::applyAction(int action)
 			break;
 		}
 	}
+}
+
+void KTExposureSheet::createFrame()
+{
+	m_viewLayer->currentLayerExposure()->insertFrame( 0, "Drawing");
 }
 
 void KTExposureSheet::actionButton( QAbstractButton *b)

@@ -18,62 +18,57 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktviewcamera.h"
+#include "ktcamerabar.h"
 #include "ktapplication.h"
+#include <QBoxLayout>
+
 #include "ktdebug.h"
 
-KTViewCamera::KTViewCamera(QWidget *parent) : KTMdiWindow(parent)
+KTCameraBar::KTCameraBar(QWidget *parent)
+ : QFrame(parent)
 {
 	KTINIT;
+	setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
+	setMidLineWidth(2);
+	setLineWidth (1);
 	
-	setWindowTitle(tr("Render Camera Preview"));
-	setWindowIcon( QPixmap(KTOON_HOME+"/images/icons/camera_preview.xpm" ));
+	QBoxLayout *m_mainLayout = new QBoxLayout(QBoxLayout::LeftToRight, parent);
+	m_mainLayout->addStretch(1);
 	
-	m_container = new QFrame(this);
-	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, m_container);
+	m_mainLayout->setSpacing(0);
+	m_mainLayout->setMargin(0);
 	
-	QFrame *animationAreaContainer = new QFrame;
+	m_rew = new KTImageButton(QPixmap(KTOON_HOME+"/images/icons/rw.png"), 33,this, true);
+	m_mainLayout->addWidget(m_rew);
+	connect(m_rew, SIGNAL(clicked()), this, SIGNAL(rew()));
 	
-	animationAreaContainer->setMidLineWidth(2);
-	animationAreaContainer->setLineWidth(2);
-	animationAreaContainer->setFrameStyle(QFrame::Box | QFrame::Raised );
+	m_play = new KTImageButton(QPixmap(KTOON_HOME+"/images/icons/play.png"), 33,this, true);
+	m_mainLayout->addWidget(m_play);
+	connect(m_play, SIGNAL(clicked()), this, SIGNAL(play()));
 	
-	QBoxLayout *animationAreaLayout = new QBoxLayout(QBoxLayout::TopToBottom, animationAreaContainer);
-	animationAreaLayout->setMargin(0);
-	m_animationArea = new AAnimationArea;
-	animationAreaLayout->addWidget(m_animationArea);
+	m_stop = new KTImageButton(QPixmap(KTOON_HOME+"/images/icons/stop.png"), 33,this, true);
+	m_mainLayout->addWidget(m_stop);
+	connect(m_stop, SIGNAL(clicked()), this, SIGNAL(stop()));
 	
+	m_ff = new KTImageButton(QPixmap(KTOON_HOME+"/images/icons/ff.png"), 33,this, true);
+	m_mainLayout->addWidget(m_ff);
+	connect(m_ff, SIGNAL(clicked()), this, SIGNAL(ff()));
 	
-	layout->addWidget( animationAreaContainer, 0, Qt::AlignTop | Qt::AlignCenter );
-	
-	m_bar = new KTCameraBar;
-	layout->addWidget( m_bar, 0, Qt::AlignTop | Qt::AlignCenter );
-	m_bar->show();
-	
-	connect(m_bar, SIGNAL(play()), m_animationArea, SLOT(play()));
-	connect(m_bar, SIGNAL(stop()), m_animationArea, SLOT(stop()));
-	
-	m_container->setLayout(layout);
-	
-	setCentralWidget(m_container);
-	
-// 	QPalette pal = palette();
-// 	pal.setColor(QPalette::Background, pal.color(QPalette::Foreground) );
-// 	setPalette(pal);
+	setLayout(m_mainLayout);
 }
 
 
-KTViewCamera::~KTViewCamera()
+KTCameraBar::~KTCameraBar()
 {
 	KTEND;
 }
 
-// QSize KTViewCamera::sizeHint() const
-// {
-// 	return m_container->sizeHint();
-// }
-
-AAnimationArea *KTViewCamera::animationArea()
+void KTCameraBar::setPalette(const QPalette &)
 {
-	return m_animationArea;
 }
+
+// void KTCameraBar::paintEvent(QPaintEvent *e)
+// {
+// 	QFrame::paintEvent(e);
+// 	QPainter painter(this);
+// }

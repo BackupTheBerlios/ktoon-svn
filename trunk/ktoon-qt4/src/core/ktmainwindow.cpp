@@ -43,7 +43,7 @@
 #include <QTextEdit>
 //
 
-KTMainWindow::KTMainWindow() : DMainWindow()
+KTMainWindow::KTMainWindow() : DMainWindow(), m_exposureSheet(0)
 {
 	KTINIT;
 	m_statusBar = new KTStatusBar(this);
@@ -53,16 +53,23 @@ KTMainWindow::KTMainWindow() : DMainWindow()
 	
 	m_projectManager = new KTProjectManager(this);
 	
-	m_workSpace = new QWorkspace;
-	m_workSpace->setScrollBarsEnabled ( true );
+	m_drawingSpace = new QWorkspace;
+	m_drawingSpace->setScrollBarsEnabled ( true );
 	
-// 	m_workSpace->setBackground(QBrush(QPixmap(background_xpm))); 
+// 	m_drawingSpace->setBackground(QBrush(QPixmap(background_xpm))); 
 	
-	addWidget(m_workSpace, tr("Illustration"));
+	addWidget(m_drawingSpace, tr("Illustration"));
 	
-	m_viewCamera = new KTViewCamera();
-	addWidget(m_viewCamera, tr("Animation"));
-
+	m_animationSpace = new QWorkspace;
+	m_animationSpace->setScrollBarsEnabled ( true );
+	
+	m_viewCamera = new KTViewCamera(m_animationSpace);
+	
+	m_animationSpace->addWindow(m_viewCamera);
+	m_viewCamera->show();
+	addWidget(m_animationSpace, tr("Animation"));
+	
+	
 	setupBackground();
 	
 	m_actionManager = new KTActionManager(this);
@@ -75,6 +82,8 @@ KTMainWindow::KTMainWindow() : DMainWindow()
 	
 	setupMenu();
 	createGUI();
+	
+	m_pActiveTabWidget->setCurrentIndex( 0 );
 	
 	showMaximized();
 	
@@ -97,8 +106,10 @@ void KTMainWindow::setupMenu()
 	m_fileMenu->addAction(m_actionManager->find("OpenFile"));
 
 	// <TEST>
-	KTAction *act = new KTAction(QIcon(), "Play (test)", QKeySequence(), m_viewCamera->animationArea(), SLOT(play()), m_actionManager, "play");
-	m_fileMenu->addAction(act);
+	KTAction *play = new KTAction(QIcon(), "Play (test)", QKeySequence(), m_viewCamera->animationArea(), SLOT(play()), m_actionManager, "play");
+	m_fileMenu->addAction(play);
+	KTAction *stop = new KTAction(QIcon(), "Stop (test)", QKeySequence(), m_viewCamera->animationArea(), SLOT(stop()), m_actionManager, "stop");
+	m_fileMenu->addAction(stop);
 	// </TEST>
 	
 	QMenu *recents = new QMenu( this );
@@ -192,7 +203,7 @@ void KTMainWindow::createGUI()
 	connect(m_scenes, SIGNAL(requestRemoveScene()), m_projectManager, SLOT(removeScene()));
 	
 	/////////////////////
-	KTExposureSheet *m_exposureSheet = new KTExposureSheet(this);
+	m_exposureSheet = new KTExposureSheet(this);
 	m_exposureSheet->setIcon(QPixmap(KTOON_HOME+"/images/icons/exposure_sheet.xpm"));
 	toolWindow(DDockWindow::Right)->addWidget(tr("Exposure Sheet"),m_exposureSheet);
 	
@@ -330,9 +341,9 @@ void KTMainWindow::setupBackground()
 {
 // 	QImage bgImg(background_xpm );
 // 	KImageEffect::fade(bgImg, 0.2, palette().color(QPalette::Active , QColorGroup::Background) );
-// 	bgImg.smoothScale(m_workSpace->size());
+// 	bgImg.smoothScale(m_drawingSpace->size());
 	
-// 	m_workSpace->setPaletteBackgroundPixmap( bgImg );
+// 	m_drawingSpace->setPaletteBackgroundPixmap( bgImg );
 }
 
 void KTMainWindow::setPalette(const QPalette &pal)
@@ -361,8 +372,8 @@ void KTMainWindow::newViewDocument(const QString &name)
 	
 	if ( scene )
 	{
-		KTViewDocument *viewDocument = new KTViewDocument(scene, m_workSpace);
-		m_workSpace->addWindow(viewDocument);
+		KTViewDocument *viewDocument = new KTViewDocument(scene, m_drawingSpace);
+		m_drawingSpace->addWindow(viewDocument);
 		viewDocument->setWindowTitle(name);
 		
 		m_statusBar->advance(4);
@@ -405,7 +416,7 @@ void KTMainWindow::save()
 {
 	ktDebug() << "Saving.." << endl;
 	
-	qobject_cast<KTViewDocument *>(m_workSpace->activeWindow ())->drawArea()->paintDevice().save("test.png", "PNG"); // only for test
+	qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ())->drawArea()->paintDevice().save("test.png", "PNG"); // only for test
 }
 
 void KTMainWindow::preferences()
@@ -428,17 +439,18 @@ void KTMainWindow::aboutKToon()
 void KTMainWindow::insertFrame()
 {
 	ktDebug() << k_funcinfo << endl;
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_workSpace->activeWindow ());
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )
 	{
 		doc->drawArea()->setKeyFrame( m_projectManager->currentLayer()->frames().count()-1);
+		m_exposureSheet->createFrame();
 	}
 }
 
 void KTMainWindow::selectFrame(int layer, int frame)
 {
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_workSpace->activeWindow ());
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )
 	{
@@ -452,7 +464,7 @@ void KTMainWindow::selectFrame(int layer, int frame)
 // Drawing
 void KTMainWindow::changeCurrentColors(const QColor &foreground, const QColor &background)
 {
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_workSpace->activeWindow ());
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )
 	{
@@ -463,7 +475,7 @@ void KTMainWindow::changeCurrentColors(const QColor &foreground, const QColor &b
 
 void KTMainWindow::changeCurrentBrush(KTBrush *brush)
 {
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_workSpace->activeWindow ());
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )
 	{

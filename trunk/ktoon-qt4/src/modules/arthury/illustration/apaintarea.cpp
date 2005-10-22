@@ -99,8 +99,16 @@ void APaintArea::paintEvent(QPaintEvent *e)
 
 void APaintArea::setKeyFrame(int index)
 {
-	m_currentFrame = m_layer->frames()[index];
-	redrawAll();
+	KTKeyFrame *frame = m_layer->frames()[index];
+	if (frame )
+	{
+		m_currentFrame = frame;
+		redrawAll();
+	}
+	else
+	{
+		ktFatal() << "Frame not exists!!!" << endl;
+	}
 }
 
 void APaintArea::setLayer(KTLayer *layer)

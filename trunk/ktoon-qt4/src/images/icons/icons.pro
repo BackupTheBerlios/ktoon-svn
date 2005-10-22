@@ -4,7 +4,7 @@
 # Destiono es una biblioteca:  
 
 INSTALLS += klicons 
-klicons.files += *.xpm 
+klicons.files += *.xpm *.png 
 klicons.path = /images/icons 
 IMAGES += addfolder.xpm \
           align_b.xpm \
@@ -101,10 +101,13 @@ IMAGES += addfolder.xpm \
           ungroup.xpm \
           written_pic.xpm \
           zoom-in.xpm \
-          zoom-out.xpm 
+          zoom-out.xpm \
+          ff.png \
+          play.png \
+          rw.png \
+          stop.png 
 CONFIG += release \
 warn_on \
 staticlib
 TEMPLATE = lib
-#The following line was inserted by qt3to4
-QT += qt3support 
+QT += qt3support

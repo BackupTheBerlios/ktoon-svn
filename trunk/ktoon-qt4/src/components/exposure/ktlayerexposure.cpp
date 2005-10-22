@@ -198,13 +198,14 @@ void KTLayerExposure::setUseFrames()
 	}
 }
 
-void KTLayerExposure::requestInsertFrames()
+void KTLayerExposure::insertFrames()
 {
 	if(m_currentFrame == m_useFrame )
 	{
 // 		m_useFrame++;
 		if(m_useFrame+1 < m_frames.count())
 		{
+			ktDebug() << "Emiting 1" << endl;
 			emit requestInsertFrame();
 // 			m_frames[m_useFrame]->setUsed( true );
 // 			frameSelect( m_useFrame, 0, 0, 0);
@@ -214,6 +215,7 @@ void KTLayerExposure::requestInsertFrames()
 	//FIXME:
 	else if(m_frames[m_currentFrame]->isUsed() && m_useFrame != m_frames.count() )
 	{
+		ktDebug() << "Emiting 2" << endl;
 // 		m_useFrame++;
 // 		m_layout->removeWidget(m_frames[m_useFrame]);
 // 		m_layout->insertWidget( m_layout->indexOf(m_frames[m_currentFrame])+1, m_frames[m_useFrame], 10);
@@ -225,6 +227,7 @@ void KTLayerExposure::requestInsertFrames()
 	{
 		for(int i = m_useFrame; i <= m_currentFrame; i++)
 		{
+			ktDebug() << "Emiting 3" << endl;
 			emit requestInsertFrame();
 // 			m_frames[i]->setUsed( true );
 // 			emit(setUsedFrame(m_frames[i]->name()));

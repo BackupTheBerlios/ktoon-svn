@@ -50,6 +50,8 @@ class KTExposureSheet : public KTModuleWidgetBase
 
 		enum Actions { /*NoAction = 0,*/ InsertLayer = 0, RemoveLayer, ShowManageLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
 		
+		void createFrame();
+		
 	private:
 		QList<QPixmap> m_imgs;
 		QGroupBox *m_buttonsPanel;
@@ -81,11 +83,7 @@ class KTExposureSheet : public KTModuleWidgetBase
 	private slots:
 		void actionButton(QAbstractButton *);
 		
-		
-		
 	signals:
-// 		void requestInsertFrame();
-		
 		void requestInsertLayer();
 		void requestRemoveLayer();
 		

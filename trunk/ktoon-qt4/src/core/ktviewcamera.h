@@ -21,14 +21,16 @@
 #ifndef KTVIEWCAMERA_H
 #define KTVIEWCAMERA_H
 
-#include <ktvhbox.h>
+#include "ktmdiwindow.h"
 
+#include "ktvhbox.h"
 #include "aanimationarea.h"
+#include "ktcamerabar.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTViewCamera : public KTVHBox
+class KTViewCamera : public KTMdiWindow
 {
 	Q_OBJECT
 	public:
@@ -36,9 +38,13 @@ class KTViewCamera : public KTVHBox
 		~KTViewCamera();
 		
 		AAnimationArea *animationArea();
+		
+// 		QSize sizeHint() const;
 
 	private:
+		QFrame *m_container;
 		AAnimationArea *m_animationArea;
+		KTCameraBar *m_bar;
 };
 
 #endif

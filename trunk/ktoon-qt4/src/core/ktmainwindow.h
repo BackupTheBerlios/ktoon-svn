@@ -143,12 +143,17 @@ class KTMainWindow : public DMainWindow
 		KTProjectManager *m_projectManager;
 		
 	private:
-		QWorkspace *m_workSpace;
+		QWorkspace *m_drawingSpace;
+		QWorkspace *m_animationSpace;
 		KTStatusBar *m_statusBar;
 		KTActionManager *m_actionManager;
 		QMenu *m_fileMenu,*m_editMenu, *m_proyectMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
 		
 		KTViewCamera *m_viewCamera;
+		
+		// Components
+	private:
+		KTExposureSheet *m_exposureSheet;
 };
 
 #endif
