@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@toonka.com   *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                          	   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,63 +17,31 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTTABWIDGET_H
+#define KTTABWIDGET_H
 
-#ifndef KTTABDIALOG_H
-#define KTTABDIALOG_H
-
-#include <QDialog>
-#include "kttabwidget.h"
-
-#include <QHash>
-
-typedef QHash<int, QPushButton *> Buttons;
-
+#include <QTabWidget>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTTabDialog : public QDialog
+class KTTabWidget : public QTabWidget
 {
 	Q_OBJECT
 	public:
-		enum Button
-		{
-			Help    = 0x00000001,
-			Ok      = 0x00000004,
-			Apply   = 0x00000008,
-			Cancel  = 0x00000020,
-			Custom1 = 0x00000080,
-			Custom2 = 0x00000100,
-			Custom3 = 0x00000200
-		};
-		KTTabDialog(QWidget *parent = 0, bool modal = true);
-		KTTabDialog(int buttons = Ok|Cancel, QWidget *parent = 0, bool modal = true);
+		KTTabWidget(QWidget *parent = 0);
+		~KTTabWidget();
 		
-		~KTTabDialog();
-		
-		void addTab ( QWidget * child, const QString & label );
-		void addTab ( QWidget * child, const QIcon & iconset, const QString & label );
-		
-		QWidget *currentTab();
-		
-		void setButtonText(Button b, const QString &text);
-		QPushButton *button(Button b);
-		
-	private:
-		void setupButtons(int buttons);
-		
-	public slots:
-		virtual void ok();
-		virtual void cancel();
-		virtual void apply();
-		virtual void help(){};
-		virtual void custom1() {};
-		virtual void custom2() {};
-		virtual void custom3() {};
-		
-	private:
-		KTTabWidget *m_tabWidget;
-		Buttons m_buttons;
+	protected:
+#ifndef QT_NO_WHEELEVENT
+    		virtual void wheelEvent( QWheelEvent *e );
+#endif
+
+	protected slots:
+#ifndef QT_NO_WHEELEVENT
+    		virtual void wheelMove( int delta );
+#endif
+
 };
 
 #endif

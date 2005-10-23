@@ -21,20 +21,25 @@
 #include <qfile.h>
 #include <qtextstream.h>
 #include <qimage.h>
-//Added by qt3to4:
+
 #include <QPixmap>
 #include <QLabel>
+#include <QScrollArea>
+
+#include <QTextBrowser>
 
 #include "ktabout.h"
 #include "images.h"
 #include "ktapplication.h"
 #include "kimageeffect.h"
 
+#include "ktdebug.h"
+
 #define DEBUG_ABOUT 1
 
-KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( parent )
+KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 { 
-	setCaption( tr( "KTAbout" ) + QString( " KToon..." ) );
+	setWindowTitle( tr( "About" ) + QString( " KToon..." ) );
 
     	//1: Credits
 
@@ -74,32 +79,29 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( parent )
 
     	// 3: Changelog
 
- 	Q3ScrollView *scroll = new Q3ScrollView( this );
+	QTextBrowser *logText = new QTextBrowser/*(scroll)*/;
 	
-	QLabel *logText = new QLabel(scroll->viewport());
-	scroll->addChild( logText );
-	
-	QString readText;
+// 	QString readText;
 	QFile clFile( KTOON_HOME+"/data/Changelog" );
 	
-	if ( clFile.open( QIODevice::ReadOnly ) )
+	if ( clFile.open( QIODevice::ReadOnly | QIODevice::Text) )
 	{
 		QTextStream stream( &clFile );
 		while ( ! stream.atEnd() )
 		{
-			QString text;
-			text = stream.readLine();
-			readText += text+"\n";
+			QString text = stream.readLine();
+// 			readText += text+"\n";
+			logText->append(text);
 		}
 		clFile.close();
 	}
-	logText -> setText( readText );
+// 	logText -> setText( readText );
 	
-	addTab( scroll, tr( "Changelog" ) );
+	addTab( logText, tr( "Changelog" ) );
 
     	// 4: Toonka Films
 
-	QLabel *toonka = new QLabel( this );
+	QLabel *toonka = new QLabel/*( this )*/;
 	
 	QImage toonkaImg( KTOON_HOME+"/images/toonka.jpg" );
 	KImageEffect::fade( toonkaImg,0.2,paletteBackgroundColor()); 
@@ -109,7 +111,7 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( parent )
 
     	// 5: Laboratoon
 
-	QLabel *laboratoon = new QLabel( this );
+	QLabel *laboratoon = new QLabel/*( this )*/;
 	
 	QImage laboratoonImg( KTOON_HOME+"/images/laboratoon.jpg" );
 	KImageEffect::fade( laboratoonImg,0.2,paletteBackgroundColor()); 
@@ -119,26 +121,29 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( parent )
 
     	// 6: Licence
 
-	Q3ScrollView *scrollLicence = new Q3ScrollView( this );
-
-	QLabel *licenceText = new QLabel( scrollLicence );
-	scrollLicence->addChild( licenceText );
-	QString licence;
+	QTextBrowser *licenceText = new QTextBrowser/*( scrollLicence )*/;
+// 	scrollLicence->setWidget( licenceText );
+// 	QString licence = "";
 	QFile licenceFile( KTOON_HOME+"/data/COPYING" );
-	if ( licenceFile.open( QIODevice::ReadOnly ) )
+	if ( licenceFile.open( QIODevice::ReadOnly  | QIODevice::Text) )
 	{
 		QTextStream stream( &licenceFile );
 		while ( ! stream.atEnd() )
 		{
 			QString line = stream.readLine();
-			licence += line+"\n";
+// 			licence += line+"\n";
+			licenceText->append(line);
 		}
 		licenceFile.close();
 	}
-	licenceText -> setText( licence );
-	addTab( scrollLicence, tr( "License Agreement" ) );
 	
+// 	licenceText -> setText( licence );
+
+	addTab( licenceText, tr( "License Agreement" ) );
+
 	setMaximumSize( m_credits->size() );
+	
+	setButtonText( Cancel, tr("Close"));
 }
 
 KTAbout::~KTAbout()

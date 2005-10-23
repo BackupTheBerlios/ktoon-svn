@@ -68,7 +68,7 @@ KTAnimWidget::KTAnimWidget(ListOfPixmaps lop, QWidget *parent) : Q3CanvasView(pa
 	setCanvas(m_canvas);
 	resize(m_canvas->width()/2, m_canvas->height());
 
-	show();
+// 	show();
 }
 
 KTAnimWidget::~ KTAnimWidget()

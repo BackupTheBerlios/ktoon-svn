@@ -18,10 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef ABOUT_H
-#define ABOUT_H
+#ifndef KTABOUT_H
+#define KTABOUT_H
 
-#include <q3scrollview.h>
 #include <qlabel.h>
 #include <qpixmap.h>
 

@@ -29,10 +29,10 @@
 #include "ktbrusheslist.h"
 
 #include <QBoxLayout>
-#include <QTabWidget>
 #include <QLineEdit>
 
 #include "ktbrush.h"
+#include "kttabwidget.h"
 
 
 
@@ -58,7 +58,7 @@ class KTBrushWidget : public KTModuleWidgetBase
 		
 	private:
 		KTDisplayBrush *m_displayBrush;
-		QTabWidget *m_brushManager;
+		KTTabWidget *m_brushManager;
 		KTEditSpinBox *m_displayThickness, *m_displaySmoothness;
 		QLineEdit *m_nameBrush;
 		KTImageButton *m_addBrush, *m_removeBrush;

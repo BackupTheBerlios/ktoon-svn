@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@toonka.com   *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                          	   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,62 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTTABDIALOG_H
-#define KTTABDIALOG_H
-
-#include <QDialog>
 #include "kttabwidget.h"
+#include <QWheelEvent>
 
-#include <QHash>
-
-typedef QHash<int, QPushButton *> Buttons;
-
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-class KTTabDialog : public QDialog
+KTTabWidget::KTTabWidget(QWidget *parent) : QTabWidget(parent)
 {
-	Q_OBJECT
-	public:
-		enum Button
-		{
-			Help    = 0x00000001,
-			Ok      = 0x00000004,
-			Apply   = 0x00000008,
-			Cancel  = 0x00000020,
-			Custom1 = 0x00000080,
-			Custom2 = 0x00000100,
-			Custom3 = 0x00000200
-		};
-		KTTabDialog(QWidget *parent = 0, bool modal = true);
-		KTTabDialog(int buttons = Ok|Cancel, QWidget *parent = 0, bool modal = true);
-		
-		~KTTabDialog();
-		
-		void addTab ( QWidget * child, const QString & label );
-		void addTab ( QWidget * child, const QIcon & iconset, const QString & label );
-		
-		QWidget *currentTab();
-		
-		void setButtonText(Button b, const QString &text);
-		QPushButton *button(Button b);
-		
-	private:
-		void setupButtons(int buttons);
-		
-	public slots:
-		virtual void ok();
-		virtual void cancel();
-		virtual void apply();
-		virtual void help(){};
-		virtual void custom1() {};
-		virtual void custom2() {};
-		virtual void custom3() {};
-		
-	private:
-		KTTabWidget *m_tabWidget;
-		Buttons m_buttons;
-};
+}
 
+
+KTTabWidget::~KTTabWidget()
+{
+}
+
+#ifndef QT_NO_WHEELEVENT
+void KTTabWidget::wheelEvent( QWheelEvent *ev )
+{
+	wheelMove( ev->delta() );
+}
+
+void KTTabWidget::wheelMove( int delta )
+{
+	if ( count() > 1 )
+	{
+		int current = currentPageIndex();
+		if ( delta < 0 )
+		{
+			current = (current + 1) % count();
+		}
+		else 
+		{
+			current--;
+			if ( current < 0 )
+				current = count() - 1;
+		}
+		setCurrentPage( current );
+	}
+}
 #endif

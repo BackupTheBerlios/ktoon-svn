@@ -33,8 +33,8 @@
 #include <QList>
 #include <QListView>
 #include <QActionGroup>
-#include <QTabWidget>
 
+#include "kttabwidget.h"
 #include "ktimagebutton.h"
 
 /**
@@ -58,7 +58,7 @@ class KTExposureSheet : public KTModuleWidgetBase
 		QButtonGroup *m_buttonGroup;
 		KTTableExposure *m_viewLayer;
 		QListView *m_layerManager;
-		QTabWidget *m_scenes;
+		KTTabWidget *m_scenes;
 
 	private:
 		void setupButtons();

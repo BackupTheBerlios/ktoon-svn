@@ -28,7 +28,7 @@ KTTabDialog::KTTabDialog(QWidget *parent, bool modal)
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout;
 
-	m_tabWidget = new QTabWidget(this);
+	m_tabWidget = new KTTabWidget(this);
 	
 	mainLayout->addWidget(m_tabWidget);
 	setLayout(mainLayout);
@@ -43,7 +43,7 @@ KTTabDialog::KTTabDialog(int buttons, QWidget *parent, bool modal)
 	QVBoxLayout *mainLayout = new QVBoxLayout;
 	setLayout(mainLayout);
 	
-	m_tabWidget = new QTabWidget(this);
+	m_tabWidget = new KTTabWidget(this);
 	
 	mainLayout->addWidget(m_tabWidget);
 	
@@ -59,23 +59,26 @@ void KTTabDialog::setupButtons(int buttons)
 	
 	if ( buttons & Custom1)
 	{
-		QPushButton *customButton = new QPushButton(tr("Help"));
+		QPushButton *customButton = new QPushButton(tr(""));
 		connect(customButton, SIGNAL(clicked()), this, SLOT(custom1()));
 		buttonLayout->addWidget(customButton);
+		m_buttons.insert( Custom1, customButton);
 	}
 	
 	if ( buttons & Custom2)
 	{
-		QPushButton *customButton = new QPushButton(tr("Help"));
+		QPushButton *customButton = new QPushButton(tr(""));
 		connect(customButton, SIGNAL(clicked()), this, SLOT(custom2()));
 		buttonLayout->addWidget(customButton);
+		m_buttons.insert( Custom2, customButton);
 	}
 	
 	if ( buttons & Custom3)
 	{
-		QPushButton *customButton = new QPushButton(tr("Help"));
+		QPushButton *customButton = new QPushButton(tr(""));
 		connect(customButton, SIGNAL(clicked()), this, SLOT(custom3()));
 		buttonLayout->addWidget(customButton);
+		m_buttons.insert( Custom3, customButton);
 	}
 	
 	if ( buttons & Help )
@@ -83,6 +86,7 @@ void KTTabDialog::setupButtons(int buttons)
 		QPushButton *helpButton = new QPushButton(tr("Help"));
 		connect(helpButton, SIGNAL(clicked()), this, SLOT(help()));
 		buttonLayout->addWidget(helpButton);
+		m_buttons.insert( Help, helpButton);
 	}
 	
 	if ( buttons & Apply )
@@ -90,6 +94,7 @@ void KTTabDialog::setupButtons(int buttons)
 		QPushButton *applyButton = new QPushButton(tr("Apply"));
 		connect(applyButton, SIGNAL(clicked()), this, SLOT(apply()));
 		buttonLayout->addWidget(applyButton);
+		m_buttons.insert( Apply, applyButton);
 	}
 	
 	if ( buttons & Ok )
@@ -97,6 +102,7 @@ void KTTabDialog::setupButtons(int buttons)
 		QPushButton *okButton = new QPushButton(tr("OK"));
 		connect(okButton, SIGNAL(clicked()), this, SLOT(ok()));
 		buttonLayout->addWidget(okButton);
+		m_buttons.insert( Ok, okButton);
 	}
 	
 	if ( buttons & Cancel)
@@ -104,6 +110,7 @@ void KTTabDialog::setupButtons(int buttons)
 		QPushButton *cancelButton = new QPushButton(tr("Cancel"));
 		connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
 		buttonLayout->addWidget(cancelButton);
+		m_buttons.insert( Cancel, cancelButton);
 	}
 	
 	static_cast<QVBoxLayout *>(layout())->addLayout(buttonLayout);
@@ -141,5 +148,19 @@ void KTTabDialog::cancel()
 
 void KTTabDialog::apply()
 {
+}
+
+void KTTabDialog::setButtonText(Button b, const QString &text)
+{
+	QPushButton *button = m_buttons[b];
+	if ( button )
+	{
+		button->setText(text);
+	}
+}
+
+QPushButton *KTTabDialog::button(Button b)
+{
+	return m_buttons[b];
 }
 

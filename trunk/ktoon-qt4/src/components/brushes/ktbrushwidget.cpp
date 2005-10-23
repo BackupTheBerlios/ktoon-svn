@@ -50,7 +50,7 @@ void KTBrushWidget::setupDisplay()
 
 void KTBrushWidget::setupBrushManager()
 {
-	m_brushManager = new QTabWidget(this);
+	m_brushManager = new KTTabWidget(this);
 	
 	QFrame *container = new QFrame(m_brushManager);
 	QBoxLayout *layoutContainer = new QBoxLayout(QBoxLayout::TopToBottom, container );

@@ -45,7 +45,7 @@ KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, 
 		QPixmap(KTOON_HOME+"/images/icons/arrowdown.xpm" );
 	setupButtons();
 	
-	m_scenes = new QTabWidget(this);
+	m_scenes = new KTTabWidget(this);
 	
 	addChild(m_scenes);
 //  	hide();
