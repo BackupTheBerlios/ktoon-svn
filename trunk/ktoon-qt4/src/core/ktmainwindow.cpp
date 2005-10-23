@@ -199,7 +199,7 @@ void KTMainWindow::createGUI()
 	m_scenes->setIcon(QPixmap(KTOON_HOME+"/images/icons/scenes.xpm"));
 	toolWindow(DDockWindow::Right)->addWidget(tr("Scenes"),m_scenes);
 	
-	connect(m_scenes, SIGNAL(requestInsertScene()), m_projectManager, SLOT(insertScene()));
+	connect(m_scenes, SIGNAL(requestInsertScene()), m_projectManager, SLOT(addScene()));
 	connect(m_scenes, SIGNAL(requestRemoveScene()), m_projectManager, SLOT(removeScene()));
 	
 	/////////////////////
@@ -207,7 +207,7 @@ void KTMainWindow::createGUI()
 	m_exposureSheet->setIcon(QPixmap(KTOON_HOME+"/images/icons/exposure_sheet.xpm"));
 	toolWindow(DDockWindow::Right)->addWidget(tr("Exposure Sheet"),m_exposureSheet);
 	
-	connect(m_exposureSheet, SIGNAL(requestInsertFrame()), m_projectManager, SLOT(insertFrame()));
+	connect(m_exposureSheet, SIGNAL(requestInsertFrame()), m_projectManager, SLOT(addFrame()));
 	
 	connect(m_exposureSheet, SIGNAL(frameSelected( int, int )), this, SLOT(selectFrame(int,int)));
 	
@@ -226,10 +226,10 @@ void KTMainWindow::createGUI()
 	
 	
 	// Connect the project manager with the components...
-	connect(m_projectManager, SIGNAL(sceneInserted(const QString &)), m_scenes, SLOT( insertScene(const QString &)));
-	connect(m_projectManager, SIGNAL(sceneInserted(const QString &)), m_exposureSheet, SLOT(addScene(const QString &)));
+	connect(m_projectManager, SIGNAL(sceneAdded(const QString &)), m_scenes, SLOT( insertScene(const QString &)));
+	connect(m_projectManager, SIGNAL(sceneAdded(const QString &)), m_exposureSheet, SLOT(addScene(const QString &)));
 	
-	connect(m_projectManager, SIGNAL(frameInserted()), this, SLOT(insertFrame()));
+	connect(m_projectManager, SIGNAL(frameAdded(const QString &)), this, SLOT(insertFrame(const QString &)));
 }
 
 void KTMainWindow::setupFileActions()
@@ -436,7 +436,7 @@ void KTMainWindow::aboutKToon()
 
 // Animation
 
-void KTMainWindow::insertFrame()
+void KTMainWindow::insertFrame(const QString &name)
 {
 	ktDebug() << k_funcinfo << endl;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
@@ -444,7 +444,7 @@ void KTMainWindow::insertFrame()
 	if ( doc )
 	{
 		doc->drawArea()->setKeyFrame( m_projectManager->currentLayer()->frames().count()-1);
-		m_exposureSheet->createFrame();
+		m_exposureSheet->addFrame(name);
 	}
 }
 

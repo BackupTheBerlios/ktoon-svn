@@ -141,12 +141,12 @@ void KTLayerExposure::otherSelected(int id)
 }
 
 
-void KTLayerExposure::insertFrame(int id, QString text)
+void KTLayerExposure::insertFrame(int id, const QString &text)
 {
-	if(text == QString::null)
-	{
-		text = tr( "Drawing " ) + QString::number( m_id ) + QString( "-" ) + QString::number( m_useFrame + 1 );
-	}
+// 	if(text == QString::null)
+// 	{
+// 		text = tr( "Drawing " ) + QString::number( m_id ) + QString( "-" ) + QString::number( m_useFrame + 1 );
+// 	}
 	ESFrame *frame = new ESFrame( text, id , this);
 	m_layout->insertWidget(id+1,frame, 10);
 	
@@ -158,7 +158,25 @@ void KTLayerExposure::insertFrame(int id, QString text)
 	frame->show();
 }
 
-void KTLayerExposure::invertFrames(int id1, int id2)
+void KTLayerExposure::addFrame(const QString &text ) // FIXME!!
+{
+	ktDebug() << m_frames.count() << endl;
+	int id = m_frames.count()-99;
+	
+	ktDebug() << "Add frame with id: " << id << " and name: " << text << endl;
+	
+	ESFrame *frame = new ESFrame( text, id, this);
+	m_layout->insertWidget(id, frame, 10);
+	
+	m_frames.insert(id, frame);//m_currentFrame, frame ) ;
+	connect( frame, SIGNAL(clicked(int, int, int, int )), this, SLOT(frameSelect(int, int, int, int)));
+	connect(this, SIGNAL(frameSelected(int )), frame, SLOT(otherSelected(int)));
+	
+	connect( frame, SIGNAL(renamed( int, const QString&)), this, SLOT(frameRename(int, const QString&)));
+	frame->show();
+}
+
+void KTLayerExposure::invertFrames(int id1, int id2) // invert or swap??
 {
 	m_layout->remove(m_frames[id1]);
 	m_layout->remove(m_frames[id2]);
@@ -256,7 +274,7 @@ void KTLayerExposure::removeFrame(int id)
 			}
 			frameSelect(id);
 			m_useFrame--;
-			insertFrame(m_frames.last()->id()+1);
+			insertFrame(m_frames.last()->id()+1, ""); // FIXME
 			
 // 			emit removedFrame(id);
 		}
@@ -272,7 +290,7 @@ void KTLayerExposure::removeFrame(int id)
 			
 			m_useFrame--;
 			frameSelect(m_useFrame);
-			insertFrame(m_frames.last()->id()+1);
+			insertFrame(m_frames.last()->id()+1, ""); //FIXME
 		}
 	}
 }

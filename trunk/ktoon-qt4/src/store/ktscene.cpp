@@ -22,9 +22,9 @@
 #include "ktdebug.h"
 
 
-KTScene::KTScene(QObject *parent) : QObject(parent), m_currentLayer(0)
+KTScene::KTScene(QObject *parent) : QObject(parent), m_currentLayer(0), m_layerCount(0)
 {
-	m_currentLayer = createLayer();
+// 	m_currentLayer = createLayer();
 }
 
 
@@ -55,8 +55,13 @@ void KTScene::setLayers(const Layers &layers)
 KTLayer *KTScene::createLayer()
 {
 	KTLayer *layer = new KTLayer(this);
+	layer->setLayerName(tr("Layer %1").arg(m_layerCount++));
+	
+	emit layerCreated( layer->layerName() );
 	
 	m_layers << layer;
+	
+	m_currentLayer = layer;
 	
 	return layer;
 }

@@ -51,20 +51,31 @@ class KTProjectManager : public QObject
 		
 	public slots:
 		//Scenes
-		void insertScene();
+		void addScene();
 		void removeScene();
 		void renameScene(const QString &name, int index);
 		
+		// Layer
+		void addLayer();
+		
 		// Frames
-		void insertFrame();
+		void addFrame();
 	signals:
-		void sceneInserted(const QString &name);
+		// Scenes
+		void sceneAdded(const QString &name);
 		void sceneRenamed(const QString &name, int id);
 		
-		void documentInserted();
-		void frameInserted();
-		void LayerInserted();
+		// Layers
+		void layerAdded(const QString &name);
 		
+		// Frames
+		void frameAdded(const QString &name);
+		
+		
+		// <FIXME>
+		void documentInserted();
+		void LayerInserted();
+		// </FIXME>
 	private:
 		Documents m_documents;
 		

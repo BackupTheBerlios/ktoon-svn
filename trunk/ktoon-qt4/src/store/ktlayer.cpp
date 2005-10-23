@@ -20,14 +20,14 @@
 
 #include "ktlayer.h"
 
-KTLayer::KTLayer(QObject *parent) : QObject(parent), m_isVisible(true), m_name(tr("Layer")), m_currentFrame(0)
+KTLayer::KTLayer(QObject *parent) : QObject(parent), m_isVisible(true), m_name(tr("Layer")), m_currentFrame(0), m_framesCount(0)
 {
-	m_currentFrame = createFrame();
+// 	m_currentFrame = createFrame();
 }
 
-KTLayer::KTLayer(const QString &layerName, QObject * parent)  : QObject(parent), m_isVisible(true), m_name(layerName), m_currentFrame(0)
+KTLayer::KTLayer(const QString &layerName, QObject * parent)  : QObject(parent), m_isVisible(true), m_name(layerName), m_currentFrame(0), m_framesCount(0)
 {
-	m_currentFrame = createFrame();
+// 	m_currentFrame = createFrame();
 }
 
 
@@ -47,9 +47,15 @@ void KTLayer::setFrames(const Frames &frames)
 
 KTKeyFrame *KTLayer::createFrame()
 {
+	QString name = tr("Drawing %1").arg(m_framesCount++);
+	
 	KTKeyFrame *keyFrame = new KTKeyFrame(this);
+	keyFrame->setFrameName( name);
+	
+	m_currentFrame = keyFrame;
 	
 	m_frames << keyFrame;
+	emit frameCreated( keyFrame->frameName() );
 	
 	return keyFrame;
 }
@@ -61,7 +67,7 @@ KTKeyFrame *KTLayer::currentFrame()
 
 void KTLayer::setCurrentFrame(int index)
 {
-	KTKeyFrame *frame = m_frames[index];
+	KTKeyFrame *frame = m_frames[index]; 
 	
 	if ( frame )
 	{

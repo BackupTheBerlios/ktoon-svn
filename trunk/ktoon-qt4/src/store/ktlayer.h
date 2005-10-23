@@ -50,10 +50,10 @@ class KTLayer : public QObject
 		void setVisible(bool isVisible);
 		
 		QString layerName() const;
-		bool isVisible();
+		bool isVisible(); 
 	
 	signals: // TODO: add more signals
-		void frameInserted();
+		void frameCreated(const QString &name);
 	
 	private:
 		Frames m_frames;
@@ -61,6 +61,8 @@ class KTLayer : public QObject
 		QString m_name;
 		
 		KTKeyFrame *m_currentFrame;
+		
+		int m_framesCount;
 
 };
 

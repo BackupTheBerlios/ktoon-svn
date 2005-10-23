@@ -46,7 +46,8 @@ class KTLayerExposure : public QFrame
 		KTLayerExposure(const QString &initial_text, int id,int numFrame, QWidget *parent = 0);
 		~KTLayerExposure();
 		QString textHeader();
-		void insertFrame(int id, QString text = QString::null );
+		void insertFrame(int id, const QString &text );
+		void addFrame(const QString &text );
 		bool isSelected();
 		void invertFrames(int id1, int id2);
 		void setId(int id);

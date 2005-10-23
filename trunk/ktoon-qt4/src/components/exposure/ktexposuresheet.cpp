@@ -227,9 +227,9 @@ void KTExposureSheet::applyAction(int action)
 	}
 }
 
-void KTExposureSheet::createFrame()
+void KTExposureSheet::addFrame(const QString &name)
 {
-	m_viewLayer->currentLayerExposure()->insertFrame( 0, "Drawing");
+	m_viewLayer->currentLayerExposure()->addFrame( name);
 }
 
 void KTExposureSheet::actionButton( QAbstractButton *b)

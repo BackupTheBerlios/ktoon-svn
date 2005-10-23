@@ -46,10 +46,15 @@ class KTScene : public QObject
 		KTLayer *currentLayer();
 		void setCurrentLayer(int index);
 		
+	signals:
+		void layerCreated(const QString &name);
+		
 	private:
 		Layers m_layers;
 		KTLayer *m_currentLayer;
 		QString m_name;
+		
+		int m_layerCount;
 };
 
 #endif

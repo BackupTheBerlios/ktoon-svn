@@ -46,11 +46,17 @@ void KTProjectManager::setDocuments(const Documents &docs)
 KTDocument *KTProjectManager::createDocument(const QString &name)
 {
 	KTDocument *doc = new KTDocument(this);
+	
+	m_currentDocument = doc;
+	
 	m_documents << doc;
 	
-	connect(doc, SIGNAL(sceneCreated(const QString &)), this, SIGNAL(sceneInserted(const QString &)));
+	connect(doc, SIGNAL(sceneCreated(const QString &)), this, SIGNAL(sceneAdded(const QString &)));
 	
-	doc->createScene();
+	
+	addScene();
+	addLayer();
+	addFrame();
 	
 	return doc;
 }
@@ -64,6 +70,7 @@ KTScene *KTProjectManager::currentScene()
 {
 	if ( ! m_currentDocument )
 	{
+		ktFatal() << "No current document" << endl;
 		return 0;
 	}
 	
@@ -74,8 +81,10 @@ KTLayer *KTProjectManager::currentLayer()
 {
 	if ( ! currentScene() )
 	{
+		ktFatal() << "No current scene" << endl;
 		return 0;
 	}
+	
 	return currentScene()->currentLayer();
 }
 
@@ -83,8 +92,10 @@ KTKeyFrame *KTProjectManager::currentKeyFrame()
 {
 	if ( ! currentLayer() )
 	{
+		ktFatal() << "No current layer" << endl;
 		return 0;
 	}
+	
 	return currentLayer()->currentFrame();
 }
 
@@ -97,9 +108,17 @@ void KTProjectManager::setCurrentDocument(int index)
 	}
 }
 
-void KTProjectManager::insertScene()
+void KTProjectManager::addScene()
 {
-	KTScene *scene = m_currentDocument->createScene();
+	if ( m_currentDocument )
+	{
+		KTScene *scene = m_currentDocument->createScene();
+		connect(scene, SIGNAL(layerCreated( const QString& )), this, SIGNAL(layerAdded( const QString &)));
+	}
+	else
+	{
+		ktFatal() << "--> No current document" << endl;
+	}
 }
 
 void KTProjectManager::removeScene()
@@ -111,13 +130,36 @@ void KTProjectManager::renameScene(const QString &name, int index)
 // 	emit sceneRenamed(name, index);
 }
 
+// Layers
+void KTProjectManager::addLayer()
+{
+	KTScene *scene = currentScene();
+	if ( scene )
+	{
+		KTLayer *layer = scene->createLayer();
+		connect(layer, SIGNAL(frameCreated( const QString &)), this, SIGNAL(frameAdded( const QString& )));
+	}
+	else
+	{
+		ktFatal() << "--> No current scene" << endl;
+	}
+}
+
 // Frames
 
-void KTProjectManager::insertFrame()
+void KTProjectManager::addFrame()
 {
-	ktDebug() << "Inserting frame" << endl;
-	KTKeyFrame *keyFrame = currentLayer()->createFrame();
-	emit frameInserted();
+	ktDebug() << "KTProjectManager:: Inserting frame" << endl;
+	
+	KTLayer *layer = currentLayer();
+	if ( layer )
+	{
+		KTKeyFrame *keyFrame = layer->createFrame();
+	}
+	else
+	{
+		ktFatal() << "--> No current layer" << endl;
+	}
 }
 
 
