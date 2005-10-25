@@ -66,9 +66,3 @@ KTCameraBar::~KTCameraBar()
 void KTCameraBar::setPalette(const QPalette &)
 {
 }
-
-// void KTCameraBar::paintEvent(QPaintEvent *e)
-// {
-// 	QFrame::paintEvent(e);
-// 	QPainter painter(this);
-// }

@@ -49,7 +49,6 @@ class KTCameraBar : public QFrame
 		
 		
 	protected:
-// 		void paintEvent(QPaintEvent *e);
 };
 
 #endif

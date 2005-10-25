@@ -46,6 +46,9 @@
 KTMainWindow::KTMainWindow() : DMainWindow(), m_exposureSheet(0)
 {
 	KTINIT;
+	
+	setObjectName("KTMainWindow_");
+	
 	m_statusBar = new KTStatusBar(this);
 	setStatusBar( m_statusBar );
 	
@@ -64,6 +67,9 @@ KTMainWindow::KTMainWindow() : DMainWindow(), m_exposureSheet(0)
 	m_animationSpace->setScrollBarsEnabled ( true );
 	
 	m_viewCamera = new KTViewCamera(m_animationSpace);
+	connect(m_viewCamera, SIGNAL(sendMessage(const QString &, int)), m_statusBar, SLOT(setStatus(const QString &, int)));
+	connect(m_viewCamera, SIGNAL(sendProgress(int, int)), m_statusBar, SLOT(advance(int, int))); 
+	
 	
 	m_animationSpace->addWindow(m_viewCamera);
 	m_viewCamera->show();

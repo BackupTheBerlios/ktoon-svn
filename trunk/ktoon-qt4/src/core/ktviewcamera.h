@@ -27,6 +27,8 @@
 #include "aanimationarea.h"
 #include "ktcamerabar.h"
 
+#include "ccbar.h"
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
@@ -40,11 +42,14 @@ class KTViewCamera : public KTMdiWindow
 		AAnimationArea *animationArea();
 		
 // 		QSize sizeHint() const;
+		
+	private slots:
 
 	private:
 		QFrame *m_container;
 		AAnimationArea *m_animationArea;
-		KTCameraBar *m_bar;
+// 		KTCameraBar *m_bar;
+// 		CCBar *m_bar;
 };
 
 #endif

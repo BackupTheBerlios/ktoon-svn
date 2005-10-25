@@ -37,7 +37,8 @@ class KTMdiWindow : public QMainWindow
 		virtual bool event( QEvent * e );
 	
 	signals:
-		void sendMessage(const QString &);
+		void sendMessage(const QString &, int ms = 0);
+		void sendProgress(int step, int totalSteps);
 		void activate(bool);
 };
 

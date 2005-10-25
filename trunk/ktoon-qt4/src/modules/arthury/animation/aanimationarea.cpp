@@ -32,6 +32,8 @@ AAnimationArea::AAnimationArea(QWidget *parent) : QFrame(parent), m_layer(0), m_
 	
 	connect(m_timer, SIGNAL(timeout()), this, SLOT(advance()));
 	
+	m_photograms << m_renderCamera;
+	
 }
 
 
@@ -52,19 +54,21 @@ void AAnimationArea::paintEvent(QPaintEvent *e)
 {
 	QPainter painter;
 	
-	m_renderCamera.fill(qRgb(255, 255, 255));
-	
-	painter.begin(&m_renderCamera);
-	painter.setRenderHint(QPainter::Antialiasing);
-	
-	painter.save();
-	if ( m_draw )
-	{
-		drawFrames(&painter);
-	}
-	painter.restore();
-	painter.end();
-	
+// 	m_renderCamera.fill(qRgb(255, 255, 255));
+// 	
+// 	painter.begin(&m_renderCamera);
+// 	painter.setRenderHint(QPainter::Antialiasing);
+// 	
+// 	painter.save();
+// 	
+// 	if ( m_draw )
+// 	{
+// 		drawFrames(&painter);
+// 	}
+// 	
+// 	painter.restore();
+// 	painter.end();
+// 	
 	painter.begin(this);
 	painter.drawImage(QPoint(0, 0), m_renderCamera);
 }
@@ -101,12 +105,17 @@ void AAnimationArea::drawFrames(QPainter *painter)
 void AAnimationArea::play()
 {
 	ktDebug() << "Playing!" << endl;
+	
 	m_draw = true;
+	
+	render();
+	
 	if ( m_layer && !m_timer->isActive() )
 	{
 		m_timer->start(1000/m_fps);
 	}
-// 	m_draw = false;
+	
+// 	emit toStatusBar( tr("Playing... "), 2000 );
 }
 
 void AAnimationArea::stop()
@@ -122,16 +131,12 @@ void AAnimationArea::stop()
 
 void AAnimationArea::advance()
 {
-// 	ktDebug() << "Advance" << endl;
 	if ( m_layer )
 	{
-		KTKeyFrame *frame = m_layer->frames()[m_currentFramePosition];
-		
-		if ( m_currentFramePosition < m_layer->frames().count() &&  frame )
+		if ( m_currentFramePosition < m_photograms.count() )
 		{
-			m_currentFrame = frame;
+			m_renderCamera = m_photograms[m_currentFramePosition];
 			repaint();
-			
 			m_currentFramePosition++;
 		}
 		else
@@ -145,6 +150,57 @@ void AAnimationArea::advance()
 				stop();
 			}
 // 			repaint();
+		}
+	}
+}
+
+void AAnimationArea::render() // TODO: Extend to scenes
+{
+	m_photograms.clear();
+
+	Frames frames = m_layer->frames();
+	
+	int nphotograms = frames.count();
+	
+	emit toStatusBar( tr("Rendering... "), nphotograms*70 );
+	
+	QImage renderized = QImage(520, 340, QImage::Format_RGB32);
+	
+	for(int i = 0; i < nphotograms; i++)
+	{
+		renderized.fill(qRgb(255, 255, 255));
+		
+		QPainter painter(&renderized);
+		painter.setRenderHint(QPainter::Antialiasing);
+		
+		KTKeyFrame *frame = frames[i];
+		if ( frame )
+		{
+			QList<AGraphicComponent *> componentList = frame->components();
+			
+			if ( componentList.count() > 0  )
+			{
+				QList<AGraphicComponent *>::iterator it = componentList.begin();
+				
+				while ( it != componentList.end() )
+				{
+					if ( *it )
+					{
+						painter.save();
+						
+						painter.setPen((*it)->pen());
+						painter.setBrush((*it)->brush());
+						
+						painter.drawPath((*it)->path());
+						
+						painter.restore();
+					}
+					++it;
+				}
+			}
+			
+			emit progressStep( i+1, nphotograms);
+			m_photograms << renderized;
 		}
 	}
 }

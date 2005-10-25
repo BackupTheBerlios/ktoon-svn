@@ -74,6 +74,10 @@ KTImageButton::KTImageButton(const QIcon &icon, int size, QObject *reciever, con
 
 KTImageButton::~KTImageButton()
 {
+	if ( m_isAnimated )
+	{
+		delete m_animator;
+	}
 }
 
 void KTImageButton::setup()

@@ -19,10 +19,13 @@
  ***************************************************************************/
 
 #include "ktstatusbar.h"
+#include "ktdebug.h"
 
 KTStatusBar::KTStatusBar(QWidget *parent)
  : QStatusBar(parent)
 {
+	setObjectName("KTStatusBar_");
+	
 	m_progressBar = new QProgressBar(this);
 	m_progressBar->setMaximumSize(100, m_progressBar->height()/2);
 	m_progressBar->setMinimumWidth(100);
@@ -49,14 +52,20 @@ void KTStatusBar::clear()
 {
 	m_status->setText("<b></b>");
 	advance(0);
+	
+	m_timer->stop();
 }
 
 void KTStatusBar::setStatus(const QString &status, int ms )
 {
 	m_status->setText("<b>"+status+"</b>");
 	
+	m_status->repaint();
+	
 	if ( ms > 0)
 	{
+		if ( m_timer->isActive() )
+			m_timer->stop();
 		m_timer->start(ms);
 	}
 }
@@ -71,7 +80,14 @@ void KTStatusBar::addWidget ( QWidget *widget, int stretch, bool permanent)
 	}
 }
 
-void KTStatusBar::advance(int step)
+void KTStatusBar::advance(int step, int totalSteps)
 {
+	ktDebug() << "KTStatusBar::Advancing step: " << step << " total: " <<  totalSteps << endl;
+	
+	if ( totalSteps != -1 )
+	{
+		m_progressBar->setMaximum(totalSteps);
+	}
+	
 	m_progressBar->setValue(step);
 }

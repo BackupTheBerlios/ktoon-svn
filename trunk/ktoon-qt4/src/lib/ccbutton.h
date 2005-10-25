@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,60 +17,45 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef AANIMATIONAREA_H
-#define AANIMATIONAREA_H
 
-#include <QImage>
-#include <QPainter>
-#include <QPaintEvent>
-#include <QTimer>
-#include <QFrame>
+#ifndef CCBUTTON_H
+#define CCBUTTON_H
 
-#include "ktlayer.h"
+#include <QPushButton>
+#include <QStyleOptionButton>
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@gmail.com>
 */
-class AAnimationArea : public QFrame
+
+class CCButton : public QPushButton
 {
 	Q_OBJECT
 	public:
-		AAnimationArea(QWidget *parent = 0);
-		~AAnimationArea();
-		void setLayer(KTLayer *layer);
-		
+		CCButton(int diameter, QWidget *parent);
+		~CCButton();
+		QStyleOptionButton styleOption() const;
 		QSize sizeHint() const;
-		
-	public slots:
-		virtual void render();
-		virtual void play();
-		virtual void stop();
-		
-	private slots:
-		void advance();
-		
-	signals:
-		void progressStep(int, int);
-		void toStatusBar(const QString &, int);
 		
 	protected:
 		void paintEvent(QPaintEvent *e);
-		virtual void drawFrames(QPainter *painter);
+		void moveEvent(QMoveEvent *e);
+		void enterEvent(QEvent *);
+		void leaveEvent(QEvent *);
+		
+		virtual void paintMask();
+		
+	private slots:
+		void animate();
 		
 	private:
-		QFrame *m_container;
-		QImage m_renderCamera;
+		QPixmap m_mask;
+		QPixmap m_pix;
+		int m_diameter : 22;
 		
-		KTKeyFrame *m_currentFrame;
-		KTLayer *m_layer;
-		
-		bool m_draw, m_ciclicAnimation;
-		
-		int m_fps, m_currentFramePosition;
-		
-		QTimer *m_timer;
-		
-		QList<QImage> m_photograms;
+		class Animator;
+		Animator *m_animator;
+
 };
 
 #endif

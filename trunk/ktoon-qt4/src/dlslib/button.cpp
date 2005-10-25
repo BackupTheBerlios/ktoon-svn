@@ -160,8 +160,8 @@ namespace Ideal {
 			opt.state |= QStyle::State_HasFocus;
 		if (isDown())
 			opt.state |= QStyle::State_Sunken;
-		if (isOn())
-			opt.state |= QStyle::State_On;
+// 		if (isOn())
+// 			opt.state |= QStyle::State_On;
 		if (! isFlat() && ! isDown())
 			opt.state |= QStyle::State_Raised;
 		opt.features = isDefault() ? QStyleOptionButton::DefaultButton : QStyleOptionButton::None;

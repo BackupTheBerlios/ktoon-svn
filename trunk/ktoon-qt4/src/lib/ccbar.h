@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,60 +17,45 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef AANIMATIONAREA_H
-#define AANIMATIONAREA_H
 
-#include <QImage>
+#ifndef CCBAR_H
+#define CCBAR_H
+
+#include <qframe.h>
+#include <QPixmap>
+#include <QPolygon>
+#include <QBoxLayout>
+#include <QBitmap>
 #include <QPainter>
-#include <QPaintEvent>
-#include <QTimer>
-#include <QFrame>
+#include <QPainterPath>
+#include <QImage>
 
-#include "ktlayer.h"
+#include "ccbutton.h"
+
+class QPainterPath;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@gmail.com>
 */
-class AAnimationArea : public QFrame
+class CCBar : public QFrame
 {
-	Q_OBJECT
 	public:
-		AAnimationArea(QWidget *parent = 0);
-		~AAnimationArea();
-		void setLayer(KTLayer *layer);
-		
-		QSize sizeHint() const;
-		
-	public slots:
-		virtual void render();
-		virtual void play();
-		virtual void stop();
-		
-	private slots:
-		void advance();
-		
-	signals:
-		void progressStep(int, int);
-		void toStatusBar(const QString &, int);
-		
-	protected:
-		void paintEvent(QPaintEvent *e);
-		virtual void drawFrames(QPainter *painter);
+		CCBar(int radio = 40, QWidget *parent= 0);
+		~CCBar();
+		CCButton *addButton(const QPixmap &pix);
 		
 	private:
-		QFrame *m_container;
-		QImage m_renderCamera;
+		QPixmap m_mask;
 		
-		KTKeyFrame *m_currentFrame;
-		KTLayer *m_layer;
+		int m_radio;
+		int m_buttonCount;
 		
-		bool m_draw, m_ciclicAnimation;
+		QBoxLayout *m_layout;
 		
-		int m_fps, m_currentFramePosition;
-		
-		QTimer *m_timer;
-		
-		QList<QImage> m_photograms;
+		int m_offset;
+	protected:
+		void paintEvent(QPaintEvent *e);
+
 };
 
 #endif

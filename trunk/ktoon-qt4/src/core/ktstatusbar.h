@@ -41,7 +41,7 @@ class KTStatusBar : public QStatusBar
 		
 	public slots:
 		void setStatus(const QString &status, int ms = 0);
-		void advance(int step);
+		void advance(int step, int totalSteps = -1);
 		void clear();
 		
 	private:
