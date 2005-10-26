@@ -99,6 +99,7 @@ void APaintArea::paintEvent(QPaintEvent *e)
 
 void APaintArea::setKeyFrame(int index)
 {
+	ktDebug( ) << "APaintArea::setKeyFrame(int " << index << ")" << endl;
 	KTKeyFrame *frame = m_layer->frames()[index];
 	if (frame )
 	{

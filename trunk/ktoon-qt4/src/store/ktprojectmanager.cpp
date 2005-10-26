@@ -162,5 +162,13 @@ void KTProjectManager::addFrame()
 	}
 }
 
-
+void KTProjectManager::setCurrentFrame(int index)
+{
+// 	KTKeyFrame *frame = currentLayer()->frames()[index];
+// 	if ( frame )
+// 	{
+		currentLayer()->setCurrentFrame(index);
+// 	}
+	
+}
 

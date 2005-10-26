@@ -44,15 +44,6 @@ KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFra
 	}
 	m_useFrame = 0;
 	m_frames[0]->setUsed( true );
-	
-// 	menuFrame = new QPopupMenu(this);
-// 	menuFrame->insertItem( tr( "Rename Frame" ), RenameFrame, RenameFrame);
-// 	menuFrame->insertItem( tr( "Remove this Frame" ), RemoveThisFrame, RemoveThisFrame);
-// 	menuFrame->insertItem( tr( "Lock this Frame" ), LockThisFrame, LockThisFrame);
-// 	menuFrame->insertItem( tr( "Copy this Frame" ), CopyThisFrame, CopyThisFrame);
-// 	menuFrame->insertItem( tr( "Paste into this Frame" ), PasteIntoFrame, PasteIntoFrame);
-	
-// 	connect(menuFrame, SIGNAL(activated ( int )), this, SLOT(clickMenuFrame(int)));
 	createMenuRight();
 	
 }
@@ -92,19 +83,14 @@ void KTLayerExposure::frameSelect(int id, int button, int x, int y)
 	setSelected(true);
 	m_header->animateClick();
 	emit frameSelected(id);
-	emit clicked(id, m_id, button, x, y);
+	emit clicked( m_layout->indexOf(m_frames[id])-1, m_id, button, x, y);
 	ktDebug() << "KTLayerExposure: id layer " << m_id << " id frame " <<  id << endl;
 	if(m_useFrame + 1 == id && !(m_frames[id]->isUsed()))
 	{
 		emit requestInsertFrame();
-// 		m_frames[id]->setUsed( true );
-// 		m_useFrame++;
-// 		emit(setUsedFrame(m_frames[id]->name()));
-
 	}
 	if(button == Qt::RightButton)
 	{
-		
 		menuFrame->exec(QPoint(x,y));
 	}
 }
@@ -218,40 +204,55 @@ void KTLayerExposure::setUseFrames()
 
 void KTLayerExposure::insertFrames()
 {
-	if(m_currentFrame == m_useFrame )
+	if(m_frames[m_currentFrame]->isUsed() )
 	{
-// 		m_useFrame++;
-		if(m_useFrame+1 < m_frames.count())
-		{
-			ktDebug() << "Emiting 1" << endl;
-			emit requestInsertFrame();
-// 			m_frames[m_useFrame]->setUsed( true );
-// 			frameSelect( m_useFrame, 0, 0, 0);
-// 			emit(setUsedFrame(m_frames[m_useFrame]->name()));
-		}
-	}
-	//FIXME:
-	else if(m_frames[m_currentFrame]->isUsed() && m_useFrame != m_frames.count() )
-	{
-		ktDebug() << "Emiting 2" << endl;
-// 		m_useFrame++;
-// 		m_layout->removeWidget(m_frames[m_useFrame]);
-// 		m_layout->insertWidget( m_layout->indexOf(m_frames[m_currentFrame])+1, m_frames[m_useFrame], 10);
-// 		m_frames[m_useFrame]->setUsed( true );
-// 		emit(setUsedFrame(m_frames[m_useFrame]->name()));
 		emit requestInsertFrame();
 	}
 	else
 	{
-		for(int i = m_useFrame; i <= m_currentFrame; i++)
-		{
-			ktDebug() << "Emiting 3" << endl;
-			emit requestInsertFrame();
-// 			m_frames[i]->setUsed( true );
-// 			emit(setUsedFrame(m_frames[i]->name()));
-		}
-// 		m_useFrame = m_currentFrame;
+// 		for(int i = m_useFrame; )
 	}
+	
+	
+	
+// 	if(m_currentFrame == m_useFrame )
+// 	{
+// 		m_useFrame++;
+// 		ktDebug() << "KTLayerExposure::" << "if("  << (m_useFrame+1 <  m_frames.count())  << "||" << (m_selected &&   !m_frames[m_currentFrame]->isSelected()) << endl;
+// 		if( m_useFrame+1 < m_frames.count() ||
+// 				  (m_selected && ! (m_frames[m_currentFrame]->isSelected())))
+// 		{
+// 			ktDebug() << "Emiting 1" << endl;
+// 			
+// 			
+// 			emit requestInsertFrame();
+// // 			m_frames[m_useFrame]->setUsed( true );
+// // 			frameSelect( m_useFrame, 0, 0, 0);
+// // 			emit(setUsedFrame(m_frames[m_useFrame]->name()));
+// 		}
+// // 	}
+// 	//FIXME:
+// 	else if(m_frames[m_currentFrame]->isUsed() && m_useFrame != m_frames.count() )
+// 	{
+// 		ktDebug() << "Emiting 2" << endl;
+// // 		m_useFrame++;
+// // 		m_layout->removeWidget(m_frames[m_useFrame]);
+// // 		m_layout->insertWidget( m_layout->indexOf(m_frames[m_currentFrame])+1, m_frames[m_useFrame], 10);
+// // 		m_frames[m_useFrame]->setUsed( true );
+// // 		emit(setUsedFrame(m_frames[m_useFrame]->name()));
+// 		emit requestInsertFrame();
+// 	}
+// 	else
+// 	{
+// 		for(int i = m_useFrame; i <= m_currentFrame; i++)
+// 		{
+// 			ktDebug() << "Emiting 3" << endl;
+// 			emit requestInsertFrame();
+// // 			m_frames[i]->setUsed( true );
+// // 			emit(setUsedFrame(m_frames[i]->name()));
+// 		}
+// // 		m_useFrame = m_currentFrame;
+// 	}
 }
 
 
@@ -443,4 +444,10 @@ void KTLayerExposure::frameRename(int idFrame, const QString&newName)
 int KTLayerExposure::id()
 {
 	return m_id;
+}
+
+int KTLayerExposure::indexOfCurrentFrame(int i)
+{
+// 	return m_frames.indexOf(m_frames[m_currentFrame]);
+	return m_layout->indexOf(m_frames[i])-1;
 }

@@ -45,6 +45,7 @@ class KTLayer : public QObject
 		
 		KTKeyFrame *currentFrame();
 		void setCurrentFrame(int index);
+		int indexCurrentFrame();
 		
 		void setLayerName(const QString &name);
 		void setVisible(bool isVisible);

@@ -449,7 +449,9 @@ void KTMainWindow::insertFrame(const QString &name)
 	
 	if ( doc )
 	{
-		doc->drawArea()->setKeyFrame( m_projectManager->currentLayer()->frames().count()-1);
+// 		doc->drawArea()->setKeyFrame( m_projectManager->currentLayer()->frames().count()-1);
+		
+		doc->drawArea()->setKeyFrame(m_projectManager->currentLayer()->indexCurrentFrame());
 		m_exposureSheet->addFrame(name);
 	}
 }
@@ -462,6 +464,7 @@ void KTMainWindow::selectFrame(int layer, int frame)
 	{
 		ktDebug() << "SELECT LAYER: " << layer << " FRAME: " << frame << endl;
 		m_projectManager->currentScene()->setCurrentLayer(layer);
+		m_projectManager->setCurrentFrame( frame );
 		doc->drawArea()->setLayer( m_projectManager->currentLayer());
 		doc->drawArea()->setKeyFrame( frame );
 	}

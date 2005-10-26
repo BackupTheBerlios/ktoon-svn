@@ -82,6 +82,8 @@ class KTLayerExposure : public QFrame
 		void changedName(const QString  &newName);
 		void applyAction(int action);
 		void frameRename(int, const QString&);
+		int indexOfCurrentFrame(int);
+		
 		
 	signals:
 		void requestInsertFrame();

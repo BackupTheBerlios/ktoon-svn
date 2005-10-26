@@ -60,6 +60,8 @@ class KTProjectManager : public QObject
 		
 		// Frames
 		void addFrame();
+		void setCurrentFrame(int index);
+		
 	signals:
 		// Scenes
 		void sceneAdded(const QString &name);
@@ -70,7 +72,7 @@ class KTProjectManager : public QObject
 		
 		// Frames
 		void frameAdded(const QString &name);
-		
+
 		
 		// <FIXME>
 		void documentInserted();

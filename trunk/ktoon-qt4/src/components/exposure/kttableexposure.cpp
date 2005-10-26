@@ -71,8 +71,6 @@ void KTTableExposure::clickedCell(int row,int col,int button,int gx,int gy)
 	if ( m_layers.at(m_currentLayer)->currentFrameIsUsed() )
 	{
 		emit(cellSelected(col, row));
-// 		QList<KeyFrame*> kf = KTStatus->currentLayer()->keyFrames();
-// 		KTStatus->setCurrentKeyFrame( kf.at(m_currentFrame) );
 	}
 	else
 	{
@@ -83,6 +81,7 @@ void KTTableExposure::clickedCell(int row,int col,int button,int gx,int gy)
 
 void KTTableExposure::insertLayer(int rows, QString text)
 {
+	
 	if(text == QString::null)
 	{
 		text = tr("Layer ")+ QString::number(m_numLayer);
