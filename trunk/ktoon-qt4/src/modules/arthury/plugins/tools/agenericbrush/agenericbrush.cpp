@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "agenericbrush.h"
-#include "brush.xpm"
+// #include "brush.xpm"
 // #include "ktdebug.h"
 #include <QDebug>
 
@@ -98,7 +98,7 @@ QHash<QString, QAction *> AGenericBrush::actions()
 {
 	QHash<QString, QAction *> hash;
 	
-	QAction *pencil = new QAction( QIcon(brush_xpm), tr("Pencil"), this);
+	QAction *pencil = new QAction( QIcon(/*brush_xpm*/), tr("Pencil"), this);
 	pencil->setShortcut( QKeySequence(tr("P")) );
 	
 	hash.insert( tr("Pencil"), pencil );
