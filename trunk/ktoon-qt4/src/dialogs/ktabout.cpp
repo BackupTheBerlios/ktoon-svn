@@ -29,7 +29,7 @@
 #include <QTextBrowser>
 
 #include "ktabout.h"
-#include "images.h"
+// #include "images.h"
 #include "ktapplication.h"
 #include "kimageeffect.h"
 
@@ -56,7 +56,7 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 		creditsFile.close();
 	}
 	
-	QImage credits = QImage(KTOON_HOME+"/images/credits-image.png" );
+	QImage credits = QImage(KTOON_THEME_DIR+"/images/credits-image.png" );
 	
 	KImageEffect::fade(credits, 0.25, paletteBackgroundColor());
     
@@ -68,7 +68,7 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 
 	for(uint i = 1; i < 11; i++)
 	{
-		QImage tmp(KTOON_HOME+QString("/images/sequences/ack-image%1.png").arg(i));
+		QImage tmp(KTOON_THEME_DIR+QString("/sequences/ack-image%1.png").arg(i));
 		KImageEffect::fade(tmp, 0.2, paletteBackgroundColor());
 		lop << QPixmap(tmp);
 	}
@@ -103,7 +103,7 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 
 	QLabel *toonka = new QLabel/*( this )*/;
 	
-	QImage toonkaImg( KTOON_HOME+"/images/toonka.jpg" );
+	QImage toonkaImg( KTOON_THEME_DIR+"/images/toonka.png" );
 	KImageEffect::fade( toonkaImg,0.2,paletteBackgroundColor()); 
 	
 	toonka->setPixmap(QPixmap(toonkaImg));
@@ -113,7 +113,7 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 
 	QLabel *laboratoon = new QLabel/*( this )*/;
 	
-	QImage laboratoonImg( KTOON_HOME+"/images/laboratoon.jpg" );
+	QImage laboratoonImg( KTOON_THEME_DIR+"/images/laboratoon.png" );
 	KImageEffect::fade( laboratoonImg,0.2,paletteBackgroundColor()); 
 	
 	laboratoon->setPixmap( QPixmap(laboratoonImg  ) );

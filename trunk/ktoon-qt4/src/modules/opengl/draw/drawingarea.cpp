@@ -43,7 +43,7 @@
 #include "rectangleproperties.h"
 #include "ellipseproperties.h"
 #include "imageproperties.h"
-#include "images.h"
+// #include "images.h"
 #include "ktapplication.h"
 #include "status.h"
 
@@ -134,8 +134,8 @@ void DrawingArea::initializeGL()
 	glPixelStorei ( GL_UNPACK_ALIGNMENT, 1 );
 	
 	glEnable( GL_TEXTURE_2D );
-	id_texture = loadTexture( KTOON_HOME + "/images/arrow_selection.xpm" );
-	id_spin = loadTexture( KTOON_HOME + "/images/spin.xpm" );
+	id_texture = loadTexture( KTOON_HOME + "/themes/default/icons/arrow_selection.png" );
+	id_spin = loadTexture( KTOON_HOME + "/themes/default/icons/spin.png" );
 	glDisable( GL_TEXTURE_2D );
 	
 	for ( int i = 0; i < 9; i++ )
@@ -565,29 +565,29 @@ void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
 				delete right_click_menu;
 			right_click_menu = new Q3PopupMenu( this );
 			right_click_menu -> setFont( QFont( "helvetica", 10 ) );
-			right_click_menu -> insertItem( QPixmap( copy_xpm ), tr( "&Copy" ), this, SLOT( slotCopy() ) );
+			right_click_menu -> insertItem( QPixmap( KTOON_HOME+"/themes/default/icons/copy.png" ), tr( "&Copy" ), this, SLOT( slotCopy() ) );
 
-			right_click_menu -> insertItem( QPixmap( cut_xpm ), tr( "C&ut" ), this, SLOT( slotCut() ) );
+			right_click_menu -> insertItem( QPixmap( KTOON_HOME+"/themes/default/icons/cut.png" ), tr( "C&ut" ), this, SLOT( slotCut() ) );
 			right_click_menu -> insertItem( tr( "&Delete" ), this, SLOT( slotDelete() ) );
 			right_click_menu -> insertSeparator();
 			//Order Submenu
 			Q3PopupMenu * order = new Q3PopupMenu( this );
 // 			order -> setFont( QFont( "helvetica", 10 ) );
-			order -> insertItem( QPixmap( bring_to_front_xpm ), tr( "&Bring to Front" ), this, SLOT( slotBringToFront() ) );
-			order -> insertItem( QPixmap( send_to_back_xpm ), tr( "&Send to Back" ), this, SLOT( slotSendToBack() ) );
-			order -> insertItem( QPixmap( one_forward_xpm ), tr( "One Step &Forward" ), this, SLOT( slotOneStepForward() ) );
-			order -> insertItem( QPixmap( one_backward_xpm ), tr( "One Step B&ackward" ), this, SLOT( slotOneStepBackward() ) );
+			order -> insertItem( QPixmap( KTOON_HOME+"/themes/default/icons/bring_to_front.png" ), tr( "&Bring to Front" ), this, SLOT( slotBringToFront() ) );
+			order -> insertItem( QPixmap( KTOON_HOME+"/themes/default/icons/send_to_back.png"), tr( "&Send to Back" ), this, SLOT( slotSendToBack() ) );
+			order -> insertItem( QPixmap( /*one_forward_xpm*/ ), tr( "One Step &Forward" ), this, SLOT( slotOneStepForward() ) );
+			order -> insertItem( QPixmap( /*one_backward_xpm*/ ), tr( "One Step B&ackward" ), this, SLOT( slotOneStepBackward() ) );
 			right_click_menu -> insertItem( tr( "&Order" ), order );
 			//Align Submenu
 			Q3PopupMenu * align = new Q3PopupMenu( this );
 // 			align -> setFont( QFont( "helvetica", 10 ) );
-			align -> insertItem( QPixmap( align_l_xpm ), tr( "&Left" ), this, SLOT( slotAlignLeft() ) );
-			align -> insertItem( QPixmap( align_cv_xpm ), tr( "&Center Vertically" ), this, SLOT( slotCenterVertically() ) );
-			align -> insertItem( QPixmap( align_r_xpm ), tr( "&Right" ), this, SLOT( slotAlignRight() ) );
+			align -> insertItem( QPixmap( /*align_l_xpm*/ ), tr( "&Left" ), this, SLOT( slotAlignLeft() ) );
+			align -> insertItem( QPixmap( /*align_cv_xpm*/ ), tr( "&Center Vertically" ), this, SLOT( slotCenterVertically() ) );
+			align -> insertItem( QPixmap( /*align_r_xpm*/ ), tr( "&Right" ), this, SLOT( slotAlignRight() ) );
 			align -> insertSeparator();
-			align -> insertItem( QPixmap( align_t_xpm ), tr( "&Top" ), this, SLOT( slotAlignTop() ) );
-			align -> insertItem( QPixmap( align_ch_xpm ), tr( "Center &Horizontally" ), this, SLOT( slotCenterHorizontally() ) );
-			align -> insertItem( QPixmap( align_b_xpm ), tr( "&Bottom" ), this, SLOT( slotAlignBottom() ) );
+			align -> insertItem( QPixmap( /*align_t_xpm*/ ), tr( "&Top" ), this, SLOT( slotAlignTop() ) );
+			align -> insertItem( QPixmap( /*align_ch_xpm*/ ), tr( "Center &Horizontally" ), this, SLOT( slotCenterHorizontally() ) );
+			align -> insertItem( QPixmap( /*align_b_xpm*/ ), tr( "&Bottom" ), this, SLOT( slotAlignBottom() ) );
 			right_click_menu -> insertItem(tr( "A&lign" ), align );
 			// Transform Submenu
 			Q3PopupMenu * transform = new Q3PopupMenu( this );
@@ -599,21 +599,21 @@ void DrawingArea::mousePressEvent( QMouseEvent *mouse_event )
 			transform -> insertItem( tr( "R&otate 90 CCW" ), this, SLOT( slotRotateCCW90() ) );
 			transform -> insertItem( tr( "Rotate &180" ), this, SLOT( slotRotate180() ) );
 			transform -> insertSeparator();
-			transform -> insertItem( QPixmap( perspective_xpm ), tr( "&Perspective" ), this, SLOT( slotPerspectiveSelection() ) );
+			transform -> insertItem( QPixmap( /*perspective_xpm*/ ), tr( "&Perspective" ), this, SLOT( slotPerspectiveSelection() ) );
 			right_click_menu -> insertItem( tr( "&Transform" ), transform );
 			right_click_menu -> insertSeparator();
 			right_click_menu -> insertItem( tr( "Add to Li&brary" ), this, SLOT( slotAddToLibrary() ) );
 			right_click_menu -> insertSeparator();
-			right_click_menu -> insertItem( QPixmap( properties_xpm ), tr( "P&roperties..." ), this, SLOT( slotProperties() ) );
+			right_click_menu -> insertItem( QPixmap( /*properties_xpm*/ ), tr( "P&roperties..." ), this, SLOT( slotProperties() ) );
 			right_click_menu -> exec( QCursor::pos() );
 		}
 		else
 		{
 			right_click_menu = new Q3PopupMenu( this );
-			right_click_menu -> insertItem( QPixmap( undo_xpm ), tr( "&Undo" ), this, SLOT( slotUndo() ) );
-			right_click_menu -> insertItem( QPixmap( redo_xpm ), tr( "&Redo" ), this, SLOT( slotRedo() ) );
+			right_click_menu -> insertItem( QPixmap( /*undo_xpm*/ ), tr( "&Undo" ), this, SLOT( slotUndo() ) );
+			right_click_menu -> insertItem( QPixmap( /*redo_xpm*/ ), tr( "&Redo" ), this, SLOT( slotRedo() ) );
 			right_click_menu -> insertSeparator();
-			right_click_menu -> insertItem( QPixmap( paste_xpm ), tr( "&Paste" ), this, SLOT( slotPaste() ) );
+			right_click_menu -> insertItem( QPixmap( /*paste_xpm*/ ), tr( "&Paste" ), this, SLOT( slotPaste() ) );
 			right_click_menu -> insertItem( tr( "P&aste in Place" ), this, SLOT( slotPasteInPlace() ) );
 			right_click_menu -> exec( QCursor::pos() );
 		}

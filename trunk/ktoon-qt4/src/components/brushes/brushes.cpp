@@ -54,8 +54,8 @@ Brushes::Brushes( QWidget *parent ) : KTModuleWidgetBase( parent, "Brushes" )
 	m_numberOfBrushes = 1;
 
     //Icon Initializations
-	i_add_brush = QPixmap( KTOON_HOME+"/images/icons/plussign.xpm" );
-	i_remove_brush = QPixmap( KTOON_HOME+"/images/icons/minussign.xpm" );
+	i_add_brush = QPixmap( KTOON_HOME+"/themes/default/icons/plussign.xpm" );
+	i_remove_brush = QPixmap( KTOON_HOME+"/themes/default/icons/minussign.xpm" );
 	
 	setupButtons();
 	setupTableBrushes();

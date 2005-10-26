@@ -3,14 +3,14 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src
 # Destiono es un subdirectorio de proyecto 
 
-SUBDIRS += images \
-           lib \
+SUBDIRS += themes \
+	   lib \
            dlslib \
            store \
            dialogs \
            components \
            modules \
-           core
+           core 
 CONFIG += release \
 warn_on
 TEMPLATE = subdirs

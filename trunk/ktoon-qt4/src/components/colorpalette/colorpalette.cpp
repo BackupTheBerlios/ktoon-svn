@@ -47,8 +47,8 @@ ColorPalette::ColorPalette( QWidget *parent) : KTModuleWidgetBase(parent, tr( "C
 	new_fill_color = NULL;
 	
 	//Icon initializations
-	i_add_color = QPixmap( KTOON_HOME+"/images/icons/plussign.xpm" );
-	i_remove_color = QPixmap( KTOON_HOME+"/images/icons/minussign.xpm" );
+	i_add_color = QPixmap( KTOON_HOME+"/themes/default/icons/plussign.png" );
+	i_remove_color = QPixmap( KTOON_HOME+"/themes/default/icons/minussign.png" );
 
 	setupBlockStandardPalette();
     

@@ -49,6 +49,10 @@ class KTApplication : public QApplication
 		~KTApplication();
 		QString home();
 		void setHome(const QString &home);
+		
+		QString themeDir() const;
+		void setThemeDir(const QString &themeDir);
+		
 		QString repository();
 		void setRepository(const QString &repos);
 		QString version();
@@ -75,6 +79,7 @@ class KTApplication : public QApplication
 		
 	private:
 		QString m_KTOON_HOME;
+		QString m_THEME_DIR;
 		QString m_KTOON_REPOSITORY;
 		QString m_configDir;
 		const QString m_VERSION;
@@ -87,5 +92,7 @@ class KTApplication : public QApplication
 #define KTOON_HOME (static_cast<KTApplication*>(qApp))->home()
 
 #define KTOON_REPOSITORY (static_cast<KTApplication*>(qApp))->repository()
+
+#define KTOON_THEME_DIR (static_cast<KTApplication*>(qApp))->themeDir()
 
 #endif

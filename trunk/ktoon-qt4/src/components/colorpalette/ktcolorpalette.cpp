@@ -126,26 +126,26 @@ void KTColorPalette::setupButtons()
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight, containerButtons);
 	layout->setMargin(0);
 	layout->setSpacing(0);
-	KTImageButton *m_addColor = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/plussign.xpm" ) , 22, containerButtons);
+	KTImageButton *m_addColor = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/plussign.png" ) , 22, containerButtons);
 	
 	connect( m_addColor, SIGNAL( clicked() ), SLOT( addColor() ) );
 	QToolTip::add( m_addColor, tr( "Add Color" ) );
 	layout->addWidget(m_addColor, Qt::AlignCenter);
 	
-	KTImageButton *m_removeColor = new KTImageButton( QPixmap( KTOON_HOME+"/images/icons/minussign.xpm"), 22, containerButtons);
+	KTImageButton *m_removeColor = new KTImageButton( QPixmap( KTOON_HOME+"/themes/default/icons/minussign.png"), 22, containerButtons);
 	
 	connect( m_removeColor, SIGNAL( clicked() ), SLOT( removeColor() ) );
 	QToolTip::add( m_removeColor, tr( "Remove Color" ) );
 	
 	layout->addWidget(m_removeColor, Qt::AlignCenter);
 	
-	KTImageButton *m_addPalette = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/plussign.xpm" ), 22, containerButtons);
+	KTImageButton *m_addPalette = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/plussign.png" ), 22, containerButtons);
 	connect( m_addPalette, SIGNAL( clicked() ), SLOT( addPalette() ) );
 	QToolTip::add( m_addPalette, tr( "Add Custom Palette" ) );
 	
 	layout->addWidget(m_addPalette, Qt::AlignCenter);
 	
-	KTImageButton *m_removePalette = new KTImageButton(QPixmap( KTOON_HOME+"/images/icons/minussign.xpm"), 22, containerButtons);
+	KTImageButton *m_removePalette = new KTImageButton(QPixmap( KTOON_HOME+"/themes/default/icons/minussign.png"), 22, containerButtons);
 	
 	connect( m_removePalette, SIGNAL( clicked() ), SLOT( removeColor() ) );
 	QToolTip::add( m_removePalette, tr( "Remove Custom Palette" ) );
@@ -175,7 +175,7 @@ void KTColorPalette::setupChooserTypeColor()
 	m_outlineAndFillColors = new KTDualColorButton(m_currentOutlineColor,m_currentFillColor, left);
 	layoutLeft->addWidget(m_outlineAndFillColors);
 	
-// 	m_fillColor = new FillColor(QPixmap( KTOON_HOME+"/images/icons/fillcolor.xpm" ), left);
+// 	m_fillColor = new FillColor(QPixmap( KTOON_HOME+"/images/icons/fillcolor.png" ), left);
 // 	connect(m_fillColor, SIGNAL( activated()) , this, SLOT(changeTypeColor()));
 // 	
 // 	layoutFillOutLine->addWidget(m_fillColor);
@@ -183,7 +183,7 @@ void KTColorPalette::setupChooserTypeColor()
 	
 // 	layoutLeft->addLayout(layoutFillOutLine);
 // 	
-// 	m_outlineColor = new FillColor(QPixmap( KTOON_HOME+"/images/icons/written_pic.xpm" ), left);
+// 	m_outlineColor = new FillColor(QPixmap( KTOON_HOME+"/images/icons/written_pic.png" ), left);
 // 	connect(m_outlineColor, SIGNAL( activated()) , this, SLOT(changeTypeColor()));
 	
 // 	m_outlineColor->setActive( true );

@@ -61,22 +61,22 @@ void KTScenesWidget::setupButtons()
 	QHBoxLayout *layout = new QHBoxLayout(m_buttonsPanel);
 	layout->setMargin(0);
 
-	KTImageButton *insertButton = new KTImageButton(QPixmap(KTOON_HOME+"/images/icons/plussign.xpm" ) , 22, m_buttonsPanel);
+	KTImageButton *insertButton = new KTImageButton(QPixmap(KTOON_HOME+"/themes/default/icons/plussign.png" ) , 22, m_buttonsPanel);
 	layout->addWidget(insertButton);
 	insertButton->setToolTip(tr("Insert Scene"));
 	connect(insertButton, SIGNAL(clicked()), this, SIGNAL(requestInsertScene()));
 	
-	KTImageButton *removeButton = new KTImageButton(QPixmap(KTOON_HOME+"/images/icons/minussign.xpm" ) , 22, m_buttonsPanel);
+	KTImageButton *removeButton = new KTImageButton(QPixmap(KTOON_HOME+"/themes/default/icons/minussign.png" ) , 22, m_buttonsPanel);
 	layout->addWidget(removeButton);
 	insertButton->setToolTip(tr("Remove Scene"));
 	connect(removeButton, SIGNAL(clicked()), this, SIGNAL(requestRemoveScene()));
 	
-	KTImageButton *moveupButton = new KTImageButton(QPixmap(KTOON_HOME+"/images/icons/arrowup.xpm" ) , 22, m_buttonsPanel);
+	KTImageButton *moveupButton = new KTImageButton(QPixmap(KTOON_HOME+"/themes/default/icons/arrowup.png" ) , 22, m_buttonsPanel);
 	layout->addWidget(moveupButton);
 	moveupButton->setToolTip(tr("Move Scene Up"));
 	connect(moveupButton, SIGNAL(clicked()), this, SIGNAL(requestMoveUpScene()));
 	
-	KTImageButton *movedownButton = new KTImageButton(QPixmap(KTOON_HOME+"/images/icons/arrowdown.xpm" ) , 22, m_buttonsPanel);
+	KTImageButton *movedownButton = new KTImageButton(QPixmap(KTOON_HOME+"/themes/default/icons/arrowdown.png" ) , 22, m_buttonsPanel);
 	layout->addWidget(movedownButton);
 	movedownButton->setToolTip(tr("Move Scene Down"));
 	connect(movedownButton, SIGNAL(clicked()), this, SIGNAL(requestMoveDownScene()));

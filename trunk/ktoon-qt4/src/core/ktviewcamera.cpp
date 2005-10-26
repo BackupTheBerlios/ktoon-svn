@@ -29,7 +29,7 @@ KTViewCamera::KTViewCamera(QWidget *parent) : KTMdiWindow(parent)
 	setObjectName("KTViewCamera_");
 	
 	setWindowTitle(tr("Render Camera Preview"));
-	setWindowIcon( QPixmap(KTOON_HOME+"/images/icons/camera_preview.xpm" ));
+	setWindowIcon( QPixmap(KTOON_HOME+"/themes/default/icons/camera_preview.png" ));
 	
 	m_container = new QFrame(this);
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, m_container);
@@ -62,10 +62,10 @@ KTViewCamera::KTViewCamera(QWidget *parent) : KTMdiWindow(parent)
 	layout->addWidget(m_bar, 0, Qt::AlignTop | Qt::AlignCenter );
 	m_bar->show();
 	
-	CCButton *rew = m_bar->addButton(QPixmap(KTOON_HOME+"/images/icons/rw.png" ));
-	CCButton *play = m_bar->addButton(QPixmap(KTOON_HOME+"/images/icons/play.png" ));
-	CCButton *stop = m_bar->addButton(QPixmap(KTOON_HOME+"/images/icons/stop.png" ));
-	CCButton *ff = m_bar->addButton(QPixmap(KTOON_HOME+"/images/icons/ff.png" ));
+	CCButton *rew = m_bar->addButton(QPixmap(KTOON_HOME+"/themes/default/icons/rw.png" ));
+	CCButton *play = m_bar->addButton(QPixmap(KTOON_HOME+"/themes/default/icons/play.png" ));
+	CCButton *stop = m_bar->addButton(QPixmap(KTOON_HOME+"/themes/default/icons/stop.png" ));
+	CCButton *ff = m_bar->addButton(QPixmap(KTOON_HOME+"/themes/default/icons/ff.png" ));
 	
 	connect(play, SIGNAL(clicked()), m_animationArea, SLOT(play()));
 	connect(stop, SIGNAL(clicked()), m_animationArea, SLOT(stop()));

@@ -6,16 +6,16 @@
 INSTALLS += agenericbrush 
 agenericbrush.files += *.so 
 agenericbrush.path = /plugins/ 
-TARGETDEPS += ../../../../../../src/lib/liblib.a 
-LIBS += ../../../../../../src/lib/liblib.a 
-INCLUDEPATH += ../../../../../../src/modules/arthury/interfaces \
-               ../../../../../../src/lib 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-CONFIG += release \
-          warn_on \
-          plugin 
-TEMPLATE = lib 
 HEADERS += agenericbrush.h 
 SOURCES += agenericbrush.cpp 
+TARGETDEPS += ../../../../../../src/lib/liblib.a
+LIBS += ../../../../../../src/lib/liblib.a
+INCLUDEPATH += ../../../../../../src/modules/arthury/interfaces \
+../../../../../../src/lib
+MOC_DIR = .moc
+UI_DIR = .ui
+OBJECTS_DIR = .obj
+CONFIG += release \
+warn_on \
+plugin
+TEMPLATE = lib

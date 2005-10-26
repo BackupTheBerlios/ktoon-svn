@@ -57,9 +57,9 @@ KTApplication::KTApplication(int & argc, char ** argv)
 #elif defined(Q_WS_MAC)
 	m_configDir = QDir::homeDirPath()+"/.ktoon";
 #endif
-	
+
  	applyColors(Default);
- 	
+
  	detectOpengl();
 }
 
@@ -210,6 +210,17 @@ QString KTApplication::home()
 void KTApplication::setHome(const QString &home)
 {
 	m_KTOON_HOME = home;
+	m_THEME_DIR = home+"/themes/default/";
+}
+
+void KTApplication::setThemeDir(const QString &themeDir)
+{
+	m_THEME_DIR = themeDir;
+}
+
+QString KTApplication::themeDir() const
+{
+	return m_THEME_DIR;
 }
 
 QString KTApplication::repository()

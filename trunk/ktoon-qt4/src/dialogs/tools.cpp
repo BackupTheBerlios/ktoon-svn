@@ -20,7 +20,7 @@
 
 #include "tools.h"
 #include "status.h"
-#include "images.h"
+// #include "images.h"
 
 #include <qtooltip.h>
 //Added by qt3to4:
@@ -41,22 +41,22 @@ Tools::Tools( QWidget *parent)//, WFlags style, QPopupMenu *in_assigned_menu, in
 	move( 13, 88 );
 
     //Icon Initializations
-	icon_selection = QPixmap( selection_xpm );
-	icon_nodes = QPixmap( nodes_xpm );
-	icon_brush = QPixmap( brush_xpm );
-	icon_pencil = QPixmap( pencil_xpm );
-	icon_line = QPixmap( line_xpm );
-	icon_pen = QPixmap( bezier_xpm );
-	icon_rectangle = QPixmap( square_xpm );
-	icon_ellipse = QPixmap( ellipse_xpm );
-	icon_eraser = QPixmap( eraser_xpm );
-	icon_slicer = QPixmap( slicer_xpm );
-	icon_fill = QPixmap( fill_xpm );
-	icon_contour_fill = QPixmap( contour_xpm );
-	icon_remove_fill = QPixmap( removefill_xpm );
-	icon_dropper = QPixmap( dropper_xpm );
-	icon_magnifying_glass = QPixmap( magnifying_xpm );
-	icon_hand = QPixmap( hand_xpm );
+	icon_selection = QPixmap( /*selection_xpm*/ );
+	icon_nodes = QPixmap( /*nodes_xpm*/ );
+	icon_brush = QPixmap( /*brush_xpm*/ );
+	icon_pencil = QPixmap( /*pencil_xpm*/ );
+	icon_line = QPixmap( /*line_xpm*/ );
+	icon_pen = QPixmap( /*bezier_xpm*/ );
+	icon_rectangle = QPixmap( /*square_xpm*/ );
+	icon_ellipse = QPixmap( /*ellipse_xpm*/ );
+	icon_eraser = QPixmap( /*eraser_xpm*/ );
+	icon_slicer = QPixmap( /*slicer_xpm*/ );
+	icon_fill = QPixmap( /*fill_xpm*/ );
+	icon_contour_fill = QPixmap( /*contour_xpm*/ );
+	icon_remove_fill = QPixmap( /*removefill_xpm*/ );
+	icon_dropper = QPixmap( /*dropper_xpm*/ );
+	icon_magnifying_glass = QPixmap( /*magnifying_xpm*/ );
+	icon_hand = QPixmap( /*hand_xpm*/ );
 
     //-------- Operations on the Menus associated with every main button --------
 

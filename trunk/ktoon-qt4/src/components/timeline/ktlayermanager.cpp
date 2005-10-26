@@ -50,17 +50,17 @@ KTLayerManager::KTLayerManager(QWidget *parent) : KTVHBox(parent), m_currentTime
 	
 // 	m_utilsInTop -> setFrameStyle( QFrame::Box | QFrame::Plain );
 	
-	m_eyeButton = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/show_hide_all_layers.xpm"), 20,  m_utilsInTop );
+	m_eyeButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/show_hide_all_layers.png"), 20,  m_utilsInTop );
 // 	m_utilsInTop->insert(m_eyeButton, ToggleLayerView);
 
 	QToolTip::add( m_eyeButton, tr( "Show / Hide all Layers" ) );
 	
-	m_lockButton = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/kilit_pic.xpm"),  20, m_utilsInTop );
+	m_lockButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/kilit_pic.png"),  20, m_utilsInTop );
 // 	m_utilsInTop->insert(m_lockButton, LockLayers);
 	
 	QToolTip::add( m_lockButton, tr( "Lock all Layers" ) );
 
-	m_outlineButton = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/outline_pic.xpm"), 20, m_utilsInTop );
+	m_outlineButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/outline_pic.png"), 20, m_utilsInTop );
 // 	m_utilsInTop->insert(m_outlineButton, ShowOutlines);
 
 	QToolTip::add( m_outlineButton, tr( "Show only outlines" ) );
@@ -91,22 +91,22 @@ KTLayerManager::KTLayerManager(QWidget *parent) : KTVHBox(parent), m_currentTime
 	m_utilsInBottom -> setMinimumSize( 192, 24 );
 	m_utilsInBottom->layout()->setAlignment(Qt::AlignLeft | Qt::AlignCenter);
 
-	m_insertButton = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/layer+.xpm") , 20,  m_utilsInBottom );
+	m_insertButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/layer+.png") , 20,  m_utilsInBottom );
 // 	m_utilsInBottom->insert(m_insertButton, InsertLayer);
 
 	QToolTip::add( m_insertButton, tr( "Insert Layer" ) );
 
-	m_removeButton = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/layer-.xpm"),  20, m_utilsInBottom );
+	m_removeButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/layer-.png"),  20, m_utilsInBottom );
 // 	m_utilsInBottom->insert(m_removeButton, RemoveLayer);
 	
 	QToolTip::add( m_removeButton, tr( "Remove Layer" ) );
 
-	m_moveUpButton = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/arrowup.xpm"),  20, m_utilsInBottom );
+	m_moveUpButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/arrowup.png"),  20, m_utilsInBottom );
 // 	m_utilsInBottom->insert(m_moveUpButton, MoveLayerUp);
 
 	QToolTip::add( m_moveUpButton, tr( "Move Layer Up" ) );
 
-	m_moveDownButton = new KTImageButton( QPixmap(KTOON_HOME+"/images/icons/arrowdown.xpm"), 20,  m_utilsInBottom );
+	m_moveDownButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/arrowdown.png"), 20,  m_utilsInBottom );
 // 	m_utilsInBottom->insert(m_moveDownButton, MoveLayerDown);
 
 	QToolTip::add( m_moveDownButton, tr( "Move Layer Down" ) );

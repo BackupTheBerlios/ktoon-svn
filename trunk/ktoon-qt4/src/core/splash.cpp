@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "splash.h"
-#include "images.h"
+
 #include <qpixmap.h>
 #include <qbitmap.h>
 #include <qimage.h>
@@ -39,7 +39,7 @@ Splash::Splash() : QSplashScreen( 0, QPixmap(), Qt::WStyle_StaysOnTop ), m_size(
 	QObject::connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
 	timer->start(150);
 	
-	QPixmap pixmap(KTOON_HOME+"/images/splash.png");
+	QPixmap pixmap(KTOON_HOME+"/themes/default/images/splash.png");
 	
 	setPixmap(pixmap);
 	m_version = tr("Version ")+ktapp->version();

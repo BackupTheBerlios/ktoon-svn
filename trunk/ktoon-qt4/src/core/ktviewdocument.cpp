@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -36,7 +36,7 @@
 
 KTViewDocument::KTViewDocument(KTScene *scene, QWidget *parent ) : KTMdiWindow(parent), m_scene(scene)
 {
-	setWindowIcon(QPixmap(KTOON_HOME+"/images/icons/layer_pic.xpm") ); // FIXME: new image for documents
+	setWindowIcon(QPixmap(KTOON_THEME_DIR+"/icons/layer_pic.png") ); // FIXME: new image for documents
 	
 	
 	
@@ -80,60 +80,60 @@ void KTViewDocument::createActions()
 {
 	gridGroup = new QActionGroup( parent());
 	gridGroup->setExclusive( true );
-	QAction *a = new QAction( QPixmap(KTOON_HOME+"/images/icons/nogrid.xpm" ), tr( "&No Grid" ), this);
+	QAction *a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/nogrid.png" ), tr( "&No Grid" ), this);
 	gridGroup->addAction ( a );
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotNoGrid()));
 
 	a->setCheckable ( true );
 	a->setStatusTip(tr("Hides the grid" ));
-	a = new QAction(QPixmap(KTOON_HOME+"/images/icons/grid12.xpm" ),  tr( "&12 Field Grid" ), this);
+	a = new QAction(QPixmap(KTOON_THEME_DIR+"/icons/grid12.png" ),  tr( "&12 Field Grid" ), this);
 	a->setCheckable ( true );
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotSeeGrid12()));
 	a->setStatusTip(tr("Shows a 12 field grid" ));
 	gridGroup->addAction ( a );
 
-	a = new QAction( QPixmap(KTOON_HOME+"/images/icons/grid16.xpm" ), tr( "&16 Field Grid" ), this);
+	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/grid16.png" ), tr( "&16 Field Grid" ), this);
 	a->setCheckable ( true );
 	gridGroup->addAction ( a );
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotSeeGrid16()));
 	a->setStatusTip(tr("Shows a 16 field grid" ));
 	a->setChecked( true);
 	
-	m_aSubGrid = new QAction( QPixmap(KTOON_HOME+"/images/icons/subgrid.xpm" ), tr( "&Subgrid" ), this);
+	m_aSubGrid = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/subgrid.png" ), tr( "&Subgrid" ), this);
 	m_aSubGrid->setCheckable ( true );
 	connect(m_aSubGrid, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotSeeSubgrid()));
 	m_aSubGrid->setStatusTip(tr("Shows or hides a 3 field subgrid in the current grid" ));
 	
-	m_aFrontBackGrid = new QAction( QPixmap(KTOON_HOME+"/images/icons/front_back_grid.xpm"), tr( "Grid to Front/Back" ), this);
+	m_aFrontBackGrid = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/front_back_grid.png"), tr( "Grid to Front/Back" ), this);
 	m_aFrontBackGrid->setCheckable ( true );
 	m_aFrontBackGrid->setChecked(true);
 	connect(m_aFrontBackGrid, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotFrontBackGrid()));
 	m_aFrontBackGrid->setStatusTip(tr("Sends the grid to the front or to the back of the drawing area" ));
 	
-	m_aUndo = new QAction( QPixmap(KTOON_HOME+"/images/icons/undo.xpm" ), tr( "Undo" ), parent());
+	m_aUndo = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/undo.png" ), tr( "Undo" ), parent());
 	m_aUndo->setShortcut(tr("Ctrl+Z"));
 	
 	connect(m_aUndo, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(undo()));
 	m_aUndo->setStatusTip(tr("Undoes the last draw action"));
 	
-	m_aRedo = new QAction( QPixmap(KTOON_HOME+"/images/icons/redo.xpm" ), tr( "Redo" ),  parent());
+	m_aRedo = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/redo.png" ), tr( "Redo" ),  parent());
 	m_aRedo->setShortcut(tr("CTRL+SHIFT+Z"));
 	connect(m_aRedo, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(redo()));
 	m_aRedo->setStatusTip(tr("Redoes a previous undone action"));
 	
 	
 	editGroup = new QActionGroup( parent() );
-	a = new QAction( QPixmap(KTOON_HOME+"/images/icons/cut.xpm" ), tr( "&Cut" ),  editGroup);
+	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/cut.png" ), tr( "&Cut" ),  editGroup);
 	a->setShortcut(tr("Ctrl+X"));
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotCut()));
 	a->setStatusTip(tr("Cuts the selection and puts it onto the clipboard"));
 	
-	a = new QAction( QPixmap(KTOON_HOME+"/images/icons/copy.xpm" ), tr( "C&opy" ),  editGroup);
+	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/copy.png" ), tr( "C&opy" ),  editGroup);
 	a->setShortcut(tr("Ctrl+C"));
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotCopy()));
 	a->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
 	
-	a = new QAction( QPixmap(KTOON_HOME+"/images/icons/paste.xpm" ), tr( "&Paste" ),  editGroup);
+	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/paste.png" ), tr( "&Paste" ),  editGroup);
 	a->setShortcut(tr("Ctrl+V"));
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotPaste()));
 	a->setStatusTip(tr("Pastes the clipboard into the current document"));
@@ -154,17 +154,17 @@ void KTViewDocument::createActions()
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotSelectAll()));
 	a->setStatusTip(tr("Selects all objects in the document"));
 	
-	m_aNtsc = new QAction( QPixmap(KTOON_HOME+"/images/icons/ntsc.xpm" ), tr( "&NTSC Zone" ), parent());
+	m_aNtsc = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/ntsc.png" ), tr( "&NTSC Zone" ), parent());
 	
 	m_aNtsc->setCheckable ( true );
 	connect(m_aNtsc, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotSeeNTSC()));
 	m_aNtsc->setStatusTip(tr("Shows or hides the NTSC Zone" ));
 	
-	m_aLightTable = new QAction( QPixmap(KTOON_HOME+"/images/icons/light_table.xpm" ), tr( "&Light Table" ),  parent());
+	m_aLightTable = new QAction( QPixmap(KTOON_HOME+"/themes/default/icons/light_table.png" ), tr( "&Light Table" ),  parent());
 	connect(m_aLightTable, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotLightTable()));
 	m_aLightTable->setStatusTip(tr("Activates or deactivates the light table" ));
 	
-	m_aClose = new QAction(QPixmap(KTOON_HOME+"/images/icons/close.xpm" ), tr( "Cl&ose" ), parent());
+	m_aClose = new QAction(QPixmap(KTOON_THEME_DIR+"/icons/close.png" ), tr( "Cl&ose" ), parent());
 	m_aClose->setShortcut( tr("Ctrl+Shift+W"));
 	connect(m_aClose, SIGNAL(triggered()), this, SLOT(close()));
 	m_aClose->setStatusTip(tr("Closes the active document"));
@@ -172,25 +172,25 @@ void KTViewDocument::createActions()
 	viewPreviousGroup = new QActionGroup( this );
 	viewPreviousGroup->setExclusive( true );
 	
-	a = new QAction( QPixmap(KTOON_HOME+"/images/icons/no_previous.xpm" ), tr( "No Previous" ),  viewPreviousGroup);
+	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/no_previous.png" ), tr( "No Previous" ),  viewPreviousGroup);
 	a->setShortcut( Qt::Key_1);
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotNoPreviousOnionSkin()));
 	a->setCheckable ( true );
 	a->setStatusTip(tr("Disables previous onion skin visualization"));
 	
-	a = new QAction( QPixmap(KTOON_HOME+"/images/icons/previous.xpm" ), tr( "Previous One" ), viewPreviousGroup);
+	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/previous.png" ), tr( "Previous One" ), viewPreviousGroup);
 	a->setShortcut( Qt::Key_2);
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotPreviousOnionSkin()));
 	a->setStatusTip(tr("Shows the previous onion skin" ));
 	a->setCheckable ( true );
 	
-	a = new QAction( QPixmap(KTOON_HOME+"/images/icons/previous2.xpm" ), tr( "Previous Two" ),  viewPreviousGroup);
+	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/previous2.png" ), tr( "Previous Two" ),  viewPreviousGroup);
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotPrevious2OnionSkin()));
 	a->setStatusTip(tr("Shows the previous 2 onion skins" ));
 	a->setCheckable ( true );
 	a->setShortcut( Qt::Key_3);
 	
-	a = new QAction( QPixmap(KTOON_HOME+"/images/icons/previous3.xpm" ), tr( "Previous Three" ),  viewPreviousGroup);
+	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/previous3.png" ), tr( "Previous Three" ),  viewPreviousGroup);
 	a->setCheckable ( true );
 	a->setShortcut( Qt::Key_4);
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotPrevious3OnionSkin()));
@@ -201,25 +201,25 @@ void KTViewDocument::createActions()
 	viewNextGroup = new QActionGroup( this );
 	viewNextGroup->setExclusive( true );
 	
-	a = new QAction( QPixmap(KTOON_HOME+"/images/icons/no_next.xpm" ), tr( "No Next" ),  viewNextGroup);
+	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/no_next.png" ), tr( "No Next" ),  viewNextGroup);
 	a->setShortcut( Qt::CTRL+Qt::Key_1);
 	a->setCheckable ( true );
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotNoNextOnionSkin()));
 	a->setStatusTip(tr("Disables next onion skin visualization" ));
 	
-	a = new QAction( QPixmap(KTOON_HOME+"/images/icons/next.xpm" ), tr( "Next One" ),  viewNextGroup);
+	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/next.png" ), tr( "Next One" ),  viewNextGroup);
 	a->setShortcut( Qt::CTRL+Qt::Key_2);
 	a->setCheckable ( true );
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotNextOnionSkin()));
 	a->setStatusTip(tr("Shows the next onion skin"));
 	
-	a = new QAction( QPixmap(KTOON_HOME+"/images/icons/next2.xpm" ), tr( "Next Two" ),  viewNextGroup);
+	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/next2.png" ), tr( "Next Two" ),  viewNextGroup);
 	a->setShortcut( Qt::CTRL+Qt::Key_3);
 	a->setToggleAction(true );
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotNext2OnionSkin()));
 	a->setStatusTip(tr("Shows the next 2 onion skins"));
 	
-	a = new QAction( QPixmap(KTOON_HOME+"/images/icons/next3.xpm" ), tr( "Next Three" ),  viewNextGroup);
+	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/next3.png" ), tr( "Next Three" ),  viewNextGroup);
 	a->setShortcut( Qt::CTRL+Qt::Key_4);
 	a->setToggleAction(true );
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotNext3OnionSkin()));
@@ -236,7 +236,7 @@ void KTViewDocument::createTools()
 	
 	// Brushes menu
 	m_brushesMenu = new QMenu(tr("Brushes"), m_toolbar);
-	m_brushesMenu->setIcon( QPixmap(KTOON_HOME+"/images/icons/brush.xpm") );
+	m_brushesMenu->setIcon( QPixmap(KTOON_THEME_DIR+"/icons/brush.png") );
 	connect( m_brushesMenu, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
 	
 	m_toolbar->addAction(m_brushesMenu->menuAction());
@@ -244,74 +244,74 @@ void KTViewDocument::createTools()
 	// Selection menu
 	
 	m_toolsSelection = new QMenu( tr("selection"), m_toolbar );
-	m_toolsSelection->setIcon(QPixmap(KTOON_HOME+"/images/icons/selection.xpm"));
+	m_toolsSelection->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/selection.png"));
 	connect( m_toolsSelection, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
 	
-	 m_toolsSelection->addAction(QPixmap(KTOON_HOME+"/images/icons/selection.xpm"), tr( "Normal &Selection" ), m_paintAreaContainer->drawArea(), SLOT( slotNormalSelection()),tr("S"));
+	m_toolsSelection->addAction(QPixmap(KTOON_THEME_DIR+"/icons/selection.png"), tr( "Normal &Selection" ), m_paintAreaContainer->drawArea(), SLOT( slotNormalSelection()),tr("S"));
 
 	
-	m_toolsSelection->addAction(QPixmap(KTOON_HOME+"/images/icons/nodes.xpm"), tr( "Con&tour Selection" ), m_paintAreaContainer->drawArea(), SLOT( slotContourSelection()), tr("T") );
+	m_toolsSelection->addAction(QPixmap(KTOON_THEME_DIR+"/icons/nodes.png"), tr( "Con&tour Selection" ), m_paintAreaContainer->drawArea(), SLOT( slotContourSelection()), tr("T") );
 	
 	m_toolsDraw = new QMenu( m_toolbar );
 	connect( m_toolsDraw, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
 	
-	m_toolsDraw->setIcon(QPixmap(KTOON_HOME+"/images/icons/brush.xpm"));
-	m_toolsDraw->addAction(QPixmap(KTOON_HOME+"/images/icons/brush.xpm"), tr( "&Brush" ), m_paintAreaContainer->drawArea(), SLOT(slotBrush()), tr("B"));
+	m_toolsDraw->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/brush.png"));
+	m_toolsDraw->addAction(QPixmap(KTOON_THEME_DIR+"/icons/brush.png"), tr( "&Brush" ), m_paintAreaContainer->drawArea(), SLOT(slotBrush()), tr("B"));
 	
-	m_toolsDraw->addAction(QPixmap(KTOON_HOME+"/images/icons/pencil.xpm"), tr( "&Pencil" ), m_paintAreaContainer->drawArea(), SLOT( slotPencil()), tr("P"));
+	m_toolsDraw->addAction(QPixmap(KTOON_THEME_DIR+"/icons/pencil.png"), tr( "&Pencil" ), m_paintAreaContainer->drawArea(), SLOT( slotPencil()), tr("P"));
 	
-	m_toolsDraw->addAction(QPixmap(KTOON_HOME+"/images/icons/bezier.xpm"), tr( "&Pen" ), m_paintAreaContainer->drawArea(), SLOT( slotPen()), tr("N"));
+	m_toolsDraw->addAction(QPixmap(KTOON_THEME_DIR+"/icons/bezier.png"), tr( "&Pen" ), m_paintAreaContainer->drawArea(), SLOT( slotPen()), tr("N"));
 	
-	m_toolsDraw->addAction(QPixmap(KTOON_HOME+"/images/icons/line.xpm"), tr( "&line" ), m_paintAreaContainer->drawArea(), SLOT( slotLine()),tr("L"));
+	m_toolsDraw->addAction(QPixmap(KTOON_THEME_DIR+"/icons/line.png"), tr( "&line" ), m_paintAreaContainer->drawArea(), SLOT( slotLine()),tr("L"));
 	
-	m_toolsDraw->addAction(QPixmap(KTOON_HOME+"/images/icons/square.xpm"), tr( "&Rectangle" ), m_paintAreaContainer->drawArea(), SLOT( slotRectangle()), tr("R"));
+	m_toolsDraw->addAction(QPixmap(KTOON_THEME_DIR+"/icons/square.png"), tr( "&Rectangle" ), m_paintAreaContainer->drawArea(), SLOT( slotRectangle()), tr("R"));
 	
-	m_toolsDraw->addAction(QPixmap(KTOON_HOME+"/images/icons/ellipse.xpm"), tr( "&Ellipse" ), m_paintAreaContainer->drawArea(), SLOT(slotEllipse()),  tr("E"));
+	m_toolsDraw->addAction(QPixmap(KTOON_THEME_DIR+"/icons/ellipse.png"), tr( "&Ellipse" ), m_paintAreaContainer->drawArea(), SLOT(slotEllipse()),  tr("E"));
 	
 	m_toolsFills = new QMenu( "fills", m_toolbar );
-	m_toolsFills->setIcon(QPixmap(KTOON_HOME+"/images/icons/fill.xpm"));
+	m_toolsFills->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/fill.png"));
 	connect( m_toolsFills, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
 	
-	m_toolsFills->addAction(QPixmap(KTOON_HOME+"/images/icons/fill.xpm"), tr( "&Fill" ), m_paintAreaContainer->drawArea(), SLOT( slotFill()), tr("F"));
+	m_toolsFills->addAction(QPixmap(KTOON_THEME_DIR+"/icons/fill.png"), tr( "&Fill" ), m_paintAreaContainer->drawArea(), SLOT( slotFill()), tr("F"));
 	
-	m_toolsFills->addAction(QPixmap(KTOON_HOME+"/images/icons/removefill.xpm"), tr( "&Remove Fill" ), m_paintAreaContainer->drawArea(), SLOT( slotRemoveFill()), tr("Shift+F"));
+	m_toolsFills->addAction(QPixmap(KTOON_THEME_DIR+"/icons/removefill.png"), tr( "&Remove Fill" ), m_paintAreaContainer->drawArea(), SLOT( slotRemoveFill()), tr("Shift+F"));
 	
-	 m_toolsFills->addAction(QPixmap(KTOON_HOME+"/images/icons/contour.xpm"), tr( "&Contour Fill" ), m_paintAreaContainer->drawArea(), SLOT( slotContourFill()), tr("Ctrl+F"));
+	m_toolsFills->addAction(QPixmap(KTOON_THEME_DIR+"/icons/contour.png"), tr( "&Contour Fill" ), m_paintAreaContainer->drawArea(), SLOT( slotContourFill()), tr("Ctrl+F"));
  
-	 m_toolsFills->addAction(QPixmap(KTOON_HOME+"/images/icons/dropper.xpm"), tr( "&Dropper"), m_paintAreaContainer->drawArea(), SLOT(slotDropper()), tr("D"));
+	m_toolsFills->addAction(QPixmap(KTOON_THEME_DIR+"/icons/dropper.png"), tr( "&Dropper"), m_paintAreaContainer->drawArea(), SLOT(slotDropper()), tr("D"));
 
 	m_toolsErasers = new QMenu(tr( "Eraser" ), m_toolbar );
-	m_toolsErasers->setIcon(QPixmap(KTOON_HOME+"/images/icons/eraser.xpm"));
+	m_toolsErasers->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/eraser.png"));
 	connect( m_toolsErasers, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
 	
-	m_toolsErasers->addAction(QPixmap(KTOON_HOME+"/images/icons/eraser.xpm"), tr( "&Eraser"), m_paintAreaContainer->drawArea(), SLOT( slotEraser()), Qt::SHIFT+Qt::Key_Delete);
+	m_toolsErasers->addAction(QPixmap(KTOON_THEME_DIR+"/icons/eraser.png"), tr( "&Eraser"), m_paintAreaContainer->drawArea(), SLOT( slotEraser()), Qt::SHIFT+Qt::Key_Delete);
 	
-	m_toolsErasers->addAction(QPixmap(KTOON_HOME+"/images/icons/dropper.xpm"), tr( "&Slicer" ), m_paintAreaContainer->drawArea(), SLOT( slotSlicer()),  Qt::CTRL+Qt::Key_Delete);
+	m_toolsErasers->addAction(QPixmap(KTOON_THEME_DIR+"/icons/dropper.png"), tr( "&Slicer" ), m_paintAreaContainer->drawArea(), SLOT( slotSlicer()),  Qt::CTRL+Qt::Key_Delete);
 	
 	m_toolsView = new QMenu(tr( "View" ), m_toolbar );
-	m_toolsView->setIcon(QPixmap(KTOON_HOME+"/images/icons/magnifying.xpm"));
+	m_toolsView->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/magnifying.png"));
 	connect( m_toolsView, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
 	
-	m_toolsView->addAction(QPixmap(KTOON_HOME+"/images/icons/magnifying.xpm"), tr("&Magnifying Glass" ), m_paintAreaContainer->drawArea(), SLOT( slotMagnifyingGlass()), tr("M"));
+	m_toolsView->addAction(QPixmap(KTOON_THEME_DIR+"/icons/magnifying.png"), tr("&Magnifying Glass" ), m_paintAreaContainer->drawArea(), SLOT( slotMagnifyingGlass()), tr("M"));
 	
-	m_toolsView->addAction(QPixmap(KTOON_HOME+"/images/icons/hand.xpm"), tr( "&Hand" ), m_paintAreaContainer->drawArea(),  SLOT( slotHand()), tr("H"));
+	m_toolsView->addAction(QPixmap(KTOON_THEME_DIR+"/icons/hand.png"), tr( "&Hand" ), m_paintAreaContainer->drawArea(),  SLOT( slotHand()), tr("H"));
 	
 	m_toolsOrder = new QMenu(tr("Order"), m_toolbar);
 	connect( m_toolsOrder, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
-	m_toolsOrder->setIcon(QPixmap(KTOON_HOME+"/images/icons/group.xpm"));
-	m_toolsOrder->addAction(QPixmap(KTOON_HOME+"/images/icons/group.xpm"), tr( "&Group" ), m_paintAreaContainer->drawArea(), SLOT( slotGroup()));
-	m_toolsOrder->addAction(QPixmap(KTOON_HOME+"/images/icons/ungroup.xpm"), tr( "&Ungroup" ), m_paintAreaContainer->drawArea(), SLOT( slotUngroup()));
+	m_toolsOrder->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/group.png"));
+	m_toolsOrder->addAction(QPixmap(KTOON_THEME_DIR+"/icons/group.png"), tr( "&Group" ), m_paintAreaContainer->drawArea(), SLOT( slotGroup()));
+	m_toolsOrder->addAction(QPixmap(KTOON_THEME_DIR+"/icons/ungroup.png"), tr( "&Ungroup" ), m_paintAreaContainer->drawArea(), SLOT( slotUngroup()));
 	
 
 // 	a->setStatusTip(tr("Group the selected objects into a single one"));
 // 	a->setStatusTip(tr("Ungroups the selected object"));
 	
-	m_toolsOrder->addAction(QPixmap(KTOON_HOME+"/images/icons/bring_to_front.xpm"), tr( "&Bring to Front" ), m_paintAreaContainer->drawArea(), SLOT(slotBringToFront()), Qt::CTRL+Qt::SHIFT+Qt::Key_Up);
-	m_toolsOrder->addAction(QPixmap(KTOON_HOME+"/images/icons/send_to_back.xpm"),  tr( "&Send to Back" ), m_paintAreaContainer->drawArea(), SLOT( slotSendToBack()), Qt::CTRL+Qt::SHIFT+Qt::Key_Down);
+	m_toolsOrder->addAction(QPixmap(KTOON_THEME_DIR+"/icons/bring_to_front.png"), tr( "&Bring to Front" ), m_paintAreaContainer->drawArea(), SLOT(slotBringToFront()), Qt::CTRL+Qt::SHIFT+Qt::Key_Up);
+	m_toolsOrder->addAction(QPixmap(KTOON_THEME_DIR+"/icons/send_to_back.png"),  tr( "&Send to Back" ), m_paintAreaContainer->drawArea(), SLOT( slotSendToBack()), Qt::CTRL+Qt::SHIFT+Qt::Key_Down);
 
-	m_toolsOrder->addAction(QPixmap(KTOON_HOME+"/images/icons/one_forward.xpm"), tr( "One Step &Forward" ), m_paintAreaContainer->drawArea(), SLOT( slotOneStepForward()), Qt::CTRL+Qt::Key_Up);
+	m_toolsOrder->addAction(QPixmap(KTOON_THEME_DIR+"/icons/one_forward.png"), tr( "One Step &Forward" ), m_paintAreaContainer->drawArea(), SLOT( slotOneStepForward()), Qt::CTRL+Qt::Key_Up);
 	
-	m_toolsOrder->addAction(QPixmap(KTOON_HOME+"/images/icons/one_backward.xpm"), tr( "One Step B&ackward" ), m_paintAreaContainer->drawArea(), SLOT(slotOneStepBackward()));
+	m_toolsOrder->addAction(QPixmap(KTOON_THEME_DIR+"/icons/one_backward.png"), tr( "One Step B&ackward" ), m_paintAreaContainer->drawArea(), SLOT(slotOneStepBackward()));
 // 	tools_bring_front->setStatusTip(tr("Brings the selected object to the front"));
 // 	tools_send_back->setStatusTip(tr("Sends the selected objects to the back"));
 // 	tools_one_step_forward->setStatusTip(tr("Moves the selected object one step forward"));
@@ -319,17 +319,17 @@ void KTViewDocument::createTools()
 
 	m_toolsAlign = new QMenu(tr( "Align"), this );
 	connect( m_toolsAlign, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
-	m_toolsAlign->setIcon(QPixmap(KTOON_HOME+"/images/icons/align_l.xpm"));
+	m_toolsAlign->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/align_l.png"));
 	
-	m_toolsAlign->addAction( QPixmap(KTOON_HOME+"/images/icons/align_l.xpm"), tr("&Left" ), m_paintAreaContainer->drawArea(), SLOT( slotAlignLeft()));
+	m_toolsAlign->addAction( QPixmap(KTOON_THEME_DIR+"/icons/align_l.png"), tr("&Left" ), m_paintAreaContainer->drawArea(), SLOT( slotAlignLeft()));
 	
-	m_toolsAlign->addAction( QPixmap(KTOON_HOME+"/images/icons/align_cv.xpm"), tr( "&Center Vertically" ),  m_paintAreaContainer->drawArea(), SLOT(slotCenterVertically()));
+	m_toolsAlign->addAction( QPixmap(KTOON_THEME_DIR+"/icons/align_cv.png"), tr( "&Center Vertically" ),  m_paintAreaContainer->drawArea(), SLOT(slotCenterVertically()));
 	
-	m_toolsAlign->addAction( QPixmap(KTOON_HOME+"/images/icons/align_r.xpm"), tr("&Right" ), m_paintAreaContainer->drawArea(), SLOT(slotAlignRight()));
+	m_toolsAlign->addAction( QPixmap(KTOON_THEME_DIR+"/icons/align_r.png"), tr("&Right" ), m_paintAreaContainer->drawArea(), SLOT(slotAlignRight()));
 	m_toolsAlign->addSeparator();
-	m_toolsAlign->addAction( QPixmap(KTOON_HOME+"/images/icons/align_t.xpm"), tr( "&Top" ), m_paintAreaContainer->drawArea(), SLOT(slotAlignTop()));
-	m_toolsAlign->addAction(QPixmap(KTOON_HOME+"/images/icons/align_ch.xpm"), tr("Center &Horizontally" ), m_paintAreaContainer->drawArea(),  SLOT( slotCenterHorizontally()));
-	m_toolsAlign->addAction(QPixmap(KTOON_HOME+"/images/icons/align_b.xpm"), tr( "&Bottom" ), m_paintAreaContainer->drawArea(), SLOT( slotAlignBottom()));
+	m_toolsAlign->addAction( QPixmap(KTOON_THEME_DIR+"/icons/align_t.png"), tr( "&Top" ), m_paintAreaContainer->drawArea(), SLOT(slotAlignTop()));
+	m_toolsAlign->addAction(QPixmap(KTOON_THEME_DIR+"/icons/align_ch.png"), tr("Center &Horizontally" ), m_paintAreaContainer->drawArea(),  SLOT( slotCenterHorizontally()));
+	m_toolsAlign->addAction(QPixmap(KTOON_THEME_DIR+"/icons/align_b.png"), tr( "&Bottom" ), m_paintAreaContainer->drawArea(), SLOT( slotAlignBottom()));
 	
 // 	tools_left->setStatusTip(tr("Aligns the selected object to the left"));
 // 	tools_center_vertically->setStatusTip(tr("Centers vertically the selected object"));
@@ -340,7 +340,7 @@ void KTViewDocument::createTools()
 
 	m_toolsTransform = new QMenu( tr( "Transform " ), this);
 	connect( m_toolsTransform, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
-// 	m_toolsTransform->setIcon(QPixmap(KTOON_HOME+"/images/icons/align_l.xpm"));
+// 	m_toolsTransform->setIcon(QPixmap(KTOON_HOME+"/images/icons/align_l.png"));
 
 	m_toolsTransform->addAction(tr( "Flip &Horizontally" ), m_paintAreaContainer->drawArea(), SLOT(slotFlipHorizontally()));
 	m_toolsTransform->addAction(tr( "Flip &Vertically" ), m_paintAreaContainer->drawArea(), SLOT(slotFlipVertically()));
@@ -349,7 +349,7 @@ void KTViewDocument::createTools()
 	m_toolsTransform->addAction(tr( "&Rotate 90 CCW" ), m_paintAreaContainer->drawArea(), SLOT( slotRotateCCW90()));
 	m_toolsTransform->addSeparator();
 	m_toolsTransform->addAction(tr( "&Rotate &180" ),m_paintAreaContainer->drawArea(),SLOT( slotRotate180()));
-	m_toolsTransform->addAction( QPixmap(KTOON_HOME+"/images/icons/perspective.xpm"),tr( "&Perspective" ) ,m_paintAreaContainer->drawArea(), SLOT( slotRotate180()));
+	m_toolsTransform->addAction( QPixmap(KTOON_THEME_DIR+"/icons/perspective.png"),tr( "&Perspective" ) ,m_paintAreaContainer->drawArea(), SLOT( slotRotate180()));
 	
 	
 // 	tools_flip_horizontally->setStatusTip(tr("Flips the selected object horizontally"));

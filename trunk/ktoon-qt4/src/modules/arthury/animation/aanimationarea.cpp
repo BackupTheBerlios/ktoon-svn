@@ -31,9 +31,6 @@ AAnimationArea::AAnimationArea(QWidget *parent) : QFrame(parent), m_layer(0), m_
 	m_timer = new QTimer(this);
 	
 	connect(m_timer, SIGNAL(timeout()), this, SLOT(advance()));
-	
-	m_photograms << m_renderCamera;
-	
 }
 
 

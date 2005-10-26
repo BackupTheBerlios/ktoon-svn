@@ -35,14 +35,14 @@ KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, 
 	setCaption( tr( "Exposure Sheet" ) );
 	
 	m_imgs <<  
-		QPixmap(KTOON_HOME+"/images/icons/layer+.xpm" ) <<
-		QPixmap(KTOON_HOME+"/images/icons/layer-.xpm" ) <<
-		QPixmap(KTOON_HOME+"/images/icons/show_hide_all_layers.xpm" ) <<
-		QPixmap(KTOON_HOME+"/images/icons/frame+.xpm" ) <<
-		QPixmap(KTOON_HOME+"/images/icons/frame-.xpm" ) <<
-		QPixmap(KTOON_HOME+"/images/icons/lock.xpm" ) <<
-		QPixmap(KTOON_HOME+"/images/icons/arrowup.xpm" ) <<
-		QPixmap(KTOON_HOME+"/images/icons/arrowdown.xpm" );
+			QPixmap(KTOON_THEME_DIR+"/icons/add_layer.png" ) <<
+			QPixmap(KTOON_THEME_DIR+"/icons/remove_layer.png" ) <<
+			QPixmap(KTOON_THEME_DIR+"/icons/show_hide_all_layers.png" ) <<
+			QPixmap(KTOON_THEME_DIR+"/icons/add_frame.png" ) <<
+			QPixmap(KTOON_THEME_DIR+"/icons/remove_frame.png" ) <<
+			QPixmap(KTOON_THEME_DIR+"/icons/lock.png" ) <<
+			QPixmap(KTOON_THEME_DIR+"/icons/arrowup.png" ) <<
+			QPixmap(KTOON_THEME_DIR+"/icons/arrowdown.png" );
 	setupButtons();
 	
 	m_scenes = new KTTabWidget(this);

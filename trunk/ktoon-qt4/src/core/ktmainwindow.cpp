@@ -21,7 +21,7 @@
 #include "ktmainwindow.h"
 
 #include "ktnewproject.h"
-#include "images.h"
+
 #include "ktdebug.h"
 #include "kimageeffect.h"
 
@@ -184,25 +184,25 @@ void KTMainWindow::createGUI()
 {
 	// TODO: put setIcon in each class
 	KTColorPalette *m_colorPalette = new KTColorPalette(this);
-	m_colorPalette->setIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.xpm") );
+	m_colorPalette->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/color_palette.png") );
 	connect(m_colorPalette, SIGNAL(colorChanged(const QColor &, const QColor &)), this, SLOT(changeCurrentColors(const QColor &, const QColor &)));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Palette"),m_colorPalette);
 	
 	////////////////
 	KTBrushWidget *m_brushWidget = new KTBrushWidget( this);
-	m_brushWidget->setIcon(QPixmap(KTOON_HOME+"/images/icons/brushes.xpm"));
+	m_brushWidget->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/brushes.png"));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Brushes"),m_brushWidget);
 	
 	connect(m_brushWidget, SIGNAL(brushSelected(KTBrush *)), this, SLOT(changeCurrentBrush(KTBrush *)));
 	
 	////////////////////
 	Library *m_libraryDialog = new Library( this, KTStatus->currentDrawingArea());
-	m_libraryDialog->setIcon(QPixmap(KTOON_HOME+"/images/icons/library.xpm"));
+	m_libraryDialog->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/library.png"));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Library"),m_libraryDialog);
 	
 	/////////////////
 	KTScenesWidget *m_scenes = new KTScenesWidget( this);
-	m_scenes->setIcon(QPixmap(KTOON_HOME+"/images/icons/scenes.xpm"));
+	m_scenes->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/scenes.png"));
 	toolWindow(DDockWindow::Right)->addWidget(tr("Scenes"),m_scenes);
 	
 	connect(m_scenes, SIGNAL(requestInsertScene()), m_projectManager, SLOT(addScene()));
@@ -210,7 +210,7 @@ void KTMainWindow::createGUI()
 	
 	/////////////////////
 	m_exposureSheet = new KTExposureSheet(this);
-	m_exposureSheet->setIcon(QPixmap(KTOON_HOME+"/images/icons/exposure_sheet.xpm"));
+	m_exposureSheet->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/exposure_sheet.png"));
 	toolWindow(DDockWindow::Right)->addWidget(tr("Exposure Sheet"),m_exposureSheet);
 	
 	connect(m_exposureSheet, SIGNAL(requestInsertFrame()), m_projectManager, SLOT(addFrame()));
@@ -222,12 +222,12 @@ void KTMainWindow::createGUI()
 	
 	//////////////////////
 	KTTimeLine *m_timeLine = new KTTimeLine(this);
-	m_timeLine->setIcon(QPixmap(KTOON_HOME+"/images/icons/time_line.xpm"));
+	m_timeLine->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/time_line.png"));
 	toolWindow(DDockWindow::Bottom)->addWidget(tr("Time Line"),m_timeLine);
 	
 	//////////////////
 	KToonScript *m_scriptEditor = new KToonScript(this);
-// 	m_scriptEditor->setIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.xpm") );
+// 	m_scriptEditor->setIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.png") );
 	toolWindow(DDockWindow::Bottom)->addWidget(tr("KToonScript"), m_scriptEditor);
 	
 	
@@ -240,16 +240,16 @@ void KTMainWindow::createGUI()
 
 void KTMainWindow::setupFileActions()
 {
-	KTAction *newFile = new KTAction( QPixmap( new_xpm ), tr( "New Document" ), QKeySequence(tr("Ctrl+N")), this, SLOT(newViewDocument()), m_actionManager, "NewFile");
+	KTAction *newFile = new KTAction( QPixmap( KTOON_THEME_DIR+"/icons/new.png" ), tr( "New Document" ), QKeySequence(tr("Ctrl+N")), this, SLOT(newViewDocument()), m_actionManager, "NewFile");
 	
 // 	connect(newFile, SIGNAL(activated()), this, SLOT(newDocument()));
 	newFile->setStatusTip(tr( "Opens a new document"));
 	
-	KTAction *openFile = new KTAction( QPixmap(open_xpm), tr( "Open Document" ), tr("Ctrl+O"), this, SLOT(chooseFile()), m_actionManager, "OpenFile");
+	KTAction *openFile = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/open.png"), tr( "Open Document" ), tr("Ctrl+O"), this, SLOT(chooseFile()), m_actionManager, "OpenFile");
 // 	connect(openFile, SIGNAL(activated()), this, SLOT(chooseFile()));
 	openFile->setStatusTip(tr("Loads an existent document"));
 	
-	KTAction *save = new KTAction( QPixmap(save_xpm), tr( "Save Document" ),QKeySequence(tr("Ctrl+S")), this, SLOT(save()), m_actionManager, "Save");
+	KTAction *save = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/save.png"), tr( "Save Document" ),QKeySequence(tr("Ctrl+S")), this, SLOT(save()), m_actionManager, "Save");
 // 	connect(save, SIGNAL(activated()), this, SLOT(save()));
 	save->setStatusTip(tr("Saves the current document in the current location"));
 	
@@ -257,14 +257,14 @@ void KTMainWindow::setupFileActions()
 	connect(saveAs, SIGNAL(activated()), this, SLOT(saveAs()));
 	saveAs->setStatusTip(tr("Opens a dialog box to save the current document in any location"));
 	
-	KTAction *close = new KTAction(QPixmap(close_xpm), tr( "Cl&ose" ), QKeySequence(tr("Ctrl+W")), m_actionManager, "Close");
+	KTAction *close = new KTAction(QPixmap(KTOON_THEME_DIR+"/icons/close.png"), tr( "Cl&ose" ), QKeySequence(tr("Ctrl+W")), m_actionManager, "Close");
 	close->setStatusTip(tr("Closes the active document"));
 	
-	KTAction *import = new KTAction( QPixmap(import_xpm), tr( "&Import..." ),  QKeySequence(tr("Ctrl+I")), this, SLOT(import()), m_actionManager, "Import");
+	KTAction *import = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/import.png"), tr( "&Import..." ),  QKeySequence(tr("Ctrl+I")), this, SLOT(import()), m_actionManager, "Import");
 // 	connect(import, SIGNAL(activated()), this, SLOT(import()));
 	import->setStatusTip(tr("Imports a file in the supported format"));
 	
-	KTAction *exptr = new KTAction(QPixmap(export_xpm), tr( "&Export..." ),  QKeySequence(tr("Ctrl+E")), this, SLOT(export()), m_actionManager, "Export");
+	KTAction *exptr = new KTAction(QPixmap(KTOON_THEME_DIR+"/icons/export.png"), tr( "&Export..." ),  QKeySequence(tr("Ctrl+E")), this, SLOT(export()), m_actionManager, "Export");
 // 	connect(exptr, SIGNAL(activated()), this, SLOT(export()));
 	exptr->setStatusTip(tr("Exports this document as a file in the available formats"));
 	exptr->setVisible(false);
@@ -273,25 +273,25 @@ void KTMainWindow::setupFileActions()
 	connect(properties, SIGNAL(activated()), this, SLOT(properties()));
 	properties->setStatusTip(tr("Opens the properties dialog box"));
 	
-	KTAction *exit = new KTAction(QPixmap(export_xpm), tr( "E&xit" ),  QKeySequence(tr("Ctrl+Q")), qApp, SLOT(closeAllWindows ()),m_actionManager, "Exit");
+	KTAction *exit = new KTAction(QPixmap(KTOON_THEME_DIR+"/icons/export.png"), tr( "E&xit" ),  QKeySequence(tr("Ctrl+Q")), qApp, SLOT(closeAllWindows ()),m_actionManager, "Exit");
 	exit->setStatusTip(tr("Closes the application"));
 }
 
 void KTMainWindow::setupEditActions()
 {
-	KTAction * undo = new KTAction( QPixmap(undo_xpm), tr( "Undo" ), QKeySequence("Ctrl+Z"), this, SLOT(slotUndo()), m_actionManager, "undo");
+	KTAction * undo = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/undo.png"), tr( "Undo" ), QKeySequence("Ctrl+Z"), this, SLOT(slotUndo()), m_actionManager, "undo");
 	undo->setStatusTip(tr("Undoes the last draw action"));
 	
-	KTAction *redo = new KTAction( QPixmap(redo_xpm), tr( "Redo" ), QKeySequence("CTRL+SHIFT+Z"), this, SLOT(slotRedo()), m_actionManager, "redo");
+	KTAction *redo = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/redo.png"), tr( "Redo" ), QKeySequence("CTRL+SHIFT+Z"), this, SLOT(slotRedo()), m_actionManager, "redo");
 	redo->setStatusTip(tr("Redoes a previous undone action"));
 	
-	KTAction *cut = new KTAction( QPixmap(cut_xpm), tr( "&Cut" ), QKeySequence("Ctrl+X"), this, SLOT(slotCut()), m_actionManager, "cut");
+	KTAction *cut = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/cut.png"), tr( "&Cut" ), QKeySequence("Ctrl+X"), this, SLOT(slotCut()), m_actionManager, "cut");
 	cut->setStatusTip(tr("Cuts the selection and puts it onto the clipboard"));
 	
-	KTAction *copy = new KTAction( QPixmap(copy_xpm), tr( "C&opy" ), QKeySequence("Ctrl+C"), this, SLOT(slotCopy()), m_actionManager, "copy");
+	KTAction *copy = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/copy.png"), tr( "C&opy" ), QKeySequence("Ctrl+C"), this, SLOT(slotCopy()), m_actionManager, "copy");
 	copy->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
 	
-	KTAction *paste = new KTAction( QPixmap(paste_xpm), tr( "&Paste" ), QKeySequence("Ctrl+V"), this, SLOT(slotPaste()), m_actionManager, "paste");
+	KTAction *paste = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/paste.png"), tr( "&Paste" ), QKeySequence("Ctrl+V"), this, SLOT(slotPaste()), m_actionManager, "paste");
 	paste->setStatusTip(tr("Pastes the clipboard into the current document"));
 	
 	KTAction *pasteInPlace = new KTAction( tr(  "Paste &In Place" ),  QKeySequence("Ctrl+Shift+V"), this, SLOT(slotPasteInPlace()), m_actionManager, "paste in place");

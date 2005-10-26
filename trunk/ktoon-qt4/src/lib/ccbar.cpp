@@ -22,7 +22,7 @@
 
 #include <QApplication>
 
-CCBar::CCBar(int radio, QWidget *parent) : QFrame(parent), m_radio(radio), m_buttonCount(0), m_offset(10)
+CCBar::CCBar(int radio, QWidget *parent) : QFrame(parent), m_radio(radio), m_buttonCount(0), m_offset(15)
 {	
 	m_layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
 	m_layout->setSpacing(0);

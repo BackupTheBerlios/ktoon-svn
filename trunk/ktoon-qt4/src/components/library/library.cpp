@@ -19,13 +19,14 @@
  ***************************************************************************/
 
 #include "library.h"
-#include "images.h"
+// #include "images.h"
 // #include "ktoon.h"
 #include "librarydata.h"
 #include "symbol.h"
 #include "folder.h"
 
 // #include "glgraphiccomponent"
+#include "ktapplication.h"
 
 #include <qtooltip.h>
 #include <qmatrix.h>
@@ -65,10 +66,10 @@ Library::Library( QWidget *parent, QGLWidget *share)//, WFlags style)
 // 	k_toon = ( KToon * )parent;
 
     //Icon initializations
-	i_add_symbol = QPixmap( plussign_xpm );
-	i_delete_symbol = QPixmap( minussign_xpm );
-	i_insert_into_drawing_area = QPixmap( insert_cg_xpm );
-	i_add_folder = QPixmap( addfolder_xpm );
+	i_add_symbol = QPixmap( KTOON_THEME_DIR+"/icons/plussign.png" );
+	i_delete_symbol = QPixmap( KTOON_THEME_DIR+"/icons/minussign.png" );
+	i_insert_into_drawing_area = QPixmap( KTOON_THEME_DIR+"/icons/insert_cg.png" );
+	i_add_folder = QPixmap( KTOON_THEME_DIR+"/icons/addfolder.png" );
 
     //----------- Component Initializations -----------------
 

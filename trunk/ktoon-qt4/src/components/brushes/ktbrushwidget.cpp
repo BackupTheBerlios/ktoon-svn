@@ -92,12 +92,12 @@ void KTBrushWidget::setupButtons()
 	QGroupBox *containerButtons = new QGroupBox(this);
 	QHBoxLayout *layout = new QHBoxLayout(containerButtons);
 	layout->setMargin(0);
-	m_addBrush = new KTImageButton( QPixmap( KTOON_HOME+"/images/icons/plussign.xpm" ), 22, containerButtons);
+	m_addBrush = new KTImageButton( QPixmap( KTOON_HOME+"/themes/default/icons/plussign.png" ), 22, containerButtons);
 	
 	connect( m_addBrush, SIGNAL( clicked() ), SLOT( addBrush() ) );
 	QToolTip::add( m_addBrush, tr( "Add Brush" ) );
 	layout->addWidget(m_addBrush, Qt::AlignCenter);
-	m_removeBrush = new KTImageButton( QPixmap( KTOON_HOME+"/images/icons/minussign.xpm" ), 22, containerButtons);
+	m_removeBrush = new KTImageButton( QPixmap( KTOON_HOME+"/themes/default/icons/minussign.png" ), 22, containerButtons);
 	connect( m_removeBrush, SIGNAL( clicked() ), SLOT( removeBrush() ) );
 	QToolTip::add( m_removeBrush, tr( "Remove Brush" ) );
 	

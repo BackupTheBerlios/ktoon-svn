@@ -34,7 +34,7 @@ OutlineColor::OutlineColor( QWidget *parent ) : QFrame( parent )
     Q_CHECK_PTR( parent );
     resize( 47, 30 );
     parent_widget = parent;
-    icon = QPixmap( KTOON_HOME+"/images/icons/written_pic.xpm" );
+    icon = QPixmap( KTOON_HOME+"/themes/default/icons/written_pic.png" );
     setFrameStyle( QFrame::Panel | QFrame::Raised );
     active = false;
     current_color = QColor( 0, 0, 0 );

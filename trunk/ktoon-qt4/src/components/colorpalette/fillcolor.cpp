@@ -47,7 +47,7 @@ FillColor::FillColor(  QWidget *parent ) : QFrame( parent )
 	Q_CHECK_PTR( parent );
 // 	resize( 47, 30 );
 	
-	m_icon = QPixmap( KTOON_HOME+"/images/icons/fillcolor.xpm" );
+	m_icon = QPixmap( KTOON_HOME+"/themes/default/icons/fillcolor.png" );
 	setFrameStyle( QFrame::Panel | QFrame::Raised );
 	active = false;
 	current_color = QColor( 255, 255, 255 );

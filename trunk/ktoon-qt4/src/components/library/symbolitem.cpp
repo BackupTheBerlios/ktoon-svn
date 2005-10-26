@@ -21,7 +21,7 @@
 #include "symboltable.h"
 #include "symbolitem.h"
 // #include "drawingarea.h"
-#include "images.h"
+#include "ktapplication.h"
 
 #include <qmatrix.h>
 //Added by qt3to4:
@@ -35,8 +35,8 @@ SymbolItem::SymbolItem( SymbolTable *parent, const QString &text ) : Q3ListViewI
     kind = UNDEFINED;
     graphic = NULL;
 
-    i_folder = QPixmap( folder_icon_xpm );
-    i_graphic = QPixmap( redhat_graphics_xpm );
+    i_folder = QPixmap( KTOON_THEME_DIR+"/icons/folder_icon.png" );
+//     i_graphic = QPixmap( redhat_graphics_xpm );
 }
 
 SymbolItem::SymbolItem( SymbolItem *parent, const QString &text ) : Q3ListViewItem( parent, text )
@@ -45,8 +45,8 @@ SymbolItem::SymbolItem( SymbolItem *parent, const QString &text ) : Q3ListViewIt
     kind = UNDEFINED;
     graphic = NULL;
 
-    i_folder = QPixmap( folder_icon_xpm );
-    i_graphic = QPixmap( redhat_graphics_xpm );
+    i_folder = QPixmap( KTOON_THEME_DIR+"/icons/folder_icon.png" );
+//     i_graphic = QPixmap( redhat_graphics_xpm );
 }
 
 //--------------- DESTRUCTOR ---------------
@@ -76,9 +76,9 @@ void SymbolItem::setKind( int kind_ )
     }
     else if ( kind == GRAPHIC )
     {
-        m.scale( 0.55, 0.55 );
-        QPixmap small = i_graphic.xForm( m );
-        setPixmap( 0, small );
+// //         m.scale( 0.55, 0.55 );
+// //         QPixmap small = i_graphic.xForm( m );
+// //         setPixmap( 0, small );
     }
 }
 

@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "agenericbrush.h"
-#include "../../../images/icons/brush.xpm"
+#include "brush.xpm"
 // #include "ktdebug.h"
 #include <QDebug>
 

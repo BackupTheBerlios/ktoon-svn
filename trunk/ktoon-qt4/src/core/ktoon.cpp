@@ -41,7 +41,7 @@
 #include <QList>
 #include <q3dockarea.h>
 #include "ktoon.h"
-#include "images.h"
+
 #include "symbol.h"
 #include "folder.h"
 
@@ -93,10 +93,10 @@ KToon::KToon() : Q3MainWindow( 0, "KToon", Qt::WDestructiveClose ), document_max
 	main_panel = new QWorkspace( this );
 	main_panel->setScrollBarsEnabled ( true );
 	
-	QImage bgImg(background_xpm );
-	KImageEffect::fade(bgImg, 0.2, paletteBackgroundColor());
+	QImage bgImg(/*background_xpm*/ );
+// 	KImageEffect::fade(bgImg, 0.2, paletteBackgroundColor());
 	
-	main_panel -> setPaletteBackgroundPixmap( QPixmap(bgImg) );
+// 	main_panel -> setPaletteBackgroundPixmap( QPixmap(bgImg) );
 	main_panel -> show();
 	
 	//--------------- Document Object ---------------
@@ -252,99 +252,99 @@ void KToon::setupColors()
 
 void KToon::setupIcons()
 {
-	icon_new = QPixmap( new_xpm );
-	icon_open = QPixmap( open_xpm );
-	icon_save = QPixmap( save_xpm );
-	icon_import = QPixmap( import_xpm );
-	icon_export = QPixmap( export_xpm );
-	icon_undo = QPixmap( undo_xpm );
-	icon_redo = QPixmap( redo_xpm );
-	icon_zoom_in = QPixmap( zoomin_xpm );
-	icon_zoom_out = QPixmap( zoomout_xpm );
-	icon_fit = QPixmap( fit_xpm );
-	icon_grid12 = QPixmap( grid12_xpm );
-	icon_grid16 = QPixmap( grid16_xpm );
-	icon_subgrid = QPixmap( subgrid_xpm );
-	icon_no_grid = QPixmap( nogrid_xpm );
-	icon_close = QPixmap( close_xpm );
-	icon_cut = QPixmap( cut_xpm );
-	icon_copy = QPixmap( copy_xpm );
-	icon_paste = QPixmap( paste_xpm );
-	icon_perspective = QPixmap( perspective_xpm );
-	icon_ani_mode = QPixmap( ani_mode_xpm );
-	icon_bring_to_front = QPixmap( bring_to_front_xpm );
-	icon_brushes = QPixmap( brushes_xpm );
-	icon_camera_preview = QPixmap( camera_preview_xpm );
-	icon_color_palette = QPixmap( color_palette_xpm );
-	icon_drawing_area = QPixmap( drawing_area_xpm );
-	icon_exposure_sheet = QPixmap( exposure_sheet_xpm );
-	icon_group = QPixmap( group_xpm );
-	icon_illus_mode = QPixmap( illus_mode_xpm );
-	icon_library = QPixmap( library_xpm );
-	icon_light_table = QPixmap( light_table_xpm );
-	icon_front_back_grid = QPixmap( front_back_grid_xpm );
-	icon_ntsc = QPixmap( ntsc_xpm );
-	icon_one_backward = QPixmap( one_backward_xpm );
-	icon_one_forward = QPixmap( one_forward_xpm );
-	icon_properties = QPixmap( properties_xpm );
-	icon_scenes = QPixmap( scenes_xpm );
-	icon_send_to_back = QPixmap( send_to_back_xpm );
-	icon_side_camera = QPixmap( side_camera_xpm );
-	icon_time_line = QPixmap( time_line_xpm );
-	icon_top_camera = QPixmap( top_camera_xpm );
-	icon_tools = QPixmap( tools_xpm );
-	icon_ungroup = QPixmap( ungroup_xpm );
-	icon_no_previous = QPixmap( no_previous_xpm );
-	icon_previous = QPixmap( previous_xpm );
-	icon_previous2 = QPixmap( previous2_xpm );
-	icon_previous3 = QPixmap( previous3_xpm );
-	icon_no_next = QPixmap( no_next_xpm );
-	icon_next = QPixmap( next_xpm );
-	icon_next2 = QPixmap( next2_xpm );
-	icon_next3 = QPixmap( next3_xpm );
-	icon_align_l = QPixmap( align_l_xpm );
-	icon_align_r = QPixmap( align_r_xpm );
-	icon_align_t = QPixmap( align_t_xpm );
-	icon_align_b = QPixmap( align_b_xpm );
-	icon_align_cv = QPixmap( align_cv_xpm );
-	icon_align_ch = QPixmap( align_ch_xpm );
+	icon_new = QPixmap( /*new_xpm*/ );
+	icon_open = QPixmap( /*open_xpm*/ );
+	icon_save = QPixmap( /*save_xpm*/ );
+	icon_import = QPixmap( /*import_xpm*/ );
+	icon_export = QPixmap( /*export_xpm*/ );
+	icon_undo = QPixmap( /*undo_xpm*/ );
+	icon_redo = QPixmap( /*redo_xpm*/ );
+	icon_zoom_in = QPixmap( /*zoomin_xpm*/ );
+	icon_zoom_out = QPixmap( /*zoomout_xpm*/ );
+	icon_fit = QPixmap( /*fit_xpm*/ );
+	icon_grid12 = QPixmap( /*grid12_xpm*/ );
+	icon_grid16 = QPixmap( /*grid16_xpm*/ );
+	icon_subgrid = QPixmap( /*subgrid_xpm*/ );
+	icon_no_grid = QPixmap( /*nogrid_xpm*/ );
+	icon_close = QPixmap( /*close_xpm*/ );
+	icon_cut = QPixmap( /*cut_xpm*/ );
+	icon_copy = QPixmap( /*copy_xpm*/ );
+	icon_paste = QPixmap( /*paste_xpm*/ );
+	icon_perspective = QPixmap( /*perspective_xpm*/ );
+	icon_ani_mode = QPixmap( /*ani_mode_xpm*/ );
+	icon_bring_to_front = QPixmap( /*bring_to_front_xpm*/ );
+	icon_brushes = QPixmap( /*brushes_xpm*/ );
+	icon_camera_preview = QPixmap( /*camera_preview_xpm*/ );
+	icon_color_palette = QPixmap( /*color_palette_xpm*/ );
+	icon_drawing_area = QPixmap( /*drawing_area_xpm*/ );
+	icon_exposure_sheet = QPixmap( /*exposure_sheet_xpm*/ );
+	icon_group = QPixmap( /*group_xpm*/ );
+	icon_illus_mode = QPixmap( /*illus_mode_xpm*/ );
+	icon_library = QPixmap( /*library_xpm*/ );
+	icon_light_table = QPixmap( /*light_table_xpm*/ );
+	icon_front_back_grid = QPixmap( /*front_back_grid_xpm*/ );
+	icon_ntsc = QPixmap( /*ntsc_xpm*/ );
+	icon_one_backward = QPixmap( /*one_backward_xpm*/ );
+	icon_one_forward = QPixmap( /*one_forward_xpm*/ );
+	icon_properties = QPixmap( /*properties_xpm*/ );
+	icon_scenes = QPixmap( /*scenes_xpm*/ );
+	icon_send_to_back = QPixmap( /*send_to_back_xpm*/ );
+	icon_side_camera = QPixmap( /*side_camera_xpm*/ );
+	icon_time_line = QPixmap( /*time_line_xpm*/ );
+	icon_top_camera = QPixmap( /*top_camera_xpm*/ );
+	icon_tools = QPixmap( /*tools_xpm*/ );
+	icon_ungroup = QPixmap( /*ungroup_xpm*/ );
+	icon_no_previous = QPixmap( /*no_previous_xpm*/ );
+	icon_previous = QPixmap( /*previous_xpm*/ );
+	icon_previous2 = QPixmap( /*previous2_xpm*/ );
+	icon_previous3 = QPixmap( /*previous3_xpm*/ );
+	icon_no_next = QPixmap( /*no_next_xpm*/ );
+	icon_next = QPixmap( /*next_xpm*/ );
+	icon_next2 = QPixmap( /*next2_xpm*/ );
+	icon_next3 = QPixmap( /*next3_xpm*/ );
+	icon_align_l = QPixmap( /*align_l_xpm*/ );
+	icon_align_r = QPixmap( /*align_r_xpm*/ );
+	icon_align_t = QPixmap( /*align_t_xpm*/ );
+	icon_align_b = QPixmap( /*align_b_xpm*/ );
+	icon_align_cv = QPixmap( /*align_cv_xpm*/ );
+	icon_align_ch = QPixmap( /*align_ch_xpm*/ );
 	
-	icon_selection = QPixmap( selection_xpm );
-	icon_nodes = QPixmap( nodes_xpm );
-	icon_brush = QPixmap( brush_xpm );
-	icon_pencil = QPixmap( pencil_xpm );
-	icon_line = QPixmap( line_xpm );
-	icon_pen = QPixmap( bezier_xpm );
-	icon_rectangle = QPixmap( square_xpm );
-	icon_ellipse = QPixmap( ellipse_xpm );
-	icon_eraser = QPixmap( eraser_xpm );
-	icon_slicer = QPixmap( slicer_xpm );
-	icon_fill = QPixmap( fill_xpm );
-	icon_contour_fill = QPixmap( contour_xpm );
-	icon_remove_fill = QPixmap( removefill_xpm );
-	icon_dropper = QPixmap( dropper_xpm );
-	icon_magnifying_glass = QPixmap( magnifying_xpm );
-	icon_hand = QPixmap( hand_xpm );
+	icon_selection = QPixmap( /*selection_xpm*/ );
+	icon_nodes = QPixmap( /*nodes_xpm*/ );
+	icon_brush = QPixmap( /*brush_xpm*/ );
+	icon_pencil = QPixmap( /*pencil_xpm*/ );
+	icon_line = QPixmap( /*line_xpm*/ );
+	icon_pen = QPixmap( /*bezier_xpm*/ );
+	icon_rectangle = QPixmap( /*square_xpm*/ );
+	icon_ellipse = QPixmap( /*ellipse_xpm*/ );
+	icon_eraser = QPixmap( /*eraser_xpm*/ );
+	icon_slicer = QPixmap( /*slicer_xpm*/ );
+	icon_fill = QPixmap( /*fill_xpm*/ );
+	icon_contour_fill = QPixmap( /*contour_xpm*/ );
+	icon_remove_fill = QPixmap( /*removefill_xpm*/ );
+	icon_dropper = QPixmap( /*dropper_xpm*/ );
+	icon_magnifying_glass = QPixmap( /*magnifying_xpm*/ );
+	icon_hand = QPixmap( /*hand_xpm*/ );
 }
 
 void KToon::setupCursors()
 {
 	//Cursor Initializations
-	i_cursor_selection = QPixmap( cselect_xpm );
-	i_cursor_nodes = QPixmap( cnodes_xpm );
-	i_cursor_brush = QPixmap( cbrush_xpm );
-	i_cursor_pencil = QPixmap( cpencil_xpm );
-	i_cursor_pen = QPixmap( cpen_xpm );
-	i_cursor_rectangle = QPixmap( csquare_xpm );
-	i_cursor_ellipse = QPixmap( ccircle_xpm );
-	i_cursor_eraser = QPixmap( ceraser_xpm );
-	i_cursor_slicer = QPixmap( cslicer_xpm );
-	i_cursor_fill = QPixmap( cpaint_xpm );
-	i_cursor_remove_fill = QPixmap( cunpaint_xpm );
-	i_cursor_magnifying_glass = QPixmap( cmagnifying_xpm );
-	i_cursor_hand = QPixmap( chand_xpm );
-	i_cursor_dropper = QPixmap( cdropper_xpm );
-	i_cursor_contour_fill = QPixmap( ccontour_xpm );
+	i_cursor_selection = QPixmap( /*cselect_xpm*/ );
+	i_cursor_nodes = QPixmap( /*cnodes_xpm*/ );
+	i_cursor_brush = QPixmap( /*cbrush_xpm*/ );
+	i_cursor_pencil = QPixmap( /*cpencil_xpm*/ );
+	i_cursor_pen = QPixmap( /*cpen_xpm*/ );
+	i_cursor_rectangle = QPixmap( /*csquare_xpm*/ );
+	i_cursor_ellipse = QPixmap( /*ccircle_xpm*/ );
+	i_cursor_eraser = QPixmap( /*ceraser_xpm*/ );
+	i_cursor_slicer = QPixmap( /*cslicer_xpm*/ );
+	i_cursor_fill = QPixmap( /*cpaint_xpm*/ );
+	i_cursor_remove_fill = QPixmap( /*cunpaint_xpm*/ );
+	i_cursor_magnifying_glass = QPixmap( /*cmagnifying_xpm*/ );
+	i_cursor_hand = QPixmap( /*chand_xpm*/ );
+	i_cursor_dropper = QPixmap( /*cdropper_xpm*/ );
+	i_cursor_contour_fill = QPixmap( /*ccontour_xpm*/ );
 	
 	cursor_line = new QCursor( Qt::CrossCursor );
 	cursor_selection = new QCursor( i_cursor_selection, 0, 0 );
@@ -4021,10 +4021,10 @@ void KToon::setPalette(const QPalette &pal)
 {
 	Q3MainWindow::setPalette(pal);
 	
-	QImage bgImg(background_xpm );
-	KImageEffect::fade(bgImg, 0.2, pal.color(QPalette::Active , QColorGroup::Background) );
-	
-	main_panel -> setPaletteBackgroundPixmap( QPixmap(bgImg) );
+// 	QImage bgImg(background_xpm );
+// 	KImageEffect::fade(bgImg, 0.2, pal.color(QPalette::Active , QColorGroup::Background) );
+// 	
+// 	main_panel -> setPaletteBackgroundPixmap( QPixmap(bgImg) );
 }
 
 #endif
