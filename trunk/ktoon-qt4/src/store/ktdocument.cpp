@@ -51,9 +51,10 @@ KTScene *KTDocument::createScene()
 
 	m_scenes << scene;
 	
-	emit sceneCreated(scene->sceneName());
-
 	m_currentScene = scene;
+	
+	emit sceneCreated(scene->sceneName());
+	
 	return scene;
 }
 

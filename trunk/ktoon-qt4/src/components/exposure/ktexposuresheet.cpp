@@ -94,44 +94,6 @@ void KTExposureSheet::createLayerManager()
 	//FIXME:kuadrosx crear una clase que me permita visualizar los items y seleccionarlos un QCheckBox
 	m_layerManager = new QListView;
 	m_layerManager->setMovement ( QListView::Static  );
-	
-// 	m_layerManager->setViewMode ( QListView::ListMode );
-// 	m_layerManager = new QListWidget/*QListView*/(0/*,"", Qt::WType_Popup*/);
-// // 	m_layerManager->setColumnCount(1);
-// // 	m_layerManager->addColumn( tr( "Name" ), 105 );
-// 	m_layerManager->setFrameStyle( WinPanel|Raised );
-// 	QStringList list = m_viewLayer->textHeaders();
-// 	QListWidgetItem * item = new QListWidgetItem (m_layerManager );
-// 
-// 	item->setText(list[0] );
-// 	item->setFlags(Qt::ItemIsUserCheckable);
-// 	m_layerManager->addItem ( item );
-// 	m_layerManager->addItems ( list );
-	
-// 	for(int i = 0; i < list.count(); i++)
-// 	{
-// 		ktDebug() << "KTExposureSheet " << i;
-// 		QList<QListWidgetItem *> items = m_layerManager->findItems(list[i], Qt::MatchCaseSensitive);
-// 		ktDebug() << "KTExposureSheet::items.count() " << items.count();
-// 		for(int j = 0; j < items.count(); j++)
-// 		{
-// 			items[j]->setFlags(Qt::ItemIsUserCheckable);
-// 		}
-// 	}
-// 	QTreeWidgetItem * item = new QTreeWidgetItem(0);
-// 	item->setText(0, list[0] );
-// 	m_layerManager->setHeaderItem (item )	;
-// 			>addTopLevelItem(  item );
-	
-// 	for(int i = 0; i < list.count(); i++)
-// 	{
-// 	m_layerManager->addItems ( list );
-// 		QCheckListItem *checkItem = new QCheckListItem( m_layerManager, list[i], Q3CheckListItem::CheckBox );
-// 		checkItem->setVisible( true );
-// 		checkItem->setOn( true );
-// 		m_layerManager->insertItem ( checkItem);
-// 	}
-
 	m_layerManager->resize(150,100);
 }
 
@@ -148,14 +110,6 @@ void KTExposureSheet::addScene(const QString &name)
 	
 	connect(newLayer, SIGNAL(requestInsertFrame()), this, SIGNAL(requestInsertFrame()));
 	
-// 	connect(m_viewLayer, SIGNAL(layerInserted()), this, SIGNAL(requestInsertLayer()));
-// 	connect(m_viewLayer, SIGNAL(layerRemoved()), this, SIGNAL(requestRemoveLayer()));
-// 	
-// 	connect(m_viewLayer,  SIGNAL(requestInsertFrame()), this, SIGNAL(requestInsertFrame()));
-// 	connect(m_viewLayer,  SIGNAL(requestRemoveFrame()), this, SIGNAL(requestRemoveFrame()));
-// 	connect(m_viewLayer,  SIGNAL(requestMoveUpFrame()), this, SIGNAL(requestMoveUpFrame()));
-// 	connect(m_viewLayer,  SIGNAL(requestMoveDownFrame()), this, SIGNAL(requestMoveDownFrame()));
-	
 	m_viewLayer = newLayer;
 }
 
@@ -166,12 +120,13 @@ void KTExposureSheet::renameScene(const QString &name, int id)
 
 void KTExposureSheet::applyAction(int action)
 {
-// 	ktDebug(1) << action;
 	ktDebug( ) << k_funcinfo << endl;
+	
 	switch(action)
 	{
 		case InsertLayer:
 		{
+			
 			emit requestInsertLayer();
 // 			m_viewLayer->insertLayer(100);
 			
@@ -180,6 +135,7 @@ void KTExposureSheet::applyAction(int action)
 		}
 		case RemoveLayer:
 		{
+			
 			emit requestRemoveLayer();
 // 			m_viewLayer->removeCurrentLayer();
 			break;
@@ -227,10 +183,13 @@ void KTExposureSheet::applyAction(int action)
 	}
 }
 
-void KTExposureSheet::addFrame(const QString &name)
+void KTExposureSheet::addFrame(int idLayer, const QString &name)
 {
-	ktDebug( ) << "KTExposureSheet::addFrame(" << name << ")";
-	m_viewLayer->currentLayerExposure()->setUseFrames();
+	ktDebug( ) << "KTExposureSheet::addFrame(" << idLayer << name << ")" << endl;
+// 	m_viewLayer->currentLayerExposure()->setUseFrames(name);
+	m_viewLayer->setUseFrame(idLayer, name);
+	
+	
 }
 
 void KTExposureSheet::actionButton( QAbstractButton *b)
@@ -248,10 +207,11 @@ void KTExposureSheet::updateLayersAndKeyframes()
 	m_viewLayer->updateLayers();
 }
 
-void KTExposureSheet::insertCurrentLayer()
+void KTExposureSheet::insertLayer(const QString& name)
 {
+	ktDebug( ) << k_funcinfo << endl;
 	//change m_viewLayer for currentTable
-	m_viewLayer->insertLayer(100);
+	m_viewLayer->insertLayer(100, name);
 }
 
 void KTExposureSheet::removeCurrentLayer()

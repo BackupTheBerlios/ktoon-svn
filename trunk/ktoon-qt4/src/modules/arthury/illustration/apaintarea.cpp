@@ -25,7 +25,7 @@
 #include <QPainter>
 #include <cmath>
 
-APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_brushColor(Qt::transparent)
+APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_brushColor(Qt::transparent), m_currentFrame(0), m_layer(0)
 {
 	m_redrawAll = true;
 	
@@ -101,7 +101,7 @@ void APaintArea::setKeyFrame(int index)
 {
 	ktDebug( ) << "APaintArea::setKeyFrame(int " << index << ")" << endl;
 	KTKeyFrame *frame = m_layer->frames()[index];
-	if (frame )
+	if (frame && index < m_layer->frames().count())
 	{
 		m_currentFrame = frame;
 		redrawAll();
@@ -114,32 +114,43 @@ void APaintArea::setKeyFrame(int index)
 
 void APaintArea::setLayer(KTLayer *layer)
 {
-	m_layer = layer;
-	setKeyFrame( 0 );// FIXME
+	if (layer )
+	{
+		m_layer = layer;
+		setKeyFrame( 0 );// FIXME
+	}
+	else
+	{
+		ktFatal() << "Layer not exists!!!" << endl;
+	}
+	
 }
 
 void APaintArea::draw(QPainter *painter)
 {
-	QList<AGraphicComponent *> componentList = m_currentFrame->components();
-	
-	if ( componentList.count() > 0)
+	if(m_currentFrame)
 	{
-		QList<AGraphicComponent *>::iterator it = componentList.begin();
+		QList<AGraphicComponent *> componentList = m_currentFrame->components();
 		
-		while ( it != componentList.end() )
+		if ( componentList.count() > 0)
 		{
-			if ( *it )
+			QList<AGraphicComponent *>::iterator it = componentList.begin();
+			
+			while ( it != componentList.end() )
 			{
-				painter->save();
-				
-				painter->setPen((*it)->pen());
-				painter->setBrush((*it)->brush());
-				
-				painter->drawPath((*it)->path());
-				
-				painter->restore();
+				if ( *it )
+				{
+					painter->save();
+					
+					painter->setPen((*it)->pen());
+					painter->setBrush((*it)->brush());
+					
+					painter->drawPath((*it)->path());
+					
+					painter->restore();
+				}
+				++it;
 			}
-			++it;
 		}
 	}
 }

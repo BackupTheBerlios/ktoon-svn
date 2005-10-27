@@ -133,11 +133,12 @@ void KTProjectManager::renameScene(const QString &name, int index)
 // Layers
 void KTProjectManager::addLayer()
 {
+	ktDebug( ) << k_funcinfo << endl;
 	KTScene *scene = currentScene();
 	if ( scene )
 	{
 		KTLayer *layer = scene->createLayer();
-		connect(layer, SIGNAL(frameCreated( const QString &)), this, SIGNAL(frameAdded( const QString& )));
+		connect(layer, SIGNAL(frameCreated( const QString &)), this, SIGNAL(frameAdded(  const QString& )));
 	}
 	else
 	{
@@ -164,11 +165,9 @@ void KTProjectManager::addFrame()
 
 void KTProjectManager::setCurrentFrame(int index)
 {
-// 	KTKeyFrame *frame = currentLayer()->frames()[index];
-// 	if ( frame )
-// 	{
+	if ( currentLayer() )
+	{
 		currentLayer()->setCurrentFrame(index);
-// 	}
-	
+	}
 }
 

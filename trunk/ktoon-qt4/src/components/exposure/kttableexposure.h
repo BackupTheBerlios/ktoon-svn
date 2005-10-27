@@ -46,7 +46,7 @@ class KTTableExposure : public QScrollArea
 		enum Direction {Up = 0, Down};
 		KTTableExposure(int rows, int cols, QWidget *parent = 0);
 		~KTTableExposure();
-		void setUseFrame();
+		void setUseFrame(int idLayer, const QString& name );
 		void removeFrame();
 		void moveCurrentFrame(Direction dir);
 		void lockCurrentFrame();
@@ -66,7 +66,7 @@ class KTTableExposure : public QScrollArea
 		ListOfLayers m_layers;
 		
 	public slots:
-		void insertLayer(int rows, QString text = QString::null);
+		void insertLayer(int rows, const QString &text = QString::null);
 		void clickedCell(int row, int col, int button, int gx, int gy);
 		void changeCurrentLayer(int idLayer);
 		void useFrame( const QString &newName);

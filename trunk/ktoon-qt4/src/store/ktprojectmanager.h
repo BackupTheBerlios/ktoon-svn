@@ -37,6 +37,9 @@ class KTProjectManager : public QObject
 		KTProjectManager(QObject *parent = 0);
 		~KTProjectManager();
 		
+		
+	public slots:
+		//Scenes
 		Documents documents() const;
 		void setDocuments(const Documents &);
 		
@@ -71,8 +74,7 @@ class KTProjectManager : public QObject
 		void layerAdded(const QString &name);
 		
 		// Frames
-		void frameAdded(const QString &name);
-
+		void frameAdded( const QString &name);
 		
 		// <FIXME>
 		void documentInserted();

@@ -31,15 +31,15 @@
 
 //--------------- CONSTRUCTOR --------------------
 
-ESFrame::ESFrame( const QString &initial_text,int id, QWidget *parent )
-	: KTSqueezeLabel( parent )  ,  is_used(false), is_selected(false), is_locked(false),  is_motion(false), has_drawing(false), m_id(id), m_initialText(initial_text)
+ESFrame::ESFrame( /*const QString &initial_text,*/int id, QWidget *parent )
+	: KTSqueezeLabel( parent )  ,  is_used(false), is_selected(false), is_locked(false),  is_motion(false), has_drawing(false), m_id(id) /*m_initialText(initial_text)*/
 {
 // 	KTINIT;
     //Initializations
 	setFrameShadow ( QFrame::Raised  );
 	setFrameShape ( QFrame::Panel );
 	setLineWidth( 2 );
-	description = new QLineEdit( initial_text , this );
+	description = new QLineEdit( /*initial_text ,*/ this );
 	description->hide();
 	connect( description, SIGNAL( lostFocus() ), SLOT( slotSetDescription() ) );
 	connect( description, SIGNAL( returnPressed() ), SLOT( slotSetDescription() ) );
@@ -211,12 +211,12 @@ void ESFrame::setHasDrawing( bool in_has_drawing )
 
 void ESFrame::setName( const QString &new_name )
 {
-	ktDebug() << "ESFrame::setName( const QString & " << new_name << " )" <<  endl;
+// 	ktDebug() << "ESFrame::setName( const QString & " << new_name << " )" <<  endl;
 	m_initialText = new_name;
 	description->setText(new_name);
 	setText( new_name );
 // 	emit renamed(m_id, new_name);
-	ktDebug() << "finish ESFrame::setName( const QString & " << text() << " )"  << endl;
+// 	ktDebug() << "finish ESFrame::setName( const QString & " << text() << " )"  << endl;
 // 	emit renamed( text() );
 }
 

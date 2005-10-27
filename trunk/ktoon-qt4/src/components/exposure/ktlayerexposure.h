@@ -56,6 +56,7 @@ class KTLayerExposure : public QFrame
 		int  frameUsed();
 		void loadFrames(Layer *layer);
 		void insertFrames();
+		void selectedFirstFrame();
 		
 	private:
 		enum KTLActions { RenameFrame = 0, RemoveThisFrame, LockThisFrame, InsertFrames, CopyThisFrame, PasteIntoFrame, RenameLayer, RemoveThisLayer};
@@ -70,7 +71,7 @@ class KTLayerExposure : public QFrame
 		void setSelected(bool selected = true, QMouseEvent *e = 0);
 		void frameSelect(int id, int button =0 , int x = 0, int y = 0);
 		void otherSelected(int id);
-		void setUseFrames();
+		void setUseFrames(const QString &name);
 		void removeFrame(int id);
 		void moveCurrentFrameUp();
 		void moveCurrentFrameDown();
@@ -82,7 +83,6 @@ class KTLayerExposure : public QFrame
 		void changedName(const QString  &newName);
 		void applyAction(int action);
 		void frameRename(int, const QString&);
-		int indexOfCurrentFrame(int);
 		
 		
 	signals:

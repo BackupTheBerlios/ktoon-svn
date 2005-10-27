@@ -215,6 +215,9 @@ void KTMainWindow::createGUI()
 	
 	connect(m_exposureSheet, SIGNAL(requestInsertFrame()), m_projectManager, SLOT(addFrame()));
 	
+	connect(m_exposureSheet, SIGNAL(requestInsertLayer()), m_projectManager, SLOT(addLayer()));
+	
+	
 	connect(m_exposureSheet, SIGNAL(frameSelected( int, int )), this, SLOT(selectFrame(int,int)));
 	
 // 	connect(m_scenes, SIGNAL(sceneInserted( const QString &, int )), m_exposureSheet, SLOT(addScene( const QString &, int )));
@@ -235,7 +238,13 @@ void KTMainWindow::createGUI()
 	connect(m_projectManager, SIGNAL(sceneAdded(const QString &)), m_scenes, SLOT( insertScene(const QString &)));
 	connect(m_projectManager, SIGNAL(sceneAdded(const QString &)), m_exposureSheet, SLOT(addScene(const QString &)));
 	
-	connect(m_projectManager, SIGNAL(frameAdded(const QString &)), this, SLOT(insertFrame(const QString &)));
+	
+	connect(m_projectManager, SIGNAL(frameAdded( const QString &)), this, SLOT(insertFrame( const QString &)));
+	
+	connect(m_projectManager, SIGNAL(layerAdded(const QString &)), this, SLOT(insertLayer(const QString &)));
+	
+	
+	
 }
 
 void KTMainWindow::setupFileActions()
@@ -442,18 +451,36 @@ void KTMainWindow::aboutKToon()
 
 // Animation
 
-void KTMainWindow::insertFrame(const QString &name)
+
+void KTMainWindow::insertLayer(const QString &name)
 {
 	ktDebug() << k_funcinfo << endl;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )
 	{
-// 		doc->drawArea()->setKeyFrame( m_projectManager->currentLayer()->frames().count()-1);
-		
-		doc->drawArea()->setKeyFrame(m_projectManager->currentLayer()->indexCurrentFrame());
-		m_exposureSheet->addFrame(name);
+		doc->drawArea()->setLayer(m_projectManager->currentLayer());
 	}
+	
+	m_exposureSheet->insertLayer(name);
+}
+
+
+void KTMainWindow::insertFrame(const QString &name)
+{
+	ktDebug( ) << "insertFrame"<< endl;
+	ktDebug() << k_funcinfo << endl;
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+	
+	if ( doc )
+	{
+// 		doc->drawArea()->setKeyFrame( m_projectManager->currentLayer()->frames().count()-1);
+// 		ktDebug( ) << "******************" << endl;
+		doc->drawArea()->setKeyFrame(m_projectManager->currentLayer()->indexCurrentFrame());
+		
+	}
+	
+	m_exposureSheet->addFrame(m_projectManager->currentScene()->indexCurrentLayer(), name);
 }
 
 void KTMainWindow::selectFrame(int layer, int frame)

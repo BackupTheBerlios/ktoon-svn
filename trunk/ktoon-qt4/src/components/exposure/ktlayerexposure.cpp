@@ -35,7 +35,7 @@ KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFra
 	
 	for(int i = 0; i < numFrame; i++)
 	{
-		ESFrame *frame = new ESFrame( tr( "Drawing " ) + QString::number( m_id ) + QString( "-" ) + QString::number( i + 1 ), i , this);
+		ESFrame *frame = new ESFrame( /*tr( "Drawing " ) + QString::number( m_id ) + QString( "-" ) + QString::number( i + 1 ),*/ i , this);
 		m_layout->addWidget(frame);
 		m_frames.append(frame);
 		connect( frame, SIGNAL(clicked(int, int, int, int )), this, SLOT(frameSelect(int, int, int, int)));
@@ -43,7 +43,9 @@ KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFra
 		connect( frame, SIGNAL(renamed( int, const QString&)), this, SLOT(frameRename(int, const QString&)));
 	}
 	m_useFrame = 0;
-	m_frames[0]->setUsed( true );
+// 	m_frames[0]->setName("Drawing 0");
+// 	m_frames[0]->setUsed( true );
+// 	frameSelect( 0, 0,0,0);
 	createMenuRight();
 	
 }
@@ -76,19 +78,23 @@ KTLayerExposure::~KTLayerExposure()
 
 void KTLayerExposure::frameSelect(int id, int button, int x, int y)
 {
-	
+	ktDebug() << "FRAME SELECT: " << id << endl;
 	if(id < 0)
+	{
 		id = 0;
+	}
+	
 	m_currentFrame = id;
 	setSelected(true);
 	m_header->animateClick();
 	emit frameSelected(id);
 	emit clicked( m_layout->indexOf(m_frames[id])-1, m_id, button, x, y);
-	ktDebug() << "KTLayerExposure: id layer " << m_id << " id frame " <<  id << endl;
-	if(m_useFrame + 1 == id && !(m_frames[id]->isUsed()))
-	{
-		emit requestInsertFrame();
-	}
+	ktDebug() << "KTLayerExposure: id layer " << m_id << " id frame " <<  m_layout->indexOf(m_frames[id])-1 << endl;
+// 	if(m_useFrame + 1 == id && !(m_frames[id]->isUsed()))
+// 	{
+		//FIXME: al poner usado a este frame el frame anterior cambia su nombre
+// 		emit requestInsertFrame();
+// 	}
 	if(button == Qt::RightButton)
 	{
 		menuFrame->exec(QPoint(x,y));
@@ -120,6 +126,7 @@ void KTLayerExposure::setSelected(bool select, QMouseEvent *e)
 
 void KTLayerExposure::otherSelected(int id)
 {
+	ktDebug() << "void KTLayerExposure::otherSelected(int " <<  id << ")" << endl;
 	if(m_id != id)
 	{
 		setSelected(false);
@@ -133,7 +140,7 @@ void KTLayerExposure::insertFrame(int id, const QString &text)
 // 	{
 // 		text = tr( "Drawing " ) + QString::number( m_id ) + QString( "-" ) + QString::number( m_useFrame + 1 );
 // 	}
-	ESFrame *frame = new ESFrame( text, id , this);
+	ESFrame *frame = new ESFrame( /*text,*/ id , this);
 	m_layout->insertWidget(id+1,frame, 10);
 	
 	m_frames.insert(id, frame);//m_currentFrame, frame ) ;
@@ -151,7 +158,7 @@ void KTLayerExposure::addFrame(const QString &text ) // FIXME!!
 	
 	ktDebug() << "Add frame with id: " << id << " and name: " << text << endl;
 	
-	ESFrame *frame = new ESFrame( text, id, this);
+	ESFrame *frame = new ESFrame( /*text,*/ id, this);
 	m_layout->insertWidget(id, frame, 10);
 	
 	m_frames.insert(id, frame);//m_currentFrame, frame ) ;
@@ -170,47 +177,51 @@ void KTLayerExposure::invertFrames(int id1, int id2) // invert or swap??
 	m_layout->insertWidget(id2+1, m_frames[id1], 10);
 }
 
-void KTLayerExposure::setUseFrames()
+void KTLayerExposure::setUseFrames(const QString &name)
 {
-	if(m_currentFrame == m_useFrame )
+	ktDebug( ) << "##############m_currentFrame "  << m_currentFrame << "m_useFrame " << m_useFrame << endl;
+// 	if( m_useFrame == 0)
+// 	{
+// 		m_frames[m_useFrame]->setName(name);
+// 		m_frames[m_useFrame]->setUsed( true );
+// 		frameSelect( m_useFrame, 0, 0, 0);
+// 		m_useFrame++;
+// 	}
+// 	else
+// 	if(m_currentFrame == m_useFrame )
 	{
-		m_useFrame++;
 		if(m_useFrame < m_frames.count())
 		{
+			m_frames[m_useFrame]->setName(name);
 			m_frames[m_useFrame]->setUsed( true );
 			frameSelect( m_useFrame, 0, 0, 0);
-// 			emit(setUsedFrame(m_frames[m_useFrame]->name()));
+			m_useFrame++;
 		}
 	}
-	//FIXME:
-	else if(m_frames[m_currentFrame]->isUsed() && m_useFrame != m_frames.count() )
-	{
-		m_useFrame++;
-		m_layout->removeWidget(m_frames[m_useFrame]);
-		m_layout->insertWidget( m_layout->indexOf(m_frames[m_currentFrame])+1, m_frames[m_useFrame], 10);
-		m_frames[m_useFrame]->setUsed( true );
-// 		emit(setUsedFrame(m_frames[m_useFrame]->name()));
-	}
-	else
-	{
-		for(int i = m_useFrame; i <= m_currentFrame; i++)
-		{
-			m_frames[i]->setUsed( true );
-// 			emit(setUsedFrame(m_frames[i]->name()));
-		}
-		m_useFrame = m_currentFrame;
-	}
+// 	else if(m_frames[m_currentFrame]->isUsed() && m_useFrame != m_frames.count() )
+// 	{
+// 		m_useFrame++;
+// 		m_layout->removeWidget(m_frames[m_useFrame]);
+// 		m_layout->insertWidget( m_layout->indexOf(m_frames[m_currentFrame])+1, m_frames[m_useFrame], 10);
+// 		m_frames[m_useFrame]->setName(name);
+// 		m_frames[m_useFrame]->setUsed( true );
+// 	}
+// 	else
+// 	{
+// 		for(int i = m_useFrame; i <= m_currentFrame; i++)
+// 		{
+// 			m_frames[m_useFrame]->setName(name);
+// 			m_frames[i]->setUsed( true );
+// 		}
+// 		m_useFrame = m_currentFrame;
+// 	}
 }
 
 void KTLayerExposure::insertFrames()
 {
-	if(m_frames[m_currentFrame]->isUsed() )
+	if(m_frames[m_currentFrame]->isUsed() || m_currentFrame == 0)
 	{
 		emit requestInsertFrame();
-	}
-	else
-	{
-// 		for(int i = m_useFrame; )
 	}
 	
 	
@@ -446,8 +457,8 @@ int KTLayerExposure::id()
 	return m_id;
 }
 
-int KTLayerExposure::indexOfCurrentFrame(int i)
-{
-// 	return m_frames.indexOf(m_frames[m_currentFrame]);
-	return m_layout->indexOf(m_frames[i])-1;
-}
+
+// 	m_frames[0]->setName("Drawing 0");
+// 	m_frames[0]->setUsed( true );
+// 	frameSelect( 0, 0,0,0);
+

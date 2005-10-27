@@ -40,10 +40,10 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent)
 	m_layout = new QBoxLayout (  m_port, QBoxLayout::LeftToRight,4,1);
 	m_layout->setSpacing(0);
 	m_layout->setMargin(0);
-	for(int i = 0; i < cols; i++)
-	{
-		insertLayer(rows);
-	}
+// 	for(int i = 0; i < cols; i++)
+// 	{
+// 		insertLayer(rows);
+// 	}
 	
 	setWidget(m_port);
 	setWidgetResizable (true);
@@ -57,7 +57,7 @@ KTTableExposure::~KTTableExposure()
 
 void KTTableExposure::touchFirstFrame()
 {
-	m_layers.at(0)->frameSelect(0,0,0,0);
+// 	m_layers.at(0)->frameSelect(0,0,0,0);
 }
 
 void KTTableExposure::clickedCell(int row,int col,int button,int gx,int gy)
@@ -79,16 +79,9 @@ void KTTableExposure::clickedCell(int row,int col,int button,int gx,int gy)
 	emit(clickedFrame());
 }
 
-void KTTableExposure::insertLayer(int rows, QString text)
+void KTTableExposure::insertLayer(int rows, const QString &text)
 {
-	
-	if(text == QString::null)
-	{
-		text = tr("Layer ")+ QString::number(m_numLayer);
-	}
-	
 	KTLayerExposure *newLayer = new KTLayerExposure(text, m_numLayer, rows, m_port);
-
 	m_layers.append(newLayer);
 	connect(newLayer, SIGNAL(selected(int)), this, SLOT(changeCurrentLayer(int)));
 	connect(this, SIGNAL(layerSelected(int)), newLayer, SLOT(otherSelected(int)));
@@ -101,10 +94,8 @@ void KTTableExposure::insertLayer(int rows, QString text)
 	connect(newLayer, SIGNAL(layerRenamed(int, const QString &)), this, SLOT(layerRename(int, const QString &)));
 	connect(newLayer, SIGNAL(frameRenamed(int, int, const QString &)), this, SLOT(frameRename(int, int, const QString &)));
 	
-	connect(newLayer, SIGNAL(requestInsertLayer()), this, SIGNAL(requestInsertLayer()));
 	
 	connect(newLayer, SIGNAL(requestInsertFrame()), this, SIGNAL(requestInsertFrame()));
-	
 	
 	m_layout->addWidget( newLayer, 0, /*Qt::AlignTop | */Qt::AlignLeft);
 	
@@ -112,9 +103,8 @@ void KTTableExposure::insertLayer(int rows, QString text)
 	newLayer->show();
 	
 	m_port->adjustSize();
-// 	emit layerInserted();
 	
-	
+	emit requestInsertFrame();
 }
 
 void KTTableExposure::changeCurrentLayer(int idLayer)
@@ -124,9 +114,10 @@ void KTTableExposure::changeCurrentLayer(int idLayer)
 	emit layerSelected(idLayer);
 }
 
-void KTTableExposure::setUseFrame()
+void KTTableExposure::setUseFrame(int idLayer, const QString& name)
 {
-	m_layers.at(m_currentLayer)->setUseFrames();
+	ktDebug() << "ID LAYER: " << idLayer << endl;
+	m_layers.at(idLayer)->setUseFrames(name);
 }
 
 void KTTableExposure::insertFrames()

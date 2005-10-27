@@ -30,7 +30,6 @@ KTLayer::KTLayer(const QString &layerName, QObject * parent)  : QObject(parent),
 // 	m_currentFrame = createFrame();
 }
 
-
 KTLayer::~KTLayer()
 {
 }
@@ -53,8 +52,8 @@ KTKeyFrame *KTLayer::createFrame()
 	keyFrame->setFrameName( name);
 	
 	//EL nuevo frame es insertado despues del current
-// 	m_frames << keyFrame;
-	m_frames.insert(m_frames.indexOf(currentFrame())+1, keyFrame);
+	m_frames << keyFrame;
+// 	m_frames.insert(m_frames.indexOf(currentFrame())+1, keyFrame);
 	
 	m_currentFrame = keyFrame;
 	

@@ -54,14 +54,15 @@ void KTScene::setLayers(const Layers &layers)
 
 KTLayer *KTScene::createLayer()
 {
+	ktDebug( ) << k_funcinfo << endl;
 	KTLayer *layer = new KTLayer(this);
 	layer->setLayerName(tr("Layer %1").arg(m_layerCount++));
-	
-	emit layerCreated( layer->layerName() );
 	
 	m_layers << layer;
 	
 	m_currentLayer = layer;
+	
+	emit layerCreated( layer->layerName() );
 	
 	return layer;
 }
@@ -78,5 +79,10 @@ void KTScene::setCurrentLayer(int index)
 	{
 		m_currentLayer = layer;
 	}
+}
+
+int KTScene::indexCurrentLayer()
+{
+	return m_layers.indexOf(m_currentLayer);
 }
 

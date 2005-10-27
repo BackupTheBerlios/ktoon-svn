@@ -45,6 +45,7 @@ class KTScene : public QObject
 		
 		KTLayer *currentLayer();
 		void setCurrentLayer(int index);
+		int indexCurrentLayer();
 		
 	signals:
 		void layerCreated(const QString &name);

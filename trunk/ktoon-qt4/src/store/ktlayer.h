@@ -54,7 +54,8 @@ class KTLayer : public QObject
 		bool isVisible(); 
 	
 	signals: // TODO: add more signals
-		void frameCreated(const QString &name);
+		//FIXME:
+		void frameCreated( const QString &name);
 	
 	private:
 		Frames m_frames;

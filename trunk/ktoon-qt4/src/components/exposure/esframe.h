@@ -54,7 +54,7 @@ public:
      * @param initial_text The text that this object will display
      * @param parent The parent widget
      */
-    ESFrame( const QString &initial_text, int id, QWidget *parent);
+    ESFrame( /*const QString &initial_text,*/ int id, QWidget *parent);
     /**
      * @brief Default Destructor
      *

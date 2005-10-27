@@ -50,7 +50,7 @@ class KTExposureSheet : public KTModuleWidgetBase
 
 		enum Actions { /*NoAction = 0,*/ InsertLayer = 0, RemoveLayer, ShowManageLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
 		
-		void addFrame(const QString &name);
+		void addFrame(int, const QString &name);
 		
 	private:
 		QList<QPixmap> m_imgs;
@@ -66,7 +66,7 @@ class KTExposureSheet : public KTModuleWidgetBase
 		void createLayerManager();
 		
 	public slots:
-		void insertCurrentLayer();
+		void insertLayer(const QString& name);
 		void removeCurrentLayer();
 		void removeCurrentFrame();
 		void moveUpFrame();
