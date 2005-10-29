@@ -39,47 +39,46 @@ class KTProjectManager : public QObject
 		
 		
 	public slots:
-		//Scenes
+		// Documents
+		void setCurrentDocument(int index);
+		KTDocument *currentDocument();
+		KTDocument *createDocument(const QString &name);
+		
 		Documents documents() const;
 		void setDocuments(const Documents &);
 		
-		KTDocument *createDocument(const QString &name);
-		
-		KTDocument *currentDocument();
-		KTScene *currentScene();
-		KTLayer *currentLayer();
-		KTKeyFrame *currentKeyFrame();
-		
-		void setCurrentDocument(int index);
-		
-	public slots:
 		//Scenes
-		void addScene();
+		void createScene(bool addToEnd = true);
 		void removeScene();
 		void renameScene(const QString &name, int index);
+		void setCurrentScene(int index);
+		KTScene *currentScene();
 		
 		// Layer
-		void addLayer();
+		void createLayer(bool addToEnd = true);
+		void setCurrentLayer(int index);
+		KTLayer *currentLayer();
 		
 		// Frames
-		void addFrame();
+		void createFrame(bool addToEnd = true);
+		KTKeyFrame *currentKeyFrame();
 		void setCurrentFrame(int index);
 		
 	signals:
+		// Documents
+		void documentCreated(const QString &name);
+		
 		// Scenes
-		void sceneAdded(const QString &name);
+		void sceneCreated(const QString &name, bool addedToEnd);
 		void sceneRenamed(const QString &name, int id);
 		
 		// Layers
-		void layerAdded(const QString &name);
+		void layerCreated(const QString &name, bool addedToEnd);
 		
 		// Frames
-		void frameAdded( const QString &name);
+		void frameCreated( const QString &name, bool addedToEnd);
 		
-		// <FIXME>
-		void documentInserted();
-		void LayerInserted();
-		// </FIXME>
+		
 	private:
 		Documents m_documents;
 		

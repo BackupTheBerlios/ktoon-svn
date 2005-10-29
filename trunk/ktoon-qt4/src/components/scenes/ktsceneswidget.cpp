@@ -145,7 +145,7 @@ void KTScenesWidget::setupTableScenes()
 
 //------------------- SLOTS ----------------------------
 
-void KTScenesWidget::insertScene(const QString &name)
+void KTScenesWidget::insertScene(const QString &name, bool addedToEnd)
 {
 	ktDebug() << k_funcinfo << endl;
 	m_tableScenes->addScene(name);

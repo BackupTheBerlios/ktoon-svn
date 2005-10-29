@@ -44,24 +44,28 @@ void KTLayer::setFrames(const Frames &frames)
 	m_frames = frames;
 }
 
-KTKeyFrame *KTLayer::createFrame()
+KTKeyFrame *KTLayer::createFrame(bool addToEnd)
 {
 	QString name = tr("Drawing %1").arg(m_framesCount++);
 	
 	KTKeyFrame *keyFrame = new KTKeyFrame(this);
 	keyFrame->setFrameName( name);
 	
-	//EL nuevo frame es insertado despues del current
-	m_frames << keyFrame;
-// 	m_frames.insert(m_frames.indexOf(currentFrame())+1, keyFrame);
+	if ( addToEnd )
+	{
+		m_frames << keyFrame;
+	}
+	else
+	{
+		m_frames.insert(m_frames.indexOf(m_currentFrame)+1, keyFrame);
+	}
 	
 	m_currentFrame = keyFrame;
-	
-	emit frameCreated( keyFrame->frameName() );
+
+	emit frameCreated( keyFrame->frameName(), addToEnd );
 	
 	return keyFrame;
 }
-
 
 KTKeyFrame *KTLayer::currentFrame()
 {

@@ -42,21 +42,28 @@ void KTDocument::setScenes(const Scenes &scenes)
 	m_scenes = scenes;
 }
 
-KTScene *KTDocument::createScene()
+KTScene *KTDocument::createScene(bool addToEnd)
 {
 	ktDebug() << "Creating Scene" << m_sceneCount+1 << endl;
 	
 	KTScene *scene = new KTScene(this);
 	scene->setSceneName( tr("Scene %1").arg(m_sceneCount++));
 
-	m_scenes << scene;
-	
+	if ( addToEnd )
+	{
+		m_scenes << scene;
+	}
+	else
+	{
+		m_scenes.insert(m_scenes.indexOf(m_currentScene)+1, scene);
+	}
 	m_currentScene = scene;
 	
-	emit sceneCreated(scene->sceneName());
+	emit sceneCreated(scene->sceneName(), addToEnd);
 	
 	return scene;
 }
+
 
 KTScene *KTDocument::currentScene()
 {

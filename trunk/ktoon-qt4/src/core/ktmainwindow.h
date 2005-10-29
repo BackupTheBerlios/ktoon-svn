@@ -136,10 +136,13 @@ class KTMainWindow : public DMainWindow
 	private slots:
 		
 		//Layers
-		void insertLayer( const QString &);
+		void insertLayer( const QString &, bool);
 		//Frames
-		void insertFrame( const QString &name);
+		void insertFrame( const QString &name, bool);
 		void selectFrame(int layer, int frame);
+		
+		// Scenes
+		void insertScene( const QString &name, bool);
 		
 		
 		void changeCurrentColors(const QColor &, const QColor &);
@@ -160,6 +163,7 @@ class KTMainWindow : public DMainWindow
 		// Components
 	private:
 		KTExposureSheet *m_exposureSheet;
+		KTScenesWidget *m_scenes;
 };
 
 #endif

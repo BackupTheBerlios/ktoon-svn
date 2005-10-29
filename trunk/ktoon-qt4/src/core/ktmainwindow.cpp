@@ -43,7 +43,7 @@
 #include <QTextEdit>
 //
 
-KTMainWindow::KTMainWindow() : DMainWindow(), m_exposureSheet(0)
+KTMainWindow::KTMainWindow() : DMainWindow(), m_exposureSheet(0), m_scenes(0)
 {
 	KTINIT;
 	
@@ -201,11 +201,11 @@ void KTMainWindow::createGUI()
 	toolWindow(DDockWindow::Left)->addWidget(tr("Library"),m_libraryDialog);
 	
 	/////////////////
-	KTScenesWidget *m_scenes = new KTScenesWidget( this);
+	m_scenes = new KTScenesWidget( this);
 	m_scenes->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/scenes.png"));
 	toolWindow(DDockWindow::Right)->addWidget(tr("Scenes"),m_scenes);
 	
-	connect(m_scenes, SIGNAL(requestInsertScene()), m_projectManager, SLOT(addScene()));
+	connect(m_scenes, SIGNAL(requestInsertScene()), m_projectManager, SLOT(createScene()));
 	connect(m_scenes, SIGNAL(requestRemoveScene()), m_projectManager, SLOT(removeScene()));
 	
 	/////////////////////
@@ -213,9 +213,9 @@ void KTMainWindow::createGUI()
 	m_exposureSheet->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/exposure_sheet.png"));
 	toolWindow(DDockWindow::Right)->addWidget(tr("Exposure Sheet"),m_exposureSheet);
 	
-	connect(m_exposureSheet, SIGNAL(requestInsertFrame()), m_projectManager, SLOT(addFrame()));
+	connect(m_exposureSheet, SIGNAL(requestInsertFrame()), m_projectManager, SLOT(createFrame()));
 	
-	connect(m_exposureSheet, SIGNAL(requestInsertLayer()), m_projectManager, SLOT(addLayer()));
+	connect(m_exposureSheet, SIGNAL(requestInsertLayer()), m_projectManager, SLOT(createLayer()));
 	
 	
 	connect(m_exposureSheet, SIGNAL(frameSelected( int, int )), this, SLOT(selectFrame(int,int)));
@@ -235,13 +235,11 @@ void KTMainWindow::createGUI()
 	
 	
 	// Connect the project manager with the components...
-	connect(m_projectManager, SIGNAL(sceneAdded(const QString &)), m_scenes, SLOT( insertScene(const QString &)));
-	connect(m_projectManager, SIGNAL(sceneAdded(const QString &)), m_exposureSheet, SLOT(addScene(const QString &)));
+	connect(m_projectManager, SIGNAL(sceneCreated(const QString &, bool)), this, SLOT( insertScene(const QString &, bool)));
 	
+	connect(m_projectManager, SIGNAL(frameCreated( const QString &, bool)), this, SLOT(insertFrame( const QString &, bool)));
 	
-	connect(m_projectManager, SIGNAL(frameAdded( const QString &)), this, SLOT(insertFrame( const QString &)));
-	
-	connect(m_projectManager, SIGNAL(layerAdded(const QString &)), this, SLOT(insertLayer(const QString &)));
+	connect(m_projectManager, SIGNAL(layerCreated(const QString &, bool)), this, SLOT(insertLayer(const QString &, bool)));
 	
 	
 	
@@ -451,10 +449,15 @@ void KTMainWindow::aboutKToon()
 
 // Animation
 
-
-void KTMainWindow::insertLayer(const QString &name)
+void KTMainWindow::insertScene( const QString &name, bool addedToEnd)
 {
-	ktDebug() << k_funcinfo << endl;
+	m_scenes->insertScene( name, addedToEnd);
+	m_exposureSheet->addScene( name);
+}
+
+void KTMainWindow::insertLayer(const QString &name, bool addedToEnd)
+{
+	ktDebug() << "KTMainWindow::insertLayer(" << name << "," << addedToEnd << ")" << endl;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )
@@ -466,7 +469,7 @@ void KTMainWindow::insertLayer(const QString &name)
 }
 
 
-void KTMainWindow::insertFrame(const QString &name)
+void KTMainWindow::insertFrame(const QString &name, bool addedToEnd)
 {
 	ktDebug( ) << "insertFrame"<< endl;
 	ktDebug() << k_funcinfo << endl;

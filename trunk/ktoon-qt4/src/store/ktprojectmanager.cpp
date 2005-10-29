@@ -51,12 +51,12 @@ KTDocument *KTProjectManager::createDocument(const QString &name)
 	
 	m_documents << doc;
 	
-	connect(doc, SIGNAL(sceneCreated(const QString &)), this, SIGNAL(sceneAdded(const QString &)));
+	connect(doc, SIGNAL(sceneCreated(const QString &, bool)), this, SIGNAL(sceneCreated(const QString &, bool)));
 	
 	
-	addScene();
-	addLayer();
-	addFrame();
+	createScene();
+	createLayer();
+	createFrame();
 	
 	return doc;
 }
@@ -108,18 +108,45 @@ void KTProjectManager::setCurrentDocument(int index)
 	}
 }
 
-void KTProjectManager::addScene()
+void KTProjectManager::setCurrentScene(int index)
 {
 	if ( m_currentDocument )
 	{
-		KTScene *scene = m_currentDocument->createScene();
-		connect(scene, SIGNAL(layerCreated( const QString& )), this, SIGNAL(layerAdded( const QString &)));
+		m_currentDocument->setCurrentScene( index );
+	}
+}
+
+void KTProjectManager::setCurrentLayer(int index)
+{
+	KTScene *scene = currentScene();
+	if( scene )
+	{
+		scene->setCurrentLayer( index );
+	}
+}
+
+void KTProjectManager::setCurrentFrame(int index)
+{
+	KTLayer *layer = currentLayer();
+	if ( layer )
+	{
+		layer->setCurrentFrame( index );
+	}
+}
+
+void KTProjectManager::createScene(bool addToEnd)
+{
+	if ( m_currentDocument )
+	{
+		KTScene *scene = m_currentDocument->createScene(addToEnd);
+		connect(scene, SIGNAL(layerCreated( const QString&, bool)), this, SIGNAL(layerCreated( const QString &, bool)));
 	}
 	else
 	{
 		ktFatal() << "--> No current document" << endl;
 	}
 }
+
 
 void KTProjectManager::removeScene()
 {
@@ -131,14 +158,14 @@ void KTProjectManager::renameScene(const QString &name, int index)
 }
 
 // Layers
-void KTProjectManager::addLayer()
+void KTProjectManager::createLayer(bool addToEnd)
 {
 	ktDebug( ) << k_funcinfo << endl;
 	KTScene *scene = currentScene();
 	if ( scene )
 	{
-		KTLayer *layer = scene->createLayer();
-		connect(layer, SIGNAL(frameCreated( const QString &)), this, SIGNAL(frameAdded(  const QString& )));
+		KTLayer *layer = scene->createLayer(addToEnd);
+		connect(layer, SIGNAL(frameCreated( const QString &, bool)), this, SIGNAL(frameCreated(  const QString& , bool)));
 	}
 	else
 	{
@@ -148,14 +175,14 @@ void KTProjectManager::addLayer()
 
 // Frames
 
-void KTProjectManager::addFrame()
+void KTProjectManager::createFrame(bool addToEnd)
 {
 	ktDebug() << "KTProjectManager:: Inserting frame" << endl;
 	
 	KTLayer *layer = currentLayer();
 	if ( layer )
 	{
-		KTKeyFrame *keyFrame = layer->createFrame();
+		KTKeyFrame *keyFrame = layer->createFrame(addToEnd);
 	}
 	else
 	{
@@ -163,11 +190,4 @@ void KTProjectManager::addFrame()
 	}
 }
 
-void KTProjectManager::setCurrentFrame(int index)
-{
-	if ( currentLayer() )
-	{
-		currentLayer()->setCurrentFrame(index);
-	}
-}
 

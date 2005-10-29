@@ -122,6 +122,12 @@ void KTExposureSheet::applyAction(int action)
 {
 	ktDebug( ) << k_funcinfo << endl;
 	
+	if ( ! m_viewLayer )
+	{
+		ktFatal() << "KTExposureSheet::applyAction: No layer view!!" << endl;
+		return;
+	}
+	
 	switch(action)
 	{
 		case InsertLayer:
@@ -211,7 +217,14 @@ void KTExposureSheet::insertLayer(const QString& name)
 {
 	ktDebug( ) << k_funcinfo << endl;
 	//change m_viewLayer for currentTable
-	m_viewLayer->insertLayer(100, name);
+	if ( m_viewLayer )
+	{
+		m_viewLayer->insertLayer(100, name);
+	}
+	else
+	{
+		ktFatal() << "KTExposureSheet::insertLayer: No layer view!" << endl;
+	}
 }
 
 void KTExposureSheet::removeCurrentLayer()

@@ -52,17 +52,24 @@ void KTScene::setLayers(const Layers &layers)
 	m_layers = layers;
 }
 
-KTLayer *KTScene::createLayer()
+KTLayer *KTScene::createLayer(bool addToEnd )
 {
 	ktDebug( ) << k_funcinfo << endl;
 	KTLayer *layer = new KTLayer(this);
 	layer->setLayerName(tr("Layer %1").arg(m_layerCount++));
 	
-	m_layers << layer;
+	if ( addToEnd )
+	{
+		m_layers << layer;
+	}
+	else
+	{
+		m_layers.insert( m_layers.indexOf(m_currentLayer)+1, layer);
+	}
 	
 	m_currentLayer = layer;
 	
-	emit layerCreated( layer->layerName() );
+	emit layerCreated( layer->layerName() , addToEnd);
 	
 	return layer;
 }

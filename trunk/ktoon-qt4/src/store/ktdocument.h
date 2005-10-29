@@ -38,13 +38,13 @@ class KTDocument : public QObject
 		~KTDocument();
 		Scenes scenes() const;
 		void setScenes(const Scenes &);
-		KTScene *createScene();
+		KTScene *createScene(bool addToEnd);
 		
 		KTScene *currentScene();
 		void setCurrentScene(int index);
 		
 	signals:
-		void sceneCreated(const QString &name);
+		void sceneCreated(const QString &name, bool toEnd);
 		
 	private:
 		Scenes m_scenes;

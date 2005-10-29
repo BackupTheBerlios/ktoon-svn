@@ -41,15 +41,15 @@ class KTScene : public QObject
 		QString sceneName();
 		Layers layers() const;
 		void setLayers(const Layers &);
-		KTLayer *createLayer();
+		KTLayer *createLayer(bool addToEnd );
 		
 		KTLayer *currentLayer();
 		void setCurrentLayer(int index);
 		int indexCurrentLayer();
 		
 	signals:
-		void layerCreated(const QString &name);
-		
+		void layerCreated(const QString &name, bool toEnd);
+
 	private:
 		Layers m_layers;
 		KTLayer *m_currentLayer;

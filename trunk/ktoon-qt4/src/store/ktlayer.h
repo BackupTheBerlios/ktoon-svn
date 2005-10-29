@@ -41,7 +41,7 @@ class KTLayer : public QObject
 		Frames frames();
 		void setFrames(const Frames &frames);
 		
-		KTKeyFrame *createFrame();
+		KTKeyFrame *createFrame(bool addToEnd );
 		
 		KTKeyFrame *currentFrame();
 		void setCurrentFrame(int index);
@@ -53,10 +53,9 @@ class KTLayer : public QObject
 		QString layerName() const;
 		bool isVisible(); 
 	
-	signals: // TODO: add more signals
-		//FIXME:
-		void frameCreated( const QString &name);
-	
+	signals:
+		void frameCreated( const QString &name, bool toEnd );
+		
 	private:
 		Frames m_frames;
 		bool m_isVisible;

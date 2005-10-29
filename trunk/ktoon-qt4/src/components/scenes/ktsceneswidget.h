@@ -67,7 +67,7 @@ class KTScenesWidget : public KTModuleWidgetBase
 		void renameScene(const QString &name);
 		
 	public slots:
-		void insertScene(const QString &name);
+		void insertScene(const QString &name, bool addedToEnd);
 		void removeScene();
 };
 
