@@ -3875,7 +3875,7 @@ void KToon::createGUI()
 // 		es -> loadLayersAndKeyframes( layers );
 // 		delete m_ExposureSheetDialog;
 // 		m_ExposureSheetDialog = new KTExposureSheet(this);
-		m_ExposureSheetDialog-> loadLayersAndKeyframes( layers );
+// 		m_ExposureSheetDialog-> loadLayersAndKeyframes( layers );
 		KTTimeLine *tl = m_timeLineList.at( scenes.indexOf( s_it ) );
 		// 		tl -> loadLayersAndKeyframes( layers ); // FIXME
 // 		QPtrList<ILayer> layer_list = es -> getILayers();

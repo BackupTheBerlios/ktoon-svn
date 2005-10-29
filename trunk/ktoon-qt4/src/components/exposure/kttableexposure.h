@@ -29,9 +29,9 @@
 #include <QBoxLayout>
 
 #include "ktlayerexposure.h"
-#include "gldrawing.h"
-#include "keyframe.h"
-#include "layer.h"
+// #include "gldrawing.h"
+// #include "keyframe.h"
+// #include "layer.h"
 
 /**
  * @author Jorge Cuadrado
@@ -46,13 +46,15 @@ class KTTableExposure : public QScrollArea
 		enum Direction {Up = 0, Down};
 		KTTableExposure(int rows, int cols, QWidget *parent = 0);
 		~KTTableExposure();
-		void setUseFrame(int idLayer, const QString& name );
+		
+		void setUseFrame(int idLayer, const QString& name, bool addedToEnd );
+		
 		void removeFrame();
 		void moveCurrentFrame(Direction dir);
 		void lockCurrentFrame();
 		void removeCurrentLayer();
 		void insertFrames();
-		void loadLayers(QList<Layer*> layers);
+// 		void loadLayers(QList<Layer*> layers);
 		void updateLayers();
 		QStringList textHeaders();
 		
@@ -69,11 +71,10 @@ class KTTableExposure : public QScrollArea
 		void insertLayer(int rows, const QString &text = QString::null);
 		void clickedCell(int row, int col, int button, int gx, int gy);
 		void changeCurrentLayer(int idLayer);
-		void useFrame( const QString &newName);
-		void removeKeyFrame(int id);
-		void touchFirstFrame();
-		void copyCurrentFrame();
-		void pasteCurrentFrame();
+// 		void removeKeyFrame(int id);
+// 		void touchFirstFrame();
+// 		void copyCurrentFrame();
+// 		void pasteCurrentFrame();
 		void removeLayer(int idLayer);
 // 		void changedName(const QString &);
 		void layerRename(int, const QString &);
@@ -85,7 +86,7 @@ class KTTableExposure : public QScrollArea
 		void layerSelected(int id);
 		
 		// TODO: <krawek> FALTAN SIGNALS
-		void requestInsertFrame();
+		void requestInsertFrame(bool addedToEnd);
 		
 };
 

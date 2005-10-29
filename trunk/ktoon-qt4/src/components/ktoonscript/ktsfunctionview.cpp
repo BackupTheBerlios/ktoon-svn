@@ -57,4 +57,5 @@ void KTSFunctionView::addModule(const QString &module, const QString &section, Q
 
 bool KTSFunctionView::dropMimeData ( QTreeWidgetItem * parent, int index, const QMimeData * data, Qt::DropAction action )
 {
+	return true;
 }

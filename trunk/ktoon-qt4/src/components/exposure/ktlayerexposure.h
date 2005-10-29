@@ -32,7 +32,7 @@
 #include "eslayer.h"
 
 
-#include "layer.h"
+// #include "layer.h"
 
 typedef QList<ESFrame*> ListOfFrames;
 
@@ -46,15 +46,17 @@ class KTLayerExposure : public QFrame
 		KTLayerExposure(const QString &initial_text, int id,int numFrame, QWidget *parent = 0);
 		~KTLayerExposure();
 		QString textHeader();
+		
 		void insertFrame(int id, const QString &text );
+		
 		void addFrame(const QString &text );
 		bool isSelected();
 		void invertFrames(int id1, int id2);
 		void setId(int id);
 		int id();
 		bool currentFrameIsUsed();
-		int  frameUsed();
-		void loadFrames(Layer *layer);
+		int  numUsedFrame();
+// 		void loadFrames(Layer *layer);
 		void insertFrames();
 		void selectedFirstFrame();
 		
@@ -71,7 +73,7 @@ class KTLayerExposure : public QFrame
 		void setSelected(bool selected = true, QMouseEvent *e = 0);
 		void frameSelect(int id, int button =0 , int x = 0, int y = 0);
 		void otherSelected(int id);
-		void setUseFrames(const QString &name);
+		void setUseFrames(const QString &name, bool addedToEnd);
 		void removeFrame(int id);
 		void moveCurrentFrameUp();
 		void moveCurrentFrameDown();
@@ -86,7 +88,7 @@ class KTLayerExposure : public QFrame
 		
 		
 	signals:
-		void requestInsertFrame();
+		void requestInsertFrame(bool);
 		
 		void selected(int id);
 		void clicked( int row, int col, int button,int x, int y);

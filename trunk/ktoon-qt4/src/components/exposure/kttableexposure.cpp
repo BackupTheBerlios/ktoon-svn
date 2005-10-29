@@ -26,8 +26,8 @@
 #include <QBoxLayout>
 // #include "status.h"
 #include "ktdebug.h"
-#include "layer.h"
-#include <memory>
+// #include "layer.h"
+// #include <memory>
 
 KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent)
 	: QScrollArea(parent),m_numLayer(0), m_currentLayer(0), m_currentFrame(0)
@@ -40,10 +40,6 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent)
 	m_layout = new QBoxLayout (  m_port, QBoxLayout::LeftToRight,4,1);
 	m_layout->setSpacing(0);
 	m_layout->setMargin(0);
-// 	for(int i = 0; i < cols; i++)
-// 	{
-// 		insertLayer(rows);
-// 	}
 	
 	setWidget(m_port);
 	setWidgetResizable (true);
@@ -55,10 +51,10 @@ KTTableExposure::~KTTableExposure()
 	KTEND;
 }
 
-void KTTableExposure::touchFirstFrame()
-{
+// void KTTableExposure::touchFirstFrame()
+// {
 // 	m_layers.at(0)->frameSelect(0,0,0,0);
-}
+// }
 
 void KTTableExposure::clickedCell(int row,int col,int button,int gx,int gy)
 {
@@ -66,14 +62,13 @@ void KTTableExposure::clickedCell(int row,int col,int button,int gx,int gy)
 	m_currentLayer = col;
 	m_currentFrame = row;
 	
-	
-	
 	if ( m_layers.at(m_currentLayer)->currentFrameIsUsed() )
 	{
 		emit(cellSelected(col, row));
 	}
 	else
 	{
+		//TODO: cambiar el currentFrame a bloqueado
 // 		KTStatus -> setCurrentKeyFrame( NULL );
 	}
 	emit(clickedFrame());
@@ -83,19 +78,30 @@ void KTTableExposure::insertLayer(int rows, const QString &text)
 {
 	KTLayerExposure *newLayer = new KTLayerExposure(text, m_numLayer, rows, m_port);
 	m_layers.append(newLayer);
+	
 	connect(newLayer, SIGNAL(selected(int)), this, SLOT(changeCurrentLayer(int)));
+	
 	connect(this, SIGNAL(layerSelected(int)), newLayer, SLOT(otherSelected(int)));
+	
 	connect(newLayer, SIGNAL(clicked(int,int,int,int,int)), this, SLOT(clickedCell(int,int,int,int,int)));
-	connect(newLayer, SIGNAL(setUsedFrame(const QString &)), this, SLOT(useFrame(const QString &)));
-	connect(newLayer, SIGNAL(copyFrame()), this, SLOT(copyCurrentFrame()));
-	connect(newLayer, SIGNAL(pasteFrame()), this, SLOT(pasteCurrentFrame()));
+	
+// 	connect(newLayer, SIGNAL(setUsedFrame(const QString &)), this, SLOT(useFrame(const QString &)));
+	
+// 	connect(newLayer, SIGNAL(copyFrame()), this, SLOT(copyCurrentFrame()));
+	
+// 	connect(newLayer, SIGNAL(pasteFrame()), this, SLOT(pasteCurrentFrame()));
+	
 	connect(newLayer, SIGNAL(removed(int)), this, SLOT(removeLayer(int)));
-	connect(newLayer, SIGNAL(removedFrame(int)), this, SLOT(removeKeyFrame(int)));
+	
+// 	connect(newLayer, SIGNAL(removedFrame(int)), this, SLOT(removeKeyFrame(int)));
+	
 	connect(newLayer, SIGNAL(layerRenamed(int, const QString &)), this, SLOT(layerRename(int, const QString &)));
+	
 	connect(newLayer, SIGNAL(frameRenamed(int, int, const QString &)), this, SLOT(frameRename(int, int, const QString &)));
 	
 	
-	connect(newLayer, SIGNAL(requestInsertFrame()), this, SIGNAL(requestInsertFrame()));
+	
+	connect(newLayer, SIGNAL(requestInsertFrame(bool)), this, SIGNAL(requestInsertFrame(bool)));
 	
 	m_layout->addWidget( newLayer, 0, /*Qt::AlignTop | */Qt::AlignLeft);
 	
@@ -104,20 +110,20 @@ void KTTableExposure::insertLayer(int rows, const QString &text)
 	
 	m_port->adjustSize();
 	
-	emit requestInsertFrame();
+// 	emit requestInsertFrame();
 }
 
 void KTTableExposure::changeCurrentLayer(int idLayer)
 {
 	m_currentLayer = idLayer;
-	m_currentFrame = m_layers.at(m_currentLayer)->frameUsed();
+	m_currentFrame = m_layers.at(m_currentLayer)->numUsedFrame();
 	emit layerSelected(idLayer);
 }
 
-void KTTableExposure::setUseFrame(int idLayer, const QString& name)
+void KTTableExposure::setUseFrame(int idLayer, const QString& name, bool addedToEnd)
 {
 	ktDebug() << "ID LAYER: " << idLayer << endl;
-	m_layers.at(idLayer)->setUseFrames(name);
+	m_layers.at(idLayer)->setUseFrames(name, addedToEnd);
 }
 
 void KTTableExposure::insertFrames()
@@ -125,11 +131,6 @@ void KTTableExposure::insertFrames()
 	m_layers.at(m_currentLayer)->insertFrames();
 }
 		
-void KTTableExposure::useFrame(const QString &newName)
-{
-// 	emit requestInsertFrame();
-}
-
 void KTTableExposure::removeFrame()
 {
 	m_layers.at(m_currentLayer)->removeCurrentFrame();
@@ -174,23 +175,6 @@ void KTTableExposure::removeCurrentLayer()
 	}
 }
 
-void KTTableExposure::copyCurrentFrame()
-{
-// 	KTStatus->currentDrawingArea()->slotSelectAll();
-// 	KTStatus->currentDrawingArea()->slotCopy();
-}
-
-void KTTableExposure::pasteCurrentFrame()
-{
-// 	KTStatus->currentDrawingArea()->clear();
-// 	KTStatus->currentDrawingArea()->slotPasteInPlace();
-}
-
-void KTTableExposure::removeKeyFrame(int idLayer)
-{
-// 	emit requestRemoveFrame();
-}
-
 void KTTableExposure::removeLayer(int idLayer)
 {
 	m_layout->remove( m_layers.at(idLayer) );
@@ -214,8 +198,8 @@ QStringList KTTableExposure::textHeaders()
 }
 
 
-void KTTableExposure::loadLayers(QList<Layer*> layers)
-{
+// void KTTableExposure::loadLayers(QList<Layer*> layers)
+// {
 // 	ktDebug() << "KTTableExposure::loadLayers init" <<  layers.count();
 // 	m_layers.clear();
 // 	KTStatus -> currentScene() -> getLayers();
@@ -234,7 +218,7 @@ void KTTableExposure::loadLayers(QList<Layer*> layers)
 // 	}
 	
 // 	ktDebug() << "KTTableExposure::loadLayers finish load " <<  m_numLayer << "layers" << endl;
-}
+// }
 
 void KTTableExposure::updateLayers()
 {

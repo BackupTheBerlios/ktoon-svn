@@ -213,7 +213,7 @@ void KTMainWindow::createGUI()
 	m_exposureSheet->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/exposure_sheet.png"));
 	toolWindow(DDockWindow::Right)->addWidget(tr("Exposure Sheet"),m_exposureSheet);
 	
-	connect(m_exposureSheet, SIGNAL(requestInsertFrame()), m_projectManager, SLOT(createFrame()));
+	connect(m_exposureSheet, SIGNAL(requestInsertFrame(bool)), m_projectManager, SLOT(createFrame(bool)));
 	
 	connect(m_exposureSheet, SIGNAL(requestInsertLayer()), m_projectManager, SLOT(createLayer()));
 	
@@ -240,8 +240,6 @@ void KTMainWindow::createGUI()
 	connect(m_projectManager, SIGNAL(frameCreated( const QString &, bool)), this, SLOT(insertFrame( const QString &, bool)));
 	
 	connect(m_projectManager, SIGNAL(layerCreated(const QString &, bool)), this, SLOT(insertLayer(const QString &, bool)));
-	
-	
 	
 }
 
@@ -471,7 +469,7 @@ void KTMainWindow::insertLayer(const QString &name, bool addedToEnd)
 
 void KTMainWindow::insertFrame(const QString &name, bool addedToEnd)
 {
-	ktDebug( ) << "insertFrame"<< endl;
+	ktDebug() << "KTMainWindow::insertFrame(" << name << "," << addedToEnd << ")" << endl;
 	ktDebug() << k_funcinfo << endl;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
@@ -483,7 +481,7 @@ void KTMainWindow::insertFrame(const QString &name, bool addedToEnd)
 		
 	}
 	
-	m_exposureSheet->addFrame(m_projectManager->currentScene()->indexCurrentLayer(), name);
+	m_exposureSheet->addFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd);
 }
 
 void KTMainWindow::selectFrame(int layer, int frame)

@@ -177,7 +177,7 @@ void KTProjectManager::createLayer(bool addToEnd)
 
 void KTProjectManager::createFrame(bool addToEnd)
 {
-	ktDebug() << "KTProjectManager:: Inserting frame" << endl;
+	ktDebug() << "#KTProjectManager:: Inserting frame " << addToEnd <<  endl;
 	
 	KTLayer *layer = currentLayer();
 	if ( layer )

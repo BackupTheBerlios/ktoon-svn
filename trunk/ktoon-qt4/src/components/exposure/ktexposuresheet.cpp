@@ -44,15 +44,9 @@ KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, 
 			QPixmap(KTOON_THEME_DIR+"/icons/arrowup.png" ) <<
 			QPixmap(KTOON_THEME_DIR+"/icons/arrowdown.png" );
 	setupButtons();
-	
 	m_scenes = new KTTabWidget(this);
-	
 	addChild(m_scenes);
-//  	hide();
 	show();
-
-// 	setResizeEnabled ( true );
-
 	createLayerManager();
 }
 
@@ -80,8 +74,6 @@ void KTExposureSheet::setupButtons()
 	{
 		QPushButton * tmpButton = new KTImageButton(m_imgs[i], 25, m_buttonsPanel);
 		m_buttonGroup->addButton (tmpButton);
-
-// 		tmpButton->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding );
 		QToolTip::add( tmpButton, toolTips[i]  );
 	}
 	m_buttonsPanel->setMaximumHeight( m_buttonsPanel->sizeHint().height());
@@ -91,7 +83,7 @@ void KTExposureSheet::setupButtons()
 
 void KTExposureSheet::createLayerManager()
 {
-	//FIXME:kuadrosx crear una clase que me permita visualizar los items y seleccionarlos un QCheckBox
+	//TODO:kuadrosx crear una clase que me permita visualizar los items y seleccionarlos un QCheckBox
 	m_layerManager = new QListView;
 	m_layerManager->setMovement ( QListView::Static  );
 	m_layerManager->resize(150,100);
@@ -100,7 +92,6 @@ void KTExposureSheet::createLayerManager()
 void KTExposureSheet::addScene(const QString &name)
 {
 	KTTableExposure *newLayer = new KTTableExposure(100, 1, m_scenes);
-	newLayer->touchFirstFrame();
 	
 	m_scenes->addTab(newLayer, name); // TODO: Necesitamos una forma facil de identificar scenas, puede ser por el indice de insersion
 	
@@ -108,7 +99,7 @@ void KTExposureSheet::addScene(const QString &name)
 	connect(newLayer, SIGNAL(cellSelected( int, int )), this, SIGNAL(frameSelected(int, int)));
 	connect(newLayer, SIGNAL(layerSelected(int)), this, SIGNAL(layerSelected(int)));
 	
-	connect(newLayer, SIGNAL(requestInsertFrame()), this, SIGNAL(requestInsertFrame()));
+	connect(newLayer, SIGNAL(requestInsertFrame(bool)), this, SIGNAL(requestInsertFrame(bool)));
 	
 	m_viewLayer = newLayer;
 }
@@ -135,13 +126,11 @@ void KTExposureSheet::applyAction(int action)
 			
 			emit requestInsertLayer();
 // 			m_viewLayer->insertLayer(100);
-			
 // 			slotInsertLayer();
 			break;
 		}
 		case RemoveLayer:
 		{
-			
 			emit requestRemoveLayer();
 // 			m_viewLayer->removeCurrentLayer();
 			break;
@@ -170,7 +159,6 @@ void KTExposureSheet::applyAction(int action)
 		}
 		case LockFrame:
 		{
-			
 			m_viewLayer->lockCurrentFrame();
 			break;
 		}
@@ -189,13 +177,11 @@ void KTExposureSheet::applyAction(int action)
 	}
 }
 
-void KTExposureSheet::addFrame(int idLayer, const QString &name)
+void KTExposureSheet::addFrame(int idLayer, const QString &name, bool addedToEnd)
 {
-	ktDebug( ) << "KTExposureSheet::addFrame(" << idLayer << name << ")" << endl;
+	ktDebug( ) << "KTExposureSheet::addFrame(" << idLayer << " , "<< name << " , "  << addedToEnd << ")" << endl;
 // 	m_viewLayer->currentLayerExposure()->setUseFrames(name);
-	m_viewLayer->setUseFrame(idLayer, name);
-	
-	
+	m_viewLayer->setUseFrame(idLayer, name, addedToEnd);
 }
 
 void KTExposureSheet::actionButton( QAbstractButton *b)
@@ -203,10 +189,10 @@ void KTExposureSheet::actionButton( QAbstractButton *b)
 	applyAction(m_buttonGroup->buttons().indexOf(b));
 }
 
-void KTExposureSheet::loadLayersAndKeyframes( QList<Layer*> layers )
-{
-	m_viewLayer->loadLayers(layers);
-}
+// void KTExposureSheet::loadLayersAndKeyframes( QList<Layer*> layers )
+// {
+// 	m_viewLayer->loadLayers(layers);
+// }
 
 void KTExposureSheet::updateLayersAndKeyframes()
 {
