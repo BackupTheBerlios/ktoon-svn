@@ -25,7 +25,7 @@
 #include <QPainter>
 #include <cmath>
 
-APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_brushColor(Qt::transparent), m_currentFrame(0), m_layer(0)
+APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_brushColor(Qt::transparent), m_currentFrame(0), m_layer(0), m_scene(0)
 {
 	m_redrawAll = true;
 	
@@ -99,24 +99,48 @@ void APaintArea::paintEvent(QPaintEvent *e)
 
 void APaintArea::setKeyFrame(int index)
 {
-	ktDebug( ) << "APaintArea::setKeyFrame(int " << index << ")" << endl;
-	KTKeyFrame *frame = m_layer->frames()[index];
-	if (frame && index < m_layer->frames().count())
+	ktDebug( ) << "APaintArea::setKeyFrame(" << index << ")" << endl;
+	if ( m_layer )
 	{
-		m_currentFrame = frame;
-		redrawAll();
-	}
-	else
-	{
-		ktFatal() << "Frame not exists!!!" << endl;
+		KTKeyFrame *frame = m_layer->frames()[index];
+		
+		if (frame && index < m_layer->frames().count())
+		{
+			m_currentFrame = frame;
+			redrawAll();
+		}
+		else
+		{
+			ktFatal() << "Frame not exists!!!" << endl;
+		}
 	}
 }
 
-void APaintArea::setLayer(KTLayer *layer)
+void APaintArea::setLayer(int index)
 {
-	if (layer )
+	ktDebug( ) << "APaintArea::setLayer(" << index << ")" << endl;
+	if ( m_scene )
 	{
-		m_layer = layer;
+		KTLayer *layer = m_scene->layers()[index];
+		
+		if (layer && index < m_scene->layers().count() )
+		{
+			m_layer = layer;
+	// 		redrawAll();
+		}
+		else
+		{
+			ktFatal() << "Layer not exists!!!" << endl;
+		}
+	}
+}
+
+void APaintArea::setScene(KTScene *scene)
+{
+	if (scene )
+	{
+		m_scene = scene;
+		m_layer = m_scene->currentLayer();
 		setKeyFrame( 0 );// FIXME
 	}
 	else
@@ -128,30 +152,42 @@ void APaintArea::setLayer(KTLayer *layer)
 
 void APaintArea::draw(QPainter *painter)
 {
-	if(m_currentFrame)
-	{
-		QList<AGraphicComponent *> componentList = m_currentFrame->components();
+	Layers layers = m_scene->layers();
+	Layers::iterator layerIterator = layers.begin();
+	
+	int index = m_layer->frames().indexOf(m_currentFrame);
+	
+	while ( layerIterator != layers.end() )
+	{	
+		KTKeyFrame *frame = (*layerIterator)->frames()[ index ];
 		
-		if ( componentList.count() > 0)
+		if(frame && index < (*layerIterator)->frames().count() && (*layerIterator)->isVisible() )
 		{
-			QList<AGraphicComponent *>::iterator it = componentList.begin();
-			
-			while ( it != componentList.end() )
+			QList<AGraphicComponent *> componentList = frame->components();
+		
+			if ( componentList.count() > 0)
 			{
-				if ( *it )
+				QList<AGraphicComponent *>::iterator it = componentList.begin();
+			
+				while ( it != componentList.end() )
 				{
-					painter->save();
+					if ( *it )
+					{
+						painter->save();
 					
-					painter->setPen((*it)->pen());
-					painter->setBrush((*it)->brush());
+						painter->setPen((*it)->pen());
+						painter->setBrush((*it)->brush());
 					
-					painter->drawPath((*it)->path());
+						painter->drawPath((*it)->path());
 					
-					painter->restore();
+						painter->restore();
+					}
+					++it;
 				}
-				++it;
 			}
 		}
+		
+		++layerIterator;
 	}
 }
 

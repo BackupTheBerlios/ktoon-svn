@@ -49,7 +49,7 @@ KTViewDocument::KTViewDocument(KTScene *scene, QWidget *parent ) : KTMdiWindow(p
 	connect( m_paintAreaContainer->drawArea(), SIGNAL(mousePos(const QPoint &)),  this,  SLOT(showPos(const QPoint &)) );
 	
 	
-	m_paintAreaContainer->drawArea()->setLayer( m_scene->layers()[0] );
+	m_paintAreaContainer->drawArea()->setScene( m_scene );
 	
 	createActions();
 	createToolbar();

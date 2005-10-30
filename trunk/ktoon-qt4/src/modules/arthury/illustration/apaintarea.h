@@ -32,7 +32,7 @@
 #include "afilterinterface.h"
 #include "atoolinterface.h"
 
-#include "ktlayer.h"
+#include "ktscene.h"
 
 #include "ktbrush.h"
 
@@ -55,7 +55,8 @@ class APaintArea : public QWidget
 		
 	public slots:
 		void setKeyFrame(int index);
-		void setLayer(KTLayer *layer);
+		void setLayer(int index);
+		void setScene(KTScene *scene);
 		
 	private:
 		QImage m_paintDevice;
@@ -81,6 +82,7 @@ class APaintArea : public QWidget
 
 		KTKeyFrame *m_currentFrame;
 		KTLayer *m_layer;
+		KTScene *m_scene;
 
 	public:
 		void setTool( AToolInterface *toolIface, const QString &tool);

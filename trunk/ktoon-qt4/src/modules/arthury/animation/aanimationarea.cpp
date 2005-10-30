@@ -21,7 +21,7 @@
 #include "aanimationarea.h"
 #include "ktdebug.h"
 
-AAnimationArea::AAnimationArea(QWidget *parent) : QFrame(parent), m_layer(0), m_currentFrame(0), m_draw(false), m_ciclicAnimation(false), m_fps(24), m_currentFramePosition(0)
+AAnimationArea::AAnimationArea(QWidget *parent) : QFrame(parent), m_scene(0), m_draw(false), m_ciclicAnimation(false), m_fps(24), m_currentFramePosition(0), m_isRendered(false)
 {
 	setAttribute(Qt::WA_StaticContents);
 
@@ -38,65 +38,57 @@ AAnimationArea::~AAnimationArea()
 {
 }
 
-void AAnimationArea::setLayer(KTLayer *layer)
+void AAnimationArea::setScene(KTScene *scene)
 {
-	m_layer = layer;
-	if ( m_layer->frames().count() > 0 )
-	{
-		m_currentFrame = m_layer->currentFrame();
-	}
+	m_scene = scene;
+// 	if ( m_scene->frames().count() > 0 )
+// 	{
+// 		m_currentFrame = m_scene->currentFrame();
+// 	}
+	m_isRendered = false;
 }
 
 void AAnimationArea::paintEvent(QPaintEvent *e)
 {
 	QPainter painter;
-	
-// 	m_renderCamera.fill(qRgb(255, 255, 255));
-// 	
-// 	painter.begin(&m_renderCamera);
-// 	painter.setRenderHint(QPainter::Antialiasing);
-// 	
-// 	painter.save();
-// 	
-// 	if ( m_draw )
-// 	{
-// 		drawFrames(&painter);
-// 	}
-// 	
-// 	painter.restore();
-// 	painter.end();
-// 	
+
 	painter.begin(this);
 	painter.drawImage(QPoint(0, 0), m_renderCamera);
 }
 
 void AAnimationArea::drawFrames(QPainter *painter)
 {
-	if ( m_currentFrame )
-	{
-		QList<AGraphicComponent *> componentList = m_currentFrame->components();
-		
-		if ( componentList.count() > 0)
-		{
-			QList<AGraphicComponent *>::iterator it = componentList.begin();
-			
-			while ( it != componentList.end() )
-			{
-				if ( *it )
-				{
-					painter->save();
-					
-					painter->setPen((*it)->pen());
-					painter->setBrush((*it)->brush());
-					
-					painter->drawPath((*it)->path());
-					
-					painter->restore();
-				}
-				++it;
-			}
-		}
-	}
+// 	QList<KTKeyFrame *> frames = m_scene->frames();
+// 	QList<KTKeyFrame *>::iterator frameIterator = frames.begin();
+// 	
+// 	while ( frameIterator != frames.end() )
+// 	{
+// 		if ( m_currentFrame )
+// 		{
+// 			QList<AGraphicComponent *> componentList = m_currentFrame->components();
+// 			
+// 			if ( componentList.count() > 0)
+// 			{
+// 				QList<AGraphicComponent *>::iterator it = componentList.begin();
+// 				
+// 				while ( it != componentList.end() )
+// 				{
+// 					if ( *it )
+// 					{
+// 						painter->save();
+// 						
+// 						painter->setPen((*it)->pen());
+// 						painter->setBrush((*it)->brush());
+// 						
+// 						painter->drawPath((*it)->path());
+// 						
+// 						painter->restore();
+// 					}
+// 					++it;
+// 				}
+// 			}
+// 		}
+// 	}
 }
 
 void AAnimationArea::play()
@@ -107,7 +99,7 @@ void AAnimationArea::play()
 	
 	render();
 	
-	if ( m_layer && !m_timer->isActive() )
+	if ( m_scene && !m_timer->isActive() )
 	{
 		m_timer->start(1000/m_fps);
 	}
@@ -128,7 +120,7 @@ void AAnimationArea::stop()
 
 void AAnimationArea::advance()
 {
-	if ( m_layer )
+	if ( m_scene )
 	{
 		if ( m_currentFramePosition < m_photograms.count() )
 		{
@@ -154,52 +146,138 @@ void AAnimationArea::advance()
 void AAnimationArea::render() // TODO: Extend to scenes
 {
 	m_photograms.clear();
-
-	Frames frames = m_layer->frames();
 	
-	int nphotograms = frames.count();
+	Layers layers = m_scene->layers();
 	
-	emit toStatusBar( tr("Rendering... "), nphotograms*70 );
+	int nPhotogramsRenderized = 0;
 	
-	QImage renderized = QImage(520, 340, QImage::Format_RGB32);
+	m_isRendered = false; // TODO: for test
+	int totalPhotograms = photogramsCount();
 	
-	for(int i = 0; i < nphotograms; i++)
+	emit toStatusBar( tr("Rendering... "),totalPhotograms*70 );
+	
+	while ( ! m_isRendered )
 	{
+		Layers::iterator layerIterator = layers.begin();
+		bool ok = true;
+		
+		QImage renderized = QImage(520, 340, QImage::Format_RGB32);
 		renderized.fill(qRgb(255, 255, 255));
 		
 		QPainter painter(&renderized);
 		painter.setRenderHint(QPainter::Antialiasing);
 		
-		KTKeyFrame *frame = frames[i];
-		if ( frame )
+		while ( layerIterator != layers.end() )
 		{
-			QList<AGraphicComponent *> componentList = frame->components();
+			ok = ok && (nPhotogramsRenderized > (*layerIterator)->frames().count());
 			
-			if ( componentList.count() > 0  )
+			if ( *layerIterator && nPhotogramsRenderized < (*layerIterator)->frames().count() && (*layerIterator)->isVisible() )
 			{
-				QList<AGraphicComponent *>::iterator it = componentList.begin();
-				
-				while ( it != componentList.end() )
+				KTKeyFrame *frame = (*layerIterator)->frames()[nPhotogramsRenderized];
+				if ( frame )
 				{
-					if ( *it )
+					QList<AGraphicComponent *> componentList = frame->components();
+											
+					if ( componentList.count() > 0  )
 					{
-						painter.save();
-						
-						painter.setPen((*it)->pen());
-						painter.setBrush((*it)->brush());
-						
-						painter.drawPath((*it)->path());
-						
-						painter.restore();
+						QList<AGraphicComponent *>::iterator it = componentList.begin();
+												
+						while ( it != componentList.end() )
+						{
+							if ( *it )
+							{
+								painter.save();
+														
+								painter.setPen((*it)->pen());
+								painter.setBrush((*it)->brush());
+														
+								painter.drawPath((*it)->path());
+								painter.restore();
+							}
+							++it;
+						}
 					}
-					++it;
 				}
 			}
-			
-			emit progressStep( i+1, nphotograms);
-			m_photograms << renderized;
+			++layerIterator;
 		}
+		
+		emit progressStep( nPhotogramsRenderized, totalPhotograms);
+		m_photograms << renderized;
+		
+		
+		if (ok )
+		{
+			m_isRendered = true;
+		}
+		
+		nPhotogramsRenderized++;
 	}
+
+
+// 				Frames frames = (*layerIterator)->frames();
+// 				
+// 				int nphotograms = frames.count();
+// 				
+// 				emit toStatusBar( tr("Rendering... "), nphotograms*70 );
+// 				
+// 				for(int i = 0; i < nphotograms; i++)
+// 				{
+// 					QPainter painter(&renderized);
+// 					painter.setRenderHint(QPainter::Antialiasing);
+// 					
+// 					KTKeyFrame *frame = frames[i];
+// 					if ( frame )
+// 					{
+// 						QList<AGraphicComponent *> componentList = frame->components();
+// 						
+// 						if ( componentList.count() > 0  )
+// 						{
+// 							QList<AGraphicComponent *>::iterator it = componentList.begin();
+// 							
+// 							while ( it != componentList.end() )
+// 							{
+// 								if ( *it )
+// 								{
+// 									painter.save();
+// 									
+// 									painter.setPen((*it)->pen());
+// 									painter.setBrush((*it)->brush());
+// 									
+// 									painter.drawPath((*it)->path());
+// 									
+// 									painter.restore();
+// 								}
+// 								++it;
+// 							}
+// 						}
+// 						
+// 						emit progressStep( i+1, nphotograms);
+// 						m_photograms << renderized;
+// 					}
+// 				}
+// 			}
+// 		}
+// 	}
+}
+
+int AAnimationArea::photogramsCount() const
+{
+	Layers layers = m_scene->layers();
+	Layers::iterator layerIterator = layers.begin();
+	
+	int total = 0;
+
+	while ( layerIterator != layers.end() )
+	{
+		if( *layerIterator )
+		{
+			total = qMax(total, (*layerIterator)->frames().count());
+		}
+		++layerIterator;
+	}
+	
+	return total;
 }
 
 QSize AAnimationArea::sizeHint() const

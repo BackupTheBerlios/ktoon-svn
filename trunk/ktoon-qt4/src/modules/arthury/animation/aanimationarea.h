@@ -26,7 +26,7 @@
 #include <QTimer>
 #include <QFrame>
 
-#include "ktlayer.h"
+#include "ktscene.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -37,9 +37,10 @@ class AAnimationArea : public QFrame
 	public:
 		AAnimationArea(QWidget *parent = 0);
 		~AAnimationArea();
-		void setLayer(KTLayer *layer);
+		void setScene(KTScene *scene);
 		
 		QSize sizeHint() const;
+		int photogramsCount() const;
 		
 	public slots:
 		virtual void render();
@@ -61,8 +62,8 @@ class AAnimationArea : public QFrame
 		QFrame *m_container;
 		QImage m_renderCamera;
 		
-		KTKeyFrame *m_currentFrame;
-		KTLayer *m_layer;
+// 		KTKeyFrame *m_currentFrame;
+		KTScene *m_scene;
 		
 		bool m_draw, m_ciclicAnimation;
 		
@@ -71,6 +72,8 @@ class AAnimationArea : public QFrame
 		QTimer *m_timer;
 		
 		QList<QImage> m_photograms;
+		
+		bool m_isRendered;
 };
 
 #endif

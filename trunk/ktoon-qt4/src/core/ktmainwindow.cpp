@@ -372,7 +372,7 @@ void KTMainWindow::createNewProject(const QString &name, const QSize &size)
 	
 	newViewDocument(name);
 	
-	m_viewCamera->animationArea()->setLayer(m_projectManager->currentLayer());
+	m_viewCamera->animationArea()->setScene(m_projectManager->currentScene());
 }
 
 void KTMainWindow::newViewDocument(const QString &name)
@@ -460,7 +460,7 @@ void KTMainWindow::insertLayer(const QString &name, bool addedToEnd)
 	
 	if ( doc )
 	{
-		doc->drawArea()->setLayer(m_projectManager->currentLayer());
+// 		doc->drawArea()->setScene( m_projectManager->currentScene() );
 	}
 	
 	m_exposureSheet->insertLayer(name);
@@ -477,7 +477,9 @@ void KTMainWindow::insertFrame(const QString &name, bool addedToEnd)
 	{
 // 		doc->drawArea()->setKeyFrame( m_projectManager->currentLayer()->frames().count()-1);
 // 		ktDebug( ) << "******************" << endl;
-		doc->drawArea()->setKeyFrame(m_projectManager->currentLayer()->indexCurrentFrame());
+		
+		
+// 		doc->drawArea()->setKeyFrame(m_projectManager->currentLayer()->indexCurrentFrame());
 		
 	}
 	
@@ -493,7 +495,8 @@ void KTMainWindow::selectFrame(int layer, int frame)
 		ktDebug() << "SELECT LAYER: " << layer << " FRAME: " << frame << endl;
 		m_projectManager->currentScene()->setCurrentLayer(layer);
 		m_projectManager->setCurrentFrame( frame );
-		doc->drawArea()->setLayer( m_projectManager->currentLayer());
+		
+		doc->drawArea()->setLayer( layer );
 		doc->drawArea()->setKeyFrame( frame );
 	}
 }
