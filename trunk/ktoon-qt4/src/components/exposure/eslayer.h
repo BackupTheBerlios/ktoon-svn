@@ -83,6 +83,7 @@ private:
     QColor default_color, selection_color;
     QLineEdit *description;
     bool is_selected;
+    QPushButton *m_visibilityButton;
 
 signals:
     /**
@@ -91,6 +92,7 @@ signals:
      */
     void renamed( const QString &n );
     void clicked( bool , QMouseEvent *e);
+    void visibilityChanged(bool value);
 
 public slots:
     /**
@@ -105,6 +107,10 @@ public slots:
      * You should never use it from ouside.
      */
     void slotSendDoubleClickEvent();
+	      
+	      
+	private slots:
+		void visibilityClick();
 	      
 
 protected:

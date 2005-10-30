@@ -274,8 +274,9 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 
 void APaintArea::mouseMoveEvent(QMouseEvent *e)
 {
-	emit mousePos(e->pos());
 	QMouseEvent *event = new QMouseEvent( e->type(), e->pos()-QPoint(m_zero/2, m_zero/2), mapToGlobal( e->pos()-QPoint(m_zero, m_zero) ), e->button(), e->buttons(), 0 );
+	
+	emit mousePos(event->pos());
 	
 	if ((event->buttons() & Qt::LeftButton) && m_lastPosition != QPoint(-1, -1))
 	{

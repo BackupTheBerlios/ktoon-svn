@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QApplication>
 #include <QCursor>
 //Added by qt3to4:
 #include <QMouseEvent>
@@ -26,20 +25,41 @@
 #include <QEvent>
 #include "eslayer.h"
 
+#include <QVBoxLayout>
+
+#include "ktapplication.h"
+
 //--------------- CONSTRUCTOR --------------------
 
 ESLayer::ESLayer( const QString &initial_text, QWidget *parent  )
     : QPushButton( initial_text, parent )
 {
     Q_CHECK_PTR( parent );
-
-    //Initializations
-//     resize( 70, 25 );
+    
+    QVBoxLayout *m_layout = new QVBoxLayout;
+    
+    m_layout->setMargin(5);
+    m_layout->setSpacing(0);
+    
+    m_visibilityButton = new QPushButton;
+    m_visibilityButton->setCheckable(true);
+    m_visibilityButton->setChecked(true);
+    
+    connect(m_visibilityButton, SIGNAL(clicked()), this, SLOT(visibilityClick()));
+    m_visibilityButton->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/show_hide_all_layers.png" ));
+//     m_visibilityButton->setIconSize(m_visibilityButton->size());
+    
+    QPalette pal = palette();
+    pal.setColor(QPalette::Button, Qt::green );
+    m_visibilityButton->setPalette(pal);
+    
+    m_visibilityButton->setMaximumWidth(15);
+    
+    
+    m_layout->addWidget(m_visibilityButton, 0, Qt::AlignLeft);
+    
     setAutoDefault( false );
     setFocusPolicy( Qt::NoFocus );
-//     setFont( QFont( "helvetica", 10 ) );
-//     parent_widget = parent;
-//     grandparent_widget = grandparent;
     default_color = paletteBackgroundColor();
     selection_color = QColor( 210, 210, 255 );
 
@@ -57,6 +77,8 @@ ESLayer::ESLayer( const QString &initial_text, QWidget *parent  )
     right_click_menu -> insertSeparator();
     right_click_menu -> insertItem( tr( "Insert Frames" ), grandparent, SLOT( slotInsertFrame() ) );
     right_click_menu -> insertItem( tr( "Remove Frames" ), grandparent, SLOT( slotRemoveFrame() ) );*/
+    
+    setLayout(m_layout);
 }
 
 //--------------- DESTRUCTOR --------------------
@@ -84,7 +106,6 @@ void ESLayer::setSelected( bool in_is_selected )
 // 		setPaletteBackgroundColor( colorGroup ().highlight().light ( 100 ) );
 // 		setPaletteForegroundColor( colorGroup ().highlightedText ());
 	}
-    		
 	else
 	{
 		setPaletteBackgroundColor( colorGroup ().background() );
@@ -106,6 +127,7 @@ void ESLayer::slotSetDescription()
 		setText( description -> text() );
 		emit renamed(text());
 	}
+	m_visibilityButton->show();
 	description -> hide();
 }
 
@@ -142,6 +164,7 @@ void ESLayer::mouseDoubleClickEvent( QMouseEvent *mouse_event )
     if ( mouse_event -> button() == Qt::LeftButton )
     {
         description -> show();
+	m_visibilityButton->hide();
         description -> setText( text() );
         description -> setFocus();
 	mouse_event -> accept();
@@ -153,5 +176,26 @@ void ESLayer::mouseDoubleClickEvent( QMouseEvent *mouse_event )
 void ESLayer::resizeEvent ( QResizeEvent *  )
 {
 	description -> resize( width(), height() );
+}
+
+void ESLayer::visibilityClick()
+{
+	QPalette pal = palette();
+	
+	bool isVisible = m_visibilityButton->isChecked();
+	
+	if ( isVisible )
+	{
+		pal.setColor(QPalette::Button, Qt::green);
+	}
+	else
+	{
+		pal.setColor(QPalette::Button, Qt::red );
+	}
+	m_visibilityButton->setPalette(pal);
+	
+	
+	emit visibilityChanged( isVisible );
+	
 }
 
