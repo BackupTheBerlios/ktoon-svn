@@ -55,6 +55,7 @@ class KTLayer : public QObject
 	
 	signals:
 		void frameCreated( const QString &name, bool toEnd );
+		void visibilityChanged(bool );
 		
 	private:
 		Frames m_frames;

@@ -125,6 +125,20 @@ void KTProjectManager::setCurrentLayer(int index)
 	}
 }
 
+void KTProjectManager::setLayerVisibility(int idLayer, bool value)
+{
+	KTScene *scene = currentScene();
+	if( scene && scene->layers().count() > idLayer)
+	{
+		scene->layers()[idLayer]->setVisible(value);
+	}
+	else
+	{
+		ktFatal() << "ERROR" << endl;
+	}
+}
+
+
 void KTProjectManager::setCurrentFrame(int index)
 {
 	KTLayer *layer = currentLayer();
@@ -166,10 +180,22 @@ void KTProjectManager::createLayer(bool addToEnd)
 	{
 		KTLayer *layer = scene->createLayer(addToEnd);
 		connect(layer, SIGNAL(frameCreated( const QString &, bool)), this, SIGNAL(frameCreated(  const QString& , bool)));
+		connect(layer, SIGNAL(visibilityChanged(bool)), this, SLOT(emitLayerVisibility(bool)));
 	}
 	else
 	{
 		ktFatal() << "--> No current scene" << endl;
+	}
+}
+
+void KTProjectManager::emitLayerVisibility(bool isVisible )
+{
+	KTScene *scene = currentScene();
+	KTLayer *layer = dynamic_cast<KTLayer *>(sender());
+	
+	if ( scene && layer)
+	{
+		emit layerVisibilityChanged( scene->layers().indexOf(layer), isVisible );
 	}
 }
 

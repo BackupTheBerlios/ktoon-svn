@@ -81,6 +81,7 @@ class KTTableExposure : public QScrollArea
 		void frameRename(int idFrame, int idLayer, const QString  &newName);
 		
 	signals:
+		void layerVisibilityChanged( int idLayer, bool value);
 		void cellSelected(int idLayer, int idFrame);
 		void clickedFrame();
 		void layerSelected(int id);

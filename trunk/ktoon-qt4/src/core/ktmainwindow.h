@@ -137,6 +137,7 @@ class KTMainWindow : public DMainWindow
 		
 		//Layers
 		void insertLayer( const QString &, bool);
+		void setLayerVisibilityChanged(int idLayer, bool isVisible);
 		//Frames
 		void insertFrame( const QString &name, bool);
 		void selectFrame(int layer, int frame);

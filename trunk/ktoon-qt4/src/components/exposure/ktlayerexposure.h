@@ -74,6 +74,8 @@ class KTLayerExposure : public QFrame
 		void frameSelect(int id, int button =0 , int x = 0, int y = 0);
 		void otherSelected(int id);
 		void setUseFrames(const QString &name, bool addedToEnd);
+		void setLayerVisible(bool);
+		
 		void removeFrame(int id);
 		void moveCurrentFrameUp();
 		void moveCurrentFrameDown();
@@ -89,6 +91,8 @@ class KTLayerExposure : public QFrame
 		
 	signals:
 		void requestInsertFrame(bool);
+		void visibilityChanged( int idLayer, bool value);
+		
 		
 		void selected(int id);
 		void clicked( int row, int col, int button,int x, int y);
@@ -103,6 +107,8 @@ class KTLayerExposure : public QFrame
 // 		void removedFrame(int id);
 		void layerRenamed( int idLayer, const QString &name );
 		void frameRenamed( int idFrame, int idLayer, const QString &name );
+		
+		
 		
 	protected:
 		QBoxLayout *m_layout;

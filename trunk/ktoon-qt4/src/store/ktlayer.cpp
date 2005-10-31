@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "ktlayer.h"
+#include "ktdebug.h"
 
 KTLayer::KTLayer(QObject *parent) : QObject(parent), m_isVisible(true), m_name(tr("Layer")), m_currentFrame(0), m_framesCount(0)
 {
@@ -94,7 +95,9 @@ void KTLayer::setLayerName(const QString &name)
 
 void KTLayer::setVisible(bool isVisible)
 {
+	ktDebug() << "KTLayer::setVisible(" << isVisible << ")" << endl;
 	m_isVisible = isVisible;
+	emit visibilityChanged(isVisible);
 }
 
 QString KTLayer::layerName() const

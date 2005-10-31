@@ -29,6 +29,7 @@ KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFra
 	m_header = new ESLayer(initial_text,this);
 	connect( m_header, SIGNAL(clicked(bool, QMouseEvent*)), this, SLOT(setSelected(bool, QMouseEvent*)));
 	connect( m_header, SIGNAL(renamed( const QString & )), this, SLOT(changedName(const QString &)));
+	connect( m_header, SIGNAL(visibilityChanged(bool)), this, SLOT(setLayerVisible(bool)));
 	
 	m_layout->addWidget(m_header);
 	
@@ -400,6 +401,12 @@ void KTLayerExposure::frameRename(int idFrame, const QString&newName)
 // 	QList<Layer*> ly = KTStatus -> currentScene() -> getLayers();
 // 	ly.at(m_id)->keyFrames().at(idFrame)->setNameKeyFrame(newName);
 }
+
+void KTLayerExposure::setLayerVisible( bool value)
+{
+	emit (visibilityChanged( m_id, value));
+}
+
 
 int KTLayerExposure::id()
 {

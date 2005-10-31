@@ -99,18 +99,26 @@ bool ESLayer::isSelected()
 
 void ESLayer::setSelected( bool in_is_selected )
 {
+	QPalette pal = palette();
 	is_selected = in_is_selected;
 	if ( is_selected )
 	{
-		setPaletteBackgroundColor( colorGroup().dark() );
+		pal.setColor(QPalette::Button, selection_color);
+// 		pal.setColor(QPalette::ButtonText, pal.highlightedText ());
+		
+// 		setPaletteBackgroundColor( colorGroup().dark() );
 // 		setPaletteBackgroundColor( colorGroup ().highlight().light ( 100 ) );
 // 		setPaletteForegroundColor( colorGroup ().highlightedText ());
 	}
 	else
 	{
-		setPaletteBackgroundColor( colorGroup ().background() );
-		setPaletteForegroundColor( colorGroup ().text ());
+		pal.setColor(QPalette::Button, /*pal.dark()*/QApplication::palette().button() );
+// 		pal.setColor(QPalette::ButtonText, colorGroup ().highlightedText ());
+// 		setPaletteBackgroundColor( colorGroup ().background() );
+// 		setPaletteForegroundColor( colorGroup ().text ());
 	}
+	
+	setPalette(pal);
 }
 
 void ESLayer::clearTextfieldFocus()
@@ -145,6 +153,10 @@ void ESLayer::mousePressEvent( QMouseEvent *mouse_event )
     setSelected( true );
     /*is_selected = true;
     setPaletteBackgroundColor( selection_color );*/
+    
+    QPalette pal = palette();
+    pal.setColor(QPalette::Button, selection_color);
+    setPalette(pal);
     
     description -> setText( text() );
 

@@ -217,8 +217,10 @@ void KTMainWindow::createGUI()
 	
 	connect(m_exposureSheet, SIGNAL(requestInsertLayer()), m_projectManager, SLOT(createLayer()));
 	
-	
 	connect(m_exposureSheet, SIGNAL(frameSelected( int, int )), this, SLOT(selectFrame(int,int)));
+	
+	connect(m_exposureSheet, SIGNAL(layerVisibilityChanged( int, bool)), m_projectManager, SLOT(setLayerVisibility( int, bool)));
+	
 	
 // 	connect(m_scenes, SIGNAL(sceneInserted( const QString &, int )), m_exposureSheet, SLOT(addScene( const QString &, int )));
 // 	connect(m_scenes, SIGNAL(sceneRenamed( const QString &, int )), m_exposureSheet, SLOT(renameScene(const QString &, int)));
@@ -240,6 +242,8 @@ void KTMainWindow::createGUI()
 	connect(m_projectManager, SIGNAL(frameCreated( const QString &, bool)), this, SLOT(insertFrame( const QString &, bool)));
 	
 	connect(m_projectManager, SIGNAL(layerCreated(const QString &, bool)), this, SLOT(insertLayer(const QString &, bool)));
+	
+	connect(m_projectManager, SIGNAL(layerVisibilityChanged(int, bool)), this, SLOT(setLayerVisibilityChanged(int, bool)));
 	
 }
 
@@ -464,6 +468,16 @@ void KTMainWindow::insertLayer(const QString &name, bool addedToEnd)
 	}
 	
 	m_exposureSheet->insertLayer(name);
+}
+
+void KTMainWindow::setLayerVisibilityChanged(int idLayer, bool isVisible)
+{
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+	
+	if ( doc )
+	{
+		doc->drawArea()->redrawAll();
+	}
 }
 
 

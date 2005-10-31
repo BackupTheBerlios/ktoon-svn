@@ -53,6 +53,8 @@ class APaintArea : public QWidget
 		void setPaintDevice(const QImage &image);
 		void setZeroAt(int zero);
 		
+		virtual void redrawAll();
+		
 	public slots:
 		void setKeyFrame(int index);
 		void setLayer(int index);
@@ -106,7 +108,7 @@ class APaintArea : public QWidget
 		void paintEvent(QPaintEvent *);
 		virtual void draw(QPainter *p);
 		void resizeEvent(QResizeEvent * event );
-		virtual void redrawAll();
+		
 		
 		
 	signals:

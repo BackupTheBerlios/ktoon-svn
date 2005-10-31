@@ -83,6 +83,8 @@ void KTTableExposure::insertLayer(int rows, const QString &text)
 	
 	connect(this, SIGNAL(layerSelected(int)), newLayer, SLOT(otherSelected(int)));
 	
+	connect(newLayer, SIGNAL(visibilityChanged( int, bool)), this, SIGNAL(layerVisibilityChanged( int, bool)));
+	
 	connect(newLayer, SIGNAL(clicked(int,int,int,int,int)), this, SLOT(clickedCell(int,int,int,int,int)));
 	
 // 	connect(newLayer, SIGNAL(setUsedFrame(const QString &)), this, SLOT(useFrame(const QString &)));
@@ -99,8 +101,6 @@ void KTTableExposure::insertLayer(int rows, const QString &text)
 	
 	connect(newLayer, SIGNAL(frameRenamed(int, int, const QString &)), this, SLOT(frameRename(int, int, const QString &)));
 	
-	
-	
 	connect(newLayer, SIGNAL(requestInsertFrame(bool)), this, SIGNAL(requestInsertFrame(bool)));
 	
 	m_layout->addWidget( newLayer, 0, /*Qt::AlignTop | */Qt::AlignLeft);
@@ -109,7 +109,7 @@ void KTTableExposure::insertLayer(int rows, const QString &text)
 	newLayer->show();
 	
 	m_port->adjustSize();
-	
+
 // 	emit requestInsertFrame();
 }
 

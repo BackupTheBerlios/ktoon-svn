@@ -57,12 +57,17 @@ class KTProjectManager : public QObject
 		// Layer
 		void createLayer(bool addToEnd = true);
 		void setCurrentLayer(int index);
+		void setLayerVisibility(int idLayer, bool value);
 		KTLayer *currentLayer();
 		
 		// Frames
 		void createFrame(bool addToEnd = true);
 		KTKeyFrame *currentKeyFrame();
 		void setCurrentFrame(int index);
+		
+	private slots:
+		// Layers
+		void emitLayerVisibility(bool);
 		
 	signals:
 		// Documents
@@ -74,6 +79,7 @@ class KTProjectManager : public QObject
 		
 		// Layers
 		void layerCreated(const QString &name, bool addedToEnd);
+		void layerVisibilityChanged(int index, bool );
 		
 		// Frames
 		void frameCreated( const QString &name, bool addedToEnd);

@@ -86,8 +86,8 @@ class KTExposureSheet : public KTModuleWidgetBase
 	signals:
 		void requestInsertLayer();
 		void requestRemoveLayer();
-		
 		void requestInsertFrame(bool addedToEnd);
+		void layerVisibilityChanged( int idLayer, bool value);
 		
 		void requestRemoveFrame();
 		void requestMoveUpFrame();
