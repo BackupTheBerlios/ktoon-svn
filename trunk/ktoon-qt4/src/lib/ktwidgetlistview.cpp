@@ -23,7 +23,9 @@
 
 KTWidgetListView::KTWidgetListView(QWidget * parent) : QScrollArea(parent),m_header(0),  m_itemSelected(0)
 {
-	m_container = new QFrame(0);
+// 	setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOn);
+	m_container = new QFrame;
+	
 	m_layout = new QVBoxLayout(m_container);
 	m_layout->setMargin(1);
 	m_layout->setSpacing(2);
@@ -65,7 +67,7 @@ void KTWidgetListView::setHeader(QWidget *header)
 }
 
 void KTWidgetListView::addItem(KTWidgetListItem *item)
-{
+{	
 	item->setParent(m_container);
 	m_layout->addWidget(item, 0, Qt::AlignTop);
 	
@@ -74,6 +76,8 @@ void KTWidgetListView::addItem(KTWidgetListItem *item)
 	m_items<<item;
 	
 	connect(item, SIGNAL(selected()), this, SLOT(itemSelect()));
+	
+	m_container->adjustSize();
 }
 
 void KTWidgetListView::itemSelect()

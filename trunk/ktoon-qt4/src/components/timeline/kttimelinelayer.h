@@ -44,11 +44,9 @@ class KTTimeLineLayer : public KTWidgetListItem
 {
 	Q_OBJECT
 	public:
-		KTTimeLineLayer(const QString &name = "Layer", int position = 0, KTWidgetListView *parent = 0);
+		KTTimeLineLayer(const QString &name, KTWidgetListView *parent = 0);
 		~KTTimeLineLayer();
 		void clearEditFocus();
-		int position();
-		void setPosition(int pos);
 		
 	public slots:
 // 		void setSelected( bool selected );
@@ -76,7 +74,6 @@ class KTTimeLineLayer : public KTWidgetListItem
 		
 	private:
 		QCheckBox *m_onlyOutlines;
-		int m_position;
 		KTELabel *m_layerName;
 		QLabel *m_editionImage, *m_visibilityImage, *m_lockImage;
 		

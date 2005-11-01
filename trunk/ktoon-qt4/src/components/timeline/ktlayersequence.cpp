@@ -32,17 +32,17 @@ KTLayerSequence::KTLayerSequence(QWidget *parent) : KTWidgetListView(parent), m_
 	
 	setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
 	
-	m_defaultLayer = createNewLayer();
+// 	m_defaultLayer = createNewLayer();
 	
 // 	new KTTimeLineLayer (tr("Layer %1").arg("1"), 1, m_layerContainer);
 // 	m_layers.append( m_defaultLayer );
 	
 // 	setMaximumHeight( sizeHint().height() ); // IMPORTANT
 
-	m_pCurrentLayer = m_defaultLayer;
-	m_pLastLayer = m_pCurrentLayer;
+// 	m_pCurrentLayer = m_defaultLayer;
+// 	m_pLastLayer = m_pCurrentLayer;
 // 	m_pCurrentLayer -> setSelected( true );
-	m_pCurrentLayer -> setEdited( true );
+// 	m_pCurrentLayer -> setEdited( true );
 }
 
 
@@ -68,10 +68,12 @@ void KTLayerSequence::setPalette(const QPalette &)
 {
 }
 
-KTTimeLineLayer * KTLayerSequence::createNewLayer()
+KTTimeLineLayer * KTLayerSequence::createNewLayer(const QString &name, bool toEnd)
 {
-	KTTimeLineLayer *newLayer = new KTTimeLineLayer( tr( "New Layer %1").arg( m_layerCount ), m_layers.count(), this);
-	newLayer->resize( width(), 24 );
+	ktDebug() << "KTLayerSequence::createNewLayer(" << name << "," << toEnd << ")"<< endl;
+	KTTimeLineLayer *newLayer = new KTTimeLineLayer( name, this);
+// 	newLayer->resize( width(), 24 );
+	newLayer->setMinimumHeight(24);
 	
 	connect(newLayer, SIGNAL(rightClicked(KTTimeLineLayer *,const QPoint &)), this, SLOT(displayMenu(KTTimeLineLayer *,const QPoint &)));
 	connect( newLayer, SIGNAL( selected(int) ), SLOT( selectLayer(int) ) );
@@ -82,14 +84,14 @@ KTTimeLineLayer * KTLayerSequence::createNewLayer()
 // 	connect( newLayer, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameLayer( const QString & ) ) );
 // 	connect( newLayer, SIGNAL( visibilityChanged( bool ) ), SLOT( slotChangeVisibilityState( bool ) ) );
 	
-	newLayer->show();
+// 	newLayer->show();
 	m_layers.append( newLayer );
 	
 	m_pLastLayer = newLayer;
 	
 	m_layerCount++;
 	
-	adjustSize();
+// 	adjustSize();
 	
 	return newLayer;
 }

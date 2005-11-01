@@ -226,7 +226,7 @@ void KTMainWindow::createGUI()
 // 	connect(m_scenes, SIGNAL(sceneRenamed( const QString &, int )), m_exposureSheet, SLOT(renameScene(const QString &, int)));
 	
 	//////////////////////
-	KTTimeLine *m_timeLine = new KTTimeLine(this);
+	m_timeLine = new KTTimeLine(this);
 	m_timeLine->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/time_line.png"));
 	toolWindow(DDockWindow::Bottom)->addWidget(tr("Time Line"),m_timeLine);
 	
@@ -468,6 +468,7 @@ void KTMainWindow::insertLayer(const QString &name, bool addedToEnd)
 	}
 	
 	m_exposureSheet->insertLayer(name);
+	m_timeLine->createLayer( name );
 }
 
 void KTMainWindow::setLayerVisibilityChanged(int idLayer, bool isVisible)

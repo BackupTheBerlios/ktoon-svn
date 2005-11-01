@@ -40,6 +40,7 @@ class KTTimeLine : public KTModuleWidgetBase
 		
 	public slots:
 		void execAction(int action);
+		void createLayer(const QString &name, bool toEnd = true);
 		
 	signals:
 		void layerInserted();

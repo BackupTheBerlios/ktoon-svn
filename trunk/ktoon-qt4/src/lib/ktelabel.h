@@ -21,8 +21,8 @@
 #define KTELABEL_H
 
 #include <ktsqueezelabel.h>
-#include <qlineedit.h>
-//Added by qt3to4:
+
+#include <QLineEdit>
 #include <QMouseEvent>
 
 /**
@@ -34,7 +34,7 @@ class KTELabel : public KTSqueezeLabel
 	Q_OBJECT
 
 	public:
-		KTELabel(const QString &text, QWidget *parent);
+		KTELabel(const QString &text, QWidget *parent = 0);
 		~KTELabel();
 		
 	public slots:

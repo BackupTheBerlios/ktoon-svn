@@ -83,5 +83,8 @@ void KTTimeLine::execAction(int action)
 	}
 }
 
-
+void KTTimeLine::createLayer(const QString &name, bool toEnd)
+{
+	m_layerManager->layerSequence()->createNewLayer(name, toEnd);
+}
 

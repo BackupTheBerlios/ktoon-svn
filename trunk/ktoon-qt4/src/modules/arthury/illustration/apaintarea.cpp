@@ -72,7 +72,7 @@ void APaintArea::paintEvent(QPaintEvent *e)
 		m_paintDevice.fill(qRgb(255, 255, 255));
 		
 		painter.begin(&m_paintDevice);
-	// 	painter.setClipRect(e->rect());
+		painter.setClipRect(e->rect());
 		painter.setRenderHint(QPainter::Antialiasing);
 		
 		if(m_drawGrid)
@@ -99,7 +99,7 @@ void APaintArea::paintEvent(QPaintEvent *e)
 
 void APaintArea::setKeyFrame(int index)
 {
-	ktDebug( ) << "APaintArea::setKeyFrame(" << index << ")" << endl;
+	ktDebug() << "APaintArea::setKeyFrame(" << index << ")" << endl;
 	if ( m_layer )
 	{
 		KTKeyFrame *frame = m_layer->frames()[index];
@@ -233,41 +233,44 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 {
 	QMouseEvent *event = new QMouseEvent( e->type(), e->pos()-QPoint(m_zero/2, m_zero/2), mapToGlobal( e->pos()-QPoint(m_zero, m_zero) ), e->button(), e->buttons(), 0 );
 	
-	if (event->button() == Qt::LeftButton)
+	if ( m_currentFrame )
 	{
-		m_currentGraphic = new AGraphicComponent;
-
-		if ( ! m_path.isEmpty() )
+		if (event->button() == Qt::LeftButton && !m_currentFrame->isLocked())
 		{
-			QPainter painter(&m_paintDevice);
-			setupPainter(painter);
-
-			QRectF boundingRect = m_path.boundingRect();
-			QLinearGradient gradient(boundingRect.topRight(), boundingRect.bottomLeft());
-			gradient.setColorAt(0.0, QColor(m_brushColor.red(), m_brushColor.green(),m_brushColor.blue(), 63));
-			gradient.setColorAt(1.0, QColor(m_brushColor.red(), m_brushColor.green(),m_brushColor.blue(), 191));
-			painter.setBrush(gradient);
-			
-			painter.translate(event->pos() - boundingRect.center());
-			painter.drawPath(m_path);
-
-			m_path = QPainterPath();
-			
-			unsetCursor();
-			update();
-		}
-		else 
-		{
-			if (m_currentTool)
+			m_currentGraphic = new AGraphicComponent;
+	
+			if ( ! m_path.isEmpty() )
 			{
 				QPainter painter(&m_paintDevice);
 				setupPainter(painter);
-				QRect rect = m_currentTool->press(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), event->pos());
-				rect.translate(m_xpos, m_ypos);
-				update(rect);
+	
+				QRectF boundingRect = m_path.boundingRect();
+				QLinearGradient gradient(boundingRect.topRight(), boundingRect.bottomLeft());
+				gradient.setColorAt(0.0, QColor(m_brushColor.red(), m_brushColor.green(),m_brushColor.blue(), 63));
+				gradient.setColorAt(1.0, QColor(m_brushColor.red(), m_brushColor.green(),m_brushColor.blue(), 191));
+				painter.setBrush(gradient);
+				
+				painter.translate(event->pos() - boundingRect.center());
+				painter.drawPath(m_path);
+	
+				m_path = QPainterPath();
+				
+				unsetCursor();
+				update();
 			}
-
-			m_lastPosition = event->pos();
+			else 
+			{
+				if (m_currentTool)
+				{
+					QPainter painter(&m_paintDevice);
+					setupPainter(painter);
+					QRect rect = m_currentTool->press(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), event->pos());
+					rect.translate(m_xpos, m_ypos);
+					update(rect);
+				}
+	
+				m_lastPosition = event->pos();
+			}
 		}
 	}
 }
@@ -278,18 +281,21 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 	
 	emit mousePos(e->pos());
 	
-	if ((event->buttons() & Qt::LeftButton) && m_lastPosition != QPoint(-1, -1))
+	if ( m_currentFrame )
 	{
-		if (m_currentTool)
+		if ((event->buttons() & Qt::LeftButton) && m_lastPosition != QPoint(-1, -1)  && !m_currentFrame->isLocked() )
 		{
-			QPainter painter(&m_paintDevice);
-			setupPainter(painter);
-			QRect rect = m_currentTool->move(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), m_lastPosition, event->pos());
-			rect.translate(m_xpos, m_ypos);
-			update(rect);
+			if (m_currentTool)
+			{
+				QPainter painter(&m_paintDevice);
+				setupPainter(painter);
+				QRect rect = m_currentTool->move(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), m_lastPosition, event->pos());
+				rect.translate(m_xpos, m_ypos);
+				update(rect);
+			}
+	
+			m_lastPosition = event->pos();
 		}
-
-		m_lastPosition = event->pos();
 	}
 }
 
@@ -297,33 +303,36 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 {
 	QMouseEvent *event = new QMouseEvent( e->type(), e->pos()-QPoint(m_zero/2, m_zero/2), mapToGlobal( e->pos()-QPoint(m_zero, m_zero) ), e->button(), e->buttons(), 0 );
 	
-	if (event->button() == Qt::LeftButton && m_lastPosition != QPoint(-1, -1)) 
+	if ( m_currentFrame )
 	{
-		if (m_currentTool)
+		if (event->button() == Qt::LeftButton && m_lastPosition != QPoint(-1, -1)  && !m_currentFrame->isLocked())
 		{
-			QPainter painter(&m_paintDevice);
-			setupPainter(painter);
-			QRect rect = m_currentTool->release(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(), event->pos()), event->pos());
-			rect.translate(m_xpos, m_ypos);
-			update(rect);
+			if (m_currentTool)
+			{
+				QPainter painter(&m_paintDevice);
+				setupPainter(painter);
+				QRect rect = m_currentTool->release(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(), event->pos()), event->pos());
+				rect.translate(m_xpos, m_ypos);
+				update(rect);
+				
+				ktDebug() << "Adding component" << endl;
+				
+				m_currentGraphic->setPath(m_currentTool->path());
+				m_currentGraphic->setPen(painter.pen());
+				m_currentGraphic->setBrush(painter.brush());
+				
+				m_currentFrame->addComponent(  m_currentGraphic );
+				
+				ktDebug() << "Components count: " << m_currentFrame->components().count() << endl;
+				
+				m_undoComponents.clear();
+	#if 0
+				redrawAll();
+	#endif
+			}
 			
-			ktDebug() << "Adding component" << endl;
-			
-			m_currentGraphic->setPath(m_currentTool->path());
-			m_currentGraphic->setPen(painter.pen());
-			m_currentGraphic->setBrush(painter.brush());
-			
-			m_currentFrame->addComponent(  m_currentGraphic );
-			
-			ktDebug() << "Components count: " << m_currentFrame->components().count() << endl;
-			
-			m_undoComponents.clear();
-#if 0
-			redrawAll();
-#endif
+			m_lastPosition = QPoint(-1, -1);
 		}
-		
-		m_lastPosition = QPoint(-1, -1);
 	}
 }
 

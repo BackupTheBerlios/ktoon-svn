@@ -9,7 +9,9 @@ SUBDIRS += brushes \
            library \
            timeline \
            exposure \
-           ktoonscript 
+           ktoonscript \
+           export \
+           import 
 CONFIG += release \
 warn_on
 TEMPLATE = subdirs

@@ -23,42 +23,39 @@
 #include <qpixmap.h>
 #include <qlayout.h>
 #include <qtooltip.h>
-//Added by qt3to4:
+
 #include <QMouseEvent>
 #include <QLabel>
-#include <Q3Frame>
 
 #include "ktdebug.h"
 
-KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, KTWidgetListView *parent) : KTWidgetListItem(parent), m_isLocked(false), m_isVisible(true), m_onlySeeOutlines(false), m_isSelected(false), m_isEdited(false)
+KTTimeLineLayer::KTTimeLineLayer(const QString &name, KTWidgetListView *parent) : KTWidgetListItem(parent), m_isLocked(false), m_isVisible(true), m_onlySeeOutlines(false), m_isSelected(false), m_isEdited(false)
 {
 	KTINIT;
 	setFrameStyle( QFrame::Panel | QFrame::Raised );
-// 	layout()->setAlignment(Qt::AlignLeft);
-// 	layout()->setSpacing(25);
-// 	layout()->setMargin(0);
-	
+
 	QHBoxLayout *m_layout = new QHBoxLayout;
 	m_layout->setMargin(1);
 	m_layout->setSpacing(1);
 	
 	setLineWidth( 2 );
-	
-	m_position = position;
 
     	//Icon Initializations
 	
 	//----------- Main Component Initializations -------------
 	
-	QLabel *staticLayerImage = new QLabel( this );
+	QLabel *staticLayerImage = new QLabel(this);
 	m_layout->addWidget(staticLayerImage);
+	staticLayerImage->show();
 	
 	staticLayerImage -> setPixmap( QPixmap( KTOON_HOME+"/themes/default/icons/layer_pic.png" ) );
-	staticLayerImage->resize( 20, 20 );
+	staticLayerImage->setMinimumSize( 20, 20 );
 // 	layout()->setAlignment(staticLayerImage, Qt::AlignLeft);
 
 	m_layerName = new KTELabel( name, this );
 	m_layout->addWidget(m_layerName);
+	
+	m_layerName->show();
 // 	layout()->setAlignment(m_layerName, Qt::AlignLeft);
 	connect(m_layerName, SIGNAL(renamed(const QString &)), this, SIGNAL(renamed(const QString &)));
 
@@ -71,6 +68,7 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, KTWidgetList
 	
 	m_utils = new KTVHBox(this, false);
 	m_layout->addWidget(m_utils);
+	m_utils->show();
 // 	layout()->setAlignment(m_utils, Qt::AlignRight);
 	m_utils->layout()->setAlignment(Qt::AlignRight );
 	
@@ -83,25 +81,25 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, KTWidgetList
 	m_utils->layout()->setSpacing(6);
 	
 	m_visibilityImage = new QLabel( m_utils );
-	m_layout->addWidget(m_visibilityImage);
+// 	m_layout->addWidget(m_visibilityImage);
 	m_visibilityImage -> setPixmap( QPixmap( KTOON_HOME+"/themes/default/icons/enable.png" ) );
 	m_visibilityImage -> resize( 20, 20 );
 
 	
 	m_lockImage = new QLabel( m_utils );
-	m_layout->addWidget(m_lockImage);
+// 	m_layout->addWidget(m_lockImage);
 	m_lockImage -> setPixmap( QPixmap( KTOON_HOME+"/themes/default/icons/disable.png" ) );
 	m_lockImage -> resize( 20, 20 );
 
 	m_onlyOutlines = new QCheckBox( m_utils );
-	m_layout->addWidget(m_onlyOutlines);
-	m_onlyOutlines->setPaletteForegroundColor(Qt::black); // FIXME
+	
+// 	m_layout->addWidget(m_onlyOutlines);
+//	m_onlyOutlines->setPaletteForegroundColor(Qt::black); // FIXME
 	m_onlyOutlines -> resize( 20, 20 );
 
 	connect( m_onlyOutlines, SIGNAL( clicked() ), this, SLOT( toggleOutlines() ) );
 
 	setLayout(m_layout);
-	show();
 }
 
 
@@ -157,7 +155,7 @@ void KTTimeLineLayer::toggleOutlines()
 // 	setSelected( true );
 	setEdited( true );
 
-	emit selected(m_position);
+// 	emit selected(m_position);
 }
 
 void KTTimeLineLayer::setLock(bool yes)
@@ -234,7 +232,7 @@ void KTTimeLineLayer::mousePressEvent( QMouseEvent *me )
 // 		ls_parent -> setDragging( true );
 	}
 	
-	emit selected(m_position);
+// 	emit selected(m_position);
 
 	if ( me -> button() == Qt::RightButton )
 	{
@@ -263,16 +261,5 @@ void KTTimeLineLayer::rename()
 void KTTimeLineLayer::clearEditFocus()
 {
 	m_layerName->clearFocus();
-}
-
-int KTTimeLineLayer::position()
-{
-	return m_position;
-}
-
-void KTTimeLineLayer::setPosition(int pos)
-{
-	ktDebug() << "Setting position " << pos << " to layer: " << m_layerName->completeText() << endl;
-	m_position = pos;
 }
 

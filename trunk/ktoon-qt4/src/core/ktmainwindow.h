@@ -165,6 +165,7 @@ class KTMainWindow : public DMainWindow
 	private:
 		KTExposureSheet *m_exposureSheet;
 		KTScenesWidget *m_scenes;
+		KTTimeLine *m_timeLine;
 };
 
 #endif

@@ -60,6 +60,8 @@ class KTLayerManager : public KTVHBox
 		~KTLayerManager();
 		QScrollBar *verticalScrollBar();
 		
+		KTLayerSequence *layerSequence();
+		
 	private slots:
 		/**
 		 * Toggle the layer state

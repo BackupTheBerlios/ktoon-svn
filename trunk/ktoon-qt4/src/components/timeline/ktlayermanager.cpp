@@ -199,28 +199,28 @@ void KTLayerManager::changeLayersState(int opt)
 // 	}
 }
 
-void KTLayerManager::selectLayerAction(int opt)
+void KTLayerManager::selectLayerAction(int opt) // TODO: Emit the request
 {
 	switch(opt)
 	{
 		case InsertLayer:
 		{
-			m_sequence->createNewLayer();
+// 			m_sequence->createNewLayer();
 		}
 		break;
 		case RemoveLayer:
 		{
-			m_sequence->removeLayer();
+// 			m_sequence->removeLayer();
 		}
 		break;
 		case MoveLayerUp:
 		{
-			m_sequence->moveLayerUp();
+// 			m_sequence->moveLayerUp();
 		}
 		break;
 		case MoveLayerDown:
 		{
-			m_sequence->moveLayerDown();
+// 			m_sequence->moveLayerDown();
 		}
 		break;
 		case NoAction:
@@ -233,5 +233,8 @@ void KTLayerManager::selectLayerAction(int opt)
 	emit actionSelected(opt);
 }
 
-
+KTLayerSequence *KTLayerManager::layerSequence()
+{
+	return m_sequence;
+}
 
