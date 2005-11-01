@@ -36,6 +36,7 @@ class KTPaintAreaContainer : public QWidget
 		KTPaintAreaContainer(QWidget *parent = 0);
 		~KTPaintAreaContainer();
 		APaintArea *drawArea() const;
+		int drawAreaDelta() { return m_drawAreaDelta; };
 		
 	public slots:
 		void moveRulerPointers(const QPoint &);

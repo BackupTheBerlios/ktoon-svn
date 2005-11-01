@@ -51,9 +51,6 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine
 	connect( m_layerManager->verticalScrollBar(), SIGNAL( valueChanged( int ) ), m_sequenceManager->verticalScrollBar(), SLOT( setValue( int ) ) );
 	
 	show();
-// 	hide();
-	
-// 	setResizeEnabled(true);
 
 	m_container->setMinimumHeight( m_container->sizeHint().height() );
 

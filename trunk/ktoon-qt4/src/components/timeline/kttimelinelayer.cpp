@@ -30,13 +30,17 @@
 
 #include "ktdebug.h"
 
-KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, QWidget *parent) : KTVHBox(parent, false), m_isLocked(false), m_isVisible(true), m_onlySeeOutlines(false), m_isSelected(false), m_isEdited(false)
+KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, KTWidgetListView *parent) : KTWidgetListItem(parent), m_isLocked(false), m_isVisible(true), m_onlySeeOutlines(false), m_isSelected(false), m_isEdited(false)
 {
-// 	setMinimumSize( 192, 24 );
+	KTINIT;
 	setFrameStyle( QFrame::Panel | QFrame::Raised );
-	layout()->setAlignment(Qt::AlignLeft);
-	layout()->setSpacing(25);
+// 	layout()->setAlignment(Qt::AlignLeft);
+// 	layout()->setSpacing(25);
 // 	layout()->setMargin(0);
+	
+	QHBoxLayout *m_layout = new QHBoxLayout;
+	m_layout->setMargin(1);
+	m_layout->setSpacing(1);
 	
 	setLineWidth( 2 );
 	
@@ -47,12 +51,15 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, QWidget *par
 	//----------- Main Component Initializations -------------
 	
 	QLabel *staticLayerImage = new QLabel( this );
+	m_layout->addWidget(staticLayerImage);
+	
 	staticLayerImage -> setPixmap( QPixmap( KTOON_HOME+"/themes/default/icons/layer_pic.png" ) );
 	staticLayerImage->resize( 20, 20 );
-	layout()->setAlignment(staticLayerImage, Qt::AlignLeft);
+// 	layout()->setAlignment(staticLayerImage, Qt::AlignLeft);
 
 	m_layerName = new KTELabel( name, this );
-	layout()->setAlignment(m_layerName, Qt::AlignLeft);
+	m_layout->addWidget(m_layerName);
+// 	layout()->setAlignment(m_layerName, Qt::AlignLeft);
 	connect(m_layerName, SIGNAL(renamed(const QString &)), this, SIGNAL(renamed(const QString &)));
 
 	m_layerName->setMargin(1);
@@ -63,60 +70,63 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name, int position, QWidget *par
 // 	m_editionImage -> setMaximumSize( 19, 19 );
 	
 	m_utils = new KTVHBox(this, false);
-	layout()->setAlignment(m_utils, Qt::AlignRight);
+	m_layout->addWidget(m_utils);
+// 	layout()->setAlignment(m_utils, Qt::AlignRight);
 	m_utils->layout()->setAlignment(Qt::AlignRight );
 	
 	m_editionImage = new QLabel( m_utils );
 	
-	QPalette pal = palette();
-	pal.setColor(QPalette::Background, Qt::red);
-	m_layerName->setPalette(pal);
+// 	QPalette pal = palette();
+// 	pal.setColor(QPalette::Background, Qt::red);
+// 	m_layerName->setPalette(pal);
 	
 	m_utils->layout()->setSpacing(6);
 	
 	m_visibilityImage = new QLabel( m_utils );
+	m_layout->addWidget(m_visibilityImage);
 	m_visibilityImage -> setPixmap( QPixmap( KTOON_HOME+"/themes/default/icons/enable.png" ) );
 	m_visibilityImage -> resize( 20, 20 );
 
 	
 	m_lockImage = new QLabel( m_utils );
+	m_layout->addWidget(m_lockImage);
 	m_lockImage -> setPixmap( QPixmap( KTOON_HOME+"/themes/default/icons/disable.png" ) );
 	m_lockImage -> resize( 20, 20 );
 
 	m_onlyOutlines = new QCheckBox( m_utils );
+	m_layout->addWidget(m_onlyOutlines);
 	m_onlyOutlines->setPaletteForegroundColor(Qt::black); // FIXME
 	m_onlyOutlines -> resize( 20, 20 );
 
 	connect( m_onlyOutlines, SIGNAL( clicked() ), this, SLOT( toggleOutlines() ) );
-	
-	QWidget *spacer = new QWidget(m_utils); // A little hack, FIXME
-	spacer->setMinimumWidth(20);
-	
+
+	setLayout(m_layout);
 	show();
 }
 
 
 KTTimeLineLayer::~KTTimeLineLayer()
 {
+	KTEND;
 }
 
-void KTTimeLineLayer::setSelected( bool selected )
-{
-	m_isSelected = selected;
-
-	if ( m_isSelected )
-	{
-		m_layerName->setPaletteForegroundColor( palette().color(QPalette::Active , QColorGroup::HighlightedText) );
-		m_layerName->setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight) );
-		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight));
-	}
-	else
-	{
-		m_layerName->setPaletteForegroundColor( parentWidget()->paletteForegroundColor() );
-		m_layerName->setPaletteBackgroundColor( parentWidget()->paletteBackgroundColor() );
-		setPaletteBackgroundColor( parentWidget()->paletteBackgroundColor() );
-	}
-}
+// void KTTimeLineLayer::setSelected( bool selected )
+// {
+// 	m_isSelected = selected;
+// 
+// 	if ( m_isSelected )
+// 	{
+// 		m_layerName->setPaletteForegroundColor( palette().color(QPalette::Active , QColorGroup::HighlightedText) );
+// 		m_layerName->setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight) );
+// 		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight));
+// 	}
+// 	else
+// 	{
+// 		m_layerName->setPaletteForegroundColor( parentWidget()->paletteForegroundColor() );
+// 		m_layerName->setPaletteBackgroundColor( parentWidget()->paletteBackgroundColor() );
+// 		setPaletteBackgroundColor( parentWidget()->paletteBackgroundColor() );
+// 	}
+// }
 
 void KTTimeLineLayer::setEdited( bool isEdited )
 {
@@ -144,7 +154,7 @@ void KTTimeLineLayer::toggleOutlines()
 	m_onlySeeOutlines = !m_onlySeeOutlines;	
 	m_onlyOutlines->setChecked(m_onlySeeOutlines);
 	
-	setSelected( true );
+// 	setSelected( true );
 	setEdited( true );
 
 	emit selected(m_position);
@@ -204,7 +214,8 @@ void KTTimeLineLayer::toggleView()
 
 void KTTimeLineLayer::mousePressEvent( QMouseEvent *me )
 {
-	setSelected( true );
+	KTWidgetListItem::mousePressEvent( me );
+// 	setSelected( true );
 	setEdited( true );
 
 	if ( childAt( me -> pos() ) == m_visibilityImage )

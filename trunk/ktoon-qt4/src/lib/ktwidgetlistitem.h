@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2005 by David Cuadrado   *
+ *   krawek@gmail.com   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,38 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTTIMELINE_H
-#define KTTIMELINE_H
+#ifndef KTWIDGETLISTITEM_H
+#define KTWIDGETLISTITEM_H
 
-#include <ktmodulewidgetbase.h>
-#include <qsplitter.h>
+#include <QFrame>
+#include <QMouseEvent>
 
-#include "ktlayermanager.h"
-#include "ktframesequencemanager.h"
+class KTWidgetListView;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@gmail.com>
 */
-
-class KTTimeLine : public KTModuleWidgetBase
+class KTWidgetListItem : public QFrame
 {
 	Q_OBJECT
 	public:
-		KTTimeLine(QWidget *parent = 0);
-		~KTTimeLine();
+		KTWidgetListItem(KTWidgetListView *listView = 0);
+		~KTWidgetListItem();
 		
-	public slots:
-		void execAction(int action);
+	protected:
+		void mousePressEvent(QMouseEvent *e);
 		
 	signals:
-		void layerInserted();
-		void layerRemoved();
+		void selected();
 		
 	private:
-		KTVHBox *m_container;
-		QSplitter *m_splitter;
-		KTLayerManager *m_layerManager;
-		KTFrameSequenceManager *m_sequenceManager;
+		KTWidgetListView *m_listView;
 };
 
 #endif

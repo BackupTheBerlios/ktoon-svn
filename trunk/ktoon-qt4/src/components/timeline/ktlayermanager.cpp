@@ -50,25 +50,27 @@ KTLayerManager::KTLayerManager(QWidget *parent) : KTVHBox(parent), m_currentTime
 	
 // 	m_utilsInTop -> setFrameStyle( QFrame::Box | QFrame::Plain );
 	
-	m_eyeButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/show_hide_all_layers.png"), 20,  m_utilsInTop );
+	m_eyeButton = new KTImageButton( QPixmap(KTOON_THEME_DIR+"/icons/show_hide_all_layers.png"), 20,  m_utilsInTop );
 // 	m_utilsInTop->insert(m_eyeButton, ToggleLayerView);
 
 	QToolTip::add( m_eyeButton, tr( "Show / Hide all Layers" ) );
 	
-	m_lockButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/kilit_pic.png"),  20, m_utilsInTop );
+	m_lockButton = new KTImageButton( QPixmap(KTOON_THEME_DIR+"/icons/kilit_pic.png"),  20, m_utilsInTop );
 // 	m_utilsInTop->insert(m_lockButton, LockLayers);
 	
 	QToolTip::add( m_lockButton, tr( "Lock all Layers" ) );
 
-	m_outlineButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/outline_pic.png"), 20, m_utilsInTop );
+	m_outlineButton = new KTImageButton( QPixmap(KTOON_THEME_DIR+"/icons/outline_pic.png"), 20, m_utilsInTop );
 // 	m_utilsInTop->insert(m_outlineButton, ShowOutlines);
 
 	QToolTip::add( m_outlineButton, tr( "Show only outlines" ) );
 	
 // 	m_utilsInTop->setMaximumHeight(m_eyeButton->height()+2);
 	
+	m_utilsInTop->layout()->setSpacing(0);
+	
 	QWidget *spacer = new QWidget(m_utilsInTop);
-	spacer->setMinimumWidth(20);
+	spacer->setMinimumWidth(10);
 	
 	
 	//------------------------------------------------------
@@ -91,12 +93,12 @@ KTLayerManager::KTLayerManager(QWidget *parent) : KTVHBox(parent), m_currentTime
 	m_utilsInBottom -> setMinimumSize( 192, 24 );
 	m_utilsInBottom->layout()->setAlignment(Qt::AlignLeft | Qt::AlignCenter);
 
-	m_insertButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/layer+.png") , 20,  m_utilsInBottom );
+	m_insertButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/add_layer.png") , 20,  m_utilsInBottom );
 // 	m_utilsInBottom->insert(m_insertButton, InsertLayer);
 
 	QToolTip::add( m_insertButton, tr( "Insert Layer" ) );
 
-	m_removeButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/layer-.png"),  20, m_utilsInBottom );
+	m_removeButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/remove_layer.png"),  20, m_utilsInBottom );
 // 	m_utilsInBottom->insert(m_removeButton, RemoveLayer);
 	
 	QToolTip::add( m_removeButton, tr( "Remove Layer" ) );
@@ -139,62 +141,62 @@ QScrollBar *KTLayerManager::verticalScrollBar()
 
 void KTLayerManager::changeLayersState(int opt)
 {
-	KTTimeLineLayer *iterator;
-	ListOfTLLayers layerList = m_sequence->layers();
-
-	for ( iterator = layerList.first(); iterator; iterator = layerList.next() )
-	{
-		if ( iterator )
-		{
-			switch(opt)
-			{
-				case ShowOutlines:
-				{
-					iterator->setOnlyOutlines(!m_allSelected);
-				}
-				break;
-				case LockLayers:
-				{
-					iterator->setLock(m_allLock);
-				}
-				break;
-				case ToggleLayerView:
-				{
-					iterator->setView(m_allVisible);
-				}
-				break;
-				default:
-				{
-					ktDebug() << "Invalid action" << endl;
-				}
-				break;
-			}
-		}
-		else
-		{
-			ktError() << "Invalid layer" << endl;
-		}
-	}
-	
-	// Toggle states
-	switch(opt)
-	{
-		case ShowOutlines:
-		{
-			m_allSelected = !m_allSelected;
-		}
-		break;
-		case LockLayers:
-		{
-			m_allLock = !m_allLock;
-		}
-		break;
-		case ToggleLayerView:
-		{
-			m_allVisible = !m_allVisible;
-		}
-		break;
-	}
+// 	KTTimeLineLayer *iterator;
+// 	ListOfTLLayers layerList = m_sequence->layers();
+// 
+// 	for ( iterator = layerList.first(); iterator; iterator = layerList.next() )
+// 	{
+// 		if ( iterator )
+// 		{
+// 			switch(opt)
+// 			{
+// 				case ShowOutlines:
+// 				{
+// 					iterator->setOnlyOutlines(!m_allSelected);
+// 				}
+// 				break;
+// 				case LockLayers:
+// 				{
+// 					iterator->setLock(m_allLock);
+// 				}
+// 				break;
+// 				case ToggleLayerView:
+// 				{
+// 					iterator->setView(m_allVisible);
+// 				}
+// 				break;
+// 				default:
+// 				{
+// 					ktDebug() << "Invalid action" << endl;
+// 				}
+// 				break;
+// 			}
+// 		}
+// 		else
+// 		{
+// 			ktError() << "Invalid layer" << endl;
+// 		}
+// 	}
+// 	
+// 	// Toggle states
+// 	switch(opt)
+// 	{
+// 		case ShowOutlines:
+// 		{
+// 			m_allSelected = !m_allSelected;
+// 		}
+// 		break;
+// 		case LockLayers:
+// 		{
+// 			m_allLock = !m_allLock;
+// 		}
+// 		break;
+// 		case ToggleLayerView:
+// 		{
+// 			m_allVisible = !m_allVisible;
+// 		}
+// 		break;
+// 	}
 }
 
 void KTLayerManager::selectLayerAction(int opt)

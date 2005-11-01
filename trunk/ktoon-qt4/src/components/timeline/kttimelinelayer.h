@@ -25,11 +25,14 @@
 #include <qlineedit.h>
 #include <qlabel.h>
 #include <qcheckbox.h>
-//Added by qt3to4:
+
 #include <QMouseEvent>
 
 #include "ktelabel.h"
 #include "ktvhbox.h"
+
+#include "ktwidgetlistitem.h"
+#include "ktwidgetlistview.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -37,18 +40,18 @@
 
 class KTTimeLineLayer;
 
-class KTTimeLineLayer : public KTVHBox
+class KTTimeLineLayer : public KTWidgetListItem
 {
 	Q_OBJECT
 	public:
-		KTTimeLineLayer(const QString &name = "Layer", int position = 0, QWidget *parent = 0);
+		KTTimeLineLayer(const QString &name = "Layer", int position = 0, KTWidgetListView *parent = 0);
 		~KTTimeLineLayer();
 		void clearEditFocus();
 		int position();
 		void setPosition(int pos);
 		
 	public slots:
-		void setSelected( bool selected );
+// 		void setSelected( bool selected );
 		void setEdited( bool isEdited );
 		
 		void setOnlyOutlines( bool yes = true);

@@ -36,7 +36,9 @@ HEADERS += ktapplication.h \
            ktwizard.h \
            kttabwidget.h \
            ccbar.h \
-           ccbutton.h 
+           ccbutton.h \
+           ktwidgetlistitem.h \
+           ktwidgetlistview.h 
 SOURCES += ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
@@ -68,7 +70,9 @@ SOURCES += ktapplication.cpp \
            ktwizard.cpp \
            kttabwidget.cpp \
            ccbar.cpp \
-           ccbutton.cpp 
+           ccbutton.cpp \
+           ktwidgetlistitem.cpp \
+           ktwidgetlistview.cpp 
 MOC_DIR = .moc
 UI_DIR = .ui
 OBJECTS_DIR = .obj

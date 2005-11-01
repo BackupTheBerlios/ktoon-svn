@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2005 by David Cuadrado   *
+ *   krawek@gmail.com   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,38 +18,47 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTTIMELINE_H
-#define KTTIMELINE_H
+#ifndef KTWIDGETLISTVIEW_H
+#define KTWIDGETLISTVIEW_H
 
-#include <ktmodulewidgetbase.h>
-#include <qsplitter.h>
+#include <qlistview.h>
+#include <QVBoxLayout>
+#include <QScrollArea>
 
-#include "ktlayermanager.h"
-#include "ktframesequencemanager.h"
+
+class KTWidgetListItem;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@gmail.com>
 */
 
-class KTTimeLine : public KTModuleWidgetBase
+class KTWidgetListView : public QScrollArea
 {
 	Q_OBJECT
 	public:
-		KTTimeLine(QWidget *parent = 0);
-		~KTTimeLine();
+		KTWidgetListView( QWidget * parent = 0);
+		~KTWidgetListView();
 		
-	public slots:
-		void execAction(int action);
+		void setHeader(QWidget *header);
 		
-	signals:
-		void layerInserted();
-		void layerRemoved();
+		void addItem(KTWidgetListItem *item);
 		
+		QWidget *header();
+		KTWidgetListItem *itemSelected();
+		
+	private slots:
+		void itemSelect();
+
 	private:
-		KTVHBox *m_container;
-		QSplitter *m_splitter;
-		KTLayerManager *m_layerManager;
-		KTFrameSequenceManager *m_sequenceManager;
+		QWidget *m_header;
+		
+		QFrame *m_container;
+		QVBoxLayout *m_layout;
+		
+		QList<KTWidgetListItem *> m_items;
+		
+		KTWidgetListItem *m_itemSelected;
+
 };
 
 #endif

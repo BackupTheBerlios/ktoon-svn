@@ -72,7 +72,7 @@ KTViewDocument::~KTViewDocument()
 
 void KTViewDocument::showPos(const QPoint &p)
 {
-	QString messages =  "x: " +  QString::number(p.x()) +  " y: " + QString::number(p.y());
+	QString messages =  "X: " +  QString::number(p.x()- m_paintAreaContainer->drawAreaDelta() ) +  " Y: " + QString::number(p.y()- m_paintAreaContainer->drawAreaDelta() );
 	statusBar()->showMessage ( messages ) ;
 }
 

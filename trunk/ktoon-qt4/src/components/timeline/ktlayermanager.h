@@ -21,11 +21,10 @@
 #ifndef KTLAYERMANAGER_H
 #define KTLAYERMANAGER_H
 
-#include <qpushbutton.h>
-#include <qtooltip.h>
-#include <qlabel.h>
-#include <qscrollbar.h>
-#include <Q3HButtonGroup>
+#include <QPushButton>
+#include <QToolTip>
+#include <QLabel>
+#include <QScrollBar>
 
 #include "ktvhbox.h"
 

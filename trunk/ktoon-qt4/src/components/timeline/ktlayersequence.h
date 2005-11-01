@@ -23,20 +23,18 @@
 
 #include "kttimelinelayer.h"
 
-#include <QScrollArea>
+#include "ktwidgetlistview.h"
 
-//Added by qt3to4:
 #include <QResizeEvent>
-#include <Q3PtrList>
 #include "ktvhbox.h"
 
-typedef Q3PtrList<KTTimeLineLayer>  ListOfTLLayers;
+typedef QList<KTTimeLineLayer *>  ListOfTLLayers;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTLayerSequence : public QScrollArea
+class KTLayerSequence : public KTWidgetListView
 {
 	Q_OBJECT
 	public:
@@ -58,7 +56,6 @@ class KTLayerSequence : public QScrollArea
 		void moveLayerDown();
 		
 	private:
-		KTVHBox *m_layerContainer;
 		KTTimeLineLayer *m_defaultLayer;
 		ListOfTLLayers m_layers;
 		int m_layerCount;
