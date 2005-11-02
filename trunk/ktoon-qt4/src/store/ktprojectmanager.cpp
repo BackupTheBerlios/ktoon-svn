@@ -174,7 +174,7 @@ void KTProjectManager::renameScene(const QString &name, int index)
 // Layers
 void KTProjectManager::createLayer(bool addToEnd)
 {
-	ktDebug( ) << k_funcinfo << endl;
+	KT_FUNCINFO;
 	KTScene *scene = currentScene();
 	if ( scene )
 	{

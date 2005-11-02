@@ -64,12 +64,14 @@ void KTWidgetListView::setHeader(QWidget *header)
 	m_header = header;
 	
 	m_header->setPalette(pal);
+	
+	m_container->adjustSize();
 }
 
 void KTWidgetListView::addItem(KTWidgetListItem *item)
 {	
 	item->setParent(m_container);
-	m_layout->addWidget(item, 0, Qt::AlignTop);
+	m_layout->addWidget(item, 1, Qt::AlignTop);
 	
 	item->show();
 	

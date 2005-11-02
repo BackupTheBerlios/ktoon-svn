@@ -54,7 +54,7 @@ void KTScene::setLayers(const Layers &layers)
 
 KTLayer *KTScene::createLayer(bool addToEnd )
 {
-	ktDebug( ) << k_funcinfo << endl;
+	KT_FUNCINFO;
 	KTLayer *layer = new KTLayer(this);
 	layer->setLayerName(tr("Layer %1").arg(m_layerCount++));
 	

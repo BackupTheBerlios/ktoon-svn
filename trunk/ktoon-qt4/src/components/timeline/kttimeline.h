@@ -22,10 +22,10 @@
 #define KTTIMELINE_H
 
 #include <ktmodulewidgetbase.h>
-#include <qsplitter.h>
+#include <QSplitter>
 
 #include "ktlayermanager.h"
-#include "ktframesequencemanager.h"
+#include "ktframesequencecontainer.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -50,7 +50,7 @@ class KTTimeLine : public KTModuleWidgetBase
 		KTVHBox *m_container;
 		QSplitter *m_splitter;
 		KTLayerManager *m_layerManager;
-		KTFrameSequenceManager *m_sequenceManager;
+		KTFrameSequenceContainer *m_sequenceManager;
 };
 
 #endif

@@ -24,9 +24,15 @@
 #include <qlayout.h>
 #include <qlabel.h>
 
-KTFrameSequence::KTFrameSequence( int ID, int count, QWidget *parent) : Q3HBox(parent, "KTFrameSequence"), m_ID(ID)
+KTFrameSequence::KTFrameSequence( int ID, int count, KTWidgetListView *parent) : KTWidgetListItem(parent), m_ID(ID)
 {
+	m_layout = new QHBoxLayout(this);
+	m_layout->setMargin(1);
+	m_layout->setSpacing(0);
+	
 	createFrames(count);
+	
+	setLayout(m_layout);
 }
 
 
@@ -40,7 +46,9 @@ void KTFrameSequence::createFrames(int count)
 	for(uint i = 0; i < count; i++)
 	{
 		TLFrame *nextFrame = new TLFrame( i, this );
-
+		
+		m_layout->addWidget(nextFrame, 0, Qt::AlignTop | Qt::AlignLeft);
+		
 		if ( i % 5 == 0 )
 		{
 			nextFrame->setSpecial( true );
@@ -55,6 +63,8 @@ void KTFrameSequence::createFrames(int count)
 		
 		connect(nextFrame, SIGNAL(selected(int)), this, SLOT(selectFrame(int))); // FIXME
 	}
+	
+	adjustSize();
 }
 
 void KTFrameSequence::selectFrame(int position)

@@ -22,23 +22,24 @@
 #define KTFRAMESEQUENCE_H
 
 #include <qwidget.h>
-#include <q3hbox.h>
-//Added by qt3to4:
-#include <Q3PtrList>
 
 #include "tlframe.h"
+#include "ktwidgetlistview.h"
+#include "ktwidgetlistitem.h"
 
-typedef Q3PtrList<TLFrame> ListOfTimeLineFrames;
+#include <QHBoxLayout>
+
+typedef QList<TLFrame *> ListOfTimeLineFrames;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTFrameSequence : public Q3HBox
+class KTFrameSequence : public KTWidgetListItem
 {
 	Q_OBJECT
 	public:
-		KTFrameSequence(int ID, int count = 100,  QWidget *parent = 0);
+		KTFrameSequence(int ID, int count = 100,  KTWidgetListView *parent = 0);
 		~KTFrameSequence();
 		void setPosition(int pos);
 		int position();
@@ -56,6 +57,7 @@ class KTFrameSequence : public Q3HBox
 
 	private:
 		void createFrames(int count);
+		QHBoxLayout *m_layout;
 
 };
 

@@ -112,7 +112,7 @@ int main( int argc, char ** argv )
 
 void usage()
 {
-#if defined(Q_WS_X11)
+#if defined(Q_OS_UNIX)
 	puts("\033[1;33m"+ktapp->objectName() + ktapp->version());
 	puts(QObject::tr("2D Animation tool kit")+"\033[0;0m" );
 

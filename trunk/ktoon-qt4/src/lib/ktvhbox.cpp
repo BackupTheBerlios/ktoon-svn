@@ -63,6 +63,7 @@ KTVHBox::~KTVHBox()
 
 void KTVHBox::addWidget(QWidget *child, Qt::Alignment alignment)
 {
+	child->setParent(this);
 	m_pLayout->addWidget(child);
 	m_pLayout->setAlignment(child, alignment);
 }

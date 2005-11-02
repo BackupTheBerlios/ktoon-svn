@@ -19,8 +19,7 @@
  ***************************************************************************/
 
 #include <qlayout.h>
-#include <q3popupmenu.h>
-//Added by qt3to4:
+#include <qmenu.h>
 #include <QResizeEvent>
 
 #include "ktlayersequence.h"

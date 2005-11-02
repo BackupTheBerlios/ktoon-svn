@@ -485,7 +485,7 @@ void KTMainWindow::setLayerVisibilityChanged(int idLayer, bool isVisible)
 void KTMainWindow::insertFrame(const QString &name, bool addedToEnd)
 {
 	ktDebug() << "KTMainWindow::insertFrame(" << name << "," << addedToEnd << ")" << endl;
-	ktDebug() << k_funcinfo << endl;
+	KT_FUNCINFO;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )

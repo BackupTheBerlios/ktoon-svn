@@ -29,6 +29,7 @@
 
 #include "kttlruler.h"
 #include "ktframesequence.h"
+#include "ktwidgetlistview.h"
 
 typedef QList<KTFrameSequence *> ListOfFrameSequences;
 
@@ -36,13 +37,12 @@ typedef QList<KTFrameSequence *> ListOfFrameSequences;
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTFrameSequenceManager : public KTVHBox
+class KTFrameSequenceManager : public KTWidgetListView
 {
 	Q_OBJECT
 	public:
 		KTFrameSequenceManager(QWidget *parent);
 		~KTFrameSequenceManager();
-		QScrollBar *verticalScrollBar();
 		
 	public slots:
 		void insertFrameSequence();
@@ -50,14 +50,12 @@ class KTFrameSequenceManager : public KTVHBox
 		void setCurrentFrame(TLFrame *);
 			
 	protected:
-		QSize sizeHint() const;
+// 		QSize sizeHint() const;
 		
 	private:
 		ListOfFrameSequences m_sequences;
 		
-		QScrollArea *m_sequenceLayout;
-		KTVHBox *m_vBox;
-		KTTLRuler *m_ruler;
+// 		KTVHBox *m_vBox;
 		KTFrameSequence *m_lastSequence, *m_currentFrameSequence;
 
 		QScrollBar *m_scroll;

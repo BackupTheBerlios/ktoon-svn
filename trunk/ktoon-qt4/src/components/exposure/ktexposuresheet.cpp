@@ -110,7 +110,7 @@ void KTExposureSheet::renameScene(const QString &name, int id)
 
 void KTExposureSheet::applyAction(int action)
 {
-	ktDebug( ) << k_funcinfo << endl;
+	KT_FUNCINFO;
 	
 	if ( ! m_viewLayer )
 	{
@@ -200,7 +200,7 @@ void KTExposureSheet::updateLayersAndKeyframes()
 
 void KTExposureSheet::insertLayer(const QString& name)
 {
-	ktDebug( ) << k_funcinfo << endl;
+	KT_FUNCINFO;
 	//change m_viewLayer for currentTable
 	if ( m_viewLayer )
 	{

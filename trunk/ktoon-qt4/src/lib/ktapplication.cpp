@@ -317,19 +317,19 @@ void KTApplication::detectOpengl()
 		QGLWidget gl((QWidget *) 0);
 		gl.makeCurrent();
 		
-		ktDebug() << "-> OpenGL detected :)" << endl;
+		ktDebug() << "-> OpenGL detected :)";
 		if ( gl.format().directRendering() )
 		{
-			ktDebug() << "-> Using direct rendering :)" << endl;
+			ktDebug() << "-> Using direct rendering :)";
 		}
 		else
 		{
-			ktDebug() << "-> No direct rendering" << endl;
+			ktDebug() << "-> No direct rendering";
 		}
 	}
 	else
 	{
-		ktDebug() << "-> OpenGL not detected" << endl;
+		ktDebug() << "-> OpenGL not detected";
 	}
 }
 

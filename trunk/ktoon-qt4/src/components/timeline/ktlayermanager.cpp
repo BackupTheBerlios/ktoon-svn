@@ -23,9 +23,8 @@
 #include "ktapplication.h"
 #include <qlabel.h>
 #include <qlayout.h>
-//Added by qt3to4:
+
 #include <QPixmap>
-#include <Q3Frame>
 
 #include "kseparator.h"
 

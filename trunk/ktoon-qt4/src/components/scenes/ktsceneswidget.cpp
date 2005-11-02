@@ -147,7 +147,7 @@ void KTScenesWidget::setupTableScenes()
 
 void KTScenesWidget::insertScene(const QString &name, bool addedToEnd)
 {
-	ktDebug() << k_funcinfo << endl;
+	KT_FUNCINFO;
 	m_tableScenes->addScene(name);
 }
 

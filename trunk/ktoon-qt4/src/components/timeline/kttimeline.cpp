@@ -39,20 +39,22 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine
 	
 	m_layerManager = new KTLayerManager( m_splitter );
 	m_splitter->addWidget(m_layerManager);
-	m_layerManager->resize( 590, m_layerManager->height() );
+// 	m_layerManager->resize( 590, m_layerManager->height() );
 	
-	m_sequenceManager = new KTFrameSequenceManager(m_splitter);
+
+	m_sequenceManager = new KTFrameSequenceContainer(m_splitter);
 	m_splitter->addWidget(m_sequenceManager);
 	
 	connect(m_layerManager, SIGNAL(actionSelected(int)), this, SLOT(execAction(int)));
 	
 	// Mover scrolls simetricamente
-	connect( m_sequenceManager->verticalScrollBar(), SIGNAL( valueChanged( int ) ), m_layerManager->verticalScrollBar(), SLOT( setValue( int ) ) );
-	connect( m_layerManager->verticalScrollBar(), SIGNAL( valueChanged( int ) ), m_sequenceManager->verticalScrollBar(), SLOT( setValue( int ) ) );
+	connect( m_sequenceManager->manager()->verticalScrollBar(), SIGNAL( valueChanged( int ) ), m_layerManager->verticalScrollBar(), SLOT( setValue( int ) ) );
 	
-	show();
+	connect( m_layerManager->verticalScrollBar(), SIGNAL( valueChanged( int ) ), m_sequenceManager->manager()->verticalScrollBar(), SLOT( setValue( int ) ) );
 
-	m_container->setMinimumHeight( m_container->sizeHint().height() );
+// 	show();
+
+// 	m_container->setMinimumHeight( m_container->sizeHint().height() );
 
 	m_splitter->setSizes( QList<int>() << 190 << 590 );
 }
@@ -69,13 +71,13 @@ void KTTimeLine::execAction(int action)
 	{
 		case KTLayerManager::InsertLayer:
 		{
-			m_sequenceManager->insertFrameSequence();
+// 			m_sequenceManager->insertFrameSequence();
 			emit layerInserted();
 		}
 		break;
 		case KTLayerManager::RemoveLayer:
 		{
-			m_sequenceManager->removeFrameSequence();
+// 			m_sequenceManager->removeFrameSequence();
 			emit layerRemoved();
 		}
 		break;
@@ -86,5 +88,6 @@ void KTTimeLine::execAction(int action)
 void KTTimeLine::createLayer(const QString &name, bool toEnd)
 {
 	m_layerManager->layerSequence()->createNewLayer(name, toEnd);
+	m_sequenceManager->manager()->insertFrameSequence();
 }
 

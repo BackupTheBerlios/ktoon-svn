@@ -18,33 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTTLRULER_H
-#define KTTLRULER_H
+#ifndef KTFRAMESEQUENCECONTAINER_H
+#define KTFRAMESEQUENCECONTAINER_H
 
-#include <ktrulerbase.h>
-#include <q3popupmenu.h>
+#include <ktvhbox.h>
+#include "ktframesequencemanager.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-
-class KTTLRuler : public KTRulerBase
+class KTFrameSequenceContainer : public KTVHBox
 {
 	Q_OBJECT
 	public:
-		KTTLRuler(QWidget *parent = 0);
-		~KTTLRuler();
-// 		virtual void drawScale();
+		KTFrameSequenceContainer(QWidget *parent = 0);
+		~KTFrameSequenceContainer();
 		
-	private slots:
-// 		void showMenu(KTRulerBase *, QPoint pos);
-// 		void chooseOption(int);
-		
-	public slots:
-		virtual void movePointers(const QPoint &pos);
+		KTFrameSequenceManager *manager();
 		
 	private:
-
+		void setupPropertiesBar();
+		
+	private:
+		KTTLRuler *m_ruler;
+		KTFrameSequenceManager *m_manager;
+		
+		KTVHBox *m_propertiesBar;
+		
 };
 
 #endif
