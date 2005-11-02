@@ -29,8 +29,8 @@
 
 #ifdef __GNUC__
 #define KT_FUNCINFO ktDebug() << "[" << __PRETTY_FUNCTION__ << "] ";
-#define KTINIT ktDebug() << "[Initializing " << __PRETTY_FUNCTION__ << "]";
-#define KTEND ktDebug() << "[Destroying " << __PRETTY_FUNCTION__ << "]";
+#define KTINIT ktDebug() << "[Initializing " << __FUNCTION__ << "]";
+#define KTEND ktDebug() << "[Destroying " << __FUNCTION__ << "]";
 #else
 #define KT_FUNCINFO ktDebug() << "[Initializing " << __FILE__ << ":" << __LINE__ << "] ";
 #define KTINIT ktDebug() << "[Destroying " << __FILE__ << ":" << __LINE__ << "] ";
