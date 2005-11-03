@@ -26,11 +26,13 @@
 //Added by qt3to4:
 #include <Q3PtrList>
 
+#include "ktdebug.h"
+
 //-------------- CONSTRUCTOR ---------------
 
 Status::Status() : m_currentDrawingArea(0)
 {
-	qDebug("[Initializing Status]");
+	KTINIT;
 	current_scene = NULL;
 	current_layer = NULL;
 	current_keyframe = NULL;
@@ -112,7 +114,7 @@ void Status::setupDrawingArea(QWorkspace *ws)
 
 Status::~Status()
 {
-	qDebug("[Destroying Status]");
+	KTEND;
 	render_camera_frames.clear();
 	if(current_outline_color == current_fill_color)
 	{
@@ -148,7 +150,7 @@ DrawingAreaQt *
 Status::currentDrawingArea()
 {
 	if ( m_currentDrawingArea.isNull() )
-		qDebug("No drawing area");
+		ktError() << "No drawing area";
 	return m_currentDrawingArea;
 }
 

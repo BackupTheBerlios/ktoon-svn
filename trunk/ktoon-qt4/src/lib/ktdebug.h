@@ -38,7 +38,6 @@
 
 #define SHOW_VAR(arg) ktDebug() << #arg << " = " << arg;
 
-class KTDebug;
 
 class QWidget;
 class QDateTime;
@@ -58,15 +57,15 @@ class QIcon;
 class QImage;
 template <class T> class QList;
 
-
 enum DebugType
 {
 	KTDebugMsg = 0,
 	KTWarningMsg,
 	KTErrorMsg,
-	KTFatalMsg
+	KTFatalMsg 
 };
 
+#if !defined(KT_NODEBUG)
 class KTDebug
 {
 	public:
@@ -219,5 +218,31 @@ inline KTDebug ktWarning()
 	return KTDebug(KTWarningMsg);
 }
 
+#else // KT_NODEBUG
+
+class KTNDebug
+{
+	public:
+		inline KTNDebug(){}
+		inline KTNDebug(const QDebug &){}
+		inline ~KTNDebug(){}
+		inline KTNDebug &operator<<(QTextStreamFunction) { return *this; }
+		inline KTNDebug &operator<<(QTextStreamManipulator) { return *this; }
+		inline KTNDebug &space() { return *this; }
+		inline KTNDebug &nospace() { return *this; }
+		inline KTNDebug &maybeSpace() { return *this; }
+		template<typename T> inline KTNDebug &operator<<(const T &) { return *this; }
+};
+
+inline KTNDebug ktDebug()
+{
+	return KTNDebug();
+}
+
+#define ktFatal ktDebug
+#define ktError ktDebug
+#define ktWarning ktDebug
+
+#endif // KT_NODEBUG
 
 #endif

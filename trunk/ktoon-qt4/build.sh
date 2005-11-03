@@ -2,7 +2,7 @@
 
 # Script for update the .pro files && build the app
 # Author: Krawek
-# Version: 0.0.4
+# Version: 0.0.5
 
 APPNAME="KToon"
 APPVER="0.8alpha-svn"
@@ -13,27 +13,15 @@ QMAKE=`which qmake`
 KTOON_GLOBAL_ENV=/etc/ktoon.env
 KTOON_LOCAL_ENV=~/.ktoon.env
 
+PARAMETERS=""
+
+OPTION_NODEBUG=-1
+OPTION_GL=-1
+ASSUME_YES=0
+
+STAT_FILE=/tmp/ktoon_stat_file-$RANDOM
+
 export PATH=/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin
-
-if [ $# -eq 0 ]
-then
-	if [ ! $KTOON_HOME ]
-	then
-		echo "Usage: `basename $0` -p [prefix]"
-		exit 0
-	fi
-fi
-
-set - `getopt ":p" "$@"`
-
-if [ "$1" == "-p" ]
-then
-	KTOON_HOME=$3 
-fi
-
-shift
-export KTOON_HOME
-export INSTALL_ROOT=$KTOON_HOME
 
 # Look & feel
 
@@ -70,6 +58,17 @@ function verifyEnv()
 		qperror "You doesn't have installed \"make\" tool"
 		exit -1
 	fi
+	
+	if [ ! $QMAKE ]
+	then
+		if [ -x "$QTDIR/bin/qmake" ]
+		then
+			QMAKE="$QTDIR/bin/qmake"
+		else
+			qperror "You don't have qmake in your PATH, or doesn't have Qtlibs, please install it and try"
+			exit 1
+		fi
+	fi
 }
 
 function detectQtVersion()
@@ -84,18 +83,14 @@ function detectQtVersion()
 	fi
 }
 
-detectQtVersion
-
 function openglCC
 {
-	touch ktoon.config
+	PARAMETERS="$PARAMETERS DEFINES+=KT_OPENGL"
 }
 
 function qtCC
 {
-	cat << _EOF_ > ktoon.config
-DEFINES += NO_OPENGL
-_EOF_
+	PARAMETERS="$PARAMETERS "
 }
 
 function buildenv()
@@ -129,7 +124,7 @@ function addMenuEntry()
 
 function ktinstall()
 {
-	make install
+	$MAKE install 2> /dev/null >/dev/null
 	
 	if [ $(basename `echo $SHELL`) == "bash" ]
 	then
@@ -166,20 +161,24 @@ function ktinstall()
 	fi
 }
 
-verifyEnv
-
-DIRS=`find . -type d`
-
-if [ ! $QMAKE ]
-then
-	if [ -x "$QTDIR/bin/qmake" ]
-	then
-		QMAKE="$QTDIR/bin/qmake"
-	else
-		qperror "You don't have qmake in your PATH, or doesn't have Qtlibs, please install it and try"
-		exit 1
-	fi
-fi
+function updateMakefiles()
+{
+	qpinfo "Updating Makefiles with parameters ${PARAMETERS}"
+	echo -n "Wait a moment."
+	DIRS=`find . -type d`
+	for i in $DIRS
+	do
+		cd $i
+		if [ -e *.pro ]
+		then
+# 			qpinfo "Updating $i..."
+			echo -n "."
+			$QMAKE ${PARAMETERS} 2> /dev/null >/dev/null
+		fi
+		cd - 2> /dev/null >/dev/null
+	done
+	echo
+}
 
 # compile ming
 
@@ -192,49 +191,155 @@ fi
 #	ln -s $KTHOME/ming/Makefile-real $KTHOME/ming/Makefile
 #fi
 
-qpinfo "Update dirs"
-for i in $DIRS
-do
-	cd $i
-	if [ -e *.pro ]
+function main()
+{
+	echo
+	qpinfo "###################################"
+	if [ $OPTION_GL -eq 1 ]
 	then
-		qpinfo "Updating $i..."
-		$QMAKE 2> /dev/null >/dev/null
+		qpinfo "-> Using OpenGL version"
+		openglCC
+	else
+		qpinfo "-> Using NO-OpenGL version"
+		qtCC
 	fi
-	cd - 2> /dev/null >/dev/null
+	
+	if [ $OPTION_NODEBUG -eq 1 ]
+	then
+		qpinfo "-> Using NO-DEBUG support"
+		PARAMETERS="$PARAMETERS DEFINES+=KT_NODEBUG"
+	else
+		qpinfo "-> Using DEBUG support"
+	fi
+	
+	qpinfo "###################################"
+	echo
+	
+	if [ $ASSUME_YES -ne 1 ]
+	then
+		qpelec "This is right (y/n)? "
+		read UOG
+	
+		case $UOG in
+			n|N|no|NO) exit -1 ;;
+		esac
+	fi
+	
+	updateMakefiles
+	$QMAKE
+	
+	qpelec "Do you wants clean the project (y/n)? "
+	read UOG
+	
+	case $UOG in
+		y|yes|si|s|Y|S)
+			qpinfo "Cleaning..."
+			$MAKE clean > /dev/null
+		;;
+	esac
+	
+########################
+	qpinfo "Compiling $APPNAME $APPVER..."
+	qpinfo "Go for a cup of coffee ;)"
+	
+# 	$MAKE 2> /dev/null > /dev/null || ( qperror "Error while compiling, please try to run \"make\" manually"; exit 1 )
+	
+	echo > $STAT_FILE
+	END=0
+	( make  >/dev/null 2>/dev/null && echo END=1 > $STAT_FILE ) & 
+	while [ $END -eq 0 ]
+	do
+		if [ -f $STAT_FILE ]
+		then
+ 	       		. $STAT_FILE
+ 	       		echo -n .
+ 	       		sleep 2
+ 	       	else
+ 	       		wait
+ 	       		break;
+ 	       	fi
+	done
+	echo
+	rm $STAT_FILE
+	
+	qpinfo "Compiling successful!"
+	
+	qpelec "Do you wants install ktoon in \"$KTOON_HOME\" (y/n)? "
+	read SN
+	
+	case $SN in
+		y|yes|si|s) ktinstall ;;
+	esac
+}
+
+function usage()
+{
+	echo "Usage: `basename $0` [option]"
+	echo
+	echo "Options: "
+	echo "	-p [PREFIX]"
+	echo "	   Set the prefix"
+	echo "	-d"
+	echo "	   Activate debug"
+	echo "	-o"
+	echo "	   Compile the opengl version"
+	echo "	-Y"
+	echo "	   Assume yes"
+	echo "	-h"
+	echo "	   This message"
+	echo
+	exit 0
+}
+
+if [ $# -eq 0 ]
+then
+	if [ ! $KTOON_HOME ]
+	then
+		usage
+	fi
+fi
+
+while getopts "p:doYh" opt
+do
+	case $opt in
+		h) usage ;;
+		p) KTOON_HOME=$OPTARG ;;
+		d) OPTION_NODEBUG=0 ;;
+		o) OPTION_GL=1 ;;
+		Y) ASSUME_YES=1 ;;
+	esac
 done
 
-qpelec "Do you wants use opengl (y/n)? "
-read UOG
+shift $(($OPTIND - 1))
 
-case $UOG in
-	y) openglCC ;;
-	yes) openglCC ;;
-	si) openglCC ;;
-	s) openglCC ;;
-	Y) openglCC ;;
-	S) openglCC ;;
-	*) qtCC ;;
-esac
+verifyEnv
+detectQtVersion
 
-$QMAKE
+if [ $OPTION_GL -eq -1 ]
+then
+	qpelec "Do you wants compile opengl version (y/n)? "
+	read UOG
 
-qpinfo "Compiling $APPNAME $APPVER"
+	case $UOG in
+		y|Y|yes|YES|si|SI|s|S) OPTION_GL=1 ;;
+		*) OPTION_GL=0 ;;
+	esac
+fi
 
-#$MAKE clean
+if [ $OPTION_NODEBUG -eq -1 ]
+then
+	qpelec "Do you wants debug support (y/n)? "
+	read UOG
+	
+	case $UOG in
+		n|N|no|NO) OPTION_NODEBUG=1 ;;
+	esac
+fi
 
-$MAKE || exit 1
+export KTOON_HOME
+export INSTALL_ROOT=$KTOON_HOME
 
-qpinfo "Compiling successful!"
+main
 
-qpelec "Do you wants install ktoon in \"$KTOON_HOME\" (y/n)? "
-read SN
-
-case $SN in
-	y) ktinstall;;
-	yes) ktinstall;;
-	si) ktinstall;;
-	s) ktinstall;;
-esac
 
 

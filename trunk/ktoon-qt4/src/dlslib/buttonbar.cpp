@@ -94,7 +94,6 @@ ButtonBar::~ButtonBar()
 
 void ButtonBar::addButton(Button *button)
 {
-	qDebug("Adding button to bar");
     int buttonCount = m_buttons.count();
     
     button->setMode(m_mode);
@@ -192,7 +191,6 @@ void ButtonBar::resizeEvent(QResizeEvent *ev)
 
 void ButtonBar::shrink(int preferredDimension, int actualDimension)
 {
-	qDebug("shrink");
     if (!preferredDimension)
         return;
     

@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#if !defined(KT_NODEBUG)
 #include "ktdebug.h"
 
 #include <QFile>
@@ -37,9 +38,13 @@
 #include <QWidget>
 
 #if defined(Q_OS_UNIX)
-# define SHOW_ERROR "\033[0;31m%s\033[0;0m\n"
-# define SHOW_WARNING "\033[0;33m%s\033[0;0m\n"
-# define SHOW_FATAL "\033[0;35m%s\033[0;0m\n"
+# define SHOW_ERROR "*** \033[0;31m%s\033[0;0m ***\n"
+# define SHOW_WARNING "-> \033[10;33m%s\033[0;0m\n"
+# define SHOW_FATAL "***** \033[0;35m%s\033[0;0m *****\n"
+#else
+# define SHOW_ERROR "*** %s ***\n"
+# define SHOW_WARNING "-> %s\n"
+# define SHOW_FATAL "***** %s *****\n"
 #endif
 
 static void KTDebutOutput(DebugType t, const char *data)
@@ -49,38 +54,22 @@ static void KTDebutOutput(DebugType t, const char *data)
 	{
 		case KTDebugMsg:
 		{
-#if defined(Q_OS_UNIX)
-			output = "%s\n";
-#else
-			output = "%s\n";
-#endif
+// 			output = "%s\n";
 		}
 		break;
 		case KTWarningMsg:
 		{
-#if defined(Q_OS_UNIX)
 			output = SHOW_WARNING;
-#else
-			output = "%s\n";
-#endif
 		}
 		break;
 		case KTErrorMsg:
 		{
-#if defined(Q_OS_UNIX)
 			output = SHOW_ERROR;
-#else
-			output = "%s\n";
-#endif
 		}
 		break;
 		case KTFatalMsg:
 		{
-#if defined(Q_OS_UNIX)
 			output = SHOW_FATAL;
-#else
-			output = "%s\n";
-#endif
 		}
 		break;
 	}
@@ -95,7 +84,7 @@ KTDebug::KTDebug(DebugType t) : m_type(t)
 
 KTDebug::~KTDebug()
 {
-	KTDebutOutput( m_type, streamer->buffer.toLocal8Bit().data() ); 
+	::KTDebutOutput( m_type, streamer->buffer.toLocal8Bit().data() ); 
 	delete streamer;
 }
 
@@ -257,5 +246,5 @@ KTDebug& KTDebug::operator << (const QWidget* t)
 	return *this; 
 }
 
-
+#endif // KT_NODEBUG
 

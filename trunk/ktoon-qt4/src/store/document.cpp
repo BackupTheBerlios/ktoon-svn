@@ -36,7 +36,7 @@
 
 Document::Document()
 {
-	qDebug("[Initializing Document]");
+	KTINIT;
 	init();
 }
 
@@ -58,7 +58,7 @@ void Document::init()
 
 Document::~Document()
 {
-	qDebug("[Destroying Document]");
+	KTEND;
 	delete animation;
 	delete custom_palette;
 	delete library;

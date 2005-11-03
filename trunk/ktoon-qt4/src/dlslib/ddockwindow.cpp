@@ -114,8 +114,6 @@ DDockInternalWidget *DDockWindow::centralWidget()
 
 DDockInternalWidget::DDockInternalWidget(QWidget *parent, DDockWindow::Position position) : QWidget(parent), m_separator(0), m_position(position), m_visible(false), m_toggledButton(0)
 {
-	qDebug("[Initializing DDockInternalWidget]");
-	
 	Ideal::Place place = Ideal::Left;
 	switch (position)
 	{
@@ -210,7 +208,6 @@ DDockInternalWidget::DDockInternalWidget(QWidget *parent, DDockWindow::Position 
 
 DDockInternalWidget::~DDockInternalWidget()
 {
-	qDebug("[Destroying DDockInternalWidget]");
 	saveSettings();
 	
 	QListIterator<QWidget *> iterator( m_widgets.values() );
@@ -322,8 +319,6 @@ QWidget *DDockInternalWidget::currentWidget() const
 
 void DDockInternalWidget::addWidget(const QString &title, QWidget *widget)
 {
-	qDebug(QString("######Adding widget with name %1").arg(widget->name()));
-
 	QPixmap *pm = const_cast<QPixmap*>(widget->icon());
 	Ideal::Button *button;
 	if (pm != 0)
@@ -565,7 +560,6 @@ void DDockInternalWidget::setSeparator(QWidget *separator)
 
 void DDockInternalWidget::dialoged(int index)
 {
-	qDebug("Removed %d", index);
 	setExpanded(false);
 }
 

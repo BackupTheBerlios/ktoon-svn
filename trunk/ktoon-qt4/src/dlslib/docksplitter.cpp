@@ -47,7 +47,6 @@ DockSplitter::DockSplitter(Qt::Orientation orientation, QWidget *parent, const c
 
 	void DockSplitter::addDock(int row, int col, QWidget *dock)
 	{
-		qDebug("*****Adding dock with name: " +QString( dock->name() ));
 		if (m_docks.count() <= row)
 		{
 			for (int i = m_docks.count(); i <= row ; ++i)

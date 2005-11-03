@@ -27,9 +27,11 @@
 #include <qobject.h>
 #include <q3stylesheet.h>
 
+#include "ktdebug.h"
+
 KTConfigDocument::KTConfigDocument(const QString &path) : QDomDocument(), m_path(path), MAXRECENTS(6)
 {
-	qDebug("[Initializing KTConfigDocument]");
+	KTINIT;
 	setup();
 
 	if ( !m_isOk )
@@ -68,6 +70,7 @@ void KTConfigDocument::setup()
 
 KTConfigDocument::~KTConfigDocument()
 {
+	KTEND;
 }
 
 void KTConfigDocument::setHome(const QString &home)

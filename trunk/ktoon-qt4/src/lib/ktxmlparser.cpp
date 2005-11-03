@@ -17,18 +17,20 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "ktxmlparser.h"
-#include <iostream>
+#include "ktdebug.h"
 
 KTXmlParser::KTXmlParser()
 	: QXmlDefaultHandler(), fileNumber(0)
 {
-	qDebug("[Initializing KTXmlParser]");
+	KTINIT;
 }
 
 
 KTXmlParser::~KTXmlParser()
 {
+	KTEND;
 }
 
 
