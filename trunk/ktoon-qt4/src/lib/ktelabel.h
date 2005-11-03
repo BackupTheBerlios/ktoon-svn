@@ -36,16 +36,17 @@ class KTELabel : public KTSqueezeLabel
 	public:
 		KTELabel(const QString &text, QWidget *parent = 0);
 		~KTELabel();
+		void setValidator(const QValidator * v);
 		
 	public slots:
-		void rename();
+		void edit();
 		void clearFocus();
 		
 	private slots:
 		void applyText();
 		
 	signals:
-		void renamed(const QString &);
+		void edited(const QString &);
 		
 	protected:
 		virtual void mouseDoubleClickEvent( QMouseEvent *mouse_event );

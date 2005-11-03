@@ -21,7 +21,7 @@
 #include "aanimationarea.h"
 #include "ktdebug.h"
 
-AAnimationArea::AAnimationArea(QWidget *parent) : QFrame(parent), m_scene(0), m_draw(false), m_ciclicAnimation(false), m_fps(24), m_currentFramePosition(0), m_isRendered(false)
+AAnimationArea::AAnimationArea(QWidget *parent) : QFrame(parent), m_scene(0), m_draw(false), m_ciclicAnimation(false), m_currentFramePosition(0), m_isRendered(false)
 {
 	setAttribute(Qt::WA_StaticContents);
 
@@ -101,7 +101,7 @@ void AAnimationArea::play()
 	
 	if ( m_scene && !m_timer->isActive() )
 	{
-		m_timer->start(1000/m_fps);
+		m_timer->start(1000/m_scene->fps() );
 	}
 	
 // 	emit toStatusBar( tr("Playing... "), 2000 );

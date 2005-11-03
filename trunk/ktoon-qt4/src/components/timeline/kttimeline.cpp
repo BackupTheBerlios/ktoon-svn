@@ -45,6 +45,8 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine
 	m_sequenceManager = new KTFrameSequenceContainer(m_splitter);
 	m_splitter->addWidget(m_sequenceManager);
 	
+	connect(m_sequenceManager, SIGNAL(fpsChanged(int)), this, SIGNAL(requestChangeFPS(int)));
+	
 	connect(m_layerManager, SIGNAL(actionSelected(int)), this, SLOT(execAction(int)));
 	
 	// Mover scrolls simetricamente

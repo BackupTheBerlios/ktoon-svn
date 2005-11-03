@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 #include "ktelabel.h"
-//Added by qt3to4:
 #include <QMouseEvent>
 
 KTELabel::KTELabel(const QString &text, QWidget *parent) : KTSqueezeLabel(text, parent)
@@ -43,7 +42,7 @@ void KTELabel::mouseDoubleClickEvent( QMouseEvent *event )
 {
 	if ( event->button() == Qt::LeftButton )
 	{
-		rename();
+		edit();
 		event->accept();
 	}
 	else
@@ -57,13 +56,13 @@ void KTELabel::applyText()
 	if(completeText() != m_editor->text())
 	{
 		setText( m_editor -> text() );
-		emit renamed( m_editor->text() );
+		emit edited( m_editor->text() );
 	}
 	
 	m_editor->hide();
 }
 
-void KTELabel::rename()
+void KTELabel::edit()
 {
 	m_editor->setText( completeText() );
 	m_editor->selectAll();
@@ -76,3 +75,9 @@ void KTELabel::clearFocus()
 {
 	m_editor->clearFocus();
 }
+
+void KTELabel::setValidator(const QValidator * v)
+{
+	m_editor->setValidator(v);
+}
+

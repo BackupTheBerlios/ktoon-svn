@@ -72,7 +72,6 @@ void APaintArea::paintEvent(QPaintEvent *e)
 		m_paintDevice.fill(qRgb(255, 255, 255));
 		
 		painter.begin(&m_paintDevice);
-		painter.setClipRect(e->rect());
 		painter.setRenderHint(QPainter::Antialiasing);
 		
 		if(m_drawGrid)
@@ -85,6 +84,7 @@ void APaintArea::paintEvent(QPaintEvent *e)
 		
 		painter.save();
 		
+// 		painter.setClipRect(e->rect());
 		draw(&painter);
 		
 		painter.restore();

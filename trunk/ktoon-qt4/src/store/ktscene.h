@@ -47,6 +47,9 @@ class KTScene : public QObject
 		void setCurrentLayer(int index);
 		int indexCurrentLayer();
 		
+		void setFPS(int fps);
+		int fps();
+		
 	signals:
 		void layerCreated(const QString &name, bool toEnd);
 
@@ -56,6 +59,8 @@ class KTScene : public QObject
 		QString m_name;
 		
 		int m_layerCount;
+		
+		int m_fps;
 };
 
 #endif

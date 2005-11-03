@@ -57,7 +57,7 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name, KTWidgetListView *parent) 
 	
 	m_layerName->show();
 // 	layout()->setAlignment(m_layerName, Qt::AlignLeft);
-	connect(m_layerName, SIGNAL(renamed(const QString &)), this, SIGNAL(renamed(const QString &)));
+	connect(m_layerName, SIGNAL(edited(const QString &)), this, SIGNAL(renamed(const QString &)));
 
 	m_layerName->setMargin(1);
 	m_layerName->resize( 70, 20 );
@@ -255,7 +255,7 @@ void KTTimeLineLayer::mousePressEvent( QMouseEvent *me )
 
 void KTTimeLineLayer::rename()
 {
-	m_layerName->rename();
+	m_layerName->edit();
 }
 
 void KTTimeLineLayer::clearEditFocus()

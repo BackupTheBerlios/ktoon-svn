@@ -22,7 +22,7 @@
 #include "ktdebug.h"
 
 
-KTScene::KTScene(QObject *parent) : QObject(parent), m_currentLayer(0), m_layerCount(0)
+KTScene::KTScene(QObject *parent) : QObject(parent), m_currentLayer(0), m_layerCount(0), m_fps(24)
 {
 // 	m_currentLayer = createLayer();
 }
@@ -91,5 +91,22 @@ void KTScene::setCurrentLayer(int index)
 int KTScene::indexCurrentLayer()
 {
 	return m_layers.indexOf(m_currentLayer);
+}
+
+void KTScene::setFPS(int fps)
+{
+	if (fps > 0 )
+	{
+		m_fps = fps;
+	}
+	else
+	{
+		ktError() << "FPS out of range" << endl;
+	}
+}
+
+int KTScene::fps()
+{
+	return m_fps;
 }
 

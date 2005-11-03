@@ -229,6 +229,7 @@ void KTMainWindow::createGUI()
 	m_timeLine = new KTTimeLine(this);
 	m_timeLine->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/time_line.png"));
 	toolWindow(DDockWindow::Bottom)->addWidget(tr("Time Line"),m_timeLine);
+	connect(m_timeLine, SIGNAL(requestChangeFPS(int)), this, SLOT(changeFPS( int )));
 	
 	//////////////////
 	KToonScript *m_scriptEditor = new KToonScript(this);
@@ -538,3 +539,7 @@ void KTMainWindow::changeCurrentBrush(KTBrush *brush)
 	}
 }
 
+void KTMainWindow::changeFPS(int fps)
+{
+	m_projectManager->currentScene()->setFPS( fps );
+}

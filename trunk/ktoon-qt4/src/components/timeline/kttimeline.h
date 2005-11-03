@@ -46,6 +46,8 @@ class KTTimeLine : public KTModuleWidgetBase
 		void layerInserted();
 		void layerRemoved();
 		
+		void requestChangeFPS(int fps);
+		
 	private:
 		KTVHBox *m_container;
 		QSplitter *m_splitter;

@@ -149,6 +149,9 @@ class KTMainWindow : public DMainWindow
 		void changeCurrentColors(const QColor &, const QColor &);
 		void changeCurrentBrush(KTBrush *);
 		
+		
+		void changeFPS(int fps);
+		
 	private:
 		KTProjectManager *m_projectManager;
 		

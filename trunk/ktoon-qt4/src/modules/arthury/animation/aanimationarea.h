@@ -67,7 +67,7 @@ class AAnimationArea : public QFrame
 		
 		bool m_draw, m_ciclicAnimation;
 		
-		int m_fps, m_currentFramePosition;
+		int m_currentFramePosition;
 		
 		QTimer *m_timer;
 		
