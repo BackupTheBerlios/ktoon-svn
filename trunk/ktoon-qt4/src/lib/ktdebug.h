@@ -32,8 +32,9 @@
 #define KTINIT ktDebug() << "[Initializing " << __FUNCTION__ << "]";
 #define KTEND ktDebug() << "[Destroying " << __FUNCTION__ << "]";
 #else
-#define KT_FUNCINFO ktDebug() << "[Initializing " << __FILE__ << ":" << __LINE__ << "] ";
-#define KTINIT ktDebug() << "[Destroying " << __FILE__ << ":" << __LINE__ << "] ";
+#define KT_FUNCINFO
+#define KTINIT ktDebug() << "[Initializing " << __FILE__ << ":" << __LINE__ << "] ";
+#define KTEND ktDebug() << "[Destroying " << __FILE__ << ":" << __LINE__ << "] ";
 #endif
 
 #define SHOW_VAR(arg) ktDebug() << #arg << " = " << arg;
@@ -224,7 +225,7 @@ class KTNDebug
 {
 	public:
 		inline KTNDebug(){}
-		inline KTNDebug(const QDebug &){}
+		inline KTNDebug(const KTNDebug &){}
 		inline ~KTNDebug(){}
 		inline KTNDebug &operator<<(QTextStreamFunction) { return *this; }
 		inline KTNDebug &operator<<(QTextStreamManipulator) { return *this; }
