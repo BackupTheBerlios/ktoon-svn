@@ -24,9 +24,9 @@
 #include <QList>
 #include <QFrame>
 #include <QLayout>
-#include <QMenu>
 #include <QMouseEvent>
 #include <QBoxLayout>
+#include <QMenu>
 
 #include "esframe.h"
 #include "eslayer.h"
@@ -48,6 +48,7 @@ class KTLayerExposure : public QFrame
 		QString textHeader();
 		
 		void insertFrame(int id, const QString &text );
+		enum KTTAction{ RenameLayer = 0, RemoveThisLayer, InsertFrames, RemoveThisFrame};
 		
 		void addFrame(const QString &text );
 		bool isSelected();
@@ -56,17 +57,15 @@ class KTLayerExposure : public QFrame
 		int id();
 		bool currentFrameIsUsed();
 		int  numUsedFrame();
-// 		void loadFrames(Layer *layer);
 		void insertFrames();
 		void selectedFirstFrame();
 		
 	private:
-		enum KTLActions { RenameFrame = 0, RemoveThisFrame, LockThisFrame, InsertFrames, CopyThisFrame, PasteIntoFrame, RenameLayer, RemoveThisLayer};
 		bool m_selected;
 		int m_id, m_currentFrame,  m_useFrame;
 		ESLayer *m_header;
 		ListOfFrames m_frames;
-		QMenu *menuFrame, *menuLayer;
+		QMenu *menuLayer;
 		void createMenuRight();
 		
 	public slots:
@@ -88,11 +87,9 @@ class KTLayerExposure : public QFrame
 		void applyAction(int action);
 		void frameRename(int, const QString&);
 		
-		
 	signals:
 		void requestInsertFrame(bool);
 		void visibilityChanged( int idLayer, bool value);
-		
 		
 		void selected(int id);
 		void clicked( int row, int col, int button,int x, int y);
@@ -101,14 +98,12 @@ class KTLayerExposure : public QFrame
 // 		void setUsedFrame(const QString &);
 		
 		void clickedMenuFrame(int action, int idFrame, int idLayer);
-		void copyFrame();
-		void pasteFrame();
+// 		void copyFrame();
+// 		void pasteFrame();
 		void removed(int);
 // 		void removedFrame(int id);
 		void layerRenamed( int idLayer, const QString &name );
 		void frameRenamed( int idFrame, int idLayer, const QString &name );
-		
-		
 		
 	protected:
 		QBoxLayout *m_layout;

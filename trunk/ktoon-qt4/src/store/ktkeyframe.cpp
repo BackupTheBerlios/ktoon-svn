@@ -19,14 +19,29 @@
  ***************************************************************************/
 
 #include "ktkeyframe.h"
+#include "ktdebug.h"
+
+KTKeyFrame::KTKeyFrame(const KTKeyFrame &kf) : QObject(kf.parent()), m_name(kf.m_name), m_isLocked(kf.m_isLocked), m_components(QList<AGraphicComponent *>(kf.m_components))
+{
+}
+
+
 
 KTKeyFrame::KTKeyFrame(QObject *parent) : QObject(parent), m_name("Frame"), m_isLocked(false)
 {
+	
 }
 
 KTKeyFrame::KTKeyFrame(const QString &frameName, QObject * parent) : QObject(parent), m_name(frameName), m_isLocked(false)
-{
+{	
+	
 }
+
+// KTKeyFrame::KTKeyFrame(const KTKeyFrame &kf) : QObject(kf.parent()), m_name(kf.m_name), m_isLocked(kf.m_isLocked)
+// {
+// 	kf.m_components.count() << endl;
+// 	m_components += kf.m_components;
+// }
 
 KTKeyFrame::~KTKeyFrame()
 {

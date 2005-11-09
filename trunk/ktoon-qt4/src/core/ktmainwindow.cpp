@@ -221,6 +221,11 @@ void KTMainWindow::createGUI()
 	
 	connect(m_exposureSheet, SIGNAL(layerVisibilityChanged( int, bool)), m_projectManager, SLOT(setLayerVisibility( int, bool)));
 	
+	connect(m_exposureSheet, SIGNAL(layerSelected( int)), m_projectManager, SLOT(setCurrentLayer( int)));
+	
+	connect(m_exposureSheet, SIGNAL(requestCopyFrame(int)), m_projectManager, SLOT(copyFrame(int)));
+	
+	connect(m_exposureSheet, SIGNAL(requestPasteFrame(int)), m_projectManager, SLOT(pasteFrame(int)));
 	
 // 	connect(m_scenes, SIGNAL(sceneInserted( const QString &, int )), m_exposureSheet, SLOT(addScene( const QString &, int )));
 // 	connect(m_scenes, SIGNAL(sceneRenamed( const QString &, int )), m_exposureSheet, SLOT(renameScene(const QString &, int)));

@@ -64,6 +64,9 @@ class KTProjectManager : public QObject
 		void createFrame(bool addToEnd = true);
 		KTKeyFrame *currentKeyFrame();
 		void setCurrentFrame(int index);
+		void copyFrame(int index);
+		void pasteFrame(int index);
+		
 		
 	private slots:
 		// Layers
@@ -87,8 +90,8 @@ class KTProjectManager : public QObject
 		
 	private:
 		Documents m_documents;
-		
 		KTDocument *m_currentDocument;
+		KTKeyFrame *m_copyFrame;
 };
 
 #endif

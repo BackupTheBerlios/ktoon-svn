@@ -45,6 +45,9 @@ class KTLayer : public QObject
 		
 		KTKeyFrame *currentFrame();
 		void setCurrentFrame(int index);
+		void pasteFrame(const int& index, KTKeyFrame* copy);
+		
+		
 		int indexCurrentFrame();
 		
 		void setLayerName(const QString &name);
@@ -61,7 +64,7 @@ class KTLayer : public QObject
 		Frames m_frames;
 		bool m_isVisible;
 		QString m_name;
-		
+
 		KTKeyFrame *m_currentFrame;
 		
 		int m_framesCount;

@@ -21,12 +21,12 @@
 #include "ktlayer.h"
 #include "ktdebug.h"
 
-KTLayer::KTLayer(QObject *parent) : QObject(parent), m_isVisible(true), m_name(tr("Layer")), m_currentFrame(0), m_framesCount(0)
+KTLayer::KTLayer(QObject *parent) : QObject(parent), m_isVisible(true), m_name(tr("Layer")), m_currentFrame(0), m_framesCount(0)/*, m_copyFrame(0)*/
 {
 // 	m_currentFrame = createFrame();
 }
 
-KTLayer::KTLayer(const QString &layerName, QObject * parent)  : QObject(parent), m_isVisible(true), m_name(layerName), m_currentFrame(0), m_framesCount(0)
+KTLayer::KTLayer(const QString &layerName, QObject * parent)  : QObject(parent), m_isVisible(true), m_name(layerName), m_currentFrame(0), m_framesCount(0)/*, m_copyFrame(0)*/
 {
 // 	m_currentFrame = createFrame();
 }
@@ -88,10 +88,26 @@ int KTLayer::indexCurrentFrame()
 	return m_frames.indexOf(m_currentFrame);
 }
 
+
 void KTLayer::setLayerName(const QString &name)
 {
 	m_name = name;
 }
+
+void KTLayer::pasteFrame(const int& index, KTKeyFrame* copy)
+{
+	if ( index > m_frames.count() )
+	{
+		ktDebug() << "TO END";
+		m_frames << copy;
+	}
+	else
+	{
+		ktDebug() << "REPLACE";
+		m_frames.replace(index, copy);
+	}
+}
+
 
 void KTLayer::setVisible(bool isVisible)
 {

@@ -49,14 +49,14 @@ KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFra
 
 void KTLayerExposure::createMenuRight()
 {
-	menuFrame = new QMenu(this);
-	menuFrame->insertItem( tr( "Rename Frame" ), RenameFrame, RenameFrame);
-	menuFrame->insertItem( tr( "Remove this Frame" ), RemoveThisFrame, RemoveThisFrame);
-	menuFrame->insertItem( tr( "Lock this Frame" ), LockThisFrame, LockThisFrame);
-	menuFrame->insertItem( tr( "Copy this Frame" ), CopyThisFrame, CopyThisFrame);
-	menuFrame->insertItem( tr( "Paste into this Frame" ), PasteIntoFrame, PasteIntoFrame);
-	connect(menuFrame, SIGNAL(activated ( int )), this, SLOT(applyAction(int)));
-	
+// 	menuFrame = new QMenu(this);
+// 	menuFrame->insertItem( tr( "Rename Frame" ), RenameFrame, RenameFrame);
+// 	menuFrame->insertItem( tr( "Remove this Frame" ), RemoveThisFrame, RemoveThisFrame);
+// 	menuFrame->insertItem( tr( "Lock this Frame" ), LockThisFrame, LockThisFrame);
+// 	menuFrame->insertItem( tr( "Copy this Frame" ), CopyThisFrame, CopyThisFrame);
+// 	menuFrame->insertItem( tr( "Paste into this Frame" ), PasteIntoFrame, PasteIntoFrame);
+// 	connect(menuFrame, SIGNAL(activated ( int )), this, SLOT(applyAction(int)));
+
 	menuLayer = new QMenu(this);
 	menuLayer->insertItem( tr( "Rename Layer" ), RenameLayer);
 	menuLayer->insertItem( tr( "Remove this Layer" ), RemoveThisLayer );
@@ -85,15 +85,12 @@ void KTLayerExposure::frameSelect(int id, int button, int x, int y)
 	m_header->animateClick();
 	emit frameSelected(id);
 	emit clicked( m_layout->indexOf(m_frames[id])-1, m_id, button, x, y);
+	
 	ktDebug() << "KTLayerExposure: id layer " << m_id << " id frame " <<  m_layout->indexOf(m_frames[id])-1 << endl;
 	if(m_useFrame == id && !(m_frames[id]->isUsed()))
 	{
 		//FIXME: al tener dos o mas layers solo inserta el el primero
-// 		emit requestInsertFrame(true);
-	}
-	if(button == Qt::RightButton)
-	{
-		menuFrame->exec(QPoint(x,y));
+		emit requestInsertFrame(true);
 	}
 }
 
@@ -122,7 +119,7 @@ void KTLayerExposure::setSelected(bool select, QMouseEvent *e)
 
 void KTLayerExposure::otherSelected(int id)
 {
-	ktDebug() << "void KTLayerExposure::otherSelected(int " <<  id << ")" << endl;
+// 	ktDebug() << "void KTLayerExposure::otherSelected(int " <<  id << ")" << endl;
 	if(m_id != id)
 	{
 		setSelected(false);
@@ -327,35 +324,15 @@ void KTLayerExposure::applyAction(int action)
 {
 	switch(action)
 	{
-		case RenameFrame:
-		{
-			renameCurrentFrame();
-			break;
-		}
+
 		case RemoveThisFrame:
 		{
 			removeCurrentFrame();
 			break;
 		}
-		case LockThisFrame:
-		{
-			lockFrame();
-			break;
-		}
 		case InsertFrames:
 		{
 			currentFrameIsUsed();
-			break;
-		}
-		case CopyThisFrame:
-		{
-			emit copyFrame();
-			break;
-		}
-		
-		case PasteIntoFrame:
-		{
-			emit pasteFrame();
 			break;
 		}
 		
@@ -367,7 +344,7 @@ void KTLayerExposure::applyAction(int action)
 		
 		case RemoveThisLayer:
 		{
-			emit removed(m_id);
+// 			emit removed(m_id);
 			break;
 		}
 	}

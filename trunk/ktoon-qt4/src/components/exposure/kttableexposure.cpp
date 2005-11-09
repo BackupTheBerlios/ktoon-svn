@@ -42,7 +42,7 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent)
 	m_layout->setMargin(0);
 	
 	setWidget(m_port);
-	setWidgetResizable (true);
+	createMenuRight();
 }
 
 
@@ -51,27 +51,86 @@ KTTableExposure::~KTTableExposure()
 	KTEND;
 }
 
-// void KTTableExposure::touchFirstFrame()
-// {
-// 	m_layers.at(0)->frameSelect(0,0,0,0);
-// }
-
-void KTTableExposure::clickedCell(int row,int col,int button,int gx,int gy)
+void KTTableExposure::createMenuRight()
 {
+	menuFrame = new QMenu(this);
+	menuFrame->insertItem( tr( "Rename Frame" ), RenameFrame, RenameFrame);
+	menuFrame->insertItem( tr( "Remove this Frame" ), RemoveThisFrame, RemoveThisFrame);
+	menuFrame->insertItem( tr( "Lock this Frame" ), LockThisFrame, LockThisFrame);
+	menuFrame->insertItem( tr( "Copy this Frame" ), CopyThisFrame, CopyThisFrame);
+	menuFrame->insertItem( tr( "Paste into this Frame" ), PasteIntoFrame, PasteIntoFrame);
+	connect(menuFrame, SIGNAL(activated ( int )), this, SLOT(applyAction(int)));
 	
+
+}
+
+void KTTableExposure::applyAction(int action)
+{
+	switch(action)
+	{
+		case RenameFrame:
+		{
+// 			renameCurrentFrame();
+			break;
+		}
+		case RemoveThisFrame:
+		{
+// 			removeCurrentFrame();
+			break;
+		}
+		case LockThisFrame:
+		{
+// 			lockFrame();
+			break;
+		}
+		case InsertFrames:
+		{
+// 			currentFrameIsUsed();
+			break;
+		}
+		
+		case CopyThisFrame:
+		{
+// 			ktDebug() << "requestCopyFrame()" << endl;
+			emit requestCopyFrame(m_currentFrame);
+			break;
+		}
+		
+		case PasteIntoFrame:
+		{
+// 			ktDebug() << "requestPasteFrame()" << endl;
+			emit requestPasteFrame(m_currentFrame);
+			break;
+		}
+	}
+}
+
+void KTTableExposure::clickedCell(int row, int col,int button,int gx,int gy)
+{	
 	m_currentLayer = col;
 	m_currentFrame = row;
 	
-	if ( m_layers.at(m_currentLayer)->currentFrameIsUsed() )
+	if(button == Qt::RightButton)
+	{
+		menuFrame->exec(QPoint(gx,gy));
+	}
+	else if ( m_layers.at(m_currentLayer)->currentFrameIsUsed() )
 	{
 		emit(cellSelected(col, row));
 	}
 	else
 	{
+		emit(layerSelected(col));
 		//TODO: cambiar el currentFrame a bloqueado
 // 		KTStatus -> setCurrentKeyFrame( NULL );
 	}
-	emit(clickedFrame());
+	
+}
+
+
+int KTTableExposure::currentLayer()
+{
+	return m_currentLayer;
 }
 
 void KTTableExposure::insertLayer(int rows, const QString &text)
@@ -87,15 +146,7 @@ void KTTableExposure::insertLayer(int rows, const QString &text)
 	
 	connect(newLayer, SIGNAL(clicked(int,int,int,int,int)), this, SLOT(clickedCell(int,int,int,int,int)));
 	
-// 	connect(newLayer, SIGNAL(setUsedFrame(const QString &)), this, SLOT(useFrame(const QString &)));
-	
-// 	connect(newLayer, SIGNAL(copyFrame()), this, SLOT(copyCurrentFrame()));
-	
-// 	connect(newLayer, SIGNAL(pasteFrame()), this, SLOT(pasteCurrentFrame()));
-	
 	connect(newLayer, SIGNAL(removed(int)), this, SLOT(removeLayer(int)));
-	
-// 	connect(newLayer, SIGNAL(removedFrame(int)), this, SLOT(removeKeyFrame(int)));
 	
 	connect(newLayer, SIGNAL(layerRenamed(int, const QString &)), this, SLOT(layerRename(int, const QString &)));
 	
@@ -107,10 +158,7 @@ void KTTableExposure::insertLayer(int rows, const QString &text)
 	
 	m_numLayer++;
 	newLayer->show();
-	
 	m_port->adjustSize();
-
-// 	emit requestInsertFrame();
 }
 
 void KTTableExposure::changeCurrentLayer(int idLayer)

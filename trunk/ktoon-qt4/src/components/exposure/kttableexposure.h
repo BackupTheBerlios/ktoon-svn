@@ -27,6 +27,8 @@
 #include <QLabel>
 #include <QList>
 #include <QBoxLayout>
+#include <QMenu>
+
 
 #include "ktlayerexposure.h"
 // #include "gldrawing.h"
@@ -44,6 +46,8 @@ class KTTableExposure : public QScrollArea
 	Q_OBJECT
 	public:
 		enum Direction {Up = 0, Down};
+		
+		enum KTTAction{ RenameFrame = 0, RemoveThisFrame, LockThisFrame, InsertFrames, CopyThisFrame, PasteIntoFrame};
 		KTTableExposure(int rows, int cols, QWidget *parent = 0);
 		~KTTableExposure();
 		
@@ -58,7 +62,12 @@ class KTTableExposure : public QScrollArea
 		void updateLayers();
 		QStringList textHeaders();
 		
+		int currentLayer();
+		
 		KTLayerExposure *currentLayerExposure();
+		
+	private:
+		void createMenuRight();
 		
 	private:
 		QBoxLayout *m_layout;
@@ -66,13 +75,14 @@ class KTTableExposure : public QScrollArea
 		int m_numLayer;
 		int m_currentLayer, m_currentFrame;
 		ListOfLayers m_layers;
+		QMenu *menuFrame;
 		
 	public slots:
 		void insertLayer(int rows, const QString &text = QString::null);
 		void clickedCell(int row, int col, int button, int gx, int gy);
 		void changeCurrentLayer(int idLayer);
+		void applyAction(int action);
 // 		void removeKeyFrame(int id);
-// 		void touchFirstFrame();
 // 		void copyCurrentFrame();
 // 		void pasteCurrentFrame();
 		void removeLayer(int idLayer);
@@ -88,6 +98,8 @@ class KTTableExposure : public QScrollArea
 		
 		// TODO: <krawek> FALTAN SIGNALS
 		void requestInsertFrame(bool addedToEnd);
+		void requestPasteFrame(int);
+		void requestCopyFrame(int);
 		
 };
 

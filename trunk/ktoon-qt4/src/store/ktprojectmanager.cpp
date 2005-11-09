@@ -21,7 +21,7 @@
 #include "ktprojectmanager.h"
 #include "ktdebug.h"
 
-KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_currentDocument(0)
+KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_currentDocument(0), m_copyFrame(0)
 {
 	KTINIT;
 
@@ -216,4 +216,40 @@ void KTProjectManager::createFrame(bool addToEnd)
 	}
 }
 
+void KTProjectManager::copyFrame(int index)
+{
+	ktDebug() << "KTProjectManager::copyFrame()" << endl;
+	KTLayer *layer = currentLayer();
+	if ( layer && layer->currentFrame() )
+	{
+// 		layer->copyFrame(index);
+		ktDebug() << "KTLayer::copyFrame" << index;
+		KTKeyFrame *frame = layer->frames()[index];
+		if ( frame )
+		{
+			SHOW_VAR(frame->components().count());
+			m_copyFrame = new KTKeyFrame(*frame);
+			SHOW_VAR(m_copyFrame->components().count());
+		}
+	}
+	else
+	{
+		ktFatal() << "--> No current layer" << endl;
+	}
+}
+
+void KTProjectManager::pasteFrame(int index )
+{
+	ktDebug() << "KTProjectManager::pasteFrame()" << endl;
+	KTLayer *layer = currentLayer();
+	if ( layer )
+	{
+		m_copyFrame->components().count();
+		layer->pasteFrame(index, m_copyFrame);
+	}
+	else
+	{
+		ktFatal() << "--> No current layer" << endl;
+	}
+}
 

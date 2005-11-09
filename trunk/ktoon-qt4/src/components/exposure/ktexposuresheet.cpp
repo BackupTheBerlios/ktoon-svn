@@ -37,7 +37,7 @@ KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, 
 	m_imgs <<  
 			QPixmap(KTOON_THEME_DIR+"/icons/add_layer.png" ) <<
 			QPixmap(KTOON_THEME_DIR+"/icons/remove_layer.png" ) <<
-			QPixmap(KTOON_THEME_DIR+"/icons/show_hide_all_layers.png" ) <<
+// 			QPixmap(KTOON_THEME_DIR+"/icons/show_hide_all_layers.png" ) <<
 			QPixmap(KTOON_THEME_DIR+"/icons/add_frame.png" ) <<
 			QPixmap(KTOON_THEME_DIR+"/icons/remove_frame.png" ) <<
 			QPixmap(KTOON_THEME_DIR+"/icons/lock.png" ) <<
@@ -68,7 +68,7 @@ void KTExposureSheet::setupButtons()
 	m_buttonGroup = new QButtonGroup(m_buttonsPanel);
 	connect(m_buttonGroup, SIGNAL(buttonClicked ( QAbstractButton *)), this, SLOT(actionButton( QAbstractButton *)));
 	QStringList toolTips;
-	toolTips << tr("Insert Layer") << tr("Remove Layer") << tr("Manage the layer visibility") << tr("Insert Keyframes") << tr("Remove Keyframe") << tr("Lock Frame") << tr("Move Keyframe Up") << tr("Move Keyframe Down");
+	toolTips << tr("Insert Layer") << tr("Remove Layer") << /*tr("Manage the layer visibility") <<*/ tr("Insert Keyframes") << tr("Remove Keyframe") << tr("Lock Frame") << tr("Move Keyframe Up") << tr("Move Keyframe Down");
 	
 	for(int i = 0; i < toolTips.count(); i++)
 	{
@@ -95,10 +95,20 @@ void KTExposureSheet::addScene(const QString &name)
 	
 	m_scenes->addTab(newLayer, name); // TODO: Necesitamos una forma facil de identificar scenas, puede ser por el indice de insersion
 	connect(newLayer, SIGNAL(layerVisibilityChanged( int, bool)), this, SIGNAL(layerVisibilityChanged( int, bool)));
-	connect(newLayer, SIGNAL(clickedFrame()), this, SIGNAL(frameSelected()));
+	
+	
+	
 	connect(newLayer, SIGNAL(cellSelected( int, int )), this, SIGNAL(frameSelected(int, int)));
 	connect(newLayer, SIGNAL(layerSelected(int)), this, SIGNAL(layerSelected(int)));
+	
+	
+	
+	
 	connect(newLayer, SIGNAL(requestInsertFrame(bool)), this, SIGNAL(requestInsertFrame(bool)));
+	
+	connect(newLayer, SIGNAL(requestCopyFrame(int)), this,   SIGNAL(requestCopyFrame(int)));
+	
+	connect(newLayer, SIGNAL(requestPasteFrame(int)), this,   SIGNAL(requestPasteFrame(int)));
 	
 	m_viewLayer = newLayer;
 }
@@ -124,30 +134,18 @@ void KTExposureSheet::applyAction(int action)
 		{
 			
 			emit requestInsertLayer();
-// 			m_viewLayer->insertLayer(100);
-// 			slotInsertLayer();
+			emit layerSelected(m_viewLayer->currentLayer());
+// 			m_viewLayer->insertFrames();
 			break;
 		}
 		case RemoveLayer:
 		{
 			emit requestRemoveLayer();
-// 			m_viewLayer->removeCurrentLayer();
-			break;
-		}
-		case ShowManageLayer:
-		{
-// 			QAbstractButton *p = m_buttonsPanel->find(ShowManageLayer);
-			QAbstractButton *p = m_buttonGroup->buttons()[ShowManageLayer];
-// 			m_layerManager->move( mapToGlobal( p->geometry().bottomLeft() ) );
-			m_layerManager->move(mapToParent(p->geometry().bottomLeft() ) );
-			m_layerManager->show();
 			break;
 		}
 		case InsertFrames:
 		{
-// 			m_viewLayer->setUseFrame();
 			m_viewLayer->insertFrames();
-// 			emit requestInsertFrame();
 			break;
 		}
 		case RemoveFrame:

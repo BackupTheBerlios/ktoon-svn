@@ -48,7 +48,7 @@ class KTExposureSheet : public KTModuleWidgetBase
 		KTExposureSheet(QWidget *parent = 0);
 		~KTExposureSheet();
 
-		enum Actions { /*NoAction = 0,*/ InsertLayer = 0, RemoveLayer, ShowManageLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
+		enum Actions { /*NoAction = 0,*/ InsertLayer = 0, RemoveLayer /*ShowManageLayer*/, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
 		
 		void addFrame(int idLayer, const QString &name, bool addedToEnd);
 		
@@ -92,6 +92,9 @@ class KTExposureSheet : public KTModuleWidgetBase
 		void requestRemoveFrame();
 		void requestMoveUpFrame();
 		void requestMoveDownFrame();
+		
+		void requestCopyFrame(int);
+		void requestPasteFrame(int);
 		
 		void frameSelected(int idLayer, int idFrame);
 		void layerSelected(int);

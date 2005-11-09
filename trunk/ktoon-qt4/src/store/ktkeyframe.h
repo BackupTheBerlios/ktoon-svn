@@ -36,6 +36,8 @@ class KTKeyFrame : public QObject
 	public:
 		KTKeyFrame(QObject *parent = 0);
 		KTKeyFrame(const QString &frameName, QObject * parent = 0);
+		KTKeyFrame(const KTKeyFrame &kf);
+		
 		
 		~KTKeyFrame();
 		void addComponent(AGraphicComponent *comp);
