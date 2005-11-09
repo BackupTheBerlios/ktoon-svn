@@ -109,6 +109,35 @@ void KTLayer::pasteFrame(const int& index, KTKeyFrame* copy)
 }
 
 
+void KTLayer::moveCurrentFrame( bool up)
+{
+	
+	if(currentFrame())
+	{
+		if(up)
+		{
+			//FIXME: verificar que el anterior frame exista
+			
+			if(m_frames[indexCurrentFrame()-1])
+			{
+				m_frames.swap ( indexCurrentFrame(), indexCurrentFrame()-1);
+				emit movedFrame(up);
+			}
+		}
+		else
+		{
+			//FIXME: verificar que el siguiente frame exista
+			if(m_frames[indexCurrentFrame()+1])
+			{
+				m_frames.swap ( indexCurrentFrame(), indexCurrentFrame()+1);
+				emit movedFrame(up);
+			}
+		}
+
+	}
+	
+}
+
 void KTLayer::setVisible(bool isVisible)
 {
 	ktDebug() << "KTLayer::setVisible(" << isVisible << ")" << endl;

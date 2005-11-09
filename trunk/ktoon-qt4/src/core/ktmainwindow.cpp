@@ -227,6 +227,8 @@ void KTMainWindow::createGUI()
 	
 	connect(m_exposureSheet, SIGNAL(requestPasteFrame(int)), m_projectManager, SLOT(pasteFrame(int)));
 	
+	connect(m_exposureSheet, SIGNAL(requestMoveFrame(bool)), m_projectManager, SLOT(moveFrame(bool)));
+	
 // 	connect(m_scenes, SIGNAL(sceneInserted( const QString &, int )), m_exposureSheet, SLOT(addScene( const QString &, int )));
 // 	connect(m_scenes, SIGNAL(sceneRenamed( const QString &, int )), m_exposureSheet, SLOT(renameScene(const QString &, int)));
 	
@@ -250,6 +252,10 @@ void KTMainWindow::createGUI()
 	connect(m_projectManager, SIGNAL(layerCreated(const QString &, bool)), this, SLOT(insertLayer(const QString &, bool)));
 	
 	connect(m_projectManager, SIGNAL(layerVisibilityChanged(int, bool)), this, SLOT(setLayerVisibilityChanged(int, bool)));
+	
+	connect(m_projectManager, SIGNAL(movedFrame(bool)), this, SLOT(moveFrame(bool)));
+	
+	
 	
 }
 
@@ -506,6 +512,12 @@ void KTMainWindow::insertFrame(const QString &name, bool addedToEnd)
 	
 	m_exposureSheet->addFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd);
 }
+
+void KTMainWindow::moveFrame(bool up)
+{
+	m_exposureSheet->moveFrame(up);
+}
+
 
 void KTMainWindow::selectFrame(int layer, int frame)
 {

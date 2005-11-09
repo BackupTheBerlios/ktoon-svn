@@ -52,6 +52,8 @@ class KTExposureSheet : public KTModuleWidgetBase
 		
 		void addFrame(int idLayer, const QString &name, bool addedToEnd);
 		
+		void moveFrame(bool up);
+		
 	private:
 		QList<QPixmap> m_imgs;
 		QGroupBox *m_buttonsPanel;
@@ -69,8 +71,8 @@ class KTExposureSheet : public KTModuleWidgetBase
 		void insertLayer(const QString& name);
 		void removeCurrentLayer();
 		void removeCurrentFrame();
-		void moveUpFrame();
-		void moveDownFrame();
+// 		void moveUpFrame();
+// 		void moveDownFrame();
 		
 		void applyAction(int action);
 		
@@ -90,8 +92,9 @@ class KTExposureSheet : public KTModuleWidgetBase
 		void layerVisibilityChanged( int idLayer, bool value);
 		
 		void requestRemoveFrame();
-		void requestMoveUpFrame();
-		void requestMoveDownFrame();
+		void requestMoveFrame(bool up);
+// 		void requestMoveUpFrame();
+// 		void requestMoveDownFrame();
 		
 		void requestCopyFrame(int);
 		void requestPasteFrame(int);

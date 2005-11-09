@@ -92,6 +92,7 @@ void KTTableExposure::applyAction(int action)
 		case CopyThisFrame:
 		{
 // 			ktDebug() << "requestCopyFrame()" << endl;
+			
 			emit requestCopyFrame(m_currentFrame);
 			break;
 		}

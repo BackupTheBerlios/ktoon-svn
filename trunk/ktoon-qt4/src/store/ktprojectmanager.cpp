@@ -180,6 +180,8 @@ void KTProjectManager::createLayer(bool addToEnd)
 	{
 		KTLayer *layer = scene->createLayer(addToEnd);
 		connect(layer, SIGNAL(frameCreated( const QString &, bool)), this, SIGNAL(frameCreated(  const QString& , bool)));
+		
+		connect(layer, SIGNAL(movedFrame(bool)), this, SIGNAL(movedFrame(bool))); 
 		connect(layer, SIGNAL(visibilityChanged(bool)), this, SLOT(emitLayerVisibility(bool)));
 	}
 	else
@@ -218,12 +220,10 @@ void KTProjectManager::createFrame(bool addToEnd)
 
 void KTProjectManager::copyFrame(int index)
 {
-	ktDebug() << "KTProjectManager::copyFrame()" << endl;
+	ktDebug() << "KTProjectManager::copyFrame()";
 	KTLayer *layer = currentLayer();
-	if ( layer && layer->currentFrame() )
+	if ( layer && layer->frames().count() > index )
 	{
-// 		layer->copyFrame(index);
-		ktDebug() << "KTLayer::copyFrame" << index;
 		KTKeyFrame *frame = layer->frames()[index];
 		if ( frame )
 		{
@@ -242,10 +242,11 @@ void KTProjectManager::pasteFrame(int index )
 {
 	ktDebug() << "KTProjectManager::pasteFrame()" << endl;
 	KTLayer *layer = currentLayer();
-	if ( layer )
+	if ( layer && m_copyFrame)
 	{
 		m_copyFrame->components().count();
 		layer->pasteFrame(index, m_copyFrame);
+// 		emit pastedFrame();
 	}
 	else
 	{
@@ -253,3 +254,11 @@ void KTProjectManager::pasteFrame(int index )
 	}
 }
 
+void KTProjectManager::moveFrame(bool up)
+{
+	KTLayer *layer = currentLayer();
+	if ( layer )
+	{
+		layer->moveCurrentFrame(up);
+	}
+}
