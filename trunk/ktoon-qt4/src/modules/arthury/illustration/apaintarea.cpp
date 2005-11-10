@@ -25,7 +25,7 @@
 #include <QPainter>
 #include <cmath>
 
-APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_brushColor(Qt::transparent), m_currentFrame(0), m_layer(0), m_scene(0), m_previewsFramesNumber(0), m_nextFramesNumber(0)
+APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_brushColor(Qt::transparent), m_currentFrame(0), m_layer(0), m_scene(0), m_previousFramesNumber(0), m_nextFramesNumber(0)
 {
 	m_redrawAll = true;
 	
@@ -160,22 +160,54 @@ void APaintArea::draw(QPainter *painter)
 	// draw visible layers
 	while ( layerIterator != layers.end() )
 	{
-		// hasta indice - previews y indice + next
 		
-		// Draw a frame
-		KTKeyFrame *frame = (*layerIterator)->frames()[ index ];
-		
-		if(frame && index < (*layerIterator)->frames().count() && (*layerIterator)->isVisible() )
+		if ( (*layerIterator)->isVisible() )
 		{
-			drawFrame(frame, painter);
+			// hasta indice - previews y indice + next
+			
+			float intensitive = 1;
+			for (int frameIndex = index-1; frameIndex > index-m_previousFramesNumber-1; frameIndex-- )
+			{
+				intensitive -= 0.25f;
+				
+				if ( frameIndex < 0 )
+				{
+					break;
+				}
+				
+				drawFrame((*layerIterator)->frames()[ frameIndex ], painter, intensitive );
+			}
+			
+			intensitive = 1;
+			for (int frameIndex = index+1; frameIndex < index+m_nextFramesNumber+1; frameIndex++ )
+			{
+				intensitive -= 0.25f;
+				
+				if ( frameIndex > (*layerIterator)->frames().count()-1 )
+				{
+					break;
+				}
+				
+				drawFrame((*layerIterator)->frames()[ frameIndex ], painter, intensitive );
+			}
+			
+			// Draw the current frame
+			KTKeyFrame *frame = (*layerIterator)->frames()[ index ];
+			
+			if(frame && index < (*layerIterator)->frames().count() )
+			{
+				drawFrame(frame, painter);
+			}
 		}
 		
 		++layerIterator;
 	}
 }
 
-void APaintArea::drawFrame(const KTKeyFrame *frame, QPainter *painter, int intensitive = -1)
+void APaintArea::drawFrame(const KTKeyFrame *frame, QPainter *painter, float intensitive)
 {
+	SHOW_VAR(intensitive);
+	
 	if ( frame  )
 	{
 		QList<AGraphicComponent *> componentList = frame->components();
@@ -189,9 +221,34 @@ void APaintArea::drawFrame(const KTKeyFrame *frame, QPainter *painter, int inten
 				if ( *it )
 				{
 					painter->save();
+					
+					QPen pen = (*it)->pen();
+					QBrush brush = (*it)->brush();
+					
+					if ( intensitive < 1 && intensitive >= 0 )
+					{
+						QColor penColor = Qt::gray;
+						QColor brushColor = Qt::gray;
 						
-					painter->setPen((*it)->pen());
-					painter->setBrush((*it)->brush());
+						const float factor = (1-intensitive); // FIXME: fix this ;)
+						
+						penColor.setHsv(0,0, static_cast<int>(factor * pen.color().alpha()) % 360 );
+						
+						brushColor.setHsv(0,0, static_cast<int>( factor * brush.color().alpha() ) % 360 );
+						
+						penColor.setAlpha(pen.color().alpha());
+						brushColor.setAlpha(brush.color().alpha());
+						
+						pen.setColor(penColor);
+						brush.setColor(brushColor);
+					}
+					else if ( intensitive > 1 && intensitive < 0)
+					{
+						ktWarning() << "Intensitive must be lesser than 1 - No effect";
+					}
+					
+					painter->setPen(pen);
+					painter->setBrush(brush);
 						
 					painter->drawPath((*it)->path());
 						
@@ -409,18 +466,20 @@ void APaintArea::redo()
 	}
 }
 
-void APaintArea::setPreviewsFrames(int n)
+void APaintArea::setPreviousFrames(int n)
 {
-	if ( n > 0 )
+	if ( n >= 0 )
 	{
-		m_previewsFramesNumber = n;
+		m_previousFramesNumber = n;
+		redrawAll();
 	}
 }
 
 void APaintArea::setNextFrames(int n)
 {
-	if ( n > 0)
+	if ( n >= 0)
 	{
 		m_nextFramesNumber = n;
+		redrawAll();
 	}
 }

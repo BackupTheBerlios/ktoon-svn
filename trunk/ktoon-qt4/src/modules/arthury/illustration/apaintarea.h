@@ -60,7 +60,7 @@ class APaintArea : public QWidget
 		void setLayer(int index);
 		void setScene(KTScene *scene);
 		
-		void setPreviewsFrames(int n);
+		void setPreviousFrames(int n);
 		void setNextFrames(int n);
 		
 	private:
@@ -89,7 +89,7 @@ class APaintArea : public QWidget
 		KTLayer *m_layer;
 		KTScene *m_scene;
 		
-		int m_previewsFramesNumber, m_nextFramesNumber;
+		int m_previousFramesNumber, m_nextFramesNumber;
 
 	public:
 		void setTool( AToolInterface *toolIface, const QString &tool);
@@ -112,7 +112,7 @@ class APaintArea : public QWidget
 		void mouseReleaseEvent(QMouseEvent *e);
 		void paintEvent(QPaintEvent *);
 		virtual void draw(QPainter *p);
-		virtual void drawFrame(const KTKeyFrame *frame, QPainter *painter, int intensitive = 1);
+		virtual void drawFrame(const KTKeyFrame *frame, QPainter *painter, float intensitive = 1);
 		void resizeEvent(QResizeEvent * event );
 		
 		

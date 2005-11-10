@@ -31,6 +31,8 @@
 #include <QDir>
 #include <QPluginLoader>
 
+#include "ktactionmanager.h"
+
 #include "afilterinterface.h"
 #include "atoolinterface.h"
 
@@ -50,6 +52,16 @@ class KTViewDocument : public KTMdiWindow
 		void close();
 		APaintArea *drawArea();
 		
+	public slots:
+		void disablePreviousOnionSkin();
+		void onePreviousOnionSkin();
+		void twoPreviousOnionSkin();
+		void threePreviousOnionSkin();
+		void disableNextOnionSkin();
+		void oneNextOnionSkin();
+		void twoNextOnionSkin();
+		void threeNextOnionSkin();
+		
 	private:
 		QActionGroup *gridGroup, *editGroup, *editGroup2, *viewNextGroup, *viewPreviousGroup;
 		QMenu *m_brushesMenu, *m_filterMenu;
@@ -64,6 +76,8 @@ class KTViewDocument : public KTMdiWindow
 		
 	private:
 		void createActions();
+		void setupViewActions();
+		
 		void createToolbar();
 		void createMenu();
 		void createTools();
@@ -74,6 +88,7 @@ class KTViewDocument : public KTMdiWindow
 		
 	private:
 		QDir m_pluginDirectory;
+		KTActionManager *m_actionManager;
 
 	private slots:
 		void showPos(const QPoint &p);	

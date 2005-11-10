@@ -46,7 +46,7 @@ void CCBar::paintEvent(QPaintEvent *)
 	
 	QPolygon m_border;
 	m_border.putPoints( 0, 6, m_offset, 0, 0, m_mask.height()/2, m_offset, m_mask.height(), m_mask.width()-m_offset, m_mask.height(), m_mask.width(),  m_mask.height()/2, m_mask.width()-m_offset, 0);
-
+	
 	QPainter p(&m_mask);
 	p.setPen(QPen(Qt::black,1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 	p.setBrush(Qt::red);
@@ -57,9 +57,14 @@ void CCBar::paintEvent(QPaintEvent *)
 	setMinimumSize( m_mask.size() );
 	
 	
-	painter.setPen(QPen(Qt::black,5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+	painter.setPen(QPen(palette().color(QPalette::Foreground ),5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 	
 	painter.drawPolygon(m_border);
+	
+	QPalette pal = palette();
+	
+	pal.setColor(QPalette::Background, pal.color(QPalette::Button ));
+	setPalette(pal);
 	
 }
 

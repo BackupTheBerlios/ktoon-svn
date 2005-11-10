@@ -198,8 +198,8 @@ void CCButton::paintMask()
 	
 	QPainter paintMask(&m_mask);
 	paintMask.setRenderHint(QPainter::Antialiasing);
-	paintMask.setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-	paintMask.setBrush(QBrush(Qt::black));
+	paintMask.setPen(QPen(palette().color(QPalette::Foreground ), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+	paintMask.setBrush(QBrush(palette().color(QPalette::Foreground )));
 	
 	paintMask.drawEllipse(QRect(rect().x(),rect().y(),m_diameter, m_diameter));
 	
@@ -228,7 +228,7 @@ void CCButton::paintEvent(QPaintEvent *e)
 	int internalRadio = m_diameter;
 	
 	// pen
-	painter.setPen(QPen(Qt::black, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+	painter.setPen(QPen(palette().color(QPalette::Foreground ), 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 	
 	path.addEllipse( rect().x(), rect().y(), m_diameter, m_diameter   );
 	painter.drawPath(path);
@@ -247,7 +247,7 @@ void CCButton::paintEvent(QPaintEvent *e)
 	path = QPainterPath();
 	
 	// pen
-	painter.setPen(QPen(Qt::black, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin) );
+	painter.setPen(QPen(palette().color(QPalette::Foreground ), 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin) );
 	internalRadio += 2;
 	
 	path.addEllipse( rect().x()+internalRadio, rect().y()+internalRadio, m_diameter-internalRadio*2, m_diameter-internalRadio*2   );

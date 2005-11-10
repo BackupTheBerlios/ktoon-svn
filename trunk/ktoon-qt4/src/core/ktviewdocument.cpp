@@ -38,7 +38,7 @@ KTViewDocument::KTViewDocument(KTScene *scene, QWidget *parent ) : KTMdiWindow(p
 {
 	setWindowIcon(QPixmap(KTOON_THEME_DIR+"/icons/layer_pic.png") ); // FIXME: new image for documents
 	
-	
+	m_actionManager = new KTActionManager(this);
 	
 	m_paintAreaContainer = new KTPaintAreaContainer(this);
 	
@@ -52,16 +52,12 @@ KTViewDocument::KTViewDocument(KTScene *scene, QWidget *parent ) : KTMdiWindow(p
 	m_paintAreaContainer->drawArea()->setScene( m_scene );
 	
 	createActions();
+	setupViewActions();
+	
 	createToolbar();
 	createTools();
 	createMenu();
 	
-	/**************************************/
-	// FIXME: delete this
-// 	DrawingArea *area  = new DrawingArea(0);
-// 	area->hide();
-// 	KTStatus->setDrawingArea(area);
-	/**************************************/
 	loadPlugins();
 }
 
@@ -169,62 +165,69 @@ void KTViewDocument::createActions()
 	connect(m_aClose, SIGNAL(triggered()), this, SLOT(close()));
 	m_aClose->setStatusTip(tr("Closes the active document"));
 	
+	
+}
+
+void KTViewDocument::setupViewActions()
+{
 	viewPreviousGroup = new QActionGroup( this );
 	viewPreviousGroup->setExclusive( true );
 	
-	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/no_previous.png" ), tr( "No Previous" ),  viewPreviousGroup);
-	a->setShortcut( Qt::Key_1);
-	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotNoPreviousOnionSkin()));
-	a->setCheckable ( true );
-	a->setStatusTip(tr("Disables previous onion skin visualization"));
+	KTAction *noPrevious = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/no_previous.png" ), tr( "No Previous" ), QKeySequence(Qt::Key_0), this, SLOT(disablePreviousOnionSkin()), m_actionManager, "no_previous" );
 	
-	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/previous.png" ), tr( "Previous One" ), viewPreviousGroup);
-	a->setShortcut( Qt::Key_2);
-	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotPreviousOnionSkin()));
-	a->setStatusTip(tr("Shows the previous onion skin" ));
-	a->setCheckable ( true );
+	viewPreviousGroup->addAction(noPrevious);
 	
-	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/previous2.png" ), tr( "Previous Two" ),  viewPreviousGroup);
-	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotPrevious2OnionSkin()));
-	a->setStatusTip(tr("Shows the previous 2 onion skins" ));
-	a->setCheckable ( true );
-	a->setShortcut( Qt::Key_3);
+	noPrevious->setCheckable ( true );
+	noPrevious->setStatusTip(tr("Disables previous onion skin visualization"));
 	
-	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/previous3.png" ), tr( "Previous Three" ),  viewPreviousGroup);
-	a->setCheckable ( true );
-	a->setShortcut( Qt::Key_4);
-	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotPrevious3OnionSkin()));
-	a->setStatusTip(tr("Shows the previous 3 onion skins" ));
+	noPrevious->setChecked(true);
 	
-	a->setChecked( true );
+	KTAction *onePrevious = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/previous.png" ), tr( "Previous One" ), QKeySequence(Qt::Key_1), this, SLOT(onePreviousOnionSkin()), m_actionManager, "previews_one");
 	
+	viewPreviousGroup->addAction(onePrevious);
+	
+	onePrevious->setStatusTip(tr("Shows the previous onion skin" ));
+	onePrevious->setCheckable ( true );
+	
+	KTAction *twoPrevious = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/previous2.png" ), tr( "Previous Two" ), QKeySequence(Qt::Key_2), this, SLOT(twoPreviousOnionSkin()), m_actionManager, "previews_two");
+	viewPreviousGroup->addAction(twoPrevious);
+	twoPrevious->setStatusTip(tr("Shows the previous 2 onion skins" ));
+	twoPrevious->setCheckable ( true );
+	
+	KTAction *threePrevious = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/previous3.png" ), tr( "Previous Three" ), QKeySequence(Qt::Key_3), this, SLOT(threePreviousOnionSkin()), m_actionManager, "previews_three");
+	viewPreviousGroup->addAction(threePrevious);
+	threePrevious->setCheckable ( true );
+	threePrevious->setStatusTip(tr("Shows the previous 3 onion skins" ));
+
+// 	// NEXT 
+
 	viewNextGroup = new QActionGroup( this );
 	viewNextGroup->setExclusive( true );
 	
-	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/no_next.png" ), tr( "No Next" ),  viewNextGroup);
-	a->setShortcut( Qt::CTRL+Qt::Key_1);
-	a->setCheckable ( true );
-	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotNoNextOnionSkin()));
-	a->setStatusTip(tr("Disables next onion skin visualization" ));
+	KTAction *noNext = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/no_next.png" ), tr( "No Next" ), QKeySequence(Qt::CTRL+Qt::Key_0), this, SLOT(disableNextOnionSkin()), m_actionManager, "no_next");
+	viewNextGroup->addAction(noNext);
 	
-	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/next.png" ), tr( "Next One" ),  viewNextGroup);
-	a->setShortcut( Qt::CTRL+Qt::Key_2);
-	a->setCheckable ( true );
-	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotNextOnionSkin()));
-	a->setStatusTip(tr("Shows the next onion skin"));
 	
-	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/next2.png" ), tr( "Next Two" ),  viewNextGroup);
-	a->setShortcut( Qt::CTRL+Qt::Key_3);
-	a->setToggleAction(true );
-	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotNext2OnionSkin()));
-	a->setStatusTip(tr("Shows the next 2 onion skins"));
+	noNext->setCheckable ( true );
+	noNext->setStatusTip(tr("Disables next onion skin visualization" ));
 	
-	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/next3.png" ), tr( "Next Three" ),  viewNextGroup);
-	a->setShortcut( Qt::CTRL+Qt::Key_4);
-	a->setToggleAction(true );
-	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotNext3OnionSkin()));
-	a->setStatusTip(tr("Shows the next 3 onion skins"));
-	a->setChecked( true );
+	KTAction *oneNext = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/next.png" ), tr( "Next One" ), QKeySequence(Qt::CTRL+Qt::Key_1), this, SLOT(oneNextOnionSkin()), m_actionManager, "next_one");
+	viewNextGroup->addAction(oneNext);
+	
+	oneNext->setCheckable ( true );
+	oneNext->setStatusTip(tr("Shows the next onion skin"));
+	
+	KTAction *twoNext = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/next2.png" ), tr( "Next Two" ), QKeySequence(Qt::CTRL+Qt::Key_2), this, SLOT(twoNextOnionSkin()), m_actionManager, "next_two");
+	viewNextGroup->addAction(twoNext);
+	
+	twoNext->setCheckable( true );
+	twoNext->setStatusTip(tr("Shows the next 2 onion skins"));
+	
+	KTAction *threeNext = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/next3.png" ), tr( "Next Three" ), QKeySequence(Qt::CTRL+Qt::Key_3), this, SLOT(threeNextOnionSkin()), m_actionManager, "next_three");
+	viewNextGroup->addAction(threeNext);
+	
+	threeNext->setToggleAction(true );
+	threeNext->setStatusTip(tr("Shows the next 3 onion skins"));
 }
 
 
@@ -534,6 +537,47 @@ APaintArea *KTViewDocument::drawArea()
 void KTViewDocument::setCursor(const QCursor &c)
 {
 	m_paintAreaContainer->drawArea()->setCursor(c);
+}
+
+
+void KTViewDocument::disablePreviousOnionSkin()
+{
+	m_paintAreaContainer->drawArea()->setPreviousFrames( 0 );
+}
+
+void KTViewDocument::onePreviousOnionSkin()
+{
+	m_paintAreaContainer->drawArea()->setPreviousFrames( 1 );
+}
+
+void KTViewDocument::twoPreviousOnionSkin()
+{
+	m_paintAreaContainer->drawArea()->setPreviousFrames( 2 );
+}
+
+void KTViewDocument::threePreviousOnionSkin()
+{
+	m_paintAreaContainer->drawArea()->setPreviousFrames( 3 );
+}
+// NEXT
+void KTViewDocument::disableNextOnionSkin()
+{
+	m_paintAreaContainer->drawArea()->setNextFrames( 0 );
+}
+
+void KTViewDocument::oneNextOnionSkin()
+{
+	m_paintAreaContainer->drawArea()->setNextFrames( 1 );
+}
+
+void KTViewDocument::twoNextOnionSkin()
+{
+	m_paintAreaContainer->drawArea()->setNextFrames( 2 );
+}
+
+void KTViewDocument::threeNextOnionSkin()
+{
+	m_paintAreaContainer->drawArea()->setNextFrames( 3 );
 }
 
 
