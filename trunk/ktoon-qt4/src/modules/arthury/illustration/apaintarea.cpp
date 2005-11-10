@@ -25,7 +25,7 @@
 #include <QPainter>
 #include <cmath>
 
-APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_brushColor(Qt::transparent), m_currentFrame(0), m_layer(0), m_scene(0)
+APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_brushColor(Qt::transparent), m_currentFrame(0), m_layer(0), m_scene(0), m_previewsFramesNumber(0), m_nextFramesNumber(0)
 {
 	m_redrawAll = true;
 	
@@ -157,37 +157,49 @@ void APaintArea::draw(QPainter *painter)
 	
 	int index = m_layer->frames().indexOf(m_currentFrame);
 	
+	// draw visible layers
 	while ( layerIterator != layers.end() )
-	{	
+	{
+		// hasta indice - previews y indice + next
+		
+		// Draw a frame
 		KTKeyFrame *frame = (*layerIterator)->frames()[ index ];
 		
 		if(frame && index < (*layerIterator)->frames().count() && (*layerIterator)->isVisible() )
 		{
-			QList<AGraphicComponent *> componentList = frame->components();
-		
-			if ( componentList.count() > 0)
-			{
-				QList<AGraphicComponent *>::iterator it = componentList.begin();
-			
-				while ( it != componentList.end() )
-				{
-					if ( *it )
-					{
-						painter->save();
-					
-						painter->setPen((*it)->pen());
-						painter->setBrush((*it)->brush());
-					
-						painter->drawPath((*it)->path());
-					
-						painter->restore();
-					}
-					++it;
-				}
-			}
+			drawFrame(frame, painter);
 		}
 		
 		++layerIterator;
+	}
+}
+
+void APaintArea::drawFrame(const KTKeyFrame *frame, QPainter *painter, int intensitive = -1)
+{
+	if ( frame  )
+	{
+		QList<AGraphicComponent *> componentList = frame->components();
+
+		if ( componentList.count() > 0)
+		{
+			QList<AGraphicComponent *>::iterator it = componentList.begin();
+				
+			while ( it != componentList.end() )
+			{
+				if ( *it )
+				{
+					painter->save();
+						
+					painter->setPen((*it)->pen());
+					painter->setBrush((*it)->brush());
+						
+					painter->drawPath((*it)->path());
+						
+					painter->restore();
+				}
+				++it;
+			}
+		}
 	}
 }
 
@@ -397,6 +409,18 @@ void APaintArea::redo()
 	}
 }
 
+void APaintArea::setPreviewsFrames(int n)
+{
+	if ( n > 0 )
+	{
+		m_previewsFramesNumber = n;
+	}
+}
 
-
-
+void APaintArea::setNextFrames(int n)
+{
+	if ( n > 0)
+	{
+		m_nextFramesNumber = n;
+	}
+}
