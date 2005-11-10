@@ -151,6 +151,7 @@ void KTExposureSheet::applyAction(int action)
 		case RemoveFrame:
 		{
 // 			m_viewLayer->removeFrame();
+			ktDebug() << "emit requestRemoveFrame();";
 			emit requestRemoveFrame();
 			break;
 		}

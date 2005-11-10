@@ -89,7 +89,6 @@ void KTLayerExposure::frameSelect(int id, int button, int x, int y)
 	ktDebug() << "KTLayerExposure: id layer " << m_id << " id frame " <<  m_layout->indexOf(m_frames[id])-1 << endl;
 	if(m_useFrame == id && !(m_frames[id]->isUsed()))
 	{
-		//FIXME: al tener dos o mas layers solo inserta el el primero
 		emit requestInsertFrame(true);
 	}
 }
@@ -166,7 +165,7 @@ void KTLayerExposure::invertFrames(int id1, int id2) // invert or swap??
 
 void KTLayerExposure::setUseFrames(const QString &name, bool addedToEnd)
 {
-	ktDebug( ) << "##############m_currentFrame "  << m_currentFrame << "m_useFrame " << m_useFrame << " name " << name << endl;
+// 	ktDebug( ) << "##############m_currentFrame "  << m_currentFrame << "m_useFrame " << m_useFrame << " name " << name << endl;
 
 	if( addedToEnd )
 	{
@@ -217,7 +216,6 @@ void KTLayerExposure::insertFrames()
 void KTLayerExposure::removeFrame(int id)
 {
 	int pos = m_layout->indexOf(m_frames[id]);
-	//FIXME:
 	
 	if(m_useFrame > 0 && m_frames[id]->isUsed())
 	{
@@ -227,19 +225,15 @@ void KTLayerExposure::removeFrame(int id)
 			m_frames.removeAt(id);
 			for( int i = id; i < m_frames.count(); i++)
 			{
-// 				ktDebug() << "new id for " << m_frames[i]->id() << " is " << m_frames[i]->id() -1<< endl;
 				m_frames[i]->setId(m_frames[i]->id()-1);
-				
 			}
 			frameSelect(id);
 			m_useFrame--;
-			insertFrame(m_frames.last()->id()+1, ""); // FIXME
+			insertFrame(m_frames.last()->id()+1, ""); 
 			
-// 			emit removedFrame(id);
 		}
 		else if(m_selected)
 		{
-// 			emit removedFrame(id);
 			m_layout->remove(m_frames[m_useFrame]);
 			m_frames.removeAt(m_useFrame);
 			for( int i = m_useFrame; i < m_frames.count(); i++)

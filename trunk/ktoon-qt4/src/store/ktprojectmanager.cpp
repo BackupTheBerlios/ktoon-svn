@@ -181,8 +181,12 @@ void KTProjectManager::createLayer(bool addToEnd)
 		KTLayer *layer = scene->createLayer(addToEnd);
 		connect(layer, SIGNAL(frameCreated( const QString &, bool)), this, SIGNAL(frameCreated(  const QString& , bool)));
 		
-		connect(layer, SIGNAL(movedFrame(bool)), this, SIGNAL(movedFrame(bool))); 
+		connect(layer, SIGNAL(frameMoved(bool)), this, SIGNAL(frameMoved(bool))); 
+		
+		connect(layer, SIGNAL(frameRemoved()), this, SIGNAL(frameRemoved()));
 		connect(layer, SIGNAL(visibilityChanged(bool)), this, SLOT(emitLayerVisibility(bool)));
+		
+		
 	}
 	else
 	{
@@ -260,5 +264,15 @@ void KTProjectManager::moveFrame(bool up)
 	if ( layer )
 	{
 		layer->moveCurrentFrame(up);
+	}
+}
+
+void KTProjectManager::removeFrame()
+{
+	ktDebug() << "emit KTProjectManager::removeFrame();";
+	KTLayer *layer = currentLayer();
+	if ( layer )
+	{
+		layer->removeCurrentFrame();
 	}
 }

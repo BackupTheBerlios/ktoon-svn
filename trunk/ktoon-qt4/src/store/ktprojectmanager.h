@@ -67,6 +67,7 @@ class KTProjectManager : public QObject
 		void copyFrame(int index);
 		void pasteFrame(int index);
 		void moveFrame(bool up);
+		void removeFrame();
 		
 	private slots:
 		// Layers
@@ -86,9 +87,8 @@ class KTProjectManager : public QObject
 		
 		// Frames
 		void frameCreated( const QString &name, bool addedToEnd);
-		void movedFrame(bool up);
-		
-// 		void pastedFrame();
+		void frameMoved(bool up);
+		void frameRemoved();
 		
 	private:
 		Documents m_documents;

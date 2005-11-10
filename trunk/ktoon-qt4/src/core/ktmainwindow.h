@@ -142,6 +142,8 @@ class KTMainWindow : public DMainWindow
 		void insertFrame( const QString &name, bool);
 		void selectFrame(int layer, int frame);
 		void moveFrame(bool up);
+		void removeFrame();
+		
 		// Scenes
 		void insertScene( const QString &name, bool);
 		

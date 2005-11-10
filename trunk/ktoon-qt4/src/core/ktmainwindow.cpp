@@ -229,6 +229,8 @@ void KTMainWindow::createGUI()
 	
 	connect(m_exposureSheet, SIGNAL(requestMoveFrame(bool)), m_projectManager, SLOT(moveFrame(bool)));
 	
+	connect(m_exposureSheet, SIGNAL(requestRemoveFrame()), m_projectManager, SLOT(removeFrame()));
+	
 // 	connect(m_scenes, SIGNAL(sceneInserted( const QString &, int )), m_exposureSheet, SLOT(addScene( const QString &, int )));
 // 	connect(m_scenes, SIGNAL(sceneRenamed( const QString &, int )), m_exposureSheet, SLOT(renameScene(const QString &, int)));
 	
@@ -253,7 +255,10 @@ void KTMainWindow::createGUI()
 	
 	connect(m_projectManager, SIGNAL(layerVisibilityChanged(int, bool)), this, SLOT(setLayerVisibilityChanged(int, bool)));
 	
-	connect(m_projectManager, SIGNAL(movedFrame(bool)), this, SLOT(moveFrame(bool)));
+	connect(m_projectManager, SIGNAL(frameMoved(bool)), this, SLOT(moveFrame(bool)));
+	
+	connect(m_projectManager, SIGNAL(frameRemoved()), this, SLOT(removeFrame()));
+	
 	
 	
 	
@@ -516,6 +521,11 @@ void KTMainWindow::insertFrame(const QString &name, bool addedToEnd)
 void KTMainWindow::moveFrame(bool up)
 {
 	m_exposureSheet->moveFrame(up);
+}
+void KTMainWindow::removeFrame()
+{
+	ktDebug() << "emit KTMainWindow::removeFrame()" ;
+	m_exposureSheet->removeCurrentFrame();
 }
 
 
