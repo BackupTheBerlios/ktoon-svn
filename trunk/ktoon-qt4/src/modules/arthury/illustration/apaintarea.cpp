@@ -160,8 +160,8 @@ void APaintArea::draw(QPainter *painter)
 	// draw visible layers
 	while ( layerIterator != layers.end() )
 	{
-		
-		if ( (*layerIterator)->isVisible() )
+		SHOW_VAR((*layerIterator)->layerName());
+		if ( (*layerIterator) && (*layerIterator)->isVisible() )
 		{
 			// hasta indice - previews y indice + next
 			
@@ -169,8 +169,8 @@ void APaintArea::draw(QPainter *painter)
 			for (int frameIndex = index-1; frameIndex > index-m_previousFramesNumber-1; frameIndex-- )
 			{
 				intensitive -= 0.25f;
-				
-				if ( frameIndex < 0 )
+
+				if ( frameIndex < 0 || frameIndex > (*layerIterator)->frames().count()-1 )
 				{
 					break;
 				}
@@ -187,7 +187,6 @@ void APaintArea::draw(QPainter *painter)
 				{
 					break;
 				}
-				
 				drawFrame((*layerIterator)->frames()[ frameIndex ], painter, intensitive );
 			}
 			
@@ -196,6 +195,7 @@ void APaintArea::draw(QPainter *painter)
 			
 			if(frame && index < (*layerIterator)->frames().count() )
 			{
+				ktDebug() << "CURR";
 				drawFrame(frame, painter);
 			}
 		}
