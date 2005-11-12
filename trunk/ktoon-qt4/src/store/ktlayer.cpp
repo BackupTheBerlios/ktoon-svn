@@ -139,6 +139,15 @@ void KTLayer::removeCurrentFrame()
 	}
 }
 
+void KTLayer::lockCurrentFrame()
+{
+	if ( m_currentFrame)
+	{
+		m_currentFrame->setLocked(!m_currentFrame->isLocked());
+		emit frameLocked(/*m_currentFrame->isLocked()*/);
+	}
+}
+
 void KTLayer::setVisible(bool isVisible)
 {
 // 	ktDebug() << "KTLayer::setVisible(" << isVisible << ")" << endl;

@@ -110,3 +110,14 @@ int KTScene::fps()
 	return m_fps;
 }
 
+void KTScene::removeLayer( int index)
+{
+	if(index < m_layers.count())
+	{
+		m_layers.removeAt(index);
+		emit layerRemoved(index);
+	}
+	
+}
+
+

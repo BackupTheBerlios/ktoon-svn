@@ -154,6 +154,7 @@ void KTProjectManager::createScene(bool addToEnd)
 	{
 		KTScene *scene = m_currentDocument->createScene(addToEnd);
 		connect(scene, SIGNAL(layerCreated( const QString&, bool)), this, SIGNAL(layerCreated( const QString &, bool)));
+		connect(scene, SIGNAL(layerRemoved( int)), this, SIGNAL(layerRemoved(int))) ;
 	}
 	else
 	{
@@ -184,6 +185,7 @@ void KTProjectManager::createLayer(bool addToEnd)
 		connect(layer, SIGNAL(frameMoved(bool)), this, SIGNAL(frameMoved(bool))); 
 		
 		connect(layer, SIGNAL(frameRemoved()), this, SIGNAL(frameRemoved()));
+		connect(layer, SIGNAL(frameLocked()), this, SIGNAL(frameLocked()));
 		connect(layer, SIGNAL(visibilityChanged(bool)), this, SLOT(emitLayerVisibility(bool)));
 		
 		
@@ -248,6 +250,7 @@ void KTProjectManager::pasteFrame(int index )
 	KTLayer *layer = currentLayer();
 	if ( layer && m_copyFrame)
 	{
+// 		layer->createFrame();
 		m_copyFrame->components().count();
 		layer->pasteFrame(index, m_copyFrame);
 // 		emit pastedFrame();
@@ -269,10 +272,32 @@ void KTProjectManager::moveFrame(bool up)
 
 void KTProjectManager::removeFrame()
 {
-	ktDebug() << "emit KTProjectManager::removeFrame();";
+// 	ktDebug() << "emit KTProjectManager::removeFrame();";
 	KTLayer *layer = currentLayer();
 	if ( layer )
 	{
 		layer->removeCurrentFrame();
 	}
 }
+
+void KTProjectManager::lockCurrentFrame()
+{
+	KTLayer *layer = currentLayer();
+	if ( layer )
+	{
+		layer->lockCurrentFrame();
+	}
+}
+
+void KTProjectManager::removeLayer()
+{
+	KTScene *scene = currentScene();
+	if( scene )
+	{
+		scene->removeLayer(scene->indexCurrentLayer());
+	}
+}
+
+
+
+

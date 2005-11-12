@@ -155,6 +155,8 @@ void KTLayerExposure::addFrame(const QString &text ) // FIXME!!
 	frame->show();
 }
 
+
+
 void KTLayerExposure::invertFrames(int id1, int id2) // invert or swap??
 {
 	m_layout->remove(m_frames[id1]);
@@ -179,11 +181,13 @@ void KTLayerExposure::setUseFrames(const QString &name, bool addedToEnd)
 	}
 	else
 	{
-		m_useFrame++;
-		m_layout->removeWidget(m_frames[m_useFrame]);
+// 		m_layout->removeWidget(m_frames[m_useFrame]);
 		m_layout->insertWidget( m_layout->indexOf(m_frames[m_currentFrame])+1, m_frames[m_useFrame], 10);
+		
 		m_frames[m_useFrame]->setName(name);
 		m_frames[m_useFrame]->setUsed( true );
+		m_useFrame++;
+
 	}
 }
 
@@ -192,7 +196,8 @@ void KTLayerExposure::insertFrames()
 	
 	if((m_frames[m_currentFrame]->isUsed() && m_selected ) || m_currentFrame == 0)
 	{
-		if(m_currentFrame == m_useFrame-1 || m_useFrame == 0 )
+		ktDebug() << "remove frame " << (m_layout->indexOf(m_frames[m_currentFrame]) == m_layout->indexOf(m_frames[m_useFrame])-1) << "||" << (m_useFrame == 0);
+		if(m_layout->indexOf(m_frames[m_currentFrame]) == m_layout->indexOf(m_frames[m_useFrame])-1 || m_useFrame == 0 )
 		{
 			emit requestInsertFrame(true);
 		}
@@ -213,38 +218,30 @@ void KTLayerExposure::insertFrames()
 }
 
 
+
 void KTLayerExposure::removeFrame(int id)
 {
-	int pos = m_layout->indexOf(m_frames[id]);
-	
-	if(m_useFrame > 0 && m_frames[id]->isUsed())
+	int pos = m_layout->indexOf(m_frames[id]) -1;
+	ESFrame *frame = m_frames[id];
+	if(frame  && m_frames[id]->isUsed() && m_frames[id]->isSelected())
 	{
-		if(m_frames[id]->isUsed() && m_frames[id]->isSelected())
+		m_layout->remove(m_frames[id]);
+		m_frames[id]->hide();
+		m_frames.removeAt(id);
+		for( int i = id; i < m_frames.count(); i++)
 		{
-			m_layout->remove(m_frames[id]);
-			m_frames.removeAt(id);
-			for( int i = id; i < m_frames.count(); i++)
-			{
-				m_frames[i]->setId(m_frames[i]->id()-1);
-			}
-			frameSelect(id);
-			m_useFrame--;
-			insertFrame(m_frames.last()->id()+1, ""); 
-			
+			m_frames[i]->setId(m_frames[i]->id()-1);
 		}
-		else if(m_selected)
+		if(pos != 0)
 		{
-			m_layout->remove(m_frames[m_useFrame]);
-			m_frames.removeAt(m_useFrame);
-			for( int i = m_useFrame; i < m_frames.count(); i++)
-			{
-				m_frames[i]->setId(i);
-			}
-			
-			m_useFrame--;
-			frameSelect(m_useFrame);
-			insertFrame(m_frames.last()->id()+1, ""); //FIXME
+			frameSelect(pos-1);
 		}
+		else
+		{
+			frameSelect(pos);
+		}
+		m_useFrame--;
+		insertFrame(m_frames.last()->id()+1, ""); 
 	}
 }
 
@@ -326,13 +323,12 @@ void KTLayerExposure::applyAction(int action)
 		}
 		case InsertFrames:
 		{
-			currentFrameIsUsed();
+			insertFrames();
 			break;
 		}
 		
 		case RenameLayer:
 		{
-			
 			break;
 		}
 		

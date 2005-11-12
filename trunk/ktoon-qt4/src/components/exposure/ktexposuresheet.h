@@ -53,6 +53,9 @@ class KTExposureSheet : public KTModuleWidgetBase
 		void addFrame(int idLayer, const QString &name, bool addedToEnd);
 		
 		void moveFrame(bool up);
+		void removeCurrentLayer();
+		void removeCurrentFrame();
+		void lockCurrentFrame();
 		
 	private:
 		QList<QPixmap> m_imgs;
@@ -69,8 +72,7 @@ class KTExposureSheet : public KTModuleWidgetBase
 		
 	public slots:
 		void insertLayer(const QString& name);
-		void removeCurrentLayer();
-		void removeCurrentFrame();
+
 // 		void moveUpFrame();
 // 		void moveDownFrame();
 		
@@ -93,9 +95,7 @@ class KTExposureSheet : public KTModuleWidgetBase
 		
 		void requestRemoveFrame();
 		void requestMoveFrame(bool up);
-// 		void requestMoveUpFrame();
-// 		void requestMoveDownFrame();
-		
+		void requestLockFrame();
 		void requestCopyFrame(int);
 		void requestPasteFrame(int);
 		

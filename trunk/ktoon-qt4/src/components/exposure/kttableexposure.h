@@ -47,7 +47,7 @@ class KTTableExposure : public QScrollArea
 	public:
 		enum Direction {Up = 0, Down};
 		
-		enum KTTAction{ RenameFrame = 0, RemoveThisFrame, LockThisFrame, InsertFrames, CopyThisFrame, PasteIntoFrame};
+		enum KTTAction{ RenameFrame = 0, RemoveThisFrame, LockThisFrame, CopyThisFrame, PasteIntoFrame};
 		KTTableExposure(int rows, int cols, QWidget *parent = 0);
 		~KTTableExposure();
 		

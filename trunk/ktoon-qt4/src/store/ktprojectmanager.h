@@ -59,7 +59,8 @@ class KTProjectManager : public QObject
 		void setCurrentLayer(int index);
 		void setLayerVisibility(int idLayer, bool value);
 		KTLayer *currentLayer();
-		
+		void removeLayer();
+				
 		// Frames
 		void createFrame(bool addToEnd = true);
 		KTKeyFrame *currentKeyFrame();
@@ -68,6 +69,7 @@ class KTProjectManager : public QObject
 		void pasteFrame(int index);
 		void moveFrame(bool up);
 		void removeFrame();
+		void lockCurrentFrame();
 		
 	private slots:
 		// Layers
@@ -84,11 +86,15 @@ class KTProjectManager : public QObject
 		// Layers
 		void layerCreated(const QString &name, bool addedToEnd);
 		void layerVisibilityChanged(int index, bool );
+		void layerRemoved(int );
+		
 		
 		// Frames
 		void frameCreated( const QString &name, bool addedToEnd);
 		void frameMoved(bool up);
 		void frameRemoved();
+		void frameLocked();
+		
 		
 	private:
 		Documents m_documents;

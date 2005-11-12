@@ -20,8 +20,8 @@
 
 #include <QCursor>
 #include <QApplication>
+#include <QToolTip>
 #include <QMouseEvent>
-// #include <Q3Frame>
 #include <QResizeEvent>
 #include <QKeyEvent>
 #include <QEvent>
@@ -127,6 +127,7 @@ void ESFrame::setUsed( bool in_is_used )
 	}
 	else
 	{
+// 		setPaletteBackgroundColor(qobject_cast<QWidget*>(parent())->palette().background () );
 		setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
 		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
 	}
@@ -278,7 +279,7 @@ void ESFrame::otherSelected(int id)
 
 void ESFrame::mousePressEvent( QMouseEvent *mouse_event )
 {
-	
+	QToolTip::showText(mapToGlobal ( mouse_event->pos()), "offset " + QString::number(m_id), this);
 	Q_CHECK_PTR( mouse_event );
 	if ( !is_used )
 	{
@@ -370,4 +371,5 @@ void ESFrame::resizeEvent ( QResizeEvent * e )
 
 void ESFrame::keyPressEvent(QKeyEvent *)
 {
+
 }

@@ -231,6 +231,10 @@ void KTMainWindow::createGUI()
 	
 	connect(m_exposureSheet, SIGNAL(requestRemoveFrame()), m_projectManager, SLOT(removeFrame()));
 	
+	connect(m_exposureSheet, SIGNAL(requestLockFrame()), m_projectManager, SLOT(lockCurrentFrame()));
+	
+	connect(m_exposureSheet, SIGNAL(requestRemoveLayer()), m_projectManager, SLOT(removeLayer()));
+	
 // 	connect(m_scenes, SIGNAL(sceneInserted( const QString &, int )), m_exposureSheet, SLOT(addScene( const QString &, int )));
 // 	connect(m_scenes, SIGNAL(sceneRenamed( const QString &, int )), m_exposureSheet, SLOT(renameScene(const QString &, int)));
 	
@@ -258,8 +262,8 @@ void KTMainWindow::createGUI()
 	connect(m_projectManager, SIGNAL(frameMoved(bool)), this, SLOT(moveFrame(bool)));
 	
 	connect(m_projectManager, SIGNAL(frameRemoved()), this, SLOT(removeFrame()));
-	
-	
+	connect(m_projectManager, SIGNAL(frameLocked()), this, SLOT(lockFrame()));
+	connect(m_projectManager, SIGNAL(layerRemoved(int )), this, SLOT(removeLayer(int)));
 	
 	
 }
@@ -488,6 +492,11 @@ void KTMainWindow::insertLayer(const QString &name, bool addedToEnd)
 	m_timeLine->createLayer( name );
 }
 
+void KTMainWindow::removeLayer(int index)
+{
+	m_exposureSheet->removeCurrentLayer();
+}
+
 void KTMainWindow::setLayerVisibilityChanged(int idLayer, bool isVisible)
 {
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
@@ -524,8 +533,12 @@ void KTMainWindow::moveFrame(bool up)
 }
 void KTMainWindow::removeFrame()
 {
-	ktDebug() << "emit KTMainWindow::removeFrame()" ;
 	m_exposureSheet->removeCurrentFrame();
+}
+
+void KTMainWindow::lockFrame()
+{
+	m_exposureSheet->lockCurrentFrame();
 }
 
 
@@ -535,7 +548,6 @@ void KTMainWindow::selectFrame(int layer, int frame)
 	
 	if ( doc )
 	{
-		ktDebug() << "SELECT LAYER: " << layer << " FRAME: " << frame << endl;
 		m_projectManager->currentScene()->setCurrentLayer(layer);
 		m_projectManager->setCurrentFrame( frame );
 		
@@ -570,3 +582,4 @@ void KTMainWindow::changeFPS(int fps)
 {
 	m_projectManager->currentScene()->setFPS( fps );
 }
+

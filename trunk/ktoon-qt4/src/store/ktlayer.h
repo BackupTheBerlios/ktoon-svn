@@ -48,6 +48,7 @@ class KTLayer : public QObject
 		void pasteFrame(const int& index, KTKeyFrame* copy);
 		void moveCurrentFrame( bool up);
 		void removeCurrentFrame();
+		void lockCurrentFrame();
 		
 		int indexCurrentFrame();
 		
@@ -62,6 +63,8 @@ class KTLayer : public QObject
 		void visibilityChanged(bool );
 		void frameMoved(bool up);
 		void frameRemoved();
+		void frameLocked();
+		
 	private:
 		Frames m_frames;
 		bool m_isVisible;

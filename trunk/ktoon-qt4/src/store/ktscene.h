@@ -46,13 +46,15 @@ class KTScene : public QObject
 		KTLayer *currentLayer();
 		void setCurrentLayer(int index);
 		int indexCurrentLayer();
-		
+		void removeLayer(int index);
+				
 		void setFPS(int fps);
 		int fps();
 		
 	signals:
 		void layerCreated(const QString &name, bool toEnd);
-
+		void layerRemoved(int index);
+				
 	private:
 		Layers m_layers;
 		KTLayer *m_currentLayer;

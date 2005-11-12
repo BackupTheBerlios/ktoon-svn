@@ -24,10 +24,7 @@
 #include <QLayout>
 #include <QLabel>
 #include <QBoxLayout>
-// #include "status.h"
 #include "ktdebug.h"
-// #include "layer.h"
-// #include <memory>
 
 KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent)
 	: QScrollArea(parent),m_numLayer(0), m_currentLayer(0), m_currentFrame(0)
@@ -83,28 +80,21 @@ void KTTableExposure::applyAction(int action)
 // 			lockFrame();
 			break;
 		}
-		case InsertFrames:
-		{
-// 			currentFrameIsUsed();
-			break;
-		}
-		
 		case CopyThisFrame:
 		{
-// 			ktDebug() << "requestCopyFrame()" << endl;
-			
 			emit requestCopyFrame(m_currentFrame);
 			break;
 		}
 		
 		case PasteIntoFrame:
 		{
-// 			ktDebug() << "requestPasteFrame()" << endl;
 			emit requestPasteFrame(m_currentFrame);
+			cellSelected(m_currentLayer, m_currentFrame);
 			break;
 		}
 	}
 }
+
 
 void KTTableExposure::clickedCell(int row, int col,int button,int gx,int gy)
 {	
@@ -195,12 +185,10 @@ void KTTableExposure::moveCurrentFrame(Direction dir)
 	if(dir == Up)
 	{
 		m_layers.at(m_currentLayer)->moveCurrentFrameUp();
-// 		emit requestMoveUpFrame();
 	}
 	else if(dir == Down)
 	{
 		m_layers.at(m_currentLayer)->moveCurrentFrameDown();
-// 		emit requestMoveDownFrame();
 	}
 }
 
@@ -211,17 +199,18 @@ void KTTableExposure::lockCurrentFrame()
 
 void KTTableExposure::removeCurrentLayer()
 {
-	if(m_numLayer > 1 && m_layers.at(m_currentLayer)->isSelected())
-	{
-		m_layout->remove( m_layers.at(m_currentLayer) );
+// 	if(m_numLayer > 1 && m_layers.at(m_currentLayer)->isSelected())
+// 	{
+// 		m_layout->removeWidget( m_layers.at(m_currentLayer) );
+		m_layers[m_currentLayer]->hide();
+// 		delete m_layers[m_currentLayer];
 		m_layers.removeAt(m_currentLayer);
 		for( int i = m_currentLayer; i < m_layers.count(); i++)
 		{
 			m_layers.at(i)->setId(i);
 		}
 		m_numLayer--;
-// 		emit (layerRemoved());
-	}
+// 	}
 }
 
 void KTTableExposure::removeLayer(int idLayer)
@@ -232,7 +221,6 @@ void KTTableExposure::removeLayer(int idLayer)
 	{
 		m_layers.at(i)->setId(i);
 	}
-// 	emit (layerRemoved());
 	m_numLayer--;
 }
 

@@ -150,31 +150,23 @@ void KTExposureSheet::applyAction(int action)
 		}
 		case RemoveFrame:
 		{
-// 			m_viewLayer->removeFrame();
-			ktDebug() << "emit requestRemoveFrame();";
 			emit requestRemoveFrame();
 			break;
 		}
 		case LockFrame:
 		{
-			m_viewLayer->lockCurrentFrame();
+// 			m_viewLayer->testLockFrame();
+			emit requestLockFrame();
 			break;
 		}
 		case MoveFrameUp:
 		{
-// 			emit requestMoveUpFrame();
-			ktDebug() << "requestMoveFrame(true)";
 			emit requestMoveFrame(true);
-// 			m_viewLayer->moveCurrentFrame(KTTableExposure::Up );
 			break;
 		}
 		case MoveFrameDown:
 		{
-			ktDebug() << "requestMoveFrame(false)";
-			
 			emit requestMoveFrame(false);
-// 			emit requestMoveDownFrame();
-// 			m_viewLayer->moveCurrentFrame(KTTableExposure::Down );
 			break;
 		}
 	}
@@ -249,3 +241,7 @@ void KTExposureSheet::moveFrame(bool up)
 	}
 }
 
+void KTExposureSheet::lockCurrentFrame()
+{
+	m_viewLayer->lockCurrentFrame();
+}
