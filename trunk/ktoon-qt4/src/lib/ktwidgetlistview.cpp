@@ -21,9 +21,10 @@
 #include "ktwidgetlistview.h"
 #include "ktwidgetlistitem.h"
 
+#include "ktdebug.h"
+
 KTWidgetListView::KTWidgetListView(QWidget * parent) : QScrollArea(parent),m_header(0),  m_itemSelected(0)
 {
-// 	setVerticalScrollBarPolicy (Qt::ScrollBarAlwaysOn);
 	m_container = new QFrame;
 	
 	m_layout = new QVBoxLayout(m_container);
@@ -70,36 +71,72 @@ void KTWidgetListView::setHeader(QWidget *header)
 
 void KTWidgetListView::addItem(KTWidgetListItem *item)
 {	
+	item->setMinimumHeight(20);
+	item->setMaximumHeight(20);
 	item->setParent(m_container);
 	m_layout->addWidget(item, 1, Qt::AlignTop);
 	
-	item->show();
+// 	item->show();
 	
-	m_items<<item;
+	m_items << item;
 	
-	connect(item, SIGNAL(selected()), this, SLOT(itemSelect()));
+	connect( item, SIGNAL(selected()), this, SLOT(itemSelect()) );
 	
 	m_container->adjustSize();
+	
+	if ( m_itemSelected == 0 )
+	{
+		selectItem( item );
+	}
+}
+
+void KTWidgetListView::removeItem(KTWidgetListItem *item)
+{
+	KT_FUNCINFO;
+	if ( item )
+	{
+		int index = m_layout->indexOf(item);
+		
+		if ( index >= 0)
+		{
+			m_layout->removeWidget(item);
+			
+			item->hide();
+			
+			if ( item == m_itemSelected )
+			{
+				delete m_itemSelected;
+				m_itemSelected = 0;
+			}
+			else
+			{
+				delete item;
+				item = 0;
+			}
+			
+			
+			if ( m_layout->itemAt(index) )
+			{
+				selectItem( qobject_cast<KTWidgetListItem *>(m_layout->itemAt(index)->widget()) );
+			}
+		}
+		else
+		{
+			ktError() << "Invalid item";
+		}
+	}
+	else
+	{
+		ktError() << "Invalid item";
+	}
 }
 
 void KTWidgetListView::itemSelect()
 {
-	KTWidgetListItem *itemSelected = qobject_cast<KTWidgetListItem *>(sender());
-	
-	if ( itemSelected && itemSelected != m_header )
+	if ( sender() )
 	{
-		QPalette pal = palette();
-		
-		if ( m_itemSelected )
-		{
-			m_itemSelected->setPalette(pal);
-		}
-		m_itemSelected = itemSelected;
-		
-		pal.setBrush(QPalette::Background, pal.highlight());
-		pal.setBrush(QPalette::Foreground, pal.base());
-		
-		m_itemSelected->setPalette(pal);
+		KTWidgetListItem *itemSelected = qobject_cast<KTWidgetListItem *>(sender());
+		selectItem( itemSelected );
 	}
 }
 
@@ -108,7 +145,48 @@ QWidget *KTWidgetListView::header()
 	return m_header;
 }
 
-KTWidgetListItem *KTWidgetListView::itemSelected()
+KTWidgetListItem *KTWidgetListView::currentItem() const
 {
 	return m_itemSelected;
+}
+
+void KTWidgetListView::selectItem(KTWidgetListItem *item)
+{
+	KT_FUNCINFO;
+	if ( item && item != m_itemSelected && item != m_header )
+	{
+		QPalette pal = palette();
+		
+		if ( m_itemSelected != 0)
+		{
+			ktDebug() << "Break";
+			m_itemSelected->setPalette(pal);
+		}
+		
+		m_itemSelected = item;
+		
+		pal.setBrush(QPalette::Background, pal.highlight());
+		pal.setBrush(QPalette::Foreground, pal.base());
+		
+		m_itemSelected->setPalette(pal);
+		emit itemSelected( m_layout->indexOf(item) );
+	}
+	else
+	{
+		ktError() << "Invalid item selected";
+	}
+}
+
+void KTWidgetListView::selectItem(int position)
+{
+	KT_FUNCINFO;
+	
+	if ( m_layout->itemAt(position) )
+	{
+		KTWidgetListItem *item = qobject_cast<KTWidgetListItem *>(m_layout->itemAt(position)->widget());
+		if ( item )
+		{
+			selectItem( item );
+		}
+	}
 }

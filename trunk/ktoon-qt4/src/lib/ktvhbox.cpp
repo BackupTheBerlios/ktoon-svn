@@ -104,7 +104,8 @@ bool KTVHBox::event( QEvent* ev )
 		case QEvent::ChildAdded:
 		{
 			QChildEvent* childEv = static_cast<QChildEvent *>( ev );
-			if ( childEv->child()->isWidgetType() ) {
+			if ( childEv->child()->isWidgetType() ) 
+			{
 				QWidget* w = static_cast<QWidget *>( childEv->child() );
 				static_cast<QBoxLayout *>( layout() )->addWidget( w );
 			}
@@ -113,7 +114,8 @@ bool KTVHBox::event( QEvent* ev )
 		case QEvent::ChildRemoved:
 		{
 			QChildEvent* childEv = static_cast<QChildEvent *>( ev );
-			if ( childEv->child()->isWidgetType() ) {
+			if ( childEv->child()->isWidgetType() ) 
+			{
 				QWidget* w = static_cast<QWidget *>( childEv->child() );
 				static_cast<QBoxLayout *>( layout() )->removeWidget( w );
 			}

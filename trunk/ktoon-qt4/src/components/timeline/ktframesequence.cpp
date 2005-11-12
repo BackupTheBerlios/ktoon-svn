@@ -24,8 +24,9 @@
 #include <qlayout.h>
 #include <qlabel.h>
 
-KTFrameSequence::KTFrameSequence( int ID, int count, KTWidgetListView *parent) : KTWidgetListItem(parent), m_ID(ID)
+KTFrameSequence::KTFrameSequence( int ID, int count, KTWidgetListView *parent) : KTWidgetListItem(parent), m_ID(ID), m_selectedFrameIndex(0)
 {
+	hide();
 	m_layout = new QHBoxLayout(this);
 	m_layout->setMargin(1);
 	m_layout->setSpacing(0);
@@ -46,6 +47,7 @@ void KTFrameSequence::createFrames(int count)
 	for(uint i = 0; i < count; i++)
 	{
 		TLFrame *nextFrame = new TLFrame( i, this );
+		nextFrame->setMinimumHeight(height());
 		
 		m_layout->addWidget(nextFrame, 0, Qt::AlignTop | Qt::AlignLeft);
 		
@@ -69,19 +71,23 @@ void KTFrameSequence::createFrames(int count)
 
 void KTFrameSequence::selectFrame(int position)
 {
-	TLFrame *selected = m_frames.at(position);
+	TLFrame *tlFSelected = m_frames.at(position);
 	
-	if ( !selected )
+	if ( !tlFSelected )
 	{
 		ktError() << "Invalid TLFrame" << endl;
 		return;
 	}
-	selected->setSelected( true );
-
-// 	TLFrameSequenceManager *fsm = ( TLFrameSequenceManager * )( parent_widget );
-// 	fsm -> getRuler() -> slotSetOffset( current_frame_sequence -> framePosition( selected_frame ) );
 	
-	emit frameSelected(selected);
+	if ( position != m_selectedFrameIndex )
+	{
+		tlFSelected->setSelected( true );
+		
+		emit frameSelected(tlFSelected);
+		emit selected();
+		
+		m_selectedFrameIndex = position;
+	}
 }
 
 void KTFrameSequence::setPosition(int pos)

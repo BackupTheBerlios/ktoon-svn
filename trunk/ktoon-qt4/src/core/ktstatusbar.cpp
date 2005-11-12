@@ -82,8 +82,6 @@ void KTStatusBar::addWidget ( QWidget *widget, int stretch, bool permanent)
 
 void KTStatusBar::advance(int step, int totalSteps)
 {
-	ktDebug() << "KTStatusBar::Advancing step: " << step << " total: " <<  totalSteps << endl;
-	
 	if ( totalSteps != -1 )
 	{
 		m_progressBar->setMaximum(totalSteps);

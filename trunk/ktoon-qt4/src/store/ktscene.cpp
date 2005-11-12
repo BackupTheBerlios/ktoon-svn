@@ -85,6 +85,11 @@ void KTScene::setCurrentLayer(int index)
 	if ( layer )
 	{
 		m_currentLayer = layer;
+		ktDebug() << m_currentLayer;
+	}
+	else
+	{
+		ktError() << "No layer!";
 	}
 }
 
@@ -112,9 +117,10 @@ int KTScene::fps()
 
 void KTScene::removeLayer( int index)
 {
-	if(index < m_layers.count())
+	if(index >= 0 && index < m_layers.count())
 	{
 		m_layers.removeAt(index);
+		setCurrentLayer( index );
 		emit layerRemoved(index);
 	}
 	

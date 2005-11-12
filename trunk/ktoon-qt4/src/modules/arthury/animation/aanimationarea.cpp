@@ -93,7 +93,7 @@ void AAnimationArea::drawFrames(QPainter *painter)
 
 void AAnimationArea::play()
 {
-	ktDebug() << "Playing!" << endl;
+	ktDebug() << "Playing!";
 	
 	m_draw = true;
 	
@@ -109,7 +109,7 @@ void AAnimationArea::play()
 
 void AAnimationArea::stop()
 {
-	ktDebug() << "Stopping" << endl;
+	ktDebug() << "Stopping";
 	m_timer->stop();
 // 	m_draw = false;
 	m_currentFramePosition = 0;
@@ -191,7 +191,13 @@ void AAnimationArea::render() // TODO: Extend to scenes
 								painter.setPen((*it)->pen());
 								painter.setBrush((*it)->brush());
 														
-								painter.drawPath((*it)->path());
+// 								painter.drawPath((*it)->path());
+								QList<QPolygonF> poligons =   (*it)->path().toSubpathPolygons();
+								QList<QPolygonF>::const_iterator it;
+								for(it = poligons.begin(); it != poligons.end(); ++it)
+								{
+									painter.drawPolygon(*it);
+								}
 								painter.restore();
 							}
 							++it;

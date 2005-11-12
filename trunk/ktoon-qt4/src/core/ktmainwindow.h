@@ -102,6 +102,8 @@ class KTMainWindow : public DMainWindow
 		
 		void setupHelpActions();
 		
+		void ui4project(QWidget *widget);
+		
 	protected:
 		/**
 	 	 *  Event for main window closing control

@@ -31,17 +31,6 @@ KTLayerSequence::KTLayerSequence(QWidget *parent) : KTWidgetListView(parent), m_
 	
 	setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
 	
-// 	m_defaultLayer = createNewLayer();
-	
-// 	new KTTimeLineLayer (tr("Layer %1").arg("1"), 1, m_layerContainer);
-// 	m_layers.append( m_defaultLayer );
-	
-// 	setMaximumHeight( sizeHint().height() ); // IMPORTANT
-
-// 	m_pCurrentLayer = m_defaultLayer;
-// 	m_pLastLayer = m_pCurrentLayer;
-// 	m_pCurrentLayer -> setSelected( true );
-// 	m_pCurrentLayer -> setEdited( true );
 }
 
 
@@ -51,12 +40,12 @@ KTLayerSequence::~KTLayerSequence()
 }
 
 
-void KTLayerSequence::resizeEvent(QResizeEvent *e)
-{
-	QSize nSize = e->size();
-	QWidget::resizeEvent( e );
-	widget()->resize( nSize.width(), /*widget()->*/height() );
-}
+// void KTLayerSequence::resizeEvent(QResizeEvent *e)
+// {
+// 	QSize nSize = e->size();
+// 	QWidget::resizeEvent( e );
+// 	widget()->resize( nSize.width(), /*widget()->*/height() );
+// }
 
 ListOfTLLayers KTLayerSequence::layers()
 {
@@ -69,7 +58,7 @@ void KTLayerSequence::setPalette(const QPalette &)
 
 KTTimeLineLayer * KTLayerSequence::createNewLayer(const QString &name, bool toEnd)
 {
-	ktDebug() << "KTLayerSequence::createNewLayer(" << name << "," << toEnd << ")"<< endl;
+	ktDebug() << "KTLayerSequence::createNewLayer(" << name << "," << toEnd << ")";
 	KTTimeLineLayer *newLayer = new KTTimeLineLayer( name, this);
 // 	newLayer->resize( width(), 24 );
 	newLayer->setMinimumHeight(24);
@@ -97,6 +86,8 @@ KTTimeLineLayer * KTLayerSequence::createNewLayer(const QString &name, bool toEn
 
 void KTLayerSequence::removeLayer()
 {
+	ktDebug() << "Remove layer";
+	removeItem(currentItem());
 }
 
 void KTLayerSequence::selectLayer(int id)

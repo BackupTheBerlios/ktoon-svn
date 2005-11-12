@@ -204,7 +204,8 @@ void KTTableExposure::removeCurrentLayer()
 // 		m_layout->removeWidget( m_layers.at(m_currentLayer) );
 		m_layers[m_currentLayer]->hide();
 // 		delete m_layers[m_currentLayer];
-		m_layers.removeAt(m_currentLayer);
+		KTLayerExposure * ly = m_layers.takeAt(m_currentLayer);
+		delete ly;
 		for( int i = m_currentLayer; i < m_layers.count(); i++)
 		{
 			m_layers.at(i)->setId(i);

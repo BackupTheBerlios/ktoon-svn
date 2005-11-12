@@ -278,10 +278,10 @@ void KTApplication::initDirectories()
 	
 	if ( ! home.exists() )
 	{
-		ktDebug() << tr("Initializing ktoon home") << endl;
+		ktDebug() << tr("Initializing ktoon home");
 		if ( ! home.mkdir(m_KTOON_HOME) )
 		{
-			ktError() << tr("I cannot create ktoon home %1").arg(m_KTOON_HOME) << endl;
+			ktError() << tr("I cannot create ktoon home %1").arg(m_KTOON_HOME);
 		}
 	}
 	
@@ -290,10 +290,10 @@ void KTApplication::initDirectories()
 	QDir repos (m_KTOON_REPOSITORY);
 	if ( ! repos.exists() )
 	{
-		ktDebug() << tr("Initializing repository %1").arg(m_KTOON_REPOSITORY) << endl;
+		ktDebug() << tr("Initializing repository %1").arg(m_KTOON_REPOSITORY);
 		if ( ! repos.mkdir(m_KTOON_REPOSITORY) )
 		{
-			ktError() << tr("I cannot create the repository") << endl;
+			ktError() << tr("I cannot create the repository");
 		}
 		
 		QStringList files = QStringList() << "bru" << "cpl" << "output" << "lbr" << "components";

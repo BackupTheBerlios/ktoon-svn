@@ -107,7 +107,6 @@ void KTWizard::back()
 
 void KTWizard::next()
 {
-	ktDebug() << "NEXT" << endl;
 	m_history.setCurrentIndex(m_history.currentIndex()+1);
 	
 	ktDebug() << m_history.currentIndex() << " " << m_history.count() << endl;

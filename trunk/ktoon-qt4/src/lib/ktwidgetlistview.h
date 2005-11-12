@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -36,15 +36,20 @@ class KTWidgetListView : public QScrollArea
 {
 	Q_OBJECT
 	public:
-		KTWidgetListView( QWidget * parent = 0);
+		KTWidgetListView( QWidget * parent = 0 );
 		~KTWidgetListView();
 		
 		void setHeader(QWidget *header);
 		
 		void addItem(KTWidgetListItem *item);
+		void removeItem(KTWidgetListItem *item);
 		
 		QWidget *header();
-		KTWidgetListItem *itemSelected();
+		KTWidgetListItem *currentItem() const;
+		
+	public slots:
+		void selectItem(KTWidgetListItem *item);
+		void selectItem(int position);
 		
 	private slots:
 		void itemSelect();
@@ -58,6 +63,9 @@ class KTWidgetListView : public QScrollArea
 		QList<KTWidgetListItem *> m_items;
 		
 		KTWidgetListItem *m_itemSelected;
+		
+	signals:
+		void itemSelected(int index);
 
 };
 

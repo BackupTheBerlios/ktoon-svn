@@ -58,6 +58,8 @@ class KTFrameSequence : public KTWidgetListItem
 	private:
 		void createFrames(int count);
 		QHBoxLayout *m_layout;
+		
+		int m_selectedFrameIndex;
 
 };
 

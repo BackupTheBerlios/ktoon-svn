@@ -37,22 +37,41 @@ class KTTimeLine : public KTModuleWidgetBase
 	public:
 		KTTimeLine(QWidget *parent = 0);
 		~KTTimeLine();
+				
+	private:
+		void setupPropertiesBar();
+		
+	private slots:
+		void emitNewFPS(const QString &);
+		
+	signals:
+		void fpsChanged(int);
 		
 	public slots:
 		void execAction(int action);
 		void createLayer(const QString &name, bool toEnd = true);
+		void removeCurrentLayer();
 		
 	signals:
-		void layerInserted();
-		void layerRemoved();
+		void requestInsertLayer();
+		void requestRemoveLayer();
 		
 		void requestChangeFPS(int fps);
+		
+		void layerSelected(int );
+		
+	private slots:
+		void selectCurrentLayer(int index);
 		
 	private:
 		KTVHBox *m_container;
 		QSplitter *m_splitter;
 		KTLayerManager *m_layerManager;
 		KTFrameSequenceContainer *m_sequenceManager;
+		
+		KTVHBox *m_propertiesBar;
+		
+		KTELabel *m_editLayer;
 };
 
 #endif

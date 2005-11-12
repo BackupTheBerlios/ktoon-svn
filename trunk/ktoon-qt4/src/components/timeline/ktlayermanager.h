@@ -25,6 +25,7 @@
 #include <QToolTip>
 #include <QLabel>
 #include <QScrollBar>
+#include <QButtonGroup>
 
 #include "ktvhbox.h"
 
@@ -73,7 +74,7 @@ class KTLayerManager : public KTVHBox
 		 * Select a layer action (Insert, remove, move up, move down...)
 		 * @param action 
 		 */
-		void selectLayerAction(int action);
+		void selectLayerAction(QAbstractButton *);
 		
 	signals:
 		void actionSelected(int);
@@ -92,6 +93,8 @@ class KTLayerManager : public KTVHBox
 		KTLayerSequence *m_sequence;
 		
 		bool m_allSelected, m_allVisible, m_allLock;
+		
+		QButtonGroup *m_layerGroup, *m_layerState;
 };
 
 #endif

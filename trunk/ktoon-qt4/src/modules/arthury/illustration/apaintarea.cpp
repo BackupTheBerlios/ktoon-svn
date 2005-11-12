@@ -99,7 +99,7 @@ void APaintArea::paintEvent(QPaintEvent *e)
 
 void APaintArea::setKeyFrame(int index)
 {
-	ktDebug() << "APaintArea::setKeyFrame(" << index << ")" << endl;
+	ktDebug() << "APaintArea::setKeyFrame(" << index << ")";
 	if ( m_layer )
 	{
 		KTKeyFrame *frame = m_layer->frames()[index];
@@ -111,14 +111,14 @@ void APaintArea::setKeyFrame(int index)
 		}
 		else
 		{
-			ktFatal() << "Frame not exists!!!" << endl;
+			ktFatal() << "Frame not exists!!!";
 		}
 	}
 }
 
 void APaintArea::setLayer(int index)
 {
-	ktDebug( ) << "APaintArea::setLayer(" << index << ")" << endl;
+	ktDebug( ) << "APaintArea::setLayer(" << index << ")";
 	if ( m_scene )
 	{
 		KTLayer *layer = m_scene->layers()[index];
@@ -130,7 +130,7 @@ void APaintArea::setLayer(int index)
 		}
 		else
 		{
-			ktFatal() << "Layer not exists!!!" << endl;
+			ktFatal() << "Layer not exists!!!";
 		}
 	}
 }
@@ -145,7 +145,7 @@ void APaintArea::setScene(KTScene *scene)
 	}
 	else
 	{
-		ktFatal() << "Layer not exists!!!" << endl;
+		ktFatal() << "Layer not exists!!!";
 	}
 	
 }
@@ -247,8 +247,15 @@ void APaintArea::drawFrame(const KTKeyFrame *frame, QPainter *painter, float int
 					
 					painter->setPen(pen);
 					painter->setBrush(brush);
-						
-					painter->drawPath((*it)->path());
+					
+					QList<QPolygonF> poligons =   (*it)->path().toSubpathPolygons();
+					QList<QPolygonF>::const_iterator it;
+					for(it = poligons.begin(); it != poligons.end(); ++it)
+					{
+						painter->drawPolygon(*it);
+					}
+					
+// 					painter->drawPath();
 						
 					painter->restore();
 				}
@@ -382,7 +389,7 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 				rect.translate(m_xpos, m_ypos);
 				update(rect);
 				
-				ktDebug() << "Adding component" << endl;
+				ktDebug() << "Adding component";
 				
 				m_currentGraphic->setPath(m_currentTool->path());
 				m_currentGraphic->setPen(painter.pen());
@@ -390,7 +397,7 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 				
 				m_currentFrame->addComponent(  m_currentGraphic );
 				
-				ktDebug() << "Components count: " << m_currentFrame->components().count() << endl;
+				ktDebug() << "Components count: " << m_currentFrame->components().count();
 				
 				m_undoComponents.clear();
 	#if 0

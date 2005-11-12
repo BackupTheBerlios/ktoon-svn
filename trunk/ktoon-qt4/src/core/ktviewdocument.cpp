@@ -381,7 +381,7 @@ void KTViewDocument::loadPlugins()
 		QPluginLoader loader(m_pluginDirectory.absoluteFilePath(fileName));
 		QObject *plugin = loader.instance();
 		
-		ktDebug() << "******FILE: " << fileName << endl;
+		ktDebug() << "******FILE: " << fileName;
 		
 		if (plugin)
 		{
@@ -396,7 +396,7 @@ void KTViewDocument::loadPlugins()
 								
 				for (it = keys.begin(); it != keys.end(); ++it)
 				{
-					ktDebug() << "*******Filter Loaded: " << *it << endl;
+					ktDebug() << "*******Filter Loaded: " << *it;
 					
 					QAction *act = aFilter->actions()[*it];
 					if ( act )
@@ -414,7 +414,7 @@ void KTViewDocument::loadPlugins()
 				
 				for (it = keys.begin(); it != keys.end(); ++it)
 				{
-					ktDebug() << "*******Tool Loaded: " << *it << endl;
+					ktDebug() << "*******Tool Loaded: " << *it;
 					
 					QAction *act = aTool->actions()[*it];
 					if ( act )
@@ -428,7 +428,7 @@ void KTViewDocument::loadPlugins()
 		}
 		else
 		{
-			ktError() << tr("Not load, please try to rebuild from the scratch") << endl;
+			ktError() << tr("Not load, please try to rebuild from the scratch");
 		}
 	}
 }

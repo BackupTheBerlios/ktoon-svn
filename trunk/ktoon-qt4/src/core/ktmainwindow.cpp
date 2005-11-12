@@ -110,13 +110,6 @@ void KTMainWindow::setupMenu()
 	
 	m_fileMenu->addAction(m_actionManager->find("NewFile"));
 	m_fileMenu->addAction(m_actionManager->find("OpenFile"));
-
-	// <TEST>
-	KTAction *play = new KTAction(QIcon(), "Play (test)", QKeySequence(), m_viewCamera->animationArea(), SLOT(play()), m_actionManager, "play");
-	m_fileMenu->addAction(play);
-	KTAction *stop = new KTAction(QIcon(), "Stop (test)", QKeySequence(), m_viewCamera->animationArea(), SLOT(stop()), m_actionManager, "stop");
-	m_fileMenu->addAction(stop);
-	// </TEST>
 	
 	QMenu *recents = new QMenu( this );
 	connect( recents, SIGNAL( activated( int ) ), SLOT( openRecent( int ) ) );
@@ -213,27 +206,7 @@ void KTMainWindow::createGUI()
 	m_exposureSheet->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/exposure_sheet.png"));
 	toolWindow(DDockWindow::Right)->addWidget(tr("Exposure Sheet"),m_exposureSheet);
 	
-	connect(m_exposureSheet, SIGNAL(requestInsertFrame(bool)), m_projectManager, SLOT(createFrame(bool)));
-	
-	connect(m_exposureSheet, SIGNAL(requestInsertLayer()), m_projectManager, SLOT(createLayer()));
-	
-	connect(m_exposureSheet, SIGNAL(frameSelected( int, int )), this, SLOT(selectFrame(int,int)));
-	
-	connect(m_exposureSheet, SIGNAL(layerVisibilityChanged( int, bool)), m_projectManager, SLOT(setLayerVisibility( int, bool)));
-	
-	connect(m_exposureSheet, SIGNAL(layerSelected( int)), m_projectManager, SLOT(setCurrentLayer( int)));
-	
-	connect(m_exposureSheet, SIGNAL(requestCopyFrame(int)), m_projectManager, SLOT(copyFrame(int)));
-	
-	connect(m_exposureSheet, SIGNAL(requestPasteFrame(int)), m_projectManager, SLOT(pasteFrame(int)));
-	
-	connect(m_exposureSheet, SIGNAL(requestMoveFrame(bool)), m_projectManager, SLOT(moveFrame(bool)));
-	
-	connect(m_exposureSheet, SIGNAL(requestRemoveFrame()), m_projectManager, SLOT(removeFrame()));
-	
-	connect(m_exposureSheet, SIGNAL(requestLockFrame()), m_projectManager, SLOT(lockCurrentFrame()));
-	
-	connect(m_exposureSheet, SIGNAL(requestRemoveLayer()), m_projectManager, SLOT(removeLayer()));
+	ui4project( m_exposureSheet );
 	
 // 	connect(m_scenes, SIGNAL(sceneInserted( const QString &, int )), m_exposureSheet, SLOT(addScene( const QString &, int )));
 // 	connect(m_scenes, SIGNAL(sceneRenamed( const QString &, int )), m_exposureSheet, SLOT(renameScene(const QString &, int)));
@@ -243,6 +216,7 @@ void KTMainWindow::createGUI()
 	m_timeLine->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/time_line.png"));
 	toolWindow(DDockWindow::Bottom)->addWidget(tr("Time Line"),m_timeLine);
 	connect(m_timeLine, SIGNAL(requestChangeFPS(int)), this, SLOT(changeFPS( int )));
+	ui4project( m_timeLine );
 	
 	//////////////////
 	KToonScript *m_scriptEditor = new KToonScript(this);
@@ -495,6 +469,7 @@ void KTMainWindow::insertLayer(const QString &name, bool addedToEnd)
 void KTMainWindow::removeLayer(int index)
 {
 	m_exposureSheet->removeCurrentLayer();
+	m_timeLine->removeCurrentLayer();
 }
 
 void KTMainWindow::setLayerVisibilityChanged(int idLayer, bool isVisible)
@@ -583,3 +558,27 @@ void KTMainWindow::changeFPS(int fps)
 	m_projectManager->currentScene()->setFPS( fps );
 }
 
+void KTMainWindow::ui4project(QWidget *widget)
+{
+	connect(widget, SIGNAL(requestInsertFrame(bool)), m_projectManager, SLOT(createFrame(bool)));
+	
+	connect(widget, SIGNAL(requestInsertLayer()), m_projectManager, SLOT(createLayer()));
+	
+	connect(widget, SIGNAL(frameSelected( int, int )), this, SLOT(selectFrame(int,int)));
+	
+	connect(widget, SIGNAL(layerVisibilityChanged( int, bool)), m_projectManager, SLOT(setLayerVisibility( int, bool)));
+	
+	connect(widget, SIGNAL(layerSelected( int)), m_projectManager, SLOT(setCurrentLayer( int)));
+	
+	connect(widget, SIGNAL(requestCopyFrame(int)), m_projectManager, SLOT(copyFrame(int)));
+	
+	connect(widget, SIGNAL(requestPasteFrame(int)), m_projectManager, SLOT(pasteFrame(int)));
+	
+	connect(widget, SIGNAL(requestMoveFrame(bool)), m_projectManager, SLOT(moveFrame(bool)));
+	
+	connect(widget, SIGNAL(requestRemoveFrame()), m_projectManager, SLOT(removeFrame()));
+	
+	connect(widget, SIGNAL(requestLockFrame()), m_projectManager, SLOT(lockCurrentFrame()));
+	
+	connect(widget, SIGNAL(requestRemoveLayer()), m_projectManager, SLOT(removeLayer()));
+}

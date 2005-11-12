@@ -37,19 +37,8 @@ class KTFrameSequenceContainer : public KTVHBox
 		KTFrameSequenceManager *manager();
 		
 	private:
-		void setupPropertiesBar();
-		
-	private slots:
-		void emitNewFPS(const QString &);
-		
-	signals:
-		void fpsChanged(int);
-		
-	private:
 		KTTLRuler *m_ruler;
 		KTFrameSequenceManager *m_manager;
-		
-		KTVHBox *m_propertiesBar;
 		
 };
 

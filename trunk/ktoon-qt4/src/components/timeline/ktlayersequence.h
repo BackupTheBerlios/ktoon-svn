@@ -64,7 +64,7 @@ class KTLayerSequence : public KTWidgetListView
 		KTTimeLineLayer *m_pCurrentLayer, *m_pLastLayer;
 	
 	protected:
-		void resizeEvent(QResizeEvent *e);
+// 		void resizeEvent(QResizeEvent *e);
 
 };
 

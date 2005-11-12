@@ -48,9 +48,9 @@ class KTFrameSequenceManager : public KTWidgetListView
 		void insertFrameSequence();
 		void removeFrameSequence();
 		void setCurrentFrame(TLFrame *);
+		void selectFrame(int index);
 			
 	protected:
-// 		QSize sizeHint() const;
 		
 	private:
 		ListOfFrameSequences m_sequences;

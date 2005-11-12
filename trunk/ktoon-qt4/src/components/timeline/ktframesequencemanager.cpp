@@ -40,7 +40,7 @@ KTFrameSequenceManager::~KTFrameSequenceManager()
 void KTFrameSequenceManager::insertFrameSequence()
 {
 	KTFrameSequence *newFrameSequence = new KTFrameSequence(m_sequences.count(),100, this );
-	newFrameSequence->setMinimumHeight(24);
+// 	newFrameSequence->setMinimumHeight(24);
 	
 	connect(newFrameSequence, SIGNAL(frameSelected(TLFrame *)), this, SLOT(setCurrentFrame(TLFrame *)));
 
@@ -53,50 +53,17 @@ void KTFrameSequenceManager::insertFrameSequence()
 	newFrameSequence->show();
 	m_sequences.append( newFrameSequence );
 	m_lastSequence = newFrameSequence;
+	
+	if ( m_currentFrameSequence == 0)
+	{
+		m_currentFrameSequence = m_lastSequence;
+	}
 }
 
 void KTFrameSequenceManager::removeFrameSequence()
 {
-// 	if ( m_sequences.count() > 1 )
-// 	{
-// 		KTFrameSequence *bridgeFrameSequence;
-// 
-//       		//Case 1: When the sequence of frames is the last within the list
-// 		if ( m_currentFrameSequence == m_lastSequence )
-// 		{
-// 			QListIterator<KTFrameSequence*> iterator(m_sequences);
-// 			
-// 			
-// 			m_sequences.removeAt(m_currentFrameSequence->position());
-// 			
-// 			bridgeFrameSequence = m_sequences.last();
-// 			delete m_currentFrameSequence;
-// 			m_currentFrameSequence = bridgeFrameSequence;
-// 			m_lastSequence = m_currentFrameSequence;
-// // 			m_currentFrame= 0;
-// 		}
-//       		//Case 2: When the sequence of frames is any except the last
-// 		else
-// 		{
-// 			bridgeFrameSequence = m_sequences.at( m_currentFrameSequence->position() );
-// 
-// 	  		//Reaccomodate every frame_sequence next to the frame_sequence that is going to be deleted
-// 			
-// 			
-// 			QListIterator<KTFrameSequence*> iterator(m_sequences);
-// 			
-// 			while ( iterator.hasNext() )
-// 			{
-// 				KTFrameSequence *next = iterator.next();
-// 				next->setPosition( next->position() - 1 );
-// 			}
-// 
-// 			m_vBox->layout()->remove(m_currentFrameSequence);
-// 			m_sequences.removeAt( m_currentFrameSequence->position()+1 );
-// 			delete m_currentFrameSequence;
-// 			m_currentFrameSequence = bridgeFrameSequence;
-// 		}
-// 	}
+	ktDebug() << "Removing frame sequence";
+	removeItem( currentItem() );
 }
 
 void KTFrameSequenceManager::setCurrentFrame(TLFrame *frame)
@@ -116,9 +83,10 @@ void KTFrameSequenceManager::setCurrentFrame(TLFrame *frame)
 	m_currentFrame->setSelected(true);
 }
 
-// QSize KTFrameSequenceManager::sizeHint() const
-// {
-// 	const QSize sh(499, KTVHBox::sizeHint().height() );
-// 	
-// 	return sh;
-// }
+void KTFrameSequenceManager::selectFrame(int index)
+{
+	if ( m_currentFrameSequence )
+	{
+		m_currentFrameSequence->selectFrame(index);
+	}
+}

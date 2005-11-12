@@ -39,7 +39,7 @@
  * <b>Date of Creation: June 22 - 2004.</b>\n
  * This is a widget that represents the timeline frames, as they are used in Flash.
  */
-class TLFrame : public Q3Frame
+class TLFrame : public QFrame
 {
     Q_OBJECT
 
@@ -245,10 +245,6 @@ private:
     int m_ID;
 
 signals:
-    /**
-     * This signal is emitted when the TLFrame is selected.
-     */
-	void selected();// DEPRECATED
     
     //FIXME
     void selected(int);
