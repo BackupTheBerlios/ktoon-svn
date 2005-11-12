@@ -15,6 +15,10 @@ AGraphicComponent::AGraphicComponent() : QObject(), m_pPath(), m_pColor(Qt::blac
 {	
 }
 
+AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : QObject(toCopy.parent()), m_pPath(toCopy.m_pPath), m_pColor(toCopy.m_pColor), m_pPen(toCopy.m_pPen)
+{
+}
+
 AGraphicComponent::~AGraphicComponent()
 {
 }

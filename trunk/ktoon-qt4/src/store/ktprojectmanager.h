@@ -99,7 +99,7 @@ class KTProjectManager : public QObject
 	private:
 		Documents m_documents;
 		KTDocument *m_currentDocument;
-		KTKeyFrame *m_copyFrame;
+		const KTKeyFrame *m_copyFrame;
 };
 
 #endif

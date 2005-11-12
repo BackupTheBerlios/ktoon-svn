@@ -32,12 +32,13 @@
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-
+class AGraphicComponent;
 class AGraphicComponent : public QObject
 {
 	Q_OBJECT
 	public:
 		AGraphicComponent();
+		AGraphicComponent(const AGraphicComponent &);
 		virtual ~AGraphicComponent();
 		
 		virtual QDomElement createXML( QDomDocument &doc ) { return QDomElement(); }; // TODO: Implement me

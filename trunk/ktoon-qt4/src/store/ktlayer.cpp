@@ -98,12 +98,10 @@ void KTLayer::pasteFrame(const int& index, KTKeyFrame* copy)
 {
 	if ( index > m_frames.count() )
 	{
-		ktDebug() << "TO END";
 		m_frames << copy;
 	}
 	else
 	{
-		ktDebug() << "REPLACE";
 		m_frames.replace(index, copy);
 	}
 }

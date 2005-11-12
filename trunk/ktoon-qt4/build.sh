@@ -2,7 +2,7 @@
 
 # Script for update the .pro files && build the app
 # Author: Krawek
-# Version: 0.0.5
+# Version: 0.1.0
 
 APPNAME="KToon"
 APPVER="0.8alpha-svn"
@@ -19,6 +19,7 @@ OPTION_NODEBUG=-1
 OPTION_GL=-1
 ASSUME_YES=0
 
+LOG_FILE=build.log
 STAT_FILE=/tmp/ktoon_stat_file-$RANDOM
 
 export PATH=/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin
@@ -33,11 +34,13 @@ NULLC='\033[0;0m'
 function qpinfo ()
 {
 	echo -e $GREEN '*' $NULLC $1
+	echo $1 >> $LOG_FILE
 }
 
 function qperror ()
 {
 	echo -e $RED '*' $NULLC $1
+	echo $1 >> $LOG_FILE
 }
 
 function qpelec ()
@@ -124,7 +127,7 @@ function addMenuEntry()
 
 function ktinstall()
 {
-	$MAKE install 2> /dev/null >/dev/null
+	$MAKE install 2>> $LOG_FILE >/dev/null || qperror "I can't install!"
 	
 	if [ $(basename `echo $SHELL`) == "bash" ]
 	then
@@ -194,6 +197,7 @@ function updateMakefiles()
 function main()
 {
 	echo
+	echo `date` > $LOG_FILE
 	qpinfo "###################################"
 	if [ $OPTION_GL -eq 1 ]
 	then
@@ -246,7 +250,7 @@ function main()
 	
 	echo > $STAT_FILE
 	END=0
-	( make  >/dev/null 2>/dev/null && echo END=1 > $STAT_FILE ) & 
+	( make  >/dev/null 2>> $LOG_FILE && echo END=1 > $STAT_FILE ) & 
 	while [ $END -eq 0 ]
 	do
 		if [ -f $STAT_FILE ]

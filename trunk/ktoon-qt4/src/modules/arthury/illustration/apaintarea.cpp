@@ -160,7 +160,6 @@ void APaintArea::draw(QPainter *painter)
 	// draw visible layers
 	while ( layerIterator != layers.end() )
 	{
-		SHOW_VAR((*layerIterator)->layerName());
 		if ( (*layerIterator) && (*layerIterator)->isVisible() )
 		{
 			// hasta indice - previews y indice + next
@@ -195,7 +194,6 @@ void APaintArea::draw(QPainter *painter)
 			
 			if(frame && index < (*layerIterator)->frames().count() )
 			{
-				ktDebug() << "CURR";
 				drawFrame(frame, painter);
 			}
 		}

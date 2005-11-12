@@ -233,9 +233,11 @@ void KTProjectManager::copyFrame(int index)
 		KTKeyFrame *frame = layer->frames()[index];
 		if ( frame )
 		{
-			SHOW_VAR(frame->components().count());
-			m_copyFrame = new KTKeyFrame(*frame);
-			SHOW_VAR(m_copyFrame->components().count());
+			m_copyFrame = frame;
+			if ( m_copyFrame->components()[0] == frame->components()[0] )
+			{
+				ktError() << "HEREEEEEEEEEEEEEE";
+			}
 		}
 	}
 	else
@@ -250,10 +252,7 @@ void KTProjectManager::pasteFrame(int index )
 	KTLayer *layer = currentLayer();
 	if ( layer && m_copyFrame)
 	{
-// 		layer->createFrame();
-		m_copyFrame->components().count();
-		layer->pasteFrame(index, m_copyFrame);
-// 		emit pastedFrame();
+		layer->pasteFrame(index, new KTKeyFrame(*m_copyFrame) );
 	}
 	else
 	{
