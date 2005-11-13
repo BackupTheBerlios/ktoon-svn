@@ -1,15 +1,25 @@
-//
-// C++ Implementation: agraphiccomponent
-//
-// Description: 
-//
-//
-// Author: Jorge Cuadrado <kuadrosx@toonka.com>, (C) 2005
-//
-// Copyright: See COPYING file that comes with this distribution
-//
-//
+/***************************************************************************
+ *   Copyright (C) 2004 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                    *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
 #include "agraphiccomponent.h"
+#include "ktdebug.h"
 
 AGraphicComponent::AGraphicComponent() : QObject(), m_pPath(), m_pColor(Qt::black), m_pPen(m_pColor, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin)
 {
@@ -73,4 +83,42 @@ void AGraphicComponent::setPen(const QColor &color)
 void AGraphicComponent::setColor(const QColor &color)
 {
 	m_pColor = color;
+}
+
+void AGraphicComponent::scale(double sX, double sY)
+{
+	QPointF position = m_pPath.currentPosition();
+	QMatrix mId(1,0,0,1, 0, 0);
+	
+	mId.scale(sX, sY);
+	m_pPath = mId.map(m_pPath);
+	translate( position.x(), position.y());
+}
+
+void AGraphicComponent::shear(double sX, double sY)
+{
+	QPointF position = m_pPath.currentPosition();
+	QMatrix mId(1,0,0,1, 0, 0);
+	
+	mId.shear(sX, sY);
+	m_pPath = mId.map(m_pPath);
+	translate( position.x(), position.y());
+}
+
+void AGraphicComponent::translate(double sX, double sY)
+{
+	QPointF position = m_pPath.currentPosition();
+	QMatrix mId(1,0,0,1, 0, 0);
+	
+	mId.translate(sX-position.x(), sY-position.y());
+	m_pPath = mId.map(m_pPath);	
+}
+
+void AGraphicComponent::rotate( double angle )
+{
+	QPointF position = m_pPath.currentPosition();
+	QMatrix mId(1,0,0,1, position.x(), position.y());
+	
+	mId.rotate(angle);
+	m_pPath = mId.map(m_pPath);	
 }

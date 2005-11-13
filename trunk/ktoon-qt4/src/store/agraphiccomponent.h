@@ -56,6 +56,11 @@ class AGraphicComponent : public QObject
 		virtual void setPen(const QPen &pen);
 		virtual void setPen(const QColor &color);
 		
+		void scale(double sX, double sY);
+		void shear(double sX, double sY);
+		void translate(double sX, double sY);
+		void rotate( double angle ); 
+		
 	protected:
 		QPainterPath m_pPath;
 		QColor m_pColor;

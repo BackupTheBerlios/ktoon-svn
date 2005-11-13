@@ -311,6 +311,13 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 	{
 		if (event->button() == Qt::LeftButton && !m_currentFrame->isLocked())
 		{
+#if 0
+			if ( m_currentGraphic )
+			{
+				m_currentGraphic->shear(2,2);
+				redrawAll();
+			}
+#endif
 			m_currentGraphic = new AGraphicComponent;
 	
 			if ( ! m_path.isEmpty() )
