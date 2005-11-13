@@ -71,13 +71,12 @@ void KTWidgetListView::setHeader(QWidget *header)
 
 void KTWidgetListView::addItem(KTWidgetListItem *item)
 {	
-	item->setMinimumHeight(20);
-	item->setMaximumHeight(20);
+	item->setMinimumHeight(24);
+	item->setMaximumHeight(24);
 	item->setParent(m_container);
 	m_layout->addWidget(item, 1, Qt::AlignTop);
 	
 // 	item->show();
-	
 	m_items << item;
 	
 	connect( item, SIGNAL(selected()), this, SLOT(itemSelect()) );

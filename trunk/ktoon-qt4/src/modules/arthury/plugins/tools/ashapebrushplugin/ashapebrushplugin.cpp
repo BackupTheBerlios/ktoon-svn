@@ -55,9 +55,9 @@ QRect AShapeBrushPlugin::move(const QString &brush, QPainter &painter,const QPai
 	}
 	
 	m_path.addPath(path);
-// 	m_path.setFillRule( Qt::WindingFill );
+	m_path.setFillRule( Qt::WindingFill );
 	
-	painter.drawPath(m_path);
+	painter.drawPath(path);
 	
 	boundingRect = path.boundingRect().toRect();
 	

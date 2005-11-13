@@ -18,48 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTFRAMESEQUENCEMANAGER_H
-#define KTFRAMESEQUENCEMANAGER_H
+#ifndef KTTIMELINEFRAME_H
+#define KTTIMELINEFRAME_H
 
-#include "ktvhbox.h"
-#include <QList>
-
-#include <QScrollArea>
-
-#include "kttlruler.h"
-#include "ktframesequence.h"
-#include "ktwidgetlistview.h"
-
-typedef QList<KTFrameSequence *> ListOfFrameSequences;
+#include <QWidget>
+#include <QMouseEvent>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-
-class KTFrameSequenceManager : public KTWidgetListView
+class KTTimeLineFrame : public QWidget
 {
 	Q_OBJECT
 	public:
-		KTFrameSequenceManager(QWidget *parent);
-		~KTFrameSequenceManager();
+		KTTimeLineFrame(int id, QWidget *parent = 0);
+		~KTTimeLineFrame();
+		void setSelected(bool opt);
+		void setSpecial(bool opt);
+		void setKey(bool opt);
+		void setUsed(bool opt);
+		void setOffset(bool opt);
+		void setId(int id);
 		
-	public slots:
-		void insertFrameSequence();
-		void removeFrameSequence();
-		void setCurrentFrame(KTTimeLineFrame *);
-		void selectFrame(int index);
-			
 	protected:
+		void mousePressEvent( QMouseEvent *mEv );
+		void paintEvent( QPaintEvent *pEv );
+		virtual void paintSelected(QPainter *p);
+		virtual void paintNotSelected(QPainter *p);
 		
 	private:
-		ListOfFrameSequences m_sequences;
+		bool m_isUsed, m_isSpecial, m_isSelected, m_isOffset, m_isKey;
+		int m_ID;
 		
-		KTFrameSequence *m_lastSequence, *m_currentFrameSequence;
-
-		QScrollBar *m_scroll;
-		
-		KTTimeLineFrame *m_currentFrame;
-
+	signals:
+		void selected(int);
 };
 
 #endif

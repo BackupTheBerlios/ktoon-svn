@@ -46,7 +46,7 @@ void KTFrameSequence::createFrames(int count)
 {
 	for(uint i = 0; i < count; i++)
 	{
-		TLFrame *nextFrame = new TLFrame( i, this );
+		KTTimeLineFrame *nextFrame = new KTTimeLineFrame(i, this);
 		nextFrame->setMinimumHeight(height());
 		
 		m_layout->addWidget(nextFrame, 0, Qt::AlignTop | Qt::AlignLeft);
@@ -58,7 +58,7 @@ void KTFrameSequence::createFrames(int count)
 		if ( i == 0 )
 		{
 			nextFrame->setKey( true );
-			nextFrame->setLast( true );
+// 			nextFrame->setLast( true );
 		}
 		
 		m_frames.append(nextFrame);
@@ -71,7 +71,7 @@ void KTFrameSequence::createFrames(int count)
 
 void KTFrameSequence::selectFrame(int position)
 {
-	TLFrame *tlFSelected = m_frames.at(position);
+	KTTimeLineFrame *tlFSelected = m_frames.at(position);
 	
 	if ( !tlFSelected )
 	{
@@ -100,7 +100,7 @@ int KTFrameSequence::position()
 	return m_ID;
 }
 
-TLFrame *KTFrameSequence::frameAt(int pos)
+KTTimeLineFrame *KTFrameSequence::frameAt(int pos)
 {
 	return m_frames.at(pos);
 }

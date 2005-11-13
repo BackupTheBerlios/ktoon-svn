@@ -24,12 +24,14 @@
 #include <qwidget.h>
 
 #include "tlframe.h"
+#include "kttimelineframe.h"
+
 #include "ktwidgetlistview.h"
 #include "ktwidgetlistitem.h"
 
 #include <QHBoxLayout>
 
-typedef QList<TLFrame *> ListOfTimeLineFrames;
+typedef QList<KTTimeLineFrame *> ListOfTimeLineFrames;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -43,10 +45,10 @@ class KTFrameSequence : public KTWidgetListItem
 		~KTFrameSequence();
 		void setPosition(int pos);
 		int position();
-		TLFrame *frameAt(int pos);
+		KTTimeLineFrame *frameAt(int pos);
 		
 	signals:
-		void frameSelected(TLFrame *);
+		void frameSelected(KTTimeLineFrame *);
 		
 	public slots:
 		void selectFrame(int position);

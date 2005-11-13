@@ -40,9 +40,8 @@ KTFrameSequenceManager::~KTFrameSequenceManager()
 void KTFrameSequenceManager::insertFrameSequence()
 {
 	KTFrameSequence *newFrameSequence = new KTFrameSequence(m_sequences.count(),100, this );
-// 	newFrameSequence->setMinimumHeight(24);
 	
-	connect(newFrameSequence, SIGNAL(frameSelected(TLFrame *)), this, SLOT(setCurrentFrame(TLFrame *)));
+	connect(newFrameSequence, SIGNAL(frameSelected(KTTimeLineFrame *)), this, SLOT(setCurrentFrame(KTTimeLineFrame *)));
 
 // 	connect( newFrameSequence, SIGNAL( frameInserted() ), SLOT( slotUpdateMaxUsedFrames() ) );
 // 	connect( newFrameSequence, SIGNAL( frameRemoved() ), SLOT( slotUpdateMaxUsedFrames() ) );
@@ -66,8 +65,10 @@ void KTFrameSequenceManager::removeFrameSequence()
 	removeItem( currentItem() );
 }
 
-void KTFrameSequenceManager::setCurrentFrame(TLFrame *frame)
+void KTFrameSequenceManager::setCurrentFrame(KTTimeLineFrame *frame)
 {
+	KT_FUNCINFO;
+	
 	if (!frame|| m_currentFrame == frame)
 	{
 		ktError() << "Invalid Frame" << endl;

@@ -11,7 +11,8 @@ HEADERS += tlframe.h \
            kttlruler.h \
            ktframesequencemanager.h \
            ktframesequence.h \
-           ktframesequencecontainer.h 
+           ktframesequencecontainer.h \
+           kttimelineframe.h 
 SOURCES += tlframe.cpp \
            kttimeline.cpp \
            ktlayermanager.cpp \
@@ -20,7 +21,8 @@ SOURCES += tlframe.cpp \
            kttlruler.cpp \
            ktframesequencemanager.cpp \
            ktframesequence.cpp \
-           ktframesequencecontainer.cpp 
+           ktframesequencecontainer.cpp \
+           kttimelineframe.cpp 
 INCLUDEPATH += ../../../src/lib \
 ../../../src/images/images
 MOC_DIR = .moc
