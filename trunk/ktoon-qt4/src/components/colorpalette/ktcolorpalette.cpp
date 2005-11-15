@@ -156,40 +156,33 @@ void KTColorPalette::setupButtons()
 
 void KTColorPalette::setupChooserTypeColor()
 {
-	QFrame *chooserTypeColor = new QFrame(this);
 	
+	QFrame *chooserTypeColor = new QFrame(this);
+// 	
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
 	chooserTypeColor->setLayout(layout);
-	
+// 	
 	layout->setSizeConstraint(QLayout::SetFixedSize);
-	
+// 	
 	m_displayValueColor = new KTValueColor(chooserTypeColor);
 	layout->addWidget(m_displayValueColor);
-	
+// 	
 	QBoxLayout *layoutContainer = new QBoxLayout(QBoxLayout::LeftToRight);
-	
+// 	
 	QFrame *left = new QFrame(chooserTypeColor);
 	QBoxLayout *layoutLeft = new QBoxLayout(QBoxLayout::TopToBottom);
 	left->setLayout(layoutLeft);
-	
+// 	
 	m_outlineAndFillColors = new KTDualColorButton(m_currentOutlineColor,m_currentFillColor, left);
+	
+// 	connect( m_outlineAndFillColors, SIGNAL(fgChanged(const QColor &)), this, SLOT(setColor( const QColor &)));
+// 	connect( m_outlineAndFillColors, SIGNAL(bgChanged(const QColor &)), this, SLOT(setColor( const QColor &)));
+	
+	connect( m_outlineAndFillColors, SIGNAL(currentChanged(KTDualColorButton::DualColor)),this, SLOT(changeTypeColor(KTDualColorButton::DualColor)));
+// 	connect( m_outlineAndFillColors, SIGNAL(selectionChanged()), this, SLOT(changeTypeColor()));
+	
 	layoutLeft->addWidget(m_outlineAndFillColors);
-	
-// 	m_fillColor = new FillColor(QPixmap( KTOON_HOME+"/images/icons/fillcolor.png" ), left);
-// 	connect(m_fillColor, SIGNAL( activated()) , this, SLOT(changeTypeColor()));
-// 	
-// 	layoutFillOutLine->addWidget(m_fillColor);
-// 	m_fillColor->slotSetColor(m_currentFillColor);
-	
-// 	layoutLeft->addLayout(layoutFillOutLine);
-// 	
-// 	m_outlineColor = new FillColor(QPixmap( KTOON_HOME+"/images/icons/written_pic.png" ), left);
-// 	connect(m_outlineColor, SIGNAL( activated()) , this, SLOT(changeTypeColor()));
-	
-// 	m_outlineColor->setActive( true );
-// 	layoutFillOutLine->addWidget(m_outlineColor);
-// 	m_outlineColor->slotSetColor(m_currentOutlineColor);
-	
+
 	QBoxLayout *layoutName = new  QBoxLayout(QBoxLayout::TopToBottom);
 	layoutName->addWidget(new QLabel( tr("<b>HTML</b>"), left));
 	m_nameColor = new QLineEdit(left);
@@ -197,36 +190,33 @@ void KTColorPalette::setupChooserTypeColor()
 	
 	layoutName->addWidget(m_nameColor);
 	layoutLeft->addLayout(layoutName);
-	
-// 	layout->addWidget(left);
+// 	
+// // 	layout->addWidget(left);
 	layoutContainer->addWidget(left);
-	
-// 	QBoxLayout * layoutColorPicker= new QBoxLayout(QBoxLayout::LeftToRight);
+// 	
+// // 	QBoxLayout * layoutColorPicker= new QBoxLayout(QBoxLayout::LeftToRight);
 	m_colorPicker = new KTColorPicker(chooserTypeColor);
 	connect( m_colorPicker, SIGNAL(newCol(int, int)), this, SLOT(setHS(int, int)));
 	connect(m_displayValueColor, SIGNAL(hueChanged(int)), m_colorPicker, SLOT(setH(int)));
 	connect(m_displayValueColor, SIGNAL(saturationChanged(int)), m_colorPicker, SLOT(setS(int)));
+	
 	layoutContainer->addWidget(m_colorPicker);
-
-// 	layoutColorPicker->addWidget(m_colorPicker);
+	
 	m_luminancePicker = new KTLuminancePicker( chooserTypeColor );
 	connect( m_luminancePicker, SIGNAL( newHsv(int, int, int )), this, SLOT (syncHsv(int, int, int)));
 
 	m_luminancePicker->setMaximumWidth(15);
-
 	m_luminancePicker->setMinimumWidth(15);
-	
 	connect(m_displayValueColor, SIGNAL(valueChanged(int)), m_luminancePicker, SLOT(setVal( int )));
 	layoutContainer->addWidget(m_luminancePicker);
-// 	layoutColorPicker->addWidget(m_luminancePicker);
 	layoutContainer->setSpacing(3);
-	
+// 
 	layout->addLayout(layoutContainer);
 	addChild( chooserTypeColor );
 	this->layout()->setAlignment( chooserTypeColor, Qt::AlignTop);
 	connect(m_displayValueColor, SIGNAL(colorChanged(const QColor&)), this, SLOT(setColor(const QColor &)));
 	setColor(m_currentOutlineColor);
-	
+// 	
 	m_centralWidget->addItem(chooserTypeColor, m_icon, tr("Color Mixer"));
 	
 }
@@ -240,12 +230,12 @@ void KTColorPalette::setupChooserGradient()
 	list << tr( "None" ) << tr( "Linear" ) << tr( "Radial" );
 	m_gradientTypes = new QComboBox( blockGradient );
 	m_gradientTypes -> insertStringList( list );
-	QBoxLayout *displayGradient = new QBoxLayout(QBoxLayout::LeftToRight);
+	QBoxLayout *displayGradient = new QBoxLayout( QBoxLayout::LeftToRight);
 	
-	m_gradientViewer = new GradientViewer( blockGradient );
+	m_gradientViewer = new GradientViewer( this );
 	displayGradient->addWidget(m_gradientViewer);
 	
-	m_gradient = new ColorGradientSelector( blockGradient );
+	m_gradient = new ColorGradientSelector( this );
 	displayGradient->addWidget(m_gradient);
 	blockGradient->boxLayout()->addLayout(displayGradient);
 	addChild(blockGradient);
@@ -255,24 +245,10 @@ void KTColorPalette::setupChooserGradient()
 
 void KTColorPalette::setColor(const QColor& color)
 {
-
+	ktDebug() << "KTColorPalette::setColor " << color; 
 	m_outlineAndFillColors->setCurrentColor(color);
-// 	if( m_outlineColor->isActive() )
-// 	{
-// 		m_outlineColor->slotSetColor(color);
-// 		m_currentOutlineColor = color;
-// 	}
-// 	else
-// 	{
-// 		m_fillColor->slotSetColor(color);
-// 		m_currentFillColor = color;
-// 	}
 	
-	if(m_displayValueColor != sender())
-	{
-// 		ktDebug( ) << "KTColorPalette0 "<< color << endl;
-		m_displayValueColor->setColor(color);
-	}
+	m_displayValueColor->setColor(color);
 	
 	m_colorPicker->setCol(color.hue(), color.saturation ());
 
@@ -284,8 +260,27 @@ void KTColorPalette::setColor(const QColor& color)
 	emit colorChanged( m_outlineAndFillColors->foreground(),m_outlineAndFillColors->background() );
 }
 
-void KTColorPalette::changeTypeColor()
+void KTColorPalette::changeTypeColor(KTDualColorButton::DualColor s)
 {
+	
+// 	setColor( m_outlineAndFillColors->currentColor());
+	
+// 	if(KTDualColorButton::Background)
+// 	{
+// 	setColor(  );
+// 	m_outlineAndFillColors->setCurrentColor(color);
+	if(s == KTDualColorButton::Background)
+	{
+		m_outlineAndFillColors->setCurrent( s);
+		setColor( m_outlineAndFillColors->background());
+	}
+	else
+	{
+		m_outlineAndFillColors->setCurrent( s);
+		setColor( m_outlineAndFillColors->foreground());
+	}
+// 	}
+// 	setColor( m_outlineAndFillColors->currentColor());
 // 	if(m_outlineColor == sender())
 // 	{
 // 		m_fillColor->setActive(false);
@@ -304,15 +299,6 @@ void KTColorPalette::syncHsv(int h, int s, int v)
 {
 	int th, ts, tv;
 	QColor tmpColor = m_outlineAndFillColors->currentColor();
-// 	if(m_outlineColor->isActive())
-// 	{
-// 		tmpColor = m_currentOutlineColor;
-// 	}
-// 	else
-// 	{
-// 		tmpColor = m_currentFillColor;
-// 	}
-// 	tmpColor.getHsv( &th, &ts, &tv );
 	tmpColor.setHsv( h, s, v, tmpColor.alpha() );
 	if(m_luminancePicker == sender())
 		setColor(tmpColor);

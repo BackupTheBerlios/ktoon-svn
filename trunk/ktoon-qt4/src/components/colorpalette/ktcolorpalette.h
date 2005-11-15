@@ -41,16 +41,16 @@
 #include "outlinecolor.h"
 
 //FIXME: portar estas Clases
-#include "valueselector.h"
+// #include "valueselector.h"
 #include "colorgradientselector.h"
 #include "gradientviewer.h"
-// #include <QColor>
 
 class KTColorPalette;
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
+					  
 class KTColorPalette : public KTModuleWidgetBase
 {
 	Q_OBJECT
@@ -96,7 +96,7 @@ class KTColorPalette : public KTModuleWidgetBase
 	public slots:
 		void setColor(const QColor &color);
 		void updateColor();
-		void changeTypeColor();
+		void changeTypeColor(KTDualColorButton::DualColor s);
 		void syncHsv(int h , int s , int v);
 		void setHS(int h, int s);
 		

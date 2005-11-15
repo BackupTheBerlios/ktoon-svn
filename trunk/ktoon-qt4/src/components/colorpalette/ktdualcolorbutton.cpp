@@ -197,11 +197,13 @@ void KTDualColorButton::mousePressEvent(QMouseEvent *ev)
 	{
 		curColor = Foreground;
 		miniCtlFlag = false;
+// 		emit selectionChanged();
 	}
 	else if(bgRect.contains(mPos))
 	{
 		curColor = Background;
 		miniCtlFlag = false;
+// 		emit selectionChanged();
 	}
 	else if(ev->pos().x() > fgRect.width())
 	{
@@ -245,20 +247,20 @@ void KTDualColorButton::mouseMoveEvent(QMouseEvent *ev)
 
 void KTDualColorButton::mouseReleaseEvent(QMouseEvent *ev)
 {
-// 	if(!miniCtlFlag)
-// 	{
-// 		QRect fgRect, bgRect;
-// 
-// 		metrics(fgRect, bgRect);
-// 		if(dragFlag)
-// 			curColor = tmpColor;
-// 		else if(fgRect.contains(ev->pos()) && curColor == Foreground)
-// 		{
-// 			if(tmpColor == Background)
-// 			{
-// 				curColor = Foreground;
-// 				emit currentChanged(Foreground);
-// 			}
+	if(!miniCtlFlag)
+	{
+		QRect fgRect, bgRect;
+
+		metrics(fgRect, bgRect);
+		if(dragFlag)
+			curColor = tmpColor;
+		else if(fgRect.contains(ev->pos()) && curColor == Foreground)
+		{
+			if(tmpColor == Background)
+			{
+				curColor = Foreground;
+				emit currentChanged(Foreground);
+			}
 // 			else
 // 			{
 // 				QColor newColor = fg.color();
@@ -268,14 +270,14 @@ void KTDualColorButton::mouseReleaseEvent(QMouseEvent *ev)
 // 					emit fgChanged(newColor);
 // 				}
 // 			}
-// 		}
-// 		else if(bgRect.contains(ev->pos()) && curColor == Background)
-// 		{
-// 			if(tmpColor == Foreground)
-// 			{
-// 				curColor = Background;
-// 				emit currentChanged(Background);
-// 			}
+		}
+		else if(bgRect.contains(ev->pos()) && curColor == Background)
+		{
+			if(tmpColor == Foreground)
+			{
+				curColor = Background;
+				emit currentChanged(Background);
+			}
 // 			else
 // 			{
 // 				QColor newColor = bg.color();
@@ -285,11 +287,11 @@ void KTDualColorButton::mouseReleaseEvent(QMouseEvent *ev)
 // 					emit bgChanged(newColor);
 // 				}
 // 			}
-// 		}
-// 		update();
-// 		dragFlag = false;
-// 	}
-// 	else
-// 		miniCtlFlag = false;
+		}
+		update();
+		dragFlag = false;
+	}
+	else
+		miniCtlFlag = false;
 }
 

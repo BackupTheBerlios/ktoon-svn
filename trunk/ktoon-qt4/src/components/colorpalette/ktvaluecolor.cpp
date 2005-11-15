@@ -62,7 +62,7 @@ void KTItemValueColor::setMax(int max)
 }
 
 
-KTValueColor::KTValueColor(QWidget *parent) : QFrame(parent)
+KTValueColor::KTValueColor(QWidget *parent) : QFrame(parent), ok(true)
 {
 	KTINIT;
 	m_layout = new QGridLayout;
@@ -89,7 +89,7 @@ void KTValueColor::setupForm()
 	connect(m_valueB, SIGNAL(valueChanged(int)), this, SLOT(syncValuesRgb(int)));
 	
 	m_valueH = new KTItemValueColor("H", this);
-	m_valueH->setMax(360);
+	m_valueH->setMax(359);
 	connect(m_valueH, SIGNAL(valueChanged(int)), this, SIGNAL(hueChanged(int)));
 	
 	m_valueS = new KTItemValueColor("S", this);
@@ -113,6 +113,7 @@ void KTValueColor::setupForm()
 
 void KTValueColor::setColor(const QColor &color)
 {
+	ok = false;
 	m_valueR->setValue( color.red());
 	m_valueG->setValue( color.green());
 	m_valueB->setValue( color.blue());
@@ -120,21 +121,23 @@ void KTValueColor::setColor(const QColor &color)
 	m_valueS->setValue( color.saturation());
 	m_valueV->setValue( color.value ());
 	m_valueA->setValue( color.alpha ());
-	emit colorChanged(color);
+	ok = true;
 }
 
 void KTValueColor::syncValuesRgb(int)
 {
-	int r =  m_valueR->value();
-	int g = m_valueG->value();
-	int b = m_valueB->value();
-	int a = m_valueA->value();
-	QColor tmp = QColor::fromRgb(r,g,b,a);
-	m_valueH->setValue( tmp.hue ());
-	m_valueS->setValue( tmp.saturation());
-	m_valueV->setValue( tmp.value ());
-	
-	emit colorChanged(QColor::fromRgb(r,g,b,a));
+	if(ok)
+	{
+		int r =  m_valueR->value();
+		int g = m_valueG->value();
+		int b = m_valueB->value();
+		int a = m_valueA->value();
+		QColor tmp = QColor::fromRgb(r,g,b,a);
+		m_valueH->setValue( tmp.hue ());
+		m_valueS->setValue( tmp.saturation());
+		m_valueV->setValue( tmp.value ());
+		emit colorChanged(QColor::fromRgb(r,g,b,a)) ;
+	}
 }
 
 int KTValueColor::hue()

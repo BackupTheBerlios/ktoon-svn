@@ -133,6 +133,9 @@ class KTDualColorButton : public QWidget
 		 * Emitted when the user changes the current color selection.
      		*/
 		void currentChanged(KTDualColorButton::DualColor s);
+		
+// 		void selectionChanged();
+		
 	protected:
     		/**
 		* Sets the supplied rectangles to the proper size and position for the
