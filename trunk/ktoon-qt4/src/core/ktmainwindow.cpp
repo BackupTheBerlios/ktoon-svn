@@ -223,6 +223,11 @@ void KTMainWindow::createGUI()
 // 	m_scriptEditor->setIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.png") );
 // 	toolWindow(DDockWindow::Bottom)->addWidget(tr("KToonScript"), m_scriptEditor);
 	
+	/////////////////
+	
+	KTGCEditor *m_gcEditor = new KTGCEditor(this);
+	
+	toolWindow(DDockWindow::Bottom)->addWidget(tr("GC Editor"), m_gcEditor);
 	
 	// Connect the project manager with the components...
 	connect(m_projectManager, SIGNAL(sceneCreated(const QString &, bool)), this, SLOT( insertScene(const QString &, bool)));

@@ -3,18 +3,9 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/lib
 # Destiono es una biblioteca:  ktoon
 
-QT += qt3support xml opengl
 INSTALLS += libktoon 
 libktoon.files += *.so* 
 libktoon.path = /lib/ 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-TARGET = ktoon 
-CONFIG += release \
-          warn_on \
-          dll 
-TEMPLATE = lib 
 IMAGES += wizard1.xpm \
           wizard2.xpm 
 HEADERS += ktapplication.h \
@@ -50,7 +41,8 @@ HEADERS += ktapplication.h \
            ccbar.h \
            ccbutton.h \
            ktwidgetlistitem.h \
-           ktwidgetlistview.h 
+           ktwidgetlistview.h \
+           ktxyspinbox.h 
 SOURCES += ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
@@ -84,4 +76,14 @@ SOURCES += ktapplication.cpp \
            ccbar.cpp \
            ccbutton.cpp \
            ktwidgetlistitem.cpp \
-           ktwidgetlistview.cpp 
+           ktwidgetlistview.cpp \
+           ktxyspinbox.cpp 
+QT += qt3support xml opengl
+MOC_DIR = .moc
+UI_DIR = .ui
+OBJECTS_DIR = .obj
+TARGET = ktoon
+CONFIG += release \
+warn_on \
+dll
+TEMPLATE = lib

@@ -3,7 +3,7 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/core
 # Destiono es una aplicaci??n: ../../bin/ktoon
 
-QT += qt3support xml opengl
+QT += xml opengl qt3support 
 INSTALLS += ktbin \
             kttrans \
             ktdata 
@@ -30,7 +30,10 @@ TARGETDEPS += ../../src/dlslib/libdlslib.a \
               ../../src/modules/opengl/cameras/libcameras.a \
               ../../src/modules/arthury/animation/libanimation.a \
               ../../src/modules/arthury/illustration/libillustration.a \
-              ../../src/lib/libktoon.so 
+              ../../src/lib/libktoon.so \
+              ../../src/components/gceditor/libgceditor.a \
+              ../../src/components/import/libimport.a \
+              ../../src/components/export/libexport.a 
 LIBS += ../../src/dialogs/libdialogs.a \
         ../../src/components/brushes/libbrushes.a \
         ../../src/components/colorpalette/libcolorpalette.a \
@@ -46,16 +49,19 @@ LIBS += ../../src/dialogs/libdialogs.a \
         ../../src/modules/arthury/illustration/libillustration.a \
         ../../src/dlslib/libdlslib.a \
         ../../src/store/libstore.a \
-         \
-         \
-        -lktoon 
-INCLUDEPATH += ../../src/lib \
-               ../../src/modules/opengl/draw \
+        -lktoon \
+        ../../src/components/gceditor/libgceditor.a \
+        ../../src/components/import/libimport.a \
+        ../../src/components/export/libexport.a 
+INCLUDEPATH += ../../src/modules/opengl/draw \
                ../../src/modules/opengl/tools \
                ../../src/modules/opengl/cameras \
                ../../src/modules/arthury/interfaces \
                ../../src/modules/arthury/animation \
                ../../src/modules/arthury/illustration \
+               ../../src/components/gceditor \
+               ../../src/components/import \
+               ../../src/components/export \
                ../../src/components/ktoonscript \
                ../../src/components/exposure \
                ../../src/components/timeline \
@@ -65,7 +71,8 @@ INCLUDEPATH += ../../src/lib \
                ../../src/components/brushes \
                ../../src/dialogs \
                ../../src/store \
-               ../../src/dlslib 
+               ../../src/dlslib \
+               ../../src/lib 
 MOC_DIR = .moc 
 UI_DIR = .ui 
 OBJECTS_DIR = .obj 

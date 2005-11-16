@@ -59,6 +59,8 @@
 #include "ktviewdocument.h"
 #include "ktviewcamera.h"
 
+#include "ktgceditor.h"
+
 #include "dmainwindow.h"
 #include "ktstatusbar.h"
 
