@@ -7,6 +7,8 @@
 APPNAME="KToon"
 APPVER="0.8alpha-svn"
 
+EMAIL='ktoon@toonka.com'
+
 MAKE=`which make` 
 QMAKE=`which qmake`
 
@@ -102,9 +104,11 @@ function buildenv()
 	then
 		echo export KTOON_HOME=$KTOON_HOME > $KTOON_GLOBAL_ENV
 		echo export PATH=\$PATH:$KTOON_HOME/bin >> $KTOON_GLOBAL_ENV
+		echo export LD_LIBRARY_PATH=$KTOON_HOME/lib:\$LD_LIBRARY_PATH >> $KTOON_GLOBAL_ENV
 	else
 		echo export KTOON_HOME=$KTOON_HOME > $KTOON_LOCAL_ENV
 		echo export PATH=\$PATH:$KTOON_HOME/bin >> $KTOON_LOCAL_ENV
+		echo export LD_LIBRARY_PATH=$KTOON_HOME/lib:\$LD_LIBRARY_PATH >> $KTOON_LOCAL_ENV
 	fi
 }
 
@@ -127,7 +131,7 @@ function addMenuEntry()
 
 function ktinstall()
 {
-	$MAKE install 2>> $LOG_FILE >/dev/null || qperror "I can't install!"
+	$MAKE install 2>> $LOG_FILE >/dev/null || qperror "Error while install!. Please send the file $LOG_FILE to $EMAIL"
 	
 	if [ $(basename `echo $SHELL`) == "bash" ]
 	then
@@ -250,7 +254,7 @@ function main()
 	
 	echo > $STAT_FILE
 	END=0
-	( make  >/dev/null 2>> $LOG_FILE && echo END=1 > $STAT_FILE ) & 
+	( ( make  >/dev/null 2>> $LOG_FILE || qperror "Error while compile! Please send the file $LOG_FILE to $EMAIL" ) && echo END=1 > $STAT_FILE ) & 
 	while [ $END -eq 0 ]
 	do
 		if [ -f $STAT_FILE ]

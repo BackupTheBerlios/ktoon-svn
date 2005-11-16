@@ -318,8 +318,6 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 				redrawAll();
 			}
 #endif
-			m_currentGraphic = new AGraphicComponent;
-	
 			if ( ! m_path.isEmpty() )
 			{
 				QPainter painter(&m_paintDevice);
@@ -345,6 +343,27 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 				{
 					QPainter painter(&m_paintDevice);
 					setupPainter(painter);
+#if 0
+					if ( m_currentTool->keys().contains("Selection") )
+					{
+						QList<AGraphicComponent *> components =  m_currentFrame->components();
+						QList<AGraphicComponent *>::iterator it;
+						
+						for(it = components.end()-1; it != components.begin()-1; it--)
+						{
+// 							QRectF estimated(event->pos() + QPointF(10,10), QSizeF(10,10) );
+							if( (*it) && (*it)->path().contains( event->pos() ) )
+							{
+								redrawAll();
+								break;
+							}
+						}
+						
+					}
+#endif
+					
+					m_currentGraphic = new AGraphicComponent;
+					
 					QRect rect = m_currentTool->press(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), event->pos());
 					rect.translate(m_xpos, m_ypos);
 					update(rect);
@@ -396,17 +415,21 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 				rect.translate(m_xpos, m_ypos);
 				update(rect);
 				
-				ktDebug() << "Adding component";
-				
 				m_currentGraphic->setPath(m_currentTool->path());
 				m_currentGraphic->setPen(painter.pen());
 				m_currentGraphic->setBrush(painter.brush());
 				
-				m_currentFrame->addComponent(  m_currentGraphic );
+				if ( !m_currentGraphic->path().isEmpty() )
+				{
+					ktDebug() << "Adding component";
+					
+					m_currentFrame->addComponent(  m_currentGraphic );
+					ktDebug() << "Components count: " << m_currentFrame->components().count();
+					m_undoComponents.clear();
+				}
 				
-				ktDebug() << "Components count: " << m_currentFrame->components().count();
 				
-				m_undoComponents.clear();
+				
 	#if 0
 				redrawAll();
 	#endif

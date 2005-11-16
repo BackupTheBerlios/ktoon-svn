@@ -219,9 +219,9 @@ void KTMainWindow::createGUI()
 	ui4project( m_timeLine );
 	
 	//////////////////
-	KToonScript *m_scriptEditor = new KToonScript(this);
+// 	KToonScript *m_scriptEditor = new KToonScript(this);
 // 	m_scriptEditor->setIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.png") );
-	toolWindow(DDockWindow::Bottom)->addWidget(tr("KToonScript"), m_scriptEditor);
+// 	toolWindow(DDockWindow::Bottom)->addWidget(tr("KToonScript"), m_scriptEditor);
 	
 	
 	// Connect the project manager with the components...

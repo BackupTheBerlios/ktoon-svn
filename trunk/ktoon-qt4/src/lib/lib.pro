@@ -1,8 +1,20 @@
 # Archivo generado por el gestor qmake de kdevelop. 
 # ------------------------------------------- 
 # Subdirectorio relativo al directorio principal del proyecto: ./src/lib
-# Destiono es una biblioteca:  
+# Destiono es una biblioteca:  ktoon
 
+QT += qt3support xml opengl
+INSTALLS += libktoon 
+libktoon.files += *.so* 
+libktoon.path = /lib/ 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+TARGET = ktoon 
+CONFIG += release \
+          warn_on \
+          dll 
+TEMPLATE = lib 
 IMAGES += wizard1.xpm \
           wizard2.xpm 
 HEADERS += ktapplication.h \
@@ -73,11 +85,3 @@ SOURCES += ktapplication.cpp \
            ccbutton.cpp \
            ktwidgetlistitem.cpp \
            ktwidgetlistview.cpp 
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-CONFIG += release \
-warn_on \
-staticlib
-TEMPLATE = lib
-QT += qt3support xml opengl

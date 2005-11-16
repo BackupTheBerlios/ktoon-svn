@@ -22,6 +22,10 @@
 
 #include <QKeySequence>
 #include <QDebug>
+#include <QImage>
+#include <QPaintDevice>
+
+#include "ktdebug.h"
 
 QStringList AGeometricToolPlugin::keys() const
 {
@@ -33,6 +37,8 @@ QRect AGeometricToolPlugin::press(const QString &brush, QPainter &painter, const
 	m_path = QPainterPath();
 	m_path.moveTo(pos);
 	
+// 	painter.drawEllipse(pos.x(), pos.y(), 2,2);
+	
 	m_rect.setTopLeft(pos);
 	
 	return move(brush, painter, form, pos, pos);
@@ -41,7 +47,7 @@ QRect AGeometricToolPlugin::press(const QString &brush, QPainter &painter, const
 QRect AGeometricToolPlugin::move(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos)
 {
 	painter.save();
-
+	
 	int rad = painter.pen().width() / 2;
 	QRect boundingRect = QRect(oldPos, newPos).normalized().adjusted(-rad, -rad, +rad, +rad);
 	
@@ -57,11 +63,13 @@ QRect AGeometricToolPlugin::move(const QString &brush, QPainter &painter,const Q
 	
 	if (brush == tr("Rectangle") )
 	{
+// 		path.addRect(m_rect);
 	}
 	else if ( brush == tr("Ellipse"))
 	{
+// 		path.addEllipse(m_rect);
 	}
-	
+// 	painter.setPen(QPen(color, 0.1, Qt::DotLine));
 	painter.drawPath(path);
 	
 	boundingRect = path.boundingRect().toRect();

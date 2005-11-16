@@ -3,7 +3,7 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/core
 # Destiono es una aplicaci??n: ../../bin/ktoon
 
-QT += opengl qt3support xml 
+QT += qt3support xml opengl
 INSTALLS += ktbin \
             kttrans \
             ktdata 
@@ -15,10 +15,9 @@ kttrans.files += *.qm
 kttrans.path = /data/translations 
 ktbin.files += ../../bin/ktoon 
 ktbin.path = /bin 
-TARGETDEPS += ../../src/dialogs/libdialogs.a \
+TARGETDEPS += ../../src/dlslib/libdlslib.a \
               ../../src/store/libstore.a \
-              ../../src/lib/liblib.a \
-              ../../src/dlslib/libdlslib.a \
+              ../../src/dialogs/libdialogs.a \
               ../../src/components/colorpalette/libcolorpalette.a \
               ../../src/components/scenes/libscenes.a \
               ../../src/components/brushes/libbrushes.a \
@@ -30,7 +29,8 @@ TARGETDEPS += ../../src/dialogs/libdialogs.a \
               ../../src/modules/opengl/tools/libtools.a \
               ../../src/modules/opengl/cameras/libcameras.a \
               ../../src/modules/arthury/animation/libanimation.a \
-              ../../src/modules/arthury/illustration/libillustration.a 
+              ../../src/modules/arthury/illustration/libillustration.a \
+              ../../src/lib/libktoon.so 
 LIBS += ../../src/dialogs/libdialogs.a \
         ../../src/components/brushes/libbrushes.a \
         ../../src/components/colorpalette/libcolorpalette.a \
@@ -46,8 +46,11 @@ LIBS += ../../src/dialogs/libdialogs.a \
         ../../src/modules/arthury/illustration/libillustration.a \
         ../../src/dlslib/libdlslib.a \
         ../../src/store/libstore.a \
-        ../../src/lib/liblib.a 
-INCLUDEPATH += ../../src/modules/opengl/draw \
+         \
+         \
+        -lktoon 
+INCLUDEPATH += ../../src/lib \
+               ../../src/modules/opengl/draw \
                ../../src/modules/opengl/tools \
                ../../src/modules/opengl/cameras \
                ../../src/modules/arthury/interfaces \
@@ -62,15 +65,11 @@ INCLUDEPATH += ../../src/modules/opengl/draw \
                ../../src/components/brushes \
                ../../src/dialogs \
                ../../src/store \
-               ../../src/dlslib \
-               ../../src/lib \
-               ../../src/images/sequences \
-               ../../src/images/icons \
-               ../../src/images/cursors \
-               ../../src/images/images 
+               ../../src/dlslib 
 MOC_DIR = .moc 
 UI_DIR = .ui 
 OBJECTS_DIR = .obj 
+QMAKE_LIBDIR = ../../src/lib 
 TARGET = ../../bin/ktoon 
 CONFIG += release \
           warn_on \
