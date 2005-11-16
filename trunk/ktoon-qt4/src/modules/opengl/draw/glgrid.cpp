@@ -18,6 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "ktdebug.h"
+
 #define QT_CLEAN_NAMESPACE
 #include <qgl.h>
 #include <qfont.h>
@@ -32,7 +34,6 @@
 #include <GL/glx.h>
 #endif
 
-#include "ktdebug.h"
 
 #define GRID_FONT "fixed"
 
