@@ -26,6 +26,8 @@
 #include <QVBoxLayout>
 
 //reimplemtentar estas clases para porta a qt4 
+
+#include "ktcolorcells.h"
 #include "colorcells.h"
 #include "custompalette.h"
 
@@ -42,11 +44,14 @@ class KTViewColorCells : public QFrame
 	private:
 		QComboBox *m_chooserPalette;
 		QStackedWidget *m_containerPalette;
-		ColorCells *m_defaultPalette;
-		
+// 		ColorCells *m_defaultPalette;
+		KTColorCells *m_defaultPalette;
 		
 	private:
 		void setupForm();
+		
+	signals:
+		void selectColor(const QColor &);
 		
 	public slots:
 		virtual void addCustomColor(QColor c);

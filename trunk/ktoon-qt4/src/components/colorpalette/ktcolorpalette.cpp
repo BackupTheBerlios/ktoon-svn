@@ -54,6 +54,7 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_
 	m_containerPalette = new KTViewColorCells(m_centralWidget);
 	m_centralWidget->addItem( m_containerPalette, m_icon, tr("Palettes") );
 // 	layout()->setAlignment(m_containerPalette, Qt::AlignTop);
+	connect (m_containerPalette, SIGNAL(selectColor( const QColor& )), this, SLOT(setColor( const QColor& )));
 	setupButtons();
 	
 	setupChooserTypeColor();
@@ -246,10 +247,9 @@ void KTColorPalette::setupChooserGradient()
 void KTColorPalette::setColor(const QColor& color)
 {
 	ktDebug() << "KTColorPalette::setColor " << color; 
-	m_outlineAndFillColors->setCurrentColor(color);
 	
 	m_displayValueColor->setColor(color);
-	
+	m_outlineAndFillColors->setCurrentColor(color);
 	m_colorPicker->setCol(color.hue(), color.saturation ());
 
 	m_nameColor->setText(color.name ());
@@ -262,13 +262,7 @@ void KTColorPalette::setColor(const QColor& color)
 
 void KTColorPalette::changeTypeColor(KTDualColorButton::DualColor s)
 {
-	
-// 	setColor( m_outlineAndFillColors->currentColor());
-	
-// 	if(KTDualColorButton::Background)
-// 	{
-// 	setColor(  );
-// 	m_outlineAndFillColors->setCurrentColor(color);
+	ktDebug() << "KTColorPalette::changeTypeColor";
 	if(s == KTDualColorButton::Background)
 	{
 		m_outlineAndFillColors->setCurrent( s);
@@ -279,20 +273,6 @@ void KTColorPalette::changeTypeColor(KTDualColorButton::DualColor s)
 		m_outlineAndFillColors->setCurrent( s);
 		setColor( m_outlineAndFillColors->foreground());
 	}
-// 	}
-// 	setColor( m_outlineAndFillColors->currentColor());
-// 	if(m_outlineColor == sender())
-// 	{
-// 		m_fillColor->setActive(false);
-// 		m_outlineColor->setActive(true);
-// 		setColor(m_outlineColor->currentColor());
-// 	}
-// 	else
-// 	{
-// 		m_outlineColor->setActive(false);
-// 		m_fillColor ->setActive(true);
-// 		setColor(m_fillColor->currentColor());
-// 	}
 }
 
 void KTColorPalette::syncHsv(int h, int s, int v)
@@ -309,15 +289,6 @@ void KTColorPalette::setHS(int h , int s)
 {
 	int th, ts, tv;
 	QColor tmpColor = m_outlineAndFillColors->currentColor();
-
-// 	if(m_outlineColor->isActive())
-// 	{
-// 		tmpColor = m_currentOutlineColor;
-// 	}
-// 	else
-// 	{
-// 		tmpColor = m_currentFillColor;
-// 	}
 	
 	tmpColor.getHsv( &th, &ts, &tv );
 	tmpColor.setHsv( h, s, tv, tmpColor.alpha() );

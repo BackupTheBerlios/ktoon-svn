@@ -196,14 +196,15 @@ void KTDualColorButton::mousePressEvent(QMouseEvent *ev)
 	if(fgRect.contains(mPos))
 	{
 		curColor = Foreground;
+		emit currentChanged(Foreground);
 		miniCtlFlag = false;
-// 		emit selectionChanged();
 	}
 	else if(bgRect.contains(mPos))
 	{
 		curColor = Background;
+		emit currentChanged(Background);
+		
 		miniCtlFlag = false;
-// 		emit selectionChanged();
 	}
 	else if(ev->pos().x() > fgRect.width())
 	{
@@ -247,51 +248,51 @@ void KTDualColorButton::mouseMoveEvent(QMouseEvent *ev)
 
 void KTDualColorButton::mouseReleaseEvent(QMouseEvent *ev)
 {
-	if(!miniCtlFlag)
-	{
-		QRect fgRect, bgRect;
-
-		metrics(fgRect, bgRect);
-		if(dragFlag)
-			curColor = tmpColor;
-		else if(fgRect.contains(ev->pos()) && curColor == Foreground)
-		{
-			if(tmpColor == Background)
-			{
-				curColor = Foreground;
-				emit currentChanged(Foreground);
-			}
-// 			else
+// 	if(!miniCtlFlag)
+// 	{
+// 		QRect fgRect, bgRect;
+// 
+// 		metrics(fgRect, bgRect);
+// 		if(dragFlag)
+// 			curColor = tmpColor;
+// 		else if(fgRect.contains(ev->pos()) && curColor == Foreground)
+// 		{
+// 			if(tmpColor == Background)
 // 			{
-// 				QColor newColor = fg.color();
-// 				if(KColorDialog::getColor(newColor, d->dialogParent) != QDialog::Rejected)
-// 				{
-// 					fg.setColor(newColor);
-// 					emit fgChanged(newColor);
-// 				}
+// 				curColor = Foreground;
+// 				emit currentChanged(Foreground);
 // 			}
-		}
-		else if(bgRect.contains(ev->pos()) && curColor == Background)
-		{
-			if(tmpColor == Foreground)
-			{
-				curColor = Background;
-				emit currentChanged(Background);
-			}
-// 			else
+// // 			else
+// // 			{
+// // 				QColor newColor = fg.color();
+// // 				if(KColorDialog::getColor(newColor, d->dialogParent) != QDialog::Rejected)
+// // 				{
+// // 					fg.setColor(newColor);
+// // 					emit fgChanged(newColor);
+// // 				}
+// // 			}
+// 		}
+// 		else if(bgRect.contains(ev->pos()) && curColor == Background)
+// 		{
+// 			if(tmpColor == Foreground)
 // 			{
-// 				QColor newColor = bg.color();
-// 				if(KColorDialog::getColor(newColor, d->dialogParent) != QDialog::Rejected)
-// 				{
-// 					bg.setColor(newColor);
-// 					emit bgChanged(newColor);
-// 				}
+// 				curColor = Background;
+// 				emit currentChanged(Background);
 // 			}
-		}
-		update();
-		dragFlag = false;
-	}
-	else
-		miniCtlFlag = false;
+// // 			else
+// // 			{
+// // 				QColor newColor = bg.color();
+// // 				if(KColorDialog::getColor(newColor, d->dialogParent) != QDialog::Rejected)
+// // 				{
+// // 					bg.setColor(newColor);
+// // 					emit bgChanged(newColor);
+// // 				}
+// // 			}
+// 		}
+// 		update();
+// 		dragFlag = false;
+// 	}
+// 	else
+// 		miniCtlFlag = false;
 }
 

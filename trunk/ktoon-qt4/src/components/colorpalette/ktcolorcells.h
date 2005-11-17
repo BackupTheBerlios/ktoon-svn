@@ -43,9 +43,10 @@ class KTColorItemCells : public QFrame
 		
 	protected:
 		virtual void mousePressEvent ( QMouseEvent * e );
-		
+		virtual void resizeEvent ( QResizeEvent * event );
+		virtual QSize sizeHint () const;
 	signals:
-		void selectColor( QColor);
+		void selectColor( const QColor&);
 };
 
 class KTColorCells : public QFrame
@@ -54,17 +55,22 @@ class KTColorCells : public QFrame
 	public:
 		KTColorCells(QWidget *parent = 0);
 		~KTColorCells();
-	
+		void fillColorsDefault();
+		
+		
+		
 	private:
 		QList<QColor> m_colors;
 		QGridLayout *m_layout;
+		int m_columns, m_rows, m_maxColumns, m_maxRows;
+		
 		
 	public slots:
 		void addColor(QColor color );
 		void addColors(QList<QColor> colors);
 		
 	signals:
-		void changeColor(QColor);
+		void changeColor(const QColor &);
 		
 };
 

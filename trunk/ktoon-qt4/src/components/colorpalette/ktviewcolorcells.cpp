@@ -41,7 +41,10 @@ void KTViewColorCells::setupForm()
 	layout()->addWidget(m_chooserPalette);
 	layout()->addWidget(m_containerPalette);
 	
-	m_defaultPalette = new  ColorCells(m_containerPalette);
+	m_defaultPalette = new  KTColorCells(m_containerPalette);
+	m_defaultPalette->fillColorsDefault();
+	connect(m_defaultPalette, SIGNAL(changeColor( const QColor& )), this, SIGNAL(selectColor(const QColor &)));
+// 	m_defaultPalette->addColor( Qt::green);
 	m_containerPalette->addWidget(m_defaultPalette);
 	
 }
