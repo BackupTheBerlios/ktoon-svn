@@ -180,6 +180,11 @@ function updateMakefiles()
 		then
 # 			qpinfo "Updating $i..."
 			echo -n "."
+			if [ -f Makefile ]
+			then
+				rm Makefile
+			fi
+
 			$QMAKE ${PARAMETERS} 2> /dev/null >/dev/null
 		fi
 		cd - 2> /dev/null >/dev/null
