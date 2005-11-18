@@ -42,7 +42,7 @@ function showModified()
 
 function showUnknown()
 {
-	UNKNOWN=`svn st | grep ^? | grep -vE moc_\|Makefile\|.ui\|.moc\|qmake_\|.a\|.so\|.pcs\|.obj | awk '{ print "   " $2 }'`
+	UNKNOWN=`svn st | grep ^? | grep -vE 'moc_|Makefile|\.ui|\.moc|qmake_|\.a|\.so|\.pcs|\.obj' | awk '{print $2}'`
 	echo '##############################'
 	echo 'Unknown files'
 	echo $UNKNOWN | xargs -n1 echo -e "\t"

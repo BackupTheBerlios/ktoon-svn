@@ -1,0 +1,177 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+#include "ktmainwindow.h"
+
+#include "ktdebug.h"
+#include "ktapplication.h"
+
+// Animation
+
+void KTMainWindow::insertScene( const QString &name, bool addedToEnd)
+{
+	m_scenes->insertScene( name, addedToEnd);
+	m_exposureSheet->addScene( name);
+}
+
+void KTMainWindow::insertLayer(const QString &name, bool addedToEnd)
+{
+	ktDebug() << "KTMainWindow::insertLayer(" << name << "," << addedToEnd << ")" << endl;
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+	
+	if ( doc )
+	{
+// 		doc->drawArea()->setScene( m_projectManager->currentScene() );
+	}
+	
+	m_exposureSheet->insertLayer(name);
+	m_timeLine->createLayer( name );
+}
+
+void KTMainWindow::removeLayer(int index)
+{
+	m_exposureSheet->removeCurrentLayer();
+	m_timeLine->removeCurrentLayer();
+}
+
+void KTMainWindow::setLayerVisibilityChanged(int idLayer, bool isVisible)
+{
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+	
+	if ( doc )
+	{
+		doc->drawArea()->redrawAll();
+	}
+}
+
+
+void KTMainWindow::insertFrame(const QString &name, bool addedToEnd)
+{
+	ktDebug() << "KTMainWindow::insertFrame(" << name << "," << addedToEnd << ")" << endl;
+	KT_FUNCINFO;
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+	
+	if ( doc )
+	{
+// 		doc->drawArea()->setKeyFrame( m_projectManager->currentLayer()->frames().count()-1);
+// 		ktDebug( ) << "******************" << endl;
+		
+		
+// 		doc->drawArea()->setKeyFrame(m_projectManager->currentLayer()->indexCurrentFrame());
+		
+	}
+	
+	m_exposureSheet->addFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd);
+}
+
+void KTMainWindow::moveFrame(bool up)
+{
+	m_exposureSheet->moveFrame(up);
+}
+void KTMainWindow::removeFrame()
+{
+	m_exposureSheet->removeCurrentFrame();
+}
+
+void KTMainWindow::lockFrame()
+{
+	m_exposureSheet->lockCurrentFrame();
+}
+
+
+void KTMainWindow::selectFrame(int layer, int frame)
+{
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+	
+	if ( doc )
+	{
+		m_projectManager->currentScene()->setCurrentLayer(layer);
+		m_projectManager->setCurrentFrame( frame );
+		
+		doc->drawArea()->setLayer( layer );
+		doc->drawArea()->setKeyFrame( frame );
+	}
+}
+
+// Graphic Components
+void KTMainWindow::rotateCurrentElement(int a)
+{
+	KT_FUNCINFO;
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+	
+	if ( doc )
+	{
+		AGraphicComponent *selected = doc->drawArea()->selectedGraphic();
+		
+		if ( selected )
+		{
+			selected->rotate(a);
+			doc->drawArea()->redrawAll();
+		}
+	}
+}
+
+void KTMainWindow::scaleCurrentElement(double dx,double dy)
+{
+	KT_FUNCINFO;
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+	
+	if ( doc )
+	{
+		AGraphicComponent *selected = doc->drawArea()->selectedGraphic();
+		if ( selected )
+		{
+			selected->scale(dx, dy);
+			doc->drawArea()->redrawAll();
+		}
+	}
+}
+
+void KTMainWindow::translateCurrentElement(double dx ,double dy)
+{
+	KT_FUNCINFO;
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+	
+	if ( doc )
+	{
+		AGraphicComponent *selected = doc->drawArea()->selectedGraphic();
+		if ( selected )
+		{
+			selected->translate(dx, dy);
+			doc->drawArea()->redrawAll();
+		}
+	}
+}
+
+void KTMainWindow::shearCurrentElement(double dx,double dy)
+{
+	KT_FUNCINFO;
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+	
+	if ( doc )
+	{
+		AGraphicComponent *selected = doc->drawArea()->selectedGraphic();
+		if ( selected )
+		{
+			selected->shear(dx, dy);
+			doc->drawArea()->redrawAll();
+		}
+	}
+}

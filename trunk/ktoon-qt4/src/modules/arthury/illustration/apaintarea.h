@@ -55,6 +55,9 @@ class APaintArea : public QWidget
 		
 		virtual void redrawAll();
 		
+		AGraphicComponent *currentGraphic();
+		AGraphicComponent *selectedGraphic();
+		
 	public slots:
 		void setKeyFrame(int index);
 		void setLayer(int index);
@@ -83,6 +86,7 @@ class APaintArea : public QWidget
 		QList<AGraphicComponent *> m_undoComponents;
 		
 		AGraphicComponent *m_currentGraphic;
+		AGraphicComponent *m_selectedGraphic;
 		bool m_redrawAll;
 
 		KTKeyFrame *m_currentFrame;

@@ -38,11 +38,18 @@ class KTGCEditor : public KTModuleWidgetBase
 	public:
 		KTGCEditor(QWidget *parent = 0);
 		~KTGCEditor();
+		
+	signals:
+		void requestRotate(int angle);
+		void requestScale(double x, double y);
+		void requestTranslate(double x, double y);
+		void requestShear(double x, double y);
+		
 	private:
 		KTEditSpinBox *m_angle;
 		KTXYSpinBox *m_scale;
 		KTXYSpinBox *m_shear;
-		KTXYSpinBox *m_translade;
+		KTXYSpinBox *m_translate;
 };
 
 #endif

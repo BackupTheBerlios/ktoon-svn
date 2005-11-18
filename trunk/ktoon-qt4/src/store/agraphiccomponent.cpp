@@ -25,7 +25,7 @@ AGraphicComponent::AGraphicComponent() : QObject(), m_pPath(), m_pColor(Qt::blac
 {
 }
 
-AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : QObject(toCopy.parent()), m_pPath(toCopy.m_pPath), m_pColor(toCopy.m_pColor), m_pPen(toCopy.m_pPen)
+AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : QObject(toCopy.parent()), m_pPath(toCopy.m_pPath), m_pColor(toCopy.m_pColor), m_pPen(toCopy.m_pPen), m_previousPath(toCopy.m_previousPath), m_pBrush(toCopy.m_pBrush)
 {
 }
 
@@ -62,6 +62,7 @@ QColor AGraphicComponent::color() const
 void AGraphicComponent::setPath(const QPainterPath &path )
 {
 	m_pPath = path;
+	m_previousPath = path;
 }
 
 void AGraphicComponent::setBrush(const QBrush &brush)
@@ -87,12 +88,16 @@ void AGraphicComponent::setColor(const QColor &color)
 
 void AGraphicComponent::scale(double sX, double sY)
 {
-	QPointF position = m_pPath.currentPosition();
-	QMatrix mId(1,0,0,1, 0, 0);
-	
-	mId.scale(sX, sY);
-	m_pPath = mId.map(m_pPath);
-	translate( position.x(), position.y());
+	if ( sX > 0 && sY > 0 )
+	{
+		QPointF position = m_pPath.currentPosition();
+		QMatrix mId(1,0,0,1, 0, 0);
+		
+		mId.scale(sX, sY);
+		
+		m_pPath = mId.map(m_previousPath);
+		translate( position.x(), position.y());
+	}
 }
 
 void AGraphicComponent::shear(double sX, double sY)
@@ -101,7 +106,7 @@ void AGraphicComponent::shear(double sX, double sY)
 	QMatrix mId(1,0,0,1, 0, 0);
 	
 	mId.shear(sX, sY);
-	m_pPath = mId.map(m_pPath);
+	m_pPath = mId.map(m_previousPath);
 	translate( position.x(), position.y());
 }
 
@@ -120,5 +125,8 @@ void AGraphicComponent::rotate( double angle )
 	QMatrix mId(1,0,0,1, position.x(), position.y());
 	
 	mId.rotate(angle);
-	m_pPath = mId.map(m_pPath);	
+	
+	m_pPath = mId.map(m_previousPath);
+	
+	translate( position.x(), position.y());
 }

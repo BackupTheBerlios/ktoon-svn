@@ -31,6 +31,8 @@
 #include "colorcells.h"
 #include "custompalette.h"
 
+#include "ktimagestable.h"
+
 /**
 	@author Jorge Cuadrado <kuadrosx@toonka.com>
 */
@@ -44,8 +46,10 @@ class KTViewColorCells : public QFrame
 	private:
 		QComboBox *m_chooserPalette;
 		QStackedWidget *m_containerPalette;
-// 		ColorCells *m_defaultPalette;
 		KTColorCells *m_defaultPalette;
+// 		KTImagesTable *m_defaultPalette;
+		
+// 		KTImagesTable *m_palette;
 		
 	private:
 		void setupForm();

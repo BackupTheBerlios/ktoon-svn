@@ -138,6 +138,11 @@ class KTMainWindow : public DMainWindow
 		void aboutKToon();
 		
 	private slots:
+		// Graphic Components
+		void rotateCurrentElement(int a);
+		void scaleCurrentElement(double dx,double dy);
+		void translateCurrentElement(double dx,double dy);
+		void shearCurrentElement(double dx,double dy);
 		
 		//Layers
 		void insertLayer( const QString &, bool);

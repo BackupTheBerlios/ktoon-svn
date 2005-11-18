@@ -66,6 +66,10 @@ class AGraphicComponent : public QObject
 		QColor m_pColor;
 		QBrush m_pBrush;
 		QPen m_pPen;
+		
+	private:
+		QPainterPath m_previousPath;
+
 };
 
 #endif

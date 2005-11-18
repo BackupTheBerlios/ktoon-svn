@@ -21,13 +21,13 @@
 #include "ktkeyframe.h"
 #include "ktdebug.h"
 
-KTKeyFrame::KTKeyFrame(const KTKeyFrame &kf) : QObject(kf.parent()), m_name(kf.m_name), m_isLocked(kf.m_isLocked), m_components(QList<AGraphicComponent *>(kf.m_components))
+KTKeyFrame::KTKeyFrame(const KTKeyFrame &kf) : QObject(kf.parent()), m_name(kf.m_name), m_isLocked(kf.m_isLocked)/*, m_components(QList<AGraphicComponent *>(kf.m_components))*/
 {
-// 	QList<AGraphicComponent *>::const_iterator it;
-// 	for(it = kf.m_components.begin(); it != kf.m_components.end(); ++it )
-// 	{
-// 		addComponent( new AGraphicComponent(*(*it)));
-// 	}
+	QList<AGraphicComponent *>::const_iterator it;
+	for(it = kf.m_components.begin(); it != kf.m_components.end(); ++it )
+	{
+		addComponent( new AGraphicComponent(*(*it)));
+	}
 }
 
 

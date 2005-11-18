@@ -38,13 +38,30 @@ void KTViewColorCells::setupForm()
 	m_chooserPalette = new QComboBox(this);
 	m_chooserPalette->addItem(tr("Default Palette"));
 	m_containerPalette = new QStackedWidget(this);
+	
 	layout()->addWidget(m_chooserPalette);
 	layout()->addWidget(m_containerPalette);
 	
-	m_defaultPalette = new  KTColorCells(m_containerPalette);
+// 	m_defaultPalette = new  KTImagesTable(20,20, m_containerPalette);
+// 	
+// 	KTImagesTableItem *item = new KTImagesTableItem;
+// 	
+// 	QImage img(22,22,QImage::Format_RGB32);
+// 	img.fill(qRgb(234,23,56));
+// 	QPainter pimg(&img);
+// 	
+// 	pimg.drawLine(0,0,20,20);
+// 	item->setImage(img);
+// 	m_defaultPalette->setItem(0,0, item);
+// 	m_defaultPalette->setItem(0,1, item);
+// 	m_defaultPalette->setItem(0,2, item);
+	
+	m_defaultPalette = new KTColorCells(m_containerPalette);
+
 	m_defaultPalette->fillColorsDefault();
+	
 	connect(m_defaultPalette, SIGNAL(changeColor( const QColor& )), this, SIGNAL(selectColor(const QColor &)));
-// 	m_defaultPalette->addColor( Qt::green);
+	
 	m_containerPalette->addWidget(m_defaultPalette);
 	
 }

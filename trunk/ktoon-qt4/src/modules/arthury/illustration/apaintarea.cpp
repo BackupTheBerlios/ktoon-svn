@@ -152,6 +152,7 @@ void APaintArea::setScene(KTScene *scene)
 
 void APaintArea::draw(QPainter *painter)
 {
+	KT_FUNCINFO;
 	Layers layers = m_scene->layers();
 	Layers::iterator layerIterator = layers.begin();
 	
@@ -200,6 +201,8 @@ void APaintArea::draw(QPainter *painter)
 		
 		++layerIterator;
 	}
+	
+	ktDebug() << "END " << __FUNCTION__;
 }
 
 void APaintArea::drawFrame(const KTKeyFrame *frame, QPainter *painter, float intensitive)
@@ -343,7 +346,7 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 				{
 					QPainter painter(&m_paintDevice);
 					setupPainter(painter);
-#if 0
+#if 1
 					if ( m_currentTool->keys().contains("Selection") )
 					{
 						QList<AGraphicComponent *> components =  m_currentFrame->components();
@@ -351,10 +354,9 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 						
 						for(it = components.end()-1; it != components.begin()-1; it--)
 						{
-// 							QRectF estimated(event->pos() + QPointF(10,10), QSizeF(10,10) );
 							if( (*it) && (*it)->path().contains( event->pos() ) )
 							{
-								redrawAll();
+								m_selectedGraphic = (*it);
 								break;
 							}
 						}
@@ -426,6 +428,8 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 					m_currentFrame->addComponent(  m_currentGraphic );
 					ktDebug() << "Components count: " << m_currentFrame->components().count();
 					m_undoComponents.clear();
+					
+					m_selectedGraphic = m_currentGraphic;
 				}
 				
 				
@@ -517,4 +521,14 @@ void APaintArea::setNextFrames(int n)
 		m_nextFramesNumber = n;
 		redrawAll();
 	}
+}
+
+AGraphicComponent *APaintArea::currentGraphic()
+{
+	return m_currentGraphic;
+}
+
+AGraphicComponent *APaintArea::selectedGraphic()
+{
+	return m_selectedGraphic;
 }
