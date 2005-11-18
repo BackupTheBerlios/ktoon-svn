@@ -19,11 +19,12 @@
  ***************************************************************************/
  
 #include "ktcolorcells.h"
+#include <QPainter>
+#include "ktdebug.h"
 
-
-
-KTColorItemCells::KTColorItemCells(QColor c, QWidget *parent): QFrame(parent), m_color(c)
+KTColorItemCells::KTColorItemCells(int row, int col, QColor c, QWidget *parent): QFrame(parent), m_row(row), m_col(col), m_color(c)
 {
+
 	QPalette p = palette();
 	p.setColor( QPalette::Background, c);
 	setPalette ( p );
@@ -36,7 +37,7 @@ KTColorItemCells::~KTColorItemCells()
 
 void KTColorItemCells::mousePressEvent ( QMouseEvent * e )
 {
-	emit selectColor(m_color);
+	emit selectColor(m_row, m_col, m_color);
 }
 
 void KTColorItemCells::resizeEvent ( QResizeEvent * event )
@@ -44,18 +45,18 @@ void KTColorItemCells::resizeEvent ( QResizeEvent * event )
 // 	adjustSize();
 }
 
-QSize  KTColorItemCells::sizeHint () const
-{
-	int size = qMin ( height (), width() );
-	return  QSize(size, size);
-}
+// QSize  KTColorItemCells::sizeHint () const
+// {
+// 	int size = qMin ( height (), width() );
+// 	return  QSize(size, size);
+// }
 
 KTColorCells::KTColorCells(QWidget *parent): 
-		QFrame(parent), m_columns(0), m_rows(0), m_maxColumns(19), m_maxRows(12)
+		QFrame(parent), m_columns(0), m_rows(0), m_maxColumns(19), m_maxRows(12), m_currentItem(0)
 {
 	m_layout = new QGridLayout;
 	m_layout->setOriginCorner ( Qt::TopLeftCorner );
-	m_layout->setSpacing(3);
+	m_layout->setSpacing(2);
 	m_layout->setMargin(3);
 
 	setLayout(m_layout);
@@ -117,11 +118,6 @@ void KTColorCells::addColor(QColor color )
 {
 	
 	m_colors.append(color);
-// 	if(m_columns == m_maxColumns)
-// 	{
-// 		m_rows++;
-// 		m_columns = 0;
-// 	}
 	
 	if(m_rows == m_maxRows)
 	{
@@ -129,15 +125,50 @@ void KTColorCells::addColor(QColor color )
 		m_columns++;
 	}
 	
-	KTColorItemCells *itemColor = new KTColorItemCells(color, this);
-	m_layout->addWidget(itemColor, m_rows, m_columns, Qt::AlignLeft);
-// 	m_columns++;
+	KTColorItemCells *itemColor = new KTColorItemCells(m_rows, m_columns, color, this);
+	m_layout->addWidget(itemColor, m_rows, m_columns, Qt::AlignLeft | Qt::AlignTop);
+	itemColor->setMaximumSize(10,10);
+	m_currentRow = m_rows;
+	m_currentCol = m_columns;
 	m_rows++;
-	connect (itemColor, SIGNAL(selectColor( const QColor& )),this, SIGNAL(changeColor(const QColor &)));
+	connect (itemColor, SIGNAL(selectColor(int, int , const QColor& )),this, SLOT(selectColor(int, int , const QColor &)));
 
 }
 
 void KTColorCells::addColors(QList<QColor> colors)
 {
+}
+
+void KTColorCells::paintEvent(QPaintEvent *e)
+{
+
+	QPainter p;
+	p.begin(this);
+	p.setPen(QPen(palette().color(QPalette::Highlight), 2));
+	p.drawRect( m_layout->cellRect(m_currentRow, m_currentCol).normalized().adjusted(-1, -1, +1, +1) );
+	p.end();
 	
 }
+
+void KTColorCells::selectColor(int row, int colm , const QColor& color)
+{
+	m_currentRow = row;
+	m_currentCol = colm;
+	ktDebug() << "Seleceted " << row << "," << colm;
+	repaint();
+	emit changeColor(color);
+}
+
+
+void KTColorCells::resizeEvent ( QResizeEvent * event )
+{
+// 	int size = qMin ( height (), width() );
+// 	resize(size, size);
+}
+
+
+// QSize  KTColorCells::sizeHint () const
+// {
+// 	int size = qMin ( height (), width() );
+// 	return  QSize(size, size);
+// }

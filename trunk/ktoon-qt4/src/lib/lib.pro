@@ -3,8 +3,9 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/lib
 # Destiono es una biblioteca:  ktoon
 
+DLLDESTDIR = /tmp
 INSTALLS += libktoon 
-libktoon.files += *.so* 
+libktoon.files +=  *.so* 
 libktoon.path = /lib/ 
 IMAGES += wizard1.xpm \
           wizard2.xpm 
@@ -87,3 +88,5 @@ CONFIG += release \
 warn_on \
 dll
 TEMPLATE = lib
+
+QMAKE_COPY_FILE = cp -fd

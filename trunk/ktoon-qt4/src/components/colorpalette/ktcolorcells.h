@@ -27,6 +27,9 @@
 
 #include <QGridLayout> // implemtar FlowLayout
 #include <QList>
+#include <QTableView>
+#include <QAbstractTableModel>
+
 /**
 	@author Jorge Cuadrado <kuadrosx@toonka.com>
 */
@@ -35,18 +38,19 @@ class KTColorItemCells : public QFrame
 {
 	Q_OBJECT
 	public:
-		KTColorItemCells(QColor c, QWidget *parent = 0);
+		KTColorItemCells(int row, int col, QColor c, QWidget *parent = 0);
 		~KTColorItemCells();
 		
 	private:
+		int  m_row,  m_col;
 		QColor m_color;
-		
+	
 	protected:
 		virtual void mousePressEvent ( QMouseEvent * e );
 		virtual void resizeEvent ( QResizeEvent * event );
-		virtual QSize sizeHint () const;
+		
 	signals:
-		void selectColor( const QColor&);
+		void selectColor( int, int, const QColor&);
 };
 
 class KTColorCells : public QFrame
@@ -57,17 +61,22 @@ class KTColorCells : public QFrame
 		~KTColorCells();
 		void fillColorsDefault();
 		
-		
-		
 	private:
 		QList<QColor> m_colors;
 		QGridLayout *m_layout;
-		int m_columns, m_rows, m_maxColumns, m_maxRows;
+		int m_columns, m_rows, m_maxColumns, m_maxRows, m_currentRow, m_currentCol;
+		KTColorItemCells *m_currentItem;
 		
 		
+	protected:
+		void paintEvent(QPaintEvent *);
+		void resizeEvent ( QResizeEvent * event );
+				
 	public slots:
 		void addColor(QColor color );
 		void addColors(QList<QColor> colors);
+		void selectColor(int row, int col, const QColor& );
+		
 		
 	signals:
 		void changeColor(const QColor &);

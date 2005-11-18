@@ -50,6 +50,9 @@ class KTViewColorCells : public QFrame
 	private:
 		void setupForm();
 		
+	protected:
+		
+		
 	signals:
 		void selectColor(const QColor &);
 		
