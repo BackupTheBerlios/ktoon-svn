@@ -19,11 +19,13 @@
 #include <QListWidgetItem>
 #include <QPainterPath>
 
+#include "ktimagestable.h"
+
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
-class KTBrushesList : public QListWidget
+class KTBrushesList : public KTImagesTable
 {
 	Q_OBJECT
 	public:
@@ -46,6 +48,7 @@ class KTBrushesList : public QListWidget
 		
 	private:
 		QList<QPainterPath> m_forms;
+		const int MAX_COLUMS;
 
 };
 

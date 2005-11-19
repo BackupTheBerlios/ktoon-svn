@@ -23,10 +23,14 @@
 
 #include <QTableView>
 #include <QStyleOptionViewItem>
+#include <QHash>
 
 class KTImagesTable;
 class KTImagesTableItem;
+class KTImagesTableItemDelegate;
 class KTImagesTableModel;
+
+typedef QHash<int, QVariant> ItemData ;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -53,10 +57,13 @@ class KTImagesTableItem
 		void setImage(const QImage &);
 		QImage image() const;
 		
+		void setBackground(const QColor &);
+		QColor background() const;
+		
 		virtual void setData(int role, const QVariant &value);
 	
 	private:
-		QImage m_value;
+		ItemData m_values;
 		KTImagesTable *m_view;
 		KTImagesTableModel *m_model;
 		Qt::ItemFlags m_itemFlags;
@@ -80,25 +87,14 @@ class KTImagesTable : public QAbstractItemView
 		int column(const KTImagesTableItem *item) const;
 
 		KTImagesTableItem *item(int row, int column) const;
+		
 		void setItem(int row, int column, KTImagesTableItem *item);
 		KTImagesTableItem *takeItem(int row, int column);
-
-		KTImagesTableItem *verticalHeaderItem(int row) const;
-		void setVerticalHeaderItem(int row, KTImagesTableItem *item);
-
-		KTImagesTableItem *horizontalHeaderItem(int column) const;
-		void setHorizontalHeaderItem(int column, KTImagesTableItem *item);
-		void setVerticalHeaderLabels(const QStringList &labels);
-		void setHorizontalHeaderLabels(const QStringList &labels);
-
+		
 		int currentRow() const;
 		int currentColumn() const;
 		KTImagesTableItem *currentItem() const;
 		void setCurrentItem(KTImagesTableItem *item);
-
-		void sortItems(int column, Qt::SortOrder order = Qt::AscendingOrder);
-		void setSortingEnabled(bool enable);
-		bool isSortingEnabled() const;
 
 		bool isItemSelected(const KTImagesTableItem *item) const;
 		void setItemSelected(const KTImagesTableItem *item, bool select);
@@ -110,8 +106,6 @@ class KTImagesTable : public QAbstractItemView
 		inline KTImagesTableItem *itemAt(int x, int y) const { return itemAt(QPoint(x, y)); };
 		QRect visualItemRect(const KTImagesTableItem *item) const;
 
-		const KTImagesTableItem *itemPrototype() const;
-		
 		virtual void scrollTo ( const QModelIndex & index, ScrollHint hint = EnsureVisible );
 		virtual QRect visualRect ( const QModelIndex & index ) const;
 		
@@ -119,15 +113,24 @@ class KTImagesTable : public QAbstractItemView
 		virtual int verticalOffset () const;
 		virtual int horizontalOffset () const;
 		virtual QModelIndex indexAt ( const QPoint & p ) const;
+		int rowAt(int p) const;
+		int columnAt(int p) const;
 		
 		virtual QModelIndex moveCursor ( CursorAction cursorAction, Qt::KeyboardModifiers modifiers );
 		virtual QRegion visualRegionForSelection ( const QItemSelection & selection ) const;
 		virtual void setSelection ( const QRect & rect, QItemSelectionModel::SelectionFlags flags );
 		
-		
-		
 	private:
 		void setup();
+		
+	private slots:
+		void emitItemPressed(const QModelIndex &index);
+		void emitItemClicked(const QModelIndex &index);
+		void emitItemDoubleClicked(const QModelIndex &index);
+		void emitItemActivated(const QModelIndex &index);
+		void emitItemEntered(const QModelIndex &index);
+		void emitItemChanged(const QModelIndex &index);
+		void emitCurrentItemChanged(const QModelIndex &previous, const QModelIndex &current);
 
 	public slots:
 		void scrollToItem(const KTImagesTableItem *item, QAbstractItemView::ScrollHint hint = EnsureVisible);
@@ -138,7 +141,7 @@ class KTImagesTable : public QAbstractItemView
 
 		void clear();
 		void selectCell(int row, int column);
-
+		
 	signals:
 		void itemPressed(KTImagesTableItem *item);
 		void itemClicked(KTImagesTableItem *item);

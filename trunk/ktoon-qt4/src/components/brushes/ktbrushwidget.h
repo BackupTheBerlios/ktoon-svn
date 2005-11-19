@@ -76,7 +76,7 @@ class KTBrushWidget : public KTModuleWidgetBase
 	public slots:
 		void changeValueMinThickness(int value);
 		void changeValueSmoothness(int value);
-		void selectBrush(QListWidgetItem * item);
+		void selectBrush(KTImagesTableItem * item);
 		
 	signals:
 		void brushSelected(KTBrush *);

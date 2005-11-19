@@ -120,23 +120,31 @@ void KTBrushWidget::changeValueSmoothness(int value)
 // 	emit smoothnessChanged(m_tableBrushes->indexCurrentBrush(), value);
 }
 
-void KTBrushWidget::selectBrush(QListWidgetItem *item)
+void KTBrushWidget::selectBrush(KTImagesTableItem *item)
 {
-		m_displayBrush->setForm( item->icon().pixmap ( 100, 100));
-		//TODO: crear una clase que contenga la informacion de la brocha, como la brocha, el tama�
+	// 	m_displayBrush->setForm( item->icon().pixmap ( 100, 100)); // Escalar el path
+// 	TODO: crear una clase que contenga la informacion de la brocha, como la brocha, el tama�
+
+	if ( item )
+	{
+		int currentRow = m_defaultBrushesList->row(item);
+		int currentColumn = m_defaultBrushesList->column(item);
+
+		if ( currentRow >= 0 && currentColumn >= 0 )
+		{
+			KTBrush *brush = new KTBrush(m_defaultBrushesList->path( currentRow  ));
 		
-		KTBrush *brush = new KTBrush(m_defaultBrushesList->path( m_defaultBrushesList->currentRow()));
-		
-		ktDebug() << m_defaultBrushesList->currentRow() << endl;
-		
-		emit brushSelected( brush);
+			if ( brush )
+				emit brushSelected( brush);
+		}
+	}
 }
 
 void KTBrushWidget::createDefaultBrushes()
 {
 	m_defaultBrushesList = new KTBrushesList(m_brushManager);
 	QPainterPath form;
-	connect(m_defaultBrushesList, SIGNAL(changeCurrentBrush ( QListWidgetItem * )), this,SLOT(selectBrush( QListWidgetItem * )));
+	connect(m_defaultBrushesList, SIGNAL(itemClicked( KTImagesTableItem * )), this,SLOT(selectBrush( KTImagesTableItem * )));
 	
 	int thickness = 40; // FIXME
 	QRect boundingRect = QRect( 0, 0, thickness , thickness);
@@ -170,6 +178,13 @@ void KTBrushWidget::createDefaultBrushes()
 	form.closeSubpath();
 	
 	m_defaultBrushesList->addBrush( thickness, m_displaySmoothness->value(), form, tr("arc"));
+	
+	form = QPainterPath();
+	boundingRect = QRect( 0, 0, thickness , thickness);
+	form.moveTo(0,0);
+	form.addText(0, 0,QFont("Times", 70),"KTooN");
+	
+	m_defaultBrushesList->addBrush( thickness, m_displaySmoothness->value(), form, tr("Text"));
 	
 	form = QPainterPath();
 // 	boundingRect = QRect( 0, 0, thickness , thickness);

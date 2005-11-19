@@ -16,13 +16,8 @@
 #include "ktdebug.h"
 
 KTBrushesList::KTBrushesList(QWidget *parent)
-	: QListWidget(parent)
+	: KTImagesTable(parent), MAX_COLUMS(10)
 {
-// 	setHeaderLabels ( QStringList() << tr("Min") << tr( "Max" ) << tr( "Smo" ) << tr( "Name" ) );
-	QListView::setViewMode(QListView::IconMode);
-	setDragEnabled ( false );
-// 	header()->setResizeMode(QHeaderView::Stretch);
-	connect(this, SIGNAL( itemSelectionChanged ()), this, SLOT(changeCurrentBrush()));
 }
 
 
@@ -32,25 +27,46 @@ KTBrushesList::~KTBrushesList()
 
 void KTBrushesList::addBrush(int thickness, int smooth, const QPainterPath &form, QString name)
 {
-	QListWidgetItem *newBrush = new QListWidgetItem(this);
+	KT_FUNCINFO;
+	
+	const int columns = columnCount();
+	const int rows = rowCount();
+	
+	KTImagesTableItem *newBrush = new KTImagesTableItem();
+
+	QImage tbrush(form.boundingRect().width()+2, form.boundingRect().height()+2, QImage::Format_RGB32);
+	
+	tbrush.fill(qRgba(255,255,255,0));
+	QPainter p(&tbrush);
+	p.setRenderHint(QPainter::Antialiasing);
+	
+	p.setPen(QPen(Qt::black,3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+	
+// 	p.setBrush( QBrush( foregroundColor (), Qt::SolidPattern));
+	
+	
+	p.drawPath(form);
+	
+	newBrush->setImage( tbrush );
+// 	newBrush->setBackground( QColor(34,34,234,60 ) );
 	
 	m_forms << form;
-// 	newBrush->setToolTip ( tr("Thickness: %1\nSmooth: %1").arg(thickness).arg(smooth) );
 	
-	QPixmap px(form.boundingRect().width(), form.boundingRect().height());
+	int row = 0, col = 0;
 	
-	px.fill(QColor(0,0,0,0));
-	QPainter p;
-	p.begin(&px);
-// 	p.setPen(Qt::NoPen);
-// 	p.setBrush( QBrush( foregroundColor (), Qt::SolidPattern));
-	p.setRenderHint(QPainter::Antialiasing);
-	p.drawPath(form);
-	newBrush->setIcon ( QIcon(px) );
-	newBrush->setText(name);
+	if ( columns < m_forms.count() % MAX_COLUMS)
+	{
+		insertRow( rows + 1);
+		row = rows;
+	}
 	
-	setCurrentItem ( newBrush );
-	
+	if ( columns == MAX_COLUMS || rows == 0 )
+	{
+		insertColumn( m_forms.count() % MAX_COLUMS );
+		col = ( m_forms.count() % MAX_COLUMS ) -1;
+	}
+
+	setItem( row, col, newBrush);
 }
 
 QPainterPath KTBrushesList::path(int index)
@@ -117,7 +133,7 @@ void KTBrushesList::changeCurrentBrush()
 // 	int max = QString(currentItem()->text(1)).toInt();
 // 	int smooth = QString(currentItem()->text(2)).toInt();
 // 	QString name = currentItem()->text(3);
-	emit( changeCurrentBrush(currentItem()));
+// 	emit( changeCurrentBrush(currentItem()));
 }
 
 int KTBrushesList::indexCurrentBrush()

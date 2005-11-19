@@ -23,9 +23,89 @@
 #include <QPainter>
 #include <QPaintEvent>
 #include <QItemSelectionModel>
+#include <QPainterPath>
 
 
 #include "ktdebug.h"
+
+////////// KTImagesTableItemDelegate ///////////
+
+class KTImagesTableItemDelegate : public QAbstractItemDelegate
+{
+	public:
+		KTImagesTableItemDelegate(QObject * parent = 0 );
+		~KTImagesTableItemDelegate();
+		virtual void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
+		virtual QSize sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const;
+		
+};
+
+KTImagesTableItemDelegate::KTImagesTableItemDelegate(QObject * parent) :  QAbstractItemDelegate(parent)
+{
+}
+
+KTImagesTableItemDelegate::~KTImagesTableItemDelegate()
+{
+}
+
+void KTImagesTableItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+{
+	Q_ASSERT(index.isValid());
+	const QAbstractItemModel *model = index.model();
+	Q_ASSERT(model);
+	
+	QVariant value;
+
+	QStyleOptionViewItem opt = option;
+
+    	// do layout
+	QImage img = qvariant_cast<QImage>(model->data(index,Qt::DisplayRole));
+	
+	if( ! img.isNull() )
+	{
+		painter->drawImage(opt.rect, img);
+	}
+	
+	
+	// Selection!
+	if (option.showDecorationSelected && (option.state & QStyle::State_Selected))
+	{
+		QPalette::ColorGroup cg = option.state & QStyle::State_Enabled ? QPalette::Normal : QPalette::Disabled;
+		
+		painter->save();
+		painter->setPen(QPen(option.palette.brush(cg, QPalette::Highlight), 3));
+		painter->drawRect(option.rect);
+		painter->restore();
+	}
+	
+	// draw the background color
+	value = model->data(index, Qt::BackgroundColorRole);
+	if (value.isValid() && qvariant_cast<QColor>(value).isValid())
+	{
+		painter->fillRect(option.rect, qvariant_cast<QColor>(value));
+	}
+}
+
+QSize KTImagesTableItemDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
+{
+	Q_ASSERT(index.isValid());
+	const QAbstractItemModel *model = index.model();
+	Q_ASSERT(model);
+
+	QVariant value = model->data(index, Qt::FontRole);
+	QFont fnt = value.isValid() ? qvariant_cast<QFont>(value) : option.font;
+	QString text = model->data(index, Qt::DisplayRole).toString();
+	QRect pixmapRect;
+	if (model->data(index, Qt::DecorationRole).isValid())
+		pixmapRect = QRect(0, 0, option.decorationSize.width(),
+				   option.decorationSize.height());
+
+	QFontMetrics fontMetrics(fnt);
+	
+	return (pixmapRect).size();
+}
+
+//////////// KTImagesTableModel
 
 class KTImagesTableModel : public QAbstractTableModel
 {
@@ -473,9 +553,9 @@ KTImagesTableItem *KTImagesTableItem::clone() const
 }
 
 
-void KTImagesTableItem::setData(int, const QVariant &value)
+void KTImagesTableItem::setData(int r, const QVariant &value)
 {
-	m_value = qvariant_cast<QImage>(value);
+	m_values.insert(r, value);
 	
 // 	if (m_model)
 // 		m_model->itemChanged(this);
@@ -483,21 +563,29 @@ void KTImagesTableItem::setData(int, const QVariant &value)
 
 QVariant KTImagesTableItem::data(int role) const
 {
-	ktDebug() << "DATAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-	return m_value;
+	return m_values[role];
 }
 
 void KTImagesTableItem::setImage(const QImage &img)
 {
-	m_value = img;
+	m_values.insert(Qt::DisplayRole, img);
 }
 
 QImage KTImagesTableItem::image() const
 {
-	return m_value;
+	return qvariant_cast<QImage>(m_values[Qt::DisplayRole]);
 }
 
+void KTImagesTableItem::setBackground(const QColor &c)
+{
+	m_values.insert(Qt::BackgroundColorRole, c);
+}
 
+QColor KTImagesTableItem::background() const
+{
+	return qvariant_cast<QColor>(m_values[Qt::BackgroundColorRole]);
+}
+	
 ////////// KTImagesTable  ///////////
 KTImagesTable::KTImagesTable(QWidget *parent)
 	: QAbstractItemView(parent)
@@ -513,21 +601,66 @@ KTImagesTable::KTImagesTable(int rows, int columns, QWidget *parent)
 	m_model = new KTImagesTableModel(rows, columns, this);
 	setModel( m_model );
 	setup();
-	setSelectionModel(new QItemSelectionModel(m_model));
 }
 
 void KTImagesTable::setup()
 {
+	setItemDelegate( new KTImagesTableItemDelegate(this));
+	setSelectionModel(new QItemSelectionModel(m_model));
+	
 	connect(this, SIGNAL(pressed(QModelIndex)), this, SLOT(emitItemPressed(QModelIndex)));
+	
 	connect(this, SIGNAL(clicked(QModelIndex)), this,SLOT(emitItemClicked(QModelIndex)));
+	
 	connect(this, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(emitItemDoubleClicked(QModelIndex)));
+	
 	connect(this, SIGNAL(activated(QModelIndex)), this,SLOT(emitItemActivated(QModelIndex)));
+	
 	connect(this, SIGNAL(entered(QModelIndex)), this,SLOT(emitItemEntered(QModelIndex)));
    
 	connect(m_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)),this, SLOT(emitItemChanged(QModelIndex)));
 	
 	connect(this->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),this, SLOT(emitCurrentItemChanged(QModelIndex,QModelIndex)));
+	
 	connect(this->selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),this, SIGNAL(itemSelectionChanged()));
+	
+	setSelectionBehavior(QAbstractItemView::SelectItems);
+	setSelectionMode (QAbstractItemView::SingleSelection);
+}
+
+void KTImagesTable::emitItemPressed(const QModelIndex &index)
+{
+	emit itemPressed( m_model->item(index) );
+}
+
+void KTImagesTable::emitItemClicked(const QModelIndex &index)
+{
+	emit itemClicked(m_model->item(index));
+}
+
+void KTImagesTable::emitItemDoubleClicked(const QModelIndex &index)
+{
+	emit itemDoubleClicked(m_model->item(index));
+}
+
+void KTImagesTable::emitItemActivated(const QModelIndex &index)
+{
+	emit itemActivated(m_model->item(index));
+}
+
+void KTImagesTable::emitItemEntered(const QModelIndex &index)
+{
+	emit itemEntered(m_model->item(index));
+}
+
+void KTImagesTable::emitItemChanged(const QModelIndex &index)
+{
+	emit itemChanged(m_model->item(index));
+}
+
+void KTImagesTable::emitCurrentItemChanged(const QModelIndex &previous, const QModelIndex &current)
+{
+	emit currentItemChanged(m_model->item(current), m_model->item(previous));
 }
 
 KTImagesTable::~KTImagesTable()
@@ -662,6 +795,7 @@ KTImagesTableItem *KTImagesTable::itemAt(const QPoint &p) const
 
 QRect KTImagesTable::visualItemRect(const KTImagesTableItem *item) const
 {
+	KT_FUNCINFO;
 	Q_ASSERT(item);
 	QModelIndex index = m_model->index(const_cast<KTImagesTableItem*>(item));
 	Q_ASSERT(index.isValid());
@@ -670,10 +804,10 @@ QRect KTImagesTable::visualItemRect(const KTImagesTableItem *item) const
 
 QRect KTImagesTable::visualRect ( const QModelIndex & index ) const
 {
-// 	if (!index.isValid() || index.parent() != rootIndex())
+	if (!index.isValid() || index.parent() != rootIndex())
 		return QRect();
-// 	return QRect(columnViewportPosition(index.column()), rowViewportPosition(index.row()),
-// 		     columnWidth(index.column()) - 1, rowHeight(index.row()) - 1);
+
+	return viewport()->rect();
 }
 
 bool KTImagesTable::isIndexHidden ( const QModelIndex & index ) const
@@ -683,23 +817,35 @@ bool KTImagesTable::isIndexHidden ( const QModelIndex & index ) const
 
 int KTImagesTable::verticalOffset () const
 {
-	return 1;
+	KT_FUNCINFO;
+	return 25;
 }
 
 int KTImagesTable::horizontalOffset () const
 {
-	return 1;
+	KT_FUNCINFO;
+	return 25;
 }
 
 QModelIndex KTImagesTable::indexAt ( const QPoint & p ) const
 {
-	int r = p.y();
-	int c = p.x();
+	int r = rowAt(p.y());
+	int c = columnAt(p.x());
 	if (r >= 0 && c >= 0)
 	{
-		return m_model->index(r, c, rootIndex());
+		return m_model->index(c, r, rootIndex());
 	}
 	return QModelIndex();
+}
+
+int KTImagesTable::rowAt(int X) const
+{
+	return X / 25;
+}
+
+int KTImagesTable::columnAt(int Y) const
+{
+	return Y / 25;
 }
 
 void KTImagesTable::scrollToItem(const KTImagesTableItem *item, ScrollHint hint)
@@ -761,27 +907,57 @@ void KTImagesTable::setModel(QAbstractItemModel *model)
 
 QModelIndex KTImagesTable::moveCursor ( CursorAction cursorAction, Qt::KeyboardModifiers modifiers )
 {
+	KT_FUNCINFO;
 	return QModelIndex();
 }
 
 QRegion KTImagesTable::visualRegionForSelection ( const QItemSelection & selection ) const
 {
+	KT_FUNCINFO;
+	if (selection.isEmpty())
+		return QRegion();
+
+	QRegion selectionRegion;
 	
-	return QRegion();
+	for (int i = 0; i < selection.count(); ++i) 
+	{
+		QItemSelectionRange range = selection.at(i);
+		if (range.parent() != rootIndex() || !range.isValid())
+			continue;
+		QRect tl = visualRect(range.topLeft());
+		QRect br = visualRect(range.bottomRight());
+		selectionRegion += QRegion(tl|br);
+	}
+
+	return selectionRegion;
 }
 
 void KTImagesTable::setSelection ( const QRect & rect, QItemSelectionModel::SelectionFlags flags )
 {
+	KT_FUNCINFO;
+	
+	if (!selectionModel())
+	{
+		return;
+	}
+	
+	QModelIndex tl = indexAt( QPoint(rect.right(), rect.top() ));
+	QModelIndex br = indexAt(QPoint(rect.left(), rect.bottom()));
+
+	selectionModel()->clear();
+	selectionModel()->select(QItemSelection(tl, br), flags | QItemSelectionModel::ClearAndSelect);
 }
 
 void KTImagesTable::paintEvent(QPaintEvent *e)
 {
-	selectCell(0,0);
+	KT_FUNCINFO;
 	
 	QStyleOptionViewItem option = viewOptions();
 	
 	const QModelIndex current = currentIndex();
 	const QItemSelectionModel *m_selectionModel = selectionModel();
+	const QStyle::State state = option.state;
+	
 	
 	QPainter p(viewport());
 	
@@ -789,11 +965,9 @@ void KTImagesTable::paintEvent(QPaintEvent *e)
 	const int columns = m_model->columnCount();
 
 	// TODO: Si esta vacio, borra el area y retorna
-	
-// 	int rectWidth = viewport()->width()/rows;
-// 	int rectHeight = viewport()->height()/columns;
-	int rectWidth = 22;
-	int rectHeight = 22;
+
+	int rectWidth = 25;
+	int rectHeight = 25;
 	
 	for(int v = 0; v < rows; ++v)
 	{
@@ -809,11 +983,12 @@ void KTImagesTable::paintEvent(QPaintEvent *e)
 				QRect trect = QRect((v*rectWidth), (h*rectHeight), rectWidth, rectHeight);
 				
 				option.rect = trect;
+				option.state = state; // State is reset
 				
 				// TODO: pintarl el seleccionado
 				if (m_selectionModel && m_selectionModel->isSelected(index))
 				{
-// 					p.fillRect(trect, Qt::red );
+					option.state |= QStyle::State_Selected;
 				}
 				
 				p.drawRect(trect);
@@ -842,9 +1017,11 @@ void KTImagesTable::selectCell(int row, int column)
 QStyleOptionViewItem KTImagesTable::viewOptions() const
 {
 	QStyleOptionViewItem option = QAbstractItemView::viewOptions();
-	option.showDecorationSelected = false;
-	option.decorationSize = QSize(1,1);
+	option.showDecorationSelected = true;
+	option.decorationSize = QSize(22,22);
 	option.decorationPosition = QStyleOptionViewItem::Right;
 	
 	return option;
 }
+
+
