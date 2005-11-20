@@ -26,9 +26,8 @@
  * @brief Include this file if you need the class GradientSwitch
  */
 
-#include <qwidget.h>
-#include <qpainter.h>
-//Added by qt3to4:
+#include <QWidget>
+#include <QPainter>
 #include <QMouseEvent>
 #include <QPaintEvent>
 
@@ -109,7 +108,6 @@ public:
     void setSelected( bool in_is_selected );
 
 private:
-    QWidget *parent_widget;
     QPainter painter;
     QColor current_color;
     QColor border_color;
@@ -192,7 +190,7 @@ protected:
      * @param paint_event The input event
      */
     void paintEvent( QPaintEvent *paint_event );
-
+	      virtual QSize sizeHint () const;
 };
 
 #endif

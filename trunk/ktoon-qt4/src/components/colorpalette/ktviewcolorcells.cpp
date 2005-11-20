@@ -42,28 +42,88 @@ void KTViewColorCells::setupForm()
 	layout()->addWidget(m_chooserPalette);
 	layout()->addWidget(m_containerPalette);
 	
-// 	m_defaultPalette = new  KTImagesTable(20,20, m_containerPalette);
-// 	
-// 	KTImagesTableItem *item = new KTImagesTableItem;
-// 	
-// 	QImage img(22,22,QImage::Format_RGB32);
-// 	img.fill(qRgb(234,23,56));
-// 	QPainter pimg(&img);
-// 	
-// 	pimg.drawLine(0,0,20,20);
-// 	item->setImage(img);
-// 	m_defaultPalette->setItem(0,0, item);
-// 	m_defaultPalette->setItem(0,1, item);
-// 	m_defaultPalette->setItem(0,2, item);
+	m_defaultPalette = new  KTImagesTable(11,18, m_containerPalette);
 	
-	m_defaultPalette = new KTColorCells(m_containerPalette);
-
-	m_defaultPalette->fillColorsDefault();
+	fillDefaultColors();
 	
-	connect(m_defaultPalette, SIGNAL(changeColor( const QColor& )), this, SIGNAL(selectColor(const QColor &)));
+	connect(m_defaultPalette, SIGNAL(itemPressed( KTImagesTableItem* )), this, SLOT(changeColor(KTImagesTableItem*)));
 	
 	m_containerPalette->addWidget(m_defaultPalette);
 	
+}
+
+void KTViewColorCells::changeColor(KTImagesTableItem* item)
+{
+	if(item)
+	{
+		emit selectColor(item->background());
+	}
+}
+
+void KTViewColorCells::fillDefaultColors()
+{
+	int i, j;
+
+    //First column, first 6 rows, a gray scale
+	for ( i = 0; i <= 5; i++ )
+	{
+		addDefaultColor(i,j,QColor( i * 51, i * 51, i * 51 ));
+	}
+    //First column, last 6 rows, basic colors
+	addDefaultColor(i,j,QColor( 255, 0, 0 ));
+	addDefaultColor(i,j,QColor( 0, 255, 0 ));
+	addDefaultColor(i,j,QColor( 0, 0, 255 ));
+	addDefaultColor(i,j,QColor( 255, 255, 0 ));
+	addDefaultColor(i,j,QColor( 0, 255, 255 ));
+	addDefaultColor(i,j,QColor( 255, 0, 255 ));
+
+    //Segment from column 1 to 6 and row 0 to 5
+	for ( i = 0; i <= 5; i++ )
+	{
+		for ( j = 1; j <= 6; j++ )
+		{
+			addDefaultColor(i,j,QColor( 0, ( j - 1 ) * 51, i * 51 ));
+		}
+	}
+
+    //Segment from column 1 to 6 and row 6 to 11
+	for ( i = 6; i <= 11; i++ )
+	{
+		for ( j = 1; j <= 6; j++ )
+		{
+			addDefaultColor(i,j,QColor( 153, ( j - 1 ) * 51, ( i - 6 ) * 51 ));
+		}
+	}
+
+    //Segment from column 7 to 12 and row 0 to 5
+	for ( i = 0; i <= 5; i++ )
+		for ( j = 7; j <= 12; j++ )
+			addDefaultColor(i,j,QColor( 51, ( j - 7 ) * 51, i * 51 ));
+
+    //Segment from column 7 to 12 and row 6 to 11
+	for ( i = 6; i <= 11; i++ )
+		for ( j = 7; j <= 12; j++ )
+			addDefaultColor(i,j,QColor( 204, ( j - 7 ) * 51, ( i - 6 ) * 51 ));
+
+    //Segment from column 13 to 18 and row 0 to 5
+	for ( i = 0; i <= 5; i++ )
+		for ( j = 13; j <= 18; j++ )
+			addDefaultColor(i,j,QColor( 102, ( j - 13 ) * 51, i * 51 ));
+
+    //Segment from column 13 to 18 and row 6 to 11
+	for ( i = 6; i <= 11; i++ )
+		for ( j = 13; j <= 18; j++ )
+			addDefaultColor(i,j,QColor( 255, ( j - 13 ) * 51, ( i - 6 ) * 51 ));
+	
+	
+}
+
+void KTViewColorCells::addDefaultColor(int i, int j, const QColor &c)
+{
+	KTImagesTableItem *item = new KTImagesTableItem;
+	item->setBackground(c);
+	m_defaultPalette->setItem(i-1,j-1, item);
+
 }
 
 void KTViewColorCells::addCustomColor(QColor c)
@@ -75,3 +135,5 @@ void KTViewColorCells::addCustomPalette(QString name)
 {
 	
 }
+
+

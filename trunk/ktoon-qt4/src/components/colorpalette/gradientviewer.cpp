@@ -19,20 +19,17 @@
  ***************************************************************************/
 
 #include <q3ptrlist.h>
-//Added by qt3to4:
-#include <Q3Frame>
-
 #include "gradientviewer.h"
 
 //-------------- CONSTRUCTOR ---------------
 
-GradientViewer::GradientViewer( QWidget *parent ) : Q3Frame( parent )
+GradientViewer::GradientViewer( QWidget *parent ) : QFrame( parent )
 {
     Q_CHECK_PTR( parent );
 
-    setMinimumSize( 46, 46 );
-    setFrameStyle( Q3Frame::Panel | Q3Frame::Sunken );
-    parent_widget = parent;
+//     setMinimumSize( 46, 46 );
+    setFrameStyle( QFrame::Panel | QFrame::Sunken );
+//     parent_widget = parent;
     dark_color = QColor( 135, 135, 135 );
     light_color = paletteBackgroundColor();
     type = LINEAR;
@@ -51,6 +48,11 @@ GradientViewer::~GradientViewer()
 
 //--------------- SLOTS ---------------
 
+QSize GradientViewer::sizeHint () const
+{
+	return QSize(46, 46 );
+}
+
 void GradientViewer::slotSetType( int in_type )
 {
     type = in_type;
@@ -64,34 +66,33 @@ void GradientViewer::slotUpdateGradient( const QColor &color1, const QColor &col
 }
 
 //---------- EVENTS AND PROTECTED MEMBERS -------------
-
-void GradientViewer::drawContents( QPainter *painter )
+void GradientViewer::paintEvent( QPaintEvent *paint_event )
 {
-    Q_CHECK_PTR( painter );
+	QPainter painter(this);
 
     QColor pen_color, brush_color;
 
     pen_color = Qt::white;
     brush_color = Qt::white;
-    painter -> setPen( pen_color );
-    painter -> setBrush( brush_color );
-    painter -> drawRect( 0, 0, 45, 45 );
+    painter.setPen( pen_color );
+    painter.setBrush( brush_color );
+    painter.drawRect( 0, 0, 45, 45 );
 
     if ( type == LINEAR )
     {
         for ( int i = 0; i <= 43; i++ )
         {
             pen_color = linear_array[i];
-            painter -> setPen( pen_color );
-	    painter -> drawLine( i, 0, i, 43 );
+            painter.setPen( pen_color );
+	    painter.drawLine( i, 0, i, 43 );
 	    pen_color = linear_array_d[i];
-	    painter -> setPen( pen_color );
-	    painter -> drawPoint( i, 6 );
-	    painter -> drawPoint( i, 12 );
-	    painter -> drawPoint( i, 18 );
-	    painter -> drawPoint( i, 24 );
-	    painter -> drawPoint( i, 30 );
-	    painter -> drawPoint( i, 36 );
+	    painter.setPen( pen_color );
+	    painter.drawPoint( i, 6 );
+	    painter.drawPoint( i, 12 );
+	    painter.drawPoint( i, 18 );
+	    painter.drawPoint( i, 24 );
+	    painter.drawPoint( i, 30 );
+	    painter.drawPoint( i, 36 );
         }
     }
     else if ( type == RADIAL )
@@ -100,15 +101,15 @@ void GradientViewer::drawContents( QPainter *painter )
         {
             pen_color = radial_array[21 - i];
 	    brush_color = radial_array[21 - i];
-            painter -> setPen( pen_color );
-	    painter -> setBrush( brush_color );
-	    painter -> drawEllipse( i + 1, i + 1, 43 - 2 * i, 43 - 2 * i );
+            painter.setPen( pen_color );
+	    painter.setBrush( brush_color );
+	    painter.drawEllipse( i + 1, i + 1, 43 - 2 * i, 43 - 2 * i );
 	    pen_color = radial_array_d[21 - i];
-	    painter -> setPen( pen_color );
-	    painter -> drawPoint( ( i + 1 ) + ( 43 - 2 * i ) / 2, i + 1 );
-	    painter -> drawPoint( i + 1, ( i + 1 ) + ( 43 - 2 * i ) / 2 );
-	    painter -> drawPoint( ( i + 1 ) + ( 43 - 2 * i ) / 2, i + ( 43 - 2 * i ) );
-	    painter -> drawPoint( i + ( 43 - 2 * i ), ( i + 1 ) + ( 43 - 2 * i ) / 2 );
+	    painter.setPen( pen_color );
+	    painter.drawPoint( ( i + 1 ) + ( 43 - 2 * i ) / 2, i + 1 );
+	    painter.drawPoint( i + 1, ( i + 1 ) + ( 43 - 2 * i ) / 2 );
+	    painter.drawPoint( ( i + 1 ) + ( 43 - 2 * i ) / 2, i + ( 43 - 2 * i ) );
+	    painter.drawPoint( i + ( 43 - 2 * i ), ( i + 1 ) + ( 43 - 2 * i ) / 2 );
         }
     }
 }

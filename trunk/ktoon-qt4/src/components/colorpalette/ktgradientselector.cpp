@@ -58,9 +58,9 @@ void KTGradientSelector::paintEvent( QPaintEvent * )
 
 	painter.begin( this );
 
-	drawContents( &painter );
+// 	drawContents( &painter );
 
-	QBrush brush;
+	QBrush brush; 
 
 	if ( indent() )
 	{

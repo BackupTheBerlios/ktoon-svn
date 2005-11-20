@@ -26,8 +26,8 @@
  * @brief Include this file if you need the class GradientViewer
  */
 
-#include <q3frame.h>
-#include <qpainter.h>
+#include <QFrame>
+#include <QPainter>
 
 /**
  * @brief Class that handles the color palette's gradient viewer
@@ -35,7 +35,7 @@
  * <b>Date of Creation: July 15 - 2004.</b>\n
  * This is a widget where the user can edit a multicolor gradient with the help of gradient switches.
  */
-class GradientViewer : public Q3Frame
+class GradientViewer : public QFrame
 {
     Q_OBJECT
 
@@ -62,7 +62,7 @@ public:
     ~GradientViewer();
 
 private:
-    QWidget *parent_widget;
+//     QWidget *parent_widget;
     QColor linear_array[45], linear_array_d[45];
     QColor radial_array[23], radial_array_d[23];
     QColor dark_color, light_color;
@@ -92,7 +92,7 @@ public slots:
     void slotUpdateGradient( const QColor &color1, const QColor &color2, int pos1, int pos2, int alpha1, int alpha2 );
 
 protected:
-    void drawContents( QPainter *painter );
+	void paintEvent( QPaintEvent *paint_event );
     /**
      * @brief Computes the intermediate colors from \a color1 to \a color2 and updates the color arrays.
      *
@@ -114,7 +114,7 @@ protected:
      * @return The corresponding gradient viewer position
      */
     int mapGSPosition( int gs_pos );
-
+	      virtual QSize sizeHint () const;
 };
 
 #endif

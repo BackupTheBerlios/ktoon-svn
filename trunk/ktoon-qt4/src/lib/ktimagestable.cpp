@@ -991,9 +991,9 @@ void KTImagesTable::paintEvent(QPaintEvent *e)
 					option.state |= QStyle::State_Selected;
 				}
 				
-				p.drawRect(trect);
-				
 				itemDelegate()->paint(&p, option, index);
+				
+				p.drawRect(trect);
 			}
 			else
 			{

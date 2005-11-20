@@ -18,11 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <q3pointarray.h>
-//Added by qt3to4:
 #include <QMouseEvent>
 #include <QPaintEvent>
-
+#include <QPolygon>
 #include "gradientswitch.h"
 
 //------------ CONSTRUCTOR ----------------
@@ -30,9 +28,6 @@
 GradientSwitch::GradientSwitch( QWidget *parent ) : QWidget( parent )
 {
     Q_CHECK_PTR( parent );
-
-    resize( 7, 10 );
-    parent_widget = parent;
     border_color = QColor( 0, 0, 0 );
     current_color = QColor( 255, 255, 255 );
     click_point = 0;
@@ -43,6 +38,12 @@ GradientSwitch::GradientSwitch( QWidget *parent ) : QWidget( parent )
 }
 
 //------------ DESTRUCTOR -----------------
+ 
+QSize GradientSwitch::sizeHint () const
+{
+	return QSize(7,10);
+}
+
 
 GradientSwitch::~GradientSwitch()
 {
@@ -152,7 +153,7 @@ void GradientSwitch::paintEvent( QPaintEvent *paint_event )
     	painter.drawRect( 0, 3, width(), width() );
 
     	//Triangle
-    	Q3PointArray point_array( 3 );
+	QPolygon point_array( 3 );
     	point_array.putPoints( 0, 3, 3, 0, 0, 3, 6, 3 );
     	painter.setPen( border_color );
     	if ( is_selected )

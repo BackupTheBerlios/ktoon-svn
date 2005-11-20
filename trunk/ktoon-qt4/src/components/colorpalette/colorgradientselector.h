@@ -26,10 +26,9 @@
  * @brief Include this file if you need the class ColorGradientSelector
  */
 
-#include <qcolor.h>
-#include <qpainter.h>
-#include <q3ptrlist.h>
-//Added by qt3to4:
+#include <QColor>
+#include <QPainter>
+#include <QList>
 #include <QMouseEvent>
 #include <QPaintEvent>
 
@@ -82,13 +81,13 @@ public:
      * @sa switchBefore()
      */
     GradientSwitch *switchAfter( GradientSwitch *gradient_switch );
-
+	      QSize sizeHint () const;
 private:
-    QWidget *parent_widget;
+//     QWidget *parent_widget;
     QPainter painter;
     QColor highlight, shadow;
     QColor color_array[169];
-    Q3PtrList<GradientSwitch> switches;
+    QList<GradientSwitch*> switches;
     GradientSwitch *fake_switch;
     GradientSwitch *current_switch;
 

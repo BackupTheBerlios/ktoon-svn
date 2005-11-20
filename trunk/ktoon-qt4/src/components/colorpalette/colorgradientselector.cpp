@@ -19,9 +19,9 @@
  ***************************************************************************/
 
 #include "colorgradientselector.h"
-//Added by qt3to4:
 #include <QMouseEvent>
 #include <QPaintEvent>
+#include <QLinearGradient>
 
 //------------ CONSTRUCTOR ----------------
 
@@ -29,9 +29,6 @@ ColorGradientSelector::ColorGradientSelector( QWidget *parent ) : QWidget( paren
 {
     Q_CHECK_PTR( parent );
 
-    //resize( 175, 20 );
-    setMinimumSize(175,20);
-    parent_widget = parent;
     highlight = QColor( 255, 255, 255 );
     shadow = QColor( 0, 0, 0 );
     current_switch = NULL;
@@ -76,7 +73,14 @@ ColorGradientSelector::~ColorGradientSelector()
 
 }
 
+
+
 //----------- PUBLIC MEMBERS --------------
+QSize ColorGradientSelector::sizeHint () const
+{
+	return QSize( 175, 20 );
+}
+
 
 GradientSwitch *ColorGradientSelector::currentSwitch()
 {
@@ -89,8 +93,9 @@ GradientSwitch *ColorGradientSelector::switchBefore( GradientSwitch *gradient_sw
 
     GradientSwitch *gs_iterator, *gs_before;
     gs_before = NULL;
-    for ( gs_iterator = switches.first(); gs_iterator; gs_iterator = switches.next() )
+    for ( int i = 0; i < switches.count(); i++ )
     {
+	    gs_iterator = switches[i];
 	if ( gs_iterator != fake_switch && gs_iterator != gradient_switch )
 	    gs_before = gs_iterator;
 
@@ -106,8 +111,9 @@ GradientSwitch *ColorGradientSelector::switchAfter( GradientSwitch *gradient_swi
 
     GradientSwitch *gs_iterator, *gs_before;
     gs_before = NULL;
-    for ( gs_iterator = switches.last(); gs_iterator; gs_iterator = switches.prev() )
+    for ( int i = switches.count()-1; i >= 0; i-- )
     {
+	    gs_iterator = switches[i];
 	if ( gs_iterator != fake_switch && gs_iterator != gradient_switch )
 	    gs_before = gs_iterator;
 
@@ -279,7 +285,8 @@ void ColorGradientSelector::mousePressEvent( QMouseEvent *mouse_event )
 void ColorGradientSelector::paintEvent( QPaintEvent *paint_event )
 {
     Q_CHECK_PTR( paint_event );
-
+    QLinearGradient gradient(QPoint(0,0), QPoint(width(), height()));
+    
     if ( paint_event -> erased() )
     {
         painter.begin( this );
@@ -294,13 +301,22 @@ void ColorGradientSelector::paintEvent( QPaintEvent *paint_event )
 
         //---------- Paint the frame according to switch colors -----------
 
-        QColor pen_color;
-        for ( int i = 0; i <= 167; i++ )
-        {
-            pen_color = color_array[i];
-            painter.setPen( pen_color );
-	    painter.drawLine( i + 3, 1, i + 3, 8 );
-        }
+//         QColor pen_color;
+//         for ( int i = 0; i <= 167; i++ )
+//         {
+// 		pen_color = color_array[i];
+// 		gradient.setColorAt(i, color_array[i]);
+		
+// 	}
+	painter.setBrush(gradient);
+	painter.drawRect(0, 0, width(), height()/2);
+
+	
+//             pen_color = color_array[i];
+//             painter.setPen( pen_color );
+// 	    painter.drawLine( i + 3, 1, i + 3, 8 );
+//         }
+// 	    painter.
 
         painter.end();
     }
