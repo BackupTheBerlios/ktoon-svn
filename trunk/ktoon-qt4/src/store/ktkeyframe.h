@@ -41,6 +41,7 @@ class KTKeyFrame : public QObject
 		
 		~KTKeyFrame();
 		void addComponent(AGraphicComponent *comp);
+		void removeComponent(AGraphicComponent *comp);
 		AGraphicComponent *takeLastComponent();
 		
 		QList<AGraphicComponent *> components() const;

@@ -351,14 +351,32 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 					{
 						QList<AGraphicComponent *> components =  m_currentFrame->components();
 						QList<AGraphicComponent *>::iterator it;
+						AGraphicComponent *toSelect = 0;
 						
 						for(it = components.end()-1; it != components.begin()-1; it--)
 						{
 							if( (*it) && (*it)->path().contains( event->pos() ) )
 							{
-								m_selectedGraphic = (*it);
+								toSelect = (*it);
 								break;
 							}
+						}
+
+						if ( e->modifiers() & Qt::ControlModifier )
+						{
+							if ( m_selectedGraphic && m_selectedGraphic != toSelect)
+							{
+								QPainterPath selectPath = m_selectedGraphic->path();
+								QPainterPath toSelectPath = toSelect->path();
+								selectPath.addPath(toSelectPath);
+								m_selectedGraphic->setPath(selectPath);	
+
+								m_currentFrame->removeComponent(toSelect);
+							}
+						}
+						else
+						{
+							m_selectedGraphic = toSelect;
 						}
 						
 					}

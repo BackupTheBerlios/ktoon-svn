@@ -182,6 +182,7 @@ function updateMakefiles()
 			echo -n "."
 			if [ -f Makefile ]
 			then
+				echo "Removing $(pwd) Makefile"
 				rm Makefile
 			fi
 

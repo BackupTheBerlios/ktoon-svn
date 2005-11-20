@@ -57,6 +57,12 @@ void KTKeyFrame::addComponent(AGraphicComponent *comp)
 	m_components << comp;
 }
 
+void KTKeyFrame::removeComponent(AGraphicComponent *comp)
+{
+        m_components.removeAll(comp);
+}
+
+
 AGraphicComponent *KTKeyFrame::takeLastComponent()
 {
 	return m_components.takeLast();
