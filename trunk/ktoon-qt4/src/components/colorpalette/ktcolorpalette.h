@@ -42,7 +42,8 @@
 
 //FIXME: portar estas Clases
 // #include "valueselector.h"
-#include "colorgradientselector.h"
+// #include "colorgradientselector.h"
+#include "ktgradientselector.h"
 #include "gradientviewer.h"
 
 class KTColorPalette;
@@ -77,7 +78,7 @@ class KTColorPalette : public KTModuleWidgetBase
 // 		QColor m_currentLineColor, m_currentFillColor;
 // 		ColorMixer *m_colorPicker;
 		GradientViewer *m_gradientViewer;
-		ColorGradientSelector *m_gradient;
+		KTGradientSelector *m_gradient;
 		QComboBox *m_gradientTypes;
 		QLineEdit *m_nameColor;
 // 		FillColor *m_outlineColor, *m_fillColor;

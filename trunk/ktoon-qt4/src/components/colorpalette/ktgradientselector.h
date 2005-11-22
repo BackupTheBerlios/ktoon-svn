@@ -11,6 +11,27 @@
 #include <QWheelEvent>
 #include <QPaintEvent>
 #include <QPoint>
+#include <QLinearGradient>
+#include <QPainterPath>
+
+#include <QList>
+
+class KTGradientArrow : public QObject
+{
+	public:
+		KTGradientArrow(QPoint pos, QColor color);
+		~KTGradientArrow();
+		double position();
+		bool contains ( const QPoint & pt );
+		void moveArrow( const QPoint &pos );
+		QPainterPath form();
+		
+	private:
+		QPainterPath m_form;
+		QColor m_color;
+		
+};
+
 
 class KTGradientSelector : public QAbstractSlider
 {
@@ -64,8 +85,7 @@ class KTGradientSelector : public QAbstractSlider
 
 		void setValue(int value)
 		{
-			QAbstractSlider
-				::setValue(value);
+			QAbstractSlider::setValue(value);
 		}
 
 		int value() const
@@ -91,6 +111,8 @@ class KTGradientSelector : public QAbstractSlider
 		{
 			return QAbstractSlider::maxValue();
 		}
+		
+		qreal valueToGradien(int _value) const;
 
 	signals:
 		void newValue( int value );
@@ -98,6 +120,7 @@ class KTGradientSelector : public QAbstractSlider
 	protected:
 		virtual void drawContents( QPainter * );
 		virtual void drawArrow( QPainter *painter, bool show, const QPoint &pos );
+		virtual void drawArrows( QPainter *painter, bool show, QList<qreal> values );
 
 		virtual void valueChange( int value);
 		virtual void paintEvent( QPaintEvent * );
@@ -117,10 +140,15 @@ class KTGradientSelector : public QAbstractSlider
 
 	private:
 		void init();
+// 		QList<qreal> m_values;
 		QColor color1;
 		QColor color2;
 		QString text1;
 		QString text2;
+		int m_currentArrowIndex;
+		QLinearGradient m_gradient;
+		
+		QList<KTGradientArrow*> m_arrows;
 };
 
 #endif
