@@ -31,7 +31,7 @@
 #include "colorcells.h"
 #include "custompalette.h"
 
-#include "ktimagestable.h"
+#include "ktcellview.h"
 
 /**
 	@author Jorge Cuadrado <kuadrosx@toonka.com>

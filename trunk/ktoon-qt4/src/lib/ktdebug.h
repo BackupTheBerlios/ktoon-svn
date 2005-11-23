@@ -22,6 +22,7 @@
 #define KTDEBUG_H
 
 #include <QTextStream>
+#include <QColor>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
@@ -39,6 +40,7 @@
 
 #define SHOW_VAR(arg) ktDebug() << #arg << " = " << arg;
 
+class QPalette;
 
 class QWidget;
 class QDateTime;
@@ -84,6 +86,7 @@ class KTDebug
 		KTDebug(DebugType t);
 		~KTDebug();
 		
+		void resaltWidget(QWidget *w, const QColor &color = QColor(Qt::magenta));
 		
 		inline KTDebug &operator<<(QTextStreamManipulator m)
 		{ 
@@ -233,6 +236,9 @@ class KTNDebug
 		inline KTNDebug &nospace() { return *this; }
 		inline KTNDebug &maybeSpace() { return *this; }
 		template<typename T> inline KTNDebug &operator<<(const T &) { return *this; }
+		void resaltWidget(QWidget *w, const QColor &color = QColor(Qt::magenta))
+		{
+		}
 };
 
 inline KTNDebug ktDebug()

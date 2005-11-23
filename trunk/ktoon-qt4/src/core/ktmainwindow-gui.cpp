@@ -107,7 +107,7 @@ void KTMainWindow::createGUI()
 	m_brushWidget->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/brushes.png"));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Brushes"),m_brushWidget);
 	
-	connect(m_brushWidget, SIGNAL(brushSelected(KTBrush *)), this, SLOT(changeCurrentBrush(KTBrush *)));
+	connect(m_brushWidget, SIGNAL(brushSelected( const QPainterPath &, int   )), this, SLOT(changeCurrentBrush(  const QPainterPath &, int )));
 	
 	////////////////////
 	KTLibraryWidget *m_libraryDialog = new KTLibraryWidget( this );

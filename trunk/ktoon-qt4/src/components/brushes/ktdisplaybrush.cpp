@@ -23,11 +23,10 @@
 #include <QPainterPath>
 #include "ktdebug.h"
 
-KTDisplayBrush::KTDisplayBrush(int minThickness, int maxThickness, QWidget *parent)
-	: QWidget(parent), m_minThickness(minThickness), m_maxThickness(maxThickness)
+#include <QVBoxLayout>
+
+KTDisplayBrush::KTDisplayBrush(QWidget *parent) : QWidget(parent), m_thickness(0)
 {
-	show();
-	setMinimumSize(maxThickness+10, maxThickness+10);
 }
 
 
@@ -35,39 +34,50 @@ KTDisplayBrush::~KTDisplayBrush()
 {
 }
 
+QSize KTDisplayBrush::sizeHint() const
+{
+	return (QSize(100, 100));
+}
+
 void KTDisplayBrush::paintEvent ( QPaintEvent * event )
 {
+	const QPalette palette = this->palette();
+	const QPointF formCurrentPos = m_currentForm.currentPosition();
+	
+	QMatrix matrix;
+	
+	matrix.translate((width()/2) - formCurrentPos.x() , (height()/2) - formCurrentPos.y() );
+	
+	m_currentForm = matrix.map(m_currentForm);
+	
 	QPainter p(this);
 	p.setRenderHint(QPainter::Antialiasing);
 	
-	p.setPen(foregroundColor ());
-	QRect minimumBoundingRect(width()/2 - m_minThickness/2, height()/2 - m_minThickness/2 , m_minThickness, m_minThickness);
+	p.setPen( palette.color(QPalette::Foreground) );
+
+	p.drawRect(rect().adjusted(5,5,-5,-5));
 	
 	p.save();
 	
-	p.setBrush( QBrush( foregroundColor (), Qt::SolidPattern));
+	p.setPen( QPen(Qt::black, m_thickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin) );
+	p.drawPath(m_currentForm);
 	
-	p.drawPixmap ( minimumBoundingRect, m_form, m_form.rect() );
-	
-	p.restore();
-	p.drawRect( (width()/2- minimumSize().width()/2)-1, (height()/2 - minimumSize().height()/2), minimumSize().width(), minimumSize().height()-1);
-	p.end();
+	p.restore();	
 }
 
-void KTDisplayBrush::changeMinThickness(int minThickness)
+void KTDisplayBrush::setThickness(int value)
 {
-	m_minThickness = minThickness;
+	m_thickness = value;
 	repaint();
 }
 
-void KTDisplayBrush::changeMaxThickness(int maxThickness)
+void KTDisplayBrush::setForm(const QPainterPath &path)
 {
-	m_maxThickness = maxThickness;
+	QMatrix matrix;
+	matrix.scale(0.50, 0.50);
+	
+	m_currentForm = matrix.map(path);
 	repaint();
 }
 
-void KTDisplayBrush::setForm(QPixmap form)
-{
-	m_form = form;
-	update();
-}
+

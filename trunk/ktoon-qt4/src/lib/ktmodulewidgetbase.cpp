@@ -33,16 +33,19 @@
 KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent), m_isChildHidden(false), m_originalParent(parent)
 {
 	setObjectName(name);
+	
+// 	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	
 	m_container = new QVBoxLayout(this);
 	
-	m_title = new KTModuleWidgetTitle("...", this, "DialogTitle");
+	m_title = new KTModuleWidgetTitle("", this, "DialogTitle");
 	setMinimumSize(m_title->size());
 	
 	QToolTip::add(m_title, tr("Double click for roll up"));
 	
 	m_container->addWidget(m_title);
 	m_container->setAlignment(m_title, Qt::AlignTop);
-	m_container->setDirection ( QBoxLayout::TopToBottom);
+// 	m_container->setDirection ( QBoxLayout::TopToBottom);
 	m_container->setMargin(5);
 	m_container->setSpacing(1);
 // 	m_container->setSizeConstraint(QLayout::SetFixedSize);
@@ -64,6 +67,8 @@ KTModuleWidgetBase::~KTModuleWidgetBase()
 void KTModuleWidgetBase::addChild(QWidget* child, Qt::Alignment alignment)
 {
 	m_childs.append(child);
+	
+	m_container->invalidate();
 	m_container->addWidget(child, 0,alignment);
 }
 

@@ -246,5 +246,12 @@ KTDebug& KTDebug::operator << (const QWidget* t)
 	return *this; 
 }
 
+void KTDebug::resaltWidget(QWidget *w, const QColor &color)
+{
+	QPalette pal = w->palette();
+	pal.setColor(QPalette::Background, color);
+	w->setPalette(pal);
+}
+
 #endif // KT_NODEBUG
 

@@ -27,8 +27,6 @@
 #include <QMessageBox>
 #include <QObject>
 
-#include <QGLWidget>
-
 #include <QApplication>
 #include <QMap>
 

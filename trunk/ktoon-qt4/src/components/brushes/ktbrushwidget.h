@@ -31,10 +31,9 @@
 #include <QBoxLayout>
 #include <QLineEdit>
 
-#include "ktbrush.h"
 #include "kttabwidget.h"
 
-
+#include <QGridLayout>
 
 /**
 * @author Jorge Cuadrado <kuadrosx@toonka.com>
@@ -45,16 +44,6 @@ class KTBrushWidget : public KTModuleWidgetBase
 	public:
 		KTBrushWidget(QWidget *parent = 0);
 		~KTBrushWidget();
-		//FIXME:
-		enum BrushConstants
-		{
-			THICKNESS_MIN_MIN = 1, /**< Constant that defines the lowest value of the brush minimum thickness */
-			THICKNESS_MIN_MAX = 99, /**< Constant that defines the highest value of the brush minimum thickness */
-			THICKNESS_MAX_MIN = 1, /**< Constant that defines the lowest value of the brush maximum thickness */
-			THICKNESS_MAX_MAX = 99, /**< Constant that defines the highest value of the brush maximum thickness */
-			SMOOTHNESS_MIN = 0, /**< Constant that defines the lowest value of the brush smoothness */
-			SMOOTHNESS_MAX = 9 /**< Constant that defines the highest value of the brush smoothness */
-		};
 		
 	private:
 		KTDisplayBrush *m_displayBrush;
@@ -79,19 +68,11 @@ class KTBrushWidget : public KTModuleWidgetBase
 		void selectBrush(KTCellViewItem * item);
 		
 	signals:
-		void brushSelected(KTBrush *);
-		/**
-		* This signal is emitted when the minimum thickness has changed.
-		*/
-// 		void minThicknessChanged(int index , int value);
-		/**
-		 * This signal is emitted when the maximum thickness has changed.
-		*/
-// 		void maxThicknessChanged(int index , int value);
-		/**
-		 * This signal is emitted when the smoothness has changed.
-		*/
-// 		void smoothnessChanged(int index , int value);
+		void brushSelected(const QPainterPath &form, int thickness);
+		
+	private:
+		QGridLayout *m_layout;
+		int m_currentFormIndex;
 };
 
 #endif

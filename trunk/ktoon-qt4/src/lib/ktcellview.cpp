@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktimagestable.h"
+#include "ktcellview.h"
 
 #include <QPainter>
 #include <QPaintEvent>
@@ -963,11 +963,15 @@ void KTCellView::paintEvent(QPaintEvent *e)
 	
 	
 	QPainter p(viewport());
+	p.fillRect(viewport()->rect(), palette.color(QPalette::Base));
 	
 	const int rows = m_model->rowCount();
 	const int columns = m_model->columnCount();
-
-	p.fillRect(viewport()->rect(), palette.color(QPalette::Base));
+	
+	if ( rows == 0 || columns == 0 )
+	{
+		return;
+	}
 
 	int width = viewport()->width();
 	int height = viewport()->height();

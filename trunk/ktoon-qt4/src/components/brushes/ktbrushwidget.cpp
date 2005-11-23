@@ -25,40 +25,47 @@
 #include <QToolTip>
 #include <QFrame>
 #include <QPainterPath>
+#include <QSizePolicy>
 
 #include <cmath>
 
 KTBrushWidget::KTBrushWidget(QWidget *parent) : KTModuleWidgetBase( parent )
 {
 	setCaption( tr( "Brushes" ) );
+	
+	m_layout = new QGridLayout;
+	
 	setupDisplay();
 	setupBrushManager();
 	setupButtons();
+	
+	static_cast<QVBoxLayout *>(layout())->addLayout(m_layout);
 }
 
 
 KTBrushWidget::~KTBrushWidget()
 {
-}
+} 
 
 void KTBrushWidget::setupDisplay()
 {
-	m_displayBrush = new KTDisplayBrush(5, 100, this);
-	addChild(m_displayBrush, Qt::AlignTop);
+	m_displayBrush = new KTDisplayBrush();
+
+	m_layout->addWidget(m_displayBrush, 0,0);
 }
 
 void KTBrushWidget::setupBrushManager()
 {
-	m_brushManager = new KTTabWidget(this);
+	m_brushManager = new KTTabWidget();
 	
 	QFrame *container = new QFrame(m_brushManager);
 	QBoxLayout *layoutContainer = new QBoxLayout(QBoxLayout::TopToBottom, container );
 	
-	m_displayThickness = new KTEditSpinBox(5, THICKNESS_MIN_MIN, THICKNESS_MIN_MAX,1, tr("Thickness"), container,"Display Thickness");
+	m_displayThickness = new KTEditSpinBox(5, 1, 99,1, tr("Thickness"), container,"Display Thickness");
 	layoutContainer->addWidget(m_displayThickness);
 	connect( m_displayThickness, SIGNAL( valueChanged( int ) ), this , SLOT( changeValueMinThickness(int) ) );
 	
-	m_displaySmoothness = new KTEditSpinBox(2,  SMOOTHNESS_MIN, SMOOTHNESS_MAX,1, tr("Smoothness"), container, "Display Smoothness");
+	m_displaySmoothness = new KTEditSpinBox(2,  1, 99,1, tr("Smoothness"), container, "Display Smoothness");
 	layoutContainer->addWidget(m_displaySmoothness);
 	
 	
@@ -83,34 +90,35 @@ void KTBrushWidget::setupBrushManager()
 	m_brushManager->addTab (m_customBrushesList, tr("Custom Brushes") );
 	
 	m_brushManager->addTab ( container, tr("Edit Brush") );
-	addChild(m_brushManager, Qt::AlignTop);
+// 	addChild(m_brushManager, Qt::AlignTop);
+	
+	m_layout->addWidget(m_brushManager, 1,0);
 }
 
 void KTBrushWidget::setupButtons()
 {
-	QGroupBox *containerButtons = new QGroupBox(this);
+	QGroupBox *containerButtons = new QGroupBox();
 	QHBoxLayout *layout = new QHBoxLayout(containerButtons);
 	layout->setMargin(0);
 	m_addBrush = new KTImageButton( QPixmap( KTOON_HOME+"/themes/default/icons/plussign.png" ), 22, containerButtons);
-	
 	connect( m_addBrush, SIGNAL( clicked() ), SLOT( addBrush() ) );
 	QToolTip::add( m_addBrush, tr( "Add Brush" ) );
 	layout->addWidget(m_addBrush, Qt::AlignCenter);
+	
 	m_removeBrush = new KTImageButton( QPixmap( KTOON_HOME+"/themes/default/icons/minussign.png" ), 22, containerButtons);
 	connect( m_removeBrush, SIGNAL( clicked() ), SLOT( removeBrush() ) );
 	QToolTip::add( m_removeBrush, tr( "Remove Brush" ) );
-	
 	layout->addWidget(m_removeBrush, Qt::AlignCenter);
-	addChild(containerButtons);
-	m_addBrush->setMinimumWidth(containerButtons->width()-10);
-	m_removeBrush->setMinimumWidth(containerButtons->width()-10);
-	containerButtons->setMaximumHeight(m_removeBrush->height());
+	
+	m_layout->addWidget(containerButtons, 2,0);
 }
 
 
 void KTBrushWidget::changeValueMinThickness(int value)
 {
-	m_displayBrush->changeMinThickness(value);
+	m_displayBrush->setThickness( value );
+	
+	emit brushSelected( m_defaultBrushesList->path( m_currentFormIndex), m_displayThickness->value()  );
 }
 
 
@@ -122,7 +130,6 @@ void KTBrushWidget::changeValueSmoothness(int value)
 void KTBrushWidget::selectBrush(KTCellViewItem *item)
 {
 	// 	m_displayBrush->setForm( item->icon().pixmap ( 100, 100)); // Escalar el path
-// 	TODO: crear una clase que contenga la informacion de la brocha, como la brocha, el tama�
 
 	if ( item )
 	{
@@ -131,10 +138,12 @@ void KTBrushWidget::selectBrush(KTCellViewItem *item)
 
 		if ( currentRow >= 0 && currentColumn >= 0 )
 		{
-			KTBrush *brush = new KTBrush(m_defaultBrushesList->path( currentRow  ));
-			if ( brush )
+			// FIXME: no funciona para columnas!! // doesn't work for columns
+			if ( currentRow < m_defaultBrushesList->count() )
 			{
-				emit brushSelected( brush);
+				m_currentFormIndex = currentRow;
+				m_displayBrush->setForm( m_defaultBrushesList->path( currentRow  ));
+				emit brushSelected( m_defaultBrushesList->path( m_currentFormIndex), m_displayThickness->value()  );
 			}
 		}
 	}

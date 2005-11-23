@@ -19,7 +19,7 @@
 #include <QListWidgetItem>
 #include <QPainterPath>
 
-#include "ktimagestable.h"
+#include "ktcellview.h"
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
@@ -35,6 +35,7 @@ class KTBrushesList : public KTCellView
 		int removeCurrentBrush();
 		int indexCurrentBrush();
 		QPainterPath path(int);
+		int count() const;
 		
 	public slots:
 		void changeCurrentValueMin(int min);

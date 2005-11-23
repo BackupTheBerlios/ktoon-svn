@@ -141,3 +141,8 @@ int KTBrushesList::indexCurrentBrush()
 	return 0;
 // 	return indexOfTopLevelItem(currentItem());
 }
+
+int KTBrushesList::count() const
+{
+	return m_forms.count();
+}

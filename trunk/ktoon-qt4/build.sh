@@ -255,7 +255,7 @@ function main()
 	
 	echo > $STAT_FILE
 	END=0
-	( ( make  >/dev/null 2>> $LOG_FILE || qperror "Error while compile! Please send the file $LOG_FILE to $EMAIL" ) && echo END=1 > $STAT_FILE ) & 
+	( ( $MAKE  >/dev/null 2>> $LOG_FILE || qperror "Error while compile! Please send the file $LOG_FILE to $EMAIL" ) && echo END=1 > $STAT_FILE ) & 
 	while [ $END -eq 0 ]
 	do
 		if [ -f $STAT_FILE ]

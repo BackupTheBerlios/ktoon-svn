@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,35 +18,20 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTDISPLAYBRUSH_H
-#define KTDISPLAYBRUSH_H
+#ifndef KTLIBRARYWIDGET_H
+#define KTLIBRARYWIDGET_H
 
-#include <QWidget>
-#include <QPixmap>
-#include <QPainterPath>
+#include <ktmodulewidgetbase.h>
 
 /**
-* @author Jorge Cuadrado <kuadrosx@toonka.com>
+	@author David Cuadrado <krawek@toonka.com>
 */
-
-class KTDisplayBrush : public QWidget
+class KTLibraryWidget : public KTModuleWidgetBase
 {
-Q_OBJECT
+	Q_OBJECT
 	public:
-		KTDisplayBrush(QWidget *parent = 0);
-		~KTDisplayBrush();
-		virtual QSize sizeHint() const;
-		
-	public slots:
-		void setThickness(int value);
-		void setForm(const QPainterPath &form);
-		
-	private:
-		int m_thickness;
-		QPainterPath m_currentForm;
-		
-	protected:
-		virtual void paintEvent ( QPaintEvent * event );
+		KTLibraryWidget(QWidget *parent = 0);
+		~KTLibraryWidget();
 
 };
 
