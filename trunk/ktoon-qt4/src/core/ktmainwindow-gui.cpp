@@ -99,7 +99,7 @@ void KTMainWindow::createGUI()
 	// TODO: put setIcon in each class
 	KTColorPalette *m_colorPalette = new KTColorPalette(this);
 	m_colorPalette->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/color_palette.png") );
-	connect(m_colorPalette, SIGNAL(colorChanged(const QColor &, const QColor &)), this, SLOT(changeCurrentColors(const QColor &, const QColor &)));
+	connect(m_colorPalette, SIGNAL(colorChanged(const QBrush &, const QBrush &)), this, SLOT(changeCurrentColors(const QBrush &, const QBrush &)));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Palette"),m_colorPalette);
 	
 	////////////////
@@ -110,7 +110,7 @@ void KTMainWindow::createGUI()
 	connect(m_brushWidget, SIGNAL(brushSelected(KTBrush *)), this, SLOT(changeCurrentBrush(KTBrush *)));
 	
 	////////////////////
-	Library *m_libraryDialog = new Library( this, KTStatus->currentDrawingArea());
+	KTLibraryWidget *m_libraryDialog = new KTLibraryWidget( this );
 	m_libraryDialog->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/library.png"));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Library"),m_libraryDialog);
 	

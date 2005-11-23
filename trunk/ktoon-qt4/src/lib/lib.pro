@@ -81,7 +81,7 @@ SOURCES += ktapplication.cpp \
            ktxyspinbox.cpp \
            ktimagestable.cpp 
 DLLDESTDIR = /tmp
-QT += qt3support xml opengl
+QT += qt3support xml
 MOC_DIR = .moc
 UI_DIR = .ui
 OBJECTS_DIR = .obj

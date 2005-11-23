@@ -58,6 +58,8 @@ class APaintArea : public QWidget
 		AGraphicComponent *currentGraphic();
 		AGraphicComponent *selectedGraphic();
 		
+		KTBrush *currentBrush();
+		
 	public slots:
 		void setKeyFrame(int index);
 		void setLayer(int index);
@@ -81,8 +83,6 @@ class APaintArea : public QWidget
 		
 		QPoint m_lastPosition;
 		
-		QColor m_brushColor, m_penColor; // TODO: move to KTBrush
-		
 		QList<AGraphicComponent *> m_undoComponents;
 		
 		AGraphicComponent *m_currentGraphic;
@@ -101,14 +101,9 @@ class APaintArea : public QWidget
 		
 	public slots:
 		void setBrush( KTBrush *brush );
-		void setPenColor( const QColor&); // TODO: move to KTBrush
-		void setBrushColor( const QColor&); // TODO: move to KTBrush
 		void undo();
 		void redo();
-		
-	private:
-		void setupPainter(QPainter &painter); // TODO: move to KTBrush
-		
+
 		// </FIXME>
 	protected:
 		void mouseMoveEvent(QMouseEvent *e);
@@ -118,8 +113,6 @@ class APaintArea : public QWidget
 		virtual void draw(QPainter *p);
 		virtual void drawFrame(const KTKeyFrame *frame, QPainter *painter, float intensitive = 1);
 		void resizeEvent(QResizeEvent * event );
-		
-		
 		
 	signals:
 		void mousePos(const QPoint& p);

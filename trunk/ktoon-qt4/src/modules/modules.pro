@@ -3,9 +3,8 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/modules
 # Destiono es un subdirectorio de proyecto 
 
-SUBDIRS += arthury \
-           opengl 
+SUBDIRS += arthury 
 CONFIG += release \
-          warn_on 
-TEMPLATE = subdirs 
+warn_on
+TEMPLATE = subdirs
 QT += qt3support xml opengl

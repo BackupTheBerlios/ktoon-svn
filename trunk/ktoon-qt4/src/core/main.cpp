@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include <ktapplication.h>
-#include <qgl.h>
+
 #include <qfile.h>
 #include <qtextstream.h>
 #include <qtextcodec.h>
@@ -29,7 +29,7 @@
 #include <QTranslator>
 
 #include "ktapplication.h"
-#include "ktoon.h"
+
 #include "splash.h"
 #include "ktconfigdocument.h"
 #include "ktxmlreader.h"
@@ -83,11 +83,6 @@ int main( int argc, char ** argv )
 	translator->load( QString( "ktoon_" ) + QTextCodec::locale(),  KTOON_HOME+"/data/translations");
 	
 	application.installTranslator( translator );
-	
-	QGLFormat format;
-	format.setAlpha( TRUE );
-	format.setDepth( TRUE );
-	QGLFormat::setDefaultFormat( format );
 	
 	Splash *splash = new Splash;
 	splash->show();

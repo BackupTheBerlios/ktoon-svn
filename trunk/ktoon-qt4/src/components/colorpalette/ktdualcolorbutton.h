@@ -83,11 +83,11 @@ class KTDualColorButton : public QWidget
     		/**
 		 * Returns the current foreground color.
      		*/
-		QColor foreground() const;
+		QBrush foreground() const;
 		/**
 		 * Returns the current background color.
      		*/
-		QColor background() const;
+		QBrush background() const;
     		/**
 		 * Returns the current color item selected by the user.
 		*/
@@ -95,7 +95,7 @@ class KTDualColorButton : public QWidget
     		/**
 		 * Returns the color of the selected item.
      		 */
-		QColor currentColor() const;
+		QBrush currentColor() const;
     		/**
 		 * Returns the minimum size needed to display the widget and all its
 		 * controls.
@@ -106,11 +106,11 @@ class KTDualColorButton : public QWidget
 		/**
 		* Sets the foreground color.
 		*/
-		void setForeground(const QColor &c);
+		void setForeground(const QBrush &c);
     		/**
 		 * Sets the background color.
      		*/
-		void setBackground(const QColor &c);
+		void setBackground(const QBrush &c);
     		/**
 		 * Sets the current selected color item.
      		*/
@@ -118,17 +118,17 @@ class KTDualColorButton : public QWidget
     		/**
 		 * Sets the color of the selected item.
      		*/
-		void setCurrentColor(const QColor &c);
+		void setCurrentColor(const QBrush &c);
 
 	signals:
     		/**
 	 	* Emitted when the foreground color is changed.
      		*/
-		void fgChanged(const QColor &c);
+		void fgChanged(const QBrush &c);
     		/**
 		 * Emitted when the background color is changed.
      		*/
-		void bgChanged(const QColor &c);
+		void bgChanged(const QBrush &c);
     		/**
 		 * Emitted when the user changes the current color selection.
      		*/

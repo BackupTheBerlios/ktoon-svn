@@ -36,7 +36,7 @@
 
 #include "ktexposuresheet.h"
 #include "ktoonscript.h"
-#include "properties.h"
+
 #include "preferences.h"
 #include "ktsceneswidget.h"
 
@@ -46,16 +46,9 @@
 // #include "colorpalette.h"
 #include "ktcolorpalette.h"
 
-#include "tools.h"
-#include "library.h"
+#include "ktlibrarywidget.h"
 #include "kttimeline.h"
-#include "gltopcameraview.h"
-#include "glsidecameraview.h"
-#include "status.h"
-#include "document.h"
-#include "import.h"
-#include "export.h"
-#include "ktcamerapreview.h"
+
 #include "ktviewdocument.h"
 #include "ktviewcamera.h"
 
@@ -159,7 +152,7 @@ class KTMainWindow : public DMainWindow
 		void insertScene( const QString &name, bool);
 		
 		
-		void changeCurrentColors(const QColor &, const QColor &);
+		void changeCurrentColors(const QBrush &, const QBrush &);
 		void changeCurrentBrush(KTBrush *);
 		
 		

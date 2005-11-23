@@ -75,7 +75,7 @@ class KTApplication : public QApplication
 		
 	protected:
 		void initDirectories();
-		virtual void detectOpengl();
+// 		virtual void detectOpengl();
 		
 	private:
 		QString m_KTOON_HOME;

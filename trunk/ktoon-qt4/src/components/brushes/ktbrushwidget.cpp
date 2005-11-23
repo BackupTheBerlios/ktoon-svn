@@ -28,8 +28,7 @@
 
 #include <cmath>
 
-KTBrushWidget::KTBrushWidget(QWidget *parent)
-	:  KTModuleWidgetBase( parent )
+KTBrushWidget::KTBrushWidget(QWidget *parent) : KTModuleWidgetBase( parent )
 {
 	setCaption( tr( "Brushes" ) );
 	setupDisplay();
@@ -120,7 +119,7 @@ void KTBrushWidget::changeValueSmoothness(int value)
 // 	emit smoothnessChanged(m_tableBrushes->indexCurrentBrush(), value);
 }
 
-void KTBrushWidget::selectBrush(KTImagesTableItem *item)
+void KTBrushWidget::selectBrush(KTCellViewItem *item)
 {
 	// 	m_displayBrush->setForm( item->icon().pixmap ( 100, 100)); // Escalar el path
 // 	TODO: crear una clase que contenga la informacion de la brocha, como la brocha, el tama�
@@ -133,9 +132,10 @@ void KTBrushWidget::selectBrush(KTImagesTableItem *item)
 		if ( currentRow >= 0 && currentColumn >= 0 )
 		{
 			KTBrush *brush = new KTBrush(m_defaultBrushesList->path( currentRow  ));
-		
 			if ( brush )
+			{
 				emit brushSelected( brush);
+			}
 		}
 	}
 }
@@ -144,7 +144,7 @@ void KTBrushWidget::createDefaultBrushes()
 {
 	m_defaultBrushesList = new KTBrushesList(m_brushManager);
 	QPainterPath form;
-	connect(m_defaultBrushesList, SIGNAL(itemClicked( KTImagesTableItem * )), this,SLOT(selectBrush( KTImagesTableItem * )));
+	connect(m_defaultBrushesList, SIGNAL(itemClicked( KTCellViewItem * )), this,SLOT(selectBrush( KTCellViewItem * )));
 	
 	int thickness = 40; // FIXME
 	QRect boundingRect = QRect( 0, 0, thickness , thickness);

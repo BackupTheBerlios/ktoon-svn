@@ -24,17 +24,25 @@
 KTBrush::KTBrush(): QObject()
 {
 	KTINIT;
+	setup();
 }
 
 KTBrush::KTBrush(const QPainterPath &brushForm) : QObject(), m_brushForm(brushForm)
 {
 	KTINIT;
+	setup();
 }
 
 
 KTBrush::~KTBrush()
 {
 	KTEND;
+}
+
+void KTBrush::setup()
+{
+	m_brush = Qt::transparent;
+	m_pen = QPen(Qt::black, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 }
 
 
@@ -48,5 +56,30 @@ void KTBrush::setBrushForm(const QPainterPath &form)
 	m_brushForm = form;
 }
 
+void KTBrush::setBrush(const QBrush &brush)
+{
+	m_brush = brush;
+}
 
+void KTBrush::setPen(const QPen &pen)
+{
+	m_pen = pen;
+}
+
+void KTBrush::setPenBrush(const QBrush &brush)
+{
+	m_pen.setBrush(brush);
+}
+
+void KTBrush::setPenWidth(double width)
+{
+	m_pen.setWidthF(width);
+}
+
+void KTBrush::setupPainter(QPainter *p)
+{
+	p->setRenderHint(QPainter::Antialiasing, true);
+	p->setPen(m_pen);
+	p->setBrush(m_brush);
+}
 

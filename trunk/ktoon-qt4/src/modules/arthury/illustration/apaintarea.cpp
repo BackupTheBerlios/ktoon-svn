@@ -25,7 +25,7 @@
 #include <QPainter>
 #include <cmath>
 
-APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_brushColor(Qt::transparent), m_currentFrame(0), m_layer(0), m_scene(0), m_previousFramesNumber(0), m_nextFramesNumber(0)
+APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_currentFrame(0), m_layer(0), m_scene(0), m_previousFramesNumber(0), m_nextFramesNumber(0)
 {
 	m_redrawAll = true;
 	
@@ -321,31 +321,31 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 				redrawAll();
 			}
 #endif
-			if ( ! m_path.isEmpty() )
-			{
-				QPainter painter(&m_paintDevice);
-				setupPainter(painter);
-	
-				QRectF boundingRect = m_path.boundingRect();
-				QLinearGradient gradient(boundingRect.topRight(), boundingRect.bottomLeft());
-				gradient.setColorAt(0.0, QColor(m_brushColor.red(), m_brushColor.green(),m_brushColor.blue(), 63));
-				gradient.setColorAt(1.0, QColor(m_brushColor.red(), m_brushColor.green(),m_brushColor.blue(), 191));
-				painter.setBrush(gradient);
-				
-				painter.translate(event->pos() - boundingRect.center());
-				painter.drawPath(m_path);
-	
-				m_path = QPainterPath();
-				
-				unsetCursor();
-				update();
-			}
-			else 
+// 			if ( ! m_path.isEmpty() )
+// 			{
+// 				QPainter painter(&m_paintDevice);
+// 				m_currentBrush->setupPainter(&painter);
+// 	
+// 				QRectF boundingRect = m_path.boundingRect();
+// 				QLinearGradient gradient(boundingRect.topRight(), boundingRect.bottomLeft());
+// 				gradient.setColorAt(0.0, QColor(m_brushColor.red(), m_brushColor.green(),m_brushColor.blue(), 63));
+// 				gradient.setColorAt(1.0, QColor(m_brushColor.red(), m_brushColor.green(),m_brushColor.blue(), 191));
+// 				painter.setBrush(gradient);
+// 				
+// 				painter.translate(event->pos() - boundingRect.center());
+// 				painter.drawPath(m_path);
+// 	
+// 				m_path = QPainterPath();
+// 				
+// 				unsetCursor();
+// 				update();
+// 			}
+// 			else 
 			{
 				if (m_currentTool)
 				{
 					QPainter painter(&m_paintDevice);
-					setupPainter(painter);
+					m_currentBrush->setupPainter(&painter);
 #if 1
 					if ( m_currentTool->keys().contains("Selection") )
 					{
@@ -408,7 +408,7 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 			if (m_currentTool)
 			{
 				QPainter painter(&m_paintDevice);
-				setupPainter(painter);
+				m_currentBrush->setupPainter(&painter);
 				QRect rect = m_currentTool->move(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), m_lastPosition, event->pos());
 				rect.translate(m_xpos, m_ypos);
 				update(rect);
@@ -430,7 +430,7 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 			if (m_currentTool)
 			{
 				QPainter painter(&m_paintDevice);
-				setupPainter(painter);
+				m_currentBrush->setupPainter(&painter);
 				QRect rect = m_currentTool->release(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(), event->pos()), event->pos());
 				rect.translate(m_xpos, m_ypos);
 				update(rect);
@@ -487,23 +487,23 @@ QPainterPath APaintArea::translatePath(const QPainterPath &path, const QPoint &p
 	return result;
 }
 
-void APaintArea::setupPainter(QPainter &painter)
-{
-	painter.setRenderHint(QPainter::Antialiasing, true);
-	painter.setPen(QPen(m_penColor, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+// void APaintArea::setupPainter(QPainter &painter)
+// {
+// 	painter.setRenderHint(QPainter::Antialiasing, true);
+// 	painter.setPen(QPen(m_penColor, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+// 
+// 	painter.setBrush(QBrush(m_brushColor));
+// }
 
-	painter.setBrush(QBrush(m_brushColor));
-}
-
-void APaintArea::setPenColor(const QColor& color)
-{
-	m_penColor = color;
-}
-
-void APaintArea::setBrushColor(const QColor& color)
-{
-	m_brushColor = color;
-}
+// void APaintArea::setPenColor(const QColor& color)
+// {
+// 	m_penColor = color;
+// }
+// 
+// void APaintArea::setBrushColor(const QColor& color)
+// {
+// 	m_brushColor = color;
+// }
 
 void APaintArea::undo()
 {
@@ -549,4 +549,9 @@ AGraphicComponent *APaintArea::currentGraphic()
 AGraphicComponent *APaintArea::selectedGraphic()
 {
 	return m_selectedGraphic;
+}
+
+KTBrush *APaintArea::currentBrush()
+{
+	return m_currentBrush;
 }

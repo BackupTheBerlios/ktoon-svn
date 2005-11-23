@@ -20,7 +20,7 @@
 
 #include "ktexposuresheet.h"
 #include "ktapplication.h"
-#include "status.h"
+
 #include "ktdebug.h"
 
 #include <QToolTip>

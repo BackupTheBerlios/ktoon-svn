@@ -18,36 +18,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTIMAGESTABLE_H
-#define KTIMAGESTABLE_H
+#ifndef KTCELLVIEW_H
+#define KTCELLVIEW_H
 
 #include <QTableView>
 #include <QStyleOptionViewItem>
 #include <QHash>
 
-class KTImagesTable;
-class KTImagesTableItem;
-class KTImagesTableItemDelegate;
-class KTImagesTableModel;
+class KTCellView;
+class KTCellViewItem;
+class KTCellViewItemDelegate;
+class KTCellViewModel;
 
-typedef QHash<int, QVariant> ItemData ;
+typedef QHash<int, QVariant> ItemData;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTImagesTableItem
+class KTCellViewItem
 {
-	friend class KTImagesTableModel;
-	friend class KTImagesTable;
+	friend class KTCellViewModel;
+	friend class KTCellView;
 	
 	public:
-		KTImagesTableItem();
-		virtual ~KTImagesTableItem();
+		KTCellViewItem();
+		virtual ~KTCellViewItem();
 
-		virtual KTImagesTableItem *clone() const;
+		virtual KTCellViewItem *clone() const;
 
-		inline KTImagesTable *tableWidget() const { return m_view; }
+		inline KTCellView *tableWidget() const { return m_view; }
 
 		inline Qt::ItemFlags flags() const { return m_itemFlags; }
 		inline void setFlags(Qt::ItemFlags flags);
@@ -57,25 +57,25 @@ class KTImagesTableItem
 		void setImage(const QImage &);
 		QImage image() const;
 		
-		void setBackground(const QColor &);
-		QColor background() const;
+		void setBackground(const QBrush &);
+		QBrush background() const;
 		
 		virtual void setData(int role, const QVariant &value);
 	
 	private:
 		ItemData m_values;
-		KTImagesTable *m_view;
-		KTImagesTableModel *m_model;
+		KTCellView *m_view;
+		KTCellViewModel *m_model;
 		Qt::ItemFlags m_itemFlags;
 };
 
-class KTImagesTable : public QAbstractItemView
+class KTCellView : public QAbstractItemView
 {
 	Q_OBJECT
 	public:
-		KTImagesTable( QWidget *parent = 0);
-		KTImagesTable(int rows, int columns, QWidget *parent = 0);
-		~KTImagesTable();
+		KTCellView( QWidget *parent = 0);
+		KTCellView(int rows, int columns, QWidget *parent = 0);
+		~KTCellView();
 
 		void setRowCount(int rows);
 		int rowCount() const;
@@ -83,28 +83,28 @@ class KTImagesTable : public QAbstractItemView
 		void setColumnCount(int columns);
 		int columnCount() const;
 
-		int row(const KTImagesTableItem *item) const;
-		int column(const KTImagesTableItem *item) const;
+		int row(const KTCellViewItem *item) const;
+		int column(const KTCellViewItem *item) const;
 
-		KTImagesTableItem *item(int row, int column) const;
+		KTCellViewItem *item(int row, int column) const;
 		
-		void setItem(int row, int column, KTImagesTableItem *item);
-		KTImagesTableItem *takeItem(int row, int column);
+		void setItem(int row, int column, KTCellViewItem *item);
+		KTCellViewItem *takeItem(int row, int column);
 		
 		int currentRow() const;
 		int currentColumn() const;
-		KTImagesTableItem *currentItem() const;
-		void setCurrentItem(KTImagesTableItem *item);
+		KTCellViewItem *currentItem() const;
+		void setCurrentItem(KTCellViewItem *item);
 
-		bool isItemSelected(const KTImagesTableItem *item) const;
-		void setItemSelected(const KTImagesTableItem *item, bool select);
+		bool isItemSelected(const KTCellViewItem *item) const;
+		void setItemSelected(const KTCellViewItem *item, bool select);
 
-		QList<KTImagesTableItem*> selectedItems();
-		QList<KTImagesTableItem*> findItems(const QString &text, Qt::MatchFlags flags) const;
+		QList<KTCellViewItem*> selectedItems();
+		QList<KTCellViewItem*> findItems(const QString &text, Qt::MatchFlags flags) const;
 		
-		KTImagesTableItem *itemAt(const QPoint &p) const;
-		inline KTImagesTableItem *itemAt(int x, int y) const { return itemAt(QPoint(x, y)); };
-		QRect visualItemRect(const KTImagesTableItem *item) const;
+		KTCellViewItem *itemAt(const QPoint &p) const;
+		inline KTCellViewItem *itemAt(int x, int y) const { return itemAt(QPoint(x, y)); };
+		QRect visualItemRect(const KTCellViewItem *item) const;
 
 		virtual void scrollTo ( const QModelIndex & index, ScrollHint hint = EnsureVisible );
 		virtual QRect visualRect ( const QModelIndex & index ) const;
@@ -133,7 +133,7 @@ class KTImagesTable : public QAbstractItemView
 		void emitCurrentItemChanged(const QModelIndex &previous, const QModelIndex &current);
 
 	public slots:
-		void scrollToItem(const KTImagesTableItem *item, QAbstractItemView::ScrollHint hint = EnsureVisible);
+		void scrollToItem(const KTCellViewItem *item, QAbstractItemView::ScrollHint hint = EnsureVisible);
 		void insertRow(int row);
 		void insertColumn(int column);
 		void removeRow(int row);
@@ -143,29 +143,31 @@ class KTImagesTable : public QAbstractItemView
 		void selectCell(int row, int column);
 		
 	signals:
-		void itemPressed(KTImagesTableItem *item);
-		void itemClicked(KTImagesTableItem *item);
-		void itemDoubleClicked(KTImagesTableItem *item);
+		void itemPressed(KTCellViewItem *item);
+		void itemClicked(KTCellViewItem *item);
+		void itemDoubleClicked(KTCellViewItem *item);
 
-		void itemActivated(KTImagesTableItem *item);
-		void itemEntered(KTImagesTableItem *item);
-		void itemChanged(KTImagesTableItem *item);
+		void itemActivated(KTCellViewItem *item);
+		void itemEntered(KTCellViewItem *item);
+		void itemChanged(KTCellViewItem *item);
 
-		void currentItemChanged(KTImagesTableItem *current, KTImagesTableItem *previous);
+		void currentItemChanged(KTCellViewItem *current, KTCellViewItem *previous);
 		void itemSelectionChanged();
 
 	protected:
-		QModelIndex indexFromItem(KTImagesTableItem *item) const;
-		KTImagesTableItem *itemFromIndex(const QModelIndex &index) const;
+		QModelIndex indexFromItem(KTCellViewItem *item) const;
+		KTCellViewItem *itemFromIndex(const QModelIndex &index) const;
 		
 		virtual void paintEvent(QPaintEvent *e);
 		
-		QStyleOptionViewItem viewOptions() const;
+		virtual QStyleOptionViewItem viewOptions() const;
 		
 	private:
 		void setModel(QAbstractItemModel *model);
 		
-		KTImagesTableModel *m_model;
+	private:
+		KTCellViewModel *m_model;
+		int m_rectSize;
 };
 
 #endif

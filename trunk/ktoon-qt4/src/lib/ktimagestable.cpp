@@ -28,27 +28,26 @@
 
 #include "ktdebug.h"
 
-////////// KTImagesTableItemDelegate ///////////
+////////// KTCellViewItemDelegate ///////////
 
-class KTImagesTableItemDelegate : public QAbstractItemDelegate
+class KTCellViewItemDelegate : public QAbstractItemDelegate
 {
 	public:
-		KTImagesTableItemDelegate(QObject * parent = 0 );
-		~KTImagesTableItemDelegate();
+		KTCellViewItemDelegate(QObject * parent = 0 );
+		~KTCellViewItemDelegate();
 		virtual void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
 		virtual QSize sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const;
-		
 };
 
-KTImagesTableItemDelegate::KTImagesTableItemDelegate(QObject * parent) :  QAbstractItemDelegate(parent)
+KTCellViewItemDelegate::KTCellViewItemDelegate(QObject * parent) :  QAbstractItemDelegate(parent)
 {
 }
 
-KTImagesTableItemDelegate::~KTImagesTableItemDelegate()
+KTCellViewItemDelegate::~KTCellViewItemDelegate()
 {
 }
 
-void KTImagesTableItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+void KTCellViewItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
 	Q_ASSERT(index.isValid());
 	const QAbstractItemModel *model = index.model();
@@ -80,13 +79,13 @@ void KTImagesTableItemDelegate::paint ( QPainter * painter, const QStyleOptionVi
 	
 	// draw the background color
 	value = model->data(index, Qt::BackgroundColorRole);
-	if (value.isValid() && qvariant_cast<QColor>(value).isValid())
+	if (value.isValid()/* && qvariant_cast<QBrush>(value).isValid()*/)
 	{
-		painter->fillRect(option.rect, qvariant_cast<QColor>(value));
+		painter->fillRect(option.rect, qvariant_cast<QBrush>(value));
 	}
 }
 
-QSize KTImagesTableItemDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
+QSize KTCellViewItemDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
 	Q_ASSERT(index.isValid());
 	const QAbstractItemModel *model = index.model();
@@ -105,15 +104,15 @@ QSize KTImagesTableItemDelegate::sizeHint ( const QStyleOptionViewItem & option,
 	return (pixmapRect).size();
 }
 
-//////////// KTImagesTableModel
+//////////// KTCellViewModel
 
-class KTImagesTableModel : public QAbstractTableModel
+class KTCellViewModel : public QAbstractTableModel
 {
 	public:
-		KTImagesTableModel(int rows, int columns, KTImagesTable *parent);
-		~KTImagesTableModel();
+		KTCellViewModel(int rows, int columns, KTCellView *parent);
+		~KTCellViewModel();
 		
-		inline KTImagesTableItem *createItem() const { return new KTImagesTableItem(); }
+		inline KTCellViewItem *createItem() const { return new KTCellViewItem(); }
 		
 		
 		bool insertRows(int row, int count = 1, const QModelIndex &parent = QModelIndex());
@@ -122,18 +121,18 @@ class KTImagesTableModel : public QAbstractTableModel
 		bool removeRows(int row, int count = 1, const QModelIndex &parent = QModelIndex());
 		bool removeColumns(int column, int count = 1, const QModelIndex &parent = QModelIndex());
 
-		void setItem(int row, int column, KTImagesTableItem *item);
-		KTImagesTableItem *takeItem(int row, int column);
-		KTImagesTableItem *item(int row, int column) const;
-		KTImagesTableItem *item(const QModelIndex &index) const;
-		void removeItem(KTImagesTableItem *item);
+		void setItem(int row, int column, KTCellViewItem *item);
+		KTCellViewItem *takeItem(int row, int column);
+		KTCellViewItem *item(int row, int column) const;
+		KTCellViewItem *item(const QModelIndex &index) const;
+		void removeItem(KTCellViewItem *item);
 
-		void setHorizontalHeaderItem(int section, KTImagesTableItem *item);
-		void setVerticalHeaderItem(int section, KTImagesTableItem *item);
-		KTImagesTableItem *horizontalHeaderItem(int section);
-		KTImagesTableItem *verticalHeaderItem(int section);
+		void setHorizontalHeaderItem(int section, KTCellViewItem *item);
+		void setVerticalHeaderItem(int section, KTCellViewItem *item);
+		KTCellViewItem *horizontalHeaderItem(int section);
+		KTCellViewItem *verticalHeaderItem(int section);
 
-		QModelIndex index(const KTImagesTableItem *item) const;
+		QModelIndex index(const KTCellViewItem *item) const;
 		QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 
 		void setRowCount(int rows);
@@ -152,7 +151,7 @@ class KTImagesTableModel : public QAbstractTableModel
 		{ return (row * m_horizontal.count()) + column; }
 
 		void clear();
-		void itemChanged(KTImagesTableItem *item);
+		void itemChanged(KTCellViewItem *item);
 		
 		virtual QModelIndex parent ( const QModelIndex & index ) const
 		{
@@ -161,21 +160,21 @@ class KTImagesTableModel : public QAbstractTableModel
 		
 
 	private:
-		QVector<KTImagesTableItem*> m_table;
-		QVector<KTImagesTableItem*> m_vertical;
-		QVector<KTImagesTableItem*> m_horizontal;
+		QVector<KTCellViewItem*> m_table;
+		QVector<KTCellViewItem*> m_vertical;
+		QVector<KTCellViewItem*> m_horizontal;
 };
 
-KTImagesTableModel::KTImagesTableModel(int rows, int columns, KTImagesTable *parent)
+KTCellViewModel::KTCellViewModel(int rows, int columns, KTCellView *parent)
 	: QAbstractTableModel(parent), m_table(rows * columns), m_vertical(rows), m_horizontal(columns)
 {}
 
-KTImagesTableModel::~KTImagesTableModel()
+KTCellViewModel::~KTCellViewModel()
 {
 	clear();
 }
 
-bool KTImagesTableModel::insertRows(int row, int count, const QModelIndex &)
+bool KTCellViewModel::insertRows(int row, int count, const QModelIndex &)
 {
 	if (row < 0)
 		row = 0;
@@ -195,7 +194,7 @@ bool KTImagesTableModel::insertRows(int row, int count, const QModelIndex &)
 	return true;
 }
 
-bool KTImagesTableModel::insertColumns(int column, int count, const QModelIndex &)
+bool KTCellViewModel::insertColumns(int column, int count, const QModelIndex &)
 {
 	if (column < 0)
 		column = 0;
@@ -214,14 +213,14 @@ bool KTImagesTableModel::insertColumns(int column, int count, const QModelIndex 
 	return true;
 }
 
-bool KTImagesTableModel::removeRows(int row, int count, const QModelIndex &)
+bool KTCellViewModel::removeRows(int row, int count, const QModelIndex &)
 {
 	if (row >= 0 && row < m_vertical.count()) 
 	{
 		beginRemoveRows(QModelIndex(), row, row + count - 1);
 		int i = tableIndex(row, 0);
 		int n = count * columnCount();
-		KTImagesTableItem *oldItem = 0;
+		KTCellViewItem *oldItem = 0;
 		for (int j=i; j<n+i; ++j) 
 		{
 			oldItem = m_table.at(j);
@@ -244,12 +243,12 @@ bool KTImagesTableModel::removeRows(int row, int count, const QModelIndex &)
 	return false;
 }
 
-bool KTImagesTableModel::removeColumns(int column, int count, const QModelIndex &)
+bool KTCellViewModel::removeColumns(int column, int count, const QModelIndex &)
 {
 	if (column >= 0 && column < m_horizontal.count()) 
 	{
 		beginRemoveColumns(QModelIndex(), column, column + count - 1);
-		KTImagesTableItem *oldItem = 0;
+		KTCellViewItem *oldItem = 0;
 		for (int row = rowCount() - 1; row >= 0; --row) 
 		{
 			int i = tableIndex(row, column);
@@ -276,12 +275,12 @@ bool KTImagesTableModel::removeColumns(int column, int count, const QModelIndex 
 	return false;
 }
 
-void KTImagesTableModel::setItem(int row, int column, KTImagesTableItem *item)
+void KTCellViewModel::setItem(int row, int column, KTCellViewItem *item)
 {
 	int i = tableIndex(row, column);
 	if (i < 0 || i >= m_table.count())
 		return;
-	KTImagesTableItem *oldItem = m_table.at(i);
+	KTCellViewItem *oldItem = m_table.at(i);
 	if (item == oldItem)
 		return;
 
@@ -298,10 +297,10 @@ void KTImagesTableModel::setItem(int row, int column, KTImagesTableItem *item)
 	emit dataChanged(idx, idx);
 }
 
-KTImagesTableItem *KTImagesTableModel::takeItem(int row, int column)
+KTCellViewItem *KTCellViewModel::takeItem(int row, int column)
 {
 	long i = tableIndex(row, column);
-	KTImagesTableItem *itm = m_table.value(i);
+	KTCellViewItem *itm = m_table.value(i);
 	if (itm) {
 		itm->m_model = 0;
 		m_table[i] = 0;
@@ -309,19 +308,19 @@ KTImagesTableItem *KTImagesTableModel::takeItem(int row, int column)
 	return itm;
 }
 
-KTImagesTableItem *KTImagesTableModel::item(int row, int column) const
+KTCellViewItem *KTCellViewModel::item(int row, int column) const
 {
 	return m_table.value(tableIndex(row, column));
 }
 
-KTImagesTableItem *KTImagesTableModel::item(const QModelIndex &index) const
+KTCellViewItem *KTCellViewModel::item(const QModelIndex &index) const
 {
 	if (!isValid(index))
 		return 0;
 	return m_table.at(tableIndex(index.row(), index.column()));
 }
 
-void KTImagesTableModel::removeItem(KTImagesTableItem *item)
+void KTCellViewModel::removeItem(KTCellViewItem *item)
 {
 	int i = m_table.indexOf(item);
 	if (i != -1) {
@@ -346,11 +345,11 @@ void KTImagesTableModel::removeItem(KTImagesTableItem *item)
 	}
 }
 
-void KTImagesTableModel::setHorizontalHeaderItem(int section, KTImagesTableItem *item)
+void KTCellViewModel::setHorizontalHeaderItem(int section, KTCellViewItem *item)
 {
 	if (section < 0 || section >= m_horizontal.count())
 		return;
-	KTImagesTableItem *oldItem = m_horizontal.at(section);
+	KTCellViewItem *oldItem = m_horizontal.at(section);
 	if (item == oldItem)
 		return;
 
@@ -364,11 +363,11 @@ void KTImagesTableModel::setHorizontalHeaderItem(int section, KTImagesTableItem 
 	emit headerDataChanged(Qt::Horizontal, section, section);
 }
 
-void KTImagesTableModel::setVerticalHeaderItem(int section, KTImagesTableItem *item)
+void KTCellViewModel::setVerticalHeaderItem(int section, KTCellViewItem *item)
 {
 	if (section < 0 || section >= m_vertical.count())
 		return;
-	KTImagesTableItem *oldItem = m_vertical.at(section);
+	KTCellViewItem *oldItem = m_vertical.at(section);
 	if (item == oldItem)
 		return;
 
@@ -382,34 +381,34 @@ void KTImagesTableModel::setVerticalHeaderItem(int section, KTImagesTableItem *i
 	emit headerDataChanged(Qt::Vertical, section, section);
 }
 
-KTImagesTableItem *KTImagesTableModel::horizontalHeaderItem(int section)
+KTCellViewItem *KTCellViewModel::horizontalHeaderItem(int section)
 {
 	return m_horizontal.value(section);
 }
 
-KTImagesTableItem *KTImagesTableModel::verticalHeaderItem(int section)
+KTCellViewItem *KTCellViewModel::verticalHeaderItem(int section)
 {
 	return m_vertical.value(section);
 }
 
-QModelIndex KTImagesTableModel::index(const KTImagesTableItem *item) const
+QModelIndex KTCellViewModel::index(const KTCellViewItem *item) const
 {
-	int i = m_table.indexOf(const_cast<KTImagesTableItem*>(item));
+	int i = m_table.indexOf(const_cast<KTCellViewItem*>(item));
 	int row = i / columnCount();
 	int col = i % columnCount();
 	return index(row, col);
 }
 
-QModelIndex KTImagesTableModel::index(int row, int column, const QModelIndex &parent) const
+QModelIndex KTCellViewModel::index(int row, int column, const QModelIndex &parent) const
 {
 	if (hasIndex(row, column, parent)) {
-		KTImagesTableItem *item = m_table.at(tableIndex(row, column));
+		KTCellViewItem *item = m_table.at(tableIndex(row, column));
 		return createIndex(row, column, item);
 	}
 	return QModelIndex();
 }
 
-void KTImagesTableModel::setRowCount(int rows)
+void KTCellViewModel::setRowCount(int rows)
 {
 	int rc = m_vertical.count();
 	if (rc == rows)
@@ -420,7 +419,7 @@ void KTImagesTableModel::setRowCount(int rows)
 		removeRows(qMax(rows, 0), rc - rows);
 }
 
-void KTImagesTableModel::setColumnCount(int columns)
+void KTCellViewModel::setColumnCount(int columns)
 {
 	int cc = m_horizontal.count();
 	if (cc == columns)
@@ -431,19 +430,19 @@ void KTImagesTableModel::setColumnCount(int columns)
 		removeColumns(qMax(columns, 0), cc - columns);
 }
 
-int KTImagesTableModel::rowCount(const QModelIndex &) const
+int KTCellViewModel::rowCount(const QModelIndex &) const
 {
 	return m_vertical.count();
 }
 
-int KTImagesTableModel::columnCount(const QModelIndex &) const
+int KTCellViewModel::columnCount(const QModelIndex &) const
 {
 	return m_horizontal.count();
 }
 
-QVariant KTImagesTableModel::data(const QModelIndex &index, int role) const
+QVariant KTCellViewModel::data(const QModelIndex &index, int role) const
 {
-	KTImagesTableItem *itm = item(index);
+	KTCellViewItem *itm = item(index);
 	if (itm)
 	{
 		return itm->data(role);
@@ -451,16 +450,17 @@ QVariant KTImagesTableModel::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-bool KTImagesTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool KTCellViewModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	KTImagesTableItem *itm = item(index);
+	KTCellViewItem *itm = item(index);
 
-	if (itm) {
+	if (itm) 
+	{
 		itm->setData(role, value);
 		return true;
 	}
 
-	KTImagesTable *view = qobject_cast<KTImagesTable*>(QObject::parent());
+	KTCellView *view = qobject_cast<KTCellView*>(QObject::parent());
 	if (!view)
 		return false;
 
@@ -470,9 +470,9 @@ bool KTImagesTableModel::setData(const QModelIndex &index, const QVariant &value
 	return true;
 }
 
-Qt::ItemFlags KTImagesTableModel::flags(const QModelIndex &index) const
+Qt::ItemFlags KTCellViewModel::flags(const QModelIndex &index) const
 {
-	KTImagesTableItem *itm = item(index);
+	KTCellViewItem *itm = item(index);
 	if (itm)
 		return itm->flags();
 	return Qt::ItemIsEditable
@@ -481,12 +481,12 @@ Qt::ItemFlags KTImagesTableModel::flags(const QModelIndex &index) const
 			|Qt::ItemIsEnabled;
 }
 
-bool KTImagesTableModel::isValid(const QModelIndex &index) const
+bool KTCellViewModel::isValid(const QModelIndex &index) const
 {
 	return index.isValid() && index.row() < m_vertical.count() && index.column() < m_horizontal.count();
 }
 
-void KTImagesTableModel::clear()
+void KTCellViewModel::clear()
 {
 	for (int i = 0; i < m_table.count(); ++i) 
 	{
@@ -518,15 +518,15 @@ void KTImagesTableModel::clear()
 	reset();
 }
 
-void KTImagesTableModel::itemChanged(KTImagesTableItem *item)
+void KTCellViewModel::itemChanged(KTCellViewItem *item)
 {
 	QModelIndex idx = index(item);
 	emit dataChanged(idx, idx);
 }
 
 
-////////// KTImagesTableItem ////////
-KTImagesTableItem::KTImagesTableItem()
+////////// KTCellViewItem ////////
+KTCellViewItem::KTCellViewItem()
 	:  m_view(0), m_model(0), m_itemFlags(Qt::ItemIsEditable
 		      |Qt::ItemIsSelectable
 		      |Qt::ItemIsUserCheckable
@@ -536,7 +536,7 @@ KTImagesTableItem::KTImagesTableItem()
 {
 }
 
-KTImagesTableItem::~KTImagesTableItem()
+KTCellViewItem::~KTCellViewItem()
 {
 	if (m_model)
 	{
@@ -545,15 +545,15 @@ KTImagesTableItem::~KTImagesTableItem()
 }
 
 
-KTImagesTableItem *KTImagesTableItem::clone() const
+KTCellViewItem *KTCellViewItem::clone() const
 {
-	KTImagesTableItem *item = new KTImagesTableItem();
+	KTCellViewItem *item = new KTCellViewItem();
 	*item = *this;
 	return item;
 }
 
 
-void KTImagesTableItem::setData(int r, const QVariant &value)
+void KTCellViewItem::setData(int r, const QVariant &value)
 {
 	m_values.insert(r, value);
 	
@@ -561,51 +561,51 @@ void KTImagesTableItem::setData(int r, const QVariant &value)
 // 		m_model->itemChanged(this);
 }
 
-QVariant KTImagesTableItem::data(int role) const
+QVariant KTCellViewItem::data(int role) const
 {
 	return m_values[role];
 }
 
-void KTImagesTableItem::setImage(const QImage &img)
+void KTCellViewItem::setImage(const QImage &img)
 {
 	m_values.insert(Qt::DisplayRole, img);
 }
 
-QImage KTImagesTableItem::image() const
+QImage KTCellViewItem::image() const
 {
 	return qvariant_cast<QImage>(m_values[Qt::DisplayRole]);
 }
 
-void KTImagesTableItem::setBackground(const QColor &c)
+void KTCellViewItem::setBackground(const QBrush &c)
 {
 	m_values.insert(Qt::BackgroundColorRole, c);
 }
 
-QColor KTImagesTableItem::background() const
+QBrush KTCellViewItem::background() const
 {
-	return qvariant_cast<QColor>(m_values[Qt::BackgroundColorRole]);
+	return qvariant_cast<QBrush>(m_values[Qt::BackgroundColorRole]);
 }
 	
-////////// KTImagesTable  ///////////
-KTImagesTable::KTImagesTable(QWidget *parent)
+////////// KTCellView  ///////////
+KTCellView::KTCellView(QWidget *parent)
 	: QAbstractItemView(parent)
 {
-	m_model = new KTImagesTableModel(0, 0, this);
+	m_model = new KTCellViewModel(0, 0, this);
 	setModel( m_model );
 	setup();
 }
 
-KTImagesTable::KTImagesTable(int rows, int columns, QWidget *parent)
+KTCellView::KTCellView(int rows, int columns, QWidget *parent)
 	: QAbstractItemView(parent)
 {
-	m_model = new KTImagesTableModel(rows, columns, this);
+	m_model = new KTCellViewModel(rows, columns, this);
 	setModel( m_model );
 	setup();
 }
 
-void KTImagesTable::setup()
+void KTCellView::setup()
 {
-	setItemDelegate( new KTImagesTableItemDelegate(this));
+	setItemDelegate( new KTCellViewItemDelegate(this));
 	setSelectionModel(new QItemSelectionModel(m_model));
 	
 	connect(this, SIGNAL(pressed(QModelIndex)), this, SLOT(emitItemPressed(QModelIndex)));
@@ -628,144 +628,144 @@ void KTImagesTable::setup()
 	setSelectionMode (QAbstractItemView::SingleSelection);
 }
 
-void KTImagesTable::emitItemPressed(const QModelIndex &index)
+void KTCellView::emitItemPressed(const QModelIndex &index)
 {
 	emit itemPressed( m_model->item(index) );
 }
 
-void KTImagesTable::emitItemClicked(const QModelIndex &index)
+void KTCellView::emitItemClicked(const QModelIndex &index)
 {
 	emit itemClicked(m_model->item(index));
 }
 
-void KTImagesTable::emitItemDoubleClicked(const QModelIndex &index)
+void KTCellView::emitItemDoubleClicked(const QModelIndex &index)
 {
 	emit itemDoubleClicked(m_model->item(index));
 }
 
-void KTImagesTable::emitItemActivated(const QModelIndex &index)
+void KTCellView::emitItemActivated(const QModelIndex &index)
 {
 	emit itemActivated(m_model->item(index));
 }
 
-void KTImagesTable::emitItemEntered(const QModelIndex &index)
+void KTCellView::emitItemEntered(const QModelIndex &index)
 {
 	emit itemEntered(m_model->item(index));
 }
 
-void KTImagesTable::emitItemChanged(const QModelIndex &index)
+void KTCellView::emitItemChanged(const QModelIndex &index)
 {
 	emit itemChanged(m_model->item(index));
 }
 
-void KTImagesTable::emitCurrentItemChanged(const QModelIndex &previous, const QModelIndex &current)
+void KTCellView::emitCurrentItemChanged(const QModelIndex &previous, const QModelIndex &current)
 {
 	emit currentItemChanged(m_model->item(current), m_model->item(previous));
 }
 
-KTImagesTable::~KTImagesTable()
+KTCellView::~KTCellView()
 {
 }
 
-// void KTImagesTable::emitItemPressed()
+// void KTCellView::emitItemPressed()
 // {
 // }
 
-void KTImagesTable::setRowCount(int rows)
+void KTCellView::setRowCount(int rows)
 {
 	m_model->setRowCount(rows);
 }
 
 
-int KTImagesTable::rowCount() const
+int KTCellView::rowCount() const
 {
 	return m_model->rowCount();
 }
 
 
-void KTImagesTable::setColumnCount(int columns)
+void KTCellView::setColumnCount(int columns)
 {
 	m_model->setColumnCount(columns);
 }
 
 
-int KTImagesTable::columnCount() const
+int KTCellView::columnCount() const
 {
 	return m_model->columnCount();
 }
 
-int KTImagesTable::row(const KTImagesTableItem *item) const
+int KTCellView::row(const KTCellViewItem *item) const
 {
 	Q_ASSERT(item);
 	return m_model->index(item).row();
 }
 
-int KTImagesTable::column(const KTImagesTableItem *item) const
+int KTCellView::column(const KTCellViewItem *item) const
 {
 	Q_ASSERT(item);
 	return m_model->index(item).column();
 }
 
-KTImagesTableItem *KTImagesTable::item(int row, int column) const
+KTCellViewItem *KTCellView::item(int row, int column) const
 {
 	return m_model->item(row, column);
 }
 
-void KTImagesTable::setItem(int row, int column, KTImagesTableItem *item)
+void KTCellView::setItem(int row, int column, KTCellViewItem *item)
 {
 	Q_ASSERT(item);
 	item->m_view = this;
 	m_model->setItem(row, column, item);
 }
 
-KTImagesTableItem *KTImagesTable::takeItem(int row, int column)
+KTCellViewItem *KTCellView::takeItem(int row, int column)
 {
-	KTImagesTableItem *item = m_model->takeItem(row, column);
+	KTCellViewItem *item = m_model->takeItem(row, column);
 	item->m_view = 0;
 	return item;
 }
 
-int KTImagesTable::currentRow() const
+int KTCellView::currentRow() const
 {
 	return currentIndex().row();
 }
 
-int KTImagesTable::currentColumn() const
+int KTCellView::currentColumn() const
 {
 	return currentIndex().column();
 }
 
 
-KTImagesTableItem *KTImagesTable::currentItem() const
+KTCellViewItem *KTCellView::currentItem() const
 {
 	return m_model->item(currentIndex());
 }
 
-void KTImagesTable::setCurrentItem(KTImagesTableItem *item)
+void KTCellView::setCurrentItem(KTCellViewItem *item)
 {
 	setCurrentIndex(m_model->index(item));
 }
 
-bool KTImagesTable::isItemSelected(const KTImagesTableItem *item) const
+bool KTCellView::isItemSelected(const KTCellViewItem *item) const
 {
 	QModelIndex index = m_model->index(item);
 	return selectionModel()->isSelected(index) && !isIndexHidden(index);
 }
 
 
-void KTImagesTable::setItemSelected(const KTImagesTableItem *item, bool select)
+void KTCellView::setItemSelected(const KTCellViewItem *item, bool select)
 {
 	QModelIndex index = m_model->index(item);
 	selectionModel()->select(index, select ? QItemSelectionModel::Select : QItemSelectionModel::Deselect);
 }
 
-QList<KTImagesTableItem*> KTImagesTable::selectedItems()
+QList<KTCellViewItem*> KTCellView::selectedItems()
 {
 	QModelIndexList indexes = selectedIndexes();
-	QList<KTImagesTableItem*> items;
+	QList<KTCellViewItem*> items;
 	for (int i = 0; i < indexes.count(); ++i) {
 		QModelIndex index = indexes.at(i);
-		KTImagesTableItem *item = m_model->item(index);
+		KTCellViewItem *item = m_model->item(index);
 		if (item)
 			items.append(item);
 	}
@@ -773,7 +773,7 @@ QList<KTImagesTableItem*> KTImagesTable::selectedItems()
 }
 
 
-QList<KTImagesTableItem*> KTImagesTable::findItems(const QString &text, Qt::MatchFlags flags) const
+QList<KTCellViewItem*> KTCellView::findItems(const QString &text, Qt::MatchFlags flags) const
 {
 	QModelIndexList indexes;
 	for (int column = 0; column < columnCount(); ++column)
@@ -781,28 +781,28 @@ QList<KTImagesTableItem*> KTImagesTable::findItems(const QString &text, Qt::Matc
 		indexes += m_model->match(model()->index(0, column, QModelIndex()),
 		Qt::DisplayRole, text, -1, flags);
 	}
-	QList<KTImagesTableItem*> items;
+	QList<KTCellViewItem*> items;
 	for (int i = 0; i < indexes.size(); ++i)
 		items.append(m_model->item(indexes.at(i)));
 	return items;
 }
 
-KTImagesTableItem *KTImagesTable::itemAt(const QPoint &p) const
+KTCellViewItem *KTCellView::itemAt(const QPoint &p) const
 {
 	return m_model->item(indexAt(p));
 }
 
 
-QRect KTImagesTable::visualItemRect(const KTImagesTableItem *item) const
+QRect KTCellView::visualItemRect(const KTCellViewItem *item) const
 {
 	KT_FUNCINFO;
 	Q_ASSERT(item);
-	QModelIndex index = m_model->index(const_cast<KTImagesTableItem*>(item));
+	QModelIndex index = m_model->index(const_cast<KTCellViewItem*>(item));
 	Q_ASSERT(index.isValid());
 	return visualRect(index);
 }
 
-QRect KTImagesTable::visualRect ( const QModelIndex & index ) const
+QRect KTCellView::visualRect ( const QModelIndex & index ) const
 {
 	if (!index.isValid() || index.parent() != rootIndex())
 		return QRect();
@@ -810,24 +810,24 @@ QRect KTImagesTable::visualRect ( const QModelIndex & index ) const
 	return viewport()->rect();
 }
 
-bool KTImagesTable::isIndexHidden ( const QModelIndex & index ) const
+bool KTCellView::isIndexHidden ( const QModelIndex & index ) const
 {
 	return false;
 }
 
-int KTImagesTable::verticalOffset () const
+int KTCellView::verticalOffset () const
 {
 	KT_FUNCINFO;
-	return 25;
+	return m_rectSize;
 }
 
-int KTImagesTable::horizontalOffset () const
+int KTCellView::horizontalOffset () const
 {
 	KT_FUNCINFO;
-	return 25;
+	return m_rectSize;
 }
 
-QModelIndex KTImagesTable::indexAt ( const QPoint & p ) const
+QModelIndex KTCellView::indexAt ( const QPoint & p ) const
 {
 	int r = rowAt(p.y());
 	int c = columnAt(p.x());
@@ -838,85 +838,87 @@ QModelIndex KTImagesTable::indexAt ( const QPoint & p ) const
 	return QModelIndex();
 }
 
-int KTImagesTable::rowAt(int X) const
+int KTCellView::rowAt(int X) const
 {
-	return X / 25;
+	return X / m_rectSize;
 }
 
-int KTImagesTable::columnAt(int Y) const
+int KTCellView::columnAt(int Y) const
 {
-	return Y / 25;
+	return Y / m_rectSize;
 }
 
-void KTImagesTable::scrollToItem(const KTImagesTableItem *item, ScrollHint hint)
+void KTCellView::scrollToItem(const KTCellViewItem *item, ScrollHint hint)
 {
 	Q_ASSERT(item);
-	QModelIndex index = m_model->index(const_cast<KTImagesTableItem*>(item));
+	QModelIndex index = m_model->index(const_cast<KTCellViewItem*>(item));
 	Q_ASSERT(index.isValid());
 	scrollTo(index, hint);
 }
 
-void KTImagesTable::scrollTo ( const QModelIndex & index, ScrollHint hint )
+void KTCellView::scrollTo ( const QModelIndex & index, ScrollHint hint )
 {
 }
 
-void KTImagesTable::insertRow(int row)
+void KTCellView::insertRow(int row)
 {
 	m_model->insertRows(row);
 }
 
-void KTImagesTable::insertColumn(int column)
+void KTCellView::insertColumn(int column)
 {
 	m_model->insertColumns(column);
 }
 
 
-void KTImagesTable::removeRow(int row)
+void KTCellView::removeRow(int row)
 {
 	m_model->removeRows(row);
 }
 
 
-void KTImagesTable::removeColumn(int column)
+void KTCellView::removeColumn(int column)
 {
 	m_model->removeColumns(column);
 }
 
-void KTImagesTable::clear()
+void KTCellView::clear()
 {
 	selectionModel()->clear();
 	m_model->clear();
 }
 
-QModelIndex KTImagesTable::indexFromItem(KTImagesTableItem *item) const
+QModelIndex KTCellView::indexFromItem(KTCellViewItem *item) const
 {
 	Q_ASSERT(item);
 	return m_model->index(item);
 }
 
-KTImagesTableItem *KTImagesTable::itemFromIndex(const QModelIndex &index) const
+KTCellViewItem *KTCellView::itemFromIndex(const QModelIndex &index) const
 {
 	Q_ASSERT(index.isValid());
 	return m_model->item(index);
 }
 
-void KTImagesTable::setModel(QAbstractItemModel *model)
+void KTCellView::setModel(QAbstractItemModel *model)
 {
 	QAbstractItemView::setModel(model);
 }
 
-QModelIndex KTImagesTable::moveCursor ( CursorAction cursorAction, Qt::KeyboardModifiers modifiers )
+QModelIndex KTCellView::moveCursor ( CursorAction cursorAction, Qt::KeyboardModifiers modifiers )
 {
 	KT_FUNCINFO;
 	return QModelIndex();
 }
 
-QRegion KTImagesTable::visualRegionForSelection ( const QItemSelection & selection ) const
+QRegion KTCellView::visualRegionForSelection ( const QItemSelection & selection ) const
 {
 	KT_FUNCINFO;
 	if (selection.isEmpty())
+	{
 		return QRegion();
-
+	}
+	
 	QRegion selectionRegion;
 	
 	for (int i = 0; i < selection.count(); ++i) 
@@ -928,11 +930,11 @@ QRegion KTImagesTable::visualRegionForSelection ( const QItemSelection & selecti
 		QRect br = visualRect(range.bottomRight());
 		selectionRegion += QRegion(tl|br);
 	}
-
+	
 	return selectionRegion;
 }
 
-void KTImagesTable::setSelection ( const QRect & rect, QItemSelectionModel::SelectionFlags flags )
+void KTCellView::setSelection ( const QRect & rect, QItemSelectionModel::SelectionFlags flags )
 {
 	KT_FUNCINFO;
 	
@@ -948,7 +950,7 @@ void KTImagesTable::setSelection ( const QRect & rect, QItemSelectionModel::Sele
 	selectionModel()->select(QItemSelection(tl, br), flags | QItemSelectionModel::ClearAndSelect);
 }
 
-void KTImagesTable::paintEvent(QPaintEvent *e)
+void KTCellView::paintEvent(QPaintEvent *e)
 {
 	KT_FUNCINFO;
 	
@@ -957,6 +959,7 @@ void KTImagesTable::paintEvent(QPaintEvent *e)
 	const QModelIndex current = currentIndex();
 	const QItemSelectionModel *m_selectionModel = selectionModel();
 	const QStyle::State state = option.state;
+	const QPalette palette = this->palette();
 	
 	
 	QPainter p(viewport());
@@ -964,10 +967,12 @@ void KTImagesTable::paintEvent(QPaintEvent *e)
 	const int rows = m_model->rowCount();
 	const int columns = m_model->columnCount();
 
-	// TODO: Si esta vacio, borra el area y retorna
+	p.fillRect(viewport()->rect(), palette.color(QPalette::Base));
 
-	int rectWidth = 25;
-	int rectHeight = 25;
+	int width = viewport()->width();
+	int height = viewport()->height();
+	
+	m_rectSize = qMin(25, qMin(width / rows, height / columns ));
 	
 	for(int v = 0; v < rows; ++v)
 	{
@@ -980,7 +985,7 @@ void KTImagesTable::paintEvent(QPaintEvent *e)
 			QModelIndex index = model()->index(row, col, rootIndex());
 			if (index.isValid())
 			{
-				QRect trect = QRect((v*rectWidth), (h*rectHeight), rectWidth, rectHeight);
+				QRect trect = QRect((v*m_rectSize), (h*m_rectSize), m_rectSize, m_rectSize);
 				
 				option.rect = trect;
 				option.state = state; // State is reset
@@ -990,7 +995,6 @@ void KTImagesTable::paintEvent(QPaintEvent *e)
 				{
 					option.state |= QStyle::State_Selected;
 				}
-				
 				itemDelegate()->paint(&p, option, index);
 				
 				p.drawRect(trect);
@@ -1003,7 +1007,7 @@ void KTImagesTable::paintEvent(QPaintEvent *e)
 	}
 }
 
-void KTImagesTable::selectCell(int row, int column)
+void KTCellView::selectCell(int row, int column)
 {
 	if (row >= 0 && row < model()->rowCount(rootIndex()) && column >= 0 && column < model()->columnCount(rootIndex()))
 	{
@@ -1014,7 +1018,7 @@ void KTImagesTable::selectCell(int row, int column)
 	}
 }
 
-QStyleOptionViewItem KTImagesTable::viewOptions() const
+QStyleOptionViewItem KTCellView::viewOptions() const
 {
 	QStyleOptionViewItem option = QAbstractItemView::viewOptions();
 	option.showDecorationSelected = true;

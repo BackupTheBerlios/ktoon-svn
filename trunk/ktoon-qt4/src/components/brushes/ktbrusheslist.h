@@ -25,7 +25,7 @@
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
-class KTBrushesList : public KTImagesTable
+class KTBrushesList : public KTCellView
 {
 	Q_OBJECT
 	public:

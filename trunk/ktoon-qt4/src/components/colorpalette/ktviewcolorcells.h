@@ -47,7 +47,7 @@ class KTViewColorCells : public QFrame
 		QComboBox *m_chooserPalette;
 		QStackedWidget *m_containerPalette;
 // 		KTColorCells *m_defaultPalette;
-		KTImagesTable *m_defaultPalette;
+		KTCellView *m_defaultPalette;
 		
 // 		KTImagesTable *m_palette;
 		
@@ -65,7 +65,7 @@ class KTViewColorCells : public QFrame
 	public slots:
 		virtual void addCustomColor(QColor c);
 		virtual void addCustomPalette(QString name);
-		void changeColor(KTImagesTableItem*);
+		void changeColor(KTCellViewItem*);
 		
 };
 

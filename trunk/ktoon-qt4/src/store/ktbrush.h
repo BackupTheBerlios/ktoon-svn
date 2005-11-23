@@ -22,6 +22,9 @@
 
 #include <QObject>
 #include <QPainterPath>
+#include <QPainter>
+#include <QBrush>
+#include <QPen>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -35,11 +38,24 @@ class KTBrush : public QObject
 		QPainterPath brushForm() const;
 		void setBrushForm(const QPainterPath &);
 		
+		void setBrush(const QBrush &brush);
+		void setPen(const QPen &pen);
+		
+		void setPenBrush(const QBrush &brush);
+		void setPenWidth(double width);
+		
+		void setupPainter(QPainter *painter);
+		
+	private:
+		void setup();
+		
 	private:
 		QPainterPath m_brushForm;
 		int m_thickness;
-		QString m_brushName; // TODO: Use-me
-		// TODO: Add QPen and QBrush??
+		QString m_brushName; // TODO: save me!! ;)
+		
+		QBrush m_brush;
+		QPen m_pen;
 };
 
 #endif

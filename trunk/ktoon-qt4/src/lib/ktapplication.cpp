@@ -60,7 +60,7 @@ KTApplication::KTApplication(int & argc, char ** argv)
 
  	applyColors(Default);
 
- 	detectOpengl();
+//  	detectOpengl();
 }
 
 
@@ -310,26 +310,26 @@ void KTApplication::initDirectories()
 	}
 }
 
-void KTApplication::detectOpengl()
-{
-	if ( QGLFormat::hasOpenGL() )
-	{
-		QGLWidget gl((QWidget *) 0);
-		gl.makeCurrent();
-		
-		ktDebug() << "-> OpenGL detected :)";
-		if ( gl.format().directRendering() )
-		{
-			ktDebug() << "-> Using direct rendering :)";
-		}
-		else
-		{
-			ktDebug() << "-> No direct rendering";
-		}
-	}
-	else
-	{
-		ktDebug() << "-> OpenGL not detected";
-	}
-}
+// void KTApplication::detectOpengl()
+// {
+// 	if ( QGLFormat::hasOpenGL() )
+// 	{
+// 		QGLWidget gl((QWidget *) 0);
+// 		gl.makeCurrent();
+// 		
+// 		ktDebug() << "-> OpenGL detected :)";
+// 		if ( gl.format().directRendering() )
+// 		{
+// 			ktDebug() << "-> Using direct rendering :)";
+// 		}
+// 		else
+// 		{
+// 			ktDebug() << "-> No direct rendering";
+// 		}
+// 	}
+// 	else
+// 	{
+// 		ktDebug() << "-> OpenGL not detected";
+// 	}
+// }
 

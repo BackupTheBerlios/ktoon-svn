@@ -16,7 +16,7 @@
 #include "ktdebug.h"
 
 KTBrushesList::KTBrushesList(QWidget *parent)
-	: KTImagesTable(parent), MAX_COLUMS(10)
+	: KTCellView(parent), MAX_COLUMS(10)
 {
 }
 
@@ -32,7 +32,7 @@ void KTBrushesList::addBrush(int thickness, int smooth, const QPainterPath &form
 	const int columns = columnCount();
 	const int rows = rowCount();
 	
-	KTImagesTableItem *newBrush = new KTImagesTableItem();
+	KTCellViewItem *newBrush = new KTCellViewItem();
 
 	QImage tbrush(form.boundingRect().width()+2, form.boundingRect().height()+2, QImage::Format_RGB32);
 	

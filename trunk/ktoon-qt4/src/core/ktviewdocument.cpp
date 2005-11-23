@@ -30,10 +30,6 @@
 
 #include "ktvhbox.h"
 
-// TODO: DELETE THIS
-#include "status.h"
-#include "drawingarea.h"
-
 KTViewDocument::KTViewDocument(KTScene *scene, QWidget *parent ) : KTMdiWindow(parent), m_scene(scene)
 {
 	setWindowIcon(QPixmap(KTOON_THEME_DIR+"/icons/layer_pic.png") ); // FIXME: new image for documents

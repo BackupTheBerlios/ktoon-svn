@@ -37,7 +37,7 @@
 
 
 /**
-*	@author Jorge Cuadrado <kuadrosx@toonka.com>
+* @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 class KTBrushWidget : public KTModuleWidgetBase
 {
@@ -76,7 +76,7 @@ class KTBrushWidget : public KTModuleWidgetBase
 	public slots:
 		void changeValueMinThickness(int value);
 		void changeValueSmoothness(int value);
-		void selectBrush(KTImagesTableItem * item);
+		void selectBrush(KTCellViewItem * item);
 		
 	signals:
 		void brushSelected(KTBrush *);

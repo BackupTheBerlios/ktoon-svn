@@ -78,14 +78,14 @@ KTDualColorButton::~KTDualColorButton()
 	delete resetPixmap;
 }
 
-QColor KTDualColorButton::foreground() const
+QBrush KTDualColorButton::foreground() const
 {
-	return fg.color();
+	return fg;
 }
 
-QColor KTDualColorButton::background() const
+QBrush KTDualColorButton::background() const
 {
-	return bg.color();
+	return bg;
 }
 
 KTDualColorButton::DualColor KTDualColorButton::current() const
@@ -93,9 +93,9 @@ KTDualColorButton::DualColor KTDualColorButton::current() const
 	return curColor;
 }
 
-QColor KTDualColorButton::currentColor() const
+QBrush KTDualColorButton::currentColor() const
 {
-	return (curColor == Background ? bg.color() : fg.color());
+	return (curColor == Background ? bg : fg);
 }
 
 QSize KTDualColorButton::sizeHint() const
@@ -103,31 +103,35 @@ QSize KTDualColorButton::sizeHint() const
 	return QSize(34, 34);
 }
 
-void KTDualColorButton::setForeground(const QColor &c)
+void KTDualColorButton::setForeground(const QBrush &c)
 {
-	fg = QBrush(c, Qt::SolidPattern);
+// 	fg = QBrush(c, Qt::SolidPattern);
+	fg = c;
 	update();
 
 	emit fgChanged(fg.color());
 }
 
-void KTDualColorButton::setBackground(const QColor &c)
+void KTDualColorButton::setBackground(const QBrush &c)
 {
-	bg = QBrush(c, Qt::SolidPattern);
+// 	bg = QBrush(c, Qt::SolidPattern);
+	bg = c;
 	update();
 
 	emit bgChanged(bg.color());
 }
 
-void KTDualColorButton::setCurrentColor(const QColor &c)
+void KTDualColorButton::setCurrentColor(const QBrush &c)
 {
 	if(curColor == Background)
 	{
-		bg = QBrush(c, Qt::SolidPattern);
+// 		bg = QBrush(c, Qt::SolidPattern);
+		bg = c;
 	}
 	else
 	{
-		fg = QBrush(c, Qt::SolidPattern);
+// 		fg = QBrush(c, Qt::SolidPattern);
+		fg = c;
 	}
 	update();
 }
@@ -213,16 +217,16 @@ void KTDualColorButton::mousePressEvent(QMouseEvent *ev)
 		QBrush c = fg;
 		fg = bg;
 		bg = c;
-		emit fgChanged(fg.color());
-		emit bgChanged(bg.color());
+		emit fgChanged(fg);
+		emit bgChanged(bg);
 		miniCtlFlag = true;
 	}
 	else if(ev->pos().x() < bgRect.x())
 	{
 		fg.setColor(Qt::black);
 		bg.setColor(Qt::white);
-		emit fgChanged(fg.color());
-		emit bgChanged(bg.color());
+		emit fgChanged(fg);
+		emit bgChanged(bg);
 		miniCtlFlag = true;
 	}
 	update();

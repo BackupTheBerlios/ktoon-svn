@@ -107,7 +107,7 @@ class KTColorPalette : public KTModuleWidgetBase
 // 		void changeGradient(const QGradientStops&);
 		
 	signals:
-		void colorChanged(const QColor &foreground, const QColor &background);
+		void colorChanged(const QBrush &foreground, const QBrush &background); // TODO: cambiar nombre
 };
 
 #endif

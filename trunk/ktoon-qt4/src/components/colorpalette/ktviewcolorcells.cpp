@@ -42,17 +42,17 @@ void KTViewColorCells::setupForm()
 	layout()->addWidget(m_chooserPalette);
 	layout()->addWidget(m_containerPalette);
 	
-	m_defaultPalette = new  KTImagesTable(11,18, m_containerPalette);
+	m_defaultPalette = new  KTCellView(11,18, m_containerPalette);
 	
 	fillDefaultColors();
 	
-	connect(m_defaultPalette, SIGNAL(itemPressed( KTImagesTableItem* )), this, SLOT(changeColor(KTImagesTableItem*)));
+	connect(m_defaultPalette, SIGNAL(itemPressed( KTCellViewItem* )), this, SLOT(changeColor(KTCellViewItem*)));
 	
 	m_containerPalette->addWidget(m_defaultPalette);
 	
 }
 
-void KTViewColorCells::changeColor(KTImagesTableItem* item)
+void KTViewColorCells::changeColor(KTCellViewItem* item)
 {
 	if(item)
 	{
@@ -120,7 +120,7 @@ void KTViewColorCells::fillDefaultColors()
 
 void KTViewColorCells::addDefaultColor(int i, int j, const QColor &c)
 {
-	KTImagesTableItem *item = new KTImagesTableItem;
+	KTCellViewItem *item = new KTCellViewItem;
 	item->setBackground(c);
 	m_defaultPalette->setItem(i-1,j-1, item);
 

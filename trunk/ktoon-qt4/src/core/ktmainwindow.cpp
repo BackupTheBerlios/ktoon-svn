@@ -25,8 +25,6 @@
 #include "ktdebug.h"
 #include "kimageeffect.h"
 
-#include "status.h"
-
 #include "ktapplication.h"
 #include "ktabout.h"
 
@@ -188,14 +186,14 @@ void KTMainWindow::aboutKToon()
 
 
 // Drawing
-void KTMainWindow::changeCurrentColors(const QColor &foreground, const QColor &background)
+void KTMainWindow::changeCurrentColors(const QBrush &foreground, const QBrush &background)
 {
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )
 	{
-		doc->drawArea()->setPenColor(foreground);
-		doc->drawArea()->setBrushColor(background);
+		doc->drawArea()->currentBrush()->setPenBrush(foreground);
+		doc->drawArea()->currentBrush()->setBrush(background);
 	}
 }
 

@@ -180,11 +180,6 @@ function updateMakefiles()
 		then
 # 			qpinfo "Updating $i..."
 			echo -n "."
-			if [ -f Makefile ]
-			then
-				echo "Removing $(pwd) Makefile"
-				rm Makefile
-			fi
 
 			$QMAKE ${PARAMETERS} 2> /dev/null >/dev/null
 		fi
