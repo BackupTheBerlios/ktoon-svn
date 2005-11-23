@@ -20,18 +20,18 @@
 
 #include "agenericbrush.h"
 #include "brush.xpm"
-// #include "ktdebug.h"
-#include <QDebug>
+#include "ktdebug.h"
 
 #include <QKeySequence>
 
 QStringList AGenericBrush::keys() const
 {
-	return QStringList() << tr("Pencil") << tr("Air Brush") << tr("Quad Brush");
+	return QStringList() << tr("Pencil") << tr("Air Brush") << tr("Bezier Brush");
 }
 
 QRect AGenericBrush::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos)
 {
+	m_firstPoint = QPoint(0,0);
 	m_path = QPainterPath();
 	m_path.moveTo(pos);
 	
@@ -42,12 +42,12 @@ QRect AGenericBrush::move(const QString &brush, QPainter &painter,const QPainter
 {
 	painter.save();
 
-	int rad = painter.pen().width() / 2;
+	int rad = painter.pen().width();
 	QRect boundingRect = QRect(oldPos, newPos).normalized().adjusted(-rad, -rad, +rad, +rad);
 	QColor color = painter.pen().color();
 	int thickness = painter.pen().width();
 	QColor transparentColor(color.red(), color.green(), color.blue(), 0);
-
+	
 	QPainterPath path;
 	path.setFillRule ( Qt::WindingFill );
 	m_path.setFillRule ( Qt::WindingFill );
@@ -71,12 +71,17 @@ QRect AGenericBrush::move(const QString &brush, QPainter &painter,const QPainter
 			path.addEllipse(x - (thickness / 2), y - (thickness / 2),thickness, thickness);
 		}
 	}
-	else if ( brush == tr("Quad Brush"))
+	else if ( brush == tr("Bezier Brush"))
 	{
-		path.addRect(newPos.x(), newPos.y(), 20, 20);
-		boundingRect = QRect( newPos.x()-rad*2, newPos.y()-rad*2, 20+painter.pen().width()*2, 20+painter.pen().width()*2);
+		if ( ! m_firstPoint.isNull() )
+		{
+			m_points << oldPos << newPos;
+			path.moveTo(oldPos);
+			path.cubicTo(oldPos, m_firstPoint, newPos);
+		}
+		m_firstPoint = oldPos;
 	}
-	
+
 	painter.drawPath(path);
 	m_path.addPath ( path );
 // 	m_path.connectPath ( path );
@@ -85,8 +90,9 @@ QRect AGenericBrush::move(const QString &brush, QPainter &painter,const QPainter
 	return boundingRect;
 }
 
-QRect AGenericBrush::release(const QString & /* brush */,QPainter & /* painter */,const QPainterPath &/*form*/, const QPoint & /* pos */)
+QRect AGenericBrush::release(const QString & /* brush */,QPainter &  /*painter */,const QPainterPath &/*form*/, const QPoint & /* pos */)
 {
+	m_firstPoint = QPoint(0,0);
 	return QRect(0, 0, 0, 0);
 }
 
@@ -108,9 +114,9 @@ QHash<QString, QAction *> AGenericBrush::actions()
 	airBrush->setShortcut( QKeySequence(tr("A")) );
 	hash.insert(tr("Air Brush"), airBrush);
 	
-	QAction *quadBrush = new QAction( QIcon(), tr("Quad Brush"), this);
+	QAction *quadBrush = new QAction( QIcon(), tr("Bezier Brush"), this);
 	quadBrush->setShortcut( QKeySequence(tr("Q")) );
-	hash.insert(tr("Quad Brush"), quadBrush);
+	hash.insert(tr("Bezier Brush"), quadBrush);
 	
 	return hash;
 }

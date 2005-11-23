@@ -44,6 +44,8 @@ class AGenericBrush : public QObject, public AToolInterface
 		virtual QHash<QString, QAction *>actions();
 		
 	private:
+		QPoint m_firstPoint;
+		QList<QPoint> m_points;
 		QPainterPath m_path;
 };
 

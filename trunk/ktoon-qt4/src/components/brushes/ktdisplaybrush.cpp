@@ -36,7 +36,7 @@ KTDisplayBrush::~KTDisplayBrush()
 
 QSize KTDisplayBrush::sizeHint() const
 {
-	return (QSize(100, 100));
+	return (QSize(parentWidget()->width(), 100));
 }
 
 void KTDisplayBrush::paintEvent ( QPaintEvent * event )
