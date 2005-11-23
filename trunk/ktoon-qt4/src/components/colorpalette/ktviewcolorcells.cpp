@@ -63,7 +63,7 @@ void KTViewColorCells::changeColor(KTCellViewItem* item)
 void KTViewColorCells::fillDefaultColors()
 {
 	int i, j;
-
+	j =0;
     //First column, first 6 rows, a gray scale
 	for ( i = 0; i <= 5; i++ )
 	{

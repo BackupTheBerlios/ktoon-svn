@@ -41,6 +41,7 @@ KTBrush::~KTBrush()
 
 void KTBrush::setup()
 {
+	m_hasGradient = false;
 	m_brush = Qt::transparent;
 	m_pen = QPen(Qt::black, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
 }
@@ -56,9 +57,17 @@ void KTBrush::setBrushForm(const QPainterPath &form)
 	m_brushForm = form;
 }
 
-void KTBrush::setBrush(const QBrush &brush)
+void KTBrush::setBrush(const QBrush &brush )
 {
 	m_brush = brush;
+	if ( m_brush.gradient() )
+	{
+		m_hasGradient = true;
+	}
+	else
+	{
+		m_hasGradient = false;
+	}
 }
 
 void KTBrush::setPen(const QPen &pen)
@@ -80,6 +89,9 @@ void KTBrush::setupPainter(QPainter *p)
 {
 	p->setRenderHint(QPainter::Antialiasing, true);
 	p->setPen(m_pen);
+	
+
+	
 	p->setBrush(m_brush);
 }
 

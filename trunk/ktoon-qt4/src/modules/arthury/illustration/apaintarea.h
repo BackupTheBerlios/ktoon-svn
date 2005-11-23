@@ -114,6 +114,7 @@ class APaintArea : public QWidget
 		virtual void drawFrame(const KTKeyFrame *frame, QPainter *painter, float intensitive = 1);
 		void resizeEvent(QResizeEvent * event );
 		
+		
 	signals:
 		void mousePos(const QPoint& p);
 };

@@ -40,6 +40,13 @@ KTGradientViewer::~KTGradientViewer()
 void KTGradientViewer::paintEvent( QPaintEvent*)
 {
 	QPainter p(this);
+	createGradient();
+	p.setBrush(m_gradient);
+	p.drawRect(rect());
+}
+
+void KTGradientViewer::createGradient()
+{
 	switch(m_type)
 	{
 		case  QGradient::LinearGradient:
@@ -61,13 +68,9 @@ void KTGradientViewer::paintEvent( QPaintEvent*)
 			break;
 		}
 	}
-	p.setBrush(m_gradient);
-	p.drawRect(rect());
 }
-
 void KTGradientViewer::changeGradient( const QGradientStops& stops)
 {
-	
 	m_gradientStops = stops;
 	repaint();
 }
@@ -86,4 +89,9 @@ void KTGradientViewer::changeFocal(double dx, double dy)
 	m_yFocal = dy;
 	
 	repaint();
+}
+
+QGradient KTGradientViewer::gradient()
+{
+	return m_gradient;
 }

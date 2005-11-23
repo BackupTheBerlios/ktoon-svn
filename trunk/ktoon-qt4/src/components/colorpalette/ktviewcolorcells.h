@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
 #ifndef KTVIEWCOLORCELLS_H
 #define KTVIEWCOLORCELLS_H
 
@@ -24,12 +25,6 @@
 #include <QComboBox>
 #include <QStackedWidget>
 #include <QVBoxLayout>
-
-//reimplemtentar estas clases para porta a qt4 
-
-#include "ktcolorcells.h"
-#include "colorcells.h"
-#include "custompalette.h"
 
 #include "ktcellview.h"
 
@@ -46,10 +41,8 @@ class KTViewColorCells : public QFrame
 	private:
 		QComboBox *m_chooserPalette;
 		QStackedWidget *m_containerPalette;
-// 		KTColorCells *m_defaultPalette;
 		KTCellView *m_defaultPalette;
 		
-// 		KTImagesTable *m_palette;
 		
 	private:
 		void setupForm();

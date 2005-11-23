@@ -44,7 +44,7 @@ class KTBrush : public QObject
 		void setPenBrush(const QBrush &brush);
 		void setPenWidth(double width);
 		
-		void setupPainter(QPainter *painter);
+		void setupPainter(QPainter *painter );
 		
 	private:
 		void setup();
@@ -56,6 +56,8 @@ class KTBrush : public QObject
 		
 		QBrush m_brush;
 		QPen m_pen;
+		
+		bool m_hasGradient;
 };
 
 #endif

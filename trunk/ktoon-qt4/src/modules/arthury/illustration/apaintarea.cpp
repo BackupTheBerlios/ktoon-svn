@@ -409,6 +409,7 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 			{
 				QPainter painter(&m_paintDevice);
 				m_currentBrush->setupPainter(&painter);
+				
 				QRect rect = m_currentTool->move(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), m_lastPosition, event->pos());
 				rect.translate(m_xpos, m_ypos);
 				update(rect);
@@ -432,6 +433,7 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 				QPainter painter(&m_paintDevice);
 				m_currentBrush->setupPainter(&painter);
 				QRect rect = m_currentTool->release(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(), event->pos()), event->pos());
+				
 				rect.translate(m_xpos, m_ypos);
 				update(rect);
 				
@@ -555,3 +557,4 @@ KTBrush *APaintArea::currentBrush()
 {
 	return m_currentBrush;
 }
+

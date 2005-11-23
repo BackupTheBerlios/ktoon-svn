@@ -29,6 +29,7 @@
 
 #include <QFrame>
 #include <QComboBox>
+
 #include "ktxyspinbox.h"
 
 /**
@@ -41,7 +42,8 @@ class KTGradientManager : public QFrame
 		KTGradientManager(QWidget *parent = 0);
 		~KTGradientManager();
 		void setColor(const QColor &);
-		
+		int gradientType();
+		void updateGradient();
 	private:
 		KTGradientSelector *m_selector;
 		KTGradientViewer *m_viewer;
@@ -51,6 +53,11 @@ class KTGradientManager : public QFrame
 		
 	public slots:
 		void changeType(int type);
+		void changeGradient( const QGradientStops& );
+		
+	signals:
+		void gradientChanged(const QGradient &);
+		
 };
 
 #endif

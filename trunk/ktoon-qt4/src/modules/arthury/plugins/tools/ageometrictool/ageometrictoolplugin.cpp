@@ -93,9 +93,13 @@ QRect AGeometricToolPlugin::release(const QString &  brush ,QPainter &  painter 
 		m_path.addEllipse(m_rect);
 	}
 	
+	QRect rect = m_path.boundingRect().toRect().normalized().adjusted(-rad, -rad, +rad, +rad);
+	
+	applyGradient( &painter, rect); 
+	
 	painter.drawPath(m_path);
 	
-	return m_path.boundingRect().toRect().normalized().adjusted(-rad, -rad, +rad, +rad);
+	return rect;
 // 	return QRect(0, 0, 0, 0);
 }
 
@@ -120,6 +124,39 @@ QHash<QString, QAction *> AGeometricToolPlugin::actions()
 	hash.insert(tr("Ellipse"), rectangle);
 
 	return hash;
+}
+
+void AGeometricToolPlugin::applyGradient(QPainter *painter, const QRect &rect)
+{
+	if ( painter && rect.isValid() && !rect.isNull() )
+	{
+		const QGradient *gradient = painter->brush().gradient();
+		if( gradient )
+		{
+			QGradient newGradient;
+			switch( gradient->type() )
+			{
+				case  QGradient::LinearGradient:
+				{
+					newGradient = QLinearGradient(rect.topLeft(), rect.topRight());
+					break;
+				}
+				case QGradient::RadialGradient:
+				{
+					newGradient = QRadialGradient(rect.center(), rect.topRight().x(), rect.center());
+					break;
+				}
+				case QGradient::ConicalGradient:
+				{
+					newGradient = QConicalGradient(rect.center(), 450);
+					break;
+				}
+			}
+			newGradient.setStops(gradient->stops());
+			
+			painter->setBrush(QBrush(newGradient));
+		}
+	}
 }
 
 Q_EXPORT_PLUGIN( AGeometricToolPlugin )

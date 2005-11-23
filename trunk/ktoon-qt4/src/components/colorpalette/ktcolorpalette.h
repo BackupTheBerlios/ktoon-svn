@@ -35,18 +35,6 @@
 #include "ktcolorpicker.h"
 #include "ktluminancepicker.h"
 #include "ktdualcolorbutton.h"
-
-//FIXME: unificar estas clases
-#include "fillcolor.h"
-#include "outlinecolor.h"
-
-//FIXME: portar estas Clases
-// #include "valueselector.h"
-// #include "colorgradientselector.h"
-// #include "ktgradientselector.h"
-// #include "gradientviewer.h"
-// #include "ktgradientviewer.h"
-
 #include "ktgradientmanager.h"
 
 class KTColorPalette;
@@ -78,25 +66,20 @@ class KTColorPalette : public KTModuleWidgetBase
 		KTValueColor *m_displayValueColor;
 		KTColorPicker *m_colorPicker;
 		KTLuminancePicker *m_luminancePicker;
-// 		QColor m_currentLineColor, m_currentFillColor;
-// 		ColorMixer *m_colorPicker;
-// 		KTGradientViewer *m_gradientViewer;
-// 		KTGradientSelector *m_gradient;
-// 		QComboBox *m_gradientTypes;
 		KTGradientManager *m_gradientManager;
 		QLineEdit *m_nameColor;
-// 		FillColor *m_outlineColor, *m_fillColor;
 		KTDualColorButton *m_outlineAndFillColors;
-// 		ValueSelector *m_valueSelector;
 		QColor m_currentOutlineColor, m_currentFillColor;
 		
 		QIcon m_icon;
 		int m_lastIndex;
+		bool m_flagGradient;
+		
 		
 	private:
 		void setupButtons();
 		void setupChooserTypeColor();
-// 		void setupChooserGradient();
+		
 		
 	public slots:
 		void setColor(const QColor &color);
@@ -104,7 +87,7 @@ class KTColorPalette : public KTModuleWidgetBase
 		void changeTypeColor(KTDualColorButton::DualColor s);
 		void syncHsv(int h , int s , int v);
 		void setHS(int h, int s);
-// 		void changeGradient(const QGradientStops&);
+		void changeGradient(const QGradient & gradient);
 		
 	signals:
 		void colorChanged(const QBrush &foreground, const QBrush &background); // TODO: cambiar nombre

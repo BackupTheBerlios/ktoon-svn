@@ -50,6 +50,8 @@ class AToolInterface
 		virtual QHash<QString, QAction *>actions() = 0;
 		
 		virtual QPainterPath path() const = 0;
+		
+		virtual void applyGradient(QPainter *painter, const QRect &rect){};
 };
 
 Q_DECLARE_INTERFACE( AToolInterface, "com.toonka.ktoon.AToolInterface/0.1" );

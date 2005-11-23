@@ -33,6 +33,9 @@ class KTGradientViewer : public QFrame
 	public:
 		KTGradientViewer(QWidget *parent = 0);
 		~KTGradientViewer();
+		QGradient gradient();
+		void createGradient();
+		
 		
 	protected:
 		virtual void paintEvent( QPaintEvent * );

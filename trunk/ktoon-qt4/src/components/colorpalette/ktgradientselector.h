@@ -47,7 +47,7 @@ class KTGradientSelector : public QAbstractSlider
 		KTGradientSelector( Qt::Orientation o, QWidget *parent = 0 );
 
 		~KTGradientSelector();
-
+		void emitGradientChanged();
 // 		void setColors( const QColor &col1, const QColor &col2 )
 // 		{	color1 = col1; color2 = col2; update(); }
 // 		void setText( const QString &t1, const QString &t2 )
@@ -97,6 +97,13 @@ class KTGradientSelector : public QAbstractSlider
 				::value();
 		}
 
+		void setMaxRow(int value);
+		
+		QGradient gradient() const
+		{
+			return m_gradient;
+		}
+		void  createGradient();
 // 		void setMinValue(int value)
 // 		{ QAbstractSlider::setMaximum(value); }
 
@@ -110,6 +117,7 @@ class KTGradientSelector : public QAbstractSlider
 // 		{
 // 			QAbstractSlider::setMaximum(value);
 // 		}
+		
 // 		int maxValue() const
 // 		{
 // 			return QAbstractSlider::maxValue();
@@ -122,8 +130,10 @@ class KTGradientSelector : public QAbstractSlider
 		void newValue( int value );
 		void gradientChanged(  const QGradientStops& );
 		
+		
+		
 	public slots:
-		void KTGradientSelector::addArrow(QPoint position, QColor color);
+		void addArrow(QPoint position, QColor color);
 		
 	protected:
 		virtual void drawContents( QPainter * );
@@ -157,6 +167,7 @@ class KTGradientSelector : public QAbstractSlider
 		QLinearGradient m_gradient;
 		QList<KTGradientArrow*> m_arrows;
 		bool m_update;
+		int m_maxRow;
 		QImage m_buffer;
 };
 

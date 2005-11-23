@@ -42,6 +42,8 @@ class AGeometricToolPlugin : public QObject, public AToolInterface
 
 		virtual QHash<QString, QAction *>actions();
 		
+		virtual void applyGradient(QPainter *painter, const QRect &rect);
+		
 	private:
 		QPainterPath m_path;
 		QRect m_rect;

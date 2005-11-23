@@ -28,25 +28,28 @@ KTGradientManager::KTGradientManager(QWidget *parent)
 {
 	QGridLayout *layout = new QGridLayout();
 	layout->setSpacing(2);
+	layout->setMargin(2);
 	setLayout(layout);
 	
 	m_viewer = new KTGradientViewer(this);
+	m_viewer->setMinimumSize(100,100);
 	layout->addWidget(m_viewer, 0, 0);
 	m_selector = new KTGradientSelector(this);
 	layout->addWidget(m_selector, 0, 1);
-	connect( m_selector, SIGNAL(gradientChanged(  const QGradientStops& )),m_viewer, SLOT(changeGradient( const QGradientStops& )));
+	connect( m_selector, SIGNAL(gradientChanged(  const QGradientStops& )),this, SLOT(changeGradient( const QGradientStops& )));
+
 	
-	m_selector->addArrow( QPoint(0,0), QColor( 0,0,0 ) );
+
 	m_type = new QComboBox(this);
 	QStringList list;
-	list /*<< tr( "None" )*/ << tr( "Linear" ) << tr( "Radial" ) << tr("Conical");
+	list << tr( "None" ) << tr( "Linear" ) << tr( "Radial" ) << tr("Conical");
 	m_type->addItems ( list );
-	connect(  m_type, SIGNAL( highlighted (int)),this, SLOT(changeType(int)));
-	layout->addWidget( m_type, 1 ,0);
+	connect(  m_type, SIGNAL(  activated ( int )),this, SLOT(changeType(int)));
+	layout->addWidget( m_type, 1 ,1);
 	
 	
 	m_focal = new KTXYSpinBox(tr("focal") );
-	layout->addWidget(m_focal, 2, 0);
+	layout->addWidget(m_focal, 1, 0);
 	connect( m_focal, SIGNAL(valueXYChanged(double, double)), m_viewer,SLOT( changeFocal(double, double)));
 }
 
@@ -55,13 +58,55 @@ KTGradientManager::~KTGradientManager()
 {
 }
 
+
+void KTGradientManager::updateGradient()
+{
+	
+}
+
+
 void KTGradientManager::setColor(const QColor &color)
 {
+	
 	m_selector->setColor(color);
+// 	SHOW_VAR(isVisible());
+	if(!isVisible())
+	{
+		m_viewer->createGradient();
+	}
+	emit gradientChanged(m_viewer->gradient());
 }
+
+int KTGradientManager::gradientType()
+{
+	return m_type->currentIndex();
+}
+
 
 void KTGradientManager::changeType(int type)
 {
 	SHOW_VAR(type);
-	m_viewer->changeType( type);
+	switch(type)
+	{
+		case 0:
+		{
+			m_selector->setMaxRow( 1);
+			break;
+		}
+		case 1:
+		case 2:
+		case 3:
+		{
+			m_selector->setMaxRow( 10);
+			m_viewer->changeType( type-1);
+			break;
+		}
+	}
+	
+}
+
+void KTGradientManager::changeGradient( const QGradientStops& stops )
+{
+	m_viewer->changeGradient(stops);
+	emit gradientChanged(m_viewer->gradient());
 }

@@ -31,12 +31,9 @@
 
 #include "ktimagebutton.h"
 #include "ktapplication.h"
-#include "colordisplay.h"
-
-// #include "ktgradientselector.h"
 
 
-KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_currentOutlineColor(Qt::black), m_currentFillColor(Qt::transparent), m_lastIndex(0)
+KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_currentOutlineColor(Qt::black), m_currentFillColor(Qt::transparent), m_lastIndex(0), m_flagGradient(true)
 {
 	KTINIT;
 	setCaption( tr( "Color Palette" ) );
@@ -68,7 +65,6 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_
 	layoutName->addWidget(new QLabel( tr("<b>HTML</b>"), viewColor));
 	m_nameColor = new QLineEdit(viewColor);
 	m_nameColor->setMaxLength ( 7 );
-// 	m_nameColor->
 	QFontMetrics fm( font() );
 	m_nameColor->setMaximumWidth( fm.width ( " #000000 " ) );
 	
@@ -77,11 +73,11 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_
 	
 	layout->addLayout(layoutName);
 	setupChooserTypeColor();
-// 	setupChooserGradient();
 	m_gradientManager = new KTGradientManager(this);
+	connect(m_gradientManager, SIGNAL(gradientChanged( const QGradient& )), this, SLOT(changeGradient(const QGradient &) ));
+	layoutName->addWidget(m_nameColor);
 	m_centralWidget->addItem(m_gradientManager, m_icon, tr("Gradients"));
 	
-
 	addChild(viewColor);
 	setColor(m_currentOutlineColor);
 	setupButtons();
@@ -147,9 +143,10 @@ void KTColorPalette::changeIcon(int index)
 void KTColorPalette::setupButtons()
 {
 	QGroupBox *containerButtons = new QGroupBox(this);
-	QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight, containerButtons);
-	layout->setMargin(0);
-	layout->setSpacing(0);
+	QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight);
+	containerButtons->setLayout(layout);
+	layout->setMargin(3);
+// 	layout->setSpacing(0);
 	KTImageButton *m_addColor = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/plussign.png" ) , 22, containerButtons);
 	
 	connect( m_addColor, SIGNAL( clicked() ), SLOT( addColor() ) );
@@ -265,25 +262,35 @@ void KTColorPalette::setColor(const QColor& color)
 		m_nameColor->setText(color.name ());
 	
 		m_luminancePicker->setCol(color.hue(), color.saturation(), color.value());
-		
-		m_gradientManager->setColor(color);
-		emit colorChanged( m_outlineAndFillColors->foreground(),m_outlineAndFillColors->background() );
-		
+		if(m_flagGradient)
+		{
+			m_gradientManager->setColor(color);
+			m_gradientManager->repaint();
+		}
+		if(m_gradientManager->gradientType() == 0)
+		{
+			emit colorChanged( m_outlineAndFillColors->foreground(),m_outlineAndFillColors->background() );
+		}
 	}
 }
 
+
+
 void KTColorPalette::changeTypeColor(KTDualColorButton::DualColor s)
 {
-// 	ktDebug() << "KTColorPalette::changeTypeColor";
 	if(s == KTDualColorButton::Background)
 	{
 		m_outlineAndFillColors->setCurrent( s);
+		m_flagGradient = false;
 		setColor( m_outlineAndFillColors->background());
+		m_flagGradient = true;
 	}
 	else
 	{
 		m_outlineAndFillColors->setCurrent( s);
+		m_flagGradient = false;
 		setColor( m_outlineAndFillColors->foreground());
+		m_flagGradient = true;
 	}
 }
 
@@ -323,4 +330,23 @@ QPair<QColor, QColor> KTColorPalette::color()
 	return colors;
 }
 
+void KTColorPalette::changeGradient(const QGradient & gradient)
+{
+	
+	if(m_gradientManager->gradientType() != 0)
+	{
+		if(m_outlineAndFillColors->current() == KTDualColorButton::Background)
+		{
+			emit colorChanged(m_outlineAndFillColors->foreground(), QBrush(gradient));
+		}
+		else
+		{
+			emit colorChanged(QBrush(gradient) ,m_outlineAndFillColors->background());
+		}
+	}
+	else
+	{
+		emit colorChanged( m_outlineAndFillColors->foreground(),m_outlineAndFillColors->background() );
+	}
+}
 
