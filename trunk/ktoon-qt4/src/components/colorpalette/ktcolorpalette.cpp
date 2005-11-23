@@ -33,7 +33,8 @@
 #include "ktapplication.h"
 #include "colordisplay.h"
 
-#include "ktgradientselector.h"
+// #include "ktgradientselector.h"
+
 
 KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_currentOutlineColor(Qt::black), m_currentFillColor(Qt::transparent), m_lastIndex(0)
 {
@@ -76,7 +77,9 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_
 	
 	layout->addLayout(layoutName);
 	setupChooserTypeColor();
-	setupChooserGradient();
+// 	setupChooserGradient();
+	m_gradientManager = new KTGradientManager(this);
+	m_centralWidget->addItem(m_gradientManager, m_icon, tr("Gradients"));
 	
 
 	addChild(viewColor);
@@ -218,31 +221,41 @@ void KTColorPalette::setupChooserTypeColor()
 	
 }
 
-void KTColorPalette::setupChooserGradient()
-{
-	KTVHBox *blockGradient = new KTVHBox(this);
-	blockGradient->layout()->setSizeConstraint(QLayout::SetFixedSize);
-	
-	QStringList list;
-	list << tr( "None" ) << tr( "Linear" ) << tr( "Radial" );
-	m_gradientTypes = new QComboBox( blockGradient );
-	m_gradientTypes -> insertStringList( list );
-	QBoxLayout *displayGradient = new QBoxLayout( QBoxLayout::LeftToRight);
-	
-	m_gradientViewer = new GradientViewer( this );
-	displayGradient->addWidget(m_gradientViewer);
-	
-	m_gradient = new KTGradientSelector( this );
-	displayGradient->addWidget(m_gradient);
-	blockGradient->boxLayout()->addLayout(displayGradient);
-	addChild(blockGradient);
+// void KTColorPalette::setupChooserGradient()
+// {
+// 	KTVHBox *blockGradient = new KTVHBox(this);
+// 	blockGradient->layout()->setSizeConstraint(QLayout::SetFixedSize);
+// 	
+// 	QStringList list;
+// 	list << tr( "None" ) << tr( "Linear" ) << tr( "Radial" ) << tr("Conical");
+// 	
+// 	m_gradientTypes = new QComboBox( blockGradient );
+// 	m_gradientTypes -> insertStringList( list );
+// 	QBoxLayout *displayGradient = new QBoxLayout( QBoxLayout::LeftToRight);
+// 	
+// 	m_gradientViewer = new KTGradientViewer( this );
+// 	
+// 	displayGradient->addWidget(m_gradientViewer);
+// 	
+// 	m_gradient = new KTGradientSelector( this );
+// 	
+// 	displayGradient->addWidget(m_gradient);
+// 	blockGradient->boxLayout()->addLayout(displayGradient);
+// 	addChild(blockGradient);
+// 	
+// 	connect( m_gradient, SIGNAL(gradientChanged(  const QGradientStops& )),this, SLOT(changeGradient( const QGradientStops& )));
+// 	
+// 	m_centralWidget->addItem(blockGradient, m_icon, tr("Gradients"));
+// }
 
-	m_centralWidget->addItem(blockGradient, m_icon, tr("Gradients"));
-}
+// void KTColorPalette::changeGradient(const QGradientStops& stops)
+// {
+// // 	m_gradientViewer->changeGradient( stops);
+// }
 
 void KTColorPalette::setColor(const QColor& color)
 {
-	ktDebug() << "KTColorPalette::setColor " << color; 
+// 	ktDebug() << "KTColorPalette::setColor " << color; 
 	if(m_displayValueColor && m_outlineAndFillColors && m_colorPicker && m_nameColor && m_luminancePicker)
 	{
 		m_displayValueColor->setColor(color);
@@ -253,14 +266,15 @@ void KTColorPalette::setColor(const QColor& color)
 	
 		m_luminancePicker->setCol(color.hue(), color.saturation(), color.value());
 		
-		
+		m_gradientManager->setColor(color);
 		emit colorChanged( m_outlineAndFillColors->foreground(),m_outlineAndFillColors->background() );
+		
 	}
 }
 
 void KTColorPalette::changeTypeColor(KTDualColorButton::DualColor s)
 {
-	ktDebug() << "KTColorPalette::changeTypeColor";
+// 	ktDebug() << "KTColorPalette::changeTypeColor";
 	if(s == KTDualColorButton::Background)
 	{
 		m_outlineAndFillColors->setCurrent( s);

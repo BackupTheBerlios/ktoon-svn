@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2005 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,47 +17,40 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
 
-#ifndef KTXYSPINBOX_H
-#define KTXYSPINBOX_H
 
-#include <QGroupBox>
-#include <QPushButton>
-#include <QSpinBox>
-#include <QLabel>
+#ifndef KTGRADIENTMANAGER_H
+#define KTGRADIENTMANAGER_H
+
+#include "ktgradientselector.h"
+#include "ktgradientviewer.h"
+#include "kteditspinbox.h"
+
+#include <QFrame>
+#include <QComboBox>
+#include "ktxyspinbox.h"
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
+	@author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-class KTXYSpinBox : public QGroupBox
+class KTGradientManager : public QFrame
 {
 	Q_OBJECT
 	public:
-		KTXYSpinBox(const QString &title, QWidget *parent = 0);
-		~KTXYSpinBox();
-		void setSingleStep(double step);
-		void setMinimum ( double min);
-		void setMaximum ( double max);
-		double x();
-		double y();
-		
-	private slots:
-		void updateXValue(double v);
-		void updateYValue(double v);
-		void toggleModify();
+		KTGradientManager(QWidget *parent = 0);
+		~KTGradientManager();
+		void setColor(const QColor &);
 		
 	private:
-		QLabel *m_textX, *m_textY;
-	
-		QDoubleSpinBox *m_x, *m_y;
-		QPushButton *m_separator;
+		KTGradientSelector *m_selector;
+		KTGradientViewer *m_viewer;
+		QComboBox *m_type ;
 		
-		bool m_modifyTogether;
+		KTXYSpinBox *m_center, *m_focal;
 		
-	signals:
-		void valueXChanged(double );
-		void valueYChanged(double );
-		void valueXYChanged(double, double);
+	public slots:
+		void changeType(int type);
 };
 
 #endif

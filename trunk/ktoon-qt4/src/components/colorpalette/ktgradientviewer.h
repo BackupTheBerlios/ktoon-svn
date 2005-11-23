@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2005 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,47 +17,37 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef KTGRADIENTVIEWER_H
+#define KTGRADIENTVIEWER_H
 
-#ifndef KTXYSPINBOX_H
-#define KTXYSPINBOX_H
-
-#include <QGroupBox>
-#include <QPushButton>
-#include <QSpinBox>
-#include <QLabel>
+#include <QFrame>
+#include <QGradient>
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
+	@author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-class KTXYSpinBox : public QGroupBox
+class KTGradientViewer : public QFrame
 {
 	Q_OBJECT
 	public:
-		KTXYSpinBox(const QString &title, QWidget *parent = 0);
-		~KTXYSpinBox();
-		void setSingleStep(double step);
-		void setMinimum ( double min);
-		void setMaximum ( double max);
-		double x();
-		double y();
+		KTGradientViewer(QWidget *parent = 0);
+		~KTGradientViewer();
 		
-	private slots:
-		void updateXValue(double v);
-		void updateYValue(double v);
-		void toggleModify();
+	protected:
+		virtual void paintEvent( QPaintEvent * );
 		
 	private:
-		QLabel *m_textX, *m_textY;
+		QGradientStops m_gradientStops;
+		QGradient m_gradient;
+		QGradient::Type m_type;
+		double m_xFocal, m_yFocal;
+		
+	public slots:
+		void changeGradient( const QGradientStops& );
+		void changeType(int  type);
+		void changeFocal(double dx, double dy);
 	
-		QDoubleSpinBox *m_x, *m_y;
-		QPushButton *m_separator;
-		
-		bool m_modifyTogether;
-		
-	signals:
-		void valueXChanged(double );
-		void valueYChanged(double );
-		void valueXYChanged(double, double);
 };
 
 #endif

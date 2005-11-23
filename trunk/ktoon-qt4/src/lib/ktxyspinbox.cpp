@@ -19,7 +19,9 @@
  ***************************************************************************/
 
 #include "ktxyspinbox.h"
+
 #include <QHBoxLayout>
+#include <QSizePolicy>
 
 #include "ktdebug.h"
 
@@ -48,6 +50,8 @@ KTXYSpinBox::KTXYSpinBox(const QString &title, QWidget *parent) : QGroupBox(titl
 	layout->addLayout(internal);
 	
 	m_separator = new QPushButton;
+	m_separator->setFlat(true);
+
 	m_separator->setMaximumWidth(20);
 // 	m_separator->setMinimumHeight(50);
 	layout->addWidget(m_separator);
@@ -58,6 +62,8 @@ KTXYSpinBox::KTXYSpinBox(const QString &title, QWidget *parent) : QGroupBox(titl
 	
 	connect(m_x, SIGNAL(valueChanged (double)), this, SLOT(updateXValue(double)));
 	connect(m_y, SIGNAL(valueChanged (double)), this, SLOT(updateYValue(double)));
+	
+	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
 
@@ -119,4 +125,14 @@ void KTXYSpinBox::setMaximum ( double max)
 {
 	m_x->setMaximum(max);
 	m_y->setMaximum(max);
+}
+
+double KTXYSpinBox::x()
+{
+	return m_x->value();
+}
+
+double KTXYSpinBox::y()
+{
+	return m_y->value();
 }
