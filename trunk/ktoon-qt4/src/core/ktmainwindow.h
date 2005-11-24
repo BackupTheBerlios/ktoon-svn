@@ -57,6 +57,8 @@
 #include "dmainwindow.h"
 #include "ktstatusbar.h"
 
+#include "ktosd.h"
+
 // Projects
 #include "ktprojectmanager.h"
 
@@ -169,6 +171,8 @@ class KTMainWindow : public DMainWindow
 		QMenu *m_fileMenu,*m_editMenu, *m_proyectMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
 		
 		KTViewCamera *m_viewCamera;
+		
+		KTOsd *m_osd;
 		
 		// Components
 	private:

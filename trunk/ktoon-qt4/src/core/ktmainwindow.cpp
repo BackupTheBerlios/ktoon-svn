@@ -47,6 +47,8 @@ KTMainWindow::KTMainWindow() : DMainWindow(), m_exposureSheet(0), m_scenes(0)
 	
 	setObjectName("KTMainWindow_");
 	
+	m_osd = new KTOsd( centralWidget() );
+	
 	m_statusBar = new KTStatusBar(this);
 	setStatusBar( m_statusBar );
 	
@@ -164,7 +166,6 @@ void KTMainWindow::openProject()
 void KTMainWindow::save()
 {
 	ktDebug() << "Saving.." << endl;
-	
 	qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ())->drawArea()->paintDevice().save("test.png", "PNG"); // only for test
 }
 
