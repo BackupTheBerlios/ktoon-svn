@@ -27,9 +27,10 @@ KTGradientViewer::KTGradientViewer(QWidget *parent)
 {
 // 	setMinimumHeight(width());
 	
-	setMinimumSize(50,50);
+	setMinimumSize(50,50); // FIXME: es mejor reimplementar el size hint, que limitar de manera tan brusca los tamaños de los widgets
 	setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
-	
+
+	m_type = QGradient::LinearGradient;
 }
 
 
@@ -41,7 +42,9 @@ void KTGradientViewer::paintEvent( QPaintEvent*)
 {
 	QPainter p(this);
 	createGradient();
+	
 	p.setBrush(m_gradient);
+	
 	p.drawRect(rect());
 }
 
@@ -66,6 +69,10 @@ void KTGradientViewer::createGradient()
 			m_gradient = QConicalGradient(rect().center(), 450);
 			m_gradient.setStops( m_gradientStops);
 			break;
+		}
+		default:
+		{
+			ktFatal() << "Fatal error, the gradient type doesn't exists!";
 		}
 	}
 }
