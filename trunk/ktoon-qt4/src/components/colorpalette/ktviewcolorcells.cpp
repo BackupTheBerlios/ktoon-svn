@@ -18,10 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "ktviewcolorcells.h"
+#include "ktdebug.h"
+#include <QScrollArea>
+
 
 KTViewColorCells::KTViewColorCells(QWidget *parent)
  : QFrame(parent)
 {
+	
 	QVBoxLayout *layout = new QVBoxLayout;
 	setLayout(layout);
 	setFrameStyle ( QFrame::Box | QFrame::Raised);
@@ -36,21 +40,39 @@ KTViewColorCells::~KTViewColorCells()
 void KTViewColorCells::setupForm()
 {
 	m_chooserPalette = new QComboBox(this);
+	
 	m_chooserPalette->addItem(tr("Default Palette"));
 	m_containerPalette = new QStackedWidget(this);
-	
 	layout()->addWidget(m_chooserPalette);
 	layout()->addWidget(m_containerPalette);
+	QScrollArea *scroll = new QScrollArea(m_containerPalette);
 	
-	m_defaultPalette = new  KTCellView(11,18, m_containerPalette);
-	
+	m_defaultPalette = new  KTCellView(11,18, scroll);
+	scroll->setWidget(m_defaultPalette);
+	scroll->setWidgetResizable ( true );
+// 	scroll->setMinimumHeight( m_defaultPalette->size().height() );
 	fillDefaultColors();
 	
 	connect(m_defaultPalette, SIGNAL(itemPressed( KTCellViewItem* )), this, SLOT(changeColor(KTCellViewItem*)));
 	
-	m_containerPalette->addWidget(m_defaultPalette);
+	m_containerPalette->addWidget(/*m_defaultPalette*/scroll);
 	
 }
+
+void KTViewColorCells::addPalette(const QString & name)
+{
+	QScrollArea *scroll = new QScrollArea(m_containerPalette);
+
+	KTCellView *palette = new  KTCellView(11,18, scroll);
+	
+	scroll->setWidget(palette);
+	
+	connect(palette, SIGNAL(itemPressed( KTCellViewItem* )), this, SLOT(changeColor(KTCellViewItem*)));
+	m_chooserPalette->addItem(name);
+	m_containerPalette->addWidget(scroll);
+	
+}
+
 
 void KTViewColorCells::changeColor(KTCellViewItem* item)
 {

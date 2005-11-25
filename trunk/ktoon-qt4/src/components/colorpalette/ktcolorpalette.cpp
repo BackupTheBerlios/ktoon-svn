@@ -21,14 +21,11 @@
 #include "ktcolorpalette.h"
 #include "ktdebug.h"
 
-
-
 #include <QBoxLayout>
 #include <QPushButton>
 #include <QLineEdit>
 #include <QFrame>
 #include <QToolTip>
-
 #include "ktimagebutton.h"
 #include "ktapplication.h"
 
@@ -40,46 +37,21 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_
 	
 	createIcon();
 
-	m_centralWidget = new QToolBox(this);
+	m_splitter = new QSplitter(Qt::Vertical, this);
+	addChild( m_splitter);
+	
+	m_centralWidget = new QToolBox(m_splitter);
 	connect(m_centralWidget, SIGNAL(currentChanged(int)), this, SLOT(changeIcon(int)));
 	
+	
+	
 	m_centralWidget->setFrameStyle(QFrame::StyledPanel );
-	
-	addChild(m_centralWidget);
-	
-	m_containerPalette = new KTViewColorCells(m_centralWidget);
-	m_centralWidget->addItem( m_containerPalette, m_icon, tr("Palettes") );
-	connect (m_containerPalette, SIGNAL(selectColor( const QColor& )), this, SLOT(setColor( const QColor& )));
-	
-	QFrame *viewColor = new QFrame(this);;
-	QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight);
-	viewColor->setLayout(layout);
-	m_outlineAndFillColors = new KTDualColorButton(m_currentOutlineColor,m_currentFillColor, viewColor);
-	m_outlineAndFillColors->setSizePolicy ( QSizePolicy::Fixed, QSizePolicy::Fixed );
-	connect( m_outlineAndFillColors, SIGNAL(currentChanged(KTDualColorButton::DualColor)),this, SLOT(changeTypeColor(KTDualColorButton::DualColor)));
-	layout->addWidget( m_outlineAndFillColors);
-	
-	m_centralWidget->setPalette(palette());
-	
-	QBoxLayout *layoutName = new  QBoxLayout(QBoxLayout::TopToBottom);
-	layoutName->addWidget(new QLabel( tr("<b>HTML</b>"), viewColor));
-	m_nameColor = new QLineEdit(viewColor);
-	m_nameColor->setMaxLength ( 7 );
-	QFontMetrics fm( font() );
-	m_nameColor->setMaximumWidth( fm.width ( " #000000 " ) );
-	
-	connect( m_nameColor, SIGNAL(editingFinished()), this, SLOT(updateColor()));
-	layoutName->addWidget(m_nameColor);
-	
-	layout->addLayout(layoutName);
 	setupChooserTypeColor();
-	m_gradientManager = new KTGradientManager(this);
-	connect(m_gradientManager, SIGNAL(gradientChanged( const QGradient& )), this, SLOT(changeGradient(const QGradient &) ));
-	layoutName->addWidget(m_nameColor);
-	m_centralWidget->addItem(m_gradientManager, m_icon, tr("Gradients"));
-	
-	addChild(viewColor);
-	setColor(m_currentOutlineColor);
+	setupGradienManager();
+	setupDisplayColor();
+	m_splitter->addWidget(m_centralWidget);
+// 	addChild(m_centralWidget);
+	m_centralWidget->setPalette(palette());
 	setupButtons();
 }
 
@@ -177,9 +149,7 @@ void KTColorPalette::setupButtons()
 
 void KTColorPalette::setupChooserTypeColor()
 {
-	
-	QFrame *colorMixer = new QFrame(this);
-	
+	QFrame *colorMixer = new QFrame(m_centralWidget);
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
 	colorMixer->setLayout(layout);
 
@@ -188,7 +158,6 @@ void KTColorPalette::setupChooserTypeColor()
 	m_displayValueColor = new KTValueColor(colorMixer);
 	
 	layout->addWidget(m_displayValueColor);
-	
 	
 	QBoxLayout *layoutContainer = new QBoxLayout(QBoxLayout::LeftToRight);
 	
@@ -209,7 +178,6 @@ void KTColorPalette::setupChooserTypeColor()
 	layoutContainer->setSpacing(3);
 // 
 	layout->addLayout(layoutContainer);
-	addChild( colorMixer );
 	this->layout()->setAlignment( colorMixer, Qt::AlignTop);
 	connect(m_displayValueColor, SIGNAL(colorChanged(const QColor&)), this, SLOT(setColor(const QColor &)));
 // 	setColor(m_currentOutlineColor);
@@ -218,37 +186,54 @@ void KTColorPalette::setupChooserTypeColor()
 	
 }
 
-// void KTColorPalette::setupChooserGradient()
-// {
-// 	KTVHBox *blockGradient = new KTVHBox(this);
-// 	blockGradient->layout()->setSizeConstraint(QLayout::SetFixedSize);
-// 	
-// 	QStringList list;
-// 	list << tr( "None" ) << tr( "Linear" ) << tr( "Radial" ) << tr("Conical");
-// 	
-// 	m_gradientTypes = new QComboBox( blockGradient );
-// 	m_gradientTypes -> insertStringList( list );
-// 	QBoxLayout *displayGradient = new QBoxLayout( QBoxLayout::LeftToRight);
-// 	
-// 	m_gradientViewer = new KTGradientViewer( this );
-// 	
-// 	displayGradient->addWidget(m_gradientViewer);
-// 	
-// 	m_gradient = new KTGradientSelector( this );
-// 	
-// 	displayGradient->addWidget(m_gradient);
-// 	blockGradient->boxLayout()->addLayout(displayGradient);
-// 	addChild(blockGradient);
-// 	
-// 	connect( m_gradient, SIGNAL(gradientChanged(  const QGradientStops& )),this, SLOT(changeGradient( const QGradientStops& )));
-// 	
-// 	m_centralWidget->addItem(blockGradient, m_icon, tr("Gradients"));
-// }
 
-// void KTColorPalette::changeGradient(const QGradientStops& stops)
-// {
-// // 	m_gradientViewer->changeGradient( stops);
-// }
+void KTColorPalette::setupGradienManager()
+{
+	m_gradientManager = new KTGradientManager(this);
+	connect(m_gradientManager, SIGNAL(gradientChanged( const QGradient& )), this, SLOT(changeGradient(const QGradient &) ));
+	m_centralWidget->addItem(m_gradientManager, m_icon, tr("Gradients"));
+// 	m_centralWidget->setMaximumHeight(m_gradientManager->height());
+}
+
+void KTColorPalette::setupDisplayColor()
+{
+	QFrame *displayColor = new QFrame(this);
+	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
+	displayColor->setLayout(layout);
+	
+	//palettes
+	m_containerPalette = new KTViewColorCells(displayColor);
+	
+	//display
+	connect (m_containerPalette, SIGNAL(selectColor( const QColor& )), this, SLOT(setColor( const QColor& )));
+	layout->addWidget(m_containerPalette);
+// 	addChild( m_containerPalette );
+	
+	QFrame *viewColor = new QFrame(displayColor);
+	QBoxLayout *vlayout = new QBoxLayout(QBoxLayout::LeftToRight);
+	viewColor->setLayout(vlayout);
+	
+	m_outlineAndFillColors = new KTDualColorButton(m_currentOutlineColor,m_currentFillColor, viewColor);
+	m_outlineAndFillColors->setSizePolicy ( QSizePolicy::Fixed, QSizePolicy::Fixed );
+	connect( m_outlineAndFillColors, SIGNAL(currentChanged(KTDualColorButton::DualColor)),this, SLOT(changeTypeColor(KTDualColorButton::DualColor)));
+	vlayout->addWidget( m_outlineAndFillColors);
+	
+	QBoxLayout *layoutName = new  QBoxLayout(QBoxLayout::TopToBottom);
+	layoutName->addWidget(new QLabel( tr("<b>HTML</b>"), viewColor));
+	m_nameColor = new QLineEdit(viewColor);
+	QFontMetrics fm( font() );
+	m_nameColor->setMaximumWidth( fm.width ( " #000000 " ) );
+	
+	connect( m_nameColor, SIGNAL(editingFinished()), this, SLOT(updateColor()));
+	layoutName->addWidget(m_nameColor);
+	vlayout->addLayout(layoutName);
+	layout->addWidget(viewColor);
+	
+// 	addChild( displayColor);
+	m_splitter->addWidget(displayColor);
+}
+
+
 
 void KTColorPalette::setColor(const QColor& color)
 {
@@ -338,10 +323,11 @@ void KTColorPalette::changeGradient(const QGradient & gradient)
 		if(m_outlineAndFillColors->current() == KTDualColorButton::Background)
 		{
 			emit colorChanged(m_outlineAndFillColors->foreground(), QBrush(gradient));
+			
 		}
 		else
 		{
-			emit colorChanged(QBrush(gradient) ,m_outlineAndFillColors->background());
+			emit colorChanged(m_outlineAndFillColors->foreground()/*QBrush(gradient)*/ ,m_outlineAndFillColors->background());
 		}
 	}
 	else

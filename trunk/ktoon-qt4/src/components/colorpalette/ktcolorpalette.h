@@ -30,6 +30,7 @@
 
 #include <QGroupBox>
 #include <QToolBox>
+#include <QSplitter>
 
 #include "ktvhbox.h"
 #include "ktcolorpicker.h"
@@ -71,6 +72,8 @@ class KTColorPalette : public KTModuleWidgetBase
 		KTDualColorButton *m_outlineAndFillColors;
 		QColor m_currentOutlineColor, m_currentFillColor;
 		
+		QSplitter *m_splitter;
+		
 		QIcon m_icon;
 		int m_lastIndex;
 		bool m_flagGradient;
@@ -79,8 +82,9 @@ class KTColorPalette : public KTModuleWidgetBase
 	private:
 		void setupButtons();
 		void setupChooserTypeColor();
-		
-		
+		void setupGradienManager();
+		void setupDisplayColor();
+				
 	public slots:
 		void setColor(const QColor &color);
 		void updateColor();

@@ -143,7 +143,7 @@ void AGeometricToolPlugin::applyGradient(QPainter *painter, const QRect &rect)
 				}
 				case QGradient::RadialGradient:
 				{
-					newGradient = QRadialGradient(rect.center(), rect.topRight().x(), rect.center());
+					newGradient = QRadialGradient(rect.center(), (rect.left()-rect.right())/2, rect.center());
 					break;
 				}
 				case QGradient::ConicalGradient:

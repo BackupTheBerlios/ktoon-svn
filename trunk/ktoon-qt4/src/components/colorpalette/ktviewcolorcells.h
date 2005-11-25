@@ -58,6 +58,7 @@ class KTViewColorCells : public QFrame
 	public slots:
 		virtual void addCustomColor(QColor c);
 		virtual void addCustomPalette(QString name);
+		void addPalette(const QString & name);
 		void changeColor(KTCellViewItem*);
 		
 };

@@ -20,37 +20,37 @@
  
 #include "ktgradientmanager.h"
 #include "ktdebug.h"
-#include <QGridLayout>
+#include <QBoxLayout>
 
 
 KTGradientManager::KTGradientManager(QWidget *parent)
  : QFrame(parent)
 {
-	QGridLayout *layout = new QGridLayout();
+	QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight);
 	layout->setSpacing(2);
 	layout->setMargin(2);
 	setLayout(layout);
 	
 	m_viewer = new KTGradientViewer(this);
 	m_viewer->setMinimumSize(100,100);
-	layout->addWidget(m_viewer, 0, 0);
+	layout->addWidget(m_viewer);
 	m_selector = new KTGradientSelector(this);
-	layout->addWidget(m_selector, 0, 1);
+	QBoxLayout *subLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+	subLayout->addWidget(m_selector);
 	connect( m_selector, SIGNAL(gradientChanged(  const QGradientStops& )),this, SLOT(changeGradient( const QGradientStops& )));
 
-	
 
 	m_type = new QComboBox(this);
 	QStringList list;
 	list << tr( "None" ) << tr( "Linear" ) << tr( "Radial" ) << tr("Conical");
 	m_type->addItems ( list );
 	connect(  m_type, SIGNAL(  activated ( int )),this, SLOT(changeType(int)));
-	layout->addWidget( m_type, 1 ,1);
-	
-	
-	m_focal = new KTXYSpinBox(tr("focal") );
-	layout->addWidget(m_focal, 1, 0);
-	connect( m_focal, SIGNAL(valueXYChanged(double, double)), m_viewer,SLOT( changeFocal(double, double)));
+	subLayout->addWidget( m_type);
+	layout->addLayout(subLayout);
+// 	m_focal = new KTXYSpinBox(tr("focal") );
+// 	layout->addWidget(m_focal, 1, 0);
+// 	connect( m_focal, SIGNAL(valueXYChanged(double, double)), m_viewer,SLOT( changeFocal(double, double)));
+	m_viewer->changeFocal( m_viewer->rect().center().x(), m_viewer->rect().center().y());
 }
 
 

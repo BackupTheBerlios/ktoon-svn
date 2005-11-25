@@ -49,7 +49,7 @@ class KTGradientManager : public QFrame
 		KTGradientViewer *m_viewer;
 		QComboBox *m_type ;
 		
-		KTXYSpinBox *m_center, *m_focal;
+// 		KTXYSpinBox *m_center, *m_focal;
 		
 	public slots:
 		void changeType(int type);
