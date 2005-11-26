@@ -117,7 +117,9 @@ void KTMainWindow::createNewProject(const QString &name, const QSize &size)
 
 void KTMainWindow::newViewDocument(const QString &name)
 {
-	m_statusBar->setStatus(tr("Opening a new document..."));
+	messageToStatus(tr("Opening a new document..."));
+	
+	messageToOSD(tr("Opening a new document..."));
 	
 	KTScene *scene = m_projectManager->currentScene();
 	
@@ -240,3 +242,14 @@ void KTMainWindow::ui4project(QWidget *widget)
 	
 	connect(widget, SIGNAL(requestRemoveLayer()), m_projectManager, SLOT(removeLayer()));
 }
+
+void KTMainWindow::messageToStatus(const QString &msg)
+{
+	m_statusBar->setStatus(msg, msg.length() * 90);
+}
+
+void KTMainWindow::messageToOSD(const QString &msg)
+{
+	m_osd->display( msg, KTOsd::Info, msg.length()*90);
+}
+

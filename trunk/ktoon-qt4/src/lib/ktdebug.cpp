@@ -36,6 +36,7 @@
 #include <QIcon>
 #include <QPixmap>
 #include <QWidget>
+#include <QEvent>
 
 #if defined(Q_OS_UNIX)
 # define SHOW_ERROR "*** \033[0;31m%s\033[0;0m ***\n"
@@ -244,6 +245,13 @@ KTDebug& KTDebug::operator << (const QWidget* t)
 		*this << "[Null Widget]";
 	}
 	return *this; 
+}
+
+KTDebug& KTDebug::operator << (const QEvent* e)
+{
+	*this << "[Event " << e->type() << "]";
+	
+	return *this;
 }
 
 void KTDebug::resaltWidget(QWidget *w, const QColor &color)

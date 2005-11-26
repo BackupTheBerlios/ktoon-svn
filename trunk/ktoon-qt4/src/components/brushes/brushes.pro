@@ -5,10 +5,12 @@
 
 HEADERS += ktdisplaybrush.h \
            ktbrusheslist.h \
-           ktbrushwidget.h 
+           ktbrushwidget.h \
+           ktbrusheditor.h 
 SOURCES += ktdisplaybrush.cpp \
            ktbrusheslist.cpp \
-           ktbrushwidget.cpp 
+           ktbrushwidget.cpp \
+           ktbrusheditor.cpp 
 QT += xml qt3support
 INCLUDEPATH += ../../../src/store \
 ../../../src/lib

@@ -24,7 +24,7 @@
 #include <QPaintEvent>
 #include <QItemSelectionModel>
 #include <QPainterPath>
-
+#include <QScrollBar>
 
 #include "ktdebug.h"
 
@@ -65,6 +65,13 @@ void KTCellViewItemDelegate::paint ( QPainter * painter, const QStyleOptionViewI
 		painter->drawImage(opt.rect, img);
 	}
 	
+	// draw the background color
+	value = model->data(index, Qt::BackgroundColorRole);
+	if (value.isValid()/* && qvariant_cast<QBrush>(value).isValid()*/)
+	{
+		painter->fillRect(option.rect, qvariant_cast<QBrush>(value));
+	}
+	
 	
 	// Selection!
 	if (option.showDecorationSelected && (option.state & QStyle::State_Selected))
@@ -73,15 +80,8 @@ void KTCellViewItemDelegate::paint ( QPainter * painter, const QStyleOptionViewI
 		
 		painter->save();
 		painter->setPen(QPen(option.palette.brush(cg, QPalette::Highlight), 3));
-		painter->drawRect(option.rect);
+		painter->drawRect(option.rect.adjusted(2,2,-2,-2));
 		painter->restore();
-	}
-	
-	// draw the background color
-	value = model->data(index, Qt::BackgroundColorRole);
-	if (value.isValid()/* && qvariant_cast<QBrush>(value).isValid()*/)
-	{
-		painter->fillRect(option.rect, qvariant_cast<QBrush>(value));
 	}
 }
 
@@ -401,7 +401,8 @@ QModelIndex KTCellViewModel::index(const KTCellViewItem *item) const
 
 QModelIndex KTCellViewModel::index(int row, int column, const QModelIndex &parent) const
 {
-	if (hasIndex(row, column, parent)) {
+	if (hasIndex(row, column, parent))
+	{
 		KTCellViewItem *item = m_table.at(tableIndex(row, column));
 		return createIndex(row, column, item);
 	}
@@ -626,6 +627,9 @@ void KTCellView::setup()
 	
 	setSelectionBehavior(QAbstractItemView::SelectItems);
 	setSelectionMode (QAbstractItemView::SingleSelection);
+	
+	updateHorizontalScrollbar();
+	updateVerticalScrollbar();
 }
 
 void KTCellView::emitItemPressed(const QModelIndex &index)
@@ -818,13 +822,13 @@ bool KTCellView::isIndexHidden ( const QModelIndex & index ) const
 int KTCellView::verticalOffset () const
 {
 	KT_FUNCINFO;
-	return m_rectSize;
+	return m_rectHeight;
 }
 
 int KTCellView::horizontalOffset () const
 {
 	KT_FUNCINFO;
-	return m_rectSize;
+	return m_rectWidth;
 }
 
 QModelIndex KTCellView::indexAt ( const QPoint & p ) const
@@ -840,12 +844,12 @@ QModelIndex KTCellView::indexAt ( const QPoint & p ) const
 
 int KTCellView::rowAt(int X) const
 {
-	return X / m_rectSize;
+	return X / m_rectWidth;
 }
 
 int KTCellView::columnAt(int Y) const
 {
-	return Y / m_rectSize;
+	return Y / m_rectHeight;
 }
 
 void KTCellView::scrollToItem(const KTCellViewItem *item, ScrollHint hint)
@@ -858,7 +862,145 @@ void KTCellView::scrollToItem(const KTCellViewItem *item, ScrollHint hint)
 
 void KTCellView::scrollTo ( const QModelIndex & index, ScrollHint hint )
 {
+	KT_FUNCINFO;
+	// check if we really need to do anything
+	if (!index.isValid() || !model() /*|| (model()->parent(index) != rootIndex()) */|| isIndexHidden(index))
+		return;
+
+	QRect area = viewport()->rect();
+	QRect rect = visualRect(index);
+	if (hint == EnsureVisible && area.contains(rect)) 
+	{
+#if 0
+		setDirtyRegion(rect);
+#endif
+		return;
+	}
+
+    	// vertical
+	int verticalSteps = verticalStepsPerItem();
+	bool above = (hint == EnsureVisible && rect.top() < area.top());
+	bool below = (hint == EnsureVisible && rect.bottom() > area.bottom());
+	
+	if (hint == PositionAtTop || above) 
+	{
+		verticalScrollBar()->setValue(index.row() * verticalSteps);
+	} 
+	else if (hint == PositionAtBottom || below)
+	{
+		int r = index.row();
+		int y = area.height();
+// 		while (y > 0 && r > 0)
+// 		{
+// 			y -= rowHeight(r--);
+// 		}
+		
+		y -= r * m_rectHeight;
+		
+// 		int h = rowHeight(r);
+		int h = m_rectHeight;
+		int a = (-y * verticalSteps) / (h ? h : 1);
+		verticalScrollBar()->setValue(++r * verticalSteps + a);
+	}
+
+    	// horizontal
+	int horizontalSteps = horizontalStepsPerItem();
+	bool leftOf = isRightToLeft()
+			? rect.right() > area.right()
+	: rect.left() < area.left();
+	bool rightOf = isRightToLeft()
+			? rect.left() < area.left()
+	: rect.right() > area.right();
+	if (leftOf) 
+	{
+		horizontalScrollBar()->setValue(index.column() * horizontalSteps);
+	} else if (rightOf) 
+	{
+		int c = index.column();
+		int x = area.width();
+// 		while (x > 0 && c > 0)
+// 		{
+// 			x -= columnWidth(c--);
+// 		}
+		x -= x* m_rectWidth;
+// 		int w = columnWidth(c);
+		int w = m_rectWidth;
+		int a = (-x * horizontalSteps) / (w ? w : 1);
+		horizontalScrollBar()->setValue(++c * horizontalSteps + a);
+	}
+#if 0
+	setDirtyRegion(visualRect(index));
+#endif
 }
+
+void KTCellView::updateVerticalScrollbar()
+{
+	KT_FUNCINFO;
+	int height = viewport()->height();
+	int top = rowCount();
+	
+	if (!m_model || top <= 0 || height <= 0) 
+	{
+		verticalScrollBar()->setRange(0, 0);
+		return;
+	}
+	
+	verticalScrollBar()->setPageStep( verticalStepsPerItem() );
+
+	int max = top * verticalStepsPerItem();
+	verticalScrollBar()->setRange(0, max);
+}
+
+void KTCellView::updateHorizontalScrollbar()
+{
+	KT_FUNCINFO;
+	int width = viewport()->width();
+
+	if (!m_model || width <= 0 ) {
+		horizontalScrollBar()->setRange(0, 0);
+		return;
+	}
+
+	int left = columnCount();
+
+	horizontalScrollBar()->setPageStep(1 * horizontalStepsPerItem());
+
+	int max = left * horizontalStepsPerItem();
+
+	horizontalScrollBar()->setRange(0, max);
+}
+
+// void KTCellView::scrollContentsBy(int dx, int dy)
+// {
+// 	if (dx) 
+// 	{ // horizontal
+// 		int value = horizontalScrollBar()->value();
+// 		int section = (value / horizontalStepsPerItem()) / m_rectWidth;
+// 		
+// 		int steps = horizontalStepsPerItem();
+// 		int left = (value % steps) * m_rectWidth;
+// 		int offset = (left / steps) + d->horizontalHeader->sectionPosition(section);
+// 		if (isRightToLeft())
+// 			dx = /*offset - */d->horizontalHeader->offset();
+// 		else
+// 			dx = d->horizontalHeader->offset() - offset;
+// 		d->horizontalHeader->setOffset(offset);
+// 	}
+// 
+// 	if (dy) { // vertical
+// 		int value = verticalScrollBar()->value();
+// 		int section = d->verticalHeader->logicalIndex(value / verticalStepsPerItem());
+// 		while (d->verticalHeader->isSectionHidden(section))
+// 			++section;
+// 		int steps = verticalStepsPerItem();
+// 		int above = (value % steps) * d->verticalHeader->sectionSize(section);
+// 		int offset = (above / steps) + d->verticalHeader->sectionPosition(section);
+// 		dy = d->verticalHeader->offset() - offset;
+// 		d->verticalHeader->setOffset(offset);
+// 	}
+// 
+// 	d->scrollContentsBy(dx, dy);
+// }
 
 void KTCellView::insertRow(int row)
 {
@@ -950,12 +1092,13 @@ void KTCellView::setSelection ( const QRect & rect, QItemSelectionModel::Selecti
 	selectionModel()->select(QItemSelection(tl, br), flags | QItemSelectionModel::ClearAndSelect);
 }
 
-void KTCellView::paintEvent(QPaintEvent *e)
+void KTCellView::paintEvent(QPaintEvent *ev)
 {
 	KT_FUNCINFO;
 	
 	QStyleOptionViewItem option = viewOptions();
 	
+	const QPoint offset = QPoint(0,0);
 	const QModelIndex current = currentIndex();
 	const QItemSelectionModel *m_selectionModel = selectionModel();
 	const QStyle::State state = option.state;
@@ -972,11 +1115,120 @@ void KTCellView::paintEvent(QPaintEvent *e)
 	{
 		return;
 	}
-
-	int width = viewport()->width();
-	int height = viewport()->height();
 	
-	m_rectSize = qMin(25, qMin(width / rows, height / columns ));
+	
+#if 1
+// 	m_rectWidth = viewport()->width() / columns;
+// 	m_rectHeight = viewport()->height() / rows;
+	
+	m_rectWidth = 25/*viewport()->width() / columns*/;
+	m_rectHeight = 25/*viewport()->height() / rows*/;
+	
+	QVector<QRect> rects = ev->region().rects();
+	
+	for (int i = 0; i < rects.size(); ++i)
+	{
+		QRect area = rects.at(i);
+		area.translate(offset);
+
+// 		int left = d->horizontalHeader->visualIndexAt(area.left());
+// 		int right = d->horizontalHeader->visualIndexAt(area.right());;
+		
+		int left = (horizontalScrollBar()->value() - area.left())  / m_rectWidth;
+		int right = (horizontalScrollBar()->value () - area.right()) / m_rectHeight;
+		
+		if (isRightToLeft())
+		{
+			left = (left <= -1 ? model()->columnCount(rootIndex()) - 1 : left);
+			right = (right <= -1 ? 0 : right);
+		} else 
+		{
+			left = (left <= -1 ? 0 : left);
+			right = (right <= -1 ? model()->columnCount(rootIndex()) - 1 : right);
+		}
+
+		int tmp = left;
+		left = qMin(left, right);
+		right = qMax(tmp, right);
+
+        	// get the vertical start and end sections (visual indexes)
+// 		int top = d->verticalHeader->visualIndexAt(area.top());
+// 		int bottom = d->verticalHeader->visualIndexAt(area.bottom());
+		
+		int top = (verticalScrollBar()->value() - area.top())  / m_rectWidth;
+		int bottom = (verticalScrollBar()->value ()-area.bottom() ) / m_rectHeight;
+		
+		SHOW_VAR(left << " " << right << " " << top << " " << bottom << " ");
+		
+		top = (top <= -1 ? 0 : top);
+		bottom = (bottom <= -1 ? m_model->rowCount(rootIndex()) - 1 : bottom);
+
+		tmp = top;
+		top = qMin(top, bottom);
+		bottom = qMax(tmp, bottom);
+		
+        	// do the actual painting
+		SHOW_VAR(left << " " << right << " " << top << " " << bottom << " ");
+		
+		for (int v = top; v <= bottom; ++v)
+		{
+			int row = v;
+
+// 			int rowp = rowViewportPosition(row) + offset.y();
+// 			int rowh = rowHeight(row) - gridSize;
+			int rowp = v * m_rectWidth;
+			
+			for (int h = left; h <= right; ++h)
+			{
+				int col = h;
+
+// 				int colp = columnViewportPosition(col) + offset.x();
+// 				int colw = columnWidth(col) - gridSize;
+				int colp = h * m_rectHeight;
+				
+				QModelIndex index = model()->index(row, col, rootIndex());
+				if (index.isValid())
+				{
+					option.rect = QRect(rowp, colp, m_rectWidth, m_rectHeight);
+					
+					option.state = state;
+					if (m_selectionModel && m_selectionModel->isSelected(index))
+					{
+						option.state |= QStyle::State_Selected;
+					}
+					QPalette::ColorGroup cg;
+					if ((model()->flags(index) & Qt::ItemIsEnabled) == 0)
+					{
+						option.state &= ~QStyle::State_Enabled;
+						cg = QPalette::Disabled;
+					} else 
+					{
+						cg = QPalette::Normal;
+					}
+					
+// 					if (focus && index == current)
+// 					{
+// 						option.state |= QStyle::State_HasFocus;
+// 					}
+					
+// 					if (alternate && v & 1)
+// 					{	painter.fillRect(option.rect,option.palette.brush(cg,QPalette::AlternateBase));
+// 					}
+// 					else
+// 					{
+// 					p.fillRect(option.rect,option.palette.brush(QPalette::Base));
+// 					}
+					
+					itemDelegate()->paint(&p, option, index);
+					
+					p.drawRect(option.rect);
+				}
+			}
+		}
+	}
+#else
+	m_rectWidth = viewport()->width() / columnCount();
+	m_rectHeight = viewport()->height() / rowCount();
 	
 	for(int v = 0; v < rows; ++v)
 	{
@@ -989,7 +1241,7 @@ void KTCellView::paintEvent(QPaintEvent *e)
 			QModelIndex index = model()->index(row, col, rootIndex());
 			if (index.isValid())
 			{
-				QRect trect = QRect((v*m_rectSize), (h*m_rectSize), m_rectSize, m_rectSize);
+				QRect trect = QRect((row*m_rectHeight), (col*m_rectWidth), m_rectHeight, m_rectWidth);
 				
 				option.rect = trect;
 				option.state = state; // State is reset
@@ -1009,6 +1261,14 @@ void KTCellView::paintEvent(QPaintEvent *e)
 			}
 		}
 	}
+#endif
+}
+
+int KTCellView::firstVisualIndex(int y) const
+{
+	int top = verticalScrollBar()->value() / verticalStepsPerItem();
+
+	return top+y;
 }
 
 void KTCellView::selectCell(int row, int column)

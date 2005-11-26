@@ -60,7 +60,8 @@ void KTDisplayBrush::paintEvent ( QPaintEvent * event )
 	p.save();
 	
 	p.setPen( QPen(Qt::black, m_thickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin) );
-	p.drawPath(m_currentForm);
+// 	p.drawPath(m_currentForm);
+	p.drawPoint(width()/2, height()/2);
 	
 	p.restore();	
 }

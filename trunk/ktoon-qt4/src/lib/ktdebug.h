@@ -178,6 +178,7 @@ class KTDebug
 		KTDebug& operator<<( const QBrush & );
 		KTDebug& operator<<( const QVariant & );
 		KTDebug& operator << (const QWidget*);
+		KTDebug& operator << (const QEvent*);
 		
 		template <class T> KTDebug& operator << ( const QList<T> &list );
 		

@@ -126,9 +126,12 @@ class KTMainWindow : public DMainWindow
 		void newProject();
 		void closeProject();
 		void openProject();
-				
+		
 		void save();
 		
+	private slots:
+		void messageToStatus(const QString &);
+		void messageToOSD(const QString &);
 		void preferences();
 		void aboutKToon();
 		

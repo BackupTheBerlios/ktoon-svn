@@ -61,15 +61,15 @@ void KTViewColorCells::setupForm()
 
 void KTViewColorCells::addPalette(const QString & name)
 {
-	QScrollArea *scroll = new QScrollArea(m_containerPalette);
+// 	QScrollArea *scroll = new QScrollArea(m_containerPalette);
 
-	KTCellView *palette = new  KTCellView(11,18, scroll);
+	KTCellView *palette = new  KTCellView(11,18, m_containerPalette);
 	
-	scroll->setWidget(palette);
+// 	scroll->setWidget(palette);
 	
 	connect(palette, SIGNAL(itemPressed( KTCellViewItem* )), this, SLOT(changeColor(KTCellViewItem*)));
 	m_chooserPalette->addItem(name);
-	m_containerPalette->addWidget(scroll);
+	m_containerPalette->addWidget(palette);
 	
 }
 

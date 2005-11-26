@@ -164,10 +164,16 @@ class KTCellView : public QAbstractItemView
 		
 	private:
 		void setModel(QAbstractItemModel *model);
+		void updateVerticalScrollbar();
+		void updateHorizontalScrollbar() ;
+		int firstVisualIndex(int y) const;
+// 		void scrollContentsBy(int dx, int dy);
+		
 		
 	private:
 		KTCellViewModel *m_model;
-		int m_rectSize;
+// 		int m_rectSize;
+		int m_rectWidth, m_rectHeight;
 };
 
 #endif

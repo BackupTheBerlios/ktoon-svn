@@ -29,7 +29,7 @@
 
 #include <cmath>
 
-KTBrushWidget::KTBrushWidget(QWidget *parent) : KTModuleWidgetBase( parent )
+KTBrushWidget::KTBrushWidget(QWidget *parent) : KTModuleWidgetBase( parent ), m_currentFormIndex(0)
 {
 	setCaption( tr( "Brushes" ) );
 	
