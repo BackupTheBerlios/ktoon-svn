@@ -91,7 +91,7 @@ void KTExposureSheet::createLayerManager()
 
 void KTExposureSheet::addScene(const QString &name)
 {
-	KTTableExposure *newLayer = new KTTableExposure(100, 1, m_scenes);
+	KTTableExposure *newLayer = new KTTableExposure(100, 1/*, m_scenes*/);
 	
 	m_scenes->addTab(newLayer, name); // TODO: Necesitamos una forma facil de identificar scenas, puede ser por el indice de insersion
 	connect(newLayer, SIGNAL(layerVisibilityChanged( int, bool)), this, SIGNAL(layerVisibilityChanged( int, bool)));

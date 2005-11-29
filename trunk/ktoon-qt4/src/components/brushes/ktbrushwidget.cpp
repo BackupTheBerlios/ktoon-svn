@@ -49,14 +49,14 @@ KTBrushWidget::~KTBrushWidget()
 
 void KTBrushWidget::setupDisplay()
 {
-	m_displayBrush = new KTDisplayBrush();
+	m_brushEditor = new KTBrushEditor();
 
-	m_layout->addWidget(m_displayBrush, 0,0);
+	m_layout->addWidget(m_brushEditor, 0,0);
 }
 
 void KTBrushWidget::setupBrushManager()
 {
-	m_brushManager = new KTTabWidget();
+	m_brushManager = new QToolBox();
 	
 	QFrame *container = new QFrame(m_brushManager);
 	QBoxLayout *layoutContainer = new QBoxLayout(QBoxLayout::TopToBottom, container );
@@ -69,7 +69,7 @@ void KTBrushWidget::setupBrushManager()
 	layoutContainer->addWidget(m_displaySmoothness);
 	
 	
-	QGroupBox *box = new QGroupBox(this);
+	QGroupBox *box = new QGroupBox;
 	QBoxLayout *layoutBox = new QBoxLayout(QBoxLayout::TopToBottom, box);
 	layoutBox->setSpacing(1);
 	layoutBox->setMargin(2);
@@ -79,17 +79,19 @@ void KTBrushWidget::setupBrushManager()
 	m_nameBrush = new QLineEdit( tr( "Brush" ),  box);
 	layoutBox->addWidget(m_nameBrush);
 	
-	QPushButton *editForm = new QPushButton(tr("Edit Form"),container );
+	m_editFormButton = new QPushButton(tr("Edit Form"),container );
+	m_editFormButton->setCheckable(true);
+	connect(m_editFormButton, SIGNAL(clicked()), this, SLOT(editBrush()));
 	layoutContainer->addWidget(box);
-	layoutContainer->addWidget(editForm);
+	layoutContainer->addWidget(m_editFormButton);
 	
 	createDefaultBrushes();
 	
 	m_customBrushesList = new KTBrushesList(m_brushManager);
-	m_brushManager->addTab (m_defaultBrushesList, tr("Default Brushes") );
-	m_brushManager->addTab (m_customBrushesList, tr("Custom Brushes") );
+	m_brushManager->addItem (m_defaultBrushesList, tr("Default Brushes") );
+	m_brushManager->addItem (m_customBrushesList, tr("Custom Brushes") );
 	
-	m_brushManager->addTab ( container, tr("Edit Brush") );
+	m_brushManager->addItem( container, tr("Edit Brush") );
 // 	addChild(m_brushManager, Qt::AlignTop);
 	
 	m_layout->addWidget(m_brushManager, 1,0);
@@ -116,7 +118,7 @@ void KTBrushWidget::setupButtons()
 
 void KTBrushWidget::changeValueMinThickness(int value)
 {
-	m_displayBrush->setThickness( value );
+// 	m_brushEditor->setThickness( value );
 	
 	emit brushSelected( m_defaultBrushesList->path( m_currentFormIndex), m_displayThickness->value()  );
 }
@@ -142,7 +144,7 @@ void KTBrushWidget::selectBrush(KTCellViewItem *item)
 			if ( currentRow < m_defaultBrushesList->count() )
 			{
 				m_currentFormIndex = currentRow;
-				m_displayBrush->setForm( m_defaultBrushesList->path( currentRow  ));
+				m_brushEditor->setForm( m_defaultBrushesList->path( currentRow  ));
 				emit brushSelected( m_defaultBrushesList->path( m_currentFormIndex), m_displayThickness->value()  );
 			}
 		}
@@ -215,4 +217,9 @@ void KTBrushWidget::createDefaultBrushes()
 	m_defaultBrushesList->addBrush( thickness, m_displaySmoothness->value(), form, tr("star"));
 }
 
-
+void KTBrushWidget::editBrush()
+{
+	m_brushEditor->setEdit( m_editFormButton->isChecked());
+	
+	emit brushSelected( m_brushEditor->brushEdited(), m_displayThickness->value()  ); // FIXME: for test
+}

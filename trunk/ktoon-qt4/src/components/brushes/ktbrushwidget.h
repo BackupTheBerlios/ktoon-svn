@@ -23,13 +23,17 @@
 
 
 #include "ktmodulewidgetbase.h"
+
 #include "ktdisplaybrush.h"
+#include "ktbrusheditor.h"
+
 #include "kteditspinbox.h"
 #include "ktimagebutton.h"
 #include "ktbrusheslist.h"
 
 #include <QBoxLayout>
 #include <QLineEdit>
+#include <QToolBox>
 
 #include "kttabwidget.h"
 
@@ -46,21 +50,13 @@ class KTBrushWidget : public KTModuleWidgetBase
 		~KTBrushWidget();
 		
 	private:
-		KTDisplayBrush *m_displayBrush;
-		KTTabWidget *m_brushManager;
-		KTEditSpinBox *m_displayThickness, *m_displaySmoothness;
-		QLineEdit *m_nameBrush;
-		KTImageButton *m_addBrush, *m_removeBrush;
-		KTBrushesList *m_defaultBrushesList;
-		KTBrushesList *m_customBrushesList;
-		
-	private:
 		void setupDisplay();
 		void setupBrushManager();
 		void setupButtons();
 		void createDefaultBrushes();
 		
-		
+	private slots:
+		void editBrush();
 		
 	public slots:
 		void changeValueMinThickness(int value);
@@ -71,6 +67,18 @@ class KTBrushWidget : public KTModuleWidgetBase
 		void brushSelected(const QPainterPath &form, int thickness);
 		
 	private:
+		KTBrushEditor *m_brushEditor;
+// 		KTTabWidget *m_brushManager;
+		QToolBox *m_brushManager;
+		KTEditSpinBox *m_displayThickness, *m_displaySmoothness;
+		QLineEdit *m_nameBrush;
+		KTImageButton *m_addBrush, *m_removeBrush;
+		KTBrushesList *m_defaultBrushesList;
+		KTBrushesList *m_customBrushesList;
+		
+	private:
+		QPushButton *m_editFormButton;
+		
 		QGridLayout *m_layout;
 		int m_currentFormIndex;
 };

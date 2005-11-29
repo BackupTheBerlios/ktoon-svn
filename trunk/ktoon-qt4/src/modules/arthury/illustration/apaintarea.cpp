@@ -212,7 +212,7 @@ void APaintArea::drawFrame(const KTKeyFrame *frame, QPainter *painter, float int
 	if ( frame  )
 	{
 		QList<AGraphicComponent *> componentList = frame->components();
-
+		
 		if ( componentList.count() > 0)
 		{
 			QList<AGraphicComponent *>::iterator it = componentList.begin();
@@ -388,7 +388,7 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 					rect.translate(m_xpos, m_ypos);
 					update(rect);
 				}
-	
+				
 				m_lastPosition = event->pos();
 			}
 		}

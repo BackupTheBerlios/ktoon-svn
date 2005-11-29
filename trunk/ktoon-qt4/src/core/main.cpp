@@ -30,7 +30,7 @@
 
 #include "ktapplication.h"
 
-#include "splash.h"
+#include "ktsplash.h"
 #include "ktconfigdocument.h"
 #include "ktxmlreader.h"
 #include "ktdebug.h"
@@ -42,6 +42,8 @@ void usage();
 int main( int argc, char ** argv )
 {	
 	KTApplication application( argc, argv );
+	
+	QApplication::setStyle("plastique");
 	
 	if ( application.isArg("help") || application.isArg("h") )
 	{
@@ -97,7 +99,7 @@ int main( int argc, char ** argv )
 	splash->finish( mainWindow );
 	delete splash;
 
-	mainWindow->show();
+	mainWindow->showMaximized();
 	
 	QApplication::setActiveWindow(mainWindow);
 	QApplication::addLibraryPath (KTOON_HOME+"/plugins");

@@ -33,9 +33,7 @@
 KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent), m_isChildHidden(false), m_originalParent(parent)
 {
 	setObjectName(name);
-	
-// 	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-	
+
 	m_container = new QVBoxLayout(this);
 	
 	m_title = new KTModuleWidgetTitle("", this, "DialogTitle");
@@ -115,6 +113,8 @@ void KTModuleWidgetBase::toggleView()
 void KTModuleWidgetBase::setCaption(const QString &text)
 {
  	m_title->setText(text);
+	
+	setWindowTitle(text);
 }
 
 void KTModuleWidgetBase::setFont( const QFont &f)

@@ -21,24 +21,45 @@
 #ifndef KTBRUSHEDITOR_H
 #define KTBRUSHEDITOR_H
 
-#include <QWidget>
+#include <QFrame>
 #include <QImage>
+#include <QPainterPath>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTBrushEditor : public QWidget
+class KTBrushEditor : public QFrame
 {
 	Q_OBJECT
 	public:
 		KTBrushEditor(QWidget *parent = 0);
 		~KTBrushEditor();
+		virtual QSize sizeHint() const;
+		void setEdit(bool e);
 		
-	protected:
-		void paintEvent(QPaintEvent *e);
-		void mousePressEvent(QMouseEvent *e);
+		QPainterPath brushEdited();
+	
+	public slots:
+		void setForm(const QPainterPath &form);
+		
 		
 	private:
+		QPoint mapToEditor(const QPoint &p);
+		int findNodeIndex(const QPoint &p, int rate = 0);
+		
+	protected:
+		virtual void drawEditor(QPainter *p);
+		void paintEvent(QPaintEvent *e);
+		void mousePressEvent(QMouseEvent *e);
+		void mouseMoveEvent(QMouseEvent *e);
+		void mouseReleaseEvent(QMouseEvent *e);
+		
+	private:
+		class Editor;
+		Editor *m_editor;
+		
+		QPainterPath m_currentForm;
+		
 		QImage m_editArea;
 };
 

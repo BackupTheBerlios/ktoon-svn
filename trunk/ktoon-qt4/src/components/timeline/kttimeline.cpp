@@ -31,10 +31,14 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine
 	setCaption(tr("The Time line"));
 	
 	m_container = new KTVHBox(this, false);
-	addChild(m_container);
+	
+	addChild(m_container/*, Qt::AlignTop*/);
 	
 	m_splitter = new QSplitter( m_container );
-	m_splitter->setMinimumHeight(100);
+	
+	m_splitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	
+// 	m_splitter->setMinimumHeight(100);
 // 	m_container->addWidget(m_splitter);
 	
 	m_layerManager = new KTLayerManager( m_splitter );

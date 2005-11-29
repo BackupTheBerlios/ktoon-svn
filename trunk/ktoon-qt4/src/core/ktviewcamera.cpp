@@ -58,7 +58,7 @@ KTViewCamera::KTViewCamera(QWidget *parent) : KTMdiWindow(parent)
 	connect(m_bar, SIGNAL(play()), m_animationArea, SLOT(play()));
 	connect(m_bar, SIGNAL(stop()), m_animationArea, SLOT(stop()));
 #else
-	CCBar *m_bar = new CCBar(40,this);
+	CCBar *m_bar = new CCBar(40);
 	layout->addWidget(m_bar, 0, Qt::AlignTop | Qt::AlignCenter );
 	m_bar->show();
 	

@@ -18,8 +18,7 @@ TRANSLATIONS += ktoon_es.ts \
                 ktoon_fr.ts \
                 ktoon_ru.ts \
                 qt_es.ts 
-HEADERS += splash.h \
-           ktdocumentruler.h \
+HEADERS += ktdocumentruler.h \
            ktviewdocument.h \
            ktmainwindow.h \
            ktstatusbar.h \
@@ -27,9 +26,9 @@ HEADERS += splash.h \
            ktnewproject.h \
            ktviewcamera.h \
            ktcamerabar.h \
-           ktosd.h 
+           ktosd.h \
+           ktsplash.h 
 SOURCES += main.cpp \
-           splash.cpp \
            ktdocumentruler.cpp \
            ktviewdocument.cpp \
            ktmainwindow.cpp \
@@ -40,7 +39,8 @@ SOURCES += main.cpp \
            ktcamerabar.cpp \
            ktmainwindow-gui.cpp \
            ktmainwindow-project.cpp \
-           ktosd.cpp 
+           ktosd.cpp \
+           ktsplash.cpp 
 QT += qt3support xml
 TARGETDEPS += ../../src/dlslib/libdlslib.a \
 ../../src/store/libstore.a \

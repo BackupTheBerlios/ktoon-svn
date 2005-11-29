@@ -62,7 +62,6 @@ class KTColorPalette : public KTModuleWidgetBase
 		QToolBox *m_centralWidget;
 		
 		KTViewColorCells *m_containerPalette;
-		QGroupBox *containerButtons;
 		
 		KTValueColor *m_displayValueColor;
 		KTColorPicker *m_colorPicker;

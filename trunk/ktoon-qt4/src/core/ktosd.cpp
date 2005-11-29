@@ -42,7 +42,10 @@ KTOsd::~KTOsd()
 
 void KTOsd::display( const QString & message, Level level, int ms )
 {
-    	// determine text rectangle
+	QBrush background = palette().background();
+	QBrush foreground = palette().foreground();
+	
+	// determine text rectangle
 	QRect textRect = fontMetrics().boundingRect( message );
 	textRect.moveBy( -textRect.left(), -textRect.top() );
 	textRect.addCoords( 0, 0, 2, 2 );
@@ -57,12 +60,16 @@ void KTOsd::display( const QString & message, Level level, int ms )
 		switch ( level )
 		{
 			case Info:
+				background = QColor(0xd2ccff);
+				foreground = Qt::black;
 				break;
 			case Warning:
 				break;
 			case Error:
+				background = Qt::red;
 				break;
 			case Fatal:
+				background = Qt::magenta;
 				break;
 			default:
 				break;
@@ -82,6 +89,7 @@ void KTOsd::display( const QString & message, Level level, int ms )
 
     	// create and set transparency mask
 	QPainter maskPainter(&mask);
+	maskPainter.setRenderHint(QPainter::Antialiasing);
 	mask.fill( Qt::white );
 	maskPainter.setBrush( Qt::black );
 	maskPainter.drawRoundRect( geometry2, 1600 / geometry2.width(), 1600 / geometry2.height() );
@@ -89,8 +97,9 @@ void KTOsd::display( const QString & message, Level level, int ms )
 
     	// draw background
 	QPainter bufferPainter( &m_pixmap );
-	bufferPainter.setPen( Qt::black );
-	bufferPainter.setBrush( paletteBackgroundColor() );
+	bufferPainter.setRenderHint(QPainter::Antialiasing);
+	bufferPainter.setPen( foreground  );
+	bufferPainter.setBrush( background ); 
 	bufferPainter.drawRoundRect( geometry2, 1600 / geometry2.width(), 1600 / geometry2.height() );
 
     	// draw icon if present
@@ -120,7 +129,9 @@ void KTOsd::display( const QString & message, Level level, int ms )
 		}
 		m_timer->start( ms, true );
 	} else if ( m_timer )
+	{
 		m_timer->stop();
+	}
 }
 
 void KTOsd::paintEvent( QPaintEvent * e )

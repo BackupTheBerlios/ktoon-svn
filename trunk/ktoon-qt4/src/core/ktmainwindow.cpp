@@ -91,8 +91,6 @@ KTMainWindow::KTMainWindow() : DMainWindow(), m_exposureSheet(0), m_scenes(0)
 	
 	m_pActiveTabWidget->setCurrentIndex( 0 );
 	
-	showMaximized();
-	
 	createNewProject("test");
 }
 

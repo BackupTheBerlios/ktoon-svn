@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "splash.h"
+#include "ktsplash.h"
 
 #include <qpixmap.h>
 #include <qbitmap.h>
@@ -75,7 +75,7 @@ void Splash::drawContents ( QPainter * painter )
 	painter->drawEllipse(62,7,9,9);
 	painter->drawEllipse(73,7,9,9);
 
-	QColor baseColor = palette().base();
+	QColor baseColor = palette().alternateBase();
 	for (int i = 0; i < m_size; i++)
 	{
 		position = (m_state+i)%(2*m_size-1);
