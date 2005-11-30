@@ -44,6 +44,8 @@ class KTGradientManager : public QFrame
 		void setColor(const QColor &);
 		int gradientType();
 		void updateGradient();
+		QBrush currentGradient();
+		
 	private:
 		KTGradientSelector *m_selector;
 		KTGradientViewer *m_viewer;

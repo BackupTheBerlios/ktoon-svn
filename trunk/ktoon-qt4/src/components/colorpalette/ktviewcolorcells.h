@@ -42,7 +42,9 @@ class KTViewColorCells : public QFrame
 		QComboBox *m_chooserPalette;
 		QStackedWidget *m_containerPalette;
 		KTCellView *m_defaultPalette;
-		
+		KTCellView *m_customColorPalette;
+		int m_numColorRecent;
+		const int MAX_COLUMS;
 		
 	private:
 		void setupForm();
@@ -54,11 +56,12 @@ class KTViewColorCells : public QFrame
 		
 	signals:
 		void selectColor(const QColor &);
+		void selectGradient(const QGradient &);
 		
 	public slots:
-		virtual void addCustomColor(QColor c);
-		virtual void addCustomPalette(QString name);
-		void addPalette(const QString & name);
+		virtual void addCustomColor(const QBrush& c);
+		virtual void removeCurrentColor();
+		virtual void addPalette(const QString & name);
 		void changeColor(KTCellViewItem*);
 		
 };

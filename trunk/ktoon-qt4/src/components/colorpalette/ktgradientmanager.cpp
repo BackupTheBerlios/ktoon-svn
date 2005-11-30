@@ -48,7 +48,7 @@ KTGradientManager::KTGradientManager(QWidget *parent)
 	subLayout->addWidget( m_type);
 	layout->addLayout(subLayout);
 // 	m_focal = new KTXYSpinBox(tr("focal") );
-// 	layout->addWidget(m_focal, 1, 0);
+// 	layout->addWidget(m_focal);
 // 	connect( m_focal, SIGNAL(valueXYChanged(double, double)), m_viewer,SLOT( changeFocal(double, double)));
 	m_viewer->changeFocal( m_viewer->rect().center().x(), m_viewer->rect().center().y());
 }
@@ -110,3 +110,9 @@ void KTGradientManager::changeGradient( const QGradientStops& stops )
 	m_viewer->changeGradient(stops);
 	emit gradientChanged(m_viewer->gradient());
 }
+
+QBrush KTGradientManager::currentGradient()
+{
+	return QBrush(m_viewer->gradient());
+}
+

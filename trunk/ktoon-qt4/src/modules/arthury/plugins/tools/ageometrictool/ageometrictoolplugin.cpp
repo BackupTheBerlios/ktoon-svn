@@ -143,12 +143,18 @@ void AGeometricToolPlugin::applyGradient(QPainter *painter, const QRect &rect)
 				}
 				case QGradient::RadialGradient:
 				{
-					newGradient = QRadialGradient(rect.center(), (rect.left()-rect.right())/2, rect.center());
+					
+					QPointF focal= static_cast<const QRadialGradient*>(gradient)->focalPoint ();
+// 					focal = focal * (QMatrix().scale( rect.width()/ 100 ,   rect.height()/100  ));
+// 					ktDebug() << focal.x() << ", " << focal.y();
+					newGradient = QRadialGradient(rect.center(), (rect.left()-rect.right())/2, rect.center() );
 					break;
 				}
 				case QGradient::ConicalGradient:
 				{
-					newGradient = QConicalGradient(rect.center(), 450);
+					double angle = static_cast<const QConicalGradient*>(gradient)->angle();
+					ktDebug() << angle;
+					newGradient = QConicalGradient(rect.center(), angle);
 					break;
 				}
 			}

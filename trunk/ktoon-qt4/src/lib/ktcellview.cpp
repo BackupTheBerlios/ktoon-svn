@@ -69,7 +69,45 @@ void KTCellViewItemDelegate::paint ( QPainter * painter, const QStyleOptionViewI
 	value = model->data(index, Qt::BackgroundColorRole);
 	if (value.isValid()/* && qvariant_cast<QBrush>(value).isValid()*/)
 	{
-		painter->fillRect(option.rect, qvariant_cast<QBrush>(value));
+		QBrush brush = qvariant_cast<QBrush>(value);
+		
+		if ( brush.gradient() )
+		{
+			const QGradient *gradient = brush.gradient();
+			
+			QGradient newGradient;
+			switch( gradient->type() )
+			{
+				case  QGradient::LinearGradient:
+				{
+					newGradient = QLinearGradient(option.rect.topLeft(), option.rect.topRight());
+					break;
+				}
+				case QGradient::RadialGradient:
+				{
+					
+					QPointF focal= static_cast<const QRadialGradient*>(gradient)->focalPoint ();
+// 					focal = focal * (QMatrix().scale( rect.width()/ 100 ,   rect.height()/100  ));
+// 					ktDebug() << focal.x() << ", " << focal.y();
+					newGradient = QRadialGradient(option.rect.center(), (option.rect.left()-option.rect.right())/2, option.rect.center() );
+					break;
+				}
+				case QGradient::ConicalGradient:
+				{
+					double angle = static_cast<const QConicalGradient*>(gradient)->angle();
+					ktDebug() << angle;
+					newGradient = QConicalGradient(option.rect.center(), angle);
+					break;
+				}
+			}
+			newGradient.setStops(gradient->stops());
+			
+			painter->fillRect(option.rect, QBrush(newGradient));
+		}
+		else
+		{
+			painter->fillRect(option.rect, brush);
+		}
 	}
 	
 	
@@ -1158,7 +1196,7 @@ void KTCellView::paintEvent(QPaintEvent *ev)
 		int top = (verticalScrollBar()->value() - area.top())  / m_rectWidth;
 		int bottom = (verticalScrollBar()->value ()-area.bottom() ) / m_rectHeight;
 		
-		SHOW_VAR(left << " " << right << " " << top << " " << bottom << " ");
+// 		SHOW_VAR(left << " " << right << " " << top << " " << bottom << " ");
 		
 		top = (top <= -1 ? 0 : top);
 		bottom = (bottom <= -1 ? m_model->rowCount(rootIndex()) - 1 : bottom);
@@ -1168,7 +1206,7 @@ void KTCellView::paintEvent(QPaintEvent *ev)
 		bottom = qMax(tmp, bottom);
 		
         	// do the actual painting
-		SHOW_VAR(left << " " << right << " " << top << " " << bottom << " ");
+// 		SHOW_VAR(left << " " << right << " " << top << " " << bottom << " ");
 		
 		for (int v = top; v <= bottom; ++v)
 		{

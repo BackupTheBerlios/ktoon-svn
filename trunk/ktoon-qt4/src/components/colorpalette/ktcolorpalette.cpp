@@ -206,6 +206,7 @@ void KTColorPalette::setupDisplayColor()
 	
 	//display
 	connect (m_containerPalette, SIGNAL(selectColor( const QColor& )), this, SLOT(setColor( const QColor& )));
+	connect (m_containerPalette, SIGNAL(selectGradient(const QGradient&)), this, SLOT(changeGradient(const QGradient&)));
 	layout->addWidget(m_containerPalette);
 // 	addChild( m_containerPalette );
 	
@@ -336,3 +337,21 @@ void KTColorPalette::changeGradient(const QGradient & gradient)
 	}
 }
 
+
+void KTColorPalette::addColor()
+{
+	KTGradientManager *gradientManager = qobject_cast<KTGradientManager *>( m_centralWidget->currentWidget() );
+	if(gradientManager && m_gradientManager->gradientType() != 0)
+	{
+		m_containerPalette->addCustomColor( m_gradientManager->currentGradient());
+	}
+	else
+	{
+		m_containerPalette->addCustomColor( m_outlineAndFillColors->currentColor());
+	}
+}
+
+void KTColorPalette::removeColor()
+{
+	m_containerPalette->removeCurrentColor();
+}

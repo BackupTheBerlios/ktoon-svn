@@ -23,7 +23,7 @@
 
 
 KTViewColorCells::KTViewColorCells(QWidget *parent)
- : QFrame(parent)
+	: QFrame(parent), m_numColorRecent(0), MAX_COLUMS(11)
 {
 	
 	QVBoxLayout *layout = new QVBoxLayout;
@@ -45,18 +45,22 @@ void KTViewColorCells::setupForm()
 	m_containerPalette = new QStackedWidget(this);
 	layout()->addWidget(m_chooserPalette);
 	layout()->addWidget(m_containerPalette);
-	QScrollArea *scroll = new QScrollArea(m_containerPalette);
 	
-	m_defaultPalette = new  KTCellView(11,18, scroll);
-	scroll->setWidget(m_defaultPalette);
-	scroll->setWidgetResizable ( true );
-// 	scroll->setMinimumHeight( m_defaultPalette->size().height() );
+	m_defaultPalette = new  KTCellView(11,18, m_containerPalette );
 	fillDefaultColors();
 	
 	connect(m_defaultPalette, SIGNAL(itemPressed( KTCellViewItem* )), this, SLOT(changeColor(KTCellViewItem*)));
 	
-	m_containerPalette->addWidget(/*m_defaultPalette*/scroll);
+	m_containerPalette->addWidget(m_defaultPalette);
 	
+	m_chooserPalette->addItem(tr("Custom Color Palette"));
+	m_customColorPalette = new  KTCellView(m_containerPalette);
+	connect(m_customColorPalette, SIGNAL(itemPressed( KTCellViewItem* )), this, SLOT(changeColor(KTCellViewItem*)));
+	m_containerPalette->addWidget(m_customColorPalette);
+	
+
+	
+	connect(m_chooserPalette, SIGNAL(activated ( int  )), m_containerPalette, SLOT(setCurrentIndex ( int )));
 }
 
 void KTViewColorCells::addPalette(const QString & name)
@@ -78,7 +82,14 @@ void KTViewColorCells::changeColor(KTCellViewItem* item)
 {
 	if(item)
 	{
-		emit selectColor(item->background());
+		if(item->background().gradient ())
+		{
+			emit selectGradient( *item->background().gradient ());
+		}
+		else
+		{
+			emit selectColor(item->background());
+		}
 	}
 }
 
@@ -148,14 +159,42 @@ void KTViewColorCells::addDefaultColor(int i, int j, const QColor &c)
 
 }
 
-void KTViewColorCells::addCustomColor(QColor c)
+void KTViewColorCells::addCustomColor(const QBrush& c)
 {
+	KTCellViewItem *item = new KTCellViewItem;
+	item->setBackground(c);
+
+	static int col = 0;
+	static int row = 0;
 	
+	if( m_customColorPalette->columnCount() < MAX_COLUMS)
+	{
+		m_customColorPalette->insertRow(  m_customColorPalette->rowCount()+1);
+	}
+	if( m_numColorRecent % MAX_COLUMS == 0)
+	{
+		m_customColorPalette->insertColumn(  ( m_customColorPalette->columnCount()+1));
+		row++;
+		col = 0;
+	}
+	else
+	{
+		col++;
+	}
+	
+	m_numColorRecent++;
+	m_customColorPalette->setItem( col, row-1, item);
+	m_customColorPalette->setCurrentItem( item);
 }
 
-void KTViewColorCells::addCustomPalette(QString name)
+void KTViewColorCells::removeCurrentColor()
 {
-	
+	KTCellView *palette = qobject_cast<KTCellView *>(m_containerPalette->currentWidget());
+	if(palette)
+	{
+		if( m_defaultPalette != palette)
+		{
+			//TODO: implementar en KTCellView removeItem
+		}
+	}
 }
-
-

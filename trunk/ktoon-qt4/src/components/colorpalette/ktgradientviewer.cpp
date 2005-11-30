@@ -59,7 +59,7 @@ void KTGradientViewer::createGradient()
 		}
 		case QGradient::RadialGradient:
 		{
-			m_gradient = QRadialGradient(rect().center(), rect().topRight().x(), QPointF(m_xFocal, m_yFocal));
+			m_gradient = QRadialGradient(rect().center(), rect().topRight().x(), rect().center());
 			m_gradient.setStops( m_gradientStops);
 			break;
 		}
