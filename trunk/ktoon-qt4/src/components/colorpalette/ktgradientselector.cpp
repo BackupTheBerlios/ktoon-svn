@@ -56,7 +56,7 @@ void KTGradientArrow::moveArrow( const QPoint &pos )
 {	
 	QMatrix matrix;
 	
-	matrix.translate(pos.x()-5 - m_form.currentPosition().x(), 0);
+	matrix.translate(pos.x() - m_form.currentPosition().x(), 0);
 	
 	m_form = matrix.map(m_form);
 }
@@ -122,9 +122,9 @@ KTGradientSelector::~KTGradientSelector()
 QRect KTGradientSelector::contentsRect() const
 {
 	if ( orientation() == Qt::Vertical )
-		return QRect( 2, 5, width()-14, height()-10 );
+		return QRect( 2, 2, width()-14, height());
 	else
-		return QRect( 5, 2, width()-10, height()-14 );
+		return QRect( 2, 2, width(), height()-14 );
 }
 
 void  KTGradientSelector::setMaxRow(int value)
@@ -135,7 +135,6 @@ void  KTGradientSelector::setMaxRow(int value)
 		m_arrows.removeLast();
 	}
 	update();
-	
 }
 
 void KTGradientSelector::paintEvent( QPaintEvent * )
@@ -149,16 +148,15 @@ void KTGradientSelector::paintEvent( QPaintEvent * )
 
 	QBrush brush;
 
-	if ( indent() )
-	{
-		if ( orientation() == Qt::Vertical )
-			qDrawShadePanel( &painter, 0, 3, width()-5, height()-6,
-					  colorGroup(), true, 2, &brush );
-		else
-			qDrawShadePanel( &painter, 3, 0, width()-6, height()-5,
-					  colorGroup(), true, 2, &brush );
-	}
-
+// 	if ( indent() )
+// 	{
+// 		if ( orientation() == Qt::Vertical )
+// 			qDrawShadePanel( &painter, 0, 0, width()-1, height()-1,
+// 					  colorGroup(), true, 2, &brush );
+// 		else
+// 			qDrawShadePanel( &painter, 0, 0, width()-1, height()-1,
+// 					  colorGroup(), true, 2, &brush );
+// 	}
 	
 	
 	for(int i = 0; i < m_arrows.count(); i++)
@@ -166,7 +164,7 @@ void KTGradientSelector::paintEvent( QPaintEvent * )
 		painter.setBrush(m_arrows[i]->color());
 		if(i == m_currentArrowIndex)
 		{
-			painter.setPen(QPen(palette().highlight() , 3));
+			painter.setPen(QPen(palette().highlight(), 3));
 		}
 		else
 		{
@@ -189,20 +187,30 @@ void KTGradientSelector::mousePressEvent( QMouseEvent *e )
 		{
 			
 			m_currentArrowIndex = i;
-			moveArrow( e->pos() );
+// 			moveArrow( e->pos() );
 			select = true;
 			break;
-			
-			
 		}
 	}
 	if(m_arrows.count() > 1 && e->button() == Qt::RightButton )
 	{
 		m_arrows.removeAt(m_currentArrowIndex);
 		repaint();
-	}else if(!select)
+	}
+	else if(!select)
 	{
-		addArrow(calcArrowPos(e->pos().x()),m_arrows[m_currentArrowIndex]->color());
+		int val;
+		if ( orientation() == Qt::Vertical )
+		{
+			val = ( maximum() - minimum() ) * (height()-e->y())
+				/ (height()) + minimum();
+		}
+		else
+		{
+			val = ( maximum() - minimum() ) * (width()-e->x())/width() + minimum();
+		}
+		
+		addArrow( calcArrowPos(val), m_arrows[m_currentArrowIndex]->color());
 	}
 	
 	
@@ -211,14 +219,14 @@ void KTGradientSelector::mousePressEvent( QMouseEvent *e )
 
 void KTGradientSelector::mouseMoveEvent( QMouseEvent *e )
 {
-	if ( orientation() == Qt::Vertical && (e->y() <= minimum() || e->y() >= maximum()) )
-	{
-		return;
-	}
-	if(  orientation() == Qt::Horizontal && (e->x() <= minimum()+7 || e->x()-7 >= maximum()) )
-	{
-		return;
-	}
+// 	if ( orientation() == Qt::Vertical && (e->y() <= minimum() || e->y() >= maximum()) )
+// 	{
+// 		return;
+// 	}
+// 	if(  orientation() == Qt::Horizontal && (e->x() <= minimum()+7 || e->x()-7 >= maximum()) )
+// 	{
+// 		return;
+// 	}
 	moveArrow( e->pos() );
 	
 }
@@ -245,28 +253,32 @@ void  KTGradientSelector::resizeEvent ( QResizeEvent * event )
 
 void KTGradientSelector::valueChange( int newV)
 {
-	QPoint prevPos, newPos;
-
-	prevPos = calcArrowPos( value() );
-	newPos = calcArrowPos( newV );
-	update(QRect(prevPos, newPos));
+	update();
 	
 	emit newValue( newV );
 }
 
 void KTGradientSelector::moveArrow( const QPoint &pos )
 {
+	if ( orientation() == Qt::Vertical && (pos.y() <= minimum() || pos.y() >= maximum()) )
+	{
+		return;
+	}
+	if(  orientation() == Qt::Horizontal &&  (pos.x() <= minimum() || pos.x() >= maximum()) )
+	{
+		return;
+	}
 	int val;
 
 	if ( orientation() == Qt::Vertical )
 	{
-		val = ( maximum() - minimum() ) * (height()-pos.y()-3)
-				/ (height()-10) + minimum();
+		val = ( maximum() - minimum() ) * (height()-pos.y())
+				/ (height()) + minimum();
 	}
 	else
 	{
-		val = ( maximum() - minimum() ) * (width()-pos.x()-3)
-				/ (width()-10) + minimum();
+		val = ( maximum() - minimum() ) * (width()-pos.x())
+				/ (width()) + minimum();
 	}
 
 	setValue( val );
@@ -287,8 +299,8 @@ QPoint KTGradientSelector::calcArrowPos( int val )
 	}
 	else
 	{
-		p.setX( width() - ( (width()-10) * val
-				/ ( maximum() - minimum() ) + 5 ) );
+		p.setX( width() - ( (width()) * val
+				/ ( maximum() - minimum() )  ) );
 		p.setY( height() - 10 );
 	}
 
@@ -297,7 +309,6 @@ QPoint KTGradientSelector::calcArrowPos( int val )
 
 void KTGradientSelector::drawContents( QPainter *painter )
 {
-// 	QImage image( contentsRect().width(), contentsRect().height(), 32 );
 	createGradient();
 	emit gradientChanged(  m_gradient.stops());
 	painter->setBrush(m_gradient);
@@ -313,11 +324,7 @@ void  KTGradientSelector::createGradient()
 	}
 }
 
-void KTGradientSelector::emitGradientChanged()
-{
 
-// 	emit gradientChanged(  m_gradient.stops());
-}
 
 qreal KTGradientSelector::valueToGradien(int value) const
 {
@@ -327,7 +334,6 @@ qreal KTGradientSelector::valueToGradien(int value) const
 
 void KTGradientSelector::addArrow(QPoint position, QColor color)
 {
-// 	SHOW_VAR(m_arrows.count());
 	if(m_arrows.count() < m_maxRow)
 	{
 		KTGradientArrow *arrow = new KTGradientArrow(position, color);

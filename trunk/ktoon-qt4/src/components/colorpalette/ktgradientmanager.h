@@ -26,9 +26,12 @@
 #include "ktgradientselector.h"
 #include "ktgradientviewer.h"
 #include "kteditspinbox.h"
-
+#include "ktimagebutton.h"
+#include "ccbutton.h"
 #include <QFrame>
 #include <QComboBox>
+
+
 
 #include "ktxyspinbox.h"
 
@@ -39,6 +42,7 @@ class KTGradientManager : public QFrame
 {
 	Q_OBJECT
 	public:
+		enum KTGradientApply{None=0, Fill, OutLine, FillAndOutLine };
 		KTGradientManager(QWidget *parent = 0);
 		~KTGradientManager();
 		void setColor(const QColor &);
@@ -46,16 +50,19 @@ class KTGradientManager : public QFrame
 		void updateGradient();
 		QBrush currentGradient();
 		
+		int gradientApply();
+		
 	private:
 		KTGradientSelector *m_selector;
 		KTGradientViewer *m_viewer;
 		QComboBox *m_type ;
-		
+		KTImageButton *m_fill, *m_outLine;
 // 		KTXYSpinBox *m_center, *m_focal;
 		
 	public slots:
 		void changeType(int type);
 		void changeGradient( const QGradientStops& );
+		void emitGradientChanged();
 		
 	signals:
 		void gradientChanged(const QGradient &);

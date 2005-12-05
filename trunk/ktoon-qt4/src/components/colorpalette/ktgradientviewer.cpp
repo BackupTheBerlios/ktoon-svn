@@ -25,8 +25,7 @@
 KTGradientViewer::KTGradientViewer(QWidget *parent)
  : QFrame(parent)
 {
-// 	setMinimumHeight(width());
-	setMinimumSize(50,50); // FIXME: es mejor reimplementar el size hint, que limitar de manera tan brusca los tama�s de los widgets
+
 	setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
 
 	m_type = QGradient::LinearGradient;
@@ -45,6 +44,11 @@ void KTGradientViewer::paintEvent( QPaintEvent*)
 	p.setBrush(m_gradient);
 	
 	p.drawRect(rect());
+}
+
+QSize KTGradientViewer::sizeHint() const
+{
+	return QSize(100,100);
 }
 
 void KTGradientViewer::createGradient()

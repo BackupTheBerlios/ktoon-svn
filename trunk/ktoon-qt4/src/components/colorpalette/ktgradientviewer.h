@@ -39,6 +39,7 @@ class KTGradientViewer : public QFrame
 		
 	protected:
 		virtual void paintEvent( QPaintEvent * );
+		virtual QSize sizeHint() const;
 		
 	private:
 		QGradientStops m_gradientStops;

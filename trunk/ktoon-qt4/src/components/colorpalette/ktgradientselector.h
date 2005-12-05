@@ -47,7 +47,6 @@ class KTGradientSelector : public QAbstractSlider
 		KTGradientSelector( Qt::Orientation o, QWidget *parent = 0 );
 
 		~KTGradientSelector();
-		void emitGradientChanged();
 // 		void setColors( const QColor &col1, const QColor &col2 )
 // 		{	color1 = col1; color2 = col2; update(); }
 // 		void setText( const QString &t1, const QString &t2 )
