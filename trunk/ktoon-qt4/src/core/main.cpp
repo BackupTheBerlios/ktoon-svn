@@ -77,12 +77,12 @@ int main( int argc, char ** argv )
 	
 	QTranslator *qttranslator = new QTranslator( 0 );
 	
-	qttranslator->load( QString( "qt_" ) + QTextCodec::locale(), KTOON_HOME+"/data/translations");
+	qttranslator->load( QString( "qt_" ) + QString(QTextCodec::locale()).left(2), KTOON_HOME+"/data/translations");
 
 	application.installTranslator( qttranslator );
 	
 	QTranslator *translator = new QTranslator( 0 );
-	translator->load( QString( "ktoon_" ) + QTextCodec::locale(),  KTOON_HOME+"/data/translations");
+	translator->load( QString( "ktoon_" ) + QString(QTextCodec::locale()).left(2),  KTOON_HOME+"/data/translations");
 	
 	application.installTranslator( translator );
 	

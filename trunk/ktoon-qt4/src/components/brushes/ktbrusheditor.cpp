@@ -55,10 +55,10 @@ class KTBrushEditor::Editor
 					brushForm.lineTo(*it);
 				}
 				
-// 				if ( it == nodes.end()-1)
-// 				{
-// 					brushForm.lineTo( *nodes.begin() );
-// 				}
+				if ( it == nodes.end()-1)
+				{
+					brushForm.lineTo( *nodes.begin() );
+				}
 			}
 			
 			return brushForm;

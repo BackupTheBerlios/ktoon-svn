@@ -144,22 +144,22 @@ function ktinstall()
 			fi
 #install menu entry
 		else
-			if [ -f ~/.bashrc ]
+			if [ -f ~/.bash_profile ]
 			then
-				if [ `grep -c "source $KTOON_LOCAL_ENV" ~/.bashrc` -eq 0 ]
+				if [ `grep -c "source $KTOON_LOCAL_ENV" ~/.bash_profile` -eq 0 ]
 				then
-					echo "source $KTOON_LOCAL_ENV" >> ~/.bashrc
+					echo "source $KTOON_LOCAL_ENV" >> ~/.bash_profile
 				fi
 				
 			else
-				if [ -f ~/.bash_profile ]
+				if [ -f ~/.bashrc ]
 				then
-					if [ `grep -c "source $KTOON_LOCAL_ENV" ~/.bash_profile` -eq 0 ]
+					if [ `grep -c "source $KTOON_LOCAL_ENV" ~/.bashrc` -eq 0 ]
 					then
-						echo "source $KTOON_LOCAL_ENV" >> ~/.bash_profile
+						echo "source $KTOON_LOCAL_ENV" >> ~/.bashrc
 					fi
 				else
-					echo "source $KTOON_LOCAL_ENV" >> ~/.bashrc
+					echo "source $KTOON_LOCAL_ENV" >> ~/.bash_profile
 				fi
 			fi
  		fi
