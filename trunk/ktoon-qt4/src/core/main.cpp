@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Fernando Jose Roldan Correa                     *
- *   froldan@toonka.com                                                    *
+ *   Copyright (C) 2004 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *

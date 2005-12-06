@@ -9,6 +9,4 @@ CONFIG += release \
 TEMPLATE = subdirs 
 SUBDIRS += src 
 
-include ( "config.ktoon" )
-
 QT += qt3support xml opengl

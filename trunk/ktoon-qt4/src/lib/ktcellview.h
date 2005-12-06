@@ -69,7 +69,7 @@ class KTCellViewItem
 		Qt::ItemFlags m_itemFlags;
 };
 
-class KTCellView : public QAbstractItemView
+class KTCellView : public QTableView
 {
 	Q_OBJECT
 	public:
@@ -106,19 +106,8 @@ class KTCellView : public QAbstractItemView
 		inline KTCellViewItem *itemAt(int x, int y) const { return itemAt(QPoint(x, y)); };
 		QRect visualItemRect(const KTCellViewItem *item) const;
 
-		virtual void scrollTo ( const QModelIndex & index, ScrollHint hint = EnsureVisible );
-		virtual QRect visualRect ( const QModelIndex & index ) const;
-		
-		virtual bool isIndexHidden ( const QModelIndex & index ) const;
 		virtual int verticalOffset () const;
 		virtual int horizontalOffset () const;
-		virtual QModelIndex indexAt ( const QPoint & p ) const;
-		int rowAt(int p) const;
-		int columnAt(int p) const;
-		
-		virtual QModelIndex moveCursor ( CursorAction cursorAction, Qt::KeyboardModifiers modifiers );
-		virtual QRegion visualRegionForSelection ( const QItemSelection & selection ) const;
-		virtual void setSelection ( const QRect & rect, QItemSelectionModel::SelectionFlags flags );
 		
 	private:
 		void setup();
@@ -158,17 +147,7 @@ class KTCellView : public QAbstractItemView
 		QModelIndex indexFromItem(KTCellViewItem *item) const;
 		KTCellViewItem *itemFromIndex(const QModelIndex &index) const;
 		
-		virtual void paintEvent(QPaintEvent *e);
-		
 		virtual QStyleOptionViewItem viewOptions() const;
-		
-	private:
-		void setModel(QAbstractItemModel *model);
-		void updateVerticalScrollbar();
-		void updateHorizontalScrollbar() ;
-		int firstVisualIndex(int y) const;
-// 		void scrollContentsBy(int dx, int dy);
-		
 		
 	private:
 		KTCellViewModel *m_model;
