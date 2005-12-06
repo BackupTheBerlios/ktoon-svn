@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2005 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,22 +17,36 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "ktlibrarywidget.h"
 
-KTLibraryWidget::KTLibraryWidget(QWidget *parent)
- : KTModuleWidgetBase(parent)
+
+#ifndef KTCELLSCOLOR_H
+#define KTCELLSCOLOR_H
+
+#include "ktcellview.h"
+
+/**
+	@author Jorge Cuadrado <kuadrosx@toonka.com>
+*/
+class KTCellsColor : public KTCellView
 {
-	setCaption(tr("Library"));
-	m_libraryTree = new QTreeWidget(this);
-	QTreeWidgetItem *header = new QTreeWidgetItem(m_libraryTree);
-// 	m_libraryTree->addTopLevelItem ( header );
-	addChild( m_libraryTree );
-}
+Q_OBJECT
+	public:
+		
+		enum Type{Color = 0, Gradient};
+		KTCellsColor(QWidget *parent = 0, Type type= Color);
+		virtual ~KTCellsColor();
+		void addColor(const QBrush&);
+		void setReadOnly(bool enable);
+		void setType(Type type);
+		bool isReadOnly();
+		int type();
+		
+	private:
+		Type m_type;
+		int m_countColor;
+		bool m_readOnly;
+		int m_col, m_row;
+		const int MAX_COLUMNS;
+};
 
-KTLibraryWidget::~KTLibraryWidget()
-{
-}
-
-// KTLibraryWidget::
-
-
+#endif

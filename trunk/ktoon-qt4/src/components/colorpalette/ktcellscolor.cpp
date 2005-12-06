@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2005 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,22 +17,64 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "ktlibrarywidget.h"
 
-KTLibraryWidget::KTLibraryWidget(QWidget *parent)
- : KTModuleWidgetBase(parent)
+
+#include "ktcellscolor.h"
+#include "ktdebug.h"
+
+KTCellsColor::KTCellsColor(QWidget *parent, Type type)
+	: KTCellView(parent), m_type(type), m_countColor(0), m_readOnly(false), MAX_COLUMNS(10), m_col(0), m_row(0)
+{}
+
+
+KTCellsColor::~KTCellsColor()
 {
-	setCaption(tr("Library"));
-	m_libraryTree = new QTreeWidget(this);
-	QTreeWidgetItem *header = new QTreeWidgetItem(m_libraryTree);
-// 	m_libraryTree->addTopLevelItem ( header );
-	addChild( m_libraryTree );
+	KTEND;
 }
 
-KTLibraryWidget::~KTLibraryWidget()
+void KTCellsColor::addColor(const QBrush& b)
 {
+	KTCellViewItem *item = new KTCellViewItem;
+	
+	if( rowCount() < MAX_COLUMNS)
+	{
+		insertRow( rowCount()+1);
+	}
+	if( m_countColor % MAX_COLUMNS == 0)
+	{
+		insertColumn((columnCount()+1));
+		m_row++;
+		m_col = 0;
+	}
+	else
+	{
+		m_col++;
+	}
+	item->setBackground(b);
+	m_countColor++;
+// 	ktDebug() << "col " << col << " row " << row-1;
+	setItem( m_col, m_row-1, item);
+// 	setCurrentItem( item);
 }
 
-// KTLibraryWidget::
+void KTCellsColor::setReadOnly(bool enable)
+{
+	m_readOnly = enable;
+}
+
+bool KTCellsColor::isReadOnly()
+{
+	return m_readOnly;
+}
+
+void KTCellsColor::setType(Type type)
+{
+	m_type = type;
+}
+
+int KTCellsColor::type()
+{
+	return m_type;
+}
 
 
