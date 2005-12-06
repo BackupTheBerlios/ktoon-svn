@@ -23,11 +23,17 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent)
  : KTModuleWidgetBase(parent)
 {
 	setCaption(tr("Library"));
+	m_libraryTree = new QTreeWidget(this);
+	QTreeWidgetItem *header = new QTreeWidgetItem(m_libraryTree);
+	m_libraryTree->addTopLevelItem ( header );
+	addChild( m_libraryTree );
 }
-
 
 KTLibraryWidget::~KTLibraryWidget()
 {
+	
 }
+
+// KTLibraryWidget::
 
 

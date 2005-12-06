@@ -34,6 +34,7 @@ KTGradientViewer::KTGradientViewer(QWidget *parent)
 
 KTGradientViewer::~KTGradientViewer()
 {
+	KTEND;
 }
 
 void KTGradientViewer::paintEvent( QPaintEvent*)

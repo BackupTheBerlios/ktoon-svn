@@ -35,6 +35,7 @@ KTGradientArrow::KTGradientArrow(QPoint pos, const QColor& color): QObject(), m_
 
 KTGradientArrow::~KTGradientArrow()
 {
+	KTEND;
 }
 
 double KTGradientArrow::position()
@@ -107,14 +108,14 @@ void KTGradientSelector::init()
 	
 	show();
 	
-	KTGradientArrow *first = new KTGradientArrow(calcArrowPos(0), QColor(Qt::white));
+	KTGradientArrow *first = new KTGradientArrow(calcArrowPos(1), QColor(Qt::black));
 
-	m_arrows << first /*<< second*/;
+	m_arrows << first ;
 }
 
 
 KTGradientSelector::~KTGradientSelector()
-{}
+{KTEND;}
 
 
 

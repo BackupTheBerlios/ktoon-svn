@@ -837,7 +837,7 @@ KTCellViewItem *KTCellView::itemAt(const QPoint &p) const
 
 QRect KTCellView::visualItemRect(const KTCellViewItem *item) const
 {
-	KT_FUNCINFO;
+// 	KT_FUNCINFO;
 	Q_ASSERT(item);
 	QModelIndex index = m_model->index(const_cast<KTCellViewItem*>(item));
 	Q_ASSERT(index.isValid());
@@ -859,13 +859,13 @@ bool KTCellView::isIndexHidden ( const QModelIndex & index ) const
 
 int KTCellView::verticalOffset () const
 {
-	KT_FUNCINFO;
+// 	KT_FUNCINFO;
 	return m_rectHeight;
 }
 
 int KTCellView::horizontalOffset () const
 {
-	KT_FUNCINFO;
+// 	KT_FUNCINFO;
 	return m_rectWidth;
 }
 
@@ -900,7 +900,7 @@ void KTCellView::scrollToItem(const KTCellViewItem *item, ScrollHint hint)
 
 void KTCellView::scrollTo ( const QModelIndex & index, ScrollHint hint )
 {
-	KT_FUNCINFO;
+// 	KT_FUNCINFO;
 	// check if we really need to do anything
 	if (!index.isValid() || !model() /*|| (model()->parent(index) != rootIndex()) */|| isIndexHidden(index))
 		return;
@@ -973,7 +973,7 @@ void KTCellView::scrollTo ( const QModelIndex & index, ScrollHint hint )
 
 void KTCellView::updateVerticalScrollbar()
 {
-	KT_FUNCINFO;
+// 	KT_FUNCINFO;
 	int height = viewport()->height();
 	int top = rowCount();
 	
@@ -991,7 +991,7 @@ void KTCellView::updateVerticalScrollbar()
 
 void KTCellView::updateHorizontalScrollbar()
 {
-	KT_FUNCINFO;
+// 	KT_FUNCINFO;
 	int width = viewport()->width();
 
 	if (!m_model || width <= 0 ) {
@@ -1087,13 +1087,13 @@ void KTCellView::setModel(QAbstractItemModel *model)
 
 QModelIndex KTCellView::moveCursor ( CursorAction cursorAction, Qt::KeyboardModifiers modifiers )
 {
-	KT_FUNCINFO;
+// 	KT_FUNCINFO;
 	return QModelIndex();
 }
 
 QRegion KTCellView::visualRegionForSelection ( const QItemSelection & selection ) const
 {
-	KT_FUNCINFO;
+// 	KT_FUNCINFO;
 	if (selection.isEmpty())
 	{
 		return QRegion();
@@ -1116,7 +1116,7 @@ QRegion KTCellView::visualRegionForSelection ( const QItemSelection & selection 
 
 void KTCellView::setSelection ( const QRect & rect, QItemSelectionModel::SelectionFlags flags )
 {
-	KT_FUNCINFO;
+// 	KT_FUNCINFO;
 	
 	if (!selectionModel())
 	{
@@ -1132,7 +1132,7 @@ void KTCellView::setSelection ( const QRect & rect, QItemSelectionModel::Selecti
 
 void KTCellView::paintEvent(QPaintEvent *ev)
 {
-	KT_FUNCINFO;
+// 	KT_FUNCINFO;
 	
 	QStyleOptionViewItem option = viewOptions();
 	

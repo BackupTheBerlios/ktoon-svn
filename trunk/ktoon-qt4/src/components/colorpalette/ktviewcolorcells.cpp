@@ -35,46 +35,54 @@ KTViewColorCells::KTViewColorCells(QWidget *parent)
 
 KTViewColorCells::~KTViewColorCells()
 {
+	KTEND;
 }
 
 void KTViewColorCells::setupForm()
 {
 	m_chooserPalette = new QComboBox(this);
 	
-	m_chooserPalette->addItem(tr("Default Palette"));
+	
 	m_containerPalette = new QStackedWidget(this);
 	layout()->addWidget(m_chooserPalette);
 	layout()->addWidget(m_containerPalette);
 	
-	m_defaultPalette = new  KTCellView(11,18, m_containerPalette );
+	m_chooserPalette->addItem(tr("Default Palette"));
+	m_defaultPalette = new  KTCellsColor( m_containerPalette );
+	m_defaultPalette->setReadOnly( true);
 	fillDefaultColors();
-	
 	connect(m_defaultPalette, SIGNAL(itemPressed( KTCellViewItem* )), this, SLOT(changeColor(KTCellViewItem*)));
-	
 	m_containerPalette->addWidget(m_defaultPalette);
 	
+	
+	m_chooserPalette->addItem(tr("Qt Color Palette"));
+	m_qtColorPalette = new  KTCellsColor( m_containerPalette );
+	m_qtColorPalette->setReadOnly( true);
+	connect(m_qtColorPalette, SIGNAL(itemPressed( KTCellViewItem* )), this, SLOT(changeColor(KTCellViewItem*)));
+	m_containerPalette->addWidget(m_qtColorPalette);
+	fillQtColor();
+	
 	m_chooserPalette->addItem(tr("Custom Color Palette"));
-	m_customColorPalette = new  KTCellView(m_containerPalette);
+	m_customColorPalette = new  KTCellsColor(m_containerPalette);
 	connect(m_customColorPalette, SIGNAL(itemPressed( KTCellViewItem* )), this, SLOT(changeColor(KTCellViewItem*)));
 	m_containerPalette->addWidget(m_customColorPalette);
-	
 
+	
+	m_chooserPalette->addItem(tr("Custom Gradient Palette"));
+	m_customGradientPalette = new  KTCellsColor(m_containerPalette);
+	connect(m_customGradientPalette, SIGNAL(itemPressed( KTCellViewItem* )), this, SLOT(changeColor(KTCellViewItem*)));
+	m_containerPalette->addWidget(m_customGradientPalette);
 	
 	connect(m_chooserPalette, SIGNAL(activated ( int  )), m_containerPalette, SLOT(setCurrentIndex ( int )));
 }
 
 void KTViewColorCells::addPalette(const QString & name)
 {
-// 	QScrollArea *scroll = new QScrollArea(m_containerPalette);
-
 	KTCellView *palette = new  KTCellView(11,18, m_containerPalette);
-	
-// 	scroll->setWidget(palette);
 	
 	connect(palette, SIGNAL(itemPressed( KTCellViewItem* )), this, SLOT(changeColor(KTCellViewItem*)));
 	m_chooserPalette->addItem(name);
 	m_containerPalette->addWidget(palette);
-	
 }
 
 
@@ -100,22 +108,22 @@ void KTViewColorCells::fillDefaultColors()
     //First column, first 6 rows, a gray scale
 	for ( i = 0; i <= 5; i++ )
 	{
-		addDefaultColor(i,j,QColor( i * 51, i * 51, i * 51 ));
+		m_defaultPalette->addColor(QColor( i * 51, i * 51, i * 51 ));
 	}
     //First column, last 6 rows, basic colors
-	addDefaultColor(i,j,QColor( 255, 0, 0 ));
-	addDefaultColor(i,j,QColor( 0, 255, 0 ));
-	addDefaultColor(i,j,QColor( 0, 0, 255 ));
-	addDefaultColor(i,j,QColor( 255, 255, 0 ));
-	addDefaultColor(i,j,QColor( 0, 255, 255 ));
-	addDefaultColor(i,j,QColor( 255, 0, 255 ));
+	m_defaultPalette->addColor(QColor( 255, 0, 0 ));
+	m_defaultPalette->addColor(QColor( 0, 255, 0 ));
+	m_defaultPalette->addColor(QColor( 0, 0, 255 ));
+	m_defaultPalette->addColor(QColor( 255, 255, 0 ));
+	m_defaultPalette->addColor(QColor( 0, 255, 255 ));
+	m_defaultPalette->addColor(QColor( 255, 0, 255 ));
 
     //Segment from column 1 to 6 and row 0 to 5
 	for ( i = 0; i <= 5; i++ )
 	{
 		for ( j = 1; j <= 6; j++ )
 		{
-			addDefaultColor(i,j,QColor( 0, ( j - 1 ) * 51, i * 51 ));
+			m_defaultPalette->addColor(QColor( 0, ( j - 1 ) * 51, i * 51 ));
 		}
 	}
 
@@ -124,67 +132,81 @@ void KTViewColorCells::fillDefaultColors()
 	{
 		for ( j = 1; j <= 6; j++ )
 		{
-			addDefaultColor(i,j,QColor( 153, ( j - 1 ) * 51, ( i - 6 ) * 51 ));
+			m_defaultPalette->addColor(QColor( 153, ( j - 1 ) * 51, ( i - 6 ) * 51 ));
 		}
 	}
 
     //Segment from column 7 to 12 and row 0 to 5
 	for ( i = 0; i <= 5; i++ )
+	{
 		for ( j = 7; j <= 12; j++ )
-			addDefaultColor(i,j,QColor( 51, ( j - 7 ) * 51, i * 51 ));
+		{
+			m_defaultPalette->addColor(QColor( 51, ( j - 7 ) * 51, i * 51 ));
+		}
+	}
 
     //Segment from column 7 to 12 and row 6 to 11
 	for ( i = 6; i <= 11; i++ )
+	{
 		for ( j = 7; j <= 12; j++ )
-			addDefaultColor(i,j,QColor( 204, ( j - 7 ) * 51, ( i - 6 ) * 51 ));
+		{
+			m_defaultPalette->addColor(QColor( 204, ( j - 7 ) * 51, ( i - 6 ) * 51 ));
+		}
+	}
 
     //Segment from column 13 to 18 and row 0 to 5
 	for ( i = 0; i <= 5; i++ )
+	{
 		for ( j = 13; j <= 18; j++ )
-			addDefaultColor(i,j,QColor( 102, ( j - 13 ) * 51, i * 51 ));
+		{
+			m_defaultPalette->addColor(QColor( 102, ( j - 13 ) * 51, i * 51 ));
+		}
+	}
 
     //Segment from column 13 to 18 and row 6 to 11
 	for ( i = 6; i <= 11; i++ )
+	{
 		for ( j = 13; j <= 18; j++ )
-			addDefaultColor(i,j,QColor( 255, ( j - 13 ) * 51, ( i - 6 ) * 51 ));
-	
+		{
+			m_defaultPalette->addColor(QColor( 255, ( j - 13 ) * 51, ( i - 6 ) * 51 ));
+		}
+	}
 	
 }
 
-void KTViewColorCells::addDefaultColor(int i, int j, const QColor &c)
+void KTViewColorCells::fillQtColor()
 {
-	KTCellViewItem *item = new KTCellViewItem;
-	item->setBackground(c);
-	m_defaultPalette->setItem(i-1,j-1, item);
-
+	QStringList strColor = QColor::colorNames ();
+	SHOW_VAR(strColor.count());
+	for(int i = 0; i  < strColor.count(); i++)
+	{
+		m_qtColorPalette->addColor( QColor(strColor[i]) );
+	}
 }
+
+
 
 void KTViewColorCells::addCustomColor(const QBrush& c)
 {
-	KTCellViewItem *item = new KTCellViewItem;
-	item->setBackground(c);
-
-	static int col = 0;
-	static int row = 0;
 	
-	if( m_customColorPalette->columnCount() < MAX_COLUMS)
-	{
-		m_customColorPalette->insertRow(  m_customColorPalette->rowCount()+1);
-	}
-	if( m_numColorRecent % MAX_COLUMS == 0)
-	{
-		m_customColorPalette->insertColumn(  ( m_customColorPalette->columnCount()+1));
-		row++;
-		col = 0;
-	}
-	else
-	{
-		col++;
-	}
+	KTCellsColor *palette =  qobject_cast<KTCellsColor*>(m_containerPalette->currentWidget());
 	
-	m_numColorRecent++;
-	m_customColorPalette->setItem( col, row-1, item);
-	m_customColorPalette->setCurrentItem( item);
+	if(palette->isReadOnly() || (c.gradient() && palette->type() == KTCellsColor::Color ) || !c.color().isValid() && palette->type() == KTCellsColor::Gradient )
+	{
+		if(c.gradient())
+		{
+			palette = m_customGradientPalette;
+			m_chooserPalette->setCurrentIndex( m_chooserPalette->count()-1 );
+			m_containerPalette->setCurrentWidget ( m_customGradientPalette );
+		}
+		else
+		{
+			palette = m_customColorPalette;
+			m_chooserPalette->setCurrentIndex( m_chooserPalette->count()-2 );
+			m_containerPalette->setCurrentWidget ( m_customColorPalette );
+		}
+	}
+	palette->addColor(c);
 }
 
 void KTViewColorCells::removeCurrentColor()

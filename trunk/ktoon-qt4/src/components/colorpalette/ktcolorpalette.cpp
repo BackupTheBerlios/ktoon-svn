@@ -49,7 +49,6 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_
 	setupGradienManager();
 	setupDisplayColor();
 	m_splitter->addWidget(m_centralWidget);
-// 	addChild(m_centralWidget);
 	m_centralWidget->setPalette(palette());
 	setupButtons();
 }

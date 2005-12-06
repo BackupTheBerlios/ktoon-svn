@@ -26,8 +26,8 @@
 #include <QStackedWidget>
 #include <QVBoxLayout>
 
-#include "ktcellview.h"
-
+// #include "ktcellview.h"
+#include "ktcellscolor.h"
 /**
 	@author Jorge Cuadrado <kuadrosx@toonka.com>
 */
@@ -41,8 +41,10 @@ class KTViewColorCells : public QFrame
 	private:
 		QComboBox *m_chooserPalette;
 		QStackedWidget *m_containerPalette;
-		KTCellView *m_defaultPalette;
-		KTCellView *m_customColorPalette;
+		KTCellsColor *m_defaultPalette;
+		KTCellsColor *m_qtColorPalette;
+		KTCellsColor *m_customColorPalette;
+		KTCellsColor *m_customGradientPalette;
 		int m_numColorRecent;
 		const int MAX_COLUMS;
 		
@@ -50,7 +52,7 @@ class KTViewColorCells : public QFrame
 		void setupForm();
 		void fillDefaultColors();
 		void addDefaultColor(int i , int j, const QColor &);
-		
+		void fillQtColor();
 	protected:
 		
 		

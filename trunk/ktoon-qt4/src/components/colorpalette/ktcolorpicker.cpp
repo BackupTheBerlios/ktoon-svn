@@ -9,6 +9,7 @@
 #include <QMouseEvent>
 
 #include "ktcolorpicker.h"
+#include "ktdebug.h"
 
 // static int pWidth = 220;
 // static int pHeight = 200;
@@ -60,7 +61,9 @@ KTColorPicker::KTColorPicker(QWidget* parent) : QFrame(parent)
 
 KTColorPicker::~KTColorPicker()
 {
+	
 	delete m_pix;
+	KTEND;
 }
 
 QSize KTColorPicker::sizeHint() const

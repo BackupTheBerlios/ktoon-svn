@@ -44,6 +44,7 @@ KTItemValueColor::KTItemValueColor( const QString &text, QWidget *parent ) :QFra
 KTItemValueColor::~KTItemValueColor()
 {
 	delete m_value;
+	KTEND;
 }
 
 void KTItemValueColor::setValue( int val)
@@ -75,6 +76,7 @@ KTValueColor::KTValueColor(QWidget *parent) : QFrame(parent), ok(true)
 
 KTValueColor::~KTValueColor()
 {
+	KTEND;
 }
 
 void KTValueColor::setupForm()

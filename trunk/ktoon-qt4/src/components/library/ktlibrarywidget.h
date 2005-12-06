@@ -22,6 +22,8 @@
 #define KTLIBRARYWIDGET_H
 
 #include <ktmodulewidgetbase.h>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
 
 /**
 	@author David Cuadrado <krawek@toonka.com>
@@ -32,7 +34,9 @@ class KTLibraryWidget : public KTModuleWidgetBase
 	public:
 		KTLibraryWidget(QWidget *parent = 0);
 		~KTLibraryWidget();
-
+	
+	private:
+		QTreeWidget *m_libraryTree;
 };
 
 #endif

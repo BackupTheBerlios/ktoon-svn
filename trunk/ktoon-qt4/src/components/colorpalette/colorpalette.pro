@@ -15,7 +15,8 @@ HEADERS += ktcolorpicker.h \
            ktdualcolorbutton.h \
            ktgradientselector.h \
            ktgradientviewer.h \
-           ktgradientmanager.h 
+           ktgradientmanager.h \
+           ktcellscolor.h 
 SOURCES += ktcolorpicker.cpp \
            ktcolorpalette.cpp \
            ktvaluecolor.cpp \
@@ -24,7 +25,8 @@ SOURCES += ktcolorpicker.cpp \
            ktdualcolorbutton.cpp \
            ktgradientselector.cpp \
            ktgradientviewer.cpp \
-           ktgradientmanager.cpp 
+           ktgradientmanager.cpp \
+           ktcellscolor.cpp 
 QT += xml qt3support
 INCLUDEPATH += ../../../src/store \
 ../../../src/lib

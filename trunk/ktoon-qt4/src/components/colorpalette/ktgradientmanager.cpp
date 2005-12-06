@@ -57,7 +57,7 @@ KTGradientManager::KTGradientManager(QWidget *parent)
 	box->setFrameStyle(QFrame::StyledPanel );
 	box->setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Fixed);
 	box->boxLayout()->setSpacing(0);
-	box->boxLayout()->setMargin(5);
+	box->boxLayout()->setMargin(2);
 	
 	m_fill = new KTImageButton(QPixmap(KTOON_THEME_DIR+"icons/fillcolor.png"), 32, box, false);
 	connect(m_fill, SIGNAL( clicked()), this, SLOT(emitGradientChanged()));
@@ -78,6 +78,7 @@ KTGradientManager::KTGradientManager(QWidget *parent)
 
 KTGradientManager::~KTGradientManager()
 {
+	KTEND;
 }
 
 
