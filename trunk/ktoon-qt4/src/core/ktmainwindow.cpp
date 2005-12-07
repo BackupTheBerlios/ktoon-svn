@@ -28,6 +28,8 @@
 #include "ktapplication.h"
 #include "ktabout.h"
 
+#include "kthelpbrowser.h"
+
 // dlslib
 #include "dtabwidget.h"
 #include "docksplitter.h"
@@ -251,3 +253,11 @@ void KTMainWindow::messageToOSD(const QString &msg)
 	m_osd->display( msg, KTOsd::Info, msg.length()*90);
 }
 
+void KTMainWindow::showHelpPage(const QString &title, const QString &document)
+{
+	KT_FUNCINFO;
+	KTHelpBrowser *page = new KTHelpBrowser(this);
+	
+	page->setDocument( document );
+	addWidget( page, tr("Help:%1").arg(title) );
+}

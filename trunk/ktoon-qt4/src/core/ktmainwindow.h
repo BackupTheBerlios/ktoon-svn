@@ -53,6 +53,7 @@
 #include "ktviewcamera.h"
 
 #include "ktgceditor.h"
+#include "kthelpwidget.h"
 
 #include "dmainwindow.h"
 #include "ktstatusbar.h"
@@ -128,6 +129,7 @@ class KTMainWindow : public DMainWindow
 		void openProject();
 		
 		void save();
+		void showHelpPage(const QString &title, const QString &document);
 		
 	private slots:
 		void messageToStatus(const QString &);
@@ -182,6 +184,7 @@ class KTMainWindow : public DMainWindow
 		KTExposureSheet *m_exposureSheet;
 		KTScenesWidget *m_scenes;
 		KTTimeLine *m_timeLine;
+		KTHelpWidget *m_helper;
 };
 
 #endif

@@ -12,7 +12,8 @@ SUBDIRS += brushes \
            ktoonscript \
            export \
            import \
-           gceditor 
+           gceditor \
+           help 
 CONFIG += release \
 warn_on
 TEMPLATE = subdirs

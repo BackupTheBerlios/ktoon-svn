@@ -132,6 +132,11 @@ void KTMainWindow::createGUI()
 // 	connect(m_scenes, SIGNAL(sceneInserted( const QString &, int )), m_exposureSheet, SLOT(addScene( const QString &, int )));
 // 	connect(m_scenes, SIGNAL(sceneRenamed( const QString &, int )), m_exposureSheet, SLOT(renameScene(const QString &, int)));
 	
+	///////////////////////
+	m_helper = new KTHelpWidget(KTOON_HOME+"/data/help/");
+	toolWindow(DDockWindow::Right)->addWidget(tr("Help"),m_helper);
+	connect(m_helper, SIGNAL(pageLoaded(const QString &, const QString &)), this, SLOT(showHelpPage(const QString &, const QString &)));
+	
 	//////////////////////
 	m_timeLine = new KTTimeLine(this);
 	m_timeLine->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/time_line.png"));
