@@ -18,54 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTSPLASH_H
-#define KTSPLASH_H
+#ifndef KTTOOLBOX_H
+#define KTTOOLBOX_H
+
+#include <QToolBox>
 
 /**
- * @author Fernando Roldan - David Cuadrado
- * @file splash.h
- * @brief Include this file if you need the class KTSplash
- */
-
-#include <qpainter.h>
-#include <qsplashscreen.h>
-
-/**
- * @brief Class that handles the application's splash screen
- *
- * <b>Date of Creation: July 28 - 2004.</b>\n
- * This is a widget that it is shown at the application's startup.
+ * @author David Cuadrado <krawek@toonka.com>
 */
-class KTSplash : public QSplashScreen
+class KTToolBox : public QToolBox
 {
-    	Q_OBJECT
-
+	Q_OBJECT
 	public:
-		/**
-		* @brief Default Constructor
-		*
-		* Constructs a KTSplash object.
-		*/
-		KTSplash();
-		/**
-		* @brief Default Destructor
-		*
-		* Destroys the KTSplash object.
-		*/
-		~KTSplash();
-			 
-		void setMessage(const QString &msg);
+		KTToolBox(QWidget *parent = 0);
+		~KTToolBox();
+		void addPage(QWidget *page, const QString &title);
+		
+	protected:
+		virtual void createIcon();
 		
 	private slots:
-		void animate();
-
+		void changeIcon(int index);
+		
 	private:
-		QString m_message, m_version;
-		int m_size;
-		int m_state;
-	
-	protected:
-		void drawContents ( QPainter * painter );
+		QIcon m_icon;
+		int m_lastIndex;
+
 };
 
 #endif

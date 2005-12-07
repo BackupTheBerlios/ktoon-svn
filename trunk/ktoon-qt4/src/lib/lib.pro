@@ -43,7 +43,8 @@ HEADERS += ktapplication.h \
            ktwidgetlistitem.h \
            ktwidgetlistview.h \
            ktxyspinbox.h \
-           ktcellview.h 
+           ktcellview.h \
+           kttoolbox.h 
 SOURCES += ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
@@ -79,7 +80,8 @@ SOURCES += ktapplication.cpp \
            ktwidgetlistitem.cpp \
            ktwidgetlistview.cpp \
            ktxyspinbox.cpp \
-           ktcellview.cpp 
+           ktcellview.cpp \
+           kttoolbox.cpp 
 DLLDESTDIR = /tmp
 QT += qt3support xml opengl
 MOC_DIR = .moc

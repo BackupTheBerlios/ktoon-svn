@@ -56,7 +56,7 @@ void KTBrushWidget::setupDisplay()
 
 void KTBrushWidget::setupBrushManager()
 {
-	m_brushManager = new QToolBox();
+	m_brushManager = new KTToolBox();
 	
 	QFrame *container = new QFrame(m_brushManager);
 	QBoxLayout *layoutContainer = new QBoxLayout(QBoxLayout::TopToBottom, container );
@@ -88,10 +88,10 @@ void KTBrushWidget::setupBrushManager()
 	createDefaultBrushes();
 	
 	m_customBrushesList = new KTBrushesList(m_brushManager);
-	m_brushManager->addItem (m_defaultBrushesList, tr("Default Brushes") );
-	m_brushManager->addItem (m_customBrushesList, tr("Custom Brushes") );
+	m_brushManager->addPage(m_defaultBrushesList, tr("Default Brushes") );
+	m_brushManager->addPage(m_customBrushesList, tr("Custom Brushes") );
 	
-	m_brushManager->addItem( container, tr("Edit Brush") );
+	m_brushManager->addPage( container, tr("Edit Brush") );
 // 	addChild(m_brushManager, Qt::AlignTop);
 	
 	m_layout->addWidget(m_brushManager, 1,0);

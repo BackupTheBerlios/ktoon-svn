@@ -66,6 +66,20 @@ DDockWindow::DDockWindow(QWidget *parent, Position position) : QDockWidget( pare
 	layout()->setMargin(0);
 	
 	connect(this, SIGNAL(topLevelChanged ( bool)), this, SLOT(addFloatingOption(bool)));
+	
+	QList<QWidget*> widgets = findChildren<QWidget*>();
+	QList<QWidget*>::ConstIterator it = widgets.begin();
+	
+	while (it != widgets.end())
+	{
+		if ((*it)->metaObject()->className() == QString("QDockWidgetTitle"))
+		{
+			(*it)->setStyle("windows");
+			(*it)->hide();
+			break;
+		}
+		++it;
+	}
 }
 
 DDockWindow::~DDockWindow()
@@ -556,6 +570,8 @@ void DDockInternalWidget::setSeparator(QWidget *separator)
 {
 	Q_CHECK_PTR(separator);
 	m_separator = separator;
+	
+	m_separator->setStyle("windows");
 }
 
 void DDockInternalWidget::dialoged(int index)

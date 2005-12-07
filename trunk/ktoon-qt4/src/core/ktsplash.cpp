@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by Fernando Jose Roldan Correa                     *
- *   froldan@toonka.com                                                    *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -32,7 +32,7 @@
 
 //------------------ CONSTRUCTOR -----------------
 
-Splash::Splash() : QSplashScreen( 0, QPixmap(), Qt::WStyle_StaysOnTop ), m_size(3), m_state(0)
+KTSplash::KTSplash() : QSplashScreen( 0, QPixmap(), Qt::WStyle_StaysOnTop ), m_size(3), m_state(0)
 {
 	KTINIT;
 	QTimer *timer = new QTimer( this );
@@ -45,25 +45,25 @@ Splash::Splash() : QSplashScreen( 0, QPixmap(), Qt::WStyle_StaysOnTop ), m_size(
 	m_version = tr("Version ")+ktapp->version();
 }
 
-Splash::~Splash()
+KTSplash::~KTSplash()
 {
 	KTEND;
 }
 
-void Splash::animate()
+void KTSplash::animate()
 {
 	m_state = ((m_state + 1) % (2*m_size-1));
 	repaint();
 }
 
-void Splash::setMessage(const QString &msg)
+void KTSplash::setMessage(const QString &msg)
 {
 	QSplashScreen::showMessage(msg,Qt::AlignTop, palette().text() );
 	m_message = msg;
 	animate();
 }
 
-void Splash::drawContents ( QPainter * painter )
+void KTSplash::drawContents ( QPainter * painter )
 {
 	//QSplashScreen::drawContents(painter);
 	int position;
@@ -107,7 +107,7 @@ void Splash::drawContents ( QPainter * painter )
 }
 
 /*
-void Splash::drawContents ( QPainter * painter )
+void KTSplash::drawContents ( QPainter * painter )
 {
 	painter->setRenderHint(QPainter::TextAntialiasing, true);
 	painter->setPen(palette().base());

@@ -63,6 +63,8 @@
 // Projects
 #include "ktprojectmanager.h"
 
+#include "ktsplash.h"
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
@@ -71,7 +73,7 @@ class KTMainWindow : public DMainWindow
 {
 	Q_OBJECT
 	public:
-		KTMainWindow();
+		KTMainWindow(KTSplash *splash);
 		~KTMainWindow();
 		virtual void setPalette(const QPalette &);
 		

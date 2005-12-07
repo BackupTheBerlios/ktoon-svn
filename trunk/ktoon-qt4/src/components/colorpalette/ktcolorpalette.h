@@ -29,9 +29,9 @@
 #include <QComboBox>
 
 #include <QGroupBox>
-#include <QToolBox>
 #include <QSplitter>
 
+#include "kttoolbox.h"
 #include "ktvhbox.h"
 #include "ktcolorpicker.h"
 #include "ktluminancepicker.h"
@@ -51,15 +51,9 @@ class KTColorPalette : public KTModuleWidgetBase
 		KTColorPalette(QWidget *parent = 0);
 		~KTColorPalette();
 		QPair<QColor, QColor> color();
-		
+
 	private:
-		void createIcon();
-		
-	private slots:
-		void changeIcon(int);
-		
-	private:
-		QToolBox *m_centralWidget;
+		KTToolBox *m_centralWidget;
 		
 		KTViewColorCells *m_containerPalette;
 		
@@ -72,9 +66,6 @@ class KTColorPalette : public KTModuleWidgetBase
 		QColor m_currentOutlineColor, m_currentFillColor;
 		
 		QSplitter *m_splitter;
-		
-		QIcon m_icon;
-		int m_lastIndex;
 		bool m_flagGradient;
 		
 		

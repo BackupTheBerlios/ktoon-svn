@@ -43,7 +43,7 @@
 #include <QTextEdit>
 //
 
-KTMainWindow::KTMainWindow() : DMainWindow(), m_exposureSheet(0), m_scenes(0)
+KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0), m_scenes(0)
 {
 	KTINIT;
 	
@@ -57,6 +57,7 @@ KTMainWindow::KTMainWindow() : DMainWindow(), m_exposureSheet(0), m_scenes(0)
 	setWindowTitle(tr("KToon: 2D animation toolkit"));
 	
 	m_projectManager = new KTProjectManager(this);
+	splash->setMessage( tr("Setting up the project manager") );
 	
 	m_drawingSpace = new QWorkspace;
 	m_drawingSpace->setScrollBarsEnabled ( true );
@@ -80,15 +81,19 @@ KTMainWindow::KTMainWindow() : DMainWindow(), m_exposureSheet(0), m_scenes(0)
 	
 	setupBackground();
 	
+	splash->setMessage( tr("Loading action manager..."));
 	m_actionManager = new KTActionManager(this);
 	
 	// Create the menubar;
+	splash->setMessage( tr("Creating menu bar..."));
 	setupFileActions();
 	setupEditActions();
 	setupProjectActions();
 	setupHelpActions();
 	
 	setupMenu();
+	
+	splash->setMessage( tr("Creating GUI..."));
 	createGUI();
 	
 	m_pActiveTabWidget->setCurrentIndex( 0 );

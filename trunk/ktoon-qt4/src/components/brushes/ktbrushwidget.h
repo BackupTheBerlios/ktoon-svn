@@ -33,9 +33,9 @@
 
 #include <QBoxLayout>
 #include <QLineEdit>
-#include <QToolBox>
 
 #include "kttabwidget.h"
+#include "kttoolbox.h"
 
 #include <QGridLayout>
 
@@ -69,7 +69,7 @@ class KTBrushWidget : public KTModuleWidgetBase
 	private:
 		KTBrushEditor *m_brushEditor;
 // 		KTTabWidget *m_brushManager;
-		QToolBox *m_brushManager;
+		KTToolBox *m_brushManager;
 		KTEditSpinBox *m_displayThickness, *m_displaySmoothness;
 		QLineEdit *m_nameBrush;
 		KTImageButton *m_addBrush, *m_removeBrush;

@@ -30,21 +30,16 @@
 #include "ktapplication.h"
 
 
-KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_currentOutlineColor(Qt::black), m_currentFillColor(Qt::transparent), m_lastIndex(0), m_flagGradient(true)
+KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_currentOutlineColor(Qt::black), m_currentFillColor(Qt::transparent), m_flagGradient(true)
 {
 	KTINIT;
 	setCaption( tr( "Color Palette" ) );
-	
-	createIcon();
 
 	m_splitter = new QSplitter(Qt::Vertical, this);
 	addChild( m_splitter);
 	
-	m_centralWidget = new QToolBox(m_splitter);
-	connect(m_centralWidget, SIGNAL(currentChanged(int)), this, SLOT(changeIcon(int)));
-	
-	
-	m_centralWidget->setFrameStyle(QFrame::StyledPanel );
+	m_centralWidget = new KTToolBox(m_splitter);
+
 	setupChooserTypeColor();
 	setupGradienManager();
 	setupDisplayColor();
@@ -57,57 +52,6 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_
 KTColorPalette::~KTColorPalette()
 {
 	KTEND;
-}
-
-void KTColorPalette::createIcon()
-{
-	QPolygon m_pArrow(3);
-
-	QPixmap pixmap (22,22);
-	pixmap.fill( palette().background() );
-	
-	m_pArrow.setPoint ( 0, 0, 0);
-	m_pArrow.setPoint ( 1, 10, 5);
-	m_pArrow.setPoint ( 2, 0, 10);
-	
-	QPainter p(&pixmap);
-	
-	p.setBrush( palette().foreground() );
-	p.translate(pixmap.width()/3, 5);
-	p.drawConvexPolygon(m_pArrow);
-
-	p.end();
-	
-	m_icon.addPixmap(pixmap, QIcon::Normal, QIcon::Off);
-	
-	///////////
-	
-	QPixmap pixmap2 (22,22);
-	pixmap2.fill( palette().background() );
-	
-	m_pArrow.setPoint ( 0, 0, 0);
-	m_pArrow.setPoint ( 1, 5, 10);
-	m_pArrow.setPoint ( 2, 10, 0);
-	
-	QPainter p2(&pixmap2);
-	
-	p2.setBrush( palette().foreground() );
-	p2.translate(pixmap2.width()/3, 5);
-	p2.drawConvexPolygon(m_pArrow);
-
-	p2.end();
-	
-	m_icon.addPixmap(pixmap2, QIcon::Normal, QIcon::On);
-	
-}
-
-void KTColorPalette::changeIcon(int index)
-{
-	m_centralWidget->setItemIcon(m_lastIndex, m_icon.pixmap (QSize(22,22), QIcon::Normal, QIcon::Off));
-	
-	m_centralWidget->setItemIcon(index, m_icon.pixmap (QSize(22,22), QIcon::Normal, QIcon::On));
-	
-	m_lastIndex = index;
 }
 
 void KTColorPalette::setupButtons()
@@ -178,8 +122,7 @@ void KTColorPalette::setupChooserTypeColor()
 	this->layout()->setAlignment( colorMixer, Qt::AlignTop);
 	connect(m_displayValueColor, SIGNAL(colorChanged(const QColor&)), this, SLOT(setColor(const QColor &)));
 	
-	m_centralWidget->addItem(colorMixer, m_icon, tr("Color Mixer"));
-	
+	m_centralWidget->addPage(colorMixer, tr("Color Mixer"));
 }
 
 
@@ -187,7 +130,7 @@ void KTColorPalette::setupGradienManager()
 {
 	m_gradientManager = new KTGradientManager(this);
 	connect(m_gradientManager, SIGNAL(gradientChanged( const QGradient& )), this, SLOT(changeGradient(const QGradient &) ));
-	m_centralWidget->addItem(m_gradientManager, m_icon, tr("Gradients"));
+	m_centralWidget->addPage(m_gradientManager,tr("Gradients"));
 	
 }
 
@@ -275,7 +218,7 @@ void KTColorPalette::changeTypeColor(KTDualColorButton::DualColor s)
 
 void KTColorPalette::syncHsv(int h, int s, int v)
 {
-	int th, ts, tv;
+// 	int th, ts, tv;
 	QColor tmpColor = m_outlineAndFillColors->currentColor();
 	tmpColor.setHsv( h, s, v, tmpColor.alpha() );
 	if(m_luminancePicker == sender())

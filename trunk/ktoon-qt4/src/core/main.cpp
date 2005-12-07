@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2004 by David Cuadrado                                  *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -86,12 +86,12 @@ int main( int argc, char ** argv )
 	
 	application.installTranslator( translator );
 	
-	Splash *splash = new Splash;
+	KTSplash *splash = new KTSplash;
 	splash->show();
 	splash->setMessage( QObject::tr( "Initializing..." ) );
 	
-	KTMainWindow *mainWindow = new KTMainWindow;
 	splash->setMessage( QObject::tr( "Loading Modules" ) );
+	KTMainWindow *mainWindow = new KTMainWindow(splash);
 
 
 	splash->setMessage( QObject::tr( "Loaded!" ) );
