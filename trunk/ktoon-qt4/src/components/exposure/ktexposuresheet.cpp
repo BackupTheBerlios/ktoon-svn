@@ -29,7 +29,7 @@
 #include <QList>
 
 
-KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, "Exposure Sheet"), m_viewLayer(0)
+KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, "Exposure Sheet"), m_currentTable(0)
 {
 	KTINIT;
 	setCaption( tr( "Exposure Sheet" ) );
@@ -37,7 +37,6 @@ KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, 
 	m_imgs <<  
 			QPixmap(KTOON_THEME_DIR+"/icons/add_layer.png" ) <<
 			QPixmap(KTOON_THEME_DIR+"/icons/remove_layer.png" ) <<
-// 			QPixmap(KTOON_THEME_DIR+"/icons/show_hide_all_layers.png" ) <<
 			QPixmap(KTOON_THEME_DIR+"/icons/add_frame.png" ) <<
 			QPixmap(KTOON_THEME_DIR+"/icons/remove_frame.png" ) <<
 			QPixmap(KTOON_THEME_DIR+"/icons/lock.png" ) <<
@@ -45,11 +44,10 @@ KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, 
 			QPixmap(KTOON_THEME_DIR+"/icons/arrowdown.png" );
 	setupButtons();
 	m_scenes = new KTTabWidget(this);
+	connect( m_scenes , SIGNAL(currentChanged ( int )), this, SLOT(emitRequestChangeScene( int ) ));
 	addChild(m_scenes);
 	show();
-	createLayerManager();
 }
-
 
 KTExposureSheet::~KTExposureSheet()
 {
@@ -68,7 +66,7 @@ void KTExposureSheet::setupButtons()
 	m_buttonGroup = new QButtonGroup(m_buttonsPanel);
 	connect(m_buttonGroup, SIGNAL(buttonClicked ( QAbstractButton *)), this, SLOT(actionButton( QAbstractButton *)));
 	QStringList toolTips;
-	toolTips << tr("Insert Layer") << tr("Remove Layer") << /*tr("Manage the layer visibility") <<*/ tr("Insert Keyframes") << tr("Remove Keyframe") << tr("Lock Frame") << tr("Move Keyframe Up") << tr("Move Keyframe Down");
+	toolTips << tr("Insert Layer") << tr("Remove Layer") << tr("Insert Keyframes") << tr("Remove Keyframe") << tr("Lock Frame") << tr("Move Keyframe Up") << tr("Move Keyframe Down");
 	
 	for(int i = 0; i < toolTips.count(); i++)
 	{
@@ -81,28 +79,18 @@ void KTExposureSheet::setupButtons()
 	addChild(m_buttonsPanel);
 }
 
-void KTExposureSheet::createLayerManager()
-{
-	//TODO:kuadrosx crear una clase que me permita visualizar los items y seleccionarlos un QCheckBox
-	m_layerManager = new QListView;
-	m_layerManager->setMovement ( QListView::Static  );
-	m_layerManager->resize(150,100);
-}
 
 void KTExposureSheet::addScene(const QString &name)
 {
 	KTTableExposure *newLayer = new KTTableExposure(100, 1/*, m_scenes*/);
 	
+	m_tables << newLayer;
+	
 	m_scenes->addTab(newLayer, name); // TODO: Necesitamos una forma facil de identificar scenas, puede ser por el indice de insersion
 	connect(newLayer, SIGNAL(layerVisibilityChanged( int, bool)), this, SIGNAL(layerVisibilityChanged( int, bool)));
 	
-	
-	
 	connect(newLayer, SIGNAL(cellSelected( int, int )), this, SIGNAL(frameSelected(int, int)));
 	connect(newLayer, SIGNAL(layerSelected(int)), this, SIGNAL(layerSelected(int)));
-	
-	
-	
 	
 	connect(newLayer, SIGNAL(requestInsertFrame(bool)), this, SIGNAL(requestInsertFrame(bool)));
 	
@@ -110,7 +98,8 @@ void KTExposureSheet::addScene(const QString &name)
 	
 	connect(newLayer, SIGNAL(requestPasteFrame(int)), this,   SIGNAL(requestPasteFrame(int)));
 	
-	m_viewLayer = newLayer;
+	m_currentTable = newLayer;
+	m_scenes->setCurrentWidget(m_currentTable);
 }
 
 void KTExposureSheet::renameScene(const QString &name, int id)
@@ -118,11 +107,12 @@ void KTExposureSheet::renameScene(const QString &name, int id)
 	m_scenes->setTabText(id, name);
 }
 
+
 void KTExposureSheet::applyAction(int action)
 {
 	KT_FUNCINFO;
 	
-	if ( ! m_viewLayer )
+	if ( ! m_currentTable )
 	{
 		ktFatal() << "KTExposureSheet::applyAction: No layer view!!" << endl;
 		return;
@@ -134,8 +124,8 @@ void KTExposureSheet::applyAction(int action)
 		{
 			
 			emit requestInsertLayer();
-			emit layerSelected(m_viewLayer->currentLayer());
-// 			m_viewLayer->insertFrames();
+			emit layerSelected(m_currentTable->currentLayer());
+// 			m_currentTable->insertFrames();
 			break;
 		}
 		case RemoveLayer:
@@ -145,7 +135,7 @@ void KTExposureSheet::applyAction(int action)
 		}
 		case InsertFrames:
 		{
-			m_viewLayer->insertFrames();
+			m_currentTable->insertFrames();
 			break;
 		}
 		case RemoveFrame:
@@ -155,7 +145,7 @@ void KTExposureSheet::applyAction(int action)
 		}
 		case LockFrame:
 		{
-// 			m_viewLayer->testLockFrame();
+// 			m_currentTable->testLockFrame();
 			emit requestLockFrame();
 			break;
 		}
@@ -175,8 +165,8 @@ void KTExposureSheet::applyAction(int action)
 void KTExposureSheet::addFrame(int idLayer, const QString &name, bool addedToEnd)
 {
 	ktDebug( ) << "KTExposureSheet::addFrame(" << idLayer << " , "<< name << " , "  << addedToEnd << ")" << endl;
-// 	m_viewLayer->currentLayerExposure()->setUseFrames(name);
-	m_viewLayer->setUseFrame(idLayer, name, addedToEnd);
+// 	m_currentTable->currentLayerExposure()->setUseFrames(name);
+	m_currentTable->setUseFrame(idLayer, name, addedToEnd);
 }
 
 void KTExposureSheet::actionButton( QAbstractButton *b)
@@ -186,21 +176,21 @@ void KTExposureSheet::actionButton( QAbstractButton *b)
 
 // void KTExposureSheet::loadLayersAndKeyframes( QList<Layer*> layers )
 // {
-// 	m_viewLayer->loadLayers(layers);
+// 	m_currentTable->loadLayers(layers);
 // }
 
 void KTExposureSheet::updateLayersAndKeyframes()
 {
-	m_viewLayer->updateLayers();
+	m_currentTable->updateLayers();
 }
 
 void KTExposureSheet::insertLayer(const QString& name)
 {
 	KT_FUNCINFO;
-	//change m_viewLayer for currentTable
-	if ( m_viewLayer )
+	//change m_currentTable for currentTable
+	if ( m_currentTable )
 	{
-		m_viewLayer->insertLayer(100, name);
+		m_currentTable->insertLayer(100, name);
 	}
 	else
 	{
@@ -210,38 +200,58 @@ void KTExposureSheet::insertLayer(const QString& name)
 
 void KTExposureSheet::removeCurrentLayer()
 {
-	//change m_viewLayer for currentTable
-	m_viewLayer->removeCurrentLayer();
+	//change m_currentTable for currentTable
+	m_currentTable->removeCurrentLayer();
 }
 
 void KTExposureSheet::removeCurrentFrame()
 {
-	m_viewLayer->removeFrame();
+	m_currentTable->removeFrame();
 }
 
 // void KTExposureSheet::moveUpFrame()
 // {
-// 	m_viewLayer->moveCurrentFrame(KTTableExposure::Up );
+// 	m_currentTable->moveCurrentFrame(KTTableExposure::Up );
 // }
 // 
 // void KTExposureSheet::moveDownFrame()
 // {
-// 	m_viewLayer->moveCurrentFrame(KTTableExposure::Down );
+// 	m_currentTable->moveCurrentFrame(KTTableExposure::Down );
 // }
 
 void KTExposureSheet::moveFrame(bool up)
 {
 	if(up)
 	{
-		m_viewLayer->moveCurrentFrame(KTTableExposure::Up );
+		m_currentTable->moveCurrentFrame(KTTableExposure::Up );
 	}
 	else
 	{
-		m_viewLayer->moveCurrentFrame(KTTableExposure::Down );
+		m_currentTable->moveCurrentFrame(KTTableExposure::Down );
 	}
 }
 
 void KTExposureSheet::lockCurrentFrame()
 {
-	m_viewLayer->lockCurrentFrame();
+	m_currentTable->lockCurrentFrame();
+}
+
+void KTExposureSheet::setScene(int index)
+{
+	
+	if(index != m_scenes->indexOf(m_currentTable))
+	{
+		
+		m_currentTable = m_tables[index];
+		m_scenes->setCurrentWidget(m_tables[index]);
+	}
+}
+
+void KTExposureSheet::emitRequestChangeScene(int index)
+{
+// 	ktDebug() << "KTExposureSheet::emitRequestChangeScene(int" <<  index << ")";
+	if(index != m_scenes->indexOf(m_currentTable))
+	{
+		emit requestChangeScene(index);
+	}
 }

@@ -121,6 +121,7 @@ void KTMainWindow::createGUI()
 	
 	connect(m_scenes, SIGNAL(requestInsertScene()), m_projectManager, SLOT(createScene()));
 	connect(m_scenes, SIGNAL(requestRemoveScene()), m_projectManager, SLOT(removeScene()));
+	connect(m_scenes, SIGNAL(changeCurrentScene( int )), this, SLOT(changeScene(int)));
 	
 	/////////////////////
 	m_exposureSheet = new KTExposureSheet(this);
@@ -128,6 +129,7 @@ void KTMainWindow::createGUI()
 	toolWindow(DDockWindow::Right)->addWidget(tr("Exposure Sheet"),m_exposureSheet);
 	
 	ui4project( m_exposureSheet );
+	connect(m_exposureSheet, SIGNAL(requestChangeScene( int ) ), this, SLOT(changeScene(int)));
 	
 // 	connect(m_scenes, SIGNAL(sceneInserted( const QString &, int )), m_exposureSheet, SLOT(addScene( const QString &, int )));
 // 	connect(m_scenes, SIGNAL(sceneRenamed( const QString &, int )), m_exposureSheet, SLOT(renameScene(const QString &, int)));
@@ -175,7 +177,7 @@ void KTMainWindow::createGUI()
 	connect(m_projectManager, SIGNAL(frameRemoved()), this, SLOT(removeFrame()));
 	connect(m_projectManager, SIGNAL(frameLocked()), this, SLOT(lockFrame()));
 	connect(m_projectManager, SIGNAL(layerRemoved(int )), this, SLOT(removeLayer(int)));
-	
+
 	
 }
 

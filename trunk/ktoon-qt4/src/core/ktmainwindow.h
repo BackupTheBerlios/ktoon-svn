@@ -158,9 +158,11 @@ class KTMainWindow : public DMainWindow
 		void removeFrame( );
 		void lockFrame();
 		// Scenes
+		
 		void insertScene( const QString &name, bool);
+		void changeScene(int index);
 		
-		
+		//others
 		void changeCurrentColors(const QBrush &, const QBrush &);
 		void changeCurrentBrush(const QPainterPath &form, int thickness);
 		

@@ -31,9 +31,16 @@ void KTMainWindow::insertScene( const QString &name, bool addedToEnd)
 	m_exposureSheet->addScene( name);
 }
 
+void KTMainWindow::changeScene(int index)
+{
+	m_exposureSheet->setScene( index);
+	m_scenes->setScene(index);
+	m_projectManager->setCurrentScene( index);
+}
+
 void KTMainWindow::insertLayer(const QString &name, bool addedToEnd)
 {
-	ktDebug() << "KTMainWindow::insertLayer(" << name << "," << addedToEnd << ")" << endl;
+// 	ktDebug() << "KTMainWindow::insertLayer(" << name << "," << addedToEnd << ")";
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )
@@ -64,7 +71,7 @@ void KTMainWindow::setLayerVisibilityChanged(int idLayer, bool isVisible)
 
 void KTMainWindow::insertFrame(const QString &name, bool addedToEnd)
 {
-	ktDebug() << "KTMainWindow::insertFrame(" << name << "," << addedToEnd << ")" << endl;
+// 	ktDebug() << "KTMainWindow::insertFrame(" << name << "," << addedToEnd << ")" << endl;
 	KT_FUNCINFO;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	

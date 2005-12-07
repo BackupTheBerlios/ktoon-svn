@@ -85,7 +85,6 @@ void KTScene::setCurrentLayer(int index)
 	if ( layer )
 	{
 		m_currentLayer = layer;
-		ktDebug() << m_currentLayer;
 	}
 	else
 	{

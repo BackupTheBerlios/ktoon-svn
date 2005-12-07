@@ -54,6 +54,7 @@ class KTProjectManager : public QObject
 		void setCurrentScene(int index);
 		KTScene *currentScene();
 		
+		
 		// Layer
 		void createLayer(bool addToEnd = true);
 		void setCurrentLayer(int index);
@@ -82,6 +83,7 @@ class KTProjectManager : public QObject
 		// Scenes
 		void sceneCreated(const QString &name, bool addedToEnd);
 		void sceneRenamed(const QString &name, int id);
+		
 		
 		// Layers
 		void layerCreated(const QString &name, bool addedToEnd);

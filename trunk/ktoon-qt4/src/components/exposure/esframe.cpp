@@ -243,7 +243,7 @@ void ESFrame::slotSetDescription()
 // 	ktDebug() << "ESFrame::slotSetDescription()" << endl;
 	if(m_initialText != description->text())
 	{
-		ktDebug() << "ESFrame" <<  description -> text() <<  endl;
+// 		ktDebug() << "ESFrame" <<  description -> text() <<  endl;
 		setText( description -> text() );
 		emit renamed( m_id, description->text() );
 		m_initialText = description -> text();

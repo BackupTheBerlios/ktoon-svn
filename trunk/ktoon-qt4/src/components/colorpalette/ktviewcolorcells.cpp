@@ -177,11 +177,12 @@ void KTViewColorCells::fillDefaultColors()
 void KTViewColorCells::fillQtColor()
 {
 	QStringList strColor = QColor::colorNames ();
-	SHOW_VAR(strColor.count());
 	for(int i = 0; i  < strColor.count(); i++)
 	{
 		m_qtColorPalette->addColor( QColor(strColor[i]) );
 	}
+	m_qtColorPalette->addColor(QColor(0,0,0,0));
+	m_qtColorPalette->addColor(QColor(0,0,0,50));
 }
 
 

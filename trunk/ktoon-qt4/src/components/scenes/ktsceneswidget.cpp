@@ -156,14 +156,20 @@ void KTScenesWidget::removeScene()
 	m_tableScenes->removeCurrentScene();
 }
 
-// void KTScenesWidget::selectScene(const QString & name, int index)
-// {
+void KTScenesWidget::selectScene(const QString & name, int index)
+{
+// 	ktDebug() << "selectScene( " << index << ")" ;
+// 	if(index != m_tableScenes->indexCurrentScene())
+// 	{
+		emit changeCurrentScene(index);
+// 	}
+		
 // 	ktDebug() << "KTScenesWidget::selectScene() Init" <<  endl;
 // 	m_valueName->setText(name);
 // 	emit sceneSelected(index);
 // 	
 // 	ktDebug() << "KTScenesWidget::selectScene() finished" <<  endl;
-// }
+}
 // 
 // void KTScenesWidget::moveSceneUp()
 // {
@@ -184,4 +190,10 @@ void KTScenesWidget::sceneDobleClick(QTreeWidgetItem * item, int )
 {
 // 	int index = m_tableScenes->indexOfTopLevelItem(item);
 // 	emit( esceneDobleClicked(index));
+}
+
+
+void KTScenesWidget::setScene(int index)
+{
+	m_tableScenes->setCurrentItem(m_tableScenes->topLevelItem ( index) );
 }

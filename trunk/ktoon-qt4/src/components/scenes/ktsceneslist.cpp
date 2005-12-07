@@ -35,9 +35,10 @@ void KTScenesList::addScene( QString name)
 {
 	QTreeWidgetItem *newScene = new QTreeWidgetItem( this);
 // 	newScene->setFlags(Qt::ItemIsEditable/*Qt::ItemIsEnabled*//*Qt::ItemIsUserCheckable*/ );//Qt::ItemIsDragEnabled);
-	setCurrentItem(newScene);
+
 	newScene->setText(0, name);
-	emit changeCurrent(name, indexOfTopLevelItem(newScene));
+	setCurrentItem(newScene);
+// 	emit changeCurrent(name, indexCurrentScene());
 }
 
 void KTScenesList::changeCurrentName(QString name)

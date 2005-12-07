@@ -879,8 +879,6 @@ void KTCellView::insertRow(int row)
 {
 	m_model->insertRows(row);
 	
-	
-	ktDebug() << row;
 // 	horizontalHeader()->resizeSection( columnCount()-1 , 25);
 	verticalHeader()->resizeSection(row-1, 25);
 }

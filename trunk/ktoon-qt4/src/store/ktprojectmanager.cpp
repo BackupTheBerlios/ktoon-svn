@@ -114,6 +114,7 @@ void KTProjectManager::setCurrentScene(int index)
 	{
 		m_currentDocument->setCurrentScene( index );
 	}
+
 }
 
 void KTProjectManager::setCurrentLayer(int index)

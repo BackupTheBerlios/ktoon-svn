@@ -141,7 +141,7 @@ void KTLayerExposure::insertFrame(int id, const QString &text)
 
 void KTLayerExposure::addFrame(const QString &text ) // FIXME!!
 {
-	ktDebug() << m_frames.count() << endl;
+// 	ktDebug() << m_frames.count() << endl;
 	int id = m_frames.count();
 	
 	ktDebug() << "Add frame with id: " << id << " and name: " << text << endl;

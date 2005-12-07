@@ -28,10 +28,8 @@
 #include <QButtonGroup>
 #include <QGroupBox>
 #include <QPushButton>
-#include <QStringList>
 #include <QListWidget>
 #include <QList>
-#include <QListView>
 #include <QActionGroup>
 
 #include "kttabwidget.h"
@@ -56,15 +54,17 @@ class KTExposureSheet : public KTModuleWidgetBase
 		void removeCurrentLayer();
 		void removeCurrentFrame();
 		void lockCurrentFrame();
+		void setScene(int index);
+		
 		
 	private:
 		QList<QPixmap> m_imgs;
+		QList<KTTableExposure*> m_tables;
 		QGroupBox *m_buttonsPanel;
 		QButtonGroup *m_buttonGroup;
-		KTTableExposure *m_viewLayer;
-		QListView *m_layerManager;
 		KTTabWidget *m_scenes;
-
+		KTTableExposure *m_currentTable;
+		
 	private:
 		void setupButtons();
 		
@@ -72,10 +72,6 @@ class KTExposureSheet : public KTModuleWidgetBase
 		
 	public slots:
 		void insertLayer(const QString& name);
-
-// 		void moveUpFrame();
-// 		void moveDownFrame();
-		
 		void applyAction(int action);
 		
 // 		void loadLayersAndKeyframes( QList<Layer*> layers );
@@ -86,21 +82,32 @@ class KTExposureSheet : public KTModuleWidgetBase
 		
 	private slots:
 		void actionButton(QAbstractButton *);
-		
+		void emitRequestChangeScene(int index);
+				
 	signals:
+		//layers
 		void requestInsertLayer();
 		void requestRemoveLayer();
 		void requestInsertFrame(bool addedToEnd);
 		void layerVisibilityChanged( int idLayer, bool value);
 		
+		//frames
 		void requestRemoveFrame();
 		void requestMoveFrame(bool up);
 		void requestLockFrame();
 		void requestCopyFrame(int);
 		void requestPasteFrame(int);
 		
+		//scenes
+		void requestChangeScene( int index );
+		
+		//others
 		void frameSelected(int idLayer, int idFrame);
 		void layerSelected(int);
+		
+		
+		
+		
 };
 
 #endif

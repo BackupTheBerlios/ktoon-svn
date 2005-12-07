@@ -36,13 +36,14 @@ void KTCellsColor::addColor(const QBrush& b)
 {
 	KTCellViewItem *item = new KTCellViewItem;
 	
-	if( rowCount() < MAX_COLUMNS)
+	if( columnCount() < MAX_COLUMNS)
 	{
-		insertRow( rowCount()+1);
+		insertColumn( columnCount()+1);
 	}
+	
 	if( m_countColor % MAX_COLUMNS == 0)
 	{
-		insertColumn((columnCount()+1));
+		insertRow( (rowCount()+1));
 		m_row++;
 		m_col = 0;
 	}
@@ -52,8 +53,8 @@ void KTCellsColor::addColor(const QBrush& b)
 	}
 	item->setBackground(b);
 	m_countColor++;
-// 	ktDebug() << "col " << col << " row " << row-1;
-	setItem( m_col, m_row-1, item);
+// 	ktDebug() << "col " << m_col << " row " << m_row-1;
+	setItem(m_row-1 , m_col , item);
 // 	setCurrentItem( item);
 }
 

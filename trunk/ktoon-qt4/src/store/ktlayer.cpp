@@ -129,7 +129,7 @@ void KTLayer::moveCurrentFrame( bool up)
 
 void KTLayer::removeCurrentFrame()
 {
-	ktDebug() << "emit KTLayer::removeCurrentFrame()";
+// 	ktDebug() << "emit KTLayer::removeCurrentFrame()";
 	if(m_currentFrame)
 	{
 		m_frames.removeAt( indexCurrentFrame() );
