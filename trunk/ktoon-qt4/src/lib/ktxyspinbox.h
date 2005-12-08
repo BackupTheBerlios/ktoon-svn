@@ -27,7 +27,7 @@
 #include <QLabel>
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@toonka.com>
 */
 class KTXYSpinBox : public QGroupBox
 {

@@ -36,7 +36,6 @@ KTThemeManager::~KTThemeManager()
 
 bool KTThemeManager::applyTheme(const QString &file)
 {
-	ktDebug() << "Applying theme" << endl;
 	bool ok = false;
 	QXmlSimpleReader reader;
 	reader.setContentHandler(this);
@@ -93,7 +92,7 @@ bool KTThemeManager::startElement( const QString& , const QString& , const QStri
 			QColor c = getColor(atts);
 			if ( c.isValid() )
 			{
-				m_colorGroup.setColor( QColorGroup::Text, c);
+				m_colorGroup.setColor( QPalette::Text, c);
 			}
 		}
 		else if ( qname == "Base" )
@@ -101,9 +100,8 @@ bool KTThemeManager::startElement( const QString& , const QString& , const QStri
 			QColor c = getColor(atts);
 			if ( c.isValid() )
 			{
-				m_colorGroup.setColor( QColorGroup::Base, c );
+				m_colorGroup.setColor( QPalette::Base, c );
 			}
-
 		}
 		else if ( qname == "Foreground" )
 		{
@@ -112,7 +110,7 @@ bool KTThemeManager::startElement( const QString& , const QString& , const QStri
 			{
 				c = 0xd7d7ef;
 			}
-			m_colorGroup.setColor( QColorGroup::Foreground, c );
+			m_colorGroup.setColor( QPalette::Foreground, c );
 
 		}
 		else if ( qname == "Background" )
@@ -120,7 +118,7 @@ bool KTThemeManager::startElement( const QString& , const QString& , const QStri
 			QColor c = getColor(atts);
 			if ( c.isValid() )
 			{
-				m_colorGroup.setColor( QColorGroup::Background, c );
+				m_colorGroup.setColor( QPalette::Background, c );
 			}
 		}
 		else if ( qname == "Button" )
@@ -128,7 +126,7 @@ bool KTThemeManager::startElement( const QString& , const QString& , const QStri
 			QColor c = getColor(atts);
 			if ( c.isValid() )
 			{
-				m_colorGroup.setColor( QColorGroup::Button, c );
+				m_colorGroup.setColor( QPalette::Button, c );
 			}
 		}
 		else if ( qname == "ButtonText" )
@@ -138,7 +136,7 @@ bool KTThemeManager::startElement( const QString& , const QString& , const QStri
 			{
 				c = 0xd7d7ef;
 			}
-			m_colorGroup.setColor( QColorGroup::ButtonText, c );
+			m_colorGroup.setColor( QPalette::ButtonText, c );
 		
 		}
 		else if ( qname == "Light" )
@@ -146,7 +144,7 @@ bool KTThemeManager::startElement( const QString& , const QString& , const QStri
 			QColor c = getColor(atts);
 			if ( c.isValid() )
 			{
-				m_colorGroup.setColor( QColorGroup::Light, c );
+				m_colorGroup.setColor( QPalette::Light, c );
 			}
 		}
 		else if ( qname == "Midlight" )
@@ -154,7 +152,7 @@ bool KTThemeManager::startElement( const QString& , const QString& , const QStri
 			QColor c = getColor(atts);
 			if ( c.isValid() )
 			{
-				m_colorGroup.setColor( QColorGroup::Midlight, c );
+				m_colorGroup.setColor( QPalette::Midlight, c );
 			}
 		}
 		else if ( qname == "Dark" )
@@ -162,7 +160,7 @@ bool KTThemeManager::startElement( const QString& , const QString& , const QStri
 			QColor c = getColor(atts);
 			if ( c.isValid() )
 			{
-				m_colorGroup.setColor( QColorGroup::Mid, c );
+				m_colorGroup.setColor( QPalette::Mid, c );
 			}
 		}
 		else if ( qname == "Mid" )
@@ -170,7 +168,7 @@ bool KTThemeManager::startElement( const QString& , const QString& , const QStri
 			QColor c = getColor(atts);
 			if ( c.isValid() )
 			{
-				m_colorGroup.setColor( QColorGroup::Mid, c );
+				m_colorGroup.setColor( QPalette::Mid, c );
 			}
 		}
 		else if ( qname == "Highlight" )
@@ -178,7 +176,7 @@ bool KTThemeManager::startElement( const QString& , const QString& , const QStri
 			QColor c = getColor(atts);
 			if ( c.isValid() )
 			{
-				m_colorGroup.setColor( QColorGroup::Highlight, c );
+				m_colorGroup.setColor( QPalette::Highlight, c );
 			}
 		}
 		else if ( qname == "HighlightedText" )
@@ -186,7 +184,7 @@ bool KTThemeManager::startElement( const QString& , const QString& , const QStri
 			QColor c = getColor(atts);
 			if ( c.isValid() )
 			{
-				m_colorGroup.setColor( QColorGroup::HighlightedText, c );
+				m_colorGroup.setColor( QPalette::HighlightedText, c );
 			}
 		}
 		else if ( qname == "BrightText" )
@@ -194,7 +192,7 @@ bool KTThemeManager::startElement( const QString& , const QString& , const QStri
 			QColor c = getColor(atts);
 			if ( c.isValid() )
 			{
-				m_colorGroup.setColor( QColorGroup::HighlightedText, c );
+				m_colorGroup.setColor( QPalette::HighlightedText, c );
 			}
 		}
 		else if ( qname == "Link" )
@@ -202,7 +200,7 @@ bool KTThemeManager::startElement( const QString& , const QString& , const QStri
 			QColor c = getColor(atts);
 			if ( c.isValid() )
 			{
-				m_colorGroup.setColor( QColorGroup::Link, c );
+				m_colorGroup.setColor( QPalette::Link, c );
 			}
 		}
 		else if ( qname == "LinkVisited" )
@@ -210,7 +208,7 @@ bool KTThemeManager::startElement( const QString& , const QString& , const QStri
 			QColor c = getColor(atts);
 			if ( c.isValid() )
 			{
-				m_colorGroup.setColor( QColorGroup::LinkVisited, c );
+				m_colorGroup.setColor( QPalette::LinkVisited, c );
 			}
 		}
 	}

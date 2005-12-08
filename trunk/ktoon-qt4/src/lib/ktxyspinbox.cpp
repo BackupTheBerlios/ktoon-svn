@@ -22,6 +22,7 @@
 
 #include <QHBoxLayout>
 #include <QSizePolicy>
+#include "ktapplication.h"
 
 #include "ktdebug.h"
 
@@ -63,7 +64,9 @@ KTXYSpinBox::KTXYSpinBox(const QString &title, QWidget *parent) : QGroupBox(titl
 	connect(m_x, SIGNAL(valueChanged (double)), this, SLOT(updateXValue(double)));
 	connect(m_y, SIGNAL(valueChanged (double)), this, SLOT(updateYValue(double)));
 	
-	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+	
+	m_separator->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/vchain.png"));
 }
 
 
@@ -106,7 +109,14 @@ void KTXYSpinBox::toggleModify()
 	// TODO: Change the button icon !!
 	m_modifyTogether = !m_modifyTogether;
 	
-	SHOW_VAR(m_modifyTogether);
+	if ( m_modifyTogether )
+	{
+		m_separator->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/vchain.png"));
+	}
+	else
+	{
+		m_separator->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/vchain_broken.png"));
+	}
 }
 
 void KTXYSpinBox::setSingleStep(double step)
