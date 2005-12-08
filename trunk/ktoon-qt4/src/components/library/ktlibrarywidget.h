@@ -24,19 +24,42 @@
 #include <ktmodulewidgetbase.h>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
+#include <QMap>
+
+#include "ktdisplaypath.h"
+#include "ktimagebutton.h"
+
+#include "agraphiccomponent.h"
+
+#include "ktgctable.h"
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@toonka.com>
 */
+
 class KTLibraryWidget : public KTModuleWidgetBase
 {
 	Q_OBJECT
 	public:
 		KTLibraryWidget(QWidget *parent = 0);
 		~KTLibraryWidget();
+		
+	private slots:
+		void drawCurrentItem(QTreeWidgetItem *, int);
+		void emitSelectedComponent();
+		void removeCurrentGraphic();
+		
+	public slots:
+		void addGraphic(const AGraphicComponent *graphic);
+		
+	signals:
+		void requestCurrentGraphic();
+		void sendCurrentGraphic(const AGraphicComponent *graphic);
 	
 	private:
-		QTreeWidget *m_libraryTree;
+		KTDisplayPath *m_displayPath;
+		KTGCTable *m_libraryTree;
+		QMap<QTreeWidgetItem *, AGraphicComponent *> m_graphics;
 };
 
 #endif

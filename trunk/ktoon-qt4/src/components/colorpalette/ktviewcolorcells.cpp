@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "ktviewcolorcells.h"
 #include "ktdebug.h"
 #include <QScrollArea>
@@ -55,12 +56,12 @@ void KTViewColorCells::setupForm()
 	m_containerPalette->addWidget(m_defaultPalette);
 	
 	
-	m_chooserPalette->addItem(tr("Qt Color Palette"));
+	m_chooserPalette->addItem(tr("Named Colors"));
 	m_qtColorPalette = new  KTCellsColor( m_containerPalette );
-	m_qtColorPalette->setReadOnly( true);
+	m_qtColorPalette->setReadOnly( true );
 	connect(m_qtColorPalette, SIGNAL(itemPressed( KTCellViewItem* )), this, SLOT(changeColor(KTCellViewItem*)));
 	m_containerPalette->addWidget(m_qtColorPalette);
-	fillQtColor();
+	fillNamedColor();
 	
 	m_chooserPalette->addItem(tr("Custom Color Palette"));
 	m_customColorPalette = new  KTCellsColor(m_containerPalette);
@@ -174,13 +175,17 @@ void KTViewColorCells::fillDefaultColors()
 	
 }
 
-void KTViewColorCells::fillQtColor()
+void KTViewColorCells::fillNamedColor()
 {
-	QStringList strColor = QColor::colorNames ();
-	for(int i = 0; i  < strColor.count(); i++)
+	QStringList strColors = QColor::colorNames ();
+	QStringList::ConstIterator it = strColors.begin();
+	
+	while(it != strColors.end() )
 	{
-		m_qtColorPalette->addColor( QColor(strColor[i]) );
+		m_qtColorPalette->addColor( QColor(*it) );
+		++it;
 	}
+	
 	m_qtColorPalette->addColor(QColor(0,0,0,0));
 	m_qtColorPalette->addColor(QColor(0,0,0,50));
 }

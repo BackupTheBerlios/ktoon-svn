@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,23 +18,39 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTDISPLAYBRUSH_H
-#define KTDISPLAYBRUSH_H
+#ifndef KTRADIOBUTTONGROUP_H
+#define KTRADIOBUTTONGROUP_H
 
-#include <QWidget>
-
-#include "ktdisplaypath.h"
+#include <QGroupBox>
+#include <QRadioButton>
+#include <QBoxLayout>
+#include <QButtonGroup>
 
 /**
-* @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author David Cuadrado <krawek@toonka.com>
 */
-
-class KTDisplayBrush : public KTDisplayPath
+class KTRadioButtonGroup : public QGroupBox
 {
 	Q_OBJECT
 	public:
-		KTDisplayBrush(QWidget *parent = 0);
-		~KTDisplayBrush();
+		KTRadioButtonGroup(const QString &title, Qt::Orientation orientation, QWidget *parent = 0);
+		~KTRadioButtonGroup();
+		
+		void addItem ( const QString & text );
+		void addItems(const QStringList &texts);
+		
+		int currentIndex() const;
+		
+	private slots:
+		void emitButtonId(QAbstractButton *button);
+		
+	signals:
+		void clicked(int index);
+		
+	private:
+		Qt::Orientation m_orientation;
+		QBoxLayout *m_layout;
+		QButtonGroup *m_buttonGroup;
 };
 
 #endif

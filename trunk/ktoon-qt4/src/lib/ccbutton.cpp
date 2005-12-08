@@ -86,7 +86,7 @@ class CCButton::Animator
 		int m_interval;
 };
 
-CCButton::CCButton(int diameter, QWidget *parent) : QPushButton(parent), m_diameter(diameter)
+CCButton::CCButton(int diameter, bool animate, QWidget *parent) : QPushButton(parent), m_diameter(diameter)
 {
 	show();
 
@@ -100,7 +100,10 @@ CCButton::CCButton(int diameter, QWidget *parent) : QPushButton(parent), m_diame
 	
 	m_animator = new Animator;
 	
-	connect(m_animator->aTimer, SIGNAL(timeout()), this, SLOT(animate()));
+	if ( animate )
+	{
+		connect(m_animator->aTimer, SIGNAL(timeout()), this, SLOT(animate()));
+	}
 }
 
 CCButton::~CCButton()

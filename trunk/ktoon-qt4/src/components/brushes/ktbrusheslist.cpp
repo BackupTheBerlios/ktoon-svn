@@ -16,7 +16,7 @@
 #include "ktdebug.h"
 
 KTBrushesList::KTBrushesList(QWidget *parent)
-	: KTCellView(parent), MAX_COLUMS(10)
+	: KTCellView(parent), MAX_COLUMNS(10), m_row(0), m_col(0)
 {
 }
 
@@ -28,10 +28,7 @@ KTBrushesList::~KTBrushesList()
 void KTBrushesList::addBrush(int thickness, int smooth, const QPainterPath &form, QString name)
 {
 	KT_FUNCINFO;
-	
-	const int columns = columnCount();
-	const int rows = rowCount();
-	
+
 	KTCellViewItem *newBrush = new KTCellViewItem();
 
 	QImage tbrush(form.boundingRect().width()+2, form.boundingRect().height()+2, QImage::Format_RGB32);
@@ -52,21 +49,25 @@ void KTBrushesList::addBrush(int thickness, int smooth, const QPainterPath &form
 	
 	m_forms << form;
 	
-	int row = 0, col = 0;
+	/////
 	
-	if ( columns < m_forms.count() % MAX_COLUMS)
+	if( columnCount() < MAX_COLUMNS)
 	{
-		insertRow( rows + 1);
-		row = rows;
+		insertColumn( columnCount()+1);
 	}
 	
-	if ( columns == MAX_COLUMS || rows == 0 )
+	if( (m_forms.count()-1) % MAX_COLUMNS == 0)
 	{
-		insertColumn( m_forms.count() % MAX_COLUMS );
-		col = ( m_forms.count() % MAX_COLUMS ) -1;
+		insertRow( (rowCount()+1));
+		m_row++;
+		m_col = 0;
 	}
-
-	setItem( row, col, newBrush);
+	else
+	{
+		m_col++;
+	}
+	
+	setItem( m_row-1 , m_col , newBrush);
 }
 
 QPainterPath KTBrushesList::path(int index)

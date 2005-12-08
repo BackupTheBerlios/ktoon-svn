@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,24 +17,31 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTGCTABLE_H
+#define KTGCTABLE_H
 
-#ifndef KTDISPLAYBRUSH_H
-#define KTDISPLAYBRUSH_H
-
-#include <QWidget>
-
-#include "ktdisplaypath.h"
+#include <QTreeWidget>
 
 /**
-* @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author David Cuadrado <krawek@toonka.com>
+ * @todo Crear un item delegador para editar!
 */
-
-class KTDisplayBrush : public KTDisplayPath
+class KTGCTable : public QTreeWidget
 {
 	Q_OBJECT
 	public:
-		KTDisplayBrush(QWidget *parent = 0);
-		~KTDisplayBrush();
+		KTGCTable(QWidget *parent = 0);
+		~KTGCTable();
+		QTreeWidgetItem *currentFolder();
+		void setCurrentFolder(QTreeWidgetItem *cf);
+		void removeCurrentFolder();
+		
+	public slots:
+		void createFolder(const QString &name = tr("New folder"));
+		
+	private:
+		QTreeWidgetItem *m_currentFolder;
+
 };
 
 #endif

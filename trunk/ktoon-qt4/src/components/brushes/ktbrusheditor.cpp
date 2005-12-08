@@ -78,7 +78,7 @@ KTBrushEditor::KTBrushEditor(QWidget *parent) : QFrame(parent), m_editor(0)
 	
 	setMidLineWidth(2);
 	setLineWidth(2);
-	setFrameStyle( QFrame::Box | QFrame::Raised );
+	setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
 	
 	m_editor = new Editor();
 }
@@ -90,11 +90,12 @@ KTBrushEditor::~KTBrushEditor()
 
 QSize KTBrushEditor::sizeHint() const
 {
-	return (QSize(parentWidget()->width(), m_editArea.height() + 5));
+	return (QSize(parentWidget()->width(), m_editArea.height() + 15));
 }
 
 void KTBrushEditor::paintEvent(QPaintEvent *e)
 {
+	QFrame::paintEvent(e);
 	QPainter painter;
 	
 	m_editArea.fill(qRgb(255, 255, 255));
@@ -106,7 +107,7 @@ void KTBrushEditor::paintEvent(QPaintEvent *e)
 	
 	if ( m_editor->editing )
 	{
-		painter.save();	
+		painter.save();
 		drawEditor(&painter);
 		painter.restore();
 	}
@@ -119,7 +120,11 @@ void KTBrushEditor::paintEvent(QPaintEvent *e)
 	painter.end();
 	
 	painter.begin(this);
-	painter.drawImage(QPoint(width()/2-50, 0), m_editArea);
+	painter.translate(QPoint(width()/2-50, (height() - m_editArea.height())/2 ));
+	
+	painter.drawImage(QPoint(0, 0), m_editArea);
+	
+	painter.drawRect(m_editArea.rect());
 }
 
 void KTBrushEditor::drawEditor(QPainter *p)
@@ -219,8 +224,6 @@ int KTBrushEditor::findNodeIndex(const QPoint &p, int rate)
 			break;
 		}
 	}
-	
-	SHOW_VAR(pos);
 	
 	return pos;
 }

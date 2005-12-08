@@ -88,7 +88,7 @@ void KTApplication::applyColors(ColorScheme cs)
 			const QColor bgAlt( 183, 182, 171 );
 			
 			group.setColor( QColorGroup::Text, Qt::black );
-			group.setColor( QColorGroup::Base, bg );
+			group.setColor( QColorGroup::Base, QColor(183, 183, 183) );
 			group.setColor( QColorGroup::Foreground, 0x3e3e45);
 			group.setColor( QColorGroup::Background, bg );
 		
@@ -236,6 +236,9 @@ QString KTApplication::configDir()
 	return m_configDir;
 }
 
+void KTApplication::config(const QString &group)
+{
+}
 
 QString KTApplication::version()
 {

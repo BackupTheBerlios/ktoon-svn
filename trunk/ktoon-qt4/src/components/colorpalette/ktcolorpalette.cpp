@@ -44,8 +44,8 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_
 	setupGradienManager();
 	setupDisplayColor();
 	m_splitter->addWidget(m_centralWidget);
-	m_centralWidget->setPalette(palette());
 	setupButtons();
+	m_centralWidget->setPalette(palette());
 }
 
 
@@ -64,27 +64,27 @@ void KTColorPalette::setupButtons()
 	
 	connect( m_addColor, SIGNAL( clicked() ), SLOT( addColor() ) );
 	QToolTip::add( m_addColor, tr( "Add Color" ) );
-	layout->addWidget(m_addColor, Qt::AlignCenter);
+	layout->addWidget(m_addColor/*, Qt::AlignCenter*/);
 	
 	KTImageButton *m_removeColor = new KTImageButton( QPixmap( KTOON_THEME_DIR + "icons/minussign.png"), 22, containerButtons);
 	
 	connect( m_removeColor, SIGNAL( clicked() ), SLOT( removeColor() ) );
 	QToolTip::add( m_removeColor, tr( "Remove Color" ) );
 	
-	layout->addWidget(m_removeColor, Qt::AlignCenter);
+	layout->addWidget(m_removeColor/*, Qt::AlignCenter*/);
 	
 	KTImageButton *m_addPalette = new KTImageButton( QPixmap(KTOON_THEME_DIR + "icons/plussign.png" ), 22, containerButtons);
 	connect( m_addPalette, SIGNAL( clicked() ), SLOT( addPalette() ) );
 	QToolTip::add( m_addPalette, tr( "Add Custom Palette" ) );
 	
-	layout->addWidget(m_addPalette, Qt::AlignCenter);
+	layout->addWidget(m_addPalette/*, Qt::AlignCenter*/);
 	
 	KTImageButton *m_removePalette = new KTImageButton(QPixmap( KTOON_THEME_DIR+ "icons/minussign.png"), 22, containerButtons);
 	
 	connect( m_removePalette, SIGNAL( clicked() ), SLOT( removeColor() ) );
 	QToolTip::add( m_removePalette, tr( "Remove Custom Palette" ) );
-	containerButtons->setMaximumHeight(m_removePalette->height());
-	layout->addWidget(m_removePalette, Qt::AlignCenter);
+// 	containerButtons->setMaximumHeight(m_removePalette->height());
+	layout->addWidget(m_removePalette/*, Qt::AlignCenter*/);
 	addChild(containerButtons);
 }
 

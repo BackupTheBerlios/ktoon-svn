@@ -20,8 +20,10 @@
 #ifndef KTCONFIG_H
 #define KTCONFIG_H
 
-#include <qobject.h>
-#include <qdir.h>
+#include <QObject>
+#include <QDir>
+#include <QHash>
+
 #include "ktconfigdocument.h"
 #include "ktxmlreader.h"
 

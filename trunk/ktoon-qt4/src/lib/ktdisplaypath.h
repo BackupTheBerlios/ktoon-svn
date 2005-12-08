@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,23 +18,42 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTDISPLAYBRUSH_H
-#define KTDISPLAYBRUSH_H
+#ifndef KTDISPLAYPATH_H
+#define KTDISPLAYPATH_H
 
-#include <QWidget>
-
-#include "ktdisplaypath.h"
+#include <QFrame>
+#include <QPainterPath>
+#include <QImage>
+#include <QPen>
+#include <QBrush>
 
 /**
-* @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author David Cuadrado <krawek@toonka.com>
 */
-
-class KTDisplayBrush : public KTDisplayPath
+class KTDisplayPath : public QFrame
 {
 	Q_OBJECT
 	public:
-		KTDisplayBrush(QWidget *parent = 0);
-		~KTDisplayBrush();
+		KTDisplayPath(QWidget *parent = 0);
+		~KTDisplayPath();
+		virtual QSize sizeHint() const;
+		
+	public:
+		void setPath(const QPainterPath &form);
+		void setThickness(int value);
+		void setPen(const QPen &pen);
+		void setBrush(const QBrush &brush);
+		
+	private:
+		QPainterPath m_currentForm;
+		int m_thickness;
+		QImage m_displayArea;
+		
+		QBrush m_brush;
+		QPen m_pen;
+		
+	protected:
+		virtual void paintEvent ( QPaintEvent * event );
 };
 
 #endif

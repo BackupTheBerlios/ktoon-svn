@@ -3,8 +3,10 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/components/library
 # Destiono es una biblioteca:  
 
-HEADERS += ktlibrarywidget.h 
-SOURCES += ktlibrarywidget.cpp 
+HEADERS += ktlibrarywidget.h \
+           ktgctable.h 
+SOURCES += ktlibrarywidget.cpp \
+           ktgctable.cpp 
 INCLUDEPATH += ../../../src/store \
 ../../../src/lib \
 ../../../src/images/images \
@@ -21,4 +23,4 @@ CONFIG += release \
 warn_on \
 staticlib
 TEMPLATE = lib
-QT += qt3support xml opengl
+QT += qt3support xml

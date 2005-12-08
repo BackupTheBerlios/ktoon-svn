@@ -110,9 +110,12 @@ void KTMainWindow::createGUI()
 	connect(m_brushWidget, SIGNAL(brushSelected( const QPainterPath &, int   )), this, SLOT(changeCurrentBrush(  const QPainterPath &, int )));
 	
 	////////////////////
-	KTLibraryWidget *m_libraryDialog = new KTLibraryWidget( this );
-	m_libraryDialog->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/library.png"));
-	toolWindow(DDockWindow::Left)->addWidget(tr("Library"),m_libraryDialog);
+	m_libraryWidget = new KTLibraryWidget( this );
+	m_libraryWidget->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/library.png"));
+	toolWindow(DDockWindow::Left)->addWidget(tr("Library"),m_libraryWidget);
+	
+	connect(m_libraryWidget, SIGNAL(requestCurrentGraphic()), this, SLOT(addCurrentGraphicToLibrary()));
+	connect(m_libraryWidget, SIGNAL(sendCurrentGraphic(const AGraphicComponent *)), this, SLOT(addGraphicComponent(const AGraphicComponent *)));
 	
 	/////////////////
 	m_scenes = new KTScenesWidget( this);

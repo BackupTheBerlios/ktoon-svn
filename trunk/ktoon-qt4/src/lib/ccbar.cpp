@@ -75,7 +75,7 @@ CCButton *CCBar::addButton(const QPixmap &pix)
 	m_mask = QPixmap( (m_buttonCount+1)*m_radio+m_offset*3, m_radio+10);
 	m_mask.fill(Qt::transparent);
 	
-	CCButton *but = new CCButton(m_radio,this);
+	CCButton *but = new CCButton(m_radio,true, this);
 	
 	
 	m_layout->addWidget(but);

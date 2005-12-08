@@ -41,22 +41,22 @@ KTGradientManager::KTGradientManager(QWidget *parent)
 	m_selector = new KTGradientSelector(this);
 	layout->addWidget(m_selector);
 	connect( m_selector, SIGNAL(gradientChanged(  const QGradientStops& )),this, SLOT(changeGradient( const QGradientStops& )));
-	m_type = new QComboBox(this); //cambiar por una clase que liste las opciones con radiobuttons
+	m_type = new KTRadioButtonGroup(tr("Gradient type"), Qt::Vertical, this);
 	QStringList list;
 	list << tr( "None" ) << tr( "Linear" ) << tr( "Radial" ) << tr("Conical");
 	m_type->addItems ( list );
-	connect(  m_type, SIGNAL(  activated ( int )),this, SLOT(changeType(int)));
-	subLayout->addWidget( m_type,0, Qt::AlignTop);
+	connect(  m_type, SIGNAL(  clicked ( int )),this, SLOT(changeType(int)));
+	subLayout->addWidget( m_type/*,0, Qt::AlignTop*/);
 	
-	subLayout->setSpacing(0);
-	subLayout->setMargin(0);
-	subLayout->setSizeConstraint(QLayout::SetMinimumSize);
+	subLayout->setSpacing(2);
+	subLayout->setMargin(2);
+// 	subLayout->setSizeConstraint(QLayout::SetMinimumSize);
 	
 	
 	KTVHBox *box = new KTVHBox(this, Qt::Horizontal);
 	box->setFrameStyle(QFrame::StyledPanel );
 	box->setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Fixed);
-	box->boxLayout()->setSpacing(0);
+	box->boxLayout()->setSpacing(2);
 	box->boxLayout()->setMargin(2);
 	
 	m_fill = new KTImageButton(QPixmap(KTOON_THEME_DIR+"icons/fillcolor.png"), 32, box, false);

@@ -94,7 +94,7 @@ void KTBrushWidget::setupBrushManager()
 	m_brushManager->addPage( container, tr("Edit Brush") );
 // 	addChild(m_brushManager, Qt::AlignTop);
 	
-	m_layout->addWidget(m_brushManager, 1,0);
+	m_layout->addWidget(m_brushManager, 2,0);
 }
 
 void KTBrushWidget::setupButtons()
@@ -112,7 +112,7 @@ void KTBrushWidget::setupButtons()
 	QToolTip::add( m_removeBrush, tr( "Remove Brush" ) );
 	layout->addWidget(m_removeBrush, Qt::AlignCenter);
 	
-	m_layout->addWidget(containerButtons, 2,0);
+	m_layout->addWidget(containerButtons, 1,0);
 }
 
 
@@ -140,11 +140,11 @@ void KTBrushWidget::selectBrush(KTCellViewItem *item)
 
 		if ( currentRow >= 0 && currentColumn >= 0 )
 		{
-			// FIXME: no funciona para columnas!! // doesn't work for columns
-			if ( currentRow < m_defaultBrushesList->count() )
+			int pos = (m_defaultBrushesList->MAX_COLUMNS * (currentRow)) + currentColumn;
+			if ( pos < m_defaultBrushesList->count() )
 			{
-				m_currentFormIndex = currentRow;
-				m_brushEditor->setForm( m_defaultBrushesList->path( currentRow  ));
+				m_currentFormIndex = pos;
+				m_brushEditor->setForm( m_defaultBrushesList->path( m_currentFormIndex  ));
 				emit brushSelected( m_defaultBrushesList->path( m_currentFormIndex), m_displayThickness->value()  );
 			}
 		}

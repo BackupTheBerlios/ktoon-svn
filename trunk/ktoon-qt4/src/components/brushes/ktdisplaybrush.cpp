@@ -25,60 +25,13 @@
 
 #include <QVBoxLayout>
 
-KTDisplayBrush::KTDisplayBrush(QWidget *parent) : QWidget(parent), m_thickness(0)
+KTDisplayBrush::KTDisplayBrush(QWidget *parent) : KTDisplayPath(parent)
 {
 }
 
 
 KTDisplayBrush::~KTDisplayBrush()
 {
-}
-
-QSize KTDisplayBrush::sizeHint() const
-{
-	return (QSize(parentWidget()->width(), 100));
-}
-
-void KTDisplayBrush::paintEvent ( QPaintEvent * event )
-{
-	const QPalette palette = this->palette();
-	const QPointF formCurrentPos = m_currentForm.currentPosition();
-	
-	QMatrix matrix;
-	
-	matrix.translate((width()/2) - formCurrentPos.x() , (height()/2) - formCurrentPos.y() );
-	
-	m_currentForm = matrix.map(m_currentForm);
-	
-	QPainter p(this);
-	p.setRenderHint(QPainter::Antialiasing);
-	
-	p.setPen( palette.color(QPalette::Foreground) );
-
-	p.drawRect(rect().adjusted(5,5,-5,-5));
-	
-	p.save();
-	
-	p.setPen( QPen(Qt::black, m_thickness, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin) );
-// 	p.drawPath(m_currentForm);
-	p.drawPoint(width()/2, height()/2);
-	
-	p.restore();	
-}
-
-void KTDisplayBrush::setThickness(int value)
-{
-	m_thickness = value;
-	repaint();
-}
-
-void KTDisplayBrush::setForm(const QPainterPath &path)
-{
-	QMatrix matrix;
-	matrix.scale(0.50, 0.50);
-	
-	m_currentForm = matrix.map(path);
-	repaint();
 }
 
 

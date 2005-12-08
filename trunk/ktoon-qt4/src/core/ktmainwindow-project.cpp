@@ -182,3 +182,31 @@ void KTMainWindow::shearCurrentElement(double dx,double dy)
 		}
 	}
 }
+
+void KTMainWindow::addCurrentGraphicToLibrary()
+{
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+	
+	if ( doc )
+	{
+		AGraphicComponent *selected = doc->drawArea()->selectedGraphic();
+		if ( selected )
+		{
+			m_libraryWidget->addGraphic(selected);
+		}
+	}
+}
+
+void KTMainWindow::addGraphicComponent(const AGraphicComponent *graphic)
+{
+	AGraphicComponent *copy = new AGraphicComponent(*graphic);
+	
+	m_projectManager->currentKeyFrame()->addComponent( copy );
+	
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+	
+	if ( doc )
+	{
+		doc->drawArea()->redrawAll();
+	}
+}

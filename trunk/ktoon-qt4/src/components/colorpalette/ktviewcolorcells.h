@@ -52,7 +52,7 @@ class KTViewColorCells : public QFrame
 		void setupForm();
 		void fillDefaultColors();
 		void addDefaultColor(int i , int j, const QColor &);
-		void fillQtColor();
+		void fillNamedColor();
 	protected:
 		
 		

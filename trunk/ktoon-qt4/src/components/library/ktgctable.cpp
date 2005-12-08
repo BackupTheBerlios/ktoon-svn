@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,23 +18,66 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTDISPLAYBRUSH_H
-#define KTDISPLAYBRUSH_H
+#include "ktgctable.h"
+#include <QHeaderView>
 
-#include <QWidget>
+#include "ktapplication.h"
 
-#include "ktdisplaypath.h"
-
-/**
-* @author Jorge Cuadrado <kuadrosx@toonka.com>
-*/
-
-class KTDisplayBrush : public KTDisplayPath
+KTGCTable::KTGCTable(QWidget *parent)
+	: QTreeWidget(parent), m_currentFolder(0)
 {
-	Q_OBJECT
-	public:
-		KTDisplayBrush(QWidget *parent = 0);
-		~KTDisplayBrush();
-};
+	setEditTriggers(QAbstractItemView::EditKeyPressed | QAbstractItemView::DoubleClicked);
+	setAcceptDrops(true);
+	setDragEnabled(true);
+	
+	setHeaderLabels(QStringList() << "");
+	
+	header()->hide();
+	setUniformRowHeights (true);
+	
+	setAlternatingRowColors(true);
+}
 
-#endif
+
+KTGCTable::~KTGCTable()
+{
+}
+
+void KTGCTable::createFolder(const QString &name)
+{
+	QTreeWidgetItem *newFolder = new QTreeWidgetItem(this);
+	newFolder->setText(0, name);
+	
+	newFolder->setIcon(0, QPixmap(KTOON_THEME_DIR+"/icons/folder_icon.png" ));
+	
+	m_currentFolder = newFolder;
+	
+	setCurrentItem(m_currentFolder);
+}
+
+QTreeWidgetItem *KTGCTable::currentFolder()
+{
+	return m_currentFolder;
+}
+
+void KTGCTable::setCurrentFolder(QTreeWidgetItem *cf)
+{
+	if ( cf )
+	{
+		m_currentFolder = cf;
+	}
+}
+
+void KTGCTable::removeCurrentFolder()
+{
+	if ( m_currentFolder )
+	{
+		int index = indexOfTopLevelItem(m_currentFolder) - 1;
+		
+		delete m_currentFolder;
+		
+		m_currentFolder = topLevelItem (index);
+		setCurrentItem(m_currentFolder);
+	}
+}
+

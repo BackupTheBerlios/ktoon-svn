@@ -73,6 +73,8 @@ class KTApplication : public QApplication
 		
 		QString configDir();
 		
+		void config(const QString &group = "General"); // FIXME: return
+		
 	protected:
 		void initDirectories();
 // 		virtual void detectOpengl();

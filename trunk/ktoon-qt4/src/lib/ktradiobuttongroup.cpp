@@ -18,33 +18,71 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "kthelpbrowser.h"
-#include <QHBoxLayout>
+#include "ktradiobuttongroup.h"
+
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 
-// KTHelpBrowser
+#include "ktdebug.h"
 
-KTHelpBrowser::KTHelpBrowser( QWidget *parent)
-	: QWidget(parent)
+KTRadioButtonGroup::KTRadioButtonGroup(const QString &title, Qt::Orientation orientation, QWidget *parent) : QGroupBox(title, parent), m_orientation(orientation)
 {
-	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->setMargin(15);
-	m_separator = new QSplitter(this);
-	layout->addWidget(m_separator);
-
-	m_pageArea = new QTextBrowser(m_separator);
-	m_document = new QTextDocument(m_pageArea);
+	if ( orientation == Qt::Horizontal )
+	{
+		m_layout = new QHBoxLayout;
+	}
+	else
+	{
+		m_layout = new QVBoxLayout;
+	}
 	
-	m_pageArea->setDocument(m_document);
+	m_buttonGroup = new QButtonGroup(this);
+	connect(m_buttonGroup, SIGNAL(buttonClicked ( QAbstractButton *)), this, SLOT(emitButtonId(QAbstractButton *)));
+	
+	setLayout(m_layout);
 }
 
-
-KTHelpBrowser::~KTHelpBrowser()
+KTRadioButtonGroup::~KTRadioButtonGroup()
 {
 }
 
-void KTHelpBrowser::setDocument(const QString &doc)
+void KTRadioButtonGroup::addItem ( const QString & text )
 {
-	m_document->setHtml(doc);
+	QRadioButton *button = new QRadioButton(text);
+	m_buttonGroup->addButton(button);
+	
+	m_layout->addWidget(button);
 }
+
+void KTRadioButtonGroup::addItems(const QStringList &texts)
+{
+	QStringList::ConstIterator it = texts.begin();
+	
+	while( it != texts.end() )
+	{
+		addItem( *it );
+		++it;
+	}
+	
+	if ( m_buttonGroup->buttons().count() )
+	{
+		QAbstractButton *button = m_buttonGroup->buttons()[0];
+		if(button)
+		{
+			button->setChecked(true);
+		}
+	}
+}
+
+int KTRadioButtonGroup::currentIndex() const
+{
+	return m_buttonGroup->buttons().indexOf(m_buttonGroup->checkedButton () );
+}
+
+void KTRadioButtonGroup::emitButtonId(QAbstractButton *button)
+{
+	emit clicked(m_buttonGroup->buttons().indexOf(button));
+}
+
+
 

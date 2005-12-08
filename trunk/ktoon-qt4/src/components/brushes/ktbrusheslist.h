@@ -47,9 +47,13 @@ class KTBrushesList : public KTCellView
 	signals:
 		void changeCurrentBrush( QListWidgetItem*);
 		
+		
+	public:
+		const int MAX_COLUMNS;
+		
 	private:
 		QList<QPainterPath> m_forms;
-		const int MAX_COLUMS;
+		int m_row, m_col;
 
 };
 

@@ -145,6 +145,8 @@ class KTMainWindow : public DMainWindow
 		void scaleCurrentElement(double dx,double dy);
 		void translateCurrentElement(double dx,double dy);
 		void shearCurrentElement(double dx,double dy);
+		void addCurrentGraphicToLibrary();
+		void addGraphicComponent(const AGraphicComponent *graphic);
 		
 		//Layers
 		void insertLayer( const QString &, bool);
@@ -189,6 +191,7 @@ class KTMainWindow : public DMainWindow
 		KTScenesWidget *m_scenes;
 		KTTimeLine *m_timeLine;
 		KTHelpWidget *m_helper;
+		KTLibraryWidget *m_libraryWidget;
 };
 
 #endif

@@ -29,7 +29,8 @@
 #include "ktimagebutton.h"
 #include "ccbutton.h"
 #include <QFrame>
-#include <QComboBox>
+
+#include "ktradiobuttongroup.h"
 
 
 
@@ -55,7 +56,7 @@ class KTGradientManager : public QFrame
 	private:
 		KTGradientSelector *m_selector;
 		KTGradientViewer *m_viewer;
-		QComboBox *m_type ;
+		KTRadioButtonGroup *m_type ;
 		KTImageButton *m_fill, *m_outLine;
 // 		KTXYSpinBox *m_center, *m_focal;
 		

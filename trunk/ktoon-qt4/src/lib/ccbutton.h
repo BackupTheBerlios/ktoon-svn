@@ -32,7 +32,7 @@ class CCButton : public QPushButton
 {
 	Q_OBJECT
 	public:
-		CCButton(int diameter, QWidget *parent);
+		CCButton(int diameter, bool animate = true, QWidget *parent = 0);
 		~CCButton();
 		QStyleOptionButton styleOption() const;
 		QSize sizeHint() const;
