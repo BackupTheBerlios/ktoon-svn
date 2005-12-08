@@ -69,7 +69,7 @@ void Preferences::apply()
 			
 			if ( ! filepath.isEmpty() )
 			{
-				KTCONFIG->configDocument()->setThemePath(filepath);
+				KTCONFIG->setValue("General", filepath);
 			}
 		}
 	}

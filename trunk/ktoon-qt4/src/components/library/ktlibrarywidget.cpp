@@ -21,6 +21,9 @@
 #include "ktlibrarywidget.h"
 #include "ktapplication.h"
 #include "ktdebug.h"
+#include "ktoptionaldialog.h"
+
+#include "ktconfig.h"
 
 #include <QGroupBox>
 
@@ -125,7 +128,24 @@ void KTLibraryWidget::emitSelectedComponent()
 
 void KTLibraryWidget::removeCurrentGraphic()
 {
-	// TODO: preguntar si quiere borrar
+	KTCONFIG->beginGroup("Library");
+	bool noAsk = qvariant_cast<bool>(KTCONFIG->value("RemoveWithoutAsk", false));
+	
+	if ( ! noAsk )
+	{
+		// TODO: preguntar si quiere borrar
+		KTOptionalDialog dialog(tr("Do you want remove this component?"),tr("Remove?"), this);
+		
+		if( dialog.exec() == QDialog::Rejected )
+		{
+			return;
+		}
+		
+		KTCONFIG->setValue("RemoveWithoutAsk", dialog.checked());
+		
+		KTCONFIG->sync();
+	}
+	
 	AGraphicComponent *gc = m_graphics.take(m_libraryTree->currentItem());
 	if ( gc )
 	{

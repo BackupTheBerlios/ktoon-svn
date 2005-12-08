@@ -53,6 +53,8 @@ int main( int argc, char ** argv )
 	}
 	
 	KTCONFIG->init();
+	
+	KTCONFIG->beginGroup("General");
 
 	if ( ! KTCONFIG->isOk() || application.isArg("r") || application.isArg("reconfigure") )
 	{
@@ -66,10 +68,11 @@ int main( int argc, char ** argv )
 			
 		}
 	}
+
+	application.setHome(KTCONFIG->value("Home").toString());
+	application.setRepository(KTCONFIG->value("Repository").toString());
 	
-	application.setHome(KTCONFIG->read("KTHome"));
-	application.setRepository(KTCONFIG->read("Repository"));
-	QString themefile = KTCONFIG->read("KTTheme");
+	QString themefile = KTCONFIG->value("ThemeFile").toString();
 	if ( ! themefile.isEmpty() )
 	{
 		application.applyTheme(themefile);

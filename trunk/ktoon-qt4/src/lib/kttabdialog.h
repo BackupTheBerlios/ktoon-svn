@@ -38,13 +38,13 @@ class KTTabDialog : public QDialog
 	public:
 		enum Button
 		{
-			Help    = 0x00000001,
-			Ok      = 0x00000004,
-			Apply   = 0x00000008,
-			Cancel  = 0x00000020,
-			Custom1 = 0x00000080,
-			Custom2 = 0x00000100,
-			Custom3 = 0x00000200
+			Help    = 1<<2,
+			Ok      = 1<<3,
+			Apply   = 1<<4,
+			Cancel  = 1<<5,
+			Custom1 = 1<<6,
+			Custom2 = 1<<7,
+			Custom3 = 1<<8
 		};
 		KTTabDialog(QWidget *parent = 0, bool modal = true);
 		KTTabDialog(int buttons = Ok|Cancel, QWidget *parent = 0, bool modal = true);

@@ -29,7 +29,7 @@
 
 #include "ktdebug.h"
 
-KTConfigDocument::KTConfigDocument(const QString &path) : QDomDocument(), m_path(path), MAXRECENTS(6)
+KTConfigDocument::KTConfigDocument(const QString &path) : QDomDocument(), m_path(path)
 {
 	KTINIT;
 	setup();
@@ -73,156 +73,82 @@ KTConfigDocument::~KTConfigDocument()
 	KTEND;
 }
 
-void KTConfigDocument::setHome(const QString &home)
+
+void KTConfigDocument::beginGroup(const QString & prefix )
 {
-	QDomElement kthome = createElement("KTHome");
-	kthome.setAttribute("path", home);
-	
-	if ( ! exists("KTHome" ) )
+	if ( m_groups.contains(prefix) )
 	{
-		documentElement().appendChild(kthome);
+		m_currentGroup = m_groups[prefix];
 	}
-	else
+	else // Create element
 	{
-		QDomNodeList list = documentElement().elementsByTagName("KTHome");
-		documentElement().replaceChild(kthome, list.item(0) );
+		m_currentGroup = find(documentElement(), prefix);
+		
+		if ( m_currentGroup.isNull() )
+		{
+			ktDebug() << "Creando GRUPO: " << prefix;
+			m_currentGroup = createElement(prefix);
+			documentElement().appendChild(m_currentGroup);
+		}
+		
+// 		m_currentGroup = element;
 	}
 }
 
-void KTConfigDocument::setLang(const QString &lang)
+void KTConfigDocument::setValue ( const QString & key, const QVariant & value )
 {
-	QDomElement ktlang = createElement("Lang");
-	ktlang.setAttribute("id", lang);
+	QDomElement element = find(m_currentGroup, key);
 	
-	if ( ! exists("Lang" ) )
+	if ( !element.isNull () )
 	{
-		documentElement().appendChild(ktlang);
+		element.setAttribute("value", value.toString());
 	}
 	else
 	{
-		QDomNodeList list = documentElement().elementsByTagName("Lang");
-		documentElement().replaceChild(ktlang, list.item(0) );
+		element = createElement(key);
+		element.setAttribute("value", value.toString());
+		m_currentGroup.appendChild(element);
 	}
 }
 
-void KTConfigDocument::setRepository(const QString &repository)
+QVariant KTConfigDocument::value ( const QString & key, const QVariant & defaultValue) const
 {
-	QDomElement ktrepository = createElement("Repository");
-	ktrepository.setAttribute("path", repository);
+	QDomElement element = find(m_currentGroup, key); // Current group or root?
 	
-	if ( ! exists("Repository" ) )
+	if ( element.isNull() )
 	{
-		documentElement().appendChild(ktrepository);
+		return defaultValue;
 	}
-	else
-	{
-		QDomNodeList list = documentElement().elementsByTagName("Repository");
-		documentElement().replaceChild(ktrepository, list.item(0) );
-	}
-}
-
-void KTConfigDocument::setThemePath(const QString &theme)
-{
-	QDomElement kttheme = createElement("KTTheme");
-	kttheme.setAttribute("path", theme);
 	
-	if ( ! exists("KTTheme" ) )
-	{
-		documentElement().appendChild(kttheme);
-	}
-	else
-	{
-		QDomNodeList list = documentElement().elementsByTagName("KTTheme");
-		documentElement().replaceChild(kttheme, list.item(0) );
-	}
+	return element.attribute("value");
 }
 
-void KTConfigDocument::addRecentFiles(const QStringList &names)
-{
-	QDomElement root = documentElement();
 
+QDomElement KTConfigDocument::find(const QDomElement &element, const QString &key) const 
+{
 	QDomElement recent;
-	QDomNode n = root.firstChild();
-	bool exists = false;
+	QDomNode n = element.firstChild();
+	
 	while( !n.isNull() )
 	{
 		QDomElement e = n.toElement();
-		if( !e.isNull() ) 
+		if( !e.isNull() )
 		{
-			if ( e.tagName() == "Recent" )
+			if ( e.tagName() == key )
 			{
-				recent = e; // Find Recent element
-				exists = true;
+				recent = e;
 				break;
 			}
 		}
 		n = n.nextSibling();
 	}
 	
-	if ( exists )
-	{
-		QDomNodeList list = recent.elementsByTagName("file");
-
-		Q_ASSERT(list.count() == names.count());
-		
-		for (uint i = 0; i < names.count(); i++)
-		{
-			QDomElement e = list.item(i).toElement();
-			if ( names[i] == "" )
-			{
-				e.setAttribute("name", /*QStyleSheet::escape(*/QObject::tr("<empty>")/*)*/);
-			}
-			else
-			{
-				e.setAttribute("name", names[i]);
-			}
-			recent.replaceChild(e, list.item(i));
-		}
-	}
-	else
-	{
-		recent = createElement("Recent");
-		for(uint i = 0; i < names.count(); i++)
-		{
-			QDomElement e = createElement("file");
-			e.setAttribute("name", /*QStyleSheet::escape(*/QObject::tr("<empty>"))/*)*/;
-			recent.appendChild(e);
-		}
-		
-		root.appendChild(recent);
-	}
+	return recent;
 }
 
 QString KTConfigDocument::path()
 {
 	return m_path;
-}
-
-bool KTConfigDocument::exists(const QString &key)
-{
-	QDomElement root = documentElement();
-
-	QDomElement recent;
-	QDomNode n = root.firstChild();
-	
-	bool exists = false;
-	while( !n.isNull() )
-	{
-		QDomElement e = n.toElement();
-		if( !e.isNull() ) 
-		{
-			if ( e.tagName() == key )
-			{
-				recent = e; // Find Recent element
-				exists = true;
-				break;
-			}
-		}
-		n = n.nextSibling();
-	}
-	
-	return exists;
-	
 }
 
 void KTConfigDocument::saveConfig(const QString &file)

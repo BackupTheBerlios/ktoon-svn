@@ -18,52 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTCONFIGDOCUMENT_H
-#define KTCONFIGDOCUMENT_H
+#ifndef KTOPTIONALDIALOG_H
+#define KTOPTIONALDIALOG_H
 
-#include <QDomDocument>
-#include <QDomElement>
-#include <QStringList>
-#include <QVariant>
-#include <QHash>
+#include <QDialog>
+#include <QCheckBox>
+#include <QPushButton>
+#include <QHBoxLayout>
 
 /**
- * This class represents the ktoon configuration xml document
- * @author David Cuadrado
+ * @author David Cuadrado <krawek@toonka.com>
 */
-class KTConfigDocument : public QDomDocument
+class KTOptionalDialog : public QDialog
 {
+	Q_OBJECT
 	public:
-    		KTConfigDocument(const QString &path);
-    		~KTConfigDocument();
-		
-		void beginGroup(const QString & prefix );
-		void setValue ( const QString & key, const QVariant & value );
-		QVariant value ( const QString & key, const QVariant & defaultValue = QVariant() ) const;
-		
-		void addRecentFiles(const QStringList &names);
-		
-		QString path();
-		
-		void saveConfig(const QString &file = QString::null);
-		bool exists(const QString &key);
-		
-		bool isOk();
-
-		void setup();
+		KTOptionalDialog(const QString &text, const QString &title = 0, QWidget *parent = 0);
+		~KTOptionalDialog();
+		bool checked();
 		
 	private:
-		QDomElement find(const QDomElement &element, const QString &key) const;
-		
-	private:
-		QHash<QString, QDomElement> m_groups;
-		
-		QDomElement m_currentGroup;
-		
-		QString m_path;
-		bool m_isOk;
+		QBoxLayout *m_layout;
+		QCheckBox *m_checkBox;
 };
 
 #endif
-
-

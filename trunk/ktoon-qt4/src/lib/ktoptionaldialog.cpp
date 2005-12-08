@@ -18,52 +18,44 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTCONFIGDOCUMENT_H
-#define KTCONFIGDOCUMENT_H
+#include "ktoptionaldialog.h"
+#include <QVBoxLayout>
+#include <QLabel>
 
-#include <QDomDocument>
-#include <QDomElement>
-#include <QStringList>
-#include <QVariant>
-#include <QHash>
-
-/**
- * This class represents the ktoon configuration xml document
- * @author David Cuadrado
-*/
-class KTConfigDocument : public QDomDocument
+KTOptionalDialog::KTOptionalDialog(const QString &text,const QString &title,QWidget *parent) : QDialog(parent)
 {
-	public:
-    		KTConfigDocument(const QString &path);
-    		~KTConfigDocument();
-		
-		void beginGroup(const QString & prefix );
-		void setValue ( const QString & key, const QVariant & value );
-		QVariant value ( const QString & key, const QVariant & defaultValue = QVariant() ) const;
-		
-		void addRecentFiles(const QStringList &names);
-		
-		QString path();
-		
-		void saveConfig(const QString &file = QString::null);
-		bool exists(const QString &key);
-		
-		bool isOk();
+	setWindowTitle(title);
+	m_layout = new QVBoxLayout;
+	
+	QLabel *label = new QLabel(text, this);
+	
+	m_layout->addWidget(label);
+	
+	QHBoxLayout *buttonLayout = new QHBoxLayout;
+	buttonLayout->addStretch(1);
+	
+	m_checkBox = new QCheckBox(tr("Don't show again"));
+	buttonLayout->addWidget(m_checkBox);
+	
+	QPushButton *cancelButton = new QPushButton(tr("Cancel"));
+	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
+	buttonLayout->addWidget(cancelButton);
+	
+	QPushButton *okButton = new QPushButton(tr("OK"));
+	connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
+	buttonLayout->addWidget(okButton);
+	
+	m_layout->addLayout(buttonLayout);
+	setLayout(m_layout);
+}
 
-		void setup();
-		
-	private:
-		QDomElement find(const QDomElement &element, const QString &key) const;
-		
-	private:
-		QHash<QString, QDomElement> m_groups;
-		
-		QDomElement m_currentGroup;
-		
-		QString m_path;
-		bool m_isOk;
-};
 
-#endif
+KTOptionalDialog::~KTOptionalDialog()
+{
+}
 
+bool KTOptionalDialog::checked()
+{
+	return m_checkBox->isChecked();
+}
 

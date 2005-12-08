@@ -40,6 +40,13 @@ class KTConfig : public QObject
 		KTConfig();
 		~KTConfig();
 		void init();
+		
+		void beginGroup(const QString & prefix );
+		void setValue ( const QString & key, const QVariant & value );
+// 		void setValue ( const QString &group, const QString & key, const QVariant & value );
+		QVariant value ( const QString & key, const QVariant & defaultValue = QVariant() ) const;
+// 		QVariant value ( const QString &group, const QString & key, const QVariant & defaultValue = QVariant() );
+		
 		QString read(const QString &sec);
 		static KTConfig *instance();
 		

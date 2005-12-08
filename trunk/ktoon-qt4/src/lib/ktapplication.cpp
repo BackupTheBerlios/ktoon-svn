@@ -65,6 +65,8 @@ KTApplication::KTApplication(int & argc, char ** argv)
 KTApplication::~KTApplication()
 {
 	KTEND;
+	
+	KTCONFIG->sync();
 }
 
 void KTApplication::applyTheme(const QString &file)
@@ -257,8 +259,13 @@ bool KTApplication::firstRun()
 		
 		initDirectories();
 		
-		KTCONFIG->configDocument()->setHome( m_KTOON_HOME );
-		KTCONFIG->configDocument()->setRepository( m_KTOON_REPOSITORY );
+		KTCONFIG->beginGroup("General");
+		
+// 		KTCONFIG->configDocument()->setHome( m_KTOON_HOME );
+// 		KTCONFIG->configDocument()->setRepository( m_KTOON_REPOSITORY );
+		
+		KTCONFIG->setValue( "Home", m_KTOON_HOME);
+		KTCONFIG->setValue( "Repository", m_KTOON_REPOSITORY);
 		
 		KTCONFIG->sync();
 		KTCONFIG->init();
