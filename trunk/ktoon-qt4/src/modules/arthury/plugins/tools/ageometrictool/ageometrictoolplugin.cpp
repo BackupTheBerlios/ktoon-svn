@@ -134,6 +134,7 @@ void AGeometricToolPlugin::applyGradient(QPainter *painter, const QRect &rect)
 		if( gradient )
 		{
 			QGradient newGradient;
+			newGradient.setSpread(gradient->spread());
 			switch( gradient->type() )
 			{
 				case  QGradient::LinearGradient:

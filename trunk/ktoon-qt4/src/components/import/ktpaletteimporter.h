@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                    *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,59 +17,36 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef KTVIEWCOLORCELLS_H
-#define KTVIEWCOLORCELLS_H
 
-#include <QFrame>
-#include <QComboBox>
-#include <QStackedWidget>
-#include <QVBoxLayout>
+#ifndef KTPALETTEIMPORTER_H
+#define KTPALETTEIMPORTER_H
 
-#include "ktcellscolor.h"
-#include "ktpaletteparser.h"
-
+#include <QDomDocument>
 
 /**
-	@author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author David Cuadrado <krawek@toonka.com>
 */
-class KTViewColorCells : public QFrame
+class KTPaletteImporter : QDomDocument
 {
-	Q_OBJECT
 	public:
-		KTViewColorCells(QWidget *parent = 0);
-		virtual ~KTViewColorCells();
-		void readPaletteFile(const QString &file);
+		enum PaletteType
+		{
+			Gimp = 0
+		};
+		
+		KTPaletteImporter();
+		~KTPaletteImporter();
+		
+		void import(const QString &file, PaletteType pt);
+		void saveFile(const QString &path);
+		QString filePath() const;
 		
 	private:
-		QComboBox *m_chooserPalette;
-		QStackedWidget *m_containerPalette;
-		KTCellsColor *m_defaultPalette;
-		KTCellsColor *m_qtColorPalette;
-		KTCellsColor *m_customColorPalette;
-		KTCellsColor *m_customGradientPalette;
-		int m_numColorRecent;
+		void importGimpPalette(const QString &file);
 		
 	private:
-		void setupForm();
-		void fillDefaultColors();
-		void addDefaultColor(int i , int j, const QColor &);
-		void fillNamedColor();
-		void readPalettes(const QString &paletteDir);
-		
-	protected:
-		
-		
-	signals:
-		void selectColor(const QColor &);
-		void selectGradient(const QGradient &);
-		
-	public slots:
-		virtual void addCustomColor(const QBrush& c);
-		virtual void removeCurrentColor();
-		virtual void addPalette(const QString & name, const QList<QBrush> & brushes, bool editable );
-		void changeColor(KTCellViewItem*);
-		
+		QString m_paletteName;
+		QString m_filePath;
 };
 
 #endif

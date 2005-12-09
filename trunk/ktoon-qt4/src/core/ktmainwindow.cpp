@@ -30,6 +30,8 @@
 
 #include "kthelpbrowser.h"
 
+#include "ktpaletteimporter.h"
+
 // dlslib
 #include "dtabwidget.h"
 #include "docksplitter.h"
@@ -41,6 +43,8 @@
 #include <QMenu>
 #include <QCloseEvent>
 #include <QTextEdit>
+#include <QFileDialog>
+#include <QDomDocument>
 //
 
 KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0), m_scenes(0)
@@ -191,7 +195,27 @@ void KTMainWindow::aboutKToon()
 	delete about;
 }
 
-
+void KTMainWindow::importPalettes()
+{
+	ktDebug() << "Importing";
+	QStringList files = QFileDialog::getOpenFileNames( this, tr("Import gimp palettes"), QString(), "Gimp Palette (*.gpl)");
+	
+	m_statusBar->setStatus( tr("Importing palettes"));
+	QStringList::ConstIterator it = files.begin();
+	
+	int progress = 1;
+	while( it != files.end() )
+	{
+		KTPaletteImporter importer;
+		importer.import( *it, KTPaletteImporter::Gimp);
+		++it;
+		importer.saveFile(ktapp->configDir()+"/palettes");
+		
+		m_colorPalette->parsePaletteFile( importer.filePath() );
+		
+		m_statusBar->advance( progress++, files.count());
+	}
+}
 
 // Drawing
 void KTMainWindow::changeCurrentColors(const QBrush &foreground, const QBrush &background)

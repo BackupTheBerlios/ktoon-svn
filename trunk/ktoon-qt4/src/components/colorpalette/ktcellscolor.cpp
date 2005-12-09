@@ -23,7 +23,7 @@
 #include "ktdebug.h"
 
 KTCellsColor::KTCellsColor(QWidget *parent, Type type)
-	: KTCellView(parent), m_type(type), m_countColor(0), m_readOnly(false), MAX_COLUMNS(10), m_col(0), m_row(0)
+	: KTCellView(parent), m_type(type), m_countColor(0), m_readOnly(false), MAX_COLUMNS(16), m_col(0), m_row(0)
 {}
 
 

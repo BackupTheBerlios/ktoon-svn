@@ -138,6 +138,7 @@ class KTMainWindow : public DMainWindow
 		void messageToOSD(const QString &);
 		void preferences();
 		void aboutKToon();
+		void importPalettes();
 		
 	private slots:
 		// Graphic Components
@@ -192,6 +193,7 @@ class KTMainWindow : public DMainWindow
 		KTTimeLine *m_timeLine;
 		KTHelpWidget *m_helper;
 		KTLibraryWidget *m_libraryWidget;
+		KTColorPalette *m_colorPalette;
 };
 
 #endif

@@ -303,3 +303,8 @@ void KTColorPalette::removeColor()
 {
 	m_containerPalette->removeCurrentColor();
 }
+
+void KTColorPalette::parsePaletteFile(const QString &file)
+{
+	m_containerPalette->readPaletteFile( file );
+}

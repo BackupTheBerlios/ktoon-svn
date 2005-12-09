@@ -3,6 +3,9 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/components/colorpalette
 # Destiono es una biblioteca:  
 
+INSTALLS += palettes 
+palettes.files += palettes/*.ktpl 
+palettes.path = /data/palettes/ 
 DISTFILES += dcolorarrow.xpm \
              dcolorreset.xpm 
 IMAGES += dcolorarrow.xpm \
@@ -16,7 +19,8 @@ HEADERS += ktcolorpicker.h \
            ktgradientselector.h \
            ktgradientviewer.h \
            ktgradientmanager.h \
-           ktcellscolor.h 
+           ktcellscolor.h \
+           ktpaletteparser.h 
 SOURCES += ktcolorpicker.cpp \
            ktcolorpalette.cpp \
            ktvaluecolor.cpp \
@@ -26,7 +30,8 @@ SOURCES += ktcolorpicker.cpp \
            ktgradientselector.cpp \
            ktgradientviewer.cpp \
            ktgradientmanager.cpp \
-           ktcellscolor.cpp 
+           ktcellscolor.cpp \
+           ktpaletteparser.cpp 
 QT += xml qt3support
 INCLUDEPATH += ../../../src/store \
 ../../../src/lib

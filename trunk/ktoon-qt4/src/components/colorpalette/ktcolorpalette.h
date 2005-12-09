@@ -51,6 +51,7 @@ class KTColorPalette : public KTModuleWidgetBase
 		KTColorPalette(QWidget *parent = 0);
 		~KTColorPalette();
 		QPair<QColor, QColor> color();
+		void parsePaletteFile(const QString &file);
 
 	private:
 		KTToolBox *m_centralWidget;

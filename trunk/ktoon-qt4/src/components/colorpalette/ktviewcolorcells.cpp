@@ -20,11 +20,12 @@
 
 #include "ktviewcolorcells.h"
 #include "ktdebug.h"
+#include "ktapplication.h"
 #include <QScrollArea>
 
 
 KTViewColorCells::KTViewColorCells(QWidget *parent)
-	: QFrame(parent), m_numColorRecent(0), MAX_COLUMS(11)
+	: QFrame(parent), m_numColorRecent(0)
 {
 	
 	QVBoxLayout *layout = new QVBoxLayout;
@@ -63,6 +64,9 @@ void KTViewColorCells::setupForm()
 	m_containerPalette->addWidget(m_qtColorPalette);
 	fillNamedColor();
 	
+// 	readPalettes(KTOON_HOME+"/data/palettes"); // Pre-installed
+	readPalettes(ktapp->configDir()+"/palettes"); // Locals
+	
 	m_chooserPalette->addItem(tr("Custom Color Palette"));
 	m_customColorPalette = new  KTCellsColor(m_containerPalette);
 	connect(m_customColorPalette, SIGNAL(itemPressed( KTCellViewItem* )), this, SLOT(changeColor(KTCellViewItem*)));
@@ -77,11 +81,63 @@ void KTViewColorCells::setupForm()
 	connect(m_chooserPalette, SIGNAL(activated ( int  )), m_containerPalette, SLOT(setCurrentIndex ( int )));
 }
 
-void KTViewColorCells::addPalette(const QString & name)
+void KTViewColorCells::readPalettes(const QString &paletteDir)
 {
-	KTCellView *palette = new  KTCellView(11,18, m_containerPalette);
+	QDir dir(paletteDir);
+	
+	if(dir.exists ())
+	{
+		QStringList files = dir.entryList ( QStringList() << "*.ktpl" );
+		QStringList::ConstIterator it = files.begin();
+		
+		ktDebug() << files;
+		while(it != files.end())
+		{
+			readPaletteFile(dir.path()+"/"+*it);
+			++it;
+		}
+		
+	}
+
+}
+
+void KTViewColorCells::readPaletteFile(const QString &file)
+{
+	KTPaletteParser *parser = new KTPaletteParser();
+	QXmlSimpleReader reader;
+	reader.setContentHandler(parser);
+	reader.setErrorHandler(parser);
+			
+	QFile f(file);
+	QXmlInputSource xmlsource(&f);
+			
+	if ( reader.parse(&xmlsource) )
+	{
+		QList<QBrush> brushes = parser->brushes();
+		QString name = parser->paletteName();
+		bool editable = parser->paletteIsEditable();
+		addPalette(name,brushes,editable );
+	}
+	else
+	{
+		ktError() << "Error while parse palette file: " << file;
+	}
+	delete parser;
+}
+
+void KTViewColorCells::addPalette(const QString & name, const QList<QBrush> & brushes, bool editable )
+{
+	KTCellsColor *palette = new  KTCellsColor( m_containerPalette);
+	QList<QBrush>::ConstIterator it = brushes.begin();
+	
+	while(it != brushes.end())
+	{
+		palette->addColor( *it);
+		++it;
+	}
 	
 	connect(palette, SIGNAL(itemPressed( KTCellViewItem* )), this, SLOT(changeColor(KTCellViewItem*)));
+	palette->setReadOnly( !editable );
 	m_chooserPalette->addItem(name);
 	m_containerPalette->addWidget(palette);
 }

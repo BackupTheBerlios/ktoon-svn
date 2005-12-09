@@ -86,7 +86,7 @@ void KTConfigDocument::beginGroup(const QString & prefix )
 		
 		if ( m_currentGroup.isNull() )
 		{
-			ktDebug() << "Creando GRUPO: " << prefix;
+// 			ktDebug() << "Creando GRUPO: " << prefix;
 			m_currentGroup = createElement(prefix);
 			documentElement().appendChild(m_currentGroup);
 		}

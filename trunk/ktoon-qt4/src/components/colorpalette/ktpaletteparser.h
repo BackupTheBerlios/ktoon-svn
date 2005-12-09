@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                    *
+ *   Copyright (C) 2005 by David Cuadrado   *
+ *   krawek@toonka.com   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,59 +17,45 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef KTVIEWCOLORCELLS_H
-#define KTVIEWCOLORCELLS_H
 
-#include <QFrame>
-#include <QComboBox>
-#include <QStackedWidget>
-#include <QVBoxLayout>
+#ifndef KTPALETTEPARSER_H
+#define KTPALETTEPARSER_H
 
-#include "ktcellscolor.h"
-#include "ktpaletteparser.h"
-
+#include <QXmlDefaultHandler>
+#include <QBrush>
+#include <QLinearGradient>
+#include <QConicalGradient>
+#include <QRadialGradient>
 
 /**
-	@author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author David Cuadrado
 */
-class KTViewColorCells : public QFrame
+class KTPaletteParser : public QXmlDefaultHandler
 {
-	Q_OBJECT
 	public:
-		KTViewColorCells(QWidget *parent = 0);
-		virtual ~KTViewColorCells();
-		void readPaletteFile(const QString &file);
+		KTPaletteParser();
+		~KTPaletteParser();
+		
+		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
+		
+		bool endElement( const QString& ns, const QString& localname, const QString& qname);
+		
+		QList<QBrush> brushes() const;
+		QString paletteName() const;
+		bool paletteIsEditable() const;
+		
+		bool error ( const QXmlParseException & exception );
+		bool fatalError ( const QXmlParseException & exception );
 		
 	private:
-		QComboBox *m_chooserPalette;
-		QStackedWidget *m_containerPalette;
-		KTCellsColor *m_defaultPalette;
-		KTCellsColor *m_qtColorPalette;
-		KTCellsColor *m_customColorPalette;
-		KTCellsColor *m_customGradientPalette;
-		int m_numColorRecent;
+		QString m_root,m_qname;
 		
-	private:
-		void setupForm();
-		void fillDefaultColors();
-		void addDefaultColor(int i , int j, const QColor &);
-		void fillNamedColor();
-		void readPalettes(const QString &paletteDir);
+		QString m_paletteName;
+		bool m_isEditable;
+		QList<QBrush> m_brushes;
 		
-	protected:
-		
-		
-	signals:
-		void selectColor(const QColor &);
-		void selectGradient(const QGradient &);
-		
-	public slots:
-		virtual void addCustomColor(const QBrush& c);
-		virtual void removeCurrentColor();
-		virtual void addPalette(const QString & name, const QList<QBrush> & brushes, bool editable );
-		void changeColor(KTCellViewItem*);
-		
+		QGradientStops m_tmpStops;
+		QGradient *m_tmpGradient;
 };
 
 #endif

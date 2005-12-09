@@ -41,6 +41,8 @@ void KTMainWindow::setupMenu()
 	m_fileMenu->addAction(m_actionManager->find("Close"));
 	m_fileMenu->insertSeparator();
 	m_fileMenu->addAction(m_actionManager->find("Import"));
+	m_fileMenu->addAction(m_actionManager->find("ImportPalettes"));
+	
 	m_fileMenu->addAction(m_actionManager->find("Export"));
 	m_fileMenu->insertSeparator();
 	m_fileMenu->addAction(m_actionManager->find("Properties"));
@@ -97,7 +99,7 @@ void KTMainWindow::setupMenu()
 void KTMainWindow::createGUI()
 {
 	// TODO: put setIcon in each class
-	KTColorPalette *m_colorPalette = new KTColorPalette(this);
+	m_colorPalette = new KTColorPalette(this);
 	m_colorPalette->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/color_palette.png") );
 	connect(m_colorPalette, SIGNAL(colorChanged(const QBrush &, const QBrush &)), this, SLOT(changeCurrentColors(const QBrush &, const QBrush &)));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Palette"),m_colorPalette);
@@ -209,6 +211,9 @@ void KTMainWindow::setupFileActions()
 	KTAction *import = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/import.png"), tr( "&Import..." ),  QKeySequence(tr("Ctrl+I")), this, SLOT(import()), m_actionManager, "Import");
 // 	connect(import, SIGNAL(activated()), this, SLOT(import()));
 	import->setStatusTip(tr("Imports a file in the supported format"));
+	
+	KTAction *importPalette = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/import.png"), tr( "&Import GIMP palettes..." ),  QKeySequence(), this, SLOT(importPalettes()), m_actionManager, "ImportPalettes");
+	importPalette->setStatusTip(tr("Imports palettes"));
 	
 	KTAction *exptr = new KTAction(QPixmap(KTOON_THEME_DIR+"/icons/export.png"), tr( "&Export..." ),  QKeySequence(tr("Ctrl+E")), this, SLOT(export()), m_actionManager, "Export");
 // 	connect(exptr, SIGNAL(activated()), this, SLOT(export()));
