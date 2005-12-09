@@ -64,7 +64,7 @@ void KTViewColorCells::setupForm()
 	m_containerPalette->addWidget(m_qtColorPalette);
 	fillNamedColor();
 	
-// 	readPalettes(KTOON_HOME+"/data/palettes"); // Pre-installed
+	readPalettes(KTOON_HOME+"/data/palettes"); // Pre-installed
 	readPalettes(ktapp->configDir()+"/palettes"); // Locals
 	
 	m_chooserPalette->addItem(tr("Custom Color Palette"));
@@ -83,6 +83,7 @@ void KTViewColorCells::setupForm()
 
 void KTViewColorCells::readPalettes(const QString &paletteDir)
 {
+	ktDebug() << "Reading palettes from: " << paletteDir;
 	QDir dir(paletteDir);
 	
 	if(dir.exists ())
@@ -90,7 +91,6 @@ void KTViewColorCells::readPalettes(const QString &paletteDir)
 		QStringList files = dir.entryList ( QStringList() << "*.ktpl" );
 		QStringList::ConstIterator it = files.begin();
 		
-		ktDebug() << files;
 		while(it != files.end())
 		{
 			readPaletteFile(dir.path()+"/"+*it);

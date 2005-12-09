@@ -82,26 +82,40 @@ void KTPaletteImporter::importGimpPalette(const QString &file)
 			stream.readLine();
 		}
 		
+		QRegExp rgb("\\s*([\\d]{0,3})\\s+([\\d]{0,3})\\s+([\\d]{0,3})\\s+.*$");
 		while ( !stream.atEnd())
 		{
-			int r, g, b;
-			stream >> r >> g >> b;
-			stream >> string;
+			QString line = stream.readLine();
+			ktDebug() << "Readed: " << line;
 			
-			QColor c(r, g, b);
-			
-			if ( c.isValid() && !string.isEmpty() && string != "#" )
+			if ( rgb.indexIn(line) != -1 )
 			{
-				QDomElement element = createElement("Color");
-				element.setAttribute("colorName", c.name());
-				element.setAttribute("alpha", "255");
+				QStringList capturedTexts = rgb.capturedTexts();
+				ktDebug() << capturedTexts;
+				if ( capturedTexts.count() != 4 )
+					continue;
 				
-				documentElement().appendChild(element);
+				int r = capturedTexts[1].toInt();
+				int g = capturedTexts[2].toInt();
+				int b = capturedTexts[3].toInt();
+			
+				QColor c(r, g, b);
+			
+				if ( c.isValid() )
+				{
+					QDomElement element = createElement("Color");
+					element.setAttribute("colorName", c.name());
+					element.setAttribute("alpha", "255");
+				
+					documentElement().appendChild(element);
+				}
+				else
+				{
+					ktError() << "Bad color";
+				}
 			}
 			else
-			{
-				ktError() << "Bad color";
-			}
+				ktError() << "No find";
 		}
 	}
 }
