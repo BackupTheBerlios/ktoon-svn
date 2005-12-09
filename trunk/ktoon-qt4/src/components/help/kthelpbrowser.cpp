@@ -33,6 +33,7 @@ KTHelpBrowser::KTHelpBrowser( QWidget *parent)
 	layout->addWidget(m_separator);
 
 	m_pageArea = new QTextBrowser(m_separator);
+	
 	m_document = new QTextDocument(m_pageArea);
 	
 	m_pageArea->setDocument(m_document);
@@ -46,5 +47,15 @@ KTHelpBrowser::~KTHelpBrowser()
 void KTHelpBrowser::setDocument(const QString &doc)
 {
 	m_document->setHtml(doc);
+}
+
+void KTHelpBrowser::setSource( const QString &filePath)
+{
+	m_pageArea->setSource(filePath);
+}
+
+void KTHelpBrowser::setDataDirs(const QStringList &dirs)
+{
+	m_pageArea->setSearchPaths (dirs);
 }
 

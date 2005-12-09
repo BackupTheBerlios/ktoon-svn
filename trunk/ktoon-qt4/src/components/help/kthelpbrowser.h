@@ -37,6 +37,8 @@ class KTHelpBrowser : public QWidget
 		
 	public slots:
 		void setDocument(const QString &doc);
+		void setSource( const QString &filePath);
+		void setDataDirs(const QStringList &dirs);
 		
 	private:
 		QSplitter *m_separator;

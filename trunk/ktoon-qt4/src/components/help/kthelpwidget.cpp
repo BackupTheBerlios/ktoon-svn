@@ -110,7 +110,7 @@ void KTHelpWidget::tryToLoadPage(QTreeWidgetItem *item, int)
 void KTHelpWidget::loadPage(const QString &title, const QString &filePath)
 {
 	ktDebug() << "Loading: "+filePath;
-	
+/*	
 	QFile file(filePath);
 	QFileInfo finfo(file);
 	
@@ -126,10 +126,13 @@ void KTHelpWidget::loadPage(const QString &title, const QString &filePath)
 		
 		file.close();
 		
-		if ( document != "" )
-			emit pageLoaded(title, document);
-	}
+		if ( document != "" )*/
+	emit pageLoaded(title, filePath);
+// 	}
 	
 }
 
-
+QString KTHelpWidget::helpPath () const
+{
+	return m_helpPath.path();
+}

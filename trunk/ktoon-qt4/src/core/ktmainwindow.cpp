@@ -282,11 +282,13 @@ void KTMainWindow::messageToOSD(const QString &msg)
 	m_osd->display( msg, KTOsd::Info, msg.length()*90);
 }
 
-void KTMainWindow::showHelpPage(const QString &title, const QString &document)
+void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 {
 	KT_FUNCINFO;
 	KTHelpBrowser *page = new KTHelpBrowser(this);
+	page->setDataDirs( QStringList() << m_helper->helpPath() );
 	
-	page->setDocument( document );
+// 	page->setDocument( document );
+	page->setSource( filePath);
 	addWidget( page, tr("Help:%1").arg(title) );
 }
