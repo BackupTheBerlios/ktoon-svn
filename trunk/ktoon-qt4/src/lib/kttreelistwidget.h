@@ -18,55 +18,27 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktgctable.h"
+#ifndef KTTREELISTWIDGET_H
+#define KTTREELISTWIDGET_H
 
-#include "ktapplication.h"
+#include <QTreeWidget>
 
-KTGCTable::KTGCTable(QWidget *parent)
-	: KTTreeListWidget(parent), m_currentFolder(0)
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+class KTTreeListWidget : public QTreeWidget
 {
-}
-
-
-KTGCTable::~KTGCTable()
-{
-}
-
-void KTGCTable::createFolder(const QString &name)
-{
-	QTreeWidgetItem *newFolder = new QTreeWidgetItem(this);
-	newFolder->setText(0, name);
-	
-	newFolder->setIcon(0, QPixmap(KTOON_THEME_DIR+"/icons/folder_icon.png" ));
-	
-	m_currentFolder = newFolder;
-	
-	setCurrentItem(m_currentFolder);
-}
-
-QTreeWidgetItem *KTGCTable::currentFolder()
-{
-	return m_currentFolder;
-}
-
-void KTGCTable::setCurrentFolder(QTreeWidgetItem *cf)
-{
-	if ( cf )
-	{
-		m_currentFolder = cf;
-	}
-}
-
-void KTGCTable::removeCurrentFolder()
-{
-	if ( m_currentFolder )
-	{
-		int index = indexOfTopLevelItem(m_currentFolder) - 1;
+	Q_OBJECT
+	public:
+		KTTreeListWidget(QWidget *parent = 0);
+		~KTTreeListWidget();
 		
-		delete m_currentFolder;
 		
-		m_currentFolder = topLevelItem (index);
-		setCurrentItem(m_currentFolder);
-	}
-}
+	private slots:
+		void editDoubleClickedItem(QTreeWidgetItem *item, int col);
+		
+	protected slots:
+		virtual void closeEditor ( QWidget * editor, QAbstractItemDelegate::EndEditHint hint );
+};
 
+#endif

@@ -47,7 +47,8 @@ HEADERS += ktapplication.h \
            kttoolbox.h \
            ktdisplaypath.h \
            ktradiobuttongroup.h \
-           ktoptionaldialog.h 
+           ktoptionaldialog.h \
+           kttreelistwidget.h 
 SOURCES += ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
@@ -87,7 +88,8 @@ SOURCES += ktapplication.cpp \
            kttoolbox.cpp \
            ktdisplaypath.cpp \
            ktradiobuttongroup.cpp \
-           ktoptionaldialog.cpp 
+           ktoptionaldialog.cpp \
+           kttreelistwidget.cpp 
 DLLDESTDIR = /tmp
 QT += qt3support xml opengl
 MOC_DIR = .moc
