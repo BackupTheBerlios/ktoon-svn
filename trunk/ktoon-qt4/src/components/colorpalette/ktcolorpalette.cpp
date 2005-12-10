@@ -44,8 +44,8 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_
 	setupGradienManager();
 	setupDisplayColor();
 	m_splitter->addWidget(m_centralWidget);
-	setupButtons();
 	m_centralWidget->setPalette(palette());
+	setColor( Qt::black);
 }
 
 
@@ -54,39 +54,7 @@ KTColorPalette::~KTColorPalette()
 	KTEND;
 }
 
-void KTColorPalette::setupButtons()
-{
-	QGroupBox *containerButtons = new QGroupBox(this);
-	QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight);
-	containerButtons->setLayout(layout);
-	layout->setMargin(3);
-	KTImageButton *m_addColor = new KTImageButton( QPixmap(KTOON_THEME_DIR  + "icons/plussign.png" ) , 22, containerButtons);
-	
-	connect( m_addColor, SIGNAL( clicked() ), SLOT( addColor() ) );
-	QToolTip::add( m_addColor, tr( "Add Color" ) );
-	layout->addWidget(m_addColor/*, Qt::AlignCenter*/);
-	
-	KTImageButton *m_removeColor = new KTImageButton( QPixmap( KTOON_THEME_DIR + "icons/minussign.png"), 22, containerButtons);
-	
-	connect( m_removeColor, SIGNAL( clicked() ), SLOT( removeColor() ) );
-	QToolTip::add( m_removeColor, tr( "Remove Color" ) );
-	
-	layout->addWidget(m_removeColor/*, Qt::AlignCenter*/);
-	
-	KTImageButton *m_addPalette = new KTImageButton( QPixmap(KTOON_THEME_DIR + "icons/plussign.png" ), 22, containerButtons);
-	connect( m_addPalette, SIGNAL( clicked() ), SLOT( addPalette() ) );
-	QToolTip::add( m_addPalette, tr( "Add Custom Palette" ) );
-	
-	layout->addWidget(m_addPalette/*, Qt::AlignCenter*/);
-	
-	KTImageButton *m_removePalette = new KTImageButton(QPixmap( KTOON_THEME_DIR+ "icons/minussign.png"), 22, containerButtons);
-	
-	connect( m_removePalette, SIGNAL( clicked() ), SLOT( removeColor() ) );
-	QToolTip::add( m_removePalette, tr( "Remove Custom Palette" ) );
-// 	containerButtons->setMaximumHeight(m_removePalette->height());
-	layout->addWidget(m_removePalette/*, Qt::AlignCenter*/);
-	addChild(containerButtons);
-}
+
 
 void KTColorPalette::setupChooserTypeColor()
 {
@@ -140,8 +108,8 @@ void KTColorPalette::setupDisplayColor()
 	//palettes
 	m_containerPalette = new KTViewColorCells(m_splitter);
 	
-	//display
 	connect (m_containerPalette, SIGNAL(selectColor( const QColor& )), this, SLOT(setColor( const QColor& )));
+	
 	connect (m_containerPalette, SIGNAL(selectGradient(const QGradient&)), this, SLOT(changeGradient(const QGradient&)));
 	
 	m_splitter->addWidget(m_containerPalette);
@@ -184,12 +152,16 @@ void KTColorPalette::setColor(const QColor& color)
 		m_nameColor->setText(color.name ());
 	
 		m_luminancePicker->setCol(color.hue(), color.saturation(), color.value());
+		m_containerPalette->setColor( QBrush(color) );
+		
+		
 		if(m_flagGradient)
 		{
 			m_gradientManager->setColor(color);
 			m_gradientManager->repaint();
 		}
-		if(m_gradientManager->gradientType() == 0)
+		
+		if(m_gradientManager->gradientApply() == KTGradientManager::None)
 		{
 			emit colorChanged( m_outlineAndFillColors->foreground(),m_outlineAndFillColors->background() );
 		}
@@ -254,9 +226,8 @@ QPair<QColor, QColor> KTColorPalette::color()
 
 void KTColorPalette::changeGradient(const QGradient & gradient)
 {
-	
-// 	gradientApply()
-	if(m_gradientManager->gradientType() != 0)
+	KT_FUNCINFO;
+	if(m_gradientManager->gradientApply() != KTGradientManager::None)
 	{
 		switch(m_gradientManager->gradientApply())
 		{
@@ -264,6 +235,7 @@ void KTColorPalette::changeGradient(const QGradient & gradient)
 			{
 				emit colorChanged(QBrush(gradient), QBrush(gradient));
 				break;
+
 			}
 			case KTGradientManager::Fill:
 			{
@@ -275,33 +247,17 @@ void KTColorPalette::changeGradient(const QGradient & gradient)
 				emit colorChanged(QBrush(gradient) ,m_outlineAndFillColors->background());
 				break;
 			}
-			case KTGradientManager::None:
+			default:
 			{
-				emit colorChanged(m_outlineAndFillColors->foreground(),m_outlineAndFillColors->background());
+				return;
 				break;
 			}
 			
 		}
+		
+		m_containerPalette->setColor( QBrush(gradient) );
+		m_gradientManager->setGradient( gradient );
 	}
-}
-
-
-void KTColorPalette::addColor()
-{
-	KTGradientManager *gradientManager = qobject_cast<KTGradientManager *>( m_centralWidget->currentWidget() );
-	if(gradientManager && m_gradientManager->gradientType() != 0)
-	{
-		m_containerPalette->addCustomColor( m_gradientManager->currentGradient());
-	}
-	else
-	{
-		m_containerPalette->addCustomColor( m_outlineAndFillColors->currentColor());
-	}
-}
-
-void KTColorPalette::removeColor()
-{
-	m_containerPalette->removeCurrentColor();
 }
 
 void KTColorPalette::parsePaletteFile(const QString &file)

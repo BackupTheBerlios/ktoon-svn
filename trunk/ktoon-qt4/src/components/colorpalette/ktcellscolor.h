@@ -40,9 +40,11 @@ Q_OBJECT
 		void setType(Type type);
 		bool isReadOnly();
 		int type();
-		
+		QString name() const;
+		void setName(const QString& name);
 	private:
 		Type m_type;
+		QString m_name;
 		int m_countColor;
 		bool m_readOnly;
 		int m_col, m_row;

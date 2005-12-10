@@ -75,7 +75,7 @@ class KTColorPalette : public KTModuleWidgetBase
 		void setupChooserTypeColor();
 		void setupGradienManager();
 		void setupDisplayColor();
-				
+		
 	public slots:
 		void setColor(const QColor &color);
 		void updateColor();
@@ -83,9 +83,6 @@ class KTColorPalette : public KTModuleWidgetBase
 		void syncHsv(int h , int s , int v);
 		void setHS(int h, int s);
 		void changeGradient(const QGradient & gradient);
-		
-		void addColor();
-		void removeColor();
 		
 	signals:
 		void colorChanged(const QBrush &foreground, const QBrush &background); // TODO: cambiar nombre

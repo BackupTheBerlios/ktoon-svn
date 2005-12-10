@@ -40,6 +40,7 @@ class KTRadioButtonGroup : public QGroupBox
 		void addItems(const QStringList &texts);
 		
 		int currentIndex() const;
+		void setCurrentIndex ( int index );
 		
 	private slots:
 		void emitButtonId(QAbstractButton *button);

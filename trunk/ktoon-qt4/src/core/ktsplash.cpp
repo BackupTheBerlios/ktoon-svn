@@ -25,6 +25,8 @@
 #include <qimage.h>
 #include <QTimer>
 
+#include <cmath> //abs
+
 #include "ktapplication.h"
 #include "kimageeffect.h"
 
@@ -79,10 +81,11 @@ void KTSplash::drawContents ( QPainter * painter )
 	for (int i = 0; i < m_size; i++)
 	{
 		position = (m_state+i)%(2*m_size-1);
-
-		painter->setBrush(QColor(baseColor.red()-18*i,
-				  baseColor.green()-10*i,
-				  baseColor.blue()-28*i));
+		
+		int r = abs(baseColor.red()-18*i)%255;
+		int g = abs(baseColor.green()-10*i)%255;
+		int b = abs(baseColor.blue()-28*i)%255;
+		painter->setBrush(QColor(r,g,b));
 
 		if (position < 3) 
 		{

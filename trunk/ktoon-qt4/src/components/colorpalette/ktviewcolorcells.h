@@ -25,6 +25,7 @@
 #include <QComboBox>
 #include <QStackedWidget>
 #include <QVBoxLayout>
+#include <QBrush>
 
 #include "ktcellscolor.h"
 #include "ktpaletteparser.h"
@@ -40,6 +41,7 @@ class KTViewColorCells : public QFrame
 		KTViewColorCells(QWidget *parent = 0);
 		virtual ~KTViewColorCells();
 		void readPaletteFile(const QString &file);
+		void setColor(const QBrush & b);
 		
 	private:
 		QComboBox *m_chooserPalette;
@@ -49,13 +51,17 @@ class KTViewColorCells : public QFrame
 		KTCellsColor *m_customColorPalette;
 		KTCellsColor *m_customGradientPalette;
 		int m_numColorRecent;
+		QBrush m_currentColor;
 		
 	private:
 		void setupForm();
+		void setupButtons();
 		void fillDefaultColors();
 		void addDefaultColor(int i , int j, const QColor &);
 		void fillNamedColor();
 		void readPalettes(const QString &paletteDir);
+		void addPalette(KTCellsColor *palette);
+		
 		
 	protected:
 		
@@ -65,10 +71,10 @@ class KTViewColorCells : public QFrame
 		void selectGradient(const QGradient &);
 		
 	public slots:
-		virtual void addCustomColor(const QBrush& c);
+		virtual void addCurrentColor();
 		virtual void removeCurrentColor();
 		virtual void addPalette(const QString & name, const QList<QBrush> & brushes, bool editable );
-		void changeColor(KTCellViewItem*);
+		void changeColor(KTCellViewItem*/*, KTCellViewItem **/);
 		
 };
 

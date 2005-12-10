@@ -84,5 +84,8 @@ void KTRadioButtonGroup::emitButtonId(QAbstractButton *button)
 	emit clicked(m_buttonGroup->buttons().indexOf(button));
 }
 
-
+void KTRadioButtonGroup::setCurrentIndex ( int index )
+{
+	m_buttonGroup->buttons()[index]->setChecked(true);
+}
 

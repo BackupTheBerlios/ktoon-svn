@@ -43,7 +43,7 @@ class KTGradientManager : public QFrame
 {
 	Q_OBJECT
 	public:
-		enum KTGradientApply{None=0, Fill, OutLine, FillAndOutLine };
+		enum KTGradientApply{None=-1, Fill, OutLine, FillAndOutLine };
 		KTGradientManager(QWidget *parent = 0);
 		~KTGradientManager();
 		void setColor(const QColor &);
@@ -51,13 +51,15 @@ class KTGradientManager : public QFrame
 		void updateGradient();
 		QBrush currentGradient();
 		
-		int gradientApply();
+		KTGradientApply gradientApply();
+		void setGradient(const QGradient & gradient);
 		
 	private:
 		KTGradientSelector *m_selector;
 		KTGradientViewer *m_viewer;
 		KTRadioButtonGroup *m_type ;
 		KTImageButton *m_fill, *m_outLine;
+
 // 		KTXYSpinBox *m_center, *m_focal;
 		
 	public slots:

@@ -24,13 +24,13 @@
 KTPaletteParser::KTPaletteParser()
 	: QXmlDefaultHandler(), m_paletteName(""), m_isEditable(false), m_tmpGradient(0)
 {
-	KTINIT;
+// 	KTINIT;
 }
 
 
 KTPaletteParser::~KTPaletteParser()
 {
-	KTEND;
+// 	KTEND;
 }
 
 

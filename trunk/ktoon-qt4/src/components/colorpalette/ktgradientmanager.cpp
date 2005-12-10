@@ -87,7 +87,7 @@ void KTGradientManager::updateGradient()
 	
 }
 
-int KTGradientManager::gradientApply()
+KTGradientManager::KTGradientApply KTGradientManager::gradientApply()
 {
 	if( m_fill->isChecked() && m_outLine->isChecked())
 	{
@@ -101,10 +101,8 @@ int KTGradientManager::gradientApply()
 	{
 		return OutLine;
 	}
-	else
-	{
-		return None;
-	}
+	return None;
+	
 }
 
 void KTGradientManager::setColor(const QColor &color)
@@ -126,7 +124,6 @@ int KTGradientManager::gradientType()
 
 void KTGradientManager::changeType(int type)
 {
-	SHOW_VAR(type);
 	switch(type)
 	{
 		case 0:
@@ -152,6 +149,11 @@ void KTGradientManager::changeGradient( const QGradientStops& stops )
 	m_viewer->changeGradient(stops);
 	emit gradientChanged(m_viewer->gradient());
 }
+void KTGradientManager::setGradient(const QGradient & gradient)
+{
+	m_type->setCurrentIndex(gradient.type()+1);
+	m_selector->setStops(gradient.stops());
+}
 
 void KTGradientManager::emitGradientChanged()
 {
@@ -163,4 +165,3 @@ QBrush KTGradientManager::currentGradient()
 {
 	return QBrush(m_viewer->gradient());
 }
-

@@ -47,6 +47,9 @@ class KTGradientSelector : public QAbstractSlider
 		KTGradientSelector( Qt::Orientation o, QWidget *parent = 0 );
 
 		~KTGradientSelector();
+		
+		void setStops(const QGradientStops &);
+		
 // 		void setColors( const QColor &col1, const QColor &col2 )
 // 		{	color1 = col1; color2 = col2; update(); }
 // 		void setText( const QString &t1, const QString &t2 )
@@ -122,7 +125,7 @@ class KTGradientSelector : public QAbstractSlider
 // 			return QAbstractSlider::maxValue();
 // 		}
 		
-		qreal valueToGradien(int _value) const;
+		double valueToGradient(int _value) const;
 		void setColor(const QColor& color);
 					
 	signals:

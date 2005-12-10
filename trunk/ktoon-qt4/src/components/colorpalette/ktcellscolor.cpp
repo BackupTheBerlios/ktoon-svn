@@ -78,4 +78,12 @@ int KTCellsColor::type()
 	return m_type;
 }
 
+QString KTCellsColor::name() const
+{
+	return m_name;
+}
 
+void KTCellsColor::setName(const QString& name)
+{
+	m_name = name;
+}
