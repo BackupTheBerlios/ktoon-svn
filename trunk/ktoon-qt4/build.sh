@@ -50,6 +50,17 @@ function qpelec ()
 	echo -en "$YELLOW * $NULLC $1 "
 }
 
+function fails ()
+{
+	echo
+	qperror $*
+	echo "------ dmesg --------" >> $LOG_FILE
+	echo `dmesg | tail -n 10` >> $LOG_FILE
+	echo "---------------------" >> $LOG_FILE
+	echo "Send the file $LOG_FILE to $EMAIL"
+	exit 1
+}
+
 function verifyEnv()
 {
 	if [ ! -x $QMAKE -a $QMAKE ]
@@ -131,7 +142,7 @@ function addMenuEntry()
 
 function ktinstall()
 {
-	$MAKE install 2>> $LOG_FILE >/dev/null || qperror "Error while install!. Please send the file $LOG_FILE to $EMAIL"
+	$MAKE install 2>> $LOG_FILE >/dev/null || fails "Error while install!. Please send the file $LOG_FILE to $EMAIL"
 	
 	if [ $(basename `echo $SHELL`) == "bash" ]
 	then
@@ -250,11 +261,11 @@ function main()
 	qpinfo "Compiling $APPNAME $APPVER..."
 	qpinfo "Go for a cup of coffee ;)"
 	
-# 	$MAKE 2> /dev/null > /dev/null || ( qperror "Error while compiling, please try to run \"make\" manually"; exit 1 )
+# 	$MAKE 2> /dev/null > /dev/null || ( fails "Error while compiling, please try to run \"make\" manually"; exit 1 )
 	
 	echo > $STAT_FILE
 	END=0
-	( ( $MAKE  >/dev/null 2>> $LOG_FILE || qperror "Error while compile! Please send the file $LOG_FILE to $EMAIL" ) && echo END=1 > $STAT_FILE ) & 
+	( ( $MAKE  >/dev/null 2>> $LOG_FILE || fails "Error while compile!" ) && echo END=1 > $STAT_FILE ) & 
 	while [ $END -eq 0 ]
 	do
 		if [ -f $STAT_FILE ]
