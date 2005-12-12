@@ -28,6 +28,7 @@
 #include <QHeaderView>
 
 #include "ktdebug.h"
+#include "ktgradientadjuster.h"
 
 ////////// KTCellViewItemDelegate ///////////
 
@@ -74,35 +75,7 @@ void KTCellViewItemDelegate::paint ( QPainter * painter, const QStyleOptionViewI
 		
 		if ( brush.gradient() )
 		{
-			const QGradient *gradient = brush.gradient();
-			
-			QGradient newGradient;
-			switch( gradient->type() )
-			{
-				case  QGradient::LinearGradient:
-				{
-					newGradient = QLinearGradient(option.rect.topLeft(), option.rect.topRight());
-					break;
-				}
-				case QGradient::RadialGradient:
-				{
-					
-					QPointF focal= static_cast<const QRadialGradient*>(gradient)->focalPoint ();
-// 					focal = focal * (QMatrix().scale( rect.width()/ 100 ,   rect.height()/100  ));
-// 					ktDebug() << focal.x() << ", " << focal.y();
-					newGradient = QRadialGradient(option.rect.center(), (option.rect.left()-option.rect.right())/2, option.rect.center() );
-					break;
-				}
-				case QGradient::ConicalGradient:
-				{
-					double angle = static_cast<const QConicalGradient*>(gradient)->angle();
-					ktDebug() << angle;
-					newGradient = QConicalGradient(option.rect.center(), angle);
-					break;
-				}
-			}
-			newGradient.setStops(gradient->stops());
-			
+			QGradient newGradient = KTGradientAdjuster::adjustGradient( brush.gradient(), option.rect);
 			painter->fillRect(option.rect, QBrush(newGradient));
 		}
 		else

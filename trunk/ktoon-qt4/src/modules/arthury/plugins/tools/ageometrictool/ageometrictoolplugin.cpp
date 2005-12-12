@@ -25,6 +25,7 @@
 #include <QImage>
 #include <QPaintDevice>
 
+#include "ktgradientadjuster.h"
 #include "ktdebug.h"
 
 QStringList AGeometricToolPlugin::keys() const
@@ -95,7 +96,10 @@ QRect AGeometricToolPlugin::release(const QString &  brush ,QPainter &  painter 
 	
 	QRect rect = m_path.boundingRect().toRect().normalized().adjusted(-rad, -rad, +rad, +rad);
 	
-	applyGradient( &painter, rect); 
+	if ( painter.brush().gradient() )
+	{
+		painter.setBrush(KTGradientAdjuster::adjustGradient(painter.brush().gradient(), rect));
+	}
 	
 	painter.drawPath(m_path);
 	
@@ -124,46 +128,6 @@ QHash<QString, QAction *> AGeometricToolPlugin::actions()
 	hash.insert(tr("Ellipse"), rectangle);
 
 	return hash;
-}
-
-void AGeometricToolPlugin::applyGradient(QPainter *painter, const QRect &rect)
-{
-	if ( painter && rect.isValid() && !rect.isNull() )
-	{
-		const QGradient *gradient = painter->brush().gradient();
-		if( gradient )
-		{
-			QGradient newGradient;
-			newGradient.setSpread(gradient->spread());
-			switch( gradient->type() )
-			{
-				case  QGradient::LinearGradient:
-				{
-					newGradient = QLinearGradient(rect.topLeft(), rect.topRight());
-					break;
-				}
-				case QGradient::RadialGradient:
-				{
-					
-					QPointF focal= static_cast<const QRadialGradient*>(gradient)->focalPoint ();
-// 					focal = focal * (QMatrix().scale( rect.width()/ 100 ,   rect.height()/100  ));
-// 					ktDebug() << focal.x() << ", " << focal.y();
-					newGradient = QRadialGradient(rect.center(), (rect.left()-rect.right())/2, rect.center() );
-					break;
-				}
-				case QGradient::ConicalGradient:
-				{
-					double angle = static_cast<const QConicalGradient*>(gradient)->angle();
-					ktDebug() << angle;
-					newGradient = QConicalGradient(rect.center(), angle);
-					break;
-				}
-			}
-			newGradient.setStops(gradient->stops());
-			
-			painter->setBrush(QBrush(newGradient));
-		}
-	}
 }
 
 Q_EXPORT_PLUGIN( AGeometricToolPlugin )

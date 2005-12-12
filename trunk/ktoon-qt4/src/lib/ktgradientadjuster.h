@@ -18,35 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef AGEOMETRICTOOLPLUGIN_H
-#define AGEOMETRICTOOLPLUGIN_H
+#ifndef KTGRADIENTADJUSTER_H
+#define KTGRADIENTADJUSTER_H
 
-#include <atoolinterface.h>
 #include <QObject>
+#include <QRadialGradient>
+#include <QConicalGradient>
+#include <QLinearGradient>
+#include <QRect>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class AGeometricToolPlugin : public QObject, public AToolInterface
+class KTGradientAdjuster
 {
-	Q_OBJECT;
-	Q_INTERFACES(AToolInterface);
-	
+	protected:
+		KTGradientAdjuster();
+		~KTGradientAdjuster();
+		
 	public:
-		virtual QStringList keys() const;
-		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form, const QPoint &pos);
-		virtual QRect move(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos);
-		virtual QRect release(const QString &brush, QPainter &painter, const QPainterPath &form, const QPoint &pos);
-		virtual QPainterPath path() const;
-
-		virtual QHash<QString, QAction *>actions();
-		
-// 		virtual void applyGradient(QPainter *painter, const QRect &rect);
-		
-	private:
-		QPainterPath m_path;
-		QRect m_rect;
+		static QGradient adjustGradient(const QGradient *gradient, const QRect &rect );
+		static QLinearGradient adjustGradient(const QLinearGradient &gradient, const QRect &rect);
+		static QRadialGradient adjustGradient(const QRadialGradient &gradient, const QRect &rect);
+		static QConicalGradient adjustGradient(const QConicalGradient &gradient, const QRect &rect);
 };
 
 #endif

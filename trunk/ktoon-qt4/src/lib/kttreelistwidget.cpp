@@ -89,5 +89,7 @@ void KTTreeListWidget::editDoubleClickedItem(QTreeWidgetItem *item, int col)
 void KTTreeListWidget::closeEditor ( QWidget * editor, QAbstractItemDelegate::EndEditHint hint )
 {
 	KT_FUNCINFO;
+	
+	QTreeWidget::closeEditor(editor, hint);
 }
 
