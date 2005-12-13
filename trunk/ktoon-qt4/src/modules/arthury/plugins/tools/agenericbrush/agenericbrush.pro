@@ -4,7 +4,7 @@
 # Destiono es una biblioteca:  
 
 INSTALLS += agenericbrush 
-agenericbrush.files += *.so 
+agenericbrush.files = *.so 
 agenericbrush.path = /plugins/ 
 TARGETDEPS += ../../../../../../src/lib/libktoon.so 
 LIBS += -lktoon 

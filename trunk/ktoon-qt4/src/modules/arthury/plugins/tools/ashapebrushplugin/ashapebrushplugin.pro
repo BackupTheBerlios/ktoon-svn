@@ -4,7 +4,7 @@
 # Destiono es una biblioteca:  
 
 INSTALLS += ashapebrush 
-ashapebrush.files += *.so 
+ashapebrush.files = *.so 
 ashapebrush.path = /plugins/ 
 HEADERS += ashapebrushplugin.h 
 SOURCES += ashapebrushplugin.cpp 

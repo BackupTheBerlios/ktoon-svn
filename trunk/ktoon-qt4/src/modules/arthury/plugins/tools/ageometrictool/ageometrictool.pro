@@ -5,7 +5,7 @@
 
 QT += xml 
 INSTALLS += ageometrictoolplugin 
-ageometrictoolplugin.files += *.so 
+ageometrictoolplugin.files = *.so 
 ageometrictoolplugin.path = /plugins/ 
 TARGETDEPS += ../../../../../../src/lib/libktoon.so 
 LIBS += -lktoon 

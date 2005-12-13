@@ -5,7 +5,7 @@
 
 QT += xml 
 INSTALLS += atransformfilter 
-atransformfilter.files += *.so 
+atransformfilter.files = *.so 
 atransformfilter.path = /plugins/ 
 INCLUDEPATH += ../../../../../../src/modules/arthury/interfaces \
                ../../../../../../src/lib 

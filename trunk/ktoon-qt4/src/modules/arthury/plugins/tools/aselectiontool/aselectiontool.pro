@@ -4,7 +4,7 @@
 # Destiono es una biblioteca:  
 
 INSTALLS += aselectiontool 
-aselectiontool.files += *.so 
+aselectiontool.files = *.so 
 aselectiontool.path = /plugins/ 
 HEADERS += aselectionplugin.h 
 SOURCES += aselectionplugin.cpp 

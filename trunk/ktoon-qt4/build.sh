@@ -109,6 +109,26 @@ function qtCC
 	PARAMETERS="$PARAMETERS "
 }
 
+function updateMakefiles()
+{
+#	qpinfo "Updating Makefiles with parameters ${PARAMETERS}"
+	echo -n "Wait a moment."
+	DIRS=`find . -type d`
+	for i in $DIRS
+	do
+		cd $i
+		if [ -e *.pro ]
+		then
+# 			qpinfo "Updating $i..."
+			echo -n "."
+
+			$QMAKE ${PARAMETERS} 2> /dev/null >/dev/null
+		fi
+		cd - 2> /dev/null >/dev/null
+	done
+	echo
+}
+
 function buildenv()
 {
 	if [ `whoami` == "root" ]
@@ -142,6 +162,8 @@ function addMenuEntry()
 
 function ktinstall()
 {
+	# this is a hack
+	updateMakefiles
 	$MAKE install 2>> $LOG_FILE >/dev/null || fails "Error while install!. Please send the file $LOG_FILE to $EMAIL"
 	
 	if [ $(basename `echo $SHELL`) == "bash" ]
@@ -178,25 +200,6 @@ function ktinstall()
 	fi
 }
 
-function updateMakefiles()
-{
-	qpinfo "Updating Makefiles with parameters ${PARAMETERS}"
-	echo -n "Wait a moment."
-	DIRS=`find . -type d`
-	for i in $DIRS
-	do
-		cd $i
-		if [ -e *.pro ]
-		then
-# 			qpinfo "Updating $i..."
-			echo -n "."
-
-			$QMAKE ${PARAMETERS} 2> /dev/null >/dev/null
-		fi
-		cd - 2> /dev/null >/dev/null
-	done
-	echo
-}
 
 # compile ming
 
@@ -283,7 +286,7 @@ function main()
 	
 	qpinfo "Compiling successful!"
 	
-	qpelec "Do you wants install ktoon in \"$KTOON_HOME\" (y/n)? "
+	qpelec "Do you wants install ktoon in \033[0;41m\"$KTOON_HOME\"\033[0;0m (y/n)? "
 	read SN
 	
 	case $SN in
@@ -359,12 +362,4 @@ export KTOON_HOME
 export INSTALL_ROOT=$KTOON_HOME
 
 main
-
-# HACK: somtimes bin isn't copy to KTOON_HOME
-
-if [ ! -d $KTOON_HOME/bin ]
-then
-	cp -r bin $KTOON_HOME/bin
-fi
-
 
