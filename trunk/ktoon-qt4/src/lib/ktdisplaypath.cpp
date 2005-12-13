@@ -21,6 +21,7 @@
 #include "ktdisplaypath.h"
 
 #include "ktdebug.h"
+#include "ktgradientadjuster.h"
 
 #include <QPainter>
 
@@ -59,6 +60,12 @@ void KTDisplayPath::paintEvent ( QPaintEvent *e )
 	painter.setRenderHint(QPainter::Antialiasing);
 	
 	painter.setPen(m_pen);
+	
+	if ( m_brush.gradient() )
+	{
+		m_brush = QBrush(KTGradientAdjuster::adjustGradient(m_brush.gradient(), m_displayArea.rect()));
+	}
+	
 	painter.setBrush(m_brush);
 	
 	painter.drawPath(m_currentForm);

@@ -9,11 +9,11 @@ INSTALLS += ktbin \
 ktdata.files += credits.txt \
                 ../../COPYING \
                 ../../Changelog 
+ktbin.files += ../../bin/ktoon 
+ktbin.path = /bin 
 ktdata.path = /data 
 kttrans.files += *.qm 
 kttrans.path = /data/translations 
-ktbin.files += ../../bin/ktoon 
-ktbin.path = /bin 
 TRANSLATIONS += ktoon_es.ts \
                 ktoon_fr.ts \
                 ktoon_ru.ts \

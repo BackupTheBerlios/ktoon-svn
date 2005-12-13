@@ -32,13 +32,16 @@ class KTTreeListWidget : public QTreeWidget
 	public:
 		KTTreeListWidget(QWidget *parent = 0);
 		~KTTreeListWidget();
-		
+		void addItems(const QStringList &items);
 		
 	private slots:
 		void editDoubleClickedItem(QTreeWidgetItem *item, int col);
 		
 	protected slots:
 		virtual void closeEditor ( QWidget * editor, QAbstractItemDelegate::EndEditHint hint );
+		
+	signals:
+		void itemRenamed(const QString &text);
 };
 
 #endif

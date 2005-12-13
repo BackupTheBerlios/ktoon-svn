@@ -28,6 +28,10 @@ KTModuleWidgetTitle::KTModuleWidgetTitle(const QString &title, QWidget *parent, 
 {
 	setFrameStyle( QFrame::Box | QFrame::Raised );
 	setText(title);
+	
+#if QT_VERSION >= 0x040100
+	setAutoFillBackground(true);
+#endif
 }
 
 

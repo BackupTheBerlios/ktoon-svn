@@ -63,7 +63,7 @@ class DDockWindow : public QDockWidget
 		DDockInternalWidget *centralWidget();
 		
 	private slots:
-		void addFloatingOption(bool);
+		void setFloatingOption(bool);
 		
 	protected:
 		void closeEvent(QCloseEvent *e);

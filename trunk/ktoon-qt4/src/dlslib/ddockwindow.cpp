@@ -86,7 +86,7 @@ DDockWindow::~DDockWindow()
 {
 }
 
-void DDockWindow::addFloatingOption(bool opt)
+void DDockWindow::setFloatingOption(bool opt)
 {
 	if ( opt )
 	{

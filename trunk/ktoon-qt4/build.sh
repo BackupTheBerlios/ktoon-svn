@@ -360,5 +360,11 @@ export INSTALL_ROOT=$KTOON_HOME
 
 main
 
+# HACK: somtimes bin isn't copy to KTOON_HOME
+
+if [ ! -d $KTOON_HOME/bin ]
+then
+	cp -r bin $KTOON_HOME/bin
+fi
 
 

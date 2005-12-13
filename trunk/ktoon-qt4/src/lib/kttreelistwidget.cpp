@@ -22,6 +22,7 @@
 #include <QHeaderView>
 #include <QItemDelegate>
 #include <QEvent>
+#include <QLineEdit>
 
 #include "ktdebug.h"
 
@@ -65,9 +66,9 @@ KTTreeListWidget::KTTreeListWidget(QWidget *parent) : QTreeWidget(parent)
 	
 	setAlternatingRowColors(true);
 	
-// 	KTTreeListWidgetDelegate *delegator = new KTTreeListWidgetDelegate(this);
+	KTTreeListWidgetDelegate *delegator = new KTTreeListWidgetDelegate(this);
 	
-// 	setItemDelegate(delegator);
+	setItemDelegate(delegator);
 	
 	connect(this, SIGNAL(itemDoubleClicked ( QTreeWidgetItem *, int )), this, SLOT(editDoubleClickedItem(QTreeWidgetItem *, int  )));
 }
@@ -86,9 +87,28 @@ void KTTreeListWidget::editDoubleClickedItem(QTreeWidgetItem *item, int col)
 	}
 }
 
+void KTTreeListWidget::addItems(const QStringList &items)
+{
+	QStringList::ConstIterator it = items.begin();
+	
+	while(it != items.end())
+	{
+		QTreeWidgetItem *item = new QTreeWidgetItem(this);
+		item->setText(0, *it);
+		++it;
+	}
+}
+
 void KTTreeListWidget::closeEditor ( QWidget * editor, QAbstractItemDelegate::EndEditHint hint )
 {
 	KT_FUNCINFO;
+	
+	QLineEdit *edit = qobject_cast<QLineEdit *>(editor);
+
+	if ( edit )
+	{
+		emit itemRenamed(edit->text());
+	}
 	
 	QTreeWidget::closeEditor(editor, hint);
 }
