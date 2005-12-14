@@ -25,6 +25,7 @@
 #include <QString>
 #include <QDateTime>
 #include <QPoint>
+#include <QPointF>
 #include <QRect>
 #include <QRegion>
 #include <QStringList>
@@ -127,6 +128,12 @@ KTDebug& KTDebug::operator<<( const QTime& time)
 }
 
 KTDebug& KTDebug::operator<<( const QPoint & p)  
+{
+	*this << "(" << p.x() << ", " << p.y() << ")";
+	return *this;
+}
+
+KTDebug& KTDebug::operator<<( const QPointF & p)  
 {
 	*this << "(" << p.x() << ", " << p.y() << ")";
 	return *this;

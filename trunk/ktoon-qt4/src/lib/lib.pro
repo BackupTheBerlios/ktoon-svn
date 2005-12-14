@@ -3,6 +3,9 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/lib
 # Destiono es una biblioteca:  ktoon
 
+INSTALLS += libktoon 
+libktoon.files += *.so* 
+libktoon.path = /lib/ 
 IMAGES += wizard1.xpm \
           wizard2.xpm 
 HEADERS += ktapplication.h \
@@ -46,7 +49,8 @@ HEADERS += ktapplication.h \
            ktradiobuttongroup.h \
            ktoptionaldialog.h \
            kttreelistwidget.h \
-           ktgradientadjuster.h 
+           ktgradientadjuster.h \
+           ktpathadjuster.h 
 SOURCES += ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
@@ -88,7 +92,8 @@ SOURCES += ktapplication.cpp \
            ktradiobuttongroup.cpp \
            ktoptionaldialog.cpp \
            kttreelistwidget.cpp \
-           ktgradientadjuster.cpp 
+           ktgradientadjuster.cpp \
+           ktpathadjuster.cpp 
 QT += qt3support xml opengl
 MOC_DIR = .moc
 UI_DIR = .ui
@@ -100,8 +105,3 @@ dll \
 moc
 TEMPLATE = lib
 QMAKE_COPY_FILE = cp -fd
-
-INSTALLS += libktoon 
-libktoon.files = *.so* 
-libktoon.path = /lib/ 
-

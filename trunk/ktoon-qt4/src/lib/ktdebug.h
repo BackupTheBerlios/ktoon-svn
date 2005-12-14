@@ -47,6 +47,7 @@ class QDateTime;
 class QDate;
 class QTime;
 class QPoint;
+class QPointF;
 class QSize;
 class QRect;
 class QRegion;
@@ -169,6 +170,7 @@ class KTDebug
 		KTDebug& operator<<( const QDate&     );
 		KTDebug& operator<<( const QTime&     );
 		KTDebug& operator<<( const QPoint & ) ;
+		KTDebug& operator<<( const QPointF & ) ;
 		KTDebug& operator<<( const QSize & ) ;
 		KTDebug& operator<<( const QRect & ) ;
 		KTDebug& operator<<( const QRegion & );

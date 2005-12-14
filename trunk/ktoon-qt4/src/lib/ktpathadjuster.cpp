@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,71 +18,44 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "ktpathadjuster.h"
 
-#include "ktcellscolor.h"
-#include "ktdebug.h"
-
-KTCellsColor::KTCellsColor(QWidget *parent, Type type)
-	: KTCellView(parent), m_type(type), m_countColor(0), m_readOnly(false), MAX_COLUMNS(16), m_col(0), m_row(0)
-{}
-
-
-KTCellsColor::~KTCellsColor()
+KTPathAdjuster::KTPathAdjuster()
 {
 }
 
-void KTCellsColor::addColor(const QBrush& b)
+
+KTPathAdjuster::~KTPathAdjuster()
 {
-	KTCellViewItem *item = new KTCellViewItem;
+}
+
+QPainterPath KTPathAdjuster::toRect(const QPainterPath &p, const QRect &rect, float offset)
+{
+	QPainterPath path;
 	
-	if( columnCount() < MAX_COLUMNS)
+	QRectF br = p.boundingRect();
+	QMatrix matrix;
+	
+	float sx = 1, sy = 1;
+	if ( rect.width() < br.width() )
 	{
-		insertColumn( columnCount()+1);
+		sx = static_cast<float>(rect.width()-offset) / static_cast<float>(br.width());
+	}
+	if ( rect.height() < br.height() )
+	{
+		sy = static_cast<float>(rect.height()-offset) / static_cast<float>(br.height());
 	}
 	
-	if( m_countColor % MAX_COLUMNS == 0)
-	{
-		insertRow( (rowCount()+1));
-		m_row++;
-		m_col = 0;
-	}
-	else
-	{
-		m_col++;
-	}
-	item->setBackground(b);
-	m_countColor++;
-// 	ktDebug() << "col " << m_col << " row " << m_row-1;
-	setItem(m_row-1 , m_col , item);
-// 	setCurrentItem( item);
-}
-
-void KTCellsColor::setReadOnly(bool enable)
-{
-	m_readOnly = enable;
-}
-
-bool KTCellsColor::isReadOnly()
-{
-	return m_readOnly;
-}
-
-void KTCellsColor::setType(Type type)
-{
-	m_type = type;
-}
-
-int KTCellsColor::type()
-{
-	return m_type;
-}
-
-QString KTCellsColor::name() const
-{
-	return m_name;
-}
-
-void KTCellsColor::setName(const QString& name)
-{
-	m_name = name;
+	float factor = qMin(sx, sy);
+	matrix.scale(factor, factor);
+	path = matrix.map(p);
+	
+	matrix.reset();
+	
+	QPointF pos = path.boundingRect().topLeft();
+	
+	float tx = offset/2-pos.x(), ty = offset/2-pos.y();
+	
+	matrix.translate(tx, ty);
+	return matrix.map(path);
 }

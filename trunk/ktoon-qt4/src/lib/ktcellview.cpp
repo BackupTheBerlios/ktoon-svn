@@ -165,7 +165,7 @@ class KTCellViewModel : public QAbstractTableModel
 		void clear();
 		void itemChanged(KTCellViewItem *item);
 		
-		virtual QModelIndex parent ( const QModelIndex & index ) const
+		virtual QModelIndex parent ( const QModelIndex & ) const
 		{
 			return QModelIndex();
 		}

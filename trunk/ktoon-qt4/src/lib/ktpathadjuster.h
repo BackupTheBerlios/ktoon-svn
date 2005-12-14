@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,71 +18,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef KTPATHADJUSTER_H
+#define KTPATHADJUSTER_H
 
-#include "ktcellscolor.h"
-#include "ktdebug.h"
+#include <QPainterPath>
 
-KTCellsColor::KTCellsColor(QWidget *parent, Type type)
-	: KTCellView(parent), m_type(type), m_countColor(0), m_readOnly(false), MAX_COLUMNS(16), m_col(0), m_row(0)
-{}
-
-
-KTCellsColor::~KTCellsColor()
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+class KTPathAdjuster
 {
-}
+	public:
+		KTPathAdjuster();
+		~KTPathAdjuster();
+		
+		static QPainterPath toRect(const QPainterPath &p, const QRect &rect, float offset = 10.0f);
 
-void KTCellsColor::addColor(const QBrush& b)
-{
-	KTCellViewItem *item = new KTCellViewItem;
-	
-	if( columnCount() < MAX_COLUMNS)
-	{
-		insertColumn( columnCount()+1);
-	}
-	
-	if( m_countColor % MAX_COLUMNS == 0)
-	{
-		insertRow( (rowCount()+1));
-		m_row++;
-		m_col = 0;
-	}
-	else
-	{
-		m_col++;
-	}
-	item->setBackground(b);
-	m_countColor++;
-// 	ktDebug() << "col " << m_col << " row " << m_row-1;
-	setItem(m_row-1 , m_col , item);
-// 	setCurrentItem( item);
-}
+};
 
-void KTCellsColor::setReadOnly(bool enable)
-{
-	m_readOnly = enable;
-}
-
-bool KTCellsColor::isReadOnly()
-{
-	return m_readOnly;
-}
-
-void KTCellsColor::setType(Type type)
-{
-	m_type = type;
-}
-
-int KTCellsColor::type()
-{
-	return m_type;
-}
-
-QString KTCellsColor::name() const
-{
-	return m_name;
-}
-
-void KTCellsColor::setName(const QString& name)
-{
-	m_name = name;
-}
+#endif

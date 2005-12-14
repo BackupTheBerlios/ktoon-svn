@@ -22,13 +22,19 @@
 #include <QPainter>
 #include "ktdebug.h"
 
+#include "ktgradientadjuster.h"
+
 KTGradientViewer::KTGradientViewer(QWidget *parent)
  : QFrame(parent)
 {
 
-	setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+// 	setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
 
 	m_type = QGradient::LinearGradient;
+	
+	setMidLineWidth(2);
+	setLineWidth(2);
+	setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
 }
 
 
@@ -37,7 +43,7 @@ KTGradientViewer::~KTGradientViewer()
 	KTEND;
 }
 
-void KTGradientViewer::paintEvent( QPaintEvent*)
+void KTGradientViewer::paintEvent( QPaintEvent* e)
 {
 	QPainter p(this);
 	createGradient();
@@ -45,6 +51,8 @@ void KTGradientViewer::paintEvent( QPaintEvent*)
 	p.setBrush(m_gradient);
 	
 	p.drawRect(rect());
+	
+	QFrame::paintEvent(e);
 }
 
 QSize KTGradientViewer::sizeHint() const

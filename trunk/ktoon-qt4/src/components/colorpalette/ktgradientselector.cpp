@@ -102,7 +102,7 @@ KTGradientSelector::KTGradientSelector( Qt::Orientation o, QWidget *parent )
 
 void KTGradientSelector::init()
 {
-	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
 	connect(this, SIGNAL(valueChanged (int)), this, SLOT(valueChange(int)));
 	

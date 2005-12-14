@@ -9,14 +9,16 @@ HEADERS += ktkeyframe.h \
            ktprojectmanager.h \
            ktscene.h \
            ktdocument.h \
-           ktserializableobject.h 
+           ktserializableobject.h \
+           ktbrush.h 
 SOURCES += ktkeyframe.cpp \
            agraphiccomponent.cpp \
            ktlayer.cpp \
            ktprojectmanager.cpp \
            ktscene.cpp \
            ktdocument.cpp \
-           ktserializableobject.cpp 
+           ktserializableobject.cpp \
+           ktbrush.cpp 
 INCLUDEPATH += ../../src/modules/opengl/draw \
 ../../src/modules/opengl/tools \
 ../../src/modules/opengl/cameras \

@@ -120,11 +120,10 @@ QDomElement KTBrush::createXML( QDomDocument &doc )
 		}
 		
 		polygonElement.setAttribute("points", attribute);
+		item.appendChild(polygonElement);
 		
 		++polygonIt;
 	}
-	
-	ktDebug() << doc.toString();
 	
 	return item;
 }

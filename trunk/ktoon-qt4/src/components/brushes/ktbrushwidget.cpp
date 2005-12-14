@@ -47,6 +47,19 @@ KTBrushWidget::KTBrushWidget(QWidget *parent) : KTModuleWidgetBase( parent ), m_
 
 KTBrushWidget::~KTBrushWidget()
 {
+	KTEND;
+	
+	QDomDocument doc;
+	QDomElement root = doc.createElement("Brushes");
+	doc.appendChild(root);
+	
+	for ( int i = 0; i < m_customBrushesList->count(); i++)
+	{
+		KTBrush brush;
+		brush.setBrushForm( m_customBrushesList->path(i) );
+		root.appendChild(brush.createXML( doc ));
+	}
+	
 	if ( m_currentBrush ) delete m_currentBrush;
 } 
 
@@ -122,8 +135,7 @@ void KTBrushWidget::setupButtons()
 
 void KTBrushWidget::changeValueMinThickness(int value)
 {
-// 	m_brushEditor->setThickness( value );
-	
+	m_currentBrush->setPenWidth( value );
 	emit brushSelected( m_currentBrush  );
 }
 

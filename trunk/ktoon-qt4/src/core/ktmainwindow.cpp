@@ -109,6 +109,12 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 KTMainWindow::~KTMainWindow()
 {
 	KTEND;
+	
+	if ( m_animationSpace )
+		delete m_animationSpace;
+	
+	if ( m_drawingSpace )
+		delete m_drawingSpace;
 }
 
 

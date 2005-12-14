@@ -51,6 +51,7 @@ APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0),
 APaintArea::~APaintArea()
 {
 	KTEND;
+	if ( m_currentBrush ) delete m_currentBrush;
 }
 
 QSize APaintArea::sizeHint() const
@@ -472,7 +473,7 @@ void APaintArea::setTool( AToolInterface *toolIface, const QString &tool)
 
 void APaintArea::setBrush( const KTBrush *brush )
 {
-	m_currentBrush = new KTBrush(brush);
+	m_currentBrush = new KTBrush(*brush);
 }
 
 QPainterPath APaintArea::translatePath(const QPainterPath &path, const QPoint &pos)

@@ -20,7 +20,7 @@
 #include "ashapebrushplugin.h"
 
 #include <QKeySequence>
-#include <QDebug>
+#include <QMatrix>
 
 QStringList AShapeBrushPlugin::keys() const
 {
@@ -35,12 +35,17 @@ QRect AShapeBrushPlugin::press(const QString &brush, QPainter &painter, const QP
 	return move(brush, painter, form, pos, pos);
 }
 
-QRect AShapeBrushPlugin::move(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos)
+QRect AShapeBrushPlugin::move(const QString &brush, QPainter &painter,const QPainterPath &aPath,const QPoint &oldPos, const QPoint &newPos)
 {
 	painter.save();
+	
+	QMatrix matrix;
+	matrix.translate(newPos.x() - aPath.boundingRect().center().x(), newPos.y() - aPath.boundingRect().center().y()  );
+	
+	QPainterPath form = matrix.map(aPath);
 
-	int rad = painter.pen().width() / 2;
-	QRect boundingRect = QRect(oldPos, newPos).normalized().adjusted(-rad, -rad, +rad, +rad);
+	int rad = painter.pen().width()/2 + 1;
+	QRect boundingRect = form.boundingRect().toRect().normalized().adjusted(-rad, -rad, +rad, +rad);
 	
 	QColor color = painter.pen().color();
 	int thickness = painter.pen().width();
@@ -59,7 +64,7 @@ QRect AShapeBrushPlugin::move(const QString &brush, QPainter &painter,const QPai
 	
 	painter.drawPath(path);
 	
-	boundingRect = path.boundingRect().toRect();
+// 	boundingRect = path.boundingRect().toRect();
 	
 	painter.restore();
 	return boundingRect;

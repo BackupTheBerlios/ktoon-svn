@@ -23,6 +23,8 @@
 #include <QStringList>
 #include "ktdebug.h"
 
+#include "ktpathadjuster.h"
+
 KTBrushesList::KTBrushesList(QWidget *parent)
 	: KTCellView(parent), MAX_COLUMNS(10), m_row(0), m_col(0)
 {
@@ -48,12 +50,12 @@ void KTBrushesList::addBrush(const QPainterPath &form)
 	p.setPen(QPen(Qt::black,3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 	
 // 	p.setBrush( QBrush( foregroundColor (), Qt::SolidPattern));
-	
-	
-	p.drawPath(form);
+
+
+	p.drawPath(KTPathAdjuster::toRect(form, tbrush.rect(), 0));
 	
 	newBrush->setImage( tbrush );
-// 	newBrush->setBackground( QColor(34,34,234,60 ) );
+	newBrush->setBackground( QColor(34,34,234,60 ) );
 	
 	m_forms << form;
 	

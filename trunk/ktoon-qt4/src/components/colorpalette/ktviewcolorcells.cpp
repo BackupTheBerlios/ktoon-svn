@@ -52,7 +52,7 @@ void KTViewColorCells::setupForm()
 	layout()->addWidget(m_containerPalette);
 	
 	//Default Palette
-	m_defaultPalette = new  KTCellsColor( m_containerPalette );
+	m_defaultPalette = new  KTCellsColor;
 	m_defaultPalette->setName( tr("Default Palette") );
 	m_defaultPalette->setReadOnly( true);
 	fillDefaultColors();
@@ -60,7 +60,7 @@ void KTViewColorCells::setupForm()
 	
 	
 	//Named Colors
-	m_qtColorPalette = new  KTCellsColor( m_containerPalette );
+	m_qtColorPalette = new  KTCellsColor;
 	m_qtColorPalette->setReadOnly( true );
 	m_qtColorPalette->setName( tr("Named Colors") );
 	addPalette(m_qtColorPalette);
@@ -71,19 +71,14 @@ void KTViewColorCells::setupForm()
 	readPalettes(ktapp->configDir()+"/palettes"); // Locals
 	
 	//Custom Color Palette
-	m_customColorPalette = new  KTCellsColor(m_containerPalette);
+	m_customColorPalette = new  KTCellsColor;
 	m_customColorPalette->setName( tr("Custom Color Palette"));
 	addPalette( m_customColorPalette );
 	
-	m_containerPalette->addWidget(m_customColorPalette);
-
-	
 	//Custom Gradient Palette
-	m_customGradientPalette = new  KTCellsColor(m_containerPalette);
+	m_customGradientPalette = new  KTCellsColor;
 	m_customGradientPalette->setName( tr("Custom Gradient Palette"));
 	addPalette( m_customGradientPalette );
-	
-	m_containerPalette->addWidget(m_customGradientPalette);
 	
 	connect(m_chooserPalette, SIGNAL(activated ( int  )), m_containerPalette, SLOT(setCurrentIndex ( int )));
 }
@@ -145,11 +140,7 @@ void KTViewColorCells::addPalette(const QString & name, const QList<QBrush> & br
 	palette->setName(name);
 	addPalette(palette);
 
-// 	connect(palette, SIGNAL(itemEntered(KTCellViewItem *)), this, SLOT(changeColor(KTCellViewItem *)));
-// 	connect(palette, SIGNAL(itemPressed(KTCellViewItem *)), this, SLOT(changeColor(KTCellViewItem *)));
 	palette->setReadOnly( !editable );
-// 	m_chooserPalette->addItem(name);
-// 	m_containerPalette->addWidget(palette);
 }
 
 void KTViewColorCells::addPalette(KTCellsColor *palette)
