@@ -1,14 +1,22 @@
-//
-// C++ Implementation: ktbrusheslist
-//
-// Description: 
-//
-//
-// Author: Jorge Cuadrado <kuadrosx@toonka.com>, (C) 2005
-//
-// Copyright: See COPYING file that comes with this distribution
-//
-//
+/***************************************************************************
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 
 #include "ktbrusheslist.h"
 #include <QPainter>
@@ -25,7 +33,7 @@ KTBrushesList::~KTBrushesList()
 {
 }
 
-void KTBrushesList::addBrush(int thickness, int smooth, const QPainterPath &form, QString name)
+void KTBrushesList::addBrush(const QPainterPath &form)
 {
 	KT_FUNCINFO;
 
@@ -73,74 +81,6 @@ void KTBrushesList::addBrush(int thickness, int smooth, const QPainterPath &form
 QPainterPath KTBrushesList::path(int index)
 {
 	return m_forms[index];
-}
-
-void KTBrushesList::changeCurrentValueMin( int min)
-{
-// 	if(currentItem() )
-// 	{
-// 		currentItem()->setText(0,QString::number(min));
-// 	}
-}
-
-void KTBrushesList::changeCurrentValueMax( int max)
-{
-// 	if(currentItem() )
-// 	{
-// 		currentItem()->setText(1,QString::number(max));
-// 	}
-}
-
-void KTBrushesList::changeCurrentValueSmooth( int smooth)
-{
-// 	if(currentItem() )
-// 	{
-// 		currentItem()->setText(2,QString::number(smooth));
-// 	}
-}
-
-void KTBrushesList::changeCurrentValueName( QString name)
-{
-// 	if(currentItem() )
-// 	{
-// 		currentItem()->setText(3, name);
-// 	}
-}
-
-int KTBrushesList::removeCurrentBrush()
-{
-// 	QPoint p = visualItemRect ( currentItem()).topRight();
-// 	delete currentItem();
-// 	QTreeWidgetItem *item = itemAt( p -= QPoint(2,2) );
-// 	setCurrentItem( item );
-	
-// 	int index = indexCurrentBrush();
-// 	delete currentItem();
-// 	if(index < 1)
-// 	{
-// 		setCurrentItem( topLevelItem ( 0 ) );
-// 	}
-// 	else
-// 	{
-// 		setCurrentItem( topLevelItem ( index -1 ) );
-// 	}
-// 	return index;
-	
-}
-
-void KTBrushesList::changeCurrentBrush()
-{
-// 	int min = QString(currentItem()->text(0)).toInt();
-// 	int max = QString(currentItem()->text(1)).toInt();
-// 	int smooth = QString(currentItem()->text(2)).toInt();
-// 	QString name = currentItem()->text(3);
-// 	emit( changeCurrentBrush(currentItem()));
-}
-
-int KTBrushesList::indexCurrentBrush()
-{
-	return 0;
-// 	return indexOfTopLevelItem(currentItem());
 }
 
 int KTBrushesList::count() const

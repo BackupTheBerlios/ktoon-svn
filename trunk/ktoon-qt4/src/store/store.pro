@@ -10,7 +10,8 @@ HEADERS += ktcolor.h \
            ktlayer.h \
            ktprojectmanager.h \
            ktscene.h \
-           ktdocument.h 
+           ktdocument.h \
+           ktserializableobject.h 
 SOURCES += ktcolor.cpp \
            ktbrush.cpp \
            ktkeyframe.cpp \
@@ -18,7 +19,8 @@ SOURCES += ktcolor.cpp \
            ktlayer.cpp \
            ktprojectmanager.cpp \
            ktscene.cpp \
-           ktdocument.cpp 
+           ktdocument.cpp \
+           ktserializableobject.cpp 
 INCLUDEPATH += ../../src/modules/opengl/draw \
 ../../src/modules/opengl/tools \
 ../../src/modules/opengl/cameras \

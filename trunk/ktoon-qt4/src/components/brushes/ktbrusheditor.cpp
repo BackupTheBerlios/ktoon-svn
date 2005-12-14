@@ -69,16 +69,9 @@ class KTBrushEditor::Editor
 		int editedPointIndex;
 };
 
-KTBrushEditor::KTBrushEditor(QWidget *parent) : QFrame(parent), m_editor(0)
+KTBrushEditor::KTBrushEditor(QWidget *parent) : KTDisplayPath(parent), m_editor(0)
 {
-	m_editArea = QImage(100, 100, QImage::Format_RGB32);
-	m_editArea.fill(qRgb(255, 255, 255));
-	
 	setMouseTracking(true);
-	
-	setMidLineWidth(2);
-	setLineWidth(2);
-	setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
 	
 	m_editor = new Editor();
 }
@@ -88,43 +81,35 @@ KTBrushEditor::~KTBrushEditor()
 	if ( m_editor ) delete m_editor;
 }
 
-QSize KTBrushEditor::sizeHint() const
-{
-	return (QSize(parentWidget()->width(), m_editArea.height() + 15));
-}
-
 void KTBrushEditor::paintEvent(QPaintEvent *e)
 {
 	QFrame::paintEvent(e);
-	QPainter painter;
-	
-	m_editArea.fill(qRgb(255, 255, 255));
-	
-	painter.begin(&m_editArea);
-	painter.setRenderHint(QPainter::Antialiasing);
-	
-	painter.setPen(Qt::black);
-	
 	if ( m_editor->editing )
 	{
+		QImage *editArea = displayDevice();
+		QPainter painter( editArea ) ;
+		painter.setRenderHint(QPainter::Antialiasing);
+		painter.setPen(Qt::black);
+		
+		editArea->fill(qRgb(255, 255, 255));
+		
 		painter.save();
 		drawEditor(&painter);
 		painter.restore();
+		
+		painter.end();
+	
+		painter.begin(this);
+		painter.translate(QPoint(width()/2-50, (height() - editArea->height())/2 ));
+	
+		painter.drawImage(QPoint(0, 0), *editArea);
+	
+		painter.drawRect(editArea->rect());
 	}
 	else
 	{
-		// Draw the path
-		painter.drawPath(m_currentForm);
+		KTDisplayPath::paintEvent(e);
 	}
-	
-	painter.end();
-	
-	painter.begin(this);
-	painter.translate(QPoint(width()/2-50, (height() - m_editArea.height())/2 ));
-	
-	painter.drawImage(QPoint(0, 0), m_editArea);
-	
-	painter.drawRect(m_editArea.rect());
 }
 
 void KTBrushEditor::drawEditor(QPainter *p)
@@ -235,37 +220,22 @@ void KTBrushEditor::setEdit(bool e)
 	repaint();
 }
 
-QPainterPath KTBrushEditor::brushEdited()
-{
-	QPainterPath path = m_editor->createPath();
-	
-	QPointF position = path.currentPosition();
-	
-	QMatrix matrix;
-	matrix.translate(-position.x(),-position.y());	
-	return matrix.map(path);
-}
-
 QPoint KTBrushEditor::mapToEditor(const QPoint &p)
 {
-	return p - QPoint(width()/2-50, 0);
+	return p - QPoint( width()/2 - displayDevice()->width()/2, height()/2 - displayDevice()->height()/2);
 }
 
-void KTBrushEditor::setForm(const QPainterPath &path)
+QPainterPath KTBrushEditor::currentPainterPath()
 {
-	QMatrix matrix;
+	if ( m_editor->editing )
+	{
+		QPainterPath path = m_editor->createPath();
+		QPointF position = path.currentPosition();
 	
-	matrix.scale(0.5,0.5);
-	
-	m_currentForm = matrix.map(path);
-	
-	matrix.reset();
-	
-	QPointF pos = m_currentForm.currentPosition();
-	
-	matrix.translate( (m_editArea.width()/2) - pos.x(), (m_editArea.height()/2) - pos.y());
-	
-	m_currentForm = matrix.map(m_currentForm);
-	
-	repaint();
+		QMatrix matrix;
+		matrix.translate(-position.x(),-position.y());	
+		return matrix.map(path);
+	}
+	return KTDisplayPath::currentPainterPath();
 }
+

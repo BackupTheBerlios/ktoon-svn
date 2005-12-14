@@ -21,12 +21,12 @@
 #include "ktlayer.h"
 #include "ktdebug.h"
 
-KTLayer::KTLayer(QObject *parent) : QObject(parent), m_isVisible(true), m_name(tr("Layer")), m_currentFrame(0), m_framesCount(0)/*, m_copyFrame(0)*/
+KTLayer::KTLayer(QObject *parent) : KTSerializableObject(parent), m_isVisible(true), m_name(tr("Layer")), m_currentFrame(0), m_framesCount(0)/*, m_copyFrame(0)*/
 {
 // 	m_currentFrame = createFrame();
 }
 
-KTLayer::KTLayer(const QString &layerName, QObject * parent)  : QObject(parent), m_isVisible(true), m_name(layerName), m_currentFrame(0), m_framesCount(0)/*, m_copyFrame(0)*/
+KTLayer::KTLayer(const QString &layerName, QObject * parent)  : KTSerializableObject(parent), m_isVisible(true), m_name(layerName), m_currentFrame(0), m_framesCount(0)/*, m_copyFrame(0)*/
 {
 // 	m_currentFrame = createFrame();
 }

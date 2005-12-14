@@ -1,14 +1,23 @@
-//
-// C++ Interface: ktbrusheslist
-//
-// Description: 
-//
-//
-// Author: Jorge Cuadrado <kuadrosx@toonka.com>, (C) 2005
-//
-// Copyright: See COPYING file that comes with this distribution
-//
-//
+/***************************************************************************
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
 #ifndef KTBRUSHESLIST_H
 #define KTBRUSHESLIST_H
 
@@ -31,18 +40,9 @@ class KTBrushesList : public KTCellView
 	public:
 		KTBrushesList(QWidget *parent = 0);
 		~KTBrushesList();
-		void addBrush(int thickness, int smooth, const QPainterPath &form, QString name);
-		int removeCurrentBrush();
-		int indexCurrentBrush();
+		void addBrush(const QPainterPath &form);
 		QPainterPath path(int);
 		int count() const;
-		
-	public slots:
-		void changeCurrentValueMin(int min);
-		void changeCurrentValueMax(int max);
-		void changeCurrentValueSmooth(int smooth);
-		void changeCurrentValueName(QString name);
-		void changeCurrentBrush();
 		
 	signals:
 		void changeCurrentBrush( QListWidgetItem*);

@@ -128,3 +128,20 @@ void KTDisplayPath::setBrush(const QBrush &brush)
 	m_brush = brush;
 }
 
+QPainterPath KTDisplayPath::currentPainterPath()
+{
+	QPainterPath path = m_currentForm;
+	
+	QPointF position = path.currentPosition();
+	
+	QMatrix matrix;
+	matrix.translate(-position.x(),-position.y());	
+	return matrix.map(path);
+}
+
+
+QImage *KTDisplayPath::displayDevice()
+{
+	return &m_displayArea;
+}
+

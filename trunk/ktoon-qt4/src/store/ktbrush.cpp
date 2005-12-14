@@ -21,13 +21,13 @@
 #include "ktbrush.h"
 #include <ktdebug.h>
 
-KTBrush::KTBrush(): QObject()
+KTBrush::KTBrush(): KTSerializableObject()
 {
 	KTINIT;
 	setup();
 }
 
-KTBrush::KTBrush(const QPainterPath &brushForm) : QObject(), m_brushForm(brushForm)
+KTBrush::KTBrush(const QPainterPath &brushForm) : KTSerializableObject(), m_brushForm(brushForm)
 {
 	KTINIT;
 	setup();
@@ -90,8 +90,10 @@ void KTBrush::setupPainter(QPainter *p)
 	p->setRenderHint(QPainter::Antialiasing, true);
 	p->setPen(m_pen);
 	
-
-	
 	p->setBrush(m_brush);
 }
 
+QDomElement KTBrush::createXML( QDomDocument & )
+{
+	return QDomElement();
+}

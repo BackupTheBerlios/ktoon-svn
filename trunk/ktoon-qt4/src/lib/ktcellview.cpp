@@ -296,12 +296,12 @@ void KTCellViewModel::setItem(int row, int column, KTCellViewItem *item)
 	if (item == oldItem)
 		return;
 
-    // remove old
+	// remove old
 	if (oldItem)
 		oldItem->m_model = 0;
 	delete m_table.at(i);
 
-    // set new
+	// set new
 	if (item)
 		item->m_model = this;
 	m_table[i] = item;
@@ -643,17 +643,25 @@ void KTCellView::setup()
 	verticalHeader()->hide();
 	horizontalHeader()->hide();
 	
-	for(int column = 0; column < columnCount(); column++)
-	{
-		horizontalHeader()->resizeSection(column, 25);
-	}
-	for( int row = 0; row < rowCount(); row++)
-	{
-		verticalHeader()->resizeSection(row, 25);
-	}
+	setItemSize( 25, 25 );
 	
 	horizontalHeader()->setResizeMode(QHeaderView::Custom);
 	verticalHeader()->setResizeMode(QHeaderView::Custom);
+}
+
+void KTCellView::setItemSize(int w, int h)
+{
+	m_rectHeight = h;
+	m_rectWidth = w;
+	
+	for(int column = 0; column < columnCount(); column++)
+	{
+		horizontalHeader()->resizeSection(column, m_rectWidth);
+	}
+	for( int row = 0; row < rowCount(); row++)
+	{
+		verticalHeader()->resizeSection(row, m_rectHeight);
+	}
 }
 
 void KTCellView::emitItemPressed(const QModelIndex &index)
@@ -852,15 +860,13 @@ void KTCellView::insertRow(int row)
 {
 	m_model->insertRows(row);
 	
-// 	horizontalHeader()->resizeSection( columnCount()-1 , 25);
-	verticalHeader()->resizeSection(row-1, 25);
+	verticalHeader()->resizeSection(row-1, m_rectHeight);
 }
 
 void KTCellView::insertColumn(int column)
 {
 	m_model->insertColumns(column);
-// 	verticalHeader()->resizeSection(rowCount()-1, 25);
-	horizontalHeader()->resizeSection(column-1, 25);
+	horizontalHeader()->resizeSection(column-1, m_rectWidth);
 }
 
 

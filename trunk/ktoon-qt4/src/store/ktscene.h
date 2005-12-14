@@ -26,11 +26,13 @@
 
 typedef QList<KTLayer *> Layers;
 
+#include "ktserializableobject.h"
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTScene : public QObject
+class KTScene : public KTSerializableObject
 {
 	Q_OBJECT
 	public:

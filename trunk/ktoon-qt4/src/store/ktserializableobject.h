@@ -18,64 +18,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTLAYER_H
-#define KTLAYER_H
+#ifndef KTSERIALIZABLEOBJECT_H
+#define KTSERIALIZABLEOBJECT_H
 
 #include <QObject>
-#include "ktkeyframe.h"
-
-#include "ktserializableobject.h"
-
-typedef QList<KTKeyFrame *> Frames;
+#include <QDomDocument>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-
-class KTLayer : public KTSerializableObject
+class KTSerializableObject : public QObject
 {
-	Q_OBJECT
 	public:
-		KTLayer(QObject *parent = 0);
-		KTLayer(const QString &layerName, QObject * parent = 0);
+		KTSerializableObject(QObject *parent = 0);
+		~KTSerializableObject();
 		
-		~KTLayer();
-		Frames frames();
-		void setFrames(const Frames &frames);
-		
-		KTKeyFrame *createFrame(bool addToEnd );
-		
-		KTKeyFrame *currentFrame();
-		void setCurrentFrame(int index);
-		void pasteFrame(const int& index, KTKeyFrame* copy);
-		void moveCurrentFrame( bool up);
-		void removeCurrentFrame();
-		void lockCurrentFrame();
-		
-		int indexCurrentFrame();
-		
-		void setLayerName(const QString &name);
-		void setVisible(bool isVisible);
-		
-		QString layerName() const;
-		bool isVisible(); 
-	
-	signals:
-		void frameCreated( const QString &name, bool toEnd );
-		void visibilityChanged(bool );
-		void frameMoved(bool up);
-		void frameRemoved();
-		void frameLocked();
-		
-	private:
-		Frames m_frames;
-		bool m_isVisible;
-		QString m_name;
-		
-		KTKeyFrame *m_currentFrame;
-		
-		int m_framesCount;
-
+		virtual QDomElement createXML( QDomDocument &doc );
 };
 
 #endif

@@ -25,13 +25,14 @@
 #include <QList>
 
 #include "agraphiccomponent.h"
+#include "ktserializableobject.h"
 
 class KTKeyFrame;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTKeyFrame : public QObject
+class KTKeyFrame : public KTSerializableObject
 {
 	public:
 		KTKeyFrame(QObject *parent = 0);

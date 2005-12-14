@@ -43,6 +43,8 @@ class KTDisplayPath : public QFrame
 		void setThickness(int value);
 		void setPen(const QPen &pen);
 		void setBrush(const QBrush &brush);
+		virtual QPainterPath currentPainterPath();
+		QImage *displayDevice();
 		
 	private:
 		QPainterPath m_currentForm;

@@ -26,10 +26,12 @@
 #include <QBrush>
 #include <QPen>
 
+#include "ktserializableobject.h"
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTBrush : public QObject
+class KTBrush : public KTSerializableObject
 {
 	public:
 		KTBrush();
@@ -45,6 +47,8 @@ class KTBrush : public QObject
 		void setPenWidth(double width);
 		
 		void setupPainter(QPainter *painter );
+		
+		QDomElement createXML( QDomDocument &doc );
 		
 	private:
 		void setup();

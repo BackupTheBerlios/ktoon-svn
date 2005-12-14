@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -40,7 +40,7 @@
 #include <QGridLayout>
 
 /**
-* @author Jorge Cuadrado <kuadrosx@toonka.com>
+* @author David Cuadrado <krawek@toonka.com>
 */
 class KTBrushWidget : public KTModuleWidgetBase
 {
@@ -57,6 +57,8 @@ class KTBrushWidget : public KTModuleWidgetBase
 		
 	private slots:
 		void editBrush();
+		void addBrush();
+		void removeBrush();
 		
 	public slots:
 		void changeValueMinThickness(int value);
@@ -68,7 +70,6 @@ class KTBrushWidget : public KTModuleWidgetBase
 		
 	private:
 		KTBrushEditor *m_brushEditor;
-// 		KTTabWidget *m_brushManager;
 		KTToolBox *m_brushManager;
 		KTEditSpinBox *m_displayThickness, *m_displaySmoothness;
 		QLineEdit *m_nameBrush;

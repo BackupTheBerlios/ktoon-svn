@@ -109,6 +109,8 @@ class KTCellView : public QTableView
 		virtual int verticalOffset () const;
 		virtual int horizontalOffset () const;
 		
+		void setItemSize(int w, int h);
+		
 	private:
 		void setup();
 		
@@ -151,7 +153,6 @@ class KTCellView : public QTableView
 		
 	private:
 		KTCellViewModel *m_model;
-// 		int m_rectSize;
 		int m_rectWidth, m_rectHeight;
 };
 

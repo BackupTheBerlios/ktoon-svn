@@ -24,13 +24,15 @@
 #include <QObject>
 #include "ktscene.h"
 
+#include "ktserializableobject.h"
+
 typedef QList<KTScene *> Scenes;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTDocument : public QObject
+class KTDocument : public KTSerializableObject
 {
 	Q_OBJECT
 	public:

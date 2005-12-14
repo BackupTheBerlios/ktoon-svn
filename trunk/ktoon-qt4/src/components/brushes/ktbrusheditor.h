@@ -25,23 +25,19 @@
 #include <QImage>
 #include <QPainterPath>
 
+#include "ktdisplaypath.h"
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTBrushEditor : public QFrame
+class KTBrushEditor : public KTDisplayPath
 {
 	Q_OBJECT
 	public:
 		KTBrushEditor(QWidget *parent = 0);
 		~KTBrushEditor();
-		virtual QSize sizeHint() const;
 		void setEdit(bool e);
-		
-		QPainterPath brushEdited();
-	
-	public slots:
-		void setForm(const QPainterPath &form);
-		
+		QPainterPath currentPainterPath();
 		
 	private:
 		QPoint mapToEditor(const QPoint &p);
@@ -57,10 +53,6 @@ class KTBrushEditor : public QFrame
 	private:
 		class Editor;
 		Editor *m_editor;
-		
-		QPainterPath m_currentForm;
-		
-		QImage m_editArea;
 };
 
 #endif

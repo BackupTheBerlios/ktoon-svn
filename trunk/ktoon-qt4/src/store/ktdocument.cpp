@@ -22,7 +22,7 @@
 
 #include "ktdebug.h"
 
-KTDocument::KTDocument(QObject *parent) : QObject(parent), m_currentScene(0), m_sceneCount(0)
+KTDocument::KTDocument(QObject *parent) : KTSerializableObject(parent), m_currentScene(0), m_sceneCount(0)
 {
 // 	m_currentScene = createScene();
 }

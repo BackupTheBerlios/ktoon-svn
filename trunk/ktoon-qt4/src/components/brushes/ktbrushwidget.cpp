@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -88,11 +88,12 @@ void KTBrushWidget::setupBrushManager()
 	createDefaultBrushes();
 	
 	m_customBrushesList = new KTBrushesList(m_brushManager);
+	connect(m_customBrushesList, SIGNAL(itemClicked( KTCellViewItem * )), this,SLOT(selectBrush( KTCellViewItem * )));
+	
 	m_brushManager->addPage(m_defaultBrushesList, tr("Default Brushes") );
 	m_brushManager->addPage(m_customBrushesList, tr("Custom Brushes") );
 	
 	m_brushManager->addPage( container, tr("Edit Brush") );
-// 	addChild(m_brushManager, Qt::AlignTop);
 	
 	m_layout->addWidget(m_brushManager, 2,0);
 }
@@ -126,26 +127,34 @@ void KTBrushWidget::changeValueMinThickness(int value)
 
 void KTBrushWidget::changeValueSmoothness(int value)
 {
-// 	emit smoothnessChanged(m_tableBrushes->indexCurrentBrush(), value);
 }
 
 void KTBrushWidget::selectBrush(KTCellViewItem *item)
 {
-	// 	m_displayBrush->setForm( item->icon().pixmap ( 100, 100)); // Escalar el path
-
 	if ( item )
 	{
-		int currentRow = m_defaultBrushesList->row(item);
-		int currentColumn = m_defaultBrushesList->column(item);
+		KTBrushesList *brushesList = 0;
+		
+		if ( m_defaultBrushesList->isVisible() )
+		{
+			brushesList = m_defaultBrushesList;
+		}
+		else
+		{
+			brushesList = m_customBrushesList;
+		}
+		
+		int currentRow = brushesList->row(item);
+		int currentColumn = brushesList->column(item);
 
 		if ( currentRow >= 0 && currentColumn >= 0 )
 		{
-			int pos = (m_defaultBrushesList->MAX_COLUMNS * (currentRow)) + currentColumn;
-			if ( pos < m_defaultBrushesList->count() )
+			int pos = (brushesList->MAX_COLUMNS * (currentRow)) + currentColumn;
+			if ( pos < brushesList->count() )
 			{
 				m_currentFormIndex = pos;
-				m_brushEditor->setForm( m_defaultBrushesList->path( m_currentFormIndex  ));
-				emit brushSelected( m_defaultBrushesList->path( m_currentFormIndex), m_displayThickness->value()  );
+				m_brushEditor->setPath( brushesList->path( m_currentFormIndex  ));
+				emit brushSelected( brushesList->path( m_currentFormIndex), m_displayThickness->value()  );
 			}
 		}
 	}
@@ -162,25 +171,19 @@ void KTBrushWidget::createDefaultBrushes()
 	
 	form.moveTo( boundingRect.center() );
 	form.addEllipse(boundingRect);
-	m_defaultBrushesList->addBrush( thickness, m_displaySmoothness->value(), form, tr("normal"));
+	m_defaultBrushesList->addBrush( form);
 	
 	form = QPainterPath();
 	
 	form.addRect(boundingRect);
-	m_defaultBrushesList->addBrush( thickness, m_displaySmoothness->value(), form, tr("square"));
+	m_defaultBrushesList->addBrush( form);
 	boundingRect = QRect( 0, 0, thickness , thickness);
 	form.moveTo(boundingRect.center());
 	
 	form = QPainterPath();
 	form.moveTo(0,0);
 	form.lineTo(thickness , thickness);
-	m_defaultBrushesList->addBrush( thickness, m_displaySmoothness->value(), form, tr("line"));
-	
-// 	form = QPainterPath();
-// 	QFont f( "Cronyx-Helvetica", 10, thickness);
-// 	f.setPixelSize ( 50);
-// 	form.addText( 0, 50, f, "text" );
-// 	m_defaultBrushesList->addBrush( thickness, thickness, form, tr("text"));
+	m_defaultBrushesList->addBrush( form);
 
 	form = QPainterPath();
 	boundingRect = QRect( 0, 0, thickness , thickness);
@@ -188,25 +191,23 @@ void KTBrushWidget::createDefaultBrushes()
 	form.arcTo(boundingRect,0,180);
 	form.closeSubpath();
 	
-	m_defaultBrushesList->addBrush( thickness, m_displaySmoothness->value(), form, tr("arc"));
+	m_defaultBrushesList->addBrush( form );
 	
 	form = QPainterPath();
 	boundingRect = QRect( 0, 0, thickness , thickness);
 	form.moveTo(0,0);
 	form.addText(0, 0,QFont("Times", 70),"KTooN");
 	
-	m_defaultBrushesList->addBrush( thickness, m_displaySmoothness->value(), form, tr("Text"));
+	m_defaultBrushesList->addBrush( form );
 	
 	form = QPainterPath();
-// 	boundingRect = QRect( 0, 0, thickness , thickness);
-	
+
 	form.moveTo(0,0);
 	form.cubicTo(thickness*2, 0, thickness+10, thickness+10, thickness*2, thickness*2);
 	
-	m_defaultBrushesList->addBrush( thickness, m_displaySmoothness->value(), form, tr("bezier"));
+	m_defaultBrushesList->addBrush(form);
 	
 	form = QPainterPath();
-// 	boundingRect = QRect( 0, 0, thickness*2 , thickness*2);
 	form.moveTo(thickness/2, 0);
 	for (int i = 1; i < 5; ++i)
 	{
@@ -214,12 +215,22 @@ void KTBrushWidget::createDefaultBrushes()
 	}
 	form.closeSubpath();
 	
-	m_defaultBrushesList->addBrush( thickness, m_displaySmoothness->value(), form, tr("star"));
+	m_defaultBrushesList->addBrush( form);
 }
 
 void KTBrushWidget::editBrush()
 {
 	m_brushEditor->setEdit( m_editFormButton->isChecked());
 	
-	emit brushSelected( m_brushEditor->brushEdited(), m_displayThickness->value()  ); // FIXME: for test
+	emit brushSelected( m_brushEditor->currentPainterPath(), m_displayThickness->value()  ); // FIXME: for test
+}
+
+void KTBrushWidget::addBrush()
+{
+	m_customBrushesList->addBrush(m_brushEditor->currentPainterPath());
+}
+
+void KTBrushWidget::removeBrush()
+{
+	ktWarning() << "Not implemented yet!";
 }

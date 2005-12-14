@@ -21,11 +21,11 @@
 #include "agraphiccomponent.h"
 #include "ktdebug.h"
 
-AGraphicComponent::AGraphicComponent() : QObject(), m_pPath(), m_pColor(Qt::black), m_pPen(m_pColor, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin)
+AGraphicComponent::AGraphicComponent() : KTSerializableObject(), m_pPath(), m_pColor(Qt::black), m_pPen(m_pColor, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin)
 {
 }
 
-AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : QObject(toCopy.parent()), m_pPath(toCopy.m_pPath), m_pColor(toCopy.m_pColor), m_pPen(toCopy.m_pPen), m_previousPath(toCopy.m_previousPath), m_pBrush(toCopy.m_pBrush)
+AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : KTSerializableObject(toCopy.parent()), m_pPath(toCopy.m_pPath), m_pColor(toCopy.m_pColor), m_pPen(toCopy.m_pPen), m_previousPath(toCopy.m_previousPath), m_pBrush(toCopy.m_pBrush)
 {
 }
 

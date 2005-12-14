@@ -29,11 +29,13 @@
 #include <QDomElement>
 #include <QDomDocument>
 
+#include "ktserializableobject.h"
+
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 class AGraphicComponent;
-class AGraphicComponent : public QObject
+class AGraphicComponent : public KTSerializableObject
 {
 	Q_OBJECT
 	public:
