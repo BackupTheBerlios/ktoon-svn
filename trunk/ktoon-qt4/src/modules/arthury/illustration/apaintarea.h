@@ -100,7 +100,7 @@ class APaintArea : public QWidget
 		QPainterPath translatePath(const QPainterPath &path, const QPoint &pos);
 		
 	public slots:
-		void setBrush( KTBrush *brush );
+		void setBrush( const KTBrush *brush );
 		void undo();
 		void redo();
 

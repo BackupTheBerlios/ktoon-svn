@@ -3,18 +3,14 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/store
 # Destiono es una biblioteca:  
 
-HEADERS += ktcolor.h \
-           ktbrush.h \
-           ktkeyframe.h \
+HEADERS += ktkeyframe.h \
            agraphiccomponent.h \
            ktlayer.h \
            ktprojectmanager.h \
            ktscene.h \
            ktdocument.h \
            ktserializableobject.h 
-SOURCES += ktcolor.cpp \
-           ktbrush.cpp \
-           ktkeyframe.cpp \
+SOURCES += ktkeyframe.cpp \
            agraphiccomponent.cpp \
            ktlayer.cpp \
            ktprojectmanager.cpp \

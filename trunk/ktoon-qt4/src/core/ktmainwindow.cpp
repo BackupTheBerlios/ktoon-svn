@@ -229,16 +229,13 @@ void KTMainWindow::changeCurrentColors(const QBrush &foreground, const QBrush &b
 	}
 }
 
-void KTMainWindow::changeCurrentBrush(const QPainterPath &form, int thickness)
+void KTMainWindow::changeCurrentBrush(const KTBrush *form)
 {
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )
 	{
-		KTBrush *current = doc->drawArea()->currentBrush();
-		
-		current->setBrushForm( form );
-		current->setPenWidth( thickness );
+		doc->drawArea()->setBrush( form );
 	}
 }
 

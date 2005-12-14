@@ -29,9 +29,11 @@
 
 #include <cmath>
 
-KTBrushWidget::KTBrushWidget(QWidget *parent) : KTModuleWidgetBase( parent ), m_currentFormIndex(0)
+KTBrushWidget::KTBrushWidget(QWidget *parent) : KTModuleWidgetBase( parent ), m_currentFormIndex(0), m_currentBrush(0)
 {
 	setCaption( tr( "Brushes" ) );
+	
+	m_currentBrush = new KTBrush;
 	
 	m_layout = new QGridLayout;
 	
@@ -45,6 +47,7 @@ KTBrushWidget::KTBrushWidget(QWidget *parent) : KTModuleWidgetBase( parent ), m_
 
 KTBrushWidget::~KTBrushWidget()
 {
+	if ( m_currentBrush ) delete m_currentBrush;
 } 
 
 void KTBrushWidget::setupDisplay()
@@ -121,7 +124,7 @@ void KTBrushWidget::changeValueMinThickness(int value)
 {
 // 	m_brushEditor->setThickness( value );
 	
-	emit brushSelected( m_defaultBrushesList->path( m_currentFormIndex), m_displayThickness->value()  );
+	emit brushSelected( m_currentBrush  );
 }
 
 
@@ -154,7 +157,11 @@ void KTBrushWidget::selectBrush(KTCellViewItem *item)
 			{
 				m_currentFormIndex = pos;
 				m_brushEditor->setPath( brushesList->path( m_currentFormIndex  ));
-				emit brushSelected( brushesList->path( m_currentFormIndex), m_displayThickness->value()  );
+				
+				m_currentBrush->setBrushForm( brushesList->path( m_currentFormIndex) );
+				m_currentBrush->setPenWidth( m_displayThickness->value() );
+				
+				emit brushSelected( m_currentBrush );
 			}
 		}
 	}
@@ -222,7 +229,9 @@ void KTBrushWidget::editBrush()
 {
 	m_brushEditor->setEdit( m_editFormButton->isChecked());
 	
-	emit brushSelected( m_brushEditor->currentPainterPath(), m_displayThickness->value()  ); // FIXME: for test
+	m_currentBrush->setBrushForm( m_brushEditor->currentPainterPath() );
+	m_currentBrush->setPenWidth( m_displayThickness->value() );
+	emit brushSelected( m_currentBrush ); // FIXME: for test
 }
 
 void KTBrushWidget::addBrush()

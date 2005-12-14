@@ -33,6 +33,11 @@ KTBrush::KTBrush(const QPainterPath &brushForm) : KTSerializableObject(), m_brus
 	setup();
 }
 
+KTBrush::KTBrush(const KTBrush &toCopy) : KTSerializableObject(), m_brushForm(toCopy.m_brushForm), m_brush(toCopy.m_brush), m_brushName(toCopy.m_brushName), m_hasGradient(toCopy.m_hasGradient), m_pen(toCopy.m_pen), m_thickness(toCopy.m_thickness)
+{
+	
+}
+
 
 KTBrush::~KTBrush()
 {
@@ -93,7 +98,42 @@ void KTBrush::setupPainter(QPainter *p)
 	p->setBrush(m_brush);
 }
 
-QDomElement KTBrush::createXML( QDomDocument & )
+QDomElement KTBrush::createXML( QDomDocument &doc )
 {
-	return QDomElement();
+	QDomElement item = doc.createElement("Item");
+	
+	QList<QPolygonF> polygons = m_brushForm.toSubpathPolygons ();
+	
+	QList<QPolygonF>::ConstIterator polygonIt = polygons.begin();
+	
+	while ( polygonIt != polygons.end() )
+	{
+		QDomElement polygonElement = doc.createElement("Polygon");
+		
+		QPolygonF::ConstIterator pointIt = (*polygonIt).begin();
+		
+		QString attribute = "";
+		while (pointIt != (*polygonIt).end() )
+		{
+			attribute += QString("%1:%2 ").arg((*pointIt).x()).arg((*pointIt).y());
+			++pointIt;
+		}
+		
+		polygonElement.setAttribute("points", attribute);
+		
+		++polygonIt;
+	}
+	
+	ktDebug() << doc.toString();
+	
+	return item;
 }
+
+
+
+
+
+
+
+
+

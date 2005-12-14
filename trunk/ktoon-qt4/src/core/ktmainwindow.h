@@ -167,7 +167,7 @@ class KTMainWindow : public DMainWindow
 		
 		//others
 		void changeCurrentColors(const QBrush &, const QBrush &);
-		void changeCurrentBrush(const QPainterPath &form, int thickness);
+		void changeCurrentBrush(const KTBrush *form);
 		
 		
 		void changeFPS(int fps);

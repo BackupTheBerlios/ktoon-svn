@@ -39,6 +39,8 @@
 
 #include <QGridLayout>
 
+#include "ktbrush.h"
+
 /**
 * @author David Cuadrado <krawek@toonka.com>
 */
@@ -66,7 +68,7 @@ class KTBrushWidget : public KTModuleWidgetBase
 		void selectBrush(KTCellViewItem * item);
 		
 	signals:
-		void brushSelected(const QPainterPath &form, int thickness);
+		void brushSelected(const KTBrush *form );
 		
 	private:
 		KTBrushEditor *m_brushEditor;
@@ -82,6 +84,8 @@ class KTBrushWidget : public KTModuleWidgetBase
 		
 		QGridLayout *m_layout;
 		int m_currentFormIndex;
+		
+		KTBrush *m_currentBrush;
 };
 
 #endif

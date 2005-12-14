@@ -470,9 +470,9 @@ void APaintArea::setTool( AToolInterface *toolIface, const QString &tool)
 	m_currentKeyTool = tool;
 }
 
-void APaintArea::setBrush( KTBrush *brush )
+void APaintArea::setBrush( const KTBrush *brush )
 {
-	m_currentBrush = brush;
+	m_currentBrush = new KTBrush(brush);
 }
 
 QPainterPath APaintArea::translatePath(const QPainterPath &path, const QPoint &pos)
