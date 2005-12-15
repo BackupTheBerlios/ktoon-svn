@@ -23,6 +23,8 @@
 
 #include "ktdebug.h"
 
+KTConfig* KTConfig::m_instance = 0;
+
 KTConfig::KTConfig() : QObject()
 {
 	KTINIT;
@@ -50,13 +52,17 @@ KTConfig::KTConfig() : QObject()
 KTConfig::~KTConfig()
 {
 	KTEND;
+	if ( m_instance )
+		delete m_instance;
 }
 
 KTConfig *KTConfig::instance()
 {
-	static KTConfig *config = new KTConfig;
-	
-	return config;
+	if ( ! m_instance )
+	{
+		m_instance = new KTConfig;
+	}
+	return m_instance;
 }
 
 void KTConfig::init()

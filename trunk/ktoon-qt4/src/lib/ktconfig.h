@@ -56,6 +56,7 @@ class KTConfig : public QObject
 		void sync();
 		
 	private:
+		static KTConfig *m_instance;
 		KTConfigDocument *m_ktconfig;
 		XMLSingleResult m_configKeys;
 		bool m_isOk;
