@@ -247,58 +247,15 @@ void DDockInternalWidget::setExpanded(bool v)
 	m_internalLayout->invalidate();
 	
 	m_visible = v;
-	
-	// HACK: update dock separator, this hack causes 'flickr'
-// 	QMainWindow *window = dynamic_cast<QMainWindow*>(QApplication::activeWindow());
-// 
-// 	if ( window && !m_visible)
-// 	{
-// 		window->layout()->setGeometry( QRect() );
-// 		window->layout()->invalidate();
-// 	}
-	
+
 	if ( ! v)
 	{
 		for (int i = 0; i < 2; ++i)
 			qApp->processEvents();
 		shrink();
+		
+		if ( m_toggledButton) m_toggledButton->setChecked(false);
 	}
-	
-#if 0
-	if (!m_visible)
-	{
-		if (m_position == DDockWindow::Bottom)
-		{
-			// height
-			parentWidget()->resize(-1,m_internalLayout->sizeHint().height());
-		}
-		else
-		{
-			// width
-			parentWidget()->resize(m_internalLayout->sizeHint().width(),-1);
-		}
-	}
-	else
-	{
-        	//restore widget size from the config
-		int size = 0;
-		if (m_position == DDockWindow::Bottom)
-		{
-			size = config.value("ViewWidth", m_internalLayout->sizeHint().height()).toInt();
-
-			resize(-1,size);
-			parentWidget()->resize(-1,size);
-		}
-		else
-		{
-			size = config.value("ViewWidth", m_internalLayout->sizeHint().width()).toInt();
-
-			resize(size,-1);
-			parentWidget()->resize(size,-1);
-		}
-	}
-	
-#endif
 }
 
 void DDockInternalWidget::loadSettings()

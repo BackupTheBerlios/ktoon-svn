@@ -86,8 +86,13 @@ void KTMainWindow::setupMenu()
 	menuBar()->insertItem( tr( "&Tools" ), m_toolsMenu );
 	
 	// Setup the window menu
+	setupWindowActions();
 	m_windowMenu = new QMenu(this);
 	menuBar()->insertItem( tr( "&Window" ), m_windowMenu );
+	m_windowMenu->addAction(m_actionManager->find("show timeline"));
+	m_windowMenu->addAction(m_actionManager->find("show exposure"));
+	m_windowMenu->addAction(m_actionManager->find("show brushes"));
+	m_windowMenu->addAction(m_actionManager->find("show scenes"));
 	
 	// Setup the help menu
 	m_helpMenu = new QMenu(this);
@@ -104,12 +109,16 @@ void KTMainWindow::createGUI()
 	connect(m_colorPalette, SIGNAL(colorChanged(const QBrush &, const QBrush &)), this, SLOT(changeCurrentColors(const QBrush &, const QBrush &)));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Palette"),m_colorPalette);
 	
+	connectToDisplays(m_colorPalette);
+	
 	////////////////
-	KTBrushWidget *m_brushWidget = new KTBrushWidget( this);
+	m_brushWidget = new KTBrushWidget( this);
 	m_brushWidget->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/brushes.png"));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Brushes"),m_brushWidget);
 	
 	connect(m_brushWidget, SIGNAL(brushSelected( const KTBrush *)), this, SLOT(changeCurrentBrush(  const KTBrush * )));
+	
+	connectToDisplays(m_brushWidget);
 	
 	////////////////////
 	m_libraryWidget = new KTLibraryWidget( this );
@@ -119,6 +128,8 @@ void KTMainWindow::createGUI()
 	connect(m_libraryWidget, SIGNAL(requestCurrentGraphic()), this, SLOT(addCurrentGraphicToLibrary()));
 	connect(m_libraryWidget, SIGNAL(sendCurrentGraphic(const AGraphicComponent *)), this, SLOT(addGraphicComponent(const AGraphicComponent *)));
 	
+	connectToDisplays(m_libraryWidget);
+	
 	/////////////////
 	m_scenes = new KTScenesWidget( this);
 	m_scenes->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/scenes.png"));
@@ -127,6 +138,8 @@ void KTMainWindow::createGUI()
 	connect(m_scenes, SIGNAL(requestInsertScene()), m_projectManager, SLOT(createScene()));
 	connect(m_scenes, SIGNAL(requestRemoveScene()), m_projectManager, SLOT(removeScene()));
 	connect(m_scenes, SIGNAL(changeCurrentScene( int )), this, SLOT(changeScene(int)));
+	
+	connectToDisplays(m_scenes);
 	
 	/////////////////////
 	m_exposureSheet = new KTExposureSheet(this);
@@ -139,10 +152,14 @@ void KTMainWindow::createGUI()
 // 	connect(m_scenes, SIGNAL(sceneInserted( const QString &, int )), m_exposureSheet, SLOT(addScene( const QString &, int )));
 // 	connect(m_scenes, SIGNAL(sceneRenamed( const QString &, int )), m_exposureSheet, SLOT(renameScene(const QString &, int)));
 	
+	connectToDisplays(m_exposureSheet);
+	
 	///////////////////////
 	m_helper = new KTHelpWidget(KTOON_HOME+"/data/help/");
 	toolWindow(DDockWindow::Right)->addWidget(tr("Help"),m_helper);
 	connect(m_helper, SIGNAL(pageLoaded(const QString &, const QString &)), this, SLOT(showHelpPage(const QString &, const QString &)));
+	
+	connectToDisplays(m_helper);
 	
 	//////////////////////
 	m_timeLine = new KTTimeLine(this);
@@ -150,6 +167,9 @@ void KTMainWindow::createGUI()
 	toolWindow(DDockWindow::Bottom)->addWidget(tr("Time Line"),m_timeLine);
 	connect(m_timeLine, SIGNAL(requestChangeFPS(int)), this, SLOT(changeFPS( int )));
 	ui4project( m_timeLine );
+	
+	connectToDisplays(m_timeLine);
+	
 	
 	//////////////////
 // 	KToonScript *m_scriptEditor = new KToonScript(this);
@@ -166,7 +186,7 @@ void KTMainWindow::createGUI()
 	
 	toolWindow(DDockWindow::Bottom)->addWidget(tr("GC Editor"), m_gcEditor);
 	
-	
+	connectToDisplays(m_gcEditor);
 	
 	// Connect the project manager with the components...
 	connect(m_projectManager, SIGNAL(sceneCreated(const QString &, bool)), this, SLOT( insertScene(const QString &, bool)));
@@ -182,8 +202,12 @@ void KTMainWindow::createGUI()
 	connect(m_projectManager, SIGNAL(frameRemoved()), this, SLOT(removeFrame()));
 	connect(m_projectManager, SIGNAL(frameLocked()), this, SLOT(lockFrame()));
 	connect(m_projectManager, SIGNAL(layerRemoved(int )), this, SLOT(removeLayer(int)));
+}
 
-	
+void KTMainWindow::connectToDisplays(const QWidget *widget)
+{
+	connect(widget, SIGNAL(sendToStatus(const QString &)), this, SLOT(messageToStatus(const QString &)));
+	connect(widget, SIGNAL(sendToOSD(const QString &)), this, SLOT(messageToOSD(const QString &)));
 }
 
 void KTMainWindow::setupFileActions()
@@ -273,6 +297,14 @@ void KTMainWindow::setupHelpActions()
 	new KTAction(QPixmap(), tr("About KToon"), QKeySequence(), this, SLOT(aboutKToon()), m_actionManager, "about ktoon");
 }
 
+void KTMainWindow::setupWindowActions()
+{
+	new KTAction(QPixmap(), tr("Show TimeLine widget"), QKeySequence("CTRL+K"), this, SLOT(showWidgetPage()), m_actionManager, "show timeline");
+	new KTAction(QPixmap(), tr("Show exposure sheet widget"), QKeySequence("CTRL+H"), this, SLOT(showWidgetPage()), m_actionManager, "show exposure");
+	new KTAction(QPixmap(), tr("Show scenes widget"), QKeySequence("CTRL+Y"), this, SLOT(showWidgetPage()), m_actionManager, "show scenes");
+	new KTAction(QPixmap(), tr("Show brushes widget"), QKeySequence("CTRL+B"), this, SLOT(showWidgetPage()), m_actionManager, "show brushes");
+}
+
 void KTMainWindow::setupToolBar()
 {
 }
@@ -292,6 +324,63 @@ void KTMainWindow::resizeEvent(QResizeEvent *event)
 
 void KTMainWindow::updateOpenRecentMenu()
 {
+}
+
+void KTMainWindow::showWidgetPage()
+{
+	KTAction *action = qobject_cast<KTAction *>(sender());
+	
+	if ( action )
+	{
+		QWidget *widget = 0;
+		DDockWindow::Position position;
+		QString actionText = "";
+		
+		if ( action == m_actionManager->find("show timeline") )
+		{
+			widget = m_timeLine;
+			position = DDockWindow::Bottom;
+			actionText = "time line widget";
+		}
+		else if ( action == m_actionManager->find("show brushes") )
+		{
+			widget = m_brushWidget;
+			position = DDockWindow::Left;
+			actionText = "brushes widget";
+		}
+		else if ( action == m_actionManager->find("show exposure") )
+		{
+			widget = m_exposureSheet;
+			position = DDockWindow::Right;
+			actionText = "exposure widget";
+		}
+		else if ( action == m_actionManager->find("show library") )
+		{
+			widget = m_libraryWidget;
+			position = DDockWindow::Left;
+			actionText = "library widget";
+		}
+		else if ( action == m_actionManager->find("show scenes") )
+		{
+			widget = m_scenes;
+			position = DDockWindow::Right;
+			actionText = "scenes widget";
+		}
+		
+		if ( widget )
+		{
+			if ( widget->isVisible() )
+			{
+				toolWindow( position)->centralWidget()->setExpanded(false);
+				action->setText("Show "+actionText);
+			}
+			else
+			{
+				toolWindow( position)->centralWidget()->raiseWidget(widget);
+				action->setText("Hide "+actionText);
+			}
+		}
+	}
 }
 
 void KTMainWindow::setupBackground()

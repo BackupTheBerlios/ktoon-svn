@@ -149,11 +149,13 @@ void KTScenesWidget::insertScene(const QString &name, bool addedToEnd)
 {
 	KT_FUNCINFO;
 	m_tableScenes->addScene(name);
+	emit sendToStatus( tr("Scene added"));
 }
 
 void KTScenesWidget::removeScene()
 {
 	m_tableScenes->removeCurrentScene();
+	emit sendToStatus( tr("Scene removed"));
 }
 
 void KTScenesWidget::selectScene(const QString & name, int index)

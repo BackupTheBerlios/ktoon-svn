@@ -52,8 +52,6 @@ int main( int argc, char ** argv )
 		return 0;
 	}
 	
-	KTCONFIG->init();
-	
 	KTCONFIG->beginGroup("General");
 
 	if ( ! KTCONFIG->isOk() || application.isArg("r") || application.isArg("reconfigure") )

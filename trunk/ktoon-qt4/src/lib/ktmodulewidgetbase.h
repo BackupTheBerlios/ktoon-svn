@@ -65,7 +65,8 @@ class KTModuleWidgetBase : public QWidget
 		
 	signals:
 		void documentModified(bool);
-		void sendMessage(const QString &);
+		void sendToStatus(const QString &);
+		void sendToOSD(const QString &);
 		void toggle();
 		void activate(bool);
 };

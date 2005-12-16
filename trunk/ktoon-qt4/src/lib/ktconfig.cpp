@@ -46,14 +46,15 @@ KTConfig::KTConfig() : QObject()
 	}
 
 	m_ktconfig = new KTConfigDocument( configDirectory.path() + "/ktoon.cfg" );
+	
+	init();
 }
 
 
 KTConfig::~KTConfig()
 {
 	KTEND;
-	if ( m_instance )
-		delete m_instance;
+	if ( m_instance ) delete m_instance;
 }
 
 KTConfig *KTConfig::instance()

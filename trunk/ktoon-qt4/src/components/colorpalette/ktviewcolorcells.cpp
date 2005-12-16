@@ -25,6 +25,8 @@
 #include <QGroupBox>
 #include "ktimagebutton.h"
 
+#include "ktconfig.h"
+
 KTViewColorCells::KTViewColorCells(QWidget *parent)
 	: QFrame(parent), m_numColorRecent(0)
 {
@@ -40,6 +42,9 @@ KTViewColorCells::KTViewColorCells(QWidget *parent)
 KTViewColorCells::~KTViewColorCells()
 {
 	KTEND;
+	
+	KTCONFIG->beginGroup("ColorPalette");
+	KTCONFIG->setValue("LastPalette", m_chooserPalette->currentIndex());;
 }
 
 void KTViewColorCells::setupForm()
@@ -81,6 +86,11 @@ void KTViewColorCells::setupForm()
 	addPalette( m_customGradientPalette );
 	
 	connect(m_chooserPalette, SIGNAL(activated ( int  )), m_containerPalette, SLOT(setCurrentIndex ( int )));
+	
+	KTCONFIG->beginGroup("ColorPalette");
+	int lastIndex = KTCONFIG->value("LastPalette").toInt();
+	m_chooserPalette->setCurrentIndex(lastIndex);
+	m_containerPalette->setCurrentIndex(lastIndex);
 }
 
 void KTViewColorCells::readPalettes(const QString &paletteDir)

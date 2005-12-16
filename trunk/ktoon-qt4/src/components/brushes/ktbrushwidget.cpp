@@ -239,7 +239,11 @@ void KTBrushWidget::createDefaultBrushes()
 
 void KTBrushWidget::editBrush()
 {
-	m_brushEditor->setEdit( m_editFormButton->isChecked());
+	m_brushEditor->setEdit( m_editFormButton->isChecked() );
+	if ( m_editFormButton->isChecked() )
+	{
+		emit sendToOSD( tr("Click the brush area for create a brush") );
+	}
 	
 	m_currentBrush->setBrushForm( m_brushEditor->currentPainterPath() );
 	m_currentBrush->setPenWidth( m_displayThickness->value() );
@@ -249,6 +253,7 @@ void KTBrushWidget::editBrush()
 void KTBrushWidget::addBrush()
 {
 	m_customBrushesList->addBrush(m_brushEditor->currentPainterPath());
+	emit sendToStatus(tr("Brush added!"));
 }
 
 void KTBrushWidget::removeBrush()

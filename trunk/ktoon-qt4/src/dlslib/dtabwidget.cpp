@@ -32,10 +32,9 @@
 
 #include "comdefs.h"
 
-DTabWidget::DTabWidget(QWidget *parent, const char *name)
+DTabWidget::DTabWidget(QWidget *parent)
     :KTWCLASS(parent), m_closeButton(0)
 {
-	setObjectName(name);
 	setFocusPolicy(Qt::NoFocus);
     setMargin(0);
 

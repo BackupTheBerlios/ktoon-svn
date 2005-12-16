@@ -84,6 +84,7 @@ class KTMainWindow : public DMainWindow
 		 */
 		void setupFileActions();
 		void setupEditActions();
+		void setupWindowActions();
 		
 		/**
 		 * Create the proyect action
@@ -132,6 +133,7 @@ class KTMainWindow : public DMainWindow
 		
 		void save();
 		void showHelpPage(const QString &title, const QString &document);
+		void showWidgetPage();
 		
 	private slots:
 		void messageToStatus(const QString &);
@@ -139,6 +141,7 @@ class KTMainWindow : public DMainWindow
 		void preferences();
 		void aboutKToon();
 		void importPalettes();
+		void connectToDisplays(const QWidget *widget);
 		
 	private slots:
 		// Graphic Components
@@ -194,6 +197,7 @@ class KTMainWindow : public DMainWindow
 		KTHelpWidget *m_helper;
 		KTLibraryWidget *m_libraryWidget;
 		KTColorPalette *m_colorPalette;
+		KTBrushWidget *m_brushWidget;
 };
 
 #endif

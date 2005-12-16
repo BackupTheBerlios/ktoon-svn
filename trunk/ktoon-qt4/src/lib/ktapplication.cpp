@@ -261,14 +261,10 @@ bool KTApplication::firstRun()
 		
 		KTCONFIG->beginGroup("General");
 		
-// 		KTCONFIG->configDocument()->setHome( m_KTOON_HOME );
-// 		KTCONFIG->configDocument()->setRepository( m_KTOON_REPOSITORY );
-		
 		KTCONFIG->setValue( "Home", m_KTOON_HOME);
 		KTCONFIG->setValue( "Repository", m_KTOON_REPOSITORY);
 		
 		KTCONFIG->sync();
-		KTCONFIG->init();
 		
 		delete firstDialog;
 		

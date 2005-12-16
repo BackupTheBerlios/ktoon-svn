@@ -133,7 +133,6 @@ void KTLibraryWidget::removeCurrentGraphic()
 	
 	if ( ! noAsk )
 	{
-		// TODO: preguntar si quiere borrar
 		KTOptionalDialog dialog(tr("Do you want remove this component?"),tr("Remove?"), this);
 		
 		if( dialog.exec() == QDialog::Rejected )

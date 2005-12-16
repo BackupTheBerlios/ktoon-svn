@@ -36,11 +36,13 @@ class KTConfig;
 
 class KTConfig : public QObject
 {
-	public:
+	protected:
 		KTConfig();
 		~KTConfig();
 		void init();
 		
+		
+	public:
 		void beginGroup(const QString & prefix );
 		void setValue ( const QString & key, const QVariant & value );
 // 		void setValue ( const QString &group, const QString & key, const QVariant & value );

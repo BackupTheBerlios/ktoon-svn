@@ -26,6 +26,7 @@
 KTWidgetListView::KTWidgetListView(QWidget * parent) : QScrollArea(parent),m_header(0),  m_itemSelected(0)
 {
 	m_container = new QFrame;
+	m_container->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 	
 	m_layout = new QVBoxLayout(m_container);
 	m_layout->setMargin(1);
@@ -34,9 +35,6 @@ KTWidgetListView::KTWidgetListView(QWidget * parent) : QScrollArea(parent),m_hea
 	m_container->setLayout(m_layout);
 
 	QPalette pal = palette();
-	
-// 	pal.setBrush(QPalette::Background, pal.button()  );
-// 	pal.setBrush(QPalette::Foreground,  );
 	
 	m_container->setPalette(pal);
 	
@@ -118,6 +116,7 @@ void KTWidgetListView::removeItem(KTWidgetListItem *item)
 			{
 				selectItem( qobject_cast<KTWidgetListItem *>(m_layout->itemAt(index)->widget()) );
 			}
+			m_container->adjustSize();
 		}
 		else
 		{
