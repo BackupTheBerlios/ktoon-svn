@@ -165,7 +165,6 @@ void KTExposureSheet::applyAction(int action)
 void KTExposureSheet::addFrame(int idLayer, const QString &name, bool addedToEnd)
 {
 	ktDebug( ) << "KTExposureSheet::addFrame(" << idLayer << " , "<< name << " , "  << addedToEnd << ")" << endl;
-// 	m_currentTable->currentLayerExposure()->setUseFrames(name);
 	m_currentTable->setUseFrame(idLayer, name, addedToEnd);
 }
 

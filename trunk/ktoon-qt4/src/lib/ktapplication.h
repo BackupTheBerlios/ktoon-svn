@@ -44,7 +44,7 @@ class KTApplication : public QApplication
 {
 	Q_OBJECT
 	public:
-		enum ColorScheme { Default = 0, DarkBlue };
+		enum ColorSchema { Default = 0, DarkBlue };
 		KTApplication(int & argc, char ** argv);
 		~KTApplication();
 		QString home();
@@ -61,7 +61,7 @@ class KTApplication : public QApplication
 		
 		void parseArgs( int &argc, char **argv);
 		
-		void applyColors(ColorScheme cs);
+		void applyColors(ColorSchema cs);
 		void applyPalette( const QPalette &p );
 		void applyTheme(const QString &file);
 		void applyTheme(const KTThemeDocument &ktd);

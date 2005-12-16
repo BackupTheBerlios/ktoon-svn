@@ -117,19 +117,18 @@ void DMainWindow::addDockWidget(Qt::DockWidgetArea area, DDockWindow * dockwidge
 	}
 }
 
-void DMainWindow::addWidget(QWidget *widget, const QString &title)
+void DMainWindow::addWidget(QWidget *widget, const QString &title, bool persistant)
 {
-//     invalidateActiveTabWidget();
     if (m_pFirstRemoved && m_pActiveTabWidget == m_pTabs.first())
     {
         m_pCentral->addDock(0, 0, m_pActiveTabWidget);
         m_pFirstRemoved = false;
     }
 
-    addWidget(m_pActiveTabWidget, widget, title);
+    addWidget(m_pActiveTabWidget, widget, title, persistant);
 }
 
-void DMainWindow::addWidget(DTabWidget *tab, QWidget *widget, const QString &title)
+void DMainWindow::addWidget(DTabWidget *tab, QWidget *widget, const QString &title, bool persistant)
 {
     int idx = -1;
     if (m_pOpenTabAfterCurrent && (tab->count() > 0))
@@ -151,6 +150,11 @@ void DMainWindow::addWidget(DTabWidget *tab, QWidget *widget, const QString &tit
     m_pWidgetTabs[widget] = tab;
     widget->installEventFilter(this);
     tab->showPage(widget);
+    
+    if ( persistant )
+    {
+	    m_persistantWidgets << widget;
+    }
 }
 
 void DMainWindow::removeWidget(QWidget *widget)
@@ -283,10 +287,10 @@ bool DMainWindow::eventFilter(QObject *obj, QEvent *ev)
 
 void DMainWindow::closeTab()
 {
-    //nothing to do here, should be reimplemented
-    
-    removeWidget(m_pCurrentWidget);
-    
+	if ( ! m_persistantWidgets.contains(m_pCurrentWidget) )
+	{
+		removeWidget(m_pCurrentWidget);
+	}
 }
 
 void DMainWindow::tabContext(QWidget *, const QPoint &)

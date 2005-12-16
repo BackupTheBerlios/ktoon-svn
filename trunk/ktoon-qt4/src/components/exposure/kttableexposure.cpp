@@ -33,11 +33,13 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent)
 	setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOn);
 	viewport ()->setPaletteBackgroundColor ( paletteBackgroundColor() );
 	
+	
+	
 	m_port = new QWidget(this);
-	m_layout = new QBoxLayout (  m_port, QBoxLayout::LeftToRight,4,1);
+	m_layout = new QBoxLayout (  m_port, QBoxLayout::LeftToRight);
 	m_layout->setSpacing(0);
 	m_layout->setMargin(0);
-	
+	m_port->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 	setWidget(m_port);
 	createMenuRight();
 }
@@ -145,7 +147,7 @@ void KTTableExposure::insertLayer(int rows, const QString &text)
 	
 	connect(newLayer, SIGNAL(requestInsertFrame(bool)), this, SIGNAL(requestInsertFrame(bool)));
 	
-	m_layout->addWidget( newLayer, 0, /*Qt::AlignTop | */Qt::AlignLeft);
+	m_layout->addWidget( newLayer, 0, Qt::AlignLeft);
 	
 	m_numLayer++;
 	newLayer->show();
@@ -172,7 +174,14 @@ void KTTableExposure::insertFrames()
 		
 void KTTableExposure::removeFrame()
 {
-	m_layers.at(m_currentLayer)->removeCurrentFrame();
+	if ( m_layers.count() > 0)
+	{
+		KTLayerExposure *layer = m_layers.at(m_currentLayer);
+		if(layer)
+		{
+			layer->removeCurrentFrame();
+		}
+	}
 }
 
 KTLayerExposure *KTTableExposure::currentLayerExposure()
@@ -197,25 +206,27 @@ void KTTableExposure::lockCurrentFrame()
 	m_layers.at(m_currentLayer)->lockFrame();
 }
 
-void KTTableExposure::removeCurrentLayer()
+void KTTableExposure::removeCurrentLayer() // FIXME SIGSEGV
 {
-// 	if(m_numLayer > 1 && m_layers.at(m_currentLayer)->isSelected())
-// 	{
-// 		m_layout->removeWidget( m_layers.at(m_currentLayer) );
-		m_layers[m_currentLayer]->hide();
-// 		delete m_layers[m_currentLayer];
+	KT_FUNCINFO;
+	if ( m_layers.count() > 0 && m_currentLayer >= 0 )
+	{
 		KTLayerExposure * ly = m_layers.takeAt(m_currentLayer);
-		delete ly;
+		if ( ly ) { delete ly; }
 		for( int i = m_currentLayer; i < m_layers.count(); i++)
 		{
-			m_layers.at(i)->setId(i);
+			KTLayerExposure *layer = m_layers.at(i);
+			if ( layer ) layer->setId(i);
 		}
 		m_numLayer--;
-// 	}
+		m_port->adjustSize();
+	}
 }
 
 void KTTableExposure::removeLayer(int idLayer)
 {
+	KT_FUNCINFO;
+	SHOW_VAR(idLayer);
 	m_layout->remove( m_layers.at(idLayer) );
 	m_layers.removeAt(idLayer);
 	for( int i = idLayer; i < m_layers.count(); i++)

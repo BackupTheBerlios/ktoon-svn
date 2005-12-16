@@ -45,11 +45,11 @@ class DMainWindow: public MWCLASS
     
 		/**@return The tool window in given @p position.*/
 		DDockWindow *toolWindow(DDockWindow::Position position) const;
-    
-    /**Adds a tabbed widget into the active (focused) tab widget. 
+		
+		/**Adds a tabbed widget into the active (focused) tab widget. 
 		If @p widget is null then only tab is created.*/
-		virtual void addWidget(QWidget *widget, const QString &title);
-		virtual void addWidget(DTabWidget *tab, QWidget *widget, const QString &title);
+		virtual void addWidget(QWidget *widget, const QString &title, bool persistant = false);
+		virtual void addWidget(DTabWidget *tab, QWidget *widget, const QString &title, bool persistant);
 		/**Removes widget. Does not delete it.*/
 		virtual void removeWidget(QWidget *widget);
 		QWidget *findCorrectSeparator();
@@ -60,10 +60,10 @@ class DMainWindow: public MWCLASS
 		DTabWidget *splitVertical();
     
 	protected slots:
-    /**This does nothing. Reimplement in subclass to close the tab 
+		/**This does nothing. Reimplement in subclass to close the tab 
 		when corner close button is pressed.*/
 		virtual void closeTab();
-    /**This does nothing. Reimplement in subclass to close the tab
+		/**This does nothing. Reimplement in subclass to close the tab
 		when hover close button is pressed.*/
 		virtual void closeTab(QWidget*);
 		/**This does nothing. Reimplement in subclass to show tab context menu.*/
@@ -100,7 +100,9 @@ class DMainWindow: public MWCLASS
 
 	private slots:
 		void invalidateActiveTabWidget();
-
+		
+	private:
+		QWidgetList m_persistantWidgets;
 };
 
 #endif

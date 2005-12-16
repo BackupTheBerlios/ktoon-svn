@@ -29,8 +29,14 @@ KTOsd::KTOsd( QWidget * parent )
 	: QWidget( parent, "pageViewMessage" ), m_timer( 0 )
 {
 	setFocusPolicy( Qt::NoFocus );
-	setBackgroundMode( Qt::NoBackground );
-	setPaletteBackgroundColor(qApp->palette().color(QPalette::Active, QColorGroup::Background));
+	
+	QPalette pal = palette();
+// 	setBackgroundMode( Qt::NoBackground );
+// 	setPaletteBackgroundColor(qApp->palette().color(QPalette::Active, QColorGroup::Background));
+	
+// 	pal.setColor(QPalette::Background, palette.color(QPalette::Background) );
+	
+	
 	move( 10, 10 );
 	resize( 0, 0 );
 	hide();
@@ -60,8 +66,9 @@ void KTOsd::display( const QString & message, Level level, int ms )
 		switch ( level )
 		{
 			case Info:
-				background = QColor(0xd2ccff);
-				foreground = Qt::black;
+// 				background = QColor(0xd2ccff);
+				background = palette().color(QPalette::Highlight);
+				foreground = palette().color(QPalette::HighlightedText);
 				break;
 			case Warning:
 				break;

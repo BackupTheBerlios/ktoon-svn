@@ -79,7 +79,7 @@ void KTApplication::applyTheme(const KTThemeDocument &ktd)
 	m_themeManager.applyTheme(ktd);
 }
 
-void KTApplication::applyColors(ColorScheme cs)
+void KTApplication::applyColors(ColorSchema cs)
 {
 	QColorGroup group = QApplication::palette().active();
 	switch (cs)

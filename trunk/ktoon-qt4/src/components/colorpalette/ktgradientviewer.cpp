@@ -29,7 +29,9 @@ KTGradientViewer::KTGradientViewer(QWidget *parent)
 {
 
 // 	setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
-
+	
+	setMaximumWidth(100);
+	
 	m_type = QGradient::LinearGradient;
 	
 	setMidLineWidth(2);

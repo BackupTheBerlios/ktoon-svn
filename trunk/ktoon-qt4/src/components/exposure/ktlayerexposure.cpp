@@ -193,26 +193,33 @@ void KTLayerExposure::setUseFrames(const QString &name, bool addedToEnd)
 
 void KTLayerExposure::insertFrames()
 {
-	
-	if((m_frames[m_currentFrame]->isUsed() && m_selected ) || m_currentFrame == 0)
+	KT_FUNCINFO;
+	if ( m_frames.count() > 0 )
 	{
-		ktDebug() << "remove frame " << (m_layout->indexOf(m_frames[m_currentFrame]) == m_layout->indexOf(m_frames[m_useFrame])-1) << "||" << (m_useFrame == 0);
-		if(m_layout->indexOf(m_frames[m_currentFrame]) == m_layout->indexOf(m_frames[m_useFrame])-1 || m_useFrame == 0 )
+		ESFrame *esFrame = m_frames[m_currentFrame];
+		if(esFrame )
 		{
-			emit requestInsertFrame(true);
-		}
-		else 
-		{
-			emit requestInsertFrame(false);
-		}
-		
-	}
-	else if(  m_useFrame-1 < m_currentFrame )
-	{
-		int end = m_currentFrame;
-		for(int i = m_useFrame; i <= end; i++)
-		{
-			emit requestInsertFrame(true);
+			if( (esFrame->isUsed() && m_selected ) || m_currentFrame == 0)
+			{
+				ktDebug() << "remove frame " << (m_layout->indexOf(esFrame) == m_layout->indexOf(m_frames[m_useFrame])-1) << "||" << (m_useFrame == 0);
+				if(m_layout->indexOf(m_frames[m_currentFrame]) == m_layout->indexOf(m_frames[m_useFrame])-1 || m_useFrame == 0 )
+				{
+					emit requestInsertFrame(true);
+				}
+				else 
+				{
+					emit requestInsertFrame(false);
+				}
+				
+			}
+			else if(  m_useFrame-1 < m_currentFrame )
+			{
+				int end = m_currentFrame;
+				for(int i = m_useFrame; i <= end; i++)
+				{
+					emit requestInsertFrame(true);
+				}
+			}
 		}
 	}
 }

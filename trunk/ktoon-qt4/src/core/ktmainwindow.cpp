@@ -68,7 +68,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	
 // 	m_drawingSpace->setBackground(QBrush(QPixmap(background_xpm))); 
 	
-	addWidget(m_drawingSpace, tr("Illustration"));
+	addWidget(m_drawingSpace, tr("Illustration"), true);
 	
 	m_animationSpace = new QWorkspace;
 	m_animationSpace->setScrollBarsEnabled ( true );
@@ -80,7 +80,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	
 	m_animationSpace->addWindow(m_viewCamera);
 	m_viewCamera->show();
-	addWidget(m_animationSpace, tr("Animation"));
+	addWidget(m_animationSpace, tr("Animation"), true);
 	
 	
 	setupBackground();
@@ -115,6 +115,9 @@ KTMainWindow::~KTMainWindow()
 	
 	if ( m_drawingSpace )
 		delete m_drawingSpace;
+	
+	if ( m_projectManager )
+		delete m_projectManager;
 }
 
 
