@@ -48,6 +48,8 @@ class KTBrush : public KTSerializableObject
 		void setPenBrush(const QBrush &brush);
 		void setPenWidth(double width);
 		
+		double penWidth() const;
+		
 		void setupPainter(QPainter *painter );
 		
 		QDomElement createXML( QDomDocument &doc );

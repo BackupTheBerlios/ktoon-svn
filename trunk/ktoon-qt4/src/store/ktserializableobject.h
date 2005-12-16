@@ -23,6 +23,7 @@
 
 #include <QObject>
 #include <QDomDocument>
+#include <QVariant>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>

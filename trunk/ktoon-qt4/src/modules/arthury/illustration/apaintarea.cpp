@@ -473,7 +473,8 @@ void APaintArea::setTool( AToolInterface *toolIface, const QString &tool)
 
 void APaintArea::setBrush( const KTBrush *brush )
 {
-	m_currentBrush = new KTBrush(*brush);
+	m_currentBrush->setBrushForm( brush->brushForm() );
+	m_currentBrush->setPenWidth( brush->penWidth() );
 }
 
 QPainterPath APaintArea::translatePath(const QPainterPath &path, const QPoint &pos)

@@ -59,7 +59,7 @@ KTBrushWidget::~KTBrushWidget()
 		brush.setBrushForm( m_customBrushesList->path(i) );
 		root.appendChild(brush.createXML( doc ));
 	}
-	
+
 	if ( m_currentBrush ) delete m_currentBrush;
 } 
 

@@ -45,13 +45,22 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_
 	setupDisplayColor();
 	m_splitter->addWidget(m_centralWidget);
 	m_centralWidget->setPalette(palette());
-	setColor( Qt::black);
+	
+	KTCONFIG->beginGroup("ColorPalette");
+	QColor foreground = QColor(KTCONFIG->value("LastForegroundColor", Qt::black).toString());
+	QColor background = QColor(KTCONFIG->value("LastBackgroundColor", Qt::transparent).toString());
+	
+	setColor( foreground );
 }
 
 
 KTColorPalette::~KTColorPalette()
 {
 	KTEND;
+	
+	KTCONFIG->beginGroup("ColorPalette");
+	KTCONFIG->setValue("LastForegroundColor", color().first);
+	KTCONFIG->setValue("LastBackgroundColor", color().second);
 }
 
 
@@ -219,7 +228,7 @@ QPair<QColor, QColor> KTColorPalette::color()
 {
 	QPair<QColor, QColor> colors;
 	colors.first = m_outlineAndFillColors->foreground();
-	colors.first = m_outlineAndFillColors->background();
+	colors.second = m_outlineAndFillColors->background();
 	
 	return colors;
 }

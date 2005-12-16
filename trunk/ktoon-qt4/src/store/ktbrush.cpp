@@ -90,6 +90,11 @@ void KTBrush::setPenWidth(double width)
 	m_pen.setWidthF(width);
 }
 
+double KTBrush::penWidth() const
+{
+	return m_pen.widthF();
+}
+
 void KTBrush::setupPainter(QPainter *p)
 {
 	p->setRenderHint(QPainter::Antialiasing, true);
@@ -118,7 +123,6 @@ QDomElement KTBrush::createXML( QDomDocument &doc )
 			attribute += QString("%1:%2 ").arg((*pointIt).x()).arg((*pointIt).y());
 			++pointIt;
 		}
-		
 		polygonElement.setAttribute("points", attribute);
 		item.appendChild(polygonElement);
 		
