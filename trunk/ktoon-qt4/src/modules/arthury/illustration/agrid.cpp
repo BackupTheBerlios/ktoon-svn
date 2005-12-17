@@ -25,41 +25,56 @@
 
 AGrid::AGrid(QObject *parent) : QObject(parent), m_deltaX(10), m_deltaY(10), m_color(Qt::gray)
 {
-	
 }
 
 AGrid::AGrid(int dx, int dy,QColor color, QObject *parent): QObject(parent), m_deltaX(dx), m_deltaY(dy), m_color(color)
 {
-	
 }
-
 
 AGrid::~AGrid()
 {
 }
 
-QPainterPath AGrid::createGrid(QImage& img)
+QPainterPath AGrid::createGrid(int width, int height)
 {
+	m_buffer = QImage(width, height, QImage::Format_RGB32);
+	m_buffer.fill(qRgb(255, 255, 255));
 	
-	ktDebug() << "AGrid::createGrid " << img.width() << endl;
 	m_path = QPainterPath();
-	for(int i = 10; i <= img.width()-10; i+=m_deltaX)
+	for(int i = 10; i <= width-10; i+=m_deltaX)
 	{
-		drawLine(i, img.height()-10, i, 10 );
+		drawLine(i, height-10, i, 10 );
 	}
 	
-	
-	for(int i = 10; i <= img.height()-10; i+=m_deltaY)
+	for(int i = 10; i <= height-10; i+=m_deltaY)
 	{
-		drawLine(img.width()-10, i, 10, i);
-// 		p.drawText(0, i-15, QString::number(i/m_deltaY*-1));
+		drawLine(width-10, i, 10, i);
 	}
+	
+	QPainter painter(&m_buffer);
+	painter.setRenderHint(QPainter::Antialiasing);
+	painter.setPen(Qt::gray);
+	painter.drawPath(m_path);
+	
 	return m_path;
-// 	QPainter p(&img);
-// 	p.setPen(QPen(m_color, 1));
-// // 	p.setPen(Qt::black);
-// 	p.drawPath(m_path);
-// 	p.end();
+}
+
+QImage AGrid::copy(const QRect & r)
+{
+	if ( r.intersects(m_buffer.rect()) )
+	{
+		// FIXME: move rect to inside area
+		if ( r.bottom() < (m_buffer.height() + 18 ) ) // HACK: Qt bug(?)
+		{
+			return m_buffer.copy(r);
+		}
+		else
+		{
+			ktFatal() << "Qt bug in QImage::copy (?)";
+		}
+	}
+	
+	return QImage();
 }
 
 void AGrid::setDeltaX(int delta)

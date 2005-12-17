@@ -33,7 +33,7 @@ KTBrush::KTBrush(const QPainterPath &brushForm) : KTSerializableObject(), m_brus
 	setup();
 }
 
-KTBrush::KTBrush(const KTBrush &toCopy) : KTSerializableObject(), m_brushForm(toCopy.m_brushForm), m_brush(toCopy.m_brush), m_brushName(toCopy.m_brushName), m_hasGradient(toCopy.m_hasGradient), m_pen(toCopy.m_pen), m_thickness(toCopy.m_thickness)
+KTBrush::KTBrush(const KTBrush &toCopy) : KTSerializableObject(), m_brushForm(toCopy.m_brushForm),m_thickness(toCopy.m_thickness), m_brushName(toCopy.m_brushName), m_brush(toCopy.m_brush), m_pen(toCopy.m_pen), m_hasGradient(toCopy.m_hasGradient)
 {
 	
 }
@@ -131,12 +131,4 @@ QDomElement KTBrush::createXML( QDomDocument &doc )
 	
 	return item;
 }
-
-
-
-
-
-
-
-
 

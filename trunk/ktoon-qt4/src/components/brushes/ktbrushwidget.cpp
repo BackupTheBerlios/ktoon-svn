@@ -253,7 +253,7 @@ void KTBrushWidget::editBrush()
 void KTBrushWidget::addBrush()
 {
 	m_customBrushesList->addBrush(m_brushEditor->currentPainterPath());
-	emit sendToStatus(tr("Brush added!"));
+	emit sendToStatus(tr("Brush added."));
 }
 
 void KTBrushWidget::removeBrush()

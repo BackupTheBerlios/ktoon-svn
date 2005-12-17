@@ -37,14 +37,16 @@ class AGrid : public QObject
 		
 		~AGrid();
 		
-		QPainterPath createGrid(QImage& img);
+		QPainterPath createGrid(int width, int height);
 		
 		void setDeltaX(int delta);
 		void setDeltaY(int delta);
 		void setColor(QColor color);
 		QPainterPath pathGrid();
+		QImage copy(const QRect & r = QRect());
 		
 	private:
+		QImage m_buffer;
 		int m_deltaX, m_deltaY;
 		QColor m_color;
 		void drawLine(int x1, int y1, int x2, int y2);

@@ -60,7 +60,10 @@ class APaintArea : public QWidget
 		
 		KTBrush *currentBrush();
 		
+		void drawSelected(QPainter *painter);
+		
 	public slots:
+		void aUpdate(const QRectF &rect);
 		void setKeyFrame(int index);
 		void setLayer(int index);
 		void setScene(KTScene *scene);
@@ -112,6 +115,7 @@ class APaintArea : public QWidget
 		void paintEvent(QPaintEvent *);
 		virtual void draw(QPainter *p);
 		virtual void drawFrame(const KTKeyFrame *frame, QPainter *painter, float intensitive = 1);
+		virtual void drawGraphic(const AGraphicComponent *graphic, QPainter *painter, float intensitive = 1);
 		void resizeEvent(QResizeEvent * event );
 		
 		
