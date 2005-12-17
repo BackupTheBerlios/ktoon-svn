@@ -108,7 +108,7 @@ CWSecondPage::CWSecondPage(QWidget *parent) : KTWizardPage(tr("Configure KToon")
 	fd->hide();
 	connect(button, SIGNAL(clicked()), fd, SLOT(show()));
 	
-// 	new QLabel(tr("Choose your project directory"), container);
+	new QLabel(tr("Choose your project directory"), container);
 	
 	KTVHBox *hbox2 = new KTVHBox(container, Qt::Horizontal);
 	

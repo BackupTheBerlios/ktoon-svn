@@ -71,7 +71,10 @@ KTWizardPage *KTWizard::addPage(KTWizardPage *newPage)
 		m_nextButton->setDefault(true);
 // 		m_finishButton->setEnabled(false);
 	}
-
+	
+// 	ktDebug() << "ENABLE: " << newPage->isComplete();
+// 	m_nextButton->setEnabled( newPage->isComplete() );
+	
 	connect(newPage, SIGNAL(completed()), this, SLOT(pageCompleted()));
 	
 	return newPage;
@@ -120,9 +123,10 @@ void KTWizard::next()
 		m_finishButton->setDefault(true);
 	} else 
 	{
-		m_nextButton->setDefault(true);
 		m_finishButton->setEnabled(false);
 	}
+	
+	pageCompleted();
 }
 
 void KTWizard::pageCompleted()

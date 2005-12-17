@@ -3,7 +3,10 @@
 # Subdirectorio relativo al directorio principal del proyecto: ./src/lib
 # Destiono es una biblioteca:  ktoon
 
-INSTALLS += libktoon 
+INSTALLS += libktoon \
+            include 
+include.files += *.h 
+include.path = /include/ 
 libktoon.files += *.so* 
 libktoon.path = /lib/ 
 IMAGES += wizard1.xpm \
