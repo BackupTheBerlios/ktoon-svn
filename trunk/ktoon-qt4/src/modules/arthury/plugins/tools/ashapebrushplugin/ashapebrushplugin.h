@@ -41,6 +41,11 @@ class AShapeBrushPlugin : public QObject, public AToolInterface
 
 		virtual QHash<QString, QAction *>actions();
 		
+		int type() const
+		{
+			return Brush;
+		}
+		
 	private:
 		QPainterPath m_path;
 };

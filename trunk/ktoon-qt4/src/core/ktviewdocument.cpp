@@ -48,6 +48,9 @@ KTViewDocument::KTViewDocument(KTScene *scene, QWidget *parent ) : KTMdiWindow(p
 	m_paintAreaContainer->drawArea()->setScene( m_scene );
 	
 	createActions();
+	setupGridActions();
+	setupEditActions();
+	setupEdit2Actions();
 	setupViewActions();
 	
 	createToolbar();
@@ -70,7 +73,22 @@ void KTViewDocument::showPos(const QPoint &p)
 
 void KTViewDocument::createActions()
 {
-	gridGroup = new QActionGroup( parent());
+	m_aUndo = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/undo.png" ), tr( "Undo" ), parent());
+	m_aUndo->setShortcut(tr("Ctrl+Z"));
+	
+	connect(m_aUndo, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(undo()));
+	m_aUndo->setStatusTip(tr("Undoes the last draw action"));
+	
+	m_aRedo = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/redo.png" ), tr( "Redo" ),  parent());
+	m_aRedo->setShortcut(tr("CTRL+SHIFT+Z"));
+	connect(m_aRedo, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(redo()));
+	m_aRedo->setStatusTip(tr("Redoes a previous undone action"));
+}
+
+void KTViewDocument::setupGridActions()
+{
+#if 0
+	m_gridGroup = new QActionGroup( parent());
 	gridGroup->setExclusive( true );
 	QAction *a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/nogrid.png" ), tr( "&No Grid" ), this);
 	gridGroup->addAction ( a );
@@ -101,77 +119,71 @@ void KTViewDocument::createActions()
 	m_aFrontBackGrid->setChecked(true);
 	connect(m_aFrontBackGrid, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotFrontBackGrid()));
 	m_aFrontBackGrid->setStatusTip(tr("Sends the grid to the front or to the back of the drawing area" ));
-	
-	m_aUndo = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/undo.png" ), tr( "Undo" ), parent());
-	m_aUndo->setShortcut(tr("Ctrl+Z"));
-	
-	connect(m_aUndo, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(undo()));
-	m_aUndo->setStatusTip(tr("Undoes the last draw action"));
-	
-	m_aRedo = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/redo.png" ), tr( "Redo" ),  parent());
-	m_aRedo->setShortcut(tr("CTRL+SHIFT+Z"));
-	connect(m_aRedo, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(redo()));
-	m_aRedo->setStatusTip(tr("Redoes a previous undone action"));
-	
-	
-	editGroup = new QActionGroup( parent() );
-	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/cut.png" ), tr( "&Cut" ),  editGroup);
+#endif
+}
+
+void KTViewDocument::setupEditActions()
+{
+	m_editGroup = new QActionGroup( parent() );
+	QAction *a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/cut.png" ), tr( "&Cut" ),  m_editGroup);
 	a->setShortcut(tr("Ctrl+X"));
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotCut()));
 	a->setStatusTip(tr("Cuts the selection and puts it onto the clipboard"));
 	
-	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/copy.png" ), tr( "C&opy" ),  editGroup);
+	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/copy.png" ), tr( "C&opy" ),  m_editGroup);
 	a->setShortcut(tr("Ctrl+C"));
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotCopy()));
 	a->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
 	
-	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/paste.png" ), tr( "&Paste" ),  editGroup);
+	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/paste.png" ), tr( "&Paste" ),  m_editGroup);
 	a->setShortcut(tr("Ctrl+V"));
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotPaste()));
 	a->setStatusTip(tr("Pastes the clipboard into the current document"));
 	
-	
-	editGroup2 = new QActionGroup( parent() );
-	a = new QAction( tr(  "Paste &In Place" ), editGroup2);
+}
+
+void KTViewDocument::setupEdit2Actions()
+{
+	m_editGroup2 = new QActionGroup( parent() );
+	QAction *a = new QAction( tr(  "Paste &In Place" ), m_editGroup2);
 	a->setShortcut(tr("Ctrl+Shift+V"));
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotPasteInPlace()));
 	a->setStatusTip(tr("Pastes the clipboard into the same place as the copy was did"));
 	
-	a = new QAction( tr(  "&Delete" ),  editGroup2);
+	a = new QAction( tr(  "&Delete" ),  m_editGroup2);
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotDelete()));
 	a->setStatusTip(tr("Deletes the selected object"));
 	
-	a = new QAction( tr(  "&Select All" ),  editGroup2);
+	a = new QAction( tr(  "&Select All" ),  m_editGroup2);
 	a->setShortcut( tr("Ctrl+A"));
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotSelectAll()));
 	a->setStatusTip(tr("Selects all objects in the document"));
 	
-	m_aNtsc = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/ntsc.png" ), tr( "&NTSC Zone" ), parent());
+// 	m_aNtsc = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/ntsc.png" ), tr( "&NTSC Zone" ), parent());
 	
-	m_aNtsc->setCheckable ( true );
-	connect(m_aNtsc, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotSeeNTSC()));
-	m_aNtsc->setStatusTip(tr("Shows or hides the NTSC Zone" ));
+// 	m_aNtsc->setCheckable ( true );
+// 	connect(m_aNtsc, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotSeeNTSC()));
+// 	m_aNtsc->setStatusTip(tr("Shows or hides the NTSC Zone" ));
 	
-	m_aLightTable = new QAction( QPixmap(KTOON_HOME+"/themes/default/icons/light_table.png" ), tr( "&Light Table" ),  parent());
-	connect(m_aLightTable, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotLightTable()));
-	m_aLightTable->setStatusTip(tr("Activates or deactivates the light table" ));
+// 	m_aLightTable = new QAction( QPixmap(KTOON_HOME+"/themes/default/icons/light_table.png" ), tr( "&Light Table" ),  parent());
+// 	connect(m_aLightTable, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotLightTable()));
+// 	m_aLightTable->setStatusTip(tr("Activates or deactivates the light table" ));
 	
 	m_aClose = new QAction(QPixmap(KTOON_THEME_DIR+"/icons/close.png" ), tr( "Cl&ose" ), parent());
 	m_aClose->setShortcut( tr("Ctrl+Shift+W"));
 	connect(m_aClose, SIGNAL(triggered()), this, SLOT(close()));
 	m_aClose->setStatusTip(tr("Closes the active document"));
 	
-	
 }
 
 void KTViewDocument::setupViewActions()
 {
-	viewPreviousGroup = new QActionGroup( this );
-	viewPreviousGroup->setExclusive( true );
+	m_viewPreviousGroup = new QActionGroup( this );
+	m_viewPreviousGroup->setExclusive( true );
 	
 	KTAction *noPrevious = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/no_previous.png" ), tr( "No Previous" ), QKeySequence(Qt::Key_0), this, SLOT(disablePreviousOnionSkin()), m_actionManager, "no_previous" );
 	
-	viewPreviousGroup->addAction(noPrevious);
+	m_viewPreviousGroup->addAction(noPrevious);
 	
 	noPrevious->setCheckable ( true );
 	noPrevious->setStatusTip(tr("Disables previous onion skin visualization"));
@@ -180,47 +192,47 @@ void KTViewDocument::setupViewActions()
 	
 	KTAction *onePrevious = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/previous.png" ), tr( "Previous One" ), QKeySequence(Qt::Key_1), this, SLOT(onePreviousOnionSkin()), m_actionManager, "previews_one");
 	
-	viewPreviousGroup->addAction(onePrevious);
+	m_viewPreviousGroup->addAction(onePrevious);
 	
 	onePrevious->setStatusTip(tr("Shows the previous onion skin" ));
 	onePrevious->setCheckable ( true );
 	
 	KTAction *twoPrevious = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/previous2.png" ), tr( "Previous Two" ), QKeySequence(Qt::Key_2), this, SLOT(twoPreviousOnionSkin()), m_actionManager, "previews_two");
-	viewPreviousGroup->addAction(twoPrevious);
+	m_viewPreviousGroup->addAction(twoPrevious);
 	twoPrevious->setStatusTip(tr("Shows the previous 2 onion skins" ));
 	twoPrevious->setCheckable ( true );
 	
 	KTAction *threePrevious = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/previous3.png" ), tr( "Previous Three" ), QKeySequence(Qt::Key_3), this, SLOT(threePreviousOnionSkin()), m_actionManager, "previews_three");
-	viewPreviousGroup->addAction(threePrevious);
+	m_viewPreviousGroup->addAction(threePrevious);
 	threePrevious->setCheckable ( true );
 	threePrevious->setStatusTip(tr("Shows the previous 3 onion skins" ));
 
 // 	// NEXT 
 
-	viewNextGroup = new QActionGroup( this );
-	viewNextGroup->setExclusive( true );
+	m_viewNextGroup = new QActionGroup( this );
+	m_viewNextGroup->setExclusive( true );
 	
 	KTAction *noNext = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/no_next.png" ), tr( "No Next" ), QKeySequence(Qt::CTRL+Qt::Key_0), this, SLOT(disableNextOnionSkin()), m_actionManager, "no_next");
-	viewNextGroup->addAction(noNext);
+	m_viewNextGroup->addAction(noNext);
 	
 	
 	noNext->setCheckable ( true );
 	noNext->setStatusTip(tr("Disables next onion skin visualization" ));
 	
 	KTAction *oneNext = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/next.png" ), tr( "Next One" ), QKeySequence(Qt::CTRL+Qt::Key_1), this, SLOT(oneNextOnionSkin()), m_actionManager, "next_one");
-	viewNextGroup->addAction(oneNext);
+	m_viewNextGroup->addAction(oneNext);
 	
 	oneNext->setCheckable ( true );
 	oneNext->setStatusTip(tr("Shows the next onion skin"));
 	
 	KTAction *twoNext = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/next2.png" ), tr( "Next Two" ), QKeySequence(Qt::CTRL+Qt::Key_2), this, SLOT(twoNextOnionSkin()), m_actionManager, "next_two");
-	viewNextGroup->addAction(twoNext);
+	m_viewNextGroup->addAction(twoNext);
 	
 	twoNext->setCheckable( true );
 	twoNext->setStatusTip(tr("Shows the next 2 onion skins"));
 	
 	KTAction *threeNext = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/next3.png" ), tr( "Next Three" ), QKeySequence(Qt::CTRL+Qt::Key_3), this, SLOT(threeNextOnionSkin()), m_actionManager, "next_three");
-	viewNextGroup->addAction(threeNext);
+	m_viewNextGroup->addAction(threeNext);
 	
 	threeNext->setToggleAction(true );
 	threeNext->setStatusTip(tr("Shows the next 3 onion skins"));
@@ -242,13 +254,13 @@ void KTViewDocument::createTools()
 	
 	// Selection menu
 	
-	m_toolsSelection = new QMenu( tr("selection"), m_toolbar );
-	m_toolsSelection->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/selection.png"));
-	connect( m_toolsSelection, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
+	m_selectionMenu = new QMenu( tr("selection"), m_toolbar );
+	m_selectionMenu->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/selection.png"));
+	connect( m_selectionMenu, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
 	
-	m_toolsSelection->addAction(QPixmap(KTOON_THEME_DIR+"/icons/selection.png"), tr( "Normal &Selection" ), m_paintAreaContainer->drawArea(), SLOT( slotNormalSelection()),tr("S"));
-
+	m_toolbar->addAction(m_selectionMenu->menuAction());
 	
+#if 0
 	m_toolsSelection->addAction(QPixmap(KTOON_THEME_DIR+"/icons/nodes.png"), tr( "Con&tour Selection" ), m_paintAreaContainer->drawArea(), SLOT( slotContourSelection()), tr("T") );
 	
 	m_toolsDraw = new QMenu( m_toolbar );
@@ -330,16 +342,16 @@ void KTViewDocument::createTools()
 	m_toolsAlign->addAction(QPixmap(KTOON_THEME_DIR+"/icons/align_ch.png"), tr("Center &Horizontally" ), m_paintAreaContainer->drawArea(),  SLOT( slotCenterHorizontally()));
 	m_toolsAlign->addAction(QPixmap(KTOON_THEME_DIR+"/icons/align_b.png"), tr( "&Bottom" ), m_paintAreaContainer->drawArea(), SLOT( slotAlignBottom()));
 	
-// 	tools_left->setStatusTip(tr("Aligns the selected object to the left"));
-// 	tools_center_vertically->setStatusTip(tr("Centers vertically the selected object"));
-// 	tools_right->setStatusTip(tr("Aligns the selected object to the right"));
-// 	tools_top->setStatusTip(tr("Aligns the selected object to the top"));
-// 	tools_center_horizontally->setStatusTip(tr("Centers horizontally the selected object"));
-// 	tools_bottom->setStatusTip(tr("Aligns the selected object to the bottom"));
+	tools_left->setStatusTip(tr("Aligns the selected object to the left"));
+	tools_center_vertically->setStatusTip(tr("Centers vertically the selected object"));
+	tools_right->setStatusTip(tr("Aligns the selected object to the right"));
+	tools_top->setStatusTip(tr("Aligns the selected object to the top"));
+	tools_center_horizontally->setStatusTip(tr("Centers horizontally the selected object"));
+	tools_bottom->setStatusTip(tr("Aligns the selected object to the bottom"));
 
 	m_toolsTransform = new QMenu( tr( "Transform " ), this);
 	connect( m_toolsTransform, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
-// 	m_toolsTransform->setIcon(QPixmap(KTOON_HOME+"/images/icons/align_l.png"));
+	m_toolsTransform->setIcon(QPixmap(KTOON_HOME+"/images/icons/align_l.png"));
 
 	m_toolsTransform->addAction(tr( "Flip &Horizontally" ), m_paintAreaContainer->drawArea(), SLOT(slotFlipHorizontally()));
 	m_toolsTransform->addAction(tr( "Flip &Vertically" ), m_paintAreaContainer->drawArea(), SLOT(slotFlipVertically()));
@@ -351,12 +363,12 @@ void KTViewDocument::createTools()
 	m_toolsTransform->addAction( QPixmap(KTOON_THEME_DIR+"/icons/perspective.png"),tr( "&Perspective" ) ,m_paintAreaContainer->drawArea(), SLOT( slotRotate180()));
 	
 	
-// 	tools_flip_horizontally->setStatusTip(tr("Flips the selected object horizontally"));
-// 	tools_flip_vertically->setStatusTip(tr("Flips the selected object vertically"));
-// 	tools_rotate_cw90->setStatusTip(tr("Rotates the selected object 90 degrees clockwise"));
-// 	tools_rotate_ccw90->setStatusTip(tr("Rotates the selected object 90 degrees counterclockwise"));
-// 	tools_rotate180->setStatusTip(tr("Rotates the selected object 180 degrees"));
-// 	tools_perspective->setStatusTip(tr("Activates the perspective tool"));
+	tools_flip_horizontally->setStatusTip(tr("Flips the selected object horizontally"));
+	tools_flip_vertically->setStatusTip(tr("Flips the selected object vertically"));
+	tools_rotate_cw90->setStatusTip(tr("Rotates the selected object 90 degrees clockwise"));
+	tools_rotate_ccw90->setStatusTip(tr("Rotates the selected object 90 degrees counterclockwise"));
+	tools_rotate180->setStatusTip(tr("Rotates the selected object 180 degrees"));
+	tools_perspective->setStatusTip(tr("Activates the perspective tool"));
 	
 	m_toolbar->addAction(m_toolsSelection->menuAction());
 	m_toolbar->addAction(m_toolsDraw->menuAction());
@@ -365,7 +377,8 @@ void KTViewDocument::createTools()
 	m_toolbar->addAction(m_toolsView->menuAction());
 	m_toolbar->addAction(m_toolsOrder->menuAction());
 	m_toolbar->addAction(m_toolsAlign->menuAction());
-// 	m_toolbar->addAction(m_toolsTransform->menuAction());
+	m_toolbar->addAction(m_toolsTransform->menuAction());
+#endif
 }
 
 void KTViewDocument::loadPlugins()
@@ -416,7 +429,23 @@ void KTViewDocument::loadPlugins()
 					if ( act )
 					{
 						connect(act, SIGNAL(triggered()), this, SLOT(selectTool()));
-						m_brushesMenu->addAction(act);
+						
+						switch( aTool->type() )
+						{
+							case AToolInterface::Brush:
+							{
+								m_brushesMenu->addAction(act);
+							}
+							break;
+							case AToolInterface::Selection:
+							{
+								m_selectionMenu->addAction(act);
+							}
+							default:
+							{
+							}
+							break;
+						}
 						m_paintAreaContainer->drawArea()->setTool(aTool, *it);
 					}
 				}
@@ -479,21 +508,21 @@ void KTViewDocument::createToolbar()
 	m_barGrid = new QToolBar(tr("Bar Actions"), this);
 	m_barGrid->setIconSize( QSize(22,22) );
 	addToolBar(m_barGrid);
-	m_barGrid->addActions(gridGroup->actions());
-	m_barGrid->addAction(m_aSubGrid);
-	m_barGrid->addAction(m_aFrontBackGrid);
+// 	m_barGrid->addActions(m_gridGroup->actions());
+// 	m_barGrid->addAction(m_aSubGrid);
+// 	m_barGrid->addAction(m_aFrontBackGrid);
 	m_barGrid->addSeparator();
 	m_barGrid->addAction(m_aUndo);
 	m_barGrid->addAction(m_aRedo);
 	m_barGrid->addSeparator();
-	m_barGrid->addActions(editGroup->actions());
+// 	m_barGrid->addActions(m_editGroup->actions());
 	m_barGrid->addSeparator();
-	m_barGrid->addAction(m_aNtsc);
-	m_barGrid->addAction(m_aLightTable);
+// 	m_barGrid->addAction(m_aNtsc);
+// 	m_barGrid->addAction(m_aLightTable);
 	m_barGrid->addSeparator();
-	m_barGrid->addActions(viewPreviousGroup->actions());
+	m_barGrid->addActions(m_viewPreviousGroup->actions());
 	m_barGrid->addSeparator();
-	m_barGrid->addActions(viewNextGroup->actions());
+	m_barGrid->addActions(m_viewNextGroup->actions());
 	
 }
 

@@ -40,6 +40,8 @@
 
 #include "ktdocument.h"
 
+#include "ktactionmanager.h"
+
 /**
  * @author Jorge Cuadrado
 */
@@ -63,11 +65,11 @@ class KTViewDocument : public KTMdiWindow
 		void threeNextOnionSkin();
 		
 	private:
-		QActionGroup *gridGroup, *editGroup, *editGroup2, *viewNextGroup, *viewPreviousGroup;
-		QMenu *m_brushesMenu, *m_filterMenu;
+		QActionGroup *m_gridGroup, *m_editGroup, *m_editGroup2, *m_viewNextGroup, *m_viewPreviousGroup;
+		QMenu *m_brushesMenu, *m_selectionMenu, *m_filterMenu;
 		
-		QMenu *m_toolsSelection, *m_toolsDraw, *m_toolsFills, *m_toolsErasers, *m_toolsView, *m_toolsOrder,*m_toolsAlign, *m_toolsTransform;
-		QAction *m_aSubGrid, *m_aNtsc, *m_aLightTable,*m_aUndo, *m_aRedo, *m_aClose, *m_aFrontBackGrid;
+// 		QMenu *m_toolsSelection, *m_toolsDraw, *m_toolsFills, *m_toolsErasers, *m_toolsView, *m_toolsOrder,*m_toolsAlign, *m_toolsTransform;
+		QAction *m_aUndo, *m_aRedo, *m_aClose;
 		QToolBar *m_barGrid, *m_toolbar;
 		
 		KTPaintAreaContainer *m_paintAreaContainer;
@@ -77,6 +79,9 @@ class KTViewDocument : public KTMdiWindow
 	private:
 		void createActions();
 		void setupViewActions();
+		void setupGridActions();
+		void setupEditActions();
+		void setupEdit2Actions();
 		
 		void createToolbar();
 		void createMenu();

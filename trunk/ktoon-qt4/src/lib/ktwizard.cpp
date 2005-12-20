@@ -166,13 +166,12 @@ KTWizardPage::KTWizardPage(const QString &title, QWidget *parent) : KTVHBox(pare
 void KTWizardPage::setPixmap(const QPixmap &px)
 {
 	m_image->setPixmap(px);
-// 	m_image->setMask(px.mask());
 	m_image->show();
 }
 
 void KTWizardPage::setWidget(QWidget *w)
 {
-	m_layout->addWidget(w, 0, 1, Qt::AlignTop);
+	m_layout->addWidget(w, 0, 1/*, Qt::AlignTop*/);
 }
 
 KTWizardPage::~KTWizardPage() {};

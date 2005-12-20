@@ -64,7 +64,7 @@ namespace Ideal {
 	Button::Button(ButtonBar *parent, const QString text, const QIcon &icon,
 		       const QString &description)
 	: QPushButton(icon, text, parent), m_buttonBar(parent), m_description(description),
-	m_place(parent->place()), m_realText(text), m_realIconSet(icon), m_isSensible(false)
+	m_place(parent->place()), m_realText(text), m_realIconSet(icon), m_isSensible(false), m_haveIcon(true)
 	{
 		hide();
 		setFlat(true);
@@ -168,9 +168,12 @@ namespace Ideal {
 
 		opt.text = text();
 
-		opt.icon = m_realIconSet;
-		opt.iconSize = QSize(16,16);
-
+		if ( m_haveIcon )
+		{
+			opt.icon = m_realIconSet;
+			opt.iconSize = QSize(16,16);
+		}
+		
 		QRect r = rect();
 		if (m_place == Ideal::Left || m_place == Ideal::Right)
 			r.setSize(QSize(r.height(), r.width()));
@@ -357,13 +360,16 @@ namespace Ideal {
 			{
            		 	m_realIconSet = QIcon((const char**)new_xpm);
 			}
-			setIconSet(m_realIconSet);
+			setIcon(m_realIconSet);
 		}
+		
+		m_haveIcon = true;
 	}
 
 	void Button::disableIconSet()
 	{
-		setIconSet(QIcon());
+		m_haveIcon = false;
+		setIcon(QIcon());
 	}
 
 	void Button::disableText()

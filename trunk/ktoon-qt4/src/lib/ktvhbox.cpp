@@ -65,7 +65,10 @@ void KTVHBox::addWidget(QWidget *child, Qt::Alignment alignment)
 {
 	child->setParent(this);
 	m_pLayout->addWidget(child);
-	m_pLayout->setAlignment(child, alignment);
+	if ( alignment != 0 )
+	{
+		m_pLayout->setAlignment(child, alignment);
+	}
 }
 
 void KTVHBox::moveWidgetUp(QWidget *widget)
@@ -100,7 +103,8 @@ void KTVHBox::moveWidgetDown(QWidget *widget)
 
 bool KTVHBox::event( QEvent* ev )
 {
-	switch ( ev->type() ) {
+	switch ( ev->type() )
+	{
 		case QEvent::ChildAdded:
 		{
 			QChildEvent* childEv = static_cast<QChildEvent *>( ev );
@@ -130,7 +134,7 @@ QSize KTVHBox::sizeHint() const
 {
 	KTVHBox* that = const_cast<KTVHBox *>( this );
 	QApplication::sendPostedEvents( that, QEvent::ChildAdded );
-	return QWidget::sizeHint();
+	return QFrame::sizeHint();
 }
 
 void KTVHBox::setSpacing( int sp )

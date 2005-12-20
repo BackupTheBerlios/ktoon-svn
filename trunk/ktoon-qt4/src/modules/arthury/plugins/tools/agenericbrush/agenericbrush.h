@@ -43,6 +43,11 @@ class AGenericBrush : public QObject, public AToolInterface
 
 		virtual QHash<QString, QAction *>actions();
 		
+		int type() const
+		{
+			return Brush;
+		}
+		
 	private:
 		QPoint m_firstPoint;
 		QList<QPoint> m_points;

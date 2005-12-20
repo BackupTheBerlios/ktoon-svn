@@ -141,7 +141,7 @@ private:
     QString m_realText;
     QIcon m_realIconSet;
     
-    bool m_isSensible;
+    bool m_isSensible, m_haveIcon;
     
     Animation *m_animation;
     

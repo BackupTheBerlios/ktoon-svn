@@ -41,6 +41,13 @@
 class AToolInterface
 {
 	public:
+		enum Type
+		{
+			None = 0,
+			Brush,
+			Selection
+		};
+		
 		virtual ~AToolInterface() {};
 		virtual QStringList keys() const = 0;
 		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos) = 0;
@@ -50,6 +57,8 @@ class AToolInterface
 		virtual QHash<QString, QAction *>actions() = 0;
 		
 		virtual QPainterPath path() const = 0;
+		
+		virtual int type() const = 0;
 };
 
 Q_DECLARE_INTERFACE( AToolInterface, "com.toonka.ktoon.AToolInterface/0.1" );

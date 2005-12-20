@@ -262,7 +262,7 @@ function main()
 	
 ########################
 	qpinfo "Compiling $APPNAME $APPVER..."
-	qpinfo "Go for a cup of coffee ;)"
+	qpinfo "Go for a coffee cup ;)"
 	
 # 	$MAKE 2> /dev/null > /dev/null || ( fails "Error while compiling, please try to run \"make\" manually"; exit 1 )
 	

@@ -394,14 +394,17 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 						{
 							if( (*it) && (*it)->path().intersects( QRectF(QPointF(static_cast<double>(event->pos().x()-1), static_cast<double>(event->pos().y()-1) ), QSizeF(2,2) ) ) )
 							{
-								toSelect = (*it);
-								break;
+								if ( *it )
+								{
+									toSelect = (*it);
+									break;
+								}
 							}
 						}
 
 						if ( e->modifiers() & Qt::ControlModifier )
 						{
-							if ( m_selectedGraphic && m_selectedGraphic != toSelect)
+							if ( toSelect && m_selectedGraphic && m_selectedGraphic != toSelect)
 							{
 								QPainterPath selectPath = m_selectedGraphic->path();
 								QPainterPath toSelectPath = toSelect->path();

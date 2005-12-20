@@ -46,7 +46,7 @@ class KTVHBox : public QFrame
 		virtual QSize sizeHint() const;
 		void setSpacing( int space );
 		void setStretchFactor( QWidget* w, int stretch );
-		void addWidget(QWidget *child, Qt::Alignment alignment = Qt::AlignCenter);
+		void addWidget(QWidget *child, Qt::Alignment alignment = 0);
 		QBoxLayout *boxLayout();
 		
 	signals:

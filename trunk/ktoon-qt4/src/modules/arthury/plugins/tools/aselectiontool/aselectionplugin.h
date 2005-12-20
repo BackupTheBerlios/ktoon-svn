@@ -41,6 +41,11 @@ class ASelectionPlugin : public QObject, public AToolInterface
 
 		virtual QHash<QString, QAction *>actions();
 		
+		int type() const
+		{
+			return Selection;
+		}
+		
 	private:
 		QPainterPath m_path;
 };

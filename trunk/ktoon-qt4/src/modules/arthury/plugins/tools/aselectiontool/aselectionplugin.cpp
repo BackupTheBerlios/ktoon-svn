@@ -23,6 +23,8 @@
 #include <QKeySequence>
 #include <QDebug>
 
+#include "ktapplication.h"
+
 QStringList ASelectionPlugin::keys() const
 {
 	return QStringList() << tr("Selection");
@@ -80,7 +82,7 @@ QHash<QString, QAction *> ASelectionPlugin::actions()
 {
 	QHash<QString, QAction *> hash;
 	
-	QAction *act = new QAction( tr("Selection"), this);
+	QAction *act = new QAction(QPixmap(KTOON_THEME_DIR+"/icons/selection.png"), tr("Selection"), this);
 // 	act->setShortcut( QKeySequence(tr("R")) );
 	hash.insert( tr("Selection"), act );
 	
