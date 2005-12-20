@@ -41,7 +41,6 @@ function unpack_ktoon_home()
 	
 	if [ -f $KTOON_DIST_FILE ]
 	then
-		echo $PATH
 		tar xjf $KTOON_DIST_FILE -C $DIRTMP
 		
 		DIR_EXTRACTED=$(ls $DIRTMP)
@@ -63,8 +62,6 @@ if [ -f /etc/profile ]
 then
 	. /etc/profile
 fi
-
-echo $PATH
 
 unpack_ktoon_home
 verify

@@ -21,12 +21,22 @@
 #include "application.h"
 #include "ktdebug.h"
 
-Application::Application(int & argc, char ** argv) : QApplication(argc, argv)
+#include <QFile>
+
+Application::Application(int & argc, char ** argv) : QApplication(argc, argv), m_ktoonHome("")
 {
 	if ( argc == 2 )
 	{
 		m_ktoonHome = QString(argv[1]);
-		ktDebug() << "Configuring with: " << m_ktoonHome;
+		
+		if ( QFile::exists(m_ktoonHome ) )
+		{
+			ktDebug() << "Configuring with: " << m_ktoonHome;
+		}
+		else
+		{
+			m_ktoonHome = "";
+		}
 	}
 }
 

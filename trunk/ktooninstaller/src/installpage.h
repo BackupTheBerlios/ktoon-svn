@@ -22,6 +22,13 @@
 #define INSTALLPAGE_H
 
 #include <ktwizard.h>
+#include <qprogressbar.h>
+#include <QDir>
+#include <QList>
+#include <QFileInfo>
+#include <QFile>
+
+#include <QLineEdit>
 
 /**
 	@author David Cuadrado <krawek@toonka.com>
@@ -34,6 +41,16 @@ class InstallPage : public KTWizardPage
 		~InstallPage();
 		bool isComplete();
 		void reset();
+		
+	private slots:
+		void chooseDestination();
+		void install();
+		void installDir(const QDir &dir);
+		
+	private:
+		QProgressBar *m_status;
+		bool m_isComplete;
+		QLineEdit *m_destinationPath;
 };
 
 #endif

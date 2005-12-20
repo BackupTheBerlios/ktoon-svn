@@ -20,14 +20,27 @@
 
 #include "licencepage.h"
 #include <QTextBrowser>
+#include <QFile>
 
+#include "application.h"
 #include "ktdebug.h"
 
 LicencePage::LicencePage(QWidget *parent)
 	: KTWizardPage(tr("Licence"), parent), m_isComplete(false)
 {
 	QTextBrowser *licence = new QTextBrowser;
-	licence->setHtml("<font color=red><h2>TODO: add licence text</h2></font>");
+	
+	QFile licenceFile( static_cast<Application*>(qApp)->ktoonHome()+"/data/COPYING" );
+	if ( licenceFile.open( QIODevice::ReadOnly  | QIODevice::Text) )
+	{
+		QTextStream stream( &licenceFile );
+		while ( ! stream.atEnd() )
+		{
+			QString line = stream.readLine();
+			licence->append(line);
+		}
+		licenceFile.close();
+	}
 	
 	m_agree = new QCheckBox(tr("I agree"), this);
 	connect(m_agree, SIGNAL(clicked()), this, SLOT(toggleAgree()));

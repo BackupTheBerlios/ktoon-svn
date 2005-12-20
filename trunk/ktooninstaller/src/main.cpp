@@ -29,15 +29,17 @@
 int main( int argc, char ** argv )
 {
 	Application app( argc, argv );
-	KToonInstaller * mw = new KToonInstaller();
-	mw->setWindowTitle( "Installer" );
-	mw->show();
 	
-	if ( app.ktoonHome().isNull() )
+	if ( app.ktoonHome().isEmpty() )
 	{
-		ktFatal() << "Missing home argument";
+		ktFatal() << QObject::tr("Please don't use this binary directly");
 		return -1;
 	}
+	
+	KToonInstaller * mw = new KToonInstaller();
+	mw->setWindowTitle( QObject::tr("KToon Installer = )"));
+	mw->show();
+	
 	return app.exec();
 }
 
