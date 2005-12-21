@@ -38,6 +38,7 @@
 #include <QScrollArea>
 #include <QDialog>
 #include <QMainWindow>
+#include <QDebug>
 
 #include "buttonbar.h"
 #include "button.h"
@@ -46,27 +47,19 @@ DDockWindow::DDockWindow(QWidget *parent, Position position) : QDockWidget( pare
 {
 	setFeatures(QDockWidget::NoDockWidgetFeatures);
 	
-// 	layout()->setSizeConstraint( QLayout::SetMinimumSize );
 	m_centralWidget = new DDockInternalWidget(this, position);
 
 	setWidget(m_centralWidget);
 	m_centralWidget->show();
-	
-// 	resize(minimumSize());
-	
-// 	QPalette pal = QApplication::palette();
-// 	pal.setColor(QPalette::Background, Qt::blue);
-// 	setPalette(pal);
-// 	
-// 	QPalette pal2 = QApplication::palette();
-// 	pal2.setColor(QPalette::Background, Qt::red);
-// 	m_centralWidget->setPalette(pal2);
 	
 	layout()->setSpacing(0);
 	layout()->setMargin(0);
 	
 	connect(this, SIGNAL(topLevelChanged ( bool)), this, SLOT(addFloatingOption(bool)));
 	
+#if QT_VERSION >= 0x040100
+	setStyle("windows");
+#else
 	QList<QWidget*> widgets = findChildren<QWidget*>();
 	QList<QWidget*>::ConstIterator it = widgets.begin();
 	
@@ -80,6 +73,7 @@ DDockWindow::DDockWindow(QWidget *parent, Position position) : QDockWidget( pare
 		}
 		++it;
 	}
+#endif
 }
 
 DDockWindow::~DDockWindow()

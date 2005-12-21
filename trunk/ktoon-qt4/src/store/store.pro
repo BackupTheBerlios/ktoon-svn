@@ -24,7 +24,7 @@ SOURCES += ktkeyframe.cpp \
            ktdocument.cpp \
            ktserializableobject.cpp \
            ktbrush.cpp 
-QT = qt3support
+QT += xml
 INCLUDEPATH += ../../src/core \
 ../../src/dialogs \
 ../../src/store \

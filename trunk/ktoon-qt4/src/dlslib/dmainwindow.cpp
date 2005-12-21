@@ -34,6 +34,7 @@ static const char* const icon_xpm[]={
 #include <QEvent>
 #include <QApplication>
 #include <QToolButton>
+#include <QDebug>
 
 #include "dtabwidget.h"
 #include "docksplitter.h"
