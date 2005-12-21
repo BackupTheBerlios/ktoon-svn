@@ -18,25 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTPATHADJUSTER_H
-#define KTPATHADJUSTER_H
+#ifndef KTBRUSHESPARSER_H
+#define KTBRUSHESPARSER_H
 
+#include <QXmlDefaultHandler>
+#include <QList>
 #include <QPainterPath>
-#include <QChar>
-#include <QStringList>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTPathAdjuster
+class KTBrushesParser : public QXmlDefaultHandler
 {
 	public:
-		KTPathAdjuster();
-		~KTPathAdjuster();
+		KTBrushesParser();
+		~KTBrushesParser();
+		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
 		
-		static QPainterPath toRect(const QPainterPath &p, const QRect &rect, float offset = 10.0f);
-		static QPainterPath buildPath(const QStringList &polygonsStr, QChar sep);
-
+		bool endElement( const QString& ns, const QString& localname, const QString& qname);
+		
+		bool error ( const QXmlParseException & exception );
+		bool fatalError ( const QXmlParseException & exception );
+		
+		QList<QPainterPath> brushes();
+		
+	private:
+		QString m_root,m_qname;
+		QList<QPainterPath> m_brushes;
+		QStringList m_tmpPolygons;
 };
 
 #endif

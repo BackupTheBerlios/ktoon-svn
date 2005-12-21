@@ -29,6 +29,8 @@
 
 #include <cmath>
 
+#include "ktbrushesparser.h"
+
 KTBrushWidget::KTBrushWidget(QWidget *parent) : KTModuleWidgetBase( parent ), m_currentFormIndex(0), m_currentBrush(0)
 {
 	setCaption( tr( "Brushes" ) );
@@ -42,6 +44,11 @@ KTBrushWidget::KTBrushWidget(QWidget *parent) : KTModuleWidgetBase( parent ), m_
 	setupButtons();
 	
 	static_cast<QVBoxLayout *>(layout())->addLayout(m_layout);
+	
+	KTCONFIG->beginGroup("Brushes");
+	int lastIndex = KTCONFIG->value("LastIndex", 0).toInt();
+	
+	m_brushManager->setCurrentIndex(lastIndex);
 }
 
 
@@ -61,6 +68,28 @@ KTBrushWidget::~KTBrushWidget()
 	}
 
 	if ( m_currentBrush ) delete m_currentBrush;
+	
+	
+	QFile custom(ktapp->configDir()+"/brushes/customBrushes.ktbr");
+	
+	QDir brushesDir(ktapp->configDir()+"/brushes");
+	
+	if ( ! brushesDir.exists() )
+	{
+		brushesDir.mkdir(brushesDir.path() );
+	}
+	
+	if ( custom.open(QIODevice::WriteOnly | QIODevice::Text))
+	{
+		QTextStream out(&custom);
+		
+		out << doc.toString();
+		
+		custom.close();
+	}
+	
+	KTCONFIG->beginGroup("Brushes");
+	KTCONFIG->setValue("LastIndex", m_brushManager->currentIndex());
 } 
 
 void KTBrushWidget::setupDisplay()
@@ -103,15 +132,50 @@ void KTBrushWidget::setupBrushManager()
 	
 	createDefaultBrushes();
 	
-	m_customBrushesList = new KTBrushesList(m_brushManager);
-	connect(m_customBrushesList, SIGNAL(itemClicked( KTCellViewItem * )), this,SLOT(selectBrush( KTCellViewItem * )));
-	
 	m_brushManager->addPage(m_defaultBrushesList, tr("Default Brushes") );
-	m_brushManager->addPage(m_customBrushesList, tr("Custom Brushes") );
+	
+	setupCustomBrushes();
 	
 	m_brushManager->addPage( container, tr("Edit Brush") );
 	
 	m_layout->addWidget(m_brushManager, 2,0);
+}
+
+void KTBrushWidget::setupCustomBrushes()
+{
+	m_customBrushesList = new KTBrushesList(m_brushManager);
+	connect(m_customBrushesList, SIGNAL(itemClicked( KTCellViewItem * )), this,SLOT(selectBrush( KTCellViewItem * )));
+	
+	QDir customBrushesDir(ktapp->configDir()+"/brushes");
+	
+	if ( customBrushesDir.exists() )
+	{
+		// Parse!
+		
+		KTBrushesParser parser;
+		
+		QXmlSimpleReader reader;
+		reader.setContentHandler(&parser);
+		reader.setErrorHandler(&parser);
+		
+		QFile custom(ktapp->configDir()+"/brushes/customBrushes.ktbr");
+		QXmlInputSource xmlsource(&custom);
+		
+		if ( reader.parse(&xmlsource) )
+		{
+			foreach(QPainterPath path, parser.brushes() )
+			{
+				m_customBrushesList->addBrush( path );
+			}
+		}
+		else
+		{
+			ktError() << "Error while parse file: " << custom.fileName();
+		}
+	}
+	
+	
+	m_brushManager->addPage(m_customBrushesList, tr("Custom Brushes") );
 }
 
 void KTBrushWidget::setupButtons()

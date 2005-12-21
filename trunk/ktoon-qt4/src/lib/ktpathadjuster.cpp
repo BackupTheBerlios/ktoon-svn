@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "ktpathadjuster.h"
+#include "ktdebug.h"
 
 KTPathAdjuster::KTPathAdjuster()
 {
@@ -59,3 +60,32 @@ QPainterPath KTPathAdjuster::toRect(const QPainterPath &p, const QRect &rect, fl
 	matrix.translate(tx, ty);
 	return matrix.map(path);
 }
+
+QPainterPath KTPathAdjuster::buildPath(const QStringList &polygonsStr, QChar sep) // FIXME: the path is closed.
+{
+	QPainterPath path;
+	path.setFillRule ( Qt::WindingFill );
+	
+	foreach (QString polTmp, polygonsStr)
+	{
+		QStringList points = polTmp.split(' ');
+		
+		QPolygonF polygon;
+		
+		foreach(QString p, points)
+		{
+			double x = p.section(sep, 0, 0).toDouble();
+			double y = p.section(sep, 1, 1).toDouble();
+			
+			if ( polTmp == *polygonsStr.begin() )
+			{
+				path.moveTo(x, y);
+			}
+			
+			polygon << QPointF(x, y);
+		}
+		path.addPolygon(polygon);
+	}
+	return path;
+}
+

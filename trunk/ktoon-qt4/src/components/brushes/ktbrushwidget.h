@@ -56,6 +56,7 @@ class KTBrushWidget : public KTModuleWidgetBase
 		void setupBrushManager();
 		void setupButtons();
 		void createDefaultBrushes();
+		void setupCustomBrushes();
 		
 	private slots:
 		void editBrush();

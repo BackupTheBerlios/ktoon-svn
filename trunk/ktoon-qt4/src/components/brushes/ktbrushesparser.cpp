@@ -18,25 +18,67 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTPATHADJUSTER_H
-#define KTPATHADJUSTER_H
+#include "ktbrushesparser.h"
+#include "ktdebug.h"
+#include "ktpathadjuster.h"
 
-#include <QPainterPath>
-#include <QChar>
-#include <QStringList>
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-class KTPathAdjuster
+KTBrushesParser::KTBrushesParser() : QXmlDefaultHandler()
 {
-	public:
-		KTPathAdjuster();
-		~KTPathAdjuster();
-		
-		static QPainterPath toRect(const QPainterPath &p, const QRect &rect, float offset = 10.0f);
-		static QPainterPath buildPath(const QStringList &polygonsStr, QChar sep);
+}
 
-};
 
-#endif
+KTBrushesParser::~KTBrushesParser()
+{
+}
+
+bool KTBrushesParser::startElement( const QString& , const QString& , const QString& qname, const QXmlAttributes& atts)
+{
+	m_qname = qname;
+
+	if (m_root.isNull() )
+	{
+		m_root = qname;
+	}
+	else if ( m_root == "Brushes" )
+	{
+		if ( qname == "Item" )
+		{
+			m_tmpPolygons.clear();
+		}
+		else if ( qname == "Polygon")
+		{
+			QString points = atts.value("points");
+			m_tmpPolygons << points;
+		}
+	}
+	return true;
+}
+
+bool KTBrushesParser::endElement(const QString&, const QString& , const QString& qname)
+{
+	if ( m_root == "Brushes" )
+	{
+		if ( qname == "Item" )
+		{
+			m_brushes << KTPathAdjuster::buildPath( m_tmpPolygons, ':');
+		}
+	}
+	
+	return true;
+}
+
+bool KTBrushesParser::error ( const QXmlParseException & exception )
+{
+	ktError() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+}
+
+
+bool KTBrushesParser::fatalError ( const QXmlParseException & exception )
+{
+	ktFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+}
+
+QList<QPainterPath> KTBrushesParser::brushes()
+{
+	return m_brushes;
+}
