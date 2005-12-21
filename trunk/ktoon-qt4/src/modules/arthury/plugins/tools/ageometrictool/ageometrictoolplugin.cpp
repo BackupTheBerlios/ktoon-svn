@@ -25,12 +25,14 @@
 #include <QImage>
 #include <QPaintDevice>
 
+
+#include "ktapplication.h"
 #include "ktgradientadjuster.h"
 #include "ktdebug.h"
 
 QStringList AGeometricToolPlugin::keys() const
 {
-	return QStringList() << tr("Rectangle") << tr("Ellipse");
+	return QStringList() << tr("Rectangle") << tr("Ellipse") << tr("Line");
 }
 
 QRect AGeometricToolPlugin::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos)
@@ -93,6 +95,11 @@ QRect AGeometricToolPlugin::release(const QString &  brush ,QPainter &  painter 
 	{
 		m_path.addEllipse(m_rect);
 	}
+	else if( brush == tr("Line"))
+	{
+		m_path.moveTo(m_rect.topLeft());
+		m_path.lineTo( m_rect.bottomRight());
+	}
 	
 	QRect rect = m_path.boundingRect().toRect().normalized().adjusted(-rad, -rad, +rad, +rad);
 	
@@ -116,17 +123,18 @@ QHash<QString, QAction *> AGeometricToolPlugin::actions()
 {
 	QHash<QString, QAction *> hash;
 	
-	QAction *circle = new QAction( tr("Rectangle"), this);
+	QAction *circle = new QAction( QIcon(KTOON_THEME_DIR+"/icons/square.png"), tr("Rectangle"), this);
 // 	circle->setShortcut( QKeySequence(tr("R")) );
 	
 	hash.insert( tr("Rectangle"), circle );
 	
-	
-	
-	QAction *rectangle = new QAction( tr("Ellipse"), this);
+	QAction *rectangle = new QAction(QIcon(KTOON_THEME_DIR+"/icons/ellipse.png"), tr("Ellipse"), this);
 // 	rectangle->setShortcut( QKeySequence(tr("C")) );
 	hash.insert(tr("Ellipse"), rectangle);
-
+	
+	QAction *line = new QAction( QIcon(KTOON_THEME_DIR+"/icons/line.png"), tr("Line"), this);
+	hash.insert(tr("Line"), line);
+	
 	return hash;
 }
 
