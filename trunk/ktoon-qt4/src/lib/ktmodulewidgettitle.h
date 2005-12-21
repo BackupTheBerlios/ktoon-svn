@@ -24,7 +24,7 @@
 #include "ktsqueezelabel.h"
 
 /**
-@author David Cuadrado
+ * @author David Cuadrado
 */
 class KTModuleWidgetTitle : public QLabel
 {

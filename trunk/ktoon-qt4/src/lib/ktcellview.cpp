@@ -647,6 +647,10 @@ void KTCellView::setup()
 	
 	horizontalHeader()->setResizeMode(QHeaderView::Custom);
 	verticalHeader()->setResizeMode(QHeaderView::Custom);
+	
+#if QT_VERSION >= 0x040100
+	setAutoFillBackground(true);
+#endif
 }
 
 void KTCellView::setItemSize(int w, int h)

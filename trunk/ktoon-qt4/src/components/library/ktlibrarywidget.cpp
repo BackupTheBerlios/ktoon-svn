@@ -27,7 +27,7 @@
 
 #include <QGroupBox>
 
-KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent)
+KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), m_childCount(0)
 {
 	setCaption(tr("Library"));
 	
@@ -89,11 +89,10 @@ void KTLibraryWidget::addGraphic(const AGraphicComponent *graphic)
 		m_displayPath->setPath( copy->path() );
 		
 		QTreeWidgetItem *item = new QTreeWidgetItem(m_libraryTree->currentFolder() );
-		item->setText(0, tr("Component #"));
-		
-// 		m_libraryTree->openPersistentEditor(item, 0);
+		item->setText(0, tr("Component #%1").arg(m_childCount++));
 		
 		m_graphics.insert(item, copy);
+		m_libraryTree->setCurrentItem (item);
 	}
 }
 

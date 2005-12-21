@@ -23,6 +23,7 @@
 
 #include <QPalette>
 #include <QPainter>
+#include <QTimer>
 #include <cmath>
 
 #include "ktgradientadjuster.h"
@@ -66,7 +67,7 @@ QSize APaintArea::minimumSizeHint () const
 	return QSize(m_zero,m_zero);
 }
 
-void APaintArea::paintEvent(QPaintEvent *e)
+void APaintArea::paintEvent(QPaintEvent *)
 {
 	QPainter painter;
 	
@@ -235,7 +236,7 @@ void APaintArea::drawFrame(const KTKeyFrame *frame, QPainter *painter, float int
 void APaintArea::drawGraphic(const AGraphicComponent *graphic, QPainter *painter, float intensitive )
 {
 	painter->save();
-					
+	
 	QPen pen = graphic->pen();
 	QBrush brush = graphic->brush();
 	if ( brush.gradient() )
@@ -281,7 +282,7 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphic, QPainter *painter
 void APaintArea::redrawAll()
 {
 	m_redrawAll = true;
-	update();
+	QTimer::singleShot(50, this, SLOT(update()));;
 }
 
 void APaintArea::aUpdate(const QRectF &rect)
@@ -290,15 +291,15 @@ void APaintArea::aUpdate(const QRectF &rect)
 	painter.setRenderHint(QPainter::Antialiasing);
 	if(m_drawGrid)
 	{
-		painter.drawImage(rect, m_grid.copy( rect.toRect() ));
+		painter.drawImage(rect.toRect(), m_grid.copy( rect.toRect() ));
 	}
-	
-	QList<AGraphicComponent *> componentList = m_currentFrame->components();
 		
+	QList<AGraphicComponent *> componentList = m_currentFrame->components();
+	
 	if ( componentList.count() > 0)
 	{
 		QList<AGraphicComponent *>::iterator it = componentList.begin();
-				
+		
 		while ( it != componentList.end() )
 		{
 			if ( *it && (*it)->path().intersects(rect) )
@@ -308,7 +309,7 @@ void APaintArea::aUpdate(const QRectF &rect)
 			++it;
 		}
 	}
-	update();
+	QTimer::singleShot(50, this, SLOT(update()));;
 }
 
 void APaintArea::resizeEvent( QResizeEvent * event )
@@ -351,88 +352,58 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 	{
 		if (event->button() == Qt::LeftButton && !m_currentFrame->isLocked())
 		{
-#if 0
-			if ( m_currentGraphic )
+			if (m_currentTool)
 			{
-				m_currentGraphic->shear(2,2);
-				redrawAll();
-			}
-#endif
-// 			if ( ! m_path.isEmpty() )
-// 			{
-// 				QPainter painter(&m_paintDevice);
-// 				m_currentBrush->setupPainter(&painter);
-// 	
-// 				QRectF boundingRect = m_path.boundingRect();
-// 				QLinearGradient gradient(boundingRect.topRight(), boundingRect.bottomLeft());
-// 				gradient.setColorAt(0.0, QColor(m_brushColor.red(), m_brushColor.green(),m_brushColor.blue(), 63));
-// 				gradient.setColorAt(1.0, QColor(m_brushColor.red(), m_brushColor.green(),m_brushColor.blue(), 191));
-// 				painter.setBrush(gradient);
-// 				
-// 				painter.translate(event->pos() - boundingRect.center());
-// 				painter.drawPath(m_path);
-// 	
-// 				m_path = QPainterPath();
-// 				
-// 				unsetCursor();
-// 				update();
-// 			}
-// 			else 
-			{
-				if (m_currentTool)
-				{
-					QPainter painter(&m_paintDevice);
-					m_currentBrush->setupPainter(&painter);
+				QPainter painter(&m_paintDevice);
+				m_currentBrush->setupPainter(&painter);
 #if 1
-					if ( m_currentTool->keys().contains("Selection") )
+				if ( m_currentTool->keys().contains("Selection") )
+				{
+					QList<AGraphicComponent *> components =  m_currentFrame->components();
+					QList<AGraphicComponent *>::iterator it;
+					AGraphicComponent *toSelect = 0;
+					
+					for(it = components.end()-1; it != components.begin()-1; it--)
 					{
-						QList<AGraphicComponent *> components =  m_currentFrame->components();
-						QList<AGraphicComponent *>::iterator it;
-						AGraphicComponent *toSelect = 0;
-						
-						for(it = components.end()-1; it != components.begin()-1; it--)
+						if( (*it) && (*it)->path().intersects( QRectF(QPointF(static_cast<double>(event->pos().x()-1), static_cast<double>(event->pos().y()-1) ), QSizeF(2,2) ) ) )
 						{
-							if( (*it) && (*it)->path().intersects( QRectF(QPointF(static_cast<double>(event->pos().x()-1), static_cast<double>(event->pos().y()-1) ), QSizeF(2,2) ) ) )
+							if ( *it )
 							{
-								if ( *it )
-								{
-									toSelect = (*it);
-									break;
-								}
+								toSelect = (*it);
+								break;
 							}
 						}
+					}
 
-						if ( e->modifiers() & Qt::ControlModifier )
+					if ( e->modifiers() & Qt::ControlModifier )
+					{
+						if ( toSelect && m_selectedGraphic && m_selectedGraphic != toSelect)
 						{
-							if ( toSelect && m_selectedGraphic && m_selectedGraphic != toSelect)
-							{
-								QPainterPath selectPath = m_selectedGraphic->path();
-								QPainterPath toSelectPath = toSelect->path();
-								selectPath.addPath(toSelectPath);
-								m_selectedGraphic->setPath(selectPath);	
+							QPainterPath selectPath = m_selectedGraphic->path();
+							QPainterPath toSelectPath = toSelect->path();
+							selectPath.addPath(toSelectPath);
+							m_selectedGraphic->setPath(selectPath);	
 
-								m_currentFrame->removeComponent(toSelect);
-								redrawAll();
-							}
-						}
-						else
-						{
-							m_selectedGraphic = toSelect;
+							m_currentFrame->removeComponent(toSelect);
 							redrawAll();
 						}
-						
 					}
-#endif
+					else
+					{
+						m_selectedGraphic = toSelect;
+						redrawAll();
+					}
 					
-					m_currentGraphic = new AGraphicComponent;
-					
-					QRect rect = m_currentTool->press(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), event->pos());
-					rect.translate(m_xpos, m_ypos);
-					update(rect);
 				}
+#endif
+				m_currentGraphic = new AGraphicComponent;
 				
-				m_lastPosition = event->pos();
+				QRect rect = m_currentTool->press(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), event->pos());
+				rect.translate(m_xpos, m_ypos);
+				update(rect);
 			}
+			
+			m_lastPosition = event->pos();
 		}
 	}
 }
@@ -486,6 +457,9 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 						QMatrix matrix;
 						matrix.translate(event->pos().x()-m_lastPosition.x(), event->pos().y()-m_lastPosition.y());
 						m_selectedGraphic->setPath(matrix.map(m_selectedGraphic->path()));
+						
+						
+						painter.drawImage(boundingRect.toRect(), m_paintDevice.copy( boundingRect.toRect() ));
 						
 						aUpdate( boundingRect );
 					}
