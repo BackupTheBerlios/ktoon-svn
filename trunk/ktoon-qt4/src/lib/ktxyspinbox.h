@@ -38,9 +38,12 @@ class KTXYSpinBox : public QGroupBox
 		void setSingleStep(double step);
 		void setMinimum ( double min);
 		void setMaximum ( double max);
+		void setX(double x);
+		void setY(double y);
 		double x();
 		double y();
-		
+		void setModifyTogether(bool enable);
+				
 	private slots:
 		void updateXValue(double v);
 		void updateYValue(double v);

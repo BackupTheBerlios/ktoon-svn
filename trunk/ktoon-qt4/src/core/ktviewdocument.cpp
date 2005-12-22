@@ -30,13 +30,13 @@
 
 #include "ktvhbox.h"
 
-KTViewDocument::KTViewDocument(KTScene *scene, QWidget *parent ) : KTMdiWindow(parent), m_scene(scene)
+KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, KTDocument *doc, QWidget *parent ) : KTMdiWindow(parent), m_document(doc), m_title(projectName)
 {
 	setWindowIcon(QPixmap(KTOON_THEME_DIR+"/icons/layer_pic.png") ); // FIXME: new image for documents
 	
 	m_actionManager = new KTActionManager(this);
 	
-	m_paintAreaContainer = new KTPaintAreaContainer(this);
+	m_paintAreaContainer = new KTPaintAreaContainer(size, this);
 	
 	setCentralWidget ( m_paintAreaContainer );
 	
@@ -44,8 +44,11 @@ KTViewDocument::KTViewDocument(KTScene *scene, QWidget *parent ) : KTMdiWindow(p
 	
 	connect( m_paintAreaContainer->drawArea(), SIGNAL(mousePos(const QPoint &)),  this,  SLOT(showPos(const QPoint &)) );
 	
+	setWindowTitle( m_title + " - " + m_document->currentScene()->sceneName() );
 	
-	m_paintAreaContainer->drawArea()->setScene( m_scene );
+	m_paintAreaContainer->drawArea()->setScene( m_document->currentScene() );
+	
+	connect(m_document, SIGNAL(sceneChanged( KTScene* )) , this, SLOT(setScene( KTScene* )  )); 
 	
 	createActions();
 	setupGridActions();
@@ -56,10 +59,8 @@ KTViewDocument::KTViewDocument(KTScene *scene, QWidget *parent ) : KTMdiWindow(p
 	createToolbar();
 	createTools();
 	createMenu();
-	
 	loadPlugins();
 }
-
 
 KTViewDocument::~KTViewDocument()
 {
@@ -67,7 +68,7 @@ KTViewDocument::~KTViewDocument()
 
 void KTViewDocument::showPos(const QPoint &p)
 {
-	QString messages =  "X: " +  QString::number(p.x()- m_paintAreaContainer->drawAreaDelta() ) +  " Y: " + QString::number(p.y()- m_paintAreaContainer->drawAreaDelta() );
+	QString messages =  "X: " +  QString::number(p.x()- m_paintAreaContainer->drawAreaDelta().x() ) +  " Y: " + QString::number(p.y()- m_paintAreaContainer->drawAreaDelta().y() );
 	statusBar()->showMessage ( messages ) ;
 }
 
@@ -605,4 +606,9 @@ void KTViewDocument::threeNextOnionSkin()
 	m_paintAreaContainer->drawArea()->setNextFrames( 3 );
 }
 
-
+void KTViewDocument::setScene(KTScene* scene)
+{
+	setWindowTitle( m_title + " - " + scene->sceneName() );
+	m_paintAreaContainer->drawArea()->setScene(  scene );
+	
+}

@@ -45,9 +45,9 @@ class KTScenesWidget : public KTModuleWidgetBase
 		QButtonGroup *m_buttonGroup;
 		KTScenesList *m_tableScenes;
 
-		QLabel *m_textName;
+// 		QLabel *m_textName;
 
-		QLineEdit *m_valueName;
+// 		QLineEdit *m_valueName;
 
 	private:
 		void setupButtons();

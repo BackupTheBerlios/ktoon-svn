@@ -49,8 +49,8 @@ KTScenesWidget::KTScenesWidget( QWidget *parent) : KTModuleWidgetBase( parent, "
 KTScenesWidget::~KTScenesWidget()
 {
 	KTEND;
-	delete m_textName;
-	delete m_valueName;
+// 	delete m_textName;
+// 	delete m_valueName;
 }
 
 void KTScenesWidget::setupButtons()
@@ -68,18 +68,18 @@ void KTScenesWidget::setupButtons()
 	
 	KTImageButton *removeButton = new KTImageButton(QPixmap(KTOON_HOME+"/themes/default/icons/minussign.png" ) , 22, m_buttonsPanel);
 	layout->addWidget(removeButton);
-	insertButton->setToolTip(tr("Remove Scene"));
+	removeButton->setToolTip(tr("Remove Scene"));
 	connect(removeButton, SIGNAL(clicked()), this, SIGNAL(requestRemoveScene()));
 	
-	KTImageButton *moveupButton = new KTImageButton(QPixmap(KTOON_HOME+"/themes/default/icons/arrowup.png" ) , 22, m_buttonsPanel);
-	layout->addWidget(moveupButton);
-	moveupButton->setToolTip(tr("Move Scene Up"));
-	connect(moveupButton, SIGNAL(clicked()), this, SIGNAL(requestMoveUpScene()));
-	
-	KTImageButton *movedownButton = new KTImageButton(QPixmap(KTOON_HOME+"/themes/default/icons/arrowdown.png" ) , 22, m_buttonsPanel);
-	layout->addWidget(movedownButton);
-	movedownButton->setToolTip(tr("Move Scene Down"));
-	connect(movedownButton, SIGNAL(clicked()), this, SIGNAL(requestMoveDownScene()));
+// 	KTImageButton *moveupButton = new KTImageButton(QPixmap(KTOON_HOME+"/themes/default/icons/arrowup.png" ) , 22, m_buttonsPanel);
+// 	layout->addWidget(moveupButton);
+// 	moveupButton->setToolTip(tr("Move Scene Up"));
+// 	connect(moveupButton, SIGNAL(clicked()), this, SIGNAL(requestMoveUpScene()));
+// 	
+// 	KTImageButton *movedownButton = new KTImageButton(QPixmap(KTOON_HOME+"/themes/default/icons/arrowdown.png" ) , 22, m_buttonsPanel);
+// 	layout->addWidget(movedownButton);
+// 	movedownButton->setToolTip(tr("Move Scene Down"));
+// 	connect(movedownButton, SIGNAL(clicked()), this, SIGNAL(requestMoveDownScene()));
 
 	addChild(m_buttonsPanel);
 }
@@ -130,16 +130,16 @@ void KTScenesWidget::setupTableScenes()
 	
 	connect(m_tableScenes, SIGNAL(  itemDoubleClicked ( QTreeWidgetItem *, int )), this, SLOT(sceneDobleClick(QTreeWidgetItem *, int )));
 
-	m_textName = new QLabel( tr( "Name" ), this );
-	m_textName -> setAlignment( Qt::AlignTop );
-	addChild(m_textName);
+// 	m_textName = new QLabel( tr( "Name" ), this );
+// 	m_textName -> setAlignment( Qt::AlignTop );
+// 	addChild(m_textName);
 	
-	m_valueName = new QLineEdit( tr( "" ), this );
-	m_valueName -> setMaxLength( 10 );
-	connect( m_valueName, SIGNAL( lostFocus() ), SLOT( changeValueName() ) );
-	connect( m_valueName, SIGNAL( returnPressed() ), SLOT( changeValueName() ) );
-	addChild( m_valueName);
-// 
+// 	m_valueName = new QLineEdit( tr( "" ), this );
+// 	m_valueName -> setMaxLength( 10 );
+// 	connect( m_valueName, SIGNAL( lostFocus() ), SLOT( changeValueName() ) );
+// 	connect( m_valueName, SIGNAL( returnPressed() ), SLOT( changeValueName() ) );
+// 	addChild( m_valueName);
+// // 
 // 	addChild(containerTableScens);
 }
 

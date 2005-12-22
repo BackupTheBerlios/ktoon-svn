@@ -44,14 +44,14 @@ class APaintArea : public QWidget
 {
 	Q_OBJECT
 	public:
-		APaintArea(QWidget *parent = 0);
+		APaintArea(const QSize& size, QWidget *parent = 0);
 		~APaintArea();
 		QSize sizeHint() const;
 		QSize minimumSizeHint () const;
 		QPoint paintDevicePosition() const;
 		QImage paintDevice() const;
 		void setPaintDevice(const QImage &image);
-		void setZeroAt(int zero);
+		void setZeroAt(const QPoint& zero);
 		
 		virtual void redrawAll();
 		
@@ -76,7 +76,7 @@ class APaintArea : public QWidget
 		AGrid m_grid;
 		QPainterPath m_path;
 		int m_xpos, m_ypos;
-		int m_zero;
+		QPoint m_zero;
 		bool m_drawGrid;
 		
 		// <FIXME>

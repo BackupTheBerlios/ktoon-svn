@@ -33,16 +33,16 @@ class KTPaintAreaContainer : public QWidget
 {
 	Q_OBJECT
 	public:
-		KTPaintAreaContainer(QWidget *parent = 0);
+		KTPaintAreaContainer(const QSize& size, QWidget *parent = 0);
 		~KTPaintAreaContainer();
 		APaintArea *drawArea() const;
-		int drawAreaDelta() { return m_drawAreaDelta; };
+		QPoint drawAreaDelta() const { return m_drawAreaDelta; } ;
 		
 	public slots:
 		void moveRulerPointers(const QPoint &);
 		
 	protected:
-// 		void resizeEvent ( QResizeEvent * event );
+		void resizeEvent ( QResizeEvent * event );
 // 		void mouseMoveEvent(QMouseEvent *e);
 // 		QSize sizeHint() const;
 		
@@ -51,7 +51,8 @@ class KTPaintAreaContainer : public QWidget
 		KTDocumentRuler *m_HRuler;
 		KTDocumentRuler *m_VRuler;
 		
-		int m_drawAreaDelta;
+// 		int m_drawAreaDelta;
+		QPoint m_drawAreaDelta;
 };
 
 #endif

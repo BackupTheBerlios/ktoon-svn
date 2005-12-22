@@ -32,6 +32,16 @@ KTScene::~KTScene()
 {
 }
 
+QDomElement KTScene::createXML( QDomDocument &doc )
+{
+	
+}
+
+void KTScene::save(QString location)
+{
+	//TODO: guadar la escena
+}
+
 void KTScene::setSceneName(const QString &name)
 {
 	m_name = name;

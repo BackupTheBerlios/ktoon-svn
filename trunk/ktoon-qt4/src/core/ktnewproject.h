@@ -21,7 +21,7 @@
 #define KTNEWPROYECT_H
 
 #include "ktwizard.h"
-
+#include "ktxyspinbox.h"
 class NPFirstPage;
 class QLineEdit;
 
@@ -35,6 +35,11 @@ class KTNewProject : public KTWizard
 		KTNewProject(QWidget *parent = 0);
 		~KTNewProject();
 		QString projectName() const;
+		QSize dimension() const;
+		
+	signals:
+		void sendToStatus(const QString &);
+		void sendToOSD(const QString &);
 		
 	private:
 		NPFirstPage *m_firstPage ;
@@ -49,10 +54,17 @@ class NPFirstPage : public KTWizardPage
 		bool isComplete();
 		void reset();
 		QString projectName() const;
+		QSize dimension() const;
+		
+	signals:
+		void sendToStatus(const QString &);
+		void sendToOSD(const QString &);
 		
 	private:
 		QLineEdit *m_projectName;
 		QLineEdit *m_authorName;
+		
+		KTXYSpinBox *m_size;
 };
 
 #endif

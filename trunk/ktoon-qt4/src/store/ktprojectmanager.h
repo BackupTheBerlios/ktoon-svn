@@ -22,6 +22,7 @@
 #define KTPROJECTMANAGER_H
 
 #include <QObject>
+#include "ktserializableobject.h"
 #include "ktdocument.h"
 
 typedef QList<KTDocument *> Documents;
@@ -30,12 +31,14 @@ typedef QList<KTDocument *> Documents;
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTProjectManager : public QObject
+class KTProjectManager : public KTSerializableObject
 {
 	Q_OBJECT
 	public:
 		KTProjectManager(QObject *parent = 0);
 		~KTProjectManager();
+		QDomElement createXML( QDomDocument &doc );
+		void save();
 		
 		
 	public slots:
@@ -71,6 +74,8 @@ class KTProjectManager : public QObject
 		void moveFrame(bool up);
 		void removeFrame();
 		void lockCurrentFrame();
+		
+		void close();
 		
 	private slots:
 		// Layers

@@ -18,16 +18,17 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "ktnewproject.h"
+
 #include <QLabel>
 #include <QLineEdit>
 #include <QLayout>
-
 
 KTNewProject::KTNewProject(QWidget *parent)
  : KTWizard(parent)
 {
 	setModal(true);
 	m_firstPage = new NPFirstPage;
+	connect( m_firstPage, SIGNAL(sendToOSD( const QString& )), this, SIGNAL(sendToOSD( const QString& )));
 	addPage(m_firstPage);
 }
 
@@ -39,6 +40,11 @@ KTNewProject::~KTNewProject()
 QString KTNewProject::projectName() const
 {
 	return m_firstPage->projectName();
+}
+
+QSize KTNewProject::dimension() const
+{
+	return m_firstPage->dimension();
 }
 
 // NPFirstPage
@@ -60,6 +66,13 @@ NPFirstPage::NPFirstPage(QWidget *parent) : KTWizardPage(tr("New KToon Project")
 	m_authorName = new QLineEdit( container );
 	layout->addWidget(m_authorName, 1, 1);
 	
+	m_size = new KTXYSpinBox("Dimension", container);
+	m_size->setMaximum( 1000);
+	m_size->setModifyTogether(true);;
+	m_size->setX( 520);
+	m_size->setY( 340);
+	layout->addWidget(m_size, 2, 0);
+	
 	setWidget(container);
 	
 }
@@ -71,14 +84,28 @@ NPFirstPage::~NPFirstPage()
 
 bool NPFirstPage::isComplete()
 {
-	return true;
+	bool ok = true;
+	
+	if(m_projectName->text().isEmpty())
+	{
+		emit sendToOSD(tr("field project name is empty"));
+		ok = false;
+	}
+	return ok;
 }
 
 void NPFirstPage::reset()
 {
+	
 }
 
 QString NPFirstPage::projectName() const
 {
 	return m_projectName->text();
+}
+
+QSize NPFirstPage::dimension() const
+{
+	QSize size( m_size->x(), m_size->y() );
+	return size;
 }

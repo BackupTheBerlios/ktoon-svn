@@ -104,6 +104,12 @@ void KTXYSpinBox::updateYValue(double v)
 	}
 }
 
+void KTXYSpinBox::setModifyTogether(bool enable)
+{
+	m_modifyTogether = enable;
+	toggleModify();
+}
+
 void KTXYSpinBox::toggleModify()
 {
 	// TODO: Change the button icon !!
@@ -135,6 +141,16 @@ void KTXYSpinBox::setMaximum ( double max)
 {
 	m_x->setMaximum(max);
 	m_y->setMaximum(max);
+}
+
+void KTXYSpinBox::setX(double x)
+{
+	m_x->setValue(x);
+}
+
+void KTXYSpinBox::setY(double y)
+{
+	m_y->setValue(y);
 }
 
 double KTXYSpinBox::x()

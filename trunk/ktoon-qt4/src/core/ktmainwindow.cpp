@@ -102,7 +102,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	
 	m_pActiveTabWidget->setCurrentIndex( 0 );
 	
-	createNewProject("test");
+// 	createNewProject("test");
 }
 
 
@@ -125,15 +125,25 @@ KTMainWindow::~KTMainWindow()
 
 void KTMainWindow::createNewProject(const QString &name, const QSize &size)
 {
-	KTDocument *document = m_projectManager->createDocument(name);
-	m_projectManager->setCurrentDocument(0);
+	//TODO: crear estructura de archivos
 	
-	newViewDocument(name);
-	
-	m_viewCamera->animationArea()->setScene(m_projectManager->currentScene());
+	QDir repository(KTOON_REPOSITORY);
+	if(repository.exists( name ))
+	{
+		messageToOSD("open project " + name);
+		//TODO: abrir el proyecto
+	}
+	else
+	{
+		repository.mkdir(name);
+		KTDocument *document = m_projectManager->createDocument(name);
+		m_projectManager->setCurrentDocument(0);
+		newViewDocument( name, size);
+		m_viewCamera->animationArea()->setScene(m_projectManager->currentScene());
+	}
 }
 
-void KTMainWindow::newViewDocument(const QString &name)
+void KTMainWindow::newViewDocument(const QString &name, const QSize &size)
 {
 	messageToStatus(tr("Opening a new document..."));
 	
@@ -143,9 +153,9 @@ void KTMainWindow::newViewDocument(const QString &name)
 	
 	if ( scene )
 	{
-		KTViewDocument *viewDocument = new KTViewDocument(scene, m_drawingSpace);
+		KTViewDocument *viewDocument = new KTViewDocument( size,  name, m_projectManager->currentDocument(), m_drawingSpace);
 		m_drawingSpace->addWindow(viewDocument);
-		viewDocument->setWindowTitle(name);
+// 		viewDocument->setWindowTitle(name);
 		
 		m_statusBar->advance(4);
 		viewDocument->setActiveWindow();
@@ -167,9 +177,10 @@ void KTMainWindow::newViewDocument(const QString &name)
 void KTMainWindow::newProject()
 {
 	KTNewProject *wizard = new KTNewProject;
+	connectToDisplays(wizard);
 	if ( wizard->exec() != QDialog::Rejected )
 	{
-		createNewProject( wizard->projectName() );
+		createNewProject( wizard->projectName() , wizard->dimension());
 	}
 	delete wizard;
 }

@@ -53,6 +53,10 @@ class KTScene : public KTSerializableObject
 		void setFPS(int fps);
 		int fps();
 		
+		QDomElement createXML( QDomDocument &doc );
+		void save(QString location);
+		
+		
 	signals:
 		void layerCreated(const QString &name, bool toEnd);
 		void layerRemoved(int index);

@@ -49,10 +49,11 @@ class KTViewDocument : public KTMdiWindow
 {
 	Q_OBJECT
 	public:
-		KTViewDocument( KTScene *scene, QWidget *parent = 0 );
+		KTViewDocument( const QSize& size ,  const QString& projectName ,KTDocument *doc, QWidget *parent = 0 );
 		~KTViewDocument();
 		void close();
 		APaintArea *drawArea();
+		
 		
 	public slots:
 		void disablePreviousOnionSkin();
@@ -64,6 +65,8 @@ class KTViewDocument : public KTMdiWindow
 		void twoNextOnionSkin();
 		void threeNextOnionSkin();
 		
+		void setScene(KTScene* scene);
+		
 	private:
 		QActionGroup *m_gridGroup, *m_editGroup, *m_editGroup2, *m_viewNextGroup, *m_viewPreviousGroup;
 		QMenu *m_brushesMenu, *m_selectionMenu, *m_filterMenu;
@@ -74,7 +77,8 @@ class KTViewDocument : public KTMdiWindow
 		
 		KTPaintAreaContainer *m_paintAreaContainer;
 		
-		KTScene *m_scene;
+		KTDocument *m_document;
+		QString m_title;
 		
 	private:
 		void createActions();

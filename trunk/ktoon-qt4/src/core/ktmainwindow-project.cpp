@@ -29,6 +29,7 @@ void KTMainWindow::insertScene( const QString &name, bool addedToEnd)
 {
 	m_scenes->insertScene( name, addedToEnd);
 	m_exposureSheet->addScene( name);
+	
 }
 
 void KTMainWindow::changeScene(int index)
@@ -36,6 +37,7 @@ void KTMainWindow::changeScene(int index)
 	m_exposureSheet->setScene( index);
 	m_scenes->setScene(index);
 	m_projectManager->setCurrentScene( index);
+	
 }
 
 void KTMainWindow::insertLayer(const QString &name, bool addedToEnd)
@@ -56,6 +58,7 @@ void KTMainWindow::removeLayer(int index)
 {
 	m_exposureSheet->removeCurrentLayer();
 	m_timeLine->removeCurrentLayer();
+	
 }
 
 void KTMainWindow::setLayerVisibilityChanged(int idLayer, bool isVisible)

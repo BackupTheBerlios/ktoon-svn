@@ -32,6 +32,21 @@ KTDocument::~KTDocument()
 {
 }
 
+QDomElement KTDocument::createXML(  QDomDocument &doc )
+{
+	QDomElement document = doc.createElement("Document");
+	//TODO: añadir nombre al documento
+	document.setAttribute("name", "document1");
+// 	Scenes::ConstIterator sceneIt = m_scenes.begin();
+	for( int i = 0; i < m_scenes.count(); i++)
+	{
+		QDomElement scene = doc.createElement("Scene");
+		scene.setAttribute("location", "document1/"+QString("Scene%1").arg(i));
+		m_scenes[i]->save( "document1/"+QString("Scene%1").arg(i) );
+	}
+	return  document;
+}
+
 Scenes KTDocument::scenes() const
 {
 	return m_scenes;
@@ -76,5 +91,7 @@ void KTDocument::setCurrentScene(int index)
 	if ( scene )
 	{
 		m_currentScene = scene;
+		emit sceneChanged(m_currentScene);
 	}
 }
+

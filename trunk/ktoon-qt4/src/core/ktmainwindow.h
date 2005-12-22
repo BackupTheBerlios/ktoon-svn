@@ -126,7 +126,7 @@ class KTMainWindow : public DMainWindow
 		
 	private slots:
 		void createNewProject(const QString &name, const QSize &size = QSize(-1,-1) );
-		void newViewDocument(const QString &name = QString::null );
+		void newViewDocument(const QString &name = QString::null ,   const QSize &size = QSize(-1,-1) );
 		void newProject();
 		void closeProject();
 		void openProject();

@@ -130,3 +130,33 @@ void AGraphicComponent::rotate( double angle )
 	
 	translate( position.x(), position.y());
 }
+
+
+QDomElement  AGraphicComponent::createXML( QDomDocument &doc )
+{
+	QDomElement item = doc.createElement("Component");
+	
+	QList<QPolygonF> polygons = m_pPath.toSubpathPolygons ();
+	
+	QList<QPolygonF>::ConstIterator polygonIt = polygons.begin();
+	
+	while ( polygonIt != polygons.end() )
+	{
+		QDomElement polygonElement = doc.createElement("Polygon");
+		
+		QPolygonF::ConstIterator pointIt = (*polygonIt).begin();
+		
+		QString attribute = "";
+		while (pointIt != (*polygonIt).end() )
+		{
+			attribute += QString("%1:%2 ").arg((*pointIt).x()).arg((*pointIt).y());
+			++pointIt;
+		}
+		polygonElement.setAttribute("points", attribute);
+		item.appendChild(polygonElement);
+		
+		++polygonIt;
+	}
+	
+	return item;
+}

@@ -27,7 +27,7 @@
 
 #include "ktdebug.h"
 
-KTPaintAreaContainer::KTPaintAreaContainer(QWidget *parent) : QWidget(parent), m_drawAreaDelta(25)
+KTPaintAreaContainer::KTPaintAreaContainer(const QSize& size, QWidget *parent) : QWidget(parent), m_drawAreaDelta(25,25)
 {
 	KTINIT;
 // 	setMouseTracking(true);
@@ -44,10 +44,10 @@ KTPaintAreaContainer::KTPaintAreaContainer(QWidget *parent) : QWidget(parent), m
 	QScrollArea *m_scroller = new QScrollArea(this);
 // 	m_scroller->setBackgroundRole(QPalette::Mid);
 	
-	m_HRuler->setZeroAt(m_drawAreaDelta);
-	m_VRuler->setZeroAt(m_drawAreaDelta);
+	m_HRuler->setZeroAt(m_drawAreaDelta.x());
+	m_VRuler->setZeroAt(m_drawAreaDelta.y());
 	
-	m_drawArea = new APaintArea(m_scroller);
+	m_drawArea = new APaintArea(size, m_scroller);
 	m_drawArea->setZeroAt(m_drawAreaDelta);
 	
 	m_HRuler->setMinimumWidth(m_drawArea->width());
@@ -95,14 +95,21 @@ APaintArea *KTPaintAreaContainer::drawArea() const
 // 	return QSize(400,400);
 // }
 
-// void KTPaintAreaContainer::resizeEvent ( QResizeEvent * event )
-// {
-// 	m_drawAreaDelta  = width()/2 -m_drawArea->paintDevice().width()/2  /*m_drawArea->*/ ;
-// 	
-// 	m_HRuler->setZeroAt(m_drawAreaDelta);
-// 	m_VRuler->setZeroAt(m_drawAreaDelta);
-// 	m_drawArea->setZeroAt(m_drawAreaDelta);
+void KTPaintAreaContainer::resizeEvent ( QResizeEvent * event )
+{
 	
-	
-// }
+	m_drawAreaDelta.setY( height()/2 - m_drawArea->paintDevice().height()/2);
+	m_drawAreaDelta.setX( width()/2 - m_drawArea->paintDevice().width()/2 );
+	if(m_drawAreaDelta.x() < 0 )
+	{
+		m_drawAreaDelta.setX(0);
+	}
+	if( m_drawAreaDelta.y() < 0 )
+	{
+		m_drawAreaDelta.setY(0);
+	}
+	m_HRuler->setZeroAt(m_drawAreaDelta.x());
+	m_VRuler->setZeroAt(m_drawAreaDelta.y());
+	m_drawArea->setZeroAt(m_drawAreaDelta);
+}
 

@@ -44,9 +44,11 @@ class KTDocument : public KTSerializableObject
 		
 		KTScene *currentScene();
 		void setCurrentScene(int index);
+		QDomElement createXML( QDomDocument &doc );
 		
 	signals:
 		void sceneCreated(const QString &name, bool toEnd);
+		void sceneChanged(KTScene *scene);
 		
 	private:
 		Scenes m_scenes;

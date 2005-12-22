@@ -28,14 +28,13 @@
 
 #include "ktgradientadjuster.h"
 
-APaintArea::APaintArea(QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_currentFrame(0), m_layer(0), m_scene(0), m_previousFramesNumber(0), m_nextFramesNumber(0), m_selectedGraphic(0)
+APaintArea::APaintArea(const QSize& size ,QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0,0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_currentFrame(0), m_layer(0), m_scene(0), m_previousFramesNumber(0), m_nextFramesNumber(0), m_selectedGraphic(0)
 {
 	m_redrawAll = true;
 	
 	KTINIT;
 	setAttribute(Qt::WA_StaticContents);
-	
-	m_paintDevice = QImage(520, 340, QImage::Format_RGB32);
+	m_paintDevice = QImage(size, QImage::Format_RGB32);
 	m_paintDevice.fill(qRgb(255, 255, 255));
 	
 	setMouseTracking(true);
@@ -59,12 +58,12 @@ APaintArea::~APaintArea()
 
 QSize APaintArea::sizeHint() const
 {
-	return m_paintDevice.size() + QSize(m_zero,m_zero);
+	return m_paintDevice.size() + QSize(m_zero.x(),m_zero.y());
 }
 
 QSize APaintArea::minimumSizeHint () const
 {
-	return QSize(m_zero,m_zero);
+	return QSize(m_zero.x(),m_zero.y());
 }
 
 void APaintArea::paintEvent(QPaintEvent *)
@@ -325,9 +324,9 @@ QPoint APaintArea::paintDevicePosition() const
 	return QPoint(m_xpos, m_ypos);
 }
 
-void APaintArea::setZeroAt(int zero)
+void APaintArea::setZeroAt(const QPoint & zero)
 {
-	m_zero = zero*2;
+	m_zero = zero *2;
 	resize(sizeHint());
 	repaint();
 }
@@ -346,7 +345,7 @@ void APaintArea::setPaintDevice(const QImage &image)
 
 void APaintArea::mousePressEvent ( QMouseEvent * e )
 {
-	QMouseEvent *event = new QMouseEvent( e->type(), e->pos()-QPoint(m_zero/2, m_zero/2), mapToGlobal( e->pos()-QPoint(m_zero, m_zero) ), e->button(), e->buttons(), 0 );
+	QMouseEvent *event = new QMouseEvent( e->type(), e->pos()-QPoint(m_zero.x()/2, m_zero.y()/2), mapToGlobal( e->pos()-QPoint(m_zero.x(), m_zero.y()) ), e->button(), e->buttons(), 0 );
 	
 	if ( m_currentFrame )
 	{
@@ -434,7 +433,7 @@ void APaintArea::drawSelected(QPainter *painter)
 
 void APaintArea::mouseMoveEvent(QMouseEvent *e)
 {
-	QMouseEvent *event = new QMouseEvent( e->type(), e->pos()-QPoint(m_zero/2, m_zero/2), mapToGlobal( e->pos()-QPoint(m_zero, m_zero) ), e->button(), e->buttons(), 0 );
+	QMouseEvent *event = new QMouseEvent( e->type(), e->pos()-m_zero/2 /*QPoint(m_zero/2, m_zero/2)*/, mapToGlobal( e->pos()-m_zero/2/*QPoint(m_zero, m_zero) */), e->button(), e->buttons(), 0 );
 	
 	emit mousePos(e->pos());
 	
@@ -479,7 +478,7 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 
 void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 {
-	QMouseEvent *event = new QMouseEvent( e->type(), e->pos()-QPoint(m_zero/2, m_zero/2), mapToGlobal( e->pos()-QPoint(m_zero, m_zero) ), e->button(), e->buttons(), 0 );
+	QMouseEvent *event = new QMouseEvent( e->type(), e->pos()-m_zero/2, mapToGlobal( e->pos()-m_zero ), e->button(), e->buttons(), 0 );
 	
 	if ( m_currentFrame )
 	{

@@ -21,7 +21,7 @@
 #include "ktprojectmanager.h"
 #include "ktdebug.h"
 
-KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_currentDocument(0), m_copyFrame(0)
+KTProjectManager::KTProjectManager(QObject *parent) : KTSerializableObject(parent), m_currentDocument(0), m_copyFrame(0)
 {
 	KTINIT;
 
@@ -31,6 +31,28 @@ KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_current
 KTProjectManager::~KTProjectManager()
 {
 	KTEND;
+}
+
+QDomElement KTProjectManager::createXML( QDomDocument &doc )
+{
+	QDomElement project = doc.createElement("Project");
+	//TODO: añadir nombre al proyecto
+	project.setAttribute("name", "project1");
+	Documents::ConstIterator documentIt = m_documents.begin();
+	while( documentIt != m_documents.end() )
+	{
+		project.appendChild((*documentIt)->createXML( doc ));
+		++documentIt;
+	}
+	return  project;
+}
+
+void KTProjectManager::save()
+{
+	QDomDocument doc;
+	QDomElement root = doc.createElement("KToon");
+	doc.appendChild(root);
+	createXML( doc );
 }
 
 Documents KTProjectManager::documents() const
@@ -298,6 +320,9 @@ void KTProjectManager::removeLayer()
 	}
 }
 
-
+void KTProjectManager::close()
+{
+	
+}
 
 
