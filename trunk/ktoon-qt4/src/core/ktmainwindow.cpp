@@ -199,7 +199,7 @@ void KTMainWindow::openProject()
 void KTMainWindow::save()
 {
 	ktDebug() << "Saving.." << endl;
-	m_projectManager->save();
+	QTimer::singleShot(100, m_projectManager, SLOT(save()));;
 }
 
 void KTMainWindow::preferences()

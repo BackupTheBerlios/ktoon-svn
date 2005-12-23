@@ -97,10 +97,9 @@ void AAnimationArea::play()
 	
 	m_draw = true;
 	
-	render();
-	
 	if ( m_scene && !m_timer->isActive() )
 	{
+		render();
 		m_timer->start(1000/m_scene->fps() );
 	}
 	

@@ -38,11 +38,12 @@ class KTProjectManager : public KTSerializableObject
 		KTProjectManager(QObject *parent = 0);
 		~KTProjectManager();
 		QDomElement createXML( QDomDocument &doc );
-		void save();
 		void setProjectName(const QString &name);
 		
 		
 	public slots:
+		void save();
+		
 		// Documents
 		void setCurrentDocument(int index);
 		KTDocument *currentDocument();
