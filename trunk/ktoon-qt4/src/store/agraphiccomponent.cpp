@@ -152,7 +152,7 @@ QDomElement  AGraphicComponent::createXML( QDomDocument &doc )
 			attribute += QString("%1:%2 ").arg((*pointIt).x()).arg((*pointIt).y());
 			++pointIt;
 		}
-		polygonElement.setAttribute("points", attribute);
+		polygonElement.setAttribute("points", attribute.trimmed());
 		item.appendChild(polygonElement);
 		
 		++polygonIt;

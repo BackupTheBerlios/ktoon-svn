@@ -61,11 +61,9 @@ QPainterPath KTPathAdjuster::toRect(const QPainterPath &p, const QRect &rect, fl
 	return matrix.map(path);
 }
 
-QPainterPath KTPathAdjuster::buildPath(const QStringList &polygonsStr, QChar sep) // FIXME: the path is closed.
+QPainterPath KTPathAdjuster::buildPath(const QStringList &polygonsStr, QChar sep)
 {
 	QPainterPath path;
-	
-	ktDebug() << polygonsStr;
 	
 	foreach (QString polTmp, polygonsStr)
 	{
