@@ -136,11 +136,13 @@ void KTMainWindow::createNewProject(const QString &name, const QSize &size)
 	else
 	{
 		repository.mkdir(name);
-		KTDocument *document = m_projectManager->createDocument(name);
-		m_projectManager->setCurrentDocument(0);
-		newViewDocument( name, size);
-		m_viewCamera->animationArea()->setScene(m_projectManager->currentScene());
 	}
+	KTDocument *document = m_projectManager->createDocument(name);
+	m_projectManager->setCurrentDocument(0);
+	newViewDocument( name, size);
+	m_viewCamera->animationArea()->setScene(m_projectManager->currentScene());
+	
+	m_projectManager->setProjectName( name );
 }
 
 void KTMainWindow::newViewDocument(const QString &name, const QSize &size)
@@ -197,7 +199,7 @@ void KTMainWindow::openProject()
 void KTMainWindow::save()
 {
 	ktDebug() << "Saving.." << endl;
-	qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ())->drawArea()->paintDevice().save("test.png", "PNG"); // only for test
+	m_projectManager->save();
 }
 
 void KTMainWindow::preferences()

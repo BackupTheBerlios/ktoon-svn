@@ -21,6 +21,8 @@
 #include "ktprojectmanager.h"
 #include "ktdebug.h"
 
+#include "ktapplication.h"
+
 KTProjectManager::KTProjectManager(QObject *parent) : KTSerializableObject(parent), m_currentDocument(0), m_copyFrame(0)
 {
 	KTINIT;
@@ -37,11 +39,21 @@ QDomElement KTProjectManager::createXML( QDomDocument &doc )
 {
 	QDomElement project = doc.createElement("Project");
 	//TODO: añadir nombre al proyecto
-	project.setAttribute("name", "project1");
+	project.setAttribute("name", m_name);
 	Documents::ConstIterator documentIt = m_documents.begin();
+	
+	int documentCounter = 0;
 	while( documentIt != m_documents.end() )
 	{
-		project.appendChild((*documentIt)->createXML( doc ));
+		QString location = QString("Document%1").arg(documentCounter++);
+		QString docPath = ktapp->repository() + +"/"+m_name+"/"+location;
+		
+		QDomElement docElement = (*documentIt)->createXML( doc );
+		docElement.setAttribute("location",location);
+		project.appendChild(docElement);
+		
+		(*documentIt)->save(docPath);
+		
 		++documentIt;
 	}
 	return  project;
@@ -49,10 +61,22 @@ QDomElement KTProjectManager::createXML( QDomDocument &doc )
 
 void KTProjectManager::save()
 {
+	if ( m_name.isNull() ) return;
+	
 	QDomDocument doc;
 	QDomElement root = doc.createElement("KToon");
 	doc.appendChild(root);
-	createXML( doc );
+	root.appendChild(createXML( doc ));
+	
+	QFile save(ktapp->repository() + +"/"+m_name+"/"+m_name+".ktn");
+	
+	if ( save.open(QIODevice::WriteOnly | QIODevice::Text))
+	{
+		QTextStream out(&save);
+		out << doc.toString();
+		
+		save.close();
+	}
 }
 
 Documents KTProjectManager::documents() const
@@ -325,4 +349,7 @@ void KTProjectManager::close()
 	
 }
 
-
+void KTProjectManager::setProjectName(const QString &name)
+{
+	m_name = name;
+}

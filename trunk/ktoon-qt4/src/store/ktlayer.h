@@ -59,6 +59,8 @@ class KTLayer : public KTSerializableObject
 		
 		QString layerName() const;
 		bool isVisible(); 
+		
+		QDomElement createXML( QDomDocument &doc );
 	
 	signals:
 		void frameCreated( const QString &name, bool toEnd );

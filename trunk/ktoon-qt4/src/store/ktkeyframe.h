@@ -39,6 +39,7 @@ class KTKeyFrame : public KTSerializableObject
 		KTKeyFrame(const QString &frameName, QObject * parent = 0);
 		KTKeyFrame(const KTKeyFrame &kf);
 		
+		QDomElement createXML( QDomDocument &doc );
 		
 		~KTKeyFrame();
 		void addComponent(AGraphicComponent *comp);

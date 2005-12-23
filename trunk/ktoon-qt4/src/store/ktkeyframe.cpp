@@ -94,3 +94,21 @@ bool KTKeyFrame::isLocked()
 	return m_isLocked;
 }
 
+QDomElement KTKeyFrame::createXML( QDomDocument &doc )
+{
+	QDomElement frame = doc.createElement("Frame");
+	
+	QList<AGraphicComponent *>::ConstIterator iterator = m_components.begin();
+	
+	while( iterator != m_components.end() )
+	{
+		frame.appendChild((*iterator)->createXML(doc));
+		
+		++iterator;
+	}
+	
+	return frame;
+}
+
+
+

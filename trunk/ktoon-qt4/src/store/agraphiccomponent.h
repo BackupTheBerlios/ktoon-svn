@@ -43,10 +43,7 @@ class AGraphicComponent : public KTSerializableObject
 		AGraphicComponent(const AGraphicComponent &);
 		virtual ~AGraphicComponent();
 		
-		virtual QDomElement createXML( QDomDocument &doc ) ; // TODO: Implement me
-		virtual QString key() const { return ""; }; // TODO: Implement me
-		
-		
+		QDomElement createXML( QDomDocument &doc );
 		
 		QRectF boundingRect() const;
 		QColor color() const;

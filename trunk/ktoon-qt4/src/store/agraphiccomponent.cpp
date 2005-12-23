@@ -160,3 +160,4 @@ QDomElement  AGraphicComponent::createXML( QDomDocument &doc )
 	
 	return item;
 }
+

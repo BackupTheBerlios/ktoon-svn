@@ -68,7 +68,7 @@ int main( int argc, char ** argv )
 	}
 
 	application.setHome(KTCONFIG->value("Home").toString());
-	application.setRepository(KTCONFIG->value("Repository").toString());
+	application.createRepository(KTCONFIG->value("Repository").toString());
 	
 	QString themefile = KTCONFIG->value("ThemeFile").toString();
 	if ( ! themefile.isEmpty() )

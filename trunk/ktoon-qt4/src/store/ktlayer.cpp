@@ -163,3 +163,21 @@ bool KTLayer::isVisible()
 	return m_isVisible;
 }
 
+
+QDomElement KTLayer::createXML( QDomDocument &doc )
+{
+	QDomElement layer = doc.createElement("Layer");
+	
+	Frames::ConstIterator iterator = m_frames.begin();
+	
+	while( iterator != m_frames.end() )
+	{
+		layer.appendChild((*iterator)->createXML(doc));
+		++iterator;
+	}
+	
+	return layer;
+}
+
+
+

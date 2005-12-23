@@ -21,6 +21,7 @@
 #include "ktscene.h"
 #include "ktdebug.h"
 
+#include <QDir>
 
 KTScene::KTScene(QObject *parent) : KTSerializableObject(parent), m_currentLayer(0), m_layerCount(0), m_fps(24)
 {
@@ -34,12 +35,44 @@ KTScene::~KTScene()
 
 QDomElement KTScene::createXML( QDomDocument &doc )
 {
-	
+	QDomElement scene = doc.createElement("Scene");
+	return scene;
 }
 
-void KTScene::save(QString location)
+void KTScene::save(const QString &scenePath)
 {
-	//TODO: guadar la escena
+	QDir sceneDir(scenePath);
+		
+	if ( ! sceneDir.exists() )
+	{
+		sceneDir.mkdir(sceneDir.path());
+	}
+	
+	QDomDocument document;
+	
+	QDomElement root = createXML(document);
+	root.setAttribute("name", "sceneW");
+	document.appendChild(root);
+	
+	Layers::ConstIterator iterator = m_layers.begin();
+	
+	
+	while ( iterator != m_layers.end() )
+	{
+		root.appendChild((*iterator)->createXML(document));
+		++iterator;
+	}
+	
+	QFile save(scenePath+"/"+/*m_name*/"sceneXXX"+".kts");
+	
+	if ( save.open(QIODevice::WriteOnly | QIODevice::Text))
+	{
+		QTextStream out(&save);
+		out << document.toString();
+		
+		save.close();
+	}
+	
 }
 
 void KTScene::setSceneName(const QString &name)

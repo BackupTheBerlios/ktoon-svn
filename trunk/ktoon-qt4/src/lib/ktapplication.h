@@ -54,7 +54,7 @@ class KTApplication : public QApplication
 		void setThemeDir(const QString &themeDir);
 		
 		QString repository();
-		void setRepository(const QString &repos);
+		void createRepository(const QString &repository);
 		QString version();
 
 		bool firstRun();
@@ -76,7 +76,6 @@ class KTApplication : public QApplication
 		void config(const QString &group = "General"); // FIXME: return
 		
 	protected:
-		void initDirectories();
 // 		virtual void detectOpengl();
 		
 	private:

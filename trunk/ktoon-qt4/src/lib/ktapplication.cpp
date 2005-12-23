@@ -56,7 +56,18 @@ KTApplication::KTApplication(int & argc, char ** argv)
 	m_configDir = QDir::homeDirPath()+"/.ktoon";
 #endif
 
- 	applyColors(Default);
+	QDir home(m_configDir);
+	
+	if ( ! home.exists() )
+	{
+		ktDebug() << tr("Initializing ktoon home");
+		if ( ! home.mkdir(m_configDir) )
+		{
+			ktError() << tr("I cannot create ktoon local home %1").arg(m_configDir);
+		}
+	}
+	
+	applyColors(Default);
 
 //  	detectOpengl();
 }
@@ -228,9 +239,19 @@ QString KTApplication::repository()
 	return m_KTOON_REPOSITORY;
 }
 
-void KTApplication::setRepository(const QString &repos)
+void KTApplication::createRepository(const QString &repository)
 {
-	m_KTOON_REPOSITORY = repos;
+	m_KTOON_REPOSITORY = repository;
+	
+	QDir repos(m_KTOON_REPOSITORY);
+	if ( ! repos.exists() )
+	{
+		ktDebug() << tr("Initializing repository %1").arg(m_KTOON_REPOSITORY);
+		if ( ! repos.mkdir(m_KTOON_REPOSITORY) )
+		{
+			ktError() << tr("I cannot create the repository");
+		}
+	}
 }
 
 QString KTApplication::configDir()
@@ -255,9 +276,7 @@ bool KTApplication::firstRun()
 	if ( firstDialog->exec() != QDialog::Rejected )
 	{
 		m_KTOON_HOME = firstDialog->home();
-		m_KTOON_REPOSITORY = firstDialog->repository();
-		
-		initDirectories();
+		createRepository(firstDialog->repository());
 		
 		KTCONFIG->beginGroup("General");
 		
@@ -274,44 +293,6 @@ bool KTApplication::firstRun()
 	delete firstDialog;
 	
 	return false;
-}
-
-void KTApplication::initDirectories()
-{
-	QDir home(m_KTOON_HOME);
-	
-	if ( ! home.exists() )
-	{
-		ktDebug() << tr("Initializing ktoon home");
-		if ( ! home.mkdir(m_KTOON_HOME) )
-		{
-			ktError() << tr("I cannot create ktoon home %1").arg(m_KTOON_HOME);
-		}
-	}
-	
-	home.mkdir(m_configDir);
-	
-	QDir repos (m_KTOON_REPOSITORY);
-	if ( ! repos.exists() )
-	{
-		ktDebug() << tr("Initializing repository %1").arg(m_KTOON_REPOSITORY);
-		if ( ! repos.mkdir(m_KTOON_REPOSITORY) )
-		{
-			ktError() << tr("I cannot create the repository");
-		}
-		
-		QStringList files = QStringList() << "bru" << "cpl" << "output" << "lbr" << "components";
-		
-		for (int i = 0; i < files.count(); i++)
-		{
-			QDir tmp(m_KTOON_REPOSITORY+"/"+files[i]+"/");
-			
-			if ( ! tmp.exists() )
-			{
-				tmp.mkdir(m_KTOON_REPOSITORY+"/"+files[i]+"/");
-			}
-		}
-	}
 }
 
 // void KTApplication::detectOpengl()

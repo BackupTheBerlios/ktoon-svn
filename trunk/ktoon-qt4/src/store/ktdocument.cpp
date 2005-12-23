@@ -22,6 +22,9 @@
 
 #include "ktdebug.h"
 
+#include <QDir>
+#include <QDomDocument>
+
 KTDocument::KTDocument(QObject *parent) : KTSerializableObject(parent), m_currentScene(0), m_sceneCount(0)
 {
 // 	m_currentScene = createScene();
@@ -35,16 +38,50 @@ KTDocument::~KTDocument()
 QDomElement KTDocument::createXML(  QDomDocument &doc )
 {
 	QDomElement document = doc.createElement("Document");
+
+	return  document;
+}
+
+void KTDocument::save(const QString &docPath)
+{
+	QDir docDir(docPath);
+	
+	if ( ! docDir.exists() )
+	{
+		docDir.mkdir(docDir.path());
+	}
+	
+	
 	//TODO: añadir nombre al documento
-	document.setAttribute("name", "document1");
+	
+	QDomDocument document;
+	
+	QDomElement root = createXML(document);
+	root.setAttribute("name", "documentZ");
 // 	Scenes::ConstIterator sceneIt = m_scenes.begin();
+	
+	document.appendChild(root);
 	for( int i = 0; i < m_scenes.count(); i++)
 	{
-		QDomElement scene = doc.createElement("Scene");
-		scene.setAttribute("location", "document1/"+QString("Scene%1").arg(i));
-		m_scenes[i]->save( "document1/"+QString("Scene%1").arg(i) );
+		QString scenePath = docPath+"/"+QString("Scene%1").arg(i);
+		QDomElement scn = m_scenes[i]->createXML(document);
+		scn.setAttribute("location", QString("Scene%1").arg(i));
+			
+		root.appendChild(scn);
+			
+		m_scenes[i]->save( scenePath );
 	}
-	return  document;
+	
+	QFile save(docPath+"/"+/*m_name*/"documentXXX"+".ktd");
+	
+	if ( save.open(QIODevice::WriteOnly | QIODevice::Text))
+	{
+		QTextStream out(&save);
+		out << document.toString();
+		
+		save.close();
+	}
+	
 }
 
 Scenes KTDocument::scenes() const

@@ -54,7 +54,7 @@ class KTScene : public KTSerializableObject
 		int fps();
 		
 		QDomElement createXML( QDomDocument &doc );
-		void save(QString location);
+		void save(const QString &scenePath);
 		
 		
 	signals:

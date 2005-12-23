@@ -90,7 +90,7 @@ class APaintArea : public QWidget
 		
 		AGraphicComponent *m_currentGraphic;
 		AGraphicComponent *m_selectedGraphic;
-		bool m_redrawAll;
+		bool m_redrawAll; 
 
 		KTKeyFrame *m_currentFrame;
 		KTLayer *m_layer;
