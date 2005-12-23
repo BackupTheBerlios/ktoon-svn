@@ -45,6 +45,7 @@
 #include <QTextEdit>
 #include <QFileDialog>
 #include <QDomDocument>
+#include <QMessageBox>
 //
 
 KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0), m_scenes(0)
@@ -74,6 +75,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	m_animationSpace->setScrollBarsEnabled ( true );
 	
 	m_viewCamera = new KTViewCamera(m_animationSpace);
+	m_viewCamera->setAttribute(Qt::WA_DeleteOnClose, true);
 	connect(m_viewCamera, SIGNAL(sendMessage(const QString &, int)), m_statusBar, SLOT(setStatus(const QString &, int)));
 	connect(m_viewCamera, SIGNAL(sendProgress(int, int)), m_statusBar, SLOT(advance(int, int))); 
 	
@@ -156,6 +158,7 @@ void KTMainWindow::newViewDocument(const QString &name, const QSize &size)
 	if ( scene )
 	{
 		KTViewDocument *viewDocument = new KTViewDocument( size,  name, m_projectManager->currentDocument(), m_drawingSpace);
+		viewDocument->setAttribute(Qt::WA_DeleteOnClose, true);
 		m_drawingSpace->addWindow(viewDocument);
 // 		viewDocument->setWindowTitle(name);
 		
@@ -189,17 +192,64 @@ void KTMainWindow::newProject()
 
 void KTMainWindow::closeProject()
 {
+	ktDebug() << "Closing.." << endl;
 	
+	QMessageBox mb(QApplication::applicationName (), "Do you want to save?",
+		       QMessageBox::Information,
+		       QMessageBox::Yes | QMessageBox::Default,
+		       QMessageBox::No,
+		       QMessageBox::Cancel | QMessageBox::Escape);
+	mb.setButtonText(QMessageBox::Yes, "Save");
+	mb.setButtonText(QMessageBox::No, "Discard");
+	
+	switch(mb.exec())
+	{
+		case QMessageBox::Yes:
+		{
+			m_projectManager->save();
+		}
+		break;
+		case QMessageBox::No:
+		{
+		}
+		break;
+		case QMessageBox::Cancel:
+		{
+			return;
+		}
+		break;
+	}
+	
+	m_projectManager->close();
+	
+	m_drawingSpace->closeAllWindows();
+	
+	QWidgetList cameras = m_animationSpace->windowList();
+	
+	foreach (QWidget *widget, cameras)
+	{
+		KTViewCamera *view = qobject_cast<KTViewCamera *>(widget);
+		
+		if ( view )
+		{
+			view->animationArea()->setScene(0);
+		}
+	}
+	
+	// Clean widgets
+	m_exposureSheet->closeAllScenes();
+	m_scenes->closeAllScenes();
 }
 
 void KTMainWindow::openProject()
 {
+	ktDebug() << "Opening.." << endl;
 }
 
 void KTMainWindow::save()
 {
 	ktDebug() << "Saving.." << endl;
-	QTimer::singleShot(100, m_projectManager, SLOT(save()));;
+	QTimer::singleShot(100, m_projectManager, SLOT(save()));
 }
 
 void KTMainWindow::preferences()
@@ -242,7 +292,7 @@ void KTMainWindow::importPalettes()
 // Drawing
 void KTMainWindow::changeCurrentColors(const QBrush &foreground, const QBrush &background)
 {
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow());
 	
 	if ( doc )
 	{
@@ -263,7 +313,12 @@ void KTMainWindow::changeCurrentBrush(const KTBrush *form)
 
 void KTMainWindow::changeFPS(int fps)
 {
-	m_projectManager->currentScene()->setFPS( fps );
+	KTScene *scene = m_projectManager->currentScene();
+	
+	if ( scene )
+	{
+		scene->setFPS( fps );
+	}
 }
 
 void KTMainWindow::ui4project(QWidget *widget)

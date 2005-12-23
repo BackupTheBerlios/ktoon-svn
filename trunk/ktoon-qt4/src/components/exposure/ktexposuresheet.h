@@ -71,6 +71,7 @@ class KTExposureSheet : public KTModuleWidgetBase
 		void createLayerManager();
 		
 	public slots:
+		void closeAllScenes();
 		void insertLayer(const QString& name);
 		void applyAction(int action);
 		

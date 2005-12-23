@@ -346,7 +346,12 @@ void KTProjectManager::removeLayer()
 
 void KTProjectManager::close()
 {
+	for(int i = 0; i < m_documents.count(); i++ )
+	{
+		delete m_documents.takeAt(i);
+	}
 	
+	m_currentDocument = 0;
 }
 
 void KTProjectManager::setProjectName(const QString &name)

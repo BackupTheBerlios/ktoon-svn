@@ -199,3 +199,9 @@ void KTScenesWidget::setScene(int index)
 {
 	m_tableScenes->setCurrentItem(m_tableScenes->topLevelItem ( index) );
 }
+
+void KTScenesWidget::closeAllScenes()
+{
+	m_tableScenes->removeAll();
+}
+

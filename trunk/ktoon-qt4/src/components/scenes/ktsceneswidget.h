@@ -39,7 +39,10 @@ class KTScenesWidget : public KTModuleWidgetBase
 	public:
 		KTScenesWidget( QWidget *parent);
 		~KTScenesWidget();
-
+		
+	public slots:
+		void closeAllScenes();
+		
 	private:
 		QGroupBox *m_buttonsPanel;
 		QButtonGroup *m_buttonGroup;

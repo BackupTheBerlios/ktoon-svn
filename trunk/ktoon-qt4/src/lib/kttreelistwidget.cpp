@@ -113,3 +113,13 @@ void KTTreeListWidget::closeEditor ( QWidget * editor, QAbstractItemDelegate::En
 	QTreeWidget::closeEditor(editor, hint);
 }
 
+void KTTreeListWidget::removeAll()
+{
+// 	for ( uint i = 0; i < topLevelItemCount (); i++ )
+// 	{
+// 		delete takeTopLevelItem (i);
+// 	}
+	clear();
+}
+
+

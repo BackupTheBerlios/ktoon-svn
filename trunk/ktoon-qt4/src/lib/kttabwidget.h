@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef KTTABWIDGET_H
 #define KTTABWIDGET_H
 
@@ -31,6 +32,9 @@ class KTTabWidget : public QTabWidget
 	public:
 		KTTabWidget(QWidget *parent = 0);
 		~KTTabWidget();
+		
+	public slots:
+		void removeAllTabs();
 		
 	protected:
 #ifndef QT_NO_WHEELEVENT

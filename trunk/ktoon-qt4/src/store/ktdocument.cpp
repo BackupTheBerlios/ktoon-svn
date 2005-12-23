@@ -27,19 +27,25 @@
 
 KTDocument::KTDocument(QObject *parent) : KTSerializableObject(parent), m_currentScene(0), m_sceneCount(0)
 {
+	KTINIT;
 // 	m_currentScene = createScene();
 }
 
 
 KTDocument::~KTDocument()
 {
+	KTEND;
+	for(int i = 0; i < m_scenes.count(); i++ )
+	{
+		delete m_scenes.takeAt(i);
+	}
 }
 
 QDomElement KTDocument::createXML(  QDomDocument &doc )
 {
 	QDomElement document = doc.createElement("Document");
 
-	return  document;
+	return document;
 }
 
 void KTDocument::save(const QString &docPath)

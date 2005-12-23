@@ -43,6 +43,7 @@ class KTProjectManager : public KTSerializableObject
 		
 	public slots:
 		void save();
+		void close();
 		
 		// Documents
 		void setCurrentDocument(int index);
@@ -76,8 +77,6 @@ class KTProjectManager : public KTSerializableObject
 		void moveFrame(bool up);
 		void removeFrame();
 		void lockCurrentFrame();
-		
-		void close();
 		
 	private slots:
 		// Layers

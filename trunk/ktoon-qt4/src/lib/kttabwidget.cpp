@@ -20,6 +20,9 @@
 
 #include "kttabwidget.h"
 #include <QWheelEvent>
+#include <QTabBar>
+
+#include "ktdebug.h"
 
 KTTabWidget::KTTabWidget(QWidget *parent) : QTabWidget(parent)
 {
@@ -28,6 +31,15 @@ KTTabWidget::KTTabWidget(QWidget *parent) : QTabWidget(parent)
 
 KTTabWidget::~KTTabWidget()
 {
+}
+
+void KTTabWidget::removeAllTabs()
+{
+	int count = this->count();
+	for (int i = 0; i < count; i++)
+	{
+		delete currentWidget();
+	}
 }
 
 #ifndef QT_NO_WHEELEVENT
@@ -55,3 +67,5 @@ void KTTabWidget::wheelMove( int delta )
 	}
 }
 #endif
+
+

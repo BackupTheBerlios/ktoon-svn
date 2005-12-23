@@ -31,6 +31,11 @@ KTScene::KTScene(QObject *parent) : KTSerializableObject(parent), m_currentLayer
 
 KTScene::~KTScene()
 {
+	KTEND;
+	for(int i = 0; i < m_layers.count(); i++ )
+	{
+		delete m_layers.takeAt(i);
+	}
 }
 
 QDomElement KTScene::createXML( QDomDocument &doc )

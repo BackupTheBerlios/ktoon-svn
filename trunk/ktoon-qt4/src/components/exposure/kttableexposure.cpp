@@ -169,7 +169,11 @@ void KTTableExposure::setUseFrame(int idLayer, const QString& name, bool addedTo
 
 void KTTableExposure::insertFrames()
 {
-	m_layers.at(m_currentLayer)->insertFrames();
+	KTLayerExposure *layer = m_layers.at(m_currentLayer);
+	if ( layer )
+	{
+		layer->insertFrames();
+	}
 }
 		
 void KTTableExposure::removeFrame()

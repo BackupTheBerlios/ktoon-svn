@@ -34,6 +34,9 @@ class KTTreeListWidget : public QTreeWidget
 		~KTTreeListWidget();
 		void addItems(const QStringList &items);
 		
+	public slots:
+		void removeAll();
+		
 	private slots:
 		void editDoubleClickedItem(QTreeWidgetItem *item, int col);
 		

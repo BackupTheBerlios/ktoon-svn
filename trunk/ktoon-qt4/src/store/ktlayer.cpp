@@ -33,6 +33,11 @@ KTLayer::KTLayer(const QString &layerName, QObject * parent)  : KTSerializableOb
 
 KTLayer::~KTLayer()
 {
+	KTEND;
+	for(int i = 0; i < m_frames.count(); i++ )
+	{
+		delete m_frames.takeAt(i);
+	}
 }
 
 Frames KTLayer::frames()

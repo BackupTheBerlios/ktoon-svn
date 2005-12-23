@@ -82,11 +82,12 @@ void KTExposureSheet::setupButtons()
 
 void KTExposureSheet::addScene(const QString &name)
 {
-	KTTableExposure *newLayer = new KTTableExposure(100, 1/*, m_scenes*/);
+	KT_FUNCINFO;
+	KTTableExposure *newLayer = new KTTableExposure(100, 1);
 	
 	m_tables << newLayer;
 	
-	m_scenes->addTab(newLayer, name); // TODO: Necesitamos una forma facil de identificar scenas, puede ser por el indice de insersion
+	m_scenes->addTab(newLayer, name);
 	connect(newLayer, SIGNAL(layerVisibilityChanged( int, bool)), this, SIGNAL(layerVisibilityChanged( int, bool)));
 	
 	connect(newLayer, SIGNAL(cellSelected( int, int )), this, SIGNAL(frameSelected(int, int)));
@@ -112,7 +113,9 @@ void KTExposureSheet::applyAction(int action)
 {
 	KT_FUNCINFO;
 	
-	if ( ! m_currentTable )
+	ktDebug() << m_tables.count();
+	
+	if ( m_tables.count() == 0 || m_currentTable == 0 )
 	{
 		ktFatal() << "KTExposureSheet::applyAction: No layer view!!" << endl;
 		return;
@@ -122,7 +125,6 @@ void KTExposureSheet::applyAction(int action)
 	{
 		case InsertLayer:
 		{
-			
 			emit requestInsertLayer();
 			emit layerSelected(m_currentTable->currentLayer());
 // 			m_currentTable->insertFrames();
@@ -186,7 +188,7 @@ void KTExposureSheet::updateLayersAndKeyframes()
 void KTExposureSheet::insertLayer(const QString& name)
 {
 	KT_FUNCINFO;
-	//change m_currentTable for currentTable
+	
 	if ( m_currentTable )
 	{
 		m_currentTable->insertLayer(100, name);
@@ -199,12 +201,13 @@ void KTExposureSheet::insertLayer(const QString& name)
 
 void KTExposureSheet::removeCurrentLayer()
 {
-	//change m_currentTable for currentTable
+	if ( m_currentTable )
 	m_currentTable->removeCurrentLayer();
 }
 
 void KTExposureSheet::removeCurrentFrame()
 {
+	if ( m_currentTable )
 	m_currentTable->removeFrame();
 }
 
@@ -237,10 +240,9 @@ void KTExposureSheet::lockCurrentFrame()
 
 void KTExposureSheet::setScene(int index)
 {
-	
-	if(index != m_scenes->indexOf(m_currentTable))
+	KT_FUNCINFO;
+	if(index != m_scenes->indexOf(m_currentTable) && m_tables.count() <= index)
 	{
-		
 		m_currentTable = m_tables[index];
 		m_scenes->setCurrentWidget(m_tables[index]);
 	}
@@ -254,3 +256,19 @@ void KTExposureSheet::emitRequestChangeScene(int index)
 		emit requestChangeScene(index);
 	}
 }
+
+
+void KTExposureSheet::closeAllScenes()
+{
+	KT_FUNCINFO;
+	
+	delete m_currentTable;
+	
+	m_scenes->removeAllTabs();
+	m_tables.clear();
+	
+	m_currentTable = 0;
+}
+
+
+

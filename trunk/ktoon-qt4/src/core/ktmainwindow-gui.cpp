@@ -286,8 +286,7 @@ void KTMainWindow::setupProjectActions()
 {
 	KTAction *newProject = new KTAction( QPixmap(), tr( "New Project" ), QKeySequence(), this, SLOT(newProject()), m_actionManager, "NewProject");
 	
-	KTAction *closeProject = new KTAction( QPixmap(), tr( "Close Project" ), QKeySequence(), this, SLOT(currentProject()), m_actionManager, "CloseProject");
-// 	newProject->setStatusTip(tr("create new project"));
+	KTAction *closeProject = new KTAction( QPixmap(), tr( "Close Project" ), QKeySequence(), this, SLOT(closeProject()), m_actionManager, "CloseProject");
 	
 	KTAction *openProject = new KTAction( QPixmap(), tr( "Open Project" ), QKeySequence(), this, SLOT(openProject()), m_actionManager, "OpenProject");
 }
