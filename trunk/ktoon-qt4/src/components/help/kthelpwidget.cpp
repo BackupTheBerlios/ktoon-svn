@@ -22,8 +22,17 @@
 #include <QHeaderView>
 
 
-KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidgetBase(parent), m_helpPath(path+QString(QTextCodec::locale()).left(2))
+KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidgetBase(parent)
 {
+	if (QString(QTextCodec::locale()).length() > 1 )
+	{
+		m_helpPath = path+"/"+QString(QTextCodec::locale()).left(2);
+	}
+	else
+	{
+		m_helpPath = path+"/en";
+	}
+	
 	setCaption( tr("Help system"));
 	QTreeWidget *contentsListView = new QTreeWidget(this);
 	contentsListView->setHeaderLabels ( QStringList() << tr("") );
@@ -38,7 +47,8 @@ KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidge
 	
 	QDomDocument document;
 	QFile file( m_helpPath.path()+"/help.xml" );
-
+	
+	ktDebug() << "Help path: " << m_helpPath.path();
 	if ( file.open( QIODevice::ReadOnly ) )
 	{
 		if ( document.setContent(&file) )

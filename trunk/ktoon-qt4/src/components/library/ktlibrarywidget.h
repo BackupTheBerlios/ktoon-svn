@@ -44,6 +44,9 @@ class KTLibraryWidget : public KTModuleWidgetBase
 		KTLibraryWidget(QWidget *parent = 0);
 		~KTLibraryWidget();
 		
+	private:
+		void setup();
+		
 	private slots:
 		void drawCurrentItem(QTreeWidgetItem *, int);
 		void emitSelectedComponent();
@@ -61,6 +64,8 @@ class KTLibraryWidget : public KTModuleWidgetBase
 		KTGCTable *m_libraryTree;
 		QMap<QTreeWidgetItem *, AGraphicComponent *> m_graphics;
 		int m_childCount;
+		
+		QList<AGraphicComponent *> m_objects;
 };
 
 #endif

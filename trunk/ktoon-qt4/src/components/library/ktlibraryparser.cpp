@@ -17,77 +17,73 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#include "ktpathadjuster.h"
+ 
+#include "ktlibraryparser.h"
 #include "ktdebug.h"
+#include "ktpathadjuster.h"
 
-KTPathAdjuster::KTPathAdjuster()
+KTLibraryParser::KTLibraryParser()
+ : QXmlDefaultHandler()
 {
 }
 
 
-KTPathAdjuster::~KTPathAdjuster()
+KTLibraryParser::~KTLibraryParser()
 {
 }
 
-QPainterPath KTPathAdjuster::toRect(const QPainterPath &p, const QRect &rect, float offset)
+bool KTLibraryParser::startElement( const QString& , const QString& , const QString& qname, const QXmlAttributes& atts)
 {
-	QPainterPath path;
-	
-	QRectF br = p.boundingRect();
-	QMatrix matrix;
-	
-	float sx = 1, sy = 1;
-	if ( rect.width() < br.width() )
+	m_qname = qname;
+
+	if (m_root.isNull() )
 	{
-		sx = static_cast<float>(rect.width()-offset) / static_cast<float>(br.width());
+		m_root = qname;
 	}
-	if ( rect.height() < br.height() )
+	else if ( m_root == "Library" )
 	{
-		sy = static_cast<float>(rect.height()-offset) / static_cast<float>(br.height());
-	}
-	
-	float factor = qMin(sx, sy);
-	matrix.scale(factor, factor);
-	path = matrix.map(p);
-	
-	matrix.reset();
-	
-	QPointF pos = path.boundingRect().topLeft();
-	
-	float tx = offset/2-pos.x(), ty = offset/2-pos.y();
-	
-	matrix.translate(tx, ty);
-	return matrix.map(path);
-}
-
-QPainterPath KTPathAdjuster::buildPath(const QStringList &polygonsStr, QChar sep) // FIXME: the path is closed.
-{
-	QPainterPath path;
-	
-	ktDebug() << polygonsStr;
-	
-	foreach (QString polTmp, polygonsStr)
-	{
-		QStringList points = polTmp.trimmed().split(' ');
-		
-		QPolygonF polygon;
-		
-		foreach(QString p, points)
+		if ( qname == "Component" )
 		{
-			bool valid = false;
-			double x = p.section(sep, 0, 0).toDouble(&valid);
-			double y = p.section(sep, 1, 1).toDouble(&valid);
-			
-			if ( valid )
-			{
-				polygon << QPointF(x, y);
-			}
+			m_tmpPolygons.clear();
 		}
-		
-		path.addPolygon(polygon);
-
+		else if ( qname == "Polygon")
+		{
+			QString points = atts.value("points");
+			m_tmpPolygons << points;
+		}
 	}
-	return path;
+	return true;
 }
 
+bool KTLibraryParser::endElement(const QString&, const QString& , const QString& qname)
+{
+	if ( m_root == "Library" )
+	{
+		if ( qname == "Component" )
+		{
+			AGraphicComponent *graphic = new AGraphicComponent;
+			
+			graphic->setPath( KTPathAdjuster::buildPath( m_tmpPolygons, ':') );
+			
+			m_components << graphic;
+		}
+	}
+	
+	return true;
+}
+
+bool KTLibraryParser::error ( const QXmlParseException & exception )
+{
+	ktError() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+}
+
+
+bool KTLibraryParser::fatalError ( const QXmlParseException & exception )
+{
+	ktFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+}
+
+QList<AGraphicComponent *> KTLibraryParser::components()
+{
+	return m_components;
+}

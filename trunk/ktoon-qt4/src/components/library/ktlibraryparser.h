@@ -17,77 +17,38 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef KTLIBRARYPARSER_H
+#define KTLIBRARYPARSER_H
 
-#include "ktpathadjuster.h"
-#include "ktdebug.h"
+#include <QXmlDefaultHandler>
+#include <QList>
+#include <QPainterPath>
 
-KTPathAdjuster::KTPathAdjuster()
+#include "agraphiccomponent.h"
+
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+class KTLibraryParser : public QXmlDefaultHandler
 {
-}
-
-
-KTPathAdjuster::~KTPathAdjuster()
-{
-}
-
-QPainterPath KTPathAdjuster::toRect(const QPainterPath &p, const QRect &rect, float offset)
-{
-	QPainterPath path;
-	
-	QRectF br = p.boundingRect();
-	QMatrix matrix;
-	
-	float sx = 1, sy = 1;
-	if ( rect.width() < br.width() )
-	{
-		sx = static_cast<float>(rect.width()-offset) / static_cast<float>(br.width());
-	}
-	if ( rect.height() < br.height() )
-	{
-		sy = static_cast<float>(rect.height()-offset) / static_cast<float>(br.height());
-	}
-	
-	float factor = qMin(sx, sy);
-	matrix.scale(factor, factor);
-	path = matrix.map(p);
-	
-	matrix.reset();
-	
-	QPointF pos = path.boundingRect().topLeft();
-	
-	float tx = offset/2-pos.x(), ty = offset/2-pos.y();
-	
-	matrix.translate(tx, ty);
-	return matrix.map(path);
-}
-
-QPainterPath KTPathAdjuster::buildPath(const QStringList &polygonsStr, QChar sep) // FIXME: the path is closed.
-{
-	QPainterPath path;
-	
-	ktDebug() << polygonsStr;
-	
-	foreach (QString polTmp, polygonsStr)
-	{
-		QStringList points = polTmp.trimmed().split(' ');
+	public:
+		KTLibraryParser();
+		~KTLibraryParser();
 		
-		QPolygonF polygon;
+		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
 		
-		foreach(QString p, points)
-		{
-			bool valid = false;
-			double x = p.section(sep, 0, 0).toDouble(&valid);
-			double y = p.section(sep, 1, 1).toDouble(&valid);
-			
-			if ( valid )
-			{
-				polygon << QPointF(x, y);
-			}
-		}
+		bool endElement( const QString& ns, const QString& localname, const QString& qname);
 		
-		path.addPolygon(polygon);
+		bool error ( const QXmlParseException & exception );
+		bool fatalError ( const QXmlParseException & exception );
+		
+		QList<AGraphicComponent *> components();
+		
+	private:
+		QString m_root,m_qname;
+		QList<AGraphicComponent *> m_components;
+		QStringList m_tmpPolygons;
+};
 
-	}
-	return path;
-}
-
+#endif

@@ -27,6 +27,8 @@
 
 #include <QGroupBox>
 
+#include "ktlibraryparser.h"
+
 KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), m_childCount(0)
 {
 	setCaption(tr("Library"));
@@ -38,6 +40,8 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
 	connect(m_libraryTree, SIGNAL(itemClicked ( QTreeWidgetItem *, int)), this, SLOT(drawCurrentItem(QTreeWidgetItem *, int)));
 	
 	m_libraryTree->createFolder( tr("General") );
+	
+	setup();
 	
 	QGroupBox *m_buttons = new QGroupBox(this);
 	QHBoxLayout *buttonLayout = new QHBoxLayout(m_buttons);
@@ -73,8 +77,72 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
 	addChild( m_libraryTree );
 }
 
+void KTLibraryWidget::setup()
+{
+	QDir librariesDir(ktapp->configDir()+"/libraries");
+	
+	if ( librariesDir.exists() )
+	{
+		// Parse!
+		
+		KTLibraryParser parser;
+		
+		QXmlSimpleReader reader;
+		reader.setContentHandler(&parser);
+		reader.setErrorHandler(&parser);
+		
+		QFile libFile(librariesDir.path()+"/library.ktlbr");
+		QXmlInputSource xmlsource(&libFile);
+		
+		if ( reader.parse(&xmlsource) )
+		{
+			foreach(AGraphicComponent *component, parser.components() )
+			{
+				addGraphic(component);
+			}
+		}
+		else
+		{
+			ktError() << "Error while parse file: " << libFile.fileName();
+		}
+	}
+}
+
 KTLibraryWidget::~KTLibraryWidget()
 {
+	KTEND;
+	
+	QDomDocument doc;
+	QDomElement root = doc.createElement("Library");
+	doc.appendChild(root);
+	
+	
+	QList<AGraphicComponent *>::iterator iterator = m_objects.begin();
+	
+	while ( iterator != m_objects.end() )
+	{
+		root.appendChild((*iterator)->createXML(doc));
+		++iterator;
+	}
+	
+	QFile custom(ktapp->configDir()+"/libraries/library.ktlbr");
+	
+	QDir brushesDir(ktapp->configDir()+"/libraries");
+	
+	if ( ! brushesDir.exists() )
+	{
+		brushesDir.mkdir(brushesDir.path() );
+	}
+	
+	if ( custom.open(QIODevice::WriteOnly | QIODevice::Text))
+	{
+		QTextStream out(&custom);
+		
+		out << doc.toString();
+		
+		custom.close();
+	}
+	
 }
 
 void KTLibraryWidget::addGraphic(const AGraphicComponent *graphic)
@@ -93,6 +161,8 @@ void KTLibraryWidget::addGraphic(const AGraphicComponent *graphic)
 		
 		m_graphics.insert(item, copy);
 		m_libraryTree->setCurrentItem (item);
+		
+		m_objects << copy;
 	}
 }
 
