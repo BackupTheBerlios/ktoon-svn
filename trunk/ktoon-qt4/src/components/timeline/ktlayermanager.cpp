@@ -82,8 +82,8 @@ KTLayerManager::KTLayerManager(QWidget *parent) : KTVHBox(parent), m_currentTime
 	connect(m_layerGroup, SIGNAL(buttonClicked ( QAbstractButton *)), this, SLOT(selectLayerAction( QAbstractButton *)));
 	
 	m_utilsInBottom = new KTVHBox( this, false );
-	m_utilsInBottom->setMaximumHeight(20);
-	m_utilsInBottom->setMinimumHeight(20);
+	m_utilsInBottom->setMaximumHeight(16);
+	m_utilsInBottom->setMinimumHeight(16);
 	
 	connect(m_utilsInBottom, SIGNAL(clicked(int)), this, SLOT(selectLayerAction(int)));
 	

@@ -63,15 +63,7 @@ QImage AGrid::copy(const QRect & r)
 {
 	if ( r.intersects(m_buffer.rect()) )
 	{
-		// FIXME: move rect to inside area
-		if ( r.bottom() < (m_buffer.height() + 18 ) ) // HACK: Qt bug(?)
-		{
-			return m_buffer.copy(r);
-		}
-		else
-		{
-			ktFatal() << "Qt bug in QImage::copy (?)";
-		}
+		return m_buffer.copy(r);
 	}
 	
 	return QImage();

@@ -63,6 +63,10 @@ void KTProjectManager::save()
 {
 	if ( m_name.isNull() ) return;
 	
+	QDir repository(KTOON_REPOSITORY);
+
+	if ( ! repository.mkdir(m_name) ) return;
+	
 	QDomDocument doc;
 	QDomElement root = doc.createElement("KToon");
 	doc.appendChild(root);

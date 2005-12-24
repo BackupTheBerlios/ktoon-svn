@@ -104,7 +104,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	
 	m_pActiveTabWidget->setCurrentIndex( 0 );
 	
-// 	createNewProject("test");
+	createNewProject("test", QSize(200,200));
 }
 
 
@@ -128,17 +128,7 @@ KTMainWindow::~KTMainWindow()
 void KTMainWindow::createNewProject(const QString &name, const QSize &size)
 {
 	//TODO: crear estructura de archivos
-	
-	QDir repository(KTOON_REPOSITORY);
-	if(repository.exists( name ))
-	{
-		messageToOSD("open project " + name);
-		//TODO: abrir el proyecto
-	}
-	else
-	{
-		repository.mkdir(name);
-	}
+
 	KTDocument *document = m_projectManager->createDocument(name);
 	m_projectManager->setCurrentDocument(0);
 	newViewDocument( name, size);

@@ -34,7 +34,8 @@ KTFrameSequenceContainer::KTFrameSequenceContainer(QWidget *parent) : KTVHBox(pa
 	m_ruler->setMaximumHeight(20);
 	m_ruler->setMinimumHeight(20);
 	
-	m_manager = new KTFrameSequenceManager(this);
+// 	m_manager = new KTFrameSequenceManager(this);
+	m_frameTable = new TFramesTable(this);
 }
 
 
@@ -42,8 +43,8 @@ KTFrameSequenceContainer::~KTFrameSequenceContainer()
 {
 }
 
-KTFrameSequenceManager *KTFrameSequenceContainer::manager()
+TFramesTable *KTFrameSequenceContainer::manager()
 {
-	return m_manager;
+	return m_frameTable;
 }
 

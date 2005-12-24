@@ -24,6 +24,8 @@
 #include <ktvhbox.h>
 #include "ktframesequencemanager.h"
 
+#include "tframestable.h"
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
@@ -34,11 +36,11 @@ class KTFrameSequenceContainer : public KTVHBox
 		KTFrameSequenceContainer(QWidget *parent = 0);
 		~KTFrameSequenceContainer();
 		
-		KTFrameSequenceManager *manager();
+		TFramesTable *manager();
 		
 	private:
 		KTTLRuler *m_ruler;
-		KTFrameSequenceManager *m_manager;
+		TFramesTable *m_frameTable;
 		
 };
 

@@ -63,7 +63,7 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine
 
 // 	m_container->setMinimumHeight( m_container->sizeHint().height() );
 
-	m_splitter->setSizes( QList<int>() << 190 << 590 );
+	m_splitter->setSizes( QList<int>() << 190 << 700 );
 	
 	setupPropertiesBar();
 }
@@ -164,7 +164,7 @@ void KTTimeLine::removeCurrentLayer()
 
 void KTTimeLine::selectCurrentLayer(int index)
 {
-	m_sequenceManager->manager()->selectItem(index);
+	m_sequenceManager->manager()->selectFrame(index);
 	
 	m_layerManager->layerSequence()->selectItem(index);
 	
