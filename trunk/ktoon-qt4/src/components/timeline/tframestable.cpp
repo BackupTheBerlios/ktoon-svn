@@ -29,73 +29,6 @@
 
 #include "ktdebug.h"
 
-////////// TFramesTableItemDelegate ///////////
-
-class TFramesTableItemDelegate : public QAbstractItemDelegate
-{
-	public:
-		TFramesTableItemDelegate(QObject * parent = 0 );
-		~TFramesTableItemDelegate();
-		virtual void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
-		virtual QSize sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const;
-};
-
-TFramesTableItemDelegate::TFramesTableItemDelegate(QObject * parent) :  QAbstractItemDelegate(parent)
-{
-}
-
-TFramesTableItemDelegate::~TFramesTableItemDelegate()
-{
-}
-
-void TFramesTableItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
-{
-	Q_ASSERT(index.isValid());
-	const QAbstractItemModel *model = index.model();
-	Q_ASSERT(model);
-	
-	QVariant value;
-
-	QStyleOptionViewItem opt = option;
-	
-	// draw the background color
-	value = model->data(index, Qt::BackgroundColorRole);
-	if (value.isValid())
-	{
-	}
-	
-	
-	// Selection!
-	if (option.showDecorationSelected && (option.state & QStyle::State_Selected))
-	{
-		QPalette::ColorGroup cg = option.state & QStyle::State_Enabled ? QPalette::Normal : QPalette::Disabled;
-		
-		painter->save();
-		painter->setPen(QPen(option.palette.brush(cg, QPalette::Highlight), 3));
-		painter->drawRect(option.rect.adjusted(1,1,-2,-2));
-		painter->restore();
-	}
-}
-
-QSize TFramesTableItemDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
-{
-	Q_ASSERT(index.isValid());
-	const QAbstractItemModel *model = index.model();
-	Q_ASSERT(model);
-
-	QVariant value = model->data(index, Qt::FontRole);
-	QFont fnt = value.isValid() ? qvariant_cast<QFont>(value) : option.font;
-	QString text = model->data(index, Qt::DisplayRole).toString();
-	QRect pixmapRect;
-	if (model->data(index, Qt::DecorationRole).isValid())
-		pixmapRect = QRect(0, 0, option.decorationSize.width(),
-				   option.decorationSize.height());
-
-	QFontMetrics fontMetrics(fnt);
-	
-	return (pixmapRect).size();
-}
-
 //////////// TFramesTableModel
 
 class TFramesTableModel : public QAbstractTableModel
@@ -515,6 +448,94 @@ void TFramesTableModel::itemChanged(TFramesTableItem *item)
 {
 	QModelIndex idx = index(item);
 	emit dataChanged(idx, idx);
+}
+
+////////// TFramesTableItemDelegate ///////////
+
+class TFramesTableItemDelegate : public QAbstractItemDelegate
+{
+	public:
+		TFramesTableItemDelegate(QObject * parent = 0 );
+		~TFramesTableItemDelegate();
+		virtual void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
+		virtual QSize sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const;
+};
+
+TFramesTableItemDelegate::TFramesTableItemDelegate(QObject * parent) :  QAbstractItemDelegate(parent)
+{
+}
+
+TFramesTableItemDelegate::~TFramesTableItemDelegate()
+{
+}
+
+void TFramesTableItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+{
+	Q_ASSERT(index.isValid());
+	const TFramesTableModel *model = reinterpret_cast<const TFramesTableModel*>( index.model() );
+	Q_ASSERT(model);
+	
+	QVariant value;
+
+	QStyleOptionViewItem opt = option;
+	
+	// draw the background color
+	value = model->data(index, Qt::BackgroundColorRole);
+	if (value.isValid())
+	{
+		painter->save();
+		painter->fillRect(option.rect, value.value<QColor>() );
+		painter->restore();
+	}
+	else
+	{
+		painter->save();
+		painter->fillRect(option.rect, Qt::white );
+		painter->restore();
+	}
+	
+		// Selection!
+	if (option.showDecorationSelected && (option.state & QStyle::State_Selected))
+	{
+		QPalette::ColorGroup cg = option.state & QStyle::State_Enabled ? QPalette::Normal : QPalette::Disabled;
+		
+		painter->save();
+		painter->setPen(QPen(option.palette.brush(cg, QPalette::Highlight), 3));
+		painter->drawRect(option.rect.adjusted(1,1,-2,-2));
+		painter->restore();
+	}
+	
+	// Draw attributes
+	int offset = option.rect.width() - 2 ;
+// 	painter->drawEllipse( option.rect.left(), option.rect.bottom() - offset, offset, offset );
+	
+// 	painter->save();
+// 	painter->setBrush(Qt::black);
+// 	painter->drawEllipse( option.rect.left(), option.rect.bottom() - offset, offset, offset);
+// 	painter->restore();
+	
+// 	painter->drawRect( option.rect.left(), option.rect.bottom() - offset, offset, offset );
+	
+// 	painter->fillRect( option.rect.left(), option.rect.bottom() - offset, offset, offset, Qt::black );
+}
+
+QSize TFramesTableItemDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
+{
+	Q_ASSERT(index.isValid());
+	const QAbstractItemModel *model = index.model();
+	Q_ASSERT(model);
+
+	QVariant value = model->data(index, Qt::FontRole);
+	QFont fnt = value.isValid() ? qvariant_cast<QFont>(value) : option.font;
+	QString text = model->data(index, Qt::DisplayRole).toString();
+	QRect pixmapRect;
+	if (model->data(index, Qt::DecorationRole).isValid())
+		pixmapRect = QRect(0, 0, option.decorationSize.width(),
+				   option.decorationSize.height());
+
+	QFontMetrics fontMetrics(fnt);
+	
+	return (pixmapRect).size();
 }
 
 

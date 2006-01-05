@@ -34,6 +34,11 @@ class TFramesTableItem
 	friend class TFramesTable;
 	
 	public:
+		enum Attributes
+		{
+			IsUsed = 0
+		};
+		
 		TFramesTableItem();
 		virtual ~TFramesTableItem();
 
