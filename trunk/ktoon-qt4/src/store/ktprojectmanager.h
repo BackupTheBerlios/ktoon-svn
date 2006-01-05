@@ -39,16 +39,18 @@ class KTProjectManager : public KTSerializableObject
 		~KTProjectManager();
 		QDomElement createXML( QDomDocument &doc );
 		void setProjectName(const QString &name);
-		
+		void setDocumentSize(const QSize& size );
+		QSize documentSize() const;
 		
 	public slots:
 		void save();
 		void close();
+		void load(const QString &path);
 		
 		// Documents
 		void setCurrentDocument(int index);
 		KTDocument *currentDocument();
-		KTDocument *createDocument(const QString &name);
+		KTDocument *createDocument(const QString &name = QString());
 		
 		Documents documents() const;
 		void setDocuments(const Documents &);
@@ -107,8 +109,9 @@ class KTProjectManager : public KTSerializableObject
 	private:
 		Documents m_documents;
 		KTDocument *m_currentDocument;
+		QSize m_size;
 		const KTKeyFrame *m_copyFrame;
-		QString m_name;
+		mutable QString m_name;
 };
 
 #endif

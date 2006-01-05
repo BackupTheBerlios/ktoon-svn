@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,20 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktbrushesparser.h"
+#include "ktprojectparser.h"
 #include "ktdebug.h"
-#include "ktpathadjuster.h"
 
-KTBrushesParser::KTBrushesParser() : QXmlDefaultHandler()
+KTProjectParser::KTProjectParser() : QXmlDefaultHandler()
 {
 }
 
 
-KTBrushesParser::~KTBrushesParser()
+KTProjectParser::~KTProjectParser()
 {
 }
 
-bool KTBrushesParser::startElement( const QString& , const QString& , const QString& qname, const QXmlAttributes& atts)
+bool KTProjectParser::startElement( const QString& , const QString& , const QString& qname, const QXmlAttributes& atts)
 {
 	m_qname = qname;
 
@@ -39,48 +38,97 @@ bool KTBrushesParser::startElement( const QString& , const QString& , const QStr
 	{
 		m_root = qname;
 	}
-	else if ( m_root == "Brushes" )
+	else if ( m_root == "KToon" )
 	{
-		if ( qname == "Item" )
+		if ( qname == "Project" )
 		{
-			m_tmpPolygons.clear();
+			m_partName = atts.value("name");
+		}
+		else if ( qname == "Document")
+		{
+			m_locations << atts.value("location");
+		}
+	}
+	else if ( m_root == "Document" )
+	{
+		if ( qname == "Document" )
+		{
+			m_partName = atts.value("name");
+		}
+		else if ( qname == "Scene")
+		{
+			m_locations << atts.value("location");
+		}
+	}
+	else if ( m_root == "Scene")
+	{
+		if ( qname == "Layer" )
+		{
+			emit createLayer();
+		}
+		else if ( qname == "Frame")
+		{
+			emit createFrame();
+		}
+		else if ( qname == "Component")
+		{
 		}
 		else if ( qname == "Polygon")
 		{
-			QString points = atts.value("points");
-			m_tmpPolygons << points;
-		}
-	}
-	return true;
-}
-
-bool KTBrushesParser::endElement(const QString&, const QString& , const QString& qname)
-{
-	if ( m_root == "Brushes" )
-	{
-		if ( qname == "Item" )
-		{
-			m_brushes << KTPathAdjuster::buildPath( m_tmpPolygons, ':');
+			m_polygons << atts.value("points");
 		}
 	}
 	
 	return true;
 }
 
-bool KTBrushesParser::error ( const QXmlParseException & exception )
+bool KTProjectParser::endElement(const QString&, const QString& , const QString& qname)
+{
+	if ( m_root == "Scene")
+	{
+		if ( qname == "Layer" )
+		{
+		}
+		else if ( qname == "Frame")
+		{
+		}
+		else if ( qname == "Component")
+		{
+			emit createComponent( m_polygons );
+			
+			m_polygons.clear();
+		}
+		else if ( qname == "Polygon")
+		{
+		}
+	}
+	
+	return true;
+}
+
+bool KTProjectParser::error ( const QXmlParseException & exception )
 {
 	ktError() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
 	return true;
 }
 
 
-bool KTBrushesParser::fatalError ( const QXmlParseException & exception )
+bool KTProjectParser::fatalError ( const QXmlParseException & exception )
 {
 	ktFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	
 	return true;
 }
 
-QList<QPainterPath> KTBrushesParser::brushes()
+
+QString KTProjectParser::partName() const
 {
-	return m_brushes;
+	return m_partName;
 }
+
+QStringList KTProjectParser::locations() const
+{
+	return m_locations;
+}
+
+

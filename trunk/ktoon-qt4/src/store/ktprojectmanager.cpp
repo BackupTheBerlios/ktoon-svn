@@ -23,6 +23,8 @@
 
 #include "ktapplication.h"
 
+#include "ktprojectparser.h"
+
 KTProjectManager::KTProjectManager(QObject *parent) : KTSerializableObject(parent), m_currentDocument(0), m_copyFrame(0)
 {
 	KTINIT;
@@ -34,6 +36,8 @@ KTProjectManager::~KTProjectManager()
 {
 	KTEND;
 }
+
+
 
 QDomElement KTProjectManager::createXML( QDomDocument &doc )
 {
@@ -83,6 +87,65 @@ void KTProjectManager::save()
 	}
 }
 
+void KTProjectManager::load(const QString &path)
+{
+	ktDebug() << "Loading: " << path;
+	
+	KTProjectParser parser;
+	QXmlSimpleReader reader;
+	reader.setContentHandler(&parser);
+	reader.setErrorHandler(&parser);
+		
+	QFile source(path);
+	QXmlInputSource xmlsource(&source);
+		
+	if ( reader.parse(&xmlsource) )
+	{
+		setProjectName( parser.partName() );
+		
+		QFileInfo info(source);
+		foreach(QString location, parser.locations())
+		{
+			QString docPath = info.absolutePath ()+"/"+location+"/document.ktd";
+			
+			KTDocument *doc = createDocument();
+			doc->load(docPath);
+			
+			Scenes scenes = doc->scenes();
+			foreach(KTScene *scene, scenes )
+			{
+				connect(scene, SIGNAL(layerCreated( const QString&, bool)), this, SIGNAL(layerCreated( const QString &, bool)));
+				connect(scene, SIGNAL(layerRemoved( int)), this, SIGNAL(layerRemoved(int))) ;
+				
+				Layers layers = scene->layers();
+				foreach(KTLayer *layer, layers)
+				{
+					emit layerCreated(layer->layerName(), true);
+					
+					connect(layer, SIGNAL(frameCreated( const QString &, bool)), this, SIGNAL(frameCreated(  const QString& , bool)));
+		
+					connect(layer, SIGNAL(frameMoved(bool)), this, SIGNAL(frameMoved(bool))); 
+		
+					connect(layer, SIGNAL(frameRemoved()), this, SIGNAL(frameRemoved()));
+					connect(layer, SIGNAL(frameLocked()), this, SIGNAL(frameLocked()));
+					connect(layer, SIGNAL(visibilityChanged(bool)), this, SLOT(emitLayerVisibility(bool)));
+					
+					Frames frames = layer->frames();
+					
+					foreach(KTKeyFrame *frame, frames)
+					{
+						emit frameCreated( frame->frameName(), true);
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		ktError() << "Error while parse file: " << source.fileName();
+	}
+}
+
 Documents KTProjectManager::documents() const
 {
 	return m_documents;
@@ -104,9 +167,9 @@ KTDocument *KTProjectManager::createDocument(const QString &name)
 	connect(doc, SIGNAL(sceneCreated(const QString &, bool)), this, SIGNAL(sceneCreated(const QString &, bool)));
 	
 	
-	createScene();
-	createLayer();
-	createFrame();
+// 	createScene();
+// 	createLayer();
+// 	createFrame();
 	
 	return doc;
 }
@@ -362,3 +425,14 @@ void KTProjectManager::setProjectName(const QString &name)
 {
 	m_name = name;
 }
+
+void  KTProjectManager::setDocumentSize(const QSize& size )
+{
+	m_size = size;
+}
+
+QSize KTProjectManager::documentSize() const
+{
+	return m_size;
+}
+

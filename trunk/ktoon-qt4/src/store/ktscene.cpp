@@ -23,6 +23,9 @@
 
 #include <QDir>
 
+#include "ktprojectparser.h"
+#include "ktpathadjuster.h"
+
 KTScene::KTScene(QObject *parent) : KTSerializableObject(parent), m_currentLayer(0), m_layerCount(0), m_fps(24)
 {
 // 	m_currentLayer = createLayer();
@@ -68,7 +71,7 @@ void KTScene::save(const QString &scenePath)
 		++iterator;
 	}
 	
-	QFile save(scenePath+"/"+/*m_name*/"sceneXXX"+".kts");
+	QFile save(scenePath+"/"+/*m_name*/"scene"+".kts");
 	
 	if ( save.open(QIODevice::WriteOnly | QIODevice::Text))
 	{
@@ -78,6 +81,32 @@ void KTScene::save(const QString &scenePath)
 		save.close();
 	}
 	
+}
+
+void KTScene::load(const QString &path)
+{
+	ktDebug() << "Loading scene: " << path;
+	
+	KTProjectParser parser;
+	
+	connect(&parser, SIGNAL(createLayer()), this, SLOT(loadLayer()));
+	
+	QXmlSimpleReader reader;
+	reader.setContentHandler(&parser);
+	reader.setErrorHandler(&parser);
+		
+	QFile source(path);
+	QXmlInputSource xmlsource(&source);
+		
+	if ( reader.parse(&xmlsource) )
+	{
+		setSceneName( parser.partName() );
+		
+	}
+	else
+	{
+		ktError() << "Error while parse file: " << source.fileName();
+	}
 }
 
 void KTScene::setSceneName(const QString &name)
@@ -173,4 +202,43 @@ void KTScene::removeLayer( int index)
 	
 }
 
+void KTScene::loadLayer()
+{
+	KT_FUNCINFO;
+	KTLayer *layer = createLayer(true);
+	
+	KTProjectParser *parser = qobject_cast<KTProjectParser *>(sender());
+	
+	if ( parser )
+	{
+		connect(parser, SIGNAL(createFrame()), this, SLOT(loadFrame()));
+	}
+}
 
+void KTScene::loadFrame()
+{
+	KT_FUNCINFO;
+	if ( m_currentLayer )
+	{
+		KTKeyFrame *frame = m_currentLayer->createFrame(true);
+		
+		KTProjectParser *parser = qobject_cast<KTProjectParser *>(sender());
+		
+		if ( parser )
+		{
+			connect(parser, SIGNAL(createComponent( const QStringList& ) ), this, SLOT( loadComponent(const QStringList &) ));
+		}
+	}
+}
+
+void KTScene::loadComponent(const QStringList &polygons)
+{
+	KT_FUNCINFO;
+	if ( m_currentLayer )
+	{
+		AGraphicComponent *component = new AGraphicComponent();
+		component->setPath( KTPathAdjuster::buildPath( polygons, ':') );
+		
+		m_currentLayer->currentFrame()->addComponent( component );
+	}
+}

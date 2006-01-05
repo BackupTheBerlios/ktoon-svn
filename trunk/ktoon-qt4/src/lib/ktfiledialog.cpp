@@ -73,7 +73,7 @@ KTFileDialog::KTFileDialog(Type t, QWidget *parent) : QDialog(parent), m_type(t)
 	m_treeWidget->setHeaderLabels ( QStringList() << tr("Filename") << tr( "Owner" ) << tr( "Date" ) );
 	m_treeWidget->header()->setResizeMode(QHeaderView::Stretch);
 	
-	connect(m_treeWidget, SIGNAL(clicked(QTreeWidgetItem *)), this, SLOT(select(QTreeWidgetItem *)));
+	connect(m_treeWidget, SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, SLOT(select(QTreeWidgetItem *, int)));
 	
 	KTVHBox *buttonBox= new KTVHBox(this, Qt::Horizontal);
 	buttonBox->show();
@@ -131,7 +131,7 @@ QString KTFileDialog::fileName() const
 void KTFileDialog::readFiles()
 {
 	QDir m_dir;
-	QString extension = "";	
+	QString extension = "";
 	
 	if ( m_type == Repository )
 	{
@@ -147,22 +147,28 @@ void KTFileDialog::readFiles()
 	
 	if ( m_dir.exists() )
 	{
-		QFileInfoList files = m_dir.entryInfoList(QString("*.")+extension);
-	
-		Q_CHECK_PTR(files);
+		QFileInfoList projects = m_dir.entryInfoList();
 		
-		for(int i = 0; i < files.count(); i++ )
+		foreach(QFileInfo dir, projects)
 		{
-			QFileInfo iterator = files[i];
-			QTreeWidgetItem *item = new QTreeWidgetItem(m_treeWidget);
-			item->setText(0, iterator.fileName());
-			item->setText(1, iterator.owner());
-			item->setText(2, iterator.created().toString());
+			if ( dir.isDir() && ! (dir.fileName()[0] == '.') )
+			{
+				QDir projectDir(dir.filePath());
+				QFileInfoList files = projectDir.entryInfoList(QStringList() << QString("*.")+extension);
+		
+				foreach(QFileInfo iterator, files)
+				{
+					QTreeWidgetItem *item = new QTreeWidgetItem(m_treeWidget);
+					item->setText(0, iterator.fileName());
+					item->setText(1, iterator.owner());
+					item->setText(2, iterator.created().toString());
+				}
+			}
 		}
 	}
 }
 
-void KTFileDialog::select(QTreeWidgetItem *item)
+void KTFileDialog::select(QTreeWidgetItem *item, int)
 {
 	if ( ! item )
 	{

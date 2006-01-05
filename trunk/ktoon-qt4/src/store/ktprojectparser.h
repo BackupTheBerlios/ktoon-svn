@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,50 +17,52 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef KTPROJECTPARSER_H
+#define KTPROJECTPARSER_H
 
-#ifndef KTFILEDIALOG_H
-#define KTFILEDIALOG_H
+#include <QXmlDefaultHandler>
 
-#include <QTreeWidget>
-#include <QLabel>
-#include <QLayout>
-#include <QPushButton>
-#include <QLineEdit>
-#include <QDialog>
+// #include "ktlayer.h"
+// #include "ktkeyframe.h"
+// #include "agraphiccomponent.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTFileDialog : public QDialog
+class KTProjectParser : public QObject, public QXmlDefaultHandler
 {
 	Q_OBJECT
 	public:
-		enum Type
-		{
-			Repository = 0,
-			Themes
-		};
+		KTProjectParser();
+		~KTProjectParser();
+		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
 		
-		KTFileDialog(Type t, QWidget *parent = 0);
-		~KTFileDialog();
-		QString fileName() const;
+		bool endElement( const QString& ns, const QString& localname, const QString& qname);
+		
+		bool error ( const QXmlParseException & exception );
+		bool fatalError ( const QXmlParseException & exception );
+		
+		QString partName() const;
+		QStringList locations() const;
+		
+	signals:
+		void createLayer();
+		void createFrame();
+		void createComponent(const QStringList &polygons);
 		
 	private:
-		void readFiles();
+		QString m_root,m_qname;
 		
-	private slots:
-		void accept();
-		void select(QTreeWidgetItem *, int);
-// 		void reject();
+		QString m_partName;
+		QStringList m_locations;
 		
-	private:
-		QLineEdit *m_fileNameLE;
-		QTreeWidget *m_treeWidget;
-		QPushButton *m_accept, *m_cancel;
-		QString m_fileName;
-		Type m_type;
+		QStringList m_polygons;
 		
+// 		Layers m_layers;
+// 		Frames m_frames;
+// 		QList<AGraphicComponent *> m_graphics;
 };
 
 #endif

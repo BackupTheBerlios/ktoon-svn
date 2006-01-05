@@ -87,6 +87,11 @@ void KTMainWindow::insertFrame(const QString &name, bool addedToEnd)
 // 		doc->drawArea()->setKeyFrame(m_projectManager->currentLayer()->indexCurrentFrame());
 		
 	}
+	else
+	{
+		newViewDocument( name);
+		m_viewCamera->animationArea()->setScene(m_projectManager->currentScene());
+	}
 	
 	m_exposureSheet->addFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd);
 }

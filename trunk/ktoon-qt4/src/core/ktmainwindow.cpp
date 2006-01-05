@@ -131,13 +131,15 @@ void KTMainWindow::createNewProject(const QString &name, const QSize &size)
 
 	KTDocument *document = m_projectManager->createDocument(name);
 	m_projectManager->setCurrentDocument(0);
-	newViewDocument( name, size);
-	m_viewCamera->animationArea()->setScene(m_projectManager->currentScene());
+	
+// 	newViewDocument( name, size);
+// 	m_viewCamera->animationArea()->setScene(m_projectManager->currentScene());
 	
 	m_projectManager->setProjectName( name );
+	m_projectManager->setDocumentSize( size );
 }
 
-void KTMainWindow::newViewDocument(const QString &name, const QSize &size)
+void KTMainWindow::newViewDocument(const QString &name)
 {
 	messageToStatus(tr("Opening a new document..."));
 	
@@ -147,7 +149,7 @@ void KTMainWindow::newViewDocument(const QString &name, const QSize &size)
 	
 	if ( scene )
 	{
-		KTViewDocument *viewDocument = new KTViewDocument( size,  name, m_projectManager->currentDocument(), m_drawingSpace);
+		KTViewDocument *viewDocument = new KTViewDocument( m_projectManager->documentSize(),  name, m_projectManager->currentDocument(), m_drawingSpace);
 		viewDocument->setAttribute(Qt::WA_DeleteOnClose, true);
 		m_drawingSpace->addWindow(viewDocument);
 // 		viewDocument->setWindowTitle(name);
@@ -233,7 +235,16 @@ void KTMainWindow::closeProject()
 
 void KTMainWindow::openProject()
 {
-	ktDebug() << "Opening.." << endl;
+	KTFileDialog opener(KTFileDialog::Repository, this);
+	if ( opener.exec() != QDialog::Rejected )
+	{
+		QString fileName = opener.fileName();
+		
+		QString path = KTOON_REPOSITORY+"/"+fileName.left(fileName.length()-4)+"/"+fileName;
+		
+		closeProject(); // FIXME: solo si esta abierto
+		m_projectManager->load( path );
+	}
 }
 
 void KTMainWindow::save()
@@ -247,6 +258,8 @@ void KTMainWindow::preferences()
 	m_statusBar->setStatus( tr( "Preferences Dialog Opened" ), 2000 );
 	Preferences *preferences = new Preferences( this );
 	preferences->exec();
+	
+	delete preferences;
 }
 
 void KTMainWindow::aboutKToon()

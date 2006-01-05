@@ -25,6 +25,8 @@
 #include <QDir>
 #include <QDomDocument>
 
+#include "ktprojectparser.h"
+
 KTDocument::KTDocument(QObject *parent) : KTSerializableObject(parent), m_currentScene(0), m_sceneCount(0)
 {
 	KTINIT;
@@ -78,7 +80,7 @@ void KTDocument::save(const QString &docPath)
 		m_scenes[i]->save( scenePath );
 	}
 	
-	QFile save(docPath+"/"+/*m_name*/"documentXXX"+".ktd");
+	QFile save(docPath+"/"+/*m_name*/"document"+".ktd");
 	
 	if ( save.open(QIODevice::WriteOnly | QIODevice::Text))
 	{
@@ -88,6 +90,37 @@ void KTDocument::save(const QString &docPath)
 		save.close();
 	}
 	
+}
+
+void KTDocument::load(const QString &path)
+{
+	ktDebug() << "Loading doc: " << path;
+	
+	KTProjectParser parser;
+	QXmlSimpleReader reader;
+	reader.setContentHandler(&parser);
+	reader.setErrorHandler(&parser);
+		
+	QFile source(path);
+	QXmlInputSource xmlsource(&source);
+		
+	if ( reader.parse(&xmlsource) )
+	{
+		setDocumentName( parser.partName() );
+		
+		QFileInfo info(source);
+		foreach(QString location, parser.locations())
+		{
+			QString scenePath = info.absolutePath ()+"/"+location+"/scene.kts";
+			
+			KTScene *scene = createScene(true);
+			scene->load(scenePath);
+		}
+	}
+	else
+	{
+		ktError() << "Error while parse file: " << source.fileName();
+	}
 }
 
 Scenes KTDocument::scenes() const
@@ -138,3 +171,7 @@ void KTDocument::setCurrentScene(int index)
 	}
 }
 
+void KTDocument::setDocumentName(const QString &name)
+{
+	m_name = name;
+}

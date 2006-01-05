@@ -26,13 +26,13 @@
 #include <QMenu>
 #include <QMenuBar>
 #include <QStatusBar>
-
 #include <QResizeEvent>
 #include <QCloseEvent>
 
 #include "ktactionmanager.h"
 #include "ktviewdocument.h"
 
+#include "ktfiledialog.h"
 
 #include "ktexposuresheet.h"
 #include "ktoonscript.h"
@@ -41,9 +41,6 @@
 #include "ktsceneswidget.h"
 
 #include "ktbrushwidget.h"
-// #include "brushes.h"
-
-// #include "colorpalette.h"
 #include "ktcolorpalette.h"
 
 #include "ktlibrarywidget.h"
@@ -126,7 +123,7 @@ class KTMainWindow : public DMainWindow
 		
 	private slots:
 		void createNewProject(const QString &name, const QSize &size = QSize(-1,-1) );
-		void newViewDocument(const QString &name = QString::null ,   const QSize &size = QSize(-1,-1) );
+		void newViewDocument(const QString &name = QString::null);
 		void newProject();
 		void closeProject();
 		void openProject();

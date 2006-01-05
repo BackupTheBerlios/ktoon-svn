@@ -43,19 +43,24 @@ class KTScene : public KTSerializableObject
 		QString sceneName();
 		Layers layers() const;
 		void setLayers(const Layers &);
-		KTLayer *createLayer(bool addToEnd );
 		
 		KTLayer *currentLayer();
 		void setCurrentLayer(int index);
 		int indexCurrentLayer();
 		void removeLayer(int index);
-				
+		KTLayer *createLayer(bool addToEnd  );
+		
 		void setFPS(int fps);
 		int fps();
 		
 		QDomElement createXML( QDomDocument &doc );
 		void save(const QString &scenePath);
+		void load(const QString &path);
 		
+	private slots:
+		void loadLayer();
+		void loadFrame();
+		void loadComponent(const QStringList &polygons);
 		
 	signals:
 		void layerCreated(const QString &name, bool toEnd);
@@ -64,7 +69,7 @@ class KTScene : public KTSerializableObject
 	private:
 		Layers m_layers;
 		KTLayer *m_currentLayer;
-		QString m_name;
+		mutable QString m_name;
 		
 		int m_layerCount;
 		

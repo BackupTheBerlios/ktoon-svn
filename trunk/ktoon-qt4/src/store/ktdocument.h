@@ -40,12 +40,16 @@ class KTDocument : public KTSerializableObject
 		~KTDocument();
 		Scenes scenes() const;
 		void setScenes(const Scenes &);
-		KTScene *createScene(bool addToEnd);
+		KTScene *createScene(bool addToEnd );
 		
 		KTScene *currentScene();
 		void setCurrentScene(int index);
 		QDomElement createXML( QDomDocument &doc );
 		void save(const QString &path);
+		void load(const QString &path);
+		
+		void setDocumentName(const QString &name);
+		
 		
 	signals:
 		void sceneCreated(const QString &name, bool toEnd);
@@ -56,7 +60,7 @@ class KTDocument : public KTSerializableObject
 		KTScene *m_currentScene;
 		
 		int m_sceneCount;
-		QString m_name;
+		mutable QString m_name;
 };
 
 #endif

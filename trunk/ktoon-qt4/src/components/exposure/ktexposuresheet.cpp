@@ -83,7 +83,7 @@ void KTExposureSheet::setupButtons()
 void KTExposureSheet::addScene(const QString &name)
 {
 	KT_FUNCINFO;
-	KTTableExposure *newLayer = new KTTableExposure(100, 1);
+	KTTableExposure *newLayer = new KTTableExposure(100, 0);
 	
 	m_tables << newLayer;
 	
