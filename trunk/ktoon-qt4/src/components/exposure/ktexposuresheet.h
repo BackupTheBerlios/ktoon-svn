@@ -56,6 +56,7 @@ class KTExposureSheet : public KTModuleWidgetBase
 		void lockCurrentFrame();
 		void setScene(int index);
 		
+		void setCurrentCell( int idLayer, int idFrame);
 		
 	private:
 		QList<QPixmap> m_imgs;
@@ -105,9 +106,6 @@ class KTExposureSheet : public KTModuleWidgetBase
 		//others
 		void frameSelected(int idLayer, int idFrame);
 		void layerSelected(int);
-		
-		
-		
 		
 };
 

@@ -75,7 +75,7 @@ KTLayerExposure::~KTLayerExposure()
 
 void KTLayerExposure::frameSelect(int id, int button, int x, int y)
 {
-	ktDebug() << "FRAME SELECT: " << id << endl;
+// 	ktDebug() << "FRAME SELECT: " << id << endl;
 	if(id < 0)
 	{
 		id = 0;
@@ -86,7 +86,7 @@ void KTLayerExposure::frameSelect(int id, int button, int x, int y)
 	emit frameSelected(id);
 	emit clicked( m_layout->indexOf(m_frames[id])-1, m_id, button, x, y);
 	
-	ktDebug() << "KTLayerExposure: id layer " << m_id << " id frame " <<  m_layout->indexOf(m_frames[id])-1 << endl;
+// 	ktDebug() << "KTLayerExposure: id layer " << m_id << " id frame " <<  m_layout->indexOf(m_frames[id])-1 << endl;
 	if(m_useFrame == id && !(m_frames[id]->isUsed()))
 	{
 		emit requestInsertFrame(true);
@@ -100,6 +100,7 @@ void KTLayerExposure::setSelected(bool select, QMouseEvent *e)
 	m_header->slotSetDescription();
 	if(select)
 	{
+		m_frames[m_currentFrame]->setSelected(select);
 		emit selected(m_id);
 	}
 	else
@@ -139,12 +140,10 @@ void KTLayerExposure::insertFrame(int id, const QString &text)
 	frame->show();
 }
 
-void KTLayerExposure::addFrame(const QString &text ) // FIXME!!
+void KTLayerExposure::addFrame(const QString &text ) 
 {
-// 	ktDebug() << m_frames.count() << endl;
 	int id = m_frames.count();
 	
-	ktDebug() << "Add frame with id: " << id << " and name: " << text << endl;
 	
 	ESFrame *frame = new ESFrame( id, this);
 	m_layout->insertWidget(id, frame, 10);
@@ -201,7 +200,7 @@ void KTLayerExposure::insertFrames()
 		{
 			if( (esFrame->isUsed() && m_selected ) || m_currentFrame == 0)
 			{
-				ktDebug() << "remove frame " << (m_layout->indexOf(esFrame) == m_layout->indexOf(m_frames[m_useFrame])-1) << "||" << (m_useFrame == 0);
+// 				ktDebug() << "remove frame " << (m_layout->indexOf(esFrame) == m_layout->indexOf(m_frames[m_useFrame])-1) << "||" << (m_useFrame == 0);
 				if(m_layout->indexOf(m_frames[m_currentFrame]) == m_layout->indexOf(m_frames[m_useFrame])-1 || m_useFrame == 0 )
 				{
 					emit requestInsertFrame(true);
@@ -386,3 +385,9 @@ int KTLayerExposure::id()
 {
 	return m_id;
 }
+
+int  KTLayerExposure::currentFrame()
+{
+	return m_currentFrame;
+}
+

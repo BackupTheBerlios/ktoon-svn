@@ -180,6 +180,14 @@ void KTExposureSheet::actionButton( QAbstractButton *b)
 // 	m_currentTable->loadLayers(layers);
 // }
 
+void KTExposureSheet::setCurrentCell( int idLayer, int idFrame)
+{
+	if(m_currentTable)
+	{
+		m_currentTable->setCurrentCell( idLayer, idFrame);
+	}
+}
+
 void KTExposureSheet::updateLayersAndKeyframes()
 {
 	m_currentTable->updateLayers();

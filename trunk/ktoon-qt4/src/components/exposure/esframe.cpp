@@ -43,8 +43,11 @@ ESFrame::ESFrame( /*const QString &initial_text,*/int id, QWidget *parent )
 	description->hide();
 	connect( description, SIGNAL( lostFocus() ), SLOT( slotSetDescription() ) );
 	connect( description, SIGNAL( returnPressed() ), SLOT( slotSetDescription() ) );
-
+#if QT_VERSION >= 0x040100
+	setAutoFillBackground(true);
+#endif
 	setMinimumSize(sizeHint());
+	
 }
 
 //--------------- DESTRUCTOR --------------------

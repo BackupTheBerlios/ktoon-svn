@@ -60,11 +60,12 @@ class KTTableExposure : public QScrollArea
 		void insertFrames();
 // 		void loadLayers(QList<Layer*> layers);
 		void updateLayers();
-		QStringList textHeaders();
 		
 		int currentLayer();
 		
 		KTLayerExposure *currentLayerExposure();
+		
+		void setCurrentCell(int idLayer, int idFrame);
 		
 	private:
 		void createMenuRight();

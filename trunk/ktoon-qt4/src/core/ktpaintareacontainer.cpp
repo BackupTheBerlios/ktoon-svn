@@ -54,7 +54,9 @@ KTPaintAreaContainer::KTPaintAreaContainer(const QSize& size, QWidget *parent) :
 	m_VRuler->setMinimumHeight(m_drawArea->height());
 	
 	m_scroller->setWidget(m_drawArea);
-	
+	m_scroller->setFocus();
+
+// 	m_scroller->setWidgetResizable ( true );
 	QScrollBar *hBar = m_scroller->horizontalScrollBar();
 	hBar->setSingleStep(10);
 	connect(hBar, SIGNAL(sliderMoved(int)), m_HRuler, SLOT(slide(int)));
@@ -111,5 +113,6 @@ void KTPaintAreaContainer::resizeEvent ( QResizeEvent * event )
 	m_HRuler->setZeroAt(m_drawAreaDelta.x());
 	m_VRuler->setZeroAt(m_drawAreaDelta.y());
 	m_drawArea->setZeroAt(m_drawAreaDelta);
+	resize(m_drawArea->size());
 }
 

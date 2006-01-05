@@ -21,7 +21,7 @@
 #include "agenericbrush.h"
 #include "brush.xpm"
 #include "ktdebug.h"
-
+#include <QPointF>
 #include <QKeySequence>
 
 QStringList AGenericBrush::keys() const
@@ -77,7 +77,17 @@ QRect AGenericBrush::move(const QString &brush, QPainter &painter,const QPainter
 		{
 			m_points << oldPos << newPos;
 			path.moveTo(oldPos);
-			path.cubicTo(oldPos, m_firstPoint, newPos);
+// 			for(int i = 0; i < poly.count() ; i+=2)
+// 			{
+				QPointF medio = ( oldPos + newPos)/2;
+				QPointF cuarto = ( oldPos + medio)/2;
+				path.cubicTo(oldPos, cuarto, medio);
+				path.cubicTo(medio,  (cuarto + newPos)/2 , newPos);
+// 			}
+// 			path.moveTo(oldPos);
+			
+// 			path.cubicTo(oldPos, m_firstPoint, newPos);
+// 			ktDebug() << newPos;
 		}
 		m_firstPoint = oldPos;
 	}

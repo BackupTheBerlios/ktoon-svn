@@ -59,6 +59,7 @@ class KTLayerExposure : public QFrame
 		int  numUsedFrame();
 		void insertFrames();
 		void selectedFirstFrame();
+		int currentFrame();
 		
 	private:
 		bool m_selected;

@@ -114,7 +114,6 @@ void KTTableExposure::clickedCell(int row, int col,int button,int gx,int gy)
 	else
 	{
 		emit(layerSelected(col));
-		//TODO: cambiar el currentFrame a bloqueado
 // 		KTStatus -> setCurrentKeyFrame( NULL );
 	}
 	
@@ -216,7 +215,10 @@ void KTTableExposure::removeCurrentLayer() // FIXME SIGSEGV
 	if ( m_layers.count() > 0 && m_currentLayer >= 0 )
 	{
 		KTLayerExposure * ly = m_layers.takeAt(m_currentLayer);
-		if ( ly ) { delete ly; }
+		if ( ly ) 
+		{
+			delete ly; 
+		}
 		for( int i = m_currentLayer; i < m_layers.count(); i++)
 		{
 			KTLayerExposure *layer = m_layers.at(i);
@@ -224,7 +226,25 @@ void KTTableExposure::removeCurrentLayer() // FIXME SIGSEGV
 		}
 		m_numLayer--;
 		m_port->adjustSize();
+		
+		emit cellSelected( m_currentLayer-1, m_layers[m_currentLayer-1]->currentFrame());
+// 		m_currentLayer--;
 	}
+}
+
+
+void KTTableExposure::setCurrentCell(int idLayer, int idFrame)
+{
+	
+	if( idLayer < 0 || idFrame < 0  || (idLayer == m_currentLayer && m_layers[m_currentLayer]->currentFrame() == idFrame ))
+	{
+		return;
+	}
+	m_currentLayer = idLayer;
+	m_currentFrame = idFrame;
+	m_layers[m_currentLayer]->setSelected(true);
+	
+	
 }
 
 void KTTableExposure::removeLayer(int idLayer)
@@ -240,15 +260,6 @@ void KTTableExposure::removeLayer(int idLayer)
 	m_numLayer--;
 }
 
-QStringList KTTableExposure::textHeaders()
-{
-	QStringList list;
-	for( int i = 0; i < m_layers.count(); i++)
-	{
-		list << m_layers.at(i)->textHeader();
-	}
-	return list;
-}
 
 
 // void KTTableExposure::loadLayers(QList<Layer*> layers)

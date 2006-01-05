@@ -114,9 +114,11 @@ void KTMainWindow::selectFrame(int layer, int frame)
 	{
 		m_projectManager->currentScene()->setCurrentLayer(layer);
 		m_projectManager->setCurrentFrame( frame );
-		
 		doc->drawArea()->setLayer( layer );
 		doc->drawArea()->setKeyFrame( frame );
+		
+		m_exposureSheet->setCurrentCell(layer, frame);
+		
 	}
 }
 
