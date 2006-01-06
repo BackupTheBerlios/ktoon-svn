@@ -25,7 +25,7 @@
 
 #include "ktprojectparser.h"
 
-KTProjectManager::KTProjectManager(QObject *parent) : KTSerializableObject(parent), m_currentDocument(0), m_copyFrame(0)
+KTProjectManager::KTProjectManager(QObject *parent) : KTSerializableObject(parent), m_currentDocument(0), m_copyFrame(0), m_open(true)
 {
 	KTINIT;
 
@@ -72,8 +72,17 @@ void KTProjectManager::save()
 	
 	QDir repository(KTOON_REPOSITORY);
 
-	if ( ! repository.exists() ) if ( ! repository.mkdir(m_name) ) return;
-	
+	if ( ! repository.exists() ) 
+	{ 
+		return;
+	}
+	else
+	{
+		if ( !repository.exists(m_name) )
+		{
+			repository.mkdir(m_name);
+		}
+	}
 	QDomDocument doc;
 	QDomElement root = doc.createElement("KToon");
 	doc.appendChild(root);
@@ -93,7 +102,6 @@ void KTProjectManager::save()
 void KTProjectManager::load(const QString &path)
 {
 	ktDebug() << "Loading: " << path;
-	
 	KTProjectParser parser;
 	QXmlSimpleReader reader;
 	reader.setContentHandler(&parser);
@@ -144,11 +152,13 @@ void KTProjectManager::load(const QString &path)
 				}
 			}
 		}
+		m_open = true;
 	}
 	else
 	{
 		ktError() << "Error while parse file: " << source.fileName();
 	}
+	
 }
 
 Documents KTProjectManager::documents() const
@@ -424,6 +434,7 @@ void KTProjectManager::close()
 	}
 	
 	m_currentDocument = 0;
+	m_open = false;
 }
 
 void KTProjectManager::setProjectName(const QString &name)
@@ -441,3 +452,7 @@ QSize KTProjectManager::documentSize() const
 	return m_size;
 }
 
+bool  KTProjectManager::open()
+{
+	return m_open;
+}

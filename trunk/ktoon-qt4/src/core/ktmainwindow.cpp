@@ -127,7 +127,6 @@ KTMainWindow::~KTMainWindow()
 
 void KTMainWindow::createNewProject(const QString &name, const QSize &size)
 {
-	//TODO: crear estructura de archivos
 
 	KTDocument *document = m_projectManager->createDocument(name);
 	m_projectManager->setCurrentDocument(0);
@@ -185,7 +184,10 @@ void KTMainWindow::newProject()
 void KTMainWindow::closeProject()
 {
 	ktDebug() << "Closing.." << endl;
-	
+	if(!m_projectManager->open())
+	{
+		return;
+	}
 	QMessageBox mb(QApplication::applicationName (), "Do you want to save?",
 		       QMessageBox::Information,
 		       QMessageBox::Yes | QMessageBox::Default,
@@ -242,7 +244,7 @@ void KTMainWindow::openProject()
 		
 		QString path = KTOON_REPOSITORY+"/"+fileName.left(fileName.length()-4)+"/"+fileName;
 		
-		closeProject(); // FIXME: solo si esta abierto
+		closeProject();
 		m_projectManager->load( path );
 	}
 }

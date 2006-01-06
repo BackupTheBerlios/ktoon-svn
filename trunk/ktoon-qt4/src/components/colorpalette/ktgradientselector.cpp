@@ -83,7 +83,7 @@ QColor KTGradientArrow::color() const
 }
 
 
-KTGradientSelector::KTGradientSelector( QWidget *parent ) : QAbstractSlider( parent ), m_currentArrowIndex(0), m_gradient(0,0,0,0), m_update(true), m_maxRow(1)
+KTGradientSelector::KTGradientSelector( QWidget *parent ) : QAbstractSlider( parent ), m_currentArrowIndex(0), m_gradient(0,0,0,0), m_update(true), m_maxRow(10)
 {
 	_orientation = Qt::Horizontal;
 	_indent = true;
@@ -215,9 +215,6 @@ void KTGradientSelector::mousePressEvent( QMouseEvent *e )
 		
 		addArrow( calcArrowPos(val), m_arrows[m_currentArrowIndex]->color());
 	}
-	
-	
-	
 }
 
 void KTGradientSelector::mouseMoveEvent( QMouseEvent *e )
@@ -327,8 +324,6 @@ void  KTGradientSelector::createGradient()
 		m_gradient.setColorAt( valueToGradient(m_arrows[i]->position()), m_arrows[i]->color());
 	}
 }
-
-
 
 double KTGradientSelector::valueToGradient(int value) const
 {

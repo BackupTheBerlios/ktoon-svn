@@ -185,7 +185,6 @@ class KTMainWindow : public DMainWindow
 		KTViewCamera *m_viewCamera;
 		
 		KTOsd *m_osd;
-		
 		// Components
 	private:
 		KTExposureSheet *m_exposureSheet;

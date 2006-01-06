@@ -39,11 +39,12 @@ KTGradientManager::KTGradientManager(QWidget *parent)
 	subLayout->addWidget(m_viewer);
 
 	m_selector = new KTGradientSelector(this);
+// 	m_selector->setMaxRow( 10);
 	layout->addWidget(m_selector);
 	connect( m_selector, SIGNAL(gradientChanged(  const QGradientStops& )),this, SLOT(changeGradient( const QGradientStops& )));
 	m_type = new KTRadioButtonGroup(tr("Gradient type"), Qt::Vertical, this);
 	QStringList list;
-	list << tr( "None" ) << tr( "Linear" ) << tr( "Radial" ) << tr("Conical");
+	list /*<< tr( "None" )*/ << tr( "Linear" ) << tr( "Radial" ) << tr("Conical");
 	m_type->addItems ( list );
 	connect(  m_type, SIGNAL(  clicked ( int )),this, SLOT(changeType(int)));
 	subLayout->addWidget( m_type/*,0, Qt::AlignTop*/);
@@ -124,22 +125,7 @@ int KTGradientManager::gradientType()
 
 void KTGradientManager::changeType(int type)
 {
-	switch(type)
-	{
-		case 0:
-		{
-			m_selector->setMaxRow( 1);
-			break;
-		}
-		case 1:
-		case 2:
-		case 3:
-		{
-			m_selector->setMaxRow( 10);
-			m_viewer->changeType( type-1);
-			break;
-		}
-	}
+	m_viewer->changeType( type);
 	emitGradientChanged();
 	
 }

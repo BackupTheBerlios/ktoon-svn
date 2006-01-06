@@ -15,7 +15,8 @@
 // static int pHeight = 200;
 static int pWidth = 100;
 static int pHeight = 80;
-
+// static int pWidth = 150;
+// static int pHeight = 130;
 QPoint KTColorPicker::colPt()
 { 
 	return QPoint((360-m_hue)*(pWidth-1)/360, (255-m_sat)*(pHeight-1)/255); 
@@ -57,6 +58,7 @@ KTColorPicker::KTColorPicker(QWidget* parent) : QFrame(parent)
 	m_pix = new QPixmap(QPixmap::fromImage(img));
 	setAttribute(Qt::WA_NoSystemBackground);
 	setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed) );
+
 }
 
 KTColorPicker::~KTColorPicker()

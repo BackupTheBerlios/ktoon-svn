@@ -41,6 +41,7 @@ class KTProjectManager : public KTSerializableObject
 		void setProjectName(const QString &name);
 		void setDocumentSize(const QSize& size );
 		QSize documentSize() const;
+		bool open();
 		
 	public slots:
 		void save();
@@ -105,13 +106,13 @@ class KTProjectManager : public KTSerializableObject
 		void frameRemoved();
 		void frameLocked();
 		
-		
 	private:
 		Documents m_documents;
 		KTDocument *m_currentDocument;
 		QSize m_size;
 		const KTKeyFrame *m_copyFrame;
 		mutable QString m_name;
+		bool m_open;
 };
 
 #endif
