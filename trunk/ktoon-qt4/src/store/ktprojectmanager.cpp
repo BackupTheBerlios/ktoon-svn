@@ -44,6 +44,9 @@ QDomElement KTProjectManager::createXML( QDomDocument &doc )
 	QDomElement project = doc.createElement("Project");
 	//TODO: añadir nombre al proyecto
 	project.setAttribute("name", m_name);
+	project.setAttribute("width", m_size.width());
+	project.setAttribute("height", m_size.height());
+	
 	Documents::ConstIterator documentIt = m_documents.begin();
 	
 	int documentCounter = 0;
@@ -69,7 +72,7 @@ void KTProjectManager::save()
 	
 	QDir repository(KTOON_REPOSITORY);
 
-	if ( ! repository.mkdir(m_name) ) return;
+	if ( ! repository.exists() ) if ( ! repository.mkdir(m_name) ) return;
 	
 	QDomDocument doc;
 	QDomElement root = doc.createElement("KToon");
@@ -102,6 +105,7 @@ void KTProjectManager::load(const QString &path)
 	if ( reader.parse(&xmlsource) )
 	{
 		setProjectName( parser.partName() );
+		setDocumentSize( parser.documentSize());
 		
 		QFileInfo info(source);
 		foreach(QString location, parser.locations())
@@ -114,6 +118,7 @@ void KTProjectManager::load(const QString &path)
 			Scenes scenes = doc->scenes();
 			foreach(KTScene *scene, scenes )
 			{
+				emit sceneCreated( scene->sceneName(), true);
 				connect(scene, SIGNAL(layerCreated( const QString&, bool)), this, SIGNAL(layerCreated( const QString &, bool)));
 				connect(scene, SIGNAL(layerRemoved( int)), this, SIGNAL(layerRemoved(int))) ;
 				

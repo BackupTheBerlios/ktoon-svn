@@ -22,6 +22,7 @@
 #define KTPROJECTPARSER_H
 
 #include <QXmlDefaultHandler>
+#include <QSize>
 
 // #include "ktlayer.h"
 // #include "ktkeyframe.h"
@@ -47,6 +48,10 @@ class KTProjectParser : public QObject, public QXmlDefaultHandler
 		QString partName() const;
 		QStringList locations() const;
 		
+		QSize documentSize() const;
+		
+		
+		
 	signals:
 		void createLayer();
 		void createFrame();
@@ -59,6 +64,8 @@ class KTProjectParser : public QObject, public QXmlDefaultHandler
 		QStringList m_locations;
 		
 		QStringList m_polygons;
+		
+		QSize m_documentSize;
 		
 // 		Layers m_layers;
 // 		Frames m_frames;

@@ -149,6 +149,9 @@ void KTTableExposure::insertLayer(int rows, const QString &text)
 	m_layout->addWidget( newLayer, 0, Qt::AlignLeft);
 	
 	m_numLayer++;
+	newLayer->setSelected(true);
+// 	m_currentLayer = m_numLayer;
+	
 	newLayer->show();
 	m_port->adjustSize();
 }

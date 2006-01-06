@@ -195,11 +195,12 @@ void KTExposureSheet::updateLayersAndKeyframes()
 
 void KTExposureSheet::insertLayer(const QString& name)
 {
-	KT_FUNCINFO;
-	
+// 	KT_FUNCINFO;
+	ktDebug() << "KTExposureSheet::insertLayer(const QString& " << name  << ")";
 	if ( m_currentTable )
 	{
 		m_currentTable->insertLayer(100, name);
+		
 	}
 	else
 	{
@@ -249,7 +250,8 @@ void KTExposureSheet::lockCurrentFrame()
 void KTExposureSheet::setScene(int index)
 {
 	KT_FUNCINFO;
-	if(index != m_scenes->indexOf(m_currentTable) && m_tables.count() <= index)
+// 	ktDebug() << "KTExposureSheet::setScene(int "<< index << ")";
+	if(index != m_scenes->indexOf(m_currentTable) && m_tables.count() >= index)
 	{
 		m_currentTable = m_tables[index];
 		m_scenes->setCurrentWidget(m_tables[index]);
@@ -258,7 +260,8 @@ void KTExposureSheet::setScene(int index)
 
 void KTExposureSheet::emitRequestChangeScene(int index)
 {
-// 	ktDebug() << "KTExposureSheet::emitRequestChangeScene(int" <<  index << ")";
+// 	ktDebug() << "KTExposureSheet::emitRequestChangeScene(int" <<  index << ")" << m_scenes->indexOf(m_currentTable);
+	
 	if(index != m_scenes->indexOf(m_currentTable))
 	{
 		emit requestChangeScene(index);

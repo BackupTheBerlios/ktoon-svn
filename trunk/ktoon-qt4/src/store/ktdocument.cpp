@@ -65,7 +65,7 @@ void KTDocument::save(const QString &docPath)
 	QDomDocument document;
 	
 	QDomElement root = createXML(document);
-	root.setAttribute("name", "documentZ");
+	root.setAttribute("name", m_name);
 // 	Scenes::ConstIterator sceneIt = m_scenes.begin();
 	
 	document.appendChild(root);
@@ -113,7 +113,10 @@ void KTDocument::load(const QString &path)
 		{
 			QString scenePath = info.absolutePath ()+"/"+location+"/scene.kts";
 			
-			KTScene *scene = createScene(true);
+			KTScene *scene = new KTScene(this);
+			m_currentScene = scene;
+			
+			m_scenes << scene;
 			scene->load(scenePath);
 		}
 	}

@@ -38,11 +38,16 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 	{
 		m_root = qname;
 	}
-	else if ( m_root == "KToon" )
+	
+	if ( m_root == "KToon" )
 	{
 		if ( qname == "Project" )
 		{
 			m_partName = atts.value("name");
+			int width = atts.value( "width" ).toInt();
+			int height = atts.value ("height").toInt();
+			
+			m_documentSize = QSize(width, height);
 		}
 		else if ( qname == "Document")
 		{
@@ -62,7 +67,11 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 	}
 	else if ( m_root == "Scene")
 	{
-		if ( qname == "Layer" )
+		if ( qname == "Scene" )
+		{
+			m_partName = atts.value("name");
+		}
+		else if ( qname == "Layer" )
 		{
 			emit createLayer();
 		}
@@ -131,4 +140,7 @@ QStringList KTProjectParser::locations() const
 	return m_locations;
 }
 
-
+QSize KTProjectParser::documentSize() const
+{
+	return m_documentSize;
+}

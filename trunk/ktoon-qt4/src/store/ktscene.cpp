@@ -59,7 +59,7 @@ void KTScene::save(const QString &scenePath)
 	QDomDocument document;
 	
 	QDomElement root = createXML(document);
-	root.setAttribute("name", "sceneW");
+	root.setAttribute("name", m_name );
 	document.appendChild(root);
 	
 	Layers::ConstIterator iterator = m_layers.begin();
@@ -90,6 +90,8 @@ void KTScene::load(const QString &path)
 	KTProjectParser parser;
 	
 	connect(&parser, SIGNAL(createLayer()), this, SLOT(loadLayer()));
+	connect(&parser, SIGNAL(createFrame()), this, SLOT(loadFrame()));
+	connect(&parser, SIGNAL(createComponent( const QStringList& ) ), this, SLOT( loadComponent(const QStringList &) ));
 	
 	QXmlSimpleReader reader;
 	reader.setContentHandler(&parser);
@@ -111,6 +113,7 @@ void KTScene::load(const QString &path)
 
 void KTScene::setSceneName(const QString &name)
 {
+	ktDebug() << "Setting scene name: " << name;
 	m_name = name;
 }
 
@@ -204,36 +207,19 @@ void KTScene::removeLayer( int index)
 
 void KTScene::loadLayer()
 {
-	KT_FUNCINFO;
 	KTLayer *layer = createLayer(true);
-	
-	KTProjectParser *parser = qobject_cast<KTProjectParser *>(sender());
-	
-	if ( parser )
-	{
-		connect(parser, SIGNAL(createFrame()), this, SLOT(loadFrame()));
-	}
 }
 
 void KTScene::loadFrame()
 {
-	KT_FUNCINFO;
 	if ( m_currentLayer )
 	{
 		KTKeyFrame *frame = m_currentLayer->createFrame(true);
-		
-		KTProjectParser *parser = qobject_cast<KTProjectParser *>(sender());
-		
-		if ( parser )
-		{
-			connect(parser, SIGNAL(createComponent( const QStringList& ) ), this, SLOT( loadComponent(const QStringList &) ));
-		}
 	}
 }
 
 void KTScene::loadComponent(const QStringList &polygons)
 {
-	KT_FUNCINFO;
 	if ( m_currentLayer )
 	{
 		AGraphicComponent *component = new AGraphicComponent();
