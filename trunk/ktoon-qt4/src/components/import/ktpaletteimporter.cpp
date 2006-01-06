@@ -24,18 +24,14 @@
 
 #include "ktdebug.h"
 
-KTPaletteImporter::KTPaletteImporter() : QDomDocument()
+KTPaletteImporter::KTPaletteImporter() : m_document(0)
 {
-	QDomProcessingInstruction header = this->createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\"");
-	this->appendChild(header);
-		
-	QDomElement root = createElement( "Palette" );
-	appendChild( root );
 }
 
 
 KTPaletteImporter::~KTPaletteImporter()
 {
+	if ( m_document) delete m_document;
 }
 
 void KTPaletteImporter::import(const QString &file, PaletteType pt)
@@ -70,8 +66,8 @@ void KTPaletteImporter::importGimpPalette(const QString &file)
 		
 		m_paletteName = string.section("Name:", 1).trimmed();
 		
-		documentElement().setAttribute("name", m_paletteName);
-		documentElement().setAttribute("editable", "false");
+		if ( m_document ) delete m_document;
+		m_document = new KTPaletteDocument(m_paletteName, false);
 		
 		stream >> string;
 		
@@ -103,11 +99,7 @@ void KTPaletteImporter::importGimpPalette(const QString &file)
 			
 				if ( c.isValid() )
 				{
-					QDomElement element = createElement("Color");
-					element.setAttribute("colorName", c.name());
-					element.setAttribute("alpha", "255");
-				
-					documentElement().appendChild(element);
+					m_document->addColor(c);
 				}
 				else
 				{
@@ -129,7 +121,7 @@ void KTPaletteImporter::saveFile(const QString &path)
 	if (file.open(QIODevice::WriteOnly | QIODevice::Text))
 	{
 		QTextStream ts(&file);
-		ts << toString();
+		ts << m_document->toString();
 		
 		m_filePath = path+"/"+m_paletteName.remove(' ')+".ktpl";
 	}

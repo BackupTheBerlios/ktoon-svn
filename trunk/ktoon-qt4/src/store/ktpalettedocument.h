@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,37 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTPALETTEIMPORTER_H
-#define KTPALETTEIMPORTER_H
+#ifndef KTPALETTEDOCUMENT_H
+#define KTPALETTEDOCUMENT_H
 
-#include "ktpalettedocument.h"
+#include <QDomDocument>
+#include <QBrush>
+#include <QList>
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado
 */
 
-class KTPaletteImporter
+class KTPaletteDocument : public QDomDocument
 {
 	public:
-		enum PaletteType
-		{
-			Gimp = 0
-		};
-		
-		KTPaletteImporter();
-		~KTPaletteImporter();
-		
-		void import(const QString &file, PaletteType pt);
-		void saveFile(const QString &path);
-		QString filePath() const;
-		
-	private:
-		void importGimpPalette(const QString &file);
-		
-	private:
-		KTPaletteDocument *m_document;
-		QString m_paletteName;
-		QString m_filePath;
+		KTPaletteDocument(const QString &name, bool isEditable);
+		~KTPaletteDocument();
+		void addGradient(const QGradient &gradient);
+		void addColor(const QColor &color);
+		void setElements(const QList<QBrush > &colors);
 };
 
 #endif

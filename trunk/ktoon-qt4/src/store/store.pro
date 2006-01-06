@@ -16,7 +16,8 @@ HEADERS += ktkeyframe.h \
            ktdocument.h \
            ktserializableobject.h \
            ktbrush.h \
-           ktprojectparser.h 
+           ktprojectparser.h \
+           ktpalettedocument.h 
 SOURCES += ktkeyframe.cpp \
            agraphiccomponent.cpp \
            ktlayer.cpp \
@@ -25,7 +26,8 @@ SOURCES += ktkeyframe.cpp \
            ktdocument.cpp \
            ktserializableobject.cpp \
            ktbrush.cpp \
-           ktprojectparser.cpp 
+           ktprojectparser.cpp \
+           ktpalettedocument.cpp 
 QT += xml
 INCLUDEPATH += ../../src/core \
 ../../src/dialogs \

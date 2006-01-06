@@ -75,7 +75,7 @@ void KTColorPalette::setupChooserTypeColor()
 	
 	m_displayValueColor = new KTValueColor(colorMixer);
 	
-	layout->addWidget(m_displayValueColor);
+	
 	
 	QBoxLayout *layoutContainer = new QBoxLayout(QBoxLayout::LeftToRight);
 	
@@ -96,6 +96,7 @@ void KTColorPalette::setupChooserTypeColor()
 	layoutContainer->setSpacing(3);
 	
 	layout->addLayout(layoutContainer);
+	layout->addWidget(m_displayValueColor);
 	this->layout()->setAlignment( colorMixer, Qt::AlignTop);
 	connect(m_displayValueColor, SIGNAL(colorChanged(const QColor&)), this, SLOT(setColor(const QColor &)));
 	
