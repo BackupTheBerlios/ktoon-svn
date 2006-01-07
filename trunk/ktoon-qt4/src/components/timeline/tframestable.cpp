@@ -92,7 +92,9 @@ class TFramesTableModel : public QAbstractTableModel
 
 TFramesTableModel::TFramesTableModel(int rows, int columns, TFramesTable *parent)
 	: QAbstractTableModel(parent), m_table(rows * columns), m_vertical(rows), m_horizontal(columns)
-{}
+{
+	
+}
 
 TFramesTableModel::~TFramesTableModel()
 {
@@ -490,7 +492,15 @@ void TFramesTableItemDelegate::paint ( QPainter * painter, const QStyleOptionVie
 	else
 	{
 		painter->save();
-		painter->fillRect(option.rect, Qt::white );
+		
+		if ( index.column() % 5 == 0 )
+		{
+			painter->fillRect(option.rect, Qt::lightGray );
+		}
+		else
+		{
+			painter->fillRect(option.rect, Qt::white );
+		}
 		painter->restore();
 	}
 	
@@ -506,13 +516,24 @@ void TFramesTableItemDelegate::paint ( QPainter * painter, const QStyleOptionVie
 	}
 	
 	// Draw attributes
+	
+	TFramesTableItem *item = model->item(index);
+	
 	int offset = option.rect.width() - 2 ;
+	
+
 // 	painter->drawEllipse( option.rect.left(), option.rect.bottom() - offset, offset, offset );
 	
-// 	painter->save();
-// 	painter->setBrush(Qt::black);
-// 	painter->drawEllipse( option.rect.left(), option.rect.bottom() - offset, offset, offset);
-// 	painter->restore();
+	if ( item )
+	{
+		if(item->isUsed() )
+		{
+			painter->save();
+			painter->setBrush(Qt::black);
+			painter->drawEllipse( option.rect.left(), option.rect.bottom() - offset, offset, offset);
+			painter->restore();
+		}
+	}
 	
 // 	painter->drawRect( option.rect.left(), option.rect.bottom() - offset, offset, offset );
 	
@@ -546,7 +567,7 @@ TFramesTableItem::TFramesTableItem()
 		|Qt::ItemIsUserCheckable
 		|Qt::ItemIsEnabled
 		|Qt::ItemIsDragEnabled
-		|Qt::ItemIsDropEnabled)
+		|Qt::ItemIsDropEnabled), m_isUsed(false), m_isLocked(false)
 {
 }
 
@@ -569,16 +590,34 @@ TFramesTableItem *TFramesTableItem::clone() const
 
 void TFramesTableItem::setData(int r, const QVariant &value)
 {
-// 	m_values.insert(r, value);
-	
-// 	if (m_model)
-// 		m_model->itemChanged(this);
+	switch(r)
+	{
+		case IsUsed:
+		{
+			m_attributes.insert(IsUsed, value.toBool());
+		}
+		break;
+		case IsLocked:
+		{
+			m_attributes.insert(IsLocked, value.toBool());
+		}
+		break;
+	}
 }
 
 QVariant TFramesTableItem::data(int role) const
 {
-// 	return m_values[role];
 	return QVariant();
+}
+
+bool TFramesTableItem::isUsed()
+{
+	return m_attributes[IsUsed];
+}
+
+bool TFramesTableItem::isLocked()
+{
+	return m_attributes[IsLocked];
 }
 
 //// TFramesTable
@@ -915,4 +954,8 @@ void TFramesTable::selectFrame(int index)
 	setCurrentItem( item( rowCount(), index ) );
 }
 
+void TFramesTable::setAttribute(int row, int col, TFramesTableItem::Attributes att, bool value)
+{
+	m_model->setData( m_model->index(row, col), value, att);
+}
 

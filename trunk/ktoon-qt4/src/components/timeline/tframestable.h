@@ -22,6 +22,7 @@
 #define TLAYERTABLE_H
 
 #include <QTableView>
+#include <QHash>
 
 class TFramesTable;
 class TFramesTableItem;
@@ -36,7 +37,8 @@ class TFramesTableItem
 	public:
 		enum Attributes
 		{
-			IsUsed = 0
+			IsUsed = 0,
+			IsLocked
 		};
 		
 		TFramesTableItem();
@@ -52,11 +54,19 @@ class TFramesTableItem
 		virtual QVariant data(int role) const;
 
 		virtual void setData(int role, const QVariant &value);
+
+		bool isUsed();
+		bool isLocked();
 	
 	private:
+		QHash<Attributes, bool> m_attributes;
+		
 		TFramesTable *m_view;
 		TFramesTableModel *m_model;
 		Qt::ItemFlags m_itemFlags;
+		
+		bool m_isUsed, m_isLocked;
+		
 };
 
 /**
@@ -74,6 +84,8 @@ class TFramesTable : public QTableView
 		void removeFrameSequence();
 		void setCurrentFrame(TFramesTableItem *);
 		void selectFrame(int index);
+		
+		void setAttribute(int row, int col, TFramesTableItem::Attributes att, bool value);
 		
 	private:
 		void setup();

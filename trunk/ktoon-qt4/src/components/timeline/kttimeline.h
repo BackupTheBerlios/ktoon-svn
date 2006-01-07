@@ -27,6 +27,8 @@
 #include "ktlayermanager.h"
 #include "ktframesequencecontainer.h"
 
+#include <QStackedWidget>
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
@@ -37,7 +39,11 @@ class KTTimeLine : public KTModuleWidgetBase
 	public:
 		KTTimeLine(QWidget *parent = 0);
 		~KTTimeLine();
-				
+		void setScene(int index);
+		KTLayerManager *currentLayerManager();
+		KTFrameSequenceContainer *currentFrameContainer();
+		void addFrame(int layerId, const QString &name, bool addToEnd );
+		
 	private:
 		void setupPropertiesBar();
 		
@@ -46,11 +52,14 @@ class KTTimeLine : public KTModuleWidgetBase
 		
 	signals:
 		void fpsChanged(int);
+// 		void requestChangeScene( int );
 		
 	public slots:
 		void execAction(int action);
 		void createLayer(const QString &name, bool toEnd = true);
 		void removeCurrentLayer();
+		
+		void addScene(const QString &name);
 		
 	signals:
 		void requestInsertLayer();
@@ -64,13 +73,8 @@ class KTTimeLine : public KTModuleWidgetBase
 		void selectCurrentLayer(int index);
 		
 	private:
-		KTVHBox *m_container;
-		QSplitter *m_splitter;
-		KTLayerManager *m_layerManager;
-		KTFrameSequenceContainer *m_sequenceManager;
-		
+		QStackedWidget *m_container;
 		KTVHBox *m_propertiesBar;
-		
 		KTELabel *m_editLayer;
 };
 

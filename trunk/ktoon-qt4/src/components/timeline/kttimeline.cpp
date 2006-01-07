@@ -28,25 +28,26 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine
 {
 	KTINIT;
 
-	setCaption(tr("The Time line"));
+	setCaption(tr("The time line"));
 	
-	m_container = new KTVHBox(this, false);
+	m_container = new QStackedWidget(this);
+// 	connect(m_container, SIGNAL(currentChanged (int)), this, SIGNAL(requestChangeScene( int )));
 	
-	addChild(m_container/*, Qt::AlignTop*/);
+	addChild(m_container);
 	
-	m_splitter = new QSplitter( m_container );
+	setupPropertiesBar();
+}
+
+void KTTimeLine::addScene(const QString &name)
+{
+	QSplitter *m_splitter = new QSplitter( m_container );
 	
 	m_splitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	
-// 	m_splitter->setMinimumHeight(100);
-// 	m_container->addWidget(m_splitter);
-	
-	m_layerManager = new KTLayerManager( m_splitter );
+	KTLayerManager *m_layerManager = new KTLayerManager( m_splitter );
 	m_splitter->addWidget(m_layerManager);
-// 	m_layerManager->resize( 590, m_layerManager->height() );
-	
 
-	m_sequenceManager = new KTFrameSequenceContainer(m_splitter);
+	KTFrameSequenceContainer *m_sequenceManager = new KTFrameSequenceContainer(m_splitter);
 	m_splitter->addWidget(m_sequenceManager);
 	
 	connect(m_layerManager, SIGNAL(actionSelected(int)), this, SLOT(execAction(int)));
@@ -59,13 +60,15 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine
 	connect(m_sequenceManager->manager(), SIGNAL( itemSelected(int )), this, SLOT(selectCurrentLayer(int)));
 	connect(m_layerManager->layerSequence(), SIGNAL( itemSelected(int )), this, SLOT(selectCurrentLayer(int)));
 
-// 	show();
-
-// 	m_container->setMinimumHeight( m_container->sizeHint().height() );
-
 	m_splitter->setSizes( QList<int>() << 190 << 700 );
 	
-	setupPropertiesBar();
+	m_container->addWidget(m_splitter);
+	m_container->setCurrentWidget(m_splitter);
+}
+
+void KTTimeLine::setScene(int index)
+{
+	m_container->setCurrentIndex(index);
 }
 
 void KTTimeLine::setupPropertiesBar()
@@ -150,23 +153,46 @@ void KTTimeLine::execAction(int action)
 	}
 }
 
+KTLayerManager *KTTimeLine::currentLayerManager()
+{
+	QSplitter *splitter = qobject_cast<QSplitter *>(m_container->currentWidget());
+	if ( splitter )
+	{
+		return qobject_cast<KTLayerManager *>(splitter->widget(0));
+	}
+	
+	return 0;
+}
+
+KTFrameSequenceContainer *KTTimeLine::currentFrameContainer()
+{
+	QSplitter *splitter = qobject_cast<QSplitter *>(m_container->currentWidget());
+	
+	if ( splitter )
+	{
+		return qobject_cast<KTFrameSequenceContainer *>(splitter->widget(1));
+	}
+	
+	return 0;
+}
+
 void KTTimeLine::createLayer(const QString &name, bool toEnd)
 {
-	m_layerManager->layerSequence()->createNewLayer(name, toEnd);
-	m_sequenceManager->manager()->insertFrameSequence();
+	currentLayerManager()->layerSequence()->createNewLayer(name, toEnd);
+	currentFrameContainer()->manager()->insertFrameSequence();
 }
 
 void KTTimeLine::removeCurrentLayer()
 {
-	m_layerManager->layerSequence()->removeLayer();
-	m_sequenceManager->manager()->removeFrameSequence();
+	currentLayerManager()->layerSequence()->removeLayer();
+	currentFrameContainer()->manager()->removeFrameSequence();
 }
 
 void KTTimeLine::selectCurrentLayer(int index)
 {
-	m_sequenceManager->manager()->selectFrame(index);
+	currentFrameContainer()->manager()->selectFrame(index);
 	
-	m_layerManager->layerSequence()->selectItem(index);
+	currentLayerManager()->layerSequence()->selectItem(index);
 	
 	emit layerSelected( index);
 	
@@ -189,3 +215,17 @@ void KTTimeLine::emitNewFPS(const QString &value)
 		ktError() << "Incorrect FPS value";
 	}
 }
+
+void KTTimeLine::addFrame(int layerId, const QString &name, bool addToEnd )
+{
+	ktDebug() << layerId;
+	if ( addToEnd ) // TODO: Terminar
+	{
+		currentFrameContainer()->manager()->setAttribute( layerId, 5, TFramesTableItem::IsUsed, true);
+	}
+	else 
+	{
+		currentFrameContainer()->manager()->setAttribute( layerId, 5, TFramesTableItem::IsUsed, true);
+	}
+}
+

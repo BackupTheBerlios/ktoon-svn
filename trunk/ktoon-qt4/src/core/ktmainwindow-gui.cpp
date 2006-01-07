@@ -148,10 +148,7 @@ void KTMainWindow::createGUI()
 	
 	ui4project( m_exposureSheet );
 	connect(m_exposureSheet, SIGNAL(requestChangeScene( int ) ), this, SLOT(changeScene(int)));
-	
-// 	connect(m_scenes, SIGNAL(sceneInserted( const QString &, int )), m_exposureSheet, SLOT(addScene( const QString &, int )));
-// 	connect(m_scenes, SIGNAL(sceneRenamed( const QString &, int )), m_exposureSheet, SLOT(renameScene(const QString &, int)));
-	
+
 	connectToDisplays(m_exposureSheet);
 	
 	///////////////////////
@@ -166,6 +163,7 @@ void KTMainWindow::createGUI()
 	m_timeLine->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/time_line.png"));
 	toolWindow(DDockWindow::Bottom)->addWidget(tr("Time Line"),m_timeLine);
 	connect(m_timeLine, SIGNAL(requestChangeFPS(int)), this, SLOT(changeFPS( int )));
+// 	connect(m_timeLine, SIGNAL(requestChangeScene( int ) ), this, SLOT(changeScene(int)));
 	ui4project( m_timeLine );
 	
 	connectToDisplays(m_timeLine);
