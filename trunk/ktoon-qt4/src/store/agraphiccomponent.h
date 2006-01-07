@@ -60,7 +60,10 @@ class AGraphicComponent : public KTSerializableObject
 		void scale(double sX, double sY);
 		void shear(double sX, double sY);
 		void translate(double sX, double sY);
-		void rotate( double angle ); 
+		void rotate( double angle );
+		
+	private:
+		QDomElement brushToElement(const QBrush &brush, QDomDocument &doc);
 		
 	protected:
 		QPainterPath m_pPath;

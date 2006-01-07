@@ -91,7 +91,7 @@ void KTScene::load(const QString &path)
 	
 	connect(&parser, SIGNAL(createLayer()), this, SLOT(loadLayer()));
 	connect(&parser, SIGNAL(createFrame()), this, SLOT(loadFrame()));
-	connect(&parser, SIGNAL(createComponent( const QStringList& ) ), this, SLOT( loadComponent(const QStringList &) ));
+	connect(&parser, SIGNAL(createComponent( const QStringList&, const QPen &, const QBrush & ) ), this, SLOT( loadComponent(const QStringList &, const QPen &, const QBrush &) ));
 	
 	QXmlSimpleReader reader;
 	reader.setContentHandler(&parser);
@@ -218,12 +218,14 @@ void KTScene::loadFrame()
 	}
 }
 
-void KTScene::loadComponent(const QStringList &polygons)
+void KTScene::loadComponent(const QStringList &polygons, const QPen &pen, const QBrush &brush)
 {
 	if ( m_currentLayer )
 	{
 		AGraphicComponent *component = new AGraphicComponent();
 		component->setPath( KTPathAdjuster::buildPath( polygons, ':') );
+		component->setPen( pen);
+		component->setBrush( brush);
 		
 		m_currentLayer->currentFrame()->addComponent( component );
 	}

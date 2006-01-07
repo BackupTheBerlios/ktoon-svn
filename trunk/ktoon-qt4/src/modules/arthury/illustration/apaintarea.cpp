@@ -242,7 +242,12 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphic, QPainter *painter
 	{
 		brush = KTGradientAdjuster::adjustGradient(brush.gradient(), graphic->path().boundingRect().toRect());
 	}
-					
+	
+	if ( pen.brush().gradient() )
+	{
+		pen.setBrush( KTGradientAdjuster::adjustGradient( pen.brush().gradient(), graphic->path().boundingRect().toRect()) );
+	}
+	
 	if ( intensitive < 1 && intensitive >= 0 )
 	{
 		QColor penColor = Qt::gray;

@@ -60,7 +60,7 @@ class KTScene : public KTSerializableObject
 	private slots:
 		void loadLayer();
 		void loadFrame();
-		void loadComponent(const QStringList &polygons);
+		void loadComponent(const QStringList &polygons, const QPen &, const QBrush &);
 		
 	signals:
 		void layerCreated(const QString &name, bool toEnd);

@@ -23,10 +23,8 @@
 
 #include <QXmlDefaultHandler>
 #include <QSize>
-
-// #include "ktlayer.h"
-// #include "ktkeyframe.h"
-// #include "agraphiccomponent.h"
+#include <QBrush>
+#include <QPen>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -49,13 +47,11 @@ class KTProjectParser : public QObject, public QXmlDefaultHandler
 		QStringList locations() const;
 		
 		QSize documentSize() const;
-		
-		
-		
+
 	signals:
 		void createLayer();
 		void createFrame();
-		void createComponent(const QStringList &polygons);
+		void createComponent(const QStringList &polygons, const QPen &pen, const QBrush &brush);
 		
 	private:
 		QString m_root,m_qname;
@@ -67,9 +63,10 @@ class KTProjectParser : public QObject, public QXmlDefaultHandler
 		
 		QSize m_documentSize;
 		
-// 		Layers m_layers;
-// 		Frames m_frames;
-// 		QList<AGraphicComponent *> m_graphics;
+		QBrush m_brush;
+		QPen m_pen;
+		QGradient *m_gradient;
+		QGradientStops m_gradientStops;
 };
 
 #endif

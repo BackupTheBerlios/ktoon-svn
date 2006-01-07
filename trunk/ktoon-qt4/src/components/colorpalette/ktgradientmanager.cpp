@@ -137,7 +137,7 @@ void KTGradientManager::changeGradient( const QGradientStops& stops )
 }
 void KTGradientManager::setGradient(const QGradient & gradient)
 {
-	m_type->setCurrentIndex(gradient.type()+1);
+	m_type->setCurrentIndex(gradient.type());
 	m_selector->setStops(gradient.stops());
 }
 

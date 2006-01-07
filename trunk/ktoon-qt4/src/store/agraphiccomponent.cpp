@@ -132,13 +132,33 @@ void AGraphicComponent::rotate( double angle )
 }
 
 
-QDomElement  AGraphicComponent::createXML( QDomDocument &doc )
+QDomElement AGraphicComponent::createXML( QDomDocument &doc )
 {
 	QDomElement item = doc.createElement("Component");
 	
 	QList<QPolygonF> polygons = m_pPath.toSubpathPolygons ();
 	
 	QList<QPolygonF>::ConstIterator polygonIt = polygons.begin();
+	
+	
+	QDomElement propertiesElement = doc.createElement("Properties");
+	QDomElement penElement = doc.createElement("Pen");
+	penElement.setAttribute("width", m_pPen.widthF() );
+	penElement.setAttribute("style", m_pPen.style() );
+	penElement.setAttribute("capstyle", m_pPen.capStyle() );
+	penElement.setAttribute("joinstyle", m_pPen.joinStyle() );
+	
+	penElement.appendChild( brushToElement( m_pPen.brush(), doc) );
+	
+	propertiesElement.appendChild(penElement);
+	
+	QDomElement brushElement = doc.createElement("Brush");
+	brushElement.setAttribute("style", m_pBrush.style() );
+	
+	brushElement.appendChild(brushToElement( m_pBrush, doc) );
+	
+	propertiesElement.appendChild(brushElement);
+	item.appendChild(propertiesElement);
 	
 	while ( polygonIt != polygons.end() )
 	{
@@ -160,4 +180,40 @@ QDomElement  AGraphicComponent::createXML( QDomDocument &doc )
 	
 	return item;
 }
+
+QDomElement AGraphicComponent::brushToElement(const QBrush &brush, QDomDocument &doc)
+{
+	QDomElement element;
+	
+	if ( brush.gradient() )
+	{
+		const QGradient *gradient = brush.gradient();
+		element = doc.createElement("Gradient");
+		
+		element.setAttribute("type", gradient->type() );
+	
+		QGradientStops stops = gradient->stops();
+	
+		foreach(QGradientStop stop, stops)
+		{
+			QDomElement stopElement = doc.createElement("Stop");
+			stopElement.setAttribute("value", stop.first );
+			stopElement.setAttribute("colorName", stop.second.name());
+			stopElement.setAttribute("alpha", stop.second.alpha());
+		
+			element.appendChild(stopElement);
+		}
+	}
+	else
+	{
+		element = doc.createElement("Color");
+		element.setAttribute("colorName", brush.color().name());
+		element.setAttribute("alpha", QString::number(brush.color().alpha()) );
+	}
+	
+	return element;
+}
+
+
+
 
