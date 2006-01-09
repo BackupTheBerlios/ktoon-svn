@@ -64,8 +64,6 @@ class KTLibraryWidget : public KTModuleWidgetBase
 		KTGCTable *m_libraryTree;
 		QMap<QTreeWidgetItem *, AGraphicComponent *> m_graphics;
 		int m_childCount;
-		
-		QList<AGraphicComponent *> m_objects;
 };
 
 #endif

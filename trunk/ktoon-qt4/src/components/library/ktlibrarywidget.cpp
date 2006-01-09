@@ -117,11 +117,15 @@ KTLibraryWidget::~KTLibraryWidget()
 	doc.appendChild(root);
 	
 	
-	QList<AGraphicComponent *>::iterator iterator = m_objects.begin();
+	QList<AGraphicComponent *> components = m_graphics.values();
+	QList<AGraphicComponent *>::iterator iterator = components.begin();
 	
-	while ( iterator != m_objects.end() )
+	while ( iterator != components.end() )
 	{
-		root.appendChild((*iterator)->createXML(doc));
+		if ( *iterator )
+		{
+			root.appendChild((*iterator)->createXML(doc));
+		}
 		++iterator;
 	}
 	
@@ -142,7 +146,6 @@ KTLibraryWidget::~KTLibraryWidget()
 		
 		custom.close();
 	}
-	
 }
 
 void KTLibraryWidget::addGraphic(const AGraphicComponent *graphic)
@@ -161,8 +164,6 @@ void KTLibraryWidget::addGraphic(const AGraphicComponent *graphic)
 		
 		m_graphics.insert(item, copy);
 		m_libraryTree->setCurrentItem (item);
-		
-		m_objects << copy;
 	}
 }
 
