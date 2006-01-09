@@ -37,11 +37,14 @@
 
 #include "ktmainwindow.h"
 
+#include "crashhandler.h"
+
 void usage();
 
 int main( int argc, char ** argv )
-{	
+{
 	KTApplication application( argc, argv );
+	CrashHandler::init();
 	
 	QApplication::setStyle("plastique");
 	
@@ -104,6 +107,10 @@ int main( int argc, char ** argv )
 	
 	QApplication::setActiveWindow(mainWindow);
 	QApplication::addLibraryPath (KTOON_HOME+"/plugins");
+	
+
+	CHANDLER->setConfig(KTOON_HOME+"/data/"+ QString(QTextCodec::locale()).left(2) +"/crashhandler.xml"); // TODO: make standar way to access to data
+	CHANDLER->setImagePath(KTOON_THEME_DIR+"/icons/");
 	
 	return application.exec();
 }

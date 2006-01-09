@@ -1,0 +1,100 @@
+
+
+Kt00n ChangeLog
+===============
+
+KToon-0.8a
+	* New ruler
+	* New debug framework
+	* FIX crash on copy
+	* new config handler
+	* Changed for use the new config handler
+	* Fixed crash when change mode
+	* Changed for use the new config handler
+	* Save theme in configuration file
+	* new option for compile without opengl in build.sh
+	* Use QAction instead QToolButton
+	* Change constructor for don't use QToolButton
+	* Removed time line default colors
+	* Removed ktoon.h dependence in many classes
+	* new Class KTAnimWidget
+	* new Class for preferences
+	* Added	class KTFontWidget adapted from KDE KFontChooser
+	* Initial theme support
+	* Rewritted class About
+	* Created class KTAnimWidget
+	* Added a script for build ktoon
+	* Fixed copy/paste problem (Thanks to lauxa)
+	* Implemented a parser for the line-command options
+	* Change the directories and libraries structure
+	* Change math.h for cmath
+	* Change stdlib.h for cstdlib
+	* Added functions for construct dialogs, icons, cursors, and toolbars
+	* Modified the constructor structure.
+	* Added undo/redo functionability
+	* Many improvements in project management
+	* Improved About dialog, added KTTabWidget with mouse wheel sensibility
+	* Many improvements in project management
+	* Improved About dialog, added KTTabWidget with mouse wheel sensibility
+	* New camera bar, improved cameras
+	* working in new architecture
+	* Initial animation support
+	* Working in new project architecture
+	* Restaured theme selector, code cleanup
+	* About restaured, improve store schema, cleaned dependences on scenes component
+	* New KTProjectManager, KTDocument, KTScene, KTLayer, KTKeyFrame, renamed Scenes to KTScenesWidget
+	* New class KTKeyFrame, move KTBrush, AGraphicComponent to libstore, improved shape brush, fixes and code * cleanup
+	* Select brush from brushes dialog
+	* New shape brushes, removed old plugin interface, new ellipse and rectangle tool plugins, many fixes
+	* redesigning component brushes
+	* Colors now works =)
+	* New graphic component concept, implemented undo and redo in arthury module
+	* Added missing file
+	* New filter interface and 2 plugins for flip vertically and horizontally
+	* Fixes
+	* New color palette ui, improved Quad bruch
+	* Refactoring color palette, new KTDualColorButton, Fixed segmentation fault in APaintArea
+	* redesigning component colorpalette
+	* Fixed
+	* redesigning component colorpalette
+	* Renamed class ABrushInterface to ADrawingToolInterface
+	* New brushes, fixes, porting to Qt4 preferences dialog, extended plugin system
+	* Pluggins support
+	* Fixes, speed improvements and new KTColorPicker
+	* new Arthury Base Graphic component
+	* New Arthury Grid
+	* Initial project support
+	* new class for Wizards, new first-run wizard
+	* new Arthury ruler and paint area
+	* Porting to Qt4, added new module named arthury
+	* Fixed desktop menu entry, Porting to Qt4
+	* Add desktop entry, Fixed SIGSEGV in ~Brushes
+	* Totally ported Scenes and Brushes to Qt4
+	* Improved and ported KTActionManager, new class KTAction
+	* Fixed flickr in dlslib, now I'm happy
+	* port to qt4 classes KTEditSpinbox and brushes for last class added new class ktbrusheslist
+	* Move components to new dir
+	* Initial KToonScript module, ported ktdebug, ktsqueezelabel to Qt4, now KToon remember the toolwindows last state
+	* Added mouse sensibility to newui4
+	* Changed and improved splash, fixed ruler flicker, improved new ui
+	* Fixed stupid problem with KTMdiWindow, Hack: adjust dock separator, improved dialog support
+	* porting KTViewDocument and code cleanup
+	* Porting KTStatusBar, ConfigWizard; Fixes and code cleanup
+	* Fixed bug in scene dialog, fixed problem with KTModuleWidgetBase effect, added dialog support
+	* Changed default size for KTImageButton from 44 to 22 pixels, added animations and/or effects to KTModuleWidgetBase, Ideal::Button, KTImageButton; Changed default "highlight color" in default theme, used KTImageButton in KTExposure instead of QPushButton, added QScrollArea to big widgets in DDockWindow
+	* Porting KTTimeLine to Qt4, extended and renamed KTVBox to KTVHBox, many improvements in GUI code
+	* Fixed installation issue
+	* Porting to Qt4
+	* Porting Brushes to Qt4, code cleanup
+	* Porting new ui to Qt4
+	* Ported KTVBox
+	* Added a new ui named dlslib, ported classes to Qt4
+	* Ported KTExposureSheet, Scenes, KeyFrame, Layer
+	* Qt4 port, newui and svn reordered
+
+
+
+
+
+
+

@@ -7,9 +7,7 @@ QT += qt3support gui xml
 INSTALLS += ktbin \
             kttrans \
             ktdata 
-ktdata.files += credits.txt \
-                ../../COPYING \
-                ../../Changelog 
+ktdata.files += data/*
 ktdata.path = /data 
 kttrans.files += *.qm 
 kttrans.path = /data/translations 
@@ -91,7 +89,9 @@ HEADERS += ktdocumentruler.h \
            ktviewcamera.h \
            ktcamerabar.h \
            ktosd.h \
-           ktsplash.h 
+           ktsplash.h \
+	   crashhandler.h \
+           crashwidget.h 
 SOURCES += main.cpp \
            ktdocumentruler.cpp \
            ktviewdocument.cpp \
@@ -104,4 +104,7 @@ SOURCES += main.cpp \
            ktmainwindow-gui.cpp \
            ktmainwindow-project.cpp \
            ktosd.cpp \
-           ktsplash.cpp 
+           ktsplash.cpp \
+	   crashhandler.cpp \
+           crashwidget.cpp
+
