@@ -38,6 +38,7 @@
 #include <QPixmap>
 #include <QWidget>
 #include <QEvent>
+#include <QTimer>
 
 #if defined(Q_OS_UNIX)
 # define SHOW_ERROR "*** \033[0;31m%s\033[0;0m ***\n"
@@ -84,9 +85,13 @@ KTDebug::KTDebug(DebugType t) : m_type(t)
 	streamer = new Streamer();
 };
 
+KTDebug::KTDebug(const KTDebug & d ) : m_type(d.m_type), streamer(d.streamer)
+{
+}
+
 KTDebug::~KTDebug()
 {
-	::KTDebutOutput( m_type, streamer->buffer.toLocal8Bit().data() ); 
+	::KTDebutOutput( m_type, streamer->buffer.toLocal8Bit().data() );
 	delete streamer;
 }
 
@@ -209,7 +214,7 @@ KTDebug& KTDebug::operator<<( const QPen & p)
 			return *this;
 }
 
-KTDebug& KTDebug::operator<<( const QBrush & b) 
+KTDebug& KTDebug::operator<<( const QBrush & b)
 {
 	static const char* const s_brushStyles[] = {
 		"NoBrush", "SolidPattern", "Dense1Pattern", "Dense2Pattern", "Dense3Pattern",
@@ -240,7 +245,7 @@ KTDebug& KTDebug::operator<<( const QVariant & v)
 	*this << "]";
 	return *this;
 }
-
+// 5580379
 KTDebug& KTDebug::operator << (const QWidget* t) 
 {
 	if ( t )

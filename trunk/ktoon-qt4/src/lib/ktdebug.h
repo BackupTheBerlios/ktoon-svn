@@ -73,94 +73,175 @@ enum DebugType
 class KTDebug
 {
 	public:
-		class Streamer
+		class Streamer : public QObject
 		{
 			public:
-				Streamer() : ts(&buffer, QIODevice::WriteOnly), space(true) {}
+				Streamer() : space(true) {}
 				~Streamer() {};
-				QTextStream ts;
 				QString buffer;
 				bool space;
+				Streamer & operator<< ( QChar c )
+				{
+					buffer += c;
+					return *this;
+				}
+				Streamer & operator<< ( signed short i )
+				{
+					buffer += QString::number(i);
+					return *this;
+				}
+				Streamer & operator<< ( float f )
+				{
+					buffer += QString::number(f);
+					return *this;
+				}
+				Streamer & operator<< ( const QString & string )
+				{
+					buffer += string;
+					return *this;
+				}
+				Streamer & operator<< ( char c )
+				{
+					buffer += c;
+					return *this;
+				}
+				Streamer & operator<< ( unsigned short i )
+				{
+					buffer += QString::number(i);
+					return *this;
+				}
+				Streamer & operator<< ( signed int i )
+				{
+					buffer += QString::number(i);
+					return *this;
+				}
+				Streamer & operator<< ( unsigned int i )
+				{
+					buffer += QString::number(i);
+					return *this;
+				}
+				Streamer & operator<< ( signed long i )
+				{
+					buffer += QString::number(i);
+					return *this;
+				}
+				Streamer & operator<< ( unsigned long i )
+				{
+					buffer += QString::number(i);
+					return *this;
+				}
+				Streamer & operator<< ( qlonglong i )
+				{
+					buffer += QString::number(i);
+					return *this;
+				}
+				Streamer & operator<< ( qulonglong i )
+				{
+					buffer += QString::number(i);
+					return *this;
+				}
+				Streamer & operator<< ( double f )
+				{
+					buffer += QString::number(f);
+					return *this;
+				}
+				Streamer & operator<< ( const QByteArray & array )
+				{
+					buffer += array.data();
+					return *this;
+				}
+				Streamer & operator<< ( const char * string )
+				{
+					buffer += string;
+					return *this;
+				}
+				Streamer & operator<< ( const void * ptr )
+				{
+					
+					return *this;
+				}
 		} *streamer;
 		
 		
 		KTDebug(DebugType t);
+		KTDebug(const KTDebug &);
 		~KTDebug();
 		
 		void resaltWidget(QWidget *w, const QColor &color = QColor(Qt::magenta));
 		
 		inline KTDebug &operator<<(QTextStreamManipulator m)
 		{ 
-			streamer->ts << m; 
+// 			streamer->ts << m; 
 			return *this; 
 		}
 		
-		inline KTDebug &operator<<(QTextStreamFunction f) {
-			streamer->ts << f;
+		inline KTDebug &operator<<(QTextStreamFunction f) 
+		{
+// 			streamer->ts << f;
 			return *this;
 		}
 		
 		inline KTDebug& operator << (const QString &str)
 		{
-			streamer->ts << "\"" << str << "\"";
+			*streamer << "\"" << str << "\"";
 			return *this;
 		};
 		
 		inline KTDebug& operator << (char c)
 		{
-			streamer->ts << "\'" << c << "\'";
+			*streamer << "\'" << c << "\'";
 			return *this;
 		};
 		
 		inline KTDebug &operator<<(bool t) 
 		{ 
-			streamer->ts << (t ? "true" : "false"); 
+			*streamer << (t ? "true" : "false"); 
 			return *this; 
 		}
 
 		inline KTDebug &operator<<(signed short t) 
 		{ 
-			streamer->ts << t; 
+			*streamer << t; 
 			return *this; 
 		}
 		inline KTDebug &operator<<(unsigned short t) 
 		{ 
-			streamer->ts << t; 
+			*streamer << t; 
 			return *this; 
 		}
 		inline KTDebug &operator<<(signed int t) 
 		{ 
-			streamer->ts << t; 
+			*streamer << t; 
 			return *this; 
 		}
 		inline KTDebug &operator<<(unsigned int t) 
 		{ 
-			streamer->ts << t; 
+			*streamer << t; 
 			return *this; 
 		}
 		inline KTDebug &operator<<(signed long t) 
 		{ 
-			streamer->ts << t; 
+			*streamer << t; 
 			return *this; 
 		}
 		inline KTDebug &operator<<(unsigned long t) 
 		{ 
-			streamer->ts << t; 
+			*streamer << t; 
 			return *this; 
 		}
 		inline KTDebug &operator<<(float t) 
 		{ 
-			streamer->ts << t; 
+			*streamer << t; 
 			return *this; 
 		}
 		inline KTDebug &operator<<(double t) 
 		{ 
-			streamer->ts << t; 
+			*streamer << t; 
 			return *this; 
 		}
 		inline KTDebug &operator<<(const char* t) 
 		{ 
-			streamer->ts  << t; 
+			*streamer << t; 
 			return *this; 
 		}
 		KTDebug& operator<<( const QPixmap& p );
@@ -184,8 +265,12 @@ class KTDebug
 		
 		template <class T> KTDebug& operator << ( const QList<T> &list );
 		
+	private slots:
+		void write();
+		
 	private:
 		DebugType m_type;
+		QString m_toWrite;
 };
 
 template <class T> KTDebug &KTDebug::operator<<( const QList<T> &list )
@@ -239,7 +324,7 @@ class KTNDebug
 		inline KTNDebug &nospace() { return *this; }
 		inline KTNDebug &maybeSpace() { return *this; }
 		template<typename T> inline KTNDebug &operator<<(const T &) { return *this; }
-		void resaltWidget(QWidget *w, const QColor &color = QColor(Qt::magenta))
+		void resaltWidget(QWidget */*w*/, const QColor &/*color*/ = QColor(Qt::magenta))
 		{
 		}
 };
