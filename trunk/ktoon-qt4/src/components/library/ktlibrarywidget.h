@@ -51,6 +51,7 @@ class KTLibraryWidget : public KTModuleWidgetBase
 		void drawCurrentItem(QTreeWidgetItem *, int);
 		void emitSelectedComponent();
 		void removeCurrentGraphic();
+		void renameObject( QTreeWidgetItem* item);
 		
 	public slots:
 		void addGraphic(const AGraphicComponent *graphic);

@@ -3,11 +3,11 @@
 # Subdir relative project main directory: ./src/core
 # Target is an application:  ../../bin/ktoon
 
-QT += qt3support gui xml
+QT += qt3support xml gui 
 INSTALLS += ktbin \
             kttrans \
             ktdata 
-ktdata.files += data/*
+ktdata.files += data/* 
 ktdata.path = /data 
 kttrans.files += *.qm 
 kttrans.path = /data/translations 
@@ -90,7 +90,7 @@ HEADERS += ktdocumentruler.h \
            ktcamerabar.h \
            ktosd.h \
            ktsplash.h \
-	   crashhandler.h \
+           crashhandler.h \
            crashwidget.h 
 SOURCES += main.cpp \
            ktdocumentruler.cpp \
@@ -105,6 +105,5 @@ SOURCES += main.cpp \
            ktmainwindow-project.cpp \
            ktosd.cpp \
            ktsplash.cpp \
-	   crashhandler.cpp \
-           crashwidget.cpp
-
+           crashhandler.cpp \
+           crashwidget.cpp 

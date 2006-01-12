@@ -62,6 +62,9 @@ class AGraphicComponent : public KTSerializableObject
 		void translate(double sX, double sY);
 		void rotate( double angle );
 		
+		void setComponentName(const QString &name);
+		QString componentName() const;
+		
 	private:
 		QDomElement brushToElement(const QBrush &brush, QDomDocument &doc);
 		
@@ -70,6 +73,8 @@ class AGraphicComponent : public KTSerializableObject
 		QColor m_pColor;
 		QBrush m_pBrush;
 		QPen m_pPen;
+		
+		QString m_name;
 		
 	private:
 		QPainterPath m_previousPath;

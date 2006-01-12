@@ -23,19 +23,18 @@
 #include "ktpathadjuster.h"
 
 KTLibraryParser::KTLibraryParser()
- : QXmlDefaultHandler()
+	: QXmlDefaultHandler(), m_gradient(0)
 {
 }
 
 
 KTLibraryParser::~KTLibraryParser()
 {
+	if ( m_gradient ) delete m_gradient;
 }
 
 bool KTLibraryParser::startElement( const QString& , const QString& , const QString& qname, const QXmlAttributes& atts)
 {
-	m_qname = qname;
-
 	if (m_root.isNull() )
 	{
 		m_root = qname;
@@ -45,13 +44,84 @@ bool KTLibraryParser::startElement( const QString& , const QString& , const QStr
 		if ( qname == "Component" )
 		{
 			m_tmpPolygons.clear();
+			QString objName = atts.value("name");
+			if ( !(objName.isEmpty() || objName.isNull()) )
+			{
+				m_objectName = objName;
+			}
 		}
 		else if ( qname == "Polygon")
 		{
 			QString points = atts.value("points");
 			m_tmpPolygons << points;
 		}
+		else if ( qname == "Pen" )
+		{
+			m_pen = QPen( atts.value("style").toInt() );
+			m_pen.setWidthF( atts.value("width").toDouble() );
+			m_pen.setCapStyle( Qt::PenCapStyle(atts.value("capstyle").toInt()) );
+			m_pen.setJoinStyle( Qt::PenJoinStyle(atts.value("joinstyle").toInt()) );
+		}
+		else if ( qname == "Brush")
+		{
+			m_brush = QBrush(Qt::BrushStyle(atts.value("style").toInt()));
+		}
+		else if ( qname == "Color" )
+		{
+			QColor c( atts.value("colorName") );
+			c.setAlpha( atts.value("alpha").toInt());
+			
+			if ( m_qname == "Brush" )
+			{
+				m_brush.setColor(c);
+			}
+			else if ( m_qname == "Pen")
+			{
+				m_pen.setColor(c);
+			}
+		}
+		else if ( qname == "Gradient" )
+		{
+			if ( m_gradient ) delete m_gradient;
+			m_gradientStops.clear();
+			
+			QGradient::Type type = QGradient::Type(atts.value("type").toInt());
+			
+			switch( type )
+			{
+				
+				case QGradient::LinearGradient:
+				{
+					m_gradient = new QLinearGradient(0,0,0,0);
+				}
+				break;
+				case QGradient::RadialGradient:
+				{
+					m_gradient = new QRadialGradient(0,0,0);
+				}
+				break;
+				case QGradient::ConicalGradient:
+				{
+					m_gradient = new QConicalGradient(0,0,0);
+				}
+				break;
+				default:
+				{
+					ktFatal() << "No gradient type: " << type;
+				}
+				break;
+			}
+		}
+		else if ( qname == "Stop" )
+		{
+			QColor c(atts.value("colorName") );
+			c.setAlpha(atts.value("alpha").toInt() );
+			
+			m_gradientStops << qMakePair(atts.value("value").toDouble(), c);	
+		}
 	}
+	
+	m_qname = qname;
 	return true;
 }
 
@@ -64,8 +134,36 @@ bool KTLibraryParser::endElement(const QString&, const QString& , const QString&
 			AGraphicComponent *graphic = new AGraphicComponent;
 			
 			graphic->setPath( KTPathAdjuster::buildPath( m_tmpPolygons, ':') );
+			graphic->setBrush( m_brush );
+			graphic->setPen( m_pen );
+			
+			if ( ! m_objectName.isNull() )
+			{
+				graphic->setComponentName( m_objectName);
+			}
 			
 			m_components << graphic;
+			
+			m_objectName = QString();
+		}
+		else if ( qname == "Brush")
+		{
+			if ( m_qname == "Stop"  && m_gradient )
+			{
+				Qt::BrushStyle style = m_brush.style();
+				m_gradient->setStops(m_gradientStops);
+				
+				m_brush = QBrush( *m_gradient );
+				m_brush.setStyle(style);
+			}
+		}
+		else if ( m_qname == "Pen")
+		{
+			if ( m_qname == "Stop" && m_gradient )
+			{
+				m_gradient->setStops(m_gradientStops);
+				m_pen.setBrush( *m_gradient );
+			}
 		}
 	}
 	

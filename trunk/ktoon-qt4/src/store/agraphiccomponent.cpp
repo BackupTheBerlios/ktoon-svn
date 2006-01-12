@@ -25,7 +25,7 @@ AGraphicComponent::AGraphicComponent() : KTSerializableObject(), m_pPath(), m_pC
 {
 }
 
-AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : KTSerializableObject(toCopy.parent()), m_pPath(toCopy.m_pPath), m_pColor(toCopy.m_pColor), m_pPen(toCopy.m_pPen), m_previousPath(toCopy.m_previousPath), m_pBrush(toCopy.m_pBrush)
+AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : KTSerializableObject(toCopy.parent()), m_pPath(toCopy.m_pPath), m_pColor(toCopy.m_pColor), m_pBrush(toCopy.m_pBrush), m_pPen(toCopy.m_pPen), m_name(toCopy.m_name), m_previousPath(toCopy.m_previousPath)
 {
 }
 
@@ -136,6 +136,11 @@ QDomElement AGraphicComponent::createXML( QDomDocument &doc )
 {
 	QDomElement item = doc.createElement("Component");
 	
+	if ( ! m_name.isNull() )
+	{
+		item.setAttribute("name", m_name);
+	}
+	
 	QList<QPolygonF> polygons = m_pPath.toSubpathPolygons ();
 	
 	QList<QPolygonF>::ConstIterator polygonIt = polygons.begin();
@@ -179,6 +184,16 @@ QDomElement AGraphicComponent::createXML( QDomDocument &doc )
 	}
 	
 	return item;
+}
+
+void AGraphicComponent::setComponentName(const QString &name)
+{
+	m_name = name;
+}
+
+QString AGraphicComponent::componentName() const
+{
+	return m_name;
 }
 
 QDomElement AGraphicComponent::brushToElement(const QBrush &brush, QDomDocument &doc)

@@ -38,6 +38,7 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
 	m_libraryTree = new KTGCTable(this);
 
 	connect(m_libraryTree, SIGNAL(itemClicked ( QTreeWidgetItem *, int)), this, SLOT(drawCurrentItem(QTreeWidgetItem *, int)));
+	connect(m_libraryTree, SIGNAL(itemRenamed( QTreeWidgetItem* )), this, SLOT(renameObject( QTreeWidgetItem* )));
 	
 	m_libraryTree->createFolder( tr("General") );
 	
@@ -124,6 +125,7 @@ KTLibraryWidget::~KTLibraryWidget()
 	{
 		if ( *iterator )
 		{
+			ktDebug() << "GRABANDO: " << (*iterator)->componentName();
 			root.appendChild((*iterator)->createXML(doc));
 		}
 		++iterator;
@@ -141,9 +143,7 @@ KTLibraryWidget::~KTLibraryWidget()
 	if ( custom.open(QIODevice::WriteOnly | QIODevice::Text))
 	{
 		QTextStream out(&custom);
-		
 		out << doc.toString();
-		
 		custom.close();
 	}
 }
@@ -160,7 +160,15 @@ void KTLibraryWidget::addGraphic(const AGraphicComponent *graphic)
 		m_displayPath->setPath( copy->path() );
 		
 		QTreeWidgetItem *item = new QTreeWidgetItem(m_libraryTree->currentFolder() );
-		item->setText(0, tr("Component #%1").arg(m_childCount++));
+		
+		if( graphic->componentName().isNull() )
+		{
+			item->setText(0, tr("Component #%1").arg(m_childCount++));
+		}
+		else
+		{
+			item->setText(0, graphic->componentName());
+		}
 		
 		m_graphics.insert(item, copy);
 		m_libraryTree->setCurrentItem (item);
@@ -243,4 +251,10 @@ void KTLibraryWidget::removeCurrentGraphic()
 	}
 }
 
-
+void KTLibraryWidget::renameObject( QTreeWidgetItem* item)
+{
+	if ( item )
+	{
+		m_graphics[item]->setComponentName(item->text(0));
+	}
+}

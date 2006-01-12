@@ -107,7 +107,7 @@ void KTTreeListWidget::closeEditor ( QWidget * editor, QAbstractItemDelegate::En
 
 	if ( edit )
 	{
-		emit itemRenamed(edit->text());
+		emit itemRenamed(currentItem());
 	}
 	
 	QTreeWidget::closeEditor(editor, hint);

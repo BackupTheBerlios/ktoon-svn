@@ -49,6 +49,12 @@ class KTLibraryParser : public QXmlDefaultHandler
 		QString m_root,m_qname;
 		QList<AGraphicComponent *> m_components;
 		QStringList m_tmpPolygons;
+		QString m_objectName;
+		
+		QBrush m_brush;
+		QPen m_pen;
+		QGradient *m_gradient;
+		QGradientStops m_gradientStops;
 };
 
 #endif

@@ -44,7 +44,7 @@ class KTTreeListWidget : public QTreeWidget
 		virtual void closeEditor ( QWidget * editor, QAbstractItemDelegate::EndEditHint hint );
 		
 	signals:
-		void itemRenamed(const QString &text);
+		void itemRenamed(QTreeWidgetItem *item);
 };
 
 #endif
