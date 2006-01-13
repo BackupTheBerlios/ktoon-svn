@@ -33,6 +33,7 @@ class KTTreeListWidget : public QTreeWidget
 		KTTreeListWidget(QWidget *parent = 0);
 		~KTTreeListWidget();
 		void addItems(const QStringList &items);
+		QList<QTreeWidgetItem *> topLevelItems();
 		
 	public slots:
 		void removeAll();

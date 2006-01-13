@@ -99,26 +99,35 @@ void KTTreeListWidget::addItems(const QStringList &items)
 	}
 }
 
+QList<QTreeWidgetItem *> KTTreeListWidget::topLevelItems()
+{
+	QList<QTreeWidgetItem *> items;
+	for ( uint i = 0; i < topLevelItemCount (); i++ )
+	{
+		items << topLevelItem(i);
+	}
+	
+	return items;
+}
+
 void KTTreeListWidget::closeEditor ( QWidget * editor, QAbstractItemDelegate::EndEditHint hint )
 {
 	KT_FUNCINFO;
 	
 	QLineEdit *edit = qobject_cast<QLineEdit *>(editor);
-
 	if ( edit )
 	{
-		emit itemRenamed(currentItem());
+		QTreeWidgetItem *item = currentItem();
+		if ( item )
+		{
+			emit itemRenamed(item);
+		}
 	}
-	
 	QTreeWidget::closeEditor(editor, hint);
 }
 
 void KTTreeListWidget::removeAll()
 {
-// 	for ( uint i = 0; i < topLevelItemCount (); i++ )
-// 	{
-// 		delete takeTopLevelItem (i);
-// 	}
 	clear();
 }
 

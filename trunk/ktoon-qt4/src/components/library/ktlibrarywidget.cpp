@@ -26,11 +26,14 @@
 #include "ktconfig.h"
 
 #include <QGroupBox>
+#include <cstdlib>
+#include <ctime>
 
 #include "ktlibraryparser.h"
 
 KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), m_childCount(0)
 {
+	srand(time(0));
 	setCaption(tr("Library"));
 	
 	m_displayPath = new KTDisplayPath(this);
@@ -40,7 +43,7 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
 	connect(m_libraryTree, SIGNAL(itemClicked ( QTreeWidgetItem *, int)), this, SLOT(drawCurrentItem(QTreeWidgetItem *, int)));
 	connect(m_libraryTree, SIGNAL(itemRenamed( QTreeWidgetItem* )), this, SLOT(renameObject( QTreeWidgetItem* )));
 	
-	m_libraryTree->createFolder( tr("General") );
+// 	m_libraryTree->createFolder( tr("Custom") );
 	
 	setup();
 	
@@ -86,25 +89,31 @@ void KTLibraryWidget::setup()
 	{
 		// Parse!
 		
-		KTLibraryParser parser;
+		QStringList files = librariesDir.entryList(QStringList() << "*.ktlbr");
 		
-		QXmlSimpleReader reader;
-		reader.setContentHandler(&parser);
-		reader.setErrorHandler(&parser);
-		
-		QFile libFile(librariesDir.path()+"/library.ktlbr");
-		QXmlInputSource xmlsource(&libFile);
-		
-		if ( reader.parse(&xmlsource) )
+		foreach( QString file, files)
 		{
-			foreach(AGraphicComponent *component, parser.components() )
+			addFolder( file.left( file.length()-6 ));
+			KTLibraryParser parser;
+			
+			QXmlSimpleReader reader;
+			reader.setContentHandler(&parser);
+			reader.setErrorHandler(&parser);
+			
+			QFile libFile(librariesDir.path() +"/"+ file );
+			QXmlInputSource xmlsource(&libFile);
+			
+			if ( reader.parse(&xmlsource) )
 			{
-				addGraphic(component);
+				foreach(AGraphicComponent *component, parser.components() )
+				{
+					addGraphic(component);
+				}
 			}
-		}
-		else
-		{
-			ktError() << "Error while parse file: " << libFile.fileName();
+			else
+			{
+				ktError() << "Error while parse file: " << libFile.fileName();
+			}
 		}
 	}
 }
@@ -112,39 +121,37 @@ void KTLibraryWidget::setup()
 KTLibraryWidget::~KTLibraryWidget()
 {
 	KTEND;
+
+	QList<QTreeWidgetItem *> folders = m_libraryTree->topLevelItems();
+	QList<QTreeWidgetItem *>::ConstIterator folderIterator = folders.begin();
 	
-	QDomDocument doc;
-	QDomElement root = doc.createElement("Library");
-	doc.appendChild(root);
-	
-	
-	QList<AGraphicComponent *> components = m_graphics.values();
-	QList<AGraphicComponent *>::iterator iterator = components.begin();
-	
-	while ( iterator != components.end() )
+	while ( folderIterator != folders.end() )
 	{
-		if ( *iterator )
+		QDomDocument doc;
+		QDomElement root = doc.createElement("Library");
+		doc.appendChild(root);
+		
+		for ( int index = 0; index < (*folderIterator)->childCount(); index++)
 		{
-			ktDebug() << "GRABANDO: " << (*iterator)->componentName();
-			root.appendChild((*iterator)->createXML(doc));
+			root.appendChild( m_graphics[(*folderIterator)->child(index) ]->createXML(doc));
 		}
-		++iterator;
-	}
-	
-	QFile custom(ktapp->configDir()+"/libraries/library.ktlbr");
-	
-	QDir brushesDir(ktapp->configDir()+"/libraries");
-	
-	if ( ! brushesDir.exists() )
-	{
-		brushesDir.mkdir(brushesDir.path() );
-	}
-	
-	if ( custom.open(QIODevice::WriteOnly | QIODevice::Text))
-	{
-		QTextStream out(&custom);
-		out << doc.toString();
-		custom.close();
+		
+		QFile custom(ktapp->configDir()+"/libraries/"+(*folderIterator)->text(0)+".ktlbr");
+		
+		QDir brushesDir(ktapp->configDir()+"/libraries");
+		
+		if ( ! brushesDir.exists() )
+		{
+			brushesDir.mkdir(brushesDir.path() );
+		}
+		
+		if ( custom.open(QIODevice::WriteOnly | QIODevice::Text))
+		{
+			QTextStream out(&custom);
+			out << doc.toString();
+			custom.close();
+		}
+		++folderIterator;
 	}
 }
 
@@ -173,6 +180,11 @@ void KTLibraryWidget::addGraphic(const AGraphicComponent *graphic)
 		m_graphics.insert(item, copy);
 		m_libraryTree->setCurrentItem (item);
 	}
+}
+
+void KTLibraryWidget::addFolder(const QString &name)
+{
+	m_libraryTree->createFolder(name);
 }
 
 void KTLibraryWidget::drawCurrentItem(QTreeWidgetItem *item, int)
@@ -255,6 +267,25 @@ void KTLibraryWidget::renameObject( QTreeWidgetItem* item)
 {
 	if ( item )
 	{
-		m_graphics[item]->setComponentName(item->text(0));
+		AGraphicComponent *graphic = m_graphics[item];
+		
+		if ( graphic )
+		{
+			graphic->setComponentName(item->text(0));
+		}
+		else // A Folder
+		{
+			foreach( QTreeWidgetItem *folder, m_libraryTree->topLevelItems() )
+			{
+				if ( folder != item && folder->text(0) == item->text(0) )
+				{
+					// Invalid name
+					item->setFlags(item->flags() | Qt::ItemIsEditable );
+					item->setText(0, item->text(0)+QString::number(rand() % 999) );
+					m_libraryTree->editItem( item, 0);
+					break;
+				}
+			}
+		}
 	}
 }

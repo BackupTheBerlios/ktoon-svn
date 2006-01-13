@@ -202,7 +202,7 @@ void CrashHandler::setConfig(const QString &filePath)
 
 void crashTrapper (int sig)
 {
-	qDebug(CHANDLER->program()+" is crashing :(");
+	qDebug(CHANDLER->program()+" is crashing with signal %d :(", sig);
 	
 	bool isActive = true;
 	

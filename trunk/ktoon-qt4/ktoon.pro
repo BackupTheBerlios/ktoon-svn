@@ -3,10 +3,10 @@
 # Subdir relative project main directory: .
 # Target is a subdirs project 
 
+QT += qt3support 
+KDEV_QTVER = 4 
 DEFINES = $(KTDEFINES) 
 CONFIG += release \
           warn_on 
 TEMPLATE = subdirs 
 SUBDIRS += src 
-
-QT += qt3support xml opengl

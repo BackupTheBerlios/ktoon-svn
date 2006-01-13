@@ -48,6 +48,7 @@ class KTLibraryWidget : public KTModuleWidgetBase
 		void setup();
 		
 	private slots:
+		void addFolder(const QString &name);
 		void drawCurrentItem(QTreeWidgetItem *, int);
 		void emitSelectedComponent();
 		void removeCurrentGraphic();

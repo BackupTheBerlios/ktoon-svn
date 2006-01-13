@@ -3,7 +3,7 @@
 # Subdir relative project main directory: ./src/core
 # Target is an application:  ../../bin/ktoon
 
-QT += qt3support xml gui 
+QT += qt3support gui xml opengl 
 INSTALLS += ktbin \
             kttrans \
             ktdata 
@@ -13,6 +13,7 @@ kttrans.files += *.qm
 kttrans.path = /data/translations 
 ktbin.files += ../../bin/ktoon 
 ktbin.path = /bin 
+KDEV_QTVER = 4 
 TARGETDEPS += ../../src/dlslib/libdlslib.a \
               ../../src/dialogs/libdialogs.a \
               ../../src/components/colorpalette/libcolorpalette.a \

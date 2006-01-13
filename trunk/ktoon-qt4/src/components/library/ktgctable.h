@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef KTGCTABLE_H
 #define KTGCTABLE_H
 
@@ -37,7 +38,7 @@ class KTGCTable : public KTTreeListWidget
 		void removeCurrentFolder();
 		
 	public slots:
-		void createFolder(const QString &name = tr("New folder"));
+		void createFolder(const QString &name = QString() );
 		
 	private:
 		QTreeWidgetItem *m_currentFolder;

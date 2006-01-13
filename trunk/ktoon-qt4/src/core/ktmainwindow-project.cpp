@@ -203,7 +203,14 @@ void KTMainWindow::addGraphicComponent(const AGraphicComponent *graphic)
 {
 	AGraphicComponent *copy = new AGraphicComponent(*graphic);
 	
-	m_projectManager->currentKeyFrame()->addComponent( copy );
+	KTKeyFrame *frame = m_projectManager->currentKeyFrame();
+	
+	if ( ! frame )
+	{
+		return;
+	}
+	
+	frame->addComponent( copy );
 	
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
