@@ -113,6 +113,8 @@ void KTApplication::applyColors(ColorSchema cs)
 			int h,s,v;
 			bgAlt.getHsv( &h, &s, &v );
 			group.setColor( QColorGroup::Midlight, QColor( h, s/3, (int)(v * 1.2),QColor::Hsv ) );
+			group.setColor( QColorGroup::Light, Qt::white );
+			group.setColor( QColorGroup::Dark, Qt::black );
 		}
 		break;
 		case DarkBlue:

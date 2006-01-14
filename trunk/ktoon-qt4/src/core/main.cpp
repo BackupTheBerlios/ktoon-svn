@@ -39,14 +39,17 @@
 
 #include "crashhandler.h"
 
+#include "ktoonstyle.h"
+
 void usage();
 
 int main( int argc, char ** argv )
 {
 	KTApplication application( argc, argv );
 	CrashHandler::init();
-	
-	QApplication::setStyle("plastique");
+
+	QStyle *style = new KToonStyle();
+	QApplication::setStyle(style);
 	
 	if ( application.isArg("help") || application.isArg("h") )
 	{

@@ -3,7 +3,7 @@
 # Subdir relative project main directory: ./src/core
 # Target is an application:  ../../bin/ktoon
 
-QT += qt3support gui xml opengl 
+QT += qt3support 
 INSTALLS += ktbin \
             kttrans \
             ktdata 
@@ -30,8 +30,10 @@ TARGETDEPS += ../../src/dlslib/libdlslib.a \
               ../../src/components/import/libimport.a \
               ../../src/components/export/libexport.a \
               ../../src/components/help/libhelp.a \
-              ../../src/store/libstore.so 
-LIBS += ../../src/dialogs/libdialogs.a \
+              ../../src/store/libstore.so \
+              ../../src/ktoonstyle/libktoonstyle.a 
+LIBS += ../../src/ktoonstyle/libktoonstyle.a \
+        ../../src/dialogs/libdialogs.a \
         ../../src/components/brushes/libbrushes.a \
         ../../src/components/colorpalette/libcolorpalette.a \
         ../../src/components/scenes/libscenes.a \
@@ -48,7 +50,8 @@ LIBS += ../../src/dialogs/libdialogs.a \
         ../../src/components/export/libexport.a \
         ../../src/components/help/libhelp.a \
         -lstore 
-INCLUDEPATH += ../../src/modules/arthury/interfaces \
+INCLUDEPATH += ../../src/ktoonstyle \
+               ../../src/modules/arthury/interfaces \
                ../../src/modules/arthury/animation \
                ../../src/modules/arthury/illustration \
                ../../src/components/help \
