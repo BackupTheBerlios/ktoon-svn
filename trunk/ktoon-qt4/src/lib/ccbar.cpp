@@ -22,7 +22,7 @@
 
 #include <QApplication>
 
-CCBar::CCBar(int radio, QWidget *parent) : QFrame(parent), m_radio(radio), m_buttonCount(0), m_offset(15)
+CCBar::CCBar(int radio, QWidget *parent) : QFrame(parent), m_radio(radio), m_buttonCount(0), m_offset(30)
 {	
 	m_layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
 	m_layout->setSpacing(0);
@@ -44,22 +44,35 @@ void CCBar::paintEvent(QPaintEvent *)
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
 	
-	QPolygon m_border;
-	m_border.putPoints( 0, 6, m_offset, 0, 0, m_mask.height()/2, m_offset, m_mask.height(), m_mask.width()-m_offset, m_mask.height(), m_mask.width(),  m_mask.height()/2, m_mask.width()-m_offset, 0);
+	QPainterPath border;
+	border.moveTo(m_offset, 0);
+	border.cubicTo(
+			m_offset, 0,
+			0, m_mask.height()/2,
+			m_offset, m_mask.height()
+		      );
+	
+	border.lineTo(m_mask.width()-m_offset,  m_mask.height());
+	
+	border.cubicTo(
+			m_mask.width()-m_offset,  m_mask.height(),
+			m_mask.width(), m_mask.height()/2,
+			m_mask.width()-m_offset, 0
+		      );
+	border.lineTo(m_offset, 0);
 	
 	QPainter p(&m_mask);
 	p.setPen(QPen(Qt::black,1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 	p.setBrush(Qt::red);
-	p.drawPolygon(m_border);
+	p.drawPath(border);
 	
 	setMask(m_mask.mask());
 	
 	setMinimumSize( m_mask.size() );
 	
-	
 	painter.setPen(QPen(palette().color(QPalette::Foreground ),5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 	
-	painter.drawPolygon(m_border);
+	painter.drawPath(border);
 	
 	QPalette pal = palette();
 	

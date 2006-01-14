@@ -3,7 +3,7 @@
 # Subdir relative project main directory: ./src/dialogs
 # Target is a library:  
 
-QT += qt3support 
+QT += qt3support xml 
 KDEV_QTVER = 4 
 INCLUDEPATH += ../../src/core \
                ../../src/store \
