@@ -3,7 +3,7 @@
 # Subdir relative project main directory: ./src/core
 # Target is an application:  ../../bin/ktoon
 
-QT += qt3support 
+QT += qt3support xml 
 INSTALLS += ktbin \
             kttrans \
             ktdata 

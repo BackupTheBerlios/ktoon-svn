@@ -185,6 +185,7 @@ void KToonStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *opt
 		}
 		case PE_FrameGroupBox:
 		{
+#if QT_VERSION >= 0x040100
 			const QStyleOptionFrameV2 *group = qstyleoption_cast<const QStyleOptionFrameV2 *>(option);
 			if (group)
 			{
@@ -265,6 +266,9 @@ void KToonStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *opt
 			{
 				QPlastiqueStyle::drawPrimitive(element, option, painter, widget);
 			}
+#else
+			QPlastiqueStyle::drawPrimitive(element, option, painter, widget);
+#endif
 			break;
 		}
 		default:
@@ -331,6 +335,7 @@ void KToonStyle::drawComplexControl(ComplexControl control, const QStyleOptionCo
 			
 			break;
 		}
+#if QT_VERSION >= 0x040100
 		case CC_GroupBox:
 		{
 			const QStyleOptionGroupBox *groupBox = qstyleoption_cast<const QStyleOptionGroupBox *>(option);
@@ -370,6 +375,7 @@ void KToonStyle::drawComplexControl(ComplexControl control, const QStyleOptionCo
 			}
 			break;
 		}
+#endif
 		default:
 			QPlastiqueStyle::drawComplexControl(control, option, painter, widget);
 			break;
@@ -388,6 +394,7 @@ QRect KToonStyle::subControlRect(ComplexControl control, const QStyleOptionCompl
 			rect = QPlastiqueStyle::subControlRect(control, option, subControl, widget);
 			break;
 		}
+#if QT_VERSION >= 0x040100
 		case CC_GroupBox:
 		{
 			if (const QStyleOptionGroupBox *group = qstyleoption_cast<const QStyleOptionGroupBox *>(option)) 
@@ -397,10 +404,12 @@ QRect KToonStyle::subControlRect(ComplexControl control, const QStyleOptionCompl
 					default:
 						rect = QPlastiqueStyle::subControlRect(control, option, subControl, widget);
 						break;
+#if QT_VERSION >= 0x040100
 					case SC_GroupBoxContents:
 						rect = QPlastiqueStyle::subControlRect(control, option, subControl, widget);
 						rect.adjust(0, -8, 0, 0);
 						break;
+#endif
 					case SC_GroupBoxFrame:
 						rect = group->rect;
 						break;
@@ -417,6 +426,7 @@ QRect KToonStyle::subControlRect(ComplexControl control, const QStyleOptionCompl
 			}
 			break;
 		}
+#endif
 	}
 
 	if (control == CC_Slider && subControl == SC_SliderHandle) 
