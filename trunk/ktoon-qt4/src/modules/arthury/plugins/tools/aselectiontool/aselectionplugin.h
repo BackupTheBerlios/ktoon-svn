@@ -27,14 +27,14 @@
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class ASelectionPlugin : public QObject, public AToolInterface
+class ASelectionPlugin : public KTPluginObject, public AToolInterface
 {
 	Q_OBJECT;
 	Q_INTERFACES(AToolInterface);
 
 	public:
 		virtual QStringList keys() const;
-		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form, const QPoint &pos);
+		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form, const QPoint &pos, AGraphicComponent *clickedGraphic = 0);
 		virtual QRect move(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos);
 		virtual QRect release(const QString &brush, QPainter &painter, const QPainterPath &form, const QPoint &pos);
 		virtual QPainterPath path() const;
@@ -48,6 +48,7 @@ class ASelectionPlugin : public QObject, public AToolInterface
 		
 	private:
 		QPainterPath m_path;
+		AGraphicComponent *m_currentGraphic;
 };
 
 #endif

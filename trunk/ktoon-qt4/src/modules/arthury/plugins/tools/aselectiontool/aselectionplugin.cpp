@@ -30,47 +30,45 @@ QStringList ASelectionPlugin::keys() const
 	return QStringList() << tr("Selection");
 }
 
-QRect ASelectionPlugin::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos)
+QRect ASelectionPlugin::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, AGraphicComponent *clickedGraphic)
 {
-// 	m_path = QPainterPath();
-// 	m_path.moveTo(pos);
-// 	
-// 	return move(brush, painter, form, pos, pos);
+	QRect rect;
+	if ( clickedGraphic )
+	{
+		qDebug("Drawing Selected");
+		
+		rect = clickedGraphic->boundingRect().toRect();
+		QPainterPath path;
+	
+		path.addRect( QRectF(rect.bottomLeft() - QPointF(2, 2), QSizeF(4,4)));
+		path.addRect( QRectF(rect.bottomRight() - QPointF(2, 2), QSizeF(4,4)));
+		path.addRect( QRectF(rect.topLeft() - QPointF(2, 2), QSizeF(4,4)));
+		path.addRect( QRectF(rect.topRight() - QPointF(2, 2), QSizeF(4,4)));
+		path.addRect( QRectF(rect.center() - QPointF(2, 2), QSizeF(4,4)));
+		path.addRect( QRectF( QPointF(rect.x(), rect.y()+rect.height()/2 ) - QPointF(2, 2), QSizeF(4,4)));
+		path.addRect( QRectF( QPointF(rect.x()+rect.width(), rect.y()+rect.height()/2 ) - QPointF(2, 2), QSizeF(4,4)));
+		path.addRect( QRectF( QPointF(rect.x()+rect.width()/2, rect.y() ) - QPointF(2, 2), QSizeF(4,4)));
+		path.addRect( QRectF( QPointF(rect.x()+rect.width()/2, rect.y()+rect.height() ) - QPointF(2, 2), QSizeF(4,4)));
+		painter.save();
+		painter.setPen(QColor("blue"));
+		painter.setBrush(QColor("blue"));
+		painter.drawPath(path);
+		painter.restore();
+	}
+			
+	m_currentGraphic = clickedGraphic;
+	
+	return rect;
 }
 
 QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos)
 {
-// 	painter.save();
-// 
-// 	int rad = painter.pen().width() / 2;
-// 	QRect boundingRect = QRect(oldPos, newPos).normalized().adjusted(-rad, -rad, +rad, +rad);
-// 	
-// 	QColor color = painter.pen().color();
-// 	int thickness = painter.pen().width();
-// 	QColor transparentColor(color.red(), color.green(), color.blue(), 0);
-// 
-// 	QPainterPath path;
-// 	path.setFillRule( Qt::WindingFill );
-// 	
-// 	if (brush == tr("Shape brush") )
-// 	{
-// 		path.addPath(form);
-// 	}
-// 	
-// 	m_path.addPath(path);
-// 	m_path.setFillRule( Qt::WindingFill );
-// 	
-// 	painter.drawPath(path);
-// 	
-// 	boundingRect = path.boundingRect().toRect();
-// 	
-// 	painter.restore();
-// 	return boundingRect;
+	return QRect();
 }
 
 QRect ASelectionPlugin::release(const QString &  brush ,QPainter &  painter , const QPainterPath &form, const QPoint &  pos )
 {
-// 	return QRect(0, 0, 0, 0);
+	return QRect();
 }
 
 QPainterPath ASelectionPlugin::path() const
@@ -83,7 +81,6 @@ QHash<QString, QAction *> ASelectionPlugin::actions()
 	QHash<QString, QAction *> hash;
 	
 	QAction *act = new QAction(QPixmap(KTOON_THEME_DIR+"/icons/selection.png"), tr("Selection"), this);
-// 	act->setShortcut( QKeySequence(tr("R")) );
 	hash.insert( tr("Selection"), act );
 	
 	return hash;

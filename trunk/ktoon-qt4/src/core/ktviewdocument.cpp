@@ -29,6 +29,7 @@
 #include <QActionGroup>
 
 #include "ktvhbox.h"
+#include "ktpluginobject.h"
 
 KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, KTDocument *doc, QWidget *parent ) : KTMdiWindow(parent), m_document(doc), m_title(projectName)
 {
@@ -389,7 +390,7 @@ void KTViewDocument::loadPlugins()
 	foreach (QString fileName, m_pluginDirectory.entryList(QDir::Files))
 	{
 		QPluginLoader loader(m_pluginDirectory.absoluteFilePath(fileName));
-		QObject *plugin = loader.instance();
+		KTPluginObject *plugin = qobject_cast<KTPluginObject*>(loader.instance());
 		
 		ktDebug() << "******FILE: " << fileName;
 		
@@ -450,6 +451,8 @@ void KTViewDocument::loadPlugins()
 						m_paintAreaContainer->drawArea()->setTool(aTool, *it);
 					}
 				}
+				
+				connect(plugin, SIGNAL(toDrawGhostGraphic(const QPainterPath &)), m_paintAreaContainer->drawArea(), SLOT(drawGhostGraphic(const QPainterPath &)));
 			}
 		}
 		else

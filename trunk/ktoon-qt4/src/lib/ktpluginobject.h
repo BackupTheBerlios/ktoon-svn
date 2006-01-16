@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,36 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef ASHAPEBRUSHPLUGIN_H
-#define ASHAPEBRUSHPLUGIN_H
+#ifndef KTPLUGINOBJECT_H
+#define KTPLUGINOBJECT_H
 
-#include <atoolinterface.h>
+#include <QObject>
+#include <QPainterPath>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-
-class AShapeBrushPlugin : public KTPluginObject, public AToolInterface
+class KTPluginObject : public QObject
 {
-	Q_OBJECT;
-	Q_INTERFACES(AToolInterface);
-	
+	Q_OBJECT
 	public:
-		virtual QStringList keys() const;
-		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form, const QPoint &pos, AGraphicComponent *currentComponent = 0);
-		virtual QRect move(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos);
-		virtual QRect release(const QString &brush, QPainter &painter, const QPainterPath &form, const QPoint &pos);
-		virtual QPainterPath path() const;
+		KTPluginObject();
+		~KTPluginObject();
+		
+	signals:
+		void toDrawGhostGraphic(const QPainterPath &r);
 
-		virtual QHash<QString, QAction *>actions();
-		
-		int type() const
-		{
-			return Brush;
-		}
-		
-	private:
-		QPainterPath m_path;
 };
 
 #endif

@@ -91,7 +91,7 @@ void APaintArea::paintEvent(QPaintEvent *)
 		draw(&painter);
 		
 		painter.restore();
-		drawSelected(&painter);
+		
 		painter.end();
 		m_redrawAll = false;
 	}
@@ -286,7 +286,7 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphic, QPainter *painter
 void APaintArea::redrawAll()
 {
 	m_redrawAll = true;
-	QTimer::singleShot(50, this, SLOT(update()));;
+	QTimer::singleShot(0, this, SLOT(update()));;
 }
 
 void APaintArea::aUpdate(const QRectF &rect)
@@ -313,7 +313,15 @@ void APaintArea::aUpdate(const QRectF &rect)
 			++it;
 		}
 	}
-	QTimer::singleShot(50, this, SLOT(update()));;
+	QTimer::singleShot(0, this, SLOT(update()));
+}
+
+void APaintArea::drawGhostGraphic(const QPainterPath &path)
+{
+	aUpdate(path.boundingRect().toRect().normalized().adjusted(-60,-60,60,60) );
+	QPainter painter(&m_paintDevice);
+	painter.setPen(QPen(Qt::black, 1, Qt::DashLine));
+	painter.drawPath(path);
 }
 
 void APaintArea::resizeEvent( QResizeEvent * event )
@@ -360,79 +368,52 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 			{
 				QPainter painter(&m_paintDevice);
 				m_currentBrush->setupPainter(&painter);
-#if 1
-				if ( m_currentTool->keys().contains("Selection") )
+
+				QList<AGraphicComponent *> components =  m_currentFrame->components();
+				QList<AGraphicComponent *>::iterator it;
+				AGraphicComponent *toSelect = 0;
+				
+				for(it = components.end()-1; it != components.begin()-1; it--)
 				{
-					QList<AGraphicComponent *> components =  m_currentFrame->components();
-					QList<AGraphicComponent *>::iterator it;
-					AGraphicComponent *toSelect = 0;
-					
-					for(it = components.end()-1; it != components.begin()-1; it--)
+					if( (*it) && (*it)->path().intersects( QRectF(QPointF(static_cast<double>(event->pos().x()-1), static_cast<double>(event->pos().y()-1) ), QSizeF(2,2) ) ) )
 					{
-						if( (*it) && (*it)->path().intersects( QRectF(QPointF(static_cast<double>(event->pos().x()-1), static_cast<double>(event->pos().y()-1) ), QSizeF(2,2) ) ) )
+						if ( *it )
 						{
-							if ( *it )
-							{
-								toSelect = (*it);
-								break;
-							}
+							toSelect = (*it);
+							break;
 						}
 					}
-
-					if ( e->modifiers() & Qt::ControlModifier )
+				}
+				
+				if ( e->modifiers() & Qt::ControlModifier ) // Temporary Group
+				{
+					if ( toSelect && m_selectedGraphic && m_selectedGraphic != toSelect)
 					{
-						if ( toSelect && m_selectedGraphic && m_selectedGraphic != toSelect)
-						{
-							QPainterPath selectPath = m_selectedGraphic->path();
-							QPainterPath toSelectPath = toSelect->path();
-							selectPath.addPath(toSelectPath);
-							m_selectedGraphic->setPath(selectPath);	
+						QPainterPath selectPath = m_selectedGraphic->path();
+						QPainterPath toSelectPath = toSelect->path();
+						selectPath.addPath(toSelectPath);
+						m_selectedGraphic->setPath(selectPath);	
 
-							m_currentFrame->removeComponent(toSelect);
-							redrawAll();
-						}
-					}
-					else
-					{
-						m_selectedGraphic = toSelect;
+						m_currentFrame->removeComponent(toSelect);
 						redrawAll();
 					}
-					
 				}
-#endif
+				else
+				{
+					m_selectedGraphic = toSelect;
+				}
+				
+				
+
 				m_currentGraphic = new AGraphicComponent;
 				
-				QRect rect = m_currentTool->press(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), event->pos());
+				QRect rect = m_currentTool->press(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), event->pos(), toSelect);
 				rect.translate(m_xpos, m_ypos);
 				update(rect);
 			}
 			
 			m_lastPosition = event->pos();
 		}
-	}
-}
-
-void APaintArea::drawSelected(QPainter *painter)
-{
-	if(m_selectedGraphic)
-	{
-		QRectF rect = m_selectedGraphic->boundingRect();
-		QPainterPath path;
-		
-		path.addRect( QRectF(rect.bottomLeft() - QPointF(2, 2), QSizeF(4,4)));
-		path.addRect( QRectF(rect.bottomRight() - QPointF(2, 2), QSizeF(4,4)));
-		path.addRect( QRectF(rect.topLeft() - QPointF(2, 2), QSizeF(4,4)));
-		path.addRect( QRectF(rect.topRight() - QPointF(2, 2), QSizeF(4,4)));
-		path.addRect( QRectF(rect.center() - QPointF(2, 2), QSizeF(4,4)));
-		path.addRect( QRectF( QPointF(rect.x(), rect.y()+rect.height()/2 ) - QPointF(2, 2), QSizeF(4,4)));
-		path.addRect( QRectF( QPointF(rect.x()+rect.width(), rect.y()+rect.height()/2 ) - QPointF(2, 2), QSizeF(4,4)));
-		path.addRect( QRectF( QPointF(rect.x()+rect.width()/2, rect.y() ) - QPointF(2, 2), QSizeF(4,4)));
-		path.addRect( QRectF( QPointF(rect.x()+rect.width()/2, rect.y()+rect.height() ) - QPointF(2, 2), QSizeF(4,4)));
-		painter->save();
-		painter->setPen(QColor("blue"));
-		painter->setBrush(QColor("blue"));
-		painter->drawPath(path);
-		painter->restore();
 	}
 }
 

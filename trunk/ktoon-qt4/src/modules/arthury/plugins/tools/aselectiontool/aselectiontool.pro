@@ -3,15 +3,22 @@
 # Subdir relative project main directory: ./src/modules/arthury/plugins/tools/aselectiontool
 # Target is a library:  
 
-QT += xml gui qt3support
+QT += xml gui 
 INSTALLS += aselectiontool 
 aselectiontool.files += *.so 
 aselectiontool.path = /plugins/ 
+KDEV_QTVER = 4 
+TARGETDEPS += ../../../../../../src/store/libstore.so \
+              ../../../../../../src/modules/arthury/interfaces/libinterfaces.a 
+LIBS += -lstore \
+        ../../../../../../src/modules/arthury/interfaces/libinterfaces.a 
 INCLUDEPATH += ../../../../../../src/modules/arthury/interfaces \
+               ../../../../../../src/store \
                ../../../../../../src/lib 
 MOC_DIR = .moc 
 UI_DIR = .ui 
 OBJECTS_DIR = .obj 
+QMAKE_LIBDIR = ../../../../../../src/store 
 CONFIG += release \
           warn_on \
           plugin 

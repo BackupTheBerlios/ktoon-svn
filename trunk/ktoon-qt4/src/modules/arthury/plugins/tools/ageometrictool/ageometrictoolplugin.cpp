@@ -35,7 +35,7 @@ QStringList AGeometricToolPlugin::keys() const
 	return QStringList() << tr("Rectangle") << tr("Ellipse") << tr("Line");
 }
 
-QRect AGeometricToolPlugin::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos)
+QRect AGeometricToolPlugin::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, AGraphicComponent *currentComponent)
 {
 	m_path = QPainterPath();
 	m_path.moveTo(pos);
@@ -51,7 +51,7 @@ QRect AGeometricToolPlugin::move(const QString &brush, QPainter &painter,const Q
 {
 	painter.save();
 	
-	int rad = painter.pen().width() / 2;
+	int rad = painter.pen().width()/2 + 1;
 	QRect boundingRect = QRect(oldPos, newPos).normalized().adjusted(-rad, -rad, +rad, +rad);
 	
 	QColor color = painter.pen().color();
@@ -66,19 +66,26 @@ QRect AGeometricToolPlugin::move(const QString &brush, QPainter &painter,const Q
 	
 	if (brush == tr("Rectangle") )
 	{
-// 		path.addRect(m_rect);
+		path.addRect(m_rect);
 	}
 	else if ( brush == tr("Ellipse"))
 	{
-// 		path.addEllipse(m_rect);
+		path.addEllipse(m_rect);
 	}
-// 	painter.setPen(QPen(color, 0.1, Qt::DotLine));
-	painter.drawPath(path);
+	else if( brush == tr("Line"))
+	{
+		path.moveTo(m_rect.topLeft());
+		path.lineTo( m_rect.bottomRight());
+	}
 	
-	boundingRect = path.boundingRect().toRect();
-	
+// 	painter.setPen(QPen(color, 1, Qt::DashLine));
+// 	painter.drawPath(path);
 	painter.restore();
-	return boundingRect;
+	
+// 	boundingRect = path.boundingRect().toRect();
+	
+	emit toDrawGhostGraphic( path ); 
+	return QRect(0, 0, 0, 0);
 }
 
 QRect AGeometricToolPlugin::release(const QString &  brush ,QPainter &  painter , const QPainterPath &form, const QPoint &  pos )

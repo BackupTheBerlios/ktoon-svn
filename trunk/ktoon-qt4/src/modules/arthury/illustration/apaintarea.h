@@ -60,10 +60,9 @@ class APaintArea : public QWidget
 		
 		KTBrush *currentBrush();
 		
-		void drawSelected(QPainter *painter);
-		
 	public slots:
 		void aUpdate(const QRectF &rect);
+		void drawGhostGraphic(const QPainterPath &path);
 		void setKeyFrame(int index);
 		void setLayer(int index);
 		void setScene(KTScene *scene);

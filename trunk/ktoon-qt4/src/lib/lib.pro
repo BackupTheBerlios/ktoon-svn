@@ -3,20 +3,11 @@
 # Subdir relative project main directory: ./src/lib
 # Target is a library:  ktoon
 
-QT += qt3support xml
 INSTALLS += include \
             target 
 target.path = /lib/ 
 include.files += *.h 
 include.path = /include/ 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-TARGET = ktoon 
-CONFIG += release \
-          warn_on \
-          dll 
-TEMPLATE = lib 
 IMAGES += wizard1.xpm \
           wizard2.xpm 
 HEADERS += ktapplication.h \
@@ -61,7 +52,8 @@ HEADERS += ktapplication.h \
            ktoptionaldialog.h \
            kttreelistwidget.h \
            ktgradientadjuster.h \
-           ktpathadjuster.h 
+           ktpathadjuster.h \
+           ktpluginobject.h 
 SOURCES += ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
@@ -104,4 +96,14 @@ SOURCES += ktapplication.cpp \
            ktoptionaldialog.cpp \
            kttreelistwidget.cpp \
            ktgradientadjuster.cpp \
-           ktpathadjuster.cpp 
+           ktpathadjuster.cpp \
+           ktpluginobject.cpp 
+QT += qt3support xml
+MOC_DIR = .moc
+UI_DIR = .ui
+OBJECTS_DIR = .obj
+TARGET = ktoon
+CONFIG += release \
+warn_on \
+dll
+TEMPLATE = lib
