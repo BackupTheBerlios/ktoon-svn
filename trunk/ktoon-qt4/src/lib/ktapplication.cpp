@@ -236,6 +236,18 @@ QString KTApplication::themeDir() const
 	return m_THEME_DIR;
 }
 
+QString KTApplication::dataDir() const
+{
+	QString locale = QString(QTextCodec::locale()).left(2);
+	
+	if ( locale.length() < 2 )
+	{
+		locale = "en";
+	}
+	
+	return m_KTOON_HOME+"/data/"+locale+"/";
+}
+
 QString KTApplication::repository()
 {
 	return m_KTOON_REPOSITORY;

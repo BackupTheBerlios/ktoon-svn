@@ -48,6 +48,8 @@
 #include <QMessageBox>
 //
 
+#include "collapsiblewidget.h"
+
 KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0), m_scenes(0)
 {
 	KTINIT;
@@ -64,14 +66,14 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	m_projectManager = new KTProjectManager(this);
 	splash->setMessage( tr("Setting up the project manager") );
 	
-	m_drawingSpace = new QWorkspace;
+	m_drawingSpace = new KTWorkspace;
 	m_drawingSpace->setScrollBarsEnabled ( true );
 	
 // 	m_drawingSpace->setBackground(QBrush(QPixmap(background_xpm))); 
 	
 	addWidget(m_drawingSpace, tr("Illustration"), true);
 	
-	m_animationSpace = new QWorkspace;
+	m_animationSpace = new KTWorkspace;
 	m_animationSpace->setScrollBarsEnabled ( true );
 	
 	m_viewCamera = new KTViewCamera(m_animationSpace);

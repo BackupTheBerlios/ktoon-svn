@@ -53,6 +53,8 @@ class KTApplication : public QApplication
 		QString themeDir() const;
 		void setThemeDir(const QString &themeDir);
 		
+		QString dataDir() const;
+		
 		QString repository();
 		void createRepository(const QString &repository);
 		QString version();
@@ -95,5 +97,7 @@ class KTApplication : public QApplication
 #define KTOON_REPOSITORY (static_cast<KTApplication*>(qApp))->repository()
 
 #define KTOON_THEME_DIR (static_cast<KTApplication*>(qApp))->themeDir()
+
+#define KTOON_DATA_DIR (static_cast<KTApplication*>(qApp))->dataDir()
 
 #endif

@@ -28,6 +28,8 @@
 #include "crashhandler.h"
 #include "crashwidget.h"
 
+#include "ktdebug.h"
+
 CrashHandler *CrashHandler::m_instance = 0;
 
 void crashTrapper (int sig);
@@ -147,6 +149,8 @@ bool CrashHandler::containsSignalEntry(int signal)
 
 void CrashHandler::setConfig(const QString &filePath)
 {
+	KT_FUNCINFO;
+	SHOW_VAR(filePath);
 	QDomDocument doc;
 	QFile file(filePath);
 	

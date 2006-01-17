@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,46 +17,26 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef AGENERICBRUSH_H
-#define AGENERICBRUSH_H
 
-#include <QObject>
-#include <atoolinterface.h>
+#ifndef KTWORKSPACE_H
+#define KTWORKSPACE_H
 
-class QKeySequence;
+#include <QWorkspace>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-
-class AGenericBrush : public KTPluginObject, public AToolInterface
+class KTWorkspace : public QWorkspace
 {
-	Q_OBJECT;
-	Q_INTERFACES(AToolInterface);
-	
+	Q_OBJECT
 	public:
-		virtual QStringList keys() const;
-		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, AGraphicComponent *currentComponent = 0);
-		virtual QRect move(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos);
-		virtual QRect release(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &pos);
-		virtual QPainterPath path() const;
-
-		virtual QHash<QString, QAction *>actions();
+		KTWorkspace(QWidget *parent = 0);
+		~KTWorkspace();
 		
-		int type() const
-		{
-			return Brush;
-		}
-		
-		virtual QWidget *configurator()
-		{
-			return 0;
-		}
-		
-	private:
-		QPoint m_firstPoint;
-		QList<QPoint> m_points;
-		QPainterPath m_path;
+	protected:
+		void mousePressEvent(QMouseEvent *e);
+		void mouseMoveEvent(QMouseEvent *e);
+		void mouseReleaseEvent(QMouseEvent *e);
 };
 
 #endif

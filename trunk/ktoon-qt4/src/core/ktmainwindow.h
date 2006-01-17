@@ -32,6 +32,8 @@
 #include "ktactionmanager.h"
 #include "ktviewdocument.h"
 
+#include "ktworkspace.h"
+
 #include "ktfiledialog.h"
 
 #include "ktexposuresheet.h"
@@ -61,6 +63,8 @@
 #include "ktprojectmanager.h"
 
 #include "ktsplash.h"
+
+class SettingsContainer;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -176,8 +180,8 @@ class KTMainWindow : public DMainWindow
 		KTProjectManager *m_projectManager;
 		
 	private:
-		QWorkspace *m_drawingSpace;
-		QWorkspace *m_animationSpace;
+		KTWorkspace *m_drawingSpace;
+		KTWorkspace *m_animationSpace;
 		KTStatusBar *m_statusBar;
 		KTActionManager *m_actionManager;
 		QMenu *m_fileMenu,*m_editMenu, *m_proyectMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;

@@ -49,7 +49,7 @@ class KTViewDocument : public KTMdiWindow
 {
 	Q_OBJECT
 	public:
-		KTViewDocument( const QSize& size ,  const QString& projectName ,KTDocument *doc, QWidget *parent = 0 );
+		KTViewDocument( const QSize& size ,  const QString& projectName ,KTDocument *doc, QWorkspace *parent = 0 );
 		~KTViewDocument();
 		void close();
 		APaintArea *drawArea();

@@ -46,6 +46,11 @@ class ASelectionPlugin : public KTPluginObject, public AToolInterface
 			return Selection;
 		}
 		
+		virtual QWidget *configurator()
+		{
+			return 0;
+		}
+		
 	private:
 		QPainterPath m_path;
 		AGraphicComponent *m_currentGraphic;

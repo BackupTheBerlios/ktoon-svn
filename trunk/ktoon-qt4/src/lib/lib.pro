@@ -53,7 +53,8 @@ HEADERS += ktapplication.h \
            kttreelistwidget.h \
            ktgradientadjuster.h \
            ktpathadjuster.h \
-           ktpluginobject.h 
+           ktpluginobject.h \
+           collapsiblewidget.h 
 SOURCES += ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
@@ -97,7 +98,8 @@ SOURCES += ktapplication.cpp \
            kttreelistwidget.cpp \
            ktgradientadjuster.cpp \
            ktpathadjuster.cpp \
-           ktpluginobject.cpp 
+           ktpluginobject.cpp \
+           collapsiblewidget.cpp 
 QT += qt3support xml
 MOC_DIR = .moc
 UI_DIR = .ui

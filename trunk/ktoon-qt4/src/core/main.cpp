@@ -48,7 +48,7 @@ int main( int argc, char ** argv )
 	KTApplication application( argc, argv );
 	CrashHandler::init();
 
-	QApplication::setStyle(new KToonStyle());
+// 	QApplication::setStyle(new KToonStyle());
 	
 	if ( application.isArg("help") || application.isArg("h") )
 	{
@@ -111,7 +111,7 @@ int main( int argc, char ** argv )
 	QApplication::addLibraryPath (KTOON_HOME+"/plugins");
 	
 
-	CHANDLER->setConfig(KTOON_HOME+"/data/"+ QString(QTextCodec::locale()).left(2) +"/crashhandler.xml"); // TODO: make standar way to access to data
+	CHANDLER->setConfig(KTOON_DATA_DIR+"/crashhandler.xml"); // TODO: make standar way to access to data
 	CHANDLER->setImagePath(KTOON_THEME_DIR+"/icons/");
 	
 	return application.exec();

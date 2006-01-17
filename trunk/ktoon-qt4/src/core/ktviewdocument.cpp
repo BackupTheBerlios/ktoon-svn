@@ -31,7 +31,7 @@
 #include "ktvhbox.h"
 #include "ktpluginobject.h"
 
-KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, KTDocument *doc, QWidget *parent ) : KTMdiWindow(parent), m_document(doc), m_title(projectName)
+KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, KTDocument *doc, QWorkspace *parent ) : KTMdiWindow(parent), m_document(doc), m_title(projectName)
 {
 	setWindowIcon(QPixmap(KTOON_THEME_DIR+"/icons/layer_pic.png") ); // FIXME: new image for documents
 	
@@ -396,10 +396,10 @@ void KTViewDocument::loadPlugins()
 		
 		if (plugin)
 		{
-			AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(plugin);
+// 			AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(plugin);
 			AToolInterface *aTool = qobject_cast<AToolInterface *>(plugin);
 			
-			if ( aFilter )
+/*			if ( aFilter )
 			{
 				QStringList::iterator it;
 				QStringList keys = aFilter->keys();
@@ -417,7 +417,8 @@ void KTViewDocument::loadPlugins()
 					}
 				}
 			}
-			else if (aTool)
+			else */
+			if (aTool)
 			{
 				QStringList::iterator it;
 				QStringList keys = aTool->keys();
@@ -450,8 +451,7 @@ void KTViewDocument::loadPlugins()
 						}
 						m_paintAreaContainer->drawArea()->setTool(aTool, *it);
 					}
-				}
-				
+				}				
 				connect(plugin, SIGNAL(toDrawGhostGraphic(const QPainterPath &)), m_paintAreaContainer->drawArea(), SLOT(drawGhostGraphic(const QPainterPath &)));
 			}
 		}
@@ -470,7 +470,15 @@ void KTViewDocument::selectTool()
 	{
 		AToolInterface *aTool = qobject_cast<AToolInterface *>(action->parent());
 		QString tool = action->text();
-	
+
+		QWidget *toolConfigurator = aTool->configurator();
+		
+		if ( toolConfigurator )
+		{
+			workspace()->addWindow(toolConfigurator);
+			toolConfigurator->show();
+		}
+		
 		m_paintAreaContainer->drawArea()->setTool(aTool, tool);
 	}
 }

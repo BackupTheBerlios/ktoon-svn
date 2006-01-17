@@ -22,6 +22,7 @@
 #define KTMDIWINDOW_H
 
 #include <QMainWindow>
+#include <QWorkspace>
 
 /**
 @author Jorge Cuadrado
@@ -30,8 +31,9 @@ class KTMdiWindow : public QMainWindow
 {
 	Q_OBJECT
 	public:
-		KTMdiWindow(QWidget* parent = 0, const char* name = 0);
+		KTMdiWindow(QWorkspace* parent = 0, const char* name = 0);
 		~KTMdiWindow();
+		QWorkspace* workspace();
 	
 	protected:
 		virtual bool event( QEvent * e );
@@ -40,6 +42,9 @@ class KTMdiWindow : public QMainWindow
 		void sendMessage(const QString &, int ms = 0);
 		void sendProgress(int step, int totalSteps);
 		void activate(bool);
+		
+	private:
+		QWorkspace *m_workspace;
 };
 
 #endif

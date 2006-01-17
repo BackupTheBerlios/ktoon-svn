@@ -45,6 +45,10 @@ class AShapeBrushPlugin : public KTPluginObject, public AToolInterface
 		{
 			return Brush;
 		}
+		virtual QWidget *configurator()
+		{
+			return 0;
+		}
 		
 	private:
 		QPainterPath m_path;

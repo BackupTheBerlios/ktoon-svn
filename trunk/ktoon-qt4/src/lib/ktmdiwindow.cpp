@@ -24,7 +24,7 @@
 #include <QEvent>
 #include <QMenuBar>
 
-KTMdiWindow::KTMdiWindow(QWidget* parent, const char* name): QMainWindow(parent)
+KTMdiWindow::KTMdiWindow(QWorkspace* parent, const char* name): QMainWindow(parent), m_workspace(parent)
 {
 	setObjectName(name);
 }
@@ -62,4 +62,9 @@ bool  KTMdiWindow::event( QEvent * e )
 	}
 
 	return QMainWindow::event(e );
+}
+
+QWorkspace* KTMdiWindow::workspace()
+{
+	return m_workspace;
 }

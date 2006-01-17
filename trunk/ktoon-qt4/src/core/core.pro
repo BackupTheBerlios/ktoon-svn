@@ -3,7 +3,6 @@
 # Subdir relative project main directory: ./src/core
 # Target is an application:  ../../bin/ktoon
 
-QT += qt3support xml 
 INSTALLS += ktbin \
             kttrans \
             ktdata 
@@ -13,73 +12,6 @@ kttrans.files += *.qm
 kttrans.path = /data/translations 
 ktbin.files += ../../bin/ktoon 
 ktbin.path = /bin 
-KDEV_QTVER = 4 
-TARGETDEPS += ../../src/dlslib/libdlslib.a \
-              ../../src/dialogs/libdialogs.a \
-              ../../src/components/colorpalette/libcolorpalette.a \
-              ../../src/components/scenes/libscenes.a \
-              ../../src/components/brushes/libbrushes.a \
-              ../../src/components/ktoonscript/libktoonscript.a \
-              ../../src/components/exposure/libexposure.a \
-              ../../src/components/timeline/libtimeline.a \
-              ../../src/components/library/liblibrary.a \
-              ../../src/modules/arthury/animation/libanimation.a \
-              ../../src/modules/arthury/illustration/libillustration.a \
-              ../../src/lib/libktoon.so \
-              ../../src/components/gceditor/libgceditor.a \
-              ../../src/components/import/libimport.a \
-              ../../src/components/export/libexport.a \
-              ../../src/components/help/libhelp.a \
-              ../../src/store/libstore.so \
-              ../../src/ktoonstyle/libktoonstyle.a 
-LIBS += ../../src/ktoonstyle/libktoonstyle.a \
-        ../../src/dialogs/libdialogs.a \
-        ../../src/components/brushes/libbrushes.a \
-        ../../src/components/colorpalette/libcolorpalette.a \
-        ../../src/components/scenes/libscenes.a \
-        ../../src/components/ktoonscript/libktoonscript.a \
-        ../../src/components/exposure/libexposure.a \
-        ../../src/components/timeline/libtimeline.a \
-        ../../src/components/library/liblibrary.a \
-        ../../src/modules/arthury/animation/libanimation.a \
-        ../../src/modules/arthury/illustration/libillustration.a \
-        ../../src/dlslib/libdlslib.a \
-        -lktoon \
-        ../../src/components/gceditor/libgceditor.a \
-        ../../src/components/import/libimport.a \
-        ../../src/components/export/libexport.a \
-        ../../src/components/help/libhelp.a \
-        -lstore 
-INCLUDEPATH += ../../src/ktoonstyle \
-               ../../src/modules/arthury/interfaces \
-               ../../src/modules/arthury/animation \
-               ../../src/modules/arthury/illustration \
-               ../../src/components/help \
-               ../../src/components/gceditor \
-               ../../src/components/import \
-               ../../src/components/export \
-               ../../src/components/ktoonscript \
-               ../../src/components/exposure \
-               ../../src/components/timeline \
-               ../../src/components/library \
-               ../../src/components/colorpalette \
-               ../../src/components/scenes \
-               ../../src/components/brushes \
-               ../../src/dialogs \
-               ../../src/store \
-               ../../src/dlslib \
-               ../../src/lib 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-QMAKE_LIBDIR = ../../src/lib \
-               ../../src/store 
-TARGET = ../../bin/ktoon 
-CONFIG += release \
-          warn_on \
-          qt \
-          opengl 
-TEMPLATE = app 
 TRANSLATIONS += ktoon_es.ts \
                 ktoon_fr.ts \
                 ktoon_ru.ts \
@@ -95,7 +27,8 @@ HEADERS += ktdocumentruler.h \
            ktosd.h \
            ktsplash.h \
            crashhandler.h \
-           crashwidget.h 
+           crashwidget.h \
+           ktworkspace.h 
 SOURCES += main.cpp \
            ktdocumentruler.cpp \
            ktviewdocument.cpp \
@@ -110,4 +43,73 @@ SOURCES += main.cpp \
            ktosd.cpp \
            ktsplash.cpp \
            crashhandler.cpp \
-           crashwidget.cpp 
+           crashwidget.cpp \
+           ktworkspace.cpp 
+QT += qt3support xml
+KDEV_QTVER = 4
+TARGETDEPS += ../../src/dlslib/libdlslib.a \
+../../src/dialogs/libdialogs.a \
+../../src/components/colorpalette/libcolorpalette.a \
+../../src/components/scenes/libscenes.a \
+../../src/components/brushes/libbrushes.a \
+../../src/components/ktoonscript/libktoonscript.a \
+../../src/components/exposure/libexposure.a \
+../../src/components/timeline/libtimeline.a \
+../../src/components/library/liblibrary.a \
+../../src/modules/arthury/animation/libanimation.a \
+../../src/modules/arthury/illustration/libillustration.a \
+../../src/lib/libktoon.so \
+../../src/components/gceditor/libgceditor.a \
+../../src/components/import/libimport.a \
+../../src/components/export/libexport.a \
+../../src/components/help/libhelp.a \
+../../src/store/libstore.so \
+../../src/ktoonstyle/libktoonstyle.a
+LIBS += ../../src/ktoonstyle/libktoonstyle.a \
+../../src/dialogs/libdialogs.a \
+../../src/components/brushes/libbrushes.a \
+../../src/components/colorpalette/libcolorpalette.a \
+../../src/components/scenes/libscenes.a \
+../../src/components/ktoonscript/libktoonscript.a \
+../../src/components/exposure/libexposure.a \
+../../src/components/timeline/libtimeline.a \
+../../src/components/library/liblibrary.a \
+../../src/modules/arthury/animation/libanimation.a \
+../../src/modules/arthury/illustration/libillustration.a \
+../../src/dlslib/libdlslib.a \
+-lktoon \
+../../src/components/gceditor/libgceditor.a \
+../../src/components/import/libimport.a \
+../../src/components/export/libexport.a \
+../../src/components/help/libhelp.a \
+-lstore
+INCLUDEPATH += ../../src/ktoonstyle \
+../../src/modules/arthury/interfaces \
+../../src/modules/arthury/animation \
+../../src/modules/arthury/illustration \
+../../src/components/help \
+../../src/components/gceditor \
+../../src/components/import \
+../../src/components/export \
+../../src/components/ktoonscript \
+../../src/components/exposure \
+../../src/components/timeline \
+../../src/components/library \
+../../src/components/colorpalette \
+../../src/components/scenes \
+../../src/components/brushes \
+../../src/dialogs \
+../../src/store \
+../../src/dlslib \
+../../src/lib
+MOC_DIR = .moc
+UI_DIR = .ui
+OBJECTS_DIR = .obj
+QMAKE_LIBDIR = ../../src/lib \
+../../src/store
+TARGET = ../../bin/ktoon
+CONFIG += release \
+warn_on \
+qt \
+opengl
+TEMPLATE = app

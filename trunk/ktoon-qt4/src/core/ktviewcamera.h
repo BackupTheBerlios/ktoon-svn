@@ -36,7 +36,7 @@ class KTViewCamera : public KTMdiWindow
 {
 	Q_OBJECT
 	public:
-		KTViewCamera(QWidget *parent = 0);
+		KTViewCamera(QWorkspace *parent = 0);
 		~KTViewCamera();
 		
 		AAnimationArea *animationArea();

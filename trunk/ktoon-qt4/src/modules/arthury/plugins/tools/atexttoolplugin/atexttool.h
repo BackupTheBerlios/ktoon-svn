@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,24 +17,27 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef AGENERICBRUSH_H
-#define AGENERICBRUSH_H
+ 
+#ifndef ATEXTTOOL_H
+#define ATEXTTOOL_H
 
-#include <QObject>
 #include <atoolinterface.h>
 
-class QKeySequence;
+#include "textconfigurator.h"
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+	@author David Cuadrado <krawek@toonka.com>
 */
-
-class AGenericBrush : public KTPluginObject, public AToolInterface
+class ATextTool : public KTPluginObject, public AToolInterface
 {
 	Q_OBJECT;
 	Q_INTERFACES(AToolInterface);
-	
 	public:
+		ATextTool()
+		{
+			m_configurator = new TextConfigurator;
+		}
+		
 		virtual QStringList keys() const;
 		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, AGraphicComponent *currentComponent = 0);
 		virtual QRect move(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos);
@@ -50,13 +53,15 @@ class AGenericBrush : public KTPluginObject, public AToolInterface
 		
 		virtual QWidget *configurator()
 		{
-			return 0;
+			return m_configurator;
 		}
 		
 	private:
-		QPoint m_firstPoint;
-		QList<QPoint> m_points;
 		QPainterPath m_path;
+		TextConfigurator *m_configurator;
+		
+		QPoint m_position;
+
 };
 
 #endif

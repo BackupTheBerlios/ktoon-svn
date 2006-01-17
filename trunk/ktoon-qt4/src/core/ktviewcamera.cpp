@@ -22,7 +22,7 @@
 #include "ktapplication.h"
 #include "ktdebug.h"
 
-KTViewCamera::KTViewCamera(QWidget *parent) : KTMdiWindow(parent)
+KTViewCamera::KTViewCamera(QWorkspace *parent) : KTMdiWindow(parent)
 {
 	KTINIT;
 	

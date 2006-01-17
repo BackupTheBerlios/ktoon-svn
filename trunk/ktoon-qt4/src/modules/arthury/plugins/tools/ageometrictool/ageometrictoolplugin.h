@@ -23,6 +23,7 @@
 
 #include <atoolinterface.h>
 #include <QObject>
+#include <QLabel>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -45,6 +46,12 @@ class AGeometricToolPlugin : public KTPluginObject, public AToolInterface
 		int type() const
 		{
 			return Brush;
+		}
+		
+		virtual QWidget *configurator()
+		{
+			QLabel *label = new QLabel(tr("Hi!"));
+			return  label;
 		}
 		
 	private:

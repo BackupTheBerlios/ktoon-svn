@@ -62,6 +62,8 @@ class AToolInterface
 		virtual QPainterPath path() const = 0;
 		
 		virtual int type() const = 0;
+		
+		virtual QWidget *configurator() = 0;
 };
 
 Q_DECLARE_INTERFACE( AToolInterface, "com.toonka.ktoon.AToolInterface/0.1" );
