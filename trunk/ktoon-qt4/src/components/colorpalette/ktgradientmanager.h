@@ -57,13 +57,13 @@ class KTGradientManager : public QFrame
 	private:
 		KTGradientSelector *m_selector;
 		KTGradientViewer *m_viewer;
-		KTRadioButtonGroup *m_type ;
+		KTRadioButtonGroup *m_type, *m_spread ;
 		KTImageButton *m_fill, *m_outLine;
-
 // 		KTXYSpinBox *m_center, *m_focal;
 		
 	public slots:
 		void changeType(int type);
+		void changeSpread(int spread);
 		void changeGradient( const QGradientStops& );
 		void emitGradientChanged();
 		

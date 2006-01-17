@@ -42,12 +42,21 @@ KTGradientManager::KTGradientManager(QWidget *parent)
 // 	m_selector->setMaxRow( 10);
 	layout->addWidget(m_selector);
 	connect( m_selector, SIGNAL(gradientChanged(  const QGradientStops& )),this, SLOT(changeGradient( const QGradientStops& )));
+	
 	m_type = new KTRadioButtonGroup(tr("Gradient type"), Qt::Vertical, this);
 	QStringList list;
-	list /*<< tr( "None" )*/ << tr( "Linear" ) << tr( "Radial" ) << tr("Conical");
+	list << tr( "Linear" ) << tr( "Radial" ) << tr("Conical");
 	m_type->addItems ( list );
 	connect(  m_type, SIGNAL(  clicked ( int )),this, SLOT(changeType(int)));
-	subLayout->addWidget( m_type/*,0, Qt::AlignTop*/);
+	subLayout->addWidget( m_type);
+	
+	m_spread = new KTRadioButtonGroup(tr("Gradient spread"), Qt::Vertical, this);
+	list.clear();
+	list << tr( "Pad" ) << tr( "Reflect" ) << tr("Repeat");
+	m_spread->addItems ( list );
+	connect(  m_spread, SIGNAL(  clicked ( int )),this, SLOT(changeSpread(int)));
+	subLayout->addWidget( m_spread);
+	
 	
 	subLayout->setSpacing(2);
 	subLayout->setMargin(2);
@@ -71,7 +80,7 @@ KTGradientManager::KTGradientManager(QWidget *parent)
 // 	m_focal = new KTXYSpinBox(tr("focal") );
 // 	layout->addWidget(m_focal);
 // 	connect( m_focal, SIGNAL(valueXYChanged(double, double)), m_viewer,SLOT( changeFocal(double, double)));
-	m_viewer->changeFocal( m_viewer->rect().center().x(), m_viewer->rect().center().y());
+	m_viewer->changeFocal( QPointF(m_viewer->rect().center().x(), m_viewer->rect().center().y()));
 	setFrameStyle(QFrame::StyledPanel );
 // 	ktDebug().resaltWidget(this);
 }
@@ -127,8 +136,14 @@ void KTGradientManager::changeType(int type)
 {
 	m_viewer->changeType( type);
 	emitGradientChanged();
-	
 }
+
+void KTGradientManager::changeSpread(int spread)
+{
+	m_viewer->setSpread( spread);
+	emitGradientChanged();
+}
+
 
 void KTGradientManager::changeGradient( const QGradientStops& stops )
 {

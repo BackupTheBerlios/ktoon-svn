@@ -23,6 +23,7 @@
 
 #include <QFrame>
 #include <QGradient>
+#include <QList>
 
 /**
 	@author Jorge Cuadrado <kuadrosx@toonka.com>
@@ -35,23 +36,29 @@ class KTGradientViewer : public QFrame
 		~KTGradientViewer();
 		QGradient gradient();
 		void createGradient();
-		
+		void setSpread(int spread);
+		void mousePressEvent(QMouseEvent *e);
+		void mouseMoveEvent( QMouseEvent * e );
 		
 	protected:
 		virtual void paintEvent( QPaintEvent * );
 		virtual QSize sizeHint() const;
 		
 	private:
+		class ControlPoint;
+		ControlPoint *m_controlPoint;
 		QGradientStops m_gradientStops;
 		QGradient m_gradient;
+		
+		QPointF m_focal, m_center;
+		
 		QGradient::Type m_type;
-		double m_xFocal, m_yFocal;
+		QGradient::Spread m_spread;
 		
 	public slots:
 		void changeGradient( const QGradientStops& );
 		void changeType(int  type);
-		void changeFocal(double dx, double dy);
-	
+		void changeFocal(const QPointF& focal);
 };
 
 #endif

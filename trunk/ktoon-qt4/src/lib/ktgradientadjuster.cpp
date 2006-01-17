@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "ktgradientadjuster.h"
+#include <QMatrix>
 
 KTGradientAdjuster::KTGradientAdjuster()
 {
@@ -35,6 +36,7 @@ QGradient KTGradientAdjuster::adjustGradient(const QGradient *gradient, const QR
 		case  QGradient::LinearGradient:
 		{
 			const QLinearGradient *lg = static_cast<const QLinearGradient *>(gradient);
+			
 			return adjustGradient(*lg, rect);
 			break;
 		}
@@ -57,6 +59,40 @@ QGradient KTGradientAdjuster::adjustGradient(const QGradient *gradient, const QR
 
 QLinearGradient KTGradientAdjuster::adjustGradient(const QLinearGradient &gradient, const QRect &rect)
 {
+	const float offset = 10;
+	
+// 	QRectF toScale(gradient.start(), QSizeF(gradient.finalStop().x(), gradient.finalStop().y()) );
+	
+// 	QMatrix matrix;
+// 	float sx = 1, sy = 1;
+// 	if ( rect.width() < toScale.width() )
+// 	{
+// 		sx = static_cast<float>(rect.width()) / static_cast<float>(toScale.width());
+// 	}
+// 	else
+// 	{
+// 		
+// 	}
+// 	
+// 	if ( rect.height() < toScale.height() )
+// 	{
+// 		sy = static_cast<float>(rect.height()) / static_cast<float>(toScale.height());
+// 	}
+// 	else
+// 	{
+// 		
+// 	}
+	
+// 	float factor = qMin(sx, sy);
+	
+// 	matrix.scale(factor, factor);
+	
+// 	QRectF gradientRect = matrix.mapRect(toScale);
+	
+// 	gradientRect.translate((rect.width()-gradientRect.width())/2, (rect.height()-gradientRect.height())/2);
+	
+// 	toScale.translate((rect.width()-toScale.width())/2, (rect.height()-toScale.height())/2);
+	
 	QLinearGradient newGradient = QLinearGradient(rect.topLeft(), rect.topRight());
 	newGradient.setStops(gradient.stops());
 	newGradient.setSpread(gradient.spread());
@@ -68,6 +104,7 @@ QRadialGradient KTGradientAdjuster::adjustGradient(const QRadialGradient &gradie
 	
 	QRadialGradient newGradient = QRadialGradient(rect.center(), (rect.left()-rect.right())/2, rect.center());
 	newGradient.setStops(gradient.stops());
+	newGradient.setSpread(gradient.spread());
 	return newGradient;
 }
 
@@ -75,6 +112,7 @@ QConicalGradient KTGradientAdjuster::adjustGradient(const QConicalGradient &grad
 {
 	QConicalGradient newGradient = QConicalGradient(rect.center(), gradient.angle());
 	newGradient.setStops(gradient.stops());
+	newGradient.setSpread(gradient.spread());
 	return newGradient;
 }
 

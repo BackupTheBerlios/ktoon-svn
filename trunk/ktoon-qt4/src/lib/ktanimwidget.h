@@ -21,20 +21,19 @@
 #ifndef KTANIMWIDGET_H
 #define KTANIMWIDGET_H
 
-#include <q3canvas.h>
-#include <qpixmap.h>
-//Added by qt3to4:
+#include <QPixmap>
 #include <QHideEvent>
 #include <QShowEvent>
-#include <Q3ValueList>
+#include <QList>
+#include <QWidget>
 
-typedef Q3ValueList<QPixmap> ListOfPixmaps;
+typedef QList<QPixmap> ListOfPixmaps;
 
 /**
  * @Author David Cuadrado
  */
  
-class KTAnimWidget : public Q3CanvasView
+class KTAnimWidget : public QWidget
 {
 	public:
 		enum Type { AnimText = 0, AnimPixmap };
@@ -44,20 +43,23 @@ class KTAnimWidget : public Q3CanvasView
 		~KTAnimWidget();
 		
 		void setBackgroundPixmap(const QPixmap &px);
-		
-		bool isItemVisible();
-		
-		void stop();
-		void follow();
-		void start();
-		
 		void showEvent ( QShowEvent * e);
 		void hideEvent ( QHideEvent * e);
 		
+	protected:
+		void timerEvent(QTimerEvent *e);
+		void paintEvent(QPaintEvent *e);
+		
 	private:
 		Type m_type;
-		Q3Canvas *m_canvas;
-		Q3CanvasItem *m_item;
+		class Controller;
+		Controller *m_controller;
+		QPixmap m_background;
+		QString m_text;
+		QRectF m_textRect;
+		
+		ListOfPixmaps m_pixmaps;
+		int m_pixmapIndex;
 };
 
 #endif

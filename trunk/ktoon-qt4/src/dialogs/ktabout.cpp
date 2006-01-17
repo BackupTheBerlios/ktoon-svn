@@ -38,7 +38,8 @@
 #define DEBUG_ABOUT 1
 
 KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
-{ 
+{
+	KTINIT;
 	setWindowTitle( tr( "About" ) + QString( " KToon..." ) );
 
     	//1: Credits
@@ -148,6 +149,7 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 
 KTAbout::~KTAbout()
 {
+	KTEND;
 }
 
 

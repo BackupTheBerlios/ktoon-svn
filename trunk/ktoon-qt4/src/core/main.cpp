@@ -48,8 +48,7 @@ int main( int argc, char ** argv )
 	KTApplication application( argc, argv );
 	CrashHandler::init();
 
-	QStyle *style = new KToonStyle();
-	QApplication::setStyle(style);
+	QApplication::setStyle(new KToonStyle());
 	
 	if ( application.isArg("help") || application.isArg("h") )
 	{

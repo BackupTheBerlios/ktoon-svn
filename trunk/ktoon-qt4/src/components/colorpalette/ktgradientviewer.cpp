@@ -23,36 +23,83 @@
 #include "ktdebug.h"
 
 #include "ktgradientadjuster.h"
+#include <QMouseEvent>
+#include <QRectF>
+
+class KTGradientViewer::ControlPoint
+{
+	public:
+		ControlPoint()
+		{
+			currentIndex = 0;
+			points << QPointF(10,50) << QPointF(60,50);
+		}
+		~ControlPoint() {}
+		QVector<QPointF> points;
+		int currentIndex;
+		
+		void selectPoint(const QPointF &point)
+		{
+			int rate = 6;
+			QPointF p2(point + QPoint(rate/2,rate/2));
+			QRectF rect(point - QPointF(rate/2,rate/2) , QSizeF(p2.x(), p2.y()) );
+			
+			QVector<QPointF>::const_iterator it;
+			for (it = points.begin(); it != points.end(); ++it)
+			{
+				if( rect.contains(*it) )
+				{
+					currentIndex = points.indexOf(*it);
+					break;
+				}
+			}
+		}
+		void drawPoints(QPainter *p)
+		{
+			foreach(QPointF point, points)
+			{
+				p->drawPoint(point);
+			}
+		}
+};
 
 KTGradientViewer::KTGradientViewer(QWidget *parent)
  : QFrame(parent)
 {
 
 // 	setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
-	
+	m_controlPoint = new ControlPoint();
 	setMaximumWidth(100);
 	
 	m_type = QGradient::LinearGradient;
-	
+	m_spread =  QGradient::PadSpread;
 	setMidLineWidth(2);
 	setLineWidth(2);
 	setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
+	m_focal = rect().center();
+	m_center = rect().center();
 }
 
 
 KTGradientViewer::~KTGradientViewer()
 {
 	KTEND;
+	delete m_controlPoint;
 }
 
 void KTGradientViewer::paintEvent( QPaintEvent* e)
 {
-	QPainter p(this);
 	createGradient();
-	
+	QPainter p;
+	p.begin(this);
 	p.setBrush(m_gradient);
-	
 	p.drawRect(rect());
+	p.setPen(QPen(Qt::blue, 5, Qt::SolidLine,Qt::RoundCap,Qt::RoundJoin ));
+	
+	
+	m_controlPoint->drawPoints(&p);
+	
+	p.end();
 	
 	QFrame::paintEvent(e);
 }
@@ -68,20 +115,23 @@ void KTGradientViewer::createGradient()
 	{
 		case  QGradient::LinearGradient:
 		{
-			m_gradient = QLinearGradient(rect().topLeft(), rect().topRight());
+			m_gradient = QLinearGradient(m_controlPoint->points[0], m_controlPoint->points[1]);
 			m_gradient.setStops( m_gradientStops);
+			m_gradient.setSpread(m_spread);
 			break;
 		}
 		case QGradient::RadialGradient:
 		{
-			m_gradient = QRadialGradient(rect().center(), rect().topRight().x(), rect().center());
+			m_gradient = QRadialGradient(m_controlPoint->points[0], rect().topRight().x(), m_controlPoint->points[1] );
 			m_gradient.setStops( m_gradientStops);
+			m_gradient.setSpread(m_spread);
 			break;
 		}
 		case QGradient::ConicalGradient:
 		{
-			m_gradient = QConicalGradient(rect().center(), 450);
+			m_gradient = QConicalGradient(m_controlPoint->points[0], 450);
 			m_gradient.setStops( m_gradientStops);
+			m_gradient.setSpread(m_spread);
 			break;
 		}
 		default:
@@ -98,17 +148,20 @@ void KTGradientViewer::changeGradient( const QGradientStops& stops)
 
 void KTGradientViewer::changeType(int type)
 {
-	
 	m_type = QGradient::Type(type);
-	
 	repaint();
 }
 
-void KTGradientViewer::changeFocal(double dx, double dy)
+
+void KTGradientViewer::setSpread(int spread)
 {
-	m_xFocal = dx;
-	m_yFocal = dy;
-	
+	m_spread = QGradient::Spread(spread);
+	repaint();
+}
+
+void KTGradientViewer::changeFocal(const QPointF& focal )
+{
+	m_focal = focal;
 	repaint();
 }
 
@@ -116,3 +169,18 @@ QGradient KTGradientViewer::gradient()
 {
 	return m_gradient;
 }
+
+void KTGradientViewer::mousePressEvent(QMouseEvent *e)
+{
+	m_controlPoint->selectPoint(e->pos());
+	
+	update();
+}
+
+void KTGradientViewer::mouseMoveEvent( QMouseEvent * e )
+{
+	m_controlPoint->points[m_controlPoint->currentIndex] = e->pos();
+// 	m_controlPoint->setCurrentPosition( e->pos() );
+	update();
+}
+

@@ -18,133 +18,136 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#define DEBUG_KTANIMWIDGET 0
-
 #include "ktanimwidget.h"
 #include "ktapplication.h"
-//Added by qt3to4:
+
 #include <QPixmap>
 #include <QHideEvent>
 #include <QShowEvent>
+#include <QPainter>
+#include <QFontMetricsF>
 
-KTAnimWidget::KTAnimWidget(const QPixmap &px, const QString &text, QWidget *parent) : Q3CanvasView(parent, "KTAnimWidgetText"), m_type(AnimText)
+#include "ktdebug.h"
+
+class KTAnimWidget::Controller
 {
-#if DEBUG_KTANIMWIDGET
-	qDebug("[Initializing KTAnimWidget]");
-#endif
-	setVScrollBarMode(AlwaysOff);
-	setHScrollBarMode(AlwaysOff);
-	
-	m_canvas = new Q3Canvas(px.width(), px.height());
-	m_canvas->setAdvancePeriod(40);
-	m_canvas->setBackgroundPixmap(px);
-	m_canvas->setDoubleBuffering(true);
+	public:
+		Controller(KTAnimWidget *area) : m_area(area), m_timerId(-1)
+		{
+		}
+		~Controller()
+		{
+		}
+		void start(int ms)
+		{
+			if ( m_timerId != -1 )
+			{
+				stop();
+			}
+			
+			m_timerId = m_area->startTimer(ms);
+		}
+		void stop()
+		{
+			m_area->killTimer(m_timerId);
+			m_timerId = -1;
+		}
+		
+	private:
+		KTAnimWidget *m_area;
+		int m_timerId;
+};
 
-	m_item = new Q3CanvasText(text, QApplication::font(), m_canvas);
-	static_cast<Q3CanvasText*>(m_item)->setTextFlags (Qt::AlignLeft );
-	
-	setCanvas(m_canvas);
+KTAnimWidget::KTAnimWidget(const QPixmap &px, const QString &text, QWidget *parent) : QWidget(parent), m_type(AnimText), m_controller(new Controller(this)), m_background(px), m_text(text)
+{
 	resize(px.width()/2, px.height());
-// 	show();
+	
+	setFont(QFont("Times", 24, QFont::Bold));
+	
+	QPoint position = QPoint(50, px.height());
+	QFontMetricsF fontMetrics(font());
+	m_textRect = QRectF(QPointF(40, height()), fontMetrics.size(Qt::TextWordWrap, m_text));
 }
 
-KTAnimWidget::KTAnimWidget(ListOfPixmaps lop, QWidget *parent) : Q3CanvasView(parent, "KTAnimWidgetPixmap"), m_type(AnimPixmap)
+KTAnimWidget::KTAnimWidget(ListOfPixmaps lop, QWidget *parent) : QWidget(parent), m_type(AnimPixmap), m_controller(new Controller(this)), m_pixmaps(lop), m_pixmapIndex(0)
 {
-#if DEBUG_KTANIMWIDGET
-	qDebug("[Initializing KTAnimWidget]");
-#endif
-	Q_ASSERT(lop.count() > 1);
-	setVScrollBarMode(AlwaysOff);
-	setHScrollBarMode(AlwaysOff);
-
-	m_canvas = new Q3Canvas(lop[0].width(), lop[0].height());
-	m_canvas->setAdvancePeriod(5000);
-	m_canvas->setDoubleBuffering(true);
-	
-	Q3CanvasPixmapArray *pa = new Q3CanvasPixmapArray(lop);
-	
-	m_item = new Q3CanvasSprite(pa, m_canvas);
-
-	setCanvas(m_canvas);
-	resize(m_canvas->width()/2, m_canvas->height());
-
-// 	show();
+	m_background = lop[0];
 }
 
 KTAnimWidget::~ KTAnimWidget()
 {
+	delete m_controller;
 }
 
 void KTAnimWidget::setBackgroundPixmap(const QPixmap &px)
 {
-	m_canvas->setBackgroundPixmap(px);
-}
-
-void KTAnimWidget::stop()
-{
-	m_item->setAnimated(false);
-}
-
-void KTAnimWidget::start()
-{
-	switch ( m_type )
-	{
-		case AnimText:
-		{
-			m_item->move( 20, m_canvas->height());
-			m_item->show();
-			m_item->setAnimated(true);
-			m_item->setYVelocity(-0.5);
-		}
-		break;
-		case AnimPixmap:
-		{
-			// QCanvasPixmap *px = static_cast<QCanvasSprite*>(m_item)->image(0);
-			// setBackgroundPixmap(*px);
-	
-			static_cast<Q3CanvasSprite*>(m_item)->setFrameAnimation(Q3CanvasSprite::Cycle);
-			static_cast<Q3CanvasSprite*>(m_item)->setAnimated(true);
-			static_cast<Q3CanvasSprite*>(m_item)->show();
-			static_cast<Q3CanvasSprite*>(m_item)->advance(1);
-			//m_item->setYVelocity(-0.5);
-		}
-		break;
-	}
-}
-
-void KTAnimWidget::follow()
-{
-	m_item->setAnimated(true);
-}
-
-bool KTAnimWidget::isItemVisible()
-{
-	bool incanvas = false;
-	QRect r = m_item->boundingRect();
-	
-	if ( r.y() < - r.height() || r.x() < - r.width() )
-		incanvas = false;
-	else
-		incanvas = true;
-	
-	return m_item->isVisible() && incanvas;
+	m_background = px;
 }
 
 void KTAnimWidget::showEvent ( QShowEvent * e )
 {
-	if ( isItemVisible() )
+	switch(m_type)
 	{
-		follow();
+		case AnimText:
+		{
+			m_controller->start(50);
+		}
+		break;
+		case AnimPixmap:
+		{
+			m_controller->start(5000);
+		}
+		break;
 	}
-	else
-	{
-		start();
-	}
-	Q3CanvasView::showEvent ( e);
+	QWidget::showEvent (e);
 }
 
-void KTAnimWidget::hideEvent ( QHideEvent * e)
+void KTAnimWidget::hideEvent ( QHideEvent *e)
 {
-	stop();
-	Q3CanvasView::hideEvent ( e);
+	m_controller->stop();
+	QWidget::hideEvent ( e);
 }
+
+void KTAnimWidget::timerEvent(QTimerEvent *e)
+{
+	switch(m_type)
+	{
+		case AnimText:
+		{
+			int yPos = m_textRect.y() - 1;
+			m_textRect.setY( yPos );
+		}
+		break;
+		case AnimPixmap:
+		{
+			m_pixmapIndex = (m_pixmapIndex + 1) % m_pixmaps.count();
+			m_background = m_pixmaps[m_pixmapIndex];
+		}
+		break;
+	}
+	update();
+}
+
+void KTAnimWidget::paintEvent(QPaintEvent *)
+{
+	QPainter painter(this);
+	painter.setRenderHint(QPainter::Antialiasing, true);
+	
+	painter.drawPixmap(0,0, m_background);
+	
+	switch(m_type)
+	{
+		case AnimText:
+		{
+			painter.setRenderHint(QPainter::TextAntialiasing, true);
+			painter.drawText( m_textRect, m_text);
+		}
+		break;
+		case AnimPixmap:
+		{
+		}
+		break;
+	}
+}
+
+
