@@ -60,6 +60,51 @@ void KTPaletteDocument::addGradient(const QGradient &gradient)
 	QDomElement element = createElement("Gradient");
 	
 	element.setAttribute("type", gradient.type() );
+	element.setAttribute("spread", gradient.type() );
+	const QGradient *gr = &gradient;
+	switch( gradient.type() )
+	{
+		case  QGradient::LinearGradient:
+		{
+			const QLinearGradient *lg = static_cast<const QLinearGradient *>(gr);
+			QDomElement startPoint = createElement("startPoint");
+			startPoint.setAttribute("x", lg->start().x() );
+			startPoint.setAttribute("y", lg->start().y() );
+			element.appendChild(startPoint);
+			
+			QDomElement finalPoint = createElement("finalPoint");
+			finalPoint.setAttribute("x", lg->finalStop().x() );
+			finalPoint.setAttribute("y", lg->finalStop().y() );
+			element.appendChild(finalPoint);
+			break;
+		}
+		case QGradient::RadialGradient:
+		{
+			const QRadialGradient *lg = static_cast<const QRadialGradient *>(gr);
+			element.setAttribute("radius", lg->radius() );
+			QDomElement centerPoint = createElement("centerPoint");
+			centerPoint.setAttribute("x", lg->center().x() );
+			centerPoint.setAttribute("y", lg->center().y() );
+			element.appendChild(centerPoint);
+			
+			QDomElement focalPoint = createElement("focalPoint");
+			focalPoint.setAttribute("x", lg->focalPoint().x() );
+			focalPoint.setAttribute("y", lg->focalPoint().y() );
+			element.appendChild(focalPoint);
+			break;
+		}
+		case QGradient::ConicalGradient:
+		{
+			const QConicalGradient *lg = static_cast<const QConicalGradient *>(gr);
+			element.setAttribute("angle", lg->angle() );
+			QDomElement centerPoint = createElement("centerPoint");
+			centerPoint.setAttribute("x", lg->center().x() );
+			centerPoint.setAttribute("y", lg->center().y() );
+			element.appendChild(centerPoint);
+			break;
+		}
+	}
+	
 	
 	QGradientStops stops = gradient.stops();
 	

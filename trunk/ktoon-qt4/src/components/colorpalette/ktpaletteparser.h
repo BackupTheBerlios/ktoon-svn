@@ -54,8 +54,9 @@ class KTPaletteParser : public QXmlDefaultHandler
 		bool m_isEditable;
 		QList<QBrush> m_brushes;
 		
-		QGradientStops m_tmpStops;
-		QGradient *m_tmpGradient;
+		QGradientStops m_gradientStops;
+		QGradient *m_gradient;
+		
 };
 
 #endif

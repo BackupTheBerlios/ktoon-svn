@@ -21,11 +21,11 @@
 #include "aanimationarea.h"
 #include "ktdebug.h"
 
-AAnimationArea::AAnimationArea(QWidget *parent) : QFrame(parent), m_scene(0), m_draw(false), m_ciclicAnimation(false), m_currentFramePosition(0), m_isRendered(false)
+AAnimationArea::AAnimationArea(const QSize& size, QWidget *parent) : QFrame(parent), m_scene(0), m_draw(false), m_ciclicAnimation(false), m_currentFramePosition(0), m_isRendered(false)
 {
 	setAttribute(Qt::WA_StaticContents);
 
-	m_renderCamera = QImage(520, 340, QImage::Format_RGB32);
+	m_renderCamera = QImage(size, QImage::Format_RGB32);
 	m_renderCamera.fill(qRgb(255, 255, 255));
 	
 	m_timer = new QTimer(this);
@@ -303,5 +303,12 @@ int AAnimationArea::photogramsCount() const
 QSize AAnimationArea::sizeHint() const
 {
 	return m_renderCamera.size();
+}
+
+void AAnimationArea::setSize(const QSize& size)
+{
+	m_renderCamera = QImage(size, QImage::Format_RGB32);
+	m_renderCamera.fill(qRgb(255, 255, 255));
+	update();
 }
 

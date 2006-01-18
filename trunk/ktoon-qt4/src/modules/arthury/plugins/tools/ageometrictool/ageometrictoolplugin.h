@@ -50,8 +50,7 @@ class AGeometricToolPlugin : public KTPluginObject, public AToolInterface
 		
 		virtual QWidget *configurator()
 		{
-			QLabel *label = new QLabel(tr("Hi!"));
-			return  label;
+			return  0;
 		}
 		
 	private:

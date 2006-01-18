@@ -40,7 +40,7 @@ class KTGradientViewer::ControlPoint
 		
 		void selectPoint(const QPointF &point)
 		{
-			int rate = 6;
+			int rate = 5;
 			QPointF p2(point + QPoint(rate/2,rate/2));
 			QRectF rect(point - QPointF(rate/2,rate/2) , QSizeF(p2.x(), p2.y()) );
 			
@@ -58,19 +58,29 @@ class KTGradientViewer::ControlPoint
 		{
 			foreach(QPointF point, points)
 			{
+				if(point == points[currentIndex])
+				{
+					p->save();
+					p->setPen(QPen(Qt::red, 5, Qt::SolidLine,Qt::RoundCap,Qt::RoundJoin ));
+				}
+				else
+				{
+					p->save();
+					p->setPen(QPen(Qt::blue, 5, Qt::SolidLine,Qt::RoundCap,Qt::RoundJoin ));
+				}
 				p->drawPoint(point);
+				p->restore();
 			}
 		}
 };
 
 KTGradientViewer::KTGradientViewer(QWidget *parent)
- : QFrame(parent)
+	: QFrame(parent), m_angle(360), m_radius(50)
 {
 
-// 	setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
 	m_controlPoint = new ControlPoint();
-	setMaximumWidth(100);
-	
+	setMaximumSize(100,100);
+	setMinimumSize(100,100);
 	m_type = QGradient::LinearGradient;
 	m_spread =  QGradient::PadSpread;
 	setMidLineWidth(2);
@@ -122,14 +132,14 @@ void KTGradientViewer::createGradient()
 		}
 		case QGradient::RadialGradient:
 		{
-			m_gradient = QRadialGradient(m_controlPoint->points[0], rect().topRight().x(), m_controlPoint->points[1] );
+			m_gradient = QRadialGradient(m_controlPoint->points[0], m_radius, m_controlPoint->points[1] );
 			m_gradient.setStops( m_gradientStops);
 			m_gradient.setSpread(m_spread);
 			break;
 		}
 		case QGradient::ConicalGradient:
 		{
-			m_gradient = QConicalGradient(m_controlPoint->points[0], 450);
+			m_gradient = QConicalGradient(m_controlPoint->points[0], m_angle);
 			m_gradient.setStops( m_gradientStops);
 			m_gradient.setSpread(m_spread);
 			break;
@@ -180,7 +190,18 @@ void KTGradientViewer::mousePressEvent(QMouseEvent *e)
 void KTGradientViewer::mouseMoveEvent( QMouseEvent * e )
 {
 	m_controlPoint->points[m_controlPoint->currentIndex] = e->pos();
-// 	m_controlPoint->setCurrentPosition( e->pos() );
+	update();
+}
+
+void KTGradientViewer::changeAngle(int angle)
+{
+	m_angle = angle;
+	update();
+}
+
+void KTGradientViewer::changeRadius(int radius)
+{
+	m_radius = radius;
 	update();
 }
 

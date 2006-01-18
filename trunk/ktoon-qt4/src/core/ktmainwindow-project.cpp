@@ -30,6 +30,9 @@ void KTMainWindow::insertScene( const QString &name, bool addedToEnd)
 	m_scenes->insertScene( name, addedToEnd);
 	m_exposureSheet->addScene( name);
 	m_timeLine->addScene(name);
+	
+	
+	
 }
 
 void KTMainWindow::changeScene(int index)
@@ -39,6 +42,13 @@ void KTMainWindow::changeScene(int index)
 	
 	m_scenes->setScene(index);
 	m_projectManager->setCurrentScene( index);
+	
+	KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->activeWindow());
+	if(camera)
+	{
+		camera->animationArea()->setScene(m_projectManager->currentScene());
+	}
+	
 }
 
 void KTMainWindow::insertLayer(const QString &name, bool addedToEnd)
@@ -81,7 +91,6 @@ void KTMainWindow::insertFrame(const QString &name, bool addedToEnd)
 	if(!doc)
 	{
 		newViewDocument( name);
-		m_viewCamera->animationArea()->setScene(m_projectManager->currentScene());
 	}
 	
 	m_exposureSheet->addFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd);

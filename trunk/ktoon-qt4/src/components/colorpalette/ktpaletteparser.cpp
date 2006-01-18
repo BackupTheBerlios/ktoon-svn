@@ -22,7 +22,7 @@
 #include "ktdebug.h"
 
 KTPaletteParser::KTPaletteParser()
-	: QXmlDefaultHandler(), m_paletteName(""), m_isEditable(false), m_tmpGradient(0)
+	: QXmlDefaultHandler(), m_paletteName(""), m_isEditable(false), m_gradient(0)
 {
 // 	KTINIT;
 }
@@ -65,46 +65,45 @@ bool KTPaletteParser::startElement( const QString& , const QString& , const QStr
 			else
 				ktError() << "Invalid Color";
 		}
-		else if ( qname == "Gradient")
+		if ( qname == "Gradient" )
 		{
-			QString type = atts.value("type");
-			QString spread = atts.value("spread");
+			if ( m_gradient ) delete m_gradient;
+			m_gradientStops.clear();
 			
-			if ( type == "linear" )
-			{
-				m_tmpGradient = new QLinearGradient(0, 0, 0, 0 );
-			}
-			else if ( type == "conical" )
-			{
-				m_tmpGradient = new QConicalGradient(0, 0, atts.value("angle").toDouble() );
-			}
-			else if ( type == "radial" )
-			{
-				m_tmpGradient = new QRadialGradient(0, 0, 0, 0, 0 );
-			}
+			QGradient::Type type = QGradient::Type(atts.value("type").toInt());
+			QGradient::Spread spread = QGradient::Spread(atts.value("spread").toInt());
 			
-			if ( spread == "PadSpread")
+			switch( type )
 			{
-				m_tmpGradient->setSpread(QGradient::PadSpread);
-			}
-			else if ( spread == "RepeatSpread" )
-			{
-				m_tmpGradient->setSpread(QGradient::RepeatSpread);
-			}
-			else if ( spread == "ReflectSpread" )
-			{
-				m_tmpGradient->setSpread(QGradient::ReflectSpread);
+				case QGradient::LinearGradient:
+				{
+					m_gradient = new QLinearGradient(0,0,0,0);
+				}
+				break;
+				case QGradient::RadialGradient:
+				{
+					m_gradient = new QRadialGradient(0,0,0);
+				}
+				break;
+				case QGradient::ConicalGradient:
+				{
+					m_gradient = new QConicalGradient(0,0,0);
+				}
+				break;
+				default:
+				{
+					ktFatal() << "No gradient type: " << type;
+				}
+				break;
+				m_gradient->setSpread(spread);
 			}
 		}
 		else if ( qname == "Stop" )
 		{
-			QColor c = QColor(atts.value("colorName"));
-			c.setAlpha( atts.value("alpha").toInt() );
+			QColor c(atts.value("colorName") );
+			c.setAlpha(atts.value("alpha").toInt() );
 			
-			if ( c.isValid() )
-			{
-				m_tmpStops << qMakePair(atts.value("value").toDouble() ,c);
-			}
+			m_gradientStops << qMakePair(atts.value("value").toDouble(), c);	
 		}
 	}
 	return true;
@@ -114,11 +113,11 @@ bool KTPaletteParser::endElement(const QString&, const QString& , const QString&
 {
 	if ( m_root == "Palette" )
 	{
-		if ( qname == "Gradient" && m_tmpGradient )
+		if ( qname == "Gradient" && m_gradient )
 		{
-			m_tmpGradient->setStops(m_tmpStops);
-			m_brushes << *m_tmpGradient;
-			m_tmpStops.clear();
+			m_gradient->setStops(m_gradientStops);
+			m_brushes << *m_gradient;
+			m_gradientStops.clear(); 
 		}
 	}
 	

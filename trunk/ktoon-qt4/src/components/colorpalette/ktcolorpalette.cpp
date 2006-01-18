@@ -63,8 +63,6 @@ KTColorPalette::~KTColorPalette()
 	KTCONFIG->setValue("LastBackgroundColor", color().second);
 }
 
-
-
 void KTColorPalette::setupChooserTypeColor()
 {
 	QFrame *colorMixer = new QFrame(m_centralWidget);
@@ -74,8 +72,6 @@ void KTColorPalette::setupChooserTypeColor()
 	layout->setSizeConstraint(QLayout::SetFixedSize);
 	
 	m_displayValueColor = new KTValueColor(colorMixer);
-	
-	
 	
 	QBoxLayout *layoutContainer = new QBoxLayout(QBoxLayout::LeftToRight);
 	
@@ -122,6 +118,8 @@ void KTColorPalette::setupDisplayColor()
 	
 	connect (m_containerPalette, SIGNAL(selectGradient(const QGradient&)), this, SLOT(changeGradient(const QGradient&)));
 	
+	connect (m_containerPalette, SIGNAL(selectGradient(const QGradient&)), m_gradientManager, SLOT(setGradient(const QGradient&)));
+	
 	m_splitter->addWidget(m_containerPalette);
 	
 	
@@ -163,7 +161,6 @@ void KTColorPalette::setColor(const QColor& color)
 	
 		m_luminancePicker->setCol(color.hue(), color.saturation(), color.value());
 		m_containerPalette->setColor( QBrush(color) );
-		
 		
 		if(m_flagGradient)
 		{
@@ -236,38 +233,33 @@ QPair<QColor, QColor> KTColorPalette::color()
 
 void KTColorPalette::changeGradient(const QGradient & gradient)
 {
-	KT_FUNCINFO;
-	if(m_gradientManager->gradientApply() != KTGradientManager::None)
+	switch(m_gradientManager->gradientApply())
 	{
-		switch(m_gradientManager->gradientApply())
+		case KTGradientManager::FillAndOutLine:
 		{
-			case KTGradientManager::FillAndOutLine:
-			{
-				emit colorChanged(QBrush(gradient), QBrush(gradient));
-				break;
-
-			}
-			case KTGradientManager::Fill:
-			{
-				emit colorChanged(m_outlineAndFillColors->foreground(), QBrush(gradient));
-				break;
-			}
-			case KTGradientManager::OutLine:
-			{
-				emit colorChanged(QBrush(gradient) ,m_outlineAndFillColors->background());
-				break;
-			}
-			default:
-			{
-				return;
-				break;
-			}
-			
+			ktDebug() << m_gradientManager->gradientApply();
+			emit colorChanged(QBrush(gradient), QBrush(gradient));
+			break;
 		}
-		
-		m_containerPalette->setColor( QBrush(gradient) );
-		m_gradientManager->setGradient( gradient );
+		case KTGradientManager::Fill:
+		{
+			ktDebug() << m_gradientManager->gradientApply();
+			emit colorChanged(m_outlineAndFillColors->foreground(), QBrush(gradient));
+			break;
+		}
+		case KTGradientManager::OutLine:
+		{
+			ktDebug() << m_gradientManager->gradientApply();
+			emit colorChanged(QBrush(gradient) ,m_outlineAndFillColors->background());
+			break;
+		}
+		default:
+		{
+			return;
+			break;
+		}
 	}
+	m_containerPalette->setColor( QBrush(gradient) );
 }
 
 void KTColorPalette::parsePaletteFile(const QString &file)

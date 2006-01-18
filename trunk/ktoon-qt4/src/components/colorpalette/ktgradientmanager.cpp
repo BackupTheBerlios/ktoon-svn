@@ -24,7 +24,6 @@
 #include <QBoxLayout>
 #include "ktvhbox.h"
 
-
 KTGradientManager::KTGradientManager(QWidget *parent)
  : QFrame(parent)
 {
@@ -33,15 +32,28 @@ KTGradientManager::KTGradientManager(QWidget *parent)
 	layout->setMargin(2);
 	setLayout(layout);
 	
-	m_viewer = new KTGradientViewer(this);
 	QBoxLayout *subLayout = new QBoxLayout(QBoxLayout::LeftToRight);
-	layout->addLayout(subLayout);
-	subLayout->addWidget(m_viewer);
-
+	
+	QBoxLayout *selectorAndViewer = new QBoxLayout(QBoxLayout::TopToBottom);
+	
 	m_selector = new KTGradientSelector(this);
-// 	m_selector->setMaxRow( 10);
-	layout->addWidget(m_selector);
+	m_viewer = new KTGradientViewer(this);
+	
+	layout->addLayout(subLayout);
+	
+	selectorAndViewer->addWidget(m_viewer);
+	selectorAndViewer->addWidget(m_selector);
+	subLayout->addLayout(selectorAndViewer);
+	
 	connect( m_selector, SIGNAL(gradientChanged(  const QGradientStops& )),this, SLOT(changeGradient( const QGradientStops& )));
+	
+	m_controlerSpins = new ControlerSpins(this);
+	
+	connect(m_controlerSpins, SIGNAL(angleChanged(int)), m_viewer, SLOT(changeAngle(int)));
+	connect(m_controlerSpins, SIGNAL(radiusChanged(int)), m_viewer, SLOT(changeRadius(int)));
+	layout->addWidget(m_controlerSpins);
+	
+	
 	
 	m_type = new KTRadioButtonGroup(tr("Gradient type"), Qt::Vertical, this);
 	QStringList list;
@@ -60,7 +72,6 @@ KTGradientManager::KTGradientManager(QWidget *parent)
 	
 	subLayout->setSpacing(2);
 	subLayout->setMargin(2);
-// 	subLayout->setSizeConstraint(QLayout::SetMinimumSize);
 	
 	
 	KTVHBox *box = new KTVHBox(this, Qt::Horizontal);
@@ -77,12 +88,11 @@ KTGradientManager::KTGradientManager(QWidget *parent)
 	m_outLine->setCheckable ( true );
 	layout->addWidget(box);
 
-// 	m_focal = new KTXYSpinBox(tr("focal") );
-// 	layout->addWidget(m_focal);
-// 	connect( m_focal, SIGNAL(valueXYChanged(double, double)), m_viewer,SLOT( changeFocal(double, double)));
 	m_viewer->changeFocal( QPointF(m_viewer->rect().center().x(), m_viewer->rect().center().y()));
 	setFrameStyle(QFrame::StyledPanel );
-// 	ktDebug().resaltWidget(this);
+	
+	m_controlerSpins->setSpin( QGradient::Type(0 ));
+	m_controlerSpins->setRadius(50);
 }
 
 
@@ -135,6 +145,9 @@ int KTGradientManager::gradientType()
 void KTGradientManager::changeType(int type)
 {
 	m_viewer->changeType( type);
+	
+	m_controlerSpins->setSpin( QGradient::Type(type));
+	adjustSize();
 	emitGradientChanged();
 }
 
@@ -150,10 +163,16 @@ void KTGradientManager::changeGradient( const QGradientStops& stops )
 	m_viewer->changeGradient(stops);
 	emit gradientChanged(m_viewer->gradient());
 }
+
 void KTGradientManager::setGradient(const QGradient & gradient)
 {
+	blockSignals ( true);
 	m_type->setCurrentIndex(gradient.type());
+	m_spread->setCurrentIndex(gradient.spread());
 	m_selector->setStops(gradient.stops());
+	m_viewer->changeGradient( gradient.stops());
+	blockSignals ( false);
+// 	emit gradientChanged(m_viewer->gradient());
 }
 
 void KTGradientManager::emitGradientChanged()

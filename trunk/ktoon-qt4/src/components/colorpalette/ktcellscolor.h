@@ -42,6 +42,8 @@ Q_OBJECT
 		int type();
 		QString name() const;
 		void setName(const QString& name);
+		void save( const QString& path);
+		
 	private:
 		Type m_type;
 		QString m_name;

@@ -45,6 +45,27 @@ KTViewColorCells::~KTViewColorCells()
 	
 	KTCONFIG->beginGroup("ColorPalette");
 	KTCONFIG->setValue("LastPalette", m_chooserPalette->currentIndex());;
+	
+	QDir brushesDir(ktapp->configDir()+"/palettes");
+	
+	if ( ! brushesDir.exists() )
+	{
+		brushesDir.mkdir(brushesDir.path() );
+	}
+	
+	ktDebug() << brushesDir.path();
+	
+	for(int i = 0; i < m_containerPalette->count(); i++)
+	{
+		KTCellsColor *palette = qobject_cast<KTCellsColor *>(m_containerPalette->widget(i) );
+		if(palette)
+		{
+			if(!palette->isReadOnly())
+			{
+				palette->save( ktapp->configDir()+"/palettes/"+ palette->name() + ".ktpl" );
+			}
+		}
+	}
 }
 
 void KTViewColorCells::setupForm()
@@ -71,10 +92,7 @@ void KTViewColorCells::setupForm()
 	addPalette(m_qtColorPalette);
 	
 	fillNamedColor();
-	
-	readPalettes(KTOON_HOME+"/data/palettes"); // Pre-installed
-	readPalettes(ktapp->configDir()+"/palettes"); // Locals
-	
+		
 	//Custom Color Palette
 	m_customColorPalette = new  KTCellsColor;
 	m_customColorPalette->setName( tr("Custom Color Palette"));
@@ -83,6 +101,7 @@ void KTViewColorCells::setupForm()
 	//Custom Gradient Palette
 	m_customGradientPalette = new  KTCellsColor;
 	m_customGradientPalette->setName( tr("Custom Gradient Palette"));
+	m_customGradientPalette->setType( KTCellsColor::Gradient);
 	addPalette( m_customGradientPalette );
 	
 	connect(m_chooserPalette, SIGNAL(activated ( int  )), m_containerPalette, SLOT(setCurrentIndex ( int )));
@@ -91,6 +110,9 @@ void KTViewColorCells::setupForm()
 	int lastIndex = KTCONFIG->value("LastPalette").toInt();
 	m_chooserPalette->setCurrentIndex(lastIndex);
 	m_containerPalette->setCurrentIndex(lastIndex);
+	
+	readPalettes(KTOON_HOME+"/data/palettes"); // Pre-installed
+	readPalettes(ktapp->configDir()+"/palettes"); // Locals
 }
 
 void KTViewColorCells::readPalettes(const QString &paletteDir)
@@ -108,9 +130,7 @@ void KTViewColorCells::readPalettes(const QString &paletteDir)
 			readPaletteFile(dir.path()+"/"+*it);
 			++it;
 		}
-		
 	}
-
 }
 
 void KTViewColorCells::readPaletteFile(const QString &file)
@@ -119,7 +139,7 @@ void KTViewColorCells::readPaletteFile(const QString &file)
 	QXmlSimpleReader reader;
 	reader.setContentHandler(parser);
 	reader.setErrorHandler(parser);
-			
+	
 	QFile f(file);
 	QXmlInputSource xmlsource(&f);
 			
@@ -139,18 +159,41 @@ void KTViewColorCells::readPaletteFile(const QString &file)
 
 void KTViewColorCells::addPalette(const QString & name, const QList<QBrush> & brushes, bool editable )
 {
-	KTCellsColor *palette = new  KTCellsColor;
-	QList<QBrush>::ConstIterator it = brushes.begin();
-	
-	while(it != brushes.end())
+	if( name == m_customColorPalette->name())
 	{
-		palette->addColor( *it);
-		++it;
+		QList<QBrush>::ConstIterator it = brushes.begin();
+		
+		while(it != brushes.end())
+		{
+			m_customColorPalette->addColor( *it);
+			++it;
+		}
 	}
-	palette->setName(name);
-	addPalette(palette);
-
-	palette->setReadOnly( !editable );
+	else if(name == m_customGradientPalette->name())
+	{
+		QList<QBrush>::ConstIterator it = brushes.begin();
+		
+		while(it != brushes.end())
+		{
+			m_customGradientPalette->addColor( *it);
+			++it;
+		}
+	}
+	else
+	{
+		KTCellsColor *palette = new  KTCellsColor;
+		QList<QBrush>::ConstIterator it = brushes.begin();
+		
+		while(it != brushes.end())
+		{
+			palette->addColor( *it);
+			++it;
+		}
+		palette->setName(name);
+		addPalette(palette);
+	
+		palette->setReadOnly( !editable );
+	}
 }
 
 void KTViewColorCells::addPalette(KTCellsColor *palette)
@@ -266,30 +309,31 @@ void KTViewColorCells::fillNamedColor()
 	m_qtColorPalette->addColor(QColor(0,0,0,50));
 }
 
-
-
 void KTViewColorCells::addCurrentColor()
 {
-	KTCellsColor *palette =  qobject_cast<KTCellsColor*>(m_containerPalette->currentWidget());
+	KTCellsColor *palette = qobject_cast<KTCellsColor*>(m_containerPalette->currentWidget());
 	
-	if( palette->isReadOnly()
-	||(m_currentColor.gradient() && palette->type() == KTCellsColor::Color )
-	|| !m_currentColor.color().isValid() && palette->type() == KTCellsColor::Gradient )
+	if(palette)
 	{
-		if(m_currentColor.gradient())
+		if( palette->isReadOnly()
+		|| (m_currentColor.gradient()  && palette->type() == KTCellsColor::Color )
+		|| m_currentColor.color().isValid() && palette->type() == KTCellsColor::Gradient )
 		{
-			palette = m_customGradientPalette;
-			m_chooserPalette->setCurrentIndex( m_chooserPalette->count()-1 );
-			m_containerPalette->setCurrentWidget ( m_customGradientPalette );
+			if( 15 <= m_currentColor.style() && m_currentColor.style() < 18  )
+			{
+				palette = m_customGradientPalette;
+				m_chooserPalette->setCurrentIndex( m_chooserPalette->findText ( m_customGradientPalette->name()));
+				m_containerPalette->setCurrentWidget ( m_customGradientPalette );
+			}
+			else
+			{
+				palette = m_customColorPalette;
+				m_chooserPalette->setCurrentIndex( m_chooserPalette->findText ( m_customColorPalette->name()));
+				m_containerPalette->setCurrentWidget ( m_customColorPalette );
+			}
 		}
-		else
-		{
-			palette = m_customColorPalette;
-			m_chooserPalette->setCurrentIndex( m_chooserPalette->count()-2 );
-			m_containerPalette->setCurrentWidget ( m_customColorPalette );
-		}
+		palette->addColor(m_currentColor);
 	}
-	palette->addColor(m_currentColor);
 }
 
 void KTViewColorCells::removeCurrentColor()
@@ -336,7 +380,6 @@ void KTViewColorCells::setupButtons()
 
 void KTViewColorCells::setColor(const QBrush& b)
 {
-// 	ktDebug() << "tiene gradiente "<<   b.gradient();
 	m_currentColor = b;
 }
 

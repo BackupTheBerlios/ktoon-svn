@@ -51,7 +51,7 @@ class KTGradientViewer : public QFrame
 		QGradient m_gradient;
 		
 		QPointF m_focal, m_center;
-		
+		int m_angle, m_radius;
 		QGradient::Type m_type;
 		QGradient::Spread m_spread;
 		
@@ -59,6 +59,8 @@ class KTGradientViewer : public QFrame
 		void changeGradient( const QGradientStops& );
 		void changeType(int  type);
 		void changeFocal(const QPointF& focal);
+		void changeAngle(int angle);
+		void changeRadius(int radius);
 };
 
 #endif

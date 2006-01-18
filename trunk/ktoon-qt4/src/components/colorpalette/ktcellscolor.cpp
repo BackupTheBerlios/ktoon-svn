@@ -21,14 +21,19 @@
 
 #include "ktcellscolor.h"
 #include "ktdebug.h"
+#include "ktpalettedocument.h"
+
+#include <QFile>
+
 
 KTCellsColor::KTCellsColor(QWidget *parent, Type type)
-	: KTCellView(parent), m_type(type), m_countColor(0), m_readOnly(false), MAX_COLUMNS(16), m_col(0), m_row(0)
+	: KTCellView(parent), m_type(type), m_countColor(0), m_readOnly(false),  m_col(0), m_row(0), MAX_COLUMNS(16)
 {}
 
 
 KTCellsColor::~KTCellsColor()
 {
+	
 }
 
 void KTCellsColor::addColor(const QBrush& b)
@@ -52,9 +57,7 @@ void KTCellsColor::addColor(const QBrush& b)
 	}
 	item->setBackground(b);
 	m_countColor++;
-// 	ktDebug() << "col " << m_col << " row " << m_row-1;
 	setItem(m_row-1 , m_col , item);
-// 	setCurrentItem( item);
 }
 
 void KTCellsColor::setReadOnly(bool enable)
@@ -86,3 +89,35 @@ void KTCellsColor::setName(const QString& name)
 {
 	m_name = name;
 }
+
+void KTCellsColor::save( const QString &path)
+{
+	QFile save(path);
+	KTPaletteDocument document(m_name, true);
+	
+	for(int i = 0; i < columnCount() ; i++)
+	{
+		for (int  j = 0; j < rowCount() ; j++)
+		{
+			KTCellViewItem *tmpItem = itemAt(i*25, j*25);
+			if(tmpItem)
+			{
+				if(tmpItem->background().gradient())
+				{
+					document.addGradient(*tmpItem->background().gradient());
+				}
+				else if(tmpItem->background().color().isValid())
+				{
+					document.addColor(tmpItem->background().color());
+				}
+			}
+		}
+	}
+	if ( save.open(QIODevice::WriteOnly | QIODevice::Text))
+	{
+		QTextStream out(&save);
+		out << document.toString();
+		save.close();
+	}
+}
+

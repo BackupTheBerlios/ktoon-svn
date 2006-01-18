@@ -116,6 +116,7 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 			m_gradientStops.clear();
 			
 			QGradient::Type type = QGradient::Type(atts.value("type").toInt());
+// 			QGradient::Spread spread = QGradient::Type(atts.value("spread").toInt());
 			
 			switch( type )
 			{
@@ -141,6 +142,8 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 				}
 				break;
 			}
+			
+			
 		}
 		else if ( qname == "Stop" )
 		{

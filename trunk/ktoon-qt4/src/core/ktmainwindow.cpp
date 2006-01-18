@@ -48,8 +48,6 @@
 #include <QMessageBox>
 //
 
-#include "collapsiblewidget.h"
-
 KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0), m_scenes(0)
 {
 	KTINIT;
@@ -68,7 +66,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	
 	m_drawingSpace = new KTWorkspace;
 	m_drawingSpace->setScrollBarsEnabled ( true );
-	
+
 // 	m_drawingSpace->setBackground(QBrush(QPixmap(background_xpm))); 
 	
 	addWidget(m_drawingSpace, tr("Illustration"), true);
@@ -76,14 +74,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	m_animationSpace = new KTWorkspace;
 	m_animationSpace->setScrollBarsEnabled ( true );
 	
-	m_viewCamera = new KTViewCamera(m_animationSpace);
-	m_viewCamera->setAttribute(Qt::WA_DeleteOnClose, true);
-	connect(m_viewCamera, SIGNAL(sendMessage(const QString &, int)), m_statusBar, SLOT(setStatus(const QString &, int)));
-	connect(m_viewCamera, SIGNAL(sendProgress(int, int)), m_statusBar, SLOT(advance(int, int))); 
-	
-	
-	m_animationSpace->addWindow(m_viewCamera);
-	m_viewCamera->show();
+
 	addWidget(m_animationSpace, tr("Animation"), true);
 	
 	
@@ -138,6 +129,15 @@ void KTMainWindow::createNewProject(const QString &name, const QSize &size)
 	
 	m_projectManager->setProjectName( name );
 	m_projectManager->setDocumentSize( size );
+	
+	KTViewCamera *viewCamera = new KTViewCamera(size , m_animationSpace);
+	viewCamera->setAttribute(Qt::WA_DeleteOnClose, true);
+	connect(viewCamera, SIGNAL(sendMessage(const QString &, int)), m_statusBar, SLOT(setStatus(const QString &, int)));
+	connect(viewCamera, SIGNAL(sendProgress(int, int)), m_statusBar, SLOT(advance(int, int)));
+	m_animationSpace->addWindow(viewCamera);
+	
+	viewCamera->show();
+	
 }
 
 void KTMainWindow::newViewDocument(const QString &name)
@@ -160,6 +160,13 @@ void KTMainWindow::newViewDocument(const QString &name)
 		m_statusBar->advance(7);
 		viewDocument->show();
 		m_statusBar->advance(10);
+// 		KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->activeWindow());
+		KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->windowList()[0]);
+		if(camera)
+		{
+			camera->animationArea()->setScene(scene);
+		}
+		
 		m_statusBar->setStatus(tr("Opened."));
 	}
 	else
@@ -229,6 +236,7 @@ void KTMainWindow::closeProject()
 		if ( view )
 		{
 			view->animationArea()->setScene(0);
+			view->animationArea()->setSize(m_projectManager->documentSize());
 		}
 	}
 	

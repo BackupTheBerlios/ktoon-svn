@@ -22,14 +22,14 @@
 #include "ktapplication.h"
 #include "ktdebug.h"
 
-KTViewCamera::KTViewCamera(QWorkspace *parent) : KTMdiWindow(parent)
+KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : KTMdiWindow(parent)
 {
 	KTINIT;
 	
 	setObjectName("KTViewCamera_");
 	
 	setWindowTitle(tr("Render Camera Preview"));
-	setWindowIcon( QPixmap(KTOON_HOME+"/themes/default/icons/camera_preview.png" ));
+	setWindowIcon( QPixmap(KTOON_THEME_DIR+"/icons/camera_preview.png" ));
 	
 	m_container = new QFrame(this);
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, m_container);
@@ -42,7 +42,7 @@ KTViewCamera::KTViewCamera(QWorkspace *parent) : KTMdiWindow(parent)
 	
 	QBoxLayout *animationAreaLayout = new QBoxLayout(QBoxLayout::TopToBottom, animationAreaContainer);
 	animationAreaLayout->setMargin(0);
-	m_animationArea = new AAnimationArea;
+	m_animationArea = new AAnimationArea(size );
 	animationAreaLayout->addWidget(m_animationArea);
 	
 	connect(m_animationArea, SIGNAL(progressStep(int, int)), this, SIGNAL(sendProgress(int, int)));
@@ -62,10 +62,10 @@ KTViewCamera::KTViewCamera(QWorkspace *parent) : KTMdiWindow(parent)
 	layout->addWidget(m_bar, 0, Qt::AlignTop | Qt::AlignCenter );
 	m_bar->show();
 	
-	CCButton *rew = m_bar->addButton(QPixmap(KTOON_HOME+"/themes/default/icons/rw.png" ));
-	CCButton *play = m_bar->addButton(QPixmap(KTOON_HOME+"/themes/default/icons/play.png" ));
-	CCButton *stop = m_bar->addButton(QPixmap(KTOON_HOME+"/themes/default/icons/stop.png" ));
-	CCButton *ff = m_bar->addButton(QPixmap(KTOON_HOME+"/themes/default/icons/ff.png" ));
+	CCButton *rew = m_bar->addButton(QPixmap(KTOON_THEME_DIR+"/icons/rw.png" ));
+	CCButton *play = m_bar->addButton(QPixmap(KTOON_THEME_DIR+"/icons/play.png" ));
+	CCButton *stop = m_bar->addButton(QPixmap(KTOON_THEME_DIR+"/icons/stop.png" ));
+	CCButton *ff = m_bar->addButton(QPixmap(KTOON_THEME_DIR+"/icons/ff.png" ));
 	
 	connect(play, SIGNAL(clicked()), m_animationArea, SLOT(play()));
 	connect(stop, SIGNAL(clicked()), m_animationArea, SLOT(stop()));

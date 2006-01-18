@@ -35,12 +35,13 @@ class AAnimationArea : public QFrame
 {
 	Q_OBJECT
 	public:
-		AAnimationArea(QWidget *parent = 0);
+		AAnimationArea(const QSize& size, QWidget *parent = 0);
 		~AAnimationArea();
 		void setScene(KTScene *scene);
 		
 		QSize sizeHint() const;
 		int photogramsCount() const;
+		void setSize(const QSize& size);
 		
 	public slots:
 		virtual void render();

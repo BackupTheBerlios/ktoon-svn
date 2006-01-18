@@ -39,6 +39,92 @@
 /**
 	@author Jorge Cuadrado <kuadrosx@toonka.com>
 */
+
+class ControlerSpins: public QGroupBox
+{
+	Q_OBJECT
+	public:
+		ControlerSpins(const QWidget *parent)
+		{
+			QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
+			layout->setSizeConstraint(QLayout::SetFixedSize);
+			m_title = new QLabel(this);
+			layout->addWidget(m_title);
+			
+			m_radius = new QSpinBox(this);
+			connect(m_radius, SIGNAL( valueChanged(int) ), this, SIGNAL(radiusChanged(int)));
+			m_radius->setMaximum ( 100 );
+			layout->addWidget(m_radius);
+			
+			m_angle = new QSpinBox(this);
+			layout->addWidget(m_angle);
+			connect( m_angle, SIGNAL( valueChanged(int) ), this, SIGNAL(angleChanged(int)));
+			m_angle->setMaximum ( 360 );
+			
+		};
+		~ControlerSpins(){};
+		
+		void setSpin(QGradient::Type type)
+		{
+			switch(type)
+			{
+				case QGradient::LinearGradient:
+				{
+					setVisible(false);
+					m_angle->setVisible(false);
+					m_radius->setVisible(false);
+					m_title->setVisible(false);
+					break;
+				}
+				case  QGradient::RadialGradient:
+				{
+					show();
+					m_radius->show();
+					m_angle->hide();
+					m_title->show();
+					m_title->setText("radius");
+					break;
+				}
+				case  QGradient::ConicalGradient:
+				{
+					show();
+					m_radius->hide();
+					m_angle->show();
+					m_title->show();
+					m_title->setText("angle");
+					break;
+				}
+			}
+		};
+		
+		int angle()
+		{
+			return m_angle->value();
+		};
+		int radius()
+		{
+			return m_radius->value();
+		};
+		
+		void setAngle(int angle)
+		{
+			m_angle->setValue(angle);
+		}
+		
+		void setRadius(int radius)
+		{
+			m_radius->setValue(radius);
+		}
+		
+	private:
+		QSpinBox *m_angle, *m_radius;
+		QLabel *m_title;
+		
+	signals:
+		void angleChanged(int angle);
+		void radiusChanged(int radius);
+};
+
 class KTGradientManager : public QFrame
 {
 	Q_OBJECT
@@ -52,19 +138,21 @@ class KTGradientManager : public QFrame
 		QBrush currentGradient();
 		
 		KTGradientApply gradientApply();
-		void setGradient(const QGradient & gradient);
+		
 		
 	private:
 		KTGradientSelector *m_selector;
 		KTGradientViewer *m_viewer;
 		KTRadioButtonGroup *m_type, *m_spread ;
 		KTImageButton *m_fill, *m_outLine;
-// 		KTXYSpinBox *m_center, *m_focal;
+		QSpinBox *m_radius, *m_angle;
+		ControlerSpins *m_controlerSpins;
 		
 	public slots:
 		void changeType(int type);
 		void changeSpread(int spread);
 		void changeGradient( const QGradientStops& );
+		void setGradient(const QGradient & gradient);
 		void emitGradientChanged();
 		
 	signals:

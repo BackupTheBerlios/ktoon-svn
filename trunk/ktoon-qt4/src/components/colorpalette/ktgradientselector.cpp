@@ -105,6 +105,7 @@ void KTGradientSelector::init()
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 	
 	setMaximumWidth(100);
+	setMinimumWidth(100);
 
 	connect(this, SIGNAL(valueChanged (int)), this, SLOT(valueChange(int)));
 	
@@ -370,7 +371,14 @@ void KTGradientSelector::setColor(const QColor& color)
 void KTGradientSelector::setStops(const QGradientStops &stops)
 {
 	m_gradient.setStops(stops);
-	createGradient();
+	m_arrows.clear();
+// 	createGradient();
+	for(int i = 0; i < stops.count(); i++)
+	{
+		addArrow( calcArrowPos(100 - (stops[i].first *100)), stops[i].second );
+		ktDebug() << "value" <<stops[i].first << "color " << stops[i].second;
+	}
 	
-	repaint();
+	
+	update();
 }
