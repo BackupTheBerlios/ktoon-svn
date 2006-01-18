@@ -59,9 +59,9 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 	
 	QImage credits = QImage(KTOON_THEME_DIR+"/images/credits-image.png" );
 	
-	KImageEffect::fade(credits, 0.25, paletteBackgroundColor());
+	KImageEffect::fade(credits, 0.25, palette().background().color());
     
-	m_credits = new KTAnimWidget( QPixmap(credits), creditsText );
+	m_credits = new KTAnimWidget( QPixmap::fromImage(credits), creditsText );
 	addTab( m_credits, tr( "Credits" ) );
 
     	// 2: Ack
@@ -70,8 +70,8 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 	for(uint i = 1; i < 11; i++)
 	{
 		QImage tmp(KTOON_THEME_DIR+QString("/sequences/ack-image%1.png").arg(i));
-		KImageEffect::fade(tmp, 0.2, paletteBackgroundColor());
-		lop << QPixmap(tmp);
+		KImageEffect::fade(tmp, 0.2, palette().background().color());
+		lop << QPixmap::fromImage(tmp);
 	}
 	
 	m_ack = new KTAnimWidget( lop );
@@ -105,9 +105,9 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 	QLabel *toonka = new QLabel/*( this )*/;
 	
 	QImage toonkaImg( KTOON_THEME_DIR+"/images/toonka.png" );
-	KImageEffect::fade( toonkaImg,0.2,paletteBackgroundColor()); 
+	KImageEffect::fade( toonkaImg,0.2,palette().background().color()); 
 	
-	toonka->setPixmap(QPixmap(toonkaImg));
+	toonka->setPixmap(QPixmap::fromImage(toonkaImg));
 	addTab( toonka, "Toonka Films" );
 
     	// 5: Laboratoon
@@ -115,9 +115,9 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 	QLabel *laboratoon = new QLabel/*( this )*/;
 	
 	QImage laboratoonImg( KTOON_THEME_DIR+"/images/laboratoon.png" );
-	KImageEffect::fade( laboratoonImg,0.2,paletteBackgroundColor()); 
+	KImageEffect::fade( laboratoonImg,0.2,palette().background().color()); 
 	
-	laboratoon->setPixmap( QPixmap(laboratoonImg  ) );
+	laboratoon->setPixmap( QPixmap::fromImage(laboratoonImg  ) );
 	addTab( laboratoon, "Laboratoon" );
 
     	// 6: Licence

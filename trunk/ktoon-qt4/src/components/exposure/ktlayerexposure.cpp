@@ -25,7 +25,9 @@ KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFra
 	: QFrame(parent) , m_id(id), m_currentFrame(0)
 {
 	KTINIT;
-	m_layout = new QBoxLayout(this, QBoxLayout::TopToBottom);
+	m_layout = new QBoxLayout(QBoxLayout::TopToBottom, this );
+	m_layout->setMargin(0);
+	m_layout->setSpacing(0);
 	m_header = new ESLayer(initial_text,this);
 	connect( m_header, SIGNAL(clicked(bool, QMouseEvent*)), this, SLOT(setSelected(bool, QMouseEvent*)));
 	connect( m_header, SIGNAL(renamed( const QString & )), this, SLOT(changedName(const QString &)));
@@ -49,21 +51,15 @@ KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFra
 
 void KTLayerExposure::createMenuRight()
 {
-// 	menuFrame = new QMenu(this);
-// 	menuFrame->insertItem( tr( "Rename Frame" ), RenameFrame, RenameFrame);
-// 	menuFrame->insertItem( tr( "Remove this Frame" ), RemoveThisFrame, RemoveThisFrame);
-// 	menuFrame->insertItem( tr( "Lock this Frame" ), LockThisFrame, LockThisFrame);
-// 	menuFrame->insertItem( tr( "Copy this Frame" ), CopyThisFrame, CopyThisFrame);
-// 	menuFrame->insertItem( tr( "Paste into this Frame" ), PasteIntoFrame, PasteIntoFrame);
-// 	connect(menuFrame, SIGNAL(activated ( int )), this, SLOT(applyAction(int)));
-
+	
 	menuLayer = new QMenu(this);
-	menuLayer->insertItem( tr( "Rename Layer" ), RenameLayer);
-	menuLayer->insertItem( tr( "Remove this Layer" ), RemoveThisLayer );
-	menuLayer->insertSeparator();
-	menuLayer->insertItem( tr( "Insert Frames" ), InsertFrames  );
-	menuLayer->insertItem( tr( "Remove Frames" ), RemoveThisFrame );
-	connect(menuLayer, SIGNAL(activated ( int )), this, SLOT(applyAction(int)));
+	//FIXME: implemtentar rename, remove slots
+	menuLayer->addAction( tr( "Rename Layer"), this, SLOT(rename()));
+	menuLayer->addAction( tr( "Remove this Layer"), this, SLOT(remove()));
+	
+	menuLayer->addSeparator();
+	menuLayer->addAction( tr( "Insert Frames" ),this, SLOT(insertFrames())  );
+	menuLayer->addAction( tr( "Remove Frame" ),this, SLOT(removeCurrentFrame()) );
 }
 
 
@@ -75,7 +71,6 @@ KTLayerExposure::~KTLayerExposure()
 
 void KTLayerExposure::frameSelect(int id, int button, int x, int y)
 {
-// 	ktDebug() << "FRAME SELECT: " << id << endl;
 	if(id < 0)
 	{
 		id = 0;
@@ -85,8 +80,6 @@ void KTLayerExposure::frameSelect(int id, int button, int x, int y)
 	m_header->animateClick();
 	emit frameSelected(id);
 	emit clicked( m_layout->indexOf(m_frames[id])-1, m_id, button, x, y);
-	
-// 	ktDebug() << "KTLayerExposure: id layer " << m_id << " id frame " <<  m_layout->indexOf(m_frames[id])-1 << endl;
 	if(m_useFrame == id && !(m_frames[id]->isUsed()))
 	{
 		emit requestInsertFrame(true);
@@ -119,7 +112,6 @@ void KTLayerExposure::setSelected(bool select, QMouseEvent *e)
 
 void KTLayerExposure::otherSelected(int id)
 {
-// 	ktDebug() << "void KTLayerExposure::otherSelected(int " <<  id << ")" << endl;
 	if(m_id != id)
 	{
 		setSelected(false);
@@ -158,16 +150,14 @@ void KTLayerExposure::addFrame(const QString &text )
 
 void KTLayerExposure::invertFrames(int id1, int id2) // invert or swap??
 {
-	m_layout->remove(m_frames[id1]);
-	m_layout->remove(m_frames[id2]);
+	m_layout->removeWidget(m_frames[id1]);
+	m_layout->removeWidget(m_frames[id2]);
 	m_layout->insertWidget(id1+1, m_frames[id2], 10);
 	m_layout->insertWidget(id2+1, m_frames[id1], 10);
 }
 
 void KTLayerExposure::setUseFrames(const QString &name, bool addedToEnd)
 {
-// 	ktDebug( ) << "##############m_currentFrame "  << m_currentFrame << "m_useFrame " << m_useFrame << " name " << name << endl;
-
 	if( addedToEnd )
 	{
 		if(m_useFrame < m_frames.count())
@@ -180,7 +170,6 @@ void KTLayerExposure::setUseFrames(const QString &name, bool addedToEnd)
 	}
 	else
 	{
-// 		m_layout->removeWidget(m_frames[m_useFrame]);
 		m_layout->insertWidget( m_layout->indexOf(m_frames[m_currentFrame])+1, m_frames[m_useFrame], 10);
 		
 		m_frames[m_useFrame]->setName(name);
@@ -231,7 +220,7 @@ void KTLayerExposure::removeFrame(int id)
 	ESFrame *frame = m_frames[id];
 	if(frame  && m_frames[id]->isUsed() && m_frames[id]->isSelected())
 	{
-		m_layout->remove(m_frames[id]);
+		m_layout->removeWidget(m_frames[id]);
 		m_frames[id]->hide();
 		m_frames.removeAt(id);
 		for( int i = id; i < m_frames.count(); i++)
@@ -258,7 +247,7 @@ void KTLayerExposure::moveCurrentFrameUp()
 	{
 		if(m_frames[m_currentFrame]->isUsed())
 		{
-			m_layout->remove(m_frames[m_currentFrame]);
+			m_layout->removeWidget(m_frames[m_currentFrame]);
 			m_layout->insertWidget(pos-1, m_frames[m_currentFrame], 10);
 		}
 	}
@@ -270,7 +259,7 @@ void KTLayerExposure::moveCurrentFrameDown()
 	int idFrame = m_frames[pos+1]->id();
 	if( m_frames[idFrame-1]->isUsed())
 	{
-		m_layout->remove(m_frames[m_currentFrame]);
+		m_layout->removeWidget(m_frames[m_currentFrame]);
 		m_layout->insertWidget(pos+1, m_frames[m_currentFrame], 10);
 	}
 }

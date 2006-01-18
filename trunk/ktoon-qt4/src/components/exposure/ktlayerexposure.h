@@ -57,7 +57,7 @@ class KTLayerExposure : public QFrame
 		int id();
 		bool currentFrameIsUsed();
 		int  numUsedFrame();
-		void insertFrames();
+		
 		void selectedFirstFrame();
 		int currentFrame();
 		
@@ -88,21 +88,16 @@ class KTLayerExposure : public QFrame
 		void applyAction(int action);
 		void frameRename(int, const QString&);
 		
+		void insertFrames();
+		
 	signals:
 		void requestInsertFrame(bool);
 		void visibilityChanged( int idLayer, bool value);
-		
 		void selected(int id);
 		void clicked( int row, int col, int button,int x, int y);
 		void frameSelected(int id);
-		
-// 		void setUsedFrame(const QString &);
-		
 		void clickedMenuFrame(int action, int idFrame, int idLayer);
-// 		void copyFrame();
-// 		void pasteFrame();
 		void removed(int);
-// 		void removedFrame(int id);
 		void layerRenamed( int idLayer, const QString &name );
 		void frameRenamed( int idFrame, int idLayer, const QString &name );
 		

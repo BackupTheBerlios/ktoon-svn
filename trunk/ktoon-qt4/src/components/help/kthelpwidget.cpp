@@ -16,7 +16,7 @@
 
 #include "ktdebug.h"
 
-#include <QTextStream>
+#include <QLocale>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QHeaderView>
@@ -24,9 +24,9 @@
 
 KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidgetBase(parent)
 {
-	if (QString(QTextCodec::locale()).length() > 1 )
+	if (QString(QLocale::system().name()).length() > 1 )
 	{
-		m_helpPath = path+"/"+QString(QTextCodec::locale()).left(2);
+		m_helpPath = path+"/"+QString(QLocale::system().name()).left(2);
 	}
 	else
 	{

@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qmessagebox.h>
 #include <qfile.h>
 #include <qtextstream.h>
 #include <qtextcodec.h>
@@ -28,22 +27,24 @@
 
 #include "ktdebug.h"
 
+#include <QLabel>
+
 //--------------- CONSTRUCTOR --------------------
 
-Preferences::Preferences( QWidget *parent ) : KTTabDialog( KTTabDialog::Apply|KTTabDialog::Ok|KTTabDialog::Cancel, parent )
+Preferences::Preferences( QWidget *parent ) : KTConfigurationDialog(parent )
 {
-	setCaption( tr( "Application Preferences" ) );
-	resize( 220, 230 );
+	setWindowTitle( tr( "Application Preferences" ) );
 	
+	addSection( new QLabel("<h3>You can configure general settings<br> in this section</h3>"), tr("General") );
+	
+	addSection( new QLabel("<h3>You can configure user interface settings <br>in this section</h3>"),tr("User interface") );
 	m_themeSelector = new KTThemeSelector;
-	addTab(m_themeSelector, tr("Theme preferences"));
-// 	m_colorPref = new ColorSchemePref(this);
-// 	addTab(m_colorPref, tr("Color Preferences"));
-	
-// 	m_fontWidget = new KTFontWidget;
+	addPage(m_themeSelector, tr("Theme preferences"), tr("User interface"));
+
+	m_fontWidget = new KTFontWidget;
 // 	m_fontWidget->setFont( QFont("helvetica", 10));
 // 	m_fontWidget->showXLFDArea(false);
-// 	addTab(m_fontWidget, tr("Font"));
+	addPage(m_fontWidget, tr("Font"), tr("User interface"));
 }
 
 //-------------- DESTRUCTOR -----------------
@@ -55,12 +56,12 @@ Preferences::~Preferences()
 void Preferences::ok()
 {
 	apply();
-	KTTabDialog::ok();
+	KTConfigurationDialog::ok();
 }
 
 void Preferences::apply()
 {
-	if ( static_cast<KTThemeSelector *>(currentTab()) ==  m_themeSelector)
+	if ( static_cast<KTThemeSelector *>(currentPage()) ==  m_themeSelector)
 	{
 		if(m_themeSelector->iWantApplyColors() )
 		{

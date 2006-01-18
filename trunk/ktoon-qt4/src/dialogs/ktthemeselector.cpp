@@ -54,22 +54,22 @@ void KTThemeSelector::setupChooseColor()
 	box1->boxLayout()->setMargin(10);
 	m_general = new QGroupBox(tr("General"), box1);
 	
-	QGridLayout *layout1 = new QGridLayout(m_general, 4, 2, 15, 5);
+	QGridLayout *layout1 = new QGridLayout(m_general);
 	
 	QStringList labels1 = QStringList() << tr("Text") << tr("Base") << tr("Foreground") << tr("Background") << tr("Button") << tr("Button Text");
 	
 	QStringList names = QStringList() << "Text" << "Base" << "Foreground" << "Background" << "Button" << "ButtonText";
 	
-	QColorGroup colorGroup = QApplication::palette().active();
+	QPalette colorGroup = QApplication::palette();
 	
 	
-	QList<QColor> colors = QList<QColor>() << colorGroup.text () << colorGroup.base() << colorGroup.foreground() << colorGroup.background() << colorGroup.button() << colorGroup.buttonText();
+	QList<QColor> colors = QList<QColor>() << colorGroup.text ().color() << colorGroup.base().color() << colorGroup.foreground().color() << colorGroup.background().color() << colorGroup.button().color() << colorGroup.buttonText().color();
 	
 	for(uint i = 0; i < labels1.count(); i++)
 	{
 		layout1->addWidget(new QLabel(labels1[i], m_general), i, 0 );
-		QPushButton *button = new QPushButton(m_general, names[i]);
-		
+		QPushButton *button = new QPushButton(m_general);
+		button->setObjectName(names[i]);
 		QPalette pal = button->palette();
 		pal.setColor(QPalette::Button, colors[i]);
 		button->setPalette(pal);
@@ -81,18 +81,19 @@ void KTThemeSelector::setupChooseColor()
 	
 	m_effects = new QGroupBox(tr("Effects"), box1);
 	
-	QGridLayout *layout2 = new QGridLayout(m_effects, 4, 2, 15, 5);
+	QGridLayout *layout2 = new QGridLayout(m_effects);
 	
 	QStringList labels2 = QStringList() << tr("Light") << tr("Midlight") << tr("Dark") << tr("Mid");
 	QStringList names2 = QStringList() << "Light" << "Midlight" << "Dark" << "Mid";
 	
 	colors.clear();
-	colors << colorGroup.light() << colorGroup.midlight() << colorGroup.dark() << colorGroup.mid();
+	colors << colorGroup.light().color() << colorGroup.midlight().color() << colorGroup.dark().color() << colorGroup.mid().color();
 	
 	for(uint i = 0; i < labels2.count(); i++)
 	{
 		layout2->addWidget(new QLabel(labels2[i], m_effects), i, 0 );
-		QPushButton *button = new QPushButton(m_effects, names2[i]);
+		QPushButton *button = new QPushButton(m_effects);
+		button->setObjectName(names2[i]);
 		QPalette pal = button->palette();
 		pal.setColor(QPalette::Button, colors[i]);
 		button->setPalette(pal);
@@ -106,17 +107,18 @@ void KTThemeSelector::setupChooseColor()
 	box2->boxLayout()->setMargin(10);
 	m_selections = new QGroupBox(tr("Selections"), box2);
 	
-	QGridLayout *layout3 = new QGridLayout(m_selections, 4, 2, 15, 5);
+	QGridLayout *layout3 = new QGridLayout(m_selections);
 	
 	QStringList labels3 = QStringList() << tr("Highlight") << tr("Highlighted Text");
 	QStringList names3 = QStringList() << "Highlight" << "HighlightedText";
 	colors.clear();
-	colors << colorGroup.highlight() << colorGroup.highlightedText();
+	colors << colorGroup.highlight().color() << colorGroup.highlightedText().color();
 	
 	for(uint i = 0; i < labels3.count(); i++)
 	{
 		layout3->addWidget(new QLabel(labels3[i], m_selections), i, 0 );
-		QPushButton *button = new QPushButton(m_selections, names3[i]);
+		QPushButton *button = new QPushButton(m_selections);
+		button->setObjectName(names3[i]);
 		QPalette pal = button->palette();
 		pal.setColor(QPalette::Button, colors[i]);
 		button->setPalette(pal);
@@ -127,17 +129,18 @@ void KTThemeSelector::setupChooseColor()
 	
 	m_textEffects = new QGroupBox(tr("Text effects"), box2);
 	
-	QGridLayout *layout4 = new QGridLayout(m_textEffects, 4, 2, 15, 5);
+	QGridLayout *layout4 = new QGridLayout(m_textEffects);
 	QStringList labels4 = QStringList() << tr("Bright Text") << tr("Link") << tr("Link Visited");
 	QStringList names4 = QStringList() << "BrightText" << "Link" << "LinkVisited";
 	
 	colors.clear();
-	colors << colorGroup.brightText() << colorGroup.link() << colorGroup.linkVisited();
+	colors << colorGroup.brightText().color() << colorGroup.link().color() << colorGroup.linkVisited().color();
 	
 	for(uint i = 0; i < labels4.count(); i++)
 	{
 		layout4->addWidget(new QLabel(labels4[i], m_textEffects), i, 0 );
-		QPushButton *button = new QPushButton(m_textEffects, names4[i]);
+		QPushButton *button = new QPushButton(m_textEffects);
+		button->setObjectName(names4[i]);
 		QPalette pal = button->palette();
 		pal.setColor(QPalette::Button, colors[i]);
 		button->setPalette(pal);
@@ -183,7 +186,7 @@ void KTThemeSelector::chooseGeneralColor(QAbstractButton *  button)
 		pal.setColor(QPalette::Button, c);
 		button->setPalette(pal);
 		
-		m_generalSection.insert(button->name(), c.name());
+		m_generalSection.insert(button->objectName(), c.name());
 	}
 }
 
@@ -197,7 +200,7 @@ void KTThemeSelector::chooseEffectsColor(QAbstractButton *  button)
 		pal.setColor(QPalette::Button, c);
 		button->setPalette(pal);
 		
-		m_effectsSection.insert(button->name(), c.name());
+		m_effectsSection.insert(button->objectName(), c.name());
 	}
 }
 
@@ -211,7 +214,7 @@ void KTThemeSelector::chooseSelectionsColor(QAbstractButton *  button)
 		pal.setColor(QPalette::Button, c);
 		button->setPalette(pal);
 		
-		m_selectionsSection.insert(button->name(), c.name());
+		m_selectionsSection.insert(button->objectName(), c.name());
 	}
 }
 
@@ -224,7 +227,7 @@ void KTThemeSelector::chooseTextEffectsColor(QAbstractButton *  button)
 		pal.setColor(QPalette::Button, c);
 		button->setPalette(pal);
 		
-		m_textEffectsSection.insert(button->name(), c.name());
+		m_textEffectsSection.insert(button->objectName(), c.name());
 	}
 }
 
@@ -247,7 +250,7 @@ void KTThemeSelector::loadSchemes()
 	if ( themeDir.exists() )
 	{
 		m_allSchemes->clear();
-		QFileInfoList files = themeDir.entryInfoList("*.ktt");
+		QFileInfoList files = themeDir.entryInfoList(QStringList() <<"*.ktt");
 		
 		for(int i = 0; i < files.count(); i++ )
 		{

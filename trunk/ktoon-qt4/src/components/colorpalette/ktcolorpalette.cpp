@@ -74,13 +74,12 @@ void KTColorPalette::setupChooserTypeColor()
 	m_displayValueColor = new KTValueColor(colorMixer);
 	
 	QBoxLayout *layoutContainer = new QBoxLayout(QBoxLayout::LeftToRight);
-	
 	m_colorPicker = new KTColorPicker(colorMixer);
 	connect( m_colorPicker, SIGNAL(newCol(int, int)), this, SLOT(setHS(int, int)));
 	connect(m_displayValueColor, SIGNAL(hueChanged(int)), m_colorPicker, SLOT(setH(int)));
 	connect(m_displayValueColor, SIGNAL(saturationChanged(int)), m_colorPicker, SLOT(setS(int)));
 	
-	layoutContainer->addWidget(m_colorPicker);
+	layoutContainer->addWidget(m_colorPicker, 0, Qt::AlignLeft);
 	
 	m_luminancePicker = new KTLuminancePicker( colorMixer );
 	connect( m_luminancePicker, SIGNAL( newHsv(int, int, int )), this, SLOT (syncHsv(int, int, int)));
@@ -88,7 +87,7 @@ void KTColorPalette::setupChooserTypeColor()
 	m_luminancePicker->setMaximumWidth(15);
 	m_luminancePicker->setMinimumWidth(15);
 	connect(m_displayValueColor, SIGNAL(valueChanged(int)), m_luminancePicker, SLOT(setVal( int )));
-	layoutContainer->addWidget(m_luminancePicker);
+	layoutContainer->addWidget(m_luminancePicker, 0, Qt::AlignLeft);
 	layoutContainer->setSpacing(3);
 	
 	layout->addLayout(layoutContainer);

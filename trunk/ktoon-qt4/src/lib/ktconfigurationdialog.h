@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2004 by David Cuadrado                                  *
- *   krawek@toonka.com                                                    *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,47 +17,47 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef KTCONFIGURATIONDIALOG_H
+#define KTCONFIGURATIONDIALOG_H
 
-#ifndef PREFERENCES_H
-#define PREFERENCES_H
+#include <QDialog>
+#include <QMap>
+
+class QStackedWidget;
+class QTreeWidget;
+class QTreeWidgetItem;
 
 /**
- * @file preferences.h
- * @brief Include this file if you need the class Preferences
- */
+ * @author David Cuadrado <krawek@toonka.com>
+*/
 
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qradiobutton.h>
-
-#include "ktfontwidget.h"
-#include "ktthemeselector.h"
-
-#include "kttabdialog.h"
-
-#include "ktconfigurationdialog.h"
-
-class ColorSchemePref;
-
-class Preferences : public KTConfigurationDialog
+class KTConfigurationDialog : public QDialog
 {
 	Q_OBJECT
-			
-	
 	public:
-		Preferences( QWidget *parent );
-		~Preferences();
+		KTConfigurationDialog(QWidget *parent = 0);
+		~KTConfigurationDialog();
+		void addSection(QWidget *info, const QString &title);
+		void addSection(const QString &title);
+		void addPage(QWidget *page, const QString &title, const QString &section);
+		void addPage(QWidget *page, const QString &title, const QIcon &icon, const QString &section);
+		QWidget *currentPage();
 		
+	public slots:
+		virtual void ok();
+		virtual void cancel();
+		virtual void apply();
+		
+	private slots:
+		void showPageForItem(QTreeWidgetItem *, int );
 		
 	private:
-		KTThemeSelector *m_themeSelector;
-		KTFontWidget *m_fontWidget;
-
-	public slots:
-		void apply();
-		void ok();
-    
-	protected:
+		QTreeWidget *m_list;
+		QStackedWidget *m_container;
+		QMap<QTreeWidgetItem *, QWidget *> m_pages;
+		QMap<QString, QTreeWidgetItem *> m_sections;
+		
 };
 
 #endif

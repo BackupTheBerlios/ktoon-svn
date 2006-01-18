@@ -33,7 +33,7 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name, KTWidgetListView *parent) 
 {
 	KTINIT;
 	setFrameStyle( QFrame::Panel | QFrame::Raised );
-
+	
 	QHBoxLayout *m_layout = new QHBoxLayout;
 	m_layout->setMargin(1);
 	m_layout->setSpacing(1);

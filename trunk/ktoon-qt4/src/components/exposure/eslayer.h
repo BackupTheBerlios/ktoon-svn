@@ -106,7 +106,7 @@ public slots:
      *
      * You should never use it from ouside.
      */
-    void slotSendDoubleClickEvent();
+//     void slotSendDoubleClickEvent();
 	      
 	      
 	private slots:

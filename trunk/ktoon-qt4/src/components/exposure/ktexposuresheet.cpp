@@ -58,9 +58,8 @@ KTExposureSheet::~KTExposureSheet()
 
 void KTExposureSheet::setupButtons()
 {
-	m_buttonsPanel = new QGroupBox/*QButtonGroup*/(this);
+	m_buttonsPanel = new QGroupBox(this);
 	QHBoxLayout *layout = new QHBoxLayout(m_buttonsPanel);
-	layout->setAutoAdd(true);
 	layout->setMargin(0);
 	layout->setSpacing(0);
 	m_buttonGroup = new QButtonGroup(m_buttonsPanel);
@@ -72,7 +71,8 @@ void KTExposureSheet::setupButtons()
 	{
 		QPushButton * tmpButton = new KTImageButton(m_imgs[i], 25, m_buttonsPanel);
 		m_buttonGroup->addButton (tmpButton);
-		QToolTip::add( tmpButton, toolTips[i]  );
+		tmpButton->setToolTip(toolTips[i]);
+		layout->addWidget(tmpButton);
 	}
 	m_buttonsPanel->setMaximumHeight( m_buttonsPanel->sizeHint().height());
 

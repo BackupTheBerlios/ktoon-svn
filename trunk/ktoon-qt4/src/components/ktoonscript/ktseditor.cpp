@@ -11,6 +11,7 @@
 //
 
 #include "ktseditor.h"
+#include <QDragEnterEvent>
 
 KTSEditor::KTSEditor(QWidget *parent) : QTextEdit(parent)
 {

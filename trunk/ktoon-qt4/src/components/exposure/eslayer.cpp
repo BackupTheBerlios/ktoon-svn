@@ -34,59 +34,47 @@
 ESLayer::ESLayer( const QString &initial_text, QWidget *parent  )
     : QPushButton( initial_text, parent )
 {
-    Q_CHECK_PTR( parent );
-    
-    QVBoxLayout *m_layout = new QVBoxLayout;
-    
-    m_layout->setMargin(5);
-    m_layout->setSpacing(0);
-    
-    m_visibilityButton = new QPushButton;
-    m_visibilityButton->setCheckable(true);
-    m_visibilityButton->setChecked(true);
-    
-    connect(m_visibilityButton, SIGNAL(clicked()), this, SLOT(visibilityClick()));
-    m_visibilityButton->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/show_hide_all_layers.png" ));
-//     m_visibilityButton->setIconSize(m_visibilityButton->size());
-    
-    QPalette pal = palette();
-    pal.setColor(QPalette::Button, Qt::green );
-    m_visibilityButton->setPalette(pal);
-    
-    m_visibilityButton->setMaximumWidth(15);
-    
-    
-    m_layout->addWidget(m_visibilityButton, 0, Qt::AlignLeft);
-    
-    setAutoDefault( false );
-    setFocusPolicy( Qt::NoFocus );
-    default_color = paletteBackgroundColor();
-    selection_color = QColor( 210, 210, 255 );
+	Q_CHECK_PTR( parent );
+	
+	QVBoxLayout *m_layout = new QVBoxLayout;
+	
+	m_layout->setMargin(5);
+	m_layout->setSpacing(0);
+	
+	m_visibilityButton = new QPushButton;
+	m_visibilityButton->setCheckable(true);
+	m_visibilityButton->setChecked(true);
+	
+	connect(m_visibilityButton, SIGNAL(clicked()), this, SLOT(visibilityClick()));
+	m_visibilityButton->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/show_hide_all_layers.png" ));
+	
+	QPalette pal = palette();
+	pal.setColor(QPalette::Button, Qt::green );
+	m_visibilityButton->setPalette(pal);
+	
+	m_visibilityButton->setMaximumWidth(15);
+	
+	
+	m_layout->addWidget(m_visibilityButton, 0, Qt::AlignLeft);
+	
+	setAutoDefault( false );
+	setFocusPolicy( Qt::NoFocus );
+	default_color = palette().color(QPalette::Background);
+	selection_color = palette().color(QPalette::Active , QPalette::Highlight).light(200);
+	
+	description = new QLineEdit( initial_text,this );
+	description -> hide();
+	connect( description, SIGNAL( lostFocus() ), SLOT( slotSetDescription() ) );
+	connect( description, SIGNAL( returnPressed() ), SLOT( slotSetDescription() ) );
 
-    description = new QLineEdit( initial_text,this );
-//     description -> resize( 66, 21 );
-//     description -> move( 2, 2 );
-    description -> hide();
-    connect( description, SIGNAL( lostFocus() ), SLOT( slotSetDescription() ) );
-    connect( description, SIGNAL( returnPressed() ), SLOT( slotSetDescription() ) );
-
-//     right_click_menu = new QPopupMenu( this );
-//     right_click_menu -> setFont( QFont( "helvetica", 10 ) );
-    /*right_click_menu -> insertItem( tr( "Rename Layer" ), this, SLOT( slotSendDoubleClickEvent() ) );
-    right_click_menu -> insertItem( tr( "Remove this Layer" ), grandparent, SLOT( slotRemoveLayer() ) );
-    right_click_menu -> insertSeparator();
-    right_click_menu -> insertItem( tr( "Insert Frames" ), grandparent, SLOT( slotInsertFrame() ) );
-    right_click_menu -> insertItem( tr( "Remove Frames" ), grandparent, SLOT( slotRemoveFrame() ) );*/
-    
-    setLayout(m_layout);
+	setLayout(m_layout);
 }
 
 //--------------- DESTRUCTOR --------------------
 
 ESLayer::~ESLayer()
 {
-//     delete right_click_menu;
-    delete description;
+	delete description;
 }
 
 //-------------- PUBLIC MEMBERS ----------------
@@ -101,21 +89,26 @@ void ESLayer::setSelected( bool in_is_selected )
 {
 	QPalette pal = palette();
 	is_selected = in_is_selected;
-	if ( is_selected )
+	QColor fg;
+	if(parentWidget())
 	{
-		pal.setColor(QPalette::Button, selection_color);
-// 		pal.setColor(QPalette::ButtonText, pal.highlightedText ());
-		
-// 		setPaletteBackgroundColor( colorGroup().dark() );
-// 		setPaletteBackgroundColor( colorGroup ().highlight().light ( 100 ) );
-// 		setPaletteForegroundColor( colorGroup ().highlightedText ());
+		fg = parentWidget()->palette().color(QPalette::Foreground);
 	}
 	else
 	{
-		pal.setColor(QPalette::Button, /*pal.dark()*/QApplication::palette().button() );
-// 		pal.setColor(QPalette::ButtonText, colorGroup ().highlightedText ());
-// 		setPaletteBackgroundColor( colorGroup ().background() );
-// 		setPaletteForegroundColor( colorGroup ().text ());
+		fg = palette().color(QPalette::Foreground);
+	}
+	
+	if ( is_selected )
+	{
+		pal.setColor(QPalette::Button, selection_color);
+		pal.setColor(QPalette::ButtonText, fg);
+	}
+	else
+	{
+		pal.setColor(QPalette::Button, QApplication::palette().button().color() );
+		pal.setColor(QPalette::ButtonText, fg);
+		
 	}
 	
 	setPalette(pal);
@@ -139,11 +132,7 @@ void ESLayer::slotSetDescription()
 	description -> hide();
 }
 
-void ESLayer::slotSendDoubleClickEvent()
-{
-    QMouseEvent mouse_event( QEvent::MouseButtonDblClick, QPoint( x(), y() ), Qt::LeftButton, 0 );
-    QApplication::sendEvent( this, &mouse_event );
-}
+
 
 //-------------- EVENTS AND PROTECTED MEMBERS --------------
 
@@ -151,8 +140,6 @@ void ESLayer::mousePressEvent( QMouseEvent *mouse_event )
 {
     Q_CHECK_PTR( mouse_event );
     setSelected( true );
-    /*is_selected = true;
-    setPaletteBackgroundColor( selection_color );*/
     
     QPalette pal = palette();
     pal.setColor(QPalette::Button, selection_color);
@@ -162,9 +149,6 @@ void ESLayer::mousePressEvent( QMouseEvent *mouse_event )
 
     emit clicked(true, mouse_event );
 
-//     emit clicked();
-//     if ( mouse_event -> button() == Qt::RightButton )
-//         right_click_menu -> exec( QCursor::pos() );
 
     mouse_event -> accept();
 }

@@ -52,7 +52,8 @@ HEADERS += ktapplication.h \
            ktgradientadjuster.h \
            ktpathadjuster.h \
            ktpluginobject.h \
-           collapsiblewidget.h 
+           collapsiblewidget.h \
+           ktconfigurationdialog.h 
 SOURCES += ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
@@ -97,14 +98,15 @@ SOURCES += ktapplication.cpp \
            ktgradientadjuster.cpp \
            ktpathadjuster.cpp \
            ktpluginobject.cpp \
-           collapsiblewidget.cpp 
-QT += xml 
-KDEV_QTVER = 4 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-TARGET = ktoon 
+           collapsiblewidget.cpp \
+           ktconfigurationdialog.cpp 
+QT += xml
+KDEV_QTVER = 4
+MOC_DIR = .moc
+UI_DIR = .ui
+OBJECTS_DIR = .obj
+TARGET = ktoon
 CONFIG += release \
-          warn_on \
-          dll 
-TEMPLATE = lib 
+warn_on \
+dll
+TEMPLATE = lib

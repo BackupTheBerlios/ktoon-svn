@@ -104,100 +104,142 @@ void ESFrame::setUsed( bool in_is_used )
 	is_used = in_is_used;
 	setName(m_initialText);
 	QPalette pal = palette();
+#if 0
+	QColor fg;
+	if(parentWidget())
+	{
+		fg = parentWidget()->palette().color(QPalette::Foreground);
+	}
+	else
+	{
+		fg = palette().color(QPalette::Foreground);
+	}
+	
 	if ( is_selected == true && in_is_used == true )
 	{
 		pal.setColor( QPalette::Background, palette().color( QPalette::Highlight).light(200)) ; 
 		setPalette(pal);
-// 		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight).light(200) );
 		setName(m_initialText);
 	}
 	else if ( is_selected == true && in_is_used == false )
 	{
-// 		pal.setColor( QPalette::Background,  palette().color(QPalette::dark ));
 		pal.setColor( QPalette::Foreground, QColor( 255, 255, 255 ));
+		pal.setColor( QPalette::Foreground, pal.color( QPalette::Dark));
 		setPalette(pal);
-		setPaletteBackgroundColor( colorGroup().dark() );
-// 		setPaletteForegroundColor( QColor( 255, 255, 255 ) );
-		
 	}
 	else if ( is_selected == false && in_is_used == true )
 	{
-		pal.setColor( QPalette::Background, palette().color(QPalette::Active , QColorGroup::Highlight));
+		pal.setColor( QPalette::Background, palette().color(QPalette::Active , QPalette::Highlight));
 		pal.setColor( QPalette::Foreground, QColor( 255, 255, 255 ));
 		setPalette(pal);
-		
-// 		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight) );
 	}
 	else
 	{
-// 		setPaletteBackgroundColor(qobject_cast<QWidget*>(parent())->palette().background () );
-		setPaletteBackgroundColor( QColor( 239, 237, 223 ) );
-		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
+		pal.setColor( QPalette::Background, QColor( 239, 237, 223 ));
+		pal.setColor( QPalette::Foreground, fg);
+		setPalette(pal);
 	}
+#endif
 }
 
 void ESFrame::setSelected( bool in_is_selected )
 {
 	is_selected = in_is_selected;
+	QPalette pal = palette();
+	QColor fg;
+	if(parentWidget())
+	{
+		fg = parentWidget()->palette().color(QPalette::Foreground);
+	}
+	else
+	{
+		fg = palette().color(QPalette::Foreground);
+	}
 	
 	if ( in_is_selected == true && is_used == true && is_locked == false )
 	{
-		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight).light(200) );
-		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
+		pal.setColor( QPalette::Background, palette().color(QPalette::Active , QPalette::Highlight).light(200));
+		pal.setColor( QPalette::Foreground, fg);
 	}
 	else if ( in_is_selected == true && is_used == false && is_locked == false )
 	{
-		
-// 		setPaletteBackgroundColor( QColor( 0, 0, 0 ) );
-// 		setPaletteForegroundColor( QColor( 255, 255, 255 ) );
+		pal.setColor( QPalette::Background, palette().color(QPalette::Active , QPalette::Highlight).dark(200));
 	}
 	else if ( in_is_selected == false && is_used == true && is_locked == false )
 	{
-		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight).light(130) );
-		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
+		pal.setColor( QPalette::Background, palette().color(QPalette::Active , QPalette::Highlight).light(130));
+// 		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight).light(130) );
+// 		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
+		pal.setColor( QPalette::Foreground, fg);
 	}
 	else if ( in_is_selected == false && is_used == false && is_locked == false )
 	{
-		setPaletteForegroundColor( parentWidget()->paletteForegroundColor() );
-		setPaletteBackgroundColor( parentWidget()->paletteBackgroundColor() );
+		if( parentWidget())
+		{
+			pal =  parentWidget()->palette();
+		}
+// 		setPaletteForegroundColor( parentWidget()->palette().color(QPalette::Background));
+// 		setPaletteBackgroundColor( parentWidget()->paletteBackgroundColor() );
 	}
 	else if ( is_locked && in_is_selected )
 	{
-		setPaletteBackgroundColor( colorGroup().link());
-		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
+		pal.setColor( QPalette::Background, pal.color(QPalette::Link));
+		pal.setColor( QPalette::Foreground, fg);
+// 		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
 	}
 	else if ( is_locked && !in_is_selected )
 	{
-		setPaletteBackgroundColor( colorGroup().linkVisited());
-		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
+		pal.setColor( QPalette::Background, pal.color(QPalette::LinkVisited));
+		pal.setColor( QPalette::Foreground, fg);
+// 		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
 	}
+	setPalette(pal);
 }
 
 void ESFrame::setLocked( bool in_is_locked )
 {
+
+	
 	if ( is_used )
 	{
 		is_locked = in_is_locked;
-		if ( is_selected && is_locked )
+		QPalette pal = palette();
+		QColor fg;
+		if(parentWidget())
 		{
-			setPaletteBackgroundColor( colorGroup().link());
-			setPaletteForegroundColor( QColor( 0, 0, 0 ) );
-		}
-		else if ( is_selected && !is_locked )
-		{
-			setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight).light(200) );
-		}
-		else if ( !is_selected && is_locked )
-		{
-			setPaletteBackgroundColor( colorGroup().linkVisited());
-			setPaletteForegroundColor( QColor( 0, 0, 0 ) );
+			fg = parentWidget()->palette().color(QPalette::Foreground);
 		}
 		else
 		{
-			setPaletteBackgroundColor( QColor( 200, 200, 200 ) );
-			setPaletteForegroundColor( QColor( 0, 0, 0 ) );
+			fg = palette().color(QPalette::Foreground);
 		}
+		if ( is_selected && is_locked )
+		{
+			pal.setColor( QPalette::Background, pal.color(QPalette::Link));
+			pal.setColor( QPalette::Foreground, fg);
+			
+// 			setPaletteBackgroundColor( colorGroup().link());
+// 			setPaletteForegroundColor( QColor( 0, 0, 0 ) );
+		}
+		else if ( is_selected && !is_locked )
+		{
+			pal.setColor( QPalette::Background, palette().color(QPalette::Active , QPalette::Highlight).light(200));
+// 			setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight).light(200) );
+		}
+		else if ( !is_selected && is_locked )
+		{
+			pal.setColor( QPalette::Background, pal.color(QPalette::LinkVisited));
+			pal.setColor( QPalette::Foreground, fg);
+			
+		}
+		else
+		{
+			pal.setColor( QPalette::Background, QColor( 200, 200, 200 ) );
+			pal.setColor( QPalette::Foreground, fg);
+		}
+		setPalette(pal);
 	}
+
 }
 
 void ESFrame::setMotion( bool in_is_motion )
@@ -258,11 +300,11 @@ void ESFrame::slotSetDescription()
 	description->hide();
 }
 
-void ESFrame::slotSendDoubleClickEvent()
-{
-	QMouseEvent mouse_event( QEvent::MouseButtonDblClick, QPoint( x(), y() ), Qt::LeftButton, 0 );
-	QApplication::sendEvent( this, &mouse_event );
-}
+// void ESFrame::slotSendDoubleClickEvent()
+// {
+// 	QMouseEvent mouse_event( QEvent::MouseButtonDblClick, QPoint( x(), y() ), Qt::LeftButton, 0 );
+// 	QApplication::sendEvent( this, &mouse_event );
+// }
 
 void ESFrame::otherSelected(int id)
 {
@@ -282,25 +324,40 @@ void ESFrame::otherSelected(int id)
 
 void ESFrame::mousePressEvent( QMouseEvent *mouse_event )
 {
-	QToolTip::showText(mapToGlobal ( mouse_event->pos()), "offset " + QString::number(m_id), this);
+// 	QToolTip::showText(mapToGlobal ( mouse_event->pos()), "offset " + QString::number(m_id), this);
 	Q_CHECK_PTR( mouse_event );
+	QPalette pal = palette();
+	QColor fg;
+	if(parentWidget())
+	{
+		fg = parentWidget()->palette().color(QPalette::Foreground);
+	}
+	else
+	{
+		fg = palette().color(QPalette::Foreground);
+	}
 	if ( !is_used )
 	{
 		is_selected = true;
-		setPaletteBackgroundColor( QColor( 0, 0, 0 ) );
-		setPaletteForegroundColor( QColor( 255, 255, 255 ) );
+		pal.setColor( QPalette::Background, pal.color(QPalette::Dark));
+		pal.setColor( QPalette::Foreground, pal.color(QPalette::Dark));
+		
+// 		setPaletteBackgroundColor( QColor( 0, 0, 0 ) );
+// 		setPaletteForegroundColor( QColor( 255, 255, 255 ) );
 	}
 	else if ( is_used && !is_locked )
 	{
 		is_selected = true;
-		setPaletteBackgroundColor( QColor( 255, 255, 255 ) );
-		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
+		pal.setColor( QPalette::Background, palette().color(QPalette::Active , QPalette::Highlight).light(200));
+		pal.setColor( QPalette::Foreground, fg);
+// 		setPaletteBackgroundColor( QColor( 255, 255, 255 ) );
+// 		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
 	}
 	else if ( is_locked )
 	{
 		is_selected = true;
-		setPaletteBackgroundColor( QColor( 210, 210, 255 ) );
-		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
+		pal.setColor( QPalette::Background, pal.color(QPalette::LinkVisited));
+		pal.setColor( QPalette::Foreground, fg);
 	}
 
 	emit clicked(m_id, mouse_event->button(), mouse_event->globalX(), mouse_event->globalY() );
@@ -354,8 +411,14 @@ void ESFrame::drawContents( QPainter *painter )
 	}
 	else
 	{
-		painter -> setPen(parentWidget()->paletteForegroundColor());
-// 		painter -> setPen( QColor( 0, 0, 0 ) );
+		if(parentWidget())
+		{
+			painter->setPen(parentWidget()->palette().color(QPalette::Foreground));
+		}
+		else
+		{
+			painter->setPen( QColor( 0, 0, 0 ) );
+		}
 	}
 	
 	painter -> drawText( 5, 16, text() );
@@ -376,3 +439,10 @@ void ESFrame::keyPressEvent(QKeyEvent *)
 {
 
 }
+
+void ESFrame::slotSendDoubleClickEvent()
+{
+	QMouseEvent mouse_event( QEvent::MouseButtonDblClick, QPoint( x(), y() ), Qt::LeftButton,  Qt::NoButton , Qt::NoModifier );
+	QApplication::sendEvent( this, &mouse_event );
+}
+

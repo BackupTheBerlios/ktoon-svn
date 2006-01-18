@@ -31,9 +31,6 @@
 
 
 #include "ktlayerexposure.h"
-// #include "gldrawing.h"
-// #include "keyframe.h"
-// #include "layer.h"
 
 /**
  * @author Jorge Cuadrado
@@ -53,9 +50,9 @@ class KTTableExposure : public QScrollArea
 		
 		void setUseFrame(int idLayer, const QString& name, bool addedToEnd );
 		
-		void removeFrame();
+		
 		void moveCurrentFrame(Direction dir);
-		void lockCurrentFrame();
+		
 		void removeCurrentLayer();
 		void insertFrames();
 // 		void loadLayers(QList<Layer*> layers);
@@ -78,18 +75,19 @@ class KTTableExposure : public QScrollArea
 		ListOfLayers m_layers;
 		QMenu *menuFrame;
 		
+	private slots:
+		void emitRequestCopyCurrentFrame();
+		void emitRequestPasteCurrentFrame();
+		
 	public slots:
 		void insertLayer(int rows, const QString &text = QString::null);
 		void clickedCell(int row, int col, int button, int gx, int gy);
 		void changeCurrentLayer(int idLayer);
-		void applyAction(int action);
-// 		void removeKeyFrame(int id);
-// 		void copyCurrentFrame();
-// 		void pasteCurrentFrame();
 		void removeLayer(int idLayer);
-// 		void changedName(const QString &);
 		void layerRename(int, const QString &);
 		void frameRename(int idFrame, int idLayer, const QString  &newName);
+		void lockCurrentFrame();
+		void removeFrame();
 		
 	signals:
 		void layerVisibilityChanged( int idLayer, bool value);

@@ -85,6 +85,7 @@ void KTWidgetListView::addItem(KTWidgetListItem *item)
 	{
 		selectItem( item );
 	}
+	update();
 }
 
 void KTWidgetListView::removeItem(KTWidgetListItem *item)

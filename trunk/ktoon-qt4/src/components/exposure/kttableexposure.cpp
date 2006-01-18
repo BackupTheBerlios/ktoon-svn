@@ -31,12 +31,9 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent)
 {
 	KTINIT;
 	setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOn);
-	viewport ()->setPaletteBackgroundColor ( paletteBackgroundColor() );
-	
-	
 	
 	m_port = new QWidget(this);
-	m_layout = new QBoxLayout (  m_port, QBoxLayout::LeftToRight);
+	m_layout = new QBoxLayout ( QBoxLayout::LeftToRight, m_port );
 	m_layout->setSpacing(0);
 	m_layout->setMargin(0);
 	m_port->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
@@ -52,50 +49,30 @@ KTTableExposure::~KTTableExposure()
 
 void KTTableExposure::createMenuRight()
 {
-	menuFrame = new QMenu(this);
-	menuFrame->insertItem( tr( "Rename Frame" ), RenameFrame, RenameFrame);
-	menuFrame->insertItem( tr( "Remove this Frame" ), RemoveThisFrame, RemoveThisFrame);
-	menuFrame->insertItem( tr( "Lock this Frame" ), LockThisFrame, LockThisFrame);
-	menuFrame->insertItem( tr( "Copy this Frame" ), CopyThisFrame, CopyThisFrame);
-	menuFrame->insertItem( tr( "Paste into this Frame" ), PasteIntoFrame, PasteIntoFrame);
-	connect(menuFrame, SIGNAL(activated ( int )), this, SLOT(applyAction(int)));
+	menuFrame = new QMenu(this); 
+	//FIXME implemtentar renameCurrentFrame removeCurrentFrame
+	menuFrame->addAction( tr( "Rename Frame" ), this,  SLOT(renameCurrentFrame()));
+	menuFrame->addAction( tr( "Remove this Frame" ), this, SLOT(removeCurrentFrame()));
 	
-
+	menuFrame->addAction( tr( "Copy this Frame" ), this,  SLOT(emitRequestCopyCurrentFrame()));
+	
+	menuFrame->addAction( tr( "Paste into this Frame" ), this, SLOT(emitRequestPasteCurrentFrame()));
+	
+	menuFrame->addAction( tr( "Lock this Frame" ), this, SLOT(lockCurrentFrame()));
 }
 
-void KTTableExposure::applyAction(int action)
+void KTTableExposure::emitRequestCopyCurrentFrame()
 {
-	switch(action)
-	{
-		case RenameFrame:
-		{
-// 			renameCurrentFrame();
-			break;
-		}
-		case RemoveThisFrame:
-		{
-// 			removeCurrentFrame();
-			break;
-		}
-		case LockThisFrame:
-		{
-// 			lockFrame();
-			break;
-		}
-		case CopyThisFrame:
-		{
-			emit requestCopyFrame(m_currentFrame);
-			break;
-		}
-		
-		case PasteIntoFrame:
-		{
-			emit requestPasteFrame(m_currentFrame);
-			cellSelected(m_currentLayer, m_currentFrame);
-			break;
-		}
-	}
+	emit requestCopyFrame(m_currentFrame);
 }
+
+void KTTableExposure::emitRequestPasteCurrentFrame()
+{
+	emit requestPasteFrame(m_layers[m_currentLayer]->currentFrame());
+	m_layers[m_currentLayer]->frameSelect(m_layers[m_currentLayer]->currentFrame());
+}
+
+
 
 
 void KTTableExposure::clickedCell(int row, int col,int button,int gx,int gy)
@@ -114,7 +91,6 @@ void KTTableExposure::clickedCell(int row, int col,int button,int gx,int gy)
 	else
 	{
 		emit(layerSelected(col));
-// 		KTStatus -> setCurrentKeyFrame( NULL );
 	}
 	
 }
@@ -146,7 +122,7 @@ void KTTableExposure::insertLayer(int rows, const QString &text)
 	
 	connect(newLayer, SIGNAL(requestInsertFrame(bool)), this, SIGNAL(requestInsertFrame(bool)));
 	
-	m_layout->addWidget( newLayer, 0, Qt::AlignLeft);
+	m_layout->addWidget( newLayer/*, 0, Qt::AlignLeft*/);
 	
 	m_numLayer++;
 	newLayer->setSelected(true);
@@ -252,9 +228,9 @@ void KTTableExposure::setCurrentCell(int idLayer, int idFrame)
 
 void KTTableExposure::removeLayer(int idLayer)
 {
-	KT_FUNCINFO;
+// 	KT_FUNCINFO;
 	SHOW_VAR(idLayer);
-	m_layout->remove( m_layers.at(idLayer) );
+	m_layout->removeWidget( m_layers.at(idLayer) );
 	m_layers.removeAt(idLayer);
 	for( int i = idLayer; i < m_layers.count(); i++)
 	{
