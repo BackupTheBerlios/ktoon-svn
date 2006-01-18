@@ -39,6 +39,7 @@
 #include <QDialog>
 #include <QMainWindow>
 #include <QDebug>
+#include <QWindowsStyle>
 
 #include "buttonbar.h"
 #include "button.h"
@@ -58,7 +59,7 @@ DDockWindow::DDockWindow(QWidget *parent, Position position) : QDockWidget( pare
 	connect(this, SIGNAL(topLevelChanged ( bool)), this, SLOT(addFloatingOption(bool)));
 	
 #if QT_VERSION >= 0x040100
-	setStyle("windows");
+	setStyle(new QWindowsStyle());
 #else
 	QList<QWidget*> widgets = findChildren<QWidget*>();
 	QList<QWidget*>::ConstIterator it = widgets.begin();
@@ -284,18 +285,11 @@ QWidget *DDockInternalWidget::currentWidget() const
 
 void DDockInternalWidget::addWidget(const QString &title, QWidget *widget)
 {
-	QPixmap *pm = const_cast<QPixmap*>(widget->icon());
+	QPixmap pm = widget->windowIcon().pixmap(16,16);
 	Ideal::Button *button;
-	if (pm != 0)
+	if (!pm.isNull())
 	{
-        //force 16pt for now
-		if (pm->height() > 16)
-		{
-			QImage img = pm->convertToImage();
-			img = img.smoothScale(16, 16);
-			pm->convertFromImage(img);
-		}
-		button = new Ideal::Button(m_bar, title, *pm);
+		button = new Ideal::Button(m_bar, title, pm);
 	}
 	else
 	{
@@ -522,7 +516,7 @@ void DDockInternalWidget::setSeparator(QWidget *separator)
 	Q_CHECK_PTR(separator);
 	m_separator = separator;
 	
-	m_separator->setStyle("windows");
+	m_separator->setStyle(new QWindowsStyle());
 }
 
 void DDockInternalWidget::dialoged(int index)

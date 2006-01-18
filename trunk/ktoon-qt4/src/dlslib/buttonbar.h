@@ -1,6 +1,8 @@
 /***************************************************************************
  *   Copyright (C) 2004 by Alexander Dymo                                  *
  *   adymo@kdevelop.org                                                    *
+ *   David Cuadrado (C) 2005 						   *
+ *   krawek@gmail.com							   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Library General Public License as       *
@@ -17,6 +19,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef IDEALBUTTONBAR_H
 #define IDEALBUTTONBAR_H
 
@@ -61,7 +64,7 @@ class ButtonBar : public QWidget
     Q_OBJECT
 public:    
     ButtonBar(Place place, ButtonMode mode = IconsAndText,
-        QWidget *parent = 0, const char *name = 0);
+        QWidget *parent = 0);
     virtual ~ButtonBar();
 
     /**Adds a button to the bar.*/

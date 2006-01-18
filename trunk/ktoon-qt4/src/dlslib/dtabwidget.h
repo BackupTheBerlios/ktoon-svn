@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Alexander Dymo                                  *
+ *   Copyright (C) 2004 by Alexander Dymo                                  *
  *   adymo@kdevelop.org                                                    *
+ *   David Cuadrado (C) 2005 						   *
+ *   krawek@gmail.com							   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Library General Public License as       *
@@ -17,6 +19,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef DTABWIDGET_H
 #define DTABWIDGET_H
 

@@ -21,11 +21,8 @@
 #include "ktconfigdocument.h"
 
 #include <qfile.h>
-//Added by qt3to4:
 #include <QTextStream>
-#include <iostream>
 #include <qobject.h>
-#include <q3stylesheet.h>
 
 #include "ktdebug.h"
 
@@ -60,7 +57,7 @@ void KTConfigDocument::setup()
 		}
 		else
 		{
-			qDebug(QObject::tr("Configuration file is corrupted %1:%2: %3").arg(errorLine).arg(errorColumn).arg(errorMsg) );
+			ktDebug() << QObject::tr("Configuration file is corrupted %1:%2: %3").arg(errorLine).arg(errorColumn).arg(errorMsg);
 			m_isOk = false;
 		}
 		config.close();

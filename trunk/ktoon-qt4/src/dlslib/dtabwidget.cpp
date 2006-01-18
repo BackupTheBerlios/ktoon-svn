@@ -1,6 +1,8 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Alexander Dymo                                  *
+ *   Copyright (C) 2004 by Alexander Dymo                                  *
  *   adymo@kdevelop.org                                                    *
+ *   David Cuadrado (C) 2005 						   *
+ *   krawek@gmail.com							   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Library General Public License as       *
@@ -17,7 +19,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
 #ifndef USE_KDE
 #include "close.xpm"
 #endif
@@ -29,48 +31,48 @@
 
 #include <QApplication>
 #include <QSettings>
+#include <QLayout>
 
 #include "comdefs.h"
 
 DTabWidget::DTabWidget(QWidget *parent)
-    :KTWCLASS(parent), m_closeButton(0)
+	:KTWCLASS(parent), m_closeButton(0)
 {
 	setFocusPolicy(Qt::NoFocus);
-    setMargin(0);
 
-    loadSettings();
+	loadSettings();
     
-    if (!m_tabBarShown)
-    {
-        tabBar()->hide();
-    }
-    else {
-        m_closeButton = new QToolButton(this);
+	if (!m_tabBarShown)
+	{
+		tabBar()->hide();
+	}
+	else {
+		m_closeButton = new QToolButton(this);
 
-        m_closeButton->setIconSet(QIcon( (const char **) close_xpm));
+		m_closeButton->setIcon(QIcon( (const char **) close_xpm));
 
-        m_closeButton->adjustSize();
-        m_closeButton->hide();
-	setCornerWidget(m_closeButton, Qt::TopRight);
+		m_closeButton->adjustSize();
+		m_closeButton->hide();
+		setCornerWidget(m_closeButton, Qt::TopRightCorner);
         
-        if (m_closeOnHover)
-        {
+		if (m_closeOnHover)
+		{
 //             setHoverCloseButton(true);
-        }
-    }
+		}
+	}
     
-    connect(this, SIGNAL(currentChanged(QWidget*)), this, SLOT(setFocus(QWidget*)));
+	connect(this, SIGNAL(currentChanged(QWidget*)), this, SLOT(setFocus(QWidget*)));
 //    connect(this, SIGNAL(currentChanged(QWidget*)), this, SLOT(updateHistory(QWidget*)));
 }
 
 void DTabWidget::loadSettings()
 {
-    QSettings config;
-    config.beginGroup("DLSLib");
+	QSettings config;
+	config.beginGroup("DLSLib");
     
-    m_tabBarShown = !config.value("TabWidgetVisibility", 0).toBool();
-    m_closeOnHover = config.value("CloseOnHover", false).toBool();
-    m_closeButtonShown = config.value("ShowCloseTabsButton", true).toBool();
+	m_tabBarShown = !config.value("TabWidgetVisibility", 0).toBool();
+	m_closeOnHover = config.value("CloseOnHover", false).toBool();
+	m_closeButtonShown = config.value("ShowCloseTabsButton", true).toBool();
 
 }
 
@@ -80,37 +82,37 @@ void DTabWidget::saveSettings()
 
 QToolButton *DTabWidget::closeButton() const
 {
-    return m_closeButton;
+	return m_closeButton;
 }
 
 void DTabWidget::setFocus(QWidget *w)
 {
-    if (w)
-    {
-        w->setFocus();
-    }
+	if (w)
+	{
+		w->setFocus();
+	}
 }
 
 void DTabWidget::insertTab(QWidget *child, const QString &label, int index)
 {
 	child->setParent(0);
-    if (m_closeButton && m_closeButtonShown)
-    {
-        m_closeButton->show();
-    }
-    KTWCLASS::insertTab(index, child, label);
-    if (index != -1) tabBar()->repaint();
+	if (m_closeButton && m_closeButtonShown)
+	{
+		m_closeButton->show();
+	}
+	KTWCLASS::insertTab(index, child, label);
+	if (index != -1) tabBar()->repaint();
 }
 
 void DTabWidget::insertTab(QWidget *child, const QIcon &iconset, 
-    const QString &label, int index)
+			   const QString &label, int index)
 {
-    if (m_closeButton && m_closeButtonShown)
-    {
-        m_closeButton->show();
-    }
-    KTWCLASS::insertTab(index, child, iconset, label );
-    if (index != -1) tabBar()->repaint();
+	if (m_closeButton && m_closeButtonShown)
+	{
+		m_closeButton->show();
+	}
+	KTWCLASS::insertTab(index, child, iconset, label );
+	if (index != -1) tabBar()->repaint();
 }
 
 

@@ -30,10 +30,16 @@ KTEditSpinBox::KTEditSpinBox( int value, int minValue, int maxValue, int step, Q
 	layout->setSpacing(0);
 	setTitle(text);
 	setLayout(layout);
-	m_spin = new QSpinBox(minValue, maxValue, step, this);
+	m_spin = new QSpinBox(this);
+	m_spin->setMinimum(minValue);
+	m_spin->setMaximum(maxValue);
+	m_spin->setSingleStep ( step );
 	m_spin->setValue(value);
 	layout->addWidget(m_spin);
-	m_slider = new QSlider ( minValue,  maxValue, step, value, Qt::Horizontal  ,this);
+	m_slider = new QSlider (Qt::Horizontal, this);
+	m_slider->setMinimum(minValue);
+	m_slider->setMaximum(maxValue);
+	m_slider->setSingleStep ( step );
 	
 	layout->addWidget(m_slider );
 	setupConnects();
@@ -56,10 +62,10 @@ void KTEditSpinBox::setupConnects()
 
 void KTEditSpinBox::setRange(int min, int max)
 {
-	m_spin->setMinValue ( min );
-	m_spin->setMaxValue ( max );
-	m_slider->setMinValue ( min );
-	m_slider->setMaxValue ( max );
+	m_spin->setMinimum ( min );
+	m_spin->setMaximum ( max );
+	m_slider->setMinimum ( min );
+	m_slider->setMaximum ( max );
 }
 
 void KTEditSpinBox::setValue(int value)

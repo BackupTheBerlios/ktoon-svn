@@ -3,7 +3,7 @@
 # Subdir relative project main directory: ./src/dlslib
 # Target is a library:  
 
-QT += qt3support 
+QT += gui 
 KDEV_QTVER = 4 
 INCLUDEPATH += ../../src/ktoonstyle 
 MOC_DIR = .moc 
@@ -13,7 +13,6 @@ CONFIG += release \
           warn_on \
           staticlib 
 TEMPLATE = lib 
-IMAGES += close.xpm 
 HEADERS += buttonbar.h \
            button.h \
            comdefs.h \

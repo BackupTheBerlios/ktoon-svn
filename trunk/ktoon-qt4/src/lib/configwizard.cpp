@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 #include "configwizard.h"
-#include <QToolTip>
 #include <QLabel>
 #include <QLayout>
 #include <QHBoxLayout>
@@ -66,7 +65,7 @@ CWFirstPage::CWFirstPage(QWidget *parent) : KTWizardPage(tr("Welcome"), parent)
 {
 	QImage img(wizard1_xpm);
 	
-	setPixmap( QPixmap(KImageEffect::blend(img, 0.1f, palette().color(QPalette::Background), KImageEffect::DiagonalGradient, true)) );
+	setPixmap( QPixmap::fromImage(KImageEffect::blend(img, 0.1f, palette().color(QPalette::Background), KImageEffect::DiagonalGradient, true)) );
 
 	QLabel *msg = new QLabel(tr("<h3>KToon</h3><br>"
 			"In this wizard you need set a values for proper configuration of ktoon<br><br>"
@@ -97,13 +96,13 @@ CWSecondPage::CWSecondPage(QWidget *parent) : KTWizardPage(tr("Configure KToon")
 	m_kthome = new QLineEdit("", hbox1);
 	connect(m_kthome, SIGNAL(textChanged(const QString &)), this, SLOT(verify(const QString &)));
 
-	QToolTip::add(m_kthome, tr("Choose your KTOON_HOME directory"));
+	m_kthome->setToolTip(tr("Choose your KTOON_HOME directory"));
 	
 	QPushButton *button = new QPushButton(tr("browse..."), hbox1);
 	
 	QFileDialog *fd = new QFileDialog(hbox1);
 	connect(fd, SIGNAL(currentChanged ( const QString & )), m_kthome, SLOT(setText(const QString &)));
-	fd->setMode(QFileDialog::Directory);
+	fd->setFileMode(QFileDialog::Directory);
 	fd->setModal(true);
 	fd->hide();
 	connect(button, SIGNAL(clicked()), fd, SLOT(show()));
@@ -115,13 +114,13 @@ CWSecondPage::CWSecondPage(QWidget *parent) : KTWizardPage(tr("Configure KToon")
 	m_ktrepos = new QLineEdit("",hbox2);
 	connect(m_ktrepos, SIGNAL(textChanged(const QString &)), this, SLOT(verify(const QString &)));
 	
-	QToolTip::add(m_ktrepos, tr("In this directory will be save your projects"));
+	m_ktrepos->setToolTip(tr("In this directory will be save your projects"));
 	
 	QFileDialog *fd2 = new QFileDialog(hbox2);
 	connect(fd2, SIGNAL(currentChanged ( const QString & )), m_ktrepos, SLOT(setText(const QString &)));
 	
 	fd2->hide();
-	fd2->setMode(QFileDialog::Directory);
+	fd2->setFileMode(QFileDialog::Directory);
 	fd2->setModal(true);
 	QPushButton *button2 = new QPushButton(tr("browse..."), hbox2);
 	

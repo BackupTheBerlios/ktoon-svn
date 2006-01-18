@@ -75,7 +75,7 @@ namespace Ideal {
 		resize(sizeHint());
 		fixDimensions(Ideal::Bottom);
     
-		QToolTip::add(this, m_realText);
+		setToolTip(m_realText);
 		
 		m_animation = new Animation(this);
 		
@@ -140,8 +140,7 @@ namespace Ideal {
 	void Button::setDescription(const QString &description)
 	{
 		m_description = description;
-		QToolTip::remove(this);
-		QToolTip::add(this, m_description);
+		setToolTip(m_description);
 	}
 
 	QString Button::description() const
@@ -192,13 +191,13 @@ namespace Ideal {
 		
 		if ( isDown() || isChecked() )
 		{
-			fillColor = m_animation->blendColors( colorGroup().highlight(), colorGroup().background(), static_cast<int>( m_animation->count * 3.5 ) );
-			textColor = m_animation->blendColors( colorGroup().highlightedText(), colorGroup().text(), static_cast<int>( m_animation->count * 4.5 ) );
+			fillColor = m_animation->blendColors( palette().highlight().color(), palette().background().color(), static_cast<int>( m_animation->count * 3.5 ) );
+			textColor = m_animation->blendColors( palette().highlightedText().color(), palette().text().color(), static_cast<int>( m_animation->count * 4.5 ) );
 		}
 		else
 		{
-			fillColor = m_animation->blendColors( colorGroup().background(), colorGroup().highlight(), static_cast<int>( m_animation->count * 3.5 ) );
-			textColor = m_animation->blendColors( colorGroup().text(), colorGroup().highlightedText(), static_cast<int>( m_animation->count * 4.5 ) );
+			fillColor = m_animation->blendColors( palette().background().color(), palette().highlight().color(), static_cast<int>( m_animation->count * 3.5 ) );
+			textColor = m_animation->blendColors( palette().text().color(), palette().highlightedText().color(), static_cast<int>( m_animation->count * 4.5 ) );
 		}
 		////
 		
@@ -207,7 +206,7 @@ namespace Ideal {
 
 		QPixmap pm(r.width(), r.height());
 		pm.fill(fillColor);
-		p.setPen( colorGroup().mid() );
+		p.setPen( QPen(palette().mid(), 1) );
 		
 		opt.palette.setColor(QPalette::Button, fillColor);
 		opt.palette.setColor(QPalette::ButtonText, textColor);
@@ -278,24 +277,19 @@ namespace Ideal {
 
 	QSize Button::sizeHint(const QString &text) const
 	{
-		constPolish();
+// 		constPolish();
 		QStyleOptionButton option = styleOption();
-		int w = 0, h = 0;
+		int w = option.iconSize.width(), h = option.iconSize.height();
 
-		if ( iconSet() && !iconSet()->isNull() && (m_buttonBar->mode() != Text) ) {
-			int iw = iconSet()->pixmap( QIcon::Small, QIcon::Normal ).width() + 4;
-			int ih = iconSet()->pixmap( QIcon::Small, QIcon::Normal ).height();
+		if ( !icon().isNull() && m_buttonBar->mode() != Text ) 
+		{
+			int iw = option.iconSize.width();
+			int ih = option.iconSize.height();
 			w += iw;
-			h = QMAX( h, ih );
+			h = qMax( h, ih );
 		}
-		if ( isMenuButton() ) {
-			w += style()->pixelMetric(QStyle::PM_MenuButtonIndicator, &option, this);
-		}
-		if ( pixmap() ) {
-			QPixmap *pm = (QPixmap *)pixmap();
-			w += pm->width();
-			h += pm->height();
-		} else if (m_buttonBar->mode() != Icons) {
+		if (m_buttonBar->mode() != Icons) 
+		{
 			QString s( text );
 			bool empty = s.isEmpty();
 			if ( empty )
@@ -305,7 +299,7 @@ namespace Ideal {
 			if(!empty || !w)
 				w += sz.width();
 			if(!empty || !h)
-				h = QMAX(h, sz.height());
+				h = qMax(h, sz.height());
 		}
 
 		return (style()->sizeFromContents(QStyle::CT_ToolButton, &option, QSize(w, h), this).expandedTo(QApplication::globalStrut()));
@@ -354,7 +348,7 @@ namespace Ideal {
 
 	void Button::enableIconSet()
 	{
-		if (!iconSet())
+		if (!icon().isNull() )
 		{
 			if (m_realIconSet.isNull())
 			{

@@ -1,7 +1,7 @@
 /* This file is part of the KDE libraries
  Copyright (C) 1998, 1999, 2001, 2002 Daniel M. Duley <mosfet@interaccess.com>
  (C) 1998, 1999 Christian Tibirna <ctibirna@total.net>
- (C) 1998, 1999 Dirk A. Mueller <mueller@kde.org>
+ (C) 1998, 1999 Dirk Mueller <mueller@kde.org>
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions
@@ -26,8 +26,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-// $Id: kimageeffect.h,v 1.39 2004/06/12 21:03:57 waba Exp $
-
 #ifndef __KIMAGE_EFFECT_H
 #define __KIMAGE_EFFECT_H
 
@@ -35,11 +33,9 @@ class QImage;
 class QSize;
 class QColor;
 class QPoint;
-class QRect;
+class QRect; 
 
 /**
- * This class is part of KDE libraries adapted to ktoon by David Cuadrado
- * 
  * This class includes various QImage based graphical effects.
  *
  * Everything is
@@ -47,7 +43,7 @@ class QRect;
  * just call the static methods. They are encapsulated here merely to provide
  * a common namespace.
  */
-class KImageEffect
+class  KImageEffect
 {
 public:
     /**
@@ -763,6 +759,7 @@ public:
      * @param compensate compensate for darkening
      * @param invert invert bumpmap
      * @param type type of the bumpmap
+     * @param tiled tile the bumpmap over the image through the Y offset
      *
      * @return The destination image (dst) containing the result.
      * @author Zack Rusin <zack@kde.org>

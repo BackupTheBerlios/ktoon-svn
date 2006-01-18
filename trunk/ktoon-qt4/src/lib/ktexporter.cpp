@@ -37,7 +37,7 @@ bool KTExporter::exportAnimation(const QString &filename, Format format)
 	{
 		case PNG:
 		{
-			if ( ! m_filename.contains(".png", false) )
+			if ( ! m_filename.contains(".png", Qt::CaseInsensitive) )
 			{
 				m_filename += ".png";
 			}
@@ -46,7 +46,7 @@ bool KTExporter::exportAnimation(const QString &filename, Format format)
 		break;
 		case SWF:
 		{
-			if ( ! m_filename.contains(".swf", false) )
+			if ( ! m_filename.contains(".swf", Qt::CaseInsensitive) )
 			{
 				m_filename += ".swf";
 			}
@@ -54,7 +54,7 @@ bool KTExporter::exportAnimation(const QString &filename, Format format)
 		break;
 		case SVG:
 		{
-			if ( ! m_filename.contains(".svg", false) )
+			if ( ! m_filename.contains(".svg", Qt::CaseInsensitive) )
 			{
 				m_filename += ".svg";
 			}
@@ -62,7 +62,7 @@ bool KTExporter::exportAnimation(const QString &filename, Format format)
 		break;
 		case JPEG:
 		{
-			if ( ! m_filename.contains(".jpg", false) )
+			if ( ! m_filename.contains(".jpg", Qt::CaseInsensitive) )
 			{
 				m_filename += ".jpg";
 			}

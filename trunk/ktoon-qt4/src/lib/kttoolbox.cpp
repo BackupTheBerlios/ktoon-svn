@@ -43,7 +43,6 @@ void KTToolBox::createIcon()
 	QPolygon m_pArrow(3);
 
 	QPixmap pixmap (22,22);
-	pixmap.fill( palette().background() );
 	
 	m_pArrow.setPoint ( 0, 0, 0);
 	m_pArrow.setPoint ( 1, 10, 5);
@@ -51,6 +50,7 @@ void KTToolBox::createIcon()
 	
 	QPainter p(&pixmap);
 	
+	p.fillRect(pixmap.rect(), palette().background() );
 	p.setBrush( palette().foreground() );
 	p.translate(pixmap.width()/3, 5);
 	p.drawConvexPolygon(m_pArrow);
@@ -62,7 +62,6 @@ void KTToolBox::createIcon()
 	///////////
 	
 	QPixmap pixmap2 (22,22);
-	pixmap2.fill( palette().background() );
 	
 	m_pArrow.setPoint ( 0, 0, 0);
 	m_pArrow.setPoint ( 1, 5, 10);
@@ -70,6 +69,7 @@ void KTToolBox::createIcon()
 	
 	QPainter p2(&pixmap2);
 	
+	p2.fillRect(pixmap2.rect(), palette().background() );
 	p2.setBrush( palette().foreground() );
 	p2.translate(pixmap2.width()/3, 5);
 	p2.drawConvexPolygon(m_pArrow);

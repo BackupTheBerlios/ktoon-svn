@@ -36,7 +36,7 @@
 KTFileDialog::KTFileDialog(Type t, QWidget *parent) : QDialog(parent), m_type(t)
 {
 	KTINIT;
-	setCaption("Choose your file...");
+	setWindowTitle("Choose your file...");
 	setModal(true);
 	
 	QVBoxLayout *m_mainLayout = new QVBoxLayout;

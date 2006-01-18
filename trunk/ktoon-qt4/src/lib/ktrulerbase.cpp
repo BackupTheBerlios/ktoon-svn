@@ -65,11 +65,11 @@ KTRulerBase::KTRulerBase(Qt::Orientation m_orientation, QWidget *parent, const c
 	
 	connect(this, SIGNAL(displayMenu(KTRulerBase *, QPoint)), this, SLOT(showMenu(KTRulerBase *, QPoint)));
 	
-	m_menu = new QMenu(this);
-	m_menu->insertItem( tr("Change scale to 5..."), ChangeScaleToFive);
-	m_menu->insertItem( tr("Change scale to 10..."), ChangeScaleToTen);
-	
-	connect(m_menu, SIGNAL(activated(int)), this, SLOT(chooseOption(int)));
+// 	m_menu = new QMenu(this);
+// 	m_menu->addAction( tr("Change scale to 5..."), ChangeScaleToFive);
+// 	m_menu->addAction( tr("Change scale to 10..."), ChangeScaleToTen);
+// 	
+// 	connect(m_menu, SIGNAL(activated(int)), this, SLOT(chooseOption(int)));
 }
 
 
@@ -225,7 +225,7 @@ void KTRulerBase::mouseMoveEvent ( QMouseEvent * e )
 void KTRulerBase::setDrawPointer(bool yes)
 {
 	m_drawPointer = yes;
-	repaint(false);
+	update();
 }
 
 void KTRulerBase::setSeparation(int sep)

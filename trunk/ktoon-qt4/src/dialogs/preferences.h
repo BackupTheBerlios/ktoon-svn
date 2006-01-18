@@ -53,7 +53,7 @@ class Preferences : public KTTabDialog
 		
 	private:
 		KTThemeSelector *m_themeSelector;
-		KTFontWidget *m_fontWidget;
+// 		KTFontWidget *m_fontWidget;
 
 	public slots:
 		void apply();

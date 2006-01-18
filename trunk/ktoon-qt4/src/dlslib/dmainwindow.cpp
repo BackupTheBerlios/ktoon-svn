@@ -134,13 +134,13 @@ void DMainWindow::addWidget(DTabWidget *tab, QWidget *widget, const QString &tit
     int idx = -1;
     if (m_pOpenTabAfterCurrent && (tab->count() > 0))
     {
-        idx = tab->currentPageIndex() + 1;
+        idx = tab->currentIndex() + 1;
     }
 
     if (m_pShowIconsOnTabs)
     {
-        const QPixmap *pixmap = widget->icon();
-        const QIcon &icons = (pixmap && (pixmap->size().height() <= 16)) ? *(pixmap) : QIcon((const char **)icon_xpm);
+	    QPixmap pixmap = widget->windowIcon().pixmap(16,16);
+	const QIcon &icons = (!pixmap.isNull() && (pixmap.size().height() <= 16)) ? pixmap : QIcon((const char **)icon_xpm);
         tab->insertTab(widget, icons, title, idx);
     }
     else
@@ -150,7 +150,7 @@ void DMainWindow::addWidget(DTabWidget *tab, QWidget *widget, const QString &tit
     m_pWidgets.append(widget);
     m_pWidgetTabs[widget] = tab;
     widget->installEventFilter(this);
-    tab->showPage(widget);
+    tab->setCurrentWidget(widget);
     
     if ( persistant )
     {
@@ -170,8 +170,8 @@ void DMainWindow::removeWidget(QWidget *widget)
         DTabWidget *tab = m_pWidgetTabs[widget];
 	if (tab->indexOf(widget) >= 0 && m_pActiveTabWidget->count() > 1)
         {
-            tab->removePage(widget);
-            widget->reparent(0,QPoint(0,0),false);
+		tab->removeTab(tab->indexOf(widget));
+            widget->setParent(0);
             if (tab->count() == 0)
             {
                 if (tab->closeButton())
@@ -182,7 +182,7 @@ void DMainWindow::removeWidget(QWidget *widget)
                 if (tab != m_pTabs.first())
                 {
                     QPair<int, int> idx = m_pCentral->indexOf(tab);
-                    m_pTabs.remove(tab);
+                    m_pTabs.removeAll(tab);
                     m_pActiveTabWidget = m_pTabs.first();
                     m_pCentral->removeDock(idx.first, idx.second, true);
                 }
@@ -195,16 +195,16 @@ void DMainWindow::removeWidget(QWidget *widget)
                 //focus smth in m_pActiveTabWidget
                 if (m_pActiveTabWidget)
                 {
-                    if (m_pActiveTabWidget->currentPage())
+                    if (m_pActiveTabWidget->currentWidget())
                     {
-                        m_pActiveTabWidget->currentPage()->setFocus();
+			    m_pActiveTabWidget->currentWidget()->setFocus();
                     }
                 }
             }
         }
     }
     
-    m_pWidgets.remove(widget);
+    m_pWidgets.removeAll(widget);
     m_pWidgetTabs.remove(widget);
 }
 
@@ -270,18 +270,18 @@ bool DMainWindow::eventFilter(QObject *obj, QEvent *ev)
         m_pCurrentWidget = w;
         emit widgetChanged(w);
     }
-    else if (ev->type() == QEvent::IconChange)
-    {
-        if (m_pWidgetTabs.contains(w))
-        {
-            DTabWidget *tab = m_pWidgetTabs[w];
-            tab->setTabIconSet(w, w->icon() ? (*(w->icon())) : QPixmap());
-        }
-    }
-    else if (ev->type() == QEvent::CaptionChange)
-    {
-        qDebug("caption change");
-    }
+//     else if (ev->type() == QEvent::IconChange)
+//     {
+//         if (m_pWidgetTabs.contains(w))
+//         {
+//             DTabWidget *tab = m_pWidgetTabs[w];
+//             tab->setTabIconSet(w, w->icon() ? (*(w->icon())) : QPixmap());
+//         }
+//     }
+//     else if (ev->type() == QEvent::CaptionChange)
+//     {
+//         qDebug("caption change");
+//     }
 
     return MWCLASS::eventFilter(obj, ev);
 }

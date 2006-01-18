@@ -74,14 +74,14 @@ void KTVHBox::addWidget(QWidget *child, Qt::Alignment alignment)
 void KTVHBox::moveWidgetUp(QWidget *widget)
 {
 	ktDebug() << "Childs " << children ().count() << endl;
-	int position = m_pLayout->findWidget(widget);
+	int position = m_pLayout->indexOf(widget);
 	
 	
 	ktDebug() << "Position: " << position << endl;
 	
 	if (position > 0 )
 	{
-		m_pLayout->remove(widget);
+		m_pLayout->removeWidget(widget);
 		m_pLayout->insertWidget(position-1, widget);
 	}
 	else
@@ -92,11 +92,11 @@ void KTVHBox::moveWidgetUp(QWidget *widget)
 
 void KTVHBox::moveWidgetDown(QWidget *widget)
 {
-	int position = m_pLayout->findWidget(widget);
+	int position = m_pLayout->indexOf(widget);
 	
 	if (position >= 0 )
 	{
-		m_pLayout->remove(widget);
+		m_pLayout->removeWidget(widget);
 		m_pLayout->insertWidget(position+1, widget);
 	}
 }
@@ -150,8 +150,8 @@ void KTVHBox::setStretchFactor( QWidget* w, int stretch )
 
 void KTVHBox::switchWidgetsPosition(QWidget *widget1, QWidget *widget2)
 {
-	int position1 = m_pLayout->findWidget(widget1);
-	int position2 = m_pLayout->findWidget(widget2);
+	int position1 = m_pLayout->indexOf(widget1);
+	int position2 = m_pLayout->indexOf(widget2);
 	
 	if (position1 > 0 && position2 > 0 )
 	{

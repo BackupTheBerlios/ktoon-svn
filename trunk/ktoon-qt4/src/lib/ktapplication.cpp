@@ -26,6 +26,7 @@
 #include <QFileInfo>
 #include <QMessageBox>
 #include <QObject>
+#include <QLocale>
 
 #include <QApplication>
 #include <QMap>
@@ -49,11 +50,11 @@ KTApplication::KTApplication(int & argc, char ** argv)
 	
 #ifdef Q_WS_X11
 	setStyle("plastik");
-	m_configDir = QDir::homeDirPath()+"/.ktoon";
+	m_configDir = QDir::homePath()+"/.ktoon";
 #elif defined(Q_WS_WIN)
-	m_configDir = QDir::homeDirPath()+"/KToon";
+	m_configDir = QDir::homePath()+"/KToon";
 #elif defined(Q_WS_MAC)
-	m_configDir = QDir::homeDirPath()+"/.ktoon";
+	m_configDir = QDir::homePath()+"/.ktoon";
 #endif
 
 	QDir home(m_configDir);
@@ -92,7 +93,7 @@ void KTApplication::applyTheme(const KTThemeDocument &ktd)
 
 void KTApplication::applyColors(ColorSchema cs)
 {
-	QColorGroup group = QApplication::palette().active();
+	QPalette pal = QApplication::palette();
 	switch (cs)
 	{
 		case Default:
@@ -100,21 +101,21 @@ void KTApplication::applyColors(ColorSchema cs)
 			const QColor bg( 239, 237, 223 );
 			const QColor bgAlt( 183, 182, 171 );
 			
-			group.setColor( QColorGroup::Text, Qt::black );
-			group.setColor( QColorGroup::Base, QColor(183, 183, 183) );
-			group.setColor( QColorGroup::Foreground, 0x3e3e45);
-			group.setColor( QColorGroup::Background, bg );
+			pal.setColor( QPalette::Text, Qt::black );
+			pal.setColor( QPalette::Base, QColor(183, 183, 183) );
+			pal.setColor( QPalette::Foreground, 0x3e3e45);
+			pal.setColor( QPalette::Background, bg );
 		
-			group.setColor( QColorGroup::Button, bgAlt );
-			group.setColor( QColorGroup::ButtonText,0x3e3e45 );
+			pal.setColor( QPalette::Button, bgAlt );
+			pal.setColor( QPalette::ButtonText,0x3e3e45 );
 		
-			group.setColor( QColorGroup::Highlight, 0x8f8368 );
-			group.setColor( QColorGroup::HighlightedText, bg );
+			pal.setColor( QPalette::Highlight, 0x8f8368 );
+			pal.setColor( QPalette::HighlightedText, bg );
 			int h,s,v;
 			bgAlt.getHsv( &h, &s, &v );
-			group.setColor( QColorGroup::Midlight, QColor( h, s/3, (int)(v * 1.2),QColor::Hsv ) );
-			group.setColor( QColorGroup::Light, Qt::white );
-			group.setColor( QColorGroup::Dark, Qt::black );
+			pal.setColor( QPalette::Midlight, QColor( h, s/3, (int)(v * 1.2)/*,QColor::Hsv*/ ) );
+			pal.setColor( QPalette::Light, Qt::white );
+			pal.setColor( QPalette::Dark, Qt::black );
 		}
 		break;
 		case DarkBlue:
@@ -122,23 +123,22 @@ void KTApplication::applyColors(ColorSchema cs)
 			const QColor bg( 32,32,82 );
 			const QColor bgAlt( 57, 64, 98 );
 			
-			group.setColor( QColorGroup::Text, Qt::white );
-			group.setColor( QColorGroup::Base, bg );
-			group.setColor( QColorGroup::Foreground, 0xd7d7ef );
-			group.setColor( QColorGroup::Background, bgAlt );
+			pal.setColor( QPalette::Text, Qt::white );
+			pal.setColor( QPalette::Base, bg );
+			pal.setColor( QPalette::Foreground, 0xd7d7ef );
+			pal.setColor( QPalette::Background, bgAlt );
 		
-			group.setColor( QColorGroup::Button, bgAlt );
-			group.setColor( QColorGroup::ButtonText, 0xd7d7ef );
+			pal.setColor( QPalette::Button, bgAlt );
+			pal.setColor( QPalette::ButtonText, 0xd7d7ef );
 		
-			group.setColor( QColorGroup::Highlight, Qt::white );
-			group.setColor( QColorGroup::HighlightedText, bg );
+			pal.setColor( QPalette::Highlight, Qt::white );
+			pal.setColor( QPalette::HighlightedText, bg );
 			int h,s,v;
 			bgAlt.getHsv( &h, &s, &v );
-			group.setColor( QColorGroup::Midlight, QColor( h, s/3, (int)(v * 1.2),QColor::Hsv ) );
+			pal.setColor( QPalette::Midlight, QColor( h, s/3, (int)(v * 1.2)/*,QColor::Hsv*/ ) );
 		}
 		break;
 	}
-	QPalette pal(group, group, group);
 	applyPalette(pal);
 }
 
@@ -146,25 +146,20 @@ void KTApplication::applyPalette(const QPalette &pal)
 {
 	setPalette(pal);
 	
-	if ( mainWidget() )
+	QWidgetList list = allWidgets ();
+	for( int i = 0; i < list.count(); i++ )
 	{
-		QObjectList list = mainWidget()->queryList("QWidget");
-		for( int i = 0; i < list.count(); i++ )
+		QObject *o = list[i];
+		if ( o )
 		{
-			QObject *o = list[i];
-			if ( o )
-			{
-				static_cast<QWidget*>(o)->setPalette(pal);
-			}
+			static_cast<QWidget*>(o)->setPalette(pal);
 		}
-		
-		mainWidget()->setPalette(pal);
 	}
 }
 
 void KTApplication::changeFont(const QFont &font)
 {
-	QApplication::setFont(font, true, "QWidget");
+	QApplication::setFont(font, "QWidget");
 // 	if ( mainWidget() )
 // 	{
 // 		QObjectList* const list = mainWidget()->queryList("QWidget");
@@ -184,19 +179,19 @@ void KTApplication::parseArgs(int &argc, char **argv)
 {
 	for(int i = 0; i < argc; i++)
 	{
-		QString opt = QString(argv[i]).simplifyWhiteSpace();
+		QString opt = QString(argv[i]).simplified();
 		if ( opt.startsWith("--") )
 		{
 			QString arg = "";
 			if ( argv[i+1] && ! QString(argv[i+1]).startsWith("-") )
-				arg = QString(argv[i+1]).simplifyWhiteSpace();
+				arg = QString(argv[i+1]).simplified();
 			m_parseArgs.insert(opt.remove(0,2), arg);
 		}
 		else if (opt.startsWith("-") )
 		{
 			QString arg = "";
 			if ( argv[i+1] && ! QString(argv[i+1]).startsWith("-") )
-				arg = QString(argv[i+1]).simplifyWhiteSpace();
+				arg = QString(argv[i+1]).simplified();
 			
 			m_parseArgs.insert(opt.remove(0,1), arg );
 		}
@@ -238,7 +233,7 @@ QString KTApplication::themeDir() const
 
 QString KTApplication::dataDir() const
 {
-	QString locale = QString(QTextCodec::locale()).left(2);
+	QString locale = QString(QLocale::system().name()).left(2);
 	
 	if ( locale.length() < 2 )
 	{

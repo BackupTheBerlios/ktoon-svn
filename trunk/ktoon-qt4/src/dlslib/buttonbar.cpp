@@ -1,6 +1,8 @@
 /***************************************************************************
  *   Copyright (C) 2004 by Alexander Dymo                                  *
  *   adymo@kdevelop.org                                                    *
+ *   David Cuadrado (C) 2005 						   *
+ *   krawek@gmail.com							   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Library General Public License as       *
@@ -17,6 +19,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "buttonbar.h"
 
 #include <QLayout>
@@ -65,8 +68,8 @@ QSize ButtonLayout::minimumSize() const
 //ButtonBar class
 
 
-ButtonBar::ButtonBar(Place place, ButtonMode mode, QWidget *parent, const char *name)
-    :QWidget(parent, name), m_place(place), l(0), m_shrinked(false), m_autoResize(true)
+ButtonBar::ButtonBar(Place place, ButtonMode mode, QWidget *parent)
+    :QWidget(parent), m_place(place), l(0), m_shrinked(false), m_autoResize(true)
 {
     switch (m_place)
     {
@@ -107,8 +110,8 @@ void ButtonBar::addButton(Button *button)
 
 void ButtonBar::removeButton(Button *button)
 {
-    m_buttons.remove(button);
-    l->remove(button);
+    m_buttons.removeAll(button);
+    l->removeWidget(button);
     delete button;
 }
 
@@ -119,6 +122,7 @@ void ButtonBar::setMode(ButtonMode mode)
     {
         (*it)->setMode(mode);
     }
+    layout()->update();
 }
 
 ButtonMode ButtonBar::mode() const

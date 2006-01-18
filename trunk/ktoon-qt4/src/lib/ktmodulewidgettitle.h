@@ -30,7 +30,7 @@ class KTModuleWidgetTitle : public QLabel
 {
 	Q_OBJECT
 	public:
-		KTModuleWidgetTitle(const QString &title, QWidget *parent = 0, const char *name = 0);
+		KTModuleWidgetTitle(const QString &title, QWidget *parent = 0);
 		~KTModuleWidgetTitle();
 		
 		

@@ -29,11 +29,11 @@ KTConfig::KTConfig() : QObject()
 {
 	KTINIT;
 #ifdef Q_WS_X11
-	configDirectory.setPath(QDir::homeDirPath()+"/.ktoon");
+	configDirectory.setPath(QDir::homePath()+"/.ktoon");
 #elif defined(Q_WS_WIN)
-	configDirectory.setPath(QDir::homeDirPath()+"/KToon");
+	configDirectory.setPath(QDir::homePath()+"/KToon");
 #elif defined(Q_WS_MAC)
-	configDirectory.setPath(QDir::homeDirPath()+"/.ktoon");
+	configDirectory.setPath(QDir::homePath()+"/.ktoon");
 #endif
 
 	if ( !configDirectory.exists() )

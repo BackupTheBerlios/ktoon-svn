@@ -58,14 +58,11 @@ void KTSqueezeLabel::squeezeText()
 		QString squeezedText = squeezer(m_text, fm, labelWidth);
 
 		QLabel::setText(squeezedText);
-		QToolTip::remove( this );
-		QToolTip::add( this, m_text );
+		setToolTip( m_text );
 	} 
 	else 
 	{
 		QLabel::setText(m_text);
-		QToolTip::remove( this );
-// 		QToolTip::hide();
 	}
 }
 
@@ -125,7 +122,7 @@ void KTSqueezeLabel::resizeEvent( QResizeEvent * )
 	squeezeText();
 }
 
-void KTSqueezeLabel::setAlignment( int alignment )
+void KTSqueezeLabel::setAlignment( Qt::Alignment alignment )
 {
 	QString tmp(m_text);
 	QLabel::setAlignment(alignment);

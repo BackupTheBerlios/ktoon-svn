@@ -8,8 +8,6 @@ INSTALLS += include \
 target.path = /lib/ 
 include.files += *.h 
 include.path = /include/ 
-IMAGES += wizard1.xpm \
-          wizard2.xpm 
 HEADERS += ktapplication.h \
            configwizard.h \
            ktxmlparser.h \
@@ -100,12 +98,13 @@ SOURCES += ktapplication.cpp \
            ktpathadjuster.cpp \
            ktpluginobject.cpp \
            collapsiblewidget.cpp 
-QT += qt3support xml
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-TARGET = ktoon
+QT += xml 
+KDEV_QTVER = 4 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+TARGET = ktoon 
 CONFIG += release \
-warn_on \
-dll
-TEMPLATE = lib
+          warn_on \
+          dll 
+TEMPLATE = lib 

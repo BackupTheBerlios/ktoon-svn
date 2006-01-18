@@ -26,7 +26,7 @@
 
 KTThemeManager::KTThemeManager() : QXmlDefaultHandler()
 {
-	m_colorGroup = QApplication::palette().active();
+	m_colorGroup = QApplication::palette();
 }
 
 
@@ -219,9 +219,7 @@ bool KTThemeManager::endElement(const QString&, const QString&, const QString& q
 {
 	if ( qname == "KTTheme" ) // Configuration document
 	{
-		// aplicar el theme
-		QPalette p (m_colorGroup, m_colorGroup, m_colorGroup);
-		ktapp->applyPalette(p);
+		ktapp->applyPalette(m_colorGroup);
 	}
 	
 	return true;

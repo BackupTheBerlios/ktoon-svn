@@ -52,7 +52,7 @@ void KTTabWidget::wheelMove( int delta )
 {
 	if ( count() > 1 )
 	{
-		int current = currentPageIndex();
+		int current = currentIndex();
 		if ( delta < 0 )
 		{
 			current = (current + 1) % count();
@@ -63,9 +63,10 @@ void KTTabWidget::wheelMove( int delta )
 			if ( current < 0 )
 				current = count() - 1;
 		}
-		setCurrentPage( current );
+		setCurrentIndex( current );
 	}
 }
+
 #endif
 
 

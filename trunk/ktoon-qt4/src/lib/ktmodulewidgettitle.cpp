@@ -23,8 +23,8 @@
 #include <QLabel>
 #include <QFrame>
 
-KTModuleWidgetTitle::KTModuleWidgetTitle(const QString &title, QWidget *parent, const char *name)
- : QLabel(parent, name)
+KTModuleWidgetTitle::KTModuleWidgetTitle(const QString &title, QWidget *parent)
+ : QLabel(parent)
 {
 	setFrameStyle( QFrame::Box | QFrame::Raised );
 	setText(title);

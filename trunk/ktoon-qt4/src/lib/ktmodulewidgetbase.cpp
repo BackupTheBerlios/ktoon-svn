@@ -20,8 +20,7 @@
 
 #include "ktmodulewidgetbase.h"
 #include <qtooltip.h>
-#include <q3dockarea.h>
-//Added by qt3to4:
+
 #include <QEvent>
 #include <QBoxLayout>
 #include <QDialog>
@@ -36,10 +35,10 @@ KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWid
 
 	m_container = new QVBoxLayout(this);
 	
-	m_title = new KTModuleWidgetTitle("", this, "DialogTitle");
+	m_title = new KTModuleWidgetTitle("", this);
 	setMinimumSize(m_title->size());
 	
-	QToolTip::add(m_title, tr("Double click for roll up"));
+	m_title->setToolTip(tr("Double click for roll up"));
 	
 	m_container->addWidget(m_title);
 	m_container->setAlignment(m_title, Qt::AlignTop);
@@ -140,8 +139,8 @@ bool KTModuleWidgetBase::event( QEvent * e )
 void KTModuleWidgetBase::enterEvent(QEvent *e)
 {
 	QPalette pal = palette();
-	pal.setColor(QPalette::Background, pal.highlight ());
-	pal.setColor(QPalette::Text, pal.base ());
+	pal.setBrush(QPalette::Background, pal.highlight ());
+	pal.setBrush(QPalette::Text, pal.base ());
 	m_title->setPalette(pal);
 }
 

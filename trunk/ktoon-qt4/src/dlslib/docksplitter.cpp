@@ -77,6 +77,7 @@ DockSplitter::DockSplitter(Qt::Orientation orientation, QWidget *parent, const c
 		}
 		QSplitter *splitter = m_splitters.at(row);
 		splitter->addWidget(dock);
+		splitter->setCollapsible(splitter->indexOf(dock), true);
 		
 		if (col < m_docks.at(row).count()-1)
 		{
@@ -117,7 +118,7 @@ DockSplitter::DockSplitter(Qt::Orientation orientation, QWidget *parent, const c
 		}
 		else
 		{
-			w->reparent(0, QPoint(0,0), false);
+			w->setParent(0);
 			w->hide();
 		}
 
@@ -146,7 +147,7 @@ DockSplitter::DockSplitter(Qt::Orientation orientation, QWidget *parent, const c
 		{
 			if (m_docks[row][i])
 			{
-				splitter->moveToLast(m_docks[row][i]);
+				splitter->addWidget(m_docks[row][i]);
 			}
 		}
 	}

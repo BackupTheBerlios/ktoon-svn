@@ -40,10 +40,10 @@ Preferences::Preferences( QWidget *parent ) : KTTabDialog( KTTabDialog::Apply|KT
 // 	m_colorPref = new ColorSchemePref(this);
 // 	addTab(m_colorPref, tr("Color Preferences"));
 	
-	m_fontWidget = new KTFontWidget;
-	m_fontWidget->setFont( QFont("helvetica", 10));
-	m_fontWidget->showXLFDArea(false);
-	addTab(m_fontWidget, tr("Font"));
+// 	m_fontWidget = new KTFontWidget;
+// 	m_fontWidget->setFont( QFont("helvetica", 10));
+// 	m_fontWidget->showXLFDArea(false);
+// 	addTab(m_fontWidget, tr("Font"));
 }
 
 //-------------- DESTRUCTOR -----------------
@@ -73,9 +73,9 @@ void Preferences::apply()
 			}
 		}
 	}
-	else if ( static_cast<KTFontWidget *>( currentTab ()) == m_fontWidget )
-	{
-		ktapp->changeFont(m_fontWidget->font());
-	}
+// 	else if ( static_cast<KTFontWidget *>( currentTab ()) == m_fontWidget )
+// 	{
+// 		ktapp->changeFont(m_fontWidget->font());
+// 	}
 }
 

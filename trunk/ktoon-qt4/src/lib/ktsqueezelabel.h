@@ -38,7 +38,7 @@ class KTSqueezeLabel : public QLabel
 		QSize sizeHint() const;
 		QSize minimumSizeHint() const;
 		void setText( const QString &text );
-		void setAlignment( int alignment );
+		void setAlignment( Qt::Alignment alignment );
 		QString completeText() const;
 		
 	protected:
