@@ -402,8 +402,11 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 						}
 					}
 				}
-				
-				if ( e->modifiers() & Qt::ControlModifier )
+				if(!toSelect)
+				{
+					m_currentFrame->clearSelections();
+				}
+				else if ( e->modifiers() & Qt::ControlModifier )
 				{
 					m_currentFrame->addSelectedComponent( toSelect);
 				}
