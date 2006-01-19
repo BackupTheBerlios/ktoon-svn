@@ -192,7 +192,7 @@ void KTTimeLine::selectCurrentLayer(int index)
 {
 	currentFrameContainer()->manager()->selectFrame(index);
 	
-	currentLayerManager()->layerSequence()->selectItem(index);
+// 	currentLayerManager()->layerSequence()->selectItem(index);
 	
 	emit layerSelected( index);
 	

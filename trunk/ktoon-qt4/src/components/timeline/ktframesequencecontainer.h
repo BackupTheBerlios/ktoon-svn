@@ -22,9 +22,9 @@
 #define KTFRAMESEQUENCECONTAINER_H
 
 #include <ktvhbox.h>
-#include "ktframesequencemanager.h"
 
 #include "tframestable.h"
+#include "kttlruler.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>

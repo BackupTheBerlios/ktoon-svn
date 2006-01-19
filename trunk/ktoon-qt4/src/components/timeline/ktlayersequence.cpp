@@ -30,7 +30,6 @@ KTLayerSequence::KTLayerSequence(QWidget *parent) : KTWidgetListView(parent), m_
 	KTINIT;
 	
 	setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
-	
 }
 
 
@@ -38,14 +37,6 @@ KTLayerSequence::~KTLayerSequence()
 {
 	KTEND;
 }
-
-
-// void KTLayerSequence::resizeEvent(QResizeEvent *e)
-// {
-// 	QSize nSize = e->size();
-// 	QWidget::resizeEvent( e );
-// 	widget()->resize( nSize.width(), /*widget()->*/height() );
-// }
 
 ListOfTLLayers KTLayerSequence::layers()
 {
@@ -58,36 +49,27 @@ void KTLayerSequence::setPalette(const QPalette &)
 
 KTTimeLineLayer * KTLayerSequence::createNewLayer(const QString &name, bool toEnd)
 {
-// 	ktDebug() << "KTLayerSequence::createNewLayer(" << name << "," << toEnd << ")";
-	KTTimeLineLayer *newLayer = new KTTimeLineLayer( name, this);
-// 	newLayer->resize( width(), 24 );
-	newLayer->setMinimumHeight(24);
+	KTTimeLineLayer *newLayer = new KTTimeLineLayer( name );
+// 	newLayer->setMinimumHeight(24);
+// 	newLayer->setMaximumHeight(24);
 	
 	connect(newLayer, SIGNAL(rightClicked(KTTimeLineLayer *,const QPoint &)), this, SLOT(displayMenu(KTTimeLineLayer *,const QPoint &)));
+	
 	connect( newLayer, SIGNAL( selected(int) ), SLOT( selectLayer(int) ) );
-// 	connect( newLayer, SIGNAL( draggedAbove( int ) ), SLOT( slotDragLayerAbove( int ) ) );
-// 	connect( newLayer, SIGNAL( draggedBelow( int ) ), SLOT( slotDragLayerBelow( int ) ) );
-// 	connect( newLayer, SIGNAL( releasedAbove( int ) ), SLOT( slotReleaseLayerAbove( int ) ) );
-// 	connect( newLayer, SIGNAL( releasedBelow( int ) ), SLOT( slotReleaseLayerBelow( int ) ) );
-// 	connect( newLayer, SIGNAL( renamed( const QString & ) ), SLOT( slotRenameLayer( const QString & ) ) );
-// 	connect( newLayer, SIGNAL( visibilityChanged( bool ) ), SLOT( slotChangeVisibilityState( bool ) ) );
-	
-// 	newLayer->show();
+
 	m_layers.append( newLayer );
-	
 	m_pLastLayer = newLayer;
-	
 	m_layerCount++;
 	
-// 	adjustSize();
-	
+	addWidget( newLayer );
+
 	return newLayer;
 }
 
 void KTLayerSequence::removeLayer()
 {
 // 	ktDebug() << "Remove layer";
-	removeItem(currentItem());
+// 	removeItem(currentItem());
 }
 
 void KTLayerSequence::selectLayer(int id)
@@ -106,12 +88,12 @@ void KTLayerSequence::displayMenu(KTTimeLineLayer *ly, const QPoint &pos)
 {
 	if ( ly )
 	{
-		QMenu *menu = new QMenu( this );
-		menu -> insertItem( tr( "Rename Layer" ), ly, SLOT( rename() ) );
-		menu -> insertSeparator();
-		menu -> insertItem( tr( "Insert Layer" ), this, SLOT( createNewLayer() ) );
-		menu -> insertItem( tr( "Delete Layer" ), this, SLOT( removeLayer() ) );
-		menu -> exec( pos );
+// 		QMenu *menu = new QMenu( this );
+// 		menu -> insertItem( tr( "Rename Layer" ), ly, SLOT( rename() ) );
+// 		menu -> insertSeparator();
+// 		menu -> insertItem( tr( "Insert Layer" ), this, SLOT( createNewLayer() ) );
+// 		menu -> insertItem( tr( "Delete Layer" ), this, SLOT( removeLayer() ) );
+// 		menu -> exec( pos );
 	}
 }
 

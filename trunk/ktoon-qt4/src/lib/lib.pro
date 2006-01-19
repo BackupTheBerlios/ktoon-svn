@@ -40,7 +40,6 @@ HEADERS += ktapplication.h \
            kttabwidget.h \
            ccbar.h \
            ccbutton.h \
-           ktwidgetlistitem.h \
            ktwidgetlistview.h \
            ktxyspinbox.h \
            ktcellview.h \
@@ -86,7 +85,6 @@ SOURCES += ktapplication.cpp \
            kttabwidget.cpp \
            ccbar.cpp \
            ccbutton.cpp \
-           ktwidgetlistitem.cpp \
            ktwidgetlistview.cpp \
            ktxyspinbox.cpp \
            ktcellview.cpp \

@@ -54,17 +54,17 @@ KTLayerManager::KTLayerManager(QWidget *parent) : KTVHBox(parent), m_currentTime
 	m_eyeButton = new KTImageButton( QPixmap(KTOON_THEME_DIR+"/icons/show_hide_all_layers.png"), 20,  m_utilsInTop );
 	
 	m_layerState->addButton(m_eyeButton);
-	QToolTip::add( m_eyeButton, tr( "Show / Hide all Layers" ) );
+	m_eyeButton->setToolTip(tr( "Show / Hide all Layers" ) );
 	
 	m_lockButton = new KTImageButton( QPixmap(KTOON_THEME_DIR+"/icons/kilit_pic.png"),  20, m_utilsInTop );
 	m_layerState->addButton(m_lockButton);
 	
-	QToolTip::add( m_lockButton, tr( "Lock all Layers" ) );
+	m_lockButton->setToolTip(tr( "Lock all Layers" ) );
 
 	m_outlineButton = new KTImageButton( QPixmap(KTOON_THEME_DIR+"/icons/outline_pic.png"), 20, m_utilsInTop );
 	m_layerState->addButton(m_outlineButton);
 
-	QToolTip::add( m_outlineButton, tr( "Show only outlines" ) );
+	m_outlineButton->setToolTip(tr( "Show only outlines" ) );
 	
 	m_utilsInTop->layout()->setSpacing(0);
 	
@@ -95,22 +95,22 @@ KTLayerManager::KTLayerManager(QWidget *parent) : KTVHBox(parent), m_currentTime
 	m_insertButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/add_layer.png") , 20,  m_utilsInBottom );
 	m_layerGroup->addButton(m_insertButton);
 
-	QToolTip::add( m_insertButton, tr( "Insert Layer" ) );
+	m_insertButton->setToolTip(tr( "Insert Layer" ) );
 
 	m_removeButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/remove_layer.png"),  20, m_utilsInBottom );
 	m_layerGroup->addButton(m_removeButton);
 	
-	QToolTip::add( m_removeButton, tr( "Remove Layer" ) );
+	m_removeButton->setToolTip(tr( "Remove Layer" ) );
 
 	m_moveUpButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/arrowup.png"),  20, m_utilsInBottom );
 	m_layerGroup->addButton(m_moveUpButton);
 
-	QToolTip::add( m_moveUpButton, tr( "Move Layer Up" ) );
+	m_moveUpButton->setToolTip(tr( "Move Layer Up" ) );
 
 	m_moveDownButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/arrowdown.png"), 20,  m_utilsInBottom );
 	m_layerGroup->addButton(m_moveDownButton);
 
-	QToolTip::add( m_moveDownButton, tr( "Move Layer Down" ) );
+	m_moveDownButton->setToolTip(tr( "Move Layer Down" ) );
 	
 	new KSeparator( Qt::Vertical, m_utilsInBottom);
 	

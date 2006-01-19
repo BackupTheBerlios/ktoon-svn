@@ -3,36 +3,29 @@
 # Subdir relative project main directory: ./src/components/timeline
 # Target is a library:  
 
-HEADERS += tlframe.h \
-           kttimeline.h \
+QT += xml 
+KDEV_QTVER = 4 
+INCLUDEPATH += ../../../src/lib \
+               ../../../src/images/images 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+CONFIG += release \
+          warn_on \
+          qt \
+          staticlib 
+TEMPLATE = lib 
+HEADERS += kttimeline.h \
            ktlayermanager.h \
            ktlayersequence.h \
            kttimelinelayer.h \
            kttlruler.h \
-           ktframesequencemanager.h \
-           ktframesequence.h \
            ktframesequencecontainer.h \
-           kttimelineframe.h \
            tframestable.h 
-SOURCES += tlframe.cpp \
-           kttimeline.cpp \
+SOURCES += kttimeline.cpp \
            ktlayermanager.cpp \
            ktlayersequence.cpp \
            kttimelinelayer.cpp \
            kttlruler.cpp \
-           ktframesequencemanager.cpp \
-           ktframesequence.cpp \
            ktframesequencecontainer.cpp \
-           kttimelineframe.cpp \
            tframestable.cpp 
-INCLUDEPATH += ../../../src/lib \
-../../../src/images/images
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-CONFIG += release \
-warn_on \
-qt \
-staticlib
-TEMPLATE = lib
-QT += qt3support xml opengl

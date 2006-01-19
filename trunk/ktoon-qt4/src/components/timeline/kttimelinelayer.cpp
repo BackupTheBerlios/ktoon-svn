@@ -29,7 +29,7 @@
 
 #include "ktdebug.h"
 
-KTTimeLineLayer::KTTimeLineLayer(const QString &name, KTWidgetListView *parent) : KTWidgetListItem(parent), m_isLocked(false), m_isVisible(true), m_onlySeeOutlines(false), m_isSelected(false), m_isEdited(false)
+KTTimeLineLayer::KTTimeLineLayer(const QString &name) : QFrame(), m_isLocked(false), m_isVisible(true), m_onlySeeOutlines(false), m_isSelected(false), m_isEdited(false)
 {
 	KTINIT;
 	setFrameStyle( QFrame::Panel | QFrame::Raised );
@@ -108,23 +108,13 @@ KTTimeLineLayer::~KTTimeLineLayer()
 	KTEND;
 }
 
-// void KTTimeLineLayer::setSelected( bool selected )
-// {
-// 	m_isSelected = selected;
-// 
-// 	if ( m_isSelected )
-// 	{
-// 		m_layerName->setPaletteForegroundColor( palette().color(QPalette::Active , QColorGroup::HighlightedText) );
-// 		m_layerName->setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight) );
-// 		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight));
-// 	}
-// 	else
-// 	{
-// 		m_layerName->setPaletteForegroundColor( parentWidget()->paletteForegroundColor() );
-// 		m_layerName->setPaletteBackgroundColor( parentWidget()->paletteBackgroundColor() );
-// 		setPaletteBackgroundColor( parentWidget()->paletteBackgroundColor() );
-// 	}
-// }
+QSize KTTimeLineLayer::sizeHint() const
+{
+	QSize size = QFrame::sizeHint();
+	size.setHeight(24);
+	
+	return size;
+}
 
 void KTTimeLineLayer::setEdited( bool isEdited )
 {
@@ -212,8 +202,6 @@ void KTTimeLineLayer::toggleView()
 
 void KTTimeLineLayer::mousePressEvent( QMouseEvent *me )
 {
-	KTWidgetListItem::mousePressEvent( me );
-// 	setSelected( true );
 	setEdited( true );
 
 	if ( childAt( me -> pos() ) == m_visibilityImage )

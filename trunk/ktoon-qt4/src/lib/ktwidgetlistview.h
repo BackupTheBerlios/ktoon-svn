@@ -21,52 +21,24 @@
 #ifndef KTWIDGETLISTVIEW_H
 #define KTWIDGETLISTVIEW_H
 
-#include <qlistview.h>
-#include <QVBoxLayout>
-#include <QScrollArea>
-
-
-class KTWidgetListItem;
+#include <QTreeWidget>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class KTWidgetListView : public QScrollArea
+class KTWidgetListView : public QTreeWidget
 {
 	Q_OBJECT
 	public:
 		KTWidgetListView( QWidget * parent = 0 );
 		~KTWidgetListView();
-		
-		void setHeader(QWidget *header);
-		
-		void addItem(KTWidgetListItem *item);
-		void removeItem(KTWidgetListItem *item);
-		
-		QWidget *header();
-		KTWidgetListItem *currentItem() const;
-		
-	public slots:
-		void selectItem(KTWidgetListItem *item);
-		void selectItem(int position);
-		
-	private slots:
-		void itemSelect();
 
-	private:
-		QWidget *m_header;
-		
-		QFrame *m_container;
-		QVBoxLayout *m_layout;
-		
-		QList<KTWidgetListItem *> m_items;
-		
-		KTWidgetListItem *m_itemSelected;
-		
+		void addWidget(QWidget *widget);
+		QWidget *widget(QTreeWidgetItem *treeItem);
+
 	signals:
 		void itemSelected(int index);
-
 };
 
 #endif

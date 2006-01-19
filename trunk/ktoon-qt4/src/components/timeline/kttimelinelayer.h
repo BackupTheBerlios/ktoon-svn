@@ -31,7 +31,6 @@
 #include "ktelabel.h"
 #include "ktvhbox.h"
 
-#include "ktwidgetlistitem.h"
 #include "ktwidgetlistview.h"
 
 /**
@@ -40,13 +39,14 @@
 
 class KTTimeLineLayer;
 
-class KTTimeLineLayer : public KTWidgetListItem
+class KTTimeLineLayer : public QFrame
 {
 	Q_OBJECT
 	public:
-		KTTimeLineLayer(const QString &name, KTWidgetListView *parent = 0);
+		KTTimeLineLayer(const QString &name);
 		~KTTimeLineLayer();
 		void clearEditFocus();
+		QSize sizeHint() const;
 		
 	public slots:
 // 		void setSelected( bool selected );

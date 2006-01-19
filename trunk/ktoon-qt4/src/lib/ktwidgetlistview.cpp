@@ -19,31 +19,16 @@
  ***************************************************************************/
 
 #include "ktwidgetlistview.h"
-#include "ktwidgetlistitem.h"
+#include <QHeaderView>
 
 #include "ktdebug.h"
 
-KTWidgetListView::KTWidgetListView(QWidget * parent) : QScrollArea(parent),m_header(0),  m_itemSelected(0)
+KTWidgetListView::KTWidgetListView(QWidget * parent) : QTreeWidget(parent)
 {
-	m_container = new QFrame;
-	m_container->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+	setHeaderLabels (QStringList() << "");
+	setRootIsDecorated(false);
 	
-	m_layout = new QVBoxLayout(m_container);
-	m_layout->setMargin(1);
-	m_layout->setSpacing(2);
-	
-	m_container->setLayout(m_layout);
-
-	QPalette pal = palette();
-	
-	m_container->setPalette(pal);
-	
-	setWidget(m_container);
-	
-	setWidgetResizable(true);
-// 	m_container->resize(sizeHint());
-	
-	m_container->show();
+	header()->hide();
 }
 
 
@@ -51,141 +36,20 @@ KTWidgetListView::~KTWidgetListView()
 {
 }
 
-void KTWidgetListView::setHeader(QWidget *header)
+void KTWidgetListView::addWidget(QWidget *widget)
 {
-	header->setParent(m_container);
-	m_layout->insertWidget(0, header, 0, Qt::AlignTop);
-	
-	QPalette pal = palette();
-	pal.setBrush(QPalette::Background, pal.base() );
-	pal.setBrush(QPalette::Foreground, pal.highlightedText ()  );
-	
-	m_header = header;
-	
-	m_header->setPalette(pal);
-	
-	m_container->adjustSize();
+	QTreeWidgetItem *newItem = new QTreeWidgetItem(this);
+	setIndexWidget(indexFromItem(newItem), widget);
 }
 
-void KTWidgetListView::addItem(KTWidgetListItem *item)
-{	
-	item->setMinimumHeight(24);
-	item->setMaximumHeight(24);
-	item->setParent(m_container);
-	m_layout->addWidget(item, 1, Qt::AlignTop);
-	
-// 	item->show();
-	m_items << item;
-	
-	connect( item, SIGNAL(selected()), this, SLOT(itemSelect()) );
-	
-	m_container->adjustSize();
-	
-	if ( m_itemSelected == 0 )
-	{
-		selectItem( item );
-	}
-	update();
+QWidget *KTWidgetListView::widget(QTreeWidgetItem *treeItem)
+{
+	return indexWidget(indexFromItem(treeItem));
 }
 
-void KTWidgetListView::removeItem(KTWidgetListItem *item)
-{
-	KT_FUNCINFO;
-	if ( item )
-	{
-		int index = m_layout->indexOf(item);
-		
-		if ( index >= 0)
-		{
-			m_layout->removeWidget(item);
-			
-			item->hide();
-			
-			if ( item == m_itemSelected )
-			{
-				delete m_itemSelected;
-				m_itemSelected = 0;
-			}
-			else
-			{
-				delete item;
-				item = 0;
-			}
-			
-			
-			if ( m_layout->itemAt(index) )
-			{
-				selectItem( qobject_cast<KTWidgetListItem *>(m_layout->itemAt(index)->widget()) );
-			}
-			m_container->adjustSize();
-		}
-		else
-		{
-			ktError() << "Invalid item";
-		}
-	}
-	else
-	{
-		ktError() << "Invalid item";
-	}
-}
 
-void KTWidgetListView::itemSelect()
-{
-	if ( sender() )
-	{
-		KTWidgetListItem *itemSelected = qobject_cast<KTWidgetListItem *>(sender());
-		selectItem( itemSelected );
-	}
-}
 
-QWidget *KTWidgetListView::header()
-{
-	return m_header;
-}
 
-KTWidgetListItem *KTWidgetListView::currentItem() const
-{
-	return m_itemSelected;
-}
 
-void KTWidgetListView::selectItem(KTWidgetListItem *item)
-{
-	KT_FUNCINFO;
-	if ( item && item != m_itemSelected && item != m_header )
-	{
-		QPalette pal = palette();
-		
-		if ( m_itemSelected != 0)
-		{
-			ktDebug() << "Break";
-			m_itemSelected->setPalette(pal);
-		}
-		
-		m_itemSelected = item;
-		
-		pal.setBrush(QPalette::Background, pal.highlight());
-		pal.setBrush(QPalette::Foreground, pal.base());
-		
-		m_itemSelected->setPalette(pal);
-		emit itemSelected( m_layout->indexOf(item) );
-	}
-	else
-	{
-		ktError() << "Invalid item selected";
-	}
-}
 
-void KTWidgetListView::selectItem(int position)
-{
-	KT_FUNCINFO;
-	
-	if ( m_layout->itemAt(position) )
-	{
-		KTWidgetListItem *item = qobject_cast<KTWidgetListItem *>(m_layout->itemAt(position)->widget());
-		if ( item )
-		{
-			selectItem( item );
-		}
-	}
-}
+

@@ -22,7 +22,6 @@
 #define KTTLRULER_H
 
 #include <ktrulerbase.h>
-#include <q3popupmenu.h>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
