@@ -126,20 +126,19 @@ void KTViewDocument::setupGridActions()
 
 void KTViewDocument::setupEditActions()
 {
-	m_editGroup = new QActionGroup( parent() );
-	QAction *a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/cut.png" ), tr( "&Cut" ),  m_editGroup);
-	a->setShortcut(tr("Ctrl+X"));
-	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotCut()));
-	a->setStatusTip(tr("Cuts the selection and puts it onto the clipboard"));
 	
-	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/copy.png" ), tr( "C&opy" ),  m_editGroup);
-	a->setShortcut(tr("Ctrl+C"));
-	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotCopy()));
+	m_editGroup = new QActionGroup( parent() );
+	KTAction *a = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/cut.png" ), tr( "&Cut" ),  QKeySequence(tr("Ctrl+X")), m_paintAreaContainer->drawArea(), SLOT(cut()),m_actionManager, "cut" );
+	m_editGroup->addAction(a);
+
+	
+	a = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/copy.png" ), tr( "C&opy" ),  QKeySequence(tr("Ctrl+C")), m_paintAreaContainer->drawArea(), SLOT(copy()), m_actionManager, "copy");
+	m_editGroup->addAction(a);
+	
 	a->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
 	
-	a = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/paste.png" ), tr( "&Paste" ),  m_editGroup);
-	a->setShortcut(tr("Ctrl+V"));
-	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotPaste()));
+	a = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/paste.png" ), tr( "&Paste" ),   QKeySequence(tr("Ctrl+V")), m_paintAreaContainer->drawArea(), SLOT(paste()), m_actionManager, "paste");
+	m_editGroup->addAction(a);
 	a->setStatusTip(tr("Pastes the clipboard into the current document"));
 	
 }
@@ -147,6 +146,7 @@ void KTViewDocument::setupEditActions()
 void KTViewDocument::setupEdit2Actions()
 {
 	m_editGroup2 = new QActionGroup( parent() );
+	
 	QAction *a = new QAction( tr(  "Paste &In Place" ), m_editGroup2);
 	a->setShortcut(tr("Ctrl+Shift+V"));
 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotPasteInPlace()));
@@ -453,6 +453,7 @@ void KTViewDocument::loadPlugins()
 					}
 				}				
 				connect(plugin, SIGNAL(toDrawGhostGraphic(const QPainterPath &)), m_paintAreaContainer->drawArea(), SLOT(drawGhostGraphic(const QPainterPath &)));
+				connect(plugin, SIGNAL(requestRedraw()), m_paintAreaContainer->drawArea(), SLOT(redrawAll()));
 			}
 		}
 		else
@@ -527,7 +528,7 @@ void KTViewDocument::createToolbar()
 	m_barGrid->addAction(m_aUndo);
 	m_barGrid->addAction(m_aRedo);
 	m_barGrid->addSeparator();
-// 	m_barGrid->addActions(m_editGroup->actions());
+	m_barGrid->addActions(m_editGroup->actions());
 	m_barGrid->addSeparator();
 // 	m_barGrid->addAction(m_aNtsc);
 // 	m_barGrid->addAction(m_aLightTable);

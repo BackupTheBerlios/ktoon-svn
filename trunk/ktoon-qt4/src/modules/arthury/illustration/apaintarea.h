@@ -53,14 +53,13 @@ class APaintArea : public QWidget
 		void setPaintDevice(const QImage &image);
 		void setZeroAt(const QPoint& zero);
 		
-		virtual void redrawAll();
-		
 		AGraphicComponent *currentGraphic();
 		AGraphicComponent *selectedGraphic();
 		
 		KTBrush *currentBrush();
 		
 	public slots:
+		void redrawAll();
 		void aUpdate(const QRectF &rect);
 		void drawGhostGraphic(const QPainterPath &path);
 		void setKeyFrame(int index);
@@ -88,14 +87,18 @@ class APaintArea : public QWidget
 		QList<AGraphicComponent *> m_undoComponents;
 		
 		AGraphicComponent *m_currentGraphic;
-		AGraphicComponent *m_selectedGraphic;
-		bool m_redrawAll; 
+// 		QList<AGraphicComponent *> m_selectedGraphics;
+		QList<AGraphicComponent *> m_copiedGraphics;
+		bool m_redrawAll;
 
 		KTKeyFrame *m_currentFrame;
 		KTLayer *m_layer;
 		KTScene *m_scene;
 		
 		int m_previousFramesNumber, m_nextFramesNumber;
+		
+		QImage m_overBuffer;
+		QRect m_overBufferRect;
 
 	public:
 		void setTool( AToolInterface *toolIface, const QString &tool);
@@ -105,7 +108,11 @@ class APaintArea : public QWidget
 		void setBrush( const KTBrush *brush );
 		void undo();
 		void redo();
-
+		void copy();
+		void paste();
+		void cut();
+		
+		
 		// </FIXME>
 	protected:
 		void mouseMoveEvent(QMouseEvent *e);

@@ -29,7 +29,7 @@ QStringList ATextTool::keys() const
 	return QStringList() << tr("Text");
 }
 
-QRect ATextTool::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, AGraphicComponent *currentComponent)
+QRect ATextTool::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, KTKeyFrame *currentFrame)
 {
 	m_path = QPainterPath();
 	m_path.moveTo(pos);

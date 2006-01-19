@@ -35,7 +35,7 @@ QStringList AGeometricToolPlugin::keys() const
 	return QStringList() << tr("Rectangle") << tr("Ellipse") << tr("Line");
 }
 
-QRect AGeometricToolPlugin::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, AGraphicComponent *currentComponent)
+QRect AGeometricToolPlugin::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, KTKeyFrame *currentFrame)
 {
 	m_path = QPainterPath();
 	m_path.moveTo(pos);

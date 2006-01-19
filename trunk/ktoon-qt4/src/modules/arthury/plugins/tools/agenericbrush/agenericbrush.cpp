@@ -29,7 +29,7 @@ QStringList AGenericBrush::keys() const
 	return QStringList() << tr("Pencil") << tr("Air Brush") << tr("Bezier Brush");
 }
 
-QRect AGenericBrush::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, AGraphicComponent *currentComponent)
+QRect AGenericBrush::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, KTKeyFrame *currentFrame )
 {
 	m_firstPoint = QPoint(0,0);
 	m_path = QPainterPath();

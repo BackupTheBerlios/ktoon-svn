@@ -115,5 +115,38 @@ QDomElement KTKeyFrame::createXML( QDomDocument &doc )
 	return frame;
 }
 
+void KTKeyFrame::addSelectedComponent(AGraphicComponent *toSelect)
+{
+	if(toSelect && !m_selectedComponents.contains(toSelect))
+	{
+		m_selectedComponents << toSelect;
+	}
+}
 
+void KTKeyFrame::deSelectedComponent(AGraphicComponent *toDeSelect)
+{
+	m_selectedComponents.removeAll ( toDeSelect );
+}
 
+void KTKeyFrame::clearSelections()
+{
+	m_selectedComponents.clear();
+}
+
+QList<AGraphicComponent *> KTKeyFrame::selectedComponents()
+{
+	return m_selectedComponents;
+}
+
+void KTKeyFrame::addComponents(QList<AGraphicComponent *> comps)
+{
+	m_components += comps;
+}
+
+void KTKeyFrame::cutSelections()
+{
+	foreach(AGraphicComponent *comp, m_selectedComponents)
+	{
+		m_components.removeAll (comp);
+	}
+}

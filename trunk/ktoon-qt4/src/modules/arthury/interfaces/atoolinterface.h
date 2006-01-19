@@ -34,6 +34,7 @@
 
 #include "agraphiccomponent.h"
 #include "ktpluginobject.h"
+#include "ktkeyframe.h"
 
 #include "qplugin.h" // Q_EXPORT_PLUGIN
 
@@ -53,7 +54,7 @@ class AToolInterface
 		
 		virtual ~AToolInterface() {};
 		virtual QStringList keys() const = 0;
-		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, AGraphicComponent *clickedGraphic = 0) = 0;
+		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, KTKeyFrame *currentFrame = 0) = 0;
 		virtual QRect move(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos) = 0;
 		virtual QRect release(const QString &brush, QPainter &painter,const QPainterPath &form, const QPoint &pos) = 0;
 		

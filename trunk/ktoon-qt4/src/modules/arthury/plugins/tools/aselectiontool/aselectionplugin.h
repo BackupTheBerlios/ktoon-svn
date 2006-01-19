@@ -34,7 +34,7 @@ class ASelectionPlugin : public KTPluginObject, public AToolInterface
 
 	public:
 		virtual QStringList keys() const;
-		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form, const QPoint &pos, AGraphicComponent *clickedGraphic = 0);
+		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form, const QPoint &pos,KTKeyFrame *currentFrame = 0);
 		virtual QRect move(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos);
 		virtual QRect release(const QString &brush, QPainter &painter, const QPainterPath &form, const QPoint &pos);
 		virtual QPainterPath path() const;
@@ -52,8 +52,11 @@ class ASelectionPlugin : public KTPluginObject, public AToolInterface
 		}
 		
 	private:
+		QRect drawControls(QPainter *painter);
+		
+	private:
 		QPainterPath m_path;
-		AGraphicComponent *m_currentGraphic;
+		QList<AGraphicComponent *> m_graphics;
 };
 
 #endif

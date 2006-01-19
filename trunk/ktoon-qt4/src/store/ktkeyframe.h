@@ -43,6 +43,7 @@ class KTKeyFrame : public KTSerializableObject
 		
 		~KTKeyFrame();
 		void addComponent(AGraphicComponent *comp);
+		void addComponents(QList<AGraphicComponent *> comp);
 		void removeComponent(AGraphicComponent *comp);
 		AGraphicComponent *takeLastComponent();
 		
@@ -54,8 +55,16 @@ class KTKeyFrame : public KTSerializableObject
 		QString frameName() const;
 		bool isLocked();
 		
+		void addSelectedComponent(AGraphicComponent *toSelect);
+		void deSelectedComponent(AGraphicComponent *toDeSelect);
+		void clearSelections();
+		void cutSelections();
+		QList<AGraphicComponent *> selectedComponents();
+		
+		
 	private:
 		QList<AGraphicComponent *> m_components;
+		QList<AGraphicComponent *> m_selectedComponents;
 		QString m_name;
 		bool m_isLocked;
 };

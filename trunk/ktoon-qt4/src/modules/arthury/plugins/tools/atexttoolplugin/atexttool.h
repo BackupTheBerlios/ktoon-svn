@@ -39,7 +39,7 @@ class ATextTool : public KTPluginObject, public AToolInterface
 		}
 		
 		virtual QStringList keys() const;
-		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, AGraphicComponent *currentComponent = 0);
+		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, KTKeyFrame *currentFrame = 0);
 		virtual QRect move(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos);
 		virtual QRect release(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &pos);
 		virtual QPainterPath path() const;

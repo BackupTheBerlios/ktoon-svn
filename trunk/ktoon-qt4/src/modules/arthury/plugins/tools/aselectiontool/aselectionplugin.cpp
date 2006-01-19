@@ -21,54 +21,62 @@
 #include "aselectionplugin.h"
 
 #include <QKeySequence>
-#include <QDebug>
 
 #include "ktapplication.h"
+#include "ktdebug.h"
 
 QStringList ASelectionPlugin::keys() const
 {
 	return QStringList() << tr("Selection");
 }
 
-QRect ASelectionPlugin::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, AGraphicComponent *clickedGraphic)
+QRect ASelectionPlugin::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, KTKeyFrame *currentFrame )
 {
 	QRect rect;
-	if ( clickedGraphic )
+	if ( currentFrame  )
 	{
-		qDebug("Drawing Selected");
-		
-		rect = clickedGraphic->boundingRect().toRect();
-		QPainterPath path;
-	
-		path.addRect( QRectF(rect.bottomLeft() - QPointF(2, 2), QSizeF(4,4)));
-		path.addRect( QRectF(rect.bottomRight() - QPointF(2, 2), QSizeF(4,4)));
-		path.addRect( QRectF(rect.topLeft() - QPointF(2, 2), QSizeF(4,4)));
-		path.addRect( QRectF(rect.topRight() - QPointF(2, 2), QSizeF(4,4)));
-		path.addRect( QRectF(rect.center() - QPointF(2, 2), QSizeF(4,4)));
-		path.addRect( QRectF( QPointF(rect.x(), rect.y()+rect.height()/2 ) - QPointF(2, 2), QSizeF(4,4)));
-		path.addRect( QRectF( QPointF(rect.x()+rect.width(), rect.y()+rect.height()/2 ) - QPointF(2, 2), QSizeF(4,4)));
-		path.addRect( QRectF( QPointF(rect.x()+rect.width()/2, rect.y() ) - QPointF(2, 2), QSizeF(4,4)));
-		path.addRect( QRectF( QPointF(rect.x()+rect.width()/2, rect.y()+rect.height() ) - QPointF(2, 2), QSizeF(4,4)));
-		painter.save();
-		painter.setPen(QColor("blue"));
-		painter.setBrush(QColor("blue"));
-		painter.drawPath(path);
-		painter.restore();
+		if(currentFrame->selectedComponents().count() > 0)
+		{
+			m_graphics = currentFrame->selectedComponents();
+			rect = drawControls(&painter);
+		}
 	}
-			
-	m_currentGraphic = clickedGraphic;
+// 	m_currentGraphic = clickedGraphic;
 	
 	return rect;
 }
 
 QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos)
 {
-	return QRect();
+	QRectF boundingRect;
+	if ( m_graphics.count() > 0 )
+	{
+		QPainterPath ghost;
+		
+		QMatrix matrix;
+		matrix.translate(newPos.x()-oldPos.x(), newPos.y()-oldPos.y());
+		
+		foreach(AGraphicComponent *selected, m_graphics )
+		{
+			ghost.addPath(selected->path());
+			selected->setPath(matrix.map(selected->path()));
+		}
+		
+		int rad = painter.pen().width();
+		
+		ghost = matrix.map(ghost);
+		boundingRect = ghost.boundingRect().normalized().adjusted(-rad, -rad, +rad, +rad);
+		emit toDrawGhostGraphic( ghost );
+	}
+	return boundingRect.toRect();
 }
 
 QRect ASelectionPlugin::release(const QString &  brush ,QPainter &  painter , const QPainterPath &form, const QPoint &  pos )
 {
-	return QRect();
+	emit requestRedraw();
+	QRect rect = drawControls(&painter);;
+	
+	return rect;
 }
 
 QPainterPath ASelectionPlugin::path() const
@@ -84,6 +92,36 @@ QHash<QString, QAction *> ASelectionPlugin::actions()
 	hash.insert( tr("Selection"), act );
 	
 	return hash;
+}
+
+QRect ASelectionPlugin::drawControls(QPainter *painter)
+{
+	QRect rect;
+	foreach(AGraphicComponent *clickedGraphic, m_graphics)
+	{
+		if ( clickedGraphic )
+		{
+			rect = clickedGraphic->boundingRect().toRect().unite(rect);
+			QPainterPath path;
+				
+			path.addRect( QRectF(rect.bottomLeft() - QPointF(2, 2), QSizeF(4,4)));
+			path.addRect( QRectF(rect.bottomRight() - QPointF(2, 2), QSizeF(4,4)));
+			path.addRect( QRectF(rect.topLeft() - QPointF(2, 2), QSizeF(4,4)));
+			path.addRect( QRectF(rect.topRight() - QPointF(2, 2), QSizeF(4,4)));
+			path.addRect( QRectF(rect.center() - QPointF(2, 2), QSizeF(4,4)));
+			path.addRect( QRectF( QPointF(rect.x(), rect.y()+rect.height()/2 ) - QPointF(2, 2), QSizeF(4,4)));
+			path.addRect( QRectF( QPointF(rect.x()+rect.width(), rect.y()+rect.height()/2 ) - QPointF(2, 2), QSizeF(4,4)));
+			path.addRect( QRectF( QPointF(rect.x()+rect.width()/2, rect.y() ) - QPointF(2, 2), QSizeF(4,4)));
+			path.addRect( QRectF( QPointF(rect.x()+rect.width()/2, rect.y()+rect.height() ) - QPointF(2, 2), QSizeF(4,4)));
+			painter->save();
+			painter->setPen(QColor("blue"));
+			painter->setBrush(QColor("blue"));
+			painter->drawPath(path);
+			painter->restore();
+		}
+	}
+	
+	return rect;
 }
 
 Q_EXPORT_PLUGIN( ASelectionPlugin )

@@ -28,7 +28,7 @@
 
 #include "ktgradientadjuster.h"
 
-APaintArea::APaintArea(const QSize& size ,QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0,0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_currentFrame(0), m_layer(0), m_scene(0), m_previousFramesNumber(0), m_nextFramesNumber(0), m_selectedGraphic(0)
+APaintArea::APaintArea(const QSize& size ,QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0,0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_currentFrame(0), m_layer(0), m_scene(0), m_previousFramesNumber(0), m_nextFramesNumber(0)
 {
 	m_redrawAll = true;
 	
@@ -66,7 +66,7 @@ QSize APaintArea::minimumSizeHint () const
 	return QSize(m_zero.x(),m_zero.y());
 }
 
-void APaintArea::paintEvent(QPaintEvent *)
+void APaintArea::paintEvent(QPaintEvent *e)
 {
 	QPainter painter;
 	
@@ -129,7 +129,6 @@ void APaintArea::setLayer(int index)
 		if (layer && index < m_scene->layers().count() )
 		{
 			m_layer = layer;
-// 			redrawAll();
 		}
 		else
 		{
@@ -292,7 +291,20 @@ void APaintArea::redrawAll()
 void APaintArea::aUpdate(const QRectF &rect)
 {
 	QPainter painter(&m_paintDevice);
-	painter.setRenderHint(QPainter::Antialiasing);
+	
+#if 1
+
+	if ( !m_overBuffer.isNull())
+	{
+		painter.drawImage(m_overBufferRect, m_overBuffer);
+// 		update(m_overBufferRect);
+		QTimer::singleShot(0, this, SLOT(update())); // FIXME: calculate the rect
+	}
+	m_overBuffer = m_paintDevice.copy( rect.toRect() );
+	m_overBufferRect = rect.toRect();
+	
+#else
+	
 	if(m_drawGrid)
 	{
 		painter.drawImage(rect.toRect(), m_grid.copy( rect.toRect() ));
@@ -314,12 +326,16 @@ void APaintArea::aUpdate(const QRectF &rect)
 		}
 	}
 	QTimer::singleShot(0, this, SLOT(update()));
+#endif
 }
 
 void APaintArea::drawGhostGraphic(const QPainterPath &path)
 {
 	aUpdate(path.boundingRect().toRect().normalized().adjusted(-60,-60,60,60) );
+
 	QPainter painter(&m_paintDevice);
+	
+	painter.drawImage(m_overBufferRect, m_overBuffer);
 	painter.setPen(QPen(Qt::black, 1, Qt::DashLine));
 	painter.drawPath(path);
 }
@@ -340,6 +356,7 @@ QPoint APaintArea::paintDevicePosition() const
 void APaintArea::setZeroAt(const QPoint & zero)
 {
 	m_zero = zero *2;
+
 	resize(sizeHint());
 	repaint();
 }
@@ -358,6 +375,7 @@ void APaintArea::setPaintDevice(const QImage &image)
 
 void APaintArea::mousePressEvent ( QMouseEvent * e )
 {
+	m_overBuffer = QImage();
 	QMouseEvent *event = new QMouseEvent( e->type(), e->pos()-QPoint(m_zero.x()/2, m_zero.y()/2), mapToGlobal( e->pos()-QPoint(m_zero.x(), m_zero.y()) ), e->button(), e->buttons(), 0 );
 	
 	if ( m_currentFrame )
@@ -385,29 +403,19 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 					}
 				}
 				
-				if ( e->modifiers() & Qt::ControlModifier ) // Temporary Group
+				if ( e->modifiers() & Qt::ControlModifier )
 				{
-					if ( toSelect && m_selectedGraphic && m_selectedGraphic != toSelect)
-					{
-						QPainterPath selectPath = m_selectedGraphic->path();
-						QPainterPath toSelectPath = toSelect->path();
-						selectPath.addPath(toSelectPath);
-						m_selectedGraphic->setPath(selectPath);	
-
-						m_currentFrame->removeComponent(toSelect);
-						redrawAll();
-					}
+					m_currentFrame->addSelectedComponent( toSelect);
 				}
 				else
 				{
-					m_selectedGraphic = toSelect;
+					m_currentFrame->clearSelections();
+					m_currentFrame->addSelectedComponent( toSelect );
 				}
-				
-				
 
 				m_currentGraphic = new AGraphicComponent;
 				
-				QRect rect = m_currentTool->press(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), event->pos(), toSelect);
+				QRect rect = m_currentTool->press(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), event->pos(), m_currentFrame);
 				rect.translate(m_xpos, m_ypos);
 				update(rect);
 			}
@@ -432,29 +440,10 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 				QPainter painter(&m_paintDevice);
 				m_currentBrush->setupPainter(&painter);
 				
-				if ( m_currentTool->keys().contains("Selection") )
-				{
-					if ( m_selectedGraphic )
-					{
-						int rad = painter.pen().width();
-						QRectF boundingRect = m_selectedGraphic->boundingRect().normalized().adjusted(-rad, -rad, +rad, +rad);
-						
-						QMatrix matrix;
-						matrix.translate(event->pos().x()-m_lastPosition.x(), event->pos().y()-m_lastPosition.y());
-						m_selectedGraphic->setPath(matrix.map(m_selectedGraphic->path()));
-						
-						
-						painter.drawImage(boundingRect.toRect(), m_paintDevice.copy( boundingRect.toRect() ));
-						
-						aUpdate( boundingRect );
-					}
-				}
-				else
-				{
-					QRect rect = m_currentTool->move(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), m_lastPosition, event->pos());
-					rect.translate(m_xpos, m_ypos);
-					update(rect);
-				}
+				QRect rect = m_currentTool->move(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), m_lastPosition, event->pos());
+				rect.translate(m_xpos, m_ypos);
+				update(rect);
+
 			}
 	
 			m_lastPosition = event->pos();
@@ -490,15 +479,7 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 					m_currentFrame->addComponent(  m_currentGraphic );
 					ktDebug() << "Components count: " << m_currentFrame->components().count();
 					m_undoComponents.clear();
-					
-					m_selectedGraphic = m_currentGraphic;
 				}
-				
-				
-				
-	#if 0
-				redrawAll();
-	#endif
 			}
 			
 			m_lastPosition = QPoint(-1, -1);
@@ -538,10 +519,10 @@ void APaintArea::undo()
 	{
 		AGraphicComponent *grafic = m_currentFrame->takeLastComponent();
 		
-		if ( grafic == m_selectedGraphic )
-		{
-			m_selectedGraphic = 0;
-		}
+// 		if ( grafic == m_selectedGraphic )
+// 		{
+// 			m_selectedGraphic = 0;
+// 		}
 		
 		m_undoComponents << grafic;
 		redrawAll();
@@ -582,11 +563,32 @@ AGraphicComponent *APaintArea::currentGraphic()
 
 AGraphicComponent *APaintArea::selectedGraphic()
 {
-	return m_selectedGraphic;
+// 	return m_selectedGraphic;
 }
 
 KTBrush *APaintArea::currentBrush()
 {
 	return m_currentBrush;
+}
+
+void APaintArea::copy()
+{
+	if(m_currentFrame->selectedComponents().count() > 0)
+	{
+		m_copiedGraphics = m_currentFrame->selectedComponents();
+	}
+}
+
+void APaintArea::paste()
+{
+	m_currentFrame->addComponents( m_copiedGraphics);
+	redrawAll();
+}
+
+void APaintArea::cut()
+{
+	copy();
+	m_currentFrame->cutSelections();
+	redrawAll();
 }
 

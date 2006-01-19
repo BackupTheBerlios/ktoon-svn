@@ -36,6 +36,7 @@ class KTPluginObject : public QObject
 		
 	signals:
 		void toDrawGhostGraphic(const QPainterPath &r);
+		void requestRedraw();
 
 };
 

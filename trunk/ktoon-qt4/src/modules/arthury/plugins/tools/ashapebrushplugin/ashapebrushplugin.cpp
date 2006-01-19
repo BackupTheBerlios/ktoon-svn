@@ -27,7 +27,7 @@ QStringList AShapeBrushPlugin::keys() const
 	return QStringList() << tr("Shape brush");
 }
 
-QRect AShapeBrushPlugin::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, AGraphicComponent *currentComponent)
+QRect AShapeBrushPlugin::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, KTKeyFrame *currentFrame)
 {
 	m_path = QPainterPath();
 	m_path.moveTo(pos);
