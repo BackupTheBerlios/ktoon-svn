@@ -24,11 +24,12 @@
 #include <QHBoxLayout>
 #include <QStackedWidget>
 #include <QLabel>
-#include <QTreeWidget>
 #include <QHeaderView>
 
 
 #include "kseparator.h"
+
+#include "ktdebug.h"
 
 KTConfigurationDialog::KTConfigurationDialog(QWidget *parent) : QDialog(parent)
 {
@@ -36,13 +37,8 @@ KTConfigurationDialog::KTConfigurationDialog(QWidget *parent) : QDialog(parent)
 	QHBoxLayout *controlLayout = new QHBoxLayout;
 // 	controlLayout->addStretch(0);
 	
-	m_list = new QTreeWidget;
-	connect(m_list, SIGNAL(itemClicked (QTreeWidgetItem *, int )), this, SLOT(showPageForItem(QTreeWidgetItem *, int )));
-	m_list->setHeaderLabels(QStringList() << "");
-	m_list->header()->hide();
-	m_list->setAlternatingRowColors(true);
-	m_list->setUniformRowHeights (true);
-	m_list->setRootIsDecorated (true);
+	m_list = new KTWidgetListView;
+	connect(m_list, SIGNAL(itemClicked (QTableWidgetItem *)), this, SLOT(showPageForItem(QTableWidgetItem * )));
 	
 	controlLayout->addWidget(m_list);
 	
@@ -71,6 +67,11 @@ KTConfigurationDialog::KTConfigurationDialog(QWidget *parent) : QDialog(parent)
 
 	setLayout(mainLayout);
 	setModal(true);
+	
+	m_buttonGroup = new QButtonGroup(this);
+	connect(m_buttonGroup, SIGNAL(buttonClicked (QAbstractButton *)), this, SLOT(showPageForButton(QAbstractButton *)));
+	
+	m_buttonGroup->setExclusive(true);
 }
 
 
@@ -94,32 +95,32 @@ void KTConfigurationDialog::apply()
 
 void KTConfigurationDialog::addSection(const QString &title)
 {
-	QTreeWidgetItem *newItem = new QTreeWidgetItem(m_list);
-	newItem->setText(0, title);
+	QTableWidgetItem *newItem = new QTableWidgetItem();
+	newItem->setText(title);
 	
 	m_sections.insert(title, newItem);
 }
 
 void KTConfigurationDialog::addSection(QWidget *info, const QString &title)
 {
-	QTreeWidgetItem *newItem = new QTreeWidgetItem(m_list);
-	newItem->setText(0, title);
+	QTableWidgetItem *newItem = new QTableWidgetItem();
+	newItem->setText(title);
 	
 	m_container->addWidget(info);
 	m_pages.insert(newItem, info);
 	m_sections.insert(title, newItem);
 }
 
-void KTConfigurationDialog::addPage(QWidget *page, const QString &title, const QString &section)
+void KTConfigurationDialog::addPageToSection(QWidget *page, const QString &title, const QString &section)
 {
-	QTreeWidgetItem *sectionItem = m_sections[section];
+	QTableWidgetItem *sectionItem = m_sections[section];
 	
 	if ( sectionItem )
 	{
-		QTreeWidgetItem *newItem = new QTreeWidgetItem();
-		newItem->setText(0, title);
+		QTableWidgetItem *newItem = new QTableWidgetItem();
+		newItem->setText(title);
 		
-		sectionItem->addChild(newItem);
+// 		sectionItem->addChild(newItem);
 		
 		m_pages.insert(newItem, page);
 	
@@ -127,36 +128,60 @@ void KTConfigurationDialog::addPage(QWidget *page, const QString &title, const Q
 	}
 }
 
-void KTConfigurationDialog::addPage(QWidget *page, const QString &title, const QIcon &icon, const QString &section)
+void KTConfigurationDialog::addPageToSection(QWidget *page, const QString &title, const QIcon &icon, const QString &section)
 {
-	QTreeWidgetItem *sectionItem = m_sections[section];
+	QTableWidgetItem *sectionItem = m_sections[section];
 	
 	if ( sectionItem )
 	{
-		QTreeWidgetItem *newItem = new QTreeWidgetItem();
-		newItem->setText(0, title);
-		newItem->setIcon(0, icon );
+		QTableWidgetItem *newItem = new QTableWidgetItem;
+		newItem->setText(title);
+		newItem->setIcon(icon);
 		
-		sectionItem->addChild(newItem);
+// 		sectionItem->addChild(newItem);
 		
 		m_pages.insert(newItem, page);
 	
 		m_container->addWidget(page);
+	}
+}
+
+void KTConfigurationDialog::addPage(QWidget *page, const QString &title, const QIcon &icon)
+{
+	KTFlatButton *button = new KTFlatButton(title);
+	button->setIcon(icon);
+	button->setMinimumHeight(70);
+	QTableWidgetItem *newItem = m_list->addWidget( button );
+	
+	m_buttonGroup->addButton(button);
+	
+	m_pages.insert(newItem, page);
+	m_container->addWidget(page);
+	
+	if ( m_list->rowCount() == 1 )
+	{
+		button->click();
 	}
 }
 
 QWidget *KTConfigurationDialog::currentPage()
 {
+	ktDebug() << m_list->currentItem();
 	return m_pages[m_list->currentItem()];
 }
 
-
-void KTConfigurationDialog::showPageForItem(QTreeWidgetItem *item, int )
+void KTConfigurationDialog::showPageForItem(QTableWidgetItem *item )
 {
 	if ( item )
 	{
 		m_container->setCurrentWidget(m_pages[item]);
 	}
+}
+
+void KTConfigurationDialog::showPageForButton(QAbstractButton *button)
+{
+	m_list->setCurrentItem(m_list->item(button));
+	showPageForItem( m_list->item(button) );
 }
 
 

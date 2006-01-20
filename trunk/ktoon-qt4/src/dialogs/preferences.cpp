@@ -35,16 +35,16 @@ Preferences::Preferences( QWidget *parent ) : KTConfigurationDialog(parent )
 {
 	setWindowTitle( tr( "Application Preferences" ) );
 	
-	addSection( new QLabel("<h3>You can configure general settings<br> in this section</h3>"), tr("General") );
+// 	addSection( new QLabel("<h3>You can configure general settings<br> in this section</h3>"), tr("General") );
 	
-	addSection( new QLabel("<h3>You can configure user interface settings <br>in this section</h3>"),tr("User interface") );
+// 	addSection( new QLabel("<h3>You can configure user interface settings <br>in this section</h3>"),tr("User interface") );
 	m_themeSelector = new KTThemeSelector;
-	addPage(m_themeSelector, tr("Theme preferences"), tr("User interface"));
+	addPage(m_themeSelector, tr("Theme preferences"), QPixmap(KTOON_THEME_DIR+"/icons/play.png"));
 
 	m_fontWidget = new KTFontWidget;
 // 	m_fontWidget->setFont( QFont("helvetica", 10));
 // 	m_fontWidget->showXLFDArea(false);
-	addPage(m_fontWidget, tr("Font"), tr("User interface"));
+	addPage(m_fontWidget, tr("Font"), QPixmap(KTOON_THEME_DIR+"/icons/ff.png"));
 }
 
 //-------------- DESTRUCTOR -----------------

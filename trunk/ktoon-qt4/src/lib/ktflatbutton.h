@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,36 +18,24 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTWIDGETLISTVIEW_H
-#define KTWIDGETLISTVIEW_H
+#ifndef KTFLATBUTTON_H
+#define KTFLATBUTTON_H
 
-#include <QTableWidget>
-#include <QMap>
+#include <QAbstractButton>
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+	@author David Cuadrado <krawek@toonka.com>
 */
-
-class KTWidgetListView : public QTableWidget
+class KTFlatButton : public QAbstractButton
 {
 	Q_OBJECT
 	public:
-		KTWidgetListView( QWidget * parent = 0 );
-		~KTWidgetListView();
-
-		QTableWidgetItem *addWidget(QWidget *widget);
-		QWidget *widget(QTableWidgetItem *treeItem);
-		
-		QTableWidgetItem *item(QWidget *widget);
+		KTFlatButton(QWidget *parent = 0);
+		KTFlatButton(const QString &text, QWidget *parent = 0);
+		~KTFlatButton();
 		
 	protected:
-		void resizeEvent(QResizeEvent *e);
-
-	signals:
-		void itemSelected(int index);
-		
-	private:
-		QMap<QWidget *, QTableWidgetItem *> m_items;
+		void paintEvent(QPaintEvent *e);
 };
 
 #endif

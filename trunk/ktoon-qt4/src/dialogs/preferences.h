@@ -37,6 +37,8 @@
 
 #include "ktconfigurationdialog.h"
 
+#include "ktflatbutton.h"
+
 class ColorSchemePref;
 
 class Preferences : public KTConfigurationDialog

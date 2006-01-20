@@ -23,10 +23,14 @@
 
 #include <QDialog>
 #include <QMap>
+#include <QButtonGroup>
+
+#include "ktwidgetlistview.h"
+#include "ktflatbutton.h"
 
 class QStackedWidget;
 class QTreeWidget;
-class QTreeWidgetItem;
+class QTableWidgetItem;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -40,8 +44,11 @@ class KTConfigurationDialog : public QDialog
 		~KTConfigurationDialog();
 		void addSection(QWidget *info, const QString &title);
 		void addSection(const QString &title);
-		void addPage(QWidget *page, const QString &title, const QString &section);
-		void addPage(QWidget *page, const QString &title, const QIcon &icon, const QString &section);
+		void addPageToSection(QWidget *page, const QString &title, const QString &section);
+		void addPageToSection(QWidget *page, const QString &title, const QIcon &icon, const QString &section);
+		
+		void addPage(QWidget *page, const QString &title, const QIcon &icon);
+		
 		QWidget *currentPage();
 		
 	public slots:
@@ -50,14 +57,16 @@ class KTConfigurationDialog : public QDialog
 		virtual void apply();
 		
 	private slots:
-		void showPageForItem(QTreeWidgetItem *, int );
+		void showPageForItem(QTableWidgetItem *);
+		void showPageForButton(QAbstractButton *);
 		
 	private:
-		QTreeWidget *m_list;
+		KTWidgetListView *m_list;
 		QStackedWidget *m_container;
-		QMap<QTreeWidgetItem *, QWidget *> m_pages;
-		QMap<QString, QTreeWidgetItem *> m_sections;
+		QMap<QTableWidgetItem *, QWidget *> m_pages;
+		QMap<QString, QTableWidgetItem *> m_sections;
 		
+		QButtonGroup *m_buttonGroup;
 };
 
 #endif

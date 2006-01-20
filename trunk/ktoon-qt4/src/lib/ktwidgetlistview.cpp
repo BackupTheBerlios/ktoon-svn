@@ -20,15 +20,16 @@
 
 #include "ktwidgetlistview.h"
 #include <QHeaderView>
-
+#include <QResizeEvent>
 #include "ktdebug.h"
 
-KTWidgetListView::KTWidgetListView(QWidget * parent) : QTreeWidget(parent)
+KTWidgetListView::KTWidgetListView(QWidget * parent) : QTableWidget(0,1,parent)
 {
-	setHeaderLabels (QStringList() << "");
-	setRootIsDecorated(false);
+	verticalHeader()->hide();
+	horizontalHeader()->hide();
 	
-	header()->hide();
+	horizontalHeader()->setResizeMode ( QHeaderView::Custom);
+// 	horizontalHeader()->setStretchLastSection(true);
 }
 
 
@@ -36,20 +37,38 @@ KTWidgetListView::~KTWidgetListView()
 {
 }
 
-void KTWidgetListView::addWidget(QWidget *widget)
+QTableWidgetItem *KTWidgetListView::addWidget(QWidget *widget)
 {
-	QTreeWidgetItem *newItem = new QTreeWidgetItem(this);
+	QTableWidgetItem *newItem = new QTableWidgetItem();
+	
+	int newRowIndex = rowCount();
+	
+	insertRow(newRowIndex);
+	setItem( newRowIndex, 0, newItem);
+	
 	setIndexWidget(indexFromItem(newItem), widget);
+	
+	verticalHeader()->resizeSection(newRowIndex, widget->height());
+	
+	m_items.insert(widget, newItem);
+
+	return newItem;
 }
 
-QWidget *KTWidgetListView::widget(QTreeWidgetItem *treeItem)
+QWidget *KTWidgetListView::widget(QTableWidgetItem *treeItem)
 {
 	return indexWidget(indexFromItem(treeItem));
 }
 
+QTableWidgetItem *KTWidgetListView::item(QWidget *widget)
+{
+	return m_items[widget];
+}
 
-
-
+void KTWidgetListView::resizeEvent(QResizeEvent *e)
+{
+	horizontalHeader()->resizeSection (0, e->size().width() );
+}
 
 
 
