@@ -111,6 +111,10 @@ void KTApplication::applyColors(ColorSchema cs)
 		
 			pal.setColor( QPalette::Highlight, 0x8f8368 );
 			pal.setColor( QPalette::HighlightedText, bg );
+			
+			pal.setColor( QPalette::Link, 0x596B8C);
+			pal.setColor(QPalette::LinkVisited, 0x7B94C1);
+			
 			int h,s,v;
 			bgAlt.getHsv( &h, &s, &v );
 			pal.setColor( QPalette::Midlight, QColor( h, s/3, (int)(v * 1.2)/*,QColor::Hsv*/ ) );

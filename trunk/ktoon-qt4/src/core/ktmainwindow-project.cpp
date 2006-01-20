@@ -136,7 +136,8 @@ void KTMainWindow::rotateCurrentElement(int a)
 	
 	if ( doc )
 	{
-		AGraphicComponent *selected = doc->drawArea()->selectedGraphic();
+		//FIXME: tomar todos los graficos seleccionados
+		AGraphicComponent *selected = doc->drawArea()->selectedGraphic()[0];
 		
 		if ( selected )
 		{
@@ -153,10 +154,16 @@ void KTMainWindow::scaleCurrentElement(double dx,double dy)
 	
 	if ( doc )
 	{
-		AGraphicComponent *selected = doc->drawArea()->selectedGraphic();
-		if ( selected )
+		//FIXME: tomar todos los graficos seleccionados
+		QList<AGraphicComponent *>selecteds = doc->drawArea()->selectedGraphic();
+		if ( selecteds.count() > 0 )
 		{
-			selected->scale(dx, dy);
+			AGraphicComponent *form = new AGraphicComponent();
+			QPainterPath path;
+			foreach( AGraphicComponent * selected,  selecteds )
+			{
+				selected->scale(dx, dy);
+			}
 			doc->drawArea()->redrawAll();
 		}
 	}
@@ -169,10 +176,16 @@ void KTMainWindow::translateCurrentElement(double dx ,double dy)
 	
 	if ( doc )
 	{
-		AGraphicComponent *selected = doc->drawArea()->selectedGraphic();
-		if ( selected )
+		QList<AGraphicComponent *> selecteds = doc->drawArea()->selectedGraphic();
+		
+		if ( selecteds.count() > 0 )
 		{
-			selected->translate(dx, dy);
+			AGraphicComponent *form = new AGraphicComponent();
+			QPainterPath path;
+			foreach( AGraphicComponent * selected,  selecteds )
+			{
+				selected->translate(dx, dy);
+			}
 			doc->drawArea()->redrawAll();
 		}
 	}
@@ -185,10 +198,15 @@ void KTMainWindow::shearCurrentElement(double dx,double dy)
 	
 	if ( doc )
 	{
-		AGraphicComponent *selected = doc->drawArea()->selectedGraphic();
-		if ( selected )
+		QList<AGraphicComponent* > selecteds = doc->drawArea()->selectedGraphic();
+		if ( selecteds.count() > 0 )
 		{
-			selected->shear(dx, dy);
+			AGraphicComponent *form = new AGraphicComponent();
+			QPainterPath path;
+			foreach( AGraphicComponent * selected,  selecteds )
+			{
+				selected->shear(dx, dy);
+			}
 			doc->drawArea()->redrawAll();
 		}
 	}
@@ -200,10 +218,20 @@ void KTMainWindow::addCurrentGraphicToLibrary()
 	
 	if ( doc )
 	{
-		AGraphicComponent *selected = doc->drawArea()->selectedGraphic();
-		if ( selected )
+		QList<AGraphicComponent *> selecteds = doc->drawArea()->selectedGraphic();
+		if ( selecteds.count() > 0 )
 		{
-			m_libraryWidget->addGraphic(selected);
+			AGraphicComponent *form = new AGraphicComponent();
+			QPainterPath path;
+			foreach( AGraphicComponent * selected,  selecteds )
+			{
+				path.addPath(selected->path());
+			}
+			form->setBrush( selecteds[0]->brush());
+			form->setPen( selecteds[0]->pen());
+			form->setPath( path);
+			
+			m_libraryWidget->addGraphic(form);
 		}
 	}
 }

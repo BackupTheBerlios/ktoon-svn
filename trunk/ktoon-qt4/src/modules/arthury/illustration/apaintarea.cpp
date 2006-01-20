@@ -564,9 +564,12 @@ AGraphicComponent *APaintArea::currentGraphic()
 	return m_currentGraphic;
 }
 
-AGraphicComponent *APaintArea::selectedGraphic()
+QList<AGraphicComponent *> APaintArea::selectedGraphic()
 {
-// 	return m_selectedGraphic;
+	if(m_currentFrame)
+	{
+		return m_currentFrame->selectedComponents();
+	}
 }
 
 KTBrush *APaintArea::currentBrush()

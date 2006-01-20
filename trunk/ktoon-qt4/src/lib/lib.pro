@@ -53,7 +53,8 @@ HEADERS += ktapplication.h \
            ktpluginobject.h \
            collapsiblewidget.h \
            ktconfigurationdialog.h \
-           ktflatbutton.h 
+           ktflatbutton.h \
+           ktcolorbutton.h 
 SOURCES += ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
@@ -99,7 +100,8 @@ SOURCES += ktapplication.cpp \
            ktpluginobject.cpp \
            collapsiblewidget.cpp \
            ktconfigurationdialog.cpp \
-           ktflatbutton.cpp 
+           ktflatbutton.cpp \
+           ktcolorbutton.cpp 
 QT += xml
 KDEV_QTVER = 4
 MOC_DIR = .moc

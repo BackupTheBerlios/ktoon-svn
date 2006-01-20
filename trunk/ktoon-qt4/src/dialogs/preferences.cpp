@@ -66,12 +66,6 @@ void Preferences::apply()
 		if(m_themeSelector->iWantApplyColors() )
 		{
 			ktapp->applyTheme(m_themeSelector->document());
-			QString filepath = m_themeSelector->lastFile();
-			
-			if ( ! filepath.isEmpty() )
-			{
-				KTCONFIG->setValue("General", filepath);
-			}
 		}
 	}
 // 	else if ( static_cast<KTFontWidget *>( currentTab ()) == m_fontWidget )

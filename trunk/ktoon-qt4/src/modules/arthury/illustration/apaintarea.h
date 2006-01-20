@@ -54,7 +54,7 @@ class APaintArea : public QWidget
 		void setZeroAt(const QPoint& zero);
 		
 		AGraphicComponent *currentGraphic();
-		AGraphicComponent *selectedGraphic();
+		QList<AGraphicComponent *>selectedGraphic();
 		
 		KTBrush *currentBrush();
 		
