@@ -4,14 +4,6 @@
 # Author: Krawek
 # Version: 0.1.0
 
-APPNAME="KToon"
-APPVER="0.8alpha-svn"
-
-EMAIL='ktoon@toonka.com'
-
-MAKE=`which make` 
-QMAKE=`which qmake`
-
 KTOON_GLOBAL_ENV=/etc/ktoon.env
 KTOON_LOCAL_ENV=~/.ktoon.env
 
@@ -21,38 +13,14 @@ OPTION_NODEBUG=-1
 OPTION_GL=-1
 ASSUME_YES=0
 
-LOG_FILE=build.log
 STAT_FILE=/tmp/ktoon_stat_file-$RANDOM
 
-export PATH=/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin
+. scripts/global
 
-# Look & feel
-
-GREEN='\033[1;32m'
-RED='\033[9;31m'
-YELLOW='\033[1;33m'
-NULLC='\033[0;0m'
-
-function qpinfo ()
-{
-	echo -e $GREEN '*' $NULLC $1
-	echo $1 >> $LOG_FILE
-}
-
-function qperror ()
-{
-	echo -e $RED '*' $NULLC $1
-	echo $1 >> $LOG_FILE
-}
-
-function qpelec ()
-{
-	echo -en "$YELLOW * $NULLC $1 "
-}
 
 function fails ()
 {
-	echo
+	echo 
 	qperror $*
 	echo "------ dmesg --------" >> $LOG_FILE
 	echo `dmesg | tail -n 10` >> $LOG_FILE
@@ -60,6 +28,7 @@ function fails ()
 	echo "Send the file $LOG_FILE to $EMAIL"
 	exit 1
 }
+
 
 function verifyEnv()
 {
@@ -84,18 +53,6 @@ function verifyEnv()
 			qperror "You don't have qmake in your PATH, or doesn't have Qtlibs, please install it and try"
 			exit 1
 		fi
-	fi
-}
-
-function detectQtVersion()
-{
-	QT_VERSION=`$QMAKE -query QT_VERSION | grep -o "^\\w"`
-	if [ "$QT_VERSION" != "4" ]
-	then
-		qperror "Please install Qt4 or set QTDIR to Qt4 installation path"
-		exit -1
-	else
-		qpinfo "Using Qt: `$QMAKE -query QT_VERSION `"
 	fi
 }
 

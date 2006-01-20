@@ -1,0 +1,43 @@
+#/bin/bash
+
+. scripts/global
+
+CONFIGURE_TEST_DIR=configure.tests
+FAIL=-1
+SUCC=0
+
+# $1 parameter is a text
+# $2 directory 
+function check()
+{
+	RESULT="yes."
+	if [ -d $CONFIGURE_TEST_DIR/$2 ]
+	then
+		cd $CONFIGURE_TEST_DIR/$2
+		$QMAKE 2> /dev/null >/dev/null
+		${MAKE} 2>/dev/null >/dev/null|| RESULT="no."
+		cd - 2> /dev/null > /dev/null
+	else
+		RESULT="no."
+	fi
+	
+	qpinfo "Checking for $1... \t$RESULT" -n
+	
+	if [ ${RESULT} != "yes." ]
+	then
+		return $FAIL
+	fi
+	
+	return $SUCC
+}
+
+
+detectQtVersion
+
+check "sound" sound
+check "gif" gif
+check "ungif" ungif
+check "ffmpeg" ffmpeg
+check "ming" ming
+
+

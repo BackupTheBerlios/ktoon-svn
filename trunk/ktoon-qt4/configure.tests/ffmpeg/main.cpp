@@ -1,0 +1,7 @@
+#include <ffmpeg/avformat.h>
+
+int main()
+{
+	return 0;
+}
+

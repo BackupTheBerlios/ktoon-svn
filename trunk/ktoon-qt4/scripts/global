@@ -1,0 +1,55 @@
+#!/bin/bash
+
+APPNAME="KToon"
+APPVER="0.8alpha-svn"
+
+EMAIL='ktoon@toonka.com'
+
+MAKE=`which make`
+QMAKE=`which qmake`
+
+LOG_FILE=build.log
+
+export PATH=/bin:/usr/bin:/usr/local/bin:/sbin:/usr/sbin:/usr/local/sbin
+
+
+# Look & feel
+
+GREEN='\033[1;32m'
+RED='\033[9;31m'
+YELLOW='\033[1;33m'
+NULLC='\033[0;0m'
+
+function qpinfo ()
+{
+	echo -e $GREEN '*' $NULLC $1
+	echo $1 >> $LOG_FILE
+}
+
+function qperror ()
+{
+	echo -e $RED '*' $NULLC $1
+	echo $1 >> $LOG_FILE
+}
+
+function qpelec ()
+{
+	echo -en "$YELLOW * $NULLC $1 "
+}
+
+function detectQtVersion()
+{
+	QT_VERSION=`$QMAKE -query QT_VERSION | grep -o "^\\w"`
+	if [ "$QT_VERSION" != "4" ]
+	then
+		qperror "Please install Qt4 or set QTDIR to Qt4 installation path"
+		exit -1
+	else
+		qpinfo "Using Qt: `$QMAKE -query QT_VERSION `"
+	fi
+}
+
+
+
+
+
