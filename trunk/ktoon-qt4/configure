@@ -5,6 +5,8 @@
 CONFIGURE_TEST_DIR=configure.tests
 FAIL=-1
 SUCC=0
+CONFIG_H=config.h
+CONFIG_LOG=$(pwd)/$LOG_FILE
 
 # $1 parameter is a text
 # $2 directory 
@@ -14,9 +16,9 @@ function check()
 	if [ -d $CONFIGURE_TEST_DIR/$2 ]
 	then
 		cd $CONFIGURE_TEST_DIR/$2
-		$QMAKE 2> /dev/null >/dev/null
-		${MAKE} 2>/dev/null >/dev/null|| RESULT="no."
-		cd - 2> /dev/null > /dev/null
+		$QMAKE 2>> $CONFIG_LOG >> $CONFIG_LOG
+		${MAKE} 2>>$CONFIG_LOG >>$CONFIG_LOG || RESULT="no."
+		cd - 2>> /dev/null >> /dev/null
 	else
 		RESULT="no."
 	fi
@@ -31,13 +33,26 @@ function check()
 	return $SUCC
 }
 
+function defineMacro()
+{
+	echo "#define $1" >> $CONFIG_H
+}
 
 detectQtVersion
 
-check "sound" sound
-check "gif" gif
-check "ungif" ungif
-check "ffmpeg" ffmpeg
-check "ming" ming
+echo "/* Generated automatically by configure script */" > $CONFIG_H 
+ln -fs $(pwd)/$CONFIG_H $(pwd)/src/lib/$CONFIG_H
 
+check "sound" sound && defineMacro HAVE_SOUND
+check "gif" gif && defineMacro HAVE_LIBGIF
+check "ungif" ungif && defineMacro HAVE_LIBUNGIF
+check "ffmpeg" ffmpeg && defineMacro HAVE_FFMPEG
+check "ming" ming && defineMacro HAVE_MING
+
+
+echo
+echo "**************************************"
+qpwarn "$APPNAME is configured, if you want clean configure, please execute 'make confclean'"
+echo "**************************************"
+echo
 

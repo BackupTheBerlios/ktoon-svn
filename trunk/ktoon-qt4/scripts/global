@@ -26,6 +26,12 @@ function qpinfo ()
 	echo $1 >> $LOG_FILE
 }
 
+function qpwarn ()
+{
+	echo -e $YELLOW '*' $NULLC $1
+	echo $1 >> $LOG_FILE
+}
+
 function qperror ()
 {
 	echo -e $RED '*' $NULLC $1

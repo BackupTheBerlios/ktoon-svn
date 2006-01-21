@@ -172,7 +172,7 @@ function ktinstall()
 function main()
 {
 	echo
-	echo `date` > $LOG_FILE
+	echo `date` >> $LOG_FILE
 	qpinfo "###################################"
 	if [ $OPTION_GL -eq 1 ]
 	then
@@ -290,6 +290,13 @@ do
 done
 
 shift $(($OPTIND - 1))
+
+if [ ! -f config.h ]
+then
+	qperror "Please run ./configure first"
+	exit -1
+fi
+
 
 verifyEnv
 detectQtVersion

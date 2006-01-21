@@ -6,5 +6,6 @@ TEMPLATE = app
 CONFIG -= moc
 INCLUDEPATH += .
 
+LIBS += -lavformat -lavcodec
 # Input
 SOURCES += main.cpp
