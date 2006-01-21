@@ -5,22 +5,8 @@
 
 QT += qt3support 
 KDEV_QTVER = 4 
-DEFINES = $(KTDEFINES) 
 CONFIG += release \
           warn_on 
 TEMPLATE = subdirs 
 SUBDIRS += src 
-
-# confclean.depends += clean
-confclean.commands += (cd configure.tests/sound && $(MAKE) distclean); \
-			(cd configure.tests/gif && $(MAKE) distclean); \
-			(cd configure.tests/ffmpeg && $(MAKE) distclean); \
-			(cd configure.tests/ming && $(MAKE) distclean); \
-			rm config.h
-
-QMAKE_EXTRA_UNIX_TARGETS += confclean
-
-!exists("config.h") {
-	error("Please run ./configure first")
-}
 

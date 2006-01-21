@@ -675,6 +675,7 @@ void KTCellView::emitItemPressed(const QModelIndex &index)
 
 void KTCellView::emitItemClicked(const QModelIndex &index)
 {
+	setCurrentItem( m_model->item(index) ); // FIXME: it's necessary?
 	emit itemClicked(m_model->item(index));
 }
 

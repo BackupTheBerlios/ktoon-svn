@@ -21,11 +21,13 @@
 #include "ktworkspace.h"
 
 #include <QMouseEvent>
+#include <QDropEvent>
 
 #include "ktdebug.h"
 
 KTWorkspace::KTWorkspace(QWidget *parent) : QWorkspace(parent)
 {
+	setAcceptDrops( true );
 }
 
 
@@ -45,4 +47,39 @@ void KTWorkspace::mouseMoveEvent(QMouseEvent *e)
 void KTWorkspace::mouseReleaseEvent(QMouseEvent *e)
 {
 }
+
+// void KTWorkspace::dropEvent( QDropEvent *event )
+// {
+// 	if (event->mimeData()->hasColor())
+// 	{
+// 		QColor color = qvariant_cast<QColor>(event->mimeData()->colorData());
+// 		
+// 		QPalette pal = palette();
+// 		pal.setColor(QPalette::Dark, color);
+// 		
+// 		ktDebug() << "Co: " << color;
+// 		setPalette(pal);
+// 		
+// 		event->acceptProposedAction();
+// 	} 
+// 	else 
+// 	{
+// 		event->ignore();
+// 	}
+// }
+// 
+// void KTWorkspace::dragEnterEvent( QDragEnterEvent *event )
+// {
+// 	setFocus();
+// 
+// 	if (event->mimeData()->hasColor()) 
+// 	{
+// 		event->acceptProposedAction();
+// 	} 
+// 	else 
+// 	{
+// 		event->ignore();
+// 	}
+// }
+
 

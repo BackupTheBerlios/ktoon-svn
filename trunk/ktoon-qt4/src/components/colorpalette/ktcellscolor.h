@@ -51,6 +51,15 @@ Q_OBJECT
 		bool m_readOnly;
 		int m_col, m_row;
 		const int MAX_COLUMNS;
+		
+	protected:
+		void mousePressEvent(QMouseEvent* e);
+		void mouseMoveEvent(QMouseEvent* e);
+		void dragEnterEvent(QDragEnterEvent* e);
+		void dropEvent(QDropEvent* e);
+		
+	private:
+		QPoint m_startDragPosition;
 };
 
 #endif

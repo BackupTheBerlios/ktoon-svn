@@ -157,7 +157,7 @@ void KTColorButton::mouseMoveEvent(QMouseEvent* e)
 	QPainter painter( &pix );
 	painter.drawRect( 0, 0, pix.width(), pix.height() );
 	painter.end();
-		
+	
 	QMimeData *mimeData = new QMimeData;
 	mimeData->setColorData(m_color);
 		

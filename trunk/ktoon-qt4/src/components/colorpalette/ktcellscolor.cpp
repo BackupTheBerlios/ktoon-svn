@@ -24,11 +24,18 @@
 #include "ktpalettedocument.h"
 
 #include <QFile>
+#include <QDragEnterEvent>
+#include <QMouseEvent>
+#include <QDrag>
+#include <QApplication>
+#include <QPainter>
 
 
 KTCellsColor::KTCellsColor(QWidget *parent, Type type)
 	: KTCellView(parent), m_type(type), m_countColor(0), m_readOnly(false),  m_col(0), m_row(0), MAX_COLUMNS(16)
-{}
+{
+	setAcceptDrops(true);
+}
 
 
 KTCellsColor::~KTCellsColor()
@@ -120,4 +127,85 @@ void KTCellsColor::save( const QString &path)
 		save.close();
 	}
 }
+
+void KTCellsColor::dragEnterEvent( QDragEnterEvent *event )
+{
+	setFocus();
+
+	if (event->mimeData()->hasColor()) 
+	{
+		if (event->source() == this) 
+		{
+			event->setDropAction(Qt::MoveAction);
+			event->accept();
+		} 
+		else
+		{
+			event->acceptProposedAction();
+		}
+	} 
+	else 
+	{
+		event->ignore();
+	}
+}
+
+void KTCellsColor::dropEvent( QDropEvent *event )
+{
+	if (event->mimeData()->hasColor())
+	{
+		QColor color = qvariant_cast<QColor>(event->mimeData()->colorData());
+		
+		// TODO: crear item
+		
+		if (event->source() == this) 
+		{
+			event->setDropAction(Qt::MoveAction);
+			event->accept();
+		} 
+		else 
+		{
+			event->acceptProposedAction();
+		}
+	} 
+	else 
+	{
+		event->ignore();
+	}
+}
+
+void KTCellsColor::mousePressEvent(QMouseEvent* e)
+{
+	KTCellView::mousePressEvent(e);
+	m_startDragPosition = e->pos();
+	
+}
+
+void KTCellsColor::mouseMoveEvent(QMouseEvent* e)
+{
+	KTCellView::mouseMoveEvent(e);
+	
+	if ((e->pos() - m_startDragPosition).manhattanLength() <  QApplication::startDragDistance())
+		return;
+
+	QDrag *drag = new QDrag( this );
+	QPixmap pix( 25, 25 );
+	pix.fill( currentItem()->background() );
+	
+	QPainter painter( &pix );
+	painter.drawRect( 0, 0, pix.width(), pix.height() );
+	painter.end();
+		
+	QMimeData *mimeData = new QMimeData;
+	mimeData->setColorData(currentItem()->background().color());
+		
+	drag->setMimeData(mimeData);
+	drag->setPixmap( pix );
+		
+	Qt::DropAction dropAction = drag->start(Qt::MoveAction);
+
+}
+
+
+
 

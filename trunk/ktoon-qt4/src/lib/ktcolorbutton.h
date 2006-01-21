@@ -55,14 +55,10 @@ class KTColorButton : public QAbstractButton
 	protected:
 		void paintEvent(QPaintEvent *e);
 		void mousePressEvent(QMouseEvent* e);
-
-#ifndef QT_NO_DRAGANDDROP
-
-	void mouseMoveEvent(QMouseEvent* e);
-	void dragEnterEvent(QDragEnterEvent* e);
-	void dragMoveEvent(QDragMoveEvent* e);
-	void dropEvent(QDropEvent* e);
-#endif
+		void mouseMoveEvent(QMouseEvent* e);
+		void dragEnterEvent(QDragEnterEvent* e);
+		void dragMoveEvent(QDragMoveEvent* e);
+		void dropEvent(QDropEvent* e);
 
 	private:
 		QColor m_color;
