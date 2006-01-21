@@ -3,12 +3,15 @@
 # Subdir relative project main directory: ./src/modules/arthury/interfaces
 # Target is a library:  
 
-QT += xml  
-KDEV_QTVER = 4 
-INCLUDEPATH += ../../../../src/store 
-CONFIG += release \
-          warn_on \
-          staticlib 
-TEMPLATE = lib 
+INSTALLS += interfaces 
+interfaces.files += *.h 
+interfaces.path = /include/interfaces/ 
 HEADERS += afilterinterface.h \
            atoolinterface.h 
+QT += xml
+KDEV_QTVER = 4
+INCLUDEPATH += ../../../../src/store
+CONFIG += release \
+warn_on \
+staticlib
+TEMPLATE = lib

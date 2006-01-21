@@ -99,9 +99,8 @@ APaintArea *KTPaintAreaContainer::drawArea() const
 
 void KTPaintAreaContainer::resizeEvent ( QResizeEvent * event )
 {
-	
-	m_drawAreaDelta.setY( height()/2 - m_drawArea->paintDevice().height()/2);
-	m_drawAreaDelta.setX( width()/2 - m_drawArea->paintDevice().width()/2 );
+	m_drawAreaDelta.setY( height()/2 - m_drawArea->paintDevice()->height()/2);
+	m_drawAreaDelta.setX( width()/2 - m_drawArea->paintDevice()->width()/2 );
 	if(m_drawAreaDelta.x() < 0 )
 	{
 		m_drawAreaDelta.setX(0);
@@ -113,6 +112,7 @@ void KTPaintAreaContainer::resizeEvent ( QResizeEvent * event )
 	m_HRuler->setZeroAt(m_drawAreaDelta.x());
 	m_VRuler->setZeroAt(m_drawAreaDelta.y());
 	m_drawArea->setZeroAt(m_drawAreaDelta);
-	resize(m_drawArea->size());
+	m_drawArea->resize(size());
+// 	resize(m_drawArea->size());
 }
 

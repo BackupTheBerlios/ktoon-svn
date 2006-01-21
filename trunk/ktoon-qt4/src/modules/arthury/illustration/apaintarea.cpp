@@ -25,20 +25,54 @@
 #include <QPainter>
 #include <QTimer>
 #include <cmath>
-
+#include <QBoxLayout>
 #include "ktgradientadjuster.h"
+
+#define BEGIN_PAINTER(var) switch(m_renderType) { case Image: \
+var.begin(IMAGE_DEVICE); break; \
+	case Native: \
+		var.begin(NATIVE_DEVICE); break; \
+	case OpenGL: \
+		var.begin(OPENGL_DEVICE); break; }; 
 
 APaintArea::APaintArea(const QSize& size ,QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0,0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_currentFrame(0), m_layer(0), m_scene(0), m_previousFramesNumber(0), m_nextFramesNumber(0)
 {
 	m_redrawAll = true;
 	
+	m_renderType = Image;
+	
 	KTINIT;
 	setAttribute(Qt::WA_StaticContents);
-	m_paintDevice = QImage(size, QImage::Format_RGB32);
-	m_paintDevice.fill(qRgb(255, 255, 255));
+// 	QBoxLayout *layout = new QBoxLayout( QBoxLayout::LeftToRight, this);
+	switch(m_renderType)
+	{
+		case Image:
+		{
+			m_paintDevice = new AImageDeviceWidget(size, this);
+		}
+		break;
+		case OpenGL:
+		{
+			m_paintDevice = new QGLWidget(this);
+			m_paintDevice->resize(size);
+		}
+		break;
+		case Native:
+		{
+			m_paintDevice = new QWidget(this);
+			m_paintDevice->resize(size);
+			m_paintDevice->setAttribute (Qt::WA_PaintOutsidePaintEvent);
+		}
+		break;
+	}
+	
+	m_paintDevice->setAutoFillBackground(true);
+// 	layout->addWidget(m_paintDevice);
+	
+	fillDevice( Qt::white );
 	
 	setMouseTracking(true);
-	m_grid.createGrid(m_paintDevice.width(), m_paintDevice.height() );
+	m_grid.createGrid(m_paintDevice->width(), m_paintDevice->height() );
 	
 	m_path = QPainterPath();
 	
@@ -58,7 +92,7 @@ APaintArea::~APaintArea()
 
 QSize APaintArea::sizeHint() const
 {
-	return m_paintDevice.size() + QSize(m_zero.x(),m_zero.y());
+	return m_paintDevice->size() + QSize(m_zero.x(),m_zero.y());
 }
 
 QSize APaintArea::minimumSizeHint () const
@@ -72,9 +106,9 @@ void APaintArea::paintEvent(QPaintEvent *e)
 	
 	if ( m_redrawAll )
 	{
-		m_paintDevice.fill(qRgb(255, 255, 255));
+		fillDevice( Qt::white );
 		
-		painter.begin(&m_paintDevice);
+		BEGIN_PAINTER(painter);
 		painter.setRenderHint(QPainter::Antialiasing);
 		
 		if(m_drawGrid)
@@ -95,9 +129,7 @@ void APaintArea::paintEvent(QPaintEvent *e)
 		painter.end();
 		m_redrawAll = false;
 	}
-
-	painter.begin(this);
-	painter.drawImage(QPoint(m_xpos, m_ypos), m_paintDevice);
+	m_paintDevice->update();
 }
 
 void APaintArea::setKeyFrame(int index)
@@ -268,7 +300,7 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphic, QPainter *painter
 	{
 		ktWarning() << "Intensitive must be lesser than 1 - No effect";
 	}
-					
+	
 	painter->setPen(pen);
 	painter->setBrush(brush);
 					
@@ -290,17 +322,37 @@ void APaintArea::redrawAll()
 
 void APaintArea::aUpdate(const QRectF &rect)
 {
-	QPainter painter(&m_paintDevice);
+	QPainter painter;
+	BEGIN_PAINTER(painter);
 	
 #if 1
 
 	if ( !m_overBuffer.isNull())
 	{
 		painter.drawImage(m_overBufferRect, m_overBuffer);
+		
+		
 // 		update(m_overBufferRect);
 		QTimer::singleShot(0, this, SLOT(update())); // FIXME: calculate the rect
 	}
-	m_overBuffer = m_paintDevice.copy( rect.toRect() );
+	
+	switch(m_renderType)
+	{
+		case Image:
+		{
+			m_overBuffer = IMAGE_DEVICE->copy( rect.toRect() );
+		}
+		break;
+		case Native:
+		{
+		}
+		break;
+		case OpenGL:
+		{
+			m_overBuffer = OPENGL_DEVICE->grabFrameBuffer().copy( rect.toRect() );
+		}
+	}
+// 	m_overBuffer = m_paintDevice->copy( rect.toRect() );
 	m_overBufferRect = rect.toRect();
 	
 #else
@@ -333,7 +385,8 @@ void APaintArea::drawGhostGraphic(const QPainterPath &path)
 {
 	aUpdate(path.boundingRect().toRect().normalized().adjusted(-60,-60,60,60) );
 
-	QPainter painter(&m_paintDevice);
+	QPainter painter;
+	BEGIN_PAINTER(painter);
 	
 	painter.drawImage(m_overBufferRect, m_overBuffer);
 	painter.setPen(QPen(Qt::black, 1, Qt::DashLine));
@@ -342,8 +395,9 @@ void APaintArea::drawGhostGraphic(const QPainterPath &path)
 
 void APaintArea::resizeEvent( QResizeEvent * event )
 {
-	m_xpos = width() / 2 - m_paintDevice.width() / 2;
-	m_ypos = height() / 2 - m_paintDevice.height() / 2;
+	m_xpos = width() / 2 - m_paintDevice->width() / 2;
+	m_ypos = height() / 2 - m_paintDevice->height() / 2;
+// 	m_paintDevice->resize( size() );
 	repaint();
 	QWidget::resizeEvent(event);
 }
@@ -356,22 +410,22 @@ QPoint APaintArea::paintDevicePosition() const
 void APaintArea::setZeroAt(const QPoint & zero)
 {
 	m_zero = zero *2;
-
-	resize(sizeHint());
+	m_paintDevice->move(zero);
+	resize(m_paintDevice->sizeHint());
 	repaint();
 }
 
-QImage APaintArea::paintDevice() const
+QWidget *APaintArea::paintDevice() const
 {
 	return m_paintDevice;
 }
 
-void APaintArea::setPaintDevice(const QImage &image)
-{
-	m_paintDevice = image.convertToFormat(QImage::Format_RGB32);
-	update();
-	updateGeometry();
-}
+// void APaintArea::setPaintDevice(const QImage &image)
+// {
+// 	m_paintDevice = image.convertToFormat(QImage::Format_RGB32);
+// 	update();
+// 	updateGeometry();
+// }
 
 void APaintArea::mousePressEvent ( QMouseEvent * e )
 {
@@ -384,7 +438,8 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 		{
 			if (m_currentTool)
 			{
-				QPainter painter(&m_paintDevice);
+				QPainter painter;
+				BEGIN_PAINTER(painter);
 				m_currentBrush->setupPainter(&painter);
 
 				QList<AGraphicComponent *> components =  m_currentFrame->components();
@@ -440,7 +495,8 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 		{
 			if (m_currentTool)
 			{
-				QPainter painter(&m_paintDevice);
+				QPainter painter;
+				BEGIN_PAINTER(painter);
 				m_currentBrush->setupPainter(&painter);
 				
 				QRect rect = m_currentTool->move(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), m_lastPosition, event->pos());
@@ -464,7 +520,8 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 		{
 			if (m_currentTool)
 			{
-				QPainter painter(&m_paintDevice);
+				QPainter painter;
+				BEGIN_PAINTER(painter);
 				m_currentBrush->setupPainter(&painter);
 				QRect rect = m_currentTool->release(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(), event->pos()), event->pos());
 				

@@ -36,6 +36,14 @@
 
 #include "ktbrush.h"
 
+// Devices
+#include "aimagedevicewidget.h"
+#include <QGLWidget>
+
+#define IMAGE_DEVICE qobject_cast<AImageDeviceWidget *>(m_paintDevice)->device
+#define OPENGL_DEVICE qobject_cast<QGLWidget *>(m_paintDevice)
+#define NATIVE_DEVICE m_paintDevice
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
@@ -44,13 +52,20 @@ class APaintArea : public QWidget
 {
 	Q_OBJECT
 	public:
+		enum RenderType
+		{
+			Image,
+			OpenGL,
+			Native
+		};
+		
 		APaintArea(const QSize& size, QWidget *parent = 0);
 		~APaintArea();
 		QSize sizeHint() const;
 		QSize minimumSizeHint () const;
 		QPoint paintDevicePosition() const;
-		QImage paintDevice() const;
-		void setPaintDevice(const QImage &image);
+		QWidget *paintDevice() const;
+// 		void setPaintDevice(const QImage &image);
 		void setZeroAt(const QPoint& zero);
 		
 		AGraphicComponent *currentGraphic();
@@ -70,7 +85,8 @@ class APaintArea : public QWidget
 		void setNextFrames(int n);
 		
 	private:
-		QImage m_paintDevice;
+		RenderType m_renderType;
+		QWidget *m_paintDevice;
 		AGrid m_grid;
 		QPainterPath m_path;
 		int m_xpos, m_ypos;
@@ -123,6 +139,24 @@ class APaintArea : public QWidget
 		virtual void drawFrame(const KTKeyFrame *frame, QPainter *painter, float intensitive = 1);
 		virtual void drawGraphic(const AGraphicComponent *graphic, QPainter *painter, float intensitive = 1);
 		void resizeEvent(QResizeEvent * event );
+		
+		inline void fillDevice(const QBrush &brush)
+		{
+			switch(m_renderType)
+			{
+				case Image:
+				{
+					IMAGE_DEVICE->fill(brush.color().rgb());
+				}
+				break;
+				case OpenGL:
+				case Native:
+				{
+					QPainter painter(m_paintDevice);
+					painter.fillRect(m_paintDevice->rect(), brush);
+				}
+			}
+		}
 		
 		
 	signals:

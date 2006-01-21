@@ -487,17 +487,17 @@ void KTViewDocument::selectTool()
 
 void KTViewDocument::applyFilter()
 {
-	QAction *action = qobject_cast<QAction *>(sender());
-	
-	if ( action )
-	{
-		AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(action->parent());
-		QString filter = action->text();
-		
-		QImage image = aFilter->filter(action->text(), m_paintAreaContainer->drawArea()->paintDevice(), this);
-		
-		m_paintAreaContainer->drawArea()->setPaintDevice(image);
-	}
+// 	QAction *action = qobject_cast<QAction *>(sender());
+// 	
+// 	if ( action )
+// 	{
+// 		AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(action->parent());
+// 		QString filter = action->text();
+// 		
+// 		QImage image = aFilter->filter(action->text(), m_paintAreaContainer->drawArea()->paintDevice(), this);
+// 		
+// 		m_paintAreaContainer->drawArea()->setPaintDevice(image);
+// 	}
 }
 
 void KTViewDocument::changeTool( QAction *a)
