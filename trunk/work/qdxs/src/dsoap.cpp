@@ -123,10 +123,10 @@ void DSoap::call_soap(QDomElement element, const QString &endpoint)
 	QByteArray data = s.toUtf8();
 	data.truncate(data.size() - 1);
 
-	qDebug() << "HTTP-POST" << url.path() << endl;
+	qDebug() << "HTTP-POST" << url.toString() << endl;
 	qDebug() << "HTTP-POST" << data << endl;
 	
-	m_http->post(url.path(), data);
+	m_http->post(url.toString(), data);
 
 // 	KIO::Job *job;
 // 	job = KIO::http_post(url, data, false);

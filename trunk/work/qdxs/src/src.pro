@@ -4,16 +4,22 @@
 # Target is an application:  ../bin/qdxs
 
 HEADERS += dsoap.h \
-           ddxs.h 
+           ddxs.h \
+           dentry.h \
+           dprovider.h \
+           dtransfermanager.h 
 SOURCES += main.cpp \
            dsoap.cpp \
-           ddxs.cpp 
-QT += xml network gui 
-KDEV_QTVER = 4 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-TARGET = ../bin/qdxs 
+           ddxs.cpp \
+           dentry.cpp \
+           dprovider.cpp \
+           dtransfermanager.cpp 
+QT += xml network gui
+KDEV_QTVER = 4
+MOC_DIR = .moc
+UI_DIR = .ui
+OBJECTS_DIR = .obj
+TARGET = ../bin/qdxs
 CONFIG += release \
-          warn_on 
-TEMPLATE = app 
+warn_on
+TEMPLATE = app
