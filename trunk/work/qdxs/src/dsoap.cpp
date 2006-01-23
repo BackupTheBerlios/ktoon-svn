@@ -50,7 +50,7 @@ DSoap::~DSoap()
 {
 }
 
-void DSoap::call(QDomElement element, QString endpoint)
+void DSoap::call(const QDomElement &element, const QString &endpoint)
 {
 	if(m_inprogress)
 	{
@@ -70,7 +70,7 @@ void DSoap::call(QDomElement element, QString endpoint)
 	m_inprogress = true;
 }
 
-void DSoap::call_tree(QDomElement element, QString endpoint)
+void DSoap::call_tree(const QDomElement &element, const QString  &endpoint)
 {
 	Q_UNUSED(endpoint);
 
@@ -105,7 +105,7 @@ void DSoap::call_tree(QDomElement element, QString endpoint)
 	m_buffer = QByteArray();
 }
 
-void DSoap::call_soap(QDomElement element, QString endpoint)
+void DSoap::call_soap(QDomElement element, const QString &endpoint)
 {
 	QUrl url(endpoint);
 
@@ -212,14 +212,14 @@ void DSoap::slotResult(bool error)
 	}
 }
 
-QString DSoap::localname(QDomNode node)
+QString DSoap::localname(const QDomNode &node)
 {
 	QDomElement el = node.toElement();
 	QString s = el.tagName().section(":", -1);
 	return s;
 }
 
-QString DSoap::xpath(QDomNode node, QString expr)
+QString DSoap::xpath(const QDomNode &node,QString expr)
 {
 	if(m_model == canonicaltree)
 	{
@@ -280,7 +280,7 @@ void DSoap::slotSocket()
 	}
 }
 
-QDomDocument DSoap::buildtree(QDomDocument doc, QDomElement cur, QString data)
+QDomDocument DSoap::buildtree( QDomDocument doc, QDomElement cur, const QString &data)
 {
 	qDebug() << "MATCH " << data << endl;
 
