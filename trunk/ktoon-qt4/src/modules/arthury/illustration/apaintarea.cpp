@@ -39,7 +39,7 @@ APaintArea::APaintArea(const QSize& size ,QWidget *parent) : QWidget(parent), m_
 {
 	m_redrawAll = true;
 	
-	m_renderType = Image;
+	m_renderType = OpenGL;
 	
 	KTINIT;
 	setAttribute(Qt::WA_StaticContents);
@@ -398,7 +398,7 @@ void APaintArea::resizeEvent( QResizeEvent * event )
 	m_xpos = width() / 2 - m_paintDevice->width() / 2;
 	m_ypos = height() / 2 - m_paintDevice->height() / 2;
 // 	m_paintDevice->resize( size() );
-	repaint();
+	update();
 	QWidget::resizeEvent(event);
 }
 
@@ -411,8 +411,8 @@ void APaintArea::setZeroAt(const QPoint & zero)
 {
 	m_zero = zero *2;
 	m_paintDevice->move(zero);
-	resize(m_paintDevice->sizeHint());
-	repaint();
+// 	resize(m_paintDevice->sizeHint());
+	update();
 }
 
 QWidget *APaintArea::paintDevice() const
