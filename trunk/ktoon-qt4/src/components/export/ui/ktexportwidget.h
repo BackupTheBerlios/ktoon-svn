@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,45 +18,74 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef ASELECTIONPLUGIN_H
-#define ASELECTIONPLUGIN_H
+#ifndef KTEXPORTWIDGET_H
+#define KTEXPORTWIDGET_H
 
-#include <QObject>
-#include <atoolinterface.h>
+#include <ktmodulewidgetbase.h>
+#include "ktprojectmanager.h"
+
+#include <QListWidget>
+#include <QHash>
+
+#include "exportinterface.h"
+
+
+class QButtonGroup;
+class QLineEdit;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class ASelectionPlugin : public KTToolPluginObject, public AToolInterface
+class KTExportWidget : public KTModuleWidgetBase
 {
-	Q_OBJECT;
-	Q_INTERFACES(AToolInterface);
-
+	Q_OBJECT
 	public:
-		virtual QStringList keys() const;
-		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form, const QPoint &pos,KTKeyFrame *currentFrame = 0);
-		virtual QRect move(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos);
-		virtual QRect release(const QString &brush, QPainter &painter, const QPainterPath &form, const QPoint &pos);
-		virtual QPainterPath path() const;
-
-		virtual QHash<QString, QAction *>actions();
+		KTExportWidget(const KTProjectManager *manager, QWidget *parent = 0);
+		~KTExportWidget();
+		void addFormats(ExportInterface::Formats formats);
 		
-		int type() const
-		{
-			return Selection;
-		}
-		
-		virtual QWidget *configurator()
-		{
-			return 0;
-		}
+		QString fileToExport() const;
 		
 	private:
-		QRect drawControls(QPainter *painter);
+		enum ButtonId
+		{
+			AllScenes = 0,
+			CurrentScene,
+			SceneRange
+		};
+		
+	public slots:
+		void exportIt();
 		
 	private:
-		QPainterPath m_path;
-		QList<AGraphicComponent *> m_graphics;
+		void setupToExport(QBoxLayout *mainLayout);
+		void setupExportBox(QBoxLayout *mainLayout);
+		
+	private slots:
+		void makeAction(int buttonId);
+		void selectExporter(QListWidgetItem *item);
+		void selectFormat(QListWidgetItem *item);
+		
+	private:
+		void loadPlugins();
+		QList<KTScene *> scenesToExport();
+		
+	private:
+		QButtonGroup *m_buttons;
+		
+		const KTProjectManager *m_manager;
+		
+		QListWidget *m_exporterList;
+		QListWidget *m_formatList;
+		
+		QHash<QListWidgetItem *, ExportInterface *> m_plugins;
+		QHash<QListWidgetItem *, ExportInterface::Format > m_formats;
+		
+		ExportInterface *m_currentExporter;
+		ExportInterface::Format m_currentFormat;
+		
+		QLineEdit *m_fromScene, *m_toScene;
+		QLineEdit *m_filePath;
 };
 
 #endif

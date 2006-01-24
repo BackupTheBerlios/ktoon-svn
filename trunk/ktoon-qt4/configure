@@ -43,12 +43,15 @@ detectQtVersion
 echo "/* Generated automatically by configure script */" > $CONFIG_H 
 ln -fs $(pwd)/$CONFIG_H $(pwd)/src/lib/$CONFIG_H
 
+LIBS=''
+
 check "sound" sound && defineMacro HAVE_SOUND
 check "gif" gif && defineMacro HAVE_LIBGIF
 check "ungif" ungif && defineMacro HAVE_LIBUNGIF
 check "ffmpeg" ffmpeg && defineMacro HAVE_FFMPEG
-check "ming" ming && defineMacro HAVE_MING
+check "ming" ming && LIBS="$LIBS -lming" && defineMacro HAVE_MING
 
+echo "LIBS += $LIBS" >> $KT_CONFIG
 
 echo
 echo "**************************************"

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado   				   *
- *   krawek@toonka.com   						   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,38 +18,27 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTEXPORTER_H
-#define KTEXPORTER_H
+#ifndef FFMPEGPLUGIN_H
+#define FFMPEGPLUGIN_H
 
-#include <qobject.h>
-
-#ifdef USE_MING
-#include "mingpp.h"
-#endif
+#include <config.h>
+#include <exportinterface.h>
 
 /**
- * This class is used for export animations to others formats like SVG, PNG, SWF, etc...
- * @author David Cuadrado
+ * @author David Cuadrado <krawek@toonka.com>
 */
-
-class KTExporter : public QObject
+class FFMpegPlugin : public KTExportPluginObject, public ExportInterface
 {
-	Q_OBJECT
+	Q_OBJECT;
+	Q_INTERFACES(ExportInterface);
 	public:
-		enum Format { PNG = 0, SWF, SVG, JPEG  };
+		FFMpegPlugin();
+		virtual ~FFMpegPlugin();
+		virtual QString key() const;
+		ExportInterface::Formats availableFormats();
 		
-		KTExporter(QObject *parent = 0);
-		~KTExporter();
+		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format, int fps);
 		
-		bool exportAnimation(const QString &filename, Format format);
-		
-#ifdef USE_MING	
-		SWFMovie *doMovie( int width, int height );
-		SWFDisplayItem *doAnimation( SWFMovie *movie, const QStringList &images );
-#endif
-
-	private:
-		QString m_filename;
 };
 
 #endif

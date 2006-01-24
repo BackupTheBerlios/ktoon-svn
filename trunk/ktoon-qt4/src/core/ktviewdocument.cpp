@@ -29,7 +29,7 @@
 #include <QActionGroup>
 
 #include "ktvhbox.h"
-#include "ktpluginobject.h"
+#include "kttoolpluginobject.h"
 
 KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, KTDocument *doc, QWorkspace *parent ) : KTMdiWindow(parent), m_document(doc), m_title(projectName)
 {
@@ -390,7 +390,7 @@ void KTViewDocument::loadPlugins()
 	foreach (QString fileName, m_pluginDirectory.entryList(QDir::Files))
 	{
 		QPluginLoader loader(m_pluginDirectory.absoluteFilePath(fileName));
-		KTPluginObject *plugin = qobject_cast<KTPluginObject*>(loader.instance());
+		KTToolPluginObject *plugin = qobject_cast<KTToolPluginObject*>(loader.instance());
 		
 		ktDebug() << "******FILE: " << fileName;
 		

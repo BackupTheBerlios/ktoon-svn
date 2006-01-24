@@ -33,7 +33,7 @@
 #include <QHash>
 
 #include "agraphiccomponent.h"
-#include "ktpluginobject.h"
+#include "kttoolpluginobject.h"
 #include "ktkeyframe.h"
 
 #include "qplugin.h" // Q_EXPORT_PLUGIN

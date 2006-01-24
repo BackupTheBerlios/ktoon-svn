@@ -3,6 +3,8 @@
 # Subdir relative project main directory: .
 # Target is a subdirs project 
 
+include ( config.pri )
+
 KDEV_QTVER = 4 
 CONFIG += release \
           warn_on 

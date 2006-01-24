@@ -29,7 +29,7 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class AGeometricToolPlugin : public KTPluginObject, public AToolInterface
+class AGeometricToolPlugin : public KTToolPluginObject, public AToolInterface
 {
 	Q_OBJECT;
 	Q_INTERFACES(AToolInterface);

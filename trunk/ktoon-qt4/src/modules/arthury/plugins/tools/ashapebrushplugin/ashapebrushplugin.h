@@ -27,7 +27,7 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class AShapeBrushPlugin : public KTPluginObject, public AToolInterface
+class AShapeBrushPlugin : public KTToolPluginObject, public AToolInterface
 {
 	Q_OBJECT;
 	Q_INTERFACES(AToolInterface);

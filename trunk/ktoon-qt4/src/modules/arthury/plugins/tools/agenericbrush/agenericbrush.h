@@ -29,7 +29,7 @@ class QKeySequence;
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class AGenericBrush : public KTPluginObject, public AToolInterface
+class AGenericBrush : public KTToolPluginObject, public AToolInterface
 {
 	Q_OBJECT;
 	Q_INTERFACES(AToolInterface);

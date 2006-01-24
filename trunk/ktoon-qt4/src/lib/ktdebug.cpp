@@ -85,7 +85,7 @@ KTDebug::KTDebug(DebugType t) : m_type(t)
 	streamer = new Streamer();
 };
 
-KTDebug::KTDebug(const KTDebug & d ) : m_type(d.m_type), streamer(d.streamer)
+KTDebug::KTDebug(const KTDebug & d ) : streamer(d.streamer), m_type(d.m_type)
 {
 }
 

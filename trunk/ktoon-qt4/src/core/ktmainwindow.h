@@ -54,6 +54,8 @@
 #include "ktgceditor.h"
 #include "kthelpwidget.h"
 
+#include "ktexportwidget.h"
+
 #include "dmainwindow.h"
 #include "ktstatusbar.h"
 

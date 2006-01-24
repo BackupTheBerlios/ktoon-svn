@@ -28,10 +28,10 @@ TARGETDEPS += ../../src/dlslib/libdlslib.a \
               ../../src/lib/libktoon.so \
               ../../src/components/gceditor/libgceditor.a \
               ../../src/components/import/libimport.a \
-              ../../src/components/export/libexport.a \
               ../../src/components/help/libhelp.a \
               ../../src/store/libstore.so \
-              ../../src/ktoonstyle/libktoonstyle.a 
+              ../../src/ktoonstyle/libktoonstyle.a \
+              ../../src/components/export/ui/libui.a 
 LIBS += ../../src/ktoonstyle/libktoonstyle.a \
         ../../src/dialogs/libdialogs.a \
         ../../src/components/brushes/libbrushes.a \
@@ -47,9 +47,9 @@ LIBS += ../../src/ktoonstyle/libktoonstyle.a \
         -lktoon \
         ../../src/components/gceditor/libgceditor.a \
         ../../src/components/import/libimport.a \
-        ../../src/components/export/libexport.a \
         ../../src/components/help/libhelp.a \
-        -lstore 
+        -lstore \
+        ../../src/components/export/ui/libui.a 
 INCLUDEPATH += ../../src/ktoonstyle \
                ../../src/modules/arthury/interfaces \
                ../../src/modules/arthury/animation \
@@ -57,7 +57,7 @@ INCLUDEPATH += ../../src/ktoonstyle \
                ../../src/components/help \
                ../../src/components/gceditor \
                ../../src/components/import \
-               ../../src/components/export \
+               ../../src/components/export/ui \
                ../../src/components/ktoonscript \
                ../../src/components/exposure \
                ../../src/components/timeline \
@@ -68,7 +68,8 @@ INCLUDEPATH += ../../src/ktoonstyle \
                ../../src/dialogs \
                ../../src/store \
                ../../src/dlslib \
-               ../../src/lib 
+               ../../src/lib \
+               ../../src/interfaces 
 MOC_DIR = .moc 
 UI_DIR = .ui 
 OBJECTS_DIR = .obj 

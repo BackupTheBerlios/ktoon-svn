@@ -189,7 +189,7 @@ KTDocument *KTProjectManager::createDocument(const QString &name)
 	return doc;
 }
 
-KTDocument *KTProjectManager::currentDocument()
+KTDocument *KTProjectManager::currentDocument() const
 {
 	return m_currentDocument;
 }

@@ -18,16 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktpluginobject.h"
+#ifndef KTPLUGINOBJECT_H
+#define KTPLUGINOBJECT_H
 
-KTPluginObject::KTPluginObject()
- : QObject()
+#include <QObject>
+#include <QPainterPath>
+
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+class KTToolPluginObject : public QObject
 {
-}
+	Q_OBJECT
+	public:
+		KTToolPluginObject();
+		~KTToolPluginObject();
+		
+	signals:
+		void toDrawGhostGraphic(const QPainterPath &r);
+		void requestRedraw();
 
+};
 
-KTPluginObject::~KTPluginObject()
-{
-}
-
-
+#endif

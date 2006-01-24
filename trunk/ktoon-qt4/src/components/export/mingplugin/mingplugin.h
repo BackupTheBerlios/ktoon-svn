@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,45 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef ASELECTIONPLUGIN_H
-#define ASELECTIONPLUGIN_H
+#ifndef MINGPLUGIN_H
+#define MINGPLUGIN_H
 
+#include <config.h>
 #include <QObject>
-#include <atoolinterface.h>
+#include <QDir>
+
+#include <exportinterface.h>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class ASelectionPlugin : public KTToolPluginObject, public AToolInterface
+class MingPlugin : public KTExportPluginObject, public ExportInterface
 {
 	Q_OBJECT;
-	Q_INTERFACES(AToolInterface);
-
+	Q_INTERFACES(ExportInterface);
 	public:
-		virtual QStringList keys() const;
-		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form, const QPoint &pos,KTKeyFrame *currentFrame = 0);
-		virtual QRect move(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos);
-		virtual QRect release(const QString &brush, QPainter &painter, const QPainterPath &form, const QPoint &pos);
-		virtual QPainterPath path() const;
-
-		virtual QHash<QString, QAction *>actions();
+		MingPlugin();
+		virtual ~MingPlugin();
+		virtual QString key() const;
+		ExportInterface::Formats availableFormats();
 		
-		int type() const
-		{
-			return Selection;
-		}
-		
-		virtual QWidget *configurator()
-		{
-			return 0;
-		}
+		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format, int fps);
 		
 	private:
-		QRect drawControls(QPainter *painter);
-		
-	private:
-		QPainterPath m_path;
-		QList<AGraphicComponent *> m_graphics;
+		QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir);
 };
 
 #endif
+
+

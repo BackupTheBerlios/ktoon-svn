@@ -100,4 +100,7 @@ class KTApplication : public QApplication
 
 #define KTOON_DATA_DIR (static_cast<KTApplication*>(qApp))->dataDir()
 
+// TODO: Permitir configuracion de esto
+#define KTOON_TEMP_DIR QDir::tempPath()
+
 #endif

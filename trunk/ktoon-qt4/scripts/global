@@ -3,6 +3,9 @@
 APPNAME="KToon"
 APPVER="0.8alpha-svn"
 
+
+KT_CONFIG=ktconfig.pri
+
 EMAIL='ktoon@toonka.com'
 
 MAKE=`which make`

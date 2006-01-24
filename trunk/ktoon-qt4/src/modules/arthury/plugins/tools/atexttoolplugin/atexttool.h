@@ -28,7 +28,7 @@
 /**
 	@author David Cuadrado <krawek@toonka.com>
 */
-class ATextTool : public KTPluginObject, public AToolInterface
+class ATextTool : public KTToolPluginObject, public AToolInterface
 {
 	Q_OBJECT;
 	Q_INTERFACES(AToolInterface);

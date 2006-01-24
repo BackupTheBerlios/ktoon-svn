@@ -17,7 +17,6 @@ HEADERS += ktapplication.h \
            ktthememanager.h \
            ktthemedocument.h \
            kteditspinbox.h \
-           ktexporter.h \
            ktmdiwindow.h \
            ktconfigdocument.h \
            ktconfig.h \
@@ -50,11 +49,12 @@ HEADERS += ktapplication.h \
            kttreelistwidget.h \
            ktgradientadjuster.h \
            ktpathadjuster.h \
-           ktpluginobject.h \
            collapsiblewidget.h \
            ktconfigurationdialog.h \
            ktflatbutton.h \
-           ktcolorbutton.h 
+           ktcolorbutton.h \
+           kttoolpluginobject.h \
+           ktexportpluginobject.h 
 SOURCES += ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
@@ -64,7 +64,6 @@ SOURCES += ktapplication.cpp \
            ktthememanager.cpp \
            ktthemedocument.cpp \
            kteditspinbox.cpp \
-           ktexporter.cpp \
            ktmdiwindow.cpp \
            ktconfigdocument.cpp \
            ktconfig.cpp \
@@ -97,11 +96,12 @@ SOURCES += ktapplication.cpp \
            kttreelistwidget.cpp \
            ktgradientadjuster.cpp \
            ktpathadjuster.cpp \
-           ktpluginobject.cpp \
            collapsiblewidget.cpp \
            ktconfigurationdialog.cpp \
            ktflatbutton.cpp \
-           ktcolorbutton.cpp 
+           ktcolorbutton.cpp \
+           kttoolpluginobject.cpp \
+           ktexportpluginobject.cpp 
 QT += xml
 KDEV_QTVER = 4
 MOC_DIR = .moc

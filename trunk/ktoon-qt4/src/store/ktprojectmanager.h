@@ -50,7 +50,7 @@ class KTProjectManager : public KTSerializableObject
 		
 		// Documents
 		void setCurrentDocument(int index);
-		KTDocument *currentDocument();
+		KTDocument *currentDocument() const;
 		KTDocument *createDocument(const QString &name = QString());
 		
 		Documents documents() const;

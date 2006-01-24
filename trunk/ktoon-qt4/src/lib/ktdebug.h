@@ -169,13 +169,13 @@ class KTDebug
 		
 		void resaltWidget(QWidget *w, const QColor &color = QColor(Qt::magenta));
 		
-		inline KTDebug &operator<<(QTextStreamManipulator m)
+		inline KTDebug &operator<<(QTextStreamManipulator /*m*/)
 		{ 
 // 			streamer->ts << m; 
 			return *this; 
 		}
 		
-		inline KTDebug &operator<<(QTextStreamFunction f) 
+		inline KTDebug &operator<<(QTextStreamFunction /*f*/)
 		{
 // 			streamer->ts << f;
 			return *this;

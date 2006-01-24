@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,45 +18,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef ASELECTIONPLUGIN_H
-#define ASELECTIONPLUGIN_H
+#include "ffmpegplugin.h"
 
-#include <QObject>
-#include <atoolinterface.h>
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-class ASelectionPlugin : public KTToolPluginObject, public AToolInterface
-{
-	Q_OBJECT;
-	Q_INTERFACES(AToolInterface);
-
-	public:
-		virtual QStringList keys() const;
-		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form, const QPoint &pos,KTKeyFrame *currentFrame = 0);
-		virtual QRect move(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos);
-		virtual QRect release(const QString &brush, QPainter &painter, const QPainterPath &form, const QPoint &pos);
-		virtual QPainterPath path() const;
-
-		virtual QHash<QString, QAction *>actions();
-		
-		int type() const
-		{
-			return Selection;
-		}
-		
-		virtual QWidget *configurator()
-		{
-			return 0;
-		}
-		
-	private:
-		QRect drawControls(QPainter *painter);
-		
-	private:
-		QPainterPath m_path;
-		QList<AGraphicComponent *> m_graphics;
-};
-
+#ifdef HAVE_FFMPEG
+#include <ffmpeg/avcodec.h>
 #endif
+
+FFMpegPlugin::FFMpegPlugin()
+{
+}
+
+
+FFMpegPlugin::~FFMpegPlugin()
+{
+}
+
+QString FFMpegPlugin::key() const
+{
+	return "ffmpeg";
+}
+
+ExportInterface::Formats FFMpegPlugin::availableFormats()
+{
+	return SWF | MPEG | AVI;
+}
+
+void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format, int fps)
+{
+}
+
+#ifdef HAVE_FFMPEG
+Q_EXPORT_PLUGIN( FFMpegPlugin );
+#endif
+

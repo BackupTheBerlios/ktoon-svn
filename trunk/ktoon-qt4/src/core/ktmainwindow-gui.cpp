@@ -186,6 +186,18 @@ void KTMainWindow::createGUI()
 	
 	connectToDisplays(m_gcEditor);
 	
+	
+	//////////////
+	
+	KTExportWidget *m_exportWidget = new KTExportWidget(m_projectManager, this);
+	
+	toolWindow(DDockWindow::Bottom)->addWidget(tr("Export"), m_exportWidget);
+	
+	connectToDisplays(m_exportWidget);
+	
+	//////////////
+	
+	
 	// Connect the project manager with the components...
 	connect(m_projectManager, SIGNAL(sceneCreated(const QString &, bool)), this, SLOT( insertScene(const QString &, bool)));
 	
