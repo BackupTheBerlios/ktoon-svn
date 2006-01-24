@@ -37,7 +37,7 @@ KTWizard::KTWizard(QWidget *parent) : QDialog(parent)
 	connect(m_cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 	connect(m_backButton, SIGNAL(clicked()), this, SLOT(back()));
 	connect(m_nextButton, SIGNAL(clicked()), this, SLOT(next()));
-	connect(m_finishButton, SIGNAL(clicked()), this, SLOT(accept()));
+	connect(m_finishButton, SIGNAL(clicked()), this, SLOT(finish()));
 
 	m_buttonLayout = new QHBoxLayout;
 	m_buttonLayout->addStretch(1);
@@ -129,13 +129,23 @@ void KTWizard::next()
 	pageCompleted();
 }
 
+void KTWizard::finish()
+{
+	KTWizardPage *current = qobject_cast<KTWizardPage *>(m_history.currentWidget());
+	if ( current ) current->aboutToFinish();
+	accept();
+}
+
 void KTWizard::pageCompleted()
 {
 	KTWizardPage *current = qobject_cast<KTWizardPage *>(m_history.currentWidget());
 	
 	if ( m_history.currentIndex() == m_history.count()-1 )
 	{
-		m_finishButton->setEnabled(current->isComplete());
+		if ( current->isComplete() )
+		{
+			m_finishButton->setEnabled(current->isComplete());
+		}
 	}
 	else
 	{

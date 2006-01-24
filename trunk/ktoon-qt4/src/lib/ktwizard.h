@@ -49,6 +49,7 @@ class KTWizard : public QDialog
 		void back();
 		void next();
 		void pageCompleted();
+		void finish();
 		
 	private:
 		QStackedWidget m_history;
@@ -78,6 +79,9 @@ class KTWizardPage : public KTVHBox
 		
 		void setPixmap(const QPixmap &px);
 		void setWidget(QWidget *w);
+		
+	public slots:
+		virtual void aboutToFinish() {};
 		
 	private:
 		QFrame *m_container;
