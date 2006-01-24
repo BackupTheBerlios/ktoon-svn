@@ -30,8 +30,10 @@
 
 #include <QLineEdit>
 
+class QCheckBox;
+
 /**
-	@author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@toonka.com>
 */
 class InstallPage : public KTWizardPage
 {
@@ -42,6 +44,13 @@ class InstallPage : public KTWizardPage
 		bool isComplete();
 		void reset();
 		
+	public slots:
+		void aboutToFinish();
+		
+	private:
+		void generateLauncher();
+		void launchApplication();
+		
 	private slots:
 		void chooseDestination();
 		void install();
@@ -51,6 +60,8 @@ class InstallPage : public KTWizardPage
 		QProgressBar *m_status;
 		bool m_isComplete;
 		QLineEdit *m_destinationPath;
+		
+		QCheckBox *m_launchApp;
 };
 
 #endif

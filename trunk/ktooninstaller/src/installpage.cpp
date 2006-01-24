@@ -22,6 +22,8 @@
 #include <QVBoxLayout>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QCheckBox>
+#include <QProcess>
 
 #include "ktimagebutton.h"
 #include "application.h"
@@ -67,6 +69,9 @@ InstallPage::InstallPage(QWidget *parent)
 	setPixmap(QPixmap(install_xpm));
 	setWidget( container);
 	
+	m_launchApp = new QCheckBox(tr("Launch application"));
+	layout->addWidget(m_launchApp);
+	
 	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
@@ -86,16 +91,28 @@ void InstallPage::reset()
 
 void InstallPage::chooseDestination()
 {
-	QString destination = QFileDialog::getSaveFileName (this, tr("Choose... ;)"), QDir::homePath(), QString(), new QString(), QFileDialog::ShowDirsOnly );
+	QFileDialog fileDialog;
+	fileDialog.setFileMode(QFileDialog::AnyFile);
 	
-	QFileInfo fileInfo(destination);
-	
-	if ( QFile::exists(destination) && ! fileInfo.isDir() )
+	if ( fileDialog.exec() != QDialog::Rejected )
 	{
-		destination = fileInfo.absolutePath () ;
+		QStringList selected = fileDialog.selectedFiles ();
+		if  (selected.count() > 0 )
+		{
+			QString destination = selected[0];
+			
+			//QFileDialog::getSaveFileName (this, tr("Choose... ;)"), QDir::homePath(), QString(), new QString(), QFileDialog::ShowDirsOnly );
+			
+			QFileInfo fileInfo(destination);
+			
+			if ( QFile::exists(destination) && ! fileInfo.isDir() )
+			{
+				destination = fileInfo.absolutePath () ;
+			}
+			
+			m_destinationPath->setText(destination);
+		}
 	}
-	
-	m_destinationPath->setText(destination);
 }
 
 void InstallPage::install()
@@ -106,6 +123,9 @@ void InstallPage::install()
 	{
 		installDir(toCopy);
 		m_isComplete = true;
+		
+		generateLauncher();
+		
 		emit completed();
 	}
 	else
@@ -144,5 +164,39 @@ void InstallPage::installDir(const QDir &toCopy)
 	}
 }
 
+void InstallPage::generateLauncher()
+{
+	QFile launcher(m_destinationPath->text()+"/ktoon");
+	
+	if ( launcher.open(QIODevice::WriteOnly | QIODevice::Text))
+	{
+		QTextStream ts(&launcher);
+		// Write header
+		ts << "#!/bin/bash" << endl;
+		
+		ts << "KTOON_HOME=" << m_destinationPath->text() << endl;
+		ts << "LD_LIBRARY_PATH=$KTOON_HOME/lib" << endl;
+		ts << "exec $KTOON_HOME/bin/ktoon" << endl;
+		
+		launcher.close();
+		
+		launcher.setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner | QFile::ReadUser | QFile::ExeUser | QFile::ReadGroup | QFile::ExeGroup | QFile::ReadOther | QFile::ExeOther );
+	}
+}
+
+void InstallPage::launchApplication()
+{
+	ktDebug() << "Launching application!";
+	QProcess::startDetached(m_destinationPath->text()+"/ktoon");
+}
+
+void InstallPage::aboutToFinish()
+{
+	KT_FUNCINFO;
+	if (m_launchApp->isChecked() )
+	{
+		launchApplication();
+	}
+}
 
 
