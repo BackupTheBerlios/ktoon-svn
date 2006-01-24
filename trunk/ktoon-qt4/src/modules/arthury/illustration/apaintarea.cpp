@@ -39,7 +39,7 @@ APaintArea::APaintArea(const QSize& size ,QWidget *parent) : QWidget(parent), m_
 {
 	m_redrawAll = true;
 	
-	m_renderType = OpenGL;
+	m_renderType = Image;
 	
 	KTINIT;
 	setAttribute(Qt::WA_StaticContents);

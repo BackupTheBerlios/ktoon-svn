@@ -26,7 +26,7 @@
 #include <QPainter>
 
 KTOsd::KTOsd( QWidget * parent )
-	: QWidget( parent, "pageViewMessage" ), m_timer( 0 )
+	: QWidget( parent), m_timer( 0 )
 {
 	setFocusPolicy( Qt::NoFocus );
 	
@@ -53,8 +53,8 @@ void KTOsd::display( const QString & message, Level level, int ms )
 	
 	// determine text rectangle
 	QRect textRect = fontMetrics().boundingRect( message );
-	textRect.moveBy( -textRect.left(), -textRect.top() );
-	textRect.addCoords( 0, 0, 2, 2 );
+	textRect.translate( -textRect.left(), -textRect.top() );
+	textRect.adjust( 0, 0, 2, 2 );
 	int width = textRect.width(),
 	height = textRect.height(),
 	textXOffset = 0,
@@ -90,8 +90,8 @@ void KTOsd::display( const QString & message, Level level, int ms )
 
     	// resize pixmap, mask and widget
 	static QBitmap mask;
-	mask.resize( geometry.size() );
-	m_pixmap.resize( geometry.size() );
+	mask = QBitmap( geometry.size() );
+	m_pixmap = QPixmap( geometry.size() );
 	resize( geometry.size() );
 
     	// create and set transparency mask
@@ -105,7 +105,7 @@ void KTOsd::display( const QString & message, Level level, int ms )
     	// draw background
 	QPainter bufferPainter( &m_pixmap );
 	bufferPainter.setRenderHint(QPainter::Antialiasing);
-	bufferPainter.setPen( foreground  );
+	bufferPainter.setPen( QPen(QBrush(foreground), 3)  );
 	bufferPainter.setBrush( background ); 
 	bufferPainter.drawRoundRect( geometry2, 1600 / geometry2.width(), 1600 / geometry2.height() );
 
@@ -117,9 +117,9 @@ void KTOsd::display( const QString & message, Level level, int ms )
 	
     	// draw shadow and text
 	int yText = geometry.height() - height / 2;
-	bufferPainter.setPen( paletteBackgroundColor().dark( 115 ) );
+	bufferPainter.setPen( palette().background().color().dark( 115 ) );
 	bufferPainter.drawText( 5 + textXOffset + shadowOffset, yText + 1, message );
-	bufferPainter.setPen( foregroundColor() );
+	bufferPainter.setPen( palette().foreground().color() );
 	bufferPainter.drawText( 5 + textXOffset, yText, message );
 
     	// show widget and schedule a repaint
@@ -134,7 +134,7 @@ void KTOsd::display( const QString & message, Level level, int ms )
 			m_timer = new QTimer( this );
 			connect( m_timer, SIGNAL( timeout() ), SLOT( hide() ) );
 		}
-		m_timer->start( ms, true );
+		m_timer->start( ms );
 	} else if ( m_timer )
 	{
 		m_timer->stop();

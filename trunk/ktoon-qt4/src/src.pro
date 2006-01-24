@@ -3,6 +3,10 @@
 # Subdir relative project main directory: ./src
 # Target is a subdirs project 
 
+KDEV_QTVER = 4 
+CONFIG += release \
+          warn_on 
+TEMPLATE = subdirs 
 SUBDIRS += themes \
            lib \
            dlslib \
@@ -10,10 +14,5 @@ SUBDIRS += themes \
            dialogs \
            components \
            modules \
-           ktoonstyle \ 
-           core
-QT += qt3support
-KDEV_QTVER = 4
-CONFIG += release \
-warn_on
-TEMPLATE = subdirs
+           ktoonstyle \
+           core 

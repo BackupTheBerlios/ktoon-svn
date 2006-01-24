@@ -236,7 +236,7 @@ void KTViewDocument::setupViewActions()
 	KTAction *threeNext = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/next3.png" ), tr( "Next Three" ), QKeySequence(Qt::CTRL+Qt::Key_3), this, SLOT(threeNextOnionSkin()), m_actionManager, "next_three");
 	m_viewNextGroup->addAction(threeNext);
 	
-	threeNext->setToggleAction(true );
+	threeNext->setCheckable(true );
 	threeNext->setStatusTip(tr("Shows the next 3 onion skins"));
 }
 
@@ -542,7 +542,7 @@ void KTViewDocument::createToolbar()
 void KTViewDocument::createMenu()
 {
 	m_filterMenu = new QMenu(this);
-	menuBar()->insertItem(tr("&Filters"), m_filterMenu);
+// 	menuBar()->insertItem(tr("&Filters"), m_filterMenu);
 	
 	//FIXME:crear el menu
 // 	m_menuFile = new Q3PopupMenu( this );

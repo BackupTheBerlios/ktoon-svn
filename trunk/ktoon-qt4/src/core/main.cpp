@@ -120,25 +120,25 @@ int main( int argc, char ** argv )
 void usage()
 {
 #if defined(Q_OS_UNIX)
-	puts("\033[1;33m"+ktapp->objectName() + ktapp->version());
-	puts(QObject::tr("2D Animation tool kit")+"\033[0;0m" );
+	puts(QString("\033[1;33m"+ktapp->objectName() + ktapp->version()).toLatin1());
+	puts(QString(QObject::tr("2D Animation tool kit")+"\033[0;0m" ).toLatin1());
 
-	puts("\033[1;34m"+QObject::tr("Usage: %1 [option]").arg(ktapp->argv()[0])+"\033[0;0m");
+	puts(QString("\033[1;34m"+QObject::tr("Usage: %1 [option]").arg(ktapp->argv()[0])+"\033[0;0m").toLatin1());
 	
-	puts("\033[1;31m"+QObject::tr("Options: "));
+	puts(QString("\033[1;31m"+QObject::tr("Options: ")).toLatin1());
 	
 	puts("-r, --reconfigure");
-	puts(QObject::tr("\t\tReconfigure %1").arg(ktapp->name()));
+	puts(QObject::tr("\t\tReconfigure %1").arg(ktapp->objectName()).toLatin1());
 	
 	puts("\033[0;0m");
 #else
-	puts(ktapp->objectName() + ktapp->version());
+	puts(QString(ktapp->objectName() + ktapp->version()).toLatin1());
 
-	puts(QObject::tr("Usage: %1 [option]").arg(ktapp->argv()[0]));
+	puts(QObject::tr("Usage: %1 [option]").arg(ktapp->argv()[0]).toLatin1());
 	
-	puts(QObject::tr("Options: "));
+	puts(QObject::tr("Options: ").toLatin1());
 	
 	puts("-r, --reconfigure");
-	puts(QObject::tr("\t\tReconfigure %1").arg(ktapp->name())); 
+	puts(QObject::tr("\t\tReconfigure %1").arg(ktapp->objectName()).toLatin1()); 
 #endif
 }

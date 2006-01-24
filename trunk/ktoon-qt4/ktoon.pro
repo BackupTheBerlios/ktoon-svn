@@ -3,10 +3,8 @@
 # Subdir relative project main directory: .
 # Target is a subdirs project 
 
-QT += qt3support 
 KDEV_QTVER = 4 
 CONFIG += release \
           warn_on 
 TEMPLATE = subdirs 
 SUBDIRS += src 
-

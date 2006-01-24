@@ -3,7 +3,7 @@
 # Subdir relative project main directory: ./src/core
 # Target is an application:  ../../bin/ktoon
 
-QT += xml opengl qt3support 
+QT += xml opengl 
 INSTALLS += ktbin \
             kttrans \
             ktdata 
@@ -76,9 +76,7 @@ QMAKE_LIBDIR = ../../src/lib \
                ../../src/store 
 TARGET = ../../bin/ktoon 
 CONFIG += release \
-          warn_on \
-          qt \
-          opengl 
+          warn_on 
 TEMPLATE = app 
 TRANSLATIONS += ktoon_es.ts \
                 ktoon_fr.ts \

@@ -34,7 +34,7 @@
 
 //------------------ CONSTRUCTOR -----------------
 
-KTSplash::KTSplash() : QSplashScreen( 0, QPixmap(), Qt::WStyle_StaysOnTop ), m_size(3), m_state(0)
+KTSplash::KTSplash() : QSplashScreen( 0 ), m_size(3), m_state(0)
 {
 	KTINIT;
 	QTimer *timer = new QTimer( this );
@@ -60,7 +60,7 @@ void KTSplash::animate()
 
 void KTSplash::setMessage(const QString &msg)
 {
-	QSplashScreen::showMessage(msg,Qt::AlignTop, palette().text() );
+	QSplashScreen::showMessage(msg,Qt::AlignTop, palette().text().color() );
 	m_message = msg;
 	animate();
 }
@@ -77,7 +77,7 @@ void KTSplash::drawContents ( QPainter * painter )
 	painter->drawEllipse(62,7,9,9);
 	painter->drawEllipse(73,7,9,9);
 
-	QColor baseColor = palette().alternateBase();
+	QColor baseColor = palette().alternateBase().color();
 	for (int i = 0; i < m_size; i++)
 	{
 		position = (m_state+i)%(2*m_size-1);
@@ -106,7 +106,7 @@ void KTSplash::drawContents ( QPainter * painter )
 	{
 		m_message.truncate(39); m_message += "...";
 	}
-	painter->drawText (90, 16, m_message, 42);
+	painter->drawText (90, 16, m_message);
 }
 
 /*

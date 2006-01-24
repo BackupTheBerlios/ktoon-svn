@@ -26,86 +26,86 @@
 void KTMainWindow::setupMenu()
 {
 	// Setup the file menu
-	m_fileMenu = new QMenu(this);
-	menuBar()->insertItem(tr("&File"), m_fileMenu);
+	m_fileMenu = new QMenu(tr("&File"), this);
+	menuBar()->addMenu(m_fileMenu);
 	
 	m_fileMenu->addAction(m_actionManager->find("NewFile"));
 	m_fileMenu->addAction(m_actionManager->find("OpenFile"));
 	
-	QMenu *recents = new QMenu( this );
+	QMenu *recents = new QMenu(tr("Recents"), this );
 	connect( recents, SIGNAL( activated( int ) ), SLOT( openRecent( int ) ) );
-	m_fileMenu->insertItem( tr( "Open Recent" ), recents );
+	m_fileMenu->addMenu( recents );
 
 	m_fileMenu->addAction(m_actionManager->find("Save"));
 	m_fileMenu->addAction(m_actionManager->find("SaveAs"));
 	m_fileMenu->addAction(m_actionManager->find("Close"));
-	m_fileMenu->insertSeparator();
+	m_fileMenu->addSeparator();
 	m_fileMenu->addAction(m_actionManager->find("Import"));
 	m_fileMenu->addAction(m_actionManager->find("ImportPalettes"));
 	
 	m_fileMenu->addAction(m_actionManager->find("Export"));
-	m_fileMenu->insertSeparator();
+	m_fileMenu->addSeparator();
 	m_fileMenu->addAction(m_actionManager->find("Properties"));
-	m_fileMenu->insertSeparator();
+	m_fileMenu->addSeparator();
 	m_fileMenu->addAction(m_actionManager->find("Exit"));
-	m_fileMenu->insertSeparator();
+	m_fileMenu->addSeparator();
 	
 	// Setup the edit menu
-	m_editMenu = new QMenu(this);
-	menuBar()->insertItem( tr( "&Edit" ), m_editMenu );
+	m_editMenu = new QMenu(tr( "&Edit" ), this);
+	menuBar()->addMenu( m_editMenu );
 
-	m_editMenu->insertSeparator();
+	m_editMenu->addSeparator();
 	
 	m_editMenu->addAction(m_actionManager->find("cut"));
 	m_editMenu->addAction(m_actionManager->find("copy"));
 	m_editMenu->addAction(m_actionManager->find("paste"));
 	m_editMenu->addAction(m_actionManager->find("paste in place"));
 	m_editMenu->addAction(m_actionManager->find("delete"));
-	m_editMenu->insertSeparator();
+	m_editMenu->addSeparator();
 	m_editMenu->addAction(m_actionManager->find("select all"));
-	m_editMenu -> insertSeparator();
+	m_editMenu -> addSeparator();
 	m_editMenu->addAction(m_actionManager->find("preferences"));
 	
 	// Setup the view menu
-	m_viewMenu = new QMenu(this);
-	menuBar()->insertItem( tr( "&View" ), m_viewMenu );
+	m_viewMenu = new QMenu(tr( "&View" ), this);
+	menuBar()->addMenu( m_viewMenu );
 	
 	// Setup the proyect menu
-	m_proyectMenu = new QMenu(this);
-	menuBar()->insertItem( tr( "&Project" ), m_proyectMenu );
+	m_proyectMenu = new QMenu(tr( "&Project" ),this);
+	menuBar()->addMenu(  m_proyectMenu );
 	m_proyectMenu->addAction(m_actionManager->find("NewProject"));
 	m_proyectMenu->addAction(m_actionManager->find("CloseProject"));
 	m_proyectMenu->addAction(m_actionManager->find("OpenProject"));
 	
 	// Setup the insert menu
-	m_insertMenu = new QMenu(this);
-	menuBar()->insertItem( tr( "&Insert" ), m_insertMenu );
+	m_insertMenu = new QMenu(tr( "&Insert" ), this);
+	menuBar()->addMenu( m_insertMenu );
 	
 	// Setup the tools menu
-	m_toolsMenu = new QMenu(this);
-	menuBar()->insertItem( tr( "&Tools" ), m_toolsMenu );
+	m_toolsMenu = new QMenu(tr( "&Tools" ),this);
+	menuBar()->addMenu(  m_toolsMenu );
 	
 	// Setup the window menu
 	setupWindowActions();
-	m_windowMenu = new QMenu(this);
-	menuBar()->insertItem( tr( "&Window" ), m_windowMenu );
+	m_windowMenu = new QMenu(tr( "&Window" ),this);
+	menuBar()->addMenu(  m_windowMenu );
 	m_windowMenu->addAction(m_actionManager->find("show timeline"));
 	m_windowMenu->addAction(m_actionManager->find("show exposure"));
 	m_windowMenu->addAction(m_actionManager->find("show brushes"));
 	m_windowMenu->addAction(m_actionManager->find("show scenes"));
 	
 	// Setup the help menu
-	m_helpMenu = new QMenu(this);
-	menuBar()->insertItem( tr( "&Help" ), m_helpMenu );
+	m_helpMenu = new QMenu(tr( "&Help" ),this);
+	menuBar()->addMenu(  m_helpMenu );
 	m_helpMenu->addAction(m_actionManager->find("about ktoon") );
 	
 }
 
 void KTMainWindow::createGUI()
 {
-	// TODO: put setIcon in each class
+	// TODO: put setWindowIcon in each class
 	m_colorPalette = new KTColorPalette(this);
-	m_colorPalette->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/color_palette.png") );
+	m_colorPalette->setWindowIcon(QPixmap(KTOON_THEME_DIR+"/icons/color_palette.png") );
 	connect(m_colorPalette, SIGNAL(colorChanged(const QBrush &, const QBrush &)), this, SLOT(changeCurrentColors(const QBrush &, const QBrush &)));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Palette"),m_colorPalette);
 	
@@ -113,7 +113,7 @@ void KTMainWindow::createGUI()
 	
 	////////////////
 	m_brushWidget = new KTBrushWidget( this);
-	m_brushWidget->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/brushes.png"));
+	m_brushWidget->setWindowIcon(QPixmap(KTOON_THEME_DIR+"/icons/brushes.png"));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Brushes"),m_brushWidget);
 	
 	connect(m_brushWidget, SIGNAL(brushSelected( const KTBrush *)), this, SLOT(changeCurrentBrush(  const KTBrush * )));
@@ -122,7 +122,7 @@ void KTMainWindow::createGUI()
 	
 	////////////////////
 	m_libraryWidget = new KTLibraryWidget( this );
-	m_libraryWidget->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/library.png"));
+	m_libraryWidget->setWindowIcon(QPixmap(KTOON_THEME_DIR+"/icons/library.png"));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Library"),m_libraryWidget);
 	
 	connect(m_libraryWidget, SIGNAL(requestCurrentGraphic()), this, SLOT(addCurrentGraphicToLibrary()));
@@ -132,7 +132,7 @@ void KTMainWindow::createGUI()
 	
 	/////////////////
 	m_scenes = new KTScenesWidget( this);
-	m_scenes->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/scenes.png"));
+	m_scenes->setWindowIcon(QPixmap(KTOON_THEME_DIR+"/icons/scenes.png"));
 	toolWindow(DDockWindow::Right)->addWidget(tr("Scenes"),m_scenes);
 	
 	connect(m_scenes, SIGNAL(requestInsertScene()), m_projectManager, SLOT(createScene()));
@@ -143,7 +143,7 @@ void KTMainWindow::createGUI()
 	
 	/////////////////////
 	m_exposureSheet = new KTExposureSheet(this);
-	m_exposureSheet->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/exposure_sheet.png"));
+	m_exposureSheet->setWindowIcon(QPixmap(KTOON_THEME_DIR+"/icons/exposure_sheet.png"));
 	toolWindow(DDockWindow::Right)->addWidget(tr("Exposure Sheet"),m_exposureSheet);
 	
 	ui4project( m_exposureSheet );
@@ -160,7 +160,7 @@ void KTMainWindow::createGUI()
 	
 	//////////////////////
 	m_timeLine = new KTTimeLine(this);
-	m_timeLine->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/time_line.png"));
+	m_timeLine->setWindowIcon(QPixmap(KTOON_THEME_DIR+"/icons/time_line.png"));
 	toolWindow(DDockWindow::Bottom)->addWidget(tr("Time Line"),m_timeLine);
 	connect(m_timeLine, SIGNAL(requestChangeFPS(int)), this, SLOT(changeFPS( int )));
 // 	connect(m_timeLine, SIGNAL(requestChangeScene( int ) ), this, SLOT(changeScene(int)));
@@ -171,7 +171,7 @@ void KTMainWindow::createGUI()
 	
 	//////////////////
 // 	KToonScript *m_scriptEditor = new KToonScript(this);
-// 	m_scriptEditor->setIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.png") );
+// 	m_scriptEditor->setWindowIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.png") );
 // 	toolWindow(DDockWindow::Bottom)->addWidget(tr("KToonScript"), m_scriptEditor);
 	
 	/////////////////

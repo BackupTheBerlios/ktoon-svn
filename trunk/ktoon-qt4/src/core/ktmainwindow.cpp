@@ -156,7 +156,7 @@ void KTMainWindow::newViewDocument(const QString &name)
 // 		viewDocument->setWindowTitle(name);
 		
 		m_statusBar->advance(4);
-		viewDocument->setActiveWindow();
+// 		viewDocument->setActiveWindow();
 		m_statusBar->advance(7);
 		viewDocument->show();
 		m_statusBar->advance(10);

@@ -72,8 +72,15 @@ void KTStatusBar::setStatus(const QString &status, int ms )
 
 void KTStatusBar::addWidget ( QWidget *widget, int stretch, bool permanent)
 {
-	QStatusBar::addWidget(widget,stretch,permanent);
-
+	if ( permanent )
+	{
+		QStatusBar::addPermanentWidget(widget,stretch);
+	}
+	else
+	{
+		QStatusBar::addWidget(widget,stretch);
+	}
+	
 	if(widget->sizeHint().height() + 4 > height())
 	{
 		setFixedHeight(widget->sizeHint().height() + 4);

@@ -3,7 +3,8 @@
 # Subdir relative project main directory: ./src/components/scenes
 # Target is a library:  
 
-QT += qt3support xml
+QT += xml 
+KDEV_QTVER = 4 
 INCLUDEPATH += ../../../src/lib 
 MOC_DIR = .moc 
 UI_DIR = .ui 
