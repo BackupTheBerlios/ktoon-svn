@@ -24,6 +24,11 @@
 #include <config.h>
 #include <exportinterface.h>
 
+#ifdef HAVE_FFMPEG
+#include <ffmpeg/avcodec.h>
+#include <ffmpeg/avformat.h>
+#endif
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
@@ -38,6 +43,23 @@ class FFMpegPlugin : public KTExportPluginObject, public ExportInterface
 		ExportInterface::Formats availableFormats();
 		
 		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format, int fps);
+		
+	private:
+		AVFrame *m_picture, *m_tmpPicture;
+		uint8_t *videOutbuf;
+		int m_frameCount, videOutbufSize;
+		double m_streamDuration;
+		
+	private:
+		bool openVideo(AVFormatContext *oc, AVStream *st);
+		void closeVideo(AVFormatContext *oc, AVStream *st);
+		bool writeVideoFrame(AVFormatContext *oc, AVStream *st, int fps);
+		AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int fps);
+		void fillYuvImage(AVFrame *pict, int frame_index, int width, int height);
+		AVFrame *allocPicture(int pix_fmt, int width, int height);
+		
+	private:
+		QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir);
 		
 };
 

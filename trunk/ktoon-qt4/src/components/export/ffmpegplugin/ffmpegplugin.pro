@@ -10,7 +10,8 @@ KDEV_QTVER = 4
 TARGETDEPS += ../../../../src/store/libstore.so \
               ../../../../src/lib/libktoon.so 
 LIBS += -lstore \
-        -lktoon 
+        -lktoon \
+        -lavformat -lavcodec 
 INCLUDEPATH += ../../../../src/store \
                ../../../../src/lib \
                ../../../../src/interfaces 

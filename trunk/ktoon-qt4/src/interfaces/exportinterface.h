@@ -22,7 +22,7 @@
 #define EXPORTINTERFACE_H
 
 #include <QStringList>
-#include <qglobal.h>
+#include <QDir>
 
 #include "ktexportpluginobject.h"
 
@@ -53,6 +53,9 @@ class ExportInterface
 		virtual Formats availableFormats() = 0;
 		
 		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format, int fps = 25) = 0;
+		
+	private:
+		virtual QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir) = 0;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(ExportInterface::Formats);
