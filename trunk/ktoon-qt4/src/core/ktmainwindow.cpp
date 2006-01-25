@@ -129,15 +129,6 @@ void KTMainWindow::createNewProject(const QString &name, const QSize &size)
 	
 	m_projectManager->setProjectName( name );
 	m_projectManager->setDocumentSize( size );
-	
-	KTViewCamera *viewCamera = new KTViewCamera(size , m_animationSpace);
-	viewCamera->setAttribute(Qt::WA_DeleteOnClose, true);
-	connect(viewCamera, SIGNAL(sendMessage(const QString &, int)), m_statusBar, SLOT(setStatus(const QString &, int)));
-	connect(viewCamera, SIGNAL(sendProgress(int, int)), m_statusBar, SLOT(advance(int, int)));
-	m_animationSpace->addWindow(viewCamera);
-	
-	viewCamera->show();
-	
 }
 
 void KTMainWindow::newViewDocument(const QString &name)
@@ -160,11 +151,28 @@ void KTMainWindow::newViewDocument(const QString &name)
 		m_statusBar->advance(7);
 		viewDocument->show();
 		m_statusBar->advance(10);
-// 		KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->activeWindow());
-		KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->windowList()[0]);
-		if(camera)
+		KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->activeWindow());
+		
+		if ( camera )
 		{
-			camera->animationArea()->setScene(scene);
+			camera->animationArea()->setScene( scene );
+		}
+		else
+		{
+			QWidgetList cameras = m_animationSpace->windowList();
+			
+			if ( cameras.count() > 0 )
+			{
+				camera = qobject_cast<KTViewCamera *>(cameras[0]);
+				if(camera)
+				{
+					camera->animationArea()->setScene(scene);
+				}
+			}
+			else
+			{
+				newViewCamera(scene);
+			}
 		}
 		
 		m_statusBar->setStatus(tr("Opened."));
@@ -176,9 +184,20 @@ void KTMainWindow::newViewDocument(const QString &name)
 	}
 }
 
-/**
- * @todo close current project
- */
+void KTMainWindow::newViewCamera(KTScene *scene)
+{
+	KTViewCamera *viewCamera = new KTViewCamera(m_projectManager->documentSize() , m_animationSpace);
+	viewCamera->setAttribute(Qt::WA_DeleteOnClose, true);
+	connect(viewCamera, SIGNAL(sendMessage(const QString &, int)), m_statusBar, SLOT(setStatus(const QString &, int)));
+	connect(viewCamera, SIGNAL(sendProgress(int, int)), m_statusBar, SLOT(advance(int, int)));
+		
+	m_animationSpace->addWindow(viewCamera);
+		
+	viewCamera->animationArea()->setScene( scene );
+		
+	viewCamera->show();
+}
+
 void KTMainWindow::newProject()
 {
 	KTNewProject *wizard = new KTNewProject;
@@ -226,19 +245,20 @@ void KTMainWindow::closeProject()
 	m_projectManager->close();
 	
 	m_drawingSpace->closeAllWindows();
+	m_animationSpace->closeAllWindows();
 	
-	QWidgetList cameras = m_animationSpace->windowList();
-	
-	foreach (QWidget *widget, cameras)
-	{
-		KTViewCamera *view = qobject_cast<KTViewCamera *>(widget);
-		
-		if ( view )
-		{
-			view->animationArea()->setScene(0);
-			view->animationArea()->setSize(m_projectManager->documentSize());
-		}
-	}
+// 	QWidgetList cameras = m_animationSpace->windowList();
+// 	
+// 	foreach (QWidget *widget, cameras)
+// 	{
+// 		KTViewCamera *view = qobject_cast<KTViewCamera *>(widget);
+// 		
+// 		if ( view )
+// 		{
+// 			view->animationArea()->setScene(0);
+// 			view->animationArea()->setSize(m_projectManager->documentSize());
+// 		}
+// 	}
 	
 	// Clean widgets
 	m_exposureSheet->closeAllScenes();

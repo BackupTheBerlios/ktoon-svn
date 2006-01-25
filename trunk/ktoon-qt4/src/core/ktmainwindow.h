@@ -128,6 +128,7 @@ class KTMainWindow : public DMainWindow
 	private slots:
 		void createNewProject(const QString &name, const QSize &size = QSize(-1,-1) );
 		void newViewDocument(const QString &name = QString::null);
+		void newViewCamera(KTScene *scene);
 		void newProject();
 		void closeProject();
 		void openProject();

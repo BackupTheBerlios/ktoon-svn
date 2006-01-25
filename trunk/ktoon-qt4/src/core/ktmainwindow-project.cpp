@@ -126,6 +126,14 @@ void KTMainWindow::selectFrame(int layer, int frame)
 		m_exposureSheet->setCurrentCell(layer, frame);
 		
 	}
+	else
+	{
+		if(m_drawingSpace->isVisible() )
+		{
+			newViewDocument( m_projectManager->currentDocument()->currentScene()->layers()[layer]->frames()[frame]->frameName() );
+			selectFrame(layer, frame);
+		}
+	}
 }
 
 // Graphic Components
