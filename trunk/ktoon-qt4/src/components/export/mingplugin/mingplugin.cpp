@@ -103,8 +103,11 @@ void MingPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> 
 // 	fclose(f);
 	
 	destroySWFMovie(movie);
-	
-	// TODO: limpiar el directorio!
+
+	foreach(QString path, paths)
+	{
+		QFile::remove(path);
+	}
 #endif
 }
 
@@ -190,7 +193,7 @@ QStringList MingPlugin::createImages(const QList<KTScene *> &scenes, const QDir 
 				file = QString("%1.png").arg(nPhotogramsRenderized);
 			}
 			
-			renderized.save(file, "PNG");
+			renderized.save(dir.path()+"/"+file, "PNG");
 // 			emit progressStep( nPhotogramsRenderized, totalPhotograms);
 			
 			paths << dir.path()+"/"+file;

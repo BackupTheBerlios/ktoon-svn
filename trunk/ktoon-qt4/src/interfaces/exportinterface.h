@@ -42,7 +42,10 @@ class ExportInterface
 			NONE = 0,
 			SWF = 1<<0,
 			MPEG = 1<<1,
-			AVI = 1<<2
+			AVI = 1<<2,
+			RM = 1 << 3,
+			ASF = 1 << 5,
+			MOV = 1 << 6
 		};
 		
 		Q_DECLARE_FLAGS(Formats, Format);

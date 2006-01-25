@@ -21,13 +21,14 @@
 #include "ffmpegplugin.h"
 
 #include "ktdebug.h"
+#include "ktapplication.h"
 
 #include <QImage>
 #include <QPainter>
 
 #include <cstdio>
 
-FFMpegPlugin::FFMpegPlugin() : m_frameCount(0), m_streamDuration(5.0)
+FFMpegPlugin::FFMpegPlugin() : m_frameCount(0), m_streamDuration(10.0)
 {
 #ifdef HAVE_FFMPEG
 	av_register_all();
@@ -46,7 +47,7 @@ QString FFMpegPlugin::key() const
 
 ExportInterface::Formats FFMpegPlugin::availableFormats()
 {
-	return SWF | MPEG | AVI;
+	return SWF | MPEG | AVI | RM | ASF | MOV;
 }
 
 void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format, int fps)
@@ -85,7 +86,7 @@ void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *
 		return;
 	}
 	
-	if (!(fmt->flags & AVFMT_NOFILE)) 
+	if (!(fmt->flags & AVFMT_NOFILE))
 	{
 		if (url_fopen(&oc->pb, filePath.toLatin1().data(), URL_WRONLY) < 0) 
 		{
@@ -98,7 +99,15 @@ void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *
 	
 	double video_pts = 0.0;
 	
-	while(true) 
+	QDir temp(KTOON_TEMP_DIR+"/exporting");
+	if ( !temp.exists() )
+	{
+		temp.mkdir(temp.path());
+	}
+	
+	QStringList paths = createImages(scenes, temp);
+	
+	foreach(QString imagePath, paths)
 	{
 		if (video_st)
 		{
@@ -113,7 +122,7 @@ void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *
 			break;
 		}
 		
-		if (! writeVideoFrame(oc, video_st, fps) )
+		if (! writeVideoFrame(imagePath, oc, video_st, fps) )
 		{
 			break;
 		}
@@ -135,33 +144,12 @@ void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *
 	
 	av_free(oc);
 	
+	foreach(QString path, paths)
+	{
+		QFile::remove(path);
+	}
+	
 #endif
-}
-
-void FFMpegPlugin::fillYuvImage(AVFrame *pict, int frame_index, int width, int height)
-{
-	int x, y, i;
-
-	i = frame_index;
-
-	/* Y */
-	for(y=0;y<height;y++) 
-	{
-		for(x=0;x<width;x++) 
-		{
-			pict->data[0][y * pict->linesize[0] + x] = x + y + i * 3;
-		}
-	}
-    
-	/* Cb and Cr */
-	for(y=0;y<height/2;y++) 
-	{
-		for(x=0;x<width/2;x++) 
-		{
-			pict->data[1][y * pict->linesize[1] + x] = 128 + y + i * 2;
-			pict->data[2][y * pict->linesize[2] + x] = 64 + x + i * 5;
-		}
-	}
 }
 
 AVStream *FFMpegPlugin::addVideoStream(AVFormatContext *oc, int codec_id, int fps)
@@ -183,8 +171,8 @@ AVStream *FFMpegPlugin::addVideoStream(AVFormatContext *oc, int codec_id, int fp
 	/* put sample parameters */
 	c->bit_rate = 400000;
 	/* resolution must be a multiple of two */
-	c->width = 352;
-	c->height = 288;
+	c->width = 520; // FIXME FIXME FIXME
+	c->height = 340; // FIXME FIXME FIXME
 	/* frames per second */
 	c->frame_rate = fps;
 	c->frame_rate_base = 1;
@@ -224,47 +212,52 @@ AVFrame *FFMpegPlugin::allocPicture(int pix_fmt, int width, int height)
 	
 	size = avpicture_get_size(pix_fmt, width, height);
 	picture_buf = (uint8_t *)malloc(size);
-	if (!picture_buf) 
+	if (!picture_buf)
 	{
 		av_free(m_picture);
 		return 0;
 	}
 	avpicture_fill((AVPicture *)m_picture, picture_buf, pix_fmt, width, height);
+	
 	return m_picture;
 }
 
-bool FFMpegPlugin::writeVideoFrame(AVFormatContext *oc, AVStream *st, int fps)
+bool FFMpegPlugin::writeVideoFrame(const QString &imagePath, AVFormatContext *oc, AVStream *st, int fps)
 {
 	AVCodecContext *c = &st->codec;
+	
+	AVPicture *pict = (AVPicture *) m_picture;
 	AVFrame *picturePtr;
-
+	
+	
 	double nbFrames = ((int)(m_streamDuration * fps));
 	if (m_frameCount >= nbFrames)
 	{
-        /* no more frame to compress. The codec has a latency of a few
+        	/* no more frame to compress. The codec has a latency of a few
 		frames if using B frames, so we get the last frames by
 		passing a 0 m_picture */
 		picturePtr = 0;
-	} else 
+	}
+	else
 	{
-		if (c->pix_fmt != PIX_FMT_YUV420P)
-		{
-			fillYuvImage(m_tmpPicture, m_frameCount, c->width, c->height);
-			img_convert((AVPicture *)m_picture, c->pix_fmt, 
-				     (AVPicture *)m_tmpPicture, PIX_FMT_YUV420P,
-				     c->width, c->height);
-		} 
-		else 
-		{
-			fillYuvImage(m_picture, m_frameCount, c->width, c->height);
-		}
+		QImage image(imagePath);
+		
+		AVPicture pictTmp;
+		
+		avpicture_alloc(&pictTmp, PIX_FMT_RGBA32,c->width, c->height);
+
+		memcpy(pictTmp.data[0],image.bits(),c->width*c->height*4);
+
+		img_convert((AVPicture *)m_picture,c->pix_fmt,&pictTmp,PIX_FMT_RGBA32,c->width,c->height);
+		avpicture_free(&pictTmp);
+
 		picturePtr = m_picture;
 	}
 
 	int out_size = -1, ret = -1;
-	if (oc->oformat->flags & AVFMT_RAWPICTURE) 
+	if (oc->oformat->flags & AVFMT_RAWPICTURE)
 	{
-        /* raw video case. The API will change slightly in the near
+        	/* raw video case. The API will change slightly in the near
 		futur for that */
 		AVPacket pkt;
 		av_init_packet(&pkt);
@@ -281,6 +274,7 @@ bool FFMpegPlugin::writeVideoFrame(AVFormatContext *oc, AVStream *st, int fps)
 		/* encode the image */
 		out_size = avcodec_encode_video(c, videOutbuf, videOutbufSize, picturePtr);
 		/* if zero size, it means the image was buffered */
+
 		if (out_size != 0)
 		{
 			AVPacket pkt;
@@ -311,6 +305,60 @@ bool FFMpegPlugin::writeVideoFrame(AVFormatContext *oc, AVStream *st, int fps)
 	return true;
 }
 
+bool FFMpegPlugin::openVideo(AVFormatContext *oc, AVStream *st)
+{
+	AVCodec *codec;
+	AVCodecContext *c;
+
+	c = &st->codec;
+
+	/* find the video encoder */
+	codec = avcodec_find_encoder(c->codec_id);
+	if (!codec)
+	{
+		ktError() << "codec not found";
+		return false;
+	}
+
+	/* open the codec */
+	if (avcodec_open(c, codec) < 0)
+	{
+		ktError() << "could not open codec";
+		return false;
+	}
+
+	videOutbuf = 0;
+	if (!(oc->oformat->flags & AVFMT_RAWPICTURE))
+	{
+		/* allocate output buffer */
+		/* XXX: API change will be done */
+		videOutbufSize = 200000;
+// 		videOutbuf = (uint8_t *) malloc(videOutbufSize);
+		videOutbuf = (uint8_t *) av_malloc(videOutbufSize);
+	}
+
+	/* allocate the encoded raw m_picture */
+	m_picture = allocPicture(c->pix_fmt, c->width, c->height);
+	if (!m_picture) 
+	{
+		ktError() << "Could not allocate m_picture";
+		return false;
+	}
+	
+	m_tmpPicture = 0;
+	if (c->pix_fmt != PIX_FMT_YUV420P) 
+	{
+		m_tmpPicture = allocPicture(PIX_FMT_YUV420P, c->width, c->height);
+		if (!m_tmpPicture)
+		{
+			ktError() << "Could not allocate temporary picture";
+			return false;
+		}
+	}
+	
+	return true;
+}
+
 void FFMpegPlugin::closeVideo(AVFormatContext *oc, AVStream *st)
 {
 	avcodec_close(&st->codec);
@@ -322,62 +370,6 @@ void FFMpegPlugin::closeVideo(AVFormatContext *oc, AVStream *st)
 		av_free(m_tmpPicture);
 	}
 	av_free(videOutbuf);
-}
-
-bool FFMpegPlugin::openVideo(AVFormatContext *oc, AVStream *st)
-{
-	AVCodec *codec;
-	AVCodecContext *c;
-
-	c = &st->codec;
-
-	/* find the video encoder */
-	codec = avcodec_find_encoder(c->codec_id);
-	if (!codec) 
-	{
-		ktError() << "codec not found";
-		return false;
-	}
-
-	/* open the codec */
-	if (avcodec_open(c, codec) < 0) 
-	{
-		ktError() << "could not open codec";
-		return false;
-	}
-
-	videOutbuf = 0;
-	if (!(oc->oformat->flags & AVFMT_RAWPICTURE)) 
-	{
-		/* allocate output buffer */
-		/* XXX: API change will be done */
-		videOutbufSize = 200000;
-		videOutbuf = (uint8_t *) malloc(videOutbufSize);
-	}
-
-	/* allocate the encoded raw m_picture */
-	m_picture = allocPicture(c->pix_fmt, c->width, c->height);
-	if (!m_picture) 
-	{
-		ktError() << "Could not allocate m_picture";
-		return false;
-	}
-
-    /* if the output format is not YUV420P, then a temporary YUV420P
-	m_picture is needed too. It is then converted to the required
-	output format */
-	m_tmpPicture = 0;
-	if (c->pix_fmt != PIX_FMT_YUV420P) 
-	{
-		m_tmpPicture = allocPicture(PIX_FMT_YUV420P, c->width, c->height);
-		if (!m_tmpPicture) 
-		{
-			fprintf(stderr, "Could not allocate temporary m_picture\n");
-			exit(1);
-		}
-	}
-	
-	return true;
 }
 
 QStringList FFMpegPlugin::createImages(const QList<KTScene *> &scenes, const QDir &dir)
@@ -462,7 +454,7 @@ QStringList FFMpegPlugin::createImages(const QList<KTScene *> &scenes, const QDi
 				file = QString("%1.png").arg(nPhotogramsRenderized);
 			}
 			
-			renderized.save(file, "PNG");
+			renderized.save(dir.path()+"/"+file, "PNG");
 // 			emit progressStep( nPhotogramsRenderized, totalPhotograms);
 			
 			paths << dir.path()+"/"+file;

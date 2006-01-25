@@ -182,6 +182,27 @@ void KTExportWidget::addFormats(ExportInterface::Formats formats)
 		
 		m_formats.insert(format, ExportInterface::AVI);
 	}
+	
+	if ( formats & ExportInterface::RM )
+	{
+		QListWidgetItem *format = new QListWidgetItem(tr("RealMedia Video"), m_formatList);
+		
+		m_formats.insert(format, ExportInterface::RM);
+	}
+	
+	if ( formats & ExportInterface::ASF )
+	{
+		QListWidgetItem *format = new QListWidgetItem(tr("ASF Video"), m_formatList);
+		
+		m_formats.insert(format, ExportInterface::ASF);
+	}
+	
+	if ( formats & ExportInterface::MOV )
+	{
+		QListWidgetItem *format = new QListWidgetItem(tr("QuickTime Video"), m_formatList);
+		
+		m_formats.insert(format, ExportInterface::MOV);
+	}
 }
 
 void KTExportWidget::makeAction(int buttonId)
@@ -302,6 +323,31 @@ QString KTExportWidget::fileToExport() const
 			if ( !file.toLower().endsWith(".avi"))
 			{
 				file+=".avi";
+			}
+		}
+		break;
+		
+		case ExportInterface::RM:
+		{
+			if ( !file.toLower().endsWith(".rm"))
+			{
+				file+=".rm";
+			}
+		}
+		break;
+		case ExportInterface::ASF:
+		{
+			if ( !file.toLower().endsWith(".asf"))
+			{
+				file+=".asf";
+			}
+		}
+		break;
+		case ExportInterface::MOV:
+		{
+			if ( !file.toLower().endsWith(".mov"))
+			{
+				file+=".mov";
 			}
 		}
 		break;

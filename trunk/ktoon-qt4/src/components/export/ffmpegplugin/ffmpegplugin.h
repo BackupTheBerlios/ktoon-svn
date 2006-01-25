@@ -53,9 +53,9 @@ class FFMpegPlugin : public KTExportPluginObject, public ExportInterface
 	private:
 		bool openVideo(AVFormatContext *oc, AVStream *st);
 		void closeVideo(AVFormatContext *oc, AVStream *st);
-		bool writeVideoFrame(AVFormatContext *oc, AVStream *st, int fps);
+		bool writeVideoFrame(const QString &imagePath,AVFormatContext *oc, AVStream *st, int fps);
 		AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int fps);
-		void fillYuvImage(AVFrame *pict, int frame_index, int width, int height);
+		
 		AVFrame *allocPicture(int pix_fmt, int width, int height);
 		
 	private:
