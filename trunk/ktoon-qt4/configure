@@ -45,17 +45,17 @@ ln -fs $(pwd)/$CONFIG_H $(pwd)/src/lib/$CONFIG_H
 
 LIBS=''
 
-check "sound" sound && defineMacro HAVE_SOUND
-check "gif" gif && defineMacro HAVE_LIBGIF
-check "ungif" ungif && defineMacro HAVE_LIBUNGIF
-check "ffmpeg" ffmpeg && defineMacro HAVE_FFMPEG
+check "sound" sound && LIBS="$LIBS -laudio" && defineMacro HAVE_SOUND
+check "gif" gif && LIBS="$LIBS -lgif" && defineMacro HAVE_LIBGIF
+# check "ungif" ungif && defineMacro HAVE_LIBUNGIF
+check "ffmpeg" ffmpeg && LIBS="$LIBS -lavcodec -lavformat" && defineMacro HAVE_FFMPEG
 check "ming" ming && LIBS="$LIBS -lming" && defineMacro HAVE_MING
 
-echo "LIBS += $LIBS" >> $KT_CONFIG
+echo "LIBS += $LIBS" > $KT_CONFIG
 
 echo
 echo "**************************************"
-qpwarn "$APPNAME is configured, if you want clean configure, please execute 'make confclean'"
+qpwarn "$APPNAME is configured'"
 echo "**************************************"
 echo
 

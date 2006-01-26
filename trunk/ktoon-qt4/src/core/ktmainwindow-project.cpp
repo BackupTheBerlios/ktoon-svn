@@ -130,8 +130,8 @@ void KTMainWindow::selectFrame(int layer, int frame)
 	{
 		if(m_drawingSpace->isVisible() )
 		{
-			newViewDocument( m_projectManager->currentDocument()->currentScene()->layers()[layer]->frames()[frame]->frameName() );
-			selectFrame(layer, frame);
+// 			newViewDocument( m_projectManager->currentDocument()->currentScene()->layers()[layer]->frames()[frame]->frameName() );
+// 			selectFrame(layer, frame);
 		}
 	}
 }

@@ -50,7 +50,7 @@ ExportInterface::Formats MingPlugin::availableFormats()
 	return SWF;
 }
 
-void MingPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format, int fps)
+void MingPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size)
 {
 #ifdef HAVE_MING
 	QDir temp(KTOON_TEMP_DIR+"/exporting");
@@ -61,8 +61,8 @@ void MingPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> 
 	
 	SWFMovie movie = newSWFMovie();
 	
-	SWFMovie_setRate(movie, fps);
-	SWFMovie_setDimension(movie,  400, 400 );
+	SWFMovie_setRate(movie, scenes[0]->fps() );
+	SWFMovie_setDimension(movie,  size.width(), size.height() );
 	SWFMovie_setBackground(movie,  0xff, 0xff, 0xff );
 
 	SWFMatrix matrix = SWFFillStyle_getMatrix(newSWFSolidFillStyle(255,255,255,255));

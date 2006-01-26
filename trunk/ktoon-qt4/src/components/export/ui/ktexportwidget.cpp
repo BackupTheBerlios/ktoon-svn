@@ -246,10 +246,10 @@ void KTExportWidget::exportIt()
 		
 		ktDebug() << "Exporting " << scenes.count() << " scenas";
 		
-		
-		m_currentExporter->exportToFormat( file, scenes, m_currentFormat );
-		
-// 		exportar(archivo, scenas, formato, 
+		if ( scenes.count() > 0)
+		{
+			m_currentExporter->exportToFormat( file, scenes, m_currentFormat, m_manager->documentSize() );
+		}
 	}
 	else
 	{

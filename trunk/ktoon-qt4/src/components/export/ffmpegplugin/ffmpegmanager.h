@@ -18,34 +18,42 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef MINGPLUGIN_H
-#define MINGPLUGIN_H
+#ifndef FFMPEGMANAGER_H
+#define FFMPEGMANAGER_H
 
 #include <config.h>
-#include <QObject>
-#include <QDir>
+#include <QString>
+#include <QSize>
 
-#include <exportinterface.h>
+#ifdef HAVE_FFMPEG
+#include <ffmpeg/avcodec.h>
+#include <ffmpeg/avformat.h>
+#endif
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class MingPlugin : public KTExportPluginObject, public ExportInterface
+class FFMpegManager
 {
-	Q_OBJECT;
-	Q_INTERFACES(ExportInterface);
 	public:
-		MingPlugin();
-		virtual ~MingPlugin();
-		virtual QString key() const;
-		ExportInterface::Formats availableFormats();
+		FFMpegManager();
+		~FFMpegManager();
 		
-		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size);
+		void create(const QString &filePath, const QStringList &paths, const QSize &size, int fps);
+#ifdef HAVE_FFMPEG
+		bool openVideo(AVFormatContext *oc, AVStream *st);
+		void closeVideo(AVFormatContext *oc, AVStream *st);
+		bool writeVideoFrame(const QString &imagePath,AVFormatContext *oc, AVStream *st, int fps);
+		AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, int height, int fps);
+		
+		AVFrame *allocPicture(int pix_fmt, int width, int height);
 		
 	private:
-		QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir);
+		AVFrame *m_picture, *m_tmpPicture;
+		uint8_t *videOutbuf;
+		int m_frameCount, videOutbufSize;
+		double m_streamDuration;
+#endif
 };
 
 #endif
-
-

@@ -3,23 +3,27 @@
 # Subdir relative project main directory: ./src/components/export/ffmpegplugin
 # Target is a library:  
 
-QT += xml 
 INSTALLS += target 
 target.path = /plugins/ 
-KDEV_QTVER = 4 
+HEADERS += ffmpegplugin.h \
+           ffmpegmanager.h 
+SOURCES += ffmpegplugin.cpp \
+           ffmpegmanager.cpp 
+QT += xml
+KDEV_QTVER = 4
 TARGETDEPS += ../../../../src/store/libstore.so \
-              ../../../../src/lib/libktoon.so 
+../../../../src/lib/libktoon.so
 LIBS += -lstore \
-        -lktoon \
-        -lavformat -lavcodec 
+-lktoon
 INCLUDEPATH += ../../../../src/store \
-               ../../../../src/lib \
-               ../../../../src/interfaces 
+../../../../src/lib \
+../../../../src/interfaces
 QMAKE_LIBDIR = ../../../../src/store \
-               ../../../../src/lib 
+../../../../src/lib
 CONFIG += release \
-          warn_on \
-          plugin 
-TEMPLATE = lib 
-HEADERS += ffmpegplugin.h 
-SOURCES += ffmpegplugin.cpp 
+warn_on \
+plugin
+TEMPLATE = lib
+!include(../../../../ktconfig.pri) {
+error("Please run configure first")
+}

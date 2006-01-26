@@ -21,13 +21,7 @@
 #ifndef FFMPEGPLUGIN_H
 #define FFMPEGPLUGIN_H
 
-#include <config.h>
 #include <exportinterface.h>
-
-#ifdef HAVE_FFMPEG
-#include <ffmpeg/avcodec.h>
-#include <ffmpeg/avformat.h>
-#endif
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -42,21 +36,7 @@ class FFMpegPlugin : public KTExportPluginObject, public ExportInterface
 		virtual QString key() const;
 		ExportInterface::Formats availableFormats();
 		
-		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format, int fps);
-		
-	private:
-		AVFrame *m_picture, *m_tmpPicture;
-		uint8_t *videOutbuf;
-		int m_frameCount, videOutbufSize;
-		double m_streamDuration;
-		
-	private:
-		bool openVideo(AVFormatContext *oc, AVStream *st);
-		void closeVideo(AVFormatContext *oc, AVStream *st);
-		bool writeVideoFrame(const QString &imagePath,AVFormatContext *oc, AVStream *st, int fps);
-		AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int fps);
-		
-		AVFrame *allocPicture(int pix_fmt, int width, int height);
+		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size);
 		
 	private:
 		QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir);

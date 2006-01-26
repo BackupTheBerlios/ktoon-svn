@@ -10,8 +10,7 @@ KDEV_QTVER = 4
 TARGETDEPS += ../../../../src/store/libstore.so \
               ../../../../src/lib/libktoon.so 
 LIBS += -lstore \
-        -lktoon \
-        -lming 
+        -lktoon 
 INCLUDEPATH += ../../../../src/store \
                ../../../../src/lib \
                ../../../../src/interfaces 
@@ -23,3 +22,6 @@ CONFIG += release \
 TEMPLATE = lib 
 HEADERS += mingplugin.h 
 SOURCES += mingplugin.cpp 
+!include(../../../../ktconfig.pri) {
+error("Please run configure first")
+}

@@ -55,7 +55,7 @@ class ExportInterface
 		virtual QString key() const = 0;
 		virtual Formats availableFormats() = 0;
 		
-		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format, int fps = 25) = 0;
+		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format, const QSize &size) = 0;
 		
 	private:
 		virtual QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir) = 0;

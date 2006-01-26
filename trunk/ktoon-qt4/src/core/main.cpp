@@ -20,6 +20,8 @@
 
 #include <ktapplication.h>
 
+#include <config.h>
+
 #include <qfile.h>
 #include <qtextstream.h>
 #include <qtextcodec.h>
@@ -48,8 +50,10 @@ int main( int argc, char ** argv )
 	KTApplication application( argc, argv );
 	CrashHandler::init();
 
-// 	QApplication::setStyle(new KToonStyle());
-	
+#ifdef ENABLE_KTOONSTYLE
+	QApplication::setStyle(new KToonStyle());
+#endif
+
 	if ( application.isArg("help") || application.isArg("h") )
 	{
 		usage();
