@@ -155,19 +155,19 @@ class KTMainWindow : public DMainWindow
 		void addGraphicComponent(const AGraphicComponent *graphic);
 		
 		//Layers
-		void insertLayer( const QString &, bool);
+		void insertLayer( const QString &, bool addedToEnd);
 		void setLayerVisibilityChanged(int idLayer, bool isVisible);
 		void removeLayer(int );
 		
 		//Frames
-		void insertFrame( const QString &name, bool);
+		void insertFrame( const QString &name, bool addedToEnd);
 		void selectFrame(int layer, int frame);
 		void moveFrame(bool up);
 		void removeFrame( );
 		void lockFrame();
 		// Scenes
 		
-		void insertScene( const QString &name, bool);
+		void insertScene( const QString &name, bool addedToEnd);
 		void changeScene(int index);
 		
 		//others

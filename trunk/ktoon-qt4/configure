@@ -47,7 +47,6 @@ LIBS=''
 
 check "sound" sound && LIBS="$LIBS -laudio" && defineMacro HAVE_SOUND
 check "gif" gif && LIBS="$LIBS -lgif" && defineMacro HAVE_LIBGIF
-# check "ungif" ungif && defineMacro HAVE_LIBUNGIF
 check "ffmpeg" ffmpeg && LIBS="$LIBS -lavcodec -lavformat" && defineMacro HAVE_FFMPEG
 check "ming" ming && LIBS="$LIBS -lming" && defineMacro HAVE_MING
 
