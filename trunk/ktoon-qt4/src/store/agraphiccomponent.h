@@ -1,6 +1,8 @@
 /***************************************************************************
  *   Copyright (C) 2004 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                    *
+ *   kuadrosx@toonka.com                                                   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -34,6 +36,19 @@
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
+
+struct AGraphic
+{
+	public:
+		AGraphic() {};
+		~AGraphic() {};
+		QPainterPath path;
+		QBrush brush;
+		QPen pen;
+};
+
+typedef QList<AGraphic *> Graphics;
+
 class AGraphicComponent;
 class AGraphicComponent : public KTSerializableObject
 {
@@ -46,8 +61,21 @@ class AGraphicComponent : public KTSerializableObject
 		QDomElement createXML( QDomDocument &doc );
 		
 		QRectF boundingRect() const;
+		
+		
+		bool isValid();
+		
+		void addGraphic(AGraphic *graphic);
+		void addGraphic(const QPainterPath &path, const QPen &pen, const QBrush &brush );
+		
+		Graphics graphics() const;
+		
+		bool intersects(const QRectF &rect);
+		
+		// <deprecated>
+		
 		QColor color() const;
-		QPainterPath path() const;
+// 		QPainterPath path() const;
 		QBrush brush() const;
 		QPen pen() const;
 		
@@ -56,6 +84,8 @@ class AGraphicComponent : public KTSerializableObject
 		virtual void setBrush(const QBrush &brush);
 		virtual void setPen(const QPen &pen);
 		virtual void setPen(const QColor &color);
+		
+		// </deprecated>
 		
 		void scale(double sX, double sY);
 		void shear(double sX, double sY);
@@ -69,12 +99,17 @@ class AGraphicComponent : public KTSerializableObject
 		QDomElement brushToElement(const QBrush &brush, QDomDocument &doc);
 		
 	protected:
+		// <deprecated>
 		QPainterPath m_pPath;
 		QColor m_pColor;
 		QBrush m_pBrush;
 		QPen m_pPen;
+		// </deprecated>
+		
 		
 		QString m_name;
+		
+		Graphics m_graphics;
 		
 	private:
 		QPainterPath m_previousPath;

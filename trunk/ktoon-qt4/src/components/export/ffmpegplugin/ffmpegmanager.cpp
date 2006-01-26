@@ -27,6 +27,8 @@
 
 #include <QImage>
 
+#include "exportinterface.h"
+
 FFMpegManager::FFMpegManager()
 {
 #ifdef HAVE_FFMPEG
@@ -42,10 +44,48 @@ FFMpegManager::~FFMpegManager()
 {
 }
 
-void FFMpegManager::create(const QString &filePath, const QStringList &paths, const QSize &size, int fps)
+void FFMpegManager::create(const QString &filePath, int formatId, const QStringList &paths, const QSize &size, int fps)
 {
 #ifdef HAVE_FFMPEG
+
 	AVOutputFormat *fmt = guess_format(0, filePath.toLatin1().data(), 0);
+	
+	
+	switch(formatId)
+	{
+		case ExportInterface::ASF:
+		{
+			
+		}
+		break;
+		case ExportInterface::AVI:
+		{
+			fmt->video_codec = CODEC_ID_MSMPEG4V3;
+// 			video_st->codec.codec_tag = 0;
+		}
+		break;
+		case ExportInterface::MOV:
+		{
+			
+		}
+		break;
+		case ExportInterface::MPEG:
+		{
+		}
+		break;
+		case ExportInterface::RM:
+		{
+			
+		}
+		break;
+		case ExportInterface::SWF:
+		{
+			
+		}
+		break;
+		default: break;
+	}
+	
 	AVFormatContext *oc = av_alloc_format_context();
 	if ( !oc )
 	{
@@ -304,7 +344,9 @@ bool FFMpegManager::openVideo(AVFormatContext *oc, AVStream *st)
 	c = &st->codec;
 
 	/* find the video encoder */
+	
 	codec = avcodec_find_encoder(c->codec_id);
+	
 	if (!codec)
 	{
 		ktError() << "codec not found";

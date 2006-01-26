@@ -263,55 +263,58 @@ void APaintArea::drawFrame(const KTKeyFrame *frame, QPainter *painter, float int
 	}
 }
 
-void APaintArea::drawGraphic(const AGraphicComponent *graphic, QPainter *painter, float intensitive )
+void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter *painter, float intensitive )
 {
 	painter->save();
 	
-	QPen pen = graphic->pen();
-	QBrush brush = graphic->brush();
-	if ( brush.gradient() )
+	foreach(AGraphic *graphic, graphicComponent->graphics())
 	{
-		brush = KTGradientAdjuster::adjustGradient(brush.gradient(), graphic->path().boundingRect().toRect());
-	}
+		QPen pen = graphic->pen;
+		QBrush brush = graphic->brush;
+		if ( brush.gradient() )
+		{
+			brush = KTGradientAdjuster::adjustGradient(brush.gradient(), graphic->path.boundingRect().toRect());
+		}
 	
-	if ( pen.brush().gradient() )
-	{
-		pen.setBrush( KTGradientAdjuster::adjustGradient( pen.brush().gradient(), graphic->path().boundingRect().toRect()) );
-	}
+		if ( pen.brush().gradient() )
+		{
+			pen.setBrush( KTGradientAdjuster::adjustGradient( pen.brush().gradient(), graphic->path.boundingRect().toRect()) );
+		}
 	
-	if ( intensitive < 1 && intensitive >= 0 )
-	{
-		QColor penColor = Qt::gray;
-		QColor brushColor = Qt::gray;
+		if ( intensitive < 1 && intensitive >= 0 )
+		{
+			QColor penColor = Qt::gray;
+			QColor brushColor = Qt::gray;
 						
-		const float factor = (1-intensitive); // FIXME: fix this ;)
+			const float factor = (1-intensitive); // FIXME: fix this ;)
 						
-		penColor.setHsv(0,0, static_cast<int>(factor * pen.color().alpha()) % 360 );
+			penColor.setHsv(0,0, static_cast<int>(factor * pen.color().alpha()) % 360 );
 						
-		brushColor.setHsv(0,0, static_cast<int>( factor * brush.color().alpha() ) % 360 );
+			brushColor.setHsv(0,0, static_cast<int>( factor * brush.color().alpha() ) % 360 );
 						
-		penColor.setAlpha(pen.color().alpha());
-		brushColor.setAlpha(brush.color().alpha());
+			penColor.setAlpha(pen.color().alpha());
+			brushColor.setAlpha(brush.color().alpha());
 						
-		pen.setColor(penColor);
-		brush.setColor(brushColor);
-	}
-	else if ( intensitive > 1 && intensitive < 0)
-	{
-		ktWarning() << "Intensitive must be lesser than 1 - No effect";
-	}
-	
-	painter->setPen(pen);
-	painter->setBrush(brush);
+			pen.setColor(penColor);
+			brush.setColor(brushColor);
+		}
+		else if ( intensitive > 1 && intensitive < 0)
+		{
+			ktWarning() << "Intensitive must be lesser than 1 - No effect";
+		}
+		
+		painter->setPen(pen);
+		painter->setBrush(brush);
 					
-	QList<QPolygonF> poligons =   graphic->path().toSubpathPolygons();
-	QList<QPolygonF>::const_iterator it;
-	for(it = poligons.begin(); it != poligons.end(); ++it)
-	{
-		painter->drawPolygon(*it);
-	}
+		QList<QPolygonF> poligons = graphic->path.toSubpathPolygons();
+		QList<QPolygonF>::const_iterator it;
+		for(it = poligons.begin(); it != poligons.end(); ++it)
+		{
+			painter->drawPolygon(*it);
+		}
 
-	painter->restore();
+		painter->restore();
+	}
 }
 
 void APaintArea::redrawAll()
@@ -445,10 +448,10 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 				QList<AGraphicComponent *> components =  m_currentFrame->components();
 				QList<AGraphicComponent *>::iterator it;
 				AGraphicComponent *toSelect = 0;
-				
+
 				for(it = components.end()-1; it != components.begin()-1; it--)
 				{
-					if( (*it) && (*it)->path().intersects( QRectF(QPointF(static_cast<double>(event->pos().x()-1), static_cast<double>(event->pos().y()-1) ), QSizeF(2,2) ) ) )
+					if( (*it) && (*it)->intersects( QRectF(QPointF(static_cast<double>(event->pos().x()-1), static_cast<double>(event->pos().y()-1) ), QSizeF(2,2) ) ) )
 					{
 						if ( *it )
 						{
@@ -457,13 +460,14 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 						}
 					}
 				}
+				
 				if(!toSelect)
 				{
 					m_currentFrame->clearSelections();
 				}
 				else if ( e->modifiers() & Qt::ControlModifier )
 				{
-					m_currentFrame->addSelectedComponent( toSelect);
+					m_currentFrame->addSelectedComponent( toSelect );
 				}
 				else
 				{
@@ -528,11 +532,9 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 				rect.translate(m_xpos, m_ypos);
 				update(rect);
 				
-				m_currentGraphic->setPath(m_currentTool->path());
-				m_currentGraphic->setPen(painter.pen());
-				m_currentGraphic->setBrush(painter.brush());
+				m_currentGraphic->addGraphic( m_currentTool->path(), painter.pen(), painter.brush());
 				
-				if ( !m_currentGraphic->path().isEmpty() )
+				if ( m_currentGraphic->isValid() )
 				{
 					ktDebug() << "Adding component";
 					
@@ -627,6 +629,8 @@ QList<AGraphicComponent *> APaintArea::selectedGraphic()
 	{
 		return m_currentFrame->selectedComponents();
 	}
+	
+	return QList<AGraphicComponent *>();
 }
 
 KTBrush *APaintArea::currentBrush()

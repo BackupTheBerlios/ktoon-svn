@@ -51,6 +51,7 @@ QRect ASelectionPlugin::press(const QString &brush, QPainter &painter, const QPa
 
 QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos)
 {
+	qDebug("BEGIN MOVE");
 	QRectF boundingRect;
 	if ( m_graphics.count() > 0 )
 	{
@@ -60,8 +61,12 @@ QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPain
 		matrix.translate(newPos.x()-oldPos.x(), newPos.y()-oldPos.y());
 		foreach(AGraphicComponent *selected, m_graphics )
 		{
-			ghost.addPath(selected->path());
-			selected->setPath(matrix.map(selected->path()));
+			foreach(AGraphic *graphic, selected->graphics() )
+			{
+				ghost.addPath(graphic->path );
+// 				selected->addGraphic(, graphic.pen, graphic.brush);
+				graphic->path = matrix.map(graphic->path);
+			}
 		}
 		
 		int rad = painter.pen().width();
@@ -70,6 +75,8 @@ QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPain
 		boundingRect = ghost.boundingRect().normalized().adjusted(-rad, -rad, +rad, +rad);
 		emit toDrawGhostGraphic( ghost );
 	}
+	
+	qDebug("END MOVE");
 	return boundingRect.toRect();
 }
 

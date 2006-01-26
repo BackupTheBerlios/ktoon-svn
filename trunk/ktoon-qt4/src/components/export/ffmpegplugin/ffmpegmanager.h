@@ -39,7 +39,7 @@ class FFMpegManager
 		FFMpegManager();
 		~FFMpegManager();
 		
-		void create(const QString &filePath, const QStringList &paths, const QSize &size, int fps);
+		void create(const QString &filePath, int formatId, const QStringList &paths, const QSize &size, int fps );
 #ifdef HAVE_FFMPEG
 		bool openVideo(AVFormatContext *oc, AVStream *st);
 		void closeVideo(AVFormatContext *oc, AVStream *st);

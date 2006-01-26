@@ -31,18 +31,73 @@ AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : KTSerial
 
 AGraphicComponent::~AGraphicComponent()
 {
+	foreach(AGraphic *graphic, m_graphics)
+	{
+		if ( graphic )
+			delete graphic;
+	}
 }
 
- 
+
 QRectF AGraphicComponent::boundingRect() const
 {
-	return m_pPath.boundingRect();
+	QRectF r;
+	
+	foreach(AGraphic *graphic, m_graphics)
+	{
+		r = r | graphic->path.boundingRect();
+	}
+	
+	return r;
 }
 
-QPainterPath AGraphicComponent::path() const
+bool AGraphicComponent::isValid()
 {
-	return m_pPath;
+	return !m_graphics.isEmpty();
 }
+
+void AGraphicComponent::addGraphic(AGraphic *graphic)
+{
+	m_graphics << graphic;
+}
+
+void AGraphicComponent::addGraphic(const QPainterPath &path, const QPen &pen, const QBrush &brush )
+{
+	AGraphic *graphic = new AGraphic;
+	graphic->path = path;
+	graphic->brush = brush;
+	graphic->pen = pen;
+	addGraphic( graphic );
+}
+
+Graphics AGraphicComponent::graphics() const
+{
+	return m_graphics;
+}
+
+bool AGraphicComponent::intersects(const QRectF &rect)
+{
+	if ( isValid() )
+	{
+// 		QRectF r = m_graphics[0].path.boundingRect();
+// 		
+// 		for(int i = 1; i < m_graphics.count(); i++ )
+// 		{
+// 			r = r | m_graphics[i].path.boundingRect();
+// 		}
+		
+		return boundingRect().intersects(rect);
+	}
+	
+	return false;
+}
+
+
+// <deprecated>
+// QPainterPath AGraphicComponent::path() const
+// {
+// 	return m_pPath;
+// }
 
 QBrush AGraphicComponent::brush() const
 {
@@ -86,6 +141,8 @@ void AGraphicComponent::setColor(const QColor &color)
 	m_pColor = color;
 }
 
+// </deprecated>
+
 void AGraphicComponent::scale(double sX, double sY)
 {
 	if ( sX > 0 && sY > 0 )
@@ -116,7 +173,7 @@ void AGraphicComponent::translate(double sX, double sY)
 	QMatrix mId(1,0,0,1, 0, 0);
 	
 	mId.translate(sX-position.x(), sY-position.y());
-	m_pPath = mId.map(m_pPath);	
+	m_pPath = mId.map(m_pPath);
 }
 
 void AGraphicComponent::rotate( double angle )

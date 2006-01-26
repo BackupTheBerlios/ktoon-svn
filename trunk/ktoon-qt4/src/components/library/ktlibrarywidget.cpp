@@ -162,9 +162,9 @@ void KTLibraryWidget::addGraphic(const AGraphicComponent *graphic)
 	{
 		AGraphicComponent *copy = new AGraphicComponent(*graphic);
 		
-		m_displayPath->setBrush(copy->brush());
-		m_displayPath->setPen(copy->pen());
-		m_displayPath->setPath( copy->path() );
+// 		m_displayPath->setBrush( copy->brush() );
+// 		m_displayPath->setPen( copy->pen() );
+// 		m_displayPath->setPath( copy->path() );
 		
 		QTreeWidgetItem *item = new QTreeWidgetItem(m_libraryTree->currentFolder() );
 		
@@ -195,9 +195,9 @@ void KTLibraryWidget::drawCurrentItem(QTreeWidgetItem *item, int)
 		AGraphicComponent *gc = m_graphics[item];
 		if ( gc )
 		{
-			m_displayPath->setBrush(gc->brush());
-			m_displayPath->setPen(gc->pen());
-			m_displayPath->setPath( gc->path() );
+// 			m_displayPath->setBrush(gc->brush());
+// 			m_displayPath->setPen(gc->pen());
+// 			m_displayPath->setPath( gc->path() );
 		}
 		else
 		{

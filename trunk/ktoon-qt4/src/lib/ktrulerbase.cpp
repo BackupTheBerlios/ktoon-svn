@@ -133,7 +133,6 @@ void KTRulerBase::drawScale()
 	
 	for(int i = m_zero; i > 0 ; i -=10)
 	{
-// 		ktDebug() << "aki" << i << endl;
 		QSize sizeFont = fm.size (Qt::TextSingleLine, QString::number(i));
 		if( i % 100  == 0 )
 		{
@@ -292,7 +291,6 @@ void KTRulerBase::drawLine(int x1 , int y1, int x2, int y2)
 
 void KTRulerBase::slide(int value)
 {
-	ktDebug() << "SLIDE" << endl;
 	if ( m_orientation == Qt::Horizontal )
 	{
 		move(-value+m_height, pos().y());
