@@ -21,6 +21,8 @@
 #include "ktprojectparser.h"
 #include "ktdebug.h"
 
+#include "ktpathadjuster.h"
+
 KTProjectParser::KTProjectParser() : QXmlDefaultHandler(), m_gradient(0)
 {
 }
@@ -78,8 +80,23 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 		{
 			emit createFrame();
 		}
-		else if ( qname == "Component")
+		if ( qname == "Component" )
 		{
+			qDeleteAll(m_graphics.begin(), m_graphics.end());
+			m_graphics.clear();
+			
+			QString objName = atts.value("name");
+			if ( !(objName.isEmpty() || objName.isNull()) )
+			{
+				m_partName = objName;
+			}
+		}
+		else if ( qname == "Graphic" )
+		{
+			m_polygons.clear();
+			
+			AGraphic *graphic = new AGraphic;
+			m_graphics << graphic;
 		}
 		else if ( qname == "Polygon")
 		{
@@ -169,11 +186,27 @@ bool KTProjectParser::endElement(const QString&, const QString& , const QString&
 		else if ( qname == "Frame")
 		{
 		}
-		else if ( qname == "Component")
+		else if ( qname == "Graphic" )
 		{
-			emit createComponent( m_polygons, m_pen, m_brush );
+			m_graphics[m_graphics.count()-1]->path = KTPathAdjuster::buildPath( m_polygons, ':');
+			m_graphics[m_graphics.count()-1]->pen = m_pen;
+			m_graphics[m_graphics.count()-1]->brush = m_brush;
+		}
+		else if ( qname == "Component" )
+		{
+			AGraphicComponent *component = new AGraphicComponent;
 			
-			m_polygons.clear();
+			if ( ! m_partName.isNull() )
+			{
+				component->setComponentName( m_partName);
+			}
+			
+			foreach(AGraphic *graphic, m_graphics)
+			{
+				component->addGraphic(graphic->path, graphic->pen, graphic->brush);
+			}
+			
+			emit createComponent( component );
 		}
 		else if ( qname == "Brush")
 		{

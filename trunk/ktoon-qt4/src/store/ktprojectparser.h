@@ -26,6 +26,8 @@
 #include <QBrush>
 #include <QPen>
 
+#include "agraphiccomponent.h"
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
@@ -51,10 +53,11 @@ class KTProjectParser : public QObject, public QXmlDefaultHandler
 	signals:
 		void createLayer();
 		void createFrame();
-		void createComponent(const QStringList &polygons, const QPen &pen, const QBrush &brush);
+		void createComponent(AGraphicComponent *component);
 		
 	private:
 		QString m_root,m_qname;
+		QList<AGraphicComponent *> m_components;
 		
 		QString m_partName;
 		QStringList m_locations;
@@ -67,6 +70,8 @@ class KTProjectParser : public QObject, public QXmlDefaultHandler
 		QPen m_pen;
 		QGradient *m_gradient;
 		QGradientStops m_gradientStops;
+		
+		QList<AGraphic *> m_graphics;
 };
 
 #endif

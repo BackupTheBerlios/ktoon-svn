@@ -48,6 +48,9 @@ bool KTLibraryParser::startElement( const QString& , const QString& , const QStr
 	{
 		if ( qname == "Component" )
 		{
+			qDeleteAll(m_graphics.begin(), m_graphics.end());
+			m_graphics.clear();
+			
 			QString objName = atts.value("name");
 			if ( !(objName.isEmpty() || objName.isNull()) )
 			{
