@@ -223,10 +223,8 @@ void KTScene::loadComponent(const QStringList &polygons, const QPen &pen, const 
 	if ( m_currentLayer )
 	{
 		AGraphicComponent *component = new AGraphicComponent();
-		component->setPath( KTPathAdjuster::buildPath( polygons, ':') );
-		component->setPen( pen);
-		component->setBrush( brush);
 		
+		component->addGraphic( KTPathAdjuster::buildPath( polygons, ':'), pen, brush);
 		m_currentLayer->currentFrame()->addComponent( component );
 	}
 }

@@ -31,8 +31,6 @@ void KTMainWindow::insertScene( const QString &name, bool addedToEnd)
 	m_exposureSheet->addScene( name);
 	m_timeLine->addScene(name);
 	
-	
-	
 }
 
 void KTMainWindow::changeScene(int index)
@@ -231,8 +229,6 @@ void KTMainWindow::addCurrentGraphicToLibrary()
 		{
 			AGraphicComponent *form = new AGraphicComponent();
 			
-			
-			
 // 			QPainterPath path;
 			foreach( AGraphicComponent * selected,  selecteds )
 			{
@@ -240,7 +236,7 @@ void KTMainWindow::addCurrentGraphicToLibrary()
 				
 				foreach(AGraphic *graphic, selected->graphics())
 				{
-					form->addGraphic( graphic );
+					form->addGraphic( graphic->path, graphic->pen, graphic->brush );
 				}
 			}
 // 			form->setBrush( selecteds[0]->brush());

@@ -26,7 +26,7 @@
 #include <QTreeWidgetItem>
 #include <QMap>
 
-#include "ktdisplaypath.h"
+#include "ktdisplaygraphic.h"
 #include "ktimagebutton.h"
 
 #include "agraphiccomponent.h"
@@ -62,7 +62,7 @@ class KTLibraryWidget : public KTModuleWidgetBase
 		void sendCurrentGraphic(const AGraphicComponent *graphic);
 	
 	private:
-		KTDisplayPath *m_displayPath;
+		KTDisplayGraphic *m_display;
 		KTGCTable *m_libraryTree;
 		QMap<QTreeWidgetItem *, AGraphicComponent *> m_graphics;
 		int m_childCount;

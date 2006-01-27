@@ -31,6 +31,11 @@ KTLibraryParser::KTLibraryParser()
 KTLibraryParser::~KTLibraryParser()
 {
 	if ( m_gradient ) delete m_gradient;
+	
+	foreach(AGraphic *graphic, m_graphics)
+	{
+		delete graphic;
+	}
 }
 
 bool KTLibraryParser::startElement( const QString& , const QString& , const QString& qname, const QXmlAttributes& atts)
@@ -43,12 +48,18 @@ bool KTLibraryParser::startElement( const QString& , const QString& , const QStr
 	{
 		if ( qname == "Component" )
 		{
-			m_tmpPolygons.clear();
 			QString objName = atts.value("name");
 			if ( !(objName.isEmpty() || objName.isNull()) )
 			{
 				m_objectName = objName;
 			}
+		}
+		else if ( qname == "Graphic" )
+		{
+			m_tmpPolygons.clear();
+			
+			AGraphic *graphic = new AGraphic;
+			m_graphics << graphic;
 		}
 		else if ( qname == "Polygon")
 		{
@@ -129,20 +140,27 @@ bool KTLibraryParser::endElement(const QString&, const QString& , const QString&
 {
 	if ( m_root == "Library" )
 	{
-		if ( qname == "Component" )
+		if ( qname == "Graphic" )
 		{
-			AGraphicComponent *graphic = new AGraphicComponent;
-			
-			graphic->setPath( KTPathAdjuster::buildPath( m_tmpPolygons, ':') );
-			graphic->setBrush( m_brush );
-			graphic->setPen( m_pen );
+			m_graphics[m_graphics.count()-1]->path = KTPathAdjuster::buildPath( m_tmpPolygons, ':');
+			m_graphics[m_graphics.count()-1]->pen = m_pen;
+			m_graphics[m_graphics.count()-1]->brush = m_brush;
+		}
+		else if ( qname == "Component" )
+		{
+			AGraphicComponent *component = new AGraphicComponent;
 			
 			if ( ! m_objectName.isNull() )
 			{
-				graphic->setComponentName( m_objectName);
+				component->setComponentName( m_objectName);
 			}
 			
-			m_components << graphic;
+			foreach(AGraphic *graphic, m_graphics)
+			{
+				component->addGraphic(graphic->path, graphic->pen, graphic->brush);
+			}
+			
+			m_components << component;
 			
 			m_objectName = QString();
 		}
@@ -163,7 +181,13 @@ bool KTLibraryParser::endElement(const QString&, const QString& , const QString&
 			{
 				m_gradient->setStops(m_gradientStops);
 				m_pen.setBrush( *m_gradient );
+				
+				
 			}
+		}
+		else if ( m_qname == "Properties")
+		{
+
 		}
 	}
 	
@@ -173,12 +197,16 @@ bool KTLibraryParser::endElement(const QString&, const QString& , const QString&
 bool KTLibraryParser::error ( const QXmlParseException & exception )
 {
 	ktError() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	
+	return true;
 }
 
 
 bool KTLibraryParser::fatalError ( const QXmlParseException & exception )
 {
 	ktFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	
+	return true;
 }
 
 QList<AGraphicComponent *> KTLibraryParser::components()

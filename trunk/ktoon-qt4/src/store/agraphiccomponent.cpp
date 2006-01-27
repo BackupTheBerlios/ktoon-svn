@@ -21,12 +21,17 @@
 #include "agraphiccomponent.h"
 #include "ktdebug.h"
 
-AGraphicComponent::AGraphicComponent() : KTSerializableObject(), m_pPath(), m_pColor(Qt::black), m_pPen(m_pColor, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin)
+AGraphicComponent::AGraphicComponent() : KTSerializableObject()
 {
 }
 
-AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : KTSerializableObject(toCopy.parent()), m_pPath(toCopy.m_pPath), m_pColor(toCopy.m_pColor), m_pBrush(toCopy.m_pBrush), m_pPen(toCopy.m_pPen), m_name(toCopy.m_name), m_previousPath(toCopy.m_previousPath)
+AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : KTSerializableObject(toCopy.parent()), m_name(toCopy.m_name)
 {
+// 	, m_graphics(toCopy.m_graphics)
+	foreach(AGraphic *graphic, toCopy.m_graphics)
+	{
+		m_graphics << new AGraphic(*graphic);
+	}
 }
 
 AGraphicComponent::~AGraphicComponent()
@@ -56,10 +61,10 @@ bool AGraphicComponent::isValid()
 	return !m_graphics.isEmpty();
 }
 
-void AGraphicComponent::addGraphic(AGraphic *graphic)
-{
-	m_graphics << graphic;
-}
+// void AGraphicComponent::addGraphic(const AGraphic *graphic)
+// {
+// 	m_graphics << new AGraphic(*graphic);
+// }
 
 void AGraphicComponent::addGraphic(const QPainterPath &path, const QPen &pen, const QBrush &brush )
 {
@@ -67,7 +72,7 @@ void AGraphicComponent::addGraphic(const QPainterPath &path, const QPen &pen, co
 	graphic->path = path;
 	graphic->brush = brush;
 	graphic->pen = pen;
-	addGraphic( graphic );
+	m_graphics << graphic;
 }
 
 Graphics AGraphicComponent::graphics() const
@@ -93,99 +98,61 @@ bool AGraphicComponent::intersects(const QRectF &rect)
 }
 
 
-// <deprecated>
-// QPainterPath AGraphicComponent::path() const
-// {
-// 	return m_pPath;
-// }
-
-QBrush AGraphicComponent::brush() const
-{
-	return m_pBrush;
-}
-
-QPen AGraphicComponent::pen() const
-{
-	return m_pPen;
-}
-
-QColor AGraphicComponent::color() const
-{
-	return m_pColor;
-}
-
-void AGraphicComponent::setPath(const QPainterPath &path )
-{
-	m_pPath = path;
-	m_previousPath = path;
-}
-
-void AGraphicComponent::setBrush(const QBrush &brush)
-{
-	m_pBrush = brush;
-}
-
-void AGraphicComponent::setPen(const QPen &pen)
-{
-	m_pPen = pen;
-}
-
-void AGraphicComponent::setPen(const QColor &color)
-{
-	m_pColor = color;
-	m_pPen = QPen(color, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-}
-
-void AGraphicComponent::setColor(const QColor &color)
-{
-	m_pColor = color;
-}
-
-// </deprecated>
-
 void AGraphicComponent::scale(double sX, double sY)
 {
 	if ( sX > 0 && sY > 0 )
 	{
-		QPointF position = m_pPath.currentPosition();
-		QMatrix mId(1,0,0,1, 0, 0);
-		
-		mId.scale(sX, sY);
-		
-		m_pPath = mId.map(m_previousPath);
-		translate( position.x(), position.y());
+		foreach(AGraphic *graphic, m_graphics)
+		{
+			QPointF position = graphic->path.currentPosition();
+			QMatrix mId(1,0,0,1, 0, 0);
+			
+			mId.scale(sX, sY);
+			
+			graphic->path = mId.map(graphic->path);
+			translate( position.x(), position.y());
+		}
 	}
 }
 
 void AGraphicComponent::shear(double sX, double sY)
 {
-	QPointF position = m_pPath.currentPosition();
-	QMatrix mId(1,0,0,1, 0, 0);
-	
-	mId.shear(sX, sY);
-	m_pPath = mId.map(m_previousPath);
-	translate( position.x(), position.y());
+	foreach(AGraphic *graphic, m_graphics)
+	{
+		QPointF position = graphic->path.currentPosition();
+		QMatrix mId(1,0,0,1, 0, 0);
+		
+		mId.shear(sX, sY);
+		graphic->path = mId.map(graphic->path);
+		translate( position.x(), position.y());
+	}
 }
 
 void AGraphicComponent::translate(double sX, double sY)
 {
-	QPointF position = m_pPath.currentPosition();
-	QMatrix mId(1,0,0,1, 0, 0);
-	
-	mId.translate(sX-position.x(), sY-position.y());
-	m_pPath = mId.map(m_pPath);
+	foreach(AGraphic *graphic, m_graphics)
+	{
+		QPointF position = graphic->path.currentPosition();
+		QMatrix mId(1,0,0,1, 0, 0);
+		
+		mId.translate(sX-position.x(), sY-position.y());
+		graphic->path = mId.map(graphic->path);
+	}
 }
 
 void AGraphicComponent::rotate( double angle )
 {
-	QPointF position = m_pPath.currentPosition();
-	QMatrix mId(1,0,0,1, position.x(), position.y());
-	
-	mId.rotate(angle);
-	
-	m_pPath = mId.map(m_previousPath);
-	
-	translate( position.x(), position.y());
+	foreach(AGraphic *graphic, m_graphics)
+	{
+		QPointF position = graphic->path.currentPosition();
+		QMatrix mId(1,0,0,1, position.x(), position.y());
+		
+		mId.rotate(angle);
+		
+		graphic->path = mId.map(graphic->path);
+		
+		translate( position.x(), position.y());
+	}
 }
 
 
@@ -198,46 +165,53 @@ QDomElement AGraphicComponent::createXML( QDomDocument &doc )
 		item.setAttribute("name", m_name);
 	}
 	
-	QList<QPolygonF> polygons = m_pPath.toSubpathPolygons ();
-	
-	QList<QPolygonF>::ConstIterator polygonIt = polygons.begin();
-	
-	
-	QDomElement propertiesElement = doc.createElement("Properties");
-	QDomElement penElement = doc.createElement("Pen");
-	penElement.setAttribute("width", m_pPen.widthF() );
-	penElement.setAttribute("style", m_pPen.style() );
-	penElement.setAttribute("capstyle", m_pPen.capStyle() );
-	penElement.setAttribute("joinstyle", m_pPen.joinStyle() );
-	
-	penElement.appendChild( brushToElement( m_pPen.brush(), doc) );
-	
-	propertiesElement.appendChild(penElement);
-	
-	QDomElement brushElement = doc.createElement("Brush");
-	brushElement.setAttribute("style", m_pBrush.style() );
-	
-	brushElement.appendChild(brushToElement( m_pBrush, doc) );
-	
-	propertiesElement.appendChild(brushElement);
-	item.appendChild(propertiesElement);
-	
-	while ( polygonIt != polygons.end() )
+	foreach(AGraphic *graphic, m_graphics)
 	{
-		QDomElement polygonElement = doc.createElement("Polygon");
+		QDomElement graphicElement = doc.createElement("Graphic");
 		
-		QPolygonF::ConstIterator pointIt = (*polygonIt).begin();
+		QList<QPolygonF> polygons = graphic->path.toSubpathPolygons();
 		
-		QString attribute = "";
-		while (pointIt != (*polygonIt).end() )
+		QList<QPolygonF>::ConstIterator polygonIt = polygons.begin();
+		
+		
+		QDomElement propertiesElement = doc.createElement("Properties");
+		QDomElement penElement = doc.createElement("Pen");
+		penElement.setAttribute("width", graphic->pen.widthF() );
+		penElement.setAttribute("style", graphic->pen.style() );
+		penElement.setAttribute("capstyle", graphic->pen.capStyle() );
+		penElement.setAttribute("joinstyle", graphic->pen.joinStyle() );
+		
+		penElement.appendChild( brushToElement( graphic->pen.brush(), doc) );
+		
+		propertiesElement.appendChild(penElement);
+		
+		QDomElement brushElement = doc.createElement("Brush");
+		brushElement.setAttribute("style", graphic->brush.style() );
+		
+		brushElement.appendChild(brushToElement( graphic->brush, doc) );
+		
+		propertiesElement.appendChild(brushElement);
+		graphicElement.appendChild(propertiesElement);
+		
+		while ( polygonIt != polygons.end() )
 		{
-			attribute += QString("%1:%2 ").arg((*pointIt).x()).arg((*pointIt).y());
-			++pointIt;
+			QDomElement polygonElement = doc.createElement("Polygon");
+			
+			QPolygonF::ConstIterator pointIt = (*polygonIt).begin();
+			
+			QString attribute = "";
+			while (pointIt != (*polygonIt).end() )
+			{
+				attribute += QString("%1:%2 ").arg((*pointIt).x()).arg((*pointIt).y());
+				++pointIt;
+			}
+			polygonElement.setAttribute("points", attribute.trimmed());
+			graphicElement.appendChild(polygonElement);
+			
+			++polygonIt;
 		}
-		polygonElement.setAttribute("points", attribute.trimmed());
-		item.appendChild(polygonElement);
 		
-		++polygonIt;
+		item.appendChild(graphicElement);
 	}
 	
 	return item;

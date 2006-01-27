@@ -54,7 +54,8 @@ HEADERS += ktapplication.h \
            ktflatbutton.h \
            ktcolorbutton.h \
            kttoolpluginobject.h \
-           ktexportpluginobject.h 
+           ktexportpluginobject.h \
+           agraphic.h 
 SOURCES += ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
@@ -101,7 +102,8 @@ SOURCES += ktapplication.cpp \
            ktflatbutton.cpp \
            ktcolorbutton.cpp \
            kttoolpluginobject.cpp \
-           ktexportpluginobject.cpp 
+           ktexportpluginobject.cpp \
+           agraphic.cpp 
 QT += xml
 KDEV_QTVER = 4
 MOC_DIR = .moc

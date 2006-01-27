@@ -55,6 +55,8 @@ class KTLibraryParser : public QXmlDefaultHandler
 		QPen m_pen;
 		QGradient *m_gradient;
 		QGradientStops m_gradientStops;
+		
+		QList<AGraphic *> m_graphics;
 };
 
 #endif

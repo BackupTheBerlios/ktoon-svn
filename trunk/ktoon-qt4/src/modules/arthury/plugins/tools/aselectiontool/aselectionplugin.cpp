@@ -51,7 +51,6 @@ QRect ASelectionPlugin::press(const QString &brush, QPainter &painter, const QPa
 
 QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos)
 {
-	qDebug("BEGIN MOVE");
 	QRectF boundingRect;
 	if ( m_graphics.count() > 0 )
 	{
@@ -76,7 +75,6 @@ QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPain
 		emit toDrawGhostGraphic( ghost );
 	}
 	
-	qDebug("END MOVE");
 	return boundingRect.toRect();
 }
 

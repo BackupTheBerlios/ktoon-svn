@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,28 +18,39 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTPATHADJUSTER_H
-#define KTPATHADJUSTER_H
+#ifndef KTDISPLAYGRAPHIC_H
+#define KTDISPLAYGRAPHIC_H
 
+#include <QFrame>
 #include <QPainterPath>
-#include <QChar>
-#include <QStringList>
+#include <QImage>
+#include <QPen>
+#include <QBrush>
+
+#include "agraphic.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTPathAdjuster
+class KTDisplayGraphic : public QFrame
 {
+	Q_OBJECT
 	public:
-		KTPathAdjuster();
-		~KTPathAdjuster();
+		KTDisplayGraphic(QWidget *parent = 0);
+		~KTDisplayGraphic();
+		virtual QSize sizeHint() const;
 		
-		static QPainterPath toRect(const QPainterPath &p, const QRect &rect, float offset = 10.0f);
+	public:
+		void addGraphic(const AGraphic *graphic);
+		void removeGraphics();
+		void adjustPaths();
 		
-		static QList<QPainterPath> toRect(const QList<QPainterPath> &l, const QRect &rect, float offset = 10.0f);
+	private:
+		QImage m_displayArea;
+		QList<AGraphic *> m_graphics;
 		
-		static QPainterPath buildPath(const QStringList &polygonsStr, QChar sep);
-
+	protected:
+		virtual void paintEvent ( QPaintEvent * event );
 };
 
 #endif

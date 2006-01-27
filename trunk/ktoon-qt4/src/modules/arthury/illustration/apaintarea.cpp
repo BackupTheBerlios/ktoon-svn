@@ -266,7 +266,6 @@ void APaintArea::drawFrame(const KTKeyFrame *frame, QPainter *painter, float int
 void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter *painter, float intensitive )
 {
 	painter->save();
-	
 	foreach(AGraphic *graphic, graphicComponent->graphics())
 	{
 		QPen pen = graphic->pen;
@@ -312,9 +311,9 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter
 		{
 			painter->drawPolygon(*it);
 		}
-
-		painter->restore();
 	}
+	
+	painter->restore();
 }
 
 void APaintArea::redrawAll()

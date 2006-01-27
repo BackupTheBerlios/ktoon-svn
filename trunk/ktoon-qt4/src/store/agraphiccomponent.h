@@ -33,19 +33,11 @@
 
 #include "ktserializableobject.h"
 
+#include "agraphic.h"
+
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-
-struct AGraphic
-{
-	public:
-		AGraphic() {};
-		~AGraphic() {};
-		QPainterPath path;
-		QBrush brush;
-		QPen pen;
-};
 
 typedef QList<AGraphic *> Graphics;
 
@@ -65,27 +57,12 @@ class AGraphicComponent : public KTSerializableObject
 		
 		bool isValid();
 		
-		void addGraphic(AGraphic *graphic);
+// 		void addGraphic(const AGraphic *graphic);
 		void addGraphic(const QPainterPath &path, const QPen &pen, const QBrush &brush );
 		
 		Graphics graphics() const;
 		
 		bool intersects(const QRectF &rect);
-		
-		// <deprecated>
-		
-		QColor color() const;
-// 		QPainterPath path() const;
-		QBrush brush() const;
-		QPen pen() const;
-		
-		virtual void setPath(const QPainterPath &path );
-		virtual void setColor(const QColor &color);
-		virtual void setBrush(const QBrush &brush);
-		virtual void setPen(const QPen &pen);
-		virtual void setPen(const QColor &color);
-		
-		// </deprecated>
 		
 		void scale(double sX, double sY);
 		void shear(double sX, double sY);
@@ -99,20 +76,9 @@ class AGraphicComponent : public KTSerializableObject
 		QDomElement brushToElement(const QBrush &brush, QDomDocument &doc);
 		
 	protected:
-		// <deprecated>
-		QPainterPath m_pPath;
-		QColor m_pColor;
-		QBrush m_pBrush;
-		QPen m_pPen;
-		// </deprecated>
-		
-		
 		QString m_name;
-		
 		Graphics m_graphics;
-		
-	private:
-		QPainterPath m_previousPath;
+
 
 };
 

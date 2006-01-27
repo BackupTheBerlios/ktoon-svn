@@ -61,6 +61,50 @@ QPainterPath KTPathAdjuster::toRect(const QPainterPath &p, const QRect &rect, fl
 	return matrix.map(path);
 }
 
+QList<QPainterPath> KTPathAdjuster::toRect(const QList<QPainterPath> &l, const QRect &rect, float offset)
+{
+	QList<QPainterPath> returnList;
+	QRectF br;
+	
+	foreach(QPainterPath in, l)
+	{
+		br = br | in.boundingRect().toRect();
+	}
+
+	
+	foreach(QPainterPath path, l)
+	{
+		QMatrix matrix;
+		
+		float sx = 1, sy = 1;
+		if ( rect.width() < br.width() )
+		{
+			sx = static_cast<float>(rect.width()-offset) / static_cast<float>(br.width());
+		}
+		if ( rect.height() < br.height() )
+		{
+			sy = static_cast<float>(rect.height()-offset) / static_cast<float>(br.height());
+		}
+		
+		float factor = qMin(sx, sy);
+		matrix.scale(factor, factor);
+		path = matrix.map(path);
+		
+		matrix.reset();
+		
+		QPointF pos = path.boundingRect().topLeft();
+		
+		float tx = offset/2-pos.x(), ty = offset/2-pos.y();
+		
+		matrix.translate(tx, ty);
+		returnList << matrix.map(path);
+	}
+	
+	return returnList;
+}
+
+
+
 QPainterPath KTPathAdjuster::buildPath(const QStringList &polygonsStr, QChar sep)
 {
 	QPainterPath path;

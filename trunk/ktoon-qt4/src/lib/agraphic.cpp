@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,28 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTPATHADJUSTER_H
-#define KTPATHADJUSTER_H
+#include "agraphic.h"
 
-#include <QPainterPath>
-#include <QChar>
-#include <QStringList>
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-class KTPathAdjuster
+AGraphic::AGraphic()
 {
-	public:
-		KTPathAdjuster();
-		~KTPathAdjuster();
-		
-		static QPainterPath toRect(const QPainterPath &p, const QRect &rect, float offset = 10.0f);
-		
-		static QList<QPainterPath> toRect(const QList<QPainterPath> &l, const QRect &rect, float offset = 10.0f);
-		
-		static QPainterPath buildPath(const QStringList &polygonsStr, QChar sep);
+}
 
-};
+AGraphic::AGraphic(const AGraphic &toCopy) : path(toCopy.path), brush(toCopy.brush), pen(toCopy.pen)
+{
+}
 
-#endif
+AGraphic::~AGraphic()
+{
+}
+
+
