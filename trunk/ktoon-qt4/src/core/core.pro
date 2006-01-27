@@ -4,15 +4,14 @@
 # Target is an application:  ../../bin/ktoon
 
 QT += xml opengl 
-INSTALLS += ktbin \
-            kttrans \
-            ktdata 
+INSTALLS += kttrans \
+            ktdata \
+            target 
+target.path = /bin/ 
 ktdata.files += data/* 
 ktdata.path = /data 
 kttrans.files += *.qm 
 kttrans.path = /data/translations 
-ktbin.files += ../../bin/ktoon 
-ktbin.path = /bin 
 KDEV_QTVER = 4 
 TARGETDEPS += ../../src/dlslib/libdlslib.a \
               ../../src/dialogs/libdialogs.a \

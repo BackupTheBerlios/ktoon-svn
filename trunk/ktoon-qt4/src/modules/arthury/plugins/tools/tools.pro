@@ -7,7 +7,8 @@ SUBDIRS += agenericbrush \
            ageometrictool \
            ashapebrushplugin \
            aselectiontool \
-           atexttoolplugin 
+           atexttoolplugin \
+           aerasertool 
 CONFIG += release \
 warn_on
 TEMPLATE = subdirs

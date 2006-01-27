@@ -531,7 +531,10 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 				rect.translate(m_xpos, m_ypos);
 				update(rect);
 				
-				m_currentGraphic->addGraphic( m_currentTool->path(), painter.pen(), painter.brush());
+				if ( !m_currentTool->path().isEmpty())
+				{
+					m_currentGraphic->addGraphic( m_currentTool->path(), painter.pen(), painter.brush());
+				}
 				
 				if ( m_currentGraphic->isValid() )
 				{
