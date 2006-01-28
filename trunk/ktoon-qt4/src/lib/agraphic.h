@@ -21,9 +21,12 @@
 #ifndef AGRAPHIC_H
 #define AGRAPHIC_H
 
-#include <QPainterPath>
+#include <QList>
+#include <QPolygonF>
 #include <QPen>
 #include <QBrush>
+
+#include <QPainterPath>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -34,6 +37,7 @@ class AGraphic
 		AGraphic();
 		AGraphic(const AGraphic &toCopy);
 		~AGraphic();
+		
 		QPainterPath path;
 		QBrush brush;
 		QPen pen;

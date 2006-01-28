@@ -56,8 +56,7 @@ class AGenericBrush : public KTToolPluginObject, public AToolInterface
 	private:
 		QPoint m_firstPoint;
 		QList<QPoint> m_points;
-// 		QPainterPath m_path;
-		QPolygonF m_polygon;
+		QPainterPath m_path;
 };
 
 #endif

@@ -59,6 +59,7 @@ class AGraphicComponent : public KTSerializableObject
 		
 // 		void addGraphic(const AGraphic *graphic);
 		void addGraphic(const QPainterPath &path, const QPen &pen, const QBrush &brush );
+		void addGraphic(const QList<QPolygonF> &polygons, const QPen &pen, const QBrush &brush );
 		
 		Graphics graphics() const;
 		

@@ -225,7 +225,7 @@ function main()
 	
 	echo > $STAT_FILE
 	END=0
-	( ( $MAKE  >/dev/null 2>> $LOG_FILE || fails "Error while compile!" ) && echo END=1 > $STAT_FILE ) & 
+	( ( $MAKE  >/dev/null 2>> $LOG_FILE || fails "Error while compile!" && END=-1 ) && echo END=1 > $STAT_FILE ) & 
 	while [ $END -eq 0 ]
 	do
 		if [ -f $STAT_FILE ]
@@ -240,6 +240,11 @@ function main()
 	done
 	echo
 	rm $STAT_FILE
+	
+	if [ $END -eq -1 ]
+	then
+		exit -1
+	fi
 	
 	qpinfo "Compiling successful!"
 	

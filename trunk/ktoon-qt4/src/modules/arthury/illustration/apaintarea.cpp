@@ -304,12 +304,22 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter
 		
 		painter->setPen(pen);
 		painter->setBrush(brush);
-					
+		
+		
+		
 		QList<QPolygonF> poligons = graphic->path.toSubpathPolygons();
-		QList<QPolygonF>::const_iterator it;
-		for(it = poligons.begin(); it != poligons.end(); ++it)
+		
+		if ( poligons.count() == 1 )
 		{
-			painter->drawPolygon(*it);
+			painter->drawPath(graphic->path);
+		}
+		else
+		{
+			QList<QPolygonF>::const_iterator it;
+			for(it = poligons.begin(); it != poligons.end(); ++it)
+			{
+				painter->drawPolygon(*it);
+			}
 		}
 	}
 	
@@ -651,7 +661,10 @@ void APaintArea::copy()
 {
 	if(m_currentFrame->selectedComponents().count() > 0)
 	{
-		m_copiedGraphics = m_currentFrame->selectedComponents();
+		foreach(AGraphicComponent *component, m_currentFrame->selectedComponents())
+		{
+			m_copiedGraphics << new AGraphicComponent(*component);
+		}
 	}
 }
 

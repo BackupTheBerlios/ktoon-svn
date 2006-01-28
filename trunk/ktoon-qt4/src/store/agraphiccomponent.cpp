@@ -75,6 +75,23 @@ void AGraphicComponent::addGraphic(const QPainterPath &path, const QPen &pen, co
 	m_graphics << graphic;
 }
 
+void AGraphicComponent::addGraphic(const QList<QPolygonF> &polygons, const QPen &pen, const QBrush &brush )
+{
+	AGraphic *graphic = new AGraphic;
+	
+	QPainterPath path;
+	
+	foreach(QPolygonF pol, polygons)
+	{
+		path.addPolygon(pol);
+	}
+	
+	graphic->path = path;
+	graphic->brush = brush;
+	graphic->pen = pen;
+	m_graphics << graphic;
+}
+
 Graphics AGraphicComponent::graphics() const
 {
 	return m_graphics;

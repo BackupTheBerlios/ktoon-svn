@@ -186,15 +186,23 @@ void AAnimationArea::render() // TODO: Extend to scenes
 							foreach(AGraphic *graphic, (*it)->graphics() )
 							{
 								painter.save();
-														
+								
+								
 								painter.setPen(graphic->pen);
 								painter.setBrush(graphic->brush);
-	
-								QList<QPolygonF> poligons =   graphic->path.toSubpathPolygons();
-								QList<QPolygonF>::const_iterator it;
-								for(it = poligons.begin(); it != poligons.end(); ++it)
+								
+								QList<QPolygonF> poligons = graphic->path.toSubpathPolygons();
+								if ( poligons.count() == 1 )
 								{
-									painter.drawPolygon(*it);
+									painter.drawPath(graphic->path);
+								}
+								else
+								{
+									QList<QPolygonF>::const_iterator it;
+									for(it = poligons.begin(); it != poligons.end(); ++it)
+									{
+										painter.drawPolygon(*it);
+									}
 								}
 								painter.restore();
 							}

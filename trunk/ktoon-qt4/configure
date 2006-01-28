@@ -50,11 +50,16 @@ check "gif" gif && LIBS="$LIBS -lgif" && defineMacro HAVE_LIBGIF
 check "ffmpeg" ffmpeg && LIBS="$LIBS -lavcodec -lavformat" && defineMacro HAVE_FFMPEG
 check "ming" ming && LIBS="$LIBS -lming" && defineMacro HAVE_MING
 
-echo "LIBS += $LIBS" > $KT_CONFIG
+if [ "$LIBS" != '' ]
+then
+	echo "LIBS += $LIBS" > $KT_CONFIG
+else
+	echo > $KT_CONFIG
+fi
 
 echo
 echo "**************************************"
-qpwarn "$APPNAME is configured'"
+qpwarn "$APPNAME is configured"
 echo "**************************************"
 echo
 
