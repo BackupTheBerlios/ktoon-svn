@@ -143,7 +143,7 @@ void KTKeyFrame::addComponents(QList<AGraphicComponent *> comps)
 	m_components += comps;
 }
 
-void KTKeyFrame::cutSelections()
+void KTKeyFrame::removeSelections()
 {
 	foreach(AGraphicComponent *comp, m_selectedComponents)
 	{

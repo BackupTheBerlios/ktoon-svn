@@ -52,11 +52,17 @@ class ASelectionPlugin : public KTToolPluginObject, public AToolInterface
 		}
 		
 	private:
-		QRect drawControls(QPainter *painter);
+		QRect drawControls(const QString brush, QPainter *painter);
 		
 	private:
 		QPainterPath m_path;
 		QList<AGraphicComponent *> m_graphics;
+		bool selectPoint;
+		struct Node
+		{
+			int componentpos, graphicPos, polygonPos, pointPos;
+		} m_node;
+		
 };
 
 #endif

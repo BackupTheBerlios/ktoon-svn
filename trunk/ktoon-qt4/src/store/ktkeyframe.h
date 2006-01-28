@@ -58,7 +58,7 @@ class KTKeyFrame : public KTSerializableObject
 		void addSelectedComponent(AGraphicComponent *toSelect);
 		void deSelectedComponent(AGraphicComponent *toDeSelect);
 		void clearSelections();
-		void cutSelections();
+		void removeSelections();
 		QList<AGraphicComponent *> selectedComponents();
 		
 		

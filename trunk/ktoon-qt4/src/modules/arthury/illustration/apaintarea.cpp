@@ -620,6 +620,13 @@ void APaintArea::setNextFrames(int n)
 	}
 }
 
+void APaintArea::removeSelectsGraphics()
+{
+	m_currentFrame->removeSelections();
+	redrawAll();
+}
+
+
 AGraphicComponent *APaintArea::currentGraphic()
 {
 	return m_currentGraphic;
@@ -657,7 +664,7 @@ void APaintArea::paste()
 void APaintArea::cut()
 {
 	copy();
-	m_currentFrame->cutSelections();
+	m_currentFrame->removeSelections();
 	redrawAll();
 }
 

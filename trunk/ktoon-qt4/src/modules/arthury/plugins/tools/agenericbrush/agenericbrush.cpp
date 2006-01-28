@@ -32,8 +32,9 @@ QStringList AGenericBrush::keys() const
 QRect AGenericBrush::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, KTKeyFrame *currentFrame )
 {
 	m_firstPoint = QPoint(0,0);
-	m_path = QPainterPath();
-	m_path.moveTo(pos);
+// 	m_path = QPainterPath();
+	m_polygon.clear();
+	m_polygon << pos;
 	
 	return move(brush, painter, form, pos, pos);
 }
@@ -48,53 +49,29 @@ QRect AGenericBrush::move(const QString &brush, QPainter &painter,const QPainter
 	int thickness = painter.pen().width();
 	QColor transparentColor(color.red(), color.green(), color.blue(), 0);
 	
-	QPainterPath path;
-	path.setFillRule ( Qt::WindingFill );
-	m_path.setFillRule ( Qt::WindingFill );
+// 	QPolygon polygon;
+// 	path.setFillRule ( Qt::WindingFill );
+// 	m_path.setFillRule ( Qt::WindingFill );
 	if (brush == tr("Pencil") )
 	{
-		path.moveTo(oldPos);
-		path.lineTo(newPos);
-	}
-	else if ( brush == tr("Air Brush"))
-	{
-		int numSteps = 2 + (newPos - oldPos).manhattanLength() / 2;
-
-		painter.setBrush(QBrush(color, Qt::Dense6Pattern));
-		painter.setPen(Qt::NoPen);
-
-		for (int i = 0; i < numSteps; ++i)
-		{
-			int x = oldPos.x() + i * (newPos.x() - oldPos.x()) / (numSteps - 1);
-			int y = oldPos.y() + i * (newPos.y() - oldPos.y()) / (numSteps - 1);
-
-			path.addEllipse(x - (thickness / 2), y - (thickness / 2),thickness, thickness);
-		}
+		m_polygon << newPos;
 	}
 	else if ( brush == tr("Bezier Brush"))
 	{
 		if ( ! m_firstPoint.isNull() )
 		{
+			QPainterPath path;
 			m_points << oldPos << newPos;
 			path.moveTo(oldPos);
-// 			for(int i = 0; i < poly.count() ; i+=2)
-// 			{
-				QPointF medio = ( oldPos + newPos)/2;
-				QPointF cuarto = ( oldPos + medio)/2;
-				path.cubicTo(oldPos, cuarto, medio);
-				path.cubicTo(medio,  (cuarto + newPos)/2 , newPos);
-// 			}
-// 			path.moveTo(oldPos);
+			path.moveTo(oldPos);
 			
-// 			path.cubicTo(oldPos, m_firstPoint, newPos);
-// 			ktDebug() << newPos;
+			path.cubicTo(oldPos, m_firstPoint, newPos);
+			m_polygon += path.toFillPolygon();
 		}
 		m_firstPoint = oldPos;
 	}
 
-	painter.drawPath(path);
-	m_path.addPath ( path );
-// 	m_path.connectPath ( path );
+	painter.drawPolygon(m_polygon);
 	
 	painter.restore();
 	return boundingRect;
@@ -108,7 +85,9 @@ QRect AGenericBrush::release(const QString & /* brush */,QPainter &  /*painter *
 
 QPainterPath AGenericBrush::path() const
 {
-	return m_path;
+	QPainterPath path;
+	path.addPolygon(m_polygon);
+	return path;
 }
 
 QHash<QString, QAction *> AGenericBrush::actions()
@@ -119,10 +98,6 @@ QHash<QString, QAction *> AGenericBrush::actions()
 	pencil->setShortcut( QKeySequence(tr("P")) );
 	
 	hash.insert( tr("Pencil"), pencil );
-	
-	QAction *airBrush = new QAction( QIcon(), tr("Air Brush"), this);
-	airBrush->setShortcut( QKeySequence(tr("A")) );
-	hash.insert(tr("Air Brush"), airBrush);
 	
 	QAction *quadBrush = new QAction( QIcon(), tr("Bezier Brush"), this);
 	quadBrush->setShortcut( QKeySequence(tr("Q")) );
