@@ -21,28 +21,34 @@
 #ifndef KTMODULEWIDGETTITLE_H
 #define KTMODULEWIDGETTITLE_H
 
-#include "ktsqueezelabel.h"
+#include <QFrame>
 
 /**
  * @author David Cuadrado
 */
-class KTModuleWidgetTitle : public QLabel
+class KTModuleWidgetTitle : public QFrame
 {
 	Q_OBJECT
 	public:
 		KTModuleWidgetTitle(const QString &title, QWidget *parent = 0);
 		~KTModuleWidgetTitle();
+		QSize sizeHint() const;
 		
 		
 	public slots:
 		void setText(const QString &text);
+		void setFont(const QFont &font);
 		
 	signals:
 		void doubleClicked();
 		
 	protected:
 		void mouseDoubleClickEvent(QMouseEvent * e );
-
+		void paintEvent(QPaintEvent *e);
+		
+	private:
+		QString m_text;
+		QFont m_font;
 };
 
 #endif

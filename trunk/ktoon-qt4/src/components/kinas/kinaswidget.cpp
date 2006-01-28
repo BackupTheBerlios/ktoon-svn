@@ -10,10 +10,10 @@
 //
 //
 
-#include "ktoonscript.h"
+#include "kinaswidget.h"
 #include "ktdebug.h"
 
-KToonScript::KToonScript(QWidget *parent) : KTModuleWidgetBase(parent)
+KinasWidget::KinasWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 {
 	KTINIT;
 	
@@ -34,12 +34,12 @@ KToonScript::KToonScript(QWidget *parent) : KTModuleWidgetBase(parent)
 }
 
 
-KToonScript::~KToonScript()
+KinasWidget::~KinasWidget()
 {
 	KTEND;
 }
 
-void KToonScript::addEditor(const QString &title)
+void KinasWidget::addEditor(const QString &title)
 {
 	KTSEditor *m_editor = new KTSEditor;
 	m_editors->addTab(m_editor, title);

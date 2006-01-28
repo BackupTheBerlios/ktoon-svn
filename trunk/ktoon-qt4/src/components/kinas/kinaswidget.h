@@ -9,8 +9,8 @@
 // Copyright: See COPYING file that comes with this distribution
 //
 //
-#ifndef KTOONSCRIPT_H
-#define KTOONSCRIPT_H
+#ifndef KINASWIDGET_H
+#define KINASWIDGET_H
 
 #include <ktmodulewidgetbase.h>
 #include <QSplitter>
@@ -20,14 +20,14 @@
 #include "ktsfunctionview.h"
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@toonka.com>
 */
-class KToonScript : public KTModuleWidgetBase
+class KinasWidget : public KTModuleWidgetBase
 {
 	Q_OBJECT
 	public:
-		KToonScript(QWidget *parent = 0);
-		~KToonScript();
+		KinasWidget(QWidget *parent = 0);
+		~KinasWidget();
 		
 	public slots:
 		void addEditor(const QString &title);

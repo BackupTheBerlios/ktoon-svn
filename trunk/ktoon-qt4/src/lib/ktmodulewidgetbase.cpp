@@ -38,7 +38,7 @@ KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWid
 	m_title = new KTModuleWidgetTitle("", this);
 	setMinimumSize(m_title->size());
 	
-	m_title->setToolTip(tr("Double click for roll up"));
+// 	m_title->setToolTip(tr("Double click for roll up"));
 	
 	m_container->addWidget(m_title);
 	m_container->setAlignment(m_title, Qt::AlignTop);

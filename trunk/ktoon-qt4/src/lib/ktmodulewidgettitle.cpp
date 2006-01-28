@@ -22,9 +22,13 @@
 
 #include <QLabel>
 #include <QFrame>
+#include <QPainterPath>
+#include <QPainter>
+#include <QLinearGradient>
 
-KTModuleWidgetTitle::KTModuleWidgetTitle(const QString &title, QWidget *parent)
- : QLabel(parent)
+#include "ktdebug.h"
+
+KTModuleWidgetTitle::KTModuleWidgetTitle(const QString &title, QWidget *parent) : QFrame(parent)
 {
 	setFrameStyle( QFrame::Box | QFrame::Raised );
 	setText(title);
@@ -32,11 +36,29 @@ KTModuleWidgetTitle::KTModuleWidgetTitle(const QString &title, QWidget *parent)
 #if QT_VERSION >= 0x040100
 	setAutoFillBackground(true);
 #endif
+
+	setToolTip(tr("Double clickme for undock"));
+	
+	setFont(font());
 }
 
 
 KTModuleWidgetTitle::~KTModuleWidgetTitle()
 {
+}
+
+QSize KTModuleWidgetTitle::sizeHint() const
+{
+	QFontMetrics fm(m_font);
+	
+	QString text = m_text;
+	
+	if ( m_text.isNull() )
+	{
+		text = "XXXXX";
+	}
+	
+	return QSize(QFrame::sizeHint().width(), fm.size(Qt::TextSingleLine, text).height());
 }
 
 void KTModuleWidgetTitle::mouseDoubleClickEvent(QMouseEvent *)
@@ -46,6 +68,40 @@ void KTModuleWidgetTitle::mouseDoubleClickEvent(QMouseEvent *)
 
 void KTModuleWidgetTitle::setText( const QString &text)
 {
-	QLabel::setText("<div align=center>"+text+"</div>");
+	m_text = text;
 }
+
+void KTModuleWidgetTitle::setFont(const QFont &font)
+{
+	m_font = font;
+	
+	QFontMetrics fm(font);
+	setMinimumHeight( fm.size(Qt::TextSingleLine, "X").height() );
+}
+
+void KTModuleWidgetTitle::paintEvent(QPaintEvent *e)
+{
+	QFrame::paintEvent(e);
+	
+	QRect rect = contentsRect();
+	
+	QPainter painter(this);
+	
+	QPoint start = rect.topLeft();
+	start.setY(rect.center().y());
+	QLinearGradient gradient(start, rect.bottomLeft());
+	gradient.setSpread(QGradient::ReflectSpread);
+	gradient.setColorAt(0, palette().button().color());
+	gradient.setColorAt(1, palette().background().color());
+	
+	painter.fillRect(rect, QBrush(gradient));
+	
+	painter.setFont(m_font);
+	QFontMetrics fm(m_font);
+	QSize tSize = fm.size(Qt::TextSingleLine, m_text);
+	painter.drawText( (width()-tSize.width())/2, height()-5, m_text);
+	
+}
+
+
 

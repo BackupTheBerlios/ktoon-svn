@@ -170,10 +170,11 @@ void KTMainWindow::createGUI()
 	
 	
 	//////////////////
-// 	KToonScript *m_scriptEditor = new KToonScript(this);
-// 	m_scriptEditor->setWindowIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.png") );
-// 	toolWindow(DDockWindow::Bottom)->addWidget(tr("KToonScript"), m_scriptEditor);
-	
+#ifdef WITH_KINAS
+	KinasWidget *m_scriptEditor = new KinasWidget(this);
+	m_scriptEditor->setWindowIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.png") );
+	toolWindow(DDockWindow::Bottom)->addWidget(tr("Kinas"), m_scriptEditor);
+#endif
 	/////////////////
 	
 	KTGCEditor *m_gcEditor = new KTGCEditor(this);

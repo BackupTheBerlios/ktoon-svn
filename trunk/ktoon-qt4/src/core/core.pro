@@ -18,7 +18,6 @@ TARGETDEPS += ../../src/dlslib/libdlslib.a \
               ../../src/components/colorpalette/libcolorpalette.a \
               ../../src/components/scenes/libscenes.a \
               ../../src/components/brushes/libbrushes.a \
-              ../../src/components/ktoonscript/libktoonscript.a \
               ../../src/components/exposure/libexposure.a \
               ../../src/components/timeline/libtimeline.a \
               ../../src/components/library/liblibrary.a \
@@ -30,13 +29,13 @@ TARGETDEPS += ../../src/dlslib/libdlslib.a \
               ../../src/components/help/libhelp.a \
               ../../src/store/libstore.so \
               ../../src/ktoonstyle/libktoonstyle.a \
-              ../../src/components/export/ui/libui.a 
+              ../../src/components/export/ui/libui.a \
+              ../../src/components/kinas/libkinas.a 
 LIBS += ../../src/ktoonstyle/libktoonstyle.a \
         ../../src/dialogs/libdialogs.a \
         ../../src/components/brushes/libbrushes.a \
         ../../src/components/colorpalette/libcolorpalette.a \
         ../../src/components/scenes/libscenes.a \
-        ../../src/components/ktoonscript/libktoonscript.a \
         ../../src/components/exposure/libexposure.a \
         ../../src/components/timeline/libtimeline.a \
         ../../src/components/library/liblibrary.a \
@@ -48,16 +47,17 @@ LIBS += ../../src/ktoonstyle/libktoonstyle.a \
         ../../src/components/import/libimport.a \
         ../../src/components/help/libhelp.a \
         -lstore \
-        ../../src/components/export/ui/libui.a 
+        ../../src/components/export/ui/libui.a \
+        ../../src/components/kinas/libkinas.a 
 INCLUDEPATH += ../../src/ktoonstyle \
                ../../src/modules/arthury/interfaces \
                ../../src/modules/arthury/animation \
                ../../src/modules/arthury/illustration \
+               ../../src/components/kinas \
                ../../src/components/help \
                ../../src/components/gceditor \
                ../../src/components/import \
                ../../src/components/export/ui \
-               ../../src/components/ktoonscript \
                ../../src/components/exposure \
                ../../src/components/timeline \
                ../../src/components/library \

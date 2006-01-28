@@ -37,7 +37,7 @@
 #include "ktfiledialog.h"
 
 #include "ktexposuresheet.h"
-#include "ktoonscript.h"
+#include "kinaswidget.h"
 
 #include "preferences.h"
 #include "ktsceneswidget.h"
