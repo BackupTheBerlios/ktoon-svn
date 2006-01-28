@@ -251,10 +251,14 @@ void KTViewDocument::createTools()
 	m_toolbar->setIconSize( QSize(22,22) );
 	addToolBar ( Qt::LeftToolBarArea, m_toolbar );
 	
+	connect(m_toolbar, SIGNAL(actionTriggered(QAction *)), this, SLOT(selectToolFromMenu(QAction *)));
+	
 	// Brushes menu
 	m_brushesMenu = new QMenu(tr("Brushes"), m_toolbar);
 	m_brushesMenu->setIcon( QPixmap(KTOON_THEME_DIR+"/icons/brush.png") );
 	connect( m_brushesMenu, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
+	
+// 	connect(m_brushesMenu->menuAction(), SIGNAL(triggered()), this, SLOT(selectToolFromMenu()));
 	
 	m_toolbar->addAction(m_brushesMenu->menuAction());
 	
@@ -262,7 +266,7 @@ void KTViewDocument::createTools()
 	
 	m_selectionMenu = new QMenu( tr("selection"), m_toolbar );
 	m_selectionMenu->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/selection.png"));
-	connect( m_selectionMenu, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
+	connect( m_selectionMenu, SIGNAL(triggered ()), this, SLOT(selectTool()));
 	
 	m_toolbar->addAction(m_selectionMenu->menuAction());
 	
@@ -449,16 +453,28 @@ void KTViewDocument::loadPlugins()
 							case AToolInterface::Brush:
 							{
 								m_brushesMenu->addAction(act);
+								if ( !m_brushesMenu->activeAction() )
+								{
+									act->trigger();
+								}
 							}
 							break;
 							case AToolInterface::Selection:
 							{
 								m_selectionMenu->addAction(act);
+								if ( !m_selectionMenu->activeAction() )
+								{
+									act->trigger();
+								}
 							}
 							break;
 							case AToolInterface::Fill:
 							{
 								m_fillMenu->addAction(act);
+								if ( !m_fillMenu->activeAction() )
+								{
+									act->trigger();
+								}
 							}
 							break;
 							default:
@@ -482,6 +498,7 @@ void KTViewDocument::loadPlugins()
 
 void KTViewDocument::selectTool()
 {
+	KT_FUNCINFO;
 	QAction *action = qobject_cast<QAction *>(sender());
 	
 	if ( action )
@@ -489,6 +506,40 @@ void KTViewDocument::selectTool()
 		AToolInterface *aTool = qobject_cast<AToolInterface *>(action->parent());
 		QString tool = action->text();
 
+		switch(aTool->type())
+		{
+			case AToolInterface::Brush:
+			{
+				m_brushesMenu->setDefaultAction(action);
+				m_brushesMenu->setActiveAction(action);
+				if ( !action->icon().isNull() )
+				{
+					m_brushesMenu->menuAction()->setIcon(action->icon());
+				}
+			}
+			break;
+			case AToolInterface::Fill:
+			{
+				m_fillMenu->setDefaultAction(action);
+				m_fillMenu->setActiveAction(action);
+				if ( !action->icon().isNull() )
+				{
+					m_fillMenu->menuAction()->setIcon(action->icon());
+				}
+			}
+			break;
+			case AToolInterface::Selection:
+			{
+				m_selectionMenu->setDefaultAction(action);
+				m_selectionMenu->setActiveAction(action);
+				if ( !action->icon().isNull() )
+				{
+					m_selectionMenu->menuAction()->setIcon(action->icon());
+				}
+			}
+			break;
+		}
+		
 		QWidget *toolConfigurator = aTool->configurator();
 		
 		if ( toolConfigurator )
@@ -498,6 +549,22 @@ void KTViewDocument::selectTool()
 		}
 		
 		m_paintAreaContainer->drawArea()->setTool(aTool, tool);
+	}
+}
+
+void KTViewDocument::selectToolFromMenu(QAction *action)
+{
+	KT_FUNCINFO;
+	
+	QMenu *menu = qobject_cast<QMenu *>(action->parent());
+	if (menu )
+	{
+		QAction *tool = menu->activeAction();
+		
+		if ( tool )
+		{
+			tool->trigger(); // this call selectTool()
+		}
 	}
 }
 
@@ -515,22 +582,6 @@ void KTViewDocument::applyFilter()
 // 		
 // 		m_paintAreaContainer->drawArea()->setPaintDevice(image);
 // 	}
-}
-
-void KTViewDocument::changeTool( QAction *a)
-{
-	QMenu *menuTmp = qobject_cast<QMenu*>(a->parentWidget());
-	if(menuTmp)
-	{
-		menuTmp->setIcon(a->icon());
-		menuTmp->setDefaultAction (  a );
-		menuTmp->setActiveAction ( a );
-	}
-	else
-	{
-// 		ktDebug( 1) << "else" << endl;
-	}
-	
 }
 
 void KTViewDocument::createToolbar()

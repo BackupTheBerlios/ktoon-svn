@@ -33,7 +33,7 @@ AFillTool::~AFillTool()
 
 QStringList AFillTool::keys() const
 {
-	return QStringList() << "Fill";
+	return QStringList() << "Fill" << "Remove Fill" << "Countour Fill";
 }
 
 
@@ -42,9 +42,19 @@ QHash< QString, QAction * > AFillTool::actions()
 	QHash<QString, QAction *> hash;
 	
 	QAction *fillAction = new QAction( QIcon(QPixmap(KTOON_THEME_DIR+"/icons/fill.png")), tr("Fill"), this);
-	fillAction->setShortcut( QKeySequence(tr("F")) );
+	fillAction->setShortcut( QKeySequence( tr("F") ) );
 	
 	hash.insert( tr("Fill"), fillAction );
+	
+	QAction *removeFillAction = new QAction( QIcon(QPixmap(KTOON_THEME_DIR+"/icons/removefill.png")), tr("Remove Fill"), this);
+	removeFillAction->setShortcut( QKeySequence(tr("Shift+F") ));
+	
+	hash.insert( tr("Remove Fill"), removeFillAction );
+	
+	QAction *countourFillAction = new QAction( QIcon(QPixmap(KTOON_THEME_DIR+"/icons/contour.png")), tr("Countour Fill"), this);
+	countourFillAction->setShortcut( QKeySequence(tr("Control+F") ));
+	
+	hash.insert( tr("Countour Fill"), countourFillAction );
 	
 	return hash;
 }
@@ -64,7 +74,20 @@ QRect AFillTool::press(const QString& brush, QPainter& painter, const QPainterPa
 		{
 			if ( graphic->path.contains(pos) )
 			{
-				graphic->brush = painter.pen().brush();
+				if ( brush == "Fill" )
+				{
+					graphic->brush = painter.pen().brush();
+				}
+				else if ( brush == "Remove Fill" )
+				{
+					graphic->brush = Qt::transparent;
+				}
+				else if ( brush == "Countour Fill" )
+				{
+					graphic->pen = painter.pen();
+				}
+				
+				break;
 			}
 		}
 		

@@ -102,9 +102,9 @@ class KTViewDocument : public KTMdiWindow
 	private slots:
 		void showPos(const QPoint &p);	
 		void setCursor(const QCursor &c);
-		void changeTool(QAction *a);
 		
 		void selectTool();
+		void selectToolFromMenu(QAction *act);
 		void applyFilter();
 		
 	protected:
