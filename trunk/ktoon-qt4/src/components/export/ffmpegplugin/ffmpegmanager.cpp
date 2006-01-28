@@ -196,7 +196,12 @@ AVStream *FFMpegManager::addVideoStream(AVFormatContext *oc, int codec_id, int w
 		return 0;
 	}
 
+#if LIBAVCODEC_BUILD <= 4743
 	c = &st->codec;
+#else
+	c = st->codec;
+#endif
+
 	c->codec_id = CodecID(codec_id);
 	c->codec_type = CODEC_TYPE_VIDEO;
 
@@ -205,9 +210,14 @@ AVStream *FFMpegManager::addVideoStream(AVFormatContext *oc, int codec_id, int w
 	/* resolution must be a multiple of two */
 	c->width = w;  // 520
 	c->height = h; // 340
+
+#if LIBAVCODEC_BUILD <= 4743
+#warning FIXME:  fps support
 	/* frames per second */
 	c->frame_rate = fps;
 	c->frame_rate_base = 1;
+#endif
+
 	c->gop_size = 12; /* emit one intra frame every twelve frames at most */
 	if (c->codec_id == CODEC_ID_MPEG2VIDEO) 
 	{
@@ -256,7 +266,11 @@ AVFrame *FFMpegManager::allocPicture(int pix_fmt, int width, int height)
 
 bool FFMpegManager::writeVideoFrame(const QString &imagePath, AVFormatContext *oc, AVStream *st, int fps)
 {
+#if LIBAVCODEC_BUILD <= 4743
 	AVCodecContext *c = &st->codec;
+#else
+	AVCodecContext *c = st->codec;
+#endif
 
 	AVFrame *picturePtr;
 	
@@ -340,9 +354,11 @@ bool FFMpegManager::openVideo(AVFormatContext *oc, AVStream *st)
 {
 	AVCodec *codec;
 	AVCodecContext *c;
-
+#if LIBAVCODEC_BUILD <= 4743
 	c = &st->codec;
-
+#else
+	c = st->codec;
+#endif
 	/* find the video encoder */
 	
 	codec = avcodec_find_encoder(c->codec_id);
@@ -394,7 +410,13 @@ bool FFMpegManager::openVideo(AVFormatContext *oc, AVStream *st)
 
 void FFMpegManager::closeVideo(AVFormatContext *oc, AVStream *st)
 {
-	avcodec_close(&st->codec);
+	AVCodecContext *c;
+#if LIBAVCODEC_BUILD <= 4743
+	c = &st->codec;
+#else
+	c = st->codec;
+#endif
+	avcodec_close(c);
 	av_free(m_picture->data[0]);
 	av_free(m_picture);
 	if (m_tmpPicture)

@@ -59,7 +59,7 @@ fi
 
 echo
 echo "**************************************"
-qpwarn "$APPNAME is configured"
+qpwarn "$APPNAME is configured, if you want to clean configuration, execute \'make -f Makefile.common confclean\'"
 echo "**************************************"
 echo
 

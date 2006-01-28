@@ -1,0 +1,18 @@
+
+all: build
+
+confclean:
+	cd configure.tests 
+	cd configure.tests/ffmpeg && make clean 
+	cd configure.tests/sound && make clean 
+	cd configure.tests/gif && make clean 
+	cd configure.tests/ming && make clean 
+
+build:
+	sh build.sh
+
+configure:
+	sh configure
+
+translate:
+	sh scripts/translate.sh

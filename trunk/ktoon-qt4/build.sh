@@ -26,7 +26,9 @@ function fails ()
 	echo `dmesg | tail -n 10` >> $LOG_FILE
 	echo "---------------------" >> $LOG_FILE
 	echo "Send the file $LOG_FILE to $EMAIL"
-	exit 1
+	echo 'END=-1' > $STAT_FILE
+
+	return -1
 }
 
 
@@ -225,7 +227,8 @@ function main()
 	
 	echo > $STAT_FILE
 	END=0
-	( ( $MAKE  >/dev/null 2>> $LOG_FILE || fails "Error while compile!" && END=-1 ) && echo END=1 > $STAT_FILE ) & 
+	( ( $MAKE  >/dev/null 2>> $LOG_FILE || fails "Error while compile!" ) && echo END=1 > $STAT_FILE ) & 
+	
 	while [ $END -eq 0 ]
 	do
 		if [ -f $STAT_FILE ]
