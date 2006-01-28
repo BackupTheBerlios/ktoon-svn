@@ -266,6 +266,13 @@ void KTViewDocument::createTools()
 	
 	m_toolbar->addAction(m_selectionMenu->menuAction());
 	
+	// Fill menu
+	m_fillMenu = new QMenu(tr("Fill"), m_toolbar);
+	m_fillMenu->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/fill.png"));
+	connect(m_fillMenu, SIGNAL(triggered(QAction *)), this, SLOT(changeTool( QAction* )));
+	
+	m_toolbar->addAction(m_fillMenu->menuAction());
+	
 #if 0
 	m_toolsSelection->addAction(QPixmap(KTOON_THEME_DIR+"/icons/nodes.png"), tr( "Con&tour Selection" ), m_paintAreaContainer->drawArea(), SLOT( slotContourSelection()), tr("T") );
 	
@@ -448,6 +455,12 @@ void KTViewDocument::loadPlugins()
 							{
 								m_selectionMenu->addAction(act);
 							}
+							break;
+							case AToolInterface::Fill:
+							{
+								m_fillMenu->addAction(act);
+							}
+							break;
 							default:
 							{
 							}
@@ -462,7 +475,7 @@ void KTViewDocument::loadPlugins()
 		}
 		else
 		{
-			ktError() << tr("Not load, please try to rebuild from the scratch");
+// 			ktError() << tr("Not load, please try to rebuild from the scratch");
 		}
 	}
 }

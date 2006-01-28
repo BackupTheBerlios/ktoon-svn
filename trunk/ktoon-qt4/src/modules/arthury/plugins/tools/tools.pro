@@ -8,7 +8,8 @@ SUBDIRS += agenericbrush \
            ashapebrushplugin \
            aselectiontool \
            atexttoolplugin \
-           aerasertool 
+           aerasertool \
+           afilltool 
 CONFIG += release \
 warn_on
 TEMPLATE = subdirs

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,56 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef ATOOLINTERFACE_H
-#define ATOOLINTERFACE_H
+#ifndef AFILLTOOL_H
+#define AFILLTOOL_H
 
-#include <QStringList>
-#include <QRect>
-#include <QPoint>
-#include <QPainter>
-#include <QBrush>
-#include <QPen>
-#include <QPainterPath>
-#include <QImage>
-#include <QAction>
-#include <QHash>
-
-#include "agraphiccomponent.h"
-#include "kttoolpluginobject.h"
-#include "ktkeyframe.h"
-
-#include "qplugin.h" // Q_EXPORT_PLUGIN
+#include <kttoolpluginobject.h>
+#include <atoolinterface.h>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-
-class AToolInterface
+class AFillTool : public KTToolPluginObject, public AToolInterface
 {
+	Q_OBJECT;
+	Q_INTERFACES(AToolInterface);
 	public:
-		enum Type
-		{
-			None = 0,
-			Brush,
-			Fill,
-			Selection
-		};
-		
-		virtual ~AToolInterface() {};
-		virtual QStringList keys() const = 0;
-		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, KTKeyFrame *currentFrame = 0) = 0;
-		virtual QRect move(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos) = 0;
-		virtual QRect release(const QString &brush, QPainter &painter,const QPainterPath &form, const QPoint &pos) = 0;
-		
-		virtual QHash<QString, QAction *>actions() = 0;
-		
-		virtual QPainterPath path() const = 0;
-		
-		virtual int type() const = 0;
-		
-		virtual QWidget *configurator() = 0;
-};
+		AFillTool();
+		~AFillTool();
 
-Q_DECLARE_INTERFACE( AToolInterface, "com.toonka.ktoon.AToolInterface/0.1" );
+		virtual QHash< QString, QAction * > actions();
+		virtual QPainterPath path() const;
+		virtual QRect move(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& oldPos, const QPoint& newPos);
+		virtual QRect press(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& pos, KTKeyFrame* currentFrame);
+		virtual QRect release(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &pos);
+		virtual QStringList keys() const;
+		virtual QWidget* configurator();
+		virtual int type() const;
+
+};
 
 #endif

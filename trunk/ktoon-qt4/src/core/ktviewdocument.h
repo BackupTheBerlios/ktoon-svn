@@ -69,7 +69,7 @@ class KTViewDocument : public KTMdiWindow
 		
 	private:
 		QActionGroup *m_gridGroup, *m_editGroup, *m_editGroup2, *m_viewNextGroup, *m_viewPreviousGroup;
-		QMenu *m_brushesMenu, *m_selectionMenu, *m_filterMenu;
+		QMenu *m_brushesMenu, *m_selectionMenu, *m_fillMenu, *m_filterMenu;
 		
 // 		QMenu *m_toolsSelection, *m_toolsDraw, *m_toolsFills, *m_toolsErasers, *m_toolsView, *m_toolsOrder,*m_toolsAlign, *m_toolsTransform;
 		QAction *m_aUndo, *m_aRedo, *m_aClose;

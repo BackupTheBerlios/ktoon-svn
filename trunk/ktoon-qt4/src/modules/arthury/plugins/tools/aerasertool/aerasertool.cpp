@@ -67,10 +67,10 @@ QHash<QString, QAction *> AEraserTool::actions()
 {
 	QHash<QString, QAction *> hash;
 	
-	QAction *pencil = new QAction( QIcon(), tr("Node eraser"), this);
-	pencil->setShortcut( QKeySequence(tr("T")) );
+	QAction *eraserAction = new QAction( QIcon(), tr("Node eraser"), this);
+	eraserAction->setShortcut( QKeySequence(tr("T")) );
 	
-	hash.insert( tr("Node eraser"), pencil );
+	hash.insert( tr("Node eraser"), eraserAction );
 	
 	return hash;
 }
