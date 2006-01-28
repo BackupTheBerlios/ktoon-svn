@@ -23,7 +23,7 @@ function check()
 		RESULT="no."
 	fi
 	
-	qpinfo "Checking for $1... \t$RESULT" -n
+	qpinfo "Checking for $1... $RESULT" -n
 	
 	if [ ${RESULT} != "yes." ]
 	then
@@ -47,7 +47,7 @@ LIBS=''
 
 check "sound" sound && LIBS="$LIBS -laudio" && defineMacro HAVE_SOUND
 check "gif" gif && LIBS="$LIBS -lgif" && defineMacro HAVE_LIBGIF
-check "ffmpeg" ffmpeg && LIBS="$LIBS -lavcodec -lavformat" && defineMacro HAVE_FFMPEG
+check "ffmpeg 0.4.9" ffmpeg && LIBS="$LIBS -lavcodec -lavformat" && defineMacro HAVE_FFMPEG
 check "ming" ming && LIBS="$LIBS -lming" && defineMacro HAVE_MING
 
 if [ "$LIBS" != '' ]
