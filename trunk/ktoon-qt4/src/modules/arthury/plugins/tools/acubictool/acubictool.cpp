@@ -88,8 +88,11 @@ QRect ACubicTool::move(const QString& brush, QPainter& painter, const QPainterPa
 
 QRect ACubicTool::press(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& pos, KTKeyFrame* currentFrame)
 {
+	if(m_isComplete)
+	{
+		m_isComplete = false;
+	}
 	
-	ktDebug() << "press";
 	Node node;
 	node.center = pos;
 	m_nodes << node;

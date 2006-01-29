@@ -84,7 +84,7 @@ QRect AFillTool::press(const QString& brush, QPainter& painter, const QPainterPa
 				}
 				else if ( brush == "Countour Fill" )
 				{
-					graphic->pen = painter.pen();
+					graphic->pen.setBrush(painter.pen().brush());
 				}
 				
 				break;
