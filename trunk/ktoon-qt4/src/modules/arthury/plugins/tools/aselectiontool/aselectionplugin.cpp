@@ -59,7 +59,6 @@ QRect ASelectionPlugin::press(const QString &brush, QPainter &painter, const QPa
 		{
 			foreach(AGraphic *graphic, component->graphics() )
 			{
-// 				QPolygonF polygon = graphic->path.toFillPolygon();
 				QList<QPolygonF> polygons = graphic->path.toSubpathPolygons();
 				ktDebug() << "polygons.count()" <<  polygons.count();
 				foreach(QPolygonF polygon, polygons)
@@ -123,36 +122,20 @@ QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPain
 		}
 		else if(brush == tr("Contour") && selectPoint)
 		{
-			ktDebug() << "here c:" 
-					<< m_node.componentpos 
-					<< " g:" 
-					<< m_node.graphicPos 
-					<< "pol: " 
-					<< m_node.polygonPos 
-					<< "point: " 
-					<< m_node.pointPos;
-			ktDebug() << "component" ;
-			ktDebug() << m_graphics[m_node.componentpos]->graphics()[m_node.graphicPos]->path.toSubpathPolygons()[m_node.polygonPos].count();
-			ktDebug() << "component end" ;
-// 			QPolygonF polygon = m_graphics[m_node.componentpos]->graphics()[m_node.graphicPos]->path.toSubpathPolygons()[m_node.polygonPos];
-// 			
+
 			QList<QPolygonF> polygons = m_graphics[m_node.componentpos]->graphics()[m_node.graphicPos]->path.toSubpathPolygons();
-// 			ktDebug() << "polygons.count()" <<  polygons.count();
 			m_graphics[m_node.componentpos]->graphics()[m_node.graphicPos]->path = QPainterPath();
 			foreach(QPolygonF polygon, polygons)
 			{
-// 				ktDebug() << "as";
 				if(polygon == polygons[m_node.polygonPos])
 				{
 					if(m_node.pointPos == 0 && polygon.first () == polygon.last ()  )
 					{
-// 						ktDebug() << "aki";
 						polygon[m_node.pointPos] = newPos;
 						polygon[polygon.count()-1] = newPos;
 					}
 					else
 					{
-// 						ktDebug() << "aka";
 						polygon[m_node.pointPos] = newPos;
 					}
 				}

@@ -546,7 +546,7 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 					m_currentGraphic->addGraphic( m_currentTool->path(), painter.pen(), painter.brush());
 				}
 				
-				if ( m_currentGraphic->isValid() )
+				if ( m_currentGraphic->isValid() && m_currentTool->isComplete() )
 				{
 					ktDebug() << "Adding component";
 					
@@ -563,6 +563,11 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 
 void APaintArea::setTool( AToolInterface *toolIface, const QString &tool)
 {
+	if ( m_currentTool )
+	{
+		m_currentTool->aboutToChangeTool();
+	}
+	
 	m_currentTool = toolIface;
 	m_currentKeyTool = tool;
 }

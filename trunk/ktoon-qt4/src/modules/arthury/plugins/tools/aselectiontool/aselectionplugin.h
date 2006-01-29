@@ -50,6 +50,13 @@ class ASelectionPlugin : public KTToolPluginObject, public AToolInterface
 		{
 			return 0;
 		}
+		virtual bool isComplete() const
+		{
+			return false;
+		}
+		virtual void aboutToChangeTool() 
+		{
+		}
 		
 	private:
 		QRect drawControls(const QString brush, QPainter *painter);

@@ -55,6 +55,13 @@ class ATextTool : public KTToolPluginObject, public AToolInterface
 		{
 			return m_configurator;
 		}
+		virtual bool isComplete() const
+		{
+			return true;
+		}
+		virtual void aboutToChangeTool() 
+		{
+		}
 		
 	private:
 		QPainterPath m_path;

@@ -52,7 +52,13 @@ class AGeometricToolPlugin : public KTToolPluginObject, public AToolInterface
 		{
 			return  0;
 		}
-		
+		virtual bool isComplete() const
+		{
+			return true;
+		}
+		virtual void aboutToChangeTool() 
+		{
+		}
 	private:
 		QPainterPath m_path;
 		QRect m_rect;

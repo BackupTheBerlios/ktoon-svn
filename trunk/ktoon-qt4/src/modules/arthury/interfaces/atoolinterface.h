@@ -66,6 +66,9 @@ class AToolInterface
 		virtual int type() const = 0;
 		
 		virtual QWidget *configurator() = 0;
+		
+		virtual bool isComplete() const = 0;
+		virtual void aboutToChangeTool() = 0;
 };
 
 Q_DECLARE_INTERFACE( AToolInterface, "com.toonka.ktoon.AToolInterface/0.1" );

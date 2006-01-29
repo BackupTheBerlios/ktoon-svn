@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2006 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,41 +17,69 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
 
-#ifndef AFILLTOOL_H
-#define AFILLTOOL_H
+#ifndef ACUBICTOOL_H
+#define ACUBICTOOL_H
 
 #include <kttoolpluginobject.h>
 #include <atoolinterface.h>
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-class AFillTool : public KTToolPluginObject, public AToolInterface
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ */
+
+class ACubicTool : public KTToolPluginObject, public AToolInterface
 {
-	Q_OBJECT;
+	Q_OBJECT
 	Q_INTERFACES(AToolInterface);
 	public:
-		AFillTool();
-		~AFillTool();
-
+		ACubicTool();
+		~ACubicTool();
+		
 		virtual QHash< QString, QAction * > actions();
 		virtual QPainterPath path() const;
 		virtual QRect move(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& oldPos, const QPoint& newPos);
 		virtual QRect press(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& pos, KTKeyFrame* currentFrame);
-		virtual QRect release(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &pos);
+		virtual QRect release(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& pos);
 		virtual QStringList keys() const;
-		virtual QWidget* configurator();
-		virtual int type() const;
+		virtual QWidget* configurator()
+		{
+			return 0;
+		}
+		virtual int type() const
+		{
+			return Brush;
+		};
 		
 		virtual bool isComplete() const
 		{
-			return false;
+			return m_isComplete;
 		}
 		virtual void aboutToChangeTool() 
 		{
+			m_isComplete = true;
+			emit requestRedraw();
 		}
-
+		
+		
+	private:
+		QPainterPath m_path;
+		
+		struct Node;
+		struct Node
+		{
+			QPoint right, center, left;
+// 			Node *next;
+// 			Node *
+		};
+		int m_count;
+		Node *m_root;
+		QList< Node > m_nodes;
+		
+		QPainterPath drawNodes();
+		
+		bool m_isComplete;
 };
 
 #endif

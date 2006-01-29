@@ -53,6 +53,14 @@ class AGenericBrush : public KTToolPluginObject, public AToolInterface
 			return 0;
 		}
 		
+		virtual bool isComplete() const
+		{
+			return true;
+		}
+		virtual void aboutToChangeTool() 
+		{
+		}
+		
 	private:
 		QPoint m_firstPoint;
 		QList<QPoint> m_points;
