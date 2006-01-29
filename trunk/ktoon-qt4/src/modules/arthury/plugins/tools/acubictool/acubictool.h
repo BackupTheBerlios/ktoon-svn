@@ -60,6 +60,8 @@ class ACubicTool : public KTToolPluginObject, public AToolInterface
 		{
 			m_isComplete = true;
 			emit requestRedraw();
+			
+			m_nodes.clear();
 		}
 		
 		
