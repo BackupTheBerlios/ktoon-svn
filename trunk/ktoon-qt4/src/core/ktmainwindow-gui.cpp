@@ -97,8 +97,9 @@ void KTMainWindow::setupMenu()
 	// Setup the help menu
 	m_helpMenu = new QMenu(tr( "&Help" ),this);
 	menuBar()->addMenu(  m_helpMenu );
+	m_helpMenu->addAction(m_actionManager->find("tipofday") );
+	m_helpMenu->addSeparator();
 	m_helpMenu->addAction(m_actionManager->find("about ktoon") );
-	
 }
 
 void KTMainWindow::createGUI()
@@ -305,6 +306,8 @@ void KTMainWindow::setupProjectActions()
 void KTMainWindow::setupHelpActions()
 {
 	new KTAction(QPixmap(), tr("About KToon"), QKeySequence(), this, SLOT(aboutKToon()), m_actionManager, "about ktoon");
+	
+	new KTAction(QPixmap(), tr("Tip of day"), QKeySequence(), this, SLOT(showTipDialog()), m_actionManager, "tipofday");
 }
 
 void KTMainWindow::setupWindowActions()

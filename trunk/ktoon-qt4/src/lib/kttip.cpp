@@ -32,12 +32,16 @@
 #include <QFile>
 
 #include "ktconfig.h"
+#include "ktdebug.h"
 
 KTTipDatabase::KTTipDatabase(const QString &file)
 {
 	loadTips( file );
 	
-	m_currentTipIndex = KTAlgorithm::random() % m_tips.count();
+	if ( !m_tips.isEmpty() )
+	{
+		m_currentTipIndex = KTAlgorithm::random() % m_tips.count();
+	}
 }
 
 
@@ -47,7 +51,9 @@ KTTipDatabase::~KTTipDatabase()
 
 KTTip KTTipDatabase::tip() const
 {
-	return m_tips[m_currentTipIndex];
+	if (m_currentTipIndex >= 0 && m_currentTipIndex < m_tips.count() )
+		return m_tips[m_currentTipIndex];
+	return KTTip();
 }
 
 void KTTipDatabase::nextTip()
@@ -78,7 +84,9 @@ void KTTipDatabase::loadTips(const QString &filePath)
 	QFile file(filePath);
 	
 	if (!file.open(QIODevice::ReadOnly))
+	{
 		return;
+	}
 	
 	if (!doc.setContent(&file))
 	{
@@ -88,7 +96,6 @@ void KTTipDatabase::loadTips(const QString &filePath)
 	file.close();
 	
 	QDomElement docElem = doc.documentElement();
-
 	QDomNode n = docElem.firstChild();
 	while(!n.isNull())
 	{
@@ -106,12 +113,44 @@ void KTTipDatabase::loadTips(const QString &filePath)
 	}
 }
 
-KTTipDialog::KTTipDialog()
+// KTTipDialog
+
+KTTipDialog::KTTipDialog(const QString &file) : QDialog()
+{
+	m_database = new KTTipDatabase(file);
+	setupGUI();
+}
+
+KTTipDialog::KTTipDialog(KTTipDatabase *database) : QDialog(), m_database(database)
+{
+	setupGUI();
+	
+}
+
+void KTTipDialog::setupGUI()
 {
 	setWindowTitle(tr("Tip of day"));
+	
+	int h,s,v;
+	QColor baseColor = palette().base().color();
+	baseColor.getHsv(&h,&s,&v);
+	baseColor.setHsv(h, int(s*(71/76.0)), int(v*(67/93.0)));
+// 	baseColor.setHsv(h, int(s*(10/6.0)), int(v*(93/99.0)));
+	
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	
 	m_textArea = new QTextBrowser;
+	
+	m_textArea->setWordWrapMode( QTextOption::WrapAtWordBoundaryOrAnywhere );
+	m_textArea->setFrameStyle(QFrame::NoFrame | QFrame::Plain);
+	m_textArea->setHorizontalScrollBarPolicy( Qt::ScrollBarAlwaysOff );
+		
+	QPalette pal = m_textArea->palette();
+	
+	pal.setBrush(QPalette::Base, baseColor);
+	
+	m_textArea->setPalette(pal);
+	
 	layout->addWidget(m_textArea);
 	
 	layout->addWidget(new KSeparator);
@@ -144,6 +183,7 @@ KTTipDialog::KTTipDialog()
 	KTCONFIG->beginGroup("TipOfDay");
 	m_showOnStart->setChecked(qvariant_cast<bool>(KTCONFIG->value("ShowOnStart", true ) ));
 	
+	showNextTip();
 }
 
 KTTipDialog::~KTTipDialog()
@@ -152,10 +192,18 @@ KTTipDialog::~KTTipDialog()
 
 void KTTipDialog::showPrevTip()
 {
+	m_database->prevTip();
+	KTTip tip = m_database->tip();
+	
+	m_textArea->setHtml(tip.text);
 }
 
 void KTTipDialog::showNextTip()
 {
+	m_database->nextTip();
+	KTTip tip = m_database->tip();
+	
+	m_textArea->setHtml(tip.text);
 }
 
 void KTTipDialog::setShowOnStart()

@@ -60,8 +60,12 @@ class KTTipDialog : public QDialog
 {
 	Q_OBJECT;
 	public:
-		KTTipDialog();
+		KTTipDialog(const QString &file);
+		KTTipDialog(KTTipDatabase *database);
 		~KTTipDialog();
+		
+	private:
+		void setupGUI();
 		
 	private slots:
 		void showPrevTip();
@@ -69,11 +73,10 @@ class KTTipDialog : public QDialog
 		
 		void setShowOnStart();
 		
-		
 	private:
 		QTextBrowser *m_textArea;
 		QCheckBox *m_showOnStart;
-		
+		KTTipDatabase *m_database;
 };
 
 #endif

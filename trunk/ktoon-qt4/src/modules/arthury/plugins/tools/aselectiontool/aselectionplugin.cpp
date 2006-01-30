@@ -88,12 +88,14 @@ QRect ASelectionPlugin::press(const QString &brush, QPainter &painter, const QPa
 					break;
 				}
 				m_node.graphicPos++;
+				m_node.polygonPos = 0;
 			}
 			if(selectPoint)
 			{
 				break;
 			}
 			m_node.componentpos++;
+			m_node.graphicPos = 0;
 		}
 	}
 	return rect;
