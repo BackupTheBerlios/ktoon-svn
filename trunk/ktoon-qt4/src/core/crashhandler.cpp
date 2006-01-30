@@ -206,7 +206,7 @@ void CrashHandler::setConfig(const QString &filePath)
 
 void crashTrapper (int sig)
 {
-	qDebug("%s is crashing with signal %d :(", CHANDLER->program().toLatin1(), sig);
+	qDebug("%s is crashing with signal %d :(", CHANDLER->program().toLatin1().data(), sig);
 	
 	bool isActive = true;
 	
@@ -216,7 +216,7 @@ void crashTrapper (int sig)
 		isActive = false;
 		int argc = 1;
 		char *argv[] = { CHANDLER->program().toUtf8().data(), 0  };
-		QApplication*application = new QApplication(argc, argv);
+		application = new QApplication(argc, argv);
 	}
 	
 	CrashWidget widget(sig);

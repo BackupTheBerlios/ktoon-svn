@@ -29,12 +29,14 @@
 #include <QPen>
 #include <QPainterPath>
 #include <QImage>
-#include <QAction>
 #include <QHash>
+#include <QCursor>
 
 #include "agraphiccomponent.h"
 #include "kttoolpluginobject.h"
 #include "ktkeyframe.h"
+
+#include "ktaction.h"
 
 #include "qplugin.h" // Q_EXPORT_PLUGIN
 
@@ -59,7 +61,7 @@ class AToolInterface
 		virtual QRect move(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos) = 0;
 		virtual QRect release(const QString &brush, QPainter &painter,const QPainterPath &form, const QPoint &pos) = 0;
 		
-		virtual QHash<QString, QAction *>actions() = 0;
+		virtual QHash<QString, KTAction *>actions() = 0;
 		
 		virtual QPainterPath path() const = 0;
 		

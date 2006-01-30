@@ -22,7 +22,11 @@
 #include "ktalgorithm.h"
 
 #include <QVBoxLayout>
+
 #include <QTextBrowser>
+#include <QTextFrame>
+#include <QTextFrameFormat>
+
 #include <QCheckBox>
 #include <QPushButton>
 
@@ -115,13 +119,13 @@ void KTTipDatabase::loadTips(const QString &filePath)
 
 // KTTipDialog
 
-KTTipDialog::KTTipDialog(const QString &file) : QDialog()
+KTTipDialog::KTTipDialog(const QString &file, QWidget *parent) : QDialog(parent)
 {
 	m_database = new KTTipDatabase(file);
 	setupGUI();
 }
 
-KTTipDialog::KTTipDialog(KTTipDatabase *database) : QDialog(), m_database(database)
+KTTipDialog::KTTipDialog(KTTipDatabase *database, QWidget *parent) : QDialog(parent), m_database(database)
 {
 	setupGUI();
 	
@@ -140,6 +144,11 @@ void KTTipDialog::setupGUI()
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	
 	m_textArea = new QTextBrowser;
+	
+	QTextFrameFormat format = m_textArea->document()->rootFrame()->frameFormat();
+	format.setMargin(15);
+	format.setBorder(5);
+	m_textArea->document()->rootFrame()->setFrameFormat(format);
 	
 	m_textArea->setWordWrapMode( QTextOption::WrapAtWordBoundaryOrAnywhere );
 	m_textArea->setFrameStyle(QFrame::NoFrame | QFrame::Plain);

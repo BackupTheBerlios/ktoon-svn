@@ -63,11 +63,11 @@ QPainterPath AEraserTool::path() const
 	return QPainterPath();
 }
 
-QHash<QString, QAction *> AEraserTool::actions()
+QHash<QString, KTAction *> AEraserTool::actions()
 {
-	QHash<QString, QAction *> hash;
+	QHash<QString, KTAction *> hash;
 	
-	QAction *eraserAction = new QAction( QIcon(), tr("Node eraser"), this);
+	KTAction *eraserAction = new KTAction( QIcon(), tr("Node eraser"), this);
 	eraserAction->setShortcut( QKeySequence(tr("T")) );
 	
 	hash.insert( tr("Node eraser"), eraserAction );
@@ -111,6 +111,23 @@ void AEraserTool::deleteNode(const QRect &rect )
 	emit requestRedraw();
 }
 
+int AEraserTool::type() const
+{
+	return Brush;
+}
 
+QWidget *AEraserTool::configurator()
+{
+	return 0;
+}
+
+bool AEraserTool::isComplete() const
+{
+	return true;
+}
+
+void AEraserTool::aboutToChangeTool() 
+{
+}
 
 Q_EXPORT_PLUGIN( AEraserTool );

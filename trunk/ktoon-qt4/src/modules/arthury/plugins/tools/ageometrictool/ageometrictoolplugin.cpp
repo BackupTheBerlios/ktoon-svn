@@ -126,24 +126,48 @@ QPainterPath AGeometricToolPlugin::path() const
 	return m_path;
 }
 
-QHash<QString, QAction *> AGeometricToolPlugin::actions()
+QHash<QString, KTAction *> AGeometricToolPlugin::actions()
 {
-	QHash<QString, QAction *> hash;
+	QHash<QString, KTAction *> hash;
 	
-	QAction *circle = new QAction( QIcon(KTOON_THEME_DIR+"/icons/square.png"), tr("Rectangle"), this);
+	KTAction *action1 = new KTAction( QIcon(KTOON_THEME_DIR+"/icons/square.png"), tr("Rectangle"), this);
 // 	circle->setShortcut( QKeySequence(tr("R")) );
+	action1->setCursor( QCursor(KTOON_THEME_DIR+"/cursors/square.png") );
 	
-	hash.insert( tr("Rectangle"), circle );
+	hash.insert( tr("Rectangle"), action1 );
 	
-	QAction *rectangle = new QAction(QIcon(KTOON_THEME_DIR+"/icons/ellipse.png"), tr("Ellipse"), this);
+	KTAction *action2 = new KTAction(QIcon(KTOON_THEME_DIR+"/icons/ellipse.png"), tr("Ellipse"), this);
 // 	rectangle->setShortcut( QKeySequence(tr("C")) );
-	hash.insert(tr("Ellipse"), rectangle);
+	action2->setCursor( QCursor(KTOON_THEME_DIR+"/cursors/circle.png") );
 	
-	QAction *line = new QAction( QIcon(KTOON_THEME_DIR+"/icons/line.png"), tr("Line"), this);
-	hash.insert(tr("Line"), line);
+	hash.insert(tr("Ellipse"), action2);
+	
+	
+	KTAction *action3 = new KTAction( QIcon(KTOON_THEME_DIR+"/icons/line.png"), tr("Line"), this);
+	hash.insert(tr("Line"), action3);
 	
 	return hash;
 }
+
+int AGeometricToolPlugin::type() const
+{
+	return Brush;
+}
+		
+QWidget *AGeometricToolPlugin::configurator()
+{
+	return  0;
+}
+
+bool AGeometricToolPlugin::isComplete() const
+{
+	return true;
+}
+
+void AGeometricToolPlugin::aboutToChangeTool() 
+{
+}
+
 
 Q_EXPORT_PLUGIN( AGeometricToolPlugin )
 

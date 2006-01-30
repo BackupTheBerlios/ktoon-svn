@@ -37,21 +37,21 @@ QStringList AFillTool::keys() const
 }
 
 
-QHash< QString, QAction * > AFillTool::actions()
+QHash< QString, KTAction * > AFillTool::actions()
 {
-	QHash<QString, QAction *> hash;
+	QHash<QString, KTAction *> hash;
 	
-	QAction *fillAction = new QAction( QIcon(QPixmap(KTOON_THEME_DIR+"/icons/fill.png")), tr("Fill"), this);
+	KTAction *fillAction = new KTAction( QIcon(QPixmap(KTOON_THEME_DIR+"/icons/fill.png")), tr("Fill"), this);
 	fillAction->setShortcut( QKeySequence( tr("F") ) );
 	
 	hash.insert( tr("Fill"), fillAction );
 	
-	QAction *removeFillAction = new QAction( QIcon(QPixmap(KTOON_THEME_DIR+"/icons/removefill.png")), tr("Remove Fill"), this);
+	KTAction *removeFillAction = new KTAction( QIcon(QPixmap(KTOON_THEME_DIR+"/icons/removefill.png")), tr("Remove Fill"), this);
 	removeFillAction->setShortcut( QKeySequence(tr("Shift+F") ));
 	
 	hash.insert( tr("Remove Fill"), removeFillAction );
 	
-	QAction *countourFillAction = new QAction( QIcon(QPixmap(KTOON_THEME_DIR+"/icons/contour.png")), tr("Countour Fill"), this);
+	KTAction *countourFillAction = new KTAction( QIcon(QPixmap(KTOON_THEME_DIR+"/icons/contour.png")), tr("Countour Fill"), this);
 	countourFillAction->setShortcut( QKeySequence(tr("Control+F") ));
 	
 	hash.insert( tr("Countour Fill"), countourFillAction );
@@ -118,5 +118,14 @@ int AFillTool::type() const
 {
 	return Fill;
 }
+
+bool AFillTool::isComplete() const
+{
+	return false;
+}
+void AFillTool::aboutToChangeTool() 
+{
+}
+
 
 Q_EXPORT_PLUGIN( AFillTool );

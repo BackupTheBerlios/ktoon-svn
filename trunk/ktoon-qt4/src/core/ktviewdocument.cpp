@@ -499,7 +499,7 @@ void KTViewDocument::loadPlugins()
 void KTViewDocument::selectTool()
 {
 	KT_FUNCINFO;
-	QAction *action = qobject_cast<QAction *>(sender());
+	KTAction *action = qobject_cast<KTAction *>(sender());
 	
 	if ( action )
 	{
@@ -549,6 +549,7 @@ void KTViewDocument::selectTool()
 		}
 		
 		m_paintAreaContainer->drawArea()->setTool(aTool, tool);
+		m_paintAreaContainer->drawArea()->setCursor(action->cursor());
 	}
 }
 
@@ -559,7 +560,7 @@ void KTViewDocument::selectToolFromMenu(QAction *action)
 	QMenu *menu = qobject_cast<QMenu *>(action->parent());
 	if (menu )
 	{
-		QAction *tool = menu->activeAction();
+		KTAction *tool = qobject_cast<KTAction *>(menu->activeAction());
 		
 		if ( tool )
 		{

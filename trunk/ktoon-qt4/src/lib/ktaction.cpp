@@ -110,5 +110,13 @@ void KTAction::init()
 {
 }
 
+void KTAction::setCursor(const QCursor &cursor)
+{
+	m_cursor = cursor;
+}
 
+QCursor KTAction::cursor() const
+{
+	return m_cursor;
+}
 

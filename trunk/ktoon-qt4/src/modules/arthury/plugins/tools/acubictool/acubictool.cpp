@@ -23,7 +23,7 @@
 
 ACubicTool::ACubicTool(): m_count(0), m_isComplete(false)
 {
-	
+	m_path = QPainterPath();
 }
 
 ACubicTool::~ACubicTool()
@@ -31,10 +31,10 @@ ACubicTool::~ACubicTool()
 	
 }
 
-QHash< QString, QAction * > ACubicTool::actions()
+QHash< QString, KTAction * > ACubicTool::actions()
 {
-	QHash<QString, QAction *> hash;
-	QAction *cubic = new QAction( QIcon(), tr("Cubic"), this);
+	QHash<QString, KTAction *> hash;
+	KTAction *cubic = new KTAction( QIcon(), tr("Cubic"), this);
 // 	cubic->setShortcut( QKeySequence(tr("C")) );
 	
 	hash.insert( tr("Cubic"), cubic );
@@ -115,7 +115,6 @@ QStringList ACubicTool::keys() const
 
 QPainterPath ACubicTool::drawNodes()
 {
-// 	ktDebug() << "aki";
 	QList< Node >::iterator it = m_nodes.end();
 	QPainterPath path;
 	if(m_nodes.count() > 1)
@@ -134,6 +133,29 @@ QPainterPath ACubicTool::drawNodes()
 // 	painter->drawPath(path);
 	return path;
 }
+
+QWidget* ACubicTool::configurator()
+{
+	return 0;
+}
+int ACubicTool::type() const
+{
+	return Brush;
+};
+
+bool ACubicTool::isComplete() const
+{
+	return m_isComplete;
+}
+
+void ACubicTool::aboutToChangeTool() 
+{
+	m_isComplete = true;
+	emit requestRedraw();
+			
+	m_nodes.clear();
+}
+
 
 
 Q_EXPORT_PLUGIN( ACubicTool );

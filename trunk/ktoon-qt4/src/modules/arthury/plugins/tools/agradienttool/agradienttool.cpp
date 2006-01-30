@@ -33,11 +33,11 @@ AGradientTool::~AGradientTool()
 }
 
 
-QHash< QString, QAction * > AGradientTool::actions()
+QHash< QString, KTAction * > AGradientTool::actions()
 {
-	QHash<QString, QAction *> hash;
+	QHash<QString, KTAction *> hash;
 	
-	QAction *action1 = new QAction( QIcon(QPixmap(KTOON_THEME_DIR+"/icons/fill.png")), tr("Random Gradient"), this);
+	KTAction *action1 = new KTAction( QIcon(QPixmap(KTOON_THEME_DIR+"/icons/fill.png")), tr("Random Gradient"), this);
 // 	action1->setShortcut( QKeySequence( tr("F") ) );
 	
 	hash.insert( tr("Random Gradient"), action1 );
@@ -113,5 +113,6 @@ int AGradientTool::type() const
 void AGradientTool::aboutToChangeTool()
 {
 }
+
 
 Q_EXPORT_PLUGIN( AGradientTool );

@@ -35,7 +35,7 @@ class AFillTool : public KTToolPluginObject, public AToolInterface
 		AFillTool();
 		~AFillTool();
 
-		virtual QHash< QString, QAction * > actions();
+		virtual QHash< QString, KTAction * > actions();
 		virtual QPainterPath path() const;
 		virtual QRect move(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& oldPos, const QPoint& newPos);
 		virtual QRect press(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& pos, KTKeyFrame* currentFrame);
@@ -43,15 +43,8 @@ class AFillTool : public KTToolPluginObject, public AToolInterface
 		virtual QStringList keys() const;
 		virtual QWidget* configurator();
 		virtual int type() const;
-		
-		virtual bool isComplete() const
-		{
-			return false;
-		}
-		virtual void aboutToChangeTool() 
-		{
-		}
-
+		virtual bool isComplete() const;
+		virtual void aboutToChangeTool();
 };
 
 #endif

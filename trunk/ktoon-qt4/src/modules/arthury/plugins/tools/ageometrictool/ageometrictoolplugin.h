@@ -41,24 +41,13 @@ class AGeometricToolPlugin : public KTToolPluginObject, public AToolInterface
 		virtual QRect release(const QString &brush, QPainter &painter, const QPainterPath &form, const QPoint &pos);
 		virtual QPainterPath path() const;
 
-		virtual QHash<QString, QAction *>actions();
+		virtual QHash<QString, KTAction *>actions();
 		
-		int type() const
-		{
-			return Brush;
-		}
+		int type() const;
 		
-		virtual QWidget *configurator()
-		{
-			return  0;
-		}
-		virtual bool isComplete() const
-		{
-			return true;
-		}
-		virtual void aboutToChangeTool() 
-		{
-		}
+		virtual QWidget *configurator();
+		virtual bool isComplete() const;
+		virtual void aboutToChangeTool() ;
 	private:
 		QPainterPath m_path;
 		QRect m_rect;

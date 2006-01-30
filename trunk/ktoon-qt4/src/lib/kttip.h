@@ -60,8 +60,8 @@ class KTTipDialog : public QDialog
 {
 	Q_OBJECT;
 	public:
-		KTTipDialog(const QString &file);
-		KTTipDialog(KTTipDatabase *database);
+		KTTipDialog(const QString &file, QWidget *parent = 0);
+		KTTipDialog(KTTipDatabase *database, QWidget *parent = 0);
 		~KTTipDialog();
 		
 	private:

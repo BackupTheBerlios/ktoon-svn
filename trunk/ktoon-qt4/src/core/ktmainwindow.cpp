@@ -321,7 +321,7 @@ void KTMainWindow::aboutKToon()
 
 void KTMainWindow::showTipDialog()
 {
-	KTTipDialog *tipDialog = new KTTipDialog(KTOON_DATA_DIR+"/tips");
+	KTTipDialog *tipDialog = new KTTipDialog(KTOON_DATA_DIR+"/tips", this);
 	tipDialog->show();
 // 	tipDialog.exec();
 }

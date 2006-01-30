@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,42 +17,50 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef AGENERICBRUSH_H
-#define AGENERICBRUSH_H
 
-#include <QObject>
-#include <atoolinterface.h>
+#ifndef KTGUIITEM_H
+#define KTGUIITEM_H
 
-class QKeySequence;
+#include <QIcon>
+#include <QString>
+#include <QKeySequence>
+#include <QCursor>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-
-class AGenericBrush : public KTToolPluginObject, public AToolInterface
+class KTGuiItem
 {
-	Q_OBJECT;
-	Q_INTERFACES(AToolInterface);
-	
 	public:
-		virtual QStringList keys() const;
-		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, KTKeyFrame *currentFrame = 0);
-		virtual QRect move(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos);
-		virtual QRect release(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &pos);
-		virtual QPainterPath path() const;
-
-		virtual QHash<QString, KTAction *>actions();
+		KTGuiItem(const QString &text, const QIcon &icon, const QString &toolTip, const QString &whatIs);
+		~KTGuiItem();
 		
-		int type() const;
+		void setText(const QString &text);
+		void setIcon(const QIcon &icon);
+		void setToolTip(const QString &toolTip);
+		void setWhatIs( const QString &whatIs);
+		void setKeySequence(const QKeySequence &key);
+		void setCursor(const QCursor &cursor);
 		
-		virtual QWidget *configurator();
+		QString text() const;
+		QIcon icon() const;
+		QString toolTip() const;
+		QString whatIs() const;
+		QKeySequence keySequence() const;
+		QCursor cursor() const;
 		
-		virtual bool isComplete() const;
-		virtual void aboutToChangeTool() ;
 	private:
-		QPoint m_firstPoint;
-		QList<QPoint> m_points;
-		QPainterPath m_path;
+		QString m_text;
+		QIcon m_icon;
+		QString m_tooltip;
+		QString m_whatIs;
+		
+		
+		QCursor m_cursor;
+		QKeySequence m_keySequence;
+		
+		
+
 };
 
 #endif

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,42 +17,76 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef AGENERICBRUSH_H
-#define AGENERICBRUSH_H
 
-#include <QObject>
-#include <atoolinterface.h>
+#include "ktguiitem.h"
 
-class QKeySequence;
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-
-class AGenericBrush : public KTToolPluginObject, public AToolInterface
+KTGuiItem::KTGuiItem(const QString &text, const QIcon &icon, const QString &toolTip, const QString &whatIs) : m_text(text), m_icon(icon), m_tooltip(toolTip), m_whatIs(whatIs)
 {
-	Q_OBJECT;
-	Q_INTERFACES(AToolInterface);
-	
-	public:
-		virtual QStringList keys() const;
-		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, KTKeyFrame *currentFrame = 0);
-		virtual QRect move(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos);
-		virtual QRect release(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &pos);
-		virtual QPainterPath path() const;
+}
 
-		virtual QHash<QString, KTAction *>actions();
-		
-		int type() const;
-		
-		virtual QWidget *configurator();
-		
-		virtual bool isComplete() const;
-		virtual void aboutToChangeTool() ;
-	private:
-		QPoint m_firstPoint;
-		QList<QPoint> m_points;
-		QPainterPath m_path;
-};
 
-#endif
+KTGuiItem::~KTGuiItem()
+{
+}
+
+void KTGuiItem::setText(const QString &text)
+{
+	m_text = text;
+}
+
+void KTGuiItem::setIcon(const QIcon &icon)
+{
+	m_icon = icon;
+}
+
+void KTGuiItem::setToolTip(const QString &toolTip)
+{
+	m_tooltip = toolTip;
+}
+
+void KTGuiItem::setWhatIs( const QString &whatIs)
+{
+	m_whatIs = whatIs;
+}
+
+void KTGuiItem::setKeySequence(const QKeySequence &key)
+{
+	m_keySequence = key;
+}
+
+void  KTGuiItem::setCursor(const QCursor &cursor)
+{
+	m_cursor = cursor;
+}
+
+
+QString  KTGuiItem::text() const
+{
+	return m_text;
+}
+
+QIcon  KTGuiItem::icon() const
+{
+	return m_icon;
+}
+
+QString  KTGuiItem::toolTip() const
+{
+	return m_tooltip;
+}
+
+QString  KTGuiItem::whatIs() const
+{
+	return m_whatIs;
+}
+
+QKeySequence  KTGuiItem::keySequence() const
+{
+	return m_keySequence;
+}
+
+QCursor  KTGuiItem::cursor() const
+{
+	return m_cursor;
+}
+

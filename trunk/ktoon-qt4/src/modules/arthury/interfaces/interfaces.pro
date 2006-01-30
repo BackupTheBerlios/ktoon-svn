@@ -5,7 +5,7 @@
 
 INSTALLS += interfaces 
 interfaces.files += *.h 
-interfaces.path = /include/interfaces/ 
+interfaces.path = /include/arthury/ 
 HEADERS += afilterinterface.h \
            atoolinterface.h 
 QT += xml

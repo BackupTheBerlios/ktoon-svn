@@ -175,14 +175,14 @@ QPainterPath ASelectionPlugin::path() const
 	return m_path;
 }
 
-QHash<QString, QAction *> ASelectionPlugin::actions()
+QHash<QString, KTAction *> ASelectionPlugin::actions()
 {
-	QHash<QString, QAction *> hash;
+	QHash<QString, KTAction *> hash;
 	
-	QAction *act = new QAction(QPixmap(KTOON_THEME_DIR+"/icons/selection.png"), tr("Selection"), this);
+	KTAction *act = new KTAction(QPixmap(KTOON_THEME_DIR+"/icons/selection.png"), tr("Selection"), this);
 	hash.insert( tr("Selection"), act );
 	
-	act = new QAction(QPixmap(KTOON_THEME_DIR+"/icons/nodes.png"), tr("Contour"), this);
+	act = new KTAction(QPixmap(KTOON_THEME_DIR+"/icons/nodes.png"), tr("Contour"), this);
 	hash.insert( tr("Contour"), act );
 	
 	
@@ -234,6 +234,25 @@ QRect ASelectionPlugin::drawControls(const QString brush, QPainter *painter)
 	return rect;
 }
 
+int ASelectionPlugin::type() const
+{
+	return Selection;
+}
+		
+QWidget *ASelectionPlugin::configurator()
+{
+	return 0;
+}
+
+bool ASelectionPlugin::isComplete() const
+{
+	return false;
+}
+
+void ASelectionPlugin::aboutToChangeTool() 
+{
+	
+}
 
 
 Q_EXPORT_PLUGIN( ASelectionPlugin )

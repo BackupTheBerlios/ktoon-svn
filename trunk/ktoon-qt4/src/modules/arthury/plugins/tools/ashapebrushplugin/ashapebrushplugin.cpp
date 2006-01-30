@@ -80,15 +80,33 @@ QPainterPath AShapeBrushPlugin::path() const
 	return m_path;
 }
 
-QHash<QString, QAction *> AShapeBrushPlugin::actions()
+QHash<QString, KTAction *> AShapeBrushPlugin::actions()
 {
-	QHash<QString, QAction *> hash;
+	QHash<QString, KTAction *> hash;
 	
-	QAction *act = new QAction( tr("Shape brush"), this);
+	KTAction *act = new KTAction( QIcon(), tr("Shape brush"),this);
 // 	act->setShortcut( QKeySequence(tr("R")) );
 	hash.insert( tr("Shape brush"), act );
 	
 	return hash;
+}
+
+int AShapeBrushPlugin::type() const
+{
+	return Brush;
+}
+QWidget *AShapeBrushPlugin::configurator()
+{
+	return 0;
+}
+		
+bool AShapeBrushPlugin::isComplete() const
+{
+	return true;
+}
+
+void AShapeBrushPlugin::aboutToChangeTool()
+{
 }
 
 Q_EXPORT_PLUGIN( AShapeBrushPlugin )

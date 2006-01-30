@@ -23,13 +23,13 @@ class KTActionManager;
 class KTAction : public QAction
 {
 	public:
-		KTAction ( QObject * parent, const QString &id);
+		KTAction ( QObject * parent, const QString &id = QString());
 		KTAction ( const QString & text, QObject * parent, const QString &id );
-		KTAction ( const QIcon & icon, const QString & text, QObject * parent, const QString &id );
-		KTAction ( const QIcon & icon, const QString & text, const QString &key, QObject * parent, const QString &id );
-		KTAction ( const QIcon & icon, QObject * parent, const QString &id );
-		KTAction ( const QIcon & icon,  const QKeySequence &key, QObject * parent, const QString &id );
-		KTAction (const QIcon & icon, const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, QObject * parent, const QString &id);
+		KTAction ( const QIcon & icon, const QString & text, QObject * parent, const QString &id = QString() );
+		KTAction ( const QIcon & icon, const QString & text, const QString &key, QObject * parent, const QString &id = QString());
+		KTAction ( const QIcon & icon, QObject * parent, const QString &id = QString() );
+		KTAction ( const QIcon & icon,  const QKeySequence &key, QObject * parent, const QString &id  = QString());
+		KTAction (const QIcon & icon, const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, QObject * parent, const QString &id = QString());
 		
 		
 		/////////
@@ -49,12 +49,17 @@ class KTAction : public QAction
 		
 		QString id() { return m_id; };
 		
+		void setCursor(const QCursor &cursor);
+		QCursor cursor() const;
+		
 	private:
 		void initWithManager(KTActionManager * parent);
 		void init();
 		
 	private:
 		QString m_id;
+		
+		QCursor m_cursor;
 };
 
 #endif

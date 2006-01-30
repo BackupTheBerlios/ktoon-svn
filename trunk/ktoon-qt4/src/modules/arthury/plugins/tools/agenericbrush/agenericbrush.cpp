@@ -24,6 +24,8 @@
 #include <QPointF>
 #include <QKeySequence>
 
+#include "ktapplication.h"
+
 QStringList AGenericBrush::keys() const
 {
 	return QStringList() << tr("Pencil") << tr("Air Brush") << tr("Bezier Brush");
@@ -114,21 +116,44 @@ QPainterPath AGenericBrush::path() const
 	return m_path;
 }
 
-QHash<QString, QAction *> AGenericBrush::actions()
+QHash<QString, KTAction *> AGenericBrush::actions()
 {
-	QHash<QString, QAction *> hash;
+	QHash<QString, KTAction *> hash;
 	
-	QAction *pencil = new QAction( QIcon(brush_xpm), tr("Pencil"), this);
+	KTAction *pencil = new KTAction( QIcon(brush_xpm), tr("Pencil"), this);
 	pencil->setShortcut( QKeySequence(tr("P")) );
+	
+	QPixmap pix(KTOON_THEME_DIR+"/cursors/pencil.png");
+	pencil->setCursor( QCursor(pix, 0, pix.height()) );
 	
 	hash.insert( tr("Pencil"), pencil );
 	
-	QAction *quadBrush = new QAction( QIcon(), tr("Bezier Brush"), this);
+	KTAction *quadBrush = new KTAction( QIcon(), tr("Bezier Brush"), this);
 	quadBrush->setShortcut( QKeySequence(tr("Q")) );
 	hash.insert(tr("Bezier Brush"), quadBrush);
 	
 	return hash;
 }
+
+int AGenericBrush::type() const
+{
+	return Brush;
+}
+		
+QWidget *AGenericBrush::configurator()
+{
+	return 0;
+}
+		
+bool AGenericBrush::isComplete() const
+{
+	return true;
+}
+
+void AGenericBrush::aboutToChangeTool() 
+{
+}
+
 
 Q_EXPORT_PLUGIN( AGenericBrush )
 

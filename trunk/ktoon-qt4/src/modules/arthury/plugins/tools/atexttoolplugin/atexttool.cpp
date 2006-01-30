@@ -60,17 +60,37 @@ QPainterPath ATextTool::path() const
 	return m_path;
 }
 
-QHash<QString, QAction *> ATextTool::actions()
+QHash<QString, KTAction *> ATextTool::actions()
 {
-	QHash<QString, QAction *> hash;
+	QHash<QString, KTAction *> hash;
 	
-	QAction *pencil = new QAction( QIcon(), tr("Text"), this);
+	KTAction *pencil = new KTAction( QIcon(), tr("Text"), this);
 	pencil->setShortcut( QKeySequence(tr("T")) );
 	
 	hash.insert( tr("Text"), pencil );
 	
 	return hash;
 }
+
+int ATextTool::type() const
+{
+	return Brush;
+}
+		
+QWidget *ATextTool::configurator()
+{
+	return m_configurator;
+}
+
+bool ATextTool::isComplete() const
+{
+	return true;
+}
+
+void ATextTool::aboutToChangeTool() 
+{
+}
+
 
 Q_EXPORT_PLUGIN( ATextTool );
 
