@@ -32,6 +32,8 @@
 
 #include "ktpaletteimporter.h"
 
+#include "kttip.h"
+
 // dlslib
 #include "dtabwidget.h"
 #include "docksplitter.h"
@@ -98,6 +100,15 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	m_pActiveTabWidget->setCurrentIndex( 0 );
 	
 	createNewProject("test", QSize(200,200));
+	
+	KTCONFIG->beginGroup("TipOfDay");
+	bool showTips = qvariant_cast<bool>(KTCONFIG->value("ShowOnStart", true ));
+	
+	
+	if ( showTips )
+	{
+		QTimer::singleShot(0, this, SLOT(showTipDialog()));
+	}
 }
 
 
@@ -306,6 +317,13 @@ void KTMainWindow::aboutKToon()
 	about->exec();
 	
 	delete about;
+}
+
+void KTMainWindow::showTipDialog()
+{
+	KTTipDialog *tipDialog = new KTTipDialog;
+	tipDialog->show();
+// 	tipDialog.exec();
 }
 
 void KTMainWindow::importPalettes()

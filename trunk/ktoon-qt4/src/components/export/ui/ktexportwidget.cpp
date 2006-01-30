@@ -204,6 +204,13 @@ void KTExportWidget::addFormats(ExportInterface::Formats formats)
 		
 		m_formats.insert(format, ExportInterface::MOV);
 	}
+	
+	if ( formats & ExportInterface::GIF )
+	{
+		QListWidgetItem *format = new QListWidgetItem(tr("Gif Image"), m_formatList);
+		
+		m_formats.insert(format, ExportInterface::GIF);
+	}
 }
 
 void KTExportWidget::makeAction(int buttonId)
@@ -349,6 +356,15 @@ QString KTExportWidget::fileToExport() const
 			if ( !file.toLower().endsWith(".mov"))
 			{
 				file+=".mov";
+			}
+		}
+		break;
+		
+		case ExportInterface::GIF:
+		{
+			if ( !file.toLower().endsWith(".gif"))
+			{
+				file+=".gif";
 			}
 		}
 		break;

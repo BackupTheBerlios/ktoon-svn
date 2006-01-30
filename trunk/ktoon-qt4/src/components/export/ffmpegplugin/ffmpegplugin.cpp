@@ -48,7 +48,7 @@ QString FFMpegPlugin::key() const
 
 ExportInterface::Formats FFMpegPlugin::availableFormats()
 {
-	return SWF | MPEG | AVI | RM | ASF | MOV;
+	return SWF | MPEG | AVI | RM | ASF | MOV | GIF;
 }
 
 void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size)

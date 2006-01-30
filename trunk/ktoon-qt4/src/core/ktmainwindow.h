@@ -142,6 +142,7 @@ class KTMainWindow : public DMainWindow
 		void messageToOSD(const QString &);
 		void preferences();
 		void aboutKToon();
+		void showTipDialog();
 		void importPalettes();
 		void connectToDisplays(const QWidget *widget);
 		

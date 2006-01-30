@@ -101,6 +101,9 @@ void KTModuleWidgetTitle::paintEvent(QPaintEvent *e)
 	QSize tSize = fm.size(Qt::TextSingleLine, m_text);
 	painter.drawText( (width()-tSize.width())/2, height()-5, m_text);
 	
+	
+	painter.end();
+	
 }
 
 

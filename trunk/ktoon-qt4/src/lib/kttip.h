@@ -18,52 +18,62 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef EXPORTINTERFACE_H
-#define EXPORTINTERFACE_H
+#ifndef KTTIP_H
+#define KTTIP_H
 
-#include <QStringList>
-#include <QDir>
+#include <QString>
+#include <QList>
+#include <QDialog>
 
-#include "ktexportpluginobject.h"
-
-#include "ktscene.h"
-
-#include "qplugin.h" // Q_EXPORT_PLUGIN
+class QCheckBox;
+class QTextBrowser;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class ExportInterface
+struct KTTip
 {
-	public:
-		enum Format
-		{
-			NONE = 0,
-			SWF = 1<<0,
-			MPEG = 1<<1,
-			AVI = 1<<2,
-			RM = 1 << 3,
-			ASF = 1 << 5,
-			MOV = 1 << 6,
-			GIF = 1 << 7
-		};
-		
-		Q_DECLARE_FLAGS(Formats, Format);
-		
-		
-		virtual ~ExportInterface() {};
-		virtual QString key() const = 0;
-		virtual Formats availableFormats() = 0;
-		
-		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format, const QSize &size) = 0;
-		
-	private:
-		virtual QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir) = 0;
+	QString text;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(ExportInterface::Formats);
+class KTTipDatabase
+{
+	public:
+		KTTipDatabase(const QString &file);
+		~KTTipDatabase();
+		KTTip tip() const;
+		void nextTip();
+		void prevTip();
+		
+	private:
+		void loadTips(const QString &file);
+		
+	private:
+		
+		
+		QList<KTTip> m_tips;
+		int m_currentTipIndex;
+};
 
-Q_DECLARE_INTERFACE( ExportInterface, "com.toonka.ktoon.ExportInterface/0.1" );
+class KTTipDialog : public QDialog
+{
+	Q_OBJECT;
+	public:
+		KTTipDialog();
+		~KTTipDialog();
+		
+	private slots:
+		void showPrevTip();
+		void showNextTip();
+		
+		void setShowOnStart();
+		
+		
+	private:
+		QTextBrowser *m_textArea;
+		QCheckBox *m_showOnStart;
+		
+};
 
 #endif

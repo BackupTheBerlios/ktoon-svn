@@ -50,6 +50,7 @@ void FFMpegManager::create(const QString &filePath, int formatId, const QStringL
 
 	AVOutputFormat *fmt = guess_format(0, filePath.toLatin1().data(), 0);
 	
+	AVFormatParameters params, *ap = &params;
 	
 	switch(formatId)
 	{
@@ -83,6 +84,14 @@ void FFMpegManager::create(const QString &filePath, int formatId, const QStringL
 			
 		}
 		break;
+		case ExportInterface::GIF:
+		{
+			AVImageFormat *imageFormat = guess_image_format(filePath.toLatin1().data());
+			
+			memset(ap, 0, sizeof(*ap));
+			ap->image_format = imageFormat;
+		}
+		break;
 		default: break;
 	}
 	
@@ -92,6 +101,7 @@ void FFMpegManager::create(const QString &filePath, int formatId, const QStringL
 		ktError() << "Error while export";
 		return;
 	}
+
 	
 	oc->oformat = fmt;
 	snprintf(oc->filename, sizeof(oc->filename), "%s", filePath.toLatin1().data());
@@ -104,7 +114,7 @@ void FFMpegManager::create(const QString &filePath, int formatId, const QStringL
 		return;
 	}
 	
-	if (av_set_parameters(oc, 0) < 0)
+	if (av_set_parameters(oc, ap) < 0)
 	{
 		ktError() << "Invalid output format parameters";
 		return ;
@@ -212,7 +222,7 @@ AVStream *FFMpegManager::addVideoStream(AVFormatContext *oc, int codec_id, int w
 	c->height = h; // 340
 
 #if LIBAVCODEC_BUILD <= 4743
-#warning FIXME:  fps support
+#warning FIXME:  fps support, add to AV Params
 	/* frames per second */
 	c->frame_rate = fps;
 	c->frame_rate_base = 1;
@@ -274,7 +284,6 @@ bool FFMpegManager::writeVideoFrame(const QString &imagePath, AVFormatContext *o
 
 	AVFrame *picturePtr;
 	
-	
 	double nbFrames = ((int)(m_streamDuration * fps));
 	if (m_frameCount >= nbFrames)
 	{
@@ -318,6 +327,7 @@ bool FFMpegManager::writeVideoFrame(const QString &imagePath, AVFormatContext *o
 	{
 		/* encode the image */
 		out_size = avcodec_encode_video(c, videOutbuf, videOutbufSize, picturePtr);
+// 		out_size = av_write_trailer(oc);
 		/* if zero size, it means the image was buffered */
 
 		if (out_size != 0)
