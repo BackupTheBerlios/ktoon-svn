@@ -60,7 +60,7 @@ void KTMainWindow::insertLayer(const QString &name, bool addedToEnd)
 // 	}
 	
 	m_exposureSheet->insertLayer(name);
-	m_timeLine->createLayer( name );
+	m_timeLine->insertLayer( name, addedToEnd );
 }
 
 void KTMainWindow::removeLayer(int index)
@@ -72,6 +72,7 @@ void KTMainWindow::removeLayer(int index)
 
 void KTMainWindow::setLayerVisibilityChanged(int idLayer, bool isVisible)
 {
+	// FIXME: Implements
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )
@@ -91,38 +92,64 @@ void KTMainWindow::insertFrame(const QString &name, bool addedToEnd)
 		newViewDocument( name);
 	}
 	
-	m_exposureSheet->addFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd);
-	m_timeLine->addFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd);
+	m_exposureSheet->addFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd); // FIXME: insert!
+	m_timeLine->insertFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd);
 }
 
 void KTMainWindow::moveFrame(bool up)
 {
 	m_exposureSheet->moveFrame(up);
+	m_timeLine->moveFrame(up);
 }
 void KTMainWindow::removeFrame()
 {
 	m_exposureSheet->removeCurrentFrame();
+	m_timeLine->removeCurrentFrame();
 }
 
 void KTMainWindow::lockFrame()
 {
 	m_exposureSheet->lockCurrentFrame();
+	m_timeLine->lockCurrentFrame();
 }
 
 
 void KTMainWindow::selectFrame(int layer, int frame)
 {
+	KT_FUNCINFO;
+	SHOW_VAR(layer);
+	SHOW_VAR(frame);
+	
+	if ( layer < 0 || frame < 0 ) return;
+	
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )
 	{
-		m_projectManager->currentScene()->setCurrentLayer(layer);
-		m_projectManager->setCurrentFrame( frame );
-		doc->drawArea()->setLayer( layer );
-		doc->drawArea()->setKeyFrame( frame );
-		
-		m_exposureSheet->setCurrentCell(layer, frame);
-		
+		KTScene *currentScene = m_projectManager->currentScene();
+		if ( currentScene )
+		{
+			if ( layer >= 0 && layer < currentScene->layers().count() )
+			{
+				currentScene->setCurrentLayer(layer);
+			}
+			
+			KTLayer *currentLayer = m_projectManager->currentLayer();
+			
+			if ( currentLayer )
+			{
+// 				if ( frame >= 0 && frame < currentLayer->frames().count() )
+				{
+					m_projectManager->setCurrentFrame( frame );
+					
+					doc->drawArea()->setLayer( layer );
+					doc->drawArea()->setKeyFrame( frame );
+					
+					m_exposureSheet->setCurrentCell( layer, frame);
+					m_timeLine->setCurrentCell( layer, frame);
+				}
+			}
+		}
 	}
 	else
 	{

@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 #include <QCursor>
-//Added by qt3to4:
 #include <QMouseEvent>
 #include <QResizeEvent>
 #include <QEvent>
@@ -28,14 +27,13 @@
 #include <QVBoxLayout>
 
 #include "ktapplication.h"
+#include "ktdebug.h"
 
 //--------------- CONSTRUCTOR --------------------
 
 ESLayer::ESLayer( const QString &initial_text, QWidget *parent  )
     : QPushButton( initial_text, parent )
 {
-	Q_CHECK_PTR( parent );
-	
 	QVBoxLayout *m_layout = new QVBoxLayout;
 	
 	m_layout->setMargin(5);
@@ -176,6 +174,7 @@ void ESLayer::resizeEvent ( QResizeEvent *  )
 
 void ESLayer::visibilityClick()
 {
+	KT_FUNCINFO;
 	QPalette pal = palette();
 	
 	bool isVisible = m_visibilityButton->isChecked();

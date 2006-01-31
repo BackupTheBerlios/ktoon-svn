@@ -64,11 +64,57 @@ void KTTimeLine::addScene(const QString &name)
 	
 	m_container->addWidget(m_splitter);
 	m_container->setCurrentWidget(m_splitter);
+	
+	connect(m_sequenceManager->manager(), SIGNAL(requestInsertFrame(bool)), this, SIGNAL(requestInsertFrame( bool )));
+	connect(m_sequenceManager->manager(), SIGNAL(requestInsertLayer()), this, SIGNAL(requestInsertLayer( )));
+	
+	connect(m_sequenceManager, SIGNAL(frameSelected(int,int)), this, SLOT(emitFrameSelected( int,int )));
+	
+	connect(m_sequenceManager->manager(), SIGNAL(layerVisibilityChanged(int, bool)), this, SIGNAL(layerVisibilityChanged( int,bool )));
+	
+	connect(m_sequenceManager->manager(), SIGNAL(layerSelected(int)), this, SIGNAL(layerSelected( int )));
+	
+	connect(m_sequenceManager->manager(), SIGNAL(requestCopyFrame(int)), this, SIGNAL(requestCopyFrame( int )));
+	connect(m_sequenceManager->manager(), SIGNAL(requestPasteFrame(int)), this, SIGNAL(requestPasteFrame( int )));
+	
+	connect(m_sequenceManager->manager(), SIGNAL(requestMoveFrame(bool)), this, SIGNAL(requestMoveFrame( bool )));
+	
+	connect(m_sequenceManager->manager(), SIGNAL(requestRemoveFrame()), this, SIGNAL(requestRemoveFrame( )));
+	connect(m_sequenceManager->manager(), SIGNAL(requestLockFrame()), this, SIGNAL(requestLockFrame( )));
+	
+	connect(m_sequenceManager->manager(), SIGNAL(requestRemoveLayer()), this, SIGNAL(requestRemoveLayer( )));
 }
 
 void KTTimeLine::setScene(int index)
 {
 	m_container->setCurrentIndex(index);
+}
+
+void KTTimeLine::removeCurrentLayer()
+{
+	currentLayerManager()->removeLayer();
+	currentFrameContainer()->removeCurrentLayer();
+}
+
+void KTTimeLine::moveFrame(bool up)
+{
+	
+}
+
+void KTTimeLine::removeCurrentFrame()
+{
+	
+}
+
+void KTTimeLine::lockCurrentFrame()
+{
+	
+}
+
+void KTTimeLine::setCurrentCell(int layer, int frame)
+{
+	currentLayerManager()->selectLayer( layer );
+	currentFrameContainer()->selectCell(layer, frame);
 }
 
 void KTTimeLine::setupPropertiesBar()
@@ -176,29 +222,22 @@ KTFrameSequenceContainer *KTTimeLine::currentFrameContainer()
 	return 0;
 }
 
-void KTTimeLine::createLayer(const QString &name, bool toEnd)
+void KTTimeLine::insertLayer(const QString &name, bool toEnd)
 {
-	currentLayerManager()->layerSequence()->createNewLayer(name, toEnd);
-	currentFrameContainer()->manager()->insertFrameSequence();
+	currentLayerManager()->createNewLayer(name, toEnd);
+// 	currentFrameContainer()->manager()->insertFrameSequence();
 	currentFrameContainer()->addLayer();
 }
 
-void KTTimeLine::removeCurrentLayer()
+void KTTimeLine::selectCurrentLayer(int pos)
 {
-	currentLayerManager()->layerSequence()->removeLayer();
-// 	currentFrameContainer()->manager()->removeFrameSequence();
-	currentFrameContainer()->removeCurrentLayer();
-}
-
-void KTTimeLine::selectCurrentLayer(int index)
-{
-	currentFrameContainer()->manager()->selectFrame(index);
+	currentFrameContainer()->selectLayer(pos);
 	
 // 	currentLayerManager()->layerSequence()->selectItem(index);
 	
-	emit layerSelected( index);
+// 	emit layerSelected( pos );
 	
-	m_editLayer->setText(QString::number(index));
+	m_editLayer->setText(QString::number(pos));
 }
 
 void KTTimeLine::emitNewFPS(const QString &value)
@@ -218,16 +257,16 @@ void KTTimeLine::emitNewFPS(const QString &value)
 	}
 }
 
-void KTTimeLine::addFrame(int layerId, const QString &name, bool addToEnd )
+void KTTimeLine::insertFrame(int layerId, const QString &name, bool addToEnd )
 {
 	KT_FUNCINFO;
-	if ( addToEnd ) // TODO: Terminar
-	{
-		currentFrameContainer()->addFrameToLayer( layerId );
-	}
-	else 
-	{
-		currentFrameContainer()->manager()->setAttribute( layerId, 5, TFramesTableItem::IsUsed, true);
-	}
+	currentFrameContainer()->addFrameToLayer( layerId );
+
 }
 
+void KTTimeLine::emitFrameSelected(int layer, int frame)
+{
+// 	currentLayerManager()->
+	
+	emit frameSelected( layer, frame);
+}

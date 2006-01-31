@@ -57,25 +57,42 @@ KTTimeLineLayer * KTLayerSequence::createNewLayer(const QString &name, bool toEn
 	
 	connect(newLayer, SIGNAL(rightClicked(KTTimeLineLayer *,const QPoint &)), this, SLOT(displayMenu(KTTimeLineLayer *,const QPoint &)));
 	
-	connect( newLayer, SIGNAL( selected(int) ), SLOT( selectLayer(int) ) );
-
-	m_layers.append( newLayer );
-	m_pLastLayer = newLayer;
-	m_layerCount++;
+	connect( newLayer, SIGNAL( selected(KTTimeLineLayer *) ), SLOT( selectLayer(KTTimeLineLayer *) ) );
 	
-	addWidget( newLayer );
-
+	if ( toEnd )
+	{
+		m_layers.append( newLayer );
+		
+		addWidget( newLayer );
+		
+		setCurrentCell (m_layerCount, 0);
+	}
+	else
+	{
+		int pos = currentRow();
+		m_layers.insert(pos, newLayer);
+		
+		insertWidget(pos, newLayer);
+		
+		setCurrentCell(pos, 0);
+	}
+	
+	m_layerCount++;
 	return newLayer;
 }
 
 void KTLayerSequence::removeLayer()
 {
 // 	ktDebug() << "Remove layer";
-// 	removeItem(currentItem());
+	int pos = currentRow();
+	removeRow(pos);
+	setCurrentCell(pos-1,  0);
 }
 
-void KTLayerSequence::selectLayer(int id)
+void KTLayerSequence::selectLayer(KTTimeLineLayer *tm)
 {
+// 	setCurrentCell (pos, 0);
+	setCurrentItem(this->item( tm));
 }
 
 void KTLayerSequence::moveLayerUp()

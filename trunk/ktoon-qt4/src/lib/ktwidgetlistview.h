@@ -36,6 +36,8 @@ class KTWidgetListView : public QTableWidget
 		~KTWidgetListView();
 
 		QTableWidgetItem *addWidget(QWidget *widget);
+		QTableWidgetItem *insertWidget(int pos, QWidget *widget);
+		
 		QWidget *widget(QTableWidgetItem *treeItem);
 		
 		QTableWidgetItem *item(QWidget *widget);

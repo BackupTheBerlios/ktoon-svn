@@ -102,6 +102,7 @@ QSize APaintArea::minimumSizeHint () const
 
 void APaintArea::paintEvent(QPaintEvent *e)
 {
+	KT_FUNCINFO;
 	QPainter painter;
 	
 	if ( m_redrawAll )
@@ -137,16 +138,19 @@ void APaintArea::setKeyFrame(int index)
 	ktDebug() << "APaintArea::setKeyFrame(" << index << ")";
 	if ( m_layer )
 	{
-		KTKeyFrame *frame = m_layer->frames()[index];
-		
-		if (frame && index < m_layer->frames().count())
+		if ( index >= 0 && index < m_layer->frames().count() )
 		{
-			m_currentFrame = frame;
-			redrawAll();
-		}
-		else
-		{
-			ktFatal() << "Frame not exists!!!";
+			KTKeyFrame *frame = m_layer->frames()[index];
+			
+			if (frame)
+			{
+				m_currentFrame = frame;
+				redrawAll();
+			}
+			else
+			{
+				ktFatal() << "Frame not exists!!!";
+			}
 		}
 	}
 }
@@ -156,15 +160,18 @@ void APaintArea::setLayer(int index)
 	ktDebug( ) << "APaintArea::setLayer(" << index << ")";
 	if ( m_scene )
 	{
-		KTLayer *layer = m_scene->layers()[index];
-		
-		if (layer && index < m_scene->layers().count() )
+		if ( index >= 0 && index < m_scene->layers().count() )
 		{
-			m_layer = layer;
-		}
-		else
-		{
-			ktFatal() << "Layer not exists!!!";
+			KTLayer *layer = m_scene->layers()[index];
+			
+			if (layer )
+			{
+				m_layer = layer;
+			}
+			else
+			{
+				ktFatal() << "Layer not exists!!!";
+			}
 		}
 	}
 }
@@ -192,6 +199,7 @@ void APaintArea::draw(QPainter *painter)
 	
 	int index = m_layer->frames().indexOf(m_currentFrame);
 	
+	if ( index < 0 ) return;
 	// draw visible layers
 	while ( layerIterator != layers.end() )
 	{
@@ -225,11 +233,14 @@ void APaintArea::draw(QPainter *painter)
 			}
 			
 			// Draw the current frame
-			KTKeyFrame *frame = (*layerIterator)->frames()[ index ];
-			
-			if(frame && index < (*layerIterator)->frames().count() )
+			if ( index < (*layerIterator)->frames().count() )
 			{
-				drawFrame(frame, painter);
+				KTKeyFrame *frame = (*layerIterator)->frames()[ index ];
+				
+				if(frame )
+				{
+					drawFrame(frame, painter);
+				}
 			}
 		}
 		
@@ -241,8 +252,7 @@ void APaintArea::draw(QPainter *painter)
 
 void APaintArea::drawFrame(const KTKeyFrame *frame, QPainter *painter, float intensitive)
 {
-	SHOW_VAR(intensitive);
-	
+	KT_FUNCINFO;
 	if ( frame  )
 	{
 		QList<AGraphicComponent *> componentList = frame->components();

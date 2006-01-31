@@ -50,7 +50,7 @@ class KTLayerSequence : public KTWidgetListView
 		KTTimeLineLayer *createNewLayer(const QString &name, bool toEnd = true);
 		void removeLayer();
 		
-		void selectLayer(int id);
+		void selectLayer(KTTimeLineLayer *);
 		
 		void moveLayerUp();
 		void moveLayerDown();
@@ -59,9 +59,6 @@ class KTLayerSequence : public KTWidgetListView
 		KTTimeLineLayer *m_defaultLayer;
 		ListOfTLLayers m_layers;
 		int m_layerCount;
-		
-	protected:
-		KTTimeLineLayer *m_pCurrentLayer, *m_pLastLayer;
 	
 	protected:
 // 		void resizeEvent(QResizeEvent *e);

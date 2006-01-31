@@ -67,7 +67,7 @@ class KTTimeLineLayer : public QFrame
 		void mousePressEvent( QMouseEvent *me );
 		
 	signals:
-		void selected(int pos);
+		void selected(KTTimeLineLayer *);
 		void renamed(const QString &);
 		void rightClicked(KTTimeLineLayer *ly, const QPoint &pos);
 		

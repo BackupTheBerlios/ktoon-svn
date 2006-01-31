@@ -134,9 +134,13 @@ void KTTableExposure::insertLayer(int rows, const QString &text)
 
 void KTTableExposure::changeCurrentLayer(int idLayer)
 {
-	m_currentLayer = idLayer;
-	m_currentFrame = m_layers.at(m_currentLayer)->numUsedFrame();
-	emit layerSelected(idLayer);
+	if(m_currentLayer != idLayer || m_currentFrame != m_layers.at(m_currentLayer)->numUsedFrame())
+	{
+		m_currentLayer = idLayer;
+		m_currentFrame = m_layers.at(m_currentLayer)->numUsedFrame();
+		emit layerSelected(idLayer);
+		emit cellSelected(m_currentLayer, m_currentFrame);
+	}
 }
 
 void KTTableExposure::setUseFrame(int idLayer, const QString& name, bool addedToEnd)

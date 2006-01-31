@@ -104,7 +104,7 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name) : QFrame(), m_isLocked(fal
 	m_onlyOutlines = new QCheckBox( m_utils );
 	
 // 	m_layout->addWidget(m_onlyOutlines);
-	m_onlyOutlines -> resize( 20, 20 );
+	m_onlyOutlines->resize( 20, 20 );
 
 	connect( m_onlyOutlines, SIGNAL( clicked() ), this, SLOT( toggleOutlines() ) );
 
@@ -156,7 +156,7 @@ void KTTimeLineLayer::toggleOutlines()
 // 	setSelected( true );
 	setEdited( true );
 
-// 	emit selected(m_position);
+	emit selected(this);
 }
 
 void KTTimeLineLayer::setLock(bool yes)
@@ -231,7 +231,7 @@ void KTTimeLineLayer::mousePressEvent( QMouseEvent *me )
 // 		ls_parent -> setDragging( true );
 	}
 	
-// 	emit selected(m_position);
+	emit selected(this);
 
 	if ( me -> button() == Qt::RightButton )
 	{

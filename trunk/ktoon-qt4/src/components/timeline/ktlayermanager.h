@@ -61,7 +61,12 @@ class KTLayerManager : public KTVHBox
 		~KTLayerManager();
 		QScrollBar *verticalScrollBar();
 		
-		KTLayerSequence *layerSequence();
+		KTLayerSequence const *layerSequence();
+		
+		
+		void removeLayer();
+		void createNewLayer(const QString &name, bool toEnd);
+		void selectLayer(int layerPos);
 		
 	private slots:
 		/**

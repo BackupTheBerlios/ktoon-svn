@@ -239,8 +239,24 @@ void KTLayerManager::selectLayerAction(QAbstractButton *but)
 	}
 }
 
-KTLayerSequence *KTLayerManager::layerSequence()
+KTLayerSequence const *KTLayerManager::layerSequence()
 {
 	return m_sequence;
+}
+
+void KTLayerManager::removeLayer()
+{
+	m_sequence->removeLayer();
+}
+
+void KTLayerManager::createNewLayer(const QString &name, bool toEnd)
+{
+	m_sequence->createNewLayer( name, toEnd);
+}
+
+void KTLayerManager::selectLayer(int layerPos)
+{
+	SHOW_VAR(layerPos);
+	m_sequence->setCurrentCell(layerPos, 0);
 }
 

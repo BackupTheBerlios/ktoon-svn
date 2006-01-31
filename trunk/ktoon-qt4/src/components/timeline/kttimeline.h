@@ -39,10 +39,8 @@ class KTTimeLine : public KTModuleWidgetBase
 	public:
 		KTTimeLine(QWidget *parent = 0);
 		~KTTimeLine();
-		void setScene(int index);
 		KTLayerManager *currentLayerManager();
 		KTFrameSequenceContainer *currentFrameContainer();
-		void addFrame(int layerId, const QString &name, bool addToEnd );
 		
 	private:
 		void setupPropertiesBar();
@@ -56,18 +54,37 @@ class KTTimeLine : public KTModuleWidgetBase
 		
 	public slots:
 		void execAction(int action);
-		void createLayer(const QString &name, bool toEnd = true);
-		void removeCurrentLayer();
+		
+		
+		void insertLayer(const QString &name, bool toEnd = true);
 		
 		void addScene(const QString &name);
+		void setScene(int position);
+		void removeCurrentLayer();
+		void insertFrame(int position, const QString &name, bool toEnd);
+		void moveFrame(bool up);
+		void removeCurrentFrame();
+		void lockCurrentFrame();
+		void setCurrentCell(int layer, int frame);
+		
+		
+	private slots:
+		void emitFrameSelected(int layer, int frame);
 		
 	signals:
+		void requestInsertFrame(bool);
 		void requestInsertLayer();
+		void frameSelected( int, int );
+		void layerVisibilityChanged( int, bool);
+		void layerSelected( int);
+		void requestCopyFrame(int);
+		void requestPasteFrame(int);
+		void requestMoveFrame(bool);
+		void requestRemoveFrame();
+		void requestLockFrame();
 		void requestRemoveLayer();
 		
-		void requestChangeFPS(int fps);
-		
-		void layerSelected(int );
+		void requestChangeFPS(int);
 		
 	private slots:
 		void selectCurrentLayer(int index);

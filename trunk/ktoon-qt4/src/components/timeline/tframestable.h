@@ -79,10 +79,24 @@ class TFramesTable : public QTableView
 		TFramesTable(QWidget *parent = 0);
 		~TFramesTable();
 		
+		struct LayerItem
+		{
+			LayerItem() : lastItem(-1) {};
+			int lastItem;
+		};
+		
 	public slots:
-		void insertFrameSequence();
-		void removeFrameSequence();
+		// Layers
+		void addLayer();
+		void removeCurrentLayer();
+		
+		int lastFrameByLayer(int layerPos);
+		
+		// Frames
+		void addFrame(int layerPos);
+		
 		void setCurrentFrame(TFramesTableItem *);
+		void setCurrentLayer(int layerPos);
 		void selectFrame(int index);
 		
 		void setAttribute(int row, int col, TFramesTableItem::Attributes att, bool value);
@@ -165,6 +179,8 @@ class TFramesTable : public QTableView
 	private:
 		TFramesTableModel *m_model;
 		int m_rectWidth, m_rectHeight;
+		
+		QList<LayerItem> m_layers;
 };
 
 #endif

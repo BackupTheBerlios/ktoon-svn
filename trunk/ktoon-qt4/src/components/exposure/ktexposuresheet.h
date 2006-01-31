@@ -106,7 +106,6 @@ class KTExposureSheet : public KTModuleWidgetBase
 		//others
 		void frameSelected(int idLayer, int idFrame);
 		void layerSelected(int);
-		
 };
 
 #endif

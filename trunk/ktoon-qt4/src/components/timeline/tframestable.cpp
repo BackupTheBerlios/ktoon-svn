@@ -934,19 +934,47 @@ QStyleOptionViewItem TFramesTable::viewOptions() const
 }
 
 
-void TFramesTable::insertFrameSequence()
+void TFramesTable::addLayer()
 {
-	insertRow( rowCount()+1 );
+	int pos = rowCount() ;
+	insertRow( pos + 1);
+	
+	LayerItem layer;
+	
+	m_layers << layer;
+	
+	selectCell( pos, 0);
 }
 
-void TFramesTable::removeFrameSequence()
+void TFramesTable::removeCurrentLayer()
 {
-	removeRow( currentRow() );
+	int pos = currentRow();
+	removeRow( pos );
+	m_layers.removeAt(pos);
+}
+
+int TFramesTable::lastFrameByLayer(int layerPos)
+{
+	return m_layers[layerPos].lastItem;
+}
+
+// FRAMES
+
+void TFramesTable::addFrame(int layerPos)
+{
+	m_layers[layerPos].lastItem++;
+	
+	setAttribute( layerPos, m_layers[layerPos].lastItem, TFramesTableItem::IsUsed, true);
 }
 
 void TFramesTable::setCurrentFrame(TFramesTableItem *item)
 {
 	setCurrentItem(item);
+}
+
+void TFramesTable::setCurrentLayer(int layerPos)
+{
+	selectCell( layerPos, 0);
 }
 
 void TFramesTable::selectFrame(int index)

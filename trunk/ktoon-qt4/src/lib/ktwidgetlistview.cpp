@@ -55,6 +55,23 @@ QTableWidgetItem *KTWidgetListView::addWidget(QWidget *widget)
 	return newItem;
 }
 
+QTableWidgetItem *KTWidgetListView::insertWidget(int pos, QWidget *widget)
+{
+	QTableWidgetItem *newItem = new QTableWidgetItem();
+	
+	insertRow(pos);
+	setItem( pos, 0, newItem);
+	
+	setIndexWidget(indexFromItem(newItem), widget);
+	
+	verticalHeader()->resizeSection(pos, widget->height());
+	
+	m_items.insert(widget, newItem);
+
+	return newItem;
+}
+
+
 QWidget *KTWidgetListView::widget(QTableWidgetItem *treeItem)
 {
 	return indexWidget(indexFromItem(treeItem));

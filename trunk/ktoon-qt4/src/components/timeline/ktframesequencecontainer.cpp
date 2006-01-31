@@ -43,7 +43,7 @@ KTFrameSequenceContainer::~KTFrameSequenceContainer()
 {
 }
 
-TFramesTable *KTFrameSequenceContainer::manager()
+TFramesTable const *KTFrameSequenceContainer::manager()
 {
 	return m_frameTable;
 }
@@ -51,36 +51,36 @@ TFramesTable *KTFrameSequenceContainer::manager()
 void KTFrameSequenceContainer::addLayer()
 {
 	KT_FUNCINFO;
-	int layerId = 0;
-	if ( !m_lastUsedFrame.isEmpty() )
-	{
-		layerId = m_lastUsedFrame[m_lastUsedFrame.count()-1]+1;
-	}
-	SHOW_VAR(layerId);
-	
-	m_lastUsedFrame.insert(layerId, 0);
+
+	m_frameTable->addLayer();
 }
 
-void KTFrameSequenceContainer::addFrameToLayer(int layerId)
+void KTFrameSequenceContainer::addFrameToLayer(int layerPos)
 {
 	KT_FUNCINFO;
-	SHOW_VAR(layerId);
-	m_frameTable->setAttribute( layerId, m_lastUsedFrame[layerId], TFramesTableItem::IsUsed, true );
-	
-// 	m_lastUsedFrame++;
-	m_lastUsedFrame[layerId] = m_lastUsedFrame[layerId]+1;
+	m_frameTable->addFrame( layerPos );
 }
 
 
 void KTFrameSequenceContainer::selectFrameFromItem(TFramesTableItem *item)
 {
 	KT_FUNCINFO;
+	emit frameSelected( m_frameTable->row(item), m_frameTable->column(item));
 }
 
 void KTFrameSequenceContainer::removeCurrentLayer()
 {
-	
+	KT_FUNCINFO;
+	m_frameTable->removeCurrentLayer();
 }
 
+void KTFrameSequenceContainer::selectLayer(int pos)
+{
+	m_frameTable->setCurrentLayer( pos );
+}
 
+void KTFrameSequenceContainer::selectCell(int layer, int frame)
+{
+	m_frameTable->setCurrentItem(  m_frameTable->item(layer, frame) );
+}
 

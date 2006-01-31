@@ -39,23 +39,25 @@ class KTFrameSequenceContainer : public KTVHBox
 		KTFrameSequenceContainer(QWidget *parent = 0);
 		~KTFrameSequenceContainer();
 		
-		TFramesTable *manager();
+		TFramesTable const *manager();
 		
 		void addLayer();
 		void addFrameToLayer(int layerId);
 		void removeCurrentLayer();
 		
+		void selectLayer(int pos);
+		void selectCell(int layer, int frame);
+		
 	private slots:
 		void selectFrameFromItem(TFramesTableItem *item);
+		
+	signals:
+		void frameSelected(int layer, int frame);
 		
 	private:
 		KTTLRuler *m_ruler;
 		TFramesTable *m_frameTable;
 
-		int m_selectedFrame;
-		
-		// Last used frame by layer; key=layer
-		QMap<int, int> m_lastUsedFrame;// ###: tal vez deba usar una estructura con la informacion del layer
 };
 
 #endif
