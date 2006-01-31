@@ -23,8 +23,11 @@
 
 #include <ktvhbox.h>
 
+#include <QMap>
+
 #include "tframestable.h"
 #include "kttlruler.h"
+
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -38,10 +41,21 @@ class KTFrameSequenceContainer : public KTVHBox
 		
 		TFramesTable *manager();
 		
+		void addLayer();
+		void addFrameToLayer(int layerId);
+		void removeCurrentLayer();
+		
+	private slots:
+		void selectFrameFromItem(TFramesTableItem *item);
+		
 	private:
 		KTTLRuler *m_ruler;
 		TFramesTable *m_frameTable;
+
+		int m_selectedFrame;
 		
+		// Last used frame by layer; key=layer
+		QMap<int, int> m_lastUsedFrame;// ###: tal vez deba usar una estructura con la informacion del layer
 };
 
 #endif

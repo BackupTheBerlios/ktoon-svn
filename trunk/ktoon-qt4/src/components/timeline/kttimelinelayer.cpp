@@ -32,6 +32,16 @@
 KTTimeLineLayer::KTTimeLineLayer(const QString &name) : QFrame(), m_isLocked(false), m_isVisible(true), m_onlySeeOutlines(false), m_isSelected(false), m_isEdited(false)
 {
 	KTINIT;
+	
+	QPalette pal = palette();
+	pal.setBrush( QPalette::Base, pal.button());
+	
+	
+	setPalette(pal);
+	setAutoFillBackground(true);
+	
+	
+	
 	setFrameStyle( QFrame::Panel | QFrame::Raised );
 	
 	QHBoxLayout *m_layout = new QHBoxLayout;
@@ -94,12 +104,13 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name) : QFrame(), m_isLocked(fal
 	m_onlyOutlines = new QCheckBox( m_utils );
 	
 // 	m_layout->addWidget(m_onlyOutlines);
-//	m_onlyOutlines->setPaletteForegroundColor(Qt::black); // FIXME
 	m_onlyOutlines -> resize( 20, 20 );
 
 	connect( m_onlyOutlines, SIGNAL( clicked() ), this, SLOT( toggleOutlines() ) );
 
 	setLayout(m_layout);
+	
+	setMaximumHeight(26);
 }
 
 

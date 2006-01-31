@@ -222,7 +222,7 @@ void KTLayerExposure::removeFrame(int id)
 	{
 		m_layout->removeWidget(m_frames[id]);
 		m_frames[id]->hide();
-		m_frames.removeAt(id);
+		delete m_frames.takeAt(id);
 		for( int i = id; i < m_frames.count(); i++)
 		{
 			m_frames[i]->setId(m_frames[i]->id()-1);
@@ -236,7 +236,7 @@ void KTLayerExposure::removeFrame(int id)
 			frameSelect(pos);
 		}
 		m_useFrame--;
-		insertFrame(m_frames.last()->id()+1, ""); 
+		insertFrame(m_frames.last()->id()+1, "");
 	}
 }
 

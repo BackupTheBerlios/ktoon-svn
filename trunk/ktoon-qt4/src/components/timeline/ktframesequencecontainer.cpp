@@ -34,8 +34,8 @@ KTFrameSequenceContainer::KTFrameSequenceContainer(QWidget *parent) : KTVHBox(pa
 	m_ruler->setMaximumHeight(20);
 	m_ruler->setMinimumHeight(20);
 	
-// 	m_manager = new KTFrameSequenceManager(this);
 	m_frameTable = new TFramesTable(this);
+	connect(m_frameTable, SIGNAL(itemClicked( TFramesTableItem* )), this, SLOT(selectFrameFromItem(TFramesTableItem *)));
 }
 
 
@@ -47,4 +47,40 @@ TFramesTable *KTFrameSequenceContainer::manager()
 {
 	return m_frameTable;
 }
+
+void KTFrameSequenceContainer::addLayer()
+{
+	KT_FUNCINFO;
+	int layerId = 0;
+	if ( !m_lastUsedFrame.isEmpty() )
+	{
+		layerId = m_lastUsedFrame[m_lastUsedFrame.count()-1]+1;
+	}
+	SHOW_VAR(layerId);
+	
+	m_lastUsedFrame.insert(layerId, 0);
+}
+
+void KTFrameSequenceContainer::addFrameToLayer(int layerId)
+{
+	KT_FUNCINFO;
+	SHOW_VAR(layerId);
+	m_frameTable->setAttribute( layerId, m_lastUsedFrame[layerId], TFramesTableItem::IsUsed, true );
+	
+// 	m_lastUsedFrame++;
+	m_lastUsedFrame[layerId] = m_lastUsedFrame[layerId]+1;
+}
+
+
+void KTFrameSequenceContainer::selectFrameFromItem(TFramesTableItem *item)
+{
+	KT_FUNCINFO;
+}
+
+void KTFrameSequenceContainer::removeCurrentLayer()
+{
+	
+}
+
+
 

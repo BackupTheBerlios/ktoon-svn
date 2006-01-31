@@ -936,7 +936,7 @@ QStyleOptionViewItem TFramesTable::viewOptions() const
 
 void TFramesTable::insertFrameSequence()
 {
-	insertRow( rowCount()+1);
+	insertRow( rowCount()+1 );
 }
 
 void TFramesTable::removeFrameSequence()

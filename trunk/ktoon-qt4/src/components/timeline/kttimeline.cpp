@@ -60,7 +60,7 @@ void KTTimeLine::addScene(const QString &name)
 	connect(m_sequenceManager->manager(), SIGNAL( itemSelected(int )), this, SLOT(selectCurrentLayer(int)));
 	connect(m_layerManager->layerSequence(), SIGNAL( itemSelected(int )), this, SLOT(selectCurrentLayer(int)));
 
-	m_splitter->setSizes( QList<int>() << 190 << 700 );
+	m_splitter->setSizes( QList<int>() << 250 << 700 );
 	
 	m_container->addWidget(m_splitter);
 	m_container->setCurrentWidget(m_splitter);
@@ -180,12 +180,14 @@ void KTTimeLine::createLayer(const QString &name, bool toEnd)
 {
 	currentLayerManager()->layerSequence()->createNewLayer(name, toEnd);
 	currentFrameContainer()->manager()->insertFrameSequence();
+	currentFrameContainer()->addLayer();
 }
 
 void KTTimeLine::removeCurrentLayer()
 {
 	currentLayerManager()->layerSequence()->removeLayer();
-	currentFrameContainer()->manager()->removeFrameSequence();
+// 	currentFrameContainer()->manager()->removeFrameSequence();
+	currentFrameContainer()->removeCurrentLayer();
 }
 
 void KTTimeLine::selectCurrentLayer(int index)
@@ -218,10 +220,10 @@ void KTTimeLine::emitNewFPS(const QString &value)
 
 void KTTimeLine::addFrame(int layerId, const QString &name, bool addToEnd )
 {
-	ktDebug() << layerId;
+	KT_FUNCINFO;
 	if ( addToEnd ) // TODO: Terminar
 	{
-		currentFrameContainer()->manager()->setAttribute( layerId, 5, TFramesTableItem::IsUsed, true);
+		currentFrameContainer()->addFrameToLayer( layerId );
 	}
 	else 
 	{

@@ -36,7 +36,7 @@ KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWid
 	m_container = new QVBoxLayout(this);
 	
 	m_title = new KTModuleWidgetTitle("", this);
-	setMinimumSize(m_title->size());
+	setMinimumHeight(m_title->height());
 	
 // 	m_title->setToolTip(tr("Double click for roll up"));
 	
