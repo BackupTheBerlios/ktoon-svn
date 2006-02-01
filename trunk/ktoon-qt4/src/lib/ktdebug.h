@@ -32,10 +32,12 @@
 #define KT_FUNCINFO ktDebug() << "[" << __PRETTY_FUNCTION__ << "] ";
 #define KTINIT ktDebug() << "[Initializing " << __FUNCTION__ << "]";
 #define KTEND ktDebug() << "[Destroying " << __FUNCTION__ << "]";
+#define FUNC_NOT_IMPLEMENTED ktWarning() << __FILE__ << ":" << __LINE__ << " " << __PRETTY_FUNCTION__ << " not implemented yet";
 #else
 #define KT_FUNCINFO
 #define KTINIT ktDebug() << "[Initializing " << __FILE__ << ":" << __LINE__ << "] ";
 #define KTEND ktDebug() << "[Destroying " << __FILE__ << ":" << __LINE__ << "] ";
+#define FUNC_NOT_IMPLEMENTED ktWarning() << __FILE__<<":"<<__LINE__ << " not implemented yet";
 #endif
 
 #define SHOW_VAR(arg) ktDebug() << #arg << " = " << arg;

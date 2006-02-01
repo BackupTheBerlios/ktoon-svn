@@ -100,17 +100,17 @@ void KTTimeLine::removeCurrentLayer()
 
 void KTTimeLine::moveFrame(bool up)
 {
-	
+	FUNC_NOT_IMPLEMENTED;
 }
 
 void KTTimeLine::removeCurrentFrame()
 {
-	
+	FUNC_NOT_IMPLEMENTED;
 }
 
 void KTTimeLine::lockCurrentFrame()
 {
-	
+	FUNC_NOT_IMPLEMENTED;
 }
 
 void KTTimeLine::setCurrentCell(int layer, int frame)

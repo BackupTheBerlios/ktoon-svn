@@ -23,6 +23,8 @@
 #include "kseparator.h"
 #include "ktdebug.h"
 
+#include "kimageeffect.h"
+
 // Qt
 #include <QLabel>
 #include <QBitmap>
@@ -175,7 +177,9 @@ KTWizardPage::KTWizardPage(const QString &title, QWidget *parent) : KTVHBox(pare
 
 void KTWizardPage::setPixmap(const QPixmap &px)
 {
-	m_image->setPixmap(px);
+	QImage image = px.toImage();
+	KImageEffect::hash( image, KImageEffect::SouthLite, 1);
+	m_image->setPixmap(QPixmap::fromImage(image));
 	m_image->show();
 }
 

@@ -351,10 +351,34 @@ QList<AGraphicComponent*> AGraphicComponent::childs() const
 
 bool AGraphicComponent::hasChilds()
 {
-	if(m_childs.count() > 0)
+	return !m_childs.isEmpty();
+}
+
+
+QList<AGraphicComponent*> AGraphicComponent::allChilds() const
+{
+	QList<AGraphicComponent*> m_allChilds;
+	foreach(AGraphicComponent *component, m_childs)
 	{
-		return  true;
+		m_allChilds << component;
+		if ( component->hasChilds() )
+		{
+			appendChilds(component, m_allChilds );
+		}
 	}
-	return false;
+	
+	return m_allChilds;
+}
+
+void AGraphicComponent::appendChilds(AGraphicComponent *component, QList<AGraphicComponent *> &childs) const
+{	
+	foreach(AGraphicComponent *child, component->childs())
+	{
+		childs << child;
+		if ( child->hasChilds() )
+		{
+			appendChilds(child, childs );
+		}
+	}
 }
 

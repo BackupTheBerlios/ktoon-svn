@@ -45,6 +45,9 @@ class AFillTool : public KTToolPluginObject, public AToolInterface
 		virtual int type() const;
 		virtual bool isComplete() const;
 		virtual void aboutToChangeTool();
+		
+	private:
+		bool findChild(AGraphicComponent *component, const QString &brush, const QPoint &clickedPos);
 };
 
 #endif

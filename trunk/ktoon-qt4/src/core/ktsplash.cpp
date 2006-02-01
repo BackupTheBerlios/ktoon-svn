@@ -39,11 +39,15 @@ KTSplash::KTSplash() : QSplashScreen( 0 ), m_size(3), m_state(0)
 	KTINIT;
 	QTimer *timer = new QTimer( this );
 	QObject::connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
-	timer->start(150);
+	timer->start(500);
 	
-	QPixmap pixmap(KTOON_HOME+"/themes/default/images/splash.png");
+	QImage image(KTOON_HOME+"/themes/default/images/splash.png");
 	
-	setPixmap(pixmap);
+	KImageEffect::addNoise( image, KImageEffect::LaplacianNoise );
+	KImageEffect::hash( image, KImageEffect::SouthLite, 1);
+	
+	
+	setPixmap(QPixmap::fromImage(image));
 	m_version = tr("Version ")+ktapp->version();
 }
 

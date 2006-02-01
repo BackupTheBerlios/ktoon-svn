@@ -79,6 +79,8 @@ class AGraphicComponent : public KTSerializableObject
 		QList<AGraphicComponent*> childs() const ;
 		bool hasChilds();
 		
+		QList<AGraphicComponent*> allChilds() const;
+		
 		
 	private:
 		QDomElement brushToElement(const QBrush &brush, QDomDocument &doc);
@@ -87,6 +89,10 @@ class AGraphicComponent : public KTSerializableObject
 	protected:
 		QString m_name;
 		Graphics m_graphics;
+		
+	private: // AUX FUNCTIONS
+		void appendChilds(AGraphicComponent *component, QList<AGraphicComponent *> &childs) const;
+		
 };
 
 #endif

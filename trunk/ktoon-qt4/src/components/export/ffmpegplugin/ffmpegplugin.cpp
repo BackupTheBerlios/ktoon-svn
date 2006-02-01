@@ -28,7 +28,10 @@
 
 #include <cstdio>
 
+#include "ktgradientadjuster.h"
+
 #include "ffmpegmanager.h"
+
 
 #include <config.h>
 
@@ -114,28 +117,7 @@ QStringList FFMpegPlugin::createImages(const QList<KTScene *> &scenes, const QDi
 													
 							while ( it != componentList.end() )
 							{
-								foreach(AGraphic *graphic, (*it)->graphics() )
-								{
-									painter.save();
-														
-									painter.setPen(graphic->pen);
-									painter.setBrush(graphic->brush);
-	
-									QList<QPolygonF> poligons = graphic->path.toSubpathPolygons();
-									if ( poligons.count() == 1 )
-									{
-										painter.drawPath(graphic->path);
-									}
-									else
-									{
-										QList<QPolygonF>::const_iterator it;
-										for(it = poligons.begin(); it != poligons.end(); ++it)
-										{
-										painter.drawPolygon(*it);
-										}
-									}
-									painter.restore();
-								}
+								createImage( *it, &painter);
 								++it;
 							}
 						}
@@ -178,6 +160,57 @@ QStringList FFMpegPlugin::createImages(const QList<KTScene *> &scenes, const QDi
 	
 	return paths;
 }
+
+
+void FFMpegPlugin::createImage(AGraphicComponent *component, QPainter *painter)
+{
+	painter->save();
+	foreach(AGraphic *graphic, component->graphics())
+	{
+		QPen pen = graphic->pen;
+		QBrush brush = graphic->brush;
+		if ( brush.gradient() )
+		{
+			brush = KTGradientAdjuster::adjustGradient(brush.gradient(), graphic->path.boundingRect().toRect());
+		}
+	
+		if ( pen.brush().gradient() )
+		{
+			pen.setBrush( KTGradientAdjuster::adjustGradient( pen.brush().gradient(), graphic->path.boundingRect().toRect()) );
+		}
+		
+		painter->setPen(pen);
+		painter->setBrush(brush);
+		
+		QList<QPolygonF> poligons = graphic->path.toSubpathPolygons();
+		
+		if ( poligons.count() == 1 )
+		{
+			painter->drawPath(graphic->path);
+		}
+		else
+		{
+			QList<QPolygonF>::const_iterator it;
+			for(it = poligons.begin(); it != poligons.end(); ++it)
+			{
+				painter->drawPolygon(*it);
+			}
+		}
+	}
+
+	const QList< AGraphicComponent *> childs = component->childs();
+	if(childs.count() > 0)
+	{
+		foreach(AGraphicComponent *child, childs)
+		{
+			createImage( child, painter);
+		}
+	}
+	
+	
+	painter->restore();
+}
+
 
 
 #ifdef HAVE_FFMPEG

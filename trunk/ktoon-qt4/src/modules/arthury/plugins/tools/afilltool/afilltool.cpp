@@ -68,34 +68,48 @@ QRect AFillTool::press(const QString& brush, QPainter& painter, const QPainterPa
 {
 	if( currentFrame->selectedComponents().count() > 0 )
 	{
-		AGraphicComponent *component = currentFrame->selectedComponents()[0];
+		AGraphicComponent *selected = currentFrame->selectedComponents()[0];
 		
-		foreach(AGraphic *graphic, component->graphics())
+		QList<AGraphicComponent*> components = QList<AGraphicComponent*>() << selected << selected->allChilds();
+		
+		bool finded = false;
+		
+		foreach(AGraphicComponent *component, components)
 		{
-			if ( graphic->path.contains(pos) )
+			foreach(AGraphic *graphic, component->graphics())
 			{
-				if ( brush == "Fill" )
+				if ( graphic->path.contains(pos) )
 				{
-					graphic->brush = painter.pen().brush();
+					if ( brush == "Fill" )
+					{
+						graphic->brush = painter.pen().brush();
+					}
+					else if ( brush == "Remove Fill" )
+					{
+						graphic->brush = Qt::transparent;
+					}
+					else if ( brush == "Countour Fill" )
+					{
+						graphic->pen.setBrush(painter.pen().brush());
+					}
+					finded = true;
+					break;
 				}
-				else if ( brush == "Remove Fill" )
-				{
-					graphic->brush = Qt::transparent;
-				}
-				else if ( brush == "Countour Fill" )
-				{
-					graphic->pen.setBrush(painter.pen().brush());
-				}
-				
-				break;
 			}
+			if(finded) break;
 		}
 		
-		emit requestRedraw();
-		
+		if ( finded)
+		{
+			emit requestRedraw();
+		}
 	}
 	
 	return QRect(0,0,0,0);
+}
+
+bool AFillTool::findChild(AGraphicComponent *component, const QString &brush, const QPoint &clickedPos)
+{
 }
 
 QRect AFillTool::move(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& oldPos, const QPoint& newPos)
@@ -126,6 +140,5 @@ bool AFillTool::isComplete() const
 void AFillTool::aboutToChangeTool() 
 {
 }
-
 
 Q_EXPORT_PLUGIN( AFillTool );

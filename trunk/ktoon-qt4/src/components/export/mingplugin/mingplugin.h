@@ -44,6 +44,7 @@ class MingPlugin : public KTExportPluginObject, public ExportInterface
 		
 	private:
 		QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir);
+		void createImage(AGraphicComponent *component, QPainter *painter);
 };
 
 #endif
