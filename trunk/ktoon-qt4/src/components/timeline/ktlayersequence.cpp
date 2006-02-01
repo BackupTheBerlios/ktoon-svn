@@ -91,8 +91,11 @@ void KTLayerSequence::removeLayer()
 
 void KTLayerSequence::selectLayer(KTTimeLineLayer *tm)
 {
-// 	setCurrentCell (pos, 0);
-	setCurrentItem(this->item( tm));
+	KT_FUNCINFO;
+	setCurrentItem(this->item( tm) );
+	setItemSelected ( this->item( tm), true);
+	
+	emit itemSelected( currentRow() );
 }
 
 void KTLayerSequence::moveLayerUp()

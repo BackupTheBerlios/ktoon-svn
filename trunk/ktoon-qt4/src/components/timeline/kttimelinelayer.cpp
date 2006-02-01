@@ -38,9 +38,7 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name) : QFrame(), m_isLocked(fal
 	
 	
 	setPalette(pal);
-	setAutoFillBackground(true);
-	
-	
+	setAutoFillBackground(false);
 	
 	setFrameStyle( QFrame::Panel | QFrame::Raised );
 	

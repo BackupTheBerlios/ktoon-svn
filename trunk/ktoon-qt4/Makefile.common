@@ -8,6 +8,9 @@ confclean:
 	cd configure.tests/gif && make clean 
 	cd configure.tests/ming && make clean 
 
+install_plugins:
+	cd src/modules/ && make install
+
 build:
 	sh build.sh
 

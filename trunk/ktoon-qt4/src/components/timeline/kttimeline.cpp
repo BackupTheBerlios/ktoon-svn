@@ -57,9 +57,11 @@ void KTTimeLine::addScene(const QString &name)
 	
 	connect( m_layerManager->verticalScrollBar(), SIGNAL( valueChanged( int ) ), m_sequenceManager->manager()->verticalScrollBar(), SLOT( setValue( int ) ) );
 	
+	/***/
 	connect(m_sequenceManager->manager(), SIGNAL( itemSelected(int )), this, SLOT(selectCurrentLayer(int)));
-	connect(m_layerManager->layerSequence(), SIGNAL( itemSelected(int )), this, SLOT(selectCurrentLayer(int)));
-
+// 	connect(m_layerManager->layerSequence(), SIGNAL( itemSelected(int )), this, SLOT(selectCurrentLayer(int)));
+	/***/
+	
 	m_splitter->setSizes( QList<int>() << 250 << 700 );
 	
 	m_container->addWidget(m_splitter);
@@ -113,6 +115,9 @@ void KTTimeLine::lockCurrentFrame()
 
 void KTTimeLine::setCurrentCell(int layer, int frame)
 {
+	KT_FUNCINFO;
+	SHOW_VAR(layer);
+	SHOW_VAR(frame);
 	currentLayerManager()->selectLayer( layer );
 	currentFrameContainer()->selectCell(layer, frame);
 }
@@ -231,11 +236,11 @@ void KTTimeLine::insertLayer(const QString &name, bool toEnd)
 
 void KTTimeLine::selectCurrentLayer(int pos)
 {
+	KT_FUNCINFO;
 	currentFrameContainer()->selectLayer(pos);
+	currentLayerManager()->selectLayer( pos );
 	
-// 	currentLayerManager()->layerSequence()->selectItem(index);
-	
-// 	emit layerSelected( pos );
+	emit layerSelected( pos );
 	
 	m_editLayer->setText(QString::number(pos));
 }
@@ -266,7 +271,9 @@ void KTTimeLine::insertFrame(int layerId, const QString &name, bool addToEnd )
 
 void KTTimeLine::emitFrameSelected(int layer, int frame)
 {
-// 	currentLayerManager()->
+	KT_FUNCINFO;
+	currentLayerManager()->selectLayer( layer );
+	currentFrameContainer()->selectLayer( layer );
 	
 	emit frameSelected( layer, frame);
 }

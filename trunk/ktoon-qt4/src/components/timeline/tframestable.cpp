@@ -974,12 +974,12 @@ void TFramesTable::setCurrentFrame(TFramesTableItem *item)
 
 void TFramesTable::setCurrentLayer(int layerPos)
 {
-	selectCell( layerPos, 0);
+	setCurrentItem(item(layerPos, 0));
 }
 
 void TFramesTable::selectFrame(int index)
 {
-	setCurrentItem( item( rowCount(), index ) );
+	setCurrentItem( item( currentRow(), index ) );
 }
 
 void TFramesTable::setAttribute(int row, int col, TFramesTableItem::Attributes att, bool value)

@@ -61,9 +61,23 @@ QRect ACubicTool::move(const QString& brush, QPainter& painter, const QPainterPa
 		Node first = m_nodes[m_nodes.count()-2];
 		Node second = m_nodes.last();
 		path.moveTo(first.center);
+		
 		QPoint c = (first.center + second.center)/2;
-		path.cubicTo( first.center, first.right , c);
-		path.cubicTo( c,  second.left , second.center);
+		QPoint lc = second.right;
+		
+		if ( m_nodes.count() % 2 == 0 )
+		{
+			path.cubicTo( first.right , second.left, second.center);
+		}
+		else
+		{
+			path.cubicTo( first.right , second.right, second.center);
+		}
+		
+// 		path.cubicTo( c,  second.left , second.center);
+		
+// 		path.cubicTo( first.center, first.right , c);
+// 		path.cubicTo( c,  second.left , second.center);
 	}
 	else
 	{
@@ -112,7 +126,6 @@ QStringList ACubicTool::keys() const
 	return QStringList() << "Cubic";
 }
 
-
 QPainterPath ACubicTool::drawNodes()
 {
 	QList< Node >::iterator it = m_nodes.end();
@@ -124,6 +137,7 @@ QPainterPath ACubicTool::drawNodes()
 		for(int i = 0; i <  m_nodes.count()-1 ; i++)
 		{
 			QPoint c = (m_nodes[i].center + m_nodes[i+1].center)/2;
+			
 			path.cubicTo( m_nodes[i].center, m_nodes[i].right , c);
 			path.cubicTo( c,  m_nodes[i+1].left , m_nodes[i+1].center);
 		}
@@ -156,6 +170,5 @@ void ACubicTool::aboutToChangeTool()
 	m_nodes.clear();
 }
 
-
-
 Q_EXPORT_PLUGIN( ACubicTool );
+
