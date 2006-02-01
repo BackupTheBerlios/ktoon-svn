@@ -145,6 +145,25 @@ void KTViewDocument::setupEditActions()
 	m_editGroup->addAction(a);
 	a->setStatusTip(tr("Deletes the selected object"));
 	
+	
+	
+// 	m_toolsOrder = new QMenu(tr("Order"), m_toolbar);
+	
+	a = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/group.png" ), tr( "&Group" ),   QKeySequence(  ), m_paintAreaContainer->drawArea(), SLOT(group()), m_actionManager, "group");
+// 	m_toolsOrder->addAction(a);
+	m_editGroup->addAction(a);//FIXME caambiar por m_toolsOrder
+	a->setStatusTip(tr("Group the selected objects into a single one"));
+	
+	a = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/ungroup.png" ), tr( "&Ungroup" ),   QKeySequence(  ), m_paintAreaContainer->drawArea(), SLOT(ungroup()), m_actionManager, "ungroup");
+	m_editGroup->addAction(a);//FIXME caambiar por m_toolsOrder
+	a->setStatusTip(tr("Ungroups the selected object"));
+	
+	
+// 	connect( m_toolsOrder, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
+// 	m_toolsOrder->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/group.png"));
+// 	m_toolsOrder->addAction(QPixmap(KTOON_THEME_DIR+"/icons/group.png"), tr( "&Group" ), m_paintAreaContainer->drawArea(), SLOT( slotGroup()));
+// 	m_toolsOrder->addAction(QPixmap(KTOON_THEME_DIR+"/icons/ungroup.png"), tr( "&Ungroup" ), m_paintAreaContainer->drawArea(), SLOT( slotUngroup()));
+	
 }
 
 void KTViewDocument::setupEdit2Actions()

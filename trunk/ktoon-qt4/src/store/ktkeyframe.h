@@ -59,7 +59,7 @@ class KTKeyFrame : public KTSerializableObject
 		void deSelectedComponent(AGraphicComponent *toDeSelect);
 		void clearSelections();
 		void removeSelections();
-		QList<AGraphicComponent *> selectedComponents();
+		 QList<AGraphicComponent *> selectedComponents();
 		
 		
 	private:

@@ -53,7 +53,7 @@ class AGraphicComponent : public KTSerializableObject
 		QDomElement createXML( QDomDocument &doc );
 		
 		QRectF boundingRect() const;
-		
+		QPointF position() const;
 		
 		bool isValid();
 		
@@ -70,17 +70,23 @@ class AGraphicComponent : public KTSerializableObject
 		void translate(double sX, double sY);
 		void rotate( double angle );
 		
+		void mapTo(const QMatrix& matrix);
+		
 		void setComponentName(const QString &name);
 		QString componentName() const;
 		
+		void addChild ( AGraphicComponent * child );
+		QList<AGraphicComponent*> childs() const ;
+		bool hasChilds();
+		
+		
 	private:
 		QDomElement brushToElement(const QBrush &brush, QDomDocument &doc);
+		QList<AGraphicComponent*> m_childs;
 		
 	protected:
 		QString m_name;
 		Graphics m_graphics;
-
-
 };
 
 #endif

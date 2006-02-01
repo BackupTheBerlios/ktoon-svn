@@ -65,6 +65,7 @@ void KTKeyFrame::addComponent(AGraphicComponent *comp)
 void KTKeyFrame::removeComponent(AGraphicComponent *comp)
 {
         m_components.removeAll(comp);
+	delete comp;
 }
 
 

@@ -128,7 +128,8 @@ class APaintArea : public QWidget
 		void copy();
 		void paste();
 		void cut();
-		
+		void group();
+		void ungroup();
 		
 		// </FIXME>
 	protected:

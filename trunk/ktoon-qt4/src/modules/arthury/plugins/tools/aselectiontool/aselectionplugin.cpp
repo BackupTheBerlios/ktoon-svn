@@ -112,13 +112,26 @@ QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPain
 		matrix.translate(newPos.x()-oldPos.x(), newPos.y()-oldPos.y());
 		if(brush == tr("Selection"))
 		{
-			foreach(AGraphicComponent *selected, m_graphics )
+			foreach(AGraphicComponent *selected, m_graphics)
 			{
+// 				matrix.translate(newPos.x() - selected->position().x(),  newPos.y()- selected->position().y());
+				selected->mapTo(matrix);
+// 				selected->translate(newPos.x(), newPos.y());
 				foreach(AGraphic *graphic, selected->graphics() )
 				{
-					
 					ghost.addPath(graphic->path );
-					graphic->path = matrix.map(graphic->path);
+// 					graphic->path = matrix.map(graphic->path);
+				}
+		
+				if(selected->hasChilds())
+				{
+					foreach(AGraphicComponent *child, selected->childs())
+					{
+						foreach(AGraphic *graphic1, child->graphics() )
+						{
+							ghost.addPath(graphic1->path );
+						}
+					}
 				}
 			}
 		}
@@ -151,7 +164,7 @@ QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPain
 		
 		int rad = painter.pen().width();
 		
-		ghost = matrix.map(ghost);
+// 		ghost = matrix.map(ghost);
 		boundingRect = ghost.boundingRect().normalized().adjusted(-rad, -rad, +rad, +rad);
 		emit toDrawGhostGraphic( ghost );
 	}
@@ -254,6 +267,23 @@ void ASelectionPlugin::aboutToChangeTool()
 	
 }
 
+// void moveGraphics(const QPoint& newPos, QList<AGraphicComponent *> graphics, QPainterPath &ghost)
+// {
+// 	foreach(AGraphicComponent *selected, graphics)
+// 	{
+// 		selected->translate(newPos.x(), newPos.y());
+// 		foreach(AGraphic *graphic, selected->graphics() )
+// 		{
+// 			ghost.addPath(graphic->path );
+// // 			graphic->path = matrix.map(graphic->path);
+// 		}
+// 		
+// 		if(selected->hasChilds())
+// 		{
+// 			moveGraphics( newPos, selected->childs() , ghost);
+// 		}
+// 	}
+// }
 
 Q_EXPORT_PLUGIN( ASelectionPlugin )
 

@@ -102,7 +102,7 @@ QSize APaintArea::minimumSizeHint () const
 
 void APaintArea::paintEvent(QPaintEvent *e)
 {
-	KT_FUNCINFO;
+// 	KT_FUNCINFO;
 	QPainter painter;
 	
 	if ( m_redrawAll )
@@ -332,6 +332,16 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter
 			}
 		}
 	}
+
+	const QList< AGraphicComponent *> childs = graphicComponent->childs();
+	if(childs.count() > 0)
+	{
+		foreach(AGraphicComponent *child, childs)
+		{
+			drawGraphic(child, painter, intensitive );
+		}
+	}
+	
 	
 	painter->restore();
 }
@@ -467,7 +477,6 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 				QList<AGraphicComponent *> components =  m_currentFrame->components();
 				QList<AGraphicComponent *>::iterator it;
 				AGraphicComponent *toSelect = 0;
-
 				for(it = components.end()-1; it != components.begin()-1; it--)
 				{
 					if( (*it) && (*it)->intersects( QRectF(QPointF(static_cast<double>(event->pos().x()-1), static_cast<double>(event->pos().y()-1) ), QSizeF(2,2) ) ) )
@@ -482,6 +491,7 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 				
 				if(!toSelect)
 				{
+// 					ktDebug() << "no selecionado";
 					m_currentFrame->clearSelections();
 				}
 				else if ( e->modifiers() & Qt::ControlModifier )
@@ -696,5 +706,49 @@ void APaintArea::cut()
 	copy();
 	m_currentFrame->removeSelections();
 	redrawAll();
+}
+
+
+void APaintArea::group()
+{
+	
+	ktDebug() << "void APaintArea::group()" ;
+	if(m_currentFrame->selectedComponents().count() > 1)
+	{
+		AGraphicComponent *newComponent = new AGraphicComponent();
+	
+		foreach(AGraphicComponent *component, m_currentFrame->selectedComponents())
+		{
+// 			AGraphicComponent *child = new AGraphicComponent(*component);
+			newComponent->addChild( component);
+		}
+		
+		m_currentFrame->removeSelections();
+		
+		m_currentFrame->addComponent( newComponent );
+		m_currentFrame->addSelectedComponent( newComponent );
+	}
+	
+}
+
+void APaintArea::ungroup()
+{
+	ktDebug() << "void APaintArea::ungroup()" ;
+	if(m_currentFrame->selectedComponents().count() > 0)
+	{
+		foreach(AGraphicComponent *component, m_currentFrame->selectedComponents())
+		{
+			if(component->hasChilds())
+			{
+				
+				foreach(AGraphicComponent *child, component->childs())
+				{
+					m_currentFrame->addSelectedComponent( child );
+					m_currentFrame->addComponent( child );
+				}
+				m_currentFrame->removeComponent(component);
+			}
+		}
+	}
 }
 

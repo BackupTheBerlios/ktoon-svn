@@ -28,10 +28,12 @@ AGraphicComponent::AGraphicComponent() : KTSerializableObject()
 AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : KTSerializableObject(toCopy.parent()), m_name(toCopy.m_name)
 {
 // 	, m_graphics(toCopy.m_graphics)
+	
 	foreach(AGraphic *graphic, toCopy.m_graphics)
 	{
 		m_graphics << new AGraphic(*graphic);
 	}
+	m_childs = toCopy.m_childs;
 }
 
 AGraphicComponent::~AGraphicComponent()
@@ -52,13 +54,26 @@ QRectF AGraphicComponent::boundingRect() const
 	{
 		r = r | graphic->path.boundingRect();
 	}
+// 	SHOW_VAR(m_childs.count());
+	if(m_childs.count() > 0)
+	{
+		foreach(AGraphicComponent *child, m_childs)
+		{
+			r = r | child->boundingRect();
+		}
+	}
 	
 	return r;
 }
 
+QPointF AGraphicComponent::position() const
+{
+	return boundingRect().topLeft();
+}
+
 bool AGraphicComponent::isValid()
 {
-	return !m_graphics.isEmpty();
+	return (!m_graphics.isEmpty() || !m_childs.isEmpty());
 }
 
 // void AGraphicComponent::addGraphic(const AGraphic *graphic)
@@ -107,71 +122,117 @@ bool AGraphicComponent::intersects(const QRectF &rect)
 // 		{
 // 			r = r | m_graphics[i].path.boundingRect();
 // 		}
-		
-		return boundingRect().intersects(rect);
+		QRectF r = boundingRect();
+		return r.intersects(rect);
 	}
 	
 	return false;
 }
 
 
-void AGraphicComponent::scale(double sX, double sY)
+void AGraphicComponent::scale(double sX, double sY) //FIXME
 {
+	
 	if ( sX > 0 && sY > 0 )
 	{
+		QPointF pos = position();
+		QMatrix mId(1,0,0,1, 0, 0);
+		mId.scale(sX, sY);
 		foreach(AGraphic *graphic, m_graphics)
 		{
-			QPointF position = graphic->path.currentPosition();
-			QMatrix mId(1,0,0,1, 0, 0);
-			
-			mId.scale(sX, sY);
-			
 			graphic->path = mId.map(graphic->path);
-			translate( position.x(), position.y());
 		}
+		if(m_childs.count() > 0)
+		{
+			foreach(AGraphicComponent *child, m_childs)
+			{
+				child->mapTo(mId);
+// // 			
+			}
+		}
+		translate( pos.x(), pos.y());
 	}
+
 }
 
-void AGraphicComponent::shear(double sX, double sY)
+void AGraphicComponent::shear(double sX, double sY)//FIXME
 {
+	
+	QPointF pos = position();
+
+	QMatrix mId(1,0,0,1, 0, 0);
+	mId.shear(sX, sY);
+	
 	foreach(AGraphic *graphic, m_graphics)
 	{
-		QPointF position = graphic->path.currentPosition();
-		QMatrix mId(1,0,0,1, 0, 0);
-		
-		mId.shear(sX, sY);
 		graphic->path = mId.map(graphic->path);
-		translate( position.x(), position.y());
 	}
+	if(m_childs.count() > 0)
+	{
+		foreach(AGraphicComponent *child, m_childs)
+		{
+			child->mapTo(mId);
+		}
+	}
+	translate( pos.x(), pos.y());
 }
 
 void AGraphicComponent::translate(double sX, double sY)
 {
+
+	QPointF position = boundingRect().topLeft();
+	QMatrix mId;
+	mId.translate(sX - position.x(), sY - position.y());
 	foreach(AGraphic *graphic, m_graphics)
 	{
-		QPointF position = graphic->path.currentPosition();
-		QMatrix mId(1,0,0,1, 0, 0);
 		
-		mId.translate(sX-position.x(), sY-position.y());
+		QPointF position = graphic->path.currentPosition();
 		graphic->path = mId.map(graphic->path);
+	}
+	if(m_childs.count() > 0)
+	{
+		foreach(AGraphicComponent *child, m_childs)
+		{
+			child->mapTo(mId);
+		}
 	}
 }
 
-void AGraphicComponent::rotate( double angle )
+
+
+void AGraphicComponent::rotate( double angle )//FIXME
+{
+	QPointF pos = position();
+	QMatrix mId(1,0,0,1, position().x(), position().y());
+	mId.rotate(angle);
+	foreach(AGraphic *graphic, m_graphics)
+	{
+		graphic->path = mId.map(graphic->path);
+	}
+	if(m_childs.count() > 0)
+	{
+		foreach(AGraphicComponent *child, m_childs)
+		{
+			child->mapTo(mId);
+		}
+	}
+	translate( pos.x(), pos.y());
+}
+
+void AGraphicComponent::mapTo(const QMatrix& matrix)
 {
 	foreach(AGraphic *graphic, m_graphics)
 	{
-		QPointF position = graphic->path.currentPosition();
-		QMatrix mId(1,0,0,1, position.x(), position.y());
-		
-		mId.rotate(angle);
-		
-		graphic->path = mId.map(graphic->path);
-		
-		translate( position.x(), position.y());
+		graphic->path = matrix.map(graphic->path);
+	}
+	if(m_childs.count() > 0)
+	{
+		foreach(AGraphicComponent *child, m_childs)
+		{
+			child->mapTo(matrix);
+		}
 	}
 }
-
 
 QDomElement AGraphicComponent::createXML( QDomDocument &doc )
 {
@@ -277,6 +338,23 @@ QDomElement AGraphicComponent::brushToElement(const QBrush &brush, QDomDocument 
 	return element;
 }
 
+void AGraphicComponent::addChild ( AGraphicComponent * child )
+{
+	m_childs << child;
+	
+}
 
+QList<AGraphicComponent*> AGraphicComponent::childs() const
+{
+	return m_childs;
+}
 
+bool AGraphicComponent::hasChilds()
+{
+	if(m_childs.count() > 0)
+	{
+		return  true;
+	}
+	return false;
+}
 
