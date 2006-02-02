@@ -22,6 +22,10 @@
 
 #include "ktwizard.h"
 #include "ktxyspinbox.h"
+#include <QComboBox>
+#include <QSpinBox>
+
+
 class NPFirstPage;
 class QLineEdit;
 
@@ -36,7 +40,8 @@ class KTNewProject : public KTWizard
 		~KTNewProject();
 		QString projectName() const;
 		QSize dimension() const;
-		
+		int fps() const;
+		QString renderType() const;
 	signals:
 		void sendToStatus(const QString &);
 		void sendToOSD(const QString &);
@@ -55,6 +60,8 @@ class NPFirstPage : public KTWizardPage
 		void reset();
 		QString projectName() const;
 		QSize dimension() const;
+		int fps() const;
+		QString renderType() const;
 		
 	signals:
 		void sendToStatus(const QString &);
@@ -63,6 +70,8 @@ class NPFirstPage : public KTWizardPage
 	private:
 		QLineEdit *m_projectName;
 		QLineEdit *m_authorName;
+		QComboBox *m_renderType;
+		QSpinBox *m_fps;
 		
 		KTXYSpinBox *m_size;
 };

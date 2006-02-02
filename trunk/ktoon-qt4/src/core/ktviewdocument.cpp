@@ -31,13 +31,26 @@
 #include "ktvhbox.h"
 #include "kttoolpluginobject.h"
 
-KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, KTDocument *doc, QWorkspace *parent ) : KTMdiWindow(parent), m_document(doc), m_title(projectName)
+KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, const QString & renderType, KTDocument *doc, QWorkspace *parent ) : KTMdiWindow(parent), m_document(doc), m_title(projectName)
 {
 	setWindowIcon(QPixmap(KTOON_THEME_DIR+"/icons/layer_pic.png") ); // FIXME: new image for documents
-	
+	SHOW_VAR( renderType);
 	m_actionManager = new KTActionManager(this);
-	
-	m_paintAreaContainer = new KTPaintAreaContainer(size, this);
+	APaintArea::RenderType type;
+	if(renderType == tr("Native"))
+	{
+		type = APaintArea::Native;
+	}
+	else if(renderType == tr("OpenGL"))
+	{
+		type = APaintArea::OpenGL;
+	}
+	else
+	{
+		type = APaintArea::Image;
+	}
+	SHOW_VAR(type);
+	m_paintAreaContainer = new KTPaintAreaContainer(size,type,  this);
 	
 	setCentralWidget ( m_paintAreaContainer );
 	

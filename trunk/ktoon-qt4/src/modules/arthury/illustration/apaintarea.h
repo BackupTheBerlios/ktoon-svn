@@ -59,7 +59,7 @@ class APaintArea : public QWidget
 			Native
 		};
 		
-		APaintArea(const QSize& size, QWidget *parent = 0);
+		APaintArea(const QSize& size, RenderType type,  QWidget *parent = 0);
 		~APaintArea();
 		QSize sizeHint() const;
 		QSize minimumSizeHint () const;

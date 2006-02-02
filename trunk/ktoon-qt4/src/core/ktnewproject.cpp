@@ -47,11 +47,21 @@ QSize KTNewProject::dimension() const
 	return m_firstPage->dimension();
 }
 
+int KTNewProject::fps() const
+{
+	return m_firstPage->fps();
+}
+
+QString KTNewProject::renderType() const
+{
+	return m_firstPage->renderType();
+}
+
 // NPFirstPage
 
 NPFirstPage::NPFirstPage(QWidget *parent) : KTWizardPage(tr("New KToon Project"), parent)
 {
-	QFrame *container = new QFrame(this);
+	QFrame *container = new QFrame();
 	QGridLayout *layout = new QGridLayout(container);
 	
 	QLabel *labelProjectName = new QLabel(tr("Project Name"), container);
@@ -73,6 +83,31 @@ NPFirstPage::NPFirstPage(QWidget *parent) : KTWizardPage(tr("New KToon Project")
 	m_size->setY( 340);
 	layout->addWidget(m_size, 2, 0);
 	
+	QGroupBox *renderAndFps= new QGroupBox();
+	
+	QBoxLayout *subLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+	renderAndFps->setLayout(subLayout);
+	
+	QBoxLayout *renderLayout = new QBoxLayout(QBoxLayout::LeftToRight);
+	QLabel *label = new QLabel(tr("Render type"));
+
+	m_renderType = new QComboBox();
+	m_renderType->addItems ( QStringList() << tr("Image") << tr("OpenGL") << tr("Native") );
+	renderLayout->addWidget(label);
+	renderLayout->addWidget(m_renderType);
+	subLayout->addLayout(renderLayout);
+	
+	QBoxLayout *fpsLayout = new QBoxLayout(QBoxLayout::LeftToRight);
+	
+	label = new QLabel(tr("FPS"));
+	m_fps = new QSpinBox();
+	m_fps->setValue(24);
+	
+	fpsLayout->addWidget(label);
+	fpsLayout->addWidget(m_fps);
+	subLayout->addLayout(fpsLayout);
+	
+	layout->addWidget(renderAndFps, 2, 1);
 	setWidget(container);
 	
 }
@@ -108,4 +143,14 @@ QSize NPFirstPage::dimension() const
 {
 	QSize size( m_size->x(), m_size->y() );
 	return size;
+}
+
+int  NPFirstPage::fps() const
+{
+	return m_fps->value();
+}
+
+QString NPFirstPage::renderType() const
+{
+	return m_renderType->currentText();
 }

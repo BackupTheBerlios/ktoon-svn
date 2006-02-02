@@ -234,6 +234,22 @@ void AGraphicComponent::mapTo(const QMatrix& matrix)
 	}
 }
 
+void AGraphicComponent::getPath(QPainterPath & path, const QMatrix& matrix)
+{
+	foreach(AGraphic *graphic, m_graphics)
+	{
+		graphic->path = matrix.map(graphic->path);
+		path.addPath(graphic->path);
+	}
+	if(m_childs.count() > 0)
+	{
+		foreach(AGraphicComponent *child, m_childs)
+		{
+			child->getPath(path, matrix);
+		}
+	}
+}
+
 QDomElement AGraphicComponent::createXML( QDomDocument &doc )
 {
 	QDomElement item = doc.createElement("Component");

@@ -35,11 +35,11 @@ var.begin(IMAGE_DEVICE); break; \
 	case OpenGL: \
 		var.begin(OPENGL_DEVICE); break; }; 
 
-APaintArea::APaintArea(const QSize& size ,QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0,0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_currentFrame(0), m_layer(0), m_scene(0), m_previousFramesNumber(0), m_nextFramesNumber(0), m_currentGraphic(0)
+APaintArea::APaintArea(const QSize& size, RenderType type, QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0,0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_currentFrame(0), m_layer(0), m_scene(0), m_previousFramesNumber(0), m_nextFramesNumber(0), m_currentGraphic(0)
 {
 	m_redrawAll = true;
 	
-	m_renderType = Image;
+	m_renderType = type;
 	
 	KTINIT;
 	setAttribute(Qt::WA_StaticContents);

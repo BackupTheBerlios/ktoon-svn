@@ -282,6 +282,7 @@ void KTProjectManager::createScene(bool addToEnd)
 	if ( m_currentDocument )
 	{
 		KTScene *scene = m_currentDocument->createScene(addToEnd);
+		scene->setFPS( m_fps );
 		connect(scene, SIGNAL(layerCreated( const QString&, bool)), this, SIGNAL(layerCreated( const QString &, bool)));
 		connect(scene, SIGNAL(layerRemoved( int)), this, SIGNAL(layerRemoved(int))) ;
 	}
@@ -446,6 +447,26 @@ void  KTProjectManager::setDocumentSize(const QSize& size )
 {
 	m_size = size;
 }
+
+void KTProjectManager::setProjectRender( const QString typeRender)
+{
+	m_typeRender = typeRender;
+}
+void KTProjectManager::setProjectFPS( int fps )
+{
+	m_fps = fps;
+}
+
+QString KTProjectManager::projectRender( ) const
+{
+	return m_typeRender;
+}
+
+int KTProjectManager::fps()
+{
+	return m_fps;
+}
+
 
 QSize KTProjectManager::documentSize() const
 {

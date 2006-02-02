@@ -39,8 +39,13 @@ class KTProjectManager : public KTSerializableObject
 		~KTProjectManager();
 		QDomElement createXML( QDomDocument &doc );
 		void setProjectName(const QString &name);
+		void setProjectRender( const QString typeRender);
+		void setProjectFPS( int fps );
 		void setDocumentSize(const QSize& size );
 		QSize documentSize() const;
+		QString projectRender( ) const;
+		int fps();
+		
 		bool open();
 		
 	public slots:
@@ -113,6 +118,10 @@ class KTProjectManager : public KTSerializableObject
 		const KTKeyFrame *m_copyFrame;
 		mutable QString m_name;
 		bool m_open;
+		
+		QString m_typeRender;
+		int m_fps;
+		
 };
 
 #endif

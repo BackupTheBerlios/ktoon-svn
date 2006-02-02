@@ -48,19 +48,21 @@ class ASelectionPlugin : public KTToolPluginObject, public AToolInterface
 		virtual void aboutToChangeTool() ;
 		
 		
+		
+		
 	private:
 		QRect drawControls(const QString brush, QPainter *painter);
 		
 	private:
 		QPainterPath m_path;
-// 		virtual void moveGraphics(const QPoint& newPos, QList<AGraphicComponent *> graphics, QPainterPath &ghost);
 		QList<AGraphicComponent *> m_graphics;
-		bool selectPoint;
+		bool m_selectPoint;
 		struct Node
 		{
 			int componentpos, graphicPos, polygonPos, pointPos;
 		} m_node;
 		
+		virtual void allGraphisComponent(QList<AGraphicComponent *> components);
 };
 
 #endif

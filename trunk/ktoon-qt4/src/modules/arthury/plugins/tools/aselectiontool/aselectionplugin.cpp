@@ -36,14 +36,23 @@ QRect ASelectionPlugin::press(const QString &brush, QPainter &painter, const QPa
 	m_node.graphicPos = 0;
 	m_node.polygonPos = 0;
 	m_node.pointPos = 0;
-	selectPoint = false;
+	m_selectPoint = false;
 	QRect rect;
 	if ( currentFrame  )
 	{
 		if(currentFrame->selectedComponents().count() > 0)
 		{
-			m_graphics = currentFrame->selectedComponents();
+			if( brush == tr("Contour"))
+			{
+				
+				allGraphisComponent(currentFrame->selectedComponents());
+			}
+			else if(  brush ==tr("Selection"))
+			{
+				m_graphics = currentFrame->selectedComponents();
+			}
 			rect = drawControls(brush, &painter);
+			
 		}
 		else
 		{
@@ -57,10 +66,10 @@ QRect ASelectionPlugin::press(const QString &brush, QPainter &painter, const QPa
 		QRectF rectS(pos-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness)); // FIXME: configure
 		foreach(AGraphicComponent *component, m_graphics)
 		{
+			
 			foreach(AGraphic *graphic, component->graphics() )
 			{
 				QList<QPolygonF> polygons = graphic->path.toSubpathPolygons();
-				ktDebug() << "polygons.count()" <<  polygons.count();
 				foreach(QPolygonF polygon, polygons)
 				{
 					QPolygonF::iterator point = polygon.begin();
@@ -68,14 +77,14 @@ QRect ASelectionPlugin::press(const QString &brush, QPainter &painter, const QPa
 					{
 						if ( rectS.contains( (*point).toPoint() ) )
 						{
-							selectPoint = true;
+							m_selectPoint = true;
 							break;
 						}
 						m_node.pointPos++;
 						++point;
 					}
 					
-					if(selectPoint)
+					if(m_selectPoint)
 					{
 						ktDebug() << m_node.polygonPos;
 						break;
@@ -83,14 +92,14 @@ QRect ASelectionPlugin::press(const QString &brush, QPainter &painter, const QPa
 					m_node.polygonPos++;
 					m_node.pointPos = 0;
 				}
-				if(selectPoint)
+				if(m_selectPoint)
 				{
 					break;
 				}
 				m_node.graphicPos++;
 				m_node.polygonPos = 0;
 			}
-			if(selectPoint)
+			if(m_selectPoint)
 			{
 				break;
 			}
@@ -112,30 +121,27 @@ QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPain
 		matrix.translate(newPos.x()-oldPos.x(), newPos.y()-oldPos.y());
 		if(brush == tr("Selection"))
 		{
-			foreach(AGraphicComponent *selected, m_graphics)
+			foreach(AGraphicComponent *selected, m_graphics) //FIXME: optimizar
 			{
-// 				matrix.translate(newPos.x() - selected->position().x(),  newPos.y()- selected->position().y());
-				selected->mapTo(matrix);
-// 				selected->translate(newPos.x(), newPos.y());
-				foreach(AGraphic *graphic, selected->graphics() )
-				{
-					ghost.addPath(graphic->path );
-// 					graphic->path = matrix.map(graphic->path);
-				}
-		
-				if(selected->hasChilds())
-				{
-					foreach(AGraphicComponent *child, selected->childs())
-					{
-						foreach(AGraphic *graphic1, child->graphics() )
-						{
-							ghost.addPath(graphic1->path );
-						}
-					}
-				}
+				selected->getPath(ghost, matrix);
+// 				foreach(AGraphic *graphic, selected->graphics() )
+// 				{
+// 					ghost.addPath(graphic->path );
+// 				}
+// 				
+// 				if(selected->hasChilds())
+// 				{
+// 					foreach(AGraphicComponent *child, selected->childs())
+// 					{
+// 						foreach(AGraphic *graphic1, child->graphics() )
+// 						{
+// 							ghost.addPath(graphic1->path );
+// 						}
+// 					}
+// 				}
 			}
 		}
-		else if(brush == tr("Contour") && selectPoint)
+		else if(brush == tr("Contour") && m_selectPoint)
 		{
 
 			QList<QPolygonF> polygons = m_graphics[m_node.componentpos]->graphics()[m_node.graphicPos]->path.toSubpathPolygons();
@@ -267,23 +273,18 @@ void ASelectionPlugin::aboutToChangeTool()
 	
 }
 
-// void moveGraphics(const QPoint& newPos, QList<AGraphicComponent *> graphics, QPainterPath &ghost)
-// {
-// 	foreach(AGraphicComponent *selected, graphics)
-// 	{
-// 		selected->translate(newPos.x(), newPos.y());
-// 		foreach(AGraphic *graphic, selected->graphics() )
-// 		{
-// 			ghost.addPath(graphic->path );
-// // 			graphic->path = matrix.map(graphic->path);
-// 		}
-// 		
-// 		if(selected->hasChilds())
-// 		{
-// 			moveGraphics( newPos, selected->childs() , ghost);
-// 		}
-// 	}
-// }
+void ASelectionPlugin::allGraphisComponent(QList<AGraphicComponent *> components)
+{
+	foreach(AGraphicComponent * component,  components)
+	{
+		m_graphics << component;
+		if(component->hasChilds())
+		{
+			allGraphisComponent(component->childs());
+		}
+	}
+}
+
 
 Q_EXPORT_PLUGIN( ASelectionPlugin )
 

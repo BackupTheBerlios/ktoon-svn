@@ -126,7 +126,7 @@ class KTMainWindow : public DMainWindow
 		void updateOpenRecentMenu();
 		
 	private slots:
-		void createNewProject(const QString &name, const QSize &size = QSize(-1,-1) );
+		void createNewProject(const QString &name, const QSize &size = QSize(-1,-1), const QString& renderType = tr("Image"), const int fps = 24  );
 		void newViewDocument(const QString &name = QString::null);
 		void newViewCamera(KTScene *scene);
 		void newProject();

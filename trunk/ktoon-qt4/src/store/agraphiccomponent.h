@@ -71,6 +71,7 @@ class AGraphicComponent : public KTSerializableObject
 		void rotate( double angle );
 		
 		void mapTo(const QMatrix& matrix);
+		void getPath(QPainterPath & path, const QMatrix& matrix = QMatrix() );
 		
 		void setComponentName(const QString &name);
 		QString componentName() const;

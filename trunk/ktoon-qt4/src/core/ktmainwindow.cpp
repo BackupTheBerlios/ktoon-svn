@@ -99,7 +99,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	
 	m_pActiveTabWidget->setCurrentIndex( 0 );
 	
-	createNewProject("test", QSize(200,200));
+	createNewProject("test", QSize(300,300), tr("Image"), 24);
 	
 	KTCONFIG->beginGroup("TipOfDay");
 	bool showTips = qvariant_cast<bool>(KTCONFIG->value("ShowOnStart", true ));
@@ -129,7 +129,7 @@ KTMainWindow::~KTMainWindow()
 
 // Modal
 
-void KTMainWindow::createNewProject(const QString &name, const QSize &size)
+void KTMainWindow::createNewProject(const QString &name, const QSize &size, const QString & renderType, const int fps)
 {
 
 	KTDocument *document = m_projectManager->createDocument(name);
@@ -139,6 +139,8 @@ void KTMainWindow::createNewProject(const QString &name, const QSize &size)
 // 	m_viewCamera->animationArea()->setScene(m_projectManager->currentScene());
 	
 	m_projectManager->setProjectName( name );
+	m_projectManager->setProjectRender( renderType);
+	m_projectManager->setProjectFPS( fps);
 	m_projectManager->setDocumentSize( size );
 	
 	
@@ -158,7 +160,8 @@ void KTMainWindow::newViewDocument(const QString &name)
 	
 	if ( scene )
 	{
-		KTViewDocument *viewDocument = new KTViewDocument( m_projectManager->documentSize(),  name, m_projectManager->currentDocument(), m_drawingSpace);
+		
+		KTViewDocument *viewDocument = new KTViewDocument( m_projectManager->documentSize(),  name, m_projectManager->projectRender(),  m_projectManager->currentDocument(), m_drawingSpace);
 		viewDocument->setAttribute(Qt::WA_DeleteOnClose, true);
 		m_drawingSpace->addWindow(viewDocument);
 // 		viewDocument->setWindowTitle(name);
@@ -221,7 +224,7 @@ void KTMainWindow::newProject()
 	connectToDisplays(wizard);
 	if ( wizard->exec() != QDialog::Rejected )
 	{
-		createNewProject( wizard->projectName() , wizard->dimension());
+		createNewProject( wizard->projectName(), wizard->dimension(), wizard->renderType(), wizard->fps() );
 	}
 	delete wizard;
 }

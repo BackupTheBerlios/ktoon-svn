@@ -33,7 +33,7 @@ class KTPaintAreaContainer : public QWidget
 {
 	Q_OBJECT
 	public:
-		KTPaintAreaContainer(const QSize& size, QWidget *parent = 0);
+		KTPaintAreaContainer(const QSize& size, APaintArea::RenderType type,  QWidget *parent = 0);
 		~KTPaintAreaContainer();
 		APaintArea *drawArea() const;
 		QPoint drawAreaDelta() const { return m_drawAreaDelta; } ;

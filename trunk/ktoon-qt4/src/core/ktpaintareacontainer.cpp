@@ -27,7 +27,7 @@
 
 #include "ktdebug.h"
 
-KTPaintAreaContainer::KTPaintAreaContainer(const QSize& size, QWidget *parent) : QWidget(parent), m_drawAreaDelta(25,25)
+KTPaintAreaContainer::KTPaintAreaContainer(const QSize& size, APaintArea::RenderType type,  QWidget *parent) : QWidget(parent), m_drawAreaDelta(25,25)
 {
 	KTINIT;
 // 	setMouseTracking(true);
@@ -47,7 +47,7 @@ KTPaintAreaContainer::KTPaintAreaContainer(const QSize& size, QWidget *parent) :
 	m_HRuler->setZeroAt(m_drawAreaDelta.x());
 	m_VRuler->setZeroAt(m_drawAreaDelta.y());
 	
-	m_drawArea = new APaintArea(size, m_scroller);
+	m_drawArea = new APaintArea(size, type, m_scroller);
 	m_drawArea->setZeroAt(m_drawAreaDelta);
 	
 	m_HRuler->setMinimumWidth(m_drawArea->width());
