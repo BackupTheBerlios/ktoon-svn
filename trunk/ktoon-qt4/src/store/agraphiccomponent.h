@@ -76,20 +76,25 @@ class AGraphicComponent : public KTSerializableObject
 		void setComponentName(const QString &name);
 		QString componentName() const;
 		
+		
 		void addChild ( AGraphicComponent * child );
 		QList<AGraphicComponent*> childs() const ;
 		bool hasChilds();
-		
 		QList<AGraphicComponent*> allChilds() const;
 		
+		QPolygonF controlPoints() const;
+		void setControlPoints(const QPolygonF& points) ;
+		void removeControlPoints();
 		
 	private:
 		QDomElement brushToElement(const QBrush &brush, QDomDocument &doc);
 		QList<AGraphicComponent*> m_childs;
 		
+		
 	protected:
 		QString m_name;
 		Graphics m_graphics;
+		QPolygonF m_controlPoints;
 		
 	private: // AUX FUNCTIONS
 		void appendChilds(AGraphicComponent *component, QList<AGraphicComponent *> &childs) const;

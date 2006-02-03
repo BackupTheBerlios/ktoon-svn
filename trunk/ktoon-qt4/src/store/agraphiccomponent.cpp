@@ -383,6 +383,7 @@ QList<AGraphicComponent*> AGraphicComponent::allChilds() const
 	QList<AGraphicComponent*> m_allChilds;
 	foreach(AGraphicComponent *component, m_childs)
 	{
+		
 		m_allChilds << component;
 		if ( component->hasChilds() )
 		{
@@ -405,3 +406,27 @@ void AGraphicComponent::appendChilds(AGraphicComponent *component, QList<AGraphi
 	}
 }
 
+QPolygonF AGraphicComponent::controlPoints() const
+{
+	return m_controlPoints;
+}
+
+void AGraphicComponent::setControlPoints(const QPolygonF& points) 
+{
+	m_controlPoints = points;
+}
+
+void AGraphicComponent::removeControlPoints()
+{
+	m_controlPoints.clear();
+	if( m_childs.count() > 0  )
+	{
+		foreach(AGraphicComponent * child, m_childs)
+		{
+			if(!child->controlPoints().isEmpty())
+			{
+				child->removeControlPoints();
+			}
+		}
+	}
+}

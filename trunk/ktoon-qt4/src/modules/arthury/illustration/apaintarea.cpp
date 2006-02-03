@@ -127,6 +127,19 @@ void APaintArea::paintEvent(QPaintEvent *e)
 		
 		painter.restore();
 		
+// 		if(m_currentFrame)
+// 		{
+// 			painter.save();
+// 			foreach(AGraphicComponent *component, m_currentFrame->selectedComponents())
+// 			{
+// 				painter.setPen(QPen(Qt::blue, 5)); //FIXME: configure
+// 				if(!component->controlPoints().isEmpty())
+// 				{
+// 					painter.drawPoints(component->controlPoints());
+// 				}
+// 			}
+// 			painter.restore();
+// 		}
 		painter.end();
 		m_redrawAll = false;
 	}
@@ -344,6 +357,14 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter
 	
 	
 	painter->restore();
+	painter->save();// FIXME hacer aqui o al final del paintEvent???
+	painter->setPen(QPen(Qt::blue, 5)); //FIXME: configure 
+	if(!graphicComponent->controlPoints().isEmpty())
+	{
+		painter->drawPoints(graphicComponent->controlPoints());
+	}
+	painter->restore();
+	
 }
 
 void APaintArea::redrawAll()
@@ -743,7 +764,6 @@ void APaintArea::ungroup()
 				
 				foreach(AGraphicComponent *child, component->childs())
 				{
-					m_currentFrame->addSelectedComponent( child );
 					m_currentFrame->addComponent( child );
 				}
 				m_currentFrame->removeComponent(component);

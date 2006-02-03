@@ -51,12 +51,15 @@ QRect ASelectionPlugin::press(const QString &brush, QPainter &painter, const QPa
 			{
 				m_graphics = currentFrame->selectedComponents();
 			}
-			rect = drawControls(brush, &painter);
+// 			rect = drawControls(brush, &painter);
+			setControls( brush);
 			
 		}
 		else
 		{
 			m_graphics.clear();
+			m_selectionRect.setTopLeft(pos);
+			
 		}
 	}
 	
@@ -113,6 +116,7 @@ QRect ASelectionPlugin::press(const QString &brush, QPainter &painter, const QPa
 QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos)
 {
 	QRectF boundingRect;
+// 	seletionRect
 	if ( m_graphics.count() > 0 )
 	{
 		QPainterPath ghost;
@@ -174,6 +178,13 @@ QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPain
 		boundingRect = ghost.boundingRect().normalized().adjusted(-rad, -rad, +rad, +rad);
 		emit toDrawGhostGraphic( ghost );
 	}
+	else
+	{
+		m_selectionRect.setBottomRight(newPos);
+		QPainterPath path;
+		path.addRect(m_selectionRect);
+		emit toDrawGhostGraphic( path );
+	}
 	
 	return boundingRect.toRect();
 }
@@ -184,8 +195,10 @@ QRect ASelectionPlugin::release(const QString &  brush ,QPainter &  painter , co
 	m_node.graphicPos = 0;
 	m_node.polygonPos = 0;
 	m_node.pointPos = 0;
+	QRect rect = setControls(brush);
 	emit requestRedraw();
-	QRect rect = drawControls(brush, &painter);
+// 	QRect rect = drawControls(brush, &painter);
+	
 	return rect;
 }
 
@@ -270,7 +283,7 @@ bool ASelectionPlugin::isComplete() const
 
 void ASelectionPlugin::aboutToChangeTool() 
 {
-	
+	m_graphics.clear();
 }
 
 void ASelectionPlugin::allGraphisComponent(QList<AGraphicComponent *> components)
@@ -285,6 +298,44 @@ void ASelectionPlugin::allGraphisComponent(QList<AGraphicComponent *> components
 	}
 }
 
+QRect  ASelectionPlugin::setControls(const QString& brush)
+{
+	ktDebug() << "ASelectionPlugin::setControls(" <<  brush << ")" ;
+	SHOW_VAR(m_graphics.count());
+	if( brush == tr("Selection") )
+	{
+		foreach(AGraphicComponent * component,  m_graphics)
+		{
+			QPolygonF points;
+			QRectF rect = component->boundingRect();
+			points 
+			<< rect.topLeft() 
+			<< QPointF(rect.x()+rect.width()/2, rect.y()) 
+			<< rect.topRight() 
+			<< QPointF(rect.x()+rect.width(), rect.y()+rect.height()/2) 
+			<< rect.bottomRight() 
+			<< QPointF(rect.x()+rect.width()/2, rect.y()+rect.height() ) 
+			<< rect.bottomLeft() 
+			<< QPointF(rect.x(), rect.y()+rect.height()/2 ) 
+			<< rect.center();
+			component->setControlPoints(points);
+		}
+	}
+	if( brush == tr("Contour") )
+	{
+		QPolygonF points;
+		foreach(AGraphicComponent * component,  m_graphics)
+		{
+			
+			foreach(AGraphic * graphic, component->graphics())
+			{
+				points << graphic->path.toFillPolygon();
+			}
+			component->setControlPoints(points);
+		}
+// 		m_graphics[0]->setControlPoints(points);
+	}
+}
 
 Q_EXPORT_PLUGIN( ASelectionPlugin )
 

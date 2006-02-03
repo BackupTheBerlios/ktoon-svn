@@ -64,6 +64,7 @@ void KTKeyFrame::addComponent(AGraphicComponent *comp)
 
 void KTKeyFrame::removeComponent(AGraphicComponent *comp)
 {
+	deSelectedComponent( comp);
         m_components.removeAll(comp);
 	delete comp;
 }
@@ -126,12 +127,17 @@ void KTKeyFrame::addSelectedComponent(AGraphicComponent *toSelect)
 
 void KTKeyFrame::deSelectedComponent(AGraphicComponent *toDeSelect)
 {
+	
+	toDeSelect->removeControlPoints();
 	m_selectedComponents.removeAll ( toDeSelect );
 }
 
 void KTKeyFrame::clearSelections()
 {
-	m_selectedComponents.clear();
+	foreach( AGraphicComponent*  component, m_selectedComponents)
+	{
+		deSelectedComponent(component);
+	}
 }
 
 QList<AGraphicComponent *> KTKeyFrame::selectedComponents()
