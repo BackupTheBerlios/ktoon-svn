@@ -57,6 +57,8 @@ class KTLibraryParser : public QXmlDefaultHandler
 		QGradientStops m_gradientStops;
 		
 		QList<AGraphic *> m_graphics;
+		
+		int m_tagCounter;
 };
 
 #endif

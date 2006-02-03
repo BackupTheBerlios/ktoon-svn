@@ -24,7 +24,7 @@
 #include <QAbstractButton>
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@toonka.com>
 */
 class KTFlatButton : public QAbstractButton
 {

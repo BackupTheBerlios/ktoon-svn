@@ -51,6 +51,7 @@ void KTTimeLine::addScene(const QString &name)
 	m_splitter->addWidget(m_sequenceManager);
 	
 	connect(m_layerManager, SIGNAL(actionSelected(int)), this, SLOT(execAction(int)));
+
 	
 	// Mover scrolls simetricamente
 	connect( m_sequenceManager->manager()->verticalScrollBar(), SIGNAL( valueChanged( int ) ), m_layerManager->verticalScrollBar(), SLOT( setValue( int ) ) );
@@ -59,7 +60,7 @@ void KTTimeLine::addScene(const QString &name)
 	
 	/***/
 	connect(m_sequenceManager->manager(), SIGNAL( itemSelected(int )), this, SLOT(selectCurrentLayer(int)));
-// 	connect(m_layerManager->layerSequence(), SIGNAL( itemSelected(int )), this, SLOT(selectCurrentLayer(int)));
+	connect(m_layerManager->layerSequence(), SIGNAL( itemSelected(int )), this, SLOT(selectCurrentLayer(int)));
 	/***/
 	
 	m_splitter->setSizes( QList<int>() << 250 << 700 );
@@ -96,6 +97,16 @@ void KTTimeLine::removeCurrentLayer()
 {
 	currentLayerManager()->removeLayer();
 	currentFrameContainer()->removeCurrentLayer();
+}
+
+
+void KTTimeLine::removeLayer(int index)
+{
+	KT_FUNCINFO;
+	
+	SHOW_VAR(index);
+	currentLayerManager()->removeLayer(index);
+	currentFrameContainer()->removeLayer(index);
 }
 
 void KTTimeLine::moveFrame(bool up)
@@ -234,15 +245,18 @@ void KTTimeLine::insertLayer(const QString &name, bool toEnd)
 	currentFrameContainer()->addLayer();
 }
 
+void KTTimeLine::setLayer(int index)
+{
+	currentFrameContainer()->selectLayer(index);
+	currentLayerManager()->selectLayer( index );
+	
+	m_editLayer->setText(QString::number(index));
+}
+
 void KTTimeLine::selectCurrentLayer(int pos)
 {
 	KT_FUNCINFO;
-	currentFrameContainer()->selectLayer(pos);
-	currentLayerManager()->selectLayer( pos );
-	
 	emit layerSelected( pos );
-	
-	m_editLayer->setText(QString::number(pos));
 }
 
 void KTTimeLine::emitNewFPS(const QString &value)

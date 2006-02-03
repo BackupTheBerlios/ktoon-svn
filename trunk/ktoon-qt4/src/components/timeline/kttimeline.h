@@ -61,13 +61,14 @@ class KTTimeLine : public KTModuleWidgetBase
 		void addScene(const QString &name);
 		void setScene(int position);
 		void removeCurrentLayer();
+		void removeLayer(int index);
 		void insertFrame(int position, const QString &name, bool toEnd);
 		void moveFrame(bool up);
 		void removeCurrentFrame();
 		void lockCurrentFrame();
 		void setCurrentCell(int layer, int frame);
-		
-		
+		void selectCurrentLayer(int index);
+		void setLayer(int index);
 	private slots:
 		void emitFrameSelected(int layer, int frame);
 		
@@ -87,7 +88,7 @@ class KTTimeLine : public KTModuleWidgetBase
 		void requestChangeFPS(int);
 		
 	private slots:
-		void selectCurrentLayer(int index);
+		
 		
 	private:
 		QStackedWidget *m_container;

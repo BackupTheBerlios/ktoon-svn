@@ -27,13 +27,15 @@ AGraphicComponent::AGraphicComponent() : KTSerializableObject()
 
 AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : KTSerializableObject(toCopy.parent()), m_name(toCopy.m_name)
 {
-// 	, m_graphics(toCopy.m_graphics)
-	
 	foreach(AGraphic *graphic, toCopy.m_graphics)
 	{
 		m_graphics << new AGraphic(*graphic);
 	}
-	m_childs = toCopy.m_childs;
+	
+	foreach(AGraphicComponent *child, toCopy.m_childs )
+	{
+		m_childs << new AGraphicComponent(*child);
+	}
 }
 
 AGraphicComponent::~AGraphicComponent()
@@ -306,6 +308,11 @@ QDomElement AGraphicComponent::createXML( QDomDocument &doc )
 		}
 		
 		item.appendChild(graphicElement);
+	}
+	
+	foreach(AGraphicComponent *child, m_childs)
+	{
+		item.appendChild(child->createXML(doc));
 	}
 	
 	return item;

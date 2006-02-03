@@ -49,6 +49,7 @@ class KTLayerSequence : public KTWidgetListView
 	public slots:
 		KTTimeLineLayer *createNewLayer(const QString &name, bool toEnd = true);
 		void removeLayer();
+		void removeLayer(int pos);
 		
 		void selectLayer(KTTimeLineLayer *);
 		

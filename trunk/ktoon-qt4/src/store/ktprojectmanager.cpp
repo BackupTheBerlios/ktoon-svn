@@ -285,6 +285,8 @@ void KTProjectManager::createScene(bool addToEnd)
 		scene->setFPS( m_fps );
 		connect(scene, SIGNAL(layerCreated( const QString&, bool)), this, SIGNAL(layerCreated( const QString &, bool)));
 		connect(scene, SIGNAL(layerRemoved( int)), this, SIGNAL(layerRemoved(int))) ;
+		connect(scene, SIGNAL(layerSelected( int)), this, SIGNAL(layerSelected(int))) ;
+
 	}
 	else
 	{
@@ -418,12 +420,12 @@ void KTProjectManager::lockCurrentFrame()
 	}
 }
 
-void KTProjectManager::removeLayer()
+void KTProjectManager::removeLayer(int index)
 {
 	KTScene *scene = currentScene();
 	if( scene )
 	{
-		scene->removeLayer(scene->indexCurrentLayer());
+		scene->removeLayer(index/*scene->indexCurrentLayer()*/);
 	}
 }
 

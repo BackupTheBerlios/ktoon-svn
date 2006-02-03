@@ -83,7 +83,8 @@ void KTFlatButton::paintEvent(QPaintEvent *e)
 		int pixX = qMax( qMax( 0, (textRect.width() - pixmap.width()) / 2 ), ( rect.width() - pixmap.width() ) / 2 );
 		painter.drawPixmap( pixX, textY-pixmap.height()-textRect.height(), pixmap );
 	}
-
+	
+	painter.setFont(QFont("Times", 12, QFont::Bold) );
 	painter.drawText( textX, textY, text() );
 	
 }

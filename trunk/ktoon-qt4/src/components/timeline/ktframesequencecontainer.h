@@ -44,6 +44,7 @@ class KTFrameSequenceContainer : public KTVHBox
 		void addLayer();
 		void addFrameToLayer(int layerId);
 		void removeCurrentLayer();
+		void removeLayer(int pos);
 		
 		void selectLayer(int pos);
 		void selectCell(int layer, int frame);

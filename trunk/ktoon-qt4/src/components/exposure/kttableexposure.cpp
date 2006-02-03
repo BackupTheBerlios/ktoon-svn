@@ -134,13 +134,15 @@ void KTTableExposure::insertLayer(int rows, const QString &text)
 
 void KTTableExposure::changeCurrentLayer(int idLayer)
 {
-	if(m_currentLayer != idLayer || m_currentFrame != m_layers.at(m_currentLayer)->numUsedFrame())
-	{
-		m_currentLayer = idLayer;
-		m_currentFrame = m_layers.at(m_currentLayer)->numUsedFrame();
+// 	if(m_currentLayer != idLayer || m_currentFrame != m_layers.at(m_currentLayer)->numUsedFrame())
+// 	{
+// 		m_currentLayer = idLayer;
+// 		m_currentFrame = m_layers.at(m_currentLayer)->numUsedFrame();
+	m_layers.at(m_currentLayer)->otherSelected( idLayer);
 		emit layerSelected(idLayer);
-		emit cellSelected(m_currentLayer, m_currentFrame);
-	}
+		
+// 		emit cellSelected(m_currentLayer, m_currentFrame);
+// 	}
 }
 
 void KTTableExposure::setUseFrame(int idLayer, const QString& name, bool addedToEnd)
@@ -230,17 +232,42 @@ void KTTableExposure::setCurrentCell(int idLayer, int idFrame)
 	
 }
 
+void KTTableExposure::setLayer(int index)
+{
+	ktDebug() << "KTTableExposure::setLayer(int" << index << ")"  << m_currentLayer;
+	if(index == m_currentLayer)
+	{
+		return;
+	}
+	m_currentLayer = index;
+	m_layers[m_currentLayer]->setSelected(true);
+// 	m_layers[m_currentLayer]->otherSelected(index);
+}
+
 void KTTableExposure::removeLayer(int idLayer)
 {
-// 	KT_FUNCINFO;
+	KT_FUNCINFO;
 	SHOW_VAR(idLayer);
-	m_layout->removeWidget( m_layers.at(idLayer) );
-	m_layers.removeAt(idLayer);
-	for( int i = idLayer; i < m_layers.count(); i++)
+	
+	if ( m_layers.count() > 0 && idLayer >= 0 )
 	{
-		m_layers.at(i)->setId(i);
+		KTLayerExposure * ly = m_layers.takeAt(idLayer);
+		if ( ly ) 
+		{
+			delete ly; 
+		}
+		for( int i = idLayer; i < m_layers.count(); i++)
+		{
+			KTLayerExposure *layer = m_layers.at(i);
+			if ( layer ) layer->setId(i);
+		}
+		m_numLayer--;
+		m_port->adjustSize();
+		
+		emit cellSelected( m_currentLayer-1, m_layers[idLayer-1]->currentFrame());
+// 		m_currentLayer--;
 	}
-	m_numLayer--;
+	
 }
 
 

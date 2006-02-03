@@ -74,6 +74,11 @@ void KTFrameSequenceContainer::removeCurrentLayer()
 	m_frameTable->removeCurrentLayer();
 }
 
+void KTFrameSequenceContainer::removeLayer(int pos)
+{
+	m_frameTable->removeLayer( pos );
+}
+
 void KTFrameSequenceContainer::selectLayer(int pos)
 {
 	m_frameTable->setCurrentLayer( pos );

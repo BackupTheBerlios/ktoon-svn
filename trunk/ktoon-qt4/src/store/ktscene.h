@@ -65,7 +65,9 @@ class KTScene : public KTSerializableObject
 	signals:
 		void layerCreated(const QString &name, bool toEnd);
 		void layerRemoved(int index);
-				
+		void layerSelected(int index);
+		
+		
 	private:
 		Layers m_layers;
 		KTLayer *m_currentLayer;

@@ -113,7 +113,7 @@ void KTExposureSheet::applyAction(int action)
 {
 	KT_FUNCINFO;
 	
-	ktDebug() << m_tables.count();
+// 	ktDebug() << m_tables.count();
 	
 	if ( m_tables.count() == 0 || m_currentTable == 0 )
 	{
@@ -132,7 +132,8 @@ void KTExposureSheet::applyAction(int action)
 		}
 		case RemoveLayer:
 		{
-			emit requestRemoveLayer();
+			emit requestRemoveLayer(m_currentTable->currentLayer());
+			
 			break;
 		}
 		case InsertFrames:
@@ -214,6 +215,14 @@ void KTExposureSheet::removeCurrentLayer()
 	m_currentTable->removeCurrentLayer();
 }
 
+void KTExposureSheet::removeLayer(int index)
+{
+	ktDebug() << "removeLayer(int" <<  index << ")";
+	if ( m_currentTable )
+		m_currentTable->removeLayer( index );
+}
+
+
 void KTExposureSheet::removeCurrentFrame()
 {
 	if ( m_currentTable )
@@ -281,5 +290,8 @@ void KTExposureSheet::closeAllScenes()
 	m_currentTable = 0;
 }
 
-
+void KTExposureSheet::setLayer(int index)
+{
+	m_currentTable->setLayer( index );
+}
 

@@ -63,6 +63,7 @@ class KTTableExposure : public QScrollArea
 		KTLayerExposure *currentLayerExposure();
 		
 		void setCurrentCell(int idLayer, int idFrame);
+		void setLayer(int index);
 		
 	private:
 		void createMenuRight();

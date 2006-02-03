@@ -165,6 +165,7 @@ void KTScene::setCurrentLayer(int index)
 	if ( layer )
 	{
 		m_currentLayer = layer;
+		emit layerSelected(index);
 	}
 	else
 	{

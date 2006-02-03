@@ -953,6 +953,12 @@ void TFramesTable::removeCurrentLayer()
 	m_layers.removeAt(pos);
 }
 
+void TFramesTable::removeLayer(int pos)
+{
+	removeRow(pos);
+	m_layers.removeAt(pos);
+}
+
 int TFramesTable::lastFrameByLayer(int layerPos)
 {
 	return m_layers[layerPos].lastItem;

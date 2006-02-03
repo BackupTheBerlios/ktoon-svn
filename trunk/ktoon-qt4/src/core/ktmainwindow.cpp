@@ -405,7 +405,7 @@ void KTMainWindow::ui4project(QWidget *widget)
 	
 	connect(widget, SIGNAL(requestLockFrame()), m_projectManager, SLOT(lockCurrentFrame()));
 	
-	connect(widget, SIGNAL(requestRemoveLayer()), m_projectManager, SLOT(removeLayer()));
+	connect(widget, SIGNAL(requestRemoveLayer(int)), m_projectManager, SLOT(removeLayer(int)));
 }
 
 void KTMainWindow::messageToStatus(const QString &msg)

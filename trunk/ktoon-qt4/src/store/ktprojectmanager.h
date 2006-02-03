@@ -74,7 +74,7 @@ class KTProjectManager : public KTSerializableObject
 		void setCurrentLayer(int index);
 		void setLayerVisibility(int idLayer, bool value);
 		KTLayer *currentLayer();
-		void removeLayer();
+		void removeLayer(int index);
 				
 		// Frames
 		void createFrame(bool addToEnd = true);
@@ -103,7 +103,7 @@ class KTProjectManager : public KTSerializableObject
 		void layerCreated(const QString &name, bool addedToEnd);
 		void layerVisibilityChanged(int index, bool );
 		void layerRemoved(int );
-		
+		void layerSelected(int );
 		
 		// Frames
 		void frameCreated( const QString &name, bool addedToEnd);

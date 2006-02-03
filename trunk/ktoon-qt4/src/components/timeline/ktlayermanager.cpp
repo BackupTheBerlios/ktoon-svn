@@ -249,6 +249,11 @@ void KTLayerManager::removeLayer()
 	m_sequence->removeLayer();
 }
 
+void KTLayerManager::removeLayer(int pos)
+{
+	m_sequence->removeRow(pos);
+}
+
 void KTLayerManager::createNewLayer(const QString &name, bool toEnd)
 {
 	m_sequence->createNewLayer( name, toEnd);

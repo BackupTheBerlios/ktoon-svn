@@ -23,7 +23,7 @@
 #include "ktpathadjuster.h"
 
 KTLibraryParser::KTLibraryParser()
-	: QXmlDefaultHandler(), m_gradient(0)
+	: QXmlDefaultHandler(), m_gradient(0), m_tagCounter(0)
 {
 }
 
@@ -48,6 +48,12 @@ bool KTLibraryParser::startElement( const QString& , const QString& , const QStr
 	{
 		if ( qname == "Component" )
 		{
+			if ( m_tagCounter == 0 )
+			{
+				AGraphicComponent *rootComponent = new AGraphicComponent;
+				m_components << rootComponent;
+			}
+			
 			qDeleteAll(m_graphics.begin(), m_graphics.end());
 			m_graphics.clear();
 			
@@ -56,6 +62,7 @@ bool KTLibraryParser::startElement( const QString& , const QString& , const QStr
 			{
 				m_objectName = objName;
 			}
+			m_tagCounter++;
 		}
 		else if ( qname == "Graphic" )
 		{
@@ -151,19 +158,23 @@ bool KTLibraryParser::endElement(const QString&, const QString& , const QString&
 		}
 		else if ( qname == "Component" )
 		{
-			AGraphicComponent *component = new AGraphicComponent;
+			m_tagCounter--;
 			
-			if ( ! m_objectName.isNull() )
+			if ( m_tagCounter != 0 )
 			{
-				component->setComponentName( m_objectName);
+				AGraphicComponent *child = new AGraphicComponent;
+				if ( ! m_objectName.isNull() )
+				{
+					child->setComponentName( m_objectName);
+				}
+				
+				foreach(AGraphic *graphic, m_graphics)
+				{
+					child->addGraphic(graphic->path, graphic->pen, graphic->brush);
+				}
+				
+				m_components.last()->addChild(child);
 			}
-			
-			foreach(AGraphic *graphic, m_graphics)
-			{
-				component->addGraphic(graphic->path, graphic->pen, graphic->brush);
-			}
-			
-			m_components << component;
 			
 			m_objectName = QString();
 		}

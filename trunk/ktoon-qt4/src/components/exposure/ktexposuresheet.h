@@ -52,12 +52,13 @@ class KTExposureSheet : public KTModuleWidgetBase
 		
 		void moveFrame(bool up);
 		void removeCurrentLayer();
+		void removeLayer(int index);
 		void removeCurrentFrame();
 		void lockCurrentFrame();
 		void setScene(int index);
 		
 		void setCurrentCell( int idLayer, int idFrame);
-		
+		void setLayer(int index);
 	private:
 		QList<QPixmap> m_imgs;
 		QList<KTTableExposure*> m_tables;
@@ -85,11 +86,11 @@ class KTExposureSheet : public KTModuleWidgetBase
 	private slots:
 		void actionButton(QAbstractButton *);
 		void emitRequestChangeScene(int index);
-				
+		
 	signals:
 		//layers
 		void requestInsertLayer();
-		void requestRemoveLayer();
+		void requestRemoveLayer(int index);
 		void requestInsertFrame(bool addedToEnd);
 		void layerVisibilityChanged( int idLayer, bool value);
 		

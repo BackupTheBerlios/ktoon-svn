@@ -65,6 +65,7 @@ class KTLayerManager : public KTVHBox
 		
 		
 		void removeLayer();
+		void removeLayer(int pos);
 		void createNewLayer(const QString &name, bool toEnd);
 		void selectLayer(int layerPos);
 		

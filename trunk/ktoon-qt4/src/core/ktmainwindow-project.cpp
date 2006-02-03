@@ -49,6 +49,13 @@ void KTMainWindow::changeScene(int index)
 	
 }
 
+void KTMainWindow::selectLayer(int index)
+{
+	m_exposureSheet->setLayer(index);
+	m_timeLine->setLayer( index );
+}
+
+
 void KTMainWindow::insertLayer(const QString &name, bool addedToEnd)
 {
 // 	ktDebug() << "KTMainWindow::insertLayer(" << name << "," << addedToEnd << ")";
@@ -65,14 +72,14 @@ void KTMainWindow::insertLayer(const QString &name, bool addedToEnd)
 
 void KTMainWindow::removeLayer(int index)
 {
-	m_exposureSheet->removeCurrentLayer();
-	m_timeLine->removeCurrentLayer();
-	
+	m_exposureSheet->removeLayer(index);
+	m_timeLine->removeLayer(index);
 }
 
 void KTMainWindow::setLayerVisibilityChanged(int idLayer, bool isVisible)
 {
 	// FIXME: Implements
+	FUNC_NOT_IMPLEMENTED;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )

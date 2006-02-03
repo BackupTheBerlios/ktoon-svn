@@ -140,6 +140,7 @@ void KTMainWindow::createGUI()
 	connect(m_scenes, SIGNAL(requestRemoveScene()), m_projectManager, SLOT(removeScene()));
 	connect(m_scenes, SIGNAL(changeCurrentScene( int )), this, SLOT(changeScene(int)));
 	
+	
 	connectToDisplays(m_scenes);
 	
 	/////////////////////
@@ -213,7 +214,9 @@ void KTMainWindow::createGUI()
 	
 	connect(m_projectManager, SIGNAL(frameRemoved()), this, SLOT(removeFrame()));
 	connect(m_projectManager, SIGNAL(frameLocked()), this, SLOT(lockFrame()));
+	
 	connect(m_projectManager, SIGNAL(layerRemoved(int )), this, SLOT(removeLayer(int)));
+	connect(m_projectManager, SIGNAL(layerSelected(int )), this, SLOT(selectLayer(int)));
 }
 
 void KTMainWindow::connectToDisplays(const QWidget *widget)

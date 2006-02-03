@@ -23,7 +23,7 @@
 
 #include "ktpathadjuster.h"
 
-KTProjectParser::KTProjectParser() : QXmlDefaultHandler(), m_gradient(0)
+KTProjectParser::KTProjectParser() : QXmlDefaultHandler(), m_gradient(0), m_currentComponent(0), m_rootComponent(0), m_tagCounter(0)
 {
 }
 
@@ -71,6 +71,10 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 		if ( qname == "Scene" )
 		{
 			m_partName = atts.value("name");
+			if ( m_currentComponent ) delete m_currentComponent;
+			if ( m_rootComponent ) delete m_rootComponent;
+			
+			m_rootComponent = m_currentComponent = 0;
 		}
 		else if ( qname == "Layer" )
 		{
@@ -82,6 +86,12 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 		}
 		if ( qname == "Component" )
 		{
+			if ( m_tagCounter == 0 )
+			{
+				AGraphicComponent *rootComponent = new AGraphicComponent;
+				m_components << rootComponent;
+			}
+			
 			qDeleteAll(m_graphics.begin(), m_graphics.end());
 			m_graphics.clear();
 			
@@ -90,6 +100,7 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 			{
 				m_partName = objName;
 			}
+			m_tagCounter++;
 		}
 		else if ( qname == "Graphic" )
 		{
@@ -185,6 +196,10 @@ bool KTProjectParser::endElement(const QString&, const QString& , const QString&
 		}
 		else if ( qname == "Frame")
 		{
+			foreach(AGraphicComponent *component, m_components)
+			{
+				emit createComponent( component);
+			}
 		}
 		else if ( qname == "Graphic" )
 		{
@@ -194,19 +209,25 @@ bool KTProjectParser::endElement(const QString&, const QString& , const QString&
 		}
 		else if ( qname == "Component" )
 		{
-			AGraphicComponent *component = new AGraphicComponent;
+			m_tagCounter--;
 			
-			if ( ! m_partName.isNull() )
+			if ( m_tagCounter != 0 )
 			{
-				component->setComponentName( m_partName);
+				AGraphicComponent *child = new AGraphicComponent;
+				if ( ! m_partName.isNull() )
+				{
+					child->setComponentName( m_partName);
+				}
+				
+				foreach(AGraphic *graphic, m_graphics)
+				{
+					child->addGraphic(graphic->path, graphic->pen, graphic->brush);
+				}
+				
+				m_components.last()->addChild(child);
 			}
 			
-			foreach(AGraphic *graphic, m_graphics)
-			{
-				component->addGraphic(graphic->path, graphic->pen, graphic->brush);
-			}
-			
-			emit createComponent( component );
+// 			emit createComponent( component );
 		}
 		else if ( qname == "Brush")
 		{

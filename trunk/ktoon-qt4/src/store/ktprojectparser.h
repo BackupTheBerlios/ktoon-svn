@@ -72,6 +72,11 @@ class KTProjectParser : public QObject, public QXmlDefaultHandler
 		QGradientStops m_gradientStops;
 		
 		QList<AGraphic *> m_graphics;
+		
+		AGraphicComponent *m_currentComponent;
+		AGraphicComponent *m_rootComponent;
+		
+		int m_tagCounter;
 };
 
 #endif

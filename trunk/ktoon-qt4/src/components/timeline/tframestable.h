@@ -89,6 +89,7 @@ class TFramesTable : public QTableView
 		// Layers
 		void addLayer();
 		void removeCurrentLayer();
+		void removeLayer(int pos);
 		
 		int lastFrameByLayer(int layerPos);
 		
