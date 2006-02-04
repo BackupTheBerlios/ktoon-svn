@@ -53,6 +53,11 @@ QPainterPath AGradientTool::path() const
 
 QRect AGradientTool::move(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& oldPos, const QPoint& newPos)
 {
+	QPainterPath path;
+	path.moveTo(m_initialPoint);
+	path.lineTo(newPos);
+	
+	emit toDrawGhostGraphic( path );
 	return QRect(0,0,0,0);
 }
 

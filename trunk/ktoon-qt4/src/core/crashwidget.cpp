@@ -27,9 +27,52 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QTextBrowser>
+#include <QtDebug>
+#include <QProcess>
 
 #include "crashwidget.h"
 #include "crashhandler.h"
+
+#include "ktconfig.h"
+
+class TextArea : public QTextBrowser
+{
+	Q_OBJECT
+	public:
+		TextArea();
+		~TextArea();
+		
+	public slots:
+		void setSource ( const QUrl & name );
+};
+
+TextArea::TextArea()
+{
+}
+
+TextArea::~ TextArea()
+{
+}
+
+void TextArea::setSource( const QUrl &name )
+{
+	if ( name.scheme() == "http" )
+	{
+		KTCONFIG->beginGroup("General");
+		QString browser = KTCONFIG->value("Browser").toString();
+
+		if ( !browser.isEmpty() )
+		{
+			QProcess::startDetached (browser, QStringList() << name.toString() );
+		}
+	}
+	else
+	{
+		QTextBrowser::setSource(name);
+	}
+}
+
+#include "crashwidget.moc"
 
 CrashWidget::CrashWidget (int sig) : QDialog(0), m_sig(sig)
 {
@@ -60,7 +103,7 @@ CrashWidget::CrashWidget (int sig) : QDialog(0), m_sig(sig)
 	
 	hbox->addWidget(sigImg);
 	
-	QTextBrowser *sigText = new QTextBrowser();
+	TextArea *sigText = new TextArea();
 	sigText->setHtml(text);
 	hbox->addWidget(sigText);
 	

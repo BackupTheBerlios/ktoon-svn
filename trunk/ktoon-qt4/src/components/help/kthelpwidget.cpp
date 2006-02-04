@@ -21,9 +21,11 @@
 #include <QVBoxLayout>
 #include <QHeaderView>
 
+#include "ktapplication.h"
 
 KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidgetBase(parent)
 {
+	setWindowIcon(QPixmap(KTOON_THEME_DIR+"/icons/help.png"));
 	if (QString(QLocale::system().name()).length() > 1 )
 	{
 		m_helpPath = path+"/"+QString(QLocale::system().name()).left(2);
