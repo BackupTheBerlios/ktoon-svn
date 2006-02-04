@@ -21,6 +21,7 @@
 #include "textconfigurator.h"
 #include <QBoxLayout>
 #include <QFontDatabase>
+
 TextConfigurator::TextConfigurator(QWidget *parent)
  : QWidget(parent)
 {
@@ -42,8 +43,21 @@ TextConfigurator::TextConfigurator(QWidget *parent)
 	m_size->setMinimum ( 5 );
 	m_size->setValue(36);
 	
+	m_bold = new QPushButton(tr("bold"), this);
+	m_bold->setCheckable(true );
+	
+	m_italic = new QPushButton(tr("italic"), this);
+	m_italic->setCheckable(true );
+	
+	m_underline = new QPushButton(tr("underline"), this);
+	m_underline->setCheckable(true );
+	
+// 	addAction ( m_bold );
 	subLayout->addWidget(m_families);
 	subLayout->addWidget(m_size);
+	subLayout->addWidget(m_bold);
+	subLayout->addWidget(m_italic);
+	subLayout->addWidget(m_underline);
 // 	ktDebug() << families;
 	
 	
@@ -53,6 +67,14 @@ TextConfigurator::TextConfigurator(QWidget *parent)
 	connect(m_families, SIGNAL(currentIndexChanged ( const QString &  )), this , SLOT(setFamily( const QString &  ) ));
 	
 	connect(m_size, SIGNAL(valueChanged ( int  )), this , SLOT(setSize( int   ) ));
+	
+	connect( m_bold,  SIGNAL(toggled ( bool )), this, SLOT(setBold (bool) ));
+	
+	connect( m_italic,  SIGNAL(toggled ( bool )), this, SLOT(setItalic (bool) ));
+	
+	connect( m_underline,  SIGNAL(toggled ( bool )), this, SLOT(setUnderline (bool) ));
+	
+	
 	setFamily( m_font.family() );
 	setSize( m_font.pixelSize() );
 }
@@ -104,6 +126,33 @@ void TextConfigurator::setSize(int size)
 	}
 	
 	adjustSize();
+}
+
+void TextConfigurator::setBold(bool enable)
+{
+	m_font.setBold(enable);
+	if(enable != m_bold->isChecked())
+	{
+		m_bold->setChecked ( enable );
+	}
+}
+
+void TextConfigurator::setItalic(bool enable)
+{
+	m_font.setItalic(enable);
+	if(enable != m_italic->isChecked())
+	{
+		m_italic->setChecked ( enable );
+	}
+}
+
+void TextConfigurator::setUnderline(bool enable)
+{
+	m_font.setUnderline(enable);
+	if(enable != m_underline->isChecked())
+	{
+		m_underline->setChecked ( enable );
+	}
 }
 
 QFont TextConfigurator::textFont() const

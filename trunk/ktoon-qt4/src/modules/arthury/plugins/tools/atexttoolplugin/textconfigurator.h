@@ -25,6 +25,7 @@
 #include <QLineEdit>
 #include <QComboBox>
 #include <QSpinBox>
+#include <QPushButton>
 
 /**
 	@author David Cuadrado <krawek@toonka.com>
@@ -45,11 +46,14 @@ class TextConfigurator : public QWidget
 		QComboBox *m_families;
 		QSpinBox *m_size;
 		QFont m_font;
-		
+		QPushButton *m_bold, *m_italic, *m_underline;
+	
 	public slots:
 		void setFamily(const QString & family);
 		void setSize(int size);
-		
+		void setBold(bool enable);
+		void setItalic(bool enable);
+		void setUnderline(bool enable);
 };
 
 #endif
