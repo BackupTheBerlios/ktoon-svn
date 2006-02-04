@@ -35,7 +35,7 @@ var.begin(IMAGE_DEVICE); break; \
 	case OpenGL: \
 		var.begin(OPENGL_DEVICE); break; }; 
 
-APaintArea::APaintArea(const QSize& size, RenderType type, QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_zero(0,0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_currentFrame(0), m_layer(0), m_scene(0), m_previousFramesNumber(0), m_nextFramesNumber(0), m_currentGraphic(0)
+APaintArea::APaintArea(const QSize& size, RenderType type, QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_offset(0,0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_currentFrame(0), m_layer(0), m_scene(0), m_previousFramesNumber(0), m_nextFramesNumber(0), m_currentGraphic(0), m_zoomFactor(1.0f), m_size(size)
 {
 	m_redrawAll = true;
 	
@@ -44,6 +44,7 @@ APaintArea::APaintArea(const QSize& size, RenderType type, QWidget *parent) : QW
 	KTINIT;
 	setAttribute(Qt::WA_StaticContents);
 // 	QBoxLayout *layout = new QBoxLayout( QBoxLayout::LeftToRight, this);
+	
 	switch(m_renderType)
 	{
 		case Image:
@@ -79,7 +80,7 @@ APaintArea::APaintArea(const QSize& size, RenderType type, QWidget *parent) : QW
 	m_currentBrush = new KTBrush;
 	
 	m_currentFrame = new KTKeyFrame;
-	
+	setZoomFactor( 1 );
 	show();
 }
 
@@ -92,12 +93,12 @@ APaintArea::~APaintArea()
 
 QSize APaintArea::sizeHint() const
 {
-	return m_paintDevice->size() + QSize(m_zero.x(),m_zero.y());
+	return m_paintDevice->size() + QSize(m_offset.x(),m_offset.y());
 }
 
 QSize APaintArea::minimumSizeHint () const
 {
-	return QSize(m_zero.x(),m_zero.y());
+	return QSize(m_offset.x(),m_offset.y());
 }
 
 void APaintArea::paintEvent(QPaintEvent *e)
@@ -110,6 +111,7 @@ void APaintArea::paintEvent(QPaintEvent *e)
 		fillDevice( Qt::white );
 		
 		BEGIN_PAINTER(painter);
+		painter.scale(m_zoomFactor,m_zoomFactor);
 		painter.setRenderHint(QPainter::Antialiasing);
 		
 		if(m_drawGrid)
@@ -126,20 +128,21 @@ void APaintArea::paintEvent(QPaintEvent *e)
 		draw(&painter);
 		
 		painter.restore();
-		
-// 		if(m_currentFrame)
-// 		{
-// 			painter.save();
-// 			foreach(AGraphicComponent *component, m_currentFrame->selectedComponents())
-// 			{
-// 				painter.setPen(QPen(Qt::blue, 5)); //FIXME: configure
-// 				if(!component->controlPoints().isEmpty())
-// 				{
-// 					painter.drawPoints(component->controlPoints());
-// 				}
-// 			}
-// 			painter.restore();
-// 		}
+#if 0
+		if(m_currentFrame)
+		{
+			painter.save();
+			foreach(AGraphicComponent *component, m_currentFrame->selectedComponents())
+			{
+				painter.setPen(QPen(Qt::blue, 5)); //FIXME: configure
+				if(!component->controlPoints().isEmpty())
+				{
+					painter.drawPoints(component->controlPoints());
+				}
+			}
+			painter.restore();
+		}
+#endif
 		painter.end();
 		m_redrawAll = false;
 	}
@@ -206,7 +209,7 @@ void APaintArea::setScene(KTScene *scene)
 
 void APaintArea::draw(QPainter *painter)
 {
-	KT_FUNCINFO;
+// 	KT_FUNCINFO;
 	Layers layers = m_scene->layers();
 	Layers::iterator layerIterator = layers.begin();
 	
@@ -265,7 +268,7 @@ void APaintArea::draw(QPainter *painter)
 
 void APaintArea::drawFrame(const KTKeyFrame *frame, QPainter *painter, float intensitive)
 {
-	KT_FUNCINFO;
+// 	KT_FUNCINFO;
 	if ( frame  )
 	{
 		QList<AGraphicComponent *> componentList = frame->components();
@@ -288,6 +291,7 @@ void APaintArea::drawFrame(const KTKeyFrame *frame, QPainter *painter, float int
 
 void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter *painter, float intensitive )
 {
+	
 	painter->save();
 	foreach(AGraphic *graphic, graphicComponent->graphics())
 	{
@@ -313,7 +317,7 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter
 			penColor.setHsv(0,0, static_cast<int>(factor * pen.color().alpha()) % 360 );
 						
 			brushColor.setHsv(0,0, static_cast<int>( factor * brush.color().alpha() ) % 360 );
-						
+			
 			penColor.setAlpha(pen.color().alpha());
 			brushColor.setAlpha(brush.color().alpha());
 						
@@ -377,7 +381,7 @@ void APaintArea::aUpdate(const QRectF &rect)
 {
 	QPainter painter;
 	BEGIN_PAINTER(painter);
-	
+// 	painter.scale(m_zoomFactor,m_zoomFactor);
 #if 1
 
 	if ( !m_overBuffer.isNull())
@@ -442,6 +446,7 @@ void APaintArea::drawGhostGraphic(const QPainterPath &path)
 	BEGIN_PAINTER(painter);
 	
 	painter.drawImage(m_overBufferRect, m_overBuffer);
+	painter.scale(m_zoomFactor,m_zoomFactor);
 	painter.setPen(QPen(Qt::black, 1, Qt::DashLine));
 	painter.drawPath(path);
 }
@@ -460,9 +465,9 @@ QPoint APaintArea::paintDevicePosition() const
 	return QPoint(m_xpos, m_ypos);
 }
 
-void APaintArea::setZeroAt(const QPoint & zero)
+void APaintArea::setOffset(const QPoint & zero)
 {
-	m_zero = zero *2;
+	m_offset = zero *2;
 	m_paintDevice->move(zero);
 // 	resize(m_paintDevice->sizeHint());
 	update();
@@ -483,7 +488,12 @@ QWidget *APaintArea::paintDevice() const
 void APaintArea::mousePressEvent ( QMouseEvent * e )
 {
 	m_overBuffer = QImage();
-	QMouseEvent *event = new QMouseEvent( e->type(), e->pos()-QPoint(m_zero.x()/2, m_zero.y()/2), mapToGlobal( e->pos()-QPoint(m_zero.x(), m_zero.y()) ), e->button(), e->buttons(), 0 );
+// 	QMouseEvent *event = new QMouseEvent( e->type(), e->pos()-QPoint(m_offset.x()/2, m_offset.y()/2), mapToGlobal( e->pos()-QPoint(m_offset.x(), m_offset.y()) ), e->button(), e->buttons(), 0 );
+	QPoint pos = (e->pos()-QPoint(m_offset.x()/2, m_offset.y()/2)) / m_zoomFactor;
+	
+	
+	
+	QMouseEvent *event = new QMouseEvent( e->type(), pos, mapToGlobal(pos ), e->button(), e->buttons(), 0 );
 	
 	if ( m_currentFrame )
 	{
@@ -495,6 +505,8 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 				BEGIN_PAINTER(painter);
 				m_currentBrush->setupPainter(&painter);
 
+				painter.scale(m_zoomFactor,m_zoomFactor);
+				
 				QList<AGraphicComponent *> components =  m_currentFrame->components();
 				QList<AGraphicComponent *>::iterator it;
 				AGraphicComponent *toSelect = 0;
@@ -539,8 +551,13 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 
 void APaintArea::mouseMoveEvent(QMouseEvent *e)
 {
-	QMouseEvent *event = new QMouseEvent( e->type(), e->pos()-m_zero/2 /*QPoint(m_zero/2, m_zero/2)*/, mapToGlobal( e->pos()-m_zero/2/*QPoint(m_zero, m_zero) */), e->button(), e->buttons(), 0 );
+// 	QMouseEvent *event = new QMouseEvent( e->type(), e->pos()-m_offset/2 /*QPoint(m_offset/2, m_offset/2)*/, mapToGlobal( e->pos()-m_offset/2/*QPoint(m_offset, m_offset) */), e->button(), e->buttons(), 0 );
+	QPoint pos = (e->pos()-QPoint(m_offset.x()/2, m_offset.y()/2))/ m_zoomFactor;
+// 	pos.setX((pos.x()/m_size.width())*width());
+// 	pos.setY((pos.y()/m_size.height())*height());
 	
+	
+	QMouseEvent *event = new QMouseEvent( e->type(), pos, mapToGlobal(pos ), e->button(), e->buttons(), 0 );
 	emit mousePos(e->pos());
 	
 	if ( m_currentFrame )
@@ -552,7 +569,7 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 				QPainter painter;
 				BEGIN_PAINTER(painter);
 				m_currentBrush->setupPainter(&painter);
-				
+				painter.scale(m_zoomFactor,m_zoomFactor);
 				QRect rect = m_currentTool->move(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), m_lastPosition, event->pos());
 				rect.translate(m_xpos, m_ypos);
 				update(rect);
@@ -566,8 +583,13 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 
 void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 {
-	QMouseEvent *event = new QMouseEvent( e->type(), e->pos()-m_zero/2, mapToGlobal( e->pos()-m_zero ), e->button(), e->buttons(), 0 );
+// 	QMouseEvent *event = new QMouseEvent( e->type(), e->pos()-m_offset/2, mapToGlobal( e->pos()-m_offset ), e->button(), e->buttons(), 0 );
+	QPoint pos = (e->pos()-QPoint(m_offset.x()/2, m_offset.y()/2))/ m_zoomFactor;
+// 	pos.setX((pos.x()/m_size.width())*width());
+// 	pos.setY((pos.y()/m_size.height())*height());
 	
+	
+	QMouseEvent *event = new QMouseEvent( e->type(), pos, mapToGlobal(pos ), e->button(), e->buttons(), 0 );
 	if ( m_currentFrame )
 	{
 		if (event->button() == Qt::LeftButton && m_lastPosition != QPoint(-1, -1)  && !m_currentFrame->isLocked())
@@ -577,9 +599,11 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 				QPainter painter;
 				BEGIN_PAINTER(painter);
 				m_currentBrush->setupPainter(&painter);
+				painter.scale(m_zoomFactor,m_zoomFactor);
 				QRect rect = m_currentTool->release(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(), event->pos()), event->pos());
 				
 				rect.translate(m_xpos, m_ypos);
+				
 				update(rect);
 				
 				if ( !m_currentTool->path().isEmpty())
@@ -600,6 +624,20 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 			m_lastPosition = QPoint(-1, -1);
 		}
 	}
+}
+
+void APaintArea::wheelEvent( QWheelEvent *event )
+{
+#if 0
+	float f;
+
+	f = m_zoomFactor + 0.001*event->delta();
+	if( f < 32.0/ m_paintDevice->width() )
+	{
+		f = 32.0/m_paintDevice->width();
+	}
+	setZoomFactor( f );
+#endif
 }
 
 void APaintArea::setTool( AToolInterface *toolIface, const QString &tool)
@@ -772,3 +810,21 @@ void APaintArea::ungroup()
 	}
 }
 
+void APaintArea::setZoomFactor( float f )
+{
+	int w, h;
+	
+	if( f == m_zoomFactor )
+		return;
+
+	m_zoomFactor = f;
+// 	emit( zoomFactorChanged( m_zoomFactor ) );
+	
+	w = m_paintDevice->width()*m_zoomFactor;
+	h = m_paintDevice->height()*m_zoomFactor;
+	
+	m_paintDevice->resize(w, h );
+	m_currentFrame->scale(m_zoomFactor, m_zoomFactor);
+	m_paintDevice->update();
+// 	redrawAll();
+}

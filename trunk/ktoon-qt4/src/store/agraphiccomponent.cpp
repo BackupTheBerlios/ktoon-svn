@@ -23,6 +23,7 @@
 
 AGraphicComponent::AGraphicComponent() : KTSerializableObject()
 {
+	
 }
 
 AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : KTSerializableObject(toCopy.parent()), m_name(toCopy.m_name)
@@ -139,20 +140,12 @@ void AGraphicComponent::scale(double sX, double sY) //FIXME
 	{
 		QPointF pos = position();
 		QMatrix mId(1,0,0,1, 0, 0);
-		mId.scale(sX, sY);
-		foreach(AGraphic *graphic, m_graphics)
+		mId = mId.scale(sX, sY);
+		mapTo(mId);
+		if(!m_controlPoints.isEmpty())
 		{
-			graphic->path = mId.map(graphic->path);
+			m_controlPoints = mId.map(m_controlPoints);
 		}
-		if(m_childs.count() > 0)
-		{
-			foreach(AGraphicComponent *child, m_childs)
-			{
-				child->mapTo(mId);
-// // 			
-			}
-		}
-		translate( pos.x(), pos.y());
 	}
 
 }
@@ -161,21 +154,22 @@ void AGraphicComponent::shear(double sX, double sY)//FIXME
 {
 	
 	QPointF pos = position();
-
-	QMatrix mId(1,0,0,1, 0, 0);
-	mId.shear(sX, sY);
 	
-	foreach(AGraphic *graphic, m_graphics)
-	{
-		graphic->path = mId.map(graphic->path);
-	}
-	if(m_childs.count() > 0)
-	{
-		foreach(AGraphicComponent *child, m_childs)
-		{
-			child->mapTo(mId);
-		}
-	}
+	
+	QMatrix mId(1,0,0,1, 0, 0);
+	mId.shear(sX  , sY );
+	mapTo(mId);
+// 	foreach(AGraphic *graphic, m_graphics)
+// 	{
+// 		graphic->path = mId.map(graphic->path);
+// 	}
+// 	if(m_childs.count() > 0)
+// 	{
+// 		foreach(AGraphicComponent *child, m_childs)
+// 		{
+// 			child->mapTo(mId);
+// 		}
+// 	}
 	translate( pos.x(), pos.y());
 }
 
@@ -185,19 +179,24 @@ void AGraphicComponent::translate(double sX, double sY)
 	QPointF position = boundingRect().topLeft();
 	QMatrix mId;
 	mId.translate(sX - position.x(), sY - position.y());
-	foreach(AGraphic *graphic, m_graphics)
+	mapTo(mId);
+	if(!m_controlPoints.isEmpty())
 	{
-		
-		QPointF position = graphic->path.currentPosition();
-		graphic->path = mId.map(graphic->path);
+		m_controlPoints = mId.map(m_controlPoints);
 	}
-	if(m_childs.count() > 0)
-	{
-		foreach(AGraphicComponent *child, m_childs)
-		{
-			child->mapTo(mId);
-		}
-	}
+// 	foreach(AGraphic *graphic, m_graphics)
+// 	{
+// 		
+// 		QPointF position = graphic->path.currentPosition();
+// 		graphic->path = mId.map(graphic->path);
+// 	}
+// 	if(m_childs.count() > 0)
+// 	{
+// 		foreach(AGraphicComponent *child, m_childs)
+// 		{
+// 			child->mapTo(mId);
+// 		}
+// 	}
 }
 
 
@@ -207,17 +206,18 @@ void AGraphicComponent::rotate( double angle )//FIXME
 	QPointF pos = position();
 	QMatrix mId(1,0,0,1, position().x(), position().y());
 	mId.rotate(angle);
-	foreach(AGraphic *graphic, m_graphics)
-	{
-		graphic->path = mId.map(graphic->path);
-	}
-	if(m_childs.count() > 0)
-	{
-		foreach(AGraphicComponent *child, m_childs)
-		{
-			child->mapTo(mId);
-		}
-	}
+	mapTo( mId );
+// 	foreach(AGraphic *graphic, m_graphics)
+// 	{
+// 		graphic->path = mId.map(graphic->path);
+// 	}
+// 	if(m_childs.count() > 0)
+// 	{
+// 		foreach(AGraphicComponent *child, m_childs)
+// 		{
+// 			child->mapTo(mId);
+// 		}
+// 	}
 	translate( pos.x(), pos.y());
 }
 
@@ -226,6 +226,7 @@ void AGraphicComponent::mapTo(const QMatrix& matrix)
 	foreach(AGraphic *graphic, m_graphics)
 	{
 		graphic->path = matrix.map(graphic->path);
+		
 	}
 	if(m_childs.count() > 0)
 	{

@@ -59,9 +59,11 @@ class KTKeyFrame : public KTSerializableObject
 		void deSelectedComponent(AGraphicComponent *toDeSelect);
 		void clearSelections();
 		void removeSelections();
+		void selectContains (const QRect & rect);
 		 QList<AGraphicComponent *> selectedComponents();
 		
 		
+		 void scale(int sX, int sY);
 	private:
 		QList<AGraphicComponent *> m_components;
 		QList<AGraphicComponent *> m_selectedComponents;

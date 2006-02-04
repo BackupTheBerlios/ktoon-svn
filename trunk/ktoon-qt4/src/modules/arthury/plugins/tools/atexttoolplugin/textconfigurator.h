@@ -23,6 +23,8 @@
 
 #include <QWidget>
 #include <QLineEdit>
+#include <QComboBox>
+#include <QSpinBox>
 
 /**
 	@author David Cuadrado <krawek@toonka.com>
@@ -34,9 +36,20 @@ class TextConfigurator : public QWidget
 		TextConfigurator(QWidget *parent = 0);
 		~TextConfigurator();
 		QString text() const;
+		QString family() const;
+		int size() const;
+		QFont textFont() const;
 		
 	private:
 		QLineEdit *m_text;
+		QComboBox *m_families;
+		QSpinBox *m_size;
+		QFont m_font;
+		
+	public slots:
+		void setFamily(const QString & family);
+		void setSize(int size);
+		
 };
 
 #endif

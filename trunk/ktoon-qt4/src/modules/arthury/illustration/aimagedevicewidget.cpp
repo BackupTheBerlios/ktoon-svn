@@ -50,5 +50,8 @@ void AImageDeviceWidget::paintEvent(QPaintEvent *e)
 	painter.drawImage(QPoint(0, 0), *device);
 }
 
-
+void AImageDeviceWidget::resizeEvent ( QResizeEvent * event )
+{
+	device = new QImage(size(), QImage::Format_RGB32);
+}
 

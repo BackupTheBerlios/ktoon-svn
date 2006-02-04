@@ -47,9 +47,6 @@ class ASelectionPlugin : public KTToolPluginObject, public AToolInterface
 		virtual bool isComplete() const;
 		virtual void aboutToChangeTool() ;
 		
-		
-		
-		
 	private:
 		QRect drawControls(const QString brush, QPainter *painter);
 		QRect setControls(const QString& brush);
@@ -57,7 +54,9 @@ class ASelectionPlugin : public KTToolPluginObject, public AToolInterface
 	private:
 		QPainterPath m_path;
 		QRect m_selectionRect;
+		bool rectCompleted;
 		QList<AGraphicComponent *> m_graphics;
+		KTKeyFrame *m_frame;
 		bool m_selectPoint;
 		struct Node
 		{

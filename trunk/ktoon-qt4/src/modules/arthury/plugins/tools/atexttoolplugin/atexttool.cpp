@@ -46,7 +46,8 @@ QRect ATextTool::move(const QString &brush, QPainter &painter,const QPainterPath
 
 QRect ATextTool::release(const QString &  brush ,QPainter &  painter ,const QPainterPath &/*form*/, const QPoint &  pos )
 {
-	m_path.addText(m_position, painter.font(), m_configurator->text());
+	
+	m_path.addText(m_position, m_configurator->textFont(), m_configurator->text());
 	
 	painter.drawPath(m_path);
 	
@@ -89,6 +90,7 @@ bool ATextTool::isComplete() const
 
 void ATextTool::aboutToChangeTool() 
 {
+// 	m_configurator->hide();
 }
 
 

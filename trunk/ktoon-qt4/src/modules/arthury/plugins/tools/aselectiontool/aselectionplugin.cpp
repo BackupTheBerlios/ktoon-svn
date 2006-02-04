@@ -37,6 +37,7 @@ QRect ASelectionPlugin::press(const QString &brush, QPainter &painter, const QPa
 	m_node.polygonPos = 0;
 	m_node.pointPos = 0;
 	m_selectPoint = false;
+	rectCompleted = false;
 	QRect rect;
 	if ( currentFrame  )
 	{
@@ -59,7 +60,7 @@ QRect ASelectionPlugin::press(const QString &brush, QPainter &painter, const QPa
 		{
 			m_graphics.clear();
 			m_selectionRect.setTopLeft(pos);
-			
+			m_frame = currentFrame;
 		}
 	}
 	
@@ -181,6 +182,7 @@ QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPain
 	else
 	{
 		m_selectionRect.setBottomRight(newPos);
+		rectCompleted = true;
 		QPainterPath path;
 		path.addRect(m_selectionRect);
 		emit toDrawGhostGraphic( path );
@@ -195,8 +197,21 @@ QRect ASelectionPlugin::release(const QString &  brush ,QPainter &  painter , co
 	m_node.graphicPos = 0;
 	m_node.polygonPos = 0;
 	m_node.pointPos = 0;
-	QRect rect = setControls(brush);
+	QRect rect;
+	if( rectCompleted)
+	{
+		m_frame->selectContains (m_selectionRect);
+		m_graphics = m_frame->selectedComponents();
+		rect = setControls(brush);
+		m_selectionRect = QRect();
+	}
+	else
+	{
+		rect = setControls(brush);
+		m_graphics.clear();
+	}
 	emit requestRedraw();
+	
 // 	QRect rect = drawControls(brush, &painter);
 	
 	return rect;

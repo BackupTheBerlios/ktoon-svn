@@ -35,9 +35,9 @@ class AImageDeviceWidget : public QWidget
 		QImage *device;
 		QSize sizeHint() const;
 		
-		
 	protected:
 		void paintEvent(QPaintEvent *e);
+		void resizeEvent ( QResizeEvent * event );
 };
 
 #endif

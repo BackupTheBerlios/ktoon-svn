@@ -145,6 +145,14 @@ QList<AGraphicComponent *> KTKeyFrame::selectedComponents()
 	return m_selectedComponents;
 }
 
+void KTKeyFrame::scale(int sX, int sY)
+{
+	foreach(AGraphicComponent *comp, m_components)
+	{
+		comp->scale( sX, sY);
+	}
+}
+
 void KTKeyFrame::addComponents(QList<AGraphicComponent *> comps)
 {
 	m_components += comps;
@@ -155,5 +163,20 @@ void KTKeyFrame::removeSelections()
 	foreach(AGraphicComponent *comp, m_selectedComponents)
 	{
 		m_components.removeAll (comp);
+	}
+}
+
+
+void KTKeyFrame::selectContains (const QRect & rect)
+{
+	ktDebug() << "KTKeyFrame::selectContains ()";
+	clearSelections();
+	foreach(AGraphicComponent *comp, m_components)
+	{
+		ktDebug() << rect.intersects (comp->boundingRect().toRect());
+		if(rect.intersects (comp->boundingRect().toRect()))
+		{
+			m_selectedComponents << comp;
+		}
 	}
 }

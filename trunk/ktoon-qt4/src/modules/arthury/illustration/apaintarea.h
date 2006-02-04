@@ -66,7 +66,7 @@ class APaintArea : public QWidget
 		QPoint paintDevicePosition() const;
 		QWidget *paintDevice() const;
 // 		void setPaintDevice(const QImage &image);
-		void setZeroAt(const QPoint& zero);
+		void setOffset(const QPoint& zero);
 		
 		AGraphicComponent *currentGraphic();
 		QList<AGraphicComponent *>selectedGraphic();
@@ -91,7 +91,7 @@ class APaintArea : public QWidget
 		AGrid m_grid;
 		QPainterPath m_path;
 		int m_xpos, m_ypos;
-		QPoint m_zero;
+		QPoint m_offset;
 		bool m_drawGrid;
 		
 		// <FIXME>
@@ -113,9 +113,11 @@ class APaintArea : public QWidget
 		KTScene *m_scene;
 		
 		int m_previousFramesNumber, m_nextFramesNumber;
-		
+		float m_zoomFactor;
 		QImage m_overBuffer;
 		QRect m_overBufferRect;
+		
+		QSize m_size;
 
 	public:
 		void setTool( AToolInterface *toolIface, const QString &tool);
@@ -130,12 +132,13 @@ class APaintArea : public QWidget
 		void cut();
 		void group();
 		void ungroup();
-		
+		void setZoomFactor( float f);
 		// </FIXME>
 	protected:
 		void mouseMoveEvent(QMouseEvent *e);
 		void mousePressEvent ( QMouseEvent * e );
 		void mouseReleaseEvent(QMouseEvent *e);
+		void wheelEvent( QWheelEvent *event );
 		void paintEvent(QPaintEvent *);
 		virtual void draw(QPainter *p);
 		virtual void drawFrame(const KTKeyFrame *frame, QPainter *painter, float intensitive = 1);

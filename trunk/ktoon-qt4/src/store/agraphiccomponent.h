@@ -89,8 +89,6 @@ class AGraphicComponent : public KTSerializableObject
 	private:
 		QDomElement brushToElement(const QBrush &brush, QDomDocument &doc);
 		QList<AGraphicComponent*> m_childs;
-		
-		
 	protected:
 		QString m_name;
 		Graphics m_graphics;

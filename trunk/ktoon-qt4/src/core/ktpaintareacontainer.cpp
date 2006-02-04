@@ -48,7 +48,7 @@ KTPaintAreaContainer::KTPaintAreaContainer(const QSize& size, APaintArea::Render
 	m_VRuler->setZeroAt(m_drawAreaDelta.y());
 	
 	m_drawArea = new APaintArea(size, type, m_scroller);
-	m_drawArea->setZeroAt(m_drawAreaDelta);
+	m_drawArea->setOffset(m_drawAreaDelta);
 	
 	m_HRuler->setMinimumWidth(m_drawArea->width());
 	m_VRuler->setMinimumHeight(m_drawArea->height());
@@ -111,7 +111,7 @@ void KTPaintAreaContainer::resizeEvent ( QResizeEvent * event )
 	}
 	m_HRuler->setZeroAt(m_drawAreaDelta.x());
 	m_VRuler->setZeroAt(m_drawAreaDelta.y());
-	m_drawArea->setZeroAt(m_drawAreaDelta);
+	m_drawArea->setOffset(m_drawAreaDelta);
 	m_drawArea->resize(size());
 // 	resize(m_drawArea->size());
 }

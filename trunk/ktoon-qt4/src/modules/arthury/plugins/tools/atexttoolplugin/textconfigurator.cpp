@@ -19,15 +19,42 @@
  ***************************************************************************/
 
 #include "textconfigurator.h"
-#include <QVBoxLayout>
-
+#include <QBoxLayout>
+#include <QFontDatabase>
 TextConfigurator::TextConfigurator(QWidget *parent)
  : QWidget(parent)
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
+	
+	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this );
+	setLayout(layout);
+	
+	QBoxLayout *subLayout = new QBoxLayout(QBoxLayout::LeftToRight );
+	layout->addLayout(subLayout);
+	
+	
+	m_families = new QComboBox();
+
+	QFontDatabase fdb;
+	QStringList families = fdb.families();
+	m_families->addItems ( families );
+	
+	m_size = new QSpinBox();
+	m_size->setMinimum ( 5 );
+	m_size->setValue(36);
+	
+	subLayout->addWidget(m_families);
+	subLayout->addWidget(m_size);
+// 	ktDebug() << families;
+	
 	
 	m_text = new QLineEdit(this);
 	layout->addWidget(m_text);
+	
+	connect(m_families, SIGNAL(currentIndexChanged ( const QString &  )), this , SLOT(setFamily( const QString &  ) ));
+	
+	connect(m_size, SIGNAL(valueChanged ( int  )), this , SLOT(setSize( int   ) ));
+	setFamily( m_font.family() );
+	setSize( m_font.pixelSize() );
 }
 
 
@@ -37,6 +64,50 @@ TextConfigurator::~TextConfigurator()
 
 QString TextConfigurator::text() const
 {
-	return m_text->text();
+	return m_text->text ();
+}
+
+QString TextConfigurator::family() const
+{
+	return m_families->currentText();
+}
+
+int TextConfigurator::size() const
+{
+	return m_size->value();
+}
+
+void TextConfigurator::setFamily(const QString & family)
+{
+	m_font.setFamily(family);
+	QFont font;
+	font.setFamily(family);
+	m_text->setFont(font);
+	if(family != m_families->currentText())
+	{
+		int index = m_families->findText ( family );
+		if(index > 0)
+		{
+			m_families->setCurrentIndex ( index );
+		}
+	}
+	
+	adjustSize();
+}
+void TextConfigurator::setSize(int size)
+{
+	m_font.setPixelSize(size);
+// 	m_text->setFont(m_font);
+	if(size != m_size->value())
+	{
+		m_size->setValue ( size );
+	}
+	
+	adjustSize();
+}
+
+QFont TextConfigurator::textFont() const
+{
+	return m_font;
 }
 
