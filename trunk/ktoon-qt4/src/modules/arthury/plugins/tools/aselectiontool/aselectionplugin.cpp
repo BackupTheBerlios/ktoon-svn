@@ -313,10 +313,8 @@ void ASelectionPlugin::allGraphisComponent(QList<AGraphicComponent *> components
 	}
 }
 
-QRect  ASelectionPlugin::setControls(const QString& brush)
+QRect ASelectionPlugin::setControls(const QString& brush)
 {
-	ktDebug() << "ASelectionPlugin::setControls(" <<  brush << ")" ;
-	SHOW_VAR(m_graphics.count());
 	if( brush == tr("Selection") )
 	{
 		foreach(AGraphicComponent * component,  m_graphics)

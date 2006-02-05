@@ -25,10 +25,9 @@
 
 #include "ktprojectparser.h"
 
-KTProjectManager::KTProjectManager(QObject *parent) : KTSerializableObject(parent), m_currentDocument(0), m_copyFrame(0), m_open(true)
+KTProjectManager::KTProjectManager(QObject *parent) : KTSerializableObject(parent), m_currentDocument(0), m_copyFrame(0), m_isOpen(false)
 {
 	KTINIT;
-
 }
 
 
@@ -152,7 +151,7 @@ void KTProjectManager::load(const QString &path)
 				}
 			}
 		}
-		m_open = true;
+		m_isOpen = true;
 	}
 	else
 	{
@@ -297,11 +296,12 @@ void KTProjectManager::createScene(bool addToEnd)
 
 void KTProjectManager::removeScene()
 {
+	FUNC_NOT_IMPLEMENTED;
 }
 
 void KTProjectManager::renameScene(const QString &name, int index)
 {
-// 	emit sceneRenamed(name, index);
+	FUNC_NOT_IMPLEMENTED;
 }
 
 // Layers
@@ -437,7 +437,7 @@ void KTProjectManager::close()
 	}
 	
 	m_currentDocument = 0;
-	m_open = false;
+	m_isOpen = false;
 }
 
 void KTProjectManager::setProjectName(const QString &name)
@@ -475,7 +475,20 @@ QSize KTProjectManager::documentSize() const
 	return m_size;
 }
 
-bool  KTProjectManager::open()
+bool KTProjectManager::isOpen()
 {
-	return m_open;
+	return m_isOpen;
 }
+
+void KTProjectManager::init()
+{
+	if ( m_isOpen )
+	{
+		close();
+	}
+	
+	m_isOpen = true;
+}
+
+
+

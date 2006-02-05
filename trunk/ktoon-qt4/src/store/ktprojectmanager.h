@@ -46,7 +46,9 @@ class KTProjectManager : public KTSerializableObject
 		QString projectRender( ) const;
 		int fps();
 		
-		bool open();
+		bool isOpen();
+		
+		void init();
 		
 	public slots:
 		void save();
@@ -117,7 +119,7 @@ class KTProjectManager : public KTSerializableObject
 		QSize m_size;
 		const KTKeyFrame *m_copyFrame;
 		mutable QString m_name;
-		bool m_open;
+		bool m_isOpen;
 		
 		QString m_typeRender;
 		int m_fps;

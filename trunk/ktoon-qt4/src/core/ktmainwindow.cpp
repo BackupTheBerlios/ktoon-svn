@@ -131,7 +131,10 @@ KTMainWindow::~KTMainWindow()
 
 void KTMainWindow::createNewProject(const QString &name, const QSize &size, const QString & renderType, const int fps)
 {
-
+	closeProject();
+	
+	m_projectManager->init();
+	
 	KTDocument *document = m_projectManager->createDocument(name);
 	m_projectManager->setCurrentDocument(0);
 	
@@ -231,8 +234,8 @@ void KTMainWindow::newProject()
 
 void KTMainWindow::closeProject()
 {
-	ktDebug() << "Closing.." << endl;
-	if(!m_projectManager->open())
+	ktDebug() << "Closing..";
+	if(!m_projectManager->isOpen())
 	{
 		return;
 	}
