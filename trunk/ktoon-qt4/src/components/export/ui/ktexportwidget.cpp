@@ -261,7 +261,7 @@ void KTExportWidget::exportIt()
 	}
 	else
 	{
-		emit sendToOSD( tr("Please choose the format before export"));
+		emit sendToOSD( tr("Please choose the format before export"), 2);
 	}
 }
 

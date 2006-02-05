@@ -67,11 +67,33 @@ void CrashHandler::init()
 
 void CrashHandler::setTrapper (void (*trapper)(int))
 {
+#ifdef Q_OS_UNIX
+
+
+	if (!trapper)
+	{
+		trapper = SIG_DFL;
+	}
+	sigset_t mask;
+	sigemptyset(&mask);
+	
+	
 	signal(SIGSEGV,trapper);
+	sigaddset(&mask, SIGSEGV);
+	
 	signal(SIGFPE,trapper);
+	
 	signal(SIGILL,trapper);
+	sigaddset(&mask, SIGILL);
+	
+	signal (SIGABRT, trapper);
+	sigaddset(&mask, SIGABRT);
+	
 	signal(SIGBUS,trapper);
 	signal(SIGIOT,trapper);
+	
+	sigprocmask(SIG_UNBLOCK, &mask, 0);
+#endif
 }
 
 

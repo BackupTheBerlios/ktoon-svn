@@ -25,29 +25,33 @@
 #include <QTimer>
 #include <QPainter>
 
+#include "ktdebug.h"
+
 KTOsd::KTOsd( QWidget * parent )
 	: QWidget( parent), m_timer( 0 )
 {
 	setFocusPolicy( Qt::NoFocus );
 	
-	QPalette pal = palette();
+	m_palette = palette();
 // 	setBackgroundMode( Qt::NoBackground );
-// 	setPaletteBackgroundColor(qApp->palette().color(QPalette::Active, QColorGroup::Background));
-	
-// 	pal.setColor(QPalette::Background, palette.color(QPalette::Background) );
-	
 	
 	move( 10, 10 );
 	resize( 0, 0 );
 	hide();
+	
+	m_animator = new Animation;
+	connect(&m_animator->timer, SIGNAL(timeout()), this, SLOT(animate()));
 }
 
 KTOsd::~KTOsd()
 {
+	delete m_animator;
 }
 
 void KTOsd::display( const QString & message, Level level, int ms )
 {
+	m_animator->level = level;
+	
 	QBrush background = palette().background();
 	QBrush foreground = palette().foreground();
 	
@@ -55,20 +59,14 @@ void KTOsd::display( const QString & message, Level level, int ms )
 	QRect textRect = fontMetrics().boundingRect( message );
 	textRect.translate( -textRect.left(), -textRect.top() );
 	textRect.adjust( 0, 0, 2, 2 );
-	int width = textRect.width(),
-	height = textRect.height(),
-	textXOffset = 0,
-	shadowOffset = message.isRightToLeft() ? -1 : 1;
+	int width = textRect.width();
+	int height = textRect.height();
 
-	QPixmap symbol;
 	if ( level != None )
 	{
 		switch ( level )
 		{
 			case Info:
-// 				background = QColor(0xd2ccff);
-				background = palette().color(QPalette::Highlight);
-				foreground = palette().color(QPalette::HighlightedText);
 				break;
 			case Warning:
 				break;
@@ -81,9 +79,6 @@ void KTOsd::display( const QString & message, Level level, int ms )
 			default:
 				break;
 		}
-		textXOffset = 2 + symbol.width();
-		width += textXOffset;
-		height = qMax( height, symbol.height() );
 	}
 	QRect geometry( 0, 0, width + 10, height + 8 );
 	QRect geometry2( 0, 0, width + 9, height + 7 );
@@ -101,27 +96,10 @@ void KTOsd::display( const QString & message, Level level, int ms )
 	maskPainter.setBrush( Qt::black );
 	maskPainter.drawRoundRect( geometry2, 1600 / geometry2.width(), 1600 / geometry2.height() );
 	setMask( mask );
-
-    	// draw background
-	QPainter bufferPainter( &m_pixmap );
-	bufferPainter.setRenderHint(QPainter::Antialiasing);
-	bufferPainter.setPen( QPen(QBrush(foreground), 3)  );
-	bufferPainter.setBrush( background ); 
-	bufferPainter.drawRoundRect( geometry2, 1600 / geometry2.width(), 1600 / geometry2.height() );
-
-    	// draw icon if present
-	if ( !symbol.isNull() )
-	{
-		bufferPainter.drawPixmap( 5, 4, symbol, 0, 0, symbol.width(), symbol.height() );
-	}
 	
-    	// draw shadow and text
-	int yText = geometry.height() - height / 2;
-	bufferPainter.setPen( palette().background().color().dark( 115 ) );
-	bufferPainter.drawText( 5 + textXOffset + shadowOffset, yText + 1, message );
-	bufferPainter.setPen( palette().foreground().color() );
-	bufferPainter.drawText( 5 + textXOffset, yText, message );
-
+	
+	drawPixmap( message, background, foreground);
+	
     	// show widget and schedule a repaint
 	show();
 	update();
@@ -134,11 +112,15 @@ void KTOsd::display( const QString & message, Level level, int ms )
 			m_timer = new QTimer( this );
 			connect( m_timer, SIGNAL( timeout() ), SLOT( hide() ) );
 		}
+		
+		m_animator->timer.start(300);
 		m_timer->start( ms );
 	} else if ( m_timer )
 	{
 		m_timer->stop();
 	}
+	
+	m_lastMessage = message;
 }
 
 void KTOsd::paintEvent( QPaintEvent * e )
@@ -152,5 +134,78 @@ void KTOsd::mousePressEvent( QMouseEvent * /*e*/ )
 	if ( m_timer )
 		m_timer->stop();
 	hide();
+}
+
+void KTOsd::animate()
+{
+	KT_FUNCINFO;
+	if ( !isVisible() )
+	{
+		m_animator->timer.stop();
+	}
+	
+	QBrush background;
+	
+	if ( m_animator->level == Error )
+	{
+		if ( m_animator->on )
+		{
+			background = Qt::red;
+		}
+		else
+		{
+			background = palette().background();
+		}
+	}
+	else if ( m_animator->level == Warning )
+	{
+		if ( m_animator->on )
+		{
+			background = QColor("orange");
+		}
+		else
+		{
+			background = palette().background();
+		}
+	}
+	
+	m_animator->on = !m_animator->on;
+	drawPixmap( m_lastMessage, background, palette().foreground());
+	
+	update();
+}
+
+void KTOsd::drawPixmap(const QString &message, const QBrush &background, const QBrush &foreground)
+{
+	QPixmap symbol;
+	
+	QRect textRect = fontMetrics().boundingRect( message );
+	textRect.translate( -textRect.left(), -textRect.top() );
+	textRect.adjust( 0, 0, 2, 2 );
+	int width = textRect.width();
+	int height = textRect.height();
+	int textXOffset = 0;
+	int shadowOffset = message.isRightToLeft() ? -1 : 1;
+	
+	QRect geometry( 0, 0, width + 10, height + 8 );
+	QRect geometry2( 0, 0, width + 9, height + 7 );
+	
+	textXOffset = 2;
+	width += textXOffset;
+	height = qMax( height, symbol.height() );
+	
+	// draw background
+	QPainter bufferPainter( &m_pixmap );
+	bufferPainter.setRenderHint(QPainter::Antialiasing);
+	bufferPainter.setPen( QPen(QBrush(foreground), 3)  );
+	bufferPainter.setBrush( background ); 
+	bufferPainter.drawRoundRect( geometry2, 1600 / geometry2.width(), 1600 / geometry2.height() );
+	 
+	// draw shadow and text
+	int yText = geometry.height() - height / 2;
+	bufferPainter.setPen( palette().background().color().dark( 115 ) );
+	bufferPainter.drawText( 5 + textXOffset + shadowOffset, yText + 1, message );
+	bufferPainter.setPen( palette().foreground().color() );
+	bufferPainter.drawText( 5 + textXOffset, yText, message );
 }
 

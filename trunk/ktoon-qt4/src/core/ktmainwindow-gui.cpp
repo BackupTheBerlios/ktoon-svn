@@ -172,7 +172,7 @@ void KTMainWindow::createGUI()
 	
 	
 	//////////////////
-#ifdef WITH_KINAS
+#ifdef ENABLE_KINAS
 	KinasWidget *m_scriptEditor = new KinasWidget(this);
 	m_scriptEditor->setWindowIcon(QPixmap(KTOON_HOME+"/images/icons/color_palette.png") );
 	toolWindow(DDockWindow::Bottom)->addWidget(tr("Kinas"), m_scriptEditor);
@@ -222,7 +222,7 @@ void KTMainWindow::createGUI()
 void KTMainWindow::connectToDisplays(const QWidget *widget)
 {
 	connect(widget, SIGNAL(sendToStatus(const QString &)), this, SLOT(messageToStatus(const QString &)));
-	connect(widget, SIGNAL(sendToOSD(const QString &)), this, SLOT(messageToOSD(const QString &)));
+	connect(widget, SIGNAL(sendToOSD(const QString &, int)), this, SLOT(messageToOSD(const QString &, int)));
 }
 
 void KTMainWindow::setupFileActions()

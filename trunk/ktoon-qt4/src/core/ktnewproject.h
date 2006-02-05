@@ -44,7 +44,7 @@ class KTNewProject : public KTWizard
 		QString renderType() const;
 	signals:
 		void sendToStatus(const QString &);
-		void sendToOSD(const QString &);
+		void sendToOSD(const QString &, int);
 		
 	private:
 		NPFirstPage *m_firstPage ;
@@ -65,7 +65,7 @@ class NPFirstPage : public KTWizardPage
 		
 	signals:
 		void sendToStatus(const QString &);
-		void sendToOSD(const QString &);
+		void sendToOSD(const QString &, int level);
 		
 	private:
 		QLineEdit *m_projectName;

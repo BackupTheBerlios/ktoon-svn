@@ -29,6 +29,7 @@ class QCheckBox;
 class QTextBrowser;
 
 /**
+ * @struct KTTip
  * @author David Cuadrado <krawek@toonka.com>
 */
 
@@ -36,6 +37,11 @@ struct KTTip
 {
 	QString text;
 };
+
+/**
+ * @class KTTipDatabase
+ * @author David Cuadrado <krawek@toonka.com>
+ */
 
 class KTTipDatabase
 {
@@ -55,6 +61,11 @@ class KTTipDatabase
 		QList<KTTip> m_tips;
 		int m_currentTipIndex;
 };
+
+/**
+ * @class KTTipDialog
+ * @author David Cuadrado <krawek@toonka.com>
+ */
 
 class KTTipDialog : public QDialog
 {

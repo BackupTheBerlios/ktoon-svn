@@ -413,9 +413,9 @@ void KTMainWindow::messageToStatus(const QString &msg)
 	m_statusBar->setStatus(msg, msg.length() * 90);
 }
 
-void KTMainWindow::messageToOSD(const QString &msg)
+void KTMainWindow::messageToOSD(const QString &msg, int level)
 {
-	m_osd->display( msg, KTOsd::Info, msg.length()*90);
+	m_osd->display( msg, KTOsd::Level(level), msg.length()*90);
 }
 
 void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)

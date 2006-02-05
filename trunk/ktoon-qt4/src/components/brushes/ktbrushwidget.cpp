@@ -306,7 +306,7 @@ void KTBrushWidget::editBrush()
 	m_brushEditor->setEdit( m_editFormButton->isChecked() );
 	if ( m_editFormButton->isChecked() )
 	{
-		emit sendToOSD( tr("Click the brush area for create a brush") );
+		emit sendToOSD( tr("Click the brush area for create a brush"), 0 );
 	}
 	
 	m_currentBrush->setBrushForm( m_brushEditor->currentPainterPath() );

@@ -24,6 +24,7 @@
 #include <QWidget>
 #include <QPixmap>
 #include <QPaintEvent>
+#include <QTimer>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -35,7 +36,7 @@ class KTOsd : public QWidget
 	public:
 		enum Level
 		{
-			None,
+			None = -1,
 			Info,
 			Warning,
 			Error,
@@ -45,14 +46,31 @@ class KTOsd : public QWidget
 		~KTOsd();
 		
 		void display( const QString & message, Level level = Info, int ms = 4000 );
+		
+	private slots:
+		void animate();
 
 	protected:
 		void paintEvent( QPaintEvent * e );
 		void mousePressEvent( QMouseEvent * e );
+		
+	private:
+		void drawPixmap(const QString &message, const QBrush &background, const QBrush &foreground);
 
 	private:
 		QPixmap m_pixmap;
 		QTimer *m_timer;
+		
+		QPalette m_palette; 
+		
+		QString m_lastMessage;
+		
+		struct Animation
+		{
+			QTimer timer;
+			Level level;
+			bool on;
+		} *m_animator;
 
 };
 

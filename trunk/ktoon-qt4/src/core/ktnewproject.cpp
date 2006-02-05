@@ -26,9 +26,10 @@
 KTNewProject::KTNewProject(QWidget *parent)
  : KTWizard(parent)
 {
+	setWindowTitle(tr("Create a new project"));
 	setModal(true);
 	m_firstPage = new NPFirstPage;
-	connect( m_firstPage, SIGNAL(sendToOSD( const QString& )), this, SIGNAL(sendToOSD( const QString& )));
+	connect( m_firstPage, SIGNAL(sendToOSD( const QString&,int )), this, SIGNAL(sendToOSD( const QString&, int )));
 	addPage(m_firstPage);
 }
 
@@ -123,7 +124,7 @@ bool NPFirstPage::isComplete()
 	
 	if(m_projectName->text().isEmpty())
 	{
-		emit sendToOSD(tr("field project name is empty"));
+		emit sendToOSD(tr("Field project name is empty"), 2);
 		ok = false;
 	}
 	return ok;
@@ -141,7 +142,7 @@ QString NPFirstPage::projectName() const
 
 QSize NPFirstPage::dimension() const
 {
-	QSize size( m_size->x(), m_size->y() );
+	QSize size( (int)m_size->x(), (int)m_size->y() );
 	return size;
 }
 

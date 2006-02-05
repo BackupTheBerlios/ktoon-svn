@@ -73,6 +73,8 @@ KTPreferences::GeneralPage::GeneralPage()
 	{
 		m_browser->setText(str);
 	}
+	
+	layout->addStretch(3);
 }
 
 KTPreferences::GeneralPage::~GeneralPage()

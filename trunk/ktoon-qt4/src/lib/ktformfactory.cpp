@@ -48,6 +48,11 @@ QBoxLayout *KTFormFactory::makeLine(const QString &text, QWidget *widget,  Qt::O
 	layout->addWidget(new QLabel(text));
 	layout->addWidget(widget);
 	
+	if ( o == Qt::Vertical )
+	{
+		layout->addStretch(3);
+	}
+	
 	return layout;
 }
 
