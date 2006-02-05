@@ -23,12 +23,11 @@
 
 #include <QWidget>
 #include <QLineEdit>
-#include <QComboBox>
-#include <QSpinBox>
-#include <QPushButton>
+
+class KTFontChooser;
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@toonka.com>
 */
 class TextConfigurator : public QWidget
 {
@@ -37,23 +36,14 @@ class TextConfigurator : public QWidget
 		TextConfigurator(QWidget *parent = 0);
 		~TextConfigurator();
 		QString text() const;
-		QString family() const;
-		int size() const;
 		QFont textFont() const;
+		
+	private slots:
+		void changeFont();
 		
 	private:
 		QLineEdit *m_text;
-		QComboBox *m_families;
-		QSpinBox *m_size;
-		QFont m_font;
-		QPushButton *m_bold, *m_italic, *m_underline;
-	
-	public slots:
-		void setFamily(const QString & family);
-		void setSize(int size);
-		void setBold(bool enable);
-		void setItalic(bool enable);
-		void setUnderline(bool enable);
+		KTFontChooser *m_fontChooser;
 };
 
 #endif

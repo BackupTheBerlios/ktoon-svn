@@ -58,7 +58,9 @@ HEADERS += ktapplication.h \
            agraphic.h \
            ktalgorithm.h \
            kttip.h \
-           ktguiitem.h 
+           ktguiitem.h \
+           ktfontchooser.h \
+           ktformfactory.h 
 SOURCES += ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
@@ -109,7 +111,9 @@ SOURCES += ktapplication.cpp \
            agraphic.cpp \
            ktalgorithm.cpp \
            kttip.cpp \
-           ktguiitem.cpp 
+           ktguiitem.cpp \
+           ktfontchooser.cpp \
+           ktformfactory.cpp 
 QT += xml
 KDEV_QTVER = 4
 MOC_DIR = .moc

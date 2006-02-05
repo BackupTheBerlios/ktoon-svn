@@ -20,10 +20,11 @@
 
 #include "aimagedevicewidget.h"
 #include <QPainter>
+#include <QMouseEvent>
 
 AImageDeviceWidget::AImageDeviceWidget(const QSize &size, QWidget *parent) : QWidget(parent)
 {
-	
+	setMouseTracking(true);
 	setAttribute(Qt::WA_StaticContents);
 // 	setAttribute(Qt::WA_NoBackground);
 	device = new QImage(size, QImage::Format_RGB32);
@@ -54,4 +55,12 @@ void AImageDeviceWidget::resizeEvent ( QResizeEvent * event )
 {
 	device = new QImage(size(), QImage::Format_RGB32);
 }
+
+void AImageDeviceWidget::mouseMoveEvent(QMouseEvent *e)
+{
+	emit mousePos( mapToParent(e->pos()) );
+	
+	QWidget::mouseMoveEvent(e);
+}
+
 

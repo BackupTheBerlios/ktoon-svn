@@ -29,13 +29,18 @@
 */
 class AImageDeviceWidget : public QWidget
 {
+	Q_OBJECT;
 	public:
 		AImageDeviceWidget(const QSize &size, QWidget *parent = 0);
 		~AImageDeviceWidget();
 		QImage *device;
 		QSize sizeHint() const;
 		
+	signals:
+		void mousePos(const QPoint &pos);
+		
 	protected:
+		void mouseMoveEvent(QMouseEvent *e);
 		void paintEvent(QPaintEvent *e);
 		void resizeEvent ( QResizeEvent * event );
 };

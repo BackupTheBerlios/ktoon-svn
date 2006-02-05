@@ -308,7 +308,7 @@ void KTMainWindow::save()
 void KTMainWindow::preferences()
 {
 	m_statusBar->setStatus( tr( "Preferences Dialog Opened" ), 2000 );
-	Preferences *preferences = new Preferences( this );
+	KTPreferences *preferences = new KTPreferences( this );
 	preferences->exec();
 	
 	delete preferences;

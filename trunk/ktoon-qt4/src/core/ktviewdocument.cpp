@@ -154,7 +154,7 @@ void KTViewDocument::setupEditActions()
 	m_editGroup->addAction(a);
 	a->setStatusTip(tr("Pastes the clipboard into the current document"));
 	
-	a = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/.png" ), tr( "&Delete" ),   QKeySequence( Qt::Key_Delete ), m_paintAreaContainer->drawArea(), SLOT(removeSelectsGraphics()), m_actionManager, "delete");
+	a = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/delete.png" ), tr( "&Delete" ), QKeySequence( Qt::Key_Delete ), m_paintAreaContainer->drawArea(), SLOT(removeSelectsGraphics()), m_actionManager, "delete");
 	m_editGroup->addAction(a);
 	a->setStatusTip(tr("Deletes the selected object"));
 	

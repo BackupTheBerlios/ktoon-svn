@@ -18,48 +18,38 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "textconfigurator.h"
-#include <QBoxLayout>
-#include <QFontDatabase>
+#ifndef KTFONTCHOOSER_H
+#define KTFONTCHOOSER_H
 
-#include "ktfontchooser.h"
+#include <QFrame>
 
-// #include "ktdebug.h"
+class QComboBox;
 
-TextConfigurator::TextConfigurator(QWidget *parent) : QWidget(parent)
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+class KTFontChooser : public QFrame
 {
-	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this );
-	setLayout(layout);
-	
-	m_fontChooser = new KTFontChooser;
-	layout->addWidget(m_fontChooser);
+	Q_OBJECT
+	public:
+		KTFontChooser(QWidget *parent = 0);
+		~KTFontChooser();
+		void setCurrentFont(const QFont &font);
+		QFont font() const;
+		
+	signals:
+		void fontChanged();
+		
+	private slots:
+		void emitFontChanged(int =0);
+		
+	public slots:
+		void loadFontInfo(const QString &family);
+		
+	private:
+		QComboBox *m_families;
+		QComboBox *m_fontStyle;
+		QComboBox *m_fontSize;
+};
 
-	m_text = new QLineEdit(this);
-	layout->addWidget(m_text);
-	
-	connect(m_fontChooser, SIGNAL(fontChanged()), this, SLOT(changeFont()));
-}
-
-
-TextConfigurator::~TextConfigurator()
-{
-}
-
-QString TextConfigurator::text() const
-{
-	return m_text->text();
-}
-
-QFont TextConfigurator::textFont() const
-{
-	return m_fontChooser->font();
-}
-
-void TextConfigurator::changeFont()
-{
-	QFont font = m_fontChooser->font();
-	m_text->setFont(font);
-	
-	adjustSize();
-}
-
+#endif

@@ -50,6 +50,7 @@ APaintArea::APaintArea(const QSize& size, RenderType type, QWidget *parent) : QW
 		case Image:
 		{
 			m_paintDevice = new AImageDeviceWidget(size, this);
+			connect(m_paintDevice, SIGNAL(mousePos(const QPoint &)), this, SIGNAL(mousePos( const QPoint& )));
 		}
 		break;
 		case OpenGL:
@@ -281,7 +282,7 @@ void APaintArea::drawFrame(const KTKeyFrame *frame, QPainter *painter, float int
 			{
 				if ( *it )
 				{
-					drawGraphic( *it, painter);
+					drawGraphic( *it, painter, intensitive);
 				}
 				++it;
 			}

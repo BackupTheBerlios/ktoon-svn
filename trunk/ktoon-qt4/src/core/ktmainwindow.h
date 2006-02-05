@@ -39,7 +39,7 @@
 #include "ktexposuresheet.h"
 #include "kinaswidget.h"
 
-#include "preferences.h"
+#include "ktpreferences.h"
 #include "ktsceneswidget.h"
 
 #include "ktbrushwidget.h"

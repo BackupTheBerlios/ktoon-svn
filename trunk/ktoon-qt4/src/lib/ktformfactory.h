@@ -17,49 +17,25 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTFORMFACTORY_H
+#define KTFORMFACTORY_H
 
-#include "textconfigurator.h"
-#include <QBoxLayout>
-#include <QFontDatabase>
+#include <QWidget>
 
-#include "ktfontchooser.h"
+class QBoxLayout;
 
-// #include "ktdebug.h"
-
-TextConfigurator::TextConfigurator(QWidget *parent) : QWidget(parent)
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+class KTFormFactory
 {
-	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this );
-	setLayout(layout);
-	
-	m_fontChooser = new KTFontChooser;
-	layout->addWidget(m_fontChooser);
+	public:
+		KTFormFactory();
+		~KTFormFactory();
+		
+	public:
+		static QBoxLayout *makeLine(const QString &text, QWidget *widget,  Qt::Orientation = Qt::Vertical);
 
-	m_text = new QLineEdit(this);
-	layout->addWidget(m_text);
-	
-	connect(m_fontChooser, SIGNAL(fontChanged()), this, SLOT(changeFont()));
-}
+};
 
-
-TextConfigurator::~TextConfigurator()
-{
-}
-
-QString TextConfigurator::text() const
-{
-	return m_text->text();
-}
-
-QFont TextConfigurator::textFont() const
-{
-	return m_fontChooser->font();
-}
-
-void TextConfigurator::changeFont()
-{
-	QFont font = m_fontChooser->font();
-	m_text->setFont(font);
-	
-	adjustSize();
-}
-
+#endif

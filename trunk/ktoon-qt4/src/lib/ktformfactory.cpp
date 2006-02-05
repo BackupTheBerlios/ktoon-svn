@@ -17,49 +17,37 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "ktformfactory.h"
 
-#include "textconfigurator.h"
-#include <QBoxLayout>
-#include <QFontDatabase>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QLabel>
 
-#include "ktfontchooser.h"
-
-// #include "ktdebug.h"
-
-TextConfigurator::TextConfigurator(QWidget *parent) : QWidget(parent)
+KTFormFactory::KTFormFactory()
 {
-	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this );
-	setLayout(layout);
+}
+
+
+KTFormFactory::~KTFormFactory()
+{
+}
+
+QBoxLayout *KTFormFactory::makeLine(const QString &text, QWidget *widget,  Qt::Orientation o)
+{
+	QBoxLayout *layout;
 	
-	m_fontChooser = new KTFontChooser;
-	layout->addWidget(m_fontChooser);
-
-	m_text = new QLineEdit(this);
-	layout->addWidget(m_text);
+	if ( o == Qt::Vertical )
+	{
+		layout = new QVBoxLayout;
+	}
+	else
+	{
+		layout = new QHBoxLayout;
+	}
 	
-	connect(m_fontChooser, SIGNAL(fontChanged()), this, SLOT(changeFont()));
-}
-
-
-TextConfigurator::~TextConfigurator()
-{
-}
-
-QString TextConfigurator::text() const
-{
-	return m_text->text();
-}
-
-QFont TextConfigurator::textFont() const
-{
-	return m_fontChooser->font();
-}
-
-void TextConfigurator::changeFont()
-{
-	QFont font = m_fontChooser->font();
-	m_text->setFont(font);
+	layout->addWidget(new QLabel(text));
+	layout->addWidget(widget);
 	
-	adjustSize();
+	return layout;
 }
 

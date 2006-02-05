@@ -18,43 +18,43 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef PREFERENCES_H
-#define PREFERENCES_H
+#ifndef KTPREFERENCES_H
+#define KTPREFERENCES_H
 
 /**
- * @file preferences.h
- * @brief Include this file if you need the class Preferences
+ * @file ktpreferences.h
+ * @brief Include this file if you need the class KTPreferences
  */
 
 #include <qlineedit.h>
 #include <qlabel.h>
 #include <qradiobutton.h>
 
-#include "ktfontwidget.h"
+#include "ktfontchooser.h"
 #include "ktthemeselector.h"
 
 #include "kttabdialog.h"
-
 #include "ktconfigurationdialog.h"
-
 #include "ktflatbutton.h"
 
 class ColorSchemePref;
 
-class Preferences : public KTConfigurationDialog
+class KTPreferences : public KTConfigurationDialog
 {
-	Q_OBJECT
-			
+	Q_OBJECT;
 	
 	public:
-		Preferences( QWidget *parent );
-		~Preferences();
+		KTPreferences( QWidget *parent );
+		~KTPreferences();
 		
 		
 	private:
+		class GeneralPage;
+		
 		KTThemeSelector *m_themeSelector;
-		KTFontWidget *m_fontWidget;
-
+		KTFontChooser *m_fontChooser;
+		GeneralPage *m_generalPage;
+		
 	public slots:
 		void apply();
 		void ok();
