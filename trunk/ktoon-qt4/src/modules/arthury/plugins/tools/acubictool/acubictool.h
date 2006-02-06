@@ -55,14 +55,11 @@ class ACubicTool : public KTToolPluginObject, public AToolInterface
 		struct Node
 		{
 			QPoint right, center, left;
-// 			Node *next;
-// 			Node *
 		};
 		int m_count;
 		Node *m_root;
 		QList< Node > m_nodes;
-		
-		QPainterPath drawNodes();
+		void createFinishPath();
 		
 		bool m_isComplete;
 };

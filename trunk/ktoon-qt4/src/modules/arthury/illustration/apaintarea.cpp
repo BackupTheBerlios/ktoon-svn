@@ -746,6 +746,7 @@ KTBrush *APaintArea::currentBrush()
 
 void APaintArea::copy()
 {
+	m_copiedGraphics.clear();
 	if(m_currentFrame->selectedComponents().count() > 0)
 	{
 		foreach(AGraphicComponent *component, m_currentFrame->selectedComponents())
@@ -757,7 +758,10 @@ void APaintArea::copy()
 
 void APaintArea::paste()
 {
-	m_currentFrame->addComponents( m_copiedGraphics);
+	foreach(AGraphicComponent *component, m_copiedGraphics)
+	{
+		m_currentFrame->addComponent( new AGraphicComponent(*component));
+	}
 	redrawAll();
 }
 

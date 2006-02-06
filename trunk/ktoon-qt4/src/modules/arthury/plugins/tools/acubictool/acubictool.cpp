@@ -65,14 +65,14 @@ QRect ACubicTool::move(const QString& brush, QPainter& painter, const QPainterPa
 		QPoint c = (first.center + second.center)/2;
 		QPoint lc = second.right;
 		
-		if ( m_nodes.count() % 2 == 0 )
-		{
+// 		if ( m_nodes.count() % 2 == 0 )
+// 		{
 			path.cubicTo( first.right , second.left, second.center);
-		}
-		else
-		{
-			path.cubicTo( first.right , second.right, second.center);
-		}
+// 		}
+// 		else
+// 		{
+// 			path.cubicTo( first.right , second.right, second.center);
+// 		}
 		
 // 		path.cubicTo( c,  second.left , second.center);
 		
@@ -106,10 +106,11 @@ QRect ACubicTool::press(const QString& brush, QPainter& painter, const QPainterP
 	{
 		m_isComplete = false;
 	}
-	
+
 	Node node;
 	node.center = pos;
 	m_nodes << node;
+	
 // 	ktDebug() << m_nodes.count();
 	return move(brush, painter, form, pos, pos);
 	
@@ -118,6 +119,14 @@ QRect ACubicTool::press(const QString& brush, QPainter& painter, const QPainterP
 QRect ACubicTool::release(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& pos)
 {
 	painter.drawPath(m_path);
+	int thickness = 5;
+	QRectF rect(pos-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
+	if(rect.contains(m_nodes.last().center))
+	{
+		createFinishPath();
+		m_nodes.clear();
+		m_isComplete = true;
+	}
 	return m_path.boundingRect().toRect();
 }
 
@@ -126,26 +135,22 @@ QStringList ACubicTool::keys() const
 	return QStringList() << "Cubic";
 }
 
-QPainterPath ACubicTool::drawNodes()
+void ACubicTool::createFinishPath()
 {
 	QList< Node >::iterator it = m_nodes.end();
-	QPainterPath path;
+	m_path = QPainterPath();
 	if(m_nodes.count() > 1)
 	{
-
-		path.moveTo(m_nodes[0].center);
-		for(int i = 0; i <  m_nodes.count()-1 ; i++)
+		QList<Node>::iterator first = m_nodes.begin();
+		QList<Node>::iterator second = m_nodes.begin()+1;
+		m_path.moveTo((*first).center);
+		while(second != m_nodes.end())
 		{
-			QPoint c = (m_nodes[i].center + m_nodes[i+1].center)/2;
-			
-			path.cubicTo( m_nodes[i].center, m_nodes[i].right , c);
-			path.cubicTo( c,  m_nodes[i+1].left , m_nodes[i+1].center);
+			m_path.cubicTo( (*first).right , (*second).left, (*second).center);
+			++first;
+			++second;
 		}
-		
-		
 	}
-// 	painter->drawPath(path);
-	return path;
 }
 
 QWidget* ACubicTool::configurator()
@@ -166,7 +171,6 @@ void ACubicTool::aboutToChangeTool()
 {
 	m_isComplete = true;
 	emit requestRedraw();
-			
 	m_nodes.clear();
 }
 
