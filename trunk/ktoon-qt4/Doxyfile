@@ -33,7 +33,7 @@ MULTILINE_CPP_IS_BRIEF = NO
 DETAILS_AT_TOP         = NO
 INHERIT_DOCS           = YES
 DISTRIBUTE_GROUP_DOC   = NO
-TAB_SIZE               = 3
+TAB_SIZE               = 1
 ALIASES                = "english=@if english" \
                          "spanish=@if spanish" \
                          endenglish=@endif \
@@ -98,10 +98,12 @@ EXCLUDE_PATTERNS       = qmake_* \
 EXAMPLE_PATH           = 
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO
-IMAGE_PATH             = 
+IMAGE_PATH             = doc/images \
+                         images \
+                         .
 INPUT_FILTER           = 
 FILTER_PATTERNS        = 
-FILTER_SOURCE_FILES    = NO
+FILTER_SOURCE_FILES    = YES
 #---------------------------------------------------------------------------
 # configuration options related to source browsing
 #---------------------------------------------------------------------------
@@ -114,7 +116,7 @@ VERBATIM_HEADERS       = YES
 #---------------------------------------------------------------------------
 # configuration options related to the alphabetical class index
 #---------------------------------------------------------------------------
-ALPHABETICAL_INDEX     = NO
+ALPHABETICAL_INDEX     = YES
 COLS_IN_ALPHA_INDEX    = 5
 IGNORE_PREFIX          = 
 #---------------------------------------------------------------------------

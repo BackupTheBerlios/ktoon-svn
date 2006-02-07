@@ -3,4 +3,7 @@
  * @section intro Introduction
  * KToon is a 2D Animation Toolkit designed by animators (Toonka Films ) for animators, focused to the Cartoon Industry. This project is covered by the GPL License using g++, OpenGL and QT as programming resources from KDevelop as the development platform. By now, KToon is only available for Unix systems. 
  * @section toc Table of contents
+ * @li @ref requirements
+ * @li @ref usecase
+ *
 */

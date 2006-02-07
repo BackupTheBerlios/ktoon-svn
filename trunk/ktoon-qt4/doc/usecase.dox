@@ -1,0 +1,29 @@
+/**
+ * @page usecase Use case diagrams
+ * Use case diagrams
+ *
+ * @line 
+ * @n
+ * @section ucgeneral General use case diagram
+ * @image html uc_general.png
+ *
+ * @line 
+ * @n
+ * @section ucproject Project use case diagram
+ * @image html uc_project.png
+ *
+ * @line 
+ * @n
+ * @section ucillustration Illustration use case diagram
+ * @image html uc_illustration.png
+ *
+ * @line 
+ * @n
+ * @section ucanimation Animation use case diagram
+ * @image html uc_animation.png
+ *
+ * @line 
+ * @n
+ */
+
+
