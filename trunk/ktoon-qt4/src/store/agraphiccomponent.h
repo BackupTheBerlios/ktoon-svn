@@ -19,7 +19,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
 #ifndef AGRAPHICCOMPONENT_H
 #define AGRAPHICCOMPONENT_H
 
@@ -36,6 +36,7 @@
 #include "agraphic.h"
 
 /**
+ * @short Abstraction of graphic component
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
@@ -46,44 +47,135 @@ class AGraphicComponent : public KTSerializableObject
 {
 	Q_OBJECT
 	public:
+		/**
+		 * Default constructor
+		 */
 		AGraphicComponent();
+		
+		/**
+		 * Copy constructor
+		 */
 		AGraphicComponent(const AGraphicComponent &);
+		
+		/**
+		 * Destructor
+		 */
 		virtual ~AGraphicComponent();
 		
+		/**
+		 * Reimplemented from KTSerializableObject
+		 */
 		QDomElement createXML( QDomDocument &doc );
 		
+		/**
+		 * returns the bounding rect
+		 */
 		QRectF boundingRect() const;
+		
+		/**
+		 * Returns the current position
+		 */
 		QPointF position() const;
 		
+		/**
+		 * Return true when graphic is valid
+		 */
 		bool isValid();
 		
-// 		void addGraphic(const AGraphic *graphic);
+		/**
+		 * Add a new graphic
+		 */
 		void addGraphic(const QPainterPath &path, const QPen &pen, const QBrush &brush );
+		
+		/**
+		 * Add a new graphic
+		 */
 		void addGraphic(const QList<QPolygonF> &polygons, const QPen &pen, const QBrush &brush );
 		
+		/**
+		 * return all graphics in component
+		 */
 		Graphics graphics() const;
 		
+		/**
+		 * Returns true when component intersects with rect
+		 */
 		bool intersects(const QRectF &rect);
 		
+		/**
+		 * Scale the component
+		 */
 		void scale(double sX, double sY);
+		
+		/**
+		 * Shears the component
+		 */
 		void shear(double sX, double sY);
+		
+		/**
+		 * Translate the component
+		 */
 		void translate(double sX, double sY);
+		
+		/**
+		 * Rotate the component
+		 */
 		void rotate( double angle );
 		
+		/**
+		 * map the component to matrix
+		 */
 		void mapTo(const QMatrix& matrix);
+		
+		/**
+		 * Returns all component path
+		 */
 		void getPath(QPainterPath & path, const QMatrix& matrix = QMatrix() );
 		
+		/**
+		 * set the name to the component
+		 */
 		void setComponentName(const QString &name);
+		
+		/**
+		 * Returns the component name
+		 */
 		QString componentName() const;
 		
 		
+		/**
+		 * Add a child
+		 */
 		void addChild ( AGraphicComponent * child );
+		
+		/**
+		 * Return the childs
+		 */
 		QList<AGraphicComponent*> childs() const ;
+		
+		/**
+		 * Returns true if component has childs.
+		 */
 		bool hasChilds();
+		
+		/**
+		 * Returns the childs and child of childs...
+		 */
 		QList<AGraphicComponent*> allChilds() const;
 		
+		/**
+		 * Returns graphic component control points
+		 */
 		QPolygonF controlPoints() const;
+		
+		/**
+		 * set the control points
+		 */
 		void setControlPoints(const QPolygonF& points) ;
+		
+		/**
+		 * Remove the control points
+		 */
 		void removeControlPoints();
 		
 	private:

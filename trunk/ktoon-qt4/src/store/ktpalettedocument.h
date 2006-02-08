@@ -26,16 +26,37 @@
 #include <QList>
 
 /**
+ * Esta clase se utiliza para guardar las paletas
+ * @brief Esta clase representa un documento de paletta
  * @author David Cuadrado
 */
 
 class KTPaletteDocument : public QDomDocument
 {
 	public:
+		/**
+		 * Construye un documento de paleta con un nombre
+		 */
 		KTPaletteDocument(const QString &name, bool isEditable);
+		
+		/**
+		 * Destructor
+		 */
 		~KTPaletteDocument();
+		
+		/**
+		 * Añade un gradiente al documento
+		 */
 		void addGradient(const QGradient &gradient);
+		
+		/**
+		 * Añade un color al documento
+		 */
 		void addColor(const QColor &color);
+		
+		/**
+		 * Pone una lista de colores o gradientes en el documento
+		 */
 		void setElements(const QList<QBrush > &colors);
 };
 

@@ -29,6 +29,7 @@ typedef QList<KTLayer *> Layers;
 #include "ktserializableobject.h"
 
 /**
+ * @brief Esta clase representa una escena
  * @author David Cuadrado <krawek@toonka.com>
 */
 
@@ -36,35 +37,116 @@ class KTScene : public KTSerializableObject
 {
 	Q_OBJECT
 	public:
+		/**
+		 * Constructor por defecto
+		 */
 		KTScene(QObject *parent = 0);
+		
+		/**
+		 * Destructor
+		 */
 		~KTScene();
 		
+		/**
+		 * Pone un nombre a la escena
+		 */
 		void setSceneName(const QString &name);
+		
+		/**
+		 * retorna el nombre de la escena
+		 */
 		QString sceneName();
+		
+		/**
+		 * Retorna la lista de layers
+		 */
 		Layers layers() const;
+		
+		/**
+		 * Pone la lista de layers, esta funcion sobreescribe los layers anteriores
+		 */
 		void setLayers(const Layers &);
 		
+		/**
+		 * Retorna el layer actual
+		 */
 		KTLayer *currentLayer();
+		
+		/**
+		 * Pone el layer actual desde un indice
+		 */
 		void setCurrentLayer(int index);
+		
+		/**
+		 * Retorna el indice layer actual
+		 */
 		int indexCurrentLayer();
+		
+		/**
+		 * Remueve el layer situado en el indice proporcionado
+		 */
 		void removeLayer(int index);
+		
+		/**
+		 * Crea una layer, si addToEnd es verdadero el layer se creara al final, sino se creara despues del layer actual
+		 */
 		KTLayer *createLayer(bool addToEnd  );
 		
+		/**
+		 * Cambia los frames por segundo de la escena
+		 */
 		void setFPS(int fps);
+		
+		/**
+		 * Retorna los frames por segundo de la escena
+		 */
 		int fps();
 		
+		/**
+		 * Reimplementado de KTSerializableObject
+		 */
 		QDomElement createXML( QDomDocument &doc );
+		
+		/**
+		 * Guarda la escena en una ruta
+		 */
 		void save(const QString &scenePath);
+		
+		/**
+		 * Carga la escena desde una ruta
+		 */
 		void load(const QString &path);
 		
 	private slots:
+		/**
+		 * Carga un layer
+		 */
 		void loadLayer();
+		
+		/**
+		 * Carga un frame
+		 */
 		void loadFrame();
+		
+		/**
+		 * Carga un componente
+		 */
 		void loadComponent(AGraphicComponent *);
 		
 	signals:
+		/**
+		 * Este signal es emitido cuando se crea un layer
+		 */
 		void layerCreated(const QString &name, bool toEnd);
+		
+		/**
+		 * Este signal se emite cuando se remueve un layer
+		 */
 		void layerRemoved(int index);
+		
+		/**
+		 * Este signal se emite cuando se selecciona un layer
+		 */
 		void layerSelected(int index);
 		
 		

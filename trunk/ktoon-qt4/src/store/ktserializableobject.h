@@ -26,14 +26,25 @@
 #include <QVariant>
 
 /**
+ * @brief Esta clase es una abstraccion de objetos serializables
  * @author David Cuadrado <krawek@toonka.com>
 */
 class KTSerializableObject : public QObject
 {
 	public:
+		/**
+		 * Constructor por defecto
+		 */
 		KTSerializableObject(QObject *parent = 0);
+		
+		/**
+		 * Destructor
+		 */
 		~KTSerializableObject();
 		
+		/**
+		 * Funcion que debe ser reimplementada con el codigo para guardar el objeto
+		 */
 		virtual QDomElement createXML( QDomDocument &doc );
 };
 

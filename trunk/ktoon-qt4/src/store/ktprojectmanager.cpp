@@ -41,7 +41,7 @@ KTProjectManager::~KTProjectManager()
 QDomElement KTProjectManager::createXML( QDomDocument &doc )
 {
 	QDomElement project = doc.createElement("Project");
-	//TODO: añadir nombre al proyecto
+	//TODO: aï¿½dir nombre al proyecto
 	project.setAttribute("name", m_name);
 	project.setAttribute("width", m_size.width());
 	project.setAttribute("height", m_size.height());
@@ -450,7 +450,7 @@ void  KTProjectManager::setDocumentSize(const QSize& size )
 	m_size = size;
 }
 
-void KTProjectManager::setProjectRender( const QString typeRender)
+void KTProjectManager::setProjectRender( const QString &typeRender)
 {
 	m_typeRender = typeRender;
 }

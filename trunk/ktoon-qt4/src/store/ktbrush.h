@@ -30,28 +30,77 @@
 #include "ktserializableobject.h"
 
 /**
+ * Esta clase abstrae los componentes de una brocha
+ * 
+ * @brief Contiene los datos para utilizar una brocha con forma
  * @author David Cuadrado <krawek@toonka.com>
 */
 class KTBrush : public KTSerializableObject
 {
 	public:
+		/**
+		 * Constructor por defecto
+		 */
 		KTBrush();
+		
+		/**
+		 * Constructor de copia
+		 */
 		KTBrush(const KTBrush &toCopy);
+		
+		/**
+		 * Construye la brocha con una forma
+		 */
 		KTBrush(const QPainterPath &);
+		
+		/**
+		 * Destructor
+		 */
 		~KTBrush();
+		
+		/**
+		 * Retorna la forma de la brocha
+		 */
 		QPainterPath brushForm() const;
+		
+		/**
+		 * Pone la forma de la brocha
+		 */
 		void setBrushForm(const QPainterPath &);
 		
+		/**
+		 * Pone una brocha de Qt
+		 */
 		void setBrush(const QBrush &brush);
+		
+		/**
+		 * Pone un lapicero de Qt
+		 */
 		void setPen(const QPen &pen);
 		
+		/**
+		 * Pone una brocha de Qt al lapicero
+		 */
 		void setPenBrush(const QBrush &brush);
+		
+		/**
+		 * Pone un ancho al lapicero
+		 */
 		void setPenWidth(double width);
 		
+		/**
+		 * Retorna el ancho del lapicero
+		 */
 		double penWidth() const;
 		
+		/**
+		 * Configura el painter con la brocha
+		 */
 		void setupPainter(QPainter *painter );
 		
+		/**
+		 * Reimplementado de KTSerializableObject
+		 */
 		QDomElement createXML( QDomDocument &doc );
 		
 	private:

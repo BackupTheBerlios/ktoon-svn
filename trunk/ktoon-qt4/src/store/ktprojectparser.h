@@ -29,6 +29,7 @@
 #include "agraphiccomponent.h"
 
 /**
+ * @brief Esta clase es el analizador del archivo del proyecto
  * @author David Cuadrado <krawek@toonka.com>
 */
 
@@ -36,23 +37,65 @@ class KTProjectParser : public QObject, public QXmlDefaultHandler
 {
 	Q_OBJECT
 	public:
+		/**
+		 * Constructor por defecto
+		 */
 		KTProjectParser();
+		
+		/**
+		 * Destructor por defecto
+		 */
 		~KTProjectParser();
+		
+		/**
+		 * Analiza etiquetas de apertura del documento XML
+		 */
 		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
 		
+		/**
+		 * Analiza etiquetas de cierre del documento XML
+		 */
 		bool endElement( const QString& ns, const QString& localname, const QString& qname);
 		
+		/**
+		 * Muestra errores en el analisis del documento
+		 */
 		bool error ( const QXmlParseException & exception );
+		
+		/**
+		 * Muestra errores fatales en el analisis del documento
+		 */
 		bool fatalError ( const QXmlParseException & exception );
 		
+		/**
+		 * Retorna el nombre del componente que esta siendo analizado
+		 */
 		QString partName() const;
+		
+		/**
+		 * Retorna las rutas de componentes
+		 */
 		QStringList locations() const;
 		
+		/**
+		 * Retorna el tamaño del documento
+		 */
 		QSize documentSize() const;
 
 	signals:
+		/**
+		 * Este signal se emite cuando se requiere crear un layer
+		 */
 		void createLayer();
+		
+		/**
+		 * Este signal se emite cuando se requiere crear un frame
+		 */
 		void createFrame();
+		
+		/**
+		 * Este signal se emite cuando se requiere crear un componente
+		 */
 		void createComponent(AGraphicComponent *component);
 		
 	private:

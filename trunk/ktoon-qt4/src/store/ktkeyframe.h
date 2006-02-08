@@ -30,39 +30,116 @@
 class KTKeyFrame;
 
 /**
+ * @brief Esta clase representa un marco o frame de la animacion
  * @author David Cuadrado <krawek@toonka.com>
 */
 class KTKeyFrame : public KTSerializableObject
 {
 	public:
+		/**
+		 * Constructor por defecto
+		 */
 		KTKeyFrame(QObject *parent = 0);
+		
+		/**
+		 * Construye un frame con un nombre
+		 */
 		KTKeyFrame(const QString &frameName, QObject * parent = 0);
+		
+		/**
+		 * Constructor de copia
+		 */
 		KTKeyFrame(const KTKeyFrame &kf);
 		
+		/**
+		 * Reimplementado de KTSerializableObject
+		 */
 		QDomElement createXML( QDomDocument &doc );
 		
+		/**
+		 * Destructor
+		 */
 		~KTKeyFrame();
+		
+		/**
+		 * Añade un componente al frame
+		 */
 		void addComponent(AGraphicComponent *comp);
+		
+		/**
+		 * Añade una lista de componentes al frame, esta funcion sobreescribe los componentes anteriores
+		 */
 		void addComponents(QList<AGraphicComponent *> comp);
+		
+		/**
+		 * Remueve un componente
+		 */
 		void removeComponent(AGraphicComponent *comp);
+		
+		/**
+		 * Toma el ultimo componente
+		 */
 		AGraphicComponent *takeLastComponent();
 		
+		/**
+		 * Retorna la lista de componentes graficos
+		 */
 		QList<AGraphicComponent *> components() const;
 		
+		/**
+		 * Pone el nombre del frame
+		 */
 		void setFrameName(const QString &name);
+		
+		/**
+		 * Bloquea el frame
+		 */
 		void setLocked(bool isLocked);
 		
+		/**
+		 * Retorna el nombre del frame
+		 */
 		QString frameName() const;
+		
+		/**
+		 * Returna verdadero cuando el frame esta bloqueado
+		 */
 		bool isLocked();
 		
+		/**
+		 * Añade un componenente seleccionado al frame
+		 */
 		void addSelectedComponent(AGraphicComponent *toSelect);
+		
+		/**
+		 * Deselecciona un componente del frame
+		 */
 		void deSelectedComponent(AGraphicComponent *toDeSelect);
+		
+		/**
+		 * Deselecciona todos los componentes seleccionados
+		 */
 		void clearSelections();
+		
+		/**
+		 * Deselecciona todos los componentes seleccionados y remueve los puntos de control
+		 */
 		void removeSelections();
+		
+		/**
+		 * Selecciona los componentes que estan en el rect
+		 */
 		void selectContains (const QRect & rect);
+		
+		/**
+		 * Retorna la lista de componentes seleccionados
+		 */
 		 QList<AGraphicComponent *> selectedComponents();
-		
-		
+		 
+		 /**
+		  * Escala todos los componentes
+		  * @todo Rename this function
+		  */
 		 void scale(int sX, int sY);
 	private:
 		QList<AGraphicComponent *> m_components;

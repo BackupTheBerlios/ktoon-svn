@@ -29,6 +29,7 @@
 typedef QList<KTScene *> Scenes;
 
 /**
+ * @brief Esta clase es la abstraccion de un documento contenido en KTProjectManager
  * @author David Cuadrado <krawek@toonka.com>
 */
 
@@ -36,23 +37,71 @@ class KTDocument : public KTSerializableObject
 {
 	Q_OBJECT
 	public:
+		/**
+		 * Constructor por defecto
+		 */
 		KTDocument(QObject *parent = 0);
+		
+		/**
+		 * Destructor
+		 */
 		~KTDocument();
+		
+		/**
+		 * Retorna la lista de escenas que contiene
+		 */
 		Scenes scenes() const;
+		
+		/**
+		 * Pone una lista de escenas, esta funcion borra las lista anterior
+		 */
 		void setScenes(const Scenes &);
+		
+		/**
+		 * Crea una escena, is addToEnd es verdadero añade la escena al final, sino la añade despues de la escena actual.
+		 */
 		KTScene *createScene(bool addToEnd );
 		
+		/**
+		 * Retorna la escena actual
+		 */
 		KTScene *currentScene();
+		
+		/**
+		 * Pone la escena actual con un indice
+		 */
 		void setCurrentScene(int index);
+		
+		/**
+		 * Reimplementado de KTSerializableObject
+		 */
 		QDomElement createXML( QDomDocument &doc );
+		
+		/**
+		 * Guarda el documento en una ruta
+		 */
 		void save(const QString &path);
+		
+		/**
+		 * Carga el documento desde una ruta
+		 */
 		void load(const QString &path);
 		
+		/**
+		 * Pone el nombre del documento
+		 */
 		void setDocumentName(const QString &name);
 		
 		
 	signals:
+		/**
+		 * Este signal es emitido cuando se ha creado una escena
+		 */
 		void sceneCreated(const QString &name, bool toEnd);
+		
+		/**
+		 * Este signal es emitido cuando se cambia una escena
+		 */
 		void sceneChanged(KTScene *scene);
 		
 	private:
