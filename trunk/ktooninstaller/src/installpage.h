@@ -49,6 +49,7 @@ class InstallPage : public KTWizardPage
 		
 	private:
 		void generateLauncher();
+		void generateMenuEntry(const QString &path);
 		void launchApplication();
 		
 	private slots:

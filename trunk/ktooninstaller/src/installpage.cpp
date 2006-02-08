@@ -25,12 +25,17 @@
 #include <QCheckBox>
 #include <QProcess>
 
+#include <unistd.h> // getuid
+
 #include "ktimagebutton.h"
-#include "application.h"
 #include "ktdebug.h"
 
 #include "fileopen.xpm"
 #include "install.xpm"
+
+#include "ktglobal.h"
+
+#include "kseparator.h"
 
 InstallPage::InstallPage(QWidget *parent)
 	: KTWizardPage(tr("Install"), parent), m_isComplete(false)
@@ -66,8 +71,12 @@ InstallPage::InstallPage(QWidget *parent)
 	
 	container->setLayout(layout);
 	
+	layout->addStretch(4);
+	
 	setPixmap(QPixmap(install_xpm));
 	setWidget( container);
+	
+	layout->addWidget(new KSeparator);
 	
 	m_launchApp = new QCheckBox(tr("Launch application"));
 	layout->addWidget(m_launchApp);
@@ -117,20 +126,29 @@ void InstallPage::chooseDestination()
 
 void InstallPage::install()
 {	
-	QDir toCopy(static_cast<Application *>(qApp)->ktoonHome() );
+	QDir toCopy(KTOON_HOME );
 	
-	if ( !static_cast<Application *>(qApp)->ktoonHome().isEmpty() && !m_destinationPath->text().isEmpty() )
+	if ( !KTOON_HOME.isEmpty() && !m_destinationPath->text().isEmpty() )
 	{
 		installDir(toCopy);
 		m_isComplete = true;
 		
 		generateLauncher();
 		
+		if ( getuid() == 0 )
+		{
+			generateMenuEntry("/usr/share/applications/Graphics");
+		}
+		else 
+		{
+			generateMenuEntry(QDir::homePath()+"/.local/share/applications/Graphics/");
+		}
+		
 		emit completed();
 	}
 	else
 	{
-		QMessageBox::critical(0, tr("Error"), tr("Error while trying install"), QMessageBox::Ok, 0);
+		QMessageBox::critical(0, tr("Error"), tr("Error while trying to install"), QMessageBox::Ok, 0);
 	}
 }
 
@@ -138,7 +156,7 @@ void InstallPage::installDir(const QDir &toCopy)
 {
 	QFileInfoList files = toCopy.entryInfoList ();
 	
-	QDir destination = (m_destinationPath->text() +"/"+ toCopy.path().remove(static_cast<Application *>(qApp)->ktoonHome()));
+	QDir destination = (m_destinationPath->text() +"/"+ toCopy.path().remove(KTOON_HOME));
 	
 	if ( ! destination.exists() )
 	{
@@ -174,14 +192,88 @@ void InstallPage::generateLauncher()
 		// Write header
 		ts << "#!/bin/bash" << endl;
 		
-		ts << "KTOON_HOME=" << m_destinationPath->text() << endl;
-		ts << "LD_LIBRARY_PATH=$KTOON_HOME/lib" << endl;
-		ts << "exec $KTOON_HOME/bin/ktoon" << endl;
+		ts << "export KTOON_HOME=" << m_destinationPath->text() << endl;
+		ts << "export LD_LIBRARY_PATH=$KTOON_HOME/lib" << endl;
+		ts << "exec $KTOON_HOME/bin/ktoon $*" << endl;
 		
 		launcher.close();
 		
 		launcher.setPermissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner | QFile::ReadUser | QFile::ExeUser | QFile::ReadGroup | QFile::ExeGroup | QFile::ReadOther | QFile::ExeOther );
 	}
+}
+
+/**
+ * [Desktop Entry]
+ * Encoding=UTF-8
+ * Name=KToon: A 2D Animation toolkit
+ * Name[es]=KToon: Herramienta para animacion 2D
+ * Exec=ktoon
+ * Icon=ktoon.png
+ * Type=Application
+ * #MimeType=
+ * #DocPath=
+ * Categories=Application;Graphics;2DGraphics;RasterGraphics;
+ * Comment=A 2D animation toolkit
+ * Comment[es]=Herramienta para animacion 2D
+ * Terminal=false
+ */
+
+void InstallPage::generateMenuEntry(const QString &path)
+{
+	QDir desktopDir(path);
+	
+	if ( ! desktopDir.exists() )
+	{
+		desktopDir.mkpath(desktopDir.path());
+	}
+	
+	QFile desktop(desktopDir.path()+"/ktoon.desktop");
+	
+	if ( desktop.open(QIODevice::WriteOnly | QIODevice::Text))
+	{
+		QTextStream ts(&desktop);
+		// Write header
+		ts << "[Desktop Entry]" << endl;
+		
+		ts << "Encoding=UTF-8" << endl;
+		ts << "Name=KToon: A 2D Animation toolkit" << endl;
+		ts << "Name[es]=KToon: Herramienta para animacion 2D" << endl;
+		
+		ts << "Exec="<< m_destinationPath->text()+"/ktoon" << endl;
+		ts << "Icon=ktoon.png" << endl;
+		ts << "Type=Application" << endl;
+		ts << "Categories=Application;Graphics;2DGraphics;RasterGraphics;" << endl;
+		ts << "Comment=A 2D animation toolkit" << endl;
+		
+		ts << "Comment[es]=Herramienta para animacion 2D" << endl;
+		ts << "Terminal=false" << endl;
+		
+		desktop.close();
+	}
+	
+	QFile configure(desktopDir.path()+"/ktoon_configure.desktop");
+	
+	if ( configure.open(QIODevice::WriteOnly | QIODevice::Text))
+	{
+		QTextStream ts(&configure);
+		// Write header
+		ts << "[Desktop Entry]" << endl;
+		
+		ts << "Encoding=UTF-8" << endl;
+		ts << "Name=KToon: Reconfigure" << endl;
+		ts << "Name[es]=KToon: Reconfigurar" << endl;
+		
+		ts << "Exec="<< m_destinationPath->text()+"/ktoon --reconfigure" << endl;
+		ts << "Icon=ktoon.png" << endl;
+		ts << "Type=Application" << endl;
+		ts << "Categories=Application;Graphics;2DGraphics;RasterGraphics;" << endl;
+		ts << "Comment=Reconfigure KToon" << endl;
+		ts << "Comment[es]=Reconfigura KToon" << endl;
+		ts << "Terminal=false" << endl;
+		
+		configure.close();
+	}
+	
 }
 
 void InstallPage::launchApplication()

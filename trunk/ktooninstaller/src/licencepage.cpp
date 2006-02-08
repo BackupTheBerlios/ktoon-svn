@@ -22,15 +22,16 @@
 #include <QTextBrowser>
 #include <QFile>
 
-#include "application.h"
 #include "ktdebug.h"
+
+#include "ktglobal.h"
 
 LicencePage::LicencePage(QWidget *parent)
 	: KTWizardPage(tr("Licence"), parent), m_isComplete(false)
 {
 	QTextBrowser *licence = new QTextBrowser;
 	
-	QFile licenceFile( static_cast<Application*>(qApp)->ktoonHome()+"/data/COPYING" );
+	QFile licenceFile( KTOON_DATA_DIR+"/COPYING" );
 	if ( licenceFile.open( QIODevice::ReadOnly  | QIODevice::Text) )
 	{
 		QTextStream stream( &licenceFile );

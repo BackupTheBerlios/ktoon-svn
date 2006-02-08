@@ -18,7 +18,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "application.h"
 #include "ktooninstaller.h"
 #include "ktdebug.h"
 
@@ -26,11 +25,31 @@
 #error Only supports unix systems
 #endif
 
+#include "ktapplication.h"
+
 int main( int argc, char ** argv )
 {
-	Application app( argc, argv );
+	KTApplication app( argc, argv );
 	
-	if ( app.ktoonHome().isEmpty() )
+	
+	QString ktoonHome;
+	if ( argc == 2 )
+	{
+		ktoonHome = QString(argv[1]);
+		
+		if ( QFile::exists(ktoonHome ) )
+		{
+			ktDebug() << "Configuring with: " << ktoonHome;
+		}
+		else
+		{
+			ktoonHome = "";
+		}
+	}
+	
+	app.setHome(ktoonHome);
+	
+	if ( app.home().isEmpty() )
 	{
 		ktFatal() << QObject::tr("Please don't use this binary directly");
 		return -1;
