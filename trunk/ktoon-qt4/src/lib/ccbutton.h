@@ -20,11 +20,15 @@
 
 #ifndef CCBUTTON_H
 #define CCBUTTON_H
-
+/**
+ * @file ccbutton.h
+ * Include this file if you need the class CCButton
+ */
 #include <QPushButton>
 #include <QStyleOptionButton>
 
 /**
+ * @short The CCButton class provides a circular button
  * @author David Cuadrado <krawek@gmail.com>
 */
 
@@ -32,17 +36,37 @@ class CCButton : public QPushButton
 {
 	Q_OBJECT
 	public:
+		/**
+		 * Constructs a CCButton
+		 */
 		CCButton(int diameter, bool animate = true, QWidget *parent = 0);
+		/**
+		 * Destructor
+		 */
 		~CCButton();
+		
 		QStyleOptionButton styleOption() const;
 		QSize sizeHint() const;
 		
 	protected:
+		/**
+		 * Paints the button
+		 * @param e 
+		 */
 		void paintEvent(QPaintEvent *e);
-		void moveEvent(QMoveEvent *e);
+		
+		/**
+		 * Init animation
+		 */
 		void enterEvent(QEvent *);
+		/**
+		 * End animation
+		 */
 		void leaveEvent(QEvent *);
 		
+		/**
+		 * Creates mask of button
+		 */
 		virtual void paintMask();
 		
 	private slots:

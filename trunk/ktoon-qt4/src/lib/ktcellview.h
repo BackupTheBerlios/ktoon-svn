@@ -20,6 +20,10 @@
 
 #ifndef KTCELLVIEW_H
 #define KTCELLVIEW_H
+/**
+ * @file ktcellview.h
+ * @brief Include this file if you need the class KTCellView, KTCellViewItem,  KTCellViewItemDelegate or KTCellViewModel
+ */
 
 #include <QTableView>
 #include <QStyleOptionViewItem>
@@ -33,6 +37,8 @@ class KTCellViewModel;
 typedef QHash<int, QVariant> ItemData;
 
 /**
+ * 
+ * @short The KTCellViewItem class provides an item for use with the KTCellView class.
  * @author David Cuadrado <krawek@toonka.com>
 */
 
@@ -42,6 +48,9 @@ class KTCellViewItem
 	friend class KTCellView;
 	
 	public:
+		/**
+		 * construye un KTCellViewItem
+		 */
 		KTCellViewItem();
 		virtual ~KTCellViewItem();
 
@@ -69,6 +78,9 @@ class KTCellViewItem
 		Qt::ItemFlags m_itemFlags;
 };
 
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+ */
 class KTCellView : public QTableView
 {
 	Q_OBJECT

@@ -21,6 +21,11 @@
 #ifndef CCBAR_H
 #define CCBAR_H
 
+/**
+ * @file ccbar.h
+ * Include this file if you need the class CCBar
+ */
+
 #include <qframe.h>
 #include <QPixmap>
 #include <QPolygon>
@@ -35,13 +40,25 @@
 class QPainterPath;
 
 /**
+ * @short The CCBar class provides a circular button bar
  * @author David Cuadrado <krawek@gmail.com>
 */
 class CCBar : public QFrame
 {
 	public:
+		/**
+		 * Constructs a CCBar
+		 */
 		CCBar(int radio = 40, QWidget *parent= 0);
+		/**
+		 * Destructor
+		 */
 		~CCBar();
+		/**
+		 * Add button in CCBar
+		 * @param pix image of new CCButton
+		 * @return pointer of new CCButton
+		 */
 		CCButton *addButton(const QPixmap &pix);
 		
 	private:
@@ -53,6 +70,7 @@ class CCBar : public QFrame
 		QBoxLayout *m_layout;
 		
 		int m_offset;
+	
 	protected:
 		void paintEvent(QPaintEvent *e);
 

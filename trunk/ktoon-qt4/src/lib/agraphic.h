@@ -21,6 +21,11 @@
 #ifndef AGRAPHIC_H
 #define AGRAPHIC_H
 
+/**
+ * @file agraphic.h
+ * @brief Include this file if you need the class AGraphic
+ */
+
 #include <QList>
 #include <QPolygonF>
 #include <QPen>
@@ -34,8 +39,20 @@
 class AGraphic
 {
 	public:
+		/**
+		 * Default Constructor
+		 */
 		AGraphic();
+		/**
+		 * Copy Constructor
+		 * @param toCopy 
+		 */
 		AGraphic(const AGraphic &toCopy);
+		
+		/**
+		 * Destructor
+		 * @return 
+		 */
 		~AGraphic();
 		
 		QPainterPath path;

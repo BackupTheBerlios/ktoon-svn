@@ -32,6 +32,7 @@ typedef QList<KTAction *> QActionList;
 typedef QHash<QString, KTAction *> QActionDict;
 
 /**
+ * @short la clase KTActionManager provee de un manejador de acciones, este manejador facilita el acceso y ordenamiento a las acciones contieniendo todas las acciones de la aplicacion.
  * @author David Cuadrado <krawek@toonka.com>
 */
 
@@ -40,13 +41,47 @@ class KTActionManager : public QObject
 	Q_OBJECT
 
 	public:
+		/**
+		 * Construye un manejador de acciones.
+		 * @param parent widget que contine el manejador de acciones
+		 */
 		KTActionManager(QWidget *parent = 0L);
+		/**
+		 * Destructor
+		 */
 		~KTActionManager();
+		/**
+		 * 
+		 * @param w 
+		 */
 		void setWidget(QWidget *w);
+		/**
+		 * Inserta una accion al manejador
+		 * @param action accion para añadir
+		 * @return 
+		 */
 		bool insert(KTAction *action);
+		/**
+		 * Remueve una accion del manejador
+		 * @param action para remover
+		 */
 		void remove( KTAction* action );
+		/**
+		 * Remuve una accion del manejador retornando dicha accion.
+		 * @param action para remover
+		 * @return la accion removida o cero si esta no estaba en el manejador
+		 */
 		QAction *take( KTAction* action );
+		/**
+		 * Busca una accion en el manejardor.
+		 * @param id asociado a la accion
+		 * @return la accion requeriada
+		 */
 		QAction *find(const QString &id) const;
+		/**
+		 * Retorna la accion asociada a id
+		 * @param id 
+		 */
 		QAction *operator[](const QString &id) const;
 
 	private:

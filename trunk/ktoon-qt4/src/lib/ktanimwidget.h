@@ -20,6 +20,10 @@
 
 #ifndef KTANIMWIDGET_H
 #define KTANIMWIDGET_H
+/**
+ * @file ktanimwidget.h
+ * @brief Include this file if you need the class KTAnimWidget
+ */
 
 #include <QPixmap>
 #include <QHideEvent>
@@ -30,6 +34,9 @@
 typedef QList<QPixmap> ListOfPixmaps;
 
 /**
+ * Si el es de texto lo va desplazando de arriba abajo hacia arriba y si es de imgenes las va mostrando una por una.
+ * @short La clase KTAnimWidget provee de un widget que hace una simple animacion, de un texto o una secuencia de imagenes.
+ * 
  * @Author David Cuadrado
  */
  
@@ -37,17 +44,47 @@ class KTAnimWidget : public QWidget
 {
 	public:
 		enum Type { AnimText = 0, AnimPixmap };
+		/**
+		 * Construye un KTAnimWidget con una imagen de fondo, un texto para animar y un padre.
+		 * @param px imagen de fondo
+		 * @param text texto para animar
+		 * @param parent 
+		 */
 		KTAnimWidget(const QPixmap &px, const QString &text, QWidget *parent = 0);
+		/**
+		 * Construye un KTAnimWidget con una lista de imagenes para animar y un padre.
+		 * @param lop imagenes para animar
+		 * @param parent 
+		 */
 		KTAnimWidget(ListOfPixmaps lop, QWidget *parent = 0);
 		
+		/**
+		 * Destructor
+		 */
 		~KTAnimWidget();
 		
+		/**
+		 * pone una imagen de fondo a la animacion
+		 * @param px imagen de fondo
+		 */
 		void setBackgroundPixmap(const QPixmap &px);
+		/**
+		 * Inicia la animacion
+		 */
 		void showEvent ( QShowEvent * e);
+		/**
+		 * Detiene la animacion
+		 */
 		void hideEvent ( QHideEvent * e);
 		
 	protected:
+		/**
+		 * Avanza la animacion.
+		 */
 		void timerEvent(QTimerEvent *e);
+		/**
+		 * Dibuja la animacion.
+		 */
 		void paintEvent(QPaintEvent *e);
 		
 	private:

@@ -45,9 +45,9 @@ QTableWidgetItem *KTWidgetListView::addWidget(QWidget *widget)
 	
 	insertRow(newRowIndex);
 	setItem( newRowIndex, 0, newItem);
-	
+	#if QT_VERSION >= 0x040100
 	setIndexWidget(indexFromItem(newItem), widget);
-	
+	#endif
 	verticalHeader()->resizeSection(newRowIndex, widget->height());
 	
 	m_items.insert(widget, newItem);
@@ -62,8 +62,9 @@ QTableWidgetItem *KTWidgetListView::insertWidget(int pos, QWidget *widget)
 	insertRow(pos);
 	setItem( pos, 0, newItem);
 	
+	#if QT_VERSION >= 0x040100
 	setIndexWidget(indexFromItem(newItem), widget);
-	
+	#endif
 	verticalHeader()->resizeSection(pos, widget->height());
 	
 	m_items.insert(widget, newItem);

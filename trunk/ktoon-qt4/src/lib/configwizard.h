@@ -35,19 +35,40 @@ class CWFirstPage;
 class CWSecondPage;
 
 /**
-This class helps to config KToon!
-
-@author David Cuadrado
+ * This class helps to config KToon!
+ * @brief la clase ConfigWizard provee el dialogo para configurar los directorios principales de ktoon.
+ * El home que es el directorio donde esta instalado ktoon y el repositorio que es el directorio en donde se guardaran todos los proyectos del usuario
+ * 
+ * @author David Cuadrado
 */
 class ConfigWizard : public KTWizard
 {
 	Q_OBJECT
 	public:
+    		/**
+    		 * Crea el dialogo configuracion.
+    		 */
     		ConfigWizard();
+    		/**
+    		 * destuctor
+    		 */
     		~ConfigWizard();
 		
+		/**
+		 * Pone los directorios por defecto en el dialogo.
+		 * @param home 
+		 * @param repos 
+		 */
 		void setInitialData(const QString &home, const QString &repos);
+		
+		/**
+		 * @return la ruta del directorio home
+		 */
 		QString home();
+		
+		/**
+		 * @return la ruta del directorio repository
+		 */
 		QString repository();
 
 	private:

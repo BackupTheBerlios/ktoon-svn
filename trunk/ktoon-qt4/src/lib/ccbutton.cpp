@@ -187,13 +187,6 @@ QStyleOptionButton CCButton::styleOption() const
 	return opt;
 }
 
-void CCButton::moveEvent(QMoveEvent *e)
-{
-// 	qDebug("move");
-// 	
-// 	mask().translate(e->pos());
-}
-
 void CCButton::paintMask()
 {
 	m_mask = QPixmap(m_diameter, m_diameter);
