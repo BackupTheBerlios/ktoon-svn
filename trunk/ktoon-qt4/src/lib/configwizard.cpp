@@ -30,6 +30,8 @@
 #include "ktdebug.h"
 #include "kimageeffect.h"
 
+#include "ktglobal.h"
+
 ConfigWizard::ConfigWizard() : KTWizard(0)
 {
 	setModal(true);
@@ -127,6 +129,10 @@ CWSecondPage::CWSecondPage(QWidget *parent) : KTWizardPage(tr("Configure KToon")
 	connect(button2, SIGNAL(clicked()), fd2, SLOT(show()));
 	
 	setWidget(container);
+	
+	
+	m_kthome->setText(KTOON_HOME);
+	m_ktrepos->setText(KTOON_REPOSITORY);
 }
 
 CWSecondPage::~ CWSecondPage()

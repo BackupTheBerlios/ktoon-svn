@@ -58,8 +58,6 @@ class KTApplication : public QApplication
 		QString repository();
 		void createRepository(const QString &repository);
 		QString version();
-
-		bool firstRun();
 		
 		void parseArgs( int &argc, char **argv);
 		
@@ -77,6 +75,9 @@ class KTApplication : public QApplication
 		
 		void config(const QString &group = "General"); // FIXME: return
 		
+	public slots:
+		bool firstRun();
+		
 	protected:
 // 		virtual void detectOpengl();
 		
@@ -91,16 +92,6 @@ class KTApplication : public QApplication
 		bool m_haveDri;
 };
 
-#define ktapp static_cast<KTApplication*>(qApp)
-#define KTOON_HOME (static_cast<KTApplication*>(qApp))->home()
-
-#define KTOON_REPOSITORY (static_cast<KTApplication*>(qApp))->repository()
-
-#define KTOON_THEME_DIR (static_cast<KTApplication*>(qApp))->themeDir()
-
-#define KTOON_DATA_DIR (static_cast<KTApplication*>(qApp))->dataDir()
-
-// TODO: Permitir configuracion de esto
-#define KTOON_TEMP_DIR QDir::tempPath()
+#include "ktglobal.h"
 
 #endif

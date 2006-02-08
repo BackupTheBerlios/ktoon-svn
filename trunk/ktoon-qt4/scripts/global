@@ -48,10 +48,16 @@ function qpelec ()
 
 function detectQtVersion()
 {
-	QT_VERSION=`$QMAKE -query QT_VERSION | grep -o "^\\w"`
-	if [ "$QT_VERSION" != "4" ]
+	COUNT=0
+	for version in `$QMAKE -query QT_VERSION | grep -o "\\w"`
+	do
+		VERSION[$COUNT]=$version
+		COUNT=${COUNT+1}
+	done
+
+	if [ "${VERSION[0]}" != "4" -a ${VERSION[1]} -lt 1 ]
 	then
-		qperror "Please install Qt4 or set QTDIR to Qt4 installation path"
+		qperror "Please install Qt >= 4.1 or set QTDIR to Qt4 installation path"
 		exit -1
 	else
 		qpinfo "Using Qt: `$QMAKE -query QT_VERSION `"

@@ -64,6 +64,7 @@ void KTMainWindow::setupMenu()
 	m_editMenu->addSeparator();
 	m_editMenu->addAction(m_actionManager->find("select all"));
 	m_editMenu -> addSeparator();
+	m_editMenu->addAction(m_actionManager->find("wizard"));
 	m_editMenu->addAction(m_actionManager->find("preferences"));
 	
 	// Setup the view menu
@@ -292,6 +293,9 @@ void KTMainWindow::setupEditActions()
 	
 	KTAction * selectAll = new KTAction( tr(  "&Select All" ),  tr("Ctrl+A"), this, SLOT(slotSelectAll()), m_actionManager, "select all");
 	selectAll->setStatusTip(tr("Selects all objects in the document"));
+	
+	KTAction *wizard = new KTAction( tr( "Launch configuration wizard..." ), QKeySequence(), qobject_cast<KTApplication*>(qApp), SLOT(firstRun()), m_actionManager, "wizard");
+	wizard->setStatusTip(tr("Launch first configuration wizard"));
 	
 	KTAction * preferences = new KTAction( tr( "Pr&eferences..." ), QKeySequence(), this, SLOT( preferences()), m_actionManager, "preferences");
 	preferences->setStatusTip(tr("Opens the preferences dialog box"));

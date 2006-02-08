@@ -60,7 +60,8 @@ HEADERS += ktapplication.h \
            kttip.h \
            ktguiitem.h \
            ktfontchooser.h \
-           ktformfactory.h 
+           ktformfactory.h \
+           ktglobal.h 
 SOURCES += ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
