@@ -61,7 +61,12 @@ HEADERS += ktapplication.h \
            ktguiitem.h \
            ktfontchooser.h \
            ktformfactory.h \
-           ktglobal.h 
+           ktglobal.h \
+           aspelliface.h \
+           ispelliface.h \
+           speller.h \
+           spellhighlighter.h \
+           spellinterface.h 
 SOURCES += ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
@@ -114,7 +119,11 @@ SOURCES += ktapplication.cpp \
            kttip.cpp \
            ktguiitem.cpp \
            ktfontchooser.cpp \
-           ktformfactory.cpp 
+           ktformfactory.cpp \
+           aspelliface.cpp \
+           ispelliface.cpp \
+           speller.cpp \
+           spellhighlighter.cpp 
 QT += xml
 KDEV_QTVER = 4
 MOC_DIR = .moc
@@ -125,3 +134,8 @@ CONFIG += release \
 warn_on \
 dll
 TEMPLATE = lib
+
+!include(../../ktconfig.pri) {
+error("Run configure script first")
+}
+

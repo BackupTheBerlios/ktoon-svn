@@ -235,6 +235,9 @@ QString KTApplication::themeDir() const
 	return m_THEME_DIR;
 }
 
+/**
+ * @todo Simplify this
+ */
 QString KTApplication::dataDir() const
 {
 	QString locale = QString(QLocale::system().name()).left(2);
