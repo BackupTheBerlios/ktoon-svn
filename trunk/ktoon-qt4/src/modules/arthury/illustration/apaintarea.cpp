@@ -830,6 +830,6 @@ void APaintArea::setZoomFactor( float f )
 	
 	m_paintDevice->resize(w, h );
 	m_currentFrame->scale(m_zoomFactor, m_zoomFactor);
-	m_paintDevice->update();
-// 	redrawAll();
+// 	m_paintDevice->update();
+	redrawAll();
 }

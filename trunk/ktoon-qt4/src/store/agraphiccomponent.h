@@ -31,6 +31,7 @@
 #include <QDomElement>
 #include <QDomDocument>
 
+#include <QPointF>
 #include "ktserializableobject.h"
 
 #include "agraphic.h"
@@ -185,7 +186,8 @@ class AGraphicComponent : public KTSerializableObject
 		QString m_name;
 		Graphics m_graphics;
 		QPolygonF m_controlPoints;
-		
+		QPointF m_scale, m_shear;
+		int m_angle;
 	private: // AUX FUNCTIONS
 		void appendChilds(AGraphicComponent *component, QList<AGraphicComponent *> &childs) const;
 		

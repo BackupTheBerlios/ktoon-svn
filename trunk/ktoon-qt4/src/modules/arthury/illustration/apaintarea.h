@@ -83,7 +83,7 @@ class APaintArea : public QWidget
 		
 		void setPreviousFrames(int n);
 		void setNextFrames(int n);
-		void removeSelectsGraphics();
+
 		
 	private:
 		RenderType m_renderType;
@@ -132,6 +132,7 @@ class APaintArea : public QWidget
 		void cut();
 		void group();
 		void ungroup();
+		void removeSelectsGraphics();
 		void setZoomFactor( float f);
 		// </FIXME>
 	protected:

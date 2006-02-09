@@ -162,7 +162,9 @@ void KTKeyFrame::removeSelections()
 {
 	foreach(AGraphicComponent *comp, m_selectedComponents)
 	{
-// 		m_components.removeAll (comp); // FIXME: the memory is freed?
+		deSelectedComponent(comp);
+ 		m_components.removeAll (comp);
+		delete comp;
 	}
 }
 

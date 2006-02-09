@@ -21,12 +21,12 @@
 #include "agraphiccomponent.h"
 #include "ktdebug.h"
 
-AGraphicComponent::AGraphicComponent() : KTSerializableObject()
+AGraphicComponent::AGraphicComponent() : KTSerializableObject(), m_scale(0,0), m_shear(0,0), m_angle(0)
 {
 	
 }
 
-AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : KTSerializableObject(toCopy.parent()), m_name(toCopy.m_name)
+AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : KTSerializableObject(toCopy.parent()), m_name(toCopy.m_name), m_scale( toCopy.m_scale)
 {
 	foreach(AGraphic *graphic, toCopy.m_graphics)
 	{
@@ -119,12 +119,6 @@ bool AGraphicComponent::intersects(const QRectF &rect)
 {
 	if ( isValid() )
 	{
-// 		QRectF r = m_graphics[0].path.boundingRect();
-// 		
-// 		for(int i = 1; i < m_graphics.count(); i++ )
-// 		{
-// 			r = r | m_graphics[i].path.boundingRect();
-// 		}
 		QRectF r = boundingRect();
 		return r.intersects(rect);
 	}
@@ -133,43 +127,37 @@ bool AGraphicComponent::intersects(const QRectF &rect)
 }
 
 
-void AGraphicComponent::scale(double sX, double sY) //FIXME
+void AGraphicComponent::scale(double sX, double sY)
 {
-	
+	QPointF delta( sX-m_scale.x(), sY-m_scale.y());
 	if ( sX > 0 && sY > 0 )
 	{
 		QPointF pos = position();
 		QMatrix mId(1,0,0,1, 0, 0);
-		mId = mId.scale(sX, sY);
+		mId = mId.scale( 1+delta.x(),  1+delta.y());
 		mapTo(mId);
-		if(!m_controlPoints.isEmpty())
-		{
-			m_controlPoints = mId.map(m_controlPoints);
-		}
+		
+		m_scale.setX(sX);
+		m_scale.setY(sY);
+		
+		translate( pos.x(), pos.y());
 	}
-
 }
 
-void AGraphicComponent::shear(double sX, double sY)//FIXME
+void AGraphicComponent::shear(double sX, double sY)
 {
-	
+	QPointF delta( sX-m_shear.x(), sY-m_shear.y());
 	QPointF pos = position();
 	
 	
 	QMatrix mId(1,0,0,1, 0, 0);
-	mId.shear(sX  , sY );
+	mId.shear(delta.x()  , delta.y() );
 	mapTo(mId);
-// 	foreach(AGraphic *graphic, m_graphics)
-// 	{
-// 		graphic->path = mId.map(graphic->path);
-// 	}
-// 	if(m_childs.count() > 0)
-// 	{
-// 		foreach(AGraphicComponent *child, m_childs)
-// 		{
-// 			child->mapTo(mId);
-// 		}
-// 	}
+	
+	m_shear.setX(sX);
+	m_shear.setY(sY);
+	
+	
 	translate( pos.x(), pos.y());
 }
 
@@ -180,45 +168,18 @@ void AGraphicComponent::translate(double sX, double sY)
 	QMatrix mId;
 	mId.translate(sX - position.x(), sY - position.y());
 	mapTo(mId);
-	if(!m_controlPoints.isEmpty())
-	{
-		m_controlPoints = mId.map(m_controlPoints);
-	}
-// 	foreach(AGraphic *graphic, m_graphics)
-// 	{
-// 		
-// 		QPointF position = graphic->path.currentPosition();
-// 		graphic->path = mId.map(graphic->path);
-// 	}
-// 	if(m_childs.count() > 0)
-// 	{
-// 		foreach(AGraphicComponent *child, m_childs)
-// 		{
-// 			child->mapTo(mId);
-// 		}
-// 	}
 }
 
 
 
-void AGraphicComponent::rotate( double angle )//FIXME
+void AGraphicComponent::rotate( double angle )
 {
 	QPointF pos = position();
-	QMatrix mId(1,0,0,1, position().x(), position().y());
-	mId.rotate(angle);
+	QMatrix mId;
+	mId.rotate(-(m_angle-angle));
 	mapTo( mId );
-// 	foreach(AGraphic *graphic, m_graphics)
-// 	{
-// 		graphic->path = mId.map(graphic->path);
-// 	}
-// 	if(m_childs.count() > 0)
-// 	{
-// 		foreach(AGraphicComponent *child, m_childs)
-// 		{
-// 			child->mapTo(mId);
-// 		}
-// 	}
 	translate( pos.x(), pos.y());
+	m_angle = angle;
 }
 
 void AGraphicComponent::mapTo(const QMatrix& matrix)
@@ -234,6 +195,10 @@ void AGraphicComponent::mapTo(const QMatrix& matrix)
 		{
 			child->mapTo(matrix);
 		}
+	}
+	if(!m_controlPoints.isEmpty())
+	{
+		m_controlPoints = matrix.map(m_controlPoints);
 	}
 }
 
