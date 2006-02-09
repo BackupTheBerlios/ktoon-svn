@@ -158,19 +158,12 @@ KTLibraryWidget::~KTLibraryWidget()
 void KTLibraryWidget::addGraphic(const AGraphicComponent *graphic)
 {
 	KT_FUNCINFO;
+	
 	if ( m_libraryTree->currentFolder() )
 	{
 		AGraphicComponent *copy = new AGraphicComponent(*graphic);
 		
-// 		m_display->setBrush( copy->brush() );
-// 		m_display->setPen( copy->pen() );
-// 		m_display->setPath( copy->path() );
-		
-		m_display->removeGraphics();
-		foreach(AGraphic *graphic, copy->graphics())
-		{
-			m_display->addGraphic( graphic);
-		}
+		m_display->addGraphicComponent( copy);
 		
 		QTreeWidgetItem *item = new QTreeWidgetItem(m_libraryTree->currentFolder() );
 		
@@ -184,7 +177,7 @@ void KTLibraryWidget::addGraphic(const AGraphicComponent *graphic)
 		}
 		
 		m_graphics.insert(item, copy);
-		m_libraryTree->setCurrentItem (item);
+		m_libraryTree->setCurrentItem(item);
 	}
 }
 
@@ -201,16 +194,7 @@ void KTLibraryWidget::drawCurrentItem(QTreeWidgetItem *item, int)
 		AGraphicComponent *gc = m_graphics[item];
 		if ( gc )
 		{
-			m_display->removeGraphics();
-			foreach(AGraphic *graphic , gc->graphics())
-			{
-				m_display->addGraphic( graphic);
-			}
-			
-			m_display->adjustPaths();
-// 			m_display->setBrush(gc->brush());
-// 			m_display->setPen(gc->pen());
-// 			m_display->setPath( gc->path() );
+			m_display->addGraphicComponent( gc);
 		}
 		else
 		{
@@ -256,7 +240,7 @@ void KTLibraryWidget::removeCurrentGraphic()
 		{
 			delete item;
 			m_libraryTree->setCurrentItem(m_libraryTree->currentFolder());
-			m_display->removeGraphics();
+			m_display->removeGraphic();
 		}
 	}
 	else

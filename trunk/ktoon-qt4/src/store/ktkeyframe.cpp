@@ -163,7 +163,7 @@ void KTKeyFrame::removeSelections()
 	foreach(AGraphicComponent *comp, m_selectedComponents)
 	{
 		deSelectedComponent(comp);
- 		m_components.removeAll (comp);
+		m_components.removeAll(comp);
 		delete comp;
 	}
 }

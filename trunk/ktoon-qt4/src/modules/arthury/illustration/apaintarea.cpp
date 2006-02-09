@@ -775,8 +775,7 @@ void APaintArea::cut()
 
 void APaintArea::group()
 {
-	
-	ktDebug() << "void APaintArea::group()" ;
+	KT_FUNCINFO;
 	if(m_currentFrame->selectedComponents().count() > 1)
 	{
 		AGraphicComponent *newComponent = new AGraphicComponent();
@@ -784,7 +783,7 @@ void APaintArea::group()
 		foreach(AGraphicComponent *component, m_currentFrame->selectedComponents())
 		{
 // 			AGraphicComponent *child = new AGraphicComponent(*component);
-			newComponent->addChild( component);
+			newComponent->addChild( new AGraphicComponent(*component) );
 		}
 		
 		m_currentFrame->removeSelections();

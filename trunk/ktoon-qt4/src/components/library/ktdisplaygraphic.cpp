@@ -27,7 +27,7 @@
 
 #include "ktpathadjuster.h"
 
-KTDisplayGraphic::KTDisplayGraphic(QWidget *parent) : QFrame(parent)
+KTDisplayGraphic::KTDisplayGraphic(QWidget *parent) : QFrame(parent), m_drawGraphic(false), m_graphic(0)
 {
 	m_displayArea = QImage(100, 100, QImage::Format_RGB32);
 	m_displayArea.fill(qRgb(255, 255, 255));
@@ -43,7 +43,7 @@ KTDisplayGraphic::KTDisplayGraphic(QWidget *parent) : QFrame(parent)
 
 KTDisplayGraphic::~KTDisplayGraphic()
 {
-	qDeleteAll(m_graphics.begin(), m_graphics.end());
+	if(m_graphic) delete m_graphic; 
 }
 
 QSize KTDisplayGraphic::sizeHint() const
@@ -62,20 +62,10 @@ void KTDisplayGraphic::paintEvent ( QPaintEvent *e )
 	painter.begin(&m_displayArea);
 	painter.setRenderHint(QPainter::Antialiasing);
 	
-	
-	foreach(const AGraphic *graphic, m_graphics)
+	if ( m_drawGraphic )
 	{
-		painter.setPen(graphic->pen);
-		
-		QBrush brush = graphic->brush;
-		if ( graphic->brush.gradient() )
-		{
-			brush = QBrush(KTGradientAdjuster::adjustGradient(graphic->brush.gradient(), m_displayArea.rect()));
-		}
-		
-		painter.setBrush(brush);
-		
-		painter.drawPath(graphic->path);
+		// AQUI SE DIBUJA EL COMPONENTE
+		drawComponent(m_graphic, &painter);
 	}
 	
 	painter.end();
@@ -89,40 +79,45 @@ void KTDisplayGraphic::paintEvent ( QPaintEvent *e )
 	painter.drawRect(m_displayArea.rect());
 }
 
-void KTDisplayGraphic::addGraphic(const AGraphic *graphic)
+void KTDisplayGraphic::addGraphicComponent(const AGraphicComponent *component)
 {
-	AGraphic *newGraphic = new AGraphic(*graphic);
+	AGraphicComponent *newGraphic = new AGraphicComponent(*component);
+	newGraphic->adjustToRect(rect(), 10);
+	// AJUSTAR AL RECT
+	m_graphic = newGraphic;
 	
-	m_graphics << newGraphic;
-}
-
-void KTDisplayGraphic::adjustPaths()
-{
-// 	newGraphic->path = KTPathAdjuster::toRect( graphic->path, m_displayArea.rect(), 10);
-	
-	QList<QPainterPath> paths;
-	foreach(AGraphic *graphic, m_graphics)
-	{
-		paths << graphic->path;
-	}
-	
-	paths = KTPathAdjuster::toRect( paths, m_displayArea.rect(), 10);
-	
-	for(int i = 0; i < paths.count(); i++)
-	{
-		m_graphics[i]->path = paths[i];
-	}
+	m_drawGraphic = true;
 	
 	update();
 }
 
-void KTDisplayGraphic::removeGraphics()
+
+
+void KTDisplayGraphic::removeGraphic()
 {
-	while(m_graphics.count() != 0 )
-	{
-		delete m_graphics.takeFirst();
-	}
+	m_drawGraphic = false;
+	update();
 }
 
 
 
+void KTDisplayGraphic::drawComponent(AGraphicComponent *component, QPainter * painter)
+{
+	
+	foreach(AGraphic * graphic, component->graphics())
+	{
+		painter->save();
+		painter->setPen(graphic->pen);
+		painter->setBrush(graphic->brush);
+		painter->drawPath(graphic->path);
+		painter->restore();
+	}
+	
+	if(component->hasChilds())
+	{
+		foreach(AGraphicComponent * child, component->childs())
+		{
+			drawComponent(child, painter);
+		}
+	}
+}

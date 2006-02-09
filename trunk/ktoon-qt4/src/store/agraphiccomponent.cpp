@@ -21,12 +21,14 @@
 #include "agraphiccomponent.h"
 #include "ktdebug.h"
 
+#include <cmath> // fabs
+
 AGraphicComponent::AGraphicComponent() : KTSerializableObject(), m_scale(0,0), m_shear(0,0), m_angle(0)
 {
 	
 }
 
-AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : KTSerializableObject(toCopy.parent()), m_name(toCopy.m_name), m_scale( toCopy.m_scale)
+AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : KTSerializableObject(toCopy.parent()), m_name(toCopy.m_name), m_scale( toCopy.m_scale), m_shear(toCopy.m_shear), m_angle(toCopy.m_angle)
 {
 	foreach(AGraphic *graphic, toCopy.m_graphics)
 	{
@@ -57,7 +59,6 @@ QRectF AGraphicComponent::boundingRect() const
 	{
 		r = r | graphic->path.boundingRect();
 	}
-// 	SHOW_VAR(m_childs.count());
 	if(m_childs.count() > 0)
 	{
 		foreach(AGraphicComponent *child, m_childs)
@@ -170,8 +171,6 @@ void AGraphicComponent::translate(double sX, double sY)
 	mapTo(mId);
 }
 
-
-
 void AGraphicComponent::rotate( double angle )
 {
 	QPointF pos = position();
@@ -179,7 +178,35 @@ void AGraphicComponent::rotate( double angle )
 	mId.rotate(-(m_angle-angle));
 	mapTo( mId );
 	translate( pos.x(), pos.y());
-	m_angle = angle;
+	m_angle = (int)angle;
+}
+
+void AGraphicComponent::adjustToRect(QRect rect, float offset)
+{
+	QRectF br = boundingRect();
+	QMatrix matrix;
+	
+	float sx = 1, sy = 1;
+	if ( rect.width() < br.width() )
+	{
+		sx = static_cast<float>(rect.width()-offset) / static_cast<float>(br.width());
+	}
+	if ( rect.height() < br.height() )
+	{
+		sy = static_cast<float>(rect.height()-offset) / static_cast<float>(br.height());
+	}
+	
+	float factor = qMin(sx, sy);
+	matrix.scale(factor, factor);
+	mapTo(matrix);
+	matrix.reset();
+	
+	QPointF pos = boundingRect().topLeft();
+	
+	float tx = offset/2-pos.x(), ty = offset/2-pos.y();
+	
+	matrix.translate(tx, ty);
+	mapTo(matrix);
 }
 
 void AGraphicComponent::mapTo(const QMatrix& matrix)
@@ -349,7 +376,6 @@ QList<AGraphicComponent*> AGraphicComponent::allChilds() const
 	QList<AGraphicComponent*> m_allChilds;
 	foreach(AGraphicComponent *component, m_childs)
 	{
-		
 		m_allChilds << component;
 		if ( component->hasChilds() )
 		{
@@ -361,7 +387,7 @@ QList<AGraphicComponent*> AGraphicComponent::allChilds() const
 }
 
 void AGraphicComponent::appendChilds(AGraphicComponent *component, QList<AGraphicComponent *> &childs) const
-{	
+{
 	foreach(AGraphicComponent *child, component->childs())
 	{
 		childs << child;

@@ -263,19 +263,10 @@ void KTMainWindow::addCurrentGraphicToLibrary()
 		{
 			AGraphicComponent *form = new AGraphicComponent();
 			
-// 			QPainterPath path;
 			foreach( AGraphicComponent * selected,  selecteds )
 			{
-// 				path.addPath(selected->path());
-				
-				foreach(AGraphic *graphic, selected->graphics())
-				{
-					form->addGraphic( graphic->path, graphic->pen, graphic->brush );
-				}
+				form->addChild( new AGraphicComponent(*selected));
 			}
-// 			form->setBrush( selecteds[0]->brush());
-// 			form->setPen( selecteds[0]->pen());
-// 			form->setPath( path);
 			
 			m_libraryWidget->addGraphic(form);
 		}

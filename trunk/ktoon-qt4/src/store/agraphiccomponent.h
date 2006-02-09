@@ -124,6 +124,11 @@ class AGraphicComponent : public KTSerializableObject
 		void rotate( double angle );
 		
 		/**
+		 * adjust the component to rect 
+		 */
+		void adjustToRect(QRect rect, float offset);
+		
+		/**
 		 * map the component to matrix
 		 */
 		void mapTo(const QMatrix& matrix);
@@ -178,6 +183,8 @@ class AGraphicComponent : public KTSerializableObject
 		 * Remove the control points
 		 */
 		void removeControlPoints();
+		
+		
 		
 	private:
 		QDomElement brushToElement(const QBrush &brush, QDomDocument &doc);
