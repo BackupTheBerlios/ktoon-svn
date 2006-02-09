@@ -17,16 +17,32 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "ktgceditor.h"
 #include <QVBoxLayout>
+#include <QHeaderView>
+
+#include "ktdebug.h"
 
 KTGCEditor::KTGCEditor(QWidget *parent) : KTModuleWidgetBase(parent)
 {
+	KTINIT;
 	setCaption( tr("Graphic Component Editor") );
-
+	
+	QHBoxLayout *mainLayout = new QHBoxLayout;
+	
+	m_componentTree = new KTTreeListWidget;
+	m_componentTree->header()->show();
+	m_componentTree->setHeaderLabels(QStringList() << "Graphic Components");
+	
+	mainLayout->addWidget(m_componentTree);
+	
+	QVBoxLayout *leftLayout = new QVBoxLayout;
+	
 	m_angle = new KTEditSpinBox(0, 0, 360, 1, tr("Rotate"));
 	connect(m_angle, SIGNAL(valueChanged(int)), this, SIGNAL(requestRotate(int)));
-	addChild(m_angle, Qt::AlignTop);
+	
+	leftLayout->addWidget(m_angle);
 	
 	QHBoxLayout *propLayout = new QHBoxLayout;
 	
@@ -52,12 +68,30 @@ KTGCEditor::KTGCEditor(QWidget *parent) : KTModuleWidgetBase(parent)
 	
 	m_translate->setMaximum(1000);
 	
-	static_cast<QVBoxLayout *>(layout())->addLayout(propLayout);
+	leftLayout->addLayout(propLayout);
+	
+	mainLayout->addLayout(leftLayout);
+	
+	mainLayout->addStretch(1);
+	
+	static_cast<QVBoxLayout *>(layout())->addLayout(mainLayout);
 }
 
 
 KTGCEditor::~KTGCEditor()
 {
+	KTEND;
 }
 
-
+void KTGCEditor::addItem(const SGCItem &item)
+{
+	KT_FUNCINFO;
+	
+	QTreeWidgetItem *newItem = new QTreeWidgetItem(m_componentTree);
+	newItem->setText(0, item.name);
+	 
+	foreach(SGCItem child, item.childs)
+	{
+		addItem( child );
+	}
+}

@@ -114,7 +114,7 @@ void KTLayer::pasteFrame(const int& index, KTKeyFrame* copy)
 
 void KTLayer::moveCurrentFrame( bool up)
 {
-	if(currentFrame())
+	if(m_currentFrame)
 	{
 		if(up )
 		{

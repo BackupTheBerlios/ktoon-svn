@@ -390,8 +390,8 @@ void APaintArea::aUpdate(const QRectF &rect)
 		painter.drawImage(m_overBufferRect, m_overBuffer);
 		
 		
-// 		update(m_overBufferRect);
-		QTimer::singleShot(0, this, SLOT(update())); // FIXME: calculate the rect
+		update(m_overBufferRect);
+// 		QTimer::singleShot(0, this, SLOT(update())); // FIXME: calculate the rect
 	}
 	
 	switch(m_renderType)
@@ -727,16 +727,6 @@ void APaintArea::removeSelectsGraphics()
 AGraphicComponent *APaintArea::currentGraphic()
 {
 	return m_currentGraphic;
-}
-
-QList<AGraphicComponent *> APaintArea::selectedGraphic()
-{
-	if(m_currentFrame)
-	{
-		return m_currentFrame->selectedComponents();
-	}
-	
-	return QList<AGraphicComponent *>();
 }
 
 KTBrush *APaintArea::currentBrush()

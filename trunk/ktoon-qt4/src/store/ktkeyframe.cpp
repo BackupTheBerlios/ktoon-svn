@@ -180,3 +180,8 @@ void KTKeyFrame::selectContains (const QRect & rect)
 		}
 	}
 }
+
+bool KTKeyFrame::hasSelections() const
+{
+	return !m_selectedComponents.isEmpty();
+}

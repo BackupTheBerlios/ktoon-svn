@@ -137,10 +137,15 @@ class KTKeyFrame : public KTSerializableObject
 		 QList<AGraphicComponent *> selectedComponents();
 		 
 		 /**
-		  * Escala todos los componentes
-		  * @todo Rename this function
+		  * Escala el frame
 		  */
 		 void scale(int sX, int sY);
+		 
+		 /**
+		  * Esta funcion retorna verdadero si el frame tiene componentes seleccionados
+		  */
+		 bool hasSelections() const;
+		 
 	private:
 		QList<AGraphicComponent *> m_components;
 		QList<AGraphicComponent *> m_selectedComponents;

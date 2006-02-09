@@ -99,6 +99,9 @@ void KTLayerSequence::removeLayer(int pos)
 void KTLayerSequence::selectLayer(KTTimeLineLayer *tm)
 {
 	KT_FUNCINFO;
+	
+	SHOW_VAR(row(this->item( tm)));
+	
 	setCurrentItem(this->item( tm) );
 	setItemSelected ( this->item( tm), true);
 	
@@ -108,12 +111,18 @@ void KTLayerSequence::selectLayer(KTTimeLineLayer *tm)
 
 void KTLayerSequence::moveLayerUp()
 {
-	FUNC_NOT_IMPLEMENTED;
+	int cRow = currentRow();
+	moveItemUp( cRow );
+	
+// 	setItemSelected( itemAt(currentRow(), 0), true );
 }
 
 void KTLayerSequence::moveLayerDown()
 {
-	FUNC_NOT_IMPLEMENTED;
+	int cRow = currentRow();
+	moveItemDown( cRow);
+	
+// 	setItemSelected( itemAt(currentRow(), 0), true );
 }
 
 void KTLayerSequence::displayMenu(KTTimeLineLayer *ly, const QPoint &pos)

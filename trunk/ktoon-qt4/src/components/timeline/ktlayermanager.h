@@ -68,19 +68,7 @@ class KTLayerManager : public KTVHBox
 		void removeLayer(int pos);
 		void createNewLayer(const QString &name, bool toEnd);
 		void selectLayer(int layerPos);
-		
-	private slots:
-		/**
-		 * Toggle the layer state
-		 * @param  state
-		 */
-		void changeLayersState(int state);
-		
-		/**
-		 * Select a layer action (Insert, remove, move up, move down...)
-		 * @param action 
-		 */
-		void selectLayerAction(QAbstractButton *);
+		void moveCurrentLayer(bool up);
 		
 	signals:
 		void actionSelected(int);
@@ -100,7 +88,7 @@ class KTLayerManager : public KTVHBox
 		
 		bool m_allSelected, m_allVisible, m_allLock;
 		
-		QButtonGroup *m_layerGroup, *m_layerState;
+		QButtonGroup *m_buttonGroup;
 };
 
 #endif

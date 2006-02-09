@@ -9,7 +9,6 @@ target.path = /lib/
 include.files += *.h 
 include.path = /include/ 
 HEADERS += ktapplication.h \
-           configwizard.h \
            ktxmlparser.h \
            ktxmlreader.h \
            ktanimwidget.h \
@@ -134,8 +133,6 @@ CONFIG += release \
 warn_on \
 dll
 TEMPLATE = lib
-
 !include(../../ktconfig.pri) {
 error("Run configure script first")
 }
-

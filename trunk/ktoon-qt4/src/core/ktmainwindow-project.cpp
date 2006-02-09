@@ -70,6 +70,12 @@ void KTMainWindow::insertLayer(const QString &name, bool addedToEnd)
 	m_timeLine->insertLayer( name, addedToEnd );
 }
 
+void KTMainWindow::moveLayer(bool up)
+{
+// 	m_exposureSheet->moveLayer(up);
+	m_timeLine->moveLayer(up);
+}
+
 void KTMainWindow::removeLayer(int index)
 {
 	m_exposureSheet->removeLayer(index);
@@ -78,8 +84,6 @@ void KTMainWindow::removeLayer(int index)
 
 void KTMainWindow::setLayerVisibilityChanged(int idLayer, bool isVisible)
 {
-	// FIXME: Implements
-	FUNC_NOT_IMPLEMENTED;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )
@@ -166,6 +170,18 @@ void KTMainWindow::selectFrame(int layer, int frame)
 // 			selectFrame(layer, frame);
 		}
 	}
+	
+#if 0
+	KTKeyFrame *currentFrame = m_projectManager->currentKeyFrame();
+	foreach(AGraphicComponent *component, currentFrame->components())
+	{
+		KTGCEditor::SGCItem item;
+		item.name = component->componentName();
+		
+		
+		m_gcEditor->addItem( item);
+	}
+#endif
 }
 
 // Graphic Components
@@ -177,12 +193,21 @@ void KTMainWindow::rotateCurrentElement(int a)
 	if ( doc )
 	{
 		//FIXME: tomar todos los graficos seleccionados
-		AGraphicComponent *selected = doc->drawArea()->selectedGraphic()[0];
 		
-		if ( selected )
+		KTKeyFrame *cFrame = m_projectManager->currentKeyFrame();
+		
+		if ( cFrame )
 		{
-			selected->rotate(a);
-			doc->drawArea()->redrawAll();
+			if ( cFrame->hasSelections() )
+			{
+				AGraphicComponent *selected = cFrame->selectedComponents()[0];
+		
+				if ( selected )
+				{
+					selected->rotate(a);
+					doc->drawArea()->redrawAll();
+				}
+			}
 		}
 	}
 }
@@ -194,17 +219,19 @@ void KTMainWindow::scaleCurrentElement(double dx,double dy)
 	
 	if ( doc )
 	{
-		//FIXME: tomar todos los graficos seleccionados
-		QList<AGraphicComponent *>selecteds = doc->drawArea()->selectedGraphic();
-		if ( selecteds.count() > 0 )
+		KTKeyFrame *cFrame = m_projectManager->currentKeyFrame();
+		
+		if ( cFrame )
 		{
-			AGraphicComponent *form = new AGraphicComponent();
-			QPainterPath path;
-			foreach( AGraphicComponent * selected,  selecteds )
+			QList<AGraphicComponent *>selecteds = cFrame->selectedComponents();
+			if ( selecteds.count() > 0 )
 			{
-				selected->scale(dx, dy);
+				foreach( AGraphicComponent * selected,  selecteds )
+				{
+					selected->scale(dx, dy);
+				}
+				doc->drawArea()->redrawAll();
 			}
-			doc->drawArea()->redrawAll();
 		}
 	}
 }
@@ -216,17 +243,20 @@ void KTMainWindow::translateCurrentElement(double dx ,double dy)
 	
 	if ( doc )
 	{
-		QList<AGraphicComponent *> selecteds = doc->drawArea()->selectedGraphic();
+		KTKeyFrame *cFrame = m_projectManager->currentKeyFrame();
 		
-		if ( selecteds.count() > 0 )
+		if ( cFrame )
 		{
-			AGraphicComponent *form = new AGraphicComponent();
-			QPainterPath path;
-			foreach( AGraphicComponent * selected,  selecteds )
+			QList<AGraphicComponent *>selecteds = cFrame->selectedComponents();
+		
+			if ( selecteds.count() > 0 )
 			{
-				selected->translate(dx, dy);
+				foreach( AGraphicComponent * selected,  selecteds )
+				{
+					selected->translate(dx, dy);
+				}
+				doc->drawArea()->redrawAll();
 			}
-			doc->drawArea()->redrawAll();
 		}
 	}
 }
@@ -238,16 +268,20 @@ void KTMainWindow::shearCurrentElement(double dx,double dy)
 	
 	if ( doc )
 	{
-		QList<AGraphicComponent* > selecteds = doc->drawArea()->selectedGraphic();
-		if ( selecteds.count() > 0 )
+		KTKeyFrame *cFrame = m_projectManager->currentKeyFrame();
+		
+		if ( cFrame )
 		{
-			AGraphicComponent *form = new AGraphicComponent();
-			QPainterPath path;
-			foreach( AGraphicComponent * selected,  selecteds )
+			QList<AGraphicComponent *>selecteds = cFrame->selectedComponents();
+		
+			if ( selecteds.count() > 0 )
 			{
-				selected->shear(dx, dy);
+				foreach( AGraphicComponent * selected,  selecteds )
+				{
+					selected->shear(dx, dy);
+				}
+				doc->drawArea()->redrawAll();
 			}
-			doc->drawArea()->redrawAll();
 		}
 	}
 }
@@ -258,17 +292,22 @@ void KTMainWindow::addCurrentGraphicToLibrary()
 	
 	if ( doc )
 	{
-		QList<AGraphicComponent *> selecteds = doc->drawArea()->selectedGraphic();
-		if ( selecteds.count() > 0 )
+		KTKeyFrame *cFrame = m_projectManager->currentKeyFrame();
+		
+		if ( cFrame )
 		{
-			AGraphicComponent *form = new AGraphicComponent();
-			
-			foreach( AGraphicComponent * selected,  selecteds )
+			QList<AGraphicComponent *>selecteds = cFrame->selectedComponents();
+		
+			if ( selecteds.count() > 0 )
 			{
-				form->addChild( new AGraphicComponent(*selected));
+				AGraphicComponent *form = new AGraphicComponent();
+				foreach( AGraphicComponent * selected,  selecteds )
+				{
+					form->addChild( new AGraphicComponent(*selected));
+				}
+				
+				m_libraryWidget->addGraphic(form);
 			}
-			
-			m_libraryWidget->addGraphic(form);
 		}
 	}
 }

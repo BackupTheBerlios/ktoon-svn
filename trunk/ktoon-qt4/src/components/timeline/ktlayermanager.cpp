@@ -34,7 +34,9 @@ KTLayerManager::KTLayerManager(QWidget *parent) : KTVHBox(parent), m_currentTime
 {
 	KTINIT;
 	
-	m_layerState = new QButtonGroup(this);
+	m_buttonGroup = new QButtonGroup(this);
+	
+	connect(m_buttonGroup, SIGNAL(buttonClicked (int)), this, SIGNAL(actionSelected(int)));
 	
 	setMinimumHeight(80);
 	layout()->setAlignment(Qt::AlignTop);
@@ -53,16 +55,16 @@ KTLayerManager::KTLayerManager(QWidget *parent) : KTVHBox(parent), m_currentTime
 
 	m_eyeButton = new KTImageButton( QPixmap(KTOON_THEME_DIR+"/icons/show_hide_all_layers.png"), 20,  m_utilsInTop );
 	
-	m_layerState->addButton(m_eyeButton);
+	m_buttonGroup->addButton(m_eyeButton, ToggleLayerView);
 	m_eyeButton->setToolTip(tr( "Show / Hide all Layers" ) );
 	
 	m_lockButton = new KTImageButton( QPixmap(KTOON_THEME_DIR+"/icons/kilit_pic.png"),  20, m_utilsInTop );
-	m_layerState->addButton(m_lockButton);
+	m_buttonGroup->addButton(m_lockButton, LockLayers);
 	
 	m_lockButton->setToolTip(tr( "Lock all Layers" ) );
 
 	m_outlineButton = new KTImageButton( QPixmap(KTOON_THEME_DIR+"/icons/outline_pic.png"), 20, m_utilsInTop );
-	m_layerState->addButton(m_outlineButton);
+	m_buttonGroup->addButton(m_outlineButton,ShowOutlines);
 
 	m_outlineButton->setToolTip(tr( "Show only outlines" ) );
 	
@@ -77,10 +79,7 @@ KTLayerManager::KTLayerManager(QWidget *parent) : KTVHBox(parent), m_currentTime
 	m_sequence = new KTLayerSequence(this);
 	
 	//------------------------------------------------------
-	
-	m_layerGroup = new QButtonGroup(this);
-	connect(m_layerGroup, SIGNAL(buttonClicked ( QAbstractButton *)), this, SLOT(selectLayerAction( QAbstractButton *)));
-	
+
 	m_utilsInBottom = new KTVHBox( this, false );
 	m_utilsInBottom->setMaximumHeight(16);
 	m_utilsInBottom->setMinimumHeight(16);
@@ -93,22 +92,22 @@ KTLayerManager::KTLayerManager(QWidget *parent) : KTVHBox(parent), m_currentTime
 	m_utilsInBottom->layout()->setAlignment(Qt::AlignLeft | Qt::AlignCenter);
 
 	m_insertButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/add_layer.png") , 20,  m_utilsInBottom );
-	m_layerGroup->addButton(m_insertButton);
+	m_buttonGroup->addButton(m_insertButton, InsertLayer);
 
 	m_insertButton->setToolTip(tr( "Insert Layer" ) );
 
 	m_removeButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/remove_layer.png"),  20, m_utilsInBottom );
-	m_layerGroup->addButton(m_removeButton);
+	m_buttonGroup->addButton(m_removeButton, RemoveLayer);
 	
 	m_removeButton->setToolTip(tr( "Remove Layer" ) );
 
 	m_moveUpButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/arrowup.png"),  20, m_utilsInBottom );
-	m_layerGroup->addButton(m_moveUpButton);
+	m_buttonGroup->addButton(m_moveUpButton,MoveLayerUp);
 
 	m_moveUpButton->setToolTip(tr( "Move Layer Up" ) );
 
 	m_moveDownButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/arrowdown.png"), 20,  m_utilsInBottom );
-	m_layerGroup->addButton(m_moveDownButton);
+	m_buttonGroup->addButton(m_moveDownButton,MoveLayerDown);
 
 	m_moveDownButton->setToolTip(tr( "Move Layer Down" ) );
 	
@@ -136,109 +135,6 @@ QScrollBar *KTLayerManager::verticalScrollBar()
 	return m_sequence->verticalScrollBar();
 }
 
-void KTLayerManager::changeLayersState(int opt)
-{
-// 	KTTimeLineLayer *iterator;
-// 	ListOfTLLayers layerList = m_sequence->layers();
-// 
-// 	for ( iterator = layerList.first(); iterator; iterator = layerList.next() )
-// 	{
-// 		if ( iterator )
-// 		{
-// 			switch(opt)
-// 			{
-// 				case ShowOutlines:
-// 				{
-// 					iterator->setOnlyOutlines(!m_allSelected);
-// 				}
-// 				break;
-// 				case LockLayers:
-// 				{
-// 					iterator->setLock(m_allLock);
-// 				}
-// 				break;
-// 				case ToggleLayerView:
-// 				{
-// 					iterator->setView(m_allVisible);
-// 				}
-// 				break;
-// 				default:
-// 				{
-// 					ktDebug() << "Invalid action" << endl;
-// 				}
-// 				break;
-// 			}
-// 		}
-// 		else
-// 		{
-// 			ktError() << "Invalid layer" << endl;
-// 		}
-// 	}
-// 	
-// 	// Toggle states
-// 	switch(opt)
-// 	{
-// 		case ShowOutlines:
-// 		{
-// 			m_allSelected = !m_allSelected;
-// 		}
-// 		break;
-// 		case LockLayers:
-// 		{
-// 			m_allLock = !m_allLock;
-// 		}
-// 		break;
-// 		case ToggleLayerView:
-// 		{
-// 			m_allVisible = !m_allVisible;
-// 		}
-// 		break;
-// 	}
-}
-
-void KTLayerManager::selectLayerAction(QAbstractButton *but)
-{
-	if ( but )
-	{
-		if ( but == m_insertButton )
-		{
-			emit actionSelected(InsertLayer);
-		}
-		else if ( but == m_removeButton)
-		{
-			emit actionSelected(RemoveLayer);
-		}
-		else if ( but == m_removeButton)
-		{
-		}
-		else if ( but == m_moveUpButton)
-		{
-		}
-		else if ( but == m_moveDownButton)
-		{
-		}
-		else if ( but == m_lockButton)
-		{
-		}
-		else if ( but == m_eyeButton)
-		{
-		}
-		else if ( but == m_outlineButton)
-		{
-		}
-		
-// 			case MoveLayerUp:
-// 			{
-// 	// 			m_sequence->moveLayerUp();
-// 			}
-// 			break;
-// 			case MoveLayerDown:
-// 			{
-// 	// 			m_sequence->moveLayerDown();
-// 			}
-	}
-}
-
 KTLayerSequence const *KTLayerManager::layerSequence()
 {
 	return m_sequence;
@@ -261,7 +157,22 @@ void KTLayerManager::createNewLayer(const QString &name, bool toEnd)
 
 void KTLayerManager::selectLayer(int layerPos)
 {
-	SHOW_VAR(layerPos);
+// 	SHOW_VAR(layerPos);
+	
+	m_sequence->selectionModel()->clear();
 	m_sequence->setCurrentCell(layerPos, 0);
+	m_sequence->selectRow(layerPos);
+}
+
+void KTLayerManager::moveCurrentLayer(bool up)
+{
+	if ( up)
+	{
+		m_sequence->moveLayerUp();
+	}
+	else
+	{
+		m_sequence->moveLayerDown();
+	}
 }
 

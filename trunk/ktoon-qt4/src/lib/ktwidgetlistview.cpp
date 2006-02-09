@@ -62,9 +62,7 @@ QTableWidgetItem *KTWidgetListView::insertWidget(int pos, QWidget *widget)
 	insertRow(pos);
 	setItem( pos, 0, newItem);
 	
-	#if QT_VERSION >= 0x040100
 	setIndexWidget(indexFromItem(newItem), widget);
-	#endif
 	verticalHeader()->resizeSection(pos, widget->height());
 	
 	m_items.insert(widget, newItem);
@@ -89,4 +87,22 @@ void KTWidgetListView::resizeEvent(QResizeEvent *e)
 }
 
 
+void KTWidgetListView::moveItemUp(int index)
+{
+	if ( index > 0 )
+	{
+		verticalHeader()->moveSection(index, index-1);
+		setCurrentCell(index-1, 0);
+// 		selectRow(index/*-1*/);
+	}
+}
 
+void KTWidgetListView::moveItemDown(int index)
+{
+	if ( index < rowCount() )
+	{
+		verticalHeader()->moveSection(index, index+1);
+		setCurrentCell(index+1, 0);
+// 		selectRow(index/*+1*/);
+	}
+}

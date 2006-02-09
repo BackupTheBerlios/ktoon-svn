@@ -226,3 +226,24 @@ void KTScene::loadComponent(AGraphicComponent *component)
 		m_currentLayer->currentFrame()->addComponent( component );
 	}
 }
+
+void KTScene::moveCurrentLayer(bool up)
+{
+	if(m_currentLayer)
+	{
+		if(up )
+		{
+			if(m_layers.indexOf(m_currentLayer) > 0)
+			{
+				m_layers.swap ( m_layers.indexOf(m_currentLayer), m_layers.indexOf(m_currentLayer)-1);
+				emit layerMoved(up);
+			}
+		}
+		else if(m_layers.indexOf(m_currentLayer) < m_layers.count()-1)
+		{
+			m_layers.swap ( m_layers.indexOf(m_currentLayer), m_layers.indexOf(m_currentLayer)+1);
+			emit layerMoved(up);
+		}
+	}
+}
+

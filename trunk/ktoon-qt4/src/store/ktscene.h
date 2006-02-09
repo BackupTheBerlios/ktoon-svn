@@ -117,6 +117,11 @@ class KTScene : public KTSerializableObject
 		 */
 		void load(const QString &path);
 		
+		/**
+		 * Mueve el current layer, si up es verdadero lo mueve hacia arriba
+		 */
+		void moveCurrentLayer(bool up);
+		
 	private slots:
 		/**
 		 * Carga un layer
@@ -148,6 +153,11 @@ class KTScene : public KTSerializableObject
 		 * Este signal se emite cuando se selecciona un layer
 		 */
 		void layerSelected(int index);
+		
+		/**
+		 * Este signal se emite cuando el layer ha sido movido, si up es verdadero el layer se movio hacia arriba
+		 */
+		void layerMoved(bool up);
 		
 		
 	private:

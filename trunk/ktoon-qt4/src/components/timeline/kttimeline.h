@@ -55,7 +55,6 @@ class KTTimeLine : public KTModuleWidgetBase
 	public slots:
 		void execAction(int action);
 		
-		
 		void insertLayer(const QString &name, bool toEnd = true);
 		
 		void addScene(const QString &name);
@@ -69,6 +68,9 @@ class KTTimeLine : public KTModuleWidgetBase
 		void setCurrentCell(int layer, int frame);
 		void selectCurrentLayer(int index);
 		void setLayer(int index);
+		
+		void moveLayer(bool up);
+		
 	private slots:
 		void emitFrameSelected(int layer, int frame);
 		
@@ -84,6 +86,7 @@ class KTTimeLine : public KTModuleWidgetBase
 		void requestRemoveFrame();
 		void requestLockFrame();
 		void requestRemoveLayer();
+		void requestMoveLayer(bool up);
 		
 		void requestChangeFPS(int);
 		

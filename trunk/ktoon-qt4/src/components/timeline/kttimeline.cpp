@@ -127,8 +127,8 @@ void KTTimeLine::lockCurrentFrame()
 void KTTimeLine::setCurrentCell(int layer, int frame)
 {
 	KT_FUNCINFO;
-	SHOW_VAR(layer);
-	SHOW_VAR(frame);
+// 	SHOW_VAR(layer);
+// 	SHOW_VAR(frame);
 	currentLayerManager()->selectLayer( layer );
 	currentFrameContainer()->selectCell(layer, frame);
 }
@@ -198,7 +198,6 @@ KTTimeLine::~KTTimeLine()
 void KTTimeLine::execAction(int action)
 {
 	KT_FUNCINFO;
-	SHOW_VAR(action);
 	switch(action)
 	{
 		case KTLayerManager::InsertLayer:
@@ -209,6 +208,16 @@ void KTTimeLine::execAction(int action)
 		case KTLayerManager::RemoveLayer:
 		{
 			emit requestRemoveLayer();
+		}
+		break;
+		case KTLayerManager::MoveLayerUp:
+		{
+			emit requestMoveLayer( true );
+		}
+		break;
+		case KTLayerManager::MoveLayerDown:
+		{
+			emit requestMoveLayer( false);
 		}
 		break;
 		
@@ -251,6 +260,12 @@ void KTTimeLine::setLayer(int index)
 	currentLayerManager()->selectLayer( index );
 	
 	m_editLayer->setText(QString::number(index));
+}
+
+void KTTimeLine::moveLayer(bool up)
+{
+	currentLayerManager()->moveCurrentLayer(up);
+	// TODO: move in frame container
 }
 
 void KTTimeLine::selectCurrentLayer(int pos)

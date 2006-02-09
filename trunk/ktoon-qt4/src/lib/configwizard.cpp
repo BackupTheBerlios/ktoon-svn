@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "configwizard.h"
+#include "ktapplication.h"
 #include <QLabel>
 #include <QLayout>
 #include <QHBoxLayout>
@@ -29,8 +29,6 @@
 
 #include "ktdebug.h"
 #include "kimageeffect.h"
-
-#include "ktglobal.h"
 
 ConfigWizard::ConfigWizard() : KTWizard(0)
 {

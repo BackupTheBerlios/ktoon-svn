@@ -29,6 +29,8 @@
 #include <kteditspinbox.h>
 #include "ktxyspinbox.h"
 
+#include "kttreelistwidget.h"
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
@@ -39,6 +41,16 @@ class KTGCEditor : public KTModuleWidgetBase
 		KTGCEditor(QWidget *parent = 0);
 		~KTGCEditor();
 		
+	public:
+		struct SGCItem
+		{
+			QString name;
+			QList<SGCItem> childs;
+		};
+		
+		void addItem(const SGCItem &item);
+
+		
 	signals:
 		void requestRotate(int angle);
 		void requestScale(double x, double y);
@@ -46,6 +58,8 @@ class KTGCEditor : public KTModuleWidgetBase
 		void requestShear(double x, double y);
 		
 	private:
+		KTTreeListWidget *m_componentTree;
+		
 		KTEditSpinBox *m_angle;
 		KTXYSpinBox *m_scale;
 		KTXYSpinBox *m_shear;

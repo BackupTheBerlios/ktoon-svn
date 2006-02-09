@@ -158,8 +158,10 @@ class KTMainWindow : public DMainWindow
 		//Layers
 		void insertLayer( const QString &, bool addedToEnd);
 		void setLayerVisibilityChanged(int idLayer, bool isVisible);
+		void moveLayer(bool up);
 		void removeLayer(int );
 		void selectLayer(int );
+		
 		//Frames
 		void insertFrame( const QString &name, bool addedToEnd);
 		void selectFrame(int layer, int frame);
@@ -198,6 +200,7 @@ class KTMainWindow : public DMainWindow
 		KTLibraryWidget *m_libraryWidget;
 		KTColorPalette *m_colorPalette;
 		KTBrushWidget *m_brushWidget;
+		KTGCEditor *m_gcEditor;
 };
 
 #endif

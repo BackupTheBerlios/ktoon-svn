@@ -19,7 +19,6 @@
  ***************************************************************************/
 
 #include "ktapplication.h"
-#include "configwizard.h" 
 
 #include <QDir>
 #include <QFile>

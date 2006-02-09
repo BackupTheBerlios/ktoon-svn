@@ -46,6 +46,18 @@ QDomElement KTProjectManager::createXML( QDomDocument &doc )
 	project.setAttribute("width", m_size.width());
 	project.setAttribute("height", m_size.height());
 	
+	QDomElement meta = doc.createElement("meta");
+	
+	QDomElement author = doc.createElement("author");
+	author.setAttribute("value", "Anonymous");
+	meta.appendChild(author);
+	
+	QDomElement renderType = doc.createElement("renderType");
+	renderType.setAttribute("value", m_typeRender);
+	meta.appendChild(renderType);
+	
+	project.appendChild(meta);
+	
 	Documents::ConstIterator documentIt = m_documents.begin();
 	
 	int documentCounter = 0;
@@ -285,7 +297,7 @@ void KTProjectManager::createScene(bool addToEnd)
 		connect(scene, SIGNAL(layerCreated( const QString&, bool)), this, SIGNAL(layerCreated( const QString &, bool)));
 		connect(scene, SIGNAL(layerRemoved( int)), this, SIGNAL(layerRemoved(int))) ;
 		connect(scene, SIGNAL(layerSelected( int)), this, SIGNAL(layerSelected(int))) ;
-
+		connect(scene, SIGNAL(layerMoved(bool)), this, SIGNAL(layerMoved(bool)));
 	}
 	else
 	{
@@ -348,7 +360,7 @@ void KTProjectManager::createFrame(bool addToEnd)
 	KTLayer *layer = currentLayer();
 	if ( layer )
 	{
-		KTKeyFrame *keyFrame = layer->createFrame(addToEnd);
+		KTKeyFrame *frame = layer->createFrame(addToEnd);
 	}
 	else
 	{
@@ -426,6 +438,15 @@ void KTProjectManager::removeLayer(int index)
 	if( scene )
 	{
 		scene->removeLayer(index/*scene->indexCurrentLayer()*/);
+	}
+}
+
+void KTProjectManager::moveLayer(bool up)
+{
+	KTScene *scene = currentScene();
+	if ( scene )
+	{
+		scene->moveCurrentLayer(up);
 	}
 }
 

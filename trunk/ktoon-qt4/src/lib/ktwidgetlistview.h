@@ -42,6 +42,8 @@ class KTWidgetListView : public QTableWidget
 		
 		QTableWidgetItem *item(QWidget *widget);
 		
+		void moveItemUp(int index);
+		void moveItemDown(int index);
 	protected:
 		void resizeEvent(QResizeEvent *e);
 

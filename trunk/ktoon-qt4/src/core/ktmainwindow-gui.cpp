@@ -180,7 +180,7 @@ void KTMainWindow::createGUI()
 #endif
 	/////////////////
 	
-	KTGCEditor *m_gcEditor = new KTGCEditor(this);
+	m_gcEditor = new KTGCEditor(this);
 	connect(m_gcEditor, SIGNAL(requestRotate(int)), this, SLOT(rotateCurrentElement(int)));
 	connect(m_gcEditor, SIGNAL(requestScale(double,double)), this, SLOT(scaleCurrentElement(double,double)));
 	connect(m_gcEditor, SIGNAL(requestShear(double,double)), this, SLOT(shearCurrentElement(double,double)));
@@ -189,7 +189,6 @@ void KTMainWindow::createGUI()
 	toolWindow(DDockWindow::Bottom)->addWidget(tr("GC Editor"), m_gcEditor);
 	
 	connectToDisplays(m_gcEditor);
-	
 	
 	//////////////
 	
@@ -218,6 +217,7 @@ void KTMainWindow::createGUI()
 	
 	connect(m_projectManager, SIGNAL(layerRemoved(int )), this, SLOT(removeLayer(int)));
 	connect(m_projectManager, SIGNAL(layerSelected(int )), this, SLOT(selectLayer(int)));
+	connect(m_projectManager, SIGNAL(layerMoved(bool)), this, SLOT(moveLayer(bool)));
 }
 
 void KTMainWindow::connectToDisplays(const QWidget *widget)
@@ -228,7 +228,7 @@ void KTMainWindow::connectToDisplays(const QWidget *widget)
 
 void KTMainWindow::setupFileActions()
 {
-	KTAction *newFile = new KTAction( QPixmap( KTOON_THEME_DIR+"/icons/new.png" ), tr( "New Document" ), QKeySequence(tr("Ctrl+N")), this, SLOT(newViewDocument()), m_actionManager, "NewFile");
+	KTAction *newFile = new KTAction( QPixmap( KTOON_THEME_DIR+"/icons/new.png" ), tr( "New paint area" ), QKeySequence(tr("Ctrl+N")), this, SLOT(newViewDocument()), m_actionManager, "NewFile");
 	
 // 	connect(newFile, SIGNAL(activated()), this, SLOT(newDocument()));
 	newFile->setStatusTip(tr( "Opens a new document"));

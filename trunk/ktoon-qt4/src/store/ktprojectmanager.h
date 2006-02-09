@@ -188,6 +188,13 @@ class KTProjectManager : public KTSerializableObject
 		 */
 		KTLayer *currentLayer();
 		
+		
+		/**
+		 * Mueve el layer actual, si up es verdadero lo mueve hacia arriba
+		 * @param up 
+		 */
+		void moveLayer(bool up);
+		
 		/**
 		 * Remueve el layer con un indice
 		 */
@@ -277,6 +284,12 @@ class KTProjectManager : public KTSerializableObject
 		 * Este signal se emite cuando un layer es seleccionado
 		 */
 		void layerSelected(int );
+		
+		/**
+		 * Este signal se emite cuando un layer ha sido movido, si up es verdadero el layer se movio hacia arriba
+		 * @param up 
+		 */
+		void layerMoved(bool up);
 		
 		// Frames
 		/**
