@@ -19,17 +19,36 @@
  ***************************************************************************/
 
 #include "hsmainwindow.h"
+
+// Qt
 #include <QHBoxLayout>
 #include <QtDebug>
+#include <QMenu>
+#include <QMenuBar>
+#include <QApplication>
+
+
+// libKtoon
+#include "spellhighlighter.h"
 
 HSMainWindow::HSMainWindow() : QMainWindow()
 {
 	QWidget *container = new QWidget;
 	
+	QMenu *file = menuBar()->addMenu(tr("File"));
+	file->addAction(tr("Quit"), this, SLOT(close()));
+	 
+	QMenu *help = menuBar()->addMenu(tr("Help"));
+	help->addAction(tr("About Qt..."), qApp, SLOT(aboutQt()));
+	
+	
 	QHBoxLayout *layout = new QHBoxLayout(container);
 	
 	m_source = new QTextEdit;
 	layout->addWidget( m_source );
+	
+	new SpellHighlighter(m_source->document()); // From libktoon
+	
 	m_destiny = new QTextBrowser;
 	layout->addWidget( m_destiny );
 	
@@ -48,8 +67,6 @@ void HSMainWindow::convertSource()
 {
 	QString text = Qt::escape(m_source->toPlainText());
 	text.replace( '\n', Qt::escape("<br>") );
-	
-	qDebug() << text;
 	
 	m_destiny->setPlainText( text );
 }
