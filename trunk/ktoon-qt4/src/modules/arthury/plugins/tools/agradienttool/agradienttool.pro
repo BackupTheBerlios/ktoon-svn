@@ -3,22 +3,24 @@
 # Subdir relative project main directory: ./src/modules/arthury/plugins/tools/agradienttool
 # Target is a library:  
 
-QT += xml 
 INSTALLS += target 
 target.path = /plugins/ 
-KDEV_QTVER = 4 
+HEADERS += agradienttool.h \
+           gradientconfigurator.h 
+SOURCES += agradienttool.cpp \
+           gradientconfigurator.cpp 
+QT += xml
+KDEV_QTVER = 4
 TARGETDEPS += ../../../../../../src/store/libstore.so \
-              ../../../../../../src/lib/libktoon.so 
+../../../../../../src/lib/libktoon.so
 LIBS += -lstore \
-        -lktoon 
+-lktoon
 INCLUDEPATH += ../../../../../../src/modules/arthury/interfaces \
-               ../../../../../../src/store \
-               ../../../../../../src/lib 
+../../../../../../src/store \
+../../../../../../src/lib
 QMAKE_LIBDIR = ../../../../../../src/store \
-               ../../../../../../src/lib 
+../../../../../../src/lib
 CONFIG += release \
-          warn_on \
-          plugin 
-TEMPLATE = lib 
-HEADERS += agradienttool.h 
-SOURCES += agradienttool.cpp 
+warn_on \
+plugin
+TEMPLATE = lib

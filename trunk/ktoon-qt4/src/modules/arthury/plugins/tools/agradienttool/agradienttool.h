@@ -24,6 +24,8 @@
 #include <kttoolpluginobject.h>
 #include <atoolinterface.h>
 
+#include "gradientconfigurator.h"
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
@@ -50,6 +52,8 @@ class AGradientTool : public KTToolPluginObject, public AToolInterface
 		QRect m_rect;
 		QPoint m_initialPoint;
 		KTKeyFrame *m_currentFrame;
+		
+		GradientConfigurator *m_configurator;
 };
 
 #endif

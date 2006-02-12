@@ -18,34 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef TEXTCONFIGURATOR_H
-#define TEXTCONFIGURATOR_H
+#include "gradientconfigurator.h"
+#include "ktgradientmanager.h"
 
-#include <QWidget>
-#include <QLineEdit>
+#include <QColorDialog>
 
-#include <QTextEdit>
-
-class KTFontChooser;
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-class TextConfigurator : public QWidget
+GradientConfigurator::GradientConfigurator(QWidget *parent) : QWidget(parent)
 {
-	Q_OBJECT
-	public:
-		TextConfigurator(QWidget *parent = 0);
-		~TextConfigurator();
-		QString text() const;
-		QFont textFont() const;
-		
-	private slots:
-		void changeFont();
-		
-	private:
-		QTextEdit *m_text;
-		KTFontChooser *m_fontChooser;
-};
+	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+	
+	m_gradientCreator = new KTGradientManager;
+	mainLayout->addWidget(m_gradientCreator);
+	
+	connect(m_gradientCreator, SIGNAL(controlArrowAdded()), this, SLOT(chooseColor()));
+	
+}
 
-#endif
+
+GradientConfigurator::~GradientConfigurator()
+{
+}
+
+const QGradient *GradientConfigurator::gradient() const
+{
+	return m_gradientCreator->currentGradient().gradient();
+}
+
+void GradientConfigurator::chooseColor()
+{
+	QColor color = QColorDialog::getColor();
+	
+	m_gradientCreator->setCurrentColor(color);
+}
+
+

@@ -37,7 +37,9 @@
 #include "ktxyspinbox.h"
 
 /**
-	@author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @todo:
+ * @li Rename this class to SpinControl
 */
 
 class ControlerSpins: public QGroupBox
@@ -125,6 +127,11 @@ class ControlerSpins: public QGroupBox
 		void radiusChanged(int radius);
 };
 
+/**
+ * @class KTGradientManager
+ * @todo
+ * @li Rename this class to KTGradientCreator
+ */
 class KTGradientManager : public QFrame
 {
 	Q_OBJECT
@@ -132,12 +139,15 @@ class KTGradientManager : public QFrame
 		enum KTGradientApply{None=-1, Fill, OutLine, FillAndOutLine };
 		KTGradientManager(QWidget *parent = 0);
 		~KTGradientManager();
-		void setColor(const QColor &);
+		
+		void setCurrentColor(const QColor &);
 		int gradientType();
 		void updateGradient();
 		QBrush currentGradient();
 		
 		KTGradientApply gradientApply();
+		
+		virtual QSize sizeHint () const;
 		
 		
 	private:
@@ -157,6 +167,7 @@ class KTGradientManager : public QFrame
 		
 	signals:
 		void gradientChanged(const QGradient &);
+		void controlArrowAdded();
 		
 };
 

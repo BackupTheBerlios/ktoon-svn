@@ -18,34 +18,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef TEXTCONFIGURATOR_H
-#define TEXTCONFIGURATOR_H
+#ifndef KTCONFIGURATIONAREA_H
+#define KTCONFIGURATIONAREA_H
 
-#include <QWidget>
-#include <QLineEdit>
-
-#include <QTextEdit>
-
-class KTFontChooser;
+#include <QDockWidget>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class TextConfigurator : public QWidget
+class KTConfigurationArea : public QDockWidget
 {
 	Q_OBJECT
 	public:
-		TextConfigurator(QWidget *parent = 0);
-		~TextConfigurator();
-		QString text() const;
-		QFont textFont() const;
+		KTConfigurationArea(QWidget *parent = 0);
+		~KTConfigurationArea();
 		
-	private slots:
-		void changeFont();
-		
-	private:
-		QTextEdit *m_text;
-		KTFontChooser *m_fontChooser;
+		void setConfigurator(QWidget *widget);
 };
 
 #endif

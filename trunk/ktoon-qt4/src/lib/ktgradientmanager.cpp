@@ -47,6 +47,8 @@ KTGradientManager::KTGradientManager(QWidget *parent)
 	
 	connect( m_selector, SIGNAL(gradientChanged(  const QGradientStops& )),this, SLOT(changeGradient( const QGradientStops& )));
 	
+	connect(m_selector, SIGNAL(arrowAdded()), this, SIGNAL(controlArrowAdded()));
+	
 	m_controlerSpins = new ControlerSpins(this);
 	
 	connect(m_controlerSpins, SIGNAL(angleChanged(int)), m_viewer, SLOT(changeAngle(int)));
@@ -125,10 +127,10 @@ KTGradientManager::KTGradientApply KTGradientManager::gradientApply()
 	
 }
 
-void KTGradientManager::setColor(const QColor &color)
+void KTGradientManager::setCurrentColor(const QColor &color)
 {
 	
-	m_selector->setColor(color);
+	m_selector->setCurrentColor(color);
 	if(!isVisible())
 	{
 		m_viewer->createGradient();
@@ -192,3 +194,12 @@ QBrush KTGradientManager::currentGradient()
 {
 	return QBrush(m_viewer->gradient());
 }
+
+
+QSize KTGradientManager::sizeHint () const
+{
+	QSize size = QFrame::sizeHint();
+	
+	return size.expandedTo(QApplication::globalStrut());
+}
+

@@ -163,7 +163,7 @@ void KTColorPalette::setColor(const QColor& color)
 		
 		if(m_flagGradient)
 		{
-			m_gradientManager->setColor(color);
+			m_gradientManager->setCurrentColor(color);
 			m_gradientManager->repaint();
 		}
 		

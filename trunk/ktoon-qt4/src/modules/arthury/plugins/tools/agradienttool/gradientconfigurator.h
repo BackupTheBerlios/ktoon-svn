@@ -18,34 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef TEXTCONFIGURATOR_H
-#define TEXTCONFIGURATOR_H
+#ifndef GRADIENTCONFIGURATOR_H
+#define GRADIENTCONFIGURATOR_H
 
 #include <QWidget>
-#include <QLineEdit>
 
-#include <QTextEdit>
-
-class KTFontChooser;
+class KTGradientManager;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class TextConfigurator : public QWidget
+class GradientConfigurator : public QWidget
 {
 	Q_OBJECT
 	public:
-		TextConfigurator(QWidget *parent = 0);
-		~TextConfigurator();
-		QString text() const;
-		QFont textFont() const;
+		GradientConfigurator(QWidget *parent = 0);
+		~GradientConfigurator();
+		const QGradient *gradient() const;
 		
 	private slots:
-		void changeFont();
+		void chooseColor();
 		
 	private:
-		QTextEdit *m_text;
-		KTFontChooser *m_fontChooser;
+		KTGradientManager *m_gradientCreator;
 };
 
 #endif

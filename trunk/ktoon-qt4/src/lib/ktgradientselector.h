@@ -126,13 +126,13 @@ class KTGradientSelector : public QAbstractSlider
 // 		}
 		
 		double valueToGradient(int _value) const;
-		void setColor(const QColor& color);
+
+		void setCurrentColor(const QColor& color);
 					
 	signals:
 		void newValue( int value );
 		void gradientChanged(  const QGradientStops& );
-		
-		
+		void arrowAdded();
 		
 	public slots:
 		void addArrow(QPoint position, QColor color);

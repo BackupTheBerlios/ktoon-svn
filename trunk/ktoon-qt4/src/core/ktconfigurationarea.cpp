@@ -18,34 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef TEXTCONFIGURATOR_H
-#define TEXTCONFIGURATOR_H
+#include "ktconfigurationarea.h"
 
-#include <QWidget>
-#include <QLineEdit>
+#include <QLabel>
+#include <QTextBrowser>
 
-#include <QTextEdit>
+#include "ktdebug.h"
 
-class KTFontChooser;
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-class TextConfigurator : public QWidget
+KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent)
 {
-	Q_OBJECT
-	public:
-		TextConfigurator(QWidget *parent = 0);
-		~TextConfigurator();
-		QString text() const;
-		QFont textFont() const;
-		
-	private slots:
-		void changeFont();
-		
-	private:
-		QTextEdit *m_text;
-		KTFontChooser *m_fontChooser;
-};
+	setAllowedAreas ( Qt::RightDockWidgetArea );
+}
 
-#endif
+KTConfigurationArea::~KTConfigurationArea()
+{
+}
+
+void KTConfigurationArea::setConfigurator(QWidget *w)
+{
+	QWidget *old = widget();
+	
+	if ( old == w ) return;
+	
+	if ( old )
+	{
+		old->hide();
+	}
+	
+	setWidget(w);
+}
+

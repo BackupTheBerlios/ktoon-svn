@@ -46,8 +46,17 @@ QRect ATextTool::move(const QString &brush, QPainter &painter,const QPainterPath
 
 QRect ATextTool::release(const QString &  brush ,QPainter &  painter ,const QPainterPath &/*form*/, const QPoint &  pos )
 {
+	QStringList textList = m_configurator->text().split('\n');
 	
-	m_path.addText(m_position, m_configurator->textFont(), m_configurator->text());
+	QPoint tpos = m_position;
+	
+	QFontMetrics fm(m_configurator->textFont());
+	
+	foreach(QString text, textList)
+	{
+		m_path.addText(tpos, m_configurator->textFont(), text);
+		tpos.setY(tpos.y() + fm.size(Qt::TextSingleLine, text).height() );
+	}
 	
 	painter.drawPath(m_path);
 	

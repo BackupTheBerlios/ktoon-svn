@@ -25,6 +25,7 @@
 
 AGradientTool::AGradientTool()
 {
+	m_configurator = new GradientConfigurator;
 }
 
 
@@ -41,6 +42,11 @@ QHash< QString, KTAction * > AGradientTool::actions()
 // 	action1->setShortcut( QKeySequence( tr("F") ) );
 	
 	hash.insert( tr("Random Gradient"), action1 );
+	
+	KTAction *action2 = new KTAction( QIcon(QPixmap(KTOON_THEME_DIR+"/icons/fill.png")), tr("Gradient"), this);
+// 	action1->setShortcut( QKeySequence( tr("F") ) );
+	
+	hash.insert( tr("Gradient"), action2 );
 
 	
 	return hash;
@@ -78,7 +84,13 @@ QRect AGradientTool::release(const QString& brush, QPainter& painter, const QPai
 	QPainterPath path;
 	path.addRect(m_rect);
 	
-	if ( brush == "Random Gradient" )
+	if ( brush == "Gradient" )
+	{
+		const QGradient *gradient = m_configurator->gradient();
+
+		component->addGraphic( path, Qt::NoPen, KTGradientAdjuster::adjustGradient(gradient,m_rect ));
+	}
+	else if ( brush == "Random Gradient" )
 	{
 		QLinearGradient gradient(m_initialPoint, pos);
 		gradient.setColorAt(0, KTAlgorithm::randomColor());
@@ -97,12 +109,12 @@ QRect AGradientTool::release(const QString& brush, QPainter& painter, const QPai
 
 QStringList AGradientTool::keys() const
 {
-	return QStringList() << "Random Gradient";
+	return QStringList() << "Gradient" << "Random Gradient";
 }
 
 QWidget* AGradientTool::configurator()
 {
-	return 0; // TODO: Create a gradient configurator
+	return m_configurator;
 }
 
 bool AGradientTool::isComplete() const

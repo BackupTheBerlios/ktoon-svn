@@ -42,6 +42,8 @@
 
 #include "ktactionmanager.h"
 
+#include "ktconfigurationarea.h"
+
 /**
  * @author Jorge Cuadrado
 */
@@ -98,7 +100,9 @@ class KTViewDocument : public KTMdiWindow
 	private:
 		QDir m_pluginDirectory;
 		KTActionManager *m_actionManager;
-
+		KTConfigurationArea *m_configurationArea;
+		
+		
 	private slots:
 		void showPos(const QPoint &p);	
 		void setCursor(const QCursor &c);

@@ -27,6 +27,7 @@
 #include <QMenuBar>
 #include <QPixmap>
 #include <QActionGroup>
+#include <QDockWidget>
 
 #include "ktvhbox.h"
 #include "kttoolpluginobject.h"
@@ -74,6 +75,10 @@ KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, co
 	createTools();
 	createMenu();
 	loadPlugins();
+	
+	m_configurationArea = new KTConfigurationArea;
+	
+	addDockWidget(Qt::RightDockWidgetArea, m_configurationArea);
 }
 
 KTViewDocument::~KTViewDocument()
@@ -582,8 +587,13 @@ void KTViewDocument::selectTool()
 		
 		if ( toolConfigurator )
 		{
-			workspace()->addWindow(toolConfigurator);
+			m_configurationArea->setConfigurator( toolConfigurator);
 			toolConfigurator->show();
+			
+			if ( !m_configurationArea->isVisible() )
+			{
+				m_configurationArea->show();
+			}
 		}
 		
 		m_paintAreaContainer->drawArea()->setTool(aTool, tool);

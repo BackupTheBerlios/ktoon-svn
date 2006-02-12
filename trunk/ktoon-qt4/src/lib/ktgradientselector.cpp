@@ -340,11 +340,13 @@ void KTGradientSelector::addArrow(QPoint position, QColor color)
 		m_arrows << arrow;
 		m_currentArrowIndex = m_arrows.count()-1;
 		update();
+		
+		emit arrowAdded();
 	}
 	
 }
 
-void KTGradientSelector::setColor(const QColor& color)
+void KTGradientSelector::setCurrentColor(const QColor& color)
 {
 	if ( m_arrows.count() > 0 )
 	{

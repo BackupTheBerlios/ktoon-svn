@@ -24,6 +24,8 @@
 
 #include "ktfontchooser.h"
 
+#include "spellhighlighter.h"
+
 // #include "ktdebug.h"
 
 TextConfigurator::TextConfigurator(QWidget *parent) : QWidget(parent)
@@ -34,10 +36,12 @@ TextConfigurator::TextConfigurator(QWidget *parent) : QWidget(parent)
 	m_fontChooser = new KTFontChooser;
 	layout->addWidget(m_fontChooser);
 
-	m_text = new QLineEdit(this);
+	m_text = new QTextEdit(this);
 	layout->addWidget(m_text);
 	
 	connect(m_fontChooser, SIGNAL(fontChanged()), this, SLOT(changeFont()));
+	
+	new SpellHighlighter(m_text->document());
 }
 
 
@@ -47,7 +51,7 @@ TextConfigurator::~TextConfigurator()
 
 QString TextConfigurator::text() const
 {
-	return m_text->text();
+	return m_text->toPlainText();
 }
 
 QFont TextConfigurator::textFont() const
