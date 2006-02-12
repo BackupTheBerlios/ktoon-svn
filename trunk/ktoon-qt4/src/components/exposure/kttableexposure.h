@@ -55,8 +55,6 @@ class KTTableExposure : public QScrollArea
 		
 		void removeCurrentLayer();
 		void insertFrames();
-// 		void loadLayers(QList<Layer*> layers);
-		void updateLayers();
 		
 		int currentLayer();
 		
@@ -64,6 +62,8 @@ class KTTableExposure : public QScrollArea
 		
 		void setCurrentCell(int idLayer, int idFrame);
 		void setLayer(int index);
+		void setFrameName(int indexLayer, int indexFrame, const QString& name );
+		void setLayerName(int indexLayer, const QString& name );
 		
 	private:
 		void createMenuRight();
@@ -85,8 +85,6 @@ class KTTableExposure : public QScrollArea
 		void clickedCell(int row, int col, int button, int gx, int gy);
 		void changeCurrentLayer(int idLayer);
 		void removeLayer(int idLayer);
-		void layerRename(int, const QString &);
-		void frameRename(int idFrame, int idLayer, const QString  &newName);
 		void lockCurrentFrame();
 		void removeFrame();
 		
@@ -96,11 +94,12 @@ class KTTableExposure : public QScrollArea
 		void clickedFrame();
 		void layerSelected(int id);
 		
-		// TODO: <krawek> FALTAN SIGNALS
 		void requestInsertFrame(bool addedToEnd);
 		void requestPasteFrame(int);
 		void requestCopyFrame(int);
 		
+		void requestRenameLayer(int indexLayer, const QString &name );
+		void requestRenameFrame(int indexLayer,  int indexFrame,const QString &name );
 };
 
 #endif

@@ -99,6 +99,10 @@ void KTExposureSheet::addScene(const QString &name)
 	
 	connect(newLayer, SIGNAL(requestPasteFrame(int)), this,   SIGNAL(requestPasteFrame(int)));
 	
+	connect(newLayer, SIGNAL(requestRenameLayer(int, const QString&)), this,   SIGNAL(requestRenameLayer(int, const QString&)));
+	
+	connect(newLayer, SIGNAL(requestRenameFrame(int, int, const QString&)), this,  SIGNAL(requestRenameFrame(int, int, const QString&)));
+	
 	m_currentTable = newLayer;
 	m_scenes->setCurrentWidget(m_currentTable);
 }
@@ -191,7 +195,7 @@ void KTExposureSheet::setCurrentCell( int idLayer, int idFrame)
 
 void KTExposureSheet::updateLayersAndKeyframes()
 {
-	m_currentTable->updateLayers();
+// 	m_currentTable->updateLayers();
 }
 
 void KTExposureSheet::insertLayer(const QString& name)
@@ -228,16 +232,6 @@ void KTExposureSheet::removeCurrentFrame()
 	if ( m_currentTable )
 	m_currentTable->removeFrame();
 }
-
-// void KTExposureSheet::moveUpFrame()
-// {
-// 	m_currentTable->moveCurrentFrame(KTTableExposure::Up );
-// }
-// 
-// void KTExposureSheet::moveDownFrame()
-// {
-// 	m_currentTable->moveCurrentFrame(KTTableExposure::Down );
-// }
 
 void KTExposureSheet::moveFrame(bool up)
 {
@@ -295,3 +289,14 @@ void KTExposureSheet::setLayer(int index)
 	m_currentTable->setLayer( index );
 }
 
+void KTExposureSheet::setFrameName(int indexLayer, int indexFrame, const QString& name )
+{
+	ktDebug() << "setFrameName(" << indexLayer << "," << indexFrame << "," << name  << ")";
+	m_currentTable->setFrameName(indexLayer, indexFrame, name);
+}
+
+void KTExposureSheet::setLayerName(int indexLayer, const QString& name )
+{
+	ktDebug() << "setLayerName(" << indexLayer << "," << name << ")";
+	m_currentTable->setLayerName( indexLayer, name );
+}

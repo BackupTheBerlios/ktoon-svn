@@ -60,49 +60,42 @@ void KTPaletteDocument::addGradient(const QGradient &gradient)
 	QDomElement element = createElement("Gradient");
 	
 	element.setAttribute("type", gradient.type() );
-	element.setAttribute("spread", gradient.type() );
+	element.setAttribute("spread", gradient.spread() );
 	const QGradient *gr = &gradient;
 	switch( gradient.type() )
 	{
-		case  QGradient::LinearGradient:
+		case QGradient::LinearGradient:
 		{
-			const QLinearGradient *lg = static_cast<const QLinearGradient *>(gr);
-			QDomElement startPoint = createElement("startPoint");
-			startPoint.setAttribute("x", lg->start().x() );
-			startPoint.setAttribute("y", lg->start().y() );
-			element.appendChild(startPoint);
-			
-			QDomElement finalPoint = createElement("finalPoint");
-			finalPoint.setAttribute("x", lg->finalStop().x() );
-			finalPoint.setAttribute("y", lg->finalStop().y() );
-			element.appendChild(finalPoint);
-			break;
+			element.setAttribute("startX", static_cast<const QLinearGradient *>(gr)->start().x() );
+			element.setAttribute("startY", static_cast<const QLinearGradient *>(gr)->start().y() );
+				
+			element.setAttribute("finalX", static_cast<const QLinearGradient *>(gr)->finalStop().x() );
+			element.setAttribute("finalY", static_cast<const QLinearGradient *>(gr)->finalStop().y() );
 		}
+		break;
 		case QGradient::RadialGradient:
 		{
-			const QRadialGradient *lg = static_cast<const QRadialGradient *>(gr);
-			element.setAttribute("radius", lg->radius() );
-			QDomElement centerPoint = createElement("centerPoint");
-			centerPoint.setAttribute("x", lg->center().x() );
-			centerPoint.setAttribute("y", lg->center().y() );
-			element.appendChild(centerPoint);
-			
-			QDomElement focalPoint = createElement("focalPoint");
-			focalPoint.setAttribute("x", lg->focalPoint().x() );
-			focalPoint.setAttribute("y", lg->focalPoint().y() );
-			element.appendChild(focalPoint);
-			break;
+			element.setAttribute("centerX", static_cast<const QRadialGradient *>(gr)->center().x() );
+			element.setAttribute("centerY", static_cast<const QRadialGradient *>(gr)->center().y() );
+				
+			element.setAttribute("focalX", static_cast<const QRadialGradient *>(gr)->focalPoint().x() );
+			element.setAttribute("focalY", static_cast<const QRadialGradient *>(gr)->focalPoint().y() );
+				
+			element.setAttribute("radius", static_cast<const QRadialGradient *>(gr)->radius() );
 		}
+		break;
 		case QGradient::ConicalGradient:
 		{
-			const QConicalGradient *lg = static_cast<const QConicalGradient *>(gr);
-			element.setAttribute("angle", lg->angle() );
-			QDomElement centerPoint = createElement("centerPoint");
-			centerPoint.setAttribute("x", lg->center().x() );
-			centerPoint.setAttribute("y", lg->center().y() );
-			element.appendChild(centerPoint);
-			break;
+			element.setAttribute("centerX", static_cast<const QRadialGradient *>(gr)->center().x() );
+			element.setAttribute("centerY", static_cast<const QRadialGradient *>(gr)->center().y() );
+				
+			element.setAttribute("angle", static_cast<const QConicalGradient *>(gr)->angle() );
 		}
+		break;
+		case QGradient::NoGradient:
+		{
+		}
+		break;
 	}
 	
 	

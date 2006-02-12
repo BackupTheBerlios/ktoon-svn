@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *   Copyright (C) 2004 by Fernando Jose Roldan Correa                     *
  *   froldan@toonka.com                                                    *
@@ -47,7 +48,6 @@ public:
      * Constructs an ESLayer object.
      * @param initial_text The text that this object will display
      * @param parent The parent widget
-     * @param grandparent The grandparent widget. It is used for slot connections or function calls
      */
     ESLayer( const QString &initial_text, QWidget *parent );
     /**
@@ -78,6 +78,7 @@ public:
      * in order to emit the signal lostFocus(). You won't need to use it.
      */
     void clearTextfieldFocus();
+	
 
 private:
     QColor default_color, selection_color;

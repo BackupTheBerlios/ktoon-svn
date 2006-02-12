@@ -108,8 +108,12 @@ void KTViewColorCells::setupForm()
 	
 	KTCONFIG->beginGroup("ColorPalette");
 	int lastIndex = KTCONFIG->value("LastPalette").toInt();
-	m_chooserPalette->setCurrentIndex(lastIndex);
-	m_containerPalette->setCurrentIndex(lastIndex);
+	
+	if ( lastIndex > 0 )
+	{
+		m_chooserPalette->setCurrentIndex(lastIndex);
+		m_containerPalette->setCurrentIndex(lastIndex);
+	}
 	
 	readPalettes(KTOON_HOME+"/data/palettes"); // Pre-installed
 	readPalettes(ktapp->configDir()+"/palettes"); // Locals

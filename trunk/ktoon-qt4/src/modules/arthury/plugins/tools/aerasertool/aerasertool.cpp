@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "aerasertool.h"
+#include "ktglobal.h"
 
 AEraserTool::AEraserTool()
 {
@@ -67,7 +68,7 @@ QHash<QString, KTAction *> AEraserTool::actions()
 {
 	QHash<QString, KTAction *> hash;
 	
-	KTAction *eraserAction = new KTAction( QIcon(), tr("Node eraser"), this);
+	KTAction *eraserAction = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/node_eraser.png"), tr("Node eraser"), this);
 	eraserAction->setShortcut( QKeySequence(tr("T")) );
 	
 	hash.insert( tr("Node eraser"), eraserAction );

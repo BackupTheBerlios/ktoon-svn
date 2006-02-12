@@ -216,6 +216,12 @@ KTDebug& KTDebug::operator<<( const QPen & p)
 
 KTDebug& KTDebug::operator<<( const QBrush & b)
 {
+	if ( b.gradient())
+	{
+		*this << b.gradient();
+	}
+	else
+	{
 	static const char* const s_brushStyles[] = {
 		"NoBrush", "SolidPattern", "Dense1Pattern", "Dense2Pattern", "Dense3Pattern",
 		"Dense4Pattern", "Dense5Pattern", "Dense6Pattern", "Dense7Pattern",
@@ -233,7 +239,8 @@ KTDebug& KTDebug::operator<<( const QBrush & b)
 		if ( ! b.texture().isNull() )
 			*this <<" has a texture";
 		*this <<" ]";
-		return *this;
+	}
+	return *this;
 }
 
 KTDebug& KTDebug::operator<<( const QVariant & v) 
@@ -264,6 +271,48 @@ KTDebug& KTDebug::operator << (const QEvent* e)
 	*this << "[Event " << e->type() << "]";
 	
 	return *this;
+}
+
+
+KTDebug& KTDebug::operator << (const QLinearGradient &g)
+{
+	*this << "QLinearGradient start=" << g.start() << " stop="<<g.finalStop();
+	return *this;
+}
+
+KTDebug& KTDebug::operator << (const QRadialGradient &g)
+{
+	*this << "QRadialGradient center=" << g.center() << " focal="<<g.focalPoint() << " radius=" << g.radius();
+	return *this;
+}
+
+KTDebug& KTDebug::operator << (const QConicalGradient &g)
+{
+	*this << "QConicalGradient center=" << g.center() << " angle="<<g.angle();
+	return *this;
+}
+
+KTDebug& KTDebug::operator << (const QGradient *g)
+{
+	switch(g->type())
+	{
+		case QGradient::LinearGradient:
+		{
+			*this << static_cast<const QLinearGradient &>(*g);
+		}
+		break;
+		case QGradient::RadialGradient:
+		{
+			*this << static_cast<const QRadialGradient &>(*g);
+		}
+		break;
+		case QGradient::ConicalGradient:
+		{
+			*this << static_cast<const QConicalGradient &>(*g);
+		}
+		break;
+		
+	}
 }
 
 void KTDebug::resaltWidget(QWidget *w, const QColor &color)

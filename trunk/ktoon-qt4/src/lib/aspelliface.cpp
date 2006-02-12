@@ -20,6 +20,7 @@
 
 #include "aspelliface.h"
 
+#ifdef HAVE_ASPELL
 #include <aspell.h>
 
 #include <QLocale>
@@ -94,3 +95,5 @@ QStringList AspellIface::suggestions(const QString &word)
 	}
 	return suggs;
 }
+
+#endif // HAVE_ASPELL

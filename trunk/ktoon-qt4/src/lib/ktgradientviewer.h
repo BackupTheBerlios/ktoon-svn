@@ -39,6 +39,7 @@ class KTGradientViewer : public QFrame
 		void setSpread(int spread);
 		void mousePressEvent(QMouseEvent *e);
 		void mouseMoveEvent( QMouseEvent * e );
+		void setGradient(const QGradient* gradient);
 		
 	protected:
 		virtual void paintEvent( QPaintEvent * );

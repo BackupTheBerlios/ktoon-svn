@@ -115,7 +115,7 @@ int main( int argc, char ** argv )
 	QApplication::addLibraryPath (KTOON_HOME+"/plugins");
 	
 
-	CHANDLER->setConfig(KTOON_DATA_DIR+"/crashhandler.xml"); // TODO: make standar way to access to data
+	CHANDLER->setConfig(KTOON_DATA_DIR+"/crashhandler.xml");
 	CHANDLER->setImagePath(KTOON_THEME_DIR+"/icons/");
 	
 	return application.exec();

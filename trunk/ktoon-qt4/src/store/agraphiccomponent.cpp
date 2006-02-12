@@ -20,7 +20,6 @@
 
 #include "agraphiccomponent.h"
 #include "ktdebug.h"
-
 #include <cmath> // fabs
 
 AGraphicComponent::AGraphicComponent() : KTSerializableObject(), m_scale(0,0), m_shear(0,0), m_angle(0)
@@ -213,8 +212,7 @@ void AGraphicComponent::mapTo(const QMatrix& matrix)
 {
 	foreach(AGraphic *graphic, m_graphics)
 	{
-		graphic->path = matrix.map(graphic->path);
-		
+		graphic->mapTo(matrix);
 	}
 	if(m_childs.count() > 0)
 	{
@@ -233,7 +231,7 @@ void AGraphicComponent::getPath(QPainterPath & path, const QMatrix& matrix)
 {
 	foreach(AGraphic *graphic, m_graphics)
 	{
-		graphic->path = matrix.map(graphic->path);
+		graphic->mapTo(matrix);
 		path.addPath(graphic->path);
 	}
 	if(m_childs.count() > 0)
@@ -331,6 +329,45 @@ QDomElement AGraphicComponent::brushToElement(const QBrush &brush, QDomDocument 
 		element = doc.createElement("Gradient");
 		
 		element.setAttribute("type", gradient->type() );
+		
+		element.setAttribute("spread", gradient->spread() );
+		
+		switch(gradient->type() )
+		{
+			case QGradient::LinearGradient:
+			{
+				element.setAttribute("startX", static_cast<const QLinearGradient *>(gradient)->start().x() );
+				element.setAttribute("startY", static_cast<const QLinearGradient *>(gradient)->start().y() );
+				
+				element.setAttribute("finalX", static_cast<const QLinearGradient *>(gradient)->finalStop().x() );
+				element.setAttribute("finalY", static_cast<const QLinearGradient *>(gradient)->finalStop().y() );
+			}
+			break;
+			case QGradient::RadialGradient:
+			{
+				element.setAttribute("centerX", static_cast<const QRadialGradient *>(gradient)->center().x() );
+				element.setAttribute("centerY", static_cast<const QRadialGradient *>(gradient)->center().y() );
+				
+				element.setAttribute("focalX", static_cast<const QRadialGradient *>(gradient)->focalPoint().x() );
+				element.setAttribute("focalY", static_cast<const QRadialGradient *>(gradient)->focalPoint().y() );
+				
+				element.setAttribute("radius", static_cast<const QRadialGradient *>(gradient)->radius() );
+			}
+			break;
+			case QGradient::ConicalGradient:
+			{
+				element.setAttribute("centerX", static_cast<const QRadialGradient *>(gradient)->center().x() );
+				element.setAttribute("centerY", static_cast<const QRadialGradient *>(gradient)->center().y() );
+				
+				element.setAttribute("angle", static_cast<const QConicalGradient *>(gradient)->angle() );
+			}
+			break;
+			case QGradient::NoGradient:
+			{
+				
+			}
+			break;
+		}
 	
 		QGradientStops stops = gradient->stops();
 	

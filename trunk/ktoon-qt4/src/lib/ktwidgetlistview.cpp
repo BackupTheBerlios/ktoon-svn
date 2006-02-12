@@ -92,8 +92,8 @@ void KTWidgetListView::moveItemUp(int index)
 	if ( index > 0 )
 	{
 		verticalHeader()->moveSection(index, index-1);
-		setCurrentCell(index-1, 0);
-// 		selectRow(index/*-1*/);
+// 		setCurrentCell(index-1, 0);
+// 		selectRow(index);
 	}
 }
 
@@ -102,7 +102,14 @@ void KTWidgetListView::moveItemDown(int index)
 	if ( index < rowCount() )
 	{
 		verticalHeader()->moveSection(index, index+1);
-		setCurrentCell(index+1, 0);
-// 		selectRow(index/*+1*/);
+// 		setCurrentCell(index+1, 0);
+// 		selectRow(index);
 	}
 }
+
+
+int KTWidgetListView::currentVisualRow() const
+{
+	return verticalHeader()->visualIndex(currentRow());
+}
+

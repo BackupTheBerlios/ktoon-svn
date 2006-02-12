@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                 *
+ *   Copyright (C) 2005 by Jorge Cuadrado                                  *
  *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -30,7 +30,7 @@ KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFra
 	m_layout->setSpacing(0);
 	m_header = new ESLayer(initial_text,this);
 	connect( m_header, SIGNAL(clicked(bool, QMouseEvent*)), this, SLOT(setSelected(bool, QMouseEvent*)));
-	connect( m_header, SIGNAL(renamed( const QString & )), this, SLOT(changedName(const QString &)));
+	connect( m_header, SIGNAL(renamed( const QString & )), this, SLOT(emitRequestRenameLayer(const QString &)));
 	connect( m_header, SIGNAL(visibilityChanged(bool)), this, SLOT(setLayerVisible(bool)));
 	
 	m_layout->addWidget(m_header);
@@ -42,7 +42,7 @@ KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFra
 		m_frames.append(frame);
 		connect( frame, SIGNAL(clicked(int, int, int, int )), this, SLOT(frameSelect(int, int, int, int)));
 		connect(this, SIGNAL(frameSelected(int )), frame, SLOT(otherSelected(int)));
-		connect( frame, SIGNAL(renamed( int, const QString&)), this, SLOT(frameRename(int, const QString&)));
+		connect( frame, SIGNAL(renamed( int, const QString&)), this, SLOT(emitRequestRenameFrame(int, const QString&)));
 	}
 	m_useFrame = 0;
 	createMenuRight();
@@ -128,7 +128,7 @@ void KTLayerExposure::insertFrame(int id, const QString &text)
 	m_frames.insert(id, frame);
 	connect( frame, SIGNAL(clicked(int, int, int, int )), this, SLOT(frameSelect(int, int, int, int)));
 	connect(this, SIGNAL(frameSelected(int )), frame, SLOT(otherSelected(int)));
-	connect( frame, SIGNAL(renamed( int, const QString&)), this, SLOT(frameRename(int, const QString&)));
+	connect( frame, SIGNAL(renamed( int, const QString&)), this, SLOT(emitRequestRenameFrame(int, const QString&)));
 	frame->show();
 }
 
@@ -142,13 +142,13 @@ void KTLayerExposure::addFrame(const QString &text )
 	m_frames.insert(id, frame);
 	connect( frame, SIGNAL(clicked(int, int, int, int )), this, SLOT(frameSelect(int, int, int, int)));
 	connect(this, SIGNAL(frameSelected(int )), frame, SLOT(otherSelected(int)));
-	connect( frame, SIGNAL(renamed( int, const QString&)), this, SLOT(frameRename(int, const QString&)));
+	connect( frame, SIGNAL(renamed( int, const QString&)), this, SLOT(emitRequestRenameFrame(int, const QString&)));
 	frame->show();
 }
 
 
 
-void KTLayerExposure::invertFrames(int id1, int id2) // invert or swap??
+void KTLayerExposure::swapFrames(int id1, int id2) 
 {
 	m_layout->removeWidget(m_frames[id1]);
 	m_layout->removeWidget(m_frames[id2]);
@@ -257,6 +257,7 @@ void KTLayerExposure::moveCurrentFrameDown()
 {
 	int pos = m_layout->indexOf(m_frames[m_currentFrame]);
 	int idFrame = m_frames[pos+1]->id();
+	
 	if( m_frames[idFrame-1]->isUsed())
 	{
 		m_layout->removeWidget(m_frames[m_currentFrame]);
@@ -284,6 +285,12 @@ bool KTLayerExposure::isSelected()
 void KTLayerExposure::setId(int id)
 {
 	m_id = id;
+}
+
+void KTLayerExposure::setName(const QString & name)
+{
+	m_header->setText(name);
+	m_header->slotSetDescription();
 }
 
 void KTLayerExposure::renameCurrentFrame()
@@ -335,40 +342,12 @@ void KTLayerExposure::applyAction(int action)
 	}
 }
 
-QString KTLayerExposure::textHeader()
-{
-	return m_header->text();
-}
 
-// void KTLayerExposure::loadFrames(Layer *layer)
-// {
-// 	QList<KeyFrame*> keyframes = layer->keyFrames();
-// 	for(int i = 0 ; i < keyframes.count(); i++)
-// 	{
-// 		m_frames[i]->setUsed(true);
-// 		m_frames[i]->setName(keyframes.at(i)->nameKeyFrame());
-// 	}
-// 	
-// 	m_currentFrame = keyframes.count()-1;
-// 	m_useFrame = keyframes.count()-1;
-// }
-
-void KTLayerExposure::changedName(const QString  &newName)
-{
-	emit(layerRenamed(m_id, newName));
-}
-
-void KTLayerExposure::frameRename(int idFrame, const QString&newName)
-{
-// 	QList<Layer*> ly = KTStatus -> currentScene() -> getLayers();
-// 	ly.at(m_id)->keyFrames().at(idFrame)->setNameKeyFrame(newName);
-}
 
 void KTLayerExposure::setLayerVisible( bool value)
 {
 	emit (visibilityChanged( m_id, value));
 }
-
 
 int KTLayerExposure::id()
 {
@@ -380,3 +359,19 @@ int  KTLayerExposure::currentFrame()
 	return m_currentFrame;
 }
 
+ListOfFrames KTLayerExposure::frames()
+{
+	return m_frames;
+}
+
+void  KTLayerExposure::emitRequestRenameFrame(int indexFrame, const QString& name)
+{
+	ktDebug() << "emit (requestRenameFrame(" << m_id << "," <<  indexFrame << "," << name <<"))";
+	emit (requestRenameFrame(m_id, indexFrame, name));
+}
+
+void KTLayerExposure::emitRequestRenameLayer(const QString  &newName)
+{
+	ktDebug() << "emit(requestRenameLayer( " << m_id << "," << newName <<"))";
+	emit(requestRenameLayer(m_id, newName));
+}

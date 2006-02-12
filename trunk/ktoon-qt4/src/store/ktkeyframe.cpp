@@ -104,6 +104,7 @@ bool KTKeyFrame::isLocked()
 QDomElement KTKeyFrame::createXML( QDomDocument &doc )
 {
 	QDomElement frame = doc.createElement("Frame");
+	frame.setAttribute ( "name", m_name);
 	
 	QList<AGraphicComponent *>::ConstIterator iterator = m_components.begin();
 	

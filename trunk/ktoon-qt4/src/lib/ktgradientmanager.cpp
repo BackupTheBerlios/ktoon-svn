@@ -170,9 +170,16 @@ void KTGradientManager::setGradient(const QGradient & gradient)
 	m_type->setCurrentIndex(gradient.type());
 	m_spread->setCurrentIndex(gradient.spread());
 	m_selector->setStops(gradient.stops());
-	m_viewer->changeGradient( gradient.stops());
+	m_viewer->setGradient( &gradient);
+	m_controlerSpins->setSpin( gradient.type() );
+	if(gradient.type() == QGradient::RadialGradient)
+	{
+		m_controlerSpins->setRadius(  static_cast<const QRadialGradient*>(&gradient)->radius());
+	}else if (gradient.type() == QGradient::ConicalGradient)
+	{
+		m_controlerSpins->setAngle(  static_cast<const QConicalGradient*>(&gradient)->angle());
+	}
 	blockSignals ( false);
-// 	emit gradientChanged(m_viewer->gradient());
 }
 
 void KTGradientManager::emitGradientChanged()

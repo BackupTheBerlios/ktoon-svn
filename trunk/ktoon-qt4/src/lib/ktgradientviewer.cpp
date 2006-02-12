@@ -41,8 +41,7 @@ class KTGradientViewer::ControlPoint
 		void selectPoint(const QPointF &point)
 		{
 			int rate = 5;
-			QPointF p2(point + QPoint(rate/2,rate/2));
-			QRectF rect(point - QPointF(rate/2,rate/2) , QSizeF(p2.x(), p2.y()) );
+			QRectF rect(point - QPointF(rate/2,rate/2) , QSizeF(rate, rate ));
 			
 			QVector<QPointF>::const_iterator it;
 			for (it = points.begin(); it != points.end(); ++it)
@@ -205,3 +204,37 @@ void KTGradientViewer::changeRadius(int radius)
 	update();
 }
 
+void KTGradientViewer::setGradient(const QGradient* gradient)
+{
+	m_gradientStops = gradient->stops();
+	m_spread = gradient->spread();
+	m_type = gradient->type();
+	switch(m_type)
+	{
+		case  QGradient::LinearGradient:
+		{
+			m_controlPoint->points[0] = static_cast<const QLinearGradient*>(gradient)->start();
+			m_controlPoint->points[1] = static_cast<const QLinearGradient*>(gradient)->finalStop();
+			break;
+		}
+		case QGradient::RadialGradient:
+		{
+			m_controlPoint->points[0] = static_cast<const QRadialGradient*>(gradient)->center();
+			m_controlPoint->points[1] = static_cast<const QRadialGradient*>(gradient)->focalPoint();
+			m_radius = static_cast<const QRadialGradient*>(gradient)->radius();
+			break;
+		}
+		case QGradient::ConicalGradient:
+		{
+			m_controlPoint->points[0] = static_cast<const QConicalGradient*>(gradient)->center();
+			m_controlPoint->points[1] = static_cast<const QConicalGradient*>(gradient)->center();
+			m_radius = static_cast<const QConicalGradient*>(gradient)->angle();
+			break;
+		}
+		default:
+		{
+			ktFatal() << "Fatal error, the gradient type doesn't exists!";
+		}
+	}
+	repaint();
+}

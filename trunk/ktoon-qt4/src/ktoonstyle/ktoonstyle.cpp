@@ -76,9 +76,7 @@ void KToonStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *opt
 	
 	switch (element)
 	{
-		case PE_FrameFocusRect:
-			break;
-
+		case PE_FrameFocusRect: break;
 		case PE_IndicatorRadioButton:
 		{
 			if (const QStyleOptionButton *button = qstyleoption_cast<const QStyleOptionButton *>(option))
@@ -284,6 +282,7 @@ void KToonStyle::drawControl(ControlElement element, const QStyleOption *option,
 	{
 		case CE_DockWidgetTitle:
 		{
+			return;
 		}
 		break;
 		default:
@@ -338,13 +337,13 @@ void KToonStyle::drawComplexControl(ComplexControl control, const QStyleOptionCo
 		case CC_GroupBox:
 		{
 			const QStyleOptionGroupBox *groupBox = qstyleoption_cast<const QStyleOptionGroupBox *>(option);
-			if (groupBox) 
+			if (groupBox)
 			{
 				QStyleOptionGroupBox groupBoxCopy(*groupBox);
 				groupBoxCopy.subControls &= ~SC_GroupBoxLabel;
 				QPlastiqueStyle::drawComplexControl(control, &groupBoxCopy, painter, widget);
-
-				if (groupBox->subControls & SC_GroupBoxLabel) 
+				
+				if (groupBox->subControls & SC_GroupBoxLabel)
 				{
 					const QRect &r = groupBox->rect;
 					QPixmap titleLeft = cached(":res/images/title_cap_left.png");
@@ -406,7 +405,14 @@ QRect KToonStyle::subControlRect(ComplexControl control, const QStyleOptionCompl
 #if QT_VERSION >= 0x040100
 					case SC_GroupBoxContents:
 						rect = QPlastiqueStyle::subControlRect(control, option, subControl, widget);
-						rect.adjust(0, -4, 0, 0);
+						if ( group->text.length() < 4)
+						{
+							rect.adjust(0, 4, 0, 0);
+						}
+						else
+						{
+							rect.adjust(0, -10, 0, 0);
+						}
 						break;
 #endif
 					case SC_GroupBoxFrame:
@@ -465,35 +471,59 @@ QSize KToonStyle::sizeFromContents(ContentsType type, const QStyleOption *option
 
 int KToonStyle::pixelMetric(PixelMetric pm, const QStyleOption *opt, const QWidget *widget) const
 {
-    if (pm == PM_SliderLength)
-        return 13;
-    return QPlastiqueStyle::pixelMetric(pm, opt, widget);
+	if (pm == PM_SliderLength)
+		return 13;
+	
+	switch(pm)
+	{
+		case QStyle::PM_DockWidgetSeparatorExtent:
+		{
+			return 0;
+		}
+		break;
+		case QStyle::PM_DockWidgetHandleExtent:
+		{
+			return 0;
+		}
+		break;
+		case QStyle::PM_DockWidgetFrameWidth:
+		{
+			return 0;
+		}
+		break;
+		case QStyle::PM_DockWidgetTitleMargin:
+		{
+			return 0;
+		}
+		break;
+		default: break;
+	}
+	
+	return QPlastiqueStyle::pixelMetric(pm, opt, widget);
 }
 
 void KToonStyle::polish(QWidget *widget)
 {
 	QPlastiqueStyle::polish(widget);
-    if (widget->layout() && qobject_cast<QGroupBox *>(widget)) 
-    {
-        if (qFindChildren<QGroupBox *>(widget).size() == 0)
-            widget->layout()->setSpacing(0);
-        else
-            widget->layout()->setMargin(10);
-    }
+	if (widget->layout() && qobject_cast<QGroupBox *>(widget)) 
+	{
+		if (qFindChildren<QGroupBox *>(widget).size() == 0)
+		{
+			widget->layout()->setSpacing(0);
+		}
+		else
+		{
+			widget->layout()->setMargin(10);
+// 			widget->layout()->setSpacing(0);
+		}
+	}
 
-    if (qobject_cast<QPushButton *>(widget)
-        || qobject_cast<QRadioButton *>(widget)
-        || qobject_cast<QSlider *>(widget)) {
-        widget->setAttribute(Qt::WA_Hover);
-    }
-
-//     QPalette pal = widget->palette();
-//     if (widget->isWindow()) 
-//     {
-//         pal.setColor(QPalette::Background, QColor(241, 241, 241));
-//         widget->setPalette(pal);
-//     }
-
+	if (qobject_cast<QPushButton *>(widget)
+		   || qobject_cast<QRadioButton *>(widget)
+		   || qobject_cast<QSlider *>(widget)) 
+	{
+		widget->setAttribute(Qt::WA_Hover);
+	}
 }
 
 void KToonStyle::unpolish(QWidget *widget)

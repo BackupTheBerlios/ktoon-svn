@@ -56,6 +56,11 @@ void KTMainWindow::selectLayer(int index)
 }
 
 
+void KTMainWindow::setLayerName(int indexLayer, const QString& name)
+{
+	m_exposureSheet->setLayerName(indexLayer, name);
+}
+
 void KTMainWindow::insertLayer(const QString &name, bool addedToEnd)
 {
 // 	ktDebug() << "KTMainWindow::insertLayer(" << name << "," << addedToEnd << ")";
@@ -124,6 +129,10 @@ void KTMainWindow::lockFrame()
 	m_timeLine->lockCurrentFrame();
 }
 
+void KTMainWindow::setFrameName(int indexLayer, int indexFrame, const QString& name )
+{
+	m_exposureSheet->setFrameName( indexLayer,  indexFrame,  name );
+}
 
 void KTMainWindow::selectFrame(int layer, int frame)
 {

@@ -121,7 +121,7 @@ void ESLayer::clearTextfieldFocus()
 
 void ESLayer::slotSetDescription()
 {
-	if(description -> text() != text())
+	if(description->text() != text())
 	{
 		setText( description -> text() );
 		emit renamed(text());

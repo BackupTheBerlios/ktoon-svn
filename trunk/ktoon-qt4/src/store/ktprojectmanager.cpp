@@ -432,6 +432,29 @@ void KTProjectManager::lockCurrentFrame()
 	}
 }
 
+void  KTProjectManager::renameLayer(int indexLayer, const QString & name)
+{
+	ktDebug() << "KTProjectManager::renameLayer(int indexLayer, const QString & name)";
+	if(currentScene())
+	{
+		currentScene()->layers()[indexLayer]->setLayerName(name);
+		emit layerRenamed( indexLayer, name);
+	}
+}
+
+void KTProjectManager::renameFrame(int indexLayer, int indexFrame, const QString & name)
+{
+	ktDebug() << "KTProjectManager::renameFrame(int indexLayer, int indexFrame, const QString & name)";
+	if(currentScene())
+	{
+		currentScene()->layers()[indexLayer]->frames()[indexFrame]->setFrameName(name);
+		emit frameRenamed(indexLayer, indexFrame,  name);
+	}
+	
+}
+
+
+
 void KTProjectManager::removeLayer(int index)
 {
 	KTScene *scene = currentScene();

@@ -22,6 +22,8 @@
 #include <QKeySequence>
 #include <QMatrix>
 
+#include "ktglobal.h"
+
 QStringList AShapeBrushPlugin::keys() const
 {
 	return QStringList() << tr("Shape brush");
@@ -84,7 +86,7 @@ QHash<QString, KTAction *> AShapeBrushPlugin::actions()
 {
 	QHash<QString, KTAction *> hash;
 	
-	KTAction *act = new KTAction( QIcon(), tr("Shape brush"),this);
+	KTAction *act = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/node_eraser.png"), tr("Shape brush"),this);
 // 	act->setShortcut( QKeySequence(tr("R")) );
 	hash.insert( tr("Shape brush"), act );
 	

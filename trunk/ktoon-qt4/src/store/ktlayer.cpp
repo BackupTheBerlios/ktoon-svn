@@ -172,7 +172,7 @@ bool KTLayer::isVisible()
 QDomElement KTLayer::createXML( QDomDocument &doc )
 {
 	QDomElement layer = doc.createElement("Layer");
-	
+	layer.setAttribute ( "name", m_name);
 	Frames::ConstIterator iterator = m_frames.begin();
 	
 	while( iterator != m_frames.end() )

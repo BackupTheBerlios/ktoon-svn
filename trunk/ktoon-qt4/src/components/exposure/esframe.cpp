@@ -31,7 +31,7 @@
 
 //--------------- CONSTRUCTOR --------------------
 
-ESFrame::ESFrame( /*const QString &initial_text,*/int id, QWidget *parent )
+ESFrame::ESFrame( int id, QWidget *parent )
 	: KTSqueezeLabel( parent )  ,  is_used(false), is_selected(false), is_locked(false),  is_motion(false), has_drawing(false), m_id(id) /*m_initialText(initial_text)*/
 {
 // 	KTINIT;
@@ -257,13 +257,13 @@ void ESFrame::setHasDrawing( bool in_has_drawing )
 
 void ESFrame::setName( const QString &new_name )
 {
-// 	ktDebug() << "ESFrame::setName( const QString & " << new_name << " )" <<  endl;
-	m_initialText = new_name;
-	description->setText(new_name);
-	setText( new_name );
-// 	emit renamed(m_id, new_name);
-// 	ktDebug() << "finish ESFrame::setName( const QString & " << text() << " )"  << endl;
-// 	emit renamed( text() );
+	ktDebug() << "void ESFrame::setName( const QString &new_name )";
+	if(m_initialText != new_name)
+	{
+		m_initialText = new_name;
+		description->setText(new_name);
+		setText( new_name );
+	}
 }
 
 void ESFrame::clearTextfieldFocus()
@@ -285,26 +285,15 @@ void ESFrame::setAllProperties( ESFrame *in_esframe )
 
 void ESFrame::slotSetDescription()
 {
-// 	ktDebug() << "ESFrame::slotSetDescription()" << endl;
 	if(m_initialText != description->text())
 	{
-// 		ktDebug() << "ESFrame" <<  description -> text() <<  endl;
 		setText( description -> text() );
 		emit renamed( m_id, description->text() );
 		m_initialText = description -> text();
 	}
-// 	else
-// 	{
-// 		setText( description -> text() );
-// 	}
 	description->hide();
 }
 
-// void ESFrame::slotSendDoubleClickEvent()
-// {
-// 	QMouseEvent mouse_event( QEvent::MouseButtonDblClick, QPoint( x(), y() ), Qt::LeftButton, 0 );
-// 	QApplication::sendEvent( this, &mouse_event );
-// }
 
 void ESFrame::otherSelected(int id)
 {

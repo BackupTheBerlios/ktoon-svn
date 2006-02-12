@@ -264,6 +264,7 @@ void KTTimeLine::setLayer(int index)
 
 void KTTimeLine::moveLayer(bool up)
 {
+	KT_FUNCINFO;
 	currentLayerManager()->moveCurrentLayer(up);
 	// TODO: move in frame container
 }

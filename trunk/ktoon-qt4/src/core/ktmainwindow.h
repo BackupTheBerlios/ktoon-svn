@@ -161,6 +161,7 @@ class KTMainWindow : public DMainWindow
 		void moveLayer(bool up);
 		void removeLayer(int );
 		void selectLayer(int );
+		void setLayerName(int indexLayer, const QString& name);
 		
 		//Frames
 		void insertFrame( const QString &name, bool addedToEnd);
@@ -168,6 +169,7 @@ class KTMainWindow : public DMainWindow
 		void moveFrame(bool up);
 		void removeFrame( );
 		void lockFrame();
+		void setFrameName(int indexLayer, int indexFrame, const QString& name );
 		// Scenes
 		
 		void insertScene( const QString &name, bool addedToEnd);

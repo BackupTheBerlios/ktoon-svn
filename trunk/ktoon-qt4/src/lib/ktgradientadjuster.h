@@ -42,6 +42,13 @@ class KTGradientAdjuster
 		static QLinearGradient adjustGradient(const QLinearGradient &gradient, const QRect &rect);
 		static QRadialGradient adjustGradient(const QRadialGradient &gradient, const QRect &rect);
 		static QConicalGradient adjustGradient(const QConicalGradient &gradient, const QRect &rect);
+		
+		
+		static QGradient mapGradient(const QGradient *gradient, const QMatrix &matrix );
+		static QLinearGradient mapGradient(const QLinearGradient &gradient, const QMatrix &matrix);
+		static QRadialGradient mapGradient(const QRadialGradient &gradient, const QMatrix &matrix);
+		static QConicalGradient mapGradient(const QConicalGradient &gradient, const QMatrix &matrix);
+		
 };
 
 #endif

@@ -79,7 +79,7 @@ QLinearGradient KTGradientAdjuster::adjustGradient(const QLinearGradient &gradie
 QRadialGradient KTGradientAdjuster::adjustGradient(const QRadialGradient &gradient, const QRect &rect)
 {
 	QPointF center, focal;
-	// 	
+	
 	center.setX(((gradient.center().x() / 100) *  rect.width()) + rect.x()  );
 	center.setY(((gradient.center().y() / 100) *  rect.height()) + rect.y()  );
 	
@@ -103,4 +103,72 @@ QConicalGradient KTGradientAdjuster::adjustGradient(const QConicalGradient &grad
 	newGradient.setSpread(gradient.spread());
 	return newGradient;
 }
+
+QGradient  KTGradientAdjuster::mapGradient(const QGradient *gradient, const QMatrix &matrix )
+{
+	switch( gradient->type() )
+	{
+		case  QGradient::LinearGradient:
+		{
+			const QLinearGradient *lg = static_cast<const QLinearGradient *>(gradient);
+			
+			return mapGradient(*lg, matrix);
+			break;
+		}
+		case QGradient::RadialGradient:
+		{
+			const QRadialGradient *lg = static_cast<const QRadialGradient *>(gradient);
+			return mapGradient(*lg, matrix);
+			break;
+		}
+		case QGradient::ConicalGradient:
+		{
+			const QConicalGradient *lg = static_cast<const QConicalGradient *>(gradient);
+			return mapGradient(*lg, matrix);
+			break;
+		}
+	}
+	
+	return *gradient;
+}
+
+QLinearGradient  KTGradientAdjuster::mapGradient(const QLinearGradient &gradient, const QMatrix &matrix)
+{
+	const float offset = 10;
+	
+	QPointF start, final;
+	
+	start = matrix.map(gradient.start());
+	final = matrix.map(gradient.finalStop());
+	
+	QLinearGradient newGradient = QLinearGradient(start, final);
+	
+	newGradient.setStops(gradient.stops());
+	newGradient.setSpread(gradient.spread());
+	return newGradient;
+}
+
+QRadialGradient  KTGradientAdjuster::mapGradient(const QRadialGradient &gradient, const QMatrix &matrix)
+{
+	QPointF center, focal;
+
+	center = matrix.map(gradient.center());
+	focal = matrix.map(gradient.focalPoint());
+	QRadialGradient newGradient = QRadialGradient(center, gradient.radius(),  focal );
+	newGradient.setStops(gradient.stops());
+	newGradient.setSpread(gradient.spread());
+	return newGradient;
+}
+QConicalGradient  KTGradientAdjuster::mapGradient(const QConicalGradient &gradient, const QMatrix &matrix)
+{
+	QPointF center;
+// 	center.setX(((gradient.center().x() / 100) *  rect.width()) + rect.x()  );
+// 	center.setY(((gradient.center().y() / 100) *  rect.height()) + rect.y()  );
+	center = matrix.map(gradient.center());
+	QConicalGradient newGradient = QConicalGradient(center, gradient.angle());
+	newGradient.setStops(gradient.stops());
+	newGradient.setSpread(gradient.spread());
+	return newGradient;
+}
+
 

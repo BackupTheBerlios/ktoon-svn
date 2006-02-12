@@ -73,8 +73,6 @@ void KTTableExposure::emitRequestPasteCurrentFrame()
 }
 
 
-
-
 void KTTableExposure::clickedCell(int row, int col,int button,int gx,int gy)
 {	
 	m_currentLayer = col;
@@ -116,17 +114,16 @@ void KTTableExposure::insertLayer(int rows, const QString &text)
 	
 	connect(newLayer, SIGNAL(removed(int)), this, SLOT(removeLayer(int)));
 	
-	connect(newLayer, SIGNAL(layerRenamed(int, const QString &)), this, SLOT(layerRename(int, const QString &)));
+	connect(newLayer, SIGNAL(requestRenameLayer(int, const QString &)), this, SIGNAL(requestRenameLayer(int, const QString &)));
 	
-	connect(newLayer, SIGNAL(frameRenamed(int, int, const QString &)), this, SLOT(frameRename(int, int, const QString &)));
+	connect(newLayer, SIGNAL(requestRenameFrame(int, int, const QString &)), this, SIGNAL(requestRenameFrame(int, int, const QString &)));
 	
 	connect(newLayer, SIGNAL(requestInsertFrame(bool)), this, SIGNAL(requestInsertFrame(bool)));
 	
-	m_layout->addWidget( newLayer/*, 0, Qt::AlignLeft*/);
+	m_layout->addWidget( newLayer);
 	
 	m_numLayer++;
 	newLayer->setSelected(true);
-// 	m_currentLayer = m_numLayer;
 	
 	newLayer->show();
 	m_port->adjustSize();
@@ -134,15 +131,8 @@ void KTTableExposure::insertLayer(int rows, const QString &text)
 
 void KTTableExposure::changeCurrentLayer(int idLayer)
 {
-// 	if(m_currentLayer != idLayer || m_currentFrame != m_layers.at(m_currentLayer)->numUsedFrame())
-// 	{
-// 		m_currentLayer = idLayer;
-// 		m_currentFrame = m_layers.at(m_currentLayer)->numUsedFrame();
 	m_layers.at(m_currentLayer)->otherSelected( idLayer);
-		emit layerSelected(idLayer);
-		
-// 		emit cellSelected(m_currentLayer, m_currentFrame);
-// 	}
+	emit layerSelected(idLayer);
 }
 
 void KTTableExposure::setUseFrame(int idLayer, const QString& name, bool addedToEnd)
@@ -194,7 +184,7 @@ void KTTableExposure::lockCurrentFrame()
 	m_layers.at(m_currentLayer)->lockFrame();
 }
 
-void KTTableExposure::removeCurrentLayer() // FIXME SIGSEGV
+void KTTableExposure::removeCurrentLayer() 
 {
 	KT_FUNCINFO;
 	if ( m_layers.count() > 0 && m_currentLayer >= 0 )
@@ -213,7 +203,6 @@ void KTTableExposure::removeCurrentLayer() // FIXME SIGSEGV
 		m_port->adjustSize();
 		
 		emit cellSelected( m_currentLayer-1, m_layers[m_currentLayer-1]->currentFrame());
-// 		m_currentLayer--;
 	}
 }
 
@@ -241,7 +230,16 @@ void KTTableExposure::setLayer(int index)
 	}
 	m_currentLayer = index;
 	m_layers[m_currentLayer]->setSelected(true);
-// 	m_layers[m_currentLayer]->otherSelected(index);
+}
+
+void KTTableExposure::setLayerName(int indexLayer, const QString& name )
+{
+	m_layers[indexLayer]->setName(name);
+}
+
+void KTTableExposure::setFrameName(int indexLayer, int indexFrame, const QString& name )
+{
+	m_layers[indexLayer]->frames()[indexFrame]->setName(name);
 }
 
 void KTTableExposure::removeLayer(int idLayer)
@@ -265,70 +263,9 @@ void KTTableExposure::removeLayer(int idLayer)
 		m_port->adjustSize();
 		
 		emit cellSelected( m_currentLayer-1, m_layers[idLayer-1]->currentFrame());
-// 		m_currentLayer--;
 	}
 	
 }
 
 
 
-// void KTTableExposure::loadLayers(QList<Layer*> layers)
-// {
-// 	ktDebug() << "KTTableExposure::loadLayers init" <<  layers.count();
-// 	m_layers.clear();
-// 	KTStatus -> currentScene() -> getLayers();
-// 	QList<Layer*> ly = KTStatus->currentScene()->getLayers();
-// 	ly.setAutoDelete( true );
-// 	ly.clear();
-// 	ly.setAutoDelete( false );
-// 	KTStatus->currentScene()->setLayers(layers);
-// 	m_numLayer = 0;
-	
-// // 	for (int i = 0; i < layers.count(); i++ )
-// 	{
-// 		insertLayer(100, layers.at(i)->nameLayer());
-// 		m_layers.at(i)->loadFrames(layers.at(i));
-// 		m_numLayer++;
-// 	}
-	
-// 	ktDebug() << "KTTableExposure::loadLayers finish load " <<  m_numLayer << "layers" << endl;
-// }
-
-void KTTableExposure::updateLayers()
-{
-// 	ktDebug() << "KTTableExposure::updateLayers" << endl;
-// 	m_layers.clear();
-// 	m_numLayer = 0;
-// 	QList<Layer*> ly = KTStatus->currentScene()->getLayers();
-/*	if(ly.count() == 0)
-	{
-		insertLayer(100);
-	}
-	else
-	{
-		for (int i = 0; i < ly.count(); i++ )
-		{
-			insertLayer(100, ly.at(i)->nameLayer());
-			m_layers.at(i)->loadFrames(ly.at(i));
-			m_numLayer++;
-		}
-}*/
-// 	KTStatus->currentScene()->setLayers(ly);
-// 	ktDebug() << "KTTableExposure::updateLayers" << ly.count() << endl;
-}
-
-void KTTableExposure::layerRename(int idLayer, const QString  &newName)
-{
-// 	ktDebug() << "KTTableExposure::layerRename (" << idLayer << " , " << newName << ") " << endl;
-// 	QList<Layer*> ly = KTStatus -> currentScene() -> getLayers();
-	/*
-	ly.at(idLayer)->setNameLayer(newName);
-	emit layerRenamed( idLayer , newName);*/
-}
-
-void KTTableExposure::frameRename(int idFrame, int idLayer, const QString  &newName)
-{
-// 	ktDebug() << " KTTableExposure::frameRename " << newName << endl;
-// 	QList<Layer*> ly = KTStatus -> currentScene() -> getLayers();
-// 	ly.at(idLayer)->keyFrames().at(idFrame)->setNameKeyFrame(newName);
-}

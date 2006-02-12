@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Script for update the .pro files && build the app
-# Author: Krawek
+# Script that update the .pro files && build the app
+# Author: David Cuarado krawek [at] gmail [dot] com
 # Version: 0.1.0
 
 KTOON_GLOBAL_ENV=/etc/ktoon.env
@@ -209,15 +209,20 @@ function main()
 	updateMakefiles
 	$QMAKE
 	
-	qpelec "Do you wants clean the project (y/n)? "
-	read UOG
+	if [ $ASSUME_YES -ne 1 ]
+	then
+		qpelec "Do you wants clean the project (y/n)? "
+		read UOG
 	
-	case $UOG in
-		y|yes|si|s|Y|S)
-			qpinfo "Cleaning..."
-			$MAKE clean > /dev/null
-		;;
-	esac
+		case $UOG in
+			y|yes|si|s|Y|S)
+				qpinfo "Cleaning..."
+				$MAKE clean > /dev/null
+			;;
+		esac
+	else
+		$MAKE clean > /dev/null
+	fi
 	
 ########################
 	qpinfo "Compiling $APPNAME $APPVER..."
@@ -227,6 +232,7 @@ function main()
 	
 	echo > $STAT_FILE
 	END=0
+	INIT_TIME=`date +%s`
 	( ( $MAKE  >/dev/null 2>> $LOG_FILE || fails "Error while compile!" ) && echo END=1 > $STAT_FILE ) & 
 	
 	while [ $END -eq 0 ]
@@ -241,6 +247,7 @@ function main()
  	       		break;
  	       	fi
 	done
+	END_TIME=`date +%s`
 	echo
 	rm $STAT_FILE
 	
@@ -249,14 +256,19 @@ function main()
 		exit -1
 	fi
 	
-	qpinfo "Compiling successful!"
+	qpinfo "Compiling successful! Time: `expr $END_TIME - $INIT_TIME` seconds"
 	
-	qpelec "Do you wants install ktoon in \033[0;41m\"$KTOON_HOME\"\033[0;0m (y/n)? "
-	read SN
+	if [ $ASSUME_YES -ne 1 ]
+	then
+		qpelec "Do you wants install ktoon in \033[0;41m\"$KTOON_HOME\"\033[0;0m (y/n)? "
+		read SN
 	
-	case $SN in
-		y|yes|si|s) ktinstall ;;
-	esac
+		case $SN in
+			y|yes|si|s) ktinstall ;;
+		esac
+	else
+		ktinstall
+	fi
 }
 
 function usage()
@@ -264,15 +276,15 @@ function usage()
 	echo "Usage: `basename $0` [option]"
 	echo
 	echo "Options: "
-	echo "	-p [PREFIX]"
+	echo "	-p,--prefix [PREFIX]"
 	echo "	   Set the prefix"
-	echo "	-d"
+	echo "	-d,--debug"
 	echo "	   Activate debug"
-	echo "	-o"
+	echo "	-o,--use-opengl"
 	echo "	   Compile the opengl version"
-	echo "	-Y"
+	echo "	-Y,--assume-yes"
 	echo "	   Assume yes"
-	echo "	-h"
+	echo "	-h,--help"
 	echo "	   This message"
 	echo
 	exit 0
@@ -286,18 +298,22 @@ then
 	fi
 fi
 
-while getopts "p:doYh" opt
+
+TEMP=`getopt -o p:doYh:: --long prefix:,help,debug,use-opengl::,assume-yes -n "$0" -- "$@"`
+
+eval set -- "$TEMP"
+while [ true ]
 do
-	case $opt in
-		h) usage ;;
-		p) KTOON_HOME=$OPTARG ;;
-		d) OPTION_NODEBUG=0 ;;
-		o) OPTION_GL=1 ;;
-		Y) ASSUME_YES=1 ;;
+        case "$1" in
+		-h|--help) usage; shift;;
+		-p|--prefix) KTOON_HOME=$2; shift 2 ;;
+		-d|--debug) OPTION_NODEBUG=0; shift ;;
+		-o|--use-opengl) OPTION_GL=1; shift ;;
+		-Y|--assume-yes) ASSUME_YES=1; OPTION_NODEBUG=1; OPTION_GL=1; shift ;; 
+		--) shift ; break ;;
+		*) break;
 	esac
 done
-
-shift $(($OPTIND - 1))
 
 if [ ! -f config.h ]
 then

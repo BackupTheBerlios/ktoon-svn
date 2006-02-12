@@ -33,6 +33,7 @@
 
 #include <QPainterPath>
 
+#include "ktgradientadjuster.h"
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
@@ -54,6 +55,8 @@ class AGraphic
 		 * @return 
 		 */
 		~AGraphic();
+		
+		void mapTo(const QMatrix& matix);
 		
 		QPainterPath path;
 		QBrush brush;

@@ -45,22 +45,21 @@ class KTLayerExposure : public QFrame
 	public:
 		KTLayerExposure(const QString &initial_text, int id,int numFrame, QWidget *parent = 0);
 		~KTLayerExposure();
-		QString textHeader();
-		
 		void insertFrame(int id, const QString &text );
 		enum KTTAction{ RenameLayer = 0, RemoveThisLayer, InsertFrames, RemoveThisFrame};
 		
 		void addFrame(const QString &text );
 		bool isSelected();
-		void invertFrames(int id1, int id2);
+		void swapFrames(int id1, int id2);
 		void setId(int id);
+		void setName(const QString & name);
 		int id();
 		bool currentFrameIsUsed();
 		int  numUsedFrame();
 		
 		void selectedFirstFrame();
 		int currentFrame();
-		
+		ListOfFrames frames();
 	private:
 		bool m_selected;
 		int m_id, m_currentFrame,  m_useFrame;
@@ -68,6 +67,10 @@ class KTLayerExposure : public QFrame
 		ListOfFrames m_frames;
 		QMenu *menuLayer;
 		void createMenuRight();
+		
+	public slots:
+		void emitRequestRenameFrame(int indexFrame, const QString& name);
+		void emitRequestRenameLayer(const QString& name);
 		
 	public slots:
 		void setSelected(bool selected = true, QMouseEvent *e = 0);
@@ -84,9 +87,7 @@ class KTLayerExposure : public QFrame
 		void renameCurrentFrame();
 		
 		void removeCurrentFrame();
-		void changedName(const QString  &newName);
 		void applyAction(int action);
-		void frameRename(int, const QString&);
 		
 		void insertFrames();
 		
@@ -98,8 +99,8 @@ class KTLayerExposure : public QFrame
 		void frameSelected(int id);
 		void clickedMenuFrame(int action, int idFrame, int idLayer);
 		void removed(int);
-		void layerRenamed( int idLayer, const QString &name );
-		void frameRenamed( int idFrame, int idLayer, const QString &name );
+		void requestRenameLayer( int idLayer, const QString &name );
+		void requestRenameFrame(  int indexLayer, int indexFrame, const QString &name );
 		
 	protected:
 		QBoxLayout *m_layout;

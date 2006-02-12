@@ -411,6 +411,10 @@ void KTMainWindow::ui4project(QWidget *widget)
 	connect(widget, SIGNAL(requestRemoveLayer(int)), m_projectManager, SLOT(removeLayer(int)));
 	
 	connect(widget, SIGNAL(requestMoveLayer(bool)), m_projectManager, SLOT(moveLayer(bool)));
+	
+	connect(widget, SIGNAL(requestRenameLayer(int, const QString &)), m_projectManager, SLOT(renameLayer(int , const QString &)));
+	
+	connect(widget, SIGNAL(requestRenameFrame(int, int, const QString &)), m_projectManager, SLOT(renameFrame(int, int, const QString &)));
 }
 
 void KTMainWindow::messageToStatus(const QString &msg)

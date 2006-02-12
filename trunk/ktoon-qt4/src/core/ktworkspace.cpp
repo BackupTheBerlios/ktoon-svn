@@ -25,9 +25,20 @@
 
 #include "ktdebug.h"
 
+#include <QLinearGradient>
+
 KTWorkspace::KTWorkspace(QWidget *parent) : QWorkspace(parent)
 {
 	setAcceptDrops( true );
+	
+// 	QPalette pal = palette();
+// 	
+// 	QLinearGradient gradient(0, 0, width(), height());
+// 	gradient.setColorAt(1, pal.background().color());
+// 	gradient.setColorAt(0.5, pal.foreground().color());
+// 	gradient.setColorAt(0, pal.highlight().color());	
+// 	
+// 	setBackground(gradient);
 }
 
 

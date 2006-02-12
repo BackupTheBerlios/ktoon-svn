@@ -78,6 +78,7 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 		}
 		else if ( qname == "Layer" )
 		{
+			m_components.clear();
 			emit createLayer();
 		}
 		else if ( qname == "Frame")
@@ -144,24 +145,24 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 			m_gradientStops.clear();
 			
 			QGradient::Type type = QGradient::Type(atts.value("type").toInt());
-// 			QGradient::Spread spread = QGradient::Type(atts.value("spread").toInt());
+			QGradient::Spread spread = QGradient::Spread(atts.value("spread").toInt());
 			
 			switch( type )
 			{
 				
 				case QGradient::LinearGradient:
 				{
-					m_gradient = new QLinearGradient(0,0,0,0);
+					m_gradient = new QLinearGradient(atts.value("startX").toDouble(),atts.value("startY").toDouble(),atts.value("finalX").toDouble(), atts.value("finalY").toDouble());
 				}
 				break;
 				case QGradient::RadialGradient:
 				{
-					m_gradient = new QRadialGradient(0,0,0);
+					m_gradient = new QRadialGradient(atts.value("centerX").toDouble(),atts.value("centerY").toDouble(), atts.value("radius").toDouble(),atts.value("focalX").toDouble(),atts.value("focalY").toDouble() );
 				}
 				break;
 				case QGradient::ConicalGradient:
 				{
-					m_gradient = new QConicalGradient(0,0,0);
+					m_gradient = new QConicalGradient(atts.value("centerX").toDouble(),atts.value("centerY").toDouble(),atts.value("angle").toDouble());
 				}
 				break;
 				default:
@@ -170,6 +171,8 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 				}
 				break;
 			}
+			
+			m_gradient->setSpread(spread);
 			
 			
 		}
@@ -196,9 +199,13 @@ bool KTProjectParser::endElement(const QString&, const QString& , const QString&
 		}
 		else if ( qname == "Frame")
 		{
-			foreach(AGraphicComponent *component, m_components)
+// 			foreach(AGraphicComponent *component, m_components)
+// 			{
+// 				emit createComponent( component);
+// 			}
+			while ( m_components.count() )
 			{
-				emit createComponent( component);
+				emit createComponent( m_components.takeAt(0));
 			}
 		}
 		else if ( qname == "Graphic" )
@@ -211,20 +218,31 @@ bool KTProjectParser::endElement(const QString&, const QString& , const QString&
 		{
 			m_tagCounter--;
 			
-			if ( m_tagCounter != 0 )
+			AGraphicComponent *root = m_components.last();
+			if ( m_tagCounter == 0 )
 			{
-				AGraphicComponent *child = new AGraphicComponent;
-				if ( ! m_partName.isNull() )
-				{
-					child->setComponentName( m_partName);
-				}
-				
 				foreach(AGraphic *graphic, m_graphics)
 				{
-					child->addGraphic(graphic->path, graphic->pen, graphic->brush);
+					root->addGraphic(graphic->path, graphic->pen, graphic->brush);
 				}
-				
-				m_components.last()->addChild(child);
+			}
+			
+			if ( m_tagCounter != 0 )
+			{
+				{
+					AGraphicComponent *child = new AGraphicComponent;
+					if ( ! m_partName.isNull() )
+					{
+						child->setComponentName( m_partName);
+					}
+					
+					foreach(AGraphic *graphic, m_graphics)
+					{
+						child->addGraphic(graphic->path, graphic->pen, graphic->brush);
+					}
+					
+					root->addChild(child);
+				}
 			}
 			
 // 			emit createComponent( component );

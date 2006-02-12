@@ -275,15 +275,6 @@ void AAnimationArea::renderGraphic(const AGraphicComponent *graphicComponent, QP
 	{
 		QPen pen = graphic->pen;
 		QBrush brush = graphic->brush;
-		if ( brush.gradient() )
-		{
-			brush = KTGradientAdjuster::adjustGradient(brush.gradient(), graphic->path.boundingRect().toRect());
-		}
-	
-		if ( pen.brush().gradient() )
-		{
-			pen.setBrush( KTGradientAdjuster::adjustGradient( pen.brush().gradient(), graphic->path.boundingRect().toRect()) );
-		}
 		
 		painter->setPen(pen);
 		painter->setBrush(brush);

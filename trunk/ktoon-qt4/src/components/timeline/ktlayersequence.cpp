@@ -111,18 +111,16 @@ void KTLayerSequence::selectLayer(KTTimeLineLayer *tm)
 
 void KTLayerSequence::moveLayerUp()
 {
-	int cRow = currentRow();
+	int cRow = currentVisualRow();
+	SHOW_VAR(cRow);
 	moveItemUp( cRow );
-	
-// 	setItemSelected( itemAt(currentRow(), 0), true );
 }
 
 void KTLayerSequence::moveLayerDown()
 {
-	int cRow = currentRow();
+	int cRow = currentVisualRow();
+	SHOW_VAR(cRow);
 	moveItemDown( cRow);
-	
-// 	setItemSelected( itemAt(currentRow(), 0), true );
 }
 
 void KTLayerSequence::displayMenu(KTTimeLineLayer *ly, const QPoint &pos)

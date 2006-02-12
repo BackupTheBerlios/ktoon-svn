@@ -45,17 +45,44 @@ class QPalette;
 
 typedef QMap<QString, QString> ParseArgs;
 
+#if 0
+* @if english
+* Translate
+* @endif
+* @if spanish
+* 
+* @endif
+#endif
 /**
+ * @if english
+ * Translate
+ * @endif
+ * @if spanish
+ * Esta clase sirve para controlar y proveer informacion a las demas clases y modulos de la aplicacion
+ * @endif
+ * 
  * @author David Cuadrado
- * @TODO:
- * - We need have a cache directory (like /tmp in un*x)
+ * @TODO
+ * @li We need have a cache directory (like /tmp in un*x)
 */
-class KTApplication : public QApplication
+class Q_GUI_EXPORT KTApplication : public QApplication
 {
 	Q_OBJECT
 	public:
 		enum ColorSchema { Default = 0, DarkBlue };
+		/**
+		 * @if english
+		 * Translate
+		 * @endif
+		 * @if spanish
+		 * Construye KTApplication con los argumentos y el numero de argumentos que recibe la aplicacion por la linea de comandos
+		 * @endif
+		 * @param argc 
+		 * @param argv 
+		 * @return 
+		 */
 		KTApplication(int & argc, char ** argv);
+		
 		~KTApplication();
 		QString home();
 		void setHome(const QString &home);

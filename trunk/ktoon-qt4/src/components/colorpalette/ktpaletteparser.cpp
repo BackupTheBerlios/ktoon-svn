@@ -72,22 +72,21 @@ bool KTPaletteParser::startElement( const QString& , const QString& , const QStr
 			
 			QGradient::Type type = QGradient::Type(atts.value("type").toInt());
 			QGradient::Spread spread = QGradient::Spread(atts.value("spread").toInt());
-			
 			switch( type )
 			{
 				case QGradient::LinearGradient:
 				{
-					m_gradient = new QLinearGradient(0,0,0,0);
+					m_gradient = new QLinearGradient(atts.value("startX").toDouble(),atts.value("startY").toDouble(),atts.value("finalX").toDouble(), atts.value("finalY").toDouble());
 				}
 				break;
 				case QGradient::RadialGradient:
 				{
-					m_gradient = new QRadialGradient(0,0,0);
+					m_gradient = new QRadialGradient(atts.value("centerX").toDouble(),atts.value("centerY").toDouble(), atts.value("radius").toDouble(),atts.value("focalX").toDouble(),atts.value("focalY").toDouble() );
 				}
 				break;
 				case QGradient::ConicalGradient:
 				{
-					m_gradient = new QConicalGradient(0,0,0);
+					m_gradient = new QConicalGradient(atts.value("centerX").toDouble(),atts.value("centerY").toDouble(),atts.value("angle").toDouble());
 				}
 				break;
 				default:
@@ -95,8 +94,9 @@ bool KTPaletteParser::startElement( const QString& , const QString& , const QStr
 					ktFatal() << "No gradient type: " << type;
 				}
 				break;
-				m_gradient->setSpread(spread);
+				
 			}
+			m_gradient->setSpread(spread);
 		}
 		else if ( qname == "Stop" )
 		{

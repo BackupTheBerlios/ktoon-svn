@@ -218,6 +218,12 @@ void KTMainWindow::createGUI()
 	connect(m_projectManager, SIGNAL(layerRemoved(int )), this, SLOT(removeLayer(int)));
 	connect(m_projectManager, SIGNAL(layerSelected(int )), this, SLOT(selectLayer(int)));
 	connect(m_projectManager, SIGNAL(layerMoved(bool)), this, SLOT(moveLayer(bool)));
+	
+	
+	connect(m_projectManager, SIGNAL(layerRenamed(int, const QString & )), this, SLOT(setLayerName(int, const QString &)));
+	
+	connect(m_projectManager, SIGNAL(frameRenamed(int , int , const QString & )), this, SLOT(setFrameName( int, int, const QString& )));
+	
 }
 
 void KTMainWindow::connectToDisplays(const QWidget *widget)

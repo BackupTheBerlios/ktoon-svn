@@ -18,13 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+
 #ifndef ASPELLIFACE_H
 #define ASPELLIFACE_H
+
+#include <config.h>
+
+#ifdef HAVE_ASPELL
 
 #include <QStringList>
 #include <QString>
 
 #include "spellinterface.h"
+
 
 struct AspellSpeller;
 
@@ -48,3 +54,5 @@ class AspellIface : public SpellInterface
 };
 
 #endif
+
+#endif // HAVE_ASPELL

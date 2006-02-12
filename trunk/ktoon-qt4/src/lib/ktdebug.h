@@ -61,6 +61,12 @@ class QVariant;
 class QPixmap;
 class QIcon;
 class QImage;
+
+class QLinearGradient;
+class QRadialGradient;
+class QConicalGradient;
+class QGradient;
+
 template <class T> class QList;
 
 enum DebugType
@@ -264,6 +270,12 @@ class KTDebug
 		KTDebug& operator<<( const QVariant & );
 		KTDebug& operator << (const QWidget*);
 		KTDebug& operator << (const QEvent*);
+		
+		KTDebug& operator << (const QLinearGradient &);
+		KTDebug& operator << (const QRadialGradient &);
+		KTDebug& operator << (const QConicalGradient &);
+		KTDebug& operator << (const QGradient *);
+		
 		
 		template <class T> KTDebug& operator << ( const QList<T> &list );
 		

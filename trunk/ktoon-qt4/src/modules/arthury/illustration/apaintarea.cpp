@@ -298,15 +298,15 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter
 	{
 		QPen pen = graphic->pen;
 		QBrush brush = graphic->brush;
-		if ( brush.gradient() )
-		{
-			brush = KTGradientAdjuster::adjustGradient(brush.gradient(), graphic->path.boundingRect().toRect());
-		}
-	
-		if ( pen.brush().gradient() )
-		{
-			pen.setBrush( KTGradientAdjuster::adjustGradient( pen.brush().gradient(), graphic->path.boundingRect().toRect()) );
-		}
+// 		if ( brush.gradient() )
+// 		{
+// // 			brush = KTGradientAdjuster::translateGradient(brush.gradient(), graphic->path.boundingRect().toRect());
+// 		}
+// 	
+// 		if ( pen.brush().gradient() )
+// 		{
+// // 			pen.setBrush( KTGradientAdjuster::translateGradient( pen.brush().gradient(), graphic->path.boundingRect().toRect()) );
+// 		}
 	
 		if ( intensitive < 1 && intensitive >= 0 )
 		{

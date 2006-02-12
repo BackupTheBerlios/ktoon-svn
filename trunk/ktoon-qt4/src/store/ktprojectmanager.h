@@ -241,6 +241,18 @@ class KTProjectManager : public KTSerializableObject
 		 */
 		void lockCurrentFrame();
 		
+		
+		/**
+		 * Renombra un Layer 
+		*/
+		void renameLayer(int indexLayer, const QString & name);
+		
+		/**
+		 * Renombra un Frame 
+		 */
+		void renameFrame(int indexLayer, int indexFrame, const QString & name);
+		
+		
 	private slots:
 		// Layers
 		void emitLayerVisibility(bool);
@@ -291,6 +303,11 @@ class KTProjectManager : public KTSerializableObject
 		 */
 		void layerMoved(bool up);
 		
+		/**
+		 * Este signal se emite cuando un layer ha sido renombrado
+		 */
+		void layerRenamed(int indexLayer, const QString & name);
+		
 		// Frames
 		/**
 		 * Este signal se emite cuando un frame es creado
@@ -311,6 +328,12 @@ class KTProjectManager : public KTSerializableObject
 		 * Este signal se emite cuando un frame es bloqueado
 		 */
 		void frameLocked();
+		
+		/**
+		 * este signal se emite cuando un frame es renombrado
+		 */
+		void frameRenamed(int indexLayer, int indexFrame, const QString & name);
+		
 		
 	private:
 		Documents m_documents;
