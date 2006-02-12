@@ -142,20 +142,26 @@ void KTViewDocument::setupEditActions()
 	
 	m_editGroup = new QActionGroup( parent() );
 	KTAction *a = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/cut.png" ), tr( "&Cut" ),  QKeySequence(tr("Ctrl+X")), m_paintAreaContainer->drawArea(), SLOT(cut()),m_actionManager, "cut" );
+	a->setShortcutContext ( Qt::ApplicationShortcut );
 	m_editGroup->addAction(a);
 
 	
 	a = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/copy.png" ), tr( "C&opy" ),  QKeySequence(tr("Ctrl+C")), m_paintAreaContainer->drawArea(), SLOT(copy()), m_actionManager, "copy");
+	
+	a->setShortcutContext ( Qt::ApplicationShortcut );
 	m_editGroup->addAction(a);
 	
 	a->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
 	
 	a = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/paste.png" ), tr( "&Paste" ),   QKeySequence(tr("Ctrl+V")), m_paintAreaContainer->drawArea(), SLOT(paste()), m_actionManager, "paste");
+	
+	a->setShortcutContext ( Qt::ApplicationShortcut );
 	m_editGroup->addAction(a);
 	a->setStatusTip(tr("Pastes the clipboard into the current document"));
 	
 	a = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/delete.png" ), tr( "&Delete" ), QKeySequence( Qt::Key_Delete ), m_paintAreaContainer->drawArea(), SLOT(removeSelectsGraphics()), m_actionManager, "delete");
 	m_editGroup->addAction(a);
+	a->setShortcutContext ( Qt::ApplicationShortcut );
 	a->setStatusTip(tr("Deletes the selected object"));
 	
 	

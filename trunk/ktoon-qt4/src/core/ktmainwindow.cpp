@@ -21,18 +21,17 @@
 #include "ktmainwindow.h"
 
 #include "ktnewproject.h"
-
-#include "ktdebug.h"
-#include "kimageeffect.h"
-
-#include "ktapplication.h"
 #include "ktabout.h"
-
 #include "kthelpbrowser.h"
 
-#include "ktpaletteimporter.h"
+#include "ktpackagehandler.h"
 
+// KToonLib
+#include "ktpaletteimporter.h"
 #include "kttip.h"
+#include "ktdebug.h"
+#include "kimageeffect.h"
+#include "ktapplication.h"
 
 // dlslib
 #include "dtabwidget.h"
@@ -135,7 +134,7 @@ void KTMainWindow::createNewProject(const QString &name, const QSize &size, cons
 	
 	m_projectManager->init();
 	
-	KTDocument *document = m_projectManager->createDocument(name);
+	/*KTDocument *document = */m_projectManager->createDocument(name);
 	m_projectManager->setCurrentDocument(0);
 	
 // 	newViewDocument( name, size);
@@ -437,3 +436,37 @@ void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 	page->setSource( filePath);
 	addWidget( page, tr("Help:%1").arg(title) );
 }
+
+void KTMainWindow::importPackage()
+{
+	QString package = QFileDialog::getOpenFileName ( this, tr("Import project package"), KTOON_REPOSITORY, "KToon Project Package (*.ktpp)");
+	
+	if ( package.isEmpty() ) return;
+	
+	KTPackageHandler packageHandler;
+
+	if ( packageHandler.importPackage(package) )
+	{
+		closeProject();
+		m_projectManager->load( packageHandler.importedProjectPath() );
+	}
+}
+
+void KTMainWindow::makePackage()
+{
+	QString package = QFileDialog::getSaveFileName ( this, tr("Build project package"), KTOON_REPOSITORY, "KToon Project Package (*.ktpp)");
+	
+	if ( package.isEmpty() ) return;
+	
+	if( !package.endsWith(".ktpp"))
+	{
+		package += ".ktpp";
+	}
+	
+	KTPackageHandler packageHandler;
+	
+	packageHandler.makePackage(KTOON_REPOSITORY+"/"+m_projectManager->projectName(), package);
+
+}
+
+

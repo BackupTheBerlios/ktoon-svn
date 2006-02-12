@@ -489,6 +489,11 @@ void KTProjectManager::setProjectName(const QString &name)
 	m_name = name;
 }
 
+QString KTProjectManager::projectName() const
+{
+	return m_name;
+}
+
 void  KTProjectManager::setDocumentSize(const QSize& size )
 {
 	m_size = size;

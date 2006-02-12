@@ -40,6 +40,11 @@ void KTMainWindow::setupMenu()
 	m_fileMenu->addAction(m_actionManager->find("SaveAs"));
 	m_fileMenu->addAction(m_actionManager->find("Close"));
 	m_fileMenu->addSeparator();
+	
+	m_fileMenu->addAction(m_actionManager->find("openpkg"));
+	m_fileMenu->addAction(m_actionManager->find("makepkg"));
+	
+	m_fileMenu->addSeparator();
 	m_fileMenu->addAction(m_actionManager->find("Import"));
 	m_fileMenu->addAction(m_actionManager->find("ImportPalettes"));
 	
@@ -254,6 +259,11 @@ void KTMainWindow::setupFileActions()
 	KTAction *close = new KTAction(QPixmap(KTOON_THEME_DIR+"/icons/close.png"), tr( "Cl&ose" ), QKeySequence(tr("Ctrl+W")), m_actionManager, "Close");
 	close->setStatusTip(tr("Closes the active document"));
 	
+	
+	KTAction *openPkg = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/import.png"), tr( "Import package..." ),  QKeySequence(), this, SLOT(importPackage()), m_actionManager, "openpkg"); // FIXME: Icons
+	
+	KTAction *makePkg = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/export.png"), tr( "Make package..." ),  QKeySequence(), this, SLOT(makePackage()), m_actionManager, "makepkg"); // FIXME: Icons
+	
 	KTAction *import = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/import.png"), tr( "&Import..." ),  QKeySequence(tr("Ctrl+I")), this, SLOT(import()), m_actionManager, "Import");
 // 	connect(import, SIGNAL(activated()), this, SLOT(import()));
 	import->setStatusTip(tr("Imports a file in the supported format"));
@@ -276,28 +286,28 @@ void KTMainWindow::setupFileActions()
 
 void KTMainWindow::setupEditActions()
 {
-	KTAction * undo = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/undo.png"), tr( "Undo" ), QKeySequence("Ctrl+Z"), this, SLOT(slotUndo()), m_actionManager, "undo");
+	KTAction * undo = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/undo.png"), tr( "Undo" ), QKeySequence(/*"Ctrl+Z"*/), this, SLOT(slotUndo()), m_actionManager, "undo");
 	undo->setStatusTip(tr("Undoes the last draw action"));
 	
-	KTAction *redo = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/redo.png"), tr( "Redo" ), QKeySequence("CTRL+SHIFT+Z"), this, SLOT(slotRedo()), m_actionManager, "redo");
+	KTAction *redo = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/redo.png"), tr( "Redo" ), QKeySequence(/*"CTRL+SHIFT+Z"*/), this, SLOT(slotRedo()), m_actionManager, "redo");
 	redo->setStatusTip(tr("Redoes a previous undone action"));
 	
-	KTAction *cut = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/cut.png"), tr( "&Cut" ), QKeySequence("Ctrl+X"), this, SLOT(slotCut()), m_actionManager, "cut");
+	KTAction *cut = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/cut.png"), tr( "&Cut" ), QKeySequence(/*"Ctrl+X"*/), this, SLOT(slotCut()), m_actionManager, "cut");
 	cut->setStatusTip(tr("Cuts the selection and puts it onto the clipboard"));
 	
-	KTAction *copy = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/copy.png"), tr( "C&opy" ), QKeySequence("Ctrl+C"), this, SLOT(slotCopy()), m_actionManager, "copy");
+	KTAction *copy = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/copy.png"), tr( "C&opy" ), QKeySequence(/*"Ctrl+C"*/), this, SLOT(slotCopy()), m_actionManager, "copy");
 	copy->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
 	
-	KTAction *paste = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/paste.png"), tr( "&Paste" ), QKeySequence("Ctrl+V"), this, SLOT(slotPaste()), m_actionManager, "paste");
+	KTAction *paste = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/paste.png"), tr( "&Paste" ), QKeySequence(/*"Ctrl+V"*/), this, SLOT(slotPaste()), m_actionManager, "paste");
 	paste->setStatusTip(tr("Pastes the clipboard into the current document"));
 	
-	KTAction *pasteInPlace = new KTAction( tr(  "Paste &In Place" ),  QKeySequence("Ctrl+Shift+V"), this, SLOT(slotPasteInPlace()), m_actionManager, "paste in place");
+	KTAction *pasteInPlace = new KTAction( tr(  "Paste &In Place" ),  QKeySequence(/*"Ctrl+Shift+V"*/), this, SLOT(slotPasteInPlace()), m_actionManager, "paste in place");
 	pasteInPlace->setStatusTip(tr("Pastes the clipboard into the same place as the copy was did"));
 	
-	KTAction * adelete = new KTAction( tr(  "&Delete" ), Qt::Key_Delete , this, SLOT(slotDelete()), m_actionManager, "delete");
+	KTAction * adelete = new KTAction( tr(  "&Delete" ), QKeySequence()/*Qt::Key_Delete*/ , this, SLOT(slotDelete()), m_actionManager, "delete");
 	adelete->setStatusTip(tr("Deletes the selected object"));
 	
-	KTAction * selectAll = new KTAction( tr(  "&Select All" ),  tr("Ctrl+A"), this, SLOT(slotSelectAll()), m_actionManager, "select all");
+	KTAction * selectAll = new KTAction( tr(  "&Select All" ), QKeySequence(/*tr("Ctrl+A")*/), this, SLOT(slotSelectAll()), m_actionManager, "select all");
 	selectAll->setStatusTip(tr("Selects all objects in the document"));
 	
 	KTAction *wizard = new KTAction( tr( "Launch configuration wizard..." ), QKeySequence(), qobject_cast<KTApplication*>(qApp), SLOT(firstRun()), m_actionManager, "wizard");

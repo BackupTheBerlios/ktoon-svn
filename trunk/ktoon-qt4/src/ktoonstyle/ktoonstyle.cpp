@@ -478,24 +478,24 @@ int KToonStyle::pixelMetric(PixelMetric pm, const QStyleOption *opt, const QWidg
 	{
 		case QStyle::PM_DockWidgetSeparatorExtent:
 		{
-			return 0;
+			return 1;
 		}
 		break;
-		case QStyle::PM_DockWidgetHandleExtent:
-		{
-			return 0;
-		}
-		break;
-		case QStyle::PM_DockWidgetFrameWidth:
-		{
-			return 0;
-		}
-		break;
-		case QStyle::PM_DockWidgetTitleMargin:
-		{
-			return 0;
-		}
-		break;
+// 		case QStyle::PM_DockWidgetHandleExtent:
+// 		{
+// 			return 0;
+// 		}
+// 		break;
+// 		case QStyle::PM_DockWidgetFrameWidth:
+// 		{
+// 			return 0;
+// 		}
+// 		break;
+// 		case QStyle::PM_DockWidgetTitleMargin:
+// 		{
+// 			return 0;
+// 		}
+// 		break;
 		default: break;
 	}
 	

@@ -138,7 +138,6 @@ void KTOsd::mousePressEvent( QMouseEvent * /*e*/ )
 
 void KTOsd::animate()
 {
-	KT_FUNCINFO;
 	if ( !isVisible() )
 	{
 		m_animator->timer.stop();

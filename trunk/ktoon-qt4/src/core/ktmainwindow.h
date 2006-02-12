@@ -146,7 +146,11 @@ class KTMainWindow : public DMainWindow
 		void importPalettes();
 		void connectToDisplays(const QWidget *widget);
 		
-	private slots:
+		void importPackage();
+		void makePackage();
+		
+		
+	private slots: // defined in ktmainwindow-project.cpp
 		// Graphic Components
 		void rotateCurrentElement(int a);
 		void scaleCurrentElement(double dx,double dy);

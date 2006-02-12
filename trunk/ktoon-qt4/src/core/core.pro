@@ -30,7 +30,8 @@ TARGETDEPS += ../../src/dlslib/libdlslib.a \
               ../../src/store/libstore.so \
               ../../src/ktoonstyle/libktoonstyle.a \
               ../../src/components/export/ui/libui.a \
-              ../../src/components/kinas/libkinas.a 
+              ../../src/components/kinas/libkinas.a \
+              ../../3rdparty/quazip/libquazip.a 
 LIBS += ../../src/ktoonstyle/libktoonstyle.a \
         ../../src/dialogs/libdialogs.a \
         ../../src/components/brushes/libbrushes.a \
@@ -48,7 +49,8 @@ LIBS += ../../src/ktoonstyle/libktoonstyle.a \
         ../../src/components/help/libhelp.a \
         -lstore \
         ../../src/components/export/ui/libui.a \
-        ../../src/components/kinas/libkinas.a 
+        ../../src/components/kinas/libkinas.a \
+        ../../3rdparty/quazip/libquazip.a 
 INCLUDEPATH += ../../src/ktoonstyle \
                ../../src/modules/arthury/interfaces \
                ../../src/modules/arthury/animation \
@@ -68,7 +70,8 @@ INCLUDEPATH += ../../src/ktoonstyle \
                ../../src/store \
                ../../src/dlslib \
                ../../src/lib \
-               ../../src/interfaces 
+               ../../src/interfaces \
+               ../../3rdparty/quazip 
 MOC_DIR = .moc 
 UI_DIR = .ui 
 OBJECTS_DIR = .obj 
@@ -94,7 +97,8 @@ HEADERS += ktdocumentruler.h \
            ktsplash.h \
            crashhandler.h \
            crashwidget.h \
-           ktworkspace.h 
+           ktworkspace.h \
+           ktpackagehandler.h 
 SOURCES += main.cpp \
            ktdocumentruler.cpp \
            ktviewdocument.cpp \
@@ -110,4 +114,5 @@ SOURCES += main.cpp \
            ktsplash.cpp \
            crashhandler.cpp \
            crashwidget.cpp \
-           ktworkspace.cpp 
+           ktworkspace.cpp \
+           ktpackagehandler.cpp 

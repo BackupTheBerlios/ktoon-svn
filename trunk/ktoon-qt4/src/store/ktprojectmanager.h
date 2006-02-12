@@ -59,6 +59,17 @@ class KTProjectManager : public KTSerializableObject
 		void setProjectName(const QString &name);
 		
 		/**
+		 * @if spanish
+		 * Retorna el nombre del proyecto
+		 * @endif
+		 * 
+		 * @if english
+		 * Returns project name
+		 * @endif
+		 */
+		QString projectName() const;
+		
+		/**
 		 * Pone el tipo de render del proyecto
 		 */
 		void setProjectRender( const QString &typeRender);

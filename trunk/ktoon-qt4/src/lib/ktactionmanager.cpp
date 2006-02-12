@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "ktactionmanager.h"
+#include "ktdebug.h"
 
 KTActionManager::KTActionManager(QWidget *parent) : QObject(parent), m_widget(0)
 {
@@ -71,7 +72,14 @@ QAction *KTActionManager::take( KTAction* action )
 
 QAction *KTActionManager::find(const QString &id) const
 {
-	return m_actionDict[id.toLower()];
+	QAction *action = m_actionDict[id.toLower()];
+	
+	if ( action == 0)
+	{
+		ktError() << "KTActionManager::find(): Returning NULL action: " << id;
+	}
+	
+	return action;
 }
 
 QAction *KTActionManager::operator[](const QString &id) const
