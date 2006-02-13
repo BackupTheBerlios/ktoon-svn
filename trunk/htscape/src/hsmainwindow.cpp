@@ -42,7 +42,9 @@ HSMainWindow::HSMainWindow() : QMainWindow()
 	help->addAction(tr("About Qt..."), qApp, SLOT(aboutQt()));
 	
 	
-	QHBoxLayout *layout = new QHBoxLayout(container);
+	QVBoxLayout *mainLayout = new QVBoxLayout(container);
+	
+	QHBoxLayout *layout = new QHBoxLayout();
 	
 	m_source = new QTextEdit;
 	layout->addWidget( m_source );
@@ -51,6 +53,12 @@ HSMainWindow::HSMainWindow() : QMainWindow()
 	
 	m_destiny = new QTextBrowser;
 	layout->addWidget( m_destiny );
+	
+	mainLayout->addLayout( layout );
+	
+	m_result = new QTextBrowser;
+	mainLayout->addWidget( m_result );
+	
 	
 	setCentralWidget( container );
 	
@@ -69,6 +77,11 @@ void HSMainWindow::convertSource()
 	text.replace( '\n', Qt::escape("<br>") );
 	
 	m_destiny->setPlainText( text );
+	
+	QString result = m_source->toPlainText();
+	result.replace('\n', "<br>");
+	
+	m_result->setHtml(result);
 }
 
 

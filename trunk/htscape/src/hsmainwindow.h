@@ -49,6 +49,7 @@ class HSMainWindow : public QMainWindow
 	private:
 		QTextEdit *m_source;
 		QTextBrowser *m_destiny;
+		QTextBrowser *m_result;
 };
 
 #endif
