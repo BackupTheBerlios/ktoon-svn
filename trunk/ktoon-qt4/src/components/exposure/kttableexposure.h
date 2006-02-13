@@ -42,7 +42,7 @@ class KTTableExposure : public QScrollArea
 {
 	Q_OBJECT
 	public:
-		enum Direction {Up = 0, Down};
+		enum Direction {Up = 0, Down, Left, Right};
 		
 		enum KTTAction{ RenameFrame = 0, RemoveThisFrame, LockThisFrame, CopyThisFrame, PasteIntoFrame};
 		KTTableExposure(int rows, int cols, QWidget *parent = 0);
@@ -50,8 +50,8 @@ class KTTableExposure : public QScrollArea
 		
 		void setUseFrame(int idLayer, const QString& name, bool addedToEnd );
 		
-		
 		void moveCurrentFrame(Direction dir);
+		void moveCurrentLayer(Direction dir);
 		
 		void removeCurrentLayer();
 		void insertFrames();

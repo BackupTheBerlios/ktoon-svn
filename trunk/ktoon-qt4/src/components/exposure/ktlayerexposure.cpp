@@ -243,25 +243,40 @@ void KTLayerExposure::removeFrame(int id)
 void KTLayerExposure::moveCurrentFrameUp()
 {
 	int pos = m_layout->indexOf(m_frames[m_currentFrame]);
-	if(pos != 1)
+	if(pos > 1)
 	{
-		if(m_frames[m_currentFrame]->isUsed())
-		{
-			m_layout->removeWidget(m_frames[m_currentFrame]);
-			m_layout->insertWidget(pos-1, m_frames[m_currentFrame], 10);
-		}
+		QString name =  m_frames[m_currentFrame]->name();
+		QString name2 = m_frames[m_currentFrame-1]->name();
+		m_frames[m_currentFrame]->blockSignals(true);
+		m_frames[m_currentFrame-1]->blockSignals(true);
+		m_frames[m_currentFrame]->setName(name2);
+		m_frames[m_currentFrame-1]->setName(name);
+		m_frames[m_currentFrame-1]->setSelected(true);
+		m_frames[m_currentFrame]->setSelected(false);
+		m_frames[m_currentFrame]->blockSignals(false);
+		m_frames[m_currentFrame-1]->blockSignals(false);
+		m_currentFrame = m_currentFrame-1;
 	}
 }
 
 void KTLayerExposure::moveCurrentFrameDown()
 {
 	int pos = m_layout->indexOf(m_frames[m_currentFrame]);
-	int idFrame = m_frames[pos+1]->id();
+	int idFrame = m_frames[pos+1]->id()-1;
 	
 	if( m_frames[idFrame-1]->isUsed())
 	{
-		m_layout->removeWidget(m_frames[m_currentFrame]);
-		m_layout->insertWidget(pos+1, m_frames[m_currentFrame], 10);
+		QString name =  m_frames[m_currentFrame]->name();
+		QString name2 = m_frames[idFrame]->name();
+		m_frames[m_currentFrame]->blockSignals(true);
+		m_frames[idFrame]->blockSignals(true);
+		m_frames[m_currentFrame]->setName(name2);
+		m_frames[idFrame]->setName(name);
+		m_frames[idFrame]->setSelected(true);
+		m_frames[m_currentFrame]->setSelected(false);
+		m_frames[m_currentFrame]->blockSignals(false);
+		m_frames[idFrame]->blockSignals(false);
+		m_currentFrame = idFrame;
 	}
 }
 

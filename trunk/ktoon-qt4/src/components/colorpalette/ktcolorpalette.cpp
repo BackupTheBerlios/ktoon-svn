@@ -101,7 +101,7 @@ void KTColorPalette::setupChooserTypeColor()
 
 void KTColorPalette::setupGradienManager()
 {
-	m_gradientManager = new KTGradientManager(this);
+	m_gradientManager = new KTGradientCreator(this);
 	connect(m_gradientManager, SIGNAL(gradientChanged( const QGradient& )), this, SLOT(changeGradient(const QGradient &) ));
 	m_centralWidget->addPage(m_gradientManager,tr("Gradients"));
 	
@@ -167,7 +167,7 @@ void KTColorPalette::setColor(const QColor& color)
 			m_gradientManager->repaint();
 		}
 		
-		if(m_gradientManager->gradientApply() == KTGradientManager::None)
+		if(m_gradientManager->gradientApply() == KTGradientCreator::None)
 		{
 			emit colorChanged( m_outlineAndFillColors->foreground(),m_outlineAndFillColors->background() );
 		}
@@ -234,19 +234,19 @@ void KTColorPalette::changeGradient(const QGradient & gradient)
 {
 	switch(m_gradientManager->gradientApply())
 	{
-		case KTGradientManager::FillAndOutLine:
+		case KTGradientCreator::FillAndOutLine:
 		{
 			ktDebug() << m_gradientManager->gradientApply();
 			emit colorChanged(QBrush(gradient), QBrush(gradient));
 			break;
 		}
-		case KTGradientManager::Fill:
+		case KTGradientCreator::Fill:
 		{
 			ktDebug() << m_gradientManager->gradientApply();
 			emit colorChanged(m_outlineAndFillColors->foreground(), QBrush(gradient));
 			break;
 		}
-		case KTGradientManager::OutLine:
+		case KTGradientCreator::OutLine:
 		{
 			ktDebug() << m_gradientManager->gradientApply();
 			emit colorChanged(QBrush(gradient) ,m_outlineAndFillColors->background());

@@ -27,7 +27,7 @@ GradientConfigurator::GradientConfigurator(QWidget *parent) : QWidget(parent)
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 	
-	m_gradientCreator = new KTGradientManager;
+	m_gradientCreator = new KTGradientCreator;
 	mainLayout->addWidget(m_gradientCreator);
 	
 	connect(m_gradientCreator, SIGNAL(controlArrowAdded()), this, SLOT(chooseColor()));

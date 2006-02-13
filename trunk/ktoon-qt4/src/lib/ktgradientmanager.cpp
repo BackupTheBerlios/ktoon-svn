@@ -24,7 +24,7 @@
 #include <QBoxLayout>
 #include "ktvhbox.h"
 
-KTGradientManager::KTGradientManager(QWidget *parent)
+KTGradientCreator::KTGradientCreator(QWidget *parent)
  : QFrame(parent)
 {
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
@@ -49,11 +49,11 @@ KTGradientManager::KTGradientManager(QWidget *parent)
 	
 	connect(m_selector, SIGNAL(arrowAdded()), this, SIGNAL(controlArrowAdded()));
 	
-	m_controlerSpins = new ControlerSpins(this);
+	m_spinControl = new SpinControl(this);
 	
-	connect(m_controlerSpins, SIGNAL(angleChanged(int)), m_viewer, SLOT(changeAngle(int)));
-	connect(m_controlerSpins, SIGNAL(radiusChanged(int)), m_viewer, SLOT(changeRadius(int)));
-	layout->addWidget(m_controlerSpins);
+	connect(m_spinControl, SIGNAL(angleChanged(int)), m_viewer, SLOT(changeAngle(int)));
+	connect(m_spinControl, SIGNAL(radiusChanged(int)), m_viewer, SLOT(changeRadius(int)));
+	layout->addWidget(m_spinControl);
 	
 	
 	
@@ -93,23 +93,23 @@ KTGradientManager::KTGradientManager(QWidget *parent)
 	m_viewer->changeFocal( QPointF(m_viewer->rect().center().x(), m_viewer->rect().center().y()));
 	setFrameStyle(QFrame::StyledPanel );
 	
-	m_controlerSpins->setSpin( QGradient::Type(0 ));
-	m_controlerSpins->setRadius(50);
+	m_spinControl->setSpin( QGradient::Type(0 ));
+	m_spinControl->setRadius(50);
 }
 
 
-KTGradientManager::~KTGradientManager()
+KTGradientCreator::~KTGradientCreator()
 {
 	KTEND;
 }
 
 
-void KTGradientManager::updateGradient()
+void KTGradientCreator::updateGradient()
 {
 	
 }
 
-KTGradientManager::KTGradientApply KTGradientManager::gradientApply()
+KTGradientCreator::KTGradientApply KTGradientCreator::gradientApply()
 {
 	if( m_fill->isChecked() && m_outLine->isChecked())
 	{
@@ -127,7 +127,7 @@ KTGradientManager::KTGradientApply KTGradientManager::gradientApply()
 	
 }
 
-void KTGradientManager::setCurrentColor(const QColor &color)
+void KTGradientCreator::setCurrentColor(const QColor &color)
 {
 	
 	m_selector->setCurrentColor(color);
@@ -138,65 +138,65 @@ void KTGradientManager::setCurrentColor(const QColor &color)
 	emit gradientChanged(m_viewer->gradient());
 }
 
-int KTGradientManager::gradientType()
+int KTGradientCreator::gradientType()
 {
 	return m_type->currentIndex();
 }
 
 
-void KTGradientManager::changeType(int type)
+void KTGradientCreator::changeType(int type)
 {
 	m_viewer->changeType( type);
 	
-	m_controlerSpins->setSpin( QGradient::Type(type));
+	m_spinControl->setSpin( QGradient::Type(type));
 	adjustSize();
 	emitGradientChanged();
 }
 
-void KTGradientManager::changeSpread(int spread)
+void KTGradientCreator::changeSpread(int spread)
 {
 	m_viewer->setSpread( spread);
 	emitGradientChanged();
 }
 
 
-void KTGradientManager::changeGradient( const QGradientStops& stops )
+void KTGradientCreator::changeGradient( const QGradientStops& stops )
 {
 	m_viewer->changeGradient(stops);
 	emit gradientChanged(m_viewer->gradient());
 }
 
-void KTGradientManager::setGradient(const QGradient & gradient)
+void KTGradientCreator::setGradient(const QGradient & gradient)
 {
 	blockSignals ( true);
 	m_type->setCurrentIndex(gradient.type());
 	m_spread->setCurrentIndex(gradient.spread());
 	m_selector->setStops(gradient.stops());
 	m_viewer->setGradient( &gradient);
-	m_controlerSpins->setSpin( gradient.type() );
+	m_spinControl->setSpin( gradient.type() );
 	if(gradient.type() == QGradient::RadialGradient)
 	{
-		m_controlerSpins->setRadius(  static_cast<const QRadialGradient*>(&gradient)->radius());
+		m_spinControl->setRadius(  static_cast<const QRadialGradient*>(&gradient)->radius());
 	}else if (gradient.type() == QGradient::ConicalGradient)
 	{
-		m_controlerSpins->setAngle(  static_cast<const QConicalGradient*>(&gradient)->angle());
+		m_spinControl->setAngle(  static_cast<const QConicalGradient*>(&gradient)->angle());
 	}
 	blockSignals ( false);
 }
 
-void KTGradientManager::emitGradientChanged()
+void KTGradientCreator::emitGradientChanged()
 {
 	m_viewer->changeGradient(m_selector->gradient().stops());
 	emit gradientChanged(m_viewer->gradient());
 }
 
-QBrush KTGradientManager::currentGradient()
+QBrush KTGradientCreator::currentGradient()
 {
 	return QBrush(m_viewer->gradient());
 }
 
 
-QSize KTGradientManager::sizeHint () const
+QSize KTGradientCreator::sizeHint () const
 {
 	QSize size = QFrame::sizeHint();
 	

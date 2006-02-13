@@ -179,6 +179,42 @@ void KTTableExposure::moveCurrentFrame(Direction dir)
 	}
 }
 
+void KTTableExposure::moveCurrentLayer(Direction dir)
+{
+	ktDebug() << "KTTableExposure::moveCurrentLayer(Direction" << dir << ")";
+	int pos = m_layout->indexOf ( m_layers[m_currentLayer]);
+	if(dir == Left)
+	{
+		if(pos > 0 )
+		{
+			m_layout->removeWidget(m_layers[m_currentFrame]);
+			m_layout->insertWidget(pos-1, m_layers[m_currentFrame]);
+			
+			m_layers[m_currentFrame]->setId(m_currentLayer-1);
+			m_layers[m_currentFrame-1]->setId(m_currentLayer);
+			
+			m_layers.swap ( m_currentLayer, m_currentLayer-1);
+			m_currentLayer--;
+		}
+	}
+	else if(dir == Right)
+	{
+		int idFrame = m_layers[pos]->id();
+		if( pos+1 < m_layers.count() )
+		{
+			m_layout->removeWidget(m_layers[m_currentLayer]);
+			m_layout->insertWidget(pos-1, m_layers[m_currentLayer]);
+			int id1 = m_layers[m_currentLayer+1]->id();
+			int id2 = m_layers[m_currentLayer]->id();
+			m_layers[m_currentLayer]->setId(id1);
+			m_layers[m_currentLayer+1]->setId(id2);
+			m_layers.swap ( id1, id2);
+			m_currentLayer++;
+		}
+		
+	}
+}
+
 void KTTableExposure::lockCurrentFrame()
 {
 	m_layers.at(m_currentLayer)->lockFrame();

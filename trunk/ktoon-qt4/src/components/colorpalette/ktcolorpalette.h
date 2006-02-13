@@ -61,7 +61,7 @@ class KTColorPalette : public KTModuleWidgetBase
 		KTValueColor *m_displayValueColor;
 		KTColorPicker *m_colorPicker;
 		KTLuminancePicker *m_luminancePicker;
-		KTGradientManager *m_gradientManager;
+		KTGradientCreator *m_gradientManager;
 		QLineEdit *m_nameColor;
 		KTDualColorButton *m_outlineAndFillColors;
 		QColor m_currentOutlineColor, m_currentFillColor;

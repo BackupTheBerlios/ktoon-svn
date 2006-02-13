@@ -139,17 +139,14 @@ class KTGradientSelector : public QAbstractSlider
 		
 	protected:
 		virtual void drawContents( QPainter * );
-// 		virtual void drawArrow( QPainter *painter, bool show, const QPoint &pos );
-// 		virtual void drawArrows( QPainter *painter, bool show, QList<qreal> values );
-
 		virtual void valueChange( int value);
 		virtual void paintEvent( QPaintEvent * );
 		virtual void mousePressEvent( QMouseEvent *e );
 		virtual void mouseMoveEvent( QMouseEvent *e );
 		virtual void wheelEvent( QWheelEvent * );
 
-// 		virtual QSize minimumSize() const
-// 		{ return sizeHint(); }
+		virtual QSize minimumSize() const
+		{ return sizeHint(); }
 		virtual void resizeEvent ( QResizeEvent * event );
 		virtual QSize sizeHint() const
 		{

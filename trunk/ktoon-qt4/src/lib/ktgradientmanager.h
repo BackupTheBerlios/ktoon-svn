@@ -38,15 +38,13 @@
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
- * @todo:
- * @li Rename this class to SpinControl
 */
 
-class ControlerSpins: public QGroupBox
+class SpinControl: public QGroupBox
 {
 	Q_OBJECT
 	public:
-		ControlerSpins(const QWidget *parent)
+		SpinControl(const QWidget *parent)
 		{
 			QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
 			layout->setSizeConstraint(QLayout::SetFixedSize);
@@ -64,7 +62,7 @@ class ControlerSpins: public QGroupBox
 			m_angle->setMaximum ( 360 );
 			
 		};
-		~ControlerSpins(){};
+		~SpinControl(){};
 		
 		void setSpin(QGradient::Type type)
 		{
@@ -128,17 +126,15 @@ class ControlerSpins: public QGroupBox
 };
 
 /**
- * @class KTGradientManager
- * @todo
- * @li Rename this class to KTGradientCreator
+ * @class KTGradientCreator
  */
-class KTGradientManager : public QFrame
+class KTGradientCreator : public QFrame
 {
 	Q_OBJECT
 	public:
 		enum KTGradientApply{None=-1, Fill, OutLine, FillAndOutLine };
-		KTGradientManager(QWidget *parent = 0);
-		~KTGradientManager();
+		KTGradientCreator(QWidget *parent = 0);
+		~KTGradientCreator();
 		
 		void setCurrentColor(const QColor &);
 		int gradientType();
@@ -156,7 +152,7 @@ class KTGradientManager : public QFrame
 		KTRadioButtonGroup *m_type, *m_spread ;
 		KTImageButton *m_fill, *m_outLine;
 		QSpinBox *m_radius, *m_angle;
-		ControlerSpins *m_controlerSpins;
+		SpinControl *m_spinControl;
 		
 	public slots:
 		void changeType(int type);
@@ -168,7 +164,6 @@ class KTGradientManager : public QFrame
 	signals:
 		void gradientChanged(const QGradient &);
 		void controlArrowAdded();
-		
 };
 
 #endif
