@@ -20,13 +20,14 @@ STAT_FILE=/tmp/ktoon_stat_file-$RANDOM
 
 function fails ()
 {
+	echo 'END=-1' > $STAT_FILE
+
 	echo 
 	qperror $*
 	echo "------ dmesg --------" >> $LOG_FILE
 	echo `dmesg | tail -n 10` >> $LOG_FILE
 	echo "---------------------" >> $LOG_FILE
 	echo "Send the file $LOG_FILE to $EMAIL"
-	echo 'END=-1' > $STAT_FILE
 
 	return -1
 }

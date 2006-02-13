@@ -39,6 +39,8 @@ TextConfigurator::TextConfigurator(QWidget *parent) : QWidget(parent)
 	m_text = new QTextEdit(this);
 	layout->addWidget(m_text);
 	
+	layout->addStretch(1);
+	
 	connect(m_fontChooser, SIGNAL(fontChanged()), this, SLOT(changeFont()));
 	
 	new SpellHighlighter(m_text->document());

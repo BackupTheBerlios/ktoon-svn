@@ -46,9 +46,9 @@ const QGradient *GradientConfigurator::gradient() const
 
 void GradientConfigurator::chooseColor()
 {
-	QColor color = QColorDialog::getColor();
-	
-	m_gradientCreator->setCurrentColor(color);
+	QRgb rgb = QColorDialog::getRgba ( qRgba(0,0,0,255), 0, this );
+
+	m_gradientCreator->setCurrentColor(QColor::fromRgba(rgb));
 }
 
 

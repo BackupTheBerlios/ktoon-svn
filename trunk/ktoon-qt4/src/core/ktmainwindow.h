@@ -66,6 +66,8 @@
 
 #include "ktsplash.h"
 
+#include "config.h"
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */

@@ -38,9 +38,35 @@ function defineMacro()
 	echo "#define $1" >> $CONFIG_H
 }
 
-detectQtVersion
+function usage()
+{
+	echo "Use $0 [options]"
+	echo
+	echo "Options: "
+	echo "		-k,--enable-ktoonstyle	Enables KToonStyle"
+	echo "		--enable-kinas 		Enable KINAS"
+	echo
+	exit 0;
+}
 
 echo "/* Generated automatically by configure script */" > $CONFIG_H 
+
+TEMP=`getopt -o kh:: --long help,enable-ktoonstyle,enable-kinas:: -n "$0" -- "$@"`
+
+eval set -- "$TEMP"
+while [ true ]
+do
+        case "$1" in
+		-h|--help) usage; shift;;
+		-k|--enable-ktoonstyle) defineMacro ENABLE_KTOONSTYLE; shift ;;
+		--enable-kinas) defineMacro ENABLE_KINAS; shift ;;
+		--) shift ; break ;;
+		*) break;
+	esac
+done
+
+detectQtVersion
+
 ln -fs $(pwd)/$CONFIG_H $(pwd)/src/lib/$CONFIG_H
 
 LIBS=''
