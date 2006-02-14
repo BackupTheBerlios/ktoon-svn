@@ -82,9 +82,19 @@ CrashWidget::CrashWidget (int sig) : QDialog(0), m_sig(sig)
 	
 	m_layout = new QVBoxLayout(this);
 	
-	QLabel *message = new QLabel("<font color="+CHANDLER->messageColor().name()+">"+ CHANDLER->message()+"</color>", this);
 	
-	m_layout->addWidget(message);
+	m_tabber = new QTabWidget(this);
+	
+	m_layout->addWidget(m_tabber);
+	
+	
+	QWidget *page1 = new QWidget;
+	
+	QVBoxLayout *page1layout = new QVBoxLayout(page1);
+	
+	QLabel *message = new QLabel("<font color="+CHANDLER->messageColor().name()+">"+ CHANDLER->message()+"</color>");
+	
+	page1layout->addWidget(message);
 	
 	
 	QHBoxLayout *hbox = new QHBoxLayout;
@@ -107,13 +117,15 @@ CrashWidget::CrashWidget (int sig) : QDialog(0), m_sig(sig)
 	sigText->setHtml(text);
 	hbox->addWidget(sigText);
 	
-	m_layout->addLayout(hbox);
+	page1layout->addLayout(hbox);
+	
+	m_tabber->addTab(page1, tr("What's happen?"));
 	
 	QPushButton *end = new QPushButton( CHANDLER->buttonText(),this );
 	connect(end,SIGNAL(clicked()),SLOT(accept()));
-	
-	
 	m_layout->addWidget(end);
+	
+	
 	setLayout(m_layout);
 }
 
@@ -121,4 +133,33 @@ CrashWidget::CrashWidget (int sig) : QDialog(0), m_sig(sig)
 CrashWidget::~CrashWidget ()
 {
 }
+
+void CrashWidget::addBacktracePage(const QString &execInfo, const QString &backtrace)
+{
+	QWidget *btPage = new QWidget;
+	QVBoxLayout *layout = new QVBoxLayout(btPage);
+	
+	layout->addWidget(new QLabel(tr("Executable information")));
+	
+	TextArea *fileInfo = new TextArea;
+	
+// 	QFontMetrics fm(fileInfo->font());
+// 	
+// 	QSize fileInfoSize = fm.size( Qt::TextWordWrap, execInfo);
+	
+// 	fileInfo->setMaximumHeight(fileInfoSize.height());
+	
+	fileInfo->setHtml(execInfo);
+	
+	layout->addWidget(fileInfo);
+	
+	layout->addWidget(new QLabel(tr("Backtrace")));
+	TextArea *btInfo = new TextArea;
+	btInfo->setHtml(backtrace);
+	
+	layout->addWidget(btInfo);
+	
+	m_tabber->addTab(btPage, tr("Backtrace"));
+}
+
 

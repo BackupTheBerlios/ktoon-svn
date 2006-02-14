@@ -38,10 +38,10 @@
 
 // Devices
 #include "aimagedevicewidget.h"
-#include <QGLWidget>
+#include "agldevice.h"
 
 #define IMAGE_DEVICE qobject_cast<AImageDeviceWidget *>(m_paintDevice)->device
-#define OPENGL_DEVICE qobject_cast<QGLWidget *>(m_paintDevice)
+#define OPENGL_DEVICE qobject_cast<AGLDevice *>(m_paintDevice)
 #define NATIVE_DEVICE m_paintDevice
 
 /**

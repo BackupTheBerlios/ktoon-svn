@@ -55,7 +55,7 @@ APaintArea::APaintArea(const QSize& size, RenderType type, QWidget *parent) : QW
 		break;
 		case OpenGL:
 		{
-			m_paintDevice = new QGLWidget(this);
+			m_paintDevice = new AGLDevice(this);
 			m_paintDevice->resize(size);
 		}
 		break;
@@ -263,8 +263,6 @@ void APaintArea::draw(QPainter *painter)
 		
 		++layerIterator;
 	}
-	
-	ktDebug() << "END " << __FUNCTION__;
 }
 
 void APaintArea::drawFrame(const KTKeyFrame *frame, QPainter *painter, float intensitive)

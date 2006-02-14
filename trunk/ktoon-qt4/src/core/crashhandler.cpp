@@ -22,8 +22,16 @@
 #include <QApplication>
 #include <QDomDocument>
 #include <QFile>
+#include <QTemporaryFile>
 
 #include <csignal>
+
+extern "C"
+{
+#include <sys/types.h> //pid_t
+#include <sys/wait.h>  //waitpid
+#include <unistd.h>    //write, getpid
+}
 
 #include "crashhandler.h"
 #include "crashwidget.h"
@@ -226,6 +234,21 @@ void CrashHandler::setConfig(const QString &filePath)
 	}
 }
 
+static QString runCommand( const QString &command )
+{
+	static const uint SIZE = 40960; //40 KiB
+	static char stdout[ SIZE ];
+	
+// 	ktDebug() << "Running: " << command;
+	
+	FILE *process = ::popen( command.toLocal8Bit().data(), "r" );
+	stdout[ std::fread( (void*)stdout, sizeof(char), SIZE-1, process ) ] = '\0';
+	::pclose( process );
+
+	return QString::fromLocal8Bit( stdout );
+}
+
+
 void crashTrapper (int sig)
 {
 	qDebug("%s is crashing with signal %d :(", CHANDLER->program().toLatin1().data(), sig);
@@ -241,12 +264,64 @@ void crashTrapper (int sig)
 		application = new QApplication(argc, argv);
 	}
 	
-	CrashWidget widget(sig);
-	widget.exec();
+	const pid_t pid = ::fork();
 	
-	if ( !isActive )
+	if( pid <= 0 )
 	{
-		application->exec();
+		QString bt;
+		QString execInfo;
+		
+		{
+			QTemporaryFile temp("qt_temp_file");
+			temp.setAutoRemove( true );
+			
+			temp.open();
+			
+			const int handle = temp.handle();
+	
+			const QString gdb_batch = "bt\n";
+	
+			::write( handle, gdb_batch.toLatin1().data(), gdb_batch.length() );
+			::fsync( handle );
+	
+			// so we can read stderr too
+			::dup2( fileno( stdout ), fileno( stderr ) );
+		
+			QString gdb;
+			gdb  = "gdb --nw -n --batch -x ";
+			gdb += temp.fileName();
+			gdb += " ktoon ";
+			gdb += QString::number( ::getppid() );
+	
+			bt = runCommand( gdb );
+		}
+		
+		/// clean up
+		bt.remove( QRegExp("\\(no debugging symbols found\\)") );
+		bt = bt.simplified();
+
+		execInfo = runCommand( "file `which ktoon`" ); // FIXME: program
+		
+		/////// Widget
+		CrashWidget widget(sig);
+	
+		widget.addBacktracePage( execInfo, bt );
+	
+		widget.exec();
+	
+		if ( !isActive )
+		{
+			application->exec();
+		}
+			
+		::exit(255);
+	}
+	else
+	{
+		// Process crashed!
+		::alarm( 0 );
+		// wait for child to exit
+		::waitpid( pid, NULL, 0 );
 	}
 	
 	exit(128);

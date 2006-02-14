@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                           	   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,33 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#include "agldevice.h"
 
-#ifndef CRASHWIDGET_H
-#define CRASHWIDGET_H
-
-#include <QDialog>
-#include <QImage>
-#include <QVBoxLayout>
-
-#include <QTabWidget>
-
-class CrashWidget : public QDialog
+AGLDevice::AGLDevice(QWidget *parent) : QGLWidget(parent)
 {
-	Q_OBJECT
-	public:
-		CrashWidget (int sig);
-		~CrashWidget ();
-		
-		void addBacktracePage(const QString &execInfo, const QString &backtrace);
-		
-	public slots:
-		
-	private:
-		QVBoxLayout *m_layout;
-		QImage m_image;
-		int m_sig;
-		
-		QTabWidget *m_tabber;
-};
+}
 
-#endif
+
+AGLDevice::~AGLDevice()
+{
+}
+
+
+void AGLDevice::initializeGL()
+{
+	glShadeModel(GL_FLAT);
+	glDisable(GL_DEPTH_TEST);
+	
+	glEnable( GL_LINE_SMOOTH );
+	glEnable( GL_BLEND );
+	glEnable( GL_POINT_SMOOTH );
+}
+
+void AGLDevice::paintGL()
+{
+}
+

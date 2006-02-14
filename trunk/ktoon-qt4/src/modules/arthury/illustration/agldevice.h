@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                           	   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,33 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef AGLDEVICE_H
+#define AGLDEVICE_H
 
-#ifndef CRASHWIDGET_H
-#define CRASHWIDGET_H
+#include <QGLWidget>
 
-#include <QDialog>
-#include <QImage>
-#include <QVBoxLayout>
-
-#include <QTabWidget>
-
-class CrashWidget : public QDialog
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+class AGLDevice : public QGLWidget
 {
 	Q_OBJECT
 	public:
-		CrashWidget (int sig);
-		~CrashWidget ();
+		AGLDevice(QWidget *parent = 0);
+		~AGLDevice();
+	
+	protected:
+		void initializeGL();
+		void paintGL();
 		
-		void addBacktracePage(const QString &execInfo, const QString &backtrace);
-		
-	public slots:
-		
-	private:
-		QVBoxLayout *m_layout;
-		QImage m_image;
-		int m_sig;
-		
-		QTabWidget *m_tabber;
 };
 
 #endif
