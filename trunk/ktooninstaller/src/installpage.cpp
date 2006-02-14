@@ -50,7 +50,7 @@ InstallPage::InstallPage(QWidget *parent)
 	QHBoxLayout *destLayout = new QHBoxLayout;
 	
 	m_destinationPath = new QLineEdit();
-	m_destinationPath->setReadOnly(true);
+// 	m_destinationPath->setReadOnly(true);
 	
 	destLayout->addWidget(m_destinationPath);
 	
@@ -101,7 +101,9 @@ void InstallPage::reset()
 void InstallPage::chooseDestination()
 {
 	QFileDialog fileDialog;
-	fileDialog.setFileMode(QFileDialog::AnyFile);
+	fileDialog.setFileMode(QFileDialog::Directory );
+	
+	fileDialog.setLabelText ( QFileDialog::Accept, tr("Choose") );
 	
 	if ( fileDialog.exec() != QDialog::Rejected )
 	{
@@ -279,7 +281,15 @@ void InstallPage::generateMenuEntry(const QString &path)
 void InstallPage::launchApplication()
 {
 	ktDebug() << "Launching application!";
-	QProcess::startDetached(m_destinationPath->text()+"/ktoon");
+	
+	if ( QFile::exists( QDir::homePath()+"/.ktoon") )
+	{
+		QProcess::startDetached(m_destinationPath->text()+"/ktoon", QStringList() << "--reconfigure");
+	}
+	else
+	{
+		QProcess::startDetached(m_destinationPath->text()+"/ktoon");
+	}
 }
 
 void InstallPage::aboutToFinish()
