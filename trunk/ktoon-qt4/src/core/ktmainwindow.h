@@ -86,9 +86,9 @@ class KTMainWindow : public DMainWindow
 		 * Create the file action 
 		 */
 		void setupFileActions();
-		void setupEditActions();
+		void setupSettingsActions();
 		void setupWindowActions();
-		
+		void setupInsertActions();
 		/**
 		 * Create the proyect action
 		 */
@@ -196,10 +196,10 @@ class KTMainWindow : public DMainWindow
 		KTWorkspace *m_animationSpace;
 		KTStatusBar *m_statusBar;
 		KTActionManager *m_actionManager;
-		QMenu *m_fileMenu,*m_editMenu, *m_proyectMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
+		QMenu *m_fileMenu,*m_settingsMenu, *m_proyectMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
 		
 		KTOsd *m_osd;
-		// Components
+	// Components
 	private:
 		KTExposureSheet *m_exposureSheet;
 		KTScenesWidget *m_scenes;

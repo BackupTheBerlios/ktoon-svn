@@ -127,6 +127,11 @@ class KTKeyFrame : public KTSerializableObject
 		void removeSelections();
 		
 		/**
+		 * Selecciona todos los componentes
+		 */
+		void selecteAllComponents();
+		
+		/**
 		 * Selecciona los componentes que estan en el rect
 		 */
 		void selectContains (const QRect & rect);
@@ -145,6 +150,8 @@ class KTKeyFrame : public KTSerializableObject
 		  * Esta funcion retorna verdadero si el frame tiene componentes seleccionados
 		  */
 		 bool hasSelections() const;
+		 
+		 
 		 
 	private:
 		QList<AGraphicComponent *> m_components;

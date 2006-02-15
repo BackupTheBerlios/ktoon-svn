@@ -132,6 +132,8 @@ class APaintArea : public QWidget
 		void group();
 		void ungroup();
 		void removeSelectsGraphics();
+		void selectAll();
+		
 		void setZoomFactor( float f);
 		// </FIXME>
 	protected:

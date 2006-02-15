@@ -49,32 +49,15 @@ void KTMainWindow::setupMenu()
 	m_fileMenu->addAction(m_actionManager->find("ImportPalettes"));
 	
 	m_fileMenu->addAction(m_actionManager->find("Export"));
-	m_fileMenu->addSeparator();
-	m_fileMenu->addAction(m_actionManager->find("Properties"));
+// 	m_fileMenu->addSeparator();
+// 	m_fileMenu->addAction(m_actionManager->find("Properties"));
 	m_fileMenu->addSeparator();
 	m_fileMenu->addAction(m_actionManager->find("Exit"));
 	m_fileMenu->addSeparator();
 	
-	// Setup the edit menu
-	m_editMenu = new QMenu(tr( "&Edit" ), this);
-	menuBar()->addMenu( m_editMenu );
-
-	m_editMenu->addSeparator();
-	
-	m_editMenu->addAction(m_actionManager->find("cut"));
-	m_editMenu->addAction(m_actionManager->find("copy"));
-	m_editMenu->addAction(m_actionManager->find("paste"));
-	m_editMenu->addAction(m_actionManager->find("paste in place"));
-	m_editMenu->addAction(m_actionManager->find("delete"));
-	m_editMenu->addSeparator();
-	m_editMenu->addAction(m_actionManager->find("select all"));
-	m_editMenu -> addSeparator();
-	m_editMenu->addAction(m_actionManager->find("wizard"));
-	m_editMenu->addAction(m_actionManager->find("preferences"));
-	
 	// Setup the view menu
-	m_viewMenu = new QMenu(tr( "&View" ), this);
-	menuBar()->addMenu( m_viewMenu );
+// 	m_viewMenu = new QMenu(tr( "&View" ), this);
+// 	menuBar()->addMenu( m_viewMenu );
 	
 	// Setup the proyect menu
 	m_proyectMenu = new QMenu(tr( "&Project" ),this);
@@ -84,8 +67,12 @@ void KTMainWindow::setupMenu()
 	m_proyectMenu->addAction(m_actionManager->find("OpenProject"));
 	
 	// Setup the insert menu
+	setupInsertActions();
 	m_insertMenu = new QMenu(tr( "&Insert" ), this);
 	menuBar()->addMenu( m_insertMenu );
+	m_insertMenu->addAction(m_actionManager->find("InsertScene"));
+	m_insertMenu->addAction(m_actionManager->find("InsertLayer"));
+	m_insertMenu->addAction(m_actionManager->find("InsertFrame"));
 	
 	// Setup the tools menu
 	m_toolsMenu = new QMenu(tr( "&Tools" ),this);
@@ -95,10 +82,20 @@ void KTMainWindow::setupMenu()
 	setupWindowActions();
 	m_windowMenu = new QMenu(tr( "&Window" ),this);
 	menuBar()->addMenu(  m_windowMenu );
-	m_windowMenu->addAction(m_actionManager->find("show timeline"));
-	m_windowMenu->addAction(m_actionManager->find("show exposure"));
+	m_windowMenu->addAction(m_actionManager->find("show palette"));
 	m_windowMenu->addAction(m_actionManager->find("show brushes"));
+	m_windowMenu->addAction(m_actionManager->find("show library"));
+	m_windowMenu->addAction(m_actionManager->find("show timeline"));
 	m_windowMenu->addAction(m_actionManager->find("show scenes"));
+	m_windowMenu->addAction(m_actionManager->find("show exposure"));
+	m_windowMenu->addAction(m_actionManager->find("show help"));
+	
+	// Setup the Settings menu
+	m_settingsMenu = new QMenu(tr( "&Settings" ), this);
+	menuBar()->addMenu( m_settingsMenu );
+
+	m_settingsMenu->addAction(m_actionManager->find("wizard"));
+	m_settingsMenu->addAction(m_actionManager->find("preferences"));
 	
 	// Setup the help menu
 	m_helpMenu = new QMenu(tr( "&Help" ),this);
@@ -276,39 +273,39 @@ void KTMainWindow::setupFileActions()
 	exptr->setStatusTip(tr("Exports this document as a file in the available formats"));
 	exptr->setVisible(false);
 	
-	KTAction *properties = new KTAction( tr( "&Properties..." ), m_actionManager, "Properties");
-	connect(properties, SIGNAL(activated()), this, SLOT(properties()));
-	properties->setStatusTip(tr("Opens the properties dialog box"));
+// 	KTAction *properties = new KTAction( tr( "&Properties..." ), m_actionManager, "Properties");
+// 	connect(properties, SIGNAL(activated()), this, SLOT(properties()));
+// 	properties->setStatusTip(tr("Opens the properties dialog box"));
 	
 	KTAction *exit = new KTAction(QPixmap(KTOON_THEME_DIR+"/icons/export.png"), tr( "E&xit" ),  QKeySequence(tr("Ctrl+Q")), qApp, SLOT(closeAllWindows ()),m_actionManager, "Exit");
 	exit->setStatusTip(tr("Closes the application"));
 }
 
-void KTMainWindow::setupEditActions()
+void KTMainWindow::setupSettingsActions()
 {
-	KTAction * undo = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/undo.png"), tr( "Undo" ), QKeySequence(/*"Ctrl+Z"*/), this, SLOT(slotUndo()), m_actionManager, "undo");
-	undo->setStatusTip(tr("Undoes the last draw action"));
-	
-	KTAction *redo = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/redo.png"), tr( "Redo" ), QKeySequence(/*"CTRL+SHIFT+Z"*/), this, SLOT(slotRedo()), m_actionManager, "redo");
-	redo->setStatusTip(tr("Redoes a previous undone action"));
-	
-	KTAction *cut = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/cut.png"), tr( "&Cut" ), QKeySequence(/*"Ctrl+X"*/), this, SLOT(slotCut()), m_actionManager, "cut");
-	cut->setStatusTip(tr("Cuts the selection and puts it onto the clipboard"));
-	
-	KTAction *copy = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/copy.png"), tr( "C&opy" ), QKeySequence(/*"Ctrl+C"*/), this, SLOT(slotCopy()), m_actionManager, "copy");
-	copy->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
-	
-	KTAction *paste = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/paste.png"), tr( "&Paste" ), QKeySequence(/*"Ctrl+V"*/), this, SLOT(slotPaste()), m_actionManager, "paste");
-	paste->setStatusTip(tr("Pastes the clipboard into the current document"));
-	
-	KTAction *pasteInPlace = new KTAction( tr(  "Paste &In Place" ),  QKeySequence(/*"Ctrl+Shift+V"*/), this, SLOT(slotPasteInPlace()), m_actionManager, "paste in place");
-	pasteInPlace->setStatusTip(tr("Pastes the clipboard into the same place as the copy was did"));
-	
-	KTAction * adelete = new KTAction( tr(  "&Delete" ), QKeySequence()/*Qt::Key_Delete*/ , this, SLOT(slotDelete()), m_actionManager, "delete");
-	adelete->setStatusTip(tr("Deletes the selected object"));
-	
-	KTAction * selectAll = new KTAction( tr(  "&Select All" ), QKeySequence(/*tr("Ctrl+A")*/), this, SLOT(slotSelectAll()), m_actionManager, "select all");
-	selectAll->setStatusTip(tr("Selects all objects in the document"));
+// 	KTAction * undo = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/undo.png"), tr( "Undo" ), QKeySequence(/*"Ctrl+Z"*/), this, SLOT(slotUndo()), m_actionManager, "undo");
+// 	undo->setStatusTip(tr("Undoes the last draw action"));
+// 	
+// 	KTAction *redo = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/redo.png"), tr( "Redo" ), QKeySequence(/*"CTRL+SHIFT+Z"*/), this, SLOT(slotRedo()), m_actionManager, "redo");
+// 	redo->setStatusTip(tr("Redoes a previous undone action"));
+// 	
+// 	KTAction *cut = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/cut.png"), tr( "&Cut" ), QKeySequence(/*"Ctrl+X"*/), this, SLOT(slotCut()), m_actionManager, "cut");
+// 	cut->setStatusTip(tr("Cuts the selection and puts it onto the clipboard"));
+// 	
+// 	KTAction *copy = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/copy.png"), tr( "C&opy" ), QKeySequence(/*"Ctrl+C"*/), this, SLOT(slotCopy()), m_actionManager, "copy");
+// 	copy->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
+// 	
+// 	KTAction *paste = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/paste.png"), tr( "&Paste" ), QKeySequence(/*"Ctrl+V"*/), this, SLOT(slotPaste()), m_actionManager, "paste");
+// 	paste->setStatusTip(tr("Pastes the clipboard into the current document"));
+// 	
+// 	KTAction *pasteInPlace = new KTAction( tr(  "Paste &In Place" ),  QKeySequence(/*"Ctrl+Shift+V"*/), this, SLOT(slotPasteInPlace()), m_actionManager, "paste in place");
+// 	pasteInPlace->setStatusTip(tr("Pastes the clipboard into the same place as the copy was did"));
+// 	
+// 	KTAction * adelete = new KTAction( tr(  "&Delete" ), QKeySequence()/*Qt::Key_Delete*/ , this, SLOT(slotDelete()), m_actionManager, "delete");
+// 	adelete->setStatusTip(tr("Deletes the selected object"));
+// 	
+// 	KTAction * selectAll = new KTAction( tr(  "&Select All" ), QKeySequence(/*tr("Ctrl+A")*/), this, SLOT(slotSelectAll()), m_actionManager, "select all");
+// 	selectAll->setStatusTip(tr("Selects all objects in the document"));
 	
 	KTAction *wizard = new KTAction( tr( "Launch configuration wizard..." ), QKeySequence(), qobject_cast<KTApplication*>(qApp), SLOT(firstRun()), m_actionManager, "wizard");
 	wizard->setStatusTip(tr("Launch first configuration wizard"));
@@ -319,26 +316,44 @@ void KTMainWindow::setupEditActions()
 
 void KTMainWindow::setupProjectActions()
 {
-	KTAction *newProject = new KTAction( QPixmap(), tr( "New Project" ), QKeySequence(), this, SLOT(newProject()), m_actionManager, "NewProject");
+	/*KTAction *newProject =*/ new KTAction( QPixmap(), tr( "New Project" ), QKeySequence(), this, SLOT(newProject()), m_actionManager, "NewProject");
 	
-	KTAction *closeProject = new KTAction( QPixmap(), tr( "Close Project" ), QKeySequence(), this, SLOT(closeProject()), m_actionManager, "CloseProject");
+	/*KTAction *closeProject =*/ new KTAction( QPixmap(), tr( "Close Project" ), QKeySequence(), this, SLOT(closeProject()), m_actionManager, "CloseProject");
 	
-	KTAction *openProject = new KTAction( QPixmap(), tr( "Open Project" ), QKeySequence(), this, SLOT(openProject()), m_actionManager, "OpenProject");
+	/*KTAction *openProject =*/ new KTAction( QPixmap(), tr( "Open Project" ), QKeySequence(), this, SLOT(openProject()), m_actionManager, "OpenProject");
 }
 
 void KTMainWindow::setupHelpActions()
 {
 	new KTAction(QPixmap(), tr("About KToon"), QKeySequence(), this, SLOT(aboutKToon()), m_actionManager, "about ktoon");
-	
 	new KTAction(QPixmap(), tr("Tip of day"), QKeySequence(), this, SLOT(showTipDialog()), m_actionManager, "tipofday");
 }
 
 void KTMainWindow::setupWindowActions()
 {
 	new KTAction(QPixmap(), tr("Show TimeLine widget"), QKeySequence("CTRL+K"), this, SLOT(showWidgetPage()), m_actionManager, "show timeline");
+	
 	new KTAction(QPixmap(), tr("Show exposure sheet widget"), QKeySequence("CTRL+H"), this, SLOT(showWidgetPage()), m_actionManager, "show exposure");
+	
 	new KTAction(QPixmap(), tr("Show scenes widget"), QKeySequence("CTRL+Y"), this, SLOT(showWidgetPage()), m_actionManager, "show scenes");
+	
 	new KTAction(QPixmap(), tr("Show brushes widget"), QKeySequence("CTRL+B"), this, SLOT(showWidgetPage()), m_actionManager, "show brushes");
+	
+	new KTAction(QPixmap(), tr("Show library widget"), QKeySequence("CTRL+L"), this, SLOT(showWidgetPage()), m_actionManager, "show library");
+	
+	new KTAction(QPixmap(), tr("Show help widget"), QKeySequence(""), this, SLOT(showWidgetPage()), m_actionManager, "show help");
+	
+	new KTAction(QPixmap(), tr("Show color palette widget"), QKeySequence(), this, SLOT(showWidgetPage()), m_actionManager, "show palette");
+	
+}
+
+void KTMainWindow::setupInsertActions()
+{
+	/*KTAction *insertScene =*/ new KTAction( QPixmap(), tr( "Insert Scene" ), QKeySequence(), m_projectManager, SLOT(createScene()), m_actionManager, "InsertScene");
+	
+	/*KTAction *insertLayer =*/ new KTAction( QPixmap(), tr( "Insert Layer" ), QKeySequence(), m_projectManager, SLOT(createLayer()), m_actionManager, "InsertLayer");
+	
+	/*KTAction *insertFrame =*/ new KTAction( QPixmap(), tr( "Insert Frame" ), QKeySequence(), m_projectManager, SLOT(createFrame()), m_actionManager, "InsertFrame");
 }
 
 void KTMainWindow::setupToolBar()
@@ -402,7 +417,19 @@ void KTMainWindow::showWidgetPage()
 			position = DDockWindow::Right;
 			actionText = "scenes widget";
 		}
+		else if ( action == m_actionManager->find("show help") )
+		{
+			widget = m_helper;
+			position = DDockWindow::Right;
+			actionText = "help widget";
+		}
 		
+		else if ( action == m_actionManager->find("show palette") )
+		{
+			widget = m_colorPalette;
+			position = DDockWindow::Left;
+			actionText = "color palette widget";
+		}
 		if ( widget )
 		{
 			if ( widget->isVisible() )

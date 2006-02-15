@@ -104,7 +104,6 @@ QSize APaintArea::minimumSizeHint () const
 
 void APaintArea::paintEvent(QPaintEvent *e)
 {
-// 	KT_FUNCINFO;
 	QPainter painter;
 	
 	if ( m_redrawAll )
@@ -802,6 +801,11 @@ void APaintArea::ungroup()
 	}
 }
 
+void APaintArea::selectAll()
+{
+	m_currentFrame->selecteAllComponents();
+}
+
 void APaintArea::setZoomFactor( float f )
 {
 	int w, h;
@@ -820,3 +824,6 @@ void APaintArea::setZoomFactor( float f )
 // 	m_paintDevice->update();
 	redrawAll();
 }
+
+
+

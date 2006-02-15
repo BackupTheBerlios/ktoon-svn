@@ -75,7 +75,6 @@ KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, co
 	createTools();
 	createMenu();
 	loadPlugins();
-	
 	m_configurationArea = new KTConfigurationArea;
 	
 	addDockWidget(Qt::RightDockWidgetArea, m_configurationArea);
@@ -93,16 +92,14 @@ void KTViewDocument::showPos(const QPoint &p)
 
 void KTViewDocument::createActions()
 {
-	m_aUndo = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/undo.png" ), tr( "Undo" ), parent());
-	m_aUndo->setShortcut(tr("Ctrl+Z"));
+	KTAction *undo = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/undo.png" ), tr( "&Undo" ),  QKeySequence(tr("Ctrl+Z")), m_paintAreaContainer->drawArea(), SLOT(undo()), m_actionManager, "undo" );
+	undo->setStatusTip(tr("Undoes the last draw action"));
+	undo->setShortcutContext ( Qt::ApplicationShortcut );
 	
-	connect(m_aUndo, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(undo()));
-	m_aUndo->setStatusTip(tr("Undoes the last draw action"));
-	
-	m_aRedo = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/redo.png" ), tr( "Redo" ),  parent());
-	m_aRedo->setShortcut(tr("CTRL+SHIFT+Z"));
-	connect(m_aRedo, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(redo()));
-	m_aRedo->setStatusTip(tr("Redoes a previous undone action"));
+
+	KTAction *redo = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/redo.png" ), tr( "&Redo" ),  QKeySequence(tr("Ctrl+SHIFT+Z")), m_paintAreaContainer->drawArea(), SLOT(redo()), m_actionManager, "redo" );
+	redo->setShortcutContext ( Qt::ApplicationShortcut );
+	redo->setStatusTip(tr("Redoes a previous undone action"));
 }
 
 void KTViewDocument::setupGridActions()
@@ -165,28 +162,21 @@ void KTViewDocument::setupEditActions()
 	a->setStatusTip(tr("Pastes the clipboard into the current document"));
 	
 	a = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/delete.png" ), tr( "&Delete" ), QKeySequence( Qt::Key_Delete ), m_paintAreaContainer->drawArea(), SLOT(removeSelectsGraphics()), m_actionManager, "delete");
-	m_editGroup->addAction(a);
+// 	m_editGroup->addAction(a);
 	a->setShortcutContext ( Qt::ApplicationShortcut );
 	a->setStatusTip(tr("Deletes the selected object"));
 	
 	
-	
-// 	m_toolsOrder = new QMenu(tr("Order"), m_toolbar);
-	
 	a = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/group.png" ), tr( "&Group" ),   QKeySequence(  ), m_paintAreaContainer->drawArea(), SLOT(group()), m_actionManager, "group");
-// 	m_toolsOrder->addAction(a);
-	m_editGroup->addAction(a);//FIXME caambiar por m_toolsOrder
+	m_editGroup->addAction(a);
 	a->setStatusTip(tr("Group the selected objects into a single one"));
 	
 	a = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/ungroup.png" ), tr( "&Ungroup" ),   QKeySequence(  ), m_paintAreaContainer->drawArea(), SLOT(ungroup()), m_actionManager, "ungroup");
-	m_editGroup->addAction(a);//FIXME caambiar por m_toolsOrder
+	m_editGroup->addAction(a);
 	a->setStatusTip(tr("Ungroups the selected object"));
 	
-	
-// 	connect( m_toolsOrder, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
-// 	m_toolsOrder->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/group.png"));
-// 	m_toolsOrder->addAction(QPixmap(KTOON_THEME_DIR+"/icons/group.png"), tr( "&Group" ), m_paintAreaContainer->drawArea(), SLOT( slotGroup()));
-// 	m_toolsOrder->addAction(QPixmap(KTOON_THEME_DIR+"/icons/ungroup.png"), tr( "&Ungroup" ), m_paintAreaContainer->drawArea(), SLOT( slotUngroup()));
+	a = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/" ), tr( "Select &All" ),   QKeySequence(tr("Ctrl+A")), m_paintAreaContainer->drawArea(), SLOT(selectAll()), m_actionManager, "selectAll");
+	a->setStatusTip(tr("selected all object"));
 	
 }
 
@@ -194,19 +184,19 @@ void KTViewDocument::setupEdit2Actions()
 {
 	m_editGroup2 = new QActionGroup( parent() );
 	
-	QAction *a = new QAction( tr(  "Paste &In Place" ), m_editGroup2);
-	a->setShortcut(tr("Ctrl+Shift+V"));
-	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotPasteInPlace()));
-	a->setStatusTip(tr("Pastes the clipboard into the same place as the copy was did"));
-	
-	a = new QAction( tr(  "&Delete" ),  m_editGroup2);
-	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotDelete()));
-	a->setStatusTip(tr("Deletes the selected object"));
-	
-	a = new QAction( tr(  "&Select All" ),  m_editGroup2);
-	a->setShortcut( tr("Ctrl+A"));
-	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotSelectAll()));
-	a->setStatusTip(tr("Selects all objects in the document"));
+// 	QAction *a = new QAction( tr(  "Paste &In Place" ), m_editGroup2);
+// 	a->setShortcut(tr("Ctrl+Shift+V"));
+// 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotPasteInPlace()));
+// 	a->setStatusTip(tr("Pastes the clipboard into the same place as the copy was did"));
+// 	
+// 	a = new QAction( tr(  "&Delete" ),  m_editGroup2);
+// 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotDelete()));
+// 	a->setStatusTip(tr("Deletes the selected object"));
+// 	
+// 	a = new QAction( tr(  "&Select All" ),  m_editGroup2);
+// 	a->setShortcut( tr("Ctrl+A"));
+// 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotSelectAll()));
+// 	a->setStatusTip(tr("Selects all objects in the document"));
 	
 // 	m_aNtsc = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/ntsc.png" ), tr( "&NTSC Zone" ), parent());
 	
@@ -218,10 +208,10 @@ void KTViewDocument::setupEdit2Actions()
 // 	connect(m_aLightTable, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotLightTable()));
 // 	m_aLightTable->setStatusTip(tr("Activates or deactivates the light table" ));
 	
-	m_aClose = new QAction(QPixmap(KTOON_THEME_DIR+"/icons/close.png" ), tr( "Cl&ose" ), parent());
-	m_aClose->setShortcut( tr("Ctrl+Shift+W"));
-	connect(m_aClose, SIGNAL(triggered()), this, SLOT(close()));
-	m_aClose->setStatusTip(tr("Closes the active document"));
+// 	m_aClose = new QAction(QPixmap(KTOON_THEME_DIR+"/icons/close.png" ), tr( "Cl&ose" ), parent());
+// 	m_aClose->setShortcut( tr("Ctrl+Shift+W"));
+// 	connect(m_aClose, SIGNAL(triggered()), this, SLOT(close()));
+// 	m_aClose->setStatusTip(tr("Closes the active document"));
 	
 }
 
@@ -230,7 +220,7 @@ void KTViewDocument::setupViewActions()
 	m_viewPreviousGroup = new QActionGroup( this );
 	m_viewPreviousGroup->setExclusive( true );
 	
-	KTAction *noPrevious = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/no_previous.png" ), tr( "No Previous" ), QKeySequence(Qt::Key_0), this, SLOT(disablePreviousOnionSkin()), m_actionManager, "no_previous" );
+	KTAction *noPrevious = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/no_previous.png" ), tr( "No Previous" ), QKeySequence(Qt::Key_1), this, SLOT(disablePreviousOnionSkin()), m_actionManager, "no_previous" );
 	
 	m_viewPreviousGroup->addAction(noPrevious);
 	
@@ -239,19 +229,19 @@ void KTViewDocument::setupViewActions()
 	
 	noPrevious->setChecked(true);
 	
-	KTAction *onePrevious = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/previous.png" ), tr( "Previous One" ), QKeySequence(Qt::Key_1), this, SLOT(onePreviousOnionSkin()), m_actionManager, "previews_one");
+	KTAction *onePrevious = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/previous.png" ), tr( "Previous One" ), QKeySequence(Qt::Key_2), this, SLOT(onePreviousOnionSkin()), m_actionManager, "previews_one");
 	
 	m_viewPreviousGroup->addAction(onePrevious);
 	
 	onePrevious->setStatusTip(tr("Shows the previous onion skin" ));
 	onePrevious->setCheckable ( true );
 	
-	KTAction *twoPrevious = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/previous2.png" ), tr( "Previous Two" ), QKeySequence(Qt::Key_2), this, SLOT(twoPreviousOnionSkin()), m_actionManager, "previews_two");
+	KTAction *twoPrevious = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/previous2.png" ), tr( "Previous Two" ), QKeySequence(Qt::Key_3), this, SLOT(twoPreviousOnionSkin()), m_actionManager, "previews_two");
 	m_viewPreviousGroup->addAction(twoPrevious);
 	twoPrevious->setStatusTip(tr("Shows the previous 2 onion skins" ));
 	twoPrevious->setCheckable ( true );
 	
-	KTAction *threePrevious = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/previous3.png" ), tr( "Previous Three" ), QKeySequence(Qt::Key_3), this, SLOT(threePreviousOnionSkin()), m_actionManager, "previews_three");
+	KTAction *threePrevious = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/previous3.png" ), tr( "Previous Three" ), QKeySequence(Qt::Key_4), this, SLOT(threePreviousOnionSkin()), m_actionManager, "previews_three");
 	m_viewPreviousGroup->addAction(threePrevious);
 	threePrevious->setCheckable ( true );
 	threePrevious->setStatusTip(tr("Shows the previous 3 onion skins" ));
@@ -261,26 +251,26 @@ void KTViewDocument::setupViewActions()
 	m_viewNextGroup = new QActionGroup( this );
 	m_viewNextGroup->setExclusive( true );
 	
-	KTAction *noNext = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/no_next.png" ), tr( "No Next" ), QKeySequence(Qt::CTRL+Qt::Key_0), this, SLOT(disableNextOnionSkin()), m_actionManager, "no_next");
+	KTAction *noNext = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/no_next.png" ), tr( "No Next" ), QKeySequence(Qt::CTRL+Qt::Key_1), this, SLOT(disableNextOnionSkin()), m_actionManager, "no_next");
 	m_viewNextGroup->addAction(noNext);
 	
 	
 	noNext->setCheckable ( true );
 	noNext->setStatusTip(tr("Disables next onion skin visualization" ));
 	
-	KTAction *oneNext = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/next.png" ), tr( "Next One" ), QKeySequence(Qt::CTRL+Qt::Key_1), this, SLOT(oneNextOnionSkin()), m_actionManager, "next_one");
+	KTAction *oneNext = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/next.png" ), tr( "Next One" ), QKeySequence(Qt::CTRL+Qt::Key_2), this, SLOT(oneNextOnionSkin()), m_actionManager, "next_one");
 	m_viewNextGroup->addAction(oneNext);
 	
 	oneNext->setCheckable ( true );
 	oneNext->setStatusTip(tr("Shows the next onion skin"));
 	
-	KTAction *twoNext = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/next2.png" ), tr( "Next Two" ), QKeySequence(Qt::CTRL+Qt::Key_2), this, SLOT(twoNextOnionSkin()), m_actionManager, "next_two");
+	KTAction *twoNext = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/next2.png" ), tr( "Next Two" ), QKeySequence(Qt::CTRL+Qt::Key_3), this, SLOT(twoNextOnionSkin()), m_actionManager, "next_two");
 	m_viewNextGroup->addAction(twoNext);
 	
 	twoNext->setCheckable( true );
 	twoNext->setStatusTip(tr("Shows the next 2 onion skins"));
 	
-	KTAction *threeNext = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/next3.png" ), tr( "Next Three" ), QKeySequence(Qt::CTRL+Qt::Key_3), this, SLOT(threeNextOnionSkin()), m_actionManager, "next_three");
+	KTAction *threeNext = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/next3.png" ), tr( "Next Three" ), QKeySequence(Qt::CTRL+Qt::Key_4), this, SLOT(threeNextOnionSkin()), m_actionManager, "next_three");
 	m_viewNextGroup->addAction(threeNext);
 	
 	threeNext->setCheckable(true );
@@ -638,12 +628,9 @@ void KTViewDocument::createToolbar()
 	m_barGrid = new QToolBar(tr("Bar Actions"), this);
 	m_barGrid->setIconSize( QSize(22,22) );
 	addToolBar(m_barGrid);
-// 	m_barGrid->addActions(m_gridGroup->actions());
-// 	m_barGrid->addAction(m_aSubGrid);
-// 	m_barGrid->addAction(m_aFrontBackGrid);
 	m_barGrid->addSeparator();
-	m_barGrid->addAction(m_aUndo);
-	m_barGrid->addAction(m_aRedo);
+	m_barGrid->addAction(m_actionManager->find("undo"));
+	m_barGrid->addAction(m_actionManager->find("redo"));
 	m_barGrid->addSeparator();
 	m_barGrid->addActions(m_editGroup->actions());
 	m_barGrid->addSeparator();
@@ -658,25 +645,39 @@ void KTViewDocument::createToolbar()
 
 void KTViewDocument::createMenu()
 {
-	m_filterMenu = new QMenu(this);
-// 	menuBar()->insertItem(tr("&Filters"), m_filterMenu);
+	//tools menu
+	m_toolsMenu = new QMenu(tr( "&Tools" ), this);
+	menuBar()->addMenu( m_toolsMenu );
+	m_toolsMenu->addAction(m_brushesMenu->menuAction ());
+	m_toolsMenu->addAction(m_selectionMenu->menuAction ());
+	m_toolsMenu->addAction(m_fillMenu->menuAction ());
+	m_toolsMenu->addSeparator();
+	m_toolsMenu->addAction(m_actionManager->find("group"));
+	m_toolsMenu->addAction(m_actionManager->find("ungroup"));
 	
-	//FIXME:crear el menu
-// 	m_menuFile = new Q3PopupMenu( this );
-// 	menuBar()->insertItem( tr("&File"), m_menuFile );
-// 	m_aClose->addTo(m_menuFile);
-// 	
-// 	Q3PopupMenu *menuEdit= new Q3PopupMenu(this);
-// 	menuBar()->insertItem( tr("&Edit"), menuEdit );
-// 	editGroup->addTo(menuEdit);
-// 	menuEdit->insertSeparator();
-// 	editGroup2->addTo(menuEdit);
-// 	
-// 	m_menuGrid = new Q3PopupMenu( this );
-// 	
-// 	menuBar()->insertItem( tr("&view"), m_menuGrid );
-// 	gridGroup->addTo(m_menuGrid);
-// 	m_aSubGrid->addTo(m_menuGrid);
+	m_editMenu = new QMenu(tr( "&Edit" ), this);
+	
+	menuBar()->addMenu( m_editMenu );
+	
+	m_editMenu->addAction(m_actionManager->find("undo"));
+	m_editMenu->addAction(m_actionManager->find("redo"));
+	m_editMenu->addSeparator();
+	
+	m_editMenu->addAction(m_actionManager->find("cut"));
+	m_editMenu->addAction(m_actionManager->find("copy"));
+	m_editMenu->addAction(m_actionManager->find("paste"));
+	
+	m_editMenu->addAction(m_actionManager->find("delete"));
+	
+	m_editMenu->addSeparator();
+	m_editMenu->addAction(m_actionManager->find("selectAll"));
+	m_editMenu->addSeparator();
+	
+	m_viewMenu = new QMenu(tr( "&View" ), this);
+	m_viewMenu->addActions(m_viewPreviousGroup->actions());
+	m_viewMenu->addSeparator();
+	m_viewMenu->addActions(m_viewNextGroup->actions());
+	menuBar()->addMenu( m_viewMenu );
 }
 
 void KTViewDocument::close()
@@ -739,5 +740,4 @@ void KTViewDocument::setScene(KTScene* scene)
 {
 	setWindowTitle( m_title + " - " + scene->sceneName() );
 	m_paintAreaContainer->drawArea()->setScene(  scene );
-	
 }

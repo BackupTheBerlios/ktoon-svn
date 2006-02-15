@@ -128,7 +128,6 @@ void KTKeyFrame::addSelectedComponent(AGraphicComponent *toSelect)
 
 void KTKeyFrame::deSelectedComponent(AGraphicComponent *toDeSelect)
 {
-	
 	toDeSelect->removeControlPoints();
 	m_selectedComponents.removeAll ( toDeSelect );
 }
@@ -169,6 +168,10 @@ void KTKeyFrame::removeSelections()
 	}
 }
 
+void KTKeyFrame::selecteAllComponents()
+{
+	m_selectedComponents = m_components;
+}
 
 void KTKeyFrame::selectContains (const QRect & rect)
 {
