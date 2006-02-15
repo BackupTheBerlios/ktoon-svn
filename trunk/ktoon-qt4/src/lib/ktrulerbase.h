@@ -105,7 +105,10 @@ class KTRulerBase : public QFrame
 		void slide(int value);
 		
 		virtual void showMenu(KTRulerBase *, QPoint pos);
-		virtual void chooseOption(int);
+		
+	private slots:
+		void changeScaleTo5pts();
+		void changeScaleTo10pts();
 };
 
 #endif

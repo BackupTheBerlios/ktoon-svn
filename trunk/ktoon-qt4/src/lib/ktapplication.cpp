@@ -274,10 +274,6 @@ QString KTApplication::configDir()
 	return m_configDir;
 }
 
-void KTApplication::config(const QString &group)
-{
-}
-
 QString KTApplication::version()
 {
 	return m_VERSION;

@@ -67,8 +67,6 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	
 	m_drawingSpace = new KTWorkspace;
 	m_drawingSpace->setScrollBarsEnabled ( true );
-
-// 	m_drawingSpace->setBackground(QBrush(QPixmap(background_xpm))); 
 	
 	addWidget(m_drawingSpace, tr("Illustration"), true);
 	
@@ -78,7 +76,6 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 
 	addWidget(m_animationSpace, tr("Animation"), true);
 	
-	
 	setupBackground();
 	
 	splash->setMessage( tr("Loading action manager..."));
@@ -86,10 +83,6 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	
 	// Create the menubar;
 	splash->setMessage( tr("Creating menu bar..."));
-	setupFileActions();
-	setupSettingsActions();
-	setupProjectActions();
-	setupHelpActions();
 	
 	setupMenu();
 	
@@ -123,6 +116,7 @@ KTMainWindow::~KTMainWindow()
 	
 	if ( m_projectManager )
 		delete m_projectManager;
+	
 }
 
 
@@ -130,7 +124,7 @@ KTMainWindow::~KTMainWindow()
 
 void KTMainWindow::createNewProject(const QString &name, const QSize &size, const QString & renderType, const int fps)
 {
-	closeProject();
+	if(!closeProject()) return;
 	
 	m_projectManager->init();
 	
@@ -154,7 +148,7 @@ void KTMainWindow::createNewProject(const QString &name, const QSize &size, cons
 
 void KTMainWindow::newViewDocument(const QString &name)
 {
-	messageToStatus(tr("Opening a new document..."));
+	messageToStatus(tr("Opening a new paint area..."));
 	
 	messageToOSD(tr("Opening a new document..."));
 	
@@ -231,13 +225,14 @@ void KTMainWindow::newProject()
 	delete wizard;
 }
 
-void KTMainWindow::closeProject()
+bool KTMainWindow::closeProject()
 {
 	ktDebug() << "Closing..";
 	if(!m_projectManager->isOpen())
 	{
-		return;
+		return true;
 	}
+	
 	QMessageBox mb(QApplication::applicationName (), "Do you want to save?",
 		       QMessageBox::Information,
 		       QMessageBox::Yes | QMessageBox::Default,
@@ -259,7 +254,7 @@ void KTMainWindow::closeProject()
 		break;
 		case QMessageBox::Cancel:
 		{
-			return;
+			return false;
 		}
 		break;
 	}
@@ -285,26 +280,54 @@ void KTMainWindow::closeProject()
 	// Clean widgets
 	m_exposureSheet->closeAllScenes();
 	m_scenes->closeAllScenes();
+	
+	
+	return true;
 }
 
 void KTMainWindow::openProject()
 {
-	KTFileDialog opener(KTFileDialog::Repository, this);
-	if ( opener.exec() != QDialog::Rejected )
+	QString package = QFileDialog::getOpenFileName ( this, tr("Import project package"), KTOON_REPOSITORY, "KToon Project Package (*.ktn)");
+	
+	if ( package.isEmpty() ) return;
+	
+	openProject( package );
+}
+
+void KTMainWindow::openProject(const QString &path)
+{
+	KTPackageHandler packageHandler;
+
+	if ( packageHandler.importPackage(path) )
 	{
-		QString fileName = opener.fileName();
-		
-		QString path = KTOON_REPOSITORY+"/"+fileName.left(fileName.length()-4)+"/"+fileName;
-		
-		closeProject();
-		m_projectManager->load( path );
+		if ( closeProject() )
+		{
+			m_projectManager->load( packageHandler.importedProjectPath() );
+			
+			if ( m_recentProjects.indexOf(path) == -1 )
+			{
+				if ( m_recentProjects.count() <= 6 )
+				{
+					m_recentProjects << path;
+				}
+				else
+				{
+					m_recentProjects.push_front(path);
+				}
+			}
+			
+			messageToOSD( tr("Project opened!"));
+		}
 	}
 }
+
 
 void KTMainWindow::save()
 {
 	ktDebug() << "Saving.." << endl;
-	QTimer::singleShot(100, m_projectManager, SLOT(save()));
+	QTimer::singleShot(0, this, SLOT(saveProject()));
+	
+	
 }
 
 void KTMainWindow::preferences()
@@ -437,36 +460,79 @@ void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 	addWidget( page, tr("Help:%1").arg(title) );
 }
 
-void KTMainWindow::importPackage()
+void KTMainWindow::saveProject()
 {
-	QString package = QFileDialog::getOpenFileName ( this, tr("Import project package"), KTOON_REPOSITORY, "KToon Project Package (*.ktpp)");
+	m_projectManager->save();
+	
+	QString package = m_projectManager->projectName();
 	
 	if ( package.isEmpty() ) return;
 	
-	KTPackageHandler packageHandler;
-
-	if ( packageHandler.importPackage(package) )
+	if( !package.endsWith(".ktn"))
 	{
-		closeProject();
-		m_projectManager->load( packageHandler.importedProjectPath() );
+		package += ".ktn";
 	}
+	
+	ktDebug() << "Saving " << package;
+	
+	KTPackageHandler packageHandler;
+	
+	bool ok = packageHandler.makePackage(KTOON_REPOSITORY+"/"+m_projectManager->projectName(), KTOON_REPOSITORY+"/"+package);
+	
+	if ( ok )
+	{
+		messageToOSD( tr("Project saved!"));
+	}
+	
 }
 
-void KTMainWindow::makePackage()
+void KTMainWindow::saveProjectAs()
 {
-	QString package = QFileDialog::getSaveFileName ( this, tr("Build project package"), KTOON_REPOSITORY, "KToon Project Package (*.ktpp)");
+	m_projectManager->save();
+	
+	QString package = QFileDialog::getSaveFileName( this, tr("Build project package"), KTOON_REPOSITORY, "KToon Project Package (*.ktn)");
 	
 	if ( package.isEmpty() ) return;
 	
-	if( !package.endsWith(".ktpp"))
+	if( !package.endsWith(".ktn"))
 	{
-		package += ".ktpp";
+		package += ".ktn";
 	}
 	
 	KTPackageHandler packageHandler;
 	
-	packageHandler.makePackage(KTOON_REPOSITORY+"/"+m_projectManager->projectName(), package);
-
+	bool ok = packageHandler.makePackage(KTOON_REPOSITORY+"/"+m_projectManager->projectName(), package);
+	
+	
+	if ( ok )
+	{
+		messageToOSD( tr("Project saved in %1!").arg(package) );
+	}
 }
 
+void KTMainWindow::openRecentProject()
+{
+	QAction *action = qobject_cast<QAction *>(sender());
+	if ( action )
+	{
+		openProject( action->text() );
+	}
+}
+
+void KTMainWindow::insertImage()
+{
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+	
+	if ( doc )
+	{
+		QString image = QFileDialog::getOpenFileName ( this, tr("Insert an image from file..."), QDir::homePath(),  tr("Images")+" (*.png *.xpm *.jpg)" );
+		
+		QPixmap toInsert(image);
+		
+		if ( ! toInsert.isNull() )
+		{
+			doc->drawArea()->importImage(toInsert);
+		}
+	}
+}
 

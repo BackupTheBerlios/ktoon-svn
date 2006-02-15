@@ -121,6 +121,7 @@ class APaintArea : public QWidget
 	public:
 		void setTool( AToolInterface *toolIface, const QString &tool);
 		QPainterPath translatePath(const QPainterPath &path, const QPoint &pos);
+		void importImage(const QPixmap &image);
 		
 	public slots:
 		void setBrush( const KTBrush *brush );

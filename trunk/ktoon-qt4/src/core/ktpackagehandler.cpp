@@ -166,7 +166,7 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
 		
 		name = KTOON_REPOSITORY+"/"+file.getActualFileName();
 		
-		if( name.endsWith(".ktn") )
+		if( name.endsWith(".ktp") )
 		{
 			m_importedProjectPath = name;
 		}

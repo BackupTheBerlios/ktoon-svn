@@ -103,9 +103,9 @@ void KTFileDialog::accept()
 		
 		if ( m_type == Repository )
 		{
-			if( ! m_fileName.endsWith(".ktn") )
+			if( ! m_fileName.endsWith(".ktp") )
 			{
-				m_fileName+=".ktn";
+				m_fileName+=".ktp";
 			}
 		}
 		else if ( m_type == Themes )
@@ -136,7 +136,7 @@ void KTFileDialog::readFiles()
 	if ( m_type == Repository )
 	{
 		m_dir.setPath(KTOON_REPOSITORY);
-		extension = "ktn";
+		extension = "ktp";
 	}
 	else if (m_type == Themes )
 	{

@@ -65,11 +65,13 @@ KTRulerBase::KTRulerBase(Qt::Orientation m_orientation, QWidget *parent, const c
 	
 	connect(this, SIGNAL(displayMenu(KTRulerBase *, QPoint)), this, SLOT(showMenu(KTRulerBase *, QPoint)));
 	
-// 	m_menu = new QMenu(this);
-// 	m_menu->addAction( tr("Change scale to 5..."), ChangeScaleToFive);
-// 	m_menu->addAction( tr("Change scale to 10..."), ChangeScaleToTen);
-// 	
-// 	connect(m_menu, SIGNAL(activated(int)), this, SLOT(chooseOption(int)));
+	m_menu = new QMenu(this);
+	
+	QAction *to5 = m_menu->addAction( tr("Change scale to 5..."));
+	QAction *to10 = m_menu->addAction( tr("Change scale to 10..."));
+	
+	connect(to5, SIGNAL(triggered()), this, SLOT(changeScaleTo5pts()));
+	connect(to10, SIGNAL(triggered()), this, SLOT(changeScaleTo10pts()));
 }
 
 
@@ -262,26 +264,6 @@ void KTRulerBase::showMenu(KTRulerBase *ruler, QPoint pos)
 }
 
 
-void KTRulerBase::chooseOption(int opt)
-{
-	switch(opt)
-	{
-		case ChangeScaleToFive:
-		{
-			setSeparation(5);
-		}
-		break;
-		case ChangeScaleToTen:
-		{
-			setSeparation(10);
-		}
-		break;
-		default:
-		{
-		}
-		break;
-	}
-}
 
 void KTRulerBase::drawLine(int x1 , int y1, int x2, int y2)
 {
@@ -316,5 +298,16 @@ QSize KTRulerBase::sizeHint() const
 	
 	return QSize( width(), m_height/3 );
 }
+
+void KTRulerBase::changeScaleTo5pts()
+{
+	setSeparation( 5 );
+}
+
+void KTRulerBase::changeScaleTo10pts()
+{
+	setSeparation( 10 );
+}
+
 
 

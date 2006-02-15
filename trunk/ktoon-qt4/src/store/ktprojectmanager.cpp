@@ -99,7 +99,7 @@ void KTProjectManager::save()
 	doc.appendChild(root);
 	root.appendChild(createXML( doc ));
 	
-	QFile save(ktapp->repository() + +"/"+m_name+"/"+m_name+".ktn");
+	QFile save(ktapp->repository() + +"/"+m_name+"/"+m_name+".ktp");
 	
 	if ( save.open(QIODevice::WriteOnly | QIODevice::Text))
 	{

@@ -89,10 +89,6 @@ class KTMainWindow : public DMainWindow
 		void setupSettingsActions();
 		void setupWindowActions();
 		void setupInsertActions();
-		/**
-		 * Create the proyect action
-		 */
-		void setupProjectActions();
 		
 		/**
 		 * Setup the actions in the toolbar
@@ -116,7 +112,6 @@ class KTMainWindow : public DMainWindow
 	 	 * @param close_event The input event
 		 */
 		void closeEvent( QCloseEvent *event );
-		void resizeEvent(QResizeEvent *event);
 		
 		/**
 		 *  Creates the application GUI according to the information of the data classes
@@ -125,15 +120,16 @@ class KTMainWindow : public DMainWindow
 		/**
 		 *  Updates the open recent menu item names according to the @a recent_names list of file names
 		 */
-		void updateOpenRecentMenu();
+		void updateOpenRecentMenu(QMenu *menu);
 		
 	private slots:
 		void createNewProject(const QString &name, const QSize &size = QSize(-1,-1), const QString& renderType = tr("Image"), const int fps = 24  );
 		void newViewDocument(const QString &name = QString::null);
 		void newViewCamera(KTScene *scene);
 		void newProject();
-		void closeProject();
+		bool closeProject();
 		void openProject();
+		void openProject(const QString &path);
 		
 		void save();
 		void showHelpPage(const QString &title, const QString &document);
@@ -148,8 +144,10 @@ class KTMainWindow : public DMainWindow
 		void importPalettes();
 		void connectToDisplays(const QWidget *widget);
 		
-		void importPackage();
-		void makePackage();
+		void saveProject();
+		void saveProjectAs();
+		
+		void openRecentProject();
 		
 		
 	private slots: // defined in ktmainwindow-project.cpp
@@ -185,8 +183,9 @@ class KTMainWindow : public DMainWindow
 		void changeCurrentColors(const QBrush &, const QBrush &);
 		void changeCurrentBrush(const KTBrush *form);
 		
-		
 		void changeFPS(int fps);
+		
+		void insertImage();
 		
 	private:
 		KTProjectManager *m_projectManager;
@@ -196,9 +195,12 @@ class KTMainWindow : public DMainWindow
 		KTWorkspace *m_animationSpace;
 		KTStatusBar *m_statusBar;
 		KTActionManager *m_actionManager;
-		QMenu *m_fileMenu,*m_settingsMenu, *m_proyectMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
+		QMenu *m_fileMenu,*m_settingsMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
 		
 		KTOsd *m_osd;
+		
+		QStringList m_recentProjects;
+		
 	// Components
 	private:
 		KTExposureSheet *m_exposureSheet;

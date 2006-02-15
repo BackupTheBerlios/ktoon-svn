@@ -21,6 +21,16 @@
 #ifndef KTGLOBAL_H
 #define KTGLOBAL_H
 
+
+#if 0
+* @if english
+* Translate
+* @endif
+* @if spanish
+* 
+* @endif
+#endif
+
 #include "ktapplication.h"
 
 

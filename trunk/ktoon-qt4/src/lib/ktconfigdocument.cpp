@@ -83,7 +83,6 @@ void KTConfigDocument::beginGroup(const QString & prefix )
 		
 		if ( m_currentGroup.isNull() )
 		{
-// 			ktDebug() << "Creando GRUPO: " << prefix;
 			m_currentGroup = createElement(prefix);
 			documentElement().appendChild(m_currentGroup);
 		}
@@ -98,12 +97,32 @@ void KTConfigDocument::setValue ( const QString & key, const QVariant & value )
 	
 	if ( !element.isNull () )
 	{
-		element.setAttribute("value", value.toString());
+		if ( value.canConvert( QVariant::StringList ) )
+		{
+			QStringList list = value.toStringList();
+			
+			element.setAttribute("value", list.join(";"));
+		}
+		else
+		{
+			element.setAttribute("value", value.toString());
+		}
 	}
 	else
 	{
 		element = createElement(key);
-		element.setAttribute("value", value.toString());
+		
+		if ( value.canConvert( QVariant::StringList ) )
+		{
+			QStringList list = value.toStringList();
+			
+			element.setAttribute("value", list.join(";"));
+		}
+		else
+		{
+			element.setAttribute("value", value.toString());
+		}
+		
 		m_currentGroup.appendChild(element);
 	}
 }

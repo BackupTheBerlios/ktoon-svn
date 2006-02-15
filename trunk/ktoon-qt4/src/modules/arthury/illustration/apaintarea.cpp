@@ -825,5 +825,19 @@ void APaintArea::setZoomFactor( float f )
 	redrawAll();
 }
 
-
+void APaintArea::importImage(const QPixmap &image)
+{
+	if ( ! m_currentFrame ) return;
+	
+	QBrush brush(image);
+	AGraphicComponent *newComponent = new AGraphicComponent;
+	
+	QPainterPath path;
+	path.addRect(image.rect());
+	newComponent->addGraphic( path,QPen(Qt::transparent), brush); 
+	
+	m_currentFrame->addComponent( newComponent );
+	
+	redrawAll();
+}
 

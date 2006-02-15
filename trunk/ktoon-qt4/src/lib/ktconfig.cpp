@@ -119,22 +119,10 @@ void KTConfig::setValue ( const QString & key, const QVariant & value )
 	m_ktconfig->setValue(key, value);
 }
 
-// void KTConfig::setValue ( const QString &group, const QString & key, const QVariant & value )
-// {
-// 	beginGroup( group );
-// 	m_ktconfig->setValue(key, value);
-// }
-
 QVariant KTConfig::value ( const QString & key, const QVariant & defaultValue) const
 {
 	return m_ktconfig->value(key, defaultValue);
 }
-
-// QVariant KTConfig::value ( const QString &group, const QString & key, const QVariant & defaultValue )
-// {
-// 	beginGroup( group );
-// 	return m_ktconfig->value(key, defaultValue);
-// }
 
 
 

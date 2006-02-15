@@ -34,7 +34,13 @@
 #include <QPainterPath>
 
 #include "ktgradientadjuster.h"
+
 /**
+ * @if english
+ * Class that represents a graphic
+ * @elseif spanish
+ * Clase que representa un grafico
+ * @endif
  * @author David Cuadrado <krawek@toonka.com>
 */
 class AGraphic
@@ -56,6 +62,9 @@ class AGraphic
 		 */
 		~AGraphic();
 		
+		/**
+		 * Map the graphic path
+		 */
 		void mapTo(const QMatrix& matix);
 		
 		QPainterPath path;
