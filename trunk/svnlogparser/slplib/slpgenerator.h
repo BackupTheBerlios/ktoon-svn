@@ -33,17 +33,9 @@ class SLPGenerator : public QObject
 {
 	Q_OBJECT
 	public:
-		SLPGenerator(const QString &command, QObject *parent = 0);
+		SLPGenerator(QObject *parent = 0);
 		~SLPGenerator();
 		bool generateDocument(const QString &user, const QString &passwd);
-		
-	private slots:
-		void read();
-		
-	private:
-		QProcess *m_process;
-		QString m_command;
-		QString m_allTextReaded;
 };
 
 #endif

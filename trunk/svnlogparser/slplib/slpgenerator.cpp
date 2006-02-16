@@ -21,53 +21,34 @@
 #include "slpgenerator.h"
 
 #include <QTextStream>
-#include <QDebug>
+#include <QtDebug>
+#include <QCoreApplication>
 
-SLPGenerator::SLPGenerator(const QString &command, QObject *parent) : QObject(parent), m_command(command)
+#include <svn_client.h> // from subversion lib
+
+SLPGenerator::SLPGenerator(QObject *parent) : QObject(parent)
 {
-	m_process = new QProcess(this);
-	
-	connect(m_process, SIGNAL(readyReadStandardOutput ()), this, SLOT(read()));
-	connect(m_process, SIGNAL(readyReadStandardError ()), this, SLOT(read()));
 }
 
 
 SLPGenerator::~SLPGenerator()
 {
-	delete m_process;
 }
 
 bool SLPGenerator::generateDocument(const QString &user, const QString &passwd)
 {
-	m_process->setEnvironment(QStringList());
-	m_process->start(m_command, QStringList() << "log" << "--xml" << "--username" << user << "--password" << passwd << "--non-interactive");
+// 	svn_error_t *error = svn_client_log2 (target.array (pool),
+// 	revisionStart.revision (),
+// 	revisionEnd.revision (),
+// 	limit,
+// 	discoverChangedPaths ? 1 : 0,
+// 	strictNodeHistory ? 1 : 0,
+// 	logReceiver,
+// 	entries,
+// 	*m_context, // client ctx
+// 	pool);
 	
-	if (! m_process->waitForStarted())
-	{
-		return false;
-	}
 	
 	return true;
 }
-
-void SLPGenerator::read()
-{
-	QTextStream stream(m_process);
-	
-	QString readed = stream.readAll().trimmed();
-	
-	if ( ! readed.isEmpty() )
-	{
-		m_allTextReaded += readed;
-	}
-	else if ( readed.contains("Connection closed unexpectedly") )
-	{
-	}
-	else
-	{
-	}
-	
-	qDebug() << readed;
-}
-
 

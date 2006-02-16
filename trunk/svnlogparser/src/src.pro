@@ -3,9 +3,11 @@
 # Subdir relative project main directory: ./src
 # Target is an application:  ../bin/svnlogparser
 
-QT += xml
+QT += xml 
+KDEV_QTVER = 4 
 TARGETDEPS += ../slplib/libslplib.a 
-LIBS += ../slplib/libslplib.a 
+LIBS += ../slplib/libslplib.a \
+        -lsvn_client-1 
 INCLUDEPATH += ../slplib 
 TARGET = ../bin/svnlogparser 
 CONFIG += release \

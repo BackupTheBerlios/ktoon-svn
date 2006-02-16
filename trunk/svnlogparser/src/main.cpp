@@ -26,13 +26,13 @@
 
 #include "slpgenerator.h"
 
-// Date: 2006-01-05 17:00:00
+// I start this project at: 2006-01-05 17:00:00
 
 int main(int argc, char *argv[])
 {
 	QCoreApplication app(argc, argv);
 	
-	SLPGenerator generator("svn");
+	SLPGenerator generator;
 	
 	generator.generateDocument("fdsa", "fdsa");
 	
@@ -57,5 +57,6 @@ int main(int argc, char *argv[])
 // 	}
 	
 	
-	return app.exec();
+// 	return app.exec();
+	return 0;
 }
