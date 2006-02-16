@@ -45,9 +45,11 @@ QSize AImageDeviceWidget::sizeHint() const
 }
 
 void AImageDeviceWidget::paintEvent(QPaintEvent *e)
-{
-	Q_UNUSED(e);
+{	
+	QRect rupdate = e->rect ();
+	
 	QPainter painter(this);
+	painter.setClipRect(rupdate);
 	painter.drawImage(QPoint(0, 0), *device);
 }
 

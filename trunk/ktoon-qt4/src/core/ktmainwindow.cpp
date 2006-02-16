@@ -91,7 +91,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	
 	m_pActiveTabWidget->setCurrentIndex( 0 );
 	
-	createNewProject("test", QSize(300,300), tr("Image"), 24);
+// 	createNewProject("test", QSize(300,300), tr("Image"), 24);
 	
 	KTCONFIG->beginGroup("TipOfDay");
 	bool showTips = qvariant_cast<bool>(KTCONFIG->value("ShowOnStart", true ));
@@ -156,17 +156,16 @@ void KTMainWindow::newViewDocument(const QString &name)
 	
 	if ( scene )
 	{
-		
+		m_statusBar->advance(4);
 		KTViewDocument *viewDocument = new KTViewDocument( m_projectManager->documentSize(),  name, m_projectManager->projectRender(),  m_projectManager->currentDocument(), m_drawingSpace);
 		viewDocument->setAttribute(Qt::WA_DeleteOnClose, true);
 		m_drawingSpace->addWindow(viewDocument);
+		m_statusBar->advance(7);
+		
 // 		viewDocument->setWindowTitle(name);
 		
-		m_statusBar->advance(4);
 // 		viewDocument->setActiveWindow();
-		m_statusBar->advance(7);
-		viewDocument->show();
-		m_statusBar->advance(10);
+		
 		KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->activeWindow());
 		
 		if ( camera )
@@ -190,6 +189,10 @@ void KTMainWindow::newViewDocument(const QString &name)
 				newViewCamera(scene);
 			}
 		}
+		
+		viewDocument->show();
+		
+		m_statusBar->advance(10);
 		
 		m_statusBar->setStatus(tr("Opened."));
 	}

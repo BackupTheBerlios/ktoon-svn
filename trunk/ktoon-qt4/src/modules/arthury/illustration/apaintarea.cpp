@@ -111,6 +111,7 @@ void APaintArea::paintEvent(QPaintEvent *e)
 		fillDevice( Qt::white );
 		
 		BEGIN_PAINTER(painter);
+		
 		painter.scale(m_zoomFactor,m_zoomFactor);
 		painter.setRenderHint(QPainter::Antialiasing);
 		
@@ -375,27 +376,24 @@ void APaintArea::redrawAll()
 	QTimer::singleShot(0, this, SLOT(update()));;
 }
 
-void APaintArea::aUpdate(const QRectF &rect)
+void APaintArea::aUpdate(const QRect &rect)
 {
 	QPainter painter;
 	BEGIN_PAINTER(painter);
-// 	painter.scale(m_zoomFactor,m_zoomFactor);
-#if 1
 
 	if ( !m_overBuffer.isNull())
 	{
 		painter.drawImage(m_overBufferRect, m_overBuffer);
 		
-		
-		update(m_overBufferRect);
-// 		QTimer::singleShot(0, this, SLOT(update())); // FIXME: calculate the rect
+// 		QTimer::singleShot(0, m_paintDevice, SIGNAL(update()));
+		m_paintDevice->update(m_overBufferRect);
 	}
 	
 	switch(m_renderType)
 	{
 		case Image:
 		{
-			m_overBuffer = IMAGE_DEVICE->copy( rect.toRect() );
+			m_overBuffer = IMAGE_DEVICE->copy( rect );
 		}
 		break;
 		case Native:
@@ -404,48 +402,22 @@ void APaintArea::aUpdate(const QRectF &rect)
 		break;
 		case OpenGL:
 		{
-			m_overBuffer = OPENGL_DEVICE->grabFrameBuffer().copy( rect.toRect() );
+			m_overBuffer = OPENGL_DEVICE->grabFrameBuffer().copy( rect );
 		}
 	}
-// 	m_overBuffer = m_paintDevice->copy( rect.toRect() );
-	m_overBufferRect = rect.toRect();
-	
-#else
-	
-	if(m_drawGrid)
-	{
-		painter.drawImage(rect.toRect(), m_grid.copy( rect.toRect() ));
-	}
-		
-	QList<AGraphicComponent *> componentList = m_currentFrame->components();
-	
-	if ( componentList.count() > 0)
-	{
-		QList<AGraphicComponent *>::iterator it = componentList.begin();
-		
-		while ( it != componentList.end() )
-		{
-			if ( *it && (*it)->path().intersects(rect) )
-			{
-				drawGraphic( *it, &painter);
-			}
-			++it;
-		}
-	}
-	QTimer::singleShot(0, this, SLOT(update()));
-#endif
+	m_overBufferRect = rect;
 }
 
 void APaintArea::drawGhostGraphic(const QPainterPath &path)
 {
 	aUpdate(path.boundingRect().toRect().normalized().adjusted(-60,-60,60,60) );
-
+	
 	QPainter painter;
 	BEGIN_PAINTER(painter);
 	
-	painter.drawImage(m_overBufferRect, m_overBuffer);
-	painter.scale(m_zoomFactor,m_zoomFactor);
-	painter.setPen(QPen(Qt::black, 1, Qt::DashLine));
+// 	painter.drawImage(m_overBufferRect, m_overBuffer);
+// 	painter.scale(m_zoomFactor,m_zoomFactor);
+	painter.setPen(QPen(Qt::black, 2, Qt::DotLine));
 	painter.drawPath(path);
 }
 
@@ -569,8 +541,12 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 				m_currentBrush->setupPainter(&painter);
 				painter.scale(m_zoomFactor,m_zoomFactor);
 				QRect rect = m_currentTool->move(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), m_lastPosition, event->pos());
+				
+// 				m_paintDevice->update(rect);
 				rect.translate(m_xpos, m_ypos);
+				
 				update(rect);
+				
 
 			}
 	
@@ -600,9 +576,10 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 				painter.scale(m_zoomFactor,m_zoomFactor);
 				QRect rect = m_currentTool->release(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(), event->pos()), event->pos());
 				
+				
+				m_paintDevice->update(rect);
 				rect.translate(m_xpos, m_ypos);
 				
-				update(rect);
 				
 				if ( !m_currentTool->path().isEmpty())
 				{

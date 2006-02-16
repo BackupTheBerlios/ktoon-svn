@@ -101,6 +101,10 @@ void KTMainWindow::setLayerVisibilityChanged(int idLayer, bool isVisible)
 void KTMainWindow::insertFrame(const QString &name, bool addedToEnd)
 {
 	KT_FUNCINFO;
+	
+	m_exposureSheet->addFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd); // FIXME: insert!
+	m_timeLine->insertFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd);
+	
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if(!doc)
@@ -108,8 +112,6 @@ void KTMainWindow::insertFrame(const QString &name, bool addedToEnd)
 		newViewDocument( name);
 	}
 	
-	m_exposureSheet->addFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd); // FIXME: insert!
-	m_timeLine->insertFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd);
 }
 
 void KTMainWindow::moveFrame(bool up)

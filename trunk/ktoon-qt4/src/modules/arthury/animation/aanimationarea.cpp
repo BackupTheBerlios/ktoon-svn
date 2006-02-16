@@ -194,21 +194,6 @@ void AAnimationArea::render() // TODO: Extend to scenes
 			++layerIterator;
 		}
 		
-		QString file = "";
-		if ( nPhotogramsRenderized < 10 )
-		{
-			file = QString("/tmp/ktoon000%1.png").arg(nPhotogramsRenderized);
-		}
-		else if ( nPhotogramsRenderized >= 10 < 100 )
-		{
-			file = QString("/tmp/ktoon00%1.png").arg(nPhotogramsRenderized);
-		}
-		else
-		{
-			file = QString("/tmp/ktoon0%1.png").arg(nPhotogramsRenderized);
-		}
-		
-		renderized.save(file, "PNG");
 		emit progressStep( nPhotogramsRenderized, totalPhotograms);
 		m_photograms << renderized;
 		

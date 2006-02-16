@@ -74,7 +74,7 @@ class APaintArea : public QWidget
 		
 	public slots:
 		void redrawAll();
-		void aUpdate(const QRectF &rect);
+		void aUpdate(const QRect &rect);
 		void drawGhostGraphic(const QPainterPath &path);
 		void setKeyFrame(int index);
 		void setLayer(int index);

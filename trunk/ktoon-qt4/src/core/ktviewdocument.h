@@ -92,7 +92,7 @@ class KTViewDocument : public KTMdiWindow
 		void createMenu();
 		void createTools();
 		
-	private: 
+	private slots: 
 		// Plugins
 		void loadPlugins();
 		

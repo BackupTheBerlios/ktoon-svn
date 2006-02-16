@@ -28,6 +28,7 @@
 #include <QPixmap>
 #include <QActionGroup>
 #include <QDockWidget>
+#include <QTimer>
 
 #include "ktvhbox.h"
 #include "kttoolpluginobject.h"
@@ -74,10 +75,12 @@ KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, co
 	createToolbar();
 	createTools();
 	createMenu();
-	loadPlugins();
-	m_configurationArea = new KTConfigurationArea;
 	
+	m_configurationArea = new KTConfigurationArea;
 	addDockWidget(Qt::RightDockWidgetArea, m_configurationArea);
+	
+	
+	QTimer::singleShot(0, this, SLOT(loadPlugins()));
 }
 
 KTViewDocument::~KTViewDocument()

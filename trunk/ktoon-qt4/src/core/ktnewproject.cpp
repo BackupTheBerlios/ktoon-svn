@@ -80,8 +80,12 @@ NPFirstPage::NPFirstPage(QWidget *parent) : KTWizardPage(tr("New KToon Project")
 	m_size = new KTXYSpinBox("Dimension", container);
 	m_size->setMaximum( 1000);
 	m_size->setModifyTogether(true);;
-	m_size->setX( 520);
-	m_size->setY( 340);
+// 	m_size->setX( 520);
+// 	m_size->setY( 340);
+	
+	m_size->setX( 420 );
+	m_size->setY( 240);
+	
 	layout->addWidget(m_size, 2, 0);
 	
 	QGroupBox *renderAndFps= new QGroupBox();
