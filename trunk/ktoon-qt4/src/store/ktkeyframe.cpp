@@ -189,3 +189,54 @@ bool KTKeyFrame::hasSelections() const
 {
 	return !m_selectedComponents.isEmpty();
 }
+
+void KTKeyFrame::sendToBackSelected()
+{
+	
+	ktDebug() << "aki";
+	if(m_selectedComponents.count() == 1)
+	{
+		ktDebug() << "aki1";
+		m_components.removeAll ( m_selectedComponents[0] );
+		m_components.push_front( m_selectedComponents[0] );
+	}
+}
+
+void KTKeyFrame::bringToFromSelected()
+{
+	if(m_selectedComponents.count() == 1)
+	{
+		m_components.removeAll ( m_selectedComponents[0] );
+		m_components.push_back( m_selectedComponents[0] );
+	}
+}
+
+void KTKeyFrame::oneStepForwardSelected()
+{
+	if(m_selectedComponents.count() == 1  )
+	{
+		if(! (m_selectedComponents[0] == m_components.last()))
+		{
+			int index = m_components.indexOf(m_selectedComponents[0]);
+			if(index != -1 )
+			{
+				m_components.swap(index, index +1 );
+			} 
+		}
+	}
+}
+void KTKeyFrame::oneStepBackwardSelected()
+{
+	if(m_selectedComponents.count() == 1  )
+	{
+		if(! (m_selectedComponents[0] == m_components.first()))
+		{
+			int index = m_components.indexOf(m_selectedComponents[0]);
+			if(index != -1 )
+			{
+				m_components.swap(index, index -1 );
+			}
+		}
+	}
+}	
+

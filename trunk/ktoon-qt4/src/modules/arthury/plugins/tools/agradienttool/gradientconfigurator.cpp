@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "gradientconfigurator.h"
-#include "ktgradientmanager.h"
+#include "ktgradientcreator.h"
 
 #include <QColorDialog>
 

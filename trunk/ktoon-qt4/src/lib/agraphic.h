@@ -33,7 +33,7 @@
 
 #include <QPainterPath>
 
-#include "ktgradientadjuster.h"
+#include "ktbrushadjuster.h"
 
 /**
  * @if english

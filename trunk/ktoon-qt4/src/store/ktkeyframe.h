@@ -149,10 +149,16 @@ class KTKeyFrame : public KTSerializableObject
 		 /**
 		  * Esta funcion retorna verdadero si el frame tiene componentes seleccionados
 		  */
-		 bool hasSelections() const;
-		 
-		 
-		 
+		bool hasSelections() const;
+		
+		void bringToFromSelected(); 
+		
+		void sendToBackSelected();
+		
+		void oneStepForwardSelected();
+		void oneStepBackwardSelected();
+		
+		
 	private:
 		QList<AGraphicComponent *> m_components;
 		QList<AGraphicComponent *> m_selectedComponents;

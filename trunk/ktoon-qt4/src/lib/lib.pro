@@ -66,9 +66,10 @@ HEADERS += ktapplication.h \
            speller.h \
            spellhighlighter.h \
            spellinterface.h \
-           ktgradientmanager.h \
            ktgradientselector.h \
-           ktgradientviewer.h 
+           ktgradientviewer.h \
+           ktbrushadjuster.h \
+           ktgradientcreator.h 
 SOURCES += ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
@@ -126,9 +127,10 @@ SOURCES += ktapplication.cpp \
            ispelliface.cpp \
            speller.cpp \
            spellhighlighter.cpp \
-           ktgradientmanager.cpp \
            ktgradientselector.cpp \
-           ktgradientviewer.cpp 
+           ktgradientviewer.cpp \
+           ktbrushadjuster.cpp \
+           ktgradientcreator.cpp 
 QT += xml
 KDEV_QTVER = 4
 MOC_DIR = .moc

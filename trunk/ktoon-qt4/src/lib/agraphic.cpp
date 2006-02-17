@@ -19,6 +19,8 @@
  ***************************************************************************/
 
 #include "agraphic.h"
+#include "ktdebug.h"
+#include <QPixmap>
 
 AGraphic::AGraphic()
 {
@@ -36,13 +38,7 @@ void AGraphic::mapTo(const QMatrix& matrix)
 {
 	path = matrix.map(path);
 	
-	if ( brush.gradient() )
-	{
-		brush = KTGradientAdjuster::mapGradient(brush.gradient(), matrix);
-	}
+	brush = KTBrushAdjuster::mapBrush( &brush, matrix );
+	pen.setBrush( KTBrushAdjuster::mapBrush( &pen.brush(), matrix ));
 	
-	if ( pen.brush().gradient() )
-	{
-		pen.setBrush( KTGradientAdjuster::mapGradient( pen.brush().gradient(), matrix) );
-	}
 }

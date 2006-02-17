@@ -71,7 +71,7 @@ KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, co
 	setupEditActions();
 	setupEdit2Actions();
 	setupViewActions();
-	
+	setupOrderActions();
 	createToolbar();
 	createTools();
 	createMenu();
@@ -103,6 +103,9 @@ void KTViewDocument::createActions()
 	KTAction *redo = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/redo.png" ), tr( "&Redo" ),  QKeySequence(tr("Ctrl+SHIFT+Z")), m_paintAreaContainer->drawArea(), SLOT(redo()), m_actionManager, "redo" );
 	redo->setShortcutContext ( Qt::ApplicationShortcut );
 	redo->setStatusTip(tr("Redoes a previous undone action"));
+	
+
+	
 }
 
 void KTViewDocument::setupGridActions()
@@ -215,6 +218,34 @@ void KTViewDocument::setupEdit2Actions()
 // 	m_aClose->setShortcut( tr("Ctrl+Shift+W"));
 // 	connect(m_aClose, SIGNAL(triggered()), this, SLOT(close()));
 // 	m_aClose->setStatusTip(tr("Closes the active document"));
+	
+}
+
+void KTViewDocument::setupOrderActions()
+{
+	KTAction *bringtoFront = new KTAction(QPixmap(KTOON_THEME_DIR+"/icons/bring_to_front.png" ), tr( "&Bring to Front" ),  QKeySequence(Qt::CTRL+Qt::SHIFT+Qt::Key_Up), m_paintAreaContainer->drawArea(), SLOT(bringToFromSelected()), m_actionManager, "bringToFront" );
+	
+	bringtoFront->setShortcutContext ( Qt::ApplicationShortcut );
+	bringtoFront->setStatusTip(tr("Brings the selected object to the front"));
+	
+	
+	KTAction *sendToBack = new KTAction(QPixmap(KTOON_THEME_DIR+"/icons/send_to_back.png" ), tr( "&Send to Back" ),  QKeySequence(Qt::CTRL+Qt::SHIFT+Qt::Key_Down), m_paintAreaContainer->drawArea(), SLOT(sendToBackSelected()), m_actionManager, "sendToBack" );
+	
+	sendToBack->setShortcutContext ( Qt::ApplicationShortcut );
+	sendToBack->setStatusTip(tr("Sends the selected objects to the back"));
+	
+
+	
+	KTAction *oneStepForward = new KTAction(QPixmap(KTOON_THEME_DIR+"/icons/one_forward.png" ), tr( "One Step &Forward" ),  QKeySequence(Qt::CTRL+Qt::Key_Up), m_paintAreaContainer->drawArea(), SLOT(oneStepForwardSelected()), m_actionManager, "oneStepForward" );
+	
+	oneStepForward->setShortcutContext ( Qt::ApplicationShortcut );
+	oneStepForward->setStatusTip(tr("Moves the selected object one step forward"));
+	
+	
+	KTAction *oneStepBackward = new KTAction(QPixmap(KTOON_THEME_DIR+"/icons/one_backward.png" ), tr( "One Step B&ackward" ),  QKeySequence(Qt::CTRL+Qt::Key_Down), m_paintAreaContainer->drawArea(), SLOT(oneStepBackwardSelected()), m_actionManager, "oneStepBackward" );
+	
+	oneStepBackward->setShortcutContext ( Qt::ApplicationShortcut );
+	oneStepBackward->setStatusTip(tr("Moves the selected object one step backward"));
 	
 }
 
@@ -370,16 +401,7 @@ void KTViewDocument::createTools()
 // 	a->setStatusTip(tr("Group the selected objects into a single one"));
 // 	a->setStatusTip(tr("Ungroups the selected object"));
 	
-	m_toolsOrder->addAction(QPixmap(KTOON_THEME_DIR+"/icons/bring_to_front.png"), tr( "&Bring to Front" ), m_paintAreaContainer->drawArea(), SLOT(slotBringToFront()), Qt::CTRL+Qt::SHIFT+Qt::Key_Up);
-	m_toolsOrder->addAction(QPixmap(KTOON_THEME_DIR+"/icons/send_to_back.png"),  tr( "&Send to Back" ), m_paintAreaContainer->drawArea(), SLOT( slotSendToBack()), Qt::CTRL+Qt::SHIFT+Qt::Key_Down);
-
-	m_toolsOrder->addAction(QPixmap(KTOON_THEME_DIR+"/icons/one_forward.png"), tr( "One Step &Forward" ), m_paintAreaContainer->drawArea(), SLOT( slotOneStepForward()), Qt::CTRL+Qt::Key_Up);
 	
-	m_toolsOrder->addAction(QPixmap(KTOON_THEME_DIR+"/icons/one_backward.png"), tr( "One Step B&ackward" ), m_paintAreaContainer->drawArea(), SLOT(slotOneStepBackward()));
-// 	tools_bring_front->setStatusTip(tr("Brings the selected object to the front"));
-// 	tools_send_back->setStatusTip(tr("Sends the selected objects to the back"));
-// 	tools_one_step_forward->setStatusTip(tr("Moves the selected object one step forward"));
-// 	tools_one_step_backward->setStatusTip(tr("Moves the selected object one step backward"));
 
 	m_toolsAlign = new QMenu(tr( "Align"), this );
 	connect( m_toolsAlign, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
@@ -657,6 +679,14 @@ void KTViewDocument::createMenu()
 	m_toolsMenu->addSeparator();
 	m_toolsMenu->addAction(m_actionManager->find("group"));
 	m_toolsMenu->addAction(m_actionManager->find("ungroup"));
+	m_toolsMenu->addSeparator();
+	
+	m_orderMenu = new QMenu(tr( "&Order" ), this);
+	m_orderMenu->addAction(m_actionManager->find("bringToFront"));
+	m_orderMenu->addAction(m_actionManager->find("sendToBack"));
+	m_orderMenu->addAction(m_actionManager->find("oneStepForward"));
+	m_orderMenu->addAction(m_actionManager->find("oneStepBackward"));
+	m_toolsMenu->addAction(m_orderMenu->menuAction ());
 	
 	m_editMenu = new QMenu(tr( "&Edit" ), this);
 	

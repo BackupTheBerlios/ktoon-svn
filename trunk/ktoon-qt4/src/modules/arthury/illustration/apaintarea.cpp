@@ -296,16 +296,7 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter
 	{
 		QPen pen = graphic->pen;
 		QBrush brush = graphic->brush;
-// 		if ( brush.gradient() )
-// 		{
-// // 			brush = KTGradientAdjuster::translateGradient(brush.gradient(), graphic->path.boundingRect().toRect());
-// 		}
-// 	
-// 		if ( pen.brush().gradient() )
-// 		{
-// // 			pen.setBrush( KTGradientAdjuster::translateGradient( pen.brush().gradient(), graphic->path.boundingRect().toRect()) );
-// 		}
-	
+
 		if ( intensitive < 1 && intensitive >= 0 )
 		{
 			QColor penColor = Qt::gray;
@@ -691,6 +682,8 @@ void APaintArea::setNextFrames(int n)
 	}
 }
 
+
+
 void APaintArea::removeSelectsGraphics()
 {
 	m_currentFrame->removeSelections();
@@ -783,6 +776,42 @@ void APaintArea::selectAll()
 	m_currentFrame->selecteAllComponents();
 }
 
+void  APaintArea::bringToFromSelected()
+{
+	if(m_currentFrame )
+	{
+		m_currentFrame->bringToFromSelected();
+		redrawAll();
+	}
+}
+
+void APaintArea::sendToBackSelected()
+{
+	if(m_currentFrame )
+	{
+		m_currentFrame->sendToBackSelected();
+		redrawAll();
+	}
+}
+
+
+void APaintArea::oneStepForwardSelected()
+{
+	if(m_currentFrame )
+	{
+		m_currentFrame->oneStepForwardSelected();
+		redrawAll();
+	}
+}
+
+void APaintArea::oneStepBackwardSelected()
+{
+	if(m_currentFrame )
+	{
+		m_currentFrame->oneStepBackwardSelected();
+		redrawAll();
+	}
+}
 void APaintArea::setZoomFactor( float f )
 {
 	int w, h;

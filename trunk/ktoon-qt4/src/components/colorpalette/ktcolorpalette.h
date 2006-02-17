@@ -36,7 +36,7 @@
 #include "ktcolorpicker.h"
 #include "ktluminancepicker.h"
 #include "ktdualcolorbutton.h"
-#include "ktgradientmanager.h"
+#include "ktgradientcreator.h"
 
 class KTColorPalette;
 

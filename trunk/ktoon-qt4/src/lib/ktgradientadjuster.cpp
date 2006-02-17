@@ -68,7 +68,6 @@ QLinearGradient KTGradientAdjuster::adjustGradient(const QLinearGradient &gradie
 	final.setX(((gradient.finalStop().x() / 100) *  rect.width()) + rect.x()  );
 	final.setY(((gradient.finalStop().y() / 100) *  rect.height()) + rect.y()  );
 
-			
 	QLinearGradient newGradient = QLinearGradient(start, final);
 	
 	newGradient.setStops(gradient.stops());

@@ -129,21 +129,6 @@ QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPain
 			foreach(AGraphicComponent *selected, m_graphics) //FIXME: optimizar
 			{
 				selected->getPath(ghost, matrix);
-// 				foreach(AGraphic *graphic, selected->graphics() )
-// 				{
-// 					ghost.addPath(graphic->path );
-// 				}
-// 				
-// 				if(selected->hasChilds())
-// 				{
-// 					foreach(AGraphicComponent *child, selected->childs())
-// 					{
-// 						foreach(AGraphic *graphic1, child->graphics() )
-// 						{
-// 							ghost.addPath(graphic1->path );
-// 						}
-// 					}
-// 				}
 			}
 		}
 		else if(brush == tr("Contour") && m_selectPoint)
