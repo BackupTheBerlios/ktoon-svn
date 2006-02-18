@@ -305,6 +305,8 @@ void KTMainWindow::openProject(const QString &path)
 	{
 		if ( closeProject() )
 		{
+			m_pActiveTabWidget->setCurrentWidget(m_drawingSpace);
+			
 			m_projectManager->load( packageHandler.importedProjectPath() );
 			
 			if ( m_recentProjects.indexOf(path) == -1 )

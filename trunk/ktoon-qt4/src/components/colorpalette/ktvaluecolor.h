@@ -28,7 +28,8 @@
 #include "kteditspinbox.h"
 
 /**
-	@author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @todo: Rename from ValueColor to ColorValue
 */
 
 class KTItemValueColor : public QFrame

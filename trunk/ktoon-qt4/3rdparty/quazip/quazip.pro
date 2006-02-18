@@ -3,17 +3,6 @@
 # Subdir relative project main directory: ./3rdparty/quazip
 # Target is a library:  
 
-KDEV_QTVER = 4 
-LIBS += -lz 
-INCLUDEPATH += . 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-CONFIG += release \
-          warn_on \
-          qt \
-          staticlib 
-TEMPLATE = lib 
 HEADERS += crypt.h \
            ioapi.h \
            quazip.h \
@@ -28,4 +17,15 @@ SOURCES += ioapi.c \
            quazipnewinfo.cpp \
            unzip.c \
            zip.c 
+KDEV_QTVER = 4
+LIBS += -lz
+INCLUDEPATH += .
+MOC_DIR = .moc
+UI_DIR = .ui
+OBJECTS_DIR = .obj
+CONFIG += release \
+warn_on \
+qt \
+staticlib
+TEMPLATE = lib
 QT -= gui

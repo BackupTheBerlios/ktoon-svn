@@ -643,7 +643,7 @@ void KTCellView::setup()
 	verticalHeader()->hide();
 	horizontalHeader()->hide();
 	
-	setItemSize( 25, 25 );
+	setItemSize( 18, 18 );
 	
 	horizontalHeader()->setResizeMode(QHeaderView::Custom);
 	verticalHeader()->setResizeMode(QHeaderView::Custom);

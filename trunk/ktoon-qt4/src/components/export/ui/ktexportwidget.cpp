@@ -28,6 +28,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QLabel>
+#include <QIntValidator>
 
 #include "ktapplication.h"
 #include "ktdebug.h"
@@ -77,11 +78,13 @@ void KTExportWidget::setupToExport(QBoxLayout *mainLayout)
 	m_buttons->addButton(scenesRange, SceneRange);
 	
 	m_fromScene = new QLineEdit("0");
+	m_fromScene->setValidator(new QIntValidator(0, 100, m_fromScene));
 	rangeLayout->addWidget(m_fromScene);
 	
 	rangeLayout->addWidget(new QLabel(" to "));
 	
 	m_toScene = new QLineEdit("0");
+	m_toScene->setValidator(new QIntValidator(0, 100, m_toScene));
 	rangeLayout->addWidget(m_toScene);
 	
 	toExportLayout->addWidget(allScenes);

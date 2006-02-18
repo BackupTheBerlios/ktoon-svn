@@ -66,6 +66,8 @@ KTColorPalette::~KTColorPalette()
 void KTColorPalette::setupChooserTypeColor()
 {
 	QFrame *colorMixer = new QFrame(m_centralWidget);
+	colorMixer->setFrameStyle(QFrame::Box | QFrame::Sunken );
+	
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
 	colorMixer->setLayout(layout);
 
@@ -74,6 +76,8 @@ void KTColorPalette::setupChooserTypeColor()
 	m_displayValueColor = new KTValueColor(colorMixer);
 	
 	QBoxLayout *layoutContainer = new QBoxLayout(QBoxLayout::LeftToRight);
+	layoutContainer->addStretch(2);
+	
 	m_colorPicker = new KTColorPicker(colorMixer);
 	connect( m_colorPicker, SIGNAL(newCol(int, int)), this, SLOT(setHS(int, int)));
 	connect(m_displayValueColor, SIGNAL(hueChanged(int)), m_colorPicker, SLOT(setH(int)));
@@ -89,6 +93,8 @@ void KTColorPalette::setupChooserTypeColor()
 	connect(m_displayValueColor, SIGNAL(valueChanged(int)), m_luminancePicker, SLOT(setVal( int )));
 	layoutContainer->addWidget(m_luminancePicker, 0, Qt::AlignLeft);
 	layoutContainer->setSpacing(3);
+	
+	layoutContainer->addStretch(2);
 	
 	layout->addLayout(layoutContainer);
 	layout->addWidget(m_displayValueColor);

@@ -42,6 +42,9 @@ Developers Documentation
 David A. Cuadrado
 <krawek@toonka.com>
 
+Jorge H. Cuadrado
+<kuadrosx@toonka.com>
+
 Fernando Jose Roldan Correa
 <froldan@parquesoft.com>
 <froldan@toonka.com>
@@ -96,4 +99,4 @@ Atomica - Parquesoft
 
 
 
-2005
+2005-2006

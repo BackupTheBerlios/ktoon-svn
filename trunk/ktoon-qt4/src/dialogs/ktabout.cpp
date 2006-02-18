@@ -29,7 +29,6 @@
 #include <QTextBrowser>
 
 #include "ktabout.h"
-// #include "images.h"
 #include "ktapplication.h"
 #include "kimageeffect.h"
 
@@ -44,7 +43,7 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 
     	//1: Credits
 
-	QFile creditsFile( KTOON_HOME+"/data/credits.txt" );
+	QFile creditsFile( KTOON_DATA_DIR+"/credits.txt" );
 	QString creditsText;
 	if ( creditsFile.open( QIODevice::ReadOnly ) )
 	{
@@ -55,6 +54,10 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 			creditsText += line + "\n";
 		}
 		creditsFile.close();
+	}
+	else
+	{
+		ktError() << "Error while trying to read " << creditsFile.fileName();
 	}
 	
 	QImage credits = QImage(KTOON_THEME_DIR+"/images/credits-image.png" );
@@ -83,7 +86,7 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 	QTextBrowser *logText = new QTextBrowser/*(scroll)*/;
 	
 // 	QString readText;
-	QFile clFile( KTOON_HOME+"/data/Changelog" );
+	QFile clFile( KTOON_HOME+"/data/Changelog" ); // FIXME: translate?
 	
 	if ( clFile.open( QIODevice::ReadOnly | QIODevice::Text) )
 	{
@@ -125,7 +128,7 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 	QTextBrowser *licenceText = new QTextBrowser/*( scrollLicence )*/;
 // 	scrollLicence->setWidget( licenceText );
 // 	QString licence = "";
-	QFile licenceFile( KTOON_HOME+"/data/COPYING" );
+	QFile licenceFile( KTOON_DATA_DIR+"/COPYING" );
 	if ( licenceFile.open( QIODevice::ReadOnly  | QIODevice::Text) )
 	{
 		QTextStream stream( &licenceFile );
@@ -142,7 +145,7 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 
 	addTab( licenceText, tr( "License Agreement" ) );
 
-	setMaximumSize( m_credits->size() );
+	setMaximumSize( m_credits->size().expandedTo(m_ack->size()) );
 	
 	setButtonText( Cancel, tr("Close"));
 }
