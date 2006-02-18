@@ -25,23 +25,76 @@
 #include <QWorkspace>
 
 /**
-@author Jorge Cuadrado
+ * @if english
+ * This class is used like internal window in the workspace
+ * @elseif spanish
+ * Esta clase es usada como ventana interna de los espacios de trabajo
+ * @endif
+ * @author Jorge Cuadrado
 */
 class KTMdiWindow : public QMainWindow
 {
 	Q_OBJECT
 	public:
+		/**
+		 * @if english
+		 * Default Constructor 
+		 * @elseif spanish
+		 * Constructor por defecto
+		 * @endif
+		 * @param parent 
+		 * @param name 
+		 * @return 
+		 */
 		KTMdiWindow(QWorkspace* parent = 0, const char* name = 0);
+		/**
+		 * Destructor
+		 * @return 
+		 */
 		~KTMdiWindow();
+		
+		
+		/**
+		 * @if english
+		 * Returns the workspace associated to window
+		 * @elseif spanish
+		 * Retorna el espacio de trabajo asociado a la ventana
+		 * @endif
+		 * @return 
+		 */
 		QWorkspace* workspace();
-	
+		
 	protected:
 		virtual bool event( QEvent * e );
 	
 	signals:
+		/**
+		 * @if english
+		 * 
+		 * @elseif spanish
+		 * 
+		 * @endif
+		 * @param  
+		 * @param ms 
+		 */
 		void sendMessage(const QString &, int ms = 0);
+		
+		
+		/**
+		 * 
+		 * @param step 
+		 * @param totalSteps 
+		 */
 		void sendProgress(int step, int totalSteps);
-		void activate(bool);
+		/**
+		 * @if english
+		 * This signal is emitted when the window is activated
+		 * @elseif spanish
+		 * Esta señal es emitida cuando la ventana es activada
+		 * @endif
+		 * @param  
+		 */
+		void activate(bool isVisible);
 		
 	private:
 		QWorkspace *m_workspace;

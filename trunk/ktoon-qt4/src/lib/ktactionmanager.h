@@ -50,11 +50,7 @@ class KTActionManager : public QObject
 		 * Destructor
 		 */
 		~KTActionManager();
-		/**
-		 * 
-		 * @param w 
-		 */
-		void setWidget(QWidget *w);
+
 		/**
 		 * Inserta una accion al manejador
 		 * @param action accion para añadir
@@ -85,7 +81,6 @@ class KTActionManager : public QObject
 		QAction *operator[](const QString &id) const;
 
 	private:
-		QWidget *m_widget;
 		QActionDict m_actionDict;
 };
 

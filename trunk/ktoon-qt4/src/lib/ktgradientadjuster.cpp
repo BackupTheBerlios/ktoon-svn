@@ -21,13 +21,13 @@
 #include "ktgradientadjuster.h"
 #include <QMatrix>
 
-KTGradientAdjuster::KTGradientAdjuster()
-{
-}
-
-KTGradientAdjuster::~KTGradientAdjuster()
-{
-}
+// KTGradientAdjuster::KTGradientAdjuster()
+// {
+// }
+// 
+// KTGradientAdjuster::~KTGradientAdjuster()
+// {
+// }
 
 QGradient KTGradientAdjuster::adjustGradient(const QGradient *gradient, const QRect &rect )
 {

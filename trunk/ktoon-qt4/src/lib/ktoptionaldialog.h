@@ -27,15 +27,45 @@
 #include <QHBoxLayout>
 
 /**
+ * @if english
+ * This class represents a dialog that is optional
+ * @elseif spanish
+ * Esta clase representa un dialogo que es opcional
+ * @endif
+ * 
  * @author David Cuadrado <krawek@toonka.com>
 */
 class KTOptionalDialog : public QDialog
 {
 	Q_OBJECT
 	public:
+		/**
+		 * @if english
+		 * Default constructor
+		 * @elseif spanish
+		 * Constructor por defecto
+		 * @endif
+		 * @param text 
+		 * @param title 
+		 * @param parent 
+		 * @return 
+		 */
 		KTOptionalDialog(const QString &text, const QString &title = 0, QWidget *parent = 0);
+		/**
+		 * Destructor
+		 * @return 
+		 */
 		~KTOptionalDialog();
-		bool checked();
+		
+		/**
+		 * @if english
+		 * This function returns true when the user wants to see the dialog again
+		 * @elseif spanish
+		 * Esta funcion retorna true cuando el usuario quiere volver a ver el dialogo
+		 * @endif
+		 * @return 
+		 */
+		bool shownAgain();
 		
 	private:
 		QBoxLayout *m_layout;

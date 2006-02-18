@@ -54,7 +54,7 @@ KTOptionalDialog::~KTOptionalDialog()
 {
 }
 
-bool KTOptionalDialog::checked()
+bool KTOptionalDialog::shownAgain()
 {
 	return m_checkBox->isChecked();
 }

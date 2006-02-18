@@ -25,12 +25,36 @@
 #include <QStringList>
 
 /**
+ * @if english
+ * Abstract class that define a interface for spell programs, such as aspell, ispell, pspell
+ * @elseif spanish
+ * Clase abstracta que define una interfaz para programas de ortografia
+ * @endif
  * @author David Cuadrado <krawek@gmail.com>
 */
 class SpellInterface
 {
 	public:
+		/**
+		 * @if english
+		 * This function must check if a word is right
+		 * @elseif spanish
+		 * Esta funcion debe chequear si una palabra es correcta
+		 * @endif
+		 * @param word 
+		 * @return 
+		 */
 		virtual bool checkWord(const QString &word) = 0;
+		
+		/**
+		 * @if english
+		 * This function must return a list of suggestion
+		 * @elseif spanish
+		 * Esta funcion debe retorna una lista de sugerencias
+		 * @endif
+		 * @param word 
+		 * @return 
+		 */
 		virtual QStringList suggestions(const QString &word) = 0;
 };
 

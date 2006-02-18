@@ -23,12 +23,20 @@
 #define KTBRUSHADJUSTER_H
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
+ * @if english
+ * Translate me
+ * @elseif spanish
+ * @short
+ * Esta clase ajusta un QBrush, este es debido a que el contenido de un QBrush es estatico, por ejemplo, los gradientes siempre son creados con unos puntos definidos, si deseamos aplicar el gradiente a un cuadrado mas grande debemos ajustar
+ * @endif
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
+
 #include "ktgradientadjuster.h"
 
 #include <QBrush>
 #include <QMatrix>
+
 class KTBrushAdjuster
 {
 	public:

@@ -24,22 +24,73 @@
 #include <QFrame>
 
 /**
+ * @if english
+ * This class represents the KTModuleWidget header
+ * @elseif spanish
+ * Esta clase representa la cabecera de KTModuleWidget
+ * @endif
  * @author David Cuadrado
 */
 class KTModuleWidgetTitle : public QFrame
 {
 	Q_OBJECT
 	public:
+		/**
+		 * @if english
+		 * Default Constructor
+		 * @elseif spanish
+		 * Constructor por defecto
+		 * @endif
+		 * 
+		 * @param title 
+		 * @param parent 
+		 * @return 
+		 */
 		KTModuleWidgetTitle(const QString &title, QWidget *parent = 0);
+		/**
+		 * Destructor
+		 * @return 
+		 */
 		~KTModuleWidgetTitle();
+		/**
+		 * @if english
+		 * Reimplemented from QWidget, this function returns the size hint for the widget
+		 * @elseif spanish
+		 * Reimplementado de QWidget, esta funcion retorna el tamaño apropiado del widget
+		 * @endif
+		 * @return 
+		 */
 		QSize sizeHint() const;
 		
 		
 	public slots:
+		/**
+		 * @if english
+		 * Sets the title text
+		 * @elseif spanish
+		 * Pone el texto del titulo
+		 * @endif
+		 * @param text 
+		 */
 		void setText(const QString &text);
+		/**
+		 * @if english
+		 * Sets the title font
+		 * @elseif spanish
+		 * Pone la letra al titulo
+		 * @endif
+		 * @param font 
+		 */
 		void setFont(const QFont &font);
 		
 	signals:
+		/**
+		 * @if english
+		 * This signal is emitted when title is double clicked
+		 * @elseif spanish
+		 * Este signal es emitido cuando el titulo ha sido clickeado dos veces
+		 * @endif
+		 */
 		void doubleClicked();
 		
 	protected:

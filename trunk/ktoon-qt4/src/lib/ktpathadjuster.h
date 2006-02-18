@@ -31,13 +31,58 @@
 class KTPathAdjuster
 {
 	public:
+		/**
+		 * @if english
+		 * Default constructor
+		 * @elseif spanish
+		 * Constructor por defecto
+		 * @endif
+		 * @return 
+		 */
 		KTPathAdjuster();
+		
+		/**
+		 * Destructor
+		 * @return 
+		 */
 		~KTPathAdjuster();
 		
+		/**
+		 * @if english
+		 * Adjusts a QPainterPath to rect
+		 * @elseif spanish
+		 * Ajusta un QPainterPath a un rectangulo
+		 * @endif
+		 * @param p 
+		 * @param rect 
+		 * @param offset 
+		 * @return 
+		 */
 		static QPainterPath toRect(const QPainterPath &p, const QRect &rect, float offset = 10.0f);
 		
+		/**
+		 * @if english
+		 * Adjust a QPainterPath list to rect
+		 * @elseif spanish
+		 * Ajusta una lista de QPainterPath a un rectangulo
+		 * @endif
+		 * @param l 
+		 * @param rect 
+		 * @param offset 
+		 * @return 
+		 */
 		static QList<QPainterPath> toRect(const QList<QPainterPath> &l, const QRect &rect, float offset = 10.0f);
 		
+		/**
+		 * @if english
+		 * Builds a QPainterPath from a QStringList
+		 * @elseif spanish
+		 * Construye un QPainterPath desde un QStringList
+		 * @endif
+		 * @param polygonsStr 
+		 * @param sep 
+		 * @return 
+		 */
 		static QPainterPath buildPath(const QStringList &polygonsStr, QChar sep);
 
 };

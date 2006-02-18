@@ -26,14 +26,47 @@
 #include "speller.h"
 
 /**
+ * @if english
+ * This class represents a spell highlighter, the common use is in QTextEdit documents
+ * @code
+ * new SpellHighlighter(textEdit->document());
+ * @endcode
+ * @elseif spanish
+ * Esta clase representa un destacador de ortografia, su uso mas comun es en documentos de QTextEdit
+ * @code
+ * new SpellHighlighter(textEdit->document());
+ * @endcode
+ * @endif
  * @author David Cuadrado <krawek@gmail.com>
 */
 
 class SpellHighlighter : public QSyntaxHighlighter
 {
 	public:
+		/**
+		 * @if english
+		 * Default constructor
+		 * @elseif spanish
+		 * Constructor por defecto
+		 * @endif
+		 * @param parent 
+		 * @return 
+		 */
 		SpellHighlighter(QTextDocument * parent);
+		/**
+		 * Destructor
+		 * @return 
+		 */
 		~SpellHighlighter();
+		
+		/**
+		 * @if english
+		 * Sets the resalt color
+		 * @elseif spanish
+		 * Pone el color de resaltado del widget
+		 * @endif
+		 * @param color 
+		 */
 		void setResaltColor(const QColor &color);
 		
 	protected:

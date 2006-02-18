@@ -34,19 +34,110 @@
 class KTGradientAdjuster
 {
 	protected:
-		KTGradientAdjuster();
-		~KTGradientAdjuster();
+		
+// 		KTGradientAdjuster();
+// 		~KTGradientAdjuster();
 		
 	public:
+		/**
+		 * @if english
+		 * Adjust a gradient to rect
+		 * @param gradient gradient to adjust
+		 * @param rect rect
+		 * @elseif spanish
+		 * Ajusta un gradiente a un rectangulo
+		 * @param gradient gradiente a ajustar
+		 * @param rect rectangulo al cual se va ajustar el gradiente
+		 * @endif
+		*/
 		static QGradient adjustGradient(const QGradient *gradient, const QRect &rect );
+		/**
+		 * @if english
+		 * Adjust a linear gradient to rect
+		 * @param gradient gradient to adjust
+		 * @param rect rect
+		 * @elseif spanish
+		 * Ajusta un gradiente lineal a un rectangulo
+		 * @param gradient gradiente a ajustar
+		 * @param rect rectangulo al cual se va ajustar el gradiente
+		 * @endif
+		 */
 		static QLinearGradient adjustGradient(const QLinearGradient &gradient, const QRect &rect);
+		/**
+		 * @if english
+		 * Adjust a radial gradient to rect
+		 * @param gradient gradient to adjust
+		 * @param rect rect
+		 * @elseif spanish
+		 * Ajusta un gradiente radial a un rectangulo
+		 * @param gradient gradiente a ajustar
+		 * @param rect rectangulo al cual se va ajustar el gradiente
+		 * @endif
+		 */
 		static QRadialGradient adjustGradient(const QRadialGradient &gradient, const QRect &rect);
+		/**
+		 * @if english
+		 * Adjust a conical gradient to rect
+		 * @param gradient gradient to adjust
+		 * @param rect rect
+		 * @elseif spanish
+		 * Ajusta un gradiente conico a un rectangulo
+		 * @param gradient gradiente a ajustar
+		 * @param rect rectangulo al cual se va ajustar el gradiente
+		 * @endif
+		 */
 		static QConicalGradient adjustGradient(const QConicalGradient &gradient, const QRect &rect);
 		
-		
+		/**
+		 * @if english
+		 * Maps a gradient to transformation matrix
+		 * @param gradient
+		 * @param matrix
+		 * @elseif spanish
+		 * Mapea un gradiente a una matrix de transformacion
+		 * @param gradient gradiente a transformar
+		 * @param matrix matrix de tranformacion
+		 * @endif
+		 */
 		static QGradient mapGradient(const QGradient *gradient, const QMatrix &matrix );
+		
+		/**
+		 * @if english
+		 * Maps a linear gradient to transformation matrix
+		 * @param gradient
+		 * @param matrix
+		 * @elseif spanish
+		 * Mapea un gradiente linear a una matrix de transformacion
+		 * @param gradient gradiente a transformar
+		 * @param matrix matrix de tranformacion
+		 * @endif
+		 */
 		static QLinearGradient mapGradient(const QLinearGradient &gradient, const QMatrix &matrix);
+		
+		/**
+		 * @if english
+		 * Maps a radial gradient to transformation matrix
+		 * @param gradient
+		 * @param matrix
+		 * @elseif spanish
+		 * Mapea un gradiente radial a una matrix de transformacion
+		 * @param gradient gradiente a transformar
+		 * @param matrix matrix de tranformacion
+		 * @endif
+		 */
 		static QRadialGradient mapGradient(const QRadialGradient &gradient, const QMatrix &matrix);
+		
+		/**
+		 * @if english
+		 * Maps a conical gradient to transformation matrix
+		 * @param gradient
+		 * @param matrix
+		 * @elseif spanish
+		 * Mapea un gradiente conico a una matrix de transformacion
+		 * @param gradient gradiente a transformar
+		 * @param matrix matrix de tranformacion
+		 * @endif
+		 */
 		static QConicalGradient mapGradient(const QConicalGradient &gradient, const QMatrix &matrix);
 		
 };

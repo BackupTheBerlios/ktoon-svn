@@ -35,15 +35,44 @@
 struct AspellSpeller;
 
 /**
+ * @if english
+ * 
+ * @elseif spanish
+ * Interfaz para aspell
+ * @endif
  * @author David Cuadrado <krawek@gmail.com>
 */
 class AspellIface : public SpellInterface
 {
 	public:
+		/**
+		 * @if english
+		 * Translate
+		 * @endif
+		 * @if spanish
+		 * Constructor por defecto
+		 * @endif
+		 */
 		AspellIface();
+		
+		/**
+		 * @if english
+		 * Destructor
+		 * @endif
+		 * @if spanish
+		 * Destructor
+		 * @endif
+		 */
 		virtual ~AspellIface();
 		
+		/**
+		 * Reimplementado de SpellInterface, esta funcion verifica si una palabra esta bien escrita
+		 */
 		bool checkWord(const QString &word);
+		
+		/**
+		 * Retorna una lista de palabras sugeridas para una palabra mal escrita
+		 */
 		QStringList suggestions(const QString &word);
 		
 	private:
@@ -56,3 +85,4 @@ class AspellIface : public SpellInterface
 #endif
 
 #endif // HAVE_ASPELL
+

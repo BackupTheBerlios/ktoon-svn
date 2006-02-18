@@ -227,7 +227,7 @@ void KTLibraryWidget::removeCurrentGraphic()
 			return;
 		}
 		
-		KTCONFIG->setValue("RemoveWithoutAsk", dialog.checked());
+		KTCONFIG->setValue("RemoveWithoutAsk", dialog.shownAgain());
 		
 		KTCONFIG->sync();
 	}

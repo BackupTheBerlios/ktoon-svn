@@ -21,22 +21,13 @@
 #include "ktactionmanager.h"
 #include "ktdebug.h"
 
-KTActionManager::KTActionManager(QWidget *parent) : QObject(parent), m_widget(0)
+KTActionManager::KTActionManager(QWidget *parent) : QObject(parent)
 {
 	setObjectName( "KTActionManager"+parent->objectName() );
-	setWidget(parent);
 }
 
 KTActionManager::~KTActionManager()
 {
-}
-
-void KTActionManager::setWidget(QWidget *w)
-{
-	if ( ! m_widget )
-	{
-		m_widget = w;
-	}
 }
 
 bool KTActionManager::insert(KTAction *action)
