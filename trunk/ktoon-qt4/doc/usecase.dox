@@ -1,4 +1,5 @@
 /**
+ * @if english
  * @page usecase Use case diagrams
  * Use case diagrams
  *
@@ -24,6 +25,33 @@
  *
  * @line 
  * @n
+ * @endif
+ * @if spanish 
+ * @page usecase Diagramas de Casos de Uso
+ * Diagramas de Casos de Uso 
+ *
+ * @line
+ * @n
+ * @section ucgeneral Digramas de Casos de Uso Generales
+ * @image html uc_general.png
+ *
+ * @line
+ * @n
+ * @section ucproject Diagramas de Casos de Uso de Proyectos
+ * @image html uc_project.png
+ *
+ * @line
+ * @n
+ * @section ucillustration Diagramas de Casos de Uso de Ilustracion
+ * @image html uc_illustration.png
+ *
+ * @line
+ * @n
+ * @section ucanimation Diagramas de Casos de Uso de Animacion
+ * @image html uc_animation.png
+ *
+ * @line
+ * @n
+ * @endif
  */
-
 
