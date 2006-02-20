@@ -28,22 +28,72 @@
 #include <QBrush>
 
 /**
+ * @if english
+ * @short translate me
+ * @elseif spanish
+ * @short Esta clase provee de un visualizador de path.
+ * @endif
  * @author David Cuadrado <krawek@toonka.com>
 */
 class KTDisplayPath : public QFrame
 {
 	Q_OBJECT
 	public:
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Constructor por defecto.
+		 * @endif
+		 */
 		KTDisplayPath(QWidget *parent = 0);
+		/**
+		 * Destructor
+		 */
 		~KTDisplayPath();
+		
 		virtual QSize sizeHint() const;
 		
 	public:
+		/**
+		* @if english
+		* Translate
+		* @elseif spanish
+		* Pone el "painter path" a visualizar
+		* @endif
+		 */
 		void setPath(const QPainterPath &form);
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Pone el grosor de la linea con la que se va a visualizar el "painter path".
+		 * @endif
+		 */
 		void setThickness(int value);
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Pone el tipo de linea con la que se va a visualizar el "painter path".
+		 * @endif
+		 */
 		void setPen(const QPen &pen);
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Pone el tipo de relleno con la que se va a visualizar el "painter path".
+		 * @endif
+		 */
 		void setBrush(const QBrush &brush);
+		/**
+		 * Devuelve el "painter path" actualmente visualizado.
+		 */
 		virtual QPainterPath currentPainterPath();
+		/**
+		 * Devuelve la imagen que genera el visualizar el "painter path".
+		 */
 		QImage *displayDevice();
 		
 	private:

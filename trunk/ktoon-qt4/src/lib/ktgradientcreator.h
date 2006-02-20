@@ -36,10 +36,130 @@
 
 #include "ktxyspinbox.h"
 
+
+class SpinControl;
+
+
+ /**
+  * 
+  * @if english
+  * @short translate me
+  * @elseif spanish
+  * @short Esta clase provee de una simple interfaz grafica para crear gradientes.
+  * Consta de un visalizador de gradientes,  un configurador de "stops", dos selector de tipos de gradientes (tipo y "spread").
+  * 
+  * @endif
+  *
+  * @author Jorge Cuadrado <kuadrosx@toonka.com>
+  */
+class KTGradientCreator : public QFrame
+{
+	Q_OBJECT
+	public:
+		enum KTGradientApply{None=-1, Fill, OutLine, FillAndOutLine };
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Constructor por defecto.
+		 * @endif
+		 */
+		KTGradientCreator(QWidget *parent = 0);
+		/**
+		 * Destructor
+		 */
+		~KTGradientCreator();
+		
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Cambia el color del "stop" actual.
+		 * @endif
+		 */
+		void setCurrentColor(const QColor &);
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Devuelve el tipo del gradiente actual.
+		 * @endif
+		 * @see QGradient
+		 */
+		int gradientType();
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Devuelve un QBrush con el gradiente acutal.
+		 * @endif
+		 * @see QBrush
+		 */
+		QBrush currentGradient();
+		
+		KTGradientApply gradientApply();
+		
+		/**
+		 * Devuelve el tamaño ideal
+		 */
+		virtual QSize sizeHint () const;
+		
+	private:
+		KTGradientSelector *m_selector;
+		KTGradientViewer *m_viewer;
+		KTRadioButtonGroup *m_type, *m_spread ;
+		KTImageButton *m_fill, *m_outLine;
+		QSpinBox *m_radius, *m_angle;
+		SpinControl *m_spinControl;
+		
+	public slots:
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Cambia el tipo del gradiente actual.
+		 * @endif
+		 * @see QGradient
+		 */
+		void changeType(int type);
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Cambia el "spread" del gradiente actual.
+		 * @endif
+		 * @see QGradient
+		 */
+		void changeSpread(int spread);
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Cambia los "GradientStops" del gradiente actual.
+		 * @endif
+		 * @see QGradientStops
+		 */
+		void changeGradientStops( const QGradientStops& );
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Cambia el gradiente actual.
+		 * @endif
+		 */
+		void setGradient(const QGradient & gradient);
+		
+	private slots:
+		void emitGradientChanged();
+		
+	signals:
+		void gradientChanged(const QGradient &);
+		void controlArrowAdded();
+};
+
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
-*/
-
+ */
 class SpinControl: public QGroupBox
 {
 	Q_OBJECT
@@ -123,47 +243,6 @@ class SpinControl: public QGroupBox
 	signals:
 		void angleChanged(int angle);
 		void radiusChanged(int radius);
-};
-
-/**
- * @class KTGradientCreator
- */
-class KTGradientCreator : public QFrame
-{
-	Q_OBJECT
-	public:
-		enum KTGradientApply{None=-1, Fill, OutLine, FillAndOutLine };
-		KTGradientCreator(QWidget *parent = 0);
-		~KTGradientCreator();
-		
-		void setCurrentColor(const QColor &);
-		int gradientType();
-		void updateGradient();
-		QBrush currentGradient();
-		
-		KTGradientApply gradientApply();
-		
-		virtual QSize sizeHint () const;
-		
-		
-	private:
-		KTGradientSelector *m_selector;
-		KTGradientViewer *m_viewer;
-		KTRadioButtonGroup *m_type, *m_spread ;
-		KTImageButton *m_fill, *m_outLine;
-		QSpinBox *m_radius, *m_angle;
-		SpinControl *m_spinControl;
-		
-	public slots:
-		void changeType(int type);
-		void changeSpread(int spread);
-		void changeGradient( const QGradientStops& );
-		void setGradient(const QGradient & gradient);
-		void emitGradientChanged();
-		
-	signals:
-		void gradientChanged(const QGradient &);
-		void controlArrowAdded();
 };
 
 #endif

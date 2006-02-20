@@ -84,8 +84,8 @@ QRadialGradient KTGradientAdjuster::adjustGradient(const QRadialGradient &gradie
 	
 	focal.setX(((gradient.focalPoint().x() / 100) *  rect.width()) + rect.x()  );
 	focal.setY(((gradient.focalPoint().y() / 100) *  rect.height()) + rect.y()  );
-	
-	QRadialGradient newGradient = QRadialGradient(center, gradient.radius(),  focal );
+	int radius = gradient.radius()/100* (qMax(rect.width(), rect.height()));
+	QRadialGradient newGradient = QRadialGradient(center, radius,  focal );
 	newGradient.setStops(gradient.stops());
 	newGradient.setSpread(gradient.spread());
 	return newGradient;

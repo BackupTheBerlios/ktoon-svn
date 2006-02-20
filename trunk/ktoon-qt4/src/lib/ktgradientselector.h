@@ -16,38 +16,119 @@
 
 #include <QList>
 
-class KTGradientArrow : public QObject
-{
-	public:
-		KTGradientArrow(QPoint pos, const QColor& color);
-		~KTGradientArrow();
-		double position();
-		bool contains ( const QPoint & pt );
-		void moveArrow( const QPoint &pos );
-		QPainterPath form();
-		QColor color() const;
-		void setColor(const QColor &color);
-		void moveVertical(const QPoint &pos);
-		
-	private:
-		QPainterPath m_form;
-		QColor m_color;
-		
-};
 
 
+/**
+ * @if english
+ * @short translate me
+ * @elseif spanish
+ * @short Esta clase provee de una simple interfaz grafica para generar "GradientStops".
+ * @endif
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ */
 class KTGradientSelector : public QAbstractSlider
 {
 	Q_OBJECT;
 	
+	private:
+		class KTGradientArrow : public QObject
+		{
+			public:
+				KTGradientArrow(QPoint pos, const QColor& color): m_color(color)
+				{
+					QPolygon array(6);
+				// 	if ( orientation() == Qt::Vertical )
+				// 	{
+				// 		array.setPoint( 0, pos.x()+0, pos.y()+0 );
+				// 		array.setPoint( 1, pos.x()+5, pos.y()+5 );
+				// 		array.setPoint( 2, pos.x()+5, pos.y()-5 );
+									// 		
+						
+				// 	}
+				// 	else
+				// 	{
+					array.setPoint( 0, pos.x()+0, pos.y()+0 );
+					array.setPoint( 1, pos.x()+5, pos.y()+5 );
+					array.setPoint( 2, pos.x()+5, pos.y()+9 );
+					array.setPoint( 3, pos.x()-5, pos.y()+9 );
+					array.setPoint( 4, pos.x()-5, pos.y()+5 );
+					array.setPoint( 5, pos.x()+0, pos.y()+0 );
+// 					}
+					m_form.addPolygon(array);
+				}
+				~KTGradientArrow(){}
+				double position() 
+				{
+					return m_form.currentPosition().x();
+				}
+				bool contains ( const QPoint & pt )
+				{
+					return m_form.contains (pt);
+				}
+				void moveArrow( const QPoint &pos )
+				{	
+					QMatrix matrix;
+	
+					matrix.translate(pos.x() - m_form.currentPosition().x(), 0);
+	
+					m_form = matrix.map(m_form);
+				}
+				QPainterPath form()
+				{
+					return m_form;
+				}
+				QColor color() const
+				{
+					return m_color;
+				}
+				void setColor(const QColor &color)
+				{
+					m_color = color;
+				}
+				void moveVertical(const QPoint &pos)
+				{
+					QMatrix matrix;
+	
+					matrix.translate(0, pos.y() - m_form.currentPosition().y());
+	
+					m_form = matrix.map(m_form);
+				}
+				QPainterPath m_form;
+				QColor m_color;
+		
+		};;
+		
 	public:
 
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Constructor por defecto.
+		 * @endif
+		 */
 		KTGradientSelector( QWidget *parent=0 );
-
-		KTGradientSelector( Qt::Orientation o, QWidget *parent = 0 );
-
-		~KTGradientSelector();
 		
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Crea un KTGradientSelector, con una orientacion definida.
+		 * @endif
+		 * @see Qt::Orientation
+		 */
+		KTGradientSelector( Qt::Orientation o, QWidget *parent = 0 );
+		/**
+		 * Destructor
+		 */
+		~KTGradientSelector();
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Pone un GradienStops, para ser editado.
+		 * @endif
+		 */
 		void setStops(const QGradientStops &);
 		
 // 		void setColors( const QColor &col1, const QColor &col2 )
@@ -82,12 +163,6 @@ class KTGradientSelector : public QAbstractSlider
 
 		QRect contentsRect() const;
 
-		void setIndent( bool i )
-		{	_indent = i; }
-
-		bool indent() const
-		{	return _indent; }
-
 		void setValue(int value)
 		{
 			QAbstractSlider::setValue(value);
@@ -99,12 +174,32 @@ class KTGradientSelector : public QAbstractSlider
 				::value();
 		}
 
-		void setMaxRow(int value);
-		
-		QGradient gradient() const
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Pone el numero maximo de flechas, que definen el "GradienStops".
+		 * @endif
+		 */
+		void setMaxArrows(int value);
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Devuelve el "GradienStops" actual.
+		 * @endif
+		 */
+		QGradientStops  gradientStops() const
 		{
-			return m_gradient;
+			return m_gradient.stops();
 		}
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Crea el "GradienStops" actual apartir de las flechas acutales.
+		 * @endif
+		 */
 		void  createGradient();
 // 		void setMinValue(int value)
 // 		{ QAbstractSlider::setMaximum(value); }
@@ -125,10 +220,14 @@ class KTGradientSelector : public QAbstractSlider
 // 			return QAbstractSlider::maxValue();
 // 		}
 		
-		double valueToGradient(int _value) const;
-
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Cambia el color de la flecha actualmente seleccionada.
+		 * @endif
+		 */
 		void setCurrentColor(const QColor& color);
-					
 	signals:
 		void newValue( int value );
 		void gradientChanged(  const QGradientStops& );
@@ -157,8 +256,8 @@ class KTGradientSelector : public QAbstractSlider
 		QPoint calcArrowPos( int val );
 		void moveArrow( const QPoint &pos );
 
+		double valueToGradient(int _value) const;
 		Qt::Orientation _orientation;
-		bool _indent;
 		
 	private:
 		void init();
@@ -166,7 +265,7 @@ class KTGradientSelector : public QAbstractSlider
 		QLinearGradient m_gradient;
 		QList<KTGradientArrow*> m_arrows;
 		bool m_update;
-		int m_maxRow;
+		int m_maxArrows;
 		QImage m_buffer;
 };
 

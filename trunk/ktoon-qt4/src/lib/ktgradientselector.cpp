@@ -10,83 +10,82 @@
 
 
 	
-KTGradientArrow::KTGradientArrow(QPoint pos, const QColor& color): QObject(), m_color(color)
-{
-	QPolygon array(6);
-// 	if ( orientation() == Qt::Vertical )
-// 	{
+// KTGradientArrow::KTGradientArrow(QPoint pos, const QColor& color): QObject(), m_color(color)
+// {
+// 	QPolygon array(6);
+// // 	if ( orientation() == Qt::Vertical )
+// // 	{
+// // 		array.setPoint( 0, pos.x()+0, pos.y()+0 );
+// // 		array.setPoint( 1, pos.x()+5, pos.y()+5 );
+// // 		array.setPoint( 2, pos.x()+5, pos.y()-5 );
+// // 		
+// 		
+// // 	}
+// // 	else
+// // 	{
 // 		array.setPoint( 0, pos.x()+0, pos.y()+0 );
 // 		array.setPoint( 1, pos.x()+5, pos.y()+5 );
-// 		array.setPoint( 2, pos.x()+5, pos.y()-5 );
-// 		
-		
-// 	}
-// 	else
-// 	{
-		array.setPoint( 0, pos.x()+0, pos.y()+0 );
-		array.setPoint( 1, pos.x()+5, pos.y()+5 );
-		array.setPoint( 2, pos.x()+5, pos.y()+9 );
-		array.setPoint( 3, pos.x()-5, pos.y()+9 );
-		array.setPoint( 4, pos.x()-5, pos.y()+5 );
-		array.setPoint( 5, pos.x()+0, pos.y()+0 );
-// 	}
-		m_form.addPolygon(array);
-}
-
-KTGradientArrow::~KTGradientArrow()
-{
-	KTEND;
-}
-
-double KTGradientArrow::position()
-{
-	return m_form.currentPosition().x();
-}
-
-bool KTGradientArrow::contains ( const QPoint & pt )
-{
-	return m_form.contains (pt);
-}
-
-void KTGradientArrow::setColor( const QColor & color)
-{
-	m_color = color;
-}
-
-void KTGradientArrow::moveArrow( const QPoint &pos )
-{	
-	QMatrix matrix;
-	
-	matrix.translate(pos.x() - m_form.currentPosition().x(), 0);
-	
-	m_form = matrix.map(m_form);
-}
-
-
-void KTGradientArrow::moveVertical(const QPoint &pos)
-{
-	QMatrix matrix;
-	
-	matrix.translate(0, pos.y() - m_form.currentPosition().y());
-	
-	m_form = matrix.map(m_form);
-}
-
-QPainterPath KTGradientArrow::form()
-{
-	return m_form;
-}
-
-QColor KTGradientArrow::color() const
-{
-	return m_color;
-}
+// 		array.setPoint( 2, pos.x()+5, pos.y()+9 );
+// 		array.setPoint( 3, pos.x()-5, pos.y()+9 );
+// 		array.setPoint( 4, pos.x()-5, pos.y()+5 );
+// 		array.setPoint( 5, pos.x()+0, pos.y()+0 );
+// // 	}
+// 		m_form.addPolygon(array);
+// }
+// 
+// KTGradientArrow::~KTGradientArrow()
+// {
+// 	KTEND;
+// }
+// 
+// double KTGradientArrow::position()
+// {
+// 	return m_form.currentPosition().x();
+// }
+// 
+// bool KTGradientArrow::contains ( const QPoint & pt )
+// {
+// 	return m_form.contains (pt);
+// }
+// 
+// void KTGradientArrow::setColor( const QColor & color)
+// {
+// 	m_color = color;
+// }
+// 
+// void KTGradientArrow::moveArrow( const QPoint &pos )
+// {	
+// 	QMatrix matrix;
+// 	
+// 	matrix.translate(pos.x() - m_form.currentPosition().x(), 0);
+// 	
+// 	m_form = matrix.map(m_form);
+// }
+// 
+// 
+// void KTGradientArrow::moveVertical(const QPoint &pos)
+// {
+// 	QMatrix matrix;
+// 	
+// 	matrix.translate(0, pos.y() - m_form.currentPosition().y());
+// 	
+// 	m_form = matrix.map(m_form);
+// }
+// 
+// QPainterPath KTGradientArrow::form()
+// {
+// 	return m_form;
+// }
+// 
+// QColor KTGradientArrow::color() const
+// {
+// 	return m_color;
+// }
 
 
-KTGradientSelector::KTGradientSelector( QWidget *parent ) : QAbstractSlider( parent ), m_currentArrowIndex(0), m_gradient(0,0,0,0), m_update(true), m_maxRow(10)
+KTGradientSelector::KTGradientSelector( QWidget *parent ) : QAbstractSlider( parent ), m_currentArrowIndex(0), m_gradient(0,0,0,0), m_update(true), m_maxArrows(10)
 {
 	_orientation = Qt::Horizontal;
-	_indent = true;
 	init();
 }
 
@@ -96,7 +95,6 @@ KTGradientSelector::KTGradientSelector( Qt::Orientation o, QWidget *parent )
 	: QAbstractSlider( parent ), m_currentArrowIndex(0), m_gradient(0,0,0,0)
 {
 	_orientation = o;
-	_indent = true;
 	init();
 }
 
@@ -131,10 +129,10 @@ QRect KTGradientSelector::contentsRect() const
 		return QRect( 2, 2, width(), height()-14 );
 }
 
-void  KTGradientSelector::setMaxRow(int value)
+void  KTGradientSelector::setMaxArrows(int value)
 {
-	m_maxRow = value;
-	while(m_maxRow < m_arrows.count())
+	m_maxArrows = value;
+	while(m_maxArrows < m_arrows.count())
 	{
 		m_arrows.removeLast();
 	}
@@ -334,7 +332,7 @@ double KTGradientSelector::valueToGradient(int value) const
 
 void KTGradientSelector::addArrow(QPoint position, QColor color)
 {
-	if(m_arrows.count() < m_maxRow)
+	if(m_arrows.count() < m_maxArrows)
 	{
 		KTGradientArrow *arrow = new KTGradientArrow(position, color);
 		m_arrows << arrow;

@@ -74,7 +74,7 @@ class KTGradientViewer::ControlPoint
 };
 
 KTGradientViewer::KTGradientViewer(QWidget *parent)
-	: QFrame(parent), m_angle(360), m_radius(50)
+	: QFrame(parent), m_angle(0), m_radius(50)
 {
 
 	m_controlPoint = new ControlPoint();
@@ -85,8 +85,6 @@ KTGradientViewer::KTGradientViewer(QWidget *parent)
 	setMidLineWidth(2);
 	setLineWidth(2);
 	setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
-	m_focal = rect().center();
-	m_center = rect().center();
 }
 
 
@@ -149,10 +147,10 @@ void KTGradientViewer::createGradient()
 		}
 	}
 }
-void KTGradientViewer::changeGradient( const QGradientStops& stops)
+void KTGradientViewer::changeGradientStops( const QGradientStops& stops)
 {
 	m_gradientStops = stops;
-	repaint();
+	update();
 }
 
 void KTGradientViewer::changeType(int type)
@@ -168,11 +166,7 @@ void KTGradientViewer::setSpread(int spread)
 	repaint();
 }
 
-void KTGradientViewer::changeFocal(const QPointF& focal )
-{
-	m_focal = focal;
-	repaint();
-}
+
 
 QGradient KTGradientViewer::gradient()
 {
@@ -190,18 +184,21 @@ void KTGradientViewer::mouseMoveEvent( QMouseEvent * e )
 {
 	m_controlPoint->points[m_controlPoint->currentIndex] = e->pos();
 	update();
+	emit gradientChanged();
 }
 
 void KTGradientViewer::changeAngle(int angle)
 {
 	m_angle = angle;
 	update();
+	emit gradientChanged();
 }
 
 void KTGradientViewer::changeRadius(int radius)
 {
 	m_radius = radius;
 	update();
+	emit gradientChanged();
 }
 
 void KTGradientViewer::setGradient(const QGradient* gradient)

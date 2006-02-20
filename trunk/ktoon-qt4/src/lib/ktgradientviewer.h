@@ -26,23 +26,72 @@
 #include <QList>
 
 /**
-	@author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @if english
+ * @short translate me
+ * @elseif spanish
+ * @short Esta clase provee de una visualizardor de gradientes, ademas de permite modificar:
+ * @n-Si es Lineal: el punto inical y punto final 
+ * @n-Si es Radial: el centro, punto focal 
+ * @n-Si es Conico: el centro,
+ * @endif
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 class KTGradientViewer : public QFrame
 {
 	Q_OBJECT
 	public:
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Constructor por defecto.
+		 * @endif
+		 */
 		KTGradientViewer(QWidget *parent = 0);
+		/**
+		 * Destructor
+		 */
 		~KTGradientViewer();
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Devuelve el gradiente actualmente visualizado.
+		 * @endif
+		 */
 		QGradient gradient();
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Crea el gradiente a visualizar con la informacion que tenga de este.
+		 * @endif
+		 */
 		void createGradient();
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * pone el "spread" del gradiente a vidualizar
+		 * @endif
+		 * @see QGradient
+		 */
 		void setSpread(int spread);
-		void mousePressEvent(QMouseEvent *e);
-		void mouseMoveEvent( QMouseEvent * e );
+
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Cambia el gradiente a visualizar.
+		 * @endif
+		 * @see QGradient
+		 */
 		void setGradient(const QGradient* gradient);
 		
 	protected:
 		virtual void paintEvent( QPaintEvent * );
+		virtual void mousePressEvent(QMouseEvent *e);
+		virtual void mouseMoveEvent( QMouseEvent * e );
 		virtual QSize sizeHint() const;
 		
 	private:
@@ -51,17 +100,50 @@ class KTGradientViewer : public QFrame
 		QGradientStops m_gradientStops;
 		QGradient m_gradient;
 		
-		QPointF m_focal, m_center;
 		int m_angle, m_radius;
 		QGradient::Type m_type;
 		QGradient::Spread m_spread;
 		
 	public slots:
-		void changeGradient( const QGradientStops& );
+		/**
+		* @if english
+		* Translate
+		* @elseif spanish
+		* Cambia los "GradientStops" del actual gradiente.
+		* @endif
+		* @see QGradient
+		 */
+		void changeGradientStops( const QGradientStops& );
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Cambia el tipo del acutal gradiente.
+		 * @endif
+		 * @see QGradient
+		 */
 		void changeType(int  type);
-		void changeFocal(const QPointF& focal);
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Cambia el angulo del acutal gradiente, si este es conico.
+		 * @endif
+		 * @see QGradient
+		 */
 		void changeAngle(int angle);
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Cambia el radio del acutal gradiente, si es radial.
+		 * @endif
+		 * @see QGradient
+		 */
 		void changeRadius(int radius);
+		
+	signals:
+		void gradientChanged();
 };
 
 #endif

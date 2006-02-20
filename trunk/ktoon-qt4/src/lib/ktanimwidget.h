@@ -34,10 +34,14 @@
 typedef QList<QPixmap> ListOfPixmaps;
 
 /**
+ * @if english
+ * @short Translate
+ * @elseif spanish
  * Si el es de texto lo va desplazando de arriba abajo hacia arriba y si es de imgenes las va mostrando una por una.
  * @short La clase KTAnimWidget provee de un widget que hace una simple animacion, de un texto o una secuencia de imagenes.
  * 
  * @Author David Cuadrado
+ * @endif
  */
  
 class KTAnimWidget : public QWidget

@@ -24,6 +24,7 @@
 #include <QBoxLayout>
 #include "ktvhbox.h"
 
+
 KTGradientCreator::KTGradientCreator(QWidget *parent)
  : QFrame(parent)
 {
@@ -38,15 +39,14 @@ KTGradientCreator::KTGradientCreator(QWidget *parent)
 	
 	m_selector = new KTGradientSelector(this);
 	m_viewer = new KTGradientViewer(this);
-	
+	connect(m_viewer, SIGNAL(gradientChanged()), this, SIGNAL(gradientChanged()));
 	layout->addLayout(subLayout);
 	
 	selectorAndViewer->addWidget(m_viewer);
 	selectorAndViewer->addWidget(m_selector);
 	subLayout->addLayout(selectorAndViewer);
 	
-	connect( m_selector, SIGNAL(gradientChanged(  const QGradientStops& )),this, SLOT(changeGradient( const QGradientStops& )));
-	
+	connect( m_selector, SIGNAL(gradientChanged(  const QGradientStops& )),this, SLOT(changeGradientStops( const QGradientStops& )));
 	connect(m_selector, SIGNAL(arrowAdded()), this, SIGNAL(controlArrowAdded()));
 	
 	m_spinControl = new SpinControl(this);
@@ -90,7 +90,6 @@ KTGradientCreator::KTGradientCreator(QWidget *parent)
 	m_outLine->setCheckable ( true );
 	layout->addWidget(box);
 
-	m_viewer->changeFocal( QPointF(m_viewer->rect().center().x(), m_viewer->rect().center().y()));
 	setFrameStyle(QFrame::StyledPanel );
 	
 	m_spinControl->setSpin( QGradient::Type(0 ));
@@ -104,10 +103,7 @@ KTGradientCreator::~KTGradientCreator()
 }
 
 
-void KTGradientCreator::updateGradient()
-{
-	
-}
+
 
 KTGradientCreator::KTGradientApply KTGradientCreator::gradientApply()
 {
@@ -160,9 +156,9 @@ void KTGradientCreator::changeSpread(int spread)
 }
 
 
-void KTGradientCreator::changeGradient( const QGradientStops& stops )
+void KTGradientCreator::changeGradientStops( const QGradientStops& stops )
 {
-	m_viewer->changeGradient(stops);
+	m_viewer->changeGradientStops( stops);
 	emit gradientChanged(m_viewer->gradient());
 }
 
@@ -186,7 +182,7 @@ void KTGradientCreator::setGradient(const QGradient & gradient)
 
 void KTGradientCreator::emitGradientChanged()
 {
-	m_viewer->changeGradient(m_selector->gradient().stops());
+	m_viewer->changeGradientStops(m_selector->gradientStops());
 	emit gradientChanged(m_viewer->gradient());
 }
 
