@@ -40,11 +40,44 @@
 class KTBrushAdjuster
 {
 	public:
+		/**
+		 * @if english
+		 * Default constructor
+		 * @elseif spanish
+		 * Constructor por defecto
+		 * @endif
+		 * @return 
+		 */
 		KTBrushAdjuster();
+		
+		/**
+		 * Destructor
+		 * @return 
+		 */
 		~KTBrushAdjuster();
 	
 	public:
+		/**
+		 * @if english
+		 * Adjust a brush to rect
+		 * @elseif spanish
+		 * Ajusta un brush a un rectangulo
+		 * @endif
+		 * @param brush 
+		 * @param rect 
+		 * @return 
+		 */
 		static QBrush adjustBrush(const QBrush *brush, const QRect &rect );
+		/**
+		 * @if english
+		 * Maps a brush using transformation matrix
+		 * @elseif spanish
+		 * Mapea un brush usando la una matrix de transformacion
+		 * @endif
+		 * @param brush 
+		 * @param matrix 
+		 * @return 
+		 */
 		static QBrush mapBrush(const QBrush *brush, const QMatrix &matrix  );
 };
 

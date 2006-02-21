@@ -6,8 +6,8 @@
  * @section toc Table of contents
  * @li @ref requirements
  * @li @ref usecase
- * @endif
- * @if spanish 
+ * @elseif spanish 
+ * @line
  * @mainpage KToon: Herramienta de Animación en 2D
  * @section intro Introducción
  * <p>

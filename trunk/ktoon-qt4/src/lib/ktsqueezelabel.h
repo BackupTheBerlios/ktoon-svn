@@ -24,7 +24,23 @@
 #include <qlabel.h>
 
 /**
- * Class based in KSqueezedTextLabel from kde libraries
+ * @if english
+ * Class inspired in KSqueezedTextLabel from kde libraries
+ * 
+ * from kde documentation:
+ * 
+ * A label class that squeezes its text into the label
+ * If the text is too long to fit into the label it is divided into remaining left and right parts which are separated by three dots.
+ * 
+ * @elseif spanish
+ * Esta clase esta inspirada en KSqueezedTextLabel de las librerias KDE
+ * 
+ * De la documentacion de kde:
+ * 
+ * Una clase label que corta su texto en el label
+ * Si el texto es muy largo para ser llenado en el label es dividido en el espacio restante que son separadas por tres puntos.
+ * 
+ * @endif
  * @author David Cuadrado <krawek@toonka.com>
 */
 

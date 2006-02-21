@@ -24,6 +24,14 @@
 
 #include <QPlastiqueStyle>
 
+/**
+ * @if english
+ * KToon style
+ * @elseif spanish
+ * Estilo KToon
+ * @endif
+ */
+
 class KToonStyle : public QPlastiqueStyle
 {
 public:

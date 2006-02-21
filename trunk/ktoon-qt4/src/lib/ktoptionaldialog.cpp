@@ -19,17 +19,25 @@
  ***************************************************************************/
 
 #include "ktoptionaldialog.h"
+
 #include <QVBoxLayout>
 #include <QLabel>
+#include "kseparator.h"
 
 KTOptionalDialog::KTOptionalDialog(const QString &text,const QString &title,QWidget *parent) : QDialog(parent)
 {
 	setWindowTitle(title);
 	m_layout = new QVBoxLayout;
 	
+	m_layout->addStretch(10);
+	
 	QLabel *label = new QLabel(text, this);
 	
 	m_layout->addWidget(label);
+	
+	m_layout->addStretch(10);
+	
+	m_layout->addWidget(new KSeparator);
 	
 	QHBoxLayout *buttonLayout = new QHBoxLayout;
 	buttonLayout->addStretch(1);
