@@ -30,9 +30,9 @@
  * @short translate me
  * @elseif spanish
  * @short Esta clase provee de una visualizardor de gradientes, ademas de permite modificar:
- * @n-Si es Lineal: el punto inical y punto final 
- * @n-Si es Radial: el centro, punto focal 
- * @n-Si es Conico: el centro,
+ * @n-Si es Lineal: el punto inical y punto final.
+ * @n-Si es Radial: el centro, punto focal.
+ * @n-Si es Conico: el centro.
  * @endif
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
@@ -143,6 +143,13 @@ class KTGradientViewer : public QFrame
 		void changeRadius(int radius);
 		
 	signals:
+		/**
+		 * @if english
+		 * Translate
+		 * @elseif spanish
+		 * Se emite cuando el gradiente es cambiado.
+		 * @endif
+		 */
 		void gradientChanged();
 };
 
