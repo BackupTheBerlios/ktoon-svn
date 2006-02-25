@@ -29,10 +29,10 @@
  * @if english
  * @short translate me
  * @elseif spanish
- * @short Esta clase provee de una visualizardor de gradientes, ademas de permite modificar:
- * @n-Si es Lineal: el punto inical y punto final.
- * @n-Si es Radial: el centro, punto focal.
- * @n-Si es Conico: el centro.
+ * @short Esta clase provee de una visualizador de gradientes, ademas de permite modificar:
+ * @li Si es Lineal: el punto inical y punto final.
+ * @li Si es Radial: el centro, punto focal.
+ * @li Si es Conico: el centro.
  * @endif
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */

@@ -533,12 +533,9 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 				painter.scale(m_zoomFactor,m_zoomFactor);
 				QRect rect = m_currentTool->move(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), m_lastPosition, event->pos());
 				
-// 				m_paintDevice->update(rect);
-				rect.translate(m_xpos, m_ypos);
-				
-				update(rect);
-				
-
+				m_paintDevice->update(rect);
+// 				rect.translate(m_xpos, m_ypos);
+// 				update(rect);
 			}
 	
 			m_lastPosition = event->pos();
