@@ -12,7 +12,6 @@ HEADERS += ktapplication.h \
            ktxmlparser.h \
            ktxmlreader.h \
            ktanimwidget.h \
-           ktfontwidget.h \
            ktthememanager.h \
            ktthemedocument.h \
            kteditspinbox.h \
@@ -75,7 +74,6 @@ SOURCES += ktapplication.cpp \
            ktxmlparser.cpp \
            ktxmlreader.cpp \
            ktanimwidget.cpp \
-           ktfontwidget.cpp \
            ktthememanager.cpp \
            ktthemedocument.cpp \
            kteditspinbox.cpp \

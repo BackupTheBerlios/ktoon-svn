@@ -32,17 +32,17 @@ KTBrushAdjuster::~KTBrushAdjuster()
 {
 }
 
-QBrush KTBrushAdjuster::adjustBrush(const QBrush *brush, const QRect &rect )
+QBrush KTBrushAdjuster::adjustBrush(const QBrush &brush, const QRect &rect )
 {
 	QBrush brush1;
-	if(brush->gradient())
+	if(brush.gradient())
 	{
-		QGradient grad = KTGradientAdjuster::adjustGradient( brush->gradient(), rect );
+		QGradient grad = KTGradientAdjuster::adjustGradient( brush.gradient(), rect );
 		brush1 = QBrush(grad);
 	}
-	else if(!brush->texture().isNull())
+	else if(!brush.texture().isNull())
 	{
-		QPixmap p = (brush->texture()/*.toImage ()*/);
+		QPixmap p = (brush.texture()/*.toImage ()*/);
 		int offset= 0;
 		QRect br = p.rect();
 		QMatrix matrix;
@@ -76,17 +76,17 @@ QBrush KTBrushAdjuster::adjustBrush(const QBrush *brush, const QRect &rect )
 	return brush1;
 }
 
-QBrush KTBrushAdjuster::mapBrush(const QBrush *brush, const QMatrix &matrix  )
+QBrush KTBrushAdjuster::mapBrush(const QBrush &brush, const QMatrix &matrix  )
 {
-	QBrush brush1(*brush);
-	if(brush->gradient())
+	QBrush brush1(brush);
+	if(brush.gradient())
 	{
-		QGradient grad = KTGradientAdjuster::mapGradient( brush->gradient(), matrix );
+		QGradient grad = KTGradientAdjuster::mapGradient( brush.gradient(), matrix );
 		brush1 = QBrush(grad);
 	}
-	else if(!brush->texture().isNull())
+	else if(!brush.texture().isNull())
 	{
-		QPixmap p(brush->texture());
+		QPixmap p(brush.texture());
 		p = p.transformed(matrix , Qt::SmoothTransformation );
 		brush1.setTexture( p );
 	}

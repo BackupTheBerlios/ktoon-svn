@@ -67,7 +67,7 @@ class KTBrushAdjuster
 		 * @param rect 
 		 * @return 
 		 */
-		static QBrush adjustBrush(const QBrush *brush, const QRect &rect );
+		static QBrush adjustBrush(const QBrush &brush, const QRect &rect );
 		/**
 		 * @if english
 		 * Maps a brush using transformation matrix
@@ -78,7 +78,7 @@ class KTBrushAdjuster
 		 * @param matrix 
 		 * @return 
 		 */
-		static QBrush mapBrush(const QBrush *brush, const QMatrix &matrix  );
+		static QBrush mapBrush(const QBrush &brush, const QMatrix &matrix  );
 };
 
 #endif

@@ -38,7 +38,7 @@ void AGraphic::mapTo(const QMatrix& matrix)
 {
 	path = matrix.map(path);
 	
-	brush = KTBrushAdjuster::mapBrush( &brush, matrix );
-	pen.setBrush( KTBrushAdjuster::mapBrush( &pen.brush(), matrix ));
+	brush = KTBrushAdjuster::mapBrush( brush, matrix );
+	pen.setBrush( KTBrushAdjuster::mapBrush( pen.brush(), matrix ));
 	
 }
