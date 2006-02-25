@@ -44,35 +44,11 @@ void CCBar::paintEvent(QPaintEvent *)
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
 	
-	QPainterPath border;
-	border.moveTo(m_offset, 0);
-	border.cubicTo(
-			m_offset, 0,
-			0, m_mask.height()/2,
-			m_offset, m_mask.height()
-		      );
-	
-	border.lineTo(m_mask.width()-m_offset,  m_mask.height());
-	
-	border.cubicTo(
-			m_mask.width()-m_offset,  m_mask.height(),
-			m_mask.width(), m_mask.height()/2,
-			m_mask.width()-m_offset, 0
-		      );
-	border.lineTo(m_offset, 0);
-	
-	QPainter p(&m_mask);
-	p.setPen(QPen(Qt::black,1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-	p.setBrush(Qt::red);
-	p.drawPath(border);
-	
-	setMask(m_mask.mask());
-	
 	setMinimumSize( m_mask.size() );
 	
 	painter.setPen(QPen(palette().color(QPalette::Foreground ),5, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 	
-	painter.drawPath(border);
+	painter.drawPath(m_border);
 	
 	QPalette pal = palette();
 	
@@ -95,5 +71,32 @@ CCButton *CCBar::addButton(const QPixmap &pix)
 	but->setIcon(pix);
 	
 	return but;
+}
+
+void CCBar::resizeEvent(QResizeEvent *e)
+{
+	m_border = QPainterPath();
+	m_border.moveTo(m_offset, 0);
+	m_border.cubicTo(
+			m_offset, 0,
+	0, m_mask.height()/2,
+	m_offset, m_mask.height()
+			);
+	
+	m_border.lineTo(m_mask.width()-m_offset,  m_mask.height());
+	
+	m_border.cubicTo(
+			m_mask.width()-m_offset,  m_mask.height(),
+	m_mask.width(), m_mask.height()/2,
+	m_mask.width()-m_offset, 0
+			);
+	m_border.lineTo(m_offset, 0);
+	
+	QPainter p(&m_mask);
+	p.setPen(QPen(Qt::black,1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+	p.setBrush(Qt::red);
+	p.drawPath(m_border);
+	
+	setMask(m_mask.mask());
 }
 

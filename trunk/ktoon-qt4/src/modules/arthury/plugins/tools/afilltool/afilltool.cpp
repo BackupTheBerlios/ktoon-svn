@@ -21,6 +21,8 @@
 #include "afilltool.h"
 #include "ktapplication.h"
 
+#include "ktbrushadjuster.h"
+
 AFillTool::AFillTool()
 {
 }
@@ -82,7 +84,7 @@ QRect AFillTool::press(const QString& brush, QPainter& painter, const QPainterPa
 				{
 					if ( brush == "Fill" )
 					{
-						graphic->brush = painter.pen().brush();
+						graphic->brush = KTBrushAdjuster::adjustBrush(painter.pen().brush(), graphic->path.boundingRect().toRect());
 					}
 					else if ( brush == "Remove Fill" )
 					{

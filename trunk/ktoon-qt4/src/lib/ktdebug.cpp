@@ -311,13 +311,17 @@ KTDebug& KTDebug::operator << (const QGradient *g)
 			*this << static_cast<const QConicalGradient &>(*g);
 		}
 		break;
+		default:break;
 		
 	}
+	
+	return *this;
 }
 
 void KTDebug::resaltWidget(QWidget *w, const QColor &color)
 {
 	QPalette pal = w->palette();
+	w->setAutoFillBackground(true);
 	pal.setColor(QPalette::Background, color);
 	w->setPalette(pal);
 }

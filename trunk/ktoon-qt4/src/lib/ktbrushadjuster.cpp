@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2006 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -34,7 +34,7 @@ KTBrushAdjuster::~KTBrushAdjuster()
 
 QBrush KTBrushAdjuster::adjustBrush(const QBrush &brush, const QRect &rect )
 {
-	QBrush brush1;
+	QBrush brush1 = brush;
 	if(brush.gradient())
 	{
 		QGradient grad = KTGradientAdjuster::adjustGradient( brush.gradient(), rect );

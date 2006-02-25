@@ -73,6 +73,9 @@ class CCBar : public QFrame
 	
 	protected:
 		void paintEvent(QPaintEvent *e);
+		void resizeEvent(QResizeEvent *e);
+		
+		QPainterPath m_border;
 
 };
 

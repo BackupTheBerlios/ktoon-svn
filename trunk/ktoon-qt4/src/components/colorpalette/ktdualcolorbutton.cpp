@@ -37,8 +37,8 @@
 
 KTDualColorButton::KTDualColorButton( QWidget *parent ) : QWidget( parent )
 {
-	arrowBitmap = new QBitmap(dcolorarrow_width, dcolorarrow_height/*,
-				  (const unsigned char *)dcolorarrow_bits, true*/);
+	arrowBitmap = new QBitmap(QBitmap::fromData(QSize(dcolorarrow_width, dcolorarrow_height), (const unsigned char *)dcolorarrow_bits, QImage::Format_ARGB32_Premultiplied));
+	
 	arrowBitmap->setMask(*arrowBitmap); // heh
 	resetPixmap = new QPixmap((const char **)dcolorreset_xpm);
 	fg = QBrush(Qt::black, Qt::SolidPattern);

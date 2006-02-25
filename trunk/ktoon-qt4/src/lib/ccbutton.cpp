@@ -207,7 +207,7 @@ void CCButton::paintEvent(QPaintEvent *e)
 {
 // 	qDebug("Painting");
 
-	paintMask();
+// 	paintMask();
 	
 	QPainter painter(this);
 	painter.setRenderHint(QPainter::Antialiasing);
