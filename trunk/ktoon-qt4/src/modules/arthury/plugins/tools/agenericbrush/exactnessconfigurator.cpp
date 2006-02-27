@@ -17,8 +17,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "exactnessconfigurator.h"
 #include <QBoxLayout>
+
 ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 {
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
@@ -38,6 +40,6 @@ ExactnessConfigurator::~ExactnessConfigurator()
 
 double ExactnessConfigurator::exactness()
 {
-	m_exactness->value();
+	return m_exactness->value();
 }
 

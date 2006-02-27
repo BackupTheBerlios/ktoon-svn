@@ -28,14 +28,14 @@
 #include <fcntl.h>
 
 
-// KTAlgorithm::KTAlgorithm()
-// {
-// }
-// 
-// 
-// KTAlgorithm::~KTAlgorithm()
-// {
-// }
+KTAlgorithm::KTAlgorithm()
+{
+}
+ 
+ 
+KTAlgorithm::~KTAlgorithm()
+{
+}
 
 int KTAlgorithm::random()
 {

@@ -31,9 +31,11 @@
 
 class KTAlgorithm
 {
+	private:
+ 		KTAlgorithm();
+ 		~KTAlgorithm();
+
 	public:
-// 		KTAlgorithm();
-// 		~KTAlgorithm();
 		/**
 		 * @if english
 		 * Returns a random integer

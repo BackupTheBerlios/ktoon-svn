@@ -89,6 +89,9 @@ QRect AGenericBrush::release(const QString & brush ,QPainter & /* painter*/,cons
 		}
 		++it;
 	}
+	
+	SHOW_VAR(m_configurator->exactness());
+	
 	if(m_configurator->exactness() > 0)
 	{
 		m_path = KTGraphicalAlgorithm::bezierFit(pol, m_configurator->exactness());

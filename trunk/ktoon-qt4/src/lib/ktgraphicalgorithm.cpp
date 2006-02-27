@@ -143,8 +143,15 @@ double *chordLengthParameterize(QPolygonF points,int first,int last)
 		u[i-first] = u[i-first-1] + distance(points[i], points[i-1]);
 	}
 
-	for (i = first + 1; i <= last; i++) {
-		u[i-first] = u[i-first] / u[last-first];
+	for (i = first + 1; i <= last; i++)
+	{
+		int denominator = u[last-first];
+		
+		SHOW_VAR(denominator);
+		if ( denominator != 0.0f)
+		{
+			u[i-first] = u[i-first] / denominator;
+		}
 	}
 
 	return(u);
@@ -291,8 +298,13 @@ QPointF* generateBezier(QPolygonF &points, int first, int last, double *uPrime,F
 	{
 		det_C0_C1 = (C[0][0] * C[1][1]) * 10e-12;
 	}
-	alpha_l = det_X_C1 / det_C0_C1;
-	alpha_r = det_C0_X / det_C0_C1;
+	
+	SHOW_VAR(det_C0_C1);
+	if ( det_C0_C1 != 0.0f)
+	{
+		alpha_l = det_X_C1 / det_C0_C1;
+		alpha_r = det_C0_X / det_C0_C1;
+	}
 
 
 	/*  If alpha negative, use the Wu/Barsky heuristic (see text) */
@@ -431,7 +443,12 @@ double newtonRaphsonRootFind(QPointF *Q,QPointF P,double u)
 			(Q_u.x() - P.x()) * (Q2_u.x()) + (Q_u.y() - P.y()) * (Q2_u.y());
 
 	/* u = u - f(u)/f'(u) */
-	uPrime = u - (numerator/denominator);
+	if ( denominator != 0.0f )
+	{
+		ktDebug() << "OTHER: " << denominator;
+		uPrime = u - (numerator/denominator);
+	}
+
 	return (uPrime);
 }
 

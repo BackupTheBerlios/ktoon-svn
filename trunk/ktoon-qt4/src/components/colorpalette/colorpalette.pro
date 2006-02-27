@@ -6,10 +6,6 @@
 INSTALLS += palettes 
 palettes.files += palettes/*.ktpl 
 palettes.path = /data/palettes/ 
-DISTFILES += dcolorarrow.xpm \
-             dcolorreset.xpm 
-IMAGES += dcolorarrow.xpm \
-          dcolorreset.xpm 
 HEADERS += ktcolorpicker.h \
            ktcolorpalette.h \
            ktvaluecolor.h \
@@ -26,7 +22,7 @@ SOURCES += ktcolorpicker.cpp \
            ktdualcolorbutton.cpp \
            ktcellscolor.cpp \
            ktpaletteparser.cpp 
-QT += xml qt3support
+QT += xml 
 INCLUDEPATH += ../../../src/store \
 ../../../src/lib
 MOC_DIR = .moc
