@@ -68,7 +68,8 @@ HEADERS += ktapplication.h \
            ktgradientselector.h \
            ktgradientviewer.h \
            ktbrushadjuster.h \
-           ktgradientcreator.h 
+           ktgradientcreator.h \
+           ktgraphicalgorithm.h 
 SOURCES += ktapplication.cpp \
            configwizard.cpp \
            ktxmlparser.cpp \
@@ -128,7 +129,8 @@ SOURCES += ktapplication.cpp \
            ktgradientselector.cpp \
            ktgradientviewer.cpp \
            ktbrushadjuster.cpp \
-           ktgradientcreator.cpp 
+           ktgradientcreator.cpp \
+           ktgraphicalgorithm.cpp 
 QT += xml
 KDEV_QTVER = 4
 MOC_DIR = .moc

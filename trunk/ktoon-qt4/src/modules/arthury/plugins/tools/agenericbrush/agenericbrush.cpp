@@ -25,6 +25,7 @@
 #include <QKeySequence>
 
 #include "ktapplication.h"
+#include "ktgraphicalgorithm.h"
 
 QStringList AGenericBrush::keys() const
 {
@@ -53,22 +54,8 @@ QRect AGenericBrush::move(const QString &brush, QPainter &painter,const QPainter
 	QPainterPath path;
 	path.setFillRule ( Qt::WindingFill );
 // 	m_path.setFillRule ( Qt::WindingFill );
-	if (brush == tr("Pencil") )
-	{
-		path.moveTo(oldPos);
-		path.lineTo(newPos);
-	}
-	else if ( brush == tr("Bezier Brush"))
-	{
-		if ( ! m_firstPoint.isNull() )
-		{
-			path.moveTo(oldPos);
-			path.moveTo(oldPos);
-			
-			path.cubicTo(oldPos, m_firstPoint, newPos);
-		}
-		m_firstPoint = oldPos;
-	}
+	path.moveTo(oldPos);
+	path.lineTo(newPos);
 	
 	m_path.closeSubpath();
 	m_path.addPath(path);
@@ -79,7 +66,7 @@ QRect AGenericBrush::move(const QString &brush, QPainter &painter,const QPainter
 	return boundingRect;
 }
 
-QRect AGenericBrush::release(const QString & /* brush */,QPainter &  /*painter */,const QPainterPath &/*form*/, const QPoint & /* pos */)
+QRect AGenericBrush::release(const QString & brush ,QPainter & /* painter*/,const QPainterPath &/*form*/, const QPoint & /* pos */)
 {
 	m_firstPoint = QPoint(0,0);
 	
@@ -102,11 +89,17 @@ QRect AGenericBrush::release(const QString & /* brush */,QPainter &  /*painter *
 		
 		++it;
 	}
-	
-	m_path = QPainterPath();
-	m_path.addPolygon(pol);
-// 	m_path.moveTo(*(pol.end()-2));
-// 	m_path.lineTo(pol.last());
+	ktDebug() << pol.count();
+	if (brush == tr("Pencil") )
+	{
+		m_path = QPainterPath();
+		m_path.addPolygon(pol);
+	}
+	else if ( brush == tr("Bezier Brush"))
+	{
+		m_path = bezierFit(pol, 10);//FIXME cofigure
+		emit  requestRedraw();
+	}
 	
 	return QRect(0, 0, 0, 0);
 }

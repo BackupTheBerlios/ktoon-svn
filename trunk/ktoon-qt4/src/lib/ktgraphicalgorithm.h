@@ -17,54 +17,17 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#ifndef KTALGORITHM_H
-#define KTALGORITHM_H
+#ifndef __KTGRAPHICALGORITHM_H__
+#define __KTGRAPHICALGORITHM_H__
 
 #include <QString>
-#include <QColor>
+#include <QPolygon>
+#include <QPainterPath>
 
 /**
- * Class that contains generic useful algorithms
- * @author David Cuadrado <krawek@toonka.com>
+ * @author Jorge Cuadrado <krawek@toonka.com>
  */
-
-class KTAlgorithm
-{
-	public:
-// 		KTAlgorithm();
-// 		~KTAlgorithm();
-		/**
-		 * @if english
-		 * Returns a random integer
-		 * @elseif spanish
-		 * Retorna una entero aleatorio
-		 * @endif
-		 * @return 
-		 */
-		static int random();
-		/**
-		 * @if english
-		 * Returns an random string, this may be useful for example temporaly files
-		 * @elseif spanish
-		 * Retorna una cadena de caracteres aleatoria, esta funcion puede ser muy util por ejemplo para archivos temporales
-		 * @endif
-		 * @param length 
-		 * @return 
-		 */
-		static QString randomString(int length);
-		
-		/**
-		 * @if english
-		 * Returns a random color
-		 * @elseif spanish
-		 * Retorna un color aleatorio
-		 * @endif
-		 * 
-		 * @param withAlpha 
-		 * @return 
-		 */
-		static QColor randomColor(bool withAlpha = false);
-};
+QPainterPath bezierFit(QPolygonF &points, float error);
 
 #endif
+
