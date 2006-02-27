@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2006 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,49 +17,25 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef AGENERICBRUSH_H
-#define AGENERICBRUSH_H
+#ifndef EXACTNESSCONFIGURATOR_H
+#define EXACTNESSCONFIGURATOR_H
 
-#include <QObject>
-#include <atoolinterface.h>
-#include <QSpinBox>
-#include "exactnessconfigurator.h"
-
-class QKeySequence;
+#include <QDoubleSpinBox>
+#include <QLabel>
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+	@author Jorge Cuadrado <krawek@toonka.com>
 */
-
-class AGenericBrush : public KTToolPluginObject, public AToolInterface
+class ExactnessConfigurator : public QWidget
 {
-	Q_OBJECT;
-	Q_INTERFACES(AToolInterface);
-	
 	public:
-		AGenericBrush()
-		{
-			m_configurator = new ExactnessConfigurator;
-		}
-		virtual QStringList keys() const;
-		virtual QRect press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, KTKeyFrame *currentFrame = 0);
-		virtual QRect move(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos);
-		virtual QRect release(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &pos);
-		virtual QPainterPath path() const;
-
-		virtual QHash<QString, KTAction *>actions();
+		ExactnessConfigurator(QWidget *parent = 0);
+		~ExactnessConfigurator();
+		double exactness();
 		
-		int type() const;
-		
-		virtual QWidget *configurator();
-		
-		
-		virtual bool isComplete() const;
-		virtual void aboutToChangeTool() ;
 	private:
-		QPoint m_firstPoint;
-		QPainterPath m_path;
-		ExactnessConfigurator *m_configurator;
+		QDoubleSpinBox *m_exactness;
+
 };
 
 #endif

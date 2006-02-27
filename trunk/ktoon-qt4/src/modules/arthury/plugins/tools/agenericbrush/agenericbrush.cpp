@@ -29,7 +29,7 @@
 
 QStringList AGenericBrush::keys() const
 {
-	return QStringList() << tr("Pencil") << tr("Air Brush") << tr("Bezier Brush");
+	return QStringList() << tr("Pencil") ;
 }
 
 QRect AGenericBrush::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, KTKeyFrame *currentFrame )
@@ -70,6 +70,7 @@ QRect AGenericBrush::release(const QString & brush ,QPainter & /* painter*/,cons
 {
 	m_firstPoint = QPoint(0,0);
 	
+	
 	QPolygonF pol;
 	QList<QPolygonF> polygons = m_path.toSubpathPolygons();
 	
@@ -86,21 +87,18 @@ QRect AGenericBrush::release(const QString & brush ,QPainter & /* painter*/,cons
 			pol << (*pointIt);
 			pointIt += 2;
 		}
-		
 		++it;
 	}
-	
-	if (brush == tr("Pencil") )
+	if(m_configurator->exactness() > 0)
+	{
+		m_path = KTGraphicalAlgorithm::bezierFit(pol, m_configurator->exactness());
+		emit requestRedraw();
+	}
+	else
 	{
 		m_path = QPainterPath();
 		m_path.addPolygon(pol);
 	}
-	else if ( brush == tr("Bezier Brush"))
-	{
-		m_path = KTGraphicalAlgorithm::bezierFit(pol, 5);//TODO configure
-		emit requestRedraw();
-	}
-	
 	return QRect(0, 0, 0, 0);
 }
 
@@ -121,10 +119,6 @@ QHash<QString, KTAction *> AGenericBrush::actions()
 	
 	hash.insert( tr("Pencil"), pencil );
 	
-	KTAction *quadBrush = new KTAction( QIcon(), tr("Bezier Brush"), this);
-	quadBrush->setShortcut( QKeySequence(tr("Q")) );
-	hash.insert(tr("Bezier Brush"), quadBrush);
-	
 	return hash;
 }
 
@@ -134,8 +128,8 @@ int AGenericBrush::type() const
 }
 		
 QWidget *AGenericBrush::configurator()
-{
-	return 0;
+{	
+	return m_configurator;
 }
 		
 bool AGenericBrush::isComplete() const

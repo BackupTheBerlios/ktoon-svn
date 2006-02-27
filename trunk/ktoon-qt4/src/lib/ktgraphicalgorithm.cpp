@@ -36,7 +36,7 @@
 #include "ktdebug.h"
 
 
-#define MAXPOINTS	300		/* The most points you can have */
+#define MAXPOINTS	1000		/* The most points you can have */
 
 
 class FitVector
@@ -125,7 +125,7 @@ FitVector computeRightTangent(QPolygonF &points,int end)
 	return tHat1;
 }
 
-/**
+/*
  *  chordLengthParameterize :
  *	Assign parameter values to digitized points 
  *	using relative distances between points.
@@ -471,7 +471,6 @@ QPointF *fitCubic(QPolygonF &points,int first,int last,FitVector tHat1,FitVector
 	width=0;
 	iterationError=error*error;
 	nPts = last-first+1;
-
 	if(nPts == 2)
 	{
 		double dist = distance(points[last], points[first]) / 3.0;
@@ -568,7 +567,7 @@ QPainterPath KTGraphicalAlgorithm::bezierFit( QPolygonF &points,float error)
 	QPainterPath path;
 	
 	path = QPainterPath();
-
+	
 	if(width>3)
 	{
 		path.moveTo(curve[0]);

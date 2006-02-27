@@ -3,28 +3,30 @@
 # Subdir relative project main directory: ./src/modules/arthury/plugins/tools/agenericbrush
 # Target is a library:  
 
-QT += xml gui 
 INSTALLS += agenericbrush 
 agenericbrush.files += *.so 
 agenericbrush.path = /plugins/ 
-KDEV_QTVER = 4 
+HEADERS += agenericbrush.h \
+           exactnessconfigurator.h 
+SOURCES += agenericbrush.cpp \
+           exactnessconfigurator.cpp 
+QT += xml gui
+KDEV_QTVER = 4
 TARGETDEPS += ../../../../../../src/lib/libktoon.so \
-              ../../../../../../src/store/libstore.so \
-              ../../../../../../src/modules/arthury/interfaces/libinterfaces.a 
+../../../../../../src/store/libstore.so \
+../../../../../../src/modules/arthury/interfaces/libinterfaces.a
 LIBS += -lktoon \
-        -lstore \
-        ../../../../../../src/modules/arthury/interfaces/libinterfaces.a 
+-lstore \
+../../../../../../src/modules/arthury/interfaces/libinterfaces.a
 INCLUDEPATH += ../../../../../../src/modules/arthury/interfaces \
-               ../../../../../../src/store \
-               ../../../../../../src/lib 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
+../../../../../../src/store \
+../../../../../../src/lib
+MOC_DIR = .moc
+UI_DIR = .ui
+OBJECTS_DIR = .obj
 QMAKE_LIBDIR = ../../../../../../src/lib \
-               ../../../../../../src/store 
+../../../../../../src/store
 CONFIG += release \
-          warn_on \
-          plugin 
-TEMPLATE = lib 
-HEADERS += agenericbrush.h 
-SOURCES += agenericbrush.cpp 
+warn_on \
+plugin
+TEMPLATE = lib
