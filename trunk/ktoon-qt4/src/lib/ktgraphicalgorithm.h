@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef __KTGRAPHICALGORITHM_H__
 #define __KTGRAPHICALGORITHM_H__
 
@@ -27,7 +28,16 @@
 /**
  * @author Jorge Cuadrado <krawek@toonka.com>
  */
-QPainterPath bezierFit(QPolygonF &points, float error);
+class KTGraphicalAlgorithm
+{
+	private:
+		KTGraphicalAlgorithm() {}
+		~KTGraphicalAlgorithm() {};
+	
+	public:
+		static QPainterPath bezierFit(QPolygonF &points, float error);
+		
+};
 
 #endif
 

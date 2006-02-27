@@ -30,9 +30,13 @@
 
 
 #include "ktgraphicalgorithm.h"
-#include <math.h>
+#include <cmath>
+
+
 #include "ktdebug.h"
-#define MAXPOINTS	1000		/* The most points you can have */
+
+
+#define MAXPOINTS	300		/* The most points you can have */
 
 
 class FitVector
@@ -126,10 +130,10 @@ FitVector computeRightTangent(QPolygonF &points,int end)
  *	Assign parameter values to digitized points 
  *	using relative distances between points.
  */
-static double *chordLengthParameterize(QPolygonF points,int first,int last)
+double *chordLengthParameterize(QPolygonF points,int first,int last)
 {
 	int i;	
-	double	*u; /*  Parameterization		*/
+	double	*u; /*  Parameterization */
 
 	u = new double[(last-first+1)];
 
@@ -146,27 +150,28 @@ static double *chordLengthParameterize(QPolygonF points,int first,int last)
 	return(u);
 }
 
-static FitVector vectorAdd(FitVector a,FitVector b)
+FitVector vectorAdd(FitVector a,FitVector b)
 {
     FitVector	c;
     c.m_X = a.m_X + b.m_X;  c.m_Y = a.m_Y + b.m_Y;
     return (c);
 }
-static FitVector vectorScale(FitVector v,double s)
+
+FitVector vectorScale(FitVector v,double s)
 {
     FitVector result;
     result.m_X = v.m_X * s; result.m_Y = v.m_Y * s;
     return (result);
 }
 
-static FitVector vectorSub(FitVector a,FitVector b)
+FitVector vectorSub(FitVector a,FitVector b)
 {
     FitVector	c;
     c.m_X = a.m_X - b.m_X; c.m_Y = a.m_Y - b.m_Y;
     return (c);
 }
 
-static FitVector computeCenterTangent(QPolygonF points,int center)
+FitVector computeCenterTangent(QPolygonF points,int center)
 {
     FitVector V1, V2, tHatCenter;
     
@@ -186,26 +191,26 @@ static FitVector computeCenterTangent(QPolygonF points,int center)
  *  b0, b1, b2, b3 :
  *	Bezier multipliers
  */
-static double b0(double u)
+double b0(double u)
 {
     double tmp = 1.0 - u;
     return (tmp * tmp * tmp);
 }
 
 
-static double b1(double u)
+double b1(double u)
 {
     double tmp = 1.0 - u;
     return (3 * u * (tmp * tmp));
 }
 
-static double b2(double u)
+double b2(double u)
 {
     double tmp = 1.0 - u;
     return (3 * u * u * tmp);
 }
 
-static double b3(double u)
+double b3(double u)
 {
     return (u * u * u);
 }
@@ -329,7 +334,7 @@ QPointF* generateBezier(QPolygonF &points, int first, int last, double *uPrime,F
  *  	Evaluate a Bezier curve at a particular parameter value
  * 
  */
-static QPointF bezierII(int degree,QPointF *V, double t)
+QPointF bezierII(int degree,QPointF *V, double t)
 {
 	int i, j;
 	QPointF Q;	        /* Point on curve at parameter t	*/
@@ -362,7 +367,7 @@ static QPointF bezierII(int degree,QPointF *V, double t)
  *	Find the maximum squared distance of digitized points
  *	to fitted curve.
 */
-static double computeMaxError(QPolygonF points,int first,int last,QPointF *curve,double *u,int *splitPoint)
+double computeMaxError(QPolygonF points,int first,int last,QPointF *curve,double *u,int *splitPoint)
 {
 	int i;
 	double maxDist; /*  Maximum error		*/
@@ -391,7 +396,7 @@ static double computeMaxError(QPolygonF points,int first,int last,QPointF *curve
  *  newtonRaphsonRootFind :
  *	Use Newton-Raphson iteration to find better root.
  */
-static double newtonRaphsonRootFind(QPointF *Q,QPointF P,double u)
+double newtonRaphsonRootFind(QPointF *Q,QPointF P,double u)
 {
 	double  numerator, denominator;
 	QPointF Q1[3], Q2[2];	/*  Q' and Q''			*/
@@ -436,7 +441,7 @@ static double newtonRaphsonRootFind(QPointF *Q,QPointF P,double u)
  *   a better parameterization.
  *
  */
-static double *reparameterize(QPolygonF points,int first,int last,double *u,QPointF *curve)
+double *reparameterize(QPolygonF points,int first,int last,double *u,QPointF *curve)
 {
 	
 	int nPts = last-first+1;
@@ -548,7 +553,7 @@ QPointF *fitCubic(QPolygonF &points,int first,int last,FitVector tHat1,FitVector
 }
 
 
-QPainterPath bezierFit( QPolygonF &points,float error)
+QPainterPath KTGraphicalAlgorithm::bezierFit( QPolygonF &points,float error)
 {
 	FitVector tHat1, tHat2;
 
@@ -557,9 +562,12 @@ QPainterPath bezierFit( QPolygonF &points,float error)
 	
 	int width=0;
 	QPointF *curve;
+	 
 	curve = fitCubic(points,0,points.count()-1,tHat1,tHat2,error,width);
 	
-	QPainterPath path = QPainterPath();
+	QPainterPath path;
+	
+	path = QPainterPath();
 
 	if(width>3)
 	{
@@ -570,6 +578,7 @@ QPainterPath bezierFit( QPolygonF &points,float error)
 			path.cubicTo(curve[i+1],curve[i+2],curve[i+3]);	
 		}
 	}
+	
 	delete[] curve;
 	return path;
 }

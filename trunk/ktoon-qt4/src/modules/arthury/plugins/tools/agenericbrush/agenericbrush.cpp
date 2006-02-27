@@ -89,7 +89,7 @@ QRect AGenericBrush::release(const QString & brush ,QPainter & /* painter*/,cons
 		
 		++it;
 	}
-	ktDebug() << pol.count();
+	
 	if (brush == tr("Pencil") )
 	{
 		m_path = QPainterPath();
@@ -97,8 +97,8 @@ QRect AGenericBrush::release(const QString & brush ,QPainter & /* painter*/,cons
 	}
 	else if ( brush == tr("Bezier Brush"))
 	{
-		m_path = bezierFit(pol, 10);//FIXME cofigure
-		emit  requestRedraw();
+		m_path = KTGraphicalAlgorithm::bezierFit(pol, 5);//TODO configure
+		emit requestRedraw();
 	}
 	
 	return QRect(0, 0, 0, 0);

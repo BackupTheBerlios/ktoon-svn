@@ -290,7 +290,6 @@ void APaintArea::drawFrame(const KTKeyFrame *frame, QPainter *painter, float int
 
 void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter *painter, float intensitive )
 {
-	
 	painter->save();
 	foreach(AGraphic *graphic, graphicComponent->graphics())
 	{
@@ -323,9 +322,10 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter
 		painter->setBrush(brush);
 		
 		
-		
-		QList<QPolygonF> poligons = graphic->path.toSubpathPolygons();
-		
+#if 1
+		painter->drawPath(graphic->path);
+#else	
+		QList<QPolygonF> poligons = graphic->path.toSubpathPolygons();		
 		if ( poligons.count() == 1 )
 		{
 			painter->drawPath(graphic->path);
@@ -338,6 +338,7 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter
 				painter->drawPolygon(*it);
 			}
 		}
+#endif	
 	}
 
 	const QList< AGraphicComponent *> childs = graphicComponent->childs();

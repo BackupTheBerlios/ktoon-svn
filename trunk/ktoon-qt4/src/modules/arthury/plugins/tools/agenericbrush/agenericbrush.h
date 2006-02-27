@@ -51,7 +51,6 @@ class AGenericBrush : public KTToolPluginObject, public AToolInterface
 		virtual void aboutToChangeTool() ;
 	private:
 		QPoint m_firstPoint;
-		QList<QPoint> m_points;
 		QPainterPath m_path;
 };
 
