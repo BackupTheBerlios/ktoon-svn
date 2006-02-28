@@ -147,7 +147,6 @@ double *chordLengthParameterize(QPolygonF points,int first,int last)
 	{
 		int denominator = u[last-first];
 		
-		SHOW_VAR(denominator);
 		if ( denominator != 0.0f)
 		{
 			u[i-first] = u[i-first] / denominator;
@@ -299,14 +298,13 @@ QPointF* generateBezier(QPolygonF &points, int first, int last, double *uPrime,F
 		det_C0_C1 = (C[0][0] * C[1][1]) * 10e-12;
 	}
 	
-	SHOW_VAR(det_C0_C1);
 	if ( det_C0_C1 != 0.0f)
 	{
 		alpha_l = det_X_C1 / det_C0_C1;
 		alpha_r = det_C0_X / det_C0_C1;
 	}
-
-
+	// FIXME: else???
+	
 	/*  If alpha negative, use the Wu/Barsky heuristic (see text) */
 	/* (if alpha is 0, you get coincident control points that lead to
 	* divide by zero in any subsequent newtonRaphsonRootFind() call. */
@@ -445,7 +443,6 @@ double newtonRaphsonRootFind(QPointF *Q,QPointF P,double u)
 	/* u = u - f(u)/f'(u) */
 	if ( denominator != 0.0f )
 	{
-		ktDebug() << "OTHER: " << denominator;
 		uPrime = u - (numerator/denominator);
 	}
 

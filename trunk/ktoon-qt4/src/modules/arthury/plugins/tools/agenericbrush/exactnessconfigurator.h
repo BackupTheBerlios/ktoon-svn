@@ -17,24 +17,39 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef EXACTNESSCONFIGURATOR_H
 #define EXACTNESSCONFIGURATOR_H
 
 #include <QDoubleSpinBox>
 #include <QLabel>
 
+class QTableWidget;
+class QTableWidgetItem;
+
 /**
-	@author Jorge Cuadrado <krawek@toonka.com>
+ * @author Jorge Cuadrado <krawek@toonka.com>
 */
 class ExactnessConfigurator : public QWidget
 {
+	Q_OBJECT;
 	public:
 		ExactnessConfigurator(QWidget *parent = 0);
 		~ExactnessConfigurator();
-		double exactness();
+		double exactness() const;
+		
+	protected:
+		void resizeEvent(QResizeEvent *e);
+		
+	private slots:
+		void addCurrentValue();
+		void removeCurrentValue();
+		
+		void updateValueFromItem(QTableWidgetItem *item);
 		
 	private:
 		QDoubleSpinBox *m_exactness;
+		QTableWidget *m_table;
 
 };
 
