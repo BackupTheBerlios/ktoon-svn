@@ -119,7 +119,7 @@ void KTColorPalette::setupDisplayColor()
 	//palettes
 	m_containerPalette = new KTViewColorCells(m_splitter);
 	
-	connect (m_containerPalette, SIGNAL(selectColor( const QColor& )), this, SLOT(setColor( const QColor& )));
+	connect (m_containerPalette, SIGNAL(selectColor( const QBrush& )), this, SLOT(setColor( const QBrush& )));
 	
 	connect (m_containerPalette, SIGNAL(selectGradient(const QGradient&)), this, SLOT(changeGradient(const QGradient&)));
 	
@@ -133,7 +133,7 @@ void KTColorPalette::setupDisplayColor()
 	QBoxLayout *vlayout = new QBoxLayout(QBoxLayout::LeftToRight);
 	viewColor->setLayout(vlayout);
 	
-	m_outlineAndFillColors = new KTDualColorButton(m_currentOutlineColor,m_currentFillColor, viewColor);
+	m_outlineAndFillColors = new KTDualColorButton(m_currentOutlineColor, m_currentFillColor, viewColor);
 	m_outlineAndFillColors->setSizePolicy ( QSizePolicy::Fixed, QSizePolicy::Fixed );
 	connect( m_outlineAndFillColors, SIGNAL(currentChanged(KTDualColorButton::DualColor)),this, SLOT(changeTypeColor(KTDualColorButton::DualColor)));
 	vlayout->addWidget( m_outlineAndFillColors);
@@ -154,8 +154,10 @@ void KTColorPalette::setupDisplayColor()
 
 
 
-void KTColorPalette::setColor(const QColor& color)
+void KTColorPalette::setColor(const QBrush& brush)
 {
+	QColor color = brush.color();
+	
 	if(m_displayValueColor && m_outlineAndFillColors && m_colorPicker && m_nameColor && m_luminancePicker)
 	{
 		m_displayValueColor->setColor(color);
@@ -165,7 +167,7 @@ void KTColorPalette::setColor(const QColor& color)
 		m_nameColor->setText(color.name ());
 	
 		m_luminancePicker->setCol(color.hue(), color.saturation(), color.value());
-		m_containerPalette->setColor( QBrush(color) );
+		m_containerPalette->setColor( brush );
 		
 		if(m_flagGradient)
 		{
@@ -203,7 +205,7 @@ void KTColorPalette::changeTypeColor(KTDualColorButton::DualColor s)
 void KTColorPalette::syncHsv(int h, int s, int v)
 {
 // 	int th, ts, tv;
-	QColor tmpColor = m_outlineAndFillColors->currentColor();
+	QColor tmpColor = m_outlineAndFillColors->currentColor().color();
 	tmpColor.setHsv( h, s, v, tmpColor.alpha() );
 	if(m_luminancePicker == sender())
 		setColor(tmpColor);
@@ -213,7 +215,7 @@ void KTColorPalette::syncHsv(int h, int s, int v)
 void KTColorPalette::setHS(int h , int s)
 {
 	int th, ts, tv;
-	QColor tmpColor = m_outlineAndFillColors->currentColor();
+	QColor tmpColor = m_outlineAndFillColors->currentColor().color();
 	
 	tmpColor.getHsv( &th, &ts, &tv );
 	tmpColor.setHsv( h, s, tv, tmpColor.alpha() );
@@ -230,8 +232,8 @@ void KTColorPalette::updateColor()
 QPair<QColor, QColor> KTColorPalette::color()
 {
 	QPair<QColor, QColor> colors;
-	colors.first = m_outlineAndFillColors->foreground();
-	colors.second = m_outlineAndFillColors->background();
+	colors.first = m_outlineAndFillColors->foreground().color();
+	colors.second = m_outlineAndFillColors->background().color();
 	
 	return colors;
 }

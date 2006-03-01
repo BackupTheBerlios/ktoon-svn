@@ -54,9 +54,9 @@ class KTDualColorButton : public QWidget
 {
 	Q_OBJECT
 	Q_ENUMS( DualColor )
-	Q_PROPERTY( QColor foreground READ foreground WRITE setForeground )
-	Q_PROPERTY( QColor background READ background WRITE setBackground )
-	Q_PROPERTY( QColor currentColor READ currentColor WRITE setCurrentColor STORED false DESIGNABLE false )
+	Q_PROPERTY( QBrush foreground READ foreground WRITE setForeground )
+	Q_PROPERTY( QBrush background READ background WRITE setBackground )
+	Q_PROPERTY( QBrush currentColor READ currentColor WRITE setCurrentColor STORED false DESIGNABLE false )
 	Q_PROPERTY( DualColor current READ current WRITE setCurrent )
 
 	public:
@@ -76,7 +76,7 @@ class KTDualColorButton : public QWidget
 		 * background colors.
      		*/
     		/// KDE4 remove name argument
-		KTDualColorButton(const QColor &fgColor, const QColor &bgColor,
+		KTDualColorButton(const QBrush &fgColor, const QBrush &bgColor,
 				 QWidget *parent=0);
 
 		~KTDualColorButton();

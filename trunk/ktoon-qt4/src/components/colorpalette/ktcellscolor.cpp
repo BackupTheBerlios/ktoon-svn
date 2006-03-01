@@ -190,7 +190,8 @@ void KTCellsColor::mouseMoveEvent(QMouseEvent* e)
 
 	QDrag *drag = new QDrag( this );
 	QPixmap pix( 25, 25 );
-	pix.fill( currentItem()->background() );
+	QColor color=  currentItem()->background().color();
+	pix.fill( color);
 	
 	QPainter painter( &pix );
 	painter.drawRect( 0, 0, pix.width(), pix.height() );

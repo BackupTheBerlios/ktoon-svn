@@ -121,8 +121,9 @@ void KTValueColor::setupForm()
 	m_layout->addWidget(m_valueA, 3, 0,Qt::AlignTop | Qt::AlignLeft);
 }
 
-void KTValueColor::setColor(const QColor &color)
+void KTValueColor::setColor(const QBrush &brush)
 {
+	QColor color = brush.color();
 	ok = false;
 	m_valueR->setValue( color.red());
 	m_valueG->setValue( color.green());

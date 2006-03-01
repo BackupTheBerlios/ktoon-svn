@@ -55,14 +55,14 @@ KTDualColorButton::KTDualColorButton( QWidget *parent ) : QWidget( parent )
 	setAcceptDrops(true);
 }
 
-KTDualColorButton::KTDualColorButton(const QColor &fgColor, const QColor &bgColor, QWidget *parent) : QWidget(parent)
+KTDualColorButton::KTDualColorButton(const QBrush &fgColor, const QBrush &bgColor, QWidget *parent) : QWidget(parent)
 {
 	arrowBitmap = new QBitmap(dcolorarrow_width, dcolorarrow_height/*,
 				  (const unsigned char *)dcolorarrow_bits, true*/);
 	arrowBitmap->setMask(*arrowBitmap);
 	resetPixmap = new QPixmap((const char **)dcolorreset_xpm);
-	fg = QBrush(fgColor, Qt::SolidPattern);
-	bg = QBrush(bgColor, Qt::SolidPattern);
+	fg = fgColor;
+	bg = bgColor;
 	curColor = Foreground;
 	dragFlag = false;
 	miniCtlFlag = false;
@@ -157,13 +157,13 @@ void KTDualColorButton::paintEvent(QPaintEvent *)
 	QPainter p(this);
 
 	metrics(fgRect, bgRect);
-	QBrush defBrush = colorGroup().brush(QColorGroup::Button);
+	QBrush defBrush = palette().color(QPalette::Button);
 
-	qDrawShadeRect(&p, bgRect, colorGroup(), curColor == Background, 2, 0,
+	qDrawShadeRect(&p, bgRect, palette(), curColor == Background, 2, 0,
 			isEnabled() ? &bg : &defBrush);
-	qDrawShadeRect(&p, fgRect, colorGroup(), curColor == Foreground, 2, 0,
+	qDrawShadeRect(&p, fgRect,  palette(), curColor == Foreground, 2, 0,
 			isEnabled() ? &fg : &defBrush);
-	p.setPen(colorGroup().shadow());
+	p.setPen(QPen(palette().shadow().color()));
 	p.drawPixmap(fgRect.right()+2, 0, *arrowBitmap);
 	p.drawPixmap(0, fgRect.bottom()+2, *resetPixmap);
 

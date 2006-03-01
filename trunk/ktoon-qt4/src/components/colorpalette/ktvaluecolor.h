@@ -74,7 +74,7 @@ class KTValueColor : public QFrame
 		void setupForm();
 		
 	public slots:
-		void setColor(const QColor & color);
+	void setColor(const QBrush & brush);
 		
 	private slots:
 		void syncValuesRgb(int value);

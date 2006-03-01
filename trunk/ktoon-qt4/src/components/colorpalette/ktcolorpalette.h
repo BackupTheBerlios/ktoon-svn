@@ -64,7 +64,7 @@ class KTColorPalette : public KTModuleWidgetBase
 		KTGradientCreator *m_gradientManager;
 		QLineEdit *m_nameColor;
 		KTDualColorButton *m_outlineAndFillColors;
-		QColor m_currentOutlineColor, m_currentFillColor;
+		QBrush m_currentOutlineColor, m_currentFillColor;
 		
 		QSplitter *m_splitter;
 		bool m_flagGradient;
@@ -77,7 +77,7 @@ class KTColorPalette : public KTModuleWidgetBase
 		void setupDisplayColor();
 		
 	public slots:
-		void setColor(const QColor &color);
+		void setColor(const QBrush &brush);
 		void updateColor();
 		void changeTypeColor(KTDualColorButton::DualColor s);
 		void syncHsv(int h , int s , int v);
