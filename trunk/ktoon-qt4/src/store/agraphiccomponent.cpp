@@ -22,7 +22,7 @@
 #include "ktdebug.h"
 #include <cmath> // fabs
 
-AGraphicComponent::AGraphicComponent() : KTSerializableObject(), m_scale(0,0), m_shear(0,0), m_angle(0)
+AGraphicComponent::AGraphicComponent() : KTSerializableObject(), m_scale(1,1), m_shear(0,0), m_angle(0)
 {
 	
 }
@@ -129,12 +129,12 @@ bool AGraphicComponent::intersects(const QRectF &rect)
 
 void AGraphicComponent::scale(double sX, double sY)
 {
-	QPointF delta( sX-m_scale.x(), sY-m_scale.y());
-	if ( sX > 0 && sY > 0 )
+	QPointF delta( sX/m_scale.x(), sY/m_scale.y());
+	if ( delta.x() > 0 && delta.y() > 0 )
 	{
 		QPointF pos = position();
 		QMatrix mId(1,0,0,1, 0, 0);
-		mId = mId.scale( 1+delta.x(),  1+delta.y());
+		mId = mId.scale( delta.x(),  delta.y());
 		mapTo(mId);
 		
 		m_scale.setX(sX);
