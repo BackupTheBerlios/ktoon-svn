@@ -5,25 +5,17 @@
 
 HEADERS += auxiliary.h \
            bitmap.h \
-           bitmap_io.h \
-           bitops.h \
            curve.h \
            decompose.h \
-           greymap.h \
            lists.h \
-           main.h \
            platform.h \
            potracelib.h \
            progress.h \
-           render.h \
            trace.h \
            config.h 
-SOURCES += bitmap_io.c \
-           curve.c \
+SOURCES += curve.c \
            decompose.c \
-           greymap.c \
            potracelib.c \
-           render.c \
            trace.c 
 KDEV_QTVER = 4 
 CONFIG += release \
