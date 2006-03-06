@@ -90,7 +90,7 @@ class KTScene : public KTSerializableObject
 		/**
 		 * Crea una layer, si addToEnd es verdadero el layer se creara al final, sino se creara despues del layer actual
 		 */
-		KTLayer *createLayer(bool addToEnd  );
+		KTLayer *createLayer(const QString & name = QString::null, bool addToEnd = true );
 		
 		/**
 		 * Cambia los frames por segundo de la escena
@@ -126,12 +126,12 @@ class KTScene : public KTSerializableObject
 		/**
 		 * Carga un layer
 		 */
-		void loadLayer();
+		void loadLayer(const QString &);
 		
 		/**
 		 * Carga un frame
 		 */
-		void loadFrame();
+		void loadFrame(const QString &);
 		
 		/**
 		 * Carga un componente

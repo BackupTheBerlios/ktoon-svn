@@ -89,8 +89,8 @@ void KTScene::load(const QString &path)
 	
 	KTProjectParser parser;
 	
-	connect(&parser, SIGNAL(createLayer()), this, SLOT(loadLayer()));
-	connect(&parser, SIGNAL(createFrame()), this, SLOT(loadFrame()));
+	connect(&parser, SIGNAL(createLayer(const QString &)), this, SLOT(loadLayer(const QString &)));
+	connect(&parser, SIGNAL(createFrame(const QString &)), this, SLOT(loadFrame(const QString &)));
 	connect(&parser, SIGNAL(createComponent( AGraphicComponent * ) ), this, SLOT( loadComponent(AGraphicComponent *) ));
 	
 	QXmlSimpleReader reader;
@@ -132,12 +132,18 @@ void KTScene::setLayers(const Layers &layers)
 	m_layers = layers;
 }
 
-KTLayer *KTScene::createLayer(bool addToEnd )
+KTLayer *KTScene::createLayer(const QString& name, bool addToEnd )
 {
 	KT_FUNCINFO;
 	KTLayer *layer = new KTLayer(this);
-	layer->setLayerName(tr("Layer %1").arg(m_layerCount++));
-	
+	if(name.isNull())
+	{
+		layer->setLayerName(tr("Layer %1").arg(m_layerCount++));
+	}
+	else
+	{
+		layer->setLayerName(name);
+	}
 	if ( addToEnd )
 	{
 		m_layers << layer;
@@ -206,16 +212,16 @@ void KTScene::removeLayer( int index)
 	
 }
 
-void KTScene::loadLayer()
+void KTScene::loadLayer(const QString & name)
 {
-	KTLayer *layer = createLayer(true);
+	KTLayer *layer = createLayer(name);
 }
 
-void KTScene::loadFrame()
+void KTScene::loadFrame(const QString & name)
 {
 	if ( m_currentLayer )
 	{
-		KTKeyFrame *frame = m_currentLayer->createFrame(true);
+		KTKeyFrame *frame = m_currentLayer->createFrame(name);
 	}
 }
 

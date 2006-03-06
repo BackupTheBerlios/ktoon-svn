@@ -34,10 +34,10 @@ ACubicTool::~ACubicTool()
 QHash< QString, KTAction * > ACubicTool::actions()
 {
 	QHash<QString, KTAction *> hash;
-	KTAction *cubic = new KTAction( QIcon(), tr("Cubic"), this);
+	KTAction *cubic = new KTAction( QIcon(), tr("Polyline"), this);
 // 	cubic->setShortcut( QKeySequence(tr("C")) );
 	
-	hash.insert( tr("Cubic"), cubic );
+	hash.insert( tr("Polyline"), cubic );
 	
 	return hash;
 }
@@ -132,7 +132,7 @@ QRect ACubicTool::release(const QString& brush, QPainter& painter, const QPainte
 
 QStringList ACubicTool::keys() const
 {
-	return QStringList() << "Cubic";
+	return QStringList() << "Polyline";
 }
 
 void ACubicTool::createFinishPath()

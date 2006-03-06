@@ -65,7 +65,7 @@ class KTLayer : public KTSerializableObject
 		/**
 		 * Crea un frame, si addToEnd es verdadero el frame sera añadido al final, de lo contrario sera añadido despues del frame actual.
 		 */
-		KTKeyFrame *createFrame(bool addToEnd );
+		KTKeyFrame *createFrame(const QString & name = QString::null, bool addToEnd = true );
 		
 		/**
 		 * Retorna el frame actual

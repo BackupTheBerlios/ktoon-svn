@@ -166,6 +166,7 @@ bool AGeometricToolPlugin::isComplete() const
 
 void AGeometricToolPlugin::aboutToChangeTool() 
 {
+
 }
 
 

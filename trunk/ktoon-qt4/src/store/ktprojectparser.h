@@ -86,12 +86,12 @@ class KTProjectParser : public QObject, public QXmlDefaultHandler
 		/**
 		 * Este signal se emite cuando se requiere crear un layer
 		 */
-		void createLayer();
+		void createLayer(const QString &name);
 		
 		/**
 		 * Este signal se emite cuando se requiere crear un frame
 		 */
-		void createFrame();
+		void createFrame(const QString &name);
 		
 		/**
 		 * Este signal se emite cuando se requiere crear un componente

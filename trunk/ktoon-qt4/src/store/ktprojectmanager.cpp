@@ -323,7 +323,7 @@ void KTProjectManager::createLayer(bool addToEnd)
 	KTScene *scene = currentScene();
 	if ( scene )
 	{
-		KTLayer *layer = scene->createLayer(addToEnd);
+		KTLayer *layer = scene->createLayer(QString::null, addToEnd);
 		connect(layer, SIGNAL(frameCreated( const QString &, bool)), this, SIGNAL(frameCreated(  const QString& , bool)));
 		
 		connect(layer, SIGNAL(frameMoved(bool)), this, SIGNAL(frameMoved(bool))); 
@@ -360,7 +360,7 @@ void KTProjectManager::createFrame(bool addToEnd)
 	KTLayer *layer = currentLayer();
 	if ( layer )
 	{
-		KTKeyFrame *frame = layer->createFrame(addToEnd);
+		KTKeyFrame *frame = layer->createFrame(QString::null , addToEnd);
 	}
 	else
 	{

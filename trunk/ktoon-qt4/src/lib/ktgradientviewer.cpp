@@ -182,9 +182,12 @@ void KTGradientViewer::mousePressEvent(QMouseEvent *e)
 
 void KTGradientViewer::mouseMoveEvent( QMouseEvent * e )
 {
-	m_controlPoint->points[m_controlPoint->currentIndex] = e->pos();
-	update();
-	emit gradientChanged();
+	if( rect().contains (e->pos()))
+	{
+		m_controlPoint->points[m_controlPoint->currentIndex] = e->pos();
+		update();
+		emit gradientChanged();
+	}
 }
 
 void KTGradientViewer::changeAngle(int angle)

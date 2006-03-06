@@ -79,11 +79,11 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 		else if ( qname == "Layer" )
 		{
 			m_components.clear();
-			emit createLayer();
+			emit createLayer(atts.value("name"));
 		}
 		else if ( qname == "Frame")
 		{
-			emit createFrame();
+			emit createFrame(atts.value("name"));
 		}
 		if ( qname == "Component" )
 		{
