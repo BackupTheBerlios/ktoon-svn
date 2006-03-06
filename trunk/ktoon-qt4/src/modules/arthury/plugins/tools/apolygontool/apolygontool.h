@@ -57,9 +57,10 @@ class APolygonTool: public KTToolPluginObject, public AToolInterface
 		void aboutToChangeTool();
 	private:
 		QPainterPath m_shape;
+		QPoint m_initialPoint;
 		
 	private:
-		void createShape(const QRect & rect);
+		QPainterPath createShape(const QRect & rect);
 
 };
 

@@ -20,7 +20,10 @@
 
 #include "apolygontool.h"
 #include "ktapplication.h"
-#include "math.h"
+
+#include <QMatrix>
+
+#include <cmath>
 
 APolygonTool::APolygonTool()
 {
@@ -50,20 +53,21 @@ QPainterPath APolygonTool::path() const
 
 QRect APolygonTool::move(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& oldPos, const QPoint& newPos)
 {
-	
+	emit toDrawGhostGraphic(createShape(QRect(m_initialPoint, newPos)));
 	return QRect(0,0,0,0);
 }
 
 QRect APolygonTool::press(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& pos, KTKeyFrame* currentFrame)
 {
-// 	createShape(QRect(100,100,100,100));
-	return QRect(100,100,100,100);
+	m_initialPoint = pos;
+	return QRect(0,0,0,0);
 }
 
 QRect APolygonTool::release(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& pos)
 {
+	m_shape = createShape(QRect(m_initialPoint, pos));
 	
-	return QRect(0,0,0,0);
+	return QRect(m_initialPoint, pos);
 }
 
 QStringList APolygonTool::keys() const
@@ -73,12 +77,12 @@ QStringList APolygonTool::keys() const
 
 QWidget* APolygonTool::configurator()
 {
-	return new QWidget();
+	return 0;
 }
 
 bool APolygonTool::isComplete() const
 {
-	return false;
+	return true;
 }
 
 int APolygonTool::type() const
@@ -91,24 +95,27 @@ void APolygonTool::aboutToChangeTool()
 }
 
 
-void  APolygonTool::createShape(const QRect & rect)
+QPainterPath APolygonTool::createShape(const QRect & rect)
 {
+	QPainterPath shape;
+	
 	double angle = 360/3 /*m_angle*/;
 
 	// A star should have at least 3 edges:
-	int	m_edges = 3;
-	int m_roundness = 10;
+	int m_edges = 5;
+	int m_roundness = 10.0;
 	// Make sure, radii are positive:
-	int m_outerRadius = 30;
-	int  m_innerRadius = 10;
+	int m_outerRadius = rect.width();
+	int  m_innerRadius = rect.height();
 	QPoint p2, p3;
 	QPoint p( m_outerRadius * cos( angle + 3.1416),m_outerRadius * sin( angle + 3.1416 ) );
 	m_shape.moveTo( p );
 
-	double inAngle = 100 ;
+	double inAngle = 3.1416*2 / 360 * m_innerRadius;
 	
 	double innerRoundness = ( 3.1416 * m_innerRadius * m_roundness ) / m_edges;
 	double outerRoundness = ( 3.1416 * m_outerRadius * m_roundness ) / m_edges;
+	
 	for ( uint i = 0; i < m_edges; ++i )
 	{
 		double nextOuterAngle = angle + 3.1416 + 3.1416 / m_edges * ( i + 1.0 );
@@ -117,9 +124,10 @@ void  APolygonTool::createShape(const QRect & rect)
 		p.setX( m_outerRadius * cos( nextOuterAngle ) );
 		p.setY( m_outerRadius * sin( nextOuterAngle ) );
 		int m_roundness = 0;
+		
 		if( m_roundness == 0.0 )
 		{
-			m_shape.lineTo( p );
+			shape.lineTo( p );
 		}
 		else
 		{
@@ -133,13 +141,18 @@ void  APolygonTool::createShape(const QRect & rect)
 			p3.setY( m_outerRadius * sin( nextOuterAngle ) +
 					sin( angle + 3.1416 / m_edges * ( i + 1.0 ) ) * outerRoundness );
 		
-			m_shape.cubicTo( p2, p3, p );
+			shape.cubicTo( p2, p3, p );
 		}
 	}
 	
-	emit toDrawGhostGraphic( m_shape ); 
-
+	QMatrix matrix;
+	matrix.translate(rect.center().x(), rect.center().y());
+	
+	shape = matrix.map(shape);
+	
+	return shape;
 }
 
 
-Q_EXPORT_PLUGIN( APolygonTool )
+Q_EXPORT_PLUGIN( APolygonTool );
+

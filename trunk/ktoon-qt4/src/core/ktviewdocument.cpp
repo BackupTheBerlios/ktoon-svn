@@ -36,7 +36,7 @@
 KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, const QString & renderType, KTDocument *doc, QWorkspace *parent ) : KTMdiWindow(parent), m_document(doc), m_title(projectName)
 {
 	setWindowIcon(QPixmap(KTOON_THEME_DIR+"/icons/layer_pic.png") ); // FIXME: new image for documents
-	SHOW_VAR( renderType);
+	
 	m_actionManager = new KTActionManager(this);
 	APaintArea::RenderType type;
 	if(renderType == tr("Native"))
@@ -51,7 +51,7 @@ KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, co
 	{
 		type = APaintArea::Image;
 	}
-	SHOW_VAR(type);
+	
 	m_paintAreaContainer = new KTPaintAreaContainer(size,type,  this);
 	
 	setCentralWidget ( m_paintAreaContainer );
@@ -69,7 +69,6 @@ KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, co
 	createActions();
 	setupGridActions();
 	setupEditActions();
-	setupEdit2Actions();
 	setupViewActions();
 	setupOrderActions();
 	createToolbar();
@@ -184,41 +183,8 @@ void KTViewDocument::setupEditActions()
 	a = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/" ), tr( "Select &All" ),   QKeySequence(tr("Ctrl+A")), m_paintAreaContainer->drawArea(), SLOT(selectAll()), m_actionManager, "selectAll");
 	a->setStatusTip(tr("selected all object"));
 	
-}
-
-void KTViewDocument::setupEdit2Actions()
-{
-	m_editGroup2 = new QActionGroup( parent() );
-	
-// 	QAction *a = new QAction( tr(  "Paste &In Place" ), m_editGroup2);
-// 	a->setShortcut(tr("Ctrl+Shift+V"));
-// 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotPasteInPlace()));
-// 	a->setStatusTip(tr("Pastes the clipboard into the same place as the copy was did"));
-// 	
-// 	a = new QAction( tr(  "&Delete" ),  m_editGroup2);
-// 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotDelete()));
-// 	a->setStatusTip(tr("Deletes the selected object"));
-// 	
-// 	a = new QAction( tr(  "&Select All" ),  m_editGroup2);
-// 	a->setShortcut( tr("Ctrl+A"));
-// 	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotSelectAll()));
-// 	a->setStatusTip(tr("Selects all objects in the document"));
-	
-// 	m_aNtsc = new QAction( QPixmap(KTOON_THEME_DIR+"/icons/ntsc.png" ), tr( "&NTSC Zone" ), parent());
-	
-// 	m_aNtsc->setCheckable ( true );
-// 	connect(m_aNtsc, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotSeeNTSC()));
-// 	m_aNtsc->setStatusTip(tr("Shows or hides the NTSC Zone" ));
-	
-// 	m_aLightTable = new QAction( QPixmap(KTOON_HOME+"/themes/default/icons/light_table.png" ), tr( "&Light Table" ),  parent());
-// 	connect(m_aLightTable, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotLightTable()));
-// 	m_aLightTable->setStatusTip(tr("Activates or deactivates the light table" ));
-	
-// 	m_aClose = new QAction(QPixmap(KTOON_THEME_DIR+"/icons/close.png" ), tr( "Cl&ose" ), parent());
-// 	m_aClose->setShortcut( tr("Ctrl+Shift+W"));
-// 	connect(m_aClose, SIGNAL(triggered()), this, SLOT(close()));
-// 	m_aClose->setStatusTip(tr("Closes the active document"));
-	
+	a = new KTAction( tr("Properties..."), QKeySequence(), this, SLOT(configure()), m_actionManager, "properties");
+	a->setStatusTip(tr("Configure the paint area"));
 }
 
 void KTViewDocument::setupOrderActions()
@@ -706,6 +672,9 @@ void KTViewDocument::createMenu()
 	m_editMenu->addAction(m_actionManager->find("selectAll"));
 	m_editMenu->addSeparator();
 	
+	m_editMenu->addAction(m_actionManager->find("properties"));
+	
+	
 	m_viewMenu = new QMenu(tr( "&View" ), this);
 	m_viewMenu->addActions(m_viewPreviousGroup->actions());
 	m_viewMenu->addSeparator();
@@ -774,3 +743,9 @@ void KTViewDocument::setScene(KTScene* scene)
 	setWindowTitle( m_title + " - " + scene->sceneName() );
 	m_paintAreaContainer->drawArea()->setScene(  scene );
 }
+
+void KTViewDocument::configure()
+{
+	FUNC_NOT_IMPLEMENTED;
+}
+

@@ -70,7 +70,7 @@ class KTViewDocument : public KTMdiWindow
 		void setScene(KTScene* scene);
 		
 	private:
-		QActionGroup *m_gridGroup, *m_editGroup, *m_editGroup2, *m_viewNextGroup, *m_viewPreviousGroup;
+		QActionGroup *m_gridGroup, *m_editGroup, *m_viewNextGroup, *m_viewPreviousGroup;
 		QMenu *m_brushesMenu, *m_selectionMenu, *m_fillMenu, *m_filterMenu;
 		QMenu *m_toolsMenu, *m_editMenu, *m_viewMenu, *m_orderMenu;
 		QAction *m_aUndo, *m_aRedo, *m_aClose;
@@ -86,7 +86,6 @@ class KTViewDocument : public KTMdiWindow
 		void setupViewActions();
 		void setupGridActions();
 		void setupEditActions();
-		void setupEdit2Actions();
 		void setupOrderActions();
 		
 		void createToolbar();
@@ -110,6 +109,8 @@ class KTViewDocument : public KTMdiWindow
 		void selectTool();
 		void selectToolFromMenu(QAction *act);
 		void applyFilter();
+		
+		void configure();
 		
 	protected:
 

@@ -298,20 +298,23 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter
 
 		if ( intensitive < 1 && intensitive >= 0 )
 		{
-			QColor penColor = Qt::gray;
-			QColor brushColor = Qt::gray;
-						
+			QColor penColor = Qt::lightGray;
+			QColor brushColor = Qt::lightGray;
+			
 			const float factor = (1-intensitive); // FIXME: fix this ;)
 						
 			penColor.setHsv(0,0, static_cast<int>(factor * pen.color().alpha()) % 360 );
 						
 			brushColor.setHsv(0,0, static_cast<int>( factor * brush.color().alpha() ) % 360 );
 			
+// 			penColor.setHsv(0,0, factor * pen.color().value() );
+// 			brushColor.setHsv(0,0, factor * brush.color().value() );
+			
 			penColor.setAlpha(pen.color().alpha());
 			brushColor.setAlpha(brush.color().alpha());
-						
-			pen.setColor(penColor);
-			brush.setColor(brushColor);
+			
+			pen = QPen(penColor,1, Qt::DashDotDotLine);
+			brush = QBrush(brushColor, Qt::Dense7Pattern);
 		}
 		else if ( intensitive > 1 && intensitive < 0)
 		{
@@ -409,7 +412,7 @@ void APaintArea::drawGhostGraphic(const QPainterPath &path)
 	
 // 	painter.drawImage(m_overBufferRect, m_overBuffer);
 // 	painter.scale(m_zoomFactor,m_zoomFactor);
-	painter.setPen(QPen(Qt::black, 2, Qt::DotLine));
+	painter.setPen(QPen(Qt::gray, 2, Qt::DotLine));
 	painter.drawPath(path);
 }
 
