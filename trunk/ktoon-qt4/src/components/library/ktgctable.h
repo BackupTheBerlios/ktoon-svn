@@ -21,13 +21,13 @@
 #ifndef KTGCTABLE_H
 #define KTGCTABLE_H
 
-#include "kttreelistwidget.h"
+#include "dtreelistwidget.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
  * @todo Crear un item delegador para editar!
 */
-class KTGCTable : public KTTreeListWidget
+class KTGCTable : public DTreeListWidget
 {
 	Q_OBJECT
 	public:

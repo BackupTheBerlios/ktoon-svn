@@ -23,11 +23,11 @@
 #include <QResizeEvent>
 
 #include "ktlayersequence.h"
-#include "ktdebug.h"
+#include "ddebug.h"
 
-KTLayerSequence::KTLayerSequence(QWidget *parent) : KTWidgetListView(parent), m_layerCount(0)
+KTLayerSequence::KTLayerSequence(QWidget *parent) : DWidgetListView(parent), m_layerCount(0)
 {
-	KTINIT;
+	DINIT;
 	
 	setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
 }
@@ -35,7 +35,7 @@ KTLayerSequence::KTLayerSequence(QWidget *parent) : KTWidgetListView(parent), m_
 
 KTLayerSequence::~KTLayerSequence()
 {
-	KTEND;
+	DEND;
 }
 
 
@@ -83,7 +83,7 @@ KTTimeLineLayer * KTLayerSequence::createNewLayer(const QString &name, bool toEn
 
 void KTLayerSequence::removeLayer()
 {
-	ktDebug() << "Remove layer";
+	dDebug() << "Remove layer";
 	int pos = currentRow();
 	SHOW_VAR( currentRow() );
 	removeRow(pos);
@@ -98,7 +98,7 @@ void KTLayerSequence::removeLayer(int pos)
 
 void KTLayerSequence::selectLayer(KTTimeLineLayer *tm)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	
 	SHOW_VAR(row(this->item( tm)));
 	

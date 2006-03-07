@@ -20,8 +20,8 @@
 
 #include "ffmpegmanager.h"
 
-#include "ktdebug.h"
-#include "ktapplication.h"
+#include "ddebug.h"
+#include "dglobal.h"
 
 #include <cstdio>
 
@@ -98,7 +98,7 @@ void FFMpegManager::create(const QString &filePath, int formatId, const QStringL
 	AVFormatContext *oc = av_alloc_format_context();
 	if ( !oc )
 	{
-		ktError() << "Error while export";
+		dError() << "Error while export";
 		return;
 	}
 
@@ -110,13 +110,13 @@ void FFMpegManager::create(const QString &filePath, int formatId, const QStringL
 	
 	if ( !video_st )
 	{
-		ktError() << "Can't add video stream";
+		dError() << "Can't add video stream";
 		return;
 	}
 	
 	if (av_set_parameters(oc, ap) < 0)
 	{
-		ktError() << "Invalid output format parameters";
+		dError() << "Invalid output format parameters";
 		return ;
 	}
 	
@@ -124,7 +124,7 @@ void FFMpegManager::create(const QString &filePath, int formatId, const QStringL
 	
 	if (!openVideo(oc, video_st) )
 	{
-		ktError() << "Can't open video";
+		dError() << "Can't open video";
 		return;
 	}
 	
@@ -132,7 +132,7 @@ void FFMpegManager::create(const QString &filePath, int formatId, const QStringL
 	{
 		if (url_fopen(&oc->pb, filePath.toLatin1().data(), URL_WRONLY) < 0) 
 		{
-			ktError() << "Could not open " << filePath.toLatin1().data();
+			dError() << "Could not open " << filePath.toLatin1().data();
 			return;
 		}
 	}
@@ -202,7 +202,7 @@ AVStream *FFMpegManager::addVideoStream(AVFormatContext *oc, int codec_id, int w
 	st = av_new_stream(oc, 0);
 	if (!st) 
 	{
-		ktError() << "Could not alloc stream";
+		dError() << "Could not alloc stream";
 		return 0;
 	}
 
@@ -352,7 +352,7 @@ bool FFMpegManager::writeVideoFrame(const QString &imagePath, AVFormatContext *o
 	}
 	if (ret != 0)
 	{
-		ktError() << "Error while writing video frame";
+		dError() << "Error while writing video frame";
 		return false;
 	}
 	m_frameCount++;
@@ -375,14 +375,14 @@ bool FFMpegManager::openVideo(AVFormatContext *oc, AVStream *st)
 	
 	if (!codec)
 	{
-		ktError() << "codec not found";
+		dError() << "codec not found";
 		return false;
 	}
 
 	/* open the codec */
 	if (avcodec_open(c, codec) < 0)
 	{
-		ktError() << "could not open codec";
+		dError() << "could not open codec";
 		return false;
 	}
 
@@ -400,7 +400,7 @@ bool FFMpegManager::openVideo(AVFormatContext *oc, AVStream *st)
 	m_picture = allocPicture(c->pix_fmt, c->width, c->height);
 	if (!m_picture) 
 	{
-		ktError() << "Could not allocate m_picture";
+		dError() << "Could not allocate m_picture";
 		return false;
 	}
 	
@@ -410,7 +410,7 @@ bool FFMpegManager::openVideo(AVFormatContext *oc, AVStream *st)
 		m_tmpPicture = allocPicture(PIX_FMT_YUV420P, c->width, c->height);
 		if (!m_tmpPicture)
 		{
-			ktError() << "Could not allocate temporary picture";
+			dError() << "Could not allocate temporary picture";
 			return false;
 		}
 	}

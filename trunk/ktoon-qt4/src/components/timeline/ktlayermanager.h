@@ -27,16 +27,16 @@
 #include <QScrollBar>
 #include <QButtonGroup>
 
-#include "ktvhbox.h"
+#include "dvhbox.h"
 
-#include "ktimagebutton.h"
+#include "dimagebutton.h"
 #include "ktlayersequence.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTLayerManager : public KTVHBox
+class KTLayerManager : public DVHBox
 {
 	Q_OBJECT
 	public:
@@ -76,11 +76,11 @@ class KTLayerManager : public KTVHBox
 	private:
 		double m_currentTime, m_totalTime;
 		
-		KTVHBox *m_utilsInTop;
-		KTImageButton *m_lockButton, *m_eyeButton, *m_outlineButton;
+		DVHBox *m_utilsInTop;
+		DImageButton *m_lockButton, *m_eyeButton, *m_outlineButton;
 		
-		KTVHBox *m_utilsInBottom;
-		KTImageButton *m_insertButton, *m_removeButton, *m_moveUpButton, *m_moveDownButton;
+		DVHBox *m_utilsInBottom;
+		DImageButton *m_insertButton, *m_removeButton, *m_moveUpButton, *m_moveDownButton;
 		
 		QLabel *m_time;
 		

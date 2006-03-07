@@ -20,10 +20,10 @@
 
 #include "ktgctable.h"
 
-#include "ktapplication.h"
+#include "dglobal.h"
 
 KTGCTable::KTGCTable(QWidget *parent)
-	: KTTreeListWidget(parent), m_currentFolder(0)
+	: DTreeListWidget(parent), m_currentFolder(0)
 {
 }
 
@@ -44,7 +44,7 @@ void KTGCTable::createFolder(const QString &name)
 	{
 		newFolder->setText(0, name );
 	}
-	newFolder->setIcon(0, QPixmap(KTOON_THEME_DIR+"/icons/folder_icon.png" ));
+	newFolder->setIcon(0, QPixmap(THEME_DIR+"/icons/folder_icon.png" ));
 	
 	m_currentFolder = newFolder;
 	

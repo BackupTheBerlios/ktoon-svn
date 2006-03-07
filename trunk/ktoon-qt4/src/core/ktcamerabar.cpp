@@ -22,12 +22,13 @@
 #include "ktapplication.h"
 #include <QBoxLayout>
 
-#include "ktdebug.h"
+#include <ddebug.h>
+#include <dglobal.h>
 
 KTCameraBar::KTCameraBar(QWidget *parent)
  : QFrame(parent)
 {
-	KTINIT;
+	DINIT;
 	setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
 	setMidLineWidth(2);
 	setLineWidth (1);
@@ -38,19 +39,19 @@ KTCameraBar::KTCameraBar(QWidget *parent)
 	m_mainLayout->setSpacing(0);
 	m_mainLayout->setMargin(0);
 	
-	m_rew = new KTImageButton(QPixmap(KTOON_THEME_DIR+"/icons/rw.png"), 33,this, true);
+	m_rew = new DImageButton(QPixmap(THEME_DIR+"/icons/rw.png"), 33,this, true);
 	m_mainLayout->addWidget(m_rew);
 	connect(m_rew, SIGNAL(clicked()), this, SIGNAL(rew()));
 	
-	m_play = new KTImageButton(QPixmap(KTOON_THEME_DIR+"/icons/play.png"), 33,this, true);
+	m_play = new DImageButton(QPixmap(THEME_DIR+"/icons/play.png"), 33,this, true);
 	m_mainLayout->addWidget(m_play);
 	connect(m_play, SIGNAL(clicked()), this, SIGNAL(play()));
 	
-	m_stop = new KTImageButton(QPixmap(KTOON_THEME_DIR+"/icons/stop.png"), 33,this, true);
+	m_stop = new DImageButton(QPixmap(THEME_DIR+"/icons/stop.png"), 33,this, true);
 	m_mainLayout->addWidget(m_stop);
 	connect(m_stop, SIGNAL(clicked()), this, SIGNAL(stop()));
 	
-	m_ff = new KTImageButton(QPixmap(KTOON_THEME_DIR+"/icons/ff.png"), 33,this, true);
+	m_ff = new DImageButton(QPixmap(THEME_DIR+"/icons/ff.png"), 33,this, true);
 	m_mainLayout->addWidget(m_ff);
 	connect(m_ff, SIGNAL(clicked()), this, SIGNAL(ff()));
 	
@@ -60,7 +61,7 @@ KTCameraBar::KTCameraBar(QWidget *parent)
 
 KTCameraBar::~KTCameraBar()
 {
-	KTEND;
+	DEND;
 }
 
 void KTCameraBar::setPalette(const QPalette &)

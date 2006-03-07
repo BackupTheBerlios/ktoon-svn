@@ -19,13 +19,13 @@
  ***************************************************************************/
 
 #include "ktframesequencecontainer.h"
-#include "ktelabel.h"
+#include "delabel.h"
 
-#include "ktdebug.h"
+#include "ddebug.h"
 
 #include <QIntValidator>
 
-KTFrameSequenceContainer::KTFrameSequenceContainer(QWidget *parent) : KTVHBox(parent, Qt::Vertical )
+KTFrameSequenceContainer::KTFrameSequenceContainer(QWidget *parent) : DVHBox(parent, Qt::Vertical )
 {
 	layout()->setSpacing(0);
 	layout()->setMargin(0);
@@ -50,27 +50,27 @@ TFramesTable const *KTFrameSequenceContainer::manager()
 
 void KTFrameSequenceContainer::addLayer()
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 
 	m_frameTable->addLayer();
 }
 
 void KTFrameSequenceContainer::addFrameToLayer(int layerPos)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	m_frameTable->addFrame( layerPos );
 }
 
 
 void KTFrameSequenceContainer::selectFrameFromItem(TFramesTableItem *item)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	emit frameSelected( m_frameTable->row(item), m_frameTable->column(item));
 }
 
 void KTFrameSequenceContainer::removeCurrentLayer()
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	m_frameTable->removeCurrentLayer();
 }
 

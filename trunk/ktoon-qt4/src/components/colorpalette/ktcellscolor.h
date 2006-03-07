@@ -22,12 +22,12 @@
 #ifndef KTCELLSCOLOR_H
 #define KTCELLSCOLOR_H
 
-#include "ktcellview.h"
+#include "dcellview.h"
 
 /**
 	@author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-class KTCellsColor : public KTCellView
+class KTCellsColor : public DCellView
 {
 Q_OBJECT
 	public:

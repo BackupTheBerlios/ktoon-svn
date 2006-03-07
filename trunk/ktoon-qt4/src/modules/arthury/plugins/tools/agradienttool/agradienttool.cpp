@@ -19,9 +19,9 @@
  ***************************************************************************/
 
 #include "agradienttool.h"
-#include "ktapplication.h"
+#include "dglobal.h"
 
-#include "ktalgorithm.h"
+#include "dalgorithm.h"
 
 AGradientTool::AGradientTool()
 {
@@ -34,16 +34,16 @@ AGradientTool::~AGradientTool()
 }
 
 
-QHash< QString, KTAction * > AGradientTool::actions()
+QHash< QString, DAction * > AGradientTool::actions()
 {
-	QHash<QString, KTAction *> hash;
+	QHash<QString, DAction *> hash;
 	
-	KTAction *action1 = new KTAction( QIcon(QPixmap(KTOON_THEME_DIR+"/icons/fill.png")), tr("Random Gradient"), this);
+	DAction *action1 = new DAction( QIcon(QPixmap(THEME_DIR+"/icons/fill.png")), tr("Random Gradient"), this);
 // 	action1->setShortcut( QKeySequence( tr("F") ) );
 	
 	hash.insert( tr("Random Gradient"), action1 );
 	
-	KTAction *action2 = new KTAction( QIcon(QPixmap(KTOON_THEME_DIR+"/icons/fill.png")), tr("Gradient"), this);
+	DAction *action2 = new DAction( QIcon(QPixmap(THEME_DIR+"/icons/fill.png")), tr("Gradient"), this);
 // 	action1->setShortcut( QKeySequence( tr("F") ) );
 	
 	hash.insert( tr("Gradient"), action2 );
@@ -88,14 +88,14 @@ QRect AGradientTool::release(const QString& brush, QPainter& painter, const QPai
 	{
 		const QGradient *gradient = m_configurator->gradient();
 
-		component->addGraphic( path, Qt::NoPen, KTGradientAdjuster::adjustGradient(gradient,m_rect ));
+		component->addGraphic( path, Qt::NoPen, DGradientAdjuster::adjustGradient(gradient,m_rect ));
 	}
 	else if ( brush == "Random Gradient" )
 	{
 		QLinearGradient gradient(m_initialPoint, pos);
-		gradient.setColorAt(0, KTAlgorithm::randomColor());
-		gradient.setColorAt(0.5, KTAlgorithm::randomColor());
-		gradient.setColorAt(1, KTAlgorithm::randomColor());
+		gradient.setColorAt(0, DAlgorithm::randomColor());
+		gradient.setColorAt(0.5, DAlgorithm::randomColor());
+		gradient.setColorAt(1, DAlgorithm::randomColor());
 		
 		component->addGraphic( path, Qt::NoPen, gradient);
 	}

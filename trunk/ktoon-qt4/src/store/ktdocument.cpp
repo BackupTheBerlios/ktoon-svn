@@ -20,7 +20,7 @@
 
 #include "ktdocument.h"
 
-#include "ktdebug.h"
+#include "ddebug.h"
 
 #include <QDir>
 #include <QDomDocument>
@@ -29,14 +29,14 @@
 
 KTDocument::KTDocument(QObject *parent) : KTSerializableObject(parent), m_currentScene(0), m_sceneCount(0)
 {
-	KTINIT;
+	DINIT;
 // 	m_currentScene = createScene();
 }
 
 
 KTDocument::~KTDocument()
 {
-	KTEND;
+	DEND;
 	for(int i = 0; i < m_scenes.count(); i++ )
 	{
 		delete m_scenes.takeAt(i);
@@ -94,7 +94,7 @@ void KTDocument::save(const QString &docPath)
 
 void KTDocument::load(const QString &path)
 {
-	ktDebug() << "Loading doc: " << path;
+	dDebug() << "Loading doc: " << path;
 	
 	KTProjectParser parser;
 	QXmlSimpleReader reader;
@@ -122,7 +122,7 @@ void KTDocument::load(const QString &path)
 	}
 	else
 	{
-		ktError() << "Error while parse file: " << source.fileName();
+		dError() << "Error while parse file: " << source.fileName();
 	}
 }
 
@@ -138,7 +138,7 @@ void KTDocument::setScenes(const Scenes &scenes)
 
 KTScene *KTDocument::createScene(bool addToEnd)
 {
-	ktDebug() << "Creating Scene" << m_sceneCount+1 << endl;
+	dDebug() << "Creating Scene" << m_sceneCount+1 << endl;
 	
 	KTScene *scene = new KTScene(this);
 	scene->setSceneName( tr("Scene %1").arg(m_sceneCount++));

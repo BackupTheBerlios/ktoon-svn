@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "ktprojectmanager.h"
-#include "ktdebug.h"
+#include "ddebug.h"
 
 #include "ktapplication.h"
 
@@ -27,13 +27,13 @@
 
 KTProjectManager::KTProjectManager(QObject *parent) : KTSerializableObject(parent), m_currentDocument(0), m_copyFrame(0), m_isOpen(false)
 {
-	KTINIT;
+	DINIT;
 }
 
 
 KTProjectManager::~KTProjectManager()
 {
-	KTEND;
+	DEND;
 }
 
 
@@ -64,7 +64,7 @@ QDomElement KTProjectManager::createXML( QDomDocument &doc )
 	while( documentIt != m_documents.end() )
 	{
 		QString location = QString("Document%1").arg(documentCounter++);
-		QString docPath = ktapp->repository() + +"/"+m_name+"/"+location;
+		QString docPath = REPOSITORY + +"/"+m_name+"/"+location;
 		
 		QDomElement docElement = (*documentIt)->createXML( doc );
 		docElement.setAttribute("location",location);
@@ -81,7 +81,7 @@ void KTProjectManager::save()
 {
 	if ( m_name.isNull() ) return;
 	
-	QDir repository(KTOON_REPOSITORY);
+	QDir repository(REPOSITORY);
 
 	if ( ! repository.exists() ) 
 	{ 
@@ -99,7 +99,7 @@ void KTProjectManager::save()
 	doc.appendChild(root);
 	root.appendChild(createXML( doc ));
 	
-	QFile save(ktapp->repository() + +"/"+m_name+"/"+m_name+".ktp");
+	QFile save(REPOSITORY + +"/"+m_name+"/"+m_name+".ktp");
 	
 	if ( save.open(QIODevice::WriteOnly | QIODevice::Text))
 	{
@@ -112,7 +112,7 @@ void KTProjectManager::save()
 
 void KTProjectManager::load(const QString &path)
 {
-	ktDebug() << "Loading: " << path;
+	dDebug() << "Loading: " << path;
 	KTProjectParser parser;
 	QXmlSimpleReader reader;
 	reader.setContentHandler(&parser);
@@ -167,7 +167,7 @@ void KTProjectManager::load(const QString &path)
 	}
 	else
 	{
-		ktError() << "Error while parse file: " << source.fileName();
+		dError() << "Error while parse file: " << source.fileName();
 	}
 	
 }
@@ -209,7 +209,7 @@ KTScene *KTProjectManager::currentScene()
 {
 	if ( ! m_currentDocument )
 	{
-		ktFatal() << "No current document" << endl;
+		dFatal() << "No current document" << endl;
 		return 0;
 	}
 	
@@ -220,7 +220,7 @@ KTLayer *KTProjectManager::currentLayer()
 {
 	if ( ! currentScene() )
 	{
-		ktFatal() << "No current scene" << endl;
+		dFatal() << "No current scene" << endl;
 		return 0;
 	}
 	
@@ -231,7 +231,7 @@ KTKeyFrame *KTProjectManager::currentKeyFrame()
 {
 	if ( ! currentLayer() )
 	{
-		ktFatal() << "No current layer" << endl;
+		dFatal() << "No current layer" << endl;
 		return 0;
 	}
 	
@@ -274,7 +274,7 @@ void KTProjectManager::setLayerVisibility(int idLayer, bool value)
 	}
 	else
 	{
-		ktFatal() << "ERROR" << endl;
+		dFatal() << "ERROR" << endl;
 	}
 }
 
@@ -301,7 +301,7 @@ void KTProjectManager::createScene(bool addToEnd)
 	}
 	else
 	{
-		ktFatal() << "--> No current document" << endl;
+		dFatal() << "--> No current document" << endl;
 	}
 }
 
@@ -319,7 +319,7 @@ void KTProjectManager::renameScene(const QString &name, int index)
 // Layers
 void KTProjectManager::createLayer(bool addToEnd)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	KTScene *scene = currentScene();
 	if ( scene )
 	{
@@ -336,7 +336,7 @@ void KTProjectManager::createLayer(bool addToEnd)
 	}
 	else
 	{
-		ktFatal() << "--> No current scene" << endl;
+		dFatal() << "--> No current scene" << endl;
 	}
 }
 
@@ -355,7 +355,7 @@ void KTProjectManager::emitLayerVisibility(bool isVisible )
 
 void KTProjectManager::createFrame(bool addToEnd)
 {
-	ktDebug() << "#KTProjectManager:: Inserting frame " << addToEnd <<  endl;
+	dDebug() << "#KTProjectManager:: Inserting frame " << addToEnd <<  endl;
 	
 	KTLayer *layer = currentLayer();
 	if ( layer )
@@ -364,13 +364,13 @@ void KTProjectManager::createFrame(bool addToEnd)
 	}
 	else
 	{
-		ktFatal() << "--> No current layer" << endl;
+		dFatal() << "--> No current layer" << endl;
 	}
 }
 
 void KTProjectManager::copyFrame(int index)
 {
-	ktDebug() << "KTProjectManager::copyFrame()";
+	dDebug() << "KTProjectManager::copyFrame()";
 	KTLayer *layer = currentLayer();
 	if ( layer && layer->frames().count() > index )
 	{
@@ -380,19 +380,19 @@ void KTProjectManager::copyFrame(int index)
 			m_copyFrame = frame;
 			if ( m_copyFrame->components()[0] == frame->components()[0] )
 			{
-				ktError() << "HEREEEEEEEEEEEEEE";
+				dError() << "HEREEEEEEEEEEEEEE";
 			}
 		}
 	}
 	else
 	{
-		ktFatal() << "--> No current layer" << endl;
+		dFatal() << "--> No current layer" << endl;
 	}
 }
 
 void KTProjectManager::pasteFrame(int index )
 {
-	ktDebug() << "KTProjectManager::pasteFrame()" << endl;
+	dDebug() << "KTProjectManager::pasteFrame()" << endl;
 	KTLayer *layer = currentLayer();
 	if ( layer && m_copyFrame)
 	{
@@ -400,7 +400,7 @@ void KTProjectManager::pasteFrame(int index )
 	}
 	else
 	{
-		ktFatal() << "--> No current layer" << endl;
+		dFatal() << "--> No current layer" << endl;
 	}
 }
 
@@ -415,7 +415,7 @@ void KTProjectManager::moveFrame(bool up)
 
 void KTProjectManager::removeFrame()
 {
-// 	ktDebug() << "emit KTProjectManager::removeFrame();";
+// 	dDebug() << "emit KTProjectManager::removeFrame();";
 	KTLayer *layer = currentLayer();
 	if ( layer )
 	{
@@ -434,7 +434,7 @@ void KTProjectManager::lockCurrentFrame()
 
 void  KTProjectManager::renameLayer(int indexLayer, const QString & name)
 {
-	ktDebug() << "KTProjectManager::renameLayer(int indexLayer, const QString & name)";
+	dDebug() << "KTProjectManager::renameLayer(int indexLayer, const QString & name)";
 	if(currentScene())
 	{
 		currentScene()->layers()[indexLayer]->setLayerName(name);
@@ -444,7 +444,7 @@ void  KTProjectManager::renameLayer(int indexLayer, const QString & name)
 
 void KTProjectManager::renameFrame(int indexLayer, int indexFrame, const QString & name)
 {
-	ktDebug() << "KTProjectManager::renameFrame(int indexLayer, int indexFrame, const QString & name)";
+	dDebug() << "KTProjectManager::renameFrame(int indexLayer, int indexFrame, const QString & name)";
 	if(currentScene())
 	{
 		currentScene()->layers()[indexLayer]->frames()[indexFrame]->setFrameName(name);

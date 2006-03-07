@@ -8,14 +8,22 @@ INSTALLS += target
 target.path = /plugins/ 
 KDEV_QTVER = 4 
 TARGETDEPS += ../../../../../../src/store/libstore.so \
-              ../../../../../../src/lib/libktoon.so 
+              ../../../../../../src/ktoonlib/libktoonlib.so \
+              ../../../../../../src/dlib/dgui/libdgui.so \
+              ../../../../../../src/dlib/dcore/libdcore.so 
 LIBS += -lstore \
-        -lktoon 
+        -lktoonlib \
+        -ldgui \
+        -ldcore 
 INCLUDEPATH += ../../../../../../src/modules/arthury/interfaces \
                ../../../../../../src/store \
-               ../../../../../../src/lib 
+               ../../../../../../src/ktoonlib \
+               ../../../../../../src/dlib/dgui \
+               ../../../../../../src/dlib/dcore 
 QMAKE_LIBDIR = ../../../../../../src/store \
-               ../../../../../../src/lib 
+               ../../../../../../src/ktoonlib \
+               ../../../../../../src/dlib/dgui \
+               ../../../../../../src/dlib/dcore 
 CONFIG += release \
           warn_on \
           plugin 

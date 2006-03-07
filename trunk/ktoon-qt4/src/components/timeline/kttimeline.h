@@ -95,8 +95,8 @@ class KTTimeLine : public KTModuleWidgetBase
 		
 	private:
 		QStackedWidget *m_container;
-		KTVHBox *m_propertiesBar;
-		KTELabel *m_editLayer;
+		DVHBox *m_propertiesBar;
+		DELabel *m_editLayer;
 };
 
 #endif

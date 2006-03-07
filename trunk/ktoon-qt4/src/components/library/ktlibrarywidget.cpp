@@ -19,11 +19,11 @@
  ***************************************************************************/
 
 #include "ktlibrarywidget.h"
-#include "ktapplication.h"
-#include "ktdebug.h"
-#include "ktoptionaldialog.h"
 
-#include "ktconfig.h"
+#include "dglobal.h"
+#include "ddebug.h"
+#include "doptionaldialog.h"
+#include "dconfig.h"
 
 #include <QGroupBox>
 #include <cstdlib>
@@ -52,24 +52,24 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
 	buttonLayout->setMargin(0);
 	buttonLayout->setSpacing(0);
 	
-	KTImageButton *addGC = new KTImageButton(QPixmap(KTOON_THEME_DIR+"/icons/plussign.png" ), 22, m_buttons);
+	DImageButton *addGC = new DImageButton(QPixmap(THEME_DIR+"/icons/plussign.png" ), 22, m_buttons);
 	connect(addGC, SIGNAL(clicked()), this, SIGNAL(requestCurrentGraphic()));
 	
 	buttonLayout->addWidget(addGC);
 	addGC->setToolTip(tr( "Add the current graphic to Library" ));
 	
-	KTImageButton *delGC = new KTImageButton(QPixmap(KTOON_THEME_DIR+"/icons/minussign.png" ), 22, m_buttons);
+	DImageButton *delGC = new DImageButton(QPixmap(THEME_DIR+"/icons/minussign.png" ), 22, m_buttons);
 	connect(delGC, SIGNAL(clicked()), this, SLOT(removeCurrentGraphic()));
 	
 	delGC->setToolTip(tr( "Remove the selected Symbol from Library" ));
 	buttonLayout->addWidget(delGC);
 	
-	KTImageButton *gctoDrawingArea = new KTImageButton(QPixmap(KTOON_THEME_DIR+"/icons/insert_cg.png" ), 22, m_buttons);
+	DImageButton *gctoDrawingArea = new DImageButton(QPixmap(THEME_DIR+"/icons/insert_cg.png" ), 22, m_buttons);
 	connect(gctoDrawingArea, SIGNAL(clicked()), this, SLOT(emitSelectedComponent()));
 	gctoDrawingArea->setToolTip(tr( "Inserts the selected symbol into the drawing area" ) );
 	buttonLayout->addWidget(gctoDrawingArea);
 	
-	KTImageButton *addFolderGC = new KTImageButton(QPixmap(KTOON_THEME_DIR+"/icons/addfolder.png" ), 22, m_buttons);
+	DImageButton *addFolderGC = new DImageButton(QPixmap(THEME_DIR+"/icons/addfolder.png" ), 22, m_buttons);
 	connect(addFolderGC, SIGNAL(clicked()), m_libraryTree, SLOT(createFolder()));
 	addFolderGC->setToolTip(tr( "Adds a folder to the symbol list" ));
 	buttonLayout->addWidget(addFolderGC);
@@ -83,7 +83,7 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
 
 void KTLibraryWidget::setup()
 {
-	QDir librariesDir(ktapp->configDir()+"/libraries");
+	QDir librariesDir(CONFIG_DIR+"/libraries");
 	
 	if ( librariesDir.exists() )
 	{
@@ -112,7 +112,7 @@ void KTLibraryWidget::setup()
 			}
 			else
 			{
-				ktError() << "Error while parse file: " << libFile.fileName();
+				dError() << "Error while parse file: " << libFile.fileName();
 			}
 		}
 	}
@@ -120,7 +120,7 @@ void KTLibraryWidget::setup()
 
 KTLibraryWidget::~KTLibraryWidget()
 {
-	KTEND;
+	DEND;
 
 	QList<QTreeWidgetItem *> folders = m_libraryTree->topLevelItems();
 	QList<QTreeWidgetItem *>::ConstIterator folderIterator = folders.begin();
@@ -136,9 +136,9 @@ KTLibraryWidget::~KTLibraryWidget()
 			root.appendChild( m_graphics[(*folderIterator)->child(index) ]->createXML(doc));
 		}
 		
-		QFile custom(ktapp->configDir()+"/libraries/"+(*folderIterator)->text(0)+".ktlbr");
+		QFile custom(CONFIG_DIR+"/libraries/"+(*folderIterator)->text(0)+".ktlbr");
 		
-		QDir brushesDir(ktapp->configDir()+"/libraries");
+		QDir brushesDir(CONFIG_DIR+"/libraries");
 		
 		if ( ! brushesDir.exists() )
 		{
@@ -157,7 +157,7 @@ KTLibraryWidget::~KTLibraryWidget()
 
 void KTLibraryWidget::addGraphic(const AGraphicComponent *graphic)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	
 	if ( m_libraryTree->currentFolder() )
 	{
@@ -188,7 +188,7 @@ void KTLibraryWidget::addFolder(const QString &name)
 
 void KTLibraryWidget::drawCurrentItem(QTreeWidgetItem *item, int)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	if ( item )
 	{
 		AGraphicComponent *gc = m_graphics[item];
@@ -215,21 +215,21 @@ void KTLibraryWidget::emitSelectedComponent()
 
 void KTLibraryWidget::removeCurrentGraphic()
 {
-	KTCONFIG->beginGroup("Library");
-	bool noAsk = qvariant_cast<bool>(KTCONFIG->value("RemoveWithoutAsk", false));
+	DCONFIG->beginGroup("Library");
+	bool noAsk = qvariant_cast<bool>(DCONFIG->value("RemoveWithoutAsk", false));
 	
 	if ( ! noAsk )
 	{
-		KTOptionalDialog dialog(tr("Do you want remove this component?"),tr("Remove?"), this);
+		DOptionalDialog dialog(tr("Do you want remove this component?"),tr("Remove?"), this);
 		
 		if( dialog.exec() == QDialog::Rejected )
 		{
 			return;
 		}
 		
-		KTCONFIG->setValue("RemoveWithoutAsk", dialog.shownAgain());
+		DCONFIG->setValue("RemoveWithoutAsk", dialog.shownAgain());
 		
-		KTCONFIG->sync();
+		DCONFIG->sync();
 	}
 	
 	AGraphicComponent *gc = m_graphics.take(m_libraryTree->currentItem());

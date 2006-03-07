@@ -36,7 +36,7 @@ extern "C"
 #include "crashhandler.h"
 #include "crashwidget.h"
 
-#include "ktdebug.h"
+#include "ddebug.h"
 
 CrashHandler *CrashHandler::m_instance = 0;
 
@@ -179,7 +179,7 @@ bool CrashHandler::containsSignalEntry(int signal)
 
 void CrashHandler::setConfig(const QString &filePath)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	SHOW_VAR(filePath);
 	QDomDocument doc;
 	QFile file(filePath);
@@ -239,7 +239,7 @@ static QString runCommand( const QString &command )
 	static const uint SIZE = 40960; //40 KiB
 	static char stdout[ SIZE ];
 	
-// 	ktDebug() << "Running: " << command;
+// 	dDebug() << "Running: " << command;
 	
 	FILE *process = ::popen( command.toLocal8Bit().data(), "r" );
 	stdout[ std::fread( (void*)stdout, sizeof(char), SIZE-1, process ) ] = '\0';

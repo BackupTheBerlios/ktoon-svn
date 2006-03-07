@@ -19,14 +19,14 @@
  ***************************************************************************/
 
 #include "apaintarea.h"
-#include "ktdebug.h"
+#include "ddebug.h"
 
 #include <QPalette>
 #include <QPainter>
 #include <QTimer>
 #include <cmath>
 #include <QBoxLayout>
-#include "ktgradientadjuster.h"
+#include "dgradientadjuster.h"
 
 #define BEGIN_PAINTER(var) switch(m_renderType) { case Image: \
 var.begin(IMAGE_DEVICE); break; \
@@ -41,7 +41,7 @@ APaintArea::APaintArea(const QSize& size, RenderType type, QWidget *parent) : QW
 	
 	m_renderType = type;
 	
-	KTINIT;
+	DINIT;
 	setAttribute(Qt::WA_StaticContents);
 // 	QBoxLayout *layout = new QBoxLayout( QBoxLayout::LeftToRight, this);
 	
@@ -88,7 +88,7 @@ APaintArea::APaintArea(const QSize& size, RenderType type, QWidget *parent) : QW
 
 APaintArea::~APaintArea()
 {
-	KTEND;
+	DEND;
 	if ( m_currentBrush ) delete m_currentBrush;
 }
 
@@ -152,7 +152,7 @@ void APaintArea::paintEvent(QPaintEvent *e)
 
 void APaintArea::setKeyFrame(int index)
 {
-	ktDebug() << "APaintArea::setKeyFrame(" << index << ")";
+	dDebug() << "APaintArea::setKeyFrame(" << index << ")";
 	if ( m_layer )
 	{
 		if ( index >= 0 && index < m_layer->frames().count() )
@@ -166,7 +166,7 @@ void APaintArea::setKeyFrame(int index)
 			}
 			else
 			{
-				ktFatal() << "Frame not exists!!!";
+				dFatal() << "Frame not exists!!!";
 			}
 		}
 	}
@@ -174,7 +174,7 @@ void APaintArea::setKeyFrame(int index)
 
 void APaintArea::setLayer(int index)
 {
-	ktDebug( ) << "APaintArea::setLayer(" << index << ")";
+	dDebug( ) << "APaintArea::setLayer(" << index << ")";
 	if ( m_scene )
 	{
 		if ( index >= 0 && index < m_scene->layers().count() )
@@ -187,7 +187,7 @@ void APaintArea::setLayer(int index)
 			}
 			else
 			{
-				ktFatal() << "Layer not exists!!!";
+				dFatal() << "Layer not exists!!!";
 			}
 		}
 	}
@@ -203,14 +203,14 @@ void APaintArea::setScene(KTScene *scene)
 	}
 	else
 	{
-		ktFatal() << "Layer not exists!!!";
+		dFatal() << "Layer not exists!!!";
 	}
 	
 }
 
 void APaintArea::draw(QPainter *painter)
 {
-// 	KT_FUNCINFO;
+// 	D_FUNCINFO;
 	Layers layers = m_scene->layers();
 	Layers::iterator layerIterator = layers.begin();
 	
@@ -267,7 +267,7 @@ void APaintArea::draw(QPainter *painter)
 
 void APaintArea::drawFrame(const KTKeyFrame *frame, QPainter *painter, float intensitive)
 {
-// 	KT_FUNCINFO;
+// 	D_FUNCINFO;
 	if ( frame  )
 	{
 		QList<AGraphicComponent *> componentList = frame->components();
@@ -318,7 +318,7 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter
 		}
 		else if ( intensitive > 1 && intensitive < 0)
 		{
-			ktWarning() << "Intensitive must be lesser than 1 - No effect";
+			dWarning() << "Intensitive must be lesser than 1 - No effect";
 		}
 		
 		painter->setPen(pen);
@@ -489,7 +489,7 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 				
 				if(!toSelect)
 				{
-// 					ktDebug() << "no selecionado";
+// 					dDebug() << "no selecionado";
 					m_currentFrame->clearSelections();
 				}
 				else if ( e->modifiers() & Qt::ControlModifier )
@@ -580,10 +580,10 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 				
 				if ( m_currentGraphic->isValid() && m_currentTool->isComplete() )
 				{
-					ktDebug() << "Adding component";
+					dDebug() << "Adding component";
 					
 					m_currentFrame->addComponent(  m_currentGraphic );
-					ktDebug() << "Components count: " << m_currentFrame->components().count();
+					dDebug() << "Components count: " << m_currentFrame->components().count();
 					m_undoComponents.clear();
 				}
 			}
@@ -733,7 +733,7 @@ void APaintArea::cut()
 
 void APaintArea::group()
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	if(m_currentFrame->selectedComponents().count() > 1)
 	{
 		AGraphicComponent *newComponent = new AGraphicComponent();
@@ -754,7 +754,7 @@ void APaintArea::group()
 
 void APaintArea::ungroup()
 {
-	ktDebug() << "void APaintArea::ungroup()" ;
+	dDebug() << "void APaintArea::ungroup()" ;
 	if(m_currentFrame->selectedComponents().count() > 0)
 	{
 		foreach(AGraphicComponent *component, m_currentFrame->selectedComponents())

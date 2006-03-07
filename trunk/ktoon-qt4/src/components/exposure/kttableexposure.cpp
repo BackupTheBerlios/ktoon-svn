@@ -24,12 +24,12 @@
 #include <QLayout>
 #include <QLabel>
 #include <QBoxLayout>
-#include "ktdebug.h"
+#include "ddebug.h"
 
 KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent)
 	: QScrollArea(parent),m_numLayer(0), m_currentLayer(0), m_currentFrame(0)
 {
-	KTINIT;
+	DINIT;
 	setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOn);
 	
 	m_port = new QWidget(this);
@@ -44,7 +44,7 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent)
 
 KTTableExposure::~KTTableExposure()
 {
-	KTEND;
+	DEND;
 }
 
 void KTTableExposure::createMenuRight()
@@ -137,7 +137,7 @@ void KTTableExposure::changeCurrentLayer(int idLayer)
 
 void KTTableExposure::setUseFrame(int idLayer, const QString& name, bool addedToEnd)
 {
-	ktDebug() << "ID LAYER: " << idLayer << endl;
+	dDebug() << "ID LAYER: " << idLayer << endl;
 	m_layers.at(idLayer)->setUseFrames(name, addedToEnd);
 }
 
@@ -181,7 +181,7 @@ void KTTableExposure::moveCurrentFrame(Direction dir)
 
 void KTTableExposure::moveCurrentLayer(Direction dir)
 {
-	ktDebug() << "KTTableExposure::moveCurrentLayer(Direction" << dir << ")";
+	dDebug() << "KTTableExposure::moveCurrentLayer(Direction" << dir << ")";
 	int pos = m_layout->indexOf ( m_layers[m_currentLayer]);
 	if(dir == Left)
 	{
@@ -222,7 +222,7 @@ void KTTableExposure::lockCurrentFrame()
 
 void KTTableExposure::removeCurrentLayer() 
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	if ( m_layers.count() > 0 && m_currentLayer >= 0 )
 	{
 		KTLayerExposure * ly = m_layers.takeAt(m_currentLayer);
@@ -259,7 +259,7 @@ void KTTableExposure::setCurrentCell(int idLayer, int idFrame)
 
 void KTTableExposure::setLayer(int index)
 {
-	ktDebug() << "KTTableExposure::setLayer(int" << index << ")"  << m_currentLayer;
+	dDebug() << "KTTableExposure::setLayer(int" << index << ")"  << m_currentLayer;
 	if(index == m_currentLayer)
 	{
 		return;
@@ -280,7 +280,7 @@ void KTTableExposure::setFrameName(int indexLayer, int indexFrame, const QString
 
 void KTTableExposure::removeLayer(int idLayer)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	SHOW_VAR(idLayer);
 	
 	if ( m_layers.count() > 0 && idLayer >= 0 )

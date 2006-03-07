@@ -23,7 +23,7 @@
 #include <QLabel>
 #include <QTextBrowser>
 
-#include "ktdebug.h"
+#include "ddebug.h"
 
 KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent)
 {

@@ -19,9 +19,9 @@
  ***************************************************************************/
 
 #include "ktprojectparser.h"
-#include "ktdebug.h"
+#include "ddebug.h"
 
-#include "ktpathadjuster.h"
+#include "dpathadjuster.h"
 
 KTProjectParser::KTProjectParser() : QXmlDefaultHandler(), m_gradient(0), m_currentComponent(0), m_rootComponent(0), m_tagCounter(0)
 {
@@ -167,7 +167,7 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 				break;
 				default:
 				{
-					ktFatal() << "No gradient type: " << type;
+					dFatal() << "No gradient type: " << type;
 				}
 				break;
 			}
@@ -210,7 +210,7 @@ bool KTProjectParser::endElement(const QString&, const QString& , const QString&
 		}
 		else if ( qname == "Graphic" )
 		{
-			m_graphics[m_graphics.count()-1]->path = KTPathAdjuster::buildPath( m_polygons, ':');
+			m_graphics[m_graphics.count()-1]->path = DPathAdjuster::buildPath( m_polygons, ':');
 			m_graphics[m_graphics.count()-1]->pen = m_pen;
 			m_graphics[m_graphics.count()-1]->brush = m_brush;
 		}
@@ -273,14 +273,14 @@ bool KTProjectParser::endElement(const QString&, const QString& , const QString&
 
 bool KTProjectParser::error ( const QXmlParseException & exception )
 {
-	ktError() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	dError() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
 	return true;
 }
 
 
 bool KTProjectParser::fatalError ( const QXmlParseException & exception )
 {
-	ktFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	dFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
 	
 	return true;
 }

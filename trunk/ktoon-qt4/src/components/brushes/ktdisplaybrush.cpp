@@ -21,11 +21,11 @@
 #include "ktdisplaybrush.h"
 #include <QPainter>
 #include <QPainterPath>
-#include "ktdebug.h"
+#include "ddebug.h"
 
 #include <QVBoxLayout>
 
-KTDisplayBrush::KTDisplayBrush(QWidget *parent) : KTDisplayPath(parent)
+KTDisplayBrush::KTDisplayBrush(QWidget *parent) : DDisplayPath(parent)
 {
 }
 

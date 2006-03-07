@@ -29,12 +29,10 @@
 #include <QResizeEvent>
 #include <QCloseEvent>
 
-#include "ktactionmanager.h"
+#include "dactionmanager.h"
 #include "ktviewdocument.h"
 
 #include "ktworkspace.h"
-
-#include "ktfiledialog.h"
 
 #include "ktexposuresheet.h"
 #include "kinaswidget.h"
@@ -63,7 +61,6 @@
 
 // Projects
 #include "ktprojectmanager.h"
-
 #include "ktsplash.h"
 
 #include "config.h"
@@ -76,7 +73,7 @@ class KTMainWindow : public DMainWindow
 {
 	Q_OBJECT
 	public:
-		KTMainWindow(KTSplash *splash);
+		KTMainWindow(KTSplash *splash = 0);
 		~KTMainWindow();
 		virtual void setPalette(const QPalette &);
 		
@@ -194,7 +191,7 @@ class KTMainWindow : public DMainWindow
 		KTWorkspace *m_drawingSpace;
 		KTWorkspace *m_animationSpace;
 		KTStatusBar *m_statusBar;
-		KTActionManager *m_actionManager;
+		DActionManager *m_actionManager;
 		QMenu *m_fileMenu,*m_settingsMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
 		
 		KTOsd *m_osd;

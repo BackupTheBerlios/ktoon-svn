@@ -28,10 +28,10 @@
 
 #include <QMouseEvent>
 
-#include "ktelabel.h"
-#include "ktvhbox.h"
+#include "delabel.h"
+#include "dvhbox.h"
 
-#include "ktwidgetlistview.h"
+#include "dwidgetlistview.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -74,10 +74,10 @@ class KTTimeLineLayer : public QFrame
 		
 	private:
 		QCheckBox *m_onlyOutlines;
-		KTELabel *m_layerName;
+		DELabel *m_layerName;
 		QLabel *m_editionImage, *m_visibilityImage, *m_lockImage;
 		
-		KTVHBox *m_utils;
+		DVHBox *m_utils;
 		
 		bool m_isLocked, m_isVisible, m_onlySeeOutlines, m_isSelected, m_isEdited;
 };

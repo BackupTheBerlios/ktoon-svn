@@ -41,7 +41,7 @@ class AEraserTool : public KTToolPluginObject, public AToolInterface
 		virtual QRect release(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &pos);
 		virtual QPainterPath path() const;
 
-		virtual QHash<QString, KTAction *>actions();
+		virtual QHash<QString, DAction *>actions();
 		
 		virtual int type() const;
 		

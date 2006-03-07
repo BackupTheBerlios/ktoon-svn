@@ -19,8 +19,8 @@
  ***************************************************************************/
  
 #include "ktlibraryparser.h"
-#include "ktdebug.h"
-#include "ktpathadjuster.h"
+#include "ddebug.h"
+#include "dpathadjuster.h"
 
 KTLibraryParser::KTLibraryParser()
 	: QXmlDefaultHandler(), m_gradient(0), m_tagCounter(0)
@@ -48,20 +48,22 @@ bool KTLibraryParser::startElement( const QString& , const QString& , const QStr
 	{
 		if ( qname == "Component" )
 		{
+			QString objName = atts.value("name");
+			if ( !(objName.isEmpty() || objName.isNull()) )
+			{
+				m_objectName = objName;
+			}
+			
 			if ( m_tagCounter == 0 )
 			{
 				AGraphicComponent *rootComponent = new AGraphicComponent;
+				rootComponent->setComponentName( m_objectName);
 				m_components << rootComponent;
 			}
 			
 			qDeleteAll(m_graphics.begin(), m_graphics.end());
 			m_graphics.clear();
 			
-			QString objName = atts.value("name");
-			if ( !(objName.isEmpty() || objName.isNull()) )
-			{
-				m_objectName = objName;
-			}
 			m_tagCounter++;
 		}
 		else if ( qname == "Graphic" )
@@ -129,7 +131,7 @@ bool KTLibraryParser::startElement( const QString& , const QString& , const QStr
 				break;
 				default:
 				{
-					ktFatal() << "No gradient type: " << type;
+					dFatal() << "No gradient type: " << type;
 				}
 				break;
 			}
@@ -155,7 +157,7 @@ bool KTLibraryParser::endElement(const QString&, const QString& , const QString&
 	{
 		if ( qname == "Graphic" )
 		{
-			m_graphics[m_graphics.count()-1]->path = KTPathAdjuster::buildPath( m_tmpPolygons, ':');
+			m_graphics[m_graphics.count()-1]->path = DPathAdjuster::buildPath( m_tmpPolygons, ':');
 			m_graphics[m_graphics.count()-1]->pen = m_pen;
 			m_graphics[m_graphics.count()-1]->brush = m_brush;
 		}
@@ -177,9 +179,9 @@ bool KTLibraryParser::endElement(const QString&, const QString& , const QString&
 				}
 				
 				m_components.last()->addChild(child);
+				
+				m_objectName = QString();
 			}
-			
-			m_objectName = QString();
 		}
 		else if ( qname == "Brush")
 		{
@@ -213,7 +215,7 @@ bool KTLibraryParser::endElement(const QString&, const QString& , const QString&
 
 bool KTLibraryParser::error ( const QXmlParseException & exception )
 {
-	ktError() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	dError() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
 	
 	return true;
 }
@@ -221,7 +223,7 @@ bool KTLibraryParser::error ( const QXmlParseException & exception )
 
 bool KTLibraryParser::fatalError ( const QXmlParseException & exception )
 {
-	ktFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	dFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
 	
 	return true;
 }

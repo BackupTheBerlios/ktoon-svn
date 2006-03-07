@@ -22,8 +22,8 @@
 
 #include <QKeySequence>
 
-#include "ktapplication.h"
-#include "ktdebug.h"
+#include "dglobal.h"
+#include "ddebug.h"
 
 QStringList ASelectionPlugin::keys() const
 {
@@ -90,7 +90,7 @@ QRect ASelectionPlugin::press(const QString &brush, QPainter &painter, const QPa
 					
 					if(m_selectPoint)
 					{
-						ktDebug() << m_node.polygonPos;
+						dDebug() << m_node.polygonPos;
 						break;
 					}
 					m_node.polygonPos++;
@@ -207,14 +207,14 @@ QPainterPath ASelectionPlugin::path() const
 	return m_path;
 }
 
-QHash<QString, KTAction *> ASelectionPlugin::actions()
+QHash<QString, DAction *> ASelectionPlugin::actions()
 {
-	QHash<QString, KTAction *> hash;
+	QHash<QString, DAction *> hash;
 	
-	KTAction *act = new KTAction(QPixmap(KTOON_THEME_DIR+"/icons/selection.png"), tr("Selection"), this);
+	DAction *act = new DAction(QPixmap(THEME_DIR+"/icons/selection.png"), tr("Selection"), this);
 	hash.insert( tr("Selection"), act );
 	
-	act = new KTAction(QPixmap(KTOON_THEME_DIR+"/icons/nodes.png"), tr("Contour"), this);
+	act = new DAction(QPixmap(THEME_DIR+"/icons/nodes.png"), tr("Contour"), this);
 	hash.insert( tr("Contour"), act );
 	
 	

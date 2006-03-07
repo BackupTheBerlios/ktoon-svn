@@ -19,17 +19,17 @@
  ***************************************************************************/
 
 #include "ktbrush.h"
-#include <ktdebug.h>
+#include <ddebug.h>
 
 KTBrush::KTBrush(): KTSerializableObject()
 {
-	KTINIT;
+	DINIT;
 	setup();
 }
 
 KTBrush::KTBrush(const QPainterPath &brushForm) : KTSerializableObject(), m_brushForm(brushForm)
 {
-	KTINIT;
+	DINIT;
 	setup();
 }
 
@@ -41,7 +41,7 @@ KTBrush::KTBrush(const KTBrush &toCopy) : KTSerializableObject(), m_brushForm(to
 
 KTBrush::~KTBrush()
 {
-	KTEND;
+	DEND;
 }
 
 void KTBrush::setup()

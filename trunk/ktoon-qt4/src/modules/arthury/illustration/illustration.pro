@@ -3,6 +3,20 @@
 # Subdir relative project main directory: ./src/modules/arthury/illustration
 # Target is a library:  
 
+QT += xml opengl 
+KDEV_QTVER = 4 
+INCLUDEPATH += ../../../../src/modules/arthury/interfaces \
+               ../../../../src/store \
+               ../../../../src/ktoonlib \
+               ../../../../src/dlib/dgui \
+               ../../../../src/dlib/dcore 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+CONFIG += release \
+          warn_on \
+          staticlib 
+TEMPLATE = lib 
 HEADERS += apaintarea.h \
            agrid.h \
            aimagedevicewidget.h \
@@ -11,15 +25,3 @@ SOURCES += apaintarea.cpp \
            agrid.cpp \
            aimagedevicewidget.cpp \
            agldevice.cpp 
-QT += xml opengl
-KDEV_QTVER = 4
-INCLUDEPATH += ../../../../src/modules/arthury/interfaces \
-../../../../src/store \
-../../../../src/lib
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-CONFIG += release \
-warn_on \
-staticlib
-TEMPLATE = lib

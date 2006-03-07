@@ -3,24 +3,32 @@
 # Subdir relative project main directory: ./src/modules/arthury/plugins/tools/atexttoolplugin
 # Target is a library:  
 
+QT += xml 
 INSTALLS += target 
 target.path = /plugins/ 
-HEADERS += atexttool.h \
-           textconfigurator.h 
-SOURCES += atexttool.cpp \
-           textconfigurator.cpp 
-QT += xml 
 KDEV_QTVER = 4 
 TARGETDEPS += ../../../../../../src/store/libstore.so \
-              ../../../../../../src/lib/libktoon.so 
+              ../../../../../../src/ktoonlib/libktoonlib.so \
+              ../../../../../../src/dlib/dgui/libdgui.so \
+              ../../../../../../src/dlib/dcore/libdcore.so 
 LIBS += -lstore \
-        -lktoon 
+        -lktoonlib \
+        -ldgui \
+        -ldcore 
 INCLUDEPATH += ../../../../../../src/modules/arthury/interfaces \
                ../../../../../../src/store \
-               ../../../../../../src/lib 
+               ../../../../../../src/ktoonlib \
+               ../../../../../../src/dlib/dgui \
+               ../../../../../../src/dlib/dcore 
 QMAKE_LIBDIR = ../../../../../../src/store \
-               ../../../../../../src/lib 
+               ../../../../../../src/ktoonlib \
+               ../../../../../../src/dlib/dgui \
+               ../../../../../../src/dlib/dcore 
 CONFIG += release \
           warn_on \
           plugin 
 TEMPLATE = lib 
+HEADERS += atexttool.h \
+           textconfigurator.h 
+SOURCES += atexttool.cpp \
+           textconfigurator.cpp 

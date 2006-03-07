@@ -14,18 +14,18 @@
 #include <qfile.h>
 #include <qmap.h>
 
-#include "ktdebug.h"
+#include "ddebug.h"
 
 #include <QLocale>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QHeaderView>
 
-#include "ktapplication.h"
+#include "dglobal.h"
 
 KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidgetBase(parent)
 {
-	setWindowIcon(QPixmap(KTOON_THEME_DIR+"/icons/help.png"));
+	setWindowIcon(QPixmap(THEME_DIR+"/icons/help.png"));
 	if (QString(QLocale::system().name()).length() > 1 )
 	{
 		m_helpPath = path+"/"+QString(QLocale::system().name()).left(2);
@@ -50,7 +50,7 @@ KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidge
 	QDomDocument document;
 	QFile file( m_helpPath.path()+"/help.xml" );
 	
-	ktDebug() << "Help path: " << m_helpPath.path();
+	dDebug() << "Help path: " << m_helpPath.path();
 	if ( file.open( QIODevice::ReadOnly ) )
 	{
 		if ( document.setContent(&file) )
@@ -121,7 +121,7 @@ void KTHelpWidget::tryToLoadPage(QTreeWidgetItem *item, int)
 
 void KTHelpWidget::loadPage(const QString &title, const QString &filePath)
 {
-	ktDebug() << "Loading: "+filePath;
+	dDebug() << "Loading: "+filePath;
 /*	
 	QFile file(filePath);
 	QFileInfo finfo(file);

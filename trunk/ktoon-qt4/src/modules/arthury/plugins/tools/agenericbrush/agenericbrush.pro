@@ -3,30 +3,40 @@
 # Subdir relative project main directory: ./src/modules/arthury/plugins/tools/agenericbrush
 # Target is a library:  
 
-INSTALLS += agenericbrush 
+QT += xml 
+INSTALLS += agenericbrush \
+            target 
+target.path = /plugins/ 
 agenericbrush.files += *.so 
 agenericbrush.path = /plugins/ 
+KDEV_QTVER = 4 
+TARGETDEPS += ../../../../../../src/store/libstore.so \
+              ../../../../../../src/modules/arthury/interfaces/libinterfaces.a \
+              ../../../../../../src/ktoonlib/libktoonlib.so \
+              ../../../../../../src/dlib/dgui/libdgui.so \
+              ../../../../../../src/dlib/dcore/libdcore.so 
+LIBS += -lstore \
+        ../../../../../../src/modules/arthury/interfaces/libinterfaces.a \
+        -lktoonlib \
+        -ldgui \
+        -ldcore 
+INCLUDEPATH += ../../../../../../src/modules/arthury/interfaces \
+               ../../../../../../src/store \
+               ../../../../../../src/ktoonlib \
+               ../../../../../../src/dlib/dgui \
+               ../../../../../../src/dlib/dcore 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+QMAKE_LIBDIR = ../../../../../../src/store \
+               ../../../../../../src/ktoonlib \
+               ../../../../../../src/dlib/dgui \
+               ../../../../../../src/dlib/dcore 
+CONFIG += release \
+          warn_on \
+          plugin 
+TEMPLATE = lib 
 HEADERS += agenericbrush.h \
            exactnessconfigurator.h 
 SOURCES += agenericbrush.cpp \
            exactnessconfigurator.cpp 
-QT += xml gui
-KDEV_QTVER = 4
-TARGETDEPS += ../../../../../../src/lib/libktoon.so \
-../../../../../../src/store/libstore.so \
-../../../../../../src/modules/arthury/interfaces/libinterfaces.a
-LIBS += -lktoon \
--lstore \
-../../../../../../src/modules/arthury/interfaces/libinterfaces.a
-INCLUDEPATH += ../../../../../../src/modules/arthury/interfaces \
-../../../../../../src/store \
-../../../../../../src/lib
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-QMAKE_LIBDIR = ../../../../../../src/lib \
-../../../../../../src/store
-CONFIG += release \
-warn_on \
-plugin
-TEMPLATE = lib

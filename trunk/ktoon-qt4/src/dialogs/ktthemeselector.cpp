@@ -30,14 +30,13 @@
 #include <QCheckBox>
 
 // KToon
-#include "ktapplication.h"
-#include "ktfiledialog.h"
+#include "dglobal.h"
 
-#include "ktdebug.h"
+#include "ddebug.h"
 #include "kseparator.h"
-#include "ktcolorbutton.h"
+#include "dcolorbutton.h"
 
-KTThemeSelector::KTThemeSelector(QWidget *parent) : KTVHBox(parent, Qt::Vertical)
+KTThemeSelector::KTThemeSelector(QWidget *parent) : DVHBox(parent, Qt::Vertical)
 {
 	setupChooseColor();
 	loadSchemes();
@@ -50,8 +49,8 @@ KTThemeSelector::~KTThemeSelector()
 
 void KTThemeSelector::setupChooseColor()
 {
-	KTVHBox *hbox = new KTVHBox(this, Qt::Horizontal);
-	KTVHBox *box1 = new KTVHBox(hbox, Qt::Vertical);
+	DVHBox *hbox = new DVHBox(this, Qt::Horizontal);
+	DVHBox *box1 = new DVHBox(hbox, Qt::Vertical);
 	box1->boxLayout()->setMargin(10);
 	m_general = new QGroupBox(tr("General"), box1);
 	
@@ -69,7 +68,7 @@ void KTThemeSelector::setupChooseColor()
 	for(uint i = 0; i < labels1.count(); i++)
 	{
 		layout1->addWidget(new QLabel(labels1[i], m_general), i, 0 );
-		KTColorButton *button = new KTColorButton(m_general);
+		DColorButton *button = new DColorButton(m_general);
 		button->setObjectName(names[i]);
 		QPalette pal = button->palette();
 		pal.setColor(QPalette::Button, colors[i]);
@@ -93,7 +92,7 @@ void KTThemeSelector::setupChooseColor()
 	for(uint i = 0; i < labels2.count(); i++)
 	{
 		layout2->addWidget(new QLabel(labels2[i], m_effects), i, 0 );
-		KTColorButton *button = new KTColorButton(m_effects);
+		DColorButton *button = new DColorButton(m_effects);
 		button->setObjectName(names2[i]);
 		QPalette pal = button->palette();
 		pal.setColor(QPalette::Button, colors[i]);
@@ -104,7 +103,7 @@ void KTThemeSelector::setupChooseColor()
 	}
 	////////////
 	
-	KTVHBox *box2 = new KTVHBox(hbox, Qt::Vertical);
+	DVHBox *box2 = new DVHBox(hbox, Qt::Vertical);
 	box2->boxLayout()->setMargin(10);
 	m_selections = new QGroupBox(tr("Selections"), box2);
 	
@@ -118,7 +117,7 @@ void KTThemeSelector::setupChooseColor()
 	for(uint i = 0; i < labels3.count(); i++)
 	{
 		layout3->addWidget(new QLabel(labels3[i], m_selections), i, 0 );
-		KTColorButton *button = new KTColorButton(m_selections);
+		DColorButton *button = new DColorButton(m_selections);
 		button->setObjectName(names3[i]);
 		QPalette pal = button->palette();
 		pal.setColor(QPalette::Button, colors[i]);
@@ -140,7 +139,7 @@ void KTThemeSelector::setupChooseColor()
 	for(uint i = 0; i < labels4.count(); i++)
 	{
 		layout4->addWidget(new QLabel(labels4[i], m_textEffects), i, 0 );
-		KTColorButton *button = new KTColorButton(m_textEffects);
+		DColorButton *button = new DColorButton(m_textEffects);
 		button->setObjectName(names4[i]);
 		QPalette pal = button->palette();
 		pal.setColor(QPalette::Button, colors[i]);
@@ -179,7 +178,7 @@ void KTThemeSelector::setupChooseColor()
 
 void KTThemeSelector::chooseGeneralColor(QAbstractButton *  button)
 {
-	QColor c = qobject_cast<KTColorButton *>(button)->color();
+	QColor c = qobject_cast<DColorButton *>(button)->color();
 	QPalette pal = button->palette();
 	pal.setColor(QPalette::Button, c);
 	button->setPalette(pal);
@@ -189,7 +188,7 @@ void KTThemeSelector::chooseGeneralColor(QAbstractButton *  button)
 
 void KTThemeSelector::chooseEffectsColor(QAbstractButton *  button)
 {
-	QColor c = qobject_cast<KTColorButton *>(button)->color();
+	QColor c = qobject_cast<DColorButton *>(button)->color();
 	QPalette pal = button->palette();
 	pal.setColor(QPalette::Button, c);
 	button->setPalette(pal);
@@ -198,7 +197,7 @@ void KTThemeSelector::chooseEffectsColor(QAbstractButton *  button)
 
 void KTThemeSelector::chooseSelectionsColor(QAbstractButton *  button)
 {
-	QColor c = qobject_cast<KTColorButton *>(button)->color();
+	QColor c = qobject_cast<DColorButton *>(button)->color();
 	QPalette pal = button->palette();
 	pal.setColor(QPalette::Button, c);
 	button->setPalette(pal);
@@ -208,7 +207,7 @@ void KTThemeSelector::chooseSelectionsColor(QAbstractButton *  button)
 
 void KTThemeSelector::chooseTextEffectsColor(QAbstractButton *  button)
 {
-	QColor c = qobject_cast<KTColorButton *>(button)->color();
+	QColor c = qobject_cast<DColorButton *>(button)->color();
 	QPalette pal = button->palette();
 	pal.setColor(QPalette::Button, c);
 	button->setPalette(pal);
@@ -217,9 +216,9 @@ void KTThemeSelector::chooseTextEffectsColor(QAbstractButton *  button)
 
 }
 
-KTThemeDocument KTThemeSelector::document()
+DThemeDocument KTThemeSelector::document()
 {
-	KTThemeDocument doc;
+	DThemeDocument doc;
 	
 	doc.addGeneralSection( m_generalSection);
 	doc.addEffectsSection(m_effectsSection);
@@ -231,7 +230,7 @@ KTThemeDocument KTThemeSelector::document()
 
 void KTThemeSelector::loadSchemes()
 {
-	QDir themeDir(ktapp->configDir()+"/themes");
+	QDir themeDir(CONFIG_DIR+"/themes");
 	
 	if ( themeDir.exists() )
 	{
@@ -256,29 +255,29 @@ bool KTThemeSelector::iWantApplyColors()
 
 void KTThemeSelector::saveSchema()
 {
-	QDir themeDir(ktapp->configDir()+"/themes");
-	if ( ! themeDir.exists() )
-	{
-		themeDir.mkdir(themeDir.path());
-	}
-	
-	KTFileDialog saveDialog(KTFileDialog::Themes, this);
-	
-	if ( saveDialog.exec() == QDialog::Rejected )
-	{
-		return;
-	}
-	
-	QFile file(themeDir.path()+"/"+saveDialog.fileName());
-	
-	if (file.open(QIODevice::WriteOnly ) )
-	{
-		QTextStream stream( &file );
-		stream << document().toString() << endl;
-		file.close();
-		m_lastFile = themeDir.path()+"/"+saveDialog.fileName();
-	}
-	loadSchemes();
+// 	QDir themeDir(CONFIG_DIR+"/themes");
+// 	if ( ! themeDir.exists() )
+// 	{
+// 		themeDir.mkdir(themeDir.path());
+// 	}
+// 	
+// 	KTFileDialog saveDialog(KTFileDialog::Themes, this);
+// 	
+// 	if ( saveDialog.exec() == QDialog::Rejected )
+// 	{
+// 		return;
+// 	}
+// 	
+// 	QFile file(themeDir.path()+"/"+saveDialog.fileName());
+// 	
+// 	if (file.open(QIODevice::WriteOnly ) )
+// 	{
+// 		QTextStream stream( &file );
+// 		stream << document().toString() << endl;
+// 		file.close();
+// 		m_lastFile = themeDir.path()+"/"+saveDialog.fileName();
+// 	}
+// 	loadSchemes();
 }
 
 QString KTThemeSelector::lastFile()
@@ -290,15 +289,15 @@ void KTThemeSelector::loadSchemaFromListView(QTreeWidgetItem *item, int /*column
 {
 	if ( item )
 	{
-		ktapp->applyTheme(ktapp->configDir()+"/themes/"+item->text(0));
+		dApp->applyTheme(CONFIG_DIR+"/themes/"+item->text(0));
 		
 		if ( ! item->text(0).isEmpty() )
 		{
-			KT_FUNCINFO;
-			KTCONFIG->beginGroup("General");
-			KTCONFIG->setValue( "ThemeFile", ktapp->configDir()+"/themes/"+item->text(0) );
+			D_FUNCINFO;
+			DCONFIG->beginGroup("General");
+			DCONFIG->setValue( "ThemeFile", CONFIG_DIR+"/themes/"+item->text(0) );
 			
-			m_lastFile = ktapp->configDir()+"/themes/"+item->text(0);
+			m_lastFile = CONFIG_DIR+"/themes/"+item->text(0);
 		}
 	}
 }

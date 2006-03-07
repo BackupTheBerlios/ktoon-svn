@@ -25,7 +25,7 @@
 #include <QPaintEvent>
 #include <QVector>
 
-#include "ktdebug.h"
+#include "ddebug.h"
 
 
 class KTBrushEditor::Editor
@@ -69,7 +69,7 @@ class KTBrushEditor::Editor
 		int editedPointIndex;
 };
 
-KTBrushEditor::KTBrushEditor(QWidget *parent) : KTDisplayPath(parent), m_editor(0)
+KTBrushEditor::KTBrushEditor(QWidget *parent) : DDisplayPath(parent), m_editor(0)
 {
 	setMouseTracking(true);
 	
@@ -108,7 +108,7 @@ void KTBrushEditor::paintEvent(QPaintEvent *e)
 	}
 	else
 	{
-		KTDisplayPath::paintEvent(e);
+		DDisplayPath::paintEvent(e);
 	}
 }
 
@@ -236,6 +236,6 @@ QPainterPath KTBrushEditor::currentPainterPath()
 		matrix.translate(-position.x(),-position.y());	
 		return matrix.map(path);
 	}
-	return KTDisplayPath::currentPainterPath();
+	return DDisplayPath::currentPainterPath();
 }
 

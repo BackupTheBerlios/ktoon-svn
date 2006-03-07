@@ -26,8 +26,8 @@
 
 #include <QVBoxLayout>
 
-#include "ktapplication.h"
-#include "ktdebug.h"
+#include "dapplication.h"
+#include "ddebug.h"
 
 //--------------- CONSTRUCTOR --------------------
 
@@ -44,7 +44,7 @@ ESLayer::ESLayer( const QString &initial_text, QWidget *parent  )
 	m_visibilityButton->setChecked(true);
 	
 	connect(m_visibilityButton, SIGNAL(clicked()), this, SLOT(visibilityClick()));
-	m_visibilityButton->setIcon(QPixmap(KTOON_THEME_DIR+"/icons/show_hide_all_layers.png" ));
+	m_visibilityButton->setIcon(QPixmap(THEME_DIR+"/icons/show_hide_all_layers.png" ));
 	
 	QPalette pal = palette();
 	pal.setColor(QPalette::Button, Qt::green );
@@ -174,7 +174,7 @@ void ESLayer::resizeEvent ( QResizeEvent *  )
 
 void ESLayer::visibilityClick()
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	QPalette pal = palette();
 	
 	bool isVisible = m_visibilityButton->isChecked();

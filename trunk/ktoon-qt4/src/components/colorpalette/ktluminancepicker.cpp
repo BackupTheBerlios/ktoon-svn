@@ -3,7 +3,7 @@
 
 #include <QPainter>
 #include <qdrawutil.h>
-#include "ktdebug.h"
+#include "ddebug.h"
 int KTLuminancePicker::y2val(int y)
 {
 	int d = height() - 2*coff - 1;
@@ -28,7 +28,7 @@ KTLuminancePicker::KTLuminancePicker(QWidget* parent)
 KTLuminancePicker::~KTLuminancePicker()
 {
 	delete pix;
-	KTEND;
+	DEND;
 }
 
 void KTLuminancePicker::mouseMoveEvent(QMouseEvent *m)

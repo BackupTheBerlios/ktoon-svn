@@ -26,9 +26,9 @@
 #include <QPaintDevice>
 
 
-#include "ktapplication.h"
-#include "ktgradientadjuster.h"
-#include "ktdebug.h"
+#include "dglobal.h"
+#include "dgradientadjuster.h"
+#include "ddebug.h"
 
 QStringList AGeometricToolPlugin::keys() const
 {
@@ -112,7 +112,7 @@ QRect AGeometricToolPlugin::release(const QString &  brush ,QPainter &  painter 
 	
 	if ( painter.brush().gradient() )
 	{
-		painter.setBrush(KTGradientAdjuster::adjustGradient(painter.brush().gradient(), rect));
+		painter.setBrush(DGradientAdjuster::adjustGradient(painter.brush().gradient(), rect));
 	}
 	
 	painter.drawPath(m_path);
@@ -126,24 +126,24 @@ QPainterPath AGeometricToolPlugin::path() const
 	return m_path;
 }
 
-QHash<QString, KTAction *> AGeometricToolPlugin::actions()
+QHash<QString, DAction *> AGeometricToolPlugin::actions()
 {
-	QHash<QString, KTAction *> hash;
+	QHash<QString, DAction *> hash;
 	
-	KTAction *action1 = new KTAction( QIcon(KTOON_THEME_DIR+"/icons/square.png"), tr("Rectangle"), this);
+	DAction *action1 = new DAction( QIcon(THEME_DIR+"/icons/square.png"), tr("Rectangle"), this);
 // 	circle->setShortcut( QKeySequence(tr("R")) );
-	action1->setCursor( QCursor(KTOON_THEME_DIR+"/cursors/square.png") );
+	action1->setCursor( QCursor(THEME_DIR+"/cursors/square.png") );
 	
 	hash.insert( tr("Rectangle"), action1 );
 	
-	KTAction *action2 = new KTAction(QIcon(KTOON_THEME_DIR+"/icons/ellipse.png"), tr("Ellipse"), this);
+	DAction *action2 = new DAction(QIcon(THEME_DIR+"/icons/ellipse.png"), tr("Ellipse"), this);
 // 	rectangle->setShortcut( QKeySequence(tr("C")) );
-	action2->setCursor( QCursor(KTOON_THEME_DIR+"/cursors/circle.png") );
+	action2->setCursor( QCursor(THEME_DIR+"/cursors/circle.png") );
 	
 	hash.insert(tr("Ellipse"), action2);
 	
 	
-	KTAction *action3 = new KTAction( QIcon(KTOON_THEME_DIR+"/icons/line.png"), tr("Line"), this);
+	DAction *action3 = new DAction( QIcon(THEME_DIR+"/icons/line.png"), tr("Line"), this);
 	hash.insert(tr("Line"), action3);
 	
 	return hash;

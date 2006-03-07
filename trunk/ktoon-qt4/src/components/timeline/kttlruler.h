@@ -21,23 +21,18 @@
 #ifndef KTTLRULER_H
 #define KTTLRULER_H
 
-#include <ktrulerbase.h>
+#include <drulerbase.h>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTTLRuler : public KTRulerBase
+class KTTLRuler : public DRulerBase
 {
 	Q_OBJECT
 	public:
 		KTTLRuler(QWidget *parent = 0);
 		~KTTLRuler();
-// 		virtual void drawScale();
-		
-	private slots:
-// 		void showMenu(KTRulerBase *, QPoint pos);
-// 		void chooseOption(int);
 		
 	public slots:
 		virtual void movePointers(const QPoint &pos);

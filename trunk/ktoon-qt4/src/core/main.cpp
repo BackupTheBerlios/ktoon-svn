@@ -31,11 +31,12 @@
 #include <QTranslator>
 
 #include "ktapplication.h"
+#include "dapplicationproperties.h"
 
 #include "ktsplash.h"
-#include "ktconfigdocument.h"
-#include "ktxmlreader.h"
-#include "ktdebug.h"
+#include "dconfigdocument.h"
+
+#include "ddebug.h"
 
 #include "ktmainwindow.h"
 
@@ -48,7 +49,10 @@ void usage();
 int main( int argc, char ** argv )
 {
 	KTApplication application( argc, argv );
+	
 	CrashHandler::init();
+	
+	
 
 #ifdef ENABLE_KTOONSTYLE
 	QApplication::setStyle(new KToonStyle());
@@ -61,14 +65,14 @@ int main( int argc, char ** argv )
 		return 0;
 	}
 	
-	KTCONFIG->beginGroup("General");
+	DCONFIG->beginGroup("General");
 
-	if ( ! KTCONFIG->isOk() || application.isArg("r") || application.isArg("reconfigure") )
+	if ( ! DCONFIG->isOk() || application.isArg("r") || application.isArg("reconfigure") )
 	{
 		qDebug("RECONFIGURING");
 		if ( ! application.firstRun() /*&& ! (application.isArg("r") || application.isArg("reconfigure"))*/ )
 		{
-			ktFatal () << "**********************You need configure the application" << endl;
+			dFatal () << "**********************You need configure the application" << endl;
 			QMessageBox::critical(0, QObject::tr("Missing..."), QObject::tr("You need configure the application"));
 			application.exit(-1);
 			return -1;
@@ -76,10 +80,10 @@ int main( int argc, char ** argv )
 		}
 	}
 
-	application.setHome(KTCONFIG->value("Home").toString());
-	application.createRepository(KTCONFIG->value("Repository").toString());
+	dAppProp->setHomeDir(DCONFIG->value("Home").toString());
+	application.createRepository(DCONFIG->value("Repository").toString());
 	
-	QString themefile = KTCONFIG->value("ThemeFile").toString();
+	QString themefile = DCONFIG->value("ThemeFile").toString();
 	if ( ! themefile.isEmpty() )
 	{
 		application.applyTheme(themefile);
@@ -87,36 +91,36 @@ int main( int argc, char ** argv )
 	
 	QTranslator *qttranslator = new QTranslator( 0 );
 	
-	// 	qttranslator->load( QString( "qt_" ) + QString(QTextCodec::locale()).left(2), KTOON_HOME+"/data/translations"); // FIXME FIXME FIXME
+	// 	qttranslator->load( QString( "qt_" ) + QString(QTextCodec::locale()).left(2), HOME+"/data/translations"); // FIXME FIXME FIXME
 
 	application.installTranslator( qttranslator );
 	
 	QTranslator *translator = new QTranslator( 0 );
-// 	translator->load( QString( "ktoon_" ) + QString(QTextCodec::locale()).left(2),  KTOON_HOME+"/data/translations");// FIXME FIXME FIXME
+// 	translator->load( QString( "ktoon_" ) + QString(QTextCodec::locale()).left(2),  HOME+"/data/translations");// FIXME FIXME FIXME
 	
 	application.installTranslator( translator );
-	
+
 	KTSplash *splash = new KTSplash;
 	splash->show();
 	splash->setMessage( QObject::tr( "Initializing..." ) );
 	
 	splash->setMessage( QObject::tr( "Loading Modules" ) );
-	KTMainWindow *mainWindow = new KTMainWindow(splash);
+	KTMainWindow mainWindow(splash);
 
 
 	splash->setMessage( QObject::tr( "Loaded!" ) );
+
+	splash->finish( &mainWindow );
 	
-	splash->finish( mainWindow );
+	mainWindow.showMaximized();
+	
 	delete splash;
-
-	mainWindow->showMaximized();
 	
-	QApplication::setActiveWindow(mainWindow);
-	QApplication::addLibraryPath (KTOON_HOME+"/plugins");
+	QApplication::addLibraryPath (HOME+"/plugins");
 	
 
-	CHANDLER->setConfig(KTOON_DATA_DIR+"/crashhandler.xml");
-	CHANDLER->setImagePath(KTOON_THEME_DIR+"/icons/");
+	CHANDLER->setConfig(DATA_DIR+"/crashhandler.xml");
+	CHANDLER->setImagePath(THEME_DIR+"/icons/");
 	
 	return application.exec();
 }
@@ -124,25 +128,25 @@ int main( int argc, char ** argv )
 void usage()
 {
 #if defined(Q_OS_UNIX)
-	puts(QString("\033[1;33m"+ktapp->objectName() + ktapp->version()).toLatin1());
+	puts(QString("\033[1;33m"+QApplication::applicationName() + dAppProp->version()).toLatin1());
 	puts(QString(QObject::tr("2D Animation tool kit")+"\033[0;0m" ).toLatin1());
 
-	puts(QString("\033[1;34m"+QObject::tr("Usage: %1 [option]").arg(ktapp->argv()[0])+"\033[0;0m").toLatin1());
+	puts(QString("\033[1;34m"+QObject::tr("Usage: %1 [option]").arg(dApp->argv()[0])+"\033[0;0m").toLatin1());
 	
 	puts(QString("\033[1;31m"+QObject::tr("Options: ")).toLatin1());
 	
 	puts("-r, --reconfigure");
-	puts(QObject::tr("\t\tReconfigure %1").arg(ktapp->objectName()).toLatin1());
+	puts(QObject::tr("\t\tReconfigure %1").arg(QApplication::applicationName()).toLatin1());
 	
 	puts("\033[0;0m");
 #else
-	puts(QString(ktapp->objectName() + ktapp->version()).toLatin1());
+	puts(QString(QApplication::applicationName() + dApp->version()).toLatin1());
 
-	puts(QObject::tr("Usage: %1 [option]").arg(ktapp->argv()[0]).toLatin1());
+	puts(QObject::tr("Usage: %1 [option]").arg(dApp->argv()[0]).toLatin1());
 	
 	puts(QObject::tr("Options: ").toLatin1());
 	
 	puts("-r, --reconfigure");
-	puts(QObject::tr("\t\tReconfigure %1").arg(ktapp->objectName()).toLatin1()); 
+	puts(QObject::tr("\t\tReconfigure %1").arg(QApplication::applicationName()).toLatin1()); 
 #endif
 }

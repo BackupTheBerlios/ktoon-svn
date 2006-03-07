@@ -3,25 +3,22 @@
 # Subdir relative project main directory: ./src/dialogs
 # Target is a library:  
 
+QT += xml 
+KDEV_QTVER = 4 
+INCLUDEPATH += ../../src/store \
+               ../../src/ktoonlib \
+               ../../src/dlib/dgui \
+               ../../src/dlib/dcore 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+CONFIG += release \
+          warn_on \
+          staticlib 
+TEMPLATE = lib 
 HEADERS += ktthemeselector.h \
            ktabout.h \
            ktpreferences.h 
 SOURCES += ktthemeselector.cpp \
            ktabout.cpp \
            ktpreferences.cpp 
-QT += xml
-KDEV_QTVER = 4
-INCLUDEPATH += ../../src/core \
-../../src/store \
-../../src/lib \
-../../src/modules/opengl/draw \
-../../src/modules/opengl/tools \
-../../src/modules/opengl/cameras \
-../../src/images/images
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-CONFIG += release \
-warn_on \
-staticlib
-TEMPLATE = lib

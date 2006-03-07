@@ -21,8 +21,7 @@
 #ifndef KTTHEMESELECTOR_H
 #define KTTHEMESELECTOR_H
 
-#include <qmap.h>
-
+#include <QMap>
 #include <QTreeWidget>
 #include <QGroupBox>
 #include <QPushButton>
@@ -34,22 +33,22 @@
 #include <QGridLayout>
 #include <QButtonGroup>
 
-#include "ktthemedocument.h"
-#include "ktvhbox.h"
+#include "dthemedocument.h"
+#include "dvhbox.h"
 
 class QCheckBox;
 
 /**
  * @author David Cuadrado
 */
-class KTThemeSelector : public KTVHBox
+class KTThemeSelector : public DVHBox
 {
 	Q_OBJECT
 	public:
 		KTThemeSelector(QWidget *parent = 0);
 		~KTThemeSelector();
 		
-		KTThemeDocument document();
+		DThemeDocument document();
 		QString lastFile();
 		
 		bool iWantApplyColors();

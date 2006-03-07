@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "agraphiccomponent.h"
-#include "ktdebug.h"
+#include "ddebug.h"
 #include <cmath> // fabs
 
 AGraphicComponent::AGraphicComponent() : KTSerializableObject(), m_scale(1,1), m_shear(0,0), m_angle(0)
@@ -27,7 +27,7 @@ AGraphicComponent::AGraphicComponent() : KTSerializableObject(), m_scale(1,1), m
 	
 }
 
-AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : KTSerializableObject(toCopy.parent()), m_name(toCopy.m_name), m_scale( toCopy.m_scale), m_shear(toCopy.m_shear), m_angle(toCopy.m_angle)
+AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : KTSerializableObject(toCopy.parent()), m_name(toCopy.m_name), m_scale( toCopy.m_scale), m_shear(toCopy.m_shear), m_angle(toCopy.m_angle), m_controlPoints(toCopy.m_controlPoints)
 {
 	foreach(AGraphic *graphic, toCopy.m_graphics)
 	{

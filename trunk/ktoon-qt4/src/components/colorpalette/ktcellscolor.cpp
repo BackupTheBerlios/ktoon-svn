@@ -20,7 +20,7 @@
 
 
 #include "ktcellscolor.h"
-#include "ktdebug.h"
+#include "ddebug.h"
 #include "ktpalettedocument.h"
 
 #include <QFile>
@@ -32,7 +32,7 @@
 
 
 KTCellsColor::KTCellsColor(QWidget *parent, Type type)
-	: KTCellView(parent), m_type(type), m_countColor(0), m_readOnly(false),  m_col(0), m_row(0), MAX_COLUMNS(16)
+	: DCellView(parent), m_type(type), m_countColor(0), m_readOnly(false),  m_col(0), m_row(0), MAX_COLUMNS(16)
 {
 	setAcceptDrops(true);
 }
@@ -45,7 +45,7 @@ KTCellsColor::~KTCellsColor()
 
 void KTCellsColor::addColor(const QBrush& b)
 {
-	KTCellViewItem *item = new KTCellViewItem;
+	DCellViewItem *item = new DCellViewItem;
 	
 	if( columnCount() < MAX_COLUMNS)
 	{
@@ -106,7 +106,7 @@ void KTCellsColor::save( const QString &path)
 	{
 		for (int  j = 0; j < rowCount() ; j++)
 		{
-			KTCellViewItem *tmpItem = itemAt(i*25, j*25);
+			DCellViewItem *tmpItem = itemAt(i*25, j*25);
 			if(tmpItem)
 			{
 				if(tmpItem->background().gradient())
@@ -176,14 +176,14 @@ void KTCellsColor::dropEvent( QDropEvent *event )
 
 void KTCellsColor::mousePressEvent(QMouseEvent* e)
 {
-	KTCellView::mousePressEvent(e);
+	DCellView::mousePressEvent(e);
 	m_startDragPosition = e->pos();
 	
 }
 
 void KTCellsColor::mouseMoveEvent(QMouseEvent* e)
 {
-	KTCellView::mouseMoveEvent(e);
+	DCellView::mouseMoveEvent(e);
 	
 	if ((e->pos() - m_startDragPosition).manhattanLength() <  QApplication::startDragDistance())
 		return;

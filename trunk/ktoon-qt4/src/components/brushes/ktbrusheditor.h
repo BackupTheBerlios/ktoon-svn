@@ -25,12 +25,12 @@
 #include <QImage>
 #include <QPainterPath>
 
-#include "ktdisplaypath.h"
+#include "ddisplaypath.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTBrushEditor : public KTDisplayPath
+class KTBrushEditor : public DDisplayPath
 {
 	Q_OBJECT
 	public:

@@ -26,15 +26,15 @@
 #include <QKeyEvent>
 #include <QEvent>
 #include <QPalette>
-#include "ktdebug.h"
+#include "ddebug.h"
 #include "esframe.h"
 
 //--------------- CONSTRUCTOR --------------------
 
 ESFrame::ESFrame( int id, QWidget *parent )
-	: KTSqueezeLabel( parent )  ,  is_used(false), is_selected(false), is_locked(false),  is_motion(false), has_drawing(false), m_id(id) /*m_initialText(initial_text)*/
+	: DSqueezeLabel( parent )  ,  is_used(false), is_selected(false), is_locked(false),  is_motion(false), has_drawing(false), m_id(id) /*m_initialText(initial_text)*/
 {
-// 	KTINIT;
+// 	DINIT;
     //Initializations
 	setFrameShadow ( QFrame::Raised  );
 	setFrameShape ( QFrame::Panel );
@@ -54,7 +54,7 @@ ESFrame::ESFrame( int id, QWidget *parent )
 
 ESFrame::~ESFrame()
 {
-// 	KTEND;
+// 	DEND;
 }
 
 //-------------- PUBLIC MEMBERS ----------------
@@ -250,14 +250,14 @@ void ESFrame::setMotion( bool in_is_motion )
 
 void ESFrame::setHasDrawing( bool in_has_drawing )
 {
-// 	ktDebug(1) << "void ESFrame::setHasDrawing(" << in_has_drawing << ")";
+// 	dDebug(1) << "void ESFrame::setHasDrawing(" << in_has_drawing << ")";
 	has_drawing = in_has_drawing;
 	update();
 }
 
 void ESFrame::setName( const QString &new_name )
 {
-	ktDebug() << "void ESFrame::setName( const QString &new_name )";
+	dDebug() << "void ESFrame::setName( const QString &new_name )";
 	if(m_initialText != new_name)
 	{
 		m_initialText = new_name;
@@ -421,7 +421,7 @@ void ESFrame::drawContents( QPainter *painter )
 void ESFrame::resizeEvent ( QResizeEvent * e )
 {
 	description -> resize( width(), height() );
-	KTSqueezeLabel::resizeEvent(e);
+	DSqueezeLabel::resizeEvent(e);
 }
 
 void ESFrame::keyPressEvent(QKeyEvent *)

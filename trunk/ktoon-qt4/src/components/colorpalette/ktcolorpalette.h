@@ -31,12 +31,12 @@
 #include <QGroupBox>
 #include <QSplitter>
 
-#include "kttoolbox.h"
-#include "ktvhbox.h"
+#include "dtoolbox.h"
+#include "dvhbox.h"
 #include "ktcolorpicker.h"
 #include "ktluminancepicker.h"
 #include "ktdualcolorbutton.h"
-#include "ktgradientcreator.h"
+#include "dgradientcreator.h"
 
 class KTColorPalette;
 
@@ -54,14 +54,14 @@ class KTColorPalette : public KTModuleWidgetBase
 		void parsePaletteFile(const QString &file);
 
 	private:
-		KTToolBox *m_centralWidget;
+		DToolBox *m_centralWidget;
 		
 		KTViewColorCells *m_containerPalette;
 		
 		KTValueColor *m_displayValueColor;
 		KTColorPicker *m_colorPicker;
 		KTLuminancePicker *m_luminancePicker;
-		KTGradientCreator *m_gradientManager;
+		DGradientCreator *m_gradientManager;
 		QLineEdit *m_nameColor;
 		KTDualColorButton *m_outlineAndFillColors;
 		QBrush m_currentOutlineColor, m_currentFillColor;

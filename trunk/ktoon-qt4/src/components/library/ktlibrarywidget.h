@@ -27,7 +27,7 @@
 #include <QMap>
 
 #include "ktdisplaygraphic.h"
-#include "ktimagebutton.h"
+#include "dimagebutton.h"
 
 #include "agraphiccomponent.h"
 

@@ -24,9 +24,9 @@
 #include <qlabel.h>
 #include <qpixmap.h>
 
-#include "kttabdialog.h"
+#include "dtabdialog.h"
 
-#include "ktanimwidget.h"
+#include "danimwidget.h"
 
 /**
  * @brief Class that handles the about dialog box
@@ -46,7 +46,7 @@
  * Moreover, it provides an OK Button and a Cancel Button.
  */
 
-class KTAbout : public KTTabDialog
+class KTAbout : public DTabDialog
 {
 	Q_OBJECT
 
@@ -66,8 +66,8 @@ class KTAbout : public KTTabDialog
 		~KTAbout();
 	
 	private:
-		KTAnimWidget *m_credits;
-		KTAnimWidget *m_ack;
+		DAnimWidget *m_credits;
+		DAnimWidget *m_ack;
 };
 
 #endif

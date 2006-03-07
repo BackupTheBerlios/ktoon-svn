@@ -27,33 +27,33 @@
 
 #include <cmath> //abs
 
-#include "ktapplication.h"
 #include "kimageeffect.h"
 
-#include "ktdebug.h"
+#include "ddebug.h"
+#include "dglobal.h"
 
 //------------------ CONSTRUCTOR -----------------
 
 KTSplash::KTSplash() : QSplashScreen( 0 ), m_size(3), m_state(0)
 {
-	KTINIT;
+	DINIT;
 	QTimer *timer = new QTimer( this );
 	QObject::connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
 	timer->start(500);
 	
-	QImage image(KTOON_HOME+"/themes/default/images/splash.png");
+	QImage image(THEME_DIR+"/images/splash.png");
 	
 	KImageEffect::addNoise( image, KImageEffect::LaplacianNoise );
 	KImageEffect::hash( image, KImageEffect::SouthLite, 1);
 	
 	
 	setPixmap(QPixmap::fromImage(image));
-	m_version = tr("Version ")+ktapp->version();
+	m_version = tr("Version ")+dAppProp->version();
 }
 
 KTSplash::~KTSplash()
 {
-	KTEND;
+	DEND;
 }
 
 void KTSplash::animate()
@@ -112,17 +112,5 @@ void KTSplash::drawContents ( QPainter * painter )
 	}
 	painter->drawText (90, 16, m_message);
 }
-
-/*
-void KTSplash::drawContents ( QPainter * painter )
-{
-	painter->setRenderHint(QPainter::TextAntialiasing, true);
-	painter->setPen(palette().base());
-	painter->setFont(QFont("Times", 12, QFont::Bold));
-	QSize sizeText = painter->fontMetrics ().size(Qt::TextSingleLine , m_version);
-	painter->drawText( width()-sizeText.width()-10, height()-sizeText.height()-10, sizeText.width(), sizeText.height(), Qt::AlignHCenter, m_version );
-	
-	QSplashScreen::drawContents(painter);
-}*/
 
 

@@ -20,11 +20,11 @@
 #include "ktvaluecolor.h"
 #include <QHBoxLayout>
 #include <QLabel>
-#include "ktdebug.h"
+#include "ddebug.h"
 
 KTItemValueColor::KTItemValueColor( const QString &text, QWidget *parent ) :QFrame(parent)
 {
-	KTINIT;
+	DINIT;
 	QHBoxLayout * m_layout = new QHBoxLayout;
 	m_layout->setSpacing(0);
 	m_layout->setMargin(0);
@@ -44,7 +44,7 @@ KTItemValueColor::KTItemValueColor( const QString &text, QWidget *parent ) :QFra
 KTItemValueColor::~KTItemValueColor()
 {
 	delete m_value;
-	KTEND;
+	DEND;
 }
 
 void KTItemValueColor::setValue( int val)
@@ -65,7 +65,7 @@ void KTItemValueColor::setMax(int max)
 
 KTValueColor::KTValueColor(QWidget *parent) : QFrame(parent), ok(true)
 {
-	KTINIT;
+	DINIT;
 	m_layout = new QGridLayout;
 	m_layout->setSpacing(2);
 	m_layout->setMargin(0);
@@ -76,39 +76,39 @@ KTValueColor::KTValueColor(QWidget *parent) : QFrame(parent), ok(true)
 
 KTValueColor::~KTValueColor()
 {
-	KTEND;
+	DEND;
 }
 
 void KTValueColor::setupForm()
 {
 // 	m_valueR = new KTItemValueColor("R", this);
-	m_valueR = new KTEditSpinBox(0, 0, 255, 1, "R", this);
+	m_valueR = new DEditSpinBox(0, 0, 255, 1, "R", this);
 	connect(m_valueR, SIGNAL(valueChanged(int)), this, SLOT(syncValuesRgb(int)));
 	
 // 	m_valueG = new KTItemValueColor("G", this);
-	m_valueG = new KTEditSpinBox(0, 0, 255, 1,"G", this);
+	m_valueG = new DEditSpinBox(0, 0, 255, 1,"G", this);
 	connect(m_valueG, SIGNAL(valueChanged(int)), this, SLOT(syncValuesRgb(int)));
 	
 // 	m_valueB = new KTItemValueColor("B", this);
-	m_valueB = new KTEditSpinBox(0, 0, 255, 1,"B", this);
+	m_valueB = new DEditSpinBox(0, 0, 255, 1,"B", this);
 	connect(m_valueB, SIGNAL(valueChanged(int)), this, SLOT(syncValuesRgb(int)));
 	
 // 	m_valueH = new KTItemValueColor("H", this);
-	m_valueH = new KTEditSpinBox(0, 0, 359, 1,"H", this);
+	m_valueH = new DEditSpinBox(0, 0, 359, 1,"H", this);
 	
 // 	m_valueH->setMax(359);
 	connect(m_valueH, SIGNAL(valueChanged(int)), this, SIGNAL(hueChanged(int)));
 	
 // 	m_valueS = new KTItemValueColor("S", this);
-	m_valueS = new KTEditSpinBox(0, 0, 255, 1,"S", this);
+	m_valueS = new DEditSpinBox(0, 0, 255, 1,"S", this);
 	connect(m_valueS, SIGNAL(valueChanged(int)), this, SIGNAL(saturationChanged( int)));
 	
 // 	m_valueV = new KTItemValueColor("V", this);
-	m_valueV = new KTEditSpinBox(0, 0, 255, 1,"V", this);
+	m_valueV = new DEditSpinBox(0, 0, 255, 1,"V", this);
 	connect(m_valueV, SIGNAL(valueChanged(int)), this, SIGNAL(valueChanged( int)));
 	
 // 	m_valueA = new KTItemValueColor("A", this);
-	m_valueA = new KTEditSpinBox(0, 0, 255, 1,"A", this);
+	m_valueA = new DEditSpinBox(0, 0, 255, 1,"A", this);
 	connect(m_valueA, SIGNAL(valueChanged(int)), this, SLOT(syncValuesRgb( int)));
 	
 // 	m_layout->setSizeConstraint(QLayout::SetFixedSize);

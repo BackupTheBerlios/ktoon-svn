@@ -23,7 +23,7 @@
 #include <QMouseEvent>
 #include <QDropEvent>
 
-#include "ktdebug.h"
+#include "ddebug.h"
 
 #include <QLinearGradient>
 
@@ -68,7 +68,7 @@ void KTWorkspace::mouseReleaseEvent(QMouseEvent *e)
 // 		QPalette pal = palette();
 // 		pal.setColor(QPalette::Dark, color);
 // 		
-// 		ktDebug() << "Co: " << color;
+// 		dDebug() << "Co: " << color;
 // 		setPalette(pal);
 // 		
 // 		event->acceptProposedAction();

@@ -3,11 +3,26 @@
 # Subdir relative project main directory: ./src/store
 # Target is a library:  
 
+QT += xml 
 INSTALLS += headers \
             target 
 target.path = /lib/ 
 headers.files += *.h 
 headers.path = /include/ 
+KDEV_QTVER = 4 
+INCLUDEPATH += ../../src/ktoonlib \
+               ../../src/core \
+               ../../src/dialogs \
+               ../../src/store \
+               ../../src/dlib/dgui \
+               ../../src/dlib/dcore 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+CONFIG += release \
+          warn_on \
+          dll 
+TEMPLATE = lib 
 HEADERS += ktkeyframe.h \
            agraphiccomponent.h \
            ktlayer.h \
@@ -28,22 +43,3 @@ SOURCES += ktkeyframe.cpp \
            ktbrush.cpp \
            ktprojectparser.cpp \
            ktpalettedocument.cpp 
-QT += xml
-INCLUDEPATH += ../../src/core \
-../../src/dialogs \
-../../src/store \
-../../src/lib \
-../../src/modules/opengl/draw \
-../../src/modules/opengl/tools \
-../../src/modules/opengl/cameras \
-../../src/images/sequences \
-../../src/images/icons \
-../../src/images/cursors \
-../../src/images/images
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-CONFIG += release \
-warn_on \
-dll
-TEMPLATE = lib

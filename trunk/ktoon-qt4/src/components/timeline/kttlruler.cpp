@@ -19,11 +19,11 @@
  ***************************************************************************/
 
 #include "kttlruler.h"
-#include "ktdebug.h"
+#include "ddebug.h"
 
-KTTLRuler::KTTLRuler(QWidget *parent) : KTRulerBase(Qt::Horizontal, parent, "KTTLRuler")
+KTTLRuler::KTTLRuler(QWidget *parent) : DRulerBase(Qt::Horizontal, parent, "KTTLRuler")
 {
-	KTINIT;
+	DINIT;
 	
 	setSeparation(5);
 	show();
@@ -32,12 +32,12 @@ KTTLRuler::KTTLRuler(QWidget *parent) : KTRulerBase(Qt::Horizontal, parent, "KTT
 
 KTTLRuler::~KTTLRuler()
 {
-	KTEND;
+	DEND;
 }
 
 void KTTLRuler::movePointers(const QPoint &pos)
 {
-	ktDebug() << "movePointers" << pos << endl;
+	dDebug() << "movePointers" << pos << endl;
 }
 
 // void KTTLRuler::showMenu(KTRulerBase *ruler, QPoint pos)

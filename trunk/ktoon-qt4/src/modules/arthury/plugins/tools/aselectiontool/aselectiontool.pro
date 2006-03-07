@@ -3,22 +3,35 @@
 # Subdir relative project main directory: ./src/modules/arthury/plugins/tools/aselectiontool
 # Target is a library:  
 
-QT += xml gui 
-INSTALLS += aselectiontool 
+QT += xml 
+INSTALLS += aselectiontool \
+            target 
+target.path = /plugins/ 
 aselectiontool.files += *.so 
 aselectiontool.path = /plugins/ 
 KDEV_QTVER = 4 
 TARGETDEPS += ../../../../../../src/store/libstore.so \
-              ../../../../../../src/modules/arthury/interfaces/libinterfaces.a 
+              ../../../../../../src/modules/arthury/interfaces/libinterfaces.a \
+              ../../../../../../src/ktoonlib/libktoonlib.so \
+              ../../../../../../src/dlib/dgui/libdgui.so \
+              ../../../../../../src/dlib/dcore/libdcore.so 
 LIBS += -lstore \
-        ../../../../../../src/modules/arthury/interfaces/libinterfaces.a 
+        ../../../../../../src/modules/arthury/interfaces/libinterfaces.a \
+        -lktoonlib \
+        -ldgui \
+        -ldcore 
 INCLUDEPATH += ../../../../../../src/modules/arthury/interfaces \
                ../../../../../../src/store \
-               ../../../../../../src/lib 
+               ../../../../../../src/ktoonlib \
+               ../../../../../../src/dlib/dgui \
+               ../../../../../../src/dlib/dcore 
 MOC_DIR = .moc 
 UI_DIR = .ui 
 OBJECTS_DIR = .obj 
-QMAKE_LIBDIR = ../../../../../../src/store 
+QMAKE_LIBDIR = ../../../../../../src/store \
+               ../../../../../../src/ktoonlib \
+               ../../../../../../src/dlib/dgui \
+               ../../../../../../src/dlib/dcore 
 CONFIG += release \
           warn_on \
           plugin 

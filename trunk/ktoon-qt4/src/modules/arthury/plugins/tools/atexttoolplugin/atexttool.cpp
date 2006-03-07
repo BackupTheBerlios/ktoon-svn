@@ -70,11 +70,11 @@ QPainterPath ATextTool::path() const
 	return m_path;
 }
 
-QHash<QString, KTAction *> ATextTool::actions()
+QHash<QString, DAction *> ATextTool::actions()
 {
-	QHash<QString, KTAction *> hash;
+	QHash<QString, DAction *> hash;
 	
-	KTAction *pencil = new KTAction( QIcon(), tr("Text"), this);
+	DAction *pencil = new DAction( QIcon(), tr("Text"), this);
 	pencil->setShortcut( QKeySequence(tr("T")) );
 	
 	hash.insert( tr("Text"), pencil );

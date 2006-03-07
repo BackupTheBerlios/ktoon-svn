@@ -22,16 +22,16 @@
 #include <QVBoxLayout>
 #include <QHeaderView>
 
-#include "ktdebug.h"
+#include "ddebug.h"
 
 KTGCEditor::KTGCEditor(QWidget *parent) : KTModuleWidgetBase(parent)
 {
-	KTINIT;
+	DINIT;
 	setCaption( tr("Graphic Component Editor") );
 	
 	QHBoxLayout *mainLayout = new QHBoxLayout;
 	
-	m_componentTree = new KTTreeListWidget;
+	m_componentTree = new DTreeListWidget;
 	m_componentTree->header()->show();
 	m_componentTree->setHeaderLabels(QStringList() << "Graphic Components");
 	
@@ -39,21 +39,21 @@ KTGCEditor::KTGCEditor(QWidget *parent) : KTModuleWidgetBase(parent)
 	
 	QVBoxLayout *leftLayout = new QVBoxLayout;
 	
-	m_angle = new KTEditSpinBox(0, 0, 360, 1, tr("Rotate"));
+	m_angle = new DEditSpinBox(0, 0, 360, 1, tr("Rotate"));
 	connect(m_angle, SIGNAL(valueChanged(int)), this, SIGNAL(requestRotate(int)));
 	
 	leftLayout->addWidget(m_angle);
 	
 	QHBoxLayout *propLayout = new QHBoxLayout;
 	
-	m_scale = new KTXYSpinBox(tr("Scale"));
+	m_scale = new DXYSpinBox(tr("Scale"));
 	connect(m_scale, SIGNAL(valueXYChanged(double,double)), this, SIGNAL(requestScale( double,double)));
 	
 	m_scale->setSingleStep(0.1);
 	m_scale->setMaximum(100);
 	propLayout->addWidget(m_scale);
 	
-	m_shear = new KTXYSpinBox(tr("Shear"));
+	m_shear = new DXYSpinBox(tr("Shear"));
 	connect(m_shear, SIGNAL(valueXYChanged(double,double)), this, SIGNAL(requestShear( double,double)));
 	propLayout->addWidget(m_shear);
 	
@@ -62,7 +62,7 @@ KTGCEditor::KTGCEditor(QWidget *parent) : KTModuleWidgetBase(parent)
 	m_shear->setMinimum(-100);
 	
 	
-	m_translate = new KTXYSpinBox(tr("Translate"));
+	m_translate = new DXYSpinBox(tr("Translate"));
 	connect(m_translate, SIGNAL(valueXYChanged(double,double)), this, SIGNAL(requestTranslate( double,double)));
 	propLayout->addWidget(m_translate);
 	
@@ -80,12 +80,12 @@ KTGCEditor::KTGCEditor(QWidget *parent) : KTModuleWidgetBase(parent)
 
 KTGCEditor::~KTGCEditor()
 {
-	KTEND;
+	DEND;
 }
 
 void KTGCEditor::addItem(const SGCItem &item)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	
 	QTreeWidgetItem *newItem = new QTreeWidgetItem(m_componentTree);
 	newItem->setText(0, item.name);

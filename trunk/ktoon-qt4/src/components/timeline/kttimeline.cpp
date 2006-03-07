@@ -21,12 +21,12 @@
 #include <QList>
 
 #include "kttimeline.h"
-#include "ktapplication.h"
-#include "ktdebug.h"
+#include "dapplication.h"
+#include "ddebug.h"
 
 KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine")
 {
-	KTINIT;
+	DINIT;
 
 	setCaption(tr("The time line"));
 	
@@ -102,7 +102,7 @@ void KTTimeLine::removeCurrentLayer()
 
 void KTTimeLine::removeLayer(int index)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	
 	SHOW_VAR(index);
 	currentLayerManager()->removeLayer(index);
@@ -126,7 +126,7 @@ void KTTimeLine::lockCurrentFrame()
 
 void KTTimeLine::setCurrentCell(int layer, int frame)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 // 	SHOW_VAR(layer);
 // 	SHOW_VAR(frame);
 	currentLayerManager()->selectLayer( layer );
@@ -135,7 +135,7 @@ void KTTimeLine::setCurrentCell(int layer, int frame)
 
 void KTTimeLine::setupPropertiesBar()
 {
-	m_propertiesBar = new KTVHBox(this, Qt::Horizontal);
+	m_propertiesBar = new DVHBox(this, Qt::Horizontal);
 	m_propertiesBar->boxLayout()->setMargin(0);
 	m_propertiesBar->boxLayout()->setSpacing(5);
 	
@@ -146,7 +146,7 @@ void KTTimeLine::setupPropertiesBar()
 	m_propertiesBar->setMinimumHeight(20);
 	
 	QLabel *m_fps = new QLabel("<b><i>FPS: </i></b>", m_propertiesBar);
-	KTELabel *m_editFPS = new KTELabel("24", m_propertiesBar);
+	DELabel *m_editFPS = new DELabel("24", m_propertiesBar);
 	
 	m_editFPS->setValidator(new QIntValidator(0,1000, m_editFPS));
 	
@@ -160,14 +160,14 @@ void KTTimeLine::setupPropertiesBar()
 // 	setStretchFactor( m_editFPS, 1 );
 	
 	QLabel *m_time = new QLabel("<b><i>Time: </i></b>", m_propertiesBar);
-	KTELabel *m_editTime = new KTELabel("24", m_propertiesBar);
+	DELabel *m_editTime = new DELabel("24", m_propertiesBar);
 	m_editTime->setMidLineWidth(1);
 	m_editTime->setLineWidth(1);
 	m_editTime->setFrameStyle(QFrame::Panel | QFrame::Raised);
 	m_editTime->setMaximumWidth(50);
 	
 	QLabel *m_layer = new QLabel("<b><i>Current Layer: </i></b>", m_propertiesBar);
-	m_editLayer = new KTELabel("0", m_propertiesBar);
+	m_editLayer = new DELabel("0", m_propertiesBar);
 // 	m_editLayer->setValidator(new QIntValidator(0,100, m_editFPS));
 	
 	m_editLayer->setMidLineWidth(1);
@@ -176,7 +176,7 @@ void KTTimeLine::setupPropertiesBar()
 	m_editLayer->setMaximumWidth(50);
 	
 	QLabel *m_frame = new QLabel("<b><i>Current Frame:</i></b> ", m_propertiesBar);
-	KTELabel *m_editFrame = new KTELabel("0", m_propertiesBar);
+	DELabel *m_editFrame = new DELabel("0", m_propertiesBar);
 	m_editFrame->setMidLineWidth(1);
 	m_editFrame->setLineWidth(1);
 	m_editFrame->setFrameStyle(QFrame::Panel | QFrame::Raised);
@@ -184,7 +184,7 @@ void KTTimeLine::setupPropertiesBar()
 	
 // 	setStretchFactor( m_editFrame, 1 );
 	
-	new KTELabel("",m_propertiesBar);
+	new DELabel("",m_propertiesBar);
 	
 	addChild(m_propertiesBar);
 }
@@ -192,12 +192,12 @@ void KTTimeLine::setupPropertiesBar()
 
 KTTimeLine::~KTTimeLine()
 {
-	KTEND;
+	DEND;
 }
 
 void KTTimeLine::execAction(int action)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	switch(action)
 	{
 		case KTLayerManager::InsertLayer:
@@ -264,14 +264,14 @@ void KTTimeLine::setLayer(int index)
 
 void KTTimeLine::moveLayer(bool up)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	currentLayerManager()->moveCurrentLayer(up);
 	// TODO: move in frame container
 }
 
 void KTTimeLine::selectCurrentLayer(int pos)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	emit layerSelected( pos );
 }
 
@@ -283,25 +283,25 @@ void KTTimeLine::emitNewFPS(const QString &value)
 	
 	if ( ok )
 	{
-		ktWarning() << "Changing fps to " << intValue;
+		dWarning() << "Changing fps to " << intValue;
 		emit requestChangeFPS( intValue);
 	}
 	else
 	{
-		ktError() << "Incorrect FPS value";
+		dError() << "Incorrect FPS value";
 	}
 }
 
 void KTTimeLine::insertFrame(int layerId, const QString &name, bool addToEnd )
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	currentFrameContainer()->addFrameToLayer( layerId );
 
 }
 
 void KTTimeLine::emitFrameSelected(int layer, int frame)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	currentLayerManager()->selectLayer( layer );
 	currentFrameContainer()->selectLayer( layer );
 	

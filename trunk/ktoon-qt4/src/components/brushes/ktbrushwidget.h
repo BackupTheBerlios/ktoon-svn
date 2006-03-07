@@ -27,15 +27,15 @@
 #include "ktdisplaybrush.h"
 #include "ktbrusheditor.h"
 
-#include "kteditspinbox.h"
-#include "ktimagebutton.h"
+#include "deditspinbox.h"
+#include "dimagebutton.h"
 #include "ktbrusheslist.h"
 
 #include <QBoxLayout>
 #include <QLineEdit>
 
-#include "kttabwidget.h"
-#include "kttoolbox.h"
+#include "dtabwidget.h"
+#include "dtoolbox.h"
 
 #include <QGridLayout>
 
@@ -66,17 +66,17 @@ class KTBrushWidget : public KTModuleWidgetBase
 	public slots:
 		void changeValueMinThickness(int value);
 		void changeValueSmoothness(int value);
-		void selectBrush(KTCellViewItem * item);
+		void selectBrush(DCellViewItem * item);
 		
 	signals:
 		void brushSelected(const KTBrush *form );
 		
 	private:
 		KTBrushEditor *m_brushEditor;
-		KTToolBox *m_brushManager;
-		KTEditSpinBox *m_displayThickness, *m_displaySmoothness;
+		DToolBox *m_brushManager;
+		DEditSpinBox *m_displayThickness, *m_displaySmoothness;
 		QLineEdit *m_nameBrush;
-		KTImageButton *m_addBrush, *m_removeBrush;
+		DImageButton *m_addBrush, *m_removeBrush;
 		KTBrushesList *m_defaultBrushesList;
 		KTBrushesList *m_customBrushesList;
 		

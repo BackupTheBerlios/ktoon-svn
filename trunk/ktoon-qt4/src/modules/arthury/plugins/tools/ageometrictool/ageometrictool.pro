@@ -4,24 +4,34 @@
 # Target is a library:  
 
 QT += xml 
-INSTALLS += ageometrictoolplugin 
+INSTALLS += ageometrictoolplugin \
+            target 
+target.path = /plugins/ 
 ageometrictoolplugin.files += *.so 
 ageometrictoolplugin.path = /plugins/ 
 KDEV_QTVER = 4 
-TARGETDEPS += ../../../../../../src/lib/libktoon.so \
-              ../../../../../../src/store/libstore.so \
-              ../../../../../../src/modules/arthury/interfaces/libinterfaces.a 
-LIBS += -lktoon \
-        -lstore \
-        ../../../../../../src/modules/arthury/interfaces/libinterfaces.a 
+TARGETDEPS += ../../../../../../src/store/libstore.so \
+              ../../../../../../src/modules/arthury/interfaces/libinterfaces.a \
+              ../../../../../../src/ktoonlib/libktoonlib.so \
+              ../../../../../../src/dlib/dgui/libdgui.so \
+              ../../../../../../src/dlib/dcore/libdcore.so 
+LIBS += -lstore \
+        ../../../../../../src/modules/arthury/interfaces/libinterfaces.a \
+        -lktoonlib \
+        -ldgui \
+        -ldcore 
 INCLUDEPATH += ../../../../../../src/modules/arthury/interfaces \
                ../../../../../../src/store \
-               ../../../../../../src/lib 
+               ../../../../../../src/ktoonlib \
+               ../../../../../../src/dlib/dgui \
+               ../../../../../../src/dlib/dcore 
 MOC_DIR = .moc 
 UI_DIR = .ui 
 OBJECTS_DIR = .obj 
-QMAKE_LIBDIR = ../../../../../../src/lib \
-               ../../../../../../src/store 
+QMAKE_LIBDIR = ../../../../../../src/store \
+               ../../../../../../src/ktoonlib \
+               ../../../../../../src/dlib/dgui \
+               ../../../../../../src/dlib/dcore 
 CONFIG += release \
           warn_on \
           plugin 

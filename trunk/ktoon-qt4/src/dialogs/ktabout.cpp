@@ -29,21 +29,21 @@
 #include <QTextBrowser>
 
 #include "ktabout.h"
-#include "ktapplication.h"
+#include "dglobal.h"
 #include "kimageeffect.h"
 
-#include "ktdebug.h"
+#include "ddebug.h"
 
 #define DEBUG_ABOUT 1
 
-KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
+KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 {
-	KTINIT;
+	DINIT;
 	setWindowTitle( tr( "About" ) + QString( " KToon..." ) );
 
     	//1: Credits
 
-	QFile creditsFile( KTOON_DATA_DIR+"/credits.txt" );
+	QFile creditsFile( DATA_DIR+"/credits.txt" );
 	QString creditsText;
 	if ( creditsFile.open( QIODevice::ReadOnly ) )
 	{
@@ -57,14 +57,14 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 	}
 	else
 	{
-		ktError() << "Error while trying to read " << creditsFile.fileName();
+		dError() << "Error while trying to read " << creditsFile.fileName();
 	}
 	
-	QImage credits = QImage(KTOON_THEME_DIR+"/images/credits-image.png" );
+	QImage credits = QImage(THEME_DIR+"/images/credits-image.png" );
 	
 	KImageEffect::fade(credits, 0.25, palette().background().color());
     
-	m_credits = new KTAnimWidget( QPixmap::fromImage(credits), creditsText );
+	m_credits = new DAnimWidget( QPixmap::fromImage(credits), creditsText );
 	addTab( m_credits, tr( "Credits" ) );
 
     	// 2: Ack
@@ -72,12 +72,12 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 
 	for(uint i = 1; i < 11; i++)
 	{
-		QImage tmp(KTOON_THEME_DIR+QString("/sequences/ack-image%1.png").arg(i));
+		QImage tmp(THEME_DIR+QString("/sequences/ack-image%1.png").arg(i));
 		KImageEffect::fade(tmp, 0.2, palette().background().color());
 		lop << QPixmap::fromImage(tmp);
 	}
 	
-	m_ack = new KTAnimWidget( lop );
+	m_ack = new DAnimWidget( lop );
 
 	addTab( m_ack, tr( "Acknowledgements" ) );
 
@@ -86,7 +86,7 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 	QTextBrowser *logText = new QTextBrowser/*(scroll)*/;
 	
 // 	QString readText;
-	QFile clFile( KTOON_HOME+"/data/Changelog" ); // FIXME: translate?
+	QFile clFile( HOME+"/data/Changelog" ); // FIXME: translate?
 	
 	if ( clFile.open( QIODevice::ReadOnly | QIODevice::Text) )
 	{
@@ -107,7 +107,7 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 
 	QLabel *toonka = new QLabel/*( this )*/;
 	
-	QImage toonkaImg( KTOON_THEME_DIR+"/images/toonka.png" );
+	QImage toonkaImg( THEME_DIR+"/images/toonka.png" );
 	KImageEffect::fade( toonkaImg,0.2,palette().background().color()); 
 	
 	toonka->setPixmap(QPixmap::fromImage(toonkaImg));
@@ -117,7 +117,7 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 
 	QLabel *laboratoon = new QLabel/*( this )*/;
 	
-	QImage laboratoonImg( KTOON_THEME_DIR+"/images/laboratoon.png" );
+	QImage laboratoonImg( THEME_DIR+"/images/laboratoon.png" );
 	KImageEffect::fade( laboratoonImg,0.2,palette().background().color()); 
 	
 	laboratoon->setPixmap( QPixmap::fromImage(laboratoonImg  ) );
@@ -128,7 +128,7 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 	QTextBrowser *licenceText = new QTextBrowser/*( scrollLicence )*/;
 // 	scrollLicence->setWidget( licenceText );
 // 	QString licence = "";
-	QFile licenceFile( KTOON_DATA_DIR+"/COPYING" );
+	QFile licenceFile( DATA_DIR+"/COPYING" );
 	if ( licenceFile.open( QIODevice::ReadOnly  | QIODevice::Text) )
 	{
 		QTextStream stream( &licenceFile );
@@ -152,7 +152,7 @@ KTAbout::KTAbout( QWidget *parent ) : KTTabDialog( Cancel, parent )
 
 KTAbout::~KTAbout()
 {
-	KTEND;
+	DEND;
 }
 
 

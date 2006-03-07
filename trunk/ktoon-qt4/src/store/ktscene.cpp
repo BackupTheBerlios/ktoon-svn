@@ -19,12 +19,12 @@
  ***************************************************************************/
 
 #include "ktscene.h"
-#include "ktdebug.h"
+#include "ddebug.h"
 
 #include <QDir>
 
 #include "ktprojectparser.h"
-#include "ktpathadjuster.h"
+#include "dpathadjuster.h"
 
 KTScene::KTScene(QObject *parent) : KTSerializableObject(parent), m_currentLayer(0), m_layerCount(0), m_fps(24)
 {
@@ -34,7 +34,7 @@ KTScene::KTScene(QObject *parent) : KTSerializableObject(parent), m_currentLayer
 
 KTScene::~KTScene()
 {
-	KTEND;
+	DEND;
 	for(int i = 0; i < m_layers.count(); i++ )
 	{
 		delete m_layers.takeAt(i);
@@ -85,7 +85,7 @@ void KTScene::save(const QString &scenePath)
 
 void KTScene::load(const QString &path)
 {
-	ktDebug() << "Loading scene: " << path;
+	dDebug() << "Loading scene: " << path;
 	
 	KTProjectParser parser;
 	
@@ -107,13 +107,13 @@ void KTScene::load(const QString &path)
 	}
 	else
 	{
-		ktError() << "Error while parse file: " << source.fileName();
+		dError() << "Error while parse file: " << source.fileName();
 	}
 }
 
 void KTScene::setSceneName(const QString &name)
 {
-	ktDebug() << "Setting scene name: " << name;
+	dDebug() << "Setting scene name: " << name;
 	m_name = name;
 }
 
@@ -134,7 +134,7 @@ void KTScene::setLayers(const Layers &layers)
 
 KTLayer *KTScene::createLayer(const QString& name, bool addToEnd )
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	KTLayer *layer = new KTLayer(this);
 	if(name.isNull())
 	{
@@ -175,7 +175,7 @@ void KTScene::setCurrentLayer(int index)
 	}
 	else
 	{
-		ktError() << "No layer!";
+		dError() << "No layer!";
 	}
 }
 
@@ -192,7 +192,7 @@ void KTScene::setFPS(int fps)
 	}
 	else
 	{
-		ktError() << "FPS out of range" << endl;
+		dError() << "FPS out of range" << endl;
 	}
 }
 

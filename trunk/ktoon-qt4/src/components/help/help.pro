@@ -8,8 +8,9 @@ INSTALLS += help
 help.files += help 
 help.path = /data/ 
 KDEV_QTVER = 4 
-INCLUDEPATH += ../../../src/dlslib \
-               ../../../src/lib 
+INCLUDEPATH += ../../../src/ktoonlib \
+               ../../../src/dlib/dgui \
+               ../../../src/dlib/dcore 
 CONFIG += release \
           warn_on \
           staticlib 

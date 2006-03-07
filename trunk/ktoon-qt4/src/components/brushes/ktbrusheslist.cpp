@@ -21,12 +21,12 @@
 #include "ktbrusheslist.h"
 #include <QPainter>
 #include <QStringList>
-#include "ktdebug.h"
+#include "ddebug.h"
 
-#include "ktpathadjuster.h"
+#include "dpathadjuster.h"
 
 KTBrushesList::KTBrushesList(QWidget *parent)
-	: KTCellView(parent), MAX_COLUMNS(10), m_row(0), m_col(0)
+	: DCellView(parent), MAX_COLUMNS(10), m_row(0), m_col(0)
 {
 }
 
@@ -37,9 +37,9 @@ KTBrushesList::~KTBrushesList()
 
 void KTBrushesList::addBrush(const QPainterPath &form)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 
-	KTCellViewItem *newBrush = new KTCellViewItem();
+	DCellViewItem *newBrush = new DCellViewItem();
 
 	QImage tbrush(form.boundingRect().width()+2, form.boundingRect().height()+2, QImage::Format_RGB32);
 	
@@ -52,7 +52,7 @@ void KTBrushesList::addBrush(const QPainterPath &form)
 // 	p.setBrush( QBrush( foregroundColor (), Qt::SolidPattern));
 
 
-	p.drawPath(KTPathAdjuster::toRect(form, tbrush.rect(), 0));
+	p.drawPath(DPathAdjuster::toRect(form, tbrush.rect(), 0));
 	
 	newBrush->setImage( tbrush );
 	newBrush->setBackground( QColor(34,34,234,60 ) );

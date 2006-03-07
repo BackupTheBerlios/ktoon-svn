@@ -25,7 +25,7 @@
 #include <QTimer>
 #include <QPainter>
 
-#include "ktdebug.h"
+#include "ddebug.h"
 
 KTOsd::KTOsd( QWidget * parent )
 	: QWidget( parent), m_timer( 0 )

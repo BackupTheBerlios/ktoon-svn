@@ -26,7 +26,7 @@
 
 #include <QTextEdit>
 
-class KTFontChooser;
+class DFontChooser;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -45,7 +45,7 @@ class TextConfigurator : public QWidget
 		
 	private:
 		QTextEdit *m_text;
-		KTFontChooser *m_fontChooser;
+		DFontChooser *m_fontChooser;
 };
 
 #endif

@@ -19,12 +19,12 @@
  ***************************************************************************/
  
 #include "ktlayerexposure.h"
-#include "ktdebug.h"
+#include "ddebug.h"
 
 KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFrame, QWidget *parent)
 	: QFrame(parent) , m_id(id), m_currentFrame(0)
 {
-	KTINIT;
+	DINIT;
 	m_layout = new QBoxLayout(QBoxLayout::TopToBottom, this );
 	m_layout->setMargin(0);
 	m_layout->setSpacing(0);
@@ -65,7 +65,7 @@ void KTLayerExposure::createMenuRight()
 
 KTLayerExposure::~KTLayerExposure()
 {
-	KTEND;
+	DEND;
 	qDeleteAll(m_frames);
 }
 
@@ -181,7 +181,7 @@ void KTLayerExposure::setUseFrames(const QString &name, bool addedToEnd)
 
 void KTLayerExposure::insertFrames()
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	if ( m_frames.count() > 0 )
 	{
 		ESFrame *esFrame = m_frames[m_currentFrame];
@@ -189,7 +189,7 @@ void KTLayerExposure::insertFrames()
 		{
 			if( (esFrame->isUsed() && m_selected ) || m_currentFrame == 0)
 			{
-// 				ktDebug() << "remove frame " << (m_layout->indexOf(esFrame) == m_layout->indexOf(m_frames[m_useFrame])-1) << "||" << (m_useFrame == 0);
+// 				dDebug() << "remove frame " << (m_layout->indexOf(esFrame) == m_layout->indexOf(m_frames[m_useFrame])-1) << "||" << (m_useFrame == 0);
 				if(m_layout->indexOf(m_frames[m_currentFrame]) == m_layout->indexOf(m_frames[m_useFrame])-1 || m_useFrame == 0 )
 				{
 					emit requestInsertFrame(true);
@@ -381,12 +381,12 @@ ListOfFrames KTLayerExposure::frames()
 
 void  KTLayerExposure::emitRequestRenameFrame(int indexFrame, const QString& name)
 {
-	ktDebug() << "emit (requestRenameFrame(" << m_id << "," <<  indexFrame << "," << name <<"))";
+	dDebug() << "emit (requestRenameFrame(" << m_id << "," <<  indexFrame << "," << name <<"))";
 	emit (requestRenameFrame(m_id, indexFrame, name));
 }
 
 void KTLayerExposure::emitRequestRenameLayer(const QString  &newName)
 {
-	ktDebug() << "emit(requestRenameLayer( " << m_id << "," << newName <<"))";
+	dDebug() << "emit(requestRenameLayer( " << m_id << "," << newName <<"))";
 	emit(requestRenameLayer(m_id, newName));
 }

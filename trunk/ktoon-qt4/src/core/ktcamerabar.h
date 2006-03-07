@@ -25,7 +25,7 @@
 #include <QPainter>
 #include <QPushButton>
 
-#include "ktimagebutton.h"
+#include "dimagebutton.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -39,7 +39,7 @@ class KTCameraBar : public QFrame
 		void setPalette(const QPalette &);
 		
 	private:
-		KTImageButton *m_rew, *m_play, *m_stop, *m_ff;
+		DImageButton *m_rew, *m_play, *m_stop, *m_ff;
 		
 	signals:
 		void play();

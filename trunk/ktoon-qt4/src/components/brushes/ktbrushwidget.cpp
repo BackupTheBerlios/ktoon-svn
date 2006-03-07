@@ -19,8 +19,9 @@
  ***************************************************************************/
  
 #include "ktbrushwidget.h"
-#include "ktapplication.h"
-#include "ktdebug.h"
+
+#include "dglobal.h"
+#include "ddebug.h"
 
 #include <QToolTip>
 #include <QFrame>
@@ -45,8 +46,8 @@ KTBrushWidget::KTBrushWidget(QWidget *parent) : KTModuleWidgetBase( parent ), m_
 	
 	static_cast<QVBoxLayout *>(layout())->addLayout(m_layout);
 	
-	KTCONFIG->beginGroup("Brushes");
-	int lastIndex = KTCONFIG->value("LastIndex", 0).toInt();
+	DCONFIG->beginGroup("Brushes");
+	int lastIndex = DCONFIG->value("LastIndex", 0).toInt();
 	
 	m_brushManager->setCurrentIndex(lastIndex);
 }
@@ -54,7 +55,7 @@ KTBrushWidget::KTBrushWidget(QWidget *parent) : KTModuleWidgetBase( parent ), m_
 
 KTBrushWidget::~KTBrushWidget()
 {
-	KTEND;
+	DEND;
 	
 	QDomDocument doc;
 	QDomElement root = doc.createElement("Brushes");
@@ -70,9 +71,9 @@ KTBrushWidget::~KTBrushWidget()
 	if ( m_currentBrush ) delete m_currentBrush;
 	
 	
-	QFile custom(ktapp->configDir()+"/brushes/customBrushes.ktbr");
+	QFile custom(CONFIG_DIR+"/brushes/customBrushes.ktbr");
 	
-	QDir brushesDir(ktapp->configDir()+"/brushes");
+	QDir brushesDir(CONFIG_DIR+"/brushes");
 	
 	if ( ! brushesDir.exists() )
 	{
@@ -88,8 +89,8 @@ KTBrushWidget::~KTBrushWidget()
 		custom.close();
 	}
 	
-	KTCONFIG->beginGroup("Brushes");
-	KTCONFIG->setValue("LastIndex", m_brushManager->currentIndex());
+	DCONFIG->beginGroup("Brushes");
+	DCONFIG->setValue("LastIndex", m_brushManager->currentIndex());
 } 
 
 void KTBrushWidget::setupDisplay()
@@ -101,16 +102,16 @@ void KTBrushWidget::setupDisplay()
 
 void KTBrushWidget::setupBrushManager()
 {
-	m_brushManager = new KTToolBox();
+	m_brushManager = new DToolBox();
 	
 	QFrame *container = new QFrame(m_brushManager);
 	QBoxLayout *layoutContainer = new QBoxLayout(QBoxLayout::TopToBottom, container );
 	
-	m_displayThickness = new KTEditSpinBox(5, 1, 99,1, tr("Thickness"), container,"Display Thickness");
+	m_displayThickness = new DEditSpinBox(5, 1, 99,1, tr("Thickness"), container,"Display Thickness");
 	layoutContainer->addWidget(m_displayThickness);
 	connect( m_displayThickness, SIGNAL( valueChanged( int ) ), this , SLOT( changeValueMinThickness(int) ) );
 	
-	m_displaySmoothness = new KTEditSpinBox(2,  1, 99,1, tr("Smoothness"), container, "Display Smoothness");
+	m_displaySmoothness = new DEditSpinBox(2,  1, 99,1, tr("Smoothness"), container, "Display Smoothness");
 	layoutContainer->addWidget(m_displaySmoothness);
 	
 	
@@ -144,9 +145,9 @@ void KTBrushWidget::setupBrushManager()
 void KTBrushWidget::setupCustomBrushes()
 {
 	m_customBrushesList = new KTBrushesList(m_brushManager);
-	connect(m_customBrushesList, SIGNAL(itemClicked( KTCellViewItem * )), this,SLOT(selectBrush( KTCellViewItem * )));
+	connect(m_customBrushesList, SIGNAL(itemClicked( DCellViewItem * )), this,SLOT(selectBrush( DCellViewItem * )));
 	
-	QDir customBrushesDir(ktapp->configDir()+"/brushes");
+	QDir customBrushesDir(CONFIG_DIR+"/brushes");
 	
 	if ( customBrushesDir.exists() )
 	{
@@ -158,7 +159,7 @@ void KTBrushWidget::setupCustomBrushes()
 		reader.setContentHandler(&parser);
 		reader.setErrorHandler(&parser);
 		
-		QFile custom(ktapp->configDir()+"/brushes/customBrushes.ktbr");
+		QFile custom(CONFIG_DIR+"/brushes/customBrushes.ktbr");
 		QXmlInputSource xmlsource(&custom);
 		
 		if ( reader.parse(&xmlsource) )
@@ -170,7 +171,7 @@ void KTBrushWidget::setupCustomBrushes()
 		}
 		else
 		{
-			ktError() << "Error while parse file: " << custom.fileName();
+			dError() << "Error while parse file: " << custom.fileName();
 		}
 	}
 	
@@ -183,14 +184,14 @@ void KTBrushWidget::setupButtons()
 	QGroupBox *containerButtons = new QGroupBox();
 	QHBoxLayout *layout = new QHBoxLayout(containerButtons);
 	layout->setMargin(0);
-	m_addBrush = new KTImageButton( QPixmap( KTOON_HOME+"/themes/default/icons/plussign.png" ), 22, containerButtons);
+	m_addBrush = new DImageButton( QPixmap( HOME+"/themes/default/icons/plussign.png" ), 22, containerButtons);
 	connect( m_addBrush, SIGNAL( clicked() ), SLOT( addBrush() ) );
-	QToolTip::add( m_addBrush, tr( "Add Brush" ) );
+	m_addBrush->setToolTip(tr( "Add Brush" ) );
 	layout->addWidget(m_addBrush, Qt::AlignCenter);
 	
-	m_removeBrush = new KTImageButton( QPixmap( KTOON_HOME+"/themes/default/icons/minussign.png" ), 22, containerButtons);
+	m_removeBrush = new DImageButton( QPixmap( HOME+"/themes/default/icons/minussign.png" ), 22, containerButtons);
 	connect( m_removeBrush, SIGNAL( clicked() ), SLOT( removeBrush() ) );
-	QToolTip::add( m_removeBrush, tr( "Remove Brush" ) );
+	m_removeBrush->setToolTip( tr( "Remove Brush" ) );
 	layout->addWidget(m_removeBrush, Qt::AlignCenter);
 	
 	m_layout->addWidget(containerButtons, 1,0);
@@ -208,7 +209,7 @@ void KTBrushWidget::changeValueSmoothness(int value)
 {
 }
 
-void KTBrushWidget::selectBrush(KTCellViewItem *item)
+void KTBrushWidget::selectBrush(DCellViewItem *item)
 {
 	if ( item )
 	{
@@ -247,7 +248,7 @@ void KTBrushWidget::createDefaultBrushes()
 {
 	m_defaultBrushesList = new KTBrushesList(m_brushManager);
 	QPainterPath form;
-	connect(m_defaultBrushesList, SIGNAL(itemClicked( KTCellViewItem * )), this,SLOT(selectBrush( KTCellViewItem * )));
+	connect(m_defaultBrushesList, SIGNAL(itemClicked( DCellViewItem * )), this,SLOT(selectBrush( DCellViewItem * )));
 	
 	int thickness = 40; // FIXME
 	QRect boundingRect = QRect( 0, 0, thickness , thickness);
@@ -322,5 +323,5 @@ void KTBrushWidget::addBrush()
 
 void KTBrushWidget::removeBrush()
 {
-	ktWarning() << "Not implemented yet!";
+	dWarning() << "Not implemented yet!";
 }

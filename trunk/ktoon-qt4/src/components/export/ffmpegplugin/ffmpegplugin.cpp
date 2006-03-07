@@ -20,15 +20,13 @@
 
 #include "ffmpegplugin.h"
 
-#include "ktdebug.h"
-#include "ktapplication.h"
+#include "ddebug.h"
+#include "dglobal.h"
 
 #include <QImage>
 #include <QPainter>
 
 #include <cstdio>
-
-#include "ktgradientadjuster.h"
 
 #include "ffmpegmanager.h"
 
@@ -59,7 +57,7 @@ void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *
 #ifdef HAVE_FFMPEG
 	FFMpegManager manager;
 	
-	QDir temp(KTOON_TEMP_DIR+"/exporting");
+	QDir temp(REPOSITORY+"/exporting");
 	if ( !temp.exists() )
 	{
 		temp.mkdir(temp.path());

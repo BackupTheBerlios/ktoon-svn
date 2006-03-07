@@ -21,7 +21,7 @@
 #ifndef KTPAINTAREACONTAINER_H
 #define KTPAINTAREACONTAINER_H
 
-#include <ktvhbox.h>
+#include <dvhbox.h>
 
 #include "ktdocumentruler.h"
 #include "apaintarea.h"

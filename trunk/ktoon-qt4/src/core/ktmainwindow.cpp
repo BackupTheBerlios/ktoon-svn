@@ -26,15 +26,16 @@
 
 #include "ktpackagehandler.h"
 
-// KToonLib
 #include "ktpaletteimporter.h"
-#include "kttip.h"
-#include "ktdebug.h"
+
+// KToonLib
+#include "dtip.h"
+#include "ddebug.h"
 #include "kimageeffect.h"
 #include "ktapplication.h"
 
 // dlslib
-#include "dtabwidget.h"
+#include "dlstabwidget.h"
 #include "docksplitter.h"
 
 // Qt
@@ -51,7 +52,7 @@
 
 KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0), m_scenes(0)
 {
-	KTINIT;
+	DINIT;
 	
 	setObjectName("KTMainWindow_");
 	
@@ -79,7 +80,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	setupBackground();
 	
 	splash->setMessage( tr("Loading action manager..."));
-	m_actionManager = new KTActionManager(this);
+	m_actionManager = new DActionManager(this);
 	
 	// Create the menubar;
 	splash->setMessage( tr("Creating menu bar..."));
@@ -87,14 +88,13 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	setupMenu();
 	
 	splash->setMessage( tr("Creating GUI..."));
+	
 	createGUI();
 	
 	m_pActiveTabWidget->setCurrentIndex( 0 );
 	
-// 	createNewProject("test", QSize(300,300), tr("Image"), 24);
-	
-	KTCONFIG->beginGroup("TipOfDay");
-	bool showTips = qvariant_cast<bool>(KTCONFIG->value("ShowOnStart", true ));
+	DCONFIG->beginGroup("TipOfDay");
+	bool showTips = qvariant_cast<bool>(DCONFIG->value("ShowOnStart", true ));
 	
 	
 	if ( showTips )
@@ -106,7 +106,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 
 KTMainWindow::~KTMainWindow()
 {
-	KTEND;
+	DEND;
 	
 	if ( m_animationSpace )
 		delete m_animationSpace;
@@ -230,7 +230,7 @@ void KTMainWindow::newProject()
 
 bool KTMainWindow::closeProject()
 {
-	ktDebug() << "Closing..";
+	dDebug() << "Closing..";
 	if(!m_projectManager->isOpen())
 	{
 		return true;
@@ -290,7 +290,7 @@ bool KTMainWindow::closeProject()
 
 void KTMainWindow::openProject()
 {
-	QString package = QFileDialog::getOpenFileName ( this, tr("Import project package"), KTOON_REPOSITORY, "KToon Project Package (*.ktn)");
+	QString package = QFileDialog::getOpenFileName ( this, tr("Import project package"), REPOSITORY, "KToon Project Package (*.ktn)");
 	
 	if ( package.isEmpty() ) return;
 	
@@ -329,7 +329,7 @@ void KTMainWindow::openProject(const QString &path)
 
 void KTMainWindow::save()
 {
-	ktDebug() << "Saving.." << endl;
+	dDebug() << "Saving.." << endl;
 	QTimer::singleShot(0, this, SLOT(saveProject()));
 	
 	
@@ -354,14 +354,14 @@ void KTMainWindow::aboutKToon()
 
 void KTMainWindow::showTipDialog()
 {
-	KTTipDialog *tipDialog = new KTTipDialog(KTOON_DATA_DIR+"/tips", this);
+	DTipDialog *tipDialog = new DTipDialog(DATA_DIR+"/tips", this);
 	tipDialog->show();
 // 	tipDialog.exec();
 }
 
 void KTMainWindow::importPalettes()
 {
-	ktDebug() << "Importing";
+	dDebug() << "Importing";
 	QStringList files = QFileDialog::getOpenFileNames( this, tr("Import gimp palettes"), QString(), "Gimp Palette (*.gpl)");
 	
 	m_statusBar->setStatus( tr("Importing palettes"));
@@ -373,7 +373,7 @@ void KTMainWindow::importPalettes()
 		KTPaletteImporter importer;
 		importer.import( *it, KTPaletteImporter::Gimp);
 		++it;
-		importer.saveFile(ktapp->configDir()+"/palettes");
+		importer.saveFile(CONFIG_DIR+"/palettes");
 		
 		m_colorPalette->parsePaletteFile( importer.filePath() );
 		
@@ -456,7 +456,7 @@ void KTMainWindow::messageToOSD(const QString &msg, int level)
 
 void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	KTHelpBrowser *page = new KTHelpBrowser(this);
 	page->setDataDirs( QStringList() << m_helper->helpPath() );
 	
@@ -478,11 +478,11 @@ void KTMainWindow::saveProject()
 		package += ".ktn";
 	}
 	
-	ktDebug() << "Saving " << package;
+	dDebug() << "Saving " << package;
 	
 	KTPackageHandler packageHandler;
 	
-	bool ok = packageHandler.makePackage(KTOON_REPOSITORY+"/"+m_projectManager->projectName(), KTOON_REPOSITORY+"/"+package);
+	bool ok = packageHandler.makePackage(REPOSITORY+"/"+m_projectManager->projectName(), REPOSITORY+"/"+package);
 	
 	if ( ok )
 	{
@@ -495,7 +495,7 @@ void KTMainWindow::saveProjectAs()
 {
 	m_projectManager->save();
 	
-	QString package = QFileDialog::getSaveFileName( this, tr("Build project package"), KTOON_REPOSITORY, "KToon Project Package (*.ktn)");
+	QString package = QFileDialog::getSaveFileName( this, tr("Build project package"), REPOSITORY, "KToon Project Package (*.ktn)");
 	
 	if ( package.isEmpty() ) return;
 	
@@ -506,7 +506,7 @@ void KTMainWindow::saveProjectAs()
 	
 	KTPackageHandler packageHandler;
 	
-	bool ok = packageHandler.makePackage(KTOON_REPOSITORY+"/"+m_projectManager->projectName(), package);
+	bool ok = packageHandler.makePackage(REPOSITORY+"/"+m_projectManager->projectName(), package);
 	
 	
 	if ( ok )

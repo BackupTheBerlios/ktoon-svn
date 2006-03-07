@@ -20,7 +20,7 @@
 
 #include "ktlayermanager.h"
 
-#include "ktapplication.h"
+#include "dapplication.h"
 #include <qlabel.h>
 #include <qlayout.h>
 
@@ -28,11 +28,11 @@
 
 #include "kseparator.h"
 
-#include "ktdebug.h"
+#include "ddebug.h"
 
-KTLayerManager::KTLayerManager(QWidget *parent) : KTVHBox(parent), m_currentTime(0.0), m_totalTime(0.04), m_allSelected(false), m_allVisible(true), m_allLock(false)
+KTLayerManager::KTLayerManager(QWidget *parent) : DVHBox(parent), m_currentTime(0.0), m_totalTime(0.04), m_allSelected(false), m_allVisible(true), m_allLock(false)
 {
-	KTINIT;
+	DINIT;
 	
 	m_buttonGroup = new QButtonGroup(this);
 	
@@ -43,7 +43,7 @@ KTLayerManager::KTLayerManager(QWidget *parent) : KTVHBox(parent), m_currentTime
 	layout()->setMargin(0);
 	layout()->setSpacing(0);
 	
-	m_utilsInTop = new KTVHBox( this , false);
+	m_utilsInTop = new DVHBox( this , false);
 	m_utilsInTop->setMaximumHeight(20);
 	m_utilsInTop->setMinimumHeight(20);
 	
@@ -53,17 +53,17 @@ KTLayerManager::KTLayerManager(QWidget *parent) : KTVHBox(parent), m_currentTime
 	
 	m_utilsInTop->layout()->setAlignment(Qt::AlignRight | Qt::AlignCenter );
 
-	m_eyeButton = new KTImageButton( QPixmap(KTOON_THEME_DIR+"/icons/show_hide_all_layers.png"), 20,  m_utilsInTop );
+	m_eyeButton = new DImageButton( QPixmap(THEME_DIR+"/icons/show_hide_all_layers.png"), 20,  m_utilsInTop );
 	
 	m_buttonGroup->addButton(m_eyeButton, ToggleLayerView);
 	m_eyeButton->setToolTip(tr( "Show / Hide all Layers" ) );
 	
-	m_lockButton = new KTImageButton( QPixmap(KTOON_THEME_DIR+"/icons/kilit_pic.png"),  20, m_utilsInTop );
+	m_lockButton = new DImageButton( QPixmap(THEME_DIR+"/icons/kilit_pic.png"),  20, m_utilsInTop );
 	m_buttonGroup->addButton(m_lockButton, LockLayers);
 	
 	m_lockButton->setToolTip(tr( "Lock all Layers" ) );
 
-	m_outlineButton = new KTImageButton( QPixmap(KTOON_THEME_DIR+"/icons/outline_pic.png"), 20, m_utilsInTop );
+	m_outlineButton = new DImageButton( QPixmap(THEME_DIR+"/icons/outline_pic.png"), 20, m_utilsInTop );
 	m_buttonGroup->addButton(m_outlineButton,ShowOutlines);
 
 	m_outlineButton->setToolTip(tr( "Show only outlines" ) );
@@ -80,7 +80,7 @@ KTLayerManager::KTLayerManager(QWidget *parent) : KTVHBox(parent), m_currentTime
 	
 	//------------------------------------------------------
 
-	m_utilsInBottom = new KTVHBox( this, false );
+	m_utilsInBottom = new DVHBox( this, false );
 	m_utilsInBottom->setMaximumHeight(16);
 	m_utilsInBottom->setMinimumHeight(16);
 	
@@ -91,22 +91,22 @@ KTLayerManager::KTLayerManager(QWidget *parent) : KTVHBox(parent), m_currentTime
 
 	m_utilsInBottom->layout()->setAlignment(Qt::AlignLeft | Qt::AlignCenter);
 
-	m_insertButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/add_layer.png") , 20,  m_utilsInBottom );
+	m_insertButton = new DImageButton( QPixmap(HOME+"/themes/default/icons/add_layer.png") , 20,  m_utilsInBottom );
 	m_buttonGroup->addButton(m_insertButton, InsertLayer);
 
 	m_insertButton->setToolTip(tr( "Insert Layer" ) );
 
-	m_removeButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/remove_layer.png"),  20, m_utilsInBottom );
+	m_removeButton = new DImageButton( QPixmap(HOME+"/themes/default/icons/remove_layer.png"),  20, m_utilsInBottom );
 	m_buttonGroup->addButton(m_removeButton, RemoveLayer);
 	
 	m_removeButton->setToolTip(tr( "Remove Layer" ) );
 
-	m_moveUpButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/arrowup.png"),  20, m_utilsInBottom );
+	m_moveUpButton = new DImageButton( QPixmap(HOME+"/themes/default/icons/arrowup.png"),  20, m_utilsInBottom );
 	m_buttonGroup->addButton(m_moveUpButton,MoveLayerUp);
 
 	m_moveUpButton->setToolTip(tr( "Move Layer Up" ) );
 
-	m_moveDownButton = new KTImageButton( QPixmap(KTOON_HOME+"/themes/default/icons/arrowdown.png"), 20,  m_utilsInBottom );
+	m_moveDownButton = new DImageButton( QPixmap(HOME+"/themes/default/icons/arrowdown.png"), 20,  m_utilsInBottom );
 	m_buttonGroup->addButton(m_moveDownButton,MoveLayerDown);
 
 	m_moveDownButton->setToolTip(tr( "Move Layer Down" ) );
@@ -127,7 +127,7 @@ KTLayerManager::KTLayerManager(QWidget *parent) : KTVHBox(parent), m_currentTime
 
 KTLayerManager::~KTLayerManager()
 {
-	KTEND;
+	DEND;
 }
 
 QScrollBar *KTLayerManager::verticalScrollBar()

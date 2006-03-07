@@ -19,7 +19,7 @@
  ***************************************************************************/
  
 #include "acubictool.h"
-#include "ktdebug.h"
+#include "ddebug.h"
 
 ACubicTool::ACubicTool(): m_count(0), m_isComplete(false)
 {
@@ -31,10 +31,10 @@ ACubicTool::~ACubicTool()
 	
 }
 
-QHash< QString, KTAction * > ACubicTool::actions()
+QHash< QString, DAction * > ACubicTool::actions()
 {
-	QHash<QString, KTAction *> hash;
-	KTAction *cubic = new KTAction( QIcon(), tr("Polyline"), this);
+	QHash<QString, DAction *> hash;
+	DAction *cubic = new DAction( QIcon(), tr("Polyline"), this);
 // 	cubic->setShortcut( QKeySequence(tr("C")) );
 	
 	hash.insert( tr("Polyline"), cubic );
@@ -111,7 +111,7 @@ QRect ACubicTool::press(const QString& brush, QPainter& painter, const QPainterP
 	node.center = pos;
 	m_nodes << node;
 	
-// 	ktDebug() << m_nodes.count();
+// 	dDebug() << m_nodes.count();
 	return move(brush, painter, form, pos, pos);
 	
 }

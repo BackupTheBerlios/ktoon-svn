@@ -28,13 +28,13 @@
 #include <QListWidgetItem>
 #include <QPainterPath>
 
-#include "ktcellview.h"
+#include "dcellview.h"
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
-class KTBrushesList : public KTCellView
+class KTBrushesList : public DCellView
 {
 	Q_OBJECT
 	public:

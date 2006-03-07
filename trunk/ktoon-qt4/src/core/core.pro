@@ -3,6 +3,7 @@
 # Subdir relative project main directory: ./src/core
 # Target is an application:  ../../bin/ktoon
 
+QT += xml opengl 
 INSTALLS += kttrans \
             ktdata \
             target 
@@ -11,6 +12,80 @@ ktdata.files += data/*
 ktdata.path = /data 
 kttrans.files += *.qm 
 kttrans.path = /data/translations 
+KDEV_QTVER = 4 
+TARGETDEPS += ../../src/dlib/dgui/libdgui.so \
+              ../../src/dialogs/libdialogs.a \
+              ../../src/components/colorpalette/libcolorpalette.a \
+              ../../src/components/scenes/libscenes.a \
+              ../../src/components/brushes/libbrushes.a \
+              ../../src/components/exposure/libexposure.a \
+              ../../src/components/timeline/libtimeline.a \
+              ../../src/components/library/liblibrary.a \
+              ../../src/modules/arthury/animation/libanimation.a \
+              ../../src/modules/arthury/illustration/libillustration.a \
+              ../../src/components/gceditor/libgceditor.a \
+              ../../src/components/import/libimport.a \
+              ../../src/components/help/libhelp.a \
+              ../../src/store/libstore.so \
+              ../../src/ktoonstyle/libktoonstyle.a \
+              ../../src/components/export/ui/libui.a \
+              ../../src/components/kinas/libkinas.a \
+              ../../3rdparty/quazip/libquazip.a \
+              ../../src/dlib/dcore/libdcore.so \
+              ../../src/ktoonlib/libktoonlib.so 
+LIBS += -ldcore \
+        -ldgui \
+        -lktoonlib \
+        ../../src/ktoonstyle/libktoonstyle.a \
+        ../../src/dialogs/libdialogs.a \
+        ../../src/components/brushes/libbrushes.a \
+        ../../src/components/colorpalette/libcolorpalette.a \
+        ../../src/components/scenes/libscenes.a \
+        ../../src/components/exposure/libexposure.a \
+        ../../src/components/timeline/libtimeline.a \
+        ../../src/components/library/liblibrary.a \
+        ../../src/modules/arthury/animation/libanimation.a \
+        ../../src/modules/arthury/illustration/libillustration.a \
+        ../../src/components/gceditor/libgceditor.a \
+        ../../src/components/import/libimport.a \
+        ../../src/components/help/libhelp.a \
+        -lstore \
+        ../../src/components/export/ui/libui.a \
+        ../../src/components/kinas/libkinas.a \
+        ../../3rdparty/quazip/libquazip.a 
+INCLUDEPATH += ../../src/ktoonstyle \
+               ../../src/modules/arthury/interfaces \
+               ../../src/modules/arthury/animation \
+               ../../src/modules/arthury/illustration \
+               ../../src/components/kinas \
+               ../../src/components/help \
+               ../../src/components/gceditor \
+               ../../src/components/import \
+               ../../src/components/export/ui \
+               ../../src/components/exposure \
+               ../../src/components/timeline \
+               ../../src/components/library \
+               ../../src/components/colorpalette \
+               ../../src/components/scenes \
+               ../../src/components/brushes \
+               ../../src/dialogs \
+               ../../src/store \
+               ../../src/interfaces \
+               ../../src/ktoonlib \
+               ../../src/dlib/dgui \
+               ../../src/dlib/dcore \
+               ../../3rdparty/quazip 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+QMAKE_LIBDIR = ../../src/dlib/dcore \
+               ../../src/dlib/dgui \
+               ../../src/ktoonlib \
+               ../../src/store 
+TARGET = ../../bin/ktoon 
+CONFIG += release \
+          warn_on 
+TEMPLATE = app 
 TRANSLATIONS += ktoon_es.ts \
                 ktoon_fr.ts \
                 ktoon_ru.ts \
@@ -29,7 +104,9 @@ HEADERS += ktdocumentruler.h \
            crashwidget.h \
            ktworkspace.h \
            ktpackagehandler.h \
-           ktconfigurationarea.h 
+           ktconfigurationarea.h \
+           ktapplication.h \
+           configwizard.h 
 SOURCES += main.cpp \
            ktdocumentruler.cpp \
            ktviewdocument.cpp \
@@ -47,74 +124,6 @@ SOURCES += main.cpp \
            crashwidget.cpp \
            ktworkspace.cpp \
            ktpackagehandler.cpp \
-           ktconfigurationarea.cpp 
-QT += xml opengl
-KDEV_QTVER = 4
-TARGETDEPS += ../../src/dlslib/libdlslib.a \
-../../src/dialogs/libdialogs.a \
-../../src/components/colorpalette/libcolorpalette.a \
-../../src/components/scenes/libscenes.a \
-../../src/components/brushes/libbrushes.a \
-../../src/components/exposure/libexposure.a \
-../../src/components/timeline/libtimeline.a \
-../../src/components/library/liblibrary.a \
-../../src/modules/arthury/animation/libanimation.a \
-../../src/modules/arthury/illustration/libillustration.a \
-../../src/lib/libktoon.so \
-../../src/components/gceditor/libgceditor.a \
-../../src/components/import/libimport.a \
-../../src/components/help/libhelp.a \
-../../src/store/libstore.so \
-../../src/ktoonstyle/libktoonstyle.a \
-../../src/components/export/ui/libui.a \
-../../src/components/kinas/libkinas.a \
-../../3rdparty/quazip/libquazip.a
-LIBS += ../../src/ktoonstyle/libktoonstyle.a \
-../../src/dialogs/libdialogs.a \
-../../src/components/brushes/libbrushes.a \
-../../src/components/colorpalette/libcolorpalette.a \
-../../src/components/scenes/libscenes.a \
-../../src/components/exposure/libexposure.a \
-../../src/components/timeline/libtimeline.a \
-../../src/components/library/liblibrary.a \
-../../src/modules/arthury/animation/libanimation.a \
-../../src/modules/arthury/illustration/libillustration.a \
-../../src/dlslib/libdlslib.a \
--lktoon \
-../../src/components/gceditor/libgceditor.a \
-../../src/components/import/libimport.a \
-../../src/components/help/libhelp.a \
--lstore \
-../../src/components/export/ui/libui.a \
-../../src/components/kinas/libkinas.a \
-../../3rdparty/quazip/libquazip.a
-INCLUDEPATH += ../../src/ktoonstyle \
-../../src/modules/arthury/interfaces \
-../../src/modules/arthury/animation \
-../../src/modules/arthury/illustration \
-../../src/components/kinas \
-../../src/components/help \
-../../src/components/gceditor \
-../../src/components/import \
-../../src/components/export/ui \
-../../src/components/exposure \
-../../src/components/timeline \
-../../src/components/library \
-../../src/components/colorpalette \
-../../src/components/scenes \
-../../src/components/brushes \
-../../src/dialogs \
-../../src/store \
-../../src/dlslib \
-../../src/lib \
-../../src/interfaces \
-../../3rdparty/quazip
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-QMAKE_LIBDIR = ../../src/lib \
-../../src/store
-TARGET = ../../bin/ktoon
-CONFIG += release \
-warn_on
-TEMPLATE = app
+           ktconfigurationarea.cpp \
+           ktapplication.cpp \
+           configwizard.cpp 

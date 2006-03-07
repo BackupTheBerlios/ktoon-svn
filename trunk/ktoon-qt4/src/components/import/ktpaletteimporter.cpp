@@ -22,7 +22,7 @@
 #include <QFile>
 #include <QTextStream>
 
-#include "ktdebug.h"
+#include "ddebug.h"
 
 KTPaletteImporter::KTPaletteImporter() : m_document(0)
 {
@@ -56,7 +56,7 @@ void KTPaletteImporter::importGimpPalette(const QString &file)
 		
 		if ( ! stream.readLine().contains("GIMP Palette") )
 		{
-			ktError() << "Don't contains \"GIMP Palette\"";
+			dError() << "Don't contains \"GIMP Palette\"";
 			return;
 		}
 		
@@ -73,7 +73,7 @@ void KTPaletteImporter::importGimpPalette(const QString &file)
 		
 		if ( ! string.contains("#") )
 		{
-// 			ktDebug() << "Don't have \'#\' " << string;
+// 			dDebug() << "Don't have \'#\' " << string;
 // 			return;
 			stream.readLine();
 		}
@@ -82,12 +82,12 @@ void KTPaletteImporter::importGimpPalette(const QString &file)
 		while ( !stream.atEnd())
 		{
 			QString line = stream.readLine();
-			ktDebug() << "Readed: " << line;
+			dDebug() << "Readed: " << line;
 			
 			if ( rgb.indexIn(line) != -1 )
 			{
 				QStringList capturedTexts = rgb.capturedTexts();
-				ktDebug() << capturedTexts;
+				dDebug() << capturedTexts;
 				if ( capturedTexts.count() != 4 )
 					continue;
 				
@@ -103,11 +103,11 @@ void KTPaletteImporter::importGimpPalette(const QString &file)
 				}
 				else
 				{
-					ktError() << "Bad color";
+					dError() << "Bad color";
 				}
 			}
 			else
-				ktError() << "No find";
+				dError() << "No find";
 		}
 	}
 }

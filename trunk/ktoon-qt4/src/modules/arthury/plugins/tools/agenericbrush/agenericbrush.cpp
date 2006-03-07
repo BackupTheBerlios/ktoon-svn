@@ -20,11 +20,11 @@
 
 #include "agenericbrush.h"
 #include "brush.xpm"
-#include "ktdebug.h"
+#include "ddebug.h"
 #include <QPointF>
 #include <QKeySequence>
 
-#include "ktapplication.h"
+#include "dglobal.h"
 #include "ktgraphicalgorithm.h"
 
 QStringList AGenericBrush::keys() const
@@ -110,14 +110,14 @@ QPainterPath AGenericBrush::path() const
 	return m_path;
 }
 
-QHash<QString, KTAction *> AGenericBrush::actions()
+QHash<QString, DAction *> AGenericBrush::actions()
 {
-	QHash<QString, KTAction *> hash;
+	QHash<QString, DAction *> hash;
 	
-	KTAction *pencil = new KTAction( QIcon(brush_xpm), tr("Pencil"), this);
+	DAction *pencil = new DAction( QIcon(brush_xpm), tr("Pencil"), this);
 	pencil->setShortcut( QKeySequence(tr("P")) );
 	
-	QPixmap pix(KTOON_THEME_DIR+"/cursors/pencil.png");
+	QPixmap pix(THEME_DIR+"/cursors/pencil.png");
 	pencil->setCursor( QCursor(pix, 0, pix.height()) );
 	
 	hash.insert( tr("Pencil"), pencil );

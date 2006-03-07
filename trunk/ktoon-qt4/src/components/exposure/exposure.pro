@@ -5,11 +5,10 @@
 
 QT += xml 
 KDEV_QTVER = 4 
-INCLUDEPATH += ../../../src/store \
-               ../../../src/lib \
-               ../../../src/modules/opengl/draw \
-               ../../../src/modules/opengl/tools \
-               ../../../src/modules/opengl/cameras 
+INCLUDEPATH += ../../../src/ktoonlib \
+               ../../../src/store \
+               ../../../src/dlib/dgui \
+               ../../../src/dlib/dcore 
 MOC_DIR = .moc 
 UI_DIR = .ui 
 OBJECTS_DIR = .obj 

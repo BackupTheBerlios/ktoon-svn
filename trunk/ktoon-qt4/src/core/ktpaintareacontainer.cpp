@@ -25,11 +25,11 @@
 #include <QGridLayout>
 #include <QPushButton>
 
-#include "ktdebug.h"
+#include "ddebug.h"
 
 KTPaintAreaContainer::KTPaintAreaContainer(const QSize& size, APaintArea::RenderType type,  QWidget *parent) : QWidget(parent), m_drawAreaDelta(25,25)
 {
-	KTINIT;
+	DINIT;
 // 	setMouseTracking(true);
 	QGridLayout *grid = new QGridLayout(this);
 	grid->setMargin(0);
@@ -77,7 +77,7 @@ KTPaintAreaContainer::KTPaintAreaContainer(const QSize& size, APaintArea::Render
 
 KTPaintAreaContainer::~KTPaintAreaContainer()
 {
-	KTEND;
+	DEND;
 }
 
 
@@ -97,7 +97,7 @@ APaintArea *KTPaintAreaContainer::drawArea() const
 // 	return QSize(400,400);
 // }
 
-void KTPaintAreaContainer::resizeEvent ( QResizeEvent * event )
+void KTPaintAreaContainer::resizeEvent ( QResizeEvent * )
 {
 	m_drawAreaDelta.setY( height()/2 - m_drawArea->paintDevice()->height()/2);
 	m_drawAreaDelta.setX( width()/2 - m_drawArea->paintDevice()->width()/2 );

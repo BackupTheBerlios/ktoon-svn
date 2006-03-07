@@ -7,10 +7,10 @@ INSTALLS += ifaceheaders
 ifaceheaders.files += *.h 
 ifaceheaders.path = /include/interfaces/ 
 HEADERS += exportinterface.h 
-KDEV_QTVER = 4 
+KDEV_QTVER = 4
 INCLUDEPATH += ../../src/store \
-               ../../src/lib 
+../../src/lib
 CONFIG += release \
-          warn_on \
-          staticlib 
-TEMPLATE = lib 
+warn_on \
+staticlib
+TEMPLATE = lib

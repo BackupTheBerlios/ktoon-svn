@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTCONFIGURATIONAREA_H
-#define KTCONFIGURATIONAREA_H
+#ifndef DCONFIGURATIONAREA_H
+#define DCONFIGURATIONAREA_H
 
 #include <QDockWidget>
 

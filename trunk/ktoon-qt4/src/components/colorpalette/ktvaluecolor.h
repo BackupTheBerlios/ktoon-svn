@@ -25,7 +25,7 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QSpinBox>
-#include "kteditspinbox.h"
+#include "deditspinbox.h"
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
@@ -66,7 +66,7 @@ class KTValueColor : public QFrame
 		
 	private:
 // 		KTItemValueColor *m_valueR, *m_valueG, *m_valueB, *m_valueH, *m_valueS, *m_valueV, *m_valueA;
-		KTEditSpinBox *m_valueR, *m_valueG, *m_valueB, *m_valueH, *m_valueS, *m_valueV, *m_valueA;
+		DEditSpinBox *m_valueR, *m_valueG, *m_valueB, *m_valueH, *m_valueS, *m_valueV, *m_valueA;
 		QGridLayout *m_layout;
 		bool ok;
 		

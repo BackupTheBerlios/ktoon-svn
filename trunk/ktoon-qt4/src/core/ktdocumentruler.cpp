@@ -20,7 +20,7 @@
 
 #include "ktdocumentruler.h"
 
-KTDocumentRuler::KTDocumentRuler(Qt::Orientation orientation, QWidget *parent, const char *name) : KTRulerBase(orientation, parent, name)
+KTDocumentRuler::KTDocumentRuler(Qt::Orientation orientation, QWidget *parent, const char *name) : DRulerBase(orientation, parent, name)
 {
 	setDrawPointer(true);
 }

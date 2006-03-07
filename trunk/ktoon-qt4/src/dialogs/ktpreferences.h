@@ -30,16 +30,16 @@
 #include <qlabel.h>
 #include <qradiobutton.h>
 
-#include "ktfontchooser.h"
+#include "dfontchooser.h"
 #include "ktthemeselector.h"
 
-#include "kttabdialog.h"
-#include "ktconfigurationdialog.h"
-#include "ktflatbutton.h"
+#include "dtabdialog.h"
+#include "dconfigurationdialog.h"
+#include "dflatbutton.h"
 
 class ColorSchemePref;
 
-class KTPreferences : public KTConfigurationDialog
+class KTPreferences : public DConfigurationDialog
 {
 	Q_OBJECT;
 	
@@ -52,7 +52,7 @@ class KTPreferences : public KTConfigurationDialog
 		class GeneralPage;
 		
 		KTThemeSelector *m_themeSelector;
-		KTFontChooser *m_fontChooser;
+		DFontChooser *m_fontChooser;
 		GeneralPage *m_generalPage;
 		
 	public slots:

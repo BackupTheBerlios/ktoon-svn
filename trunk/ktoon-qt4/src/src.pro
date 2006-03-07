@@ -4,9 +4,9 @@
 # Target is a subdirs project 
 
 SUBDIRS += themes \
-           interfaces \ 
-           lib \
-           dlslib \
+           dlib \
+           ktoonlib \ 
+           interfaces \
            store \
            dialogs \
            components \

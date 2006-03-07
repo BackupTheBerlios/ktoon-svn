@@ -74,7 +74,7 @@ class KTViewColorCells : public QFrame
 		virtual void addCurrentColor();
 		virtual void removeCurrentColor();
 		virtual void addPalette(const QString & name, const QList<QBrush> & brushes, bool editable );
-		void changeColor(KTCellViewItem*/*, KTCellViewItem **/);
+		void changeColor(DCellViewItem*/*, DCellViewItem **/);
 		
 };
 

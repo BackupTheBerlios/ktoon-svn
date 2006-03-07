@@ -11,11 +11,11 @@
 //
 
 #include "kinaswidget.h"
-#include "ktdebug.h"
+#include "ddebug.h"
 
 KinasWidget::KinasWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 {
-	KTINIT;
+	DINIT;
 	
 	setCaption(tr("KToon Script"));
 	
@@ -36,7 +36,7 @@ KinasWidget::KinasWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 
 KinasWidget::~KinasWidget()
 {
-	KTEND;
+	DEND;
 }
 
 void KinasWidget::addEditor(const QString &title)

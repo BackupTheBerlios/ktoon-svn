@@ -33,7 +33,7 @@
 #include "crashwidget.h"
 #include "crashhandler.h"
 
-#include "ktconfig.h"
+#include "dconfig.h"
 
 class TextArea : public QTextBrowser
 {
@@ -58,8 +58,8 @@ void TextArea::setSource( const QUrl &name )
 {
 	if ( name.scheme() == "http" )
 	{
-		KTCONFIG->beginGroup("General");
-		QString browser = KTCONFIG->value("Browser").toString();
+		DCONFIG->beginGroup("General");
+		QString browser = DCONFIG->value("Browser").toString();
 
 		if ( !browser.isEmpty() )
 		{

@@ -36,7 +36,7 @@ class APolygonTool: public KTToolPluginObject, public AToolInterface
 		APolygonTool();
 		~APolygonTool();
 		
-		QHash< QString, KTAction * >  actions();
+		QHash< QString, DAction * >  actions();
 
 		QPainterPath  path() const;
 

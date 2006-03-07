@@ -27,7 +27,7 @@
 #include <QScrollBar>
 #include <QHeaderView>
 
-#include "ktdebug.h"
+#include "ddebug.h"
 
 //////////// TFramesTableModel
 
@@ -849,7 +849,7 @@ TFramesTableItem *TFramesTable::itemAt(const QPoint &p) const
 
 QRect TFramesTable::visualItemRect(const TFramesTableItem *item) const
 {
-// 	KT_FUNCINFO;
+// 	D_FUNCINFO;
 	Q_ASSERT(item);
 	QModelIndex index = m_model->index(const_cast<TFramesTableItem*>(item));
 	Q_ASSERT(index.isValid());
@@ -913,7 +913,7 @@ QModelIndex TFramesTable::indexFromItem(TFramesTableItem *item) const
 
 void TFramesTable::selectCell(int row, int column)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	if (row >= 0 && row < model()->rowCount(rootIndex()) && column >= 0 && column < model()->columnCount(rootIndex()))
 	{
 		QItemSelectionModel::SelectionFlags command = selectionCommand(QModelIndex());

@@ -19,9 +19,9 @@
  ***************************************************************************/
 
 #include "aanimationarea.h"
-#include "ktdebug.h"
+#include "ddebug.h"
 
-#include "ktgradientadjuster.h"
+#include "dgradientadjuster.h"
 
 AAnimationArea::AAnimationArea(const QSize& size, QWidget *parent) : QFrame(parent), m_scene(0), m_draw(false), m_ciclicAnimation(false), m_currentFramePosition(0), m_isRendered(false)
 {
@@ -95,7 +95,7 @@ void AAnimationArea::drawFrames(QPainter *painter)
 
 void AAnimationArea::play()
 {
-	ktDebug() << "Playing!";
+	dDebug() << "Playing!";
 	
 	m_draw = true;
 	
@@ -110,7 +110,7 @@ void AAnimationArea::play()
 
 void AAnimationArea::stop()
 {
-	ktDebug() << "Stopping";
+	dDebug() << "Stopping";
 	m_timer->stop();
 // 	m_draw = false;
 	m_currentFramePosition = 0;

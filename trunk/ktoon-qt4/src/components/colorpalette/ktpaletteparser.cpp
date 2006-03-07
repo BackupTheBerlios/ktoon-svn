@@ -19,18 +19,18 @@
  ***************************************************************************/
 
 #include "ktpaletteparser.h"
-#include "ktdebug.h"
+#include "ddebug.h"
 
 KTPaletteParser::KTPaletteParser()
 	: QXmlDefaultHandler(), m_paletteName(""), m_isEditable(false), m_gradient(0)
 {
-// 	KTINIT;
+// 	DINIT;
 }
 
 
 KTPaletteParser::~KTPaletteParser()
 {
-// 	KTEND;
+// 	DEND;
 }
 
 
@@ -63,7 +63,7 @@ bool KTPaletteParser::startElement( const QString& , const QString& , const QStr
 				m_brushes << c;
 			}
 			else
-				ktError() << "Invalid Color";
+				dError() << "Invalid Color";
 		}
 		if ( qname == "Gradient" )
 		{
@@ -91,7 +91,7 @@ bool KTPaletteParser::startElement( const QString& , const QString& , const QStr
 				break;
 				default:
 				{
-					ktFatal() << "No gradient type: " << type;
+					dFatal() << "No gradient type: " << type;
 				}
 				break;
 				
@@ -141,11 +141,13 @@ bool KTPaletteParser::paletteIsEditable() const
 
 bool KTPaletteParser::error ( const QXmlParseException & exception )
 {
-	ktError() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	dError() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	return true;
 }
 
 
 bool KTPaletteParser::fatalError ( const QXmlParseException & exception )
 {
-	ktFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	dFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	return true;
 }

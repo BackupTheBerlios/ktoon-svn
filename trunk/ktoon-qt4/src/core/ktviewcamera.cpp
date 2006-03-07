@@ -20,16 +20,16 @@
 
 #include "ktviewcamera.h"
 #include "ktapplication.h"
-#include "ktdebug.h"
+#include "ddebug.h"
 
-KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : KTMdiWindow(parent)
+KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : DMdiWindow(parent)
 {
-	KTINIT;
+	DINIT;
 	
 	setObjectName("KTViewCamera_");
 	
 	setWindowTitle(tr("Render Camera Preview"));
-	setWindowIcon( QPixmap(KTOON_THEME_DIR+"/icons/camera_preview.png" ));
+	setWindowIcon( QPixmap(THEME_DIR+"/icons/camera_preview.png" ));
 	
 	m_container = new QFrame(this);
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, m_container);
@@ -62,10 +62,10 @@ KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : KTMdiWindow(
 	layout->addWidget(m_bar, 0, Qt::AlignTop | Qt::AlignCenter );
 	m_bar->show();
 	
-	CCButton *rew = m_bar->addButton(QPixmap(KTOON_THEME_DIR+"/icons/rw.png" ));
-	CCButton *play = m_bar->addButton(QPixmap(KTOON_THEME_DIR+"/icons/play.png" ));
-	CCButton *stop = m_bar->addButton(QPixmap(KTOON_THEME_DIR+"/icons/stop.png" ));
-	CCButton *ff = m_bar->addButton(QPixmap(KTOON_THEME_DIR+"/icons/ff.png" ));
+	CCButton *rew = m_bar->addButton(QPixmap(THEME_DIR+"/icons/rw.png" ));
+	CCButton *play = m_bar->addButton(QPixmap(THEME_DIR+"/icons/play.png" ));
+	CCButton *stop = m_bar->addButton(QPixmap(THEME_DIR+"/icons/stop.png" ));
+	CCButton *ff = m_bar->addButton(QPixmap(THEME_DIR+"/icons/ff.png" ));
 	
 	connect(play, SIGNAL(clicked()), m_animationArea, SLOT(play()));
 	connect(stop, SIGNAL(clicked()), m_animationArea, SLOT(stop()));
@@ -84,7 +84,7 @@ KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : KTMdiWindow(
 
 KTViewCamera::~KTViewCamera()
 {
-	KTEND;
+	DEND;
 }
 
 AAnimationArea *KTViewCamera::animationArea()

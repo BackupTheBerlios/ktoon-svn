@@ -20,7 +20,7 @@
 
 #include "ktmainwindow.h"
 
-#include "ktdebug.h"
+#include "ddebug.h"
 #include "ktapplication.h"
 
 // Animation
@@ -63,7 +63,7 @@ void KTMainWindow::setLayerName(int indexLayer, const QString& name)
 
 void KTMainWindow::insertLayer(const QString &name, bool addedToEnd)
 {
-// 	ktDebug() << "KTMainWindow::insertLayer(" << name << "," << addedToEnd << ")";
+// 	dDebug() << "KTMainWindow::insertLayer(" << name << "," << addedToEnd << ")";
 // 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 // 	if ( doc )
@@ -100,7 +100,7 @@ void KTMainWindow::setLayerVisibilityChanged(int idLayer, bool isVisible)
 
 void KTMainWindow::insertFrame(const QString &name, bool addedToEnd)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	
 	m_exposureSheet->addFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd); // FIXME: insert!
 	m_timeLine->insertFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd);
@@ -138,7 +138,7 @@ void KTMainWindow::setFrameName(int indexLayer, int indexFrame, const QString& n
 
 void KTMainWindow::selectFrame(int layer, int frame)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	SHOW_VAR(layer);
 	SHOW_VAR(frame);
 	
@@ -198,7 +198,7 @@ void KTMainWindow::selectFrame(int layer, int frame)
 // Graphic Components
 void KTMainWindow::rotateCurrentElement(int a)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )
@@ -225,7 +225,7 @@ void KTMainWindow::rotateCurrentElement(int a)
 
 void KTMainWindow::scaleCurrentElement(double dx,double dy)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )
@@ -249,7 +249,7 @@ void KTMainWindow::scaleCurrentElement(double dx,double dy)
 
 void KTMainWindow::translateCurrentElement(double dx ,double dy)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )
@@ -274,7 +274,7 @@ void KTMainWindow::translateCurrentElement(double dx ,double dy)
 
 void KTMainWindow::shearCurrentElement(double dx,double dy)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )

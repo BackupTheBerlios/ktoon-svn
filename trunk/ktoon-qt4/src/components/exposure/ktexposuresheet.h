@@ -32,8 +32,8 @@
 #include <QList>
 #include <QActionGroup>
 
-#include "kttabwidget.h"
-#include "ktimagebutton.h"
+#include "dtabwidget.h"
+#include "dimagebutton.h"
 
 /**
 * @author Jorge Cuadrado
@@ -69,7 +69,7 @@ class KTExposureSheet : public KTModuleWidgetBase
 		QList<KTTableExposure*> m_tables;
 		QGroupBox *m_buttonsPanel;
 		QButtonGroup *m_buttonGroup;
-		KTTabWidget *m_scenes;
+		DTabWidget *m_scenes;
 		KTTableExposure *m_currentTable;
 		
 	private:

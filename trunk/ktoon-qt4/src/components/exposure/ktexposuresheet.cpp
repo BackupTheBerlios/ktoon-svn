@@ -19,9 +19,9 @@
  ***************************************************************************/
 
 #include "ktexposuresheet.h"
-#include "ktapplication.h"
+#include "dapplication.h"
 
-#include "ktdebug.h"
+#include "ddebug.h"
 
 #include <QToolTip>
 #include <QPixmap>
@@ -31,19 +31,19 @@
 
 KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, "Exposure Sheet"), m_currentTable(0)
 {
-	KTINIT;
+	DINIT;
 	setCaption( tr( "Exposure Sheet" ) );
 	
 	m_imgs <<  
-			QPixmap(KTOON_THEME_DIR+"/icons/add_layer.png" ) <<
-			QPixmap(KTOON_THEME_DIR+"/icons/remove_layer.png" ) <<
-			QPixmap(KTOON_THEME_DIR+"/icons/add_frame.png" ) <<
-			QPixmap(KTOON_THEME_DIR+"/icons/remove_frame.png" ) <<
-			QPixmap(KTOON_THEME_DIR+"/icons/lock.png" ) <<
-			QPixmap(KTOON_THEME_DIR+"/icons/arrowup.png" ) <<
-			QPixmap(KTOON_THEME_DIR+"/icons/arrowdown.png" );
+			QPixmap(THEME_DIR+"/icons/add_layer.png" ) <<
+			QPixmap(THEME_DIR+"/icons/remove_layer.png" ) <<
+			QPixmap(THEME_DIR+"/icons/add_frame.png" ) <<
+			QPixmap(THEME_DIR+"/icons/remove_frame.png" ) <<
+			QPixmap(THEME_DIR+"/icons/lock.png" ) <<
+			QPixmap(THEME_DIR+"/icons/arrowup.png" ) <<
+			QPixmap(THEME_DIR+"/icons/arrowdown.png" );
 	setupButtons();
-	m_scenes = new KTTabWidget(this);
+	m_scenes = new DTabWidget(this);
 	connect( m_scenes , SIGNAL(currentChanged ( int )), this, SLOT(emitRequestChangeScene( int ) ));
 	addChild(m_scenes);
 	show();
@@ -52,7 +52,7 @@ KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, 
 KTExposureSheet::~KTExposureSheet()
 {
 	m_imgs.clear();
-	KTEND;
+	DEND;
 }
 
 
@@ -69,7 +69,7 @@ void KTExposureSheet::setupButtons()
 	
 	for(int i = 0; i < toolTips.count(); i++)
 	{
-		QPushButton * tmpButton = new KTImageButton(m_imgs[i], 25, m_buttonsPanel);
+		QPushButton * tmpButton = new DImageButton(m_imgs[i], 25, m_buttonsPanel);
 		m_buttonGroup->addButton (tmpButton);
 		tmpButton->setToolTip(toolTips[i]);
 		layout->addWidget(tmpButton);
@@ -82,7 +82,7 @@ void KTExposureSheet::setupButtons()
 
 void KTExposureSheet::addScene(const QString &name)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	KTTableExposure *newLayer = new KTTableExposure(100, 0);
 	
 	m_tables << newLayer;
@@ -115,13 +115,13 @@ void KTExposureSheet::renameScene(const QString &name, int id)
 
 void KTExposureSheet::applyAction(int action)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	
-// 	ktDebug() << m_tables.count();
+// 	dDebug() << m_tables.count();
 	
 	if ( m_tables.count() == 0 || m_currentTable == 0 )
 	{
-		ktFatal() << "KTExposureSheet::applyAction: No layer view!!" << endl;
+		dFatal() << "KTExposureSheet::applyAction: No layer view!!" << endl;
 		return;
 	}
 	
@@ -171,7 +171,7 @@ void KTExposureSheet::applyAction(int action)
 
 void KTExposureSheet::addFrame(int idLayer, const QString &name, bool addedToEnd)
 {
-	ktDebug( ) << "KTExposureSheet::addFrame(" << idLayer << " , "<< name << " , "  << addedToEnd << ")" << endl;
+	dDebug( ) << "KTExposureSheet::addFrame(" << idLayer << " , "<< name << " , "  << addedToEnd << ")" << endl;
 	m_currentTable->setUseFrame(idLayer, name, addedToEnd);
 }
 
@@ -200,8 +200,8 @@ void KTExposureSheet::updateLayersAndKeyframes()
 
 void KTExposureSheet::insertLayer(const QString& name)
 {
-// 	KT_FUNCINFO;
-	ktDebug() << "KTExposureSheet::insertLayer(const QString& " << name  << ")";
+// 	D_FUNCINFO;
+	dDebug() << "KTExposureSheet::insertLayer(const QString& " << name  << ")";
 	if ( m_currentTable )
 	{
 		m_currentTable->insertLayer(100, name);
@@ -209,7 +209,7 @@ void KTExposureSheet::insertLayer(const QString& name)
 	}
 	else
 	{
-		ktFatal() << "KTExposureSheet::insertLayer: No layer view!" << endl;
+		dFatal() << "KTExposureSheet::insertLayer: No layer view!" << endl;
 	}
 }
 
@@ -221,7 +221,7 @@ void KTExposureSheet::removeCurrentLayer()
 
 void KTExposureSheet::removeLayer(int index)
 {
-	ktDebug() << "removeLayer(int" <<  index << ")";
+	dDebug() << "removeLayer(int" <<  index << ")";
 	if ( m_currentTable )
 		m_currentTable->removeLayer( index );
 }
@@ -265,8 +265,8 @@ void KTExposureSheet::lockCurrentFrame()
 
 void KTExposureSheet::setScene(int index)
 {
-	KT_FUNCINFO;
-// 	ktDebug() << "KTExposureSheet::setScene(int "<< index << ")";
+	D_FUNCINFO;
+// 	dDebug() << "KTExposureSheet::setScene(int "<< index << ")";
 	if(index != m_scenes->indexOf(m_currentTable) && m_tables.count() >= index)
 	{
 		m_currentTable = m_tables[index];
@@ -276,7 +276,7 @@ void KTExposureSheet::setScene(int index)
 
 void KTExposureSheet::emitRequestChangeScene(int index)
 {
-// 	ktDebug() << "KTExposureSheet::emitRequestChangeScene(int" <<  index << ")" << m_scenes->indexOf(m_currentTable);
+// 	dDebug() << "KTExposureSheet::emitRequestChangeScene(int" <<  index << ")" << m_scenes->indexOf(m_currentTable);
 	
 	if(index != m_scenes->indexOf(m_currentTable))
 	{
@@ -287,7 +287,7 @@ void KTExposureSheet::emitRequestChangeScene(int index)
 
 void KTExposureSheet::closeAllScenes()
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	
 	delete m_currentTable;
 	
@@ -304,12 +304,12 @@ void KTExposureSheet::setLayer(int index)
 
 void KTExposureSheet::setFrameName(int indexLayer, int indexFrame, const QString& name )
 {
-	ktDebug() << "setFrameName(" << indexLayer << "," << indexFrame << "," << name  << ")";
+	dDebug() << "setFrameName(" << indexLayer << "," << indexFrame << "," << name  << ")";
 	m_currentTable->setFrameName(indexLayer, indexFrame, name);
 }
 
 void KTExposureSheet::setLayerName(int indexLayer, const QString& name )
 {
-	ktDebug() << "setLayerName(" << indexLayer << "," << name << ")";
+	dDebug() << "setLayerName(" << indexLayer << "," << name << ")";
 	m_currentTable->setLayerName( indexLayer, name );
 }

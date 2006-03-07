@@ -11,12 +11,12 @@
 //
 
 #include "ktsceneslist.h"
-#include "ktdebug.h"
+#include "ddebug.h"
 
 #include <QTreeWidgetItem>
 
 KTScenesList::KTScenesList(QWidget *parent)
-	: KTTreeListWidget(parent)
+	: DTreeListWidget(parent)
 {
 	setHeaderLabels ( QStringList() << "name" );
 // 	hide();

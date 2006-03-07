@@ -30,13 +30,13 @@
 #include <QLabel>
 #include <QIntValidator>
 
-#include "ktapplication.h"
-#include "ktdebug.h"
+#include "dglobal.h"
+#include "ddebug.h"
 
 
 KTExportWidget::KTExportWidget(const KTProjectManager *manager, QWidget *parent) : KTModuleWidgetBase(parent), m_manager(manager), m_currentExporter(0), m_currentFormat(ExportInterface::NONE)
 {
-	KTINIT;
+	DINIT;
 	setCaption(tr("Export"));
 	
 	m_buttons = new QButtonGroup(this);
@@ -117,12 +117,12 @@ void KTExportWidget::setupExportBox(QBoxLayout *mainLayout)
 
 KTExportWidget::~KTExportWidget()
 {
-	KTEND;
+	DEND;
 }
 
 void KTExportWidget::loadPlugins()
 {
-	QDir pluginDirectory = QDir(KTOON_HOME+"/plugins/");
+	QDir pluginDirectory = QDir(HOME+"/plugins/");
 
 	foreach (QString fileName, pluginDirectory.entryList(QDir::Files))
 	{
@@ -140,7 +140,7 @@ void KTExportWidget::loadPlugins()
 			}
 		}
 		else
-			ktError() << "Can't load: " << fileName;
+			dError() << "Can't load: " << fileName;
 	}
 }
 
@@ -243,7 +243,7 @@ void KTExportWidget::makeAction(int buttonId)
 
 void KTExportWidget::exportIt()
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	
 	if( m_currentExporter && m_currentFormat != ExportInterface::NONE )
 	{
@@ -251,11 +251,11 @@ void KTExportWidget::exportIt()
 		
 		if ( file.isNull() ) return;
 		
-		ktDebug() << "Exporting to file: " << file;
+		dDebug() << "Exporting to file: " << file;
 		
 		QList<KTScene *> scenes = scenesToExport();
 		
-		ktDebug() << "Exporting " << scenes.count() << " scenas";
+		dDebug() << "Exporting " << scenes.count() << " scenas";
 		
 		if ( scenes.count() > 0)
 		{

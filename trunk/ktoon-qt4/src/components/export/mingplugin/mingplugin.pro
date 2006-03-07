@@ -7,15 +7,11 @@ QT += xml
 INSTALLS += target 
 target.path = /plugins/ 
 KDEV_QTVER = 4 
-TARGETDEPS += ../../../../src/store/libstore.so \
-              ../../../../src/lib/libktoon.so 
-LIBS += -lstore \
-        -lktoon 
 INCLUDEPATH += ../../../../src/store \
-               ../../../../src/lib \
-               ../../../../src/interfaces 
-QMAKE_LIBDIR = ../../../../src/store \
-               ../../../../src/lib 
+               ../../../../src/interfaces \
+               ../../../../src/ktoonlib \
+               ../../../../src/dlib/dgui \
+               ../../../../src/dlib/dcore 
 CONFIG += release \
           warn_on \
           plugin 

@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "ktkeyframe.h"
-#include "ktdebug.h"
+#include "ddebug.h"
 
 KTKeyFrame::KTKeyFrame(const KTKeyFrame &kf) : KTSerializableObject(kf.parent()), m_name(kf.m_name), m_isLocked(kf.m_isLocked)/*, m_components(QList<AGraphicComponent *>(kf.m_components))*/
 {
@@ -50,7 +50,7 @@ KTKeyFrame::KTKeyFrame(const QString &frameName, QObject * parent) : KTSerializa
 
 KTKeyFrame::~KTKeyFrame()
 {
-	KTEND;
+	DEND;
 	for(int i = 0; i < m_components.count(); i++ )
 	{
 		delete m_components.takeAt(i);
@@ -193,10 +193,10 @@ bool KTKeyFrame::hasSelections() const
 void KTKeyFrame::sendToBackSelected()
 {
 	
-	ktDebug() << "aki";
+	dDebug() << "aki";
 	if(m_selectedComponents.count() == 1)
 	{
-		ktDebug() << "aki1";
+		dDebug() << "aki1";
 		m_components.removeAll ( m_selectedComponents[0] );
 		m_components.push_front( m_selectedComponents[0] );
 	}

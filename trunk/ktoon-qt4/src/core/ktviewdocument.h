@@ -21,7 +21,7 @@
 #ifndef KTVIEWDOCUMENT_H
 #define KTVIEWDOCUMENT_H
 
-#include "ktmdiwindow.h"
+#include "dmdiwindow.h"
 #include "ktdocumentruler.h"
 #include <QCursor>
 #include <QAction>
@@ -31,23 +31,17 @@
 #include <QDir>
 #include <QPluginLoader>
 
-#include "ktactionmanager.h"
-
+#include "dactionmanager.h"
 #include "afilterinterface.h"
 #include "atoolinterface.h"
-
 #include "ktpaintareacontainer.h"
-
 #include "ktdocument.h"
-
-#include "ktactionmanager.h"
-
 #include "ktconfigurationarea.h"
 
 /**
  * @author Jorge Cuadrado
 */
-class KTViewDocument : public KTMdiWindow
+class KTViewDocument : public DMdiWindow
 {
 	Q_OBJECT
 	public:
@@ -98,7 +92,7 @@ class KTViewDocument : public KTMdiWindow
 		
 	private:
 		QDir m_pluginDirectory;
-		KTActionManager *m_actionManager;
+		DActionManager *m_actionManager;
 		KTConfigurationArea *m_configurationArea;
 		
 		

@@ -188,13 +188,17 @@ class AGraphicComponent : public KTSerializableObject
 		
 	private:
 		QDomElement brushToElement(const QBrush &brush, QDomDocument &doc);
-		QList<AGraphicComponent*> m_childs;
+		
 	protected:
 		QString m_name;
-		Graphics m_graphics;
-		QPolygonF m_controlPoints;
 		QPointF m_scale, m_shear;
 		int m_angle;
+		
+		Graphics m_graphics;
+		
+		QList<AGraphicComponent*> m_childs;
+		QPolygonF m_controlPoints;
+		
 	private: // AUX FUNCTIONS
 		void appendChilds(AGraphicComponent *component, QList<AGraphicComponent *> &childs) const;
 		

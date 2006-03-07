@@ -20,12 +20,12 @@
 
 #include "ktdisplaygraphic.h"
 
-#include "ktdebug.h"
-#include "ktgradientadjuster.h"
+#include "ddebug.h"
+#include "dgradientadjuster.h"
 
 #include <QPainter>
 
-#include "ktpathadjuster.h"
+#include "dpathadjuster.h"
 
 KTDisplayGraphic::KTDisplayGraphic(QWidget *parent) : QFrame(parent), m_drawGraphic(false), m_graphic(0)
 {

@@ -26,10 +26,10 @@
 #include <QLabel>
 #include <QPushButton>
 
-#include <kteditspinbox.h>
-#include "ktxyspinbox.h"
+#include <deditspinbox.h>
+#include "dxyspinbox.h"
 
-#include "kttreelistwidget.h"
+#include "dtreelistwidget.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -58,12 +58,12 @@ class KTGCEditor : public KTModuleWidgetBase
 		void requestShear(double x, double y);
 		
 	private:
-		KTTreeListWidget *m_componentTree;
+		DTreeListWidget *m_componentTree;
 		
-		KTEditSpinBox *m_angle;
-		KTXYSpinBox *m_scale;
-		KTXYSpinBox *m_shear;
-		KTXYSpinBox *m_translate;
+		DEditSpinBox *m_angle;
+		DXYSpinBox *m_scale;
+		DXYSpinBox *m_shear;
+		DXYSpinBox *m_translate;
 };
 
 #endif

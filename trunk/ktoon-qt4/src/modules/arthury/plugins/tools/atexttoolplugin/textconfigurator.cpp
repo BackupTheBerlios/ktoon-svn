@@ -22,18 +22,18 @@
 #include <QBoxLayout>
 #include <QFontDatabase>
 
-#include "ktfontchooser.h"
+#include "dfontchooser.h"
 
 #include "spellhighlighter.h"
 
-// #include "ktdebug.h"
+// #include "ddebug.h"
 
 TextConfigurator::TextConfigurator(QWidget *parent) : QWidget(parent)
 {
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom, this );
 	setLayout(layout);
 	
-	m_fontChooser = new KTFontChooser;
+	m_fontChooser = new DFontChooser;
 	layout->addWidget(m_fontChooser);
 
 	m_text = new QTextEdit(this);

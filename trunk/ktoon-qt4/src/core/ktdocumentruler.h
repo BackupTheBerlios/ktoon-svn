@@ -20,13 +20,13 @@
 #ifndef KTDOCUMENTRULER_H
 #define KTDOCUMENTRULER_H
 
-#include <ktrulerbase.h>
+#include <drulerbase.h>
 
 /**
  * @author Jorge Cuadrado
 */
 
-class KTDocumentRuler : public KTRulerBase
+class KTDocumentRuler : public DRulerBase
 {
 	Q_OBJECT
 	public:

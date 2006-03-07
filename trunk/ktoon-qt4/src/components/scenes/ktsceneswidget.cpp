@@ -20,9 +20,9 @@
 
 #include "ktsceneswidget.h"
 
-#include "ktapplication.h"
-#include "ktdebug.h"
-#include "ktimagebutton.h"
+#include "dglobal.h"
+#include "ddebug.h"
+#include "dimagebutton.h"
 
 #include <QToolTip>
 #include <QMessageBox>
@@ -36,7 +36,7 @@
 
 KTScenesWidget::KTScenesWidget( QWidget *parent) : KTModuleWidgetBase( parent, "KTScenesWidget")
 {
-	KTINIT;
+	DINIT;
 	
 	setCaption( tr( "Scenes Manager" ) );
 	
@@ -48,7 +48,7 @@ KTScenesWidget::KTScenesWidget( QWidget *parent) : KTModuleWidgetBase( parent, "
 
 KTScenesWidget::~KTScenesWidget()
 {
-	KTEND;
+	DEND;
 // 	delete m_textName;
 // 	delete m_valueName;
 }
@@ -61,22 +61,22 @@ void KTScenesWidget::setupButtons()
 	QHBoxLayout *layout = new QHBoxLayout(m_buttonsPanel);
 	layout->setMargin(0);
 
-	KTImageButton *insertButton = new KTImageButton(QPixmap(KTOON_HOME+"/themes/default/icons/plussign.png" ) , 22, m_buttonsPanel);
+	DImageButton *insertButton = new DImageButton(QPixmap(HOME+"/themes/default/icons/plussign.png" ) , 22, m_buttonsPanel);
 	layout->addWidget(insertButton);
 	insertButton->setToolTip(tr("Insert Scene"));
 	connect(insertButton, SIGNAL(clicked()), this, SIGNAL(requestInsertScene()));
 	
-	KTImageButton *removeButton = new KTImageButton(QPixmap(KTOON_HOME+"/themes/default/icons/minussign.png" ) , 22, m_buttonsPanel);
+	DImageButton *removeButton = new DImageButton(QPixmap(HOME+"/themes/default/icons/minussign.png" ) , 22, m_buttonsPanel);
 	layout->addWidget(removeButton);
 	removeButton->setToolTip(tr("Remove Scene"));
 	connect(removeButton, SIGNAL(clicked()), this, SIGNAL(requestRemoveScene()));
 	
-// 	KTImageButton *moveupButton = new KTImageButton(QPixmap(KTOON_HOME+"/themes/default/icons/arrowup.png" ) , 22, m_buttonsPanel);
+// 	DImageButton *moveupButton = new DImageButton(QPixmap(HOME+"/themes/default/icons/arrowup.png" ) , 22, m_buttonsPanel);
 // 	layout->addWidget(moveupButton);
 // 	moveupButton->setToolTip(tr("Move Scene Up"));
 // 	connect(moveupButton, SIGNAL(clicked()), this, SIGNAL(requestMoveUpScene()));
 // 	
-// 	KTImageButton *movedownButton = new KTImageButton(QPixmap(KTOON_HOME+"/themes/default/icons/arrowdown.png" ) , 22, m_buttonsPanel);
+// 	DImageButton *movedownButton = new DImageButton(QPixmap(HOME+"/themes/default/icons/arrowdown.png" ) , 22, m_buttonsPanel);
 // 	layout->addWidget(movedownButton);
 // 	movedownButton->setToolTip(tr("Move Scene Down"));
 // 	connect(movedownButton, SIGNAL(clicked()), this, SIGNAL(requestMoveDownScene()));
@@ -147,7 +147,7 @@ void KTScenesWidget::setupTableScenes()
 
 void KTScenesWidget::insertScene(const QString &name, bool addedToEnd)
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	m_tableScenes->addScene(name);
 	emit sendToStatus( tr("Scene added"));
 }
@@ -160,17 +160,17 @@ void KTScenesWidget::removeScene()
 
 void KTScenesWidget::selectScene(const QString & name, int index)
 {
-// 	ktDebug() << "selectScene( " << index << ")" ;
+// 	dDebug() << "selectScene( " << index << ")" ;
 // 	if(index != m_tableScenes->indexCurrentScene())
 // 	{
 		emit changeCurrentScene(index);
 // 	}
 		
-// 	ktDebug() << "KTScenesWidget::selectScene() Init" <<  endl;
+// 	dDebug() << "KTScenesWidget::selectScene() Init" <<  endl;
 // 	m_valueName->setText(name);
 // 	emit sceneSelected(index);
 // 	
-// 	ktDebug() << "KTScenesWidget::selectScene() finished" <<  endl;
+// 	dDebug() << "KTScenesWidget::selectScene() finished" <<  endl;
 }
 // 
 // void KTScenesWidget::moveSceneUp()

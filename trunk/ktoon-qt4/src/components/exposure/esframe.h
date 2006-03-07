@@ -34,15 +34,15 @@
 #include <QResizeEvent>
 #include <QKeyEvent>
 
-#include "ktsqueezelabel.h"
+#include "dsqueezelabel.h"
 
 /**
  * @brief Class that handles the Frame objects belonging to the Exposure Sheet dialog box
  *
  * <b>Date of Creation: June 7 - 2004.</b>\n
- * This is a widget that represents the exposure sheet keyframes, as they are used in ToonBoom.
+ * This is a widget that represents the exposure sheet keyframes
  */
-class ESFrame : public KTSqueezeLabel
+class ESFrame : public DSqueezeLabel
 {
     Q_OBJECT
 	public:

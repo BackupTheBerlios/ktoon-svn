@@ -22,7 +22,7 @@
 #include <QKeySequence>
 #include <QMatrix>
 
-#include "ktglobal.h"
+#include "dglobal.h"
 
 QStringList AShapeBrushPlugin::keys() const
 {
@@ -82,11 +82,11 @@ QPainterPath AShapeBrushPlugin::path() const
 	return m_path;
 }
 
-QHash<QString, KTAction *> AShapeBrushPlugin::actions()
+QHash<QString, DAction *> AShapeBrushPlugin::actions()
 {
-	QHash<QString, KTAction *> hash;
+	QHash<QString, DAction *> hash;
 	
-	KTAction *act = new KTAction( QPixmap(KTOON_THEME_DIR+"/icons/node_eraser.png"), tr("Shape brush"),this);
+	DAction *act = new DAction( QPixmap(THEME_DIR+"/icons/node_eraser.png"), tr("Shape brush"),this);
 // 	act->setShortcut( QKeySequence(tr("R")) );
 	hash.insert( tr("Shape brush"), act );
 	

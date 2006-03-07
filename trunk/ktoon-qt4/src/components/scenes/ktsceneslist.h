@@ -12,12 +12,12 @@
 #ifndef KTSCENESLIST_H
 #define KTSCENESLIST_H
 
-#include "kttreelistwidget.h"
+#include "dtreelistwidget.h"
 
 /**
-*	@author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-class KTScenesList : public KTTreeListWidget
+class KTScenesList : public DTreeListWidget
 {
 	Q_OBJECT
 	public:

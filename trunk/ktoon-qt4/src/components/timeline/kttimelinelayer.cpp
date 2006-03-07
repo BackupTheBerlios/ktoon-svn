@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "kttimelinelayer.h"
-#include "ktapplication.h"
+#include "dapplication.h"
 #include <qpixmap.h>
 #include <qlayout.h>
 #include <qtooltip.h>
@@ -27,11 +27,11 @@
 #include <QMouseEvent>
 #include <QLabel>
 
-#include "ktdebug.h"
+#include "ddebug.h"
 
 KTTimeLineLayer::KTTimeLineLayer(const QString &name) : QFrame(), m_isLocked(false), m_isVisible(true), m_onlySeeOutlines(false), m_isSelected(false), m_isEdited(false)
 {
-	KTINIT;
+	DINIT;
 	
 	QPalette pal = palette();
 	pal.setBrush( QPalette::Base, pal.button());
@@ -56,11 +56,11 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name) : QFrame(), m_isLocked(fal
 	m_layout->addWidget(staticLayerImage);
 	staticLayerImage->show();
 	
-	staticLayerImage -> setPixmap( QPixmap( KTOON_HOME+"/themes/default/icons/layer_pic.png" ) );
+	staticLayerImage -> setPixmap( QPixmap( HOME+"/themes/default/icons/layer_pic.png" ) );
 	staticLayerImage->setMinimumSize( 20, 20 );
 // 	layout()->setAlignment(staticLayerImage, Qt::AlignLeft);
 
-	m_layerName = new KTELabel( name, this );
+	m_layerName = new DELabel( name, this );
 	m_layout->addWidget(m_layerName);
 	
 	m_layerName->show();
@@ -74,7 +74,7 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name) : QFrame(), m_isLocked(fal
 // 	m_editionImage -> setMinimumSize( 19, 19 );
 // 	m_editionImage -> setMaximumSize( 19, 19 );
 	
-	m_utils = new KTVHBox(this, false);
+	m_utils = new DVHBox(this, false);
 	m_layout->addWidget(m_utils);
 	m_utils->show();
 // 	layout()->setAlignment(m_utils, Qt::AlignRight);
@@ -90,13 +90,13 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name) : QFrame(), m_isLocked(fal
 	
 	m_visibilityImage = new QLabel( m_utils );
 // 	m_layout->addWidget(m_visibilityImage);
-	m_visibilityImage -> setPixmap( QPixmap( KTOON_HOME+"/themes/default/icons/enable.png" ) );
+	m_visibilityImage -> setPixmap( QPixmap( HOME+"/themes/default/icons/enable.png" ) );
 	m_visibilityImage -> resize( 20, 20 );
 
 	
 	m_lockImage = new QLabel( m_utils );
 // 	m_layout->addWidget(m_lockImage);
-	m_lockImage -> setPixmap( QPixmap( KTOON_HOME+"/themes/default/icons/disable.png" ) );
+	m_lockImage -> setPixmap( QPixmap( HOME+"/themes/default/icons/disable.png" ) );
 	m_lockImage -> resize( 20, 20 );
 
 	m_onlyOutlines = new QCheckBox( m_utils );
@@ -114,7 +114,7 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name) : QFrame(), m_isLocked(fal
 
 KTTimeLineLayer::~KTTimeLineLayer()
 {
-	KTEND;
+	DEND;
 }
 
 QSize KTTimeLineLayer::sizeHint() const
@@ -131,7 +131,7 @@ void KTTimeLineLayer::setEdited( bool isEdited )
 	
 	if ( m_isEdited )
 	{
-		m_editionImage -> setPixmap( QPixmap( KTOON_HOME+"/themes/default/icons/written_pic.png" ) );
+		m_editionImage -> setPixmap( QPixmap( HOME+"/themes/default/icons/written_pic.png" ) );
 	}
 	else
 	{
@@ -161,11 +161,11 @@ void KTTimeLineLayer::setLock(bool yes)
 {
 	if ( !yes )
 	{
-		m_lockImage->setPixmap( QPixmap( KTOON_HOME+"/themes/default/icons/enable.png" ) );
+		m_lockImage->setPixmap( QPixmap( HOME+"/themes/default/icons/enable.png" ) );
 	}
 	else
 	{
-		m_lockImage->setPixmap( QPixmap( KTOON_HOME+"/themes/default/icons/disable.png" ) );
+		m_lockImage->setPixmap( QPixmap( HOME+"/themes/default/icons/disable.png" ) );
 	}
 	m_isLocked = yes;
 }
@@ -174,11 +174,11 @@ void KTTimeLineLayer::toggleLock()
 {
 	if ( !m_isLocked )
 	{
-		m_lockImage->setPixmap( QPixmap( KTOON_HOME+"/themes/default/icons/enable.png" ) );
+		m_lockImage->setPixmap( QPixmap( HOME+"/themes/default/icons/enable.png" ) );
 	}
 	else
 	{
-		m_lockImage->setPixmap( QPixmap( KTOON_HOME+"/themes/default/icons/disable.png" ) );
+		m_lockImage->setPixmap( QPixmap( HOME+"/themes/default/icons/disable.png" ) );
 	}
 	m_isLocked = !m_isLocked;
 }
@@ -187,11 +187,11 @@ void KTTimeLineLayer::setView(bool yes)
 {
 	if ( !yes )
 	{
-		m_visibilityImage -> setPixmap( QPixmap( KTOON_HOME+"/themes/default/icons/enable.png" ) );
+		m_visibilityImage -> setPixmap( QPixmap( HOME+"/themes/default/icons/enable.png" ) );
 	}
 	else
 	{
-		m_visibilityImage->setPixmap( QPixmap( KTOON_HOME+"/themes/default/icons/disable.png" ) );
+		m_visibilityImage->setPixmap( QPixmap( HOME+"/themes/default/icons/disable.png" ) );
 	}
 	m_isVisible = yes;
 }
@@ -200,11 +200,11 @@ void KTTimeLineLayer::toggleView()
 {
 	if ( !m_isVisible )
 	{
-		m_visibilityImage -> setPixmap( QPixmap( KTOON_HOME+"/themes/default/icons/enable.png" ) );
+		m_visibilityImage -> setPixmap( QPixmap( HOME+"/themes/default/icons/enable.png" ) );
 	}
 	else
 	{
-		m_visibilityImage->setPixmap( QPixmap( KTOON_HOME+"/themes/default/icons/disable.png" ) );
+		m_visibilityImage->setPixmap( QPixmap( HOME+"/themes/default/icons/disable.png" ) );
 	}
 	m_isVisible = !m_isVisible;
 }

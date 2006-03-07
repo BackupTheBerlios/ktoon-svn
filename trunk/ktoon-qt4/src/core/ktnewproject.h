@@ -20,8 +20,8 @@
 #ifndef KTNEWPROYECT_H
 #define KTNEWPROYECT_H
 
-#include "ktwizard.h"
-#include "ktxyspinbox.h"
+#include "dwizard.h"
+#include "dxyspinbox.h"
 #include <QComboBox>
 #include <QSpinBox>
 
@@ -32,7 +32,7 @@ class QLineEdit;
 /**
 	@author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-class KTNewProject : public KTWizard
+class KTNewProject : public DWizard
 {
 	Q_OBJECT
 	public:
@@ -50,7 +50,7 @@ class KTNewProject : public KTWizard
 		NPFirstPage *m_firstPage ;
 };
 
-class NPFirstPage : public KTWizardPage
+class NPFirstPage : public DWizardPage
 {
 	Q_OBJECT
 	public:
@@ -73,7 +73,7 @@ class NPFirstPage : public KTWizardPage
 		QComboBox *m_renderType;
 		QSpinBox *m_fps;
 		
-		KTXYSpinBox *m_size;
+		DXYSpinBox *m_size;
 };
 
 #endif

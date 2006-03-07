@@ -19,14 +19,12 @@
  ***************************************************************************/
 
 #include "mingplugin.h"
-#include <ktapplication.h>
+#include <dglobal.h>
 
 #include <QImage>
 #include <QPainter>
 
 #include <cstdio>
-
-#include "ktgradientadjuster.h"
 
 #ifdef HAVE_MING
 #include <ming.h>
@@ -55,7 +53,7 @@ ExportInterface::Formats MingPlugin::availableFormats()
 void MingPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size)
 {
 #ifdef HAVE_MING
-	QDir temp(KTOON_TEMP_DIR+"/exporting");
+	QDir temp(REPOSITORY+"/exporting");
 	if ( !temp.exists() )
 	{
 		temp.mkdir(temp.path());

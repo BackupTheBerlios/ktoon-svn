@@ -23,10 +23,10 @@
 
 #include "kttimelinelayer.h"
 
-#include "ktwidgetlistview.h"
+#include "dwidgetlistview.h"
 
 #include <QResizeEvent>
-#include "ktvhbox.h"
+#include "dvhbox.h"
 
 typedef QList<KTTimeLineLayer *>  ListOfTLLayers;
 
@@ -34,7 +34,7 @@ typedef QList<KTTimeLineLayer *>  ListOfTLLayers;
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTLayerSequence : public KTWidgetListView
+class KTLayerSequence : public DWidgetListView
 {
 	Q_OBJECT
 	public:

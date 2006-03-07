@@ -37,7 +37,7 @@ class AGradientTool : public KTToolPluginObject, public AToolInterface
 		AGradientTool();
 		~AGradientTool();
 
-		virtual QHash< QString, KTAction * > actions();
+		virtual QHash< QString, DAction * > actions();
 		virtual QPainterPath path() const;
 		virtual QRect move(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& oldPos, const QPoint& newPos);
 		virtual QRect press(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& pos, KTKeyFrame* currentFrame);

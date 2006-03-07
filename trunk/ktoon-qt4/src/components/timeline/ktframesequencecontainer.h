@@ -21,7 +21,7 @@
 #ifndef KTFRAMESEQUENCECONTAINER_H
 #define KTFRAMESEQUENCECONTAINER_H
 
-#include <ktvhbox.h>
+#include <dvhbox.h>
 
 #include <QMap>
 
@@ -32,7 +32,7 @@
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTFrameSequenceContainer : public KTVHBox
+class KTFrameSequenceContainer : public DVHBox
 {
 	Q_OBJECT
 	public:

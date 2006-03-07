@@ -21,9 +21,9 @@
 #ifndef KTVIEWCAMERA_H
 #define KTVIEWCAMERA_H
 
-#include "ktmdiwindow.h"
+#include "dmdiwindow.h"
 
-#include "ktvhbox.h"
+#include "dvhbox.h"
 #include "aanimationarea.h"
 #include "ktcamerabar.h"
 
@@ -32,7 +32,7 @@
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTViewCamera : public KTMdiWindow
+class KTViewCamera : public DMdiWindow
 {
 	Q_OBJECT
 	public:

@@ -23,13 +23,13 @@
 
 #include <QWidget>
 
-#include "ktdisplaypath.h"
+#include "ddisplaypath.h"
 
 /**
 * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
-class KTDisplayBrush : public KTDisplayPath
+class KTDisplayBrush : public DDisplayPath
 {
 	Q_OBJECT
 	public:

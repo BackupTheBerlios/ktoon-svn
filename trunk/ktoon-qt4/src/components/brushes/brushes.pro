@@ -3,6 +3,19 @@
 # Subdir relative project main directory: ./src/components/brushes
 # Target is a library:  
 
+QT += xml 
+KDEV_QTVER = 4 
+INCLUDEPATH += ../../../src/ktoonlib \
+               ../../../src/store \
+               ../../../src/dlib/dgui \
+               ../../../src/dlib/dcore 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+CONFIG += release \
+          warn_on \
+          staticlib 
+TEMPLATE = lib 
 HEADERS += ktdisplaybrush.h \
            ktbrusheslist.h \
            ktbrushwidget.h \
@@ -13,13 +26,3 @@ SOURCES += ktdisplaybrush.cpp \
            ktbrushwidget.cpp \
            ktbrusheditor.cpp \
            ktbrushesparser.cpp 
-QT += xml qt3support
-INCLUDEPATH += ../../../src/store \
-../../../src/lib
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-CONFIG += release \
-warn_on \
-staticlib
-TEMPLATE = lib

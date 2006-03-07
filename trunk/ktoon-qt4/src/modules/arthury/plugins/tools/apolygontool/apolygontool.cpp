@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "apolygontool.h"
-#include "ktapplication.h"
+#include "dglobal.h"
 
 #include <QMatrix>
 
@@ -35,11 +35,11 @@ APolygonTool::~APolygonTool()
 {
 }
 
-QHash< QString, KTAction * > APolygonTool::actions()
+QHash< QString, DAction * > APolygonTool::actions()
 {
-	QHash<QString, KTAction *> hash;
+	QHash<QString, DAction *> hash;
 	
-	KTAction *action1 = new KTAction( QIcon(QPixmap(KTOON_THEME_DIR+"/icons/")), tr("Polygon"), this);
+	DAction *action1 = new DAction( QIcon(QPixmap(THEME_DIR+"/icons/")), tr("Polygon"), this);
 	action1->setShortcut( QKeySequence( tr("") ) );
 	
 	hash.insert(tr("Polygon"), action1);

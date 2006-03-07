@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "gradientconfigurator.h"
-#include "ktgradientcreator.h"
+#include "dgradientcreator.h"
 
 #include <QColorDialog>
 
@@ -27,7 +27,7 @@ GradientConfigurator::GradientConfigurator(QWidget *parent) : QWidget(parent)
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 	
-	m_gradientCreator = new KTGradientCreator;
+	m_gradientCreator = new DGradientCreator;
 	mainLayout->addWidget(m_gradientCreator);
 	
 	connect(m_gradientCreator, SIGNAL(controlArrowAdded()), this, SLOT(chooseColor()));

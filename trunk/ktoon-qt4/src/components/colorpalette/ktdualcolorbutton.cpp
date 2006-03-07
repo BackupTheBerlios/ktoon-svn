@@ -33,7 +33,7 @@
 #include <QPaintEvent>
 #include <QDropEvent>
 
-#include "ktdebug.h"
+#include "ddebug.h"
 
 KTDualColorButton::KTDualColorButton( QWidget *parent ) : QWidget( parent )
 {
@@ -78,7 +78,7 @@ KTDualColorButton::~KTDualColorButton()
 {
 	delete arrowBitmap;
 	delete resetPixmap;
-	KTEND;
+	DEND;
 }
 
 QBrush KTDualColorButton::foreground() const

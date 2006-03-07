@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 #include "ktbrushesparser.h"
-#include "ktdebug.h"
-#include "ktpathadjuster.h"
+#include "ddebug.h"
+#include "dpathadjuster.h"
 
 KTBrushesParser::KTBrushesParser() : QXmlDefaultHandler()
 {
@@ -60,7 +60,7 @@ bool KTBrushesParser::endElement(const QString&, const QString& , const QString&
 	{
 		if ( qname == "Item" )
 		{
-			m_brushes << KTPathAdjuster::buildPath( m_tmpPolygons, ':');
+			m_brushes << DPathAdjuster::buildPath( m_tmpPolygons, ':');
 		}
 	}
 	
@@ -69,14 +69,14 @@ bool KTBrushesParser::endElement(const QString&, const QString& , const QString&
 
 bool KTBrushesParser::error ( const QXmlParseException & exception )
 {
-	ktError() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	dError() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
 	return true;
 }
 
 
 bool KTBrushesParser::fatalError ( const QXmlParseException & exception )
 {
-	ktFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	dFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
 	return true;
 }
 

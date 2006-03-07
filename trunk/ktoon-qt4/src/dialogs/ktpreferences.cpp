@@ -23,14 +23,13 @@
 #include <qtextcodec.h>
 
 #include "ktpreferences.h"
-#include "ktapplication.h"
-
-#include "ktdebug.h"
+#include "dglobal.h"
+#include "ddebug.h"
 
 #include <QLabel>
 #include <QLineEdit>
 
-#include "ktformfactory.h"
+#include "dformfactory.h"
 
 class KTPreferences::GeneralPage : public QWidget
 {
@@ -47,28 +46,28 @@ KTPreferences::GeneralPage::GeneralPage()
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	
-	KTCONFIG->beginGroup("General");
+	DCONFIG->beginGroup("General");
 	
 	m_home = new QLineEdit;
-	layout->addLayout( KTFormFactory::makeLine(tr("KToon Home"), m_home, Qt::Horizontal ) );
+	layout->addLayout( DFormFactory::makeLine(tr("KToon Home"), m_home, Qt::Horizontal ) );
 	
-	QString str = KTCONFIG->value("Home").toString();
+	QString str = DCONFIG->value("Home").toString();
 	if ( !str.isEmpty())
 	{
 		m_home->setText(str);
 	}
 	
 	m_repository = new QLineEdit;
-	layout->addLayout( KTFormFactory::makeLine(tr("Repository"), m_repository, Qt::Horizontal ) );
-	str = KTCONFIG->value("Repository").toString();
+	layout->addLayout( DFormFactory::makeLine(tr("Repository"), m_repository, Qt::Horizontal ) );
+	str = DCONFIG->value("Repository").toString();
 	if ( !str.isEmpty())
 	{
 		m_repository->setText(str);
 	}
 	
 	m_browser = new QLineEdit;
-	layout->addLayout( KTFormFactory::makeLine(tr("Browser"), m_browser, Qt::Horizontal ) );
-	str = KTCONFIG->value("Browser").toString();
+	layout->addLayout( DFormFactory::makeLine(tr("Browser"), m_browser, Qt::Horizontal ) );
+	str = DCONFIG->value("Browser").toString();
 	if ( !str.isEmpty())
 	{
 		m_browser->setText(str);
@@ -83,43 +82,43 @@ KTPreferences::GeneralPage::~GeneralPage()
 
 void KTPreferences::GeneralPage::saveValues()
 {
-	KTCONFIG->beginGroup("General");
+	DCONFIG->beginGroup("General");
 	
 	QString str = m_home->text();
 	if ( !str.isEmpty() && m_home->isModified ())
 	{
-		KTCONFIG->setValue("Home", str);
+		DCONFIG->setValue("Home", str);
 	}
 	
 	str = m_repository->text();
 	if ( !str.isEmpty() && m_repository->isModified () )
 	{
-		KTCONFIG->setValue("Repository", str);
+		DCONFIG->setValue("Repository", str);
 	}
 	
 	str = m_browser->text();
 	if ( !str.isEmpty() && m_browser->isModified () )
 	{
-		KTCONFIG->setValue("Browser", str);
+		DCONFIG->setValue("Browser", str);
 	}
 	
-	KTCONFIG->sync();
+	DCONFIG->sync();
 }
 
 //--------------- CONSTRUCTOR --------------------
 
-KTPreferences::KTPreferences( QWidget *parent ) : KTConfigurationDialog(parent )
+KTPreferences::KTPreferences( QWidget *parent ) : DConfigurationDialog(parent )
 {
 	setWindowTitle( tr( "Application KTPreferences" ) );
 	
 	m_generalPage = new GeneralPage;
-	addPage(m_generalPage, tr("General"), QPixmap(KTOON_THEME_DIR+"/icons/ff.png"));
+	addPage(m_generalPage, tr("General"), QPixmap(THEME_DIR+"/icons/ff.png"));
 	
 	m_themeSelector = new KTThemeSelector;
-	addPage(m_themeSelector, tr("Theme preferences"), QPixmap(KTOON_THEME_DIR+"/icons/play.png"));
+	addPage(m_themeSelector, tr("Theme preferences"), QPixmap(THEME_DIR+"/icons/play.png"));
 
-	m_fontChooser = new KTFontChooser;
-	addPage(m_fontChooser, tr("Font"), QPixmap(KTOON_THEME_DIR+"/icons/rw.png"));
+	m_fontChooser = new DFontChooser;
+	addPage(m_fontChooser, tr("Font"), QPixmap(THEME_DIR+"/icons/rw.png"));
 }
 
 //-------------- DESTRUCTOR -----------------
@@ -131,7 +130,7 @@ KTPreferences::~KTPreferences()
 void KTPreferences::ok()
 {
 	apply();
-	KTConfigurationDialog::ok();
+	DConfigurationDialog::ok();
 }
 
 void KTPreferences::apply()
@@ -140,16 +139,16 @@ void KTPreferences::apply()
 	{
 		if(m_themeSelector->iWantApplyColors() )
 		{
-			ktapp->applyTheme(m_themeSelector->document());
+			dApp->applyTheme(m_themeSelector->document());
 		}
 	}
 	else if ( static_cast<GeneralPage *>( currentPage()) == m_generalPage )
 	{
 		m_generalPage->saveValues();
 	}
-	else if ( qobject_cast<KTFontChooser *>(currentPage() ) == m_fontChooser )
+	else if ( qobject_cast<DFontChooser *>(currentPage() ) == m_fontChooser )
 	{
-		ktapp->setFont(m_fontChooser->font());
+		dApp->setFont(m_fontChooser->font());
 	}
 }
 

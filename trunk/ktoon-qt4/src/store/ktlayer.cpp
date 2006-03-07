@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "ktlayer.h"
-#include "ktdebug.h"
+#include "ddebug.h"
 
 KTLayer::KTLayer(QObject *parent) : KTSerializableObject(parent), m_isVisible(true), m_name(tr("Layer")), m_currentFrame(0), m_framesCount(0)/*, m_copyFrame(0)*/
 {
@@ -33,7 +33,7 @@ KTLayer::KTLayer(const QString &layerName, QObject * parent)  : KTSerializableOb
 
 KTLayer::~KTLayer()
 {
-	KTEND;
+	DEND;
 	for(int i = 0; i < m_frames.count(); i++ )
 	{
 		delete m_frames.takeAt(i);
@@ -52,7 +52,7 @@ void KTLayer::setFrames(const Frames &frames)
 
 KTKeyFrame *KTLayer::createFrame(const QString& name, bool addToEnd)
 {
-	ktDebug() << "createFrame(const QString&" <<  name.isNull() << "," << " bool" <<  addToEnd << ")" ;
+	dDebug() << "createFrame(const QString&" <<  name.isNull() << "," << " bool" <<  addToEnd << ")" ;
 	
 	KTKeyFrame *keyFrame = new KTKeyFrame(this);
 	if(name.isNull())
@@ -140,7 +140,7 @@ void KTLayer::moveCurrentFrame( bool up)
 
 void KTLayer::removeCurrentFrame()
 {
-// 	ktDebug() << "emit KTLayer::removeCurrentFrame()";
+// 	dDebug() << "emit KTLayer::removeCurrentFrame()";
 	if(m_currentFrame)
 	{
 		m_frames.removeAt( indexCurrentFrame() );
@@ -159,7 +159,7 @@ void KTLayer::lockCurrentFrame()
 
 void KTLayer::setVisible(bool isVisible)
 {
-// 	ktDebug() << "KTLayer::setVisible(" << isVisible << ")" << endl;
+// 	dDebug() << "KTLayer::setVisible(" << isVisible << ")" << endl;
 	m_isVisible = isVisible;
 	emit visibilityChanged(isVisible);
 }

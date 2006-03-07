@@ -19,9 +19,9 @@
  ***************************************************************************/
 
 #include "afilltool.h"
-#include "ktapplication.h"
+#include "dglobal.h"
 
-#include "ktbrushadjuster.h"
+#include "dbrushadjuster.h"
 
 AFillTool::AFillTool()
 {
@@ -39,21 +39,21 @@ QStringList AFillTool::keys() const
 }
 
 
-QHash< QString, KTAction * > AFillTool::actions()
+QHash< QString, DAction * > AFillTool::actions()
 {
-	QHash<QString, KTAction *> hash;
+	QHash<QString, DAction *> hash;
 	
-	KTAction *fillAction = new KTAction( QIcon(QPixmap(KTOON_THEME_DIR+"/icons/fill.png")), tr("Fill"), this);
+	DAction *fillAction = new DAction( QIcon(QPixmap(THEME_DIR+"/icons/fill.png")), tr("Fill"), this);
 	fillAction->setShortcut( QKeySequence( tr("F") ) );
 	
 	hash.insert( tr("Fill"), fillAction );
 	
-	KTAction *removeFillAction = new KTAction( QIcon(QPixmap(KTOON_THEME_DIR+"/icons/removefill.png")), tr("Remove Fill"), this);
+	DAction *removeFillAction = new DAction( QIcon(QPixmap(THEME_DIR+"/icons/removefill.png")), tr("Remove Fill"), this);
 	removeFillAction->setShortcut( QKeySequence(tr("Shift+F") ));
 	
 	hash.insert( tr("Remove Fill"), removeFillAction );
 	
-	KTAction *countourFillAction = new KTAction( QIcon(QPixmap(KTOON_THEME_DIR+"/icons/contour.png")), tr("Countour Fill"), this);
+	DAction *countourFillAction = new DAction( QIcon(QPixmap(THEME_DIR+"/icons/contour.png")), tr("Countour Fill"), this);
 	countourFillAction->setShortcut( QKeySequence(tr("Control+F") ));
 	
 	hash.insert( tr("Countour Fill"), countourFillAction );
@@ -84,7 +84,7 @@ QRect AFillTool::press(const QString& brush, QPainter& painter, const QPainterPa
 				{
 					if ( brush == "Fill" )
 					{
-						graphic->brush = KTBrushAdjuster::adjustBrush(painter.pen().brush(), graphic->path.boundingRect().toRect());
+						graphic->brush = DBrushAdjuster::adjustBrush(painter.pen().brush(), graphic->path.boundingRect().toRect());
 					}
 					else if ( brush == "Remove Fill" )
 					{

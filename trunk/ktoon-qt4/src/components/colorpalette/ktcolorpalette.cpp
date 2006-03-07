@@ -19,26 +19,26 @@
  ***************************************************************************/
  
 #include "ktcolorpalette.h"
-#include "ktdebug.h"
+#include "ddebug.h"
 
 #include <QBoxLayout>
 #include <QPushButton>
 #include <QLineEdit>
 #include <QFrame>
 #include <QToolTip>
-#include "ktimagebutton.h"
-#include "ktapplication.h"
+#include "dimagebutton.h"
+#include "dglobal.h"
 
 
 KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_currentOutlineColor(Qt::black), m_currentFillColor(Qt::transparent), m_flagGradient(true)
 {
-	KTINIT;
+	DINIT;
 	setCaption( tr( "Color Palette" ) );
 
 	m_splitter = new QSplitter(Qt::Vertical, this);
 	addChild( m_splitter);
 	
-	m_centralWidget = new KTToolBox(m_splitter);
+	m_centralWidget = new DToolBox(m_splitter);
 
 	setupChooserTypeColor();
 	setupGradienManager();
@@ -46,9 +46,9 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_
 	m_splitter->addWidget(m_centralWidget);
 	m_centralWidget->setPalette(palette());
 	
-	KTCONFIG->beginGroup("ColorPalette");
-	QColor foreground = QColor(KTCONFIG->value("LastForegroundColor", Qt::black).toString());
-	QColor background = QColor(KTCONFIG->value("LastBackgroundColor", Qt::transparent).toString());
+	DCONFIG->beginGroup("ColorPalette");
+	QColor foreground = QColor(DCONFIG->value("LastForegroundColor", Qt::black).toString());
+	QColor background = QColor(DCONFIG->value("LastBackgroundColor", Qt::transparent).toString());
 	
 	setColor( foreground );
 }
@@ -56,11 +56,11 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_
 
 KTColorPalette::~KTColorPalette()
 {
-	KTEND;
+	DEND;
 	
-	KTCONFIG->beginGroup("ColorPalette");
-	KTCONFIG->setValue("LastForegroundColor", color().first);
-	KTCONFIG->setValue("LastBackgroundColor", color().second);
+	DCONFIG->beginGroup("ColorPalette");
+	DCONFIG->setValue("LastForegroundColor", color().first);
+	DCONFIG->setValue("LastBackgroundColor", color().second);
 }
 
 void KTColorPalette::setupChooserTypeColor()
@@ -107,7 +107,7 @@ void KTColorPalette::setupChooserTypeColor()
 
 void KTColorPalette::setupGradienManager()
 {
-	m_gradientManager = new KTGradientCreator(this);
+	m_gradientManager = new DGradientCreator(this);
 	connect(m_gradientManager, SIGNAL(gradientChanged( const QGradient& )), this, SLOT(changeGradient(const QGradient &) ));
 	m_centralWidget->addPage(m_gradientManager,tr("Gradients"));
 	
@@ -175,7 +175,7 @@ void KTColorPalette::setColor(const QBrush& brush)
 			m_gradientManager->repaint();
 		}
 		
-		if(m_gradientManager->gradientApply() == KTGradientCreator::None)
+		if(m_gradientManager->gradientApply() == DGradientCreator::None)
 		{
 			emit colorChanged( m_outlineAndFillColors->foreground(),m_outlineAndFillColors->background() );
 		}
@@ -242,21 +242,21 @@ void KTColorPalette::changeGradient(const QGradient & gradient)
 {
 	switch(m_gradientManager->gradientApply())
 	{
-		case KTGradientCreator::FillAndOutLine:
+		case DGradientCreator::FillAndOutLine:
 		{
-			ktDebug() << m_gradientManager->gradientApply();
+			dDebug() << m_gradientManager->gradientApply();
 			emit colorChanged(QBrush(gradient), QBrush(gradient));
 			break;
 		}
-		case KTGradientCreator::Fill:
+		case DGradientCreator::Fill:
 		{
-			ktDebug() << m_gradientManager->gradientApply();
+			dDebug() << m_gradientManager->gradientApply();
 			emit colorChanged(m_outlineAndFillColors->foreground(), QBrush(gradient));
 			break;
 		}
-		case KTGradientCreator::OutLine:
+		case DGradientCreator::OutLine:
 		{
-			ktDebug() << m_gradientManager->gradientApply();
+			dDebug() << m_gradientManager->gradientApply();
 			emit colorChanged(QBrush(gradient) ,m_outlineAndFillColors->background());
 			break;
 		}

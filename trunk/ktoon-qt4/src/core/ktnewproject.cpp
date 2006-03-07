@@ -24,7 +24,7 @@
 #include <QLayout>
 
 KTNewProject::KTNewProject(QWidget *parent)
- : KTWizard(parent)
+ : DWizard(parent)
 {
 	setWindowTitle(tr("Create a new project"));
 	setModal(true);
@@ -60,7 +60,7 @@ QString KTNewProject::renderType() const
 
 // NPFirstPage
 
-NPFirstPage::NPFirstPage(QWidget *parent) : KTWizardPage(tr("New KToon Project"), parent)
+NPFirstPage::NPFirstPage(QWidget *parent) : DWizardPage(tr("New KToon Project"), parent)
 {
 	QFrame *container = new QFrame();
 	QGridLayout *layout = new QGridLayout(container);
@@ -77,7 +77,7 @@ NPFirstPage::NPFirstPage(QWidget *parent) : KTWizardPage(tr("New KToon Project")
 	m_authorName = new QLineEdit( container );
 	layout->addWidget(m_authorName, 1, 1);
 	
-	m_size = new KTXYSpinBox("Dimension", container);
+	m_size = new DXYSpinBox("Dimension", container);
 	m_size->setMaximum( 1000);
 	m_size->setModifyTogether(true);;
 // 	m_size->setX( 520);
