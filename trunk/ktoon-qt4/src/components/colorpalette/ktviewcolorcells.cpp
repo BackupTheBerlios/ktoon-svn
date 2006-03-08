@@ -216,7 +216,7 @@ void KTViewColorCells::changeColor(DCellViewItem* item)
 	{
 		if(item->background().gradient ())
 		{
-			emit selectGradient( *item->background().gradient ());
+			emit selectGradient( item->background());
 		}
 		else
 		{
@@ -358,23 +358,23 @@ void KTViewColorCells::setupButtons()
 	QBoxLayout *bLayout = new QBoxLayout(QBoxLayout::LeftToRight);
 	containerButtons->setLayout(bLayout);
 	bLayout->setMargin(3);
-	DImageButton *m_addColor = new DImageButton( QPixmap(THEME_DIR  + "icons/plussign.png" ) , 22, containerButtons);
+	DImageButton *m_addColor = new DImageButton( QPixmap(THEME_DIR  + "/icons/plussign.png" ) , 22, containerButtons);
 	connect( m_addColor, SIGNAL( clicked() ), SLOT( addCurrentColor() ));
 	m_addColor->setToolTip(tr( "Add Color" ));
 	bLayout->addWidget(m_addColor);
 	
-	DImageButton *m_removeColor = new DImageButton( QPixmap( THEME_DIR + "icons/minussign.png"), 22, containerButtons);
+	DImageButton *m_removeColor = new DImageButton( QPixmap( THEME_DIR + "/icons/minussign.png"), 22, containerButtons);
 	
 	connect( m_removeColor, SIGNAL( clicked() ), SLOT( removeColor() ) );
 	m_removeColor->setToolTip(tr( "Add Color" ));
 	bLayout->addWidget(m_removeColor);
 	
-	DImageButton *m_addPalette = new DImageButton( QPixmap(THEME_DIR + "icons/plussign.png" ), 22, containerButtons);
+	DImageButton *m_addPalette = new DImageButton( QPixmap(THEME_DIR + "/icons/plussign.png" ), 22, containerButtons);
 	connect( m_addPalette, SIGNAL( clicked() ), SLOT( addPalette() ) );
 	m_addPalette->setToolTip(tr( "Add Color" ));
 	bLayout->addWidget(m_addPalette);
 	
-	DImageButton *m_removePalette = new DImageButton(QPixmap( THEME_DIR+ "icons/minussign.png"), 22, containerButtons);
+	DImageButton *m_removePalette = new DImageButton(QPixmap( THEME_DIR+ "/icons/minussign.png"), 22, containerButtons);
 	
 	connect( m_removePalette, SIGNAL( clicked() ), SLOT( removeColor() ) );
 	m_removePalette->setToolTip(tr( "Add Color" ));

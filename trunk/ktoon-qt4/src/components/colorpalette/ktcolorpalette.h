@@ -37,6 +37,8 @@
 #include "ktluminancepicker.h"
 #include "ktdualcolorbutton.h"
 #include "dgradientcreator.h"
+#include <QMenu>
+
 
 class KTColorPalette;
 
@@ -48,8 +50,10 @@ class KTColorPalette : public KTModuleWidgetBase
 {
 	Q_OBJECT
 	public:
+		enum TypeBrush{ Solid = 0, Gradient };
 		KTColorPalette(QWidget *parent = 0);
 		~KTColorPalette();
+		//FIXME: cambiar esto por brush
 		QPair<QColor, QColor> color();
 		void parsePaletteFile(const QString &file);
 
@@ -65,27 +69,32 @@ class KTColorPalette : public KTModuleWidgetBase
 		QLineEdit *m_nameColor;
 		KTDualColorButton *m_outlineAndFillColors;
 		QBrush m_currentOutlineColor, m_currentFillColor;
-		
+		QLabel *m_labelType;
 		QSplitter *m_splitter;
 		bool m_flagGradient;
-		
+		TypeBrush m_type;
 		
 	private:
 		void setupButtons();
 		void setupChooserTypeColor();
 		void setupGradienManager();
 		void setupDisplayColor();
-		
+	
+	protected:
+		void mousePressEvent ( QMouseEvent * e );
+	
 	public slots:
 		void setColor(const QBrush &brush);
 		void updateColor();
 		void changeTypeColor(KTDualColorButton::DualColor s);
 		void syncHsv(int h , int s , int v);
 		void setHS(int h, int s);
-		void changeGradient(const QGradient & gradient);
+		void changeGradient(const QBrush & gradient);
+		void setSolidType();
+		void setGradientType();
 		
 	signals:
-		void colorChanged(const QBrush &foreground, const QBrush &background); // TODO: cambiar nombre
+		void brushChanged(const QBrush &foreground, const QBrush &background); 
 };
 
 #endif

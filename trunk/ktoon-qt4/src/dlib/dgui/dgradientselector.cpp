@@ -110,8 +110,11 @@ void DGradientSelector::init()
 	show();
 	
 	DGradientArrow *first = new DGradientArrow(calcArrowPos(1), QColor(Qt::black));
-
+	DGradientArrow * second= new DGradientArrow(calcArrowPos(0), QColor(Qt::white));
 	m_arrows << first ;
+	m_arrows << second ;
+	createGradient();
+	emit gradientChanged(  m_gradient.stops());;
 }
 
 
@@ -194,7 +197,7 @@ void DGradientSelector::mousePressEvent( QMouseEvent *e )
 			break;
 		}
 	}
-	if(m_arrows.count() > 1 && e->button() == Qt::RightButton )
+	if(m_arrows.count() > 2 && e->button() == Qt::RightButton )
 	{
 		m_arrows.removeAt(m_currentArrowIndex);
 		repaint();

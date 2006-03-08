@@ -34,7 +34,7 @@ DBrushAdjuster::~DBrushAdjuster()
 
 QBrush DBrushAdjuster::adjustBrush(const QBrush &brush, const QRect &rect )
 {
-	QBrush brush1;
+	QBrush brush1(brush);
 	if(brush.gradient())
 	{
 		QGradient grad = DGradientAdjuster::adjustGradient( brush.gradient(), rect );

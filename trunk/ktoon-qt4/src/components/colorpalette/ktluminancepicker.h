@@ -13,7 +13,7 @@ class KTLuminancePicker : public QWidget
 	public:
 		KTLuminancePicker(QWidget* parent=0);
 		~KTLuminancePicker();
-
+		int value();
 	public slots:
 		void setCol(int h, int s, int v);
 		void setCol(int h, int s);

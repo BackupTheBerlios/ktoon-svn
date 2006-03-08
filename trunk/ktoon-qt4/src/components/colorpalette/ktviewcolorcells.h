@@ -68,7 +68,7 @@ class KTViewColorCells : public QFrame
 		
 	signals:
 		void selectColor(const QBrush &);
-		void selectGradient(const QGradient &);
+		void selectGradient(const QBrush &);
 		
 	public slots:
 		virtual void addCurrentColor();

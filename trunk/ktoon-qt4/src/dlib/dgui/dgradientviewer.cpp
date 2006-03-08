@@ -85,6 +85,9 @@ DGradientViewer::DGradientViewer(QWidget *parent)
 	setMidLineWidth(2);
 	setLineWidth(2);
 	setFrameStyle( QFrame::StyledPanel | QFrame::Sunken );
+// 	m_gradientStops.append(qMakePair(0.5, QColor("#000000")));
+	createGradient();
+	repaint();
 }
 
 
@@ -102,8 +105,6 @@ void DGradientViewer::paintEvent( QPaintEvent* e)
 	p.setBrush(m_gradient);
 	p.drawRect(rect());
 	p.setPen(QPen(Qt::blue, 5, Qt::SolidLine,Qt::RoundCap,Qt::RoundJoin ));
-	
-	
 	m_controlPoint->drawPoints(&p);
 	
 	p.end();

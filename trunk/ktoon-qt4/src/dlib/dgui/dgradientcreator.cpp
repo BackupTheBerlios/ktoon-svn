@@ -39,7 +39,7 @@ DGradientCreator::DGradientCreator(QWidget *parent)
 	
 	m_selector = new DGradientSelector(this);
 	m_viewer = new DGradientViewer(this);
-	connect(m_viewer, SIGNAL(gradientChanged()), this, SIGNAL(gradientChanged()));
+	connect(m_viewer, SIGNAL(gradientChanged()), this, SLOT(emitGradientChanged()));
 	layout->addLayout(subLayout);
 	
 	selectorAndViewer->addWidget(m_viewer);
@@ -75,21 +75,6 @@ DGradientCreator::DGradientCreator(QWidget *parent)
 	subLayout->setSpacing(2);
 	subLayout->setMargin(2);
 	
-	
-	DVHBox *box = new DVHBox(this, Qt::Horizontal);
-	box->setFrameStyle(QFrame::StyledPanel );
-	box->setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Fixed);
-	box->boxLayout()->setSpacing(2);
-	box->boxLayout()->setMargin(2);
-	
-	m_fill = new DImageButton(QPixmap(THEME_DIR+"icons/fillcolor.png"), 32, box, false);
-	connect(m_fill, SIGNAL( clicked()), this, SLOT(emitGradientChanged()));
-	m_fill->setCheckable ( true );
-	
-	m_outLine = new DImageButton(QPixmap(THEME_DIR+"icons/written_pic.png"), 32, box, false);
-	m_outLine->setCheckable ( true );
-	layout->addWidget(box);
-
 	setFrameStyle(QFrame::StyledPanel );
 	
 	m_spinControl->setSpin( QGradient::Type(0 ));
@@ -102,36 +87,14 @@ DGradientCreator::~DGradientCreator()
 	DEND;
 }
 
-
-
-
-DGradientCreator::DGradientApply DGradientCreator::gradientApply()
-{
-	if( m_fill->isChecked() && m_outLine->isChecked())
-	{
-		return FillAndOutLine;
-	}
-	else if(m_fill->isChecked())
-	{
-		return Fill;
-	}
-	else if(m_outLine->isChecked())
-	{
-		return OutLine;
-	}
-	return None;
-	
-}
-
 void DGradientCreator::setCurrentColor(const QColor &color)
 {
-	
 	m_selector->setCurrentColor(color);
 	if(!isVisible())
 	{
 		m_viewer->createGradient();
 	}
-	emit gradientChanged(m_viewer->gradient());
+	emit gradientChanged(QBrush(m_viewer->gradient()));
 }
 
 int DGradientCreator::gradientType()
@@ -162,22 +125,23 @@ void DGradientCreator::changeGradientStops( const QGradientStops& stops )
 	emit gradientChanged(m_viewer->gradient());
 }
 
-void DGradientCreator::setGradient(const QGradient & gradient)
+void DGradientCreator::setGradient(const QBrush & gradient)
 {
-	blockSignals ( true);
-	m_type->setCurrentIndex(gradient.type());
-	m_spread->setCurrentIndex(gradient.spread());
-	m_selector->setStops(gradient.stops());
-	m_viewer->setGradient( &gradient);
-	m_spinControl->setSpin( gradient.type() );
-	if(gradient.type() == QGradient::RadialGradient)
+// 	blockSignals ( true);
+	const QGradient *gr = gradient.gradient();
+	m_type->setCurrentIndex(gr->type());
+	m_spread->setCurrentIndex(gr->spread());
+	m_selector->setStops(gr->stops());
+	m_viewer->setGradient( gr);
+	m_spinControl->setSpin( gr->type() );
+	if(gr->type() == QGradient::RadialGradient)
 	{
-		m_spinControl->setRadius(  static_cast<const QRadialGradient*>(&gradient)->radius());
-	}else if (gradient.type() == QGradient::ConicalGradient)
+		m_spinControl->setRadius(  static_cast<const QRadialGradient*>(gr)->radius());
+	}else if (gr->type() == QGradient::ConicalGradient)
 	{
-		m_spinControl->setAngle(  static_cast<const QConicalGradient*>(&gradient)->angle());
+		m_spinControl->setAngle(  static_cast<const QConicalGradient*>(gr)->angle());
 	}
-	blockSignals ( false);
+// 	blockSignals ( false);
 }
 
 void DGradientCreator::emitGradientChanged()

@@ -100,3 +100,9 @@ void KTLuminancePicker::setCol(int h, int s , int v)
 	delete pix; pix=0;
 	repaint();
 }
+
+int  KTLuminancePicker::value()
+{
+	return val;
+}
+

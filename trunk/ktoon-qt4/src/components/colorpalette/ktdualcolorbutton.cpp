@@ -34,6 +34,7 @@
 #include <QDropEvent>
 
 #include "ddebug.h"
+#include "dbrushadjuster.h"
 
 KTDualColorButton::KTDualColorButton( QWidget *parent ) : QWidget( parent )
 {
@@ -128,12 +129,10 @@ void KTDualColorButton::setCurrentColor(const QBrush &c)
 {
 	if(curColor == Background)
 	{
-// 		bg = QBrush(c, Qt::SolidPattern);
 		bg = c;
 	}
 	else
 	{
-// 		fg = QBrush(c, Qt::SolidPattern);
 		fg = c;
 	}
 	update();
@@ -159,10 +158,11 @@ void KTDualColorButton::paintEvent(QPaintEvent *)
 	metrics(fgRect, bgRect);
 	QBrush defBrush = palette().color(QPalette::Button);
 
+	
 	qDrawShadeRect(&p, bgRect, palette(), curColor == Background, 2, 0,
-			isEnabled() ? &bg : &defBrush);
+			isEnabled() ? &DBrushAdjuster::adjustBrush(bg, bgRect) : &defBrush);
 	qDrawShadeRect(&p, fgRect,  palette(), curColor == Foreground, 2, 0,
-			isEnabled() ? &fg : &defBrush);
+			isEnabled() ? &DBrushAdjuster::adjustBrush(fg, fgRect) : &defBrush);
 	p.setPen(QPen(palette().shadow().color()));
 	p.drawPixmap(fgRect.right()+2, 0, *arrowBitmap);
 	p.drawPixmap(0, fgRect.bottom()+2, *resetPixmap);

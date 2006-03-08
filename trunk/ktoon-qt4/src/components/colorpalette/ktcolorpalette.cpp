@@ -30,7 +30,7 @@
 #include "dglobal.h"
 
 
-KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_currentOutlineColor(Qt::black), m_currentFillColor(Qt::transparent), m_flagGradient(true)
+KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_currentOutlineColor(Qt::black), m_currentFillColor(Qt::transparent), m_flagGradient(true), m_type(Solid)
 {
 	DINIT;
 	setCaption( tr( "Color Palette" ) );
@@ -50,7 +50,6 @@ KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_
 	QColor foreground = QColor(DCONFIG->value("LastForegroundColor", Qt::black).toString());
 	QColor background = QColor(DCONFIG->value("LastBackgroundColor", Qt::transparent).toString());
 	
-	setColor( foreground );
 }
 
 
@@ -99,16 +98,15 @@ void KTColorPalette::setupChooserTypeColor()
 	layout->addLayout(layoutContainer);
 	layout->addWidget(m_displayValueColor);
 	this->layout()->setAlignment( colorMixer, Qt::AlignTop);
-	connect(m_displayValueColor, SIGNAL(colorChanged(const QColor&)), this, SLOT(setColor(const QColor &)));
+	connect(m_displayValueColor, SIGNAL(brushChanged(const QBrush&)), this, SLOT(setColor(const QBrush &)));
 	
 	m_centralWidget->addPage(colorMixer, tr("Color Mixer"));
 }
 
-
 void KTColorPalette::setupGradienManager()
 {
 	m_gradientManager = new DGradientCreator(this);
-	connect(m_gradientManager, SIGNAL(gradientChanged( const QGradient& )), this, SLOT(changeGradient(const QGradient &) ));
+	connect(m_gradientManager, SIGNAL(gradientChanged( const QBrush& )), this, SLOT(changeGradient(const QBrush &) ));
 	m_centralWidget->addPage(m_gradientManager,tr("Gradients"));
 	
 }
@@ -121,7 +119,7 @@ void KTColorPalette::setupDisplayColor()
 	
 	connect (m_containerPalette, SIGNAL(selectColor( const QBrush& )), this, SLOT(setColor( const QBrush& )));
 	
-	connect (m_containerPalette, SIGNAL(selectGradient(const QGradient&)), this, SLOT(changeGradient(const QGradient&)));
+	connect (m_containerPalette, SIGNAL(selectGradient(const QBrush&)), this, SLOT(changeGradient(const QBrush&)));
 	
 	connect (m_containerPalette, SIGNAL(selectGradient(const QGradient&)), m_gradientManager, SLOT(setGradient(const QGradient&)));
 	
@@ -132,6 +130,9 @@ void KTColorPalette::setupDisplayColor()
 	QFrame *viewColor = new QFrame(this);
 	QBoxLayout *vlayout = new QBoxLayout(QBoxLayout::LeftToRight);
 	viewColor->setLayout(vlayout);
+	
+	m_labelType = new QLabel(tr("Solid"), viewColor);
+	vlayout->addWidget(m_labelType);
 	
 	m_outlineAndFillColors = new KTDualColorButton(m_currentOutlineColor, m_currentFillColor, viewColor);
 	m_outlineAndFillColors->setSizePolicy ( QSizePolicy::Fixed, QSizePolicy::Fixed );
@@ -158,31 +159,37 @@ void KTColorPalette::setColor(const QBrush& brush)
 {
 	QColor color = brush.color();
 	
-	if(m_displayValueColor && m_outlineAndFillColors && m_colorPicker && m_nameColor && m_luminancePicker)
+	
+	if(color.isValid())
 	{
-		m_displayValueColor->setColor(color);
-		m_outlineAndFillColors->setCurrentColor(color);
-		m_colorPicker->setCol(color.hue(), color.saturation ());
-	
-		m_nameColor->setText(color.name ());
-	
-		m_luminancePicker->setCol(color.hue(), color.saturation(), color.value());
-		m_containerPalette->setColor( brush );
 		
-		if(m_flagGradient)
+		if(sender() == m_containerPalette)
 		{
-			m_gradientManager->setCurrentColor(color);
-			m_gradientManager->repaint();
+			setSolidType();
 		}
-		
-		if(m_gradientManager->gradientApply() == DGradientCreator::None)
+		if(m_displayValueColor && m_outlineAndFillColors && m_colorPicker && m_nameColor && m_luminancePicker)
 		{
-			emit colorChanged( m_outlineAndFillColors->foreground(),m_outlineAndFillColors->background() );
+			m_displayValueColor->setColor(color);
+			
+			m_outlineAndFillColors->setCurrentColor(color);
+			
+			m_colorPicker->setCol(color.hue(), color.saturation ());
+		
+			m_nameColor->setText(color.name ());
+		
+			m_luminancePicker->setCol(color.hue(), color.saturation(), color.value());
+			
+			m_containerPalette->setColor( brush );
+			
+			emit brushChanged( m_outlineAndFillColors->foreground(),m_outlineAndFillColors->background() );
 		}
 	}
+	if(m_type == Gradient)
+	{
+		m_gradientManager->setCurrentColor(color);
+		m_gradientManager->repaint();
+	}
 }
-
-
 
 void KTColorPalette::changeTypeColor(KTDualColorButton::DualColor s)
 {
@@ -204,7 +211,6 @@ void KTColorPalette::changeTypeColor(KTDualColorButton::DualColor s)
 
 void KTColorPalette::syncHsv(int h, int s, int v)
 {
-// 	int th, ts, tv;
 	QColor tmpColor = m_outlineAndFillColors->currentColor().color();
 	tmpColor.setHsv( h, s, v, tmpColor.alpha() );
 	if(m_luminancePicker == sender())
@@ -214,12 +220,10 @@ void KTColorPalette::syncHsv(int h, int s, int v)
 
 void KTColorPalette::setHS(int h , int s)
 {
-	int th, ts, tv;
 	QColor tmpColor = m_outlineAndFillColors->currentColor().color();
 	
-	tmpColor.getHsv( &th, &ts, &tv );
-	tmpColor.setHsv( h, s, tv, tmpColor.alpha() );
-	setColor(tmpColor);
+	tmpColor.setHsv( h, s, m_luminancePicker->value(), tmpColor.alpha() );
+	setColor(QBrush(tmpColor));
 }
 
 void KTColorPalette::updateColor()
@@ -234,42 +238,57 @@ QPair<QColor, QColor> KTColorPalette::color()
 	QPair<QColor, QColor> colors;
 	colors.first = m_outlineAndFillColors->foreground().color();
 	colors.second = m_outlineAndFillColors->background().color();
-	
 	return colors;
 }
 
-void KTColorPalette::changeGradient(const QGradient & gradient)
+void KTColorPalette::changeGradient(const QBrush & gradient)
 {
-	switch(m_gradientManager->gradientApply())
+	if(gradient.gradient() )
 	{
-		case DGradientCreator::FillAndOutLine:
+		setGradientType();
+		
+		
+		
+		if( sender () != m_gradientManager )
 		{
-			dDebug() << m_gradientManager->gradientApply();
-			emit colorChanged(QBrush(gradient), QBrush(gradient));
-			break;
+			m_gradientManager->setGradient(gradient);
 		}
-		case DGradientCreator::Fill:
-		{
-			dDebug() << m_gradientManager->gradientApply();
-			emit colorChanged(m_outlineAndFillColors->foreground(), QBrush(gradient));
-			break;
-		}
-		case DGradientCreator::OutLine:
-		{
-			dDebug() << m_gradientManager->gradientApply();
-			emit colorChanged(QBrush(gradient) ,m_outlineAndFillColors->background());
-			break;
-		}
-		default:
-		{
-			return;
-			break;
-		}
+		m_outlineAndFillColors->setCurrentColor(gradient);
+		m_containerPalette->setColor(gradient);
+		emit brushChanged( m_outlineAndFillColors->foreground(), m_outlineAndFillColors->background() );
 	}
-	m_containerPalette->setColor( QBrush(gradient) );
+	
+	
+	
 }
 
 void KTColorPalette::parsePaletteFile(const QString &file)
 {
 	m_containerPalette->readPaletteFile( file );
 }
+
+void KTColorPalette::mousePressEvent ( QMouseEvent * e )
+{
+	if(e->button () == Qt::RightButton)
+	{
+		QMenu *menu = new QMenu(tr("type brush"), this);
+		menu->addAction(tr("solid"), this, SLOT(setSolidType()));
+		menu->addAction(tr("gradient"), this, SLOT(setGradientType()));
+		menu->exec(e->globalPos ());
+		delete menu;
+	}
+}
+
+void KTColorPalette::setSolidType()
+{
+	m_labelType->setText(tr("Solid"));
+	m_type = Solid;
+}
+
+void KTColorPalette::setGradientType()
+{
+	m_labelType->setText(tr("Gradient"));
+	m_type = Gradient;
+}
+
+

@@ -56,7 +56,6 @@ class DGradientCreator : public QFrame
 {
 	Q_OBJECT
 	public:
-		enum DGradientApply{None=-1, Fill, OutLine, FillAndOutLine };
 		/**
 		 * @if english
 		 * Translate
@@ -97,8 +96,6 @@ class DGradientCreator : public QFrame
 		 */
 		QBrush currentGradient();
 		
-		DGradientApply gradientApply();
-		
 		/**
 		 * Devuelve el tamaño ideal
 		 */
@@ -108,7 +105,6 @@ class DGradientCreator : public QFrame
 		DGradientSelector *m_selector;
 		DGradientViewer *m_viewer;
 		DRadioButtonGroup *m_type, *m_spread ;
-		DImageButton *m_fill, *m_outLine;
 		QSpinBox *m_radius, *m_angle;
 		SpinControl *m_spinControl;
 		
@@ -147,13 +143,13 @@ class DGradientCreator : public QFrame
 		 * Cambia el gradiente actual.
 		 * @endif
 		 */
-		void setGradient(const QGradient & gradient);
+		void setGradient(const QBrush & gradient);
 		
 	private slots:
 		void emitGradientChanged();
 		
 	signals:
-		void gradientChanged(const QGradient &);
+		void gradientChanged(const QBrush &);
 		void controlArrowAdded();
 };
 

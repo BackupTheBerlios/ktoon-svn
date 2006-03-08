@@ -70,17 +70,18 @@ class KTValueColor : public QFrame
 		QGridLayout *m_layout;
 		bool ok;
 		
+		
 	private:
 		void setupForm();
 		
 	public slots:
-	void setColor(const QBrush & brush);
+		void setColor(const QBrush & brush);
 		
 	private slots:
 		void syncValuesRgb(int value);
 		
 	signals:
-		void colorChanged(const QColor &);
+		void brushChanged(const QBrush &);
 		void hueChanged(int);
 		void saturationChanged(int);
 		void valueChanged(int);

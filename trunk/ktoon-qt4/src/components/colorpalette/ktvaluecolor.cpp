@@ -147,7 +147,7 @@ void KTValueColor::syncValuesRgb(int)
 		m_valueH->setValue( tmp.hue ());
 		m_valueS->setValue( tmp.saturation());
 		m_valueV->setValue( tmp.value ());
-		emit colorChanged(QColor::fromRgb(r,g,b,a)) ;
+		emit brushChanged(QColor::fromRgb(r,g,b,a)) ;
 	}
 }
 

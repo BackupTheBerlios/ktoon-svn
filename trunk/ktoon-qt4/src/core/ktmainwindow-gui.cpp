@@ -28,7 +28,7 @@ void KTMainWindow::createGUI()
 	// TODO: put setWindowIcon in each class
 	m_colorPalette = new KTColorPalette(this);
 	m_colorPalette->setWindowIcon(QPixmap(THEME_DIR+"/icons/color_palette.png") );
-	connect(m_colorPalette, SIGNAL(colorChanged(const QBrush &, const QBrush &)), this, SLOT(changeCurrentColors(const QBrush &, const QBrush &)));
+	connect(m_colorPalette, SIGNAL(brushChanged(const QBrush &, const QBrush &)), this, SLOT(changeCurrentColors(const QBrush &, const QBrush &)));
 	toolWindow(DDockWindow::Left)->addWidget(tr("Palette"),m_colorPalette);
 	
 	connectToDisplays(m_colorPalette);
