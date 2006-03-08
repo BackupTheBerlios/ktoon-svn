@@ -36,12 +36,15 @@ class DApplicationProperties
 		void setDataDir(const QString &v);
 		void setHomeDir(const QString &v);
 		void setThemeDir(const QString &v);
+		void setCacheDir(const QString &v);
 		void setVersion(const QString &v);
+		
 		
 		virtual QString dataDir() const;
 		virtual QString homeDir() const;
 		virtual QString themeDir() const;
 		virtual QString configDir() const;
+		virtual QString cacheDir() const;
 		virtual QString version() const;
 		
 		static DApplicationProperties *instance();
@@ -53,6 +56,7 @@ class DApplicationProperties
 		QString m_dataDir;
 		QString m_themeDir;
 		QString m_version;
+		QString m_cacheDir;
 };
 
 #define dAppProp DApplicationProperties::instance()

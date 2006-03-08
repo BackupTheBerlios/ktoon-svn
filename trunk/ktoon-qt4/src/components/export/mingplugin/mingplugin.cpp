@@ -20,6 +20,7 @@
 
 #include "mingplugin.h"
 #include <dglobal.h>
+#include <ddebug.h>
 
 #include <QImage>
 #include <QPainter>
@@ -27,7 +28,7 @@
 #include <cstdio>
 
 #ifdef HAVE_MING
-#include <ming.h>
+#include <mingpp.h>
 #endif
 
 MingPlugin::MingPlugin()
@@ -58,56 +59,39 @@ void MingPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> 
 	{
 		temp.mkdir(temp.path());
 	}
-	
-	SWFMovie movie = newSWFMovie();
-	
-	SWFMovie_setRate(movie, scenes[0]->fps() );
-	SWFMovie_setDimension(movie,  size.width(), size.height() );
-	SWFMovie_setBackground(movie,  0xff, 0xff, 0xff );
 
-	SWFMatrix matrix = SWFFillStyle_getMatrix(newSWFSolidFillStyle(255,255,255,255));
+	SWFMovie movie;
 	
-	SWFDisplayItem frame = SWFMovie_add( movie, matrix);
+	movie.setRate(scenes[0]->fps() );
+	movie.setDimension(size.width(), size.height() );
+	movie.setBackground(0xff, 0xff, 0xff );
+
+	SWFShape shape;
+	shape.addSolidFill(255,255,255,255);
+
+	SWFDisplayItem *frame = movie.add( &shape);
 	
 	QStringList paths = createImages( scenes, temp );
 
 	foreach(QString image, paths)
 	{
-		FILE *fd = fopen(image.toLatin1(), "r");
-		SWFBitmap bitmap = newSWFBitmap_fromInput(newSWFInput_file(fd) ); //( image.toLatin1() );
+		SWFBitmap bitmap(image.toLatin1().data());
 		
-		fclose(fd);
-		
-		int width  = SWFBitmap_getWidth(bitmap);
-		int height = SWFBitmap_getHeight(bitmap);
-
-		SWFShape p_shape = newSWFShape();
-		SWFShape_addBitmapFillStyle(p_shape, bitmap, 0);
-
-		frame = SWFMovie_add(movie, p_shape);
-		
-		SWFMovie_nextFrame(movie);
+		SWFShape p_shape;
+		p_shape.addBitmapFill(&bitmap);
+		frame = movie.add( &p_shape);
+		movie.nextFrame();
 	}
 	
-	SWFMovie_save(movie, filePath.toLatin1());
+	movie.save(filePath.toLatin1().data());
 	
-// 	FILE *f = fopen(filePath.toLatin1(), "wb");
-// 	int count;
-// 
-// 	if(f == 0)
-// 	{
-// 		qDebug("WHAAAT???");
-// 	}
-// 	
-// 	count = SWFMovie_output(movie, fileOutputMethod, f);
-// 	fclose(f);
-	
-	destroySWFMovie(movie);
-
 	foreach(QString path, paths)
 	{
 		QFile::remove(path);
 	}
+	
+// 	Ming_cleanup();
+// 	Ming_collectGarbage();
 #endif
 }
 
@@ -178,10 +162,13 @@ QStringList MingPlugin::createImages(const QList<KTScene *> &scenes, const QDir 
 				file = QString("%1.png").arg(nPhotogramsRenderized);
 			}
 			
-			renderized.save(dir.path()+"/"+file, "PNG");
-// 			emit progressStep( nPhotogramsRenderized, totalPhotograms);
-			
-			paths << dir.path()+"/"+file;
+			if ( !renderized.isNull() )
+			{
+				renderized.save(dir.path()+"/"+file, "PNG");
+	// 			emit progressStep( nPhotogramsRenderized, totalPhotograms);
+				
+				paths << dir.path()+"/"+file;
+			}
 			
 			if (ok )
 			{
@@ -202,7 +189,7 @@ void MingPlugin::createImage(AGraphicComponent *component, QPainter *painter)
 	{
 		QPen pen = graphic->pen;
 		QBrush brush = graphic->brush;
-
+		
 		painter->setPen(pen);
 		painter->setBrush(brush);
 		

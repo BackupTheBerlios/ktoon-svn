@@ -32,7 +32,7 @@
 #define HOME dAppProp->homeDir()
 #define CONFIG_DIR dAppProp->configDir()
 
-#define REPOSITORY QString("")
+#define REPOSITORY dAppProp->cacheDir()
 
 
 #endif

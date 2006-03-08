@@ -73,5 +73,7 @@ void KTApplication::createRepository(const QString &repository)
 			dError() << tr("I cannot create the repository");
 		}
 	}
+	
+	dAppProp->setCacheDir(repository);
 }
 

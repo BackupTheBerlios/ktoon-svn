@@ -52,6 +52,11 @@ void DApplicationProperties::setThemeDir(const QString &v)
 	m_themeDir = v;
 }
 
+void DApplicationProperties::setCacheDir(const QString &v)
+{
+	m_cacheDir = v;
+}
+
 void DApplicationProperties::setVersion(const QString &v)
 {
 	m_version = v;
@@ -92,6 +97,11 @@ QString DApplicationProperties::themeDir() const
 QString DApplicationProperties::configDir() const
 {
 	return QDir::homePath()+"/."+qApp->applicationName();
+}
+
+QString DApplicationProperties::cacheDir() const
+{
+	return m_cacheDir;
 }
 
 QString DApplicationProperties::version() const
