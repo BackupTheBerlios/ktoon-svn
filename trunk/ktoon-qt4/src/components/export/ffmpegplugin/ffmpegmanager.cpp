@@ -50,7 +50,12 @@ void FFMpegManager::create(const QString &filePath, int formatId, const QStringL
 
 	AVOutputFormat *fmt = guess_format(0, filePath.toLatin1().data(), 0);
 	
-	AVFormatParameters params, *ap = &params;
+	if ( !fmt )
+	{
+		fmt = guess_format("mpeg", NULL, NULL);
+	}
+	
+// 	AVFormatParameters params, *ap = &params;
 	
 	switch(formatId)
 	{
@@ -86,10 +91,10 @@ void FFMpegManager::create(const QString &filePath, int formatId, const QStringL
 		break;
 		case ExportInterface::GIF:
 		{
-			AVImageFormat *imageFormat = guess_image_format(filePath.toLatin1().data());
-			
-			memset(ap, 0, sizeof(*ap));
-			ap->image_format = imageFormat;
+// 			AVImageFormat *imageFormat = guess_image_format(filePath.toLatin1().data());
+// 			
+// 			memset(ap, 0, sizeof(*ap));
+// 			ap->image_format = imageFormat;
 		}
 		break;
 		default: break;
@@ -114,7 +119,7 @@ void FFMpegManager::create(const QString &filePath, int formatId, const QStringL
 		return;
 	}
 	
-	if (av_set_parameters(oc, ap) < 0)
+	if (av_set_parameters(oc, 0) < 0)
 	{
 		dError() << "Invalid output format parameters";
 		return ;
@@ -190,13 +195,13 @@ AVStream *FFMpegManager::addVideoStream(AVFormatContext *oc, int codec_id, int w
 	int w = width;
 	int h = height;
 	
-	if ( width < 520 )
+	if ( width < 352 )
 	{
-		w = 520;
+		w = 352;
 	}
-	if ( height < 340 )
+	if ( height < 288 )
 	{
-		h = 340;
+		h = 288;
 	}
 
 	st = av_new_stream(oc, 0);
@@ -222,10 +227,14 @@ AVStream *FFMpegManager::addVideoStream(AVFormatContext *oc, int codec_id, int w
 	c->height = h; // 340
 
 #if LIBAVCODEC_BUILD <= 4743
-#warning FIXME:  fps support, add to AV Params
 	/* frames per second */
 	c->frame_rate = fps;
 	c->frame_rate_base = 1;
+#else
+	c->time_base.den = fps;
+	c->time_base.num = 1;
+	c->gop_size = 12; /* emit one intra frame every twelve frames at most */
+	c->pix_fmt = PIX_FMT_YUV420P;
 #endif
 
 	c->gop_size = 12; /* emit one intra frame every twelve frames at most */

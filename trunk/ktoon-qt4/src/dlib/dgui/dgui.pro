@@ -3,7 +3,8 @@
 # Subdir relative project main directory: ./src/dlib/dgui
 # Target is a library:  
 
-QT += xml -network 
+RESOURCES += images.qrc 
+QT += xml 
 INSTALLS += target 
 target.path = /lib/ 
 KDEV_QTVER = 4 
@@ -56,7 +57,9 @@ HEADERS += ccbar.h \
            docksplitter.h \
            dmdiwindow.h \
            button.h \
-           buttonbar.h 
+           buttonbar.h \
+           ddatepicker.h \
+           ddatetable.h 
 SOURCES += ccbar.cpp \
            ccbutton.cpp \
            collapsiblewidget.cpp \
@@ -97,4 +100,6 @@ SOURCES += ccbar.cpp \
            docksplitter.cpp \
            dmdiwindow.cpp \
            button.cpp \
-           buttonbar.cpp 
+           buttonbar.cpp \
+           ddatepicker.cpp \
+           ddatetable.cpp 

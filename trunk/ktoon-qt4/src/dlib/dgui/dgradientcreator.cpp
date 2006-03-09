@@ -44,6 +44,7 @@ DGradientCreator::DGradientCreator(QWidget *parent)
 	
 	selectorAndViewer->addWidget(m_viewer);
 	selectorAndViewer->addWidget(m_selector);
+	selectorAndViewer->addStretch(2);
 // 	subLayout->addLayout(selectorAndViewer);
 	
 	connect( m_selector, SIGNAL(gradientChanged(  const QGradientStops& )),this, SLOT(changeGradientStops( const QGradientStops& )));
@@ -82,6 +83,9 @@ DGradientCreator::DGradientCreator(QWidget *parent)
 	
 	m_spinControl->setSpin( QGradient::Type(0 ));
 	m_spinControl->setRadius(50);
+	
+	
+	subLayout->addStretch(2);
 }
 
 
