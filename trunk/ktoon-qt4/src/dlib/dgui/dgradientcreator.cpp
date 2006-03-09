@@ -28,23 +28,23 @@
 DGradientCreator::DGradientCreator(QWidget *parent)
  : QFrame(parent)
 {
-	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
+	QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight);
 	layout->setSpacing(2);
 	layout->setMargin(2);
 	setLayout(layout);
 	
-	QBoxLayout *subLayout = new QBoxLayout(QBoxLayout::LeftToRight);
+	
 	
 	QBoxLayout *selectorAndViewer = new QBoxLayout(QBoxLayout::TopToBottom);
 	
 	m_selector = new DGradientSelector(this);
 	m_viewer = new DGradientViewer(this);
 	connect(m_viewer, SIGNAL(gradientChanged()), this, SLOT(emitGradientChanged()));
-	layout->addLayout(subLayout);
+	layout->addLayout(selectorAndViewer);
 	
 	selectorAndViewer->addWidget(m_viewer);
 	selectorAndViewer->addWidget(m_selector);
-	subLayout->addLayout(selectorAndViewer);
+// 	subLayout->addLayout(selectorAndViewer);
 	
 	connect( m_selector, SIGNAL(gradientChanged(  const QGradientStops& )),this, SLOT(changeGradientStops( const QGradientStops& )));
 	connect(m_selector, SIGNAL(arrowAdded()), this, SIGNAL(controlArrowAdded()));
@@ -55,16 +55,18 @@ DGradientCreator::DGradientCreator(QWidget *parent)
 	connect(m_spinControl, SIGNAL(radiusChanged(int)), m_viewer, SLOT(changeRadius(int)));
 	layout->addWidget(m_spinControl);
 	
+	QBoxLayout *subLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+	layout->addLayout(subLayout);
 	
 	
-	m_type = new DRadioButtonGroup(tr("Gradient type"), Qt::Vertical, this);
+	m_type = new QComboBox(this);
 	QStringList list;
 	list << tr( "Linear" ) << tr( "Radial" ) << tr("Conical");
 	m_type->addItems ( list );
 	connect(  m_type, SIGNAL(  clicked ( int )),this, SLOT(changeType(int)));
 	subLayout->addWidget( m_type);
 	
-	m_spread = new DRadioButtonGroup(tr("Gradient spread"), Qt::Vertical, this);
+	m_spread = new QComboBox(this);
 	list.clear();
 	list << tr( "Pad" ) << tr( "Reflect" ) << tr("Repeat");
 	m_spread->addItems ( list );

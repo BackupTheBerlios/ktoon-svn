@@ -69,7 +69,7 @@ class KTColorPalette : public KTModuleWidgetBase
 		QLineEdit *m_nameColor;
 		KTDualColorButton *m_outlineAndFillColors;
 		QBrush m_currentOutlineColor, m_currentFillColor;
-		QLabel *m_labelType;
+		QComboBox *m_labelType;
 		QSplitter *m_splitter;
 		bool m_flagGradient;
 		TypeBrush m_type;
@@ -90,8 +90,7 @@ class KTColorPalette : public KTModuleWidgetBase
 		void syncHsv(int h , int s , int v);
 		void setHS(int h, int s);
 		void changeGradient(const QBrush & gradient);
-		void setSolidType();
-		void setGradientType();
+		void changeBrushType(const QString& );
 		
 	signals:
 		void brushChanged(const QBrush &foreground, const QBrush &background); 

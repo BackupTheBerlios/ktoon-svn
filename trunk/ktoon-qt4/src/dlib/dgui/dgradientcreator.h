@@ -30,9 +30,8 @@
 #include "ccbutton.h"
 #include <QFrame>
 
-#include "dradiobuttongroup.h"
-
-
+#include <QComboBox>
+#include <QBoxLayout>
 
 #include "dxyspinbox.h"
 
@@ -104,7 +103,8 @@ class DGradientCreator : public QFrame
 	private:
 		DGradientSelector *m_selector;
 		DGradientViewer *m_viewer;
-		DRadioButtonGroup *m_type, *m_spread ;
+// 		DRadioButtonGroup *m_type, *m_spread ;
+		QComboBox *m_type, *m_spread ;
 		QSpinBox *m_radius, *m_angle;
 		SpinControl *m_spinControl;
 		

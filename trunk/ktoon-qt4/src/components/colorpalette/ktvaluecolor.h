@@ -65,8 +65,8 @@ class KTValueColor : public QFrame
 		
 		
 	private:
-// 		KTItemValueColor *m_valueR, *m_valueG, *m_valueB, *m_valueH, *m_valueS, *m_valueV, *m_valueA;
-		DEditSpinBox *m_valueR, *m_valueG, *m_valueB, *m_valueH, *m_valueS, *m_valueV, *m_valueA;
+		KTItemValueColor *m_valueR, *m_valueG, *m_valueB, *m_valueH, *m_valueS, *m_valueV, *m_valueA;
+// 		DEditSpinBox *m_valueR, *m_valueG, *m_valueB, *m_valueH, *m_valueS, *m_valueV, *m_valueA;
 		QGridLayout *m_layout;
 		bool ok;
 		

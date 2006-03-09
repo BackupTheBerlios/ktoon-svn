@@ -65,12 +65,13 @@ KTColorPalette::~KTColorPalette()
 void KTColorPalette::setupChooserTypeColor()
 {
 	QFrame *colorMixer = new QFrame(m_centralWidget);
+	
 	colorMixer->setFrameStyle(QFrame::Box | QFrame::Sunken );
 	
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
 	colorMixer->setLayout(layout);
 
-	layout->setSizeConstraint(QLayout::SetFixedSize);
+// 	layout->setSizeConstraint(QLayout::SetFixedSize);
 	
 	m_displayValueColor = new KTValueColor(colorMixer);
 	
@@ -96,7 +97,7 @@ void KTColorPalette::setupChooserTypeColor()
 	layoutContainer->addStretch(2);
 	
 	layout->addLayout(layoutContainer);
-	layout->addWidget(m_displayValueColor);
+	layout->addWidget(m_displayValueColor, 0, Qt::AlignCenter);
 	this->layout()->setAlignment( colorMixer, Qt::AlignTop);
 	connect(m_displayValueColor, SIGNAL(brushChanged(const QBrush&)), this, SLOT(setColor(const QBrush &)));
 	
@@ -131,7 +132,14 @@ void KTColorPalette::setupDisplayColor()
 	QBoxLayout *vlayout = new QBoxLayout(QBoxLayout::LeftToRight);
 	viewColor->setLayout(vlayout);
 	
-	m_labelType = new QLabel(tr("Solid"), viewColor);
+	m_labelType = new QComboBox( viewColor);
+	m_labelType->addItem(tr("Solid"));
+	m_labelType->addItem(tr("Gradient"));
+	
+	connect(m_labelType, SIGNAL(activated ( const QString & )), this, SLOT(changeBrushType(const QString &)));
+	
+	
+	
 	vlayout->addWidget(m_labelType);
 	
 	m_outlineAndFillColors = new KTDualColorButton(m_currentOutlineColor, m_currentFillColor, viewColor);
@@ -165,7 +173,7 @@ void KTColorPalette::setColor(const QBrush& brush)
 		
 		if(sender() == m_containerPalette)
 		{
-			setSolidType();
+			changeBrushType(tr("Solid"));
 		}
 		if(m_displayValueColor && m_outlineAndFillColors && m_colorPicker && m_nameColor && m_luminancePicker)
 		{
@@ -245,7 +253,7 @@ void KTColorPalette::changeGradient(const QBrush & gradient)
 {
 	if(gradient.gradient() )
 	{
-		setGradientType();
+		changeBrushType(tr("Gradient"));
 		
 		
 		
@@ -272,23 +280,35 @@ void KTColorPalette::mousePressEvent ( QMouseEvent * e )
 	if(e->button () == Qt::RightButton)
 	{
 		QMenu *menu = new QMenu(tr("type brush"), this);
-		menu->addAction(tr("solid"), this, SLOT(setSolidType()));
-		menu->addAction(tr("gradient"), this, SLOT(setGradientType()));
+// 		menu->addAction(tr("solid"), this, SLOT(setSolidType()));
+// 		menu->addAction(tr("gradient"), this, SLOT(setGradientType()));
 		menu->exec(e->globalPos ());
 		delete menu;
 	}
 }
 
-void KTColorPalette::setSolidType()
+
+void KTColorPalette::changeBrushType(const QString& type)
 {
-	m_labelType->setText(tr("Solid"));
-	m_type = Solid;
+	
+	if(type == tr("Solid"))
+	{
+		m_type = Solid;
+	}
+	else if(type == tr("Gradient"))
+	{
+		m_type = Gradient;
+	}
+	if(type != m_labelType->currentText ())
+	{
+		int index =  m_labelType->findText(type);
+		if(index >= 0)
+		{
+			m_labelType->setCurrentIndex(index);
+		}
+	}
+	
 }
 
-void KTColorPalette::setGradientType()
-{
-	m_labelType->setText(tr("Gradient"));
-	m_type = Gradient;
-}
 
 
