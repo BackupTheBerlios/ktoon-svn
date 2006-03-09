@@ -49,11 +49,7 @@ DGradientCreator::DGradientCreator(QWidget *parent)
 	connect( m_selector, SIGNAL(gradientChanged(  const QGradientStops& )),this, SLOT(changeGradientStops( const QGradientStops& )));
 	connect(m_selector, SIGNAL(arrowAdded()), this, SIGNAL(controlArrowAdded()));
 	
-	m_spinControl = new SpinControl(this);
 	
-	connect(m_spinControl, SIGNAL(angleChanged(int)), m_viewer, SLOT(changeAngle(int)));
-	connect(m_spinControl, SIGNAL(radiusChanged(int)), m_viewer, SLOT(changeRadius(int)));
-	layout->addWidget(m_spinControl);
 	
 	QBoxLayout *subLayout = new QBoxLayout(QBoxLayout::TopToBottom);
 	layout->addLayout(subLayout);
@@ -63,16 +59,21 @@ DGradientCreator::DGradientCreator(QWidget *parent)
 	QStringList list;
 	list << tr( "Linear" ) << tr( "Radial" ) << tr("Conical");
 	m_type->addItems ( list );
-	connect(  m_type, SIGNAL(  clicked ( int )),this, SLOT(changeType(int)));
+	connect(  m_type, SIGNAL(  activated ( int )),this, SLOT(changeType(int)));
 	subLayout->addWidget( m_type);
 	
 	m_spread = new QComboBox(this);
 	list.clear();
 	list << tr( "Pad" ) << tr( "Reflect" ) << tr("Repeat");
 	m_spread->addItems ( list );
-	connect(  m_spread, SIGNAL(  clicked ( int )),this, SLOT(changeSpread(int)));
+	connect(  m_spread, SIGNAL(  activated ( int )),this, SLOT(changeSpread(int)));
 	subLayout->addWidget( m_spread);
 	
+	m_spinControl = new SpinControl(this);
+	
+	connect(m_spinControl, SIGNAL(angleChanged(int)), m_viewer, SLOT(changeAngle(int)));
+	connect(m_spinControl, SIGNAL(radiusChanged(int)), m_viewer, SLOT(changeRadius(int)));
+	subLayout->addWidget(m_spinControl);
 	
 	subLayout->setSpacing(2);
 	subLayout->setMargin(2);

@@ -170,11 +170,6 @@ void KTColorPalette::setColor(const QBrush& brush)
 	
 	if(color.isValid())
 	{
-		
-		if(sender() == m_containerPalette)
-		{
-			changeBrushType(tr("Solid"));
-		}
 		if(m_displayValueColor && m_outlineAndFillColors && m_colorPicker && m_nameColor && m_luminancePicker)
 		{
 			m_displayValueColor->setColor(color);
@@ -184,7 +179,7 @@ void KTColorPalette::setColor(const QBrush& brush)
 			m_colorPicker->setCol(color.hue(), color.saturation ());
 		
 			m_nameColor->setText(color.name ());
-		
+			
 			m_luminancePicker->setCol(color.hue(), color.saturation(), color.value());
 			
 			m_containerPalette->setColor( brush );
