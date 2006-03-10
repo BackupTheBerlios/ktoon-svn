@@ -42,3 +42,49 @@ void AGraphic::mapTo(const QMatrix& matrix)
 	pen.setBrush( DBrushAdjuster::mapBrush( pen.brush(), matrix ));
 	
 }
+
+void AGraphic::flip(Qt::Orientation o)
+{
+	QPointF pos = path.boundingRect().center();
+	QMatrix  matrix;
+	matrix.translate(-pos.x(),-pos.y());
+	
+	QList<QPolygonF> pols = path.toSubpathPolygons(matrix);
+	
+	QList<QPolygonF>::iterator itPol = pols.begin();
+	path = QPainterPath();
+	
+	QPolygonF result;
+	
+	while(itPol != pols.end())
+	{
+		QPolygonF::iterator itPoint = (*itPol).begin();
+		while(itPoint != (*itPol).end())
+		{
+			if ( o == Qt::Horizontal)
+			{
+				(*itPoint).setY(/*pos.y()*/-(*itPoint).y());
+			}
+			else
+			{
+				(*itPoint).setX(-(*itPoint).x());
+			}
+			result.append(*itPoint);
+			++itPoint;
+		}
+// 		path.addPolygon((*itPol));
+// 		path.closeSubpath();
+		++itPol;
+	}
+	
+	path.addPolygon(result);
+	
+	matrix.reset();
+	matrix.translate(pos.x(), pos.y()/*-path.currentPosition().y()*/);
+	path = matrix.map(path);
+	
+}
+
+
+
+

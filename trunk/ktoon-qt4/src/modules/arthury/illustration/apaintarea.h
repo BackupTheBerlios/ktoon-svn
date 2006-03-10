@@ -69,6 +69,7 @@ class APaintArea : public QWidget
 		void setOffset(const QPoint& zero);
 		
 		AGraphicComponent *currentGraphic();
+		KTKeyFrame *currentFrame() const;
 		
 		KTBrush *currentBrush();
 		

@@ -26,45 +26,32 @@ QStringList ATransformFilter::keys() const
 	return QStringList() << tr("Flip Horizontally") << tr("Flip Vertically");
 }
 
-QImage ATransformFilter::filter(const QString &filter, const QImage &image, QWidget *parent)
+void ATransformFilter::filter(const QString &filter, const QList<AGraphicComponent *> &frame)
 {
-	QImage original = image.convertToFormat(QImage::Format_RGB32);
-	QImage result = original;
-
-	if (filter == tr("Flip Horizontally")) 
+	foreach(AGraphicComponent *gc, frame)
 	{
-		for (int y = 0; y < original.height(); ++y) 
+		QMatrix matrix(1,0,0,1,0,0);
+		
+		if (filter == tr("Flip Horizontally"))
 		{
-			for (int x = 0; x < original.width(); ++x) 
-			{
-				int pixel = original.pixel(original.width() - x - 1, y);
-				result.setPixel(x, y, pixel);
-			}
+			gc->flip(Qt::Horizontal);
 		}
-	} else if (filter == tr("Flip Vertically")) 
-	{
-		for (int y = 0; y < original.height(); ++y) 
+		else if (filter == tr("Flip Vertically"))
 		{
-			for (int x = 0; x < original.width(); ++x) 
-			{
-				int pixel = original.pixel(x, original.height() - y - 1);
-				result.setPixel(x, y, pixel);
-			}
+			gc->flip(Qt::Vertical);
 		}
 	}
-	
-	return result;
 }
 
-QHash<QString, QAction *> ATransformFilter::actions()
+QHash<QString, DAction *> ATransformFilter::actions()
 {
-	QHash<QString, QAction *> hash;
+	QHash<QString, DAction *> hash;
 	
-	QAction *flipH = new QAction( tr("Flip Horizontally"), this);
+	DAction *flipH = new DAction( QIcon(), tr("Flip Horizontally"), QKeySequence(), this);
 	
 	hash.insert( tr("Flip Horizontally"), flipH );
 	
-	QAction *flipV = new QAction( tr("Flip Vertically"), this);
+	DAction *flipV = new DAction(QIcon(), tr("Flip Vertically"), QKeySequence(), this);
 	hash.insert(tr("Flip Vertically"), flipV);
 	
 	return hash;
@@ -72,4 +59,6 @@ QHash<QString, QAction *> ATransformFilter::actions()
 
 
 
-Q_EXPORT_PLUGIN( ATransformFilter )
+Q_EXPORT_PLUGIN( ATransformFilter );
+
+

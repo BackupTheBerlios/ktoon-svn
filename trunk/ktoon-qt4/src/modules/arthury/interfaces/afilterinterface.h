@@ -19,9 +19,12 @@
 #include <QBrush>
 #include <QPen>
 #include <QPainterPath>
-#include <QImage>
-#include <QAction>
 #include <QHash>
+
+#include <cmath> // sin,cos
+
+#include "ktkeyframe.h"
+#include <daction.h>
 
 #include "qplugin.h" // Q_EXPORT_PLUGIN
 
@@ -35,9 +38,9 @@ class AFilterInterface
 	public:
 		virtual ~AFilterInterface() {}
 		virtual QStringList keys() const = 0;
-		virtual QImage filter(const QString &filter, const QImage &image, QWidget *parent) = 0;
+		virtual void filter(const QString &filter, const QList<AGraphicComponent *> &frame) = 0;
 		
-		virtual QHash<QString, QAction *>actions() = 0;
+		virtual QHash<QString, DAction *>actions() = 0;
 };
 
 Q_DECLARE_INTERFACE(AFilterInterface, "com.toonka.ktoon.AFilterInterface/0.1");

@@ -429,26 +429,26 @@ void KTViewDocument::loadPlugins()
 	foreach (QString fileName, m_pluginDirectory.entryList(QDir::Files))
 	{
 		QPluginLoader loader(m_pluginDirectory.absoluteFilePath(fileName));
-		KTToolPluginObject *plugin = qobject_cast<KTToolPluginObject*>(loader.instance());
+		QObject *plugin = qobject_cast<QObject*>(loader.instance());
 		
 		dDebug() << "******FILE: " << fileName;
 		
 		if (plugin)
 		{
-// 			AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(plugin);
+			AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(plugin);
 			AToolInterface *aTool = qobject_cast<AToolInterface *>(plugin);
 			
-/*			if ( aFilter )
+			if ( aFilter )
 			{
 				QStringList::iterator it;
 				QStringList keys = aFilter->keys();
 				
-								
+				
 				for (it = keys.begin(); it != keys.end(); ++it)
 				{
 					dDebug() << "*******Filter Loaded: " << *it;
 					
-					QAction *act = aFilter->actions()[*it];
+					DAction *act = aFilter->actions()[*it];
 					if ( act )
 					{
 						connect(act, SIGNAL(triggered()), this, SLOT(applyFilter()));
@@ -456,7 +456,7 @@ void KTViewDocument::loadPlugins()
 					}
 				}
 			}
-			else */
+			else 
 			if (aTool)
 			{
 				QStringList::iterator it;
@@ -601,17 +601,21 @@ void KTViewDocument::selectToolFromMenu(QAction *action)
 
 void KTViewDocument::applyFilter()
 {
-// 	QAction *action = qobject_cast<QAction *>(sender());
-// 	
-// 	if ( action )
-// 	{
-// 		AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(action->parent());
-// 		QString filter = action->text();
-// 		
-// 		QImage image = aFilter->filter(action->text(), m_paintAreaContainer->drawArea()->paintDevice(), this);
-// 		
-// 		m_paintAreaContainer->drawArea()->setPaintDevice(image);
-// 	}
+	QAction *action = qobject_cast<QAction *>(sender());
+	
+	if ( action )
+	{
+		AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(action->parent());
+		QString filter = action->text();
+		
+		KTKeyFrame *frame = m_paintAreaContainer->drawArea()->currentFrame();
+		
+		if( frame)
+		{
+			aFilter->filter(action->text(), frame->components() );
+			m_paintAreaContainer->drawArea()->redrawAll();
+		}
+	}
 }
 
 void KTViewDocument::createToolbar()
@@ -680,6 +684,11 @@ void KTViewDocument::createMenu()
 	m_viewMenu->addSeparator();
 	m_viewMenu->addActions(m_viewNextGroup->actions());
 	menuBar()->addMenu( m_viewMenu );
+	
+	//Filters
+	
+	m_filterMenu = new QMenu(tr("Filters"), this);
+	menuBar()->addMenu(m_filterMenu);
 }
 
 void KTViewDocument::close()

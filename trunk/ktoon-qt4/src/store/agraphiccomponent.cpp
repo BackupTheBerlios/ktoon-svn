@@ -243,6 +243,21 @@ void AGraphicComponent::getPath(QPainterPath & path, const QMatrix& matrix)
 	}
 }
 
+void AGraphicComponent::flip(Qt::Orientation o)
+{
+	foreach(AGraphic *graphic, m_graphics)
+	{
+		graphic->flip(o);
+	}
+	if(m_childs.count() > 0)
+	{
+		foreach(AGraphicComponent *child, m_childs)
+		{
+			child->flip(o);
+		}
+	}
+}
+
 QDomElement AGraphicComponent::createXML( QDomDocument &doc )
 {
 	QDomElement item = doc.createElement("Component");

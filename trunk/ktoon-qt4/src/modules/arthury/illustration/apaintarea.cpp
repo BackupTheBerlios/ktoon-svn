@@ -697,6 +697,11 @@ AGraphicComponent *APaintArea::currentGraphic()
 	return m_currentGraphic;
 }
 
+KTKeyFrame *APaintArea::currentFrame() const
+{
+	return m_currentFrame;
+}
+
 KTBrush *APaintArea::currentBrush()
 {
 	return m_currentBrush;

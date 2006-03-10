@@ -87,7 +87,7 @@ QWidget *DMainWindow::findCorrectSeparator()
 	
 	while (it != widgets.end())
 	{
-		if ((*it)->metaObject()->className() == QString("QDockSeparator"))
+		if ((*it)->metaObject()->className() == QString("QDockSeparator")) // HACK
 		{
 			m_separators << (*it);
 		}

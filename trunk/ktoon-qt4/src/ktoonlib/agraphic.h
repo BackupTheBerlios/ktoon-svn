@@ -67,6 +67,8 @@ class AGraphic
 		 */
 		void mapTo(const QMatrix& matix);
 		
+		void flip(Qt::Orientation o);
+		
 		QPainterPath path;
 		QBrush brush;
 		QPen pen;

@@ -22,6 +22,7 @@
 #define DCONFIGURATIONAREA_H
 
 #include <QDockWidget>
+#include <QTimer>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -34,6 +35,25 @@ class KTConfigurationArea : public QDockWidget
 		~KTConfigurationArea();
 		
 		void setConfigurator(QWidget *widget);
+		
+	public slots:
+		void hideConfigurator();
+		
+	private:
+		void shrink();
+		
+	private slots:
+		void findSeparator();
+		void toggleLock();
+		
+	protected:
+		void enterEvent(QEvent *e);
+		void leaveEvent(QEvent *e);
+		
+	private:
+		QWidget *m_separator;
+		QTimer m_locker;
+		
 };
 
 #endif

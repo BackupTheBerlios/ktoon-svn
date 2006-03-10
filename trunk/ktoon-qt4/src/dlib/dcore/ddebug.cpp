@@ -257,7 +257,7 @@ DDebug& DDebug::operator << (const QWidget* t)
 {
 	if ( t )
 	{
-		*this << "[Widget geometry: " << t->width() << "x"<< t->height() << "]";
+		*this << "[Widget "+ QString::fromLocal8Bit(t->metaObject ()->className()) +" geometry: " << t->width() << "x"<< t->height() << "]";
 	}
 	else
 	{

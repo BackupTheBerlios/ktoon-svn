@@ -54,6 +54,7 @@ class ASelectionPlugin : public KTToolPluginObject, public AToolInterface
 	private:
 		QPainterPath m_path;
 		QRect m_selectionRect;
+		QRectF m_newBoundingRect;
 		bool rectCompleted;
 		QList<AGraphicComponent *> m_graphics;
 		KTKeyFrame *m_frame;
@@ -64,6 +65,7 @@ class ASelectionPlugin : public KTToolPluginObject, public AToolInterface
 		} m_node;
 		
 		virtual void allGraphisComponent(QList<AGraphicComponent *> components);
+		
 };
 
 #endif

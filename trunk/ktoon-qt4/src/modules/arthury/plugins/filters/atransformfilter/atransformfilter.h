@@ -33,9 +33,9 @@ class ATransformFilter : public QObject, public AFilterInterface
 	Q_INTERFACES(AFilterInterface);
 	public:
 		virtual QStringList keys() const;
-		virtual QImage filter(const QString &filter, const QImage &image, QWidget *parent);
+		virtual void filter(const QString &filter, const QList<AGraphicComponent *> &frame);
 		
-		virtual QHash<QString, QAction *>actions();
+		virtual QHash<QString, DAction *>actions();
 
 };
 

@@ -26,11 +26,14 @@
 #include <QHeaderView>
 #include <QPushButton>
 
+#include <dglobal.h>
+#include <dimagebutton.h>
+
 ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 {
 	QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 	
-	QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight);
+	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
 	QLabel *label = new QLabel(tr("Exactness"));
 	layout->addWidget(label);
 	m_exactness = new QDoubleSpinBox();
@@ -41,7 +44,7 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 	
 	mainLayout->addLayout(layout);
 	
-	m_table = new QTableWidget(3,5);
+	m_table = new QTableWidget(5,3);
 	connect(m_table, SIGNAL(itemClicked ( QTableWidgetItem *)), this, SLOT(updateValueFromItem(QTableWidgetItem *)));
 	
 	m_table->setSelectionMode ( QAbstractItemView::SingleSelection);
@@ -76,12 +79,12 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 	
 	QBoxLayout *buttonLayout = new QBoxLayout(QBoxLayout::LeftToRight);
 	
-	QPushButton *add = new QPushButton(tr("Add"));
+	QPushButton *add = new DImageButton(QIcon(THEME_DIR+"/icons/plussign.png"),22);
 	buttonLayout->addWidget(add);
 	
 	connect(add, SIGNAL(clicked()), this, SLOT(addCurrentValue()));
 	
-	QPushButton *del = new QPushButton(tr("Remove"));
+	QPushButton *del = new DImageButton(QIcon(THEME_DIR+"/icons/minussign.png"), 22);
 	
 	connect(del, SIGNAL(clicked()), this, SLOT(removeCurrentValue()));
 	
