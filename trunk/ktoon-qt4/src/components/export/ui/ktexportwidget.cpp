@@ -59,6 +59,7 @@ KTExportWidget::KTExportWidget(const KTProjectManager *manager, QWidget *parent)
 	qobject_cast<QVBoxLayout *>(layout())->addLayout(layout1);
 	
 	loadPlugins();
+	qDebug("TERMINA");
 }
 
 void KTExportWidget::setupToExport(QBoxLayout *mainLayout)
@@ -122,6 +123,7 @@ KTExportWidget::~KTExportWidget()
 
 void KTExportWidget::loadPlugins()
 {
+	return;
 	QDir pluginDirectory = QDir(HOME+"/plugins/");
 
 	foreach (QString fileName, pluginDirectory.entryList(QDir::Files))
@@ -138,9 +140,9 @@ void KTExportWidget::loadPlugins()
 				QListWidgetItem *newItem = new QListWidgetItem(exporter->key(), m_exporterList);
 				m_plugins.insert(newItem, exporter);
 			}
+			else
+				dError() << "Can't load: " << fileName;
 		}
-		else
-			dError() << "Can't load: " << fileName;
 	}
 }
 

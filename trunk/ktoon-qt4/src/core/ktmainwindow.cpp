@@ -82,7 +82,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	splash->setMessage( tr("Loading action manager..."));
 	m_actionManager = new DActionManager(this);
 	
-	// Create the menubar;
+// 	Create the menubar;
 	splash->setMessage( tr("Creating menu bar..."));
 	
 	setupMenu();
@@ -107,7 +107,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 KTMainWindow::~KTMainWindow()
 {
 	DEND;
-	
+/*	
 	if ( m_animationSpace )
 		delete m_animationSpace;
 	
@@ -115,7 +115,7 @@ KTMainWindow::~KTMainWindow()
 		delete m_drawingSpace;
 	
 	if ( m_projectManager )
-		delete m_projectManager;
+		delete m_projectManager;*/
 	
 }
 

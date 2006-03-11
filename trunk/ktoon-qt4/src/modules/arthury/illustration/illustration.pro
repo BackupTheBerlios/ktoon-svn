@@ -3,7 +3,7 @@
 # Subdir relative project main directory: ./src/modules/arthury/illustration
 # Target is a library:  
 
-QT += xml opengl 
+QT += xml opengl gui 
 KDEV_QTVER = 4 
 INCLUDEPATH += ../../../../src/modules/arthury/interfaces \
                ../../../../src/store \

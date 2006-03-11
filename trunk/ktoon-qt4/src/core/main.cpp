@@ -100,13 +100,15 @@ int main( int argc, char ** argv )
 	
 	application.installTranslator( translator );
 
+// 	QWidget mainWindow;
+// 	mainWindow.show();
 	KTSplash *splash = new KTSplash;
 	splash->show();
 	splash->setMessage( QObject::tr( "Initializing..." ) );
 	
 	splash->setMessage( QObject::tr( "Loading Modules" ) );
 	KTMainWindow mainWindow(splash);
-	
+	mainWindow.show();
 	
 
 	splash->setMessage( QObject::tr( "Loaded!" ) );

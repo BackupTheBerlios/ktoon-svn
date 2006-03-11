@@ -26,6 +26,7 @@
 #include <QConicalGradient>
 #include <QLinearGradient>
 #include <QRect>
+#include <QMatrix>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
