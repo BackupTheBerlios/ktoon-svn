@@ -77,6 +77,8 @@ class KTMainWindow : public DMainWindow
 		~KTMainWindow();
 		virtual void setPalette(const QPalette &);
 		
+		void openProject(const QString &path);
+		
 	private:
 		void setupBackground();
 		/**
@@ -126,7 +128,6 @@ class KTMainWindow : public DMainWindow
 		void newProject();
 		bool closeProject();
 		void openProject();
-		void openProject(const QString &path);
 		
 		void save();
 		void showHelpPage(const QString &title, const QString &document);

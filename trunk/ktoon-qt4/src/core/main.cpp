@@ -106,11 +106,13 @@ int main( int argc, char ** argv )
 	
 	splash->setMessage( QObject::tr( "Loading Modules" ) );
 	KTMainWindow mainWindow(splash);
-
+	
+	
 
 	splash->setMessage( QObject::tr( "Loaded!" ) );
 
 	splash->finish( &mainWindow );
+	
 	
 	mainWindow.showMaximized();
 	
@@ -121,6 +123,14 @@ int main( int argc, char ** argv )
 
 	CHANDLER->setConfig(DATA_DIR+"/crashhandler.xml");
 	CHANDLER->setImagePath(THEME_DIR+"/icons/");
+	
+	
+	if ( argc == 2 )
+	{
+		QString project = QString(argv[1]);
+		mainWindow.openProject( project );
+	}
+	
 	
 	return application.exec();
 }

@@ -210,6 +210,7 @@ class SpinControl: public QGroupBox
 					m_title->setText("angle");
 					break;
 				}
+				default: break;
 			}
 		};
 		
