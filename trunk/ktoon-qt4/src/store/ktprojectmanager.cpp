@@ -396,7 +396,7 @@ void KTProjectManager::pasteFrame(int index )
 	KTLayer *layer = currentLayer();
 	if ( layer && m_copyFrame)
 	{
-		layer->pasteFrame(index, new KTKeyFrame(*m_copyFrame) );
+		layer->pasteFrame(index, m_copyFrame );
 	}
 	else
 	{

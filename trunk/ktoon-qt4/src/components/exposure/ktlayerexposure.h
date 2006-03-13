@@ -32,7 +32,6 @@
 #include "eslayer.h"
 
 
-// #include "layer.h"
 
 typedef QList<ESFrame*> ListOfFrames;
 

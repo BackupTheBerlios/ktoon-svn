@@ -80,7 +80,7 @@ class KTLayer : public KTSerializableObject
 		/**
 		 * Pega un frame desde a un indice
 		 */
-		void pasteFrame(const int& index, KTKeyFrame* copy);
+		void pasteFrame(const int& index, const KTKeyFrame* copy);
 		
 		/**
 		 * Mueve el frame actual, is up es verdadero lo mueve hacia arriba

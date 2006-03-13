@@ -180,10 +180,7 @@ void KTExposureSheet::actionButton( QAbstractButton *b)
 	applyAction(m_buttonGroup->buttons().indexOf(b));
 }
 
-// void KTExposureSheet::loadLayersAndKeyframes( QList<Layer*> layers )
-// {
-// 	m_currentTable->loadLayers(layers);
-// }
+
 
 void KTExposureSheet::setCurrentCell( int idLayer, int idFrame)
 {
@@ -193,10 +190,6 @@ void KTExposureSheet::setCurrentCell( int idLayer, int idFrame)
 	}
 }
 
-void KTExposureSheet::updateLayersAndKeyframes()
-{
-// 	m_currentTable->updateLayers();
-}
 
 void KTExposureSheet::insertLayer(const QString& name)
 {

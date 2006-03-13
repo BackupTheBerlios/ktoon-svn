@@ -604,15 +604,20 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 
 void APaintArea::wheelEvent( QWheelEvent *event )
 {
-#if 1
-	float f;
-	f = m_zoomFactor + 0.0005*event->delta();
-	if( f < 32.0/ m_paintDevice->width() )
+	if(event->modifiers () == Qt::CTRL)
 	{
-		f = 32.0/m_paintDevice->width();
+		float f;
+		f = m_zoomFactor + 0.0005*event->delta();
+		if( f < 32.0/ m_paintDevice->width() )
+		{
+			f = 32.0/m_paintDevice->width();
+		}
+		setZoomFactor( f );
 	}
-	setZoomFactor( f );
-#endif
+	else
+	{
+		QWidget::wheelEvent(event );
+	}
 }
 
 void APaintArea::setTool( AToolInterface *toolIface, const QString &tool)

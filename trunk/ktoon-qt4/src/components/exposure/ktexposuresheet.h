@@ -47,9 +47,7 @@ class KTExposureSheet : public KTModuleWidgetBase
 		~KTExposureSheet();
 
 		enum Actions { /*NoAction = 0,*/ InsertLayer = 0, RemoveLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
-		
 		void addFrame(int idLayer, const QString &name, bool addedToEnd);
-		
 		void moveFrame(bool up);
 		void moveLayer(bool left);
 		void removeCurrentLayer();
@@ -57,13 +55,11 @@ class KTExposureSheet : public KTModuleWidgetBase
 		void removeCurrentFrame();
 		void lockCurrentFrame();
 		void setScene(int index);
-		
 		void setCurrentCell( int idLayer, int idFrame);
 		void setLayer(int index);
-		
 		void setFrameName(int indexLayer, int indexFrame, const QString& name );
-		
 		void setLayerName(int indexLayer, const QString& name );
+		
 	private:
 		QList<QPixmap> m_imgs;
 		QList<KTTableExposure*> m_tables;
@@ -82,7 +78,6 @@ class KTExposureSheet : public KTModuleWidgetBase
 		void insertLayer(const QString& name);
 		void applyAction(int action);
 		
-		void updateLayersAndKeyframes();
 		
 		void addScene(const QString &name);
 		void renameScene(const QString &name, int id);

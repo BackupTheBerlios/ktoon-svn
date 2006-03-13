@@ -80,7 +80,7 @@ void KTLayerExposure::frameSelect(int id, int button, int x, int y)
 	m_header->animateClick();
 	emit frameSelected(id);
 	emit clicked( m_layout->indexOf(m_frames[id])-1, m_id, button, x, y);
-	if(m_useFrame == id && !(m_frames[id]->isUsed()))
+	if(m_useFrame == id && !(m_frames[id]->isUsed()) && button == Qt::LeftButton)
 	{
 		emit requestInsertFrame(true);
 	}

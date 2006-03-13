@@ -109,15 +109,24 @@ void KTLayer::setLayerName(const QString &name)
 	m_name = name;
 }
 
-void KTLayer::pasteFrame(const int& index, KTKeyFrame* copy)
+void KTLayer::pasteFrame(const int& index, const KTKeyFrame* copy)
 {
-	if ( index > m_frames.count() )
+	if(index == m_frames.count() )
 	{
-		m_frames << copy;
+		createFrame(QString::null, true);
+		m_frames.replace(index, new KTKeyFrame(*copy));
+	}
+	else if ( index > m_frames.count() )
+	{
+		for(int i = m_frames.count(); i < index; i++)
+		{ 
+			createFrame(QString::null, true);
+			m_frames.replace(i, new KTKeyFrame(*copy));
+		}
 	}
 	else
 	{
-		m_frames.replace(index, copy);
+		m_frames.replace(index, new KTKeyFrame(*copy));
 	}
 }
 

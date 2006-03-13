@@ -95,11 +95,6 @@ APaintArea *KTPaintAreaContainer::drawArea() const
 	return m_drawArea;
 }
 
-// QSize KTPaintAreaContainer::sizeHint() const
-// {
-// 	return QSize(400,400);
-// }
-
 void KTPaintAreaContainer::resizeEvent ( QResizeEvent * e)
 {
 #if 0
