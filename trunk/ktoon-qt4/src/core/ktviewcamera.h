@@ -28,7 +28,7 @@
 #include "ktcamerabar.h"
 
 #include "ccbar.h"
-
+     
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
@@ -48,6 +48,8 @@ class KTViewCamera : public DMdiWindow
 	private:
 		QFrame *m_container;
 		AAnimationArea *m_animationArea;
+		
+		
 // 		KTCameraBar *m_bar;
 // 		CCBar *m_bar;
 };

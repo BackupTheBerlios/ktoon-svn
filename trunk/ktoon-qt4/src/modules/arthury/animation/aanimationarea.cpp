@@ -23,7 +23,7 @@
 
 #include "dgradientadjuster.h"
 
-AAnimationArea::AAnimationArea(const QSize& size, QWidget *parent) : QFrame(parent), m_scene(0), m_draw(false), m_ciclicAnimation(false), m_currentFramePosition(0), m_isRendered(false)
+AAnimationArea::AAnimationArea(const QSize& size, QWidget *parent) : QFrame(parent), m_scene(0), m_draw(false), m_ciclicAnimation(false), m_currentFramePosition(0), m_isRendered(false), m_size(size)
 {
 	setAttribute(Qt::WA_StaticContents);
 
@@ -162,7 +162,7 @@ void AAnimationArea::render() // TODO: Extend to scenes
 		Layers::iterator layerIterator = layers.begin();
 		bool ok = true;
 		
-		QImage renderized = QImage(520, 340, QImage::Format_RGB32);
+		QImage renderized = QImage(size(), QImage::Format_RGB32);
 		renderized.fill(qRgb(255, 255, 255));
 		
 		QPainter painter(&renderized);
@@ -182,7 +182,7 @@ void AAnimationArea::render() // TODO: Extend to scenes
 					if ( componentList.count() > 0  )
 					{
 						QList<AGraphicComponent *>::iterator it = componentList.begin();
-												
+										
 						while ( it != componentList.end() )
 						{
 							renderGraphic(*it, &painter);
@@ -256,6 +256,12 @@ void AAnimationArea::render() // TODO: Extend to scenes
 void AAnimationArea::renderGraphic(const AGraphicComponent *graphicComponent, QPainter *painter )
 {
 	painter->save();
+	float sx = 1, sy = 1, offset =0;
+	sx = static_cast<float>(size().width()-offset) / static_cast<float>(m_size.width());
+
+	sy = static_cast<float>(size().height()-offset) / static_cast<float>(m_size.height());
+
+	painter->scale(sx,sy);
 	foreach(AGraphic *graphic, graphicComponent->graphics())
 	{
 		QPen pen = graphic->pen;
@@ -317,9 +323,11 @@ QSize AAnimationArea::sizeHint() const
 	return m_renderCamera.size();
 }
 
-void AAnimationArea::setSize(const QSize& size)
+
+void  AAnimationArea::resizeEvent ( QResizeEvent * event )
 {
-	m_renderCamera = QImage(size, QImage::Format_RGB32);
+	m_renderCamera = QImage(size(), QImage::Format_RGB32);
+// 	m_size = size();
 	m_renderCamera.fill(qRgb(255, 255, 255));
 	update();
 }

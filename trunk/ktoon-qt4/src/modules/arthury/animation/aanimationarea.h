@@ -41,7 +41,6 @@ class AAnimationArea : public QFrame
 		
 		QSize sizeHint() const;
 		int photogramsCount() const;
-		void setSize(const QSize& size);
 		
 	public slots:
 		virtual void render();
@@ -61,11 +60,12 @@ class AAnimationArea : public QFrame
 	protected:
 		void paintEvent(QPaintEvent *e);
 		virtual void drawFrames(QPainter *painter);
+		void resizeEvent ( QResizeEvent * event );
 		
 	private:
 		QFrame *m_container;
 		QImage m_renderCamera;
-		
+		QSize m_size;
 // 		KTKeyFrame *m_currentFrame;
 		KTScene *m_scene;
 		

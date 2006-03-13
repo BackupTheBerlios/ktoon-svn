@@ -39,7 +39,7 @@ KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : DMdiWindow(p
 	animationAreaContainer->setMidLineWidth(2);
 	animationAreaContainer->setLineWidth(2);
 	animationAreaContainer->setFrameStyle(QFrame::Box | QFrame::Raised );
-	
+	animationAreaContainer->setSizePolicy ( QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding) );
 	QBoxLayout *animationAreaLayout = new QBoxLayout(QBoxLayout::TopToBottom, animationAreaContainer);
 	animationAreaLayout->setMargin(0);
 	m_animationArea = new AAnimationArea(size );
@@ -48,7 +48,7 @@ KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : DMdiWindow(p
 	connect(m_animationArea, SIGNAL(progressStep(int, int)), this, SIGNAL(sendProgress(int, int)));
 	connect(m_animationArea, SIGNAL(toStatusBar(const QString &, int)), this, SIGNAL(sendMessage( const QString &, int)));
 	
-	layout->addWidget( animationAreaContainer, 0, Qt::AlignTop | Qt::AlignCenter );
+	layout->addWidget( animationAreaContainer/*, 0, Qt::AlignTop | Qt::AlignCenter*/ );
 	
 #if 0
 	KTCameraBar *m_bar = new KTCameraBar;
@@ -91,3 +91,5 @@ AAnimationArea *KTViewCamera::animationArea()
 {
 	return m_animationArea;
 }
+
+

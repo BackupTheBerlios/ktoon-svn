@@ -191,14 +191,14 @@ void AGraphicComponent::adjustToRect(QRect rect, float offset)
 	QMatrix matrix;
 	
 	float sx = 1, sy = 1;
-	if ( rect.width() < br.width() )
-	{
+// 	if ( rect.width() < br.width() )
+// 	{
 		sx = static_cast<float>(rect.width()-offset) / static_cast<float>(br.width());
-	}
-	if ( rect.height() < br.height() )
-	{
+// 	}
+// 	if ( rect.height() < br.height() )
+// 	{
 		sy = static_cast<float>(rect.height()-offset) / static_cast<float>(br.height());
-	}
+// 	}
 	
 	float factor = qMin(sx, sy);
 	matrix.scale(factor, factor);
