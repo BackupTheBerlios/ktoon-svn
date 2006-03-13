@@ -110,9 +110,9 @@ void DGradientSelector::init()
 	show();
 	
 	DGradientArrow *first = new DGradientArrow(calcArrowPos(1), QColor(Qt::black));
-	DGradientArrow * second= new DGradientArrow(calcArrowPos(0), QColor(Qt::white));
+// 	DGradientArrow * second= new DGradientArrow(calcArrowPos(0), QColor(Qt::white));
 	m_arrows << first ;
-	m_arrows << second ;
+// 	m_arrows << second ;
 	createGradient();
 	emit gradientChanged(  m_gradient.stops());;
 }

@@ -82,6 +82,7 @@ APaintArea::APaintArea(const QSize& size, RenderType type, QWidget *parent) : QW
 	
 	m_currentFrame = new KTKeyFrame;
 	setZoomFactor( 1 );
+	setMinimumSize(m_paintDevice->size() + QSize(m_offset.x(),m_offset.y()));
 	show();
 }
 
@@ -355,7 +356,7 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter
 	
 	
 	painter->restore();
-	painter->save();// FIXME hacer aqui o al final del paintEvent???
+	painter->save();
 	painter->setPen(QPen(Qt::blue, 5)); //FIXME: configure 
 	if(!graphicComponent->controlPoints().isEmpty())
 	{
@@ -405,23 +406,25 @@ void APaintArea::aUpdate(const QRect &rect)
 
 void APaintArea::drawGhostGraphic(const QPainterPath &path)
 {
-	aUpdate(path.boundingRect().toRect().normalized().adjusted(-60,-60,60,60) );
+	QMatrix m;
+	m.scale(m_zoomFactor,m_zoomFactor);
+	aUpdate(m.mapRect(path.boundingRect().toRect().normalized().adjusted(-60,-60,60,60) ));
 	
 	QPainter painter;
 	BEGIN_PAINTER(painter);
 	
 // 	painter.drawImage(m_overBufferRect, m_overBuffer);
-// 	painter.scale(m_zoomFactor,m_zoomFactor);
+	painter.scale(m_zoomFactor,m_zoomFactor);
 	painter.setPen(QPen(Qt::gray, 2, Qt::DotLine));
 	painter.drawPath(path);
 }
 
 void APaintArea::resizeEvent( QResizeEvent * event )
 {
-	m_xpos = width() / 2 - m_paintDevice->width() / 2;
-	m_ypos = height() / 2 - m_paintDevice->height() / 2;
-// 	m_paintDevice->resize( size() );
-	update();
+// 	m_xpos = width() / 2 - m_paintDevice->width() / 2;
+// 	m_ypos = height() / 2 - m_paintDevice->height() / 2;
+// 	update();
+	m_size = size();
 	QWidget::resizeEvent(event);
 }
 
@@ -464,14 +467,14 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 	{
 		if (event->button() == Qt::LeftButton && !m_currentFrame->isLocked())
 		{
-			if (m_currentTool)
+			if (m_currentTool )
 			{
 				QPainter painter;
 				BEGIN_PAINTER(painter);
 				m_currentBrush->setupPainter(&painter);
 
 				painter.scale(m_zoomFactor,m_zoomFactor);
-				
+
 				QList<AGraphicComponent *> components =  m_currentFrame->components();
 				QList<AGraphicComponent *>::iterator it;
 				AGraphicComponent *toSelect = 0;
@@ -505,8 +508,11 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 				m_currentGraphic = new AGraphicComponent;
 				
 				QRect rect = m_currentTool->press(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), event->pos(), m_currentFrame);
-				rect.translate(m_xpos, m_ypos);
-				update(rect);
+// 				rect.translate(m_xpos, m_ypos);
+				QMatrix matrix;
+				matrix.scale(m_zoomFactor,m_zoomFactor);
+				matrix.translate(m_xpos, m_ypos);
+				update( matrix.mapRect(rect));
 			}
 			
 			m_lastPosition = event->pos();
@@ -535,11 +541,13 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 				BEGIN_PAINTER(painter);
 				m_currentBrush->setupPainter(&painter);
 				painter.scale(m_zoomFactor,m_zoomFactor);
+				QMatrix matrix;
+				matrix.scale(m_zoomFactor,m_zoomFactor);
 				QRect rect = m_currentTool->move(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), m_lastPosition, event->pos());
 				
-				m_paintDevice->update(rect);
+				m_paintDevice->update(matrix.mapRect(rect));
 // 				rect.translate(m_xpos, m_ypos);
-// 				update(rect);
+// 				update(matrix.mapRect(rect));
 			}
 	
 			m_lastPosition = event->pos();
@@ -567,9 +575,10 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 				m_currentBrush->setupPainter(&painter);
 				painter.scale(m_zoomFactor,m_zoomFactor);
 				QRect rect = m_currentTool->release(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(), event->pos()), event->pos());
+				QMatrix matrix;
+				matrix.scale(m_zoomFactor,m_zoomFactor);
 				
-				
-				m_paintDevice->update(rect);
+				m_paintDevice->update(matrix.mapRect(rect));
 				rect.translate(m_xpos, m_ypos);
 				
 				
@@ -595,10 +604,9 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 
 void APaintArea::wheelEvent( QWheelEvent *event )
 {
-#if 0
+#if 1
 	float f;
-
-	f = m_zoomFactor + 0.001*event->delta();
+	f = m_zoomFactor + 0.0005*event->delta();
 	if( f < 32.0/ m_paintDevice->width() )
 	{
 		f = 32.0/m_paintDevice->width();
@@ -825,15 +833,30 @@ void APaintArea::setZoomFactor( float f )
 	if( f == m_zoomFactor )
 		return;
 
-	m_zoomFactor = f;
-// 	emit( zoomFactorChanged( m_zoomFactor ) );
+	if(m_zoomFactor > 2.0 && (f - m_zoomFactor) > 0)
+	{
+		return;
+	}
+	QPointF delta( f/m_zoomFactor, f/m_zoomFactor);
 	
-	w = m_paintDevice->width()*m_zoomFactor;
-	h = m_paintDevice->height()*m_zoomFactor;
+	QRect rect = m_paintDevice->rect();
+	QMatrix matrix;
+	matrix.scale(delta.x(), delta.y());
+	rect = matrix.mapRect(rect);
 	
+	
+	w = rect.width();
+	h = rect.height();
 	m_paintDevice->resize(w, h );
-	m_currentFrame->scale(m_zoomFactor, m_zoomFactor);
-// 	m_paintDevice->update();
+	setMinimumSize(m_paintDevice->size() + QSize(m_offset.x(),m_offset.y()));
+	m_zoomFactor = f;
+	
+	if ( delta.x() > 0 && delta.y() > 0 )
+	{
+		m_currentFrame->scale( delta.x(),  delta.y());
+	}
+	m_xpos = width() / 2 - m_paintDevice->width() / 2;
+	m_ypos = height() / 2 - m_paintDevice->height() / 2;
 	redrawAll();
 }
 

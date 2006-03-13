@@ -21,6 +21,7 @@
 #include "aimagedevicewidget.h"
 #include <QPainter>
 #include <QMouseEvent>
+#include "ddebug.h"
 
 AImageDeviceWidget::AImageDeviceWidget(const QSize &size, QWidget *parent) : QWidget(parent)
 {
@@ -56,6 +57,7 @@ void AImageDeviceWidget::paintEvent(QPaintEvent *e)
 void AImageDeviceWidget::resizeEvent ( QResizeEvent * event )
 {
 	device = new QImage(size(), QImage::Format_RGB32);
+	device->fill(qRgb(255, 255, 255));
 }
 
 void AImageDeviceWidget::mouseMoveEvent(QMouseEvent *e)

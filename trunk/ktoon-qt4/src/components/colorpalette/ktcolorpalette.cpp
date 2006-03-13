@@ -107,7 +107,7 @@ void KTColorPalette::setupChooserTypeColor()
 void KTColorPalette::setupGradienManager()
 {
 	m_gradientManager = new DGradientCreator(this);
-	connect(m_gradientManager, SIGNAL(gradientChanged( const QBrush& )), this, SLOT(changeGradient(const QBrush &) ));
+	connect(m_gradientManager, SIGNAL(gradientChanged( const QBrush& )), this, SLOT(setColor(const QBrush &) ));
 	m_centralWidget->addPage(m_gradientManager,tr("Gradients"));
 	
 }
@@ -120,9 +120,9 @@ void KTColorPalette::setupDisplayColor()
 	
 	connect (m_containerPalette, SIGNAL(selectColor( const QBrush& )), this, SLOT(setColor( const QBrush& )));
 	
-	connect (m_containerPalette, SIGNAL(selectGradient(const QBrush&)), this, SLOT(changeGradient(const QBrush&)));
+// 	connect (m_containerPalette, SIGNAL(selectGradient(const QBrush&)), this, SLOT(changeGradient(const QBrush&)));
 	
-	connect (m_containerPalette, SIGNAL(selectGradient(const QGradient&)), m_gradientManager, SLOT(setGradient(const QGradient&)));
+// 	connect (m_containerPalette, SIGNAL(selectGradient(const QGradient&)), m_gradientManager, SLOT(setGradient(const QGradient&)));
 	
 	m_splitter->addWidget(m_containerPalette);
 	
@@ -144,7 +144,14 @@ void KTColorPalette::setupDisplayColor()
 	
 	m_outlineAndFillColors = new KTDualColorButton(m_currentOutlineColor, m_currentFillColor, viewColor);
 	m_outlineAndFillColors->setSizePolicy ( QSizePolicy::Fixed, QSizePolicy::Fixed );
-	connect( m_outlineAndFillColors, SIGNAL(currentChanged(KTDualColorButton::DualColor)),this, SLOT(changeTypeColor(KTDualColorButton::DualColor)));
+	connect( m_outlineAndFillColors,  SIGNAL(currentChanged(KTDualColorButton::DualColor)),this, SLOT(changeTypeColor(KTDualColorButton::DualColor)));
+
+connect( m_outlineAndFillColors,  SIGNAL(fgChanged(const QBrush &)),this, SLOT(
+		setFG(const QBrush &)));
+connect( m_outlineAndFillColors,  SIGNAL(bgChanged(const QBrush &)),this, SLOT(
+		setBG( (const QBrush &))));
+	
+	
 	vlayout->addWidget( m_outlineAndFillColors);
 	
 	QBoxLayout *layoutName = new  QBoxLayout(QBoxLayout::TopToBottom);
@@ -167,15 +174,20 @@ void KTColorPalette::setColor(const QBrush& brush)
 {
 	QColor color = brush.color();
 	
-	
 	if(color.isValid())
 	{
-		if(m_displayValueColor && m_outlineAndFillColors && m_colorPicker && m_nameColor && m_luminancePicker)
+		if(m_type == Gradient)
+		{
+			m_gradientManager->setCurrentColor(color);
+			m_gradientManager->repaint();
+		}
+		else if(m_displayValueColor && m_outlineAndFillColors && m_colorPicker && m_nameColor && m_luminancePicker)
 		{
 			m_displayValueColor->setColor(color);
-			
-			m_outlineAndFillColors->setCurrentColor(color);
-			
+			if(m_type == Solid)
+			{
+				m_outlineAndFillColors->setCurrentColor(color);
+			}
 			m_colorPicker->setCol(color.hue(), color.saturation ());
 		
 			m_nameColor->setText(color.name ());
@@ -183,25 +195,60 @@ void KTColorPalette::setColor(const QBrush& brush)
 			m_luminancePicker->setCol(color.hue(), color.saturation(), color.value());
 			
 			m_containerPalette->setColor( brush );
-			
-			emit brushChanged( m_outlineAndFillColors->foreground(),m_outlineAndFillColors->background() );
 		}
+		
 	}
-	if(m_type == Gradient)
+	if(brush.gradient())
 	{
-		m_gradientManager->setCurrentColor(color);
-		m_gradientManager->repaint();
+		QGradient gradient(*brush.gradient());
+		changeBrushType(tr("Gradient"));
+		if( sender () != m_gradientManager )
+		{
+			dDebug() << "here";
+			m_gradientManager->setGradient(gradient);
+		}
+		m_containerPalette->setColor(gradient);
+		m_outlineAndFillColors->setCurrentColor(gradient);
 	}
+	emit brushChanged( m_outlineAndFillColors->foreground(),m_outlineAndFillColors->background() );
+	
 }
+
+void KTColorPalette::setFG(const QBrush &brush)
+{
+	if(brush.color().isValid())
+	{
+		changeBrushType(tr("Solid"));
+	}
+	else
+	{
+		changeBrushType(tr("Gradient"));
+	}
+	m_outlineAndFillColors->setCurrent( KTDualColorButton::Foreground );
+	setColor(brush);
+}
+
+void KTColorPalette::setBG(const QBrush &brush)
+{
+	if(brush.color().isValid())
+	{
+		changeBrushType(tr("Solid"));
+	}
+	else
+	{
+		changeBrushType(tr("Gradient"));
+	}
+	m_outlineAndFillColors->setCurrent( KTDualColorButton::Background);
+	setColor(brush);
+}
+
 
 void KTColorPalette::changeTypeColor(KTDualColorButton::DualColor s)
 {
 	if(s == KTDualColorButton::Background)
 	{
 		m_outlineAndFillColors->setCurrent( s);
-		m_flagGradient = false;
 		setColor( m_outlineAndFillColors->background());
-		m_flagGradient = true;
 	}
 	else
 	{
@@ -244,26 +291,6 @@ QPair<QColor, QColor> KTColorPalette::color()
 	return colors;
 }
 
-void KTColorPalette::changeGradient(const QBrush & gradient)
-{
-	if(gradient.gradient() )
-	{
-		changeBrushType(tr("Gradient"));
-		
-		
-		
-		if( sender () != m_gradientManager )
-		{
-			m_gradientManager->setGradient(gradient);
-		}
-		m_outlineAndFillColors->setCurrentColor(gradient);
-		m_containerPalette->setColor(gradient);
-		emit brushChanged( m_outlineAndFillColors->foreground(), m_outlineAndFillColors->background() );
-	}
-	
-	
-	
-}
 
 void KTColorPalette::parsePaletteFile(const QString &file)
 {

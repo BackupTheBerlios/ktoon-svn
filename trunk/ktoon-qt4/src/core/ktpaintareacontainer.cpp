@@ -27,10 +27,11 @@
 
 #include "ddebug.h"
 
-KTPaintAreaContainer::KTPaintAreaContainer(const QSize& size, APaintArea::RenderType type,  QWidget *parent) : QWidget(parent), m_drawAreaDelta(25,25)
+KTPaintAreaContainer::KTPaintAreaContainer(const QSize& size, APaintArea::RenderType type,  QWidget *parent) : QWidget(parent), m_drawAreaDelta(50,50)
 {
 	DINIT;
 // 	setMouseTracking(true);
+	
 	QGridLayout *grid = new QGridLayout(this);
 	grid->setMargin(0);
 	grid->setSpacing(0);
@@ -42,6 +43,7 @@ KTPaintAreaContainer::KTPaintAreaContainer(const QSize& size, APaintArea::Render
 	grid->addWidget (m_VRuler,1,0);
 	
 	QScrollArea *m_scroller = new QScrollArea(this);
+	
 // 	m_scroller->setBackgroundRole(QPalette::Mid);
 	
 	m_HRuler->setZeroAt(m_drawAreaDelta.x());
@@ -54,9 +56,10 @@ KTPaintAreaContainer::KTPaintAreaContainer(const QSize& size, APaintArea::Render
 	m_VRuler->setMinimumHeight(m_drawArea->height());
 	
 	m_scroller->setWidget(m_drawArea);
+	
+	m_scroller->setWidgetResizable ( true );
 	m_scroller->setFocus();
-
-// 	m_scroller->setWidgetResizable ( true );
+	
 	QScrollBar *hBar = m_scroller->horizontalScrollBar();
 	hBar->setSingleStep(10);
 	connect(hBar, SIGNAL(sliderMoved(int)), m_HRuler, SLOT(slide(int)));
@@ -97,8 +100,9 @@ APaintArea *KTPaintAreaContainer::drawArea() const
 // 	return QSize(400,400);
 // }
 
-void KTPaintAreaContainer::resizeEvent ( QResizeEvent * )
+void KTPaintAreaContainer::resizeEvent ( QResizeEvent * e)
 {
+#if 0
 	m_drawAreaDelta.setY( height()/2 - m_drawArea->paintDevice()->height()/2);
 	m_drawAreaDelta.setX( width()/2 - m_drawArea->paintDevice()->width()/2 );
 	if(m_drawAreaDelta.x() < 0 )
@@ -112,7 +116,8 @@ void KTPaintAreaContainer::resizeEvent ( QResizeEvent * )
 	m_HRuler->setZeroAt(m_drawAreaDelta.x());
 	m_VRuler->setZeroAt(m_drawAreaDelta.y());
 	m_drawArea->setOffset(m_drawAreaDelta);
+#endif
 	m_drawArea->resize(size());
-// 	resize(m_drawArea->size());
+	QWidget::resizeEvent (e);
 }
 

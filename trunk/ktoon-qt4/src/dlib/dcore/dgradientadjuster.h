@@ -141,6 +141,17 @@ class DGradientAdjuster
 		 */
 		static QConicalGradient mapGradient(const QConicalGradient &gradient, const QMatrix &matrix);
 		
+		static QGradient flipGradient(const QGradient *gradient, Qt::Orientation o );
+		
+		
+		static QLinearGradient flipGradient(const QLinearGradient &gradient, Qt::Orientation o);
+		
+		
+		static QRadialGradient flipGradient(const QRadialGradient &gradient,Qt::Orientation o);
+		
+		
+		static QConicalGradient flipGradient(const QConicalGradient &gradient, Qt::Orientation o);
+		
 };
 
 #endif

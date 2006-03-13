@@ -214,14 +214,7 @@ void KTViewColorCells::changeColor(DCellViewItem* item)
 	D_FUNCINFO;
 	if(item)
 	{
-		if(item->background().gradient ())
-		{
-			emit selectGradient( item->background());
-		}
-		else
-		{
-			emit selectColor(item->background());
-		}
+		emit selectColor(item->background());
 	}
 }
 

@@ -79,6 +79,8 @@ class DBrushAdjuster
 		 * @return 
 		 */
 		static QBrush mapBrush(const QBrush &brush, const QMatrix &matrix  );
+		
+		static QBrush flipBrush(const QBrush &brush, Qt::Orientation o);
 };
 
 #endif

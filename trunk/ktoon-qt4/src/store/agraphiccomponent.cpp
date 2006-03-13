@@ -172,11 +172,16 @@ void AGraphicComponent::translate(double sX, double sY)
 
 void AGraphicComponent::rotate( double angle )
 {
-	QPointF pos = position();
+	QPointF pos = boundingRect().center();
 	QMatrix mId;
-	mId.rotate(-(m_angle-angle));
+	QMatrix origin;
+	origin.translate(-pos.x(), -pos.y());
+	QMatrix rotate;
+	rotate.rotate(-(m_angle-angle));
+	QMatrix position;
+	position.translate(pos.x(), pos.y());
+	mId = origin * rotate * position;
 	mapTo( mId );
-	translate( pos.x(), pos.y());
 	m_angle = (int)angle;
 }
 

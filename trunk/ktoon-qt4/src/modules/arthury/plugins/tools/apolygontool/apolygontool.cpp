@@ -99,7 +99,7 @@ QPainterPath APolygonTool::createShape(const QRect & rect)
 {
 	QPainterPath shape;
 	
-	double angle = 360/3 /*m_angle*/;
+	double angle = 360/3;
 
 	// A star should have at least 3 edges:
 	int m_edges = 5;

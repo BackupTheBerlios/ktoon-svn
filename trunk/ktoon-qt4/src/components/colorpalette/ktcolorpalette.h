@@ -85,11 +85,12 @@ class KTColorPalette : public KTModuleWidgetBase
 	
 	public slots:
 		void setColor(const QBrush &brush);
+		void setFG(const QBrush &brush);
+		void setBG(const QBrush &brush);
 		void updateColor();
 		void changeTypeColor(KTDualColorButton::DualColor s);
 		void syncHsv(int h , int s , int v);
 		void setHS(int h, int s);
-		void changeGradient(const QBrush & gradient);
 		void changeBrushType(const QString& );
 		
 	signals:

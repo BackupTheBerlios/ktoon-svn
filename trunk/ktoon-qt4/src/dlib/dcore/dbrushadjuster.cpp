@@ -95,4 +95,18 @@ QBrush DBrushAdjuster::mapBrush(const QBrush &brush, const QMatrix &matrix  )
 	return brush1;
 }
 
+QBrush DBrushAdjuster::flipBrush(const QBrush &brush, Qt::Orientation o)
+{
+	QBrush brush1(brush);
+	if(brush.gradient())
+	{
+		QGradient grad = DGradientAdjuster::flipGradient( brush.gradient(), o );
+		brush1 = QBrush(grad);
+	}
+	else if(!brush.texture().isNull())
+	{
+	}
+	return brush1;
+}
+
 

@@ -21,7 +21,7 @@
 #include "aselectionplugin.h"
 
 #include <QKeySequence>
-
+#include <QTimer>
 #include "dglobal.h"
 #include "ddebug.h"
 
@@ -122,13 +122,13 @@ QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPain
 	{
 		QPainterPath ghost;
 		
-		QMatrix matrix;
-		matrix.translate(newPos.x()-oldPos.x(), newPos.y()-oldPos.y());
+		m_matrix.reset();
+		m_matrix.translate(newPos.x()-oldPos.x(), newPos.y()-oldPos.y());
 		if(brush == tr("Selection"))
 		{
 			foreach(AGraphicComponent *selected, m_graphics) //FIXME: optimizar
 			{
-				selected->getPath(ghost, matrix);
+				selected->getPath(ghost, m_matrix);
 			}
 		}
 		else if(brush == tr("Contour") && m_selectPoint)
@@ -333,6 +333,14 @@ QRect ASelectionPlugin::setControls(const QString& brush)
 		}
 // 		m_graphics[0]->setControlPoints(points);
 	}
+}
+
+void ASelectionPlugin::translate()
+{
+
+	QPainterPath ghost;
+
+	emit toDrawGhostGraphic( ghost );
 }
 
 Q_EXPORT_PLUGIN( ASelectionPlugin )

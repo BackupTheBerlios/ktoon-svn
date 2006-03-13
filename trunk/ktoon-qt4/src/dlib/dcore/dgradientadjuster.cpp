@@ -170,4 +170,110 @@ QConicalGradient  DGradientAdjuster::mapGradient(const QConicalGradient &gradien
 	return newGradient;
 }
 
+QGradient  DGradientAdjuster::flipGradient(const QGradient *gradient, Qt::Orientation o )
+{
+	switch( gradient->type() )
+	{
+		case  QGradient::LinearGradient:
+		{
+			const QLinearGradient *lg = static_cast<const QLinearGradient *>(gradient);
+			
+			return flipGradient(*lg, o);
+			break;
+		}
+		case QGradient::RadialGradient:
+		{
+			const QRadialGradient *lg = static_cast<const QRadialGradient *>(gradient);
+			return flipGradient(*lg, o);
+			break;
+		}
+		case QGradient::ConicalGradient:
+		{
+			const QConicalGradient *lg = static_cast<const QConicalGradient *>(gradient);
+			return flipGradient(*lg, o);
+			break;
+		}
+	}
+	
+	return *gradient;
+}
+
+QLinearGradient  DGradientAdjuster::flipGradient(const QLinearGradient &gradient, Qt::Orientation o)
+{
+	
+	QPointF start, final;
+	
+	start = gradient.start();
+	final = gradient.finalStop();
+	if ( o == Qt::Horizontal)
+	{
+		start.setY(-start.y());
+		final.setY(-final.y());
+	}
+	else
+	{
+		start.setX(-start.x());
+		final.setX(-final.x());
+	}
+	
+	QLinearGradient newGradient = QLinearGradient(start, final);
+	
+	newGradient.setStops(gradient.stops());
+	newGradient.setSpread(gradient.spread());
+	return newGradient;
+}
+
+QRadialGradient  DGradientAdjuster::flipGradient(const QRadialGradient &gradient, Qt::Orientation o)
+{
+	QPointF center, focal;
+
+	center = gradient.center();
+	focal = gradient.focalPoint();
+	
+	if ( o == Qt::Horizontal)
+	{
+		center.setY(-(center).y());
+		focal.setY(-(focal).y());
+	}
+	else
+	{
+		center.setX(-(center).x());
+		focal.setX(-(focal).x());
+	}
+	
+	QRadialGradient newGradient = QRadialGradient(center, gradient.radius(),  focal );
+	newGradient.setStops(gradient.stops());
+	newGradient.setSpread(gradient.spread());
+	return newGradient;
+}
+
+QConicalGradient  DGradientAdjuster::flipGradient(const QConicalGradient &gradient, Qt::Orientation o)
+{
+	QPointF center;
+	center = gradient.center();
+	
+	if ( o == Qt::Horizontal)
+	{
+		center.setY(-(center).y());
+	}
+	else
+	{
+		center.setX(-(center).x());
+	}
+	QConicalGradient newGradient = QConicalGradient(center, gradient.angle());
+	newGradient.setStops(gradient.stops());
+	newGradient.setSpread(gradient.spread());
+	return newGradient;
+}
+
+
+
+
+
+
+
+
+
+
+
 

@@ -221,7 +221,9 @@ void KTDualColorButton::mousePressEvent(QMouseEvent *ev)
 		fg = bg;
 		bg = c;
 		emit fgChanged(fg);
+// 		emit currentChanged(Foreground );
 		emit bgChanged(bg);
+// 		emit currentChanged(Background );
 		miniCtlFlag = true;
 	}
 	else if(ev->pos().x() < bgRect.x())
@@ -230,6 +232,8 @@ void KTDualColorButton::mousePressEvent(QMouseEvent *ev)
 		bg.setColor(Qt::white);
 		emit fgChanged(fg);
 		emit bgChanged(bg);
+// 		emit currentChanged(Foreground );
+// 		emit currentChanged(Background );
 		miniCtlFlag = true;
 	}
 	update();

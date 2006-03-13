@@ -49,6 +49,9 @@ void AGraphic::flip(Qt::Orientation o)
 	QMatrix  matrix;
 	matrix.translate(-pos.x(),-pos.y());
 	
+	brush = DBrushAdjuster::mapBrush( brush, matrix );
+	pen.setBrush( DBrushAdjuster::mapBrush( pen.brush(), matrix ));
+	
 	QList<QPolygonF> pols = path.toSubpathPolygons(matrix);
 	
 	QList<QPolygonF>::iterator itPol = pols.begin();
@@ -78,10 +81,16 @@ void AGraphic::flip(Qt::Orientation o)
 	}
 	
 	path.addPolygon(result);
+	brush = DBrushAdjuster::flipBrush( brush, o );
+	pen.setBrush( DBrushAdjuster::flipBrush( pen.brush(), o ));
 	
 	matrix.reset();
 	matrix.translate(pos.x(), pos.y()/*-path.currentPosition().y()*/);
+	brush = DBrushAdjuster::mapBrush( brush, matrix );
+	pen.setBrush( DBrushAdjuster::mapBrush( pen.brush(), matrix ));
 	path = matrix.map(path);
+	
+	
 	
 }
 
