@@ -429,6 +429,8 @@ void KTMainWindow::ui4project(QWidget *widget)
 	
 	connect(widget, SIGNAL(requestPasteFrame(int)), m_projectManager, SLOT(pasteFrame(int)));
 	
+	connect(widget, SIGNAL(requestCloneFrame(int, int)), m_projectManager, SLOT(cloneFrame(int, int)));
+	
 	connect(widget, SIGNAL(requestMoveFrame(bool)), m_projectManager, SLOT(moveFrame(bool)));
 	
 	connect(widget, SIGNAL(requestRemoveFrame()), m_projectManager, SLOT(removeFrame()));
@@ -436,6 +438,7 @@ void KTMainWindow::ui4project(QWidget *widget)
 	connect(widget, SIGNAL(requestLockFrame()), m_projectManager, SLOT(lockCurrentFrame()));
 	
 	connect(widget, SIGNAL(requestRemoveLayer(int)), m_projectManager, SLOT(removeLayer(int)));
+	
 	
 	connect(widget, SIGNAL(requestMoveLayer(bool)), m_projectManager, SLOT(moveLayer(bool)));
 	

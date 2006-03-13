@@ -232,10 +232,13 @@ class KTProjectManager : public KTSerializableObject
 		 */
 		void copyFrame(int index);
 		
+		
 		/**
 		 * Pega un frame
 		 */
 		void pasteFrame(int index);
+		
+		void cloneFrame(int index, int numClons);
 		
 		/**
 		 * Mueve el frame actual

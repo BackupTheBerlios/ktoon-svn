@@ -79,6 +79,7 @@ class KTTableExposure : public QScrollArea
 	private slots:
 		void emitRequestCopyCurrentFrame();
 		void emitRequestPasteCurrentFrame();
+		void emitRequestCloneCurrentFrame();
 		
 	public slots:
 		void insertLayer(int rows, const QString &text = QString::null);
@@ -97,6 +98,8 @@ class KTTableExposure : public QScrollArea
 		void requestInsertFrame(bool addedToEnd);
 		void requestPasteFrame(int);
 		void requestCopyFrame(int);
+		void requestCloneFrame(int, int);
+		
 		
 		void requestRenameLayer(int indexLayer, const QString &name );
 		void requestRenameFrame(int indexLayer,  int indexFrame,const QString &name );

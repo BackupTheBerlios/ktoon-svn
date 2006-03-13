@@ -99,6 +99,8 @@ void KTExposureSheet::addScene(const QString &name)
 	
 	connect(newLayer, SIGNAL(requestPasteFrame(int)), this,   SIGNAL(requestPasteFrame(int)));
 	
+	connect(newLayer, SIGNAL(requestCloneFrame(int, int)), this, SIGNAL(requestCloneFrame(int, int)));
+	
 	connect(newLayer, SIGNAL(requestRenameLayer(int, const QString&)), this,   SIGNAL(requestRenameLayer(int, const QString&)));
 	
 	connect(newLayer, SIGNAL(requestRenameFrame(int, int, const QString&)), this,  SIGNAL(requestRenameFrame(int, int, const QString&)));

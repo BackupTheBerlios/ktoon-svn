@@ -24,6 +24,8 @@
 #include <QLayout>
 #include <QLabel>
 #include <QBoxLayout>
+#include <QInputDialog>
+
 #include "ddebug.h"
 
 KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent)
@@ -58,6 +60,8 @@ void KTTableExposure::createMenuRight()
 	
 	menuFrame->addAction( tr( "Paste into this Frame" ), this, SLOT(emitRequestPasteCurrentFrame()));
 	
+	menuFrame->addAction( tr( "Clone this Frame" ), this,  SLOT(emitRequestCloneCurrentFrame()));
+	
 	menuFrame->addAction( tr( "Lock this Frame" ), this, SLOT(lockCurrentFrame()));
 }
 
@@ -72,6 +76,17 @@ void KTTableExposure::emitRequestPasteCurrentFrame()
 	m_layers[m_currentLayer]->frameSelect(m_layers[m_currentLayer]->currentFrame());
 }
 
+void KTTableExposure::emitRequestCloneCurrentFrame()
+{
+	int used = m_layers[m_currentLayer]->currentFrameIsUsed();
+	bool ok;
+	int numClons = QInputDialog::getInteger ( 0, tr("number of clons"), tr("number of clons"), 1, 1, 100 - used , 1, &ok);
+	if(ok)
+	{
+		emit requestCloneFrame(m_layers[m_currentLayer]->currentFrame(), numClons);
+	}
+	m_layers[m_currentLayer]->frameSelect(m_layers[m_currentLayer]->currentFrame());
+}
 
 void KTTableExposure::clickedCell(int row, int col,int button,int gx,int gy)
 {	

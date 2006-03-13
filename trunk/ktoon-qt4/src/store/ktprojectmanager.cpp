@@ -404,6 +404,19 @@ void KTProjectManager::pasteFrame(int index )
 	}
 }
 
+void  KTProjectManager::cloneFrame(int index, int numClons)
+{
+	KTLayer *layer = currentLayer();
+	if ( layer )
+	{
+		layer->cloneFrame(index, numClons  );
+	}
+	else
+	{
+		dFatal() << "--> No current layer" << endl;
+	}
+}
+
 void KTProjectManager::moveFrame(bool up)
 {
 	KTLayer *layer = currentLayer();

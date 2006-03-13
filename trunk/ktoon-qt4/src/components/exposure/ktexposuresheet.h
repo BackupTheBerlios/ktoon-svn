@@ -101,6 +101,7 @@ class KTExposureSheet : public KTModuleWidgetBase
 		void requestLockFrame();
 		void requestCopyFrame(int);
 		void requestPasteFrame(int);
+		void requestCloneFrame(int, int);
 		void requestRenameFrame(int, int, const QString&);
 		void frameSelected(int idLayer, int idFrame);
 		

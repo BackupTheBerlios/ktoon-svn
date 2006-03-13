@@ -36,7 +36,9 @@ KTLayer::~KTLayer()
 	DEND;
 	for(int i = 0; i < m_frames.count(); i++ )
 	{
-		delete m_frames.takeAt(i);
+		KTKeyFrame *tmp = m_frames[i];
+		m_frames.removeAll ( tmp);
+		delete tmp;
 	}
 }
 
@@ -130,6 +132,28 @@ void KTLayer::pasteFrame(const int& index, const KTKeyFrame* copy)
 	}
 }
 
+void KTLayer::cloneFrame(const int& index, int numClons)
+{
+	dDebug() << "cloneFrame(const int& " << index << "," << "int " << numClons << ")" ;
+	KTKeyFrame *clone = m_frames[index];
+	
+	if(clone)
+	{
+		for(int i = index+1; i <= index+numClons; i++)
+		{ 
+			if(i == m_frames.count() )
+			{
+				m_frames << clone;
+				emit frameCreated( clone->frameName(), true );
+			}
+			else
+			{
+				emit frameCreated( clone->frameName(), false );
+				m_frames.insert ( i, clone );
+			}
+		}
+	}
+}
 
 void KTLayer::moveCurrentFrame( bool up)
 {
