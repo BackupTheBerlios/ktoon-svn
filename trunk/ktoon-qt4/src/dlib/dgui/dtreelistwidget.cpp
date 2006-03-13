@@ -56,8 +56,8 @@ DTreeListWidgetDelegate::~DTreeListWidgetDelegate()
 DTreeListWidget::DTreeListWidget(QWidget *parent) : QTreeWidget(parent)
 {
 	setEditTriggers(QAbstractItemView::EditKeyPressed | QAbstractItemView::DoubleClicked);
-	setAcceptDrops(true);
-	setDragEnabled(true);
+// 	setAcceptDrops(true);
+// 	setDragEnabled(true);
 	
 	setHeaderLabels(QStringList() << "");
 	

@@ -136,9 +136,12 @@ KTLayer *KTScene::createLayer(const QString& name, bool addToEnd )
 {
 	D_FUNCINFO;
 	KTLayer *layer = new KTLayer(this);
+	
+	m_layerCount++;
+	
 	if(name.isNull())
 	{
-		layer->setLayerName(tr("Layer %1").arg(m_layerCount++));
+		layer->setLayerName(tr("Layer %1").arg(m_layerCount));
 	}
 	else
 	{

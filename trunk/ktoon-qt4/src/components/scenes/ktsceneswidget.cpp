@@ -44,18 +44,13 @@ KTScenesWidget::KTScenesWidget( QWidget *parent) : KTModuleWidgetBase( parent, "
 	setupTableScenes();
 }
 
-//-------------- DESTRUCTOR -----------------
-
 KTScenesWidget::~KTScenesWidget()
 {
 	DEND;
-// 	delete m_textName;
-// 	delete m_valueName;
 }
 
 void KTScenesWidget::setupButtons()
 {
-	//------------- Operations on the Buttons -----------------
 	m_buttonsPanel = new QGroupBox(this);
 	
 	QHBoxLayout *layout = new QHBoxLayout(m_buttonsPanel);
@@ -70,59 +65,12 @@ void KTScenesWidget::setupButtons()
 	layout->addWidget(removeButton);
 	removeButton->setToolTip(tr("Remove Scene"));
 	connect(removeButton, SIGNAL(clicked()), this, SIGNAL(requestRemoveScene()));
-	
-// 	DImageButton *moveupButton = new DImageButton(QPixmap(HOME+"/themes/default/icons/arrowup.png" ) , 22, m_buttonsPanel);
-// 	layout->addWidget(moveupButton);
-// 	moveupButton->setToolTip(tr("Move Scene Up"));
-// 	connect(moveupButton, SIGNAL(clicked()), this, SIGNAL(requestMoveUpScene()));
-// 	
-// 	DImageButton *movedownButton = new DImageButton(QPixmap(HOME+"/themes/default/icons/arrowdown.png" ) , 22, m_buttonsPanel);
-// 	layout->addWidget(movedownButton);
-// 	movedownButton->setToolTip(tr("Move Scene Down"));
-// 	connect(movedownButton, SIGNAL(clicked()), this, SIGNAL(requestMoveDownScene()));
 
 	addChild(m_buttonsPanel);
 }
 
-
-// 		case RemoveScene:
-// 		{
-// 			if ( m_tableScenes->scenesCount() > 1 )
-// 			{
-// 				if ( QMessageBox::warning( this, tr( "Confirm Scene Elimination" ), tr( "Are you sure you want to delete the selected scene?" ),
-// 				     QMessageBox::Yes, QMessageBox::No, QMessageBox::NoButton ) == QMessageBox::Yes )
-// 				{
-// 					int indexScene = m_tableScenes->removeCurrentScene();
-// 					
-// 					emit sceneRemoved(indexScene);
-// 				}
-// 			}
-// 			break;
-// 		}
-// 		case MoveSceneUp:
-// 		{
-// 			int indexScene = m_tableScenes->moveCurrentSceneUp();
-// 			emit sceneMovedUp(indexScene);
-// 
-// 			break;
-// 		}
-// 		case MoveSceneDown:
-// 		{
-// 			int indexScene = m_tableScenes->moveCurrentSceneDown();
-// 			emit sceneMovedUp(indexScene);
-// 
-// 		}
-// 		default:
-// 		{
-// 			break;
-// 		}
-// 	}
-// }
-
 void KTScenesWidget::setupTableScenes()
 {
-	//------------ Operations on the scene table -------------
-	
 	m_tableScenes = new KTScenesList(this);
 	
 	addChild( m_tableScenes);
@@ -130,20 +78,7 @@ void KTScenesWidget::setupTableScenes()
 	
 	connect(m_tableScenes, SIGNAL(  itemDoubleClicked ( QTreeWidgetItem *, int )), this, SLOT(sceneDobleClick(QTreeWidgetItem *, int )));
 
-// 	m_textName = new QLabel( tr( "Name" ), this );
-// 	m_textName -> setAlignment( Qt::AlignTop );
-// 	addChild(m_textName);
-	
-// 	m_valueName = new QLineEdit( tr( "" ), this );
-// 	m_valueName -> setMaxLength( 10 );
-// 	connect( m_valueName, SIGNAL( lostFocus() ), SLOT( changeValueName() ) );
-// 	connect( m_valueName, SIGNAL( returnPressed() ), SLOT( changeValueName() ) );
-// 	addChild( m_valueName);
-// // 
-// 	addChild(containerTableScens);
 }
-
-//------------------- SLOTS ----------------------------
 
 void KTScenesWidget::insertScene(const QString &name, bool addedToEnd)
 {
@@ -160,44 +95,20 @@ void KTScenesWidget::removeScene()
 
 void KTScenesWidget::selectScene(const QString & name, int index)
 {
-// 	dDebug() << "selectScene( " << index << ")" ;
-// 	if(index != m_tableScenes->indexCurrentScene())
-// 	{
-		emit changeCurrentScene(index);
-// 	}
-		
-// 	dDebug() << "KTScenesWidget::selectScene() Init" <<  endl;
-// 	m_valueName->setText(name);
-// 	emit sceneSelected(index);
-// 	
-// 	dDebug() << "KTScenesWidget::selectScene() finished" <<  endl;
+	emit changeCurrentScene(index);
 }
-// 
-// void KTScenesWidget::moveSceneUp()
-// {
-// 	applyAction(MoveSceneUp);
-// }
-// 
-// void KTScenesWidget::moveSceneDown()
-// {
-// 	applyAction(MoveSceneDown);
-// }
-// 
 void KTScenesWidget::actionButton( QAbstractButton *b)
 {
-// 	applyAction(m_buttonGroup->buttons().indexOf(b));
 }
 
 void KTScenesWidget::sceneDobleClick(QTreeWidgetItem * item, int )
 {
-// 	int index = m_tableScenes->indexOfTopLevelItem(item);
-// 	emit( esceneDobleClicked(index));
 }
 
 
 void KTScenesWidget::setScene(int index)
 {
-	m_tableScenes->setCurrentItem(m_tableScenes->topLevelItem ( index) );
+	// 	m_tableScenes->setCurrentItem(m_tableScenes->topLevelItem ( index ) ); // FIXME
 }
 
 void KTScenesWidget::closeAllScenes()

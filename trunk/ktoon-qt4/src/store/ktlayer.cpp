@@ -48,6 +48,7 @@ Frames KTLayer::frames()
 void KTLayer::setFrames(const Frames &frames)
 {
 	m_frames = frames;
+	m_framesCount = frames.count();
 }
 
 KTKeyFrame *KTLayer::createFrame(const QString& name, bool addToEnd)
@@ -55,9 +56,12 @@ KTKeyFrame *KTLayer::createFrame(const QString& name, bool addToEnd)
 	dDebug() << "createFrame(const QString&" <<  name.isNull() << "," << " bool" <<  addToEnd << ")" ;
 	
 	KTKeyFrame *keyFrame = new KTKeyFrame(this);
+	
+	m_framesCount++;
+	
 	if(name.isNull())
 	{
-		keyFrame->setFrameName(tr("Drawing %1").arg(m_framesCount++));
+		keyFrame->setFrameName(tr("Drawing %1").arg(m_framesCount));
 	}
 	else
 	{

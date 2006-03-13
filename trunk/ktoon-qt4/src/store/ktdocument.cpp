@@ -140,8 +140,12 @@ KTScene *KTDocument::createScene(bool addToEnd)
 {
 	dDebug() << "Creating Scene" << m_sceneCount+1 << endl;
 	
+	
 	KTScene *scene = new KTScene(this);
-	scene->setSceneName( tr("Scene %1").arg(m_sceneCount++));
+	
+	m_sceneCount++;
+	
+	scene->setSceneName( tr("Scene %1").arg(m_sceneCount));
 
 	if ( addToEnd )
 	{

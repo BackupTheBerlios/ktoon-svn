@@ -24,6 +24,8 @@
 #include <QDockWidget>
 #include <QTimer>
 
+class QPushButton;
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
@@ -53,7 +55,6 @@ class KTConfigurationArea : public QDockWidget
 	private:
 		QWidget *m_separator;
 		QTimer m_locker;
-		
 };
 
 #endif

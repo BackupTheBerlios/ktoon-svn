@@ -25,6 +25,7 @@
 #include <QMainWindow>
 #include <QMouseEvent>
 #include <QApplication>
+#include <QPushButton>
 
 #include <ddebug.h>
 
@@ -183,7 +184,6 @@ void KTConfigurationArea::hideConfigurator()
 		for (int i = 0; i < 2; ++i)
 			qApp->processEvents();
 		shrink();
-		
 	}
 }
 
