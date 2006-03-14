@@ -21,6 +21,8 @@
 #include "acubictool.h"
 #include "ddebug.h"
 
+#include <dglobal.h>
+
 ACubicTool::ACubicTool(): m_count(0), m_isComplete(false)
 {
 	m_path = QPainterPath();
@@ -34,7 +36,7 @@ ACubicTool::~ACubicTool()
 QHash< QString, DAction * > ACubicTool::actions()
 {
 	QHash<QString, DAction *> hash;
-	DAction *cubic = new DAction( QIcon(), tr("Polyline"), this);
+	DAction *cubic = new DAction( QIcon(THEME_DIR+"/icons/polyline.png"), tr("Polyline"), this);
 // 	cubic->setShortcut( QKeySequence(tr("C")) );
 	
 	hash.insert( tr("Polyline"), cubic );

@@ -46,7 +46,9 @@ class ExportInterface
 			RM = 1 << 3,
 			ASF = 1 << 5,
 			MOV = 1 << 6,
-			GIF = 1 << 7
+			GIF = 1 << 7,
+			PNG = 1 << 8,
+			JPEG = 1 << 9
 		};
 		
 		Q_DECLARE_FLAGS(Formats, Format);
@@ -59,7 +61,7 @@ class ExportInterface
 		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format, const QSize &size) = 0;
 		
 	private:
-		virtual QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir) = 0;
+		virtual QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir, const char *format = "PNG") = 0;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(ExportInterface::Formats);

@@ -112,13 +112,13 @@ KTPreferences::KTPreferences( QWidget *parent ) : DConfigurationDialog(parent )
 	setWindowTitle( tr( "Application KTPreferences" ) );
 	
 	m_generalPage = new GeneralPage;
-	addPage(m_generalPage, tr("General"), QPixmap(THEME_DIR+"/icons/ff.png"));
+	addPage(m_generalPage, tr("General"), QPixmap(THEME_DIR+"/icons/general_config.png"));
 	
 	m_themeSelector = new KTThemeSelector;
-	addPage(m_themeSelector, tr("Theme preferences"), QPixmap(THEME_DIR+"/icons/play.png"));
+	addPage(m_themeSelector, tr("Theme preferences"), QPixmap(THEME_DIR+"/icons/theme_config.png"));
 
 	m_fontChooser = new DFontChooser;
-	addPage(m_fontChooser, tr("Font"), QPixmap(THEME_DIR+"/icons/rw.png"));
+	addPage(m_fontChooser, tr("Font"), QPixmap(THEME_DIR+"/icons/font_config.png"));
 }
 
 //-------------- DESTRUCTOR -----------------

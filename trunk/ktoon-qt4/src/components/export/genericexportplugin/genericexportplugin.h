@@ -18,21 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef FFMPEGPLUGIN_H
-#define FFMPEGPLUGIN_H
+#ifndef GENERICEXPORTPLUGIN_H
+#define GENERICEXPORTPLUGIN_H
 
+#include <ktexportpluginobject.h>
 #include <exportinterface.h>
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+	@author David Cuadrado <krawek@toonka.com>
 */
-class FFMpegPlugin : public KTExportPluginObject, public ExportInterface
+class GenericExportPlugin : public KTExportPluginObject, public ExportInterface
 {
 	Q_OBJECT;
 	Q_INTERFACES(ExportInterface);
+	
 	public:
-		FFMpegPlugin();
-		virtual ~FFMpegPlugin();
+		GenericExportPlugin();
+		virtual ~GenericExportPlugin();
 		virtual QString key() const;
 		ExportInterface::Formats availableFormats();
 		
@@ -42,6 +44,9 @@ class FFMpegPlugin : public KTExportPluginObject, public ExportInterface
 		QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir, const char *format = "PNG");
 		void createImage(AGraphicComponent *component, QPainter *painter);
 		
+	private:
+		QString m_baseName;
+
 };
 
 #endif

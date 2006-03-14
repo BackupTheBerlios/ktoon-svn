@@ -24,6 +24,8 @@
 #include <QFontMetrics>
 #include <QKeySequence>
 
+#include <dglobal.h>
+
 QStringList ATextTool::keys() const
 {
 	return QStringList() << tr("Text");
@@ -74,7 +76,7 @@ QHash<QString, DAction *> ATextTool::actions()
 {
 	QHash<QString, DAction *> hash;
 	
-	DAction *pencil = new DAction( QIcon(), tr("Text"), this);
+	DAction *pencil = new DAction( QIcon(THEME_DIR+"/icons/text.png"), tr("Text"), this);
 	pencil->setShortcut( QKeySequence(tr("T")) );
 	
 	hash.insert( tr("Text"), pencil );

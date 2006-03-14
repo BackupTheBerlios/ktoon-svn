@@ -28,13 +28,14 @@
 #include <QDateTime>
 #include <QHeaderView>
 #include <QCheckBox>
+#include <QInputDialog>
 
-// KToon
-#include "dglobal.h"
 
-#include "ddebug.h"
-#include "kseparator.h"
-#include "dcolorbutton.h"
+// DLib
+#include <dglobal.h>
+#include <ddebug.h>
+#include <kseparator.h>
+#include <dcolorbutton.h>
 
 KTThemeSelector::KTThemeSelector(QWidget *parent) : DVHBox(parent, Qt::Vertical)
 {
@@ -255,29 +256,24 @@ bool KTThemeSelector::iWantApplyColors()
 
 void KTThemeSelector::saveSchema()
 {
-// 	QDir themeDir(CONFIG_DIR+"/themes");
-// 	if ( ! themeDir.exists() )
-// 	{
-// 		themeDir.mkdir(themeDir.path());
-// 	}
-// 	
-// 	KTFileDialog saveDialog(KTFileDialog::Themes, this);
-// 	
-// 	if ( saveDialog.exec() == QDialog::Rejected )
-// 	{
-// 		return;
-// 	}
-// 	
-// 	QFile file(themeDir.path()+"/"+saveDialog.fileName());
-// 	
-// 	if (file.open(QIODevice::WriteOnly ) )
-// 	{
-// 		QTextStream stream( &file );
-// 		stream << document().toString() << endl;
-// 		file.close();
-// 		m_lastFile = themeDir.path()+"/"+saveDialog.fileName();
-// 	}
-// 	loadSchemes();
+	QDir themeDir(CONFIG_DIR+"/themes");
+	if ( ! themeDir.exists() )
+	{
+		themeDir.mkdir(themeDir.path());
+	}
+	
+	QString fileName = QInputDialog::getText (this,tr("Name"), tr("Please choose a theme name"));
+	
+	QFile file(themeDir.path()+"/"+fileName);
+	
+	if (file.open(QIODevice::WriteOnly ) )
+	{
+		QTextStream stream( &file );
+		stream << document().toString() << endl;
+		file.close();
+		m_lastFile = themeDir.path()+"/"+fileName;
+	}
+	loadSchemes();
 }
 
 QString KTThemeSelector::lastFile()

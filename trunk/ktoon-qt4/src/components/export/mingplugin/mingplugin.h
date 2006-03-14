@@ -43,7 +43,7 @@ class MingPlugin : public KTExportPluginObject, public ExportInterface
 		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size);
 		
 	private:
-		QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir);
+		QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir, const char *format = "PNG");
 		void createImage(AGraphicComponent *component, QPainter *painter);
 };
 

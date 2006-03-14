@@ -17,85 +17,64 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#include "genericexportplugin.h"
 
-#include "mingplugin.h"
 #include <dglobal.h>
 #include <ddebug.h>
 
 #include <QImage>
 #include <QPainter>
 
-#include <cstdio>
-
-#ifdef HAVE_MING
-#include <mingpp.h>
-#endif
-
-MingPlugin::MingPlugin()
+GenericExportPlugin::GenericExportPlugin()
 {
 }
 
 
-MingPlugin::~MingPlugin()
+GenericExportPlugin::~GenericExportPlugin()
 {
 }
 
 
-QString MingPlugin::key() const
+QString GenericExportPlugin::key() const
 {
-	return "Ming";
+	return "Image Arrays";
 }
 
-ExportInterface::Formats MingPlugin::availableFormats()
+ExportInterface::Formats GenericExportPlugin::availableFormats()
 {
-	return SWF;
+	return PNG | JPEG;
 }
 
-void MingPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size)
+void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size)
 {
-#ifdef HAVE_MING
-	QDir temp(REPOSITORY+"/exporting");
-	if ( !temp.exists() )
-	{
-		temp.mkdir(temp.path());
-	}
-
-	SWFMovie movie;
+	QFileInfo fileInfo(filePath);
 	
-	movie.setRate(scenes[0]->fps() );
-	movie.setDimension(size.width(), size.height() );
-	movie.setBackground(0xff, 0xff, 0xff );
-
-	SWFShape shape;
-	shape.addSolidFill(255,255,255,255);
-
-	SWFDisplayItem *frame = movie.add( &shape);
 	
-	QStringList paths = createImages( scenes, temp );
-
-	foreach(QString image, paths)
+	QDir dir = fileInfo.dir();
+	if ( !dir.exists() )
 	{
-		SWFBitmap bitmap(image.toLatin1().data());
-		
-		SWFShape p_shape;
-		p_shape.addBitmapFill(&bitmap);
-		frame = movie.add( &p_shape);
-		movie.nextFrame();
+		dir.mkdir(dir.path());
 	}
 	
-	movie.save(filePath.toLatin1().data());
+	char *f = "PNG";
 	
-	foreach(QString path, paths)
+	switch(format)
 	{
-		QFile::remove(path);
+		case JPEG:
+		{
+			f = "JPEG";
+		}
+		break;
+		default: break;
 	}
 	
-// 	Ming_cleanup();
-// 	Ming_collectGarbage();
-#endif
+	m_baseName = fileInfo.baseName();
+	
+	createImages(scenes, dir, f);
 }
 
-QStringList MingPlugin::createImages(const QList<KTScene *> &scenes, const QDir &dir, const char *format)
+QStringList GenericExportPlugin::createImages(const QList<KTScene *> &scenes, const QDir &dir, const char *format)
 {
 	QStringList paths;
 	
@@ -145,29 +124,30 @@ QStringList MingPlugin::createImages(const QList<KTScene *> &scenes, const QDir 
 			}
 			
 			QString file = "";
+			QString extension = QString::fromLocal8Bit(format).toLower();
 			if ( nPhotogramsRenderized < 10 )
 			{
-				file = QString("000%1.png").arg(nPhotogramsRenderized);
+				file = QString("000%1").arg(nPhotogramsRenderized);
 			}
 			else if ( nPhotogramsRenderized < 100 )
 			{
-				file = QString("00%1.png").arg(nPhotogramsRenderized);
+				file = QString("00%1").arg(nPhotogramsRenderized);
 			}
 			else if( nPhotogramsRenderized < 1000 )
 			{
-				file = QString("0%1.png").arg(nPhotogramsRenderized);
+				file = QString("0%1").arg(nPhotogramsRenderized);
 			}
 			else if( nPhotogramsRenderized < 10000 )
 			{
-				file = QString("%1.png").arg(nPhotogramsRenderized);
+				file = QString("%1").arg(nPhotogramsRenderized);
 			}
 			
 			if ( !renderized.isNull() )
 			{
-				renderized.save(dir.path()+"/"+file, "PNG");
+				renderized.save(dir.path()+"/"+m_baseName+file+"."+extension, format);
 	// 			emit progressStep( nPhotogramsRenderized, totalPhotograms);
 				
-				paths << dir.path()+"/"+file;
+				paths << dir.path()+"/"+m_baseName+file+"."+extension;
 			}
 			
 			if (ok )
@@ -182,7 +162,7 @@ QStringList MingPlugin::createImages(const QList<KTScene *> &scenes, const QDir 
 	return paths;
 }
 
-void MingPlugin::createImage(AGraphicComponent *component, QPainter *painter)
+void GenericExportPlugin::createImage(AGraphicComponent *component, QPainter *painter)
 {
 	painter->save();
 	foreach(AGraphic *graphic, component->graphics())
@@ -222,8 +202,5 @@ void MingPlugin::createImage(AGraphicComponent *component, QPainter *painter)
 	painter->restore();
 }
 
-
-#ifdef HAVE_MING
-Q_EXPORT_PLUGIN( MingPlugin );
-#endif
+Q_EXPORT_PLUGIN( GenericExportPlugin );
 

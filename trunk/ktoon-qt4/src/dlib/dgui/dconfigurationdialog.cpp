@@ -150,7 +150,7 @@ void DConfigurationDialog::addPage(QWidget *page, const QString &title, const QI
 {
 	DFlatButton *button = new DFlatButton(title);
 	button->setIcon(icon);
-	button->setMinimumHeight(70);
+	button->setMinimumHeight(90);
 	QTableWidgetItem *newItem = m_list->addWidget( button );
 	
 	m_buttonGroup->addButton(button);

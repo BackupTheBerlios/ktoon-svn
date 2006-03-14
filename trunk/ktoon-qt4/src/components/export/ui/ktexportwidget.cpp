@@ -214,6 +214,20 @@ void KTExportWidget::addFormats(ExportInterface::Formats formats)
 		
 		m_formats.insert(format, ExportInterface::GIF);
 	}
+	
+	if ( formats & ExportInterface::PNG )
+	{
+		QListWidgetItem *format = new QListWidgetItem(tr("PNG Image Array"), m_formatList);
+		
+		m_formats.insert(format, ExportInterface::PNG);
+	}
+	
+	if ( formats & ExportInterface::JPEG )
+	{
+		QListWidgetItem *format = new QListWidgetItem(tr("JPEG Image Array"), m_formatList);
+		
+		m_formats.insert(format, ExportInterface::JPEG);
+	}
 }
 
 void KTExportWidget::makeAction(int buttonId)

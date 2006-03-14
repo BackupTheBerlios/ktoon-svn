@@ -43,8 +43,8 @@ KTSplash::KTSplash() : QSplashScreen( 0 ), m_size(3), m_state(0)
 	
 	QImage image(THEME_DIR+"/images/splash.png");
 	
-	KImageEffect::addNoise( image, KImageEffect::LaplacianNoise );
-	KImageEffect::hash( image, KImageEffect::SouthLite, 1);
+// 	KImageEffect::addNoise( image, KImageEffect::LaplacianNoise );
+// 	KImageEffect::hash( image, KImageEffect::SouthLite, 1);
 	
 	
 	setPixmap(QPixmap::fromImage(image));
@@ -97,13 +97,17 @@ void KTSplash::drawContents ( QPainter * painter )
 		}
 	}
 
-	painter->setPen( 0x706012);
+	painter->setPen( 0xCFCDD3);
 
 	// Draw version number
 	QRect r = rect();
-	r.setRect(r.x() + 5, r.y() + 5, r.width() - 10, r.height() - 10);
+	r.setRect(r.x() + 5, r.y() + 5, r.width() - 30, r.height() - 30);
+	
+	QFont forig = painter->font();
+	painter->setFont(QFont("helvetica", 16, 10, true));
 	painter->drawText(r, Qt::AlignRight, m_version);
-
+	
+	painter->setFont(forig);
 	// Draw message at given position, limited to 43 chars
 	// If message is too long, string is truncated
 	if (m_message.length() > 40) 

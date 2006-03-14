@@ -38,12 +38,12 @@ QHash< QString, DAction * > AGradientTool::actions()
 {
 	QHash<QString, DAction *> hash;
 	
-	DAction *action1 = new DAction( QIcon(QPixmap(THEME_DIR+"/icons/fill.png")), tr("Random Gradient"), this);
+	DAction *action1 = new DAction( QIcon(QPixmap(THEME_DIR+"/icons/random_gradient.png")), tr("Random Gradient"), this);
 // 	action1->setShortcut( QKeySequence( tr("F") ) );
 	
 	hash.insert( tr("Random Gradient"), action1 );
 	
-	DAction *action2 = new DAction( QIcon(QPixmap(THEME_DIR+"/icons/fill.png")), tr("Gradient"), this);
+	DAction *action2 = new DAction( QIcon(QPixmap(THEME_DIR+"/icons/gradient.png")), tr("Gradient"), this);
 // 	action1->setShortcut( QKeySequence( tr("F") ) );
 	
 	hash.insert( tr("Gradient"), action2 );

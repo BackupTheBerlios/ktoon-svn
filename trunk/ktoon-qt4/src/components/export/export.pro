@@ -5,7 +5,8 @@
 
 SUBDIRS += ffmpegplugin \
            mingplugin \
-           ui 
+           ui \
+           genericexportplugin 
 KDEV_QTVER = 4
 INCLUDEPATH += ../../../src/store \
 ../../../src/lib
