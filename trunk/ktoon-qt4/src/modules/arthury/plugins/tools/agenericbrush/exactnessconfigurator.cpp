@@ -37,8 +37,10 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 	QLabel *label = new QLabel(tr("Exactness"));
 	layout->addWidget(label);
 	m_exactness = new QDoubleSpinBox();
+	
+	m_exactness->setValue(0.1L);
 	m_exactness->setDecimals ( 2 );
-	m_exactness->setSingleStep ( 0.5 );
+	m_exactness->setSingleStep ( 0.1 );
 	m_exactness->setMaximum ( 100 );
 	layout->addWidget(m_exactness);
 	

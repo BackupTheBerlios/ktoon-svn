@@ -65,13 +65,11 @@ class APaintArea : public QWidget
 		QSize minimumSizeHint () const;
 		QPoint paintDevicePosition() const;
 		QWidget *paintDevice() const;
-// 		void setPaintDevice(const QImage &image);
 		void setOffset(const QPoint& zero);
 		
 		AGraphicComponent *currentGraphic();
 		KTKeyFrame *currentFrame() const;
-		
-		KTBrush *currentBrush();
+
 		
 	public slots:
 		void redrawAll();
@@ -103,7 +101,6 @@ class APaintArea : public QWidget
 		QList<AGraphicComponent *> m_undoComponents;
 		
 		AGraphicComponent *m_currentGraphic;
-// 		QList<AGraphicComponent *> m_selectedGraphics;
 		QList<AGraphicComponent *> m_copiedGraphics;
 		bool m_redrawAll;
 
@@ -123,8 +120,10 @@ class APaintArea : public QWidget
 		QPainterPath translatePath(const QPainterPath &path, const QPoint &pos);
 		void importImage(const QPixmap &image);
 		
+		void setPen(const QPen &pen);
+		void setColors(const QBrush &foreground, const QBrush &background);
+		
 	public slots:
-		void setBrush( const KTBrush *brush );
 		void undo();
 		void redo();
 		void copy();

@@ -507,7 +507,7 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 
 				m_currentGraphic = new AGraphicComponent;
 				
-				QRect rect = m_currentTool->press(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), event->pos(), m_currentFrame);
+				QRect rect = m_currentTool->press(m_currentKeyTool, painter, event->pos(), m_currentFrame);
 // 				rect.translate(m_xpos, m_ypos);
 				QMatrix matrix;
 				matrix.scale(m_zoomFactor,m_zoomFactor);
@@ -543,7 +543,7 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 				painter.scale(m_zoomFactor,m_zoomFactor);
 				QMatrix matrix;
 				matrix.scale(m_zoomFactor,m_zoomFactor);
-				QRect rect = m_currentTool->move(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(),event->pos()), m_lastPosition, event->pos());
+				QRect rect = m_currentTool->move(m_currentKeyTool, painter, m_lastPosition, event->pos());
 				
 				m_paintDevice->update(matrix.mapRect(rect));
 // 				rect.translate(m_xpos, m_ypos);
@@ -574,7 +574,7 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 				BEGIN_PAINTER(painter);
 				m_currentBrush->setupPainter(&painter);
 				painter.scale(m_zoomFactor,m_zoomFactor);
-				QRect rect = m_currentTool->release(m_currentKeyTool, painter,translatePath(m_currentBrush->brushForm(), event->pos()), event->pos());
+				QRect rect = m_currentTool->release(m_currentKeyTool, painter, event->pos());
 				QMatrix matrix;
 				matrix.scale(m_zoomFactor,m_zoomFactor);
 				
@@ -633,10 +633,17 @@ void APaintArea::setTool( AToolInterface *toolIface, const QString &tool)
 	m_currentKeyTool = tool;
 }
 
-void APaintArea::setBrush( const KTBrush *brush )
+void APaintArea::setPen(const QPen &pen)
 {
-	m_currentBrush->setBrushForm( brush->brushForm() );
-	m_currentBrush->setPenWidth( brush->penWidth() );
+	QPen newPen = pen;
+	newPen.setBrush( m_currentBrush->pen().brush() );
+	m_currentBrush->setPen( newPen );
+}
+
+void APaintArea::setColors(const QBrush &foreground, const QBrush &background)
+{
+	m_currentBrush->setPenBrush( foreground );
+	m_currentBrush->setBrush( background );
 }
 
 QPainterPath APaintArea::translatePath(const QPainterPath &path, const QPoint &pos)
@@ -715,11 +722,6 @@ KTKeyFrame *APaintArea::currentFrame() const
 	return m_currentFrame;
 }
 
-KTBrush *APaintArea::currentBrush()
-{
-	return m_currentBrush;
-}
-
 void APaintArea::copy()
 {
 	m_copiedGraphics.clear();
@@ -772,7 +774,7 @@ void APaintArea::group()
 
 void APaintArea::ungroup()
 {
-	dDebug() << "void APaintArea::ungroup()" ;
+	D_FUNCINFO;
 	if(m_currentFrame->selectedComponents().count() > 0)
 	{
 		foreach(AGraphicComponent *component, m_currentFrame->selectedComponents())

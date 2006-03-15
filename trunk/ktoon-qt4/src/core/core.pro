@@ -3,7 +3,7 @@
 # Subdir relative project main directory: ./src/core
 # Target is an application:  ../../bin/ktoon
 
-QT += xml opengl 
+QT += xml opengl gui 
 INSTALLS += kttrans \
             ktdata \
             target 
@@ -17,7 +17,6 @@ TARGETDEPS += ../../src/dlib/dgui/libdgui.so \
               ../../src/dialogs/libdialogs.a \
               ../../src/components/colorpalette/libcolorpalette.a \
               ../../src/components/scenes/libscenes.a \
-              ../../src/components/brushes/libbrushes.a \
               ../../src/components/exposure/libexposure.a \
               ../../src/components/timeline/libtimeline.a \
               ../../src/components/library/liblibrary.a \
@@ -32,13 +31,13 @@ TARGETDEPS += ../../src/dlib/dgui/libdgui.so \
               ../../src/components/kinas/libkinas.a \
               ../../3rdparty/quazip/libquazip.a \
               ../../src/dlib/dcore/libdcore.so \
-              ../../src/ktoonlib/libktoonlib.so 
+              ../../src/ktoonlib/libktoonlib.so \
+              ../../src/components/pen/libpen.a 
 LIBS += -ldcore \
         -ldgui \
         -lktoonlib \
         ../../src/ktoonstyle/libktoonstyle.a \
         ../../src/dialogs/libdialogs.a \
-        ../../src/components/brushes/libbrushes.a \
         ../../src/components/colorpalette/libcolorpalette.a \
         ../../src/components/scenes/libscenes.a \
         ../../src/components/exposure/libexposure.a \
@@ -52,11 +51,13 @@ LIBS += -ldcore \
         -lstore \
         ../../src/components/export/ui/libui.a \
         ../../src/components/kinas/libkinas.a \
-        ../../3rdparty/quazip/libquazip.a 
+        ../../3rdparty/quazip/libquazip.a \
+        ../../src/components/pen/libpen.a 
 INCLUDEPATH += ../../src/ktoonstyle \
                ../../src/modules/arthury/interfaces \
                ../../src/modules/arthury/animation \
                ../../src/modules/arthury/illustration \
+               ../../src/components/pen \
                ../../src/components/kinas \
                ../../src/components/help \
                ../../src/components/gceditor \
@@ -67,7 +68,6 @@ INCLUDEPATH += ../../src/ktoonstyle \
                ../../src/components/library \
                ../../src/components/colorpalette \
                ../../src/components/scenes \
-               ../../src/components/brushes \
                ../../src/dialogs \
                ../../src/store \
                ../../src/interfaces \

@@ -57,7 +57,7 @@ QPainterPath AGradientTool::path() const
 	return QPainterPath();
 }
 
-QRect AGradientTool::move(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& oldPos, const QPoint& newPos)
+QRect AGradientTool::move(const QString& brush, QPainter& painter, const QPoint& oldPos, const QPoint& newPos)
 {
 	QPainterPath path;
 	path.moveTo(m_initialPoint);
@@ -67,7 +67,7 @@ QRect AGradientTool::move(const QString& brush, QPainter& painter, const QPainte
 	return QRect(0,0,0,0);
 }
 
-QRect AGradientTool::press(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& pos, KTKeyFrame* currentFrame)
+QRect AGradientTool::press(const QString& brush, QPainter& painter, const QPoint& pos, KTKeyFrame* currentFrame)
 {
 	m_initialPoint = pos;
 	
@@ -78,7 +78,7 @@ QRect AGradientTool::press(const QString& brush, QPainter& painter, const QPaint
 	return QRect(0,0,0,0);
 }
 
-QRect AGradientTool::release(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& pos)
+QRect AGradientTool::release(const QString& brush, QPainter& painter, const QPoint& pos)
 {	
 	AGraphicComponent *component = new AGraphicComponent;
 	QPainterPath path;

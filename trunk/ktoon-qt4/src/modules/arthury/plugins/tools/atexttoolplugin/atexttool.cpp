@@ -31,7 +31,7 @@ QStringList ATextTool::keys() const
 	return QStringList() << tr("Text");
 }
 
-QRect ATextTool::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, KTKeyFrame *currentFrame)
+QRect ATextTool::press(const QString &brush, QPainter &painter,const QPoint &pos, KTKeyFrame *currentFrame)
 {
 	m_path = QPainterPath();
 	m_path.moveTo(pos);
@@ -41,12 +41,12 @@ QRect ATextTool::press(const QString &brush, QPainter &painter, const QPainterPa
 	return QRect();
 }
 
-QRect ATextTool::move(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos)
+QRect ATextTool::move(const QString &brush, QPainter &painter,const QPoint &oldPos, const QPoint &newPos)
 {
 	return QRect();
 }
 
-QRect ATextTool::release(const QString &  brush ,QPainter &  painter ,const QPainterPath &/*form*/, const QPoint &  pos )
+QRect ATextTool::release(const QString &  brush ,QPainter &  painter, const QPoint &  pos )
 {
 	QStringList textList = m_configurator->text().split('\n');
 	

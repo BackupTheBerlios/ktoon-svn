@@ -5,22 +5,23 @@
 
 INSTALLS += target 
 target.path = /lib/ 
-KDEV_QTVER = 4 
-INCLUDEPATH += ../../src/dlib/dgui \
-               ../../src/dlib/dcore 
-CONFIG += release \
-          warn_on \
-          dll 
-TEMPLATE = lib 
 HEADERS += ktmodulewidgetbase.h \
            ktmodulewidgettitle.h \
            agraphic.h \
            kttoolpluginobject.h \
            ktexportpluginobject.h \
-           ktgraphicalgorithm.h 
+           ktgraphicalgorithm.h \
+           ktglobal.h 
 SOURCES += ktmodulewidgetbase.cpp \
            ktmodulewidgettitle.cpp \
            agraphic.cpp \
            kttoolpluginobject.cpp \
            ktexportpluginobject.cpp \
            ktgraphicalgorithm.cpp 
+KDEV_QTVER = 4
+INCLUDEPATH += ../../src/dlib/dgui \
+../../src/dlib/dcore
+CONFIG += release \
+warn_on \
+dll
+TEMPLATE = lib

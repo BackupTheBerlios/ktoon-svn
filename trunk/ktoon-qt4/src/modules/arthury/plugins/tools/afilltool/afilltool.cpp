@@ -66,7 +66,7 @@ QPainterPath AFillTool::path() const
 	return QPainterPath();
 }
 
-QRect AFillTool::press(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& pos, KTKeyFrame* currentFrame)
+QRect AFillTool::press(const QString& brush, QPainter& painter, const QPoint& pos, KTKeyFrame* currentFrame)
 {
 	if( currentFrame->selectedComponents().count() > 0 )
 	{
@@ -114,12 +114,12 @@ bool AFillTool::findChild(AGraphicComponent *component, const QString &brush, co
 {
 }
 
-QRect AFillTool::move(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& oldPos, const QPoint& newPos)
+QRect AFillTool::move(const QString& brush, QPainter& painter, const QPoint& oldPos, const QPoint& newPos)
 {
 	return QRect(0,0,0,0);
 }
 
-QRect AFillTool::release(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &pos)
+QRect AFillTool::release(const QString &brush, QPainter &painter,const QPoint &pos)
 {
 	
 	return QRect(0,0,0,0);

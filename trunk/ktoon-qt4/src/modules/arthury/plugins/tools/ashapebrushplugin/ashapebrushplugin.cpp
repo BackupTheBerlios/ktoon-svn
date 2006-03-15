@@ -24,22 +24,35 @@
 
 #include "dglobal.h"
 
+AShapeBrushPlugin::AShapeBrushPlugin()
+{
+	m_configurator = new ShapeConfigurator;
+}
+
+
+AShapeBrushPlugin::~AShapeBrushPlugin()
+{
+	if (m_configurator) delete m_configurator;
+}
+
 QStringList AShapeBrushPlugin::keys() const
 {
 	return QStringList() << tr("Shape brush");
 }
 
-QRect AShapeBrushPlugin::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, KTKeyFrame *currentFrame)
+QRect AShapeBrushPlugin::press(const QString &brush, QPainter &painter,const QPoint &pos, KTKeyFrame *currentFrame)
 {
 	m_path = QPainterPath();
 	m_path.moveTo(pos);
 	
-	return move(brush, painter, form, pos, pos);
+	return move(brush, painter, pos, pos);
 }
 
-QRect AShapeBrushPlugin::move(const QString &brush, QPainter &painter,const QPainterPath &aPath,const QPoint &oldPos, const QPoint &newPos)
+QRect AShapeBrushPlugin::move(const QString &brush, QPainter &painter,const QPoint &oldPos, const QPoint &newPos)
 {
 	painter.save();
+	
+	QPainterPath aPath = m_configurator->shape();
 	
 	QMatrix matrix;
 	matrix.translate(newPos.x() - aPath.boundingRect().center().x(), newPos.y() - aPath.boundingRect().center().y()  );
@@ -72,7 +85,7 @@ QRect AShapeBrushPlugin::move(const QString &brush, QPainter &painter,const QPai
 	return boundingRect;
 }
 
-QRect AShapeBrushPlugin::release(const QString &  brush ,QPainter &  painter , const QPainterPath &form, const QPoint &  pos )
+QRect AShapeBrushPlugin::release(const QString &  brush ,QPainter &  painter , const QPoint &  pos )
 {
 	return QRect(0, 0, 0, 0);
 }
@@ -99,7 +112,7 @@ int AShapeBrushPlugin::type() const
 }
 QWidget *AShapeBrushPlugin::configurator()
 {
-	return 0;
+	return m_configurator;
 }
 		
 bool AShapeBrushPlugin::isComplete() const

@@ -388,18 +388,19 @@ void KTMainWindow::changeCurrentColors(const QBrush &foreground, const QBrush &b
 	
 	if ( doc )
 	{
-		doc->drawArea()->currentBrush()->setPenBrush(foreground);
-		doc->drawArea()->currentBrush()->setBrush(background);
+// 		doc->drawArea()->currentBrush()->setPenBrush(foreground);
+// 		doc->drawArea()->currentBrush()->setBrush(background);
+		doc->drawArea()->setColors(foreground, background);
 	}
 }
 
-void KTMainWindow::changeCurrentBrush(const KTBrush *form)
+void KTMainWindow::changeCurrentPen(const QPen &pen)
 {
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )
 	{
-		doc->drawArea()->setBrush( form );
+		doc->drawArea()->setPen( pen );
 	}
 }
 

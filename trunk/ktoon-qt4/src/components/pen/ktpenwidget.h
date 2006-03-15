@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,76 +17,45 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef KTBRUSHWIDGET_H
-#define KTBRUSHWIDGET_H
 
+#ifndef KTPENWIDGET_H
+#define KTPENWIDGET_H
 
-#include "ktmodulewidgetbase.h"
+#include <QPen>
 
-#include "ktdisplaybrush.h"
-#include "ktbrusheditor.h"
+#include <ktmodulewidgetbase.h>
 
-#include "deditspinbox.h"
-#include "dimagebutton.h"
-#include "ktbrusheslist.h"
-
-#include <QBoxLayout>
-#include <QLineEdit>
-
-#include "dtabwidget.h"
-#include "dtoolbox.h"
-
-#include <QGridLayout>
-
-#include "ktbrush.h"
+#include <deditspinbox.h>
+#include <dradiobuttongroup.h>
 
 /**
-* @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@toonka.com>
 */
-class KTBrushWidget : public KTModuleWidgetBase
+class KTPenWidget : public KTModuleWidgetBase
 {
 	Q_OBJECT
 	public:
-		KTBrushWidget(QWidget *parent = 0);
-		~KTBrushWidget();
+		KTPenWidget(QWidget *parent = 0);
+		~KTPenWidget();
 		
 	private:
-		void setupDisplay();
-		void setupBrushManager();
-		void setupButtons();
-		void createDefaultBrushes();
-		void setupCustomBrushes();
+		DEditSpinBox *m_thickness;
+		DRadioButtonGroup *m_capStyle;
+		DRadioButtonGroup *m_joinStyle;
+		DRadioButtonGroup *m_style;
 		
 	private slots:
-		void editBrush();
-		void addBrush();
-		void removeBrush();
-		
-	public slots:
-		void changeValueMinThickness(int value);
-		void changeValueSmoothness(int value);
-		void selectBrush(DCellViewItem * item);
+		void setThickness(int value);
+		void setStyle(int s);
+		void setJoinStyle(int s);
+		void setCapStyle(int s );
 		
 	signals:
-		void brushSelected(const KTBrush *form );
+		void penChanged(const QPen &pen);
 		
 	private:
-		KTBrushEditor *m_brushEditor;
-		DToolBox *m_brushManager;
-		DEditSpinBox *m_displayThickness, *m_displaySmoothness;
-		QLineEdit *m_nameBrush;
-		DImageButton *m_addBrush, *m_removeBrush;
-		KTBrushesList *m_defaultBrushesList;
-		KTBrushesList *m_customBrushesList;
-		
-	private:
-		QPushButton *m_editFormButton;
-		
-		QGridLayout *m_layout;
-		int m_currentFormIndex;
-		
-		KTBrush *m_currentBrush;
+		QPen m_pen;
+
 };
 
 #endif

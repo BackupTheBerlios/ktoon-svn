@@ -46,10 +46,10 @@ DRadioButtonGroup::~DRadioButtonGroup()
 {
 }
 
-void DRadioButtonGroup::addItem ( const QString & text )
+void DRadioButtonGroup::addItem ( const QString & text, int index )
 {
 	QRadioButton *button = new QRadioButton(text);
-	m_buttonGroup->addButton(button);
+	m_buttonGroup->addButton(button, index);
 	
 	m_layout->addWidget(button);
 }
@@ -86,7 +86,11 @@ void DRadioButtonGroup::emitButtonId(QAbstractButton *button)
 
 void DRadioButtonGroup::setCurrentIndex ( int index )
 {
-	m_buttonGroup->buttons()[index]->setChecked(true);
-	emit clicked(index);
+	QAbstractButton *button = m_buttonGroup->button(index);
+	if ( button )
+	{
+		button->setChecked(true);
+		emit clicked(index);
+	}
 }
 

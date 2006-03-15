@@ -33,14 +33,16 @@ void KTMainWindow::createGUI()
 	
 	connectToDisplays(m_colorPalette);
 	
-	////////////////
-	m_brushWidget = new KTBrushWidget( this);
-	m_brushWidget->setWindowIcon(QPixmap(THEME_DIR+"/icons/brushes.png"));
-	toolWindow(DDockWindow::Left)->addWidget(tr("Brushes"),m_brushWidget);
+	////////////////////
 	
-	connect(m_brushWidget, SIGNAL(brushSelected( const KTBrush *)), this, SLOT(changeCurrentBrush(  const KTBrush * )));
+	m_penWidget = new KTPenWidget(this);
+	toolWindow(DDockWindow::Left)->addWidget(tr("Pen"),m_penWidget);
 	
-	connectToDisplays(m_brushWidget);
+	connect(m_penWidget, SIGNAL(penChanged( const QPen& )), this, SLOT(changeCurrentPen( const QPen &)));
+	
+	connectToDisplays(m_penWidget);
+	
+	
 	
 	////////////////////
 	m_libraryWidget = new KTLibraryWidget( this );
@@ -80,6 +82,10 @@ void KTMainWindow::createGUI()
 	connect(m_helper, SIGNAL(pageLoaded(const QString &, const QString &)), this, SLOT(showHelpPage(const QString &, const QString &)));
 	
 	connectToDisplays(m_helper);
+	
+	///////////////////////
+	
+	
 	
 	//////////////////////
 	m_timeLine = new KTTimeLine(this);
@@ -364,12 +370,6 @@ void KTMainWindow::showWidgetPage()
 			widget = m_timeLine;
 			position = DDockWindow::Bottom;
 			actionText = "time line widget";
-		}
-		else if ( action == m_actionManager->find("show brushes") )
-		{
-			widget = m_brushWidget;
-			position = DDockWindow::Left;
-			actionText = "brushes widget";
 		}
 		else if ( action == m_actionManager->find("show exposure") )
 		{

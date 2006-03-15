@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,51 +17,70 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef SHAPECONFIGURATOR_H
+#define SHAPECONFIGURATOR_H
 
-#ifndef APOLYGONTOOL_H
-#define APOLYGONTOOL_H
+#include "ktdisplaybrush.h"
+#include "ktbrusheditor.h"
+
+#include "deditspinbox.h"
+#include "dimagebutton.h"
+#include "ktbrusheslist.h"
+
+#include <QBoxLayout>
+#include <QLineEdit>
+
+#include "dtabwidget.h"
+#include "dtoolbox.h"
+
+#include <QGridLayout>
+
+#include "ktbrush.h"
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+* @author David Cuadrado <krawek@toonka.com>
 */
-#include <kttoolpluginobject.h>
-#include <atoolinterface.h>
-#include <QPainterPath>
-
-class APolygonTool: public KTToolPluginObject, public AToolInterface
+class ShapeConfigurator : public QWidget
 {
-	Q_OBJECT;
-	Q_INTERFACES(AToolInterface);
+	Q_OBJECT
 	public:
-		APolygonTool();
-		~APolygonTool();
-		
-		QHash< QString, DAction * >  actions();
-
-		QPainterPath  path() const;
-
-		QRect  move(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& oldPos, const QPoint& newPos);
-
-		QRect  press(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& pos, KTKeyFrame* currentFrame);
-
-		QRect  release(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& pos);
-		
-		QStringList  keys() const;
-
-		QWidget*  configurator();
-
-		bool  isComplete() const;
-
-		int type() const;
-
-		void aboutToChangeTool();
-	private:
-		QPainterPath m_shape;
-		QPoint m_initialPoint;
+		ShapeConfigurator(QWidget *parent = 0);
+		~ShapeConfigurator();
+		QPainterPath shape() const;
 		
 	private:
-		QPainterPath createShape(const QRect & rect);
-
+		void setupDisplay();
+		void setupBrushManager();
+		void setupButtons();
+		void createDefaultBrushes();
+		void setupCustomBrushes();
+		
+		QDomElement path2xml(const QPainterPath &path,QDomDocument &doc);
+		
+	private slots:
+		void editBrush();
+		void addBrush();
+		void removeBrush();
+		
+	public slots:
+		void selectBrush(DCellViewItem * item);
+		
+	private:
+		KTBrushEditor *m_brushEditor;
+		
+		DImageButton *m_addBrush, *m_removeBrush;
+		KTBrushesList *m_defaultBrushesList;
+		
+		QList<QPainterPath> m_customShapes;
+		
+	private:
+		QPushButton *m_editShapeButton;
+		
+		QGridLayout *m_layout;
+		int m_currentShapeIndex;
+		
+		QPainterPath m_currentShape;
 };
 
 #endif

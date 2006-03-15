@@ -18,41 +18,74 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef ASHAPEBRUSHPLUGIN_H
-#define ASHAPEBRUSHPLUGIN_H
+#include "ktbrusheslist.h"
+#include <QPainter>
+#include <QStringList>
+#include "ddebug.h"
 
-#include <atoolinterface.h>
-#include "shapeconfigurator.h"
+#include "dpathadjuster.h"
 
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-
-class AShapeBrushPlugin : public KTToolPluginObject, public AToolInterface
+KTBrushesList::KTBrushesList(QWidget *parent)
+	: DCellView(parent), MAX_COLUMNS(5), m_row(0), m_col(0)
 {
-	Q_OBJECT;
-	Q_INTERFACES(AToolInterface);
+}
+
+
+KTBrushesList::~KTBrushesList()
+{
+}
+
+void KTBrushesList::addBrush(const QPainterPath &form)
+{
+	D_FUNCINFO;
+
+	DCellViewItem *newBrush = new DCellViewItem();
+
+	QImage tbrush(form.boundingRect().width()+2, form.boundingRect().height()+2, QImage::Format_RGB32);
 	
-	public:
-		AShapeBrushPlugin();
-		virtual ~AShapeBrushPlugin();
-		virtual QStringList keys() const;
-		virtual QRect press(const QString &brush, QPainter &painter, const QPoint &pos, KTKeyFrame *currentFrame = 0);
-		virtual QRect move(const QString &brush, QPainter &painter,const QPoint &oldPos, const QPoint &newPos);
-		virtual QRect release(const QString &brush, QPainter &painter, const QPoint &pos);
-		virtual QPainterPath path() const;
+	tbrush.fill(qRgba(255,255,255,0));
+	QPainter p(&tbrush);
+	p.setRenderHint(QPainter::Antialiasing);
+	
+	p.setPen(QPen(Qt::black,3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+	
+// 	p.setBrush( QBrush( foregroundColor (), Qt::SolidPattern));
 
-		virtual QHash<QString, DAction *>actions();
-		
-		int type() const;
-		virtual QWidget *configurator();
-		
-		virtual bool isComplete() const;
-		
-		virtual void aboutToChangeTool();
-	private:
-		QPainterPath m_path;
-		ShapeConfigurator *m_configurator;
-};
 
-#endif
+	p.drawPath(DPathAdjuster::toRect(form, tbrush.rect(), 0));
+	
+	newBrush->setImage( tbrush );
+	newBrush->setBackground( QColor(34,34,234,60 ) );
+	
+	m_forms << form;
+	
+	/////
+	
+	if( columnCount() < MAX_COLUMNS)
+	{
+		insertColumn( columnCount()+1);
+	}
+	
+	if( (m_forms.count()-1) % MAX_COLUMNS == 0)
+	{
+		insertRow( (rowCount()+1));
+		m_row++;
+		m_col = 0;
+	}
+	else
+	{
+		m_col++;
+	}
+	
+	setItem( m_row-1 , m_col , newBrush);
+}
+
+QPainterPath KTBrushesList::path(int index)
+{
+	return m_forms[index];
+}
+
+int KTBrushesList::count() const
+{
+	return m_forms.count();
+}

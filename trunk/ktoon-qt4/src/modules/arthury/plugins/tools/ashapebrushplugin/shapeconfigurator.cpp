@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#include "ktbrushwidget.h"
+#include "shapeconfigurator.h"
 
 #include "dglobal.h"
 #include "ddebug.h"
@@ -32,28 +32,19 @@
 
 #include "ktbrushesparser.h"
 
-KTBrushWidget::KTBrushWidget(QWidget *parent) : KTModuleWidgetBase( parent ), m_currentFormIndex(0), m_currentBrush(0)
+ShapeConfigurator::ShapeConfigurator(QWidget *parent) : QWidget( parent ), m_currentShapeIndex(0)
 {
-	setCaption( tr( "Brushes" ) );
-	
-	m_currentBrush = new KTBrush;
-	
-	m_layout = new QGridLayout;
+	m_layout = new QGridLayout(this);
 	
 	setupDisplay();
 	setupBrushManager();
 	setupButtons();
 	
-	static_cast<QVBoxLayout *>(layout())->addLayout(m_layout);
-	
-	DCONFIG->beginGroup("Brushes");
-	int lastIndex = DCONFIG->value("LastIndex", 0).toInt();
-	
-	m_brushManager->setCurrentIndex(lastIndex);
+	setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
 }
 
 
-KTBrushWidget::~KTBrushWidget()
+ShapeConfigurator::~ShapeConfigurator()
 {
 	DEND;
 	
@@ -61,15 +52,10 @@ KTBrushWidget::~KTBrushWidget()
 	QDomElement root = doc.createElement("Brushes");
 	doc.appendChild(root);
 	
-	for ( int i = 0; i < m_customBrushesList->count(); i++)
+	for ( int i = 0; i < m_customShapes.count(); i++)
 	{
-		KTBrush brush;
-		brush.setBrushForm( m_customBrushesList->path(i) );
-		root.appendChild(brush.createXML( doc ));
+		root.appendChild(path2xml(m_customShapes[i], doc ));
 	}
-
-	if ( m_currentBrush ) delete m_currentBrush;
-	
 	
 	QFile custom(CONFIG_DIR+"/brushes/customBrushes.ktbr");
 	
@@ -88,65 +74,35 @@ KTBrushWidget::~KTBrushWidget()
 		
 		custom.close();
 	}
-	
-	DCONFIG->beginGroup("Brushes");
-	DCONFIG->setValue("LastIndex", m_brushManager->currentIndex());
-} 
+}
 
-void KTBrushWidget::setupDisplay()
+
+void ShapeConfigurator::setupDisplay()
 {
 	m_brushEditor = new KTBrushEditor();
 
 	m_layout->addWidget(m_brushEditor, 0,0);
 }
 
-void KTBrushWidget::setupBrushManager()
+void ShapeConfigurator::setupBrushManager()
 {
-	m_brushManager = new DToolBox();
-	
-	QFrame *container = new QFrame(m_brushManager);
+	QFrame *container = new QFrame;
 	QBoxLayout *layoutContainer = new QBoxLayout(QBoxLayout::TopToBottom, container );
 	
-	m_displayThickness = new DEditSpinBox(5, 1, 99,1, tr("Thickness"), container,"Display Thickness");
-	layoutContainer->addWidget(m_displayThickness);
-	connect( m_displayThickness, SIGNAL( valueChanged( int ) ), this , SLOT( changeValueMinThickness(int) ) );
-	
-	m_displaySmoothness = new DEditSpinBox(2,  1, 99,1, tr("Smoothness"), container, "Display Smoothness");
-	layoutContainer->addWidget(m_displaySmoothness);
-	
-	
-	QGroupBox *box = new QGroupBox;
-	QBoxLayout *layoutBox = new QBoxLayout(QBoxLayout::TopToBottom, box);
-	layoutBox->setSpacing(1);
-	layoutBox->setMargin(2);
-	
-	
-	box->setTitle(tr( "Brush Name" ));
-	m_nameBrush = new QLineEdit( tr( "Brush" ),  box);
-	layoutBox->addWidget(m_nameBrush);
-	
-	m_editFormButton = new QPushButton(tr("Edit Form"),container );
-	m_editFormButton->setCheckable(true);
-	connect(m_editFormButton, SIGNAL(clicked()), this, SLOT(editBrush()));
-	layoutContainer->addWidget(box);
-	layoutContainer->addWidget(m_editFormButton);
+	m_editShapeButton = new QPushButton(tr("Edit shape"),container );
+	m_editShapeButton->setCheckable(true);
+	connect(m_editShapeButton, SIGNAL(clicked()), this, SLOT(editBrush()));
 	
 	createDefaultBrushes();
-	
-	m_brushManager->addPage(m_defaultBrushesList, tr("Default Brushes") );
-	
 	setupCustomBrushes();
 	
-	m_brushManager->addPage( container, tr("Edit Brush") );
-	
-	m_layout->addWidget(m_brushManager, 2,0);
+	layoutContainer->addWidget(m_editShapeButton);
+	layoutContainer->addWidget(m_defaultBrushesList);
+	m_layout->addWidget(container, 2,0);
 }
 
-void KTBrushWidget::setupCustomBrushes()
+void ShapeConfigurator::setupCustomBrushes()
 {
-	m_customBrushesList = new KTBrushesList(m_brushManager);
-	connect(m_customBrushesList, SIGNAL(itemClicked( DCellViewItem * )), this,SLOT(selectBrush( DCellViewItem * )));
-	
 	QDir customBrushesDir(CONFIG_DIR+"/brushes");
 	
 	if ( customBrushesDir.exists() )
@@ -166,7 +122,8 @@ void KTBrushWidget::setupCustomBrushes()
 		{
 			foreach(QPainterPath path, parser.brushes() )
 			{
-				m_customBrushesList->addBrush( path );
+				m_defaultBrushesList->addBrush( path );
+				m_customShapes << path;
 			}
 		}
 		else
@@ -174,12 +131,9 @@ void KTBrushWidget::setupCustomBrushes()
 			dError() << "Error while parse file: " << custom.fileName();
 		}
 	}
-	
-	
-	m_brushManager->addPage(m_customBrushesList, tr("Custom Brushes") );
 }
 
-void KTBrushWidget::setupButtons()
+void ShapeConfigurator::setupButtons()
 {
 	QGroupBox *containerButtons = new QGroupBox();
 	QHBoxLayout *layout = new QHBoxLayout(containerButtons);
@@ -194,22 +148,11 @@ void KTBrushWidget::setupButtons()
 	m_removeBrush->setToolTip( tr( "Remove Brush" ) );
 	layout->addWidget(m_removeBrush, Qt::AlignCenter);
 	
+	
 	m_layout->addWidget(containerButtons, 1,0);
 }
 
-
-void KTBrushWidget::changeValueMinThickness(int value)
-{
-	m_currentBrush->setPenWidth( value );
-	emit brushSelected( m_currentBrush  );
-}
-
-
-void KTBrushWidget::changeValueSmoothness(int value)
-{
-}
-
-void KTBrushWidget::selectBrush(DCellViewItem *item)
+void ShapeConfigurator::selectBrush(DCellViewItem *item)
 {
 	if ( item )
 	{
@@ -221,7 +164,7 @@ void KTBrushWidget::selectBrush(DCellViewItem *item)
 		}
 		else
 		{
-			brushesList = m_customBrushesList;
+			brushesList = m_defaultBrushesList;
 		}
 		
 		int currentRow = brushesList->row(item);
@@ -232,21 +175,18 @@ void KTBrushWidget::selectBrush(DCellViewItem *item)
 			int pos = (brushesList->MAX_COLUMNS * (currentRow)) + currentColumn;
 			if ( pos < brushesList->count() )
 			{
-				m_currentFormIndex = pos;
-				m_brushEditor->setPath( brushesList->path( m_currentFormIndex  ));
+				m_currentShapeIndex = pos;
+				m_brushEditor->setPath( brushesList->path( m_currentShapeIndex  ));
 				
-				m_currentBrush->setBrushForm( brushesList->path( m_currentFormIndex) );
-				m_currentBrush->setPenWidth( m_displayThickness->value() );
-				
-				emit brushSelected( m_currentBrush );
+				m_currentShape = brushesList->path( m_currentShapeIndex);
 			}
 		}
 	}
 }
 
-void KTBrushWidget::createDefaultBrushes()
+void ShapeConfigurator::createDefaultBrushes()
 {
-	m_defaultBrushesList = new KTBrushesList(m_brushManager);
+	m_defaultBrushesList = new KTBrushesList;
 	QPainterPath form;
 	connect(m_defaultBrushesList, SIGNAL(itemClicked( DCellViewItem * )), this,SLOT(selectBrush( DCellViewItem * )));
 	
@@ -302,26 +242,57 @@ void KTBrushWidget::createDefaultBrushes()
 	m_defaultBrushesList->addBrush( form);
 }
 
-void KTBrushWidget::editBrush()
+void ShapeConfigurator::editBrush()
 {
-	m_brushEditor->setEdit( m_editFormButton->isChecked() );
-	if ( m_editFormButton->isChecked() )
-	{
-		emit sendToOSD( tr("Click the brush area for create a brush"), 0 );
-	}
+	m_brushEditor->setEdit( m_editShapeButton->isChecked() );
 	
-	m_currentBrush->setBrushForm( m_brushEditor->currentPainterPath() );
-	m_currentBrush->setPenWidth( m_displayThickness->value() );
-	emit brushSelected( m_currentBrush ); // FIXME: for test
+	m_currentShape = m_brushEditor->currentPainterPath();
 }
 
-void KTBrushWidget::addBrush()
+void ShapeConfigurator::addBrush()
 {
-	m_customBrushesList->addBrush(m_brushEditor->currentPainterPath());
-	emit sendToStatus(tr("Brush added."));
+	QPainterPath shape = m_brushEditor->currentPainterPath();
+	m_defaultBrushesList->addBrush(shape);
+	
+	m_customShapes << shape;
 }
 
-void KTBrushWidget::removeBrush()
+void ShapeConfigurator::removeBrush()
 {
 	dWarning() << "Not implemented yet!";
+}
+
+
+QPainterPath ShapeConfigurator::shape() const
+{
+	return m_currentShape;
+}
+
+QDomElement ShapeConfigurator::path2xml(const QPainterPath &path, QDomDocument &doc)
+{
+	QDomElement item = doc.createElement("Item");
+	
+	QList<QPolygonF> polygons = path.toSubpathPolygons ();
+		
+	QList<QPolygonF>::ConstIterator polygonIt = polygons.begin();
+		
+	while ( polygonIt != polygons.end() )
+	{
+		QDomElement polygonElement = doc.createElement("Polygon");
+			
+		QPolygonF::ConstIterator pointIt = (*polygonIt).begin();
+			
+		QString attribute = "";
+		while (pointIt != (*polygonIt).end() )
+		{
+			attribute += QString("%1:%2 ").arg((*pointIt).x()).arg((*pointIt).y());
+			++pointIt;
+		}
+		polygonElement.setAttribute("points", attribute.trimmed());
+		item.appendChild(polygonElement);
+			
+		++polygonIt;
+	}
+	
+	return item;
 }

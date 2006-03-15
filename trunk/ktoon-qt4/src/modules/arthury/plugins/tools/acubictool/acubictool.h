@@ -39,9 +39,9 @@ class ACubicTool : public KTToolPluginObject, public AToolInterface
 		
 		virtual QHash< QString, DAction * > actions();
 		virtual QPainterPath path() const;
-		virtual QRect move(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& oldPos, const QPoint& newPos);
-		virtual QRect press(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& pos, KTKeyFrame* currentFrame);
-		virtual QRect release(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& pos);
+		virtual QRect move(const QString& brush, QPainter& painter, const QPoint& oldPos, const QPoint& newPos);
+		virtual QRect press(const QString& brush, QPainter& painter, const QPoint& pos, KTKeyFrame* currentFrame);
+		virtual QRect release(const QString& brush, QPainter& painter, const QPoint& pos);
 		virtual QStringList keys() const;
 		virtual QWidget* configurator();
 		virtual int type() const;

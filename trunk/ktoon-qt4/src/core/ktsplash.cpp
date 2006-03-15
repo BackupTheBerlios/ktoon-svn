@@ -44,7 +44,7 @@ KTSplash::KTSplash() : QSplashScreen( 0 ), m_size(3), m_state(0)
 	QImage image(THEME_DIR+"/images/splash.png");
 	
 // 	KImageEffect::addNoise( image, KImageEffect::LaplacianNoise );
-// 	KImageEffect::hash( image, KImageEffect::SouthLite, 1);
+	KImageEffect::hash( image, KImageEffect::SouthLite, 1);
 	
 	
 	setPixmap(QPixmap::fromImage(image));

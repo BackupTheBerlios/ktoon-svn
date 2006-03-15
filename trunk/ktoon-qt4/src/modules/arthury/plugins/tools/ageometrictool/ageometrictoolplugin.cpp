@@ -35,7 +35,7 @@ QStringList AGeometricToolPlugin::keys() const
 	return QStringList() << tr("Rectangle") << tr("Ellipse") << tr("Line");
 }
 
-QRect AGeometricToolPlugin::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, KTKeyFrame *currentFrame)
+QRect AGeometricToolPlugin::press(const QString &brush, QPainter &painter,const QPoint &pos, KTKeyFrame *currentFrame)
 {
 	m_path = QPainterPath();
 	m_path.moveTo(pos);
@@ -44,10 +44,10 @@ QRect AGeometricToolPlugin::press(const QString &brush, QPainter &painter, const
 	
 	m_rect.setTopLeft(pos);
 	
-	return move(brush, painter, form, pos, pos);
+	return move(brush, painter, pos, pos);
 }
 
-QRect AGeometricToolPlugin::move(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos)
+QRect AGeometricToolPlugin::move(const QString &brush, QPainter &painter,const QPoint &oldPos, const QPoint &newPos)
 {
 	painter.save();
 	
@@ -88,7 +88,7 @@ QRect AGeometricToolPlugin::move(const QString &brush, QPainter &painter,const Q
 	return QRect(0, 0, 0, 0);
 }
 
-QRect AGeometricToolPlugin::release(const QString &  brush ,QPainter &  painter , const QPainterPath &form, const QPoint &  pos )
+QRect AGeometricToolPlugin::release(const QString &  brush ,QPainter &  painter , const QPoint &  pos )
 {
 	int rad = painter.pen().width();
 	

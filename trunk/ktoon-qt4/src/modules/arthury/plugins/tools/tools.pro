@@ -11,8 +11,7 @@ SUBDIRS += agenericbrush \
            aerasertool \
            afilltool \
            acubictool \
-           agradienttool \
-           apolygontool 
+           agradienttool 
 CONFIG += release \
 warn_on
 TEMPLATE = subdirs

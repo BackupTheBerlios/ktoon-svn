@@ -27,13 +27,7 @@ KTBrush::KTBrush(): KTSerializableObject()
 	setup();
 }
 
-KTBrush::KTBrush(const QPainterPath &brushForm) : KTSerializableObject(), m_brushForm(brushForm)
-{
-	DINIT;
-	setup();
-}
-
-KTBrush::KTBrush(const KTBrush &toCopy) : KTSerializableObject(), m_brushForm(toCopy.m_brushForm),m_thickness(toCopy.m_thickness), m_brushName(toCopy.m_brushName), m_brush(toCopy.m_brush), m_pen(toCopy.m_pen), m_hasGradient(toCopy.m_hasGradient)
+KTBrush::KTBrush(const KTBrush &toCopy) : KTSerializableObject(),m_thickness(toCopy.m_thickness), m_brushName(toCopy.m_brushName), m_brush(toCopy.m_brush), m_pen(toCopy.m_pen), m_hasGradient(toCopy.m_hasGradient)
 {
 	
 }
@@ -49,17 +43,6 @@ void KTBrush::setup()
 	m_hasGradient = false;
 	m_brush = Qt::transparent;
 	m_pen = QPen(Qt::black, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-}
-
-
-QPainterPath KTBrush::brushForm() const
-{
-	return m_brushForm;
-}
-
-void KTBrush::setBrushForm(const QPainterPath &form)
-{
-	m_brushForm = form;
 }
 
 void KTBrush::setBrush(const QBrush &brush )
@@ -98,8 +81,8 @@ double KTBrush::penWidth() const
 void KTBrush::setupPainter(QPainter *p)
 {
 	p->setRenderHint(QPainter::Antialiasing, true);
-	p->setPen(m_pen);
 	
+	p->setPen(m_pen);
 	p->setBrush(m_brush);
 }
 
@@ -107,28 +90,39 @@ QDomElement KTBrush::createXML( QDomDocument &doc )
 {
 	QDomElement item = doc.createElement("Item");
 	
-	QList<QPolygonF> polygons = m_brushForm.toSubpathPolygons ();
-	
-	QList<QPolygonF>::ConstIterator polygonIt = polygons.begin();
-	
-	while ( polygonIt != polygons.end() )
-	{
-		QDomElement polygonElement = doc.createElement("Polygon");
-		
-		QPolygonF::ConstIterator pointIt = (*polygonIt).begin();
-		
-		QString attribute = "";
-		while (pointIt != (*polygonIt).end() )
-		{
-			attribute += QString("%1:%2 ").arg((*pointIt).x()).arg((*pointIt).y());
-			++pointIt;
-		}
-		polygonElement.setAttribute("points", attribute.trimmed());
-		item.appendChild(polygonElement);
-		
-		++polygonIt;
-	}
+// 	QList<QPolygonF> polygons = m_brushForm.toSubpathPolygons ();
+// 	
+// 	QList<QPolygonF>::ConstIterator polygonIt = polygons.begin();
+// 	
+// 	while ( polygonIt != polygons.end() )
+// 	{
+// 		QDomElement polygonElement = doc.createElement("Polygon");
+// 		
+// 		QPolygonF::ConstIterator pointIt = (*polygonIt).begin();
+// 		
+// 		QString attribute = "";
+// 		while (pointIt != (*polygonIt).end() )
+// 		{
+// 			attribute += QString("%1:%2 ").arg((*pointIt).x()).arg((*pointIt).y());
+// 			++pointIt;
+// 		}
+// 		polygonElement.setAttribute("points", attribute.trimmed());
+// 		item.appendChild(polygonElement);
+// 		
+// 		++polygonIt;
+// 	}
 	
 	return item;
 }
+
+QPen KTBrush::pen() const
+{
+	return m_pen;
+}
+
+QBrush KTBrush::brush() const
+{
+	return m_brush;
+}
+
 

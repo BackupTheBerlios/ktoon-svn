@@ -116,7 +116,7 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 		}
 		else if ( qname == "Pen" )
 		{
-			m_pen = QPen( atts.value("style").toInt() );
+			m_pen = QPen( Qt::PenStyle(atts.value("style").toInt()) );
 			m_pen.setWidthF( atts.value("width").toDouble() );
 			m_pen.setCapStyle( Qt::PenCapStyle(atts.value("capstyle").toInt()) );
 			m_pen.setJoinStyle( Qt::PenJoinStyle(atts.value("joinstyle").toInt()) );
@@ -210,9 +210,9 @@ bool KTProjectParser::endElement(const QString&, const QString& , const QString&
 		}
 		else if ( qname == "Graphic" )
 		{
-			m_graphics[m_graphics.count()-1]->path = DPathAdjuster::buildPath( m_polygons, ':');
-			m_graphics[m_graphics.count()-1]->pen = m_pen;
-			m_graphics[m_graphics.count()-1]->brush = m_brush;
+			m_graphics.last()->path = DPathAdjuster::buildPath( m_polygons, ':');
+			m_graphics.last()->pen = m_pen;
+			m_graphics.last()->brush = m_brush;
 		}
 		else if ( qname == "Component" )
 		{

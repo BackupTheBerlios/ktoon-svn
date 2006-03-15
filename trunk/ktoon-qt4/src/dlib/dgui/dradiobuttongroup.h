@@ -36,7 +36,7 @@ class DRadioButtonGroup : public QGroupBox
 		DRadioButtonGroup(const QString &title, Qt::Orientation orientation, QWidget *parent = 0);
 		~DRadioButtonGroup();
 		
-		void addItem ( const QString & text );
+		void addItem ( const QString & text, int index = -1 );
 		void addItems(const QStringList &texts);
 		
 		int currentIndex() const;

@@ -37,10 +37,11 @@
 #include "ktexposuresheet.h"
 #include "kinaswidget.h"
 
+#include "ktpenwidget.h"
+
 #include "ktpreferences.h"
 #include "ktsceneswidget.h"
 
-#include "ktbrushwidget.h"
 #include "ktcolorpalette.h"
 
 #include "ktlibrarywidget.h"
@@ -179,7 +180,7 @@ class KTMainWindow : public DMainWindow
 		
 		//others
 		void changeCurrentColors(const QBrush &, const QBrush &);
-		void changeCurrentBrush(const KTBrush *form);
+		void changeCurrentPen(const QPen &pen);
 		
 		void changeFPS(int fps);
 		
@@ -207,8 +208,9 @@ class KTMainWindow : public DMainWindow
 		KTHelpWidget *m_helper;
 		KTLibraryWidget *m_libraryWidget;
 		KTColorPalette *m_colorPalette;
-		KTBrushWidget *m_brushWidget;
+		KTPenWidget *m_penWidget;
 		KTGCEditor *m_gcEditor;
+		
 };
 
 #endif

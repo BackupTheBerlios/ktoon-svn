@@ -49,7 +49,7 @@ QPainterPath ACubicTool::path() const
 	return m_path;
 }
 
-QRect ACubicTool::move(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& oldPos, const QPoint& newPos)
+QRect ACubicTool::move(const QString& brush, QPainter& painter, const QPoint& oldPos, const QPoint& newPos)
 {
 	m_nodes.last().right = newPos;
 	m_nodes.last().left =  m_nodes.last().center - ( newPos - m_nodes.last().center)  ;
@@ -102,7 +102,7 @@ QRect ACubicTool::move(const QString& brush, QPainter& painter, const QPainterPa
 	
 }
 
-QRect ACubicTool::press(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& pos, KTKeyFrame* currentFrame)
+QRect ACubicTool::press(const QString& brush, QPainter& painter, const QPoint& pos, KTKeyFrame* currentFrame)
 {
 	if(m_isComplete)
 	{
@@ -114,11 +114,11 @@ QRect ACubicTool::press(const QString& brush, QPainter& painter, const QPainterP
 	m_nodes << node;
 	
 // 	dDebug() << m_nodes.count();
-	return move(brush, painter, form, pos, pos);
+	return move(brush, painter, pos, pos);
 	
 }
 
-QRect ACubicTool::release(const QString& brush, QPainter& painter, const QPainterPath& form, const QPoint& pos)
+QRect ACubicTool::release(const QString& brush, QPainter& painter, const QPoint& pos)
 {
 	painter.drawPath(m_path);
 	int thickness = 5;

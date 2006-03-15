@@ -32,16 +32,16 @@ QStringList AGenericBrush::keys() const
 	return QStringList() << tr("Pencil") ;
 }
 
-QRect AGenericBrush::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, KTKeyFrame *currentFrame )
+QRect AGenericBrush::press(const QString &brush, QPainter &painter,const QPoint &pos, KTKeyFrame *currentFrame )
 {
 	m_firstPoint = QPoint(0,0);
 	m_path = QPainterPath();
 	m_path.moveTo(pos);
 	
-	return move(brush, painter, form, pos, pos);
+	return move(brush, painter, pos, pos);
 }
 
-QRect AGenericBrush::move(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos)
+QRect AGenericBrush::move(const QString &brush, QPainter &painter,const QPoint &oldPos, const QPoint &newPos)
 {
 	painter.save();
 
@@ -66,7 +66,7 @@ QRect AGenericBrush::move(const QString &brush, QPainter &painter,const QPainter
 	return boundingRect;
 }
 
-QRect AGenericBrush::release(const QString & brush ,QPainter & /* painter*/,const QPainterPath &/*form*/, const QPoint & /* pos */)
+QRect AGenericBrush::release(const QString & brush ,QPainter & /* painter*/, const QPoint & /* pos */)
 {
 	m_firstPoint = QPoint(0,0);
 	

@@ -32,7 +32,8 @@ KTStatusBar::KTStatusBar(QWidget *parent)
 	
 	m_progressBar->setMaximum(10);
 	
-	m_status = new QLabel( "<b></b>",this );
+	m_status = new QLabel( this );
+// 	m_status->setFont(QFont("Times", 8));
 	m_status->setIndent(10);
 // 	m_status->setMaximumWidth(180);
 	
@@ -50,7 +51,6 @@ KTStatusBar::~KTStatusBar()
 
 void KTStatusBar::clear()
 {
-	m_status->setText("<b></b>");
 	advance(0);
 	
 	m_timer->stop();
@@ -58,7 +58,7 @@ void KTStatusBar::clear()
 
 void KTStatusBar::setStatus(const QString &status, int ms )
 {
-	m_status->setText("<b>"+status+"</b>");
+	m_status->setText(status);
 	
 	m_status->repaint();
 	
@@ -83,7 +83,7 @@ void KTStatusBar::addWidget ( QWidget *widget, int stretch, bool permanent)
 	
 	if(widget->sizeHint().height() + 4 > height())
 	{
-		setFixedHeight(widget->sizeHint().height() + 4);
+// 		setFixedHeight(widget->sizeHint().height() + 4);
 	}
 }
 

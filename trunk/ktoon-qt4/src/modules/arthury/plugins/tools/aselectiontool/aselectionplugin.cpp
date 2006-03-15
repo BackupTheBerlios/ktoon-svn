@@ -30,7 +30,7 @@ QStringList ASelectionPlugin::keys() const
 	return QStringList() << tr("Selection") << tr("Contour");
 }
 
-QRect ASelectionPlugin::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, KTKeyFrame *currentFrame )
+QRect ASelectionPlugin::press(const QString &brush, QPainter &painter,const QPoint &pos, KTKeyFrame *currentFrame )
 {
 	m_node.componentpos = 0;
 	m_node.graphicPos = 0;
@@ -114,7 +114,7 @@ QRect ASelectionPlugin::press(const QString &brush, QPainter &painter, const QPa
 	return rect;
 }
 
-QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos)
+QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPoint &oldPos, const QPoint &newPos)
 {
 	QRectF boundingRect;
 // 	seletionRect
@@ -176,7 +176,7 @@ QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPain
 	return boundingRect.toRect();
 }
 
-QRect ASelectionPlugin::release(const QString &  brush ,QPainter &  painter , const QPainterPath &form, const QPoint &  pos )
+QRect ASelectionPlugin::release(const QString &  brush ,QPainter &  painter , const QPoint &  pos )
 {
 	m_node.componentpos = 0;
 	m_node.graphicPos = 0;

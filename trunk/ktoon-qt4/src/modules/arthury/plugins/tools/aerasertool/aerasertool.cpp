@@ -34,7 +34,7 @@ QStringList AEraserTool::keys() const
 	return QStringList() << tr("Node eraser");
 }
 
-QRect AEraserTool::press(const QString &brush, QPainter &painter, const QPainterPath &form,const QPoint &pos, KTKeyFrame *currentFrame)
+QRect AEraserTool::press(const QString &brush, QPainter &painter,const QPoint &pos, KTKeyFrame *currentFrame)
 {
 	QRect rect(pos, QSize(15,15)); // FIXME: configure
 	
@@ -45,7 +45,7 @@ QRect AEraserTool::press(const QString &brush, QPainter &painter, const QPainter
 	return QRect();
 }
 
-QRect AEraserTool::move(const QString &brush, QPainter &painter,const QPainterPath &form,const QPoint &oldPos, const QPoint &newPos)
+QRect AEraserTool::move(const QString &brush, QPainter &painter,const QPoint &oldPos, const QPoint &newPos)
 {
 	QRect rect(newPos, QSize(15,15)); // FIXME: configure
 	
@@ -53,7 +53,7 @@ QRect AEraserTool::move(const QString &brush, QPainter &painter,const QPainterPa
 	return QRect();
 }
 
-QRect AEraserTool::release(const QString &  brush ,QPainter &  painter ,const QPainterPath &/*form*/, const QPoint &  pos )
+QRect AEraserTool::release(const QString &  brush ,QPainter &  painter, const QPoint &  pos )
 {
 	
 	return QRect();

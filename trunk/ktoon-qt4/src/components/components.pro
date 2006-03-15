@@ -3,8 +3,7 @@
 # Subdir relative project main directory: ./src/components
 # Target is a subdirs project 
 
-SUBDIRS += brushes \
-           scenes \
+SUBDIRS += scenes \
            colorpalette \
            library \
            timeline \
@@ -13,7 +12,8 @@ SUBDIRS += brushes \
            import \
            gceditor \
            help \
-           kinas 
+           kinas \
+           pen 
 CONFIG += release \
 warn_on
 TEMPLATE = subdirs

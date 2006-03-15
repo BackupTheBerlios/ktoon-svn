@@ -163,7 +163,7 @@ void KTConfigurationArea::leaveEvent(QEvent *)
 		return;
 	}
 	
-	m_locker.start(500);
+	m_locker.start(1000);
 }
 
 void KTConfigurationArea::hideConfigurator()

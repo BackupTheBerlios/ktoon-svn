@@ -22,7 +22,6 @@
 #define KTBRUSH_H
 
 #include <QObject>
-#include <QPainterPath>
 #include <QPainter>
 #include <QBrush>
 #include <QPen>
@@ -49,24 +48,9 @@ class KTBrush : public KTSerializableObject
 		KTBrush(const KTBrush &toCopy);
 		
 		/**
-		 * Construye la brocha con una forma
-		 */
-		KTBrush(const QPainterPath &);
-		
-		/**
 		 * Destructor
 		 */
 		~KTBrush();
-		
-		/**
-		 * Retorna la forma de la brocha
-		 */
-		QPainterPath brushForm() const;
-		
-		/**
-		 * Pone la forma de la brocha
-		 */
-		void setBrushForm(const QPainterPath &);
 		
 		/**
 		 * Pone una brocha de Qt
@@ -77,7 +61,7 @@ class KTBrush : public KTSerializableObject
 		 * Pone un lapicero de Qt
 		 */
 		void setPen(const QPen &pen);
-		
+				
 		/**
 		 * Pone una brocha de Qt al lapicero
 		 */
@@ -103,11 +87,14 @@ class KTBrush : public KTSerializableObject
 		 */
 		QDomElement createXML( QDomDocument &doc );
 		
+		
+		QPen pen() const;
+		QBrush brush() const;
+		
 	private:
 		void setup();
 		
 	private:
-		QPainterPath m_brushForm;
 		int m_thickness;
 		QString m_brushName; // TODO: save me!! ;)
 		
