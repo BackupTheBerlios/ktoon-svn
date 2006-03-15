@@ -125,7 +125,7 @@ class KTMainWindow : public DMainWindow
 	private slots:
 		void createNewProject(const QString &name, const QSize &size = QSize(-1,-1), const QString& renderType = tr("Image"), const int fps = 24  );
 		void newViewDocument(const QString &name = QString::null);
-		void newViewCamera(KTScene *scene);
+		void newViewCamera(KTScene *scene = 0);
 		void newProject();
 		bool closeProject();
 		void openProject();
@@ -133,6 +133,8 @@ class KTMainWindow : public DMainWindow
 		void save();
 		void showHelpPage(const QString &title, const QString &document);
 		void showWidgetPage();
+		
+		void showAnimationMenu(const QPoint &p);
 		
 	private slots:
 		void messageToStatus(const QString &);

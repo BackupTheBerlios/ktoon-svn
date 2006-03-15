@@ -3,8 +3,7 @@
 # Subdir relative project main directory: ./src/components/pen
 # Target is a library:  
 
-HEADERS += ktpenwidget.h 
-SOURCES += ktpenwidget.cpp 
+QT += xml 
 KDEV_QTVER = 4 
 INCLUDEPATH += ../../../src/store \
                ../../../src/ktoonlib \
@@ -17,3 +16,5 @@ CONFIG += release \
           warn_on \
           staticlib 
 TEMPLATE = lib 
+HEADERS += ktpenwidget.h 
+SOURCES += ktpenwidget.cpp 

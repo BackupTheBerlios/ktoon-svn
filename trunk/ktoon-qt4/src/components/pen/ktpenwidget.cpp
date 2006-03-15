@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "ktpenwidget.h"
+#include <dglobal.h>
 
 KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 {
@@ -71,6 +72,8 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 	addChild( m_joinStyle );
 	
 	setThickness( 3);
+	
+	setWindowIcon(QIcon(THEME_DIR+"/icons/brushes.png"));
 }
 
 

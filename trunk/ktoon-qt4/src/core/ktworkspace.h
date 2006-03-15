@@ -38,6 +38,9 @@ class KTWorkspace : public QWorkspace
 		void mouseMoveEvent(QMouseEvent *e);
 		void mouseReleaseEvent(QMouseEvent *e);
 		
+		
+	signals:
+		void contextMenu( const QPoint &p );
 // 		void dropEvent(QDropEvent* e);
 // 		void dragEnterEvent(QDragEnterEvent* e);
 		

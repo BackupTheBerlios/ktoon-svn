@@ -74,6 +74,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	m_animationSpace = new KTWorkspace;
 	m_animationSpace->setScrollBarsEnabled ( true );
 	
+	connect(m_animationSpace, SIGNAL(contextMenu( const QPoint& )), this, SLOT(showAnimationMenu( const QPoint& )));
 
 	addWidget(m_animationSpace, tr("Animation"), true);
 	
@@ -211,9 +212,16 @@ void KTMainWindow::newViewCamera(KTScene *scene)
 	connect(viewCamera, SIGNAL(sendProgress(int, int)), m_statusBar, SLOT(advance(int, int)));
 		
 	m_animationSpace->addWindow(viewCamera);
-		
-	viewCamera->animationArea()->setScene( scene );
-		
+	
+	if ( scene )
+	{
+		viewCamera->animationArea()->setScene( scene );
+	}
+	else
+	{
+		viewCamera->animationArea()->setScene(m_projectManager->currentScene());
+	}
+	
 	viewCamera->show();
 }
 
@@ -544,4 +552,18 @@ void KTMainWindow::insertImage()
 		}
 	}
 }
+
+void KTMainWindow::showAnimationMenu(const QPoint &p)
+{
+	QMenu *menu = new QMenu(tr("Animation"), m_animationSpace);
+	
+	menu->addAction(tr("New camera"), this, SLOT(newViewCamera()));
+	
+	menu->exec(p);
+	
+	delete menu;
+}
+
+
+
 

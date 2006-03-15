@@ -27,9 +27,13 @@
 
 #include <QLinearGradient>
 
+#include <QBoxLayout>
+#include "ktcamerabar.h"
+
 KTWorkspace::KTWorkspace(QWidget *parent) : QWorkspace(parent)
 {
 	setAcceptDrops( true );
+	setMouseTracking(true);
 	
 // 	QPalette pal = palette();
 // 	
@@ -39,6 +43,13 @@ KTWorkspace::KTWorkspace(QWidget *parent) : QWorkspace(parent)
 // 	gradient.setColorAt(0, pal.highlight().color());	
 // 	
 // 	setBackground(gradient);
+	
+// 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::BottomToTop, this);
+// 	
+// 	KTCameraBar *bar = new KTCameraBar;
+// 
+// 	layout->addWidget(bar,2,Qt::AlignBottom | Qt::AlignHCenter);
+// 	bar->show();
 }
 
 
@@ -49,6 +60,10 @@ KTWorkspace::~KTWorkspace()
 
 void KTWorkspace::mousePressEvent(QMouseEvent *e)
 {
+	if ( e->button () == Qt::RightButton )
+	{
+		emit contextMenu( mapToGlobal(e->pos()) );
+	}
 }
 
 void KTWorkspace::mouseMoveEvent(QMouseEvent *e)
