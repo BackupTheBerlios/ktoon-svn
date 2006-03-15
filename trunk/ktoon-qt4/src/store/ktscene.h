@@ -55,7 +55,7 @@ class KTScene : public KTSerializableObject
 		/**
 		 * retorna el nombre de la escena
 		 */
-		QString sceneName();
+		QString sceneName() const;
 		
 		/**
 		 * Retorna la lista de layers
@@ -80,7 +80,7 @@ class KTScene : public KTSerializableObject
 		/**
 		 * Retorna el indice layer actual
 		 */
-		int indexCurrentLayer();
+		int indexCurrentLayer() const;
 		
 		/**
 		 * Remueve el layer situado en el indice proporcionado
@@ -100,7 +100,7 @@ class KTScene : public KTSerializableObject
 		/**
 		 * Retorna los frames por segundo de la escena
 		 */
-		int fps();
+		int fps() const;
 		
 		/**
 		 * Reimplementado de KTSerializableObject

@@ -43,11 +43,10 @@ AAnimationArea::~AAnimationArea()
 void AAnimationArea::setScene(KTScene *scene)
 {
 	m_scene = scene;
-// 	if ( m_scene->frames().count() > 0 )
-// 	{
-// 		m_currentFrame = m_scene->currentFrame();
-// 	}
+	
 	m_isRendered = false;
+	
+	emit sceneChanged( m_scene );
 }
 
 void AAnimationArea::paintEvent(QPaintEvent *e)

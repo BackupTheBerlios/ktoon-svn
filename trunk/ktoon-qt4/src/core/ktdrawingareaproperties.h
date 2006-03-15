@@ -18,60 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "aimagedevicewidget.h"
-#include <QPainter>
-#include <QMouseEvent>
-#include "ddebug.h"
+#ifndef KTDRAWINGAREAPROPERTIES_H
+#define KTDRAWINGAREAPROPERTIES_H
 
-AImageDeviceWidget::AImageDeviceWidget(const QSize &size, QWidget *parent) : QWidget(parent)
+#include <QDialog>
+
+
+class DColorButton;
+
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+class KTDrawingAreaProperties : public QDialog
 {
-	setMouseTracking(true);
-	setAttribute(Qt::WA_StaticContents);
-// 	setAttribute(Qt::WA_NoBackground);
-	device = new QImage(size, QImage::Format_RGB32);
-	device->fill(m_fillColor.rgb());
-	int c= 0;
-	adjustSize();
-	
-	m_fillColor = Qt::white;
-}
+	Q_OBJECT;
+	public:
+		KTDrawingAreaProperties(QWidget *parent = 0);
+		~KTDrawingAreaProperties();
+		
+		QColor gridColor() const;
+		QColor backgroundColor() const;
+		QColor onionSkinColor() const;
+		QColor onionSkinBackground() const;
+		
+	private:
+		void setupPage();
+		
+	private:
+		DColorButton *m_gridColor,*m_backgroundColor,*m_onionSkinColor,*m_onionSkinBackground;
+};
 
-AImageDeviceWidget::~AImageDeviceWidget()
-{
-	if ( device ) delete device;
-}
-
-QSize AImageDeviceWidget::sizeHint() const
-{
-	return device->size();
-}
-
-void AImageDeviceWidget::paintEvent(QPaintEvent *e)
-{	
-	QRect rupdate = e->rect ();
-	
-	QPainter painter(this);
-	painter.setClipRect(rupdate);
-	painter.drawImage(QPoint(0, 0), *device);
-}
-
-void AImageDeviceWidget::resizeEvent ( QResizeEvent * event )
-{
-	device = new QImage(size(), QImage::Format_RGB32);
-	device->fill(m_fillColor.rgb());
-}
-
-void AImageDeviceWidget::mouseMoveEvent(QMouseEvent *e)
-{
-	emit mousePos( mapToParent(e->pos()) );
-	
-	QWidget::mouseMoveEvent(e);
-}
-
-
-void AImageDeviceWidget::setBackgroundColor(const QColor &color)
-{
-	m_fillColor = color;
-	device->fill(color.rgb());
-}
-
+#endif

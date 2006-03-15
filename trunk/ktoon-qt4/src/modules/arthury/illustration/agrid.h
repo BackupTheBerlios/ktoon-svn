@@ -41,7 +41,7 @@ class AGrid : public QObject
 		
 		void setDeltaX(int delta);
 		void setDeltaY(int delta);
-		void setColor(QColor color);
+		void setColor(const QColor &color);
 		QPainterPath pathGrid();
 		QImage copy(const QRect & r = QRect());
 		

@@ -27,6 +27,7 @@
 #include <cmath>
 #include <QBoxLayout>
 #include "dgradientadjuster.h"
+#include <dconfig.h>
 
 #define BEGIN_PAINTER(var) switch(m_renderType) { case Image: \
 var.begin(IMAGE_DEVICE); break; \
@@ -37,6 +38,8 @@ var.begin(IMAGE_DEVICE); break; \
 
 APaintArea::APaintArea(const QSize& size, RenderType type, QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_offset(0,0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_currentFrame(0), m_layer(0), m_scene(0), m_previousFramesNumber(0), m_nextFramesNumber(0), m_currentGraphic(0), m_zoomFactor(1.0f), m_size(size)
 {
+	loadProperties();
+	
 	m_redrawAll = true;
 	
 	m_renderType = type;
@@ -71,7 +74,7 @@ APaintArea::APaintArea(const QSize& size, RenderType type, QWidget *parent) : QW
 	m_paintDevice->setAutoFillBackground(true);
 // 	layout->addWidget(m_paintDevice);
 	
-	fillDevice( Qt::white );
+	fillDevice( m_properties.backgroundColor );
 	
 	setMouseTracking(true);
 	m_grid.createGrid(m_paintDevice->width(), m_paintDevice->height() );
@@ -91,6 +94,13 @@ APaintArea::~APaintArea()
 {
 	DEND;
 	if ( m_currentBrush ) delete m_currentBrush;
+	
+	DCONFIG->beginGroup("PaintArea");
+	
+	DCONFIG->setValue("GridColor", m_properties.gridColor);
+	DCONFIG->setValue("BackgroundColor", m_properties.backgroundColor);
+	DCONFIG->setValue("OnionSkinColor", m_properties.onionSkinColor);
+	DCONFIG->setValue("OnionSkinBackground", m_properties.onionSkinBackground);
 }
 
 QSize APaintArea::sizeHint() const
@@ -109,7 +119,7 @@ void APaintArea::paintEvent(QPaintEvent *e)
 	
 	if ( m_redrawAll )
 	{
-		fillDevice( Qt::white );
+		fillDevice( m_properties.backgroundColor );
 		
 		BEGIN_PAINTER(painter);
 		
@@ -119,7 +129,7 @@ void APaintArea::paintEvent(QPaintEvent *e)
 		if(m_drawGrid)
 		{
 			painter.save();
-			painter.setPen(Qt::gray);
+			painter.setPen(m_properties.gridColor);
 			painter.drawPath(m_grid.pathGrid());
 			painter.restore();
 		}
@@ -226,28 +236,30 @@ void APaintArea::draw(QPainter *painter)
 			// hasta indice - previews y indice + next
 			
 			float intensitive = 1;
+			float pfactor = (double)1 / (double) m_previousFramesNumber;
+			
 			for (int frameIndex = index-1; frameIndex > index-m_previousFramesNumber-1; frameIndex-- )
 			{
-				intensitive -= 0.25f;
-
+				intensitive -= pfactor;
 				if ( frameIndex < 0 || frameIndex > (*layerIterator)->frames().count()-1 )
 				{
 					break;
 				}
 				
-				drawFrame((*layerIterator)->frames()[ frameIndex ], painter, intensitive );
+				drawFrame((*layerIterator)->frames()[ frameIndex ], painter, fabs(intensitive) );
 			}
 			
 			intensitive = 1;
+			pfactor = (double) 1 / (double)m_nextFramesNumber;
 			for (int frameIndex = index+1; frameIndex < index+m_nextFramesNumber+1; frameIndex++ )
 			{
-				intensitive -= 0.25f;
+				intensitive -= pfactor;
 				
 				if ( frameIndex > (*layerIterator)->frames().count()-1 )
 				{
 					break;
 				}
-				drawFrame((*layerIterator)->frames()[ frameIndex ], painter, intensitive );
+				drawFrame((*layerIterator)->frames()[ frameIndex ], painter, fabs(intensitive) );
 			}
 			
 			// Draw the current frame
@@ -299,14 +311,14 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter
 
 		if ( intensitive < 1 && intensitive >= 0 )
 		{
-			QColor penColor = Qt::lightGray;
-			QColor brushColor = Qt::lightGray;
+			QColor penColor = m_properties.onionSkinColor;
+			QColor brushColor = m_properties.onionSkinBackground;
 			
-			const float factor = (1-intensitive); // FIXME: fix this ;)
+			const float factor = fabs(intensitive); // FIXME: try to  fix ;)
+				
+			penColor.setHsv(penColor.hue(),penColor.saturation(), static_cast<int>(factor * pen.color().alpha()) % 360 );
 						
-			penColor.setHsv(0,0, static_cast<int>(factor * pen.color().alpha()) % 360 );
-						
-			brushColor.setHsv(0,0, static_cast<int>( factor * brush.color().alpha() ) % 360 );
+			brushColor.setHsv(brushColor.hue(),brushColor.saturation(), static_cast<int>( factor * brush.color().alpha() ) % 360 );
 			
 // 			penColor.setHsv(0,0, factor * pen.color().value() );
 // 			brushColor.setHsv(0,0, factor * brush.color().value() );
@@ -492,7 +504,6 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 				
 				if(!toSelect)
 				{
-// 					dDebug() << "no selecionado";
 					m_currentFrame->clearSelections();
 				}
 				else if ( e->modifiers() & Qt::ControlModifier )
@@ -881,5 +892,25 @@ void APaintArea::importImage(const QPixmap &image)
 	m_currentFrame->addComponent( newComponent );
 	
 	redrawAll();
+}
+
+void APaintArea::setProperties(const KTPaintAreaProperties &properties)
+{
+	m_properties = properties;
+	
+	redrawAll();
+}
+
+void APaintArea::loadProperties()
+{
+	DCONFIG->beginGroup("PaintArea");
+	
+	m_properties.gridColor = qvariant_cast<QColor>(DCONFIG->value("GridColor", QColor(Qt::gray)));
+	
+	m_properties.backgroundColor = qvariant_cast<QColor>(DCONFIG->value("BackgroundColor", QColor(Qt::white)));
+	
+	m_properties.onionSkinColor = qvariant_cast<QColor>(DCONFIG->value("OnionSkinColor", QColor(Qt::lightGray)));
+	
+	m_properties.onionSkinBackground = qvariant_cast<QColor>(DCONFIG->value("OnionSkinBackground", QColor(Qt::lightGray)));
 }
 

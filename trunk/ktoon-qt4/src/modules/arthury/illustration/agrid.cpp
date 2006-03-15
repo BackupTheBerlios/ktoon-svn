@@ -79,7 +79,7 @@ void AGrid::setDeltaY(int delta)
 	m_deltaY = delta;
 }
 
-void AGrid::setColor(QColor color)
+void AGrid::setColor(const QColor &color)
 {
 	m_color = color;
 }

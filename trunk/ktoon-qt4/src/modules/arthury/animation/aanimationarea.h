@@ -57,6 +57,8 @@ class AAnimationArea : public QFrame
 		void progressStep(int, int);
 		void toStatusBar(const QString &, int);
 		
+		void sceneChanged(const KTScene *newScene );
+		
 	protected:
 		void paintEvent(QPaintEvent *e);
 		virtual void drawFrames(QPainter *painter);

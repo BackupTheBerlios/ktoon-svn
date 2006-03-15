@@ -36,6 +36,8 @@ class AImageDeviceWidget : public QWidget
 		QImage *device;
 		QSize sizeHint() const;
 		
+		void setBackgroundColor(const QColor &color);
+		
 	signals:
 		void mousePos(const QPoint &pos);
 		
@@ -43,6 +45,9 @@ class AImageDeviceWidget : public QWidget
 		void mouseMoveEvent(QMouseEvent *e);
 		void paintEvent(QPaintEvent *e);
 		void resizeEvent ( QResizeEvent * event );
+		
+	private:
+		QColor m_fillColor;
 };
 
 #endif

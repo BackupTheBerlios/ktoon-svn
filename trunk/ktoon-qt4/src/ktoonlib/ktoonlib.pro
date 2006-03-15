@@ -11,13 +11,15 @@ HEADERS += ktmodulewidgetbase.h \
            kttoolpluginobject.h \
            ktexportpluginobject.h \
            ktgraphicalgorithm.h \
-           ktglobal.h 
+           ktglobal.h \
+           ktpaintareaproperties.h 
 SOURCES += ktmodulewidgetbase.cpp \
            ktmodulewidgettitle.cpp \
            agraphic.cpp \
            kttoolpluginobject.cpp \
            ktexportpluginobject.cpp \
-           ktgraphicalgorithm.cpp 
+           ktgraphicalgorithm.cpp \
+           ktpaintareaproperties.cpp 
 KDEV_QTVER = 4
 INCLUDEPATH += ../../src/dlib/dgui \
 ../../src/dlib/dcore

@@ -40,18 +40,17 @@ class KTViewCamera : public DMdiWindow
 		~KTViewCamera();
 		
 		AAnimationArea *animationArea();
-		
-// 		QSize sizeHint() const;
-		
-	private slots:
 
+	private slots:
+		void showSceneInfo(const KTScene *scene);
+		
 	private:
 		QFrame *m_container;
 		AAnimationArea *m_animationArea;
 		
+		class Status;
 		
-// 		KTCameraBar *m_bar;
-// 		CCBar *m_bar;
+		Status *m_status;
 };
 
 #endif

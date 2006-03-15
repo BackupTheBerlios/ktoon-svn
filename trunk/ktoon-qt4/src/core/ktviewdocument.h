@@ -30,6 +30,7 @@
 #include <QMenu>
 #include <QDir>
 #include <QPluginLoader>
+#include <QSpinBox>
 
 #include "dactionmanager.h"
 #include "afilterinterface.h"
@@ -60,6 +61,9 @@ class KTViewDocument : public DMdiWindow
 		void oneNextOnionSkin();
 		void twoNextOnionSkin();
 		void threeNextOnionSkin();
+		
+		void setNextOnionSkin(int n);
+		void setPreviousOnionSkin(int n);
 		
 		void setScene(KTScene* scene);
 		

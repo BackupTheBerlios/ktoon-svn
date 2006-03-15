@@ -36,6 +36,8 @@
 
 #include "ktbrush.h"
 
+#include "ktpaintareaproperties.h"
+
 // Devices
 #include "aimagedevicewidget.h"
 #include "agldevice.h"
@@ -69,7 +71,6 @@ class APaintArea : public QWidget
 		
 		AGraphicComponent *currentGraphic();
 		KTKeyFrame *currentFrame() const;
-
 		
 	public slots:
 		void redrawAll();
@@ -114,6 +115,8 @@ class APaintArea : public QWidget
 		QRect m_overBufferRect;
 		
 		QSize m_size;
+		
+		KTPaintAreaProperties m_properties;
 
 	public:
 		void setTool( AToolInterface *toolIface, const QString &tool);
@@ -122,6 +125,11 @@ class APaintArea : public QWidget
 		
 		void setPen(const QPen &pen);
 		void setColors(const QBrush &foreground, const QBrush &background);
+		
+		void setProperties(const KTPaintAreaProperties &properties);
+		
+	private:
+		void loadProperties();
 		
 	public slots:
 		void undo();
@@ -159,7 +167,7 @@ class APaintArea : public QWidget
 			{
 				case Image:
 				{
-					IMAGE_DEVICE->fill(brush.color().rgb());
+					qobject_cast<AImageDeviceWidget *>(m_paintDevice)->setBackgroundColor( brush.color() );
 				}
 				break;
 				case OpenGL:
@@ -175,5 +183,6 @@ class APaintArea : public QWidget
 	signals:
 		void mousePos(const QPoint& p);
 };
+
 
 #endif

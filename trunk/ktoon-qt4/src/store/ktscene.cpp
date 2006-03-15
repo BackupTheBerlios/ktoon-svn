@@ -117,7 +117,7 @@ void KTScene::setSceneName(const QString &name)
 	m_name = name;
 }
 
-QString KTScene::sceneName()
+QString KTScene::sceneName() const
 {
 	return m_name;
 }
@@ -182,7 +182,7 @@ void KTScene::setCurrentLayer(int index)
 	}
 }
 
-int KTScene::indexCurrentLayer()
+int KTScene::indexCurrentLayer() const
 {
 	return m_layers.indexOf(m_currentLayer);
 }
@@ -199,7 +199,7 @@ void KTScene::setFPS(int fps)
 	}
 }
 
-int KTScene::fps()
+int KTScene::fps() const
 {
 	return m_fps;
 }

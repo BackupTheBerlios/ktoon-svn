@@ -18,60 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "aimagedevicewidget.h"
-#include <QPainter>
-#include <QMouseEvent>
-#include "ddebug.h"
+#include "ktpaintareaproperties.h"
 
-AImageDeviceWidget::AImageDeviceWidget(const QSize &size, QWidget *parent) : QWidget(parent)
+KTPaintAreaProperties::KTPaintAreaProperties()
 {
-	setMouseTracking(true);
-	setAttribute(Qt::WA_StaticContents);
-// 	setAttribute(Qt::WA_NoBackground);
-	device = new QImage(size, QImage::Format_RGB32);
-	device->fill(m_fillColor.rgb());
-	int c= 0;
-	adjustSize();
-	
-	m_fillColor = Qt::white;
 }
 
-AImageDeviceWidget::~AImageDeviceWidget()
+
+KTPaintAreaProperties::~KTPaintAreaProperties()
 {
-	if ( device ) delete device;
 }
 
-QSize AImageDeviceWidget::sizeHint() const
-{
-	return device->size();
-}
-
-void AImageDeviceWidget::paintEvent(QPaintEvent *e)
-{	
-	QRect rupdate = e->rect ();
-	
-	QPainter painter(this);
-	painter.setClipRect(rupdate);
-	painter.drawImage(QPoint(0, 0), *device);
-}
-
-void AImageDeviceWidget::resizeEvent ( QResizeEvent * event )
-{
-	device = new QImage(size(), QImage::Format_RGB32);
-	device->fill(m_fillColor.rgb());
-}
-
-void AImageDeviceWidget::mouseMoveEvent(QMouseEvent *e)
-{
-	emit mousePos( mapToParent(e->pos()) );
-	
-	QWidget::mouseMoveEvent(e);
-}
-
-
-void AImageDeviceWidget::setBackgroundColor(const QColor &color)
-{
-	m_fillColor = color;
-	device->fill(color.rgb());
-}
 

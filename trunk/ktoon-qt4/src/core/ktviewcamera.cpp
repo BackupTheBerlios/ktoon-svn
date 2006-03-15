@@ -20,11 +20,68 @@
 
 #include "ktviewcamera.h"
 #include "ktapplication.h"
-#include "ddebug.h"
+#include <ddebug.h>
+
+#include <QStatusBar>
+#include <QLabel>
+#include <QHBoxLayout>
+
+class KTViewCamera::Status : public QStatusBar
+{
+	public:
+		Status(QWidget *parent = 0);
+		~Status();
+		
+		void setFps(int fps);
+		void setSceneName(const QString &name);
+		
+	private:
+		QLabel *m_fps;
+		QLabel *m_sceneName;
+};
+
+
+KTViewCamera::Status::Status(QWidget *parent) : QStatusBar(parent)
+{
+	QWidget *sceneInfo = new QWidget;
+	QHBoxLayout *sceneInfoLayout = new QHBoxLayout(sceneInfo);
+	
+	QLabel *fpsText = new QLabel(tr("<B>FPS:</B> "));
+	m_fps = new QLabel;
+	
+	sceneInfoLayout->addWidget(fpsText);
+	sceneInfoLayout->addWidget(m_fps,2);
+	
+	m_sceneName = new QLabel;
+	sceneInfoLayout->addWidget(new QLabel(tr("<B>Scene name:</B> ")));
+	sceneInfoLayout->addWidget(m_sceneName,2);
+	
+	addPermanentWidget(sceneInfo,2);
+	
+	sceneInfo->show();
+}
+
+KTViewCamera::Status::~Status()
+{
+	
+}
+
+void KTViewCamera::Status::setFps(int fps)
+{
+	m_fps->setText(QString::number(fps));
+}
+
+void KTViewCamera::Status::setSceneName(const QString &name)
+{
+	m_sceneName->setText(name);
+}
 
 KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : DMdiWindow(parent)
 {
 	DINIT;
+	
+	m_status = new Status;
+	setStatusBar(m_status);
 	
 	setObjectName("KTViewCamera_");
 	
@@ -42,9 +99,13 @@ KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : DMdiWindow(p
 	animationAreaContainer->setSizePolicy ( QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding) );
 	QBoxLayout *animationAreaLayout = new QBoxLayout(QBoxLayout::TopToBottom, animationAreaContainer);
 	animationAreaLayout->setMargin(0);
+	
+	
 	m_animationArea = new AAnimationArea(size );
 	animationAreaLayout->addWidget(m_animationArea);
 	
+	
+	connect(m_animationArea, SIGNAL(sceneChanged(const KTScene *)), this, SLOT(showSceneInfo(const KTScene *)));
 	connect(m_animationArea, SIGNAL(progressStep(int, int)), this, SIGNAL(sendProgress(int, int)));
 	connect(m_animationArea, SIGNAL(toStatusBar(const QString &, int)), this, SIGNAL(sendMessage( const QString &, int)));
 	
@@ -75,16 +136,19 @@ KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : DMdiWindow(p
 	m_container->setLayout(layout);
 	
 	setCentralWidget(m_container);
-	
-// 	QPalette pal = palette();
-// 	pal.setColor(QPalette::Background, pal.color(QPalette::Foreground) );
-// 	setPalette(pal);
 }
 
 
 KTViewCamera::~KTViewCamera()
 {
 	DEND;
+}
+
+void KTViewCamera::showSceneInfo(const KTScene *scene)
+{
+	qDebug("HERE");
+	m_status->setFps(scene->fps());
+	m_status->setSceneName(scene->sceneName());
 }
 
 AAnimationArea *KTViewCamera::animationArea()

@@ -32,6 +32,8 @@
 
 #include "dvhbox.h"
 #include "kttoolpluginobject.h"
+#include "ktdrawingareaproperties.h"
+#include "ktpaintareaproperties.h"
 
 KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, const QString & renderType, KTDocument *doc, QWorkspace *parent ) : DMdiWindow(parent), m_document(doc), m_title(projectName)
 {
@@ -245,7 +247,8 @@ void KTViewDocument::setupViewActions()
 	m_viewPreviousGroup->addAction(threePrevious);
 	threePrevious->setCheckable ( true );
 	threePrevious->setStatusTip(tr("Shows the previous 3 onion skins" ));
-
+	
+	
 // 	// NEXT 
 
 	m_viewNextGroup = new QActionGroup( this );
@@ -633,8 +636,19 @@ void KTViewDocument::createToolbar()
 // 	m_barGrid->addAction(m_aLightTable);
 	m_barGrid->addSeparator();
 	m_barGrid->addActions(m_viewPreviousGroup->actions());
+	
+	QSpinBox *prevOnionSkinSpin = new QSpinBox(this);
+	connect(prevOnionSkinSpin, SIGNAL(valueChanged ( int)), this, SLOT(setPreviousOnionSkin(int)));
+	
+	m_barGrid->addWidget(prevOnionSkinSpin);
+	
 	m_barGrid->addSeparator();
 	m_barGrid->addActions(m_viewNextGroup->actions());
+	
+	QSpinBox *nextOnionSkinSpin = new QSpinBox(this);
+	connect(nextOnionSkinSpin, SIGNAL(valueChanged ( int)), this, SLOT(setNextOnionSkin(int)));
+	
+	m_barGrid->addWidget(nextOnionSkinSpin);
 	
 }
 
@@ -726,6 +740,12 @@ void KTViewDocument::threePreviousOnionSkin()
 {
 	m_paintAreaContainer->drawArea()->setPreviousFrames( 3 );
 }
+
+void KTViewDocument::setPreviousOnionSkin(int n)
+{
+	m_paintAreaContainer->drawArea()->setPreviousFrames(n);
+}
+
 // NEXT
 void KTViewDocument::disableNextOnionSkin()
 {
@@ -747,6 +767,14 @@ void KTViewDocument::threeNextOnionSkin()
 	m_paintAreaContainer->drawArea()->setNextFrames( 3 );
 }
 
+
+void KTViewDocument::setNextOnionSkin(int n)
+{
+	m_paintAreaContainer->drawArea()->setNextFrames( n );
+}
+
+
+
 void KTViewDocument::setScene(KTScene* scene)
 {
 	setWindowTitle( m_title + " - " + scene->sceneName() );
@@ -755,6 +783,20 @@ void KTViewDocument::setScene(KTScene* scene)
 
 void KTViewDocument::configure()
 {
-	FUNC_NOT_IMPLEMENTED;
+	KTDrawingAreaProperties properties;
+	
+	if ( properties.exec() != QDialog::Rejected )
+	{
+		KTPaintAreaProperties areaProperties;
+		
+		areaProperties.gridColor = properties.gridColor();
+		areaProperties.backgroundColor = properties.backgroundColor();
+		areaProperties.onionSkinColor = properties.onionSkinColor();
+		areaProperties.onionSkinBackground = properties.onionSkinBackground();
+		
+		m_paintAreaContainer->drawArea()->setProperties(areaProperties);
+	}
 }
+
+
 

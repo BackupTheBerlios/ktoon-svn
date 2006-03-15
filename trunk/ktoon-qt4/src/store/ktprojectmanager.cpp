@@ -25,7 +25,7 @@
 
 #include "ktprojectparser.h"
 
-KTProjectManager::KTProjectManager(QObject *parent) : KTSerializableObject(parent), m_currentDocument(0), m_copyFrame(0), m_isOpen(false)
+KTProjectManager::KTProjectManager(QObject *parent) : KTSerializableObject(parent), m_currentDocument(0), m_copyFrame(0), m_isOpen(false), m_fps(24)
 {
 	DINIT;
 }
@@ -293,7 +293,9 @@ void KTProjectManager::createScene(bool addToEnd)
 	if ( m_currentDocument )
 	{
 		KTScene *scene = m_currentDocument->createScene(addToEnd);
+		
 		scene->setFPS( m_fps );
+		
 		connect(scene, SIGNAL(layerCreated( const QString&, bool)), this, SIGNAL(layerCreated( const QString &, bool)));
 		connect(scene, SIGNAL(layerRemoved( int)), this, SIGNAL(layerRemoved(int))) ;
 		connect(scene, SIGNAL(layerSelected( int)), this, SIGNAL(layerSelected(int))) ;
