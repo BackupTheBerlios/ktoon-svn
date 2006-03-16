@@ -42,6 +42,8 @@ class AAnimationArea : public QFrame
 		QSize sizeHint() const;
 		int photogramsCount() const;
 		
+		void setLoop(bool l);
+		
 	public slots:
 		virtual void render();
 		virtual void play();

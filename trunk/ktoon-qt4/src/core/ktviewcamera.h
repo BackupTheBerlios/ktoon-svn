@@ -28,7 +28,10 @@
 #include "ktcamerabar.h"
 
 #include "ccbar.h"
-     
+
+
+class QCheckBox;
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
@@ -43,6 +46,7 @@ class KTViewCamera : public DMdiWindow
 
 	private slots:
 		void showSceneInfo(const KTScene *scene);
+		void setLoop();
 		
 	private:
 		QFrame *m_container;
@@ -51,6 +55,8 @@ class KTViewCamera : public DMdiWindow
 		class Status;
 		
 		Status *m_status;
+		
+		QCheckBox *m_loop;
 };
 
 #endif

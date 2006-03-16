@@ -25,6 +25,7 @@
 #include <QStatusBar>
 #include <QLabel>
 #include <QHBoxLayout>
+#include <QCheckBox>
 
 class KTViewCamera::Status : public QStatusBar
 {
@@ -35,26 +36,29 @@ class KTViewCamera::Status : public QStatusBar
 		void setFps(int fps);
 		void setSceneName(const QString &name);
 		
+		void addWidget(QWidget *widget, int stretch = 0);
+		
 	private:
 		QLabel *m_fps;
 		QLabel *m_sceneName;
+		QHBoxLayout *m_sceneInfoLayout;
 };
 
 
 KTViewCamera::Status::Status(QWidget *parent) : QStatusBar(parent)
 {
 	QWidget *sceneInfo = new QWidget;
-	QHBoxLayout *sceneInfoLayout = new QHBoxLayout(sceneInfo);
+	m_sceneInfoLayout = new QHBoxLayout(sceneInfo);
 	
 	QLabel *fpsText = new QLabel(tr("<B>FPS:</B> "));
 	m_fps = new QLabel;
 	
-	sceneInfoLayout->addWidget(fpsText);
-	sceneInfoLayout->addWidget(m_fps,2);
+	m_sceneInfoLayout->addWidget(fpsText);
+	m_sceneInfoLayout->addWidget(m_fps,2);
 	
 	m_sceneName = new QLabel;
-	sceneInfoLayout->addWidget(new QLabel(tr("<B>Scene name:</B> ")));
-	sceneInfoLayout->addWidget(m_sceneName,2);
+	m_sceneInfoLayout->addWidget(new QLabel(tr("<B>Scene name:</B> ")));
+	m_sceneInfoLayout->addWidget(m_sceneName,2);
 	
 	addPermanentWidget(sceneInfo,2);
 	
@@ -76,11 +80,22 @@ void KTViewCamera::Status::setSceneName(const QString &name)
 	m_sceneName->setText(name);
 }
 
+void KTViewCamera::Status::addWidget(QWidget *widget, int stretch )
+{
+	m_sceneInfoLayout->addWidget(widget, stretch);
+}
+
 KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : DMdiWindow(parent)
 {
 	DINIT;
 	
 	m_status = new Status;
+	
+	m_loop = new QCheckBox(tr("Loop"));
+	connect(m_loop, SIGNAL(clicked()), this, SLOT(setLoop()));
+	
+	m_status->addWidget(m_loop);
+	
 	setStatusBar(m_status);
 	
 	setObjectName("KTViewCamera_");
@@ -156,4 +171,9 @@ AAnimationArea *KTViewCamera::animationArea()
 	return m_animationArea;
 }
 
+
+void KTViewCamera::setLoop()
+{
+	m_animationArea->setLoop(m_loop->isChecked());
+}
 

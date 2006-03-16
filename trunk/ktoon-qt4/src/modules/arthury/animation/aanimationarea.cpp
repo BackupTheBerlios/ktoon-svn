@@ -331,3 +331,8 @@ void  AAnimationArea::resizeEvent ( QResizeEvent * event )
 	update();
 }
 
+void AAnimationArea::setLoop(bool l)
+{
+	m_ciclicAnimation = l;
+}
+
