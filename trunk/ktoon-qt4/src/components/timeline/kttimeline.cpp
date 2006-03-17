@@ -212,11 +212,13 @@ void KTTimeLine::execAction(int action)
 		break;
 		case KTLayerManager::MoveLayerUp:
 		{
+			qDebug("MoveLayerUp");
 			emit requestMoveLayer( true );
 		}
 		break;
 		case KTLayerManager::MoveLayerDown:
 		{
+			qDebug("MoveLayerDown");
 			emit requestMoveLayer( false);
 		}
 		break;
@@ -272,6 +274,7 @@ void KTTimeLine::moveLayer(bool up)
 void KTTimeLine::selectCurrentLayer(int pos)
 {
 	D_FUNCINFO;
+	
 	emit layerSelected( pos );
 }
 

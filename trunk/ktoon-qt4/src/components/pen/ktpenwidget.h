@@ -26,7 +26,7 @@
 #include <ktmodulewidgetbase.h>
 
 #include <deditspinbox.h>
-#include <dradiobuttongroup.h>
+#include <QComboBox>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -40,9 +40,9 @@ class KTPenWidget : public KTModuleWidgetBase
 		
 	private:
 		DEditSpinBox *m_thickness;
-		DRadioButtonGroup *m_capStyle;
-		DRadioButtonGroup *m_joinStyle;
-		DRadioButtonGroup *m_style;
+		QComboBox *m_capStyle;
+		QComboBox *m_joinStyle;
+		QComboBox *m_style;
 		
 	private slots:
 		void setThickness(int value);

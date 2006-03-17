@@ -31,11 +31,7 @@ KTGCEditor::KTGCEditor(QWidget *parent) : KTModuleWidgetBase(parent)
 	
 	QHBoxLayout *mainLayout = new QHBoxLayout;
 	
-	m_componentTree = new DTreeListWidget;
-	m_componentTree->header()->show();
-	m_componentTree->setHeaderLabels(QStringList() << "Graphic Components");
-	
-	mainLayout->addWidget(m_componentTree);
+	mainLayout->addStretch(1);
 	
 	QVBoxLayout *leftLayout = new QVBoxLayout;
 	
@@ -81,17 +77,4 @@ KTGCEditor::KTGCEditor(QWidget *parent) : KTModuleWidgetBase(parent)
 KTGCEditor::~KTGCEditor()
 {
 	DEND;
-}
-
-void KTGCEditor::addItem(const SGCItem &item)
-{
-	D_FUNCINFO;
-	
-	QTreeWidgetItem *newItem = new QTreeWidgetItem(m_componentTree);
-	newItem->setText(0, item.name);
-	 
-	foreach(SGCItem child, item.childs)
-	{
-		addItem( child );
-	}
 }

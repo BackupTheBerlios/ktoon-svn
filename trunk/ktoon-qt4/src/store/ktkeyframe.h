@@ -151,6 +151,13 @@ class KTKeyFrame : public KTSerializableObject
 		  */
 		bool hasSelections() const;
 		
+		/**
+		 * Replace the orig component with newComponent
+		 * @param orig 
+		 * @param newComponent 
+		 */
+		void replace(AGraphicComponent *orig, AGraphicComponent *newComponent);
+		
 		void bringToFromSelected(); 
 		
 		void sendToBackSelected();

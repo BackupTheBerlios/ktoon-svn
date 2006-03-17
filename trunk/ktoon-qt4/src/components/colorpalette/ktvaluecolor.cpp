@@ -24,7 +24,6 @@
 
 KTItemValueColor::KTItemValueColor( const QString &text, QWidget *parent ) :QFrame(parent)
 {
-	DINIT;
 	QHBoxLayout * m_layout = new QHBoxLayout;
 	m_layout->setSpacing(0);
 	m_layout->setMargin(0);
@@ -44,7 +43,6 @@ KTItemValueColor::KTItemValueColor( const QString &text, QWidget *parent ) :QFra
 KTItemValueColor::~KTItemValueColor()
 {
 	delete m_value;
-	DEND;
 }
 
 void KTItemValueColor::setValue( int val)

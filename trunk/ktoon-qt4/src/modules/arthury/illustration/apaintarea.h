@@ -33,10 +33,10 @@
 #include "atoolinterface.h"
 
 #include "ktscene.h"
-
 #include "ktbrush.h"
-
 #include "ktpaintareaproperties.h"
+
+#include <dcommand.h>
 
 // Devices
 #include "aimagedevicewidget.h"
@@ -72,6 +72,9 @@ class APaintArea : public QWidget
 		AGraphicComponent *currentGraphic();
 		KTKeyFrame *currentFrame() const;
 		
+		void setHistory(DCommandHistory *history);
+		void addCommand(DCommand *command, bool execute = true);
+		
 	public slots:
 		void redrawAll();
 		void aUpdate(const QRect &rect);
@@ -99,8 +102,6 @@ class APaintArea : public QWidget
 		
 		QPoint m_lastPosition;
 		
-		QList<AGraphicComponent *> m_undoComponents;
-		
 		AGraphicComponent *m_currentGraphic;
 		QList<AGraphicComponent *> m_copiedGraphics;
 		bool m_redrawAll;
@@ -117,6 +118,8 @@ class APaintArea : public QWidget
 		QSize m_size;
 		
 		KTPaintAreaProperties m_properties;
+		
+		DCommandHistory *m_history;
 
 	public:
 		void setTool( AToolInterface *toolIface, const QString &tool);
@@ -132,8 +135,6 @@ class APaintArea : public QWidget
 		void loadProperties();
 		
 	public slots:
-		void undo();
-		void redo();
 		void copy();
 		void paste();
 		void cut();

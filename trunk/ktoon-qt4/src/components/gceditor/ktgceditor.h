@@ -42,13 +42,6 @@ class KTGCEditor : public KTModuleWidgetBase
 		~KTGCEditor();
 		
 	public:
-		struct SGCItem
-		{
-			QString name;
-			QList<SGCItem> childs;
-		};
-		
-		void addItem(const SGCItem &item);
 
 		
 	signals:
@@ -58,8 +51,6 @@ class KTGCEditor : public KTModuleWidgetBase
 		void requestShear(double x, double y);
 		
 	private:
-		DTreeListWidget *m_componentTree;
-		
 		DEditSpinBox *m_angle;
 		DXYSpinBox *m_scale;
 		DXYSpinBox *m_shear;

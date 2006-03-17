@@ -134,7 +134,7 @@ void KTKeyFrame::deSelectedComponent(AGraphicComponent *toDeSelect)
 
 void KTKeyFrame::clearSelections()
 {
-	foreach( AGraphicComponent*  component, m_selectedComponents)
+	foreach( AGraphicComponent *component, m_selectedComponents)
 	{
 		deSelectedComponent(component);
 	}
@@ -192,11 +192,8 @@ bool KTKeyFrame::hasSelections() const
 
 void KTKeyFrame::sendToBackSelected()
 {
-	
-	dDebug() << "aki";
 	if(m_selectedComponents.count() == 1)
 	{
-		dDebug() << "aki1";
 		m_components.removeAll ( m_selectedComponents[0] );
 		m_components.push_front( m_selectedComponents[0] );
 	}
@@ -239,4 +236,17 @@ void KTKeyFrame::oneStepBackwardSelected()
 		}
 	}
 }	
+
+
+void KTKeyFrame::replace(AGraphicComponent *orig, AGraphicComponent *newComponent)
+{
+	int index = m_components.indexOf(orig);
+	
+	if( index >= 0)
+	{
+		m_components.replace(index, newComponent);
+	}
+}
+
+
 

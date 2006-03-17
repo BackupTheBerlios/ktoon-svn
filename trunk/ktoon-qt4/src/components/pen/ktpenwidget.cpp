@@ -31,7 +31,7 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 	
 	addChild( m_thickness );
 	
-	m_style = new DRadioButtonGroup(tr("Style"), Qt::Vertical );
+	m_style = new QComboBox();
 	
 	connect(m_style, SIGNAL(clicked( int )), this, SLOT(setStyle(int)) );
 	
@@ -47,7 +47,7 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 	addChild(m_style);
 	
 	
-	m_capStyle = new DRadioButtonGroup(tr("Cap style"), Qt::Vertical );
+	m_capStyle = new QComboBox();
 	connect(m_capStyle, SIGNAL(clicked( int )), this, SLOT(setCapStyle(int)) );
 	
 	m_capStyle->addItem( tr("Flat"), Qt::FlatCap);
@@ -60,7 +60,7 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 	
 	
 	
-	m_joinStyle = new DRadioButtonGroup(tr("Join style"), Qt::Vertical );
+	m_joinStyle = new QComboBox();
 	connect(m_joinStyle, SIGNAL(clicked( int )), this, SLOT(setJoinStyle(int)) );
 	
 	m_joinStyle->addItem( tr("Miter"),Qt::MiterJoin );
@@ -74,6 +74,7 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 	setThickness( 3);
 	
 	setWindowIcon(QIcon(THEME_DIR+"/icons/brushes.png"));
+	
 }
 
 

@@ -187,6 +187,16 @@ class AGraphicComponent : public KTSerializableObject
 		 */
 		void removeControlPoints();
 		
+		/**
+		 * Copy attributes from other
+		 */
+		void copyAttributes(const AGraphicComponent *other);
+		
+		QPointF scaleFactor() const;
+		QPointF shearFactor() const;
+		int angleFactor() const;
+		
+		
 		
 		
 	private:

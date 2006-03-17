@@ -138,8 +138,8 @@ void KTProjectManager::load(const QString &path)
 			foreach(KTScene *scene, scenes )
 			{
 				emit sceneCreated( scene->sceneName(), true);
-				connect(scene, SIGNAL(layerCreated( const QString&, bool)), this, SIGNAL(layerCreated( const QString &, bool)));
-				connect(scene, SIGNAL(layerRemoved( int)), this, SIGNAL(layerRemoved(int))) ;
+				
+				connectScene( scene );
 				
 				Layers layers = scene->layers();
 				foreach(KTLayer *layer, layers)
@@ -171,6 +171,7 @@ void KTProjectManager::load(const QString &path)
 	}
 	
 }
+
 
 Documents KTProjectManager::documents() const
 {
@@ -295,16 +296,21 @@ void KTProjectManager::createScene(bool addToEnd)
 		KTScene *scene = m_currentDocument->createScene(addToEnd);
 		
 		scene->setFPS( m_fps );
-		
-		connect(scene, SIGNAL(layerCreated( const QString&, bool)), this, SIGNAL(layerCreated( const QString &, bool)));
-		connect(scene, SIGNAL(layerRemoved( int)), this, SIGNAL(layerRemoved(int))) ;
-		connect(scene, SIGNAL(layerSelected( int)), this, SIGNAL(layerSelected(int))) ;
-		connect(scene, SIGNAL(layerMoved(bool)), this, SIGNAL(layerMoved(bool)));
+		connectScene( scene );
 	}
 	else
 	{
 		dFatal() << "--> No current document" << endl;
 	}
+}
+
+
+void KTProjectManager::connectScene(const KTScene *scene)
+{
+	connect(scene, SIGNAL(layerCreated( const QString&, bool)), this, SIGNAL(layerCreated( const QString &, bool)));
+	connect(scene, SIGNAL(layerRemoved( int)), this, SIGNAL(layerRemoved(int))) ;
+	connect(scene, SIGNAL(layerSelected( int)), this, SIGNAL(layerSelected(int))) ;
+	connect(scene, SIGNAL(layerMoved(bool)), this, SIGNAL(layerMoved(bool)));
 }
 
 
@@ -481,6 +487,7 @@ void KTProjectManager::removeLayer(int index)
 
 void KTProjectManager::moveLayer(bool up)
 {
+	D_FUNCINFO;
 	KTScene *scene = currentScene();
 	if ( scene )
 	{

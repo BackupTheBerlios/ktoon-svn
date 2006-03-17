@@ -3,19 +3,8 @@
 # Subdir relative project main directory: ./src/dlib/dgui
 # Target is a library:  
 
-RESOURCES += images.qrc 
-QT += xml 
 INSTALLS += target 
 target.path = /lib/ 
-KDEV_QTVER = 4 
-INCLUDEPATH += ../../../src/dlib/dcore 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-CONFIG += release \
-          warn_on \
-          dll 
-TEMPLATE = lib 
 HEADERS += ccbar.h \
            ccbutton.h \
            collapsiblewidget.h \
@@ -59,7 +48,8 @@ HEADERS += ccbar.h \
            button.h \
            buttonbar.h \
            ddatepicker.h \
-           ddatetable.h 
+           ddatetable.h \
+           dcommand.h 
 SOURCES += ccbar.cpp \
            ccbutton.cpp \
            collapsiblewidget.cpp \
@@ -102,4 +92,16 @@ SOURCES += ccbar.cpp \
            button.cpp \
            buttonbar.cpp \
            ddatepicker.cpp \
-           ddatetable.cpp 
+           ddatetable.cpp \
+           dcommand.cpp 
+RESOURCES += images.qrc
+QT += xml
+KDEV_QTVER = 4
+INCLUDEPATH += ../../../src/dlib/dcore
+MOC_DIR = .moc
+UI_DIR = .ui
+OBJECTS_DIR = .obj
+CONFIG += release \
+warn_on \
+dll
+TEMPLATE = lib

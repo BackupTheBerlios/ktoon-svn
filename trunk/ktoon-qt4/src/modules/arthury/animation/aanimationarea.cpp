@@ -325,6 +325,7 @@ QSize AAnimationArea::sizeHint() const
 
 void  AAnimationArea::resizeEvent ( QResizeEvent * event )
 {
+	stop();
 	m_renderCamera = QImage(size(), QImage::Format_RGB32);
 // 	m_size = size();
 	m_renderCamera.fill(qRgb(255, 255, 255));

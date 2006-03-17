@@ -29,6 +29,8 @@
 #include "dgradientadjuster.h"
 #include <dconfig.h>
 
+#include "adrawcommand.h"
+
 #define BEGIN_PAINTER(var) switch(m_renderType) { case Image: \
 var.begin(IMAGE_DEVICE); break; \
 	case Native: \
@@ -36,7 +38,7 @@ var.begin(IMAGE_DEVICE); break; \
 	case OpenGL: \
 		var.begin(OPENGL_DEVICE); break; }; 
 
-APaintArea::APaintArea(const QSize& size, RenderType type, QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_offset(0,0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_currentFrame(0), m_layer(0), m_scene(0), m_previousFramesNumber(0), m_nextFramesNumber(0), m_currentGraphic(0), m_zoomFactor(1.0f), m_size(size)
+APaintArea::APaintArea(const QSize& size, RenderType type, QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_offset(0,0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_currentFrame(0), m_layer(0), m_scene(0), m_previousFramesNumber(0), m_nextFramesNumber(0), m_currentGraphic(0), m_zoomFactor(1.0f), m_size(size), m_history(0)
 {
 	loadProperties();
 	
@@ -515,7 +517,13 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 					m_currentFrame->clearSelections();
 					m_currentFrame->addSelectedComponent( toSelect );
 				}
-
+				
+				if ( m_currentFrame->hasSelections() )
+				{
+					ADrawCommand *command = new ADrawCommand(m_currentFrame);
+					addCommand( command, false);
+				}
+				
 				m_currentGraphic = new AGraphicComponent;
 				
 				QRect rect = m_currentTool->press(m_currentKeyTool, painter, event->pos(), m_currentFrame);
@@ -602,9 +610,12 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 				{
 					dDebug() << "Adding component";
 					
-					m_currentFrame->addComponent(  m_currentGraphic );
+					
+					AAddGraphicCommand *command = new AAddGraphicCommand(m_currentFrame, m_currentGraphic);
+					
+					addCommand( command );
+					
 					dDebug() << "Components count: " << m_currentFrame->components().count();
-					m_undoComponents.clear();
 				}
 			}
 			
@@ -669,31 +680,6 @@ QPainterPath APaintArea::translatePath(const QPainterPath &path, const QPoint &p
 	}
 	
 	return result;
-}
-
-void APaintArea::undo()
-{
-	if ( m_currentFrame->components().count() > 0 )
-	{
-		AGraphicComponent *grafic = m_currentFrame->takeLastComponent();
-		
-// 		if ( grafic == m_selectedGraphic )
-// 		{
-// 			m_selectedGraphic = 0;
-// 		}
-		
-		m_undoComponents << grafic;
-		redrawAll();
-	}
-}
-
-void APaintArea::redo()
-{
-	if ( m_undoComponents.count() > 0 )
-	{
-		m_currentFrame->addComponent(  m_undoComponents.takeLast() );
-		redrawAll();
-	}
 }
 
 void APaintArea::setPreviousFrames(int n)
@@ -792,11 +778,11 @@ void APaintArea::ungroup()
 		{
 			if(component->hasChilds())
 			{
-				
 				foreach(AGraphicComponent *child, component->childs())
 				{
 					m_currentFrame->addComponent( child );
 				}
+				
 				m_currentFrame->removeComponent(component);
 			}
 		}
@@ -914,3 +900,17 @@ void APaintArea::loadProperties()
 	m_properties.onionSkinBackground = qvariant_cast<QColor>(DCONFIG->value("OnionSkinBackground", QColor(Qt::lightGray)));
 }
 
+void APaintArea::setHistory(DCommandHistory *history)
+{
+	m_history = history;
+	
+	connect(m_history, SIGNAL(modified()), this, SLOT(redrawAll()));
+}
+
+void APaintArea::addCommand(DCommand *command, bool execute)
+{
+	if ( m_history )
+	{
+		m_history->addCommand( command,execute );
+	}
+}

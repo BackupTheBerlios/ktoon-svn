@@ -40,6 +40,9 @@ KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, co
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/layer_pic.png") ); // FIXME: new image for documents
 	
 	m_actionManager = new DActionManager(this);
+	
+	m_history = new DCommandHistory(m_actionManager);
+	
 	APaintArea::RenderType type;
 	if(renderType == tr("Native"))
 	{
@@ -82,10 +85,13 @@ KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, co
 	
 	
 	QTimer::singleShot(0, this, SLOT(loadPlugins()));
+	
+	m_paintAreaContainer->drawArea()->setHistory(m_history);
 }
 
 KTViewDocument::~KTViewDocument()
 {
+	delete m_history;
 }
 
 void KTViewDocument::showPos(const QPoint &p)
@@ -96,17 +102,16 @@ void KTViewDocument::showPos(const QPoint &p)
 
 void KTViewDocument::createActions()
 {
-	DAction *undo = new DAction( QPixmap(THEME_DIR+"/icons/undo.png" ), tr( "&Undo" ),  QKeySequence(tr("Ctrl+Z")), m_paintAreaContainer->drawArea(), SLOT(undo()), m_actionManager, "undo" );
-	undo->setStatusTip(tr("Undoes the last draw action"));
-	undo->setShortcutContext ( Qt::ApplicationShortcut );
+	DAction *undo = m_history->undoAction();
+	undo->setIcon( QPixmap(THEME_DIR+"/icons/undo.png" ));
 	
+	m_actionManager->insert(undo);
+	
+	DAction *redo = m_history->redoAction();
+	redo->setIcon(QPixmap(THEME_DIR+"/icons/redo.png" ));
+	
+	m_actionManager->insert(redo);
 
-	DAction *redo = new DAction( QPixmap(THEME_DIR+"/icons/redo.png" ), tr( "&Redo" ),  QKeySequence(tr("Ctrl+SHIFT+Z")), m_paintAreaContainer->drawArea(), SLOT(redo()), m_actionManager, "redo" );
-	redo->setShortcutContext ( Qt::ApplicationShortcut );
-	redo->setStatusTip(tr("Redoes a previous undone action"));
-	
-
-	
 }
 
 void KTViewDocument::setupGridActions()
@@ -629,6 +634,7 @@ void KTViewDocument::createToolbar()
 	m_barGrid->addSeparator();
 	m_barGrid->addAction(m_actionManager->find("undo"));
 	m_barGrid->addAction(m_actionManager->find("redo"));
+	
 	m_barGrid->addSeparator();
 	m_barGrid->addActions(m_editGroup->actions());
 	m_barGrid->addSeparator();
@@ -797,6 +803,4 @@ void KTViewDocument::configure()
 		m_paintAreaContainer->drawArea()->setProperties(areaProperties);
 	}
 }
-
-
 

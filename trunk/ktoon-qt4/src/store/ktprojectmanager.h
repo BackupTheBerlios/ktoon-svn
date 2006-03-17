@@ -266,6 +266,9 @@ class KTProjectManager : public KTSerializableObject
 		 */
 		void renameFrame(int indexLayer, int indexFrame, const QString & name);
 		
+	private:
+		void connectScene(const KTScene *scene);
+		
 		
 	private slots:
 		// Layers

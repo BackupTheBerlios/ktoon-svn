@@ -42,11 +42,8 @@ AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : KTSerial
 
 AGraphicComponent::~AGraphicComponent()
 {
-	foreach(AGraphic *graphic, m_graphics)
-	{
-		if ( graphic )
-			delete graphic;
-	}
+	qDeleteAll(m_graphics.begin(), m_graphics.end());
+	qDeleteAll(m_childs.begin(), m_childs.end());
 }
 
 
@@ -479,3 +476,45 @@ void AGraphicComponent::removeControlPoints()
 		}
 	}
 }
+
+void AGraphicComponent::copyAttributes(const AGraphicComponent *other)
+{
+	m_name = other->componentName();
+	m_scale = other->scaleFactor();
+	m_shear = other->shearFactor();
+	m_angle = other->angleFactor();
+	
+	m_controlPoints = other->controlPoints();
+	
+	qDeleteAll(m_childs.begin(), m_childs.end());
+	qDeleteAll(m_graphics.begin(), m_graphics.end());
+	
+	m_graphics.clear();
+	m_childs.clear();
+	
+	foreach(AGraphic *graphic, other->graphics() )
+	{
+		m_graphics << new AGraphic(*graphic);
+	}
+	
+	foreach(AGraphicComponent *child, other->childs() )
+	{
+		m_childs << new AGraphicComponent(*child);
+	}
+}
+
+QPointF AGraphicComponent::scaleFactor() const
+{
+	return m_scale;
+}
+
+QPointF AGraphicComponent::shearFactor() const
+{
+	return m_shear;
+}
+
+int AGraphicComponent::angleFactor() const
+{
+	return m_angle;
+}
+

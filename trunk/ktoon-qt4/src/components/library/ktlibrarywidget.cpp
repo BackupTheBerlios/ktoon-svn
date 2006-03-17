@@ -157,8 +157,6 @@ KTLibraryWidget::~KTLibraryWidget()
 
 void KTLibraryWidget::addGraphic(const AGraphicComponent *graphic)
 {
-	D_FUNCINFO;
-	
 	if ( m_libraryTree->currentFolder() )
 	{
 		AGraphicComponent *copy = new AGraphicComponent(*graphic);

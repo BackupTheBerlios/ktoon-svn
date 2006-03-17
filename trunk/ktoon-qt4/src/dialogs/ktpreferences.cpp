@@ -49,7 +49,6 @@ KTPreferences::GeneralPage::GeneralPage()
 	DCONFIG->beginGroup("General");
 	
 	m_home = new QLineEdit;
-	layout->addLayout( DFormFactory::makeLine(tr("KToon Home"), m_home, Qt::Horizontal ) );
 	
 	QString str = DCONFIG->value("Home").toString();
 	if ( !str.isEmpty())
@@ -58,7 +57,6 @@ KTPreferences::GeneralPage::GeneralPage()
 	}
 	
 	m_repository = new QLineEdit;
-	layout->addLayout( DFormFactory::makeLine(tr("Repository"), m_repository, Qt::Horizontal ) );
 	str = DCONFIG->value("Repository").toString();
 	if ( !str.isEmpty())
 	{
@@ -66,12 +64,15 @@ KTPreferences::GeneralPage::GeneralPage()
 	}
 	
 	m_browser = new QLineEdit;
-	layout->addLayout( DFormFactory::makeLine(tr("Browser"), m_browser, Qt::Horizontal ) );
 	str = DCONFIG->value("Browser").toString();
 	if ( !str.isEmpty())
 	{
 		m_browser->setText(str);
 	}
+	
+	QLayout *form = DFormFactory::makeGrid( QStringList() << tr("KToon Home") << tr("Repository") << tr("Browser"), QWidgetList() << m_home << m_repository << m_browser);
+	
+	layout->addLayout(form);
 	
 	layout->addStretch(3);
 }
@@ -118,6 +119,9 @@ KTPreferences::KTPreferences( QWidget *parent ) : DConfigurationDialog(parent )
 	addPage(m_themeSelector, tr("Theme preferences"), QPixmap(THEME_DIR+"/icons/theme_config.png"));
 
 	m_fontChooser = new DFontChooser;
+	
+	m_fontChooser->setCurrentFont( font() );
+	
 	addPage(m_fontChooser, tr("Font"), QPixmap(THEME_DIR+"/icons/font_config.png"));
 }
 
