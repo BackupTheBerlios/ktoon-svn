@@ -38,6 +38,8 @@
 
 #include <dcommand.h>
 
+#include "ktglobal.h"
+
 // Devices
 #include "aimagedevicewidget.h"
 #include "agldevice.h"
@@ -54,14 +56,7 @@ class APaintArea : public QWidget
 {
 	Q_OBJECT
 	public:
-		enum RenderType
-		{
-			Image,
-			OpenGL,
-			Native
-		};
-		
-		APaintArea(const QSize& size, RenderType type,  QWidget *parent = 0);
+		APaintArea(const QSize& size, KToon::RenderType type,  QWidget *parent = 0);
 		~APaintArea();
 		QSize sizeHint() const;
 		QSize minimumSizeHint () const;
@@ -87,7 +82,7 @@ class APaintArea : public QWidget
 		void setNextFrames(int n);
 		
 	private:
-		RenderType m_renderType;
+		KToon::RenderType m_renderType;
 		QWidget *m_paintDevice;
 		AGrid m_grid;
 		QPainterPath m_path;
@@ -169,13 +164,13 @@ class APaintArea : public QWidget
 		{
 			switch(m_renderType)
 			{
-				case Image:
+				case KToon::Image:
 				{
 					qobject_cast<AImageDeviceWidget *>(m_paintDevice)->setBackgroundColor( brush.color() );
 				}
 				break;
-				case OpenGL:
-				case Native:
+				case KToon::OpenGL:
+				case KToon::Native:
 				{
 					QPainter painter(m_paintDevice);
 					painter.fillRect(m_paintDevice->rect(), brush);

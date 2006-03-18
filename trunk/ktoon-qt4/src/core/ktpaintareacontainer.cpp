@@ -27,7 +27,7 @@
 
 #include "ddebug.h"
 
-KTPaintAreaContainer::KTPaintAreaContainer(const QSize& size, APaintArea::RenderType type,  QWidget *parent) : QWidget(parent), m_drawAreaDelta(50,50)
+KTPaintAreaContainer::KTPaintAreaContainer(const QSize& size, KToon::RenderType type,  QWidget *parent) : QWidget(parent), m_drawAreaDelta(50,50)
 {
 	DINIT;
 // 	setMouseTracking(true);

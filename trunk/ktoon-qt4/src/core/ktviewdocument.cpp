@@ -43,18 +43,18 @@ KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, co
 	
 	m_history = new DCommandHistory(m_actionManager);
 	
-	APaintArea::RenderType type;
+	KToon::RenderType type;
 	if(renderType == tr("Native"))
 	{
-		type = APaintArea::Native;
+		type = KToon::Native;
 	}
 	else if(renderType == tr("OpenGL"))
 	{
-		type = APaintArea::OpenGL;
+		type = KToon::OpenGL;
 	}
 	else
 	{
-		type = APaintArea::Image;
+		type = KToon::Image;
 	}
 	
 	m_paintAreaContainer = new KTPaintAreaContainer(size,type,  this);

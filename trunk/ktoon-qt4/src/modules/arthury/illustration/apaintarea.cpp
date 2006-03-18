@@ -31,14 +31,14 @@
 
 #include "adrawcommand.h"
 
-#define BEGIN_PAINTER(var) switch(m_renderType) { case Image: \
+#define BEGIN_PAINTER(var) switch(m_renderType) { case KToon::Image: \
 var.begin(IMAGE_DEVICE); break; \
-	case Native: \
+	case KToon::Native: \
 		var.begin(NATIVE_DEVICE); break; \
-	case OpenGL: \
+	case KToon::OpenGL: \
 		var.begin(OPENGL_DEVICE); break; }; 
 
-APaintArea::APaintArea(const QSize& size, RenderType type, QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_offset(0,0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_currentFrame(0), m_layer(0), m_scene(0), m_previousFramesNumber(0), m_nextFramesNumber(0), m_currentGraphic(0), m_zoomFactor(1.0f), m_size(size), m_history(0)
+APaintArea::APaintArea(const QSize& size, KToon::RenderType type, QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_offset(0,0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_currentFrame(0), m_layer(0), m_scene(0), m_previousFramesNumber(0), m_nextFramesNumber(0), m_currentGraphic(0), m_zoomFactor(1.0f), m_size(size), m_history(0)
 {
 	loadProperties();
 	
@@ -52,19 +52,19 @@ APaintArea::APaintArea(const QSize& size, RenderType type, QWidget *parent) : QW
 	
 	switch(m_renderType)
 	{
-		case Image:
+		case KToon::Image:
 		{
 			m_paintDevice = new AImageDeviceWidget(size, this);
 			connect(m_paintDevice, SIGNAL(mousePos(const QPoint &)), this, SIGNAL(mousePos( const QPoint& )));
 		}
 		break;
-		case OpenGL:
+		case KToon::OpenGL:
 		{
 			m_paintDevice = new AGLDevice(this);
 			m_paintDevice->resize(size);
 		}
 		break;
-		case Native:
+		case KToon::Native:
 		{
 			m_paintDevice = new QWidget(this);
 			m_paintDevice->resize(size);
@@ -401,16 +401,16 @@ void APaintArea::aUpdate(const QRect &rect)
 	
 	switch(m_renderType)
 	{
-		case Image:
+		case KToon::Image:
 		{
 			m_overBuffer = IMAGE_DEVICE->copy( rect );
 		}
 		break;
-		case Native:
+		case KToon::Native:
 		{
 		}
 		break;
-		case OpenGL:
+		case KToon::OpenGL:
 		{
 			m_overBuffer = OPENGL_DEVICE->grabFrameBuffer().copy( rect );
 		}
