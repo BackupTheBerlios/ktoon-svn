@@ -47,11 +47,13 @@ class DThemeManager : public QXmlDefaultHandler
 
 		bool characters ( const QString & ch );
 		
+		QPalette  themePalette() const;
+		
 		QColor getColor(const QXmlAttributes& atts);
 		
 	private:
 		QString m_root,m_qname;
-		QPalette m_colorGroup;
+		QPalette m_palette;
 };
 
 #endif

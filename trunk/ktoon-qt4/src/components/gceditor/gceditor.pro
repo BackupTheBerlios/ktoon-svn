@@ -3,6 +3,7 @@
 # Subdir relative project main directory: ./src/components/gceditor
 # Target is a library:  
 
+QT += xml 
 KDEV_QTVER = 4 
 INCLUDEPATH += ../../../src/ktoonlib \
                ../../../src/dlib/dgui \

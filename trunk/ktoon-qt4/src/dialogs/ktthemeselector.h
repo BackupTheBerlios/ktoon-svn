@@ -51,7 +51,7 @@ class KTThemeSelector : public DVHBox
 		DThemeDocument document();
 		QString lastFile();
 		
-		bool iWantApplyColors();
+		bool applyColors();
 		
 		void setPalette(const QPalette &pal) {}; 
 		

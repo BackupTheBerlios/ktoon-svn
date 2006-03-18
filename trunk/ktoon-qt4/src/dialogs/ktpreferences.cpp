@@ -141,7 +141,7 @@ void KTPreferences::apply()
 {
 	if ( static_cast<KTThemeSelector *>(currentPage()) ==  m_themeSelector)
 	{
-		if(m_themeSelector->iWantApplyColors() )
+		if(m_themeSelector->applyColors() )
 		{
 			dApp->applyTheme(m_themeSelector->document());
 		}

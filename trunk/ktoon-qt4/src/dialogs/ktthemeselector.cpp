@@ -249,7 +249,7 @@ void KTThemeSelector::loadSchemes()
 	}
 }
 
-bool KTThemeSelector::iWantApplyColors()
+bool KTThemeSelector::applyColors()
 {
 	return m_useColors->isChecked();
 }

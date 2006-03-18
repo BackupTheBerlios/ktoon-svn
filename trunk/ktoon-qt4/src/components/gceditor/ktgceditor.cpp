@@ -22,12 +22,15 @@
 #include <QVBoxLayout>
 #include <QHeaderView>
 
+#include <dglobal.h>
 #include "ddebug.h"
 
 KTGCEditor::KTGCEditor(QWidget *parent) : KTModuleWidgetBase(parent)
 {
 	DINIT;
 	setCaption( tr("Graphic Component Editor") );
+	
+	setWindowIcon(QIcon(THEME_DIR+"/icons/gceditor.png"));
 	
 	QHBoxLayout *mainLayout = new QHBoxLayout;
 	

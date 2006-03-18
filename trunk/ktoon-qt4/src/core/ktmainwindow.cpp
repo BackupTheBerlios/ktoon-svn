@@ -67,11 +67,13 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	splash->setMessage( tr("Setting up the project manager") );
 	
 	m_drawingSpace = new KTWorkspace;
+	m_drawingSpace->setWindowIcon(QIcon(THEME_DIR+"/icons/illustration_mode.png"));
 	m_drawingSpace->setScrollBarsEnabled ( true );
 	
 	addWidget(m_drawingSpace, tr("Illustration"), true);
 	
 	m_animationSpace = new KTWorkspace;
+	m_animationSpace->setWindowIcon(QIcon(THEME_DIR+"/icons/animation_mode.png"));
 	m_animationSpace->setScrollBarsEnabled ( true );
 	
 	connect(m_animationSpace, SIGNAL(contextMenu( const QPoint& )), this, SLOT(showAnimationMenu( const QPoint& )));

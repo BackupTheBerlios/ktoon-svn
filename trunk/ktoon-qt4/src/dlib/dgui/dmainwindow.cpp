@@ -62,7 +62,7 @@ void DMainWindow::loadSettings()
     config.beginGroup("DLSLib");
 //     config.setPath("NewMDI", qApp->name(), QSettings::User );
     m_pOpenTabAfterCurrent = config.value("OpenNewTabAfterCurrent", true).toBool();
-    m_pShowIconsOnTabs = config.value("ShowTabIcons", false).toBool();
+    m_pShowIconsOnTabs = config.value("ShowTabIcons", true).toBool();
 }
 
 DMainWindow::~DMainWindow()
@@ -143,8 +143,8 @@ void DMainWindow::addWidget(DLSTabWidget *tab, QWidget *widget, const QString &t
     if (m_pShowIconsOnTabs)
     {
 	    QPixmap pixmap = widget->windowIcon().pixmap(16,16);
-	const QIcon &icons = (!pixmap.isNull() && (pixmap.size().height() <= 16)) ? pixmap : QIcon((const char **)icon_xpm);
-        tab->insertTab(widget, icons, title, idx);
+	    const QIcon &icons = (!pixmap.isNull() && (pixmap.size().height() <= 16)) ? pixmap : QIcon((const char **)icon_xpm);
+	    tab->insertTab(widget, icons, title, idx);
     }
     else
     {

@@ -39,6 +39,8 @@ KTExportWidget::KTExportWidget(const KTProjectManager *manager, QWidget *parent)
 	DINIT;
 	setCaption(tr("Export"));
 	
+	setWindowIcon(QIcon(THEME_DIR+"/icons/export.png"));
+	
 	m_buttons = new QButtonGroup(this);
 	connect(m_buttons, SIGNAL(buttonClicked (int)), this, SLOT(makeAction(int)));
 	
