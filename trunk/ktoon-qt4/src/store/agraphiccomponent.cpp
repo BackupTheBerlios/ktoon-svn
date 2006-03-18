@@ -414,6 +414,11 @@ void AGraphicComponent::addChild ( AGraphicComponent * child )
 	
 }
 
+void AGraphicComponent::removeChild( AGraphicComponent * child )
+{
+	m_childs.removeAll(child);
+}
+
 QList<AGraphicComponent*> AGraphicComponent::childs() const
 {
 	return m_childs;

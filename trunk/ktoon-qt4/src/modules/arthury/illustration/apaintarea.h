@@ -149,7 +149,10 @@ class APaintArea : public QWidget
 		void oneStepForwardSelected();
 		void oneStepBackwardSelected();
 		
-		void setZoomFactor( float f);
+		void setZoomFactor( double f);
+		
+		void zoomIn();
+		void zoomOut();
 		// </FIXME>
 	protected:
 		void mouseMoveEvent(QMouseEvent *e);
@@ -183,6 +186,7 @@ class APaintArea : public QWidget
 		
 	signals:
 		void mousePos(const QPoint& p);
+		void changedZoomFactor(double f);
 };
 
 

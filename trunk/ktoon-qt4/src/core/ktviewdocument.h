@@ -69,13 +69,15 @@ class KTViewDocument : public DMdiWindow
 		
 		void setScene(KTScene* scene);
 		
+		void setZoomFactor(int porcent);
+		
 	private:
-		QActionGroup *m_gridGroup, *m_editGroup, *m_viewNextGroup, *m_viewPreviousGroup;
+		QActionGroup *m_gridGroup, *m_editGroup, *m_viewNextGroup, *m_viewZoomGroup, *m_viewPreviousGroup;
 		QMenu *m_brushesMenu, *m_selectionMenu, *m_fillMenu, *m_filterMenu;
 		QMenu *m_toolsMenu, *m_editMenu, *m_viewMenu, *m_orderMenu;
 		QAction *m_aUndo, *m_aRedo, *m_aClose;
 		QToolBar *m_barGrid, *m_toolbar;
-		
+		QSpinBox *m_zoomFactorSpin;
 		KTPaintAreaContainer *m_paintAreaContainer;
 		
 		KTDocument *m_document;
@@ -92,6 +94,7 @@ class KTViewDocument : public DMdiWindow
 		void createMenu();
 		void createTools();
 		
+		
 	private slots: 
 		// Plugins
 		void loadPlugins();
@@ -107,12 +110,14 @@ class KTViewDocument : public DMdiWindow
 	private slots:
 		void showPos(const QPoint &p);	
 		void setCursor(const QCursor &c);
-		
 		void selectTool();
 		void selectToolFromMenu(QAction *act);
 		void applyFilter();
 		
+		void updateZoomFactor( double f);
 		void configure();
+		
+		
 		
 	protected:
 

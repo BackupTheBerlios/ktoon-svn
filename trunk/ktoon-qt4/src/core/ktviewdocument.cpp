@@ -65,11 +65,12 @@ KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, co
 	
 	connect( m_paintAreaContainer->drawArea(), SIGNAL(mousePos(const QPoint &)),  this,  SLOT(showPos(const QPoint &)) );
 	
+	connect( m_paintAreaContainer->drawArea(), SIGNAL(changedZoomFactor(double)),  this,  SLOT(updateZoomFactor(double)) );
 	setWindowTitle( m_title + " - " + m_document->currentScene()->sceneName() );
 	
 	m_paintAreaContainer->drawArea()->setScene( m_document->currentScene() );
 	
-	connect(m_document, SIGNAL(sceneChanged( KTScene* )) , this, SLOT(setScene( KTScene* )  )); 
+	connect(m_document, SIGNAL(sceneChanged( KTScene* )) , this, SLOT(setScene( KTScene* )  ));
 	
 	createActions();
 	setupGridActions();
@@ -224,9 +225,23 @@ void KTViewDocument::setupOrderActions()
 
 void KTViewDocument::setupViewActions()
 {
+	DAction *zoomIn = new DAction( QPixmap(THEME_DIR+"/icons/zoom_in.png" ), tr( "Zoom In" ), QKeySequence(tr("+")), m_paintAreaContainer->drawArea(), SLOT(zoomIn()), m_actionManager, "zoom_in" );
+	
+	m_zoomFactorSpin = new QSpinBox();
+	m_zoomFactorSpin->setMaximum ( 200 );
+	m_zoomFactorSpin->setMinimum ( 26 );
+	m_zoomFactorSpin->setValue(100);
+	m_zoomFactorSpin->setSingleStep(5);
+	
+	m_zoomFactorSpin->setSuffix ( "%" );
+	connect( m_zoomFactorSpin, SIGNAL( valueChanged ( int  )), this, SLOT(setZoomFactor(int )));
+	
+	DAction *zoomOut = new DAction( QPixmap(THEME_DIR+"/icons/zoom_out.png" ), tr( "Zoom Out" ), QKeySequence(tr("-")), m_paintAreaContainer->drawArea(), SLOT(zoomOut()), m_actionManager, "zoom_out" );
+// 	m_viewPreviousGroup->addAction(zoomOut);
+	
+	
 	m_viewPreviousGroup = new QActionGroup( this );
 	m_viewPreviousGroup->setExclusive( true );
-	
 	DAction *noPrevious = new DAction( QPixmap(THEME_DIR+"/icons/no_previous.png" ), tr( "No Previous" ), QKeySequence(Qt::Key_1), this, SLOT(disablePreviousOnionSkin()), m_actionManager, "no_previous" );
 	
 	m_viewPreviousGroup->addAction(noPrevious);
@@ -626,6 +641,14 @@ void KTViewDocument::applyFilter()
 	}
 }
 
+void KTViewDocument::updateZoomFactor(double f)
+{
+// 	m_paintAreaContainer->drawArea()->setZoomFactor( f );
+	m_zoomFactorSpin->blockSignals(true);
+	m_zoomFactorSpin->setValue(f*100);
+	m_zoomFactorSpin->blockSignals(false);
+}
+
 void KTViewDocument::createToolbar()
 {
 	m_barGrid = new QToolBar(tr("Bar Actions"), this);
@@ -634,8 +657,13 @@ void KTViewDocument::createToolbar()
 	m_barGrid->addSeparator();
 	m_barGrid->addAction(m_actionManager->find("undo"));
 	m_barGrid->addAction(m_actionManager->find("redo"));
-	
 	m_barGrid->addSeparator();
+	m_barGrid->addAction(m_actionManager->find("zoom_in"));
+	m_barGrid->addWidget(m_zoomFactorSpin);
+	m_barGrid->addAction(m_actionManager->find("zoom_out"));
+	m_barGrid->addSeparator();
+	
+	
 	m_barGrid->addActions(m_editGroup->actions());
 	m_barGrid->addSeparator();
 // 	m_barGrid->addAction(m_aNtsc);
@@ -779,12 +807,17 @@ void KTViewDocument::setNextOnionSkin(int n)
 	m_paintAreaContainer->drawArea()->setNextFrames( n );
 }
 
-
-
 void KTViewDocument::setScene(KTScene* scene)
 {
 	setWindowTitle( m_title + " - " + scene->sceneName() );
 	m_paintAreaContainer->drawArea()->setScene(  scene );
+}
+
+void KTViewDocument::setZoomFactor(int porcent)
+{
+	m_zoomFactorSpin->blockSignals(true);
+	m_paintAreaContainer->drawArea()->setZoomFactor((float) porcent/100);
+	m_zoomFactorSpin->blockSignals(false);
 }
 
 void KTViewDocument::configure()
@@ -803,4 +836,6 @@ void KTViewDocument::configure()
 		m_paintAreaContainer->drawArea()->setProperties(areaProperties);
 	}
 }
+
+
 

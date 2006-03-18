@@ -157,6 +157,8 @@ class AGraphicComponent : public KTSerializableObject
 		 */
 		void addChild ( AGraphicComponent * child );
 		
+		void removeChild( AGraphicComponent * child );
+		
 		/**
 		 * Return the childs
 		 */

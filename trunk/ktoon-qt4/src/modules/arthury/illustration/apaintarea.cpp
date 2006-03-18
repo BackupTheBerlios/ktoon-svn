@@ -470,7 +470,6 @@ QWidget *APaintArea::paintDevice() const
 void APaintArea::mousePressEvent ( QMouseEvent * e )
 {
 	m_overBuffer = QImage();
-// 	QMouseEvent *event = new QMouseEvent( e->type(), e->pos()-QPoint(m_offset.x()/2, m_offset.y()/2), mapToGlobal( e->pos()-QPoint(m_offset.x(), m_offset.y()) ), e->button(), e->buttons(), 0 );
 	QPoint pos = (e->pos()-QPoint(m_offset.x()/2, m_offset.y()/2)) / m_zoomFactor;
 	
 	
@@ -527,7 +526,6 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 				m_currentGraphic = new AGraphicComponent;
 				
 				QRect rect = m_currentTool->press(m_currentKeyTool, painter, event->pos(), m_currentFrame);
-// 				rect.translate(m_xpos, m_ypos);
 				QMatrix matrix;
 				matrix.scale(m_zoomFactor,m_zoomFactor);
 				matrix.translate(m_xpos, m_ypos);
@@ -541,10 +539,7 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 
 void APaintArea::mouseMoveEvent(QMouseEvent *e)
 {
-// 	QMouseEvent *event = new QMouseEvent( e->type(), e->pos()-m_offset/2 /*QPoint(m_offset/2, m_offset/2)*/, mapToGlobal( e->pos()-m_offset/2/*QPoint(m_offset, m_offset) */), e->button(), e->buttons(), 0 );
 	QPoint pos = (e->pos()-QPoint(m_offset.x()/2, m_offset.y()/2))/ m_zoomFactor;
-// 	pos.setX((pos.x()/m_size.width())*width());
-// 	pos.setY((pos.y()/m_size.height())*height());
 	
 	
 	QMouseEvent *event = new QMouseEvent( e->type(), pos, mapToGlobal(pos ), e->button(), e->buttons(), 0 );
@@ -565,8 +560,6 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 				QRect rect = m_currentTool->move(m_currentKeyTool, painter, m_lastPosition, event->pos());
 				
 				m_paintDevice->update(matrix.mapRect(rect));
-// 				rect.translate(m_xpos, m_ypos);
-// 				update(matrix.mapRect(rect));
 			}
 	
 			m_lastPosition = event->pos();
@@ -576,10 +569,7 @@ void APaintArea::mouseMoveEvent(QMouseEvent *e)
 
 void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 {
-// 	QMouseEvent *event = new QMouseEvent( e->type(), e->pos()-m_offset/2, mapToGlobal( e->pos()-m_offset ), e->button(), e->buttons(), 0 );
 	QPoint pos = (e->pos()-QPoint(m_offset.x()/2, m_offset.y()/2))/ m_zoomFactor;
-// 	pos.setX((pos.x()/m_size.width())*width());
-// 	pos.setY((pos.y()/m_size.height())*height());
 	
 	
 	QMouseEvent *event = new QMouseEvent( e->type(), pos, mapToGlobal(pos ), e->button(), e->buttons(), 0 );
@@ -629,7 +619,7 @@ void APaintArea::wheelEvent( QWheelEvent *event )
 	if(event->modifiers () == Qt::CTRL)
 	{
 		float f;
-		f = m_zoomFactor + 0.0005*event->delta();
+		f = m_zoomFactor + 0.001*event->delta();
 		if( f < 32.0/ m_paintDevice->width() )
 		{
 			f = 32.0/m_paintDevice->width();
@@ -776,13 +766,15 @@ void APaintArea::ungroup()
 	{
 		foreach(AGraphicComponent *component, m_currentFrame->selectedComponents())
 		{
+			
 			if(component->hasChilds())
 			{
+				
 				foreach(AGraphicComponent *child, component->childs())
 				{
 					m_currentFrame->addComponent( child );
+					component->removeChild(child);
 				}
-				
 				m_currentFrame->removeComponent(component);
 			}
 		}
@@ -830,14 +822,14 @@ void APaintArea::oneStepBackwardSelected()
 		redrawAll();
 	}
 }
-void APaintArea::setZoomFactor( float f )
+void APaintArea::setZoomFactor( double f )
 {
 	int w, h;
 	
 	if( f == m_zoomFactor )
 		return;
 
-	if(m_zoomFactor > 2.0 && (f - m_zoomFactor) > 0)
+	if(m_zoomFactor > 2.0 && (f - m_zoomFactor) > 0 || m_zoomFactor < 0.26 && (f - m_zoomFactor) < 0 )
 	{
 		return;
 	}
@@ -848,20 +840,30 @@ void APaintArea::setZoomFactor( float f )
 	matrix.scale(delta.x(), delta.y());
 	rect = matrix.mapRect(rect);
 	
-	
 	w = rect.width();
 	h = rect.height();
 	m_paintDevice->resize(w, h );
-	setMinimumSize(m_paintDevice->size() + QSize(m_offset.x(),m_offset.y()));
+	setMinimumSize(m_paintDevice->size() + QSize(m_offset.x(), m_offset.y()));
 	m_zoomFactor = f;
-	
+	emit changedZoomFactor(f);
 	if ( delta.x() > 0 && delta.y() > 0 )
 	{
 		m_currentFrame->scale( delta.x(),  delta.y());
 	}
+	
 	m_xpos = width() / 2 - m_paintDevice->width() / 2;
 	m_ypos = height() / 2 - m_paintDevice->height() / 2;
 	redrawAll();
+}
+
+void APaintArea::zoomIn()
+{
+	setZoomFactor( m_zoomFactor + 0.05 );
+}
+
+void APaintArea::zoomOut()
+{
+	setZoomFactor( m_zoomFactor -0.05 );
 }
 
 void APaintArea::importImage(const QPixmap &image)
