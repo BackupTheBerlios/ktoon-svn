@@ -649,6 +649,7 @@ void APaintArea::setPen(const QPen &pen)
 {
 	QPen newPen = pen;
 	newPen.setBrush( m_currentBrush->pen().brush() );
+	
 	m_currentBrush->setPen( newPen );
 }
 

@@ -83,8 +83,8 @@ NPFirstPage::NPFirstPage(QWidget *parent) : DWizardPage(tr("New KToon Project"),
 // 	m_size->setX( 520);
 // 	m_size->setY( 340);
 	
-	m_size->setX( 420 );
-	m_size->setY( 240);
+	m_size->setX( 520 );
+	m_size->setY( 340);
 	
 	layout->addWidget(m_size, 2, 0);
 	

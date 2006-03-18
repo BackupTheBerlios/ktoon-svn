@@ -20,6 +20,7 @@
 
 #include "ktpenwidget.h"
 #include <dglobal.h>
+#include <ddebug.h>
 
 KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 {
@@ -33,7 +34,7 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 	
 	m_style = new QComboBox();
 	
-	connect(m_style, SIGNAL(clicked( int )), this, SLOT(setStyle(int)) );
+	connect(m_style, SIGNAL(activated( int )), this, SLOT(setStyle(int)) );
 	
 	m_style->addItem(tr("No pen"), Qt::NoPen);
 	m_style->addItem( tr("Solid"), Qt::SolidLine);
@@ -42,34 +43,34 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 	m_style->addItem( tr("Dash dot"), Qt::DashDotLine);
 	m_style->addItem( tr("Dash dot dot"), Qt::DashDotDotLine);
 	
-	m_style->setCurrentIndex( Qt::SolidLine );
-	
 	addChild(m_style);
+	
+	m_style->setCurrentIndex( Qt::SolidLine );
 	
 	
 	m_capStyle = new QComboBox();
-	connect(m_capStyle, SIGNAL(clicked( int )), this, SLOT(setCapStyle(int)) );
+	connect(m_capStyle, SIGNAL(activated( int )), this, SLOT(setCapStyle(int)) );
 	
 	m_capStyle->addItem( tr("Flat"), Qt::FlatCap);
 	m_capStyle->addItem( tr("Square"), Qt::SquareCap);
 	m_capStyle->addItem( tr("Round"), Qt::RoundCap);
 	
-	m_capStyle->setCurrentIndex( Qt::RoundCap );
-	
 	addChild(m_capStyle);
+	
+	m_capStyle->setCurrentIndex( int(Qt::RoundCap) );
 	
 	
 	
 	m_joinStyle = new QComboBox();
-	connect(m_joinStyle, SIGNAL(clicked( int )), this, SLOT(setJoinStyle(int)) );
+	connect(m_joinStyle, SIGNAL(activated( int )), this, SLOT(setJoinStyle(int)) );
 	
 	m_joinStyle->addItem( tr("Miter"),Qt::MiterJoin );
 	m_joinStyle->addItem( tr("Bevel"), Qt::BevelJoin);
 	m_joinStyle->addItem( tr("Round"), Qt::RoundJoin);
 	
-	m_joinStyle->setCurrentIndex( Qt::RoundJoin );
-	
 	addChild( m_joinStyle );
+	
+	m_joinStyle->setCurrentIndex( int(Qt::RoundJoin) );
 	
 	boxLayout()->addStretch(2);
 	
@@ -95,6 +96,7 @@ void KTPenWidget::setThickness(int value)
 void KTPenWidget::setStyle(int s)
 {
 	m_pen.setStyle(Qt::PenStyle(s) );
+	
 	emit penChanged( m_pen );
 }
 

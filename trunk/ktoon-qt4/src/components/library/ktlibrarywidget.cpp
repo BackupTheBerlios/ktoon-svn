@@ -253,6 +253,9 @@ void KTLibraryWidget::removeCurrentGraphic()
 				m_graphics.remove(child);
 			}
 			
+			QString folder = CONFIG_DIR+"/libraries/"+currentFolder->text(0)+".ktlbr";
+			
+			QFile::remove(folder);
 			m_libraryTree->removeCurrentFolder();
 		}
 	}
