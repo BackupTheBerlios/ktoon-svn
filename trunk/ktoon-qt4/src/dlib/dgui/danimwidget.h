@@ -72,6 +72,9 @@ class DAnimWidget : public QWidget
 		 * @param px imagen de fondo
 		 */
 		void setBackgroundPixmap(const QPixmap &px);
+
+		
+	protected:
 		/**
 		 * Inicia la animacion
 		 */

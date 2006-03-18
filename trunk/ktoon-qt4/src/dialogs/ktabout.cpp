@@ -66,46 +66,26 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
     
 	m_credits = new DAnimWidget( QPixmap::fromImage(credits), creditsText );
 	addTab( m_credits, tr( "Credits" ) );
+	
+	QPalette pal = m_credits->palette();
+	pal.setColor(QPalette::Foreground, 0x686868);
+	
+	m_credits->setPalette(pal);
 
     	// 2: Ack
-	ListOfPixmaps lop;
-
-	for(uint i = 1; i < 11; i++)
-	{
-		QImage tmp(THEME_DIR+QString("/sequences/ack-image%1.png").arg(i));
-		KImageEffect::fade(tmp, 0.2, palette().background().color());
-		lop << QPixmap::fromImage(tmp);
-	}
 	
-	m_ack = new DAnimWidget( lop );
-
-	addTab( m_ack, tr( "Acknowledgements" ) );
-
-    	// 3: Changelog
-
-	QTextBrowser *logText = new QTextBrowser/*(scroll)*/;
+	QLabel *ack = new QLabel;
 	
-// 	QString readText;
-	QFile clFile( HOME+"/data/Changelog" ); // FIXME: translate?
+	QImage ackImg( THEME_DIR+"/images/sponsors.png" );
+	KImageEffect::fade( ackImg,0.2,palette().background().color()); 
 	
-	if ( clFile.open( QIODevice::ReadOnly | QIODevice::Text) )
-	{
-		QTextStream stream( &clFile );
-		while ( ! stream.atEnd() )
-		{
-			QString text = stream.readLine();
-// 			readText += text+"\n";
-			logText->append(text);
-		}
-		clFile.close();
-	}
-// 	logText -> setText( readText );
+	ack->setPixmap(QPixmap::fromImage(ackImg));
 	
-	addTab( logText, tr( "Changelog" ) );
+	addTab( ack, tr("Sponsors") );
 
-    	// 4: Toonka Films
+	// 4: Toonka Films
 
-	QLabel *toonka = new QLabel/*( this )*/;
+	QLabel *toonka = new QLabel;
 	
 	QImage toonkaImg( THEME_DIR+"/images/toonka.png" );
 	KImageEffect::fade( toonkaImg,0.2,palette().background().color()); 
@@ -115,7 +95,7 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 
     	// 5: Laboratoon
 
-	QLabel *laboratoon = new QLabel/*( this )*/;
+	QLabel *laboratoon = new QLabel;
 	
 	QImage laboratoonImg( THEME_DIR+"/images/laboratoon.png" );
 	KImageEffect::fade( laboratoonImg,0.2,palette().background().color()); 
@@ -125,7 +105,7 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 
     	// 6: Licence
 
-	QTextBrowser *licenceText = new QTextBrowser/*( scrollLicence )*/;
+	QTextBrowser *licenceText = new QTextBrowser;
 // 	scrollLicence->setWidget( licenceText );
 // 	QString licence = "";
 	QFile licenceFile( DATA_DIR+"/COPYING" );
@@ -144,8 +124,6 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 // 	licenceText -> setText( licence );
 
 	addTab( licenceText, tr( "License Agreement" ) );
-
-	setMaximumSize( m_credits->size().expandedTo(m_ack->size()) );
 	
 	setButtonText( Cancel, tr("Close"));
 }

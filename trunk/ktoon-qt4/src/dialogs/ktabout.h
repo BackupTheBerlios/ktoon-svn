@@ -67,7 +67,6 @@ class KTAbout : public DTabDialog
 	
 	private:
 		DAnimWidget *m_credits;
-		DAnimWidget *m_ack;
 };
 
 #endif

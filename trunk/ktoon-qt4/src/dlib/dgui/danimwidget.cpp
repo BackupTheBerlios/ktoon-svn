@@ -150,4 +150,3 @@ void DAnimWidget::paintEvent(QPaintEvent *)
 	}
 }
 
-
