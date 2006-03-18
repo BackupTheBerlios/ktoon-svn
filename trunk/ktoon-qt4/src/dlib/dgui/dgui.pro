@@ -49,7 +49,9 @@ HEADERS += ccbar.h \
            buttonbar.h \
            ddatepicker.h \
            ddatetable.h \
-           dcommand.h 
+           dcommand.h \
+           dthemedocument.h \
+           dthememanager.h 
 SOURCES += ccbar.cpp \
            ccbutton.cpp \
            collapsiblewidget.cpp \
@@ -93,7 +95,9 @@ SOURCES += ccbar.cpp \
            buttonbar.cpp \
            ddatepicker.cpp \
            ddatetable.cpp \
-           dcommand.cpp 
+           dcommand.cpp \
+           dthemedocument.cpp \
+           dthememanager.cpp 
 RESOURCES += images.qrc
 QT += xml
 KDEV_QTVER = 4

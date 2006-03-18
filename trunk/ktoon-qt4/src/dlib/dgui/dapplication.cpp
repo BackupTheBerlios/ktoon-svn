@@ -59,13 +59,11 @@ DApplication::~DApplication()
 void DApplication::applyTheme(const QString &file)
 {
 	m_themeManager.applyTheme(file);
-	applyPalette( m_themeManager.themePalette() );
 }
 
 void DApplication::applyTheme(const DThemeDocument &dd)
 {
 	m_themeManager.applyTheme(dd);
-	applyPalette( m_themeManager.themePalette() );
 }
 
 void DApplication::applyColors(ColorSchema cs)

@@ -3,17 +3,8 @@
 # Subdir relative project main directory: ./src/dlib/dcore
 # Target is a library:  
 
-QT += xml -gui 
 INSTALLS += target 
 target.path = /lib/ 
-KDEV_QTVER = 4 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-CONFIG += release \
-          warn_on \
-          dll 
-TEMPLATE = lib 
 HEADERS += aspelliface.h \
            dalgorithm.h \
            dbrushadjuster.h \
@@ -23,8 +14,6 @@ HEADERS += aspelliface.h \
            dgradientadjuster.h \
            dguiitem.h \
            dpathadjuster.h \
-           dthemedocument.h \
-           dthememanager.h \
            ispelliface.h \
            kcpuinfo.h \
            kimageeffect.h \
@@ -43,8 +32,6 @@ SOURCES += aspelliface.cpp \
            dgradientadjuster.cpp \
            dguiitem.cpp \
            dpathadjuster.cpp \
-           dthemedocument.cpp \
-           dthememanager.cpp \
            ispelliface.cpp \
            kcpuinfo.cpp \
            kimageeffect.cpp \
@@ -52,3 +39,12 @@ SOURCES += aspelliface.cpp \
            spellhighlighter.cpp \
            dmd5hash.cpp \
            dapplicationproperties.cpp 
+QT += xml -gui
+KDEV_QTVER = 4
+MOC_DIR = .moc
+UI_DIR = .ui
+OBJECTS_DIR = .obj
+CONFIG += release \
+warn_on \
+dll
+TEMPLATE = lib

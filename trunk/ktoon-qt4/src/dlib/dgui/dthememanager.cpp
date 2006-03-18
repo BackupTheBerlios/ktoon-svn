@@ -22,6 +22,8 @@
 #include "qapplication.h"
 #include "dthemedocument.h"
 
+#include <dglobal.h>
+
 #include "ddebug.h"
 
 DThemeManager::DThemeManager() : QXmlDefaultHandler()
@@ -217,6 +219,11 @@ bool DThemeManager::startElement( const QString& , const QString& , const QStrin
 
 bool DThemeManager::endElement(const QString&, const QString&, const QString& qname)
 {
+	if ( qname == "DTheme" )
+	{
+		dApp->applyPalette(m_palette);
+	}
+	
 	return true;
 }
 
@@ -244,7 +251,3 @@ QColor DThemeManager::getColor(const QXmlAttributes& atts)
 	return color;
 }
 
-QPalette DThemeManager::themePalette() const
-{
-	return m_palette;
-}
