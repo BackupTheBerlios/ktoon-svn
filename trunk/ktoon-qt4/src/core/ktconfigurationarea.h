@@ -40,6 +40,7 @@ class KTConfigurationArea : public QDockWidget
 		
 	public slots:
 		void hideConfigurator();
+		void showConfigurator();
 		
 	private:
 		void shrink();
@@ -55,6 +56,7 @@ class KTConfigurationArea : public QDockWidget
 	private:
 		QWidget *m_separator;
 		QTimer m_locker;
+		QTimer m_shower;
 };
 
 #endif

@@ -28,11 +28,6 @@
 
 #include <cstdio>
 
-#include "ffmpegmanager.h"
-
-
-#include <config.h>
-
 FFMpegPlugin::FFMpegPlugin()
 {
 }
@@ -52,10 +47,12 @@ ExportInterface::Formats FFMpegPlugin::availableFormats()
 	return SWF | MPEG | AVI | RM | ASF | MOV | GIF;
 }
 
-void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size)
+void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size, float sx, float sy)
 {
 #ifdef HAVE_FFMPEG
+	
 	FFMpegManager manager;
+	m_size = size;
 	
 	QDir temp(REPOSITORY+"/exporting");
 	if ( !temp.exists() )
@@ -63,9 +60,9 @@ void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *
 		temp.mkdir(temp.path());
 	}
 	
-	QStringList paths = createImages(scenes, temp);
+	QStringList paths = createImages(scenes, temp, sx, sy);
 	
-	manager.create(filePath, format, paths, size,scenes[0]->fps());
+	manager.create(filePath, format, paths, m_size,scenes[0]->fps());
 	
 	foreach(QString path, paths)
 	{
@@ -75,11 +72,12 @@ void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *
 #endif
 }
 
-QStringList FFMpegPlugin::createImages(const QList<KTScene *> &scenes, const QDir &dir, const char *format)
+QStringList FFMpegPlugin::createImages(const QList<KTScene *> &scenes, const QDir &dir, float sx, float sy, const char *format)
 {
 	QStringList paths;
 	
 	int nPhotogramsRenderized = 0;
+
 	
 	foreach(KTScene *scene, scenes )
 	{
@@ -92,11 +90,13 @@ QStringList FFMpegPlugin::createImages(const QList<KTScene *> &scenes, const QDi
 			Layers::iterator layerIterator = layers.begin();
 			bool ok = true;
 			
-			QImage renderized = QImage(520, 340, QImage::Format_RGB32);
+			QImage renderized = QImage(m_size, QImage::Format_RGB32);
 			renderized.fill(qRgb(255, 255, 255));
 			
 			QPainter painter(&renderized);
 			painter.setRenderHint(QPainter::Antialiasing);
+			
+			painter.scale(sx,sy);
 			
 			while ( layerIterator != layers.end() )
 			{
@@ -115,7 +115,7 @@ QStringList FFMpegPlugin::createImages(const QList<KTScene *> &scenes, const QDi
 													
 							while ( it != componentList.end() )
 							{
-								createImage( *it, &painter);
+								(*it)->draw(&painter);
 								++it;
 							}
 						}
@@ -123,6 +123,9 @@ QStringList FFMpegPlugin::createImages(const QList<KTScene *> &scenes, const QDi
 				}
 				++layerIterator;
 			}
+			
+			
+			painter.end();
 			
 			QString file = "";
 			if ( nPhotogramsRenderized < 10 )
@@ -143,7 +146,6 @@ QStringList FFMpegPlugin::createImages(const QList<KTScene *> &scenes, const QDi
 			}
 			
 			renderized.save(dir.path()+"/"+file, "PNG");
-// 			emit progressStep( nPhotogramsRenderized, totalPhotograms);
 			
 			paths << dir.path()+"/"+file;
 			
@@ -153,51 +155,11 @@ QStringList FFMpegPlugin::createImages(const QList<KTScene *> &scenes, const QDi
 			}
 			
 			nPhotogramsRenderized++;
+			
 		}
 	}
 	
 	return paths;
-}
-
-
-void FFMpegPlugin::createImage(AGraphicComponent *component, QPainter *painter)
-{
-	painter->save();
-	foreach(AGraphic *graphic, component->graphics())
-	{
-		QPen pen = graphic->pen;
-		QBrush brush = graphic->brush;
-		
-		painter->setPen(pen);
-		painter->setBrush(brush);
-		
-		QList<QPolygonF> poligons = graphic->path.toSubpathPolygons();
-		
-		if ( poligons.count() == 1 )
-		{
-			painter->drawPath(graphic->path);
-		}
-		else
-		{
-			QList<QPolygonF>::const_iterator it;
-			for(it = poligons.begin(); it != poligons.end(); ++it)
-			{
-				painter->drawPolygon(*it);
-			}
-		}
-	}
-
-	const QList< AGraphicComponent *> childs = component->childs();
-	if(childs.count() > 0)
-	{
-		foreach(AGraphicComponent *child, childs)
-		{
-			createImage( child, painter);
-		}
-	}
-	
-	
-	painter->restore();
 }
 
 

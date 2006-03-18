@@ -22,6 +22,8 @@
 #include "ddebug.h"
 #include <cmath> // fabs
 
+#include <QPainter>
+
 AGraphicComponent::AGraphicComponent() : KTSerializableObject(), m_scale(1,1), m_shear(0,0), m_angle(0)
 {
 	
@@ -521,5 +523,41 @@ QPointF AGraphicComponent::shearFactor() const
 int AGraphicComponent::angleFactor() const
 {
 	return m_angle;
+}
+
+void AGraphicComponent::draw(QPainter *painter)
+{
+	painter->save();
+
+	foreach(AGraphic *graphic, graphics())
+	{
+		QPen pen = graphic->pen;
+		QBrush brush = graphic->brush;
+		
+		painter->setPen(pen);
+		painter->setBrush(brush);
+		
+		QList<QPolygonF> poligons = graphic->path.toSubpathPolygons();
+		
+		if ( poligons.count() == 1 )
+		{
+			painter->drawPath(graphic->path);
+		}
+		else
+		{
+			QList<QPolygonF>::const_iterator it;
+			for(it = poligons.begin(); it != poligons.end(); ++it)
+			{
+				painter->drawPolygon(*it);
+			}
+		}
+	}
+	
+	foreach(AGraphicComponent *child, childs())
+	{
+		child->draw(painter);
+	}
+	
+	painter->restore();
 }
 

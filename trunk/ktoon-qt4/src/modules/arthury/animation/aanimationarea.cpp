@@ -204,55 +204,9 @@ void AAnimationArea::render() // TODO: Extend to scenes
 		
 		nPhotogramsRenderized++;
 	}
-
-
-// 				Frames frames = (*layerIterator)->frames();
-// 				
-// 				int nphotograms = frames.count();
-// 				
-// 				emit toStatusBar( tr("Rendering... "), nphotograms*70 );
-// 				
-// 				for(int i = 0; i < nphotograms; i++)
-// 				{
-// 					QPainter painter(&renderized);
-// 					painter.setRenderHint(QPainter::Antialiasing);
-// 					
-// 					KTKeyFrame *frame = frames[i];
-// 					if ( frame )
-// 					{
-// 						QList<AGraphicComponent *> componentList = frame->components();
-// 						
-// 						if ( componentList.count() > 0  )
-// 						{
-// 							QList<AGraphicComponent *>::iterator it = componentList.begin();
-// 							
-// 							while ( it != componentList.end() )
-// 							{
-// 								if ( *it )
-// 								{
-// 									painter.save();
-// 									
-// 									painter.setPen((*it)->pen());
-// 									painter.setBrush((*it)->brush());
-// 									
-// 									painter.drawPath((*it)->path());
-// 									
-// 									painter.restore();
-// 								}
-// 								++it;
-// 							}
-// 						}
-// 						
-// 						emit progressStep( i+1, nphotograms);
-// 						m_photograms << renderized;
-// 					}
-// 				}
-// 			}
-// 		}
-// 	}
 }
 
-void AAnimationArea::renderGraphic(const AGraphicComponent *graphicComponent, QPainter *painter )
+void AAnimationArea::renderGraphic(AGraphicComponent *graphicComponent, QPainter *painter )
 {
 	painter->save();
 	float sx = 1, sy = 1, offset =0;
@@ -261,40 +215,8 @@ void AAnimationArea::renderGraphic(const AGraphicComponent *graphicComponent, QP
 	sy = static_cast<float>(size().height()-offset) / static_cast<float>(m_size.height());
 
 	painter->scale(sx,sy);
-	foreach(AGraphic *graphic, graphicComponent->graphics())
-	{
-		QPen pen = graphic->pen;
-		QBrush brush = graphic->brush;
-		
-		painter->setPen(pen);
-		painter->setBrush(brush);
-		
-		QList<QPolygonF> poligons = graphic->path.toSubpathPolygons();
-		
-		if ( poligons.count() == 1 )
-		{
-			painter->drawPath(graphic->path);
-		}
-		else
-		{
-			QList<QPolygonF>::const_iterator it;
-			for(it = poligons.begin(); it != poligons.end(); ++it)
-			{
-				painter->drawPolygon(*it);
-			}
-		}
-	}
-
-	const QList< AGraphicComponent *> childs = graphicComponent->childs();
-	if(childs.count() > 0)
-	{
-		foreach(AGraphicComponent *child, childs)
-		{
-			renderGraphic(child, painter);
-		}
-	}
 	
-	
+	graphicComponent->draw(painter);
 	painter->restore();
 }
 

@@ -46,7 +46,7 @@ ExportInterface::Formats GenericExportPlugin::availableFormats()
 	return PNG | JPEG;
 }
 
-void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size)
+void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size,float sx, float sy)
 {
 	QFileInfo fileInfo(filePath);
 	
@@ -71,10 +71,10 @@ void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KT
 	
 	m_baseName = fileInfo.baseName();
 	
-	createImages(scenes, dir, f);
+	createImages(scenes, dir, sx, sy, f);
 }
 
-QStringList GenericExportPlugin::createImages(const QList<KTScene *> &scenes, const QDir &dir, const char *format)
+QStringList GenericExportPlugin::createImages(const QList<KTScene *> &scenes, const QDir &dir, float sx, float sy, const char *format)
 {
 	QStringList paths;
 	
@@ -114,7 +114,7 @@ QStringList GenericExportPlugin::createImages(const QList<KTScene *> &scenes, co
 													
 							while ( it != componentList.end() )
 							{
-								createImage( *it, &painter);
+								(*it)->draw( &painter);
 								++it;
 							}
 						}
@@ -160,46 +160,6 @@ QStringList GenericExportPlugin::createImages(const QList<KTScene *> &scenes, co
 	}
 	
 	return paths;
-}
-
-void GenericExportPlugin::createImage(AGraphicComponent *component, QPainter *painter)
-{
-	painter->save();
-	foreach(AGraphic *graphic, component->graphics())
-	{
-		QPen pen = graphic->pen;
-		QBrush brush = graphic->brush;
-		
-		painter->setPen(pen);
-		painter->setBrush(brush);
-		
-		QList<QPolygonF> poligons = graphic->path.toSubpathPolygons();
-		
-		if ( poligons.count() == 1 )
-		{
-			painter->drawPath(graphic->path);
-		}
-		else
-		{
-			QList<QPolygonF>::const_iterator it;
-			for(it = poligons.begin(); it != poligons.end(); ++it)
-			{
-				painter->drawPolygon(*it);
-			}
-		}
-	}
-
-	const QList< AGraphicComponent *> childs = component->childs();
-	if(childs.count() > 0)
-	{
-		foreach(AGraphicComponent *child, childs)
-		{
-			createImage( child, painter);
-		}
-	}
-	
-	
-	painter->restore();
 }
 
 Q_EXPORT_PLUGIN( GenericExportPlugin );

@@ -49,7 +49,7 @@ DOptionalDialog::DOptionalDialog(const QString &text,const QString &title,QWidge
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 	buttonLayout->addWidget(cancelButton);
 	
-	QPushButton *okButton = new QPushButton(tr("OK"));
+	QPushButton *okButton = new QPushButton(tr("Accept"));
 	connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
 	buttonLayout->addWidget(okButton);
 	

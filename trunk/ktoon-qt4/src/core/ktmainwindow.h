@@ -76,12 +76,10 @@ class KTMainWindow : public DMainWindow
 	public:
 		KTMainWindow(KTSplash *splash = 0);
 		~KTMainWindow();
-		virtual void setPalette(const QPalette &);
 		
 		void openProject(const QString &path);
 		
 	private:
-		void setupBackground();
 		/**
 		 * Create the file action 
 		 */

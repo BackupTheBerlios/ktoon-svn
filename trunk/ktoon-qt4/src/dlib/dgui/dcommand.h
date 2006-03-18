@@ -46,38 +46,6 @@ class DCommand
 
 };
 
-
-class DNamedCommand : public DCommand
-{
-	protected:
-
-		DNamedCommand(const QString &name) : DCommand(), m_name(name) {}
-
-	public:
-
-		virtual QString name() const { return m_name; }
-		void setName(const QString &name) { m_name=name; }
-
-	private:
-		QString m_name;
-};
-
-
-class DMacroCommand : public DNamedCommand
-{
-	public:
-		DMacroCommand( const QString & name );
-		virtual ~DMacroCommand();
-
-		void addCommand(DCommand *command);
-		virtual void execute();
-		virtual void unexecute();
-
-	protected:
-		QList<DCommand *> m_commands;
-};
-
-
 class DCommandHistory : public QObject 
 {
 	Q_OBJECT

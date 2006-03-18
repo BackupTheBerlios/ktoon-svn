@@ -31,36 +31,6 @@ DCommand::~DCommand()
 {
 }
 
-DMacroCommand::DMacroCommand( const QString & name ) : DNamedCommand(name)
-{
-}
-
-DMacroCommand::~DMacroCommand()
-{
-	qDeleteAll( m_commands );
-}
-
-void DMacroCommand::addCommand( DCommand *command )
-{
-	m_commands.append(command);
-}
-
-void DMacroCommand::execute()
-{
-	QListIterator<DCommand *> it( m_commands );
-	while ( it.hasNext() )
-		it.next()->execute();
-}
-
-void DMacroCommand::unexecute()
-{
-	QListIterator<DCommand *> it( m_commands );
-	it.toBack();
-	while ( it.hasPrevious() )
-		it.previous()->unexecute();
-}
-
-
 class DCommandHistory::DCommandHistoryPrivate 
 {
 	public:

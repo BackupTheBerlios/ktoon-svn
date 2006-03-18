@@ -47,7 +47,7 @@ FFMpegManager::~FFMpegManager()
 void FFMpegManager::create(const QString &filePath, int formatId, const QStringList &paths, const QSize &size, int fps)
 {
 #ifdef HAVE_FFMPEG
-
+	
 	AVOutputFormat *fmt = guess_format(0, filePath.toLatin1().data(), 0);
 	
 	if ( !fmt )
@@ -194,15 +194,6 @@ AVStream *FFMpegManager::addVideoStream(AVFormatContext *oc, int codec_id, int w
 	
 	int w = width;
 	int h = height;
-	
-	if ( width < 352 )
-	{
-		w = 352;
-	}
-	if ( height < 288 )
-	{
-		h = 288;
-	}
 
 	st = av_new_stream(oc, 0);
 	if (!st) 
@@ -447,3 +438,5 @@ void FFMpegManager::closeVideo(AVFormatContext *oc, AVStream *st)
 }
 
 #endif
+
+

@@ -78,8 +78,6 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 
 	addWidget(m_animationSpace, tr("Animation"), true);
 	
-	setupBackground();
-	
 	splash->setMessage( tr("Loading action manager..."));
 	m_actionManager = new DActionManager(this);
 	
@@ -317,15 +315,22 @@ void KTMainWindow::openProject(const QString &path)
 			
 			m_projectManager->load( packageHandler.importedProjectPath() );
 			
-			if ( m_recentProjects.indexOf(path) == -1 )
+			QString recent = path;
+			
+			if ( QDir::isRelativePath(path) )
+			{
+				recent = QDir::currentPath()+"/"+path;
+			}
+			
+			if ( m_recentProjects.indexOf(recent) == -1 )
 			{
 				if ( m_recentProjects.count() <= 6 )
 				{
-					m_recentProjects << path;
+					m_recentProjects << recent;
 				}
 				else
 				{
-					m_recentProjects.push_front(path);
+					m_recentProjects.push_front(recent);
 				}
 			}
 			

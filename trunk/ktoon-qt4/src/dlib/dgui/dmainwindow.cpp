@@ -40,6 +40,8 @@ static const char* const icon_xpm[]={
 #include "docksplitter.h"
 #include "comdefs.h"
 
+#include <ddebug.h>
+
 DMainWindow::DMainWindow(QWidget *parent)
     :MWCLASS(parent), m_pFirstRemoved(false), m_pCurrentWidget(0)
 {
@@ -157,6 +159,8 @@ void DMainWindow::addWidget(DLSTabWidget *tab, QWidget *widget, const QString &t
     {
 	    m_persistantWidgets << widget;
     }
+    
+    widget->setFocus();
 }
 
 void DMainWindow::removeWidget(QWidget *widget)

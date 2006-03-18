@@ -150,3 +150,7 @@ void KTModuleWidgetBase::leaveEvent(QEvent *e)
 	m_title->setPalette(pal);
 }
 
+QBoxLayout *KTModuleWidgetBase::boxLayout()
+{
+	return m_container;
+}

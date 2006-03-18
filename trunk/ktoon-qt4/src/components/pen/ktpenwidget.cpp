@@ -71,6 +71,8 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 	
 	addChild( m_joinStyle );
 	
+	boxLayout()->addStretch(2);
+	
 	setThickness( 3);
 	
 	setWindowIcon(QIcon(THEME_DIR+"/icons/brushes.png"));

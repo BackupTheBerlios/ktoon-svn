@@ -38,7 +38,7 @@ KTScenesWidget::KTScenesWidget( QWidget *parent) : KTModuleWidgetBase( parent, "
 {
 	DINIT;
 	
-	setCaption( tr( "Scenes Manager" ) );
+	setCaption( tr( "Scenes manager" ) );
 	
 	setupButtons();
 	setupTableScenes();
@@ -58,12 +58,12 @@ void KTScenesWidget::setupButtons()
 
 	DImageButton *insertButton = new DImageButton(QPixmap(HOME+"/themes/default/icons/plussign.png" ) , 22, m_buttonsPanel);
 	layout->addWidget(insertButton);
-	insertButton->setToolTip(tr("Insert Scene"));
+	insertButton->setToolTip(tr("Insert scene"));
 	connect(insertButton, SIGNAL(clicked()), this, SIGNAL(requestInsertScene()));
 	
 	DImageButton *removeButton = new DImageButton(QPixmap(HOME+"/themes/default/icons/minussign.png" ) , 22, m_buttonsPanel);
 	layout->addWidget(removeButton);
-	removeButton->setToolTip(tr("Remove Scene"));
+	removeButton->setToolTip(tr("Remove scene"));
 	connect(removeButton, SIGNAL(clicked()), this, SIGNAL(requestRemoveScene()));
 
 	addChild(m_buttonsPanel);

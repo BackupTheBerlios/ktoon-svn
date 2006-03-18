@@ -36,6 +36,7 @@ KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent),
 	QTimer::singleShot(1000,this, SLOT(findSeparator()));
 	
 	connect(&m_locker, SIGNAL(timeout()), this, SLOT(toggleLock()));
+	connect(&m_shower, SIGNAL(timeout()), this, SLOT(showConfigurator()));
 // 	findSeparator();
 }
 
@@ -141,6 +142,28 @@ void KTConfigurationArea::enterEvent(QEvent *)
 {
 	if ( m_locker.isActive()) m_locker.stop();
 	
+	if ( m_shower.isActive() )
+	{
+		return;
+	}
+	
+	m_shower.start(300);
+}
+
+void KTConfigurationArea::leaveEvent(QEvent *)
+{
+	if ( m_shower.isActive()) m_shower.stop();
+	
+	if ( m_locker.isActive() )
+	{
+		return;
+	}
+	
+	m_locker.start(1000);
+}
+
+void KTConfigurationArea::showConfigurator()
+{
 	QWidget *widget = this->widget();
 	
 	if ( widget && !isFloating () )
@@ -154,16 +177,8 @@ void KTConfigurationArea::enterEvent(QEvent *)
 		
 		setFeatures(QDockWidget::AllDockWidgetFeatures );
 	}
-}
-
-void KTConfigurationArea::leaveEvent(QEvent *)
-{
-	if ( m_locker.isActive() )
-	{
-		return;
-	}
 	
-	m_locker.start(1000);
+	m_shower.stop();
 }
 
 void KTConfigurationArea::hideConfigurator()

@@ -199,6 +199,11 @@ class AGraphicComponent : public KTSerializableObject
 		int angleFactor() const;
 		
 		
+		/**
+		 * Draw the component
+		 * @param painter 
+		 */
+		void draw(QPainter *painter);
 		
 		
 	private:

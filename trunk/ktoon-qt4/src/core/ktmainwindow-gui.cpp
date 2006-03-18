@@ -311,11 +311,11 @@ void KTMainWindow::setupWindowActions()
 
 void KTMainWindow::setupInsertActions()
 {
-	new DAction( QPixmap(), tr( "Insert Scene" ), QKeySequence(), m_projectManager, SLOT(createScene()), m_actionManager, "InsertScene");
+	new DAction( QPixmap(THEME_DIR+"/icons/scene.png"), tr( "Insert scene" ), QKeySequence(), m_projectManager, SLOT(createScene()), m_actionManager, "InsertScene");
 	
-	new DAction( QPixmap(), tr( "Insert Layer" ), QKeySequence(), m_projectManager, SLOT(createLayer()), m_actionManager, "InsertLayer");
+	new DAction( QPixmap(THEME_DIR+"/icons/layer.png"), tr( "Insert layer" ), QKeySequence(), m_projectManager, SLOT(createLayer()), m_actionManager, "InsertLayer");
 	
-	new DAction( QPixmap(), tr( "Insert Frame" ), QKeySequence(), m_projectManager, SLOT(createFrame()), m_actionManager, "InsertFrame");
+	new DAction( QPixmap(THEME_DIR+"/icons/frame.png"), tr( "Insert frame" ), QKeySequence(), m_projectManager, SLOT(createFrame()), m_actionManager, "InsertFrame");
 	
 	new DAction( QPixmap(), tr( "Insert image" ), QKeySequence(), this, SLOT(insertImage()), m_actionManager, "insertimage");
 }
@@ -418,17 +418,3 @@ void KTMainWindow::showWidgetPage()
 	}
 }
 
-void KTMainWindow::setupBackground()
-{
-// 	QImage bgImg(background_xpm );
-// 	KImageEffect::fade(bgImg, 0.2, palette().color(QPalette::Active , QColorGroup::Background) );
-// 	bgImg.smoothScale(m_drawingSpace->size());
-	
-// 	m_drawingSpace->setPaletteBackgroundPixmap( bgImg );
-}
-
-void KTMainWindow::setPalette(const QPalette &pal)
-{
-	DMainWindow::setPalette(pal);
-	setupBackground();
-}

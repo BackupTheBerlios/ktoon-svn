@@ -40,11 +40,10 @@ class MingPlugin : public KTExportPluginObject, public ExportInterface
 		virtual QString key() const;
 		ExportInterface::Formats availableFormats();
 		
-		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size);
+		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size, float sx = 1, float sy = 1);
 		
 	private:
-		QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir, const char *format = "PNG");
-		void createImage(AGraphicComponent *component, QPainter *painter);
+		QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir, float sx = 1, float sy = 1, const char *format = "PNG");
 };
 
 #endif

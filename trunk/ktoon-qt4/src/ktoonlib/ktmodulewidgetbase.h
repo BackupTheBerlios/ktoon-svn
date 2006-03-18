@@ -43,6 +43,8 @@ class KTModuleWidgetBase : public QWidget
 		virtual void addChild(QWidget * child, Qt::Alignment alignment = 0);
 		void setFont(const QFont &);
 		
+		QBoxLayout *boxLayout();
+		
 	private:
 		QBoxLayout *m_container;
 		QObjectList m_childs;

@@ -50,7 +50,7 @@ class AAnimationArea : public QFrame
 		virtual void stop();
 		
 	private:
-		void renderGraphic(const AGraphicComponent *graphicComponent, QPainter *painter );
+		void renderGraphic(AGraphicComponent *graphicComponent, QPainter *painter );
 		
 	private slots:
 		void advance();

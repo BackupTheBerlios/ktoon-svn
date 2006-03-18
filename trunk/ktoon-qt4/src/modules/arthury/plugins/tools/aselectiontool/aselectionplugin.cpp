@@ -187,12 +187,12 @@ QRect ASelectionPlugin::release(const QString &  brush ,QPainter &  painter , co
 	{
 		m_frame->selectContains (m_selectionRect);
 		m_graphics = m_frame->selectedComponents();
-		rect = setControls(brush);
+		setControls(brush);
 		m_selectionRect = QRect();
 	}
 	else
 	{
-		rect = setControls(brush);
+		setControls(brush);
 		m_graphics.clear();
 	}
 	emit requestRedraw();
@@ -298,7 +298,7 @@ void ASelectionPlugin::allGraphisComponent(QList<AGraphicComponent *> components
 	}
 }
 
-QRect ASelectionPlugin::setControls(const QString& brush)
+void ASelectionPlugin::setControls(const QString& brush)
 {
 	if( brush == tr("Selection") )
 	{
