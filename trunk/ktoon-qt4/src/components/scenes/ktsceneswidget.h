@@ -59,8 +59,10 @@ class KTScenesWidget : public KTModuleWidgetBase
 	private slots:
 		void actionButton(QAbstractButton *);
 		void sceneDobleClick(QTreeWidgetItem * item, int col );
-		
+		void emitRequestInsertScene();
 	signals:
+		void requestInsertLayer();
+		void requestInsertFrame();
 		void requestInsertScene();
 		void requestRemoveScene();
 		void requestMoveUpScene();

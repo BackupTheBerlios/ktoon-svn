@@ -132,14 +132,15 @@ void KTLayer::pasteFrame(const int& index, const KTKeyFrame* copy)
 	}
 }
 
-void KTLayer::cloneFrame(const int& index, int numClons)
+void KTLayer::cloneFrame(const int& index, int nClones)
 {
-	dDebug() << "cloneFrame(const int& " << index << "," << "int " << numClons << ")" ;
+	dDebug() << "cloneFrame(const int& " << index << "," << "int " << nClones << ")" ;
 	KTKeyFrame *clone = m_frames[index];
 	
 	if(clone)
 	{
-		for(int i = index+1; i <= index+numClons; i++)
+		clone->setClonesNumber( nClones);
+		for(int i = index+1; i <= index+nClones; i++)
 		{ 
 			if(i == m_frames.count() )
 			{
@@ -221,7 +222,15 @@ QDomElement KTLayer::createXML( QDomDocument &doc )
 	while( iterator != m_frames.end() )
 	{
 		layer.appendChild((*iterator)->createXML(doc));
-		++iterator;
+		dDebug() << m_frames.count(*iterator);
+		if(m_frames.count(*iterator) != 1)
+		{
+			iterator+= (m_frames.count(*iterator));
+		}
+		else
+		{
+			++iterator;
+		}
 	}
 	
 	return layer;

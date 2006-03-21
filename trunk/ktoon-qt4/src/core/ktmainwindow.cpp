@@ -144,7 +144,7 @@ void KTMainWindow::createNewProject(const QString &name, const QSize &size, cons
 	// Add by default a scene, layer, frame
 	m_projectManager->createScene( true );
 	m_projectManager->createLayer( true );
-	m_projectManager->createFrame( true);
+	m_projectManager->createFrame( true );
 }
 
 void KTMainWindow::newViewDocument(const QString &name)

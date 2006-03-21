@@ -21,7 +21,7 @@
 #include "ktkeyframe.h"
 #include "ddebug.h"
 
-KTKeyFrame::KTKeyFrame(const KTKeyFrame &kf) : KTSerializableObject(kf.parent()), m_name(kf.m_name), m_isLocked(kf.m_isLocked)/*, m_components(QList<AGraphicComponent *>(kf.m_components))*/
+KTKeyFrame::KTKeyFrame(const KTKeyFrame &kf) : KTSerializableObject(kf.parent()), m_name(kf.m_name), m_isLocked(kf.m_isLocked), m_nClones(0)/*, m_components(QList<AGraphicComponent *>(kf.m_components))*/
 {
 	QList<AGraphicComponent *>::const_iterator it;
 	for(it = kf.m_components.begin(); it != kf.m_components.end(); ++it )
@@ -105,6 +105,7 @@ QDomElement KTKeyFrame::createXML( QDomDocument &doc )
 {
 	QDomElement frame = doc.createElement("Frame");
 	frame.setAttribute ( "name", m_name);
+	frame.setAttribute ( "nClones", m_nClones);
 	
 	QList<AGraphicComponent *>::ConstIterator iterator = m_components.begin();
 	
@@ -248,5 +249,7 @@ void KTKeyFrame::replace(AGraphicComponent *orig, AGraphicComponent *newComponen
 	}
 }
 
-
-
+void KTKeyFrame::setClonesNumber(int nClones)
+{
+	m_nClones = nClones;
+}

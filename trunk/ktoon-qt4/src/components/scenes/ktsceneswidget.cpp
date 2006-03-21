@@ -59,7 +59,7 @@ void KTScenesWidget::setupButtons()
 	DImageButton *insertButton = new DImageButton(QPixmap(HOME+"/themes/default/icons/plussign.png" ) , 22, m_buttonsPanel);
 	layout->addWidget(insertButton);
 	insertButton->setToolTip(tr("Insert scene"));
-	connect(insertButton, SIGNAL(clicked()), this, SIGNAL(requestInsertScene()));
+	connect(insertButton, SIGNAL(clicked()), this, SLOT(emitRequestInsertScene()));
 	
 	DImageButton *removeButton = new DImageButton(QPixmap(HOME+"/themes/default/icons/minussign.png" ) , 22, m_buttonsPanel);
 	layout->addWidget(removeButton);
@@ -103,6 +103,13 @@ void KTScenesWidget::actionButton( QAbstractButton *b)
 
 void KTScenesWidget::sceneDobleClick(QTreeWidgetItem * item, int )
 {
+}
+
+void KTScenesWidget::emitRequestInsertScene()
+{
+	emit requestInsertScene();
+	emit requestInsertLayer();
+	emit requestInsertFrame();
 }
 
 

@@ -238,7 +238,7 @@ class KTProjectManager : public KTSerializableObject
 		 */
 		void pasteFrame(int index);
 		
-		void cloneFrame(int index, int numClons);
+		void cloneFrame(int index, int nClones);
 		
 		/**
 		 * Mueve el frame actual

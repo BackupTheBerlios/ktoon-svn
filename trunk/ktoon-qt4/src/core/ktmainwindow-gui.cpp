@@ -60,6 +60,8 @@ void KTMainWindow::createGUI()
 	toolWindow(DDockWindow::Right)->addWidget(tr("Scenes"),m_scenes);
 	
 	connect(m_scenes, SIGNAL(requestInsertScene()), m_projectManager, SLOT(createScene()));
+	connect(m_scenes, SIGNAL(requestInsertLayer()), m_projectManager, SLOT(createLayer()));
+	connect(m_scenes, SIGNAL(requestInsertFrame()), m_projectManager, SLOT(createFrame()));
 	connect(m_scenes, SIGNAL(requestRemoveScene()), m_projectManager, SLOT(removeScene()));
 	connect(m_scenes, SIGNAL(changeCurrentScene( int )), this, SLOT(changeScene(int)));
 	

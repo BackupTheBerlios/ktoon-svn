@@ -165,12 +165,14 @@ class KTKeyFrame : public KTSerializableObject
 		void oneStepForwardSelected();
 		void oneStepBackwardSelected();
 		
+		void setClonesNumber(int nClones);
 		
 	private:
 		QList<AGraphicComponent *> m_components;
 		QList<AGraphicComponent *> m_selectedComponents;
 		QString m_name;
 		bool m_isLocked;
+		int m_nClones;
 };
 
 #endif

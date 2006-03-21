@@ -80,10 +80,10 @@ void KTTableExposure::emitRequestCloneCurrentFrame()
 {
 	int used = m_layers[m_currentLayer]->currentFrameIsUsed();
 	bool ok;
-	int numClons = QInputDialog::getInteger ( 0, tr("number of clons"), tr("number of clons"), 1, 1, 100 - used , 1, &ok);
+	int nClones = QInputDialog::getInteger ( 0, tr("number of clons"), tr("number of clons"), 1, 1, 100 - used , 1, &ok);
 	if(ok)
 	{
-		emit requestCloneFrame(m_layers[m_currentLayer]->currentFrame(), numClons);
+		emit requestCloneFrame(m_layers[m_currentLayer]->currentFrame(), nClones);
 	}
 	m_layers[m_currentLayer]->frameSelect(m_layers[m_currentLayer]->currentFrame());
 }

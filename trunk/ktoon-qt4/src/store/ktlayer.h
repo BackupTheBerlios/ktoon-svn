@@ -82,7 +82,7 @@ class KTLayer : public KTSerializableObject
 		 */
 		void pasteFrame(const int& index, const KTKeyFrame* copy);
 		
-		void cloneFrame(const int& index, int numClons);
+		void cloneFrame(const int& index, int nClones);
 		
 		/**
 		 * Mueve el frame actual, is up es verdadero lo mueve hacia arriba

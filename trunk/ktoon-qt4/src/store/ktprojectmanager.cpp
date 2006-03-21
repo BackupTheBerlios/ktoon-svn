@@ -294,7 +294,6 @@ void KTProjectManager::createScene(bool addToEnd)
 	if ( m_currentDocument )
 	{
 		KTScene *scene = m_currentDocument->createScene(addToEnd);
-		
 		scene->setFPS( m_fps );
 		connectScene( scene );
 	}
@@ -412,12 +411,12 @@ void KTProjectManager::pasteFrame(int index )
 	}
 }
 
-void  KTProjectManager::cloneFrame(int index, int numClons)
+void  KTProjectManager::cloneFrame(int index, int nClones)
 {
 	KTLayer *layer = currentLayer();
 	if ( layer )
 	{
-		layer->cloneFrame(index, numClons  );
+		layer->cloneFrame(index, nClones  );
 	}
 	else
 	{

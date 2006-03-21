@@ -213,7 +213,6 @@ class AGraphicComponent : public KTSerializableObject
 		QString m_name;
 		QPointF m_scale, m_shear;
 		int m_angle;
-		
 		Graphics m_graphics;
 		
 		QList<AGraphicComponent*> m_childs;
