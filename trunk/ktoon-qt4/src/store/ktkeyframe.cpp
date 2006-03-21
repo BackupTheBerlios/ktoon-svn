@@ -50,7 +50,6 @@ KTKeyFrame::KTKeyFrame(const QString &frameName, QObject * parent) : KTSerializa
 
 KTKeyFrame::~KTKeyFrame()
 {
-	DEND;
 	for(int i = 0; i < m_components.count(); i++ )
 	{
 		delete m_components.takeAt(i);

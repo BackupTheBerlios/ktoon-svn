@@ -90,7 +90,7 @@ void KTScene::load(const QString &path)
 	KTProjectParser parser;
 	
 	connect(&parser, SIGNAL(createLayer(const QString &)), this, SLOT(loadLayer(const QString &)));
-	connect(&parser, SIGNAL(createFrame(const QString &)), this, SLOT(loadFrame(const QString &)));
+	connect(&parser, SIGNAL(createFrame(const QString &, int)), this, SLOT(loadFrame(const QString &, int)));
 	connect(&parser, SIGNAL(createComponent( AGraphicComponent * ) ), this, SLOT( loadComponent(AGraphicComponent *) ));
 	
 	QXmlSimpleReader reader;
@@ -220,11 +220,15 @@ void KTScene::loadLayer(const QString & name)
 	KTLayer *layer = createLayer(name);
 }
 
-void KTScene::loadFrame(const QString & name)
+void KTScene::loadFrame(const QString & name, int clones)
 {
 	if ( m_currentLayer )
 	{
 		KTKeyFrame *frame = m_currentLayer->createFrame(name);
+		if(clones>0)
+		{
+			m_currentLayer->cloneFrame( m_currentLayer->frames().count()-1, clones);
+		}
 	}
 }
 

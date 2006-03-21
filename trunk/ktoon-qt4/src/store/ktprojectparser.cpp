@@ -83,7 +83,12 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 		}
 		else if ( qname == "Frame")
 		{
-			emit createFrame(atts.value("name"));
+			bool ok = false;
+			int clones = atts.value("nClones").toInt(&ok);
+			
+			if(!ok) clones = 0;
+			
+			emit createFrame(atts.value("name"), clones);
 		}
 		if ( qname == "Component" )
 		{

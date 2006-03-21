@@ -33,7 +33,6 @@ KTLayer::KTLayer(const QString &layerName, QObject * parent)  : KTSerializableOb
 
 KTLayer::~KTLayer()
 {
-	DEND;
 	for(int i = 0; i < m_frames.count(); i++ )
 	{
 		KTKeyFrame *tmp = m_frames[i];

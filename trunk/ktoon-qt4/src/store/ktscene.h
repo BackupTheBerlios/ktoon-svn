@@ -131,7 +131,7 @@ class KTScene : public KTSerializableObject
 		/**
 		 * Carga un frame
 		 */
-		void loadFrame(const QString &);
+		void loadFrame(const QString &name, int clones);
 		
 		/**
 		 * Carga un componente

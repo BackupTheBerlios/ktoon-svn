@@ -91,7 +91,7 @@ class KTProjectParser : public QObject, public QXmlDefaultHandler
 		/**
 		 * Este signal se emite cuando se requiere crear un frame
 		 */
-		void createFrame(const QString &name);
+		void createFrame(const QString &name, int clones = 0);
 		
 		/**
 		 * Este signal se emite cuando se requiere crear un componente
