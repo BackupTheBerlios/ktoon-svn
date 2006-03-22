@@ -24,6 +24,7 @@
 #include <QObject>
 #include "ktserializableobject.h"
 #include "ktdocument.h"
+#include "ktglobal.h"
 
 typedef QList<KTDocument *> Documents;
 
@@ -72,7 +73,7 @@ class KTProjectManager : public KTSerializableObject
 		/**
 		 * Pone el tipo de render del proyecto
 		 */
-		void setProjectRender( const QString &typeRender);
+// 		void setProjectRender( KToon::RenderType);
 		
 		/**
 		 * Pone los frames por segundo por defecto del proyecto, este valor sera usado para crear nuevas escenas
@@ -92,7 +93,7 @@ class KTProjectManager : public KTSerializableObject
 		/**
 		 * Retorna el tipo de render del proyecto
 		 */
-		QString projectRender( ) const;
+// 		QString projectRender( ) const;
 		
 		/**
 		 * Retorna el numero de frames por segundo por defecto del proyecto
@@ -359,8 +360,6 @@ class KTProjectManager : public KTSerializableObject
 		const KTKeyFrame *m_copyFrame;
 		mutable QString m_name;
 		bool m_isOpen;
-		
-		QString m_typeRender;
 		int m_fps;
 		
 };

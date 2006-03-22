@@ -50,7 +50,7 @@
 #include <QMessageBox>
 //
 
-KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0), m_scenes(0)
+KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(),m_renderType(KToon::Image), m_exposureSheet(0), m_scenes(0)
 {
 	DINIT;
 	
@@ -102,6 +102,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	{
 		QTimer::singleShot(0, this, SLOT(showTipDialog()));
 	}
+	
 }
 
 
@@ -123,7 +124,7 @@ KTMainWindow::~KTMainWindow()
 
 // Modal
 
-void KTMainWindow::createNewProject(const QString &name, const QSize &size, const QString & renderType, const int fps)
+void KTMainWindow::createNewProject(const QString &name, const QSize &size, const int fps)
 {
 	if(!closeProject()) return;
 	
@@ -136,7 +137,7 @@ void KTMainWindow::createNewProject(const QString &name, const QSize &size, cons
 // 	m_viewCamera->animationArea()->setScene(m_projectManager->currentScene());
 	
 	m_projectManager->setProjectName( name );
-	m_projectManager->setProjectRender( renderType);
+// 	m_projectManager->setProjectRender( renderType );
 	m_projectManager->setProjectFPS( fps);
 	m_projectManager->setDocumentSize( size );
 	
@@ -154,11 +155,13 @@ void KTMainWindow::newViewDocument(const QString &name)
 	messageToOSD(tr("Opening a new document..."));
 	
 	KTScene *scene = m_projectManager->currentScene();
-	
+	m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
 	if ( scene )
 	{
 		m_statusBar->advance(4);
-		KTViewDocument *viewDocument = new KTViewDocument( m_projectManager->documentSize(),  name, m_projectManager->projectRender(),  m_projectManager->currentDocument(), m_drawingSpace);
+		dDebug() << "here";
+		KTViewDocument *viewDocument = new KTViewDocument( m_projectManager->documentSize(),  name, m_renderType,  m_projectManager->currentDocument(), m_drawingSpace);
+		dDebug() << "here2";
 		viewDocument->setAttribute(Qt::WA_DeleteOnClose, true);
 		m_drawingSpace->addWindow(viewDocument);
 		m_statusBar->advance(7);
@@ -210,7 +213,7 @@ void KTMainWindow::newViewCamera(KTScene *scene)
 	viewCamera->setAttribute(Qt::WA_DeleteOnClose, true);
 	connect(viewCamera, SIGNAL(sendMessage(const QString &, int)), m_statusBar, SLOT(setStatus(const QString &, int)));
 	connect(viewCamera, SIGNAL(sendProgress(int, int)), m_statusBar, SLOT(advance(int, int)));
-		
+	
 	m_animationSpace->addWindow(viewCamera);
 	
 	if ( scene )
@@ -231,9 +234,11 @@ void KTMainWindow::newProject()
 	connectToDisplays(wizard);
 	if ( wizard->exec() != QDialog::Rejected )
 	{
-		createNewProject( wizard->projectName(), wizard->dimension(), wizard->renderType(), wizard->fps() );
+		createNewProject( wizard->projectName(), wizard->dimension(), wizard->fps() );
 	}
 	delete wizard;
+	
+	
 }
 
 bool KTMainWindow::closeProject()

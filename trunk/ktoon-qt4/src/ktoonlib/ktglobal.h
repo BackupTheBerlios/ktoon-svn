@@ -27,7 +27,7 @@ namespace KToon
 {
 	enum RenderType
 	{
-		Image = 1,
+		Image = 0,
 		OpenGL,
 		Native
 	};

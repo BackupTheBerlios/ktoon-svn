@@ -19,6 +19,77 @@
  ***************************************************************************/
 #include "ktnewproject.h"
 
+KTNewProject::KTNewProject(QWidget *parent)
+	: DTabDialog(parent)
+{
+	setWindowTitle(tr("Create a new project"));
+	setModal(true);
+	
+	QFrame *container = new QFrame();
+	QGridLayout *layout = new QGridLayout(container);
+	
+	QLabel *labelProjectName = new QLabel(tr("Project Name"), container);
+	layout->addWidget(labelProjectName, 0, 0);
+	
+	m_projectName = new QLineEdit( container );
+	layout->addWidget(m_projectName, 0, 1);
+	
+	QLabel *labelAuthorName = new QLabel(tr("Author"), container);
+	layout->addWidget(labelAuthorName, 1, 0);
+	
+	m_authorName = new QLineEdit( container );
+	layout->addWidget(m_authorName, 1, 1);
+	
+	m_size = new DXYSpinBox("Dimension", container);
+	m_size->setMaximum( 1000);
+	m_size->setModifyTogether(true);;
+	
+	m_size->setX( 520 );
+	m_size->setY( 340);
+	
+	layout->addWidget(m_size, 2, 0);
+	
+	QGroupBox *renderAndFps= new QGroupBox();
+	
+	QBoxLayout *subLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+	renderAndFps->setLayout(subLayout);
+	
+	QBoxLayout *fpsLayout = new QBoxLayout(QBoxLayout::LeftToRight);
+	
+	QLabel *label = new QLabel(tr("FPS"));
+	m_fps = new QSpinBox();
+	m_fps->setValue(24);
+	
+	fpsLayout->addWidget(label);
+	fpsLayout->addWidget(m_fps);
+	subLayout->addLayout(fpsLayout);
+	
+	layout->addWidget(renderAndFps, 2, 1);
+	addTab( container, tr("Project info"));
+	
+	
+}
+KTNewProject::~KTNewProject()
+{
+}
+
+QString KTNewProject::projectName() const
+{
+	return m_projectName->text();
+}
+
+QSize KTNewProject::dimension() const
+{
+	QSize size( (int)m_size->x(), (int)m_size->y() );
+	return size;
+}
+
+int  KTNewProject::fps() const
+{
+	return m_fps->value();
+}
+
+#if 0
 #include <QLabel>
 #include <QLineEdit>
 #include <QLayout>
@@ -34,9 +105,6 @@ KTNewProject::KTNewProject(QWidget *parent)
 }
 
 
-KTNewProject::~KTNewProject()
-{
-}
 
 QString KTNewProject::projectName() const
 {
@@ -159,3 +227,5 @@ QString NPFirstPage::renderType() const
 {
 	return m_renderType->currentText();
 }
+
+#endif

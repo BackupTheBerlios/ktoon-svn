@@ -52,9 +52,9 @@ QDomElement KTProjectManager::createXML( QDomDocument &doc )
 	author.setAttribute("value", "Anonymous");
 	meta.appendChild(author);
 	
-	QDomElement renderType = doc.createElement("renderType");
-	renderType.setAttribute("value", m_typeRender);
-	meta.appendChild(renderType);
+// 	QDomElement renderType = doc.createElement("renderType");
+// 	renderType.setAttribute("value", m_typeRender);
+// 	meta.appendChild(renderType);
 	
 	project.appendChild(meta);
 	
@@ -520,18 +520,9 @@ void  KTProjectManager::setDocumentSize(const QSize& size )
 	m_size = size;
 }
 
-void KTProjectManager::setProjectRender( const QString &typeRender)
-{
-	m_typeRender = typeRender;
-}
 void KTProjectManager::setProjectFPS( int fps )
 {
 	m_fps = fps;
-}
-
-QString KTProjectManager::projectRender( ) const
-{
-	return m_typeRender;
 }
 
 int KTProjectManager::fps()

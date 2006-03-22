@@ -24,14 +24,37 @@
 #include "dxyspinbox.h"
 #include <QComboBox>
 #include <QSpinBox>
+#include "dtabdialog.h"
+#include <QLineEdit>
 
-
-class NPFirstPage;
-class QLineEdit;
 
 /**
-	@author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
+
+class KTNewProject : public DTabDialog
+{
+	Q_OBJECT
+	public:
+		KTNewProject(QWidget *parent = 0);
+		~KTNewProject();
+		QString projectName() const;
+		QSize dimension() const;
+		int fps() const;
+		
+	signals:
+		void sendToStatus(const QString &);
+		void sendToOSD(const QString &, int);
+	
+	private:
+		QLineEdit *m_projectName;
+		QLineEdit *m_authorName;
+		QSpinBox *m_fps;
+		
+		DXYSpinBox *m_size;
+		
+};
+#if 0
 class KTNewProject : public DWizard
 {
 	Q_OBJECT
@@ -41,7 +64,7 @@ class KTNewProject : public DWizard
 		QString projectName() const;
 		QSize dimension() const;
 		int fps() const;
-		QString renderType() const;
+// 		QString renderType() const;
 	signals:
 		void sendToStatus(const QString &);
 		void sendToOSD(const QString &, int);
@@ -75,5 +98,5 @@ class NPFirstPage : public DWizardPage
 		
 		DXYSpinBox *m_size;
 };
-
+#endif
 #endif

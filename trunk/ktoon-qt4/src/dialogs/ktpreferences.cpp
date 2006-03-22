@@ -28,24 +28,34 @@
 
 #include <QLabel>
 #include <QLineEdit>
+#include <QComboBox>
 
 #include "dformfactory.h"
 
+
 class KTPreferences::GeneralPage : public QWidget
 {
+	Q_OBJECT
 	public:
 		GeneralPage();
 		~GeneralPage();
 		void saveValues();
 		
+// 		KToon::RenderType m_renderType;
+		
 	private:
 		QLineEdit *m_home, *m_repository, *m_browser;
+		QComboBox *m_renderType;
+		
+		
+// 	private slots:
+// 		void syncRenderType(int index);
 };
 
 KTPreferences::GeneralPage::GeneralPage()
 {
 	QVBoxLayout *layout = new QVBoxLayout(this);
-	
+// 	m_renderType = KToon::RenderType(0);
 	DCONFIG->beginGroup("General");
 	
 	m_home = new QLineEdit;
@@ -70,7 +80,19 @@ KTPreferences::GeneralPage::GeneralPage()
 		m_browser->setText(str);
 	}
 	
-	QLayout *form = DFormFactory::makeGrid( QStringList() << tr("KToon Home") << tr("Repository") << tr("Browser"), QWidgetList() << m_home << m_repository << m_browser);
+	str = DCONFIG->value("RenderType").toString();
+
+	m_renderType = new QComboBox();
+	
+	m_renderType->addItem ( tr("Image") ,  KToon::Image ) ;
+	m_renderType->addItem ( tr("OpenGL") , KToon::OpenGL );
+	m_renderType->addItem ( tr("Native") , KToon::Native );
+	if ( !str.isEmpty())
+	{
+		m_renderType->setCurrentIndex ( str.toInt() );
+	}
+
+	QLayout *form = DFormFactory::makeGrid( QStringList() << tr("KToon Home") << tr("Repository") << tr("Browser") << tr("Render Type"), QWidgetList() << m_home << m_repository << m_browser << m_renderType);
 	
 	layout->addLayout(form);
 	
@@ -103,8 +125,13 @@ void KTPreferences::GeneralPage::saveValues()
 		DCONFIG->setValue("Browser", str);
 	}
 	
+	DCONFIG->setValue("RenderType", QString::number((m_renderType->itemData(m_renderType->currentIndex ()).toInt())));
+	
 	DCONFIG->sync();
 }
+
+
+#include "ktpreferences.moc"
 
 //--------------- CONSTRUCTOR --------------------
 
@@ -155,4 +182,6 @@ void KTPreferences::apply()
 		dApp->setFont(m_fontChooser->font());
 	}
 }
+
+
 

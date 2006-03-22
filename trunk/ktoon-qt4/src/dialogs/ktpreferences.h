@@ -36,6 +36,7 @@
 #include "dtabdialog.h"
 #include "dconfigurationdialog.h"
 #include "dflatbutton.h"
+#include "ktglobal.h"
 
 class ColorSchemePref;
 
@@ -58,7 +59,7 @@ class KTPreferences : public DConfigurationDialog
 	public slots:
 		void apply();
 		void ok();
-    
+		
 	protected:
 };
 

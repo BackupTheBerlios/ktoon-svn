@@ -121,7 +121,7 @@ class KTMainWindow : public DMainWindow
 		void updateOpenRecentMenu(QMenu *menu);
 		
 	private slots:
-		void createNewProject(const QString &name, const QSize &size = QSize(-1,-1), const QString& renderType = tr("Image"), const int fps = 24  );
+		void createNewProject(const QString &name, const QSize &size = QSize(-1,-1),  const int fps = 24  );
 		void newViewDocument(const QString &name = QString::null);
 		void newViewCamera(KTScene *scene = 0);
 		void newProject();
@@ -188,6 +188,7 @@ class KTMainWindow : public DMainWindow
 		
 	private:
 		KTProjectManager *m_projectManager;
+		KToon::RenderType m_renderType;
 		
 	private:
 		KTWorkspace *m_drawingSpace;
@@ -210,6 +211,8 @@ class KTMainWindow : public DMainWindow
 		KTColorPalette *m_colorPalette;
 		KTPenWidget *m_penWidget;
 		KTGCEditor *m_gcEditor;
+		
+		
 		
 };
 

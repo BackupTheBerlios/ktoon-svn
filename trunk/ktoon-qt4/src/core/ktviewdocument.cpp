@@ -35,29 +35,15 @@
 #include "ktdrawingareaproperties.h"
 #include "ktpaintareaproperties.h"
 
-KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, const QString & renderType, KTDocument *doc, QWorkspace *parent ) : DMdiWindow(parent), m_document(doc), m_title(projectName)
+KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, KToon::RenderType renderType, KTDocument *doc, QWorkspace *parent ) : DMdiWindow(parent), m_document(doc), m_title(projectName)
 {
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/layer_pic.png") ); // FIXME: new image for documents
 	
 	m_actionManager = new DActionManager(this);
 	
 	m_history = new DCommandHistory(m_actionManager);
-	
-	KToon::RenderType type;
-	if(renderType == tr("Native"))
-	{
-		type = KToon::Native;
-	}
-	else if(renderType == tr("OpenGL"))
-	{
-		type = KToon::OpenGL;
-	}
-	else
-	{
-		type = KToon::Image;
-	}
-	
-	m_paintAreaContainer = new KTPaintAreaContainer(size,type,  this);
+		
+	m_paintAreaContainer = new KTPaintAreaContainer(size,renderType,  this);
 	
 	setCentralWidget ( m_paintAreaContainer );
 	
