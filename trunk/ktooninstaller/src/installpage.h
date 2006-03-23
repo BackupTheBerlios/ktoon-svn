@@ -21,7 +21,7 @@
 #ifndef INSTALLPAGE_H
 #define INSTALLPAGE_H
 
-#include <ktwizard.h>
+#include <dgui/dwizard.h>
 #include <qprogressbar.h>
 #include <QDir>
 #include <QList>
@@ -35,7 +35,7 @@ class QCheckBox;
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class InstallPage : public KTWizardPage
+class InstallPage : public DWizardPage
 {
 	Q_OBJECT
 	public:

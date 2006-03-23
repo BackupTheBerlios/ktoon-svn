@@ -21,13 +21,13 @@
 #ifndef LICENCEPAGE_H
 #define LICENCEPAGE_H
 
-#include <ktwizard.h>
+#include <dgui/dwizard.h>
 #include <qcheckbox.h>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class LicencePage : public KTWizardPage
+class LicencePage : public DWizardPage
 {
 	Q_OBJECT
 	public:

@@ -24,13 +24,13 @@
 #define KTOONINSTALLER_H
 
 #include <QMainWindow>
-#include <ktwizard.h>
+#include <dgui/dwizard.h>
 
 #include "welcomepage.h"
 #include "licencepage.h"
 #include "installpage.h"
 
-class KToonInstaller: public KTWizard
+class KToonInstaller: public DWizard
 {
 	Q_OBJECT
 

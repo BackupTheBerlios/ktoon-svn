@@ -21,12 +21,12 @@
 #ifndef WELCOMEPAGE_H
 #define WELCOMEPAGE_H
 
-#include <ktwizard.h>
+#include <dgui/dwizard.h>
 
 /**
 	@author David Cuadrado <krawek@toonka.com>
 */
-class WelcomePage : public KTWizardPage
+class WelcomePage : public DWizardPage
 {
 	Q_OBJECT
 	public:

@@ -19,17 +19,21 @@
  ***************************************************************************/
 
 #include "ktooninstaller.h"
-#include "ktdebug.h"
+#include "dcore/ddebug.h"
 
 #if !defined(Q_OS_UNIX)
 #error Only supports unix systems
 #endif
 
-#include "ktapplication.h"
+#include "dgui/dapplication.h"
+#include "dcore/dapplicationproperties.h"
+
+#include <dglobal.h>
 
 int main( int argc, char ** argv )
 {
-	KTApplication app( argc, argv );
+	DApplication app( argc, argv );
+	
 	
 	
 	QString ktoonHome;
@@ -39,7 +43,7 @@ int main( int argc, char ** argv )
 		
 		if ( QFile::exists(ktoonHome ) )
 		{
-			ktDebug() << "Configuring with: " << ktoonHome;
+			dDebug() << "Configuring with: " << ktoonHome;
 		}
 		else
 		{
@@ -47,11 +51,11 @@ int main( int argc, char ** argv )
 		}
 	}
 	
-	app.setHome(ktoonHome);
+	dAppProp->setHomeDir(ktoonHome);
 	
-	if ( app.home().isEmpty() )
+	if ( dAppProp->homeDir().isEmpty() )
 	{
-		ktFatal() << QObject::tr("Please don't use this binary directly");
+		dFatal() << QObject::tr("Please don't use this binary directly");
 		return -1;
 	}
 	

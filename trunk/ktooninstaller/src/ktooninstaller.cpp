@@ -38,7 +38,7 @@
 #include "fileprint.xpm"
 
 
-KToonInstaller::KToonInstaller() : KTWizard(0)
+KToonInstaller::KToonInstaller() : DWizard(0)
 {
 	m_welcomePage = new WelcomePage(this);
 	addPage( m_welcomePage );

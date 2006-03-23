@@ -24,7 +24,7 @@
 #include "welcome.xpm"
 
 WelcomePage::WelcomePage(QWidget *parent)
-	: KTWizardPage(tr("Welcome"), parent)
+	: DWizardPage(tr("Welcome"), parent)
 {
 	QString text = tr("<p>KToon is a 2d animation tool kit that...</p>");
 	QLabel *message = new QLabel(text);

@@ -27,18 +27,18 @@
 
 #include <unistd.h> // getuid
 
-#include "ktimagebutton.h"
-#include "ktdebug.h"
+#include "dimagebutton.h"
+#include "ddebug.h"
 
 #include "fileopen.xpm"
 #include "install.xpm"
 
-#include "ktglobal.h"
+#include "dglobal.h"
 
 #include "kseparator.h"
 
 InstallPage::InstallPage(QWidget *parent)
-	: KTWizardPage(tr("Install"), parent), m_isComplete(false)
+	: DWizardPage(tr("Install"), parent), m_isComplete(false)
 {
 	QWidget *container = new QWidget;
 	
@@ -54,7 +54,7 @@ InstallPage::InstallPage(QWidget *parent)
 	
 	destLayout->addWidget(m_destinationPath);
 	
-	KTImageButton *explorer = new KTImageButton(QIcon(fileopen), 16, 0, true);
+	DImageButton *explorer = new DImageButton(QIcon(fileopen), 16, 0, true);
 	connect(explorer, SIGNAL(clicked()), this, SLOT(chooseDestination()));
 	destLayout->addWidget(explorer);
 	
@@ -128,9 +128,9 @@ void InstallPage::chooseDestination()
 
 void InstallPage::install()
 {	
-	QDir toCopy(KTOON_HOME );
+	QDir toCopy( HOME );
 	
-	if ( !KTOON_HOME.isEmpty() && !m_destinationPath->text().isEmpty() )
+	if ( !HOME.isEmpty() && !m_destinationPath->text().isEmpty() )
 	{
 		installDir(toCopy);
 		m_isComplete = true;
@@ -158,7 +158,7 @@ void InstallPage::installDir(const QDir &toCopy)
 {
 	QFileInfoList files = toCopy.entryInfoList ();
 	
-	QDir destination = (m_destinationPath->text() +"/"+ toCopy.path().remove(KTOON_HOME));
+	QDir destination = (m_destinationPath->text() +"/"+ toCopy.path().remove(HOME));
 	
 	if ( ! destination.exists() )
 	{
@@ -194,9 +194,9 @@ void InstallPage::generateLauncher()
 		// Write header
 		ts << "#!/bin/bash" << endl;
 		
-		ts << "export KTOON_HOME=" << m_destinationPath->text() << endl;
-		ts << "export LD_LIBRARY_PATH=$KTOON_HOME/lib" << endl;
-		ts << "exec $KTOON_HOME/bin/ktoon $*" << endl;
+		ts << "export HOME=" << m_destinationPath->text() << endl;
+		ts << "export LD_LIBRARY_PATH=$HOME/lib" << endl;
+		ts << "exec $HOME/bin/ktoon $*" << endl;
 		
 		launcher.close();
 		
@@ -280,7 +280,7 @@ void InstallPage::generateMenuEntry(const QString &path)
 
 void InstallPage::launchApplication()
 {
-	ktDebug() << "Launching application!";
+	dDebug() << "Launching application!";
 	
 	if ( QFile::exists( QDir::homePath()+"/.ktoon") )
 	{
@@ -294,7 +294,7 @@ void InstallPage::launchApplication()
 
 void InstallPage::aboutToFinish()
 {
-	KT_FUNCINFO;
+	D_FUNCINFO;
 	if (m_launchApp->isChecked() )
 	{
 		launchApplication();

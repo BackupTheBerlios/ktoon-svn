@@ -3,10 +3,22 @@
 # Subdir relative project main directory: ./src
 # Target is an application:  ../bin/setup.bin
 
-!exists($(KTOON_HOME)) {
-	error("Please define KTOON_HOME")
-}
-
+QT += xml 
+KDEV_QTVER = 4 
+LIBS += -lstore \
+        -lktoonlib \
+        -ldgui \
+        -ldcore 
+INCLUDEPATH += $(KTOON_HOME)/include/dgui \
+               $(KTOON_HOME)/include/dcore \
+               $(KTOON_HOME)/include 
+QMAKE_LIBDIR = $(KTOON_HOME)/lib 
+TARGET = ../bin/setup.bin 
+CONFIG += release \
+          warn_on \
+          qt \
+          thread 
+TEMPLATE = app 
 HEADERS += ktooninstaller.h \
            welcomepage.h \
            licencepage.h \
@@ -16,14 +28,6 @@ SOURCES += ktooninstaller.cpp \
            welcomepage.cpp \
            licencepage.cpp \
            installpage.cpp 
-QT += xml 
-KDEV_QTVER = 4 
-LIBS += -lktoon 
-INCLUDEPATH += $(KTOON_HOME)/include 
-QMAKE_LIBDIR += $(KTOON_HOME)/lib 
-TARGET = ../bin/setup.bin 
-CONFIG += release \
-          warn_on \
-          qt \
-          thread 
-TEMPLATE = app 
+!exists($(KTOON_HOME)) {
+error("Please define KTOON_HOME")
+}
