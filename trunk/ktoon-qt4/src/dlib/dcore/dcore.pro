@@ -3,8 +3,11 @@
 # Subdir relative project main directory: ./src/dlib/dcore
 # Target is a library:  
 
-INSTALLS += target 
+INSTALLS += include \
+            target 
 target.path = /lib/ 
+include.files += *.h 
+include.path = /include/dcore/ 
 HEADERS += aspelliface.h \
            dalgorithm.h \
            dbrushadjuster.h \

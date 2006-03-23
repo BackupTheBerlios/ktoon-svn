@@ -3,8 +3,11 @@
 # Subdir relative project main directory: ./src/dlib/dgui
 # Target is a library:  
 
-INSTALLS += target 
+INSTALLS += include \
+            target 
 target.path = /lib/ 
+include.files += *.h 
+include.path = /include/dgui/ 
 HEADERS += ccbar.h \
            ccbutton.h \
            collapsiblewidget.h \
@@ -51,7 +54,8 @@ HEADERS += ccbar.h \
            ddatetable.h \
            dcommand.h \
            dthemedocument.h \
-           dthememanager.h 
+           dthememanager.h \
+           dclicklineedit.h 
 SOURCES += ccbar.cpp \
            ccbutton.cpp \
            collapsiblewidget.cpp \
@@ -97,7 +101,8 @@ SOURCES += ccbar.cpp \
            ddatetable.cpp \
            dcommand.cpp \
            dthemedocument.cpp \
-           dthememanager.cpp 
+           dthememanager.cpp \
+           dclicklineedit.cpp 
 RESOURCES += images.qrc
 QT += xml
 KDEV_QTVER = 4
