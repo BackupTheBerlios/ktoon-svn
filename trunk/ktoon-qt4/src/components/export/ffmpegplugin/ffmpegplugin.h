@@ -42,10 +42,7 @@ class FFMpegPlugin : public KTExportPluginObject, public ExportInterface
 		
 	private:
 		QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir,float sx = 1, float sy = 1, const char *format = "PNG");
-#ifdef HAVE_FFMPEG
 		QSize m_size;
-#endif
-		
 };
 
 #endif
