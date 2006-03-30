@@ -70,11 +70,16 @@ CWFirstPage::CWFirstPage(QWidget *parent) : DWizardPage(tr("Welcome"), parent)
 {
 	QImage img(wizard1_xpm);
 	
-	setPixmap( QPixmap::fromImage(KImageEffect::blend(img, 0.1f, palette().color(QPalette::Background), KImageEffect::DiagonalGradient, true)) );
+	setPixmap( QPixmap::fromImage(/* ::blend(img, 0.1f, palette().color(QPalette::Background), KImageEffect::DiagonalGradient, true)*/img) );
 
-	QLabel *msg = new QLabel(tr("<h3>KToon</h3><br>"
-			"In this wizard you need set a values for proper configuration of ktoon<br><br>"
-			"<em>--The KToon Team</em>"));
+	QLabel *msg = new QLabel(tr("<h1>Welcome to the KToon Configuration wizard!</h1><br><br>"
+			"<table border=0 align=right ><tr><td>- KToon is a 2D Animation Toolkit designed by animators for animators.</td></tr><tr><td>- KToon is free/open software and it is covered under the GNU GPL license terms.</td></tr><tr><td>- KToon is Software Project developed by Toonka Films (http://www.toonka.com)</td></tr></table><br><br>"
+
+			"This is an \"easy to use tool\" to allow you to configure your KToon environment.<br><br>"
+
+			"Please, choose the \"Next\" button to setting up some parameters<br> required to use KToon correctly or use the \"Cancel\" button<br> to close this dialog. Enjoy KToon!<br><br><br>"
+
+			"<em>--The KToon Team</em><br><br>"));
 	
 	setWidget(msg);
 }
@@ -94,16 +99,17 @@ CWSecondPage::CWSecondPage(QWidget *parent) : DWizardPage(tr("Configure KToon"),
 	
 	new QLabel(tr("<h3>Step 1<h3>"), container);
 	
-	new QLabel(tr("Choose your KToon install directory"), container);
+	new QLabel(tr("Choose your KToon installation directory"), container);
 	
 	DVHBox *hbox1 = new DVHBox(container, Qt::Horizontal);
 	
-	m_kthome = new QLineEdit("", hbox1);
+	m_kthome = new QLineEdit(QString::fromLocal8Bit(::getenv("KTOON_HOME")), hbox1);
+	
 	connect(m_kthome, SIGNAL(textChanged(const QString &)), this, SLOT(verify(const QString &)));
 
-	m_kthome->setToolTip(tr("Choose your HOME directory"));
+	m_kthome->setToolTip(tr("Choose the directory where KToon is installed"));
 	
-	QPushButton *button = new QPushButton(tr("browse..."), hbox1);
+	QPushButton *button = new QPushButton(tr("Browse..."), hbox1);
 	
 	QFileDialog *fd = new QFileDialog(hbox1);
 	connect(fd, SIGNAL(currentChanged ( const QString & )), m_kthome, SLOT(setText(const QString &)));
@@ -112,14 +118,15 @@ CWSecondPage::CWSecondPage(QWidget *parent) : DWizardPage(tr("Configure KToon"),
 	fd->hide();
 	connect(button, SIGNAL(clicked()), fd, SLOT(show()));
 	
-	new QLabel(tr("Choose your project directory"), container);
+	new QLabel(tr("Choose a temporal directory"), container);
 	
 	DVHBox *hbox2 = new DVHBox(container, Qt::Horizontal);
 	
-	m_ktrepos = new QLineEdit("",hbox2);
+	m_ktrepos = new QLineEdit("/tmp/ktoon",hbox2);
+	
 	connect(m_ktrepos, SIGNAL(textChanged(const QString &)), this, SLOT(verify(const QString &)));
 	
-	m_ktrepos->setToolTip(tr("In this directory will be save your projects"));
+	m_ktrepos->setToolTip(tr("Choose the directory for temporal files"));
 	
 	QFileDialog *fd2 = new QFileDialog(hbox2);
 	connect(fd2, SIGNAL(currentChanged ( const QString & )), m_ktrepos, SLOT(setText(const QString &)));
@@ -127,15 +134,11 @@ CWSecondPage::CWSecondPage(QWidget *parent) : DWizardPage(tr("Configure KToon"),
 	fd2->hide();
 	fd2->setFileMode(QFileDialog::Directory);
 	fd2->setModal(true);
-	QPushButton *button2 = new QPushButton(tr("browse..."), hbox2);
+	QPushButton *button2 = new QPushButton(tr("Browse..."), hbox2);
 	
 	connect(button2, SIGNAL(clicked()), fd2, SLOT(show()));
 	
 	setWidget(container);
-	
-	
-	m_kthome->setText(HOME);
-	m_ktrepos->setText(REPOSITORY);
 }
 
 CWSecondPage::~ CWSecondPage()

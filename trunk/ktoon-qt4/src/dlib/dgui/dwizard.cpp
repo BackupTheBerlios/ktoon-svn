@@ -178,7 +178,7 @@ DWizardPage::DWizardPage(const QString &title, QWidget *parent) : DVHBox(parent)
 void DWizardPage::setPixmap(const QPixmap &px)
 {
 	QImage image = px.toImage();
-	KImageEffect::hash( image, KImageEffect::SouthLite, 1);
+// 	KImageEffect::hash( image, KImageEffect::SouthLite, 1);
 	m_image->setPixmap(QPixmap::fromImage(image));
 	m_image->show();
 }

@@ -249,13 +249,13 @@ bool KTMainWindow::closeProject()
 		return true;
 	}
 	
-	QMessageBox mb(QApplication::applicationName (), "Do you want to save?",
+	QMessageBox mb(QApplication::applicationName (), tr("Do you want to save?"),
 		       QMessageBox::Information,
 		       QMessageBox::Yes | QMessageBox::Default,
 		       QMessageBox::No,
 		       QMessageBox::Cancel | QMessageBox::Escape);
-	mb.setButtonText(QMessageBox::Yes, "Save");
-	mb.setButtonText(QMessageBox::No, "Discard");
+	mb.setButtonText(QMessageBox::Yes, tr("Save"));
+	mb.setButtonText(QMessageBox::No, tr("Discard"));
 	
 	switch(mb.exec())
 	{
@@ -275,6 +275,7 @@ bool KTMainWindow::closeProject()
 		break;
 	}
 	
+	m_pActiveTabWidget->setCurrentWidget(m_drawingSpace);
 	m_projectManager->close();
 	
 	m_drawingSpace->closeAllWindows();

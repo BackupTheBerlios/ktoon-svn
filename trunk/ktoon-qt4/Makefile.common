@@ -3,10 +3,10 @@ all: build
 
 confclean:
 	cd configure.tests 
-	cd configure.tests/ffmpeg && make clean 
-	cd configure.tests/sound && make clean 
-	cd configure.tests/gif && make clean 
-	cd configure.tests/ming && make clean 
+	cd configure.tests/ffmpeg && make clean && make distclean  
+	cd configure.tests/sound && make clean && make distclean
+	cd configure.tests/gif && make clean && make distclean
+	cd configure.tests/ming && make clean && make distclean
 
 install_plugins:
 	cd src/modules/ && make install

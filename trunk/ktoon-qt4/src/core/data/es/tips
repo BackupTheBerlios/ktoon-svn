@@ -1,7 +1,6 @@
 <TipOfDay>
-	<tip>Tip1</tip>
-	<tip>Tip2</tip>
-	<tip>Tip3</tip>
-	<tip>Tip4</tip>
-	<tip>Tip5</tip>
+	<tip>Puedes crear brochas personalizadas escogiendo la opcion \"Tools -> Brushes -> Shape Brush\".</tip>
+	<tip>Si encuentras errores en esta aplicacion, o tienes alguna sugerencia sobre KToon, por favor, reportalos desde    http://developer.berlios.de/bugs/?group_id=2960</tip>
+	<tip>Si descubres un nuevo tip y deseas compartirlo. Por favor, añadelo en nuestro wiki: http://ktoon.toonka.com/documentation/index.php?title=Tips-es</tip>
+	<tip>Puedes elegir el comportamiento de la interfaz grafico de KToon. Si haces doble click en el titulo de una ventana de herramienta, la ventana empotrada la ventana flotará.</tip>
 </TipOfDay>

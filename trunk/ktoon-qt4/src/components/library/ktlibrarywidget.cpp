@@ -218,7 +218,7 @@ void KTLibraryWidget::removeCurrentGraphic()
 	
 	if ( ! noAsk )
 	{
-		DOptionalDialog dialog(tr("Do you want remove this component?"),tr("Remove?"), this);
+		DOptionalDialog dialog(tr("Do you want to remove this component?"),tr("Remove?"), this);
 		
 		if( dialog.exec() == QDialog::Rejected )
 		{

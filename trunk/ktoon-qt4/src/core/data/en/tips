@@ -1,7 +1,6 @@
 <TipOfDay>
-	<tip>Tip1</tip>
-	<tip>Tip2</tip>
-	<tip>Tip3</tip>
-	<tip>Tip4</tip>
-	<tip>Tip5</tip>
+	<tip>You can to create customized brushes choosing the option \"Tools -> Brushes -> Shape Brush\".</tip>
+	<tip>If you find bugs on this application, or you have suggestions about KToon, please, report them from    http://developer.berlios.de/bugs/?group_id=2960</tip>
+	<tip>If you discover a new tip and you want to share it. Please, add it in our wiki site: http://ktoon.toonka.com/documentation/index.php?title=Tips</tip>
+	<tip>You can choose the behaivor of the KToon interface. If you do a double click in any tool window title, the docked window will change to a floating window.</tip>
 </TipOfDay>
