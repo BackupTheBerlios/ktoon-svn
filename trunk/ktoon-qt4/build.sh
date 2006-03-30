@@ -97,9 +97,13 @@ function buildenv()
 		echo export PATH=\$PATH:$KTOON_HOME/bin >> $KTOON_GLOBAL_ENV
 		echo export LD_LIBRARY_PATH=$KTOON_HOME/lib:\$LD_LIBRARY_PATH >> $KTOON_GLOBAL_ENV
 	else
-		echo export KTOON_HOME=$KTOON_HOME > $KTOON_LOCAL_ENV
+		echo case \":\$LD_LIBRARY_PATH:\" in > $KTOON_LOCAL_ENV
+		echo   \*:$KTOON_HOME/lib:\*\) \;\; >> $KTOON_LOCAL_ENV
+		echo   \*\) export LD_LIBRARY_PATH=$KTOON_HOME/lib:\${LD_LIBRARY_PATH} >> $KTOON_LOCAL_ENV
+		echo export KTOON_HOME=$KTOON_HOME >> $KTOON_LOCAL_ENV
 		echo export PATH=\$PATH:$KTOON_HOME/bin >> $KTOON_LOCAL_ENV
-		echo export LD_LIBRARY_PATH=$KTOON_HOME/lib:\$LD_LIBRARY_PATH >> $KTOON_LOCAL_ENV
+		echo \;\; >> $KTOON_LOCAL_ENV
+		echo esac >> $KTOON_LOCAL_ENV
 	fi
 }
 

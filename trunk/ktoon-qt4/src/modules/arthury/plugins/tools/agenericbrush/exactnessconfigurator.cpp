@@ -34,7 +34,7 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 	QBoxLayout *mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 	
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
-	QLabel *label = new QLabel(tr("Exactness"));
+	QLabel *label = new QLabel(tr("Smoothness"));
 	layout->addWidget(label);
 	m_exactness = new QDoubleSpinBox();
 	
