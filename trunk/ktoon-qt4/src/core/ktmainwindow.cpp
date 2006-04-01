@@ -50,9 +50,12 @@
 #include <QMessageBox>
 //
 
-KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(),m_renderType(KToon::Image), m_exposureSheet(0), m_scenes(0)
+KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0), m_scenes(0)
 {
 	DINIT;
+	
+	m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
+	
 	
 	setObjectName("KTMainWindow_");
 	
@@ -102,7 +105,6 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(),m_renderType(KToon:
 	{
 		QTimer::singleShot(0, this, SLOT(showTipDialog()));
 	}
-	
 }
 
 
@@ -159,9 +161,7 @@ void KTMainWindow::newViewDocument(const QString &name)
 	if ( scene )
 	{
 		m_statusBar->advance(4);
-		dDebug() << "here";
 		KTViewDocument *viewDocument = new KTViewDocument( m_projectManager->documentSize(),  name, m_renderType,  m_projectManager->currentDocument(), m_drawingSpace);
-		dDebug() << "here2";
 		viewDocument->setAttribute(Qt::WA_DeleteOnClose, true);
 		m_drawingSpace->addWindow(viewDocument);
 		m_statusBar->advance(7);
@@ -350,7 +350,7 @@ void KTMainWindow::openProject(const QString &path)
 
 void KTMainWindow::save()
 {
-	dDebug() << "Saving.." << endl;
+	dDebug() << "Saving..";
 	QTimer::singleShot(0, this, SLOT(saveProject()));
 	
 	

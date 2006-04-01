@@ -26,10 +26,11 @@
 #include <QMouseEvent>
 #include <QApplication>
 #include <QPushButton>
+#include <QToolTip>
 
 #include <ddebug.h>
 
-KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent), m_separator(0)
+KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent), m_separator(0), m_toolTipShowed(false)
 {
 	setAllowedAreas ( Qt::RightDockWidgetArea );
 	
@@ -37,6 +38,7 @@ KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent),
 	
 	connect(&m_locker, SIGNAL(timeout()), this, SLOT(toggleLock()));
 	connect(&m_shower, SIGNAL(timeout()), this, SLOT(showConfigurator()));
+	
 // 	findSeparator();
 }
 
@@ -47,8 +49,7 @@ KTConfigurationArea::~KTConfigurationArea()
 void KTConfigurationArea::setConfigurator(QWidget *w)
 {
 	QWidget *old = widget();
-	
-	if ( old == w ) return;
+	if ( !w || old == w ) return;
 	
 	if ( old )
 	{
@@ -56,7 +57,6 @@ void KTConfigurationArea::setConfigurator(QWidget *w)
 	}
 	
 	setWidget(w);
-
 }
 
 void KTConfigurationArea::findSeparator()
@@ -168,6 +168,7 @@ void KTConfigurationArea::showConfigurator()
 	
 	if ( widget && !isFloating () )
 	{
+		widget->setMinimumWidth(0);
 		widget->setVisible(true);
 		
 		QPalette pal = parentWidget()->palette();
@@ -179,13 +180,17 @@ void KTConfigurationArea::showConfigurator()
 	}
 	
 	m_shower.stop();
+	
+	m_mousePos = QCursor::pos();
 }
 
 void KTConfigurationArea::hideConfigurator()
 {
 	QWidget *widget = this->widget();
+	
 	if ( widget && !isFloating () )
 	{
+		widget->setMinimumWidth(10);
 		widget->setVisible(false);
 		setFeatures(QDockWidget::NoDockWidgetFeatures );
 		
@@ -199,7 +204,16 @@ void KTConfigurationArea::hideConfigurator()
 		for (int i = 0; i < 2; ++i)
 			qApp->processEvents();
 		shrink();
+		
+		
+		if ( !m_toolTipShowed )
+		{
+			QToolTip::showText (m_mousePos, tr("Cursor here for expand"), this );
+			m_toolTipShowed = true;
+		}
 	}
+	
+	m_mousePos = QCursor::pos();
 }
 
 

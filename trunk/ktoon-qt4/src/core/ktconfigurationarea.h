@@ -57,6 +57,9 @@ class KTConfigurationArea : public QDockWidget
 		QWidget *m_separator;
 		QTimer m_locker;
 		QTimer m_shower;
+		bool m_toolTipShowed;
+		
+		QPoint m_mousePos;
 };
 
 #endif

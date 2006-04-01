@@ -538,7 +538,7 @@ void KTViewDocument::selectTool()
 	{
 		AToolInterface *aTool = qobject_cast<AToolInterface *>(action->parent());
 		QString tool = action->text();
-
+		
 		switch(aTool->type())
 		{
 			case AToolInterface::Brush:
@@ -575,17 +575,16 @@ void KTViewDocument::selectTool()
 		
 		QWidget *toolConfigurator = aTool->configurator();
 		
-		if ( toolConfigurator )
+		dDebug() << aTool->keys();
+		if ( toolConfigurator && m_configurationArea)
 		{
 			m_configurationArea->setConfigurator( toolConfigurator);
 			toolConfigurator->show();
-			
 			if ( !m_configurationArea->isVisible() )
 			{
 				m_configurationArea->show();
 			}
 		}
-		
 		m_paintAreaContainer->drawArea()->setTool(aTool, tool);
 		m_paintAreaContainer->drawArea()->setCursor(action->cursor());
 	}

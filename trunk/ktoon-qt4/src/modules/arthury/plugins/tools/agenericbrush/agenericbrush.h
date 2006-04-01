@@ -37,10 +37,8 @@ class AGenericBrush : public KTToolPluginObject, public AToolInterface
 	Q_INTERFACES(AToolInterface);
 	
 	public:
-		AGenericBrush()
-		{
-			m_configurator = new ExactnessConfigurator;
-		}
+		AGenericBrush();
+		virtual ~AGenericBrush();
 		virtual QStringList keys() const;
 		virtual QRect press(const QString &brush, QPainter &painter,const QPoint &pos, KTKeyFrame *currentFrame = 0);
 		virtual QRect move(const QString &brush, QPainter &painter,const QPoint &oldPos, const QPoint &newPos);

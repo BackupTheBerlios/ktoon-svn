@@ -27,6 +27,16 @@
 #include "dglobal.h"
 #include "ktgraphicalgorithm.h"
 
+AGenericBrush::AGenericBrush() : m_configurator(0)
+{
+	m_configurator = new ExactnessConfigurator;
+}
+
+AGenericBrush::~AGenericBrush()
+{
+	delete m_configurator;
+}
+
 QStringList AGenericBrush::keys() const
 {
 	return QStringList() << tr("Pencil") ;
