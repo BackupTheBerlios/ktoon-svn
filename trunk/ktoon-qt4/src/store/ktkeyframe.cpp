@@ -21,7 +21,7 @@
 #include "ktkeyframe.h"
 #include "ddebug.h"
 
-KTKeyFrame::KTKeyFrame(const KTKeyFrame &kf) : KTSerializableObject(kf.parent()), m_name(kf.m_name), m_isLocked(kf.m_isLocked), m_nClones(0)/*, m_components(QList<AGraphicComponent *>(kf.m_components))*/
+KTKeyFrame::KTKeyFrame(const KTKeyFrame &kf) : KTSerializableObject(kf.parent()), m_name(kf.m_name), m_isLocked(kf.m_isLocked), m_nClones(kf.m_nClones)
 {
 	QList<AGraphicComponent *>::const_iterator it;
 	for(it = kf.m_components.begin(); it != kf.m_components.end(); ++it )
@@ -32,12 +32,12 @@ KTKeyFrame::KTKeyFrame(const KTKeyFrame &kf) : KTSerializableObject(kf.parent())
 
 
 
-KTKeyFrame::KTKeyFrame(QObject *parent) : KTSerializableObject(parent), m_name("Frame"), m_isLocked(false)
+KTKeyFrame::KTKeyFrame(QObject *parent) : KTSerializableObject(parent), m_name("Frame"), m_isLocked(false), m_nClones(0)
 {
 	
 }
 
-KTKeyFrame::KTKeyFrame(const QString &frameName, QObject * parent) : KTSerializableObject(parent), m_name(frameName), m_isLocked(false)
+KTKeyFrame::KTKeyFrame(const QString &frameName, QObject * parent) : KTSerializableObject(parent), m_name(frameName), m_isLocked(false), m_nClones(0)
 {	
 	
 }

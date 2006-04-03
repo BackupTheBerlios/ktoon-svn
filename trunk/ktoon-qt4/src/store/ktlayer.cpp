@@ -54,8 +54,6 @@ void KTLayer::setFrames(const Frames &frames)
 
 KTKeyFrame *KTLayer::createFrame(const QString& name, bool addToEnd)
 {
-	dDebug() << "createFrame(const QString&" <<  name.isNull() << "," << " bool" <<  addToEnd << ")" ;
-	
 	KTKeyFrame *keyFrame = new KTKeyFrame(this);
 	
 	m_framesCount++;
@@ -133,14 +131,22 @@ void KTLayer::pasteFrame(const int& index, const KTKeyFrame* copy)
 
 void KTLayer::cloneFrame(const int& index, int nClones)
 {
-	dDebug() << "cloneFrame(const int& " << index << "," << "int " << nClones << ")" ;
+	if ( nClones <= 0 || nClones >= 100 )
+	{
+		dDebug() << "Clones out of bound";
+		return;
+	}
+	
 	KTKeyFrame *clone = m_frames[index];
 	
 	if(clone)
 	{
+		dDebug() << "1";
 		clone->setClonesNumber( nClones);
+		dDebug() << "2";
 		for(int i = index+1; i <= index+nClones; i++)
 		{ 
+// 			dDebug() << "for1";
 			if(i == m_frames.count() )
 			{
 				m_frames << clone;
@@ -151,8 +157,10 @@ void KTLayer::cloneFrame(const int& index, int nClones)
 				emit frameCreated( clone->frameName(), false );
 				m_frames.insert ( i, clone );
 			}
+// 			dDebug() << "for2s";
 		}
 	}
+	dDebug() << "SALE";
 }
 
 void KTLayer::moveCurrentFrame( bool up)
