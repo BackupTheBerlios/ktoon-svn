@@ -59,7 +59,9 @@ void MingPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> 
 	{
 		temp.mkdir(temp.path());
 	}
-
+	
+	Ming_init();
+	
 	SWFMovie movie;
 	
 	movie.setRate(scenes[0]->fps() );

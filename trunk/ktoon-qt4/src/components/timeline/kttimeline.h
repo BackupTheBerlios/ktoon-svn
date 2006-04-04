@@ -42,6 +42,8 @@ class KTTimeLine : public KTModuleWidgetBase
 		KTLayerManager *currentLayerManager();
 		KTFrameSequenceContainer *currentFrameContainer();
 		
+		void closeAllScenes();
+		
 	private:
 		void setupPropertiesBar();
 		

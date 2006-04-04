@@ -310,3 +310,11 @@ void KTTimeLine::emitFrameSelected(int layer, int frame)
 	
 	emit frameSelected( layer, frame);
 }
+
+void KTTimeLine::closeAllScenes()
+{
+	while(m_container->currentWidget())
+	{
+		delete m_container->currentWidget();
+	}
+}

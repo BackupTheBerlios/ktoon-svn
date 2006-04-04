@@ -296,6 +296,7 @@ bool KTMainWindow::closeProject()
 	
 	// Clean widgets
 	m_exposureSheet->closeAllScenes();
+	m_timeLine->closeAllScenes();
 	m_scenes->closeAllScenes();
 	
 	
