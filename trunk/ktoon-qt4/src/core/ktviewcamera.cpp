@@ -49,15 +49,26 @@ KTViewCamera::Status::Status(QWidget *parent) : QStatusBar(parent)
 {
 	QWidget *sceneInfo = new QWidget;
 	m_sceneInfoLayout = new QHBoxLayout(sceneInfo);
+	m_sceneInfoLayout->setMargin(0);
+	
+	
+	QFont font = this->font();
+	font.setPointSize(6);
 	
 	QLabel *fpsText = new QLabel(tr("<B>FPS:</B> "));
+	fpsText->setFont(font);
 	m_fps = new QLabel;
-	
+	m_fps->setFont(font);
 	m_sceneInfoLayout->addWidget(fpsText);
 	m_sceneInfoLayout->addWidget(m_fps,2);
 	
 	m_sceneName = new QLabel;
-	m_sceneInfoLayout->addWidget(new QLabel(tr("<B>Scene name:</B> ")));
+	m_sceneName->setFont(font);
+	
+	QLabel *sceneNameText = new QLabel(tr("<B>Scene name:</B> "));
+	sceneNameText->setFont(font);
+	
+	m_sceneInfoLayout->addWidget(sceneNameText);
 	m_sceneInfoLayout->addWidget(m_sceneName,2);
 	
 	addPermanentWidget(sceneInfo,2);
@@ -82,6 +93,9 @@ void KTViewCamera::Status::setSceneName(const QString &name)
 
 void KTViewCamera::Status::addWidget(QWidget *widget, int stretch )
 {
+	QFont font = widget->font();
+	font.setPointSize(6);
+	widget->setFont(font);
 	m_sceneInfoLayout->addWidget(widget, stretch);
 }
 

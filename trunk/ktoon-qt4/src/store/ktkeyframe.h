@@ -62,6 +62,11 @@ class KTKeyFrame : public KTSerializableObject
 		~KTKeyFrame();
 		
 		/**
+		 * Pone los componentes
+		 */
+		void setComponents(const QList<AGraphicComponent *> &components);
+		
+		/**
 		 * Añade un componente al frame
 		 */
 		void addComponent(AGraphicComponent *comp);
@@ -166,6 +171,8 @@ class KTKeyFrame : public KTSerializableObject
 		void oneStepBackwardSelected();
 		
 		void setClonesNumber(int nClones);
+		
+		void clear(bool alsoDelete = false);
 		
 	private:
 		QList<AGraphicComponent *> m_components;

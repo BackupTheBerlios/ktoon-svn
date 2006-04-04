@@ -4,7 +4,7 @@
 # Target is a subdirs project 
 
 SUBDIRS += 3rdparty \
-	   src
+           src 
 KDEV_QTVER = 4
 CONFIG += release \
 warn_on

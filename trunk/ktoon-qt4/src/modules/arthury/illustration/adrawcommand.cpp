@@ -51,9 +51,9 @@ QString AAddGraphicCommand::name() const
 
 ADrawCommand::ADrawCommand(KTKeyFrame *frame) : DCommand(), m_frame(frame)
 {
-	foreach(AGraphicComponent *component, frame->selectedComponents())
+	foreach(AGraphicComponent *component, frame->components()) // FIXME: lots of memory 
 	{
-		m_originals << component;
+		m_originals << new AGraphicComponent(*component);
 		m_copies << new AGraphicComponent(*component);
 	}
 }
@@ -79,6 +79,7 @@ void ADrawCommand::execute()
 			copy->copyAttributes(tmp);
 		}
 	}
+	m_frame->setComponents(m_originals);
 }
 
 void ADrawCommand::unexecute()
@@ -97,6 +98,7 @@ void ADrawCommand::unexecute()
 			copy->copyAttributes(tmp);
 		}
 	}
+	m_frame->setComponents(m_copies);
 }
 
 QString ADrawCommand::name() const

@@ -50,10 +50,13 @@ KTKeyFrame::KTKeyFrame(const QString &frameName, QObject * parent) : KTSerializa
 
 KTKeyFrame::~KTKeyFrame()
 {
-	for(int i = 0; i < m_components.count(); i++ )
-	{
-		delete m_components.takeAt(i);
-	}
+	clear(true);
+}
+
+void KTKeyFrame::setComponents(const QList<AGraphicComponent *> &components)
+{
+	clear();
+	m_components = components;
 }
 
 void KTKeyFrame::addComponent(AGraphicComponent *comp)
@@ -165,6 +168,7 @@ void KTKeyFrame::removeSelections()
 		deSelectedComponent(comp);
 		m_components.removeAll(comp);
 		delete comp;
+		comp=0;
 	}
 }
 
@@ -251,4 +255,13 @@ void KTKeyFrame::replace(AGraphicComponent *orig, AGraphicComponent *newComponen
 void KTKeyFrame::setClonesNumber(int nClones)
 {
 	m_nClones = nClones;
+}
+
+void KTKeyFrame::clear(bool alsoDelete )
+{
+	if ( alsoDelete )
+	{
+		qDeleteAll(m_components.begin(), m_components.end());
+	}
+	m_components.clear();
 }

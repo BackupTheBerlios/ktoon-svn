@@ -3,18 +3,11 @@
 # Subdir relative project main directory: ./src/core
 # Target is an application:  ../../bin/ktoon
 
-INSTALLS += kttrans \
-            ktdata \
+INSTALLS += ktdata \
             target 
 target.path = /bin/ 
 ktdata.files += data/* 
 ktdata.path = /data 
-kttrans.files += *.qm 
-kttrans.path = /data/translations 
-TRANSLATIONS += ktoon_es.ts \
-                ktoon_fr.ts \
-                ktoon_ru.ts \
-                qt_es.ts 
 HEADERS += ktdocumentruler.h \
            ktviewdocument.h \
            ktmainwindow.h \
@@ -129,3 +122,8 @@ TARGET = ../../bin/ktoon
 CONFIG += release \
 warn_on
 TEMPLATE = app
+
+TRANSLATIONS += data/translations/ktoon_es.ts \
+		data/translations/ktoon_fr.ts \
+		data/translations/ktoon_ru.ts 
+		

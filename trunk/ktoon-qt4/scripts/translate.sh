@@ -5,13 +5,18 @@
 
 if [ ! "$0" == "translate.sh" ]
 then
-	echo "Use: sh translate.sh"
+	echo "Use: sh translate.sh [output.ts]"
 	exit 0
 fi
 
 KTDIR=$(pwd)/..
 KTTS=/tmp/ktoon_untranslated.ts
 TRPRO=trans.pro
+
+if [ $# -gt 0 ]
+then
+	KTTS=$1
+fi
 
 echo "Your translate file will be generated in " $KTTS
 

@@ -27,6 +27,7 @@
 #include <qtextcodec.h>
 #include <qmessagebox.h>
 #include <qdir.h>
+#include <QLocale>
 
 #include <QTranslator>
 
@@ -90,17 +91,28 @@ int main( int argc, char ** argv )
 		application.applyTheme(themefile);
 	}
 	
-	QTranslator *qttranslator = new QTranslator( 0 );
+	{
+		QString locale = QString(QLocale::system().name()).left(2);
 	
-	// 	qttranslator->load( QString( "qt_" ) + QString(QTextCodec::locale()).left(2), HOME+"/data/translations"); // FIXME FIXME FIXME
-
-	application.installTranslator( qttranslator );
+		if ( locale.length() < 2 )
+		{
+			locale = "en";
+		}
+		
+		QTranslator *qttranslator = new QTranslator;
+		
+		qttranslator->load( QString( "qt_" ) + locale, HOME+"/data/translations");
 	
-	QTranslator *translator = new QTranslator( 0 );
-// 	translator->load( QString( "ktoon_" ) + QString(QTextCodec::locale()).left(2),  HOME+"/data/translations");// FIXME FIXME FIXME
+		application.installTranslator( qttranslator );
+		
+		QTranslator *translator = new QTranslator;
+		translator->load( QString( "ktoon_" )+locale,  HOME+"/data/translations");
+		
+		dDebug() << "Cargand de " << HOME+"/data/translations" << " archivo: " << QString( "ktoon_" )+locale;
+		
+		application.installTranslator( translator );
+	}
 	
-	application.installTranslator( translator );
-
 // 	QWidget mainWindow;
 // 	mainWindow.show();
 	KTSplash *splash = new KTSplash;

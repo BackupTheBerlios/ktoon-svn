@@ -11,12 +11,10 @@ Jorge H. Cuadrado
 Versiones anteriores
 
 Simena Dinas
-<dsimena@toonka.com>
 <dsimena@gmail.com>
 
 Fernando Jose Roldan Correa
 <froldan@parquesoft.com>
-<froldan@toonka.com>
 
 
 Parche para compilar en Mac
@@ -39,59 +37,17 @@ David A. Cuadrado
 Jorge H. Cuadrado
 <kuadrosx@toonka.com>
 
-Fernando Jose Roldan Correa
-<froldan@parquesoft.com>
-<froldan@toonka.com>
-
 ----------------------------
 Traductores
 
 (Español) David A. Cuadrado
 <krawek@toonka.com>
 
-(Español) Simena Dinas
-<dsimena@toonka.com>
-<dsimena@gmail.com>
-
-(Frances) Fred P.
-<fprog26@hotmail.com>
-
-----------------------------
-Documentación para usuarios
-
-Simena Dinas
-<dsimena@toonka.com>
-<dsimena@gmail.com>
-
-----------------------------
-Documentación para usuarios corregida por:
-
-Monica Ortiz
-<moortiz@toonka.com>
-
 ----------------------------
 Diseño de iconos
 
 Carlos Andres Cajigas
-Pablo Cesar Gomez
-Elkin Grueso
-Cesar Hurtado
-
-----------------------------
-Probadores
-
-Pablo Cesar Gomez
-Elkin Grueso
-Cesar Hurtado
-Winston Maquillan
-
-----------------------------
-Diseño de logo
-
-Diego Trujillo (Electroboy)
-Atomica - Parquesoft
 
 
-
-2004-2006
+2005-2006
 
