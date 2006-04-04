@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -26,7 +26,7 @@
 WelcomePage::WelcomePage(QWidget *parent)
 	: DWizardPage(tr("Welcome"), parent)
 {
-	QString text = tr("<p>KToon is a 2d animation tool kit that...</p>");
+	QString text = tr("<p>KToon is a 2d animation toolkit</p>");
 	QLabel *message = new QLabel(text);
 	
 	setPixmap(QPixmap(welcome_xpm));
@@ -46,4 +46,5 @@ bool WelcomePage::isComplete()
 void WelcomePage::reset()
 {
 }
+
 

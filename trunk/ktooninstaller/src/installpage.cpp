@@ -60,6 +60,7 @@ InstallPage::InstallPage(QWidget *parent)
 	
 	layout->addLayout(destLayout);
 	
+	layout->addWidget(new KSeparator());
 	m_status = new QProgressBar(container);
 	layout->addWidget(m_status);
 	
@@ -194,9 +195,9 @@ void InstallPage::generateLauncher()
 		// Write header
 		ts << "#!/bin/bash" << endl;
 		
-		ts << "export HOME=" << m_destinationPath->text() << endl;
-		ts << "export LD_LIBRARY_PATH=$HOME/lib" << endl;
-		ts << "exec $HOME/bin/ktoon $*" << endl;
+		ts << "export KTOON_HOME=" << m_destinationPath->text() << endl;
+		ts << "export LD_LIBRARY_PATH=$KTOON_HOME/lib" << endl;
+		ts << "exec $KTOON_HOME/bin/ktoon $*" << endl;
 		
 		launcher.close();
 		

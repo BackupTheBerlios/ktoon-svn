@@ -34,8 +34,6 @@ int main( int argc, char ** argv )
 {
 	DApplication app( argc, argv );
 	
-	
-	
 	QString ktoonHome;
 	if ( argc == 2 )
 	{
@@ -60,8 +58,11 @@ int main( int argc, char ** argv )
 	}
 	
 	KToonInstaller * mw = new KToonInstaller();
-	mw->setWindowTitle( QObject::tr("KToon Installer = )"));
+	mw->setWindowTitle( QObject::tr("KToon Installer"));
+	
 	mw->show();
+
+	
 	
 	return app.exec();
 }
