@@ -2,7 +2,7 @@
 
 # Script that update the .pro files && build the app
 # Author: David Cuarado krawek [at] gmail [dot] com
-# Version: 0.1.0
+# Version: 0.5.0
 
 KTOON_GLOBAL_ENV=/etc/ktoon.env
 KTOON_LOCAL_ENV=~/.ktoon.env
@@ -20,13 +20,26 @@ STAT_FILE=/tmp/ktoon_stat_file-$RANDOM
 
 function fails ()
 {
+	# Stop thread
 	echo 'END=-1' > $STAT_FILE
 
 	echo 
 	qperror $*
-	echo "------ dmesg --------" >> $LOG_FILE
+	echo "---- dmesg ------------" >> $LOG_FILE
 	echo `dmesg | tail -n 10` >> $LOG_FILE
-	echo "---------------------" >> $LOG_FILE
+	echo "---- uname ------------" >> $LOG_FILE
+	echo `uname -a` >> $LOG_FILE
+	
+	echo "---- config.h ---------" >> $LOG_FILE
+	cat config.h >> $LOG_FILE
+	
+	echo "---- ktconfig.pri -----" >> $LOG_FILE
+	cat ${KT_CONFIG} >> $LOG_FILE
+
+	echo "---- gcc --------------" >> $LOG_FILE
+	echo `g++ --version` >> $LOG_FILE
+	echo "-----------------------" >> $LOG_FILE
+	
 	echo "Send the file $LOG_FILE to $EMAIL"
 
 	return -1
@@ -89,24 +102,6 @@ function updateMakefiles()
 	echo
 }
 
-function buildenv()
-{
-	if [ `whoami` == "root" ]
-	then
-		echo export KTOON_HOME=$KTOON_HOME > $KTOON_GLOBAL_ENV
-		echo export PATH=\$PATH:$KTOON_HOME/bin >> $KTOON_GLOBAL_ENV
-		echo export LD_LIBRARY_PATH=$KTOON_HOME/lib:\$LD_LIBRARY_PATH >> $KTOON_GLOBAL_ENV
-	else
-		echo case \":\$LD_LIBRARY_PATH:\" in > $KTOON_LOCAL_ENV
-		echo   \*:$KTOON_HOME/lib:\*\) \;\; >> $KTOON_LOCAL_ENV
-		echo   \*\) export LD_LIBRARY_PATH=$KTOON_HOME/lib:\${LD_LIBRARY_PATH} >> $KTOON_LOCAL_ENV
-		echo export KTOON_HOME=$KTOON_HOME >> $KTOON_LOCAL_ENV
-		echo export PATH=\$PATH:$KTOON_HOME/bin >> $KTOON_LOCAL_ENV
-		echo \;\; >> $KTOON_LOCAL_ENV
-		echo esac >> $KTOON_LOCAL_ENV
-	fi
-}
-
 function addMenuEntry()
 {
 	if [ `whoami` == "root" ]
@@ -124,57 +119,25 @@ function addMenuEntry()
 	fi
 }
 
+function createLauncher() {
+	LAUNCHER=${KTOON_HOME}/ktoon
+	echo "#!/bin/bash" > $LAUNCHER
+	echo "export KTOON_HOME=${KTOON_HOME}" >> $LAUNCHER
+	echo "export LD_LIBRARY_PATH=$KTOON_HOME/lib" >> $LAUNCHER
+	echo "exec $KTOON_HOME/bin/ktoon $*" >> $LAUNCHER
+	chmod 755 $LAUNCHER
+}
+
 function ktinstall()
 {
-	# this is a hack
-	updateMakefiles
 	$MAKE install 2>> $LOG_FILE >/dev/null || fails "Error while install!. Please send the file $LOG_FILE to $EMAIL"
-	
-	if [ $(basename `echo $SHELL`) == "bash" ]
-	then
-		buildenv
-		if [ `whoami` == "root" ]
-		then
-			if [ `grep -c "source $KTOON_GLOBAL_ENV" /etc/profile` -eq 0 ]
-			then
-				echo "source $KTOON_GLOBAL_ENV" >> /etc/profile
-			fi
-#install menu entry
-		else
-			if [ -f ~/.bash_profile ]
-			then
-				if [ `grep -c "source $KTOON_LOCAL_ENV" ~/.bash_profile` -eq 0 ]
-				then
-					echo "source $KTOON_LOCAL_ENV" >> ~/.bash_profile
-				fi
-			fi
 
-			if [ -f ~/.bashrc ]
-			then
-				if [ `grep -c "source $KTOON_LOCAL_ENV" ~/.bashrc` -eq 0 ]
-				then
-					echo "source $KTOON_LOCAL_ENV" >> ~/.bashrc
-				fi
-			else
-				echo "source $KTOON_LOCAL_ENV" >> ~/.bash_profile
-			fi
- 		fi
- 		
- 		addMenuEntry
-	fi
+	createLauncher
+ 	addMenuEntry
 }
 
 
-# compile ming
 
-# qpinfo "Compiling ming"
-
-#if [ ! -s $KTHOME/ming/Makefile ]
-#then
-#	echo "Removing " $KTHOME/ming/Makefile
-#	rm $KTHOME/ming/Makefile 2> /dev/null >/dev/null
-#	ln -s $KTHOME/ming/Makefile-real $KTHOME/ming/Makefile
-#fi
 
 function main()
 {

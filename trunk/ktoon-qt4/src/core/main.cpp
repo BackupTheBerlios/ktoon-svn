@@ -81,7 +81,7 @@ int main( int argc, char ** argv )
 		}
 	}
 	
-	dAppProp->setVersion("0.8beta");
+	dAppProp->setVersion("0.8_beta2");
 	dAppProp->setHomeDir(DCONFIG->value("Home").toString());
 	application.createRepository(DCONFIG->value("Repository").toString());
 	

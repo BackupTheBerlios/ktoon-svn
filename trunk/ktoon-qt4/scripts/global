@@ -1,12 +1,12 @@
 #!/bin/bash
 
 APPNAME="KToon"
-APPVER="0.8beta"
+APPVER="0.8_beta2"
 
 
 KT_CONFIG=ktconfig.pri
 
-EMAIL='ktoon@toonka.com'
+EMAIL='krawek@toonka.com'
 
 MAKE=`which make`
 QMAKE=`which qmake`
