@@ -166,7 +166,6 @@ void DConfigurationDialog::addPage(QWidget *page, const QString &title, const QI
 
 QWidget *DConfigurationDialog::currentPage()
 {
-	dDebug() << m_list->currentItem();
 	return m_pages[m_list->currentItem()];
 }
 

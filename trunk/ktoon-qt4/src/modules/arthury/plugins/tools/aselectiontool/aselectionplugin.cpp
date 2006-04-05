@@ -90,7 +90,6 @@ QRect ASelectionPlugin::press(const QString &brush, QPainter &painter,const QPoi
 					
 					if(m_selectPoint)
 					{
-						dDebug() << m_node.polygonPos;
 						break;
 					}
 					m_node.polygonPos++;

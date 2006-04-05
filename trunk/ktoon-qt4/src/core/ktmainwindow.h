@@ -189,6 +189,7 @@ class KTMainWindow : public DMainWindow
 	private:
 		KTProjectManager *m_projectManager;
 		KToon::RenderType m_renderType;
+		QString m_fileName;
 		
 	private:
 		KTWorkspace *m_drawingSpace;
@@ -211,9 +212,6 @@ class KTMainWindow : public DMainWindow
 		KTColorPalette *m_colorPalette;
 		KTPenWidget *m_penWidget;
 		KTGCEditor *m_gcEditor;
-		
-		
-		
 };
 
 #endif

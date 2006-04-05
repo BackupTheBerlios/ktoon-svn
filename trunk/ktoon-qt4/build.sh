@@ -4,9 +4,6 @@
 # Author: David Cuarado krawek [at] gmail [dot] com
 # Version: 0.5.0
 
-KTOON_GLOBAL_ENV=/etc/ktoon.env
-KTOON_LOCAL_ENV=~/.ktoon.env
-
 PARAMETERS=""
 
 OPTION_NODEBUG=-1
@@ -124,7 +121,7 @@ function createLauncher() {
 	echo "#!/bin/bash" > $LAUNCHER
 	echo "export KTOON_HOME=${KTOON_HOME}" >> $LAUNCHER
 	echo "export LD_LIBRARY_PATH=$KTOON_HOME/lib" >> $LAUNCHER
-	echo "exec $KTOON_HOME/bin/ktoon $*" >> $LAUNCHER
+	echo "exec $KTOON_HOME/bin/ktoon \$*" >> $LAUNCHER
 	chmod 755 $LAUNCHER
 }
 

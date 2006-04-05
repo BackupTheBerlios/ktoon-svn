@@ -87,7 +87,7 @@ void KTPaletteImporter::importGimpPalette(const QString &file)
 			if ( rgb.indexIn(line) != -1 )
 			{
 				QStringList capturedTexts = rgb.capturedTexts();
-				dDebug() << capturedTexts;
+				
 				if ( capturedTexts.count() != 4 )
 					continue;
 				

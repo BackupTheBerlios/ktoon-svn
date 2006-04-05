@@ -575,7 +575,6 @@ void KTViewDocument::selectTool()
 		
 		QWidget *toolConfigurator = aTool->configurator();
 		
-		dDebug() << aTool->keys();
 		if ( toolConfigurator && m_configurationArea)
 		{
 			m_configurationArea->setConfigurator( toolConfigurator);

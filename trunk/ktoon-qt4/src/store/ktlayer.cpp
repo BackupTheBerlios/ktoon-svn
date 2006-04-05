@@ -141,12 +141,9 @@ void KTLayer::cloneFrame(const int& index, int nClones)
 	
 	if(clone)
 	{
-		dDebug() << "1";
 		clone->setClonesNumber( nClones);
-		dDebug() << "2";
 		for(int i = index+1; i <= index+nClones; i++)
-		{ 
-// 			dDebug() << "for1";
+		{
 			if(i == m_frames.count() )
 			{
 				m_frames << clone;
@@ -157,10 +154,8 @@ void KTLayer::cloneFrame(const int& index, int nClones)
 				emit frameCreated( clone->frameName(), false );
 				m_frames.insert ( i, clone );
 			}
-// 			dDebug() << "for2s";
 		}
 	}
-	dDebug() << "SALE";
 }
 
 void KTLayer::moveCurrentFrame( bool up)
@@ -229,7 +224,7 @@ QDomElement KTLayer::createXML( QDomDocument &doc )
 	while( iterator != m_frames.end() )
 	{
 		layer.appendChild((*iterator)->createXML(doc));
-		dDebug() << m_frames.count(*iterator);
+		
 		if(m_frames.count(*iterator) != 1)
 		{
 			iterator+= (m_frames.count(*iterator));

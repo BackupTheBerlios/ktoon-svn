@@ -108,8 +108,6 @@ int main( int argc, char ** argv )
 		QTranslator *translator = new QTranslator;
 		translator->load( QString( "ktoon_" )+locale,  HOME+"/data/translations");
 		
-		dDebug() << "Cargand de " << HOME+"/data/translations" << " archivo: " << QString( "ktoon_" )+locale;
-		
 		application.installTranslator( translator );
 	}
 	

@@ -204,7 +204,6 @@ void KTColorPalette::setColor(const QBrush& brush)
 		changeBrushType(tr("Gradient"));
 		if( sender () != m_gradientManager )
 		{
-			dDebug() << "here";
 			m_gradientManager->setGradient(gradient);
 		}
 		m_containerPalette->setColor(gradient);

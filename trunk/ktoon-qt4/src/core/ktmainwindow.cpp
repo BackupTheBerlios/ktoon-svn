@@ -495,20 +495,22 @@ void KTMainWindow::saveProject()
 {
 	m_projectManager->save();
 	
-	QString package = m_projectManager->projectName();
-	
-	if ( package.isEmpty() ) return;
-	
-	if( !package.endsWith(".ktn"))
+	if ( m_fileName.isEmpty() )
 	{
-		package += ".ktn";
+		saveProjectAs();
+		return;
 	}
 	
-	dDebug() << "Saving " << package;
+	if( !m_fileName.endsWith(".ktn"))
+	{
+		m_fileName += ".ktn";
+	}
+	
+	dDebug() << "Saving " << m_fileName;
 	
 	KTPackageHandler packageHandler;
 	
-	bool ok = packageHandler.makePackage(REPOSITORY+"/"+m_projectManager->projectName(), REPOSITORY+"/"+package);
+	bool ok = packageHandler.makePackage(REPOSITORY+"/"+m_projectManager->projectName(), m_fileName);
 	
 	if ( ok )
 	{
@@ -521,23 +523,23 @@ void KTMainWindow::saveProjectAs()
 {
 	m_projectManager->save();
 	
-	QString package = QFileDialog::getSaveFileName( this, tr("Build project package"), REPOSITORY, "KToon Project Package (*.ktn)");
+	m_fileName = QFileDialog::getSaveFileName( this, tr("Build project package"), REPOSITORY, "KToon Project Package (*.ktn)");
 	
-	if ( package.isEmpty() ) return;
+	if ( m_fileName.isEmpty() ) return;
 	
-	if( !package.endsWith(".ktn"))
+	if( !m_fileName.endsWith(".ktn"))
 	{
-		package += ".ktn";
+		m_fileName += ".ktn";
 	}
 	
 	KTPackageHandler packageHandler;
 	
-	bool ok = packageHandler.makePackage(REPOSITORY+"/"+m_projectManager->projectName(), package);
+	bool ok = packageHandler.makePackage(REPOSITORY+"/"+m_projectManager->projectName(), m_fileName);
 	
 	
 	if ( ok )
 	{
-		messageToOSD( tr("Project saved in %1!").arg(package) );
+		messageToOSD( tr("Project saved in %1!").arg(m_fileName) );
 	}
 }
 
