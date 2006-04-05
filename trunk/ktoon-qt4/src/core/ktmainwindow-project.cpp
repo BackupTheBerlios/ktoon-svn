@@ -110,16 +110,23 @@ void KTMainWindow::insertFrame(const QString &name, bool addedToEnd)
 {
 	D_FUNCINFO;
 	
+	m_exposureSheet->setUpdatesEnabled(false);
+	m_timeLine->setUpdatesEnabled(false);
+	setUpdatesEnabled(false);
+	
 	m_exposureSheet->addFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd); // FIXME: insert!
 	m_timeLine->insertFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd);
 	
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
-	if(!doc)
+	if(!doc && m_projectManager->isOpen())
 	{
 		newViewDocument( name);
 	}
 	
+	m_exposureSheet->setUpdatesEnabled(true);
+	m_timeLine->setUpdatesEnabled(true);
+	setUpdatesEnabled(true);
 }
 
 void KTMainWindow::moveFrame(bool up)
@@ -183,9 +190,9 @@ void KTMainWindow::selectFrame(int layer, int frame)
 	}
 	else
 	{
-		if(m_drawingSpace->isVisible() )
+		if(m_drawingSpace->isVisible() && m_projectManager->isOpen() )
 		{
-// 			newViewDocument( m_projectManager->currentDocument()->currentScene()->layers()[layer]->frames()[frame]->frameName() );
+			newViewDocument( m_projectManager->currentDocument()->currentScene()->layers()[layer]->frames()[frame]->frameName() );
 // 			selectFrame(layer, frame);
 		}
 	}

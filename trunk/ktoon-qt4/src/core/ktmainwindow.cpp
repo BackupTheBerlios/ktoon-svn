@@ -162,7 +162,9 @@ void KTMainWindow::newViewDocument(const QString &name)
 	{
 		m_statusBar->advance(4);
 		KTViewDocument *viewDocument = new KTViewDocument( m_projectManager->documentSize(),  name, m_renderType,  m_projectManager->currentDocument(), m_drawingSpace);
+		
 		viewDocument->setAttribute(Qt::WA_DeleteOnClose, true);
+		
 		m_drawingSpace->addWindow(viewDocument);
 		m_statusBar->advance(7);
 		
