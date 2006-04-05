@@ -154,7 +154,7 @@ void KTConfigurationArea::leaveEvent(QEvent *)
 {
 	if ( m_shower.isActive()) m_shower.stop();
 	
-	if ( m_locker.isActive() )
+	if ( m_locker.isActive() || rect().contains(mapFromGlobal(QCursor::pos())) || hasFocus() )
 	{
 		return;
 	}

@@ -355,8 +355,6 @@ void KTMainWindow::save()
 {
 	dDebug() << "Saving..";
 	QTimer::singleShot(0, this, SLOT(saveProject()));
-	
-	
 }
 
 void KTMainWindow::preferences()

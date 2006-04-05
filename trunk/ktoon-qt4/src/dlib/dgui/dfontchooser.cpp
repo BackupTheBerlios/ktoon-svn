@@ -55,6 +55,9 @@ DFontChooser::~DFontChooser()
 
 void DFontChooser::loadFontInfo(const QString &family)
 {
+	QString currentSize = m_fontSize->currentText();
+	QString currentStyle = m_fontStyle->currentText();
+	
 	QFontDatabase fdb;
 	
 	m_fontStyle->clear();
@@ -68,6 +71,18 @@ void DFontChooser::loadFontInfo(const QString &family)
 	foreach(int point, points)
 	{
 		m_fontSize->addItem(QString::number(point));
+	}
+	
+	int sizeIndex = m_fontSize->findText(currentSize);
+	int styleIndex = m_fontStyle->findText(currentStyle);
+	if ( sizeIndex >= 0 )
+	{
+		m_fontSize->setCurrentIndex(sizeIndex);
+	}
+	
+	if(styleIndex >= 0)
+	{
+		m_fontStyle->setCurrentIndex(styleIndex);
 	}
 	
 	emit fontChanged();
