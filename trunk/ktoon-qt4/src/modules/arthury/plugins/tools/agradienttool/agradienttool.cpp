@@ -84,13 +84,13 @@ QRect AGradientTool::release(const QString& brush, QPainter& painter, const QPoi
 	QPainterPath path;
 	path.addRect(m_rect);
 	
-	if ( brush == "Gradient" )
+	if ( brush == tr("Gradient") )
 	{
 		const QGradient *gradient = m_configurator->gradient();
 
 		component->addGraphic( path, Qt::NoPen, DGradientAdjuster::adjustGradient(gradient,m_rect ));
 	}
-	else if ( brush == "Random Gradient" )
+	else if ( brush == tr("Random Gradient") )
 	{
 		QLinearGradient gradient(m_initialPoint, pos);
 		gradient.setColorAt(0, DAlgorithm::randomColor());
@@ -109,7 +109,7 @@ QRect AGradientTool::release(const QString& brush, QPainter& painter, const QPoi
 
 QStringList AGradientTool::keys() const
 {
-	return QStringList() << "Gradient" << "Random Gradient";
+	return QStringList() << tr("Gradient") << tr("Random Gradient");
 }
 
 QWidget* AGradientTool::configurator()
@@ -133,3 +133,4 @@ void AGradientTool::aboutToChangeTool()
 
 
 Q_EXPORT_PLUGIN( AGradientTool );
+

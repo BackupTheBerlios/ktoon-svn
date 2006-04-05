@@ -107,5 +107,3 @@ void ATextTool::aboutToChangeTool()
 
 Q_EXPORT_PLUGIN( ATextTool );
 
-
-

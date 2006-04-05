@@ -35,7 +35,7 @@ AFillTool::~AFillTool()
 
 QStringList AFillTool::keys() const
 {
-	return QStringList() << "Fill" << "Remove Fill" << "Countour Fill";
+	return QStringList() << tr("Fill") << tr("Remove Fill") << tr("Countour Fill");
 }
 
 
@@ -82,15 +82,15 @@ QRect AFillTool::press(const QString& brush, QPainter& painter, const QPoint& po
 			{
 				if ( graphic->path.contains(pos) )
 				{
-					if ( brush == "Fill" )
+					if ( brush == tr("Fill") )
 					{
 						graphic->brush = DBrushAdjuster::adjustBrush(painter.pen().brush(), graphic->path.boundingRect().toRect());
 					}
-					else if ( brush == "Remove Fill" )
+					else if ( brush == tr("Remove Fill") )
 					{
 						graphic->brush = Qt::transparent;
 					}
-					else if ( brush == "Countour Fill" )
+					else if ( brush == tr("Countour Fill") )
 					{
 						graphic->pen.setBrush(painter.pen().brush());
 					}
@@ -144,3 +144,5 @@ void AFillTool::aboutToChangeTool()
 }
 
 Q_EXPORT_PLUGIN( AFillTool );
+
+

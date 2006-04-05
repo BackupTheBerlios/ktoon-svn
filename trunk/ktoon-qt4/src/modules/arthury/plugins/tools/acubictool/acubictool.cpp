@@ -134,7 +134,7 @@ QRect ACubicTool::release(const QString& brush, QPainter& painter, const QPoint&
 
 QStringList ACubicTool::keys() const
 {
-	return QStringList() << "Polyline";
+	return QStringList() << tr("Polyline");
 }
 
 void ACubicTool::createFinishPath()

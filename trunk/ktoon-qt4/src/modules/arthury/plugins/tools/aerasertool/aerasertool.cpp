@@ -132,3 +132,4 @@ void AEraserTool::aboutToChangeTool()
 }
 
 Q_EXPORT_PLUGIN( AEraserTool );
+

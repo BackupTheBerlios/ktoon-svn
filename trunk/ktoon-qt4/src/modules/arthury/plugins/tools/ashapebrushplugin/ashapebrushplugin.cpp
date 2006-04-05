@@ -125,3 +125,4 @@ void AShapeBrushPlugin::aboutToChangeTool()
 }
 
 Q_EXPORT_PLUGIN( AShapeBrushPlugin )
+
