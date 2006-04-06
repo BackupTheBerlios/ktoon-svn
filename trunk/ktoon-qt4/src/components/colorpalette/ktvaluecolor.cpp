@@ -141,6 +141,7 @@ void KTValueColor::syncValuesRgb(int)
 		int g = m_valueG->value();
 		int b = m_valueB->value();
 		int a = m_valueA->value();
+		
 		QColor tmp = QColor::fromRgb(r,g,b,a);
 		m_valueH->setValue( tmp.hue ());
 		m_valueS->setValue( tmp.saturation());

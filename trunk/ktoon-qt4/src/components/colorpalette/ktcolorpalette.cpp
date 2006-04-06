@@ -176,38 +176,41 @@ void KTColorPalette::setColor(const QBrush& brush)
 	
 	if(color.isValid())
 	{
+		dDebug() << "color";
 		if(m_type == Gradient)
 		{
 			m_gradientManager->setCurrentColor(color);
-			m_gradientManager->repaint();
 		}
-		else if(m_displayValueColor && m_outlineAndFillColors && m_colorPicker && m_nameColor && m_luminancePicker)
+		if(m_displayValueColor && m_outlineAndFillColors && m_colorPicker && m_nameColor && m_luminancePicker)
 		{
-			m_displayValueColor->setColor(color);
+			
+			
+			m_colorPicker->setCol(color.hue(), color.saturation ());
 			if(m_type == Solid)
 			{
 				m_outlineAndFillColors->setCurrentColor(color);
 			}
-			m_colorPicker->setCol(color.hue(), color.saturation ());
-		
 			m_nameColor->setText(color.name ());
-			
 			m_luminancePicker->setCol(color.hue(), color.saturation(), color.value());
-			
 			m_containerPalette->setColor( brush );
+			m_displayValueColor->setColor(color);
 		}
 		
 	}
-	if(brush.gradient())
+	else if(brush.gradient())
 	{
+		
+		dDebug() << "gradient";
 		QGradient gradient(*brush.gradient());
 		changeBrushType(tr("Gradient"));
+
+		m_containerPalette->setColor(gradient);
+		m_outlineAndFillColors->setCurrentColor(gradient);
 		if( sender () != m_gradientManager )
 		{
 			m_gradientManager->setGradient(gradient);
 		}
-		m_containerPalette->setColor(gradient);
-		m_outlineAndFillColors->setCurrentColor(gradient);
+		
 	}
 	emit brushChanged( m_outlineAndFillColors->foreground(),m_outlineAndFillColors->background() );
 	

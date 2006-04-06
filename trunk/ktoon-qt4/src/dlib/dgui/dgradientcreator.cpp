@@ -97,10 +97,7 @@ DGradientCreator::~DGradientCreator()
 void DGradientCreator::setCurrentColor(const QColor &color)
 {
 	m_selector->setCurrentColor(color);
-	if(!isVisible())
-	{
-		m_viewer->createGradient();
-	}
+	m_viewer->createGradient();
 	emit gradientChanged(QBrush(m_viewer->gradient()));
 }
 

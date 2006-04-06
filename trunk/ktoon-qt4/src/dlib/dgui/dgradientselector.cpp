@@ -349,6 +349,7 @@ void DGradientSelector::addArrow(QPoint position, QColor color)
 
 void DGradientSelector::setCurrentColor(const QColor& color)
 {
+	dDebug() << color;
 	if ( m_arrows.count() > 0 )
 	{
 		DGradientArrow *arrow  = m_arrows[m_currentArrowIndex];
@@ -359,15 +360,8 @@ void DGradientSelector::setCurrentColor(const QColor& color)
 			
 		}
 	}
-
-	if(!isVisible())
-	{
-		createGradient();
-	}
-	else
-	{
-		repaint();
-	}
+	createGradient();
+	repaint();
 	emit gradientChanged(  m_gradient.stops());;
 }
 
@@ -375,7 +369,6 @@ void DGradientSelector::setStops(const QGradientStops &stops)
 {
 	m_gradient.setStops(stops);
 	m_arrows.clear();
-// 	createGradient();
 	for(int i = 0; i < stops.count(); i++)
 	{
 		addArrow( calcArrowPos(100 - (stops[i].first *100)), stops[i].second );
