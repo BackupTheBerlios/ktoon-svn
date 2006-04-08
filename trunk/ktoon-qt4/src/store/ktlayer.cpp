@@ -142,7 +142,7 @@ void KTLayer::cloneFrame(const int& index, int nClones)
 	if(clone)
 	{
 		clone->setClonesNumber( nClones);
-		for(int i = index+1; i <= index+nClones; i++)
+		for(int i = index+1; i <= (index+1)+nClones; i++)
 		{
 			if(i == m_frames.count() )
 			{
