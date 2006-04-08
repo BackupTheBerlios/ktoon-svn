@@ -326,22 +326,22 @@ void KTMainWindow::openProject(const QString &path)
 			
 			m_projectManager->load( packageHandler.importedProjectPath() );
 			
-			QString recent = path;
+			m_fileName = path;
 			
 			if ( QDir::isRelativePath(path) )
 			{
-				recent = QDir::currentPath()+"/"+path;
+				m_fileName = QDir::currentPath()+"/"+path;
 			}
 			
-			if ( m_recentProjects.indexOf(recent) == -1 )
+			if ( m_recentProjects.indexOf(m_fileName) == -1 )
 			{
 				if ( m_recentProjects.count() <= 6 )
 				{
-					m_recentProjects << recent;
+					m_recentProjects << m_fileName;
 				}
 				else
 				{
-					m_recentProjects.push_front(recent);
+					m_recentProjects.push_front(m_fileName);
 				}
 			}
 			
