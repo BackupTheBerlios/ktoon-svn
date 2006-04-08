@@ -78,7 +78,7 @@ void KTMainWindow::insertLayer(const QString &name, bool addedToEnd)
 void KTMainWindow::moveLayer(bool up)
 {
 	D_FUNCINFO;
-// 	m_exposureSheet->moveLayer(up);
+ 	m_exposureSheet->moveLayer(up);
 	m_timeLine->moveLayer(up);
 	
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());

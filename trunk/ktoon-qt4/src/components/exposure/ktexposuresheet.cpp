@@ -242,14 +242,8 @@ void KTExposureSheet::moveFrame(bool up)
 
 void KTExposureSheet::moveLayer(bool left)
 {
-	if(left)
-	{
-		m_currentTable->moveCurrentLayer( KTTableExposure::Left);
-	}
-	else
-	{
-		m_currentTable->moveCurrentLayer(KTTableExposure::Right);
-	}
+	dDebug() << "here " << left;
+	m_currentTable->moveCurrentLayer(left);
 }
 
 
