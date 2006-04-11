@@ -117,7 +117,7 @@ void KTLayer::pasteFrame(const int& index, const KTKeyFrame* copy)
 	}
 	else if ( index > m_frames.count() )
 	{
-		for(int i = m_frames.count(); i < index; i++)
+		for(int i = m_frames.count(); i <= index; i++)
 		{ 
 			createFrame(QString::null, true);
 			m_frames.replace(i, new KTKeyFrame(*copy));
@@ -141,8 +141,8 @@ void KTLayer::cloneFrame(const int& index, int nClones)
 	
 	if(clone)
 	{
-		clone->setClonesNumber( nClones);
-		for(int i = index+1; i <= (index+1)+nClones; i++)
+		
+		for(int i = index+1; i <= (index)+nClones; i++)
 		{
 			if(i == m_frames.count() )
 			{
@@ -155,6 +155,7 @@ void KTLayer::cloneFrame(const int& index, int nClones)
 				m_frames.insert ( i, clone );
 			}
 		}
+		clone->setClonesNumber( m_frames.count(clone)-1);
 	}
 }
 
@@ -183,6 +184,11 @@ void KTLayer::removeCurrentFrame()
 // 	dDebug() << "emit KTLayer::removeCurrentFrame()";
 	if(m_currentFrame)
 	{
+		
+		if(m_currentFrame->clonesNumber() > 0)
+		{
+			m_currentFrame->setClonesNumber( m_currentFrame->clonesNumber() -1);
+		}
 		m_frames.removeAt( indexCurrentFrame() );
 		emit frameRemoved();
 	}

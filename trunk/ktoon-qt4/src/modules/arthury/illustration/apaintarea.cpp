@@ -171,7 +171,10 @@ void APaintArea::setKeyFrame(int index)
 		if ( index >= 0 && index < m_layer->frames().count() )
 		{
 			KTKeyFrame *frame = m_layer->frames()[index];
-			
+			if(m_currentFrame)
+			{
+				m_currentFrame->clearSelections();
+			}
 			if (frame)
 			{
 				m_currentFrame = frame;

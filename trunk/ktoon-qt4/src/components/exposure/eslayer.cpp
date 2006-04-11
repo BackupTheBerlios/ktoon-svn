@@ -57,8 +57,7 @@ ESLayer::ESLayer( const QString &initial_text, QWidget *parent  )
 	
 	setAutoDefault( false );
 	setFocusPolicy( Qt::NoFocus );
-	default_color = palette().color(QPalette::Background);
-	selection_color = palette().color(QPalette::Active , QPalette::Highlight).light(200);
+	selection_color = palette().color(QPalette::Active , QPalette::Highlight);
 	
 	description = new QLineEdit( initial_text,this );
 	description -> hide();
@@ -104,9 +103,8 @@ void ESLayer::setSelected( bool in_is_selected )
 	}
 	else
 	{
-		pal.setColor(QPalette::Button, QApplication::palette().button().color() );
+		pal.setColor(QPalette::Button, QApplication::palette().color(QPalette::Active ,QPalette::Highlight).light(200) );
 		pal.setColor(QPalette::ButtonText, fg);
-		
 	}
 	
 	setPalette(pal);
@@ -114,7 +112,7 @@ void ESLayer::setSelected( bool in_is_selected )
 
 void ESLayer::clearTextfieldFocus()
 {
-    description -> clearFocus();
+	description->clearFocus();
 }
 
 //-------------- SLOTS --------------------
@@ -130,41 +128,36 @@ void ESLayer::slotSetDescription()
 	description -> hide();
 }
 
-
-
 //-------------- EVENTS AND PROTECTED MEMBERS --------------
 
 void ESLayer::mousePressEvent( QMouseEvent *mouse_event )
 {
-    Q_CHECK_PTR( mouse_event );
-    setSelected( true );
-    
-    QPalette pal = palette();
-    pal.setColor(QPalette::Button, selection_color);
-    setPalette(pal);
-    
-    description -> setText( text() );
-
-    emit clicked(true, mouse_event );
-
-
-    mouse_event -> accept();
+	Q_CHECK_PTR( mouse_event );
+	setSelected( true );
+	QPalette pal = palette();
+	pal.setColor(QPalette::Button, selection_color);
+	setPalette(pal);
+	description -> setText( text() );
+	emit clicked(true, mouse_event );
+	mouse_event -> accept();
 }
 
 void ESLayer::mouseDoubleClickEvent( QMouseEvent *mouse_event )
 {
-    Q_CHECK_PTR( mouse_event );
-
-    if ( mouse_event -> button() == Qt::LeftButton )
-    {
-        description -> show();
-	m_visibilityButton->hide();
-        description -> setText( text() );
-        description -> setFocus();
-	mouse_event -> accept();
-    }
-    else
-        mouse_event -> ignore();
+	Q_CHECK_PTR( mouse_event );
+	
+	if ( mouse_event -> button() == Qt::LeftButton )
+	{
+		description -> show();
+		m_visibilityButton->hide();
+		description -> setText( text() );
+		description -> setFocus();
+		mouse_event -> accept();
+	}
+	else
+	{
+		mouse_event -> ignore();
+	}
 }
 
 void ESLayer::resizeEvent ( QResizeEvent *  )
@@ -188,8 +181,6 @@ void ESLayer::visibilityClick()
 		pal.setColor(QPalette::Button, Qt::red );
 	}
 	m_visibilityButton->setPalette(pal);
-	
-	
 	emit visibilityChanged( isVisible );
 	
 }

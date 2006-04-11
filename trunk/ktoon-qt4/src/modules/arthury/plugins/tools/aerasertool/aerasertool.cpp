@@ -36,9 +36,10 @@ QStringList AEraserTool::keys() const
 
 QRect AEraserTool::press(const QString &brush, QPainter &painter,const QPoint &pos, KTKeyFrame *currentFrame)
 {
-	QRect rect(pos, QSize(15,15)); // FIXME: configure
+	QRect rect(pos, QSize(10,10)); // FIXME: configure
 	
 	m_components = currentFrame->components();
+	QPolygonF points;
 	
 	deleteNode( rect );
 	
@@ -47,7 +48,7 @@ QRect AEraserTool::press(const QString &brush, QPainter &painter,const QPoint &p
 
 QRect AEraserTool::move(const QString &brush, QPainter &painter,const QPoint &oldPos, const QPoint &newPos)
 {
-	QRect rect(newPos, QSize(15,15)); // FIXME: configure
+	QRect rect(newPos, QSize(10,10)); // FIXME: configure
 	
 	deleteNode( rect );
 	return QRect();
@@ -78,37 +79,49 @@ QHash<QString, DAction *> AEraserTool::actions()
 
 void AEraserTool::deleteNode(const QRect &rect )
 {
+
 	foreach(AGraphicComponent *component, m_components)
 	{
-		foreach(AGraphic *graphic, component->graphics() )
+		
+		if( rect.intersects(component->boundingRect().toRect()))
 		{
-			QList<QPolygonF> polygons = graphic->path.toSubpathPolygons();
-			
-			graphic->path = QPainterPath();
-			
-			foreach(QPolygonF polygon, polygons)
+			QPolygonF points;
+			foreach(AGraphic *graphic, component->graphics() )
 			{
-				QPolygonF::iterator point = polygon.begin();
+				QList<QPolygonF> polygons = graphic->path.toSubpathPolygons();
 				
-// 				bool contains = false;
+				graphic->path = QPainterPath();
 				
-				while(point != polygon.end())
+				foreach(QPolygonF polygon, polygons)
 				{
-					if ( rect.contains( (*point).toPoint() ) )
+					QPolygonF::iterator point = polygon.begin();
+					
+	// 				bool contains = false;
+					
+					while(point != polygon.end())
 					{
-// 						contains = true;
-						point=polygon.erase(point);
+						if ( rect.contains( (*point).toPoint() ) )
+						{
+	// 						contains = true;
+							point=polygon.erase(point);
+						}
+						else
+							++point;
 					}
-					else
-						++point;
+					
+	// 				if ( contains )
+					graphic->path.addPolygon(polygon);
 				}
-				
-// 				if ( contains )
-				graphic->path.addPolygon(polygon);
+				points << graphic->path.toFillPolygon();
 			}
+			component->setControlPoints(points);
+			points.clear();
+		}
+		else
+		{
+			component->setControlPoints(QPolygonF());
 		}
 	}
-	
 	emit requestRedraw();
 }
 

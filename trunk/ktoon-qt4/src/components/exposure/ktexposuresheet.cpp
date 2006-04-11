@@ -22,6 +22,7 @@
 #include "dapplication.h"
 
 #include "ddebug.h"
+#include "doptionaldialog.h"
 
 #include <QToolTip>
 #include <QPixmap>
@@ -138,8 +139,20 @@ void KTExposureSheet::applyAction(int action)
 		}
 		case RemoveLayer:
 		{
+			DCONFIG->beginGroup("Exposure");
+			bool noAsk = qvariant_cast<bool>(DCONFIG->value("RemoveWithoutAskLayer", false));
+			if ( ! noAsk )
+			{
+				DOptionalDialog dialog(tr("Do you want to remove this layer?"),tr("Remove?"), this);
+		
+				if( dialog.exec() == QDialog::Rejected )
+				{
+					return;
+				}
+				DCONFIG->setValue("RemoveWithoutAskLayer", dialog.shownAgain());
+				DCONFIG->sync();
+			}
 			emit requestRemoveLayer(m_currentTable->currentLayer());
-			
 			break;
 		}
 		case InsertFrames:
@@ -149,6 +162,19 @@ void KTExposureSheet::applyAction(int action)
 		}
 		case RemoveFrame:
 		{
+			DCONFIG->beginGroup("Exposure");
+			bool noAsk = qvariant_cast<bool>(DCONFIG->value("RemoveWithoutAskFrame", false));
+			if ( ! noAsk )
+			{
+				DOptionalDialog dialog(tr("Do you want to remove this frame?"),tr("Remove?"), this);
+		
+				if( dialog.exec() == QDialog::Rejected )
+				{
+					return;
+				}
+				DCONFIG->setValue("RemoveWithoutAskFrame", dialog.shownAgain());
+				DCONFIG->sync();
+			}
 			emit requestRemoveFrame();
 			break;
 		}

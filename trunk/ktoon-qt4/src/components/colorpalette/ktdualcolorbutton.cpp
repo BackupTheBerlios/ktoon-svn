@@ -43,7 +43,8 @@ KTDualColorButton::KTDualColorButton( QWidget *parent ) : QWidget( parent )
 	arrowBitmap->setMask(*arrowBitmap); // heh
 	resetPixmap = new QPixmap((const char **)dcolorreset_xpm);
 	fg = QBrush(Qt::black, Qt::SolidPattern);
-	bg = QBrush(Qt::white, Qt::SolidPattern);
+	bg = QBrush( QColor(0,0,0,0), Qt::SolidPattern);
+	
 	curColor = Foreground;
 	dragFlag = false;
 	miniCtlFlag = false;
@@ -109,7 +110,6 @@ QSize KTDualColorButton::sizeHint() const
 
 void KTDualColorButton::setForeground(const QBrush &c)
 {
-// 	fg = QBrush(c, Qt::SolidPattern);
 	fg = c;
 	update();
 
@@ -118,7 +118,6 @@ void KTDualColorButton::setForeground(const QBrush &c)
 
 void KTDualColorButton::setBackground(const QBrush &c)
 {
-// 	bg = QBrush(c, Qt::SolidPattern);
 	bg = c;
 	update();
 
@@ -229,7 +228,7 @@ void KTDualColorButton::mousePressEvent(QMouseEvent *ev)
 	else if(ev->pos().x() < bgRect.x())
 	{
 		fg.setColor(Qt::black);
-		bg.setColor(Qt::white);
+		bg.setColor( QColor(0,0,0,0));
 		emit fgChanged(fg);
 		emit bgChanged(bg);
 // 		emit currentChanged(Foreground );

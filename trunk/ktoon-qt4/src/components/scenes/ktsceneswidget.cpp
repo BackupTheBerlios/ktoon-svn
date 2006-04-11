@@ -23,6 +23,7 @@
 #include "dglobal.h"
 #include "ddebug.h"
 #include "dimagebutton.h"
+#include "doptionaldialog.h"
 
 #include <QToolTip>
 #include <QMessageBox>
@@ -64,7 +65,7 @@ void KTScenesWidget::setupButtons()
 	DImageButton *removeButton = new DImageButton(QPixmap(HOME+"/themes/default/icons/minussign.png" ) , 22, m_buttonsPanel);
 	layout->addWidget(removeButton);
 	removeButton->setToolTip(tr("Remove scene"));
-	connect(removeButton, SIGNAL(clicked()), this, SIGNAL(requestRemoveScene()));
+	connect(removeButton, SIGNAL(clicked()), this, SLOT(emitRequestRemoveScene()));
 
 	addChild(m_buttonsPanel);
 }
@@ -111,6 +112,25 @@ void KTScenesWidget::emitRequestInsertScene()
 	emit requestInsertLayer();
 	emit requestInsertFrame();
 }
+
+void KTScenesWidget::emitRequestRemoveScene()
+{
+	DCONFIG->beginGroup("Scene");
+	bool noAsk = qvariant_cast<bool>(DCONFIG->value("RemoveWithoutAskScene", false));
+	if ( ! noAsk )
+	{
+		DOptionalDialog dialog(tr("Do you want to remove this scene?"),tr("Remove?"), this);
+		
+		if( dialog.exec() == QDialog::Rejected )
+		{
+			return;
+		}
+		DCONFIG->setValue("RemoveWithoutAskScene", dialog.shownAgain());
+		DCONFIG->sync();
+	}
+	emit requestRemoveScene();
+}
+
 
 
 void KTScenesWidget::setScene(int index)

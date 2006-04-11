@@ -122,7 +122,7 @@ class KTLayer : public KTSerializableObject
 		/**
 		 * Retorna verdadero si el layer es visible
 		 */
-		bool isVisible(); 
+		bool isVisible();
 		
 		/**
 		 * Reimplementada de KTSerializableObject

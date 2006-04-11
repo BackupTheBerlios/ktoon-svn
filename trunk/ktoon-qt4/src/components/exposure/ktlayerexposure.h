@@ -59,6 +59,7 @@ class KTLayerExposure : public QFrame
 		void selectedFirstFrame();
 		int currentFrame();
 		ListOfFrames frames();
+		
 	private:
 		bool m_selected;
 		int m_id, m_currentFrame,  m_useFrame;
@@ -77,14 +78,11 @@ class KTLayerExposure : public QFrame
 		void otherSelected(int id);
 		void setUseFrames(const QString &name, bool addedToEnd);
 		void setLayerVisible(bool);
-		
 		void removeFrame(int id);
 		void moveCurrentFrameUp();
 		void moveCurrentFrameDown();
 		void lockFrame();
-		
 		void renameCurrentFrame();
-		
 		void removeCurrentFrame();
 		void applyAction(int action);
 		

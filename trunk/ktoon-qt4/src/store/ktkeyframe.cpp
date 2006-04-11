@@ -265,3 +265,11 @@ void KTKeyFrame::clear(bool alsoDelete )
 	}
 	m_components.clear();
 }
+
+int KTKeyFrame::clonesNumber()
+{
+	return m_nClones;
+}
+
+
+

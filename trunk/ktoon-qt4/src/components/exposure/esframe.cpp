@@ -158,18 +158,16 @@ void ESFrame::setSelected( bool in_is_selected )
 	
 	if ( in_is_selected == true && is_used == true && is_locked == false )
 	{
-		pal.setColor( QPalette::Background, palette().color(QPalette::Active , QPalette::Highlight).light(200));
+		pal.setColor( QPalette::Background, palette().color(QPalette::Active , QPalette::Highlight));
 		pal.setColor( QPalette::Foreground, fg);
 	}
 	else if ( in_is_selected == true && is_used == false && is_locked == false )
 	{
-		pal.setColor( QPalette::Background, palette().color(QPalette::Active , QPalette::Highlight).dark(200));
+		pal.setColor( QPalette::Background, palette().color(QPalette::Active , QPalette::Dark));
 	}
 	else if ( in_is_selected == false && is_used == true && is_locked == false )
 	{
-		pal.setColor( QPalette::Background, palette().color(QPalette::Active , QPalette::Highlight).light(130));
-// 		setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight).light(130) );
-// 		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
+		pal.setColor( QPalette::Background, palette().color(QPalette::Active ,QPalette::Highlight).light(200));
 		pal.setColor( QPalette::Foreground, fg);
 	}
 	else if ( in_is_selected == false && is_used == false && is_locked == false )
@@ -178,28 +176,22 @@ void ESFrame::setSelected( bool in_is_selected )
 		{
 			pal =  parentWidget()->palette();
 		}
-// 		setPaletteForegroundColor( parentWidget()->palette().color(QPalette::Background));
-// 		setPaletteBackgroundColor( parentWidget()->paletteBackgroundColor() );
 	}
 	else if ( is_locked && in_is_selected )
 	{
 		pal.setColor( QPalette::Background, pal.color(QPalette::Link));
 		pal.setColor( QPalette::Foreground, fg);
-// 		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
 	}
 	else if ( is_locked && !in_is_selected )
 	{
 		pal.setColor( QPalette::Background, pal.color(QPalette::LinkVisited));
 		pal.setColor( QPalette::Foreground, fg);
-// 		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
 	}
 	setPalette(pal);
 }
 
 void ESFrame::setLocked( bool in_is_locked )
 {
-
-	
 	if ( is_used )
 	{
 		is_locked = in_is_locked;
@@ -217,14 +209,10 @@ void ESFrame::setLocked( bool in_is_locked )
 		{
 			pal.setColor( QPalette::Background, pal.color(QPalette::Link));
 			pal.setColor( QPalette::Foreground, fg);
-			
-// 			setPaletteBackgroundColor( colorGroup().link());
-// 			setPaletteForegroundColor( QColor( 0, 0, 0 ) );
 		}
 		else if ( is_selected && !is_locked )
 		{
-			pal.setColor( QPalette::Background, palette().color(QPalette::Active , QPalette::Highlight).light(200));
-// 			setPaletteBackgroundColor( palette().color(QPalette::Active , QColorGroup::Highlight).light(200) );
+			pal.setColor( QPalette::Background, palette().color(QPalette::Active , QPalette::Highlight));
 		}
 		else if ( !is_selected && is_locked )
 		{
@@ -331,13 +319,11 @@ void ESFrame::mousePressEvent( QMouseEvent *mouse_event )
 		pal.setColor( QPalette::Background, pal.color(QPalette::Dark));
 		pal.setColor( QPalette::Foreground, pal.color(QPalette::Dark));
 		
-// 		setPaletteBackgroundColor( QColor( 0, 0, 0 ) );
-// 		setPaletteForegroundColor( QColor( 255, 255, 255 ) );
 	}
 	else if ( is_used && !is_locked )
 	{
 		is_selected = true;
-		pal.setColor( QPalette::Background, palette().color(QPalette::Active , QPalette::Highlight).light(200));
+		pal.setColor( QPalette::Background, palette().color(QPalette::Active , QPalette::Button));
 		pal.setColor( QPalette::Foreground, fg);
 // 		setPaletteBackgroundColor( QColor( 255, 255, 255 ) );
 // 		setPaletteForegroundColor( QColor( 0, 0, 0 ) );
@@ -351,25 +337,6 @@ void ESFrame::mousePressEvent( QMouseEvent *mouse_event )
 
 	emit clicked(m_id, mouse_event->button(), mouse_event->globalX(), mouse_event->globalY() );
 	emit selected();
-// 	if ( mouse_event->button() == Qt::RightButton && is_used )
-// 	{
-// 		right_click_menu -> setItemVisible( id_rename, true );
-// 		right_click_menu -> setItemVisible( id_remove, true );
-// 		right_click_menu -> setItemVisible( id_lock, true );
-// 		right_click_menu -> setItemVisible( id_copy, true );
-// 		right_click_menu -> setItemVisible( id_paste, true );
-// 		right_click_menu -> exec( QCursor::pos() );
-// 	}
-// 	else if ( mouse_event -> button() == Qt::RightButton && !is_used )
-// 	{
-// 		right_click_menu -> setItemVisible( id_rename, false );
-// 		right_click_menu -> setItemVisible( id_remove, false );
-// 		right_click_menu -> setItemVisible( id_lock, false );
-// 		right_click_menu -> setItemVisible( id_copy, false );
-// 		right_click_menu -> setItemVisible( id_paste, true );
-// 		right_click_menu -> exec( QCursor::pos() );
-// 	}
-
 	mouse_event -> accept();
 
 }

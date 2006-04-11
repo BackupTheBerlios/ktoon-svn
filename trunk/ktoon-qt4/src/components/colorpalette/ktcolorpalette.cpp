@@ -155,7 +155,7 @@ connect( m_outlineAndFillColors,  SIGNAL(bgChanged(const QBrush &)),this, SLOT(
 	vlayout->addWidget( m_outlineAndFillColors);
 	
 	QBoxLayout *layoutName = new  QBoxLayout(QBoxLayout::TopToBottom);
-	layoutName->addWidget(new QLabel( tr("<b>HTML</b>"), viewColor));
+	layoutName->addWidget(new QLabel( "<b>HTML</b>", viewColor));
 	m_nameColor = new QLineEdit(viewColor);
 	QFontMetrics fm( font() );
 	m_nameColor->setMaximumWidth( fm.width ( " #000000 " ) );
@@ -176,7 +176,6 @@ void KTColorPalette::setColor(const QBrush& brush)
 	
 	if(color.isValid())
 	{
-		dDebug() << "color";
 		if(m_type == Gradient)
 		{
 			m_gradientManager->setCurrentColor(color);
@@ -200,7 +199,6 @@ void KTColorPalette::setColor(const QBrush& brush)
 	else if(brush.gradient())
 	{
 		
-		dDebug() << "gradient";
 		QGradient gradient(*brush.gradient());
 		changeBrushType(tr("Gradient"));
 

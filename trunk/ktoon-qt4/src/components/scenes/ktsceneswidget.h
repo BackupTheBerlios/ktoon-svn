@@ -60,6 +60,9 @@ class KTScenesWidget : public KTModuleWidgetBase
 		void actionButton(QAbstractButton *);
 		void sceneDobleClick(QTreeWidgetItem * item, int col );
 		void emitRequestInsertScene();
+		void emitRequestRemoveScene();
+		
+		
 	signals:
 		void requestInsertLayer();
 		void requestInsertFrame();

@@ -174,6 +174,8 @@ class KTKeyFrame : public KTSerializableObject
 		
 		void clear(bool alsoDelete = false);
 		
+		int clonesNumber();
+		
 	private:
 		QList<AGraphicComponent *> m_components;
 		QList<AGraphicComponent *> m_selectedComponents;
