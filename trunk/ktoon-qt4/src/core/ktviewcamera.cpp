@@ -152,10 +152,14 @@ KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : DMdiWindow(p
 	layout->addWidget(m_bar, 0, Qt::AlignTop | Qt::AlignCenter );
 	m_bar->show();
 	
+	qobject_cast<QBoxLayout *>(m_bar->layout())->insertStretch(0, 2);
+	
 	CCButton *rew = m_bar->addButton(QPixmap(THEME_DIR+"/icons/rw.png" ));
 	CCButton *play = m_bar->addButton(QPixmap(THEME_DIR+"/icons/play.png" ));
 	CCButton *stop = m_bar->addButton(QPixmap(THEME_DIR+"/icons/stop.png" ));
 	CCButton *ff = m_bar->addButton(QPixmap(THEME_DIR+"/icons/ff.png" ));
+	
+	qobject_cast<QBoxLayout *>(m_bar->layout())->addStretch(2);
 	
 	connect(play, SIGNAL(clicked()), m_animationArea, SLOT(play()));
 	connect(stop, SIGNAL(clicked()), m_animationArea, SLOT(stop()));

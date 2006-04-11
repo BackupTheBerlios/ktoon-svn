@@ -152,82 +152,88 @@ void KTMainWindow::createNewProject(const QString &name, const QSize &size, cons
 
 void KTMainWindow::newViewDocument(const QString &name)
 {
-	messageToStatus(tr("Opening a new paint area..."));
-	
-	messageToOSD(tr("Opening a new document..."));
-	
-	KTScene *scene = m_projectManager->currentScene();
-	m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
-	if ( scene )
+	if ( m_projectManager->isOpen())
 	{
-		m_statusBar->advance(4);
-		KTViewDocument *viewDocument = new KTViewDocument( m_projectManager->documentSize(),  name, m_renderType,  m_projectManager->currentDocument(), m_drawingSpace);
+		messageToStatus(tr("Opening a new paint area..."));
 		
-		viewDocument->setAttribute(Qt::WA_DeleteOnClose, true);
+		messageToOSD(tr("Opening a new document..."));
 		
-		m_drawingSpace->addWindow(viewDocument);
-		m_statusBar->advance(7);
-		
-// 		viewDocument->setWindowTitle(name);
-		
-// 		viewDocument->setActiveWindow();
-		
-		KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->activeWindow());
-		
-		if ( camera )
+		KTScene *scene = m_projectManager->currentScene();
+		m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
+		if ( scene )
 		{
-			camera->animationArea()->setScene( scene );
-		}
-		else
-		{
-			QWidgetList cameras = m_animationSpace->windowList();
+			m_statusBar->advance(4);
+			KTViewDocument *viewDocument = new KTViewDocument( m_projectManager->documentSize(),  name, m_renderType,  m_projectManager->currentDocument(), m_drawingSpace);
 			
-			if ( cameras.count() > 0 )
+			viewDocument->setAttribute(Qt::WA_DeleteOnClose, true);
+			
+			m_drawingSpace->addWindow(viewDocument);
+			m_statusBar->advance(7);
+			
+	// 		viewDocument->setWindowTitle(name);
+			
+	// 		viewDocument->setActiveWindow();
+			
+			KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->activeWindow());
+			
+			if ( camera )
 			{
-				camera = qobject_cast<KTViewCamera *>(cameras[0]);
-				if(camera)
-				{
-					camera->animationArea()->setScene(scene);
-				}
+				camera->animationArea()->setScene( scene );
 			}
 			else
 			{
-				newViewCamera(scene);
+				QWidgetList cameras = m_animationSpace->windowList();
+				
+				if ( cameras.count() > 0 )
+				{
+					camera = qobject_cast<KTViewCamera *>(cameras[0]);
+					if(camera)
+					{
+						camera->animationArea()->setScene(scene);
+					}
+				}
+				else
+				{
+					newViewCamera(scene);
+				}
 			}
+			
+			viewDocument->show();
+			
+			m_statusBar->advance(10);
+			
+			m_statusBar->setStatus(tr("Opened."));
 		}
-		
-		viewDocument->show();
-		
-		m_statusBar->advance(10);
-		
-		m_statusBar->setStatus(tr("Opened."));
-	}
-	else
-	{
-		m_statusBar->advance(0);
-		m_statusBar->setStatus(tr("Project not open."));
+		else
+		{
+			m_statusBar->advance(0);
+			m_statusBar->setStatus(tr("Project not open."));
+		}
 	}
 }
 
 void KTMainWindow::newViewCamera(KTScene *scene)
 {
-	KTViewCamera *viewCamera = new KTViewCamera(m_projectManager->documentSize() , m_animationSpace);
-	viewCamera->setAttribute(Qt::WA_DeleteOnClose, true);
-	connect(viewCamera, SIGNAL(sendMessage(const QString &, int)), m_statusBar, SLOT(setStatus(const QString &, int)));
-	connect(viewCamera, SIGNAL(sendProgress(int, int)), m_statusBar, SLOT(advance(int, int)));
-	
-	m_animationSpace->addWindow(viewCamera);
-	
-	if ( scene )
+	if ( m_projectManager->isOpen() )
 	{
-		viewCamera->animationArea()->setScene( scene );
+		KTViewCamera *viewCamera = new KTViewCamera(m_projectManager->documentSize() , m_animationSpace);
+		viewCamera->setAttribute(Qt::WA_DeleteOnClose, true);
+		connect(viewCamera, SIGNAL(sendMessage(const QString &, int)), m_statusBar, SLOT(setStatus(const QString &, int)));
+		connect(viewCamera, SIGNAL(sendProgress(int, int)), m_statusBar, SLOT(advance(int, int)));
+		
+		m_animationSpace->addWindow(viewCamera);
+		
+		if ( scene )
+		{
+			viewCamera->animationArea()->setScene( scene );
+		}
+		else
+		{
+			viewCamera->animationArea()->setScene(m_projectManager->currentScene());
+		}
+		
+		viewCamera->show();
 	}
-	else
-	{
-		viewCamera->animationArea()->setScene(m_projectManager->currentScene());
-	}
-	
-	viewCamera->show();
 }
 
 void KTMainWindow::newProject()
