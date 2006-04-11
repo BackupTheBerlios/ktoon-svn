@@ -122,23 +122,23 @@ void AAnimationArea::advance()
 {
 	if ( m_scene )
 	{
+		if (m_ciclicAnimation && m_currentFramePosition >= m_photograms.count())
+		{
+			m_currentFramePosition = 0;
+		}
+		
+		SHOW_VAR( m_photograms.count()) ;
+		SHOW_VAR(m_currentFramePosition);
+		
 		if ( m_currentFramePosition < m_photograms.count() )
 		{
 			m_renderCamera = m_photograms[m_currentFramePosition];
 			repaint();
 			m_currentFramePosition++;
 		}
-		else
+		else if ( !m_ciclicAnimation)
 		{
-			if (m_ciclicAnimation)
-			{
-				m_currentFramePosition = 0;
-			}
-			else
-			{
-				stop();
-			}
-// 			repaint();
+			stop();
 		}
 	}
 }
@@ -169,7 +169,7 @@ void AAnimationArea::render() // TODO: Extend to scenes
 		
 		while ( layerIterator != layers.end() )
 		{
-			ok = ok && (nPhotogramsRenderized > (*layerIterator)->frames().count());
+			ok = ok && (nPhotogramsRenderized >= (*layerIterator)->frames().count()-1);
 			
 			if ( *layerIterator && nPhotogramsRenderized < (*layerIterator)->frames().count() && (*layerIterator)->isVisible() )
 			{
