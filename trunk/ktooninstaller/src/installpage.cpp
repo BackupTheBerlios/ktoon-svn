@@ -60,19 +60,20 @@ InstallPage::InstallPage(QWidget *parent)
 	
 	layout->addLayout(destLayout);
 	
-	layout->addWidget(new KSeparator());
-	m_status = new QProgressBar(container);
-	layout->addWidget(m_status);
-	
-	
 	QPushButton *installButton = new QPushButton(tr("Install it!"));
 	connect(installButton, SIGNAL(clicked()), this, SLOT(install()));
 	
 	layout->addWidget(installButton);
 	
+	layout->addStretch(5);
+	layout->addWidget(new KSeparator());
+	layout->addWidget(new QLabel(tr("Progress")));
+	m_status = new QProgressBar(container);
+	layout->addWidget(m_status);
+	
 	container->setLayout(layout);
 	
-	layout->addStretch(4);
+// 	layout->addStretch(4);
 	
 	setPixmap(QPixmap(install_xpm));
 	setWidget( container);
