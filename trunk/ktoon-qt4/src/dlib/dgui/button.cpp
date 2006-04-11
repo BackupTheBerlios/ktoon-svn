@@ -79,7 +79,7 @@ namespace Ideal {
 		
 		m_animation = new Animation(this);
 		
-		connect( m_animation->timer, SIGNAL( timeout() ), this, SLOT( animate() ) ); // TODO; Animate ;)
+		connect( m_animation->timer, SIGNAL( timeout() ), this, SLOT( animate() ) );
 	}
 
 	Button::~Button()

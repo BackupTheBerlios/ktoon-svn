@@ -127,9 +127,6 @@ void AAnimationArea::advance()
 			m_currentFramePosition = 0;
 		}
 		
-		SHOW_VAR( m_photograms.count()) ;
-		SHOW_VAR(m_currentFramePosition);
-		
 		if ( m_currentFramePosition < m_photograms.count() )
 		{
 			m_renderCamera = m_photograms[m_currentFramePosition];

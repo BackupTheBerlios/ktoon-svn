@@ -27,6 +27,8 @@
 #include <QApplication>
 #include <QPushButton>
 #include <QToolTip>
+#include <QPainter>
+#include <QPainterPath>
 
 #include <ddebug.h>
 
@@ -38,8 +40,7 @@ KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent),
 	
 	connect(&m_locker, SIGNAL(timeout()), this, SLOT(toggleLock()));
 	connect(&m_shower, SIGNAL(timeout()), this, SLOT(showConfigurator()));
-	
-// 	findSeparator();
+
 }
 
 KTConfigurationArea::~KTConfigurationArea()
@@ -49,6 +50,7 @@ KTConfigurationArea::~KTConfigurationArea()
 void KTConfigurationArea::setConfigurator(QWidget *w)
 {
 	QWidget *old = widget();
+	
 	if ( !w || old == w ) return;
 	
 	if ( old )
@@ -57,6 +59,8 @@ void KTConfigurationArea::setConfigurator(QWidget *w)
 	}
 	
 	setWidget(w);
+	
+	showConfigurator();
 }
 
 void KTConfigurationArea::findSeparator()
@@ -73,7 +77,7 @@ void KTConfigurationArea::findSeparator()
 	{
 		QList<QWidget*> widgets = mw->findChildren<QWidget*>();
 		QList<QWidget*>::ConstIterator it = widgets.begin();
-	
+		
 		while (it != widgets.end())
 		{
 			if ((*it)->metaObject()->className() == QString("QDockSeparator")) // HACK
@@ -90,7 +94,6 @@ void KTConfigurationArea::findSeparator()
 void KTConfigurationArea::toggleLock()
 {
 	m_locker.stop();
-	
 	hideConfigurator();
 }
 
@@ -114,14 +117,15 @@ void KTConfigurationArea::shrink()
 	int df = 0;
 	int x1 = 0, x2= 0, y1= 0, y2= 0, xRelease= 0, yRelease= 0;
 
-	df = width() - 10;
+	df = width() - 20;
+	SHOW_VAR(df);
 	x1 = press.pos().x() + df;
 	y1 = press.pos().y();
 	
 	x2 = press.globalPos().x() + df;
 	y2 = press.globalPos().y();
 	
-	xRelease = width() - 10;
+	xRelease = width() - 20;
 	yRelease = m_separator->y();
 	
 	QMouseEvent move(QEvent::MouseMove,
@@ -168,7 +172,7 @@ void KTConfigurationArea::showConfigurator()
 	
 	if ( widget && !isFloating () )
 	{
-		widget->setMinimumWidth(0);
+// 		widget->setMinimumWidth(0);
 		widget->setVisible(true);
 		
 		QPalette pal = parentWidget()->palette();
@@ -177,6 +181,8 @@ void KTConfigurationArea::showConfigurator()
 		setAutoFillBackground(false);
 		
 		setFeatures(QDockWidget::AllDockWidgetFeatures );
+		
+		
 	}
 	
 	m_shower.stop();
@@ -190,16 +196,20 @@ void KTConfigurationArea::hideConfigurator()
 	
 	if ( widget && !isFloating () )
 	{
-		widget->setMinimumWidth(10);
+// 		widget->setMinimumWidth(10);
 		widget->setVisible(false);
 		setFeatures(QDockWidget::NoDockWidgetFeatures );
 		
+		// =================
 		
 		QPalette pal = palette();
-		pal.setBrush(QPalette::Background, pal.highlight() );
+		pal.setBrush(QPalette::Background, pal.button() );
 		setPalette(pal);
 		
 		setAutoFillBackground(true);
+		
+		
+		//==================
 		
 		for (int i = 0; i < 2; ++i)
 			qApp->processEvents();
@@ -215,5 +225,60 @@ void KTConfigurationArea::hideConfigurator()
 	
 	m_mousePos = QCursor::pos();
 }
+
+void KTConfigurationArea::paintEvent (QPaintEvent *e)
+{
+	QDockWidget::paintEvent(e);
+	
+	bool draw = false;
+	
+	if( widget() )
+	{
+		if ( widget()->isVisible() )
+		{
+			draw = false;
+		}
+		else
+		{
+			draw = true;
+		}
+	}
+	else
+	{
+		draw = false;
+	}
+	
+	if ( draw )
+	{
+		QPainter painter(this);
+		painter.setRenderHint(QPainter::Antialiasing);
+		
+		painter.setBrush( palette().highlight() );
+		QPainterPath path;
+		
+		QPolygon pol;
+		pol << rect().topRight()-QPoint(0,-40) << QPoint(2, height()/2) << rect().bottomRight()-QPoint(0,40);
+		path.addPolygon(pol);
+		
+		painter.drawPath(path);
+		
+		painter.rotate(90);
+		
+		QFont font("Times", 16, QFont::Bold);
+		
+		painter.setFont(font);
+		
+		QString text = tr("Properties");
+		
+		QFontMetricsF fm(painter.font());
+		
+		
+		painter.drawText(QPoint(height()/2-fm.width(text)/2, -(width()-fm.height()/2) ), text );
+	}
+}
+
+
+
+
 
 

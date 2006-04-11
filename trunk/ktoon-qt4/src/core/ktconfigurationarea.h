@@ -52,6 +52,7 @@ class KTConfigurationArea : public QDockWidget
 	protected:
 		void enterEvent(QEvent *e);
 		void leaveEvent(QEvent *e);
+		void paintEvent (QPaintEvent *e);
 		
 	private:
 		QWidget *m_separator;
