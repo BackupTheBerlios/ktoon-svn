@@ -51,6 +51,7 @@ class KTFrameSequenceContainer : public DVHBox
 		
 	private slots:
 		void selectFrameFromItem(TFramesTableItem *item);
+		void selectCurrentFrame();
 		
 	signals:
 		void frameSelected(int layer, int frame);

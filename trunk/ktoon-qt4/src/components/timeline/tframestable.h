@@ -177,6 +177,8 @@ class TFramesTable : public QTableView
 		
 		virtual QStyleOptionViewItem viewOptions() const;
 		
+		void keyPressEvent ( QKeyEvent * event );
+		
 	private:
 		TFramesTableModel *m_model;
 		int m_rectWidth, m_rectHeight;

@@ -36,6 +36,9 @@ KTFrameSequenceContainer::KTFrameSequenceContainer(QWidget *parent) : DVHBox(par
 	
 	m_frameTable = new TFramesTable(this);
 	connect(m_frameTable, SIGNAL(itemClicked( TFramesTableItem* )), this, SLOT(selectFrameFromItem(TFramesTableItem *)));
+	connect(m_frameTable, SIGNAL(itemEntered( TFramesTableItem* )), this, SLOT(selectFrameFromItem(TFramesTableItem *)));
+	
+// 	connect(m_frameTable, SIGNAL(itemSelectionChanged()), this, SLOT(selectCurrentFrame()));
 }
 
 
@@ -66,6 +69,16 @@ void KTFrameSequenceContainer::selectFrameFromItem(TFramesTableItem *item)
 {
 	D_FUNCINFO;
 	emit frameSelected( m_frameTable->row(item), m_frameTable->column(item));
+}
+
+void KTFrameSequenceContainer::selectCurrentFrame()
+{
+	TFramesTableItem *item = m_frameTable->selectedItems()[0];
+	if ( item != m_frameTable->currentItem())
+	{
+		m_frameTable->setCurrentFrame( item );
+		emit frameSelected( m_frameTable->row(item), m_frameTable->column(item));
+	}
 }
 
 void KTFrameSequenceContainer::removeCurrentLayer()

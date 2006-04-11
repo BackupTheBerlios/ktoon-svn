@@ -721,9 +721,15 @@ void TFramesTable::emitCurrentItemChanged(const QModelIndex &previous, const QMo
 	emit currentItemChanged(m_model->item(current), m_model->item(previous));
 }
 
-// void TFramesTable::emitItemPressed()
-// {
-// }
+void TFramesTable::keyPressEvent ( QKeyEvent * event )
+{
+	QTableView::keyPressEvent(event);
+	
+	if( event->key() == Qt::Key_Up ||  event->key() == Qt::Key_Down ||  event->key() == Qt::Key_Left ||  event->key() == Qt::Key_Right )
+	{
+		emit itemClicked( selectedItems()[0] );
+	}
+}
 
 void TFramesTable::setRowCount(int rows)
 {

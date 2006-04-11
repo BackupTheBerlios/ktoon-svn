@@ -145,7 +145,7 @@ void KTTimeLine::setupPropertiesBar()
 	m_propertiesBar->setMaximumHeight(20);
 	m_propertiesBar->setMinimumHeight(20);
 	
-	QLabel *m_fps = new QLabel("<b><i>FPS: </i></b>", m_propertiesBar);
+	QLabel *m_fps = new QLabel(tr("<b><i>FPS: </i></b>"), m_propertiesBar);
 	DELabel *m_editFPS = new DELabel("24", m_propertiesBar);
 	
 	m_editFPS->setValidator(new QIntValidator(0,1000, m_editFPS));
@@ -159,14 +159,14 @@ void KTTimeLine::setupPropertiesBar()
 	
 // 	setStretchFactor( m_editFPS, 1 );
 	
-	QLabel *m_time = new QLabel("<b><i>Time: </i></b>", m_propertiesBar);
+	QLabel *m_time = new QLabel(tr("<b><i>Time: </i></b>"), m_propertiesBar);
 	DELabel *m_editTime = new DELabel("24", m_propertiesBar);
 	m_editTime->setMidLineWidth(1);
 	m_editTime->setLineWidth(1);
 	m_editTime->setFrameStyle(QFrame::Panel | QFrame::Raised);
 	m_editTime->setMaximumWidth(50);
 	
-	QLabel *m_layer = new QLabel("<b><i>Current Layer: </i></b>", m_propertiesBar);
+	QLabel *m_layer = new QLabel(tr("<b><i>Current Layer: </i></b>"), m_propertiesBar);
 	m_editLayer = new DELabel("0", m_propertiesBar);
 // 	m_editLayer->setValidator(new QIntValidator(0,100, m_editFPS));
 	
@@ -175,7 +175,7 @@ void KTTimeLine::setupPropertiesBar()
 	m_editLayer->setFrameStyle(QFrame::Panel | QFrame::Raised);
 	m_editLayer->setMaximumWidth(50);
 	
-	QLabel *m_frame = new QLabel("<b><i>Current Frame:</i></b> ", m_propertiesBar);
+	QLabel *m_frame = new QLabel(tr("<b><i>Current Frame:</i></b> "), m_propertiesBar);
 	DELabel *m_editFrame = new DELabel("0", m_propertiesBar);
 	m_editFrame->setMidLineWidth(1);
 	m_editFrame->setLineWidth(1);
