@@ -316,17 +316,17 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter
 			QColor penColor = m_properties.onionSkinColor;
 			QColor brushColor = m_properties.onionSkinBackground;
 			
-			const float factor = fabs(intensitive); // FIXME: try to  fix ;)
-				
-			penColor.setHsv(penColor.hue(),penColor.saturation(), static_cast<int>(factor * pen.color().alpha()) % 360 );
+			const float factor = fabs(intensitive)+0.1; // FIXME: try to  fix ;)
+			
+			penColor.setHsv(penColor.hue(),penColor.saturation(), 255 - (static_cast<int>(factor * (pen.color().alpha()+1)) % 255) );
 						
-			brushColor.setHsv(brushColor.hue(),brushColor.saturation(), static_cast<int>( factor * brush.color().alpha() ) % 360 );
+			brushColor.setHsv(brushColor.hue(),brushColor.saturation(), 255-(static_cast<int>( factor * (brush.color().alpha())+1 ) % 255 ) );
 			
 // 			penColor.setHsv(0,0, factor * pen.color().value() );
 // 			brushColor.setHsv(0,0, factor * brush.color().value() );
 			
-			penColor.setAlpha(pen.color().alpha());
-			brushColor.setAlpha(brush.color().alpha());
+			penColor.setAlpha(pen.color().alpha() );
+			brushColor.setAlpha(brush.color().alpha() );
 			
 			pen = QPen(penColor,1, Qt::DashDotDotLine);
 			brush = QBrush(brushColor, Qt::Dense7Pattern);
