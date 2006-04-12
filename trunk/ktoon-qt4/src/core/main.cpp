@@ -77,7 +77,7 @@ int main( int argc, char ** argv )
 
 	if ( dAppProp->homeDir().isEmpty() || application.isArg("r") || application.isArg("reconfigure") )
 	{
-		if ( ! application.firstRun() /*&& ! (application.isArg("r") || application.isArg("reconfigure"))*/ )
+		if ( ! application.firstRun() )
 		{
 			dFatal () << "**********************You need configure the application" << endl;
 			QMessageBox::critical(0, QObject::tr("Missing..."), QObject::tr("You need configure the application"));

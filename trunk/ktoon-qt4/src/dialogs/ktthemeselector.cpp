@@ -264,6 +264,11 @@ void KTThemeSelector::saveSchema()
 	
 	QString fileName = QInputDialog::getText (this,tr("Name"), tr("Please choose a theme name"));
 	
+	if ( !fileName.endsWith(".ktt"))
+	{
+		fileName += ".ktt";
+	}
+	
 	QFile file(themeDir.path()+"/"+fileName);
 	
 	if (file.open(QIODevice::WriteOnly ) )
