@@ -53,8 +53,6 @@ int main( int argc, char ** argv )
 	
 	CrashHandler::init();
 	
-	
-
 #ifdef ENABLE_KTOONSTYLE
 	QApplication::setStyle(new KToonStyle());
 #endif
@@ -67,10 +65,18 @@ int main( int argc, char ** argv )
 	}
 	
 	DCONFIG->beginGroup("General");
-
-	if ( ! DCONFIG->isOk() || application.isArg("r") || application.isArg("reconfigure") )
+	
+	if ( ! DCONFIG->isOk() )
 	{
-		qDebug("RECONFIGURING");
+		DCONFIG->setValue("Home", QString::fromLocal8Bit(::getenv("KTOON_HOME")));
+		DCONFIG->setValue("Repository", QDir::tempPath() );
+	}
+	
+	dAppProp->setHomeDir(DCONFIG->value("Home").toString());
+	application.createRepository(DCONFIG->value("Repository").toString());
+
+	if ( dAppProp->homeDir().isEmpty() || application.isArg("r") || application.isArg("reconfigure") )
+	{
 		if ( ! application.firstRun() /*&& ! (application.isArg("r") || application.isArg("reconfigure"))*/ )
 		{
 			dFatal () << "**********************You need configure the application" << endl;
@@ -79,11 +85,13 @@ int main( int argc, char ** argv )
 			return -1;
 			
 		}
+		
+		
+		dAppProp->setHomeDir(DCONFIG->value("Home").toString());
+		application.createRepository(DCONFIG->value("Repository").toString());
 	}
 	
 	dAppProp->setVersion("0.8_beta2");
-	dAppProp->setHomeDir(DCONFIG->value("Home").toString());
-	application.createRepository(DCONFIG->value("Repository").toString());
 	
 	QString themefile = DCONFIG->value("ThemeFile").toString();
 	if ( ! themefile.isEmpty() )
