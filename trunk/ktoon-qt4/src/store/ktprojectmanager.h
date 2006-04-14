@@ -256,7 +256,6 @@ class KTProjectManager : public KTSerializableObject
 		 */
 		void lockCurrentFrame();
 		
-		
 		/**
 		 * Renombra un Layer 
 		*/

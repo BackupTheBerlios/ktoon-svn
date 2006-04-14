@@ -99,6 +99,7 @@ class KTMainWindow : public DMainWindow
 		void setupMenu();
 		
 		void setupHelpActions();
+		void setupActions();
 		
 		void ui4project(QWidget *widget);
 		
@@ -173,6 +174,10 @@ class KTMainWindow : public DMainWindow
 		void removeFrame( );
 		void lockFrame();
 		void setFrameName(int indexLayer, int indexFrame, const QString& name );
+		
+		void selectNextFrame();
+		void selectBackFrame();
+		
 		// Scenes
 		
 		void insertScene( const QString &name, bool addedToEnd);

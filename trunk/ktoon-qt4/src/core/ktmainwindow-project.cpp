@@ -176,7 +176,7 @@ void KTMainWindow::selectFrame(int layer, int frame)
 			if ( currentLayer )
 			{
 // 				if ( frame >= 0 && frame < currentLayer->frames().count() )
-				{
+// 				{
 					m_projectManager->setCurrentFrame( frame );
 					
 					doc->drawArea()->setLayer( layer );
@@ -184,7 +184,7 @@ void KTMainWindow::selectFrame(int layer, int frame)
 					
 					m_exposureSheet->setCurrentCell( layer, frame);
 					m_timeLine->setCurrentCell( layer, frame);
-				}
+// 				}
 			}
 		}
 	}
@@ -209,6 +209,44 @@ void KTMainWindow::selectFrame(int layer, int frame)
 	}
 #endif
 }
+
+
+void KTMainWindow::selectNextFrame()
+{
+	
+	if(m_projectManager)
+	{
+		if(m_projectManager->currentLayer() && m_projectManager->currentScene())
+		{
+			int currentFrame = m_projectManager->currentLayer()->indexCurrentFrame();
+			int currentLayer = m_projectManager->currentScene()->indexCurrentLayer();
+			
+			if(m_projectManager->currentDocument()->currentScene()->layers()[currentLayer]->frames().count() >  currentFrame+1)
+			{
+				selectFrame(currentLayer, currentFrame+1);
+			}
+			
+			
+		}
+	}
+}
+
+void KTMainWindow::selectBackFrame()
+{
+	if(m_projectManager)
+	{
+		if(m_projectManager->currentLayer() && m_projectManager->currentScene())
+		{
+			int currentFrame = m_projectManager->currentLayer()->indexCurrentFrame();
+			int currentLayer = m_projectManager->currentScene()->indexCurrentLayer();
+			if(0 <= currentFrame-1)
+			{
+				selectFrame(currentLayer, currentFrame-1);
+			}
+		}
+	}
+}
+
 
 // Graphic Components
 void KTMainWindow::rotateCurrentElement(int a)

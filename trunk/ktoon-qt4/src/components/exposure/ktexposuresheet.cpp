@@ -102,9 +102,9 @@ void KTExposureSheet::addScene(const QString &name)
 	
 	connect(newLayer, SIGNAL(requestCloneFrame(int, int)), this, SIGNAL(requestCloneFrame(int, int)));
 	
-	connect(newLayer, SIGNAL(requestRenameLayer(int, const QString&)), this,   SIGNAL(requestRenameLayer(int, const QString&)));
+	connect(newLayer, SIGNAL(requestRenameLayer(int, const QString&)), this, SIGNAL(requestRenameLayer(int, const QString&)));
 	
-	connect(newLayer, SIGNAL(requestRenameFrame(int, int, const QString&)), this,  SIGNAL(requestRenameFrame(int, int, const QString&)));
+	connect(newLayer, SIGNAL(requestRenameFrame(int, int, const QString&)), this, SIGNAL(requestRenameFrame(int, int, const QString&)));
 	
 	m_currentTable = newLayer;
 	m_scenes->setCurrentWidget(m_currentTable);

@@ -745,6 +745,7 @@ void APaintArea::cut()
 void APaintArea::group()
 {
 	D_FUNCINFO;
+	
 	if(m_currentFrame->selectedComponents().count() > 1)
 	{
 		AGraphicComponent *newComponent = new AGraphicComponent();
@@ -754,13 +755,12 @@ void APaintArea::group()
 // 			AGraphicComponent *child = new AGraphicComponent(*component);
 			newComponent->addChild( new AGraphicComponent(*component) );
 		}
-		
 		m_currentFrame->removeSelections();
 		
 		m_currentFrame->addComponent( newComponent );
 		m_currentFrame->addSelectedComponent( newComponent );
+		redrawAll();
 	}
-	
 }
 
 void APaintArea::ungroup()
@@ -782,6 +782,7 @@ void APaintArea::ungroup()
 				m_currentFrame->removeComponent(component);
 			}
 		}
+	redrawAll();
 	}
 }
 

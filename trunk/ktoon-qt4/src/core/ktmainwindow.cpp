@@ -88,7 +88,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	
 // 	Create the menubar;
 	splash->setMessage( tr("Creating menu bar..."));
-	
+	setupActions();
 	setupMenu();
 	
 	splash->setMessage( tr("Creating GUI..."));

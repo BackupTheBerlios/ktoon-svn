@@ -102,3 +102,7 @@ void KTFrameSequenceContainer::selectCell(int layer, int frame)
 	m_frameTable->setCurrentItem(  m_frameTable->item(layer, frame) );
 }
 
+
+void KTFrameSequenceContainer::moveCurrentLayer(bool up)
+{
+}

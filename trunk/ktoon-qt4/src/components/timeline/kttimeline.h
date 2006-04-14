@@ -89,7 +89,6 @@ class KTTimeLine : public KTModuleWidgetBase
 		void requestLockFrame();
 		void requestRemoveLayer();
 		void requestMoveLayer(bool up);
-		
 		void requestChangeFPS(int);
 		
 	private slots:

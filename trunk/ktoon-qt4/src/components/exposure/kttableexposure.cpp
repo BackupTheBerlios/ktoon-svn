@@ -258,13 +258,16 @@ void KTTableExposure::removeCurrentLayer()
 
 void KTTableExposure::setCurrentCell(int idLayer, int idFrame)
 {
+	dDebug() << idLayer << " " << idFrame;
 	if( idLayer < 0 || idFrame < 0  || (idLayer == m_currentLayer && m_layers[m_currentLayer]->currentFrame() == idFrame ))
 	{
 		return;
 	}
 	m_currentLayer = idLayer;
 	m_currentFrame = idFrame;
-	m_layers[m_currentLayer]->setSelected(true);	
+	m_layers[m_currentLayer]->setSelected(true);
+	m_layers[m_currentLayer]->frameSelect(m_currentFrame);
+	
 }
 
 void KTTableExposure::setLayer(int index)

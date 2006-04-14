@@ -268,6 +268,7 @@ void KTTimeLine::moveLayer(bool up)
 {
 	D_FUNCINFO;
 	currentLayerManager()->moveCurrentLayer(up);
+	currentFrameContainer()->moveCurrentLayer(up);
 	// TODO: move in frame container
 }
 

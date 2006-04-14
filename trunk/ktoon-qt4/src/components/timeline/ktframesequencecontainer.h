@@ -49,6 +49,8 @@ class KTFrameSequenceContainer : public DVHBox
 		void selectLayer(int pos);
 		void selectCell(int layer, int frame);
 		
+		void moveCurrentLayer(bool up);
+		
 	private slots:
 		void selectFrameFromItem(TFramesTableItem *item);
 		void selectCurrentFrame();

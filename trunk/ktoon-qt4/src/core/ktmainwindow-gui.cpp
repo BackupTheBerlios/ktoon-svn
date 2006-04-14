@@ -206,6 +206,8 @@ void KTMainWindow::setupMenu()
 	m_insertMenu->addAction(m_actionManager->find("InsertLayer"));
 	m_insertMenu->addAction(m_actionManager->find("InsertFrame"));
 	m_insertMenu->addSeparator();
+	
+	
 #if 0
 	m_insertMenu->addAction(m_actionManager->find("insertimage")); // FIXME: brush is not handled
 #endif
@@ -240,6 +242,21 @@ void KTMainWindow::setupMenu()
 	m_helpMenu->addSeparator();
 	m_helpMenu->addAction(m_actionManager->find("about ktoon") );
 }
+
+
+void KTMainWindow::setupActions()
+{
+	DAction *next = new DAction( QPixmap(), tr( "Back Frame" ), QKeySequence(Qt::Key_PageUp), this, SLOT(selectBackFrame()), m_actionManager, "BackFrame");
+	next->setShortcutContext ( Qt::ApplicationShortcut );
+	
+	
+	DAction *back = new DAction( QPixmap(), tr( "Next Frame" ), QKeySequence(Qt::Key_PageDown), this, SLOT(selectNextFrame()), m_actionManager, "Next Frame");
+	back->setShortcutContext ( Qt::ApplicationShortcut );
+	
+	addAction(back);
+	addAction(next);
+}
+
 
 void KTMainWindow::setupFileActions()
 {
@@ -320,6 +337,10 @@ void KTMainWindow::setupInsertActions()
 	new DAction( QPixmap(THEME_DIR+"/icons/frame.png"), tr( "Insert frame" ), QKeySequence(), m_projectManager, SLOT(createFrame()), m_actionManager, "InsertFrame");
 	
 	new DAction( QPixmap(), tr( "Insert image" ), QKeySequence(), this, SLOT(insertImage()), m_actionManager, "insertimage");
+	
+	
+
+	
 }
 
 void KTMainWindow::setupToolBar()
