@@ -1,6 +1,6 @@
 /*
  * This file is part of the KDE libraries
- * Copyright (C) 2003 Fredrik Höglund <fredrik@kde.org>
+ * Copyright (C) 2003 Fredrik HÃ¶glund <fredrik@kde.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -29,13 +29,9 @@
 
 
 /**
- * This class is part of the KDE libraries adapted to doon by David Cuadrado
- * 
  * This class provides a means for applications to obtain information at
  * runtime about processor support for certain architecture extensions,
  * such as MMX, SSE, 3DNow and AltiVec.
- *
- * @since 3.2
  */
 class KCPUInfo
 {
@@ -61,7 +57,7 @@ class KCPUInfo
          * @see     Extensions
          */
         static bool haveExtension( unsigned int extension )
-        { return s_features & extension; }
+        { return (s_features & extension) != 0; }
 
     private:
         static unsigned int s_features;

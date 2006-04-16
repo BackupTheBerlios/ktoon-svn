@@ -1,6 +1,6 @@
 /*
  * This file is part of the KDE libraries
- * Copyright (C) 2003 Fredrik Höglund <fredrik@kde.org>
+ * Copyright (C) 2003 Fredrik HÃ¶glund <fredrik@kde.org>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -47,8 +47,8 @@ static void sighandler( int )
 #endif
 
 #ifdef __PPC__
-static sigjmp_buf jmpbuf;
-static sig_atomic_t canjump = 0;
+static sigjmp_buf  jmpbuf;
+static sig_atomic_t  canjump = 0;
 
 static void sigill_handler( int sig )
 {

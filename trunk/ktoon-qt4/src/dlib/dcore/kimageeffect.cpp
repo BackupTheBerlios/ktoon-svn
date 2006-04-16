@@ -29,8 +29,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-#include <cmath> 
-#include <cassert>
+#include <math.h>
+#include <assert.h>
 
 #include <qimage.h>
 #include <stdlib.h>
@@ -126,10 +126,12 @@ QImage KImageEffect::gradient(const QSize &size, const QColor &ca,
     int rDiff, gDiff, bDiff;
     int rca, gca, bca, rcb, gcb, bcb;
 
-    QImage image(size,QImage::Format_RGB32);
+    QImage image(size, QImage::Format_RGB32);
 
-    if (size.width() == 0 || size.height() == 0) 
-    {
+    if (size.width() == 0 || size.height() == 0) {
+#ifndef NDEBUG
+      std::cerr << "WARNING: KImageEffect::gradient: invalid image" << std::endl;
+#endif
       return image;
     }
 
@@ -412,7 +414,7 @@ QImage KImageEffect::unbalancedGradient(const QSize &size, const QColor &ca,
     int rDiff, gDiff, bDiff;
     int rca, gca, bca, rcb, gcb, bcb;
 
-    QImage image(size,QImage::Format_RGB32);
+    QImage image(size, QImage::Format_RGB32);
 
     if (size.width() == 0 || size.height() == 0) {
 #ifndef NDEBUG
@@ -2262,6 +2264,7 @@ QImage& KImageEffect::dither(QImage &img, const QColor *palette, int size)
       return img;
 
     QImage dImage( img.width(), img.height(), QImage::Format_Indexed8 );
+    dImage.setNumColors( size );
     int i;
 
     dImage.setNumColors( size );
@@ -2472,8 +2475,7 @@ bool KImageEffect::blend(
     if ( cw <= 0 || ch <= 0 ) return true;
   }
 
-  output = output.scaled(cw,ch);
-  output.convertToFormat(QImage::Format_RGB32);
+  output = QImage(cw,ch,QImage::Format_RGB32);
 //  output.setAlphaBuffer(true); // I should do some benchmarks to see if
 	// this is worth the effort
 
@@ -2649,7 +2651,7 @@ QRect KImageEffect::computeDestinationRect(const QSize &lowerSize,
                     w-1, h-1);
         break;
     case Scaled:
-        upper = upper.scaled(w, h);
+        upper = upper.scaled(QSize(w, h),Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
         d.setRect(0, 0, w, h);
         break;
     case CenteredAutoFit:
@@ -2668,7 +2670,7 @@ QRect KImageEffect::computeDestinationRect(const QSize &lowerSize,
             wh = (int)(sx * wh);
             ww = w;
         }
-	upper = upper.scaled(ww, wh);
+        upper = upper.scaled(QSize(ww, wh),Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
         d.setRect((w - ww) / 2, (h - wh) / 2, ww, wh);
         break;
     }
@@ -2682,7 +2684,7 @@ QRect KImageEffect::computeDestinationRect(const QSize &lowerSize,
             wh = (int)(sx * wh);
             ww = w;
         }
-	upper = upper.scaled(ww, wh);
+        upper = upper.scaled(QSize(ww, wh),Qt::IgnoreAspectRatio,Qt::SmoothTransformation);
         d.setRect(0, 0, w, h);
         break;
     }
@@ -2752,6 +2754,7 @@ QImage KImageEffect::sample(QImage &src, int w, int h)
 
     int depth = src.depth();
     QImage dest(w, h, src.format());
+    dest.setNumColors(src.numColors());
     int *x_offset = (int *)malloc(w*sizeof(int));
     int *y_offset = (int *)malloc(h*sizeof(int));
     if(!x_offset || !y_offset){
@@ -2777,9 +2780,8 @@ QImage KImageEffect::sample(QImage &src, int w, int h)
                 destData[x] = srcData[x_offset[x]];
         }
     }
-    else if(depth == 1) 
-    {
-        int r = 0;
+    else if(depth == 1) {
+        bool r = src.format() == QImage::Format_MonoLSB;
         dest.setColorTable(src.colorTable());
         for(int y=0; y < h; ++y){
             unsigned char *destData = dest.scanLine(y);
@@ -2915,7 +2917,7 @@ QImage KImageEffect::despeckle(QImage &src)
     Y[4]= {1, 0, 1, 1};
 
     unsigned int *destData;
-    QImage dest(src.width(), src.height(),QImage::Format_RGB32);
+    QImage dest(src.width(), src.height(), QImage::Format_RGB32);
 
     packets = (src.width()+2)*(src.height()+2);
     red_channel = (unsigned int *)calloc(packets, sizeof(unsigned int));
@@ -3113,7 +3115,7 @@ unsigned int KImageEffect::generateNoise(unsigned int pixel,
 QImage KImageEffect::addNoise(QImage &src, NoiseType noise_type)
 {
     int x, y;
-    QImage dest(src.width(), src.height(),QImage::Format_RGB32);
+    QImage dest(src.width(), src.height(), QImage::Format_RGB32);
     unsigned int *destData;
 
     if(src.depth() > 8){ // DirectClass source image
@@ -3249,7 +3251,7 @@ QImage KImageEffect::implode(QImage &src, double factor,
     unsigned int *destData;
     int x, y;
 
-    QImage dest(src.width(), src.height(),QImage::Format_RGB32);
+    QImage dest(src.width(), src.height(), QImage::Format_RGB32);
 
     // compute scaling factor
     x_scale = 1.0;
@@ -3323,13 +3325,13 @@ QImage KImageEffect::implode(QImage &src, double factor,
 
 QImage KImageEffect::rotate(QImage &img, RotateDirection r)
 {
-	QImage dest = QImage(img.height(), img.width(), img.format());
+    QImage dest;
     int x, y;
     if(img.depth() > 8){
         unsigned int *srcData, *destData;
         switch(r){
         case Rotate90:
-		
+            dest = QImage(img.height(), img.width(), img.format());
             for(y=0; y < img.height(); ++y){
                 srcData = (unsigned int *)img.scanLine(y);
                 for(x=0; x < img.width(); ++x){
@@ -3339,6 +3341,7 @@ QImage KImageEffect::rotate(QImage &img, RotateDirection r)
             }
             break;
         case Rotate180:
+            dest = QImage(img.width(), img.height(), img.format());
             for(y=0; y < img.height(); ++y){
                 srcData = (unsigned int *)img.scanLine(y);
                 destData = (unsigned int *)dest.scanLine(img.height()-y-1);
@@ -3347,7 +3350,7 @@ QImage KImageEffect::rotate(QImage &img, RotateDirection r)
             }
             break;
         case Rotate270:
-
+            dest = QImage(img.height(), img.width(), img.format());
             for(y=0; y < img.height(); ++y){
                 srcData = (unsigned int *)img.scanLine(y);
                 for(x=0; x < img.width(); ++x){
@@ -3366,7 +3369,7 @@ QImage KImageEffect::rotate(QImage &img, RotateDirection r)
         unsigned int *srcTable, *destTable;
         switch(r){
         case Rotate90:
-
+            dest = QImage(img.height(), img.width(), img.format());
             dest.setNumColors(img.numColors());
             srcTable = (unsigned int *)img.colorTable().data();
             destTable = (unsigned int *)dest.colorTable().data();
@@ -3381,7 +3384,7 @@ QImage KImageEffect::rotate(QImage &img, RotateDirection r)
             }
             break;
         case Rotate180:
-
+            dest = QImage(img.width(), img.height(), img.format());
             dest.setNumColors(img.numColors());
             srcTable = (unsigned int *)img.colorTable().data();
             destTable = (unsigned int *)dest.colorTable().data();
@@ -3395,7 +3398,7 @@ QImage KImageEffect::rotate(QImage &img, RotateDirection r)
             }
             break;
         case Rotate270:
-
+            dest = QImage(img.height(), img.width(), img.format());
             dest.setNumColors(img.numColors());
             srcTable = (unsigned int *)img.colorTable().data();
             destTable = (unsigned int *)dest.colorTable().data();
@@ -3499,7 +3502,7 @@ QImage KImageEffect::swirl(QImage &src, double degrees,
         x_scale, y_center, y_distance, y_scale;
     int x, y;
     unsigned int *q;
-    QImage dest(src.width(), src.height(),QImage::Format_RGB32);
+    QImage dest(src.width(), src.height(), QImage::Format_RGB32);
 
     // compute scaling factor
     x_center = src.width()/2.0;
@@ -3577,7 +3580,7 @@ QImage KImageEffect::wave(QImage &src, double amplitude, double wavelength,
     int x, y;
     unsigned int *q;
 
-    QImage dest(src.width(), src.height() + (int)(2*fabs(amplitude)),QImage::Format_RGB32);
+    QImage dest(src.width(), src.height() + (int)(2*fabs(amplitude)), QImage::Format_RGB32);
     // allocate sine map
     sine_map = (double *)malloc(dest.width()*sizeof(double));
     if(!sine_map)
@@ -3629,41 +3632,47 @@ QImage KImageEffect::oilPaintConvolve(QImage &src, double radius)
         qWarning("KImageEffect::oilPaintConvolve(): Image is smaller than radius!");
         return(dest);
     }
+    /*
+    histogram = (unsigned long *)malloc(256*sizeof(unsigned long));
+    if(!histogram){
+        qWarning("KImageEffect::oilPaintColvolve(): Unable to allocate memory!");
+        return(dest);
+    }
+    */
+    unsigned int **jumpTable = (unsigned int **)src.bits();
+    for(y=0; y < dest.height(); ++y){
+        sy = y-(width/2);
+        q = (unsigned int *)dest.scanLine(y);
+        for(x=0; x < dest.width(); ++x){
+            count = 0;
+            memset(histogram, 0, 256*sizeof(unsigned long));
+            //memset(histogram, 0, 256);
+            sy = y-(width/2);
+            for(mcy=0; mcy < width; ++mcy, ++sy){
+                my = sy < 0 ? 0 : sy > src.height()-1 ?
+                    src.height()-1 : sy;
+                sx = x+(-width/2);
+                for(mcx=0; mcx < width; ++mcx, ++sx){
+                    mx = sx < 0 ? 0 : sx > src.width()-1 ?
+                        src.width()-1 : sx;
 
-    // FIXME: PORT TO QT4
-//     unsigned int *jumpTable = (unsigned int *)src.jumpTable();
-//     for(y=0; y < dest.height(); ++y){
-//         sy = y-(width/2);
-//         q = (unsigned int *)dest.scanLine(y);
-//         for(x=0; x < dest.width(); ++x){
-//             count = 0;
-//             memset(histogram, 0, 256*sizeof(unsigned long));
-//             //memset(histogram, 0, 256);
-//             sy = y-(width/2);
-//             for(mcy=0; mcy < width; ++mcy, ++sy){
-//                 my = sy < 0 ? 0 : sy > src.height()-1 ?
-//                     src.height()-1 : sy;
-//                 sx = x+(-width/2);
-//                 for(mcx=0; mcx < width; ++mcx, ++sx){
-//                     mx = sx < 0 ? 0 : sx > src.width()-1 ?
-//                         src.width()-1 : sx;
-// 
-//                     k = intensityValue(jumpTable[my][mx]);
-//                     if(k > 255){
-//                         qWarning("KImageEffect::oilPaintConvolve(): k is %d",
-//                                  k);
-//                         k = 255;
-//                     }
-//                     histogram[k]++;
-//                     if(histogram[k] > count){
-//                         count = histogram[k];
-//                         s = jumpTable[my]+mx;
-//                     }
-//                 }
-//             }
-//             *q++ = (*s);
-//         }
-//     }
+                    k = intensityValue(jumpTable[my][mx]);
+                    if(k > 255){
+                        qWarning("KImageEffect::oilPaintConvolve(): k is %d",
+                                 k);
+                        k = 255;
+                    }
+                    histogram[k]++;
+                    if(histogram[k] > count){
+                        count = histogram[k];
+                        s = jumpTable[my]+mx;
+                    }
+                }
+            }
+            if (s)
+                *q++ = (*s);
+        }
+    }
     /* liberateMemory((histogram); */
     return(dest);
 }
@@ -3679,7 +3688,7 @@ QImage KImageEffect::charcoal(QImage &src, double radius, double sigma)
     QImage img(edge(src, radius));
     img = blur(img, radius, sigma);
     normalize(img);
-    img.invertPixels();
+    img.invertPixels(QImage::InvertRgb);
     KImageEffect::toGray(img);
     return(img);
 }
@@ -4296,7 +4305,7 @@ QImage KImageEffect::blur(QImage &src, double radius, double sigma)
         return(dest);
     }
 
-    dest = QImage(src.width(), src.height(),QImage::Format_RGB32);
+    dest = QImage(src.width(), src.height(), QImage::Format_RGB32);
 
     scanline = (unsigned int *)malloc(sizeof(unsigned int)*src.height());
     temp = (unsigned int *)malloc(sizeof(unsigned int)*src.height());
@@ -4306,18 +4315,17 @@ QImage KImageEffect::blur(QImage &src, double radius, double sigma)
         blurScanLine(kernel, width, p, q, src.width());
     }
 
-    // FIXME: PORT TO QT4
-//     unsigned int **srcTable = (unsigned int **)src.jumpTable();
-//     unsigned int **destTable = (unsigned int **)dest.jumpTable();
-//     for(x=0; x < src.width(); ++x){
-//         for(y=0; y < src.height(); ++y){
-//             scanline[y] = srcTable[y][x];
-//         }
-//         blurScanLine(kernel, width, scanline, temp, src.height());
-//         for(y=0; y < src.height(); ++y){
-//             destTable[y][x] = temp[y];
-//         }
-//     }
+    unsigned int **srcTable = (unsigned int **)src.bits();
+    unsigned int **destTable = (unsigned int **)dest.bits();
+    for(x=0; x < src.width(); ++x){
+        for(y=0; y < src.height(); ++y){
+            scanline[y] = srcTable[y][x];
+        }
+        blurScanLine(kernel, width, scanline, temp, src.height());
+        for(y=0; y < src.height(); ++y){
+            destTable[y][x] = temp[y];
+        }
+    }
     free(scanline);
     free(temp);
     free(kernel);
@@ -4328,74 +4336,73 @@ bool KImageEffect::convolveImage(QImage *image, QImage *dest,
                                  const unsigned int order,
                                  const double *kernel)
 {
-//     long width;
-//     double red, green, blue, alpha;
-//     double normalize, *normal_kernel;
-//     register const double *k;
-//     register unsigned int *q;
-//     int x, y, mx, my, sx, sy;
-//     long i;
-//     int mcx, mcy;
-// 
-//     width = order;
-//     if((width % 2) == 0){
-//         qWarning("KImageEffect: Kernel width must be an odd number!");
-//         return(false);
-//     }
-//     normal_kernel = (double *)malloc(width*width*sizeof(double));
-//     if(!normal_kernel){
-//         qWarning("KImageEffect: Unable to allocate memory!");
-//         return(false);
-//     }
-//     dest->reset();
-//     dest->create(image->width(), image->height(),QImage::Format_RGB32);
-//     if(image->depth() < 32)
-//         *image = image->convertDepth(32);
-// 
-//     normalize=0.0;
-//     for(i=0; i < (width*width); i++)
-//         normalize += kernel[i];
-//     if(fabs(normalize) <= MagickEpsilon)
-//         normalize=1.0;
-//     normalize=1.0/normalize;
-//     for(i=0; i < (width*width); i++)
-//         normal_kernel[i] = normalize*kernel[i];
-// 
-//     unsigned int **jumpTable = (unsigned int **)image->jumpTable();
-//     for(y=0; y < dest->height(); ++y){
-//         sy = y-(width/2);
-//         q = (unsigned int *)dest->scanLine(y);
-//         for(x=0; x < dest->width(); ++x){
-//             k = normal_kernel;
-//             red = green = blue = alpha = 0;
-//             sy = y-(width/2);
-//             for(mcy=0; mcy < width; ++mcy, ++sy){
-//                 my = sy < 0 ? 0 : sy > image->height()-1 ?
-//                     image->height()-1 : sy;
-//                 sx = x+(-width/2);
-//                 for(mcx=0; mcx < width; ++mcx, ++sx){
-//                     mx = sx < 0 ? 0 : sx > image->width()-1 ?
-//                         image->width()-1 : sx;
-//                     red += (*k)*(qRed(jumpTable[my][mx])*257);
-//                     green += (*k)*(qGreen(jumpTable[my][mx])*257);
-//                     blue += (*k)*(qBlue(jumpTable[my][mx])*257);
-//                     alpha += (*k)*(qAlpha(jumpTable[my][mx])*257);
-//                     ++k;
-//                 }
-//             }
-// 
-//             red = red < 0 ? 0 : red > 65535 ? 65535 : red+0.5;
-//             green = green < 0 ? 0 : green > 65535 ? 65535 : green+0.5;
-//             blue = blue < 0 ? 0 : blue > 65535 ? 65535 : blue+0.5;
-//             alpha = alpha < 0 ? 0 : alpha > 65535 ? 65535 : alpha+0.5;
-// 
-//             *q++ = qRgba((unsigned char)(red/257UL),
-//                          (unsigned char)(green/257UL),
-//                          (unsigned char)(blue/257UL),
-//                          (unsigned char)(alpha/257UL));
-//         }
-//     }
-//     free(normal_kernel);
+    long width;
+    double red, green, blue, alpha;
+    double normalize, *normal_kernel;
+    register const double *k;
+    register unsigned int *q;
+    int x, y, mx, my, sx, sy;
+    long i;
+    int mcx, mcy;
+
+    width = order;
+    if((width % 2) == 0){
+        qWarning("KImageEffect: Kernel width must be an odd number!");
+        return(false);
+    }
+    normal_kernel = (double *)malloc(width*width*sizeof(double));
+    if(!normal_kernel){
+        qWarning("KImageEffect: Unable to allocate memory!");
+        return(false);
+    }
+    *dest = QImage(image->width(), image->height(), QImage::Format_RGB32);
+    if(image->depth() < 32)
+        *image = image->convertToFormat(QImage::Format_RGB32);
+
+    normalize=0.0;
+    for(i=0; i < (width*width); i++)
+        normalize += kernel[i];
+    if(fabs(normalize) <= MagickEpsilon)
+        normalize=1.0;
+    normalize=1.0/normalize;
+    for(i=0; i < (width*width); i++)
+        normal_kernel[i] = normalize*kernel[i];
+
+    unsigned int **jumpTable = (unsigned int **)image->bits();
+    for(y=0; y < dest->height(); ++y){
+        sy = y-(width/2);
+        q = (unsigned int *)dest->scanLine(y);
+        for(x=0; x < dest->width(); ++x){
+            k = normal_kernel;
+            red = green = blue = alpha = 0;
+            sy = y-(width/2);
+            for(mcy=0; mcy < width; ++mcy, ++sy){
+                my = sy < 0 ? 0 : sy > image->height()-1 ?
+                    image->height()-1 : sy;
+                sx = x+(-width/2);
+                for(mcx=0; mcx < width; ++mcx, ++sx){
+                    mx = sx < 0 ? 0 : sx > image->width()-1 ?
+                        image->width()-1 : sx;
+                    red += (*k)*(qRed(jumpTable[my][mx])*257);
+                    green += (*k)*(qGreen(jumpTable[my][mx])*257);
+                    blue += (*k)*(qBlue(jumpTable[my][mx])*257);
+                    alpha += (*k)*(qAlpha(jumpTable[my][mx])*257);
+                    ++k;
+                }
+            }
+
+            red = red < 0 ? 0 : red > 65535 ? 65535 : red+0.5;
+            green = green < 0 ? 0 : green > 65535 ? 65535 : green+0.5;
+            blue = blue < 0 ? 0 : blue > 65535 ? 65535 : blue+0.5;
+            alpha = alpha < 0 ? 0 : alpha > 65535 ? 65535 : alpha+0.5;
+
+            *q++ = qRgba((unsigned char)(red/257UL),
+                         (unsigned char)(green/257UL),
+                         (unsigned char)(blue/257UL),
+                         (unsigned char)(alpha/257UL));
+        }
+    }
+    free(normal_kernel);
     return(true);
 
 }
@@ -4482,7 +4489,7 @@ QImage KImageEffect::shade(QImage &src, bool color_shading, double azimuth,
 
     unsigned int *q;
 
-    QImage dest(src.width(), src.height(),QImage::Format_RGB32);
+    QImage dest(src.width(), src.height(), QImage::Format_RGB32);
 
     azimuth = DegreesToRadians(azimuth);
     elevation = DegreesToRadians(elevation);
