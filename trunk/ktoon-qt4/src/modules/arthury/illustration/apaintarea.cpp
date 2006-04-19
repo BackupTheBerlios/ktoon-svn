@@ -500,8 +500,16 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 					{
 						if ( *it )
 						{
-							toSelect = (*it);
-							break;
+							if (!toSelect)
+							{
+								toSelect = (*it);
+							}
+							else if ( toSelect->boundingRect().contains((*it)->boundingRect() ) )
+							{
+								toSelect = (*it);
+							}
+							
+// 							break;
 						}
 					}
 				}

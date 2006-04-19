@@ -118,13 +118,28 @@ bool AGraphicComponent::intersects(const QRectF &rect)
 {
 	if ( isValid() )
 	{
-		QRectF r = boundingRect();
-		return r.intersects(rect);
+		QPainterPath path;
+		getPath( path );
+		
+// 		QRectF r = boundingRect();
+		return path.intersects(rect);
 	}
 	
 	return false;
 }
 
+bool AGraphicComponent::contains(const QRectF &rect)
+{
+	if ( isValid() )
+	{
+		QPainterPath path;
+		getPath( path );
+		
+		return path.contains(rect);
+	}
+	
+	return false;
+}
 
 void AGraphicComponent::scale(double sX, double sY)
 {

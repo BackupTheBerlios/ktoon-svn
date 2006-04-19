@@ -47,7 +47,12 @@ class AFillTool : public KTToolPluginObject, public AToolInterface
 		virtual void aboutToChangeTool();
 		
 	private:
-		bool findChild(AGraphicComponent *component, const QString &brush, const QPoint &clickedPos);
+		void buildPath(AGraphic *current,  QPainterPath &fillPath, QList<AGraphic *> &graphics);
+		void joinPath(QPainterPath &orig, const QPainterPath &toJoin);
+		
+		bool isIntersected(const QPointF &point, const QPolygonF &polygon);
+		bool isContained(const QPointF &point, const QPainterPath &path);
+		bool isClosed(const QPainterPath &path);
 };
 
 #endif

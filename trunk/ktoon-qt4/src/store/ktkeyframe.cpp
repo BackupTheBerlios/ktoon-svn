@@ -64,6 +64,11 @@ void KTKeyFrame::addComponent(AGraphicComponent *comp)
 	m_components << comp;
 }
 
+void KTKeyFrame::insertComponent(int pos, AGraphicComponent *comp)
+{
+	m_components.insert(pos, comp);
+}
+
 void KTKeyFrame::removeComponent(AGraphicComponent *comp)
 {
 	deSelectedComponent( comp);

@@ -103,6 +103,8 @@ class AGraphicComponent : public KTSerializableObject
 		 */
 		bool intersects(const QRectF &rect);
 		
+		bool contains(const QRectF &rect);
+		
 		/**
 		 * Scale the component
 		 */

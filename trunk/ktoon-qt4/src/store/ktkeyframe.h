@@ -67,14 +67,18 @@ class KTKeyFrame : public KTSerializableObject
 		void setComponents(const QList<AGraphicComponent *> &components);
 		
 		/**
-		 * AÃ±ade un componente al frame
+		 * Añade un componente al frame
 		 */
 		void addComponent(AGraphicComponent *comp);
 		
+		
+		void insertComponent(int pos, AGraphicComponent *comp);
+		
 		/**
-		 * AÃ±ade una lista de componentes al frame, esta funcion sobreescribe los componentes anteriores
+		 * Añade una lista de componentes al frame, esta funcion sobreescribe los componentes anteriores
 		 */
 		void addComponents(QList<AGraphicComponent *> comp);
+		
 		
 		/**
 		 * Remueve un componente
