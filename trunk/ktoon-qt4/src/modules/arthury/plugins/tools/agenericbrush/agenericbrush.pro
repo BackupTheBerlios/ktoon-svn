@@ -10,13 +10,14 @@ target.path = /plugins/
 agenericbrush.files += *.so 
 agenericbrush.path = /plugins/ 
 KDEV_QTVER = 4 
+linux-g++ {
 TARGETDEPS += ../../../../../../src/store/libstore.so \
               ../../../../../../src/modules/arthury/interfaces/libinterfaces.a \
               ../../../../../../src/ktoonlib/libktoonlib.so \
               ../../../../../../src/dlib/dgui/libdgui.so \
               ../../../../../../src/dlib/dcore/libdcore.so 
+}
 LIBS += -lstore \
-        ../../../../../../src/modules/arthury/interfaces/libinterfaces.a \
         -lktoonlib \
         -ldgui \
         -ldcore 

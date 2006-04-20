@@ -27,3 +27,8 @@ CONFIG += release \
 warn_on \
 dll
 TEMPLATE = lib
+
+macx {
+LIBS += -ldcore -ldgui
+QMAKE_LIBDIR = ../../src/dlib/dcore ../../src/dlib/dgui
+}

@@ -10,4 +10,11 @@ KDEV_QTVER = 4
 CONFIG += release \
           warn_on \
           staticlib 
-TEMPLATE = lib 
+
+TEMPLATE = lib
+
+# little hack
+macx {
+TEMPLATE=subdirs
+}
+

@@ -14,3 +14,8 @@ CONFIG += release \
 warn_on \
 staticlib
 TEMPLATE = lib
+
+#libttle hack
+macx {
+TEMPLATE = subdirs
+}

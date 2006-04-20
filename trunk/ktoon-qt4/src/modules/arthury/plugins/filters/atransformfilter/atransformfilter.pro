@@ -24,3 +24,15 @@ CONFIG += release \
 TEMPLATE = lib 
 HEADERS += atransformfilter.h 
 SOURCES += atransformfilter.cpp 
+
+
+LIBS += -lstore \
+        -lktoonlib \
+        -ldgui \
+        -ldcore 
+
+QMAKE_LIBDIR = ../../../../../../src/store \
+               ../../../../../../src/ktoonlib \
+               ../../../../../../src/dlib/dgui \
+               ../../../../../../src/dlib/dcore 
+

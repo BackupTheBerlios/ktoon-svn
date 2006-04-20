@@ -15,3 +15,8 @@ CONFIG += release \
 warn_on \
 staticlib
 TEMPLATE = lib
+
+# a little hack
+macx {
+TEMPLATE = subdirs
+}

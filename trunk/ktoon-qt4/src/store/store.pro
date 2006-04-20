@@ -43,3 +43,8 @@ CONFIG += release \
 warn_on \
 dll
 TEMPLATE = lib
+
+macx {
+LIBS += -ldcore -ldgui -lktoonlib
+QMAKE_LIBDIR = ../../src/dlib/dcore ../../src/dlib/dgui ../../src/ktoonlib
+}

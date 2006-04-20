@@ -116,3 +116,9 @@ CONFIG += release \
 warn_on \
 dll
 TEMPLATE = lib
+
+macx {
+QMAKE_LIBDIR = ../../../src/dlib/dcore
+LIBS += -ldcore
+}
+

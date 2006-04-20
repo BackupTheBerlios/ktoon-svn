@@ -54,6 +54,7 @@ SOURCES += main.cpp \
            ktpluginmanager.cpp 
 QT += xml opengl gui
 KDEV_QTVER = 4
+linux-g++ {
 TARGETDEPS += ../../src/dlib/dgui/libdgui.so \
 ../../src/dialogs/libdialogs.a \
 ../../src/components/colorpalette/libcolorpalette.a \
@@ -74,6 +75,8 @@ TARGETDEPS += ../../src/dlib/dgui/libdgui.so \
 ../../src/dlib/dcore/libdcore.so \
 ../../src/ktoonlib/libktoonlib.so \
 ../../src/components/pen/libpen.a
+}
+
 LIBS += -ldcore \
 -ldgui \
 -lktoonlib \

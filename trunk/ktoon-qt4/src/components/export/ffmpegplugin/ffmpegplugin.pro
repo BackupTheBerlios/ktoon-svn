@@ -23,3 +23,9 @@ SOURCES += ffmpegplugin.cpp \
 !include(../../../../ktconfig.pri) {
 error("Please run configure first")
 }
+
+
+macx {
+LIBS += -ldcore -ldgui -lktoonlib
+QMAKE_LIBDIR = ../../../../src/dlib/dcore ../../../../src/dlib/dgui ../../../../src/ktoonlib
+}

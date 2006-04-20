@@ -21,3 +21,9 @@ SOURCES += mingplugin.cpp
 !include(../../../../ktconfig.pri) {
 error("Please run configure first")
 }
+
+macx {
+LIBS += -ldcore -ldgui -lktoonlib -lstore
+QMAKE_LIBDIR = ../../../../src/dlib/dcore ../../../../src/dlib/dgui ../../../../src/ktoonlib ../../../../src/store
+}
+
