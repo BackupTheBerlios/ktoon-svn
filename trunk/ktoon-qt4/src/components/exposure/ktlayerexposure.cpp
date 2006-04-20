@@ -390,3 +390,9 @@ void KTLayerExposure::emitRequestRenameLayer(const QString  &newName)
 	dDebug() << "emit(requestRenameLayer( " << m_id << "," << newName <<"))";
 	emit(requestRenameLayer(m_id, newName));
 }
+
+
+int KTLayerExposure::visualIndex(int logicalIndex)
+{
+	return m_layout->indexOf ( m_frames[logicalIndex]);
+}

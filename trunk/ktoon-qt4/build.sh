@@ -140,15 +140,15 @@ function main()
 {
 	echo
 	echo `date` >> $LOG_FILE
-	qpinfo "###################################"
-	if [ $OPTION_GL -eq 1 ]
-	then
-		qpinfo "-> Using OpenGL version"
-		openglCC
-	else
-		qpinfo "-> Using NO-OpenGL version"
-		qtCC
-	fi
+# 	qpinfo "###################################"
+# 	if [ $OPTION_GL -eq 1 ]
+# 	then
+# 		qpinfo "-> Using OpenGL version"
+# 		openglCC
+# 	else
+# 		qpinfo "-> Using NO-OpenGL version"
+# 		qtCC
+# 	fi
 	
 	if [ $OPTION_NODEBUG -eq 1 ]
 	then
@@ -243,10 +243,10 @@ function usage()
 	echo "Options: "
 	echo "	-p,--prefix [PREFIX]"
 	echo "	   Set the prefix"
-	echo "	-d,--debug"
+	echo "	-q,--quiet"
 	echo "	   Activate debug"
-	echo "	-o,--use-opengl"
-	echo "	   Compile the opengl version"
+# 	echo "	-o,--use-opengl"
+# 	echo "	   Compile the opengl version"
 	echo "	-Y,--assume-yes"
 	echo "	   Assume yes"
 	echo "	-h,--help"
@@ -264,7 +264,7 @@ then
 fi
 
 
-TEMP=`getopt -o p:doYh:: --long prefix:,help,debug,use-opengl::,assume-yes -n "$0" -- "$@"`
+TEMP=`getopt -o p:qoYh:: --long prefix:,help,quiet,use-opengl::,assume-yes -n "$0" -- "$@"`
 
 eval set -- "$TEMP"
 while [ true ]
@@ -272,9 +272,8 @@ do
         case "$1" in
 		-h|--help) usage; shift;;
 		-p|--prefix) KTOON_HOME=$2; shift 2 ;;
-		-d|--debug) OPTION_NODEBUG=0; shift ;;
-		-o|--use-opengl) OPTION_GL=1; shift ;;
-		-Y|--assume-yes) ASSUME_YES=1; OPTION_NODEBUG=1; OPTION_GL=1; shift ;; 
+		-q|--quiet) OPTION_NODEBUG=1; shift ;;
+		-Y|--assume-yes) ASSUME_YES=1; OPTION_NODEBUG=1; shift ;; 
 		--) shift ; break ;;
 		*) break;
 	esac
@@ -290,16 +289,16 @@ fi
 verifyEnv
 detectQtVersion
 
-if [ $OPTION_GL -eq -1 ]
-then
-	qpelec "Do you wants compile opengl version (y/n)? "
-	read UOG
-
-	case $UOG in
-		y|Y|yes|YES|si|SI|s|S) OPTION_GL=1 ;;
-		*) OPTION_GL=0 ;;
-	esac
-fi
+# if [ $OPTION_GL -eq -1 ]
+# then
+# 	qpelec "Do you wants compile opengl version (y/n)? "
+# 	read UOG
+# 
+# 	case $UOG in
+# 		y|Y|yes|YES|si|SI|s|S) OPTION_GL=1 ;;
+# 		*) OPTION_GL=0 ;;
+# 	esac
+# fi
 
 if [ $OPTION_NODEBUG -eq -1 ]
 then

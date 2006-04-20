@@ -101,6 +101,12 @@ void KTLayerSequence::removeLayer(int pos)
 	setCurrentCell(pos-1, 0);
 }
 
+void KTLayerSequence::setCurrentLayer(int pos)
+{
+	setCurrentCell(verticalHeader()->logicalIndex(pos) ,0);
+	selectRow(verticalHeader()->logicalIndex(pos));
+}
+
 void KTLayerSequence::selectLayer(KTTimeLineLayer *tm)
 {
 	D_FUNCINFO;
@@ -111,7 +117,7 @@ void KTLayerSequence::selectLayer(KTTimeLineLayer *tm)
 	setItemSelected ( this->item( tm), true);
 	
 	SHOW_VAR( verticalHeader()->logicalIndex(currentRow()) );
-	emit itemSelected( verticalHeader()->logicalIndex(currentRow()) );
+	emit itemSelected( verticalHeader()->visualIndex(currentRow()) );
 }
 
 void KTLayerSequence::selectLayer(int r, int c)

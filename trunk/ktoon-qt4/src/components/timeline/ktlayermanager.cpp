@@ -157,11 +157,10 @@ void KTLayerManager::createNewLayer(const QString &name, bool toEnd)
 
 void KTLayerManager::selectLayer(int layerPos)
 {
-// 	SHOW_VAR(layerPos);
+	SHOW_VAR(layerPos);
 	
 	m_sequence->selectionModel()->clear();
-	m_sequence->setCurrentCell(layerPos, 0);
-	m_sequence->selectRow(layerPos);
+	m_sequence->setCurrentLayer(layerPos);
 }
 
 void KTLayerManager::moveCurrentLayer(bool up)

@@ -197,7 +197,6 @@ void KTTableExposure::moveCurrentFrame(Direction dir)
 void KTTableExposure::moveCurrentLayer(bool left)
 {
 	int pos = m_layout->indexOf ( m_layers[m_currentLayer]);
-	
 	if ( pos < 0 )
 	{
 		dFatal() << "Can't move layer!";
@@ -215,7 +214,7 @@ void KTTableExposure::moveCurrentLayer(bool left)
 			
 			m_layers[m_currentLayer]->setId(m_currentLayer-1);
 			
-				m_layers[m_currentLayer-1]->setId(m_currentLayer);
+			m_layers[m_currentLayer-1]->setId(m_currentLayer);
 			
 			
 			m_layers.swap ( m_currentLayer, m_currentLayer-1);
@@ -228,7 +227,7 @@ void KTTableExposure::moveCurrentLayer(bool left)
 		if( pos+1 < m_layers.count() )
 		{
 			m_layout->removeWidget(m_layers[m_currentLayer]);
-			m_layout->insertWidget(pos-1, m_layers[m_currentLayer]);
+			m_layout->insertWidget(pos+1, m_layers[m_currentLayer]);
 			int id1 = m_layers[m_currentLayer+1]->id();
 			int id2 = m_layers[m_currentLayer]->id();
 			m_layers[m_currentLayer]->setId(id1);
@@ -262,7 +261,7 @@ void KTTableExposure::removeCurrentLayer()
 		m_numLayer--;
 		m_port->adjustSize();
 		
-		emit cellSelected( m_currentLayer-1, m_layers[m_currentLayer-1]->currentFrame());
+		emit cellSelected( visualIndex(m_currentLayer-1), m_layers[m_currentLayer-1]->visualIndex(m_layers[m_currentLayer-1]->currentFrame()));
 	}
 }
 
@@ -322,10 +321,13 @@ void KTTableExposure::removeLayer(int idLayer)
 		m_numLayer--;
 		m_port->adjustSize();
 		
-		emit cellSelected( m_currentLayer-1, m_layers[idLayer-1]->currentFrame());
+		emit cellSelected( visualIndex(m_currentLayer-1), visualIndex(m_layers[idLayer-1]->visualIndex(m_layers[idLayer-1]->currentFrame())));
 	}
 	
 }
 
 
-
+int KTTableExposure::visualIndex(int logicalIndex)
+{
+	return m_layout->indexOf(m_layers[logicalIndex]);
+}

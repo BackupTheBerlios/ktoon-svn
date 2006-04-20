@@ -42,6 +42,7 @@ class KTLayerSequence : public DWidgetListView
 		~KTLayerSequence();
 		ListOfTLLayers layers();
 		void setPalette(const QPalette &);
+		void setCurrentLayer(int pos);
 		
 	private slots:
 		void displayMenu(KTTimeLineLayer *ly,const QPoint &pos);

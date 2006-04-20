@@ -56,6 +56,7 @@ class KTTableExposure : public QScrollArea
 		void removeCurrentLayer();
 		void insertFrames();
 		
+		int visualIndex( int logicalIndex);
 		int currentLayer();
 		
 		KTLayerExposure *currentLayerExposure();
