@@ -263,7 +263,7 @@ QRect AFillTool::release(const QString &brush, QPainter &painter,const QPoint &p
 	return QRect(0,0,0,0);
 }
 
-QWidget* AFillTool::configurator()
+QWidget * AFillTool::configurator()
 {
 	return 0;
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,61 +18,82 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef ATOOLINTERFACE_H
-#define ATOOLINTERFACE_H
+#include "ktpluginmanager.h"
+#include "afilterinterface.h"
+#include "atoolinterface.h"
 
-#include <QStringList>
-#include <QRect>
-#include <QPoint>
-#include <QPainter>
-#include <QBrush>
-#include <QPen>
-#include <QPainterPath>
-#include <QImage>
-#include <QHash>
-#include <QCursor>
+#include <dglobal.h>
+#include <ddebug.h>
 
-#include "agraphiccomponent.h"
-#include "kttoolpluginobject.h"
-#include "ktkeyframe.h"
+#include <QPluginLoader>
+#include <QDir>
 
-#include "daction.h"
+KTPluginManager *KTPluginManager::s_instance = 0;
 
-#include "qplugin.h" // Q_EXPORT_PLUGIN
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-
-class AToolInterface
+KTPluginManager::KTPluginManager(QObject *parent) : QObject(parent)
 {
-	public:
-		enum Type
+}
+
+
+KTPluginManager::~KTPluginManager()
+{
+}
+
+KTPluginManager *KTPluginManager::instance()
+{
+	if  (!s_instance)
+	{
+		s_instance = new KTPluginManager;
+	}
+	
+	return s_instance;
+}
+
+
+void KTPluginManager::loadPlugins()
+{
+	m_filters.clear();
+	m_tools.clear();
+	
+	QDir m_pluginDirectory = QDir(HOME+"/plugins/");
+
+	foreach (QString fileName, m_pluginDirectory.entryList(QDir::Files))
+	{
+		QPluginLoader loader(m_pluginDirectory.absoluteFilePath(fileName));
+		QObject *plugin = qobject_cast<QObject*>(loader.instance());
+		
+		dDebug() << "******FILE: " << fileName;
+		
+		if (plugin)
 		{
-			None = 0,
-			Brush,
-			Fill,
-			Selection
-		};
-		
-		virtual ~AToolInterface() {};
-		virtual QStringList keys() const = 0;
-		virtual QRect press(const QString &brush, QPainter &painter,const QPoint &pos, KTKeyFrame *currentFrame = 0) = 0;
-		virtual QRect move(const QString &brush, QPainter &painter,const QPoint &oldPos, const QPoint &newPos) = 0;
-		virtual QRect release(const QString &brush, QPainter &painter, const QPoint &pos) = 0;
-		
-		virtual QHash<QString, DAction *>actions() = 0;
-		
-		virtual QPainterPath path() const = 0;
-		
-		virtual int type() const = 0;
-		
-		virtual QWidget *configurator()  = 0;
-		
-		virtual bool isComplete() const = 0;
-		virtual void aboutToChangeTool() = 0;
-};
+			AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(plugin);
+			AToolInterface *aTool = qobject_cast<AToolInterface *>(plugin);
+			
+			if ( aFilter )
+			{
+				m_filters << plugin;
+			}
+			else if (aTool)
+			{
+				m_tools << plugin;
+			}
+		}
+	}
+}
 
-Q_DECLARE_INTERFACE( AToolInterface, "com.toonka.ktoon.AToolInterface/0.1" );
 
-#endif
+QObjectList KTPluginManager::tools() const
+{
+	return m_tools;
+}
+
+QObjectList KTPluginManager::filters() const
+{
+	return m_filters;
+}
+
+
+
+
+
+

@@ -34,6 +34,7 @@
 #include "kttoolpluginobject.h"
 #include "ktdrawingareaproperties.h"
 #include "ktpaintareaproperties.h"
+#include "ktpluginmanager.h"
 
 KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, KToon::RenderType renderType, KTDocument *doc, QWorkspace *parent ) : DMdiWindow(parent), m_document(doc), m_title(projectName)
 {
@@ -59,7 +60,7 @@ KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, KT
 	connect(m_document, SIGNAL(sceneChanged( KTScene* )) , this, SLOT(setScene( KTScene* )  ));
 	
 	createActions();
-	setupGridActions();
+	
 	setupEditActions();
 	setupViewActions();
 	setupOrderActions();
@@ -99,43 +100,6 @@ void KTViewDocument::createActions()
 	
 	m_actionManager->insert(redo);
 
-}
-
-void KTViewDocument::setupGridActions()
-{
-#if 0
-	m_gridGroup = new QActionGroup( parent());
-	gridGroup->setExclusive( true );
-	QAction *a = new QAction( QPixmap(THEME_DIR+"/icons/nogrid.png" ), tr( "&No Grid" ), this);
-	gridGroup->addAction ( a );
-	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotNoGrid()));
-
-	a->setCheckable ( true );
-	a->setStatusTip(tr("Hides the grid" ));
-	a = new QAction(QPixmap(THEME_DIR+"/icons/grid12.png" ),  tr( "&12 Field Grid" ), this);
-	a->setCheckable ( true );
-	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotSeeGrid12()));
-	a->setStatusTip(tr("Shows a 12 field grid" ));
-	gridGroup->addAction ( a );
-
-	a = new QAction( QPixmap(THEME_DIR+"/icons/grid16.png" ), tr( "&16 Field Grid" ), this);
-	a->setCheckable ( true );
-	gridGroup->addAction ( a );
-	connect(a, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotSeeGrid16()));
-	a->setStatusTip(tr("Shows a 16 field grid" ));
-	a->setChecked( true);
-	
-	m_aSubGrid = new QAction( QPixmap(THEME_DIR+"/icons/subgrid.png" ), tr( "&Subgrid" ), this);
-	m_aSubGrid->setCheckable ( true );
-	connect(m_aSubGrid, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotSeeSubgrid()));
-	m_aSubGrid->setStatusTip(tr("Shows or hides a 3 field subgrid in the current grid" ));
-	
-	m_aFrontBackGrid = new QAction( QPixmap(THEME_DIR+"/icons/front_back_grid.png"), tr( "Grid to Front/Back" ), this);
-	m_aFrontBackGrid->setCheckable ( true );
-	m_aFrontBackGrid->setChecked(true);
-	connect(m_aFrontBackGrid, SIGNAL(triggered()), m_paintAreaContainer->drawArea(), SLOT(slotFrontBackGrid()));
-	m_aFrontBackGrid->setStatusTip(tr("Sends the grid to the front or to the back of the drawing area" ));
-#endif
 }
 
 void KTViewDocument::setupEditActions()
@@ -433,98 +397,80 @@ void KTViewDocument::createTools()
 
 void KTViewDocument::loadPlugins()
 {
-	m_pluginDirectory = QDir(HOME+"/plugins/");
-
-	foreach (QString fileName, m_pluginDirectory.entryList(QDir::Files))
+	foreach(QObject *plugin, KTPluginManager::instance()->tools() )
 	{
-		QPluginLoader loader(m_pluginDirectory.absoluteFilePath(fileName));
-		QObject *plugin = qobject_cast<QObject*>(loader.instance());
+		AToolInterface *tool = qobject_cast<AToolInterface *>(plugin);
 		
-		dDebug() << "******FILE: " << fileName;
-		
-		if (plugin)
-		{
-			AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(plugin);
-			AToolInterface *aTool = qobject_cast<AToolInterface *>(plugin);
+		QStringList::iterator it;
+		QStringList keys = tool->keys();
 			
-			if ( aFilter )
-			{
-				QStringList::iterator it;
-				QStringList keys = aFilter->keys();
-				
-				
-				for (it = keys.begin(); it != keys.end(); ++it)
-				{
-					dDebug() << "*******Filter Loaded: " << *it;
+		for (it = keys.begin(); it != keys.end(); ++it)
+		{
+			dDebug() << "*******Tool Loaded: " << *it;
 					
-					DAction *act = aFilter->actions()[*it];
-					if ( act )
-					{
-						connect(act, SIGNAL(triggered()), this, SLOT(applyFilter()));
-						m_filterMenu->addAction(act);
-					}
-				}
-			}
-			else 
-			if (aTool)
+			QAction *act = tool->actions()[*it];
+			if ( act )
 			{
-				QStringList::iterator it;
-				QStringList keys = aTool->keys();
-				
-				
-				for (it = keys.begin(); it != keys.end(); ++it)
-				{
-					dDebug() << "*******Tool Loaded: " << *it;
-					
-					QAction *act = aTool->actions()[*it];
-					if ( act )
-					{
-						connect(act, SIGNAL(triggered()), this, SLOT(selectTool()));
+				connect(act, SIGNAL(triggered()), this, SLOT(selectTool()));
 						
-						switch( aTool->type() )
+				switch( tool->type() )
+				{
+					case AToolInterface::Brush:
+					{
+						m_brushesMenu->addAction(act);
+						if ( !m_brushesMenu->activeAction() )
 						{
-							case AToolInterface::Brush:
-							{
-								m_brushesMenu->addAction(act);
-								if ( !m_brushesMenu->activeAction() )
-								{
-									act->trigger();
-								}
-							}
-							break;
-							case AToolInterface::Selection:
-							{
-								m_selectionMenu->addAction(act);
-								if ( !m_selectionMenu->activeAction() )
-								{
-									act->trigger();
-								}
-							}
-							break;
-							case AToolInterface::Fill:
-							{
-								m_fillMenu->addAction(act);
-								if ( !m_fillMenu->activeAction() )
-								{
-									act->trigger();
-								}
-							}
-							break;
-							default:
-							{
-							}
-							break;
+							act->trigger();
 						}
-						m_paintAreaContainer->drawArea()->setTool(aTool, *it);
 					}
-				}				
-				connect(plugin, SIGNAL(toDrawGhostGraphic(const QPainterPath &)), m_paintAreaContainer->drawArea(), SLOT(drawGhostGraphic(const QPainterPath &)));
-				connect(plugin, SIGNAL(requestRedraw()), m_paintAreaContainer->drawArea(), SLOT(redrawAll()));
+					break;
+					case AToolInterface::Selection:
+					{
+						m_selectionMenu->addAction(act);
+						if ( !m_selectionMenu->activeAction() )
+						{
+							act->trigger();
+						}
+					}
+					break;
+					case AToolInterface::Fill:
+					{
+						m_fillMenu->addAction(act);
+						if ( !m_fillMenu->activeAction() )
+						{
+							act->trigger();
+						}
+					}
+					break;
+					default:
+					{
+					}
+					break;
+				}
+				m_paintAreaContainer->drawArea()->setTool(tool, *it);
 			}
 		}
-		else
+		
+		connect(plugin, SIGNAL(toDrawGhostGraphic(const QPainterPath &)), m_paintAreaContainer->drawArea(), SLOT(drawGhostGraphic(const QPainterPath &)));
+		connect(plugin, SIGNAL(requestRedraw()), m_paintAreaContainer->drawArea(), SLOT(redrawAll()));
+	}
+	
+	foreach(QObject *plugin, KTPluginManager::instance()->filters() )
+	{
+		AFilterInterface *filter = qobject_cast<AFilterInterface *>(plugin);
+		QStringList::iterator it;
+		QStringList keys = filter->keys();
+				
+		for (it = keys.begin(); it != keys.end(); ++it)
 		{
-// 			dError() << tr("Not load, please try to rebuild from the scratch");
+			dDebug() << "*******Filter Loaded: " << *it;
+					
+			DAction *act = filter->actions()[*it];
+			if ( act )
+			{
+				connect(act, SIGNAL(triggered()), this, SLOT(applyFilter()));
+				m_filterMenu->addAction(act);
+			}
 		}
 	}
 }
@@ -536,10 +482,10 @@ void KTViewDocument::selectTool()
 	
 	if ( action )
 	{
-		AToolInterface *aTool = qobject_cast<AToolInterface *>(action->parent());
-		QString tool = action->text();
+		AToolInterface *tool = qobject_cast<AToolInterface *>(action->parent());
+		QString toolStr = action->text();
 		
-		switch(aTool->type())
+		switch(tool->type())
 		{
 			case AToolInterface::Brush:
 			{
@@ -573,18 +519,19 @@ void KTViewDocument::selectTool()
 			break;
 		}
 		
-		QWidget *toolConfigurator = aTool->configurator();
+		QWidget *toolConfigurator = tool->configurator();
 		
 		if ( toolConfigurator && m_configurationArea)
 		{
-			m_configurationArea->setConfigurator( toolConfigurator);
+			m_configurationArea->setConfigurator( toolConfigurator );
 			toolConfigurator->show();
 			if ( !m_configurationArea->isVisible() )
 			{
 				m_configurationArea->show();
 			}
 		}
-		m_paintAreaContainer->drawArea()->setTool(aTool, tool);
+		
+		m_paintAreaContainer->drawArea()->setTool(tool, toolStr);
 		m_paintAreaContainer->drawArea()->setCursor(action->cursor());
 	}
 }
@@ -821,5 +768,14 @@ void KTViewDocument::configure()
 	}
 }
 
+// void KTViewDocument::closeEvent(QCloseEvent *e)
+// {
+// 	
+// }
 
+QSize KTViewDocument::sizeHint() const
+{
+	QSize size(parentWidget()->size());
+	return size.expandedTo(QApplication::globalStrut());
+}
 

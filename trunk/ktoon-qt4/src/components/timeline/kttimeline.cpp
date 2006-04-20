@@ -276,6 +276,7 @@ void KTTimeLine::selectCurrentLayer(int pos)
 {
 	D_FUNCINFO;
 	
+	dDebug() << "LAYER SELECTED: " << pos;
 	emit layerSelected( pos );
 }
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,61 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef ATOOLINTERFACE_H
-#define ATOOLINTERFACE_H
+#ifndef KTPLUGINMANAGER_H
+#define KTPLUGINMANAGER_H
 
-#include <QStringList>
-#include <QRect>
-#include <QPoint>
-#include <QPainter>
-#include <QBrush>
-#include <QPen>
-#include <QPainterPath>
-#include <QImage>
-#include <QHash>
-#include <QCursor>
-
-#include "agraphiccomponent.h"
-#include "kttoolpluginobject.h"
-#include "ktkeyframe.h"
-
-#include "daction.h"
-
-#include "qplugin.h" // Q_EXPORT_PLUGIN
+#include <QObject>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-
-class AToolInterface
+class KTPluginManager : public QObject
 {
+	Q_OBJECT
+	private:
+		KTPluginManager(QObject *parent = 0);
+		~KTPluginManager();
+		
 	public:
-		enum Type
-		{
-			None = 0,
-			Brush,
-			Fill,
-			Selection
-		};
+		static KTPluginManager *instance();
+		static KTPluginManager *s_instance;
 		
-		virtual ~AToolInterface() {};
-		virtual QStringList keys() const = 0;
-		virtual QRect press(const QString &brush, QPainter &painter,const QPoint &pos, KTKeyFrame *currentFrame = 0) = 0;
-		virtual QRect move(const QString &brush, QPainter &painter,const QPoint &oldPos, const QPoint &newPos) = 0;
-		virtual QRect release(const QString &brush, QPainter &painter, const QPoint &pos) = 0;
+		void loadPlugins();
 		
-		virtual QHash<QString, DAction *>actions() = 0;
+		QObjectList tools() const;
+		QObjectList filters() const;
 		
-		virtual QPainterPath path() const = 0;
-		
-		virtual int type() const = 0;
-		
-		virtual QWidget *configurator()  = 0;
-		
-		virtual bool isComplete() const = 0;
-		virtual void aboutToChangeTool() = 0;
+	private:
+		QObjectList m_tools;
+		QObjectList m_filters;
 };
-
-Q_DECLARE_INTERFACE( AToolInterface, "com.toonka.ktoon.AToolInterface/0.1" );
 
 #endif

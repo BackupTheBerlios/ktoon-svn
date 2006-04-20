@@ -247,7 +247,8 @@ void KTTimeLineLayer::mousePressEvent( QMouseEvent *me )
 // 		right_click_menu -> insertItem( tr( "Delete Layer" ), lm -> removeLayerButton(), SLOT( animateClick() ) );
 // 		right_click_menu -> exec( QCursor::pos() );
 	}
-	me -> accept();
+	
+	QFrame::mousePressEvent(me);
 }
 
 void KTTimeLineLayer::rename()

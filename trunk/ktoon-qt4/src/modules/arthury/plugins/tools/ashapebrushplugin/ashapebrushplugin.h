@@ -45,7 +45,7 @@ class AShapeBrushPlugin : public KTToolPluginObject, public AToolInterface
 		virtual QHash<QString, DAction *>actions();
 		
 		int type() const;
-		virtual QWidget *configurator();
+		virtual QWidget  *configurator();
 		
 		virtual bool isComplete() const;
 		

@@ -40,11 +40,15 @@ KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent),
 	
 	connect(&m_locker, SIGNAL(timeout()), this, SLOT(toggleLock()));
 	connect(&m_shower, SIGNAL(timeout()), this, SLOT(showConfigurator()));
-
 }
 
 KTConfigurationArea::~KTConfigurationArea()
 {
+	if ( widget() )
+	{
+		widget()->hide();
+		widget()->setParent(0);
+	}
 }
 
 void KTConfigurationArea::setConfigurator(QWidget *w)

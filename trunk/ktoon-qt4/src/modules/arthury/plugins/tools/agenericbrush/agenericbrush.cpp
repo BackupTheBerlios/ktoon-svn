@@ -34,6 +34,7 @@ AGenericBrush::AGenericBrush() : m_configurator(0)
 
 AGenericBrush::~AGenericBrush()
 {
+	DEND;
 	delete m_configurator;
 }
 
@@ -139,9 +140,14 @@ int AGenericBrush::type() const
 {
 	return Brush;
 }
-		
-QWidget *AGenericBrush::configurator()
-{	
+
+QWidget *AGenericBrush::configurator() 
+{
+	if ( ! m_configurator )
+	{
+		m_configurator = new ExactnessConfigurator;;
+	}
+	
 	return m_configurator;
 }
 		

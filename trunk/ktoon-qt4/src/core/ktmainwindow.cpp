@@ -28,11 +28,13 @@
 
 #include "ktpaletteimporter.h"
 
-// KToonLib
+// KToon
+
 #include "dtip.h"
 #include "ddebug.h"
 #include "kimageeffect.h"
 #include "ktapplication.h"
+#include "ktpluginmanager.h"
 
 // dlslib
 #include "dlstabwidget.h"
@@ -105,6 +107,8 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	{
 		QTimer::singleShot(0, this, SLOT(showTipDialog()));
 	}
+	
+	KTPluginManager::instance()->loadPlugins();
 }
 
 

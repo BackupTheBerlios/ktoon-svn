@@ -53,6 +53,8 @@ class KTViewDocument : public DMdiWindow
 		void close();
 		APaintArea *drawArea();
 		
+		QSize sizeHint() const;
+		
 		
 	public slots:
 		void disablePreviousOnionSkin();
@@ -86,7 +88,6 @@ class KTViewDocument : public DMdiWindow
 	private:
 		void createActions();
 		void setupViewActions();
-		void setupGridActions();
 		void setupEditActions();
 		void setupOrderActions();
 		
@@ -100,7 +101,6 @@ class KTViewDocument : public DMdiWindow
 		void loadPlugins();
 		
 	private:
-		QDir m_pluginDirectory;
 		DActionManager *m_actionManager;
 		KTConfigurationArea *m_configurationArea;
 		
@@ -110,17 +110,19 @@ class KTViewDocument : public DMdiWindow
 	private slots:
 		void showPos(const QPoint &p);	
 		void setCursor(const QCursor &c);
-		void selectTool();
-		void selectToolFromMenu(QAction *act);
-		void applyFilter();
 		
 		void updateZoomFactor( double f);
 		void configure();
 		
 		
+		void selectToolFromMenu(QAction *act);
+		
+	public slots:
+		void selectTool();
+		void applyFilter();
 		
 	protected:
-
+// 		void closeEvent(QCloseEvent *e);
 };
 
 #endif

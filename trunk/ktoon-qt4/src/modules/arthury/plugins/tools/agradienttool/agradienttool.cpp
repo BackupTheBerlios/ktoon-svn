@@ -112,7 +112,7 @@ QStringList AGradientTool::keys() const
 	return QStringList() << tr("Gradient") << tr("Random Gradient");
 }
 
-QWidget* AGradientTool::configurator()
+QWidget * AGradientTool::configurator()
 {
 	return m_configurator;
 }
@@ -124,7 +124,7 @@ bool AGradientTool::isComplete() const
 
 int AGradientTool::type() const
 {
-	return Brush;
+	return Fill;
 }
 
 void AGradientTool::aboutToChangeTool()

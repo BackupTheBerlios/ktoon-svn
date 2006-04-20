@@ -43,7 +43,7 @@ class AGradientTool : public KTToolPluginObject, public AToolInterface
 		virtual QRect press(const QString& brush, QPainter& painter, const QPoint& pos, KTKeyFrame* currentFrame);
 		virtual QRect release(const QString& brush, QPainter& painter, const QPoint& pos);
 		virtual QStringList keys() const;
-		virtual QWidget* configurator();
+		virtual QWidget * configurator();
 		virtual bool isComplete() const;
 		virtual int type() const;
 		virtual void aboutToChangeTool();

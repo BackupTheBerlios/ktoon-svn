@@ -51,13 +51,12 @@ class AGenericBrush : public KTToolPluginObject, public AToolInterface
 		
 		virtual QWidget *configurator();
 		
-		
 		virtual bool isComplete() const;
 		virtual void aboutToChangeTool() ;
 	private:
 		QPoint m_firstPoint;
 		QPainterPath m_path;
-		ExactnessConfigurator *m_configurator;
+		ExactnessConfigurator * m_configurator;
 };
 
 #endif

@@ -197,15 +197,26 @@ void KTTableExposure::moveCurrentFrame(Direction dir)
 void KTTableExposure::moveCurrentLayer(bool left)
 {
 	int pos = m_layout->indexOf ( m_layers[m_currentLayer]);
+	
+	if ( pos < 0 )
+	{
+		dFatal() << "Can't move layer!";
+		return;
+	}
+	
 	if(left)
 	{
-		if(pos > 0 )
+		if ( m_currentLayer > 0 )
 		{
 			m_layout->removeWidget(m_layers[m_currentLayer]);
 			m_layout->insertWidget(pos-1, m_layers[m_currentLayer]);
-			dDebug() << m_currentFrame;
+			
+			SHOW_VAR(m_currentFrame);
+			
 			m_layers[m_currentLayer]->setId(m_currentLayer-1);
-			m_layers[m_currentLayer-1]->setId(m_currentLayer);
+			
+				m_layers[m_currentLayer-1]->setId(m_currentLayer);
+			
 			
 			m_layers.swap ( m_currentLayer, m_currentLayer-1);
 			m_currentLayer--;

@@ -43,7 +43,7 @@ class ACubicTool : public KTToolPluginObject, public AToolInterface
 		virtual QRect press(const QString& brush, QPainter& painter, const QPoint& pos, KTKeyFrame* currentFrame);
 		virtual QRect release(const QString& brush, QPainter& painter, const QPoint& pos);
 		virtual QStringList keys() const;
-		virtual QWidget* configurator();
+		virtual QWidget * configurator();
 		virtual int type() const;
 		virtual bool isComplete() const;
 		virtual void aboutToChangeTool();

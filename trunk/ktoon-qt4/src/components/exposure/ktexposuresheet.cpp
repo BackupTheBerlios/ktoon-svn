@@ -268,7 +268,7 @@ void KTExposureSheet::moveFrame(bool up)
 
 void KTExposureSheet::moveLayer(bool left)
 {
-	dDebug() << "here " << left;
+	D_FUNCINFO;
 	m_currentTable->moveCurrentLayer(left);
 }
 

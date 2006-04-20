@@ -179,7 +179,6 @@ KTViewCamera::~KTViewCamera()
 
 void KTViewCamera::showSceneInfo(const KTScene *scene)
 {
-	qDebug("HERE");
 	m_status->setFps(scene->fps());
 	m_status->setSceneName(scene->sceneName());
 }

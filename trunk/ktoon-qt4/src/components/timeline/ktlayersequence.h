@@ -45,6 +45,7 @@ class KTLayerSequence : public DWidgetListView
 		
 	private slots:
 		void displayMenu(KTTimeLineLayer *ly,const QPoint &pos);
+		void selectLayer(int r, int c);
 		
 	public slots:
 		KTTimeLineLayer *createNewLayer(const QString &name, bool toEnd = true);

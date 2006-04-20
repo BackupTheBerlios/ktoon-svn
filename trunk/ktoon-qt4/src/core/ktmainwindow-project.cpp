@@ -192,8 +192,27 @@ void KTMainWindow::selectFrame(int layer, int frame)
 	{
 		if(m_drawingSpace->isVisible() && m_projectManager->isOpen() )
 		{
-			newViewDocument( m_projectManager->currentDocument()->currentScene()->layers()[layer]->frames()[frame]->frameName() );
-// 			selectFrame(layer, frame);
+			KTScene *scene = m_projectManager->currentScene();
+			
+			if ( scene )
+			{
+				if ( layer < scene->layers().count() )
+				{
+					KTLayer *l = scene->layers()[layer];
+					if ( l )
+					{
+						if ( frame < l->frames().count() )
+						{
+							KTKeyFrame *f = l->frames()[frame];
+							
+							if ( f )
+							{
+								newViewDocument(f->frameName() );
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 	

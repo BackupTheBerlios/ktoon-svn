@@ -21,6 +21,7 @@
 #include <qlayout.h>
 #include <qmenu.h>
 #include <QResizeEvent>
+#include <QHeaderView>
 
 #include "ktlayersequence.h"
 #include "ddebug.h"
@@ -30,6 +31,8 @@ KTLayerSequence::KTLayerSequence(QWidget *parent) : DWidgetListView(parent), m_l
 	DINIT;
 	
 	setHorizontalScrollBarPolicy (Qt::ScrollBarAlwaysOff);
+	
+	verticalHeader()->show();
 }
 
 
@@ -58,6 +61,8 @@ KTTimeLineLayer * KTLayerSequence::createNewLayer(const QString &name, bool toEn
 	connect(newLayer, SIGNAL(rightClicked(KTTimeLineLayer *,const QPoint &)), this, SLOT(displayMenu(KTTimeLineLayer *,const QPoint &)));
 	
 	connect( newLayer, SIGNAL( selected(KTTimeLineLayer *) ), SLOT( selectLayer(KTTimeLineLayer *) ) );
+	
+	connect(this, SIGNAL(cellClicked ( int, int)), this, SLOT(selectLayer(int, int)));
 	
 	if ( toEnd )
 	{
@@ -105,8 +110,14 @@ void KTLayerSequence::selectLayer(KTTimeLineLayer *tm)
 	setCurrentItem(this->item( tm) );
 	setItemSelected ( this->item( tm), true);
 	
-	SHOW_VAR( currentRow() );
-	emit itemSelected( currentRow() );
+	SHOW_VAR( verticalHeader()->logicalIndex(currentRow()) );
+	emit itemSelected( verticalHeader()->logicalIndex(currentRow()) );
+}
+
+void KTLayerSequence::selectLayer(int r, int c)
+{
+// 	D_FUNCINFO;
+// 	SHOW_VAR(r);
 }
 
 void KTLayerSequence::moveLayerUp()

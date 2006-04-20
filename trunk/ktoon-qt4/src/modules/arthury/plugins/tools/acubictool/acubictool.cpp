@@ -155,7 +155,7 @@ void ACubicTool::createFinishPath()
 	}
 }
 
-QWidget* ACubicTool::configurator()
+QWidget * ACubicTool::configurator()
 {
 	return 0;
 }

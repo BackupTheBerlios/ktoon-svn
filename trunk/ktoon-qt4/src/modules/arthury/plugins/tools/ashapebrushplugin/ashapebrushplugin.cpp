@@ -110,7 +110,8 @@ int AShapeBrushPlugin::type() const
 {
 	return Brush;
 }
-QWidget *AShapeBrushPlugin::configurator()
+
+QWidget * AShapeBrushPlugin::configurator()
 {
 	return m_configurator;
 }

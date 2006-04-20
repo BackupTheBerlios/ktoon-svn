@@ -154,7 +154,7 @@ int AGeometricToolPlugin::type() const
 	return Brush;
 }
 		
-QWidget *AGeometricToolPlugin::configurator()
+QWidget  *AGeometricToolPlugin::configurator()
 {
 	return  0;
 }

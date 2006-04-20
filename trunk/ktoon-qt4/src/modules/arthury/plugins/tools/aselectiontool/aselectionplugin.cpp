@@ -270,7 +270,7 @@ int ASelectionPlugin::type() const
 	return Selection;
 }
 		
-QWidget *ASelectionPlugin::configurator()
+QWidget * ASelectionPlugin::configurator()
 {
 	return 0;
 }

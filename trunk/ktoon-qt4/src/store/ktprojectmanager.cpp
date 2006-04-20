@@ -387,7 +387,6 @@ void KTProjectManager::copyFrame(int index)
 			m_copyFrame = frame;
 			if ( m_copyFrame->components()[0] == frame->components()[0] )
 			{
-				dError() << "HEREEEEEEEEEEEEEE";
 			}
 		}
 	}

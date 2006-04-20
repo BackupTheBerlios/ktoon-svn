@@ -8,6 +8,9 @@ INSTALLS += ktdata \
 target.path = /bin/ 
 ktdata.files += data/* 
 ktdata.path = /data 
+TRANSLATIONS += data/translations/ktoon_es.ts \
+                data/translations/ktoon_fr.ts \
+                data/translations/ktoon_ru.ts 
 HEADERS += ktdocumentruler.h \
            ktviewdocument.h \
            ktmainwindow.h \
@@ -25,7 +28,8 @@ HEADERS += ktdocumentruler.h \
            ktconfigurationarea.h \
            ktapplication.h \
            configwizard.h \
-           ktdrawingareaproperties.h 
+           ktdrawingareaproperties.h \
+           ktpluginmanager.h 
 SOURCES += main.cpp \
            ktdocumentruler.cpp \
            ktviewdocument.cpp \
@@ -46,7 +50,8 @@ SOURCES += main.cpp \
            ktconfigurationarea.cpp \
            ktapplication.cpp \
            configwizard.cpp \
-           ktdrawingareaproperties.cpp 
+           ktdrawingareaproperties.cpp \
+           ktpluginmanager.cpp 
 QT += xml opengl gui
 KDEV_QTVER = 4
 TARGETDEPS += ../../src/dlib/dgui/libdgui.so \
@@ -122,8 +127,3 @@ TARGET = ../../bin/ktoon
 CONFIG += release \
 warn_on
 TEMPLATE = app
-
-TRANSLATIONS += data/translations/ktoon_es.ts \
-		data/translations/ktoon_fr.ts \
-		data/translations/ktoon_ru.ts 
-		
