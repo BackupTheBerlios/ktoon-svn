@@ -21,21 +21,21 @@
 #ifndef KTTLRULER_H
 #define KTTLRULER_H
 
-#include <drulerbase.h>
+#include <QHeaderView>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTTLRuler : public DRulerBase
+class KTTLRuler : public QHeaderView
 {
 	Q_OBJECT
 	public:
 		KTTLRuler(QWidget *parent = 0);
 		~KTTLRuler();
 		
-	public slots:
-		virtual void movePointers(const QPoint &pos);
+	protected:
+		void paintSection( QPainter *painter, const QRect & rect, int logicalIndex ) const;
 		
 	private:
 

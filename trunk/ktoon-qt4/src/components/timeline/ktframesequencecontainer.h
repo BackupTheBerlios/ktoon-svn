@@ -59,7 +59,6 @@ class KTFrameSequenceContainer : public DVHBox
 		void frameSelected(int layer, int frame);
 		
 	private:
-		KTTLRuler *m_ruler;
 		TFramesTable *m_frameTable;
 
 };

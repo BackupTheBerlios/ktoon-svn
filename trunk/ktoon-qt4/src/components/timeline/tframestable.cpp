@@ -28,6 +28,7 @@
 #include <QHeaderView>
 
 #include "ddebug.h"
+#include "kttlruler.h"
 
 //////////// TFramesTableModel
 
@@ -658,8 +659,9 @@ void TFramesTable::setup()
 	setSelectionBehavior(QAbstractItemView::SelectItems);
 	setSelectionMode (QAbstractItemView::SingleSelection);
 	
+	setHorizontalHeader(new KTTLRuler);
+	
 	verticalHeader()->hide();
-	horizontalHeader()->hide();
 	
 	setItemSize( 10, 25 );
 	
@@ -986,7 +988,7 @@ void TFramesTable::setCurrentFrame(TFramesTableItem *item)
 
 void TFramesTable::setCurrentLayer(int layerPos)
 {
-	setCurrentItem(item(layerPos, 0));
+	setCurrentItem(item(verticalHeader()->logicalIndex(layerPos), 0));
 }
 
 void TFramesTable::selectFrame(int index)

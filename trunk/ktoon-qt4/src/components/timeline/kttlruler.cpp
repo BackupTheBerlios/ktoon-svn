@@ -21,12 +21,11 @@
 #include "kttlruler.h"
 #include "ddebug.h"
 
-KTTLRuler::KTTLRuler(QWidget *parent) : DRulerBase(Qt::Horizontal, parent, "KTTLRuler")
+#include <QPainter>
+
+KTTLRuler::KTTLRuler(QWidget *parent) : QHeaderView(Qt::Horizontal, parent)
 {
 	DINIT;
-	
-	setSeparation(5);
-	show();
 }
 
 
@@ -35,38 +34,28 @@ KTTLRuler::~KTTLRuler()
 	DEND;
 }
 
-void KTTLRuler::movePointers(const QPoint &pos)
+void KTTLRuler::paintSection ( QPainter * painter, const QRect & rect, int logicalIndex ) const
 {
-	dDebug() << "movePointers" << pos << endl;
+	painter->save();
+	if ( logicalIndex % 5 == 0 )
+	{
+		QFontMetricsF fm(painter->font());
+		
+		QString number = QString::number(logicalIndex);
+		
+		painter->drawText(rect.center().x()-(fm.width(number)/2), rect.center().y() +(fm.height()/2) ,number);
+	}
+	
+	painter->drawLine(rect.bottomLeft(), rect.bottomLeft()- QPointF(0, 4));
+	painter->drawLine(rect.topLeft(), rect.topLeft()+ QPointF(0, 4));
+	
+	QPen pen = painter->pen();
+	pen.setWidth(4);
+	painter->setPen(pen); 
+	
+	painter->drawLine(rect.bottomLeft(), rect.bottomRight());
+	
+	painter->restore();
 }
-
-// void KTTLRuler::showMenu(KTRulerBase *ruler, QPoint pos)
-// {
-// 	if(ruler)
-// 	{
-// 		m_menu->popup(pos);
-// 	}
-// }
-// 
-// void KTTLRuler::chooseOption(int opt)
-// {
-// 	switch(opt)
-// 	{
-// 		case ChangeScaleToFive:
-// 		{
-// 			setSeparation(5);
-// 		}
-// 		break;
-// 		case ChangeScaleToTen:
-// 		{
-// 			setSeparation(10);
-// 		}
-// 		break;
-// 		default:
-// 		{
-// 		}
-// 		break;
-// 	}
-// }
 
 

@@ -24,17 +24,15 @@
 #include "ddebug.h"
 
 #include <QIntValidator>
+#include <QHeaderView>
 
 KTFrameSequenceContainer::KTFrameSequenceContainer(QWidget *parent) : DVHBox(parent, Qt::Vertical )
 {
 	layout()->setSpacing(0);
 	layout()->setMargin(0);
 	
-	m_ruler = new KTTLRuler(this);
-	m_ruler->setMaximumHeight(20);
-	m_ruler->setMinimumHeight(20);
-	
 	m_frameTable = new TFramesTable(this);
+		
 	connect(m_frameTable, SIGNAL(itemClicked( TFramesTableItem* )), this, SLOT(selectFrameFromItem(TFramesTableItem *)));
 	connect(m_frameTable, SIGNAL(itemEntered( TFramesTableItem* )), this, SLOT(selectFrameFromItem(TFramesTableItem *)));
 	
@@ -68,11 +66,12 @@ void KTFrameSequenceContainer::addFrameToLayer(int layerPos)
 void KTFrameSequenceContainer::selectFrameFromItem(TFramesTableItem *item)
 {
 	D_FUNCINFO;
-	emit frameSelected( m_frameTable->row(item), m_frameTable->column(item));
+	emit frameSelected( m_frameTable->verticalHeader()->logicalIndex(m_frameTable->row(item)), m_frameTable->column(item));
 }
 
 void KTFrameSequenceContainer::selectCurrentFrame()
 {
+	D_FUNCINFO;
 	TFramesTableItem *item = m_frameTable->selectedItems()[0];
 	if ( item != m_frameTable->currentItem())
 	{
@@ -99,10 +98,29 @@ void KTFrameSequenceContainer::selectLayer(int pos)
 
 void KTFrameSequenceContainer::selectCell(int layer, int frame)
 {
-	m_frameTable->setCurrentItem(  m_frameTable->item(layer, frame) );
+	m_frameTable->setCurrentItem(  m_frameTable->item( m_frameTable->verticalHeader()->logicalIndex(layer), frame) );
 }
 
 
 void KTFrameSequenceContainer::moveCurrentLayer(bool up)
 {
+	int index = m_frameTable->verticalHeader()->visualIndex(m_frameTable->currentRow());
+	
+	if ( up )
+	{
+		if ( index > 0 )
+		{
+			m_frameTable->verticalHeader()->moveSection(index, index-1);
+		}
+	}
+	else
+	{
+		if ( index < m_frameTable->rowCount() )
+		{
+			m_frameTable->verticalHeader()->moveSection(index, index+1);
+		}
+	}
 }
+
+
+
