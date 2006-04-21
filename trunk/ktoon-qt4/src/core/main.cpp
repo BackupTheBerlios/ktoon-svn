@@ -91,7 +91,7 @@ int main( int argc, char ** argv )
 		application.createRepository(DCONFIG->value("Repository").toString());
 	}
 	
-	dAppProp->setVersion("0.8_beta2");
+	dAppProp->setVersion("0.8.0");
 	
 	QString themefile = DCONFIG->value("ThemeFile").toString();
 	if ( ! themefile.isEmpty() )

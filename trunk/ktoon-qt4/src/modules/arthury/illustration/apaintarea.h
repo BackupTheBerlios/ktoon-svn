@@ -154,6 +154,9 @@ class APaintArea : public QWidget
 		void mousePressEvent ( QMouseEvent * e );
 		void mouseReleaseEvent(QMouseEvent *e);
 		void wheelEvent( QWheelEvent *event );
+		
+		void keyPressEvent(QKeyEvent *event);
+		
 		void paintEvent(QPaintEvent *);
 		virtual void draw(QPainter *p);
 		virtual void drawFrame(const KTKeyFrame *frame, QPainter *painter, float intensitive = 1);

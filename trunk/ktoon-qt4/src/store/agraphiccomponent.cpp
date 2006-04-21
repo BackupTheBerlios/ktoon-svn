@@ -177,7 +177,6 @@ void AGraphicComponent::shear(double sX, double sY)
 
 void AGraphicComponent::translate(double sX, double sY)
 {
-
 	QPointF position = boundingRect().topLeft();
 	QMatrix mId;
 	mId.translate(sX - position.x(), sY - position.y());
@@ -233,6 +232,7 @@ void AGraphicComponent::mapTo(const QMatrix& matrix)
 	{
 		graphic->mapTo(matrix);
 	}
+	
 	if(m_childs.count() > 0)
 	{
 		foreach(AGraphicComponent *child, m_childs)
@@ -576,3 +576,7 @@ void AGraphicComponent::draw(QPainter *painter)
 	painter->restore();
 }
 
+QPointF AGraphicComponent::currentPosition() const
+{
+	return boundingRect().topLeft();
+}

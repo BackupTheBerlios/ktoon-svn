@@ -200,6 +200,8 @@ class AGraphicComponent : public KTSerializableObject
 		QPointF shearFactor() const;
 		int angleFactor() const;
 		
+		QPointF currentPosition() const;
+		
 		
 		/**
 		 * Draw the component

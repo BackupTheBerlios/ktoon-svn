@@ -89,6 +89,8 @@ APaintArea::APaintArea(const QSize& size, KToon::RenderType type, QWidget *paren
 	setZoomFactor( 1 );
 	setMinimumSize(m_paintDevice->size() + QSize(m_offset.x(),m_offset.y()));
 	show();
+	
+	setFocusPolicy(Qt::ClickFocus);
 }
 
 
@@ -641,6 +643,56 @@ void APaintArea::wheelEvent( QWheelEvent *event )
 	{
 		QWidget::wheelEvent(event );
 	}
+}
+
+void APaintArea::keyPressEvent(QKeyEvent *event)
+{
+	QList<AGraphicComponent *> components = m_currentFrame->selectedComponents();
+	
+	if ( event->key() == Qt::Key_Up)
+	{
+		foreach(AGraphicComponent *component, components )
+		{
+			QPointF pos = component->currentPosition();
+			
+			component->translate(pos.x(), pos.y()-10);
+		}
+	}
+	else if ( event->key() == Qt::Key_Down )
+	{
+		foreach(AGraphicComponent *component, components )
+		{
+			QPointF pos = component->currentPosition();
+			
+			component->translate(pos.x(), pos.y()+10);
+		}
+	}
+	else if ( event->key() == Qt::Key_Right)
+	{
+		foreach(AGraphicComponent *component, components )
+		{
+			QPointF pos = component->currentPosition();
+			
+			component->translate(pos.x()+10, pos.y());
+		}
+	}
+	else if ( event->key() == Qt::Key_Left)
+	{
+		foreach(AGraphicComponent *component, components )
+		{
+			QPointF pos = component->currentPosition();
+			
+			component->translate(pos.x()-10, pos.y());
+		}
+	}
+	else
+	{
+		event->ignore();
+		return;
+	}
+	
+	redrawAll();
+	event->accept();
 }
 
 void APaintArea::setTool( AToolInterface *toolIface, const QString &tool)
