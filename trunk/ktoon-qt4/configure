@@ -72,7 +72,7 @@ ln -fs $(pwd)/$CONFIG_H $(pwd)/src/ktoonlib/$CONFIG_H
 LIBS=''
 
 check "aspell" aspell && LIBS="$LIBS -laspell" && defineMacro HAVE_ASPELL
-check "sound" sound && LIBS="$LIBS -laudio" && defineMacro HAVE_SOUND
+#check "sound" sound && LIBS="$LIBS -laudio" && defineMacro HAVE_SOUND
 check "gif" gif && LIBS="$LIBS -lgif" && defineMacro HAVE_LIBGIF
 check "ffmpeg 0.4.9" ffmpeg && LIBS="$LIBS -lavcodec -lavformat" && defineMacro HAVE_FFMPEG
 check "ming" ming && LIBS="$LIBS -lming" && defineMacro HAVE_MING
