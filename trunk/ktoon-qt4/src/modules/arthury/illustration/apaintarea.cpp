@@ -754,8 +754,6 @@ void APaintArea::setNextFrames(int n)
 	}
 }
 
-
-
 void APaintArea::removeSelectsGraphics()
 {
 	m_currentFrame->removeSelections();
@@ -813,6 +811,7 @@ void APaintArea::group()
 		foreach(AGraphicComponent *component, m_currentFrame->selectedComponents())
 		{
 // 			AGraphicComponent *child = new AGraphicComponent(*component);
+ 			component->setControlPoints(QPolygonF());
 			newComponent->addChild( new AGraphicComponent(*component) );
 		}
 		m_currentFrame->removeSelections();
