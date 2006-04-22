@@ -38,7 +38,7 @@
 
 KTDualColorButton::KTDualColorButton( QWidget *parent ) : QWidget( parent )
 {
-	arrowBitmap = new QBitmap(QBitmap::fromData(QSize(dcolorarrow_width, dcolorarrow_height), (const unsigned char *)dcolorarrow_bits, QImage::Format_ARGB32_Premultiplied));
+	arrowBitmap = new QPixmap((const char **)dcolorarrow_bits);
 	
 	arrowBitmap->setMask(*arrowBitmap); // heh
 	resetPixmap = new QPixmap((const char **)dcolorreset_xpm);
@@ -59,8 +59,7 @@ KTDualColorButton::KTDualColorButton( QWidget *parent ) : QWidget( parent )
 
 KTDualColorButton::KTDualColorButton(const QBrush &fgColor, const QBrush &bgColor, QWidget *parent) : QWidget(parent)
 {
-	arrowBitmap = new QBitmap(dcolorarrow_width, dcolorarrow_height/*,
-				  (const unsigned char *)dcolorarrow_bits, true*/);
+	arrowBitmap = new QPixmap((const char **)dcolorarrow_bits);
 	arrowBitmap->setMask(*arrowBitmap);
 	resetPixmap = new QPixmap((const char **)dcolorreset_xpm);
 	fg = fgColor;
@@ -163,6 +162,7 @@ void KTDualColorButton::paintEvent(QPaintEvent *)
 	qDrawShadeRect(&p, fgRect,  palette(), curColor == Foreground, 2, 0,
 			isEnabled() ? &DBrushAdjuster::adjustBrush(fg, fgRect) : &defBrush);
 	p.setPen(QPen(palette().shadow().color()));
+	
 	p.drawPixmap(fgRect.right()+2, 0, *arrowBitmap);
 	p.drawPixmap(0, fgRect.bottom()+2, *resetPixmap);
 

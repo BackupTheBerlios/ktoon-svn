@@ -154,7 +154,7 @@ class KTDualColorButton : public QWidget
 		virtual void dropEvent(QDropEvent *ev);
 
 	private:
-		QBitmap *arrowBitmap;
+		QPixmap *arrowBitmap;
 		QPixmap *resetPixmap;
 		QBrush fg, bg;
 		QPoint mPos;
