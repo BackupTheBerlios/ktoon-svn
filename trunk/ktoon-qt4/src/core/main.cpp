@@ -91,7 +91,7 @@ int main( int argc, char ** argv )
 		application.createRepository(DCONFIG->value("Repository").toString());
 	}
 	
-	dAppProp->setVersion("0.8.0");
+	dAppProp->setVersion(VERSION_STR);
 	
 	QString themefile = DCONFIG->value("ThemeFile").toString();
 	if ( ! themefile.isEmpty() )
@@ -181,3 +181,4 @@ void usage()
 	puts(QObject::tr("\t\tReconfigure %1").arg(QApplication::applicationName()).toLatin1()); 
 #endif
 }
+

@@ -35,7 +35,7 @@ function check()
 
 function defineMacro()
 {
-	echo "#define $1" >> $CONFIG_H
+	echo "#define $*" >> $CONFIG_H
 }
 
 function usage()
@@ -83,6 +83,9 @@ then
 else
 	echo > $KT_CONFIG
 fi
+
+defineMacro VERSION ${APPVER}
+defineMacro VERSION_STR \"${APPVER}\"
 
 echo
 echo "**************************************"

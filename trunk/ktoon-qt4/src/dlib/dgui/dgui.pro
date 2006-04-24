@@ -22,9 +22,6 @@ HEADERS += ccbar.h \
            dflatbutton.h \
            dfontchooser.h \
            dformfactory.h \
-           dgradientcreator.h \
-           dgradientselector.h \
-           dgradientviewer.h \
            dimagebutton.h \
            doptionaldialog.h \
            dradiobuttongroup.h \
@@ -71,9 +68,6 @@ SOURCES += ccbar.cpp \
            dflatbutton.cpp \
            dfontchooser.cpp \
            dformfactory.cpp \
-           dgradientcreator.cpp \
-           dgradientselector.cpp \
-           dgradientviewer.cpp \
            dimagebutton.cpp \
            doptionaldialog.cpp \
            dradiobuttongroup.cpp \
@@ -116,9 +110,7 @@ CONFIG += release \
 warn_on \
 dll
 TEMPLATE = lib
-
-macx {
-QMAKE_LIBDIR = ../../../src/dlib/dcore
-LIBS += -ldcore
+macx{
+  QMAKE_LIBDIR = ../../../src/dlib/dcore
+  LIBS += -ldcore
 }
-
