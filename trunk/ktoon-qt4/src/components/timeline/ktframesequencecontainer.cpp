@@ -98,7 +98,8 @@ void KTFrameSequenceContainer::selectLayer(int pos)
 
 void KTFrameSequenceContainer::selectCell(int layer, int frame)
 {
-	m_frameTable->setCurrentItem(  m_frameTable->item( m_frameTable->verticalHeader()->logicalIndex(layer), frame) );
+// 	m_frameTable->setCurrentItem(  m_frameTable->item( m_frameTable->verticalHeader()->logicalIndex(layer), frame) );
+	m_frameTable->selectCell( layer, frame );
 }
 
 

@@ -69,6 +69,8 @@ class TFramesTableItem
 		
 };
 
+class KTTLRuler;
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
@@ -158,6 +160,7 @@ class TFramesTable : public QTableView
 
 		void clear();
 		void selectCell(int row, int column);
+		void selectColumn(int logicalIndex);
 		
 	signals:
 		void itemPressed(TFramesTableItem *item);
@@ -184,6 +187,8 @@ class TFramesTable : public QTableView
 		int m_rectWidth, m_rectHeight;
 		
 		QList<LayerItem> m_layers;
+		
+		KTTLRuler *m_ruler;
 };
 
 #endif

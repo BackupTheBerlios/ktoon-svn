@@ -34,11 +34,16 @@ class KTTLRuler : public QHeaderView
 		KTTLRuler(QWidget *parent = 0);
 		~KTTLRuler();
 		
+		void select(int logical);
+		
 	protected:
 		void paintSection( QPainter *painter, const QRect & rect, int logicalIndex ) const;
 		
-	private:
-
+	private slots:
+		void updateSelected(int logical);
+		
+	signals:
+		void logicalSectionSelected(int logical);
 };
 
 #endif

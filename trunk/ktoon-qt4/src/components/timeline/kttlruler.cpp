@@ -26,8 +26,15 @@
 KTTLRuler::KTTLRuler(QWidget *parent) : QHeaderView(Qt::Horizontal, parent)
 {
 	DINIT;
+	
+	setHighlightSections ( true );
+// 	setSelectionMode ( QAbstractItemView::SingleSelection );
+// 	setSelectionBehavior ( QAbstractItemView::SelectColumns );
+	
+	setClickable (true);
+	
+	connect(this, SIGNAL(sectionClicked(int)), this, SLOT(updateSelected(int)));
 }
-
 
 KTTLRuler::~KTTLRuler()
 {
@@ -36,7 +43,20 @@ KTTLRuler::~KTTLRuler()
 
 void KTTLRuler::paintSection ( QPainter * painter, const QRect & rect, int logicalIndex ) const
 {
+	if ( !model() || !rect.isValid() )
+	{
+		return;
+	}
+	
 	painter->save();
+	
+	if ( selectionModel()->isSelected( model()->index(0, logicalIndex ) ) )
+	{
+		QBrush brush(Qt::red);
+		brush.setStyle(Qt::Dense5Pattern );
+		painter->fillRect(rect, brush);
+	}
+	
 	if ( logicalIndex % 5 == 0 )
 	{
 		QFontMetricsF fm(painter->font());
@@ -58,4 +78,18 @@ void KTTLRuler::paintSection ( QPainter * painter, const QRect & rect, int logic
 	painter->restore();
 }
 
+void KTTLRuler::updateSelected(int logical)
+{
+	select(logical);
+	
+	emit logicalSectionSelected(logical);
+}
+
+
+void KTTLRuler::select(int logical)
+{
+	selectionModel()->select( model()->index(0, logical), QItemSelectionModel::ClearAndSelect);
+	
+	viewport()->update(QRect(sectionViewportPosition(logical), 0, sectionSize(logical),viewport()->height()) );
+}
 

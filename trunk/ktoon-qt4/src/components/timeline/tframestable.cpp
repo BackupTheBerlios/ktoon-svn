@@ -626,6 +626,9 @@ bool TFramesTableItem::isLocked()
 TFramesTable::TFramesTable(QWidget *parent) : QTableView(parent)
 {
 	m_model = new TFramesTableModel(0,100,this);
+	
+	m_ruler = new KTTLRuler;
+	
 	setModel( m_model );
 	
 	setup();
@@ -659,7 +662,8 @@ void TFramesTable::setup()
 	setSelectionBehavior(QAbstractItemView::SelectItems);
 	setSelectionMode (QAbstractItemView::SingleSelection);
 	
-	setHorizontalHeader(new KTTLRuler);
+	setHorizontalHeader(m_ruler);
+	connect(m_ruler, SIGNAL(logicalSectionSelected( int )), this, SLOT(selectColumn( int )));
 	
 	verticalHeader()->hide();
 	
@@ -921,14 +925,25 @@ QModelIndex TFramesTable::indexFromItem(TFramesTableItem *item) const
 
 void TFramesTable::selectCell(int row, int column)
 {
-	D_FUNCINFO;
 	if (row >= 0 && row < model()->rowCount(rootIndex()) && column >= 0 && column < model()->columnCount(rootIndex()))
 	{
-		QItemSelectionModel::SelectionFlags command = selectionCommand(QModelIndex());
-		QModelIndex index = model()->index(row, column, rootIndex());
+		int logicalRow = verticalHeader()->logicalIndex(row);
+		int logicalCol = horizontalHeader()->logicalIndex(column);
 		
-		selectionModel()->setCurrentIndex(index, command);
+		QModelIndex index = model()->index(logicalRow, logicalCol, QModelIndex() );
+		
+		selectionModel()->setCurrentIndex(index, QItemSelectionModel::ClearAndSelect);
+		
+		m_ruler->select( logicalCol );
 	}
+}
+
+void TFramesTable::selectColumn(int logicalIndex)
+{
+	int cRow = verticalHeader()->logicalIndex(currentRow());
+	
+	selectionModel()->setCurrentIndex(model()->index(cRow, logicalIndex, QModelIndex() ), QItemSelectionModel::ClearAndSelect);
+	
 }
 
 QStyleOptionViewItem TFramesTable::viewOptions() const
