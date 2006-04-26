@@ -3,16 +3,8 @@
 # Subdir relative project main directory: ./src/ktoonlib
 # Target is a library:  
 
-QT += xml 
 INSTALLS += target 
 target.path = /lib/ 
-KDEV_QTVER = 4 
-INCLUDEPATH += ../../src/dlib/dgui \
-               ../../src/dlib/dcore 
-CONFIG += release \
-          warn_on \
-          dll 
-TEMPLATE = lib 
 HEADERS += ktmodulewidgetbase.h \
            ktmodulewidgettitle.h \
            agraphic.h \
@@ -21,9 +13,9 @@ HEADERS += ktmodulewidgetbase.h \
            ktgraphicalgorithm.h \
            ktglobal.h \
            ktpaintareaproperties.h \
-           dgradientcreator.h \
-           dgradientselector.h \
-           dgradientviewer.h 
+           ktgradientcreator.h \
+           ktgradientselector.h \
+           ktgradientviewer.h 
 SOURCES += ktmodulewidgetbase.cpp \
            ktmodulewidgettitle.cpp \
            agraphic.cpp \
@@ -31,9 +23,17 @@ SOURCES += ktmodulewidgetbase.cpp \
            ktexportpluginobject.cpp \
            ktgraphicalgorithm.cpp \
            ktpaintareaproperties.cpp \
-           dgradientcreator.cpp \
-           dgradientselector.cpp \
-           dgradientviewer.cpp 
+           ktgradientcreator.cpp \
+           ktgradientselector.cpp \
+           ktgradientviewer.cpp 
+QT += xml
+KDEV_QTVER = 4
+INCLUDEPATH += ../../src/dlib/dgui \
+../../src/dlib/dcore
+CONFIG += release \
+warn_on \
+dll
+TEMPLATE = lib
 macx{
   LIBS += -ldcore -ldgui
   QMAKE_LIBDIR = ../../src/dlib/dcore ../../src/dlib/dgui

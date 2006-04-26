@@ -1,6 +1,25 @@
-
-#ifndef DGRADIENTSELECTOR_H
-#define DGRADIENTSELECTOR_H
+/***************************************************************************
+ *   Copyright (C) 2005 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+ 
+#ifndef KTGRADIENTSELECTOR_H
+#define KTGRADIENTSELECTOR_H
 
 #include <QAbstractSlider>
 #include <QColor>
@@ -26,7 +45,7 @@
  * @endif
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
  */
-class DGradientSelector : public QAbstractSlider
+class KTGradientSelector : public QAbstractSlider
 {
 	Q_OBJECT;
 	
@@ -107,21 +126,21 @@ class DGradientSelector : public QAbstractSlider
 		 * Constructor por defecto.
 		 * @endif
 		 */
-		DGradientSelector( QWidget *parent=0 );
+		KTGradientSelector( QWidget *parent=0 );
 		
 		/**
 		 * @if english
 		 * Translate
 		 * @elseif spanish
-		 * Crea un DGradientSelector, con una orientacion definida.
+		 * Crea un KTGradientSelector, con una orientacion definida.
 		 * @endif
 		 * @see Qt::Orientation
 		 */
-		DGradientSelector( Qt::Orientation o, QWidget *parent = 0 );
+		KTGradientSelector( Qt::Orientation o, QWidget *parent = 0 );
 		/**
 		 * Destructor
 		 */
-		~DGradientSelector();
+		~KTGradientSelector();
 		/**
 		 * @if english
 		 * Translate

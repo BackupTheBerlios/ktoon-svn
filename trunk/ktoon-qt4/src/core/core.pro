@@ -130,3 +130,4 @@ TARGET = ../../bin/ktoon
 CONFIG += release \
 warn_on
 TEMPLATE = app
+

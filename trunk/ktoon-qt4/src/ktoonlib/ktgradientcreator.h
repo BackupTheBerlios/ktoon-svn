@@ -20,11 +20,11 @@
  
 
 
-#ifndef DGRADIENTMANAGER_H
-#define DGRADIENTMANAGER_H
+#ifndef KTGRADIENTMANAGER_H
+#define KTGRADIENTMANAGER_H
 
-#include "dgradientselector.h"
-#include "dgradientviewer.h"
+#include "ktgradientselector.h"
+#include "ktgradientviewer.h"
 #include "deditspinbox.h"
 #include "dimagebutton.h"
 #include "ccbutton.h"
@@ -51,7 +51,7 @@ class SpinControl;
   *
   * @author Jorge Cuadrado <kuadrosx@toonka.com>
   */
-class DGradientCreator : public QFrame
+class KTGradientCreator : public QFrame
 {
 	Q_OBJECT
 	public:
@@ -62,11 +62,11 @@ class DGradientCreator : public QFrame
 		 * Constructor por defecto.
 		 * @endif
 		 */
-		DGradientCreator(QWidget *parent = 0);
+		KTGradientCreator(QWidget *parent = 0);
 		/**
 		 * Destructor
 		 */
-		~DGradientCreator();
+		~KTGradientCreator();
 		
 		/**
 		 * @if english
@@ -101,8 +101,8 @@ class DGradientCreator : public QFrame
 		virtual QSize sizeHint () const;
 		
 	private:
-		DGradientSelector *m_selector;
-		DGradientViewer *m_viewer;
+		KTGradientSelector *m_selector;
+		KTGradientViewer *m_viewer;
 // 		DRadioButtonGroup *m_type, *m_spread ;
 		QComboBox *m_type, *m_spread ;
 		QSpinBox *m_radius, *m_angle;

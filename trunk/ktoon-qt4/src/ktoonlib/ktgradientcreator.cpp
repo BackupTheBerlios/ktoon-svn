@@ -18,14 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#include "dgradientcreator.h"
+#include "ktgradientcreator.h"
 #include "ddebug.h"
 #include "dapplication.h"
 #include <QBoxLayout>
 #include "dvhbox.h"
 
 
-DGradientCreator::DGradientCreator(QWidget *parent)
+KTGradientCreator::KTGradientCreator(QWidget *parent)
  : QFrame(parent)
 {
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight);
@@ -37,8 +37,8 @@ DGradientCreator::DGradientCreator(QWidget *parent)
 	
 	QBoxLayout *selectorAndViewer = new QBoxLayout(QBoxLayout::TopToBottom);
 	
-	m_selector = new DGradientSelector(this);
-	m_viewer = new DGradientViewer(this);
+	m_selector = new KTGradientSelector(this);
+	m_viewer = new KTGradientViewer(this);
 	connect(m_viewer, SIGNAL(gradientChanged()), this, SLOT(emitGradientChanged()));
 	layout->addLayout(selectorAndViewer);
 	
@@ -89,25 +89,25 @@ DGradientCreator::DGradientCreator(QWidget *parent)
 }
 
 
-DGradientCreator::~DGradientCreator()
+KTGradientCreator::~KTGradientCreator()
 {
 	DEND;
 }
 
-void DGradientCreator::setCurrentColor(const QColor &color)
+void KTGradientCreator::setCurrentColor(const QColor &color)
 {
 	m_selector->setCurrentColor(color);
 	m_viewer->createGradient();
 	emit gradientChanged(QBrush(m_viewer->gradient()));
 }
 
-int DGradientCreator::gradientType()
+int KTGradientCreator::gradientType()
 {
 	return m_type->currentIndex();
 }
 
 
-void DGradientCreator::changeType(int type)
+void KTGradientCreator::changeType(int type)
 {
 	m_viewer->changeType( type);
 	
@@ -116,20 +116,20 @@ void DGradientCreator::changeType(int type)
 	emitGradientChanged();
 }
 
-void DGradientCreator::changeSpread(int spread)
+void KTGradientCreator::changeSpread(int spread)
 {
 	m_viewer->setSpread( spread);
 	emitGradientChanged();
 }
 
 
-void DGradientCreator::changeGradientStops( const QGradientStops& stops )
+void KTGradientCreator::changeGradientStops( const QGradientStops& stops )
 {
 	m_viewer->changeGradientStops( stops);
 	emit gradientChanged(m_viewer->gradient());
 }
 
-void DGradientCreator::setGradient(const QBrush & gradient)
+void KTGradientCreator::setGradient(const QBrush & gradient)
 {
 // 	blockSignals ( true);
 	const QGradient *gr = gradient.gradient();
@@ -148,19 +148,19 @@ void DGradientCreator::setGradient(const QBrush & gradient)
 // 	blockSignals ( false);
 }
 
-void DGradientCreator::emitGradientChanged()
+void KTGradientCreator::emitGradientChanged()
 {
 	m_viewer->changeGradientStops(m_selector->gradientStops());
 	emit gradientChanged(m_viewer->gradient());
 }
 
-QBrush DGradientCreator::currentGradient()
+QBrush KTGradientCreator::currentGradient()
 {
 	return QBrush(m_viewer->gradient());
 }
 
 
-QSize DGradientCreator::sizeHint () const
+QSize KTGradientCreator::sizeHint () const
 {
 	QSize size = QFrame::sizeHint();
 	

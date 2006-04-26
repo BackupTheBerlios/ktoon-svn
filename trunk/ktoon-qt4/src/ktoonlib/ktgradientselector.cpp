@@ -1,4 +1,24 @@
-#include "dgradientselector.h"
+/***************************************************************************
+ *   Copyright (C) 2005 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+ 
+#include "ktgradientselector.h"
 
 #include <QPolygon>
 #include <qdrawutil.h>
@@ -83,7 +103,7 @@
 // }
 
 
-DGradientSelector::DGradientSelector( QWidget *parent ) : QAbstractSlider( parent ), m_currentArrowIndex(0), m_gradient(0,0,0,0), m_update(true), m_maxArrows(10)
+KTGradientSelector::KTGradientSelector( QWidget *parent ) : QAbstractSlider( parent ), m_currentArrowIndex(0), m_gradient(0,0,0,0), m_update(true), m_maxArrows(10)
 {
 	_orientation = Qt::Horizontal;
 	init();
@@ -91,14 +111,14 @@ DGradientSelector::DGradientSelector( QWidget *parent ) : QAbstractSlider( paren
 
 
 
-DGradientSelector::DGradientSelector( Qt::Orientation o, QWidget *parent )
+KTGradientSelector::KTGradientSelector( Qt::Orientation o, QWidget *parent )
 	: QAbstractSlider( parent ), m_currentArrowIndex(0), m_gradient(0,0,0,0)
 {
 	_orientation = o;
 	init();
 }
 
-void DGradientSelector::init()
+void KTGradientSelector::init()
 {
 	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 	
@@ -118,13 +138,13 @@ void DGradientSelector::init()
 }
 
 
-DGradientSelector::~DGradientSelector()
+KTGradientSelector::~KTGradientSelector()
 {DEND;}
 
 
 
 
-QRect DGradientSelector::contentsRect() const
+QRect KTGradientSelector::contentsRect() const
 {
 	if ( orientation() == Qt::Vertical )
 		return QRect( 2, 2, width()-14, height());
@@ -132,7 +152,7 @@ QRect DGradientSelector::contentsRect() const
 		return QRect( 2, 2, width(), height()-14 );
 }
 
-void  DGradientSelector::setMaxArrows(int value)
+void  KTGradientSelector::setMaxArrows(int value)
 {
 	m_maxArrows = value;
 	while(m_maxArrows < m_arrows.count())
@@ -142,7 +162,7 @@ void  DGradientSelector::setMaxArrows(int value)
 	update();
 }
 
-void DGradientSelector::paintEvent( QPaintEvent * )
+void KTGradientSelector::paintEvent( QPaintEvent * )
 {
 	QPainter painter;
 	
@@ -181,7 +201,7 @@ void DGradientSelector::paintEvent( QPaintEvent * )
 	painter.end();
 }
 
-void DGradientSelector::mousePressEvent( QMouseEvent *e )
+void KTGradientSelector::mousePressEvent( QMouseEvent *e )
 {
 	
 	bool select = false;
@@ -219,7 +239,7 @@ void DGradientSelector::mousePressEvent( QMouseEvent *e )
 	}
 }
 
-void DGradientSelector::mouseMoveEvent( QMouseEvent *e )
+void KTGradientSelector::mouseMoveEvent( QMouseEvent *e )
 {
 // 	if ( orientation() == Qt::Vertical && (e->y() <= minimum() || e->y() >= maximum()) )
 // 	{
@@ -233,13 +253,13 @@ void DGradientSelector::mouseMoveEvent( QMouseEvent *e )
 	
 }
 
-void DGradientSelector::wheelEvent( QWheelEvent *e )
+void KTGradientSelector::wheelEvent( QWheelEvent *e )
 {
 	int val = value() + e->delta()/120;
 	setValue( val );
 }
 
-void  DGradientSelector::resizeEvent ( QResizeEvent * event )
+void  KTGradientSelector::resizeEvent ( QResizeEvent * event )
 {
 	QAbstractSlider::setRange(0,width() );
 	QAbstractSlider::setMaximum(width());
@@ -253,14 +273,14 @@ void  DGradientSelector::resizeEvent ( QResizeEvent * event )
 	
 }
 
-void DGradientSelector::valueChange( int newV)
+void KTGradientSelector::valueChange( int newV)
 {
 	update();
 	
 	emit newValue( newV );
 }
 
-void DGradientSelector::moveArrow( const QPoint &pos )
+void KTGradientSelector::moveArrow( const QPoint &pos )
 {
 	if ( orientation() == Qt::Vertical && (pos.y() <= minimum() || pos.y() >= maximum()) )
 	{
@@ -291,7 +311,7 @@ void DGradientSelector::moveArrow( const QPoint &pos )
 	emit gradientChanged(  m_gradient.stops());
 }
 
-QPoint DGradientSelector::calcArrowPos( int val )
+QPoint KTGradientSelector::calcArrowPos( int val )
 {
 	QPoint p;
 
@@ -311,14 +331,14 @@ QPoint DGradientSelector::calcArrowPos( int val )
 	return p;
 }
 
-void DGradientSelector::drawContents( QPainter *painter )
+void KTGradientSelector::drawContents( QPainter *painter )
 {
 	createGradient();
 	painter->setBrush(m_gradient);
 	painter->drawRect(contentsRect());
 }
 
-void  DGradientSelector::createGradient()
+void  KTGradientSelector::createGradient()
 {
 	m_gradient = QLinearGradient(contentsRect().topLeft(), contentsRect().topRight () );
 	for(int i = 0; i < m_arrows.count(); i++)
@@ -327,13 +347,13 @@ void  DGradientSelector::createGradient()
 	}
 }
 
-double DGradientSelector::valueToGradient(int value) const
+double KTGradientSelector::valueToGradient(int value) const
 {
 	const float factor = static_cast<float>( ( /*maximum ()  -*/ value ))/ maximum();
 	return factor;
 }
 
-void DGradientSelector::addArrow(QPoint position, QColor color)
+void KTGradientSelector::addArrow(QPoint position, QColor color)
 {
 	if(m_arrows.count() < m_maxArrows)
 	{
@@ -347,7 +367,7 @@ void DGradientSelector::addArrow(QPoint position, QColor color)
 	
 }
 
-void DGradientSelector::setCurrentColor(const QColor& color)
+void KTGradientSelector::setCurrentColor(const QColor& color)
 {
 	dDebug() << color;
 	if ( m_arrows.count() > 0 )
@@ -365,7 +385,7 @@ void DGradientSelector::setCurrentColor(const QColor& color)
 	emit gradientChanged(  m_gradient.stops());;
 }
 
-void DGradientSelector::setStops(const QGradientStops &stops)
+void KTGradientSelector::setStops(const QGradientStops &stops)
 {
 	m_gradient.setStops(stops);
 	m_arrows.clear();

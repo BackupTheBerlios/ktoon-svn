@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef DGRADIENTVIEWER_H
-#define DGRADIENTVIEWER_H
+#ifndef KTGRADIENTVIEWER_H
+#define KTGRADIENTVIEWER_H
 
 #include <QFrame>
 #include <QGradient>
@@ -36,7 +36,7 @@
  * @endif
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-class DGradientViewer : public QFrame
+class KTGradientViewer : public QFrame
 {
 	Q_OBJECT
 	public:
@@ -47,11 +47,11 @@ class DGradientViewer : public QFrame
 		 * Constructor por defecto.
 		 * @endif
 		 */
-		DGradientViewer(QWidget *parent = 0);
+		KTGradientViewer(QWidget *parent = 0);
 		/**
 		 * Destructor
 		 */
-		~DGradientViewer();
+		~KTGradientViewer();
 		/**
 		 * @if english
 		 * Translate

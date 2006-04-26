@@ -106,7 +106,7 @@ void KTColorPalette::setupChooserTypeColor()
 
 void KTColorPalette::setupGradienManager()
 {
-	m_gradientManager = new DGradientCreator(this);
+	m_gradientManager = new KTGradientCreator(this);
 	connect(m_gradientManager, SIGNAL(gradientChanged( const QBrush& )), this, SLOT(setColor(const QBrush &) ));
 	m_centralWidget->addPage(m_gradientManager,tr("Gradients"));
 	

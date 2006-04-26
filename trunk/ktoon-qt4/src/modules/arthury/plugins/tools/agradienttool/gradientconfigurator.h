@@ -23,7 +23,7 @@
 
 #include <QWidget>
 
-class DGradientCreator;
+class KTGradientCreator;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -40,7 +40,7 @@ class GradientConfigurator : public QWidget
 		void chooseColor();
 		
 	private:
-		DGradientCreator *m_gradientCreator;
+		KTGradientCreator *m_gradientCreator;
 };
 
 #endif

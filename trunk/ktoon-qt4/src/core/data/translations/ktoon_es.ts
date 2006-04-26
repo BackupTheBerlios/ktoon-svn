@@ -277,7 +277,7 @@
     </message>
 </context>
 <context>
-    <name>DGradientCreator</name>
+    <name>KTGradientCreator</name>
     <message>
         <source>Linear</source>
         <translation type="unfinished"></translation>

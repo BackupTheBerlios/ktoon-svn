@@ -36,7 +36,7 @@
 #include "ktcolorpicker.h"
 #include "ktluminancepicker.h"
 #include "ktdualcolorbutton.h"
-#include "dgradientcreator.h"
+#include "ktgradientcreator.h"
 #include <QMenu>
 
 
@@ -65,7 +65,7 @@ class KTColorPalette : public KTModuleWidgetBase
 		KTValueColor *m_displayValueColor;
 		KTColorPicker *m_colorPicker;
 		KTLuminancePicker *m_luminancePicker;
-		DGradientCreator *m_gradientManager;
+		KTGradientCreator *m_gradientManager;
 		QLineEdit *m_nameColor;
 		KTDualColorButton *m_outlineAndFillColors;
 		QBrush m_currentOutlineColor, m_currentFillColor;

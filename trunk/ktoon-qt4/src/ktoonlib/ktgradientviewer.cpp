@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "dgradientviewer.h"
+#include "ktgradientviewer.h"
 #include <QPainter>
 #include "ddebug.h"
 
@@ -26,7 +26,7 @@
 #include <QMouseEvent>
 #include <QRectF>
 
-class DGradientViewer::ControlPoint
+class KTGradientViewer::ControlPoint
 {
 	public:
 		ControlPoint()
@@ -73,7 +73,7 @@ class DGradientViewer::ControlPoint
 		}
 };
 
-DGradientViewer::DGradientViewer(QWidget *parent)
+KTGradientViewer::KTGradientViewer(QWidget *parent)
 	: QFrame(parent), m_angle(0), m_radius(50)
 {
 
@@ -91,13 +91,13 @@ DGradientViewer::DGradientViewer(QWidget *parent)
 }
 
 
-DGradientViewer::~DGradientViewer()
+KTGradientViewer::~KTGradientViewer()
 {
 	DEND;
 	delete m_controlPoint;
 }
 
-void DGradientViewer::paintEvent( QPaintEvent* e)
+void KTGradientViewer::paintEvent( QPaintEvent* e)
 {
 	createGradient();
 	QPainter p;
@@ -112,12 +112,12 @@ void DGradientViewer::paintEvent( QPaintEvent* e)
 	QFrame::paintEvent(e);
 }
 
-QSize DGradientViewer::sizeHint() const
+QSize KTGradientViewer::sizeHint() const
 {
 	return QSize(100,100);
 }
 
-void DGradientViewer::createGradient()
+void KTGradientViewer::createGradient()
 {
 	switch(m_type)
 	{
@@ -148,20 +148,20 @@ void DGradientViewer::createGradient()
 		}
 	}
 }
-void DGradientViewer::changeGradientStops( const QGradientStops& stops)
+void KTGradientViewer::changeGradientStops( const QGradientStops& stops)
 {
 	m_gradientStops = stops;
 	update();
 }
 
-void DGradientViewer::changeType(int type)
+void KTGradientViewer::changeType(int type)
 {
 	m_type = QGradient::Type(type);
 	repaint();
 }
 
 
-void DGradientViewer::setSpread(int spread)
+void KTGradientViewer::setSpread(int spread)
 {
 	m_spread = QGradient::Spread(spread);
 	repaint();
@@ -169,40 +169,40 @@ void DGradientViewer::setSpread(int spread)
 
 
 
-QGradient DGradientViewer::gradient()
+QGradient KTGradientViewer::gradient()
 {
 	return m_gradient;
 }
 
-void DGradientViewer::mousePressEvent(QMouseEvent *e)
+void KTGradientViewer::mousePressEvent(QMouseEvent *e)
 {
 	m_controlPoint->selectPoint(e->pos());
 	
 	update();
 }
 
-void DGradientViewer::mouseMoveEvent( QMouseEvent * e )
+void KTGradientViewer::mouseMoveEvent( QMouseEvent * e )
 {
 	m_controlPoint->points[m_controlPoint->currentIndex] = e->pos();
 	update();
 	emit gradientChanged();
 }
 
-void DGradientViewer::changeAngle(int angle)
+void KTGradientViewer::changeAngle(int angle)
 {
 	m_angle = angle;
 	update();
 	emit gradientChanged();
 }
 
-void DGradientViewer::changeRadius(int radius)
+void KTGradientViewer::changeRadius(int radius)
 {
 	m_radius = radius;
 	update();
 	emit gradientChanged();
 }
 
-void DGradientViewer::setGradient(const QGradient* gradient)
+void KTGradientViewer::setGradient(const QGradient* gradient)
 {
 	m_gradientStops = gradient->stops();
 	m_spread = gradient->spread();
