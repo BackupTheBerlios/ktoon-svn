@@ -347,19 +347,6 @@ void KTMainWindow::setupToolBar()
 {
 }
 
-void KTMainWindow::closeEvent( QCloseEvent *event )
-{
-	DMainWindow::closeEvent(event);
-	
-	delete m_pBottomDock;
-	delete m_pLeftDock;
-	delete m_pRightDock;
-	
-	DCONFIG->beginGroup("General");
-	DCONFIG->setValue("recents", m_recentProjects);
-	
-}
-
 void KTMainWindow::updateOpenRecentMenu(QMenu *menu)
 {
 	DCONFIG->beginGroup("General");

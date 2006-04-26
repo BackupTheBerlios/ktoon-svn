@@ -38,7 +38,7 @@ var.begin(IMAGE_DEVICE); break; \
 	case KToon::OpenGL: \
 		var.begin(OPENGL_DEVICE); break; }; 
 
-APaintArea::APaintArea(const QSize& size, KToon::RenderType type, QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_offset(0,0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_currentFrame(0), m_layer(0), m_scene(0), m_previousFramesNumber(0), m_zoomFactor(1.0f), m_nextFramesNumber(0), m_currentGraphic(0),  m_size(size), m_history(0)
+APaintArea::APaintArea(const QSize& size, KToon::RenderType type, QWidget *parent) : QWidget(parent), m_xpos(0), m_ypos(0), m_offset(0,0), m_drawGrid(true), m_currentTool(0), m_lastPosition(-1,-1), m_currentFrame(0), m_currentFrameIndex(-1), m_layer(0), m_scene(0), m_previousFramesNumber(0), m_zoomFactor(1.0f), m_nextFramesNumber(0), m_currentGraphic(0),  m_size(size), m_history(0)
 {
 	loadProperties();
 	
@@ -177,9 +177,11 @@ void APaintArea::setKeyFrame(int index)
 			{
 				m_currentFrame->clearSelections();
 			}
+			
 			if (frame)
 			{
 				m_currentFrame = frame;
+				m_currentFrameIndex = index;
 				redrawAll();
 			}
 			else
@@ -229,10 +231,13 @@ void APaintArea::setScene(KTScene *scene)
 void APaintArea::draw(QPainter *painter)
 {
 // 	D_FUNCINFO;
+	
+	if ( m_currentFrameIndex < 0 ) return;
+	
 	Layers layers = m_scene->layers();
 	Layers::iterator layerIterator = layers.begin();
 	
-	int index = m_layer->frames().indexOf(m_currentFrame);
+	int index = m_currentFrameIndex/*m_layer->frames().indexOf(m_currentFrame)*/;
 	
 	if ( index < 0 ) return;
 	// draw visible layers

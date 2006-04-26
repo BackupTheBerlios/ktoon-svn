@@ -591,5 +591,17 @@ void KTMainWindow::showAnimationMenu(const QPoint &p)
 }
 
 
-
+void KTMainWindow::closeEvent( QCloseEvent *event )
+{
+	closeProject();
+	
+	delete m_pBottomDock;
+	delete m_pLeftDock;
+	delete m_pRightDock;
+	
+	DCONFIG->beginGroup("General");
+	DCONFIG->setValue("recents", m_recentProjects);
+	
+	DMainWindow::closeEvent(event);
+}
 

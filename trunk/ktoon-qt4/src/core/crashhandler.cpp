@@ -37,6 +37,7 @@ extern "C"
 #include "crashwidget.h"
 
 #include "ddebug.h"
+#include "dglobal.h"
 
 CrashHandler *CrashHandler::m_instance = 0;
 
@@ -253,10 +254,12 @@ void crashTrapper (int sig)
 {
 	qDebug("%s is crashing with signal %d :(", CHANDLER->program().toLatin1().data(), sig);
 	
+	CHANDLER->setTrapper(0); // Unactive crash handler
+	
 	bool isActive = true;
 	
 	QApplication* application = qApp;
-	if (!qApp)
+// 	if (!qApp)
 	{
 		isActive = false;
 		int argc = 1;
@@ -290,7 +293,7 @@ void crashTrapper (int sig)
 			QString gdb;
 			gdb  = "gdb --nw -n --batch -x ";
 			gdb += temp.fileName();
-			gdb += " ktoon ";
+			gdb += HOME+"/bin/ktoon";
 			gdb += QString::number( ::getppid() );
 	
 			bt = runCommand( gdb );
@@ -300,7 +303,7 @@ void crashTrapper (int sig)
 		bt.remove( QRegExp("\\(no debugging symbols found\\)") );
 		bt = bt.simplified();
 
-		execInfo = runCommand( "file `which ktoon`" ); // FIXME: program
+		execInfo = runCommand( "file "+HOME+"/bin/ktoon");
 		
 		/////// Widget
 		CrashWidget widget(sig);
@@ -313,7 +316,7 @@ void crashTrapper (int sig)
 		{
 			application->exec();
 		}
-			
+		
 		::exit(255);
 	}
 	else

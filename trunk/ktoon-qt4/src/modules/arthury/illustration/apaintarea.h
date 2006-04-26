@@ -102,6 +102,7 @@ class APaintArea : public QWidget
 		bool m_redrawAll;
 
 		KTKeyFrame *m_currentFrame;
+		int m_currentFrameIndex;
 		KTLayer *m_layer;
 		KTScene *m_scene;
 		

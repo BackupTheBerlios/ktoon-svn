@@ -942,8 +942,11 @@ void TFramesTable::selectColumn(int logicalIndex)
 {
 	int cRow = verticalHeader()->logicalIndex(currentRow());
 	
-	selectionModel()->setCurrentIndex(model()->index(cRow, logicalIndex, QModelIndex() ), QItemSelectionModel::ClearAndSelect);
+	QModelIndex index = model()->index(cRow, logicalIndex, QModelIndex() );
+	selectionModel()->setCurrentIndex(index, QItemSelectionModel::ClearAndSelect);
 	
+	
+	emit itemClicked( m_model->item(index) );
 }
 
 QStyleOptionViewItem TFramesTable::viewOptions() const

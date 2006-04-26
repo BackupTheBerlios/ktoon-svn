@@ -22,6 +22,7 @@
 #include "ddebug.h"
 
 #include <QPainter>
+#include <QMouseEvent>
 
 KTTLRuler::KTTLRuler(QWidget *parent) : QHeaderView(Qt::Horizontal, parent)
 {
@@ -92,4 +93,16 @@ void KTTLRuler::select(int logical)
 	
 	viewport()->update(QRect(sectionViewportPosition(logical), 0, sectionSize(logical),viewport()->height()) );
 }
+
+
+void KTTLRuler::mouseMoveEvent(QMouseEvent *e)
+{
+	if ( e->buttons() & Qt::LeftButton )
+	{
+		updateSelected(logicalIndexAt(e->pos()));
+	}
+	
+	QHeaderView::mouseMoveEvent(e);
+}
+
 
