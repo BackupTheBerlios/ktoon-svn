@@ -125,7 +125,7 @@ KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : DMdiWindow(p
 	animationAreaContainer->setMidLineWidth(2);
 	animationAreaContainer->setLineWidth(2);
 	animationAreaContainer->setFrameStyle(QFrame::Box | QFrame::Raised );
-	animationAreaContainer->setSizePolicy ( QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding) );
+	animationAreaContainer->setSizePolicy( QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding) );
 	QBoxLayout *animationAreaLayout = new QBoxLayout(QBoxLayout::TopToBottom, animationAreaContainer);
 	animationAreaLayout->setMargin(0);
 	
@@ -193,4 +193,12 @@ void KTViewCamera::setLoop()
 {
 	m_animationArea->setLoop(m_loop->isChecked());
 }
+
+QSize KTViewCamera::sizeHint() const
+{
+	QSize size = QWidget::sizeHint();
+	return size.expandedTo(QApplication::globalStrut());
+}
+
+
 

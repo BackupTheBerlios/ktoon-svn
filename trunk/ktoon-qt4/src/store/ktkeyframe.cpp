@@ -79,6 +79,11 @@ void KTKeyFrame::removeComponent(AGraphicComponent *comp)
 
 AGraphicComponent *KTKeyFrame::takeLastComponent()
 {
+	if ( m_components.count() == 0 )
+	{
+		return 0;
+	}
+	
 	return m_components.takeLast();
 }
 

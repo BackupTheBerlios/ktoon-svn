@@ -124,7 +124,7 @@ class KTProjectManager : public KTSerializableObject
 		/**
 		 * Carga del proyecto desde una ruta
 		 */
-		void load(const QString &path);
+		bool load(const QString &path);
 		
 		// Documents
 		/**

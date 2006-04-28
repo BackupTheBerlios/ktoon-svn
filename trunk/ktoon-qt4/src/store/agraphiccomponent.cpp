@@ -51,7 +51,7 @@ AGraphicComponent::~AGraphicComponent()
 
 QRectF AGraphicComponent::boundingRect() const
 {
-	QRectF r;
+	QRectF r(0,0,0,0);
 	
 	foreach(AGraphic *graphic, m_graphics)
 	{

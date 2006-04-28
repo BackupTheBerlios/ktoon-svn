@@ -22,6 +22,7 @@
 #define KTDRAWINGAREAPROPERTIES_H
 
 #include <QDialog>
+#include <QSpinBox>
 
 
 class DColorButton;
@@ -40,12 +41,14 @@ class KTDrawingAreaProperties : public QDialog
 		QColor backgroundColor() const;
 		QColor onionSkinColor() const;
 		QColor onionSkinBackground() const;
+		int gridSeparation() const;
 		
 	private:
 		void setupPage();
 		
 	private:
 		DColorButton *m_gridColor,*m_backgroundColor,*m_onionSkinColor,*m_onionSkinBackground;
+		QSpinBox *m_gridSeparation;
 };
 
 #endif

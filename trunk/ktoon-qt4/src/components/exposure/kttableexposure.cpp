@@ -152,7 +152,7 @@ void KTTableExposure::changeCurrentLayer(int idLayer)
 
 void KTTableExposure::setUseFrame(int idLayer, const QString& name, bool addedToEnd)
 {
-	dDebug() << "ID LAYER: " << idLayer << endl;
+// 	dDebug() << "ID LAYER: " << idLayer << endl;
 	m_layers.at(idLayer)->setUseFrames(name, addedToEnd);
 }
 
@@ -268,7 +268,7 @@ void KTTableExposure::removeCurrentLayer()
 
 void KTTableExposure::setCurrentCell(int idLayer, int idFrame)
 {
-	dDebug() << idLayer << " " << idFrame;
+// 	dDebug() << idLayer << " " << idFrame;
 	if( idLayer < 0 || idFrame < 0  || (idLayer == m_currentLayer && m_layers[m_currentLayer]->currentFrame() == idFrame ))
 	{
 		return;
@@ -282,7 +282,7 @@ void KTTableExposure::setCurrentCell(int idLayer, int idFrame)
 
 void KTTableExposure::setLayer(int index)
 {
-	dDebug() << "KTTableExposure::setLayer(int" << index << ")"  << m_currentLayer;
+// 	dDebug() << "KTTableExposure::setLayer(int" << index << ")"  << m_currentLayer;
 	if(index == m_currentLayer)
 	{
 		return;

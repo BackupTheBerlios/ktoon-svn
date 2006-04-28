@@ -43,6 +43,8 @@ class KTViewCamera : public DMdiWindow
 		~KTViewCamera();
 		
 		AAnimationArea *animationArea();
+		
+		QSize sizeHint() const;
 
 	private slots:
 		void showSceneInfo(const KTScene *scene);

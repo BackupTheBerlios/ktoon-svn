@@ -157,8 +157,6 @@ void KTLayerManager::createNewLayer(const QString &name, bool toEnd)
 
 void KTLayerManager::selectLayer(int layerPos)
 {
-	SHOW_VAR(layerPos);
-	
 	m_sequence->selectionModel()->clear();
 	m_sequence->setCurrentLayer(layerPos);
 }

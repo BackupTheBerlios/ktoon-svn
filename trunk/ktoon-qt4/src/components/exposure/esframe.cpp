@@ -245,7 +245,7 @@ void ESFrame::setHasDrawing( bool in_has_drawing )
 
 void ESFrame::setName( const QString &new_name )
 {
-	dDebug() << "void ESFrame::setName( const QString &new_name )";
+// 	dDebug() << "void ESFrame::setName( const QString &new_name )";
 	if(m_initialText != new_name)
 	{
 		m_initialText = new_name;

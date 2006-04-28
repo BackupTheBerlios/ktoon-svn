@@ -45,6 +45,8 @@ class AGrid : public QObject
 		QPainterPath pathGrid();
 		QImage copy(const QRect & r = QRect());
 		
+		void setDelta(int v );
+		
 	private:
 		QImage m_buffer;
 		int m_deltaX, m_deltaY;

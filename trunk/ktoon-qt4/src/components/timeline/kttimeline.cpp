@@ -126,9 +126,6 @@ void KTTimeLine::lockCurrentFrame()
 
 void KTTimeLine::setCurrentCell(int layer, int frame)
 {
-	D_FUNCINFO;
-// 	SHOW_VAR(layer);
-// 	SHOW_VAR(frame);
 	currentLayerManager()->selectLayer( layer );
 	currentFrameContainer()->selectCell(layer, frame);
 }
@@ -274,9 +271,9 @@ void KTTimeLine::moveLayer(bool up)
 
 void KTTimeLine::selectCurrentLayer(int pos)
 {
-	D_FUNCINFO;
+// 	D_FUNCINFO;
 	
-	dDebug() << "LAYER SELECTED: " << pos;
+// 	dDebug() << "LAYER SELECTED: " << pos;
 	emit layerSelected( pos );
 }
 
@@ -299,14 +296,14 @@ void KTTimeLine::emitNewFPS(const QString &value)
 
 void KTTimeLine::insertFrame(int layerId, const QString &name, bool addToEnd )
 {
-	D_FUNCINFO;
+// 	D_FUNCINFO;
 	currentFrameContainer()->addFrameToLayer( layerId );
 
 }
 
 void KTTimeLine::emitFrameSelected(int layer, int frame)
 {
-	D_FUNCINFO;
+// 	D_FUNCINFO;
 	currentLayerManager()->selectLayer( layer );
 	currentFrameContainer()->selectLayer( layer );
 	

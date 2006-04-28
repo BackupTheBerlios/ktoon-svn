@@ -763,6 +763,7 @@ void KTViewDocument::configure()
 		areaProperties.backgroundColor = properties.backgroundColor();
 		areaProperties.onionSkinColor = properties.onionSkinColor();
 		areaProperties.onionSkinBackground = properties.onionSkinBackground();
+		areaProperties.gridSeparation = properties.gridSeparation();
 		
 		m_paintAreaContainer->drawArea()->setProperties(areaProperties);
 	}

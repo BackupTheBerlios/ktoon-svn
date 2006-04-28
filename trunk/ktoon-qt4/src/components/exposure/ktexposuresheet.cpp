@@ -199,7 +199,7 @@ void KTExposureSheet::applyAction(int action)
 
 void KTExposureSheet::addFrame(int idLayer, const QString &name, bool addedToEnd)
 {
-	dDebug( ) << "KTExposureSheet::addFrame(" << idLayer << " , "<< name << " , "  << addedToEnd << ")" << endl;
+// 	dDebug( ) << "KTExposureSheet::addFrame(" << idLayer << " , "<< name << " , "  << addedToEnd << ")" << endl;
 	m_currentTable->setUseFrame(idLayer, name, addedToEnd);
 }
 
@@ -222,7 +222,7 @@ void KTExposureSheet::setCurrentCell( int idLayer, int idFrame)
 void KTExposureSheet::insertLayer(const QString& name)
 {
 // 	D_FUNCINFO;
-	dDebug() << "KTExposureSheet::insertLayer(const QString& " << name  << ")";
+// 	dDebug() << "KTExposureSheet::insertLayer(const QString& " << name  << ")";
 	if ( m_currentTable )
 	{
 		m_currentTable->insertLayer(100, name);

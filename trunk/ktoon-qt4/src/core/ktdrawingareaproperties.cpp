@@ -71,6 +71,17 @@ void KTDrawingAreaProperties::setupPage()
 	
 	m_gridColor->setColor( qvariant_cast<QColor>(DCONFIG->value("GridColor", QColor(Qt::gray))));
 	
+	
+	pageLayout->addWidget(new QLabel(tr("Grid separation")), 0, 0);
+	m_gridSeparation = new QSpinBox(this);
+	
+	pageLayout->addWidget(m_gridSeparation, 0, 1);
+	
+	m_gridSeparation->setMaximum(100);
+	m_gridSeparation->setMinimum(10);
+	m_gridSeparation->setValue(10);
+	
+	
 	pageLayout->addWidget(new QLabel(tr("Background color")), 1, 0);
 	m_backgroundColor = new DColorButton;
 	pageLayout->addWidget(m_backgroundColor, 1, 1);
@@ -112,4 +123,7 @@ QColor KTDrawingAreaProperties::onionSkinBackground() const
 	return m_onionSkinBackground->color();
 }
 
-
+int KTDrawingAreaProperties::gridSeparation() const
+{
+	return m_gridSeparation->value();
+}

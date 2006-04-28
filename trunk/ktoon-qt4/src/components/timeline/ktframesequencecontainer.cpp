@@ -58,14 +58,14 @@ void KTFrameSequenceContainer::addLayer()
 
 void KTFrameSequenceContainer::addFrameToLayer(int layerPos)
 {
-	D_FUNCINFO;
+// 	D_FUNCINFO;
 	m_frameTable->addFrame( layerPos );
 }
 
 
 void KTFrameSequenceContainer::selectFrameFromItem(TFramesTableItem *item)
 {
-	D_FUNCINFO;
+// 	D_FUNCINFO;
 	emit frameSelected( m_frameTable->verticalHeader()->logicalIndex(m_frameTable->row(item)), m_frameTable->column(item));
 }
 

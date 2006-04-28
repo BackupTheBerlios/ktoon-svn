@@ -33,12 +33,18 @@ AAddGraphicCommand::~AAddGraphicCommand()
 
 void AAddGraphicCommand::execute()
 {
-	m_frame->addComponent( m_added );
+	if ( m_frame )
+	{
+		m_frame->addComponent( m_added );
+	}
 }
 
 void AAddGraphicCommand::unexecute()
 {
-	m_frame->takeLastComponent();
+	if ( m_frame )
+	{
+		m_frame->takeLastComponent();
+	}
 }
 
 QString AAddGraphicCommand::name() const
@@ -65,6 +71,11 @@ ADrawCommand::~ADrawCommand()
 
 void ADrawCommand::execute()
 {
+	if ( !m_frame )
+	{
+		return;
+	}
+	
 	for(int i = 0; i < m_originals.count(); i++ )
 	{
 		AGraphicComponent *component = m_originals[i];
@@ -84,6 +95,11 @@ void ADrawCommand::execute()
 
 void ADrawCommand::unexecute()
 {
+	if ( !m_frame )
+	{
+		return;
+	}
+	
 	for(int i = 0; i < m_copies.count(); i++ )
 	{
 		AGraphicComponent *component = m_originals[i];

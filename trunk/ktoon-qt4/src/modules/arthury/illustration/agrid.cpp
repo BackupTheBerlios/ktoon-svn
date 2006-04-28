@@ -96,3 +96,13 @@ QPainterPath AGrid::pathGrid()
 	return m_path;
 }
 
+void AGrid::setDelta(int v )
+{
+	if ( v >= 10 && v <= 100 )
+	{
+		m_deltaX = v;
+		m_deltaY = v;
+	}
+}
+
+

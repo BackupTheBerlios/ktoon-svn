@@ -24,6 +24,7 @@
 #include <QPalette>
 #include <QPainter>
 #include <QTimer>
+#include <QClipboard>
 #include <cmath>
 #include <QBoxLayout>
 #include "dgradientadjuster.h"
@@ -79,6 +80,7 @@ APaintArea::APaintArea(const QSize& size, KToon::RenderType type, QWidget *paren
 	fillDevice( m_properties.backgroundColor );
 	
 	setMouseTracking(true);
+	m_grid.setDelta( m_properties.gridSeparation );
 	m_grid.createGrid(m_paintDevice->width(), m_paintDevice->height() );
 	
 	m_path = QPainterPath();
@@ -167,7 +169,7 @@ void APaintArea::paintEvent(QPaintEvent *e)
 
 void APaintArea::setKeyFrame(int index)
 {
-	dDebug() << "APaintArea::setKeyFrame(" << index << ")";
+// 	dDebug() << "APaintArea::setKeyFrame(" << index << ")";
 	if ( m_layer )
 	{
 		if ( index >= 0 && index < m_layer->frames().count() )
@@ -194,7 +196,7 @@ void APaintArea::setKeyFrame(int index)
 
 void APaintArea::setLayer(int index)
 {
-	dDebug( ) << "APaintArea::setLayer(" << index << ")";
+// 	dDebug( ) << "APaintArea::setLayer(" << index << ")";
 	if ( m_scene )
 	{
 		if ( index >= 0 && index < m_scene->layers().count() )
@@ -616,14 +618,14 @@ void APaintArea::mouseReleaseEvent(QMouseEvent *e)
 				
 				if ( m_currentGraphic->isValid() && m_currentTool->isComplete() )
 				{
-					dDebug() << "Adding component";
+// 					dDebug() << "Adding component";
 					
 					
 					AAddGraphicCommand *command = new AAddGraphicCommand(m_currentFrame, m_currentGraphic);
 					
 					addCommand( command );
 					
-					dDebug() << "Components count: " << m_currentFrame->components().count();
+// 					dDebug() << "Components count: " << m_currentFrame->components().count();
 				}
 			}
 			
@@ -778,14 +780,36 @@ KTKeyFrame *APaintArea::currentFrame() const
 
 void APaintArea::copy()
 {
+	QRectF bound;
+	
 	m_copiedGraphics.clear();
 	if(m_currentFrame->selectedComponents().count() > 0)
 	{
 		foreach(AGraphicComponent *component, m_currentFrame->selectedComponents())
 		{
 			m_copiedGraphics << new AGraphicComponent(*component);
+			bound |= component->boundingRect();
 		}
 	}
+	
+	bound.adjust(-1,-1,1,1);
+	
+	// To clipboard
+	QPixmap image(QSize(bound.width(), bound.height()));
+	
+	image.fill(Qt::transparent);
+	
+	QPainter painter(&image);
+	painter.setRenderHint(QPainter::Antialiasing);
+	
+	painter.translate(QPoint(m_xpos, m_ypos)-bound.topLeft());
+	
+	foreach (AGraphicComponent *component, m_copiedGraphics)
+	{
+		component->draw(&painter);
+	}
+	
+	QApplication::clipboard()->setPixmap(image);
 }
 
 void APaintArea::paste()
@@ -912,7 +936,7 @@ void APaintArea::setZoomFactor( double f )
 	w = rect.width();
 	h = rect.height();
 	m_paintDevice->resize(w, h );
-	setMinimumSize(m_paintDevice->size() + QSize(m_offset.x(), m_offset.y()));
+// 	setMinimumSize(m_paintDevice->size() + QSize(m_offset.x(), m_offset.y()));
 	m_zoomFactor = f;
 	emit changedZoomFactor(f);
 	if ( delta.x() > 0 && delta.y() > 0 )
@@ -954,6 +978,9 @@ void APaintArea::importImage(const QPixmap &image)
 void APaintArea::setProperties(const KTPaintAreaProperties &properties)
 {
 	m_properties = properties;
+	
+	m_grid.setDelta( m_properties.gridSeparation );
+	m_grid.createGrid(m_paintDevice->width(), m_paintDevice->height() );
 	
 	redrawAll();
 }

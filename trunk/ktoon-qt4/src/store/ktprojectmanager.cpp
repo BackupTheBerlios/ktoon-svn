@@ -110,7 +110,7 @@ void KTProjectManager::save()
 	}
 }
 
-void KTProjectManager::load(const QString &path)
+bool KTProjectManager::load(const QString &path)
 {
 	dDebug() << "Loading: " << path;
 	KTProjectParser parser;
@@ -168,7 +168,11 @@ void KTProjectManager::load(const QString &path)
 	else
 	{
 		dError() << "Error while parse file: " << source.fileName();
+		
+		return false;
 	}
+	
+	return m_isOpen;
 	
 }
 

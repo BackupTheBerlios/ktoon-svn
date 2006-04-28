@@ -34,6 +34,7 @@ struct KTPaintAreaProperties
 		QColor backgroundColor;
 		QColor onionSkinColor;
 		QColor onionSkinBackground;
+		int gridSeparation;
 };
 
 #endif

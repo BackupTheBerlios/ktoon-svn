@@ -25,6 +25,8 @@
 
 #include <ddebug.h>
 
+#define ENABLE_EXPERIMENTAL 0
+
 AFillTool::AFillTool()
 {
 }
@@ -90,20 +92,29 @@ QRect AFillTool::press(const QString& brush, QPainter& painter, const QPoint& po
 				{
 					current = graphic;
 					finded = true;
-#if 1
+#if !ENABLE_EXPERIMENTAL
+					if ( brush == tr("Fill") )
+					{
+						graphic->brush = painter.pen().brush();
+					}
+					else
+#endif
 					if ( brush == tr("Remove Fill") )
 					{
 						graphic->brush = Qt::transparent;
+#if ENABLE_EXPERIMENTAL
 						emit requestRedraw();
 						return QRect(0,0,0,0);
+#endif
 					}
 					else if ( brush == tr("Countour Fill") )
 					{
 						graphic->pen.setBrush(painter.pen().brush());
+#if ENABLE_EXPERIMENTAL
 						emit requestRedraw();
 						return QRect(0,0,0,0);
-					}
 #endif
+					}
 					break;
 				}
 			}
@@ -114,7 +125,7 @@ QRect AFillTool::press(const QString& brush, QPainter& painter, const QPoint& po
 			}
 		}
 		
-		
+#if ENABLE_EXPERIMENTAL
 		if ( current )
 		{
 			foreach(AGraphicComponent *component, currentFrame->components())
@@ -130,8 +141,6 @@ QRect AFillTool::press(const QString& brush, QPainter& painter, const QPoint& po
 					}
 				}
 			}
-			
-// 			SHOW_VAR(allGraphics.count());
 			
 			AGraphicComponent *component = new AGraphicComponent;
 			
@@ -150,7 +159,8 @@ QRect AFillTool::press(const QString& brush, QPainter& painter, const QPoint& po
 			
 			currentFrame->insertComponent(index, component );
 		}
-		
+#endif 
+
 		if ( finded)
 		{
 			emit requestRedraw();

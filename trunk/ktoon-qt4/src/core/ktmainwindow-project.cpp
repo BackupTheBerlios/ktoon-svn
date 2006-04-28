@@ -108,7 +108,7 @@ void KTMainWindow::setLayerVisibilityChanged(int idLayer, bool isVisible)
 
 void KTMainWindow::insertFrame(const QString &name, bool addedToEnd)
 {
-	D_FUNCINFO;
+// 	D_FUNCINFO;
 	
 	m_exposureSheet->setUpdatesEnabled(false);
 	m_timeLine->setUpdatesEnabled(false);
@@ -153,9 +153,9 @@ void KTMainWindow::setFrameName(int indexLayer, int indexFrame, const QString& n
 
 void KTMainWindow::selectFrame(int layer, int frame)
 {
-	D_FUNCINFO;
-	SHOW_VAR(layer);
-	SHOW_VAR(frame);
+// 	D_FUNCINFO;
+// 	SHOW_VAR(layer);
+// 	SHOW_VAR(frame);
 	
 	if ( layer < 0 || frame < 0 ) return;
 	

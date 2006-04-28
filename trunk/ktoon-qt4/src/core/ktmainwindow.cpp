@@ -334,28 +334,31 @@ void KTMainWindow::openProject(const QString &path)
 		{
 			m_pActiveTabWidget->setCurrentWidget(m_drawingSpace);
 			
-			m_projectManager->load( packageHandler.importedProjectPath() );
-			
-			m_fileName = path;
-			
-			if ( QDir::isRelativePath(path) )
+			if ( m_projectManager->load( packageHandler.importedProjectPath() ) )
 			{
-				m_fileName = QDir::currentPath()+"/"+path;
-			}
-			
-			if ( m_recentProjects.indexOf(m_fileName) == -1 )
-			{
-				if ( m_recentProjects.count() <= 6 )
+				m_fileName = path;
+				
+				if ( QDir::isRelativePath(path) )
 				{
-					m_recentProjects << m_fileName;
+					m_fileName = QDir::currentPath()+"/"+path;
 				}
-				else
+				
+				if ( m_recentProjects.indexOf(m_fileName) == -1 )
 				{
-					m_recentProjects.push_front(m_fileName);
+					if ( m_recentProjects.count() <= 6 )
+					{
+						m_recentProjects << m_fileName;
+					}
+					else
+					{
+						m_recentProjects.push_front(m_fileName);
+					}
 				}
+				
+				newViewDocument();
+				
+				messageToOSD( tr("Project opened!"));
 			}
-			
-			messageToOSD( tr("Project opened!"));
 		}
 	}
 }
@@ -593,7 +596,11 @@ void KTMainWindow::showAnimationMenu(const QPoint &p)
 
 void KTMainWindow::closeEvent( QCloseEvent *event )
 {
-	closeProject();
+	if (! closeProject() )
+	{
+		event->ignore();
+		return;
+	}
 	
 	delete m_pBottomDock;
 	delete m_pLeftDock;
