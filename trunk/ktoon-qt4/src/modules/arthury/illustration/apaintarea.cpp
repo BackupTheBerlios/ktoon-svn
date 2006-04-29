@@ -175,10 +175,7 @@ void APaintArea::setKeyFrame(int index)
 		if ( index >= 0 && index < m_layer->frames().count() )
 		{
 			KTKeyFrame *frame = m_layer->frames()[index];
-			if(m_currentFrame)
-			{
-				m_currentFrame->clearSelections();
-			}
+
 			
 			if (frame)
 			{
@@ -312,6 +309,24 @@ void APaintArea::drawFrame(const KTKeyFrame *frame, QPainter *painter, float int
 				++it;
 			}
 		}
+		
+		if(frame == m_currentFrame)
+		{
+			painter->save();
+			painter->setPen(QPen(Qt::blue, 5)); //FIXME: configure 
+			QList<AGraphicComponent *> selectedComponents = m_currentFrame->selectedComponents();
+			foreach(AGraphicComponent *select, componentList)
+			{
+				if( !select->controlPoints().isEmpty())
+				{
+					painter->drawPoints(select->controlPoints());
+				}
+			}
+			painter->restore();
+		}
+		
+		
+		
 	}
 }
 
@@ -370,7 +385,7 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter
 		}
 #endif	
 	}
-
+	
 	const QList< AGraphicComponent *> childs = graphicComponent->childs();
 	if(childs.count() > 0)
 	{
@@ -382,13 +397,7 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter
 	
 	
 	painter->restore();
-	painter->save();
-	painter->setPen(QPen(Qt::blue, 5)); //FIXME: configure 
-	if(!graphicComponent->controlPoints().isEmpty())
-	{
-		painter->drawPoints(graphicComponent->controlPoints());
-	}
-	painter->restore();
+
 	
 }
 
@@ -781,13 +790,13 @@ KTKeyFrame *APaintArea::currentFrame() const
 void APaintArea::copy()
 {
 	QRectF bound;
-	
 	m_copiedGraphics.clear();
 	if(m_currentFrame->selectedComponents().count() > 0)
 	{
 		foreach(AGraphicComponent *component, m_currentFrame->selectedComponents())
 		{
-			m_copiedGraphics << new AGraphicComponent(*component);
+			AGraphicComponent *comp =  new AGraphicComponent(*component);
+			m_copiedGraphics << comp;
 			bound |= component->boundingRect();
 		}
 	}
@@ -817,6 +826,8 @@ void APaintArea::paste()
 	foreach(AGraphicComponent *component, m_copiedGraphics)
 	{
 		m_currentFrame->addComponent( new AGraphicComponent(*component));
+		
+		m_currentFrame->clearSelections();
 	}
 	redrawAll();
 }

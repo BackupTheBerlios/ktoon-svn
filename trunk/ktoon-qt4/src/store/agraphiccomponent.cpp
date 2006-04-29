@@ -24,12 +24,12 @@
 
 #include <QPainter>
 
-AGraphicComponent::AGraphicComponent() : KTSerializableObject(), m_scale(1,1), m_shear(0,0), m_angle(0)
+AGraphicComponent::AGraphicComponent() : KTSerializableObject(), m_scale(1,1), m_shear(0,0), m_angle(0), m_selected(false)
 {
 	
 }
 
-AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : KTSerializableObject(toCopy.parent()), m_name(toCopy.m_name), m_scale( toCopy.m_scale), m_shear(toCopy.m_shear), m_angle(toCopy.m_angle), m_controlPoints(toCopy.m_controlPoints)
+AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : KTSerializableObject(toCopy.parent()), m_name(toCopy.m_name), m_scale( toCopy.m_scale), m_shear(toCopy.m_shear), m_angle(toCopy.m_angle), m_selectPoints(toCopy.m_selectPoints), m_selected(toCopy.m_selected)
 {
 	foreach(AGraphic *graphic, toCopy.m_graphics)
 	{
@@ -240,9 +240,9 @@ void AGraphicComponent::mapTo(const QMatrix& matrix)
 			child->mapTo(matrix);
 		}
 	}
-	if(!m_controlPoints.isEmpty())
+	if(!m_selectPoints.isEmpty())
 	{
-		m_controlPoints = matrix.map(m_controlPoints);
+		m_selectPoints = matrix.map(m_selectPoints);
 	}
 }
 
@@ -334,7 +334,6 @@ QDomElement AGraphicComponent::createXML( QDomDocument &doc )
 		
 		item.appendChild(graphicElement);
 	}
-	
 	foreach(AGraphicComponent *child, m_childs)
 	{
 		item.appendChild(child->createXML(doc));
@@ -476,17 +475,17 @@ void AGraphicComponent::appendChilds(AGraphicComponent *component, QList<AGraphi
 
 QPolygonF AGraphicComponent::controlPoints() const
 {
-	return m_controlPoints;
+	return m_selectPoints;
 }
 
 void AGraphicComponent::setControlPoints(const QPolygonF& points) 
 {
-	m_controlPoints = points;
+	m_selectPoints = points;
 }
 
 void AGraphicComponent::removeControlPoints()
 {
-	m_controlPoints.clear();
+	m_selectPoints.clear();
 	if( m_childs.count() > 0  )
 	{
 		foreach(AGraphicComponent * child, m_childs)
@@ -506,7 +505,7 @@ void AGraphicComponent::copyAttributes(const AGraphicComponent *other)
 	m_shear = other->shearFactor();
 	m_angle = other->angleFactor();
 	
-	m_controlPoints = other->controlPoints();
+	m_selectPoints = other->controlPoints();
 	
 	qDeleteAll(m_childs.begin(), m_childs.end());
 	qDeleteAll(m_graphics.begin(), m_graphics.end());
@@ -580,3 +579,24 @@ QPointF AGraphicComponent::currentPosition() const
 {
 	return boundingRect().topLeft();
 }
+
+//FIXME
+void AGraphicComponent::setSelected(bool select)
+{
+	m_selected = select;
+	if(!m_selected)
+	{
+		removeControlPoints();
+	}
+}
+bool AGraphicComponent::selected() const
+{
+	return m_selected;
+}
+
+
+
+
+
+
+

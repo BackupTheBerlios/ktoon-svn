@@ -202,6 +202,8 @@ class AGraphicComponent : public KTSerializableObject
 		
 		QPointF currentPosition() const;
 		
+		void setSelected(bool select);
+		bool selected() const;
 		
 		/**
 		 * Draw the component
@@ -220,7 +222,9 @@ class AGraphicComponent : public KTSerializableObject
 		Graphics m_graphics;
 		
 		QList<AGraphicComponent*> m_childs;
-		QPolygonF m_controlPoints;
+		QPolygonF m_selectPoints;
+		
+		bool m_selected;
 		
 	private: // AUX FUNCTIONS
 		void appendChilds(AGraphicComponent *component, QList<AGraphicComponent *> &childs) const;

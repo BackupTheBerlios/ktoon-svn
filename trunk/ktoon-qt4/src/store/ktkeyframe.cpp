@@ -59,7 +59,7 @@ void KTKeyFrame::setComponents(const QList<AGraphicComponent *> &components)
 	m_components = components;
 }
 
-void KTKeyFrame::addComponent(AGraphicComponent *comp)
+void KTKeyFrame::addComponent(AGraphicComponent *comp) 
 {
 	m_components << comp;
 }
@@ -261,6 +261,7 @@ void KTKeyFrame::replace(AGraphicComponent *orig, AGraphicComponent *newComponen
 		m_components.replace(index, newComponent);
 	}
 }
+
 
 void KTKeyFrame::setClonesNumber(int nClones)
 {
