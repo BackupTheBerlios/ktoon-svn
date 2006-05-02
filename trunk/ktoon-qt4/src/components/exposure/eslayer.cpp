@@ -181,7 +181,7 @@ void ESLayer::visibilityClick()
 		pal.setColor(QPalette::Button, Qt::red );
 	}
 	m_visibilityButton->setPalette(pal);
-	emit visibilityChanged( isVisible );
 	
+	emit visibilityChanged( isVisible );
 }
 

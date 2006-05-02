@@ -50,7 +50,7 @@ class KTExposureSheet : public KTModuleWidgetBase
 		void addFrame(int idLayer, const QString &name, bool addedToEnd);
 		void moveFrame(bool up);
 		void moveLayer(bool left);
-		void removeCurrentLayer();
+		
 		void removeLayer(int index);
 		void removeCurrentFrame();
 		void lockCurrentFrame();

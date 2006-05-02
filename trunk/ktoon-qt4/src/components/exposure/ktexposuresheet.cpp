@@ -234,12 +234,6 @@ void KTExposureSheet::insertLayer(const QString& name)
 	}
 }
 
-void KTExposureSheet::removeCurrentLayer()
-{
-	if ( m_currentTable )
-	m_currentTable->removeCurrentLayer();
-}
-
 void KTExposureSheet::removeLayer(int index)
 {
 	dDebug() << "removeLayer(int" <<  index << ")";

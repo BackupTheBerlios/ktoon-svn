@@ -53,7 +53,7 @@ class KTTableExposure : public QScrollArea
 		void moveCurrentFrame(Direction dir);
 		void moveCurrentLayer(bool left);
 		
-		void removeCurrentLayer();
+// 		void removeCurrentLayer();
 		void insertFrames();
 		
 		int visualIndex( int logicalIndex);

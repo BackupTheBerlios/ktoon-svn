@@ -243,29 +243,6 @@ void KTTableExposure::lockCurrentFrame()
 	m_layers.at(m_currentLayer)->lockFrame();
 }
 
-void KTTableExposure::removeCurrentLayer() 
-{
-	D_FUNCINFO;
-	if ( m_layers.count() > 0 && m_currentLayer >= 0 )
-	{
-		KTLayerExposure * ly = m_layers.takeAt(m_currentLayer);
-		if ( ly ) 
-		{
-			delete ly; 
-		}
-		for( int i = m_currentLayer; i < m_layers.count(); i++)
-		{
-			KTLayerExposure *layer = m_layers.at(i);
-			if ( layer ) layer->setId(i);
-		}
-		m_numLayer--;
-		m_port->adjustSize();
-		
-		emit cellSelected( visualIndex(m_currentLayer-1), m_layers[m_currentLayer-1]->visualIndex(m_layers[m_currentLayer-1]->currentFrame()));
-	}
-}
-
-
 void KTTableExposure::setCurrentCell(int idLayer, int idFrame)
 {
 // 	dDebug() << idLayer << " " << idFrame;
@@ -304,7 +281,7 @@ void KTTableExposure::setFrameName(int indexLayer, int indexFrame, const QString
 void KTTableExposure::removeLayer(int idLayer)
 {
 	D_FUNCINFO;
-	SHOW_VAR(idLayer);
+// 	SHOW_VAR(idLayer);
 	
 	if ( m_layers.count() > 0 && idLayer >= 0 )
 	{
@@ -321,11 +298,11 @@ void KTTableExposure::removeLayer(int idLayer)
 		m_numLayer--;
 		m_port->adjustSize();
 		
-		emit cellSelected( visualIndex(m_currentLayer-1), visualIndex(m_layers[idLayer-1]->visualIndex(m_layers[idLayer-1]->currentFrame())));
+		emit cellSelected( visualIndex(m_currentLayer-1), m_currentFrame); // FIXME
 	}
-	
 }
 
+// m_layers[m_currentLayer-1]->visualIndex(m_layers[m_currentLayer-1]->currentFrame())*
 
 int KTTableExposure::visualIndex(int logicalIndex)
 {
