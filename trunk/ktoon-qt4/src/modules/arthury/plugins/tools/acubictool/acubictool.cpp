@@ -37,6 +37,9 @@ QHash< QString, DAction * > ACubicTool::actions()
 {
 	QHash<QString, DAction *> hash;
 	DAction *cubic = new DAction( QIcon(THEME_DIR+"/icons/polyline.png"), tr("Polyline"), this);
+	
+	cubic->setCursor( QCursor(THEME_DIR+"/cursors/bezier.png") );
+	
 // 	cubic->setShortcut( QKeySequence(tr("C")) );
 	
 	hash.insert( tr("Polyline"), cubic );

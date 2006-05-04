@@ -72,6 +72,8 @@ QHash<QString, DAction *> AEraserTool::actions()
 	DAction *eraserAction = new DAction( QPixmap(THEME_DIR+"/icons/node_eraser.png"), tr("Node eraser"), this);
 	eraserAction->setShortcut( QKeySequence(tr("T")) );
 	
+	eraserAction->setCursor( QCursor(THEME_DIR+"/cursors/eraser.png") );
+	
 	hash.insert( tr("Node eraser"), eraserAction );
 	
 	return hash;

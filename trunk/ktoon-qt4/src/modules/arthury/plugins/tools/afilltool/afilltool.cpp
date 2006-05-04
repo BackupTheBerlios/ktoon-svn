@@ -50,10 +50,14 @@ QHash< QString, DAction * > AFillTool::actions()
 	DAction *fillAction = new DAction( QIcon(QPixmap(THEME_DIR+"/icons/fill.png")), tr("Fill"), this);
 	fillAction->setShortcut( QKeySequence( tr("F") ) );
 	
+	fillAction->setCursor( QCursor(THEME_DIR+"/cursors/paint.png") );
+	
 	hash.insert( tr("Fill"), fillAction );
 	
 	DAction *removeFillAction = new DAction( QIcon(QPixmap(THEME_DIR+"/icons/removefill.png")), tr("Remove Fill"), this);
 	removeFillAction->setShortcut( QKeySequence(tr("Shift+F") ));
+	
+	removeFillAction->setCursor( QCursor(THEME_DIR+"/cursors/unpaint.png") );
 	
 	hash.insert( tr("Remove Fill"), removeFillAction );
 	
@@ -61,6 +65,8 @@ QHash< QString, DAction * > AFillTool::actions()
 	countourFillAction->setShortcut( QKeySequence(tr("Control+F") ));
 	
 	hash.insert( tr("Countour Fill"), countourFillAction );
+	
+	countourFillAction->setCursor( QCursor(THEME_DIR+"/cursors/contour_fill.png") );
 	
 	return hash;
 }
