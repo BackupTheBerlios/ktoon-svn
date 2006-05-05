@@ -25,6 +25,7 @@
 #include <QTemporaryFile>
 
 #include <csignal>
+#include <cstdio>
 
 extern "C"
 {
