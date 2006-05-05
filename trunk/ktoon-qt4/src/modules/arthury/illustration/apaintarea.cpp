@@ -796,6 +796,7 @@ void APaintArea::copy()
 		foreach(AGraphicComponent *component, m_currentFrame->selectedComponents())
 		{
 			AGraphicComponent *comp =  new AGraphicComponent(*component);
+			comp->setSelected(false);
 			m_copiedGraphics << comp;
 			bound |= component->boundingRect();
 		}
