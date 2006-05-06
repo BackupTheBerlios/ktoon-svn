@@ -57,6 +57,8 @@ class KTTableExposure : public QScrollArea
 		void insertFrames();
 		
 		int visualIndex( int logicalIndex);
+		int logicalIndex(int visualIndex);
+		
 		int currentLayer();
 		
 		KTLayerExposure *currentLayerExposure();
@@ -65,6 +67,7 @@ class KTTableExposure : public QScrollArea
 		void setLayer(int index);
 		void setFrameName(int indexLayer, int indexFrame, const QString& name );
 		void setLayerName(int indexLayer, const QString& name );
+		
 		
 	private:
 		void createMenuRight();

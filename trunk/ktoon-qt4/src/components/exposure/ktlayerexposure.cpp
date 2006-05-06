@@ -79,7 +79,7 @@ void KTLayerExposure::frameSelect(int id, int button, int x, int y)
 	setSelected(true);
 	m_header->animateClick();
 	emit frameSelected(id);
-	emit clicked( m_layout->indexOf(m_frames[id])-1, m_id, button, x, y);
+	emit clicked( visualIndex( id), m_id, button, x, y);
 	if(m_useFrame == id && !(m_frames[id]->isUsed()) && button == Qt::LeftButton)
 	{
 		emit requestInsertFrame(true);
@@ -170,12 +170,13 @@ void KTLayerExposure::setUseFrames(const QString &name, bool addedToEnd)
 	}
 	else
 	{
-		m_layout->insertWidget( m_layout->indexOf(m_frames[m_currentFrame])+1, m_frames[m_useFrame], 10);
 		
+		m_layout->removeWidget(m_frames[m_useFrame] );
+		m_layout->insertWidget( m_layout->indexOf(m_frames[m_currentFrame])+1, m_frames[m_useFrame], 10);
 		m_frames[m_useFrame]->setName(name);
 		m_frames[m_useFrame]->setUsed( true );
+		frameSelect( m_useFrame, 0, 0, 0);
 		m_useFrame++;
-
 	}
 }
 
@@ -394,5 +395,11 @@ void KTLayerExposure::emitRequestRenameLayer(const QString  &newName)
 
 int KTLayerExposure::visualIndex(int logicalIndex)
 {
-	return m_layout->indexOf ( m_frames[logicalIndex]);
+	return m_layout->indexOf ( m_frames[logicalIndex])-1;
 }
+
+int KTLayerExposure::logicalIndex(int visualIndex)
+{
+	return m_frames.indexOf (static_cast<ESFrame*>(m_layout->itemAt( visualIndex+1)->widget()));
+}
+

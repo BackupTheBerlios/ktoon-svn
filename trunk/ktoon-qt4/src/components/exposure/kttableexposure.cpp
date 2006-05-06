@@ -245,16 +245,15 @@ void KTTableExposure::lockCurrentFrame()
 
 void KTTableExposure::setCurrentCell(int idLayer, int idFrame)
 {
-// 	dDebug() << idLayer << " " << idFrame;
-	if( idLayer < 0 || idFrame < 0  || (idLayer == m_currentLayer && m_layers[m_currentLayer]->currentFrame() == idFrame ))
+	//FIXME: los index que llegan aqui son visuales y no logicos.
+	if( idLayer < 0 || idFrame < 0  || (idLayer == m_currentLayer && m_layers[m_currentLayer]->visualIndex( m_layers[m_currentLayer]->currentFrame()) == idFrame ))
 	{
 		return;
 	}
 	m_currentLayer = idLayer;
-	m_currentFrame = idFrame;
+	m_currentFrame = m_layers[m_currentLayer]->logicalIndex(idFrame);
 	m_layers[m_currentLayer]->setSelected(true);
 	m_layers[m_currentLayer]->frameSelect(m_currentFrame);
-	
 }
 
 void KTTableExposure::setLayer(int index)
@@ -307,4 +306,9 @@ void KTTableExposure::removeLayer(int idLayer)
 int KTTableExposure::visualIndex(int logicalIndex)
 {
 	return m_layout->indexOf(m_layers[logicalIndex]);
+}
+
+int KTTableExposure::logicalIndex(int visualIndex)
+{
+	return m_layers.indexOf (static_cast<KTLayerExposure*>(m_layout->itemAt( visualIndex+1)->widget()));
 }

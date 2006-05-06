@@ -208,8 +208,6 @@ void KTExposureSheet::actionButton( QAbstractButton *b)
 	applyAction(m_buttonGroup->buttons().indexOf(b));
 }
 
-
-
 void KTExposureSheet::setCurrentCell( int idLayer, int idFrame)
 {
 	if(m_currentTable)

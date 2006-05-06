@@ -61,6 +61,7 @@ class KTLayerExposure : public QFrame
 		ListOfFrames frames();
 		
 		int visualIndex(int logicalIndex);
+		int logicalIndex(int visualIndex);
 		
 	private:
 		bool m_selected;

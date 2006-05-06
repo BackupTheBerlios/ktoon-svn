@@ -53,7 +53,7 @@ class ESFrame : public DSqueezeLabel
 		* @param initial_text The text that this object will display
 		* @param parent The parent widget
 		*/
-		ESFrame( int id, QWidget *parent);
+		ESFrame( int id, QWidget *parent = 0);
 		/**
 		* @brief Default Destructor
 		*
