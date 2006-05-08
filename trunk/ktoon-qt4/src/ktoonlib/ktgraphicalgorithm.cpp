@@ -228,7 +228,6 @@ double b3(double u)
  */
 QPointF* generateBezier(QPolygonF &points, int first, int last, double *uPrime,FitVector tHat1,FitVector tHat2)
 {
-	
 	int i;
 	FitVector A[MAXPOINTS][2];	/* Precomputed rhs for eqn	*/
 	int nPts;			/* Number of pts in sub-curve */
@@ -244,10 +243,9 @@ QPointF* generateBezier(QPolygonF &points, int first, int last, double *uPrime,F
 	
 	curve = new QPointF[4];
 	nPts = last - first + 1;
-
  
 	/* Compute the A's	*/
-	for (i = 0; i < nPts; i++) 
+	for (i = 0; i < nPts; i++)
 	{
 		FitVector v1, v2;
 		v1 = tHat1;
@@ -266,7 +264,8 @@ QPointF* generateBezier(QPolygonF &points, int first, int last, double *uPrime,F
 	X[0]    = 0.0;
 	X[1]    = 0.0;
 
-	for (i = 0; i < nPts; i++) {
+	for (i = 0; i < nPts; i++) 
+	{
 		C[0][0] += (A[i][0]).dot(A[i][0]);
 		C[0][1] += A[i][0].dot(A[i][1]);
 		/* C[1][0] += V2Dot(&A[i][0], &A[i][1]);*/	
@@ -501,7 +500,7 @@ QPointF *fitCubic(QPolygonF &points,int first,int last,FitVector tHat1,FitVector
 		width=4;	
 		return curve;
 	}
-    
+	
 	/*  Parameterize points, and attempt to fit curve */
 	u = chordLengthParameterize(points, first, last);
 	curve = generateBezier(points, first, last, u, tHat1, tHat2);
@@ -519,7 +518,7 @@ QPointF *fitCubic(QPolygonF &points,int first,int last,FitVector tHat1,FitVector
 
 	/*  If error not too large, try some reparameterization  */
 	/*  and iteration */
-	if (maxError < iterationError) 
+	if (maxError < iterationError)
 	{
 		for (i = 0; i < maxIterations; i++) 
 		{
@@ -575,8 +574,35 @@ QPainterPath KTGraphicalAlgorithm::bezierFit( QPolygonF &points,float error)
 	
 	int width=0;
 	QPointF *curve;
-	 
-	curve = fitCubic(points,0,points.count()-1,tHat1,tHat2,error,width);
+	
+	if ( points.count() < MAXPOINTS )
+	{
+		curve = fitCubic(points,0,points.count()-1,tHat1,tHat2,error,width);
+	}
+	else
+	{
+		QPainterPath path;
+		
+		QPolygonF tmp;
+		for(int i = 0; i < points.count(); i++)
+		{
+			tmp << points[i];
+			
+			if ( i % 200 == 0)
+			{
+				path.addPolygon(tmp);
+				tmp.clear();
+			}
+		}
+		
+		
+		if ( (points.count() - 200 ) % 200 != 0)
+		{
+			path.addPolygon(tmp);
+		}
+		
+		return path;
+	}
 	
 	QPainterPath path;
 	
