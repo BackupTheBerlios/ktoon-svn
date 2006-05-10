@@ -25,7 +25,7 @@
 
 #include <QLabel>
 #include <QPushButton>
-
+#include <QToolButton>
 #include <deditspinbox.h>
 #include "dxyspinbox.h"
 
@@ -42,19 +42,23 @@ class KTGCEditor : public KTModuleWidgetBase
 		~KTGCEditor();
 		
 	public:
-
 		
 	signals:
 		void requestRotate(int angle);
 		void requestScale(double x, double y);
 		void requestTranslate(double x, double y);
 		void requestShear(double x, double y);
+		void requestFlipV();
+		void requestFlipH();
 		
 	private:
 		DEditSpinBox *m_angle;
 		DXYSpinBox *m_scale;
 		DXYSpinBox *m_shear;
 		DXYSpinBox *m_translate;
+		QToolButton *m_flipV;
+		QToolButton *m_flipH;
+		
 };
 
 #endif

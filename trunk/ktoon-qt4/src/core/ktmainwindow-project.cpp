@@ -266,56 +266,55 @@ void KTMainWindow::selectBackFrame()
 	}
 }
 
+QList<AGraphicComponent *> KTMainWindow::currentElements()
+{
+	QList<AGraphicComponent *> elements;
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+	
+	if ( doc )
+	{
+		KTKeyFrame *cFrame = m_projectManager->currentKeyFrame();
+		
+		if ( cFrame )
+		{
+			elements = cFrame->selectedComponents();
+		}
+	}
+	return elements;
+}
+
 
 // Graphic Components
 void KTMainWindow::rotateCurrentElement(int a)
 {
 	D_FUNCINFO;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+	QList<AGraphicComponent *> selecteds = currentElements();
 	
-	if ( doc )
+	if ( selecteds.count() > 0 )
 	{
-		//FIXME: tomar todos los graficos seleccionados
-		
-		KTKeyFrame *cFrame = m_projectManager->currentKeyFrame();
-		
-		if ( cFrame )
+		foreach( AGraphicComponent * selected,  selecteds )
 		{
-			if ( cFrame->hasSelections() )
-			{
-				AGraphicComponent *selected = cFrame->selectedComponents()[0];
-		
-				if ( selected )
-				{
-					selected->rotate(a);
-					doc->drawArea()->redrawAll();
-				}
-			}
+			selected->rotate(a);
 		}
+		doc->drawArea()->redrawAll();
 	}
+	
+
 }
 
 void KTMainWindow::scaleCurrentElement(double dx,double dy)
 {
 	D_FUNCINFO;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
-	
-	if ( doc )
+	QList<AGraphicComponent *> selecteds = currentElements();
+	if ( selecteds.count() > 0 )
 	{
-		KTKeyFrame *cFrame = m_projectManager->currentKeyFrame();
-		
-		if ( cFrame )
+		foreach( AGraphicComponent * selected,  selecteds )
 		{
-			QList<AGraphicComponent *>selecteds = cFrame->selectedComponents();
-			if ( selecteds.count() > 0 )
-			{
-				foreach( AGraphicComponent * selected,  selecteds )
-				{
-					selected->scale(dx, dy);
-				}
-				doc->drawArea()->redrawAll();
-			}
+			selected->scale(dx, dy);
 		}
+		doc->drawArea()->redrawAll();
 	}
 }
 
@@ -323,24 +322,14 @@ void KTMainWindow::translateCurrentElement(double dx ,double dy)
 {
 	D_FUNCINFO;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
-	
-	if ( doc )
+	QList<AGraphicComponent *> selecteds = currentElements();
+	if ( selecteds.count() > 0 )
 	{
-		KTKeyFrame *cFrame = m_projectManager->currentKeyFrame();
-		
-		if ( cFrame )
+		foreach( AGraphicComponent * selected,  selecteds )
 		{
-			QList<AGraphicComponent *>selecteds = cFrame->selectedComponents();
-		
-			if ( selecteds.count() > 0 )
-			{
-				foreach( AGraphicComponent * selected,  selecteds )
-				{
-					selected->translate(dx, dy);
-				}
-				doc->drawArea()->redrawAll();
-			}
+			selected->translate(dx, dy);
 		}
+		doc->drawArea()->redrawAll();
 	}
 }
 
@@ -348,26 +337,46 @@ void KTMainWindow::shearCurrentElement(double dx,double dy)
 {
 	D_FUNCINFO;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
-	
-	if ( doc )
+	QList<AGraphicComponent *> selecteds = currentElements();
+	if ( selecteds.count() > 0 )
 	{
-		KTKeyFrame *cFrame = m_projectManager->currentKeyFrame();
-		
-		if ( cFrame )
+		foreach( AGraphicComponent * selected,  selecteds )
 		{
-			QList<AGraphicComponent *>selecteds = cFrame->selectedComponents();
-		
-			if ( selecteds.count() > 0 )
-			{
-				foreach( AGraphicComponent * selected,  selecteds )
-				{
-					selected->shear(dx, dy);
-				}
-				doc->drawArea()->redrawAll();
-			}
+			selected->shear(dx, dy);
 		}
+		doc->drawArea()->redrawAll();
 	}
 }
+//FIXME: crear una funcion que obtenga en current element
+void KTMainWindow::FlipVCurrentElement()
+{
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+	QList<AGraphicComponent *> selecteds = currentElements();
+	if ( selecteds.count() > 0 )
+	{
+		foreach( AGraphicComponent * selected,  selecteds )
+		{
+			selected->flip(Qt::Vertical);
+		}
+		doc->drawArea()->redrawAll();
+	}
+}
+
+void KTMainWindow::FlipHCurrentElement()
+{
+	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+	QList<AGraphicComponent *> selecteds = currentElements();
+	if ( selecteds.count() > 0 )
+	{
+		foreach( AGraphicComponent * selected,  selecteds )
+		{
+			selected->flip(Qt::Horizontal);
+		}
+		doc->drawArea()->redrawAll();
+	}
+}
+
+
 
 void KTMainWindow::addCurrentGraphicToLibrary()
 {

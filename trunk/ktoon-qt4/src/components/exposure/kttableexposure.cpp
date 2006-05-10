@@ -29,7 +29,7 @@
 #include "ddebug.h"
 
 KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent)
-	: QScrollArea(parent),m_numLayer(0), m_currentLayer(0), m_currentFrame(0)
+	: QScrollArea(parent),m_numLayer(0), m_currentLayer(0), m_currentFrame(0), m_numRows(rows)
 {
 	DINIT;
 	setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOn);
@@ -38,7 +38,7 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent)
 	m_layout = new QBoxLayout ( QBoxLayout::LeftToRight, m_port );
 	m_layout->setSpacing(0);
 	m_layout->setMargin(0);
-	m_port->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+// 	m_port->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 	setWidget(m_port);
 	createMenuRight();
 }
@@ -80,12 +80,23 @@ void KTTableExposure::emitRequestCloneCurrentFrame()
 {
 	int used = m_layers[m_currentLayer]->currentFrameIsUsed();
 	bool ok;
-	int nClones = QInputDialog::getInteger ( 0, tr("number of clons"), tr("number of clons"), 1, 1, 100 - used , 1, &ok);
+	int nClones = QInputDialog::getInteger ( 0, tr("number of clons"), tr("number of clons"), 1, 1, m_numRows - used , 1, &ok);
 	if(ok)
 	{
 		emit requestCloneFrame(m_layers[m_currentLayer]->currentFrame(), nClones);
 	}
 	m_layers[m_currentLayer]->frameSelect(m_layers[m_currentLayer]->currentFrame());
+}
+
+void KTTableExposure::addRows()
+{
+	int increase = 10;
+	foreach(KTLayerExposure *ly, m_layers)
+	{
+		ly->insertFrames(increase);
+	}
+	m_numRows += increase;
+	m_port->adjustSize();
 }
 
 void KTTableExposure::clickedCell(int row, int col,int button,int gx,int gy)
@@ -105,7 +116,6 @@ void KTTableExposure::clickedCell(int row, int col,int button,int gx,int gy)
 	{
 		emit(layerSelected(col));
 	}
-	
 }
 
 
@@ -114,9 +124,9 @@ int KTTableExposure::currentLayer()
 	return m_currentLayer;
 }
 
-void KTTableExposure::insertLayer(int rows, const QString &text)
+void KTTableExposure::insertLayer( const QString &text)
 {
-	KTLayerExposure *newLayer = new KTLayerExposure(text, m_numLayer, rows, m_port);
+	KTLayerExposure *newLayer = new KTLayerExposure(text, m_numLayer, m_numRows, m_port);
 	m_layers.append(newLayer);
 	
 	connect(newLayer, SIGNAL(selected(int)), this, SLOT(changeCurrentLayer(int)));
@@ -134,6 +144,8 @@ void KTTableExposure::insertLayer(int rows, const QString &text)
 	connect(newLayer, SIGNAL(requestRenameFrame(int, int, const QString &)), this, SIGNAL(requestRenameFrame(int, int, const QString &)));
 	
 	connect(newLayer, SIGNAL(requestInsertFrame(bool)), this, SIGNAL(requestInsertFrame(bool)));
+	
+	connect(newLayer, SIGNAL(finalRow()), this, SLOT(addRows()));
 	
 	m_layout->addWidget( newLayer);
 	
@@ -161,10 +173,10 @@ void KTTableExposure::insertFrames()
 	KTLayerExposure *layer = m_layers.at(m_currentLayer);
 	if ( layer )
 	{
-		layer->insertFrames();
+		layer->emitRequestInsertFrame();
 	}
 }
-		
+
 void KTTableExposure::removeFrame()
 {
 	if ( m_layers.count() > 0)
@@ -258,7 +270,6 @@ void KTTableExposure::setCurrentCell(int idLayer, int idFrame)
 
 void KTTableExposure::setLayer(int index)
 {
-// 	dDebug() << "KTTableExposure::setLayer(int" << index << ")"  << m_currentLayer;
 	if(index == m_currentLayer)
 	{
 		return;
@@ -280,8 +291,6 @@ void KTTableExposure::setFrameName(int indexLayer, int indexFrame, const QString
 void KTTableExposure::removeLayer(int idLayer)
 {
 	D_FUNCINFO;
-// 	SHOW_VAR(idLayer);
-	
 	if ( m_layers.count() > 0 && idLayer >= 0 )
 	{
 		KTLayerExposure * ly = m_layers.takeAt(idLayer);
@@ -300,8 +309,6 @@ void KTTableExposure::removeLayer(int idLayer)
 		emit cellSelected( visualIndex(m_currentLayer-1), m_currentFrame); // FIXME
 	}
 }
-
-// m_layers[m_currentLayer-1]->visualIndex(m_layers[m_currentLayer-1]->currentFrame())*
 
 int KTTableExposure::visualIndex(int logicalIndex)
 {

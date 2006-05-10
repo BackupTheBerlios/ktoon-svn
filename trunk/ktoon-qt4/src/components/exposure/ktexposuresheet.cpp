@@ -223,7 +223,7 @@ void KTExposureSheet::insertLayer(const QString& name)
 // 	dDebug() << "KTExposureSheet::insertLayer(const QString& " << name  << ")";
 	if ( m_currentTable )
 	{
-		m_currentTable->insertLayer(100, name);
+		m_currentTable->insertLayer(name);
 		
 	}
 	else

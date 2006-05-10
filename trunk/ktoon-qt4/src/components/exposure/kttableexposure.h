@@ -79,14 +79,16 @@ class KTTableExposure : public QScrollArea
 		int m_currentLayer, m_currentFrame;
 		ListOfLayers m_layers;
 		QMenu *menuFrame;
+		int m_numRows;
 		
 	private slots:
 		void emitRequestCopyCurrentFrame();
 		void emitRequestPasteCurrentFrame();
 		void emitRequestCloneCurrentFrame();
+		void addRows();
 		
 	public slots:
-		void insertLayer(int rows, const QString &text = QString::null);
+		void insertLayer( const QString &text = QString::null);
 		void clickedCell(int row, int col, int button, int gx, int gy);
 		void changeCurrentLayer(int idLayer);
 		void removeLayer(int idLayer);

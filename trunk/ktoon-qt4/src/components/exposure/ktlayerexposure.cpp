@@ -119,24 +119,25 @@ void KTLayerExposure::otherSelected(int id)
 }
 
 
-void KTLayerExposure::insertFrame(int id, const QString &text)
+void KTLayerExposure::insertFrames(int number)
 {
-
-	ESFrame *frame = new ESFrame(  id , this);
-	m_layout->insertWidget(id+1,frame, 10);
-	
-	m_frames.insert(id, frame);
-	connect( frame, SIGNAL(clicked(int, int, int, int )), this, SLOT(frameSelect(int, int, int, int)));
-	connect(this, SIGNAL(frameSelected(int )), frame, SLOT(otherSelected(int)));
-	connect( frame, SIGNAL(renamed( int, const QString&)), this, SLOT(emitRequestRenameFrame(int, const QString&)));
-	frame->show();
+	for(int i = 0; i < number; i++)
+	{
+		int id =m_frames.last()->id()+1;
+		ESFrame *frame = new ESFrame(  id , this);
+		m_layout->insertWidget(id+1,frame, 10);
+		
+		m_frames.insert(id, frame);
+		connect( frame, SIGNAL(clicked(int, int, int, int )), this, SLOT(frameSelect(int, int, int, int)));
+		connect(this, SIGNAL(frameSelected(int )), frame, SLOT(otherSelected(int)));
+		connect( frame, SIGNAL(renamed( int, const QString&)), this, SLOT(emitRequestRenameFrame(int, const QString&)));
+		frame->show();
+	}
 }
 
 void KTLayerExposure::addFrame(const QString &text ) 
 {
 	int id = m_frames.count();
-	
-	
 	ESFrame *frame = new ESFrame( id, this);
 	m_layout->insertWidget(id, frame, 10);
 	m_frames.insert(id, frame);
@@ -178,9 +179,14 @@ void KTLayerExposure::setUseFrames(const QString &name, bool addedToEnd)
 		frameSelect( m_useFrame, 0, 0, 0);
 		m_useFrame++;
 	}
+	if(m_useFrame == m_frames.count())
+	{
+		emit finalRow();
+	}
+	
 }
 
-void KTLayerExposure::insertFrames()
+void KTLayerExposure::emitRequestInsertFrame()
 {
 	D_FUNCINFO;
 	if ( m_frames.count() > 0 )
@@ -195,7 +201,7 @@ void KTLayerExposure::insertFrames()
 				{
 					emit requestInsertFrame(true);
 				}
-				else 
+				else
 				{
 					emit requestInsertFrame(false);
 				}
@@ -237,7 +243,7 @@ void KTLayerExposure::removeFrame(int id)
 			frameSelect(pos);
 		}
 		m_useFrame--;
-		insertFrame(m_frames.last()->id()+1, "");
+		insertFrames(1);
 	}
 }
 
@@ -341,7 +347,7 @@ void KTLayerExposure::applyAction(int action)
 		}
 		case InsertFrames:
 		{
-			insertFrames();
+			emitRequestInsertFrame();
 			break;
 		}
 		
@@ -402,4 +408,5 @@ int KTLayerExposure::logicalIndex(int visualIndex)
 {
 	return m_frames.indexOf (static_cast<ESFrame*>(m_layout->itemAt( visualIndex+1)->widget()));
 }
+
 

@@ -21,7 +21,7 @@
 #include "ktgceditor.h"
 #include <QVBoxLayout>
 #include <QHeaderView>
-
+#include <QGroupBox>
 #include <dglobal.h>
 #include "ddebug.h"
 
@@ -63,9 +63,20 @@ KTGCEditor::KTGCEditor(QWidget *parent) : KTModuleWidgetBase(parent)
 	
 	m_translate = new DXYSpinBox(tr("Translate"));
 	connect(m_translate, SIGNAL(valueXYChanged(double,double)), this, SIGNAL(requestTranslate( double,double)));
+	m_translate->setMaximum(1000);
 	propLayout->addWidget(m_translate);
 	
-	m_translate->setMaximum(1000);
+	
+	QGroupBox *flip = new QGroupBox("Flip");
+	QVBoxLayout *flipLayout= new QVBoxLayout(flip);
+	
+	m_flipV = new QToolButton();
+	connect(m_flipV, SIGNAL(clicked()), this, SIGNAL(requestFlipV()));
+	m_flipH = new QToolButton();
+	connect(m_flipH, SIGNAL(clicked()), this, SIGNAL(requestFlipH()));
+	flipLayout->addWidget(m_flipV);
+	flipLayout->addWidget(m_flipH);
+	propLayout->addWidget(flip);
 	
 	leftLayout->addLayout(propLayout);
 	

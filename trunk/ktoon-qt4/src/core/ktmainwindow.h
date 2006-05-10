@@ -103,6 +103,8 @@ class KTMainWindow : public DMainWindow
 		
 		void ui4project(QWidget *widget);
 		
+		QList<AGraphicComponent *> currentElements();
+		
 	protected:
 		/**
 	 	 *  Event for main window closing control
@@ -156,6 +158,9 @@ class KTMainWindow : public DMainWindow
 		void scaleCurrentElement(double dx,double dy);
 		void translateCurrentElement(double dx,double dy);
 		void shearCurrentElement(double dx,double dy);
+		void  FlipVCurrentElement();
+		void  FlipHCurrentElement();
+		
 		void addCurrentGraphicToLibrary();
 		void addGraphicComponent(const AGraphicComponent *graphic);
 		

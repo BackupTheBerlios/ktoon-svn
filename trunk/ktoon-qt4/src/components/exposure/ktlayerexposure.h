@@ -44,7 +44,7 @@ class KTLayerExposure : public QFrame
 	public:
 		KTLayerExposure(const QString &initial_text, int id,int numFrame, QWidget *parent = 0);
 		~KTLayerExposure();
-		void insertFrame(int id, const QString &text );
+		void insertFrames(int number);
 		enum KTTAction{ RenameLayer = 0, RemoveThisLayer, InsertFrames, RemoveThisFrame};
 		
 		void addFrame(const QString &text );
@@ -63,6 +63,7 @@ class KTLayerExposure : public QFrame
 		int visualIndex(int logicalIndex);
 		int logicalIndex(int visualIndex);
 		
+
 	private:
 		bool m_selected;
 		int m_id, m_currentFrame,  m_useFrame;
@@ -89,7 +90,7 @@ class KTLayerExposure : public QFrame
 		void removeCurrentFrame();
 		void applyAction(int action);
 		
-		void insertFrames();
+		void emitRequestInsertFrame();
 		
 	signals:
 		void requestInsertFrame(bool);
@@ -102,6 +103,7 @@ class KTLayerExposure : public QFrame
 		void requestRenameLayer( int idLayer, const QString &name );
 		void requestRenameFrame(  int indexLayer, int indexFrame, const QString &name );
 		
+		void finalRow();
 	protected:
 		QBoxLayout *m_layout;
 };

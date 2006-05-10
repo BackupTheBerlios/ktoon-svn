@@ -114,6 +114,10 @@ void KTMainWindow::createGUI()
 	connect(m_gcEditor, SIGNAL(requestShear(double,double)), this, SLOT(shearCurrentElement(double,double)));
 	connect(m_gcEditor, SIGNAL(requestTranslate(double,double)), this, SLOT(translateCurrentElement(double,double)));
 	
+	connect(m_gcEditor, SIGNAL(requestFlipV()), this, SLOT( FlipVCurrentElement()));
+	connect(m_gcEditor, SIGNAL(requestFlipH()), this, SLOT( FlipHCurrentElement()));
+	
+	
 	toolWindow(DDockWindow::Bottom)->addWidget(tr("GC Editor"), m_gcEditor);
 	
 	connectToDisplays(m_gcEditor);
