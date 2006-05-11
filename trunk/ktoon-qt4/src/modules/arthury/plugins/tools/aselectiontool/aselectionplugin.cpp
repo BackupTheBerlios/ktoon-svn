@@ -211,7 +211,8 @@ QHash<QString, DAction *> ASelectionPlugin::actions()
 	QHash<QString, DAction *> hash;
 	
 	DAction *act = new DAction(QPixmap(THEME_DIR+"/icons/selection.png"), tr("Selection"), this);
-	act->setCursor( QCursor(THEME_DIR+"/cursors/select.png") );
+	
+	act->setCursor( QCursor(THEME_DIR+"/cursors/select.png", 0, 0) );
 	
 	hash.insert( tr("Selection"), act );
 	

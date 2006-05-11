@@ -87,7 +87,6 @@ void KTConfigurationArea::findSeparator()
 			if ((*it)->metaObject()->className() == QString("QDockSeparator")) // HACK
 			{
 				m_separator = (*it);
-// 				m_separator->hide();
 				break;
 			}
 			++it;
@@ -122,7 +121,6 @@ void KTConfigurationArea::shrink()
 	int x1 = 0, x2= 0, y1= 0, y2= 0, xRelease= 0, yRelease= 0;
 
 	df = width() - 20;
-	SHOW_VAR(df);
 	x1 = press.pos().x() + df;
 	y1 = press.pos().y();
 	
@@ -277,7 +275,7 @@ void KTConfigurationArea::paintEvent (QPaintEvent *e)
 		QFontMetricsF fm(painter.font());
 		
 		
-		painter.drawText(QPoint(height()/2-fm.width(text)/2, -(width()-fm.height()/2) ), text );
+		painter.drawText(QPointF(height()/2-fm.width(text)/2, -(width()-fm.height()/2) ), text );
 	}
 }
 

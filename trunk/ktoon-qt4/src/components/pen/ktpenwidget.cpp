@@ -34,8 +34,6 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 	
 	m_style = new QComboBox();
 	
-	connect(m_style, SIGNAL(activated( int )), this, SLOT(setStyle(int)) );
-	
 	m_style->addItem(tr("No pen"), Qt::NoPen);
 	m_style->addItem( tr("Solid"), Qt::SolidLine);
 	m_style->addItem( tr("Dash"), Qt::DashLine );
@@ -45,39 +43,31 @@ KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 	
 	addChild(m_style);
 	
-	m_style->setCurrentIndex( Qt::SolidLine );
-	
+	connect(m_style, SIGNAL(currentIndexChanged( int )), this, SLOT(setStyle(int)) );
 	
 	m_capStyle = new QComboBox();
-	connect(m_capStyle, SIGNAL(activated( int )), this, SLOT(setCapStyle(int)) );
 	
 	m_capStyle->addItem( tr("Flat"), Qt::FlatCap);
 	m_capStyle->addItem( tr("Square"), Qt::SquareCap);
 	m_capStyle->addItem( tr("Round"), Qt::RoundCap);
 	
 	addChild(m_capStyle);
-	
-	m_capStyle->setCurrentIndex( int(Qt::RoundCap) );
-	
-	
+	connect(m_capStyle, SIGNAL(currentIndexChanged( int )), this, SLOT(setCapStyle(int)) );
 	
 	m_joinStyle = new QComboBox();
-	connect(m_joinStyle, SIGNAL(activated( int )), this, SLOT(setJoinStyle(int)) );
 	
-	m_joinStyle->addItem( tr("Miter"),Qt::MiterJoin );
+	m_joinStyle->addItem( tr("Miter"), Qt::MiterJoin );
 	m_joinStyle->addItem( tr("Bevel"), Qt::BevelJoin);
 	m_joinStyle->addItem( tr("Round"), Qt::RoundJoin);
 	
 	addChild( m_joinStyle );
-	
-	m_joinStyle->setCurrentIndex( int(Qt::RoundJoin) );
+	connect(m_joinStyle, SIGNAL(currentIndexChanged( int )), this, SLOT(setJoinStyle(int)) );
 	
 	boxLayout()->addStretch(2);
 	
-	setThickness( 3);
-	
 	setWindowIcon(QIcon(THEME_DIR+"/icons/brushes.png"));
 	
+	reset();
 }
 
 
@@ -95,20 +85,35 @@ void KTPenWidget::setThickness(int value)
 
 void KTPenWidget::setStyle(int s)
 {
-	m_pen.setStyle(Qt::PenStyle(s) );
+	m_pen.setStyle( Qt::PenStyle(m_style->itemData(s).toInt()) );
 	
 	emit penChanged( m_pen );
 }
 
 void KTPenWidget::setJoinStyle(int s)
 {
-	m_pen.setJoinStyle(Qt::PenJoinStyle(s));
+	m_pen.setJoinStyle(Qt::PenJoinStyle(m_joinStyle->itemData(s).toInt()) );
 	emit penChanged( m_pen );
 }
 
 void KTPenWidget::setCapStyle(int s )
 {
-	m_pen.setCapStyle(Qt::PenCapStyle(s));
+	m_pen.setCapStyle(Qt::PenCapStyle(m_capStyle->itemData(s).toInt()) );
 	emit penChanged( m_pen );
+}
+
+void KTPenWidget::reset()
+{
+	blockSignals(true);
+	m_capStyle->setCurrentIndex( 2 );
+	m_joinStyle->setCurrentIndex( 2 );
+	setThickness( 3 );
+	blockSignals(false);
+	m_style->setCurrentIndex( 1 );
+}
+
+QPen KTPenWidget::pen() const
+{
+	return m_pen;
 }
 

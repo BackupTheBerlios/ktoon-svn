@@ -46,7 +46,6 @@ KTSplash::KTSplash() : QSplashScreen( 0 ), m_size(3), m_state(0)
 // 	KImageEffect::addNoise( image, KImageEffect::LaplacianNoise );
 // 	KImageEffect::hash( image, KImageEffect::SouthLite, 1);
 	
-	
 	setPixmap(QPixmap::fromImage(image));
 	m_version = tr("Version ")+dAppProp->version();
 }

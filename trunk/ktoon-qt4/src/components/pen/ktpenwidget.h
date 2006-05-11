@@ -37,12 +37,16 @@ class KTPenWidget : public KTModuleWidgetBase
 	public:
 		KTPenWidget(QWidget *parent = 0);
 		~KTPenWidget();
+		QPen pen() const;
 		
 	private:
 		DEditSpinBox *m_thickness;
 		QComboBox *m_capStyle;
 		QComboBox *m_joinStyle;
 		QComboBox *m_style;
+		
+	public slots:
+		void reset();
 		
 	private slots:
 		void setThickness(int value);

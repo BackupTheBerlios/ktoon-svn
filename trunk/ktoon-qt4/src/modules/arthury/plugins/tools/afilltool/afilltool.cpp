@@ -66,7 +66,8 @@ QHash< QString, DAction * > AFillTool::actions()
 	
 	hash.insert( tr("Countour Fill"), countourFillAction );
 	
-	countourFillAction->setCursor( QCursor(THEME_DIR+"/cursors/contour_fill.png") );
+	QPixmap countourCursor(THEME_DIR+"/cursors/contour_fill.png");
+	countourFillAction->setCursor( QCursor(countourCursor, 0, countourCursor.height()) );
 	
 	return hash;
 }

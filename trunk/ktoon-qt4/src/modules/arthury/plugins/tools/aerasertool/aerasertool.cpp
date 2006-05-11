@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "aerasertool.h"
 #include "dglobal.h"
 
@@ -72,7 +73,8 @@ QHash<QString, DAction *> AEraserTool::actions()
 	DAction *eraserAction = new DAction( QPixmap(THEME_DIR+"/icons/node_eraser.png"), tr("Node eraser"), this);
 	eraserAction->setShortcut( QKeySequence(tr("T")) );
 	
-	eraserAction->setCursor( QCursor(THEME_DIR+"/cursors/eraser.png") );
+	QPixmap cursor(THEME_DIR+"/cursors/eraser.png");
+	eraserAction->setCursor( QCursor(cursor,0, cursor.height()) );
 	
 	hash.insert( tr("Node eraser"), eraserAction );
 	

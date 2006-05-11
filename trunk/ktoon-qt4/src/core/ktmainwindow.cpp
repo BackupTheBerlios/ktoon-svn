@@ -171,12 +171,10 @@ void KTMainWindow::newViewDocument(const QString &name)
 			
 			viewDocument->setAttribute(Qt::WA_DeleteOnClose, true);
 			
+			viewDocument->drawArea()->setPen( m_penWidget->pen());
+			
 			m_drawingSpace->addWindow(viewDocument);
 			m_statusBar->advance(7);
-			
-	// 		viewDocument->setWindowTitle(name);
-			
-	// 		viewDocument->setActiveWindow();
 			
 			KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->activeWindow());
 			

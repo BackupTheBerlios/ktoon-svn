@@ -114,10 +114,13 @@ void KTDocument::load(const QString &path)
 			QString scenePath = info.absolutePath ()+"/"+location+"/scene.kts";
 			
 			KTScene *scene = new KTScene(this);
+			
 			m_currentScene = scene;
 			
 			m_scenes << scene;
 			scene->load(scenePath);
+			
+			m_sceneCount++;
 		}
 	}
 	else

@@ -42,8 +42,6 @@ void KTMainWindow::createGUI()
 	
 	connectToDisplays(m_penWidget);
 	
-	
-	
 	////////////////////
 	m_libraryWidget = new KTLibraryWidget( this );
 	m_libraryWidget->setWindowIcon(QPixmap(THEME_DIR+"/icons/library.png"));
