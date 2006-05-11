@@ -62,7 +62,7 @@ void KTTLRuler::paintSection ( QPainter * painter, const QRect & rect, int logic
 	{
 		QFontMetricsF fm(painter->font());
 		
-		QString number = QString::number(logicalIndex);
+		QString number = QString::number(logicalIndex+1);
 		
 		painter->drawText(rect.center().x()-(fm.width(number)/2), rect.center().y() +(fm.height()/2) ,number);
 	}

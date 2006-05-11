@@ -128,6 +128,7 @@ bool TFramesTableModel::insertColumns(int column, int count, const QModelIndex &
 		column = 0;
 	else if (column > m_horizontal.count())
 		column = m_horizontal.count();
+	
 	beginInsertColumns(QModelIndex(), column, column + count - 1);
 	int rc = m_vertical.count();
 	int cc = m_horizontal.count();
@@ -896,7 +897,7 @@ void TFramesTable::insertRow(int row)
 void TFramesTable::insertColumn(int column)
 {
 	m_model->insertColumns(column);
-	horizontalHeader()->resizeSection(column-1, m_rectWidth);
+	horizontalHeader()->resizeSection(column, m_rectWidth);
 }
 
 
@@ -962,7 +963,7 @@ QStyleOptionViewItem TFramesTable::viewOptions() const
 
 void TFramesTable::addLayer()
 {
-	int pos = rowCount() ;
+	int pos = rowCount();
 	insertRow( pos + 1);
 	
 	LayerItem layer;
@@ -995,6 +996,11 @@ int TFramesTable::lastFrameByLayer(int layerPos)
 void TFramesTable::addFrame(int layerPos)
 {
 	m_layers[layerPos].lastItem++;
+	
+	if ( m_layers[layerPos].lastItem >= columnCount() )
+	{
+		insertColumn( m_layers[layerPos].lastItem );
+	}
 	
 	setAttribute( layerPos, m_layers[layerPos].lastItem, TFramesTableItem::IsUsed, true);
 }
