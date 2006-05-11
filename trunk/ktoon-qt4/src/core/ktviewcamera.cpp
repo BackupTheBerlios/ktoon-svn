@@ -145,7 +145,7 @@ KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : DMdiWindow(p
 	layout->addWidget( m_bar, 0, Qt::AlignTop | Qt::AlignCenter );
 	m_bar->show();
 	
-	connect(m_bar, SIGNAL(play()), m_animationArea, SLOT(play()));
+	connect(m_bar, SIGNAL(play()), this, SLOT(doPlay()));
 	connect(m_bar, SIGNAL(stop()), m_animationArea, SLOT(stop()));
 #else
 	CCBar *m_bar = new CCBar(40);
@@ -161,7 +161,7 @@ KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : DMdiWindow(p
 	
 	qobject_cast<QBoxLayout *>(m_bar->layout())->addStretch(2);
 	
-	connect(play, SIGNAL(clicked()), m_animationArea, SLOT(play()));
+	connect(play, SIGNAL(clicked()), this, SLOT(doPlay()));
 	connect(stop, SIGNAL(clicked()), m_animationArea, SLOT(stop()));
 #endif
 
@@ -179,8 +179,11 @@ KTViewCamera::~KTViewCamera()
 
 void KTViewCamera::showSceneInfo(const KTScene *scene)
 {
-	m_status->setFps(scene->fps());
-	m_status->setSceneName(scene->sceneName());
+	if ( scene )
+	{
+		m_status->setFps(scene->fps());
+		m_status->setSceneName(scene->sceneName());
+	}
 }
 
 AAnimationArea *KTViewCamera::animationArea()
@@ -201,4 +204,13 @@ QSize KTViewCamera::sizeHint() const
 }
 
 
+void KTViewCamera::doPlay()
+{
+	m_animationArea->play();
+	updateSceneInfo();
+}
 
+void KTViewCamera::updateSceneInfo()
+{
+	showSceneInfo(m_animationArea->currentScene());
+}

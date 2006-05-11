@@ -192,7 +192,7 @@ void KTKeyFrame::selectContains (const QRect & rect)
 	clearSelections();
 	foreach(AGraphicComponent *comp, m_components)
 	{
-		if(rect.intersects (comp->boundingRect().toRect()))
+		if(rect.intersects(comp->boundingRect().toRect().adjusted(1,1,-1,-1)))
 		{
 			m_selectedComponents << comp;
 		}

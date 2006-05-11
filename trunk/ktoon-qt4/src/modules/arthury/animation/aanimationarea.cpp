@@ -256,3 +256,7 @@ void AAnimationArea::setLoop(bool l)
 	m_ciclicAnimation = l;
 }
 
+const KTScene *AAnimationArea::currentScene() const
+{
+	return m_scene;
+}

@@ -44,6 +44,8 @@ class AAnimationArea : public QFrame
 		
 		void setLoop(bool l);
 		
+		const KTScene *currentScene() const;
+		
 	public slots:
 		virtual void render();
 		virtual void play();

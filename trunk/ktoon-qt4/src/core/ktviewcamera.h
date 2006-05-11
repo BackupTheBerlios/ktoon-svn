@@ -46,9 +46,12 @@ class KTViewCamera : public DMdiWindow
 		
 		QSize sizeHint() const;
 
+		void updateSceneInfo();
+		
 	private slots:
 		void showSceneInfo(const KTScene *scene);
 		void setLoop();
+		void doPlay();
 		
 	private:
 		QFrame *m_container;
