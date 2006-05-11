@@ -45,10 +45,9 @@ QStringList AGenericBrush::keys() const
 
 QRect AGenericBrush::press(const QString &brush, QPainter &painter,const QPoint &pos, KTKeyFrame *currentFrame )
 {
-	m_firstPoint = QPoint(0,0);
+	m_firstPoint = pos;
 	m_path = QPainterPath();
 	m_path.moveTo(pos);
-	
 	return move(brush, painter, pos, pos);
 }
 
@@ -77,8 +76,17 @@ QRect AGenericBrush::move(const QString &brush, QPainter &painter,const QPoint &
 	return boundingRect;
 }
 
-QRect AGenericBrush::release(const QString & brush ,QPainter & /* painter*/, const QPoint & /* pos */)
+QRect AGenericBrush::release(const QString & brush ,QPainter &  painter, const QPoint &  pos )
 {
+	int smoothness = m_configurator->exactness();
+	
+	if ( m_firstPoint == pos && m_path.elementCount() == 1)
+	{
+		smoothness = 0;
+		m_path.addEllipse(pos.x(), pos.y(), painter.pen().width(),painter.pen().width());
+		painter.drawPath(m_path);
+	}
+	
 	m_firstPoint = QPoint(0,0);
 	
 	
@@ -101,19 +109,19 @@ QRect AGenericBrush::release(const QString & brush ,QPainter & /* painter*/, con
 		++it;
 	}
 	
-	SHOW_VAR(m_configurator->exactness());
-	
-	if(m_configurator->exactness() > 0)
+	if(smoothness > 0)
 	{
-		m_path = KTGraphicalAlgorithm::bezierFit(pol, m_configurator->exactness());
+		m_path = KTGraphicalAlgorithm::bezierFit(pol, smoothness);
 		emit requestRedraw();
+		return QRect(0, 0, 0, 0);
 	}
 	else
 	{
 		m_path = QPainterPath();
 		m_path.addPolygon(pol);
 	}
-	return QRect(0, 0, 0, 0);
+	
+	return m_path.boundingRect().toRect().normalized().adjusted(-painter.pen().width(), -painter.pen().width(), +painter.pen().width(), +painter.pen().width());;
 }
 
 QPainterPath AGenericBrush::path() const
