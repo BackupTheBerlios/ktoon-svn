@@ -54,32 +54,10 @@ SOURCES += main.cpp \
            ktpluginmanager.cpp 
 QT += xml opengl gui
 KDEV_QTVER = 4
-linux-g++ {
-TARGETDEPS += ../../src/dlib/dgui/libdgui.so \
-../../src/dialogs/libdialogs.a \
-../../src/components/colorpalette/libcolorpalette.a \
-../../src/components/scenes/libscenes.a \
-../../src/components/exposure/libexposure.a \
-../../src/components/timeline/libtimeline.a \
-../../src/components/library/liblibrary.a \
-../../src/modules/arthury/animation/libanimation.a \
-../../src/modules/arthury/illustration/libillustration.a \
-../../src/components/gceditor/libgceditor.a \
-../../src/components/import/libimport.a \
-../../src/components/help/libhelp.a \
-../../src/store/libstore.so \
-../../src/ktoonstyle/libktoonstyle.a \
-../../src/components/export/ui/libui.a \
-../../src/components/kinas/libkinas.a \
-../../3rdparty/quazip/libquazip.a \
-../../src/dlib/dcore/libdcore.so \
-../../src/ktoonlib/libktoonlib.so \
-../../src/components/pen/libpen.a
-}
 
 LIBS += -ldcore \
 -ldgui \
--lktoonlib \
+-lktoon \
 ../../src/ktoonstyle/libktoonstyle.a \
 ../../src/dialogs/libdialogs.a \
 ../../src/components/colorpalette/libcolorpalette.a \

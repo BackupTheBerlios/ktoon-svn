@@ -27,7 +27,7 @@ SOURCES += atransformfilter.cpp
 
 
 LIBS += -lstore \
-        -lktoonlib \
+        -lktoon \
         -ldgui \
         -ldcore 
 

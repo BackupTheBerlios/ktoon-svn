@@ -45,6 +45,6 @@ dll
 TEMPLATE = lib
 
 macx {
-LIBS += -ldcore -ldgui -lktoonlib
+LIBS += -ldcore -ldgui -lktoon
 QMAKE_LIBDIR = ../../src/dlib/dcore ../../src/dlib/dgui ../../src/ktoonlib
 }

@@ -7,15 +7,8 @@ QT += xml
 INSTALLS += target 
 target.path = /plugins/ 
 KDEV_QTVER = 4 
-linux-g++ {
-TARGETDEPS += ../../../../../../src/store/libstore.so \
-              ../../../../../../src/ktoonlib/libktoonlib.so \
-              ../../../../../../src/dlib/dgui/libdgui.so \
-              ../../../../../../src/dlib/dcore/libdcore.so 
-}
-
 LIBS += -lstore \
-        -lktoonlib \
+        -lktoon \
         -ldgui \
         -ldcore 
 INCLUDEPATH += ../../../../../../src/modules/arthury/interfaces \

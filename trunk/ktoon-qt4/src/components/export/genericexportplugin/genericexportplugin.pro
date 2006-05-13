@@ -19,6 +19,6 @@ TEMPLATE = lib
 HEADERS += genericexportplugin.h 
 SOURCES += genericexportplugin.cpp 
 macx {
-LIBS += -ldcore -ldgui -lktoonlib -lstore
+LIBS += -ldcore -ldgui -lktoon -lstore
 QMAKE_LIBDIR = ../../../../src/dlib/dcore ../../../../src/dlib/dgui ../../../../src/ktoonlib ../../../../src/store
 }
