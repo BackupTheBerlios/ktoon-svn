@@ -29,13 +29,13 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 */
 
-#include <math.h>
-#include <assert.h>
+#include <cmath>
+#include <cassert>
 
 #include <qimage.h>
 #include <stdlib.h>
-#include <iostream>
 #include <qcolor.h>
+#include <iostream>
 #include <qpixmap.h>
 #include <qvector.h>
 
@@ -60,6 +60,11 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // Utility stuff for effects ported from ImageMagick to QImage
 //
 //======================================================================
+
+#ifndef M_PI
+# define M_PI           3.14159265358979323846  /* pi */
+#endif
+
 #define MaxRGB 255L
 #define DegreesToRadians(x) ((x)*M_PI/180.0)
 #define MagickSQ2PI 2.50662827463100024161235523934010416269302368164062
