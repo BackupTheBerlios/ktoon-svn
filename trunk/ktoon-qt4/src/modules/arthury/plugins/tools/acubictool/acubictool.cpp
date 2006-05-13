@@ -40,7 +40,7 @@ QHash< QString, DAction * > ACubicTool::actions()
 	
 	cubic->setCursor( QCursor(THEME_DIR+"/cursors/bezier.png") );
 	
-// 	cubic->setShortcut( QKeySequence(tr("C")) );
+	cubic->setShortcut( QKeySequence(tr("Alt+B")) );
 	
 	hash.insert( tr("Polyline"), cubic );
 	

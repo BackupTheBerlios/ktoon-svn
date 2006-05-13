@@ -1,4 +1,4 @@
-/***************************************************************************
+/**************************************************************************
  *   Copyright (C) 2005 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
@@ -131,19 +131,20 @@ QHash<QString, DAction *> AGeometricToolPlugin::actions()
 	QHash<QString, DAction *> hash;
 	
 	DAction *action1 = new DAction( QIcon(THEME_DIR+"/icons/square.png"), tr("Rectangle"), this);
-// 	circle->setShortcut( QKeySequence(tr("R")) );
+	action1->setShortcut( QKeySequence(tr("Ctrl+Q")) );
 	action1->setCursor( QCursor(THEME_DIR+"/cursors/square.png") );
 	
 	hash.insert( tr("Rectangle"), action1 );
 	
 	DAction *action2 = new DAction(QIcon(THEME_DIR+"/icons/ellipse.png"), tr("Ellipse"), this);
-// 	rectangle->setShortcut( QKeySequence(tr("C")) );
+	action2->setShortcut( QKeySequence(tr("Ctrl+E")) );
 	action2->setCursor( QCursor(THEME_DIR+"/cursors/circle.png") );
 	
 	hash.insert(tr("Ellipse"), action2);
 	
 	
 	DAction *action3 = new DAction( QIcon(THEME_DIR+"/icons/line.png"), tr("Line"), this);
+	action3->setShortcut( QKeySequence(tr("Ctrl+L")) );
 	hash.insert(tr("Line"), action3);
 	
 	return hash;

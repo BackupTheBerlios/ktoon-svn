@@ -131,10 +131,13 @@ void KTViewDocument::setupEditActions()
 	
 	
 	a = new DAction( QPixmap(THEME_DIR+"/icons/group.png" ), tr( "&Group" ),   QKeySequence(  ), m_paintAreaContainer->drawArea(), SLOT(group()), m_actionManager, "group");
+	a->setShortcut ( QKeySequence(tr("Ctrl+G")) );
+
 	m_editGroup->addAction(a);
 	a->setStatusTip(tr("Group the selected objects into a single one"));
 	
 	a = new DAction( QPixmap(THEME_DIR+"/icons/ungroup.png" ), tr( "&Ungroup" ),   QKeySequence(  ), m_paintAreaContainer->drawArea(), SLOT(ungroup()), m_actionManager, "ungroup");
+	a->setShortcut ( QKeySequence(tr("Ctrl+Shift+G")) );
 	m_editGroup->addAction(a);
 	a->setStatusTip(tr("Ungroups the selected object"));
 	

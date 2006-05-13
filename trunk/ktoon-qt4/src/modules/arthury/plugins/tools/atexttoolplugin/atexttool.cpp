@@ -77,7 +77,7 @@ QHash<QString, DAction *> ATextTool::actions()
 	QHash<QString, DAction *> hash;
 	
 	DAction *pencil = new DAction( QIcon(THEME_DIR+"/icons/text.png"), tr("Text"), this);
-	pencil->setShortcut( QKeySequence(tr("T")) );
+	pencil->setShortcut( QKeySequence(tr("Ctrl+T")) );
 	
 	hash.insert( tr("Text"), pencil );
 	

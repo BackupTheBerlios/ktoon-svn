@@ -314,19 +314,19 @@ void KTMainWindow::setupHelpActions()
 
 void KTMainWindow::setupWindowActions()
 {
-	new DAction(QPixmap(), tr("Show TimeLine widget"), QKeySequence("CTRL+K"), this, SLOT(showWidgetPage()), m_actionManager, "show timeline");
+	new DAction(QPixmap(), tr("Show TimeLine widget"), QKeySequence("Shift+T"), this, SLOT(showWidgetPage()), m_actionManager, "show timeline");
 	
-	new DAction(QPixmap(), tr("Show exposure sheet widget"), QKeySequence("CTRL+H"), this, SLOT(showWidgetPage()), m_actionManager, "show exposure");
+	new DAction(QPixmap(), tr("Show exposure sheet widget"), QKeySequence("Shift+E"), this, SLOT(showWidgetPage()), m_actionManager, "show exposure");
 	
-	new DAction(QPixmap(), tr("Show scenes widget"), QKeySequence("CTRL+Y"), this, SLOT(showWidgetPage()), m_actionManager, "show scenes");
+	new DAction(QPixmap(), tr("Show scenes widget"), QKeySequence("Shift+S"), this, SLOT(showWidgetPage()), m_actionManager, "show scenes");
 	
-	new DAction(QPixmap(), tr("Show brushes widget"), QKeySequence("CTRL+B"), this, SLOT(showWidgetPage()), m_actionManager, "show brushes");
+	new DAction(QPixmap(), tr("Show brushes widget"), QKeySequence("Shift+B"), this, SLOT(showWidgetPage()), m_actionManager, "show brushes");
 	
-	new DAction(QPixmap(), tr("Show library widget"), QKeySequence("CTRL+L"), this, SLOT(showWidgetPage()), m_actionManager, "show library");
+	new DAction(QPixmap(), tr("Show library widget"), QKeySequence("Shift+L"), this, SLOT(showWidgetPage()), m_actionManager, "show library");
 	
-	new DAction(QPixmap(), tr("Show help widget"), QKeySequence(""), this, SLOT(showWidgetPage()), m_actionManager, "show help");
+	new DAction(QPixmap(), tr("Show help widget"), QKeySequence("F1"), this, SLOT(showWidgetPage()), m_actionManager, "show help");
 	
-	new DAction(QPixmap(), tr("Show color palette widget"), QKeySequence(), this, SLOT(showWidgetPage()), m_actionManager, "show palette");
+	new DAction(QPixmap(), tr("Show color palette widget"), QKeySequence(tr("Shift+P")), this, SLOT(showWidgetPage()), m_actionManager, "show palette");
 	
 }
 

@@ -100,7 +100,7 @@ QHash<QString, DAction *> AShapeBrushPlugin::actions()
 	QHash<QString, DAction *> hash;
 	
 	DAction *act = new DAction( QPixmap(THEME_DIR+"/icons/node_eraser.png"), tr("Shape brush"),this);
-// 	act->setShortcut( QKeySequence(tr("R")) );
+	act->setShortcut( QKeySequence(tr("Ctrl+Alt+S")) );
 	hash.insert( tr("Shape brush"), act );
 	
 	return hash;
