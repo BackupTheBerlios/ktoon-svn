@@ -49,7 +49,7 @@ HSMainWindow::HSMainWindow() : QMainWindow()
 	m_source = new QTextEdit;
 	layout->addWidget( m_source );
 	
-	new SpellHighlighter(m_source->document()); // From libktoon
+	new SpellHighlighter(m_source->document());
 	
 	m_destiny = new QTextBrowser;
 	layout->addWidget( m_destiny );

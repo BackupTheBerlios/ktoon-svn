@@ -3,16 +3,21 @@
 # Subdir relative project main directory: ./src
 # Target is an application:  ../bin/htscape
 
-!exists($(KTOON_HOME)) {
-        error("Please define KTOON_HOME")
-}
-
+KDEV_QTVER = 3 
+LIBS += -ldgui \
+        -ldcore \
+        -lktoon 
+INCLUDEPATH += $(KTOON_HOME)/include/ \
+               $(KTOON_HOME)/include/dcore \
+               $(KTOON_HOME)/include/dgui 
+QMAKE_LIBDIR = $(KTOON_HOME)/lib 
+TARGET = ../bin/htscape 
+CONFIG += release \
+          warn_on 
+TEMPLATE = app 
 HEADERS += hsmainwindow.h 
 SOURCES += main.cpp \
            hsmainwindow.cpp 
-TARGET=../bin/htscape
-
-LIBS += -lktoon
-INCLUDEPATH += $(KTOON_HOME)/include
-QMAKE_LIBDIR += $(KTOON_HOME)/lib
-
+!exists($(KTOON_HOME)) {
+error("Please define KTOON_HOME")
+}
