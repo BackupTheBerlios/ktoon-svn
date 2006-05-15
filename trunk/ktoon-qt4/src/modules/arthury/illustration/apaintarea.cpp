@@ -569,14 +569,13 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 void APaintArea::mouseMoveEvent(QMouseEvent *e)
 {
 	QPoint pos = (e->pos()-QPoint(m_offset.x()/2, m_offset.y()/2))/ m_zoomFactor;
-	
-	
+
 	QMouseEvent *event = new QMouseEvent( e->type(), pos, mapToGlobal(pos ), e->button(), e->buttons(), 0 );
 	emit mousePos(e->pos());
 	
 	if ( m_currentFrame )
 	{
-		if ((event->buttons() & Qt::LeftButton) && m_lastPosition != QPoint(-1, -1)  && !m_currentFrame->isLocked() )
+		if ((event->buttons() & Qt::LeftButton) && m_lastPosition != QPoint(-1, -1)  && !m_currentFrame->isLocked() ) // TODO: Mover debe entrar al plugin, al igual que los modificadores del mouse
 		{
 			if (m_currentTool)
 			{

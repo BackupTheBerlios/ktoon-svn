@@ -114,20 +114,21 @@ QRect ASelectionPlugin::press(const QString &brush, QPainter &painter,const QPoi
 }
 
 QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPoint &oldPos, const QPoint &newPos)
-{
+{	
 	QRectF boundingRect;
-// 	seletionRect
 	if ( m_graphics.count() > 0 )
 	{
 		QPainterPath ghost;
 		
 		m_matrix.reset();
+		
 		m_matrix.translate(newPos.x()-oldPos.x(), newPos.y()-oldPos.y());
 		if(brush == tr("Selection"))
 		{
 			foreach(AGraphicComponent *selected, m_graphics) //FIXME: optimizar
 			{
-				selected->getPath(ghost, m_matrix);
+				if ( ghost.elementCount() > 1000 ) break;
+					selected->getPath(ghost, m_matrix);
 			}
 		}
 		else if(brush == tr("Contour") && m_selectPoint)
@@ -161,7 +162,9 @@ QRect ASelectionPlugin::move(const QString &brush, QPainter &painter,const QPoin
 		
 // 		ghost = matrix.map(ghost);
 		boundingRect = ghost.boundingRect().normalized().adjusted(-rad, -rad, +rad, +rad);
-		emit toDrawGhostGraphic( ghost );
+		
+		if ( ghost.elementCount() < 1000 )
+			emit toDrawGhostGraphic( ghost );
 	}
 	else
 	{
