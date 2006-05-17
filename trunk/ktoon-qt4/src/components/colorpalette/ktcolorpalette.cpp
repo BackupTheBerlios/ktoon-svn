@@ -302,8 +302,6 @@ void KTColorPalette::mousePressEvent ( QMouseEvent * e )
 	if(e->button () == Qt::RightButton)
 	{
 		QMenu *menu = new QMenu(tr("type brush"), this);
-// 		menu->addAction(tr("solid"), this, SLOT(setSolidType()));
-// 		menu->addAction(tr("gradient"), this, SLOT(setGradientType()));
 		menu->exec(e->globalPos ());
 		delete menu;
 	}

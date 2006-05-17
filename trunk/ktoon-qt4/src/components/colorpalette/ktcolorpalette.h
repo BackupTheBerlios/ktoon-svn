@@ -45,7 +45,6 @@ class KTColorPalette;
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-					  
 class KTColorPalette : public KTModuleWidgetBase
 {
 	Q_OBJECT
