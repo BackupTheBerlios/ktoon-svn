@@ -47,11 +47,10 @@ QHash<QString, DAction *> ATransformFilter::actions()
 {
 	QHash<QString, DAction *> hash;
 	
-	DAction *flipH = new DAction( QIcon(), tr("Flip Horizontally"), QKeySequence(), this);
-	
+	DAction *flipH = new DAction( QIcon(), tr("Flip Horizontally"), QKeySequence(tr("Alt+Ctrl+H" )), this);
 	hash.insert( tr("Flip Horizontally"), flipH );
 	
-	DAction *flipV = new DAction(QIcon(), tr("Flip Vertically"), QKeySequence(), this);
+	DAction *flipV = new DAction(QIcon(), tr("Flip Vertically"), QKeySequence(tr("Alt+Ctrl+V" )), this);
 	hash.insert(tr("Flip Vertically"), flipV);
 	
 	return hash;

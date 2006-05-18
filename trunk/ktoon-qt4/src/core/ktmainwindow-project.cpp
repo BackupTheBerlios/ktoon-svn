@@ -351,28 +351,19 @@ void KTMainWindow::shearCurrentElement(double dx,double dy)
 void KTMainWindow::FlipVCurrentElement()
 {
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
-	QList<AGraphicComponent *> selecteds = currentElements();
-	if ( selecteds.count() > 0 )
+	if(doc)
 	{
-		foreach( AGraphicComponent * selected,  selecteds )
-		{
-			selected->flip(Qt::Vertical);
-		}
-		doc->drawArea()->redrawAll();
+		doc->drawArea()->flipVCurrentElement();
 	}
+	
 }
 
 void KTMainWindow::FlipHCurrentElement()
 {
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
-	QList<AGraphicComponent *> selecteds = currentElements();
-	if ( selecteds.count() > 0 )
+	if(doc)
 	{
-		foreach( AGraphicComponent * selected,  selecteds )
-		{
-			selected->flip(Qt::Horizontal);
-		}
-		doc->drawArea()->redrawAll();
+		doc->drawArea()->flipHCurrentElement();
 	}
 }
 

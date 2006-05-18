@@ -131,7 +131,7 @@ QHash<QString, DAction *> AGeometricToolPlugin::actions()
 	QHash<QString, DAction *> hash;
 	
 	DAction *action1 = new DAction( QIcon(THEME_DIR+"/icons/square.png"), tr("Rectangle"), this);
-	action1->setShortcut( QKeySequence(tr("Ctrl+Q")) );
+	action1->setShortcut( QKeySequence(tr("Ctrl+R")) );
 	action1->setCursor( QCursor(THEME_DIR+"/cursors/square.png") );
 	
 	hash.insert( tr("Rectangle"), action1 );

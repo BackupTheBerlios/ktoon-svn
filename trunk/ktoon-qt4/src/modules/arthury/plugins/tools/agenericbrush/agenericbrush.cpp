@@ -134,7 +134,7 @@ QHash<QString, DAction *> AGenericBrush::actions()
 	QHash<QString, DAction *> hash;
 	
 	DAction *pencil = new DAction( QIcon(brush_xpm), tr("Pencil"), this);
-	pencil->setShortcut( QKeySequence(tr("Ctrl+P")) );
+	pencil->setShortcut( QKeySequence(tr("Ctrl+B")) );
 	
 	QPixmap pix(THEME_DIR+"/cursors/pencil.png");
 	pencil->setCursor( QCursor(pix, 0, pix.height()) );

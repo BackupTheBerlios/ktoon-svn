@@ -970,6 +970,31 @@ void APaintArea::zoomOut()
 	setZoomFactor( m_zoomFactor -0.05 );
 }
 
+void APaintArea::flipVCurrentElement()
+{
+	D_FUNCINFO;
+	if(m_currentFrame->selectedComponents().count() > 0)
+	{
+		foreach(AGraphicComponent *component, m_currentFrame->selectedComponents())
+		{
+			component->flip(Qt::Vertical);
+		}
+		redrawAll();
+	}
+}
+
+void APaintArea::flipHCurrentElement()
+{
+	if(m_currentFrame->selectedComponents().count() > 0)
+	{
+		foreach(AGraphicComponent *component, m_currentFrame->selectedComponents())
+		{
+			component->flip(Qt::Horizontal);
+		}
+		redrawAll();
+	}
+}
+
 void APaintArea::importImage(const QPixmap &image)
 {
 	if ( ! m_currentFrame ) return;
@@ -1023,3 +1048,5 @@ void APaintArea::addCommand(DCommand *command, bool execute)
 		m_history->addCommand( command,execute );
 	}
 }
+
+

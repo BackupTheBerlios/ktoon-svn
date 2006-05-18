@@ -149,6 +149,10 @@ class APaintArea : public QWidget
 		
 		void zoomIn();
 		void zoomOut();
+		
+		void flipVCurrentElement();
+		void flipHCurrentElement();
+		
 		// </FIXME>
 	protected:
 		void mouseMoveEvent(QMouseEvent *e);

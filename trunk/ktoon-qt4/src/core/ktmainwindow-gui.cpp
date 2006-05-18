@@ -265,7 +265,7 @@ void KTMainWindow::setupFileActions()
 	DAction *newProject = new DAction( QPixmap( THEME_DIR+"/icons/project.png" ), tr( "New project" ), QKeySequence(), this, SLOT(newProject()), m_actionManager, "newproject");
 	newProject->setStatusTip(tr( "Opens a new project"));
 	
-	DAction *newArea = new DAction( QPixmap( THEME_DIR+"/icons/new.png" ), tr( "New paint area" ), QKeySequence(tr("Ctrl+N")), this, SLOT(newViewDocument()), m_actionManager, "newarea");
+	DAction *newArea = new DAction( QPixmap( THEME_DIR+"/icons/new.png" ), tr( "New paint area" ), QKeySequence(tr("Ctrl+A")), this, SLOT(newViewDocument()), m_actionManager, "newarea");
 	newArea->setStatusTip(tr( "Opens a new paint area"));
 	
 #if 0

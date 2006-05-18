@@ -67,7 +67,6 @@ KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, KT
 	createToolbar();
 	createTools();
 	createMenu();
-	
 	m_configurationArea = new KTConfigurationArea;
 	addDockWidget(Qt::RightDockWidgetArea, m_configurationArea);
 	
@@ -97,8 +96,10 @@ void KTViewDocument::createActions()
 	
 	DAction *redo = m_history->redoAction();
 	redo->setIcon(QPixmap(THEME_DIR+"/icons/redo.png" ));
-	
 	m_actionManager->insert(redo);
+	
+
+	
 
 }
 
@@ -144,6 +145,10 @@ void KTViewDocument::setupEditActions()
 	a = new DAction( QPixmap(THEME_DIR+"/icons/" ), tr( "Select &All" ),   QKeySequence(tr("Ctrl+A")), m_paintAreaContainer->drawArea(), SLOT(selectAll()), m_actionManager, "selectAll");
 	a->setStatusTip(tr("selected all object"));
 	
+	DAction *flipV = new DAction(  QPixmap(THEME_DIR+"/icons/flip-vertical.png" ), tr("Flip Vertical"), QKeySequence(tr(" Ctrl + Alt + V")), m_paintAreaContainer->drawArea(), SLOT(flipV()), m_actionManager, "flipv");
+	
+	DAction *flipH = new DAction( QPixmap(THEME_DIR+"/icons/flip-horizontal.png" ),  tr("Flip Horizontal"), QKeySequence(tr(" Ctrl + Alt + H")), m_paintAreaContainer->drawArea(), SLOT(flipV()), m_actionManager, "fliph");
+	
 	a = new DAction( tr("Properties..."), QKeySequence(), this, SLOT(configure()), m_actionManager, "properties");
 	a->setStatusTip(tr("Configure the paint area"));
 }
@@ -178,7 +183,7 @@ void KTViewDocument::setupOrderActions()
 
 void KTViewDocument::setupViewActions()
 {
-	DAction *zoomIn = new DAction( QPixmap(THEME_DIR+"/icons/zoom_in.png" ), tr( "Zoom In" ), QKeySequence(tr("+")), m_paintAreaContainer->drawArea(), SLOT(zoomIn()), m_actionManager, "zoom_in" );
+	DAction *zoomIn = new DAction( QPixmap(THEME_DIR+"/icons/zoom_in.png" ), tr( "Zoom In" ), QKeySequence(Qt::CTRL+Qt::Key_Plus), m_paintAreaContainer->drawArea(), SLOT(zoomIn()), m_actionManager, "zoom_in" );
 	
 	m_zoomFactorSpin = new QSpinBox();
 	m_zoomFactorSpin->setMaximum ( 200 );
@@ -189,7 +194,7 @@ void KTViewDocument::setupViewActions()
 	m_zoomFactorSpin->setSuffix ( "%" );
 	connect( m_zoomFactorSpin, SIGNAL( valueChanged ( int  )), this, SLOT(setZoomFactor(int )));
 	
-	DAction *zoomOut = new DAction( QPixmap(THEME_DIR+"/icons/zoom_out.png" ), tr( "Zoom Out" ), QKeySequence(tr("-")), m_paintAreaContainer->drawArea(), SLOT(zoomOut()), m_actionManager, "zoom_out" );
+	DAction *zoomOut = new DAction( QPixmap(THEME_DIR+"/icons/zoom_out.png" ), tr( "Zoom Out" ), QKeySequence(Qt::CTRL+Qt::Key_Minus), m_paintAreaContainer->drawArea(), SLOT(zoomOut()), m_actionManager, "zoom_out" );
 // 	m_viewPreviousGroup->addAction(zoomOut);
 	
 	
@@ -657,7 +662,9 @@ void KTViewDocument::createMenu()
 	m_editMenu->addSeparator();
 	m_editMenu->addAction(m_actionManager->find("selectAll"));
 	m_editMenu->addSeparator();
-	
+// 	m_editMenu->addAction(m_actionManager->find("localflipv"));
+// 	m_editMenu->addAction(m_actionManager->find("localfliph"));
+// 	m_editMenu->addSeparator();
 	m_editMenu->addAction(m_actionManager->find("properties"));
 	
 	

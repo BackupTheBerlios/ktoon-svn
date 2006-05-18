@@ -70,8 +70,6 @@ KTGCEditor::KTGCEditor(QWidget *parent) : KTModuleWidgetBase(parent)
 	QGroupBox *flip = new QGroupBox("Flip");
 	QVBoxLayout *flipLayout= new QVBoxLayout(flip);
 	
-	
-	
 	m_flipV = new QToolButton();
 	m_flipV->setIcon ( QPixmap(THEME_DIR+"/icons/flip-vertical.png") );
 	connect(m_flipV, SIGNAL(clicked()), this, SIGNAL(requestFlipV()));
