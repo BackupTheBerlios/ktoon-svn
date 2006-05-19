@@ -230,6 +230,13 @@ void KTExportWidget::addFormats(ExportInterface::Formats formats)
 		
 		m_formats.insert(format, ExportInterface::JPEG);
 	}
+	
+	if ( formats & ExportInterface::SMIL )
+	{
+		QListWidgetItem *format = new QListWidgetItem(tr("SMIL"), m_formatList);
+		
+		m_formats.insert(format, ExportInterface::SMIL);
+	}
 }
 
 void KTExportWidget::makeAction(int buttonId)
@@ -384,6 +391,15 @@ QString KTExportWidget::fileToExport() const
 			if ( !file.toLower().endsWith(".gif"))
 			{
 				file+=".gif";
+			}
+		}
+		break;
+		
+		case ExportInterface::SMIL:
+		{
+			if ( !file.toLower().endsWith(".smil"))
+			{
+				file+=".smil";
 			}
 		}
 		break;

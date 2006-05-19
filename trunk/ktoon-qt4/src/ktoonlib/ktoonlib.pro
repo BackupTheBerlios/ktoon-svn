@@ -3,17 +3,8 @@
 # Subdir relative project main directory: ./src/ktoonlib
 # Target is a library:  ktoon
 
-QT += xml 
 INSTALLS += target 
 target.path = /lib/ 
-KDEV_QTVER = 4 
-INCLUDEPATH += ../../src/dlib/dgui \
-               ../../src/dlib/dcore 
-TARGET = ktoon 
-CONFIG += release \
-          warn_on \
-          dll 
-TEMPLATE = lib 
 HEADERS += ktmodulewidgetbase.h \
            ktmodulewidgettitle.h \
            agraphic.h \
@@ -24,7 +15,8 @@ HEADERS += ktmodulewidgetbase.h \
            ktpaintareaproperties.h \
            ktgradientcreator.h \
            ktgradientselector.h \
-           ktgradientviewer.h 
+           ktgradientviewer.h \
+           exportinterface.h 
 SOURCES += ktmodulewidgetbase.cpp \
            ktmodulewidgettitle.cpp \
            agraphic.cpp \
@@ -35,6 +27,15 @@ SOURCES += ktmodulewidgetbase.cpp \
            ktgradientcreator.cpp \
            ktgradientselector.cpp \
            ktgradientviewer.cpp 
+QT += xml
+KDEV_QTVER = 4
+INCLUDEPATH += ../../src/dlib/dgui \
+../../src/dlib/dcore
+TARGET = ktoon
+CONFIG += release \
+warn_on \
+dll
+TEMPLATE = lib
 macx{
   LIBS += -ldcore -ldgui
   QMAKE_LIBDIR = ../../src/dlib/dcore ../../src/dlib/dgui

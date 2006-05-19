@@ -5,14 +5,13 @@
 
 SUBDIRS += themes \
            dlib \
-           ktoonlib \ 
-           interfaces \
+           ktoonlib \
            store \
            dialogs \
            components \
            modules \
            ktoonstyle \
-           core
+           core 
 KDEV_QTVER = 4
 CONFIG += release \
 warn_on

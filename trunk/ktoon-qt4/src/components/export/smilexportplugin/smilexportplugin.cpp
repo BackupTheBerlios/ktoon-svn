@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#include "genericexportplugin.h"
+#include "smilexportplugin.h"
 
 #include <dglobal.h>
 #include <ddebug.h>
@@ -26,30 +26,30 @@
 #include <QImage>
 #include <QPainter>
 
-GenericExportPlugin::GenericExportPlugin()
+SmilExportPlugin::SmilExportPlugin()
 {
 }
 
 
-GenericExportPlugin::~GenericExportPlugin()
+SmilExportPlugin::~SmilExportPlugin()
 {
 }
 
 
-QString GenericExportPlugin::key() const
+QString SmilExportPlugin::key() const
 {
-	return "Image Arrays";
+	return "SMIL 2.0";
 }
 
-ExportInterface::Formats GenericExportPlugin::availableFormats()
+ExportInterface::Formats SmilExportPlugin::availableFormats()
 {
-	return PNG | JPEG;
+	return SMIL;
 }
 
-void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size,float sx, float sy)
+void SmilExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size,float sx, float sy)
 {
+	m_size = size;
 	QFileInfo fileInfo(filePath);
-	
 	
 	QDir dir = fileInfo.dir();
 	if ( !dir.exists() )
@@ -57,24 +57,74 @@ void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KT
 		dir.mkdir(dir.path());
 	}
 	
-	char *f = "PNG";
-	
-	switch(format)
-	{
-		case JPEG:
-		{
-			f = "JPEG";
-		}
-		break;
-		default: break;
-	}
-	
 	m_baseName = fileInfo.baseName();
 	
-	createImages(scenes, dir, sx, sy, f);
+	dir.mkdir("data");
+	
+	initSmil();
+	
+	createImages(scenes, dir, sx, sy);
+	
+	m_smil.documentElement().appendChild(m_body);
+	
+	QFile save(filePath);
+	if ( save.open(QIODevice::WriteOnly | QIODevice::Text))
+	{
+		QTextStream out(&save);
+		out << m_smil.toString();
+	}
 }
 
-QStringList GenericExportPlugin::createImages(const QList<KTScene *> &scenes, const QDir &dir, float sx, float sy, const char *format)
+void SmilExportPlugin::initSmil()
+{
+	m_smil = QDomDocument("smil PUBLIC \"-//W3C//DTD SMIL 2.0//EN\" \"http://www.w3.org/2001/SMIL20/SMIL20.dtd\"");
+	
+	QDomElement root = m_smil.createElement("smil");
+	
+	root.setAttribute("xmlns", "http://www.w3.org/2001/SMIL20/Language");
+	
+	QDomElement head = m_smil.createElement("head");
+	
+	QDomElement generator = m_smil.createElement("meta");
+	generator.setAttribute("name", "generator");
+	generator.setAttribute("content", "KToon" );
+	
+	head.appendChild(generator);
+	
+	QDomElement layout = m_smil.createElement("layout");
+	
+	QDomElement rootLayout = m_smil.createElement("root-layout");
+	rootLayout.setAttribute("id", "MainLayout");
+	rootLayout.setAttribute("backgroundColor", "black");
+	rootLayout.setAttribute("width", m_size.width());
+	rootLayout.setAttribute("height", m_size.height());
+	
+	layout.appendChild(rootLayout);
+	
+// 	<region id="Images" left="18" width="220" top="6" height="240" z-index="1" fit="meet"/>
+	QDomElement region = m_smil.createElement("region");
+	region.setAttribute("id", "Animation");
+	
+	
+	region.setAttribute("left", 0);
+	region.setAttribute("top", 0);
+	region.setAttribute("width", m_size.width());
+	region.setAttribute("height", m_size.height());
+	region.setAttribute("z-index", 1);
+	region.setAttribute("fit", "meet");
+	
+	layout.appendChild(region);
+	
+	head.appendChild(layout);
+	
+	root.appendChild(head);
+	
+	m_body = m_smil.createElement("body");
+	
+	m_smil.appendChild(root);
+}
+
+QStringList SmilExportPlugin::createImages(const QList<KTScene *> &scenes, const QDir &dir, float sx, float sy, const char *format)
 {
 	QStringList paths;
 	
@@ -91,7 +141,7 @@ QStringList GenericExportPlugin::createImages(const QList<KTScene *> &scenes, co
 			Layers::iterator layerIterator = layers.begin();
 			bool ok = true;
 			
-			QImage renderized = QImage(520, 340, QImage::Format_RGB32);
+			QImage renderized = QImage(m_size.width(), m_size.height(), QImage::Format_RGB32);
 			renderized.fill(qRgb(255, 255, 255));
 			
 			QPainter painter(&renderized);
@@ -144,10 +194,12 @@ QStringList GenericExportPlugin::createImages(const QList<KTScene *> &scenes, co
 			
 			if ( !renderized.isNull() )
 			{
-				renderized.save(dir.path()+"/"+m_baseName+file+"."+extension, format);
-	// 			emit progressStep( nPhotogramsRenderized, totalPhotograms);
+				QString dest = dir.path()+"/data/"+m_baseName+file+"."+extension;
+				renderized.save(dest, format);
 				
-				paths << dir.path()+"/"+m_baseName+file+"."+extension;
+				paths << dest;
+				
+				createPar( dest, 1.0f/(float)scene->fps() );
 			}
 			
 			if (ok )
@@ -162,5 +214,25 @@ QStringList GenericExportPlugin::createImages(const QList<KTScene *> &scenes, co
 	return paths;
 }
 
-Q_EXPORT_PLUGIN( GenericExportPlugin );
+void SmilExportPlugin::createPar(const QString &filePath, double duration)
+{
+	QFileInfo finfo(filePath);
+	QString relative = "data/"+finfo.baseName()+"."+finfo.completeSuffix();
+	
+	QDomElement par = m_smil.createElement("par");
+	
+// 	<img id="TitleA" region="Images" dur="8s" fill="transition" src="NYCdata/TitleA.gif"/>
+	QDomElement img = m_smil.createElement("img");
+	img.setAttribute("id", finfo.baseName());
+	img.setAttribute("region", "Animation");
+	img.setAttribute("dur", QString("%1s").arg(duration));
+	img.setAttribute("fill", "transition");
+	img.setAttribute("src", relative);
+	
+	par.appendChild(img);
+	
+	m_body.appendChild(par);
+}
+
+Q_EXPORT_PLUGIN( SmilExportPlugin );
 

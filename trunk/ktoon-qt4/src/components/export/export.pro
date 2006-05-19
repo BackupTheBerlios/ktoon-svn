@@ -6,16 +6,15 @@
 SUBDIRS += ffmpegplugin \
            mingplugin \
            ui \
-           genericexportplugin 
+           genericexportplugin \
+           smilexportplugin 
 KDEV_QTVER = 4
 INCLUDEPATH += ../../../src/store \
 ../../../src/lib
 CONFIG += release \
 warn_on
 TEMPLATE = subdirs
-macx {
-LIBS += -ldcore -ldgui -lktoon -lstore
-QMAKE_LIBDIR = ../../../../src/dlib/dcore ../../../../src/dlib/dgui ../../../../src/ktoonlib ../../../../src/store
-
+macx{
+  LIBS += -ldcore -ldgui -lktoon -lstore
+  QMAKE_LIBDIR = ../../../../src/dlib/dcore ../../../../src/dlib/dgui ../../../../src/ktoonlib ../../../../src/store
 }
-
