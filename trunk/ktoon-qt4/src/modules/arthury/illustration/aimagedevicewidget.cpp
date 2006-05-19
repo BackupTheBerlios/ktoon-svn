@@ -57,7 +57,7 @@ void AImageDeviceWidget::paintEvent(QPaintEvent *e)
 
 void AImageDeviceWidget::resizeEvent ( QResizeEvent * event )
 {
-	device = new QImage(size(), QImage::Format_RGB32);
+	device = new QImage(event->size(), QImage::Format_RGB32);
 	device->fill(m_fillColor.rgb());
 }
 

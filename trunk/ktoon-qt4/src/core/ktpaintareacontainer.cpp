@@ -42,14 +42,14 @@ KTPaintAreaContainer::KTPaintAreaContainer(const QSize& size, KToon::RenderType 
 	m_VRuler = new KTDocumentRuler(Qt::Vertical, 0);
 	grid->addWidget (m_VRuler,1,0);
 	
-	QScrollArea *m_scroller = new QScrollArea(this);
+	m_scroller = new QScrollArea(this);
 	
-// 	m_scroller->setBackgroundRole(QPalette::Mid);
+	m_scroller->setBackgroundRole(QPalette::Base);
 	
 	m_HRuler->setZeroAt(m_drawAreaDelta.x());
 	m_VRuler->setZeroAt(m_drawAreaDelta.y());
 	
-	m_drawArea = new APaintArea(size, type, m_scroller);
+	m_drawArea = new APaintArea(size, type);
 	m_drawArea->setOffset(m_drawAreaDelta);
 	
 	m_HRuler->setMinimumWidth(m_drawArea->width());
@@ -57,7 +57,6 @@ KTPaintAreaContainer::KTPaintAreaContainer(const QSize& size, KToon::RenderType 
 	
 	m_scroller->setWidget(m_drawArea);
 	
-	m_scroller->setWidgetResizable ( true );
 	m_scroller->setFocus();
 	
 	QScrollBar *hBar = m_scroller->horizontalScrollBar();
@@ -97,22 +96,25 @@ APaintArea *KTPaintAreaContainer::drawArea() const
 
 void KTPaintAreaContainer::resizeEvent ( QResizeEvent * e)
 {
-#if 0
+#if 1
 	m_drawAreaDelta.setY( height()/2 - m_drawArea->paintDevice()->height()/2);
-	m_drawAreaDelta.setX( width()/2 - m_drawArea->paintDevice()->width()/2 );
+// 	m_drawAreaDelta.setX( width()/2 - m_drawArea->paintDevice()->width()/2 );
+
 	if(m_drawAreaDelta.x() < 0 )
 	{
-		m_drawAreaDelta.setX(0);
+		m_drawAreaDelta.setX(10);
 	}
 	if( m_drawAreaDelta.y() < 0 )
 	{
-		m_drawAreaDelta.setY(0);
+		m_drawAreaDelta.setY(10);
 	}
+	
 	m_HRuler->setZeroAt(m_drawAreaDelta.x());
 	m_VRuler->setZeroAt(m_drawAreaDelta.y());
+	
 	m_drawArea->setOffset(m_drawAreaDelta);
 #endif
-	m_drawArea->resize(size());
+
 	QWidget::resizeEvent (e);
 }
 

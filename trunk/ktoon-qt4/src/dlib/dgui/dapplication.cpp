@@ -26,6 +26,7 @@
 #include <QMessageBox>
 #include <QObject>
 #include <QLocale>
+#include <QStyle>
 
 #include <QApplication>
 #include <QMap>
@@ -43,9 +44,8 @@ DApplication::DApplication(int & argc, char ** argv)
 	QApplication::setEffectEnabled ( Qt::UI_FadeTooltip, true);
 	
 	parseArgs(argc, argv);
-
-
-	applyColors(Default);
+	
+	setPalette(style()->standardPalette() );
 }
 
 
@@ -77,11 +77,11 @@ void DApplication::applyColors(ColorSchema cs)
 			const QColor bgAlt( 183, 182, 171 );
 			
 			pal.setColor( QPalette::Text, Qt::black );
-			pal.setColor( QPalette::Base, QColor(183, 183, 183) );
+			pal.setColor( QPalette::Base, 0xdcdace );
 			pal.setColor( QPalette::Foreground, 0x3e3e45);
 			pal.setColor( QPalette::Background, bg );
 		
-			pal.setColor( QPalette::Button, bgAlt );
+			pal.setColor( QPalette::Button, 0xdad8cc );
 			pal.setColor( QPalette::ButtonText,0x3e3e45 );
 		
 			pal.setColor( QPalette::Highlight, 0x8f8368 );
@@ -92,9 +92,11 @@ void DApplication::applyColors(ColorSchema cs)
 			
 			int h,s,v;
 			bgAlt.getHsv( &h, &s, &v );
-			pal.setColor( QPalette::Midlight, QColor( h, s/3, (int)(v * 1.2)/*,QColor::Hsv*/ ) );
+			
+			pal.setColor( QPalette::Midlight, QColor(Qt::red).dark(120));
 			pal.setColor( QPalette::Light, Qt::white );
 			pal.setColor( QPalette::Dark, Qt::black );
+			pal.setColor(QPalette::Mid, 0x484542);
 		}
 		break;
 		case DarkBlue:

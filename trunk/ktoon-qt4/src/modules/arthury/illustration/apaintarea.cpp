@@ -111,7 +111,7 @@ APaintArea::~APaintArea()
 
 QSize APaintArea::sizeHint() const
 {
-	return m_paintDevice->size() + QSize(m_offset.x(),m_offset.y());
+	return m_paintDevice->size() + QSize(m_offset.x()/*+10*/,m_offset.y()/*+10*/);
 }
 
 QSize APaintArea::minimumSizeHint () const
@@ -405,8 +405,10 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter
 
 void APaintArea::redrawAll()
 {
+	setUpdatesEnabled(false);
 	m_redrawAll = true;
 	QTimer::singleShot(0, this, SLOT(update()));;
+	setUpdatesEnabled(true);
 }
 
 void APaintArea::aUpdate(const QRect &rect)
@@ -959,7 +961,12 @@ void APaintArea::setZoomFactor( double f )
 	
 	m_xpos = width() / 2 - m_paintDevice->width() / 2;
 	m_ypos = height() / 2 - m_paintDevice->height() / 2;
+	
+	setUpdatesEnabled(false);
+	adjustSize();
+	
 	redrawAll();
+	setUpdatesEnabled(true);
 }
 
 void APaintArea::zoomIn()

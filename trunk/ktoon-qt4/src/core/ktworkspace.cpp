@@ -35,15 +35,19 @@ KTWorkspace::KTWorkspace(QWidget *parent) : QWorkspace(parent)
 	setAcceptDrops( true );
 	setMouseTracking(true);
 	
-// 	QPalette pal = palette();
-// 	
-// 	QLinearGradient gradient(0, 0, width(), height());
-// 	gradient.setColorAt(1, pal.background().color());
-// 	gradient.setColorAt(0.5, pal.foreground().color());
-// 	gradient.setColorAt(0, pal.highlight().color());	
-// 	
-// 	setBackground(gradient);
+#if 0
+	QPalette pal = palette();
 	
+	QLinearGradient gradient(0, 0, width(), height());
+	gradient.setColorAt(1, pal.background().color());
+	gradient.setColorAt(0.5, pal.foreground().color());
+	gradient.setColorAt(0, pal.highlight().color());
+		
+	gradient.setSpread(QGradient::ReflectSpread);
+	
+	setBackground(gradient);
+#endif
+
 // 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::BottomToTop, this);
 // 	
 // 	KTCameraBar *bar = new KTCameraBar;

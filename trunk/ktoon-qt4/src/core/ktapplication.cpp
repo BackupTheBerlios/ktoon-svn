@@ -28,6 +28,8 @@ KTApplication::KTApplication(int argc, char **argv)
  : DApplication(argc, argv)
 {
 	setApplicationName("ktoon");
+	
+	applyColors(Default);
 }
 
 

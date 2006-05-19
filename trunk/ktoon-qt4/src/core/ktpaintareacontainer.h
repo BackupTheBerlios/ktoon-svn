@@ -26,8 +26,10 @@
 #include "ktdocumentruler.h"
 #include "apaintarea.h"
 
+class QScrollArea;
+
 /**
-	@author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@toonka.com>
 */
 class KTPaintAreaContainer : public QWidget
 {
@@ -50,6 +52,8 @@ class KTPaintAreaContainer : public QWidget
 		APaintArea *m_drawArea;
 		KTDocumentRuler *m_HRuler;
 		KTDocumentRuler *m_VRuler;
+		
+		QScrollArea *m_scroller;
 		
 // 		int m_drawAreaDelta;
 		QPoint m_drawAreaDelta;

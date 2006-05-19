@@ -162,7 +162,7 @@ bool DThemeManager::startElement( const QString& , const QString& , const QStrin
 			QColor c = getColor(atts);
 			if ( c.isValid() )
 			{
-				m_palette.setColor( QPalette::Mid, c );
+				m_palette.setColor( QPalette::Dark, c );
 			}
 		}
 		else if ( qname == "Mid" )
@@ -194,7 +194,7 @@ bool DThemeManager::startElement( const QString& , const QString& , const QStrin
 			QColor c = getColor(atts);
 			if ( c.isValid() )
 			{
-				m_palette.setColor( QPalette::HighlightedText, c );
+				m_palette.setColor( QPalette::BrightText, c );
 			}
 		}
 		else if ( qname == "Link" )
