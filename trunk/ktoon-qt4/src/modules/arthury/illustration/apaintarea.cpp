@@ -366,6 +366,10 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter
 		painter->setPen(pen);
 		painter->setBrush(brush);
 		
+		if ( !graphic->pixmap.isNull() )
+		{
+			painter->drawPixmap(graphic->path.boundingRect().topLeft(), graphic->pixmap);
+		}
 		
 #if 1
 		painter->drawPath(graphic->path);
@@ -397,8 +401,6 @@ void APaintArea::drawGraphic(const AGraphicComponent *graphicComponent, QPainter
 	
 	
 	painter->restore();
-
-	
 }
 
 void APaintArea::redrawAll()

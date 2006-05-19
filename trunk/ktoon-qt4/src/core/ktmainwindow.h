@@ -194,8 +194,6 @@ class KTMainWindow : public DMainWindow
 		
 		void changeFPS(int fps);
 		
-		void insertImage();
-		
 	private:
 		KTProjectManager *m_projectManager;
 		KToon::RenderType m_renderType;

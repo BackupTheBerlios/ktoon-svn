@@ -22,6 +22,8 @@
 #include "ddebug.h"
 #include "dpathadjuster.h"
 
+#include <ktglobal.h>
+
 KTLibraryParser::KTLibraryParser()
 	: QXmlDefaultHandler(), m_gradient(0), m_tagCounter(0)
 {
@@ -72,6 +74,14 @@ bool KTLibraryParser::startElement( const QString& , const QString& , const QStr
 			
 			AGraphic *graphic = new AGraphic;
 			m_graphics << graphic;
+		}
+		else if ( qname == "Image" )
+		{
+			QPixmap pix(LIBRARY_DIR+"/resources/"+atts.value("path"));
+			
+			m_graphics.last()->setPixmap(pix, atts.value("path"));
+			
+			SHOW_VAR(pix);
 		}
 		else if ( qname == "Polygon")
 		{
@@ -175,12 +185,19 @@ bool KTLibraryParser::endElement(const QString&, const QString& , const QString&
 				
 				foreach(AGraphic *graphic, m_graphics)
 				{
-					child->addGraphic(graphic->path, graphic->pen, graphic->brush);
+					child->addGraphic(graphic->path, graphic->pen, graphic->brush, graphic->pixmap);
 				}
 				
 				m_components.last()->addChild(child);
 				
 				m_objectName = QString();
+			}
+			else
+			{
+				foreach(AGraphic *graphic, m_graphics)
+				{
+					m_components.last()->addGraphic(graphic->path, graphic->pen, graphic->brush, graphic->pixmap);
+				}
 			}
 		}
 		else if ( qname == "Brush")

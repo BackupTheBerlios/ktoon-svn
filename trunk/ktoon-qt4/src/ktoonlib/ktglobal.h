@@ -23,6 +23,8 @@
 
 #include <dglobal.h>
 
+# define LIBRARY_DIR CONFIG_DIR+"/libraries"
+
 namespace KToon
 {
 	enum RenderType
@@ -30,8 +32,7 @@ namespace KToon
 		Image = 0,
 		OpenGL,
 		Native
-	};
-	
+	};	
 };
 
 

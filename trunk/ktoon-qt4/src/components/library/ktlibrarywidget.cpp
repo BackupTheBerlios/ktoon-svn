@@ -33,8 +33,11 @@
 
 KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), m_childCount(0)
 {
+	DINIT;
 	srand(time(0));
 	setCaption(tr("Library"));
+	
+	m_libraryDir = QDir(CONFIG_DIR+"/libraries");
 	
 	m_display = new KTDisplayGraphic(this);
 	
@@ -83,13 +86,11 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
 
 void KTLibraryWidget::setup()
 {
-	QDir librariesDir(CONFIG_DIR+"/libraries");
-	
-	if ( librariesDir.exists() )
+	if ( m_libraryDir.exists() )
 	{
 		// Parse!
 		
-		QStringList files = librariesDir.entryList(QStringList() << "*.ktlbr");
+		QStringList files = m_libraryDir.entryList(QStringList() << "*.ktlbr");
 		
 		foreach( QString file, files)
 		{
@@ -100,7 +101,7 @@ void KTLibraryWidget::setup()
 			reader.setContentHandler(&parser);
 			reader.setErrorHandler(&parser);
 			
-			QFile libFile(librariesDir.path() +"/"+ file );
+			QFile libFile(m_libraryDir.path() +"/"+ file );
 			QXmlInputSource xmlsource(&libFile);
 			
 			if ( reader.parse(&xmlsource) )
@@ -115,6 +116,15 @@ void KTLibraryWidget::setup()
 				dError() << "Error while parse file: " << libFile.fileName();
 			}
 		}
+	}
+	else
+	{
+		m_libraryDir.mkdir(m_libraryDir.path() );
+	}
+	
+	if ( !m_libraryDir.exists(m_libraryDir.path()+"/resources") )
+	{
+		m_libraryDir.mkdir(m_libraryDir.path()+"/resources" );
 	}
 }
 
@@ -253,7 +263,7 @@ void KTLibraryWidget::removeCurrentGraphic()
 				m_graphics.remove(child);
 			}
 			
-			QString folder = CONFIG_DIR+"/libraries/"+currentFolder->text(0)+".ktlbr";
+			QString folder = m_libraryDir.path()+"/"+currentFolder->text(0)+".ktlbr";
 			
 			QFile::remove(folder);
 			m_libraryTree->removeCurrentFolder();
@@ -287,3 +297,38 @@ void KTLibraryWidget::renameObject( QTreeWidgetItem* item)
 		}
 	}
 }
+
+void KTLibraryWidget::importBitmap()
+{
+	QString image = QFileDialog::getOpenFileName ( this, tr("Import an image..."), QDir::homePath(),  tr("Images")+" (*.png *.xpm *.jpg)" );
+	
+	addBitmap( image );
+}
+
+void KTLibraryWidget::addBitmap(const QString &bitmap)
+{
+	QPixmap toImport(bitmap);
+	
+	if ( ! toImport.isNull() )
+	{
+		AGraphicComponent *imageComponent = new AGraphicComponent;
+		
+		QFile file(bitmap);
+		QFileInfo finfo(file);
+		
+		imageComponent->setComponentName( finfo.baseName() );
+		
+		QPainterPath path;
+		path.addRect(toImport.rect());
+		imageComponent->addGraphic(path , Qt::NoPen, Qt::NoBrush,toImport);
+		
+		if ( !file.copy(m_libraryDir.path()+"/resources/"+ imageComponent->graphics()[0]->pixmapHash() ) )
+		{
+			emit sendToOSD(tr("Cannot import ")+finfo.fileName(), 2);
+			return;
+		}
+		
+		addGraphic( imageComponent );
+	}
+}
+

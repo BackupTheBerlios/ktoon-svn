@@ -52,6 +52,8 @@ void KTMainWindow::createGUI()
 	
 	connectToDisplays(m_libraryWidget);
 	
+	new DAction( QPixmap(), tr( "Import bitmap..." ), QKeySequence(), m_libraryWidget, SLOT(importBitmap()), m_actionManager, "importbitmap");
+	
 	/////////////////
 	m_scenes = new KTScenesWidget( this);
 	m_scenes->setWindowIcon(QPixmap(THEME_DIR+"/icons/scenes.png"));
@@ -209,10 +211,7 @@ void KTMainWindow::setupMenu()
 	m_insertMenu->addAction(m_actionManager->find("InsertFrame"));
 	m_insertMenu->addSeparator();
 	
-	
-#if 0
-	m_insertMenu->addAction(m_actionManager->find("insertimage")); // FIXME: brush is not handled
-#endif
+	m_insertMenu->addAction(m_actionManager->find("importbitmap"));
 	
 	// Setup the window menu
 	setupWindowActions();
@@ -337,12 +336,6 @@ void KTMainWindow::setupInsertActions()
 	new DAction( QPixmap(THEME_DIR+"/icons/layer.png"), tr( "Insert layer" ), QKeySequence(), m_projectManager, SLOT(createLayer()), m_actionManager, "InsertLayer");
 	
 	new DAction( QPixmap(THEME_DIR+"/icons/frame.png"), tr( "Insert frame" ), QKeySequence(), m_projectManager, SLOT(createFrame()), m_actionManager, "InsertFrame");
-	
-	new DAction( QPixmap(), tr( "Insert image" ), QKeySequence(), this, SLOT(insertImage()), m_actionManager, "insertimage");
-	
-	
-
-	
 }
 
 void KTMainWindow::setupToolBar()

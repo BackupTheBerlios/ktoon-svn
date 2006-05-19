@@ -46,6 +46,8 @@ class KTSerializableObject : public QObject
 		 * Funcion que debe ser reimplementada con el codigo para guardar el objeto
 		 */
 		virtual QDomElement createXML( QDomDocument &doc );
+		
+		virtual void saveResources(const QString &resourcesDir);
 };
 
 #endif

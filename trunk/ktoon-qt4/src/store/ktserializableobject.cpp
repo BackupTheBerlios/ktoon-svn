@@ -34,3 +34,9 @@ QDomElement KTSerializableObject::createXML( QDomDocument & )
 {
 	return QDomElement();
 }
+
+void KTSerializableObject::saveResources(const QString &resourcesDir)
+{
+}
+
+

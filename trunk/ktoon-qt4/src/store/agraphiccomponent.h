@@ -86,12 +86,12 @@ class AGraphicComponent : public KTSerializableObject
 		/**
 		 * Add a new graphic
 		 */
-		void addGraphic(const QPainterPath &path, const QPen &pen, const QBrush &brush );
+		void addGraphic(const QPainterPath &path, const QPen &pen, const QBrush &brush, const QPixmap &pix = QPixmap() );
 		
 		/**
 		 * Add a new graphic
 		 */
-		void addGraphic(const QList<QPolygonF> &polygons, const QPen &pen, const QBrush &brush );
+		void addGraphic(const QList<QPolygonF> &polygons, const QPen &pen, const QBrush &brush, const QPixmap &pix = QPixmap() );
 		
 		/**
 		 * return all graphics in component
@@ -211,6 +211,8 @@ class AGraphicComponent : public KTSerializableObject
 		 */
 		void draw(QPainter *painter);
 		
+		
+		void saveResources(const QString &path);
 		
 	private:
 		QDomElement brushToElement(const QBrush &brush, QDomDocument &doc);

@@ -48,7 +48,6 @@ class KTDisplayGraphic : public QFrame
 		QImage m_displayArea;
 		bool m_drawGraphic;
 		AGraphicComponent *m_graphic;
-		void drawComponent(AGraphicComponent *component, QPainter * painter);
 		
 	protected:
 		virtual void paintEvent ( QPaintEvent * event );

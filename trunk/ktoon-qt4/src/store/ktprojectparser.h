@@ -25,6 +25,7 @@
 #include <QSize>
 #include <QBrush>
 #include <QPen>
+#include <QDir>
 
 #include "agraphiccomponent.h"
 
@@ -81,6 +82,9 @@ class KTProjectParser : public QObject, public QXmlDefaultHandler
 		 * Retorna el tamaño del documento
 		 */
 		QSize documentSize() const;
+		
+		
+		bool parse(const QString &filePath);
 
 	signals:
 		/**
@@ -120,6 +124,8 @@ class KTProjectParser : public QObject, public QXmlDefaultHandler
 		AGraphicComponent *m_rootComponent;
 		
 		int m_tagCounter;
+		
+		QDir m_projectDir;
 };
 
 #endif

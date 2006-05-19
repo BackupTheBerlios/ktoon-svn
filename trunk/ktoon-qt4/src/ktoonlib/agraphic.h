@@ -30,6 +30,7 @@
 #include <QPolygonF>
 #include <QPen>
 #include <QBrush>
+#include <QPixmap>
 
 #include <QPainterPath>
 
@@ -67,11 +68,24 @@ class AGraphic
 		 */
 		void mapTo(const QMatrix& matix);
 		
+		void mapPixmap(const QMatrix &matrix);
+		
 		void flip(Qt::Orientation o);
 		
 		QPainterPath path;
 		QBrush brush;
 		QPen pen;
+		
+		void setPixmap(const QPixmap &pix, const QString &key = QString());
+		
+		QPixmap pixmap;
+		
+		QString pixmapHash() const;
+		void savePixmap(const QString &path);
+		
+	private:
+		QPixmap m_origPixmap;
+		QString m_pixmapHash;
 };
 
 #endif

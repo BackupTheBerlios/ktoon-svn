@@ -21,12 +21,16 @@
 #include "agraphic.h"
 #include "ddebug.h"
 #include <QPixmap>
+#include <QHash>
+#include <dalgorithm.h>
+#include <dmd5hash.h>
+#include <QFile>
 
 AGraphic::AGraphic()
 {
 }
 
-AGraphic::AGraphic(const AGraphic &toCopy) : path(toCopy.path), brush(toCopy.brush), pen(toCopy.pen)
+AGraphic::AGraphic(const AGraphic &toCopy) : path(toCopy.path), brush(toCopy.brush), pen(toCopy.pen), pixmap(toCopy.pixmap), m_origPixmap(toCopy.m_origPixmap), m_pixmapHash(toCopy.m_pixmapHash)
 {
 }
 
@@ -40,8 +44,16 @@ void AGraphic::mapTo(const QMatrix& matrix)
 	
 	brush = DBrushAdjuster::mapBrush( brush, matrix );
 	pen.setBrush( DBrushAdjuster::mapBrush( pen.brush(), matrix ));
-	
 }
+
+void AGraphic::mapPixmap(const QMatrix &matrix)
+{
+	if ( !pixmap.isNull() )
+	{
+		pixmap = m_origPixmap.transformed(matrix, Qt::SmoothTransformation);
+	}
+}
+
 
 void AGraphic::flip(Qt::Orientation o)
 {
@@ -90,10 +102,71 @@ void AGraphic::flip(Qt::Orientation o)
 	pen.setBrush( DBrushAdjuster::mapBrush( pen.brush(), matrix ));
 	path = matrix.map(path);
 	
-	
-	
+	if ( !m_origPixmap.isNull() )
+	{
+		QImage original = m_origPixmap.toImage();
+		
+		QImage result = original;
+		
+		if ( o == Qt::Horizontal)
+		{
+			for (int y = 0; y < original.height(); ++y) 
+			{
+				for (int x = 0; x < original.width(); ++x) 
+				{
+					int pixel = original.pixel(original.width() - x - 1, y);
+					result.setPixel(x, y, pixel);
+				}
+			}
+		}
+		else
+		{
+			for (int y = 0; y < original.height(); ++y) 
+			{
+				for (int x = 0; x < original.width(); ++x) 
+				{
+					int pixel = original.pixel(x, original.height() - y - 1);
+					result.setPixel(x, y, pixel);
+				}
+			}
+		}
+		
+		setPixmap( QPixmap::fromImage(result));
+	}
 }
 
+void AGraphic::setPixmap(const QPixmap &pix, const QString &key)
+{
+	if ( pix.isNull() ) return;
+	
+	pixmap = pix;
+	m_origPixmap = pix;
+	
+	if ( key.isNull() )
+	{
+		m_pixmapHash = DMD5Hash::hashData((const char *)pix.toImage().bits(), 4*pix.height()*pix.width()) ;
+	}
+	else
+	{
+		m_pixmapHash = key;
+	}
+}
 
+QString AGraphic::pixmapHash() const
+{
+	return m_pixmapHash;
+}
 
+void AGraphic::savePixmap(const QString &path)
+{
+	if ( !m_origPixmap.isNull() )
+	{
+		QString file = path+"/"+m_pixmapHash;
+		
+		if ( !QFile::exists(file) )
+		{
+			m_origPixmap.save(file, "PNG" );
+		}
+	}
+}
 

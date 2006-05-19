@@ -25,6 +25,7 @@
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 #include <QMap>
+#include <QDir>
 
 #include "ktdisplaygraphic.h"
 #include "dimagebutton.h"
@@ -43,6 +44,7 @@ class KTLibraryWidget : public KTModuleWidgetBase
 	public:
 		KTLibraryWidget(QWidget *parent = 0);
 		~KTLibraryWidget();
+		void addBitmap(const QString &path);
 		
 	private:
 		void setup();
@@ -54,8 +56,10 @@ class KTLibraryWidget : public KTModuleWidgetBase
 		void removeCurrentGraphic();
 		void renameObject( QTreeWidgetItem* item);
 		
+		
 	public slots:
 		void addGraphic(const AGraphicComponent *graphic);
+		void importBitmap();
 		
 	signals:
 		void requestCurrentGraphic();
@@ -66,6 +70,8 @@ class KTLibraryWidget : public KTModuleWidgetBase
 		KTGCTable *m_libraryTree;
 		QMap<QTreeWidgetItem *, AGraphicComponent *> m_graphics;
 		int m_childCount;
+		
+		QDir m_libraryDir;
 };
 
 #endif

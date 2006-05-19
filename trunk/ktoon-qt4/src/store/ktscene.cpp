@@ -71,7 +71,7 @@ void KTScene::save(const QString &scenePath)
 		++iterator;
 	}
 	
-	QFile save(scenePath+"/"+/*m_name*/"scene"+".kts");
+	QFile save(scenePath+"/"+"scene"+".kts");
 	
 	if ( save.open(QIODevice::WriteOnly | QIODevice::Text))
 	{
@@ -80,7 +80,6 @@ void KTScene::save(const QString &scenePath)
 		
 		save.close();
 	}
-	
 }
 
 void KTScene::load(const QString &path)
@@ -93,21 +92,13 @@ void KTScene::load(const QString &path)
 	connect(&parser, SIGNAL(createFrame(const QString &, int)), this, SLOT(loadFrame(const QString &, int)));
 	connect(&parser, SIGNAL(createComponent( AGraphicComponent * ) ), this, SLOT( loadComponent(AGraphicComponent *) ));
 	
-	QXmlSimpleReader reader;
-	reader.setContentHandler(&parser);
-	reader.setErrorHandler(&parser);
-		
-	QFile source(path);
-	QXmlInputSource xmlsource(&source);
-		
-	if ( reader.parse(&xmlsource) )
+	if ( parser.parse(path) )
 	{
 		setSceneName( parser.partName() );
-		
 	}
 	else
 	{
-		dError() << "Error while parse file: " << source.fileName();
+		dError() << "Error while parse file: " << path;
 	}
 }
 

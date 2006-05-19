@@ -78,24 +78,20 @@ bool AGraphicComponent::isValid()
 	return (!m_graphics.isEmpty() || !m_childs.isEmpty());
 }
 
-// void AGraphicComponent::addGraphic(const AGraphic *graphic)
-// {
-// 	m_graphics << new AGraphic(*graphic);
-// }
-
-void AGraphicComponent::addGraphic(const QPainterPath &path, const QPen &pen, const QBrush &brush )
+void AGraphicComponent::addGraphic(const QPainterPath &path, const QPen &pen, const QBrush &brush, const QPixmap &pix )
 {
 	AGraphic *graphic = new AGraphic;
 	graphic->path = path;
 	graphic->brush = brush;
 	graphic->pen = pen;
+// 	graphic->pixmap = pix;
+// 	graphic->m_origPixmap = pix;
+	graphic->setPixmap( pix );
 	m_graphics << graphic;
 }
 
-void AGraphicComponent::addGraphic(const QList<QPolygonF> &polygons, const QPen &pen, const QBrush &brush )
+void AGraphicComponent::addGraphic(const QList<QPolygonF> &polygons, const QPen &pen, const QBrush &brush, const QPixmap &pix )
 {
-	AGraphic *graphic = new AGraphic;
-	
 	QPainterPath path;
 	
 	foreach(QPolygonF pol, polygons)
@@ -103,10 +99,7 @@ void AGraphicComponent::addGraphic(const QList<QPolygonF> &polygons, const QPen 
 		path.addPolygon(pol);
 	}
 	
-	graphic->path = path;
-	graphic->brush = brush;
-	graphic->pen = pen;
-	m_graphics << graphic;
+	addGraphic( path, pen, brush);
 }
 
 Graphics AGraphicComponent::graphics() const
@@ -163,9 +156,8 @@ void AGraphicComponent::shear(double sX, double sY)
 	QPointF delta( sX-m_shear.x(), sY-m_shear.y());
 	QPointF pos = position();
 	
-	
 	QMatrix mId(1,0,0,1, 0, 0);
-	mId.shear(delta.x()  , delta.y() );
+	mId.shear(delta.x(), delta.y() );
 	mapTo(mId);
 	
 	m_shear.setX(sX);
@@ -228,9 +220,16 @@ void AGraphicComponent::adjustToRect(QRect rect, float offset)
 
 void AGraphicComponent::mapTo(const QMatrix& matrix)
 {
+	QMatrix orig;
+	
+	orig.scale(m_scale.x(), m_scale.y());
+	orig.shear(m_shear.x(), m_shear.y());
+	orig.rotate(m_angle);
+	
 	foreach(AGraphic *graphic, m_graphics)
 	{
 		graphic->mapTo(matrix);
+		graphic->mapPixmap(orig);
 	}
 	
 	if(m_childs.count() > 0)
@@ -294,6 +293,16 @@ QDomElement AGraphicComponent::createXML( QDomDocument &doc )
 		
 		QList<QPolygonF>::ConstIterator polygonIt = polygons.begin();
 		
+		QDomElement resourcesElement = doc.createElement("Resources");
+		
+		if ( !graphic->pixmap.isNull() )
+		{
+			QDomElement imageRes = doc.createElement("Image");
+			imageRes.setAttribute("path", graphic->pixmapHash() );
+			resourcesElement.appendChild(imageRes);
+		}
+		
+		graphicElement.appendChild(resourcesElement);
 		
 		QDomElement propertiesElement = doc.createElement("Properties");
 		QDomElement penElement = doc.createElement("Pen");
@@ -334,6 +343,7 @@ QDomElement AGraphicComponent::createXML( QDomDocument &doc )
 		
 		item.appendChild(graphicElement);
 	}
+	
 	foreach(AGraphicComponent *child, m_childs)
 	{
 		item.appendChild(child->createXML(doc));
@@ -542,14 +552,20 @@ int AGraphicComponent::angleFactor() const
 void AGraphicComponent::draw(QPainter *painter)
 {
 	painter->save();
-
+	
 	foreach(AGraphic *graphic, graphics())
 	{
 		QPen pen = graphic->pen;
 		QBrush brush = graphic->brush;
 		
 		painter->setPen(pen);
+		
 		painter->setBrush(brush);
+		
+		if ( !graphic->pixmap.isNull() )
+		{
+			painter->drawPixmap(graphic->path.boundingRect().topLeft(), graphic->pixmap);
+		}
 		
 		QList<QPolygonF> poligons = graphic->path.toSubpathPolygons();
 		
@@ -594,6 +610,13 @@ bool AGraphicComponent::selected() const
 	return m_selected;
 }
 
+void AGraphicComponent::saveResources(const QString &path)
+{
+	foreach(AGraphic *graphic, graphics())
+	{
+		graphic->savePixmap(path);
+	}
+}
 
 
 

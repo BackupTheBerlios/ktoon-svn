@@ -64,8 +64,7 @@ void KTDisplayGraphic::paintEvent ( QPaintEvent *e )
 	
 	if ( m_drawGraphic )
 	{
-		// AQUI SE DIBUJA EL COMPONENTE
-		drawComponent(m_graphic, &painter);
+		m_graphic->draw( &painter);
 	}
 	
 	painter.end();
@@ -83,7 +82,7 @@ void KTDisplayGraphic::addGraphicComponent(const AGraphicComponent *component)
 {
 	AGraphicComponent *newGraphic = new AGraphicComponent(*component);
 	newGraphic->adjustToRect(m_displayArea.rect(), 10);
-	// AJUSTAR AL RECT
+	
 	m_graphic = newGraphic;
 	
 	m_drawGraphic = true;
@@ -101,23 +100,3 @@ void KTDisplayGraphic::removeGraphic()
 
 
 
-void KTDisplayGraphic::drawComponent(AGraphicComponent *component, QPainter * painter)
-{
-	
-	foreach(AGraphic * graphic, component->graphics())
-	{
-		painter->save();
-		painter->setPen(graphic->pen);
-		painter->setBrush(graphic->brush);
-		painter->drawPath(graphic->path);
-		painter->restore();
-	}
-	
-	if(component->hasChilds())
-	{
-		foreach(AGraphicComponent * child, component->childs())
-		{
-			drawComponent(child, painter);
-		}
-	}
-}

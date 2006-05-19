@@ -91,9 +91,17 @@ void KTProjectManager::save()
 	{
 		if ( !repository.exists(m_name) )
 		{
-			repository.mkdir(m_name);
+			repository.mkpath(m_name);
 		}
 	}
+	
+	QDir resources(repository.path()+"/"+m_name+"/resources");
+	
+	if ( ! repository.exists(resources.path()) )
+	{
+		repository.mkdir(resources.path());
+	}
+	
 	QDomDocument doc;
 	QDomElement root = doc.createElement("KToon");
 	doc.appendChild(root);
@@ -101,32 +109,48 @@ void KTProjectManager::save()
 	
 	QFile save(REPOSITORY + +"/"+m_name+"/"+m_name+".ktp");
 	
-	if ( save.open(QIODevice::WriteOnly | QIODevice::Text))
+	if ( ! save.open(QIODevice::WriteOnly | QIODevice::Text)) return;
+	
+	
+	QTextStream out(&save);
+	out << doc.toString();
+	
+	save.close();
+	
+	foreach(KTDocument *document, documents())
 	{
-		QTextStream out(&save);
-		out << doc.toString();
-		
-		save.close();
+		document->saveResources(resources.path());
+		foreach(KTScene *scene, document->scenes() )
+		{
+			scene->saveResources(resources.path());
+			foreach(KTLayer *layer, scene->layers() )
+			{
+				layer->saveResources(resources.path());
+				foreach(KTKeyFrame *frame, layer->frames())
+				{
+					frame->saveResources(resources.path());
+					foreach(AGraphicComponent *component, frame->components())
+					{
+						component->saveResources(resources.path());
+					}
+				}
+			}
+		}
 	}
 }
 
 bool KTProjectManager::load(const QString &path)
 {
 	dDebug() << "Loading: " << path;
+	
 	KTProjectParser parser;
-	QXmlSimpleReader reader;
-	reader.setContentHandler(&parser);
-	reader.setErrorHandler(&parser);
-		
-	QFile source(path);
-	QXmlInputSource xmlsource(&source);
-		
-	if ( reader.parse(&xmlsource) )
+	
+	if ( parser.parse(path) )
 	{
 		setProjectName( parser.partName() );
 		setDocumentSize( parser.documentSize());
 		
-		QFileInfo info(source);
+		QFileInfo info(path);
 		foreach(QString location, parser.locations())
 		{
 			QString docPath = info.absolutePath ()+"/"+location+"/document.ktd";
@@ -167,7 +191,7 @@ bool KTProjectManager::load(const QString &path)
 	}
 	else
 	{
-		dError() << "Error while parse file: " << source.fileName();
+		dError() << "Error while parse file: " << path;
 		
 		return false;
 	}

@@ -91,11 +91,12 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 // 	Create the menubar;
 	splash->setMessage( tr("Creating menu bar..."));
 	setupActions();
-	setupMenu();
 	
 	splash->setMessage( tr("Creating GUI..."));
 	
 	createGUI();
+	
+	setupMenu();
 	
 	m_pActiveTabWidget->setCurrentIndex( 0 );
 	
@@ -560,23 +561,6 @@ void KTMainWindow::openRecentProject()
 	if ( action )
 	{
 		openProject( action->text() );
-	}
-}
-
-void KTMainWindow::insertImage()
-{
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
-	
-	if ( doc )
-	{
-		QString image = QFileDialog::getOpenFileName ( this, tr("Insert an image from file..."), QDir::homePath(),  tr("Images")+" (*.png *.xpm *.jpg)" );
-		
-		QPixmap toInsert(image);
-		
-		if ( ! toInsert.isNull() )
-		{
-			doc->drawArea()->importImage(toInsert);
-		}
 	}
 }
 

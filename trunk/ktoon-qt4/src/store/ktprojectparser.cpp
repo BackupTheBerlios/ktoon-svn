@@ -23,6 +23,7 @@
 
 #include "dpathadjuster.h"
 
+
 KTProjectParser::KTProjectParser() : QXmlDefaultHandler(), m_gradient(0), m_currentComponent(0), m_rootComponent(0), m_tagCounter(0)
 {
 }
@@ -70,6 +71,7 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 	{
 		if ( qname == "Scene" )
 		{
+			m_projectDir.cd("../../");
 			m_partName = atts.value("name");
 			if ( m_currentComponent ) delete m_currentComponent;
 			if ( m_rootComponent ) delete m_rootComponent;
@@ -114,6 +116,11 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 			
 			AGraphic *graphic = new AGraphic;
 			m_graphics << graphic;
+		}
+		else if ( qname == "Image" )
+		{
+			QPixmap pix(m_projectDir.path()+"/resources/"+atts.value("path"));
+			m_graphics.last()->setPixmap(pix, atts.value("path"));
 		}
 		else if ( qname == "Polygon")
 		{
@@ -204,10 +211,6 @@ bool KTProjectParser::endElement(const QString&, const QString& , const QString&
 		}
 		else if ( qname == "Frame")
 		{
-// 			foreach(AGraphicComponent *component, m_components)
-// 			{
-// 				emit createComponent( component);
-// 			}
 			while ( m_components.count() )
 			{
 				emit createComponent( m_components.takeAt(0));
@@ -228,7 +231,7 @@ bool KTProjectParser::endElement(const QString&, const QString& , const QString&
 			{
 				foreach(AGraphic *graphic, m_graphics)
 				{
-					root->addGraphic(graphic->path, graphic->pen, graphic->brush);
+					root->addGraphic(graphic->path, graphic->pen, graphic->brush, graphic->pixmap);
 				}
 			}
 			
@@ -249,8 +252,6 @@ bool KTProjectParser::endElement(const QString&, const QString& , const QString&
 					root->addChild(child);
 				}
 			}
-			
-// 			emit createComponent( component );
 		}
 		else if ( qname == "Brush")
 		{
@@ -305,3 +306,21 @@ QSize KTProjectParser::documentSize() const
 {
 	return m_documentSize;
 }
+
+bool KTProjectParser::parse(const QString &filePath)
+{
+	QXmlSimpleReader reader;
+	reader.setContentHandler(this);
+	reader.setErrorHandler(this);
+		
+	QFile source(filePath);
+	QXmlInputSource xmlsource(&source);
+	
+	QFileInfo finfo(filePath);
+	
+	m_projectDir = finfo.absolutePath();
+		
+	return reader.parse(&xmlsource);
+}
+
+
