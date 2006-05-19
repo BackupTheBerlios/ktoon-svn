@@ -102,9 +102,9 @@ void AGraphic::flip(Qt::Orientation o)
 	pen.setBrush( DBrushAdjuster::mapBrush( pen.brush(), matrix ));
 	path = matrix.map(path);
 	
-	if ( !m_origPixmap.isNull() )
+	if ( !pixmap.isNull() )
 	{
-		QImage original = m_origPixmap.toImage();
+		QImage original = pixmap.toImage();
 		
 		QImage result = original;
 		
