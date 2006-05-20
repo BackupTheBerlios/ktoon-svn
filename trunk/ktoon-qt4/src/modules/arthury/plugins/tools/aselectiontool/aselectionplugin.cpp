@@ -222,7 +222,8 @@ QHash<QString, DAction *> ASelectionPlugin::actions()
 	act = new DAction(QPixmap(THEME_DIR+"/icons/nodes.png"), tr("Contour"), this);
 	hash.insert( tr("Contour"), act );
 	
-	act->setCursor( QCursor(THEME_DIR+"/cursors/nodes.png") );
+	QPixmap nodesCursor(THEME_DIR+"/cursors/nodes.png");
+	act->setCursor( QCursor(nodesCursor, nodesCursor.width(),0 ));
 	
 	
 	return hash;

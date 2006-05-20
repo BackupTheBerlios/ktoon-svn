@@ -891,7 +891,9 @@ void APaintArea::ungroup()
 
 void APaintArea::selectAll()
 {
+	D_FUNCINFO;
 	m_currentFrame->selecteAllComponents();
+	redrawAll();
 }
 
 void  APaintArea::bringToFromSelected()

@@ -600,10 +600,25 @@ QPointF AGraphicComponent::currentPosition() const
 void AGraphicComponent::setSelected(bool select)
 {
 	m_selected = select;
-	if(!m_selected)
-	{
+// 	if(!m_selected)
+// 	{
 		removeControlPoints();
-	}
+// 	}
+// 	else if(m_selectPoints.isEmpty())
+// 	{
+	QPolygonF points;
+	QRectF rect = boundingRect();
+	points  << rect.topLeft() 
+		<< QPointF(rect.x()+rect.width()/2, rect.y()) 
+		<< rect.topRight() 
+		<< QPointF(rect.x()+rect.width(), rect.y()+rect.height()/2) 
+		<< rect.bottomRight() 
+		<< QPointF(rect.x()+rect.width()/2, rect.y()+rect.height() ) 
+		<< rect.bottomLeft() 
+		<< QPointF(rect.x(), rect.y()+rect.height()/2 ) 
+		<< rect.center();
+	setControlPoints(points);
+// 	}
 }
 bool AGraphicComponent::selected() const
 {

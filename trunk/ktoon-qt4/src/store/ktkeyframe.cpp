@@ -185,6 +185,10 @@ void KTKeyFrame::removeSelections()
 void KTKeyFrame::selecteAllComponents()
 {
 	m_selectedComponents = m_components;
+	foreach(AGraphicComponent *comp, m_selectedComponents)
+	{
+		comp->setSelected(true);
+	}
 }
 
 void KTKeyFrame::selectContains (const QRect & rect)
