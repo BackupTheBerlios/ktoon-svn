@@ -194,7 +194,7 @@ class SpinControl: public QGroupBox
 				}
 				case  QGradient::RadialGradient:
 				{
-					show();
+// 					show();
 					m_radius->show();
 					m_angle->hide();
 					m_title->show();
@@ -203,7 +203,7 @@ class SpinControl: public QGroupBox
 				}
 				case  QGradient::ConicalGradient:
 				{
-					show();
+// 					show();
 					m_radius->hide();
 					m_angle->show();
 					m_title->show();

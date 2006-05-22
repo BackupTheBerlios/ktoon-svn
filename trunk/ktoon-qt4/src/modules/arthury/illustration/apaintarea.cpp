@@ -90,8 +90,6 @@ APaintArea::APaintArea(const QSize& size, KToon::RenderType type, QWidget *paren
 	m_currentFrame = new KTKeyFrame;
 	setZoomFactor( 1 );
 	setMinimumSize(m_paintDevice->size() + QSize(m_offset.x(),m_offset.y()));
-	show();
-	
 	setFocusPolicy(Qt::ClickFocus);
 }
 
@@ -464,6 +462,7 @@ void APaintArea::resizeEvent( QResizeEvent * event )
 // 	m_ypos = height() / 2 - m_paintDevice->height() / 2;
 // 	update();
 	m_size = size();
+	
 	QWidget::resizeEvent(event);
 }
 
@@ -1027,6 +1026,8 @@ void APaintArea::setProperties(const KTPaintAreaProperties &properties)
 	m_properties = properties;
 	
 	m_grid.setDelta( m_properties.gridSeparation );
+	
+	dError() << "SET DELTA: " << m_properties.gridSeparation;
 	m_grid.createGrid(m_paintDevice->width(), m_paintDevice->height() );
 	
 	redrawAll();

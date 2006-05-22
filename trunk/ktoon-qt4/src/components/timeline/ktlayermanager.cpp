@@ -121,7 +121,7 @@ KTLayerManager::KTLayerManager(QWidget *parent) : DVHBox(parent), m_currentTime(
 
 	new KSeparator( Qt::Vertical, m_utilsInBottom);
 	
-	show();
+// 	show();
 }
 
 

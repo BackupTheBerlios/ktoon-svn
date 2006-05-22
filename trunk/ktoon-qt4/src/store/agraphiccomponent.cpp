@@ -299,6 +299,15 @@ QDomElement AGraphicComponent::createXML( QDomDocument &doc )
 		{
 			QDomElement imageRes = doc.createElement("Image");
 			imageRes.setAttribute("path", graphic->pixmapHash() );
+
+			imageRes.setAttribute("scaleX", m_scale.x() );
+			imageRes.setAttribute("scaleY", m_scale.y() );
+
+			imageRes.setAttribute("shearX", m_shear.x() );
+			imageRes.setAttribute("shearY", m_shear.y() );
+			
+			imageRes.setAttribute("rotate", m_angle );
+			
 			resourcesElement.appendChild(imageRes);
 		}
 		

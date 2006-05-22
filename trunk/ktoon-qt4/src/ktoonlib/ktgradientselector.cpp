@@ -127,7 +127,7 @@ void KTGradientSelector::init()
 
 	connect(this, SIGNAL(valueChanged (int)), this, SLOT(valueChange(int)));
 	
-	show();
+// 	show();
 	
 	DGradientArrow *first = new DGradientArrow(calcArrowPos(1), QColor(Qt::black));
 // 	DGradientArrow * second= new DGradientArrow(calcArrowPos(0), QColor(Qt::white));

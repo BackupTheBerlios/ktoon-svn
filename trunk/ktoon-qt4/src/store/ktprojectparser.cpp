@@ -121,6 +121,25 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 		{
 			QPixmap pix(m_projectDir.path()+"/resources/"+atts.value("path"));
 			m_graphics.last()->setPixmap(pix, atts.value("path"));
+			
+			QMatrix rotate;
+			rotate.rotate(atts.value("rotate").toDouble());
+
+			QMatrix shear;
+			shear.shear(atts.value("shearX").toDouble(), atts.value("shearY").toDouble());
+
+			QMatrix scale;
+			scale.scale(atts.value("scaleX").toDouble(), atts.value("scaleY").toDouble());
+
+			QMatrix translate;
+			translate.translate(0,0);
+			
+			m_graphics.last()->mapPixmap(rotate*shear*scale*translate);
+			
+// 			m_components.last()->rotate(-atts.value("rotate").toDouble());
+// 			m_components.last()->scale(atts.value("scaleX").toDouble(), atts.value("scaleY").toDouble());
+// 			m_components.last()->shear(atts.value("shearX").toDouble(), atts.value("shearY").toDouble());
+			
 		}
 		else if ( qname == "Polygon")
 		{

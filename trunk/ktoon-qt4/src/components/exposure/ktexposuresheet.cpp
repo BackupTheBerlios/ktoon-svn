@@ -47,7 +47,7 @@ KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, 
 	m_scenes = new DTabWidget(this);
 	connect( m_scenes , SIGNAL(currentChanged ( int )), this, SLOT(emitRequestChangeScene( int ) ));
 	addChild(m_scenes);
-	show();
+// 	show();
 }
 
 KTExposureSheet::~KTExposureSheet()

@@ -287,7 +287,6 @@ QList<AGraphicComponent *> KTMainWindow::currentElements()
 // Graphic Components
 void KTMainWindow::rotateCurrentElement(int a)
 {
-	D_FUNCINFO;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	QList<AGraphicComponent *> selecteds = currentElements();
 	

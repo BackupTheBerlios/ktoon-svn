@@ -55,6 +55,8 @@ int main( int argc, char ** argv )
 	
 #ifdef ENABLE_KTOONSTYLE
 	QApplication::setStyle(new KToonStyle());
+#elif defined(Q_OS_LINUX)
+	QApplication::setStyle(new QPlastiqueStyle());
 #endif
 
 	if ( application.isArg("help") || application.isArg("h") )
