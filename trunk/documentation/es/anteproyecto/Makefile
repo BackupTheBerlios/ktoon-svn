@@ -2,6 +2,8 @@ all clean: anteproyecto.pdf
 
 anteproyecto.pdf: anteproyecto.tex
 	pdflatex anteproyecto.tex
+	if [ -f *.bbl ]; then rm *.bbl *.blg; fi
+	bibtex anteproyecto.aux
 	pdflatex anteproyecto.tex
 
 	latex_count=5 ; \
