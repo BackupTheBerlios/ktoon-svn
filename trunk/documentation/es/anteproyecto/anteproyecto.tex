@@ -8,7 +8,7 @@
 \usepackage[latin1]{inputenc}
 % \usepackage{moreverb}
 \usepackage{epsfig}
-% \usepackage{fancyhdr}
+\usepackage{fancyhdr}
 \usepackage{multicol}
 % \usepackage{rotating}
 \usepackage{graphics}
@@ -41,6 +41,15 @@
 \fi
 
 \bibliographystyle{alpha}
+\pagestyle{fancy}
+\fancyhf{}
+
+% configuración del encabezado
+\fancyhead[L]{
+\includegraphics[width=7cm]{images/header.png}
+}
+
+\fancyhead[RO,LE]{\thepage}
 
 \setcounter{tocdepth}{1}
 
@@ -63,6 +72,7 @@
 {
 	David Alejandro Cuadrado Cabrera \\
 	Jorge Humberto Cuadrado Cabrera \\
+	\\
 	\textbf{Directora:} Paola Johana Rodriguez \\
 	\textbf{Asesor:} Carlos Andres Cajigas
 }
@@ -72,10 +82,6 @@
 \begin{document}
 
 \maketitle
-
-% \pagenumbering{roman}
-\tableofcontents
-% \pagenumbering{arabic}
 
 \begin{abstract}
 
@@ -87,6 +93,10 @@ A su vez, será permitido que dos o más animadores interactúen en un mismo \hyper
 deseado, contribuyendo así con mejoras notables en los tiempos de producción.
 
 \end{abstract}
+
+% \pagenumbering{roman}
+\tableofcontents
+% \pagenumbering{arabic}
 
 \nocite{hollywood}
 \nocite{wikipedia}
@@ -101,9 +111,7 @@ deseado, contribuyendo así con mejoras notables en los tiempos de producción.
 \include{8_aspectosadministrativos}
 \include{9_aspectosfinancieros}
 
-
 \bibliography{bibliografia}
-
 
 \include{10_anexos}
 
