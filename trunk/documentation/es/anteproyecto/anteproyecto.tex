@@ -20,10 +20,13 @@
 \usepackage{times}
 \usepackage{makeidx}
 \usepackage{tocbibind}
+\usepackage{array}
 
-\setcounter{secnumdepth}{1}
-
-\newcommand{\TODO}[0]{\textbf{\underline{\color{red}{Esta sección necesita ser completada.}}} \\ }
+\newcommand{\TODO}[0] {
+\begin{center}
+	\textbf{\underline{\color{red}{Esta sección necesita ser completada.}}}
+\end{center}
+}
 
 \ifx\pdfoutput\undefined
 \usepackage[ps2pdf,
@@ -41,6 +44,9 @@
 \fi
 
 \bibliographystyle{alpha}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{1}
+
 \pagestyle{fancy}
 \fancyhf{}
 
@@ -50,8 +56,6 @@
 }
 
 \fancyhead[RO,LE]{\thepage}
-
-\setcounter{tocdepth}{1}
 
 % Tamaños
 \setlength{\textwidth}{15cm}
@@ -94,9 +98,7 @@ deseado, contribuyendo así con mejoras notables en los tiempos de producción.
 
 \end{abstract}
 
-% \pagenumbering{roman}
 \tableofcontents
-% \pagenumbering{arabic}
 
 \nocite{hollywood}
 \nocite{wikipedia}

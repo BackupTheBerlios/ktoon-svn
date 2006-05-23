@@ -5,26 +5,35 @@
 		\hypertarget{qt} {
 		\subsubsection{Qt}
 		{
-			La biblioteca fundamental utilizada en este proyecto es Qt, el cual es un \textbf{framework} \textbf{multiplataforma} rapido, estable y de rapida evolución, esta construido sobre el lenguaje de programación \hyperlink{c++}{C++}. 
+			La biblioteca fundamental utilizada en este proyecto es Qt, el cual es un \textbf{framework} \textbf{multiplataforma} rápido, estable y de rápida evolución, esta construido sobre el lenguaje de programación \hyperlink{c++}{C++}.
+			\\
+			Dentro de sus múltiples funcionalidades, Qt permite acceso a componentes gráficos y no gráficos, y se compone de diferentes módulos tales como: core, gui, xml, sql, svg. Cada modulo define un conjunto de clases para acceder a determinadas características.
+			\\
+			Qt fue creado por la empresa noruega TrollTech.
 		}
 		}
 		
 		\subsubsection{DLib}
 		{
-			\TODO
-			Es una extension de \hyperlink{qt}{Qt}, este proyecto estará basado en esta extensión.
+			DLib es una extensión de \hyperlink{qt}{Qt} que provee componentes gráficos y no-gráficos de alta calidad, tales como acceso a archivos de configuración automatico utilizando la tecnología \hyperlink{XML}{XML}, \hyperlink{widget}{widgets} para el manejo de fechas, acceso a la \hyperlink{api}{API} de sonido mediante plugins (Actualmente posee un \hyperlink{plugin}{plugin} para \hyperlink{gst}{gstreamer}), entre muchas otras funcionalidades.
+			\\
+			DLib fue y sigue siendo programada casi su totalidad por David A. Cuadrado, ha sido el esfuerzo de mucho tiempo por conseguir una extensión de \hyperlink{qt}{Qt} multiplataforma, libre y de fácil acceso al programador, actualmente está siendo utilizada para desarrollar \hyperlink{ktoon}{KToon}, proyecto que le ha dado la oportunidad de crecer.
 		}
 		
 		\hypertarget{ktoon}{
 		\subsubsection{KToon}
 		{
-			\textit{KToon es una herramienta para desarrollo de animaciones en 2D, diseñada por animadores para animadores, enfocada a la industría de la animación profesional. Este proyecto está cubierto por la Licencia GPL usando G++, OpenGL y QT como recursos de programación desde KDevelop como plataforma de desarrollo. Por ahora, KToon sólo está disponible para sistemas Unix, pero esperamos portarlo a otros sistemas operativos también.} \cite{ktoon}
+			\textit{"KToon es una herramienta para desarrollo de animaciones en 2D, diseñada por animadores para animadores, enfocada a la industria de la animación profesional. Este proyecto está cubierto por la Licencia GPL usando G++, OpenGL y QT como recursos de programación desde KDevelop como plataforma de desarrollo. Por ahora, KToon sólo está disponible para sistemas Unix, pero esperamos portarlo a otros sistemas operativos también."} \cite{ktoon}
 			\\
 			\\
-			KToon trabaja con \hyperlink{graficos_vectoriales}{graficos vectoriales} y tiene la capacidad de exportar a diversos formatos, dentro de los que se encuentran \hyperlink{flash}{SWF}, AVI, MPEG, ASF, \hyperlink{smil}{SMIL}(de manera basica) y por supuesto, una sequencia de imagenes en diversos formatos como PNG y JPEG.
+			KToon trabaja con \hyperlink{graficos_vectoriales}{gráficos vectoriales} y tiene la capacidad de exportar a diversos formatos, dentro de los que se encuentran \hyperlink{flash}{SWF}, AVI, MPEG, ASF, \hyperlink{smil}{SMIL}(de manera básica) y por supuesto, una secuencia de imágenes en diversos formatos como PNG y JPEG.
 			\\
 			\\
-			Las herramientas de esta aplicación son \hyperlink{plugin}{plugins}, mediante esta tecnologia es posible 
+			Las herramientas de esta aplicación son \hyperlink{plugin}{plugins}, mediante esta tecnología es posible añadir nuevas funcionalidades a la aplicación sin recompilar el núcleo central de la misma.
+			\\
+			\begin{center}
+			\includegraphics[width=7cm]{images/ktoon.png}
+			\end{center}
 		}}
 		
 		\hypertarget{XML} {
@@ -32,61 +41,64 @@
 		{
 			XML (siglas del inglés eXtensible Markup Language, lenguaje de marcado extensible) es un lenguaje etiquetas desarrollado por el World Wide Web Consortium (W3C). XML no es un lenguaje predefinido sino un meta-lenguaje que nos permite definir otros lenguajes para usos determinados.
 			\\
-			XML es una idea simple pero genial, que puede tener aplicación en cualquier ambito donde se desee aplicarlo, mediante la especificación de unas etiquetas y su respectiva interpretación mediante analizadores.
+			XML es una idea simple pero genial, que puede tener aplicación en cualquier ámbito donde se desee aplicarlo, mediante la especificación de unas etiquetas y su respectiva interpretación mediante analizadores.
 			\\
-			Es un excelente metodo para compartir información de manera sencilla y rapida entre diferentes sistemas, entre sus multiples aplicaciones estan:
+			Es un excelente método para compartir información de manera sencilla y rápida entre diferentes sistemas, entre sus múltiples aplicaciones están:
 			\\
 			\begin{itemize}
 			\item Protocolos de comunicación.
 			\item Formatos de persistencia.
-			\item Aplicaciónes en el web.
+			\item Aplicaciones en el web.
 			\item Archivos de configuración.
 			\item Bases de datos.
 			\end{itemize}
 			\textbf{Historia} \\
-			La historia del XML comienza en los años 70, cuando IBM crea un lenguaje llamado GML ( de las siglas en inglés, General Markup Language), esta empresa utilizo este lenguaje para el almacenamiento de grandes cantidades de datos, debido a su facil y rapida capacidad de acceso a los datos.
+			La historia del XML comienza en los años 70, cuando IBM crea un lenguaje llamado GML ( de las siglas en inglés, General Markup Language), esta empresa utilizo este lenguaje para el almacenamiento de grandes cantidades de datos, debido a su fácil y rápida capacidad de acceso a los datos.
 			\\
-			Despues de que IBM liberará la especificación de este lenguaje, la ISO decidío normalizarlo en lo que hoy se conoce como SGML (Standar General Markup Language) en el año de 1986.
+			Despues de que IBM liberará la especificación de este lenguaje, la ISO decidió normalizarlo en lo que hoy se conoce como SGML (Standar General Markup Language) en el año de 1986.
 			\\
-			Basado en este lenguaje, en 1989 se crea una especificación llamada HTML (HiperText Markup Language) utilizado en el WWW (World Wide Web), desfortunadamente HTML creció desmedidamente y algunas empresas como Microsoft y Netscape decidieron incluir etiquetas incompatibles con el estandar, es asi como en 1998 el consorcío empezó a desarrollar XML, con el fin de reemplazar HTML.
+			Basado en este lenguaje, en 1989 se crea una especificación llamada HTML (HiperText Markup Language) utilizado en el WWW (World Wide Web), desafortunadamente HTML creció desmedidamente y algunas empresas como Microsoft y Netscape decidieron incluir etiquetas incompatibles con el estándar, es así como en 1998 el consorcío empezó a desarrollar XML, con el fin de reemplazar HTML.
 			\\
 			\\
 			\textbf{Objetivos} \\
-			Este lenguaje fue creado para cumplir basicamente los siguientes objetivos:
+			Este lenguaje fue creado para cumplir básicamente los siguientes objetivos:
 			\begin{itemize}
 			\item {Ser compatible con HTML.}
 			\item Consistencia en el tratamiento de los datos.
 			\item General y extensible.
-			\item Facil modificación y lectura.
-			\item Facil implantación.
+			\item Fácil modificación y lectura.
+			\item Fácil implantación.
 			\end{itemize}
 			\textbf{Ventajas} \\
 			\begin{itemize}
-			\item Permite hacer traducciones a otros formatos facilmente, esto facilita la comunicación entre aplicaciones.
-			\item La interpretación de un documento XML es sencilla y rapida.
-			\item El acceso a los datos alojados en el documento es rapido gracias a su forma de arbol.
+			\item Permite hacer traducciones a otros formatos fácilmente, esto facilita la comunicación entre aplicaciones.
+			\item La interpretación de un documento XML es sencilla y rápida.
+			\item El acceso a los datos alojados en el documento es rápido gracias a su forma de árbol.
 			\end{itemize}
 		}}
 		
 		\hypertarget{modelo_colaborativo} {
 		\subsubsection{Modelos colaborativos}
 		{
-			Trata de aplicar el dicho popular \textit{"la union hace la fuerza"} a la informatica, mediante la combinacion de equipos de computo para lograr un fin común. \\
+			Trata de aplicar el dicho popular \textit{"la unión hace la fuerza"} a la informática, mediante la combinación de equipos de computo para lograr un fin común. \\
 			Mediante este modelo se aumenta la productividad y la eficiencia en los procesos de producción.
-			Para que el modelo funcione, es necesario que los componentes tengan la mentilidad y el deseo de cooperar en busca del bien común.
+			Para que el modelo funcione, es necesario que los componentes tengan la mentalidad y el deseo de cooperar en busca del bien común.
+			\\
 			\\
 			\textbf{Sinergia} \\
-			La sinergia es la combinacion de diversos elementos para lograr un beneficio mayor, en esta teoria la combinación de las partes es mayor a la suma de las partes, es decir, se obtiene un beneficio mayor al trabajo de las partes independientemente. \\
+			La sinergia es la combinación de diversos elementos para lograr un beneficio mayor, en esta teoría la combinación de las partes es mayor a la suma de las partes, es decir, se obtiene un beneficio mayor al trabajo de las partes independientemente. 
+			\\
+			\\
 			\textbf{La sinergia en la teoría general de sistemas} \\
-			Al analizar las partes de un sistema de manera individual, cada parte no es capaz de dar información relevante sobre las caracteristicas de él mismo, entonces decimos que es un componente sinérgico. Cada sistema sinergico, esta compuesto de otros sistemas tambien sinergicos.
+			Al analizar las partes de un sistema de manera individual, cada parte no es capaz de dar información relevante sobre las características de él mismo, entonces decimos que es un componente sinérgico. Cada sistema sinergico, esta compuesto de otros sistemas también sinergicos.
 		}}
 		
 		\hypertarget{c++} {
 		\subsubsection{C++}
 		{
-			C++ es una extension de C, basicamente para soportar objetos de forma directa, fue diseñado por Bjarne Stroustrup en los años '80.
+			C++ es una extensión de C, básicamente para soportar objetos de forma directa, fue diseñado por Bjarne Stroustrup en los años '80.
 			\\
-			Dentro de sus caracteristicas principales tenemos:
+			Dentro de sus características principales tenemos:
 			\begin{itemize}
 			\item Soporte Programación Orientada a Objetos (POO).
 			\item Soporte para plantillas, las cuales aseguran la generalidad de la clase.
@@ -102,21 +114,21 @@
 		\hypertarget{SMIL} {
 		\subsubsection { SMIL }
 		{
-			SMIL (pronunciado ESMAIL), es una opción libre, abierta y estandar al formato SWF de \hyperlink{flash}{Macromedia Flash} creada por el W3C, fue recomendado en diciembre de 2005.
-			El objetivo principal de este estandar es definir una lenguaje basado en \hyperlink{XML}{XML} para crear contenido multimedia, sincronizando multiples elementos como audio, video y lo mas importante, imagenes vectoriales descritas por el estandar \hyperlink{svg}{SVG}. \cite{smil}
+			SMIL (pronunciado ESMAIL), es una opción libre, abierta y estándar al formato SWF de \hyperlink{flash}{Macromedia Flash} creada por el W3C, fue recomendado en diciembre de 2005.
+			El objetivo principal de este estándar es definir una lenguaje basado en \hyperlink{XML}{XML} para crear contenido multimedia, sincronizando múltiples elementos como audio, vídeo y lo mas importante, imágenes vectoriales descritas por el estándar \hyperlink{svg}{SVG}. \cite{smil}
 		}}
 		
 		\hypertarget{svg} {
 		\subsubsection { SVG }
 		{
-			Scalable Vector Graphics (SVG) es una especificación de \hyperlink{XML}{XML} utilizado para describir \hyperlink{graficos_vectoriales}{graficos vectoriales}, con posibilidad de animarlos.
-			Es un estandar de la W3C, fue recomendado en el 2001 y desde esa fecha se ha extendido mucho, en este momento muchos navegadores lo incluyen de manera nativa dentro del nucleo de renderizado.
+			Scalable Vector Graphics (SVG) es una especificación de \hyperlink{XML}{XML} utilizado para describir \hyperlink{graficos_vectoriales}{gráficos vectoriales}, con posibilidad de animarlos.
+			Es un estándar de la W3C, fue recomendado en el 2001 y desde esa fecha se ha extendido mucho, en este momento muchos navegadores lo incluyen de manera nativa dentro del núcleo de renderizado.
 			\\
 			\\
 			\textbf{Características} \\
-			SVG permite combinar imagenes, graficos vectoriales y texto en un mismo archivo, y sobre estos componentes se permite realizar transformaciones y composiciones. Ademas tambien se puede aplicar efectos a los objetos componentes.
+			SVG permite combinar imágenes, gráficos vectoriales y texto en un mismo archivo, y sobre estos componentes se permite realizar transformaciones y composiciones. Además también se puede aplicar efectos a los objetos componentes.
 			\\
-			Una caracteristicas importante y poco explotada de los SVG es la capacidad de ser interactivos, mediante el uso de scripts es posible añadir eventos tales como \textit{onclick}, \textit{onmouseover}, a las animaciones creadas en este formato2. \cite{svg}
+			Una características importante y poco explotada de los SVG es la capacidad de ser interactivos, mediante el uso de scripts es posible añadir eventos tales como \textit{onclick}, \textit{onmouseover}, a las animaciones creadas en este formato2. \cite{svg}
 		}
 		}
 	}
@@ -124,7 +136,7 @@
 	\newpage
 	\subsection{Antecedentes}
 	{
-		Sobré este proyecto no se encontró otros proyectos similares, sinembargo no se descarta la posibilidad de que exista software con las caracteristicas propuestas en este proyecto.
+		Sobré este proyecto no se encontró otros proyectos similares, sinembargo no se descarta la posibilidad de que exista software con las características propuestas en este proyecto.
 		
 		A continuación se presentan dos programas comerciales de computador que sirven para realizar animaciones.
 		
@@ -137,7 +149,7 @@
 		}}
 		\subsubsection{ToonBoom}
 		{
-			A diferencia de Macromedia Flash, ToonBoom es una aplicación unicamente destinada a la creación de animaciones.
+			A diferencia de Macromedia Flash, ToonBoom es una aplicación únicamente destinada a la creación de animaciones.
 			Esta aplicación esta programada con las bibliotecas \hyperlink{qt}{Qt}, es un software muy potente ampliamente utilizado por empresas dedicadas a la creación de contenido animado.
 		}
 	}
@@ -147,15 +159,30 @@
 	{
 		A continuación se presentan una serie de conceptos claves y/o referenciados en este proyecto.
 		
-		\subsubsection{Conceptos relacionados con la informatica}
+		\subsubsection{Conceptos relacionados con la informática}
 		{	
 			\begin{itemize}
 			\hypertarget{graficos_vectoriales} {
-			\item {Graficos vectoriales} \\
-			Son graficos a los que se les pueden aplicar operaciones sin que ello empeore la calidad.}
+			\item {Gráficos vectoriales} \\
+			Son gráficos a los que se les pueden aplicar operaciones sin que ello empeore la calidad.}
 			\hypertarget{plugin}{
 			\item { Plugin } \\
 			Programas que pueden ser cargador en tiempo de ejecución por otras aplicaciones.
+			}
+			\hypertarget{gst}{
+			\item{ GStreamer } {
+				GStreamer es un framework para crear aplicaciones multimedia. GStreamer hace posible escribir cualquier aplicación multimedia debido a su alta generalidad, facilidad de acceso y su rapidez. Además este framework es multiplataforma.
+			}}
+			\hypertarget{widget} {
+			\item{Widget} {
+				Componente escencial y basico de una interfaz grafica de usuario.
+			}}
+			\hypertarget{api} {
+			\item{API} {
+			Metodo de acceso a la interfaz de programación, ayuda al programador a realizar mas facilmente sus tareas y de forma mas organizada, permitiendo el acceso a los diferentes componentes de una biblioteca.
+			\TODO
+			}}
+			
 			\end{itemize}
 		}
 		
@@ -199,7 +226,7 @@
 		}
 		
 		\hypertarget{gc} {
-		\item Componente grafico \\
+		\item Componente gráfico \\
 		Es un objeto individual que representa un componente de un marco o frame.
 		}
 		
