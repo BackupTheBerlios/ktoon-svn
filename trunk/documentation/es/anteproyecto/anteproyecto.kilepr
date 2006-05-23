@@ -15,16 +15,16 @@ QuickBuild=
 
 [item:anteproyecto.kilepr]
 archive=true
-column=29
-encoding=ISO 8859-1
+column=0
+encoding=ISO 8859-15
 highlight=None
-line=7
+line=0
 open=false
 
 [item:anteproyecto.tex]
 archive=true
-column=28
+column=9
 encoding=ISO 8859-1
 highlight=LaTeX
-line=30
+line=107
 open=false
