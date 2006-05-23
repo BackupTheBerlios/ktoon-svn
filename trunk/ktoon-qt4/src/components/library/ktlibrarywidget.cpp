@@ -167,26 +167,28 @@ KTLibraryWidget::~KTLibraryWidget()
 
 void KTLibraryWidget::addGraphic(const AGraphicComponent *graphic)
 {
-	if ( m_libraryTree->currentFolder() )
+	if ( !m_libraryTree->currentFolder() )
 	{
-		AGraphicComponent *copy = new AGraphicComponent(*graphic);
-		
-		m_display->addGraphicComponent( copy);
-		
-		QTreeWidgetItem *item = new QTreeWidgetItem(m_libraryTree->currentFolder() );
-		
-		if( graphic->componentName().isNull() )
-		{
-			item->setText(0, tr("Component #%1").arg(m_childCount++));
-		}
-		else
-		{
-			item->setText(0, graphic->componentName());
-		}
-		
-		m_graphics.insert(item, copy);
-		m_libraryTree->setCurrentItem(item);
+		addFolder( tr("General") );
 	}
+	
+	AGraphicComponent *copy = new AGraphicComponent(*graphic);
+	
+	m_display->addGraphicComponent( copy);
+	
+	QTreeWidgetItem *item = new QTreeWidgetItem(m_libraryTree->currentFolder() );
+	
+	if( graphic->componentName().isNull() )
+	{
+		item->setText(0, tr("Component #%1").arg(m_childCount++));
+	}
+	else
+	{
+		item->setText(0, graphic->componentName());
+	}
+	
+	m_graphics.insert(item, copy);
+	m_libraryTree->setCurrentItem(item);
 }
 
 void KTLibraryWidget::addFolder(const QString &name)
