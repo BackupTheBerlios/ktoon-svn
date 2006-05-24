@@ -239,6 +239,9 @@ void KTMainWindow::newViewCamera(KTScene *scene)
 	}
 }
 
+
+
+
 void KTMainWindow::newProject()
 {
 	KTNewProject *wizard = new KTNewProject;

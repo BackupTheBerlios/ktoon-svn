@@ -180,7 +180,7 @@ void KTMainWindow::setupMenu()
 #endif
 	newMenu->addSeparator();
 	newMenu->addAction(m_actionManager->find("newarea") );
-	
+	newMenu->addAction(m_actionManager->find("newcamera") );
 	
 	m_fileMenu->addAction(m_actionManager->find("openproject"));
 	
@@ -266,6 +266,10 @@ void KTMainWindow::setupFileActions()
 	
 	DAction *newArea = new DAction( QPixmap( THEME_DIR+"/icons/new.png" ), tr( "New paint area" ), QKeySequence(tr("Ctrl+A")), this, SLOT(newViewDocument()), m_actionManager, "newarea");
 	newArea->setStatusTip(tr( "Opens a new paint area"));
+	
+	DAction *newCamera = new DAction( QPixmap( THEME_DIR), tr( "New view camera"), QKeySequence(), this, SLOT(newViewCamera()), m_actionManager, "newcamera");
+	newArea->setStatusTip(tr( "Opens a new view camera"));
+	
 	
 #if 0
 	// TODO: to implement
