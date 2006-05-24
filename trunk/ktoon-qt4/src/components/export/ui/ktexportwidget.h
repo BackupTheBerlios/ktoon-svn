@@ -66,6 +66,8 @@ class KTExportWidget : public KTModuleWidgetBase
 		void selectExporter(QListWidgetItem *item);
 		void selectFormat(QListWidgetItem *item);
 		
+		void chooseFile();
+		
 	private:
 		void loadPlugins();
 		QList<KTScene *> scenesToExport();

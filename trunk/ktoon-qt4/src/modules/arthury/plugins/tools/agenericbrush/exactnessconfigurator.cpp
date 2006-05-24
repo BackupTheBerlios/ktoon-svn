@@ -84,12 +84,12 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 	
 	QBoxLayout *buttonLayout = new QBoxLayout(QBoxLayout::LeftToRight);
 	
-	QPushButton *add = new DImageButton(QIcon(THEME_DIR+"/icons/plussign.png"),22);
+	DImageButton *add = new DImageButton(QIcon(THEME_DIR+"/icons/plussign.png"),22);
 	buttonLayout->addWidget(add);
 	
 	connect(add, SIGNAL(clicked()), this, SLOT(addCurrentValue()));
 	
-	QPushButton *del = new DImageButton(QIcon(THEME_DIR+"/icons/minussign.png"), 22);
+	DImageButton *del = new DImageButton(QIcon(THEME_DIR+"/icons/minussign.png"), 22);
 	
 	connect(del, SIGNAL(clicked()), this, SLOT(removeCurrentValue()));
 	

@@ -70,7 +70,7 @@ void KTExposureSheet::setupButtons()
 	
 	for(int i = 0; i < toolTips.count(); i++)
 	{
-		QPushButton * tmpButton = new DImageButton(m_imgs[i], 25, m_buttonsPanel);
+		DImageButton * tmpButton = new DImageButton(m_imgs[i], 25, m_buttonsPanel);
 		m_buttonGroup->addButton (tmpButton);
 		tmpButton->setToolTip(toolTips[i]);
 		layout->addWidget(tmpButton);

@@ -29,6 +29,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QIntValidator>
+#include <QToolButton>
 
 #include "dglobal.h"
 #include "ddebug.h"
@@ -102,9 +103,18 @@ void KTExportWidget::setupExportBox(QBoxLayout *mainLayout)
 	QVBoxLayout *exportBoxLayout = new QVBoxLayout(exportBox);
 	
 	QHBoxLayout *filePathLayout = new QHBoxLayout;
-	filePathLayout->addWidget(new QLabel("File: "));
+	filePathLayout->addWidget(new QLabel(tr("File: ")));
+	
 	m_filePath = new QLineEdit();
 	filePathLayout->addWidget(m_filePath);
+	
+	QToolButton *button = new QToolButton;
+	
+	button->setIcon(QIcon(THEME_DIR+"/icons/open.png"));
+	
+	connect(button, SIGNAL(clicked()), this, SLOT(chooseFile()));
+	
+	filePathLayout->addWidget(button);
 	
 	QPushButton *exportIt = new QPushButton(tr("Export"));
 	connect(exportIt, SIGNAL(clicked()), this, SLOT(exportIt()));
@@ -410,4 +420,15 @@ QString KTExportWidget::fileToExport() const
 	return file;
 }
 
-
+void KTExportWidget::chooseFile()
+{
+// 	QFileDialog fileDialog;
+// 	fileDialog.setFileMode(QFileDialog::Directory);
+// 	
+// 	if ( fileDialog.exec() != QDialog::Rejected )
+// 	{
+// 		m_filePath->setText(fileDialog.selectedFiles()[0] );
+// 	}
+	QString file = QFileDialog::getSaveFileName(this, "Choose a filename to save under", QDir::homePath());
+	m_filePath->setText(file);
+}

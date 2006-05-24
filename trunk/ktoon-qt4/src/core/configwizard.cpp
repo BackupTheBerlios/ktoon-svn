@@ -122,7 +122,7 @@ CWSecondPage::CWSecondPage(QWidget *parent) : DWizardPage(tr("Configure KToon"),
 	
 	DVHBox *hbox2 = new DVHBox(container, Qt::Horizontal);
 	
-	m_ktrepos = new QLineEdit("/tmp/ktoon",hbox2);
+	m_ktrepos = new QLineEdit(QDir::tempPath(),hbox2);
 	
 	connect(m_ktrepos, SIGNAL(textChanged(const QString &)), this, SLOT(verify(const QString &)));
 	

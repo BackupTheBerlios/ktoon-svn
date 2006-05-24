@@ -26,13 +26,14 @@
 #include <QPixmap>
 #include <QIcon>
 #include <QTimer>
+#include <QToolButton>
 
 /**
  * A image pressable
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class DImageButton : public QPushButton
+class DImageButton : public QToolButton
 {
 	Q_OBJECT
 

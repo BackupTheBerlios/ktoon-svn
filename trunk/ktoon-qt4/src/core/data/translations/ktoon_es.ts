@@ -12,6 +12,10 @@
         <source>Polyline</source>
         <translation>Polilinea</translation>
     </message>
+    <message>
+        <source>Alt+B</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>AEraserTool</name>
@@ -31,10 +35,6 @@
         <translation>Rellenar</translation>
     </message>
     <message>
-        <source>F</source>
-        <translation>F</translation>
-    </message>
-    <message>
         <source>Remove Fill</source>
         <translation>Remover relleno</translation>
     </message>
@@ -47,7 +47,7 @@
         <translation>Relleno de contorno</translation>
     </message>
     <message>
-        <source>Control+F</source>
+        <source>Ctrl+F</source>
         <translation></translation>
     </message>
 </context>
@@ -58,7 +58,7 @@
         <translation>Lapiz</translation>
     </message>
     <message>
-        <source>P</source>
+        <source>Ctrl+B</source>
         <translation></translation>
     </message>
 </context>
@@ -76,6 +76,18 @@
         <source>Line</source>
         <translation>Linea</translation>
     </message>
+    <message>
+        <source>Ctrl+R</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Ctrl+E</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Ctrl+L</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>AGradientTool</name>
@@ -86,6 +98,14 @@
     <message>
         <source>Gradient</source>
         <translation>Degradado</translation>
+    </message>
+    <message>
+        <source>Shift+D</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Ctrl+D</source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -105,6 +125,10 @@
         <source>Shape brush</source>
         <translation>Brocha de figuras</translation>
     </message>
+    <message>
+        <source>Ctrl+Alt+S</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>ATextTool</name>
@@ -113,7 +137,7 @@
         <translation>Texto</translation>
     </message>
     <message>
-        <source>T</source>
+        <source>Ctrl+T</source>
         <translation></translation>
     </message>
 </context>
@@ -126,6 +150,14 @@
     <message>
         <source>Flip Vertically</source>
         <translation>Voltear verticalmente</translation>
+    </message>
+    <message>
+        <source>Alt+Ctrl+H</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Alt+Ctrl+V</source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -143,31 +175,31 @@
     <name>CWSecondPage</name>
     <message>
         <source>Configure KToon</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurar KToon</translation>
     </message>
     <message>
         <source>&lt;h3&gt;Step 1&lt;h3&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;h3&gt;Paso 1&lt;h3&gt;</translation>
     </message>
     <message>
         <source>Choose your KToon installation directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Elija el directorio de instalación</translation>
     </message>
     <message>
         <source>Choose the directory where KToon is installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Elija el directorio donde esta KToon instalado</translation>
     </message>
     <message>
         <source>Browse...</source>
-        <translation type="unfinished"></translation>
+        <translation>Examinar...</translation>
     </message>
     <message>
         <source>Choose a temporal directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Elija un directorio temporal</translation>
     </message>
     <message>
         <source>Choose the directory for temporal files</source>
-        <translation type="unfinished"></translation>
+        <translation>Elija un directorio para los archivos temporales</translation>
     </message>
 </context>
 <context>
@@ -232,11 +264,11 @@
     <name>DConfig</name>
     <message>
         <source>%1 not exists... creating...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 no existe... creando...</translation>
     </message>
     <message>
         <source>I can&apos;t create %1</source>
-        <translation type="unfinished"></translation>
+        <translation>No puedo crear %1</translation>
     </message>
 </context>
 <context>
@@ -258,75 +290,48 @@
     <name>DDatePicker</name>
     <message>
         <source>Week %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Semana %1</translation>
     </message>
 </context>
 <context>
     <name>DFontChooser</name>
     <message>
         <source>Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Familia</translation>
     </message>
     <message>
         <source>Style</source>
-        <translation type="unfinished"></translation>
+        <translation>Estilo</translation>
     </message>
     <message>
         <source>Size</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>KTGradientCreator</name>
-    <message>
-        <source>Linear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Radial</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Conical</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pad</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reflect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Repeat</source>
-        <translation type="unfinished"></translation>
+        <translation>Tamaño</translation>
     </message>
 </context>
 <context>
     <name>DOptionalDialog</name>
     <message>
         <source>Don&apos;t show again</source>
-        <translation type="unfinished"></translation>
+        <translation>No mostrar de nuevo</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Aceptar</translation>
     </message>
 </context>
 <context>
     <name>DRulerBase</name>
     <message>
         <source>Change scale to 5...</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambiar escala a 5...</translation>
     </message>
     <message>
         <source>Change scale to 10...</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambiar escala a 10...</translation>
     </message>
 </context>
 <context>
@@ -379,22 +384,22 @@
     <name>DTreeWidgetSearchLine</name>
     <message>
         <source>Filter here...</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtre aqui...</translation>
     </message>
     <message>
         <source>Search Columns</source>
-        <translation type="unfinished"></translation>
+        <translation>Buscar columnas</translation>
     </message>
     <message>
         <source>All Visible Columns</source>
-        <translation type="unfinished"></translation>
+        <translation>Todas las columnas visibles</translation>
     </message>
 </context>
 <context>
     <name>DTreeWidgetSearchLineWidget</name>
     <message>
         <source>S&amp;earch:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu&amp;scar:</translation>
     </message>
 </context>
 <context>
@@ -420,31 +425,31 @@
     <name>Day</name>
     <message>
         <source>Mon</source>
-        <translation type="unfinished"></translation>
+        <translation>Lun</translation>
     </message>
     <message>
         <source>Tue</source>
-        <translation type="unfinished"></translation>
+        <translation>Mar</translation>
     </message>
     <message>
         <source>Wed</source>
-        <translation type="unfinished"></translation>
+        <translation>Mie</translation>
     </message>
     <message>
         <source>Thu</source>
-        <translation type="unfinished"></translation>
+        <translation>Jue</translation>
     </message>
     <message>
         <source>Fri</source>
-        <translation type="unfinished"></translation>
+        <translation>Vie</translation>
     </message>
     <message>
         <source>Sat</source>
-        <translation type="unfinished"></translation>
+        <translation>Sab</translation>
     </message>
     <message>
         <source>Sun</source>
-        <translation type="unfinished"></translation>
+        <translation>Dom</translation>
     </message>
 </context>
 <context>
@@ -458,19 +463,19 @@
     <name>Ideal::ButtonBar</name>
     <message>
         <source>Only text</source>
-        <translation type="unfinished"></translation>
+        <translation>Solo texto</translation>
     </message>
     <message>
         <source>Only icons</source>
-        <translation type="unfinished"></translation>
+        <translation>Solo iconos</translation>
     </message>
     <message>
         <source>Icons and text</source>
-        <translation type="unfinished"></translation>
+        <translation>Iconos y texto</translation>
     </message>
     <message>
         <source>Mouse sensibility</source>
-        <translation type="unfinished"></translation>
+        <translation>Sensibilidad al mouse</translation>
     </message>
 </context>
 <context>
@@ -530,10 +535,6 @@
         <translation>Degradado</translation>
     </message>
     <message>
-        <source>&lt;b&gt;HTML&lt;/b&gt;</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>type brush</source>
         <translation>Tipo de brocha</translation>
     </message>
@@ -543,6 +544,10 @@
     <message>
         <source>Cursor here for expand</source>
         <translation>Ponga el cursor aqui para expandir</translation>
+    </message>
+    <message>
+        <source>Properties</source>
+        <translation>Propiedades</translation>
     </message>
 </context>
 <context>
@@ -577,6 +582,10 @@
     <message>
         <source>Onion skin background </source>
         <translation>Fondo de papel cebolla</translation>
+    </message>
+    <message>
+        <source>Grid separation</source>
+        <translation>Separación de cuadricula</translation>
     </message>
 </context>
 <context>
@@ -645,69 +654,116 @@
         <source>Please choose the format before export</source>
         <translation>Por favor escoja un formato antes de exportar</translation>
     </message>
+    <message>
+        <source>File: </source>
+        <translation>Archivo:</translation>
+    </message>
+    <message>
+        <source>SMIL</source>
+        <translation>SMIL</translation>
+    </message>
 </context>
 <context>
     <name>KTExposureSheet</name>
     <message>
         <source>Exposure Sheet</source>
-        <translation type="unfinished"></translation>
+        <translation>Tabla de rodaje</translation>
     </message>
     <message>
         <source>Insert Layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Insertar capa</translation>
     </message>
     <message>
         <source>Remove Layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar capa</translation>
     </message>
     <message>
         <source>Insert Keyframes</source>
-        <translation type="unfinished"></translation>
+        <translation>Insertar frame</translation>
     </message>
     <message>
         <source>Remove Keyframe</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar frame</translation>
     </message>
     <message>
         <source>Lock Frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Bloquear frame</translation>
     </message>
     <message>
         <source>Move Keyframe Up</source>
-        <translation type="unfinished"></translation>
+        <translation>Mover frame hacia arriba</translation>
     </message>
     <message>
         <source>Move Keyframe Down</source>
-        <translation type="unfinished"></translation>
+        <translation>Mover frame hacia abajo</translation>
+    </message>
+    <message>
+        <source>Do you want to remove this layer?</source>
+        <translation>Desea remover esta capa?</translation>
+    </message>
+    <message>
+        <source>Remove?</source>
+        <translation>Remover?</translation>
+    </message>
+    <message>
+        <source>Do you want to remove this frame?</source>
+        <translation>Desea borrar este frame?</translation>
     </message>
 </context>
 <context>
     <name>KTGCEditor</name>
     <message>
         <source>Graphic Component Editor</source>
-        <translation type="unfinished"></translation>
+        <translation>Editor de componentes graficos</translation>
     </message>
     <message>
         <source>Rotate</source>
-        <translation type="unfinished"></translation>
+        <translation>Rotar</translation>
     </message>
     <message>
         <source>Scale</source>
-        <translation type="unfinished"></translation>
+        <translation>Escalar</translation>
     </message>
     <message>
         <source>Shear</source>
-        <translation type="unfinished"></translation>
+        <translation>Perpectiva</translation>
     </message>
     <message>
         <source>Translate</source>
-        <translation type="unfinished"></translation>
+        <translation>Trasladar</translation>
     </message>
 </context>
 <context>
     <name>KTGCTable</name>
     <message>
         <source>New folder %1</source>
+        <translation>Nueva carpeta %1</translation>
+    </message>
+</context>
+<context>
+    <name>KTGradientCreator</name>
+    <message>
+        <source>Linear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Radial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conical</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pad</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reflect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Repeat</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -715,72 +771,72 @@
     <name>KTHelpWidget</name>
     <message>
         <source>Help system</source>
-        <translation type="unfinished"></translation>
+        <translation>Sistema de ayuda</translation>
     </message>
     <message>
         <source></source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
     <name>KTLayer</name>
     <message>
         <source>Layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Capa</translation>
     </message>
     <message>
         <source>Drawing %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Dibujo %1</translation>
     </message>
 </context>
 <context>
     <name>KTLayerExposure</name>
     <message>
         <source>Rename Layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar layer</translation>
     </message>
     <message>
         <source>Remove this Layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar este layer</translation>
     </message>
     <message>
         <source>Insert Frames</source>
-        <translation type="unfinished"></translation>
+        <translation>Insertar frame</translation>
     </message>
     <message>
         <source>Remove Frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar frame</translation>
     </message>
 </context>
 <context>
     <name>KTLayerManager</name>
     <message>
         <source>Show / Hide all Layers</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar/esconder todos los layers</translation>
     </message>
     <message>
         <source>Lock all Layers</source>
-        <translation type="unfinished"></translation>
+        <translation>Bloquear todos los layers</translation>
     </message>
     <message>
         <source>Show only outlines</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar lineas externas</translation>
     </message>
     <message>
         <source>Insert Layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Insertar layer</translation>
     </message>
     <message>
         <source>Remove Layer</source>
-        <translation type="unfinished"></translation>
+        <translation>Borrar layer</translation>
     </message>
     <message>
         <source>Move Layer Up</source>
-        <translation type="unfinished"></translation>
+        <translation>Mover layer hacia arriba</translation>
     </message>
     <message>
         <source>Move Layer Down</source>
-        <translation type="unfinished"></translation>
+        <translation>Mover layer hacia abajo</translation>
     </message>
 </context>
 <context>
@@ -816,6 +872,22 @@
     <message>
         <source>Remove?</source>
         <translation>Remover?</translation>
+    </message>
+    <message>
+        <source>General</source>
+        <translation>General</translation>
+    </message>
+    <message>
+        <source>Import an image...</source>
+        <translation>Importar una imagen...</translation>
+    </message>
+    <message>
+        <source>Images</source>
+        <translation>Imagenes</translation>
+    </message>
+    <message>
+        <source>Cannot import </source>
+        <translation>No puedo importar</translation>
     </message>
 </context>
 <context>
@@ -1045,10 +1117,6 @@
         <translation>Insertar frame</translation>
     </message>
     <message>
-        <source>Insert image</source>
-        <translation>Insertar imagen</translation>
-    </message>
-    <message>
         <source>KToon: 2D animation toolkit</source>
         <translation>KToon: Herramientas de animacion 2D</translation>
     </message>
@@ -1141,16 +1209,28 @@
         <translation>Proyecto guardado in %1!</translation>
     </message>
     <message>
-        <source>Insert an image from file...</source>
-        <translation>Insertar una imagen de archivo...</translation>
-    </message>
-    <message>
-        <source>Images</source>
-        <translation>Imagenes</translation>
-    </message>
-    <message>
         <source>New camera</source>
         <translation>Nueva camara</translation>
+    </message>
+    <message>
+        <source>Import bitmap...</source>
+        <translation>Importar mapa de bits...</translation>
+    </message>
+    <message>
+        <source>Back Frame</source>
+        <translation>Frame anterior</translation>
+    </message>
+    <message>
+        <source>Next Frame</source>
+        <translation>Frame siguiente</translation>
+    </message>
+    <message>
+        <source>Ctrl+A</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Shift+P</source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -1187,7 +1267,7 @@
     <name>KTPenWidget</name>
     <message>
         <source>Pen</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Lapicero</translation>
     </message>
     <message>
         <source>Thickness</source>
@@ -1195,11 +1275,11 @@
     </message>
     <message>
         <source>No pen</source>
-        <translation type="unfinished"></translation>
+        <translation>No usar lapicero</translation>
     </message>
     <message>
         <source>Solid</source>
-        <translation type="unfinished"></translation>
+        <translation>Solido</translation>
     </message>
     <message>
         <source>Dash</source>
@@ -1207,15 +1287,15 @@
     </message>
     <message>
         <source>Dot</source>
-        <translation type="unfinished"></translation>
+        <translation>Punto</translation>
     </message>
     <message>
         <source>Dash dot</source>
-        <translation type="unfinished"></translation>
+        <translation>Linea punto</translation>
     </message>
     <message>
         <source>Dash dot dot</source>
-        <translation type="unfinished"></translation>
+        <translation>Linea punto punto</translation>
     </message>
     <message>
         <source>Flat</source>
@@ -1316,6 +1396,14 @@
     <message>
         <source>Scene removed</source>
         <translation>Escena removida</translation>
+    </message>
+    <message>
+        <source>Do you want to remove this scene?</source>
+        <translation>Desea remover esta escena?</translation>
+    </message>
+    <message>
+        <source>Remove?</source>
+        <translation>Remover?</translation>
     </message>
 </context>
 <context>
@@ -1440,7 +1528,7 @@
     </message>
     <message>
         <source>Owner</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Dueño</translation>
     </message>
     <message>
         <source>Date</source>
@@ -1469,6 +1557,22 @@
         <source>The time line</source>
         <translation>Linea de tiempo</translation>
     </message>
+    <message>
+        <source>&lt;b&gt;&lt;i&gt;FPS: &lt;/i&gt;&lt;/b&gt;</source>
+        <translation>&lt;b&gt;&lt;i&gt;FPS: &lt;/i&gt;&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;&lt;i&gt;Time: &lt;/i&gt;&lt;/b&gt;</source>
+        <translation>&lt;b&gt;&lt;i&gt;Tiempo: &lt;/i&gt;&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;&lt;i&gt;Current Layer: &lt;/i&gt;&lt;/b&gt;</source>
+        <translation>&lt;b&gt;&lt;i&gt;Capa actual: &lt;/i&gt;&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;b&gt;&lt;i&gt;Current Frame:&lt;/i&gt;&lt;/b&gt; </source>
+        <translation> &lt;b&gt;&lt;i&gt;Frame actual:&lt;/i&gt;&lt;/b&gt;</translation>
+    </message>
 </context>
 <context>
     <name>KTViewCamera</name>
@@ -1485,7 +1589,7 @@
     <name>KTViewCamera::Status</name>
     <message>
         <source>&lt;B&gt;FPS:&lt;/B&gt; </source>
-        <translation>(sp)&lt;B&gt;MPS:&lt;/B&gt;</translation>
+        <translation>(sp)&lt;B&gt;FPS:&lt;/B&gt;</translation>
     </message>
     <message>
         <source>&lt;B&gt;Scene name:&lt;/B&gt; </source>
@@ -1496,122 +1600,82 @@
     <name>KTViewColorCells</name>
     <message>
         <source>Default Palette</source>
-        <translation type="unfinished">Paleta por defecto</translation>
+        <translation>Paleta por defecto</translation>
     </message>
     <message>
         <source>Named Colors</source>
-        <translation type="unfinished">Colores nombrados</translation>
+        <translation>Colores nombrados</translation>
     </message>
     <message>
         <source>Custom Color Palette</source>
-        <translation type="unfinished">Paleta de colores personalizada</translation>
+        <translation>Paleta de colores personalizada</translation>
     </message>
     <message>
         <source>Custom Gradient Palette</source>
-        <translation type="unfinished">Paleta de degradados personalizada</translation>
+        <translation>Paleta de degradados personalizada</translation>
     </message>
     <message>
         <source>Add Color</source>
-        <translation type="unfinished">Añadir color</translation>
+        <translation>Añadir color</translation>
     </message>
 </context>
 <context>
     <name>KTViewDocument</name>
     <message>
-        <source>&amp;No Grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Hides the grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;12 Field Grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Shows a 12 field grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;16 Field Grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Shows a 16 field grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Subgrid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Shows or hides a 3 field subgrid in the current grid</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid to Front/Back</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sends the grid to the front or to the back of the drawing area</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Cut</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Cortar</translation>
     </message>
     <message>
         <source>Ctrl+X</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>C&amp;opy</source>
-        <translation type="unfinished"></translation>
+        <translation>Co&amp;piar</translation>
     </message>
     <message>
         <source>Ctrl+C</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Copies the selection and puts it onto the clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Copia la selección y la pone en el clipboard</translation>
     </message>
     <message>
         <source>&amp;Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>Pe&amp;gar</translation>
     </message>
     <message>
         <source>Ctrl+V</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Pastes the clipboard into the current document</source>
-        <translation type="unfinished"></translation>
+        <translation>Pega el clipboard a el documento actual</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Borrar</translation>
     </message>
     <message>
         <source>Deletes the selected object</source>
-        <translation type="unfinished"></translation>
+        <translation>Borra el objeto seleccionado</translation>
     </message>
     <message>
         <source>&amp;Group</source>
-        <translation type="unfinished"></translation>
+        <translation>A&amp;grupar</translation>
     </message>
     <message>
         <source>Group the selected objects into a single one</source>
-        <translation type="unfinished"></translation>
+        <translation>Agrupa los objetos seleccionados en uno solo</translation>
     </message>
     <message>
         <source>&amp;Ungroup</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Desagrupar</translation>
     </message>
     <message>
         <source>Ungroups the selected object</source>
-        <translation type="unfinished"></translation>
+        <translation>Desagrupa los objetos seleccionados</translation>
     </message>
     <message>
         <source>Select &amp;All</source>
@@ -1619,7 +1683,7 @@
     </message>
     <message>
         <source>Ctrl+A</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>selected all object</source>
@@ -1627,7 +1691,7 @@
     </message>
     <message>
         <source>Properties...</source>
-        <translation type="unfinished"></translation>
+        <translation>Propiedades...</translation>
     </message>
     <message>
         <source>Configure the paint area</source>
@@ -1670,15 +1734,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>+</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Zoom Out</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>-</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1767,7 +1823,7 @@
     </message>
     <message>
         <source>T</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Brush</source>
@@ -1775,7 +1831,7 @@
     </message>
     <message>
         <source>B</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Pencil</source>
@@ -1783,7 +1839,7 @@
     </message>
     <message>
         <source>P</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Pen</source>
@@ -1791,7 +1847,7 @@
     </message>
     <message>
         <source>N</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;line</source>
@@ -1799,7 +1855,7 @@
     </message>
     <message>
         <source>L</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Rectangle</source>
@@ -1807,7 +1863,7 @@
     </message>
     <message>
         <source>R</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Ellipse</source>
@@ -1815,7 +1871,7 @@
     </message>
     <message>
         <source>E</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Fill</source>
@@ -1847,7 +1903,7 @@
     </message>
     <message>
         <source>D</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Eraser</source>
@@ -1871,7 +1927,7 @@
     </message>
     <message>
         <source>M</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>&amp;Hand</source>
@@ -1879,7 +1935,7 @@
     </message>
     <message>
         <source>H</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <source>Order</source>
@@ -1939,7 +1995,7 @@
     </message>
     <message>
         <source>Transform </source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Transformar</translation>
     </message>
     <message>
         <source>Flip &amp;Horizontally</source>
@@ -2013,6 +2069,30 @@
         <source>Filters</source>
         <translation>Filtros</translation>
     </message>
+    <message>
+        <source>Ctrl+G</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ctrl+Shift+G</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flip Vertical</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> Ctrl + Alt + V</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Flip Horizontal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> Ctrl + Alt + H</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>KinasWidget</name>
@@ -2025,39 +2105,39 @@
     <name>NPFirstPage</name>
     <message>
         <source>New KToon Project</source>
-        <translation type="unfinished"></translation>
+        <translation>Nuevo proyecto KToon</translation>
     </message>
     <message>
         <source>Project Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nombre del proyecto</translation>
     </message>
     <message>
         <source>Author</source>
-        <translation type="unfinished"></translation>
+        <translation>Autor</translation>
     </message>
     <message>
         <source>Render type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo de renderizado</translation>
     </message>
     <message>
         <source>Image</source>
-        <translation type="unfinished"></translation>
+        <translation>Imagen</translation>
     </message>
     <message>
         <source>OpenGL</source>
-        <translation type="unfinished"></translation>
+        <translation>OpenGL</translation>
     </message>
     <message>
         <source>Native</source>
-        <translation type="unfinished"></translation>
+        <translation>Nativo</translation>
     </message>
     <message>
         <source>FPS</source>
-        <translation type="unfinished"></translation>
+        <translation>FPS</translation>
     </message>
     <message>
         <source>Field project name is empty</source>
-        <translation type="unfinished"></translation>
+        <translation>El nombre del proyecto esta vacio</translation>
     </message>
 </context>
 <context>
@@ -2072,7 +2152,7 @@
     </message>
     <message>
         <source>Configuration file is corrupted %1:%2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>El archivo de configuración es invalido %1:%2: %3</translation>
     </message>
     <message>
         <source>Missing...</source>
@@ -2080,51 +2160,51 @@
     </message>
     <message>
         <source>You need configure the application</source>
-        <translation type="unfinished"></translation>
+        <translation>Necesitas configurar la aplicación</translation>
     </message>
     <message>
         <source>Initializing...</source>
-        <translation type="unfinished"></translation>
+        <translation>Inicializando...</translation>
     </message>
     <message>
         <source>Loading Modules</source>
-        <translation type="unfinished"></translation>
+        <translation>Cargando modulos</translation>
     </message>
     <message>
         <source>Loaded!</source>
-        <translation type="unfinished"></translation>
+        <translation>Cargado!</translation>
     </message>
     <message>
         <source>2D Animation tool kit</source>
-        <translation type="unfinished"></translation>
+        <translation>Herramienta de animación 2D</translation>
     </message>
     <message>
         <source>Usage: %1 [option]</source>
-        <translation type="unfinished"></translation>
+        <translation>Uso: %1 [opción]</translation>
     </message>
     <message>
         <source>Options: </source>
-        <translation type="unfinished"></translation>
+        <translation>Opciones:</translation>
     </message>
     <message>
         <source><byte value="x9"/><byte value="x9"/>Reconfigure %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Reconfigurar %1</translation>
     </message>
     <message>
         <source>Fatal error</source>
-        <translation type="unfinished"></translation>
+        <translation>Error fatal</translation>
     </message>
     <message>
         <source>%1 is crashing...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 esta fallando...</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Cerrar</translation>
     </message>
     <message>
         <source>This is a general failure</source>
-        <translation type="unfinished"></translation>
+        <translation>Este es un error general</translation>
     </message>
 </context>
 <context>
