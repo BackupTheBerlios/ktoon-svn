@@ -346,8 +346,8 @@ void KTMainWindow::shearCurrentElement(double dx,double dy)
 		doc->drawArea()->redrawAll();
 	}
 }
-//FIXME: crear una funcion que obtenga en current element
-void KTMainWindow::FlipVCurrentElement()
+
+void KTMainWindow::flipVCurrentElement()
 {
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	if(doc)
@@ -357,7 +357,7 @@ void KTMainWindow::FlipVCurrentElement()
 	
 }
 
-void KTMainWindow::FlipHCurrentElement()
+void KTMainWindow::flipHCurrentElement()
 {
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	if(doc)

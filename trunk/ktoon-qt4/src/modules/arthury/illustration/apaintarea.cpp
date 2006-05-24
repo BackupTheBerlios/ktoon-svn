@@ -549,6 +549,8 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 					m_currentFrame->addSelectedComponent( toSelect );
 				}
 				
+				SHOW_VAR(m_currentFrame->selectedComponents().count());
+				
 				if ( m_currentFrame->hasSelections() )
 				{
 					ADrawCommand *command = new ADrawCommand(m_currentFrame);
@@ -740,19 +742,7 @@ void APaintArea::setColors(const QBrush &foreground, const QBrush &background)
 	m_currentBrush->setBrush( background );
 }
 
-QPainterPath APaintArea::translatePath(const QPainterPath &path, const QPoint &pos)
-{
-	QPainterPath result;
-	QList<QPolygonF> polygons = path.toSubpathPolygons();
 
-	for(int i = 0; i < polygons.count(); i++)
-	{
-		polygons[i].translate( pos );
-		result.addPolygon(polygons[i]);
-	}
-	
-	return result;
-}
 
 void APaintArea::setPreviousFrames(int n)
 {
@@ -987,7 +977,8 @@ void APaintArea::flipVCurrentElement()
 	{
 		foreach(AGraphicComponent *component, m_currentFrame->selectedComponents())
 		{
-			component->flip(Qt::Vertical);
+			
+			component->flip(Qt::Vertical, component->boundingRect().center());
 		}
 		redrawAll();
 	}
@@ -999,27 +990,12 @@ void APaintArea::flipHCurrentElement()
 	{
 		foreach(AGraphicComponent *component, m_currentFrame->selectedComponents())
 		{
-			component->flip(Qt::Horizontal);
+			component->flip(Qt::Horizontal, component->boundingRect().center());
 		}
 		redrawAll();
 	}
 }
 
-void APaintArea::importImage(const QPixmap &image)
-{
-	if ( ! m_currentFrame ) return;
-	
-	QBrush brush(image);
-	AGraphicComponent *newComponent = new AGraphicComponent;
-	
-	QPainterPath path;
-	path.addRect(image.rect());
-	newComponent->addGraphic( path,QPen(Qt::transparent), brush); 
-	
-	m_currentFrame->addComponent( newComponent );
-	
-	redrawAll();
-}
 
 void APaintArea::setProperties(const KTPaintAreaProperties &properties)
 {

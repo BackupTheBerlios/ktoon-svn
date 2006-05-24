@@ -79,7 +79,7 @@ QPainterPath AFillTool::path() const
 
 QRect AFillTool::press(const QString& brush, QPainter& painter, const QPoint& pos, KTKeyFrame* currentFrame)
 {
-	if( currentFrame->selectedComponents().count() > 0 )
+	if( currentFrame->hasSelections() )
 	{
 		AGraphicComponent *selected = currentFrame->selectedComponents()[0];
 		
@@ -91,7 +91,7 @@ QRect AFillTool::press(const QString& brush, QPainter& painter, const QPoint& po
 		
 		QList<AGraphic *> allGraphics;
 		
-		foreach(AGraphicComponent *component, currentFrame->components())
+		foreach(AGraphicComponent *component, components)
 		{
 			foreach(AGraphic *graphic, component->graphics())
 			{

@@ -34,11 +34,11 @@ void ATransformFilter::filter(const QString &filter, const QList<AGraphicCompone
 		
 		if (filter == tr("Flip Horizontally"))
 		{
-			gc->flip(Qt::Horizontal);
+			gc->flip(Qt::Horizontal, gc->boundingRect().center() );
 		}
 		else if (filter == tr("Flip Vertically"))
 		{
-			gc->flip(Qt::Vertical);
+			gc->flip(Qt::Vertical, gc->boundingRect().center());
 		}
 	}
 }

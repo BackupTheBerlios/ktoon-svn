@@ -58,6 +58,11 @@ void AGraphic::mapPixmap(const QMatrix &matrix)
 void AGraphic::flip(Qt::Orientation o)
 {
 	QPointF pos = path.boundingRect().center();
+	flip(o, pos );
+}
+
+void AGraphic::flip(Qt::Orientation o, const QPointF &pos )
+{
 	QMatrix  matrix;
 	matrix.translate(-pos.x(),-pos.y());
 	
@@ -134,6 +139,8 @@ void AGraphic::flip(Qt::Orientation o)
 		setPixmap( QPixmap::fromImage(result));
 	}
 }
+
+
 
 void AGraphic::setPixmap(const QPixmap &pix, const QString &key)
 {

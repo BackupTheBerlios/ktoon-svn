@@ -158,8 +158,8 @@ class KTMainWindow : public DMainWindow
 		void scaleCurrentElement(double dx,double dy);
 		void translateCurrentElement(double dx,double dy);
 		void shearCurrentElement(double dx,double dy);
-		void  FlipVCurrentElement();
-		void  FlipHCurrentElement();
+		void flipVCurrentElement();
+		void flipHCurrentElement();
 		
 		void addCurrentGraphicToLibrary();
 		void addGraphicComponent(const AGraphicComponent *graphic);

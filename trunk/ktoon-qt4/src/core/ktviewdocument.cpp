@@ -145,9 +145,9 @@ void KTViewDocument::setupEditActions()
 	a = new DAction( QPixmap(THEME_DIR+"/icons/" ), tr( "Select &All" ),   QKeySequence(tr("Ctrl+A")), m_paintAreaContainer->drawArea(), SLOT(selectAll()), m_actionManager, "selectAll");
 	a->setStatusTip(tr("selected all object"));
 	
-	DAction *flipV = new DAction(  QPixmap(THEME_DIR+"/icons/flip-vertical.png" ), tr("Flip Vertical"), QKeySequence(tr(" Ctrl + Alt + V")), m_paintAreaContainer->drawArea(), SLOT(flipV()), m_actionManager, "flipv");
+	DAction *flipV = new DAction(  QPixmap(THEME_DIR+"/icons/flip-vertical.png" ), tr("Flip Vertical"), QKeySequence(tr(" Ctrl + Alt + V")), m_paintAreaContainer->drawArea(), SLOT(flipVCurrentElement()), m_actionManager, "flipv");
 	
-	DAction *flipH = new DAction( QPixmap(THEME_DIR+"/icons/flip-horizontal.png" ),  tr("Flip Horizontal"), QKeySequence(tr(" Ctrl + Alt + H")), m_paintAreaContainer->drawArea(), SLOT(flipV()), m_actionManager, "fliph");
+	DAction *flipH = new DAction( QPixmap(THEME_DIR+"/icons/flip-horizontal.png" ),  tr("Flip Horizontal"), QKeySequence(tr(" Ctrl + Alt + H")), m_paintAreaContainer->drawArea(), SLOT(flipHCurrentElement()), m_actionManager, "fliph");
 	
 	a = new DAction( tr("Properties..."), QKeySequence(), this, SLOT(configure()), m_actionManager, "properties");
 	a->setStatusTip(tr("Configure the paint area"));

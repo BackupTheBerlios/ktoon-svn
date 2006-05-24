@@ -261,17 +261,17 @@ void AGraphicComponent::getPath(QPainterPath & path, const QMatrix& matrix)
 	}
 }
 
-void AGraphicComponent::flip(Qt::Orientation o)
+void AGraphicComponent::flip(Qt::Orientation o, const QPointF & pos)
 {
 	foreach(AGraphic *graphic, m_graphics)
 	{
-		graphic->flip(o);
+		graphic->flip(o, pos);
 	}
 	if(m_childs.count() > 0)
 	{
 		foreach(AGraphicComponent *child, m_childs)
 		{
-			child->flip(o);
+			child->flip(o, pos);
 		}
 	}
 }

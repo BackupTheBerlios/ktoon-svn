@@ -141,7 +141,8 @@ class AGraphicComponent : public KTSerializableObject
 		 */
 		void getPath(QPainterPath & path, const QMatrix& matrix = QMatrix() );
 		
-		void flip(Qt::Orientation o);
+		void flip(Qt::Orientation o, const QPointF & pos);
+		
 		
 		/**
 		 * set the name to the component

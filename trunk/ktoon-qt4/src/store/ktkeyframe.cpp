@@ -71,7 +71,7 @@ void KTKeyFrame::insertComponent(int pos, AGraphicComponent *comp)
 
 void KTKeyFrame::removeComponent(AGraphicComponent *comp)
 {
-	deSelectedComponent( comp);
+	deselectComponent( comp);
         m_components.removeAll(comp);
 	delete comp;
 }
@@ -139,7 +139,7 @@ void KTKeyFrame::addSelectedComponent(AGraphicComponent *toSelect)
 	}
 }
 
-void KTKeyFrame::deSelectedComponent(AGraphicComponent *toDeSelect)
+void KTKeyFrame::deselectComponent(AGraphicComponent *toDeSelect)
 {
 	toDeSelect->removeControlPoints();
 	m_selectedComponents.removeAll ( toDeSelect );
@@ -149,7 +149,7 @@ void KTKeyFrame::clearSelections()
 {
 	foreach( AGraphicComponent *component, m_selectedComponents)
 	{
-		deSelectedComponent(component);
+		deselectComponent(component);
 	}
 }
 
@@ -175,7 +175,7 @@ void KTKeyFrame::removeSelections()
 {
 	foreach(AGraphicComponent *comp, m_selectedComponents)
 	{
-		deSelectedComponent(comp);
+		deselectComponent(comp);
 		m_components.removeAll(comp);
 		delete comp;
 		comp=0;

@@ -71,6 +71,7 @@ class AGraphic
 		void mapPixmap(const QMatrix &matrix);
 		
 		void flip(Qt::Orientation o);
+		void flip(Qt::Orientation o, const QPointF &pos );
 		
 		QPainterPath path;
 		QBrush brush;

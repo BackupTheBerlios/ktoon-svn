@@ -123,7 +123,7 @@ class KTKeyFrame : public KTSerializableObject
 		/**
 		 * Deselecciona un componente del frame
 		 */
-		void deSelectedComponent(AGraphicComponent *toDeSelect);
+		void deselectComponent(AGraphicComponent *toDeSelect);
 		
 		/**
 		 * Deselecciona todos los componentes seleccionados
