@@ -330,12 +330,14 @@ bool FFMpegManager::writeVideoFrame(const QString &imagePath, AVFormatContext *o
 // 		out_size = av_write_trailer(oc);
 		/* if zero size, it means the image was buffered */
 
-		if (out_size != 0)
+		if (out_size > 0)
 		{
 			AVPacket pkt;
 			av_init_packet(&pkt);
             
-			pkt.pts= c->coded_frame->pts;
+// 			pkt.pts= c->coded_frame->pts;
+			pkt.pts= av_rescale_q(c->coded_frame->pts, c->time_base, st->time_base);
+			
 			if(c->coded_frame->key_frame)
 				pkt.flags |= PKT_FLAG_KEY;
 			pkt.stream_index= st->index;

@@ -56,7 +56,7 @@ DDockWindow::DDockWindow(QWidget *parent, Position position) : QDockWidget( pare
 	layout()->setSpacing(0);
 	layout()->setMargin(0);
 	
-	connect(this, SIGNAL(topLevelChanged ( bool)), this, SLOT(addFloatingOption(bool)));
+	connect(this, SIGNAL(topLevelChanged ( bool)), this, SLOT(setFloatingOption(bool)));
 	
 #if QT_VERSION >= 0x040100
 	setStyle(new QWindowsStyle());

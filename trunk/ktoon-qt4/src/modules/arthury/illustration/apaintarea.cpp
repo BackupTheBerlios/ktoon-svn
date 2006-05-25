@@ -476,7 +476,8 @@ void APaintArea::setOffset(const QPoint & zero)
 	m_offset = zero *2;
 	m_paintDevice->move(zero);
 // 	resize(m_paintDevice->sizeHint());
-	update();
+// 	update();
+	adjustSize();
 }
 
 QWidget *APaintArea::paintDevice() const
@@ -548,8 +549,6 @@ void APaintArea::mousePressEvent ( QMouseEvent * e )
 					m_currentFrame->clearSelections();
 					m_currentFrame->addSelectedComponent( toSelect );
 				}
-				
-				SHOW_VAR(m_currentFrame->selectedComponents().count());
 				
 				if ( m_currentFrame->hasSelections() )
 				{

@@ -43,7 +43,6 @@ bool  DMdiWindow::event( QEvent * e )
 	}
 	else if ( e->type() == QEvent::Show )
 	{
-		adjustSize();
 		emit activate(true);
 	}
 	else if( e->type() == QEvent::Show )

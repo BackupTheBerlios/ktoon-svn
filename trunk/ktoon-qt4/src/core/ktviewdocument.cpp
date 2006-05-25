@@ -270,7 +270,7 @@ void KTViewDocument::createTools()
 	// Brushes menu
 	m_brushesMenu = new QMenu(tr("Brushes"), m_toolbar);
 	m_brushesMenu->setIcon( QPixmap(THEME_DIR+"/icons/brush.png") );
-	connect( m_brushesMenu, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
+	connect( m_brushesMenu, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
 	
 // 	connect(m_brushesMenu->menuAction(), SIGNAL(triggered()), this, SLOT(selectToolFromMenu()));
 	
@@ -287,7 +287,7 @@ void KTViewDocument::createTools()
 	// Fill menu
 	m_fillMenu = new QMenu(tr("Fill"), m_toolbar);
 	m_fillMenu->setIcon(QPixmap(THEME_DIR+"/icons/fill.png"));
-	connect(m_fillMenu, SIGNAL(triggered(QAction *)), this, SLOT(changeTool( QAction* )));
+	connect(m_fillMenu, SIGNAL(triggered(QAction *)), this, SLOT(selectToolFromMenu( QAction* )));
 	
 	m_toolbar->addAction(m_fillMenu->menuAction());
 	
@@ -295,7 +295,7 @@ void KTViewDocument::createTools()
 	m_toolsSelection->addAction(QPixmap(THEME_DIR+"/icons/nodes.png"), tr( "Con&tour Selection" ), m_paintAreaContainer->drawArea(), SLOT( slotContourSelection()), tr("T") );
 	
 	m_toolsDraw = new QMenu( m_toolbar );
-	connect( m_toolsDraw, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
+	connect( m_toolsDraw, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
 	
 	m_toolsDraw->setIcon(QPixmap(THEME_DIR+"/icons/brush.png"));
 	m_toolsDraw->addAction(QPixmap(THEME_DIR+"/icons/brush.png"), tr( "&Brush" ), m_paintAreaContainer->drawArea(), SLOT(slotBrush()), tr("B"));
@@ -312,7 +312,7 @@ void KTViewDocument::createTools()
 	
 	m_toolsFills = new QMenu( "fills", m_toolbar );
 	m_toolsFills->setIcon(QPixmap(THEME_DIR+"/icons/fill.png"));
-	connect( m_toolsFills, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
+	connect( m_toolsFills, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
 	
 	m_toolsFills->addAction(QPixmap(THEME_DIR+"/icons/fill.png"), tr( "&Fill" ), m_paintAreaContainer->drawArea(), SLOT( slotFill()), tr("F"));
 	
@@ -324,7 +324,7 @@ void KTViewDocument::createTools()
 
 	m_toolsErasers = new QMenu(tr( "Eraser" ), m_toolbar );
 	m_toolsErasers->setIcon(QPixmap(THEME_DIR+"/icons/eraser.png"));
-	connect( m_toolsErasers, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
+	connect( m_toolsErasers, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
 	
 	m_toolsErasers->addAction(QPixmap(THEME_DIR+"/icons/eraser.png"), tr( "&Eraser"), m_paintAreaContainer->drawArea(), SLOT( slotEraser()), Qt::SHIFT+Qt::Key_Delete);
 	
@@ -332,14 +332,14 @@ void KTViewDocument::createTools()
 	
 	m_toolsView = new QMenu(tr( "View" ), m_toolbar );
 	m_toolsView->setIcon(QPixmap(THEME_DIR+"/icons/magnifying.png"));
-	connect( m_toolsView, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
+	connect( m_toolsView, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
 	
 	m_toolsView->addAction(QPixmap(THEME_DIR+"/icons/magnifying.png"), tr("&Magnifying Glass" ), m_paintAreaContainer->drawArea(), SLOT( slotMagnifyingGlass()), tr("M"));
 	
 	m_toolsView->addAction(QPixmap(THEME_DIR+"/icons/hand.png"), tr( "&Hand" ), m_paintAreaContainer->drawArea(),  SLOT( slotHand()), tr("H"));
 	
 	m_toolsOrder = new QMenu(tr("Order"), m_toolbar);
-	connect( m_toolsOrder, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
+	connect( m_toolsOrder, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
 	m_toolsOrder->setIcon(QPixmap(THEME_DIR+"/icons/group.png"));
 	m_toolsOrder->addAction(QPixmap(THEME_DIR+"/icons/group.png"), tr( "&Group" ), m_paintAreaContainer->drawArea(), SLOT( slotGroup()));
 	m_toolsOrder->addAction(QPixmap(THEME_DIR+"/icons/ungroup.png"), tr( "&Ungroup" ), m_paintAreaContainer->drawArea(), SLOT( slotUngroup()));
@@ -351,7 +351,7 @@ void KTViewDocument::createTools()
 	
 
 	m_toolsAlign = new QMenu(tr( "Align"), this );
-	connect( m_toolsAlign, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
+	connect( m_toolsAlign, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
 	m_toolsAlign->setIcon(QPixmap(THEME_DIR+"/icons/align_l.png"));
 	
 	m_toolsAlign->addAction( QPixmap(THEME_DIR+"/icons/align_l.png"), tr("&Left" ), m_paintAreaContainer->drawArea(), SLOT( slotAlignLeft()));
@@ -372,7 +372,7 @@ void KTViewDocument::createTools()
 	tools_bottom->setStatusTip(tr("Aligns the selected object to the bottom"));
 
 	m_toolsTransform = new QMenu( tr( "Transform " ), this);
-	connect( m_toolsTransform, SIGNAL(triggered ( QAction * )), this, SLOT(changeTool( QAction*)));
+	connect( m_toolsTransform, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
 	m_toolsTransform->setIcon(QPixmap(HOME+"/images/icons/align_l.png"));
 
 	m_toolsTransform->addAction(tr( "Flip &Horizontally" ), m_paintAreaContainer->drawArea(), SLOT(slotFlipHorizontally()));

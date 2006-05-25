@@ -313,6 +313,7 @@ bool KTMainWindow::closeProject()
 	m_timeLine->closeAllScenes();
 	m_scenes->closeAllScenes();
 	
+	m_fileName = QString();
 	
 	return true;
 }

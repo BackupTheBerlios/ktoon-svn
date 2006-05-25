@@ -47,6 +47,7 @@ class KTViewCamera::Status : public QStatusBar
 
 KTViewCamera::Status::Status(QWidget *parent) : QStatusBar(parent)
 {
+	setSizeGripEnabled ( false );
 	QWidget *sceneInfo = new QWidget;
 	m_sceneInfoLayout = new QHBoxLayout(sceneInfo);
 	m_sceneInfoLayout->setMargin(0);

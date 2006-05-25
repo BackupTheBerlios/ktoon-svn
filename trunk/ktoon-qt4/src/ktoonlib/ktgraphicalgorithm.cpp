@@ -611,11 +611,16 @@ QPainterPath KTGraphicalAlgorithm::bezierFit( QPolygonF &points,float error)
 	if(width>3)
 	{
 		path.moveTo(curve[0]);
-		path.cubicTo(curve[1], curve[2],curve[3] );
-		for(int i=4;i<width;i+=4)
+// 		path.cubicTo(curve[1], curve[2],curve[3] );
+		
+		for(int i = 0; i < width; i += 4)
 		{
-			path.cubicTo(curve[i+1],curve[i+2],curve[i+3]);	
+			path.cubicTo( curve[i+1], curve[i+2], curve[i+3] );
 		}
+	}
+	else
+	{
+		path.addPolygon(points);
 	}
 	
 	delete[] curve;

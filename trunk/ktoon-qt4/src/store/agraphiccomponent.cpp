@@ -207,6 +207,8 @@ void AGraphicComponent::adjustToRect(QRect rect, float offset)
 	
 	float factor = qMin(sx, sy);
 	matrix.scale(factor, factor);
+	
+	m_scale = QPointF(factor, factor);
 	mapTo(matrix);
 	matrix.reset();
 	
