@@ -27,6 +27,8 @@
 DMdiWindow::DMdiWindow(QWorkspace* parent, const char* name): QMainWindow(parent), m_workspace(parent)
 {
 	setObjectName(name);
+	
+	setAttribute(Qt::WA_DeleteOnClose, true);
 }
 
 

@@ -116,16 +116,6 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 KTMainWindow::~KTMainWindow()
 {
 	DEND;
-/*	
-	if ( m_animationSpace )
-		delete m_animationSpace;
-	
-	if ( m_drawingSpace )
-		delete m_drawingSpace;
-	
-	if ( m_projectManager )
-		delete m_projectManager;*/
-	
 }
 
 
@@ -320,7 +310,7 @@ bool KTMainWindow::closeProject()
 
 void KTMainWindow::openProject()
 {
-	QString package = QFileDialog::getOpenFileName ( this, tr("Import project package"), REPOSITORY, "KToon Project Package (*.ktn)");
+	QString package = QFileDialog::getOpenFileName ( this, tr("Import project package"), REPOSITORY, tr("KToon Project Package (*.ktn)"));
 	
 	if ( package.isEmpty() ) return;
 	
@@ -346,7 +336,8 @@ void KTMainWindow::openProject(const QString &path)
 					m_fileName = QDir::currentPath()+"/"+path;
 				}
 				
-				if ( m_recentProjects.indexOf(m_fileName) == -1 )
+				int pos = m_recentProjects.indexOf(m_fileName);
+				if ( pos == -1 )
 				{
 					if ( m_recentProjects.count() <= 6 )
 					{
@@ -356,6 +347,10 @@ void KTMainWindow::openProject(const QString &path)
 					{
 						m_recentProjects.push_front(m_fileName);
 					}
+				}
+				else
+				{
+					m_recentProjects.push_front(m_recentProjects.takeAt(pos));
 				}
 				
 				newViewDocument();

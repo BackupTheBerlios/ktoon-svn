@@ -358,6 +358,7 @@ void KTMainWindow::updateOpenRecentMenu(QMenu *menu)
 		if ( !recent.isEmpty() && m_recentProjects.indexOf(recent) == -1 )
 		{
 			m_recentProjects << recent;
+// 			m_recentProjects.push_front(recent);
 			connect(menu->addAction(recent), SIGNAL(triggered()), this, SLOT(openRecentProject()));
 		}
 	}

@@ -10,14 +10,16 @@ CONFIG_LOG=$(pwd)/$LOG_FILE
 
 # $1 parameter is a text
 # $2 directory 
+# $3 INCLUDE PATH
+# $4 LIBS
 function check()
 {
 	RESULT="yes."
 	if [ -d $CONFIGURE_TEST_DIR/$2 ]
 	then
 		cd $CONFIGURE_TEST_DIR/$2
-		$QMAKE 2>> $CONFIG_LOG >> $CONFIG_LOG
-		${MAKE} 2>>$CONFIG_LOG >>$CONFIG_LOG || RESULT="no."
+		$QMAKE  2>> $CONFIG_LOG >> $CONFIG_LOG
+		${MAKE} INCPATH="${3}" LIBS="${4}" 2>>$CONFIG_LOG >>$CONFIG_LOG || RESULT="no."
 		cd - 2>> /dev/null >> /dev/null
 	else
 		RESULT="no."
@@ -70,12 +72,34 @@ detectQtVersion
 ln -fs $(pwd)/$CONFIG_H $(pwd)/src/ktoonlib/$CONFIG_H
 
 LIBS=''
+INCPATH=''
 
+
+# Checking aspell
 check "aspell" aspell && LIBS="$LIBS -laspell" && defineMacro HAVE_ASPELL
-#check "sound" sound && LIBS="$LIBS -laudio" && defineMacro HAVE_SOUND
+
+
+# Checking gstreamer
+export GST_LIBS=`pkg-config gstreamer-0.10 --libs`
+export GST_INCLUDE=`pkg-config gstreamer-0.10 --cflags`
+check "sound" sound "${GST_INCLUDE}" "${GST_LIBS}" && INCPATH="$INCPATH $GST_INCLUDE" LIBS="$LIBS $GST_LIBS" && defineMacro HAVE_SOUND
+
+# Checking gif
 check "gif" gif && LIBS="$LIBS -lgif" && defineMacro HAVE_LIBGIF
+
+# checking ffmpeg
 check "ffmpeg 0.4.9" ffmpeg && LIBS="$LIBS -lavcodec -lavformat" && defineMacro HAVE_FFMPEG
-check "ming" ming && LIBS="$LIBS -lming" && defineMacro HAVE_MING
+
+
+# Checking ming
+
+export MING_LIBS=`ming-config --libs`
+export MING_INCLUDE=`ming-config --cflags`
+check "ming" ming "${MING_INCLUDE}" "${MING_LIBS}" && LIBS="$LIBS ${MING_LIBS}" && defineMacro HAVE_MING
+
+
+
+### end checking ###
 
 if [ "$LIBS" != '' ]
 then
@@ -84,12 +108,14 @@ else
 	echo > $KT_CONFIG
 fi
 
+echo "INCLUDEPATH += $INCPATH" >> $KT_CONFIG
+
 defineMacro VERSION ${APPVER}
 defineMacro VERSION_STR \"${APPVER}\"
 
 echo
 echo "**************************************"
-qpwarn "$APPNAME is configured, if you want to clean configuration, execute \'make -f Makefile.common confclean\'"
+qpwarn "$APPNAME is configured, if you want to clean configuration, execute 'make -f Makefile.common confclean'"
 echo "**************************************"
 echo
 

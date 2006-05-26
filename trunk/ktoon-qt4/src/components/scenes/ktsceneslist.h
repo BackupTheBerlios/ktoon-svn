@@ -32,6 +32,7 @@ class KTScenesList : public DTreeListWidget
 		
 	private slots:
 		void changeCurrentScene();
+		void changeCurrentScene(QTreeWidgetItem *item, int c);
 		
 	public slots:
 		int moveCurrentSceneUp();

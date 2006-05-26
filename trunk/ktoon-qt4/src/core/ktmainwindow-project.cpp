@@ -35,6 +35,7 @@ void KTMainWindow::insertScene( const QString &name, bool addedToEnd)
 
 void KTMainWindow::changeScene(int index)
 {
+	D_FUNCINFO;
 	m_exposureSheet->setScene( index);
 	m_timeLine->setScene( index);
 	
