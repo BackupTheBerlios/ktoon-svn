@@ -25,6 +25,26 @@
  * Helper classes
  *****************************************************************/
 
+class ClickableLabel : public QLabel
+{
+	Q_OBJECT
+	public:
+		ClickableLabel( QWidget* parent = 0 );
+		~ClickableLabel();
+		
+	protected:
+		void paintEvent(QPaintEvent *e);
+		void enterEvent ( QEvent * e);
+		void leaveEvent(QEvent *e);
+		void mousePressEvent( QMouseEvent *e );
+		
+	signals:
+		void clicked();
+		
+	private:
+		bool m_isEnter;
+};
+
 ClickableLabel::ClickableLabel( QWidget* parent )
 	: QLabel( parent ), m_isEnter(false)
 {
@@ -265,3 +285,4 @@ bool CollapsibleWidget::isExpanded() const
 	return d->colButton->isChecked();
 }
 
+#include "collapsiblewidget.moc"

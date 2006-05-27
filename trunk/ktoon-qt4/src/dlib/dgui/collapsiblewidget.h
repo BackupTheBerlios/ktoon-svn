@@ -26,25 +26,29 @@
 #include <QDebug>
 
 class QScrollArea;
+class CollapsibleWidget;
+class ClickableLabel;
 
-class ClickableLabel : public QLabel
+/**
+  @short A scrollable container that contains groups of settings,
+	 usually in the form of CollapsibleWidgets.
+	 @author Daniel Molkentin <molkentin@kde.org>
+ */
+class Q_GUI_EXPORT SettingsContainer : public QScrollArea
 {
-	Q_OBJECT
+	Q_ENUMS( CollapseState );
+	Q_OBJECT;
 	public:
-		ClickableLabel( QWidget* parent = 0 );
-		~ClickableLabel();
-		
-	protected:
-		void paintEvent(QPaintEvent *e);
-		void enterEvent ( QEvent * e);
-		void leaveEvent(QEvent *e);
-		void mousePressEvent( QMouseEvent *e );
-		
-	signals:
-		void clicked();
-		
+		enum CollapseState { Collapsed, Uncollapsed };
+		SettingsContainer( QWidget *parent = 0 );
+		~SettingsContainer();
+
+		CollapsibleWidget* insertWidget( QWidget* w, const QString& name );
+
 	private:
-		bool m_isEnter;
+		Q_DISABLE_COPY( SettingsContainer );
+		class Private;
+		Private *d;
 };
 
 /**
@@ -78,31 +82,6 @@ class Q_GUI_EXPORT CollapsibleWidget : public QWidget
 		class Private;
 		Private *d;
 };
-
-
-/**
-  @short A scrollable container that contains groups of settings,
-         usually in the form of CollapsibleWidgets.
-  @author Daniel Molkentin <molkentin@kde.org>
- */
-class Q_GUI_EXPORT SettingsContainer : public QScrollArea
-{
-	Q_ENUMS( CollapseState )
-			Q_OBJECT
-	public:
-		enum CollapseState { Collapsed, Uncollapsed };
-		SettingsContainer( QWidget *parent = 0 );
-		~SettingsContainer();
-
-		CollapsibleWidget* insertWidget( QWidget* w, const QString& name );
-
-	private:
-		Q_DISABLE_COPY( SettingsContainer );
-		class Private;
-		Private *d;
-};
-
-
 
 #endif // COLLAPSIBLEWIDGET_H
 
