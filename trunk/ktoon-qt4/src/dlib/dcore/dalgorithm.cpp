@@ -23,18 +23,21 @@
 #include <cstdlib>
 #include <cstdio>
 #include <ctime>
+
+#ifdef Q_OS_LINUX
+#include <unistd.h>
 #include <sys/time.h>
 #include <fcntl.h>
+#endif
+
+DAlgorithm::DAlgorithm()
+{
+}
 
 
-// DAlgorithm::DAlgorithm()
-// {
-// }
-// 
-// 
-// DAlgorithm::~DAlgorithm()
-// {
-// }
+DAlgorithm::~DAlgorithm()
+{
+}
 
 int DAlgorithm::random()
 {

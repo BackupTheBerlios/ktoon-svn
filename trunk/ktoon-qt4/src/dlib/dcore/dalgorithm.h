@@ -31,9 +31,11 @@
 
 class DAlgorithm
 {
+	private:
+		DAlgorithm();
+		~DAlgorithm();
+		
 	public:
-// 		DAlgorithm();
-// 		~DAlgorithm();
 		/**
 		 * @if english
 		 * Returns a random integer

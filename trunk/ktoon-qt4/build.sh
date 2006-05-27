@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script that update the .pro files && build the app
+# Script for updating the .pro files and to build KToon 
 # Author: David Cuarado krawek [at] gmail [dot] com
 # Version: 0.5.0
 
@@ -37,7 +37,8 @@ function fails ()
 	echo `g++ --version` >> $LOG_FILE
 	echo "-----------------------" >> $LOG_FILE
 	
-	echo "Send the file $LOG_FILE to $EMAIL"
+	echo "There was an error in the compilation process."
+        echo "To fix it, please, send the file $LOG_FILE to $EMAIL"
 
 	return -1
 }
@@ -47,13 +48,15 @@ function verifyEnv()
 {
 	if [ ! -x $QMAKE -a $QMAKE ]
 	then
-		qperror "You need \"qmake\" in your path!"
+		qperror "Program \"qmake\" is missing in your path variable!"
+                qperror "Have you installed qmake?"
 		exit -1
 	fi
 	
 	if [ ! -x $MAKE -a $MAKE ]
 	then
-		qperror "You doesn't have installed \"make\" tool"
+		qperror "Program \"make\" is missing in your path variable!"
+                qperror "Have you installed make?"
 		exit -1
 	fi
 	
@@ -63,7 +66,8 @@ function verifyEnv()
 		then
 			QMAKE="$QTDIR/bin/qmake"
 		else
-			qperror "You don't have qmake in your PATH, or doesn't have Qtlibs, please install it and try"
+			qperror "Ooops... it looks like the \"Qtlibs\" package is missing in your system"
+                        qperror "Please install it and try to compile KToon again"
 			exit 1
 		fi
 	fi
@@ -107,12 +111,12 @@ function addMenuEntry()
 		if [ -d /usr/share/applications/Graphics ]
 		then
 			cp ktoon.desktop /usr/share/applications/Graphics &&
-			qpinfo "Added menu entry to /usr/share/applications"
+			qpinfo "Adding Menu entry for KToon in /usr/share/applications"
 		fi
 	else
 		mkdir -p $HOME/.local/share/applications/Graphics/
 		cp ktoon.desktop $HOME/.local/share/applications/Graphics/ktoon.desktop && 
-		qpinfo "Added menu entry to $HOME/.local/share/applications/Graphics/ktoon.desktop"
+		qpinfo "Adding Menu entry for KToon in $HOME/.local/share/applications/Graphics/ktoon.desktop"
 	fi
 }
 
@@ -127,13 +131,11 @@ function createLauncher() {
 
 function ktinstall()
 {
-	$MAKE install 2>> $LOG_FILE >/dev/null || fails "Error while install!. Please send the file $LOG_FILE to $EMAIL"
+	$MAKE install 2>> $LOG_FILE >/dev/null || fails "Installation process failed. Please, send the file $LOG_FILE to $EMAIL to report errors"
 
 	createLauncher
  	addMenuEntry
 }
-
-
 
 
 function main()
@@ -163,7 +165,7 @@ function main()
 	
 	if [ $ASSUME_YES -ne 1 ]
 	then
-		qpelec "This is right (y/n)? "
+		qpelec "Is this correct for you (y/n)? "
 		read UOG
 	
 		case $UOG in
@@ -176,7 +178,7 @@ function main()
 	
 	if [ $ASSUME_YES -ne 1 ]
 	then
-		qpelec "Do you wants clean the project (y/n)? "
+		qpelec "Do you want to clean the project (y/n)? "
 		read UOG
 	
 		case $UOG in
@@ -193,12 +195,12 @@ function main()
 	qpinfo "Compiling $APPNAME $APPVER..."
 	qpinfo "Go for a coffee cup ;)"
 	
-# 	$MAKE 2> /dev/null > /dev/null || ( fails "Error while compiling, please try to run \"make\" manually"; exit 1 )
+# 	$MAKE 2> /dev/null > /dev/null || ( fails "Compilation Error! please, try running the \"make\" command"; exit 1 )
 	
 	echo > $STAT_FILE
 	END=0
 	INIT_TIME=`date +%s`
-	( ( $MAKE  >/dev/null 2>> $LOG_FILE || fails "Error while compile!" ) && echo END=1 > $STAT_FILE ) & 
+	( ( $MAKE  >/dev/null 2>> $LOG_FILE || fails "Compilation Error!" ) && echo END=1 > $STAT_FILE ) & 
 	
 	while [ $END -eq 0 ]
 	do
@@ -221,11 +223,11 @@ function main()
 		exit -1
 	fi
 	
-	qpinfo "Compiling successful! Time: `expr $END_TIME - $INIT_TIME` seconds"
+	qpinfo "Compilation process successful! Time: `expr $END_TIME - $INIT_TIME` seconds"
 	
 	if [ $ASSUME_YES -ne 1 ]
 	then
-		qpelec "Do you wants install ktoon in \033[0;41m\"$KTOON_HOME\"\033[0;0m (y/n)? "
+		qpelec "Do you want to install KToon in \033[0;41m\"$KTOON_HOME\"\033[0;0m (y/n)? "
 		read SN
 	
 		case $SN in
@@ -242,15 +244,15 @@ function usage()
 	echo
 	echo "Options: "
 	echo "	-p,--prefix [PREFIX]"
-	echo "	   Set the prefix"
+	echo "	   Set the installation path"
 	echo "	-q,--quiet"
-	echo "	   Activate debug"
+	echo "	   Enable debug support"
 # 	echo "	-o,--use-opengl"
-# 	echo "	   Compile the opengl version"
+# 	echo "	   Enable OpenGL support"
 	echo "	-Y,--assume-yes"
 	echo "	   Assume yes"
 	echo "	-h,--help"
-	echo "	   This message"
+	echo "	   Show help menu"
 	echo
 	exit 0
 }
@@ -281,7 +283,7 @@ done
 
 if [ ! -f config.h ]
 then
-	qperror "Please run ./configure first"
+	qperror "Error: you need to run the command \"./configure\" first"
 	exit -1
 fi
 
@@ -302,7 +304,7 @@ detectQtVersion
 
 if [ $OPTION_NODEBUG -eq -1 ]
 then
-	qpelec "Do you wants debug support (y/n)? "
+	qpelec "Do you want to enable Debug Support (y/n)? "
 	read UOG
 	
 	case $UOG in

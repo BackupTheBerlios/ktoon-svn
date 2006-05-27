@@ -80,8 +80,6 @@ bool KTLibraryParser::startElement( const QString& , const QString& , const QStr
 			QPixmap pix(LIBRARY_DIR+"/resources/"+atts.value("path"));
 			
 			m_graphics.last()->setPixmap(pix, atts.value("path"));
-			
-			SHOW_VAR(pix);
 		}
 		else if ( qname == "Polygon")
 		{
