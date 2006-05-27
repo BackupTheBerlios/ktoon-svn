@@ -144,9 +144,10 @@ int main( int argc, char ** argv )
 	QApplication::addLibraryPath (HOME+"/plugins");
 	
 
+#ifdef Q_OS_UNIX
 	CHANDLER->setConfig(DATA_DIR+"/crashhandler.xml");
 	CHANDLER->setImagePath(THEME_DIR+"/icons/");
-	
+#endif
 	
 	if ( argc == 2 )
 	{

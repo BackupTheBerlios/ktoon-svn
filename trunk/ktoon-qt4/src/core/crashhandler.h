@@ -32,6 +32,8 @@
 
 class CrashHandler;
 
+#ifdef Q_OS_UNIX
+
 class CrashHandler
 {
 	protected:
@@ -82,5 +84,8 @@ class CrashHandler
 };
 
 #define CHANDLER CrashHandler::instance()
+
+
+#endif // Q_OS_UNIX
 
 #endif

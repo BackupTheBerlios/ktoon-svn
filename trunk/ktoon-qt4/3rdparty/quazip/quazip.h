@@ -81,7 +81,6 @@ class QuaZip {
                                  unzip.c. */
     };
     /// Open mode of the ZIP file.
-    /** Currently only mdNotOpen and mdUnzip modes are used. */
     enum Mode {
       mdNotOpen, ///< ZIP file is not open. This is the initial mode.
       mdUnzip, ///< ZIP file is open for reading files inside it.
@@ -181,7 +180,7 @@ class QuaZip {
     /// Sets the codec used to encode/decode comments inside archive.
     /** This codec defaults to locale codec, which is probably ok.
      **/
-    void setCommentCodec(QTextCodec *fileNameCodec)
+    void setCommentCodec(QTextCodec *commentCodec)
     {this->commentCodec=commentCodec;}
     /// Sets the codec used to encode/decode comments inside archive.
     /** \overload
@@ -203,10 +202,6 @@ class QuaZip {
      **/
     void setZipName(const QString& zipName);
     /// Returns the mode in which ZIP file was opened.
-    /** Since currently only QuaZip::mdUnzip mode is supported, this function
-     * can return either QuaZip::mdUnzip if ZIP is open and
-     * QuaZip::mdNotOpen otherwise.
-     **/
     Mode getMode()const {return mode;}
     /// Returns \c true if ZIP file is open, \c false otherwise.
     bool isOpen()const {return mode!=mdNotOpen;}
@@ -262,8 +257,9 @@ class QuaZip {
      * cs specifies case sensitivity of the file name. Call
      * getZipError() in the case of a failure to get error code.
      *
-     * This is not a wrapper to unzLocateFile() function. That's because
-     * I had to implement locale-specific case-insensitive comparison.
+     * This is not a wrapper to unzLocateFile() function. That is
+     * because I had to implement locale-specific case-insensitive
+     * comparison.
      *
      * Here are the differences from the original implementation:
      *
@@ -311,9 +307,7 @@ class QuaZip {
     QString getCurrentFileName()const;
     /// Returns \c unzFile handle.
     /** You can use this handle to directly call UNZIP part of the
-     * ZIP/UNZIP package functions (see unzip.h). This can be very
-     * useful since QuaZIP currently does not provide complete
-     * abstraction of the ZIP/UNZIP package interface.
+     * ZIP/UNZIP package functions (see unzip.h).
      *
      * \warning When using the handle returned by this function, please
      * keep in mind that QuaZip class is unable to detect any changes

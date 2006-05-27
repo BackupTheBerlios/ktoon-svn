@@ -21,7 +21,6 @@
 #include "dalgorithm.h"
 
 #include <cstdlib>
-#include <unistd.h>
 #include <cstdio>
 #include <ctime>
 #include <sys/time.h>
