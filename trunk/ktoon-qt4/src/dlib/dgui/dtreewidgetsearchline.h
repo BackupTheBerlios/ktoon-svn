@@ -24,7 +24,7 @@
 
 #include <QModelIndex>
 
-#include <dclicklineedit.h>
+#include "dclicklineedit.h"
 
 class QTreeWidget;
 class QTreeWidgetItem;

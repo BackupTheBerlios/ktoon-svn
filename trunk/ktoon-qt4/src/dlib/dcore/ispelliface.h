@@ -21,7 +21,7 @@
 #ifndef ISPELLIFACE_H
 #define ISPELLIFACE_H
 
-#include <spellinterface.h>
+#include "spellinterface.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>

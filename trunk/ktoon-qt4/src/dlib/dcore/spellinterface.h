@@ -34,7 +34,11 @@
 */
 class SpellInterface
 {
+	protected:
+		SpellInterface() {};
+		
 	public:
+		virtual ~SpellInterface() {};
 		/**
 		 * @if english
 		 * This function must check if a word is right

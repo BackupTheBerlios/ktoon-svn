@@ -22,7 +22,7 @@
 
 #include <ddebug.h>
 
-AAddGraphicCommand::AAddGraphicCommand(KTKeyFrame *frame, AGraphicComponent *added) : DCommand(), m_frame(frame), m_added(added)
+AAddGraphicCommand::AAddGraphicCommand(KTKeyFrame *frame, AGraphicComponent *added) : DCommand(),  m_added(added), m_frame(frame)
 {
 }
 

@@ -25,12 +25,15 @@
 #include <QPainter>
 #include <QTimer>
 #include <QClipboard>
-#include <cmath>
+#include <QApplication>
 #include <QBoxLayout>
+
 #include "dgradientadjuster.h"
 #include <dconfig.h>
 
 #include "adrawcommand.h"
+
+#include <cmath>
 
 #define BEGIN_PAINTER(var) switch(m_renderType) { case KToon::Image: \
 var.begin(IMAGE_DEVICE); break; \

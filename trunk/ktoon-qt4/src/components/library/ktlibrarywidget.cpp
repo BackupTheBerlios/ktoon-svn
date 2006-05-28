@@ -26,6 +26,8 @@
 #include "dconfig.h"
 
 #include <QGroupBox>
+#include <QFileDialog>
+
 #include <cstdlib>
 #include <ctime>
 

@@ -165,7 +165,10 @@ class DDebug
 				}
 				Streamer & operator<< ( const void * ptr )
 				{
-					
+					if ( !ptr )
+					{
+						buffer += "[Null pointer]";
+					}
 					return *this;
 				}
 		} *streamer;

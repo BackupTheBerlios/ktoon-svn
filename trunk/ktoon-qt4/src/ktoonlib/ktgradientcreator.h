@@ -160,7 +160,7 @@ class SpinControl: public QGroupBox
 {
 	Q_OBJECT
 	public:
-		SpinControl(const QWidget *parent)
+		SpinControl(QWidget *parent = 0) : QGroupBox(parent)
 		{
 			QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
 			layout->setSizeConstraint(QLayout::SetFixedSize);

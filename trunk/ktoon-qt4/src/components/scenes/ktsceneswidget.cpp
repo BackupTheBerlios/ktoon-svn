@@ -24,6 +24,7 @@
 #include "ddebug.h"
 #include "dimagebutton.h"
 #include "doptionaldialog.h"
+#include "dconfig.h"
 
 #include <QToolTip>
 #include <QMessageBox>

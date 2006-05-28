@@ -192,5 +192,6 @@ class Q_GUI_EXPORT DApplication : public QApplication
 };
 
 #include "dglobal.h"
+#define dApp static_cast<DApplication *>(qApp)
 
 #endif

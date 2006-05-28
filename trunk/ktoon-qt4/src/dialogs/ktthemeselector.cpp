@@ -36,6 +36,7 @@
 #include <ddebug.h>
 #include <kseparator.h>
 #include <dcolorbutton.h>
+#include <dapplication.h>
 
 KTThemeSelector::KTThemeSelector(QWidget *parent) : DVHBox(parent, Qt::Vertical)
 {

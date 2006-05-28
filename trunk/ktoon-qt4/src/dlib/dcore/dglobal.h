@@ -22,10 +22,7 @@
 #ifndef DGLOBAL_H
 #define DGLOBAL_H
 
-#include "dapplication.h"
 #include "dapplicationproperties.h"
-
-#define dApp static_cast<DApplication *>(qApp)
 
 #define DATA_DIR dAppProp->dataDir()
 #define THEME_DIR dAppProp->themeDir()

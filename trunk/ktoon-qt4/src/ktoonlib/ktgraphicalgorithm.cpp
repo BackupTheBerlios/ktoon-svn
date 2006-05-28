@@ -145,9 +145,9 @@ double *chordLengthParameterize(QPolygonF points,int first,int last)
 
 	for (i = first + 1; i <= last; i++)
 	{
-		int denominator = u[last-first];
+		int denominator = (int) u[last-first];
 		
-		if ( denominator != 0.0f)
+		if ( denominator != 0 )
 		{
 			u[i-first] = u[i-first] / denominator;
 		}
@@ -236,8 +236,8 @@ QPointF* generateBezier(QPolygonF &points, int first, int last, double *uPrime,F
 	double det_C0_C1,		/* Determinants of matrices	*/
 	det_C0_X,
 	det_X_C1;
-	double alpha_l,		/* Alpha values, left and right	*/
-	alpha_r;
+	double alpha_l = 0,		/* Alpha values, left and right	*/
+	alpha_r = 0;
 	FitVector tmp;			/* Utility variable		*/
 	QPointF *curve;
 	
@@ -410,7 +410,7 @@ double newtonRaphsonRootFind(QPointF *Q,QPointF P,double u)
 	double  numerator, denominator;
 	QPointF Q1[3], Q2[2];	/*  Q' and Q''			*/
 	QPointF Q_u, Q1_u, Q2_u; /*u evaluated at Q, Q', & Q''	*/
-	double  uPrime;		/*  Improved u			*/
+	double  uPrime = 0;		/*  Improved u			*/
 	int i;
     
 	/* Compute Q(u)	*/

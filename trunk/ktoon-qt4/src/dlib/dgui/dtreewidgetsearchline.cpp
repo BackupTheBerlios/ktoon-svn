@@ -22,7 +22,7 @@
 
 #include <qtoolbar.h>
 #include <ddebug.h>
-#include <dclicklineedit.h>
+#include "dclicklineedit.h"
 
 #include <QApplication>
 #include <QTimer>

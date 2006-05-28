@@ -25,6 +25,7 @@
 #include "ktpreferences.h"
 #include "dglobal.h"
 #include "ddebug.h"
+#include "dapplication.h"
 
 #include <QLabel>
 #include <QLineEdit>

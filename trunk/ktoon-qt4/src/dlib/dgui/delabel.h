@@ -20,7 +20,7 @@
 #ifndef DELABEL_H
 #define DELABEL_H
 
-#include <dsqueezelabel.h>
+#include "dsqueezelabel.h"
 
 #include <QLineEdit>
 #include <QMouseEvent>

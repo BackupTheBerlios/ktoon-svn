@@ -27,6 +27,7 @@
 #include <QFrame>
 #include <QPainterPath>
 #include <QSizePolicy>
+#include <QDir>
 
 #include <cmath>
 

@@ -30,6 +30,7 @@
 #include <QLabel>
 #include <QIntValidator>
 #include <QToolButton>
+#include <QFileDialog>
 
 #include "dglobal.h"
 #include "ddebug.h"
@@ -429,6 +430,6 @@ void KTExportWidget::chooseFile()
 // 	{
 // 		m_filePath->setText(fileDialog.selectedFiles()[0] );
 // 	}
-	QString file = QFileDialog::getSaveFileName(this, "Choose a filename to save under", QDir::homePath());
+	QString file = QFileDialog::getSaveFileName(this, tr("Choose a filename to save under"), QDir::homePath());
 	m_filePath->setText(file);
 }

@@ -138,6 +138,7 @@ bool KTModuleWidgetBase::event( QEvent * e )
 
 void KTModuleWidgetBase::enterEvent(QEvent *e)
 {
+	Q_UNUSED(e);
 	QPalette pal = palette();
 	pal.setBrush(QPalette::Background, pal.highlight ());
 	pal.setBrush(QPalette::Text, pal.base ());
@@ -146,6 +147,7 @@ void KTModuleWidgetBase::enterEvent(QEvent *e)
 
 void KTModuleWidgetBase::leaveEvent(QEvent *e)
 {
+	Q_UNUSED(e);
 	QPalette pal = palette();
 	m_title->setPalette(pal);
 }

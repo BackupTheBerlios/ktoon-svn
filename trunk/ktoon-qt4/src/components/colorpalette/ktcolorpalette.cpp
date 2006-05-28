@@ -28,6 +28,7 @@
 #include <QToolTip>
 #include "dimagebutton.h"
 #include "dglobal.h"
+#include "dconfig.h"
 
 
 KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_currentOutlineColor(Qt::black), m_currentFillColor(Qt::transparent), m_flagGradient(true), m_type(Solid)

@@ -74,9 +74,8 @@ void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *
 
 QStringList FFMpegPlugin::createImages(const QList<KTScene *> &scenes, const QDir &dir, float sx, float sy, const char *format)
 {
-#ifdef HAVE_FFMPEG
 	QStringList paths;
-	
+#ifdef HAVE_FFMPEG
 	int nPhotogramsRenderized = 0;
 
 	
@@ -159,9 +158,9 @@ QStringList FFMpegPlugin::createImages(const QList<KTScene *> &scenes, const QDi
 			
 		}
 	}
-	
-	return paths;
 #endif
+	return paths;
+
 }
 
 

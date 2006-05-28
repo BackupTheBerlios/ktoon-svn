@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 #include "dcommand.h"
-#include <daction.h>
-#include <dactionmanager.h>
+#include "daction.h"
+#include "dactionmanager.h"
 #include <ddebug.h>
 
 #include <QMenu>
