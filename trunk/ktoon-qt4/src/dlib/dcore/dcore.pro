@@ -51,3 +51,8 @@ CONFIG += release \
 warn_on \
 dll
 TEMPLATE = lib
+
+!include(../dlibconfig.pri) {
+error("Please configure first")
+}
+

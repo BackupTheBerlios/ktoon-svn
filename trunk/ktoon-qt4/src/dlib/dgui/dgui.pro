@@ -114,3 +114,8 @@ macx{
   QMAKE_LIBDIR = ../../../src/dlib/dcore
   LIBS += -ldcore
 }
+!include(../dlibconfig.pri) {
+error("Please configure first")
+}
+
+
