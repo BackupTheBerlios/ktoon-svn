@@ -2,37 +2,94 @@
 {
 	\subsection{Marco teórico}
 	{
+		\hypertarget{software} {
+		\subsubsection{Ingeniería de software}
+		{
+			La Ingeniería de software es la rama que se encarga de crear y mantener las aplicaciones de software aplicando tecnologías y prácticas de las ciencias computacionales, ingeniería, administración de proyectos, el ámbito de la aplicación, y otros campos.
+			\\
+			La ingeniería de software, tiene que ver con el costo y la confiabilidad de las aplicaciones de software, dado que que algunas aplicaciones de software tienen millones de lineas de código se espera que estas se desempeñen bien en condiciones cambiantes.
+			\\
+			Software es el conjunto de instrucciones que permite al hardware de la computadora desempeñar trabajo útil. En las últimas décadas del siglo XX, las reducciones de costo en hardware llevaron a que el software fuera un componente ubicuo de los dispositivos usados por las sociedades industrializadas.
+			\\
+			Ingeniería de software, se puede definir como el conjunto de métodos, técnicas y herramientas que controlan el proceso integral del desarrollo de software y suministra las bases para construir software de calidad de forma eficiente en los plazos adecuados. \cite{wikipedia}
+		}
+		}
+		
 		\hypertarget{xp} {
 		\subsubsection{Programación extrema }
 		{
-			\TODO
+			La programación extrema (también conocida como XP) es una metodología de ingeniería de software para el desarrollo del mismo, que hace énfasis en los siguientes aspectos: satisfacción del cliente y trabajo en equipo
+			\\	
+			La programación extrema fue creada pensando en las siguientes circunstancias:
+			\\
+			Proyectos en los que los requisitos tienen altas probabilidades de cambiar con el tiempo (por ejemplo, porque el cliente no tiene claro lo que quiere, o porque el cambio de requisitos está ligado al dominio del problema a resolver).
+			Proyectos con alto riesgo (por ejemplo, proyectos con una fecha de entrega que es indispensable cumplir, o proyectos totalmente novedosos para la industria).
+			Proyectos con un grupo pequeño de programadores (entre 2 y 12), aunque el equipo completo sea bastante más extenso (incluye a jefes de equipo y representantes de clientes).
+			\\			
+			\textbf{Aspectos destacados} \\
+			Los aspectos que habitualmente se destacan cuando se habla de programación extrema son los siguientes:
+			\\
+			\begin{itemize}
+			\item Desarrollo basado en iteraciones incrementales, usando user stories como guía.
+			\item Muchos lanzamientos con pequeños cambios
+			\item Simplicidad.
+			\item Refactorización (reescritura de código/diseño para mejorar la legibilidad y/o \item comprensión del mismo sin cambiar el significado).
+			\item Constante interacción con el cliente durante todo el desarrollo (user stories, dudas durante el desarrollo, pruebas de aceptación...).
+			\item Codificación en parejas.
+			\item Propiedad colectiva de todo el código
+			\item Pruebas unitarias codificadas antes que el propio código, que deben ser pasadas antes del lanzamiento del mismo
+			\item Pruebas de integración e integración del código realizadas secuencialmente y de forma frecuente
+			\item Pruebas de aceptación realizadas frecuentemente
+			\end{itemize}
+			A continuación se muestra un diagrama que describe el desarrollo del proyecto usando la metodología XP:
+			\begin{center}
+			\includegraphics[width=9cm]{images/xp.png}
+			\end{center}
+			\cite{xpblog}
 		}
 		}
 		
 		\hypertarget{uml} {
 		\subsubsection{UML: Unified Modeling Language }
 		{
-			\TODO
+			El UML es un lenguaje que permite modelar los elementos que forman un sistema software orientado a objetos, es el lenguaje de modelado mas utilizado en la actualidad aunque aun no es un estándar oficial.
+			\\
+			Cabe resaltar que UML no es no un método o un proceso, ni una herramienta mágica que garantiza el éxito del proyecto, sino que es un lenguaje para visualizar de una forma mas sencilla el proceso del desarrollo.
+			\\
+			Dentro de UML podemos encontrar los siguientes diagramas o artefactos:
+			\begin{itemize}
+			\item Diagrama de clases
+			\item Diagrama de componentes
+			\item Diagrama de objetos
+			\item Diagrama de estructura compuesta
+			\item Diagrama de despliegue
+			\item Diagrama de paquetes
+			\item Diagrama de actividades
+			\item Diagrama de casos de uso
+			\item Diagrama de estados
+			\item Diagrama de secuencia
+			\item Diagrama de comunicación
+			\item Diagrama de tiempos (UML 2.0)
+			\end{itemize}
 		}
 		}
-		
+				
 		\hypertarget{refactorizacion} {
 		\subsubsection{Refactorización}
 		{
-			\TODO
 			\textit{"Un cambio hecho a la estructura interna del código para hacerlo más fácil de comprender y más barato de modificar sin cambiar su comportamiento externo."}  \cite{refactoring}
 			\\
-			En ingeniería del software, el término refactorización se usa a menudo para describir la modificación del código fuente sin cambiar su comportamiento, lo que se conoce informalmente por limpiar el código. La refactorización se realiza a menudo como parte del proceso de desarrollo del software: los desarrolladores alternan la inserción de nuevas funcionalidades y casos de prueba con la refactorización del código para mejorar su consistencia interna y su claridad. Los tests aseguran que la refactorización no cambia el comportamiento del código.
+			En \hyperlink{software}{ingeniería del software}, el término refactorización se usa a menudo para describir la modificación del código fuente sin cambiar su comportamiento, lo que se conoce informalmente por limpiar el código. La refactorización se realiza a menudo como parte del proceso de desarrollo del software: los desarrolladores alternan la inserción de nuevas funcionalidades y casos de prueba con la refactorización del código para mejorar su consistencia interna y su claridad. Los tests aseguran que la refactorización no cambia el comportamiento del código.
 			\\
 			La refactorización es la parte del mantenimiento del código que no arregla errores ni añade funcionalidad. El objetivo, por el contrario, es mejorar la facilidad de comprensión del código o cambiar su estructura y diseño y eliminar código muerto, para facilitar el mantenimiento en el futuro. Añadir nuevo comportamiento a un programa puede ser difícil con la estructura dada del programa, así que un desarrollador puede refactorizarlo primero para facilitar esta tarea y luego añadir el nuevo comportamiento.
 			\\
-			Se refiere a la factorizacion matematica, para ver una estructura mas clara cuando se realiza..... previamente (como las dos raíces en -1 y +1). De manera similar, en la refactorización del software, el cambio en la estructura visible puede frecuentemente revelar la estructura interna "oculta" del código original.
+			El termino se refiere a la factorización matemática, para ver una estructura mas clara cuando se realiza esta se realiza. De manera similar, en la refactorización del software, el cambio en la estructura visible puede frecuentemente revelar la estructura interna "oculta" del código original.
 			\\
 			La refactorización debe ser realizada como un paso separado, para poder comprobar con mayor facilidad que no se han introducido errores al llevarla a cabo. Al final de la refactorización, cualquier cambio en el comportamiento es claramente un bug y puede ser arreglado de manera separada a la depuración de la nueva funcionalidad.
 			\\
 			Un ejemplo de una refactorización trivial es cambiar el nombre de una variable para que sea más significativo, como una sola letra 't' a 'tiempo'. Una refactorización más compleja es transformar el trozo dentro de un bloque en una subrutina. Una refactorización todavía más compleja es remplazar una sentencia condicional if por polimorfismo.
 			\\
-			Aunque la limpieza de código se lleva realizando desde hace décadas, el factor clave de la refactorización es realizar de manera intencionada la limpieza separándola de la adición de funcionalidad nueva, usando un catálogo conocido de métodos útiles de refactorización, para después comprobar el código ejecutando las pruebas unitarias, sabiendo que cualquier cambio en el comportamiento significa que se ha introducido un error.
+			Aunque la limpieza de código se lleva realizando desde hace décadas, el factor clave de la refactorización es realizar de manera intencionada la limpieza separándola de la adición de funcionalidad nueva, usando un catálogo conocido de métodos útiles de refactorización, para después comprobar el código ejecutando las pruebas unitarias, sabiendo que cualquier cambio en el comportamiento significa que se ha introducido un error. \cite{wikipedia}
 		}
 		}
 		
@@ -167,7 +224,6 @@
 		}
 	}
 	
-	\newpage
 	\subsection{Antecedentes}
 	{
 		Sobré este proyecto no se encontró otros proyectos similares, sinembargo no se descarta la posibilidad de que exista software con las características propuestas en este proyecto.
@@ -188,7 +244,6 @@
 		}
 	}
 	
-	\newpage
 	\subsection{Marco conceptual}
 	{
 		A continuación se presentan una serie de conceptos claves y/o referenciados en este proyecto.
@@ -214,7 +269,6 @@
 			\hypertarget{api} {
 			\item{API} {
 			Metodo de acceso a la interfaz de programación, ayuda al programador a realizar mas facilmente sus tareas y de forma mas organizada, permitiendo el acceso a los diferentes componentes de una biblioteca.
-			\TODO
 			}}
 			
 			\end{itemize}
@@ -267,7 +321,6 @@
 		\item Giros\\
 		Las vistas frontales, laterales y de espaldas de un personaje permitiendo visualizar una imagen tridimensional del personaje.
 		
-		\newpage
 		\hypertarget{script} {
 		\item Guión \\
 		En ingles llamado \textit{script} que es el desarrollo escrito de la acción, diálogo y  los sonidos de una animación
@@ -318,7 +371,6 @@
 		
 		\end{itemize}
 		}
-		\newpage
 		\subsubsection{Roles}
 		\begin{itemize}
 		\item Creador Original \\
