@@ -35,7 +35,8 @@ class KTGraphicalAlgorithm
 		~KTGraphicalAlgorithm() {};
 	
 	public:
-		static QPainterPath bezierFit(QPolygonF &points, float error);
+		static QPainterPath bezierFit(QPolygonF &points_, float error);
+		static QPolygonF polygonFit(const QPolygonF &points);
 		
 };
 

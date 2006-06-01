@@ -565,8 +565,10 @@ QPointF *fitCubic(QPolygonF &points,int first,int last,FitVector tHat1,FitVector
 }
 
 
-QPainterPath KTGraphicalAlgorithm::bezierFit( QPolygonF &points,float error)
+QPainterPath KTGraphicalAlgorithm::bezierFit( QPolygonF &points_,float error)
 {
+	QPolygonF points = KTGraphicalAlgorithm::polygonFit( points_ );
+	
 	FitVector tHat1, tHat2;
 
 	tHat1 = computeLeftTangent(points,0);
@@ -611,7 +613,6 @@ QPainterPath KTGraphicalAlgorithm::bezierFit( QPolygonF &points,float error)
 	if(width>3)
 	{
 		path.moveTo(curve[0]);
-// 		path.cubicTo(curve[1], curve[2],curve[3] );
 		
 		for(int i = 0; i < width; i += 4)
 		{
@@ -626,4 +627,74 @@ QPainterPath KTGraphicalAlgorithm::bezierFit( QPolygonF &points,float error)
 	delete[] curve;
 	return path;
 }
+
+QPolygonF fillLine(const QPointF &first_, const QPointF &second_)
+{
+	QPolygonF filled;
+	
+	QPointF first = first_, second = second_;
+	
+	double m = 0;
+	
+	double x1 = first.x();
+	double y1 = first.y();
+	double x2 = second.x();
+	double y2 = second.y();
+	
+	filled << first;
+	
+	if ( x2 == x1 )
+	{
+		return filled;
+	}
+	
+	m = (y2 - y1) / (x2 - x1);
+	
+	SHOW_VAR(m);
+	
+	for(int x = x1; x < qMax(first.x(), second.x()); x += 1 )
+	{
+		SHOW_VAR(x);
+		
+		QPointF point;
+		point.setX(x);
+	
+		point.setY(y1+m*(x-x1));
+		
+		if ( m < 0 )
+		{
+			filled.push_back(point);
+		}
+		else if ( m > 0 )
+		{
+			filled << point;
+		}
+	}
+	
+	return filled;
+}
+
+QPolygonF KTGraphicalAlgorithm::polygonFit(const QPolygonF &points)
+{
+	QPolygonF lines;
+	
+	for(int i = 0; i < points.count(); i+=2 )
+	{
+		QPointF first = points[i];
+		QPointF second = points[i+1];
+		
+		if ( i+1 >= points.count() )
+		{
+			lines << points[i];
+			break;
+		}
+		
+		lines << fillLine(first, second);
+	}
+	
+	return lines;
+}
+
+
+
 
