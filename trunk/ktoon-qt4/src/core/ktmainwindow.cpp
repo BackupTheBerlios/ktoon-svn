@@ -56,9 +56,6 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 {
 	DINIT;
 	
-	m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
-	
-	
 	setObjectName("KTMainWindow_");
 	
 	m_osd = new KTOsd( centralWidget() );
@@ -67,13 +64,15 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	setStatusBar( m_statusBar );
 	
 	setWindowTitle(tr("KToon: 2D animation toolkit"));
+	m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
+	
 	
 	m_projectManager = new KTProjectManager(this);
 	splash->setMessage( tr("Setting up the project manager") );
 	
 	m_drawingSpace = new KTWorkspace;
 	m_drawingSpace->setWindowIcon(QIcon(THEME_DIR+"/icons/illustration_mode.png"));
-	m_drawingSpace->setScrollBarsEnabled ( true );
+	m_drawingSpace->setScrollBarsEnabled( true );
 	
 	addWidget(m_drawingSpace, tr("Illustration"), true);
 	
@@ -154,7 +153,9 @@ void KTMainWindow::newViewDocument(const QString &name)
 		messageToOSD(tr("Opening a new document..."));
 		
 		KTScene *scene = m_projectManager->currentScene();
+		
 		m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
+		
 		if ( scene )
 		{
 			m_statusBar->advance(4);
