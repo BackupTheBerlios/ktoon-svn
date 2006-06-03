@@ -1,0 +1,1240 @@
+------------------------------------------------------------------------
+r408 | krawek | 2006-03-29 21:44:05 -0500 (mié, 29 mar 2006) | 1 line
+
+Applied patch to build.sh, thanks to Dirk Mueller
+------------------------------------------------------------------------
+r407 | kuadrosx | 2006-03-23 22:37:16 -0500 (jue, 23 mar 2006) | 1 line
+
+fixed
+------------------------------------------------------------------------
+r406 | krawek | 2006-03-23 21:15:48 -0500 (jue, 23 mar 2006) | 1 line
+
+Fixed ffmpeg plugin
+------------------------------------------------------------------------
+r405 | krawek | 2006-03-23 15:52:09 -0500 (jue, 23 mar 2006) | 1 line
+
+Added click line edit, and install dlib headers 
+------------------------------------------------------------------------
+r403 | kuadrosx | 2006-03-22 16:50:55 -0500 (mié, 22 mar 2006) | 1 line
+
+moved render attributte from project to global configuration
+------------------------------------------------------------------------
+r402 | krawek | 2006-03-20 22:40:20 -0500 (lun, 20 mar 2006) | 1 line
+
+Frame cloning complete
+------------------------------------------------------------------------
+r401 | krawek | 2006-03-20 22:31:11 -0500 (lun, 20 mar 2006) | 1 line
+
+Improved scenes support and frame cloning
+------------------------------------------------------------------------
+r400 | krawek | 2006-03-18 16:44:47 -0500 (sáb, 18 mar 2006) | 1 line
+
+Fixed theme manager
+------------------------------------------------------------------------
+r399 | krawek | 2006-03-18 16:38:09 -0500 (sáb, 18 mar 2006) | 1 line
+
+Added missing icons, fixing theme manager
+------------------------------------------------------------------------
+r398 | krawek | 2006-03-18 15:49:04 -0500 (sáb, 18 mar 2006) | 1 line
+
+Updating to KToon::RenderType
+------------------------------------------------------------------------
+r397 | krawek | 2006-03-18 14:23:59 -0500 (sáb, 18 mar 2006) | 1 line
+
+Removed folder in library, fixed pen widget
+------------------------------------------------------------------------
+r396 | krawek | 2006-03-18 12:47:37 -0500 (sáb, 18 mar 2006) | 1 line
+
+New about images
+------------------------------------------------------------------------
+r395 | krawek | 2006-03-18 12:07:47 -0500 (sáb, 18 mar 2006) | 5 lines
+
+Improved export iface and export plugins,
+improved configuration area,
+AGraphicComponent is drawed by itself,
+new icons for scene, layer and frame,
+many fixes and improvements
+------------------------------------------------------------------------
+r394 | kuadrosx | 2006-03-18 00:47:10 -0500 (sáb, 18 mar 2006) | 1 line
+
+added GUI for use zoom and fixed ungroup
+------------------------------------------------------------------------
+r393 | krawek | 2006-03-16 22:17:39 -0500 (jue, 16 mar 2006) | 1 line
+
+Reimplemented Undo/Redo
+------------------------------------------------------------------------
+r392 | krawek | 2006-03-15 20:51:02 -0500 (mié, 15 mar 2006) | 1 line
+
+loop
+------------------------------------------------------------------------
+r391 | krawek | 2006-03-15 18:14:10 -0500 (mié, 15 mar 2006) | 1 line
+
+New paint area properties, onion skin improvements, camera info and many fixes
+------------------------------------------------------------------------
+r390 | krawek | 2006-03-15 09:25:28 -0500 (mié, 15 mar 2006) | 1 line
+
+Added menu to animation space
+------------------------------------------------------------------------
+r389 | krawek | 2006-03-14 23:25:20 -0500 (mar, 14 mar 2006) | 1 line
+
+Updated plugin iface, moved brush widget to shape tool, new file ktglobal.h, new pen configurator, many fixes and improvements
+------------------------------------------------------------------------
+r388 | krawek | 2006-03-13 22:07:56 -0500 (lun, 13 mar 2006) | 1 line
+
+Added images, new splash, added new tool icons, added generic export plugin
+------------------------------------------------------------------------
+r387 | kuadrosx | 2006-03-13 15:04:37 -0500 (lun, 13 mar 2006) | 1 line
+
+improved view camera
+------------------------------------------------------------------------
+r386 | kuadrosx | 2006-03-13 13:24:51 -0500 (lun, 13 mar 2006) | 1 line
+
+implemented clone frame
+------------------------------------------------------------------------
+r385 | kuadrosx | 2006-03-13 12:11:30 -0500 (lun, 13 mar 2006) | 1 line
+
+fixed paste frame
+------------------------------------------------------------------------
+r384 | krawek | 2006-03-13 10:18:51 -0500 (lun, 13 mar 2006) | 1 line
+
+Fixes and code cleanup
+------------------------------------------------------------------------
+r383 | kuadrosx | 2006-03-12 23:49:39 -0500 (dom, 12 mar 2006) | 1 line
+
+implemeted zoom area on wheel event, improved rotate component and improved colorpalette
+------------------------------------------------------------------------
+r382 | krawek | 2006-03-11 13:40:29 -0500 (sáb, 11 mar 2006) | 1 line
+
+load export plugins
+------------------------------------------------------------------------
+r381 | krawek | 2006-03-11 12:08:55 -0500 (sáb, 11 mar 2006) | 1 line
+
+Fixes
+------------------------------------------------------------------------
+r380 | krawek | 2006-03-11 09:04:40 -0500 (sáb, 11 mar 2006) | 1 line
+
+Loaded projects by command line, warnings--
+------------------------------------------------------------------------
+r379 | krawek | 2006-03-10 13:20:27 -0500 (vie, 10 mar 2006) | 1 line
+
+KTConfigurationArea now is auto-audjustable, filter plugins restored, improvements and fixes
+------------------------------------------------------------------------
+r378 | krawek | 2006-03-09 16:35:37 -0500 (jue, 09 mar 2006) | 1 line
+
+Updated ffmpeg plugin, added date-widgets, Improved gradient-creator gui
+------------------------------------------------------------------------
+r377 | kuadrosx | 2006-03-09 13:22:23 -0500 (jue, 09 mar 2006) | 1 line
+
+improved DGradientCreator
+------------------------------------------------------------------------
+r376 | kuadrosx | 2006-03-08 23:13:05 -0500 (mié, 08 mar 2006) | 1 line
+
+improved GUI of color palette
+------------------------------------------------------------------------
+r375 | krawek | 2006-03-08 09:18:32 -0500 (mié, 08 mar 2006) | 1 line
+
+Updated ming plugin
+------------------------------------------------------------------------
+r374 | kuadrosx | 2006-03-08 00:19:42 -0500 (mié, 08 mar 2006) | 1 line
+
+improved color palette
+------------------------------------------------------------------------
+r373 | krawek | 2006-03-06 22:09:11 -0500 (lun, 06 mar 2006) | 1 line
+
+splitted lib in dlib/dcore dlib/dgui and ktoonlib, load names in library again
+------------------------------------------------------------------------
+r372 | krawek | 2006-03-06 09:08:37 -0500 (lun, 06 mar 2006) | 1 line
+
+Improved APolygonalTool, fixing onion skin, added properties menu entry to KTViewDocument
+------------------------------------------------------------------------
+r371 | krawek | 2006-03-06 07:53:57 -0500 (lun, 06 mar 2006) | 1 line
+
+APolygonalTool
+------------------------------------------------------------------------
+r370 | kuadrosx | 2006-03-06 06:52:53 -0500 (lun, 06 mar 2006) | 1 line
+
+loaded names of layers and frames
+------------------------------------------------------------------------
+r369 | krawek | 2006-03-04 18:13:26 -0500 (sáb, 04 mar 2006) | 1 line
+
+Cleaning potrace
+------------------------------------------------------------------------
+r368 | krawek | 2006-03-03 10:28:48 -0500 (vie, 03 mar 2006) | 1 line
+
+Fixed
+------------------------------------------------------------------------
+r367 | kuadrosx | 2006-03-02 20:13:24 -0500 (jue, 02 mar 2006) | 1 line
+
+fixed scale graphic component
+------------------------------------------------------------------------
+r366 | krawek | 2006-03-01 19:13:20 -0500 (mié, 01 mar 2006) | 1 line
+
+Added potrace lib
+------------------------------------------------------------------------
+r365 | kuadrosx | 2006-02-28 23:26:26 -0500 (mar, 28 feb 2006) | 1 line
+
+ported colorpalette to qt4
+------------------------------------------------------------------------
+r364 | krawek | 2006-02-27 20:52:00 -0500 (lun, 27 feb 2006) | 1 line
+
+Added preference table to pencil configuration widget
+------------------------------------------------------------------------
+r363 | krawek | 2006-02-27 17:20:14 -0500 (lun, 27 feb 2006) | 1 line
+
+Fixed bezier brush
+------------------------------------------------------------------------
+r362 | kuadrosx | 2006-02-27 12:57:27 -0500 (lun, 27 feb 2006) | 1 line
+
+added widget configurator to pen
+------------------------------------------------------------------------
+r361 | krawek | 2006-02-27 08:38:38 -0500 (lun, 27 feb 2006) | 1 line
+
+Fixing bezier brush
+------------------------------------------------------------------------
+r360 | kuadrosx | 2006-02-27 00:28:45 -0500 (lun, 27 feb 2006) | 1 line
+
+added new ktgraphicalgorithm and used bezierFit in bezier brush
+------------------------------------------------------------------------
+r359 | krawek | 2006-02-25 12:51:09 -0500 (sáb, 25 feb 2006) | 1 line
+
+Fixed fill tool, fixed brush adjuster, updated ccbar and ccbutton to Qt 4.1.1
+------------------------------------------------------------------------
+r358 | krawek | 2006-02-25 09:51:23 -0500 (sáb, 25 feb 2006) | 1 line
+
+Documentation, brush updated to Qt4.1.1, pdf documentation
+------------------------------------------------------------------------
+r357 | krawek | 2006-02-25 08:55:24 -0500 (sáb, 25 feb 2006) | 1 line
+
+Qt 4.1.1 compatibility
+------------------------------------------------------------------------
+r356 | krawek | 2006-02-22 14:53:10 -0500 (mié, 22 feb 2006) | 1 line
+
+Documentation
+------------------------------------------------------------------------
+r355 | krawek | 2006-02-20 21:27:43 -0500 (lun, 20 feb 2006) | 1 line
+
+Documentation
+------------------------------------------------------------------------
+r354 | kuadrosx | 2006-02-20 13:58:12 -0500 (lun, 20 feb 2006) | 1 line
+
+documented KTGradientViewer, KTGradientSelector, KTGradientCreator and KTDisplaypath
+------------------------------------------------------------------------
+r353 | xtingray | 2006-02-19 19:44:34 -0500 (dom, 19 feb 2006) | 1 line
+
+doc/ : Spanish & English Documentation Process
+------------------------------------------------------------------------
+r352 | xtingray | 2006-02-19 17:45:58 -0500 (dom, 19 feb 2006) | 1 line
+
+doc/ : Spanish/English Documentation Process
+------------------------------------------------------------------------
+r351 | xtingray | 2006-02-19 17:41:13 -0500 (dom, 19 feb 2006) | 1 line
+
+doc/mainpage.dox: Spanish/English Documentation Support
+------------------------------------------------------------------------
+r350 | krawek | 2006-02-18 14:00:30 -0500 (sáb, 18 feb 2006) | 1 line
+
+Lib documentation, still incomplete
+------------------------------------------------------------------------
+r349 | krawek | 2006-02-18 11:45:53 -0500 (sáb, 18 feb 2006) | 1 line
+
+Many fixes and improvements
+------------------------------------------------------------------------
+r348 | kuadrosx | 2006-02-17 22:35:39 -0500 (vie, 17 feb 2006) | 1 line
+
+Added missing file
+------------------------------------------------------------------------
+r347 | kuadrosx | 2006-02-16 22:44:19 -0500 (jue, 16 feb 2006) | 1 line
+
+implented order tools
+------------------------------------------------------------------------
+r346 | krawek | 2006-02-16 06:37:19 -0500 (jue, 16 feb 2006) | 1 line
+
+Improved drawing operations, many fixes and improvements
+------------------------------------------------------------------------
+r344 | krawek | 2006-02-15 18:01:03 -0500 (mié, 15 feb 2006) | 1 line
+
+Many fixes, KTConfig handles string lists, .ktpp => .ktn && .ktn => .ktp, file menu rewritted, removed project menu, documentation, recent menu and messages to osd when open,save projects 
+------------------------------------------------------------------------
+r343 | kuadrosx | 2006-02-14 21:25:05 -0500 (mar, 14 feb 2006) | 1 line
+
+added menus
+------------------------------------------------------------------------
+r342 | krawek | 2006-02-14 07:54:46 -0500 (mar, 14 feb 2006) | 1 line
+
+Added opengl paint device widget, improved crashhandler 
+------------------------------------------------------------------------
+r340 | kuadrosx | 2006-02-13 14:45:39 -0500 (lun, 13 feb 2006) | 1 line
+
+added support for move layer in exposure sheet and renamed KTGradientManager for KTGradientCreator
+------------------------------------------------------------------------
+r338 | krawek | 2006-02-12 22:59:52 -0500 (dom, 12 feb 2006) | 1 line
+
+Improved build.sh and configure scripts, improved gradient configurator
+------------------------------------------------------------------------
+r337 | krawek | 2006-02-12 15:51:21 -0500 (dom, 12 feb 2006) | 1 line
+
+new Gradient tool and gradient configurator, new configuration area, improved text tool
+------------------------------------------------------------------------
+r336 | krawek | 2006-02-12 14:23:31 -0500 (dom, 12 feb 2006) | 1 line
+
+Added missing file
+------------------------------------------------------------------------
+r335 | krawek | 2006-02-12 12:21:51 -0500 (dom, 12 feb 2006) | 1 line
+
+Drawing gradient in export plugins
+------------------------------------------------------------------------
+r334 | krawek | 2006-02-12 12:03:46 -0500 (dom, 12 feb 2006) | 1 line
+
+Improved menu actions, improved KToonStyle, Make/Import ktoon project package
+------------------------------------------------------------------------
+r333 | krawek | 2006-02-11 21:34:41 -0500 (sáb, 11 feb 2006) | 12 lines
+
+Added quazip
+Added toonka palette,
+Move Layer func,
+fixed aspell dependence,
+node eraser and shape brush icons,
+improved KToonStyle,
+Fixed load project,
+Added long options to build.sh
+gradients fixes,
+Load/Save gradients,
+Load/Save palettes,
+added frame name and layer name support.
+------------------------------------------------------------------------
+r332 | krawek | 2006-02-09 18:18:16 -0500 (jue, 09 feb 2006) | 1 line
+
+Improved GCEditor, moved config wizard to KTApplication, small fixes in selection, improved KSeparator, move layer
+------------------------------------------------------------------------
+r331 | krawek | 2006-02-09 14:09:32 -0500 (jue, 09 feb 2006) | 1 line
+
+Adapted and fixed library
+------------------------------------------------------------------------
+r329 | krawek | 2006-02-09 09:57:00 -0500 (jue, 09 feb 2006) | 1 line
+
+KToon is 100% ported to Qt4
+------------------------------------------------------------------------
+r328 | kuadrosx | 2006-02-08 19:06:04 -0500 (mié, 08 feb 2006) | 1 line
+
+fixed components graphics transformations
+------------------------------------------------------------------------
+r327 | krawek | 2006-02-08 16:16:35 -0500 (mié, 08 feb 2006) | 1 line
+
+Added spell checker
+------------------------------------------------------------------------
+r324 | krawek | 2006-02-08 12:22:14 -0500 (mié, 08 feb 2006) | 1 line
+
+Check QT >= 4.1, added launch first configuration dialog to edit menu
+------------------------------------------------------------------------
+r323 | xtingray | 2006-02-08 10:59:15 -0500 (mié, 08 feb 2006) | 1 line
+
+Documentation
+------------------------------------------------------------------------
+r322 | kuadrosx | 2006-02-07 19:04:40 -0500 (mar, 07 feb 2006) | 1 line
+
+documented KTAccion, KTActionManager, CCBar, CCButton, ConfigWizard
+------------------------------------------------------------------------
+r321 | krawek | 2006-02-06 19:49:44 -0500 (lun, 06 feb 2006) | 1 line
+
+Added to doxyfile usecase diagrams and requirements
+------------------------------------------------------------------------
+r319 | krawek | 2006-02-06 17:04:47 -0500 (lun, 06 feb 2006) | 1 line
+
+doxy main page
+------------------------------------------------------------------------
+r318 | krawek | 2006-02-06 16:46:16 -0500 (lun, 06 feb 2006) | 1 line
+
+Added new documentation template
+------------------------------------------------------------------------
+r317 | krawek | 2006-02-06 11:17:21 -0500 (lun, 06 feb 2006) | 1 line
+
+Fixed copy and improved cubic tool
+------------------------------------------------------------------------
+r316 | krawek | 2006-02-05 13:24:10 -0500 (dom, 05 feb 2006) | 1 line
+
+Fixed icons
+------------------------------------------------------------------------
+r315 | krawek | 2006-02-05 11:23:50 -0500 (dom, 05 feb 2006) | 1 line
+
+Fixed open-close-new project
+------------------------------------------------------------------------
+r314 | krawek | 2006-02-05 00:01:39 -0500 (dom, 05 feb 2006) | 1 line
+
+Improved osd, crashhandler
+------------------------------------------------------------------------
+r313 | krawek | 2006-02-04 21:40:24 -0500 (sáb, 04 feb 2006) | 1 line
+
+Improved preferences, fixed mouse position on drawing area, new font chooser widget, improved text tool, fixed onion skin, added form factory
+------------------------------------------------------------------------
+r312 | krawek | 2006-02-04 17:04:36 -0500 (sáb, 04 feb 2006) | 1 line
+
+Added new icons, improved crash widget
+------------------------------------------------------------------------
+r311 | kuadrosx | 2006-02-04 14:40:49 -0500 (sáb, 04 feb 2006) | 1 line
+
+working on text tool config widget
+------------------------------------------------------------------------
+r310 | kuadrosx | 2006-02-04 00:02:29 -0500 (sáb, 04 feb 2006) | 1 line
+
+working on text tool config widget, improved selection and working on zoom
+------------------------------------------------------------------------
+r309 | kuadrosx | 2006-02-03 14:14:59 -0500 (vie, 03 feb 2006) | 1 line
+
+working on Selection Plugin
+------------------------------------------------------------------------
+r308 | krawek | 2006-02-02 19:44:52 -0500 (jue, 02 feb 2006) | 1 line
+
+working on timeline, sync timeline and exposure, graphic component childs are serialized and loaded in projects and libraries
+------------------------------------------------------------------------
+r307 | kuadrosx | 2006-02-01 23:41:56 -0500 (mié, 01 feb 2006) | 1 line
+
+added render type and fps config in new proyect, Update contour selection to new graphic component architecture
+------------------------------------------------------------------------
+r306 | krawek | 2006-02-01 18:17:36 -0500 (mié, 01 feb 2006) | 1 line
+
+Updated export plugins, cameras and AFillTool to new graphic component architecture, improved debug framework
+------------------------------------------------------------------------
+r305 | krawek | 2006-02-01 13:54:35 -0500 (mié, 01 feb 2006) | 1 line
+
+working on timeline
+------------------------------------------------------------------------
+r304 | kuadrosx | 2006-02-01 03:28:51 -0500 (mié, 01 feb 2006) | 1 line
+
+implemented group/ungruop
+------------------------------------------------------------------------
+r303 | krawek | 2006-01-31 16:58:18 -0500 (mar, 31 ene 2006) | 1 line
+
+Improved timeline and exposure sheet
+------------------------------------------------------------------------
+r302 | krawek | 2006-01-31 00:14:09 -0500 (mar, 31 ene 2006) | 1 line
+
+Working on time line
+------------------------------------------------------------------------
+r301 | krawek | 2006-01-30 14:31:49 -0500 (lun, 30 ene 2006) | 1 line
+
+Improved tips, added new gui item class, added cursor support on tools
+------------------------------------------------------------------------
+r300 | krawek | 2006-01-30 10:30:40 -0500 (lun, 30 ene 2006) | 1 line
+
+Improved tips
+------------------------------------------------------------------------
+r299 | krawek | 2006-01-29 23:45:30 -0500 (dom, 29 ene 2006) | 1 line
+
+Tip of day
+------------------------------------------------------------------------
+r298 | krawek | 2006-01-29 12:00:35 -0500 (dom, 29 ene 2006) | 1 line
+
+New class that contains generic algorithms, new random gradient tool
+------------------------------------------------------------------------
+r297 | kuadrosx | 2006-01-28 23:24:09 -0500 (sáb, 28 ene 2006) | 1 line
+
+deleted old nodes from cubic tool
+------------------------------------------------------------------------
+r296 | kuadrosx | 2006-01-28 23:13:37 -0500 (sáb, 28 ene 2006) | 1 line
+
+Cubic tool, improved tool plugin iface
+------------------------------------------------------------------------
+r295 | krawek | 2006-01-28 16:33:45 -0500 (sáb, 28 ene 2006) | 1 line
+
+Kinas is not action script, reimplemented KTModuleWidgetTitle
+------------------------------------------------------------------------
+r294 | krawek | 2006-01-28 15:11:00 -0500 (sáb, 28 ene 2006) | 1 line
+
+Remove fill, countour fill, drop fill, gui improvements
+------------------------------------------------------------------------
+r293 | krawek | 2006-01-28 13:47:49 -0500 (sáb, 28 ene 2006) | 1 line
+
+Fill tool
+------------------------------------------------------------------------
+r292 | krawek | 2006-01-28 12:01:10 -0500 (sáb, 28 ene 2006) | 1 line
+
+Fixes
+------------------------------------------------------------------------
+r291 | krawek | 2006-01-28 10:57:30 -0500 (sáb, 28 ene 2006) | 1 line
+
+only test ffmpeg 0.4.9
+------------------------------------------------------------------------
+r290 | krawek | 2006-01-28 01:47:43 -0500 (sáb, 28 ene 2006) | 1 line
+
+Many fixes
+------------------------------------------------------------------------
+r289 | kuadrosx | 2006-01-27 23:07:16 -0500 (vie, 27 ene 2006) | 1 line
+
+implements contour selection and delete graphic component 
+------------------------------------------------------------------------
+r288 | krawek | 2006-01-27 12:07:49 -0500 (vie, 27 ene 2006) | 1 line
+
+Node eraser tool
+------------------------------------------------------------------------
+r287 | krawek | 2006-01-27 10:07:12 -0500 (vie, 27 ene 2006) | 1 line
+
+Save/Load works again
+------------------------------------------------------------------------
+r286 | krawek | 2006-01-27 00:52:30 -0500 (vie, 27 ene 2006) | 1 line
+
+Improved graphic component, still broken
+------------------------------------------------------------------------
+r285 | krawek | 2006-01-26 14:07:44 -0500 (jue, 26 ene 2006) | 1 line
+
+New graphic component concept, any components are broken
+------------------------------------------------------------------------
+r284 | krawek | 2006-01-26 11:37:12 -0500 (jue, 26 ene 2006) | 1 line
+
+Added scene,layer and frame when new project is created
+------------------------------------------------------------------------
+r283 | krawek | 2006-01-26 00:20:35 -0500 (jue, 26 ene 2006) | 1 line
+
+ffmpeg and ming dependence is optional, handled size and fps for export, fixes
+------------------------------------------------------------------------
+r282 | krawek | 2006-01-25 08:46:58 -0500 (mié, 25 ene 2006) | 1 line
+
+Fixed crash and improved usability
+------------------------------------------------------------------------
+r281 | krawek | 2006-01-25 00:05:05 -0500 (mié, 25 ene 2006) | 1 line
+
+FFMpeg plugin works now\!
+------------------------------------------------------------------------
+r280 | krawek | 2006-01-24 21:01:17 -0500 (mar, 24 ene 2006) | 1 line
+
+Initial ffmpeg plugin
+------------------------------------------------------------------------
+r279 | krawek | 2006-01-24 15:04:09 -0500 (mar, 24 ene 2006) | 1 line
+
+Initial and experimental export support
+------------------------------------------------------------------------
+r278 | krawek | 2006-01-24 08:35:35 -0500 (mar, 24 ene 2006) | 1 line
+
+Ported core to Qt4, Ktoon is 99% ported to Qt4
+------------------------------------------------------------------------
+r276 | krawek | 2006-01-24 07:56:40 -0500 (mar, 24 ene 2006) | 1 line
+
+Improved KTWizard
+------------------------------------------------------------------------
+r275 | krawek | 2006-01-23 10:59:54 -0500 (lun, 23 ene 2006) | 1 line
+
+remove flicker
+------------------------------------------------------------------------
+r271 | krawek | 2006-01-21 18:39:52 -0500 (sáb, 21 ene 2006) | 1 line
+
+Added new renders for OpenGL, Image and Native, and supports for more types like SVG
+------------------------------------------------------------------------
+r270 | krawek | 2006-01-21 02:25:37 -0500 (sáb, 21 ene 2006) | 1 line
+
+Drag&Drop
+------------------------------------------------------------------------
+r269 | krawek | 2006-01-21 01:55:05 -0500 (sáb, 21 ene 2006) | 1 line
+
+Improved configure script
+------------------------------------------------------------------------
+r268 | krawek | 2006-01-20 09:55:08 -0500 (vie, 20 ene 2006) | 1 line
+
+Added missing file, first configure script and tests
+------------------------------------------------------------------------
+r267 | kuadrosx | 2006-01-19 22:51:44 -0500 (jue, 19 ene 2006) | 1 line
+
+updated Library an GCEditor to new selection api
+------------------------------------------------------------------------
+r266 | krawek | 2006-01-19 20:42:48 -0500 (jue, 19 ene 2006) | 1 line
+
+new KTFlatButton, and redesigned preferences dialog
+------------------------------------------------------------------------
+r265 | krawek | 2006-01-19 16:45:38 -0500 (jue, 19 ene 2006) | 1 line
+
+Ported Timeline to Qt4, fixed list widget view
+------------------------------------------------------------------------
+r264 | krawek | 2006-01-19 16:43:18 -0500 (jue, 19 ene 2006) | 1 line
+
+Fixed selection
+------------------------------------------------------------------------
+r263 | kuadrosx | 2006-01-18 21:52:45 -0500 (mié, 18 ene 2006) | 1 line
+
+added copy, paste and cut, improved plugin interface, rewritted selection plugin
+------------------------------------------------------------------------
+r262 | krawek | 2006-01-18 15:13:30 -0500 (mié, 18 ene 2006) | 1 line
+
+Ported exposure and dialogs, rewritted preferences dialog, fixes 
+------------------------------------------------------------------------
+r261 | krawek | 2006-01-18 10:07:54 -0500 (mié, 18 ene 2006) | 1 line
+
+Ported totally lib and dlslib to Qt4
+------------------------------------------------------------------------
+r260 | kuadrosx | 2006-01-18 00:37:21 -0500 (mié, 18 ene 2006) | 1 line
+
+load and save of palettes implemented and drawing gradients with focal, center, start point, end point ...
+------------------------------------------------------------------------
+r259 | krawek | 2006-01-17 13:32:55 -0500 (mar, 17 ene 2006) | 1 line
+
+Added collapsible widget, improved plugin interface, added text tool plugin, improved ktoon style, added KTWorkspace, new KTOON_DATA_DIR definition
+------------------------------------------------------------------------
+r258 | kuadrosx | 2006-01-16 22:24:48 -0500 (lun, 16 ene 2006) | 1 line
+
+Added focal, center, start point, end point to gradients, rewritted KTAnimWidget
+------------------------------------------------------------------------
+r257 | krawek | 2006-01-16 10:45:19 -0500 (lun, 16 ene 2006) | 1 line
+
+Improved tool plugin interface, and tool plugins
+------------------------------------------------------------------------
+r256 | krawek | 2006-01-15 10:33:18 -0500 (dom, 15 ene 2006) | 1 line
+
+Fixed ktoonstyle for compile with qt4.0
+------------------------------------------------------------------------
+r255 | krawek | 2006-01-14 18:09:04 -0500 (sáb, 14 ene 2006) | 1 line
+
+Added new KToonStyle \(alpha\)
+------------------------------------------------------------------------
+r254 | kuadrosx | 2006-01-13 20:32:44 -0500 (vie, 13 ene 2006) | 1 line
+
+Re-designed button bar
+------------------------------------------------------------------------
+r253 | krawek | 2006-01-12 21:32:20 -0500 (jue, 12 ene 2006) | 1 line
+
+Library supports folders
+------------------------------------------------------------------------
+r252 | krawek | 2006-01-11 21:47:43 -0500 (mié, 11 ene 2006) | 1 line
+
+Loaded colors in KTLibrary
+------------------------------------------------------------------------
+r251 | krawek | 2006-01-11 14:28:26 -0500 (mié, 11 ene 2006) | 1 line
+
+Improved KTDebug, please recompile
+------------------------------------------------------------------------
+r250 | krawek | 2006-01-09 14:44:57 -0500 (lun, 09 ene 2006) | 1 line
+
+Fixed remove item from library
+------------------------------------------------------------------------
+r248 | krawek | 2006-01-08 22:01:15 -0500 (dom, 08 ene 2006) | 1 line
+
+New crash handler\!
+------------------------------------------------------------------------
+r247 | krawek | 2006-01-07 18:12:22 -0500 (sáb, 07 ene 2006) | 1 line
+
+TimeLine manages scenes, improved tframestable
+------------------------------------------------------------------------
+r246 | krawek | 2006-01-06 23:08:34 -0500 (vie, 06 ene 2006) | 1 line
+
+Load colors and gradients, fixes
+------------------------------------------------------------------------
+r245 | kuadrosx | 2006-01-06 15:01:43 -0500 (vie, 06 ene 2006) | 1 line
+
+None Type Removed KTGradientManager and fixed close project when not if it is opened 
+------------------------------------------------------------------------
+r244 | krawek | 2006-01-05 22:10:14 -0500 (jue, 05 ene 2006) | 1 line
+
+Improved open project, fixes and code cleanup
+------------------------------------------------------------------------
+r242 | kuadrosx | 2006-01-05 19:41:07 -0500 (jue, 05 ene 2006) | 1 line
+
+Created a new palette xml document
+------------------------------------------------------------------------
+r241 | krawek | 2006-01-05 13:50:57 -0500 (jue, 05 ene 2006) | 1 line
+
+Implemented \'open project\'
+------------------------------------------------------------------------
+r240 | kuadrosx | 2006-01-05 12:11:12 -0500 (jue, 05 ene 2006) | 1 line
+
+many fixes in exposure
+------------------------------------------------------------------------
+r239 | krawek | 2006-01-05 10:42:01 -0500 (jue, 05 ene 2006) | 1 line
+
+Improved timeline model/view
+------------------------------------------------------------------------
+r238 | krawek | 2005-12-24 07:41:17 -0500 (sáb, 24 dic 2005) | 1 line
+
+Timeline ported to model/view
+------------------------------------------------------------------------
+r237 | krawek | 2005-12-23 16:42:22 -0500 (vie, 23 dic 2005) | 1 line
+
+Implemented close project action
+------------------------------------------------------------------------
+r236 | krawek | 2005-12-23 12:11:09 -0500 (vie, 23 dic 2005) | 1 line
+
+Thread for save project 
+------------------------------------------------------------------------
+r235 | krawek | 2005-12-23 09:21:50 -0500 (vie, 23 dic 2005) | 1 line
+
+Fixed
+------------------------------------------------------------------------
+r234 | krawek | 2005-12-23 09:15:05 -0500 (vie, 23 dic 2005) | 1 line
+
+Many fixes, library serialization
+------------------------------------------------------------------------
+r233 | krawek | 2005-12-22 23:21:51 -0500 (jue, 22 dic 2005) | 1 line
+
+Implemented "save" functionality
+------------------------------------------------------------------------
+r232 | kuadrosx | 2005-12-21 22:54:45 -0500 (mié, 21 dic 2005) | 1 line
+
+begins implements persistence
+------------------------------------------------------------------------
+r231 | kuadrosx | 2005-12-21 12:29:50 -0500 (mié, 21 dic 2005) | 1 line
+
+added plugin line
+------------------------------------------------------------------------
+r230 | krawek | 2005-12-21 00:20:01 -0500 (mié, 21 dic 2005) | 1 line
+
+Removed qt3 dependence from libstore
+------------------------------------------------------------------------
+r229 | krawek | 2005-12-20 23:20:03 -0500 (mar, 20 dic 2005) | 1 line
+
+QString -> QPainterPath, custom brushes are loaded
+------------------------------------------------------------------------
+r228 | krawek | 2005-12-20 20:10:07 -0500 (mar, 20 dic 2005) | 1 line
+
+store is a sared lib now, improved selection
+------------------------------------------------------------------------
+r226 | krawek | 2005-12-20 15:48:10 -0500 (mar, 20 dic 2005) | 1 line
+
+[GUI] cleaning gui
+------------------------------------------------------------------------
+r225 | krawek | 2005-12-17 11:30:29 -0500 (sáb, 17 dic 2005) | 1 line
+
+KToon Installer 0.1a
+------------------------------------------------------------------------
+r224 | krawek | 2005-12-17 02:54:34 -0500 (sáb, 17 dic 2005) | 1 line
+
+Implemented selection tool
+------------------------------------------------------------------------
+r223 | krawek | 2005-12-16 14:37:28 -0500 (vie, 16 dic 2005) | 1 line
+
+Usability, fixed brush color
+------------------------------------------------------------------------
+r222 | krawek | 2005-12-16 12:42:54 -0500 (vie, 16 dic 2005) | 1 line
+
+Fixes, protect animation and illustration tabs
+------------------------------------------------------------------------
+r221 | krawek | 2005-12-16 09:50:06 -0500 (vie, 16 dic 2005) | 1 line
+
+Fixes, usability
+------------------------------------------------------------------------
+r220 | krawek | 2005-12-15 08:44:37 -0500 (jue, 15 dic 2005) | 1 line
+
+Singleton
+------------------------------------------------------------------------
+r219 | krawek | 2005-12-13 22:37:52 -0500 (mar, 13 dic 2005) | 1 line
+
+Manu fixes and improvements in brushes, plugins and framework
+------------------------------------------------------------------------
+r218 | krawek | 2005-12-13 19:58:22 -0500 (mar, 13 dic 2005) | 1 line
+
+KTBrush serialization -broke-
+------------------------------------------------------------------------
+r217 | krawek | 2005-12-13 19:24:59 -0500 (mar, 13 dic 2005) | 1 line
+
+Improved brushes, begin serialization
+------------------------------------------------------------------------
+r216 | krawek | 2005-12-13 18:09:59 -0500 (mar, 13 dic 2005) | 1 line
+
+build script now install all files
+------------------------------------------------------------------------
+r215 | krawek | 2005-12-13 14:37:37 -0500 (mar, 13 dic 2005) | 1 line
+
+Fixes
+------------------------------------------------------------------------
+r214 | krawek | 2005-12-12 11:23:10 -0500 (lun, 12 dic 2005) | 1 line
+
+Gradient adjuster
+------------------------------------------------------------------------
+r213 | krawek | 2005-12-11 13:28:39 -0500 (dom, 11 dic 2005) | 1 line
+
+Now reports errors
+------------------------------------------------------------------------
+r212 | kuadrosx | 2005-12-10 17:38:54 -0500 (sáb, 10 dic 2005) | 1 line
+
+Fixes
+------------------------------------------------------------------------
+r211 | krawek | 2005-12-10 17:36:56 -0500 (sáb, 10 dic 2005) | 1 line
+
+New tree list widget
+------------------------------------------------------------------------
+r210 | krawek | 2005-12-09 10:56:05 -0500 (vie, 09 dic 2005) | 1 line
+
+Added new functions to help browser
+------------------------------------------------------------------------
+r209 | krawek | 2005-12-09 08:23:52 -0500 (vie, 09 dic 2005) | 1 line
+
+Fixed gimp palette importer
+------------------------------------------------------------------------
+r208 | krawek | 2005-12-08 23:43:35 -0500 (jue, 08 dic 2005) | 1 line
+
+Palette parser, palette importer, ported and added GIMP palettes to KToon
+------------------------------------------------------------------------
+r207 | krawek | 2005-12-08 16:00:23 -0500 (jue, 08 dic 2005) | 1 line
+
+Fixed SIGSEGV in APaintArea, added vchain icons, Qt3--
+------------------------------------------------------------------------
+r206 | krawek | 2005-12-08 15:14:32 -0500 (jue, 08 dic 2005) | 1 line
+
+New optional dialog, and redesigned config system
+------------------------------------------------------------------------
+r205 | krawek | 2005-12-08 12:31:42 -0500 (jue, 08 dic 2005) | 1 line
+
+KToon graphic library
+------------------------------------------------------------------------
+r204 | kuadrosx | 2005-12-07 13:26:22 -0500 (mié, 07 dic 2005) | 1 line
+
+some improves in colorpalette, scenes and exposure
+------------------------------------------------------------------------
+r203 | krawek | 2005-12-07 09:18:05 -0500 (mié, 07 dic 2005) | 1 line
+
+[GUI] removed dock-titles, added KTToolBox
+------------------------------------------------------------------------
+r202 | krawek | 2005-12-06 20:59:32 -0500 (mar, 06 dic 2005) | 1 line
+
+Help system
+------------------------------------------------------------------------
+r201 | krawek | 2005-12-06 18:56:37 -0500 (mar, 06 dic 2005) | 1 line
+
+KTCellView finished
+------------------------------------------------------------------------
+r200 | krawek | 2005-12-06 07:54:56 -0500 (mar, 06 dic 2005) | 1 line
+
+Fixes
+------------------------------------------------------------------------
+r199 | kuadrosx | 2005-12-05 23:14:40 -0500 (lun, 05 dic 2005) | 1 line
+
+improved color palettes cells view
+------------------------------------------------------------------------
+r198 | krawek | 2005-12-05 07:33:29 -0500 (lun, 05 dic 2005) | 1 line
+
+Fixes
+------------------------------------------------------------------------
+r197 | kuadrosx | 2005-12-05 01:10:31 -0500 (lun, 05 dic 2005) | 1 line
+
+improved the gradient manager
+------------------------------------------------------------------------
+r196 | kuadrosx | 2005-11-30 16:39:20 -0500 (mié, 30 nov 2005) | 1 line
+
+added custom palette and gradient palettes
+------------------------------------------------------------------------
+r195 | krawek | 2005-11-28 21:18:25 -0500 (lun, 28 nov 2005) | 1 line
+
+Brush Editor, Fixes && code cleanup
+------------------------------------------------------------------------
+r194 | krawek | 2005-11-26 12:33:32 -0500 (sáb, 26 nov 2005) | 1 line
+
+Many improvements and fixes
+------------------------------------------------------------------------
+r193 | kuadrosx | 2005-11-25 14:56:42 -0500 (vie, 25 nov 2005) | 1 line
+
+ [GUI] Color palette Canged position widget 
+------------------------------------------------------------------------
+r192 | krawek | 2005-11-24 14:54:50 -0500 (jue, 24 nov 2005) | 1 line
+
+On-Screen Display
+------------------------------------------------------------------------
+r191 | krawek | 2005-11-23 21:06:26 -0500 (mié, 23 nov 2005) | 1 line
+
+Fixed gradient
+------------------------------------------------------------------------
+r190 | kuadrosx | 2005-11-23 17:30:49 -0500 (mié, 23 nov 2005) | 1 line
+
+implements gradient color and cleanup code
+------------------------------------------------------------------------
+r189 | krawek | 2005-11-23 09:43:21 -0500 (mié, 23 nov 2005) | 1 line
+
+Bezier Brush
+------------------------------------------------------------------------
+r188 | krawek | 2005-11-23 02:11:00 -0500 (mié, 23 nov 2005) | 1 line
+
+Brushes improved
+------------------------------------------------------------------------
+r187 | krawek | 2005-11-23 00:13:04 -0500 (mié, 23 nov 2005) | 1 line
+
+Clean up code
+------------------------------------------------------------------------
+r186 | kuadrosx | 2005-11-22 21:21:30 -0500 (mar, 22 nov 2005) | 1 line
+
+implementing color gradients
+------------------------------------------------------------------------
+r185 | kuadrosx | 2005-11-22 10:49:41 -0500 (mar, 22 nov 2005) | 1 line
+
+working gradient color
+------------------------------------------------------------------------
+r184 | krawek | 2005-11-20 11:41:33 -0500 (dom, 20 nov 2005) | 1 line
+
+Implemented selection and group
+------------------------------------------------------------------------
+r183 | kuadrosx | 2005-11-19 19:31:28 -0500 (sáb, 19 nov 2005) | 1 line
+
+Adapted palette to new KTImagesTable
+------------------------------------------------------------------------
+r182 | krawek | 2005-11-19 14:15:28 -0500 (sáb, 19 nov 2005) | 1 line
+
+Improvements in KTImagesTable
+------------------------------------------------------------------------
+r181 | krawek | 2005-11-18 15:27:36 -0500 (vie, 18 nov 2005) | 1 line
+
+New image view; Splitted ktmainwindow.cpp; many GCEditor improvements; Implemented selection
+------------------------------------------------------------------------
+r180 | kuadrosx | 2005-11-18 02:06:01 -0500 (vie, 18 nov 2005) | 1 line
+
+many fixes
+------------------------------------------------------------------------
+r179 | krawek | 2005-11-17 16:03:11 -0500 (jue, 17 nov 2005) | 1 line
+
+Fixed
+------------------------------------------------------------------------
+r178 | kuadrosx | 2005-11-17 01:17:59 -0500 (jue, 17 nov 2005) | 1 line
+
+working in colorcells
+------------------------------------------------------------------------
+r177 | krawek | 2005-11-16 13:28:55 -0500 (mié, 16 nov 2005) | 1 line
+
+Fixed: compilation problem qt >= 4.1
+------------------------------------------------------------------------
+r176 | krawek | 2005-11-16 01:09:54 -0500 (mié, 16 nov 2005) | 1 line
+
+Graphic Component Editor
+------------------------------------------------------------------------
+r175 | krawek | 2005-11-15 23:54:28 -0500 (mar, 15 nov 2005) | 1 line
+
+Selection plugin; libktoon now is shared
+------------------------------------------------------------------------
+r174 | kuadrosx | 2005-11-15 09:35:05 -0500 (mar, 15 nov 2005) | 1 line
+
+fixed color mixer
+------------------------------------------------------------------------
+r173 | krawek | 2005-11-14 12:07:24 -0500 (lun, 14 nov 2005) | 1 line
+
+Added check svn script, and added missing file
+------------------------------------------------------------------------
+r172 | krawek | 2005-11-13 17:56:30 -0500 (dom, 13 nov 2005) | 1 line
+
+Implemented: GraphicComponent: rotate, translate, shear, scale; still not merged 
+------------------------------------------------------------------------
+r171 | krawek | 2005-11-12 19:11:20 -0500 (sáb, 12 nov 2005) | 1 line
+
+Improved time line, fixed shapeplugin
+------------------------------------------------------------------------
+r170 | krawek | 2005-11-12 15:08:20 -0500 (sáb, 12 nov 2005) | 1 line
+
+Improved GUI, paint system, implemented insert layer, remove layer in KTTimeLine
+------------------------------------------------------------------------
+r169 | krawek | 2005-11-12 09:18:08 -0500 (sáb, 12 nov 2005) | 1 line
+
+build.sh 0.1 (support log file), fixed copy&paste problems
+------------------------------------------------------------------------
+r168 | kuadrosx | 2005-11-12 08:31:05 -0500 (sáb, 12 nov 2005) | 1 line
+
+Implemented: Lock frame, Remove frame, Remove layer, many fixes
+------------------------------------------------------------------------
+r167 | krawek | 2005-11-10 19:56:50 -0500 (jue, 10 nov 2005) | 1 line
+
+Fixed: crash
+------------------------------------------------------------------------
+r166 | krawek | 2005-11-10 18:58:47 -0500 (jue, 10 nov 2005) | 1 line
+
+Implemented Onion Skin
+------------------------------------------------------------------------
+r165 | krawek | 2005-11-10 16:28:00 -0500 (jue, 10 nov 2005) | 1 line
+
+Onion Skin
+------------------------------------------------------------------------
+r164 | kuadrosx | 2005-11-10 09:43:48 -0500 (jue, 10 nov 2005) | 1 line
+
+small adjustments in move frame and begins implements remove frame
+------------------------------------------------------------------------
+r163 | kuadrosx | 2005-11-09 14:22:48 -0500 (mié, 09 nov 2005) | 1 line
+
+implements move up and move up frame
+------------------------------------------------------------------------
+r162 | kuadrosx | 2005-11-09 12:24:07 -0500 (mié, 09 nov 2005) | 1 line
+
+implements copy and paste frames, fixed insert layer
+------------------------------------------------------------------------
+r161 | krawek | 2005-11-08 15:04:39 -0500 (mar, 08 nov 2005) | 1 line
+
+Fixes
+------------------------------------------------------------------------
+r160 | krawek | 2005-11-03 15:01:59 -0500 (jue, 03 nov 2005) | 1 line
+
+New build.sh version, added no-debug support
+------------------------------------------------------------------------
+r159 | krawek | 2005-11-03 11:41:59 -0500 (jue, 03 nov 2005) | 1 line
+
+FPS is now editable
+------------------------------------------------------------------------
+r158 | krawek | 2005-11-02 11:54:19 -0500 (mié, 02 nov 2005) | 1 line
+
+KTINIT and KTEND simplified
+------------------------------------------------------------------------
+r157 | krawek | 2005-11-02 01:16:11 -0500 (mié, 02 nov 2005) | 1 line
+
+Rewritted KTDebug, improved KTTimeLine
+------------------------------------------------------------------------
+r156 | krawek | 2005-11-01 17:13:16 -0500 (mar, 01 nov 2005) | 1 line
+
+Added import-export components, insert layer funcionability in KTTimeLine
+------------------------------------------------------------------------
+r155 | krawek | 2005-10-31 23:16:29 -0500 (lun, 31 oct 2005) | 1 line
+
+Added a widget list view, rewritting KTTimeLine
+------------------------------------------------------------------------
+r154 | krawek | 2005-10-31 09:55:07 -0500 (lun, 31 oct 2005) | 1 line
+
+Layer visibility now works
+------------------------------------------------------------------------
+r153 | krawek | 2005-10-30 18:55:59 -0500 (dom, 30 oct 2005) | 1 line
+
+GUI: the visibility can be changed in layer header
+------------------------------------------------------------------------
+r152 | krawek | 2005-10-30 12:59:35 -0500 (dom, 30 oct 2005) | 1 line
+
+Now layers are painted in the document view and camera view
+------------------------------------------------------------------------
+r151 | kuadrosx | 2005-10-29 14:42:25 -0500 (sáb, 29 oct 2005) | 1 line
+
+fixed insert layer functionability
+------------------------------------------------------------------------
+r150 | krawek | 2005-10-29 02:02:17 -0500 (sáb, 29 oct 2005) | 1 line
+
+Improvements in layer store API
+------------------------------------------------------------------------
+r149 | kuadrosx | 2005-10-26 20:46:35 -0500 (mié, 26 oct 2005) | 1 line
+
+insert layer functionability
+------------------------------------------------------------------------
+r148 | kuadrosx | 2005-10-26 15:12:19 -0500 (mié, 26 oct 2005) | 1 line
+
+working in new architecture
+------------------------------------------------------------------------
+r147 | kuadrosx | 2005-10-26 11:04:19 -0500 (mié, 26 oct 2005) | 1 line
+
+fixed
+------------------------------------------------------------------------
+r146 | krawek | 2005-10-25 23:55:30 -0500 (mar, 25 oct 2005) | 1 line
+
+Improve theme support
+------------------------------------------------------------------------
+r145 | krawek | 2005-10-25 12:40:55 -0500 (mar, 25 oct 2005) | 1 line
+
+Improved rendering, showing rendering status
+------------------------------------------------------------------------
+r144 | krawek | 2005-10-23 15:46:10 -0500 (dom, 23 oct 2005) | 1 line
+
+Many improvements in project management
+------------------------------------------------------------------------
+r143 | krawek | 2005-10-23 11:52:57 -0500 (dom, 23 oct 2005) | 1 line
+
+Improved About dialog, added KTTabWidget with mouse wheel sensibility
+------------------------------------------------------------------------
+r142 | krawek | 2005-10-21 23:41:15 -0500 (vie, 21 oct 2005) | 1 line
+
+New camera bar, improved cameras
+------------------------------------------------------------------------
+r141 | kuadrosx | 2005-10-21 15:52:15 -0500 (vie, 21 oct 2005) | 1 line
+
+working in new architecture
+------------------------------------------------------------------------
+r140 | krawek | 2005-10-20 21:03:45 -0500 (jue, 20 oct 2005) | 1 line
+
+Initial animation support
+------------------------------------------------------------------------
+r139 | krawek | 2005-10-20 19:52:07 -0500 (jue, 20 oct 2005) | 1 line
+
+Working in new project architecture
+------------------------------------------------------------------------
+r138 | krawek | 2005-10-17 18:16:28 -0500 (lun, 17 oct 2005) | 1 line
+
+Restaured theme selector, code cleanup
+------------------------------------------------------------------------
+r137 | krawek | 2005-10-17 17:12:06 -0500 (lun, 17 oct 2005) | 1 line
+
+About restaured, improve store schema, cleaned dependences on scenes component
+------------------------------------------------------------------------
+r136 | krawek | 2005-10-16 22:20:15 -0500 (dom, 16 oct 2005) | 1 line
+
+New KTProjectManager, KTDocument, KTScene, KTLayer, KTKeyFrame, renamed Scenes to KTScenesWidget
+------------------------------------------------------------------------
+r134 | krawek | 2005-10-15 10:08:44 -0500 (sáb, 15 oct 2005) | 1 line
+
+New class KTKeyFrame, move KTBrush, AGraphicComponent to libstore, improved shape brush, fixes and code cleanup
+------------------------------------------------------------------------
+r133 | krawek | 2005-10-13 23:21:40 -0500 (jue, 13 oct 2005) | 1 line
+
+Select brush from brushes dialog
+------------------------------------------------------------------------
+r132 | krawek | 2005-10-13 22:13:24 -0500 (jue, 13 oct 2005) | 1 line
+
+New shape brushes, removed old plugin interface, new ellipse and rectangle tool plugins, many fixes
+------------------------------------------------------------------------
+r130 | kuadrosx | 2005-10-12 17:38:14 -0500 (mié, 12 oct 2005) | 1 line
+
+redesigning component brushes
+------------------------------------------------------------------------
+r129 | krawek | 2005-10-10 08:56:51 -0500 (lun, 10 oct 2005) | 1 line
+
+Colors now works =)
+------------------------------------------------------------------------
+r128 | krawek | 2005-10-10 01:52:14 -0500 (lun, 10 oct 2005) | 1 line
+
+New graphic component concept, implemented undo and redo in arthury module
+------------------------------------------------------------------------
+r127 | krawek | 2005-10-09 18:46:12 -0500 (dom, 09 oct 2005) | 1 line
+
+Added missing file
+------------------------------------------------------------------------
+r126 | krawek | 2005-10-09 18:43:03 -0500 (dom, 09 oct 2005) | 1 line
+
+New filter interface and 2 plugins for flip vertically and horizontally
+------------------------------------------------------------------------
+r125 | krawek | 2005-10-08 21:27:02 -0500 (sáb, 08 oct 2005) | 1 line
+
+Fixes
+------------------------------------------------------------------------
+r124 | krawek | 2005-10-08 14:05:01 -0500 (sáb, 08 oct 2005) | 1 line
+
+New color palette ui, improved Quad bruch
+------------------------------------------------------------------------
+r123 | krawek | 2005-10-08 09:09:43 -0500 (sáb, 08 oct 2005) | 1 line
+
+Refactoring color palette, new KTDualColorButton, Fixed segmentation fault in APaintArea
+------------------------------------------------------------------------
+r122 | kuadrosx | 2005-10-07 13:56:13 -0500 (vie, 07 oct 2005) | 1 line
+
+ redesigning component colorpalette
+------------------------------------------------------------------------
+r121 | krawek | 2005-10-06 17:40:25 -0500 (jue, 06 oct 2005) | 1 line
+
+Fixed
+------------------------------------------------------------------------
+r120 | kuadrosx | 2005-10-06 07:12:46 -0500 (jue, 06 oct 2005) | 1 line
+
+redesigning component colorpalette
+------------------------------------------------------------------------
+r119 | krawek | 2005-10-04 23:16:35 -0500 (mar, 04 oct 2005) | 1 line
+
+Renamed class ABrushInterface to ADrawingToolInterface
+------------------------------------------------------------------------
+r118 | krawek | 2005-10-04 23:07:51 -0500 (mar, 04 oct 2005) | 1 line
+
+New brushes, fixes, porting to Qt4 preferences dialog, extended plugin system
+------------------------------------------------------------------------
+r117 | krawek | 2005-10-03 01:01:37 -0500 (lun, 03 oct 2005) | 1 line
+
+Pluggins support
+------------------------------------------------------------------------
+r116 | krawek | 2005-10-02 18:24:24 -0500 (dom, 02 oct 2005) | 1 line
+
+Fixes, speed improvements and new KTColorPicker
+------------------------------------------------------------------------
+r115 | kuadrosx | 2005-10-01 12:52:50 -0500 (sáb, 01 oct 2005) | 1 line
+
+new Arthury Base Graphic component
+------------------------------------------------------------------------
+r114 | krawek | 2005-09-30 16:13:36 -0500 (vie, 30 sep 2005) | 1 line
+
+New Arthury Grid
+------------------------------------------------------------------------
+r113 | krawek | 2005-09-30 13:55:29 -0500 (vie, 30 sep 2005) | 1 line
+
+Initial project support
+------------------------------------------------------------------------
+r112 | krawek | 2005-09-30 12:18:04 -0500 (vie, 30 sep 2005) | 1 line
+
+new class for Wizards, new first-run wizard
+------------------------------------------------------------------------
+r111 | krawek | 2005-09-29 23:56:18 -0500 (jue, 29 sep 2005) | 1 line
+
+new Arthury ruler and paint area
+------------------------------------------------------------------------
+r110 | krawek | 2005-09-29 15:49:06 -0500 (jue, 29 sep 2005) | 1 line
+
+Porting to Qt4, added new module named arthury
+------------------------------------------------------------------------
+r109 | krawek | 2005-09-29 13:22:24 -0500 (jue, 29 sep 2005) | 1 line
+
+Fixed desktop menu entry, Porting to Qt4
+------------------------------------------------------------------------
+r108 | krawek | 2005-09-29 08:42:52 -0500 (jue, 29 sep 2005) | 1 line
+
+Add desktop entry, Fixed SIGSEGV in ~Brushes
+------------------------------------------------------------------------
+r107 | kuadrosx | 2005-09-29 01:58:20 -0500 (jue, 29 sep 2005) | 1 line
+
+Totally ported Scenes and Brushes to Qt4
+------------------------------------------------------------------------
+r106 | krawek | 2005-09-28 17:59:55 -0500 (mié, 28 sep 2005) | 1 line
+
+Improved and ported KTActionManager, new class KTAction
+------------------------------------------------------------------------
+r105 | krawek | 2005-09-28 11:01:45 -0500 (mié, 28 sep 2005) | 1 line
+
+Fixed flickr in dlslib, now I'm happy
+------------------------------------------------------------------------
+r104 | kuadrosx | 2005-09-28 03:39:02 -0500 (mié, 28 sep 2005) | 1 line
+
+ port to qt4 classes KTEditSpinbox and brushes for last class added new class ktbrusheslist
+------------------------------------------------------------------------
+r103 | kuadrosx | 2005-09-27 23:43:25 -0500 (mar, 27 sep 2005) | 1 line
+
+Move components to new dir
+------------------------------------------------------------------------
+r102 | krawek | 2005-09-27 21:38:44 -0500 (mar, 27 sep 2005) | 1 line
+
+Initial KToonScript module, ported ktdebug, ktsqueezelabel to Qt4, now KToon remember the toolwindows last state
+------------------------------------------------------------------------
+r101 | krawek | 2005-09-27 16:06:08 -0500 (mar, 27 sep 2005) | 1 line
+
+Added mouse sensibility to newui4
+------------------------------------------------------------------------
+r100 | krawek | 2005-09-27 13:38:08 -0500 (mar, 27 sep 2005) | 1 line
+
+Changed and improved splash, fixed ruler flicker, improved new ui
+------------------------------------------------------------------------
+r99 | krawek | 2005-09-27 10:06:33 -0500 (mar, 27 sep 2005) | 1 line
+
+Fixed stupid problem with KTMdiWindow, Hack: adjust dock separator, improved dialog support
+------------------------------------------------------------------------
+r98 | kuadrosx | 2005-09-26 22:23:48 -0500 (lun, 26 sep 2005) | 1 line
+
+porting KTViewDocument and code cleanup
+------------------------------------------------------------------------
+r97 | krawek | 2005-09-26 17:53:56 -0500 (lun, 26 sep 2005) | 1 line
+
+Porting KTStatusBar, ConfigWizard; Fixes and code cleanup
+------------------------------------------------------------------------
+r96 | krawek | 2005-09-26 14:19:20 -0500 (lun, 26 sep 2005) | 1 line
+
+Fixed bug in scene dialog, fixed problem with KTModuleWidgetBase effect, added dialog support
+------------------------------------------------------------------------
+r95 | krawek | 2005-09-26 01:43:46 -0500 (lun, 26 sep 2005) | 1 line
+
+Changed default size for KTImageButton from 44 to 22 pixels, added animations and/or effects to KTModuleWidgetBase, Ideal::Button, KTImageButton; Changed default "highlight color" in default theme, used KTImageButton in KTExposure instead of QPushButton, added QScrollArea to big widgets in DDockWindow
+------------------------------------------------------------------------
+r94 | krawek | 2005-09-25 16:38:03 -0500 (dom, 25 sep 2005) | 1 line
+
+Porting KTTimeLine to Qt4, extended and renamed KTVBox to KTVHBox, many improvements in GUI code
+------------------------------------------------------------------------
+r93 | krawek | 2005-09-24 19:29:45 -0500 (sáb, 24 sep 2005) | 1 line
+
+Fixed installation issue
+------------------------------------------------------------------------
+r92 | krawek | 2005-09-24 12:31:10 -0500 (sáb, 24 sep 2005) | 1 line
+
+Porting to Qt4
+------------------------------------------------------------------------
+r91 | kuadrosx | 2005-09-23 16:59:06 -0500 (vie, 23 sep 2005) | 1 line
+
+Porting Brushes to Qt4, code cleanup
+------------------------------------------------------------------------
+r90 | krawek | 2005-09-23 15:33:17 -0500 (vie, 23 sep 2005) | 1 line
+
+Porting new ui to Qt4
+------------------------------------------------------------------------
+r89 | krawek | 2005-09-22 02:11:37 -0500 (jue, 22 sep 2005) | 1 line
+
+Ported KTVBox
+------------------------------------------------------------------------
+r88 | krawek | 2005-09-22 02:04:49 -0500 (jue, 22 sep 2005) | 1 line
+
+Added a new ui named dlslib, ported classes to Qt4
+------------------------------------------------------------------------
+r87 | kuadrosx | 2005-09-21 22:11:01 -0500 (mié, 21 sep 2005) | 1 line
+
+Ported KTExposureSheet, Scenes, KeyFrame, Layer
+------------------------------------------------------------------------
+r83 | krawek | 2005-09-19 14:52:10 -0500 (lun, 19 sep 2005) | 1 line
+
+Qt4 port, newui and svn reordered
+------------------------------------------------------------------------

@@ -1,0 +1,6 @@
+<CrashHandler>
+	<Title text="Fatal error" />
+	<Message text="KToon esta terminando debido a alguna gran falla!" color="red" />
+	<Button text="Close" />
+	<Default text="KToon esta terminado! estamos terriblemente apenados por esto :(&lt;br&gt;&lt;br&gt;Pero, no todo esta perdido! Puedes potencialmente ayudarnos a arreglar esta falla.&lt;br&gt;Por favor has el reporte de error en &lt;a href=http://developer.berlios.de/bugs/?group_id=2960 &gt;bugs&lt;/a&gt;&lt;br&gt;&lt;br&gt;Muchas gracias,&lt;br&gt;&lt;br&gt;--El equipo KToon" image="ungroup.png" />
+</CrashHandler>
