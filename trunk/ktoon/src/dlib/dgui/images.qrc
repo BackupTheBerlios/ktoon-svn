@@ -1,0 +1,9 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/res">
+   <file>images/1day.png</file>
+   <file>images/1leftarrow.png</file>
+   <file>images/1rightarrow.png</file>
+   <file>images/2leftarrow.png</file>
+   <file>images/2rightarrow.png</file>
+</qresource>
+</RCC>
