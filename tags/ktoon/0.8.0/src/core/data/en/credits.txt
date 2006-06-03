@@ -1,0 +1,56 @@
+Developers
+
+Version 0.8
+
+David A. Cuadrado
+<krawek@toonka.com>
+
+Jorge H. Cuadrado
+<kuadrosx@toonka.com>
+
+Old versions
+
+Simena Dinas
+<dsimena@gmail.com>
+
+Fernando Jose Roldan Correa
+<froldan@parquesoft.com>
+
+
+----------------------------
+Technical Advisor
+
+Gustavo Gonzalez Giron
+<xtingray@kazak.ws>
+
+----------------------------
+Developers Documentation
+
+David A. Cuadrado
+<krawek@toonka.com>
+
+Jorge H. Cuadrado
+<kuadrosx@toonka.com>
+
+----------------------------
+Translators
+
+(Spanish) David A. Cuadrado
+<krawek@toonka.com>
+
+----------------------------
+Iconographic Design
+
+Carlos Andres Cajigas
+
+
+----------------------------
+many thanks to 
+
+Markus Bongard for your unconditional collaboration
+
+
+Toonka Films
+2005-2006
+
+

@@ -1,0 +1,139 @@
+#/bin/bash
+
+. scripts/global
+
+CONFIGURE_TEST_DIR=configure.tests
+FAIL=-1
+SUCC=0
+CONFIG_H=config.h
+
+DLIB_CONFIG=src/dlib/dlibconfig.pri
+
+CONFIG_LOG=$(pwd)/$LOG_FILE
+
+# $1 parameter is a text
+# $2 directory 
+# $3 INCLUDE PATH
+# $4 LIBS
+function check()
+{
+	RESULT="yes."
+	if [ -d $CONFIGURE_TEST_DIR/$2 ]
+	then
+		cd $CONFIGURE_TEST_DIR/$2
+		$QMAKE  2>> $CONFIG_LOG >> $CONFIG_LOG
+		${MAKE} INCPATH="${3}" LIBS="${4}" 2>>$CONFIG_LOG >>$CONFIG_LOG || RESULT="no."
+		cd - 2>> /dev/null >> /dev/null
+	else
+		RESULT="no."
+	fi
+	
+	qpinfo "Checking for $1... $RESULT" -n
+	
+	if [ ${RESULT} != "yes." ]
+	then
+		return $FAIL
+	fi
+	
+	return $SUCC
+}
+
+function defineMacro()
+{
+	echo "#define $*" >> $CONFIG_H
+}
+
+function defineDLibConf()
+{
+	echo $* >> $DLIB_CONFIG
+#	for var in ${*}
+#	do
+#		echo ${var} >> $DLIB_CONFIG
+#	done
+}
+
+function usage()
+{
+	echo "Use $0 [options]"
+	echo
+	echo "Options: "
+	echo "		-k,--enable-ktoonstyle	Enables KToonStyle"
+	echo "		--enable-kinas 		Enable KINAS"
+	echo
+	exit 0;
+}
+
+echo "/* Generated automatically by configure script */" > $CONFIG_H 
+
+TEMP=`getopt -o kh:: --long help,enable-ktoonstyle,enable-kinas:: -n "$0" -- "$@"`
+
+eval set -- "$TEMP"
+while [ true ]
+do
+        case "$1" in
+		-h|--help) usage; shift;;
+		-k|--enable-ktoonstyle) defineMacro ENABLE_KTOONSTYLE; shift ;;
+		--enable-kinas) defineMacro ENABLE_KINAS; shift ;;
+		--) shift ; break ;;
+		*) break;
+	esac
+done
+
+detectQtVersion
+
+ln -fs $(pwd)/$CONFIG_H $(pwd)/src/ktoonlib/$CONFIG_H
+
+LIBS=''
+INCPATH=''
+
+
+echo > $DLIB_CONFIG
+
+# Checking aspell
+check "aspell" aspell && defineDLibConf "LIBS += -laspell" && defineDLibConf  "DEFINES += HAVE_ASPELL"
+
+
+# Checking gstreamer
+export GST_LIBS=`pkg-config gstreamer-0.10 --libs --silence-errors`
+export GST_INCLUDE=`pkg-config gstreamer-0.10 --cflags --silence-errors`
+check "sound" sound "${GST_INCLUDE}" "${GST_LIBS}" && INCPATH="$INCPATH $GST_INCLUDE" LIBS="$LIBS $GST_LIBS" && defineMacro HAVE_SOUND && defineDLibConf "LIBS += ${GST_LIBS}" && defineDLibConf "INCLUDEPATH += ${GST_INCLUDE}"
+
+# Checking gif
+check "gif" gif && LIBS="$LIBS -lgif" && defineMacro HAVE_LIBGIF
+
+# checking ffmpeg
+check "ffmpeg 0.4.9" ffmpeg && LIBS="$LIBS -lavcodec -lavformat" && defineMacro HAVE_FFMPEG
+
+
+# Checking ming
+
+if [ -x "`which ming-config`" ]
+then
+	export MING_LIBS=`ming-config --libs`
+	export MING_INCLUDE=`ming-config --cflags`
+fi
+
+check "ming" ming "${MING_INCLUDE}" "${MING_LIBS}" && LIBS="$LIBS ${MING_LIBS}" && defineMacro HAVE_MING
+
+
+
+### end checking ###
+
+if [ "$LIBS" != '' ]
+then
+	echo "LIBS += $LIBS" > $KT_CONFIG
+else
+	echo > $KT_CONFIG
+fi
+
+echo "INCLUDEPATH += $INCPATH" >> $KT_CONFIG
+
+defineMacro VERSION ${APPVER}
+defineMacro VERSION_STR \"${APPVER}\"
+
+echo
+echo "**************************************"
+qpwarn "$APPNAME is configured, if you want to clean configuration, execute 'make -f Makefile.common confclean'"
+echo "**************************************"
+echo
+
