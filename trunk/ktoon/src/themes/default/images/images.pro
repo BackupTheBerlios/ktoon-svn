@@ -9,7 +9,4 @@ images.path = /themes/default/images
 CONFIG += release \
 warn_on \
 staticlib
-TEMPLATE = lib
-macx {
 TEMPLATE = subdirs
-}

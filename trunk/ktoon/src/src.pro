@@ -5,11 +5,10 @@
 
 SUBDIRS += themes \
            dlib \
-           ktoonlib \
+           libktoon \
            store \
-           dialogs \
+           libktui \
            components \
-           ktoonstyle \
            shell 
 KDEV_QTVER = 4
 CONFIG += release \
