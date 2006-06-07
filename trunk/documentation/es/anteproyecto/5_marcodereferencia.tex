@@ -2,6 +2,14 @@
 {
 	\subsection{Marco teórico}
 	{
+		\TODO
+		Añadir mas imagenes!
+		\TODO
+		
+		Este proyecto se mueve alrededor de diferentes conceptos relacionados con la ingenieria de software y la animación.
+		\\
+		A continuación se presentan los conceptos claves que serán usados frecuentemente durante el desarrollo de este proyecto y que se han considerado como importantes para la culminación del mismo.
+		
 		\hypertarget{software} {
 		\subsubsection{Ingeniería de software}
 		{
@@ -226,22 +234,29 @@
 	
 	\subsection{Antecedentes}
 	{
-		Sobré este proyecto no se encontró otros proyectos similares, sinembargo no se descarta la posibilidad de que exista software con las características propuestas en este proyecto.
+		A pesar de que no se encontrarón trabajos similares al planteado, no se
+		descarta la posibilidad de que exista software con las características propuestas en este
+		proyecto.
 		
-		A continuación se presentan dos programas comerciales de computador que sirven para realizar animaciones.
+		No obstante, se pueden presentear dos herramientas comerciales que sirven
+		para realizar animaciones, que de alguna manera involucran aspectos relacionados con la producción de animaciones.
 		
 		\hypertarget{flash} {
 		\subsubsection{Macromedia Flash}
 		{
-			Es una aplicación de la empresa Macromedia para la creación de contenido multimedia, por ende permite combinar en una misma presentación video, audio y texto, con soporte total para eventos.
+			Es una herramienta de la empresa Macromedia para la creación de contenido multimedia, por ende permite combinar en una misma presentación video, audio y texto, con soporte total para eventos.
 			\\
 			Flash puede llegar a ser todo un lenguaje de programación, sinembargo la parte de interés para este proyecto esta en la capacidad para realizar animaciones sobre este software tan utilizado a nivel mundial.
+			\\
+			Esta es una de las herramientas mas usadas y populares a nivel mundial debido a que es muy potente y poco a poco se ha convertido en una herramienta de uso extendido en la industria de la animación y la multimedia.
 		}}
 		\subsubsection{ToonBoom}
 		{
-			A diferencia de Macromedia Flash, ToonBoom es una aplicación únicamente destinada a la creación de animaciones.
-			Esta aplicación esta programada con las bibliotecas \hyperlink{qt}{Qt}, es un software muy potente ampliamente utilizado por empresas dedicadas a la creación de contenido animado.
+			A diferencia de Macromedia Flash, ToonBoom es una aplicación únicamente destinada a la creación de animaciones. \\
+			Esta aplicación esta programada con las bibliotecas \hyperlink{qt}{Qt}, es un software muy potente ampliamente utilizado por empresas dedicadas a la creación de contenido animado a nivel mundial.
 		}
+		
+		Una de las características mas extrañadas de estas herramientas es un servidor que mantenga las bibliotecas para que el equipo de animación pueda acceder facilmente a él trabajo de sus compañeros, este proyecto pretende cubrir este agujero.
 	}
 	
 	\subsection{Marco conceptual}
@@ -252,25 +267,24 @@
 		{	
 			\begin{itemize}
 			\hypertarget{graficos_vectoriales} {
-			\item {Gráficos vectoriales} \\
+			\item {\textbf{Gráficos vectoriales}} \\
 			Son gráficos a los que se les pueden aplicar operaciones sin que ello empeore la calidad.}
 			\hypertarget{plugin}{
-			\item { Plugin } \\
+			\item { \textbf{Plugin }} \\
 			Programas que pueden ser cargador en tiempo de ejecución por otras aplicaciones.
 			}
 			\hypertarget{gst}{
-			\item{ GStreamer } {
-				GStreamer es un framework para crear aplicaciones multimedia. GStreamer hace posible escribir cualquier aplicación multimedia debido a su alta generalidad, facilidad de acceso y su rapidez. Además este framework es multiplataforma.
-			}}
+			\item{ \textbf{GStreamer }} \\
+			GStreamer es un framework para crear aplicaciones multimedia. GStreamer hace posible escribir cualquier aplicación multimedia debido a su alta generalidad, facilidad de acceso y su rapidez. Además este framework es multiplataforma.
+			}
 			\hypertarget{widget} {
-			\item{Widget} {
-				Componente escencial y basico de una interfaz grafica de usuario.
-			}}
+			\item{\textbf{Widget}} \\
+			Componente escencial y basico de una interfaz grafica de usuario.
+			}
 			\hypertarget{api} {
-			\item{API} {
+			\item{\textbf{API}} \\
 			Metodo de acceso a la interfaz de programación, ayuda al programador a realizar mas facilmente sus tareas y de forma mas organizada, permitiendo el acceso a los diferentes componentes de una biblioteca.
-			}}
-			
+			}
 			\end{itemize}
 		}
 		
@@ -278,94 +292,94 @@
 		{
 		\begin{itemize}
 		
-		\item Animática \\
+		\item \textbf{Animática} \\
 		Conocida también como tira leica o leica reel, es la grabación y edición de las imágenes del \hyperlink{story_board}{Story Board} sincronizada con la banda sonora y el audio de los personajes, con esta ficha es posible controlar los tiempos de la animación y entender en movimiento lo visualizado en el papel para corregir errores de ritmo poder generar una idea de como será la película al final.
 		
-		\item Backgrounds \\
+		\item \textbf{Backgrounds} \\
 		Fondos o escenografías de la animación.
 		
-		\item Ciclo 
+		\item \textbf{Ciclo }
 		Secuencia de animación repetitiva para mostrar una acción como la de caminar o correr.
 		
-		\item Biblia \\
+		\item \textbf{Biblia} \\
 		El Universo del proyecto de animación que contiene, el concepto, sinopsis  de los capítulos y el diseño del personaje con indicaciones de cómo dibujarlo y animarlo.
 		
 		\hypertarget{exposure} {
-		\item Hola de exposición (Exposure Sheets) \\
+		\item \textbf{Hola de exposición (Exposure Sheets)} \\
 		Hoja de exposición o la carta de rodaje donde se consigna con detalle cada uno de los cuadros que intervienen en una acción.
 		}
 
-		\item Extremo\\
+		\item \textbf{Extremo}\\
 		Dibujo final, al final de una pose.
 		
 		\hypertarget{frame} {
-		\item Marco (frame) \\
+		\item \textbf{Marco (frame)} \\
 		Es la unidad de una secuencia de animación, en la televisión 30 frames componen un segundo de animación.
 		}
 		
 		\hypertarget{layer} {
-		\item Capa (layer) \\
+		\item \textbf{Capa (layer)} \\
 		Es la agrupación de marcos o frames.
 		}
 		
 		\hypertarget{scene} {
-		\item Plano o escena (scene) \\
+		\item \textbf{Plano o escena (scene)} \\
 		Es la agrupación de fotogramas.
 		}
 		
 		\hypertarget{gc} {
-		\item Componente gráfico \\
+		\item \textbf{Componente gráfico} \\
 		Es un objeto individual que representa un componente de un marco o frame.
 		}
 		
-		\item Giros\\
+		\item \textbf{Giros}\\
 		Las vistas frontales, laterales y de espaldas de un personaje permitiendo visualizar una imagen tridimensional del personaje.
 		
 		\hypertarget{script} {
-		\item Guión \\
+		\item \textbf{Guión} \\
 		En ingles llamado \textit{script} que es el desarrollo escrito de la acción, diálogo y  los sonidos de una animación
 		}
 		
 		\hypertarget{hoja_modelo} {
-		\item Hoja de Modelo \\
+		\item \textbf{Hoja de Modelo} \\
 		Guía que representa todas las posiciones de las vistas girando en 360º, los detalles, y las diferentes poses, expresiones y estados de ánimo.
 		}
 		
 		\hypertarget{intercalado} {
-		\item Intercalado \\
+		\item \textbf{Intercalado} \\
 		También se llaman Intermedios o Inbetwenner, que son la cantidad de  dibujos que unen las puntas o dibujos claves en una animación 
 		}
 		
-		\item Key\\
+		\item \textbf{Key}\\
 		Es un dibujo clave representado por una pose importante en la animación.
 		
-		\item Layout \\
+		\item \textbf{Layout} \\
 		Es  la  planeación gráfica de un plano de animación, donde se visualiza la composición básica y los movimientos de  una cámara.
 		
-		\item Animación Limitada \\
+		\item \textbf{Animación Limitada} \\
 		La Animación limitada es la industrialización de la animación, muy común en televisión donde se consumen series rápidamente
 		
-		\item Lip-sync \\
+		\item \textbf{Lip-sync} \\
 		Es la \textit{sincronización} del audio con las imágenes. Y la descomposición del diálogo (fonemas) y la  música en cuadros para acoplar imagen y audio.
 		
-		\item Mesa de animación \\
+		\item \textbf{Mesa de animación} \\
 		Mesa de luz donde se trabajan los fotogramas de una animación, utilizando hojas de papel delgado, aprovechando las transparencias que deja la luz para visualizar el movimiento de la animación.
 		
-		\item Prueba de Línea \\
+		\item \textbf{Prueba de Línea} \\
 		Filmación de la animación en su primera etapa de realización. Llamada también \textit{Prueba de lápiz en 2D}.
 		
 		\hypertarget{story_board} {
-		\item Story-board \\
+		\item \textbf{Story-board} \\
 		Dibujos en forma de historieta de todo el desarrollo de la película, acompañado de los textos que explican las acciones y los diálogos de las escenas.
 		}
 		
 		\hypertarget{timming} {
-		\item Timming \\
+		\item \textbf{Timming} \\
 		Ritmo. Visualización de los tiempos en animación.
 		}
 		
 		\hypertarget{tweening} {
-		\item Interpolación (Tweening) \\
+		\item \textbf{Interpolación (Tweening)} \\
 		Dibujar dos o mas elementos (manos, brazos, piernas...) repitiendo la misma acción al mismo tiempo
 		}
 		
@@ -373,39 +387,39 @@
 		}
 		\subsubsection{Roles}
 		\begin{itemize}
-		\item Creador Original \\
+		\item \textbf{ Creador Original} \\
 		El creador Original es la persona que plantea el concepto original de la historia, la base de la creación. Puede ser un director, productor, ilustrador, novelista, o guionista. 
 
-		\item Productora \\
+		\item \textbf{Productora} \\
 		Es la compañía que acoge el proyecto y decide invertir tiempo, dinero y recursos en todas las fases de la producción.
 		
 		\hypertarget{director} {
-		\item Director  \\
+		\item \textbf{Director} \\
 		El Director es el responsable de todo  el desarrollo visual, artístico y audiovisual del Proyecto. Es el líder de la animación  y determina el tipo de producción  que se desea realizar, visualiza el story board que son los dibujos detallados de las secuencias de animación y  maneja toda la información que tiene que ver con el diálogo, la música, el ritmo y el trabajo de cámara.
 		}
 		
-		\item Productor \\
+		\item \textbf{Productor} \\
 		Es la persona encargada de coordinar y seguir todas las tareas de de las personas involucradas en la producción, maneja los cronogramas y el presupuesto detallado y junto al director decide  cosas importantes que atañen a la producción.
 		
 		\hypertarget{director_animacion} {
-		\item Director de Animación \\
+		\item \textbf{Director de Animación} \\
 		Es un rol que esta entre el \hyperlink{director}{director} y la producción, es el responsable de liderar el estilo de animación y de revisar y supervisar la producción de todo el show desde la historia inicial, hasta la postproducción final.
 		Él revisa los dibujos hechos por el equipo de animación y visualiza el método para realizar estas \hyperlink{scene}{escenas}.
 		}
 		
-		\item Diseñador de Personajes \\
+		\item \textbf{Diseñador de Personajes} \\
 		Esta persona hace parte del equipo creativo de la producción y se involucra desde la pre-producción desarrollando todo el diseño de los personajes para el proyecto. Este integrante del equipo provee una Biblia del proyecto con toda la información gráfica de los personajes, detalladas en poses, gestos y construcción del personaje.
 		
-		\item Animadores Clave \\
+		\item \textbf{Animadores Clave} \\
 		El animador clave trabaja desde el \hyperlink{story_board}{story board}  y crea las \hyperlink{scene}{escenas} claves de la animación, las posiciones del personaje, la integración con los fondos y determina el \hyperlink{timming}{ritmo} y la cantidad de \hyperlink{frame}{frames} asociados en el movimiento.
 		
-		\item Intercalador \\
+		\item \textbf{Intercalador} \\
 		El  intercalador usa los cuadros claves de la animación como punto referencial para desarrollar los \hyperlink{frame}{cuadros} restantes, estos cuadros permiten generar una animación mas fluida y  profesional. El intercalador no es un trabajo creativo y requiere muchísimas horas de trabajo.
 		
-		\item Clean Up \\
+		\item \textbf{Clean Up} \\
 		Como el intercalador es un trabajo que requiere muchas horas y se   encarga de darle detalle a la línea y de colorear todos los cuadros de la animación.
 		
-		\item Storyboarder \\
+		\item \textbf{Storyboarder} \\
 		Es el ilustrador encargado de plasmar en dibujos cada uno de los planos de la animación, por lo regular es el mismo director o el creador de los personajes del proyecto.
 
 		\end{itemize}
