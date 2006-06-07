@@ -1,0 +1,16 @@
+
+Plan guía para la construcción de KToon 0.9
+
+Base
+- Limpiar el proyecto y librerias
+- Rediseñar el componente grafico y frame
+- Redefinir la interfaz de plugins de herramientas
+
+
+Interfaz grafica
+- Simplificar interfaz grafica, eliminar Workspace para dibujar
+
+
+General
+- Implementación basada en el patron `comando'
+
