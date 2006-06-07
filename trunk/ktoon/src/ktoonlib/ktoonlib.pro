@@ -7,7 +7,6 @@ INSTALLS += target
 target.path = /lib/ 
 HEADERS += ktmodulewidgetbase.h \
            ktmodulewidgettitle.h \
-           agraphic.h \
            kttoolpluginobject.h \
            ktexportpluginobject.h \
            ktgraphicalgorithm.h \
@@ -16,17 +15,24 @@ HEADERS += ktmodulewidgetbase.h \
            ktgradientcreator.h \
            ktgradientselector.h \
            ktgradientviewer.h \
-           exportinterface.h 
+           ktanimationarea.h \
+           ktexportinterface.h \
+           ktfilterinterface.h \
+           ktgraphicelement.h \
+           ktpackagehandler.h \
+           kttoolinterface.h 
 SOURCES += ktmodulewidgetbase.cpp \
            ktmodulewidgettitle.cpp \
-           agraphic.cpp \
            kttoolpluginobject.cpp \
            ktexportpluginobject.cpp \
            ktgraphicalgorithm.cpp \
            ktpaintareaproperties.cpp \
            ktgradientcreator.cpp \
            ktgradientselector.cpp \
-           ktgradientviewer.cpp 
+           ktgradientviewer.cpp \
+           ktanimationarea.cpp \
+           ktgraphicelement.cpp \
+           ktpackagehandler.cpp 
 QT += xml
 KDEV_QTVER = 4
 INCLUDEPATH += ../../src/dlib/dgui \

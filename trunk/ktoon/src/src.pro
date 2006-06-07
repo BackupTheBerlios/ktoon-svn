@@ -9,9 +9,8 @@ SUBDIRS += themes \
            store \
            dialogs \
            components \
-           modules \
            ktoonstyle \
-           core 
+           shell 
 KDEV_QTVER = 4
 CONFIG += release \
 warn_on
