@@ -1,3 +1,4 @@
+
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
           Installing and Running KToon 2D Animation Toolkit
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
@@ -34,5 +35,53 @@
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
    ktoon@toonka.com
 -- The KToon Team
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
+
+
+
+Español
+
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+             Manual de Compilacion e Instalacion de KToon 
+                   (Herramienta de Animacion 2D)
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+* Dependencias
+
+  Para compilar KToon, asegurese de tener instalada la libreria Qt en 
+  su version 4.1.1 o superior.
+  Puede adquirirla en:
+  http://www.trolltech.com/download/opensource.html
+
+* Adquiriendo el codigo fuente de KToon
+
+  Descargue el codigo fuente desde: 
+  http://prdownload.berlios.de/ktoon/ktoon0.8_beta-src.tar.gz
+
+* Compilando e Instalando
+
+  Descomprima el paquete con el codigo fuente de KToon e ingrese en el 
+  directorio donde se encuentran los scripts de compilacion:
+
+    $ tar xvfz ktoon0.8_beta-src.tar.gz
+    $ cd ktoon0.8_beta
+	
+  Ejecute el script "configure":
+    $ ./configure [--enable-ktoonstyle] [--enable-kinas]
+
+  Luego, ejecute el script "build.sh":
+    $ ./build.sh --prefix [prefix]
+
+  Nota: Si usted esta interesado en ayudarnos a traducir KToon a otros
+        idiomas:
+        $ cd scripts
+        $ sh translate.sh
+
+= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+   ktoon@toonka.com
+-- El Equipo KToon
 = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 

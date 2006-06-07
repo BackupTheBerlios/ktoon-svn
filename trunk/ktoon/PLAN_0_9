@@ -13,4 +13,5 @@ Interfaz grafica
 
 General
 - Implementación basada en el patron `comando'
+- Mejorar el sistema de contrucción (configure, build)
 
