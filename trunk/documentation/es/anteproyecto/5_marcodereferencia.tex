@@ -3,10 +3,10 @@
 	\subsection{Marco teórico}
 	{
 		\TODO
-		Añadir mas imagenes!
+		Añadir mas imágenes!
 		\TODO
 		
-		Este proyecto se mueve alrededor de diferentes conceptos relacionados con la ingenieria de software y la animación.
+		Este proyecto se mueve alrededor de diferentes conceptos relacionados con la ingeniería de software y la animación.
 		\\
 		A continuación se presentan los conceptos claves que serán usados frecuentemente durante el desarrollo de este proyecto y que se han considerado como importantes para la culminación del mismo.
 		
@@ -85,7 +85,7 @@
 		\hypertarget{refactorizacion} {
 		\subsubsection{Refactorización}
 		{
-			\textit{"Un cambio hecho a la estructura interna del código para hacerlo más fácil de comprender y más barato de modificar sin cambiar su comportamiento externo."}  \cite{refactoring}
+			\textit{" Un cambio hecho a la estructura interna del código para hacerlo más fácil de comprender y más barato de modificar sin cambiar su comportamiento externo."}  \cite{refactoring}
 			\\
 			En \hyperlink{software}{ingeniería del software}, el término refactorización se usa a menudo para describir la modificación del código fuente sin cambiar su comportamiento, lo que se conoce informalmente por limpiar el código. La refactorización se realiza a menudo como parte del proceso de desarrollo del software: los desarrolladores alternan la inserción de nuevas funcionalidades y casos de prueba con la refactorización del código para mejorar su consistencia interna y su claridad. Los tests aseguran que la refactorización no cambia el comportamiento del código.
 			\\
@@ -104,8 +104,10 @@
 		\hypertarget{qt} {
 		\subsubsection{Qt}
 		{
-			La biblioteca fundamental utilizada en este proyecto es Qt, el cual es un \textbf{framework} \textbf{multiplataforma} rápido, estable y de rápida evolución, esta construido sobre el lenguaje de programación \hyperlink{c++}{C++}.
-			\\
+			La biblioteca fundamental utilizada en este proyecto es Qt, el cual es un \textbf{framework} \hyperlink{multiplataforma}{multiplataforma} rápido, estable y de rápida evolución, esta construido sobre el lenguaje de programación \hyperlink{c++}{C++}.
+			\begin{center}
+			\includegraphics[width=1.7cm]{images/qt.png}
+			\end{center}
 			Dentro de sus múltiples funcionalidades, Qt permite acceso a componentes gráficos y no gráficos, y se compone de diferentes módulos tales como: core, gui, xml, sql, svg. Cada modulo define un conjunto de clases para acceder a determinadas características.
 			\\
 			Qt fue creado por la empresa noruega TrollTech.
@@ -116,25 +118,9 @@
 		{
 			DLib es una extensión de \hyperlink{qt}{Qt} que provee componentes gráficos y no-gráficos de alta calidad, tales como acceso a archivos de configuración automatico utilizando la tecnología \hyperlink{XML}{XML}, \hyperlink{widget}{widgets} para el manejo de fechas, acceso a la \hyperlink{api}{API} de sonido mediante plugins (Actualmente posee un \hyperlink{plugin}{plugin} para \hyperlink{gst}{gstreamer}), entre muchas otras funcionalidades.
 			\\
-			DLib fue y sigue siendo programada casi su totalidad por David A. Cuadrado, ha sido el esfuerzo de mucho tiempo por conseguir una extensión de \hyperlink{qt}{Qt} multiplataforma, libre y de fácil acceso al programador, actualmente está siendo utilizada para desarrollar \hyperlink{ktoon}{KToon}, proyecto que le ha dado la oportunidad de crecer.
+			DLib fue y sigue siendo programada casi su totalidad por David A. Cuadrado, ha sido el esfuerzo de mucho tiempo por conseguir una extensión de \hyperlink{qt}{Qt} \hyperlink{multiplataforma}{multiplataforma}, libre y de fácil acceso al programador, actualmente está siendo utilizada para desarrollar \hyperlink{ktoon}{KToon}, proyecto que le ha dado la oportunidad de crecer.
 		}
-		
-		\hypertarget{ktoon}{
-		\subsubsection{KToon}
-		{
-			\textit{"KToon es una herramienta para desarrollo de animaciones en 2D, diseñada por animadores para animadores, enfocada a la industria de la animación profesional. Este proyecto está cubierto por la Licencia GPL usando G++, OpenGL y QT como recursos de programación desde KDevelop como plataforma de desarrollo. Por ahora, KToon sólo está disponible para sistemas Unix, pero esperamos portarlo a otros sistemas operativos también."} \cite{ktoon}
-			\\
-			\\
-			KToon trabaja con \hyperlink{graficos_vectoriales}{gráficos vectoriales} y tiene la capacidad de exportar a diversos formatos, dentro de los que se encuentran \hyperlink{flash}{SWF}, AVI, MPEG, ASF, \hyperlink{smil}{SMIL}(de manera básica) y por supuesto, una secuencia de imágenes en diversos formatos como PNG y JPEG.
-			\\
-			\\
-			Las herramientas de esta aplicación son \hyperlink{plugin}{plugins}, mediante esta tecnología es posible añadir nuevas funcionalidades a la aplicación sin recompilar el núcleo central de la misma.
-			\\
-			\begin{center}
-			\includegraphics[width=7cm]{images/ktoon.png}
-			\end{center}
-		}}
-		
+			
 		\hypertarget{XML} {
 		\subsubsection{XML}
 		{
@@ -230,15 +216,49 @@
 			Una características importante y poco explotada de los SVG es la capacidad de ser interactivos, mediante el uso de scripts es posible añadir eventos tales como \textit{onclick}, \textit{onmouseover}, a las animaciones creadas en este formato2. \cite{svg}
 		}
 		}
+		
+		\hypertarget{ktoon}{
+		\subsubsection{KToon}
+		{
+			\textit{"KToon es una herramienta para desarrollo de animaciones en 2D, diseñada por animadores para animadores, enfocada a la industria de la animación profesional. Este proyecto está cubierto por la Licencia GPL usando G++, OpenGL y QT como recursos de programación desde KDevelop como plataforma de desarrollo. Por ahora, KToon sólo está disponible para sistemas Unix, pero esperamos portarlo a otros sistemas operativos también."} \cite{ktoon}
+			\\
+			\\
+			KToon trabaja con \hyperlink{graficos_vectoriales}{gráficos vectoriales} y tiene la capacidad de exportar a diversos formatos, dentro de los que se encuentran \hyperlink{flash}{SWF}, AVI, MPEG, ASF, \hyperlink{smil}{SMIL}(de manera básica) y por supuesto, una secuencia de imágenes en diversos formatos como PNG y JPEG.
+			\\
+			\\
+			Las herramientas de esta aplicación son \hyperlink{plugin}{plugins}, mediante esta tecnología es posible añadir nuevas funcionalidades a la aplicación sin recompilar el núcleo central de la misma.
+			\\
+			\begin{center}
+			\includegraphics[width=7cm]{images/ktoon.png}
+			\end{center}
+		}}
+		
+		\hypertarget{proceso_de_animacion}{
+		\subsubsection{El proceso de animación tradicional}
+		{
+			La animación tradicional es un proceso costoso, que consume mucho tiempo. \cite{hollywood} \\
+			\\
+			\textbf{Pre-producción} \\
+			Igual que todos los procesos, la animación empieza con una idea que puede surgir en cualquier momento y en cualquier lugar. El concepto de la animación debe ser pensado al interior del estudio y el escritor debe dar luz verde para la realización. \\
+			Antes o despues de que el script es terminado, la empresa debe buscar un director para ese proyecto. El director será quien vigile todos los aspectos de la creación, es por eso que cada artista tiene que participar en el proceso con el director. \\
+			El tiempo usado por el director en estas semanas de pre-producción es bastante, buscando artistas, repartiendo trabajos y en general preparándose para la etapa de producción. \\
+			Una vez el script esta escrito, el equipo de aristas comienza a trabajar en el desarrollo visual.
+			\\
+			\\
+			\textbf{Producción} \\
+			\TODO
+			\textbf{Post-producción} \\
+			\TODO
+		}
 	}
 	
 	\subsection{Antecedentes}
 	{
-		A pesar de que no se encontrarón trabajos similares al planteado, no se
+		A pesar de que no se encontraron trabajos similares al planteado, no se
 		descarta la posibilidad de que exista software con las características propuestas en este
 		proyecto.
 		
-		No obstante, se pueden presentear dos herramientas comerciales que sirven
+		No obstante, se pueden presentar dos herramientas comerciales que sirven
 		para realizar animaciones, que de alguna manera involucran aspectos relacionados con la producción de animaciones.
 		
 		\hypertarget{flash} {
@@ -256,7 +276,7 @@
 			Esta aplicación esta programada con las bibliotecas \hyperlink{qt}{Qt}, es un software muy potente ampliamente utilizado por empresas dedicadas a la creación de contenido animado a nivel mundial.
 		}
 		
-		Una de las características mas extrañadas de estas herramientas es un servidor que mantenga las bibliotecas para que el equipo de animación pueda acceder facilmente a él trabajo de sus compañeros, este proyecto pretende cubrir este agujero.
+		Una de las características mas extrañadas de estas herramientas es un servidor que mantenga las bibliotecas para que el equipo de animación pueda acceder fácilmente a él trabajo de sus compañeros, este proyecto pretende cubrir este agujero.
 	}
 	
 	\subsection{Marco conceptual}
@@ -266,6 +286,10 @@
 		\subsubsection{Conceptos relacionados con la informática}
 		{	
 			\begin{itemize}
+			\hypertarget{multiplataforma} {
+			\item{\textbf{multiplataforma} } \\
+			Propiedad del software que le permite ejecutarse en varias plataformas. Normalmente las plataformas se refieren a GNU/Linux, Mac Os X y Microsoft Windows.
+			}
 			\hypertarget{graficos_vectoriales} {
 			\item {\textbf{Gráficos vectoriales}} \\
 			Son gráficos a los que se les pueden aplicar operaciones sin que ello empeore la calidad.}
@@ -275,7 +299,7 @@
 			}
 			\hypertarget{gst}{
 			\item{ \textbf{GStreamer }} \\
-			GStreamer es un framework para crear aplicaciones multimedia. GStreamer hace posible escribir cualquier aplicación multimedia debido a su alta generalidad, facilidad de acceso y su rapidez. Además este framework es multiplataforma.
+			GStreamer es un framework para crear aplicaciones multimedia. GStreamer hace posible escribir cualquier aplicación multimedia debido a su alta generalidad, facilidad de acceso y su rapidez. Además este framework es \hyperlink{multiplataforma}{multiplataforma}.
 			}
 			\hypertarget{widget} {
 			\item{\textbf{Widget}} \\
