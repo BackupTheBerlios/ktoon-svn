@@ -18,45 +18,51 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTPAINTAREACONTAINER_H
-#define KTPAINTAREACONTAINER_H
+#include "ktcamerabar.h"
+#include <QBoxLayout>
 
-#include <dvhbox.h>
+#include <ddebug.h>
+#include <dglobal.h>
 
-#include "ktdocumentruler.h"
-#include "apaintarea.h"
-
-class QScrollArea;
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-class KTPaintAreaContainer : public QWidget
+KTCameraBar::KTCameraBar(QWidget *parent)
+ : QFrame(parent)
 {
-	Q_OBJECT
-	public:
-		KTPaintAreaContainer(const QSize& size, KToon::RenderType type,  QWidget *parent = 0);
-		~KTPaintAreaContainer();
-		APaintArea *drawArea() const;
-		QPoint drawAreaDelta() const { return m_drawAreaDelta; } ;
-		
-	public slots:
-		void moveRulerPointers(const QPoint &);
-		
-	protected:
-		void resizeEvent ( QResizeEvent * event );
-// 		void mouseMoveEvent(QMouseEvent *e);
-// 		QSize sizeHint() const;
-		
-	private:
-		APaintArea *m_drawArea;
-		KTDocumentRuler *m_HRuler;
-		KTDocumentRuler *m_VRuler;
-		
-		QScrollArea *m_scroller;
-		
-// 		int m_drawAreaDelta;
-		QPoint m_drawAreaDelta;
-};
+	DINIT;
+	setFrameStyle( QFrame::StyledPanel | QFrame::Raised );
+	setMidLineWidth(2);
+	setLineWidth (1);
+	
+	QBoxLayout *m_mainLayout = new QBoxLayout(QBoxLayout::LeftToRight, parent);
+	m_mainLayout->addStretch(1);
+	
+	m_mainLayout->setSpacing(0);
+	m_mainLayout->setMargin(0);
+	
+	m_rew = new DImageButton(QPixmap(THEME_DIR+"/icons/rw.png"), 33,this, true);
+	m_mainLayout->addWidget(m_rew);
+	connect(m_rew, SIGNAL(clicked()), this, SIGNAL(rew()));
+	
+	m_play = new DImageButton(QPixmap(THEME_DIR+"/icons/play.png"), 33,this, true);
+	m_mainLayout->addWidget(m_play);
+	connect(m_play, SIGNAL(clicked()), this, SIGNAL(play()));
+	
+	m_stop = new DImageButton(QPixmap(THEME_DIR+"/icons/stop.png"), 33,this, true);
+	m_mainLayout->addWidget(m_stop);
+	connect(m_stop, SIGNAL(clicked()), this, SIGNAL(stop()));
+	
+	m_ff = new DImageButton(QPixmap(THEME_DIR+"/icons/ff.png"), 33,this, true);
+	m_mainLayout->addWidget(m_ff);
+	connect(m_ff, SIGNAL(clicked()), this, SIGNAL(ff()));
+	
+	setLayout(m_mainLayout);
+}
 
-#endif
+
+KTCameraBar::~KTCameraBar()
+{
+	DEND;
+}
+
+void KTCameraBar::setPalette(const QPalette &)
+{
+}

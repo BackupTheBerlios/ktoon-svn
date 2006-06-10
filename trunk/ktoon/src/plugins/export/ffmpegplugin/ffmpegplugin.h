@@ -21,22 +21,22 @@
 #ifndef FFMPEGPLUGIN_H
 #define FFMPEGPLUGIN_H
 
-#include <exportinterface.h>
+#include <ktexportinterface.h>
 
 #include "ffmpegmanager.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class FFMpegPlugin : public KTExportPluginObject, public ExportInterface
+class FFMpegPlugin : public KTExportPluginObject, public KTExportInterface
 {
 	Q_OBJECT;
-	Q_INTERFACES(ExportInterface);
+	Q_INTERFACES(KTExportInterface);
 	public:
 		FFMpegPlugin();
 		virtual ~FFMpegPlugin();
 		virtual QString key() const;
-		ExportInterface::Formats availableFormats();
+		KTExportInterface::Formats availableFormats();
 		
 		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size, float sx= 1, float sy = 1);
 		

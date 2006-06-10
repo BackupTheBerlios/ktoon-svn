@@ -103,7 +103,7 @@ class KTMainWindow : public DMainWindow
 		
 		void ui4project(QWidget *widget);
 		
-		QList<AGraphicComponent *> currentElements();
+		QList<KTGraphicComponent *> currentElements();
 		
 	protected:
 		/**
@@ -162,7 +162,7 @@ class KTMainWindow : public DMainWindow
 		void flipHCurrentElement();
 		
 		void addCurrentGraphicToLibrary();
-		void addGraphicComponent(const AGraphicComponent *graphic);
+		void addGraphicComponent(const KTGraphicComponent *graphic);
 		
 		//Layers
 		void insertLayer( const QString &, bool addedToEnd);

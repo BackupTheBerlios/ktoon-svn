@@ -44,18 +44,18 @@ KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, KT
 	
 	m_history = new DCommandHistory(m_actionManager);
 		
-	m_paintAreaContainer = new KTPaintAreaContainer(size,renderType,  this);
+// 	m_paintAreaContainer = new KTPaintAreaContainer(size,renderType,  this);
 	
-	setCentralWidget ( m_paintAreaContainer );
+// 	setCentralWidget ( m_paintAreaContainer );
 	
 	showPos(QPoint(0,0));
 	
-	connect( m_paintAreaContainer->drawArea(), SIGNAL(mousePos(const QPoint &)),  this,  SLOT(showPos(const QPoint &)) );
-	
-	connect( m_paintAreaContainer->drawArea(), SIGNAL(changedZoomFactor(double)),  this,  SLOT(updateZoomFactor(double)) );
-	setWindowTitle( m_title + " - " + m_document->currentScene()->sceneName() );
-	
-	m_paintAreaContainer->drawArea()->setScene( m_document->currentScene() );
+// 	connect( m_paintAreaContainer->drawArea(), SIGNAL(mousePos(const QPoint &)),  this,  SLOT(showPos(const QPoint &)) );
+// 	
+// 	connect( m_paintAreaContainer->drawArea(), SIGNAL(changedZoomFactor(double)),  this,  SLOT(updateZoomFactor(double)) );
+// 	setWindowTitle( m_title + " - " + m_document->currentScene()->sceneName() );
+// 	
+// 	m_paintAreaContainer->drawArea()->setScene( m_document->currentScene() );
 	
 	connect(m_document, SIGNAL(sceneChanged( KTScene* )) , this, SLOT(setScene( KTScene* )  ));
 	
@@ -73,7 +73,7 @@ KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, KT
 	
 	QTimer::singleShot(0, this, SLOT(loadPlugins()));
 	
-	m_paintAreaContainer->drawArea()->setHistory(m_history);
+// 	m_paintAreaContainer->drawArea()->setHistory(m_history);
 }
 
 KTViewDocument::~KTViewDocument()
@@ -83,8 +83,8 @@ KTViewDocument::~KTViewDocument()
 
 void KTViewDocument::showPos(const QPoint &p)
 {
-	QString messages =  "X: " +  QString::number(p.x()- m_paintAreaContainer->drawAreaDelta().x() ) +  " Y: " + QString::number(p.y()- m_paintAreaContainer->drawAreaDelta().y() );
-	statusBar()->showMessage ( messages ) ;
+// 	QString messages =  "X: " +  QString::number(p.x()- m_paintAreaContainer->drawAreaDelta().x() ) +  " Y: " + QString::number(p.y()- m_paintAreaContainer->drawAreaDelta().y() );
+// 	statusBar()->showMessage ( messages ) ;
 }
 
 void KTViewDocument::createActions()
@@ -106,6 +106,7 @@ void KTViewDocument::createActions()
 void KTViewDocument::setupEditActions()
 {
 	
+#if 0
 	m_editGroup = new QActionGroup( parent() );
 	DAction *a = new DAction( QPixmap(THEME_DIR+"/icons/cut.png" ), tr( "&Cut" ),  QKeySequence(tr("Ctrl+X")), m_paintAreaContainer->drawArea(), SLOT(cut()),m_actionManager, "cut" );
 	a->setShortcutContext ( Qt::ApplicationShortcut );
@@ -151,10 +152,12 @@ void KTViewDocument::setupEditActions()
 	
 	a = new DAction( tr("Properties..."), QKeySequence(), this, SLOT(configure()), m_actionManager, "properties");
 	a->setStatusTip(tr("Configure the paint area"));
+#endif
 }
 
 void KTViewDocument::setupOrderActions()
 {
+#if 0
 	DAction *bringtoFront = new DAction(QPixmap(THEME_DIR+"/icons/bring_to_front.png" ), tr( "&Bring to Front" ),  QKeySequence(Qt::CTRL+Qt::SHIFT+Qt::Key_Up), m_paintAreaContainer->drawArea(), SLOT(bringToFromSelected()), m_actionManager, "bringToFront" );
 	
 	bringtoFront->setShortcutContext ( Qt::ApplicationShortcut );
@@ -178,11 +181,13 @@ void KTViewDocument::setupOrderActions()
 	
 	oneStepBackward->setShortcutContext ( Qt::ApplicationShortcut );
 	oneStepBackward->setStatusTip(tr("Moves the selected object one step backward"));
+#endif
 	
 }
 
 void KTViewDocument::setupViewActions()
 {
+#if 0
 	DAction *zoomIn = new DAction( QPixmap(THEME_DIR+"/icons/zoom_in.png" ), tr( "Zoom In" ), QKeySequence(Qt::CTRL+Qt::Key_Plus), m_paintAreaContainer->drawArea(), SLOT(zoomIn()), m_actionManager, "zoom_in" );
 	
 	m_zoomFactorSpin = new QSpinBox();
@@ -256,6 +261,7 @@ void KTViewDocument::setupViewActions()
 	
 	threeNext->setCheckable(true );
 	threeNext->setStatusTip(tr("Shows the next 3 onion skins"));
+#endif
 }
 
 
@@ -455,12 +461,12 @@ void KTViewDocument::loadPlugins()
 					}
 					break;
 				}
-				m_paintAreaContainer->drawArea()->setTool(tool, *it);
+// 				m_paintAreaContainer->drawArea()->setTool(tool, *it);
 			}
 		}
 		
-		connect(plugin, SIGNAL(toDrawGhostGraphic(const QPainterPath &)), m_paintAreaContainer->drawArea(), SLOT(drawGhostGraphic(const QPainterPath &)));
-		connect(plugin, SIGNAL(requestRedraw()), m_paintAreaContainer->drawArea(), SLOT(redrawAll()));
+// 		connect(plugin, SIGNAL(toDrawGhostGraphic(const QPainterPath &)), m_paintAreaContainer->drawArea(), SLOT(drawGhostGraphic(const QPainterPath &)));
+// 		connect(plugin, SIGNAL(requestRedraw()), m_paintAreaContainer->drawArea(), SLOT(redrawAll()));
 	}
 	
 	foreach(QObject *plugin, KTPluginManager::instance()->filters() )
@@ -539,8 +545,8 @@ void KTViewDocument::selectTool()
 			}
 		}
 		
-		m_paintAreaContainer->drawArea()->setTool(tool, toolStr);
-		m_paintAreaContainer->drawArea()->setCursor(action->cursor());
+// 		m_paintAreaContainer->drawArea()->setTool(tool, toolStr);
+// 		m_paintAreaContainer->drawArea()->setCursor(action->cursor());
 	}
 }
 
@@ -570,13 +576,13 @@ void KTViewDocument::applyFilter()
 		AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(action->parent());
 		QString filter = action->text();
 		
-		KTKeyFrame *frame = m_paintAreaContainer->drawArea()->currentFrame();
-		
-		if( frame)
-		{
-			aFilter->filter(action->text(), frame->components() );
-			m_paintAreaContainer->drawArea()->redrawAll();
-		}
+// 		KTKeyFrame *frame = m_paintAreaContainer->drawArea()->currentFrame();
+// 		
+// 		if( frame)
+// 		{
+// 			aFilter->filter(action->text(), frame->components() );
+// 			m_paintAreaContainer->drawArea()->redrawAll();
+// 		}
 	}
 }
 
@@ -682,82 +688,77 @@ void KTViewDocument::createMenu()
 
 void KTViewDocument::close()
 {
-	m_paintAreaContainer->drawArea()->close();
-}
-
-APaintArea *KTViewDocument::drawArea()
-{
-	return m_paintAreaContainer->drawArea();
+// 	m_paintAreaContainer->drawArea()->close();
 }
 
 void KTViewDocument::setCursor(const QCursor &c)
 {
-	m_paintAreaContainer->drawArea()->setCursor(c);
+// 	m_paintAreaContainer->drawArea()->setCursor(c);
 }
 
 
 void KTViewDocument::disablePreviousOnionSkin()
 {
-	m_paintAreaContainer->drawArea()->setPreviousFrames( 0 );
+// 	m_paintAreaContainer->drawArea()->setPreviousFrames( 0 );
 }
 
 void KTViewDocument::onePreviousOnionSkin()
 {
-	m_paintAreaContainer->drawArea()->setPreviousFrames( 1 );
+// 	m_paintAreaContainer->drawArea()->setPreviousFrames( 1 );
 }
 
 void KTViewDocument::twoPreviousOnionSkin()
 {
-	m_paintAreaContainer->drawArea()->setPreviousFrames( 2 );
+// 	m_paintAreaContainer->drawArea()->setPreviousFrames( 2 );
 }
 
 void KTViewDocument::threePreviousOnionSkin()
 {
-	m_paintAreaContainer->drawArea()->setPreviousFrames( 3 );
+// 	m_paintAreaContainer->drawArea()->setPreviousFrames( 3 );
 }
 
 void KTViewDocument::setPreviousOnionSkin(int n)
 {
-	m_paintAreaContainer->drawArea()->setPreviousFrames(n);
+// 	m_paintAreaContainer->drawArea()->setPreviousFrames(n);
 }
 
 // NEXT
 void KTViewDocument::disableNextOnionSkin()
 {
-	m_paintAreaContainer->drawArea()->setNextFrames( 0 );
+// 	m_paintAreaContainer->drawArea()->setNextFrames( 0 );
 }
 
 void KTViewDocument::oneNextOnionSkin()
 {
-	m_paintAreaContainer->drawArea()->setNextFrames( 1 );
+// 	m_paintAreaContainer->drawArea()->setNextFrames( 1 );
 }
 
 void KTViewDocument::twoNextOnionSkin()
 {
-	m_paintAreaContainer->drawArea()->setNextFrames( 2 );
+// 	m_paintAreaContainer->drawArea()->setNextFrames( 2 );
 }
 
 void KTViewDocument::threeNextOnionSkin()
 {
-	m_paintAreaContainer->drawArea()->setNextFrames( 3 );
+// 	m_paintAreaContainer->drawArea()->setNextFrames( 3 );
 }
 
 
 void KTViewDocument::setNextOnionSkin(int n)
 {
-	m_paintAreaContainer->drawArea()->setNextFrames( n );
+// 	m_paintAreaContainer->drawArea()->setNextFrames( n );
 }
 
 void KTViewDocument::setScene(KTScene* scene)
 {
 	setWindowTitle( m_title + " - " + scene->sceneName() );
-	m_paintAreaContainer->drawArea()->setScene(  scene );
+// 	m_paintAreaContainer->drawArea()->setScene(  scene );
 }
 
 void KTViewDocument::setZoomFactor(int porcent)
 {
 	m_zoomFactorSpin->blockSignals(true);
-	m_paintAreaContainer->drawArea()->setZoomFactor((float) porcent/100);
+// 	m_paintAreaContainer->drawArea()->setZoomFactor((float) porcent/100);
 	m_zoomFactorSpin->blockSignals(false);
 }
 
@@ -775,7 +776,7 @@ void KTViewDocument::configure()
 		areaProperties.onionSkinBackground = properties.onionSkinBackground();
 		areaProperties.gridSeparation = properties.gridSeparation();
 		
-		m_paintAreaContainer->drawArea()->setProperties(areaProperties);
+// 		m_paintAreaContainer->drawArea()->setProperties(areaProperties);
 	}
 }
 

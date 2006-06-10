@@ -1,6 +1,6 @@
 <!DOCTYPE TS><TS>
 <context>
-    <name>AAnimationArea</name>
+    <name>KTAnimationArea</name>
     <message>
         <source>Rendering... </source>
         <translation>Renderizando...</translation>

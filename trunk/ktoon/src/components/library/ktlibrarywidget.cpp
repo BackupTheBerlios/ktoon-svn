@@ -108,7 +108,7 @@ void KTLibraryWidget::setup()
 			
 			if ( reader.parse(&xmlsource) )
 			{
-				foreach(AGraphicComponent *component, parser.components() )
+				foreach(KTGraphicComponent *component, parser.components() )
 				{
 					addGraphic(component);
 				}
@@ -167,7 +167,7 @@ KTLibraryWidget::~KTLibraryWidget()
 	}
 }
 
-void KTLibraryWidget::addGraphic(const AGraphicComponent *graphic)
+void KTLibraryWidget::addGraphic(const KTGraphicComponent *graphic)
 {
 	D_FUNCINFO;
 	if ( !m_libraryTree->currentFolder() )
@@ -175,7 +175,7 @@ void KTLibraryWidget::addGraphic(const AGraphicComponent *graphic)
 		addFolder( tr("General") );
 	}
 	
-	AGraphicComponent *copy = new AGraphicComponent(*graphic);
+	KTGraphicComponent *copy = new KTGraphicComponent(*graphic);
 	
 	m_display->addGraphicComponent( copy);
 	
@@ -204,7 +204,7 @@ void KTLibraryWidget::drawCurrentItem(QTreeWidgetItem *item, int)
 	D_FUNCINFO;
 	if ( item )
 	{
-		AGraphicComponent *gc = m_graphics[item];
+		KTGraphicComponent *gc = m_graphics[item];
 		if ( gc )
 		{
 			m_display->addGraphicComponent( gc);
@@ -218,7 +218,7 @@ void KTLibraryWidget::drawCurrentItem(QTreeWidgetItem *item, int)
 
 void KTLibraryWidget::emitSelectedComponent()
 {
-	AGraphicComponent *gc = m_graphics[ m_libraryTree->currentItem() ];
+	KTGraphicComponent *gc = m_graphics[ m_libraryTree->currentItem() ];
 	
 	if ( gc )
 	{
@@ -245,7 +245,7 @@ void KTLibraryWidget::removeCurrentGraphic()
 		DCONFIG->sync();
 	}
 	
-	AGraphicComponent *gc = m_graphics.take(m_libraryTree->currentItem());
+	KTGraphicComponent *gc = m_graphics.take(m_libraryTree->currentItem());
 	if ( gc )
 	{
 		QTreeWidgetItem *item = m_libraryTree->currentItem();
@@ -280,7 +280,7 @@ void KTLibraryWidget::renameObject( QTreeWidgetItem* item)
 {
 	if ( item )
 	{
-		AGraphicComponent *graphic = m_graphics[item];
+		KTGraphicComponent *graphic = m_graphics[item];
 		
 		if ( graphic )
 		{
@@ -316,7 +316,7 @@ void KTLibraryWidget::addBitmap(const QString &bitmap)
 	
 	if ( ! toImport.isNull() )
 	{
-		AGraphicComponent *imageComponent = new AGraphicComponent;
+		KTGraphicComponent *imageComponent = new KTGraphicComponent;
 		
 		QFile file(bitmap);
 		QFileInfo finfo(file);

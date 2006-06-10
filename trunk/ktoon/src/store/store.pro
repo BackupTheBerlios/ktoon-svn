@@ -9,7 +9,6 @@ target.path = /lib/
 headers.files += *.h 
 headers.path = /include/ 
 HEADERS += ktkeyframe.h \
-           agraphiccomponent.h \
            ktlayer.h \
            ktprojectmanager.h \
            ktscene.h \
@@ -17,9 +16,9 @@ HEADERS += ktkeyframe.h \
            ktserializableobject.h \
            ktbrush.h \
            ktprojectparser.h \
-           ktpalettedocument.h 
+           ktpalettedocument.h \
+           ktgraphiccomponent.h 
 SOURCES += ktkeyframe.cpp \
-           agraphiccomponent.cpp \
            ktlayer.cpp \
            ktprojectmanager.cpp \
            ktscene.cpp \
@@ -27,24 +26,22 @@ SOURCES += ktkeyframe.cpp \
            ktserializableobject.cpp \
            ktbrush.cpp \
            ktprojectparser.cpp \
-           ktpalettedocument.cpp 
-QT += xml
-KDEV_QTVER = 4
-INCLUDEPATH += ../../src/ktoonlib \
-../../src/core \
-../../src/dialogs \
-../../src/store \
-../../src/dlib/dgui \
-../../src/dlib/dcore
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
+           ktpalettedocument.cpp \
+           ktgraphiccomponent.cpp 
+QT += xml 
+KDEV_QTVER = 4 
+INCLUDEPATH += ../../src/store \
+               ../../src/libktoon \
+               ../../src/dlib/dgui \
+               ../../src/dlib/dcore 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
 CONFIG += release \
-warn_on \
-dll
-TEMPLATE = lib
-
-macx {
-LIBS += -ldcore -ldgui -lktoon
-QMAKE_LIBDIR = ../../src/dlib/dcore ../../src/dlib/dgui ../../src/ktoonlib
+          warn_on \
+          dll 
+TEMPLATE = lib 
+macx{
+  LIBS += -ldcore -ldgui -lktoon
+  QMAKE_LIBDIR = ../../src/dlib/dcore ../../src/dlib/dgui ../../src/ktoonlib
 }

@@ -3,10 +3,20 @@
 # Subdir relative project main directory: ./src/components/exposure
 # Target is a library:  
 
+HEADERS += ktexposuresheet.h \
+           kttableexposure.h \
+           ktlayerexposure.h \
+           ktesframe.h \
+           kteslayer.h 
+SOURCES += ktexposuresheet.cpp \
+           kttableexposure.cpp \
+           ktlayerexposure.cpp \
+           ktesframe.cpp \
+           kteslayer.cpp 
 QT += xml 
 KDEV_QTVER = 4 
-INCLUDEPATH += ../../../src/ktoonlib \
-               ../../../src/store \
+INCLUDEPATH += ../../../src/store \
+               ../../../src/libktoon \
                ../../../src/dlib/dgui \
                ../../../src/dlib/dcore 
 MOC_DIR = .moc 
@@ -16,13 +26,3 @@ CONFIG += release \
           warn_on \
           staticlib 
 TEMPLATE = lib 
-HEADERS += esframe.h \
-           eslayer.h \
-           ktexposuresheet.h \
-           kttableexposure.h \
-           ktlayerexposure.h 
-SOURCES += esframe.cpp \
-           eslayer.cpp \
-           ktexposuresheet.cpp \
-           kttableexposure.cpp \
-           ktlayerexposure.cpp 

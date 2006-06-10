@@ -27,7 +27,7 @@
 #include <QListWidget>
 #include <QHash>
 
-#include "exportinterface.h"
+#include "ktexportinterface.h"
 
 
 class QButtonGroup;
@@ -42,7 +42,7 @@ class KTExportWidget : public KTModuleWidgetBase
 	public:
 		KTExportWidget(const KTProjectManager *manager, QWidget *parent = 0);
 		~KTExportWidget();
-		void addFormats(ExportInterface::Formats formats);
+		void addFormats(KTExportInterface::Formats formats);
 		
 		QString fileToExport() const;
 		
@@ -80,11 +80,11 @@ class KTExportWidget : public KTModuleWidgetBase
 		QListWidget *m_exporterList;
 		QListWidget *m_formatList;
 		
-		QHash<QListWidgetItem *, ExportInterface *> m_plugins;
-		QHash<QListWidgetItem *, ExportInterface::Format > m_formats;
+		QHash<QListWidgetItem *, KTExportInterface *> m_plugins;
+		QHash<QListWidgetItem *, KTExportInterface::Format > m_formats;
 		
-		ExportInterface *m_currentExporter;
-		ExportInterface::Format m_currentFormat;
+		KTExportInterface *m_currentExporter;
+		KTExportInterface::Format m_currentFormat;
 		
 		QLineEdit *m_fromScene, *m_toScene;
 		QLineEdit *m_filePath;

@@ -18,48 +18,48 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "agraphiccomponent.h"
+#include "ktgraphiccomponent.h"
 #include "ddebug.h"
 #include <cmath> // fabs
 
 #include <QPainter>
 
-AGraphicComponent::AGraphicComponent() : KTSerializableObject(), m_scale(1,1), m_shear(0,0), m_angle(0), m_selected(false)
+KTGraphicComponent::KTGraphicComponent() : KTSerializableObject(), m_scale(1,1), m_shear(0,0), m_angle(0), m_selected(false)
 {
 	
 }
 
-AGraphicComponent::AGraphicComponent(const AGraphicComponent &toCopy) : KTSerializableObject(toCopy.parent()), m_name(toCopy.m_name), m_scale( toCopy.m_scale), m_shear(toCopy.m_shear), m_angle(toCopy.m_angle), m_selectPoints(toCopy.m_selectPoints), m_selected(toCopy.m_selected)
+KTGraphicComponent::KTGraphicComponent(const KTGraphicComponent &toCopy) : KTSerializableObject(toCopy.parent()), m_name(toCopy.m_name), m_scale( toCopy.m_scale), m_shear(toCopy.m_shear), m_angle(toCopy.m_angle), m_selectPoints(toCopy.m_selectPoints), m_selected(toCopy.m_selected)
 {
-	foreach(AGraphic *graphic, toCopy.m_graphics)
+	foreach(KTGraphicElement *graphic, toCopy.m_graphics)
 	{
-		m_graphics << new AGraphic(*graphic);
+		m_graphics << new KTGraphicElement(*graphic);
 	}
 	
-	foreach(AGraphicComponent *child, toCopy.m_childs )
+	foreach(KTGraphicComponent *child, toCopy.m_childs )
 	{
-		m_childs << new AGraphicComponent(*child);
+		m_childs << new KTGraphicComponent(*child);
 	}
 }
 
-AGraphicComponent::~AGraphicComponent()
+KTGraphicComponent::~KTGraphicComponent()
 {
 	qDeleteAll(m_graphics.begin(), m_graphics.end());
 	qDeleteAll(m_childs.begin(), m_childs.end());
 }
 
 
-QRectF AGraphicComponent::boundingRect() const
+QRectF KTGraphicComponent::boundingRect() const
 {
 	QRectF r(0,0,0,0);
 	
-	foreach(AGraphic *graphic, m_graphics)
+	foreach(KTGraphicElement *graphic, m_graphics)
 	{
 		r = r | graphic->path.boundingRect();
 	}
 	if(m_childs.count() > 0)
 	{
-		foreach(AGraphicComponent *child, m_childs)
+		foreach(KTGraphicComponent *child, m_childs)
 		{
 			r = r | child->boundingRect();
 		}
@@ -68,19 +68,19 @@ QRectF AGraphicComponent::boundingRect() const
 	return r;
 }
 
-QPointF AGraphicComponent::position() const
+QPointF KTGraphicComponent::position() const
 {
 	return boundingRect().topLeft();
 }
 
-bool AGraphicComponent::isValid()
+bool KTGraphicComponent::isValid()
 {
 	return (!m_graphics.isEmpty() || !m_childs.isEmpty());
 }
 
-void AGraphicComponent::addGraphic(const QPainterPath &path, const QPen &pen, const QBrush &brush, const QPixmap &pix )
+void KTGraphicComponent::addGraphic(const QPainterPath &path, const QPen &pen, const QBrush &brush, const QPixmap &pix )
 {
-	AGraphic *graphic = new AGraphic;
+	KTGraphicElement *graphic = new KTGraphicElement;
 	graphic->path = path;
 	graphic->brush = brush;
 	graphic->pen = pen;
@@ -90,7 +90,7 @@ void AGraphicComponent::addGraphic(const QPainterPath &path, const QPen &pen, co
 	m_graphics << graphic;
 }
 
-void AGraphicComponent::addGraphic(const QList<QPolygonF> &polygons, const QPen &pen, const QBrush &brush, const QPixmap &pix )
+void KTGraphicComponent::addGraphic(const QList<QPolygonF> &polygons, const QPen &pen, const QBrush &brush, const QPixmap &pix )
 {
 	QPainterPath path;
 	
@@ -102,12 +102,12 @@ void AGraphicComponent::addGraphic(const QList<QPolygonF> &polygons, const QPen 
 	addGraphic( path, pen, brush);
 }
 
-Graphics AGraphicComponent::graphics() const
+Graphics KTGraphicComponent::graphics() const
 {
 	return m_graphics;
 }
 
-bool AGraphicComponent::intersects(const QRectF &rect)
+bool KTGraphicComponent::intersects(const QRectF &rect)
 {
 	if ( isValid() )
 	{
@@ -121,7 +121,7 @@ bool AGraphicComponent::intersects(const QRectF &rect)
 	return false;
 }
 
-bool AGraphicComponent::contains(const QRectF &rect)
+bool KTGraphicComponent::contains(const QRectF &rect)
 {
 	if ( isValid() )
 	{
@@ -134,7 +134,7 @@ bool AGraphicComponent::contains(const QRectF &rect)
 	return false;
 }
 
-void AGraphicComponent::scale(double sX, double sY)
+void KTGraphicComponent::scale(double sX, double sY)
 {
 	QPointF delta( sX/m_scale.x(), sY/m_scale.y());
 	if ( delta.x() > 0 && delta.y() > 0 )
@@ -151,7 +151,7 @@ void AGraphicComponent::scale(double sX, double sY)
 	}
 }
 
-void AGraphicComponent::shear(double sX, double sY)
+void KTGraphicComponent::shear(double sX, double sY)
 {
 	QPointF delta( sX-m_shear.x(), sY-m_shear.y());
 	QPointF pos = position();
@@ -167,7 +167,7 @@ void AGraphicComponent::shear(double sX, double sY)
 	translate( pos.x(), pos.y());
 }
 
-void AGraphicComponent::translate(double sX, double sY)
+void KTGraphicComponent::translate(double sX, double sY)
 {
 	QPointF position = boundingRect().topLeft();
 	QMatrix mId;
@@ -175,7 +175,7 @@ void AGraphicComponent::translate(double sX, double sY)
 	mapTo(mId);
 }
 
-void AGraphicComponent::rotate( double angle )
+void KTGraphicComponent::rotate( double angle )
 {
 	QPointF pos = boundingRect().center();
 	QMatrix mId;
@@ -190,7 +190,7 @@ void AGraphicComponent::rotate( double angle )
 	m_angle = (int)angle;
 }
 
-void AGraphicComponent::adjustToRect(QRect rect, float offset)
+void KTGraphicComponent::adjustToRect(QRect rect, float offset)
 {
 	QRectF br = boundingRect();
 	QMatrix matrix;
@@ -220,7 +220,7 @@ void AGraphicComponent::adjustToRect(QRect rect, float offset)
 	mapTo(matrix);
 }
 
-void AGraphicComponent::mapTo(const QMatrix& matrix)
+void KTGraphicComponent::mapTo(const QMatrix& matrix)
 {
 	QMatrix orig;
 	
@@ -228,7 +228,7 @@ void AGraphicComponent::mapTo(const QMatrix& matrix)
 	orig.shear(m_shear.x(), m_shear.y());
 	orig.rotate(m_angle);
 	
-	foreach(AGraphic *graphic, m_graphics)
+	foreach(KTGraphicElement *graphic, m_graphics)
 	{
 		graphic->mapTo(matrix);
 		graphic->mapPixmap(orig);
@@ -236,7 +236,7 @@ void AGraphicComponent::mapTo(const QMatrix& matrix)
 	
 	if(m_childs.count() > 0)
 	{
-		foreach(AGraphicComponent *child, m_childs)
+		foreach(KTGraphicComponent *child, m_childs)
 		{
 			child->mapTo(matrix);
 		}
@@ -247,38 +247,38 @@ void AGraphicComponent::mapTo(const QMatrix& matrix)
 	}
 }
 
-void AGraphicComponent::getPath(QPainterPath & path, const QMatrix& matrix)
+void KTGraphicComponent::getPath(QPainterPath & path, const QMatrix& matrix)
 {
-	foreach(AGraphic *graphic, m_graphics)
+	foreach(KTGraphicElement *graphic, m_graphics)
 	{
 		graphic->mapTo(matrix);
 		path.addPath(graphic->path);
 	}
 	if(m_childs.count() > 0)
 	{
-		foreach(AGraphicComponent *child, m_childs)
+		foreach(KTGraphicComponent *child, m_childs)
 		{
 			child->getPath(path, matrix);
 		}
 	}
 }
 
-void AGraphicComponent::flip(Qt::Orientation o, const QPointF & pos)
+void KTGraphicComponent::flip(Qt::Orientation o, const QPointF & pos)
 {
-	foreach(AGraphic *graphic, m_graphics)
+	foreach(KTGraphicElement *graphic, m_graphics)
 	{
 		graphic->flip(o, pos);
 	}
 	if(m_childs.count() > 0)
 	{
-		foreach(AGraphicComponent *child, m_childs)
+		foreach(KTGraphicComponent *child, m_childs)
 		{
 			child->flip(o, pos);
 		}
 	}
 }
 
-QDomElement AGraphicComponent::createXML( QDomDocument &doc )
+QDomElement KTGraphicComponent::createXML( QDomDocument &doc )
 {
 	QDomElement item = doc.createElement("Component");
 	
@@ -287,7 +287,7 @@ QDomElement AGraphicComponent::createXML( QDomDocument &doc )
 		item.setAttribute("name", m_name);
 	}
 	
-	foreach(AGraphic *graphic, m_graphics)
+	foreach(KTGraphicElement *graphic, m_graphics)
 	{
 		QDomElement graphicElement = doc.createElement("Graphic");
 		
@@ -355,7 +355,7 @@ QDomElement AGraphicComponent::createXML( QDomDocument &doc )
 		item.appendChild(graphicElement);
 	}
 	
-	foreach(AGraphicComponent *child, m_childs)
+	foreach(KTGraphicComponent *child, m_childs)
 	{
 		item.appendChild(child->createXML(doc));
 	}
@@ -363,17 +363,17 @@ QDomElement AGraphicComponent::createXML( QDomDocument &doc )
 	return item;
 }
 
-void AGraphicComponent::setComponentName(const QString &name)
+void KTGraphicComponent::setComponentName(const QString &name)
 {
 	m_name = name;
 }
 
-QString AGraphicComponent::componentName() const
+QString KTGraphicComponent::componentName() const
 {
 	return m_name;
 }
 
-QDomElement AGraphicComponent::brushToElement(const QBrush &brush, QDomDocument &doc)
+QDomElement KTGraphicComponent::brushToElement(const QBrush &brush, QDomDocument &doc)
 {
 	QDomElement element;
 	
@@ -445,32 +445,32 @@ QDomElement AGraphicComponent::brushToElement(const QBrush &brush, QDomDocument 
 	return element;
 }
 
-void AGraphicComponent::addChild ( AGraphicComponent * child )
+void KTGraphicComponent::addChild ( KTGraphicComponent * child )
 {
 	m_childs << child;
 	
 }
 
-void AGraphicComponent::removeChild( AGraphicComponent * child )
+void KTGraphicComponent::removeChild( KTGraphicComponent * child )
 {
 	m_childs.removeAll(child);
 }
 
-QList<AGraphicComponent*> AGraphicComponent::childs() const
+QList<KTGraphicComponent*> KTGraphicComponent::childs() const
 {
 	return m_childs;
 }
 
-bool AGraphicComponent::hasChilds()
+bool KTGraphicComponent::hasChilds()
 {
 	return !m_childs.isEmpty();
 }
 
 
-QList<AGraphicComponent*> AGraphicComponent::allChilds() const
+QList<KTGraphicComponent*> KTGraphicComponent::allChilds() const
 {
-	QList<AGraphicComponent*> m_allChilds;
-	foreach(AGraphicComponent *component, m_childs)
+	QList<KTGraphicComponent*> m_allChilds;
+	foreach(KTGraphicComponent *component, m_childs)
 	{
 		m_allChilds << component;
 		if ( component->hasChilds() )
@@ -482,9 +482,9 @@ QList<AGraphicComponent*> AGraphicComponent::allChilds() const
 	return m_allChilds;
 }
 
-void AGraphicComponent::appendChilds(AGraphicComponent *component, QList<AGraphicComponent *> &childs) const
+void KTGraphicComponent::appendChilds(KTGraphicComponent *component, QList<KTGraphicComponent *> &childs) const
 {
-	foreach(AGraphicComponent *child, component->childs())
+	foreach(KTGraphicComponent *child, component->childs())
 	{
 		childs << child;
 		if ( child->hasChilds() )
@@ -494,22 +494,22 @@ void AGraphicComponent::appendChilds(AGraphicComponent *component, QList<AGraphi
 	}
 }
 
-QPolygonF AGraphicComponent::controlPoints() const
+QPolygonF KTGraphicComponent::controlPoints() const
 {
 	return m_selectPoints;
 }
 
-void AGraphicComponent::setControlPoints(const QPolygonF& points) 
+void KTGraphicComponent::setControlPoints(const QPolygonF& points) 
 {
 	m_selectPoints = points;
 }
 
-void AGraphicComponent::removeControlPoints()
+void KTGraphicComponent::removeControlPoints()
 {
 	m_selectPoints.clear();
 	if( m_childs.count() > 0  )
 	{
-		foreach(AGraphicComponent * child, m_childs)
+		foreach(KTGraphicComponent * child, m_childs)
 		{
 			if(!child->controlPoints().isEmpty())
 			{
@@ -519,7 +519,7 @@ void AGraphicComponent::removeControlPoints()
 	}
 }
 
-void AGraphicComponent::copyAttributes(const AGraphicComponent *other)
+void KTGraphicComponent::copyAttributes(const KTGraphicComponent *other)
 {
 	m_name = other->componentName();
 	m_scale = other->scaleFactor();
@@ -534,37 +534,37 @@ void AGraphicComponent::copyAttributes(const AGraphicComponent *other)
 	m_graphics.clear();
 	m_childs.clear();
 	
-	foreach(AGraphic *graphic, other->graphics() )
+	foreach(KTGraphicElement *graphic, other->graphics() )
 	{
-		m_graphics << new AGraphic(*graphic);
+		m_graphics << new KTGraphicElement(*graphic);
 	}
 	
-	foreach(AGraphicComponent *child, other->childs() )
+	foreach(KTGraphicComponent *child, other->childs() )
 	{
-		m_childs << new AGraphicComponent(*child);
+		m_childs << new KTGraphicComponent(*child);
 	}
 }
 
-QPointF AGraphicComponent::scaleFactor() const
+QPointF KTGraphicComponent::scaleFactor() const
 {
 	return m_scale;
 }
 
-QPointF AGraphicComponent::shearFactor() const
+QPointF KTGraphicComponent::shearFactor() const
 {
 	return m_shear;
 }
 
-int AGraphicComponent::angleFactor() const
+int KTGraphicComponent::angleFactor() const
 {
 	return m_angle;
 }
 
-void AGraphicComponent::draw(QPainter *painter)
+void KTGraphicComponent::draw(QPainter *painter)
 {
 	painter->save();
 	
-	foreach(AGraphic *graphic, graphics())
+	foreach(KTGraphicElement *graphic, graphics())
 	{
 		QPen pen = graphic->pen;
 		QBrush brush = graphic->brush;
@@ -594,7 +594,7 @@ void AGraphicComponent::draw(QPainter *painter)
 		}
 	}
 	
-	foreach(AGraphicComponent *child, childs())
+	foreach(KTGraphicComponent *child, childs())
 	{
 		child->draw(painter);
 	}
@@ -602,13 +602,13 @@ void AGraphicComponent::draw(QPainter *painter)
 	painter->restore();
 }
 
-QPointF AGraphicComponent::currentPosition() const
+QPointF KTGraphicComponent::currentPosition() const
 {
 	return boundingRect().topLeft();
 }
 
 //FIXME
-void AGraphicComponent::setSelected(bool select)
+void KTGraphicComponent::setSelected(bool select)
 {
 	m_selected = select;
 // 	if(!m_selected)
@@ -631,14 +631,14 @@ void AGraphicComponent::setSelected(bool select)
 	setControlPoints(points);
 // 	}
 }
-bool AGraphicComponent::selected() const
+bool KTGraphicComponent::selected() const
 {
 	return m_selected;
 }
 
-void AGraphicComponent::saveResources(const QString &path)
+void KTGraphicComponent::saveResources(const QString &path)
 {
-	foreach(AGraphic *graphic, graphics())
+	foreach(KTGraphicElement *graphic, graphics())
 	{
 		graphic->savePixmap(path);
 	}

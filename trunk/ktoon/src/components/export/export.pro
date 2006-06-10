@@ -4,19 +4,18 @@
 # Target is a library:  
 
 QT += xml 
-
+KDEV_QTVER = 4 
+INCLUDEPATH += ../../../src/store \
+               ../../../src/libktoon \
+               ../../../src/dlib/dgui \
+               ../../../src/dlib/dcore 
+CONFIG += release \
+          warn_on \
+          staticlib 
+TEMPLATE = lib 
 HEADERS += ktexportwidget.h 
 SOURCES += ktexportwidget.cpp 
-KDEV_QTVER = 4
-INCLUDEPATH += ../../../src/store \
-../../../src/lib
-CONFIG += release \
-warn_on
-TEMPLATE = lib
-
-
 macx{
   LIBS += -ldcore -ldgui -lktoon -lstore
   QMAKE_LIBDIR = ../../../../src/dlib/dcore ../../../../src/dlib/dgui ../../../../src/ktoonlib ../../../../src/store
 }
-

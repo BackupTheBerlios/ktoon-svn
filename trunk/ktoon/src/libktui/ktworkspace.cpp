@@ -28,7 +28,6 @@
 #include <QLinearGradient>
 
 #include <QBoxLayout>
-#include "ktcamerabar.h"
 
 KTWorkspace::KTWorkspace(QWidget *parent) : QWorkspace(parent)
 {

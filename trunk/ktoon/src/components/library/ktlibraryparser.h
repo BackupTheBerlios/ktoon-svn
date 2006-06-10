@@ -25,7 +25,7 @@
 #include <QList>
 #include <QPainterPath>
 
-#include "agraphiccomponent.h"
+#include "ktgraphiccomponent.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -43,11 +43,11 @@ class KTLibraryParser : public QXmlDefaultHandler
 		bool error ( const QXmlParseException & exception );
 		bool fatalError ( const QXmlParseException & exception );
 		
-		QList<AGraphicComponent *> components();
+		QList<KTGraphicComponent *> components();
 		
 	private:
 		QString m_root,m_qname;
-		QList<AGraphicComponent *> m_components;
+		QList<KTGraphicComponent *> m_components;
 		QStringList m_tmpPolygons;
 		QString m_objectName;
 		
@@ -56,7 +56,7 @@ class KTLibraryParser : public QXmlDefaultHandler
 		QGradient *m_gradient;
 		QGradientStops m_gradientStops;
 		
-		QList<AGraphic *> m_graphics;
+		QList<KTGraphicElement *> m_graphics;
 		
 		int m_tagCounter;
 };

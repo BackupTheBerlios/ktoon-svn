@@ -96,7 +96,7 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 		{
 			if ( m_tagCounter == 0 )
 			{
-				AGraphicComponent *rootComponent = new AGraphicComponent;
+				KTGraphicComponent *rootComponent = new KTGraphicComponent;
 				m_components << rootComponent;
 			}
 			
@@ -114,7 +114,7 @@ bool KTProjectParser::startElement( const QString& , const QString& , const QStr
 		{
 			m_polygons.clear();
 			
-			AGraphic *graphic = new AGraphic;
+			KTGraphicElement *graphic = new KTGraphicElement;
 			m_graphics << graphic;
 		}
 		else if ( qname == "Image" )
@@ -245,10 +245,10 @@ bool KTProjectParser::endElement(const QString&, const QString& , const QString&
 		{
 			m_tagCounter--;
 			
-			AGraphicComponent *root = m_components.last();
+			KTGraphicComponent *root = m_components.last();
 			if ( m_tagCounter == 0 )
 			{
-				foreach(AGraphic *graphic, m_graphics)
+				foreach(KTGraphicElement *graphic, m_graphics)
 				{
 					root->addGraphic(graphic->path, graphic->pen, graphic->brush, graphic->pixmap);
 				}
@@ -257,13 +257,13 @@ bool KTProjectParser::endElement(const QString&, const QString& , const QString&
 			if ( m_tagCounter != 0 )
 			{
 				{
-					AGraphicComponent *child = new AGraphicComponent;
+					KTGraphicComponent *child = new KTGraphicComponent;
 					if ( ! m_partName.isNull() )
 					{
 						child->setComponentName( m_partName);
 					}
 					
-					foreach(AGraphic *graphic, m_graphics)
+					foreach(KTGraphicElement *graphic, m_graphics)
 					{
 						child->addGraphic(graphic->path, graphic->pen, graphic->brush);
 					}

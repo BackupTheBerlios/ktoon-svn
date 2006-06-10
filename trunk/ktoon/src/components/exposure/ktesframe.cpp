@@ -27,11 +27,11 @@
 #include <QEvent>
 #include <QPalette>
 #include "ddebug.h"
-#include "esframe.h"
+#include "ktesframe.h"
 
 //--------------- CONSTRUCTOR --------------------
 
-ESFrame::ESFrame( int id, QWidget *parent )
+KTESFrame::KTESFrame( int id, QWidget *parent )
 	: DSqueezeLabel( parent )  ,  is_used(false), is_selected(false), is_locked(false),  is_motion(false), has_drawing(false), m_id(id) /*m_initialText(initial_text)*/
 {
 // 	DINIT;
@@ -52,54 +52,54 @@ ESFrame::ESFrame( int id, QWidget *parent )
 
 //--------------- DESTRUCTOR --------------------
 
-ESFrame::~ESFrame()
+KTESFrame::~KTESFrame()
 {
 // 	DEND;
 }
 
 //-------------- PUBLIC MEMBERS ----------------
 
-QString ESFrame::name()
+QString KTESFrame::name()
 {
 	return m_initialText;
 }
 
-bool ESFrame::isUsed()
+bool KTESFrame::isUsed()
 {
 	return is_used;	
 }
 
-bool ESFrame::isSelected()
+bool KTESFrame::isSelected()
 {
 	return is_selected;
 }
 
-bool ESFrame::isLocked()
+bool KTESFrame::isLocked()
 {
 	return is_locked;
 }
 
-bool ESFrame::isMotion()
+bool KTESFrame::isMotion()
 {
 	return is_motion;
 }
 
-bool ESFrame::hasDrawing()
+bool KTESFrame::hasDrawing()
 {
 	return has_drawing;
 }
 
-int ESFrame::id()
+int KTESFrame::id()
 {
 	return m_id;
 }
 
-void ESFrame::setId(int id)
+void KTESFrame::setId(int id)
 {
 	m_id = id;
 }
 
-void ESFrame::setUsed( bool in_is_used )
+void KTESFrame::setUsed( bool in_is_used )
 {
 	is_used = in_is_used;
 	setName(m_initialText);
@@ -142,7 +142,7 @@ void ESFrame::setUsed( bool in_is_used )
 #endif
 }
 
-void ESFrame::setSelected( bool in_is_selected )
+void KTESFrame::setSelected( bool in_is_selected )
 {
 	is_selected = in_is_selected;
 	QPalette pal = palette();
@@ -190,7 +190,7 @@ void ESFrame::setSelected( bool in_is_selected )
 	setPalette(pal);
 }
 
-void ESFrame::setLocked( bool in_is_locked )
+void KTESFrame::setLocked( bool in_is_locked )
 {
 	if ( is_used )
 	{
@@ -230,22 +230,22 @@ void ESFrame::setLocked( bool in_is_locked )
 
 }
 
-void ESFrame::setMotion( bool in_is_motion )
+void KTESFrame::setMotion( bool in_is_motion )
 {
 	is_motion = in_is_motion;
 	update();
 }
 
-void ESFrame::setHasDrawing( bool in_has_drawing )
+void KTESFrame::setHasDrawing( bool in_has_drawing )
 {
-// 	dDebug(1) << "void ESFrame::setHasDrawing(" << in_has_drawing << ")";
+// 	dDebug(1) << "void KTESFrame::setHasDrawing(" << in_has_drawing << ")";
 	has_drawing = in_has_drawing;
 	update();
 }
 
-void ESFrame::setName( const QString &new_name )
+void KTESFrame::setName( const QString &new_name )
 {
-// 	dDebug() << "void ESFrame::setName( const QString &new_name )";
+// 	dDebug() << "void KTESFrame::setName( const QString &new_name )";
 	if(m_initialText != new_name)
 	{
 		m_initialText = new_name;
@@ -254,12 +254,12 @@ void ESFrame::setName( const QString &new_name )
 	}
 }
 
-void ESFrame::clearTextfieldFocus()
+void KTESFrame::clearTextfieldFocus()
 {
 	description -> clearFocus();
 }
 
-void ESFrame::setAllProperties( ESFrame *in_esframe )
+void KTESFrame::setAllProperties( KTESFrame *in_esframe )
 {
 	setUsed( in_esframe -> isUsed() );
 	setLocked( in_esframe -> isLocked() );
@@ -271,7 +271,7 @@ void ESFrame::setAllProperties( ESFrame *in_esframe )
 
 //-------------- SLOTS --------------------
 
-void ESFrame::slotSetDescription()
+void KTESFrame::slotSetDescription()
 {
 	if(m_initialText != description->text())
 	{
@@ -283,7 +283,7 @@ void ESFrame::slotSetDescription()
 }
 
 
-void ESFrame::otherSelected(int id)
+void KTESFrame::otherSelected(int id)
 {
 	if(m_id != id)
 	{
@@ -299,7 +299,7 @@ void ESFrame::otherSelected(int id)
 
 //-------------- EVENTS AND PROTECTED MEMBERS --------------
 
-void ESFrame::mousePressEvent( QMouseEvent *mouse_event )
+void KTESFrame::mousePressEvent( QMouseEvent *mouse_event )
 {
 // 	QToolTip::showText(mapToGlobal ( mouse_event->pos()), "offset " + QString::number(m_id), this);
 	Q_CHECK_PTR( mouse_event );
@@ -341,7 +341,7 @@ void ESFrame::mousePressEvent( QMouseEvent *mouse_event )
 
 }
 
-void ESFrame::mouseDoubleClickEvent( QMouseEvent *mouse_event )
+void KTESFrame::mouseDoubleClickEvent( QMouseEvent *mouse_event )
 {
 	Q_CHECK_PTR( mouse_event );
 	if ( is_used == true && mouse_event -> button() == Qt::LeftButton )
@@ -357,7 +357,7 @@ void ESFrame::mouseDoubleClickEvent( QMouseEvent *mouse_event )
 	}
 }
 
-void ESFrame::drawContents( QPainter *painter )
+void KTESFrame::drawContents( QPainter *painter )
 {
 	
 	Q_CHECK_PTR( painter );
@@ -385,18 +385,18 @@ void ESFrame::drawContents( QPainter *painter )
 		painter -> drawLine( 4, 14, 8, 14 );
 	}
 }
-void ESFrame::resizeEvent ( QResizeEvent * e )
+void KTESFrame::resizeEvent ( QResizeEvent * e )
 {
 	description -> resize( width(), height() );
 	DSqueezeLabel::resizeEvent(e);
 }
 
-void ESFrame::keyPressEvent(QKeyEvent *)
+void KTESFrame::keyPressEvent(QKeyEvent *)
 {
 
 }
 
-void ESFrame::slotSendDoubleClickEvent()
+void KTESFrame::slotSendDoubleClickEvent()
 {
 	QMouseEvent mouse_event( QEvent::MouseButtonDblClick, QPoint( x(), y() ), Qt::LeftButton,  Qt::NoButton , Qt::NoModifier );
 	QApplication::sendEvent( this, &mouse_event );

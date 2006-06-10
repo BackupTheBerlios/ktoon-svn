@@ -43,7 +43,9 @@
 
 #include "crashhandler.h"
 
-#include "ktoonstyle.h"
+// #include "ktoonstyle.h"
+
+#include <QPlastiqueStyle>
 
 void usage();
 
@@ -53,11 +55,11 @@ int main( int argc, char ** argv )
 	
 	CrashHandler::init();
 	
-#ifdef ENABLE_KTOONSTYLE
-	QApplication::setStyle(new KToonStyle());
-#elif defined(Q_OS_LINUX)
+// #ifdef ENABLE_KTOONSTYLE
+// 	QApplication::setStyle(new KToonStyle());
+// #elif defined(Q_OS_LINUX)
 	QApplication::setStyle(new QPlastiqueStyle());
-#endif
+// #endif
 
 	if ( application.isArg("help") || application.isArg("h") )
 	{

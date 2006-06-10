@@ -15,10 +15,8 @@ HEADERS += ktdocumentruler.h \
            ktviewdocument.h \
            ktmainwindow.h \
            ktstatusbar.h \
-           ktpaintareacontainer.h \
            ktnewproject.h \
            ktviewcamera.h \
-           ktcamerabar.h \
            ktosd.h \
            ktsplash.h \
            crashhandler.h \
@@ -33,10 +31,8 @@ SOURCES += main.cpp \
            ktviewdocument.cpp \
            ktmainwindow.cpp \
            ktstatusbar.cpp \
-           ktpaintareacontainer.cpp \
            ktnewproject.cpp \
            ktviewcamera.cpp \
-           ktcamerabar.cpp \
            ktmainwindow-gui.cpp \
            ktmainwindow-project.cpp \
            ktosd.cpp \
@@ -48,67 +44,66 @@ SOURCES += main.cpp \
            configwizard.cpp \
            ktdrawingareaproperties.cpp \
            ktpluginmanager.cpp 
-QT += xml svg opengl
-KDEV_QTVER = 4
+QT += xml 
+KDEV_QTVER = 4 
+TARGETDEPS += ../../src/store/libstore.so 
 LIBS += -ldcore \
--ldgui \
--lktoon \
-../../src/ktoonstyle/libktoonstyle.a \
-../../src/dialogs/libdialogs.a \
-../../src/components/colorpalette/libcolorpalette.a \
-../../src/components/scenes/libscenes.a \
-../../src/components/exposure/libexposure.a \
-../../src/components/timeline/libtimeline.a \
-../../src/components/library/liblibrary.a \
-../../src/components/gceditor/libgceditor.a \
-../../src/components/import/libimport.a \
-../../src/components/help/libhelp.a \
--lstore \
-../../src/components/export/ui/libui.a \
-../../src/components/kinas/libkinas.a \
-../../3rdparty/quazip/libquazip.a \
-../../src/components/pen/libpen.a
-INCLUDEPATH += ../../src/ktoonstyle \
-../../src/components/pen \
-../../src/components/kinas \
-../../src/components/help \
-../../src/components/gceditor \
-../../src/components/import \
-../../src/components/export/ui \
-../../src/components/exposure \
-../../src/components/timeline \
-../../src/components/library \
-../../src/components/colorpalette \
-../../src/components/scenes \
-../../src/dialogs \
-../../src/store \
-../../src/ktoonlib \
-../../src/dlib/dgui \
-../../src/dlib/dcore \
-../../3rdparty/quazip
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
+        -ldgui \
+        -lktoon \
+        ../../src/components/colorpalette/libcolorpalette.a \
+        ../../src/components/scenes/libscenes.a \
+        ../../src/components/exposure/libexposure.a \
+        ../../src/components/timeline/libtimeline.a \
+        ../../src/components/library/liblibrary.a \
+        ../../src/components/gceditor/libgceditor.a \
+        ../../src/components/import/libimport.a \
+        ../../src/components/help/libhelp.a \
+        ../../src/components/kinas/libkinas.a \
+        ../../3rdparty/quazip/libquazip.a \
+        ../../src/components/pen/libpen.a \
+        ../../src/components/export/libexport.a \
+        ../../src/libktui/libktui.a \
+        -lstore 
+INCLUDEPATH += ../../src/components/pen \
+               ../../src/components/kinas \
+               ../../src/components/help \
+               ../../src/components/gceditor \
+               ../../src/components/import \
+               ../../src/components/export \
+               ../../src/components/exposure \
+               ../../src/components/timeline \
+               ../../src/components/library \
+               ../../src/components/colorpalette \
+               ../../src/components/scenes \
+               ../../src/libktui \
+               ../../src/store \
+               ../../src/libktoon \
+               ../../src/dlib/dgui \
+               ../../src/dlib/dcore \
+               ../../3rdparty/quazip 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
 QMAKE_LIBDIR = ../../src/dlib/dcore \
-../../src/dlib/dgui \
-../../src/ktoonlib \
-../../src/store
-TARGET = ../../bin/ktoon
+               ../../src/dlib/dgui \
+               ../../src/libktoon \
+               ../../src/store 
+TARGET = ../../bin/ktoon 
 CONFIG += release \
-warn_on
-TEMPLATE = app
+          warn_on 
+TEMPLATE = app 
 linux-g++{
   TARGETDEPS += ../../src/dlib/dcore/libdcore.so \
   ../../src/dlib/dgui/libdgui.so \
-  ../../src/ktoonlib/libktoon.so \
-  ../../src/dialogs/libdialogs.a \
+  ../../src/libktoon/libktoon.so \
+  ../../src/libktui/libktui.a \
   ../../src/store/libstore.so \
   ../../src/components/pen/libpen.a \
   ../../src/components/kinas/libkinas.a \
   ../../src/components/help/libhelp.a \
   ../../src/components/gceditor/libgceditor.a \
   ../../src/components/import/libimport.a \
-  ../../src/components/export/ui/libui.a \
+  ../../src/components/export/libexport.a \
   ../../src/components/exposure/libexposure.a \
   ../../src/components/timeline/libtimeline.a \
   ../../src/components/library/liblibrary.a \

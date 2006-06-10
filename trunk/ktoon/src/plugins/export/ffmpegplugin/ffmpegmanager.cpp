@@ -27,7 +27,7 @@
 
 #include <QImage>
 
-#include "exportinterface.h"
+#include "ktexportinterface.h"
 
 FFMpegManager::FFMpegManager()
 {
@@ -59,37 +59,37 @@ void FFMpegManager::create(const QString &filePath, int formatId, const QStringL
 	
 	switch(formatId)
 	{
-		case ExportInterface::ASF:
+		case KTExportInterface::ASF:
 		{
 			
 		}
 		break;
-		case ExportInterface::AVI:
+		case KTExportInterface::AVI:
 		{
 			fmt->video_codec = CODEC_ID_MSMPEG4V3;
 // 			video_st->codec.codec_tag = 0;
 		}
 		break;
-		case ExportInterface::MOV:
+		case KTExportInterface::MOV:
 		{
 			
 		}
 		break;
-		case ExportInterface::MPEG:
+		case KTExportInterface::MPEG:
 		{
 		}
 		break;
-		case ExportInterface::RM:
-		{
-			
-		}
-		break;
-		case ExportInterface::SWF:
+		case KTExportInterface::RM:
 		{
 			
 		}
 		break;
-		case ExportInterface::GIF:
+		case KTExportInterface::SWF:
+		{
+			
+		}
+		break;
+		case KTExportInterface::GIF:
 		{
 // 			AVImageFormat *imageFormat = guess_image_format(filePath.toLatin1().data());
 // 			

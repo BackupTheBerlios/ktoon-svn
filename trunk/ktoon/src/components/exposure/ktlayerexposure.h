@@ -28,12 +28,12 @@
 #include <QBoxLayout>
 #include <QMenu>
 
-#include "esframe.h"
-#include "eslayer.h"
+#include "ktesframe.h"
+#include "kteslayer.h"
 
 
 
-typedef QList<ESFrame*> ListOfFrames;
+typedef QList<KTESFrame*> ListOfFrames;
 
 /**
 @author Jorge Cuadrado
@@ -67,7 +67,7 @@ class KTLayerExposure : public QFrame
 	private:
 		bool m_selected;
 		int m_id, m_currentFrame,  m_useFrame;
-		ESLayer *m_header;
+		KTESLayer *m_header;
 		ListOfFrames m_frames;
 		QMenu *menuLayer;
 		void createMenuRight();

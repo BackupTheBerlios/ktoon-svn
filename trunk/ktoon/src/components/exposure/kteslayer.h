@@ -24,7 +24,7 @@
 
 /**
  * @file eslayer.h
- * @brief Include this file if you need the class ESLayer
+ * @brief Include this file if you need the class KTESLayer
  */
 
 #include <QPushButton>
@@ -37,7 +37,7 @@
  * <b>Date of Creation: June 10 - 2004.</b>\n
  * This is a widget that represents the exposure sheet layers as they are used in ToonBoom.
  */
-class ESLayer : public QPushButton
+class KTESLayer : public QPushButton
 {
     Q_OBJECT
 
@@ -45,27 +45,27 @@ public:
     /**
      * @brief Default Constructor
      *
-     * Constructs an ESLayer object.
+     * Constructs an KTESLayer object.
      * @param initial_text The text that this object will display
      * @param parent The parent widget
      */
-    ESLayer( const QString &initial_text, QWidget *parent );
+    KTESLayer( const QString &initial_text, QWidget *parent );
     /**
      * @brief Default Destructor
      *
      * Destroys the ColorCells object.
      */
-    ~ESLayer();
+    ~KTESLayer();
 
     /**
-     * @brief Returns the select state of the ESLayer
+     * @brief Returns the select state of the KTESLayer
      *
-     * @return <b>true</b> if the ESLayer is selected, otherwise returns <b>false</b>
+     * @return <b>true</b> if the KTESLayer is selected, otherwise returns <b>false</b>
      * @sa setSelected()
      */
     bool isSelected();
     /**
-     * @brief Sets the select state of the ESLayer
+     * @brief Sets the select state of the KTESLayer
      *
      * @param in_is_selected The boolean value of the select state
      * @sa isSelected()
@@ -88,7 +88,7 @@ private:
 
 signals:
     /**
-     * This signal is emitted when the ESLayer is renamed.
+     * This signal is emitted when the KTESLayer is renamed.
      * @param n The new name
      */
     void renamed( const QString &n );

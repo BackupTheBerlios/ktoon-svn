@@ -34,7 +34,7 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class ExportInterface
+class KTExportInterface
 {
 	public:
 		enum Format
@@ -55,7 +55,7 @@ class ExportInterface
 		Q_DECLARE_FLAGS(Formats, Format);
 		
 		
-		virtual ~ExportInterface() {};
+		virtual ~KTExportInterface() {};
 		virtual QString key() const = 0;
 		virtual Formats availableFormats() = 0;
 		
@@ -65,8 +65,8 @@ class ExportInterface
 		virtual QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir, float sx = 1, float sy = 1, const char *format = "PNG") = 0;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(ExportInterface::Formats);
+Q_DECLARE_OPERATORS_FOR_FLAGS(KTExportInterface::Formats);
 
-Q_DECLARE_INTERFACE( ExportInterface, "com.toonka.ktoon.ExportInterface/0.1" );
+Q_DECLARE_INTERFACE( KTExportInterface, "com.toonka.ktoon.ExportInterface/0.1" );
 
 #endif

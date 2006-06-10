@@ -36,7 +36,7 @@
 #include "ddebug.h"
 
 
-KTExportWidget::KTExportWidget(const KTProjectManager *manager, QWidget *parent) : KTModuleWidgetBase(parent), m_manager(manager), m_currentExporter(0), m_currentFormat(ExportInterface::NONE)
+KTExportWidget::KTExportWidget(const KTProjectManager *manager, QWidget *parent) : KTModuleWidgetBase(parent), m_manager(manager), m_currentExporter(0), m_currentFormat(KTExportInterface::NONE)
 {
 	DINIT;
 	setCaption(tr("Export"));
@@ -144,7 +144,7 @@ void KTExportWidget::loadPlugins()
 		
 		if (plugin)
 		{
-			ExportInterface *exporter = qobject_cast<ExportInterface *>(plugin);
+			KTExportInterface *exporter = qobject_cast<KTExportInterface *>(plugin);
 			
 			if (exporter)
 			{
@@ -174,79 +174,79 @@ void KTExportWidget::selectFormat(QListWidgetItem *item)
 	}
 }
 
-void KTExportWidget::addFormats(ExportInterface::Formats formats)
+void KTExportWidget::addFormats(KTExportInterface::Formats formats)
 {
 	m_formats.clear();
 	m_formatList->clear();
 	
-	if ( formats & ExportInterface::SWF )
+	if ( formats & KTExportInterface::SWF )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("Macromedia flash"), m_formatList);
 		
-		m_formats.insert(format, ExportInterface::SWF);
+		m_formats.insert(format, KTExportInterface::SWF);
 	}
 	
-	if ( formats & ExportInterface::MPEG )
+	if ( formats & KTExportInterface::MPEG )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("MPEG Video"), m_formatList);
 		
-		m_formats.insert(format, ExportInterface::MPEG);
+		m_formats.insert(format, KTExportInterface::MPEG);
 	}
 	
-	if ( formats & ExportInterface::AVI )
+	if ( formats & KTExportInterface::AVI )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("AVI Video"), m_formatList);
 		
-		m_formats.insert(format, ExportInterface::AVI);
+		m_formats.insert(format, KTExportInterface::AVI);
 	}
 	
-	if ( formats & ExportInterface::RM )
+	if ( formats & KTExportInterface::RM )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("RealMedia Video"), m_formatList);
 		
-		m_formats.insert(format, ExportInterface::RM);
+		m_formats.insert(format, KTExportInterface::RM);
 	}
 	
-	if ( formats & ExportInterface::ASF )
+	if ( formats & KTExportInterface::ASF )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("ASF Video"), m_formatList);
 		
-		m_formats.insert(format, ExportInterface::ASF);
+		m_formats.insert(format, KTExportInterface::ASF);
 	}
 	
-	if ( formats & ExportInterface::MOV )
+	if ( formats & KTExportInterface::MOV )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("QuickTime Video"), m_formatList);
 		
-		m_formats.insert(format, ExportInterface::MOV);
+		m_formats.insert(format, KTExportInterface::MOV);
 	}
 	
-	if ( formats & ExportInterface::GIF )
+	if ( formats & KTExportInterface::GIF )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("Gif Image"), m_formatList);
 		
-		m_formats.insert(format, ExportInterface::GIF);
+		m_formats.insert(format, KTExportInterface::GIF);
 	}
 	
-	if ( formats & ExportInterface::PNG )
+	if ( formats & KTExportInterface::PNG )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("PNG Image Array"), m_formatList);
 		
-		m_formats.insert(format, ExportInterface::PNG);
+		m_formats.insert(format, KTExportInterface::PNG);
 	}
 	
-	if ( formats & ExportInterface::JPEG )
+	if ( formats & KTExportInterface::JPEG )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("JPEG Image Array"), m_formatList);
 		
-		m_formats.insert(format, ExportInterface::JPEG);
+		m_formats.insert(format, KTExportInterface::JPEG);
 	}
 	
-	if ( formats & ExportInterface::SMIL )
+	if ( formats & KTExportInterface::SMIL )
 	{
 		QListWidgetItem *format = new QListWidgetItem(tr("SMIL"), m_formatList);
 		
-		m_formats.insert(format, ExportInterface::SMIL);
+		m_formats.insert(format, KTExportInterface::SMIL);
 	}
 }
 
@@ -279,7 +279,7 @@ void KTExportWidget::exportIt()
 {
 	D_FUNCINFO;
 	
-	if( m_currentExporter && m_currentFormat != ExportInterface::NONE )
+	if( m_currentExporter && m_currentFormat != KTExportInterface::NONE )
 	{
 		QString file = fileToExport();
 		
@@ -347,7 +347,7 @@ QString KTExportWidget::fileToExport() const
 	
 	switch(m_currentFormat)
 	{
-		case ExportInterface::SWF:
+		case KTExportInterface::SWF:
 		{
 			if ( !file.toLower().endsWith(".swf") )
 			{
@@ -355,7 +355,7 @@ QString KTExportWidget::fileToExport() const
 			}
 		}
 		break;
-		case ExportInterface::MPEG:
+		case KTExportInterface::MPEG:
 		{
 			if ( !file.toLower().endsWith(".mpg") && !file.toLower().endsWith(".mpeg"))
 			{
@@ -363,7 +363,7 @@ QString KTExportWidget::fileToExport() const
 			}
 		}
 		break;
-		case ExportInterface::AVI:
+		case KTExportInterface::AVI:
 		{
 			if ( !file.toLower().endsWith(".avi"))
 			{
@@ -372,7 +372,7 @@ QString KTExportWidget::fileToExport() const
 		}
 		break;
 		
-		case ExportInterface::RM:
+		case KTExportInterface::RM:
 		{
 			if ( !file.toLower().endsWith(".rm"))
 			{
@@ -380,7 +380,7 @@ QString KTExportWidget::fileToExport() const
 			}
 		}
 		break;
-		case ExportInterface::ASF:
+		case KTExportInterface::ASF:
 		{
 			if ( !file.toLower().endsWith(".asf"))
 			{
@@ -388,7 +388,7 @@ QString KTExportWidget::fileToExport() const
 			}
 		}
 		break;
-		case ExportInterface::MOV:
+		case KTExportInterface::MOV:
 		{
 			if ( !file.toLower().endsWith(".mov"))
 			{
@@ -397,7 +397,7 @@ QString KTExportWidget::fileToExport() const
 		}
 		break;
 		
-		case ExportInterface::GIF:
+		case KTExportInterface::GIF:
 		{
 			if ( !file.toLower().endsWith(".gif"))
 			{
@@ -406,7 +406,7 @@ QString KTExportWidget::fileToExport() const
 		}
 		break;
 		
-		case ExportInterface::SMIL:
+		case KTExportInterface::SMIL:
 		{
 			if ( !file.toLower().endsWith(".smil"))
 			{

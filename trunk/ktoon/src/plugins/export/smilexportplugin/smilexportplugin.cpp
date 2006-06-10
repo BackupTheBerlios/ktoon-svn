@@ -41,7 +41,7 @@ QString SmilExportPlugin::key() const
 	return "SMIL 2.0";
 }
 
-ExportInterface::Formats SmilExportPlugin::availableFormats()
+KTExportInterface::Formats SmilExportPlugin::availableFormats()
 {
 	return SMIL;
 }
@@ -156,11 +156,11 @@ QStringList SmilExportPlugin::createImages(const QList<KTScene *> &scenes, const
 					KTKeyFrame *frame = (*layerIterator)->frames()[nPhotogramsRenderized];
 					if ( frame )
 					{
-						QList<AGraphicComponent *> componentList = frame->components();
+						QList<KTGraphicComponent *> componentList = frame->components();
 						
 						if ( componentList.count() > 0  )
 						{
-							QList<AGraphicComponent *>::iterator it = componentList.begin();
+							QList<KTGraphicComponent *>::iterator it = componentList.begin();
 									
 							while ( it != componentList.end() )
 							{

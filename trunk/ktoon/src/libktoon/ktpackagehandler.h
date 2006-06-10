@@ -23,8 +23,7 @@
 
 #include <QString>
 
-#include "quazip.h"
-#include "quazipfile.h"
+class QuaZip;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>

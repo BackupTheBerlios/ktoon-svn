@@ -41,7 +41,7 @@ QString GenericExportPlugin::key() const
 	return "Image Arrays";
 }
 
-ExportInterface::Formats GenericExportPlugin::availableFormats()
+KTExportInterface::Formats GenericExportPlugin::availableFormats()
 {
 	return PNG | JPEG;
 }
@@ -106,11 +106,11 @@ QStringList GenericExportPlugin::createImages(const QList<KTScene *> &scenes, co
 					KTKeyFrame *frame = (*layerIterator)->frames()[nPhotogramsRenderized];
 					if ( frame )
 					{
-						QList<AGraphicComponent *> componentList = frame->components();
+						QList<KTGraphicComponent *> componentList = frame->components();
 						
 						if ( componentList.count() > 0  )
 						{
-							QList<AGraphicComponent *>::iterator it = componentList.begin();
+							QList<KTGraphicComponent *>::iterator it = componentList.begin();
 									
 							while ( it != componentList.end() )
 							{

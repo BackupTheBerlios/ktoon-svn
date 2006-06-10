@@ -81,7 +81,7 @@ done
 
 detectQtVersion
 
-ln -fs $(pwd)/$CONFIG_H $(pwd)/src/ktoonlib/$CONFIG_H
+ln -fs $(pwd)/$CONFIG_H $(pwd)/src/libktoon/$CONFIG_H
 
 LIBS=''
 INCPATH=''

@@ -86,7 +86,7 @@ void KTMainWindow::moveLayer(bool up)
 	
 	if ( doc )
 	{
-		doc->drawArea()->redrawAll();
+// 		doc->drawArea()->redrawAll();
 	}
 }
 
@@ -102,7 +102,7 @@ void KTMainWindow::setLayerVisibilityChanged(int idLayer, bool isVisible)
 	
 	if ( doc )
 	{
-		doc->drawArea()->redrawAll();
+// 		doc->drawArea()->redrawAll();
 	}
 }
 
@@ -180,8 +180,8 @@ void KTMainWindow::selectFrame(int layer, int frame)
 // 				{
 					m_projectManager->setCurrentFrame( frame );
 					
-					doc->drawArea()->setLayer( layer );
-					doc->drawArea()->setKeyFrame( frame );
+// 					doc->drawArea()->setLayer( layer );
+// 					doc->drawArea()->setKeyFrame( frame );
 					
 					m_exposureSheet->setCurrentCell( layer, frame);
 					m_timeLine->setCurrentCell( layer, frame);
@@ -219,7 +219,7 @@ void KTMainWindow::selectFrame(int layer, int frame)
 	
 #if 0
 	KTKeyFrame *currentFrame = m_projectManager->currentKeyFrame();
-	foreach(AGraphicComponent *component, currentFrame->components())
+	foreach(KTGraphicComponent *component, currentFrame->components())
 	{
 		KTGCEditor::SGCItem item;
 		item.name = component->componentName();
@@ -267,9 +267,9 @@ void KTMainWindow::selectBackFrame()
 	}
 }
 
-QList<AGraphicComponent *> KTMainWindow::currentElements()
+QList<KTGraphicComponent *> KTMainWindow::currentElements()
 {
-	QList<AGraphicComponent *> elements;
+	QList<KTGraphicComponent *> elements;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	
 	if ( doc )
@@ -289,15 +289,15 @@ QList<AGraphicComponent *> KTMainWindow::currentElements()
 void KTMainWindow::rotateCurrentElement(int a)
 {
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
-	QList<AGraphicComponent *> selecteds = currentElements();
+	QList<KTGraphicComponent *> selecteds = currentElements();
 	
 	if ( selecteds.count() > 0 )
 	{
-		foreach( AGraphicComponent * selected,  selecteds )
+		foreach( KTGraphicComponent * selected,  selecteds )
 		{
 			selected->rotate(a);
 		}
-		doc->drawArea()->redrawAll();
+// 		doc->drawArea()->redrawAll();
 	}
 	
 
@@ -307,14 +307,14 @@ void KTMainWindow::scaleCurrentElement(double dx,double dy)
 {
 	D_FUNCINFO;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
-	QList<AGraphicComponent *> selecteds = currentElements();
+	QList<KTGraphicComponent *> selecteds = currentElements();
 	if ( selecteds.count() > 0 )
 	{
-		foreach( AGraphicComponent * selected,  selecteds )
+		foreach( KTGraphicComponent * selected,  selecteds )
 		{
 			selected->scale(dx, dy);
 		}
-		doc->drawArea()->redrawAll();
+// 		doc->drawArea()->redrawAll();
 	}
 }
 
@@ -322,14 +322,14 @@ void KTMainWindow::translateCurrentElement(double dx ,double dy)
 {
 	D_FUNCINFO;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
-	QList<AGraphicComponent *> selecteds = currentElements();
+	QList<KTGraphicComponent *> selecteds = currentElements();
 	if ( selecteds.count() > 0 )
 	{
-		foreach( AGraphicComponent * selected,  selecteds )
+		foreach( KTGraphicComponent * selected,  selecteds )
 		{
 			selected->translate(dx, dy);
 		}
-		doc->drawArea()->redrawAll();
+// 		doc->drawArea()->redrawAll();
 	}
 }
 
@@ -337,14 +337,14 @@ void KTMainWindow::shearCurrentElement(double dx,double dy)
 {
 	D_FUNCINFO;
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
-	QList<AGraphicComponent *> selecteds = currentElements();
+	QList<KTGraphicComponent *> selecteds = currentElements();
 	if ( selecteds.count() > 0 )
 	{
-		foreach( AGraphicComponent * selected,  selecteds )
+		foreach( KTGraphicComponent * selected,  selecteds )
 		{
 			selected->shear(dx, dy);
 		}
-		doc->drawArea()->redrawAll();
+// 		doc->drawArea()->redrawAll();
 	}
 }
 
@@ -353,7 +353,7 @@ void KTMainWindow::flipVCurrentElement()
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	if(doc)
 	{
-		doc->drawArea()->flipVCurrentElement();
+// 		doc->drawArea()->flipVCurrentElement();
 	}
 	
 }
@@ -363,7 +363,7 @@ void KTMainWindow::flipHCurrentElement()
 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
 	if(doc)
 	{
-		doc->drawArea()->flipHCurrentElement();
+// 		doc->drawArea()->flipHCurrentElement();
 	}
 }
 
@@ -379,14 +379,14 @@ void KTMainWindow::addCurrentGraphicToLibrary()
 		
 		if ( cFrame )
 		{
-			QList<AGraphicComponent *>selecteds = cFrame->selectedComponents();
+			QList<KTGraphicComponent *>selecteds = cFrame->selectedComponents();
 		
 			if ( selecteds.count() > 0 )
 			{
-				AGraphicComponent *form = new AGraphicComponent();
-				foreach( AGraphicComponent * selected,  selecteds )
+				KTGraphicComponent *form = new KTGraphicComponent();
+				foreach( KTGraphicComponent * selected,  selecteds )
 				{
-					form->addChild( new AGraphicComponent(*selected));
+					form->addChild( new KTGraphicComponent(*selected));
 				}
 				
 				m_libraryWidget->addGraphic(form);
@@ -395,9 +395,9 @@ void KTMainWindow::addCurrentGraphicToLibrary()
 	}
 }
 
-void KTMainWindow::addGraphicComponent(const AGraphicComponent *graphic)
+void KTMainWindow::addGraphicComponent(const KTGraphicComponent *graphic)
 {
-	AGraphicComponent *copy = new AGraphicComponent(*graphic);
+	KTGraphicComponent *copy = new KTGraphicComponent(*graphic);
 	
 	KTKeyFrame *frame = m_projectManager->currentKeyFrame();
 	
@@ -412,6 +412,6 @@ void KTMainWindow::addGraphicComponent(const AGraphicComponent *graphic)
 	
 	if ( doc )
 	{
-		doc->drawArea()->redrawAll();
+// 		doc->drawArea()->redrawAll();
 	}
 }

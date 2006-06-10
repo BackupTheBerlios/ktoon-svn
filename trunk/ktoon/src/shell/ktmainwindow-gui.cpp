@@ -48,7 +48,7 @@ void KTMainWindow::createGUI()
 	toolWindow(DDockWindow::Left)->addWidget(tr("Library"),m_libraryWidget);
 	
 	connect(m_libraryWidget, SIGNAL(requestCurrentGraphic()), this, SLOT(addCurrentGraphicToLibrary()));
-	connect(m_libraryWidget, SIGNAL(sendCurrentGraphic(const AGraphicComponent *)), this, SLOT(addGraphicComponent(const AGraphicComponent *)));
+	connect(m_libraryWidget, SIGNAL(sendCurrentGraphic(const KTGraphicComponent *)), this, SLOT(addGraphicComponent(const KTGraphicComponent *)));
 	
 	connectToDisplays(m_libraryWidget);
 	

@@ -22,8 +22,8 @@
 #define AGRAPHIC_H
 
 /**
- * @file agraphic.h
- * @brief Include this file if you need the class AGraphic
+ * @file ktgraphicelement.h
+ * @brief Include this file if you need the class KTGraphicElement
  */
 
 #include <QList>
@@ -44,24 +44,24 @@
  * @endif
  * @author David Cuadrado <krawek@toonka.com>
 */
-class AGraphic
+class KTGraphicElement
 {
 	public:
 		/**
 		 * Default Constructor
 		 */
-		AGraphic();
+		KTGraphicElement();
 		/**
 		 * Copy Constructor
 		 * @param toCopy 
 		 */
-		AGraphic(const AGraphic &toCopy);
+		KTGraphicElement(const KTGraphicElement &toCopy);
 		
 		/**
 		 * Destructor
 		 * @return 
 		 */
-		~AGraphic();
+		~KTGraphicElement();
 		
 		/**
 		 * Map the graphic path

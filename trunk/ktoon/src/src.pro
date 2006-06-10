@@ -9,7 +9,8 @@ SUBDIRS += themes \
            store \
            libktui \
            components \
-           shell 
+           shell \
+           plugins 
 KDEV_QTVER = 4
 CONFIG += release \
 warn_on

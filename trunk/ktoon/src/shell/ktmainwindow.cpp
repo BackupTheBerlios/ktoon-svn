@@ -163,7 +163,7 @@ void KTMainWindow::newViewDocument(const QString &name)
 			
 			viewDocument->setAttribute(Qt::WA_DeleteOnClose, true);
 			
-			viewDocument->drawArea()->setPen( m_penWidget->pen());
+// 			viewDocument->drawArea()->setPen( m_penWidget->pen());
 			
 			m_drawingSpace->addWindow(viewDocument);
 			m_statusBar->advance(7);
@@ -424,7 +424,7 @@ void KTMainWindow::changeCurrentColors(const QBrush &foreground, const QBrush &b
 	{
 // 		doc->drawArea()->currentBrush()->setPenBrush(foreground);
 // 		doc->drawArea()->currentBrush()->setBrush(background);
-		doc->drawArea()->setColors(foreground, background);
+// 		doc->drawArea()->setColors(foreground, background);
 	}
 }
 
@@ -434,7 +434,7 @@ void KTMainWindow::changeCurrentPen(const QPen &pen)
 	
 	if ( doc )
 	{
-		doc->drawArea()->setPen( pen );
+// 		doc->drawArea()->setPen( pen );
 	}
 }
 

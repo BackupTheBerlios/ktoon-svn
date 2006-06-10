@@ -34,7 +34,7 @@ KTLibraryParser::~KTLibraryParser()
 {
 	if ( m_gradient ) delete m_gradient;
 	
-	foreach(AGraphic *graphic, m_graphics)
+	foreach(KTGraphicElement *graphic, m_graphics)
 	{
 		delete graphic;
 	}
@@ -58,7 +58,7 @@ bool KTLibraryParser::startElement( const QString& , const QString& , const QStr
 			
 			if ( m_tagCounter == 0 )
 			{
-				AGraphicComponent *rootComponent = new AGraphicComponent;
+				KTGraphicComponent *rootComponent = new KTGraphicComponent;
 				rootComponent->setComponentName( m_objectName);
 				m_components << rootComponent;
 			}
@@ -72,7 +72,7 @@ bool KTLibraryParser::startElement( const QString& , const QString& , const QStr
 		{
 			m_tmpPolygons.clear();
 			
-			AGraphic *graphic = new AGraphic;
+			KTGraphicElement *graphic = new KTGraphicElement;
 			m_graphics << graphic;
 		}
 		else if ( qname == "Image" )
@@ -175,13 +175,13 @@ bool KTLibraryParser::endElement(const QString&, const QString& , const QString&
 			
 			if ( m_tagCounter != 0 )
 			{
-				AGraphicComponent *child = new AGraphicComponent;
+				KTGraphicComponent *child = new KTGraphicComponent;
 				if ( ! m_objectName.isNull() )
 				{
 					child->setComponentName( m_objectName);
 				}
 				
-				foreach(AGraphic *graphic, m_graphics)
+				foreach(KTGraphicElement *graphic, m_graphics)
 				{
 					child->addGraphic(graphic->path, graphic->pen, graphic->brush, graphic->pixmap);
 				}
@@ -192,7 +192,7 @@ bool KTLibraryParser::endElement(const QString&, const QString& , const QString&
 			}
 			else
 			{
-				foreach(AGraphic *graphic, m_graphics)
+				foreach(KTGraphicElement *graphic, m_graphics)
 				{
 					m_components.last()->addGraphic(graphic->path, graphic->pen, graphic->brush, graphic->pixmap);
 				}
@@ -241,7 +241,7 @@ bool KTLibraryParser::fatalError ( const QXmlParseException & exception )
 	return true;
 }
 
-QList<AGraphicComponent *> KTLibraryParser::components()
+QList<KTGraphicComponent *> KTLibraryParser::components()
 {
 	return m_components;
 }

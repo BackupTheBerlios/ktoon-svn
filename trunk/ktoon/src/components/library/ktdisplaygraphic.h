@@ -27,7 +27,7 @@
 #include <QPen>
 #include <QBrush>
 
-#include "agraphiccomponent.h"
+#include "ktgraphiccomponent.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -41,13 +41,13 @@ class KTDisplayGraphic : public QFrame
 		virtual QSize sizeHint() const;
 		
 	public:
-		void addGraphicComponent(const AGraphicComponent *component);
+		void addGraphicComponent(const KTGraphicComponent *component);
 		void removeGraphic();
 		
 	private:
 		QImage m_displayArea;
 		bool m_drawGraphic;
-		AGraphicComponent *m_graphic;
+		KTGraphicComponent *m_graphic;
 		
 	protected:
 		virtual void paintEvent ( QPaintEvent * event );

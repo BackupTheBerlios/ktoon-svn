@@ -28,7 +28,7 @@ KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFra
 	m_layout = new QBoxLayout(QBoxLayout::TopToBottom, this );
 	m_layout->setMargin(0);
 	m_layout->setSpacing(0);
-	m_header = new ESLayer(initial_text,this);
+	m_header = new KTESLayer(initial_text,this);
 	connect( m_header, SIGNAL(clicked(bool, QMouseEvent*)), this, SLOT(setSelected(bool, QMouseEvent*)));
 	connect( m_header, SIGNAL(renamed( const QString & )), this, SLOT(emitRequestRenameLayer(const QString &)));
 	connect( m_header, SIGNAL(visibilityChanged(bool)), this, SLOT(setLayerVisible(bool)));
@@ -37,7 +37,7 @@ KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFra
 	
 	for(int i = 0; i < numFrame; i++)
 	{
-		ESFrame *frame = new ESFrame( i , this);
+		KTESFrame *frame = new KTESFrame( i , this);
 		m_layout->addWidget(frame);
 		m_frames.append(frame);
 		connect( frame, SIGNAL(clicked(int, int, int, int )), this, SLOT(frameSelect(int, int, int, int)));
@@ -124,7 +124,7 @@ void KTLayerExposure::insertFrames(int number)
 	for(int i = 0; i < number; i++)
 	{
 		int id =m_frames.last()->id()+1;
-		ESFrame *frame = new ESFrame(  id , this);
+		KTESFrame *frame = new KTESFrame(  id , this);
 		m_layout->insertWidget(id+1,frame, 10);
 		
 		m_frames.insert(id, frame);
@@ -138,7 +138,7 @@ void KTLayerExposure::insertFrames(int number)
 void KTLayerExposure::addFrame(const QString &text ) 
 {
 	int id = m_frames.count();
-	ESFrame *frame = new ESFrame( id, this);
+	KTESFrame *frame = new KTESFrame( id, this);
 	m_layout->insertWidget(id, frame, 10);
 	m_frames.insert(id, frame);
 	connect( frame, SIGNAL(clicked(int, int, int, int )), this, SLOT(frameSelect(int, int, int, int)));
@@ -191,7 +191,7 @@ void KTLayerExposure::emitRequestInsertFrame()
 	D_FUNCINFO;
 	if ( m_frames.count() > 0 )
 	{
-		ESFrame *esFrame = m_frames[m_currentFrame];
+		KTESFrame *esFrame = m_frames[m_currentFrame];
 		if(esFrame )
 		{
 			if( (esFrame->isUsed() && m_selected ) || m_currentFrame == 0)
@@ -224,7 +224,7 @@ void KTLayerExposure::emitRequestInsertFrame()
 void KTLayerExposure::removeFrame(int id)
 {
 	int pos = m_layout->indexOf(m_frames[id]) -1;
-	ESFrame *frame = m_frames[id];
+	KTESFrame *frame = m_frames[id];
 	if(frame  && m_frames[id]->isUsed() && m_frames[id]->isSelected())
 	{
 		m_layout->removeWidget(m_frames[id]);
@@ -406,7 +406,7 @@ int KTLayerExposure::visualIndex(int logicalIndex)
 
 int KTLayerExposure::logicalIndex(int visualIndex)
 {
-	return m_frames.indexOf (static_cast<ESFrame*>(m_layout->itemAt( visualIndex+1)->widget()));
+	return m_frames.indexOf (static_cast<KTESFrame*>(m_layout->itemAt( visualIndex+1)->widget()));
 }
 
 

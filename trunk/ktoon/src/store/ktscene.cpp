@@ -90,7 +90,7 @@ void KTScene::load(const QString &path)
 	
 	connect(&parser, SIGNAL(createLayer(const QString &)), this, SLOT(loadLayer(const QString &)));
 	connect(&parser, SIGNAL(createFrame(const QString &, int)), this, SLOT(loadFrame(const QString &, int)));
-	connect(&parser, SIGNAL(createComponent( AGraphicComponent * ) ), this, SLOT( loadComponent(AGraphicComponent *) ));
+	connect(&parser, SIGNAL(createComponent( KTGraphicComponent * ) ), this, SLOT( loadComponent(KTGraphicComponent *) ));
 	
 	if ( parser.parse(path) )
 	{
@@ -223,7 +223,7 @@ void KTScene::loadFrame(const QString & name, int clones)
 	}
 }
 
-void KTScene::loadComponent(AGraphicComponent *component)
+void KTScene::loadComponent(KTGraphicComponent *component)
 {
 	if ( component )
 	{

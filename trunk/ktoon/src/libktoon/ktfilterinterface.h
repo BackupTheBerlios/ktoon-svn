@@ -38,7 +38,7 @@ class AFilterInterface
 	public:
 		virtual ~AFilterInterface() {}
 		virtual QStringList keys() const = 0;
-		virtual void filter(const QString &filter, const QList<AGraphicComponent *> &frame) = 0;
+		virtual void filter(const QString &filter, const QList<KTGraphicComponent *> &frame) = 0;
 		
 		virtual QHash<QString, DAction *>actions() = 0;
 };

@@ -131,7 +131,7 @@ KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : DMdiWindow(p
 	animationAreaLayout->setMargin(0);
 	
 	
-	m_animationArea = new AAnimationArea(size );
+	m_animationArea = new KTAnimationArea(size );
 	animationAreaLayout->addWidget(m_animationArea);
 	
 	
@@ -187,7 +187,7 @@ void KTViewCamera::showSceneInfo(const KTScene *scene)
 	}
 }
 
-AAnimationArea *KTViewCamera::animationArea()
+KTAnimationArea *KTViewCamera::animationArea()
 {
 	return m_animationArea;
 }

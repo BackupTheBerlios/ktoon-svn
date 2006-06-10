@@ -24,7 +24,7 @@
 #include "dmdiwindow.h"
 
 #include "dvhbox.h"
-#include "aanimationarea.h"
+#include "ktanimationarea.h"
 #include "ktcamerabar.h"
 
 #include "ccbar.h"
@@ -42,7 +42,7 @@ class KTViewCamera : public DMdiWindow
 		KTViewCamera(const QSize& size, QWorkspace *parent = 0);
 		~KTViewCamera();
 		
-		AAnimationArea *animationArea();
+		KTAnimationArea *animationArea();
 		
 		QSize sizeHint() const;
 
@@ -55,7 +55,7 @@ class KTViewCamera : public DMdiWindow
 		
 	private:
 		QFrame *m_container;
-		AAnimationArea *m_animationArea;
+		KTAnimationArea *m_animationArea;
 		
 		class Status;
 		

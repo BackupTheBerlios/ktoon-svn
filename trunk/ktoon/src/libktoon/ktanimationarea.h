@@ -31,12 +31,12 @@
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class AAnimationArea : public QFrame
+class KTAnimationArea : public QFrame
 {
 	Q_OBJECT
 	public:
-		AAnimationArea(const QSize& size, QWidget *parent = 0);
-		~AAnimationArea();
+		KTAnimationArea(const QSize& size, QWidget *parent = 0);
+		~KTAnimationArea();
 		void setScene(KTScene *scene);
 		
 		QSize sizeHint() const;
@@ -52,7 +52,7 @@ class AAnimationArea : public QFrame
 		virtual void stop();
 		
 	private:
-		void renderGraphic(AGraphicComponent *graphicComponent, QPainter *painter );
+		void renderGraphic(KTGraphicComponent *graphicComponent, QPainter *painter );
 		
 	private slots:
 		void advance();

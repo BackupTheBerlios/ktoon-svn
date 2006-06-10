@@ -33,13 +33,15 @@
 #include <QSpinBox>
 
 #include "dactionmanager.h"
-#include "afilterinterface.h"
-#include "atoolinterface.h"
-#include "ktpaintareacontainer.h"
+#include "ktfilterinterface.h"
+#include "kttoolinterface.h"
+
 #include "ktdocument.h"
 #include "ktconfigurationarea.h"
 
 #include <dcommand.h>
+
+#include "ktglobal.h"
 
 /**
  * @author Jorge Cuadrado
@@ -51,7 +53,6 @@ class KTViewDocument : public DMdiWindow
 		KTViewDocument( const QSize& size ,  const QString& projectName , KToon::RenderType renderType, KTDocument *doc, QWorkspace *parent = 0 );
 		~KTViewDocument();
 		void close();
-		APaintArea *drawArea();
 		
 		QSize sizeHint() const;
 		
@@ -80,7 +81,6 @@ class KTViewDocument : public DMdiWindow
 		QAction *m_aUndo, *m_aRedo, *m_aClose;
 		QToolBar *m_barGrid, *m_toolbar;
 		QSpinBox *m_zoomFactorSpin;
-		KTPaintAreaContainer *m_paintAreaContainer;
 		
 		KTDocument *m_document;
 		QString m_title;

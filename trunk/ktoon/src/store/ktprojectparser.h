@@ -27,7 +27,7 @@
 #include <QPen>
 #include <QDir>
 
-#include "agraphiccomponent.h"
+#include "ktgraphiccomponent.h"
 
 /**
  * @brief Esta clase es el analizador del archivo del proyecto
@@ -100,11 +100,11 @@ class KTProjectParser : public QObject, public QXmlDefaultHandler
 		/**
 		 * Este signal se emite cuando se requiere crear un componente
 		 */
-		void createComponent(AGraphicComponent *component);
+		void createComponent(KTGraphicComponent *component);
 		
 	private:
 		QString m_root,m_qname;
-		QList<AGraphicComponent *> m_components;
+		QList<KTGraphicComponent *> m_components;
 		
 		QString m_partName;
 		QStringList m_locations;
@@ -118,10 +118,10 @@ class KTProjectParser : public QObject, public QXmlDefaultHandler
 		QGradient *m_gradient;
 		QGradientStops m_gradientStops;
 		
-		QList<AGraphic *> m_graphics;
+		QList<KTGraphicElement *> m_graphics;
 		
-		AGraphicComponent *m_currentComponent;
-		AGraphicComponent *m_rootComponent;
+		KTGraphicComponent *m_currentComponent;
+		KTGraphicComponent *m_rootComponent;
 		
 		int m_tagCounter;
 		

@@ -46,7 +46,7 @@ QString MingPlugin::key() const
 	return "Ming";
 }
 
-ExportInterface::Formats MingPlugin::availableFormats()
+KTExportInterface::Formats MingPlugin::availableFormats()
 {
 	return SWF;
 }
@@ -131,11 +131,11 @@ QStringList MingPlugin::createImages(const QList<KTScene *> &scenes, const QDir 
 					KTKeyFrame *frame = (*layerIterator)->frames()[nPhotogramsRenderized];
 					if ( frame )
 					{
-						QList<AGraphicComponent *> componentList = frame->components();
+						QList<KTGraphicComponent *> componentList = frame->components();
 												
 						if ( componentList.count() > 0  )
 						{
-							QList<AGraphicComponent *>::iterator it = componentList.begin();
+							QList<KTGraphicComponent *>::iterator it = componentList.begin();
 													
 							while ( it != componentList.end() )
 							{

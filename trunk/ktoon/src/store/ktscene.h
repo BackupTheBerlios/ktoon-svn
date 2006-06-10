@@ -136,7 +136,7 @@ class KTScene : public KTSerializableObject
 		/**
 		 * Carga un componente
 		 */
-		void loadComponent(AGraphicComponent *);
+		void loadComponent(KTGraphicComponent *);
 		
 	signals:
 		/**

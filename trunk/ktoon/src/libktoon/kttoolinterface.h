@@ -32,7 +32,7 @@
 #include <QHash>
 #include <QCursor>
 
-#include "agraphiccomponent.h"
+#include "ktgraphiccomponent.h"
 #include "kttoolpluginobject.h"
 #include "ktkeyframe.h"
 

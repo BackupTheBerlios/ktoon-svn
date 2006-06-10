@@ -18,12 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "aanimationarea.h"
+#include "ktanimationarea.h"
 #include "ddebug.h"
 
 #include "dgradientadjuster.h"
 
-AAnimationArea::AAnimationArea(const QSize& size, QWidget *parent) : QFrame(parent), m_scene(0), m_draw(false), m_ciclicAnimation(false), m_currentFramePosition(0), m_isRendered(false), m_size(size)
+KTAnimationArea::KTAnimationArea(const QSize& size, QWidget *parent) : QFrame(parent), m_scene(0), m_draw(false), m_ciclicAnimation(false), m_currentFramePosition(0), m_isRendered(false), m_size(size)
 {
 	setAttribute(Qt::WA_StaticContents);
 
@@ -36,11 +36,11 @@ AAnimationArea::AAnimationArea(const QSize& size, QWidget *parent) : QFrame(pare
 }
 
 
-AAnimationArea::~AAnimationArea()
+KTAnimationArea::~KTAnimationArea()
 {
 }
 
-void AAnimationArea::setScene(KTScene *scene)
+void KTAnimationArea::setScene(KTScene *scene)
 {
 	m_scene = scene;
 	
@@ -49,7 +49,7 @@ void AAnimationArea::setScene(KTScene *scene)
 	emit sceneChanged( m_scene );
 }
 
-void AAnimationArea::paintEvent(QPaintEvent *e)
+void KTAnimationArea::paintEvent(QPaintEvent *e)
 {
 	QPainter painter;
 
@@ -57,7 +57,7 @@ void AAnimationArea::paintEvent(QPaintEvent *e)
 	painter.drawImage(QPoint(0, 0), m_renderCamera);
 }
 
-void AAnimationArea::drawFrames(QPainter *painter)
+void KTAnimationArea::drawFrames(QPainter *painter)
 {
 // 	QList<KTKeyFrame *> frames = m_scene->frames();
 // 	QList<KTKeyFrame *>::iterator frameIterator = frames.begin();
@@ -66,11 +66,11 @@ void AAnimationArea::drawFrames(QPainter *painter)
 // 	{
 // 		if ( m_currentFrame )
 // 		{
-// 			QList<AGraphicComponent *> componentList = m_currentFrame->components();
+// 			QList<KTGraphicComponent *> componentList = m_currentFrame->components();
 // 			
 // 			if ( componentList.count() > 0)
 // 			{
-// 				QList<AGraphicComponent *>::iterator it = componentList.begin();
+// 				QList<KTGraphicComponent *>::iterator it = componentList.begin();
 // 				
 // 				while ( it != componentList.end() )
 // 				{
@@ -92,7 +92,7 @@ void AAnimationArea::drawFrames(QPainter *painter)
 // 	}
 }
 
-void AAnimationArea::play()
+void KTAnimationArea::play()
 {
 	dDebug() << "Playing!";
 	
@@ -107,7 +107,7 @@ void AAnimationArea::play()
 // 	emit toStatusBar( tr("Playing... "), 2000 );
 }
 
-void AAnimationArea::stop()
+void KTAnimationArea::stop()
 {
 	dDebug() << "Stopping";
 	m_timer->stop();
@@ -118,7 +118,7 @@ void AAnimationArea::stop()
 }
 
 
-void AAnimationArea::advance()
+void KTAnimationArea::advance()
 {
 	if ( m_scene )
 	{
@@ -140,7 +140,7 @@ void AAnimationArea::advance()
 	}
 }
 
-void AAnimationArea::render() // TODO: Extend to scenes
+void KTAnimationArea::render() // TODO: Extend to scenes
 {
 	m_photograms.clear();
 	
@@ -173,11 +173,11 @@ void AAnimationArea::render() // TODO: Extend to scenes
 				KTKeyFrame *frame = (*layerIterator)->frames()[nPhotogramsRenderized];
 				if ( frame )
 				{
-					QList<AGraphicComponent *> componentList = frame->components();
+					QList<KTGraphicComponent *> componentList = frame->components();
 					
 					if ( componentList.count() > 0  )
 					{
-						QList<AGraphicComponent *>::iterator it = componentList.begin();
+						QList<KTGraphicComponent *>::iterator it = componentList.begin();
 										
 						while ( it != componentList.end() )
 						{
@@ -203,7 +203,7 @@ void AAnimationArea::render() // TODO: Extend to scenes
 	}
 }
 
-void AAnimationArea::renderGraphic(AGraphicComponent *graphicComponent, QPainter *painter )
+void KTAnimationArea::renderGraphic(KTGraphicComponent *graphicComponent, QPainter *painter )
 {
 	painter->save();
 	float sx = 1, sy = 1, offset =0;
@@ -217,7 +217,7 @@ void AAnimationArea::renderGraphic(AGraphicComponent *graphicComponent, QPainter
 	painter->restore();
 }
 
-int AAnimationArea::photogramsCount() const
+int KTAnimationArea::photogramsCount() const
 {
 	Layers layers = m_scene->layers();
 	Layers::iterator layerIterator = layers.begin();
@@ -236,13 +236,13 @@ int AAnimationArea::photogramsCount() const
 	return total;
 }
 
-QSize AAnimationArea::sizeHint() const
+QSize KTAnimationArea::sizeHint() const
 {
 	return m_renderCamera.size();
 }
 
 
-void  AAnimationArea::resizeEvent ( QResizeEvent * event )
+void  KTAnimationArea::resizeEvent ( QResizeEvent * event )
 {
 	stop();
 	m_renderCamera = QImage(size(), QImage::Format_RGB32);
@@ -251,12 +251,12 @@ void  AAnimationArea::resizeEvent ( QResizeEvent * event )
 	update();
 }
 
-void AAnimationArea::setLoop(bool l)
+void KTAnimationArea::setLoop(bool l)
 {
 	m_ciclicAnimation = l;
 }
 
-const KTScene *AAnimationArea::currentScene() const
+const KTScene *KTAnimationArea::currentScene() const
 {
 	return m_scene;
 }

@@ -6,7 +6,7 @@
 QT += xml 
 KDEV_QTVER = 4 
 INCLUDEPATH += ../../../src/store \
-               ../../../src/ktoonlib \
+               ../../../src/libktoon \
                ../../../src/dlib/dgui \
                ../../../src/dlib/dcore 
 MOC_DIR = .moc 

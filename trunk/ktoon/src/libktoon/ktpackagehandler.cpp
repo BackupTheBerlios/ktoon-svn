@@ -28,6 +28,9 @@
 
 #include "dglobal.h"
 
+#include "quazip.h"
+#include "quazipfile.h"
+
 KTPackageHandler::KTPackageHandler()
 {
 }

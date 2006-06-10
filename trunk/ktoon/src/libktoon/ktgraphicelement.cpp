@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "agraphic.h"
+#include "ktgraphicelement.h"
 #include "ddebug.h"
 #include <QPixmap>
 #include <QHash>
@@ -26,19 +26,19 @@
 #include <dmd5hash.h>
 #include <QFile>
 
-AGraphic::AGraphic()
+KTGraphicElement::KTGraphicElement()
 {
 }
 
-AGraphic::AGraphic(const AGraphic &toCopy) : path(toCopy.path), brush(toCopy.brush), pen(toCopy.pen), pixmap(toCopy.pixmap), m_origPixmap(toCopy.m_origPixmap), m_pixmapHash(toCopy.m_pixmapHash)
+KTGraphicElement::KTGraphicElement(const KTGraphicElement &toCopy) : path(toCopy.path), brush(toCopy.brush), pen(toCopy.pen), pixmap(toCopy.pixmap), m_origPixmap(toCopy.m_origPixmap), m_pixmapHash(toCopy.m_pixmapHash)
 {
 }
 
-AGraphic::~AGraphic()
+KTGraphicElement::~KTGraphicElement()
 {
 }
 
-void AGraphic::mapTo(const QMatrix& matrix)
+void KTGraphicElement::mapTo(const QMatrix& matrix)
 {
 	path = matrix.map(path);
 	
@@ -46,7 +46,7 @@ void AGraphic::mapTo(const QMatrix& matrix)
 	pen.setBrush( DBrushAdjuster::mapBrush( pen.brush(), matrix ));
 }
 
-void AGraphic::mapPixmap(const QMatrix &matrix)
+void KTGraphicElement::mapPixmap(const QMatrix &matrix)
 {
 	if ( !pixmap.isNull() )
 	{
@@ -55,13 +55,13 @@ void AGraphic::mapPixmap(const QMatrix &matrix)
 }
 
 
-void AGraphic::flip(Qt::Orientation o)
+void KTGraphicElement::flip(Qt::Orientation o)
 {
 	QPointF pos = path.boundingRect().center();
 	flip(o, pos );
 }
 
-void AGraphic::flip(Qt::Orientation o, const QPointF &pos )
+void KTGraphicElement::flip(Qt::Orientation o, const QPointF &pos )
 {
 	QMatrix  matrix;
 	matrix.translate(-pos.x(),-pos.y());
@@ -142,7 +142,7 @@ void AGraphic::flip(Qt::Orientation o, const QPointF &pos )
 
 
 
-void AGraphic::setPixmap(const QPixmap &pix, const QString &key)
+void KTGraphicElement::setPixmap(const QPixmap &pix, const QString &key)
 {
 	if ( pix.isNull() ) return;
 	
@@ -159,12 +159,12 @@ void AGraphic::setPixmap(const QPixmap &pix, const QString &key)
 	}
 }
 
-QString AGraphic::pixmapHash() const
+QString KTGraphicElement::pixmapHash() const
 {
 	return m_pixmapHash;
 }
 
-void AGraphic::savePixmap(const QString &path)
+void KTGraphicElement::savePixmap(const QString &path)
 {
 	if ( !m_origPixmap.isNull() )
 	{

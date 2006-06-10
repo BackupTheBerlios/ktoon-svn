@@ -22,7 +22,7 @@
 #include <QMouseEvent>
 #include <QResizeEvent>
 #include <QEvent>
-#include "eslayer.h"
+#include "kteslayer.h"
 
 #include <QVBoxLayout>
 
@@ -31,7 +31,7 @@
 
 //--------------- CONSTRUCTOR --------------------
 
-ESLayer::ESLayer( const QString &initial_text, QWidget *parent  )
+KTESLayer::KTESLayer( const QString &initial_text, QWidget *parent  )
     : QPushButton( initial_text, parent )
 {
 	QVBoxLayout *m_layout = new QVBoxLayout;
@@ -69,7 +69,7 @@ ESLayer::ESLayer( const QString &initial_text, QWidget *parent  )
 
 //--------------- DESTRUCTOR --------------------
 
-ESLayer::~ESLayer()
+KTESLayer::~KTESLayer()
 {
 	delete description;
 }
@@ -77,12 +77,12 @@ ESLayer::~ESLayer()
 //-------------- PUBLIC MEMBERS ----------------
 
 
-bool ESLayer::isSelected()
+bool KTESLayer::isSelected()
 {
     return is_selected;
 }
 
-void ESLayer::setSelected( bool in_is_selected )
+void KTESLayer::setSelected( bool in_is_selected )
 {
 	QPalette pal = palette();
 	is_selected = in_is_selected;
@@ -110,14 +110,14 @@ void ESLayer::setSelected( bool in_is_selected )
 	setPalette(pal);
 }
 
-void ESLayer::clearTextfieldFocus()
+void KTESLayer::clearTextfieldFocus()
 {
 	description->clearFocus();
 }
 
 //-------------- SLOTS --------------------
 
-void ESLayer::slotSetDescription()
+void KTESLayer::slotSetDescription()
 {
 	if(description->text() != text())
 	{
@@ -130,7 +130,7 @@ void ESLayer::slotSetDescription()
 
 //-------------- EVENTS AND PROTECTED MEMBERS --------------
 
-void ESLayer::mousePressEvent( QMouseEvent *mouse_event )
+void KTESLayer::mousePressEvent( QMouseEvent *mouse_event )
 {
 	Q_CHECK_PTR( mouse_event );
 	setSelected( true );
@@ -142,7 +142,7 @@ void ESLayer::mousePressEvent( QMouseEvent *mouse_event )
 	mouse_event -> accept();
 }
 
-void ESLayer::mouseDoubleClickEvent( QMouseEvent *mouse_event )
+void KTESLayer::mouseDoubleClickEvent( QMouseEvent *mouse_event )
 {
 	Q_CHECK_PTR( mouse_event );
 	
@@ -160,12 +160,12 @@ void ESLayer::mouseDoubleClickEvent( QMouseEvent *mouse_event )
 	}
 }
 
-void ESLayer::resizeEvent ( QResizeEvent *  )
+void KTESLayer::resizeEvent ( QResizeEvent *  )
 {
 	description -> resize( width(), height() );
 }
 
-void ESLayer::visibilityClick()
+void KTESLayer::visibilityClick()
 {
 	D_FUNCINFO;
 	QPalette pal = palette();

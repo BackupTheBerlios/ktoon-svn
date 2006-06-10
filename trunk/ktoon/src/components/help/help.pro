@@ -8,7 +8,7 @@ INSTALLS += help
 help.files += help 
 help.path = /data/ 
 KDEV_QTVER = 4 
-INCLUDEPATH += ../../../src/ktoonlib \
+INCLUDEPATH += ../../../src/libktoon \
                ../../../src/dlib/dgui \
                ../../../src/dlib/dcore 
 CONFIG += release \

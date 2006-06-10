@@ -24,7 +24,7 @@
 #include <QObject>
 #include <QList>
 
-#include "agraphiccomponent.h"
+#include "ktgraphiccomponent.h"
 #include "ktserializableobject.h"
 
 class KTKeyFrame;
@@ -64,36 +64,36 @@ class KTKeyFrame : public KTSerializableObject
 		/**
 		 * Pone los componentes
 		 */
-		void setComponents(const QList<AGraphicComponent *> &components);
+		void setComponents(const QList<KTGraphicComponent *> &components);
 		
 		/**
 		 * Añade un componente al frame
 		 */
-		void addComponent(AGraphicComponent *comp);
+		void addComponent(KTGraphicComponent *comp);
 		
 		
-		void insertComponent(int pos, AGraphicComponent *comp);
+		void insertComponent(int pos, KTGraphicComponent *comp);
 		
 		/**
 		 * Añade una lista de componentes al frame, esta funcion sobreescribe los componentes anteriores
 		 */
-		void addComponents(QList<AGraphicComponent *> comp);
+		void addComponents(QList<KTGraphicComponent *> comp);
 		
 		
 		/**
 		 * Remueve un componente
 		 */
-		void removeComponent(AGraphicComponent *comp);
+		void removeComponent(KTGraphicComponent *comp);
 		
 		/**
 		 * Toma el ultimo componente
 		 */
-		AGraphicComponent *takeLastComponent();
+		KTGraphicComponent *takeLastComponent();
 		
 		/**
 		 * Retorna la lista de componentes graficos
 		 */
-		QList<AGraphicComponent *> components() const;
+		QList<KTGraphicComponent *> components() const;
 		
 		/**
 		 * Pone el nombre del frame
@@ -118,12 +118,12 @@ class KTKeyFrame : public KTSerializableObject
 		/**
 		 * AÃ±ade un componenente seleccionado al frame
 		 */
-		void addSelectedComponent(AGraphicComponent *toSelect);
+		void addSelectedComponent(KTGraphicComponent *toSelect);
 		
 		/**
 		 * Deselecciona un componente del frame
 		 */
-		void deselectComponent(AGraphicComponent *toDeSelect);
+		void deselectComponent(KTGraphicComponent *toDeSelect);
 		
 		/**
 		 * Deselecciona todos los componentes seleccionados
@@ -148,7 +148,7 @@ class KTKeyFrame : public KTSerializableObject
 		/**
 		 * Retorna la lista de componentes seleccionados
 		 */
-		 QList<AGraphicComponent *> selectedComponents();
+		 QList<KTGraphicComponent *> selectedComponents();
 		 
 		 /**
 		  * Escala el frame
@@ -165,7 +165,7 @@ class KTKeyFrame : public KTSerializableObject
 		 * @param orig 
 		 * @param newComponent 
 		 */
-		void replace(AGraphicComponent *orig, AGraphicComponent *newComponent);
+		void replace(KTGraphicComponent *orig, KTGraphicComponent *newComponent);
 		
 		void bringToFromSelected(); 
 		
@@ -181,8 +181,8 @@ class KTKeyFrame : public KTSerializableObject
 		int clonesNumber();
 		
 	private:
-		QList<AGraphicComponent *> m_components;
-		QList<AGraphicComponent *> m_selectedComponents;
+		QList<KTGraphicComponent *> m_components;
+		QList<KTGraphicComponent *> m_selectedComponents;
 		QString m_name;
 		bool m_isLocked;
 		int m_nClones;

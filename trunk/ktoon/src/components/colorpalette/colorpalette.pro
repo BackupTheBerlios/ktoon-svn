@@ -8,8 +8,8 @@ INSTALLS += palettes
 palettes.files += palettes/*.ktpl 
 palettes.path = /data/palettes/ 
 KDEV_QTVER = 4 
-INCLUDEPATH += ../../../src/ktoonlib \
-               ../../../src/store \
+INCLUDEPATH += ../../../src/store \
+               ../../../src/libktoon \
                ../../../src/dlib/dgui \
                ../../../src/dlib/dcore 
 MOC_DIR = .moc 

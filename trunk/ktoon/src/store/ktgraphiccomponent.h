@@ -34,34 +34,34 @@
 #include <QPointF>
 #include "ktserializableobject.h"
 
-#include "agraphic.h"
+#include "ktgraphicelement.h"
 
 /**
  * @short Abstraction of graphic component
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
-typedef QList<AGraphic *> Graphics;
+typedef QList<KTGraphicElement *> Graphics;
 
-class AGraphicComponent;
-class AGraphicComponent : public KTSerializableObject
+class KTGraphicComponent;
+class KTGraphicComponent : public KTSerializableObject
 {
 	Q_OBJECT
 	public:
 		/**
 		 * Default constructor
 		 */
-		AGraphicComponent();
+		KTGraphicComponent();
 		
 		/**
 		 * Copy constructor
 		 */
-		AGraphicComponent(const AGraphicComponent &);
+		KTGraphicComponent(const KTGraphicComponent &);
 		
 		/**
 		 * Destructor
 		 */
-		virtual ~AGraphicComponent();
+		virtual ~KTGraphicComponent();
 		
 		/**
 		 * Reimplemented from KTSerializableObject
@@ -158,14 +158,14 @@ class AGraphicComponent : public KTSerializableObject
 		/**
 		 * Add a child
 		 */
-		void addChild ( AGraphicComponent * child );
+		void addChild ( KTGraphicComponent * child );
 		
-		void removeChild( AGraphicComponent * child );
+		void removeChild( KTGraphicComponent * child );
 		
 		/**
 		 * Return the childs
 		 */
-		QList<AGraphicComponent*> childs() const ;
+		QList<KTGraphicComponent*> childs() const ;
 		
 		/**
 		 * Returns true if component has childs.
@@ -175,7 +175,7 @@ class AGraphicComponent : public KTSerializableObject
 		/**
 		 * Returns the childs and child of childs...
 		 */
-		QList<AGraphicComponent*> allChilds() const;
+		QList<KTGraphicComponent*> allChilds() const;
 		
 		/**
 		 * Returns graphic component control points
@@ -195,7 +195,7 @@ class AGraphicComponent : public KTSerializableObject
 		/**
 		 * Copy attributes from other
 		 */
-		void copyAttributes(const AGraphicComponent *other);
+		void copyAttributes(const KTGraphicComponent *other);
 		
 		QPointF scaleFactor() const;
 		QPointF shearFactor() const;
@@ -224,13 +224,13 @@ class AGraphicComponent : public KTSerializableObject
 		int m_angle;
 		Graphics m_graphics;
 		
-		QList<AGraphicComponent*> m_childs;
+		QList<KTGraphicComponent*> m_childs;
 		QPolygonF m_selectPoints;
 		
 		bool m_selected;
 		
 	private: // AUX FUNCTIONS
-		void appendChilds(AGraphicComponent *component, QList<AGraphicComponent *> &childs) const;
+		void appendChilds(KTGraphicComponent *component, QList<KTGraphicComponent *> &childs) const;
 		
 };
 

@@ -21,7 +21,6 @@
 #include "ktprojectmanager.h"
 #include "ddebug.h"
 
-#include "ktapplication.h"
 
 #include "ktprojectparser.h"
 
@@ -129,7 +128,7 @@ void KTProjectManager::save()
 				foreach(KTKeyFrame *frame, layer->frames())
 				{
 					frame->saveResources(resources.path());
-					foreach(AGraphicComponent *component, frame->components())
+					foreach(KTGraphicComponent *component, frame->components())
 					{
 						component->saveResources(resources.path());
 					}

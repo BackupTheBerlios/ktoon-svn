@@ -23,7 +23,7 @@
 
 /**
  * @file esframe.h
- * @brief Include this file if you need the class ESFrame
+ * @brief Include this file if you need the class KTESFrame
  */
 
 #include <QLabel>
@@ -42,81 +42,81 @@
  * <b>Date of Creation: June 7 - 2004.</b>\n
  * This is a widget that represents the exposure sheet keyframes
  */
-class ESFrame : public DSqueezeLabel
+class KTESFrame : public DSqueezeLabel
 {
     Q_OBJECT
 	public:
 		/**
 		* @brief Default Constructor
 		*
-		* Constructs an ESFrame object.
+		* Constructs an KTESFrame object.
 		* @param initial_text The text that this object will display
 		* @param parent The parent widget
 		*/
-		ESFrame( int id, QWidget *parent = 0);
+		KTESFrame( int id, QWidget *parent = 0);
 		/**
 		* @brief Default Destructor
 		*
 		* Destroys the ColorCells object.
 		*/
-		~ESFrame();
+		~KTESFrame();
 	
 		/**
-		* @brief Returns the use state of the ESFrame
+		* @brief Returns the use state of the KTESFrame
 		*
 		* A frame is used when it is possible to make a drawing into the drawing area and associate it with the frame.
 		* It is distinguished from an unused frame by its darker color.
-		* @return <b>true</b> if the ESFrame is used, otherwise returns <b>false</b>
+		* @return <b>true</b> if the KTESFrame is used, otherwise returns <b>false</b>
 		* @sa setUsed()
 		*/
 		bool isUsed();
 		/**
-		* @brief Returns the select state of the ESFrame
+		* @brief Returns the select state of the KTESFrame
 		*
-		* @return <b>true</b> if the ESFrame is selected, otherwise returns <b>false</b>
+		* @return <b>true</b> if the KTESFrame is selected, otherwise returns <b>false</b>
 		* @sa setSelected()
 		*/
 		bool isSelected();
 		/**
-		* @brief Returns the lock state of the ESFrame
+		* @brief Returns the lock state of the KTESFrame
 		*
 		* When a frame is locked it is not possible to make drawings into the associated drawing area.
-		* @return <b>true</b> if the ESFrame is lock, otherwise returns <b>false</b>
+		* @return <b>true</b> if the KTESFrame is lock, otherwise returns <b>false</b>
 		* @sa setLocked()
 		*/
 		bool isLocked();
 		/**
-		* @brief Returns the motion state of the ESFrame
+		* @brief Returns the motion state of the KTESFrame
 		*
-		* This property shows when the ESFrame begins a motion tween.
-		* @return <b>true</b> if the ESFrame is a motion frame, otherwise returns <b>false</b>
+		* This property shows when the KTESFrame begins a motion tween.
+		* @return <b>true</b> if the KTESFrame is a motion frame, otherwise returns <b>false</b>
 		* @sa setMotion()
 		*/
 		bool isMotion();
 		/**
-		* @brief Returns the "has drawing" state of the ESFrame
+		* @brief Returns the "has drawing" state of the KTESFrame
 		*
-		* This property shows when the ESFrame has graphic components inside.
-		* @return <b>true</b> if the ESFrame is has a drawing, otherwise returns <b>false</b>
+		* This property shows when the KTESFrame has graphic components inside.
+		* @return <b>true</b> if the KTESFrame is has a drawing, otherwise returns <b>false</b>
 		* @sa setHasDrawing()
 		*/
 		bool hasDrawing();
 		/**
-		* @brief Sets the use state of the ESFrame
+		* @brief Sets the use state of the KTESFrame
 		*
 		* @param in_is_used The boolean value of the use state
 		* @sa isUsed()
 		*/
 		void setUsed( bool in_is_used );
 		/**
-		* @brief Sets the select state of the ESFrame
+		* @brief Sets the select state of the KTESFrame
 		*
 		* @param in_is_selected The boolean value of the select state
 		* @sa isSelected()
 		*/
 		void setSelected( bool in_is_selected );
 		/**
-		* @brief Sets the lock state of the ESFrame
+		* @brief Sets the lock state of the KTESFrame
 		*
 		* It is only possible to lock used frames.
 		* @param in_is_locked The boolean value of the lock state
@@ -124,21 +124,21 @@ class ESFrame : public DSqueezeLabel
 		*/
 		void setLocked( bool in_is_locked );
 		/**
-		* @brief Sets the motion state of the ESFrame
+		* @brief Sets the motion state of the KTESFrame
 		*
 		* @param in_is_motion The boolean value of the motion state
 		* @sa isMotion()
 		*/
 		void setMotion( bool in_is_motion );
 		/**
-		* @brief Sets the "has drawing" state of the ESFrame
+		* @brief Sets the "has drawing" state of the KTESFrame
 		*
 		* @param in_has_drawing The boolean value of the "has drawing" state
 		* @sa hasDrawing()
 		*/
 		void setHasDrawing( bool in_has_drawing );
 		/**
-		* @brief Sets a new name for this ESFrame and displays it
+		* @brief Sets a new name for this KTESFrame and displays it
 		*
 		* @param new_name The new name
 		*/
@@ -157,7 +157,7 @@ class ESFrame : public DSqueezeLabel
 		* and other properties as they are.
 		* @param in_esframe The argument frame
 		*/
-		void setAllProperties( ESFrame *in_esframe );
+		void setAllProperties( KTESFrame *in_esframe );
 		void setId(int id);
 		int id();
 		QString name();
@@ -175,7 +175,7 @@ class ESFrame : public DSqueezeLabel
 	
 	signals:
 		/**
-		* This signal is emitted when the ESFrame is selected.
+		* This signal is emitted when the KTESFrame is selected.
 		*/
 		void selected();
 		
@@ -183,7 +183,7 @@ class ESFrame : public DSqueezeLabel
 		void clicked(int , int, int, int );
 		
 		/**
-		* This signal is emitted when the ESFrame is renamed
+		* This signal is emitted when the KTESFrame is renamed
 		*
 		* @param name The new frame name
 		*/

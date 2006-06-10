@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 #include "ktpluginmanager.h"
-#include "afilterinterface.h"
-#include "atoolinterface.h"
+#include "ktfilterinterface.h"
+#include "kttoolinterface.h"
 
 #include <dglobal.h>
 #include <ddebug.h>

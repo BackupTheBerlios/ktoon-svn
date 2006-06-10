@@ -23,10 +23,10 @@
 
 KTKeyFrame::KTKeyFrame(const KTKeyFrame &kf) : KTSerializableObject(kf.parent()), m_name(kf.m_name), m_isLocked(kf.m_isLocked), m_nClones(kf.m_nClones)
 {
-	QList<AGraphicComponent *>::const_iterator it;
+	QList<KTGraphicComponent *>::const_iterator it;
 	for(it = kf.m_components.begin(); it != kf.m_components.end(); ++it )
 	{
-		addComponent( new AGraphicComponent(*(*it)));
+		addComponent( new KTGraphicComponent(*(*it)));
 	}
 }
 
@@ -53,23 +53,23 @@ KTKeyFrame::~KTKeyFrame()
 	clear(true);
 }
 
-void KTKeyFrame::setComponents(const QList<AGraphicComponent *> &components)
+void KTKeyFrame::setComponents(const QList<KTGraphicComponent *> &components)
 {
 	clear();
 	m_components = components;
 }
 
-void KTKeyFrame::addComponent(AGraphicComponent *comp) 
+void KTKeyFrame::addComponent(KTGraphicComponent *comp) 
 {
 	m_components << comp;
 }
 
-void KTKeyFrame::insertComponent(int pos, AGraphicComponent *comp)
+void KTKeyFrame::insertComponent(int pos, KTGraphicComponent *comp)
 {
 	m_components.insert(pos, comp);
 }
 
-void KTKeyFrame::removeComponent(AGraphicComponent *comp)
+void KTKeyFrame::removeComponent(KTGraphicComponent *comp)
 {
 	deselectComponent( comp);
         m_components.removeAll(comp);
@@ -77,7 +77,7 @@ void KTKeyFrame::removeComponent(AGraphicComponent *comp)
 }
 
 
-AGraphicComponent *KTKeyFrame::takeLastComponent()
+KTGraphicComponent *KTKeyFrame::takeLastComponent()
 {
 	if ( m_components.count() == 0 )
 	{
@@ -87,7 +87,7 @@ AGraphicComponent *KTKeyFrame::takeLastComponent()
 	return m_components.takeLast();
 }
 
-QList<AGraphicComponent *> KTKeyFrame::components() const
+QList<KTGraphicComponent *> KTKeyFrame::components() const
 {
 	return m_components;
 }
@@ -119,7 +119,7 @@ QDomElement KTKeyFrame::createXML( QDomDocument &doc )
 	frame.setAttribute ( "name", m_name);
 	frame.setAttribute ( "nClones", m_nClones);
 	
-	QList<AGraphicComponent *>::ConstIterator iterator = m_components.begin();
+	QList<KTGraphicComponent *>::ConstIterator iterator = m_components.begin();
 	
 	while( iterator != m_components.end() )
 	{
@@ -131,7 +131,7 @@ QDomElement KTKeyFrame::createXML( QDomDocument &doc )
 	return frame;
 }
 
-void KTKeyFrame::addSelectedComponent(AGraphicComponent *toSelect)
+void KTKeyFrame::addSelectedComponent(KTGraphicComponent *toSelect)
 {
 	if(toSelect && !m_selectedComponents.contains(toSelect))
 	{
@@ -139,7 +139,7 @@ void KTKeyFrame::addSelectedComponent(AGraphicComponent *toSelect)
 	}
 }
 
-void KTKeyFrame::deselectComponent(AGraphicComponent *toDeSelect)
+void KTKeyFrame::deselectComponent(KTGraphicComponent *toDeSelect)
 {
 	toDeSelect->removeControlPoints();
 	m_selectedComponents.removeAll ( toDeSelect );
@@ -147,33 +147,33 @@ void KTKeyFrame::deselectComponent(AGraphicComponent *toDeSelect)
 
 void KTKeyFrame::clearSelections()
 {
-	foreach( AGraphicComponent *component, m_selectedComponents)
+	foreach( KTGraphicComponent *component, m_selectedComponents)
 	{
 		deselectComponent(component);
 	}
 }
 
-QList<AGraphicComponent *> KTKeyFrame::selectedComponents()
+QList<KTGraphicComponent *> KTKeyFrame::selectedComponents()
 {
 	return m_selectedComponents;
 }
 
 void KTKeyFrame::scale(int sX, int sY)
 {
-	foreach(AGraphicComponent *comp, m_components)
+	foreach(KTGraphicComponent *comp, m_components)
 	{
 		comp->scale( sX, sY);
 	}
 }
 
-void KTKeyFrame::addComponents(QList<AGraphicComponent *> comps)
+void KTKeyFrame::addComponents(QList<KTGraphicComponent *> comps)
 {
 	m_components += comps;
 }
 
 void KTKeyFrame::removeSelections()
 {
-	foreach(AGraphicComponent *comp, m_selectedComponents)
+	foreach(KTGraphicComponent *comp, m_selectedComponents)
 	{
 		deselectComponent(comp);
 		m_components.removeAll(comp);
@@ -185,7 +185,7 @@ void KTKeyFrame::removeSelections()
 void KTKeyFrame::selecteAllComponents()
 {
 	m_selectedComponents = m_components;
-	foreach(AGraphicComponent *comp, m_selectedComponents)
+	foreach(KTGraphicComponent *comp, m_selectedComponents)
 	{
 		comp->setSelected(true);
 	}
@@ -194,7 +194,7 @@ void KTKeyFrame::selecteAllComponents()
 void KTKeyFrame::selectContains (const QRect & rect)
 {
 	clearSelections();
-	foreach(AGraphicComponent *comp, m_components)
+	foreach(KTGraphicComponent *comp, m_components)
 	{
 		QRect bounding = comp->boundingRect().toRect().normalized();
 		if(rect.intersects(bounding.adjusted(2,3,3,-2)) || bounding.intersects(rect) )
@@ -257,7 +257,7 @@ void KTKeyFrame::oneStepBackwardSelected()
 }	
 
 
-void KTKeyFrame::replace(AGraphicComponent *orig, AGraphicComponent *newComponent)
+void KTKeyFrame::replace(KTGraphicComponent *orig, KTGraphicComponent *newComponent)
 {
 	int index = m_components.indexOf(orig);
 	

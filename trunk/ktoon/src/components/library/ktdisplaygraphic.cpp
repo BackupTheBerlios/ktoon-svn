@@ -78,9 +78,9 @@ void KTDisplayGraphic::paintEvent ( QPaintEvent *e )
 	painter.drawRect(m_displayArea.rect());
 }
 
-void KTDisplayGraphic::addGraphicComponent(const AGraphicComponent *component)
+void KTDisplayGraphic::addGraphicComponent(const KTGraphicComponent *component)
 {
-	AGraphicComponent *newGraphic = new AGraphicComponent(*component);
+	KTGraphicComponent *newGraphic = new KTGraphicComponent(*component);
 	newGraphic->adjustToRect(m_displayArea.rect(), 10);
 	
 	m_graphic = newGraphic;
