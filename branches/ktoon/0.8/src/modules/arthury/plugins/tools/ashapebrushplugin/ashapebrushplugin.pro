@@ -42,3 +42,9 @@ CONFIG += release \
           warn_on \
           plugin 
 TEMPLATE = lib 
+win32 {
+  QMAKE_LIBDIR = ../../../../../../src/dlib/dcore/release \
+  ../../../../../../src/dlib/dgui/release \
+  ../../../../../../src/ktoonlib/release \
+  ../../../../../../src/store/release
+}

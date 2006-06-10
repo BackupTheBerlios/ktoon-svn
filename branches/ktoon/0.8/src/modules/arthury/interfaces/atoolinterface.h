@@ -44,7 +44,7 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class AToolInterface
+class Q_DECL_EXPORT AToolInterface
 {
 	public:
 		enum Type

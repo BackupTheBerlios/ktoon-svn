@@ -26,7 +26,7 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class ISpellIface : public SpellInterface
+class Q_DECL_EXPORT ISpellIface : public SpellInterface
 {
 	public:
 		ISpellIface();

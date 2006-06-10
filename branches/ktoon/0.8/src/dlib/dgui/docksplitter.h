@@ -31,11 +31,11 @@ class DockWidget;
 /**
  * short Splitter for docks
 */
-	class DockSplitter: public QFrame 
+	class Q_GUI_EXPORT DockSplitter: public QFrame 
 	{
 		Q_OBJECT
 		public:
-			DockSplitter(Qt::Orientation orientation, QWidget *parent = 0, const char *name = 0);
+			 DockSplitter(Qt::Orientation orientation, QWidget *parent = 0, const char *name = 0);
 			~DockSplitter();
 
 			void addDock(int row, int col, QWidget *dock);

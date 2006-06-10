@@ -36,7 +36,7 @@
  * @endif
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-class KTGradientViewer : public QFrame
+class Q_GUI_EXPORT KTGradientViewer : public QFrame
 {
 	Q_OBJECT
 	public:
@@ -47,7 +47,7 @@ class KTGradientViewer : public QFrame
 		 * Constructor por defecto.
 		 * @endif
 		 */
-		KTGradientViewer(QWidget *parent = 0);
+		 KTGradientViewer(QWidget *parent = 0);
 		/**
 		 * Destructor
 		 */

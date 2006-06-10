@@ -35,7 +35,7 @@
  * @endif
  * @author David Cuadrado <krawek@toonka.com>
 */
-class DDisplayPath : public QFrame
+class Q_GUI_EXPORT DDisplayPath : public QFrame
 {
 	Q_OBJECT
 	public:
@@ -46,7 +46,7 @@ class DDisplayPath : public QFrame
 		 * Constructor por defecto.
 		 * @endif
 		 */
-		DDisplayPath(QWidget *parent = 0);
+		 DDisplayPath(QWidget *parent = 0);
 		/**
 		 * Destructor
 		 */

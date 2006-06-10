@@ -42,7 +42,7 @@ typedef QHash<int, QVariant> ItemData;
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class DCellViewItem
+class Q_GUI_EXPORT DCellViewItem
 {
 	friend class DCellViewModel;
 	friend class DCellView;
@@ -51,7 +51,7 @@ class DCellViewItem
 		/**
 		 * construye un DCellViewItem
 		 */
-		DCellViewItem();
+		 DCellViewItem();
 		virtual ~DCellViewItem();
 
 		virtual DCellViewItem *clone() const;
@@ -81,12 +81,12 @@ class DCellViewItem
 /**
  * @author David Cuadrado <krawek@toonka.com>
  */
-class DCellView : public QTableView
+class Q_GUI_EXPORT DCellView : public QTableView
 {
 	Q_OBJECT
 	public:
-		DCellView( QWidget *parent = 0);
-		DCellView(int rows, int columns, QWidget *parent = 0);
+		 DCellView( QWidget *parent = 0);
+		 DCellView(int rows, int columns, QWidget *parent = 0);
 		~DCellView();
 
 		void setRowCount(int rows);

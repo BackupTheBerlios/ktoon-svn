@@ -38,7 +38,7 @@ class QToolButton;
  * appropriate QTreeWidgets should be needed.
  */
 
-class Q_DECL_EXPORT DTreeWidgetSearchLine : public DClickLineEdit
+class Q_GUI_EXPORT DTreeWidgetSearchLine : public DClickLineEdit
 {
     Q_OBJECT
 
@@ -54,7 +54,7 @@ public:
      * If \a treeWidget is null then the widget will be disabled until listviews
      * are set with setTreeWidget(), setTreeWidgets() or added with addTreeWidget().
      */
-	DTreeWidgetSearchLine(const QString &text = tr("Filter here..."), QWidget *parent = 0, QTreeWidget *treeWidget = 0);
+	 DTreeWidgetSearchLine(const QString &text = tr("Filter here..."), QWidget *parent = 0, QTreeWidget *treeWidget = 0);
 
     /**
      * Constructs a DTreeWidgetSearchLine with \a treeWidgets being the list of
@@ -63,7 +63,7 @@ public:
      * If \a treeWidgets is empty then the widget will be disabled until listviews
      * are set with setTreeWidget(), setTreeWidgets() or added with addTreeWidget().
      */
-	DTreeWidgetSearchLine(const QString &text, QWidget *parent,
+	 DTreeWidgetSearchLine(const QString &text, QWidget *parent,
                         const QList<QTreeWidget *> &treeWidgets);
 
 
@@ -294,7 +294,7 @@ private:
  * Creates a widget featuring a DTreeWidgetSearchLine, a label with the text
  * "Search" and a button to clear the search.
  */
-class Q_DECL_EXPORT DTreeWidgetSearchLineWidget : public QWidget
+class Q_GUI_EXPORT DTreeWidgetSearchLineWidget : public QWidget
 {
     Q_OBJECT
 
@@ -303,7 +303,7 @@ public:
      * Creates a DTreeWidgetSearchLineWidget for \a treeWidget with \a parent as the
      * parent.
      */
-    DTreeWidgetSearchLineWidget(QWidget *parent = 0, QTreeWidget *treeWidget = 0);
+     DTreeWidgetSearchLineWidget(QWidget *parent = 0, QTreeWidget *treeWidget = 0);
 
     /**
      * Destroys the DTreeWidgetSearchLineWidget

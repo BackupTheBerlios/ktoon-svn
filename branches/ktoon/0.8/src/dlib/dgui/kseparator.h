@@ -27,7 +27,7 @@
  *
  * @author Michael Roth <mroth@wirlweb.de>
  */
-class KSeparator : public QFrame
+class Q_GUI_EXPORT KSeparator : public QFrame
 {
   Q_OBJECT
   Q_PROPERTY( Qt::Orientation orientation READ orientation WRITE setOrientation )
@@ -38,7 +38,7 @@ class KSeparator : public QFrame
    * @param parent parent object.
    * @param f extra QWidget flags.
    **/
-  KSeparator(QWidget* parent=0);
+   KSeparator(QWidget* parent=0);
 
   /**
    * Constructor.
@@ -47,7 +47,7 @@ class KSeparator : public QFrame
    * @param parent parent object.
    * @param f extra QWidget flags.
    **/
-  KSeparator(Qt::Orientation orientation, QWidget* parent=0);
+   KSeparator(Qt::Orientation orientation, QWidget* parent=0);
 
   /**
    * Returns the orientation of the separator.

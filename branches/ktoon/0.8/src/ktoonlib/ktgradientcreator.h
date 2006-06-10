@@ -51,7 +51,7 @@ class SpinControl;
   *
   * @author Jorge Cuadrado <kuadrosx@toonka.com>
   */
-class KTGradientCreator : public QFrame
+class Q_GUI_EXPORT KTGradientCreator : public QFrame
 {
 	Q_OBJECT
 	public:
@@ -156,7 +156,7 @@ class KTGradientCreator : public QFrame
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
  */
-class SpinControl: public QGroupBox
+class Q_GUI_EXPORT SpinControl: public QGroupBox
 {
 	Q_OBJECT
 	public:

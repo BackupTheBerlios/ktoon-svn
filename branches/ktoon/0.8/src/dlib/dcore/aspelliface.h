@@ -29,7 +29,6 @@
 
 #include "spellinterface.h"
 
-
 struct AspellSpeller;
 
 /**
@@ -40,7 +39,7 @@ struct AspellSpeller;
  * @endif
  * @author David Cuadrado <krawek@gmail.com>
 */
-class AspellIface : public SpellInterface
+class Q_DECL_EXPORT AspellIface : public SpellInterface
 {
 	public:
 		/**

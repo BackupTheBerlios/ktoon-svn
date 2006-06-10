@@ -34,7 +34,7 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class ExportInterface
+class Q_DECL_EXPORT ExportInterface
 {
 	public:
 		enum Format

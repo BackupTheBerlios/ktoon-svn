@@ -31,7 +31,7 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Speller : public QObject
+class Q_DECL_EXPORT Speller : public QObject
 {
 	Q_OBJECT;
 	public:

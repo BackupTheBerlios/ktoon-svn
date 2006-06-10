@@ -28,7 +28,7 @@
 /**
  * @author Jorge Cuadrado <krawek@toonka.com>
  */
-class KTGraphicalAlgorithm
+class Q_DECL_EXPORT KTGraphicalAlgorithm
 {
 	private:
 		KTGraphicalAlgorithm() {}

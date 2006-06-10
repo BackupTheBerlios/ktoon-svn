@@ -27,13 +27,14 @@
 #ifndef __KCPUINFO_H
 #define __KCPUINFO_H
 
+#include <QObject>
 
 /**
  * This class provides a means for applications to obtain information at
  * runtime about processor support for certain architecture extensions,
  * such as MMX, SSE, 3DNow and AltiVec.
  */
-class KCPUInfo
+class Q_DECL_EXPORT KCPUInfo
 {
     public:
        /**

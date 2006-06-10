@@ -18,9 +18,11 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <ktapplication.h>
+#define VERSION_STR "0.8"
 
+#if Q_OS_LINUX
 #include <config.h>
+#endif
 
 #include <qfile.h>
 #include <qtextstream.h>
@@ -41,7 +43,9 @@
 
 #include "ktmainwindow.h"
 
+#ifdef Q_OS_LINUX
 #include "crashhandler.h"
+#endif
 
 #include "ktoonstyle.h"
 
@@ -51,8 +55,10 @@ int main( int argc, char ** argv )
 {
 	KTApplication application( argc, argv );
 	
+#ifdef Q_OS_UNIX
 	CrashHandler::init();
-	
+#endif
+
 #ifdef ENABLE_KTOONSTYLE
 	QApplication::setStyle(new KToonStyle());
 #elif defined(Q_OS_LINUX)
@@ -174,7 +180,7 @@ void usage()
 	
 	puts("\033[0;0m");
 #else
-	puts(QString(QApplication::applicationName() + dApp->version()).toLatin1());
+	puts(QString(QApplication::applicationName()).toLatin1());
 
 	puts(QObject::tr("Usage: %1 [option]").arg(dApp->argv()[0]).toLatin1());
 	

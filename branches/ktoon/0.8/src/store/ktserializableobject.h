@@ -29,7 +29,7 @@
  * @brief Esta clase es una abstraccion de objetos serializables
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTSerializableObject : public QObject
+class Q_DECL_EXPORT KTSerializableObject : public QObject
 {
 	public:
 		/**

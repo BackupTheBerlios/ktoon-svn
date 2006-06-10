@@ -35,7 +35,7 @@ typedef QList<KTDocument *> Documents;
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTProjectManager : public KTSerializableObject
+class Q_DECL_EXPORT KTProjectManager : public KTSerializableObject
 {
 	Q_OBJECT
 	public:

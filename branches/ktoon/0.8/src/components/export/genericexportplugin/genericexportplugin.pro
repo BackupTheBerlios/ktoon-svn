@@ -21,3 +21,11 @@ macx{
   LIBS += -ldcore -ldgui -lktoon -lstore
   QMAKE_LIBDIR = ../../../../src/dlib/dcore ../../../../src/dlib/dgui ../../../../src/ktoonlib ../../../../src/store
 }
+win32 {
+  LIBS += -ldcore -ldgui -lktoon -lstore
+  QMAKE_LIBDIR = ../../../../src/dlib/dcore/release \
+  ../../../../src/dlib/dgui/release \
+  ../../../../src/ktoonlib/release \
+  ../../../../src/store/release
+}
+

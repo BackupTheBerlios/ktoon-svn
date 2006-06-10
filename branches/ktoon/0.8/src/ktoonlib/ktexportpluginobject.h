@@ -26,7 +26,7 @@
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTExportPluginObject : public QObject
+class Q_DECL_EXPORT KTExportPluginObject : public QObject
 {
 	Q_OBJECT
 	public:

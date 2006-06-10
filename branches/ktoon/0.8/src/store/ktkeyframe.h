@@ -33,7 +33,7 @@ class KTKeyFrame;
  * @brief Esta clase representa un marco o frame de la animacion
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTKeyFrame : public KTSerializableObject
+class Q_DECL_EXPORT KTKeyFrame : public KTSerializableObject
 {
 	public:
 		/**

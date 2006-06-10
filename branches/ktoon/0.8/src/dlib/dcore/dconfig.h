@@ -34,7 +34,7 @@ class DConfig;
  * this is a doon config handler
 */
 
-class DConfig : public QObject
+class Q_DECL_EXPORT DConfig : public QObject
 {
 	protected:
 		DConfig();

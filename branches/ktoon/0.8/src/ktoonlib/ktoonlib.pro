@@ -40,3 +40,7 @@ macx{
   LIBS += -ldcore -ldgui
   QMAKE_LIBDIR = ../../src/dlib/dcore ../../src/dlib/dgui
 }
+win32{
+  LIBS += -ldcore -ldgui
+  QMAKE_LIBDIR = ../../src/dlib/dcore/release ../../src/dlib/dgui/release
+}

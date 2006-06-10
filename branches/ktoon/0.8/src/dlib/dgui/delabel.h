@@ -29,12 +29,12 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class DELabel : public DSqueezeLabel
+class Q_GUI_EXPORT DELabel : public DSqueezeLabel
 {
 	Q_OBJECT
 
 	public:
-		DELabel(const QString &text, QWidget *parent = 0);
+		 DELabel(const QString &text, QWidget *parent = 0);
 		~DELabel();
 		void setValidator(const QValidator * v);
 		

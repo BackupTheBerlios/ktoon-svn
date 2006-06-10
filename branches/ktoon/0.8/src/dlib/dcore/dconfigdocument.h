@@ -31,7 +31,7 @@
  * This class represents the doon configuration xml document
  * @author David Cuadrado
 */
-class DConfigDocument : public QDomDocument
+class Q_DECL_EXPORT DConfigDocument : public QDomDocument
 {
 	public:
     		DConfigDocument(const QString &path);

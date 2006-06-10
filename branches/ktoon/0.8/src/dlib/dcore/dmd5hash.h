@@ -33,11 +33,13 @@
 #ifndef DMD5HASH_H
 #define DMD5HASH_H
 
+#include <QObject>
+
 class QByteArray;
 class QString;
 class QFile;
 
-class DMD5Hash
+class Q_DECL_EXPORT DMD5Hash
 {
 	public:
 		static QString hash(const QString &str);

@@ -5,11 +5,11 @@
 
 QT += xml svg opengl 
 KDEV_QTVER = 4 
-INSTALLS += ktdata \
-            target 
-target.path = /bin/ 
+INSTALLS += ktdata 
+#target.path = /bin/ 
 ktdata.files += data/* 
 ktdata.path = /data 
+unix {
 LIBS += -ldcore \
         -ldgui \
         -lktoon \
@@ -30,6 +30,18 @@ LIBS += -ldcore \
         ../../src/components/kinas/libkinas.a \
         ../../3rdparty/quazip/libquazip.a \
         ../../src/components/pen/libpen.a 
+
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+TARGET = ../../bin/ktoon 
+
+SOURCES += crashhandler.cpp \
+           crashwidget.cpp
+HEADERS += crashhandler.h \
+           crashwidget.h
+}
+
 INCLUDEPATH += ../../src/ktoonstyle \
                ../../src/modules/arthury/interfaces \
                ../../src/modules/arthury/animation \
@@ -51,14 +63,12 @@ INCLUDEPATH += ../../src/ktoonstyle \
                ../../src/dlib/dgui \
                ../../src/dlib/dcore \
                ../../3rdparty/quazip 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
+	  
+
 QMAKE_LIBDIR = ../../src/dlib/dcore \
                ../../src/dlib/dgui \
                ../../src/ktoonlib \
                ../../src/store 
-TARGET = ../../bin/ktoon 
 CONFIG += release \
           warn_on 
 TEMPLATE = app 
@@ -75,8 +85,6 @@ HEADERS += ktdocumentruler.h \
            ktcamerabar.h \
            ktosd.h \
            ktsplash.h \
-           crashhandler.h \
-           crashwidget.h \
            ktworkspace.h \
            ktpackagehandler.h \
            ktconfigurationarea.h \
@@ -97,8 +105,6 @@ SOURCES += main.cpp \
            ktmainwindow-project.cpp \
            ktosd.cpp \
            ktsplash.cpp \
-           crashhandler.cpp \
-           crashwidget.cpp \
            ktworkspace.cpp \
            ktpackagehandler.cpp \
            ktconfigurationarea.cpp \
@@ -106,6 +112,7 @@ SOURCES += main.cpp \
            configwizard.cpp \
            ktdrawingareaproperties.cpp \
            ktpluginmanager.cpp 
+
 linux-g++{
   TARGETDEPS += ../../src/dlib/dcore/libdcore.so \
   ../../src/dlib/dgui/libdgui.so \
@@ -126,3 +133,49 @@ linux-g++{
   ../../src/components/colorpalette/libcolorpalette.a \
   ../../src/components/scenes/libscenes.a
 }
+
+win32 {
+   LIBS = -ldcore \
+        -ldgui \
+        -lktoon \
+        -lktoonstyle \
+        -ldialogs \
+        -lcolorpalette \
+        -lscenes \
+        -lexposure \
+        -ltimeline \
+        -llibrary \
+        -lanimation \
+        -lillustration \
+        -lgceditor \
+        -limport \
+        -lhelp \
+        -lstore \
+        -lui \
+        -lkinas \
+        -lquazip \
+        -lpen \
+	-lQtOpenGL4
+QMAKE_LIBDIR = ../../src/dlib/dcore/release \
+               ../../src/dlib/dgui/release \
+               ../../src/ktoonlib/release \
+               ../../src/store/release \
+		../../src/ktoonstyle/release \
+        	../../src/dialogs/release \
+       		../../src/components/colorpalette/release \
+        	../../src/components/scenes/release \
+        	../../src/components/exposure/release \
+        	../../src/components/timeline/release \
+        	../../src/components/library/release \
+        	../../src/modules/arthury/animation/release \
+        	../../src/modules/arthury/illustration/release \
+        	../../src/components/gceditor/release \
+        	../../src/components/import/release \
+        	../../src/components/help/release \
+        	../../src/components/export/ui/release \
+        	../../src/components/kinas/release \
+        	../../3rdparty/quazip/release \
+        	../../src/components/pen/release
+
+}
+

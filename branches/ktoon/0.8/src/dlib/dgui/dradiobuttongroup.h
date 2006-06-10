@@ -29,11 +29,11 @@
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class DRadioButtonGroup : public QGroupBox
+class Q_GUI_EXPORT DRadioButtonGroup : public QGroupBox
 {
 	Q_OBJECT
 	public:
-		DRadioButtonGroup(const QString &title, Qt::Orientation orientation, QWidget *parent = 0);
+		 DRadioButtonGroup(const QString &title, Qt::Orientation orientation, QWidget *parent = 0);
 		~DRadioButtonGroup();
 		
 		void addItem ( const QString & text, int index = -1 );

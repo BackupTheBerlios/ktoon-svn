@@ -44,18 +44,18 @@
  * @endif
  * @author David Cuadrado <krawek@toonka.com>
 */
-class AGraphic
+class Q_GUI_EXPORT AGraphic
 {
 	public:
 		/**
 		 * Default Constructor
 		 */
-		AGraphic();
+		 AGraphic();
 		/**
 		 * Copy Constructor
 		 * @param toCopy 
 		 */
-		AGraphic(const AGraphic &toCopy);
+		 AGraphic(const AGraphic &toCopy);
 		
 		/**
 		 * Destructor

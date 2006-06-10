@@ -27,12 +27,14 @@
 #include <csignal>
 #include <cstdio>
 
+#ifdef Q_OS_UNIX
 extern "C"
 {
 #include <sys/types.h> //pid_t
 #include <sys/wait.h>  //waitpid
 #include <unistd.h>    //write, getpid
 }
+#endif
 
 #include "crashhandler.h"
 #include "crashwidget.h"

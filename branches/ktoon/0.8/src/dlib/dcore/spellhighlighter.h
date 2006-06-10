@@ -40,7 +40,7 @@
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class SpellHighlighter : public QSyntaxHighlighter
+class Q_DECL_EXPORT SpellHighlighter : public QSyntaxHighlighter
 {
 	public:
 		/**

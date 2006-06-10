@@ -36,11 +36,11 @@ namespace Ideal {
 }
 
 /**Main window which provides simplified IDEA mode.*/
-class DMainWindow: public MWCLASS 
+class Q_GUI_EXPORT DMainWindow: public MWCLASS 
 {
 	Q_OBJECT
 	public:
-		DMainWindow(QWidget *parent = 0);
+		 DMainWindow(QWidget *parent = 0);
 		virtual ~DMainWindow();
     
 		/**@return The tool window in given @p position.*/

@@ -44,7 +44,7 @@ typedef QList<QPixmap> ListOfPixmaps;
  * @endif
  */
  
-class DAnimWidget : public QWidget
+class Q_GUI_EXPORT DAnimWidget : public QWidget
 {
 	public:
 		enum Type { AnimText = 0, AnimPixmap };
@@ -54,13 +54,13 @@ class DAnimWidget : public QWidget
 		 * @param text texto para animar
 		 * @param parent 
 		 */
-		DAnimWidget(const QPixmap &px, const QString &text, QWidget *parent = 0);
+		 DAnimWidget(const QPixmap &px, const QString &text, QWidget *parent = 0);
 		/**
 		 * Construye un DAnimWidget con una lista de imagenes para animar y un padre.
 		 * @param lop imagenes para animar
 		 * @param parent 
 		 */
-		DAnimWidget(ListOfPixmaps lop, QWidget *parent = 0);
+		 DAnimWidget(ListOfPixmaps lop, QWidget *parent = 0);
 		
 		/**
 		 * Destructor

@@ -34,5 +34,11 @@ LIBS += -lstore \
 QMAKE_LIBDIR = ../../../../../../src/store \
                ../../../../../../src/ktoonlib \
                ../../../../../../src/dlib/dgui \
-               ../../../../../../src/dlib/dcore 
+               ../../../../../../src/dlib/dcore
+win32 {
+  QMAKE_LIBDIR = ../../../../../../src/dlib/dcore/release \
+  ../../../../../../src/dlib/dgui/release \
+  ../../../../../../src/ktoonlib/release \
+  ../../../../../../src/store/release
+}
 

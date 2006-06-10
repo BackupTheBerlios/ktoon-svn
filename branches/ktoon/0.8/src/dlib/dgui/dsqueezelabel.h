@@ -44,11 +44,11 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class DSqueezeLabel : public QLabel
+class Q_GUI_EXPORT DSqueezeLabel : public QLabel
 {
 	public:
-		DSqueezeLabel(QWidget *parent, const char *name=0);
-		DSqueezeLabel(const QString &text, QWidget *parent, const char *name=0);
+		 DSqueezeLabel(QWidget *parent, const char *name=0);
+		 DSqueezeLabel(const QString &text, QWidget *parent, const char *name=0);
 		~DSqueezeLabel();
 		
 		QSize sizeHint() const;

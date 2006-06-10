@@ -33,13 +33,13 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class DImageButton : public QToolButton
+class Q_GUI_EXPORT DImageButton : public QToolButton
 {
 	Q_OBJECT
 
 	public:
-		DImageButton(const QIcon &icon, int size, QWidget *parent = 0, bool animate = false);
-		DImageButton(const QIcon &icon, int size, QObject *reciever, const  char *slot, QWidget *parent = 0, bool animate = false);
+		 DImageButton(const QIcon &icon, int size, QWidget *parent = 0, bool animate = false);
+		 DImageButton(const QIcon &icon, int size, QObject *reciever, const  char *slot, QWidget *parent = 0, bool animate = false);
 		~DImageButton();
 		virtual void setImage( const QIcon &icon);
 		

@@ -23,7 +23,7 @@
 #include "dthemedocument.h"
 
 #include <dglobal.h>
-#include <dapplication.h>
+#include "dapplication.h"
 
 #include "ddebug.h"
 

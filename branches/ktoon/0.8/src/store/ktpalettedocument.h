@@ -31,7 +31,7 @@
  * @author David Cuadrado
 */
 
-class KTPaletteDocument : public QDomDocument
+class Q_DECL_EXPORT KTPaletteDocument : public QDomDocument
 {
 	public:
 		/**

@@ -78,7 +78,7 @@ enum DebugType
 };
 
 #if !defined(D_NODEBUG)
-class DDebug
+class Q_DECL_EXPORT DDebug
 {
 	public:
 		class Streamer : public QObject

@@ -32,14 +32,14 @@
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class CCButton : public QPushButton
+class Q_GUI_EXPORT CCButton : public QPushButton
 {
 	Q_OBJECT
 	public:
 		/**
 		 * Constructs a CCButton
 		 */
-		CCButton(int diameter, bool animate = true, QWidget *parent = 0);
+		 CCButton(int diameter, bool animate = true, QWidget *parent = 0);
 		/**
 		 * Destructor
 		 */

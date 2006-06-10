@@ -34,7 +34,7 @@
  * @endif
  * @author David Cuadrado <krawek@toonka.com>
 */
-class DGuiItem
+class Q_DECL_EXPORT DGuiItem
 {
 	public:
 		/**

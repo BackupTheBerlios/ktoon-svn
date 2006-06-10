@@ -7,9 +7,6 @@ INSTALLS += cursors
 cursors.files += *.png 
 cursors.path = /themes/default/cursors 
 CONFIG += release \
-warn_on \
-staticlib
-TEMPLATE = lib
-macx {
+warn_on 
+
 TEMPLATE = subdirs
-}

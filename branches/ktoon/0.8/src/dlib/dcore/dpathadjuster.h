@@ -28,7 +28,7 @@
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class DPathAdjuster
+class Q_DECL_EXPORT DPathAdjuster
 {
 	public:
 		/**

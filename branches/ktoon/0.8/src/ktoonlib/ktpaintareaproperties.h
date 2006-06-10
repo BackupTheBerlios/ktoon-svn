@@ -25,10 +25,10 @@
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-struct KTPaintAreaProperties
+struct Q_DECL_EXPORT KTPaintAreaProperties
 {
 	public:
-		KTPaintAreaProperties();
+		 KTPaintAreaProperties();
 		~KTPaintAreaProperties();
 		QColor gridColor;
 		QColor backgroundColor;

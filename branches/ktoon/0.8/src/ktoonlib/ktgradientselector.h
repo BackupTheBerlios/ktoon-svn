@@ -1,4 +1,4 @@
-/***************************************************************************
+ /***************************************************************************
  *   Copyright (C) 2005 by Jorge Cuadrado                                  *
  *   kuadrosx@toonka.com                                                   *
  *                                                                         *
@@ -45,7 +45,7 @@
  * @endif
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
  */
-class KTGradientSelector : public QAbstractSlider
+class Q_GUI_EXPORT KTGradientSelector : public QAbstractSlider
 {
 	Q_OBJECT;
 	

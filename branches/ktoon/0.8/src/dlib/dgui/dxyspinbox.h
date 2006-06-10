@@ -29,11 +29,11 @@
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class DXYSpinBox : public QGroupBox
+class Q_GUI_EXPORT DXYSpinBox : public QGroupBox
 {
 	Q_OBJECT
 	public:
-		DXYSpinBox(const QString &title, QWidget *parent = 0);
+		 DXYSpinBox(const QString &title, QWidget *parent = 0);
 		~DXYSpinBox();
 		void setSingleStep(double step);
 		void setMinimum ( double min);

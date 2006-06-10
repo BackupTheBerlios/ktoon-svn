@@ -15,3 +15,13 @@ CONFIG += release \
 TEMPLATE = lib 
 HEADERS += ktpaletteimporter.h 
 SOURCES += ktpaletteimporter.cpp 
+win32 {
+   LIBS += -ldcore \
+   -ldgui \
+   -lstore \
+   -lktoon
+   QMAKE_LIBDIR = ../../../src/dlib/dcore/release \
+   ../../../src/dlib/dgui/release \
+   ../../../src/ktoonlib/release \
+   ../../../src/store/release
+}

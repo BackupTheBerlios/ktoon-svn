@@ -20,3 +20,14 @@ TEMPLATE = lib
 macx {
 TEMPLATE = subdirs
 }
+win32 {
+TEMPLATE = subdirs
+#LIBS += -lQtOpenGL4 \
+#-ldgui \
+#-lktoon \
+#-lstore \
+#QMAKE_LIBDIR = ../../../../src/dlib/dcore/release \
+#               ../../../../src/dlib/dgui/release \
+#               ../../../../src/ktoonlib/release \
+#               ../../../../src/store/release
+}

@@ -29,10 +29,10 @@ class DThemeDocument;
 /**
  * @author David Cuadrado
 */
-class DThemeManager : public QXmlDefaultHandler
+class Q_GUI_EXPORT DThemeManager : public QXmlDefaultHandler
 {
 	public:
-		DThemeManager();
+		 DThemeManager();
 		~DThemeManager();
 		
 		bool applyTheme(const QString &file);

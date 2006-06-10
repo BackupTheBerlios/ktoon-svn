@@ -26,11 +26,11 @@
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class DToolBox : public QToolBox
+class Q_GUI_EXPORT DToolBox : public QToolBox
 {
 	Q_OBJECT
 	public:
-		DToolBox(QWidget *parent = 0);
+		 DToolBox(QWidget *parent = 0);
 		~DToolBox();
 		void addPage(QWidget *page, const QString &title);
 		

@@ -34,12 +34,12 @@ class DWizardPage;
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class DWizard : public QDialog
+class Q_GUI_EXPORT DWizard : public QDialog
 {
 	Q_OBJECT
 
 	public:
-		DWizard(QWidget *parent = 0);
+		 DWizard(QWidget *parent = 0);
 		~DWizard();
 		DWizardPage *addPage(DWizardPage *DWizardPage);
 		void showPage(int index);
@@ -67,11 +67,11 @@ class DWizard : public QDialog
 #include <QGridLayout>
 #include <QLabel>
 
-class DWizardPage : public DVHBox
+class Q_GUI_EXPORT DWizardPage : public DVHBox
 {
 	Q_OBJECT
 	public:
-		DWizardPage(const QString &title, QWidget *parent );
+		 DWizardPage(const QString &title, QWidget *parent );
 		virtual ~DWizardPage();
 		
 		virtual bool isComplete() = 0;

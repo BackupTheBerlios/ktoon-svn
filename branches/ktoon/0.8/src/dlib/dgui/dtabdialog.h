@@ -32,7 +32,7 @@ typedef QHash<int, QPushButton *> Buttons;
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class DTabDialog : public QDialog
+class Q_GUI_EXPORT DTabDialog : public QDialog
 {
 	Q_OBJECT
 	public:
@@ -46,8 +46,8 @@ class DTabDialog : public QDialog
 			Custom2 = 1<<7,
 			Custom3 = 1<<8
 		};
-		DTabDialog(QWidget *parent = 0, bool modal = true);
-		DTabDialog(int buttons = Ok|Cancel, QWidget *parent = 0, bool modal = true);
+		 DTabDialog(QWidget *parent = 0, bool modal = true);
+		 DTabDialog(int buttons = Ok|Cancel, QWidget *parent = 0, bool modal = true);
 		
 		~DTabDialog();
 		

@@ -29,7 +29,7 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class DAlgorithm
+class Q_DECL_EXPORT DAlgorithm
 {
 	private:
 		DAlgorithm();

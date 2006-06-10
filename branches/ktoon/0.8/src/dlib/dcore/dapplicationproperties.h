@@ -26,7 +26,7 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DApplicationProperties
+class Q_DECL_EXPORT DApplicationProperties
 {
 	protected:
 		DApplicationProperties();

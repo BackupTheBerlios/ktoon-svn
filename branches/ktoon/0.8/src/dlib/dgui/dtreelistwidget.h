@@ -26,11 +26,11 @@
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class DTreeListWidget : public QTreeWidget
+class Q_GUI_EXPORT DTreeListWidget : public QTreeWidget
 {
 	Q_OBJECT
 	public:
-		DTreeListWidget(QWidget *parent = 0);
+		 DTreeListWidget(QWidget *parent = 0);
 		~DTreeListWidget();
 		void addItems(const QStringList &items);
 		QList<QTreeWidgetItem *> topLevelItems();

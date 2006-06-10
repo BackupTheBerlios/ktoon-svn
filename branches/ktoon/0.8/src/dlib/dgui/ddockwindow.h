@@ -48,13 +48,13 @@ namespace Ideal {
 	class ButtonBar;
 }
 
-class DDockWindow : public QDockWidget
+class Q_GUI_EXPORT DDockWindow : public QDockWidget
 {
 	Q_OBJECT
 	public:
 		enum Position { Bottom, Left, Right };
 		
-		DDockWindow(QWidget *parent, Position position);
+		 DDockWindow(QWidget *parent, Position position);
 		virtual ~DDockWindow();
 		void addWidget(const QString &title, QWidget *widget);
 		
@@ -72,11 +72,11 @@ class DDockWindow : public QDockWidget
 		DDockInternalWidget *m_centralWidget;
 };
 
-class DDockInternalWidget : public QWidget {
+class Q_GUI_EXPORT DDockInternalWidget : public QWidget {
 	Q_OBJECT
 	public:
     
-		DDockInternalWidget(QWidget *parent, DDockWindow::Position position);
+		 DDockInternalWidget(QWidget *parent, DDockWindow::Position position);
 		virtual ~DDockInternalWidget();
     
 		virtual void setExpanded(bool v);

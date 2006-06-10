@@ -32,7 +32,7 @@
  * @endif
  * @author Jorge Cuadrado
 */
-class DMdiWindow : public QMainWindow
+class Q_GUI_EXPORT DMdiWindow : public QMainWindow
 {
 	Q_OBJECT
 	public:
@@ -46,7 +46,7 @@ class DMdiWindow : public QMainWindow
 		 * @param name 
 		 * @return 
 		 */
-		DMdiWindow(QWorkspace* parent = 0, const char* name = 0);
+		 DMdiWindow(QWorkspace* parent = 0, const char* name = 0);
 		/**
 		 * Destructor
 		 * @return 

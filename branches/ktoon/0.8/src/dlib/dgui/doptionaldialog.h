@@ -35,7 +35,7 @@
  * 
  * @author David Cuadrado <krawek@toonka.com>
 */
-class DOptionalDialog : public QDialog
+class Q_GUI_EXPORT DOptionalDialog : public QDialog
 {
 	Q_OBJECT
 	public:
@@ -50,7 +50,7 @@ class DOptionalDialog : public QDialog
 		 * @param parent 
 		 * @return 
 		 */
-		DOptionalDialog(const QString &text, const QString &title = 0, QWidget *parent = 0);
+		 DOptionalDialog(const QString &text, const QString &title = 0, QWidget *parent = 0);
 		/**
 		 * Destructor
 		 * @return 

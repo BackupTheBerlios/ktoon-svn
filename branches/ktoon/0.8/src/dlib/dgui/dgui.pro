@@ -114,6 +114,11 @@ macx{
   QMAKE_LIBDIR = ../../../src/dlib/dcore
   LIBS += -ldcore
 }
+win32{
+  QMAKE_LIBDIR = ../../../src/dlib/dcore/release
+  LIBS += -ldcore
+  RCC_DIR = ../../../src/dlib/dgui
+}
 !include(../dlibconfig.pri) {
 error("Please configure first")
 }

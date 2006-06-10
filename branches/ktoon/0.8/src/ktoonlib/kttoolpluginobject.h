@@ -27,11 +27,11 @@
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTToolPluginObject : public QObject
+class Q_DECL_EXPORT KTToolPluginObject : public QObject
 {
 	Q_OBJECT
 	public:
-		KTToolPluginObject();
+		 KTToolPluginObject();
 		~KTToolPluginObject();
 		
 	signals:

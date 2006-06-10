@@ -21,7 +21,14 @@
 #ifndef FFMPEGMANAGER_H
 #define FFMPEGMANAGER_H
 
+#include <QtGlobal>
+
+#warning HARDBIT: crear un configure.bat para windows
+
+#ifdef Q_OS_UNIX
 #include <config.h>
+#endif
+
 #include <QString>
 #include <QSize>
 

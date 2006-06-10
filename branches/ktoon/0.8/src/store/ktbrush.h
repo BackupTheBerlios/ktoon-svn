@@ -34,7 +34,7 @@
  * @brief Contiene los datos para utilizar una brocha con forma
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTBrush : public KTSerializableObject
+class Q_DECL_EXPORT KTBrush : public KTSerializableObject
 {
 	public:
 		/**

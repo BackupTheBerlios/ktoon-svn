@@ -42,7 +42,7 @@ class ButtonBar;
  * @short A layout for a ButtonBar class.
  * Overrides minimumSize method to allow shrinking button bar buttons.
 */
-class ButtonLayout: public QBoxLayout
+class Q_GUI_EXPORT ButtonLayout: public QBoxLayout
 {
 	public:
 		ButtonLayout(Direction d, ButtonBar *parent);
@@ -59,7 +59,7 @@ class ButtonLayout: public QBoxLayout
 Looks like a toolbar but has another behaviour. It is suitable for
 placing on the left(right, bottom, top) corners of a window as a bar with slider.
 */
-class ButtonBar : public QWidget 
+class Q_GUI_EXPORT ButtonBar : public QWidget 
 {
     Q_OBJECT
 public:    

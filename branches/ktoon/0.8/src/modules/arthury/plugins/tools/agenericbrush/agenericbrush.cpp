@@ -23,6 +23,7 @@
 #include "ddebug.h"
 #include <QPointF>
 #include <QKeySequence>
+#include <daction.h>
 
 #include "dglobal.h"
 #include "ktgraphicalgorithm.h"

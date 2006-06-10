@@ -34,7 +34,7 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTProjectParser : public QObject, public QXmlDefaultHandler
+class Q_DECL_EXPORT KTProjectParser : public QObject, public QXmlDefaultHandler
 {
 	Q_OBJECT
 	public:

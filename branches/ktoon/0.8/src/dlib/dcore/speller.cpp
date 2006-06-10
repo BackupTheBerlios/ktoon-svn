@@ -30,7 +30,7 @@ Speller::Speller(QObject *parent) : QObject(parent), m_speller(0)
 #elif defined(HAVE_ISPELL)
 	m_speller = new ISpellIface;
 #else
-#warning NO ASPELL/ISPELL MACROS DEFINED!
+//#warning NO ASPELL/ISPELL MACROS DEFINED!
 #endif
 }
 

@@ -40,7 +40,7 @@ class Q_GUI_EXPORT SettingsContainer : public QScrollArea
 	Q_OBJECT;
 	public:
 		enum CollapseState { Collapsed, Uncollapsed };
-		SettingsContainer( QWidget *parent = 0 );
+		 SettingsContainer( QWidget *parent = 0 );
 		~SettingsContainer();
 
 		CollapsibleWidget* insertWidget( QWidget* w, const QString& name );
@@ -59,8 +59,8 @@ class Q_GUI_EXPORT CollapsibleWidget : public QWidget
 {
 	Q_OBJECT
 	public:
-		CollapsibleWidget(QWidget *parent = 0);
-		CollapsibleWidget(const QString& caption, QWidget *parent = 0);
+		 CollapsibleWidget(QWidget *parent = 0);
+		 CollapsibleWidget(const QString& caption, QWidget *parent = 0);
 		~CollapsibleWidget();
     
 		QString caption() const;

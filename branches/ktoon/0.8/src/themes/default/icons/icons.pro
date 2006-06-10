@@ -8,13 +8,7 @@ icons.files += *.png
 icons.path = /themes/default/icons 
 KDEV_QTVER = 4 
 CONFIG += release \
-          warn_on \
-          staticlib 
+          warn_on 
 
-TEMPLATE = lib
-
-# little hack
-macx {
 TEMPLATE=subdirs
-}
 

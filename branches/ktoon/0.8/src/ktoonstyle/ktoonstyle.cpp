@@ -116,6 +116,7 @@ void KToonStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *opt
 				if ( ! pushButton  )
 				{
 					QPlastiqueStyle::drawPrimitive(element, option, painter, widget);
+					painter->restore();
 					break;
 				}
 				

@@ -35,7 +35,7 @@ namespace Ideal {
 class ButtonBar;
 class Button;
 
-class Animation
+class Q_GUI_EXPORT Animation
 {
 	public:
 		Animation(QObject *parent) : count(0), MAXCOUNT(20), INTERVAL(30), isEnter(false)
@@ -77,7 +77,7 @@ class Animation
 (placed onto different places in ideal mode).
  * @TODO: remember mouse sensibility
 */
-class Button : public QPushButton {
+class Q_GUI_EXPORT Button : public QPushButton {
     Q_OBJECT
 public:
     Button(ButtonBar *parent, const QString text, const QIcon &icon = QIcon(),

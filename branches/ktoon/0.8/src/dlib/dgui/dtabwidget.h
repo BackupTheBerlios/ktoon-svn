@@ -26,11 +26,11 @@
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class DTabWidget : public QTabWidget
+class Q_GUI_EXPORT DTabWidget : public QTabWidget
 {
 	Q_OBJECT
 	public:
-		DTabWidget(QWidget *parent = 0);
+		 DTabWidget(QWidget *parent = 0);
 		~DTabWidget();
 		
 	public slots:

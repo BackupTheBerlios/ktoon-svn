@@ -33,7 +33,7 @@ typedef QList<KTKeyFrame *> Frames;
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTLayer : public KTSerializableObject
+class Q_DECL_EXPORT KTLayer : public KTSerializableObject
 {
 	Q_OBJECT
 	public:

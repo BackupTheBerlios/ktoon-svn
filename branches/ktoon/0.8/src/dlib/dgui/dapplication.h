@@ -73,7 +73,7 @@ class Q_GUI_EXPORT DApplication : public QApplication
 		 * @param argv 
 		 * @return 
 		 */
-		DApplication(int & argc, char ** argv);
+		 DApplication(int & argc, char ** argv);
 		
 		
 		/**

@@ -37,7 +37,7 @@
 #include <QBrush>
 #include <QMatrix>
 
-class DBrushAdjuster
+class Q_DECL_EXPORT DBrushAdjuster
 {
 	public:
 		/**

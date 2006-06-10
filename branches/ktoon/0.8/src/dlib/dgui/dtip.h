@@ -43,10 +43,10 @@ struct DTip
  * @author David Cuadrado <krawek@toonka.com>
  */
 
-class DTipDatabase
+class Q_GUI_EXPORT DTipDatabase
 {
 	public:
-		DTipDatabase(const QString &file);
+		 DTipDatabase(const QString &file);
 		~DTipDatabase();
 		DTip tip() const;
 		void nextTip();
@@ -67,12 +67,12 @@ class DTipDatabase
  * @author David Cuadrado <krawek@toonka.com>
  */
 
-class DTipDialog : public QDialog
+class Q_GUI_EXPORT DTipDialog : public QDialog
 {
 	Q_OBJECT;
 	public:
-		DTipDialog(const QString &file, QWidget *parent = 0);
-		DTipDialog(DTipDatabase *database, QWidget *parent = 0);
+		 DTipDialog(const QString &file, QWidget *parent = 0);
+		 DTipDialog(DTipDatabase *database, QWidget *parent = 0);
 		~DTipDialog();
 		
 	private:

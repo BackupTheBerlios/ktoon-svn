@@ -33,12 +33,12 @@ class DVHBox;
  * @author David Cuadrado
 */
 
-class DVHBox : public QFrame
+class Q_GUI_EXPORT DVHBox : public QFrame
 {
 	Q_OBJECT
 	public:
-		DVHBox(QWidget *parent, Qt::Orientation o);
-		DVHBox(QWidget *parent = 0, bool isVertical = true);
+		 DVHBox(QWidget *parent, Qt::Orientation o);
+		 DVHBox(QWidget *parent = 0, bool isVertical = true);
 		~DVHBox();
 		void moveWidgetUp(QWidget *);
 		void moveWidgetDown(QWidget *);

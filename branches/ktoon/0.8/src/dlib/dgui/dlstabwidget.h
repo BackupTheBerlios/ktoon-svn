@@ -30,10 +30,10 @@
 
 class QToolButton;
 
-class DLSTabWidget: public KTWCLASS {
+class Q_GUI_EXPORT DLSTabWidget: public KTWCLASS {
     Q_OBJECT
 public:
-    DLSTabWidget(QWidget *parent=0);
+     DLSTabWidget(QWidget *parent=0);
     
     /**@return The close button at the top right corner. 
     May be 0 if the configuration do not allow close buttons or the tabbar.*/

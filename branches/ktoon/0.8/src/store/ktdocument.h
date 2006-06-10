@@ -33,7 +33,7 @@ typedef QList<KTScene *> Scenes;
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTDocument : public KTSerializableObject
+class Q_DECL_EXPORT KTDocument : public KTSerializableObject
 {
 	Q_OBJECT
 	public:

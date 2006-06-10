@@ -25,8 +25,13 @@ HEADERS += ffmpegplugin.h \
            ffmpegmanager.h 
 SOURCES += ffmpegplugin.cpp \
            ffmpegmanager.cpp 
+
 !include(../../../../ktconfig.pri) {
 error("Please run configure first")
 }
-macx {
+
+win32 {
+QMAKE_LIBDIR = ../../../../src/dlib/dcore/release ../../../../src/dlib/dgui/release ../../../../src/ktoonlib/release
 }
+
+

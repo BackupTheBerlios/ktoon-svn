@@ -27,3 +27,15 @@ CONFIG += release \
 warn_on \
 staticlib
 TEMPLATE = lib
+win32 {
+LIBS += -lQtOpenGL4 \
+-ldcore \
+-ldgui \
+-lktoon \
+-lstore
+QMAKE_LIBDIR = ../../../../src/dlib/dcore/release \
+               ../../../../src/dlib/dgui/release \
+               ../../../../src/ktoonlib/release \
+               ../../../../src/store/release
+
+}

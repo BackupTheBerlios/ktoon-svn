@@ -33,7 +33,7 @@ typedef QList<KTLayer *> Layers;
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTScene : public KTSerializableObject
+class Q_DECL_EXPORT KTScene : public KTSerializableObject
 {
 	Q_OBJECT
 	public:

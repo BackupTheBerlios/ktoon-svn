@@ -32,7 +32,7 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class DGradientAdjuster
+class Q_DECL_EXPORT  DGradientAdjuster
 {
 	protected:
 		

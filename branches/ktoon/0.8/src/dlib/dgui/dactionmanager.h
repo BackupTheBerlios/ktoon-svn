@@ -36,7 +36,7 @@ typedef QHash<QString, DAction *> QActionDict;
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class DActionManager : public QObject
+class Q_GUI_EXPORT DActionManager : public QObject
 {
 	Q_OBJECT
 
@@ -45,7 +45,7 @@ class DActionManager : public QObject
 		 * Construye un manejador de acciones.
 		 * @param parent widget que contine el manejador de acciones
 		 */
-		DActionManager(QWidget *parent = 0L);
+		 DActionManager(QWidget *parent = 0L);
 		/**
 		 * Destructor
 		 */

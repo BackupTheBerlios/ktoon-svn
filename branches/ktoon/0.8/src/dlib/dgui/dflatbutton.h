@@ -26,12 +26,12 @@
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class DFlatButton : public QAbstractButton
+class Q_GUI_EXPORT DFlatButton : public QAbstractButton
 {
 	Q_OBJECT
 	public:
-		DFlatButton(QWidget *parent = 0);
-		DFlatButton(const QString &text, QWidget *parent = 0);
+		 DFlatButton(QWidget *parent = 0);
+		 DFlatButton(const QString &text, QWidget *parent = 0);
 		~DFlatButton();
 		
 	protected:

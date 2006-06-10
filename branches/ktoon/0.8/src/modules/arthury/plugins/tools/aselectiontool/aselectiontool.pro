@@ -32,3 +32,9 @@ CONFIG += release \
 TEMPLATE = lib 
 HEADERS += aselectionplugin.h 
 SOURCES += aselectionplugin.cpp 
+win32 {
+  QMAKE_LIBDIR = ../../../../../../src/dlib/dcore/release \
+  ../../../../../../src/dlib/dgui/release \
+  ../../../../../../src/ktoonlib/release \
+  ../../../../../../src/store/release
+}

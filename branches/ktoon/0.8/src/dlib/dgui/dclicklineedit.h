@@ -30,10 +30,10 @@
   @short LineEdit with customizable "Click here" text
   @author Daniel Molkentin
 */
-class DClickLineEdit : public QLineEdit
+class Q_GUI_EXPORT DClickLineEdit : public QLineEdit
 {
     public:
-        DClickLineEdit( const QString &msg, QWidget *parent = 0 );
+         DClickLineEdit( const QString &msg, QWidget *parent = 0 );
 
         void setClickMessage( const QString &msg );
         QString clickMessage() const { return mClickMessage; }

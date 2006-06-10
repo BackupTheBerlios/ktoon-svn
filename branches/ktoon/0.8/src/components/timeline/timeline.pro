@@ -30,3 +30,13 @@ SOURCES += kttimeline.cpp \
            kttlruler.cpp \
            ktframesequencecontainer.cpp \
            tframestable.cpp 
+win32 {
+   LIBS += -ldcore \
+   -ldgui \
+   -lstore \
+   -lktoon
+   QMAKE_LIBDIR = ../../../src/dlib/dcore/release \
+   ../../../src/dlib/dgui/release \
+   ../../../src/ktoonlib/release \
+   ../../../src/store/release
+}

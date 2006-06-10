@@ -50,6 +50,8 @@ OBJECTS_DIR = .obj
 CONFIG += release \
 warn_on \
 dll
+
+
 TEMPLATE = lib
 
 !include(../dlibconfig.pri) {

@@ -36,11 +36,11 @@ class QTableWidgetItem;
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class DConfigurationDialog : public QDialog
+class Q_GUI_EXPORT DConfigurationDialog : public QDialog
 {
 	Q_OBJECT
 	public:
-		DConfigurationDialog(QWidget *parent = 0);
+		 DConfigurationDialog(QWidget *parent = 0);
 		~DConfigurationDialog();
 		void addSection(QWidget *info, const QString &title);
 		void addSection(const QString &title);

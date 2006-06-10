@@ -3,7 +3,17 @@
 # Subdir relative project main directory: ./src/components/pen
 # Target is a library:  
 
-QT += xml 
+QT += xml
+win32 {
+   LIBS += -ldcore \
+   -ldgui \
+   -lstore \
+   -lktoon
+   QMAKE_LIBDIR = ../../../src/dlib/dcore/release \
+   ../../../src/dlib/dgui/release \
+   ../../../src/ktoonlib/release \
+   ../../../src/store/release
+}
 KDEV_QTVER = 4 
 INCLUDEPATH += ../../../src/store \
                ../../../src/ktoonlib \
@@ -14,7 +24,8 @@ UI_DIR = .ui
 OBJECTS_DIR = .obj 
 CONFIG += release \
           warn_on \
-          staticlib 
+	  staticlib
 TEMPLATE = lib 
 HEADERS += ktpenwidget.h 
 SOURCES += ktpenwidget.cpp 
+

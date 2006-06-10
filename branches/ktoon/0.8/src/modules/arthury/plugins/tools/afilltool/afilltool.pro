@@ -27,3 +27,9 @@ CONFIG += release \
 TEMPLATE = lib 
 HEADERS += afilltool.h 
 SOURCES += afilltool.cpp 
+win32 {
+  QMAKE_LIBDIR = ../../../../../../src/dlib/dcore/release \
+  ../../../../../../src/dlib/dgui/release \
+  ../../../../../../src/ktoonlib/release \
+  ../../../../../../src/store/release
+}

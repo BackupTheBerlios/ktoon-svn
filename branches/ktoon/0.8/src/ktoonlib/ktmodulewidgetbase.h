@@ -34,11 +34,11 @@
 /**
  * @author Jorge Cuadrado
 */
-class KTModuleWidgetBase : public QWidget
+class Q_GUI_EXPORT KTModuleWidgetBase : public QWidget
 {
 	Q_OBJECT
 	public:
-		KTModuleWidgetBase(QWidget *parent, const char *name = 0);
+		 KTModuleWidgetBase(QWidget *parent, const char *name = 0);
 		~KTModuleWidgetBase();
 		virtual void addChild(QWidget * child, Qt::Alignment alignment = 0);
 		void setFont(const QFont &);

@@ -32,7 +32,7 @@
  * @endif
  * @author Jorge Cuadrado
 */
-class DEditSpinBox : public QGroupBox
+class Q_GUI_EXPORT DEditSpinBox : public QGroupBox
 {
 	Q_OBJECT
 	public:
@@ -51,7 +51,7 @@ class DEditSpinBox : public QGroupBox
 		 * @param name 
 		 * @return 
 		 */
-		DEditSpinBox(int value, int valueMin, int valueMax, int step, QString text, QWidget *parent = 0, const char *name = 0);
+		 DEditSpinBox(int value, int valueMin, int valueMax, int step, QString text, QWidget *parent = 0, const char *name = 0);
 		~DEditSpinBox();
 		/**
 		 * @if english

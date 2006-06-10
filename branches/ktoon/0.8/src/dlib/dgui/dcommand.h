@@ -33,7 +33,7 @@ class DActionManager;
 class QMenu;
 
 
-class DCommand
+class Q_GUI_EXPORT DCommand
 {
 	protected:
 		DCommand() {}
@@ -46,11 +46,11 @@ class DCommand
 
 };
 
-class DCommandHistory : public QObject 
+class Q_GUI_EXPORT DCommandHistory : public QObject 
 {
 	Q_OBJECT
 	public:
-		DCommandHistory(DActionManager *manager);
+		 DCommandHistory(DActionManager *manager);
 
 		virtual ~DCommandHistory();
 

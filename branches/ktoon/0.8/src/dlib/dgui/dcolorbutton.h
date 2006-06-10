@@ -30,13 +30,13 @@
 
 class QColor;
 
-class DColorButton : public QAbstractButton
+class Q_GUI_EXPORT DColorButton : public QAbstractButton
 {
 	Q_OBJECT;
 	Q_PROPERTY( QColor color READ color WRITE setColor );
 
 	public:
-		DColorButton( QWidget* parent = 0);
+		 DColorButton( QWidget* parent = 0);
 		~DColorButton();
 
 		void setColor( const QColor& );

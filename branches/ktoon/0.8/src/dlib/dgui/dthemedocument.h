@@ -58,11 +58,11 @@ typedef QMap<QString, QString> ThemeKey;
  * @endverbatim
 */
 
-class DThemeDocument : public QDomDocument
+class Q_GUI_EXPORT DThemeDocument : public QDomDocument
 {
 	public:
-		DThemeDocument();
-		DThemeDocument(const QString &name, const QString &version);
+		 DThemeDocument();
+		 DThemeDocument(const QString &name, const QString &version);
 		~DThemeDocument();
 		void addGeneralSection(ThemeKey tk);
 		void addEffectsSection(ThemeKey tk);

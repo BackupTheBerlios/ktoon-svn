@@ -7,9 +7,5 @@ INSTALLS += images
 images.files += *.png 
 images.path = /themes/default/images 
 CONFIG += release \
-warn_on \
-staticlib
-TEMPLATE = lib
-macx {
+warn_on 
 TEMPLATE = subdirs
-}

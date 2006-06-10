@@ -32,7 +32,7 @@
  * @endif
  * @author David Cuadrado <krawek@gmail.com>
 */
-class SpellInterface
+class Q_DECL_EXPORT SpellInterface
 {
 	protected:
 		SpellInterface() {};

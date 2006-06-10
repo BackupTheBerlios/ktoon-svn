@@ -27,11 +27,11 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DDateTable : public QTableWidget
+class Q_GUI_EXPORT DDateTable : public QTableWidget
 {
 	Q_OBJECT;
 	public:
-		DDateTable(QWidget *parent = 0);
+		 DDateTable(QWidget *parent = 0);
 		~DDateTable();
 		
 		void setDate(const QDate &date);

@@ -42,7 +42,7 @@ class Q_GUI_EXPORT DWidgetListView : public QTableWidget
 		 * @param parent 
 		 * @return 
 		 */
-		DWidgetListView( QWidget * parent = 0 );
+		 DWidgetListView( QWidget * parent = 0 );
 		
 		
 		/**

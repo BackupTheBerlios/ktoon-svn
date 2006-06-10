@@ -18,3 +18,15 @@ CONFIG += release \
 TEMPLATE = lib 
 HEADERS += aanimationarea.h 
 SOURCES += aanimationarea.cpp 
+win32 {
+LIBS += -lQtOpenGL4 \
+-ldgui \
+-lktoon \
+-lstore \
+-ldcore
+QMAKE_LIBDIR = ../../../../src/dlib/dcore/release \
+               ../../../../src/dlib/dgui/release \
+               ../../../../src/ktoonlib/release \
+               ../../../../src/store/release
+
+}

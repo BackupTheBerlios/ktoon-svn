@@ -33,4 +33,10 @@ TEMPLATE = lib
 HEADERS += agenericbrush.h \
            exactnessconfigurator.h 
 SOURCES += agenericbrush.cpp \
-           exactnessconfigurator.cpp 
+           exactnessconfigurator.cpp
+win32 {
+  QMAKE_LIBDIR = ../../../../../../src/dlib/dcore/release \
+  ../../../../../../src/dlib/dgui/release \
+  ../../../../../../src/ktoonlib/release \
+  ../../../../../../src/store/release
+}

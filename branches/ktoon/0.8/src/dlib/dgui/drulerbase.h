@@ -38,7 +38,7 @@ class DRulerBase;
  * @author Jorge Cuadrado
 */
 
-class DRulerBase : public QFrame
+class Q_GUI_EXPORT DRulerBase : public QFrame
 {
 	Q_OBJECT
 	
@@ -58,7 +58,7 @@ class DRulerBase : public QFrame
 // 			SC_C           = 5
 // 		};
 		
-		DRulerBase(Qt::Orientation orientation=Qt::Horizontal, QWidget *parent = 0, const char *name = 0);
+		 DRulerBase(Qt::Orientation orientation=Qt::Horizontal, QWidget *parent = 0, const char *name = 0);
 		virtual ~DRulerBase();
 		
 // 		const double unitGetRatioFromIndex(const int index);

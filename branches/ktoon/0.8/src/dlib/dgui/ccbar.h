@@ -43,13 +43,13 @@ class QPainterPath;
  * @short The CCBar class provides a circular button bar
  * @author David Cuadrado <krawek@gmail.com>
 */
-class CCBar : public QFrame
+class Q_GUI_EXPORT CCBar : public QFrame
 {
 	public:
 		/**
 		 * Constructs a CCBar
 		 */
-		CCBar(int radio = 40, QWidget *parent= 0);
+		 CCBar(int radio = 40, QWidget *parent= 0);
 		/**
 		 * Destructor
 		 */

@@ -64,7 +64,9 @@
 #include "ktprojectmanager.h"
 #include "ktsplash.h"
 
+#ifdef Q_OS_UNIX
 #include "config.h"
+#endif
 
 /**
  * @author David Cuadrado <krawek@toonka.com>

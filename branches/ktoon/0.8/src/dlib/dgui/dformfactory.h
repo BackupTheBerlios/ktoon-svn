@@ -29,10 +29,10 @@ class QGridLayout;
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class DFormFactory
+class Q_GUI_EXPORT DFormFactory
 {
 	public:
-		DFormFactory();
+		 DFormFactory();
 		~DFormFactory();
 		
 	public:

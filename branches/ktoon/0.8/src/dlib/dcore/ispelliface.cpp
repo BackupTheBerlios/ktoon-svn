@@ -23,7 +23,7 @@
 ISpellIface::ISpellIface() : SpellInterface()
 {
 #ifdef HAVE_ISPELL
-#warning NOT IMPLEMENTED YET
+//#warning NOT IMPLEMENTED YET
 #endif
 }
 

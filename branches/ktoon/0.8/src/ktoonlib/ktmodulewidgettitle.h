@@ -31,7 +31,7 @@
  * @endif
  * @author David Cuadrado
 */
-class KTModuleWidgetTitle : public QFrame
+class Q_GUI_EXPORT KTModuleWidgetTitle : public QFrame
 {
 	Q_OBJECT
 	public:
@@ -46,7 +46,7 @@ class KTModuleWidgetTitle : public QFrame
 		 * @param parent 
 		 * @return 
 		 */
-		KTModuleWidgetTitle(const QString &title, QWidget *parent = 0);
+		 KTModuleWidgetTitle(const QString &title, QWidget *parent = 0);
 		/**
 		 * Destructor
 		 * @return 

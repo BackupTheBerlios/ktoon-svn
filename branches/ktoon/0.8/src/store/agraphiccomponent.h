@@ -44,7 +44,7 @@
 typedef QList<AGraphic *> Graphics;
 
 class AGraphicComponent;
-class AGraphicComponent : public KTSerializableObject
+class Q_DECL_EXPORT AGraphicComponent : public KTSerializableObject
 {
 	Q_OBJECT
 	public:

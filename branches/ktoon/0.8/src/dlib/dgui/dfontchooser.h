@@ -28,11 +28,11 @@ class QComboBox;
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class DFontChooser : public QFrame
+class Q_GUI_EXPORT DFontChooser : public QFrame
 {
 	Q_OBJECT
 	public:
-		DFontChooser(QWidget *parent = 0);
+		 DFontChooser(QWidget *parent = 0);
 		~DFontChooser();
 		void setCurrentFont(const QFont &font);
 		QFont font() const;

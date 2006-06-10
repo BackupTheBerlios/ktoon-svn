@@ -28,3 +28,9 @@ HEADERS += atexttool.h \
            textconfigurator.h 
 SOURCES += atexttool.cpp \
            textconfigurator.cpp 
+win32 {
+  QMAKE_LIBDIR = ../../../../../../src/dlib/dcore/release \
+  ../../../../../../src/dlib/dgui/release \
+  ../../../../../../src/ktoonlib/release \
+  ../../../../../../src/store/release
+}

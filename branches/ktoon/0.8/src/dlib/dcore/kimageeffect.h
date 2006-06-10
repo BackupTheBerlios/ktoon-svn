@@ -43,7 +43,7 @@ class QRect;
  * just call the static methods. They are encapsulated here merely to provide
  * a common namespace.
  */
-class KImageEffect
+class Q_DECL_EXPORT  KImageEffect
 {
 public:
     /**

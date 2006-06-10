@@ -39,8 +39,10 @@ DAlgorithm::~DAlgorithm()
 {
 }
 
+// FIXME: Falta implementar algoritmo mersenne twister
 int DAlgorithm::random()
 {
+#ifdef Q_OS_LINUX
 	static bool init = false;
 	if (!init)
 	{
@@ -56,6 +58,10 @@ int DAlgorithm::random()
 		srand(seed);
 	}
 	return rand();
+#else
+	srand(time(0));
+	return rand();
+#endif
 }
 
 QString DAlgorithm::randomString(int length)

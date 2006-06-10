@@ -21,4 +21,14 @@ HEADERS += ktthemeselector.h \
            ktpreferences.h 
 SOURCES += ktthemeselector.cpp \
            ktabout.cpp \
-           ktpreferences.cpp 
+           ktpreferences.cpp
+win32 {
+   LIBS = -ldcore \
+        -ldgui \
+        -lktoon \
+        -lstore 
+  QMAKE_LIBDIR = ../../src/dlib/dcore/release \
+               ../../src/dlib/dgui/release \
+               ../../src/ktoonlib/release \
+               ../../src/store/release 
+}

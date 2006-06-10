@@ -21,7 +21,9 @@
 #ifndef MINGPLUGIN_H
 #define MINGPLUGIN_H
 
+#ifdef Q_OS_LINUX
 #include <config.h>
+#endif
 #include <QObject>
 #include <QDir>
 

@@ -33,11 +33,11 @@ class QLabel;
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class DDatePicker : public QFrame
+class Q_GUI_EXPORT DDatePicker : public QFrame
 {
 	Q_OBJECT;
 	public:
-		DDatePicker(QWidget *parent = 0);
+		 DDatePicker(QWidget *parent = 0);
 		~DDatePicker();
 		void setDate(const QDate &date);
 		
@@ -71,11 +71,11 @@ class DDatePicker : public QFrame
 		 EditableButton *m_year;
 };
 
-class DDatePicker::EditableButton : public QToolButton
+class Q_GUI_EXPORT DDatePicker::EditableButton : public QToolButton
 {
 	Q_OBJECT
 	public:
-		EditableButton();
+		 EditableButton();
 		~EditableButton();
 		
 	public slots:
