@@ -23,8 +23,8 @@ open=false
 
 [item:anteproyecto.tex]
 archive=true
-column=0
+column=27
 encoding=ISO 8859-1
 highlight=LaTeX
-line=113
-open=false
+line=57
+open=true

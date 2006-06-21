@@ -1,9 +1,26 @@
+\section{Alcances del proyecto}
+{
+	El proyecto aquí planteado, deberá abordar los temas referentes a la etapa de producción de animaciones, mas precisamente los aspectos concernientes con el trazado y dibujo.
+	Para enfrentarnos a los problemas generados en esta etapa mediante la propuesta que estamos presentando, es necesario implementar un servidor de transacciones que gestione y sincronice la tarea de los diferentes actores involucrados en el proceso. Los datos de entrada de este servidor serán enviados por cada uno de los animadores, que trabajan en nodos distintos.
+	\ds
+	Asimismo, es necesario implementar una aplicación cliente, que será la interfaz sobre la cual el animador trabajará, esta aplicación deberá contar con las suficientes características para que el animador pueda plasmar su arte.
+	\ds
+	El servidor deberá proveer un mecanismo de persistencia donde se almacene en un solo lugar toda la información, objetos, cuadros, escenas, etcétera y los clientes podrán recuperar esa información solicitándola al servidor de manera transparente.
+	\ds
+	Para que el sistema funcione bien, es necesario proveer un sistema seguro de concurrencia que permita bloquear las áreas u objetos de trabajo para que otras animadores no destruyan o modifiquen la labor que se esta realizando. De esta misma manera, es necesario restringir el acceso a los documentos para evitar que cualquier persona pueda modificar, dañar o hurtar los mismos.
+	\ds
+	Como el sistema deberá permitir el trabajo desde diferentes lugares, es decir, no es necesario que los animadores se concentren en un mismo lugar a trabajar, el sistema deberá proveer un mecanismo de comunicación para que puedan dialogar sobre los aspectos referentes al proyecto en curso, este mecanismo se implementara por medio de texto y no de voz.
+	\ds
+	Para concluir, el sistema deberá permitir el trabajo de diversos actores de la producción de animaciones simultaneamente en diversos sitios de trabajo, evitando la mayoría de problemas de concurrencia que suelen ocurrir en estos casos.
+}
+
+\newpage
 \section {Objetivos}
 {
 	\subsection{Objetivo general}
 	{
 		\begin{itemize}
-		\item Desarrollar una herramienta para producir animaciones de forma colaborativa, a través de la extensión de \hyperlink{ktoon}{KToon} y uso de la biblioteca \hyperlink{qt}{Qt},  para contribuir a la mejora y ahorro en los tiempos de producción de animaciones.
+		\item Desarrollar una herramienta para producir animaciones de forma colaboraría, a través de la extensión de \hyperlink{ktoon}{KToon} y uso de la biblioteca \hyperlink{qt}{Qt},  para contribuir a la mejora y ahorro en los tiempos de producción de animaciones.
 		\end{itemize}
 	}
 	
@@ -13,7 +30,7 @@
 		\begin{itemize}
 		\item Desarrollar un servidor de transacciones, apoyado en un protocolo de comunicaciones, para sincronizar clientes del servidor y gestionar la persistencia del proyecto.
 		\item Definir el protocolo de comunicación con el servidor, mediante el análisis de la arquitectura de la herramienta \hyperlink{ktoon}{KToon}, para establecer un estándar a seguir.
-		\item Desarrollar un editor genérico extendido de componentes gráficos que permita al animador visualizar la creación colaborativa de la animación.
+		\item Desarrollar un editor genérico extendido de componentes gráficos que permita al animador visualizar la creación colaboraría de la animación.
 		\item Desarrollar un mecanismo de comunicación o charla entre animadores, basado en el protocolo de comunicaciones, para permitir a los miembros del equipo la fácil comunicación.
 		\item Analizar las características de los componentes gráficos de la aplicación, sobre la actual arquitectura para abstraer los elementos mas importantes que serán enviados a todos los clientes del servidor.
 		\item Desarrollar un sistema de persistencia remota administrada por el servidor, basada en la jerarquía del proyecto para evitar la redundancia de información entre los clientes del servidor.
