@@ -28,3 +28,10 @@ win32 {
   ../../../../src/store/release
 }
 
+macx {
+  LIBS += -ldcore -ldgui -lktoon -lstore
+  QMAKE_LIBDIR += ../../../../src/store \
+               ../../../../src/ktoonlib \
+               ../../../../src/dlib/dgui \
+               ../../../../src/dlib/dcore 
+}

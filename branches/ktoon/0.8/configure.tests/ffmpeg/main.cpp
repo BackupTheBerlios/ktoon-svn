@@ -5,10 +5,10 @@
 
 int main()
 {
-#if FFMPEG_VERSION_INT != 0x000409
+#if FFMPEG_VERSION_INT < 0x000409
 	#error ffmpeg version != 0.4.9
 #endif
-
+	// TODO: mejorar este test 
 	return 0;
 }
 

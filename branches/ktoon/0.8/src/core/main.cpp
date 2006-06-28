@@ -18,10 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#define VERSION_STR "0.8"
 
-#if Q_OS_LINUX
+// TODO: port to windows
+#if Q_OS_UNIX
 #include <config.h>
+#else
+#define VERSION_STR "0.8"
 #endif
 
 #include <qfile.h>
@@ -43,7 +45,8 @@
 
 #include "ktmainwindow.h"
 
-#ifdef Q_OS_LINUX
+// TODO: Port to windows
+#ifdef Q_OS_UNIX
 #include "crashhandler.h"
 #endif
 
