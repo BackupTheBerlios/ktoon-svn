@@ -1,7 +1,7 @@
 [General]
 img_extIsRegExp=false
 img_extensions=.eps .pdf .dvi .ps .fig .gif .jpg .jpeg .png
-lastDocument=
+lastDocument=file:///home/krawek/Materias/tesis/anteproyecto/anteproyecto.tex
 masterDocument=
 name=anteproyecto
 pkg_extIsRegExp=false
@@ -23,7 +23,7 @@ open=false
 
 [item:anteproyecto.tex]
 archive=true
-column=27
+column=1
 encoding=ISO 8859-1
 highlight=LaTeX
 line=57
