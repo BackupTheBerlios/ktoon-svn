@@ -64,6 +64,8 @@ function usage()
 }
 
 echo "/* Generated automatically by configure script */" > $CONFIG_H 
+echo "#ifndef CONFIG_H" >> $CONFIG_H
+echo "#define CONFIG_H" >> $CONFIG_H
 
 TEMP=`getopt -o kh:: --long help,enable-ktoonstyle,enable-kinas:: -n "$0" -- "$@"`
 
@@ -130,6 +132,8 @@ echo "INCLUDEPATH += $INCPATH" >> $KT_CONFIG
 
 defineMacro VERSION ${APPVER}
 defineMacro VERSION_STR \"${APPVER}\"
+
+echo "#endif" >> $CONFIG_H
 
 echo
 echo "**************************************"
