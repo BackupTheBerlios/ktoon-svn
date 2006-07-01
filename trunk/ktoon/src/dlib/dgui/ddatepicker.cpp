@@ -66,7 +66,7 @@ void DDatePicker::EditableButton::edit()
 
 DDatePicker::DDatePicker(QWidget *parent) : QFrame(parent)
 {
-	Q_INIT_RESOURCE(images);
+	Q_INIT_RESOURCE(dgui_images);
 	
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 	mainLayout->setSpacing(0);
@@ -76,14 +76,14 @@ DDatePicker::DDatePicker(QWidget *parent) : QFrame(parent)
 	topLayout->addStretch();
 	
 	
-	// ":res/images/ 1day.png  1leftarrow.png  1rightarrow.png  2leftarrow.png  2rightarrow.png
+	// ":general/images/ 1day.png  1leftarrow.png  1rightarrow.png  2leftarrow.png  2rightarrow.png
 	// Setup buttons
 	
 	QToolButton *prevYear = new QToolButton();
 	prevYear->setAutoRaise(true);
 	prevYear->setToolButtonStyle ( Qt::ToolButtonIconOnly );
 	prevYear->setIconSize( QSize(32,32));
-	prevYear->setIcon( QIcon(":res/images/2leftarrow.png"));
+	prevYear->setIcon( QIcon(":general/images/2leftarrow.png"));
 	
 	topLayout->addWidget(prevYear);
 	
@@ -91,7 +91,7 @@ DDatePicker::DDatePicker(QWidget *parent) : QFrame(parent)
 	prevMounth->setAutoRaise(true);
 	prevMounth->setToolButtonStyle ( Qt::ToolButtonIconOnly );
 	prevMounth->setIconSize( QSize(32,32));
-	prevMounth->setIcon( QIcon(":res/images/1leftarrow.png"));
+	prevMounth->setIcon( QIcon(":general/images/1leftarrow.png"));
 	
 	topLayout->addWidget(prevMounth);
 	
@@ -116,7 +116,7 @@ DDatePicker::DDatePicker(QWidget *parent) : QFrame(parent)
 	nextMounth->setAutoRaise(true);
 	nextMounth->setToolButtonStyle ( Qt::ToolButtonIconOnly );
 	nextMounth->setIconSize( QSize(32,32));
-	nextMounth->setIcon( QPixmap(":res/images/1rightarrow.png"));
+	nextMounth->setIcon( QPixmap(":general/images/1rightarrow.png"));
 	
 	topLayout->addWidget(nextMounth);
 	
@@ -126,7 +126,7 @@ DDatePicker::DDatePicker(QWidget *parent) : QFrame(parent)
 	nextYear->setAutoRaise(true);
 	nextYear->setToolButtonStyle ( Qt::ToolButtonIconOnly );
 	nextYear->setIconSize( QSize(32,32));
-	nextYear->setIcon( QPixmap(":res/images/2rightarrow.png"));
+	nextYear->setIcon( QPixmap(":general/images/2rightarrow.png"));
 	
 	topLayout->addWidget(nextYear);
 	
@@ -268,5 +268,10 @@ void DDatePicker::mounthFromAction(QAction *act)
 		
 		setDate(date);
 	}
+}
+
+QDate DDatePicker::date() const
+{
+	return m_dateTable->date();
 }
 

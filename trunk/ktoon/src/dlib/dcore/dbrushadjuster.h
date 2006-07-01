@@ -32,7 +32,7 @@
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
-#include "dgradientadjuster.h"
+#include "dcore/dgradientadjuster.h"
 
 #include <QBrush>
 #include <QMatrix>

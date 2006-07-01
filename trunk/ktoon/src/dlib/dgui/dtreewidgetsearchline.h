@@ -2,7 +2,6 @@
    Copyright (c) 2003 Scott Wheeler <wheeler@kde.org>
    Copyright (c) 2005 Rafal Rzepecki <divide@users.sourceforge.net>
    Copyright (c) 2006 Hamish Rodda <rodda@kde.org>
-   Copyright (c) 2006 David Cuadrado <krawek@gmail.com>
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public
@@ -19,12 +18,12 @@
    Boston, MA 02110-1301, USA.
 */
 
-#ifndef DLISTVIEWSEARCHLINE_H
-#define DLISTVIEWSEARCHLINE_H
+#ifndef DTREEWIDGETSEARCHLINE_H
+#define DTREEWIDGETSEARCHLINE_H
 
 #include <QModelIndex>
 
-#include "dclicklineedit.h"
+#include <dgui/dclicklineedit.h>
 
 class QTreeWidget;
 class QTreeWidgetItem;
@@ -38,7 +37,7 @@ class QToolButton;
  * appropriate QTreeWidgets should be needed.
  */
 
-class Q_DECL_EXPORT DTreeWidgetSearchLine : public DClickLineEdit
+class Q_GUI_EXPORT DTreeWidgetSearchLine : public DClickLineEdit
 {
     Q_OBJECT
 
@@ -54,7 +53,7 @@ public:
      * If \a treeWidget is null then the widget will be disabled until listviews
      * are set with setTreeWidget(), setTreeWidgets() or added with addTreeWidget().
      */
-	DTreeWidgetSearchLine(const QString &text = tr("Filter here..."), QWidget *parent = 0, QTreeWidget *treeWidget = 0);
+    DTreeWidgetSearchLine(QWidget *parent = 0, QTreeWidget *treeWidget = 0);
 
     /**
      * Constructs a DTreeWidgetSearchLine with \a treeWidgets being the list of
@@ -63,7 +62,7 @@ public:
      * If \a treeWidgets is empty then the widget will be disabled until listviews
      * are set with setTreeWidget(), setTreeWidgets() or added with addTreeWidget().
      */
-	DTreeWidgetSearchLine(const QString &text, QWidget *parent,
+    DTreeWidgetSearchLine(QWidget *parent,
                         const QList<QTreeWidget *> &treeWidgets);
 
 
@@ -294,7 +293,7 @@ private:
  * Creates a widget featuring a DTreeWidgetSearchLine, a label with the text
  * "Search" and a button to clear the search.
  */
-class Q_DECL_EXPORT DTreeWidgetSearchLineWidget : public QWidget
+class Q_GUI_EXPORT DTreeWidgetSearchLineWidget : public QWidget
 {
     Q_OBJECT
 
@@ -314,6 +313,11 @@ public:
      * Returns a pointer to the search line.
      */
     DTreeWidgetSearchLine *searchLine() const;
+    
+    /**
+     * Sets the erase icon
+     */
+    void setEraseIcon(const QIcon &icon);
 
 protected slots:
     /**
@@ -340,3 +344,5 @@ private:
 };
 
 #endif
+
+

@@ -20,10 +20,6 @@
 
 #include "dtreewidgetsearchline.h"
 
-#include <qtoolbar.h>
-#include <ddebug.h>
-#include "dclicklineedit.h"
-
 #include <QApplication>
 #include <QTimer>
 #include <QMenu>
@@ -33,10 +29,6 @@
 #include <QToolButton>
 #include <QHeaderView>
 #include <QHBoxLayout>
-
-// Only feeling a touch guilty about this
-// Need QTreeWidget::itemFromIndex
-#define protected public
 #include <QTreeWidget>
 
 class DTreeWidgetSearchLine::DTreeWidgetSearchLinePrivate
@@ -63,8 +55,8 @@ public:
 // public methods
 ////////////////////////////////////////////////////////////////////////////////
 
-DTreeWidgetSearchLine::DTreeWidgetSearchLine(const QString &text,QWidget *parent, QTreeWidget *treeWidget) :
-    DClickLineEdit(text,parent)
+DTreeWidgetSearchLine::DTreeWidgetSearchLine(QWidget *parent, QTreeWidget *treeWidget) :
+		DClickLineEdit(tr("Search"), parent)
 {
     d = new DTreeWidgetSearchLinePrivate;
 
@@ -76,8 +68,9 @@ DTreeWidgetSearchLine::DTreeWidgetSearchLine(const QString &text,QWidget *parent
 			setEnabled(false);
 }
 
-DTreeWidgetSearchLine::DTreeWidgetSearchLine(const QString &text,QWidget *parent, const QList<QTreeWidget *> &treeWidgets) :
-		DClickLineEdit(text,parent)
+DTreeWidgetSearchLine::DTreeWidgetSearchLine(QWidget *parent,
+                                       const QList<QTreeWidget *> &treeWidgets) :
+		DClickLineEdit(tr("Search"),parent)
 {
     d = new DTreeWidgetSearchLinePrivate;
 
@@ -263,7 +256,7 @@ bool DTreeWidgetSearchLine::itemMatches(const QTreeWidgetItem *item, const QStri
 
 void DTreeWidgetSearchLine::contextMenuEvent( QContextMenuEvent*e )
 {
-    QMenu *popup = QLineEdit::createStandardContextMenu();
+	QMenu *popup = DClickLineEdit::createStandardContextMenu();
 
     if (d->canChooseColumns) {
         popup->addSeparator();
@@ -433,6 +426,15 @@ void DTreeWidgetSearchLine::activateSearch()
 // private slots
 ////////////////////////////////////////////////////////////////////////////////
 
+// Hack to make a protected method public
+class QTreeWidgetWorkaround : public QTreeWidget
+{
+public:
+    QTreeWidgetItem *itemFromIndex( const QModelIndex &index ) const {
+        return QTreeWidget::itemFromIndex( index );
+    }
+};
+
 void DTreeWidgetSearchLine::rowsInserted(const QModelIndex & parent, int start, int end) const
 {
     QAbstractItemModel* model = qobject_cast<QAbstractItemModel*>(sender());
@@ -447,8 +449,9 @@ void DTreeWidgetSearchLine::rowsInserted(const QModelIndex & parent, int start, 
 
     if (!widget) return;
 
+    QTreeWidgetWorkaround* widgetWorkaround = static_cast<QTreeWidgetWorkaround *>( widget );
     for (int i = start; i <= end; ++i) {
-        if (QTreeWidgetItem* item = widget->itemFromIndex(model->index(i, 0, parent)))
+        if (QTreeWidgetItem* item = widgetWorkaround->itemFromIndex(model->index(i, 0, parent)))
             item->treeWidget()->setItemHidden(item, !itemMatches(item, text()));
     }
 }
@@ -477,8 +480,6 @@ void DTreeWidgetSearchLine::checkItemParentsNotVisible(QTreeWidget *treeWidget)
         item->treeWidget()->setItemHidden(item, !itemMatches(item, d->search));
     }
 }
-
-#include <ddebug.h>
 
 /** Check whether \p item, its siblings and their descendents should be shown. Show or hide the items as necessary.
  *
@@ -534,33 +535,27 @@ DTreeWidgetSearchLineWidget::~DTreeWidgetSearchLineWidget()
 
 DTreeWidgetSearchLine *DTreeWidgetSearchLineWidget::createSearchLine(QTreeWidget *treeWidget) const
 {
-	return new DTreeWidgetSearchLine(const_cast<DTreeWidgetSearchLineWidget*>(this)->searchLine()->text(), const_cast<DTreeWidgetSearchLineWidget*>(this), treeWidget);
+    return new DTreeWidgetSearchLine(const_cast<DTreeWidgetSearchLineWidget*>(this), treeWidget);
 }
 
 void DTreeWidgetSearchLineWidget::createWidgets()
 {
-    if(!d->clearButton) {
-        d->clearButton = new QToolButton(this);
-//         QIcon icon = SmallIconSet(QApplication::isRightToLeft() ? "clear_left" : "locationbar_erase");
-//         d->clearButton->setIcon(icon);
+    if(!d->clearButton) 
+    {
+	   d->clearButton = new QToolButton(this);
+	   d->clearButton->setText(tr("Clear"));
     }
 
     d->clearButton->show();
 
-    QLabel *label = new QLabel(tr("S&earch:"), this);
-    label->setObjectName(QLatin1String("kde toolbar widget"));
-
     searchLine()->show();
-
-    label->setBuddy(d->searchLine);
-    label->show();
 
     connect(d->clearButton, SIGNAL(clicked()), d->searchLine, SLOT(clear()));
 
     QHBoxLayout* layout = new QHBoxLayout(this);
-    layout->setSpacing(5);
+    layout->setSpacing(2);
+    layout->setMargin(0);
     layout->addWidget(d->clearButton);
-    layout->addWidget(label);
     layout->addWidget(d->searchLine);
 }
 
@@ -570,3 +565,16 @@ DTreeWidgetSearchLine *DTreeWidgetSearchLineWidget::searchLine() const
         d->searchLine = createSearchLine(d->treeWidget);
     return d->searchLine;
 }
+
+void DTreeWidgetSearchLineWidget::setEraseIcon(const QIcon &icon)
+{
+	if ( d->clearButton )
+	{
+		d->clearButton->setText("");
+		d->clearButton->setIcon(icon);
+	}
+}
+
+
+
+

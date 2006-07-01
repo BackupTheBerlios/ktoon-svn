@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   krawek@gmail.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,7 +27,7 @@
 #include <QHeaderView>
 
 
-#include "kseparator.h"
+#include "dseparator.h"
 
 #include "ddebug.h"
 
@@ -62,7 +62,7 @@ DConfigurationDialog::DConfigurationDialog(QWidget *parent) : QDialog(parent)
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
 	buttonLayout->addWidget(cancelButton);
 	
-	mainLayout->addWidget(new KSeparator);
+	mainLayout->addWidget(new DSeparator);
 	mainLayout->addLayout(buttonLayout);
 
 	setLayout(mainLayout);

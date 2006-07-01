@@ -26,13 +26,13 @@
 #include <QMainWindow>
 #define MWCLASS QMainWindow
 
-#include "ddockwindow.h"
+#include "dgui/didockwidget.h"
 #include <QList>
 #include <QEvent>
 
-class DLSTabWidget;
+class DiTabWidget;
 namespace Ideal {
-	class DockSplitter;
+	class DiSplitter;
 }
 
 /**Main window which provides simplified IDEA mode.*/
@@ -44,20 +44,20 @@ class DMainWindow: public MWCLASS
 		virtual ~DMainWindow();
     
 		/**@return The tool window in given @p position.*/
-		DDockWindow *toolWindow(DDockWindow::Position position) const;
+		DiDockWidget *toolWindow(DiDockWidget::Position position) const;
 		
 		/**Adds a tabbed widget into the active (focused) tab widget. 
 		If @p widget is null then only tab is created.*/
 		virtual void addWidget(QWidget *widget, const QString &title, bool persistant = false);
-		virtual void addWidget(DLSTabWidget *tab, QWidget *widget, const QString &title, bool persistant);
+		virtual void addWidget(DiTabWidget *tab, QWidget *widget, const QString &title, bool persistant);
 		/**Removes widget. Does not delete it.*/
 		virtual void removeWidget(QWidget *widget);
 		QWidget *findCorrectSeparator();
-		void addDockWidget(Qt::DockWidgetArea area, DDockWindow * dockwidget );
+		void addDockWidget(Qt::DockWidgetArea area, DiDockWidget * dockwidget );
     
 	public slots:
-		DLSTabWidget *splitHorizontal();
-		DLSTabWidget *splitVertical();
+		DiTabWidget *splitHorizontal();
+		DiTabWidget *splitVertical();
     
 	protected slots:
 		/**This does nothing. Reimplement in subclass to close the tab 
@@ -77,24 +77,24 @@ class DMainWindow: public MWCLASS
 		virtual void loadSettings();
         
 		virtual void createToolWindows();
-		virtual DLSTabWidget *createTab();
+		virtual DiTabWidget *createTab();
     
 	protected:
-		DDockWindow *m_pLeftDock;
-		DDockWindow *m_pRightDock;
-		DDockWindow *m_pBottomDock;
+		DiDockWidget *m_pLeftDock;
+		DiDockWidget *m_pRightDock;
+		DiDockWidget *m_pBottomDock;
 
-		Ideal::DockSplitter *m_pCentral;
-		DLSTabWidget *m_pActiveTabWidget;
+		Ideal::DiSplitter *m_pCentral;
+		DiTabWidget *m_pActiveTabWidget;
     
-		QList<DLSTabWidget*> m_pTabs;
+		QList<DiTabWidget*> m_pTabs;
     
 		bool m_pOpenTabAfterCurrent;
 		bool m_pShowIconsOnTabs;
 		bool m_pFirstRemoved;
     
 		QList<QWidget*> m_pWidgets;
-		QMap<QWidget*, DLSTabWidget*> m_pWidgetTabs;
+		QMap<QWidget*, DiTabWidget*> m_pWidgetTabs;
 		QWidget *m_pCurrentWidget;
 		QList<QWidget *> m_separators;
 

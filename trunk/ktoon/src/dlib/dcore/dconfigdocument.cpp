@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   krawek@gmail.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -24,7 +24,7 @@
 #include <QTextStream>
 #include <qobject.h>
 
-#include "ddebug.h"
+#include "dcore/ddebug.h"
 
 DConfigDocument::DConfigDocument(const QString &path) : QDomDocument(), m_path(path)
 {

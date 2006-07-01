@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 
-#include "dbrushadjuster.h"
-#include "ddebug.h"
+#include "dcore/dbrushadjuster.h"
+#include "dcore/ddebug.h"
 
 #include <QPixmap>
 DBrushAdjuster::DBrushAdjuster()
@@ -57,7 +57,7 @@ QBrush DBrushAdjuster::adjustBrush(const QBrush &brush, const QRect &rect )
 			sy = static_cast<float>(rect.height()-offset) / static_cast<float>(br.height());
 		}
 	
-// 		float factor = qMin(sx, sy);
+		float factor = qMin(sx, sy);
 		matrix.scale(sx, sy);
 		p = p.transformed(matrix ,Qt::SmoothTransformation );
 	

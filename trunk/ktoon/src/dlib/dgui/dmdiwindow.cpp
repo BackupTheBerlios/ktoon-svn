@@ -27,8 +27,6 @@
 DMdiWindow::DMdiWindow(QWorkspace* parent, const char* name): QMainWindow(parent), m_workspace(parent)
 {
 	setObjectName(name);
-	
-	setAttribute(Qt::WA_DeleteOnClose, true);
 }
 
 
@@ -45,6 +43,7 @@ bool  DMdiWindow::event( QEvent * e )
 	}
 	else if ( e->type() == QEvent::Show )
 	{
+		adjustSize();
 		emit activate(true);
 	}
 	else if( e->type() == QEvent::Show )

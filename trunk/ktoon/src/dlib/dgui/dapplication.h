@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   krawek@gmail.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -25,8 +25,8 @@
 #include <QMap>
 #include <QColorGroup>
 
-#include "dthememanager.h"
-#include "dconfig.h"
+#include "dgui/dthememanager.h"
+#include "dcore/dconfig.h"
 
 #include <QLineEdit>
 #include <QPushButton>
@@ -34,9 +34,9 @@
 #include <QFileDialog>
 #include <QDialog>
 
-#include "dvhbox.h"
+#include "dgui/dvhbox.h"
 
-#include "dwizard.h"
+#include "dgui/dwizard.h"
 
 class QApplication;
 class QString;
@@ -61,7 +61,7 @@ class Q_GUI_EXPORT DApplication : public QApplication
 {
 	Q_OBJECT
 	public:
-		enum ColorSchema { Default = 0, DarkBlue };
+		enum ColorSchema { DarkBlue };
 		/**
 		 * @if english
 		 * Translate
@@ -191,7 +191,8 @@ class Q_GUI_EXPORT DApplication : public QApplication
 		DThemeManager m_themeManager;
 };
 
-#include "dglobal.h"
+#include <dcore/dglobal.h>
+
 #define dApp static_cast<DApplication *>(qApp)
 
 #endif

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   krawek@gmail.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -195,7 +195,7 @@ bool DThemeManager::startElement( const QString& , const QString& , const QStrin
 			QColor c = getColor(atts);
 			if ( c.isValid() )
 			{
-				m_palette.setColor( QPalette::BrightText, c );
+				m_palette.setColor( QPalette::HighlightedText, c );
 			}
 		}
 		else if ( qname == "Link" )

@@ -15,6 +15,7 @@ Interfaz grafica
 
 General
 - Implementación basada en el patron `comando' 
+- Guardar -> basado en el patron `strategy'
 - Mejorar el sistema de contrucción (configure, build) 
 
 

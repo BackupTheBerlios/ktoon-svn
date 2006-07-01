@@ -4,6 +4,7 @@
 # Target is a subdirs project 
 
 SUBDIRS += dcore \
+	   dsound \
 	   dgui
 KDEV_QTVER = 4 
 CONFIG += release \

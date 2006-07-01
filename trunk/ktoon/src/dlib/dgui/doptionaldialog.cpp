@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   krawek@gmail.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -22,7 +22,7 @@
 
 #include <QVBoxLayout>
 #include <QLabel>
-#include "kseparator.h"
+#include "dseparator.h"
 
 DOptionalDialog::DOptionalDialog(const QString &text,const QString &title,QWidget *parent) : QDialog(parent)
 {
@@ -37,7 +37,7 @@ DOptionalDialog::DOptionalDialog(const QString &text,const QString &title,QWidge
 	
 	m_layout->addStretch(10);
 	
-	m_layout->addWidget(new KSeparator);
+	m_layout->addWidget(new DSeparator);
 	
 	QHBoxLayout *buttonLayout = new QHBoxLayout;
 	buttonLayout->addStretch(1);

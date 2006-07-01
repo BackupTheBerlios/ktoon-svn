@@ -24,7 +24,7 @@
 #include <QFrame>
 #include <QToolButton>
 
-#include "ddatetable.h"
+#include "dgui/ddatetable.h"
 
 class QComboBox;
 class QLabel;
@@ -40,6 +40,7 @@ class DDatePicker : public QFrame
 		DDatePicker(QWidget *parent = 0);
 		~DDatePicker();
 		void setDate(const QDate &date);
+		QDate date() const;
 		
 	private:
 		void fillWeeks(const QDate &date);

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   krawek@gmail.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -26,14 +26,13 @@
 #include <QPixmap>
 #include <QIcon>
 #include <QTimer>
-#include <QToolButton>
 
 /**
  * A image pressable
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@gmail.com>
 */
 
-class DImageButton : public QToolButton
+class DImageButton : public QPushButton
 {
 	Q_OBJECT
 

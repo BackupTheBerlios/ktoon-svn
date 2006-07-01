@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   krawek@gmail.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -26,86 +26,11 @@
 
 #include "dformfactory.h"
 
-DFontChooser::DFontChooser(QWidget *parent) : QFrame(parent)
+DFontChooser::DFontChooser(QWidget *parent) : QFontComboBox(parent)
 {
-	QHBoxLayout *mainLayout = new QHBoxLayout(this);
-	m_families = new QComboBox;
-	QFontDatabase fdb;
-	m_families->addItems ( fdb.families() );
-	
-	connect(m_families, SIGNAL(activated (const QString &)), this, SLOT(loadFontInfo(const QString &)));
-	
-	mainLayout->addLayout(DFormFactory::makeLine(tr("Family"), m_families));
-	
-	m_fontStyle = new QComboBox;
-	connect(m_fontStyle, SIGNAL(activated (int)), this, SLOT(emitFontChanged( int)));
-	mainLayout->addLayout(DFormFactory::makeLine(tr("Style"), m_fontStyle));
-	
-	m_fontSize = new QComboBox;
-	connect(m_fontSize, SIGNAL(activated (int)), this, SLOT(emitFontChanged( int)));
-	mainLayout->addLayout(DFormFactory::makeLine(tr("Size"), m_fontSize));
-	
-	setCurrentFont(font());
 }
 
 
 DFontChooser::~DFontChooser()
 {
 }
-
-void DFontChooser::loadFontInfo(const QString &family)
-{
-	QString currentSize = m_fontSize->currentText();
-	QString currentStyle = m_fontStyle->currentText();
-	
-	QFontDatabase fdb;
-	
-	m_fontStyle->clear();
-	m_fontStyle->addItems(fdb.styles(family));
-	
-	
-	m_fontSize->clear();
-	
-	QList<int> points = fdb.pointSizes(family);
-	
-	foreach(int point, points)
-	{
-		m_fontSize->addItem(QString::number(point));
-	}
-	
-	int sizeIndex = m_fontSize->findText(currentSize);
-	int styleIndex = m_fontStyle->findText(currentStyle);
-	if ( sizeIndex >= 0 )
-	{
-		m_fontSize->setCurrentIndex(sizeIndex);
-	}
-	
-	if(styleIndex >= 0)
-	{
-		m_fontStyle->setCurrentIndex(styleIndex);
-	}
-	
-	emit fontChanged();
-}
-
-void DFontChooser::emitFontChanged(int )
-{
-	emit fontChanged();
-}
-
-void DFontChooser::setCurrentFont(const QFont &font)
-{
-	QFontDatabase fdb;
-	m_families->setCurrentIndex(m_families->findText(font.family()));
-	m_fontStyle->setCurrentIndex(m_fontStyle->findText(fdb.styleString(font.family())));
-	m_fontSize->setCurrentIndex(m_fontSize->findText(QString::number(font.pointSize())));
-}
-
-QFont DFontChooser::font() const
-{
-	QFontDatabase fdb;
-	
-	return fdb.font(m_families->currentText(), m_fontStyle->currentText(), m_fontSize->currentText().toInt());
-}
-
-

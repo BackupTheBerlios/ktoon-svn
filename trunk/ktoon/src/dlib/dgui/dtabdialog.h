@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by David Cuadrado   *
- *   krawek@toonka.com   *
+ *   krawek@gmail.com   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -22,7 +22,7 @@
 #define DTABDIALOG_H
 
 #include <QDialog>
-#include "dtabwidget.h"
+#include "dgui/dtabwidget.h"
 
 #include <QHash>
 
@@ -30,7 +30,7 @@ typedef QHash<int, QPushButton *> Buttons;
 
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@gmail.com>
 */
 class DTabDialog : public QDialog
 {

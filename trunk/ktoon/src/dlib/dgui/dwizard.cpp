@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   krawek@gmail.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -20,10 +20,10 @@
 #include "dwizard.h"
 
 #include "dvhbox.h"
-#include "kseparator.h"
+#include "dseparator.h"
 #include "ddebug.h"
 
-#include "kimageeffect.h"
+#include "dimageeffect.h"
 
 // Qt
 #include <QLabel>
@@ -159,7 +159,7 @@ DWizardPage::DWizardPage(const QString &title, QWidget *parent) : DVHBox(parent)
 {
 	DVHBox *theTitle = new DVHBox(this, Qt::Vertical);
 	new QLabel(title, theTitle);
-	new KSeparator(theTitle);
+	new DSeparator(theTitle);
 	boxLayout()->setAlignment(theTitle, Qt::AlignTop);
 	
 	m_container = new QFrame(this);
@@ -170,7 +170,7 @@ DWizardPage::DWizardPage(const QString &title, QWidget *parent) : DVHBox(parent)
 	m_layout->addWidget(m_image, 0, 0, Qt::AlignLeft);
 	m_image->hide();
 	
-	new KSeparator(this);
+	new DSeparator(this);
 	
 	hide();
 }
@@ -178,7 +178,7 @@ DWizardPage::DWizardPage(const QString &title, QWidget *parent) : DVHBox(parent)
 void DWizardPage::setPixmap(const QPixmap &px)
 {
 	QImage image = px.toImage();
-// 	KImageEffect::hash( image, KImageEffect::SouthLite, 1);
+// 	DImageEffect::hash( image, DImageEffect::SouthLite, 1);
 	m_image->setPixmap(QPixmap::fromImage(image));
 	m_image->show();
 }

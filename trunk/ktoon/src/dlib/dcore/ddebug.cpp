@@ -311,15 +311,8 @@ DDebug& DDebug::operator << (const QGradient *g)
 			*this << static_cast<const QConicalGradient &>(*g);
 		}
 		break;
-		default:
-		{
-			*this << "Undefined gradient";
-		}
-		break;
 		
 	}
-	
-	return *this;
 }
 
 void DDebug::resaltWidget(QWidget *w, const QColor &color)

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   krawek@gmail.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -26,7 +26,6 @@
 #include <QMessageBox>
 #include <QObject>
 #include <QLocale>
-#include <QStyle>
 
 #include <QApplication>
 #include <QMap>
@@ -44,8 +43,7 @@ DApplication::DApplication(int & argc, char ** argv)
 	QApplication::setEffectEnabled ( Qt::UI_FadeTooltip, true);
 	
 	parseArgs(argc, argv);
-	
-	setPalette(style()->standardPalette() );
+
 }
 
 
@@ -71,34 +69,6 @@ void DApplication::applyColors(ColorSchema cs)
 	QPalette pal = QApplication::palette();
 	switch (cs)
 	{
-		case Default:
-		{
-			const QColor bg( 239, 237, 223 );
-			const QColor bgAlt( 183, 182, 171 );
-			
-			pal.setColor( QPalette::Text, Qt::black );
-			pal.setColor( QPalette::Base, 0xdcdace );
-			pal.setColor( QPalette::Foreground, 0x3e3e45);
-			pal.setColor( QPalette::Background, bg );
-		
-			pal.setColor( QPalette::Button, 0xdad8cc );
-			pal.setColor( QPalette::ButtonText,0x3e3e45 );
-		
-			pal.setColor( QPalette::Highlight, 0x8f8368 );
-			pal.setColor( QPalette::HighlightedText, bg );
-			
-			pal.setColor( QPalette::Link, 0x596B8C);
-			pal.setColor(QPalette::LinkVisited, 0x7B94C1);
-			
-			int h,s,v;
-			bgAlt.getHsv( &h, &s, &v );
-			
-			pal.setColor( QPalette::Midlight, QColor(Qt::red).dark(120));
-			pal.setColor( QPalette::Light, Qt::white );
-			pal.setColor( QPalette::Dark, Qt::black );
-			pal.setColor(QPalette::Mid, 0x484542);
-		}
-		break;
 		case DarkBlue:
 		{
 			const QColor bg( 32,32,82 );

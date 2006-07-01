@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   krawek@gmail.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -21,35 +21,18 @@
 #ifndef DFONTCHOOSER_H
 #define DFONTCHOOSER_H
 
-#include <QFrame>
 
-class QComboBox;
+#include<QFontComboBox>
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@gmail.com>
 */
-class DFontChooser : public QFrame
+class DFontChooser : public QFontComboBox
 {
 	Q_OBJECT
 	public:
 		DFontChooser(QWidget *parent = 0);
 		~DFontChooser();
-		void setCurrentFont(const QFont &font);
-		QFont font() const;
-		
-	signals:
-		void fontChanged();
-		
-	private slots:
-		void emitFontChanged(int =0);
-		
-	public slots:
-		void loadFontInfo(const QString &family);
-		
-	private:
-		QComboBox *m_families;
-		QComboBox *m_fontStyle;
-		QComboBox *m_fontSize;
 };
 
 #endif

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   krawek@gmail.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
+
 #include "dimagebutton.h"
 
 #include <QPainter>
@@ -34,7 +34,7 @@
 class DImageButton::Animation
 {
 	public:
-		Animation(int initialSize) : aSize(initialSize), aBeginning(true), m_interval(80)
+		Animation(int initialSize) : aSize(initialSize), m_interval(80), aBeginning(true)
 		{
 			aTimer = new QTimer;
 		}
@@ -57,13 +57,13 @@ class DImageButton::Animation
 		int m_interval;
 };
 
-DImageButton::DImageButton(const QIcon &icon, int size, QWidget *parent, bool animate ) : QToolButton(parent), m_imageSize(size), m_animator(0), m_isAnimated(animate)
+DImageButton::DImageButton(const QIcon &icon, int size, QWidget *parent, bool animate ) : QPushButton(parent), m_imageSize(size), m_animator(0), m_isAnimated(animate)
 {
 	setup();
 	setImage(icon);
 }
 
-DImageButton::DImageButton(const QIcon &icon, int size, QObject *reciever, const char *method, QWidget *parent, bool animate ) : QToolButton(parent), m_imageSize(size), m_animator(0), m_isAnimated(animate)
+DImageButton::DImageButton(const QIcon &icon, int size, QObject *reciever, const char *method, QWidget *parent, bool animate ) : QPushButton(parent), m_imageSize(size), m_animator(0), m_isAnimated(animate)
 {
 	setup();
 	setImage(icon);
@@ -82,8 +82,8 @@ DImageButton::~DImageButton()
 
 void DImageButton::setup()
 {
-// 	setFlat( true );
-// 	setAutoDefault( false );
+	setFlat( true );
+	setAutoDefault( false );
 	setMaximumSize(m_imageSize, m_imageSize);
 	setMinimumSize(m_imageSize, m_imageSize);
 	
@@ -110,7 +110,7 @@ void DImageButton::enterEvent(QEvent *)
 	}
 	else
 	{
-// 		setFlat(false);
+		setFlat(false);
 	}
 }
 
@@ -126,7 +126,7 @@ void DImageButton::leaveEvent(QEvent *)
 	}
 	else
 	{
-// 		setFlat(true);
+		setFlat(true);
 	}
 }
 
@@ -180,7 +180,7 @@ void DImageButton::animate()
 void DImageButton::setImage ( const QIcon & icon)
 {
 	setIconSize( QSize(m_imageSize,m_imageSize) );
-	QToolButton::setIcon(icon);
+	QPushButton::setIcon(icon);
 }
 
 // void DImageButton::paintEvent(QPaintEvent *e)
