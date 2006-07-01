@@ -55,7 +55,7 @@ void KTPluginManager::loadPlugins()
 	m_filters.clear();
 	m_tools.clear();
 	
-	QDir m_pluginDirectory = QDir(HOME+"/plugins/");
+	QDir m_pluginDirectory = QDir(HOME_DIR+"/plugins/");
 
 	foreach (QString fileName, m_pluginDirectory.entryList(QDir::Files))
 	{

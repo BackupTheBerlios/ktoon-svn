@@ -23,7 +23,7 @@
 #include <QPolygon>
 #include <qdrawutil.h>
 
-#include "kimageeffect.h"
+#include "dimageeffect.h"
 #include "ddebug.h"
 
 #include <QMatrix>

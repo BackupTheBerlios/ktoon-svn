@@ -294,7 +294,7 @@ void crashTrapper (int sig)
 			QString gdb;
 			gdb  = "gdb --nw -n --batch -x ";
 			gdb += temp.fileName();
-			gdb += HOME+"/bin/ktoon";
+			gdb += HOME_DIR+"/bin/ktoon";
 			gdb += QString::number( ::getppid() );
 	
 			bt = runCommand( gdb );
@@ -304,7 +304,7 @@ void crashTrapper (int sig)
 		bt.remove( QRegExp("\\(no debugging symbols found\\)") );
 		bt = bt.simplified();
 
-		execInfo = runCommand( "file "+HOME+"/bin/ktoon");
+		execInfo = runCommand( "file "+HOME_DIR+"/bin/ktoon");
 		
 		/////// Widget
 		CrashWidget widget(sig);

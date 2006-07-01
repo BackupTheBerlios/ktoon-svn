@@ -44,7 +44,8 @@ INCLUDEPATH += ../../src/components/pen \
                ../../src/libktoon \
                ../../src/dlib/dgui \
                ../../src/dlib/dcore \
-               ../../3rdparty/quazip 
+               ../../3rdparty/quazip \
+               ../../src/dlib 
 MOC_DIR = .moc 
 UI_DIR = .ui 
 OBJECTS_DIR = .obj 

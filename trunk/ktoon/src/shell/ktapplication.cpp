@@ -29,7 +29,7 @@ KTApplication::KTApplication(int argc, char **argv)
 {
 	setApplicationName("ktoon");
 	
-	applyColors(Default);
+// 	applyColors(Default);
 }
 
 
@@ -45,12 +45,12 @@ bool KTApplication::firstRun()
 	if ( firstDialog->exec() != QDialog::Rejected )
 	{
 		dAppProp->setHomeDir( firstDialog->home() );
-		createRepository(firstDialog->repository());
+		createCache(firstDialog->cache());
 		
 		DCONFIG->beginGroup("General");
 		
-		DCONFIG->setValue( "Home", HOME);
-		DCONFIG->setValue( "Repository", REPOSITORY);
+		DCONFIG->setValue( "Home", HOME_DIR);
+		DCONFIG->setValue( "Cache", CACHE_DIR);
 		
 		DCONFIG->sync();
 		
@@ -64,18 +64,18 @@ bool KTApplication::firstRun()
 	return false;
 }
 
-void KTApplication::createRepository(const QString &repository)
+void KTApplication::createCache(const QString &cacheDir)
 {
-	QDir repos(repository);
-	if ( ! repos.exists() )
+	QDir cache(cacheDir);
+	if ( ! cache.exists() )
 	{
-		dDebug() << tr("Initializing repository %1").arg(repository);
-		if ( ! repos.mkdir(repository) )
+		dDebug() << tr("Initializing repository %1").arg(cacheDir);
+		if ( ! cache.mkdir(cacheDir) )
 		{
 			dError() << tr("I cannot create the repository");
 		}
 	}
 	
-	dAppProp->setCacheDir(repository);
+	dAppProp->setCacheDir(cacheDir);
 }
 

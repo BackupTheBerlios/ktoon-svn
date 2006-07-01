@@ -25,8 +25,6 @@
 
 #include <QPainter>
 
-#include "dpathadjuster.h"
-
 KTDisplayGraphic::KTDisplayGraphic(QWidget *parent) : QFrame(parent), m_drawGraphic(false), m_graphic(0)
 {
 	m_displayArea = QImage(100, 100, QImage::Format_RGB32);

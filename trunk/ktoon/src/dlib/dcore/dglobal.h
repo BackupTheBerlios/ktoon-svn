@@ -26,10 +26,10 @@
 
 #define DATA_DIR dAppProp->dataDir()
 #define THEME_DIR dAppProp->themeDir()
-#define HOME dAppProp->homeDir()
+#define HOME_DIR dAppProp->homeDir()
 #define CONFIG_DIR dAppProp->configDir()
 
-#define REPOSITORY dAppProp->cacheDir()
+#define CACHE_DIR dAppProp->cacheDir()
 
 
 #endif

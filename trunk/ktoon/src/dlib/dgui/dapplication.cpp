@@ -32,8 +32,7 @@
 
 #include "ddebug.h"
 
-DApplication::DApplication(int & argc, char ** argv)
-	: QApplication(argc, argv)
+DApplication::DApplication(int & argc, char ** argv) : QApplication(argc, argv)
 {
 	DINIT;
 	

@@ -27,7 +27,7 @@
 #include "ktgradientviewer.h"
 #include "deditspinbox.h"
 #include "dimagebutton.h"
-#include "ccbutton.h"
+#include "dcirclebutton.h"
 #include <QFrame>
 
 #include <QComboBox>

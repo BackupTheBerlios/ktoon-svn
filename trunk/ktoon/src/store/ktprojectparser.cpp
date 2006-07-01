@@ -21,7 +21,7 @@
 #include "ktprojectparser.h"
 #include "ddebug.h"
 
-#include "dpathadjuster.h"
+#include "dpathhandler.h"
 
 
 KTProjectParser::KTProjectParser() : QXmlDefaultHandler(), m_gradient(0), m_currentComponent(0), m_rootComponent(0), m_tagCounter(0)
@@ -237,7 +237,7 @@ bool KTProjectParser::endElement(const QString&, const QString& , const QString&
 		}
 		else if ( qname == "Graphic" )
 		{
-			m_graphics.last()->path = DPathAdjuster::buildPath( m_polygons, ':');
+			m_graphics.last()->path = DPathHandler::buildPath( m_polygons, ':');
 			m_graphics.last()->pen = m_pen;
 			m_graphics.last()->brush = m_brush;
 		}

@@ -54,7 +54,7 @@ KTExportInterface::Formats MingPlugin::availableFormats()
 void MingPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size, float sx, float sy)
 {
 #ifdef HAVE_MING
-	QDir temp(REPOSITORY+"/exporting");
+	QDir temp(CACHE_DIR+"/exporting");
 	if ( !temp.exists() )
 	{
 		temp.mkdir(temp.path());

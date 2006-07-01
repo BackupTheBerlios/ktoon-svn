@@ -4,13 +4,14 @@
 # Target is a library:  
 
 QT += xml 
-KDEV_QTVER += 4 
 INSTALLS += target 
 target.path = /plugins/ 
+KDEV_QTVER = 4 
 INCLUDEPATH += ../../../../src/store \
                ../../../../src/libktoon \
                ../../../../src/dlib/dgui \
-               ../../../../src/dlib/dcore 
+               ../../../../src/dlib/dcore \
+               ../../../../src/dlib 
 MOC_DIR = .moc 
 UI_DIR = .ui 
 OBJECTS_DIR = .obj 
@@ -20,22 +21,17 @@ CONFIG += release \
 TEMPLATE = lib 
 HEADERS += smilexportplugin.h 
 SOURCES += smilexportplugin.cpp 
-
-
-win32 {
+win32{
   LIBS += -ldcore -ldgui -lktoon -lstore
   QMAKE_LIBDIR = ../../../../src/dlib/dcore/release \
   ../../../../src/dlib/dgui/release \
   ../../../../src/ktoonlib/release \
   ../../../../src/store/release
 }
-
-macx {
+macx{
   LIBS += -ldcore -ldgui -lktoon -lstore
   QMAKE_LIBDIR += ../../../../src/store \
-               ../../../../src/ktoonlib \
-               ../../../../src/dlib/dgui \
-               ../../../../src/dlib/dcore
+  ../../../../src/ktoonlib \
+  ../../../../src/dlib/dgui \
+  ../../../../src/dlib/dcore
 }
-
-

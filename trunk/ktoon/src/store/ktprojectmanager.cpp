@@ -63,7 +63,7 @@ QDomElement KTProjectManager::createXML( QDomDocument &doc )
 	while( documentIt != m_documents.end() )
 	{
 		QString location = QString("Document%1").arg(documentCounter++);
-		QString docPath = REPOSITORY + +"/"+m_name+"/"+location;
+		QString docPath = CACHE_DIR + +"/"+m_name+"/"+location;
 		
 		QDomElement docElement = (*documentIt)->createXML( doc );
 		docElement.setAttribute("location",location);
@@ -80,7 +80,7 @@ void KTProjectManager::save()
 {
 	if ( m_name.isNull() ) return;
 	
-	QDir repository(REPOSITORY);
+	QDir repository(CACHE_DIR);
 
 	if ( ! repository.exists() ) 
 	{ 
@@ -106,7 +106,7 @@ void KTProjectManager::save()
 	doc.appendChild(root);
 	root.appendChild(createXML( doc ));
 	
-	QFile save(REPOSITORY + +"/"+m_name+"/"+m_name+".ktp");
+	QFile save(CACHE_DIR + +"/"+m_name+"/"+m_name+".ktp");
 	
 	if ( ! save.open(QIODevice::WriteOnly | QIODevice::Text)) return;
 	

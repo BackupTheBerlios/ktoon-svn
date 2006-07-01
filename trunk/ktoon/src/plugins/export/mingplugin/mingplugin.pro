@@ -4,9 +4,9 @@
 # Target is a library:  
 
 QT += xml 
-KDEV_QTVER += 4 
 INSTALLS += target 
 target.path = /plugins/ 
+KDEV_QTVER = 4 
 LIBS += -ldcore \
         -ldgui \
         -lktoon \
@@ -14,7 +14,8 @@ LIBS += -ldcore \
 INCLUDEPATH += ../../../../src/store \
                ../../../../src/libktoon \
                ../../../../src/dlib/dgui \
-               ../../../../src/dlib/dcore 
+               ../../../../src/dlib/dcore \
+               ../../../../src/dlib 
 QMAKE_LIBDIR = ../../../../src/dlib/dcore \
                ../../../../src/dlib/dgui \
                ../../../../src/libktoon \

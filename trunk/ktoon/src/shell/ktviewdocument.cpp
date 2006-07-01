@@ -42,7 +42,7 @@ KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, KT
 	
 	m_actionManager = new DActionManager(this);
 	
-	m_history = new DCommandHistory(m_actionManager);
+// 	m_history = new DCommandHistory(m_actionManager);
 		
 // 	m_paintAreaContainer = new KTPaintAreaContainer(size,renderType,  this);
 	
@@ -78,7 +78,7 @@ KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, KT
 
 KTViewDocument::~KTViewDocument()
 {
-	delete m_history;
+// 	delete m_history;
 }
 
 void KTViewDocument::showPos(const QPoint &p)
@@ -89,14 +89,14 @@ void KTViewDocument::showPos(const QPoint &p)
 
 void KTViewDocument::createActions()
 {
-	DAction *undo = m_history->undoAction();
-	undo->setIcon( QPixmap(THEME_DIR+"/icons/undo.png" ));
+// 	DAction *undo = m_history->undoAction();
+// 	undo->setIcon( QPixmap(THEME_DIR+"/icons/undo.png" ));
 	
-	m_actionManager->insert(undo);
+// // 	m_actionManager->insert(undo);
 	
-	DAction *redo = m_history->redoAction();
-	redo->setIcon(QPixmap(THEME_DIR+"/icons/redo.png" ));
-	m_actionManager->insert(redo);
+// 	DAction *redo = m_history->redoAction();
+// 	redo->setIcon(QPixmap(THEME_DIR+"/icons/redo.png" ));
+// 	m_actionManager->insert(redo);
 	
 
 	
@@ -379,7 +379,7 @@ void KTViewDocument::createTools()
 
 	m_toolsTransform = new QMenu( tr( "Transform " ), this);
 	connect( m_toolsTransform, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
-	m_toolsTransform->setIcon(QPixmap(HOME+"/images/icons/align_l.png"));
+	m_toolsTransform->setIcon(QPixmap(HOME_DIR+"/images/icons/align_l.png"));
 
 	m_toolsTransform->addAction(tr( "Flip &Horizontally" ), m_paintAreaContainer->drawArea(), SLOT(slotFlipHorizontally()));
 	m_toolsTransform->addAction(tr( "Flip &Vertically" ), m_paintAreaContainer->drawArea(), SLOT(slotFlipVertically()));

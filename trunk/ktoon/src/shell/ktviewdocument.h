@@ -39,8 +39,6 @@
 #include "ktdocument.h"
 #include "ktconfigurationarea.h"
 
-#include <dcommand.h>
-
 #include "ktglobal.h"
 
 /**
@@ -104,7 +102,7 @@ class KTViewDocument : public DMdiWindow
 		DActionManager *m_actionManager;
 		KTConfigurationArea *m_configurationArea;
 		
-		DCommandHistory *m_history;
+// 		DCommandHistory *m_history;
 		
 		
 	private slots:

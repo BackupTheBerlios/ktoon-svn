@@ -68,7 +68,7 @@ KTPreferences::GeneralPage::GeneralPage()
 	}
 	
 	m_repository = new QLineEdit;
-	str = DCONFIG->value("Repository").toString();
+	str = DCONFIG->value("Cache").toString();
 	if ( !str.isEmpty())
 	{
 		m_repository->setText(str);
@@ -93,7 +93,7 @@ KTPreferences::GeneralPage::GeneralPage()
 		m_renderType->setCurrentIndex ( str.toInt() );
 	}
 
-	QLayout *form = DFormFactory::makeGrid( QStringList() << tr("KToon Home") << tr("Repository") << tr("Browser") << tr("Render Type"), QWidgetList() << m_home << m_repository << m_browser << m_renderType);
+	QLayout *form = DFormFactory::makeGrid( QStringList() << tr("KToon Home") << tr("Cache") << tr("Browser") << tr("Render Type"), QWidgetList() << m_home << m_repository << m_browser << m_renderType);
 	
 	layout->addLayout(form);
 	
@@ -117,7 +117,7 @@ void KTPreferences::GeneralPage::saveValues()
 	str = m_repository->text();
 	if ( !str.isEmpty() && m_repository->isModified () )
 	{
-		DCONFIG->setValue("Repository", str);
+		DCONFIG->setValue("Cache", str);
 	}
 	
 	str = m_browser->text();

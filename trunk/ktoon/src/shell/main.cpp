@@ -73,11 +73,11 @@ int main( int argc, char ** argv )
 	if ( ! DCONFIG->isOk() )
 	{
 		DCONFIG->setValue("Home", QString::fromLocal8Bit(::getenv("KTOON_HOME")));
-		DCONFIG->setValue("Repository", QDir::tempPath() );
+		DCONFIG->setValue("Cache", QDir::tempPath() );
 	}
 	
 	dAppProp->setHomeDir(DCONFIG->value("Home").toString());
-	application.createRepository(DCONFIG->value("Repository").toString());
+	application.createCache(DCONFIG->value("Cache").toString());
 
 	if ( dAppProp->homeDir().isEmpty() || application.isArg("r") || application.isArg("reconfigure") )
 	{
@@ -92,7 +92,7 @@ int main( int argc, char ** argv )
 		
 		
 		dAppProp->setHomeDir(DCONFIG->value("Home").toString());
-		application.createRepository(DCONFIG->value("Repository").toString());
+		application.createCache(DCONFIG->value("Cache").toString());
 	}
 	
 	dAppProp->setVersion(VERSION_STR);
@@ -113,12 +113,12 @@ int main( int argc, char ** argv )
 		
 		QTranslator *qttranslator = new QTranslator;
 		
-		qttranslator->load( QString( "qt_" ) + locale, HOME+"/data/translations");
+		qttranslator->load( QString( "qt_" ) + locale, HOME_DIR+"/data/translations");
 	
 		application.installTranslator( qttranslator );
 		
 		QTranslator *translator = new QTranslator;
-		translator->load( QString( "ktoon_" )+locale,  HOME+"/data/translations");
+		translator->load( QString( "ktoon_" )+locale,  HOME_DIR+"/data/translations");
 		
 		application.installTranslator( translator );
 	}
@@ -143,7 +143,7 @@ int main( int argc, char ** argv )
 	
 	delete splash;
 	
-	QApplication::addLibraryPath (HOME+"/plugins");
+	QApplication::addLibraryPath (HOME_DIR+"/plugins");
 	
 
 #ifdef Q_OS_UNIX

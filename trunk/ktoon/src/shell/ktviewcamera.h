@@ -27,7 +27,7 @@
 #include "ktanimationarea.h"
 #include "ktcamerabar.h"
 
-#include "ccbar.h"
+#include "dcirclebuttonbar.h"
 
 
 class QCheckBox;

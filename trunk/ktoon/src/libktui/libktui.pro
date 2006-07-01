@@ -3,6 +3,22 @@
 # Subdir relative project main directory: ./src/libktui
 # Target is a library:  ktui
 
+RESOURCES += ktui_images.qrc
+QT += xml 
+KDEV_QTVER = 4 
+INCLUDEPATH += ../../src/store \
+               ../../src/libktoon \
+               ../../src/dlib/dgui \
+               ../../src/dlib/dcore \
+               ../../src/dlib 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+TARGET = ktui 
+CONFIG += release \
+          warn_on \
+          staticlib 
+TEMPLATE = lib 
 HEADERS += ktthemeselector.h \
            ktabout.h \
            ktpreferences.h \
@@ -13,17 +29,3 @@ SOURCES += ktthemeselector.cpp \
            ktpreferences.cpp \
            ktworkspace.cpp \
            ktcamerabar.cpp 
-QT += xml
-KDEV_QTVER = 4
-INCLUDEPATH += ../../src/store \
-../../src/libktoon \
-../../src/dlib/dgui \
-../../src/dlib/dcore
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-TARGET = ktui
-CONFIG += release \
-warn_on \
-staticlib
-TEMPLATE = lib

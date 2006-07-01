@@ -4,13 +4,14 @@
 # Target is a library:  
 
 QT += xml 
-KDEV_QTVER += 4 
 INSTALLS += target 
 target.path = /plugins/ 
-INCLUDEPATH += ../../../../src/libktoon \
-               ../../../../src/store \
+KDEV_QTVER = 4 
+INCLUDEPATH += ../../../../src/store \
+               ../../../../src/libktoon \
                ../../../../src/dlib/dgui \
-               ../../../../src/dlib/dcore 
+               ../../../../src/dlib/dcore \
+               ../../../../src/dlib 
 CONFIG += release \
           warn_on \
           plugin 
@@ -21,4 +22,3 @@ macx{
   LIBS += -ldcore -ldgui -lktoon -lstore
   QMAKE_LIBDIR = ../../../../src/dlib/dcore ../../../../src/dlib/dgui ../../../../src/ktoonlib ../../../../src/store
 }
-

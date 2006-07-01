@@ -3,11 +3,25 @@
 # Subdir relative project main directory: ./src/store
 # Target is a library:  
 
+QT += xml 
 INSTALLS += headers \
             target 
 target.path = /lib/ 
 headers.files += *.h 
 headers.path = /include/ 
+KDEV_QTVER = 4 
+INCLUDEPATH += ../../src/store \
+               ../../src/libktoon \
+               ../../src/dlib/dgui \
+               ../../src/dlib/dcore \
+               ../../src/dlib 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+CONFIG += release \
+          warn_on \
+          dll 
+TEMPLATE = lib 
 HEADERS += ktkeyframe.h \
            ktlayer.h \
            ktprojectmanager.h \
@@ -28,19 +42,6 @@ SOURCES += ktkeyframe.cpp \
            ktprojectparser.cpp \
            ktpalettedocument.cpp \
            ktgraphiccomponent.cpp 
-QT += xml 
-KDEV_QTVER = 4 
-INCLUDEPATH += ../../src/store \
-               ../../src/libktoon \
-               ../../src/dlib/dgui \
-               ../../src/dlib/dcore 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-CONFIG += release \
-          warn_on \
-          dll 
-TEMPLATE = lib 
 macx{
   LIBS += -ldcore -ldgui -lktoon
   QMAKE_LIBDIR = ../../src/dlib/dcore ../../src/dlib/dgui ../../src/ktoonlib

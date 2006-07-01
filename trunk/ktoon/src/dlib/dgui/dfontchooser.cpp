@@ -19,12 +19,6 @@
  ***************************************************************************/
 
 #include "dfontchooser.h"
-#include <QComboBox>
-
-#include <QHBoxLayout>
-#include <QFontDatabase>
-
-#include "dformfactory.h"
 
 DFontChooser::DFontChooser(QWidget *parent) : QFontComboBox(parent)
 {
@@ -34,3 +28,5 @@ DFontChooser::DFontChooser(QWidget *parent) : QFontComboBox(parent)
 DFontChooser::~DFontChooser()
 {
 }
+
+

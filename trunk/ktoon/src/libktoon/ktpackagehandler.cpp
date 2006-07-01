@@ -126,7 +126,7 @@ bool KTPackageHandler::compress(QuaZip *zip, const QString &path)
 
 QString KTPackageHandler::stripRepositoryFromPath(QString path)
 {
-	path.remove(REPOSITORY);
+	path.remove(CACHE_DIR);
 	if ( path[0] == QDir::separator() )
 	{
 		path.remove(0, 1);
@@ -167,7 +167,7 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
 			return false;
 		}
 		
-		name = REPOSITORY+"/"+file.getActualFileName();
+		name = CACHE_DIR+"/"+file.getActualFileName();
 		
 		if( name.endsWith(".ktp") )
 		{

@@ -74,7 +74,7 @@ class DWizardPage : public DVHBox
 		DWizardPage(const QString &title, QWidget *parent );
 		virtual ~DWizardPage();
 		
-		virtual bool isComplete() = 0;
+		virtual bool isComplete() const = 0;
 		virtual void reset() = 0;
 		
 		void setPixmap(const QPixmap &px);

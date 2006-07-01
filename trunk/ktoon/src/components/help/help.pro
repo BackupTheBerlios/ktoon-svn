@@ -10,7 +10,8 @@ help.path = /data/
 KDEV_QTVER = 4 
 INCLUDEPATH += ../../../src/libktoon \
                ../../../src/dlib/dgui \
-               ../../../src/dlib/dcore 
+               ../../../src/dlib/dcore \
+               ../../../src/dlib 
 CONFIG += release \
           warn_on \
           staticlib 

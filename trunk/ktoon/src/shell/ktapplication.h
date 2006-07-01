@@ -51,11 +51,11 @@ class KTApplication : public DApplication
 		 * Translate
 		 * @endif
 		 * @if spanish
-		 * Crea un repositorio en la ruta especificada por repository
+		 * Crea el cache en la ruta especificada por repository
 		 * @endif
 		 * @param repository 
 		 */
-		void createRepository(const QString &repository);
+		void createCache(const QString &cacheDir);
 };
 
 #endif

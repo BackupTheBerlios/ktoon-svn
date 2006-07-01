@@ -52,7 +52,7 @@ void DAudioPlayer::loadEngine(const QString &engineKey)
 {
 	qDebug() << "Loading engine: " << engineKey;
 	
-// 	QDir m_pluginDirectory = QDir(HOME+"/plugins/");
+// 	QDir m_pluginDirectory = QDir(HOME_DIR+"/plugins/");
 	QDir m_pluginDirectory = QDir("dgstengine");
 
 	foreach (QString fileName, m_pluginDirectory.entryList(QDir::Files))

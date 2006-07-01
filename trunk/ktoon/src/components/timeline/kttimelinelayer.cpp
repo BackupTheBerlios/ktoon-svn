@@ -56,7 +56,7 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name) : QFrame(), m_isLocked(fal
 	m_layout->addWidget(staticLayerImage);
 	staticLayerImage->show();
 	
-	staticLayerImage -> setPixmap( QPixmap( HOME+"/themes/default/icons/layer_pic.png" ) );
+	staticLayerImage -> setPixmap( QPixmap( HOME_DIR+"/themes/default/icons/layer_pic.png" ) );
 	staticLayerImage->setMinimumSize( 20, 20 );
 // 	layout()->setAlignment(staticLayerImage, Qt::AlignLeft);
 
@@ -90,13 +90,13 @@ KTTimeLineLayer::KTTimeLineLayer(const QString &name) : QFrame(), m_isLocked(fal
 	
 	m_visibilityImage = new QLabel( m_utils );
 // 	m_layout->addWidget(m_visibilityImage);
-	m_visibilityImage -> setPixmap( QPixmap( HOME+"/themes/default/icons/enable.png" ) );
+	m_visibilityImage -> setPixmap( QPixmap( HOME_DIR+"/themes/default/icons/enable.png" ) );
 	m_visibilityImage -> resize( 20, 20 );
 
 	
 	m_lockImage = new QLabel( m_utils );
 // 	m_layout->addWidget(m_lockImage);
-	m_lockImage -> setPixmap( QPixmap( HOME+"/themes/default/icons/disable.png" ) );
+	m_lockImage -> setPixmap( QPixmap( HOME_DIR+"/themes/default/icons/disable.png" ) );
 	m_lockImage -> resize( 20, 20 );
 
 	m_onlyOutlines = new QCheckBox( m_utils );
@@ -131,7 +131,7 @@ void KTTimeLineLayer::setEdited( bool isEdited )
 	
 	if ( m_isEdited )
 	{
-		m_editionImage -> setPixmap( QPixmap( HOME+"/themes/default/icons/written_pic.png" ) );
+		m_editionImage -> setPixmap( QPixmap( HOME_DIR+"/themes/default/icons/written_pic.png" ) );
 	}
 	else
 	{
@@ -161,11 +161,11 @@ void KTTimeLineLayer::setLock(bool yes)
 {
 	if ( !yes )
 	{
-		m_lockImage->setPixmap( QPixmap( HOME+"/themes/default/icons/enable.png" ) );
+		m_lockImage->setPixmap( QPixmap( HOME_DIR+"/themes/default/icons/enable.png" ) );
 	}
 	else
 	{
-		m_lockImage->setPixmap( QPixmap( HOME+"/themes/default/icons/disable.png" ) );
+		m_lockImage->setPixmap( QPixmap( HOME_DIR+"/themes/default/icons/disable.png" ) );
 	}
 	m_isLocked = yes;
 }
@@ -174,11 +174,11 @@ void KTTimeLineLayer::toggleLock()
 {
 	if ( !m_isLocked )
 	{
-		m_lockImage->setPixmap( QPixmap( HOME+"/themes/default/icons/enable.png" ) );
+		m_lockImage->setPixmap( QPixmap( HOME_DIR+"/themes/default/icons/enable.png" ) );
 	}
 	else
 	{
-		m_lockImage->setPixmap( QPixmap( HOME+"/themes/default/icons/disable.png" ) );
+		m_lockImage->setPixmap( QPixmap( HOME_DIR+"/themes/default/icons/disable.png" ) );
 	}
 	m_isLocked = !m_isLocked;
 }
@@ -187,11 +187,11 @@ void KTTimeLineLayer::setView(bool yes)
 {
 	if ( !yes )
 	{
-		m_visibilityImage -> setPixmap( QPixmap( HOME+"/themes/default/icons/enable.png" ) );
+		m_visibilityImage -> setPixmap( QPixmap( HOME_DIR+"/themes/default/icons/enable.png" ) );
 	}
 	else
 	{
-		m_visibilityImage->setPixmap( QPixmap( HOME+"/themes/default/icons/disable.png" ) );
+		m_visibilityImage->setPixmap( QPixmap( HOME_DIR+"/themes/default/icons/disable.png" ) );
 	}
 	m_isVisible = yes;
 }
@@ -200,11 +200,11 @@ void KTTimeLineLayer::toggleView()
 {
 	if ( !m_isVisible )
 	{
-		m_visibilityImage -> setPixmap( QPixmap( HOME+"/themes/default/icons/enable.png" ) );
+		m_visibilityImage -> setPixmap( QPixmap( HOME_DIR+"/themes/default/icons/enable.png" ) );
 	}
 	else
 	{
-		m_visibilityImage->setPixmap( QPixmap( HOME+"/themes/default/icons/disable.png" ) );
+		m_visibilityImage->setPixmap( QPixmap( HOME_DIR+"/themes/default/icons/disable.png" ) );
 	}
 	m_isVisible = !m_isVisible;
 }

@@ -54,7 +54,7 @@ void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *
 	FFMpegManager manager;
 	m_size = size;
 	
-	QDir temp(REPOSITORY+"/exporting");
+	QDir temp(CACHE_DIR+"/exporting");
 	if ( !temp.exists() )
 	{
 		temp.mkdir(temp.path());

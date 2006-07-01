@@ -11,7 +11,8 @@ KDEV_QTVER = 4
 INCLUDEPATH += ../../../src/store \
                ../../../src/libktoon \
                ../../../src/dlib/dgui \
-               ../../../src/dlib/dcore 
+               ../../../src/dlib/dcore \
+               ../../../src/dlib 
 MOC_DIR = .moc 
 UI_DIR = .ui 
 OBJECTS_DIR = .obj 

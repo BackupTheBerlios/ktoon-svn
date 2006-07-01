@@ -1356,7 +1356,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Repository</source>
+        <source>Cache</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

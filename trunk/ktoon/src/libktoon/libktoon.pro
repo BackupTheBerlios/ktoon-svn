@@ -11,7 +11,8 @@ INCLUDEPATH += ../../src/store \
                ../../src/dlib/dgui \
                ../../src/dlib/dcore \
                ../../3rdparty/potrace \
-               ../../3rdparty/quazip 
+               ../../3rdparty/quazip \
+               ../../src/dlib 
 TARGET = ktoon 
 CONFIG += release \
           warn_on \

@@ -30,7 +30,7 @@
 
 #include "ktabout.h"
 #include "dglobal.h"
-#include "kimageeffect.h"
+#include "dimageeffect.h"
 
 #include "ddebug.h"
 
@@ -39,6 +39,9 @@
 KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 {
 	DINIT;
+	
+	Q_INIT_RESOURCE(ktui_images);
+	
 	setWindowTitle( tr( "About" ) + QString( " KToon..." ) );
 
     	//1: Credits
@@ -60,9 +63,9 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 		dError() << "Error while trying to read " << creditsFile.fileName();
 	}
 	
-	QImage credits = QImage(THEME_DIR+"/images/credits-image.png" );
+	QImage credits = QImage(":about/images/credits.png" );
 	
-	KImageEffect::fade(credits, 0.25, palette().background().color());
+	DImageEffect::fade(credits, 0.25, palette().background().color());
     
 	m_credits = new DAnimWidget( QPixmap::fromImage(credits), creditsText );
 	addTab( m_credits, tr( "Credits" ) );
@@ -76,8 +79,8 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 	
 	QLabel *ack = new QLabel;
 	
-	QImage ackImg( THEME_DIR+"/images/sponsors.png" );
-	KImageEffect::fade( ackImg,0.2,palette().background().color()); 
+	QImage ackImg( ":about/images/sponsors.png" );
+	DImageEffect::fade( ackImg,0.2,palette().background().color()); 
 	
 	ack->setPixmap(QPixmap::fromImage(ackImg));
 	
@@ -87,8 +90,8 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 
 	QLabel *toonka = new QLabel;
 	
-	QImage toonkaImg( THEME_DIR+"/images/toonka.png" );
-	KImageEffect::fade( toonkaImg,0.2,palette().background().color()); 
+	QImage toonkaImg( ":about/images/toonka.png" );
+	DImageEffect::fade( toonkaImg,0.2,palette().background().color()); 
 	
 	toonka->setPixmap(QPixmap::fromImage(toonkaImg));
 	addTab( toonka, "Toonka Films" );
@@ -97,8 +100,8 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 
 	QLabel *laboratoon = new QLabel;
 	
-	QImage laboratoonImg( THEME_DIR+"/images/laboratoon.png" );
-	KImageEffect::fade( laboratoonImg,0.2,palette().background().color()); 
+	QImage laboratoonImg( ":about/images/laboratoon.png" );
+	DImageEffect::fade( laboratoonImg,0.2,palette().background().color()); 
 	
 	laboratoon->setPixmap( QPixmap::fromImage(laboratoonImg  ) );
 	addTab( laboratoon, "Laboratoon" );

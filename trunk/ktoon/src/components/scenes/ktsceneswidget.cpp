@@ -58,12 +58,12 @@ void KTScenesWidget::setupButtons()
 	QHBoxLayout *layout = new QHBoxLayout(m_buttonsPanel);
 	layout->setMargin(0);
 
-	DImageButton *insertButton = new DImageButton(QPixmap(HOME+"/themes/default/icons/plussign.png" ) , 22, m_buttonsPanel);
+	DImageButton *insertButton = new DImageButton(QPixmap(HOME_DIR+"/themes/default/icons/plussign.png" ) , 22, m_buttonsPanel);
 	layout->addWidget(insertButton);
 	insertButton->setToolTip(tr("Insert scene"));
 	connect(insertButton, SIGNAL(clicked()), this, SLOT(emitRequestInsertScene()));
 	
-	DImageButton *removeButton = new DImageButton(QPixmap(HOME+"/themes/default/icons/minussign.png" ) , 22, m_buttonsPanel);
+	DImageButton *removeButton = new DImageButton(QPixmap(HOME_DIR+"/themes/default/icons/minussign.png" ) , 22, m_buttonsPanel);
 	layout->addWidget(removeButton);
 	removeButton->setToolTip(tr("Remove scene"));
 	connect(removeButton, SIGNAL(clicked()), this, SLOT(emitRequestRemoveScene()));

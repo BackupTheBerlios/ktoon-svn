@@ -24,7 +24,6 @@
 #include <QDir>
 
 #include "ktprojectparser.h"
-#include "dpathadjuster.h"
 
 KTScene::KTScene(QObject *parent) : KTSerializableObject(parent), m_currentLayer(0), m_layerCount(0), m_fps(24)
 {

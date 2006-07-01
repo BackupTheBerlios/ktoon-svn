@@ -64,12 +64,12 @@ class ConfigWizard : public DWizard
 		/**
 		 * @return la ruta del directorio home
 		 */
-		QString home();
+		QString home() const;
 		
 		/**
 		 * @return la ruta del directorio repository
 		 */
-		QString repository();
+		QString cache() const;
 
 	private:
 		CWFirstPage *m_firstPage;
@@ -86,7 +86,7 @@ class CWFirstPage : public DWizardPage
 		CWFirstPage(QWidget *parent = 0);
 		~CWFirstPage();
 
-		bool isComplete() { return true; };
+		bool isComplete() const { return true; };
 		void reset() { };
 };
 
@@ -97,10 +97,10 @@ class CWSecondPage : public DWizardPage
 		CWSecondPage(QWidget *parent = 0);
 		~CWSecondPage();
 		void setData(const QString &home, const QString &repos);
-		QString home();
-		QString repository();
+		QString home() const;
+		QString repository() const;
 		
-		bool isComplete();
+		bool isComplete() const;
 		void reset();
 		
 	private slots:

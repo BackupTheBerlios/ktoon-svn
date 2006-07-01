@@ -34,7 +34,7 @@
 // DLib
 #include <dglobal.h>
 #include <ddebug.h>
-#include <kseparator.h>
+#include <dseparator.h>
 #include <dcolorbutton.h>
 #include <dapplication.h>
 
@@ -169,7 +169,7 @@ void KTThemeSelector::setupChooseColor()
 	
 	schemeWidget->setLayout(schemaLayout);
 	
-	new KSeparator(this);
+	new DSeparator(this);
 	m_useColors = new QCheckBox(tr("Use this colors"), this);
 	
 	connect(&m_generalButtonGroup, SIGNAL(buttonClicked(QAbstractButton * )), SLOT(chooseGeneralColor(QAbstractButton * )));

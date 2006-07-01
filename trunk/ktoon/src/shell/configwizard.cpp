@@ -31,7 +31,7 @@
 #include "wizard2.xpm"
 
 #include "ddebug.h"
-#include "kimageeffect.h"
+#include "dimageeffect.h"
 
 #include "dglobal.h"
 
@@ -55,12 +55,12 @@ void ConfigWizard::setInitialData(const QString &home, const QString &repos)
 	m_secondPage->setData(home, repos);
 }
 
-QString ConfigWizard::home()
+QString ConfigWizard::home() const
 {
 	return m_secondPage->home();
 }
 
-QString ConfigWizard::repository()
+QString ConfigWizard::cache() const
 {
 	return m_secondPage->repository();
 }
@@ -70,7 +70,7 @@ CWFirstPage::CWFirstPage(QWidget *parent) : DWizardPage(tr("Welcome"), parent)
 {
 	QImage img(wizard1_xpm);
 	
-	setPixmap( QPixmap::fromImage(/* ::blend(img, 0.1f, palette().color(QPalette::Background), KImageEffect::DiagonalGradient, true)*/img) );
+	setPixmap( QPixmap::fromImage(/* ::blend(img, 0.1f, palette().color(QPalette::Background), DImageEffect::DiagonalGradient, true)*/img) );
 
 	QLabel *msg = new QLabel(tr("<h1>Welcome to the KToon Configuration wizard!</h1><br><br>"
 			"<table border=0 align=right ><tr><td>- KToon is a 2D Animation Toolkit designed by animators for animators.</td></tr><tr><td>- KToon is free/open software and it is covered under the GNU GPL license terms.</td></tr><tr><td>- KToon is Software Project developed by Toonka Films (http://www.toonka.com)</td></tr></table><br><br>"
@@ -151,17 +151,17 @@ void CWSecondPage::setData(const QString &home, const QString &repos)
 	m_ktrepos->setText(repos);
 }
 
-QString CWSecondPage::home()
+QString CWSecondPage::home() const
 {
 	return m_kthome->text();
 }
 
-QString CWSecondPage::repository()
+QString CWSecondPage::repository() const
 {
 	return m_ktrepos->text();
 }
 
-bool CWSecondPage::isComplete()
+bool CWSecondPage::isComplete() const
 {
 	bool isOk = false;
 	
@@ -172,7 +172,7 @@ bool CWSecondPage::isComplete()
 	return isOk;
 };
 
-void CWSecondPage::reset() 
+void CWSecondPage::reset()
 {
 	m_kthome->clear();
 	m_ktrepos->clear();

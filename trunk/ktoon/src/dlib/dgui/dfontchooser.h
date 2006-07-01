@@ -29,7 +29,7 @@
 */
 class DFontChooser : public QFontComboBox
 {
-	Q_OBJECT
+	Q_OBJECT;
 	public:
 		DFontChooser(QWidget *parent = 0);
 		~DFontChooser();

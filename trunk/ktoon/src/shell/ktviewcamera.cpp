@@ -149,16 +149,16 @@ KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : DMdiWindow(p
 	connect(m_bar, SIGNAL(play()), this, SLOT(doPlay()));
 	connect(m_bar, SIGNAL(stop()), m_animationArea, SLOT(stop()));
 #else
-	CCBar *m_bar = new CCBar(40);
+	DCircleButtonBar *m_bar = new DCircleButtonBar(40);
 	layout->addWidget(m_bar, 0, Qt::AlignTop | Qt::AlignCenter );
 	m_bar->show();
 	
 	qobject_cast<QBoxLayout *>(m_bar->layout())->insertStretch(0, 2);
 	
-	CCButton *rew = m_bar->addButton(QPixmap(THEME_DIR+"/icons/rw.png" ));
-	CCButton *play = m_bar->addButton(QPixmap(THEME_DIR+"/icons/play.png" ));
-	CCButton *stop = m_bar->addButton(QPixmap(THEME_DIR+"/icons/stop.png" ));
-	CCButton *ff = m_bar->addButton(QPixmap(THEME_DIR+"/icons/ff.png" ));
+	DCircleButton *rew = m_bar->addButton(QPixmap(THEME_DIR+"/icons/rw.png" ));
+	DCircleButton *play = m_bar->addButton(QPixmap(THEME_DIR+"/icons/play.png" ));
+	DCircleButton *stop = m_bar->addButton(QPixmap(THEME_DIR+"/icons/stop.png" ));
+	DCircleButton *ff = m_bar->addButton(QPixmap(THEME_DIR+"/icons/ff.png" ));
 	
 	qobject_cast<QBoxLayout *>(m_bar->layout())->addStretch(2);
 	

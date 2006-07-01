@@ -115,7 +115,7 @@ void KTViewColorCells::setupForm()
 		m_containerPalette->setCurrentIndex(lastIndex);
 	}
 	
-	readPalettes(HOME+"/data/palettes"); // Pre-installed
+	readPalettes(HOME_DIR+"/data/palettes"); // Pre-installed
 	readPalettes(CONFIG_DIR+"/palettes"); // Locals
 }
 

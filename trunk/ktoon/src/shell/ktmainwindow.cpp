@@ -30,15 +30,15 @@
 
 // KToon
 
-#include "dtip.h"
+#include "dtipdialog.h"
 #include "ddebug.h"
-#include "kimageeffect.h"
+#include "dimageeffect.h"
 #include "ktapplication.h"
 #include "ktpluginmanager.h"
 
 // dlslib
-#include "dlstabwidget.h"
-#include "docksplitter.h"
+#include "ditabwidget.h"
+#include "displitter.h"
 
 // Qt
 #include <QImage>
@@ -311,7 +311,7 @@ bool KTMainWindow::closeProject()
 
 void KTMainWindow::openProject()
 {
-	QString package = QFileDialog::getOpenFileName ( this, tr("Import project package"), REPOSITORY, tr("KToon Project Package (*.ktn)"));
+	QString package = QFileDialog::getOpenFileName ( this, tr("Import project package"), CACHE_DIR, tr("KToon Project Package (*.ktn)"));
 	
 	if ( package.isEmpty() ) return;
 	
@@ -522,7 +522,7 @@ void KTMainWindow::saveProject()
 	
 	KTPackageHandler packageHandler;
 	
-	bool ok = packageHandler.makePackage(REPOSITORY+"/"+m_projectManager->projectName(), m_fileName);
+	bool ok = packageHandler.makePackage(CACHE_DIR+"/"+m_projectManager->projectName(), m_fileName);
 	
 	if ( ok )
 	{
@@ -535,7 +535,7 @@ void KTMainWindow::saveProjectAs()
 {
 	m_projectManager->save();
 	
-	m_fileName = QFileDialog::getSaveFileName( this, tr("Build project package"), REPOSITORY, "KToon Project Package (*.ktn)");
+	m_fileName = QFileDialog::getSaveFileName( this, tr("Build project package"), CACHE_DIR, "KToon Project Package (*.ktn)");
 	
 	if ( m_fileName.isEmpty() ) return;
 	
@@ -546,7 +546,7 @@ void KTMainWindow::saveProjectAs()
 	
 	KTPackageHandler packageHandler;
 	
-	bool ok = packageHandler.makePackage(REPOSITORY+"/"+m_projectManager->projectName(), m_fileName);
+	bool ok = packageHandler.makePackage(CACHE_DIR+"/"+m_projectManager->projectName(), m_fileName);
 	
 	
 	if ( ok )

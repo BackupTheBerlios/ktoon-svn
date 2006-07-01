@@ -26,7 +26,7 @@
 
 #include <QPixmap>
 
-#include "kseparator.h"
+#include "dseparator.h"
 
 #include "ddebug.h"
 
@@ -91,27 +91,27 @@ KTLayerManager::KTLayerManager(QWidget *parent) : DVHBox(parent), m_currentTime(
 
 	m_utilsInBottom->layout()->setAlignment(Qt::AlignLeft | Qt::AlignCenter);
 
-	m_insertButton = new DImageButton( QPixmap(HOME+"/themes/default/icons/add_layer.png") , 20,  m_utilsInBottom );
+	m_insertButton = new DImageButton( QPixmap(HOME_DIR+"/themes/default/icons/add_layer.png") , 20,  m_utilsInBottom );
 	m_buttonGroup->addButton(m_insertButton, InsertLayer);
 
 	m_insertButton->setToolTip(tr( "Insert Layer" ) );
 
-	m_removeButton = new DImageButton( QPixmap(HOME+"/themes/default/icons/remove_layer.png"),  20, m_utilsInBottom );
+	m_removeButton = new DImageButton( QPixmap(HOME_DIR+"/themes/default/icons/remove_layer.png"),  20, m_utilsInBottom );
 	m_buttonGroup->addButton(m_removeButton, RemoveLayer);
 	
 	m_removeButton->setToolTip(tr( "Remove Layer" ) );
 
-	m_moveUpButton = new DImageButton( QPixmap(HOME+"/themes/default/icons/arrowup.png"),  20, m_utilsInBottom );
+	m_moveUpButton = new DImageButton( QPixmap(HOME_DIR+"/themes/default/icons/arrowup.png"),  20, m_utilsInBottom );
 	m_buttonGroup->addButton(m_moveUpButton,MoveLayerUp);
 
 	m_moveUpButton->setToolTip(tr( "Move Layer Up" ) );
 
-	m_moveDownButton = new DImageButton( QPixmap(HOME+"/themes/default/icons/arrowdown.png"), 20,  m_utilsInBottom );
+	m_moveDownButton = new DImageButton( QPixmap(HOME_DIR+"/themes/default/icons/arrowdown.png"), 20,  m_utilsInBottom );
 	m_buttonGroup->addButton(m_moveDownButton,MoveLayerDown);
 
 	m_moveDownButton->setToolTip(tr( "Move Layer Down" ) );
 	
-	new KSeparator( Qt::Vertical, m_utilsInBottom);
+	new DSeparator( Qt::Vertical, m_utilsInBottom);
 	
 	m_time = new QLabel( QString::number( m_currentTime, 'f', 2 ) + " / " + QString::number( m_totalTime, 'f', 2 ), m_utilsInBottom );
 	
@@ -119,7 +119,7 @@ KTLayerManager::KTLayerManager(QWidget *parent) : DVHBox(parent), m_currentTime(
 	m_time -> setAlignment( Qt::AlignCenter );
 	m_time -> resize( 80, 20 );
 
-	new KSeparator( Qt::Vertical, m_utilsInBottom);
+	new DSeparator( Qt::Vertical, m_utilsInBottom);
 	
 // 	show();
 }

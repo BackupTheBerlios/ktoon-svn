@@ -20,7 +20,7 @@
  
 #include "ktlibraryparser.h"
 #include "ddebug.h"
-#include "dpathadjuster.h"
+#include "dpathhandler.h"
 
 #include <ktglobal.h>
 
@@ -165,7 +165,7 @@ bool KTLibraryParser::endElement(const QString&, const QString& , const QString&
 	{
 		if ( qname == "Graphic" )
 		{
-			m_graphics.last()->path = DPathAdjuster::buildPath( m_tmpPolygons, ':');
+			m_graphics.last()->path = DPathHandler::buildPath( m_tmpPolygons, ':');
 			m_graphics.last()->pen = m_pen;
 			m_graphics.last()->brush = m_brush;
 		}
