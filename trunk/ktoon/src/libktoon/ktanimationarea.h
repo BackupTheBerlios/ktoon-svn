@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef AANIMATIONAREA_H
 #define AANIMATIONAREA_H
 
@@ -26,7 +27,7 @@
 #include <QTimer>
 #include <QFrame>
 
-#include "ktscene.h"
+#include "ktscenemanager.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -37,14 +38,14 @@ class KTAnimationArea : public QFrame
 	public:
 		KTAnimationArea(const QSize& size, QWidget *parent = 0);
 		~KTAnimationArea();
-		void setScene(KTScene *scene);
+		void setScene(KTSceneManager *scene);
 		
 		QSize sizeHint() const;
 		int photogramsCount() const;
 		
 		void setLoop(bool l);
 		
-		const KTScene *currentScene() const;
+		const KTSceneManager *currentScene() const;
 		
 	public slots:
 		virtual void render();
@@ -52,7 +53,7 @@ class KTAnimationArea : public QFrame
 		virtual void stop();
 		
 	private:
-		void renderGraphic(KTGraphicComponent *graphicComponent, QPainter *painter );
+// 		void renderGraphic(KTGraphicComponent *graphicComponent, QPainter *painter );
 		
 	private slots:
 		void advance();
@@ -61,7 +62,7 @@ class KTAnimationArea : public QFrame
 		void progressStep(int, int);
 		void toStatusBar(const QString &, int);
 		
-		void sceneChanged(const KTScene *newScene );
+		void sceneChanged(const KTSceneManager *newScene );
 		
 	protected:
 		void paintEvent(QPaintEvent *e);
@@ -71,9 +72,9 @@ class KTAnimationArea : public QFrame
 	private:
 		QFrame *m_container;
 		QImage m_renderCamera;
-		QSize m_size;
-// 		KTKeyFrame *m_currentFrame;
-		KTScene *m_scene;
+		
+// 		KTFrame *m_currentFrame;
+		KTSceneManager *m_scene;
 		
 		bool m_draw, m_ciclicAnimation;
 		
@@ -82,7 +83,7 @@ class KTAnimationArea : public QFrame
 		QTimer *m_timer;
 		
 		QList<QImage> m_photograms;
-		
+		QSize m_size;
 		bool m_isRendered;
 };
 

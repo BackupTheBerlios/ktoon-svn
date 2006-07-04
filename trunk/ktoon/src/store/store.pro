@@ -3,45 +3,43 @@
 # Subdir relative project main directory: ./src/store
 # Target is a library:  
 
-QT += xml 
 INSTALLS += headers \
             target 
 target.path = /lib/ 
 headers.files += *.h 
 headers.path = /include/ 
-KDEV_QTVER = 4 
-INCLUDEPATH += ../../src/store \
-               ../../src/libktoon \
-               ../../src/dlib/dgui \
-               ../../src/dlib/dcore \
-               ../../src/dlib 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-CONFIG += release \
-          warn_on \
-          dll 
-TEMPLATE = lib 
-HEADERS += ktkeyframe.h \
-           ktlayer.h \
+HEADERS += ktlayer.h \
            ktprojectmanager.h \
-           ktscene.h \
-           ktdocument.h \
-           ktserializableobject.h \
-           ktbrush.h \
-           ktprojectparser.h \
            ktpalettedocument.h \
-           ktgraphiccomponent.h 
-SOURCES += ktkeyframe.cpp \
-           ktlayer.cpp \
+           ktframe.h \
+           ktscenemanager.h \
+           ktprojectcommand.h \
+           ktframecommand.h \
+           ktscenecommand.h \
+           ktlayercommand.h 
+SOURCES += ktlayer.cpp \
            ktprojectmanager.cpp \
-           ktscene.cpp \
-           ktdocument.cpp \
-           ktserializableobject.cpp \
-           ktbrush.cpp \
-           ktprojectparser.cpp \
            ktpalettedocument.cpp \
-           ktgraphiccomponent.cpp 
+           ktframe.cpp \
+           ktscenemanager.cpp \
+           ktprojectcommand.cpp \
+           ktframecommand.cpp \
+           ktscenecommand.cpp \
+           ktlayercommand.cpp 
+QT += xml
+KDEV_QTVER = 4
+INCLUDEPATH += ../../src/store \
+../../src/libktoon \
+../../src/dlib/dgui \
+../../src/dlib/dcore \
+../../src/dlib
+MOC_DIR = .moc
+UI_DIR = .ui
+OBJECTS_DIR = .obj
+CONFIG += release \
+warn_on \
+dll
+TEMPLATE = lib
 macx{
   LIBS += -ldcore -ldgui -lktoon
   QMAKE_LIBDIR = ../../src/dlib/dcore ../../src/dlib/dgui ../../src/ktoonlib

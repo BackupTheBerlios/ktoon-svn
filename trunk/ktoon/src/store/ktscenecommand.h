@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,26 +17,23 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTSCENECOMMAND_H
+#define KTSCENECOMMAND_H
 
-#include "ktserializableobject.h"
+#include <ktprojectcommand.h>
 
-KTSerializableObject::KTSerializableObject(QObject *parent)
- : QObject(parent)
+/**
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+class KTSceneCommand : public KTProjectCommand
 {
-}
+	public:
+		KTSceneCommand(Action action, const QString &name, int sceneIndex);
+		~KTSceneCommand();
+		
+		virtual int id() const;
+		virtual void redo();
+		virtual void undo();
+};
 
-
-KTSerializableObject::~KTSerializableObject()
-{
-}
-
-QDomElement KTSerializableObject::createXML( QDomDocument & )
-{
-	return QDomElement();
-}
-
-void KTSerializableObject::saveResources(const QString &resourcesDir)
-{
-}
-
-
+#endif

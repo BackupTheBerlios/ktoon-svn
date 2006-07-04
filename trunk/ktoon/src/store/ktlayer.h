@@ -22,18 +22,17 @@
 #define KTLAYER_H
 
 #include <QObject>
-#include "ktkeyframe.h"
+#include "ktframe.h"
 
-#include "ktserializableobject.h"
 
-typedef QList<KTKeyFrame *> Frames;
+typedef QList<KTFrame *> Frames;
 
 /**
- * @brief Esta clase representa un layer, los layers estan contenidos en KTDocument y contienen KTKeyFrame 's
+ * @brief Esta clase representa un layer, los layers estan contenidos en KTDocument y contienen KTFrame's
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTLayer : public KTSerializableObject
+class KTLayer : public QObject
 {
 	Q_OBJECT
 	public:
@@ -63,48 +62,6 @@ class KTLayer : public KTSerializableObject
 		void setFrames(const Frames &frames);
 		
 		/**
-		 * Crea un frame, si addToEnd es verdadero el frame sera añadido al final, de lo contrario sera añadido despues del frame actual.
-		 */
-		KTKeyFrame *createFrame(const QString & name = QString::null, bool addToEnd = true );
-		
-		/**
-		 * Retorna el frame actual
-		 */
-		KTKeyFrame *currentFrame();
-		
-		/**
-		 * Pone el frame actual desde un indice
-		 */
-		void setCurrentFrame(int index);
-		
-		/**
-		 * Pega un frame desde a un indice
-		 */
-		void pasteFrame(const int& index, const KTKeyFrame* copy);
-		
-		void cloneFrame(const int& index, int nClones);
-		
-		/**
-		 * Mueve el frame actual, is up es verdadero lo mueve hacia arriba
-		 */
-		void moveCurrentFrame( bool up);
-		
-		/**
-		 * Remueve el frame actual
-		 */
-		void removeCurrentFrame();
-		
-		/**
-		 * Bloquea el frame actual
-		 */
-		void lockCurrentFrame();
-		
-		/**
-		 * Retorna el indice del frame actual
-		 */
-		int indexCurrentFrame();
-		
-		/**
 		 * Pone el nombre del layer
 		 */
 		void setLayerName(const QString &name);
@@ -122,48 +79,21 @@ class KTLayer : public KTSerializableObject
 		/**
 		 * Retorna verdadero si el layer es visible
 		 */
-		bool isVisible();
+		bool isVisible() const;
 		
-		/**
-		 * Reimplementada de KTSerializableObject
-		 */
-		QDomElement createXML( QDomDocument &doc );
-	
+		KTFrame *createFrame(bool addToEnd = true );
+		KTFrame *currentFrame();
+		
 	signals:
-		/**
-		 * Este signal se emite cuando un frame es creado
-		 */
-		void frameCreated( const QString &name, bool toEnd );
-		
-		/**
-		 * Este signal se emite cuando la visibilidad cambia
-		 */
-		void visibilityChanged(bool );
-		
-		/**
-		 * Este signal se emite cuando el frame actual ha sido movido
-		 */
-		void frameMoved(bool up);
-		
-		/**
-		 * Este signal se emite cuando el frame actual fue removido
-		 */
-		void frameRemoved();
-		
-		/**
-		 * Este signal se emite cuando el frame actual fue bloqueado
-		 */
-		void frameLocked();
+		void frameCreated(const QString &frameName, bool addedToEnd);
 		
 	private:
 		Frames m_frames;
 		bool m_isVisible;
 		QString m_name;
-		
-		KTKeyFrame *m_currentFrame;
-		
 		int m_framesCount;
-
+		
+		int m_currentFrameIndex;
 };
 
 #endif

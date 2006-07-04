@@ -22,7 +22,7 @@
 #define KTMAINWINDOW_H
 
 #include <QMainWindow>
-#include <QWorkspace>
+// #include </*/*QWorkspace*/*/>
 #include <QMenu>
 #include <QMenuBar>
 #include <QStatusBar>
@@ -58,13 +58,14 @@
 #include "dmainwindow.h"
 #include "ktstatusbar.h"
 
-#include "ktosd.h"
+#include "dosd.h"
 
 // Projects
 #include "ktprojectmanager.h"
 #include "ktsplash.h"
 
 #include "config.h"
+#include "ktviewdocument.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -103,7 +104,7 @@ class KTMainWindow : public DMainWindow
 		
 		void ui4project(QWidget *widget);
 		
-		QList<KTGraphicComponent *> currentElements();
+// 		QList<KTGraphicComponent *> currentElements();
 		
 	protected:
 		/**
@@ -126,7 +127,7 @@ class KTMainWindow : public DMainWindow
 	private slots:
 		void createNewProject(const QString &name, const QSize &size = QSize(-1,-1),  const int fps = 24  );
 		void newViewDocument(const QString &name = QString::null);
-		void newViewCamera(KTScene *scene = 0);
+		void newViewCamera(KTSceneManager *scene = 0);
 		void newProject();
 		bool closeProject();
 		void openProject();
@@ -139,7 +140,7 @@ class KTMainWindow : public DMainWindow
 		
 	private slots:
 		void messageToStatus(const QString &);
-		void messageToOSD(const QString &, int level = KTOsd::Info);
+		void messageToOSD(const QString &, DOsd::Level level);
 		void preferences();
 		void aboutKToon();
 		void showTipDialog();
@@ -162,7 +163,7 @@ class KTMainWindow : public DMainWindow
 		void flipHCurrentElement();
 		
 		void addCurrentGraphicToLibrary();
-		void addGraphicComponent(const KTGraphicComponent *graphic);
+// 		void addGraphicComponent(const KTGraphicComponent *graphic);
 		
 		//Layers
 		void insertLayer( const QString &, bool addedToEnd);
@@ -200,20 +201,20 @@ class KTMainWindow : public DMainWindow
 		QString m_fileName;
 		
 	private:
-		KTWorkspace *m_drawingSpace;
+		KTViewArea *m_viewDoc;
 		KTWorkspace *m_animationSpace;
 		KTStatusBar *m_statusBar;
 		DActionManager *m_actionManager;
 		QMenu *m_fileMenu,*m_settingsMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
 		
-		KTOsd *m_osd;
+		DOsd *m_osd;
 		
 		QStringList m_recentProjects;
 		
 	// Components
 	private:
 		KTExposureSheet *m_exposureSheet;
-		KTScenesWidget *m_scenes;
+		KTSceneManagersWidget *m_scenes;
 		KTTimeLine *m_timeLine;
 		KTHelpWidget *m_helper;
 		KTLibraryWidget *m_libraryWidget;

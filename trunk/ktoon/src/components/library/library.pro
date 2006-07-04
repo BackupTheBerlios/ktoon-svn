@@ -3,25 +3,23 @@
 # Subdir relative project main directory: ./src/components/library
 # Target is a library:  
 
-QT += xml 
-KDEV_QTVER = 4 
-INCLUDEPATH += ../../../src/store \
-               ../../../src/libktoon \
-               ../../../src/dlib/dgui \
-               ../../../src/dlib/dcore \
-               ../../../src/dlib 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-CONFIG += release \
-          warn_on \
-          staticlib 
-TEMPLATE = lib 
 HEADERS += ktlibrarywidget.h \
            ktgctable.h \
-           ktlibraryparser.h \
            ktdisplaygraphic.h 
 SOURCES += ktlibrarywidget.cpp \
            ktgctable.cpp \
-           ktlibraryparser.cpp \
            ktdisplaygraphic.cpp 
+QT += xml
+KDEV_QTVER = 4
+INCLUDEPATH += ../../../src/store \
+../../../src/libktoon \
+../../../src/dlib/dgui \
+../../../src/dlib/dcore \
+../../../src/dlib
+MOC_DIR = .moc
+UI_DIR = .ui
+OBJECTS_DIR = .obj
+CONFIG += release \
+warn_on \
+staticlib
+TEMPLATE = lib

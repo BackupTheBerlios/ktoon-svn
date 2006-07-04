@@ -3,8 +3,8 @@
 # Subdir relative project main directory: ./src/libktui
 # Target is a library:  ktui
 
-RESOURCES += ktui_images.qrc
-QT += xml 
+RESOURCES += ktui_images.qrc 
+QT += xml opengl 
 KDEV_QTVER = 4 
 INCLUDEPATH += ../../src/store \
                ../../src/libktoon \
@@ -23,9 +23,11 @@ HEADERS += ktthemeselector.h \
            ktabout.h \
            ktpreferences.h \
            ktworkspace.h \
-           ktcamerabar.h 
+           ktcamerabar.h \
+           ktpaintarea.h 
 SOURCES += ktthemeselector.cpp \
            ktabout.cpp \
            ktpreferences.cpp \
            ktworkspace.cpp \
-           ktcamerabar.cpp 
+           ktcamerabar.cpp \
+           ktpaintarea.cpp 

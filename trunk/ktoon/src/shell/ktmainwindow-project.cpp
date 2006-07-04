@@ -36,18 +36,19 @@ void KTMainWindow::insertScene( const QString &name, bool addedToEnd)
 void KTMainWindow::changeScene(int index)
 {
 	D_FUNCINFO;
-	m_exposureSheet->setScene( index);
-	m_timeLine->setScene( index);
-	
-	m_scenes->setScene(index);
-	m_projectManager->setCurrentScene( index);
-	
-	KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->activeWindow());
-	if(camera)
-	{
-		camera->animationArea()->setScene(m_projectManager->currentScene());
-	}
-	
+// 	m_exposureSheet->setScene( index);
+// 	m_timeLine->setScene( index);
+// 	
+// 	m_scenes->setScene(index);
+// 	m_projectManager->setCurrentScene( index);
+// 	if(m_animationSpace)
+// 	{
+// 		KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->activeWindow());
+// 		if(camera)
+// 		{
+// 			camera->animationArea()->setScene(m_projectManager->currentScene());
+// 		}
+// 	}
 }
 
 void KTMainWindow::selectLayer(int index)
@@ -65,7 +66,7 @@ void KTMainWindow::setLayerName(int indexLayer, const QString& name)
 void KTMainWindow::insertLayer(const QString &name, bool addedToEnd)
 {
 // 	dDebug() << "KTMainWindow::insertLayer(" << name << "," << addedToEnd << ")";
-// 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+// 	KTViewArea *doc = qobject_cast<KTViewArea *>(m_viewDoc->activeWindow ());
 	
 // 	if ( doc )
 // 	{
@@ -82,9 +83,9 @@ void KTMainWindow::moveLayer(bool up)
  	m_exposureSheet->moveLayer(up);
 	m_timeLine->moveLayer(up);
 	
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+// 	KTViewArea *doc = qobject_cast<KTViewArea *>(m_viewDoc->activeWindow ());
 	
-	if ( doc )
+	if ( m_viewDoc )
 	{
 // 		doc->drawArea()->redrawAll();
 	}
@@ -98,9 +99,9 @@ void KTMainWindow::removeLayer(int index)
 
 void KTMainWindow::setLayerVisibilityChanged(int idLayer, bool isVisible)
 {
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+// 	KTViewArea *doc = qobject_cast<KTViewArea *>(m_viewDoc->activeWindow ());
 	
-	if ( doc )
+	if ( m_viewDoc )
 	{
 // 		doc->drawArea()->redrawAll();
 	}
@@ -115,12 +116,13 @@ void KTMainWindow::insertFrame(const QString &name, bool addedToEnd)
 	m_timeLine->setUpdatesEnabled(false);
 	setUpdatesEnabled(false);
 	
-	m_exposureSheet->addFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd); // FIXME: insert!
-	m_timeLine->insertFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd);
+// 	m_exposureSheet->addFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd); // FIXME: insert!
+// 	m_timeLine->insertFrame(m_projectManager->currentScene()->indexCurrentLayer(), name, addedToEnd);
 	
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+// 	KTViewArea *doc = qobject_cast<KTViewArea *>(m_viewDoc->activeWindow ());
 	
-	if(!doc && m_projectManager->isOpen())
+	
+	if(!m_viewDoc && m_projectManager->isOpen())
 	{
 		newViewDocument( name);
 	}
@@ -158,13 +160,14 @@ void KTMainWindow::selectFrame(int layer, int frame)
 // 	SHOW_VAR(layer);
 // 	SHOW_VAR(frame);
 	
+#if 0
 	if ( layer < 0 || frame < 0 ) return;
 	
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+// 	KTViewArea *doc = qobject_cast<KTViewArea *>(m_viewDoc->activeWindow ());
 	
-	if ( doc )
+	if ( m_viewDoc )
 	{
-		KTScene *currentScene = m_projectManager->currentScene();
+		KTSceneManager *currentScene = m_projectManager->currentScene();
 		if ( currentScene )
 		{
 			if ( layer >= 0 && layer < currentScene->layers().count() )
@@ -191,9 +194,9 @@ void KTMainWindow::selectFrame(int layer, int frame)
 	}
 	else
 	{
-		if(m_drawingSpace->isVisible() && m_projectManager->isOpen() )
+		if(m_viewDoc->isVisible() && m_projectManager->isOpen() )
 		{
-			KTScene *scene = m_projectManager->currentScene();
+			KTSceneManager *scene = m_projectManager->currentScene();
 			
 			if ( scene )
 			{
@@ -204,7 +207,7 @@ void KTMainWindow::selectFrame(int layer, int frame)
 					{
 						if ( frame < l->frames().count() )
 						{
-							KTKeyFrame *f = l->frames()[frame];
+							KTFrame *f = l->frames()[frame];
 							
 							if ( f )
 							{
@@ -216,9 +219,9 @@ void KTMainWindow::selectFrame(int layer, int frame)
 			}
 		}
 	}
-	
+#endif
 #if 0
-	KTKeyFrame *currentFrame = m_projectManager->currentKeyFrame();
+	KTFrame *currentFrame = m_projectManager->currentKeyFrame();
 	foreach(KTGraphicComponent *component, currentFrame->components())
 	{
 		KTGCEditor::SGCItem item;
@@ -236,18 +239,18 @@ void KTMainWindow::selectNextFrame()
 	
 	if(m_projectManager)
 	{
-		if(m_projectManager->currentLayer() && m_projectManager->currentScene())
-		{
-			int currentFrame = m_projectManager->currentLayer()->indexCurrentFrame();
-			int currentLayer = m_projectManager->currentScene()->indexCurrentLayer();
-			
-			if(m_projectManager->currentDocument()->currentScene()->layers()[currentLayer]->frames().count() >  currentFrame+1)
-			{
-				selectFrame(currentLayer, currentFrame+1);
-			}
-			
-			
-		}
+// 		if(m_projectManager->currentLayer() && m_projectManager->currentScene())
+// 		{
+// 			int currentFrame = m_projectManager->currentLayer()->indexCurrentFrame();
+// 			int currentLayer = m_projectManager->currentScene()->indexCurrentLayer();
+// 			
+// 			if(m_projectManager->currentDocument()->currentScene()->layers()[currentLayer]->frames().count() >  currentFrame+1)
+// 			{
+// 				selectFrame(currentLayer, currentFrame+1);
+// 			}
+// 			
+// 			
+// 		}
 	}
 }
 
@@ -255,127 +258,125 @@ void KTMainWindow::selectBackFrame()
 {
 	if(m_projectManager)
 	{
-		if(m_projectManager->currentLayer() && m_projectManager->currentScene())
-		{
-			int currentFrame = m_projectManager->currentLayer()->indexCurrentFrame();
-			int currentLayer = m_projectManager->currentScene()->indexCurrentLayer();
-			if(0 <= currentFrame-1)
-			{
-				selectFrame(currentLayer, currentFrame-1);
-			}
-		}
+// 		if(m_projectManager->currentLayer() && m_projectManager->currentScene())
+// 		{
+// 			int currentFrame = m_projectManager->currentLayer()->indexCurrentFrame();
+// 			int currentLayer = m_projectManager->currentScene()->indexCurrentLayer();
+// 			if(0 <= currentFrame-1)
+// 			{
+// 				selectFrame(currentLayer, currentFrame-1);
+// 			}
+// 		}
 	}
 }
 
-QList<KTGraphicComponent *> KTMainWindow::currentElements()
-{
-	QList<KTGraphicComponent *> elements;
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
-	
-	if ( doc )
-	{
-		KTKeyFrame *cFrame = m_projectManager->currentKeyFrame();
-		
-		if ( cFrame )
-		{
-			elements = cFrame->selectedComponents();
-		}
-	}
-	return elements;
-}
+// QList<KTGraphicComponent *> KTMainWindow::currentElements()
+// {
+// 	QList<KTGraphicComponent *> elements;
+// // 	KTViewArea *doc = qobject_cast<KTViewArea *>(m_viewDoc->activeWindow ());
+// 	
+// 	if ( m_viewDoc )
+// 	{
+// 		KTFrame *cFrame = m_projectManager->currentKeyFrame();
+// 		
+// 		if ( cFrame )
+// 		{
+// 			elements = cFrame->selectedComponents();
+// 		}
+// 	}
+// 	return elements;
+// }
 
 
 // Graphic Components
 void KTMainWindow::rotateCurrentElement(int a)
 {
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
-	QList<KTGraphicComponent *> selecteds = currentElements();
-	
-	if ( selecteds.count() > 0 )
-	{
-		foreach( KTGraphicComponent * selected,  selecteds )
-		{
-			selected->rotate(a);
-		}
-// 		doc->drawArea()->redrawAll();
-	}
-	
-
+// 	KTViewArea *doc = qobject_cast<KTViewArea *>(m_viewDoc->activeWindow ());
+// 	QList<KTGraphicComponent *> selecteds = currentElements();
+// 	
+// 	if ( selecteds.count() > 0 )
+// 	{
+// 		foreach( KTGraphicComponent * selected,  selecteds )
+// 		{
+// 			selected->rotate(a);
+// 		}
+// // 		doc->drawArea()->redrawAll();
+// 	}
 }
 
 void KTMainWindow::scaleCurrentElement(double dx,double dy)
 {
 	D_FUNCINFO;
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
-	QList<KTGraphicComponent *> selecteds = currentElements();
-	if ( selecteds.count() > 0 )
-	{
-		foreach( KTGraphicComponent * selected,  selecteds )
-		{
-			selected->scale(dx, dy);
-		}
-// 		doc->drawArea()->redrawAll();
-	}
+// 	KTViewArea *doc = qobject_cast<KTViewArea *>(m_viewDoc->activeWindow ());
+// 	QList<KTGraphicComponent *> selecteds = currentElements();
+// 	if ( selecteds.count() > 0 )
+// 	{
+// 		foreach( KTGraphicComponent * selected,  selecteds )
+// 		{
+// 			selected->scale(dx, dy);
+// 		}
+// // 		doc->drawArea()->redrawAll();
+// 	}
 }
 
 void KTMainWindow::translateCurrentElement(double dx ,double dy)
 {
 	D_FUNCINFO;
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
-	QList<KTGraphicComponent *> selecteds = currentElements();
-	if ( selecteds.count() > 0 )
-	{
-		foreach( KTGraphicComponent * selected,  selecteds )
-		{
-			selected->translate(dx, dy);
-		}
-// 		doc->drawArea()->redrawAll();
-	}
+// 	KTViewArea *doc = qobject_cast<KTViewArea *>(m_viewDoc->activeWindow ());
+// // 	QList<KTGraphicComponent *> selecteds = currentElements();
+// // 	if ( selecteds.count() > 0 )
+// // 	{
+// // 		foreach( KTGraphicComponent * selected,  selecteds )
+// // 		{
+// // 			selected->translate(dx, dy);
+// // 		}
+// // // 		doc->drawArea()->redrawAll();
+// // 	}
 }
 
 void KTMainWindow::shearCurrentElement(double dx,double dy)
 {
 	D_FUNCINFO;
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
-	QList<KTGraphicComponent *> selecteds = currentElements();
-	if ( selecteds.count() > 0 )
-	{
-		foreach( KTGraphicComponent * selected,  selecteds )
-		{
-			selected->shear(dx, dy);
-		}
+// 	KTViewArea *doc = qobject_cast<KTViewArea *>(m_viewDoc->activeWindow ());
+// 	QList<KTGraphicComponent *> selecteds = currentElements();
+// 	if ( selecteds.count() > 0 )
+// // 	{
+// 		foreach( KTGraphicComponent * selected,  selecteds )
+// 		{
+// 			selected->shear(dx, dy);
+// 		}
 // 		doc->drawArea()->redrawAll();
-	}
+// 	}
 }
 
 void KTMainWindow::flipVCurrentElement()
 {
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
-	if(doc)
-	{
+// 	KTViewArea *doc = qobject_cast<KTViewArea *>(m_viewDoc->activeWindow ());
+// 	if(doc)
+// 	{
 // 		doc->drawArea()->flipVCurrentElement();
-	}
+// 	}
 	
 }
 
 void KTMainWindow::flipHCurrentElement()
 {
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
-	if(doc)
-	{
+// 	KTViewArea *doc = qobject_cast<KTViewArea *>(m_viewDoc->activeWindow ());
+// 	if(doc)
+// 	{
 // 		doc->drawArea()->flipHCurrentElement();
-	}
+// 	}
 }
 
 
 
 void KTMainWindow::addCurrentGraphicToLibrary()
 {
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
-	
+// 	KTViewArea *doc = qobject_cast<KTViewArea *>(m_viewDoc->activeWindow ());
+/*	
 	if ( doc )
 	{
-		KTKeyFrame *cFrame = m_projectManager->currentKeyFrame();
+		KTFrame *cFrame = m_projectManager->currentKeyFrame();
 		
 		if ( cFrame )
 		{
@@ -392,26 +393,26 @@ void KTMainWindow::addCurrentGraphicToLibrary()
 				m_libraryWidget->addGraphic(form);
 			}
 		}
-	}
+	}*/
 }
 
-void KTMainWindow::addGraphicComponent(const KTGraphicComponent *graphic)
-{
-	KTGraphicComponent *copy = new KTGraphicComponent(*graphic);
-	
-	KTKeyFrame *frame = m_projectManager->currentKeyFrame();
-	
-	if ( ! frame )
-	{
-		return;
-	}
-	
-	frame->addComponent( copy );
-	
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
-	
-	if ( doc )
-	{
-// 		doc->drawArea()->redrawAll();
-	}
-}
+// void KTMainWindow::addGraphicComponent(const KTGraphicComponent *graphic)
+// {
+// 	KTGraphicComponent *copy = new KTGraphicComponent(*graphic);
+// 	
+// 	KTFrame *frame = m_projectManager->currentKeyFrame();
+// 	
+// 	if ( ! frame )
+// 	{
+// 		return;
+// 	}
+// 	
+// 	frame->addComponent( copy );
+// 	
+// 	KTViewArea *doc = qobject_cast<KTViewArea *>(m_viewDoc->activeWindow ());
+// 	
+// 	if ( doc )
+// 	{
+// // 		doc->drawArea()->redrawAll();
+// 	}
+// }

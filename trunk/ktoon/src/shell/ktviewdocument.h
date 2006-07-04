@@ -18,10 +18,10 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTVIEWDOCUMENT_H
-#define KTVIEWDOCUMENT_H
+#ifndef KTVIEWAREA_H
+#define KTVIEWAREA_H
 
-#include "dmdiwindow.h"
+// #include "dmdiwindow.h"
 #include "ktdocumentruler.h"
 #include <QCursor>
 #include <QAction>
@@ -36,22 +36,25 @@
 #include "ktfilterinterface.h"
 #include "kttoolinterface.h"
 
-#include "ktdocument.h"
 #include "ktconfigurationarea.h"
-
+#include <QMainWindow>
 #include "ktglobal.h"
+
+#include <dosd.h>
+
+class KTPaintArea;
 
 /**
  * @author Jorge Cuadrado
 */
-class KTViewDocument : public DMdiWindow
+
+class KTViewArea : public QMainWindow
 {
 	Q_OBJECT
 	public:
-		KTViewDocument( const QSize& size ,  const QString& projectName , KToon::RenderType renderType, KTDocument *doc, QWorkspace *parent = 0 );
-		~KTViewDocument();
+		KTViewArea(   const QString& title , KToon::RenderType renderType, QWidget *parent = 0 );
+		~KTViewArea();
 		void close();
-		
 		QSize sizeHint() const;
 		
 		
@@ -68,7 +71,7 @@ class KTViewDocument : public DMdiWindow
 		void setNextOnionSkin(int n);
 		void setPreviousOnionSkin(int n);
 		
-		void setScene(KTScene* scene);
+// 		void setScene(KTSceneManager* scene);
 		
 		void setZoomFactor(int porcent);
 		
@@ -80,7 +83,9 @@ class KTViewDocument : public DMdiWindow
 		QToolBar *m_barGrid, *m_toolbar;
 		QSpinBox *m_zoomFactorSpin;
 		
-		KTDocument *m_document;
+		
+// 		KTDocument *m_document;
+		KTPaintArea *m_paintArea;
 		QString m_title;
 		
 	private:
@@ -118,6 +123,10 @@ class KTViewDocument : public DMdiWindow
 	public slots:
 		void selectTool();
 		void applyFilter();
+		
+	signals:
+		void sendToStatus(const QString& msg);
+		void sendToOSD(const QString &msg, DOsd::Level );
 		
 	protected:
 // 		void closeEvent(QCloseEvent *e);

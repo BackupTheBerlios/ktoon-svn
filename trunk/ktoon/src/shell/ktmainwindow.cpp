@@ -52,13 +52,13 @@
 #include <QMessageBox>
 //
 
-KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0), m_scenes(0)
+KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0), m_scenes(0), m_viewDoc(0),m_animationSpace(0)
 {
 	DINIT;
 	
 	setObjectName("KTMainWindow_");
 	
-	m_osd = new KTOsd( centralWidget() );
+	m_osd = new DOsd( centralWidget() );
 	
 	m_statusBar = new KTStatusBar(this);
 	setStatusBar( m_statusBar );
@@ -70,19 +70,15 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	m_projectManager = new KTProjectManager(this);
 	splash->setMessage( tr("Setting up the project manager") );
 	
-	m_drawingSpace = new KTWorkspace;
-	m_drawingSpace->setWindowIcon(QIcon(THEME_DIR+"/icons/illustration_mode.png"));
-	m_drawingSpace->setScrollBarsEnabled( true );
+// 	m_viewDoc = new KTWorkspace;
+// 	m_viewDoc->setWindowIcon(QIcon(THEME_DIR+"/icons/illustration_mode.png"));
+// 	m_viewDoc->setScrollBarsEnabled( true );
+// 	m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
+// 	m_viewDoc = new KTViewArea( QSize(500, 500), "asdf", m_renderType );
 	
-	addWidget(m_drawingSpace, tr("Illustration"), true);
+// 	addWidget(m_viewDoc, tr("Illustration"), true);
 	
-	m_animationSpace = new KTWorkspace;
-	m_animationSpace->setWindowIcon(QIcon(THEME_DIR+"/icons/animation_mode.png"));
-	m_animationSpace->setScrollBarsEnabled ( true );
-	
-	connect(m_animationSpace, SIGNAL(contextMenu( const QPoint& )), this, SLOT(showAnimationMenu( const QPoint& )));
 
-	addWidget(m_animationSpace, tr("Animation"), true);
 	
 	splash->setMessage( tr("Loading action manager..."));
 	m_actionManager = new DActionManager(this);
@@ -126,107 +122,106 @@ void KTMainWindow::createNewProject(const QString &name, const QSize &size, cons
 	
 	m_projectManager->init();
 	
-	/*KTDocument *document = */m_projectManager->createDocument(name);
-	m_projectManager->setCurrentDocument(0);
-	
-// 	newViewDocument( name, size);
-// 	m_viewCamera->animationArea()->setScene(m_projectManager->currentScene());
-	
+	m_projectManager->createSceneManager(true);
+	newViewDocument( name);
 	m_projectManager->setProjectName( name );
-// 	m_projectManager->setProjectRender( renderType );
-	m_projectManager->setProjectFPS( fps);
-	m_projectManager->setDocumentSize( size );
 	
 	
-	// Add by default a scene, layer, frame
-	m_projectManager->createScene( true );
+// 	// Add by default a scene, layer, frame
 	m_projectManager->createLayer( true );
 	m_projectManager->createFrame( true );
 }
 
-void KTMainWindow::newViewDocument(const QString &name)
+void KTMainWindow::newViewDocument(const QString &title)
 {
-	if ( m_projectManager->isOpen())
-	{
-		messageToStatus(tr("Opening a new paint area..."));
-		
-		messageToOSD(tr("Opening a new document..."));
-		
-		KTScene *scene = m_projectManager->currentScene();
-		
-		m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
-		
-		if ( scene )
-		{
-			m_statusBar->advance(4);
-			KTViewDocument *viewDocument = new KTViewDocument( m_projectManager->documentSize(),  name, m_renderType,  m_projectManager->currentDocument(), m_drawingSpace);
-			
-			viewDocument->setAttribute(Qt::WA_DeleteOnClose, true);
-			
+// 	if ( m_projectManager->isOpen())
+// 	{
+// 		messageToStatus(tr("Opening a new paint area..."));
+// 		
+// 		messageToOSD(tr("Opening a new document..."));
+// 		
+// 		KTSceneManager *scene = m_projectManager->currentScene();
+// 		
+// 		m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
+// 		
+// 		if ( scene )
+// 		{
+// 			m_statusBar->advance(4);
+			/*KTViewArea **/m_viewDoc = new KTViewArea(  title, m_renderType);
+			connectToDisplays( m_viewDoc );
+			m_viewDoc->setAttribute(Qt::WA_DeleteOnClose, true);
+			addWidget( m_viewDoc, tr("Illustration"), true);
 // 			viewDocument->drawArea()->setPen( m_penWidget->pen());
+// 			
 			
-			m_drawingSpace->addWindow(viewDocument);
-			m_statusBar->advance(7);
-			
-			KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->activeWindow());
-			
-			if ( camera )
-			{
-				camera->animationArea()->setScene( scene );
-			}
-			else
-			{
-				QWidgetList cameras = m_animationSpace->windowList();
-				
-				if ( cameras.count() > 0 )
-				{
-					camera = qobject_cast<KTViewCamera *>(cameras[0]);
-					if(camera)
-					{
-						camera->animationArea()->setScene(scene);
-					}
-				}
-				else
-				{
-					newViewCamera(scene);
-				}
-			}
-			
-			viewDocument->show();
-			
-			m_statusBar->advance(10);
-			
-			m_statusBar->setStatus(tr("Opened."));
-		}
-		else
-		{
-			m_statusBar->advance(0);
-			m_statusBar->setStatus(tr("Project not open."));
-		}
-	}
+// 			m_statusBar->advance(7);
+// 			
+			m_animationSpace = new KTWorkspace;
+			m_animationSpace->setWindowIcon(QIcon(THEME_DIR+"/icons/animation_mode.png"));
+			m_animationSpace->setScrollBarsEnabled ( true );
+// 	
+// 			connect(m_animationSpace, SIGNAL(contextMenu( const QPoint& )), this, SLOT(showAnimationMenu( const QPoint& )));
+// 
+			addWidget(m_animationSpace, tr("Animation"), true);
+// 			KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->activeWindow());
+// 			
+// 			if ( camera )
+// 			{
+// 				camera->animationArea()->setScene( scene );
+// 			}
+// 			else
+// 			{
+// 				QWidgetList cameras = m_animationSpace->windowList();
+// 				
+// 				if ( cameras.count() > 0 )
+// 				{
+// 					camera = qobject_cast<KTViewCamera *>(cameras[0]);
+// 					if(camera)
+// 					{
+// 						camera->animationArea()->setScene(scene);
+// 					}
+// 				}
+// 				else
+// 				{
+// 					newViewCamera(scene);
+// 				}
+// 			}
+// 			
+// 			m_viewDoc->show();
+// 			
+// 			m_statusBar->advance(10);
+// 			
+// 			m_statusBar->setStatus(tr("Opened."));
+// 		}
+// 		else
+// 		{
+// 			m_statusBar->advance(0);
+// 			m_statusBar->setStatus(tr("Project not open."));
+// 		}
+// 	}
 }
 
-void KTMainWindow::newViewCamera(KTScene *scene)
+void KTMainWindow::newViewCamera(KTSceneManager *scene)
 {
 	if ( m_projectManager->isOpen() )
 	{
-		KTViewCamera *viewCamera = new KTViewCamera(m_projectManager->documentSize() , m_animationSpace);
-		viewCamera->setAttribute(Qt::WA_DeleteOnClose, true);
-		connect(viewCamera, SIGNAL(sendMessage(const QString &, int)), m_statusBar, SLOT(setStatus(const QString &, int)));
-		connect(viewCamera, SIGNAL(sendProgress(int, int)), m_statusBar, SLOT(advance(int, int)));
-		
-		m_animationSpace->addWindow(viewCamera);
-		
-		if ( scene )
-		{
-			viewCamera->animationArea()->setScene( scene );
-		}
-		else
-		{
-			viewCamera->animationArea()->setScene(m_projectManager->currentScene());
-		}
-		
-		viewCamera->show();
+// 		KTViewCamera *viewCamera = new KTViewCamera(m_projectManager->documentSize() , m_animationSpace);
+// 		viewCamera->setAttribute(Qt::WA_DeleteOnClose, true);
+// 		connect(viewCamera, SIGNAL(sendMessage(const QString &, int)), m_statusBar, SLOT(setStatus(const QString &, int)));
+// 		connect(viewCamera, SIGNAL(sendProgress(int, int)), m_statusBar, SLOT(advance(int, int)));
+// 		
+// 		m_animationSpace->addWindow(viewCamera);
+// 		
+// 		if ( scene )
+// 		{
+// 			viewCamera->animationArea()->setScene( scene );
+// 		}
+// 		else
+// 		{
+// 			viewCamera->animationArea()->setScene(m_projectManager->currentScene());
+// 		}
+// 		
+// 		viewCamera->show();
 	}
 }
 
@@ -242,8 +237,6 @@ void KTMainWindow::newProject()
 		createNewProject( wizard->projectName(), wizard->dimension(), wizard->fps() );
 	}
 	delete wizard;
-	
-	
 }
 
 bool KTMainWindow::closeProject()
@@ -266,7 +259,7 @@ bool KTMainWindow::closeProject()
 	{
 		case QMessageBox::Yes:
 		{
-			m_projectManager->save();
+// 			m_projectManager->save();
 		}
 		break;
 		case QMessageBox::No:
@@ -280,10 +273,10 @@ bool KTMainWindow::closeProject()
 		break;
 	}
 	
-	m_pActiveTabWidget->setCurrentWidget(m_drawingSpace);
+	m_pActiveTabWidget->setCurrentWidget(m_viewDoc);
 	m_projectManager->close();
 	
-	m_drawingSpace->closeAllWindows();
+// 	m_viewDoc->closeAllWindows();
 	m_animationSpace->closeAllWindows();
 	
 // 	QWidgetList cameras = m_animationSpace->windowList();
@@ -326,38 +319,38 @@ void KTMainWindow::openProject(const QString &path)
 	{
 		if ( closeProject() )
 		{
-			m_pActiveTabWidget->setCurrentWidget(m_drawingSpace);
+			m_pActiveTabWidget->setCurrentWidget(m_viewDoc);
 			
-			if ( m_projectManager->load( packageHandler.importedProjectPath() ) )
-			{
-				m_fileName = path;
-				
-				if ( QDir::isRelativePath(path) )
-				{
-					m_fileName = QDir::currentPath()+"/"+path;
-				}
-				
-				int pos = m_recentProjects.indexOf(m_fileName);
-				if ( pos == -1 )
-				{
-					if ( m_recentProjects.count() <= 6 )
-					{
-						m_recentProjects << m_fileName;
-					}
-					else
-					{
-						m_recentProjects.push_front(m_fileName);
-					}
-				}
-				else
-				{
-					m_recentProjects.push_front(m_recentProjects.takeAt(pos));
-				}
-				
-				newViewDocument();
-				
-				messageToOSD( tr("Project opened!"));
-			}
+// 			if ( m_projectManager->load( packageHandler.importedProjectPath() ) )
+// 			{
+// 				m_fileName = path;
+// 				
+// 				if ( QDir::isRelativePath(path) )
+// 				{
+// 					m_fileName = QDir::currentPath()+"/"+path;
+// 				}
+// 				
+// 				int pos = m_recentProjects.indexOf(m_fileName);
+// 				if ( pos == -1 )
+// 				{
+// 					if ( m_recentProjects.count() <= 6 )
+// 					{
+// 						m_recentProjects << m_fileName;
+// 					}
+// 					else
+// 					{
+// 						m_recentProjects.push_front(m_fileName);
+// 					}
+// 				}
+// 				else
+// 				{
+// 					m_recentProjects.push_front(m_recentProjects.takeAt(pos));
+// 				}
+// 				
+// 				newViewDocument();
+// 				
+// 				messageToOSD( tr("Project opened!"));
+// 			}
 		}
 	}
 }
@@ -418,9 +411,9 @@ void KTMainWindow::importPalettes()
 // Drawing
 void KTMainWindow::changeCurrentColors(const QBrush &foreground, const QBrush &background)
 {
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow());
+// 	KTViewArea *doc = qobject_cast<KTViewArea *>(m_viewDoc->activeWindow());
 	
-	if ( doc )
+	if ( m_viewDoc )
 	{
 // 		doc->drawArea()->currentBrush()->setPenBrush(foreground);
 // 		doc->drawArea()->currentBrush()->setBrush(background);
@@ -430,9 +423,9 @@ void KTMainWindow::changeCurrentColors(const QBrush &foreground, const QBrush &b
 
 void KTMainWindow::changeCurrentPen(const QPen &pen)
 {
-	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_drawingSpace->activeWindow ());
+// 	KTViewArea *doc = qobject_cast<KTViewArea *>(m_viewDoc->activeWindow ());
 	
-	if ( doc )
+	if ( m_viewDoc )
 	{
 // 		doc->drawArea()->setPen( pen );
 	}
@@ -440,12 +433,12 @@ void KTMainWindow::changeCurrentPen(const QPen &pen)
 
 void KTMainWindow::changeFPS(int fps)
 {
-	KTScene *scene = m_projectManager->currentScene();
-	
-	if ( scene )
-	{
-		scene->setFPS( fps );
-	}
+// 	KTSceneManager *scene = m_projectManager->currentScene();
+// 	
+// 	if ( scene )
+// 	{
+// 		scene->setFPS( fps );
+// 	}
 }
 
 void KTMainWindow::ui4project(QWidget *widget)
@@ -487,9 +480,9 @@ void KTMainWindow::messageToStatus(const QString &msg)
 	m_statusBar->setStatus(msg, msg.length() * 90);
 }
 
-void KTMainWindow::messageToOSD(const QString &msg, int level)
+void KTMainWindow::messageToOSD(const QString &msg, DOsd::Level level)
 {
-	m_osd->display( msg, KTOsd::Level(level), msg.length()*90);
+	m_osd->display( msg, level, msg.length()*90);
 }
 
 void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
@@ -505,54 +498,54 @@ void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 
 void KTMainWindow::saveProject()
 {
-	m_projectManager->save();
-	
-	if ( m_fileName.isEmpty() )
-	{
-		saveProjectAs();
-		return;
-	}
-	
-	if( !m_fileName.endsWith(".ktn"))
-	{
-		m_fileName += ".ktn";
-	}
-	
-	dDebug() << "Saving " << m_fileName;
-	
-	KTPackageHandler packageHandler;
-	
-	bool ok = packageHandler.makePackage(CACHE_DIR+"/"+m_projectManager->projectName(), m_fileName);
-	
-	if ( ok )
-	{
-		messageToOSD( tr("Project saved!"));
-	}
+// 	m_projectManager->save();
+// 	
+// 	if ( m_fileName.isEmpty() )
+// 	{
+// 		saveProjectAs();
+// 		return;
+// 	}
+// 	
+// 	if( !m_fileName.endsWith(".ktn"))
+// 	{
+// 		m_fileName += ".ktn";
+// 	}
+// 	
+// 	dDebug() << "Saving " << m_fileName;
+// 	
+// 	KTPackageHandler packageHandler;
+// 	
+// 	bool ok = packageHandler.makePackage(CACHE_DIR+"/"+m_projectManager->projectName(), m_fileName);
+// 	
+// 	if ( ok )
+// 	{
+// 		messageToOSD( tr("Project saved!"));
+// 	}
 	
 }
 
 void KTMainWindow::saveProjectAs()
 {
-	m_projectManager->save();
-	
-	m_fileName = QFileDialog::getSaveFileName( this, tr("Build project package"), CACHE_DIR, "KToon Project Package (*.ktn)");
-	
-	if ( m_fileName.isEmpty() ) return;
-	
-	if( !m_fileName.endsWith(".ktn"))
-	{
-		m_fileName += ".ktn";
-	}
-	
-	KTPackageHandler packageHandler;
-	
-	bool ok = packageHandler.makePackage(CACHE_DIR+"/"+m_projectManager->projectName(), m_fileName);
-	
-	
-	if ( ok )
-	{
-		messageToOSD( tr("Project saved in %1!").arg(m_fileName) );
-	}
+// 	m_projectManager->save();
+// 	
+// 	m_fileName = QFileDialog::getSaveFileName( this, tr("Build project package"), CACHE_DIR, "KToon Project Package (*.ktn)");
+// 	
+// 	if ( m_fileName.isEmpty() ) return;
+// 	
+// 	if( !m_fileName.endsWith(".ktn"))
+// 	{
+// 		m_fileName += ".ktn";
+// 	}
+// 	
+// 	KTPackageHandler packageHandler;
+// 	
+// 	bool ok = packageHandler.makePackage(CACHE_DIR+"/"+m_projectManager->projectName(), m_fileName);
+// 	
+// 	
+// 	if ( ok )
+// 	{
+// 		messageToOSD( tr("Project saved in %1!").arg(m_fileName) );
+// 	}
 }
 
 void KTMainWindow::openRecentProject()

@@ -36,7 +36,7 @@
 
 //--------------- CONSTRUCTOR --------------------
 
-KTScenesWidget::KTScenesWidget( QWidget *parent) : KTModuleWidgetBase( parent, "KTScenesWidget")
+KTSceneManagersWidget::KTSceneManagersWidget( QWidget *parent) : KTModuleWidgetBase( parent, "KTSceneManagersWidget")
 {
 	DINIT;
 	
@@ -46,12 +46,12 @@ KTScenesWidget::KTScenesWidget( QWidget *parent) : KTModuleWidgetBase( parent, "
 	setupTableScenes();
 }
 
-KTScenesWidget::~KTScenesWidget()
+KTSceneManagersWidget::~KTSceneManagersWidget()
 {
 	DEND;
 }
 
-void KTScenesWidget::setupButtons()
+void KTSceneManagersWidget::setupButtons()
 {
 	m_buttonsPanel = new QGroupBox(this);
 	
@@ -71,9 +71,9 @@ void KTScenesWidget::setupButtons()
 	addChild(m_buttonsPanel);
 }
 
-void KTScenesWidget::setupTableScenes()
+void KTSceneManagersWidget::setupTableScenes()
 {
-	m_tableScenes = new KTScenesList(this);
+	m_tableScenes = new KTSceneManagersList(this);
 	
 	addChild( m_tableScenes);
 	connect(m_tableScenes, SIGNAL(changeCurrent(QString , int )), this, SLOT(selectScene( QString, int)));
@@ -82,39 +82,39 @@ void KTScenesWidget::setupTableScenes()
 
 }
 
-void KTScenesWidget::insertScene(const QString &name, bool addedToEnd)
+void KTSceneManagersWidget::insertScene(const QString &name, bool addedToEnd)
 {
 	D_FUNCINFO;
 	m_tableScenes->addScene(name);
 	emit sendToStatus( tr("Scene added"));
 }
 
-void KTScenesWidget::removeScene()
+void KTSceneManagersWidget::removeScene()
 {
 	m_tableScenes->removeCurrentScene();
 	emit sendToStatus( tr("Scene removed"));
 }
 
-void KTScenesWidget::selectScene(const QString & name, int index)
+void KTSceneManagersWidget::selectScene(const QString & name, int index)
 {
 	emit changeCurrentScene(index);
 }
-void KTScenesWidget::actionButton( QAbstractButton *b)
+void KTSceneManagersWidget::actionButton( QAbstractButton *b)
 {
 }
 
-void KTScenesWidget::sceneDobleClick(QTreeWidgetItem * item, int )
+void KTSceneManagersWidget::sceneDobleClick(QTreeWidgetItem * item, int )
 {
 }
 
-void KTScenesWidget::emitRequestInsertScene()
+void KTSceneManagersWidget::emitRequestInsertScene()
 {
 	emit requestInsertScene();
 	emit requestInsertLayer();
 	emit requestInsertFrame();
 }
 
-void KTScenesWidget::emitRequestRemoveScene()
+void KTSceneManagersWidget::emitRequestRemoveScene()
 {
 	DCONFIG->beginGroup("Scene");
 	bool noAsk = qvariant_cast<bool>(DCONFIG->value("RemoveWithoutAskScene", false));
@@ -134,12 +134,12 @@ void KTScenesWidget::emitRequestRemoveScene()
 
 
 
-void KTScenesWidget::setScene(int index)
+void KTSceneManagersWidget::setScene(int index)
 {
 	// 	m_tableScenes->setCurrentItem(m_tableScenes->topLevelItem ( index ) ); // FIXME
 }
 
-void KTScenesWidget::closeAllScenes()
+void KTSceneManagersWidget::closeAllScenes()
 {
 	m_tableScenes->removeAll();
 }

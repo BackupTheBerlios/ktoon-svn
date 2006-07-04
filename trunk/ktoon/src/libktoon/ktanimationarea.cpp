@@ -23,7 +23,7 @@
 
 #include "dgradientadjuster.h"
 
-KTAnimationArea::KTAnimationArea(const QSize& size, QWidget *parent) : QFrame(parent), m_scene(0), m_draw(false), m_ciclicAnimation(false), m_currentFramePosition(0), m_isRendered(false), m_size(size)
+KTAnimationArea::KTAnimationArea(const QSize& size, QWidget *parent) : QFrame(parent), m_scene(0), m_draw(false), m_ciclicAnimation(false), m_currentFramePosition(0), m_size(size), m_isRendered(false)
 {
 	setAttribute(Qt::WA_StaticContents);
 
@@ -40,7 +40,7 @@ KTAnimationArea::~KTAnimationArea()
 {
 }
 
-void KTAnimationArea::setScene(KTScene *scene)
+void KTAnimationArea::setScene(KTSceneManager *scene)
 {
 	m_scene = scene;
 	
@@ -59,8 +59,8 @@ void KTAnimationArea::paintEvent(QPaintEvent *e)
 
 void KTAnimationArea::drawFrames(QPainter *painter)
 {
-// 	QList<KTKeyFrame *> frames = m_scene->frames();
-// 	QList<KTKeyFrame *>::iterator frameIterator = frames.begin();
+// 	QList<KTFrame *> frames = m_scene->frames();
+// 	QList<KTFrame *>::iterator frameIterator = frames.begin();
 // 	
 // 	while ( frameIterator != frames.end() )
 // 	{
@@ -170,21 +170,21 @@ void KTAnimationArea::render() // TODO: Extend to scenes
 			
 			if ( *layerIterator && nPhotogramsRenderized < (*layerIterator)->frames().count() && (*layerIterator)->isVisible() )
 			{
-				KTKeyFrame *frame = (*layerIterator)->frames()[nPhotogramsRenderized];
+				KTFrame *frame = (*layerIterator)->frames()[nPhotogramsRenderized];
 				if ( frame )
 				{
-					QList<KTGraphicComponent *> componentList = frame->components();
-					
-					if ( componentList.count() > 0  )
-					{
-						QList<KTGraphicComponent *>::iterator it = componentList.begin();
-										
-						while ( it != componentList.end() )
-						{
-							renderGraphic(*it, &painter);
-							++it;
-						}
-					}
+// 					QList<KTGraphicComponent *> componentList = frame->components();
+// 					
+// 					if ( componentList.count() > 0  )
+// 					{
+// 						QList<KTGraphicComponent *>::iterator it = componentList.begin();
+// 										
+// 						while ( it != componentList.end() )
+// 						{
+// 							renderGraphic(*it, &painter);
+// 							++it;
+// 						}
+// 					}
 				}
 			}
 			++layerIterator;
@@ -203,19 +203,19 @@ void KTAnimationArea::render() // TODO: Extend to scenes
 	}
 }
 
-void KTAnimationArea::renderGraphic(KTGraphicComponent *graphicComponent, QPainter *painter )
-{
-	painter->save();
-	float sx = 1, sy = 1, offset =0;
-	sx = static_cast<float>(size().width()-offset) / static_cast<float>(m_size.width());
-
-	sy = static_cast<float>(size().height()-offset) / static_cast<float>(m_size.height());
-
-	painter->scale(sx,sy);
-	
-	graphicComponent->draw(painter);
-	painter->restore();
-}
+// void KTAnimationArea::renderGraphic(KTGraphicComponent *graphicComponent, QPainter *painter )
+// {
+// 	painter->save();
+// 	float sx = 1, sy = 1, offset =0;
+// 	sx = static_cast<float>(size().width()-offset) / static_cast<float>(m_size.width());
+// 
+// 	sy = static_cast<float>(size().height()-offset) / static_cast<float>(m_size.height());
+// 
+// 	painter->scale(sx,sy);
+// 	
+// 	graphicComponent->draw(painter);
+// 	painter->restore();
+// }
 
 int KTAnimationArea::photogramsCount() const
 {
@@ -256,7 +256,7 @@ void KTAnimationArea::setLoop(bool l)
 	m_ciclicAnimation = l;
 }
 
-const KTScene *KTAnimationArea::currentScene() const
+const KTSceneManager *KTAnimationArea::currentScene() const
 {
 	return m_scene;
 }

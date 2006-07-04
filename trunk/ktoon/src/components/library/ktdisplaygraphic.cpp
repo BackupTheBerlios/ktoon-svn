@@ -25,7 +25,7 @@
 
 #include <QPainter>
 
-KTDisplayGraphic::KTDisplayGraphic(QWidget *parent) : QFrame(parent), m_drawGraphic(false), m_graphic(0)
+KTDisplayGraphic::KTDisplayGraphic(QWidget *parent) : QFrame(parent), m_drawGraphic(false)/*, m_graphic(0)*/
 {
 	m_displayArea = QImage(100, 100, QImage::Format_RGB32);
 	m_displayArea.fill(qRgb(255, 255, 255));
@@ -41,7 +41,7 @@ KTDisplayGraphic::KTDisplayGraphic(QWidget *parent) : QFrame(parent), m_drawGrap
 
 KTDisplayGraphic::~KTDisplayGraphic()
 {
-	if(m_graphic) delete m_graphic; 
+// 	if(m_graphic) delete m_graphic; 
 }
 
 QSize KTDisplayGraphic::sizeHint() const
@@ -62,7 +62,7 @@ void KTDisplayGraphic::paintEvent ( QPaintEvent *e )
 	
 	if ( m_drawGraphic )
 	{
-		m_graphic->draw( &painter);
+// 		m_graphic->draw( &painter);
 	}
 	
 	painter.end();
@@ -76,17 +76,17 @@ void KTDisplayGraphic::paintEvent ( QPaintEvent *e )
 	painter.drawRect(m_displayArea.rect());
 }
 
-void KTDisplayGraphic::addGraphicComponent(const KTGraphicComponent *component)
-{
-	KTGraphicComponent *newGraphic = new KTGraphicComponent(*component);
-	newGraphic->adjustToRect(m_displayArea.rect(), 10);
-	
-	m_graphic = newGraphic;
-	
-	m_drawGraphic = true;
-	
-	update();
-}
+// void KTDisplayGraphic::addGraphicComponent(const KTGraphicComponent *component)
+// {
+// 	KTGraphicComponent *newGraphic = new KTGraphicComponent(*component);
+// 	newGraphic->adjustToRect(m_displayArea.rect(), 10);
+// 	
+// 	m_graphic = newGraphic;
+// 	
+// 	m_drawGraphic = true;
+// 	
+// 	update();
+// }
 
 
 

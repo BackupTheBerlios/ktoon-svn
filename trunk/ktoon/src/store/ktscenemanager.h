@@ -18,34 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTSCENE_H
-#define KTSCENE_H
+#ifndef KTSCENEMANAGER_H
+#define KTSCENEMANAGER_H
 
 #include <QObject>
 #include "ktlayer.h"
 
 typedef QList<KTLayer *> Layers;
 
-#include "ktserializableobject.h"
 
 /**
  * @brief Esta clase representa una escena
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTScene : public KTSerializableObject
+class KTSceneManager : public QObject
 {
 	Q_OBJECT
 	public:
 		/**
 		 * Constructor por defecto
 		 */
-		KTScene(QObject *parent = 0);
+		KTSceneManager(QObject *parent = 0);
 		
 		/**
 		 * Destructor
 		 */
-		~KTScene();
+		~KTSceneManager();
 		
 		/**
 		 * Pone un nombre a la escena
@@ -62,25 +61,18 @@ class KTScene : public KTSerializableObject
 		 */
 		Layers layers() const;
 		
-		/**
-		 * Pone la lista de layers, esta funcion sobreescribe los layers anteriores
-		 */
+		
 		void setLayers(const Layers &);
 		
-		/**
-		 * Retorna el layer actual
-		 */
+		
 		KTLayer *currentLayer();
+		
+		int currentLayerIndex() const;
 		
 		/**
 		 * Pone el layer actual desde un indice
 		 */
 		void setCurrentLayer(int index);
-		
-		/**
-		 * Retorna el indice layer actual
-		 */
-		int indexCurrentLayer() const;
 		
 		/**
 		 * Remueve el layer situado en el indice proporcionado
@@ -90,7 +82,7 @@ class KTScene : public KTSerializableObject
 		/**
 		 * Crea una layer, si addToEnd es verdadero el layer se creara al final, sino se creara despues del layer actual
 		 */
-		KTLayer *createLayer(const QString & name = QString::null, bool addToEnd = true );
+		KTLayer *createLayer(bool addToEnd = true );
 		
 		/**
 		 * Cambia los frames por segundo de la escena
@@ -105,39 +97,24 @@ class KTScene : public KTSerializableObject
 		/**
 		 * Reimplementado de KTSerializableObject
 		 */
-		QDomElement createXML( QDomDocument &doc );
+// 		QDomElement createXML( QDomDocument &doc );
 		
 		/**
 		 * Guarda la escena en una ruta
 		 */
-		void save(const QString &scenePath);
+// 		void save(const QString &scenePath);
 		
 		/**
 		 * Carga la escena desde una ruta
 		 */
-		void load(const QString &path);
+// 		void load(const QString &path);
 		
 		/**
 		 * Mueve el current layer, si up es verdadero lo mueve hacia arriba
 		 */
 		void moveCurrentLayer(bool up);
 		
-	private slots:
-		/**
-		 * Carga un layer
-		 */
-		void loadLayer(const QString &);
-		
-		/**
-		 * Carga un frame
-		 */
-		void loadFrame(const QString &name, int clones);
-		
-		/**
-		 * Carga un componente
-		 */
-		void loadComponent(KTGraphicComponent *);
-		
+		QGraphicsScene* scene(int index);
 	signals:
 		/**
 		 * Este signal es emitido cuando se crea un layer
@@ -160,9 +137,10 @@ class KTScene : public KTSerializableObject
 		void layerMoved(bool up);
 		
 		
+		
 	private:
 		Layers m_layers;
-		KTLayer *m_currentLayer;
+		int m_currentLayerIndex;
 		mutable QString m_name;
 		
 		int m_layerCount;

@@ -46,7 +46,7 @@ KTExportInterface::Formats GenericExportPlugin::availableFormats()
 	return PNG | JPEG;
 }
 
-void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size,float sx, float sy)
+void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KTSceneManager *> &scenes, Format format,  const QSize &size,float sx, float sy)
 {
 	QFileInfo fileInfo(filePath);
 	
@@ -74,13 +74,13 @@ void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KT
 	createImages(scenes, dir, sx, sy, f);
 }
 
-QStringList GenericExportPlugin::createImages(const QList<KTScene *> &scenes, const QDir &dir, float sx, float sy, const char *format)
+QStringList GenericExportPlugin::createImages(const QList<KTSceneManager *> &scenes, const QDir &dir, float sx, float sy, const char *format)
 {
 	QStringList paths;
 	
 	int nPhotogramsRenderized = 0;
 	
-	foreach(KTScene *scene, scenes )
+	foreach(KTSceneManager *scene, scenes )
 	{
 		Layers layers = scene->layers();
 		
@@ -103,21 +103,21 @@ QStringList GenericExportPlugin::createImages(const QList<KTScene *> &scenes, co
 				
 				if ( *layerIterator && nPhotogramsRenderized < (*layerIterator)->frames().count() && (*layerIterator)->isVisible() )
 				{
-					KTKeyFrame *frame = (*layerIterator)->frames()[nPhotogramsRenderized];
+					KTFrame *frame = (*layerIterator)->frames()[nPhotogramsRenderized];
 					if ( frame )
 					{
-						QList<KTGraphicComponent *> componentList = frame->components();
-						
-						if ( componentList.count() > 0  )
-						{
-							QList<KTGraphicComponent *>::iterator it = componentList.begin();
-									
-							while ( it != componentList.end() )
-							{
-								(*it)->draw( &painter);
-								++it;
-							}
-						}
+// 						QList<KTGraphicComponent *> componentList = frame->components();
+// 						
+// 						if ( componentList.count() > 0  )
+// 						{
+// 							QList<KTGraphicComponent *>::iterator it = componentList.begin();
+// 									
+// 							while ( it != componentList.end() )
+// 							{
+// 								(*it)->draw( &painter);
+// 								++it;
+// 							}
+// 						}
 					}
 				}
 				++layerIterator;

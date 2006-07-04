@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,34 +18,42 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef GENERICEXPORTPLUGIN_H
-#define GENERICEXPORTPLUGIN_H
+#include "ktframe.h"
+#include "ddebug.h"
 
-#include <ktexportpluginobject.h>
-#include <ktexportinterface.h>
 
-/**
-	@author David Cuadrado <krawek@toonka.com>
-*/
-class GenericExportPlugin : public KTExportPluginObject, public KTExportInterface
+KTFrame::KTFrame(QObject *parent) : QGraphicsScene(parent), m_name("Frame"), m_isLocked(false)
 {
-	Q_OBJECT;
-	Q_INTERFACES(KTExportInterface);
+}
+
+KTFrame::KTFrame(const QString &frameName, QObject * parent) : QGraphicsScene(parent), m_name(frameName), m_isLocked(false)
+{	
 	
-	public:
-		GenericExportPlugin();
-		virtual ~GenericExportPlugin();
-		virtual QString key() const;
-		KTExportInterface::Formats availableFormats();
-		
-		virtual void exportToFormat(const QString &filePath, const QList<KTSceneManager *> &scenes, Format format,  const QSize &size, float sx = 1, float sy = 1);
-		
-	private:
-		QStringList createImages(const QList<KTSceneManager *> &scenes, const QDir &dir,float sx = 1, float sy = 1, const char *format = "PNG");
-		
-	private:
-		QString m_baseName;
+}
 
-};
 
-#endif
+KTFrame::~KTFrame()
+{
+}
+
+void KTFrame::setFrameName(const QString &name)
+{
+	m_name = name;
+}
+
+void KTFrame::setLocked(bool isLocked)
+{
+	m_isLocked = isLocked;
+}
+
+QString KTFrame::frameName() const
+{
+	return m_name;
+}
+
+bool KTFrame::isLocked()
+{
+	return m_isLocked;
+}
+
+

@@ -94,8 +94,6 @@ class DiDockInternalWidget : public QWidget {
     
 		DiDockWidget::Position position() const { return m_position; }
 		
-		void setSeparator(QWidget *separator);
-    
 	signals:
 		void fixedExtentHeight(int);
 		void fixedExtentWidth(int);
@@ -119,8 +117,6 @@ class DiDockInternalWidget : public QWidget {
     
 		QMap<Ideal::DiButton*, QWidget*> m_widgets;
 		QMap<QWidget*, Ideal::DiButton*> m_buttons;
-		
-		QWidget * m_separator;
 
 	private:
 		DiDockWidget::Position m_position;

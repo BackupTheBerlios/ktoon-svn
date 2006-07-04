@@ -23,7 +23,7 @@
 
 #include <cmath> // sin,cos
 
-#include "ktkeyframe.h"
+#include "ktframe.h"
 #include <daction.h>
 
 #include "qplugin.h" // Q_EXPORT_PLUGIN
@@ -38,7 +38,7 @@ class AFilterInterface
 	public:
 		virtual ~AFilterInterface() {}
 		virtual QStringList keys() const = 0;
-		virtual void filter(const QString &filter, const QList<KTGraphicComponent *> &frame) = 0;
+// 		virtual void filter(const QString &filter, const QList<KTGraphicComponent *> &frame) = 0;
 		
 		virtual QHash<QString, DAction *>actions() = 0;
 };

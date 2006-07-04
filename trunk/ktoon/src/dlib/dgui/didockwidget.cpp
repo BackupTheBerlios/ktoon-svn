@@ -40,9 +40,13 @@
 #include <QMainWindow>
 #include <QDebug>
 #include <QWindowsStyle>
+#include <QMenuBar>
+#include <QStatusBar>
 
 #include "dibuttonbar.h"
 #include "dibutton.h"
+
+#include "ddebug.h"
 
 DiDockWidget::DiDockWidget(QWidget *parent, Position position) : QDockWidget( parent)
 {
@@ -58,23 +62,7 @@ DiDockWidget::DiDockWidget(QWidget *parent, Position position) : QDockWidget( pa
 	
 	connect(this, SIGNAL(topLevelChanged ( bool)), this, SLOT(setFloatingOption(bool)));
 	
-#if QT_VERSION >= 0x040100
 	setStyle(new QWindowsStyle());
-#else
-	QList<QWidget*> widgets = findChildren<QWidget*>();
-	QList<QWidget*>::ConstIterator it = widgets.begin();
-	
-	while (it != widgets.end())
-	{
-		if ((*it)->metaObject()->className() == QString("QDockWidgetTitle"))
-		{
-			(*it)->setStyle("windows");
-			(*it)->hide();
-			break;
-		}
-		++it;
-	}
-#endif
 }
 
 DiDockWidget::~DiDockWidget()
@@ -121,7 +109,7 @@ DiDockInternalWidget *DiDockWidget::centralWidget()
 
 // DiDockInternalWidget
 
-DiDockInternalWidget::DiDockInternalWidget(QWidget *parent, DiDockWidget::Position position) : QWidget(parent), m_separator(0), m_position(position), m_visible(false), m_toggledButton(0)
+DiDockInternalWidget::DiDockInternalWidget(QWidget *parent, DiDockWidget::Position position) : QWidget(parent), m_position(position), m_visible(false), m_toggledButton(0)
 {
 	Ideal::Place place = Ideal::Left;
 	switch (position)
@@ -444,18 +432,51 @@ void DiDockInternalWidget::showWidget(QWidget *widget)
 
 void DiDockInternalWidget::shrink()
 {
-	if ( ! m_separator )
+	QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(QApplication::activeWindow());
+	if ( !mainWindow )
 	{
+		D_FUNCINFO << "Fatal error";
 		return;
 	}
 	
-	bool hmt = m_separator->hasMouseTracking();
+	mainWindow->setUpdatesEnabled(false);
 	
-	m_separator->setMouseTracking(true);
+	bool hmt = mainWindow->hasMouseTracking();
+	
+	int pm = style()->pixelMetric(QStyle::PM_DockWidgetSeparatorExtent);
+	
+	mainWindow->setMouseTracking(true);
+	
+	int wOffset = 0, hOffset= 0;
+	
+	if ( m_position == DiDockWidget::Bottom )
+	{
+		wOffset = 20;
+		hOffset = -(y() * 2 + pm - 1); // FIXME FIXME FIXME
+	}
+	else if ( m_position == DiDockWidget::Left )
+	{
+		wOffset = width()+(pm/2)+1;
+		hOffset = height() / 2;
+	}
+	else if (m_position == DiDockWidget::Right )
+	{
+		wOffset = -(pm/2)+1;
+		hOffset = height() / 2;
+	}
+	
 	QMouseEvent press(QEvent::MouseButtonPress,
-			  QPoint(m_separator->x(), m_separator->y()),
+			  mapTo(mainWindow, QPoint(this->x(), this->y())) + QPoint(wOffset, hOffset),
 			  Qt::LeftButton, 0, 0);
-	QApplication::sendEvent(m_separator, &press);
+	
+	SHOW_VAR( mapTo(mainWindow, QPoint(this->x(), this->y())) + QPoint(wOffset, hOffset) );
+	
+	if ( ! QApplication::sendEvent(mainWindow, &press) )
+	{
+		qWarning("Fail pressing");
+	}
+	
+	qApp->processEvents();
 	
 	int df = 0;
 	int x1 = 0, x2= 0, y1= 0, y2= 0, xRelease= 0, yRelease= 0;
@@ -469,7 +490,7 @@ void DiDockInternalWidget::shrink()
 		x2 = press.globalPos().x();
 		y2 = press.globalPos().y() + df;
 		
-		xRelease = m_separator->x();
+		xRelease = this->x();
 		yRelease = 10;
 	}
 	else if ( m_position == DiDockWidget::Left )
@@ -482,7 +503,7 @@ void DiDockInternalWidget::shrink()
 		y2 = press.globalPos().y();
 		
 		xRelease = 10;
-		yRelease = m_separator->y();
+		yRelease = this->y();
 	}
 	else if (m_position == DiDockWidget::Right )
 	{
@@ -493,34 +514,35 @@ void DiDockInternalWidget::shrink()
 		x2 = press.globalPos().x() + df;
 		y2 = press.globalPos().y();
 		
-		xRelease = QApplication::activeWindow()->width();
-		yRelease = m_separator->y();
+		xRelease = mainWindow->width();
+		yRelease = this->y();
 	}
 	
 	QMouseEvent move(QEvent::MouseMove,
 			 QPoint(x1, y1),
 			 QPoint(x2, y2),
 			 Qt::LeftButton, 0, 0);
-	QApplication::sendEvent(m_separator, &move);
+	
+	if ( ! QApplication::sendEvent(mainWindow, &move) )
+	{
+		qWarning("Fail moving");
+	}
+	qApp->processEvents();
 
 	QMouseEvent release(QEvent::MouseButtonRelease,
 			    QPoint(xRelease, yRelease),
 			    Qt::LeftButton, 0, 0);
-	QApplication::sendEvent(m_separator, &release);
+	if ( ! QApplication::sendEvent(mainWindow, &release) )
+	{
+		qWarning("Fail releasing");
+	}
+	qApp->processEvents();
 	
-	m_separator->setMouseTracking(hmt);
+	mainWindow->setMouseTracking(hmt);
+	
+	mainWindow->setUpdatesEnabled(true);
 }
 
-void DiDockInternalWidget::setSeparator(QWidget *separator)
-{
-	Q_CHECK_PTR(separator);
-	m_separator = 0;
-	
-	if ( m_separator )
-	{
-		m_separator->setStyle(new QWindowsStyle());
-	}
-}
 
 void DiDockInternalWidget::dialoged(int index)
 {

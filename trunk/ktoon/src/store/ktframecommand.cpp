@@ -18,34 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef GENERICEXPORTPLUGIN_H
-#define GENERICEXPORTPLUGIN_H
+#include "ktframecommand.h"
+#include <ddebug.h>
 
-#include <ktexportpluginobject.h>
-#include <ktexportinterface.h>
-
-/**
-	@author David Cuadrado <krawek@toonka.com>
-*/
-class GenericExportPlugin : public KTExportPluginObject, public KTExportInterface
+KTFrameCommand::KTFrameCommand(Action action, const QString &name, int index) : KTLayerCommand(action, name, index)
 {
-	Q_OBJECT;
-	Q_INTERFACES(KTExportInterface);
-	
-	public:
-		GenericExportPlugin();
-		virtual ~GenericExportPlugin();
-		virtual QString key() const;
-		KTExportInterface::Formats availableFormats();
-		
-		virtual void exportToFormat(const QString &filePath, const QList<KTSceneManager *> &scenes, Format format,  const QSize &size, float sx = 1, float sy = 1);
-		
-	private:
-		QStringList createImages(const QList<KTSceneManager *> &scenes, const QDir &dir,float sx = 1, float sy = 1, const char *format = "PNG");
-		
-	private:
-		QString m_baseName;
+}
 
-};
 
-#endif
+KTFrameCommand::~KTFrameCommand()
+{
+}
+
+int KTFrameCommand::id() const
+{
+	return KTProjectCommand::Frame;
+}
+
+void KTFrameCommand::redo()
+{
+	D_FUNCINFO << "IMPLEMENT ME";
+}
+
+void KTFrameCommand::undo()
+{
+	D_FUNCINFO << "IMPLEMENT ME";
+}
+

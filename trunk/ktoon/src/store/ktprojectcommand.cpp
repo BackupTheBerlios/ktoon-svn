@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,48 +17,44 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef KTLIBRARYPARSER_H
-#define KTLIBRARYPARSER_H
 
-#include <QXmlDefaultHandler>
-#include <QList>
-#include <QPainterPath>
+#include "ktprojectcommand.h"
 
-#include "ktgraphiccomponent.h"
+#include <ddebug.h>
 
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-class KTLibraryParser : public QXmlDefaultHandler
+KTProjectCommand::KTProjectCommand(Action action, const QString &name) : QUndoCommand(), m_action(action), m_partName(name)
 {
-	public:
-		KTLibraryParser();
-		~KTLibraryParser();
-		
-		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
-		
-		bool endElement( const QString& ns, const QString& localname, const QString& qname);
-		
-		bool error ( const QXmlParseException & exception );
-		bool fatalError ( const QXmlParseException & exception );
-		
-		QList<KTGraphicComponent *> components();
-		
-	private:
-		QString m_root,m_qname;
-		QList<KTGraphicComponent *> m_components;
-		QStringList m_tmpPolygons;
-		QString m_objectName;
-		
-		QBrush m_brush;
-		QPen m_pen;
-		QGradient *m_gradient;
-		QGradientStops m_gradientStops;
-		
-		QList<KTGraphicElement *> m_graphics;
-		
-		int m_tagCounter;
-};
+	
+}
 
-#endif
+
+KTProjectCommand::~KTProjectCommand()
+{
+}
+
+
+KTProjectCommand::Action KTProjectCommand::action() const
+{
+	return m_action;
+}
+
+QString KTProjectCommand::partName() const
+{
+	return m_partName;
+}
+
+
+void KTProjectCommand::redo()
+{
+	D_FUNCINFO << "IMPLEMENT ME";
+}
+
+void KTProjectCommand::undo()
+{
+	D_FUNCINFO << "IMPLEMENT ME";
+}
+
+int KTProjectCommand::id() const
+{
+	return Project;
+}

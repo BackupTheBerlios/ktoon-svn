@@ -21,24 +21,17 @@
 #include "ktlayer.h"
 #include "ddebug.h"
 
-KTLayer::KTLayer(QObject *parent) : KTSerializableObject(parent), m_isVisible(true), m_name(tr("Layer")), m_currentFrame(0), m_framesCount(0)/*, m_copyFrame(0)*/
+KTLayer::KTLayer(QObject *parent) : QObject(parent), m_isVisible(true), m_name(tr("Layer")), m_framesCount(0), m_currentFrameIndex(-1)
 {
-// 	m_currentFrame = createFrame();
 }
 
-KTLayer::KTLayer(const QString &layerName, QObject * parent)  : KTSerializableObject(parent), m_isVisible(true), m_name(layerName), m_currentFrame(0), m_framesCount(0)/*, m_copyFrame(0)*/
+KTLayer::KTLayer(const QString &layerName, QObject * parent)  : QObject(parent), m_isVisible(true), m_name(layerName), m_framesCount(0), m_currentFrameIndex(-1)
 {
-// 	m_currentFrame = createFrame();
 }
 
 KTLayer::~KTLayer()
 {
-	for(int i = 0; i < m_frames.count(); i++ )
-	{
-		KTKeyFrame *tmp = m_frames[i];
-		m_frames.removeAll ( tmp);
-		delete tmp;
-	}
+	qDeleteAll(m_frames.begin(), m_frames.end());
 }
 
 Frames KTLayer::frames()
@@ -52,162 +45,15 @@ void KTLayer::setFrames(const Frames &frames)
 	m_framesCount = frames.count();
 }
 
-KTKeyFrame *KTLayer::createFrame(const QString& name, bool addToEnd)
-{
-	KTKeyFrame *keyFrame = new KTKeyFrame(this);
-	
-	m_framesCount++;
-	
-	if(name.isNull())
-	{
-		keyFrame->setFrameName(tr("Drawing %1").arg(m_framesCount));
-	}
-	else
-	{
-		keyFrame->setFrameName( name);
-	}
-	if ( addToEnd )
-	{
-		m_frames << keyFrame;
-	}
-	else
-	{
-		m_frames.insert(m_frames.indexOf(m_currentFrame)+1, keyFrame);
-	}
-	
-	m_currentFrame = keyFrame;
-
-	emit frameCreated( keyFrame->frameName(), addToEnd );
-	
-	return keyFrame;
-}
-
-KTKeyFrame *KTLayer::currentFrame()
-{
-	return m_currentFrame;
-}
-
-void KTLayer::setCurrentFrame(int index)
-{
-	KTKeyFrame *frame = m_frames[index]; 
-	
-	if ( frame )
-	{
-		m_currentFrame = frame;
-	}
-}
-
-int KTLayer::indexCurrentFrame()
-{
-	return m_frames.indexOf(m_currentFrame);
-}
-
-
 void KTLayer::setLayerName(const QString &name)
 {
 	m_name = name;
 }
 
-void KTLayer::pasteFrame(const int& index, const KTKeyFrame* copy)
-{
-	if(index == m_frames.count() )
-	{
-		createFrame(QString::null, true);
-		m_frames.replace(index, new KTKeyFrame(*copy));
-	}
-	else if ( index > m_frames.count() )
-	{
-		for(int i = m_frames.count(); i <= index; i++)
-		{ 
-			createFrame(QString::null, true);
-			m_frames.replace(i, new KTKeyFrame(*copy));
-		}
-	}
-	else
-	{
-		m_frames.replace(index, new KTKeyFrame(*copy));
-	}
-}
-
-void KTLayer::cloneFrame(const int& index, int nClones)
-{
-	if ( nClones <= 0 || nClones >= 100 )
-	{
-		dDebug() << "Clones out of bound";
-		return;
-	}
-	
-	KTKeyFrame *clone = m_frames[index];
-	
-	if(clone)
-	{
-		
-		for(int i = index+1; i <= (index)+nClones; i++)
-		{
-			if(i == m_frames.count() )
-			{
-				m_frames << clone;
-				emit frameCreated( clone->frameName(), true );
-			}
-			else
-			{
-				emit frameCreated( clone->frameName(), false );
-				m_frames.insert ( i, clone );
-			}
-		}
-		clone->setClonesNumber( m_frames.count(clone)-1);
-	}
-}
-
-void KTLayer::moveCurrentFrame( bool up)
-{
-	if(m_currentFrame)
-	{
-		if(up )
-		{
-			if(m_frames.indexOf(m_currentFrame) > 0)
-			{
-				m_frames.swap ( indexCurrentFrame(), indexCurrentFrame()-1);
-				emit frameMoved(up);
-			}
-		}
-		else if(m_frames.indexOf(m_currentFrame) < m_frames.count()-1)
-		{
-			m_frames.swap ( indexCurrentFrame(), indexCurrentFrame()+1);
-			emit frameMoved(up);
-		}
-	}
-}
-
-void KTLayer::removeCurrentFrame()
-{
-// 	dDebug() << "emit KTLayer::removeCurrentFrame()";
-	if(m_currentFrame)
-	{
-		
-		if(m_currentFrame->clonesNumber() > 0)
-		{
-			m_currentFrame->setClonesNumber( m_currentFrame->clonesNumber() -1);
-		}
-		m_frames.removeAt( indexCurrentFrame() );
-		emit frameRemoved();
-	}
-}
-
-void KTLayer::lockCurrentFrame()
-{
-	if ( m_currentFrame)
-	{
-		m_currentFrame->setLocked(!m_currentFrame->isLocked());
-		emit frameLocked(/*m_currentFrame->isLocked()*/);
-	}
-}
-
 void KTLayer::setVisible(bool isVisible)
 {
-// 	dDebug() << "KTLayer::setVisible(" << isVisible << ")" << endl;
 	m_isVisible = isVisible;
-	emit visibilityChanged(isVisible);
+// 	emit visibilityChanged(isVisible);
 }
 
 QString KTLayer::layerName() const
@@ -215,34 +61,42 @@ QString KTLayer::layerName() const
 	return m_name;
 }
 
-bool KTLayer::isVisible()
+bool KTLayer::isVisible() const
 {
 	return m_isVisible;
 }
 
-
-QDomElement KTLayer::createXML( QDomDocument &doc )
+KTFrame *KTLayer::createFrame(bool addToEnd)
 {
-	QDomElement layer = doc.createElement("Layer");
-	layer.setAttribute ( "name", m_name);
-	Frames::ConstIterator iterator = m_frames.begin();
+	KTFrame *keyFrame = new KTFrame(this);
 	
-	while( iterator != m_frames.end() )
+	m_framesCount++;
+	
+	keyFrame->setFrameName(tr("Drawing %1").arg(m_framesCount));
+	
+	if ( addToEnd )
 	{
-		layer.appendChild((*iterator)->createXML(doc));
-		
-		if(m_frames.count(*iterator) != 1)
-		{
-			iterator+= (m_frames.count(*iterator));
-		}
-		else
-		{
-			++iterator;
-		}
+		m_currentFrameIndex = m_frames.count();
+		m_frames << keyFrame;
+	}
+	else
+	{
+		m_currentFrameIndex++;
+		m_frames.insert(m_currentFrameIndex, keyFrame);
 	}
 	
-	return layer;
+	emit frameCreated( keyFrame->frameName(), addToEnd );
+	
+	return keyFrame;
 }
 
-
+KTFrame *KTLayer::currentFrame()
+{
+	if ( m_currentFrameIndex >= 0 && m_currentFrameIndex < m_frames.count() )
+	{
+		return m_frames[m_currentFrameIndex];
+	}
+	
+	return 0;
+}
 

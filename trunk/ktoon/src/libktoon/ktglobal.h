@@ -32,7 +32,15 @@ namespace KToon
 		Image = 0,
 		OpenGL,
 		Native
-	};	
+	};
+	
+	enum MessageType
+	{
+		Information = 0,
+		Warning,
+		Error,
+		Critical
+	};
 };
 
 

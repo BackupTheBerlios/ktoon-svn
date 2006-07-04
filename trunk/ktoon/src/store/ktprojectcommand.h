@@ -18,34 +18,47 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef GENERICEXPORTPLUGIN_H
-#define GENERICEXPORTPLUGIN_H
 
-#include <ktexportpluginobject.h>
-#include <ktexportinterface.h>
+#ifndef KTPROJECTCOMMAND_H
+#define KTPROJECTCOMMAND_H
+
+#include <QUndoCommand>
 
 /**
-	@author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@gmail.com>
 */
-class GenericExportPlugin : public KTExportPluginObject, public KTExportInterface
+class KTProjectCommand : public QUndoCommand
 {
-	Q_OBJECT;
-	Q_INTERFACES(KTExportInterface);
-	
 	public:
-		GenericExportPlugin();
-		virtual ~GenericExportPlugin();
-		virtual QString key() const;
-		KTExportInterface::Formats availableFormats();
+		enum Action
+		{
+			Add = 0,
+			Remove
+		};
+		enum Part
+		{
+			Project = 1000,
+			Frame,
+			Layer,
+			Scene
+		};
 		
-		virtual void exportToFormat(const QString &filePath, const QList<KTSceneManager *> &scenes, Format format,  const QSize &size, float sx = 1, float sy = 1);
+		KTProjectCommand(Action action, const QString &name);
+		~KTProjectCommand();
+		
+		
+		Action action() const;
+		
+		QString partName() const;
+		
+		virtual void redo();
+		virtual void undo();
+		
+		virtual int id() const;
 		
 	private:
-		QStringList createImages(const QList<KTSceneManager *> &scenes, const QDir &dir,float sx = 1, float sy = 1, const char *format = "PNG");
-		
-	private:
-		QString m_baseName;
-
+		Action m_action;
+		QString m_partName;
 };
 
 #endif

@@ -51,7 +51,7 @@ KTExportInterface::Formats MingPlugin::availableFormats()
 	return SWF;
 }
 
-void MingPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size, float sx, float sy)
+void MingPlugin::exportToFormat(const QString &filePath, const QList<KTSceneManager *> &scenes, Format format,  const QSize &size, float sx, float sy)
 {
 #ifdef HAVE_MING
 	QDir temp(CACHE_DIR+"/exporting");
@@ -97,13 +97,13 @@ void MingPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> 
 #endif
 }
 
-QStringList MingPlugin::createImages(const QList<KTScene *> &scenes, const QDir &dir, float sx, float sy, const char *format)
+QStringList MingPlugin::createImages(const QList<KTSceneManager *> &scenes, const QDir &dir, float sx, float sy, const char *format)
 {
 	QStringList paths;
 	
 	int nPhotogramsRenderized = 0;
 	
-	foreach(KTScene *scene, scenes )
+	foreach(KTSceneManager *scene, scenes )
 	{
 		Layers layers = scene->layers();
 		
@@ -128,22 +128,22 @@ QStringList MingPlugin::createImages(const QList<KTScene *> &scenes, const QDir 
 				
 				if ( *layerIterator && nPhotogramsRenderized < (*layerIterator)->frames().count() && (*layerIterator)->isVisible() )
 				{
-					KTKeyFrame *frame = (*layerIterator)->frames()[nPhotogramsRenderized];
-					if ( frame )
-					{
-						QList<KTGraphicComponent *> componentList = frame->components();
-												
-						if ( componentList.count() > 0  )
-						{
-							QList<KTGraphicComponent *>::iterator it = componentList.begin();
-													
-							while ( it != componentList.end() )
-							{
-								(*it)->draw( &painter);
-								++it;
-							}
-						}
-					}
+// 					KTFrame *frame = (*layerIterator)->frames()[nPhotogramsRenderized];
+// 					if ( frame )
+// 					{
+// 						QList<KTGraphicComponent *> componentList = frame->components();
+// 												
+// 						if ( componentList.count() > 0  )
+// 						{
+// 							QList<KTGraphicComponent *>::iterator it = componentList.begin();
+// 													
+// 							while ( it != componentList.end() )
+// 							{
+// 								(*it)->draw( &painter);
+// 								++it;
+// 							}
+// 						}
+// 					}
 				}
 				++layerIterator;
 			}

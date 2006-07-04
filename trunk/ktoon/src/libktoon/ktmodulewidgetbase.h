@@ -29,6 +29,8 @@
 #include <QBoxLayout>
 #include <QDockWidget>
 
+#include "dosd.h"
+
 #include "ktmodulewidgettitle.h"
 
 /**
@@ -68,7 +70,7 @@ class KTModuleWidgetBase : public QWidget
 	signals:
 		void documentModified(bool);
 		void sendToStatus(const QString &);
-		void sendToOSD(const QString &msg, int level);
+		void sendToOSD(const QString &msg, DOsd::Level level);
 		void toggle();
 		void activate(bool);
 };

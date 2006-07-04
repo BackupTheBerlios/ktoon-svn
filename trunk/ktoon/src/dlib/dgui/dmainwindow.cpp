@@ -43,7 +43,7 @@ static const char* const icon_xpm[]={
 #include <ddebug.h>
 
 DMainWindow::DMainWindow(QWidget *parent)
-	:MWCLASS(parent), m_pFirstRemoved(false), m_pCurrentWidget(0)
+	: MWCLASS(parent), m_pFirstRemoved(false), m_pCurrentWidget(0)
 	{
 		loadSettings();
 		createToolWindows();
@@ -82,24 +82,6 @@ DMainWindow::DMainWindow(QWidget *parent)
 		return 0;
 	}
 
-	QWidget *DMainWindow::findCorrectSeparator()
-	{
-		// FIXME FIXME FIXME
-		QList<QWidget*> widgets = findChildren<QWidget*>();
-		QList<QWidget*>::ConstIterator it = widgets.begin();
-	
-		while (it != widgets.end())
-		{
-			if ((*it)->metaObject()->className() == QString("QDockSeparator")) // HACK
-			{
-// 				m_separators << (*it);
-			}
-			++it;
-		}
-	
-		return m_separators[m_separators.count()-1];
-	}
-
 	void DMainWindow::createToolWindows()
 	{
 		m_pBottomDock = new DiDockWidget(this, DiDockWidget::Bottom);
@@ -115,11 +97,6 @@ DMainWindow::DMainWindow(QWidget *parent)
 	void DMainWindow::addDockWidget(Qt::DockWidgetArea area, DiDockWidget * dockwidget )
 	{
 		QMainWindow::addDockWidget(area, dockwidget );
-		QWidget *separator = findCorrectSeparator();
-		if (separator)
-		{
-			dockwidget->centralWidget()->setSeparator( separator );
-		}
 	}
 
 	void DMainWindow::addWidget(QWidget *widget, const QString &title, bool persistant)

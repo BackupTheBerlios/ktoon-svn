@@ -287,54 +287,54 @@ void KTExportWidget::exportIt()
 		
 		dDebug() << "Exporting to file: " << file;
 		
-		QList<KTScene *> scenes = scenesToExport();
-		
-		dDebug() << "Exporting " << scenes.count() << " scenas";
-		
-		if ( scenes.count() > 0)
-		{
-			m_currentExporter->exportToFormat( file, scenes, m_currentFormat, m_manager->documentSize() );
-		}
+// 		QList<KTSceneManager *> scenes = scenesToExport();
+// 		
+// 		dDebug() << "Exporting " << scenes.count() << " scenas";
+// 		
+// 		if ( scenes.count() > 0)
+// 		{
+// 			m_currentExporter->exportToFormat( file, scenes, m_currentFormat, m_manager->documentSize() );
+// 		}
 	}
 	else
 	{
-		emit sendToOSD( tr("Please choose the format before export"), 2);
+		emit sendToOSD( tr("Please choose the format before export"), DOsd::Error );
 	}
 }
 
-QList<KTScene *> KTExportWidget::scenesToExport()
-{
-	KTDocument *currentDocument = m_manager->currentDocument();
-	
-	if (!currentDocument) return QList<KTScene *>();
-	
-	QList<KTScene *> scenes = currentDocument->scenes();
-	
-	if ( scenes.count() == 0 ) return QList<KTScene *>();
-	
-	switch( m_buttons->checkedId() )
-	{
-		case AllScenes:
-		{
-			return scenes;
-		}
-		break;
-		case CurrentScene:
-		{
-			return QList<KTScene *>() << currentDocument->currentScene();
-		}
-		break;
-		case SceneRange:
-		{
-			
-		}
-		break;
-		
-		default: break;
-	}
-	
-	return scenes;
-}
+// // QList<KTSceneManager *> KTExportWidget::scenesToExport()
+// // {
+// // 	KTDocument *currentDocument = m_manager->currentDocument();
+// // 	
+// // 	if (!currentDocument) return QList<KTSceneManager *>();
+// // 	
+// // 	QList<KTSceneManager *> scenes = currentDocument->scenes();
+// // 	
+// // 	if ( scenes.count() == 0 ) return QList<KTSceneManager *>();
+// // 	
+// // 	switch( m_buttons->checkedId() )
+// // 	{
+// // 		case AllScenes:
+// // 		{
+// // 			return scenes;
+// // 		}
+// // 		break;
+// // 		case CurrentScene:
+// // 		{
+// // 			return QList<KTSceneManager *>() << currentDocument->currentScene();
+// // 		}
+// // 		break;
+// // 		case SceneRange:
+// // 		{
+// // 			
+// // 		}
+// // 		break;
+// // 		
+// // 		default: break;
+// // 	}
+// // 	
+// // 	return scenes;
+// // }
 
 QString KTExportWidget::fileToExport() const
 {

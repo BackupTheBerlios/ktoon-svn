@@ -30,7 +30,7 @@
 #include "ktdisplaygraphic.h"
 #include "dimagebutton.h"
 
-#include "ktgraphiccomponent.h"
+// #include "ktgraphiccomponent.h"
 
 #include "ktgctable.h"
 
@@ -58,17 +58,17 @@ class KTLibraryWidget : public KTModuleWidgetBase
 		
 		
 	public slots:
-		void addGraphic(const KTGraphicComponent *graphic);
+// 		void addGraphic(const KTGraphicComponent *graphic);
 		void importBitmap();
 		
 	signals:
 		void requestCurrentGraphic();
-		void sendCurrentGraphic(const KTGraphicComponent *graphic);
+// 		void sendCurrentGraphic(const KTGraphicComponent *graphic);
 	
 	private:
 		KTDisplayGraphic *m_display;
 		KTGCTable *m_libraryTree;
-		QMap<QTreeWidgetItem *, KTGraphicComponent *> m_graphics;
+// 		QMap<QTreeWidgetItem *, KTGraphicComponent *> m_graphics;
 		int m_childCount;
 		
 		QDir m_libraryDir;

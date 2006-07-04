@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2005 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,59 +18,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTOSD_H
-#define KTOSD_H
+//
+#ifndef KTPAINTAREA_H
+#define KTPAINTAREA_H
 
-#include <QWidget>
-#include <QPixmap>
-#include <QPaintEvent>
-#include <QTimer>
+#include <QGraphicsView>
 
+
+class QGraphicsRectItem;
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * Esta clase provee un area para hacer dibujos.
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-
-class KTOsd : public QWidget
+class KTPaintArea : public QGraphicsView
 {
-	Q_OBJECT
+	Q_OBJECT;
 	public:
-		enum Level
-		{
-			None = -1,
-			Info,
-			Warning,
-			Error,
-			Fatal
-		};
-		KTOsd(QWidget *parent = 0);
-		~KTOsd();
+		KTPaintArea(QWidget * parent = 0);
+		~KTPaintArea();
 		
-		void display( const QString & message, Level level = Info, int ms = 4000 );
-		
-	private slots:
-		void animate();
-
 	protected:
-		void paintEvent( QPaintEvent * e );
-		void mousePressEvent( QMouseEvent * e );
+		void mousePressEvent ( QMouseEvent * event  );
+		void mouseMoveEvent ( QMouseEvent * event );
+		void mouseReleaseEvent(QMouseEvent *event );
+		void resizeEvent ( QResizeEvent * event );
 		
 	private:
-		void drawPixmap(const QString &message, const QBrush &background, const QBrush &foreground);
-
-	private:
-		QPixmap m_pixmap;
-		QTimer *m_timer;
+		QGraphicsRectItem *m_grid;
 		
-		QPalette m_palette; 
-		
-		QString m_lastMessage;
-		
-		struct Animation
-		{
-			QTimer timer;
-			Level level;
-			bool on;
-		} *m_animator;
+	signals:
+		void cursorPosition(const QPoint &pos);
 
 };
 

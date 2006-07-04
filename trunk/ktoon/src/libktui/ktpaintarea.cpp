@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2005 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,36 +18,52 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTSERIALIZABLEOBJECT_H
-#define KTSERIALIZABLEOBJECT_H
+#include "ktpaintarea.h"
 
-#include <QObject>
-#include <QDomDocument>
-#include <QVariant>
+#include "ddebug.h"
 
-/**
- * @brief Esta clase es una abstraccion de objetos serializables
- * @author David Cuadrado <krawek@toonka.com>
-*/
-class KTSerializableObject : public QObject
+#include <QGraphicsScene>
+#include <QMouseEvent>
+#include <QGLWidget>
+#include <QGraphicsRectItem>
+#include <QPolygon>
+
+KTPaintArea::KTPaintArea(QWidget * parent) : QGraphicsView(parent)
 {
-	public:
-		/**
-		 * Constructor por defecto
-		 */
-		KTSerializableObject(QObject *parent = 0);
-		
-		/**
-		 * Destructor
-		 */
-		~KTSerializableObject();
-		
-		/**
-		 * Funcion que debe ser reimplementada con el codigo para guardar el objeto
-		 */
-		virtual QDomElement createXML( QDomDocument &doc );
-		
-		virtual void saveResources(const QString &resourcesDir);
-};
+	setMouseTracking(true);
+	
+	QGraphicsScene *sscene = new QGraphicsScene(QRect() , this);
+	setScene(sscene);
+	
+	setBackgroundBrush (Qt::white);
+ 	
+	m_grid =  scene()->addRect( QRect() , QPen(Qt::black, 3), QBrush() );
+}
 
-#endif
+KTPaintArea::~KTPaintArea()
+{
+	
+}
+
+
+
+void KTPaintArea::mousePressEvent ( QMouseEvent * event )
+{
+}
+
+void KTPaintArea::mouseMoveEvent ( QMouseEvent * event )
+{
+	emit cursorPosition(event->pos()  );
+}
+
+void KTPaintArea::mouseReleaseEvent(QMouseEvent *event)
+{
+}
+
+
+void KTPaintArea::resizeEvent ( QResizeEvent * event )
+{
+	scene()->setSceneRect(rect().normalized().adjusted ( 0, 0, -25, -25 ) );
+	QPoint zero(scene()->width() - 500, scene()->height() - 400);
+	m_grid->setRect(QRectF(mapToScene(zero/2), QSizeF( 500, 400) ));
+}

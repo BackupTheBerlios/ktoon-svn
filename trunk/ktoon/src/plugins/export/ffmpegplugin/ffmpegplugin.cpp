@@ -47,7 +47,7 @@ KTExportInterface::Formats FFMpegPlugin::availableFormats()
 	return SWF | MPEG | AVI | RM | ASF | MOV | GIF;
 }
 
-void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size, float sx, float sy)
+void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTSceneManager *> &scenes, Format format,  const QSize &size, float sx, float sy)
 {
 #ifdef HAVE_FFMPEG
 	
@@ -72,14 +72,14 @@ void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *
 #endif
 }
 
-QStringList FFMpegPlugin::createImages(const QList<KTScene *> &scenes, const QDir &dir, float sx, float sy, const char *format)
+QStringList FFMpegPlugin::createImages(const QList<KTSceneManager *> &scenes, const QDir &dir, float sx, float sy, const char *format)
 {
 	QStringList paths;
 #ifdef HAVE_FFMPEG
 	int nPhotogramsRenderized = 0;
 
 	
-	foreach(KTScene *scene, scenes )
+	foreach(KTSceneManager *scene, scenes )
 	{
 		Layers layers = scene->layers();
 		
@@ -104,21 +104,21 @@ QStringList FFMpegPlugin::createImages(const QList<KTScene *> &scenes, const QDi
 				
 				if ( *layerIterator && nPhotogramsRenderized < (*layerIterator)->frames().count() && (*layerIterator)->isVisible() )
 				{
-					KTKeyFrame *frame = (*layerIterator)->frames()[nPhotogramsRenderized];
+					KTFrame *frame = (*layerIterator)->frames()[nPhotogramsRenderized];
 					if ( frame )
 					{
-						QList<KTGraphicComponent *> componentList = frame->components();
-												
-						if ( componentList.count() > 0  )
-						{
-							QList<KTGraphicComponent *>::iterator it = componentList.begin();
-													
-							while ( it != componentList.end() )
-							{
-								(*it)->draw(&painter);
-								++it;
-							}
-						}
+// 						QList<KTGraphicComponent *> componentList = frame->components();
+// 												
+// 						if ( componentList.count() > 0  )
+// 						{
+// 							QList<KTGraphicComponent *>::iterator it = componentList.begin();
+// 													
+// 							while ( it != componentList.end() )
+// 							{
+// 								(*it)->draw(&painter);
+// 								++it;
+// 							}
+// 						}
 					}
 				}
 				++layerIterator;

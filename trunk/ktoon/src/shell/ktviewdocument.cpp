@@ -35,8 +35,9 @@
 #include "ktdrawingareaproperties.h"
 #include "ktpaintareaproperties.h"
 #include "ktpluginmanager.h"
+#include "ktpaintarea.h"
 
-KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, KToon::RenderType renderType, KTDocument *doc, QWorkspace *parent ) : DMdiWindow(parent), m_document(doc), m_title(projectName)
+KTViewArea::KTViewArea(const QString& title, KToon::RenderType renderType, QWidget *parent ) : QMainWindow(parent), m_title(title)
 {
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/layer_pic.png") ); // FIXME: new image for documents
 	
@@ -47,47 +48,48 @@ KTViewDocument::KTViewDocument(const QSize &size, const QString& projectName, KT
 // 	m_paintAreaContainer = new KTPaintAreaContainer(size,renderType,  this);
 	
 // 	setCentralWidget ( m_paintAreaContainer );
+	m_paintArea = new KTPaintArea(this);
+	setCentralWidget( m_paintArea);
+// 	showPos(QPoint(0,0));
 	
-	showPos(QPoint(0,0));
-	
-// 	connect( m_paintAreaContainer->drawArea(), SIGNAL(mousePos(const QPoint &)),  this,  SLOT(showPos(const QPoint &)) );
+	connect(m_paintArea, SIGNAL(cursorPosition(const QPoint &)),  this,  SLOT(showPos(const QPoint &)) );
 // 	
 // 	connect( m_paintAreaContainer->drawArea(), SIGNAL(changedZoomFactor(double)),  this,  SLOT(updateZoomFactor(double)) );
 // 	setWindowTitle( m_title + " - " + m_document->currentScene()->sceneName() );
 // 	
 // 	m_paintAreaContainer->drawArea()->setScene( m_document->currentScene() );
 	
-	connect(m_document, SIGNAL(sceneChanged( KTScene* )) , this, SLOT(setScene( KTScene* )  ));
+// 	connect(m_document, SIGNAL(sceneChanged( KTSceneManager* )) , this, SLOT(setScene( KTSceneManager* )  ));
 	
 	createActions();
-	
+// 	
 	setupEditActions();
 	setupViewActions();
 	setupOrderActions();
 	createToolbar();
-	createTools();
-	createMenu();
-	m_configurationArea = new KTConfigurationArea;
-	addDockWidget(Qt::RightDockWidgetArea, m_configurationArea);
+// 	createTools();
+// 	createMenu();
+// 	m_configurationArea = new KTConfigurationArea;
+// 	addDockWidget(Qt::RightDockWidgetArea, m_configurationArea);
 	
 	
-	QTimer::singleShot(0, this, SLOT(loadPlugins()));
+// 	QTimer::singleShot(0, this, SLOT(loadPlugins()));
 	
 // 	m_paintAreaContainer->drawArea()->setHistory(m_history);
 }
 
-KTViewDocument::~KTViewDocument()
+KTViewArea::~KTViewArea()
 {
 // 	delete m_history;
 }
 
-void KTViewDocument::showPos(const QPoint &p)
+void KTViewArea::showPos(const QPoint &p)
 {
-// 	QString messages =  "X: " +  QString::number(p.x()- m_paintAreaContainer->drawAreaDelta().x() ) +  " Y: " + QString::number(p.y()- m_paintAreaContainer->drawAreaDelta().y() );
-// 	statusBar()->showMessage ( messages ) ;
+	QString messages =  "X: " +  QString::number(p.x()) + " Y: " + QString::number(p.y() );
+	emit  sendToStatus ( messages ) ;
 }
 
-void KTViewDocument::createActions()
+void KTViewArea::createActions()
 {
 // 	DAction *undo = m_history->undoAction();
 // 	undo->setIcon( QPixmap(THEME_DIR+"/icons/undo.png" ));
@@ -103,7 +105,7 @@ void KTViewDocument::createActions()
 
 }
 
-void KTViewDocument::setupEditActions()
+void KTViewArea::setupEditActions()
 {
 	
 #if 0
@@ -155,7 +157,7 @@ void KTViewDocument::setupEditActions()
 #endif
 }
 
-void KTViewDocument::setupOrderActions()
+void KTViewArea::setupOrderActions()
 {
 #if 0
 	DAction *bringtoFront = new DAction(QPixmap(THEME_DIR+"/icons/bring_to_front.png" ), tr( "&Bring to Front" ),  QKeySequence(Qt::CTRL+Qt::SHIFT+Qt::Key_Up), m_paintAreaContainer->drawArea(), SLOT(bringToFromSelected()), m_actionManager, "bringToFront" );
@@ -185,7 +187,7 @@ void KTViewDocument::setupOrderActions()
 	
 }
 
-void KTViewDocument::setupViewActions()
+void KTViewArea::setupViewActions()
 {
 #if 0
 	DAction *zoomIn = new DAction( QPixmap(THEME_DIR+"/icons/zoom_in.png" ), tr( "Zoom In" ), QKeySequence(Qt::CTRL+Qt::Key_Plus), m_paintAreaContainer->drawArea(), SLOT(zoomIn()), m_actionManager, "zoom_in" );
@@ -265,7 +267,7 @@ void KTViewDocument::setupViewActions()
 }
 
 
-void KTViewDocument::createTools()
+void KTViewArea::createTools()
 {
 	m_toolbar = new QToolBar(tr("Toolbar"), this);
 	m_toolbar->setIconSize( QSize(22,22) );
@@ -409,7 +411,7 @@ void KTViewDocument::createTools()
 #endif
 }
 
-void KTViewDocument::loadPlugins()
+void KTViewArea::loadPlugins()
 {
 	foreach(QObject *plugin, KTPluginManager::instance()->tools() )
 	{
@@ -426,7 +428,7 @@ void KTViewDocument::loadPlugins()
 			if ( act )
 			{
 				connect(act, SIGNAL(triggered()), this, SLOT(selectTool()));
-						
+				
 				switch( tool->type() )
 				{
 					case AToolInterface::Brush:
@@ -489,7 +491,7 @@ void KTViewDocument::loadPlugins()
 	}
 }
 
-void KTViewDocument::selectTool()
+void KTViewArea::selectTool()
 {
 	D_FUNCINFO;
 	DAction *action = qobject_cast<DAction *>(sender());
@@ -550,7 +552,7 @@ void KTViewDocument::selectTool()
 	}
 }
 
-void KTViewDocument::selectToolFromMenu(QAction *action)
+void KTViewArea::selectToolFromMenu(QAction *action)
 {
 	D_FUNCINFO;
 	
@@ -567,7 +569,7 @@ void KTViewDocument::selectToolFromMenu(QAction *action)
 }
 
 
-void KTViewDocument::applyFilter()
+void KTViewArea::applyFilter()
 {
 	QAction *action = qobject_cast<QAction *>(sender());
 	
@@ -576,7 +578,7 @@ void KTViewDocument::applyFilter()
 		AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(action->parent());
 		QString filter = action->text();
 		
-// 		KTKeyFrame *frame = m_paintAreaContainer->drawArea()->currentFrame();
+// 		KTFrame *frame = m_paintAreaContainer->drawArea()->currentFrame();
 // 		
 // 		if( frame)
 // 		{
@@ -586,7 +588,7 @@ void KTViewDocument::applyFilter()
 	}
 }
 
-void KTViewDocument::updateZoomFactor(double f)
+void KTViewArea::updateZoomFactor(double f)
 {
 // 	m_paintAreaContainer->drawArea()->setZoomFactor( f );
 	m_zoomFactorSpin->blockSignals(true);
@@ -594,44 +596,44 @@ void KTViewDocument::updateZoomFactor(double f)
 	m_zoomFactorSpin->blockSignals(false);
 }
 
-void KTViewDocument::createToolbar()
+void KTViewArea::createToolbar()
 {
 	m_barGrid = new QToolBar(tr("Bar Actions"), this);
 	m_barGrid->setIconSize( QSize(22,22) );
 	addToolBar(m_barGrid);
-	m_barGrid->addSeparator();
-	m_barGrid->addAction(m_actionManager->find("undo"));
-	m_barGrid->addAction(m_actionManager->find("redo"));
-	m_barGrid->addSeparator();
-	m_barGrid->addAction(m_actionManager->find("zoom_in"));
-	m_barGrid->addWidget(m_zoomFactorSpin);
-	m_barGrid->addAction(m_actionManager->find("zoom_out"));
-	m_barGrid->addSeparator();
-	
-	
-	m_barGrid->addActions(m_editGroup->actions());
-	m_barGrid->addSeparator();
-// 	m_barGrid->addAction(m_aNtsc);
-// 	m_barGrid->addAction(m_aLightTable);
-	m_barGrid->addSeparator();
-	m_barGrid->addActions(m_viewPreviousGroup->actions());
-	
-	QSpinBox *prevOnionSkinSpin = new QSpinBox(this);
-	connect(prevOnionSkinSpin, SIGNAL(valueChanged ( int)), this, SLOT(setPreviousOnionSkin(int)));
-	
-	m_barGrid->addWidget(prevOnionSkinSpin);
-	
-	m_barGrid->addSeparator();
-	m_barGrid->addActions(m_viewNextGroup->actions());
-	
-	QSpinBox *nextOnionSkinSpin = new QSpinBox(this);
-	connect(nextOnionSkinSpin, SIGNAL(valueChanged ( int)), this, SLOT(setNextOnionSkin(int)));
-	
-	m_barGrid->addWidget(nextOnionSkinSpin);
+// 	m_barGrid->addSeparator();
+// 	m_barGrid->addAction(m_actionManager->find("undo"));
+// 	m_barGrid->addAction(m_actionManager->find("redo"));
+// 	m_barGrid->addSeparator();
+// 	m_barGrid->addAction(m_actionManager->find("zoom_in"));
+// 	m_barGrid->addWidget(m_zoomFactorSpin);
+// 	m_barGrid->addAction(m_actionManager->find("zoom_out"));
+// 	m_barGrid->addSeparator();
+// 	
+// 	
+// 	m_barGrid->addActions(m_editGroup->actions());
+// 	m_barGrid->addSeparator();
+// // 	m_barGrid->addAction(m_aNtsc);
+// // 	m_barGrid->addAction(m_aLightTable);
+// 	m_barGrid->addSeparator();
+// 	m_barGrid->addActions(m_viewPreviousGroup->actions());
+// 	
+// 	QSpinBox *prevOnionSkinSpin = new QSpinBox(this);
+// 	connect(prevOnionSkinSpin, SIGNAL(valueChanged ( int)), this, SLOT(setPreviousOnionSkin(int)));
+// 	
+// 	m_barGrid->addWidget(prevOnionSkinSpin);
+// 	
+// 	m_barGrid->addSeparator();
+// 	m_barGrid->addActions(m_viewNextGroup->actions());
+// 	
+// 	QSpinBox *nextOnionSkinSpin = new QSpinBox(this);
+// 	connect(nextOnionSkinSpin, SIGNAL(valueChanged ( int)), this, SLOT(setNextOnionSkin(int)));
+// 	
+// 	m_barGrid->addWidget(nextOnionSkinSpin);
 	
 }
 
-void KTViewDocument::createMenu()
+void KTViewArea::createMenu()
 {
 	//tools menu
 	m_toolsMenu = new QMenu(tr( "&Tools" ), this);
@@ -686,83 +688,83 @@ void KTViewDocument::createMenu()
 	menuBar()->addMenu(m_filterMenu);
 }
 
-void KTViewDocument::close()
+void KTViewArea::close()
 {
 // 	m_paintAreaContainer->drawArea()->close();
 }
 
-void KTViewDocument::setCursor(const QCursor &c)
+void KTViewArea::setCursor(const QCursor &c)
 {
 // 	m_paintAreaContainer->drawArea()->setCursor(c);
 }
 
 
-void KTViewDocument::disablePreviousOnionSkin()
+void KTViewArea::disablePreviousOnionSkin()
 {
 // 	m_paintAreaContainer->drawArea()->setPreviousFrames( 0 );
 }
 
-void KTViewDocument::onePreviousOnionSkin()
+void KTViewArea::onePreviousOnionSkin()
 {
 // 	m_paintAreaContainer->drawArea()->setPreviousFrames( 1 );
 }
 
-void KTViewDocument::twoPreviousOnionSkin()
+void KTViewArea::twoPreviousOnionSkin()
 {
 // 	m_paintAreaContainer->drawArea()->setPreviousFrames( 2 );
 }
 
-void KTViewDocument::threePreviousOnionSkin()
+void KTViewArea::threePreviousOnionSkin()
 {
 // 	m_paintAreaContainer->drawArea()->setPreviousFrames( 3 );
 }
 
-void KTViewDocument::setPreviousOnionSkin(int n)
+void KTViewArea::setPreviousOnionSkin(int n)
 {
 // 	m_paintAreaContainer->drawArea()->setPreviousFrames(n);
 }
 
 // NEXT
-void KTViewDocument::disableNextOnionSkin()
+void KTViewArea::disableNextOnionSkin()
 {
 // 	m_paintAreaContainer->drawArea()->setNextFrames( 0 );
 }
 
-void KTViewDocument::oneNextOnionSkin()
+void KTViewArea::oneNextOnionSkin()
 {
 // 	m_paintAreaContainer->drawArea()->setNextFrames( 1 );
 }
 
-void KTViewDocument::twoNextOnionSkin()
+void KTViewArea::twoNextOnionSkin()
 {
 // 	m_paintAreaContainer->drawArea()->setNextFrames( 2 );
 }
 
-void KTViewDocument::threeNextOnionSkin()
+void KTViewArea::threeNextOnionSkin()
 {
 // 	m_paintAreaContainer->drawArea()->setNextFrames( 3 );
 }
 
 
-void KTViewDocument::setNextOnionSkin(int n)
+void KTViewArea::setNextOnionSkin(int n)
 {
 // 	m_paintAreaContainer->drawArea()->setNextFrames( n );
 }
 
-void KTViewDocument::setScene(KTScene* scene)
-{
-	setWindowTitle( m_title + " - " + scene->sceneName() );
+// void KTViewArea::setScene(KTSceneManager* scene)
+// {
+// 	setWindowTitle( m_title + " - " + scene->sceneName() );
 // 	m_paintAreaContainer->drawArea()->setScene(  scene );
-}
+// }
 
-void KTViewDocument::setZoomFactor(int porcent)
+void KTViewArea::setZoomFactor(int porcent)
 {
 	m_zoomFactorSpin->blockSignals(true);
 // 	m_paintAreaContainer->drawArea()->setZoomFactor((float) porcent/100);
 	m_zoomFactorSpin->blockSignals(false);
 }
 
-void KTViewDocument::configure()
+void KTViewArea::configure()
 {
 	KTDrawingAreaProperties properties;
 	
@@ -780,12 +782,12 @@ void KTViewDocument::configure()
 	}
 }
 
-// void KTViewDocument::closeEvent(QCloseEvent *e)
+// void KTViewArea::closeEvent(QCloseEvent *e)
 // {
 // 	
 // }
 
-QSize KTViewDocument::sizeHint() const
+QSize KTViewArea::sizeHint() const
 {
 	QSize size(parentWidget()->size());
 	return size.expandedTo(QApplication::globalStrut());

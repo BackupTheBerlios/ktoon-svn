@@ -31,7 +31,6 @@
 #include <cstdlib>
 #include <ctime>
 
-#include "ktlibraryparser.h"
 
 KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), m_childCount(0)
 {
@@ -88,111 +87,111 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
 
 void KTLibraryWidget::setup()
 {
-	if ( m_libraryDir.exists() )
-	{
-		// Parse!
-		
-		QStringList files = m_libraryDir.entryList(QStringList() << "*.ktlbr");
-		
-		foreach( QString file, files)
-		{
-			addFolder( file.left( file.length()-6 ));
-			KTLibraryParser parser;
-			
-			QXmlSimpleReader reader;
-			reader.setContentHandler(&parser);
-			reader.setErrorHandler(&parser);
-			
-			QFile libFile(m_libraryDir.path() +"/"+ file );
-			QXmlInputSource xmlsource(&libFile);
-			
-			if ( reader.parse(&xmlsource) )
-			{
-				foreach(KTGraphicComponent *component, parser.components() )
-				{
-					addGraphic(component);
-				}
-			}
-			else
-			{
-				dError() << "Error while parse file: " << libFile.fileName();
-			}
-		}
-	}
-	else
-	{
-		m_libraryDir.mkdir(m_libraryDir.path() );
-	}
-	
-	if ( !m_libraryDir.exists(m_libraryDir.path()+"/resources") )
-	{
-		m_libraryDir.mkdir(m_libraryDir.path()+"/resources" );
-	}
+// 	if ( m_libraryDir.exists() )
+// 	{
+// 		// Parse!
+// 		
+// 		QStringList files = m_libraryDir.entryList(QStringList() << "*.ktlbr");
+// 		
+// 		foreach( QString file, files)
+// 		{
+// 			addFolder( file.left( file.length()-6 ));
+// 			KTLibraryParser parser;
+// 			
+// 			QXmlSimpleReader reader;
+// 			reader.setContentHandler(&parser);
+// 			reader.setErrorHandler(&parser);
+// 			
+// 			QFile libFile(m_libraryDir.path() +"/"+ file );
+// 			QXmlInputSource xmlsource(&libFile);
+// 			
+// 			if ( reader.parse(&xmlsource) )
+// 			{
+// 				foreach(KTGraphicComponent *component, parser.components() )
+// 				{
+// 					addGraphic(component);
+// 				}
+// 			}
+// 			else
+// 			{
+// 				dError() << "Error while parse file: " << libFile.fileName();
+// 			}
+// 		}
+// 	}
+// 	else
+// 	{
+// 		m_libraryDir.mkdir(m_libraryDir.path() );
+// 	}
+// 	
+// 	if ( !m_libraryDir.exists(m_libraryDir.path()+"/resources") )
+// 	{
+// 		m_libraryDir.mkdir(m_libraryDir.path()+"/resources" );
+// 	}
 }
 
 KTLibraryWidget::~KTLibraryWidget()
 {
 	DEND;
 
-	QList<QTreeWidgetItem *> folders = m_libraryTree->topLevelItems();
-	QList<QTreeWidgetItem *>::ConstIterator folderIterator = folders.begin();
-	
-	while ( folderIterator != folders.end() )
-	{
-		QDomDocument doc;
-		QDomElement root = doc.createElement("Library");
-		doc.appendChild(root);
-		
-		for ( int index = 0; index < (*folderIterator)->childCount(); index++)
-		{
-			root.appendChild( m_graphics[(*folderIterator)->child(index) ]->createXML(doc));
-		}
-		
-		QFile custom(CONFIG_DIR+"/libraries/"+(*folderIterator)->text(0)+".ktlbr");
-		
-		QDir brushesDir(CONFIG_DIR+"/libraries");
-		
-		if ( ! brushesDir.exists() )
-		{
-			brushesDir.mkdir(brushesDir.path() );
-		}
-		
-		if ( custom.open(QIODevice::WriteOnly | QIODevice::Text))
-		{
-			QTextStream out(&custom);
-			out << doc.toString();
-			custom.close();
-		}
-		++folderIterator;
-	}
+// 	QList<QTreeWidgetItem *> folders = m_libraryTree->topLevelItems();
+// 	QList<QTreeWidgetItem *>::ConstIterator folderIterator = folders.begin();
+// 	
+// 	while ( folderIterator != folders.end() )
+// 	{
+// 		QDomDocument doc;
+// 		QDomElement root = doc.createElement("Library");
+// 		doc.appendChild(root);
+// 		
+// 		for ( int index = 0; index < (*folderIterator)->childCount(); index++)
+// 		{
+// 			root.appendChild( m_graphics[(*folderIterator)->child(index) ]->createXML(doc));
+// 		}
+// 		
+// 		QFile custom(CONFIG_DIR+"/libraries/"+(*folderIterator)->text(0)+".ktlbr");
+// 		
+// 		QDir brushesDir(CONFIG_DIR+"/libraries");
+// 		
+// 		if ( ! brushesDir.exists() )
+// 		{
+// 			brushesDir.mkdir(brushesDir.path() );
+// 		}
+// 		
+// 		if ( custom.open(QIODevice::WriteOnly | QIODevice::Text))
+// 		{
+// 			QTextStream out(&custom);
+// 			out << doc.toString();
+// 			custom.close();
+// 		}
+// 		++folderIterator;
+// 	}
 }
 
-void KTLibraryWidget::addGraphic(const KTGraphicComponent *graphic)
-{
-	D_FUNCINFO;
-	if ( !m_libraryTree->currentFolder() )
-	{
-		addFolder( tr("General") );
-	}
-	
-	KTGraphicComponent *copy = new KTGraphicComponent(*graphic);
-	
-	m_display->addGraphicComponent( copy);
-	
-	QTreeWidgetItem *item = new QTreeWidgetItem(m_libraryTree->currentFolder() );
-	
-	if( graphic->componentName().isNull() )
-	{
-		item->setText(0, tr("Component #%1").arg(m_childCount++));
-	}
-	else
-	{
-		item->setText(0, graphic->componentName());
-	}
-	
-	m_graphics.insert(item, copy);
-	m_libraryTree->setCurrentItem(item);
-}
+// void KTLibraryWidget::addGraphic(const KTGraphicComponent *graphic)
+// {
+// 	D_FUNCINFO;
+// 	if ( !m_libraryTree->currentFolder() )
+// 	{
+// 		addFolder( tr("General") );
+// 	}
+// 	
+// 	KTGraphicComponent *copy = new KTGraphicComponent(*graphic);
+// 	
+// 	m_display->addGraphicComponent( copy);
+// 	
+// 	QTreeWidgetItem *item = new QTreeWidgetItem(m_libraryTree->currentFolder() );
+// 	
+// 	if( graphic->componentName().isNull() )
+// 	{
+// 		item->setText(0, tr("Component #%1").arg(m_childCount++));
+// 	}
+// 	else
+// 	{
+// 		item->setText(0, graphic->componentName());
+// 	}
+// 	
+// 	m_graphics.insert(item, copy);
+// 	m_libraryTree->setCurrentItem(item);
+// }
 
 void KTLibraryWidget::addFolder(const QString &name)
 {
@@ -204,103 +203,103 @@ void KTLibraryWidget::drawCurrentItem(QTreeWidgetItem *item, int)
 	D_FUNCINFO;
 	if ( item )
 	{
-		KTGraphicComponent *gc = m_graphics[item];
-		if ( gc )
-		{
-			m_display->addGraphicComponent( gc);
-		}
-		else
-		{
-			m_libraryTree->setCurrentFolder(item);
-		}
+// 		KTGraphicComponent *gc = m_graphics[item];
+// 		if ( gc )
+// 		{
+// 			m_display->addGraphicComponent( gc);
+// 		}
+// 		else
+// 		{
+// 			m_libraryTree->setCurrentFolder(item);
+// 		}
 	}
 }
 
 void KTLibraryWidget::emitSelectedComponent()
 {
-	KTGraphicComponent *gc = m_graphics[ m_libraryTree->currentItem() ];
-	
-	if ( gc )
-	{
-		emit sendCurrentGraphic( gc );
-	}
+// 	KTGraphicComponent *gc = m_graphics[ m_libraryTree->currentItem() ];
+// 	
+// 	if ( gc )
+// 	{
+// 		emit sendCurrentGraphic( gc );
+// 	}
 }
 
 void KTLibraryWidget::removeCurrentGraphic()
 {
-	DCONFIG->beginGroup("Library");
-	bool noAsk = qvariant_cast<bool>(DCONFIG->value("RemoveWithoutAsk", false));
-	
-	if ( ! noAsk )
-	{
-		DOptionalDialog dialog(tr("Do you want to remove this component?"),tr("Remove?"), this);
-		
-		if( dialog.exec() == QDialog::Rejected )
-		{
-			return;
-		}
-		
-		DCONFIG->setValue("RemoveWithoutAsk", dialog.shownAgain());
-		
-		DCONFIG->sync();
-	}
-	
-	KTGraphicComponent *gc = m_graphics.take(m_libraryTree->currentItem());
-	if ( gc )
-	{
-		QTreeWidgetItem *item = m_libraryTree->currentItem();
-		if ( item )
-		{
-			delete item;
-			m_libraryTree->setCurrentItem(m_libraryTree->currentFolder());
-			m_display->removeGraphic();
-		}
-	}
-	else
-	{
-		QTreeWidgetItem *currentFolder = m_libraryTree->currentFolder();
-		
-		if ( currentFolder )
-		{
-			for(int item = 0; item < currentFolder->childCount(); item++)
-			{
-				QTreeWidgetItem *child = currentFolder->child(item);
-				m_graphics.remove(child);
-			}
-			
-			QString folder = m_libraryDir.path()+"/"+currentFolder->text(0)+".ktlbr";
-			
-			QFile::remove(folder);
-			m_libraryTree->removeCurrentFolder();
-		}
-	}
+// 	DCONFIG->beginGroup("Library");
+// 	bool noAsk = qvariant_cast<bool>(DCONFIG->value("RemoveWithoutAsk", false));
+// 	
+// 	if ( ! noAsk )
+// 	{
+// 		DOptionalDialog dialog(tr("Do you want to remove this component?"),tr("Remove?"), this);
+// 		
+// 		if( dialog.exec() == QDialog::Rejected )
+// 		{
+// 			return;
+// 		}
+// 		
+// 		DCONFIG->setValue("RemoveWithoutAsk", dialog.shownAgain());
+// 		
+// 		DCONFIG->sync();
+// 	}
+// 	
+// 	KTGraphicComponent *gc = m_graphics.take(m_libraryTree->currentItem());
+// 	if ( gc )
+// 	{
+// 		QTreeWidgetItem *item = m_libraryTree->currentItem();
+// 		if ( item )
+// 		{
+// 			delete item;
+// 			m_libraryTree->setCurrentItem(m_libraryTree->currentFolder());
+// 			m_display->removeGraphic();
+// 		}
+// 	}
+// 	else
+// 	{
+// 		QTreeWidgetItem *currentFolder = m_libraryTree->currentFolder();
+// 		
+// 		if ( currentFolder )
+// 		{
+// 			for(int item = 0; item < currentFolder->childCount(); item++)
+// 			{
+// 				QTreeWidgetItem *child = currentFolder->child(item);
+// 				m_graphics.remove(child);
+// 			}
+// 			
+// 			QString folder = m_libraryDir.path()+"/"+currentFolder->text(0)+".ktlbr";
+// 			
+// 			QFile::remove(folder);
+// 			m_libraryTree->removeCurrentFolder();
+// 		}
+// 	}
 }
 
 void KTLibraryWidget::renameObject( QTreeWidgetItem* item)
 {
-	if ( item )
-	{
-		KTGraphicComponent *graphic = m_graphics[item];
-		
-		if ( graphic )
-		{
-			graphic->setComponentName(item->text(0));
-		}
-		else // A Folder
-		{
-			foreach( QTreeWidgetItem *folder, m_libraryTree->topLevelItems() )
-			{
-				if ( folder != item && folder->text(0) == item->text(0) )
-				{
-					// Invalid name
-					item->setFlags(item->flags() | Qt::ItemIsEditable );
-					item->setText(0, item->text(0)+QString::number(rand() % 999) );
-					m_libraryTree->editItem( item, 0);
-					break;
-				}
-			}
-		}
-	}
+// 	if ( item )
+// 	{
+// 		KTGraphicComponent *graphic = m_graphics[item];
+// 		
+// 		if ( graphic )
+// 		{
+// 			graphic->setComponentName(item->text(0));
+// 		}
+// 		else // A Folder
+// 		{
+// 			foreach( QTreeWidgetItem *folder, m_libraryTree->topLevelItems() )
+// 			{
+// 				if ( folder != item && folder->text(0) == item->text(0) )
+// 				{
+// 					// Invalid name
+// 					item->setFlags(item->flags() | Qt::ItemIsEditable );
+// 					item->setText(0, item->text(0)+QString::number(rand() % 999) );
+// 					m_libraryTree->editItem( item, 0);
+// 					break;
+// 				}
+// 			}
+// 		}
+// 	}
 }
 
 void KTLibraryWidget::importBitmap()
@@ -312,28 +311,28 @@ void KTLibraryWidget::importBitmap()
 
 void KTLibraryWidget::addBitmap(const QString &bitmap)
 {
-	QPixmap toImport(bitmap);
-	
-	if ( ! toImport.isNull() )
-	{
-		KTGraphicComponent *imageComponent = new KTGraphicComponent;
-		
-		QFile file(bitmap);
-		QFileInfo finfo(file);
-		
-		imageComponent->setComponentName( finfo.baseName() );
-		
-		QPainterPath path;
-		path.addRect(toImport.rect());
-		imageComponent->addGraphic(path , Qt::NoPen, Qt::NoBrush,toImport);
-		
-		if ( !file.copy(m_libraryDir.path()+"/resources/"+ imageComponent->graphics()[0]->pixmapHash() ) )
-		{
-			emit sendToOSD(tr("Cannot import ")+finfo.fileName(), 2);
-			return;
-		}
-		
-		addGraphic( imageComponent );
-	}
+// 	QPixmap toImport(bitmap);
+// 	
+// 	if ( ! toImport.isNull() )
+// 	{
+// 		KTGraphicComponent *imageComponent = new KTGraphicComponent;
+// 		
+// 		QFile file(bitmap);
+// 		QFileInfo finfo(file);
+// 		
+// 		imageComponent->setComponentName( finfo.baseName() );
+// 		
+// 		QPainterPath path;
+// 		path.addRect(toImport.rect());
+// 		imageComponent->addGraphic(path , Qt::NoPen, Qt::NoBrush,toImport);
+// 		
+// 		if ( !file.copy(m_libraryDir.path()+"/resources/"+ imageComponent->graphics()[0]->pixmapHash() ) )
+// 		{
+// 			emit sendToOSD(tr("Cannot import ")+finfo.fileName(), 2);
+// 			return;
+// 		}
+// 		
+// 		addGraphic( imageComponent );
+// 	}
 }
 

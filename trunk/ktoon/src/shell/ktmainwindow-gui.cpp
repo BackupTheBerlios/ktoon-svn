@@ -55,7 +55,7 @@ void KTMainWindow::createGUI()
 	new DAction( QPixmap(), tr( "Import bitmap..." ), QKeySequence(), m_libraryWidget, SLOT(importBitmap()), m_actionManager, "importbitmap");
 	
 	/////////////////
-	m_scenes = new KTScenesWidget( this);
+	m_scenes = new KTSceneManagersWidget( this);
 	m_scenes->setWindowIcon(QPixmap(THEME_DIR+"/icons/scenes.png"));
 	toolWindow(DiDockWidget::Right)->addWidget(tr("Scenes"),m_scenes);
 	
@@ -161,7 +161,7 @@ void KTMainWindow::createGUI()
 void KTMainWindow::connectToDisplays(const QWidget *widget)
 {
 	connect(widget, SIGNAL(sendToStatus(const QString &)), this, SLOT(messageToStatus(const QString &)));
-	connect(widget, SIGNAL(sendToOSD(const QString &, int)), this, SLOT(messageToOSD(const QString &, int)));
+	connect(widget, SIGNAL(sendToOSD(const QString &, DOsd::Level)), this, SLOT(messageToOSD(const QString &, DOsd::Level )));
 }
 
 void KTMainWindow::setupMenu()
@@ -362,7 +362,6 @@ void KTMainWindow::updateOpenRecentMenu(QMenu *menu)
 			connect(menu->addAction(recent), SIGNAL(triggered()), this, SLOT(openRecentProject()));
 		}
 	}
-	
 }
 
 void KTMainWindow::showWidgetPage()

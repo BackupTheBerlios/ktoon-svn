@@ -1369,14 +1369,14 @@
     </message>
 </context>
 <context>
-    <name>KTScene</name>
+    <name>KTSceneManager</name>
     <message>
         <source>Layer %1</source>
         <translation>Capa %1</translation>
     </message>
 </context>
 <context>
-    <name>KTScenesWidget</name>
+    <name>KTSceneManagersWidget</name>
     <message>
         <source>Scenes manager</source>
         <translation>Manejador de escenas</translation>
@@ -1620,7 +1620,7 @@
     </message>
 </context>
 <context>
-    <name>KTViewDocument</name>
+    <name>KTViewArea</name>
     <message>
         <source>&amp;Cut</source>
         <translation>&amp;Cortar</translation>
