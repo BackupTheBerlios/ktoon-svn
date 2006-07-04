@@ -215,7 +215,7 @@ QString KTLayer::layerName() const
 	return m_name;
 }
 
-bool KTLayer::isVisible()
+bool KTLayer::isVisible() const
 {
 	return m_isVisible;
 }

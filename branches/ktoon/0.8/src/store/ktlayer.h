@@ -122,7 +122,7 @@ class Q_DECL_EXPORT KTLayer : public KTSerializableObject
 		/**
 		 * Retorna verdadero si el layer es visible
 		 */
-		bool isVisible();
+		bool isVisible() const;
 		
 		/**
 		 * Reimplementada de KTSerializableObject
