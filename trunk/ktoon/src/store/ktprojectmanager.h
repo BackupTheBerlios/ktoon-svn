@@ -40,12 +40,12 @@ typedef QList<KTScene *> Scenes;
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTProjectManager : public QObject
+class KTProject : public QObject
 {
 	Q_OBJECT
 	public:
-		KTProjectManager(QObject *parent = 0);
-		~KTProjectManager();
+		KTProject(QObject *parent = 0);
+		~KTProject();
 		
 		/**
 		 * Reimplementado de KTSerializableObject

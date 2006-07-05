@@ -40,6 +40,7 @@
 #define FUNC_NOT_IMPLEMENTED dWarning() << __FILE__<<":"<<__LINE__ << " not implemented yet";
 #endif
 
+#define D_CHECKPTR(ptr) if ( ptr == 0 ) { dFatal() << __PRETTY_FUNCTION__ << ": " << #ptr << " is NULL"; } 
 #define SHOW_VAR(arg) dDebug() << #arg << " = " << arg;
 
 class QPalette;

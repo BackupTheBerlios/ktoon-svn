@@ -67,7 +67,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
 	
 	
-	m_projectManager = new KTProjectManager(this);
+	m_projectManager = new KTProject(this);
 	splash->setMessage( tr("Setting up the project manager") );
 	
 // 	m_viewDoc = new KTWorkspace;

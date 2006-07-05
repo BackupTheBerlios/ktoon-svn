@@ -36,7 +36,7 @@
 #include "ddebug.h"
 
 
-KTExportWidget::KTExportWidget(const KTProjectManager *manager, QWidget *parent) : KTModuleWidgetBase(parent), m_manager(manager), m_currentExporter(0), m_currentFormat(KTExportInterface::NONE)
+KTExportWidget::KTExportWidget(const KTProject *manager, QWidget *parent) : KTModuleWidgetBase(parent), m_manager(manager), m_currentExporter(0), m_currentFormat(KTExportInterface::NONE)
 {
 	DINIT;
 	setCaption(tr("Export"));

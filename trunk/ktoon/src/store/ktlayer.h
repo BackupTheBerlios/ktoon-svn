@@ -83,6 +83,7 @@ class KTLayer : public QObject
 		
 		KTFrame *createFrame(bool addToEnd = true );
 		KTFrame *currentFrame();
+		int currentFrameIndex() const;
 		
 	signals:
 		void frameCreated(const QString &frameName, bool addedToEnd);

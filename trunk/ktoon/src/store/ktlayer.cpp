@@ -100,3 +100,8 @@ KTFrame *KTLayer::currentFrame()
 	return 0;
 }
 
+int KTLayer::currentFrameIndex() const
+{
+	return m_currentFrameIndex;
+}
+

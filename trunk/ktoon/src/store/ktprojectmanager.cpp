@@ -32,7 +32,7 @@
 /**
  * Constructor por defecto
  */
-KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(false), m_currentSceneIndex(-1)
+KTProject::KTProject(QObject *parent) : QObject(parent), m_isOpen(false), m_currentSceneIndex(-1)
 {
 	DINIT;
 }
@@ -41,7 +41,7 @@ KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(
 /**
  * Destructor por defecto
  */
-KTProjectManager::~KTProjectManager()
+KTProject::~KTProject()
 {
 	DEND;
 }
@@ -49,7 +49,7 @@ KTProjectManager::~KTProjectManager()
 /**
  * Cierra el proyecto
  */
-void KTProjectManager::close()
+void KTProject::close()
 {
 	qDeleteAll(m_scenes);
 	
@@ -59,7 +59,7 @@ void KTProjectManager::close()
 /**
  * Pone un nombre al proyecto
  */
-void KTProjectManager::setProjectName(const QString &name)
+void KTProject::setProjectName(const QString &name)
 {
 	m_name = name;
 }
@@ -73,7 +73,7 @@ void KTProjectManager::setProjectName(const QString &name)
  * Returns project name
  * @endif
  */
-QString KTProjectManager::projectName() const
+QString KTProject::projectName() const
 {
 	return m_name;
 }
@@ -81,7 +81,7 @@ QString KTProjectManager::projectName() const
 /**
  * Retorna verdadero si el proyecto esta abierto
  */
-bool KTProjectManager::isOpen()
+bool KTProject::isOpen()
 {
 	return m_isOpen;
 }
@@ -89,7 +89,7 @@ bool KTProjectManager::isOpen()
 /**
  * Inicializa el proyecto, esta funcion abre un nuevo proyecto
  */
-void KTProjectManager::init()
+void KTProject::init()
 {
 	if ( m_isOpen )
 	{
@@ -105,17 +105,19 @@ void KTProjectManager::init()
  * @param addToEnd 
  * @return 
  */
-KTScene * KTProjectManager::createScene(bool addToEnd)
+KTScene * KTProject::createScene(bool addToEnd)
 {
 	KTScene *scene = new KTScene(this);
 	
 	if ( addToEnd )
 	{
+		m_currentSceneIndex = m_scenes.count();
 		m_scenes << scene;
 	}
 	else if ( m_currentSceneIndex > 0 && m_currentSceneIndex < m_scenes.count() )
 	{
-		m_scenes.insert(m_currentSceneIndex+1, scene);
+		m_currentSceneIndex++;
+		m_scenes.insert(m_currentSceneIndex, scene);
 	}
 	else
 	{
@@ -124,7 +126,9 @@ KTScene * KTProjectManager::createScene(bool addToEnd)
 		return 0;
 	}
 	
-// 	connect(scene, SIGNAL(layerCreated(const QString &, bool)), this, SIGNAL(layerCreated(const QString &, bool)));
+	KTSceneEvent event(KTProjectEvent::Add, scene->sceneName(), m_currentSceneIndex);
+	
+	emit commandExecuted(&event);
 	
 	return scene;
 }
@@ -133,7 +137,7 @@ KTScene * KTProjectManager::createScene(bool addToEnd)
  * 
  * @return 
  */
-KTScene * KTProjectManager::currentScene()
+KTScene * KTProject::currentScene()
 {
 	if ( m_currentSceneIndex >= 0 && m_currentSceneIndex < m_scenes.count() )
 	{
@@ -149,7 +153,7 @@ KTScene * KTProjectManager::currentScene()
  * @param addToEnd 
  * @return 
  */
-KTLayer *KTProjectManager::createLayer(bool addToEnd)
+KTLayer *KTProject::createLayer(bool addToEnd)
 {
 	KTScene *scene = currentScene();
 	
@@ -157,18 +161,17 @@ KTLayer *KTProjectManager::createLayer(bool addToEnd)
 	{
 		KTLayer *layer = scene->createLayer(addToEnd);
 		
-// 		connect(layer, SIGNAL(frameCreated( const QString &, bool)), this, SIGNAL(frameCreated(const QString& , bool)));
-		
-// 		KTProjectEvent *command = new KTProjectEvent(KTFrameEvent::Add, layer->layerName(), scene->currentLayerIndex());
-		
-// 		emit commandExecuted(command);
+		KTLayerEvent event(KTProjectEvent::Add, layer->layerName(),m_currentSceneIndex, scene->currentLayerIndex() );
+	
+		emit commandExecuted(&event);
 		
 		return layer;
 	}
 	else
 	{
-		dFatal() << "--> No current scene" << endl;
+		D_CHECKPTR(scene);
 	}
+	
 	
 	return 0;
 }
@@ -177,7 +180,7 @@ KTLayer *KTProjectManager::createLayer(bool addToEnd)
  * 
  * @return 
  */
-KTLayer *KTProjectManager::currentLayer()
+KTLayer *KTProject::currentLayer()
 {
 	if ( currentScene() )
 	{
@@ -192,7 +195,7 @@ KTLayer *KTProjectManager::currentLayer()
  * @param addToEnd 
  * @return 
  */
-KTFrame *KTProjectManager::createFrame(bool addToEnd)
+KTFrame *KTProject::createFrame(bool addToEnd)
 {
 	KTLayer *layer = currentLayer();
 	
@@ -200,12 +203,15 @@ KTFrame *KTProjectManager::createFrame(bool addToEnd)
 	{
 		KTFrame *frame = layer->createFrame(addToEnd);
 		
+		KTFrameEvent event(KTProjectEvent::Add, frame->frameName(), m_currentSceneIndex, currentScene()->currentLayerIndex(), layer->currentFrameIndex() );
+	
+		emit commandExecuted(&event);
 		
 		return frame;
 	}
 	else
 	{
-		dFatal() << "--> No current layer" << endl;
+		D_CHECKPTR(layer);
 	}
 	
 	return 0;
@@ -215,7 +221,7 @@ KTFrame *KTProjectManager::createFrame(bool addToEnd)
  * Retorna el frame actual
  * @return 
  */
-KTFrame *KTProjectManager::currentFrame()
+KTFrame *KTProject::currentFrame()
 {
 	if ( currentLayer() )
 	{

@@ -196,7 +196,7 @@ class KTMainWindow : public DMainWindow
 		void changeFPS(int fps);
 		
 	private:
-		KTProjectManager *m_projectManager;
+		KTProject *m_projectManager;
 		KToon::RenderType m_renderType;
 		QString m_fileName;
 		
