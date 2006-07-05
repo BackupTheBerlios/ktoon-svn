@@ -9,23 +9,23 @@ target.path = /lib/
 headers.files += *.h 
 headers.path = /include/ 
 HEADERS += ktlayer.h \
-           ktprojectmanager.h \
            ktpalettedocument.h \
            ktframe.h \
            ktframeevent.h \
            ktlayerevent.h \
            ktprojectevent.h \
            ktsceneevent.h \
-           ktscene.h 
+           ktscene.h \
+           ktproject.h 
 SOURCES += ktlayer.cpp \
-           ktprojectmanager.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
            ktframeevent.cpp \
            ktlayerevent.cpp \
            ktprojectevent.cpp \
            ktsceneevent.cpp \
-           ktscene.cpp 
+           ktscene.cpp \
+           ktproject.cpp 
 QT += xml
 KDEV_QTVER = 4
 INCLUDEPATH += ../../src/store \
