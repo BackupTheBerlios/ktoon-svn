@@ -135,7 +135,7 @@ KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : DMdiWindow(p
 	animationAreaLayout->addWidget(m_animationArea);
 	
 	
-	connect(m_animationArea, SIGNAL(sceneChanged(const KTSceneManager *)), this, SLOT(showSceneInfo(const KTSceneManager *)));
+	connect(m_animationArea, SIGNAL(sceneChanged(const KTScene *)), this, SLOT(showSceneInfo(const KTScene *)));
 	connect(m_animationArea, SIGNAL(progressStep(int, int)), this, SIGNAL(sendProgress(int, int)));
 	connect(m_animationArea, SIGNAL(toStatusBar(const QString &, int)), this, SIGNAL(sendMessage( const QString &, int)));
 	
@@ -178,7 +178,7 @@ KTViewCamera::~KTViewCamera()
 	DEND;
 }
 
-void KTViewCamera::showSceneInfo(const KTSceneManager *scene)
+void KTViewCamera::showSceneInfo(const KTScene *scene)
 {
 	if ( scene )
 	{

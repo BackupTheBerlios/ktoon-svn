@@ -18,43 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktprojectcommand.h"
-
+#include "ktsceneevent.h"
 #include <ddebug.h>
 
-KTProjectCommand::KTProjectCommand(Action action, const QString &name) : QUndoCommand(), m_action(action), m_partName(name)
-{
-	
-}
-
-
-KTProjectCommand::~KTProjectCommand()
+KTSceneEvent::KTSceneEvent(Action action, const QString &name, int sceneIndex) : KTProjectEvent(action, name), m_sceneIndex(sceneIndex)
 {
 }
 
 
-KTProjectCommand::Action KTProjectCommand::action() const
+KTSceneEvent::~KTSceneEvent()
 {
-	return m_action;
 }
 
-QString KTProjectCommand::partName() const
+int KTSceneEvent::id() const
 {
-	return m_partName;
+	return KTProjectEvent::Scene;
 }
 
 
-void KTProjectCommand::redo()
+int KTSceneEvent::sceneIndex() const
 {
-	D_FUNCINFO << "IMPLEMENT ME";
+	return m_sceneIndex;
 }
 
-void KTProjectCommand::undo()
-{
-	D_FUNCINFO << "IMPLEMENT ME";
-}
 
-int KTProjectCommand::id() const
-{
-	return Project;
-}
+

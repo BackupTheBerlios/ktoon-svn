@@ -15,7 +15,7 @@
 
 #include <QTreeWidgetItem>
 
-KTSceneManagersList::KTSceneManagersList(QWidget *parent)
+KTScenesList::KTScenesList(QWidget *parent)
 	: DTreeListWidget(parent)
 {
 	setHeaderLabels ( QStringList() << "name" );
@@ -26,12 +26,12 @@ KTSceneManagersList::KTSceneManagersList(QWidget *parent)
 }
 
 
-KTSceneManagersList::~KTSceneManagersList()
+KTScenesList::~KTScenesList()
 {
 	
 }
 
-void KTSceneManagersList::addScene( QString name)
+void KTScenesList::addScene( QString name)
 {
 	QTreeWidgetItem *newScene = new QTreeWidgetItem( this);
 // 	newScene->setFlags(Qt::ItemIsEditable/*Qt::ItemIsEnabled*//*Qt::ItemIsUserCheckable*/ );//Qt::ItemIsDragEnabled);
@@ -41,12 +41,12 @@ void KTSceneManagersList::addScene( QString name)
 // 	emit changeCurrent(name, indexCurrentScene());
 }
 
-void KTSceneManagersList::changeCurrentName(QString name)
+void KTScenesList::changeCurrentName(QString name)
 {
 	currentItem()->setText(0, name);
 } 
 
-int KTSceneManagersList::removeCurrentScene()
+int KTScenesList::removeCurrentScene()
 {
 	int index = indexCurrentScene();
 	delete currentItem();
@@ -62,21 +62,21 @@ int KTSceneManagersList::removeCurrentScene()
 }
 
 
-void KTSceneManagersList::changeCurrentScene()
+void KTScenesList::changeCurrentScene()
 {
 	QString name = currentItem()->text(0);
 	int index = indexCurrentScene();
 	emit(changeCurrent( name, index));
 }
 
-void KTSceneManagersList::changeCurrentScene(QTreeWidgetItem *item, int )
+void KTScenesList::changeCurrentScene(QTreeWidgetItem *item, int )
 {
 	QString name = item->text(0);
 	int index = indexOfTopLevelItem(item);
 	emit(changeCurrent( name, index));
 }
 
-int KTSceneManagersList::moveCurrentSceneUp()
+int KTScenesList::moveCurrentSceneUp()
 {
 	int index = indexCurrentScene();
 	if(index > 0)
@@ -87,7 +87,7 @@ int KTSceneManagersList::moveCurrentSceneUp()
 	return index;
 }
 
-int KTSceneManagersList::moveCurrentSceneDown()
+int KTScenesList::moveCurrentSceneDown()
 {
 	int index = indexCurrentScene();
 	if(index < topLevelItemCount()-1)
@@ -99,17 +99,17 @@ int KTSceneManagersList::moveCurrentSceneDown()
 }
 
 
-int KTSceneManagersList::indexCurrentScene()
+int KTScenesList::indexCurrentScene()
 {
 	return indexOfTopLevelItem(currentItem());
 }
 
-QString KTSceneManagersList::nameCurrentScene()
+QString KTScenesList::nameCurrentScene()
 {
 	return currentItem()->text(0);
 }
 
-int KTSceneManagersList::scenesCount()
+int KTScenesList::scenesCount()
 {
 	return topLevelItemCount();
 }

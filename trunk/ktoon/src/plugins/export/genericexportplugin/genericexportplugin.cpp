@@ -46,7 +46,7 @@ KTExportInterface::Formats GenericExportPlugin::availableFormats()
 	return PNG | JPEG;
 }
 
-void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KTSceneManager *> &scenes, Format format,  const QSize &size,float sx, float sy)
+void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size,float sx, float sy)
 {
 	QFileInfo fileInfo(filePath);
 	
@@ -74,13 +74,13 @@ void GenericExportPlugin::exportToFormat(const QString &filePath, const QList<KT
 	createImages(scenes, dir, sx, sy, f);
 }
 
-QStringList GenericExportPlugin::createImages(const QList<KTSceneManager *> &scenes, const QDir &dir, float sx, float sy, const char *format)
+QStringList GenericExportPlugin::createImages(const QList<KTScene *> &scenes, const QDir &dir, float sx, float sy, const char *format)
 {
 	QStringList paths;
 	
 	int nPhotogramsRenderized = 0;
 	
-	foreach(KTSceneManager *scene, scenes )
+	foreach(KTScene *scene, scenes )
 	{
 		Layers layers = scene->layers();
 		

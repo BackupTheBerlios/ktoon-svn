@@ -48,12 +48,12 @@ class KTPaintArea;
  * @author Jorge Cuadrado
 */
 
-class KTViewArea : public QMainWindow
+class KTViewDocument : public QMainWindow
 {
 	Q_OBJECT
 	public:
-		KTViewArea(   const QString& title , KToon::RenderType renderType, QWidget *parent = 0 );
-		~KTViewArea();
+		KTViewDocument(   const QString& title , KToon::RenderType renderType, QWidget *parent = 0 );
+		~KTViewDocument();
 		void close();
 		QSize sizeHint() const;
 		
@@ -71,7 +71,7 @@ class KTViewArea : public QMainWindow
 		void setNextOnionSkin(int n);
 		void setPreviousOnionSkin(int n);
 		
-// 		void setScene(KTSceneManager* scene);
+// 		void setScene(KTScene* scene);
 		
 		void setZoomFactor(int porcent);
 		

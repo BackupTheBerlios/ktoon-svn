@@ -24,24 +24,24 @@
 #include <QDir>
 
 
-KTSceneManager::KTSceneManager(QObject *parent) : QObject(parent), m_currentLayerIndex(-1), m_layerCount(0), m_fps(24)
+KTScene::KTScene(QObject *parent) : QObject(parent), m_currentLayerIndex(-1), m_layerCount(0), m_fps(24)
 {
 }
 
 
-KTSceneManager::~KTSceneManager()
+KTScene::~KTScene()
 {
 	DEND;
 	qDeleteAll(m_layers);
 }
 
-// QDomElement KTSceneManager::createXML( QDomDocument &doc )
+// QDomElement KTScene::createXML( QDomDocument &doc )
 // {
 // 	QDomElement scene = doc.createElement("Scene");
 // 	return scene;
 // }
 // 
-// void KTSceneManager::save(const QString &scenePath)
+// void KTScene::save(const QString &scenePath)
 // {
 // 	QDir sceneDir(scenePath);
 // 		
@@ -76,7 +76,7 @@ KTSceneManager::~KTSceneManager()
 // 	}
 // }
 
-// void KTSceneManager::load(const QString &path)
+// void KTScene::load(const QString &path)
 // {
 // 	dDebug() << "Loading scene: " << path;
 // 	
@@ -96,18 +96,18 @@ KTSceneManager::~KTSceneManager()
 // 	}
 // }
 
-void KTSceneManager::setSceneName(const QString &name)
+void KTScene::setSceneName(const QString &name)
 {
 	dDebug() << "Setting scene name: " << name;
 	m_name = name;
 }
 
-QString KTSceneManager::sceneName() const
+QString KTScene::sceneName() const
 {
 	return m_name;
 }
 
-Layers KTSceneManager::layers() const
+Layers KTScene::layers() const
 {
 	return m_layers;
 }
@@ -115,12 +115,12 @@ Layers KTSceneManager::layers() const
 /**
  * Pone la lista de layers, esta funcion sobreescribe los layers anteriores
  */
-void KTSceneManager::setLayers(const Layers &layers)
+void KTScene::setLayers(const Layers &layers)
 {
 	m_layers = layers;
 }
 
-KTLayer *KTSceneManager::createLayer(bool addToEnd )
+KTLayer *KTScene::createLayer(bool addToEnd )
 {
 	KTLayer *layer = new KTLayer(this);
 	
@@ -147,7 +147,7 @@ KTLayer *KTSceneManager::createLayer(bool addToEnd )
 /**
  * Retorna el layer actual
  */
-KTLayer *KTSceneManager::currentLayer()
+KTLayer *KTScene::currentLayer()
 {
 	if (  m_currentLayerIndex >= 0  && m_currentLayerIndex < m_layers.count() )
 	{
@@ -157,12 +157,12 @@ KTLayer *KTSceneManager::currentLayer()
 	return 0;
 }
 
-int KTSceneManager::currentLayerIndex() const
+int KTScene::currentLayerIndex() const
 {
 	return m_currentLayerIndex;
 }
 
-void KTSceneManager::setCurrentLayer(int index)
+void KTScene::setCurrentLayer(int index)
 {
 	if (  index > 0  && index < m_layers.count() )
 	{
@@ -171,7 +171,7 @@ void KTSceneManager::setCurrentLayer(int index)
 }
 
 
-void KTSceneManager::setFPS(int fps)
+void KTScene::setFPS(int fps)
 {
 	if (fps > 0 )
 	{
@@ -183,12 +183,12 @@ void KTSceneManager::setFPS(int fps)
 	}
 }
 
-int KTSceneManager::fps() const
+int KTScene::fps() const
 {
 	return m_fps;
 }
 
-void KTSceneManager::removeLayer( int index)
+void KTScene::removeLayer( int index)
 {
 	if(index >= 0 && index < m_layers.count())
 	{
@@ -199,7 +199,7 @@ void KTSceneManager::removeLayer( int index)
 	
 }
 
-void KTSceneManager::moveCurrentLayer(bool up)
+void KTScene::moveCurrentLayer(bool up)
 {
 	D_FUNCINFO;
 	
@@ -224,7 +224,12 @@ void KTSceneManager::moveCurrentLayer(bool up)
 }
 
 
-QGraphicsScene *KTSceneManager::scene(int index)
+/**
+ * Retorna el fotograma de la posicición marcada por index
+ * @param index 
+ * @return 
+ */
+QGraphicsScene *KTScene::photogram(int index)
 {
 	QGraphicsScene *scene = 0;
 	foreach(KTLayer *layer, m_layers)

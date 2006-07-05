@@ -38,14 +38,14 @@ class KTAnimationArea : public QFrame
 	public:
 		KTAnimationArea(const QSize& size, QWidget *parent = 0);
 		~KTAnimationArea();
-		void setScene(KTSceneManager *scene);
+		void setScene(KTScene *scene);
 		
 		QSize sizeHint() const;
 		int photogramsCount() const;
 		
 		void setLoop(bool l);
 		
-		const KTSceneManager *currentScene() const;
+		const KTScene *currentScene() const;
 		
 	public slots:
 		virtual void render();
@@ -62,7 +62,7 @@ class KTAnimationArea : public QFrame
 		void progressStep(int, int);
 		void toStatusBar(const QString &, int);
 		
-		void sceneChanged(const KTSceneManager *newScene );
+		void sceneChanged(const KTScene *newScene );
 		
 	protected:
 		void paintEvent(QPaintEvent *e);
@@ -74,7 +74,7 @@ class KTAnimationArea : public QFrame
 		QImage m_renderCamera;
 		
 // 		KTFrame *m_currentFrame;
-		KTSceneManager *m_scene;
+		KTScene *m_scene;
 		
 		bool m_draw, m_ciclicAnimation;
 		

@@ -42,10 +42,10 @@ class SmilExportPlugin : public KTExportPluginObject, public KTExportInterface
 		virtual QString key() const;
 		KTExportInterface::Formats availableFormats();
 		
-		virtual void exportToFormat(const QString &filePath, const QList<KTSceneManager *> &scenes, Format format,  const QSize &size, float sx = 1, float sy = 1);
+		virtual void exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size, float sx = 1, float sy = 1);
 		
 	private:
-		QStringList createImages(const QList<KTSceneManager *> &scenes, const QDir &dir,float sx = 1, float sy = 1, const char *format = "PNG");
+		QStringList createImages(const QList<KTScene *> &scenes, const QDir &dir,float sx = 1, float sy = 1, const char *format = "PNG");
 		
 		void initSmil();
 		void createPar(const QString &filePath, double duration);

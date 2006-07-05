@@ -18,32 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktscenecommand.h"
+#include "ktframeevent.h"
 #include <ddebug.h>
 
-KTSceneCommand::KTSceneCommand(Action action, const QString &name, int index) : KTProjectCommand(action, name, index)
+KTFrameEvent::KTFrameEvent(Action action, const QString &name, int sceneIndex, int layerIndex, int frameIndex) : KTLayerEvent(action, name, sceneIndex, layerIndex), m_frameIndex(frameIndex)
 {
 }
 
 
-KTSceneCommand::~KTSceneCommand()
+KTFrameEvent::~KTFrameEvent()
 {
 }
 
-int KTSceneCommand::id() const
+int KTFrameEvent::id() const
 {
-	return KTProjectCommand::Scene;
+	return KTProjectEvent::Frame;
 }
 
-
-void KTSceneCommand::redo()
+int KTFrameEvent::frameIndex() const
 {
-	D_FUNCINFO << "IMPLEMENT ME";
-}
-
-void KTSceneCommand::undo()
-{
-	D_FUNCINFO << "IMPLEMENT ME";
+	return m_frameIndex;
 }
 
 

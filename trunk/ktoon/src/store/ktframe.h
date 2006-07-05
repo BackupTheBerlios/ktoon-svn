@@ -68,6 +68,7 @@ class KTFrame : public QGraphicsScene
 		bool isLocked();
 		
 	private:
+		void init();
 		QString m_name;
 		bool m_isLocked;
 };

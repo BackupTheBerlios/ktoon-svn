@@ -55,7 +55,7 @@ void KTMainWindow::createGUI()
 	new DAction( QPixmap(), tr( "Import bitmap..." ), QKeySequence(), m_libraryWidget, SLOT(importBitmap()), m_actionManager, "importbitmap");
 	
 	/////////////////
-	m_scenes = new KTSceneManagersWidget( this);
+	m_scenes = new KTScenesWidget( this);
 	m_scenes->setWindowIcon(QPixmap(THEME_DIR+"/icons/scenes.png"));
 	toolWindow(DiDockWidget::Right)->addWidget(tr("Scenes"),m_scenes);
 	

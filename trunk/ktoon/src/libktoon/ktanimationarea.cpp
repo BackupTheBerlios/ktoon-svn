@@ -40,7 +40,7 @@ KTAnimationArea::~KTAnimationArea()
 {
 }
 
-void KTAnimationArea::setScene(KTSceneManager *scene)
+void KTAnimationArea::setScene(KTScene *scene)
 {
 	m_scene = scene;
 	
@@ -256,7 +256,7 @@ void KTAnimationArea::setLoop(bool l)
 	m_ciclicAnimation = l;
 }
 
-const KTSceneManager *KTAnimationArea::currentScene() const
+const KTScene *KTAnimationArea::currentScene() const
 {
 	return m_scene;
 }

@@ -18,47 +18,27 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef KTFRAMECOMMAND_H
+#define KTFRAMECOMMAND_H
 
-#ifndef KTPROJECTCOMMAND_H
-#define KTPROJECTCOMMAND_H
-
-#include <QUndoCommand>
+#include <ktlayerevent.h>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTProjectCommand : public QUndoCommand
+class KTFrameEvent : public KTLayerEvent
 {
 	public:
-		enum Action
-		{
-			Add = 0,
-			Remove
-		};
-		enum Part
-		{
-			Project = 1000,
-			Frame,
-			Layer,
-			Scene
-		};
+		KTFrameEvent(Action action, const QString &name, int sceneIndex, int layerIndex, int frameIndex);
+		~KTFrameEvent();
 		
-		KTProjectCommand(Action action, const QString &name);
-		~KTProjectCommand();
-		
-		
-		Action action() const;
-		
-		QString partName() const;
-		
-		virtual void redo();
-		virtual void undo();
 		
 		virtual int id() const;
 		
+		int frameIndex() const;
+		
 	private:
-		Action m_action;
-		QString m_partName;
+		int m_frameIndex;
 };
 
 #endif

@@ -127,7 +127,7 @@ class KTMainWindow : public DMainWindow
 	private slots:
 		void createNewProject(const QString &name, const QSize &size = QSize(-1,-1),  const int fps = 24  );
 		void newViewDocument(const QString &name = QString::null);
-		void newViewCamera(KTSceneManager *scene = 0);
+		void newViewCamera(KTScene *scene = 0);
 		void newProject();
 		bool closeProject();
 		void openProject();
@@ -201,7 +201,7 @@ class KTMainWindow : public DMainWindow
 		QString m_fileName;
 		
 	private:
-		KTViewArea *m_viewDoc;
+		KTViewDocument *m_viewDoc;
 		KTWorkspace *m_animationSpace;
 		KTStatusBar *m_statusBar;
 		DActionManager *m_actionManager;
@@ -214,7 +214,7 @@ class KTMainWindow : public DMainWindow
 	// Components
 	private:
 		KTExposureSheet *m_exposureSheet;
-		KTSceneManagersWidget *m_scenes;
+		KTScenesWidget *m_scenes;
 		KTTimeLine *m_timeLine;
 		KTHelpWidget *m_helper;
 		KTLibraryWidget *m_libraryWidget;

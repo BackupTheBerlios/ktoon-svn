@@ -33,12 +33,12 @@
 #include <QPixmap>
 #include <QList>
 
-class KTSceneManagersWidget : public KTModuleWidgetBase
+class KTScenesWidget : public KTModuleWidgetBase
 {
 	Q_OBJECT
 	public:
-		KTSceneManagersWidget( QWidget *parent);
-		~KTSceneManagersWidget();
+		KTScenesWidget( QWidget *parent);
+		~KTScenesWidget();
 		
 	public slots:
 		void closeAllScenes();
@@ -46,7 +46,7 @@ class KTSceneManagersWidget : public KTModuleWidgetBase
 	private:
 		QGroupBox *m_buttonsPanel;
 		QButtonGroup *m_buttonGroup;
-		KTSceneManagersList *m_tableScenes;
+		KTScenesList *m_tableScenes;
 
 // 		QLabel *m_textName;
 

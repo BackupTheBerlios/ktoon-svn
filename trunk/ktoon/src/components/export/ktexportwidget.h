@@ -70,7 +70,7 @@ class KTExportWidget : public KTModuleWidgetBase
 		
 	private:
 		void loadPlugins();
-// 		QList<KTSceneManager *> scenesToExport();
+// 		QList<KTScene *> scenesToExport();
 		
 	private:
 		QButtonGroup *m_buttons;

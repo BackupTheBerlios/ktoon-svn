@@ -74,7 +74,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 // 	m_viewDoc->setWindowIcon(QIcon(THEME_DIR+"/icons/illustration_mode.png"));
 // 	m_viewDoc->setScrollBarsEnabled( true );
 // 	m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
-// 	m_viewDoc = new KTViewArea( QSize(500, 500), "asdf", m_renderType );
+// 	m_viewDoc = new KTViewDocument( QSize(500, 500), "asdf", m_renderType );
 	
 // 	addWidget(m_viewDoc, tr("Illustration"), true);
 	
@@ -122,7 +122,7 @@ void KTMainWindow::createNewProject(const QString &name, const QSize &size, cons
 	
 	m_projectManager->init();
 	
-	m_projectManager->createSceneManager(true);
+	m_projectManager->createScene(true);
 	newViewDocument( name);
 	m_projectManager->setProjectName( name );
 	
@@ -140,14 +140,14 @@ void KTMainWindow::newViewDocument(const QString &title)
 // 		
 // 		messageToOSD(tr("Opening a new document..."));
 // 		
-// 		KTSceneManager *scene = m_projectManager->currentScene();
+// 		KTScene *scene = m_projectManager->currentScene();
 // 		
 // 		m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
 // 		
 // 		if ( scene )
 // 		{
 // 			m_statusBar->advance(4);
-			/*KTViewArea **/m_viewDoc = new KTViewArea(  title, m_renderType);
+			/*KTViewDocument **/m_viewDoc = new KTViewDocument(  title, m_renderType);
 			connectToDisplays( m_viewDoc );
 			m_viewDoc->setAttribute(Qt::WA_DeleteOnClose, true);
 			addWidget( m_viewDoc, tr("Illustration"), true);
@@ -201,7 +201,7 @@ void KTMainWindow::newViewDocument(const QString &title)
 // 	}
 }
 
-void KTMainWindow::newViewCamera(KTSceneManager *scene)
+void KTMainWindow::newViewCamera(KTScene *scene)
 {
 	if ( m_projectManager->isOpen() )
 	{
@@ -411,7 +411,7 @@ void KTMainWindow::importPalettes()
 // Drawing
 void KTMainWindow::changeCurrentColors(const QBrush &foreground, const QBrush &background)
 {
-// 	KTViewArea *doc = qobject_cast<KTViewArea *>(m_viewDoc->activeWindow());
+// 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_viewDoc->activeWindow());
 	
 	if ( m_viewDoc )
 	{
@@ -423,7 +423,7 @@ void KTMainWindow::changeCurrentColors(const QBrush &foreground, const QBrush &b
 
 void KTMainWindow::changeCurrentPen(const QPen &pen)
 {
-// 	KTViewArea *doc = qobject_cast<KTViewArea *>(m_viewDoc->activeWindow ());
+// 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_viewDoc->activeWindow ());
 	
 	if ( m_viewDoc )
 	{
@@ -433,7 +433,7 @@ void KTMainWindow::changeCurrentPen(const QPen &pen)
 
 void KTMainWindow::changeFPS(int fps)
 {
-// 	KTSceneManager *scene = m_projectManager->currentScene();
+// 	KTScene *scene = m_projectManager->currentScene();
 // 	
 // 	if ( scene )
 // 	{

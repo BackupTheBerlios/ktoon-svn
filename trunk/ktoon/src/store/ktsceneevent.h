@@ -20,20 +20,25 @@
 #ifndef KTSCENECOMMAND_H
 #define KTSCENECOMMAND_H
 
-#include <ktprojectcommand.h>
+#include <ktprojectevent.h>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTSceneCommand : public KTProjectCommand
+class KTSceneEvent : public KTProjectEvent
 {
 	public:
-		KTSceneCommand(Action action, const QString &name, int sceneIndex);
-		~KTSceneCommand();
+		KTSceneEvent(Action action, const QString &name, int sceneIndex);
+		~KTSceneEvent();
 		
 		virtual int id() const;
-		virtual void redo();
-		virtual void undo();
+		
+		int sceneIndex() const;
+		
+	private:
+		int m_sceneIndex;
 };
 
 #endif
+
+

@@ -17,23 +17,35 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTLAYERCOMMAND_H
-#define KTLAYERCOMMAND_H
 
-#include <ktscenecommand.h>
+#include "ktprojectevent.h"
 
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class KTLayerCommand : public KTSceneCommand
+#include <ddebug.h>
+
+KTProjectEvent::KTProjectEvent(Action action, const QString &name) : m_action(action), m_partName(name)
 {
-	public:
-		KTLayerCommand(Action action, const QString &name, int index);
-		~KTLayerCommand();
-		
-		virtual int id() const;
-		virtual void redo();
-		virtual void undo();
-};
+	
+}
 
-#endif
+
+KTProjectEvent::~KTProjectEvent()
+{
+}
+
+
+KTProjectEvent::Action KTProjectEvent::action() const
+{
+	return m_action;
+}
+
+QString KTProjectEvent::partName() const
+{
+	return m_partName;
+}
+
+int KTProjectEvent::id() const
+{
+	return Project;
+}
+
+

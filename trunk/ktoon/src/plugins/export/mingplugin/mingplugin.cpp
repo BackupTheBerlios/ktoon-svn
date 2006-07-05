@@ -51,7 +51,7 @@ KTExportInterface::Formats MingPlugin::availableFormats()
 	return SWF;
 }
 
-void MingPlugin::exportToFormat(const QString &filePath, const QList<KTSceneManager *> &scenes, Format format,  const QSize &size, float sx, float sy)
+void MingPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size, float sx, float sy)
 {
 #ifdef HAVE_MING
 	QDir temp(CACHE_DIR+"/exporting");
@@ -97,13 +97,13 @@ void MingPlugin::exportToFormat(const QString &filePath, const QList<KTSceneMana
 #endif
 }
 
-QStringList MingPlugin::createImages(const QList<KTSceneManager *> &scenes, const QDir &dir, float sx, float sy, const char *format)
+QStringList MingPlugin::createImages(const QList<KTScene *> &scenes, const QDir &dir, float sx, float sy, const char *format)
 {
 	QStringList paths;
 	
 	int nPhotogramsRenderized = 0;
 	
-	foreach(KTSceneManager *scene, scenes )
+	foreach(KTScene *scene, scenes )
 	{
 		Layers layers = scene->layers();
 		

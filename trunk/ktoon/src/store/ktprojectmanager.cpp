@@ -26,13 +26,13 @@
 #include "ktscenemanager.h"
 #include "ktlayer.h"
 #include "ktframe.h"
-#include "ktframecommand.h"
+#include "ktframeevent.h"
 
 
 /**
  * Constructor por defecto
  */
-KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(false), m_currentSceneManagerIndex(-1)
+KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(false), m_currentSceneIndex(-1)
 {
 	DINIT;
 }
@@ -51,7 +51,7 @@ KTProjectManager::~KTProjectManager()
  */
 void KTProjectManager::close()
 {
-	qDeleteAll(m_sceneManagerList);
+	qDeleteAll(m_scenes);
 	
 	m_isOpen = false;
 }
@@ -105,39 +105,39 @@ void KTProjectManager::init()
  * @param addToEnd 
  * @return 
  */
-KTSceneManager * KTProjectManager::createSceneManager(bool addToEnd)
+KTScene * KTProjectManager::createScene(bool addToEnd)
 {
-	KTSceneManager *sceneManager = new KTSceneManager(this);
+	KTScene *scene = new KTScene(this);
 	
 	if ( addToEnd )
 	{
-		m_sceneManagerList << sceneManager;
+		m_scenes << scene;
 	}
-	else if ( m_currentSceneManagerIndex > 0 && m_currentSceneManagerIndex < m_sceneManagerList.count() )
+	else if ( m_currentSceneIndex > 0 && m_currentSceneIndex < m_scenes.count() )
 	{
-		m_sceneManagerList.insert(m_currentSceneManagerIndex+1, sceneManager);
+		m_scenes.insert(m_currentSceneIndex+1, scene);
 	}
 	else
 	{
 		dError() << "Error creating scene manager";
-		delete sceneManager;
+		delete scene;
 		return 0;
 	}
 	
-// 	connect(sceneManager, SIGNAL(layerCreated(const QString &, bool)), this, SIGNAL(layerCreated(const QString &, bool)));
+// 	connect(scene, SIGNAL(layerCreated(const QString &, bool)), this, SIGNAL(layerCreated(const QString &, bool)));
 	
-	return sceneManager;
+	return scene;
 }
 
 /**
  * 
  * @return 
  */
-KTSceneManager * KTProjectManager::currentSceneManager()
+KTScene * KTProjectManager::currentScene()
 {
-	if ( m_currentSceneManagerIndex >= 0 && m_currentSceneManagerIndex < m_sceneManagerList.count() )
+	if ( m_currentSceneIndex >= 0 && m_currentSceneIndex < m_scenes.count() )
 	{
-		return m_sceneManagerList[m_currentSceneManagerIndex];
+		return m_scenes[m_currentSceneIndex];
 	}
 	
 	return 0;
@@ -151,7 +151,7 @@ KTSceneManager * KTProjectManager::currentSceneManager()
  */
 KTLayer *KTProjectManager::createLayer(bool addToEnd)
 {
-	KTSceneManager *scene = currentSceneManager();
+	KTScene *scene = currentScene();
 	
 	if ( scene )
 	{
@@ -159,9 +159,9 @@ KTLayer *KTProjectManager::createLayer(bool addToEnd)
 		
 // 		connect(layer, SIGNAL(frameCreated( const QString &, bool)), this, SIGNAL(frameCreated(const QString& , bool)));
 		
-		KTProjectCommand *command = new KTProjectCommand(KTFrameCommand::Add, layer->layerName(), scene->currentLayerIndex());
+// 		KTProjectEvent *command = new KTProjectEvent(KTFrameEvent::Add, layer->layerName(), scene->currentLayerIndex());
 		
-		emit commandExecuted(command);
+// 		emit commandExecuted(command);
 		
 		return layer;
 	}
@@ -179,9 +179,9 @@ KTLayer *KTProjectManager::createLayer(bool addToEnd)
  */
 KTLayer *KTProjectManager::currentLayer()
 {
-	if ( currentSceneManager() )
+	if ( currentScene() )
 	{
-		return currentSceneManager()->currentLayer();
+		return currentScene()->currentLayer();
 	}
 	
 	return 0;

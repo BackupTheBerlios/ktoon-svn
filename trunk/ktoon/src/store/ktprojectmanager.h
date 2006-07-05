@@ -25,16 +25,16 @@
 #include "ktglobal.h"
 
 
-class KTSceneManager;
+class KTScene;
 class KTLayer;
 class KTFrame;
-class KTFrameCommand;
-class KTProjectCommand;
+class KTFrameEvent;
+class KTProjectEvent;
 
-typedef QList<KTSceneManager *> SceneManagerList;
+typedef QList<KTScene *> Scenes;
 
 /**
- * Esta clase maneja el proyecto, contiene KTSceneManager 's
+ * Esta clase maneja el proyecto, además contiene las diferentes escenas que componen todo el proyecto.
  * 
  * @brief Project manager
  * @author David Cuadrado <krawek@toonka.com>
@@ -50,7 +50,7 @@ class KTProjectManager : public QObject
 		/**
 		 * Reimplementado de KTSerializableObject
 		 */
-// 		QDomElement createXML( QDomSceneManager &doc );
+// 		QDomElement createXML( QDomScene &doc );
 		
 		void setProjectName(const QString &name);
 		
@@ -59,8 +59,8 @@ class KTProjectManager : public QObject
 		bool isOpen();
 		void init();
 		
-		KTSceneManager *createSceneManager(bool addToEnd = true);
-		KTSceneManager *currentSceneManager();
+		KTScene *createScene(bool addToEnd = true);
+		KTScene *currentScene();
 		
 		KTLayer *createLayer(bool addToEnd = true);
 		KTLayer *currentLayer();
@@ -82,14 +82,14 @@ class KTProjectManager : public QObject
 // 		bool load(const QString &path);
 		
 	signals:
-		void commandExecuted(KTProjectCommand *command );
+		void commandExecuted(KTProjectEvent *command );
 		
 	private:
-		SceneManagerList m_sceneManagerList;
+		Scenes m_scenes;
 		QString m_name;
 		bool m_isOpen;
 		
-		int m_currentSceneManagerIndex;
+		int m_currentSceneIndex;
 };
 
 #endif

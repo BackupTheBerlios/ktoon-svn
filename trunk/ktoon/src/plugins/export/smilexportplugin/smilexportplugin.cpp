@@ -46,7 +46,7 @@ KTExportInterface::Formats SmilExportPlugin::availableFormats()
 	return SMIL;
 }
 
-void SmilExportPlugin::exportToFormat(const QString &filePath, const QList<KTSceneManager *> &scenes, Format format,  const QSize &size,float sx, float sy)
+void SmilExportPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> &scenes, Format format,  const QSize &size,float sx, float sy)
 {
 	m_size = size;
 	QFileInfo fileInfo(filePath);
@@ -124,13 +124,13 @@ void SmilExportPlugin::initSmil()
 	m_smil.appendChild(root);
 }
 
-QStringList SmilExportPlugin::createImages(const QList<KTSceneManager *> &scenes, const QDir &dir, float sx, float sy, const char *format)
+QStringList SmilExportPlugin::createImages(const QList<KTScene *> &scenes, const QDir &dir, float sx, float sy, const char *format)
 {
 	QStringList paths;
 	
 	int nPhotogramsRenderized = 0;
 	
-	foreach(KTSceneManager *scene, scenes )
+	foreach(KTScene *scene, scenes )
 	{
 		Layers layers = scene->layers();
 		

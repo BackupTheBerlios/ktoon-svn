@@ -287,7 +287,7 @@ void KTExportWidget::exportIt()
 		
 		dDebug() << "Exporting to file: " << file;
 		
-// 		QList<KTSceneManager *> scenes = scenesToExport();
+// 		QList<KTScene *> scenes = scenesToExport();
 // 		
 // 		dDebug() << "Exporting " << scenes.count() << " scenas";
 // 		
@@ -302,15 +302,15 @@ void KTExportWidget::exportIt()
 	}
 }
 
-// // QList<KTSceneManager *> KTExportWidget::scenesToExport()
+// // QList<KTScene *> KTExportWidget::scenesToExport()
 // // {
 // // 	KTDocument *currentDocument = m_manager->currentDocument();
 // // 	
-// // 	if (!currentDocument) return QList<KTSceneManager *>();
+// // 	if (!currentDocument) return QList<KTScene *>();
 // // 	
-// // 	QList<KTSceneManager *> scenes = currentDocument->scenes();
+// // 	QList<KTScene *> scenes = currentDocument->scenes();
 // // 	
-// // 	if ( scenes.count() == 0 ) return QList<KTSceneManager *>();
+// // 	if ( scenes.count() == 0 ) return QList<KTScene *>();
 // // 	
 // // 	switch( m_buttons->checkedId() )
 // // 	{
@@ -321,7 +321,7 @@ void KTExportWidget::exportIt()
 // // 		break;
 // // 		case CurrentScene:
 // // 		{
-// // 			return QList<KTSceneManager *>() << currentDocument->currentScene();
+// // 			return QList<KTScene *>() << currentDocument->currentScene();
 // // 		}
 // // 		break;
 // // 		case SceneRange:

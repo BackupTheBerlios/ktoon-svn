@@ -49,7 +49,7 @@ class KTViewCamera : public DMdiWindow
 		void updateSceneInfo();
 		
 	private slots:
-		void showSceneInfo(const KTSceneManager *scene);
+		void showSceneInfo(const KTScene *scene);
 		void setLoop();
 		void doPlay();
 		

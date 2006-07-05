@@ -17,12 +17,12 @@
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-class KTSceneManagersList : public DTreeListWidget
+class KTScenesList : public DTreeListWidget
 {
 	Q_OBJECT
 	public:
-		KTSceneManagersList(QWidget *parent = 0);
-		~KTSceneManagersList();
+		KTScenesList(QWidget *parent = 0);
+		~KTScenesList();
 		void addScene(QString name);
 		int removeCurrentScene();
 		int indexCurrentScene();

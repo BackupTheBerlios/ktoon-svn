@@ -32,19 +32,19 @@ typedef QList<KTLayer *> Layers;
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTSceneManager : public QObject
+class KTScene : public QObject
 {
 	Q_OBJECT
 	public:
 		/**
 		 * Constructor por defecto
 		 */
-		KTSceneManager(QObject *parent = 0);
+		KTScene(QObject *parent = 0);
 		
 		/**
 		 * Destructor
 		 */
-		~KTSceneManager();
+		~KTScene();
 		
 		/**
 		 * Pone un nombre a la escena
@@ -114,7 +114,8 @@ class KTSceneManager : public QObject
 		 */
 		void moveCurrentLayer(bool up);
 		
-		QGraphicsScene* scene(int index);
+		QGraphicsScene* photogram(int index);
+		
 	signals:
 		/**
 		 * Este signal es emitido cuando se crea un layer
@@ -141,7 +142,7 @@ class KTSceneManager : public QObject
 	private:
 		Layers m_layers;
 		int m_currentLayerIndex;
-		mutable QString m_name;
+		QString m_name;
 		
 		int m_layerCount;
 		

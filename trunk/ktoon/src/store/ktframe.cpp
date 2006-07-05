@@ -24,13 +24,18 @@
 
 KTFrame::KTFrame(QObject *parent) : QGraphicsScene(parent), m_name("Frame"), m_isLocked(false)
 {
+	init();
 }
 
 KTFrame::KTFrame(const QString &frameName, QObject * parent) : QGraphicsScene(parent), m_name(frameName), m_isLocked(false)
 {	
-	
+	init();
 }
 
+void KTFrame::init()
+{
+	setItemIndexMethod(QGraphicsScene::NoIndex);
+}
 
 KTFrame::~KTFrame()
 {

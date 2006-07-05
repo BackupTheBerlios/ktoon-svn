@@ -18,31 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktlayercommand.h"
+#include "ktlayerevent.h"
 #include <ddebug.h>
 
-KTLayerCommand::KTLayerCommand(Action action, const QString &name, int index) : KTSceneCommand(action, name, index)
+KTLayerEvent::KTLayerEvent(Action action, const QString &name, int sceneIndex, int layerIndex) : KTSceneEvent(action, name, sceneIndex), m_layerIndex(layerIndex)
 {
 }
 
 
-KTLayerCommand::~KTLayerCommand()
+KTLayerEvent::~KTLayerEvent()
 {
 }
 
-int KTLayerCommand::id() const
+int KTLayerEvent::id() const
 {
-	return KTProjectCommand::Layer;
+	return KTProjectEvent::Layer;
 }
 
-
-void KTLayerCommand::redo()
+int KTLayerEvent::layerIndex() const
 {
-	D_FUNCINFO << "IMPLEMENT ME";
-}
-
-void KTLayerCommand::undo()
-{
-	D_FUNCINFO << "IMPLEMENT ME";
+	return m_layerIndex;
 }
 
