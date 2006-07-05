@@ -27,7 +27,7 @@
 #include <QTimer>
 #include <QFrame>
 
-#include "ktscenemanager.h"
+#include "ktscene.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>

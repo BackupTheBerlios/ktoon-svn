@@ -26,7 +26,7 @@
 
 #include "ktexportpluginobject.h"
 
-#include "ktscenemanager.h"
+#include "ktscene.h"
 
 #include "qplugin.h" // Q_EXPORT_PLUGIN
 

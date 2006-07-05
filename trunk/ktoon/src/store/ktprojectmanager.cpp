@@ -23,7 +23,7 @@
 
 
 // #include "ktprojectparser.h"
-#include "ktscenemanager.h"
+#include "ktscene.h"
 #include "ktlayer.h"
 #include "ktframe.h"
 #include "ktframeevent.h"
