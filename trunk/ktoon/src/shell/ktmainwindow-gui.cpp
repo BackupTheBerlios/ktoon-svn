@@ -28,7 +28,9 @@ void KTMainWindow::createGUI()
 	// TODO: put setWindowIcon in each class
 	m_colorPalette = new KTColorPalette(this);
 	m_colorPalette->setWindowIcon(QPixmap(THEME_DIR+"/icons/color_palette.png") );
-	connect(m_colorPalette, SIGNAL(brushChanged(const QBrush &, const QBrush &)), this, SLOT(changeCurrentColors(const QBrush &, const QBrush &)));
+	
+// 	connect(m_colorPalette, SIGNAL(brushChanged(const QBrush &, const QBrush &)), this, SLOT(changeCurrentColors(const QBrush &, const QBrush &)));
+	
 	toolWindow(DiDockWidget::Left)->addWidget(tr("Palette"),m_colorPalette);
 	
 	connectToDisplays(m_colorPalette);
@@ -38,7 +40,7 @@ void KTMainWindow::createGUI()
 	m_penWidget = new KTPenWidget(this);
 	toolWindow(DiDockWidget::Left)->addWidget(tr("Pen"),m_penWidget);
 	
-	connect(m_penWidget, SIGNAL(penChanged( const QPen& )), this, SLOT(changeCurrentPen( const QPen &)));
+// 	connect(m_penWidget, SIGNAL(penChanged( const QPen& )), this, SLOT(changeCurrentPen( const QPen &)));
 	
 	connectToDisplays(m_penWidget);
 	
@@ -59,12 +61,14 @@ void KTMainWindow::createGUI()
 	m_scenes->setWindowIcon(QPixmap(THEME_DIR+"/icons/scenes.png"));
 	toolWindow(DiDockWidget::Right)->addWidget(tr("Scenes"),m_scenes);
 	
+	ui4project(m_scenes);
+#if 0
 	connect(m_scenes, SIGNAL(requestInsertScene()), m_projectManager, SLOT(createScene()));
 	connect(m_scenes, SIGNAL(requestInsertLayer()), m_projectManager, SLOT(createLayer()));
 	connect(m_scenes, SIGNAL(requestInsertFrame()), m_projectManager, SLOT(createFrame()));
 	connect(m_scenes, SIGNAL(requestRemoveScene()), m_projectManager, SLOT(removeScene()));
 	connect(m_scenes, SIGNAL(changeCurrentScene( int )), this, SLOT(changeScene(int)));
-	
+#endif
 	
 	connectToDisplays(m_scenes);
 	
@@ -109,6 +113,7 @@ void KTMainWindow::createGUI()
 	/////////////////
 	
 	m_gcEditor = new KTGCEditor(this);
+#if 0
 	connect(m_gcEditor, SIGNAL(requestRotate(int)), this, SLOT(rotateCurrentElement(int)));
 	connect(m_gcEditor, SIGNAL(requestScale(double,double)), this, SLOT(scaleCurrentElement(double,double)));
 	connect(m_gcEditor, SIGNAL(requestShear(double,double)), this, SLOT(shearCurrentElement(double,double)));
@@ -116,7 +121,7 @@ void KTMainWindow::createGUI()
 	
 	connect(m_gcEditor, SIGNAL(requestFlipV()), this, SLOT( flipVCurrentElement()));
 	connect(m_gcEditor, SIGNAL(requestFlipH()), this, SLOT( flipHCurrentElement()));
-	
+#endif
 	
 	toolWindow(DiDockWidget::Bottom)->addWidget(tr("GC Editor"), m_gcEditor);
 	
@@ -124,15 +129,18 @@ void KTMainWindow::createGUI()
 	
 	//////////////
 	
+#if 0
+	// FIXME FIXME FIXME
 	KTExportWidget *m_exportWidget = new KTExportWidget(m_projectManager, this);
 	
 	toolWindow(DiDockWidget::Bottom)->addWidget(tr("Export"), m_exportWidget);
 	
 	connectToDisplays(m_exportWidget);
-	
+#endif
 	//////////////
 	
 	
+#if 0
 	// Connect the project manager with the components...
 	connect(m_projectManager, SIGNAL(sceneCreated(const QString &, bool)), this, SLOT( insertScene(const QString &, bool)));
 	
@@ -155,7 +163,7 @@ void KTMainWindow::createGUI()
 	connect(m_projectManager, SIGNAL(layerRenamed(int, const QString & )), this, SLOT(setLayerName(int, const QString &)));
 	
 	connect(m_projectManager, SIGNAL(frameRenamed(int , int , const QString & )), this, SLOT(setFrameName( int, int, const QString& )));
-	
+#endif
 }
 
 void KTMainWindow::connectToDisplays(const QWidget *widget)

@@ -17,28 +17,71 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTSCENEEVENT_H
-#define KTSCENEEVENT_H
 
-#include <ktprojectevent.h>
+#include "ktabstractprojecteventhandler.h"
 
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class KTSceneEvent : public KTProjectEvent
+#include "ktprojectevent.h"
+#include "ktframeevent.h"
+#include "ktlayerevent.h"
+#include "ktsceneevent.h"
+
+KTAbstractProjectEventHandler::KTAbstractProjectEventHandler()
 {
-	public:
-		KTSceneEvent(Action action, const QString &name, int sceneIndex);
-		~KTSceneEvent();
-		
-		virtual int id() const;
-		
-		int sceneIndex() const;
-		
-	private:
-		int m_sceneIndex;
-};
+}
 
-#endif
 
+KTAbstractProjectEventHandler::~KTAbstractProjectEventHandler()
+{
+}
+
+bool KTAbstractProjectEventHandler::handleEvent(KTProjectEvent *event)
+{
+	switch ( event->id())
+	{
+		case KTProjectEvent::Project:
+		{
+			projectEvent( event );
+		}
+		break;
+		case KTProjectEvent::Frame:
+		{
+			frameEvent( static_cast<KTFrameEvent *>(event) );
+		}
+		break;
+		case KTProjectEvent::Layer:
+		{
+			layerEvent( static_cast<KTLayerEvent *>(event) );
+		}
+		break;
+		case KTProjectEvent::Scene:
+		{
+			sceneEvent( static_cast<KTSceneEvent *>(event) );
+		}
+		break;
+		default:
+		{
+			qWarning("Unknown project event!");
+			return false;
+		}
+		break;
+	}
+	
+	return true;
+}
+
+// void KTAbstractProjectEventHandler::frameEvent(KTFrameEvent *frameEvent)
+// {
+// }
+// 
+// void KTAbstractProjectEventHandler::layerEvent(KTLayerEvent *layerEvent)
+// {
+// }
+// 
+// void KTAbstractProjectEventHandler::sceneEvent(KTSceneEvent *sceneEvent)
+// {
+// }
+// 
+// void KTAbstractProjectEventHandler::projectEvent(KTProjectEvent *projectEvent)
+// {
+// }
 

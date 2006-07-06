@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTPROJECTMANAGER_H
-#define KTPROJECTMANAGER_H
+#ifndef KTPROJECT_H
+#define KTPROJECT_H
 
 #include <QObject>
 #include "ktglobal.h"
@@ -47,18 +47,10 @@ class KTProject : public QObject
 		KTProject(QObject *parent = 0);
 		~KTProject();
 		
-		/**
-		 * Reimplementado de KTSerializableObject
-		 */
-// 		QDomElement createXML( QDomScene &doc );
-		
 		void setProjectName(const QString &name);
 		
 		QString projectName() const;
-		
-		bool isOpen();
-		void init();
-		
+				
 		KTScene *createScene(bool addToEnd = true);
 		KTScene *currentScene();
 		
@@ -68,18 +60,7 @@ class KTProject : public QObject
 		KTFrame *createFrame(bool addToEnd = true);
 		KTFrame *currentFrame();
 		
-	public slots:
-		/**
-		 * Guarda el proyecto
-		 */
-// 		void save();
-		
-		void close();
-		
-		/**
-		 * Carga del proyecto desde una ruta
-		 */
-// 		bool load(const QString &path);
+		void clear();
 		
 	signals:
 		void commandExecuted(KTProjectEvent *command );
@@ -87,7 +68,6 @@ class KTProject : public QObject
 	private:
 		Scenes m_scenes;
 		QString m_name;
-		bool m_isOpen;
 		
 		int m_currentSceneIndex;
 };

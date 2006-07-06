@@ -17,28 +17,33 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTSCENEEVENT_H
-#define KTSCENEEVENT_H
 
-#include <ktprojectevent.h>
+#ifndef KTABSTRACTPROJECTEVENTHANDLER_H
+#define KTABSTRACTPROJECTEVENTHANDLER_H
+
+#include <QObject>
+
+class KTProjectEvent;
+class KTFrameEvent;
+class KTLayerEvent;
+class KTSceneEvent;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTSceneEvent : public KTProjectEvent
+class KTAbstractProjectEventHandler
 {
 	public:
-		KTSceneEvent(Action action, const QString &name, int sceneIndex);
-		~KTSceneEvent();
+		KTAbstractProjectEventHandler();
+		virtual ~KTAbstractProjectEventHandler();
 		
-		virtual int id() const;
+		virtual bool handleEvent(KTProjectEvent *event);
 		
-		int sceneIndex() const;
-		
-	private:
-		int m_sceneIndex;
+	protected:
+		virtual void frameEvent(KTFrameEvent *frameEvent) = 0;
+		virtual void layerEvent(KTLayerEvent *layerEvent) = 0;
+		virtual void sceneEvent(KTSceneEvent *sceneEvent) = 0;
+		virtual void projectEvent(KTProjectEvent *projectEvent) = 0;
 };
 
 #endif
-
-

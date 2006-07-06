@@ -17,8 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTLAYERCOMMAND_H
-#define KTLAYERCOMMAND_H
+#ifndef KTLAYEREVENT_H
+#define KTLAYEREVENT_H
 
 #include <ktsceneevent.h>
 

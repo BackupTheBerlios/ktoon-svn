@@ -5,7 +5,8 @@
 
 QT += xml 
 KDEV_QTVER = 4 
-INCLUDEPATH += ../../../src/libktoon \
+INCLUDEPATH += ../../../src/store \
+               ../../../src/libktoon \
                ../../../src/dlib/dgui \
                ../../../src/dlib/dcore \
                ../../../src/dlib 

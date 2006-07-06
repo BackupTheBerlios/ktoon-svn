@@ -32,8 +32,6 @@ SOURCES += main.cpp \
            ktstatusbar.cpp \
            ktnewproject.cpp \
            ktviewcamera.cpp \
-           ktmainwindow-gui.cpp \
-           ktmainwindow-project.cpp \
            ktsplash.cpp \
            crashhandler.cpp \
            crashwidget.cpp \
@@ -41,7 +39,8 @@ SOURCES += main.cpp \
            ktapplication.cpp \
            configwizard.cpp \
            ktdrawingareaproperties.cpp \
-           ktpluginmanager.cpp 
+           ktpluginmanager.cpp \
+           ktmainwindow-gui.cpp 
 QT += xml opengl
 KDEV_QTVER = 4
 TARGETDEPS += ../../src/store/libstore.so

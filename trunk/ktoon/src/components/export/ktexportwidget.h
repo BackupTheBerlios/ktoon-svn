@@ -22,7 +22,7 @@
 #define KTEXPORTWIDGET_H
 
 #include <ktmodulewidgetbase.h>
-#include "ktprojectmanager.h"
+#include "ktproject.h"
 
 #include <QListWidget>
 #include <QHash>

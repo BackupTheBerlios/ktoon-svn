@@ -29,7 +29,7 @@
 
 #include <qobject.h>
 
-KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent), m_isChildHidden(false), m_originalParent(parent)
+KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent), KTAbstractProjectEventHandler(), m_isChildHidden(false), m_originalParent(parent)
 {
 	setObjectName(name);
 
@@ -156,3 +156,31 @@ QBoxLayout *KTModuleWidgetBase::boxLayout()
 {
 	return m_container;
 }
+
+bool KTModuleWidgetBase::handleProjectEvent(KTProjectEvent *e)
+{
+	return handleEvent(e);
+}
+
+void KTModuleWidgetBase::frameEvent(KTFrameEvent *frameEvent)
+{
+	D_FUNCINFO;
+}
+
+void KTModuleWidgetBase::layerEvent(KTLayerEvent *layerEvent)
+{
+	D_FUNCINFO;
+}
+
+void KTModuleWidgetBase::sceneEvent(KTSceneEvent *sceneEvent)
+{
+	D_FUNCINFO;
+}
+
+void KTModuleWidgetBase::projectEvent(KTProjectEvent *projectEvent)
+{
+	D_FUNCINFO;
+}
+
+
+

@@ -33,10 +33,14 @@
 
 #include "ktmodulewidgettitle.h"
 
+#include "ktprojectevent.h"
+
+#include "ktabstractprojecteventhandler.h"
+
 /**
  * @author Jorge Cuadrado
 */
-class KTModuleWidgetBase : public QWidget
+class KTModuleWidgetBase : public QWidget, public KTAbstractProjectEventHandler
 {
 	Q_OBJECT
 	public:
@@ -62,10 +66,16 @@ class KTModuleWidgetBase : public QWidget
 	public slots:
 		void toggleView();
 		void setCaption(const QString &text);
+		bool handleProjectEvent(KTProjectEvent *e);
+		
 		
 	protected:
-		void enterEvent(QEvent *e);
-		void leaveEvent(QEvent *e);
+		virtual void enterEvent(QEvent *e);
+		virtual void leaveEvent(QEvent *e);
+		virtual void frameEvent(KTFrameEvent *frameEvent);
+		virtual void layerEvent(KTLayerEvent *layerEvent);
+		virtual void sceneEvent(KTSceneEvent *sceneEvent);
+		virtual void projectEvent(KTProjectEvent *projectEvent);
 		
 	signals:
 		void documentModified(bool);
@@ -73,6 +83,8 @@ class KTModuleWidgetBase : public QWidget
 		void sendToOSD(const QString &msg, DOsd::Level level);
 		void toggle();
 		void activate(bool);
+		
+		void eventTriggered(KTProjectEvent *event);
 };
 
 #endif

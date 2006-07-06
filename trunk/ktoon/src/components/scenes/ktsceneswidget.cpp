@@ -32,6 +32,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 
+#include "ktsceneevent.h"
 
 
 //--------------- CONSTRUCTOR --------------------
@@ -109,9 +110,15 @@ void KTScenesWidget::sceneDobleClick(QTreeWidgetItem * item, int )
 
 void KTScenesWidget::emitRequestInsertScene()
 {
-	emit requestInsertScene();
-	emit requestInsertLayer();
-	emit requestInsertFrame();
+	D_FUNCINFO;
+	
+	KTSceneEvent *event = new KTSceneEvent(KTProjectEvent::Add, "", 0);
+	
+	emit eventTriggered( event );
+	
+// 	emit requestInsertScene();
+// 	emit requestInsertLayer();
+// 	emit requestInsertFrame();
 }
 
 void KTScenesWidget::emitRequestRemoveScene()

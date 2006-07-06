@@ -68,6 +68,7 @@
 #include "ktviewdocument.h"
 
 /**
+ * Ventana principal de la aplicación
  * @author David Cuadrado <krawek@toonka.com>
 */
 
@@ -103,8 +104,6 @@ class KTMainWindow : public DMainWindow
 		void setupActions();
 		
 		void ui4project(QWidget *widget);
-		
-// 		QList<KTGraphicComponent *> currentElements();
 		
 	protected:
 		/**
@@ -152,51 +151,10 @@ class KTMainWindow : public DMainWindow
 		
 		void openRecentProject();
 		
-		
-	private slots: // defined in ktmainwindow-project.cpp
-		// Graphic Components
-		void rotateCurrentElement(int a);
-		void scaleCurrentElement(double dx,double dy);
-		void translateCurrentElement(double dx,double dy);
-		void shearCurrentElement(double dx,double dy);
-		void flipVCurrentElement();
-		void flipHCurrentElement();
-		
-		void addCurrentGraphicToLibrary();
-// 		void addGraphicComponent(const KTGraphicComponent *graphic);
-		
-		//Layers
-		void insertLayer( const QString &, bool addedToEnd);
-		void setLayerVisibilityChanged(int idLayer, bool isVisible);
-		void moveLayer(bool up);
-		void removeLayer(int );
-		void selectLayer(int );
-		void setLayerName(int indexLayer, const QString& name);
-		
-		//Frames
-		void insertFrame( const QString &name, bool addedToEnd);
-		void selectFrame(int layer, int frame);
-		void moveFrame(bool up);
-		void removeFrame( );
-		void lockFrame();
-		void setFrameName(int indexLayer, int indexFrame, const QString& name );
-		
-		void selectNextFrame();
-		void selectBackFrame();
-		
-		// Scenes
-		
-		void insertScene( const QString &name, bool addedToEnd);
-		void changeScene(int index);
-		
-		//others
-		void changeCurrentColors(const QBrush &, const QBrush &);
-		void changeCurrentPen(const QPen &pen);
-		
-		void changeFPS(int fps);
+		void createCommand(KTProjectEvent *event);
 		
 	private:
-		KTProject *m_projectManager;
+		KTProjectManager *m_projectManager;
 		KToon::RenderType m_renderType;
 		QString m_fileName;
 		

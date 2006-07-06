@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTFRAMECOMMAND_H
-#define KTFRAMECOMMAND_H
+#ifndef KTFRAMEEVENT_H
+#define KTFRAMEEVENT_H
 
 #include <ktlayerevent.h>
 

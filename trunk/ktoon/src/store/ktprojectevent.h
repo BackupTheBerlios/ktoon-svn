@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 
-#ifndef KTPROJECTCOMMAND_H
-#define KTPROJECTCOMMAND_H
+#ifndef KTPROJECTEVENT_H
+#define KTPROJECTEVENT_H
 
 #include <QEvent>
 #include <QString>

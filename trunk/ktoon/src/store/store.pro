@@ -16,7 +16,10 @@ HEADERS += ktlayer.h \
            ktprojectevent.h \
            ktsceneevent.h \
            ktscene.h \
-           ktproject.h 
+           ktproject.h \
+           ktprojectmanager.h \
+           ktprojectcommand.h \
+           ktabstractprojecteventhandler.h 
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
@@ -25,7 +28,10 @@ SOURCES += ktlayer.cpp \
            ktprojectevent.cpp \
            ktsceneevent.cpp \
            ktscene.cpp \
-           ktproject.cpp 
+           ktproject.cpp \
+           ktprojectmanager.cpp \
+           ktprojectcommand.cpp \
+           ktabstractprojecteventhandler.cpp 
 QT += xml
 KDEV_QTVER = 4
 INCLUDEPATH += ../../src/store \

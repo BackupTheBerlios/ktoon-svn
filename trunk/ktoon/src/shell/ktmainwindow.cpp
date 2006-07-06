@@ -36,6 +36,8 @@
 #include "ktapplication.h"
 #include "ktpluginmanager.h"
 
+#include "ktprojectcommand.h"
+
 // dlslib
 #include "ditabwidget.h"
 #include "displitter.h"
@@ -67,23 +69,12 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
 	
 	
-	m_projectManager = new KTProject(this);
+	m_projectManager = new KTProjectManager(this);
 	splash->setMessage( tr("Setting up the project manager") );
-	
-// 	m_viewDoc = new KTWorkspace;
-// 	m_viewDoc->setWindowIcon(QIcon(THEME_DIR+"/icons/illustration_mode.png"));
-// 	m_viewDoc->setScrollBarsEnabled( true );
-// 	m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
-// 	m_viewDoc = new KTViewDocument( QSize(500, 500), "asdf", m_renderType );
-	
-// 	addWidget(m_viewDoc, tr("Illustration"), true);
-	
-
 	
 	splash->setMessage( tr("Loading action manager..."));
 	m_actionManager = new DActionManager(this);
 	
-// 	Create the menubar;
 	splash->setMessage( tr("Creating menu bar..."));
 	setupActions();
 	
@@ -118,18 +109,14 @@ KTMainWindow::~KTMainWindow()
 
 void KTMainWindow::createNewProject(const QString &name, const QSize &size, const int fps)
 {
-	if(!closeProject()) return;
+	if(!closeProject())
+	{
+		return;
+	}
 	
-	m_projectManager->init();
+	m_projectManager->setupNewProject(name);
 	
-	m_projectManager->createScene(true);
 	newViewDocument( name);
-	m_projectManager->setProjectName( name );
-	
-	
-// 	// Add by default a scene, layer, frame
-	m_projectManager->createLayer( true );
-	m_projectManager->createFrame( true );
 }
 
 void KTMainWindow::newViewDocument(const QString &title)
@@ -242,6 +229,7 @@ void KTMainWindow::newProject()
 bool KTMainWindow::closeProject()
 {
 	dDebug() << "Closing..";
+	
 	if(!m_projectManager->isOpen())
 	{
 		return true;
@@ -274,7 +262,7 @@ bool KTMainWindow::closeProject()
 	}
 	
 	m_pActiveTabWidget->setCurrentWidget(m_viewDoc);
-	m_projectManager->close();
+	m_projectManager->closeProject();
 	
 // 	m_viewDoc->closeAllWindows();
 	m_animationSpace->closeAllWindows();
@@ -408,71 +396,10 @@ void KTMainWindow::importPalettes()
 	}
 }
 
-// Drawing
-void KTMainWindow::changeCurrentColors(const QBrush &foreground, const QBrush &background)
-{
-// 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_viewDoc->activeWindow());
-	
-	if ( m_viewDoc )
-	{
-// 		doc->drawArea()->currentBrush()->setPenBrush(foreground);
-// 		doc->drawArea()->currentBrush()->setBrush(background);
-// 		doc->drawArea()->setColors(foreground, background);
-	}
-}
-
-void KTMainWindow::changeCurrentPen(const QPen &pen)
-{
-// 	KTViewDocument *doc = qobject_cast<KTViewDocument *>(m_viewDoc->activeWindow ());
-	
-	if ( m_viewDoc )
-	{
-// 		doc->drawArea()->setPen( pen );
-	}
-}
-
-void KTMainWindow::changeFPS(int fps)
-{
-// 	KTScene *scene = m_projectManager->currentScene();
-// 	
-// 	if ( scene )
-// 	{
-// 		scene->setFPS( fps );
-// 	}
-}
-
 void KTMainWindow::ui4project(QWidget *widget)
 {
-	connect(widget, SIGNAL(requestInsertFrame(bool)), m_projectManager, SLOT(createFrame(bool)));
-	
-	connect(widget, SIGNAL(requestInsertLayer()), m_projectManager, SLOT(createLayer()));
-	
-	connect(widget, SIGNAL(frameSelected( int, int )), this, SLOT(selectFrame(int,int)));
-	
-	connect(widget, SIGNAL(layerVisibilityChanged( int, bool)), m_projectManager, SLOT(setLayerVisibility( int, bool)));
-	
-	connect(widget, SIGNAL(layerSelected( int)), m_projectManager, SLOT(setCurrentLayer( int)));
-	
-	connect(widget, SIGNAL(requestCopyFrame(int)), m_projectManager, SLOT(copyFrame(int)));
-	
-	connect(widget, SIGNAL(requestPasteFrame(int)), m_projectManager, SLOT(pasteFrame(int)));
-	
-	connect(widget, SIGNAL(requestCloneFrame(int, int)), m_projectManager, SLOT(cloneFrame(int, int)));
-	
-	connect(widget, SIGNAL(requestMoveFrame(bool)), m_projectManager, SLOT(moveFrame(bool)));
-	
-	connect(widget, SIGNAL(requestRemoveFrame()), m_projectManager, SLOT(removeFrame()));
-	
-	connect(widget, SIGNAL(requestLockFrame()), m_projectManager, SLOT(lockCurrentFrame()));
-	
-	connect(widget, SIGNAL(requestRemoveLayer(int)), m_projectManager, SLOT(removeLayer(int)));
-	
-	
-	connect(widget, SIGNAL(requestMoveLayer(bool)), m_projectManager, SLOT(moveLayer(bool)));
-	
-	connect(widget, SIGNAL(requestRenameLayer(int, const QString &)), m_projectManager, SLOT(renameLayer(int , const QString &)));
-	
-	connect(widget, SIGNAL(requestRenameFrame(int, int, const QString &)), m_projectManager, SLOT(renameFrame(int, int, const QString &)));
+	connect(widget, SIGNAL(eventTriggered(KTProjectEvent *)), this, SLOT(createCommand(KTProjectEvent *)));
+	connect(m_projectManager, SIGNAL(commandExecuted( KTProjectEvent* )), widget, SLOT(handleProjectEvent(KTProjectEvent *)));
 }
 
 void KTMainWindow::messageToStatus(const QString &msg)
@@ -586,4 +513,16 @@ void KTMainWindow::closeEvent( QCloseEvent *event )
 	
 	DMainWindow::closeEvent(event);
 }
+
+void KTMainWindow::createCommand(KTProjectEvent *event)
+{
+	KTProjectCommand *command = m_projectManager->createCommand(event);
+	
+	command->redo();
+	
+	 // TODO: guardar el comando!
+	
+	delete command;
+}
+
 

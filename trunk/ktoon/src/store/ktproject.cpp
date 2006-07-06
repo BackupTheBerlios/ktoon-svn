@@ -19,20 +19,20 @@
  ***************************************************************************/
 
 #include "ktproject.h"
-#include "ddebug.h"
 
+#include <ddebug.h>
 
-// #include "ktprojectparser.h"
 #include "ktscene.h"
 #include "ktlayer.h"
 #include "ktframe.h"
-#include "ktframeevent.h"
 
+
+#include "ktframeevent.h" //events
 
 /**
  * Constructor por defecto
  */
-KTProject::KTProject(QObject *parent) : QObject(parent), m_isOpen(false), m_currentSceneIndex(-1)
+KTProject::KTProject(QObject *parent) : QObject(parent), m_currentSceneIndex(-1)
 {
 	DINIT;
 }
@@ -49,11 +49,9 @@ KTProject::~KTProject()
 /**
  * Cierra el proyecto
  */
-void KTProject::close()
+void KTProject::clear()
 {
 	qDeleteAll(m_scenes);
-	
-	m_isOpen = false;
 }
 
 /**
@@ -77,28 +75,6 @@ QString KTProject::projectName() const
 {
 	return m_name;
 }
-
-/**
- * Retorna verdadero si el proyecto esta abierto
- */
-bool KTProject::isOpen()
-{
-	return m_isOpen;
-}
-
-/**
- * Inicializa el proyecto, esta funcion abre un nuevo proyecto
- */
-void KTProject::init()
-{
-	if ( m_isOpen )
-	{
-		close();
-	}
-	
-	m_isOpen = true;
-}
-
 
 /**
  * 
