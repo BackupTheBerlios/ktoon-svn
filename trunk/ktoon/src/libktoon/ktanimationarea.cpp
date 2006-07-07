@@ -101,7 +101,7 @@ void KTAnimationArea::play()
 	if ( m_scene && !m_timer->isActive() )
 	{
 		render();
-		m_timer->start(1000/m_scene->fps() );
+// 		m_timer->start(1000/m_scene->fps() );
 	}
 	
 // 	emit toStatusBar( tr("Playing... "), 2000 );

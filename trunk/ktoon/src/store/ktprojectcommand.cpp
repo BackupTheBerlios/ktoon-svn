@@ -115,7 +115,6 @@ void KTProjectCommand::projectCommand(const KTProjectEvent *event, bool redo)
 		{
 			case KTProjectEvent::Add:
 			{
-				
 			}
 			break;
 			case KTProjectEvent::Remove:
@@ -139,6 +138,7 @@ void KTProjectCommand::projectCommand(const KTProjectEvent *event, bool redo)
 		{
 			case KTProjectEvent::Add:
 			{
+// 				m_project
 			}
 			break;
 			case KTProjectEvent::Remove:
@@ -166,6 +166,7 @@ void KTProjectCommand::frameCommand(const KTFrameEvent *event, bool redo)
 		{
 			case KTProjectEvent::Add:
 			{
+				m_project->createFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex() );
 			}
 			break;
 			case KTProjectEvent::Remove:
@@ -216,6 +217,7 @@ void KTProjectCommand::layerCommand(const KTLayerEvent *event, bool redo)
 		{
 			case KTProjectEvent::Add:
 			{
+				m_project->createLayer( event->sceneIndex(), event->layerIndex());
 			}
 			break;
 			case KTProjectEvent::Remove:
@@ -266,6 +268,7 @@ void KTProjectCommand::sceneCommand(const KTSceneEvent *event, bool redo)
 		{
 			case KTProjectEvent::Add:
 			{
+				m_project->createScene( event->sceneIndex() );
 			}
 			break;
 			case KTProjectEvent::Remove:

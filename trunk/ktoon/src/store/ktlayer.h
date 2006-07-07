@@ -42,11 +42,6 @@ class KTLayer : public QObject
 		KTLayer(QObject *parent = 0);
 		
 		/**
-		 * Construye el layer con un nombre
-		 */
-		KTLayer(const QString &layerName, QObject * parent = 0);
-		
-		/**
 		 * Destructor
 		 */
 		~KTLayer();
@@ -81,20 +76,15 @@ class KTLayer : public QObject
 		 */
 		bool isVisible() const;
 		
-		KTFrame *createFrame(bool addToEnd = true );
-		KTFrame *currentFrame();
-		int currentFrameIndex() const;
+		KTFrame *createFrame(int position);
 		
-	signals:
-		void frameCreated(const QString &frameName, bool addedToEnd);
+		KTFrame *frame(int position);
 		
 	private:
 		Frames m_frames;
 		bool m_isVisible;
 		QString m_name;
 		int m_framesCount;
-		
-		int m_currentFrameIndex;
 };
 
 #endif

@@ -44,12 +44,13 @@ class KTProjectEvent
 			Scene
 		};
 		
-		KTProjectEvent(Action action, const QString &name);
+		KTProjectEvent(Action action);
 		virtual ~KTProjectEvent();
 		
 		
 		Action action() const;
 		
+		void setPartName(const QString &name);
 		QString partName() const;
 		virtual int id() const;
 		

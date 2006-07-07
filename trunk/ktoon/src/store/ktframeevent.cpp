@@ -21,7 +21,7 @@
 #include "ktframeevent.h"
 #include <ddebug.h>
 
-KTFrameEvent::KTFrameEvent(Action action, const QString &name, int sceneIndex, int layerIndex, int frameIndex) : KTLayerEvent(action, name, sceneIndex, layerIndex), m_frameIndex(frameIndex)
+KTFrameEvent::KTFrameEvent(Action action, int sceneIndex, int layerIndex, int frameIndex) : KTLayerEvent(action, sceneIndex, layerIndex), m_frameIndex(frameIndex)
 {
 }
 

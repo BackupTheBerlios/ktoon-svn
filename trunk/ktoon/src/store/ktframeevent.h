@@ -29,7 +29,7 @@
 class KTFrameEvent : public KTLayerEvent
 {
 	public:
-		KTFrameEvent(Action action, const QString &name, int sceneIndex, int layerIndex, int frameIndex);
+		KTFrameEvent(Action action, int sceneIndex, int layerIndex, int frameIndex);
 		~KTFrameEvent();
 		
 		

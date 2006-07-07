@@ -62,17 +62,9 @@ class KTScene : public QObject
 		Layers layers() const;
 		
 		
+		KTLayer *layer(int position);
+		
 		void setLayers(const Layers &);
-		
-		
-		KTLayer *currentLayer();
-		
-		int currentLayerIndex() const;
-		
-		/**
-		 * Pone el layer actual desde un indice
-		 */
-		void setCurrentLayer(int index);
 		
 		/**
 		 * Remueve el layer situado en el indice proporcionado
@@ -82,32 +74,7 @@ class KTScene : public QObject
 		/**
 		 * Crea una layer, si addToEnd es verdadero el layer se creara al final, sino se creara despues del layer actual
 		 */
-		KTLayer *createLayer(bool addToEnd = true );
-		
-		/**
-		 * Cambia los frames por segundo de la escena
-		 */
-		void setFPS(int fps);
-		
-		/**
-		 * Retorna los frames por segundo de la escena
-		 */
-		int fps() const;
-		
-		/**
-		 * Reimplementado de KTSerializableObject
-		 */
-// 		QDomElement createXML( QDomDocument &doc );
-		
-		/**
-		 * Guarda la escena en una ruta
-		 */
-// 		void save(const QString &scenePath);
-		
-		/**
-		 * Carga la escena desde una ruta
-		 */
-// 		void load(const QString &path);
+		KTLayer *createLayer(int position);
 		
 		/**
 		 * Mueve el current layer, si up es verdadero lo mueve hacia arriba
@@ -116,37 +83,11 @@ class KTScene : public QObject
 		
 		QGraphicsScene* photogram(int index);
 		
-	signals:
-		/**
-		 * Este signal es emitido cuando se crea un layer
-		 */
-		void layerCreated(const QString &name, bool toEnd);
-		
-		/**
-		 * Este signal se emite cuando se remueve un layer
-		 */
-		void layerRemoved(int index);
-		
-		/**
-		 * Este signal se emite cuando se selecciona un layer
-		 */
-		void layerSelected(int index);
-		
-		/**
-		 * Este signal se emite cuando el layer ha sido movido, si up es verdadero el layer se movio hacia arriba
-		 */
-		void layerMoved(bool up);
-		
-		
-		
 	private:
 		Layers m_layers;
-		int m_currentLayerIndex;
 		QString m_name;
 		
 		int m_layerCount;
-		
-		int m_fps;
 };
 
 #endif

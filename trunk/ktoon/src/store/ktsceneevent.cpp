@@ -21,7 +21,7 @@
 #include "ktsceneevent.h"
 #include <ddebug.h>
 
-KTSceneEvent::KTSceneEvent(Action action, const QString &name, int sceneIndex) : KTProjectEvent(action, name), m_sceneIndex(sceneIndex)
+KTSceneEvent::KTSceneEvent(Action action, int sceneIndex) : KTProjectEvent(action), m_sceneIndex(sceneIndex)
 {
 }
 

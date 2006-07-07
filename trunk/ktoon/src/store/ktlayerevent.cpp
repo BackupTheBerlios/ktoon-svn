@@ -21,7 +21,7 @@
 #include "ktlayerevent.h"
 #include <ddebug.h>
 
-KTLayerEvent::KTLayerEvent(Action action, const QString &name, int sceneIndex, int layerIndex) : KTSceneEvent(action, name, sceneIndex), m_layerIndex(layerIndex)
+KTLayerEvent::KTLayerEvent(Action action, int sceneIndex, int layerIndex) : KTSceneEvent(action, sceneIndex), m_layerIndex(layerIndex)
 {
 }
 

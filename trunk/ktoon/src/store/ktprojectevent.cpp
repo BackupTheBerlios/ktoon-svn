@@ -22,7 +22,7 @@
 
 #include <ddebug.h>
 
-KTProjectEvent::KTProjectEvent(Action action, const QString &name) : m_action(action), m_partName(name)
+KTProjectEvent::KTProjectEvent(Action action) : m_action(action)
 {
 	
 }
@@ -49,3 +49,7 @@ int KTProjectEvent::id() const
 }
 
 
+void KTProjectEvent::setPartName(const QString &name)
+{
+	m_partName = name;
+}

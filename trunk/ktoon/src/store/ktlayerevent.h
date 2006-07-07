@@ -28,7 +28,7 @@
 class KTLayerEvent : public KTSceneEvent
 {
 	public:
-		KTLayerEvent(Action action, const QString &name, int sceneIndex, int layerIndex);
+		KTLayerEvent(Action action, int sceneIndex, int layerIndex);
 		~KTLayerEvent();
 		
 		virtual int id() const;

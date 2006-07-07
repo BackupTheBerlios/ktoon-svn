@@ -42,13 +42,13 @@ void KTProjectManager::setupNewProject(const QString &projectName)
 {
 	closeProject();
 	
-	m_project->createScene(true);
+// 	m_project->createScene(true);
 	m_project->setProjectName( projectName );
 	
 	
 // 	// Add by default a scene, layer, frame
-	m_project->createLayer( true );
-	m_project->createFrame( true );
+// 	m_project->createLayer( true );
+// 	m_project->createFrame( true );
 }
 
 void KTProjectManager::closeProject()

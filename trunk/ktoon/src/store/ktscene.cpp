@@ -24,7 +24,7 @@
 #include <QDir>
 
 
-KTScene::KTScene(QObject *parent) : QObject(parent), m_currentLayerIndex(-1), m_layerCount(0), m_fps(24)
+KTScene::KTScene(QObject *parent) : QObject(parent), m_layerCount(0)
 {
 }
 
@@ -34,67 +34,6 @@ KTScene::~KTScene()
 	DEND;
 	qDeleteAll(m_layers);
 }
-
-// QDomElement KTScene::createXML( QDomDocument &doc )
-// {
-// 	QDomElement scene = doc.createElement("Scene");
-// 	return scene;
-// }
-// 
-// void KTScene::save(const QString &scenePath)
-// {
-// 	QDir sceneDir(scenePath);
-// 		
-// 	if ( ! sceneDir.exists() )
-// 	{
-// 		sceneDir.mkdir(sceneDir.path());
-// 	}
-// 	
-// 	QDomDocument document;
-// 	
-// 	QDomElement root = createXML(document);
-// 	root.setAttribute("name", m_name );
-// 	document.appendChild(root);
-// 	
-// 	Layers::ConstIterator iterator = m_layers.begin();
-// 	
-// 	
-// 	while ( iterator != m_layers.end() )
-// 	{
-// 		root.appendChild((*iterator)->createXML(document));
-// 		++iterator;
-// 	}
-// 	
-// 	QFile save(scenePath+"/"+"scene"+".kts");
-// 	
-// 	if ( save.open(QIODevice::WriteOnly | QIODevice::Text))
-// 	{
-// 		QTextStream out(&save);
-// 		out << document.toString();
-// 		
-// 		save.close();
-// 	}
-// }
-
-// void KTScene::load(const QString &path)
-// {
-// 	dDebug() << "Loading scene: " << path;
-// 	
-// 	KTProjectParser parser;
-// 	
-// 	connect(&parser, SIGNAL(createLayer(const QString &)), this, SLOT(loadLayer(const QString &)));
-// 	connect(&parser, SIGNAL(createFrame(const QString &, int)), this, SLOT(loadFrame(const QString &, int)));
-// 	connect(&parser, SIGNAL(createComponent( KTGraphicComponent * ) ), this, SLOT( loadComponent(KTGraphicComponent *) ));
-// 	
-// 	if ( parser.parse(path) )
-// 	{
-// 		setSceneName( parser.partName() );
-// 	}
-// 	else
-// 	{
-// 		dError() << "Error while parse file: " << path;
-// 	}
-// }
 
 void KTScene::setSceneName(const QString &name)
 {
@@ -120,7 +59,7 @@ void KTScene::setLayers(const Layers &layers)
 	m_layers = layers;
 }
 
-KTLayer *KTScene::createLayer(bool addToEnd )
+KTLayer *KTScene::createLayer(int position)
 {
 	KTLayer *layer = new KTLayer(this);
 	
@@ -128,99 +67,19 @@ KTLayer *KTScene::createLayer(bool addToEnd )
 	
 	layer->setLayerName(tr("Layer %1").arg(m_layerCount));
 	
-	if ( addToEnd )
-	{
-		m_currentLayerIndex = m_layers.count();
-		m_layers << layer;
-	}
-	else
-	{
-		m_currentLayerIndex++;
-		m_layers.insert( m_currentLayerIndex, layer);
-	}
-	
-	emit layerCreated( layer->layerName() , addToEnd );
+	m_layers.insert( position, layer);
 	
 	return layer;
 }
 
-/**
- * Retorna el layer actual
- */
-KTLayer *KTScene::currentLayer()
-{
-	if (  m_currentLayerIndex >= 0  && m_currentLayerIndex < m_layers.count() )
-	{
-		return m_layers[m_currentLayerIndex];
-	}
-	
-	return 0;
-}
 
-int KTScene::currentLayerIndex() const
+void KTScene::removeLayer( int position)
 {
-	return m_currentLayerIndex;
-}
-
-void KTScene::setCurrentLayer(int index)
-{
-	if (  index > 0  && index < m_layers.count() )
-	{
-		m_currentLayerIndex = index;
-	}
-}
-
-
-void KTScene::setFPS(int fps)
-{
-	if (fps > 0 )
-	{
-		m_fps = fps;
-	}
-	else
-	{
-		dError() << "FPS out of range";
-	}
-}
-
-int KTScene::fps() const
-{
-	return m_fps;
-}
-
-void KTScene::removeLayer( int index)
-{
-	if(index >= 0 && index < m_layers.count())
-	{
-		m_layers.removeAt(index);
-		setCurrentLayer( index );
-		emit layerRemoved(index);
-	}
-	
 }
 
 void KTScene::moveCurrentLayer(bool up)
 {
-	D_FUNCINFO;
-	
-	if( m_currentLayerIndex == -1 )
-	{
-		return;
-	}
-	
-	if(up )
-	{
-		if(m_currentLayerIndex > 0)
-		{
-			m_layers.swap ( m_currentLayerIndex, m_currentLayerIndex-1);
-			emit layerMoved(up);
-		}
-	}
-	else if(m_currentLayerIndex < m_layers.count()-1 )
-	{
-		m_layers.swap ( m_currentLayerIndex, m_currentLayerIndex+1);
-		emit layerMoved(up);
-	}
+
 }
 
 
@@ -247,5 +106,21 @@ QGraphicsScene *KTScene::photogram(int index)
 	}
 	
 	return scene;
+}
+
+/**
+ * Retorna el layer que se encuentra en la posición indicada
+ * @param position 
+ * @return 
+ */
+KTLayer *KTScene::layer(int position)
+{
+	if ( position < 0 || position > m_layers.count() )
+	{
+		D_FUNCINFO << " FATAL ERROR: index out of bound";
+		return 0;
+	}
+	
+	return m_layers[position];
 }
 

@@ -112,7 +112,7 @@ void KTScenesWidget::emitRequestInsertScene()
 {
 	D_FUNCINFO;
 	
-	KTSceneEvent *event = new KTSceneEvent(KTProjectEvent::Add, "", 0);
+	KTSceneEvent *event = new KTSceneEvent(KTProjectEvent::Add, 0); // FIXME
 	
 	emit eventTriggered( event );
 	

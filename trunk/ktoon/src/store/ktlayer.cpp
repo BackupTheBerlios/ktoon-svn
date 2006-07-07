@@ -21,17 +21,13 @@
 #include "ktlayer.h"
 #include "ddebug.h"
 
-KTLayer::KTLayer(QObject *parent) : QObject(parent), m_isVisible(true), m_name(tr("Layer")), m_framesCount(0), m_currentFrameIndex(-1)
-{
-}
-
-KTLayer::KTLayer(const QString &layerName, QObject * parent)  : QObject(parent), m_isVisible(true), m_name(layerName), m_framesCount(0), m_currentFrameIndex(-1)
+KTLayer::KTLayer(QObject *parent) : QObject(parent), m_isVisible(true), m_name(tr("Layer")), m_framesCount(0)
 {
 }
 
 KTLayer::~KTLayer()
 {
-	qDeleteAll(m_frames.begin(), m_frames.end());
+	qDeleteAll(m_frames);
 }
 
 Frames KTLayer::frames()
@@ -66,7 +62,7 @@ bool KTLayer::isVisible() const
 	return m_isVisible;
 }
 
-KTFrame *KTLayer::createFrame(bool addToEnd)
+KTFrame *KTLayer::createFrame(int position)
 {
 	KTFrame *keyFrame = new KTFrame(this);
 	
@@ -74,34 +70,20 @@ KTFrame *KTLayer::createFrame(bool addToEnd)
 	
 	keyFrame->setFrameName(tr("Drawing %1").arg(m_framesCount));
 	
-	if ( addToEnd )
-	{
-		m_currentFrameIndex = m_frames.count();
-		m_frames << keyFrame;
-	}
-	else
-	{
-		m_currentFrameIndex++;
-		m_frames.insert(m_currentFrameIndex, keyFrame);
-	}
-	
-	emit frameCreated( keyFrame->frameName(), addToEnd );
+	m_frames.insert(position, keyFrame);
 	
 	return keyFrame;
 }
 
-KTFrame *KTLayer::currentFrame()
+KTFrame *KTLayer::frame(int position)
 {
-	if ( m_currentFrameIndex >= 0 && m_currentFrameIndex < m_frames.count() )
+	if ( position < 0 || position > m_frames.count() )
 	{
-		return m_frames[m_currentFrameIndex];
+		D_FUNCINFO << " FATAL ERROR: index out of bound";
+		return 0;
 	}
 	
-	return 0;
+	return m_frames[position];
 }
 
-int KTLayer::currentFrameIndex() const
-{
-	return m_currentFrameIndex;
-}
 

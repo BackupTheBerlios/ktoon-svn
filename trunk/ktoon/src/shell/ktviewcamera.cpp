@@ -182,7 +182,7 @@ void KTViewCamera::showSceneInfo(const KTScene *scene)
 {
 	if ( scene )
 	{
-		m_status->setFps(scene->fps());
+// 		m_status->setFps(scene->fps());
 		m_status->setSceneName(scene->sceneName());
 	}
 }

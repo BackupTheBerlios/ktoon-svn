@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef KTSCENEEVENT_H
 #define KTSCENEEVENT_H
 
@@ -28,11 +29,10 @@
 class KTSceneEvent : public KTProjectEvent
 {
 	public:
-		KTSceneEvent(Action action, const QString &name, int sceneIndex);
+		KTSceneEvent(Action action, int sceneIndex);
 		~KTSceneEvent();
 		
 		virtual int id() const;
-		
 		int sceneIndex() const;
 		
 	private:

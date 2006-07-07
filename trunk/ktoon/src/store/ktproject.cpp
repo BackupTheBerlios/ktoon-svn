@@ -32,7 +32,7 @@
 /**
  * Constructor por defecto
  */
-KTProject::KTProject(QObject *parent) : QObject(parent), m_currentSceneIndex(-1)
+KTProject::KTProject(QObject *parent) : QObject(parent)
 {
 	DINIT;
 }
@@ -76,68 +76,32 @@ QString KTProject::projectName() const
 	return m_name;
 }
 
-/**
- * 
- * @param addToEnd 
- * @return 
- */
-KTScene * KTProject::createScene(bool addToEnd)
+
+KTScene *KTProject::createScene(int position)
 {
-	KTScene *scene = new KTScene(this);
 	
-	if ( addToEnd )
-	{
-		m_currentSceneIndex = m_scenes.count();
-		m_scenes << scene;
-	}
-	else if ( m_currentSceneIndex > 0 && m_currentSceneIndex < m_scenes.count() )
-	{
-		m_currentSceneIndex++;
-		m_scenes.insert(m_currentSceneIndex, scene);
-	}
-	else
-	{
-		dError() << "Error creating scene manager";
-		delete scene;
-		return 0;
-	}
 	
-	KTSceneEvent event(KTProjectEvent::Add, scene->sceneName(), m_currentSceneIndex);
+	KTScene *scene = new KTScene(this); // TODO: Ponerle nombre!
+	m_scenes.insert(position, scene);
+	
+	KTSceneEvent event(KTProjectEvent::Add, position);
+	event.setPartName(scene->sceneName());
 	
 	emit commandExecuted(&event);
 	
 	return scene;
 }
 
-/**
- * 
- * @return 
- */
-KTScene * KTProject::currentScene()
+KTLayer *KTProject::createLayer(int scenePosition, int position)
 {
-	if ( m_currentSceneIndex >= 0 && m_currentSceneIndex < m_scenes.count() )
-	{
-		return m_scenes[m_currentSceneIndex];
-	}
-	
-	return 0;
-}
-
-
-/**
- * 
- * @param addToEnd 
- * @return 
- */
-KTLayer *KTProject::createLayer(bool addToEnd)
-{
-	KTScene *scene = currentScene();
+	KTScene *scene = this->scene(scenePosition);
 	
 	if ( scene )
 	{
-		KTLayer *layer = scene->createLayer(addToEnd);
+		KTLayer *layer = scene->createLayer(position);
 		
-		KTLayerEvent event(KTProjectEvent::Add, layer->layerName(),m_currentSceneIndex, scene->currentLayerIndex() );
+		KTLayerEvent event(KTProjectEvent::Add, scenePosition, position );
+		event.setPartName(layer->layerName());
 	
 		emit commandExecuted(&event);
 		
@@ -148,61 +112,49 @@ KTLayer *KTProject::createLayer(bool addToEnd)
 		D_CHECKPTR(scene);
 	}
 	
-	
 	return 0;
 }
 
-/**
- * 
- * @return 
- */
-KTLayer *KTProject::currentLayer()
+KTFrame *KTProject::createFrame(int scenePosition, int layerPosition, int position)
 {
-	if ( currentScene() )
+	KTScene *scene = this->scene(scenePosition);
+	
+	if ( !scene)
 	{
-		return currentScene()->currentLayer();
+		return 0;
 	}
 	
-	return 0;
-}
-
-/**
- * Crea un nuevo frame
- * @param addToEnd 
- * @return 
- */
-KTFrame *KTProject::createFrame(bool addToEnd)
-{
-	KTLayer *layer = currentLayer();
+	KTLayer *layer = scene->layer(layerPosition);
 	
 	if ( layer )
 	{
-		KTFrame *frame = layer->createFrame(addToEnd);
+		KTFrame *frame = layer->createFrame(position);
 		
-		KTFrameEvent event(KTProjectEvent::Add, frame->frameName(), m_currentSceneIndex, currentScene()->currentLayerIndex(), layer->currentFrameIndex() );
-	
+		KTFrameEvent event(KTProjectEvent::Add, scenePosition, layerPosition, position );
+		event.setPartName(frame->frameName());
+		
+		
 		emit commandExecuted(&event);
 		
 		return frame;
 	}
-	else
-	{
-		D_CHECKPTR(layer);
-	}
+// 	else
+// 	{
+// 		D_CHECKPTR(layer);
+// 	}
 	
 	return 0;
 }
 
-/**
- * Retorna el frame actual
- * @return 
- */
-KTFrame *KTProject::currentFrame()
+KTScene *KTProject::scene(int position)
 {
-	if ( currentLayer() )
+	if ( position < 0 || position > m_scenes.count() )
 	{
-		return currentLayer()->currentFrame();
+		D_FUNCINFO << " FATAL ERROR: index out of bound";
+		return 0;
 	}
 	
-	return 0;
+	return m_scenes[position];
 }
+
+

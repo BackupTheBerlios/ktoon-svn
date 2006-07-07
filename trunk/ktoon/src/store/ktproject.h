@@ -50,15 +50,14 @@ class KTProject : public QObject
 		void setProjectName(const QString &name);
 		
 		QString projectName() const;
-				
-		KTScene *createScene(bool addToEnd = true);
-		KTScene *currentScene();
 		
-		KTLayer *createLayer(bool addToEnd = true);
-		KTLayer *currentLayer();
+		KTScene *scene(int position);
 		
-		KTFrame *createFrame(bool addToEnd = true);
-		KTFrame *currentFrame();
+		KTScene *createScene(int position);
+		KTLayer *createLayer(int scene, int position);
+		KTFrame *createFrame(int scene, int layer, int position);
+		
+		
 		
 		void clear();
 		
@@ -68,8 +67,6 @@ class KTProject : public QObject
 	private:
 		Scenes m_scenes;
 		QString m_name;
-		
-		int m_currentSceneIndex;
 };
 
 #endif
