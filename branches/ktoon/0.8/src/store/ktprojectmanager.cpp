@@ -522,10 +522,7 @@ void KTProjectManager::moveLayer(bool up)
 
 void KTProjectManager::close()
 {
-	for(int i = 0; i < m_documents.count(); i++ )
-	{
-		delete m_documents.takeAt(i);
-	}
+	qDeleteAll(m_documents);
 	
 	m_currentDocument = 0;
 	m_isOpen = false;
