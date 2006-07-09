@@ -107,28 +107,30 @@ KTScene *KTProject::createScene(int position, const QString &xml)
 	return scene;
 }
 
-bool KTProject::removeScene(int position)
+QString KTProject::removeScene(int position)
 {
+	D_FUNCINFO;
 	KTScene *toRemove = scene(position);
 	
 	if ( toRemove )
 	{
-		QString xml; // TODO: crear XML desde toRemove
+		QDomDocument document;
+		
+		document.appendChild(toRemove->toXml(document));
 		
 		m_scenes.removeAt(position);
 		delete toRemove;
 		
 		KTSceneEvent event(KTProjectEvent::Remove, position);
-// 		event.setPartName(toRemove->sceneName() );
 		
 		m_sceneCounter--;
 		
 		emit commandExecuted( &event );
 		
-		return true;
+		return document.toString( 0 );
 	}
 	
-	return false;
+	return QString();
 }
 
 KTLayer *KTProject::createLayer(int scenePosition, int position, const QString &xml)
@@ -138,6 +140,11 @@ KTLayer *KTProject::createLayer(int scenePosition, int position, const QString &
 	if ( scene )
 	{
 		KTLayer *layer = scene->createLayer(position);
+		
+		if ( !xml.isEmpty() )
+		{
+			layer->fromXml( xml );
+		}
 		
 		KTLayerEvent event(KTProjectEvent::Add, scenePosition, position );
 		event.setPartName(layer->layerName());
@@ -155,27 +162,31 @@ KTLayer *KTProject::createLayer(int scenePosition, int position, const QString &
 }
 
 
-bool KTProject::removeLayer(int scenePos, int position)
+QString KTProject::removeLayer(int scenePos, int position)
 {
 	KTScene *scene = this->scene(scenePos);
 	
-	
 	if ( scene )
 	{
-		QString xml; 
-		if ( scene->removeLayer(position) )
+		KTLayer *layer = scene->layer( position );
+		if ( layer )
 		{
-			KTLayerEvent event(KTProjectEvent::Remove, scenePos, position);
+			QDomDocument document;
 			
-			event.setXML( xml );
+			document.appendChild(layer->toXml(document));
 			
-			emit commandExecuted( &event );
-			
-			return true;
+			if ( scene->removeLayer(position) )
+			{
+				KTLayerEvent event(KTProjectEvent::Remove, scenePos, position);
+				
+				emit commandExecuted( &event );
+				
+				return document.toString(0);
+			}
 		}
 	}
 	
-	return false;
+	return QString();
 }
 
 KTFrame *KTProject::createFrame(int scenePosition, int layerPosition, int position, const QString &xml)
@@ -192,6 +203,11 @@ KTFrame *KTProject::createFrame(int scenePosition, int layerPosition, int positi
 	if ( layer )
 	{
 		KTFrame *frame = layer->createFrame(position);
+		
+		if ( !xml.isEmpty() )
+		{
+			frame->fromXml( xml );
+		}
 		
 		KTFrameEvent event(KTProjectEvent::Add, scenePosition, layerPosition, position );
 		event.setPartName(frame->frameName());
@@ -210,7 +226,7 @@ KTFrame *KTProject::createFrame(int scenePosition, int layerPosition, int positi
 }
 
 
-bool KTProject::removeFrame(int scenePos, int layerPos, int position)
+QString KTProject::removeFrame(int scenePos, int layerPos, int position)
 {
 	KTScene *scene = this->scene(scenePos);
 	
@@ -219,18 +235,26 @@ bool KTProject::removeFrame(int scenePos, int layerPos, int position)
 		KTLayer *layer = scene->layer( layerPos );
 		if ( layer )
 		{
-			if ( layer->removeFrame(position) )
+			KTFrame *frame = layer->frame( position );
+			if ( frame )
 			{
-				KTFrameEvent event(KTProjectEvent::Remove, scenePos, layerPos, position);
+				QDomDocument document;
 				
-				emit commandExecuted( &event );
+				document.appendChild(frame->toXml(document));
 				
-				return true;
+				if ( layer->removeFrame(position) )
+				{
+					KTFrameEvent event(KTProjectEvent::Remove, scenePos, layerPos, position);
+					
+					emit commandExecuted( &event );
+					
+					return document.toString(0);
+				}
 			}
 		}
 	}
 	
-	return false;
+	return QString();
 }
 
 
@@ -245,4 +269,47 @@ KTScene *KTProject::scene(int position)
 	return m_scenes[position];
 }
 
+void KTProject::fromXml(const QString &xml )
+{
+	QDomDocument document;
+	
+	if (! document.setContent(xml) )
+	{
+		return;
+	}
+	
+	QDomElement root = document.documentElement();
+	
+	setProjectName( root.attribute( "name", projectName() ) );
+	
+	QDomNode n = root.firstChild();
+	
+	while( !n.isNull() )
+	{
+		QDomElement e = n.toElement();
+		
+		if(!e.isNull())
+		{
+			dDebug() << "Scene??? " << e.tagName();
+			if ( e.tagName() == "scene" )
+			{
+				KTScene *scene = createScene( m_scenes.count() );
+				
+				if ( scene )
+				{
+					QDomDocument newDoc;
+					newDoc.appendChild( e );
+					scene->fromXml( newDoc.toString(0) );
+				}
+			}
+		}
+		
+		n = n.nextSibling();
+	}
+}
+
+QDomElement KTProject::toXml(QDomDocument &doc)
+{
+	return QDomElement();
+}
 

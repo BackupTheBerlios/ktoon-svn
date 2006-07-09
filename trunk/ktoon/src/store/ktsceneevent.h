@@ -26,7 +26,7 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTSceneEvent : public KTProjectEvent
+class Q_DECL_EXPORT KTSceneEvent : public KTProjectEvent
 {
 	public:
 		KTSceneEvent(Action action, int sceneIndex);

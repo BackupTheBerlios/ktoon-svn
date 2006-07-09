@@ -101,3 +101,59 @@ KTFrame *KTLayer::frame(int position)
 }
 
 
+void KTLayer::fromXml(const QString &xml )
+{
+	QDomDocument document;
+	
+	if (! document.setContent(xml) )
+	{
+		return;
+	}
+	
+	QDomElement root = document.documentElement();
+	
+	setLayerName( root.attribute( "name", layerName() ) );
+	
+	QDomNode n = root.firstChild();
+	
+	while( !n.isNull() )
+	{
+		QDomElement e = n.toElement();
+		
+		if(!e.isNull())
+		{
+			dDebug() << "Frame??? " << e.tagName();
+			if ( e.tagName() == "frame" )
+			{
+				KTFrame *frame = createFrame( m_frames.count() );
+				
+				if ( frame )
+				{
+					QDomDocument newDoc;
+					newDoc.appendChild( e );
+					frame->fromXml( newDoc.toString(0) );
+				}
+			}
+		}
+		
+		n = n.nextSibling();
+	}
+}
+
+QDomElement KTLayer::toXml(QDomDocument &doc)
+{
+	QDomElement root = doc.createElement("layer");
+	root.setAttribute("name", m_name );
+	doc.appendChild(root);
+	
+	Frames::ConstIterator iterator = m_frames.begin();
+	
+	
+	while ( iterator != m_frames.end() )
+	{
+		root.appendChild( (*iterator)->toXml(doc) );
+		++iterator;
+	}
+	
+	return root;
+}

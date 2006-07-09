@@ -24,6 +24,8 @@
 #include "ktabstractserializable.h"
 #include "ktframe.h"
 
+#include <QDomDocument>
+#include <QDomElement>
 
 typedef QList<KTFrame *> Frames;
 
@@ -32,7 +34,7 @@ typedef QList<KTFrame *> Frames;
  * @author David Cuadrado \<krawek@toonka.com\>
 */
 
-class KTLayer : public QObject, public KTAbstractSerializable
+class Q_DECL_EXPORT KTLayer : public QObject, public KTAbstractSerializable
 {
 	Q_OBJECT
 	public:
@@ -83,8 +85,8 @@ class KTLayer : public QObject, public KTAbstractSerializable
 		KTFrame *frame(int position);
 		
 	public:
-		virtual void fromXml(const QString &xml ) {};
-		virtual QString toXml() {};
+		virtual void fromXml(const QString &xml );
+		virtual QDomElement toXml(QDomDocument &doc);
 		
 	private:
 		Frames m_frames;

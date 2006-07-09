@@ -25,6 +25,8 @@
 #include "ktglobal.h"
 
 #include <QObject>
+#include <QDomDocument>
+#include <QDomElement>
 
 
 class KTScene;
@@ -39,10 +41,10 @@ typedef QList<KTScene *> Scenes;
  * Esta clase maneja el proyecto, además contiene las diferentes escenas que componen todo el proyecto.
  * 
  * @brief Project manager
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado \<krawek@toonka.com\>
 */
 
-class KTProject : public QObject, public KTAbstractSerializable
+class Q_DECL_EXPORT KTProject : public QObject, public KTAbstractSerializable
 {
 	Q_OBJECT;
 	public:
@@ -59,15 +61,15 @@ class KTProject : public QObject, public KTAbstractSerializable
 		KTLayer *createLayer(int scene, int position, const QString &xml = QString());
 		KTFrame *createFrame(int scene, int layer, int position, const QString &xml = QString());
 		
-		bool removeScene(int position);
-		bool removeLayer(int scene, int position);
-		bool removeFrame(int scene, int layer, int position);
+		QString removeScene(int position);
+		QString removeLayer(int scene, int position);
+		QString removeFrame(int scene, int layer, int position);
 		
 		void clear();
 		
 	protected:
-		virtual void fromXml(const QString &xml ) {};
-		virtual QString toXml() {};
+		virtual void fromXml(const QString &xml );
+		virtual QDomElement toXml(QDomDocument &doc);
 		
 	signals:
 		void commandExecuted(KTProjectEvent *command );

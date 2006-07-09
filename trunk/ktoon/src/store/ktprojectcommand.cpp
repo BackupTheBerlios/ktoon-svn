@@ -166,12 +166,12 @@ void KTProjectCommand::frameCommand(const KTFrameEvent *event, bool redo)
 		{
 			case KTProjectEvent::Add:
 			{
-				m_project->createFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->xml() );
+				m_project->createFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), m_xml );
 			}
 			break;
 			case KTProjectEvent::Remove:
 			{
-				m_project->removeFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex() );
+				m_xml = m_project->removeFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex() );
 			}
 			break;
 // 			case KTProjectEvent:::
@@ -191,12 +191,12 @@ void KTProjectCommand::frameCommand(const KTFrameEvent *event, bool redo)
 		{
 			case KTProjectEvent::Add:
 			{
-				m_project->removeFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex());
+				m_xml = m_project->removeFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex());
 			}
 			break;
 			case KTProjectEvent::Remove:
 			{
-				m_project->createFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->xml());
+				m_project->createFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), m_xml);
 			}
 			break;
 // 			case KTProjectEvent:::
@@ -220,12 +220,12 @@ void KTProjectCommand::layerCommand(const KTLayerEvent *event, bool redo)
 		{
 			case KTProjectEvent::Add:
 			{
-				m_project->createLayer( event->sceneIndex(), event->layerIndex(), event->xml());
+				m_project->createLayer( event->sceneIndex(), event->layerIndex(), m_xml);
 			}
 			break;
 			case KTProjectEvent::Remove:
 			{
-				m_project->removeLayer( event->sceneIndex(), event->layerIndex());
+				m_xml = m_project->removeLayer( event->sceneIndex(), event->layerIndex());
 			}
 			break;
 // 			case KTProjectEvent:::
@@ -245,12 +245,12 @@ void KTProjectCommand::layerCommand(const KTLayerEvent *event, bool redo)
 		{
 			case KTProjectEvent::Add:
 			{
-				m_project->removeLayer( event->sceneIndex(), event->layerIndex());
+				m_xml = m_project->removeLayer( event->sceneIndex(), event->layerIndex());
 			}
 			break;
 			case KTProjectEvent::Remove:
 			{
-				m_project->createLayer( event->sceneIndex(), event->layerIndex(), event->xml());
+				m_project->createLayer( event->sceneIndex(), event->layerIndex(), m_xml);
 			}
 			break;
 // 			case KTProjectEvent:::
@@ -274,12 +274,12 @@ void KTProjectCommand::sceneCommand(const KTSceneEvent *event, bool redo)
 		{
 			case KTProjectEvent::Add:
 			{
-				m_project->createScene( event->sceneIndex(), event->xml() );
+				m_project->createScene( event->sceneIndex(), m_xml );
 			}
 			break;
 			case KTProjectEvent::Remove:
 			{
-				m_project->removeScene( event->sceneIndex() );
+				m_xml = m_project->removeScene( event->sceneIndex() );
 			}
 			break;
 // 			case KTProjectEvent:::
@@ -299,12 +299,12 @@ void KTProjectCommand::sceneCommand(const KTSceneEvent *event, bool redo)
 		{
 			case KTProjectEvent::Add:
 			{
-				m_project->removeScene( event->sceneIndex() );
+				m_xml = m_project->removeScene( event->sceneIndex() );
 			}
 			break;
 			case KTProjectEvent::Remove:
 			{
-				m_project->createScene( event->sceneIndex(), event->xml() );
+				m_project->createScene( event->sceneIndex(), m_xml );
 			}
 			break;
 // 			case KTProjectEvent:::

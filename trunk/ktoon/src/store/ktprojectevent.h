@@ -28,7 +28,7 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTProjectEvent
+class Q_DECL_EXPORT KTProjectEvent
 {
 	public:
 		enum Action
@@ -54,14 +54,9 @@ class KTProjectEvent
 		QString partName() const;
 		virtual int id() const;
 		
-		void setXML(const QString &xml);
-		QString xml() const;
-		
 	private:
 		Action m_action;
 		QString m_partName;
-		
-		QString m_xml;
 };
 
 #endif

@@ -25,7 +25,7 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTLayerEvent : public KTSceneEvent
+class Q_DECL_EXPORT KTLayerEvent : public KTSceneEvent
 {
 	public:
 		KTLayerEvent(Action action, int sceneIndex, int layerIndex);

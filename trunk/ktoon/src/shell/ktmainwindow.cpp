@@ -518,6 +518,7 @@ void KTMainWindow::closeEvent( QCloseEvent *event )
 
 void KTMainWindow::createCommand(KTProjectEvent *event)
 {
+	D_FUNCINFO;
 	KTProjectCommand *command = m_projectManager->createCommand(event);
 	m_undoCommands->push(command);
 }

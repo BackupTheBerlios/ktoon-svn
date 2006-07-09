@@ -23,14 +23,17 @@
 
 #include <QString>
 
+#include <QDomDocument>
+#include <QDomElement>
+
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTAbstractSerializable
+class Q_DECL_EXPORT KTAbstractSerializable
 {
 	public:
 		virtual void fromXml(const QString &xml) = 0;
-		virtual QString toXml() = 0;
+		virtual QDomElement toXml(QDomDocument &doc) = 0;
 };
 
 #endif

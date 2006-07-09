@@ -26,13 +26,16 @@
 
 typedef QList<KTLayer *> Layers;
 
+#include <QDomDocument>
+#include <QDomElement>
+
 
 /**
  * @brief Esta clase representa una escena
  * @author David Cuadrado \<krawek@toonka.com\>
 */
 
-class KTScene : public QObject, public KTAbstractSerializable
+class Q_DECL_EXPORT KTScene : public QObject, public KTAbstractSerializable
 {
 	Q_OBJECT
 	public:
@@ -85,7 +88,7 @@ class KTScene : public QObject, public KTAbstractSerializable
 		
 	public:
 		virtual void fromXml(const QString &xml );
-		virtual QString toXml();
+		virtual QDomElement toXml(QDomDocument &doc);
 		
 	private:
 		Layers m_layers;

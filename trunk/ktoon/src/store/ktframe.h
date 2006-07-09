@@ -24,13 +24,16 @@
 #include <QGraphicsScene>
 #include "ktabstractserializable.h"
 
+#include <QDomDocument>
+#include <QDomElement>
+
 class KTFrame;
 
 /**
  * @brief Esta clase representa un marco o frame de la animacion
  * @author David Cuadrado \<krawek@toonka.com\>
 */
-class KTFrame : public QGraphicsScene, public KTAbstractSerializable
+class Q_DECL_EXPORT KTFrame : public QGraphicsScene, public KTAbstractSerializable
 {
 	public:
 		/**
@@ -69,8 +72,8 @@ class KTFrame : public QGraphicsScene, public KTAbstractSerializable
 		bool isLocked();
 		
 	public:
-		virtual void fromXml(const QString &xml ) {};
-		virtual QString toXml() {};
+		virtual void fromXml(const QString &xml );
+		virtual QDomElement toXml(QDomDocument &doc);
 		
 	private:
 		void init();

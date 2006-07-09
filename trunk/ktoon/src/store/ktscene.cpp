@@ -89,7 +89,7 @@ bool KTScene::removeLayer( int position)
 
 void KTScene::moveCurrentLayer(bool up)
 {
-
+	
 }
 
 
@@ -136,9 +136,60 @@ KTLayer *KTScene::layer(int position)
 
 void KTScene::fromXml(const QString &xml )
 {
+	QDomDocument document;
+	
+	if (! document.setContent(xml) )
+	{
+		return;
+	}
+	
+	QDomElement root = document.documentElement();
+	
+	setSceneName( root.attribute( "name", sceneName()) );
+	
+	QDomNode n = root.firstChild();
+	
+	while( !n.isNull() )
+	{
+		QDomElement e = n.toElement();
+		
+		if(!e.isNull())
+		{
+			dDebug() << "LAYER??? " << e.tagName();
+			if ( e.tagName() == "layer" )
+			{
+				KTLayer *layer = createLayer( m_layers.count() );
+				
+				if ( layer )
+				{
+					QDomDocument newDoc;
+					newDoc.appendChild( e );
+					layer->fromXml( newDoc.toString(0) );
+				}
+			}
+		}
+		
+		n = n.nextSibling();
+	}
 }
 
-QString KTScene::toXml()
+QDomElement KTScene::toXml(QDomDocument &doc)
 {
-	return QString();
+	QDomElement root = doc.createElement("scene");
+	root.setAttribute("name", m_name );
+	doc.appendChild(root);
+	
+	Layers::ConstIterator iterator = m_layers.begin();
+	
+	
+	while ( iterator != m_layers.end() )
+	{
+		root.appendChild( (*iterator)->toXml(doc) );
+		++iterator;
+	}
+	
+	return root;
 }
+
+
+

@@ -62,3 +62,63 @@ bool KTFrame::isLocked()
 }
 
 
+void KTFrame::fromXml(const QString &xml )
+{
+	QDomDocument document;
+	
+	if (! document.setContent(xml) )
+	{
+		return;
+	}
+	
+	QDomElement root = document.documentElement();
+	
+	setFrameName( root.attribute( "name", frameName() ) );
+	
+	QDomNode n = root.firstChild();
+	
+	while( !n.isNull() )
+	{
+		QDomElement e = n.toElement();
+		
+		if(!e.isNull())
+		{
+			dDebug() << "Item??? " << e.tagName();
+#if 0
+			if ( e.tagName() == "frame" )
+			{
+				KTFrame *frame = createFrame( m_frames.count() );
+				
+				if ( frame )
+				{
+					QDomDocument newDoc;
+					newDoc.appendChild( e );
+					frame->fromXml( newDoc.toString(0) );
+				}
+			}
+#endif
+		}
+		
+		n = n.nextSibling();
+	}
+}
+
+QDomElement KTFrame::toXml(QDomDocument &doc)
+{
+	QDomElement root = doc.createElement("frame");
+	root.setAttribute("name", m_name );
+	doc.appendChild(root);
+	
+	QList<QGraphicsItem *> items = this->items();
+	
+	QList<QGraphicsItem *>::ConstIterator iterator = items.begin();
+	
+	while ( iterator != items.end() )
+	{
+// 		root.appendChild( (*iterator)->toXml(doc) );
+		++iterator;
+	}
+	
+	return root;
+}
+

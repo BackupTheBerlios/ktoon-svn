@@ -32,9 +32,9 @@ class KTLayerEvent;
 class KTSceneEvent;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado \<krawek@gmail.com\>
 */
-class KTProjectCommand : public QUndoCommand
+class Q_DECL_EXPORT KTProjectCommand : public QUndoCommand
 {
 	public:
 		KTProjectCommand(KTProject *project, const KTProjectEvent *event);
@@ -51,6 +51,8 @@ class KTProjectCommand : public QUndoCommand
 	private:
 		KTProject *m_project;
 		const KTProjectEvent *m_event;
+		
+		QString m_xml;
 };
 
 #endif

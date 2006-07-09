@@ -29,9 +29,9 @@ class KTProjectCommand;
 
 /**
  * Clase para tratar eventos del projecto
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado \<krawek@gmail.com\>
 */
-class KTProjectManager : public QObject
+class Q_DECL_EXPORT KTProjectManager : public QObject
 {
 	Q_OBJECT;
 	public:

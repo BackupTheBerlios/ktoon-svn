@@ -26,7 +26,7 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTFrameEvent : public KTLayerEvent
+class Q_DECL_EXPORT KTFrameEvent : public KTLayerEvent
 {
 	public:
 		KTFrameEvent(Action action, int sceneIndex, int layerIndex, int frameIndex);

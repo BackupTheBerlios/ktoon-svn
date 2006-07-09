@@ -29,9 +29,9 @@ class KTLayerEvent;
 class KTSceneEvent;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado \<krawek@gmail.com\>
 */
-class KTAbstractProjectEventHandler
+class Q_DECL_EXPORT KTAbstractProjectEventHandler
 {
 	public:
 		KTAbstractProjectEventHandler();
