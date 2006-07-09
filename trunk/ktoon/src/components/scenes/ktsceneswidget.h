@@ -48,10 +48,6 @@ class KTScenesWidget : public KTModuleWidgetBase
 		QButtonGroup *m_buttonGroup;
 		KTScenesList *m_tableScenes;
 
-// 		QLabel *m_textName;
-
-// 		QLineEdit *m_valueName;
-
 	private:
 		void setupButtons();
 		void setupTableScenes();
@@ -62,6 +58,8 @@ class KTScenesWidget : public KTModuleWidgetBase
 		void emitRequestInsertScene();
 		void emitRequestRemoveScene();
 		
+	protected:
+		virtual void sceneEvent(KTSceneEvent *e);
 		
 	signals:
 		void requestInsertLayer();

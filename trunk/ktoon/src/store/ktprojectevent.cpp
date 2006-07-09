@@ -53,3 +53,15 @@ void KTProjectEvent::setPartName(const QString &name)
 {
 	m_partName = name;
 }
+
+void KTProjectEvent::setXML(const QString &xml)
+{
+	m_xml = xml;
+}
+
+QString KTProjectEvent::xml() const
+{
+	return m_xml;
+}
+
+

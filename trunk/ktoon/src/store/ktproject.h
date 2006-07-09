@@ -21,8 +21,10 @@
 #ifndef KTPROJECT_H
 #define KTPROJECT_H
 
-#include <QObject>
+#include "ktabstractserializable.h"
 #include "ktglobal.h"
+
+#include <QObject>
 
 
 class KTScene;
@@ -40,9 +42,9 @@ typedef QList<KTScene *> Scenes;
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTProject : public QObject
+class KTProject : public QObject, public KTAbstractSerializable
 {
-	Q_OBJECT
+	Q_OBJECT;
 	public:
 		KTProject(QObject *parent = 0);
 		~KTProject();
@@ -53,13 +55,19 @@ class KTProject : public QObject
 		
 		KTScene *scene(int position);
 		
-		KTScene *createScene(int position);
-		KTLayer *createLayer(int scene, int position);
-		KTFrame *createFrame(int scene, int layer, int position);
+		KTScene *createScene(int position, const QString &xml = QString());
+		KTLayer *createLayer(int scene, int position, const QString &xml = QString());
+		KTFrame *createFrame(int scene, int layer, int position, const QString &xml = QString());
 		
-		
+		bool removeScene(int position);
+		bool removeLayer(int scene, int position);
+		bool removeFrame(int scene, int layer, int position);
 		
 		void clear();
+		
+	protected:
+		virtual void fromXml(const QString &xml ) {};
+		virtual QString toXml() {};
 		
 	signals:
 		void commandExecuted(KTProjectEvent *command );
@@ -67,6 +75,8 @@ class KTProject : public QObject
 	private:
 		Scenes m_scenes;
 		QString m_name;
+		
+		int m_sceneCounter;
 };
 
 #endif

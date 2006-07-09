@@ -28,7 +28,7 @@
 #include <QStatusBar>
 #include <QResizeEvent>
 #include <QCloseEvent>
-
+#include <QUndoStack>
 #include "dactionmanager.h"
 #include "ktviewdocument.h"
 
@@ -159,6 +159,8 @@ class KTMainWindow : public DMainWindow
 		QString m_fileName;
 		
 	private:
+		QUndoStack *m_undoCommands;
+		
 		KTViewDocument *m_viewDoc;
 		KTWorkspace *m_animationSpace;
 		KTStatusBar *m_statusBar;

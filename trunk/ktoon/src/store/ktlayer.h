@@ -21,7 +21,7 @@
 #ifndef KTLAYER_H
 #define KTLAYER_H
 
-#include <QObject>
+#include "ktabstractserializable.h"
 #include "ktframe.h"
 
 
@@ -29,10 +29,10 @@ typedef QList<KTFrame *> Frames;
 
 /**
  * @brief Esta clase representa un layer, los layers estan contenidos en KTDocument y contienen KTFrame's
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado \<krawek@toonka.com\>
 */
 
-class KTLayer : public QObject
+class KTLayer : public QObject, public KTAbstractSerializable
 {
 	Q_OBJECT
 	public:
@@ -78,7 +78,13 @@ class KTLayer : public QObject
 		
 		KTFrame *createFrame(int position);
 		
+		bool removeFrame(int position);
+		
 		KTFrame *frame(int position);
+		
+	public:
+		virtual void fromXml(const QString &xml ) {};
+		virtual QString toXml() {};
 		
 	private:
 		Frames m_frames;

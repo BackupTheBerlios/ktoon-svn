@@ -21,7 +21,7 @@
 #ifndef KTSCENEMANAGER_H
 #define KTSCENEMANAGER_H
 
-#include <QObject>
+#include "ktabstractserializable.h"
 #include "ktlayer.h"
 
 typedef QList<KTLayer *> Layers;
@@ -29,10 +29,10 @@ typedef QList<KTLayer *> Layers;
 
 /**
  * @brief Esta clase representa una escena
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado \<krawek@toonka.com\>
 */
 
-class KTScene : public QObject
+class KTScene : public QObject, public KTAbstractSerializable
 {
 	Q_OBJECT
 	public:
@@ -69,7 +69,7 @@ class KTScene : public QObject
 		/**
 		 * Remueve el layer situado en el indice proporcionado
 		 */
-		void removeLayer(int index);
+		bool removeLayer(int index);
 		
 		/**
 		 * Crea una layer, si addToEnd es verdadero el layer se creara al final, sino se creara despues del layer actual
@@ -82,6 +82,10 @@ class KTScene : public QObject
 		void moveCurrentLayer(bool up);
 		
 		QGraphicsScene* photogram(int index);
+		
+	public:
+		virtual void fromXml(const QString &xml );
+		virtual QString toXml();
 		
 	private:
 		Layers m_layers;

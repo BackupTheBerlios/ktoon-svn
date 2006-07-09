@@ -73,8 +73,18 @@ KTLayer *KTScene::createLayer(int position)
 }
 
 
-void KTScene::removeLayer( int position)
+bool KTScene::removeLayer( int position)
 {
+	KTLayer *layer = this->layer(position);
+	if ( layer )
+	{
+		m_layers.removeAt(position);
+		delete layer;
+		
+		return true;
+	}
+	
+	return false;
 }
 
 void KTScene::moveCurrentLayer(bool up)
@@ -124,3 +134,11 @@ KTLayer *KTScene::layer(int position)
 	return m_layers[position];
 }
 
+void KTScene::fromXml(const QString &xml )
+{
+}
+
+QString KTScene::toXml()
+{
+	return QString();
+}

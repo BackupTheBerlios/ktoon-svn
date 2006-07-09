@@ -25,6 +25,8 @@
 
 void KTMainWindow::createGUI()
 {
+	
+
 	// TODO: put setWindowIcon in each class
 	m_colorPalette = new KTColorPalette(this);
 	m_colorPalette->setWindowIcon(QPixmap(THEME_DIR+"/icons/color_palette.png") );
@@ -352,6 +354,19 @@ void KTMainWindow::setupInsertActions()
 
 void KTMainWindow::setupToolBar()
 {
+	QToolBar * toolbar = new QToolBar(tr("Bar Actions"), this);
+	toolbar->setIconSize( QSize(22,22) );
+	addToolBar(Qt::TopToolBarArea, toolbar);
+	
+	QAction * redo =  m_undoCommands->createRedoAction ( this );
+	
+	toolbar->addAction(redo);
+	
+	QAction * undo = m_undoCommands->createUndoAction( this, tr("Undo"));
+	toolbar->addAction(undo);
+	undo->setIcon( QPixmap(THEME_DIR+"/icons/undo.png" ));
+	redo->setIcon(QPixmap(THEME_DIR+"/icons/redo.png" ));
+	
 }
 
 void KTMainWindow::updateOpenRecentMenu(QMenu *menu)

@@ -23,12 +23,16 @@ class KTScenesList : public DTreeListWidget
 	public:
 		KTScenesList(QWidget *parent = 0);
 		~KTScenesList();
-		void addScene(QString name);
+		void addScene(const QString &name);
+		void insertScene(int index, const QString &name);
+		
 		int removeCurrentScene();
 		int indexCurrentScene();
 		QString nameCurrentScene();
 		
 		int scenesCount();
+		
+		void removeScene(int index);
 		
 	private slots:
 		void changeCurrentScene();

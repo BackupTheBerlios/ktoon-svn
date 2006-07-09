@@ -18,52 +18,19 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef KTABSTRACTSERIALIZABLE_H
+#define KTABSTRACTSERIALIZABLE_H
 
-#ifndef KTPROJECTEVENT_H
-#define KTPROJECTEVENT_H
-
-#include <QEvent>
 #include <QString>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTProjectEvent
+class KTAbstractSerializable
 {
 	public:
-		enum Action
-		{
-			Add,
-			Remove
-		};
-		enum Part
-		{
-			Project = 1000,
-			Frame,
-			Layer,
-			Scene
-		};
-		
-		KTProjectEvent(Action action);
-		virtual ~KTProjectEvent();
-		
-		
-		Action action() const;
-		
-		void setPartName(const QString &name);
-		QString partName() const;
-		virtual int id() const;
-		
-		void setXML(const QString &xml);
-		QString xml() const;
-		
-	private:
-		Action m_action;
-		QString m_partName;
-		
-		QString m_xml;
+		virtual void fromXml(const QString &xml) = 0;
+		virtual QString toXml() = 0;
 };
 
 #endif
-
-

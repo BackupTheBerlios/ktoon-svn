@@ -75,6 +75,20 @@ KTFrame *KTLayer::createFrame(int position)
 	return keyFrame;
 }
 
+bool KTLayer::removeFrame(int position)
+{
+	KTFrame *toRemove = frame(position);
+	if ( toRemove )
+	{
+		m_frames.removeAt(position);
+		delete toRemove;
+		
+		return true;
+	}
+	
+	return false;
+}
+
 KTFrame *KTLayer::frame(int position)
 {
 	if ( position < 0 || position > m_frames.count() )

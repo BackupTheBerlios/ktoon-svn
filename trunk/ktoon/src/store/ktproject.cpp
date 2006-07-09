@@ -32,7 +32,7 @@
 /**
  * Constructor por defecto
  */
-KTProject::KTProject(QObject *parent) : QObject(parent)
+KTProject::KTProject(QObject *parent) : QObject(parent), m_sceneCounter(0)
 {
 	DINIT;
 }
@@ -77,12 +77,27 @@ QString KTProject::projectName() const
 }
 
 
-KTScene *KTProject::createScene(int position)
+KTScene *KTProject::createScene(int position, const QString &xml)
 {
+	if ( position < 0 || position > m_scenes.count() )
+	{
+		return 0;
+	}
 	
+	KTScene *scene = new KTScene(this);
 	
-	KTScene *scene = new KTScene(this); // TODO: Ponerle nombre!
 	m_scenes.insert(position, scene);
+	
+	m_sceneCounter++;
+	
+	if ( ! xml.isEmpty() )
+	{
+		scene->fromXml(xml);
+	}
+	else
+	{
+		scene->setSceneName(tr("Scene %1").arg(m_sceneCounter));
+	}
 	
 	KTSceneEvent event(KTProjectEvent::Add, position);
 	event.setPartName(scene->sceneName());
@@ -92,7 +107,31 @@ KTScene *KTProject::createScene(int position)
 	return scene;
 }
 
-KTLayer *KTProject::createLayer(int scenePosition, int position)
+bool KTProject::removeScene(int position)
+{
+	KTScene *toRemove = scene(position);
+	
+	if ( toRemove )
+	{
+		QString xml; // TODO: crear XML desde toRemove
+		
+		m_scenes.removeAt(position);
+		delete toRemove;
+		
+		KTSceneEvent event(KTProjectEvent::Remove, position);
+// 		event.setPartName(toRemove->sceneName() );
+		
+		m_sceneCounter--;
+		
+		emit commandExecuted( &event );
+		
+		return true;
+	}
+	
+	return false;
+}
+
+KTLayer *KTProject::createLayer(int scenePosition, int position, const QString &xml)
 {
 	KTScene *scene = this->scene(scenePosition);
 	
@@ -115,7 +154,31 @@ KTLayer *KTProject::createLayer(int scenePosition, int position)
 	return 0;
 }
 
-KTFrame *KTProject::createFrame(int scenePosition, int layerPosition, int position)
+
+bool KTProject::removeLayer(int scenePos, int position)
+{
+	KTScene *scene = this->scene(scenePos);
+	
+	
+	if ( scene )
+	{
+		QString xml; 
+		if ( scene->removeLayer(position) )
+		{
+			KTLayerEvent event(KTProjectEvent::Remove, scenePos, position);
+			
+			event.setXML( xml );
+			
+			emit commandExecuted( &event );
+			
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+KTFrame *KTProject::createFrame(int scenePosition, int layerPosition, int position, const QString &xml)
 {
 	KTScene *scene = this->scene(scenePosition);
 	
@@ -138,13 +201,38 @@ KTFrame *KTProject::createFrame(int scenePosition, int layerPosition, int positi
 		
 		return frame;
 	}
-// 	else
-// 	{
-// 		D_CHECKPTR(layer);
-// 	}
+	else
+	{
+		D_CHECKPTR(layer);
+	}
 	
 	return 0;
 }
+
+
+bool KTProject::removeFrame(int scenePos, int layerPos, int position)
+{
+	KTScene *scene = this->scene(scenePos);
+	
+	if ( scene )
+	{
+		KTLayer *layer = scene->layer( layerPos );
+		if ( layer )
+		{
+			if ( layer->removeFrame(position) )
+			{
+				KTFrameEvent event(KTProjectEvent::Remove, scenePos, layerPos, position);
+				
+				emit commandExecuted( &event );
+				
+				return true;
+			}
+		}
+	}
+	
+	return false;
+}
+
 
 KTScene *KTProject::scene(int position)
 {

@@ -19,7 +19,8 @@ HEADERS += ktlayer.h \
            ktproject.h \
            ktprojectmanager.h \
            ktprojectcommand.h \
-           ktabstractprojecteventhandler.h 
+           ktabstractprojecteventhandler.h \
+           ktabstractserializable.h 
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \

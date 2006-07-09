@@ -22,14 +22,15 @@
 #define KTFRAME_H
 
 #include <QGraphicsScene>
+#include "ktabstractserializable.h"
 
 class KTFrame;
 
 /**
  * @brief Esta clase representa un marco o frame de la animacion
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado \<krawek@toonka.com\>
 */
-class KTFrame : public QGraphicsScene
+class KTFrame : public QGraphicsScene, public KTAbstractSerializable
 {
 	public:
 		/**
@@ -66,6 +67,10 @@ class KTFrame : public QGraphicsScene
 		 * Returna verdadero cuando el frame esta bloqueado
 		 */
 		bool isLocked();
+		
+	public:
+		virtual void fromXml(const QString &xml ) {};
+		virtual QString toXml() {};
 		
 	private:
 		void init();

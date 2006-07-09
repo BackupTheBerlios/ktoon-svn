@@ -112,7 +112,15 @@ void KTScenesWidget::emitRequestInsertScene()
 {
 	D_FUNCINFO;
 	
-	KTSceneEvent *event = new KTSceneEvent(KTProjectEvent::Add, 0); // FIXME
+	int index = m_tableScenes->indexCurrentScene() + 1;
+	
+	if ( index == 0 )
+	{
+		index = m_tableScenes->scenesCount();
+	}
+	
+	
+	KTSceneEvent *event = new KTSceneEvent(KTProjectEvent::Add,  index); // FIXME
 	
 	emit eventTriggered( event );
 	
@@ -136,18 +144,38 @@ void KTScenesWidget::emitRequestRemoveScene()
 		DCONFIG->setValue("RemoveWithoutAskScene", dialog.shownAgain());
 		DCONFIG->sync();
 	}
-	emit requestRemoveScene();
+	
+	KTSceneEvent *event = new KTSceneEvent(KTProjectEvent::Remove,  m_tableScenes->indexCurrentScene() ); // FIXME
+	
+	emit eventTriggered( event );
 }
 
 
 
 void KTScenesWidget::setScene(int index)
 {
-	// 	m_tableScenes->setCurrentItem(m_tableScenes->topLevelItem ( index ) ); // FIXME
+// m_tableScenes->setCurrentItem(m_tableScenes->topLevelItem ( index ) ); // FIXME
 }
 
 void KTScenesWidget::closeAllScenes()
 {
 	m_tableScenes->removeAll();
+}
+
+void KTScenesWidget::sceneEvent(KTSceneEvent *e)
+{
+	switch(e->action() )
+	{
+		case KTProjectEvent::Add:
+		{
+			m_tableScenes->insertScene(e->sceneIndex(), e->partName());
+		}
+		break;
+		case KTProjectEvent::Remove:
+		{
+			m_tableScenes->removeScene(e->sceneIndex());
+		}
+		break;
+	}
 }
 

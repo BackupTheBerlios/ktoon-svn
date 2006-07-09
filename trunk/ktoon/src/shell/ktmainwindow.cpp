@@ -57,6 +57,8 @@
 KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0), m_scenes(0), m_viewDoc(0),m_animationSpace(0)
 {
 	DINIT;
+	m_undoCommands = new QUndoStack(this);
+
 	
 	setObjectName("KTMainWindow_");
 	
@@ -81,8 +83,8 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	splash->setMessage( tr("Creating GUI..."));
 	
 	createGUI();
-	
 	setupMenu();
+	setupToolBar();
 	
 	m_pActiveTabWidget->setCurrentIndex( 0 );
 	
@@ -517,12 +519,7 @@ void KTMainWindow::closeEvent( QCloseEvent *event )
 void KTMainWindow::createCommand(KTProjectEvent *event)
 {
 	KTProjectCommand *command = m_projectManager->createCommand(event);
-	
-	command->redo();
-	
-	 // TODO: guardar el comando!
-	
-	delete command;
+	m_undoCommands->push(command);
 }
 
 
