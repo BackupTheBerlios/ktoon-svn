@@ -127,7 +127,7 @@ KTLayer *KTScene::layer(int position)
 {
 	if ( position < 0 || position > m_layers.count() )
 	{
-		D_FUNCINFO << " FATAL ERROR: index out of bound";
+		D_FUNCINFO << " FATAL ERROR: index out of bound " << position;
 		return 0;
 	}
 	
@@ -155,7 +155,6 @@ void KTScene::fromXml(const QString &xml )
 		
 		if(!e.isNull())
 		{
-			dDebug() << "LAYER??? " << e.tagName();
 			if ( e.tagName() == "layer" )
 			{
 				KTLayer *layer = createLayer( m_layers.count() );
@@ -163,7 +162,8 @@ void KTScene::fromXml(const QString &xml )
 				if ( layer )
 				{
 					QDomDocument newDoc;
-					newDoc.appendChild( e );
+					newDoc.appendChild(newDoc.importNode(n, true ));
+					
 					layer->fromXml( newDoc.toString(0) );
 				}
 			}

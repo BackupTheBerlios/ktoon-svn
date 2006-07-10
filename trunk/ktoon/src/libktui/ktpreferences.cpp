@@ -131,6 +131,34 @@ void KTPreferences::GeneralPage::saveValues()
 	DCONFIG->sync();
 }
 
+class KTPreferences::FontPage : public QWidget
+{
+	public:
+		FontPage();
+		~FontPage();
+		
+		QFont currentFont() const;
+		
+	private:
+		QFontComboBox *m_fontCombo;
+};
+
+KTPreferences::FontPage::FontPage()
+{
+	m_fontCombo = new QFontComboBox(this);
+	m_fontCombo->setCurrentFont(font());
+}
+
+KTPreferences::FontPage::~FontPage()
+{
+}
+
+
+QFont KTPreferences::FontPage::currentFont() const
+{
+	return m_fontCombo->currentFont();
+}
+
 
 #include "ktpreferences.moc"
 
@@ -141,16 +169,16 @@ KTPreferences::KTPreferences( QWidget *parent ) : DConfigurationDialog(parent )
 	setWindowTitle( tr( "Application KTPreferences" ) );
 	
 	m_generalPage = new GeneralPage;
-	addPage(m_generalPage, tr("General"), QPixmap(THEME_DIR+"/icons/general_config.png"));
+	addPage(m_generalPage, tr("General"))->setIcon(QPixmap(THEME_DIR+"/icons/general_config.png"));;
 	
 	m_themeSelector = new KTThemeSelector;
-	addPage(m_themeSelector, tr("Theme preferences"), QPixmap(THEME_DIR+"/icons/theme_config.png"));
-
-	m_fontChooser = new DFontChooser;
+	addPage(m_themeSelector, tr("Theme preferences"))->setIcon( QPixmap(THEME_DIR+"/icons/theme_config.png") );
 	
-	m_fontChooser->setCurrentFont( font() );
 	
-	addPage(m_fontChooser, tr("Font"), QPixmap(THEME_DIR+"/icons/font_config.png"));
+	
+	m_fontChooser = new FontPage;
+	
+	addPage(m_fontChooser, tr("Font"))->setIcon(QPixmap(THEME_DIR+"/icons/font_config.png"));
 }
 
 //-------------- DESTRUCTOR -----------------
@@ -167,20 +195,20 @@ void KTPreferences::ok()
 
 void KTPreferences::apply()
 {
-	if ( static_cast<KTThemeSelector *>(currentPage()) ==  m_themeSelector)
+	if ( static_cast<KTThemeSelector *>(currentPage()->widget()) ==  m_themeSelector)
 	{
 		if(m_themeSelector->applyColors() )
 		{
 			dApp->applyTheme(m_themeSelector->document());
 		}
 	}
-	else if ( static_cast<GeneralPage *>( currentPage()) == m_generalPage )
+	else if ( static_cast<GeneralPage *>( currentPage()->widget()) == m_generalPage )
 	{
 		m_generalPage->saveValues();
 	}
-	else if ( qobject_cast<DFontChooser *>(currentPage() ) == m_fontChooser )
+	else if ( qobject_cast<FontPage *>(currentPage()->widget() ) == m_fontChooser )
 	{
-		dApp->setFont(m_fontChooser->font());
+		dApp->setFont(m_fontChooser->currentFont());
 	}
 }
 

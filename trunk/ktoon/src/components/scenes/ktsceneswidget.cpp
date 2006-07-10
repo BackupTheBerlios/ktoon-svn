@@ -76,11 +76,16 @@ void KTScenesWidget::setupTableScenes()
 {
 	m_tableScenes = new KTScenesList(this);
 	
+	DTreeWidgetSearchLine *searcher = new DTreeWidgetSearchLine(this, m_tableScenes);
+	searcher->setClickMessage( tr("Filter here..."));
+	
+	addChild(searcher);
+	
 	addChild( m_tableScenes);
 	connect(m_tableScenes, SIGNAL(changeCurrent(QString , int )), this, SLOT(selectScene( QString, int)));
 	
 	connect(m_tableScenes, SIGNAL(  itemDoubleClicked ( QTreeWidgetItem *, int )), this, SLOT(sceneDobleClick(QTreeWidgetItem *, int )));
-
+	
 }
 
 void KTScenesWidget::insertScene(const QString &name, bool addedToEnd)

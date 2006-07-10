@@ -31,22 +31,10 @@
 
 #include "ddebug.h"
 
-DConfigurationDialog::DConfigurationDialog(QWidget *parent) : QDialog(parent)
+DConfigurationDialog::DConfigurationDialog(QWidget *parent) : DPageDialog(parent)
 {
-	QVBoxLayout *mainLayout = new QVBoxLayout;
-	QHBoxLayout *controlLayout = new QHBoxLayout;
-// 	controlLayout->addStretch(0);
-	
-	m_list = new DWidgetListView;
-	connect(m_list, SIGNAL(itemClicked (QTableWidgetItem *)), this, SLOT(showPageForItem(QTableWidgetItem * )));
-	
-	controlLayout->addWidget(m_list);
-	
-	m_container = new QStackedWidget;
-	controlLayout->addWidget(m_container);
-	
-	mainLayout->addLayout(controlLayout);
-	
+	setFaceType( DPageDialog::Tree );
+
 	QHBoxLayout *buttonLayout = new QHBoxLayout;
 	buttonLayout->addStretch(1);
 	
@@ -62,16 +50,7 @@ DConfigurationDialog::DConfigurationDialog(QWidget *parent) : QDialog(parent)
 	connect(cancelButton, SIGNAL(clicked()), this, SLOT(cancel()));
 	buttonLayout->addWidget(cancelButton);
 	
-	mainLayout->addWidget(new DSeparator);
-	mainLayout->addLayout(buttonLayout);
-
-	setLayout(mainLayout);
-	setModal(true);
-	
-	m_buttonGroup = new QButtonGroup(this);
-	connect(m_buttonGroup, SIGNAL(buttonClicked (QAbstractButton *)), this, SLOT(showPageForButton(QAbstractButton *)));
-	
-	m_buttonGroup->setExclusive(true);
+	static_cast<QBoxLayout *>(layout())->addLayout(buttonLayout);
 }
 
 
@@ -92,95 +71,3 @@ void DConfigurationDialog::cancel()
 void DConfigurationDialog::apply()
 {
 }
-
-void DConfigurationDialog::addSection(const QString &title)
-{
-	QTableWidgetItem *newItem = new QTableWidgetItem();
-	newItem->setText(title);
-	
-	m_sections.insert(title, newItem);
-}
-
-void DConfigurationDialog::addSection(QWidget *info, const QString &title)
-{
-	QTableWidgetItem *newItem = new QTableWidgetItem();
-	newItem->setText(title);
-	
-	m_container->addWidget(info);
-	m_pages.insert(newItem, info);
-	m_sections.insert(title, newItem);
-}
-
-void DConfigurationDialog::addPageToSection(QWidget *page, const QString &title, const QString &section)
-{
-	QTableWidgetItem *sectionItem = m_sections[section];
-	
-	if ( sectionItem )
-	{
-		QTableWidgetItem *newItem = new QTableWidgetItem();
-		newItem->setText(title);
-		
-// 		sectionItem->addChild(newItem);
-		
-		m_pages.insert(newItem, page);
-	
-		m_container->addWidget(page);
-	}
-}
-
-void DConfigurationDialog::addPageToSection(QWidget *page, const QString &title, const QIcon &icon, const QString &section)
-{
-	QTableWidgetItem *sectionItem = m_sections[section];
-	
-	if ( sectionItem )
-	{
-		QTableWidgetItem *newItem = new QTableWidgetItem;
-		newItem->setText(title);
-		newItem->setIcon(icon);
-		
-// 		sectionItem->addChild(newItem);
-		
-		m_pages.insert(newItem, page);
-	
-		m_container->addWidget(page);
-	}
-}
-
-void DConfigurationDialog::addPage(QWidget *page, const QString &title, const QIcon &icon)
-{
-	DFlatButton *button = new DFlatButton(title);
-	button->setIcon(icon);
-	button->setMinimumHeight(90);
-	QTableWidgetItem *newItem = m_list->addWidget( button );
-	
-	m_buttonGroup->addButton(button);
-	
-	m_pages.insert(newItem, page);
-	m_container->addWidget(page);
-	
-	if ( m_list->rowCount() == 1 )
-	{
-		button->click();
-	}
-}
-
-QWidget *DConfigurationDialog::currentPage()
-{
-	return m_pages[m_list->currentItem()];
-}
-
-void DConfigurationDialog::showPageForItem(QTableWidgetItem *item )
-{
-	if ( item )
-	{
-		m_container->setCurrentWidget(m_pages[item]);
-	}
-}
-
-void DConfigurationDialog::showPageForButton(QAbstractButton *button)
-{
-	m_list->setCurrentItem(m_list->item(button));
-	showPageForItem( m_list->item(button) );
-}
-
-

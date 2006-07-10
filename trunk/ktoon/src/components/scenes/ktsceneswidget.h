@@ -25,6 +25,8 @@
 
 #include "ktsceneslist.h"
 
+#include "dtreewidgetsearchline.h"
+
 #include <QGroupBox>
 #include <QPushButton>
 #include <QButtonGroup>

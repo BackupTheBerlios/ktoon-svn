@@ -39,7 +39,7 @@ KTProjectCommand::~KTProjectCommand()
 
 void KTProjectCommand::redo()
 {
-	D_FUNCINFO;
+	D_FUNCINFO << m_xml;
 	
 	switch(m_event->id() )
 	{
@@ -75,7 +75,7 @@ void KTProjectCommand::redo()
 
 void KTProjectCommand::undo()
 {
-	D_FUNCINFO;
+	D_FUNCINFO << m_xml;
 	switch(m_event->id() )
 	{
 		case KTProjectEvent::Project:

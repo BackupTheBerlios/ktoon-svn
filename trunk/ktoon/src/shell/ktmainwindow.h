@@ -139,7 +139,7 @@ class KTMainWindow : public DMainWindow
 		
 	private slots:
 		void messageToStatus(const QString &);
-		void messageToOSD(const QString &, DOsd::Level level);
+		void messageToOSD(const QString &, DOsd::Level level = DOsd::Info );
 		void preferences();
 		void aboutKToon();
 		void showTipDialog();

@@ -28,6 +28,8 @@
 #include "dgui/dwidgetlistview.h"
 #include "dgui/dflatbutton.h"
 
+#include "dgui/dpagedialog.h"
+
 class QStackedWidget;
 class QTreeWidget;
 class QTableWidgetItem;
@@ -36,37 +38,17 @@ class QTableWidgetItem;
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class DConfigurationDialog : public QDialog
+class DConfigurationDialog : public DPageDialog
 {
 	Q_OBJECT
 	public:
 		DConfigurationDialog(QWidget *parent = 0);
 		~DConfigurationDialog();
-		void addSection(QWidget *info, const QString &title);
-		void addSection(const QString &title);
-		void addPageToSection(QWidget *page, const QString &title, const QString &section);
-		void addPageToSection(QWidget *page, const QString &title, const QIcon &icon, const QString &section);
-		
-		void addPage(QWidget *page, const QString &title, const QIcon &icon);
-		
-		QWidget *currentPage();
 		
 	public slots:
 		virtual void ok();
 		virtual void cancel();
 		virtual void apply();
-		
-	private slots:
-		void showPageForItem(QTableWidgetItem *);
-		void showPageForButton(QAbstractButton *);
-		
-	private:
-		DWidgetListView *m_list;
-		QStackedWidget *m_container;
-		QMap<QTableWidgetItem *, QWidget *> m_pages;
-		QMap<QString, QTableWidgetItem *> m_sections;
-		
-		QButtonGroup *m_buttonGroup;
 };
 
 #endif

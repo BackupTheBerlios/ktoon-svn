@@ -122,7 +122,6 @@ void KTLayer::fromXml(const QString &xml )
 		
 		if(!e.isNull())
 		{
-			dDebug() << "Frame??? " << e.tagName();
 			if ( e.tagName() == "frame" )
 			{
 				KTFrame *frame = createFrame( m_frames.count() );
@@ -130,7 +129,7 @@ void KTLayer::fromXml(const QString &xml )
 				if ( frame )
 				{
 					QDomDocument newDoc;
-					newDoc.appendChild( e );
+					newDoc.appendChild(newDoc.importNode(n, true ));
 					frame->fromXml( newDoc.toString(0) );
 				}
 			}
@@ -148,7 +147,6 @@ QDomElement KTLayer::toXml(QDomDocument &doc)
 	
 	Frames::ConstIterator iterator = m_frames.begin();
 	
-	
 	while ( iterator != m_frames.end() )
 	{
 		root.appendChild( (*iterator)->toXml(doc) );
@@ -157,3 +155,5 @@ QDomElement KTLayer::toXml(QDomDocument &doc)
 	
 	return root;
 }
+
+

@@ -123,12 +123,12 @@ void KTMainWindow::createNewProject(const QString &name, const QSize &size, cons
 
 void KTMainWindow::newViewDocument(const QString &title)
 {
-// 	if ( m_projectManager->isOpen())
-// 	{
-// 		messageToStatus(tr("Opening a new paint area..."));
-// 		
-// 		messageToOSD(tr("Opening a new document..."));
-// 		
+	if ( m_projectManager->isOpen())
+	{
+		messageToStatus(tr("Opening a new paint area..."));
+		
+		messageToOSD(tr("Opening a new document..."));
+		
 // 		KTScene *scene = m_projectManager->currentScene();
 // 		
 // 		m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
@@ -152,6 +152,9 @@ void KTMainWindow::newViewDocument(const QString &title)
 // 			connect(m_animationSpace, SIGNAL(contextMenu( const QPoint& )), this, SLOT(showAnimationMenu( const QPoint& )));
 // 
 			addWidget(m_animationSpace, tr("Animation"), true);
+			
+			m_pActiveTabWidget->setCurrentWidget(m_viewDoc);
+			
 // 			KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->activeWindow());
 // 			
 // 			if ( camera )
@@ -187,7 +190,7 @@ void KTMainWindow::newViewDocument(const QString &title)
 // 			m_statusBar->advance(0);
 // 			m_statusBar->setStatus(tr("Project not open."));
 // 		}
-// 	}
+	}
 }
 
 void KTMainWindow::newViewCamera(KTScene *scene)

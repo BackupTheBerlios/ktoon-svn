@@ -85,24 +85,53 @@ KTScene *KTProject::createScene(int position, const QString &xml)
 	}
 	
 	KTScene *scene = new KTScene(this);
-	
 	m_scenes.insert(position, scene);
-	
 	m_sceneCounter++;
 	
-	if ( ! xml.isEmpty() )
+	KTSceneEvent event(KTProjectEvent::Add, position);
+	
+	
+	QDomDocument document;
+	if ( document.setContent(xml) )
 	{
-		scene->fromXml(xml);
+		QDomElement root = document.documentElement();
+	
+		scene->setSceneName( root.attribute( "name", scene->sceneName()) );
+		
+		
+		event.setPartName(scene->sceneName());
+		emit commandExecuted(&event);
+		
+		QDomNode n = root.firstChild();
+	
+		while( !n.isNull() )
+		{
+			QDomElement e = n.toElement();
+		
+			if(!e.isNull())
+			{
+				if ( e.tagName() == "layer" )
+				{
+					int layerPos = scene->layers().count();
+					QDomDocument newDoc;
+					newDoc.appendChild(newDoc.importNode(n, true ));
+					
+					createLayer(position, layerPos, newDoc.toString(0) );
+				}
+			}
+		
+			n = n.nextSibling();
+		}
 	}
 	else
 	{
 		scene->setSceneName(tr("Scene %1").arg(m_sceneCounter));
+		
+		event.setPartName(scene->sceneName());
+		emit commandExecuted(&event);
 	}
 	
-	KTSceneEvent event(KTProjectEvent::Add, position);
-	event.setPartName(scene->sceneName());
 	
-	emit commandExecuted(&event);
 	
 	return scene;
 }
@@ -141,15 +170,44 @@ KTLayer *KTProject::createLayer(int scenePosition, int position, const QString &
 	{
 		KTLayer *layer = scene->createLayer(position);
 		
-		if ( !xml.isEmpty() )
-		{
-			layer->fromXml( xml );
-		}
-		
 		KTLayerEvent event(KTProjectEvent::Add, scenePosition, position );
-		event.setPartName(layer->layerName());
+		
+		
+		QDomDocument document;
+		if ( document.setContent(xml) )
+		{
+			QDomElement root = document.documentElement();
 	
-		emit commandExecuted(&event);
+			layer->setLayerName( root.attribute( "name", layer->layerName() ) );
+	
+			QDomNode n = root.firstChild();
+			
+			event.setPartName(layer->layerName());
+			emit commandExecuted(&event);
+	
+			while( !n.isNull() )
+			{
+				QDomElement e = n.toElement();
+		
+				if(!e.isNull())
+				{
+					if ( e.tagName() == "frame" )
+					{
+						int framePos = layer->frames().count();
+						QDomDocument newDoc;
+						newDoc.appendChild(newDoc.importNode(n, true ));
+						createFrame(scenePosition, position, framePos, newDoc.toString(0) );
+					}
+				}
+		
+				n = n.nextSibling();
+			}
+		}
+		else
+		{
+			event.setPartName(layer->layerName());
+			emit commandExecuted(&event);
+		}
 		
 		return layer;
 	}
@@ -204,16 +262,51 @@ KTFrame *KTProject::createFrame(int scenePosition, int layerPosition, int positi
 	{
 		KTFrame *frame = layer->createFrame(position);
 		
-		if ( !xml.isEmpty() )
-		{
-			frame->fromXml( xml );
-		}
-		
 		KTFrameEvent event(KTProjectEvent::Add, scenePosition, layerPosition, position );
-		event.setPartName(frame->frameName());
 		
 		
-		emit commandExecuted(&event);
+		QDomDocument document;
+		if ( document.setContent(xml) )
+		{
+			QDomElement root = document.documentElement();
+	
+			frame->setFrameName( root.attribute( "name", frame->frameName() ) );
+			
+			event.setPartName(frame->frameName());
+			emit commandExecuted(&event);
+			
+			QDomNode n = root.firstChild();
+	
+			while( !n.isNull() )
+			{
+				QDomElement e = n.toElement();
+		
+				if(!e.isNull())
+				{
+					dDebug() << "Item??? " << e.tagName();
+#if 0
+					if ( e.tagName() == "frame" )
+					{
+						KTFrame *frame = createFrame( m_frames.count() );
+						
+						if ( frame )
+						{
+							QDomDocument newDoc;
+							newDoc.appendChild(newDoc.importNode(n, true ));
+							frame->fromXml( newDoc.toString(0) );
+						}
+					}
+#endif
+				}
+		
+				n = n.nextSibling();
+			}
+		}
+		else
+		{
+			event.setPartName(frame->frameName());
+			emit commandExecuted(&event);
+		}
 		
 		return frame;
 	}
@@ -262,7 +355,7 @@ KTScene *KTProject::scene(int position)
 {
 	if ( position < 0 || position > m_scenes.count() )
 	{
-		D_FUNCINFO << " FATAL ERROR: index out of bound";
+		D_FUNCINFO << " FATAL ERROR: index out of bound " << position;
 		return 0;
 	}
 	

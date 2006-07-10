@@ -92,7 +92,7 @@ void KTFrame::fromXml(const QString &xml )
 				if ( frame )
 				{
 					QDomDocument newDoc;
-					newDoc.appendChild( e );
+					newDoc.appendChild(newDoc.importNode(n, true ));
 					frame->fromXml( newDoc.toString(0) );
 				}
 			}
