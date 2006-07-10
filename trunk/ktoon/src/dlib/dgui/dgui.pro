@@ -3,26 +3,11 @@
 # Subdir relative project main directory: ./src/dlib/dgui
 # Target is a library:  
 
-RESOURCES += dgui_images.qrc 
-QT += xml 
 INSTALLS += include \
             target 
 target.path = /lib/ 
 include.files += *.h 
 include.path = /include/dgui 
-KDEV_QTVER = 4 
-LIBS += -ldcore 
-INCLUDEPATH += ../dcore \
-               ../ 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-QMAKE_LIBDIR = ../../../src/dlib/dcore \
-               ../dcore 
-CONFIG += release \
-          warn_on \
-          dll 
-TEMPLATE = lib 
 HEADERS += danimwidget.h \
            dapplication.h \
            dcellview.h \
@@ -76,7 +61,8 @@ HEADERS += danimwidget.h \
            didockwidget.h \
            displitter.h \
            ditabwidget.h \
-           dimagebutton.h 
+           dimagebutton.h \
+           dstylecombobox.h 
 SOURCES += danimwidget.cpp \
            dapplication.cpp \
            dcellview.cpp \
@@ -129,7 +115,23 @@ SOURCES += danimwidget.cpp \
            dibuttonbar.cpp \
            didockwidget.cpp \
            displitter.cpp \
-           ditabwidget.cpp 
+           ditabwidget.cpp \
+           dstylecombobox.cpp 
+RESOURCES += dgui_images.qrc
+QT += xml
+KDEV_QTVER = 4
+LIBS += -ldcore
+INCLUDEPATH += ../dcore \
+../
+MOC_DIR = .moc
+UI_DIR = .ui
+OBJECTS_DIR = .obj
+QMAKE_LIBDIR = ../../../src/dlib/dcore \
+../dcore
+CONFIG += release \
+warn_on \
+dll
+TEMPLATE = lib
 linux-g++{
   TARGETDEPS += ../dcore/libdcore.so
   HEADERS += dterm.h \

@@ -48,11 +48,9 @@ class KTThemeSelector : public DVHBox
 		KTThemeSelector(QWidget *parent = 0);
 		~KTThemeSelector();
 		
-		DThemeDocument document();
-		QString lastFile();
-		
-		bool applyColors();
-		
+		DThemeDocument document() const;
+		QString lastFile() const;
+		bool applyColors() const;
 		void setPalette(const QPalette &pal) {}; 
 		
 		

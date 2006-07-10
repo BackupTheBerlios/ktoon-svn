@@ -359,9 +359,11 @@ void KTMainWindow::setupToolBar()
 	addToolBar(Qt::TopToolBarArea, toolbar);
 	
 	QAction * undo = m_undoCommands->createUndoAction( this, tr("Undo"));
+	undo->setShortcut(QKeySequence(QKeySequence::Undo));
 	toolbar->addAction(undo);
 	
-	QAction * redo =  m_undoCommands->createRedoAction ( this );
+	QAction *redo =  m_undoCommands->createRedoAction ( this );
+	redo->setShortcut(QKeySequence(QKeySequence::Redo));
 	toolbar->addAction(redo);
 	
 	undo->setIcon( QPixmap(THEME_DIR+"/icons/undo.png" ));
