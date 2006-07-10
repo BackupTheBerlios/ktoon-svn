@@ -5,10 +5,29 @@
 
 int main()
 {
-#if FFMPEG_VERSION_INT != 0x000409
-	#error ffmpeg version != 0.4.9
-#endif
-
+	av_register_all();
+	AVOutputFormat *fmt = guess_format("mpeg", NULL, NULL);
+	
+	AVFormatContext *oc = av_alloc_format_context();
+	
+	oc->oformat = fmt;
+	
+	AVCodecContext *c;
+	AVStream *st;
+	
+	st = av_new_stream(oc, 0);
+	
+	c = st->codec;
+	
+	c->time_base.den = 24;
+	c->time_base.num = 1;
+	c->gop_size = 12;
+	c->pix_fmt = PIX_FMT_YUV420P;
+	
+	
+	av_free(oc);
+	
+	
 	return 0;
 }
 
