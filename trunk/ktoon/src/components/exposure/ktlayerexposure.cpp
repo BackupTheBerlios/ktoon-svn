@@ -34,7 +34,6 @@ KTLayerExposure::KTLayerExposure(const QString &initial_text, int id, int numFra
 	connect( m_header, SIGNAL(visibilityChanged(bool)), this, SLOT(setLayerVisible(bool)));
 	
 	m_layout->addWidget(m_header);
-	
 	for(int i = 0; i < numFrame; i++)
 	{
 		KTESFrame *frame = new KTESFrame( i , this);
@@ -139,7 +138,7 @@ void KTLayerExposure::addFrame(const QString &text )
 {
 	int id = m_frames.count();
 	KTESFrame *frame = new KTESFrame( id, this);
-	m_layout->insertWidget(id, frame, 10);
+	m_layout->insertWidget(id, frame);
 	m_frames.insert(id, frame);
 	connect( frame, SIGNAL(clicked(int, int, int, int )), this, SLOT(frameSelect(int, int, int, int)));
 	connect(this, SIGNAL(frameSelected(int )), frame, SLOT(otherSelected(int)));

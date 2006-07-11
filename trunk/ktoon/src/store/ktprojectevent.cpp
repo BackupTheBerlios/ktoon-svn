@@ -24,12 +24,13 @@
 
 KTProjectEvent::KTProjectEvent(Action action) : m_action(action)
 {
-	
+	DINIT;
 }
 
 
 KTProjectEvent::~KTProjectEvent()
 {
+	DEND;
 }
 
 
@@ -52,5 +53,10 @@ int KTProjectEvent::id() const
 void KTProjectEvent::setPartName(const QString &name)
 {
 	m_partName = name;
+}
+
+bool KTProjectEvent::isValid() const
+{
+	return false;
 }
 

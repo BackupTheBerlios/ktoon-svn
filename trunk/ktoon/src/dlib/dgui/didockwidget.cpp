@@ -274,7 +274,7 @@ QWidget *DiDockInternalWidget::currentWidget() const
 void DiDockInternalWidget::addWidget(const QString &title, QWidget *widget)
 {
 	QPixmap pm = widget->windowIcon().pixmap(16,16);
-	Ideal::DiButton *button;
+	Ideal::DiButton *button = 0;
 	if (!pm.isNull())
 	{
 		button = new Ideal::DiButton(m_bar, title, pm);
@@ -306,6 +306,8 @@ void DiDockInternalWidget::addWidget(const QString &title, QWidget *widget)
 		m_widgetStack->addWidget(widget);
 		m_buttons[widget] = button;
 	}
+	
+	delete desktop;
     
 	connect(button, SIGNAL(clicked()), this, SLOT(selectWidget()));
     

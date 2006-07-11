@@ -129,7 +129,7 @@ void KTGradientSelector::init()
 	
 // 	show();
 	
-	DGradientArrow *first = new DGradientArrow(calcArrowPos(1), QColor(Qt::black));
+	DGradientArrow *first = new DGradientArrow(calcArrowPos(1), QColor(Qt::black), this);
 // 	DGradientArrow * second= new DGradientArrow(calcArrowPos(0), QColor(Qt::white));
 	m_arrows << first ;
 // 	m_arrows << second ;
@@ -266,7 +266,7 @@ void  KTGradientSelector::resizeEvent ( QResizeEvent * event )
 	m_update = true;
 	for(int i =0; i < m_arrows.count(); i++)
 	{
-		m_arrows[i]->moveVertical(calcArrowPos( m_arrows[i]->position() ));
+		m_arrows[i]->moveVertical(  calcArrowPos( (int)m_arrows[i]->position() ));
 	}
 
 	QWidget::resizeEvent (event);
@@ -343,7 +343,7 @@ void  KTGradientSelector::createGradient()
 	m_gradient = QLinearGradient(contentsRect().topLeft(), contentsRect().topRight () );
 	for(int i = 0; i < m_arrows.count(); i++)
 	{
-		m_gradient.setColorAt( valueToGradient(m_arrows[i]->position()), m_arrows[i]->color());
+		m_gradient.setColorAt( valueToGradient((int) m_arrows[i]->position()), m_arrows[i]->color());
 	}
 }
 
@@ -391,8 +391,7 @@ void KTGradientSelector::setStops(const QGradientStops &stops)
 	m_arrows.clear();
 	for(int i = 0; i < stops.count(); i++)
 	{
-		addArrow( calcArrowPos(100 - (stops[i].first *100)), stops[i].second );
-		dDebug() << "value" <<stops[i].first << "color " << stops[i].second;
+		addArrow( calcArrowPos( (int) (100 - (stops[i].first * 100)) ), stops[i].second );
 	}
 	
 	

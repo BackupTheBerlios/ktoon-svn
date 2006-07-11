@@ -46,7 +46,8 @@ KTESFrame::KTESFrame( int id, QWidget *parent )
 #if QT_VERSION >= 0x040100
 	setAutoFillBackground(true);
 #endif
-	setMinimumSize(sizeHint());
+// 	setMinimumSize(sizeHint());
+	setMinimumHeight( 20 );
 	
 }
 

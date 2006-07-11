@@ -190,6 +190,8 @@ void DConfigDocument::saveConfig(const QString &file)
 	{
 		m_isOk = false;
 	}
+	
+	delete f;
 }
 
 bool DConfigDocument::isOk()

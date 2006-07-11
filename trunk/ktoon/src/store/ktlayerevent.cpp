@@ -23,11 +23,13 @@
 
 KTLayerEvent::KTLayerEvent(Action action, int sceneIndex, int layerIndex) : KTSceneEvent(action, sceneIndex), m_layerIndex(layerIndex)
 {
+	DINIT;
 }
 
 
 KTLayerEvent::~KTLayerEvent()
 {
+	DEND;
 }
 
 int KTLayerEvent::id() const
@@ -38,5 +40,10 @@ int KTLayerEvent::id() const
 int KTLayerEvent::layerIndex() const
 {
 	return m_layerIndex;
+}
+
+bool KTLayerEvent::isValid() const
+{
+	return KTSceneEvent::isValid() && (m_layerIndex >= 0 );
 }
 

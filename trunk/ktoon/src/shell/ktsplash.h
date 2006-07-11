@@ -30,6 +30,8 @@
 #include <qpainter.h>
 #include <qsplashscreen.h>
 
+#include <QTimer>
+
 /**
  * @brief Class that handles the application's splash screen
  *
@@ -63,7 +65,10 @@ class KTSplash : public QSplashScreen
 		QString m_message, m_version;
 		int m_size;
 		int m_state;
-	
+		int m_position;
+		
+		QTimer m_timer;
+		
 	protected:
 		void drawContents ( QPainter * painter );
 };

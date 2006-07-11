@@ -88,7 +88,7 @@ class KTTableExposure : public QScrollArea
 		void addRows();
 		
 	public slots:
-		void insertLayer( const QString &text = QString::null);
+		void insertLayer(int index, const QString &text = QString::null);
 		void clickedCell(int row, int col, int button, int gx, int gy);
 		void changeCurrentLayer(int idLayer);
 		void removeLayer(int idLayer);

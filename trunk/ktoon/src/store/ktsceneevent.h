@@ -35,6 +35,8 @@ class Q_DECL_EXPORT KTSceneEvent : public KTProjectEvent
 		virtual int id() const;
 		int sceneIndex() const;
 		
+		virtual bool isValid() const;
+		
 	private:
 		int m_sceneIndex;
 };

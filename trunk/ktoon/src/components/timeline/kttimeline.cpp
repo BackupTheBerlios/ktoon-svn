@@ -24,208 +24,37 @@
 #include "dapplication.h"
 #include "ddebug.h"
 
-KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine")
+#include "ktlayerevent.h"
+#include "ktframeevent.h"
+
+#include "ktframestable.h"
+#include "ktlayermanager.h"
+
+#include "ktprojectactionbar.h"
+
+KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine"), m_actionBar(0)
 {
 	DINIT;
 
 	setCaption(tr("The time line"));
 	
-	m_container = new QStackedWidget(this);
-// 	connect(m_container, SIGNAL(currentChanged (int)), this, SIGNAL(requestChangeScene( int )));
+	m_actionBar = new KTProjectActionBar(KTProjectActionBar::AllActions );
 	
+	m_actionBar->insertSeparator( 4 );
+	m_actionBar->insertSeparator( 9 );
+	
+	addChild( m_actionBar, Qt::AlignCenter );
+	
+	m_container = new QStackedWidget(this);
 	addChild(m_container);
 	
-	setupPropertiesBar();
+	connect(m_actionBar, SIGNAL(actionSelected( int )), this, SLOT(requestCommand(int)));
+	
 }
 
-void KTTimeLine::addScene(const QString &name)
+KTLayerManager *KTTimeLine::layerManager(int sceneIndex)
 {
-	QSplitter *m_splitter = new QSplitter( m_container );
-	
-	m_splitter->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	
-	KTLayerManager *m_layerManager = new KTLayerManager( m_splitter );
-	m_splitter->addWidget(m_layerManager);
-
-	KTFrameSequenceContainer *m_sequenceManager = new KTFrameSequenceContainer(m_splitter);
-	m_splitter->addWidget(m_sequenceManager);
-	
-	connect(m_layerManager, SIGNAL(actionSelected(int)), this, SLOT(execAction(int)));
-
-	
-	// Mover scrolls simetricamente
-	connect( m_sequenceManager->manager()->verticalScrollBar(), SIGNAL( valueChanged( int ) ), m_layerManager->verticalScrollBar(), SLOT( setValue( int ) ) );
-	
-	connect( m_layerManager->verticalScrollBar(), SIGNAL( valueChanged( int ) ), m_sequenceManager->manager()->verticalScrollBar(), SLOT( setValue( int ) ) );
-	
-	/***/
-	connect(m_sequenceManager->manager(), SIGNAL( itemSelected(int )), this, SLOT(selectCurrentLayer(int)));
-	connect(m_layerManager->layerSequence(), SIGNAL( itemSelected(int )), this, SLOT(selectCurrentLayer(int)));
-	/***/
-	
-	m_splitter->setSizes( QList<int>() << 250 << 700 );
-	
-	m_container->addWidget(m_splitter);
-	m_container->setCurrentWidget(m_splitter);
-	
-	connect(m_sequenceManager->manager(), SIGNAL(requestInsertFrame(bool)), this, SIGNAL(requestInsertFrame( bool )));
-	connect(m_sequenceManager->manager(), SIGNAL(requestInsertLayer()), this, SIGNAL(requestInsertLayer( )));
-	
-	connect(m_sequenceManager, SIGNAL(frameSelected(int,int)), this, SLOT(emitFrameSelected( int,int )));
-	
-	connect(m_sequenceManager->manager(), SIGNAL(layerVisibilityChanged(int, bool)), this, SIGNAL(layerVisibilityChanged( int,bool )));
-	
-	connect(m_sequenceManager->manager(), SIGNAL(layerSelected(int)), this, SIGNAL(layerSelected( int )));
-	
-	connect(m_sequenceManager->manager(), SIGNAL(requestCopyFrame(int)), this, SIGNAL(requestCopyFrame( int )));
-	connect(m_sequenceManager->manager(), SIGNAL(requestPasteFrame(int)), this, SIGNAL(requestPasteFrame( int )));
-	
-	connect(m_sequenceManager->manager(), SIGNAL(requestMoveFrame(bool)), this, SIGNAL(requestMoveFrame( bool )));
-	
-	connect(m_sequenceManager->manager(), SIGNAL(requestRemoveFrame()), this, SIGNAL(requestRemoveFrame( )));
-	connect(m_sequenceManager->manager(), SIGNAL(requestLockFrame()), this, SIGNAL(requestLockFrame( )));
-	
-	connect(m_sequenceManager->manager(), SIGNAL(requestRemoveLayer()), this, SIGNAL(requestRemoveLayer( )));
-}
-
-void KTTimeLine::setScene(int index)
-{
-	m_container->setCurrentIndex(index);
-}
-
-void KTTimeLine::removeCurrentLayer()
-{
-	currentLayerManager()->removeLayer();
-	currentFrameContainer()->removeCurrentLayer();
-}
-
-
-void KTTimeLine::removeLayer(int index)
-{
-	D_FUNCINFO;
-	
-	SHOW_VAR(index);
-	currentLayerManager()->removeLayer(index);
-	currentFrameContainer()->removeLayer(index);
-}
-
-void KTTimeLine::moveFrame(bool up)
-{
-	FUNC_NOT_IMPLEMENTED;
-}
-
-void KTTimeLine::removeCurrentFrame()
-{
-	FUNC_NOT_IMPLEMENTED;
-}
-
-void KTTimeLine::lockCurrentFrame()
-{
-	FUNC_NOT_IMPLEMENTED;
-}
-
-void KTTimeLine::setCurrentCell(int layer, int frame)
-{
-	currentLayerManager()->selectLayer( layer );
-	currentFrameContainer()->selectCell(layer, frame);
-}
-
-void KTTimeLine::setupPropertiesBar()
-{
-	m_propertiesBar = new DVHBox(this, Qt::Horizontal);
-	m_propertiesBar->boxLayout()->setMargin(0);
-	m_propertiesBar->boxLayout()->setSpacing(5);
-	
-	m_propertiesBar->setFrameStyle( QFrame::Box | QFrame::Raised );
-	m_propertiesBar->boxLayout()->setAlignment(Qt::AlignLeft);
-	
-	m_propertiesBar->setMaximumHeight(20);
-	m_propertiesBar->setMinimumHeight(20);
-	
-	QLabel *m_fps = new QLabel(tr("<b><i>FPS: </i></b>"), m_propertiesBar);
-	DELabel *m_editFPS = new DELabel("24", m_propertiesBar);
-	
-	m_editFPS->setValidator(new QIntValidator(0,1000, m_editFPS));
-	
-	m_editFPS->setMidLineWidth(1);
-	m_editFPS->setLineWidth(1);
-	m_editFPS->setFrameStyle(QFrame::Panel | QFrame::Raised);
-	m_editFPS->setMaximumWidth(50);
-	
-	connect(m_editFPS, SIGNAL(edited(const QString &)), this, SLOT(emitNewFPS(const QString &)));
-	
-// 	setStretchFactor( m_editFPS, 1 );
-	
-	QLabel *m_time = new QLabel(tr("<b><i>Time: </i></b>"), m_propertiesBar);
-	DELabel *m_editTime = new DELabel("24", m_propertiesBar);
-	m_editTime->setMidLineWidth(1);
-	m_editTime->setLineWidth(1);
-	m_editTime->setFrameStyle(QFrame::Panel | QFrame::Raised);
-	m_editTime->setMaximumWidth(50);
-	
-	QLabel *m_layer = new QLabel(tr("<b><i>Current Layer: </i></b>"), m_propertiesBar);
-	m_editLayer = new DELabel("0", m_propertiesBar);
-// 	m_editLayer->setValidator(new QIntValidator(0,100, m_editFPS));
-	
-	m_editLayer->setMidLineWidth(1);
-	m_editLayer->setLineWidth(1);
-	m_editLayer->setFrameStyle(QFrame::Panel | QFrame::Raised);
-	m_editLayer->setMaximumWidth(50);
-	
-	QLabel *m_frame = new QLabel(tr("<b><i>Current Frame:</i></b> "), m_propertiesBar);
-	DELabel *m_editFrame = new DELabel("0", m_propertiesBar);
-	m_editFrame->setMidLineWidth(1);
-	m_editFrame->setLineWidth(1);
-	m_editFrame->setFrameStyle(QFrame::Panel | QFrame::Raised);
-	m_editFrame->setMaximumWidth(50);
-	
-// 	setStretchFactor( m_editFrame, 1 );
-	
-	new DELabel("",m_propertiesBar);
-	
-	addChild(m_propertiesBar);
-}
-
-
-KTTimeLine::~KTTimeLine()
-{
-	DEND;
-}
-
-void KTTimeLine::execAction(int action)
-{
-	D_FUNCINFO;
-	switch(action)
-	{
-		case KTLayerManager::InsertLayer:
-		{
-			emit requestInsertLayer();
-		}
-		break;
-		case KTLayerManager::RemoveLayer:
-		{
-			emit requestRemoveLayer();
-		}
-		break;
-		case KTLayerManager::MoveLayerUp:
-		{
-			qDebug("MoveLayerUp");
-			emit requestMoveLayer( true );
-		}
-		break;
-		case KTLayerManager::MoveLayerDown:
-		{
-			qDebug("MoveLayerDown");
-			emit requestMoveLayer( false);
-		}
-		break;
-		
-	}
-}
-
-KTLayerManager *KTTimeLine::currentLayerManager()
-{
-	QSplitter *splitter = qobject_cast<QSplitter *>(m_container->currentWidget());
+	QSplitter *splitter = qobject_cast<QSplitter *>(m_container->widget(sceneIndex));
 	if ( splitter )
 	{
 		return qobject_cast<KTLayerManager *>(splitter->widget(0));
@@ -234,80 +63,60 @@ KTLayerManager *KTTimeLine::currentLayerManager()
 	return 0;
 }
 
-KTFrameSequenceContainer *KTTimeLine::currentFrameContainer()
+KTFramesTable *KTTimeLine::framesTable(int sceneIndex)
 {
-	QSplitter *splitter = qobject_cast<QSplitter *>(m_container->currentWidget());
+	QSplitter *splitter = qobject_cast<QSplitter *>(m_container->widget(sceneIndex));
 	
 	if ( splitter )
 	{
-		return qobject_cast<KTFrameSequenceContainer *>(splitter->widget(1));
+		return qobject_cast<KTFramesTable *>(splitter->widget(1));
 	}
 	
 	return 0;
 }
 
-void KTTimeLine::insertLayer(const QString &name, bool toEnd)
+void KTTimeLine::insertScene(int position, const QString &name)
 {
-	currentLayerManager()->createNewLayer(name, toEnd);
-// 	currentFrameContainer()->manager()->insertFrameSequence();
-	currentFrameContainer()->addLayer();
-}
-
-void KTTimeLine::setLayer(int index)
-{
-	currentFrameContainer()->selectLayer(index);
-	currentLayerManager()->selectLayer( index );
-	
-	m_editLayer->setText(QString::number(index));
-}
-
-void KTTimeLine::moveLayer(bool up)
-{
-	D_FUNCINFO;
-	currentLayerManager()->moveCurrentLayer(up);
-	currentFrameContainer()->moveCurrentLayer(up);
-	// TODO: move in frame container
-}
-
-void KTTimeLine::selectCurrentLayer(int pos)
-{
-// 	D_FUNCINFO;
-	
-// 	dDebug() << "LAYER SELECTED: " << pos;
-	emit layerSelected( pos );
-}
-
-void KTTimeLine::emitNewFPS(const QString &value)
-{
-	bool ok = false;
-	
-	int intValue = value.toInt(&ok);
-	
-	if ( ok )
+	if ( position < 0 || position > m_container->count() )
 	{
-		dWarning() << "Changing fps to " << intValue;
-		emit requestChangeFPS( intValue);
+		return;
 	}
-	else
+	
+	QSplitter *m_splitter = new QSplitter( m_container );
+	
+	KTLayerManager *m_layerManager = new KTLayerManager( m_splitter );
+	
+	m_layerManager->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+	
+	m_splitter->insertWidget(position, m_layerManager);
+
+	KTFramesTable *m_framesTable = new KTFramesTable(m_splitter);
+	m_splitter->addWidget(m_framesTable);
+	
+	m_framesTable->setItemSize( 10, 20);
+	m_layerManager->setRowHeight( 20 );
+	
+	connect(m_layerManager->verticalScrollBar(), SIGNAL(valueChanged (int)), m_framesTable->verticalScrollBar(), SLOT(setValue(int)));
+	connect(m_framesTable->verticalScrollBar(), SIGNAL(valueChanged (int)), m_layerManager->verticalScrollBar(), SLOT(setValue(int)));
+	
+	m_container->addWidget(m_splitter);
+}
+
+void KTTimeLine::removeScene(int position)
+{
+	if ( position >= 0 && position < m_container->count() )
 	{
-		dError() << "Incorrect FPS value";
+		QWidget *w = m_container->widget(position);
+		m_container->removeWidget(w);
+		
+		delete w;
 	}
 }
 
-void KTTimeLine::insertFrame(int layerId, const QString &name, bool addToEnd )
-{
-// 	D_FUNCINFO;
-	currentFrameContainer()->addFrameToLayer( layerId );
 
-}
-
-void KTTimeLine::emitFrameSelected(int layer, int frame)
+KTTimeLine::~KTTimeLine()
 {
-// 	D_FUNCINFO;
-	currentLayerManager()->selectLayer( layer );
-	currentFrameContainer()->selectLayer( layer );
-	
-	emit frameSelected( layer, frame);
+	DEND;
 }
 
 void KTTimeLine::closeAllScenes()
@@ -315,5 +124,200 @@ void KTTimeLine::closeAllScenes()
 	while(m_container->currentWidget())
 	{
 		delete m_container->currentWidget();
+	}
+}
+
+
+void KTTimeLine::sceneEvent(KTSceneEvent *e)
+{
+	switch(e->action())
+	{
+		case KTProjectEvent::Add:
+		{
+			insertScene( e->sceneIndex(), e->partName());
+		}
+		break;
+		case KTProjectEvent::Remove:
+		{
+			removeScene(e->sceneIndex());
+		}
+		break;
+	}
+}
+
+
+void KTTimeLine::layerEvent(KTLayerEvent *e)
+{
+	switch(e->action())
+	{
+		case KTProjectEvent::Add:
+		{
+			KTLayerManager *layerManager = this->layerManager( e->sceneIndex() );
+			if ( layerManager )
+			{
+				layerManager->insertLayer( e->layerIndex(), e->partName() );
+			}
+			
+			KTFramesTable *framesTable = this->framesTable( e->sceneIndex() );
+			if ( framesTable )
+			{
+				framesTable->insertLayer(e->layerIndex(), e->partName() );
+			}
+		}
+		break;
+		case KTProjectEvent::Remove:
+		{
+			KTLayerManager *layerManager = this->layerManager( e->sceneIndex() );
+			
+			if ( layerManager )
+			{
+				layerManager->removeLayer( e->layerIndex());
+			}
+			
+			KTFramesTable *framesTable = this->framesTable( e->sceneIndex() );
+			if ( framesTable )
+			{
+				framesTable->removeLayer(e->layerIndex() );
+			}
+		}
+		break;
+	}
+}
+
+
+void KTTimeLine::frameEvent(KTFrameEvent *e)
+{
+	switch(e->action())
+	{
+		case KTProjectEvent::Add:
+		{
+			KTFramesTable *framesTable = this->framesTable( e->sceneIndex() );
+			if ( framesTable )
+			{
+				framesTable->insertFrame( e->layerIndex(), e->partName() );
+			}
+		}
+		break;
+		case KTProjectEvent::Remove:
+		{
+			KTFramesTable *framesTable = this->framesTable( e->sceneIndex() );
+			
+			if ( framesTable )
+			{
+// 				layerManager->removeLayer( e->layerIndex());
+			}
+		}
+		break;
+	}
+}
+
+void KTTimeLine::requestCommand(int action)
+{
+	int scenePos = m_container->currentIndex();
+	int layerPos = -1;
+	int framePos = -1;
+	
+	KTProjectEvent *event = 0;
+	
+	if ( scenePos >= 0 )
+	{
+		layerPos = layerManager( scenePos )->currentRow();
+		
+		if ( layerPos < 0 )
+		{
+			layerPos = 0;
+		}
+		
+		framePos = framesTable( scenePos )->currentColumn();
+		
+		if ( framePos < 0 )
+		{
+			framePos = 0;
+		}
+	}
+	
+	if ( scenePos < 0 )
+	{
+		scenePos = 0;
+	}
+	
+	switch(action)
+	{
+		case KTProjectActionBar::InsertFrame:
+		{
+			event = new KTFrameEvent(KTProjectEvent::Add, scenePos, layerPos, framePos );
+			
+			emit eventTriggered( event );
+		}
+		break;
+		case KTProjectActionBar::RemoveFrame:
+		{
+			event = new KTFrameEvent(KTProjectEvent::Remove, scenePos, layerPos, framePos );
+			
+			emit eventTriggered( event );
+		}
+		break;
+		case KTProjectActionBar::MoveFrameUp:
+		{
+		}
+		break;
+		case KTProjectActionBar::MoveFrameDown:
+		{
+		}
+		break;
+		
+		
+		case KTProjectActionBar::InsertLayer:
+		{
+			event = new KTLayerEvent(KTProjectEvent::Add, scenePos, layerPos);
+			
+			emit eventTriggered( event );
+		}
+		break;
+		case KTProjectActionBar::RemoveLayer:
+		{
+			event = new KTLayerEvent(KTProjectEvent::Remove, scenePos, layerPos);
+			
+			emit eventTriggered( event );
+		}
+		break;
+		case KTProjectActionBar::MoveLayerUp:
+		{
+		}
+		break;
+		case KTProjectActionBar::MoveLayerDown:
+		{
+		}
+		break;
+		
+		
+		case KTProjectActionBar::InsertScene:
+		{
+			event = new KTSceneEvent(KTProjectEvent::Add, scenePos);
+			
+			emit eventTriggered( event );
+		}
+		break;
+		case KTProjectActionBar::RemoveScene:
+		{
+			event = new KTSceneEvent(KTProjectEvent::Remove, scenePos);
+			
+			emit eventTriggered( event );
+		}
+		break;
+		case KTProjectActionBar::MoveSceneUp:
+		{
+		}
+		break;
+		case KTProjectActionBar::MoveSceneDown:
+		{
+		}
+		break;
+		
+	}
+	
+	if ( event )
+	{
+		delete event;
 	}
 }

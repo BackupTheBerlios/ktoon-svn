@@ -78,15 +78,16 @@ void KTViewColorCells::setupForm()
 	layout()->addWidget(m_containerPalette);
 	
 	//Default Palette
-	m_defaultPalette = new  KTCellsColor;
+	m_defaultPalette = new  KTCellsColor(m_containerPalette);
 	m_defaultPalette->setName( tr("Default Palette") );
 	m_defaultPalette->setReadOnly( true);
+	
 	fillDefaultColors();
 	addPalette(m_defaultPalette);
 	
 	
 	//Named Colors
-	m_qtColorPalette = new  KTCellsColor;
+	m_qtColorPalette = new  KTCellsColor(m_containerPalette);
 	m_qtColorPalette->setReadOnly( true );
 	m_qtColorPalette->setName( tr("Named Colors") );
 	addPalette(m_qtColorPalette);
@@ -94,12 +95,12 @@ void KTViewColorCells::setupForm()
 	fillNamedColor();
 		
 	//Custom Color Palette
-	m_customColorPalette = new  KTCellsColor;
+	m_customColorPalette = new  KTCellsColor(m_containerPalette);
 	m_customColorPalette->setName( tr("Custom Color Palette"));
 	addPalette( m_customColorPalette );
 	
 	//Custom Gradient Palette
-	m_customGradientPalette = new  KTCellsColor;
+	m_customGradientPalette = new  KTCellsColor(m_containerPalette);
 	m_customGradientPalette->setName( tr("Custom Gradient Palette"));
 	m_customGradientPalette->setType( KTCellsColor::Gradient);
 	addPalette( m_customGradientPalette );
@@ -185,7 +186,7 @@ void KTViewColorCells::addPalette(const QString & name, const QList<QBrush> & br
 	}
 	else
 	{
-		KTCellsColor *palette = new  KTCellsColor;
+		KTCellsColor *palette = new  KTCellsColor(m_containerPalette);
 		QList<QBrush>::ConstIterator it = brushes.begin();
 		
 		while(it != brushes.end())

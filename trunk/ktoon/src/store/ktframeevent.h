@@ -37,6 +37,8 @@ class Q_DECL_EXPORT KTFrameEvent : public KTLayerEvent
 		
 		int frameIndex() const;
 		
+		virtual bool isValid() const;
+		
 	private:
 		int m_frameIndex;
 };

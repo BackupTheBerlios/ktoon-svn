@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "tframestable.h"
+#include "ktframestable.h"
 
 #include <QPainter>
 #include <QPaintEvent>
@@ -30,15 +30,15 @@
 #include "ddebug.h"
 #include "kttlruler.h"
 
-//////////// TFramesTableModel
+//////////// KTFramesTableModel
 
-class TFramesTableModel : public QAbstractTableModel
+class KTFramesTableModel : public QAbstractTableModel
 {
 	public:
-		TFramesTableModel(int rows, int columns, TFramesTable *parent);
-		~TFramesTableModel();
+		KTFramesTableModel(int rows, int columns, KTFramesTable *parent);
+		~KTFramesTableModel();
 		
-		inline TFramesTableItem *createItem() const { return new TFramesTableItem(); }
+		inline KTFramesTableItem *createItem() const { return new KTFramesTableItem(); }
 		
 		
 		bool insertRows(int row, int count = 1, const QModelIndex &parent = QModelIndex());
@@ -47,18 +47,18 @@ class TFramesTableModel : public QAbstractTableModel
 		bool removeRows(int row, int count = 1, const QModelIndex &parent = QModelIndex());
 		bool removeColumns(int column, int count = 1, const QModelIndex &parent = QModelIndex());
 
-		void setItem(int row, int column, TFramesTableItem *item);
-		TFramesTableItem *takeItem(int row, int column);
-		TFramesTableItem *item(int row, int column) const;
-		TFramesTableItem *item(const QModelIndex &index) const;
-		void removeItem(TFramesTableItem *item);
+		void setItem(int row, int column, KTFramesTableItem *item);
+		KTFramesTableItem *takeItem(int row, int column);
+		KTFramesTableItem *item(int row, int column) const;
+		KTFramesTableItem *item(const QModelIndex &index) const;
+		void removeItem(KTFramesTableItem *item);
 
-		void setHorizontalHeaderItem(int section, TFramesTableItem *item);
-		void setVerticalHeaderItem(int section, TFramesTableItem *item);
-		TFramesTableItem *horizontalHeaderItem(int section);
-		TFramesTableItem *verticalHeaderItem(int section);
+		void setHorizontalHeaderItem(int section, KTFramesTableItem *item);
+		void setVerticalHeaderItem(int section, KTFramesTableItem *item);
+		KTFramesTableItem *horizontalHeaderItem(int section);
+		KTFramesTableItem *verticalHeaderItem(int section);
 
-		QModelIndex index(const TFramesTableItem *item) const;
+		QModelIndex index(const KTFramesTableItem *item) const;
 		QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 
 		void setRowCount(int rows);
@@ -77,7 +77,7 @@ class TFramesTableModel : public QAbstractTableModel
 		{ return (row * m_horizontal.count()) + column; }
 
 		void clear();
-		void itemChanged(TFramesTableItem *item);
+		void itemChanged(KTFramesTableItem *item);
 		
 		virtual QModelIndex parent ( const QModelIndex & ) const
 		{
@@ -86,23 +86,23 @@ class TFramesTableModel : public QAbstractTableModel
 		
 
 	private:
-		QVector<TFramesTableItem*> m_table;
-		QVector<TFramesTableItem*> m_vertical;
-		QVector<TFramesTableItem*> m_horizontal;
+		QVector<KTFramesTableItem*> m_table;
+		QVector<KTFramesTableItem*> m_vertical;
+		QVector<KTFramesTableItem*> m_horizontal;
 };
 
-TFramesTableModel::TFramesTableModel(int rows, int columns, TFramesTable *parent)
+KTFramesTableModel::KTFramesTableModel(int rows, int columns, KTFramesTable *parent)
 	: QAbstractTableModel(parent), m_table(rows * columns), m_vertical(rows), m_horizontal(columns)
 {
 	
 }
 
-TFramesTableModel::~TFramesTableModel()
+KTFramesTableModel::~KTFramesTableModel()
 {
 	clear();
 }
 
-bool TFramesTableModel::insertRows(int row, int count, const QModelIndex &)
+bool KTFramesTableModel::insertRows(int row, int count, const QModelIndex &)
 {
 	if (row < 0)
 		row = 0;
@@ -122,7 +122,7 @@ bool TFramesTableModel::insertRows(int row, int count, const QModelIndex &)
 	return true;
 }
 
-bool TFramesTableModel::insertColumns(int column, int count, const QModelIndex &)
+bool KTFramesTableModel::insertColumns(int column, int count, const QModelIndex &)
 {
 	if (column < 0)
 		column = 0;
@@ -142,14 +142,14 @@ bool TFramesTableModel::insertColumns(int column, int count, const QModelIndex &
 	return true;
 }
 
-bool TFramesTableModel::removeRows(int row, int count, const QModelIndex &)
+bool KTFramesTableModel::removeRows(int row, int count, const QModelIndex &)
 {
 	if (row >= 0 && row < m_vertical.count()) 
 	{
 		beginRemoveRows(QModelIndex(), row, row + count - 1);
 		int i = tableIndex(row, 0);
 		int n = count * columnCount();
-		TFramesTableItem *oldItem = 0;
+		KTFramesTableItem *oldItem = 0;
 		for (int j=i; j<n+i; ++j) 
 		{
 			oldItem = m_table.at(j);
@@ -172,12 +172,12 @@ bool TFramesTableModel::removeRows(int row, int count, const QModelIndex &)
 	return false;
 }
 
-bool TFramesTableModel::removeColumns(int column, int count, const QModelIndex &)
+bool KTFramesTableModel::removeColumns(int column, int count, const QModelIndex &)
 {
 	if (column >= 0 && column < m_horizontal.count()) 
 	{
 		beginRemoveColumns(QModelIndex(), column, column + count - 1);
-		TFramesTableItem *oldItem = 0;
+		KTFramesTableItem *oldItem = 0;
 		for (int row = rowCount() - 1; row >= 0; --row) 
 		{
 			int i = tableIndex(row, column);
@@ -204,12 +204,12 @@ bool TFramesTableModel::removeColumns(int column, int count, const QModelIndex &
 	return false;
 }
 
-void TFramesTableModel::setItem(int row, int column, TFramesTableItem *item)
+void KTFramesTableModel::setItem(int row, int column, KTFramesTableItem *item)
 {
 	int i = tableIndex(row, column);
 	if (i < 0 || i >= m_table.count())
 		return;
-	TFramesTableItem *oldItem = m_table.at(i);
+	KTFramesTableItem *oldItem = m_table.at(i);
 	if (item == oldItem)
 		return;
 
@@ -226,10 +226,10 @@ void TFramesTableModel::setItem(int row, int column, TFramesTableItem *item)
 	emit dataChanged(idx, idx);
 }
 
-TFramesTableItem *TFramesTableModel::takeItem(int row, int column)
+KTFramesTableItem *KTFramesTableModel::takeItem(int row, int column)
 {
 	long i = tableIndex(row, column);
-	TFramesTableItem *itm = m_table.value(i);
+	KTFramesTableItem *itm = m_table.value(i);
 	if (itm) {
 		itm->m_model = 0;
 		m_table[i] = 0;
@@ -237,19 +237,19 @@ TFramesTableItem *TFramesTableModel::takeItem(int row, int column)
 	return itm;
 }
 
-TFramesTableItem *TFramesTableModel::item(int row, int column) const
+KTFramesTableItem *KTFramesTableModel::item(int row, int column) const
 {
 	return m_table.value(tableIndex(row, column));
 }
 
-TFramesTableItem *TFramesTableModel::item(const QModelIndex &index) const
+KTFramesTableItem *KTFramesTableModel::item(const QModelIndex &index) const
 {
 	if (!isValid(index))
 		return 0;
 	return m_table.at(tableIndex(index.row(), index.column()));
 }
 
-void TFramesTableModel::removeItem(TFramesTableItem *item)
+void KTFramesTableModel::removeItem(KTFramesTableItem *item)
 {
 	int i = m_table.indexOf(item);
 	if (i != -1) {
@@ -274,11 +274,11 @@ void TFramesTableModel::removeItem(TFramesTableItem *item)
 	}
 }
 
-void TFramesTableModel::setHorizontalHeaderItem(int section, TFramesTableItem *item)
+void KTFramesTableModel::setHorizontalHeaderItem(int section, KTFramesTableItem *item)
 {
 	if (section < 0 || section >= m_horizontal.count())
 		return;
-	TFramesTableItem *oldItem = m_horizontal.at(section);
+	KTFramesTableItem *oldItem = m_horizontal.at(section);
 	if (item == oldItem)
 		return;
 
@@ -292,11 +292,11 @@ void TFramesTableModel::setHorizontalHeaderItem(int section, TFramesTableItem *i
 	emit headerDataChanged(Qt::Horizontal, section, section);
 }
 
-void TFramesTableModel::setVerticalHeaderItem(int section, TFramesTableItem *item)
+void KTFramesTableModel::setVerticalHeaderItem(int section, KTFramesTableItem *item)
 {
 	if (section < 0 || section >= m_vertical.count())
 		return;
-	TFramesTableItem *oldItem = m_vertical.at(section);
+	KTFramesTableItem *oldItem = m_vertical.at(section);
 	if (item == oldItem)
 		return;
 
@@ -310,35 +310,35 @@ void TFramesTableModel::setVerticalHeaderItem(int section, TFramesTableItem *ite
 	emit headerDataChanged(Qt::Vertical, section, section);
 }
 
-TFramesTableItem *TFramesTableModel::horizontalHeaderItem(int section)
+KTFramesTableItem *KTFramesTableModel::horizontalHeaderItem(int section)
 {
 	return m_horizontal.value(section);
 }
 
-TFramesTableItem *TFramesTableModel::verticalHeaderItem(int section)
+KTFramesTableItem *KTFramesTableModel::verticalHeaderItem(int section)
 {
 	return m_vertical.value(section);
 }
 
-QModelIndex TFramesTableModel::index(const TFramesTableItem *item) const
+QModelIndex KTFramesTableModel::index(const KTFramesTableItem *item) const
 {
-	int i = m_table.indexOf(const_cast<TFramesTableItem*>(item));
+	int i = m_table.indexOf(const_cast<KTFramesTableItem*>(item));
 	int row = i / columnCount();
 	int col = i % columnCount();
 	return index(row, col);
 }
 
-QModelIndex TFramesTableModel::index(int row, int column, const QModelIndex &parent) const
+QModelIndex KTFramesTableModel::index(int row, int column, const QModelIndex &parent) const
 {
 	if (hasIndex(row, column, parent))
 	{
-		TFramesTableItem *item = m_table.at(tableIndex(row, column));
+		KTFramesTableItem *item = m_table.at(tableIndex(row, column));
 		return createIndex(row, column, item);
 	}
 	return QModelIndex();
 }
 
-void TFramesTableModel::setRowCount(int rows)
+void KTFramesTableModel::setRowCount(int rows)
 {
 	int rc = m_vertical.count();
 	if (rc == rows)
@@ -349,7 +349,7 @@ void TFramesTableModel::setRowCount(int rows)
 		removeRows(qMax(rows, 0), rc - rows);
 }
 
-void TFramesTableModel::setColumnCount(int columns)
+void KTFramesTableModel::setColumnCount(int columns)
 {
 	int cc = m_horizontal.count();
 	if (cc == columns)
@@ -360,19 +360,19 @@ void TFramesTableModel::setColumnCount(int columns)
 		removeColumns(qMax(columns, 0), cc - columns);
 }
 
-int TFramesTableModel::rowCount(const QModelIndex &) const
+int KTFramesTableModel::rowCount(const QModelIndex &) const
 {
 	return m_vertical.count();
 }
 
-int TFramesTableModel::columnCount(const QModelIndex &) const
+int KTFramesTableModel::columnCount(const QModelIndex &) const
 {
 	return m_horizontal.count();
 }
 
-QVariant TFramesTableModel::data(const QModelIndex &index, int role) const
+QVariant KTFramesTableModel::data(const QModelIndex &index, int role) const
 {
-	TFramesTableItem *itm = item(index);
+	KTFramesTableItem *itm = item(index);
 	if (itm)
 	{
 		return itm->data(role);
@@ -380,9 +380,9 @@ QVariant TFramesTableModel::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-bool TFramesTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool KTFramesTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	TFramesTableItem *itm = item(index);
+	KTFramesTableItem *itm = item(index);
 
 	if (itm)
 	{
@@ -390,7 +390,7 @@ bool TFramesTableModel::setData(const QModelIndex &index, const QVariant &value,
 		return true;
 	}
 
-	TFramesTable *view = qobject_cast<TFramesTable*>(QObject::parent());
+	KTFramesTable *view = qobject_cast<KTFramesTable*>(QObject::parent());
 	if (!view)
 		return false;
 
@@ -400,9 +400,9 @@ bool TFramesTableModel::setData(const QModelIndex &index, const QVariant &value,
 	return true;
 }
 
-Qt::ItemFlags TFramesTableModel::flags(const QModelIndex &index) const
+Qt::ItemFlags KTFramesTableModel::flags(const QModelIndex &index) const
 {
-	TFramesTableItem *itm = item(index);
+	KTFramesTableItem *itm = item(index);
 	if (itm)
 		return itm->flags();
 	return Qt::ItemIsEditable
@@ -411,12 +411,12 @@ Qt::ItemFlags TFramesTableModel::flags(const QModelIndex &index) const
 			|Qt::ItemIsEnabled;
 }
 
-bool TFramesTableModel::isValid(const QModelIndex &index) const
+bool KTFramesTableModel::isValid(const QModelIndex &index) const
 {
 	return index.isValid() && index.row() < m_vertical.count() && index.column() < m_horizontal.count();
 }
 
-void TFramesTableModel::clear()
+void KTFramesTableModel::clear()
 {
 	for (int i = 0; i < m_table.count(); ++i) 
 	{
@@ -448,35 +448,35 @@ void TFramesTableModel::clear()
 	reset();
 }
 
-void TFramesTableModel::itemChanged(TFramesTableItem *item)
+void KTFramesTableModel::itemChanged(KTFramesTableItem *item)
 {
 	QModelIndex idx = index(item);
 	emit dataChanged(idx, idx);
 }
 
-////////// TFramesTableItemDelegate ///////////
+////////// KTFramesTableItemDelegate ///////////
 
-class TFramesTableItemDelegate : public QAbstractItemDelegate
+class KTFramesTableItemDelegate : public QAbstractItemDelegate
 {
 	public:
-		TFramesTableItemDelegate(QObject * parent = 0 );
-		~TFramesTableItemDelegate();
+		KTFramesTableItemDelegate(QObject * parent = 0 );
+		~KTFramesTableItemDelegate();
 		virtual void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
 		virtual QSize sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const;
 };
 
-TFramesTableItemDelegate::TFramesTableItemDelegate(QObject * parent) :  QAbstractItemDelegate(parent)
+KTFramesTableItemDelegate::KTFramesTableItemDelegate(QObject * parent) :  QAbstractItemDelegate(parent)
 {
 }
 
-TFramesTableItemDelegate::~TFramesTableItemDelegate()
+KTFramesTableItemDelegate::~KTFramesTableItemDelegate()
 {
 }
 
-void TFramesTableItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+void KTFramesTableItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
 	Q_ASSERT(index.isValid());
-	const TFramesTableModel *model = reinterpret_cast<const TFramesTableModel*>( index.model() );
+	const KTFramesTableModel *model = reinterpret_cast<const KTFramesTableModel*>( index.model() );
 	Q_ASSERT(model);
 	
 	QVariant value;
@@ -519,7 +519,7 @@ void TFramesTableItemDelegate::paint ( QPainter * painter, const QStyleOptionVie
 	
 	// Draw attributes
 	
-	TFramesTableItem *item = model->item(index);
+	KTFramesTableItem *item = model->item(index);
 	
 	int offset = option.rect.width() - 2 ;
 	
@@ -542,7 +542,7 @@ void TFramesTableItemDelegate::paint ( QPainter * painter, const QStyleOptionVie
 // 	painter->fillRect( option.rect.left(), option.rect.bottom() - offset, offset, offset, Qt::black );
 }
 
-QSize TFramesTableItemDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
+QSize KTFramesTableItemDelegate::sizeHint ( const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
 	Q_ASSERT(index.isValid());
 	const QAbstractItemModel *model = index.model();
@@ -562,8 +562,8 @@ QSize TFramesTableItemDelegate::sizeHint ( const QStyleOptionViewItem & option, 
 }
 
 
-////////// TFramesTableItem ////////
-TFramesTableItem::TFramesTableItem()
+////////// KTFramesTableItem ////////
+KTFramesTableItem::KTFramesTableItem()
 	:  m_view(0), m_model(0), m_itemFlags(Qt::ItemIsEditable
 		|Qt::ItemIsSelectable
 		|Qt::ItemIsUserCheckable
@@ -573,7 +573,7 @@ TFramesTableItem::TFramesTableItem()
 {
 }
 
-TFramesTableItem::~TFramesTableItem()
+KTFramesTableItem::~KTFramesTableItem()
 {
 	if (m_model)
 	{
@@ -582,15 +582,15 @@ TFramesTableItem::~TFramesTableItem()
 }
 
 
-TFramesTableItem *TFramesTableItem::clone() const
+KTFramesTableItem *KTFramesTableItem::clone() const
 {
-	TFramesTableItem *item = new TFramesTableItem();
+	KTFramesTableItem *item = new KTFramesTableItem();
 	*item = *this;
 	return item;
 }
 
 
-void TFramesTableItem::setData(int r, const QVariant &value)
+void KTFramesTableItem::setData(int r, const QVariant &value)
 {
 	switch(r)
 	{
@@ -607,26 +607,26 @@ void TFramesTableItem::setData(int r, const QVariant &value)
 	}
 }
 
-QVariant TFramesTableItem::data(int role) const
+QVariant KTFramesTableItem::data(int role) const
 {
 	return QVariant();
 }
 
-bool TFramesTableItem::isUsed()
+bool KTFramesTableItem::isUsed()
 {
 	return m_attributes[IsUsed];
 }
 
-bool TFramesTableItem::isLocked()
+bool KTFramesTableItem::isLocked()
 {
 	return m_attributes[IsLocked];
 }
 
-//// TFramesTable
+//// KTFramesTable
 
-TFramesTable::TFramesTable(QWidget *parent) : QTableView(parent)
+KTFramesTable::KTFramesTable(QWidget *parent) : QTableView(parent)
 {
-	m_model = new TFramesTableModel(0,100,this);
+	m_model = new KTFramesTableModel(0,100,this);
 	
 	m_ruler = new KTTLRuler;
 	
@@ -635,13 +635,13 @@ TFramesTable::TFramesTable(QWidget *parent) : QTableView(parent)
 	setup();
 }
 
-TFramesTable::~TFramesTable()
+KTFramesTable::~KTFramesTable()
 {
 }
 
-void TFramesTable::setup()
+void KTFramesTable::setup()
 {
-	setItemDelegate( new TFramesTableItemDelegate(this));
+	setItemDelegate( new KTFramesTableItemDelegate(this));
 	setSelectionModel(new QItemSelectionModel(m_model));
 	
 	connect(this, SIGNAL(pressed(QModelIndex)), this, SLOT(emitItemPressed(QModelIndex)));
@@ -678,57 +678,50 @@ void TFramesTable::setup()
 #endif
 }
 
-void TFramesTable::setItemSize(int w, int h)
+void KTFramesTable::setItemSize(int w, int h)
 {
 	m_rectHeight = h;
 	m_rectWidth = w;
 	
-	for(int column = 0; column < columnCount(); column++)
-	{
-		horizontalHeader()->resizeSection(column, m_rectWidth);
-	}
-	for( int row = 0; row < rowCount(); row++)
-	{
-		verticalHeader()->resizeSection(row, m_rectHeight);
-	}
+	fixSize();
 }
 
-void TFramesTable::emitItemPressed(const QModelIndex &index)
+void KTFramesTable::emitItemPressed(const QModelIndex &index)
 {
 	emit itemPressed( m_model->item(index) );
 }
 
-void TFramesTable::emitItemClicked(const QModelIndex &index)
+void KTFramesTable::emitItemClicked(const QModelIndex &index)
 {
 	emit itemClicked(m_model->item(index));
 }
 
-void TFramesTable::emitItemDoubleClicked(const QModelIndex &index)
+void KTFramesTable::emitItemDoubleClicked(const QModelIndex &index)
 {
 	emit itemDoubleClicked(m_model->item(index));
 }
 
-void TFramesTable::emitItemActivated(const QModelIndex &index)
+void KTFramesTable::emitItemActivated(const QModelIndex &index)
 {
 	emit itemActivated(m_model->item(index));
 }
 
-void TFramesTable::emitItemEntered(const QModelIndex &index)
+void KTFramesTable::emitItemEntered(const QModelIndex &index)
 {
 	emit itemEntered(m_model->item(index));
 }
 
-void TFramesTable::emitItemChanged(const QModelIndex &index)
+void KTFramesTable::emitItemChanged(const QModelIndex &index)
 {
 	emit itemChanged(m_model->item(index));
 }
 
-void TFramesTable::emitCurrentItemChanged(const QModelIndex &previous, const QModelIndex &current)
+void KTFramesTable::emitCurrentItemChanged(const QModelIndex &previous, const QModelIndex &current)
 {
 	emit currentItemChanged(m_model->item(current), m_model->item(previous));
 }
 
-void TFramesTable::keyPressEvent ( QKeyEvent * event )
+void KTFramesTable::keyPressEvent ( QKeyEvent * event )
 {
 	QTableView::keyPressEvent(event);
 	
@@ -738,101 +731,101 @@ void TFramesTable::keyPressEvent ( QKeyEvent * event )
 	}
 }
 
-void TFramesTable::setRowCount(int rows)
+void KTFramesTable::setRowCount(int rows)
 {
 	m_model->setRowCount(rows);
 }
 
 
-int TFramesTable::rowCount() const
+int KTFramesTable::rowCount() const
 {
 	return m_model->rowCount();
 }
 
 
-void TFramesTable::setColumnCount(int columns)
+void KTFramesTable::setColumnCount(int columns)
 {
 	m_model->setColumnCount(columns);
 }
 
 
-int TFramesTable::columnCount() const
+int KTFramesTable::columnCount() const
 {
 	return m_model->columnCount();
 }
 
-int TFramesTable::row(const TFramesTableItem *item) const
+int KTFramesTable::row(const KTFramesTableItem *item) const
 {
 	Q_ASSERT(item);
 	return m_model->index(item).row();
 }
 
-int TFramesTable::column(const TFramesTableItem *item) const
+int KTFramesTable::column(const KTFramesTableItem *item) const
 {
 	Q_ASSERT(item);
 	return m_model->index(item).column();
 }
 
-TFramesTableItem *TFramesTable::item(int row, int column) const
+KTFramesTableItem *KTFramesTable::item(int row, int column) const
 {
 	return m_model->item(row, column);
 }
 
-void TFramesTable::setItem(int row, int column, TFramesTableItem *item)
+void KTFramesTable::setItem(int row, int column, KTFramesTableItem *item)
 {
 	Q_ASSERT(item);
 	item->m_view = this;
 	m_model->setItem(row, column, item);
 }
 
-TFramesTableItem *TFramesTable::takeItem(int row, int column)
+KTFramesTableItem *KTFramesTable::takeItem(int row, int column)
 {
-	TFramesTableItem *item = m_model->takeItem(row, column);
+	KTFramesTableItem *item = m_model->takeItem(row, column);
 	item->m_view = 0;
 	return item;
 }
 
-int TFramesTable::currentRow() const
+int KTFramesTable::currentRow() const
 {
 	return currentIndex().row();
 }
 
-int TFramesTable::currentColumn() const
+int KTFramesTable::currentColumn() const
 {
 	return currentIndex().column();
 }
 
 
-TFramesTableItem *TFramesTable::currentItem() const
+KTFramesTableItem *KTFramesTable::currentItem() const
 {
 	return m_model->item(currentIndex());
 }
 
-void TFramesTable::setCurrentItem(TFramesTableItem *item)
+void KTFramesTable::setCurrentItem(KTFramesTableItem *item)
 {
 	setCurrentIndex(m_model->index(item));
 }
 
-bool TFramesTable::isItemSelected(const TFramesTableItem *item) const
+bool KTFramesTable::isItemSelected(const KTFramesTableItem *item) const
 {
 	QModelIndex index = m_model->index(item);
 	return selectionModel()->isSelected(index) && !isIndexHidden(index);
 }
 
 
-void TFramesTable::setItemSelected(const TFramesTableItem *item, bool select)
+void KTFramesTable::setItemSelected(const KTFramesTableItem *item, bool select)
 {
 	QModelIndex index = m_model->index(item);
 	selectionModel()->select(index, select ? QItemSelectionModel::Select : QItemSelectionModel::Deselect);
 }
 
-QList<TFramesTableItem*> TFramesTable::selectedItems()
+QList<KTFramesTableItem*> KTFramesTable::selectedItems()
 {
 	QModelIndexList indexes = selectedIndexes();
-	QList<TFramesTableItem*> items;
+	QList<KTFramesTableItem*> items;
 	for (int i = 0; i < indexes.count(); ++i) {
 		QModelIndex index = indexes.at(i);
-		TFramesTableItem *item = m_model->item(index);
+		KTFramesTableItem *item = m_model->item(index);
 		if (item)
 			items.append(item);
 	}
@@ -840,7 +833,7 @@ QList<TFramesTableItem*> TFramesTable::selectedItems()
 }
 
 
-QList<TFramesTableItem*> TFramesTable::findItems(const QString &text, Qt::MatchFlags flags) const
+QList<KTFramesTableItem*> KTFramesTable::findItems(const QString &text, Qt::MatchFlags flags) const
 {
 	QModelIndexList indexes;
 	for (int column = 0; column < columnCount(); ++column)
@@ -848,83 +841,83 @@ QList<TFramesTableItem*> TFramesTable::findItems(const QString &text, Qt::MatchF
 		indexes += m_model->match(model()->index(0, column, QModelIndex()),
 					  Qt::DisplayRole, text, -1, flags);
 	}
-	QList<TFramesTableItem*> items;
+	QList<KTFramesTableItem*> items;
 	for (int i = 0; i < indexes.size(); ++i)
 		items.append(m_model->item(indexes.at(i)));
 	return items;
 }
 
-TFramesTableItem *TFramesTable::itemAt(const QPoint &p) const
+KTFramesTableItem *KTFramesTable::itemAt(const QPoint &p) const
 {
 	return m_model->item(indexAt(p));
 }
 
 
-QRect TFramesTable::visualItemRect(const TFramesTableItem *item) const
+QRect KTFramesTable::visualItemRect(const KTFramesTableItem *item) const
 {
 // 	D_FUNCINFO;
 	Q_ASSERT(item);
-	QModelIndex index = m_model->index(const_cast<TFramesTableItem*>(item));
+	QModelIndex index = m_model->index(const_cast<KTFramesTableItem*>(item));
 	Q_ASSERT(index.isValid());
 	return visualRect(index);
 }
 
-int TFramesTable::verticalOffset () const
+int KTFramesTable::verticalOffset () const
 {
 	return m_rectHeight;
 }
 
-int TFramesTable::horizontalOffset () const
+int KTFramesTable::horizontalOffset () const
 {
 	return m_rectWidth;
 }
 
-void TFramesTable::scrollToItem(const TFramesTableItem *item, ScrollHint hint)
+void KTFramesTable::scrollToItem(const KTFramesTableItem *item, ScrollHint hint)
 {
 	Q_ASSERT(item);
-	QModelIndex index = m_model->index(const_cast<TFramesTableItem*>(item));
+	QModelIndex index = m_model->index(const_cast<KTFramesTableItem*>(item));
 	Q_ASSERT(index.isValid());
 	scrollTo(index, hint);
 }
 
-void TFramesTable::insertRow(int row)
+void KTFramesTable::insertRow(int row)
 {
 	m_model->insertRows(row);
 	
-	verticalHeader()->resizeSection(row-1, m_rectHeight);
+	fixSize();
 }
 
-void TFramesTable::insertColumn(int column)
+void KTFramesTable::insertColumn(int column)
 {
 	m_model->insertColumns(column);
 	horizontalHeader()->resizeSection(column, m_rectWidth);
 }
 
 
-void TFramesTable::removeRow(int row)
+void KTFramesTable::removeRow(int row)
 {
 	m_model->removeRows(row);
 }
 
 
-void TFramesTable::removeColumn(int column)
+void KTFramesTable::removeColumn(int column)
 {
 	m_model->removeColumns(column);
 }
 
-void TFramesTable::clear()
+void KTFramesTable::clear()
 {
 	selectionModel()->clear();
 	m_model->clear();
 }
 
-QModelIndex TFramesTable::indexFromItem(TFramesTableItem *item) const
+QModelIndex KTFramesTable::indexFromItem(KTFramesTableItem *item) const
 {
 	Q_ASSERT(item);
 	return m_model->index(item);
 }
 
-void TFramesTable::selectCell(int row, int column)
+void KTFramesTable::selectCell(int row, int column)
 {
 	if (row >= 0 && row < model()->rowCount(rootIndex()) && column >= 0 && column < model()->columnCount(rootIndex()))
 	{
@@ -939,7 +932,7 @@ void TFramesTable::selectCell(int row, int column)
 	}
 }
 
-void TFramesTable::selectColumn(int logicalIndex)
+void KTFramesTable::selectColumn(int logicalIndex)
 {
 	int cRow = verticalHeader()->logicalIndex(currentRow());
 	
@@ -950,7 +943,7 @@ void TFramesTable::selectColumn(int logicalIndex)
 	emit itemClicked( m_model->item(index) );
 }
 
-QStyleOptionViewItem TFramesTable::viewOptions() const
+QStyleOptionViewItem KTFramesTable::viewOptions() const
 {
 	QStyleOptionViewItem option = QAbstractItemView::viewOptions();
 	option.showDecorationSelected = true;
@@ -961,40 +954,41 @@ QStyleOptionViewItem TFramesTable::viewOptions() const
 }
 
 
-void TFramesTable::addLayer()
+void KTFramesTable::insertLayer(int pos, const QString &name)
 {
-	int pos = rowCount();
 	insertRow( pos + 1);
 	
 	LayerItem layer;
 	
-	m_layers << layer;
+	m_layers.insert(pos, layer);
 	
 	selectCell( pos, 0);
 }
 
-void TFramesTable::removeCurrentLayer()
+void KTFramesTable::removeCurrentLayer()
 {
 	int pos = currentRow();
 	removeRow( pos );
 	m_layers.removeAt(pos);
 }
 
-void TFramesTable::removeLayer(int pos)
+void KTFramesTable::removeLayer(int pos)
 {
 	removeRow(pos);
 	m_layers.removeAt(pos);
 }
 
-int TFramesTable::lastFrameByLayer(int layerPos)
+int KTFramesTable::lastFrameByLayer(int layerPos)
 {
 	return m_layers[layerPos].lastItem;
 }
 
 // FRAMES
 
-void TFramesTable::addFrame(int layerPos)
+void KTFramesTable::insertFrame(int layerPos, const QString &name)
 {
+	if ( layerPos < 0 || layerPos >= m_layers.count() ) return;
+	
 	m_layers[layerPos].lastItem++;
 	
 	if ( m_layers[layerPos].lastItem >= columnCount() )
@@ -1002,26 +996,38 @@ void TFramesTable::addFrame(int layerPos)
 		insertColumn( m_layers[layerPos].lastItem );
 	}
 	
-	setAttribute( layerPos, m_layers[layerPos].lastItem, TFramesTableItem::IsUsed, true);
+	setAttribute( layerPos, m_layers[layerPos].lastItem, KTFramesTableItem::IsUsed, true);
 }
 
-void TFramesTable::setCurrentFrame(TFramesTableItem *item)
+void KTFramesTable::setCurrentFrame(KTFramesTableItem *item)
 {
 	setCurrentItem(item);
 }
 
-void TFramesTable::setCurrentLayer(int layerPos)
+void KTFramesTable::setCurrentLayer(int layerPos)
 {
 	setCurrentItem(item(verticalHeader()->logicalIndex(layerPos), 0));
 }
 
-void TFramesTable::selectFrame(int index)
+void KTFramesTable::selectFrame(int index)
 {
 	setCurrentItem( item( currentRow(), index ) );
 }
 
-void TFramesTable::setAttribute(int row, int col, TFramesTableItem::Attributes att, bool value)
+void KTFramesTable::setAttribute(int row, int col, KTFramesTableItem::Attributes att, bool value)
 {
 	m_model->setData( m_model->index(row, col), value, att);
+}
+
+void KTFramesTable::fixSize()
+{
+	for(int column = 0; column < columnCount(); column++)
+	{
+		horizontalHeader()->resizeSection(column, m_rectWidth);
+	}
+	for( int row = 0; row < rowCount(); row++)
+	{
+		verticalHeader()->resizeSection(row, m_rectHeight);
+	}
 }
 

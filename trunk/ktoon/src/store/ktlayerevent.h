@@ -35,6 +35,8 @@ class Q_DECL_EXPORT KTLayerEvent : public KTSceneEvent
 		
 		int layerIndex() const;
 		
+		virtual bool isValid() const;
+		
 	private:
 		int m_layerIndex;
 };

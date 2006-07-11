@@ -24,15 +24,15 @@
 #include <QTableView>
 #include <QHash>
 
-class TFramesTable;
-class TFramesTableItem;
-class TFramesTableItemDelegate;
-class TFramesTableModel;
+class KTFramesTable;
+class KTFramesTableItem;
+class KTFramesTableItemDelegate;
+class KTFramesTableModel;
 
-class TFramesTableItem
+class KTFramesTableItem
 {
-	friend class TFramesTableModel;
-	friend class TFramesTable;
+	friend class KTFramesTableModel;
+	friend class KTFramesTable;
 	
 	public:
 		enum Attributes
@@ -41,12 +41,12 @@ class TFramesTableItem
 			IsLocked
 		};
 		
-		TFramesTableItem();
-		virtual ~TFramesTableItem();
+		KTFramesTableItem();
+		virtual ~KTFramesTableItem();
 
-		virtual TFramesTableItem *clone() const;
+		virtual KTFramesTableItem *clone() const;
 
-		inline TFramesTable *tableWidget() const { return m_view; }
+		inline KTFramesTable *tableWidget() const { return m_view; }
 
 		inline Qt::ItemFlags flags() const { return m_itemFlags; }
 		inline void setFlags(Qt::ItemFlags flags);
@@ -61,8 +61,8 @@ class TFramesTableItem
 	private:
 		QHash<Attributes, bool> m_attributes;
 		
-		TFramesTable *m_view;
-		TFramesTableModel *m_model;
+		KTFramesTable *m_view;
+		KTFramesTableModel *m_model;
 		Qt::ItemFlags m_itemFlags;
 		
 		bool m_isUsed, m_isLocked;
@@ -74,12 +74,12 @@ class KTTLRuler;
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class TFramesTable : public QTableView
+class KTFramesTable : public QTableView
 {
 	Q_OBJECT
 	public:
-		TFramesTable(QWidget *parent = 0);
-		~TFramesTable();
+		KTFramesTable(QWidget *parent = 0);
+		~KTFramesTable();
 		
 		struct LayerItem
 		{
@@ -89,20 +89,20 @@ class TFramesTable : public QTableView
 		
 	public slots:
 		// Layers
-		void addLayer();
+		void insertLayer(int layerPos, const QString &name);
 		void removeCurrentLayer();
 		void removeLayer(int pos);
 		
 		int lastFrameByLayer(int layerPos);
 		
 		// Frames
-		void addFrame(int layerPos);
+		void insertFrame(int layerPos, const QString &name);
 		
-		void setCurrentFrame(TFramesTableItem *);
+		void setCurrentFrame(KTFramesTableItem *);
 		void setCurrentLayer(int layerPos);
 		void selectFrame(int index);
 		
-		void setAttribute(int row, int col, TFramesTableItem::Attributes att, bool value);
+		void setAttribute(int row, int col, KTFramesTableItem::Attributes att, bool value);
 		
 	private:
 		void setup();
@@ -114,28 +114,28 @@ class TFramesTable : public QTableView
 		void setColumnCount(int columns);
 		int columnCount() const;
 
-		int row(const TFramesTableItem *item) const;
-		int column(const TFramesTableItem *item) const;
+		int row(const KTFramesTableItem *item) const;
+		int column(const KTFramesTableItem *item) const;
 
-		TFramesTableItem *item(int row, int column) const;
+		KTFramesTableItem *item(int row, int column) const;
 		
-		void setItem(int row, int column, TFramesTableItem *item);
-		TFramesTableItem *takeItem(int row, int column);
+		void setItem(int row, int column, KTFramesTableItem *item);
+		KTFramesTableItem *takeItem(int row, int column);
 		
 		int currentRow() const;
 		int currentColumn() const;
-		TFramesTableItem *currentItem() const;
-		void setCurrentItem(TFramesTableItem *item);
+		KTFramesTableItem *currentItem() const;
+		void setCurrentItem(KTFramesTableItem *item);
 
-		bool isItemSelected(const TFramesTableItem *item) const;
-		void setItemSelected(const TFramesTableItem *item, bool select);
+		bool isItemSelected(const KTFramesTableItem *item) const;
+		void setItemSelected(const KTFramesTableItem *item, bool select);
 
-		QList<TFramesTableItem*> selectedItems();
-		QList<TFramesTableItem*> findItems(const QString &text, Qt::MatchFlags flags) const;
+		QList<KTFramesTableItem*> selectedItems();
+		QList<KTFramesTableItem*> findItems(const QString &text, Qt::MatchFlags flags) const;
 		
-		TFramesTableItem *itemAt(const QPoint &p) const;
-		inline TFramesTableItem *itemAt(int x, int y) const { return itemAt(QPoint(x, y)); };
-		QRect visualItemRect(const TFramesTableItem *item) const;
+		KTFramesTableItem *itemAt(const QPoint &p) const;
+		inline KTFramesTableItem *itemAt(int x, int y) const { return itemAt(QPoint(x, y)); };
+		QRect visualItemRect(const KTFramesTableItem *item) const;
 
 		virtual int verticalOffset () const;
 		virtual int horizontalOffset () const;
@@ -152,7 +152,7 @@ class TFramesTable : public QTableView
 		void emitCurrentItemChanged(const QModelIndex &previous, const QModelIndex &current);
 
 	public slots:
-		void scrollToItem(const TFramesTableItem *item, QAbstractItemView::ScrollHint hint = EnsureVisible);
+		void scrollToItem(const KTFramesTableItem *item, QAbstractItemView::ScrollHint hint = EnsureVisible);
 		void insertRow(int row);
 		void insertColumn(int column);
 		void removeRow(int row);
@@ -163,27 +163,29 @@ class TFramesTable : public QTableView
 		void selectColumn(int logicalIndex);
 		
 	signals:
-		void itemPressed(TFramesTableItem *item);
-		void itemClicked(TFramesTableItem *item);
-		void itemDoubleClicked(TFramesTableItem *item);
+		void itemPressed(KTFramesTableItem *item);
+		void itemClicked(KTFramesTableItem *item);
+		void itemDoubleClicked(KTFramesTableItem *item);
 
-		void itemActivated(TFramesTableItem *item);
-		void itemEntered(TFramesTableItem *item);
-		void itemChanged(TFramesTableItem *item);
+		void itemActivated(KTFramesTableItem *item);
+		void itemEntered(KTFramesTableItem *item);
+		void itemChanged(KTFramesTableItem *item);
 
-		void currentItemChanged(TFramesTableItem *current, TFramesTableItem *previous);
+		void currentItemChanged(KTFramesTableItem *current, KTFramesTableItem *previous);
 		void itemSelectionChanged();
 
 	protected:
-		QModelIndex indexFromItem(TFramesTableItem *item) const;
-		TFramesTableItem *itemFromIndex(const QModelIndex &index) const;
+		QModelIndex indexFromItem(KTFramesTableItem *item) const;
+		KTFramesTableItem *itemFromIndex(const QModelIndex &index) const;
 		
 		virtual QStyleOptionViewItem viewOptions() const;
 		
 		void keyPressEvent ( QKeyEvent * event );
 		
+		void fixSize();
+		
 	private:
-		TFramesTableModel *m_model;
+		KTFramesTableModel *m_model;
 		int m_rectWidth, m_rectHeight;
 		
 		QList<LayerItem> m_layers;

@@ -23,11 +23,13 @@
 
 KTSceneEvent::KTSceneEvent(Action action, int sceneIndex) : KTProjectEvent(action), m_sceneIndex(sceneIndex)
 {
+	DINIT;
 }
 
 
 KTSceneEvent::~KTSceneEvent()
 {
+	DEND;
 }
 
 int KTSceneEvent::id() const
@@ -41,5 +43,11 @@ int KTSceneEvent::sceneIndex() const
 	return m_sceneIndex;
 }
 
-
+bool KTSceneEvent::isValid() const
+{
+	if ( m_sceneIndex < 0 )
+		return false;
+	
+	return true;
+}
 

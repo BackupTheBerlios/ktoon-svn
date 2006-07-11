@@ -170,9 +170,9 @@ KTLayer *KTProject::createLayer(int scenePosition, int position, const QString &
 	{
 		KTLayer *layer = scene->createLayer(position);
 		
+		if ( ! layer ) return 0;
+		
 		KTLayerEvent event(KTProjectEvent::Add, scenePosition, position );
-		
-		
 		QDomDocument document;
 		if ( document.setContent(xml) )
 		{
@@ -261,6 +261,8 @@ KTFrame *KTProject::createFrame(int scenePosition, int layerPosition, int positi
 	if ( layer )
 	{
 		KTFrame *frame = layer->createFrame(position);
+		
+		if ( ! frame ) return 0;
 		
 		KTFrameEvent event(KTProjectEvent::Add, scenePosition, layerPosition, position );
 		
@@ -353,7 +355,7 @@ QString KTProject::removeFrame(int scenePos, int layerPos, int position)
 
 KTScene *KTProject::scene(int position)
 {
-	if ( position < 0 || position > m_scenes.count() )
+	if ( position < 0 || position >= m_scenes.count() )
 	{
 		D_FUNCINFO << " FATAL ERROR: index out of bound " << position;
 		return 0;

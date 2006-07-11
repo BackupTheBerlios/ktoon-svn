@@ -29,6 +29,8 @@
 #include <QHBoxLayout>
 #include <QList>
 
+#include "ktsceneevent.h"
+#include "ktlayerevent.h"
 
 KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, "Exposure Sheet"), m_currentTable(0)
 {
@@ -81,32 +83,32 @@ void KTExposureSheet::setupButtons()
 }
 
 
-void KTExposureSheet::addScene(const QString &name)
+void KTExposureSheet::addScene(int index, const QString &name)
 {
 	D_FUNCINFO;
-	KTTableExposure *newLayer = new KTTableExposure(100, 0);
+	KTTableExposure *newScene = new KTTableExposure(100, 0);
 	
-	m_tables << newLayer;
+	m_tables << newScene;
 	
-	m_scenes->addTab(newLayer, name);
-	connect(newLayer, SIGNAL(layerVisibilityChanged( int, bool)), this, SIGNAL(layerVisibilityChanged( int, bool)));
+	m_scenes->insertTab (index, newScene, name);
+	connect(newScene, SIGNAL(layerVisibilityChanged( int, bool)), this, SIGNAL(layerVisibilityChanged( int, bool)));
 	
-	connect(newLayer, SIGNAL(cellSelected( int, int )), this, SIGNAL(frameSelected(int, int)));
-	connect(newLayer, SIGNAL(layerSelected(int)), this, SIGNAL(layerSelected(int)));
+	connect(newScene, SIGNAL(cellSelected( int, int )), this, SIGNAL(frameSelected(int, int)));
+	connect(newScene, SIGNAL(layerSelected(int)), this, SIGNAL(layerSelected(int)));
 	
-	connect(newLayer, SIGNAL(requestInsertFrame(bool)), this, SIGNAL(requestInsertFrame(bool)));
+	connect(newScene, SIGNAL(requestInsertFrame(bool)), this, SIGNAL(requestInsertFrame(bool)));
 	
-	connect(newLayer, SIGNAL(requestCopyFrame(int)), this,   SIGNAL(requestCopyFrame(int)));
+	connect(newScene, SIGNAL(requestCopyFrame(int)), this,   SIGNAL(requestCopyFrame(int)));
 	
-	connect(newLayer, SIGNAL(requestPasteFrame(int)), this,   SIGNAL(requestPasteFrame(int)));
+	connect(newScene, SIGNAL(requestPasteFrame(int)), this,   SIGNAL(requestPasteFrame(int)));
 	
-	connect(newLayer, SIGNAL(requestCloneFrame(int, int)), this, SIGNAL(requestCloneFrame(int, int)));
+	connect(newScene, SIGNAL(requestCloneFrame(int, int)), this, SIGNAL(requestCloneFrame(int, int)));
 	
-	connect(newLayer, SIGNAL(requestRenameLayer(int, const QString&)), this, SIGNAL(requestRenameLayer(int, const QString&)));
+	connect(newScene, SIGNAL(requestRenameLayer(int, const QString&)), this, SIGNAL(requestRenameLayer(int, const QString&)));
 	
-	connect(newLayer, SIGNAL(requestRenameFrame(int, int, const QString&)), this, SIGNAL(requestRenameFrame(int, int, const QString&)));
+	connect(newScene, SIGNAL(requestRenameFrame(int, int, const QString&)), this, SIGNAL(requestRenameFrame(int, int, const QString&)));
 	
-	m_currentTable = newLayer;
+	m_currentTable = newScene;
 	m_scenes->setCurrentWidget(m_currentTable);
 }
 
@@ -132,8 +134,11 @@ void KTExposureSheet::applyAction(int action)
 	{
 		case InsertLayer:
 		{
-			emit requestInsertLayer();
-			emit layerSelected(m_currentTable->currentLayer());
+			KTLayerEvent *event = new KTLayerEvent(KTProjectEvent::Add, m_scenes->currentIndex() ,m_currentTable->currentLayer());
+			emit eventTriggered( event );
+			
+// 			emit requestInsertLayer();
+// 			emit layerSelected(m_currentTable->currentLayer());
 // 			m_currentTable->insertFrames();
 			break;
 		}
@@ -152,7 +157,9 @@ void KTExposureSheet::applyAction(int action)
 				DCONFIG->setValue("RemoveWithoutAskLayer", dialog.shownAgain());
 				DCONFIG->sync();
 			}
-			emit requestRemoveLayer(m_currentTable->currentLayer());
+			KTLayerEvent *event = new KTLayerEvent(KTProjectEvent::Remove, m_scenes->indexOf(m_currentTable), m_currentTable->currentLayer());
+			emit eventTriggered( event );
+// 			emit requestRemoveLayer(m_currentTable->currentLayer());
 			break;
 		}
 		case InsertFrames:
@@ -217,20 +224,20 @@ void KTExposureSheet::setCurrentCell( int idLayer, int idFrame)
 }
 
 
-void KTExposureSheet::insertLayer(const QString& name)
-{
-// 	D_FUNCINFO;
-// 	dDebug() << "KTExposureSheet::insertLayer(const QString& " << name  << ")";
-	if ( m_currentTable )
-	{
-		m_currentTable->insertLayer(name);
-		
-	}
-	else
-	{
-		dFatal() << "KTExposureSheet::insertLayer: No layer view!" << endl;
-	}
-}
+// void KTExposureSheet::insertLayer(const QString& name)
+// {
+// // 	D_FUNCINFO;
+// // 	dDebug() << "KTExposureSheet::insertLayer(const QString& " << name  << ")";
+// 	if ( m_currentTable )
+// 	{
+// 		m_currentTable->insertLayer( name);
+// 		
+// 	}
+// 	else
+// 	{
+// 		dFatal() << "KTExposureSheet::insertLayer: No layer view!" << endl;
+// 	}
+// }
 
 void KTExposureSheet::removeLayer(int index)
 {
@@ -320,3 +327,47 @@ void KTExposureSheet::setLayerName(int indexLayer, const QString& name )
 	dDebug() << "setLayerName(" << indexLayer << "," << name << ")";
 	m_currentTable->setLayerName( indexLayer, name );
 }
+
+void KTExposureSheet::sceneEvent(KTSceneEvent *e)
+{
+	switch(e->action() )
+	{
+		case KTProjectEvent::Add:
+		{
+			addScene(e->sceneIndex(), e->partName());
+		}
+		break;
+		case KTProjectEvent::Remove:
+		{
+			QWidget * widget = m_scenes->widget( e->sceneIndex() );
+			m_scenes->removeTab(e->sceneIndex());
+			delete widget;
+		}
+		break;
+	}
+}
+
+void KTExposureSheet::layerEvent(KTLayerEvent *e)
+{
+	
+	switch(e->action() )
+	{
+		case KTProjectEvent::Add:
+		{
+			 
+			KTTableExposure *scene = dynamic_cast<KTTableExposure*>(m_scenes->widget((e->sceneIndex())));
+			if(scene)
+			{
+				scene->insertLayer(e->layerIndex(),  e->partName());
+			}
+		}
+		break;
+		case KTProjectEvent::Remove:
+		{
+			removeLayer( e->sceneIndex());
+		}
+		break;
+	}
+}
+
+

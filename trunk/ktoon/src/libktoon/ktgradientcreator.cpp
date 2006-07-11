@@ -140,10 +140,10 @@ void KTGradientCreator::setGradient(const QBrush & gradient)
 	m_spinControl->setSpin( gr->type() );
 	if(gr->type() == QGradient::RadialGradient)
 	{
-		m_spinControl->setRadius(  static_cast<const QRadialGradient*>(gr)->radius());
+		m_spinControl->setRadius(  (int) static_cast<const QRadialGradient*>(gr)->radius());
 	}else if (gr->type() == QGradient::ConicalGradient)
 	{
-		m_spinControl->setAngle(  static_cast<const QConicalGradient*>(gr)->angle());
+		m_spinControl->setAngle( (int) static_cast<const QConicalGradient*>(gr)->angle());
 	}
 // 	blockSignals ( false);
 }

@@ -41,11 +41,15 @@ DOsd::DOsd( QWidget * parent )
 	
 	m_animator = new Animation;
 	connect(&m_animator->timer, SIGNAL(timeout()), this, SLOT(animate()));
+	
+	m_timer = new QTimer( this );
+	connect( m_timer, SIGNAL( timeout() ), SLOT( hide() ) );
 }
 
 DOsd::~DOsd()
 {
 	delete m_animator;
+	delete m_timer;
 }
 
 void DOsd::display( const QString & message, Level level, int ms )
@@ -89,7 +93,7 @@ void DOsd::display( const QString & message, Level level, int ms )
 	QRect geometry2( 0, 0, width + 9, height + 7 );
 
     	// resize pixmap, mask and widget
-	static QBitmap mask;
+	/*static*/ QBitmap mask;
 	mask = QBitmap( geometry.size() );
 	m_pixmap = QPixmap( geometry.size() );
 	resize( geometry.size() );
@@ -102,6 +106,7 @@ void DOsd::display( const QString & message, Level level, int ms )
 	maskPainter.drawRoundRect( geometry2, 1600 / geometry2.width(), 1600 / geometry2.height() );
 	setMask( mask );
 	
+	maskPainter.end();
 	
 	drawPixmap( message, background, foreground);
 	
@@ -112,12 +117,6 @@ void DOsd::display( const QString & message, Level level, int ms )
     	// close the message window after given mS
 	if ( ms > 0 )
 	{
-		if ( !m_timer )
-		{
-			m_timer = new QTimer( this );
-			connect( m_timer, SIGNAL( timeout() ), SLOT( hide() ) );
-		}
-		
 		m_animator->timer.start(300);
 		m_timer->start( ms );
 	} else if ( m_timer )

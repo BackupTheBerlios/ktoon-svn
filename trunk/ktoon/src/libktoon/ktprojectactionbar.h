@@ -18,49 +18,74 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef KTPROJECTACTIONBAR_H
+#define KTPROJECTACTIONBAR_H
 
-#ifndef KTPROJECTEVENT_H
-#define KTPROJECTEVENT_H
+#include <qwidget.h>
 
-#include <QEvent>
-#include <QString>
+#include <QButtonGroup>
+
+class QPushButton;
+class QBoxLayout;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Q_DECL_EXPORT KTProjectEvent
+
+class KTProjectActionBar : public QWidget
 {
+	Q_OBJECT;
+	
 	public:
 		enum Action
 		{
-			Add,
-			Remove
+			NoAction = 0x00,
+			
+			InsertFrame = 1 << 1,
+			RemoveFrame = 1 << 2,
+			MoveFrameUp = 1 << 3,
+			MoveFrameDown = 1 << 4,
+			
+			InsertLayer = 1 << 5,
+			RemoveLayer = 1 << 6,
+			MoveLayerUp = 1 << 7,
+			MoveLayerDown = 1 << 8,
+			
+			InsertScene = 1 << 9,
+			RemoveScene = 1 << 10,
+			MoveSceneUp = 1 << 11,
+			MoveSceneDown = 1 << 12,
+			
+			AllActions = InsertFrame | RemoveFrame | MoveFrameUp | MoveFrameDown | InsertLayer | RemoveLayer | MoveLayerUp | MoveLayerDown | InsertScene | RemoveScene | MoveSceneUp | MoveSceneDown,
+			FrameActions = InsertFrame | RemoveFrame | MoveFrameUp | MoveFrameDown,
+			LayerActions = InsertLayer | RemoveLayer | MoveLayerUp | MoveLayerDown,
+			SceneActions = InsertScene | RemoveScene | MoveSceneUp | MoveSceneDown
 		};
-		enum Part
-		{
-			Project = 1000,
-			Frame,
-			Layer,
-			Scene
-		};
 		
-		KTProjectEvent(Action action);
-		virtual ~KTProjectEvent();
+		Q_DECLARE_FLAGS(Actions, Action);
+		
+		KTProjectActionBar(Actions actions, Qt::Orientation orientation = Qt::Horizontal, QWidget *parent = 0);
+		~KTProjectActionBar();
+		void setFixedSize(int s);
+		
+		void insertSeparator(int position);
 		
 		
-		Action action() const;
-		
-		void setPartName(const QString &name);
-		QString partName() const;
-		virtual int id() const;
-		
-		virtual bool isValid() const;
+	signals:
+		void actionSelected(int action);
 		
 	private:
-		Action m_action;
-		QString m_partName;
+		void setup(Actions actions);
+		
+	private:
+		Qt::Orientation m_orientation;
+		
+		int m_fixedSize;
+		QButtonGroup m_actions;
+		
+		QBoxLayout *m_buttonLayout;
 };
 
+Q_DECLARE_OPERATORS_FOR_FLAGS(KTProjectActionBar::Actions);
+
 #endif
-
-

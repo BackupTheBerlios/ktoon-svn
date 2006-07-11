@@ -68,6 +68,10 @@ class KTExposureSheet : public KTModuleWidgetBase
 		DTabWidget *m_scenes;
 		KTTableExposure *m_currentTable;
 		
+	protected:
+		virtual void sceneEvent(KTSceneEvent *e);
+		virtual void layerEvent(KTLayerEvent *e);
+		
 	private:
 		void setupButtons();
 		
@@ -75,11 +79,11 @@ class KTExposureSheet : public KTModuleWidgetBase
 		
 	public slots:
 		void closeAllScenes();
-		void insertLayer(const QString& name);
+// 		void insertLayer(const QString& name);
 		void applyAction(int action);
 		
 		
-		void addScene(const QString &name);
+		void addScene(int index, const QString &name);
 		void renameScene(const QString &name, int id);
 		
 	private slots:

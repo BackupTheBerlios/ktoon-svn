@@ -64,6 +64,11 @@ bool KTLayer::isVisible() const
 
 KTFrame *KTLayer::createFrame(int position)
 {
+	if ( position < 0 || position > m_frames.count() )
+	{
+		return 0;
+	}
+	
 	KTFrame *keyFrame = new KTFrame(this);
 	
 	m_framesCount++;
@@ -91,7 +96,7 @@ bool KTLayer::removeFrame(int position)
 
 KTFrame *KTLayer::frame(int position)
 {
-	if ( position < 0 || position > m_frames.count() )
+	if ( position < 0 || position >= m_frames.count() )
 	{
 		D_FUNCINFO << " FATAL ERROR: index out of bound";
 		return 0;

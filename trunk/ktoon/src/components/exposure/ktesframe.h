@@ -202,8 +202,8 @@ class KTESFrame : public DSqueezeLabel
 		* You should never use it from ouside.
 		*/
 		void slotSendDoubleClickEvent();
-			
 		void otherSelected(int id);
+		
 	protected:
 		/**
 		* @brief Event for widget mouse press control

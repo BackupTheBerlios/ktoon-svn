@@ -181,7 +181,7 @@ void KTMainWindow::setupMenu()
 	m_fileMenu = new QMenu(tr("&File"), this);
 	menuBar()->addMenu(m_fileMenu);
 	
-	QMenu *newMenu = new QMenu(tr("&New...") );
+	QMenu *newMenu = new QMenu(tr("&New..."), this );
 	m_fileMenu->addMenu(newMenu);
 	
 	newMenu->addAction(m_actionManager->find("newproject"));

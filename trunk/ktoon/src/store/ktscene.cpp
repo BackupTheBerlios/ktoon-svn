@@ -61,6 +61,12 @@ void KTScene::setLayers(const Layers &layers)
 
 KTLayer *KTScene::createLayer(int position)
 {
+	D_FUNCINFO << position;
+	if ( position < 0 || position > m_layers.count() )
+	{
+		return 0;
+	}
+	
 	KTLayer *layer = new KTLayer(this);
 	
 	m_layerCount++;
@@ -125,7 +131,7 @@ QGraphicsScene *KTScene::photogram(int index)
  */
 KTLayer *KTScene::layer(int position)
 {
-	if ( position < 0 || position > m_layers.count() )
+	if ( position < 0 || position >= m_layers.count() )
 	{
 		D_FUNCINFO << " FATAL ERROR: index out of bound " << position;
 		return 0;

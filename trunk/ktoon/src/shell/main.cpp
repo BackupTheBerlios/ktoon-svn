@@ -111,16 +111,17 @@ int main( int argc, char ** argv )
 			locale = "en";
 		}
 		
-		QTranslator *qttranslator = new QTranslator;
+		QTranslator *qttranslator = new QTranslator(&application);
 		
 		qttranslator->load( QString( "qt_" ) + locale, HOME_DIR+"/data/translations");
 	
 		application.installTranslator( qttranslator );
 		
-		QTranslator *translator = new QTranslator;
+		QTranslator *translator = new QTranslator(&application);
 		translator->load( QString( "ktoon_" )+locale,  HOME_DIR+"/data/translations");
 		
 		application.installTranslator( translator );
+		
 	}
 	
 // 	QWidget mainWindow;

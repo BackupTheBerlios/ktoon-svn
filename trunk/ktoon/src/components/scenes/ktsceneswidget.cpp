@@ -125,9 +125,9 @@ void KTScenesWidget::emitRequestInsertScene()
 	}
 	
 	
-	KTSceneEvent *event = new KTSceneEvent(KTProjectEvent::Add,  index); // FIXME
+	KTSceneEvent event(KTProjectEvent::Add,  index);
 	
-	emit eventTriggered( event );
+	emit eventTriggered( &event );
 	
 // 	emit requestInsertScene();
 // 	emit requestInsertLayer();
@@ -150,9 +150,9 @@ void KTScenesWidget::emitRequestRemoveScene()
 		DCONFIG->sync();
 	}
 	
-	KTSceneEvent *event = new KTSceneEvent(KTProjectEvent::Remove,  m_tableScenes->indexCurrentScene() ); // FIXME
+	KTSceneEvent event(KTProjectEvent::Remove,  m_tableScenes->indexCurrentScene() );
 	
-	emit eventTriggered( event );
+	emit eventTriggered( &event );
 }
 
 

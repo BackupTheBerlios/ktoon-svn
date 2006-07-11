@@ -102,8 +102,8 @@ class KTLayerExposure : public QFrame
 		void removed(int);
 		void requestRenameLayer( int idLayer, const QString &name );
 		void requestRenameFrame(  int indexLayer, int indexFrame, const QString &name );
-		
 		void finalRow();
+		
 	protected:
 		QBoxLayout *m_layout;
 };

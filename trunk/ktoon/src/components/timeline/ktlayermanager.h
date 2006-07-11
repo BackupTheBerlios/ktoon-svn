@@ -27,16 +27,16 @@
 #include <QScrollBar>
 #include <QButtonGroup>
 
-#include "dvhbox.h"
-
 #include "dimagebutton.h"
-#include "ktlayersequence.h"
+
+#include <QTableWidget>
+
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTLayerManager : public DVHBox
+class KTLayerManager : public QTableWidget
 {
 	Q_OBJECT
 	public:
@@ -59,36 +59,20 @@ class KTLayerManager : public DVHBox
 		 */
 		KTLayerManager(QWidget *parent = 0);
 		~KTLayerManager();
-		QScrollBar *verticalScrollBar();
 		
-		KTLayerSequence const *layerSequence();
+		void insertLayer(int position, const QString &name);
+		void removeLayer(int position);
 		
+		void setRowHeight(int rowHeight);
 		
-		void removeLayer();
-		void removeLayer(int pos);
-		void createNewLayer(const QString &name, bool toEnd);
-		void selectLayer(int layerPos);
-		void moveCurrentLayer(bool up);
-		
-	signals:
-		void actionSelected(int);
+	protected:
+		void resizeEvent(QResizeEvent *e);
+		virtual void fixSize();
 		
 	private:
-		double m_currentTime, m_totalTime;
-		
-		DVHBox *m_utilsInTop;
-		DImageButton *m_lockButton, *m_eyeButton, *m_outlineButton;
-		
-		DVHBox *m_utilsInBottom;
-		DImageButton *m_insertButton, *m_removeButton, *m_moveUpButton, *m_moveDownButton;
-		
-		QLabel *m_time;
-		
-		KTLayerSequence *m_sequence;
-		
 		bool m_allSelected, m_allVisible, m_allLock;
 		
-		QButtonGroup *m_buttonGroup;
+		int m_rowHeight;
 };
 
 #endif

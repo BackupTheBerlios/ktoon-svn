@@ -3,21 +3,8 @@
 # Subdir relative project main directory: ./src/libktoon
 # Target is a library:  ktoon
 
-QT += xml 
 INSTALLS += target 
 target.path = /lib/ 
-KDEV_QTVER = 4 
-INCLUDEPATH += ../../src/store \
-               ../../src/dlib/dgui \
-               ../../src/dlib/dcore \
-               ../../3rdparty/potrace \
-               ../../3rdparty/quazip \
-               ../../src/dlib 
-TARGET = ktoon 
-CONFIG += release \
-          warn_on \
-          dll 
-TEMPLATE = lib 
 HEADERS += ktmodulewidgetbase.h \
            ktmodulewidgettitle.h \
            kttoolpluginobject.h \
@@ -33,7 +20,8 @@ HEADERS += ktmodulewidgetbase.h \
            ktfilterinterface.h \
            ktgraphicelement.h \
            ktpackagehandler.h \
-           kttoolinterface.h 
+           kttoolinterface.h \
+           ktprojectactionbar.h 
 SOURCES += ktmodulewidgetbase.cpp \
            ktmodulewidgettitle.cpp \
            kttoolpluginobject.cpp \
@@ -45,7 +33,21 @@ SOURCES += ktmodulewidgetbase.cpp \
            ktgradientviewer.cpp \
            ktanimationarea.cpp \
            ktgraphicelement.cpp \
-           ktpackagehandler.cpp 
+           ktpackagehandler.cpp \
+           ktprojectactionbar.cpp 
+QT += xml
+KDEV_QTVER = 4
+INCLUDEPATH += ../../src/store \
+../../src/dlib/dgui \
+../../src/dlib/dcore \
+../../3rdparty/potrace \
+../../3rdparty/quazip \
+../../src/dlib
+TARGET = ktoon
+CONFIG += release \
+warn_on \
+dll
+TEMPLATE = lib
 macx{
   LIBS += -ldcore -ldgui
   QMAKE_LIBDIR = ../../src/dlib/dcore ../../src/dlib/dgui

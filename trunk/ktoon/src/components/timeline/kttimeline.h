@@ -24,10 +24,11 @@
 #include <ktmodulewidgetbase.h>
 #include <QSplitter>
 
-#include "ktlayermanager.h"
-#include "ktframesequencecontainer.h"
-
 #include <QStackedWidget>
+
+class KTLayerManager;
+class KTFramesTable;
+class KTProjectActionBar;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -39,65 +40,28 @@ class KTTimeLine : public KTModuleWidgetBase
 	public:
 		KTTimeLine(QWidget *parent = 0);
 		~KTTimeLine();
-		KTLayerManager *currentLayerManager();
-		KTFrameSequenceContainer *currentFrameContainer();
-		
 		void closeAllScenes();
 		
 	private:
-		void setupPropertiesBar();
+		KTLayerManager *layerManager(int sceneIndex);
+		KTFramesTable *framesTable(int sceneIndex);
 		
-	private slots:
-		void emitNewFPS(const QString &);
-		
-	signals:
-		void fpsChanged(int);
-// 		void requestChangeScene( int );
+	protected:
+		void sceneEvent(KTSceneEvent *e);
+		void layerEvent(KTLayerEvent *e);
+		void frameEvent(KTFrameEvent *e);
 		
 	public slots:
-		void execAction(int action);
-		
-		void insertLayer(const QString &name, bool toEnd = true);
-		
-		void addScene(const QString &name);
-		void setScene(int position);
-		void removeCurrentLayer();
-		void removeLayer(int index);
-		void insertFrame(int position, const QString &name, bool toEnd);
-		void moveFrame(bool up);
-		void removeCurrentFrame();
-		void lockCurrentFrame();
-		void setCurrentCell(int layer, int frame);
-		void selectCurrentLayer(int index);
-		void setLayer(int index);
-		
-		void moveLayer(bool up);
+		void insertScene(int position, const QString &name);
+		void removeScene(int position);
 		
 	private slots:
-		void emitFrameSelected(int layer, int frame);
-		
-	signals:
-		void requestInsertFrame(bool);
-		void requestInsertLayer();
-		void frameSelected( int, int );
-		void layerVisibilityChanged( int, bool);
-		void layerSelected( int);
-		void requestCopyFrame(int);
-		void requestPasteFrame(int);
-		void requestMoveFrame(bool);
-		void requestRemoveFrame();
-		void requestLockFrame();
-		void requestRemoveLayer();
-		void requestMoveLayer(bool up);
-		void requestChangeFPS(int);
-		
-	private slots:
-		
+		void requestCommand(int action);
 		
 	private:
 		QStackedWidget *m_container;
-		DVHBox *m_propertiesBar;
-		DELabel *m_editLayer;
+		
+		KTProjectActionBar *m_actionBar;
 };
 
 #endif

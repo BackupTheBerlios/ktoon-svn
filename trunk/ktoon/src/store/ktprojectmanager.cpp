@@ -81,7 +81,9 @@ bool KTProjectManager::isOpen() const
 void KTProjectManager::handleProjectEvent(KTProjectEvent *event)
 {
 	D_FUNCINFO;
-	emit commandExecuted(event);
+	
+	if ( event->isValid() )
+		emit commandExecuted(event);
 }
 
 
@@ -95,9 +97,15 @@ void KTProjectManager::handleProjectEvent(KTProjectEvent *event)
 KTProjectCommand *KTProjectManager::createCommand(const KTProjectEvent *event)
 {
 	D_FUNCINFO;
-	KTProjectCommand *command = new KTProjectCommand(m_project, event);
 	
-	return command;
+	if ( event->isValid() )
+	{
+		KTProjectCommand *command = new KTProjectCommand(m_project, event);
+		
+		return command;
+	}
+	
+	return 0;
 }
 
 

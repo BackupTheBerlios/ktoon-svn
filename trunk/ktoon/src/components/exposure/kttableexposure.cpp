@@ -40,6 +40,7 @@ KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent)
 	m_layout->setMargin(0);
 // 	m_port->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 	setWidget(m_port);
+// 	setWidgetResizable ( true);
 	createMenuRight();
 }
 
@@ -124,9 +125,9 @@ int KTTableExposure::currentLayer()
 	return m_currentLayer;
 }
 
-void KTTableExposure::insertLayer( const QString &text)
+void KTTableExposure::insertLayer(int index,  const QString &text)
 {
-	KTLayerExposure *newLayer = new KTLayerExposure(text, m_numLayer, m_numRows, m_port);
+	KTLayerExposure *newLayer = new KTLayerExposure(text, index, m_numRows, m_port);
 	m_layers.append(newLayer);
 	
 	connect(newLayer, SIGNAL(selected(int)), this, SLOT(changeCurrentLayer(int)));
@@ -147,11 +148,10 @@ void KTTableExposure::insertLayer( const QString &text)
 	
 	connect(newLayer, SIGNAL(finalRow()), this, SLOT(addRows()));
 	
-	m_layout->addWidget( newLayer);
+	m_layout->insertWidget(index+1, newLayer);
 	
 	m_numLayer++;
 	newLayer->setSelected(true);
-	
 	newLayer->show();
 	m_port->adjustSize();
 }

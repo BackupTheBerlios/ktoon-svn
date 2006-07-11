@@ -28,12 +28,13 @@
 
 KTProjectCommand::KTProjectCommand(KTProject *project, const KTProjectEvent *event) : QUndoCommand(), m_project(project), m_event(event)
 {
-	
+	DINIT;
 }
 
 
 KTProjectCommand::~KTProjectCommand()
 {
+	DEND;
 }
 
 

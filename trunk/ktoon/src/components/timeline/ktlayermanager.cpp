@@ -25,103 +25,21 @@
 #include <qlayout.h>
 
 #include <QPixmap>
+#include <QHeaderView>
+#include <QPainter>
 
 #include "dseparator.h"
 
 #include "ddebug.h"
 
-KTLayerManager::KTLayerManager(QWidget *parent) : DVHBox(parent), m_currentTime(0.0), m_totalTime(0.04), m_allSelected(false), m_allVisible(true), m_allLock(false)
+
+KTLayerManager::KTLayerManager(QWidget *parent) : QTableWidget(0, 3, parent), m_allSelected(false), m_allVisible(true), m_allLock(false), m_rowHeight(20)
 {
 	DINIT;
 	
-	m_buttonGroup = new QButtonGroup(this);
+	setHorizontalHeaderLabels(QStringList() << tr("Layer") << tr("L") << tr("V") );
+	verticalHeader()->hide();
 	
-	connect(m_buttonGroup, SIGNAL(buttonClicked (int)), this, SIGNAL(actionSelected(int)));
-	
-	setMinimumHeight(80);
-	layout()->setAlignment(Qt::AlignTop);
-	layout()->setMargin(0);
-	layout()->setSpacing(0);
-	
-	m_utilsInTop = new DVHBox( this , false);
-	m_utilsInTop->setMaximumHeight(20);
-	m_utilsInTop->setMinimumHeight(20);
-	
-	connect(m_utilsInTop, SIGNAL(clicked(int)), this, SLOT(changeLayersState(int)));
-	m_utilsInTop->setSpacing(0); 
-	m_utilsInTop->layout()->setMargin(1);
-	
-	m_utilsInTop->layout()->setAlignment(Qt::AlignRight | Qt::AlignCenter );
-
-	m_eyeButton = new DImageButton( QPixmap(THEME_DIR+"/icons/show_hide_all_layers.png"), 20,  m_utilsInTop );
-	
-	m_buttonGroup->addButton(m_eyeButton, ToggleLayerView);
-	m_eyeButton->setToolTip(tr( "Show / Hide all Layers" ) );
-	
-	m_lockButton = new DImageButton( QPixmap(THEME_DIR+"/icons/kilit_pic.png"),  20, m_utilsInTop );
-	m_buttonGroup->addButton(m_lockButton, LockLayers);
-	
-	m_lockButton->setToolTip(tr( "Lock all Layers" ) );
-
-	m_outlineButton = new DImageButton( QPixmap(THEME_DIR+"/icons/outline_pic.png"), 20, m_utilsInTop );
-	m_buttonGroup->addButton(m_outlineButton,ShowOutlines);
-
-	m_outlineButton->setToolTip(tr( "Show only outlines" ) );
-	
-	m_utilsInTop->layout()->setSpacing(0);
-	
-	QWidget *spacer = new QWidget(m_utilsInTop);
-	spacer->setMinimumWidth(10);
-	
-	
-	//------------------------------------------------------
-	
-	m_sequence = new KTLayerSequence(this);
-	
-	//------------------------------------------------------
-
-	m_utilsInBottom = new DVHBox( this, false );
-	m_utilsInBottom->setMaximumHeight(16);
-	m_utilsInBottom->setMinimumHeight(16);
-	
-	connect(m_utilsInBottom, SIGNAL(clicked(int)), this, SLOT(selectLayerAction(int)));
-	
-	m_utilsInBottom->layout()->setSpacing(0); 
-	m_utilsInBottom->layout()->setMargin(0);
-
-	m_utilsInBottom->layout()->setAlignment(Qt::AlignLeft | Qt::AlignCenter);
-
-	m_insertButton = new DImageButton( QPixmap(HOME_DIR+"/themes/default/icons/add_layer.png") , 20,  m_utilsInBottom );
-	m_buttonGroup->addButton(m_insertButton, InsertLayer);
-
-	m_insertButton->setToolTip(tr( "Insert Layer" ) );
-
-	m_removeButton = new DImageButton( QPixmap(HOME_DIR+"/themes/default/icons/remove_layer.png"),  20, m_utilsInBottom );
-	m_buttonGroup->addButton(m_removeButton, RemoveLayer);
-	
-	m_removeButton->setToolTip(tr( "Remove Layer" ) );
-
-	m_moveUpButton = new DImageButton( QPixmap(HOME_DIR+"/themes/default/icons/arrowup.png"),  20, m_utilsInBottom );
-	m_buttonGroup->addButton(m_moveUpButton,MoveLayerUp);
-
-	m_moveUpButton->setToolTip(tr( "Move Layer Up" ) );
-
-	m_moveDownButton = new DImageButton( QPixmap(HOME_DIR+"/themes/default/icons/arrowdown.png"), 20,  m_utilsInBottom );
-	m_buttonGroup->addButton(m_moveDownButton,MoveLayerDown);
-
-	m_moveDownButton->setToolTip(tr( "Move Layer Down" ) );
-	
-	new DSeparator( Qt::Vertical, m_utilsInBottom);
-	
-	m_time = new QLabel( QString::number( m_currentTime, 'f', 2 ) + " / " + QString::number( m_totalTime, 'f', 2 ), m_utilsInBottom );
-	
-	m_time -> setFont( QFont( font().family(), 7 ) );
-	m_time -> setAlignment( Qt::AlignCenter );
-	m_time -> resize( 80, 20 );
-
-	new DSeparator( Qt::Vertical, m_utilsInBottom);
-	
-// 	show();
 }
 
 
@@ -130,46 +48,58 @@ KTLayerManager::~KTLayerManager()
 	DEND;
 }
 
-QScrollBar *KTLayerManager::verticalScrollBar()
-{
-	return m_sequence->verticalScrollBar();
-}
 
-KTLayerSequence const *KTLayerManager::layerSequence()
+void KTLayerManager::insertLayer(int position, const QString &name)
 {
-	return m_sequence;
-}
-
-void KTLayerManager::removeLayer()
-{
-	m_sequence->removeLayer();
-}
-
-void KTLayerManager::removeLayer(int pos)
-{
-	m_sequence->removeRow(pos);
-}
-
-void KTLayerManager::createNewLayer(const QString &name, bool toEnd)
-{
-	m_sequence->createNewLayer( name, toEnd);
-}
-
-void KTLayerManager::selectLayer(int layerPos)
-{
-	m_sequence->selectionModel()->clear();
-	m_sequence->setCurrentLayer(layerPos);
-}
-
-void KTLayerManager::moveCurrentLayer(bool up)
-{
-	if ( up)
+	QTableWidgetItem *newLayer = new QTableWidgetItem(name);
+	newLayer->setTextAlignment(Qt::AlignCenter);
+	
+	if (  position >= 0 && position <= rowCount())
 	{
-		m_sequence->moveLayerUp();
+		insertRow (position);
+		setItem(position, 0, newLayer);
+		
+		fixSize();
 	}
 	else
 	{
-		m_sequence->moveLayerDown();
+		delete newLayer;
 	}
 }
 
+void KTLayerManager::removeLayer(int position)
+{
+	removeRow(position);
+}
+
+
+void KTLayerManager::resizeEvent( QResizeEvent *)
+{
+	fixSize();
+}
+
+void KTLayerManager::fixSize()
+{
+	int offset = 0;
+	if ( verticalScrollBar()->isVisible() )
+	{
+		offset = verticalScrollBar()->width() +6 ;
+	}
+	
+	int width = this->width() - offset;
+		
+	horizontalHeader()->resizeSection(0, width-(m_rowHeight*2) );
+	horizontalHeader()->resizeSection(1, m_rowHeight );
+	horizontalHeader()->resizeSection(2, m_rowHeight );
+	
+	for(int row = 0; row < rowCount(); row++)
+	{
+		verticalHeader()->resizeSection(row, m_rowHeight);
+	}
+}
+
+
+void KTLayerManager::setRowHeight(int rowHeight)
+{
+	m_rowHeight = rowHeight;
+}

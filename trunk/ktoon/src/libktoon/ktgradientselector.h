@@ -53,7 +53,7 @@ class KTGradientSelector : public QAbstractSlider
 		class DGradientArrow : public QObject
 		{
 			public:
-				DGradientArrow(QPoint pos, const QColor& color): m_color(color)
+				DGradientArrow(QPoint pos, const QColor& color, QObject *parent = 0) : QObject(parent), m_color(color)
 				{
 					QPolygon array(6);
 				// 	if ( orientation() == Qt::Vertical )

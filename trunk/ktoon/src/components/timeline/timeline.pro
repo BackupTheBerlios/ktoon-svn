@@ -3,32 +3,26 @@
 # Subdir relative project main directory: ./src/components/timeline
 # Target is a library:  
 
-QT += xml 
-KDEV_QTVER = 4 
-INCLUDEPATH += ../../../src/store \
-               ../../../src/libktoon \
-               ../../../src/dlib/dgui \
-               ../../../src/dlib/dcore \
-               ../../../src/dlib 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-CONFIG += release \
-          warn_on \
-          qt \
-          staticlib 
-TEMPLATE = lib 
 HEADERS += kttimeline.h \
            ktlayermanager.h \
-           ktlayersequence.h \
-           kttimelinelayer.h \
            kttlruler.h \
-           ktframesequencecontainer.h \
-           tframestable.h 
+           ktframestable.h 
 SOURCES += kttimeline.cpp \
            ktlayermanager.cpp \
-           ktlayersequence.cpp \
-           kttimelinelayer.cpp \
            kttlruler.cpp \
-           ktframesequencecontainer.cpp \
-           tframestable.cpp 
+           ktframestable.cpp 
+QT += xml
+KDEV_QTVER = 4
+INCLUDEPATH += ../../../src/store \
+../../../src/libktoon \
+../../../src/dlib/dgui \
+../../../src/dlib/dcore \
+../../../src/dlib
+MOC_DIR = .moc
+UI_DIR = .ui
+OBJECTS_DIR = .obj
+CONFIG += release \
+warn_on \
+qt \
+staticlib
+TEMPLATE = lib

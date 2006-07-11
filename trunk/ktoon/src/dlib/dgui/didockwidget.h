@@ -72,7 +72,8 @@ class DiDockWidget : public QDockWidget
 		DiDockInternalWidget *m_centralWidget;
 };
 
-class DiDockInternalWidget : public QWidget {
+class DiDockInternalWidget : public QWidget 
+{
 	Q_OBJECT
 	public:
     

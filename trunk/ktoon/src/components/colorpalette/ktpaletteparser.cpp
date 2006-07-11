@@ -68,6 +68,8 @@ bool KTPaletteParser::startElement( const QString& , const QString& , const QStr
 		if ( qname == "Gradient" )
 		{
 			if ( m_gradient ) delete m_gradient;
+			m_gradient = 0;
+			
 			m_gradientStops.clear();
 			
 			QGradient::Type type = QGradient::Type(atts.value("type").toInt());

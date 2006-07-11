@@ -43,7 +43,7 @@ static const char* const icon_xpm[]={
 #include <ddebug.h>
 
 DMainWindow::DMainWindow(QWidget *parent)
-	: MWCLASS(parent), m_pFirstRemoved(false), m_pCurrentWidget(0)
+	: MWCLASS(parent),  m_pLeftDock(0), m_pRightDock(0), m_pBottomDock(0), m_pCentral(0), m_pActiveTabWidget(0), m_pFirstRemoved(false), m_pCurrentWidget(0)
 	{
 		loadSettings();
 		createToolWindows();
@@ -67,8 +67,10 @@ DMainWindow::DMainWindow(QWidget *parent)
 
 	DMainWindow::~DMainWindow()
 	{
-/*    for (QValueList<QWidget*>::iterator it = m_pWidgets.begin(); it != m_pWidgets.end(); ++it)
-		removeWidget(*it);*/
+		for (QList<QWidget*>::iterator it = m_pWidgets.begin(); it != m_pWidgets.end(); ++it)
+		{
+			removeWidget(*it);
+		}
 	}
 
 	DiDockWidget *DMainWindow::toolWindow(DiDockWidget::Position position) const

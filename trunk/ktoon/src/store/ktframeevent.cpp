@@ -23,11 +23,13 @@
 
 KTFrameEvent::KTFrameEvent(Action action, int sceneIndex, int layerIndex, int frameIndex) : KTLayerEvent(action, sceneIndex, layerIndex), m_frameIndex(frameIndex)
 {
+	DINIT;
 }
 
 
 KTFrameEvent::~KTFrameEvent()
 {
+	DEND;
 }
 
 int KTFrameEvent::id() const
@@ -40,5 +42,10 @@ int KTFrameEvent::frameIndex() const
 	return m_frameIndex;
 }
 
+
+bool KTFrameEvent::isValid() const
+{
+	return KTSceneEvent::isValid() && KTLayerEvent::isValid() && (m_frameIndex >= 0);
+}
 
 

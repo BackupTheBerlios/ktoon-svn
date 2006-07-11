@@ -23,7 +23,7 @@
 #include <qpixmap.h>
 #include <qbitmap.h>
 #include <qimage.h>
-#include <QTimer>
+#include <QtDebug>
 
 #include <cmath> //abs
 
@@ -34,7 +34,7 @@
 
 //------------------ CONSTRUCTOR -----------------
 
-KTSplash::KTSplash() : QSplashScreen( 0 ), m_size(3), m_state(0)
+KTSplash::KTSplash() : QSplashScreen( 0 ), m_size(3), m_state(0), m_position(0)
 {
 	DINIT;
 	QTimer *timer = new QTimer( this );
@@ -48,6 +48,10 @@ KTSplash::KTSplash() : QSplashScreen( 0 ), m_size(3), m_state(0)
 	
 	setPixmap(QPixmap::fromImage(image));
 	m_version = tr("Version ")+dAppProp->version();
+	
+	connect( &m_timer, SIGNAL(timeout()), this, SLOT(animate()));
+	
+	m_timer.start(10);
 }
 
 KTSplash::~KTSplash()
@@ -58,6 +62,8 @@ KTSplash::~KTSplash()
 void KTSplash::animate()
 {
 	m_state = ((m_state + 1) % (2*m_size-1));
+	
+	m_position++;
 	repaint();
 }
 
@@ -70,7 +76,6 @@ void KTSplash::setMessage(const QString &msg)
 
 void KTSplash::drawContents ( QPainter * painter )
 {
-	//QSplashScreen::drawContents(painter);
 	int position;
 
 	// Draw background circles
@@ -79,7 +84,19 @@ void KTSplash::drawContents ( QPainter * painter )
 	painter->drawEllipse(51,7,9,9);
 	painter->drawEllipse(62,7,9,9);
 	painter->drawEllipse(73,7,9,9);
-
+	
+	QColor fill = palette().background().color();
+	
+	int alpha = 255 - (18+m_position)*m_position;
+	if ( alpha < 0 )
+	{
+		alpha = 0;
+	}
+	
+	fill.setAlpha(alpha);
+	painter->fillRect( rect(), fill);
+	
+	painter->save();
 	QColor baseColor = palette().alternateBase().color();
 	for (int i = 0; i < m_size; i++)
 	{
@@ -95,7 +112,9 @@ void KTSplash::drawContents ( QPainter * painter )
 			painter->drawEllipse(51+position*11,7,9,9);
 		}
 	}
-
+	
+	painter->restore();
+	
 	painter->setPen( 0xCFCDD3);
 
 	// Draw version number
