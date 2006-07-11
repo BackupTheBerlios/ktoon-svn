@@ -50,7 +50,7 @@ class Q_DECL_EXPORT KTProjectCommand : public QUndoCommand
 		
 	private:
 		KTProject *m_project;
-		const KTProjectEvent *m_event;
+		KTProjectEvent *m_event;
 		
 		QString m_xml;
 };

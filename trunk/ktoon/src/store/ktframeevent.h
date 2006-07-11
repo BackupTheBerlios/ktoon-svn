@@ -29,7 +29,7 @@
 class Q_DECL_EXPORT KTFrameEvent : public KTLayerEvent
 {
 	public:
-		KTFrameEvent(Action action, int sceneIndex, int layerIndex, int frameIndex);
+		KTFrameEvent(Action action, int sceneIndex, int layerIndex, int frameIndex, QObject *parent = 0);
 		~KTFrameEvent();
 		
 		
@@ -38,6 +38,8 @@ class Q_DECL_EXPORT KTFrameEvent : public KTLayerEvent
 		int frameIndex() const;
 		
 		virtual bool isValid() const;
+		
+		virtual KTProjectEvent *clone() const;
 		
 	private:
 		int m_frameIndex;

@@ -64,7 +64,7 @@ void MingPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> 
 	
 	SWFMovie movie;
 	
-	movie.setRate(scenes[0]->fps() );
+	// 	movie.setRate(scenes[0]->fps() ); // FIXME
 	movie.setDimension(size.width(), size.height() );
 	movie.setBackground(0xff, 0xff, 0xff );
 

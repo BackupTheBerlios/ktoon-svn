@@ -102,6 +102,7 @@ void KTProjectActionBar::setup(Actions actions)
 		QToolButton *button = new QToolButton;
 		button->setIcon(QIcon(THEME_DIR+"/icons/add_frame.png" ));
 		button->setText(tr("Insert frame") );
+		button->setToolTip(tr("Insert a frame"));
 		
 		button->setShortcut(QKeySequence(Qt::Key_Plus));
 		
@@ -115,6 +116,7 @@ void KTProjectActionBar::setup(Actions actions)
 		QToolButton *button = new QToolButton;
 		button->setIcon(QIcon(THEME_DIR+"/icons/remove_frame.png"));
 		button->setText(tr("Remove frame") );
+		button->setToolTip(tr("Remove the frame"));
 		
 		m_actions.addButton(button, RemoveFrame);
 		
@@ -128,6 +130,7 @@ void KTProjectActionBar::setup(Actions actions)
 		QToolButton *button = new QToolButton;
 		button->setIcon(QIcon());
 		button->setText( tr("Move frame up"));
+		
 		
 		m_actions.addButton(button, MoveFrameUp);
 		
@@ -150,6 +153,7 @@ void KTProjectActionBar::setup(Actions actions)
 		QToolButton *button = new QToolButton;
 		button->setText( tr("Insert layer") );
 		button->setIcon(QIcon(HOME_DIR+"/themes/default/icons/add_layer.png"));
+		button->setToolTip(tr("Insert a layer"));
 		
 		m_actions.addButton(button, InsertLayer);
 		
@@ -161,6 +165,7 @@ void KTProjectActionBar::setup(Actions actions)
 		QToolButton *button = new QToolButton;
 		button->setText( tr("Remove layer") );
 		button->setIcon(QIcon( HOME_DIR+"/themes/default/icons/remove_layer.png"));
+		button->setToolTip(tr("Remove the layer"));
 		
 		m_actions.addButton(button, RemoveLayer);
 		
@@ -199,6 +204,8 @@ void KTProjectActionBar::setup(Actions actions)
 		button->setText(tr("Insert scene") );
 		button->setIcon(QIcon( ));
 		
+		button->setToolTip(tr("Insert a scene"));
+		
 		m_actions.addButton(button, InsertScene);
 		
 		m_buttonLayout->addWidget( button );
@@ -210,6 +217,9 @@ void KTProjectActionBar::setup(Actions actions)
 		
 		button->setText(tr("Remove scene") );
 		button->setIcon(QIcon( ));
+		
+		
+		button->setToolTip(tr("Remove the scene"));
 		
 		m_actions.addButton(button, RemoveScene);
 		
@@ -252,7 +262,7 @@ void KTProjectActionBar::setup(Actions actions)
 
 void KTProjectActionBar::insertSeparator(int position)
 {
-	Qt::Orientation sepOrientation;
+	Qt::Orientation sepOrientation = Qt::Vertical;
 	
 	switch(m_orientation)
 	{
@@ -269,5 +279,11 @@ void KTProjectActionBar::insertSeparator(int position)
 	}
 	
 	m_buttonLayout->insertWidget(position+1, new DSeparator(sepOrientation), 1, Qt::AlignCenter);
+}
+
+
+QToolButton *KTProjectActionBar::button(Action action)
+{
+	return qobject_cast<QToolButton *>(m_actions.button(action));
 }
 

@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef TLAYERTABLE_H
-#define TLAYERTABLE_H
+#ifndef KTLAYERTABLE_H
+#define KTLAYERTABLE_H
 
 #include <QTableView>
 #include <QHash>
@@ -103,6 +103,8 @@ class KTFramesTable : public QTableView
 		void selectFrame(int index);
 		
 		void setAttribute(int row, int col, KTFramesTableItem::Attributes att, bool value);
+		
+		void removeFrame(int layerPos, int position);
 		
 	private:
 		void setup();

@@ -31,8 +31,11 @@
 #include <QPixmap>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QToolButton>
 
 #include "ktsceneevent.h"
+
+#include "ktprojectactionbar.h"
 
 
 //--------------- CONSTRUCTOR --------------------
@@ -54,22 +57,15 @@ KTScenesWidget::~KTScenesWidget()
 
 void KTScenesWidget::setupButtons()
 {
-	m_buttonsPanel = new QGroupBox(this);
+	KTProjectActionBar *bar = new KTProjectActionBar(KTProjectActionBar::InsertScene | KTProjectActionBar::RemoveScene );
 	
-	QHBoxLayout *layout = new QHBoxLayout(m_buttonsPanel);
-	layout->setMargin(0);
-
-	DImageButton *insertButton = new DImageButton(QPixmap(HOME_DIR+"/themes/default/icons/plussign.png" ) , 22, m_buttonsPanel);
-	layout->addWidget(insertButton);
-	insertButton->setToolTip(tr("Insert scene"));
-	connect(insertButton, SIGNAL(clicked()), this, SLOT(emitRequestInsertScene()));
 	
-	DImageButton *removeButton = new DImageButton(QPixmap(HOME_DIR+"/themes/default/icons/minussign.png" ) , 22, m_buttonsPanel);
-	layout->addWidget(removeButton);
-	removeButton->setToolTip(tr("Remove scene"));
-	connect(removeButton, SIGNAL(clicked()), this, SLOT(emitRequestRemoveScene()));
-
-	addChild(m_buttonsPanel);
+	bar->button(KTProjectActionBar::InsertScene)->setIcon(QIcon(HOME_DIR+"/themes/default/icons/plussign.png" ));
+	bar->button(KTProjectActionBar::RemoveScene)->setIcon(QIcon(HOME_DIR+"/themes/default/icons/minussign.png" ));
+	
+	connect(bar, SIGNAL(actionSelected( int )), this, SLOT(sendEvent(int)));
+	
+	addChild(bar);
 }
 
 void KTScenesWidget::setupTableScenes()
@@ -86,6 +82,24 @@ void KTScenesWidget::setupTableScenes()
 	
 	connect(m_tableScenes, SIGNAL(  itemDoubleClicked ( QTreeWidgetItem *, int )), this, SLOT(sceneDobleClick(QTreeWidgetItem *, int )));
 	
+}
+
+void KTScenesWidget::sendEvent(int action)
+{
+	switch(action)
+	{
+		case KTProjectActionBar::InsertScene:
+		{
+			emitRequestInsertScene();
+		}
+		break;
+		case KTProjectActionBar::RemoveScene:
+		{
+			emitRequestRemoveScene();
+		}
+		break;
+		default: break;
+	}
 }
 
 void KTScenesWidget::insertScene(const QString &name, bool addedToEnd)
@@ -125,13 +139,9 @@ void KTScenesWidget::emitRequestInsertScene()
 	}
 	
 	
-	KTSceneEvent event(KTProjectEvent::Add,  index);
+	KTSceneEvent event(KTProjectEvent::Add,  index, this);
 	
 	emit eventTriggered( &event );
-	
-// 	emit requestInsertScene();
-// 	emit requestInsertLayer();
-// 	emit requestInsertFrame();
 }
 
 void KTScenesWidget::emitRequestRemoveScene()
@@ -150,7 +160,7 @@ void KTScenesWidget::emitRequestRemoveScene()
 		DCONFIG->sync();
 	}
 	
-	KTSceneEvent event(KTProjectEvent::Remove,  m_tableScenes->indexCurrentScene() );
+	KTSceneEvent event(KTProjectEvent::Remove,  m_tableScenes->indexCurrentScene(), this );
 	
 	emit eventTriggered( &event );
 }

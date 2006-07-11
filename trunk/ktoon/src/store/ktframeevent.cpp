@@ -21,7 +21,7 @@
 #include "ktframeevent.h"
 #include <ddebug.h>
 
-KTFrameEvent::KTFrameEvent(Action action, int sceneIndex, int layerIndex, int frameIndex) : KTLayerEvent(action, sceneIndex, layerIndex), m_frameIndex(frameIndex)
+KTFrameEvent::KTFrameEvent(Action action, int sceneIndex, int layerIndex, int frameIndex, QObject *parent ) : KTLayerEvent(action, sceneIndex, layerIndex, parent), m_frameIndex(frameIndex)
 {
 	DINIT;
 }
@@ -48,4 +48,13 @@ bool KTFrameEvent::isValid() const
 	return KTSceneEvent::isValid() && KTLayerEvent::isValid() && (m_frameIndex >= 0);
 }
 
+
+KTProjectEvent *KTFrameEvent::clone() const
+{
+	KTFrameEvent *event = new KTFrameEvent(action(), sceneIndex(), layerIndex(), m_frameIndex, parent());
+	
+	event->setPartName( event->partName() );
+	
+	return event;
+}
 

@@ -1,6 +1,8 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Alexander Dymo                                  *
  *   adymo@kdevelop.org                                                    *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU Library General Public License as       *
@@ -55,14 +57,11 @@ DiDockWidget::DiDockWidget(QWidget *parent, Position position) : QDockWidget( pa
 	m_centralWidget = new DiDockInternalWidget(this, position);
 
 	setWidget(m_centralWidget);
-	m_centralWidget->show();
 	
 	layout()->setSpacing(0);
 	layout()->setMargin(0);
 	
 	connect(this, SIGNAL(topLevelChanged ( bool)), this, SLOT(setFloatingOption(bool)));
-	
-	setStyle(new QWindowsStyle());
 }
 
 DiDockWidget::~DiDockWidget()
@@ -441,7 +440,10 @@ void DiDockInternalWidget::shrink()
 		return;
 	}
 	
-	mainWindow->setUpdatesEnabled(false);
+// 	if ( mainWindow->centralWidget() )
+// 	{
+// 		mainWindow->centralWidget()->setUpdatesEnabled(false);
+// 	}
 	
 	bool hmt = mainWindow->hasMouseTracking();
 	
@@ -470,8 +472,6 @@ void DiDockInternalWidget::shrink()
 	QMouseEvent press(QEvent::MouseButtonPress,
 			  mapTo(mainWindow, QPoint(this->x(), this->y())) + QPoint(wOffset, hOffset),
 			  Qt::LeftButton, 0, 0);
-	
-	SHOW_VAR( mapTo(mainWindow, QPoint(this->x(), this->y())) + QPoint(wOffset, hOffset) );
 	
 	if ( ! QApplication::sendEvent(mainWindow, &press) )
 	{
@@ -542,7 +542,10 @@ void DiDockInternalWidget::shrink()
 	
 	mainWindow->setMouseTracking(hmt);
 	
-	mainWindow->setUpdatesEnabled(true);
+// 	if ( mainWindow->centralWidget() )
+// 	{
+// 		mainWindow->centralWidget()->setUpdatesEnabled(true);
+// 	}
 }
 
 

@@ -21,7 +21,7 @@
 #include "ktlayerevent.h"
 #include <ddebug.h>
 
-KTLayerEvent::KTLayerEvent(Action action, int sceneIndex, int layerIndex) : KTSceneEvent(action, sceneIndex), m_layerIndex(layerIndex)
+KTLayerEvent::KTLayerEvent(Action action, int sceneIndex, int layerIndex, QObject *parent) : KTSceneEvent(action, sceneIndex, parent), m_layerIndex(layerIndex)
 {
 	DINIT;
 }
@@ -45,5 +45,13 @@ int KTLayerEvent::layerIndex() const
 bool KTLayerEvent::isValid() const
 {
 	return KTSceneEvent::isValid() && (m_layerIndex >= 0 );
+}
+
+KTProjectEvent *KTLayerEvent::clone() const
+{
+	KTLayerEvent *event = new KTLayerEvent(action(), sceneIndex(), m_layerIndex, parent());
+	
+	event->setPartName( event->partName());
+	return event;
 }
 

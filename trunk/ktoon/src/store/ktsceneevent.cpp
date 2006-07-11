@@ -21,7 +21,7 @@
 #include "ktsceneevent.h"
 #include <ddebug.h>
 
-KTSceneEvent::KTSceneEvent(Action action, int sceneIndex) : KTProjectEvent(action), m_sceneIndex(sceneIndex)
+KTSceneEvent::KTSceneEvent(Action action, int sceneIndex, QObject *parent) : KTProjectEvent(action, parent), m_sceneIndex(sceneIndex)
 {
 	DINIT;
 }
@@ -49,5 +49,14 @@ bool KTSceneEvent::isValid() const
 		return false;
 	
 	return true;
+}
+
+KTProjectEvent *KTSceneEvent::clone() const
+{
+	KTSceneEvent *event = new KTSceneEvent(action(), sceneIndex(), parent());
+	
+	event->setPartName( partName() );
+	
+	return event;
 }
 

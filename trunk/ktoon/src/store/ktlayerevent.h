@@ -28,7 +28,7 @@
 class Q_DECL_EXPORT KTLayerEvent : public KTSceneEvent
 {
 	public:
-		KTLayerEvent(Action action, int sceneIndex, int layerIndex);
+		KTLayerEvent(Action action, int sceneIndex, int layerIndex, QObject *parent = 0);
 		~KTLayerEvent();
 		
 		virtual int id() const;
@@ -36,6 +36,8 @@ class Q_DECL_EXPORT KTLayerEvent : public KTSceneEvent
 		int layerIndex() const;
 		
 		virtual bool isValid() const;
+		
+		virtual KTProjectEvent *clone() const;
 		
 	private:
 		int m_layerIndex;

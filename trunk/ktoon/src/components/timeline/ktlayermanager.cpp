@@ -69,6 +69,7 @@ void KTLayerManager::insertLayer(int position, const QString &name)
 
 void KTLayerManager::removeLayer(int position)
 {
+	D_FUNCINFO << position;
 	removeRow(position);
 }
 

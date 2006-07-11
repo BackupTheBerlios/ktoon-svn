@@ -24,18 +24,19 @@
 #include <QBitmap>
 #include <QTimer>
 #include <QPainter>
+#include <QDesktopWidget>
+#include <QLinearGradient>
 
 #include "dcore/ddebug.h"
 
-DOsd::DOsd( QWidget * parent )
-	: QWidget( parent), m_timer( 0 )
+DOsd::DOsd( QWidget * parent ) : QWidget( parent), m_timer( 0 )
 {
 	setFocusPolicy( Qt::NoFocus );
 	
 	m_palette = palette();
 // 	setBackgroundMode( Qt::NoBackground );
 	
-	move( 10, 10 );
+	move( 50, 50 );
 	resize( 0, 0 );
 	hide();
 	
@@ -44,6 +45,9 @@ DOsd::DOsd( QWidget * parent )
 	
 	m_timer = new QTimer( this );
 	connect( m_timer, SIGNAL( timeout() ), SLOT( hide() ) );
+	
+	
+	setWindowFlags( Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::ToolTip );
 }
 
 DOsd::~DOsd()
@@ -52,7 +56,7 @@ DOsd::~DOsd()
 	delete m_timer;
 }
 
-void DOsd::display( const QString & message, Level level, int ms )
+void DOsd::display( const QString &message, Level level, int ms )
 {
 	if ( ms < 0 )
 	{
@@ -68,17 +72,26 @@ void DOsd::display( const QString & message, Level level, int ms )
 	QRect textRect = fontMetrics().boundingRect( message );
 	textRect.translate( -textRect.left(), -textRect.top() );
 	textRect.adjust( 0, 0, 2, 2 );
+	
 	int width = textRect.width();
-	int height = textRect.height();
+	int height = textRect.height() + 30;
+	
+	QDesktopWidget desktop;
+	move ( (desktop.screenGeometry().width() - width ) - 50, 50 );
 
 	if ( level != None )
 	{
 		switch ( level )
 		{
 			case Info:
-				break;
+			{
+				background = QColor(0x678eae);
+			}
+			break;
 			case Warning:
-				break;
+			{
+			}
+			break;
 			case Error:
 				background = Qt::red;
 				break;
@@ -89,6 +102,7 @@ void DOsd::display( const QString & message, Level level, int ms )
 				break;
 		}
 	}
+	
 	QRect geometry( 0, 0, width + 10, height + 8 );
 	QRect geometry2( 0, 0, width + 9, height + 7 );
 
@@ -108,7 +122,7 @@ void DOsd::display( const QString & message, Level level, int ms )
 	
 	maskPainter.end();
 	
-	drawPixmap( message, background, foreground);
+	drawPixmap( message, background, foreground );
 	
     	// show widget and schedule a repaint
 	show();
@@ -118,8 +132,11 @@ void DOsd::display( const QString & message, Level level, int ms )
 	if ( ms > 0 )
 	{
 		m_animator->timer.start(300);
+		
 		m_timer->start( ms );
-	} else if ( m_timer )
+		
+	} 
+	else if ( m_timer )
 	{
 		m_timer->stop();
 	}
@@ -133,7 +150,7 @@ void DOsd::paintEvent( QPaintEvent * e )
 	p.drawPixmap( e->rect().topLeft(), m_pixmap, e->rect() );
 }
 
-void DOsd::mousePressEvent( QMouseEvent * /*e*/ )
+void DOsd::mousePressEvent( QMouseEvent *e )
 {
 	if ( m_timer )
 		m_timer->stop();
@@ -148,6 +165,9 @@ void DOsd::animate()
 	}
 	
 	QBrush background;
+	
+	if ( m_animator->level == Info )
+		return;
 	
 	if ( m_animator->level == Error )
 	{
@@ -172,10 +192,11 @@ void DOsd::animate()
 		}
 	}
 	
-	m_animator->on = !m_animator->on;
-	drawPixmap( m_lastMessage, background, palette().foreground());
+	m_animator->on = m_animator->on ? false : true;
 	
-	update();
+	drawPixmap( m_lastMessage, background, palette().foreground() );
+	
+	repaint();
 }
 
 void DOsd::drawPixmap(const QString &message, const QBrush &background, const QBrush &foreground)
@@ -185,8 +206,10 @@ void DOsd::drawPixmap(const QString &message, const QBrush &background, const QB
 	QRect textRect = fontMetrics().boundingRect( message );
 	textRect.translate( -textRect.left(), -textRect.top() );
 	textRect.adjust( 0, 0, 2, 2 );
+	
 	int width = textRect.width();
-	int height = textRect.height();
+	int height = textRect.height() + 30;
+	
 	int textXOffset = 0;
 	int shadowOffset = message.isRightToLeft() ? -1 : 1;
 	
@@ -201,7 +224,20 @@ void DOsd::drawPixmap(const QString &message, const QBrush &background, const QB
 	QPainter bufferPainter( &m_pixmap );
 	bufferPainter.setRenderHint(QPainter::Antialiasing);
 	bufferPainter.setPen( QPen(QBrush(foreground), 3)  );
-	bufferPainter.setBrush( background ); 
+	
+	QLinearGradient gradient(geometry.topLeft(), geometry.bottomLeft() );
+	
+	QColor color0 = background.color();
+	color0.setAlpha(180);
+	
+	QColor color1 = palette().color( QPalette::Button);
+	color1.setAlpha(180);
+	
+	gradient.setColorAt(0.0, color0 );
+	gradient.setColorAt(1.0, color1 );
+	gradient.setSpread(QGradient::ReflectSpread );
+	
+	bufferPainter.setBrush( gradient ); 
 	bufferPainter.drawRoundRect( geometry2, 1600 / geometry2.width(), 1600 / geometry2.height() );
 	 
 	// draw shadow and text

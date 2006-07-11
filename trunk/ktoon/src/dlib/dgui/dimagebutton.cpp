@@ -34,7 +34,7 @@
 class DImageButton::Animation
 {
 	public:
-		Animation(int initialSize) : aSize(initialSize), m_interval(80), aBeginning(true)
+		Animation(int initialSize) : aSize(initialSize), aBeginning(true), m_interval(80)
 		{
 			aTimer = new QTimer;
 		}

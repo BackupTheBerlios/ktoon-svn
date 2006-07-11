@@ -283,7 +283,7 @@
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cacelar</translation>
+        <translation>Cancelar</translation>
     </message>
 </context>
 <context>

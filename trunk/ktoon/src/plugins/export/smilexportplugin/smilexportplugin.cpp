@@ -199,7 +199,7 @@ QStringList SmilExportPlugin::createImages(const QList<KTScene *> &scenes, const
 				
 				paths << dest;
 				
-				createPar( dest, 1.0f/(float)scene->fps() );
+				// 				createPar( dest, 1.0f/(float)scene->fps() ); // FIXME
 			}
 			
 			if (ok )

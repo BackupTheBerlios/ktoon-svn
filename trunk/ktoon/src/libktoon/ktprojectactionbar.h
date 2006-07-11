@@ -25,7 +25,7 @@
 
 #include <QButtonGroup>
 
-class QPushButton;
+class QToolButton;
 class QBoxLayout;
 
 /**
@@ -69,6 +69,8 @@ class KTProjectActionBar : public QWidget
 		void setFixedSize(int s);
 		
 		void insertSeparator(int position);
+		
+		QToolButton *button(Action action);
 		
 		
 	signals:

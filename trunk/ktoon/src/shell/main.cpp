@@ -132,9 +132,7 @@ int main( int argc, char ** argv )
 	
 	splash->setMessage( QObject::tr( "Loading Modules" ) );
 	KTMainWindow mainWindow(splash);
-	mainWindow.show();
 	
-
 	splash->setMessage( QObject::tr( "Loaded!" ) );
 
 	splash->finish( &mainWindow );

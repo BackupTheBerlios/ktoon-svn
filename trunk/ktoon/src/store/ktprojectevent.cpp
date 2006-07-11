@@ -22,7 +22,7 @@
 
 #include <ddebug.h>
 
-KTProjectEvent::KTProjectEvent(Action action) : m_action(action)
+KTProjectEvent::KTProjectEvent(Action action, QObject *parent) : QObject(parent), m_action(action)
 {
 	DINIT;
 }
@@ -58,5 +58,14 @@ void KTProjectEvent::setPartName(const QString &name)
 bool KTProjectEvent::isValid() const
 {
 	return false;
+}
+
+KTProjectEvent *KTProjectEvent::clone() const
+{
+	KTProjectEvent *event = new KTProjectEvent( m_action, parent() );
+	
+	event->setPartName( event->partName() );
+	
+	return event;
 }
 

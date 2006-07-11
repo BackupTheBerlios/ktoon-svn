@@ -151,7 +151,7 @@ class KTMainWindow : public DMainWindow
 		
 		void openRecentProject();
 		
-		void createCommand(KTProjectEvent *event);
+		void createCommand(const KTProjectEvent *event);
 		
 	private:
 		KTProjectManager *m_projectManager;

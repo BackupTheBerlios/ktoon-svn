@@ -46,7 +46,7 @@ class KTScenesWidget : public KTModuleWidgetBase
 		void closeAllScenes();
 		
 	private:
-		QGroupBox *m_buttonsPanel;
+// 		QGroupBox *m_buttonsPanel;
 		QButtonGroup *m_buttonGroup;
 		KTScenesList *m_tableScenes;
 
@@ -75,6 +75,7 @@ class KTScenesWidget : public KTModuleWidgetBase
 		void renameScene(const QString &name);
 		
 	public slots:
+		void sendEvent(int action);
 		void insertScene(const QString &name, bool addedToEnd);
 		void removeScene();
 		void setScene(int index);

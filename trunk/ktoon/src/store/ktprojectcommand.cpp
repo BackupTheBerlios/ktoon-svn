@@ -26,15 +26,20 @@
 #include "ktprojectevent.h"
 #include "ktframeevent.h"
 
-KTProjectCommand::KTProjectCommand(KTProject *project, const KTProjectEvent *event) : QUndoCommand(), m_project(project), m_event(event)
+KTProjectCommand::KTProjectCommand(KTProject *project, const KTProjectEvent *event) : QUndoCommand(), m_project(project)
 {
 	DINIT;
+	
+	m_event = event->clone();
+	m_event->setParent(0);
 }
 
 
 KTProjectCommand::~KTProjectCommand()
 {
 	DEND;
+	
+	if ( m_event ) delete m_event;
 }
 
 

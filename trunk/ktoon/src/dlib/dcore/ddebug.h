@@ -305,6 +305,9 @@ template <class T> DDebug &DDebug::operator<<( const QList<T> &list )
 }
 
 // Global functions
+
+// DDebug(DDebugMsg) << __PRETTY_FUNCTION__ << ": "
+
 inline DDebug dDebug()
 {
 	return DDebug(DDebugMsg);

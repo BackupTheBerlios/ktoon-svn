@@ -476,6 +476,7 @@ KTFramesTableItemDelegate::~KTFramesTableItemDelegate()
 void KTFramesTableItemDelegate::paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
 	Q_ASSERT(index.isValid());
+	
 	const KTFramesTableModel *model = reinterpret_cast<const KTFramesTableModel*>( index.model() );
 	Q_ASSERT(model);
 	
@@ -506,7 +507,7 @@ void KTFramesTableItemDelegate::paint ( QPainter * painter, const QStyleOptionVi
 		painter->restore();
 	}
 	
-		// Selection!
+	// Selection!
 	if (option.showDecorationSelected && (option.state & QStyle::State_Selected))
 	{
 		QPalette::ColorGroup cg = option.state & QStyle::State_Enabled ? QPalette::Normal : QPalette::Disabled;
@@ -968,8 +969,7 @@ void KTFramesTable::insertLayer(int pos, const QString &name)
 void KTFramesTable::removeCurrentLayer()
 {
 	int pos = currentRow();
-	removeRow( pos );
-	m_layers.removeAt(pos);
+	removeLayer(pos);
 }
 
 void KTFramesTable::removeLayer(int pos)
@@ -997,6 +997,10 @@ void KTFramesTable::insertFrame(int layerPos, const QString &name)
 	}
 	
 	setAttribute( layerPos, m_layers[layerPos].lastItem, KTFramesTableItem::IsUsed, true);
+	
+	m_model->setData( m_model->index(layerPos, m_layers[layerPos].lastItem), name, Qt::ToolTipRole );
+	
+	viewport()->update();
 }
 
 void KTFramesTable::setCurrentFrame(KTFramesTableItem *item)
@@ -1012,6 +1016,26 @@ void KTFramesTable::setCurrentLayer(int layerPos)
 void KTFramesTable::selectFrame(int index)
 {
 	setCurrentItem( item( currentRow(), index ) );
+}
+
+void KTFramesTable::removeFrame(int layerPos, int position)
+{
+// 	for(int frameIndex = position; frameIndex < columnCount(); frameIndex++ )
+// 	{
+// 		setAttribute( layerPos, position, KTFramesTableItem::IsUsed, false);
+// 	}
+	
+	if ( layerPos < 0 || layerPos >= m_layers.count() )
+	{
+		return;
+	}
+	
+	setAttribute( layerPos, m_layers[layerPos].lastItem, KTFramesTableItem::IsUsed, false );
+	
+	m_layers[layerPos].lastItem--;
+	
+// 	viewport()->update( visualRect(indexFromItem( item(layerPos, position) )) );
+	viewport()->update();
 }
 
 void KTFramesTable::setAttribute(int row, int col, KTFramesTableItem::Attributes att, bool value)

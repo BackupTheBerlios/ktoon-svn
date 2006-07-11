@@ -22,13 +22,18 @@
 #ifndef KTPROJECTEVENT_H
 #define KTPROJECTEVENT_H
 
-#include <QEvent>
+#include <QObject>
 #include <QString>
+
+class KTProjectEvent;
+class KTSceneEvent;
+class KTLayerEvent;
+class KTFrameEvent;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Q_DECL_EXPORT KTProjectEvent
+class Q_DECL_EXPORT KTProjectEvent : public QObject
 {
 	public:
 		enum Action
@@ -44,7 +49,7 @@ class Q_DECL_EXPORT KTProjectEvent
 			Scene
 		};
 		
-		KTProjectEvent(Action action);
+		KTProjectEvent(Action action, QObject *parent = 0);
 		virtual ~KTProjectEvent();
 		
 		
@@ -55,6 +60,8 @@ class Q_DECL_EXPORT KTProjectEvent
 		virtual int id() const;
 		
 		virtual bool isValid() const;
+		
+		virtual KTProjectEvent *clone() const;
 		
 	private:
 		Action m_action;

@@ -62,7 +62,7 @@ void FFMpegPlugin::exportToFormat(const QString &filePath, const QList<KTScene *
 	
 	QStringList paths = createImages(scenes, temp, sx, sy);
 	
-	manager.create(filePath, format, paths, m_size,scenes[0]->fps());
+	// 	manager.create(filePath, format, paths, m_size,scenes[0]->fps()); // FIXME
 	
 	foreach(QString path, paths)
 	{

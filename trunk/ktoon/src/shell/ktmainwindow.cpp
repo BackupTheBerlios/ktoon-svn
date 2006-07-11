@@ -54,15 +54,15 @@
 #include <QMessageBox>
 //
 
-KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0), m_scenes(0), m_viewDoc(0),m_animationSpace(0)
+
+KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_viewDoc(0), m_animationSpace(0), m_exposureSheet(0), m_scenes(0)
 {
 	DINIT;
 	m_undoCommands = new QUndoStack(this);
 
-	
 	setObjectName("KTMainWindow_");
 	
-	m_osd = new DOsd( centralWidget() );
+	m_osd = new DOsd( 0 );
 	
 	m_statusBar = new KTStatusBar(this);
 	setStatusBar( m_statusBar );
@@ -104,6 +104,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 KTMainWindow::~KTMainWindow()
 {
 	DEND;
+	if ( m_osd ) delete m_osd;
 }
 
 
@@ -403,8 +404,8 @@ void KTMainWindow::importPalettes()
 
 void KTMainWindow::ui4project(QWidget *widget)
 {
-	connect(widget, SIGNAL(eventTriggered(KTProjectEvent *)), this, SLOT(createCommand(KTProjectEvent *)));
-	connect(m_projectManager, SIGNAL(commandExecuted( KTProjectEvent* )), widget, SLOT(handleProjectEvent(KTProjectEvent *)));
+	connect(widget, SIGNAL(eventTriggered(const KTProjectEvent *)), this, SLOT(createCommand(const KTProjectEvent *)));
+	connect(m_projectManager, SIGNAL(commandExecuted(KTProjectEvent* )), widget, SLOT(handleProjectEvent(KTProjectEvent *)));
 }
 
 void KTMainWindow::messageToStatus(const QString &msg)
@@ -516,10 +517,12 @@ void KTMainWindow::closeEvent( QCloseEvent *event )
 	DCONFIG->beginGroup("General");
 	DCONFIG->setValue("recents", m_recentProjects);
 	
+	m_osd->close();
+	
 	DMainWindow::closeEvent(event);
 }
 
-void KTMainWindow::createCommand(KTProjectEvent *event)
+void KTMainWindow::createCommand(const KTProjectEvent *event)
 {
 	D_FUNCINFO;
 	

@@ -29,13 +29,15 @@
 class Q_DECL_EXPORT KTSceneEvent : public KTProjectEvent
 {
 	public:
-		KTSceneEvent(Action action, int sceneIndex);
+		KTSceneEvent(Action action, int sceneIndex, QObject *parent = 0);
 		~KTSceneEvent();
 		
 		virtual int id() const;
 		int sceneIndex() const;
 		
 		virtual bool isValid() const;
+		
+		virtual KTProjectEvent *clone() const;
 		
 	private:
 		int m_sceneIndex;

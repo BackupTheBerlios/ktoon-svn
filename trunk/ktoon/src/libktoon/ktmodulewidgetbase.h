@@ -84,7 +84,7 @@ class KTModuleWidgetBase : public QWidget, public KTAbstractProjectEventHandler
 		void toggle();
 		void activate(bool);
 		
-		void eventTriggered(KTProjectEvent *event);
+		void eventTriggered(const KTProjectEvent *event);
 };
 
 #endif

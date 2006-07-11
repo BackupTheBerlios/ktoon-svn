@@ -204,7 +204,7 @@ void KTTimeLine::frameEvent(KTFrameEvent *e)
 			
 			if ( framesTable )
 			{
-// 				layerManager->removeLayer( e->layerIndex());
+				framesTable->removeFrame( e->layerIndex(), e->frameIndex() );
 			}
 		}
 		break;
@@ -217,42 +217,43 @@ void KTTimeLine::requestCommand(int action)
 	int layerPos = -1;
 	int framePos = -1;
 	
-	KTProjectEvent *event = 0;
-	
 	if ( scenePos >= 0 )
 	{
 		layerPos = layerManager( scenePos )->currentRow();
 		
-		if ( layerPos < 0 )
-		{
-			layerPos = 0;
-		}
+// 		if ( layerPos < 0 )
+// 		{
+// 			layerPos = 0;
+// 		}
 		
 		framePos = framesTable( scenePos )->currentColumn();
 		
-		if ( framePos < 0 )
-		{
-			framePos = 0;
-		}
+// 		if ( framePos < 0 )
+// 		{
+// 			framePos = 0;
+// 		}
 	}
 	
-	if ( scenePos < 0 )
-	{
-		scenePos = 0;
-	}
+// 	if ( scenePos < 0 )
+// 	{
+// 		scenePos = 0;
+// 	}
+	
+	KTProjectEvent *event = 0;
 	
 	switch(action)
 	{
 		case KTProjectActionBar::InsertFrame:
 		{
-			event = new KTFrameEvent(KTProjectEvent::Add, scenePos, layerPos, framePos );
+			event = new KTFrameEvent(KTProjectEvent::Add, scenePos, layerPos, framePos, this);
 			
 			emit eventTriggered( event );
+			
 		}
 		break;
 		case KTProjectActionBar::RemoveFrame:
 		{
-			event = new KTFrameEvent(KTProjectEvent::Remove, scenePos, layerPos, framePos );
+			event = new KTFrameEvent(KTProjectEvent::Remove, scenePos, layerPos, framePos, this );
 			
 			emit eventTriggered( event );
 		}
@@ -269,14 +270,14 @@ void KTTimeLine::requestCommand(int action)
 		
 		case KTProjectActionBar::InsertLayer:
 		{
-			event = new KTLayerEvent(KTProjectEvent::Add, scenePos, layerPos);
+			event = new KTLayerEvent(KTProjectEvent::Add, scenePos, layerPos+1, this);
 			
 			emit eventTriggered( event );
 		}
 		break;
 		case KTProjectActionBar::RemoveLayer:
 		{
-			event = new KTLayerEvent(KTProjectEvent::Remove, scenePos, layerPos);
+			event = new KTLayerEvent(KTProjectEvent::Remove, scenePos, layerPos, this);
 			
 			emit eventTriggered( event );
 		}
@@ -293,31 +294,30 @@ void KTTimeLine::requestCommand(int action)
 		
 		case KTProjectActionBar::InsertScene:
 		{
-			event = new KTSceneEvent(KTProjectEvent::Add, scenePos);
+			event = new KTSceneEvent(KTProjectEvent::Add, scenePos+1, this);
 			
 			emit eventTriggered( event );
 		}
 		break;
 		case KTProjectActionBar::RemoveScene:
 		{
-			event = new KTSceneEvent(KTProjectEvent::Remove, scenePos);
+			event = new KTSceneEvent(KTProjectEvent::Remove, scenePos, this);
 			
 			emit eventTriggered( event );
 		}
 		break;
 		case KTProjectActionBar::MoveSceneUp:
 		{
+			
 		}
 		break;
 		case KTProjectActionBar::MoveSceneDown:
 		{
+			
 		}
 		break;
 		
 	}
 	
-	if ( event )
-	{
-		delete event;
-	}
+	delete event;
 }
