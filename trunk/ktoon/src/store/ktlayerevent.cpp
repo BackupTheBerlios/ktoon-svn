@@ -55,3 +55,88 @@ KTProjectEvent *KTLayerEvent::clone() const
 	return event;
 }
 
+/////////// Move Layer Event
+
+KTMoveLayerEvent::KTMoveLayerEvent(int sceneIndex, int layerIndex, int newIndex, QObject *parent) : KTLayerEvent(KTProjectEvent::Move, sceneIndex, layerIndex, parent), m_newLayerIndex(newIndex)
+{
+}
+
+
+KTMoveLayerEvent::~KTMoveLayerEvent()
+{
+}
+
+
+bool KTMoveLayerEvent::isValid() const
+{
+	return KTLayerEvent::isValid() && ( m_newLayerIndex >= 0 );
+}
+
+KTProjectEvent *KTMoveLayerEvent::clone() const
+{
+	KTMoveLayerEvent *event = new KTMoveLayerEvent( sceneIndex(), layerIndex(), m_newLayerIndex );
+	
+	return event;
+}
+
+
+int KTMoveLayerEvent::newLayerIndex() const
+{
+	return m_newLayerIndex;
+}
+
+
+
+/////////// Lock Layer Event
+
+KTLockLayerEvent::KTLockLayerEvent(int sceneIndex, int layerIndex, bool lock, QObject *parent) : KTLayerEvent(KTProjectEvent::Lock, sceneIndex, layerIndex, parent), m_isLocked(lock)
+{
+}
+
+
+KTLockLayerEvent::~KTLockLayerEvent()
+{
+}
+
+bool KTLockLayerEvent::isLocked() const
+{
+	return m_isLocked;
+}
+
+KTProjectEvent *KTLockLayerEvent::clone() const
+{
+	KTLockLayerEvent *event = new KTLockLayerEvent( sceneIndex(), layerIndex(), m_isLocked );
+	
+	return event;
+}
+
+
+/////////// Rename Layer Event
+
+KTRenameLayerEvent::KTRenameLayerEvent(int sceneIndex, int layerIndex, const QString &newName, QObject *parent) : KTLayerEvent(KTProjectEvent::Rename, sceneIndex, layerIndex, parent), m_newName(newName)
+{
+}
+
+
+KTRenameLayerEvent::~KTRenameLayerEvent()
+{
+}
+
+
+QString KTRenameLayerEvent::newName() const
+{
+	return m_newName;
+}
+
+
+KTProjectEvent *KTRenameLayerEvent::clone() const
+{
+	KTRenameLayerEvent *event = new KTRenameLayerEvent( sceneIndex(), layerIndex(), m_newName, parent() );
+	
+	event->setPartName( partName() );
+	
+	return event;
+}
+
+
+

@@ -32,17 +32,73 @@ class Q_DECL_EXPORT KTFrameEvent : public KTLayerEvent
 		KTFrameEvent(Action action, int sceneIndex, int layerIndex, int frameIndex, QObject *parent = 0);
 		~KTFrameEvent();
 		
-		
 		virtual int id() const;
-		
 		int frameIndex() const;
-		
 		virtual bool isValid() const;
-		
 		virtual KTProjectEvent *clone() const;
 		
 	private:
 		int m_frameIndex;
 };
 
+
+/**
+ * @author David Cuadrado \<krawek@gmail.com\>
+ */
+class Q_DECL_EXPORT KTMoveFrameEvent : public KTFrameEvent
+{
+	public:
+		KTMoveFrameEvent(int sceneIndex, int layerIndex, int frameIndex, int newFrameIndex, QObject *parent = 0);
+		~KTMoveFrameEvent();
+		
+		int newFrameIndex() const;
+		
+		virtual bool isValid() const;
+		virtual KTProjectEvent *clone() const;
+		
+	private:
+		int m_newFrameIndex;
+};
+
+
+
+/**
+ * @author David Cuadrado \<krawek@gmail.com\>
+ */
+class Q_DECL_EXPORT KTLockFrameEvent : public KTFrameEvent
+{
+	public:
+		KTLockFrameEvent(int sceneIndex, int layerIndex, int frameIndex, bool lock, QObject *parent = 0 );
+		~KTLockFrameEvent();
+		
+		bool isLocked() const;
+		virtual KTProjectEvent *clone() const;
+		
+	private:
+		bool m_isLocked;
+};
+
+
+
+/**
+ * @author David Cuadrado \<krawek@gmail.com\>
+ */
+class Q_DECL_EXPORT KTRenameFrameEvent : public KTFrameEvent
+{
+	public:
+		KTRenameFrameEvent(int sceneIndex, int layerIndex, int frameIndex, const QString &newName, QObject *parent = 0);
+		~KTRenameFrameEvent();
+		
+		QString newName() const;
+		
+		virtual KTProjectEvent *clone() const;
+		
+	private:
+		QString m_newName;
+};
+
+
+
 #endif
+
+

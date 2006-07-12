@@ -142,6 +142,19 @@ void KTTimeLine::sceneEvent(KTSceneEvent *e)
 			removeScene(e->sceneIndex());
 		}
 		break;
+		case KTProjectEvent::Move:
+		{
+		}
+		break;
+		case KTProjectEvent::Lock:
+		{
+		}
+		break;
+		case KTProjectEvent::Rename:
+		{
+		}
+		break;
+		
 	}
 }
 
@@ -181,6 +194,20 @@ void KTTimeLine::layerEvent(KTLayerEvent *e)
 			}
 		}
 		break;
+		
+		case KTProjectEvent::Move:
+		{
+			qDebug("MOVE!!");
+		}
+		break;
+		case KTProjectEvent::Lock:
+		{
+		}
+		break;
+		case KTProjectEvent::Rename:
+		{
+		}
+		break;
 	}
 }
 
@@ -206,6 +233,18 @@ void KTTimeLine::frameEvent(KTFrameEvent *e)
 			{
 				framesTable->removeFrame( e->layerIndex(), e->frameIndex() );
 			}
+		}
+		break;
+		case KTProjectEvent::Move:
+		{
+		}
+		break;
+		case KTProjectEvent::Lock:
+		{
+		}
+		break;
+		case KTProjectEvent::Rename:
+		{
 		}
 		break;
 	}
@@ -260,18 +299,19 @@ void KTTimeLine::requestCommand(int action)
 		break;
 		case KTProjectActionBar::MoveFrameUp:
 		{
+			KTMoveFrameEvent event(scenePos, layerPos, framePos, framePos+1, this);
+			emit eventTriggered(&event);
 		}
 		break;
 		case KTProjectActionBar::MoveFrameDown:
 		{
+			KTMoveFrameEvent event(scenePos, layerPos, framePos, framePos-1, this);
+			emit eventTriggered(&event);
 		}
 		break;
-		
-		
 		case KTProjectActionBar::InsertLayer:
 		{
 			event = new KTLayerEvent(KTProjectEvent::Add, scenePos, layerPos+1, this);
-			
 			emit eventTriggered( event );
 		}
 		break;
@@ -284,10 +324,14 @@ void KTTimeLine::requestCommand(int action)
 		break;
 		case KTProjectActionBar::MoveLayerUp:
 		{
+			KTMoveLayerEvent event(scenePos, layerPos, layerPos+1, this);
+			emit eventTriggered(&event);
 		}
 		break;
 		case KTProjectActionBar::MoveLayerDown:
 		{
+			KTMoveLayerEvent event(scenePos, layerPos, layerPos-1, this);
+			emit eventTriggered(&event);
 		}
 		break;
 		
@@ -308,15 +352,16 @@ void KTTimeLine::requestCommand(int action)
 		break;
 		case KTProjectActionBar::MoveSceneUp:
 		{
-			
+			KTMoveSceneEvent event(scenePos, scenePos+1, this);
+			emit eventTriggered(&event);
 		}
 		break;
 		case KTProjectActionBar::MoveSceneDown:
 		{
-			
+			KTMoveSceneEvent event(scenePos, scenePos-1, this);
+			emit eventTriggered(&event);
 		}
 		break;
-		
 	}
 	
 	delete event;

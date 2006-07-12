@@ -408,3 +408,201 @@ QDomElement KTProject::toXml(QDomDocument &doc)
 	return QDomElement();
 }
 
+void KTProject::moveScene(int position, int newPosition)
+{
+	KTScene *scene = this->scene(position);
+	
+	if ( !scene) return;
+	
+	KTScene *other = this->scene(newPosition);
+	
+	if ( ! other ) return;
+	
+	qSwap(scene, other);
+	
+	KTMoveSceneEvent event(position, newPosition);
+	emit commandExecuted( &event);
+	
+}
+
+
+void KTProject::moveLayer(int scenePosition, int position, int newPosition)
+{
+	KTScene *scene = this->scene(scenePosition);
+	
+	if ( !scene)
+	{
+		return;
+	}
+	
+	KTLayer *layer = scene->layer(position);
+	
+	if ( layer )
+	{
+		KTLayer *other = scene->layer(newPosition);
+		qSwap(layer, other);
+		
+		KTMoveLayerEvent event(scenePosition, position, newPosition);
+		emit commandExecuted( &event);
+	}
+}
+
+void KTProject::moveFrame(int scenePosition, int layerPosition, int position, int newPosition)
+{
+	KTScene *scene = this->scene(scenePosition);
+	
+	if ( !scene)
+	{
+		return;
+	}
+	
+	KTLayer *layer = scene->layer(layerPosition);
+	
+	if ( layer )
+	{
+		KTFrame *frame = layer->frame(position);
+		
+		if ( ! frame ) return;
+		
+		KTFrame *other = layer->frame(newPosition);
+		
+		if ( !other ) return;
+		
+		qSwap(frame, other);
+		
+		KTMoveFrameEvent event(scenePosition, layerPosition, position, newPosition);
+		emit commandExecuted( &event );
+	}
+}
+
+void KTProject::lockScene(int position, bool lock)
+{
+	KTScene *scene = this->scene(position);
+	
+	if ( !scene)
+	{
+		return;
+	}
+	
+	KTLockSceneEvent event(position, lock);
+	emit commandExecuted( &event);
+	
+// 	scene->setLocked(lock);
+}
+
+void KTProject::lockLayer(int scenePosition, int position, bool lock)
+{
+	KTScene *scene = this->scene(scenePosition);
+	
+	if ( !scene)
+	{
+		return;
+	}
+	
+	KTLayer *layer = scene->layer(position);
+	
+	if ( layer )
+	{
+// 		layer->setLocked(lock);
+		
+		KTLockLayerEvent event(scenePosition, position, lock);
+		emit commandExecuted( &event);
+	}
+}
+
+void KTProject::lockFrame(int scenePosition, int layerPosition, int position, bool lock)
+{
+	KTScene *scene = this->scene(scenePosition);
+	
+	if ( !scene)
+	{
+		return;
+	}
+	
+	KTLayer *layer = scene->layer(layerPosition);
+	
+	if ( layer )
+	{
+		KTFrame *frame = layer->frame(position);
+		
+		if ( ! frame ) return;
+		
+		frame->setLocked( lock );
+		
+		KTLockFrameEvent event(scenePosition, layerPosition, position, lock);
+		emit commandExecuted( &event );
+	}
+}
+
+void KTProject::renameScene(int position, const QString &newName)
+{
+	KTScene *scene = this->scene(position);
+	
+	if ( !scene)
+	{
+		return;
+	}
+	
+	KTRenameSceneEvent event(position, newName);
+	event.setPartName( scene->sceneName() );
+	
+	scene->setSceneName( newName);
+	
+	emit commandExecuted( &event );
+}
+
+void KTProject::renameLayer(int scenePosition, int position, const QString &newName)
+{
+	KTScene *scene = this->scene(scenePosition);
+	
+	if ( !scene)
+	{
+		return;
+	}
+	
+	KTLayer *layer = scene->layer(position);
+	
+	if ( layer )
+	{
+		
+		KTRenameLayerEvent event(scenePosition, position, newName);
+		event.setPartName( layer->layerName());
+		
+		layer->setLayerName( newName );
+		
+		emit commandExecuted( &event);
+	}
+}
+
+void KTProject::renameFrame(int scenePosition, int layerPosition, int position, const QString &newName)
+{
+	KTScene *scene = this->scene(scenePosition);
+	
+	if ( !scene)
+	{
+		return;
+	}
+	
+	KTLayer *layer = scene->layer(layerPosition);
+	
+	if ( layer )
+	{
+		KTFrame *frame = layer->frame(position);
+		
+		if ( ! frame ) return;
+		
+		
+		KTRenameFrameEvent event(scenePosition, layerPosition, position, newName);
+		event.setPartName(frame->frameName());
+		
+		frame->setFrameName( newName );
+		
+		emit commandExecuted( &event );
+	}
+}
+
+
+
+
+
+

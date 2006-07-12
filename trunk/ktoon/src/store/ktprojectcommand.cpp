@@ -51,7 +51,7 @@ void KTProjectCommand::redo()
 	{
 		case KTProjectEvent::Project:
 		{
-			projectCommand(m_event, true);
+			dDebug() << "Project event isn't handle";
 		}
 		break;
 		case KTProjectEvent::Frame:
@@ -86,7 +86,7 @@ void KTProjectCommand::undo()
 	{
 		case KTProjectEvent::Project:
 		{
-			projectCommand(m_event, false);
+			dDebug() << "Project event isn't handle";
 		}
 		break;
 		case KTProjectEvent::Frame:
@@ -112,58 +112,6 @@ void KTProjectCommand::undo()
 	}
 }
 
-
-void KTProjectCommand::projectCommand(const KTProjectEvent *event, bool redo)
-{
-	if ( redo )
-	{
-		switch(event->action())
-		{
-			case KTProjectEvent::Add:
-			{
-			}
-			break;
-			case KTProjectEvent::Remove:
-			{
-			}
-			break;
-// 			case KTProjectEvent:::
-// 			{
-// 			}
-// 			break;
-// 			case KTProjectEvent::Add:
-// 			{
-// 			}
-// 			break;
-			
-		}
-	}
-	else
-	{
-		switch(event->action())
-		{
-			case KTProjectEvent::Add:
-			{
-// 				m_project
-			}
-			break;
-			case KTProjectEvent::Remove:
-			{
-			}
-			break;
-// 			case KTProjectEvent:::
-// 			{
-// 			}
-// 			break;
-// 			case KTProjectEvent::Add:
-// 			{
-// 			}
-// 			break;
-			
-		}
-	}
-}
-
 void KTProjectCommand::frameCommand(const KTFrameEvent *event, bool redo)
 {
 	if ( redo )
@@ -180,15 +128,27 @@ void KTProjectCommand::frameCommand(const KTFrameEvent *event, bool redo)
 				m_xml = m_project->removeFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex() );
 			}
 			break;
-// 			case KTProjectEvent:::
-// 			{
-// 			}
-// 			break;
-// 			case KTProjectEvent::Add:
-// 			{
-// 			}
-// 			break;
-			
+			case KTProjectEvent::Move:
+			{
+				const KTMoveFrameEvent *moveEvent = static_cast<const KTMoveFrameEvent *>(event);
+				
+				m_project->moveFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), moveEvent->newFrameIndex() );
+			}
+			break;
+			case KTProjectEvent::Lock:
+			{
+				const KTLockFrameEvent *lockEvent = static_cast<const KTLockFrameEvent *>(event);
+				
+				m_project->lockFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), lockEvent->isLocked() );
+			}
+			break;
+			case KTProjectEvent::Rename:
+			{
+				const KTRenameFrameEvent *renameEvent = static_cast<const KTRenameFrameEvent *>(event);
+				
+				m_project->renameFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), renameEvent->newName() );
+			}
+			break;
 		}
 	}
 	else
@@ -205,15 +165,27 @@ void KTProjectCommand::frameCommand(const KTFrameEvent *event, bool redo)
 				m_project->createFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), m_xml);
 			}
 			break;
-// 			case KTProjectEvent:::
-// 			{
-// 			}
-// 			break;
-// 			case KTProjectEvent::Add:
-// 			{
-// 			}
-// 			break;
-			
+			case KTProjectEvent::Move:
+			{
+				const KTMoveFrameEvent *moveEvent = static_cast<const KTMoveFrameEvent *>(event);
+				
+				m_project->moveFrame(event->sceneIndex(), event->layerIndex(), moveEvent->newFrameIndex(), event->frameIndex() );
+			}
+			break;
+			case KTProjectEvent::Lock:
+			{
+				const KTLockFrameEvent *lockEvent = static_cast<const KTLockFrameEvent *>(event);
+				
+				m_project->lockFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), !lockEvent->isLocked() );
+			}
+			break;
+			case KTProjectEvent::Rename:
+			{
+				const KTRenameFrameEvent *renameEvent = static_cast<const KTRenameFrameEvent *>(event);
+				
+				m_project->renameFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), renameEvent->partName() );
+			}
+			break;
 		}
 	}
 }
@@ -234,15 +206,27 @@ void KTProjectCommand::layerCommand(const KTLayerEvent *event, bool redo)
 				m_xml = m_project->removeLayer( event->sceneIndex(), event->layerIndex());
 			}
 			break;
-// 			case KTProjectEvent:::
-// 			{
-// 			}
-// 			break;
-// 			case KTProjectEvent::Add:
-// 			{
-// 			}
-// 			break;
-			
+			case KTProjectEvent::Move:
+			{
+				const KTMoveLayerEvent *moveEvent = static_cast<const KTMoveLayerEvent *>(event);
+				
+				m_project->moveLayer( event->sceneIndex(), event->layerIndex(), moveEvent->newLayerIndex() );
+			}
+			break;
+			case KTProjectEvent::Lock:
+			{
+				const KTLockLayerEvent *lockEvent = static_cast<const KTLockLayerEvent *>(event);
+				
+				m_project->lockLayer( event->sceneIndex(), event->layerIndex(), lockEvent->isLocked() );
+			}
+			break;
+			case KTProjectEvent::Rename:
+			{
+				const KTRenameLayerEvent *renameEvent = static_cast<const KTRenameLayerEvent *>(event);
+				
+				m_project->renameLayer( event->sceneIndex(), event->layerIndex(), renameEvent->newName() );
+			}
+			break;
 		}
 	}
 	else
@@ -259,15 +243,27 @@ void KTProjectCommand::layerCommand(const KTLayerEvent *event, bool redo)
 				m_project->createLayer( event->sceneIndex(), event->layerIndex(), m_xml);
 			}
 			break;
-// 			case KTProjectEvent:::
-// 			{
-// 			}
-// 			break;
-// 			case KTProjectEvent::Add:
-// 			{
-// 			}
-// 			break;
-			
+			case KTProjectEvent::Move:
+			{
+				const KTMoveLayerEvent *moveEvent = static_cast<const KTMoveLayerEvent *>(event);
+				
+				m_project->moveLayer( event->sceneIndex(), moveEvent->newLayerIndex(),event->layerIndex()  );
+			}
+			break;
+			case KTProjectEvent::Lock:
+			{
+				const KTLockLayerEvent *lockEvent = static_cast<const KTLockLayerEvent *>(event);
+				
+				m_project->lockLayer( event->sceneIndex(), event->layerIndex(), !lockEvent->isLocked() );
+			}
+			break;
+			case KTProjectEvent::Rename:
+			{
+				const KTRenameLayerEvent *renameEvent = static_cast<const KTRenameLayerEvent *>(event);
+				
+				m_project->renameLayer( event->sceneIndex(), event->layerIndex(), renameEvent->partName() );
+			}
+			break;
 		}
 	}
 }
@@ -288,15 +284,27 @@ void KTProjectCommand::sceneCommand(const KTSceneEvent *event, bool redo)
 				m_xml = m_project->removeScene( event->sceneIndex() );
 			}
 			break;
-// 			case KTProjectEvent:::
-// 			{
-// 			}
-// 			break;
-// 			case KTProjectEvent::Add:
-// 			{
-// 			}
-// 			break;
-			
+			case KTProjectEvent::Move:
+			{
+				const KTMoveSceneEvent *moveEvent = static_cast<const KTMoveSceneEvent *>(event);
+				
+				m_project->moveScene( event->sceneIndex(), moveEvent->newSceneIndex() );
+			}
+			break;
+			case KTProjectEvent::Lock:
+			{
+				const KTLockSceneEvent *lockEvent = static_cast<const KTLockSceneEvent *>(event);
+				
+				m_project->lockScene( event->sceneIndex(), lockEvent->isLocked() );
+			}
+			break;
+			case KTProjectEvent::Rename:
+			{
+				const KTRenameSceneEvent *renameEvent = static_cast<const KTRenameSceneEvent *>(event);
+				
+				m_project->renameScene( event->sceneIndex(), renameEvent->newName() );
+			}
+			break;
 		}
 	}
 	else
@@ -313,15 +321,27 @@ void KTProjectCommand::sceneCommand(const KTSceneEvent *event, bool redo)
 				m_project->createScene( event->sceneIndex(), m_xml );
 			}
 			break;
-// 			case KTProjectEvent:::
-// 			{
-// 			}
-// 			break;
-// 			case KTProjectEvent::Add:
-// 			{
-// 			}
-// 			break;
-			
+			case KTProjectEvent::Move:
+			{
+				const KTMoveSceneEvent *moveEvent = static_cast<const KTMoveSceneEvent *>(event);
+				
+				m_project->moveScene( moveEvent->newSceneIndex(), event->sceneIndex() );
+			}
+			break;
+			case KTProjectEvent::Lock:
+			{
+				const KTLockSceneEvent *lockEvent = static_cast<const KTLockSceneEvent *>(event);
+				
+				m_project->lockScene( event->sceneIndex(), !lockEvent->isLocked() );
+			}
+			break;
+			case KTProjectEvent::Rename:
+			{
+				const KTRenameSceneEvent *renameEvent = static_cast<const KTRenameSceneEvent *>(event);
+				
+				m_project->renameScene( event->sceneIndex(), renameEvent->partName() );
+			}
+			break;
 		}
 	}
 }

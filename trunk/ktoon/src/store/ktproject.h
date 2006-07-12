@@ -65,6 +65,18 @@ class Q_DECL_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		QString removeLayer(int scene, int position);
 		QString removeFrame(int scene, int layer, int position);
 		
+		void moveScene(int position, int newPosition);
+		void moveLayer(int scene, int position, int newPosition);
+		void moveFrame(int scene, int layer, int position, int newPosition);
+		
+		void lockScene(int position, bool lock);
+		void lockLayer(int scene, int position, bool lock);
+		void lockFrame(int scene, int layer, int position, bool lock);
+		
+		void renameScene(int position, const QString &newName);
+		void renameLayer(int scene, int position, const QString &newName);
+		void renameFrame(int scene, int layer, int position, const QString &newName);
+		
 		void clear();
 		
 	protected:

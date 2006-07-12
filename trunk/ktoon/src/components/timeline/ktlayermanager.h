@@ -38,7 +38,10 @@
 
 class KTLayerManager : public QTableWidget
 {
-	Q_OBJECT
+	Q_OBJECT;
+	
+	friend class KTLayerManagerItemDelegate;
+	
 	public:
 		enum Actions
 		{

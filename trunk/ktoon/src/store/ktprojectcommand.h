@@ -43,7 +43,6 @@ class Q_DECL_EXPORT KTProjectCommand : public QUndoCommand
 		virtual void redo();
 		virtual void undo();
 		
-		void projectCommand(const KTProjectEvent *event, bool redo);
 		void frameCommand(const KTFrameEvent *event, bool redo);
 		void layerCommand(const KTLayerEvent *event, bool redo);
 		void sceneCommand(const KTSceneEvent *event, bool redo);

@@ -39,8 +39,12 @@ class Q_DECL_EXPORT KTProjectEvent : public QObject
 		enum Action
 		{
 			Add,
-			Remove
+			Remove,
+			Move,
+			Lock,
+			Rename
 		};
+		
 		enum Part
 		{
 			Project = 1000,

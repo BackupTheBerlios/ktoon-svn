@@ -43,6 +43,62 @@ class Q_DECL_EXPORT KTSceneEvent : public KTProjectEvent
 		int m_sceneIndex;
 };
 
+/**
+ * @author David Cuadrado \<krawek@gmail.com\>
+ */
+class Q_DECL_EXPORT KTMoveSceneEvent : public KTSceneEvent
+{
+	public:
+		KTMoveSceneEvent(int sceneIndex, int newIndex, QObject *parent = 0);
+		~KTMoveSceneEvent();
+		
+		int newSceneIndex() const;
+		
+		virtual bool isValid() const;
+		virtual KTProjectEvent *clone() const;
+		
+	private:
+		int m_newSceneIndex;
+};
+
+
+
+/**
+ * @author David Cuadrado \<krawek@gmail.com\>
+ */
+class Q_DECL_EXPORT KTLockSceneEvent: public KTSceneEvent
+{
+	public:
+		KTLockSceneEvent(int sceneIndex, bool lock, QObject *parent = 0 );
+		~KTLockSceneEvent();
+		
+		bool isLocked() const;
+		virtual KTProjectEvent *clone() const;
+		
+	private:
+		bool m_isLocked;
+};
+
+
+
+/**
+ * @author David Cuadrado \<krawek@gmail.com\>
+ */
+class Q_DECL_EXPORT KTRenameSceneEvent : public KTSceneEvent
+{
+	public:
+		KTRenameSceneEvent(int sceneIndex, const QString &newName, QObject *parent = 0);
+		~KTRenameSceneEvent();
+		
+		QString newName() const;
+		
+		virtual KTProjectEvent *clone() const;
+		
+	private:
+		QString m_newName;
+};
+
+
 #endif
 
 

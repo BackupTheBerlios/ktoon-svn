@@ -25,6 +25,7 @@
 #include <QPixmap>
 #include <QPaintEvent>
 #include <QTimer>
+#include <QTextDocument>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -55,7 +56,7 @@ class DOsd : public QWidget
 		void mousePressEvent( QMouseEvent * e );
 		
 	private:
-		void drawPixmap(const QString &message, const QBrush &background, const QBrush &foreground);
+		void drawPixmap(const QBrush &background, const QBrush &foreground);
 
 	private:
 		QPixmap m_pixmap;
@@ -63,14 +64,14 @@ class DOsd : public QWidget
 		
 		QPalette m_palette; 
 		
-		QString m_lastMessage;
-		
 		struct Animation
 		{
 			QTimer timer;
 			Level level;
 			bool on;
 		} *m_animator;
+		
+		QTextDocument *m_document;
 
 };
 

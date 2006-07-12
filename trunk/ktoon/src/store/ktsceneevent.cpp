@@ -60,3 +60,87 @@ KTProjectEvent *KTSceneEvent::clone() const
 	return event;
 }
 
+
+/////////// Move Scene Event
+
+KTMoveSceneEvent::KTMoveSceneEvent(int sceneIndex, int newIndex, QObject *parent) : KTSceneEvent(KTProjectEvent::Move, sceneIndex, parent), m_newSceneIndex(newIndex)
+{
+}
+
+
+KTMoveSceneEvent::~KTMoveSceneEvent()
+{
+}
+
+
+bool KTMoveSceneEvent::isValid() const
+{
+	return KTSceneEvent::isValid() && ( m_newSceneIndex >= 0 );
+}
+
+KTProjectEvent *KTMoveSceneEvent::clone() const
+{
+	KTMoveSceneEvent *event = new KTMoveSceneEvent( sceneIndex(), m_newSceneIndex );
+	
+	return event;
+}
+
+
+int KTMoveSceneEvent::newSceneIndex() const
+{
+	return m_newSceneIndex;
+}
+
+
+
+/////////// Lock Scene Event
+
+KTLockSceneEvent::KTLockSceneEvent(int sceneIndex, bool lock, QObject *parent) : KTSceneEvent(KTProjectEvent::Lock, sceneIndex, parent), m_isLocked(lock)
+{
+}
+
+
+KTLockSceneEvent::~KTLockSceneEvent()
+{
+}
+
+bool KTLockSceneEvent::isLocked() const
+{
+	return m_isLocked;
+}
+
+KTProjectEvent *KTLockSceneEvent::clone() const
+{
+	KTLockSceneEvent *event = new KTLockSceneEvent( sceneIndex(), m_isLocked );
+	
+	return event;
+}
+
+
+/////////// Rename Scene Event
+
+KTRenameSceneEvent::KTRenameSceneEvent(int sceneIndex, const QString &newName, QObject *parent) : KTSceneEvent(KTProjectEvent::Rename, sceneIndex, parent), m_newName(newName)
+{
+}
+
+
+KTRenameSceneEvent::~KTRenameSceneEvent()
+{
+}
+
+
+QString KTRenameSceneEvent::newName() const
+{
+	return m_newName;
+}
+
+
+KTProjectEvent *KTRenameSceneEvent::clone() const
+{
+	KTRenameSceneEvent *event = new KTRenameSceneEvent( sceneIndex(), m_newName, parent() );
+	
+	event->setPartName( partName() );
+	
+	return event;
+}
+

@@ -57,55 +57,6 @@ class KTExposureHeader: public QHeaderView
 		QVector<LayerItem> m_layers;
 };
 
-/////////////////
-
-class KTExposureItemDelegate : public QItemDelegate
-{
-	public:
-		KTExposureItemDelegate(QObject * parent = 0 );
-		~KTExposureItemDelegate();
-		virtual void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
-};
-
-KTExposureItemDelegate::KTExposureItemDelegate(QObject * parent) :  QItemDelegate(parent)
-{
-}
-
-KTExposureItemDelegate::~KTExposureItemDelegate()
-{
-}
-
-void KTExposureItemDelegate::paint ( QPainter *painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
-{
-	QItemDelegate::paint(painter, option, index);
-	
-	KTExposureTable *table = qobject_cast<KTExposureTable *>(index.model()->parent());
-	
-	QTableWidgetItem *item = table->itemFromIndex(index);
-	
-	if ( item )
-	{
-		if ( item->data(KTExposureTable::IsLocked).toBool() )
-		{
-			
-		}
-		
-		if ( item->data(KTExposureTable::IsUsed).toBool() )
-		{
-			painter->drawEllipse( option.rect );
-		}
-		
-		
-	}
-}
-
-
-
-
-
-////////////////
-
-
 KTExposureHeader::KTExposureHeader(QWidget * parent ) : QHeaderView(Qt::Horizontal , parent)
 {
 	setClickable(true);
@@ -180,6 +131,49 @@ void KTExposureHeader::paintSection ( QPainter * painter, const QRect & rect, in
 }
 
 #include "ktexposuretable.moc"
+
+/////////////////
+
+class KTExposureItemDelegate : public QItemDelegate
+{
+	public:
+		KTExposureItemDelegate(QObject * parent = 0 );
+		~KTExposureItemDelegate();
+		virtual void paint ( QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
+};
+
+KTExposureItemDelegate::KTExposureItemDelegate(QObject * parent) :  QItemDelegate(parent)
+{
+}
+
+KTExposureItemDelegate::~KTExposureItemDelegate()
+{
+}
+
+void KTExposureItemDelegate::paint ( QPainter *painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+{
+	QItemDelegate::paint(painter, option, index);
+	
+	KTExposureTable *table = qobject_cast<KTExposureTable *>(index.model()->parent());
+	
+	QTableWidgetItem *item = table->itemFromIndex(index);
+	
+	if ( item )
+	{
+		if ( item->data(KTExposureTable::IsLocked).toBool() )
+		{
+			
+		}
+		
+		if ( item->data(KTExposureTable::IsUsed).toBool() )
+		{
+			painter->drawRoundRect( option.rect );
+		}
+	}
+}
+
+
+////////////////////////
 
 
 KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent)
