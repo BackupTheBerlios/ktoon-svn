@@ -155,7 +155,7 @@ function main()
 	if [ $OPTION_NODEBUG -eq 1 ]
 	then
 		qpinfo "-> Using NO-DEBUG support"
-		PARAMETERS="$PARAMETERS DEFINES+=KT_NODEBUG"
+		PARAMETERS="$PARAMETERS DEFINES+=D_NODEBUG"
 	else
 		qpinfo "-> Using DEBUG support"
 	fi

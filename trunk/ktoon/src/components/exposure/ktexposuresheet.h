@@ -23,6 +23,7 @@
 
 #include "ktmodulewidgetbase.h"
 #include "kttableexposure.h"
+#include "ktexposuretable.h"
 
 // Qt
 #include <QButtonGroup>
@@ -35,6 +36,7 @@
 #include "dtabwidget.h"
 #include "dimagebutton.h"
 
+#include "ktprojectactionbar.h"
 /**
 * @author Jorge Cuadrado
 */
@@ -61,34 +63,31 @@ class KTExposureSheet : public KTModuleWidgetBase
 		void setLayerName(int indexLayer, const QString& name );
 		
 	private:
-		QList<QPixmap> m_imgs;
-		QList<KTTableExposure*> m_tables;
-		QGroupBox *m_buttonsPanel;
-		QButtonGroup *m_buttonGroup;
+		QList<KTExposureTable*> m_tables;
 		DTabWidget *m_scenes;
-		KTTableExposure *m_currentTable;
+		KTExposureTable *m_currentTable;
+		KTProjectActionBar *m_actionBar;
+		
 		
 	protected:
 		virtual void sceneEvent(KTSceneEvent *e);
 		virtual void layerEvent(KTLayerEvent *e);
+		virtual void frameEvent(KTFrameEvent *e);
+		
 		
 	private:
-		void setupButtons();
-		
 		void createLayerManager();
 		
 	public slots:
 		void closeAllScenes();
-// 		void insertLayer(const QString& name);
 		void applyAction(int action);
-		
 		
 		void addScene(int index, const QString &name);
 		void renameScene(const QString &name, int id);
 		
 	private slots:
-		void actionButton(QAbstractButton *);
 		void emitRequestChangeScene(int index);
+		void insertItem(int indexLayer, int indexFrame);
 		
 	signals:
 		//layers

@@ -22,20 +22,22 @@
 
 #include <QToolButton>
 #include <QVBoxLayout>
-
+#include <QVariant>
 
 #include <ktglobal.h>
 #include <ddebug.h>
 
 #include <dseparator.h>
+#include <dconfig.h>
+#include <doptionaldialog.h>
 
 KTProjectActionBar::KTProjectActionBar(Actions actions, Qt::Orientation orientation, QWidget *parent) : QWidget(parent ), m_orientation(orientation)
 {
-	connect(&m_actions, SIGNAL(buttonClicked(int)), this, SIGNAL(actionSelected(int)));
+	connect(&m_actions, SIGNAL(buttonClicked(int)), this, SLOT(emitActionSelected(int)));
 	
 	setup(actions);
 	
-	setFixedSize( 20 );
+	setFixedSize( 22 );
 }
 
 
@@ -79,21 +81,23 @@ void KTProjectActionBar::setup(Actions actions)
 		{
 			mainLayout = new QBoxLayout(QBoxLayout::LeftToRight, this);
 			m_buttonLayout = new QBoxLayout(QBoxLayout::TopToBottom);
+
 		}
 		break;
 		case Qt::Horizontal:
 		{
 			mainLayout = new QBoxLayout(QBoxLayout::TopToBottom, this);
 			m_buttonLayout = new QBoxLayout(QBoxLayout::LeftToRight);
+			
 		}
 		break;
 	}
 	
 	mainLayout->setSpacing( 0);
-	mainLayout->setMargin( 0);
+	mainLayout->setMargin( 1);
 	
 	m_buttonLayout->setSpacing( 0);
-	m_buttonLayout->setMargin( 0);
+	m_buttonLayout->setMargin( 1);
 	
 	m_buttonLayout->addStretch();
 	
@@ -285,5 +289,59 @@ void KTProjectActionBar::insertSeparator(int position)
 QToolButton *KTProjectActionBar::button(Action action)
 {
 	return qobject_cast<QToolButton *>(m_actions.button(action));
+}
+
+void KTProjectActionBar::emitActionSelected(int action)
+{
+	switch(action)
+	{
+		case RemoveFrame:
+		{
+			bool noAsk = qvariant_cast<bool>(DCONFIG->value("RemoveWithoutAskFrame", false));
+			if ( ! noAsk )
+			{
+				DOptionalDialog dialog(tr("Do you want to remove this frame?"), tr("Remove?"), this);
+				if( dialog.exec() == QDialog::Rejected )
+				{
+					return;
+				}
+				DCONFIG->setValue("RemoveWithoutAskFrame", dialog.shownAgain());
+				DCONFIG->sync();
+			}
+		}
+		break;
+		case RemoveLayer:
+		{
+			bool noAsk = qvariant_cast<bool>(DCONFIG->value("RemoveWithoutAskLayer", false));
+			if ( ! noAsk )
+			{
+				DOptionalDialog dialog(tr("Do you want to remove this layer?"), tr("Remove?"), this);
+				if( dialog.exec() == QDialog::Rejected )
+				{
+					return;
+				}
+				DCONFIG->setValue("RemoveWithoutAskLayer", dialog.shownAgain());
+				DCONFIG->sync();
+			}
+		}
+		break;
+		case RemoveScene:
+		{
+			bool noAsk = qvariant_cast<bool>(DCONFIG->value("RemoveWithoutAskScene", false));
+			if ( ! noAsk )
+			{
+				DOptionalDialog dialog(tr("Do you want to remove this scene?"), tr("Remove?"), this);
+				if( dialog.exec() == QDialog::Rejected )
+				{
+					return;
+				}
+				DCONFIG->setValue("RemoveWithoutAskScene", dialog.shownAgain());
+				DCONFIG->sync();
+			}
+		}
+		break;
+	}
+	
+	emit actionSelected( action );
 }
 

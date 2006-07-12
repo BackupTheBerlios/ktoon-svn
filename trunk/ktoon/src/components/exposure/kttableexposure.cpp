@@ -29,7 +29,7 @@
 #include "ddebug.h"
 
 KTTableExposure::KTTableExposure(int rows, int cols, QWidget *parent)
-	: QScrollArea(parent),m_numLayer(0), m_currentLayer(0), m_currentFrame(0), m_numRows(rows)
+	: QScrollArea(parent), m_numLayer(0), m_currentLayer(-1), m_currentFrame(0), m_numRows(rows)
 {
 	DINIT;
 	setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOn);
@@ -105,6 +105,7 @@ void KTTableExposure::clickedCell(int row, int col,int button,int gx,int gy)
 	m_currentLayer = col;
 	m_currentFrame = row;
 	
+	dDebug() << "clickedCell(int"<<  row << ", int"<< col << ",int";
 	if(button == Qt::RightButton)
 	{
 		menuFrame->exec(QPoint(gx,gy));
@@ -125,34 +126,35 @@ int KTTableExposure::currentLayer()
 	return m_currentLayer;
 }
 
-void KTTableExposure::insertLayer(int index,  const QString &text)
+void KTTableExposure::insertLayer(int index, const QString &text)
 {
+	dDebug()  << "insertLayer" << index;
 	KTLayerExposure *newLayer = new KTLayerExposure(text, index, m_numRows, m_port);
-	m_layers.append(newLayer);
-	
+// 	m_layers.append(newLayer);
+	m_layers.insert ( index, newLayer );
 	connect(newLayer, SIGNAL(selected(int)), this, SLOT(changeCurrentLayer(int)));
-	
 	connect(this, SIGNAL(layerSelected(int)), newLayer, SLOT(otherSelected(int)));
 	
-	connect(newLayer, SIGNAL(visibilityChanged( int, bool)), this, SIGNAL(layerVisibilityChanged( int, bool)));
+// 	connect(newLayer, SIGNAL(visibilityChanged( int, bool)), this, SIGNAL(layerVisibilityChanged( int, bool)));
 	
-	connect(newLayer, SIGNAL(clicked(int,int,int,int,int)), this, SLOT(clickedCell(int,int,int,int,int)));
+// 	connect(newLayer, SIGNAL(clicked(int,int,int,int,int)), this, SLOT(clickedCell(int,int,int,int,int)));
 	
-	connect(newLayer, SIGNAL(removed(int)), this, SLOT(removeLayer(int)));
+// 	connect(newLayer, SIGNAL(removed(int)), this, SLOT(removeLayer(int)));
 	
-	connect(newLayer, SIGNAL(requestRenameLayer(int, const QString &)), this, SIGNAL(requestRenameLayer(int, const QString &)));
+// 	connect(newLayer, SIGNAL(requestRenameLayer(int, const QString &)), this, SIGNAL(requestRenameLayer(int, const QString &)));
 	
-	connect(newLayer, SIGNAL(requestRenameFrame(int, int, const QString &)), this, SIGNAL(requestRenameFrame(int, int, const QString &)));
+// 	connect(newLayer, SIGNAL(requestRenameFrame(int, int, const QString &)), this, SIGNAL(requestRenameFrame(int, int, const QString &)));
 	
-	connect(newLayer, SIGNAL(requestInsertFrame(bool)), this, SIGNAL(requestInsertFrame(bool)));
+// 	connect(newLayer, SIGNAL(requestInsertFrame(bool)), this, SIGNAL(requestInsertFrame(bool)));
 	
-	connect(newLayer, SIGNAL(finalRow()), this, SLOT(addRows()));
-	
+// 	connect(newLayer, SIGNAL(finalRow()), this, SLOT(addRows()));
+// 	
 	m_layout->insertWidget(index+1, newLayer);
-	
+// 	
 	m_numLayer++;
-	newLayer->setSelected(true);
-	newLayer->show();
+// 	m_currentLayer = index;
+// 	newLayer->setSelected(true);
+// 	newLayer->show();
 	m_port->adjustSize();
 }
 

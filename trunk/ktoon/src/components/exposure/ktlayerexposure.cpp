@@ -76,7 +76,7 @@ void KTLayerExposure::frameSelect(int id, int button, int x, int y)
 	}
 	m_currentFrame = id;
 	setSelected(true);
-	m_header->animateClick();
+// 	m_header->animateClick();
 	emit frameSelected(id);
 	emit clicked( visualIndex( id), m_id, button, x, y);
 	if(m_useFrame == id && !(m_frames[id]->isUsed()) && button == Qt::LeftButton)
@@ -310,7 +310,7 @@ void KTLayerExposure::setId(int id)
 
 void KTLayerExposure::setName(const QString & name)
 {
-	m_header->setText(name);
+// 	m_header->setText(name);
 	m_header->slotSetDescription();
 }
 

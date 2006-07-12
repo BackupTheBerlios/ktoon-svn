@@ -89,7 +89,7 @@ void KTLayerManager::fixSize()
 	
 	int width = this->width() - offset;
 		
-	horizontalHeader()->resizeSection(0, width-(m_rowHeight*2) );
+	horizontalHeader()->resizeSection(0, width-(m_rowHeight*2)-10 );
 	horizontalHeader()->resizeSection(1, m_rowHeight );
 	horizontalHeader()->resizeSection(2, m_rowHeight );
 	

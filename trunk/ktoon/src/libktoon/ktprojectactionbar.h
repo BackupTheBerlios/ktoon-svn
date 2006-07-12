@@ -72,6 +72,8 @@ class KTProjectActionBar : public QWidget
 		
 		QToolButton *button(Action action);
 		
+	private slots:
+		void emitActionSelected(int action);
 		
 	signals:
 		void actionSelected(int action);
