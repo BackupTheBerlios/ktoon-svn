@@ -73,9 +73,9 @@ class Q_DECL_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		void lockLayer(int scene, int position, bool lock);
 		void lockFrame(int scene, int layer, int position, bool lock);
 		
-		void renameScene(int position, const QString &newName);
-		void renameLayer(int scene, int position, const QString &newName);
-		void renameFrame(int scene, int layer, int position, const QString &newName);
+		QString renameScene(int position, const QString &newName);
+		QString renameLayer(int scene, int position, const QString &newName);
+		QString renameFrame(int scene, int layer, int position, const QString &newName);
 		
 		void clear();
 		

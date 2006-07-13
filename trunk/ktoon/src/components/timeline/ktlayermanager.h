@@ -65,12 +65,22 @@ class KTLayerManager : public QTableWidget
 		
 		void insertLayer(int position, const QString &name);
 		void removeLayer(int position);
+		void renameLayer(int position, const QString &name);
 		
 		void setRowHeight(int rowHeight);
 		
 	protected:
 		void resizeEvent(QResizeEvent *e);
 		virtual void fixSize();
+		
+	private slots:
+		void emitRequestRenameLayer( QTableWidgetItem *item );
+		
+	protected slots:
+		void commitData ( QWidget * editor );
+		
+	signals:
+		void requestRenameEvent(int layerPosition, const QString &newName);
 		
 	private:
 		bool m_allSelected, m_allVisible, m_allLock;

@@ -55,8 +55,11 @@ class KTTimeLine : public KTModuleWidgetBase
 		void insertScene(int position, const QString &name);
 		void removeScene(int position);
 		
+		
+		
 	private slots:
 		void requestCommand(int action);
+		void emitRequestRenameLayer(int layer, const QString &name);
 		
 	private:
 		QStackedWidget *m_container;

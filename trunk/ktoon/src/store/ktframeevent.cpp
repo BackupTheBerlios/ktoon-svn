@@ -21,15 +21,13 @@
 #include "ktframeevent.h"
 #include <ddebug.h>
 
-KTFrameEvent::KTFrameEvent(Action action, int sceneIndex, int layerIndex, int frameIndex, QObject *parent ) : KTLayerEvent(action, sceneIndex, layerIndex, parent), m_frameIndex(frameIndex)
+KTFrameEvent::KTFrameEvent(Action action, int sceneIndex, int layerIndex, int frameIndex, const QVariant &data ) : KTLayerEvent(action, sceneIndex, layerIndex, data), m_frameIndex(frameIndex)
 {
-	DINIT;
 }
 
 
 KTFrameEvent::~KTFrameEvent()
 {
-	DEND;
 }
 
 int KTFrameEvent::id() const
@@ -51,96 +49,10 @@ bool KTFrameEvent::isValid() const
 
 KTProjectEvent *KTFrameEvent::clone() const
 {
-	KTFrameEvent *event = new KTFrameEvent(action(), sceneIndex(), layerIndex(), m_frameIndex, parent());
-	
-	event->setPartName( event->partName() );
-	
-	return event;
-}
-
-
-/////////// Move Frame Event
-
-KTMoveFrameEvent::KTMoveFrameEvent(int sceneIndex, int layerIndex, int frameIndex, int newFrameIndex, QObject *parent) : KTFrameEvent(KTProjectEvent::Move, sceneIndex, layerIndex, frameIndex, parent), m_newFrameIndex(newFrameIndex)
-{
-}
-
-
-KTMoveFrameEvent::~KTMoveFrameEvent()
-{
-}
-
-
-bool KTMoveFrameEvent::isValid() const
-{
-	return KTFrameEvent::isValid() && ( m_newFrameIndex >= 0 );
-}
-
-KTProjectEvent *KTMoveFrameEvent::clone() const
-{
-	KTMoveFrameEvent *event = new KTMoveFrameEvent( sceneIndex(), layerIndex(), frameIndex(), m_newFrameIndex );
-	
-	return event;
-}
-
-
-int KTMoveFrameEvent::newFrameIndex() const
-{
-	return m_newFrameIndex;
-}
-
-
-
-/////////// Lock Frame Event
-
-KTLockFrameEvent::KTLockFrameEvent(int sceneIndex, int layerIndex, int frameIndex, bool lock, QObject *parent) : KTFrameEvent(KTProjectEvent::Lock, sceneIndex, layerIndex, frameIndex, parent), m_isLocked(lock)
-{
-}
-
-
-KTLockFrameEvent::~KTLockFrameEvent()
-{
-}
-
-bool KTLockFrameEvent::isLocked() const
-{
-	return m_isLocked;
-}
-
-KTProjectEvent *KTLockFrameEvent::clone() const
-{
-	KTLockFrameEvent *event = new KTLockFrameEvent( sceneIndex(), layerIndex(), frameIndex(), m_isLocked );
-	
-	return event;
-}
-
-
-/////////// Rename Frame Event
-
-KTRenameFrameEvent::KTRenameFrameEvent(int sceneIndex, int layerIndex, int frameIndex, const QString &newName, QObject *parent) : KTFrameEvent(KTProjectEvent::Rename, sceneIndex, layerIndex, frameIndex, parent), m_newName(newName)
-{
-}
-
-
-KTRenameFrameEvent::~KTRenameFrameEvent()
-{
-}
-
-
-QString KTRenameFrameEvent::newName() const
-{
-	return m_newName;
-}
-
-
-KTProjectEvent *KTRenameFrameEvent::clone() const
-{
-	KTRenameFrameEvent *event = new KTRenameFrameEvent( sceneIndex(), layerIndex(), frameIndex(), m_newName, parent() );
+	KTFrameEvent *event = new KTFrameEvent(action(), sceneIndex(), layerIndex(), m_frameIndex, data());
 	
 	event->setPartName( partName() );
 	
 	return event;
 }
-
-
 

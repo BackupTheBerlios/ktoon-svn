@@ -99,6 +99,8 @@ void KTTimeLine::insertScene(int position, const QString &name)
 	connect(m_layerManager->verticalScrollBar(), SIGNAL(valueChanged (int)), m_framesTable->verticalScrollBar(), SLOT(setValue(int)));
 	connect(m_framesTable->verticalScrollBar(), SIGNAL(valueChanged (int)), m_layerManager->verticalScrollBar(), SLOT(setValue(int)));
 	
+	connect(m_layerManager, SIGNAL(requestRenameEvent( int, const QString& )), this, SLOT(emitRequestRenameLayer(int, const QString &)));
+	
 	m_container->addWidget(m_splitter);
 }
 
@@ -206,6 +208,14 @@ void KTTimeLine::layerEvent(KTLayerEvent *e)
 		break;
 		case KTProjectEvent::Rename:
 		{
+			KTLayerManager *layerManager = this->layerManager( e->sceneIndex() );
+			
+			if ( layerManager )
+			{
+				layerManager->renameLayer( e->layerIndex(), e->data().toString() );
+			}
+			
+			
 		}
 		break;
 	}
@@ -284,7 +294,7 @@ void KTTimeLine::requestCommand(int action)
 	{
 		case KTProjectActionBar::InsertFrame:
 		{
-			event = new KTFrameEvent(KTProjectEvent::Add, scenePos, layerPos, framePos, this);
+			event = new KTFrameEvent(KTProjectEvent::Add, scenePos, layerPos, framePos);
 			
 			emit eventTriggered( event );
 			
@@ -292,26 +302,26 @@ void KTTimeLine::requestCommand(int action)
 		break;
 		case KTProjectActionBar::RemoveFrame:
 		{
-			event = new KTFrameEvent(KTProjectEvent::Remove, scenePos, layerPos, framePos, this );
+			event = new KTFrameEvent(KTProjectEvent::Remove, scenePos, layerPos, framePos );
 			
 			emit eventTriggered( event );
 		}
 		break;
 		case KTProjectActionBar::MoveFrameUp:
 		{
-			KTMoveFrameEvent event(scenePos, layerPos, framePos, framePos+1, this);
+			KTFrameEvent event(KTProjectEvent::Move, scenePos, layerPos, framePos, framePos+1);
 			emit eventTriggered(&event);
 		}
 		break;
 		case KTProjectActionBar::MoveFrameDown:
 		{
-			KTMoveFrameEvent event(scenePos, layerPos, framePos, framePos-1, this);
+			KTFrameEvent event(KTProjectEvent::Move,scenePos, layerPos, framePos, framePos-1);
 			emit eventTriggered(&event);
 		}
 		break;
 		case KTProjectActionBar::InsertLayer:
 		{
-			event = new KTLayerEvent(KTProjectEvent::Add, scenePos, layerPos+1, this);
+			event = new KTLayerEvent(KTProjectEvent::Add, scenePos, layerPos+1);
 			emit eventTriggered( event );
 		}
 		break;
@@ -324,41 +334,39 @@ void KTTimeLine::requestCommand(int action)
 		break;
 		case KTProjectActionBar::MoveLayerUp:
 		{
-			KTMoveLayerEvent event(scenePos, layerPos, layerPos+1, this);
+			KTLayerEvent event(KTProjectEvent::Move,scenePos, layerPos, layerPos+1);
 			emit eventTriggered(&event);
 		}
 		break;
 		case KTProjectActionBar::MoveLayerDown:
 		{
-			KTMoveLayerEvent event(scenePos, layerPos, layerPos-1, this);
+			KTLayerEvent event(KTProjectEvent::Move,scenePos, layerPos, layerPos-1);
 			emit eventTriggered(&event);
 		}
 		break;
-		
-		
 		case KTProjectActionBar::InsertScene:
 		{
-			event = new KTSceneEvent(KTProjectEvent::Add, scenePos+1, this);
+			event = new KTSceneEvent(KTProjectEvent::Add, scenePos+1);
 			
 			emit eventTriggered( event );
 		}
 		break;
 		case KTProjectActionBar::RemoveScene:
 		{
-			event = new KTSceneEvent(KTProjectEvent::Remove, scenePos, this);
+			event = new KTSceneEvent(KTProjectEvent::Remove, scenePos);
 			
 			emit eventTriggered( event );
 		}
 		break;
 		case KTProjectActionBar::MoveSceneUp:
 		{
-			KTMoveSceneEvent event(scenePos, scenePos+1, this);
+			KTSceneEvent event(KTProjectEvent::Move,scenePos, scenePos+1);
 			emit eventTriggered(&event);
 		}
 		break;
 		case KTProjectActionBar::MoveSceneDown:
 		{
-			KTMoveSceneEvent event(scenePos, scenePos-1, this);
+			KTSceneEvent event(KTProjectEvent::Move,scenePos, scenePos-1);
 			emit eventTriggered(&event);
 		}
 		break;
@@ -366,3 +374,16 @@ void KTTimeLine::requestCommand(int action)
 	
 	delete event;
 }
+
+
+void KTTimeLine::emitRequestRenameLayer(int layer, const QString &name)
+{
+	D_FUNCINFO << name;
+	int scenePos = m_container->currentIndex();
+	
+	KTLayerEvent event(KTProjectEvent::Rename, scenePos, layer, name);
+	
+	emit eventTriggered( &event );
+}
+
+

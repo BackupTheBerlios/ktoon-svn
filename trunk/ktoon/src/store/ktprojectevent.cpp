@@ -22,15 +22,13 @@
 
 #include <ddebug.h>
 
-KTProjectEvent::KTProjectEvent(Action action, QObject *parent) : QObject(parent), m_action(action)
+KTProjectEvent::KTProjectEvent(Action action, const QVariant &data) : m_action(action), m_data(data)
 {
-	DINIT;
 }
 
 
 KTProjectEvent::~KTProjectEvent()
 {
-	DEND;
 }
 
 
@@ -62,10 +60,16 @@ bool KTProjectEvent::isValid() const
 
 KTProjectEvent *KTProjectEvent::clone() const
 {
-	KTProjectEvent *event = new KTProjectEvent( m_action, parent() );
+	KTProjectEvent *event = new KTProjectEvent( m_action, data() );
 	
-	event->setPartName( event->partName() );
+	event->setPartName( partName() );
 	
 	return event;
 }
+
+QVariant KTProjectEvent::data() const
+{
+	return m_data;
+}
+
 

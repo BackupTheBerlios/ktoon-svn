@@ -26,6 +26,7 @@
 #include <QMap>
 #include <QVector>
 #include <QItemDelegate>
+#include <QLineEdit>
 
 #include <ddebug.h>
 
@@ -46,24 +47,45 @@ class KTExposureHeader: public QHeaderView
 		KTExposureHeader(QWidget * parent = 0 );
 		~KTExposureHeader();
 		void paintSection(QPainter *painter, const QRect & rect, int logicalIndex ) const;
-		void setLabel(int logicalIndex, const QString &text);
-		void advanceFrame(int logicalIndex);
+		void insertLayer(int logicalIndex, const QString &text);
+		void setNameLayer(int logicalIndex, const QString &text);
+		void setLastFrame(int logicalIndex, int num);
 		int lastFrame(int logicalIndex);
+		void removeLayer(int logicalIndex);
 		
 	private slots:
 		void changeVisibility(int section);
+		void showEditorName(int section );
+		void hideEditorName();
+		
+	protected:
+		virtual void mousePressEvent ( QMouseEvent * event );
 		
 	private:
 		QVector<LayerItem> m_layers;
+		QVector<QRectF> m_rects;
+		
+		QLineEdit *m_editor;
+		int m_sectionEdited;
+		
+	signals:
+		void changedName(int indexLayer, const QString & name );
+		
 };
 
-KTExposureHeader::KTExposureHeader(QWidget * parent ) : QHeaderView(Qt::Horizontal , parent)
+KTExposureHeader::KTExposureHeader(QWidget * parent ) : QHeaderView(Qt::Horizontal , parent), m_sectionEdited(-1)
 {
 	setClickable(true);
-// 	setCascadingSectionResizes(true );
+	setMovable(true);
+	
 	connect(this, SIGNAL(sectionClicked(int)), this, SLOT(changeVisibility(int)));
+	connect(this, SIGNAL(sectionDoubleClicked( int )), this, SLOT(showEditorName(int)));
+	
+	m_editor = new QLineEdit(this);
+	connect (m_editor, SIGNAL( returnPressed ()), this, SLOT(hideEditorName()));
+	connect (m_editor, SIGNAL( lostFocus ()), this, SLOT(hideEditorName()));
+	m_editor->hide();
 }
-
 
 KTExposureHeader::~KTExposureHeader()
 {
@@ -75,30 +97,85 @@ void KTExposureHeader::changeVisibility(int section)
 	updateSection(section);
 }
 
-void KTExposureHeader::setLabel(int logicalIndex, const QString &text)
+void KTExposureHeader::showEditorName(int section)
+{
+	int x = 0;
+	for(int i = 0; i < section; i++)
+	{
+		x += sectionSize(i);
+	}
+	m_editor->setGeometry(x, 0, sectionSize(section), height() );
+	m_sectionEdited = section;
+	m_editor->setText(m_layers[section].title);
+	m_editor->show();
+}
+
+void KTExposureHeader::hideEditorName()
+{
+	m_editor->hide();
+	
+	if(m_sectionEdited != -1 && m_editor->isModified())
+	{
+		emit changedName(m_sectionEdited, m_editor->text());
+	}
+	m_sectionEdited = -1;
+}
+
+void KTExposureHeader::insertLayer(int logicalIndex, const QString &text)
 {
 	LayerItem layer;
 	layer.title = text;
 	layer.lastFrame = 0;
 	layer.isVisible = true;
-	
 	m_layers.insert(logicalIndex, layer);
 }
 
+void KTExposureHeader::setNameLayer(int logicalIndex, const QString &text)
+{
+	m_layers[logicalIndex].title = text;
+	updateSection(logicalIndex);
+}
 
 int KTExposureHeader::lastFrame( int logicalIndex)
 {
 	return m_layers[logicalIndex].lastFrame;
 }
 
-void KTExposureHeader::advanceFrame(int logicalIndex)
+void KTExposureHeader::removeLayer(int logicalIndex)
 {
-	m_layers[logicalIndex].lastFrame++;
+	m_layers.remove(logicalIndex);
+}
+
+void KTExposureHeader::setLastFrame(int logicalIndex, int num)
+{
+	m_layers[logicalIndex].lastFrame = num;
+// 	m_layers[logicalIndex].lastFrame++;
+}
+
+void KTExposureHeader::mousePressEvent ( QMouseEvent * event )
+{
+	QHeaderView::mousePressEvent(event);
 }
 
 void KTExposureHeader::paintSection ( QPainter * painter, const QRect & rect, int logicalIndex ) const
 {
 	if ( !rect.isValid() ) return;
+	
+	QStyleOptionHeader headerOption;
+	headerOption.rect = rect;
+	headerOption.orientation = Qt::Horizontal;
+	headerOption.position = QStyleOptionHeader::Middle;
+	headerOption.text = "";
+	
+	QStyle::State state = QStyle::State_None;
+	if (isEnabled())
+		state |= QStyle::State_Enabled;
+	if (window()->isActiveWindow())
+		state |= QStyle::State_Active;
+	
+	
+	
+	style()->drawControl ( QStyle::CE_HeaderSection, &headerOption, painter );
 	
 	int height = rect.height() - 5;
 	
@@ -150,7 +227,9 @@ KTExposureItemDelegate::~KTExposureItemDelegate()
 {
 }
 
-void KTExposureItemDelegate::paint ( QPainter *painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
+
+
+void KTExposureItemDelegate::paint( QPainter *painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const
 {
 	QItemDelegate::paint(painter, option, index);
 	
@@ -188,20 +267,52 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent)
 	
 	prototype->setTextAlignment(Qt::AlignCenter);
 	
-	setItemPrototype (prototype);
+	setItemPrototype(prototype);
 	
 // 	setColumnCount( 10 );
 	setRowCount( 10 );
 	
 	m_header = new KTExposureHeader(this);
+	connect(m_header, SIGNAL(changedName ( int, const QString & )), this, SIGNAL(requestRenameLayer( int, const QString & )));
 	
 	setHorizontalHeader( m_header);
+	
 	connect(this, SIGNAL(cellClicked ( int, int )), this, SLOT(emitRequestSetUsedFrame(int, int)));
+	
+	connect(this, SIGNAL(itemChanged ( QTableWidgetItem *  )), this, SLOT(emitRequestRenameFrame( QTableWidgetItem * )));
+	
+	setSelectionBehavior (QAbstractItemView::SelectItems);
+	setSelectionMode(QAbstractItemView::SingleSelection);
 }
 
+void KTExposureTable::emitRequestRenameFrame( QTableWidgetItem * item )
+{
+	QModelIndex  index = indexFromItem ( item );
+	emit requestRenameFrame(index.column(), index.row(), item->text());
+}
 
 KTExposureTable::~KTExposureTable()
 {
+}
+
+void KTExposureTable::setName(int indexLayer, int indexFrame,const QString & name)
+{
+	if(item( indexFrame , indexLayer))
+	{
+		if(item( indexFrame , indexLayer)->text() == name)
+		{
+			item( indexFrame , indexLayer)->setText(name);
+		}
+	}
+}
+
+void KTExposureTable::setNameLayer(int indexLayer, const QString & name)
+{
+	// FIXME LAYER NAMEEEEEEEEEEEEEE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! hasta cuando??????????????
+	// FIXME LAYER NAMEEEEEEEEEEEEEE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! hasta cuando??????????????
+	// FIXME LAYER NAMEEEEEEEEEEEEEE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! hasta cuando??????????????
+	m_header->setNameLayer(indexLayer, name);
+	// FIXME LAYER NAMEEEEEEEEEEEEEE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! hasta cuando??????????????
 }
 
 int KTExposureTable::currentLayer() const
@@ -228,9 +339,9 @@ int KTExposureTable::currentFrame() const
 
 void KTExposureTable::insertLayer(int index, const QString & name)
 {
-	insertColumn ( index );
-	setCurrentCell ( 0, index );
-	m_header->setLabel( index, name );
+	insertColumn( index );
+	setCurrentCell( 0, index );
+	m_header->insertLayer( index, name );
 }
 
 void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString & name)
@@ -239,14 +350,12 @@ void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString 
 	
 	QTableWidgetItem * frame = new QTableWidgetItem;
 	
-	frame->setBackgroundColor (Qt::gray );
+	frame->setBackgroundColor(Qt::gray );
 	frame->setText(name);
 	frame->setData(IsUsed, true);
 	frame->setTextAlignment(Qt::AlignCenter);
 	
-// 	m_numUsed++;
-	
-	m_header->advanceFrame(indexLayer);
+	m_header->setLastFrame( indexLayer, m_header->lastFrame(indexLayer)+1 );
 	setItem(indexFrame, indexLayer, frame);
 	
 	setCurrentCell(indexFrame, indexLayer);
@@ -259,14 +368,44 @@ void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString 
 
 void KTExposureTable::removeLayer(int indexLayer )
 {
+	m_header->removeLayer(indexLayer);
+	removeColumn ( indexLayer );
 }
 
 void KTExposureTable::removeFrame(int indexLayer, int indexFrame)
 {
+	setUpdatesEnabled(false);
+	QTableWidgetItem *i  = takeItem (  indexFrame, indexLayer );
+	if(i)
+	{
+		for(int index = indexFrame+1; index < m_header->lastFrame(indexLayer); index++ )
+		{
+			QTableWidgetItem * idx  = takeItem (  index, indexLayer );
+			if(idx)
+			{
+				setItem(index-1, indexLayer, idx);
+			}
+		}
+		m_header->setLastFrame( indexLayer, m_header->lastFrame(indexLayer)-1 );
+	}
+	setUpdatesEnabled(true);
 }
 
-void KTExposureTable::moveFrame(  int oldPos, int newPos )
+void KTExposureTable::moveFrame(  int oldPosLayer, int oldPosFrame, int newPosLayer, int newPosFrame)
 {
+	QTableWidgetItem * oldItem  = takeItem(  oldPosFrame, oldPosLayer );
+	QTableWidgetItem * newItem  = takeItem(  newPosFrame, newPosLayer );
+	
+	setItem(newPosFrame, newPosLayer, oldItem);
+	setItem(oldPosFrame, oldPosLayer, newItem);
+	
+	setCurrentItem(oldItem);
+	
+}
+
+void KTExposureTable::moveLayer( int oldPosLayer, int newPosLayer )
+{
+	horizontalHeader()->moveSection ( oldPosLayer, newPosLayer );
 }
 
 void KTExposureTable::setLockFrame(int indexLayer, int indexFrame, bool locked)
@@ -302,7 +441,7 @@ bool KTExposureTable::edit( const QModelIndex & index, EditTrigger trigger, QEve
 		else
 		{
 			return false;
-		} 
+		}
 	}
 	
 	return false;

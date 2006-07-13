@@ -24,6 +24,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QVariant>
 
 class KTProjectEvent;
 class KTSceneEvent;
@@ -33,7 +34,7 @@ class KTFrameEvent;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Q_DECL_EXPORT KTProjectEvent : public QObject
+class Q_DECL_EXPORT KTProjectEvent
 {
 	public:
 		enum Action
@@ -53,7 +54,7 @@ class Q_DECL_EXPORT KTProjectEvent : public QObject
 			Scene
 		};
 		
-		KTProjectEvent(Action action, QObject *parent = 0);
+		KTProjectEvent(Action action, const QVariant &data = 0);
 		virtual ~KTProjectEvent();
 		
 		
@@ -61,15 +62,18 @@ class Q_DECL_EXPORT KTProjectEvent : public QObject
 		
 		void setPartName(const QString &name);
 		QString partName() const;
-		virtual int id() const;
 		
+		virtual int id() const;
 		virtual bool isValid() const;
 		
 		virtual KTProjectEvent *clone() const;
 		
+		QVariant data() const;
+		
 	private:
 		Action m_action;
 		QString m_partName;
+		QVariant m_data;
 };
 
 #endif

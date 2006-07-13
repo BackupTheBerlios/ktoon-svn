@@ -67,6 +67,19 @@ void KTLayerManagerHeader::paintSection ( QPainter * painter, const QRect & rect
 {
 	if ( !rect.isValid() ) return;
 	
+	QStyleOptionHeader headerOption;
+	headerOption.rect = rect;
+	headerOption.orientation = Qt::Horizontal;
+	headerOption.position = QStyleOptionHeader::Middle;
+	
+	QStyle::State state = QStyle::State_None;
+	if (isEnabled())
+		state |= QStyle::State_Enabled;
+	if (window()->isActiveWindow())
+		state |= QStyle::State_Active;
+	
+	style()->drawControl ( QStyle::CE_HeaderSection, &headerOption, painter );
+	
 	painter->drawRect( rect.normalized().adjusted(0, 1, 0, -1) );
 	
 	QString text = model()->headerData(logicalIndex, orientation(), Qt::DisplayRole).toString();;
@@ -85,6 +98,7 @@ void KTLayerManagerHeader::paintSection ( QPainter * painter, const QRect & rect
 	
 	
 	painter->setPen(originalPen);
+	
 	switch(logicalIndex)
 	{
 		case 0:
@@ -187,6 +201,8 @@ KTLayerManager::KTLayerManager(QWidget *parent) : QTableWidget(0, 3, parent), m_
 	
 	setHorizontalHeader(new KTLayerManagerHeader(this));
 	setItemDelegate(new KTLayerManagerItemDelegate(this));
+	
+	connect(this, SIGNAL(itemChanged ( QTableWidgetItem *  )), this, SLOT(emitRequestRenameLayer( QTableWidgetItem * )));
 }
 
 
@@ -231,10 +247,18 @@ void KTLayerManager::insertLayer(int position, const QString &name)
 
 void KTLayerManager::removeLayer(int position)
 {
-	D_FUNCINFO << position;
 	removeRow(position);
 }
 
+void KTLayerManager::renameLayer(int position, const QString &name)
+{
+	QTableWidgetItem *item = this->item(0, position);
+	
+	if ( item )
+	{
+		item->setText(name);
+	}
+}
 
 void KTLayerManager::resizeEvent( QResizeEvent *)
 {
@@ -270,5 +294,24 @@ void KTLayerManager::setRowHeight(int rowHeight)
 {
 	m_rowHeight = rowHeight;
 }
+
+void KTLayerManager::emitRequestRenameLayer( QTableWidgetItem *item )
+{
+// 	emit requestRenameEvent( item->row(), item->text() );
+}
+
+void KTLayerManager::commitData ( QWidget *editor )
+{
+	QLineEdit *lineEdit = qobject_cast<QLineEdit *>(editor);
+	
+	QTableWidget::commitData(0); // Don't rename
+	
+	if ( lineEdit )
+	{
+		emit requestRenameEvent( currentRow() , lineEdit->text() );
+	}
+}
+
+
 
 

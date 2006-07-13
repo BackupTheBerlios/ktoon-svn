@@ -48,16 +48,11 @@ class KTExposureSheet : public KTModuleWidgetBase
 		KTExposureSheet(QWidget *parent = 0);
 		~KTExposureSheet();
 
-		enum Actions { /*NoAction = 0,*/ InsertLayer = 0, RemoveLayer, InsertFrames,  RemoveFrame, LockFrame,  MoveFrameUp, MoveFrameDown };
 		void addFrame(int idLayer, const QString &name, bool addedToEnd);
 		void moveFrame(bool up);
-		void moveLayer(bool left);
 		
-		void removeLayer(int index);
 		void removeCurrentFrame();
-		void lockCurrentFrame();
 		void setScene(int index);
-		void setCurrentCell( int idLayer, int idFrame);
 		void setLayer(int index);
 		void setFrameName(int indexLayer, int indexFrame, const QString& name );
 		void setLayerName(int indexLayer, const QString& name );
@@ -68,12 +63,10 @@ class KTExposureSheet : public KTModuleWidgetBase
 		KTExposureTable *m_currentTable;
 		KTProjectActionBar *m_actionBar;
 		
-		
 	protected:
 		virtual void sceneEvent(KTSceneEvent *e);
 		virtual void layerEvent(KTLayerEvent *e);
 		virtual void frameEvent(KTFrameEvent *e);
-		
 		
 	private:
 		void createLayerManager();
@@ -81,13 +74,15 @@ class KTExposureSheet : public KTModuleWidgetBase
 	public slots:
 		void closeAllScenes();
 		void applyAction(int action);
-		
 		void addScene(int index, const QString &name);
 		void renameScene(const QString &name, int id);
+		
 		
 	private slots:
 		void emitRequestChangeScene(int index);
 		void insertItem(int indexLayer, int indexFrame);
+		void renameFrame(int indexLayer, int indexFrame, const QString & name);
+		void renameLayer(int indexLayer, const QString & name);
 		
 	signals:
 		//layers

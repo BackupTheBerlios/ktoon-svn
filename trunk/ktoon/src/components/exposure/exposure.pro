@@ -4,16 +4,8 @@
 # Target is a library:  
 
 HEADERS += ktexposuresheet.h \
-           kttableexposure.h \
-           ktlayerexposure.h \
-           ktesframe.h \
-           kteslayer.h \
            ktexposuretable.h 
 SOURCES += ktexposuresheet.cpp \
-           kttableexposure.cpp \
-           ktlayerexposure.cpp \
-           ktesframe.cpp \
-           kteslayer.cpp \
            ktexposuretable.cpp 
 QT += xml
 KDEV_QTVER = 4
