@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2006 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   kuadrosx@toonka.com                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -145,7 +145,6 @@ void KTExposureHeader::moveLayer(int index, int newIndex)
 	LayerItem tmp = m_layers[index];
 	m_layers[index] = m_layers[newIndex];
 	m_layers[newIndex] = tmp;
-	
 	blockSignals(false);
 }
 
@@ -315,13 +314,14 @@ KTExposureTable::~KTExposureTable()
 {
 }
 
-void KTExposureTable::setName(int indexLayer, int indexFrame,const QString & name)
+void KTExposureTable::setFrameName(int indexLayer, int indexFrame,const QString & name)
 {
-	if(item( indexFrame , indexLayer))
+	QTableWidgetItem *frame = item( indexFrame , indexLayer);
+	if(frame)
 	{
-		if(item( indexFrame , indexLayer)->text() == name)
+		if(frame->text() != name)
 		{
-			item( indexFrame , indexLayer)->setText(name);
+			frame->setText(name);
 		}
 	}
 }
@@ -458,7 +458,6 @@ void KTExposureTable::moveLayer( int oldPosLayer, int newPosLayer )
 void KTExposureTable::emitRequestSetUsedFrame( int indexFrame,  int indexLayer)
 {
 	D_FUNCINFO;
-// 	dDebug() << indexFrame << " " << m_header->lastFrame(indexLayer) << " " <<  indexLayer;
 	if(indexFrame == m_header->lastFrame(indexLayer))
 	{
 		emit requestSetUsedFrame(indexLayer, indexFrame);
@@ -487,5 +486,17 @@ bool KTExposureTable::edit( const QModelIndex & index, EditTrigger trigger, QEve
 	}
 	
 	return false;
+}
+
+void KTExposureTable::commitData ( QWidget *editor )
+{
+	QLineEdit *lineEdit = qobject_cast<QLineEdit *>(editor);
+	
+	QTableWidget::commitData(0); // Don't rename
+	
+	if ( lineEdit )
+	{
+		emit requestRenameFrame(currentLayer(),  currentFrame(), lineEdit->text());
+	}
 }
 

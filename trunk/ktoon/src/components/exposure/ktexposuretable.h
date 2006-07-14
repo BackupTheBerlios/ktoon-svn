@@ -57,7 +57,7 @@ class KTExposureTable : public QTableWidget
 		void setLockFrame(int indexLayer, int indexFrame, bool locked);
 		int numUsed() const;
 		
-		void setName(int indexLayer, int indexFrame,const QString & name);
+		void setFrameName(int indexLayer, int indexFrame,const QString & name);
 		void setLayerName(int indexLayer, const QString & name);
 		
 		bool frameIsLocked(int indexLayer, int indexFrame);
@@ -73,6 +73,8 @@ class KTExposureTable : public QTableWidget
 	protected:
 		bool edit ( const QModelIndex & index, EditTrigger trigger, QEvent * event );
 		
+	protected slots:
+		void commitData ( QWidget * editor );
 	signals:
 		void requestSetUsedFrame(int indexLayer, int indexFrame);
 		void requestRenameFrame(int indexLayer, int indexFrame,const QString & name);

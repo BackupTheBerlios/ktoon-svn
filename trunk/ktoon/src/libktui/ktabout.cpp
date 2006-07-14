@@ -40,7 +40,7 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 {
 	DINIT;
 	
-	Q_INIT_RESOURCE(ktui_images);
+//	Q_INIT_RESOURCE(ktui_images);
 	
 	setWindowTitle( tr( "About" ) + QString( " KToon..." ) );
 
@@ -63,7 +63,7 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 		dError() << "Error while trying to read " << creditsFile.fileName();
 	}
 	
-	QImage credits = QImage(":about/images/credits.png" );
+	QImage credits = QImage(DATA_DIR+"/images/credits.png" );
 	
 	DImageEffect::fade(credits, 0.25, palette().background().color());
     
@@ -79,7 +79,7 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 	
 	QLabel *ack = new QLabel;
 	
-	QImage ackImg( ":about/images/sponsors.png" );
+	QImage ackImg( DATA_DIR+"/images/sponsors.png" );
 	DImageEffect::fade( ackImg,0.2,palette().background().color()); 
 	
 	ack->setPixmap(QPixmap::fromImage(ackImg));
@@ -90,7 +90,7 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 
 	QLabel *toonka = new QLabel;
 	
-	QImage toonkaImg( ":about/images/toonka.png" );
+	QImage toonkaImg( DATA_DIR+"/images/toonka.png" );
 	DImageEffect::fade( toonkaImg,0.2,palette().background().color()); 
 	
 	toonka->setPixmap(QPixmap::fromImage(toonkaImg));
@@ -100,7 +100,7 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 
 	QLabel *laboratoon = new QLabel;
 	
-	QImage laboratoonImg( ":about/images/laboratoon.png" );
+	QImage laboratoonImg( DATA_DIR+"/images/laboratoon.png" );
 	DImageEffect::fade( laboratoonImg,0.2,palette().background().color()); 
 	
 	laboratoon->setPixmap( QPixmap::fromImage(laboratoonImg  ) );
