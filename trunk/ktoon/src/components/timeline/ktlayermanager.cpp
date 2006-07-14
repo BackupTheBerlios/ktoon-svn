@@ -33,6 +33,9 @@
 
 #include "ddebug.h"
 
+const int LAYER_COLUMN = 0;
+const int LOCK_COLUMN = 1;
+const int VIEW_COLUMN = 2;
 
 // Header
 
@@ -101,17 +104,17 @@ void KTLayerManagerHeader::paintSection ( QPainter * painter, const QRect & rect
 	
 	switch(logicalIndex)
 	{
-		case 0:
+		case LAYER_COLUMN:
 		{
 			// nothing...
 		}
 		break;
-		case 1:
+		case LOCK_COLUMN:
 		{
 			painter->drawPixmap( rect.normalized().adjusted(3,3, -3, -3), m_lockIcon );
 		}
 		break;
-		case 2:
+		case VIEW_COLUMN:
 		{
 			painter->drawPixmap( rect.normalized().adjusted(3, 3, -3, -3), m_viewIcon );
 		}
@@ -152,7 +155,7 @@ void KTLayerManagerItemDelegate::paint ( QPainter *painter, const QStyleOptionVi
 	{
 		switch( index.column() )
 		{
-			case 0:
+			case LAYER_COLUMN:
 			{
 				if ( item->isSelected() )
 				{
@@ -160,8 +163,8 @@ void KTLayerManagerItemDelegate::paint ( QPainter *painter, const QStyleOptionVi
 				}
 			}
 			break;
-			case 1:
-			case 2:
+			case LOCK_COLUMN:
+			case VIEW_COLUMN:
 			{
 				QStyleOptionButton checkOption;
 		
@@ -345,5 +348,24 @@ void KTLayerManager::moveLayer(int position, int newPosition)
 	setCurrentItem(item1);
 }
 
+
+void KTLayerManager::lockLayer(int position, bool locked)
+{
+	if ( position < 0 || position >= rowCount() ) return;
+	
+	QTableWidgetItem *item = this->item(position, LOCK_COLUMN);
+	
+	if ( item )
+	{
+		if ( locked )
+		{
+			item->setCheckState (Qt::Checked);
+		}
+		else
+		{
+			item->setCheckState (Qt::Unchecked);
+		}
+	}
+}
 
 

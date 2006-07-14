@@ -24,7 +24,7 @@
 #include <QDir>
 
 
-KTScene::KTScene(QObject *parent) : QObject(parent), m_isLocked(false),  m_layerCount(0)
+KTScene::KTScene(QObject *parent) : QObject(parent), m_isLocked(false),  m_layerCount(0), m_isVisible(true)
 {
 }
 
@@ -51,9 +51,19 @@ QString KTScene::sceneName() const
 	return m_name;
 }
 
-bool KTScene::isLocked()
+bool KTScene::isLocked() const
 {
 	return m_isLocked;
+}
+
+void KTScene::setVisible(bool isVisible)
+{
+	m_isVisible = isVisible;
+}
+
+bool KTScene::isVisible() const
+{
+	return m_isVisible;
 }
 
 Layers KTScene::layers() const

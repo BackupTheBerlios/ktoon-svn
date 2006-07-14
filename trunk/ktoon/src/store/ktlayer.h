@@ -81,7 +81,7 @@ class Q_DECL_EXPORT KTLayer : public QObject, public KTAbstractSerializable
 		/**
 		 * Returna verdadero cuando el layer esta bloqueado
 		*/
-		bool isLocked();
+		bool isLocked() const;
 		
 		/**
 		 * Retorna verdadero si el layer es visible

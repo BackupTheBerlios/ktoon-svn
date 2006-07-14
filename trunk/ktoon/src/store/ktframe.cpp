@@ -22,12 +22,12 @@
 #include "ddebug.h"
 
 
-KTFrame::KTFrame(QObject *parent) : QGraphicsScene(parent), m_name("Frame"), m_isLocked(false)
+KTFrame::KTFrame(QObject *parent) : QGraphicsScene(parent), m_name("Frame"), m_isLocked(false), m_isVisible(true)
 {
 	init();
 }
 
-KTFrame::KTFrame(const QString &frameName, QObject * parent) : QGraphicsScene(parent), m_name(frameName), m_isLocked(false)
+KTFrame::KTFrame(const QString &frameName, QObject * parent) : QGraphicsScene(parent), m_name(frameName), m_isLocked(false), m_isVisible(true)
 {	
 	init();
 }
@@ -56,9 +56,19 @@ QString KTFrame::frameName() const
 	return m_name;
 }
 
-bool KTFrame::isLocked()
+bool KTFrame::isLocked() const
 {
 	return m_isLocked;
+}
+
+void KTFrame::setVisible(bool isVisible)
+{
+	m_isVisible = isVisible;
+}
+
+bool KTFrame::isVisible() const
+{
+	return m_isVisible;
 }
 
 

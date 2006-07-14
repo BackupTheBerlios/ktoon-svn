@@ -69,7 +69,11 @@ class Q_DECL_EXPORT KTProjectEvent
 			/**
 			 * Selecciona una parte, el tipo de data es nulo
 			 */
-			Select
+			Select,
+			/**
+			 * Cambia la visibilidad
+			 */
+			View
 		};
 		
 		enum Part

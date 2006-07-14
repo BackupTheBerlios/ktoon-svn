@@ -51,6 +51,11 @@ void KTLayer::setLocked(bool isLocked)
 	m_isLocked = isLocked;
 }
 
+bool KTLayer::isLocked() const
+{
+	return m_isLocked;
+}
+
 void KTLayer::setVisible(bool isVisible)
 {
 	m_isVisible = isVisible;

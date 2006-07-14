@@ -107,6 +107,8 @@ class KTFramesTable : public QTableView
 		
 		void removeFrame(int layerPos, int position);
 		
+		void lockFrame(int layerPosition, int position, bool lock);
+		
 	private:
 		void setup();
 

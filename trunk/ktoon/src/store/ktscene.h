@@ -67,7 +67,11 @@ class Q_DECL_EXPORT KTScene : public QObject, public KTAbstractSerializable
 		/**
 		 * Returna verdadero cuando la escena esta bloqueada
 		 */
-		bool isLocked();
+		bool isLocked() const;
+		
+		
+		void setVisible(bool isVisible);
+		bool isVisible() const;
 		
 		/**
 		 * Retorna la lista de layers
@@ -107,6 +111,7 @@ class Q_DECL_EXPORT KTScene : public QObject, public KTAbstractSerializable
 		QString m_name;
 		bool m_isLocked;
 		int m_layerCount;
+		bool m_isVisible;
 };
 
 #endif

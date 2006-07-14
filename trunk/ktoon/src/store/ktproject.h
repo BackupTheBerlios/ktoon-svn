@@ -81,6 +81,10 @@ class Q_DECL_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		void selectLayer(int scene, int position, bool prioritary);
 		void selectFrame(int scene, int layer, int position, bool prioritary);
 		
+		void setFrameVisibility(int scenePos, int layerPos, int position, bool view);
+		void setLayerVisibility(int scenePos, int position, bool view);
+		void setSceneVisibility(int position, bool view);
+		
 		void clear();
 		
 	protected:

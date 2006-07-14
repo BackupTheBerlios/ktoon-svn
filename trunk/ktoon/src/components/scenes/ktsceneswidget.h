@@ -55,24 +55,13 @@ class KTScenesWidget : public KTModuleWidgetBase
 		void setupTableScenes();
 		
 	private slots:
-		void actionButton(QAbstractButton *);
 		void sceneDobleClick(QTreeWidgetItem * item, int col );
 		void emitRequestInsertScene();
 		void emitRequestRemoveScene();
+		void emitRequestRenameScene(QTreeWidgetItem *item);
 		
 	protected:
 		virtual void sceneEvent(KTSceneEvent *e);
-		
-	signals:
-		void requestInsertLayer();
-		void requestInsertFrame();
-		void requestInsertScene();
-		void requestRemoveScene();
-		void requestMoveUpScene();
-		void requestMoveDownScene();
-		
-		void changeCurrentScene(int id);
-		void renameScene(const QString &name);
 		
 	public slots:
 		void sendEvent(int action);

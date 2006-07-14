@@ -71,6 +71,16 @@ void KTScenesList::removeScene(int index)
 	delete topLevelItem ( index );
 }
 
+void KTScenesList::renameScene(int index, const QString &name)
+{
+	QTreeWidgetItem *item = topLevelItem(index);
+	
+	if ( item )
+	{
+		item->setText(0, name);
+	}
+}
+
 
 void KTScenesList::changeCurrentScene()
 {

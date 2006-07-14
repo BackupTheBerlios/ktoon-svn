@@ -147,6 +147,11 @@ void KTProjectCommand::frameCommand(const KTFrameEvent *event, bool redo)
 				m_project->selectFrame(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->data().toBool() );
 			}
 			break;
+			case KTProjectEvent::View:
+			{
+				m_project->setFrameVisibility(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->data().toBool());
+			}
+			break;
 		}
 	}
 	else
@@ -176,6 +181,11 @@ void KTProjectCommand::frameCommand(const KTFrameEvent *event, bool redo)
 			case KTProjectEvent::Rename:
 			{
 				m_project->renameFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->partName() );
+			}
+			break;
+			case KTProjectEvent::View:
+			{
+				m_project->setFrameVisibility(event->sceneIndex(), event->layerIndex(), event->frameIndex(), !event->data().toBool());
 			}
 			break;
 		}
@@ -218,6 +228,11 @@ void KTProjectCommand::layerCommand(const KTLayerEvent *event, bool redo)
 				m_project->selectLayer(event->sceneIndex(), event->layerIndex(), event->data().toBool() );
 			}
 			break;
+			case KTProjectEvent::View:
+			{
+				m_project->setLayerVisibility(event->sceneIndex(), event->layerIndex(), event->data().toBool());
+			}
+			break;
 		}
 	}
 	else
@@ -247,6 +262,11 @@ void KTProjectCommand::layerCommand(const KTLayerEvent *event, bool redo)
 			case KTProjectEvent::Rename:
 			{
 				m_project->renameLayer( event->sceneIndex(), event->layerIndex(), event->partName() );
+			}
+			break;
+			case KTProjectEvent::View:
+			{
+				m_project->setLayerVisibility(event->sceneIndex(), event->layerIndex(), !event->data().toBool());
 			}
 			break;
 		}
@@ -289,6 +309,11 @@ void KTProjectCommand::sceneCommand(const KTSceneEvent *event, bool redo)
 				m_project->selectScene(event->sceneIndex(), event->data().toBool() );
 			}
 			break;
+			case KTProjectEvent::View:
+			{
+				m_project->setSceneVisibility(event->sceneIndex(),  event->data().toBool());
+			}
+			break;
 		}
 	}
 	else
@@ -318,6 +343,11 @@ void KTProjectCommand::sceneCommand(const KTSceneEvent *event, bool redo)
 			case KTProjectEvent::Rename:
 			{
 				m_project->renameScene( event->sceneIndex(), event->partName() );
+			}
+			break;
+			case KTProjectEvent::View:
+			{
+				m_project->setSceneVisibility(event->sceneIndex(),  !event->data().toBool());
 			}
 			break;
 		}

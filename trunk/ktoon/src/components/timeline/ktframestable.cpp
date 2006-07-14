@@ -536,6 +536,15 @@ void KTFramesTableItemDelegate::paint ( QPainter * painter, const QStyleOptionVi
 			painter->drawEllipse( option.rect.left(), option.rect.bottom() - offset, offset, offset);
 			painter->restore();
 		}
+		if ( item->isLocked() )
+		{
+			painter->save();
+			painter->setBrush(Qt::red);
+			
+			painter->drawEllipse( option.rect.left(), option.rect.bottom() - offset, offset, offset);
+			
+			painter->restore();
+		}
 	}
 	
 // 	painter->drawRect( option.rect.left(), option.rect.bottom() - offset, offset, offset );
@@ -1074,6 +1083,19 @@ void KTFramesTable::removeFrame(int layerPos, int position)
 // 	viewport()->update( visualRect(indexFromItem( item(layerPos, position) )) );
 	viewport()->update();
 }
+
+void KTFramesTable::lockFrame(int layerPos, int position, bool lock)
+{
+	if ( layerPos < 0 || layerPos >= m_layers.count() )
+	{
+		return;
+	}
+	
+	setAttribute( layerPos, position, KTFramesTableItem::IsLocked, lock );
+	
+	viewport()->update();
+}
+
 
 void KTFramesTable::setAttribute(int row, int col, KTFramesTableItem::Attributes att, bool value)
 {

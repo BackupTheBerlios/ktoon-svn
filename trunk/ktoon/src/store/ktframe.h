@@ -69,7 +69,11 @@ class Q_DECL_EXPORT KTFrame : public QGraphicsScene, public KTAbstractSerializab
 		/**
 		 * Returna verdadero cuando el frame esta bloqueado
 		 */
-		bool isLocked();
+		bool isLocked() const;
+		
+		
+		void setVisible(bool isVisible);
+		bool isVisible() const;
 		
 	public:
 		virtual void fromXml(const QString &xml );
@@ -79,6 +83,7 @@ class Q_DECL_EXPORT KTFrame : public QGraphicsScene, public KTAbstractSerializab
 		void init();
 		QString m_name;
 		bool m_isLocked;
+		bool m_isVisible;
 };
 
 #endif

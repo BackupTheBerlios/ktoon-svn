@@ -69,6 +69,8 @@ class KTLayerManager : public QTableWidget
 		
 		void moveLayer(int position, int newPosition);
 		
+		void lockLayer(int position, bool locked);
+		
 		void setRowHeight(int rowHeight);
 		
 	protected:

@@ -33,6 +33,7 @@ class KTScenesList : public DTreeListWidget
 		int scenesCount();
 		
 		void removeScene(int index);
+		void renameScene(int index, const QString &name);
 		
 	private slots:
 		void changeCurrentScene();

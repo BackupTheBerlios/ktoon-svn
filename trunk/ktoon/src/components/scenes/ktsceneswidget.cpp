@@ -82,6 +82,8 @@ void KTScenesWidget::setupTableScenes()
 	
 	connect(m_tableScenes, SIGNAL(  itemDoubleClicked ( QTreeWidgetItem *, int )), this, SLOT(sceneDobleClick(QTreeWidgetItem *, int )));
 	
+	connect(m_tableScenes, SIGNAL(itemRenamed(QTreeWidgetItem *)), this, SLOT(emitRequestRenameScene(QTreeWidgetItem *)));
+	
 }
 
 void KTScenesWidget::sendEvent(int action)
@@ -117,14 +119,11 @@ void KTScenesWidget::removeScene()
 
 void KTScenesWidget::selectScene(const QString & name, int index)
 {
-	emit changeCurrentScene(index);
-}
-void KTScenesWidget::actionButton( QAbstractButton *b)
-{
 }
 
 void KTScenesWidget::sceneDobleClick(QTreeWidgetItem * item, int )
 {
+	
 }
 
 void KTScenesWidget::emitRequestInsertScene()
@@ -147,6 +146,7 @@ void KTScenesWidget::emitRequestInsertScene()
 void KTScenesWidget::emitRequestRemoveScene()
 {
 	DCONFIG->beginGroup("Scene");
+	
 	bool noAsk = qvariant_cast<bool>(DCONFIG->value("RemoveWithoutAskScene", false));
 	if ( ! noAsk )
 	{
@@ -191,6 +191,19 @@ void KTScenesWidget::sceneEvent(KTSceneEvent *e)
 			m_tableScenes->removeScene(e->sceneIndex());
 		}
 		break;
+		case KTProjectEvent::Rename:
+		{
+			m_tableScenes->renameScene(e->sceneIndex(), e->data().toString() );
+		}
+		break;
+		default: break;
 	}
+}
+
+void KTScenesWidget::emitRequestRenameScene(QTreeWidgetItem *item)
+{
+	KTSceneEvent event(KTProjectEvent::Rename, m_tableScenes->indexOfTopLevelItem (item), item->text(0));
+	
+	emit eventTriggered( &event);
 }
 

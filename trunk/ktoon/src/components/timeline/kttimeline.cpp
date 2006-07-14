@@ -146,14 +146,17 @@ void KTTimeLine::sceneEvent(KTSceneEvent *e)
 		break;
 		case KTProjectEvent::Move:
 		{
+			
 		}
 		break;
 		case KTProjectEvent::Lock:
 		{
+			
 		}
 		break;
 		case KTProjectEvent::Rename:
 		{
+			
 		}
 		break;
 		
@@ -215,6 +218,12 @@ void KTTimeLine::layerEvent(KTLayerEvent *e)
 		break;
 		case KTProjectEvent::Lock:
 		{
+			KTLayerManager *layerManager = this->layerManager( e->sceneIndex() );
+			
+			if ( layerManager )
+			{
+				layerManager->lockLayer( e->layerIndex(), e->data().toBool() );
+			}
 		}
 		break;
 		case KTProjectEvent::Rename:
@@ -260,6 +269,11 @@ void KTTimeLine::frameEvent(KTFrameEvent *e)
 		break;
 		case KTProjectEvent::Lock:
 		{
+			KTFramesTable *framesTable = this->framesTable( e->sceneIndex() );
+			if ( framesTable )
+			{
+				framesTable->lockFrame(e->layerIndex(), e->frameIndex(), e->data().toBool() );
+			}
 		}
 		break;
 		case KTProjectEvent::Rename:

@@ -652,6 +652,65 @@ void KTProject::selectFrame(int scene, int layer, int position, bool prioritary)
 	emit commandExecuted( &event );
 }
 
+void KTProject::setFrameVisibility(int scenePos, int layerPos, int position, bool view)
+{
+	KTScene *scene = this->scene(scenePos);
+	
+	if ( !scene)
+	{
+		return;
+	}
+	
+	KTLayer *layer = scene->layer(layerPos);
+	
+	if ( layer )
+	{
+		KTFrame *frame = layer->frame(position);
+		
+		if ( ! frame ) return;
+		
+		
+		KTFrameEvent event(KTProjectEvent::View, scenePos, layerPos, position, view);
+		
+		frame->setVisible(view);
+		
+		emit commandExecuted( &event );
+	}
+}
 
+void KTProject::setLayerVisibility(int scenePos, int position, bool view)
+{
+	KTScene *scene = this->scene(scenePos);
+	
+	if ( !scene)
+	{
+		return;
+	}
+	
+	KTLayer *layer = scene->layer(position);
+	
+	if ( layer )
+	{
+		layer->setVisible(view);
+		
+		KTLayerEvent event(KTProjectEvent::View, scenePos, position, view);
+		emit commandExecuted( &event );
+	}
+}
+
+void KTProject::setSceneVisibility(int position, bool view)
+{
+	KTScene *scene = this->scene(position);
+	
+	if ( !scene)
+	{
+		return;
+	}
+	
+	scene->setVisible(view);
+	
+	KTSceneEvent event(KTProjectEvent::View, position, view);
+	emit commandExecuted( &event );
+}
 
 
