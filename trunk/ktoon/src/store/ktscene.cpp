@@ -103,12 +103,6 @@ bool KTScene::removeLayer( int position)
 	return false;
 }
 
-void KTScene::moveCurrentLayer(bool up)
-{
-	
-}
-
-
 /**
  * Retorna el fotograma de la posicición marcada por index
  * @param index 
@@ -207,5 +201,19 @@ QDomElement KTScene::toXml(QDomDocument &doc)
 	return root;
 }
 
+
+bool KTScene::moveLayer(int from, int to)
+{
+	if ( from < 0 || from >= m_layers.count() || to < 0 || to >= m_layers.count() )
+	{
+		return false;
+	}
+	
+	KTLayer *layer = m_layers.takeAt(from);
+	
+	m_layers.insert(to, layer);
+	
+	return true;
+}
 
 

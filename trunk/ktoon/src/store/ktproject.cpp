@@ -412,15 +412,16 @@ void KTProject::moveScene(int position, int newPosition)
 {
 	dDebug() << "Move scene from " << position << " to " << newPosition;
 	
-	KTScene *scene = this->scene(position);
+	if ( position < 0 || position >= m_scenes.count() || newPosition < 0 || newPosition >= m_scenes.count() )
+	{
+		dWarning() << "Failed moving scene!";
+		return;
+	}
 	
-	if ( !scene) return;
+	KTScene *scene = m_scenes.takeAt(position);
 	
-	KTScene *other = this->scene(newPosition);
+	m_scenes.insert(newPosition, scene);
 	
-	if ( ! other ) return;
-	
-	qSwap(scene, other);
 	
 	KTSceneEvent event(KTProjectEvent::Move, position, newPosition);
 	emit commandExecuted( &event);
@@ -438,16 +439,16 @@ void KTProject::moveLayer(int scenePosition, int position, int newPosition)
 		return;
 	}
 	
-	KTLayer *layer = scene->layer(position);
-	
-	if ( layer )
+	if ( ! scene->moveLayer(position, newPosition) )
 	{
-		KTLayer *other = scene->layer(newPosition);
-		qSwap(layer, other);
-		
+		dWarning() << "Failed moving layer";
+	}
+	else
+	{
 		KTLayerEvent event(KTProjectEvent::Move,scenePosition, position, newPosition);
 		emit commandExecuted( &event);
 	}
+	
 }
 
 void KTProject::moveFrame(int scenePosition, int layerPosition, int position, int newPosition)
@@ -464,18 +465,16 @@ void KTProject::moveFrame(int scenePosition, int layerPosition, int position, in
 	
 	if ( layer )
 	{
-		KTFrame *frame = layer->frame(position);
-		
-		if ( ! frame ) return;
-		
-		KTFrame *other = layer->frame(newPosition);
-		
-		if ( !other ) return;
-		
-		qSwap(frame, other);
-		
-		KTFrameEvent event(KTProjectEvent::Move, scenePosition, layerPosition, position, newPosition);
-		emit commandExecuted( &event );
+		if ( ! layer->moveFrame(position, newPosition) )
+		{
+			dWarning() << "Failed moving frame";
+			return;
+		}
+		else
+		{
+			KTFrameEvent event(KTProjectEvent::Move, scenePosition, layerPosition, position, newPosition);
+			emit commandExecuted( &event );
+		}
 	}
 }
 

@@ -92,6 +92,8 @@ class Q_DECL_EXPORT KTLayer : public QObject, public KTAbstractSerializable
 		
 		bool removeFrame(int position);
 		
+		bool moveFrame(int from, int to);
+		
 		KTFrame *frame(int position);
 		
 	public:
@@ -100,9 +102,11 @@ class Q_DECL_EXPORT KTLayer : public QObject, public KTAbstractSerializable
 		
 	private:
 		Frames m_frames;
-		bool m_isVisible, m_isLocked;
+		bool m_isVisible;
 		QString m_name;
 		int m_framesCount;
+		
+		bool m_isLocked;
 };
 
 #endif

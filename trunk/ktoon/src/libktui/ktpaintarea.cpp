@@ -24,9 +24,12 @@
 
 #include <QGraphicsScene>
 #include <QMouseEvent>
-#include <QGLWidget>
 #include <QGraphicsRectItem>
 #include <QPolygon>
+
+#ifdef QT_OPENGL_LIB
+#include <QGLWidget>
+#endif
 
 KTPaintArea::KTPaintArea(QWidget * parent) : QGraphicsView(parent)
 {
@@ -38,6 +41,10 @@ KTPaintArea::KTPaintArea(QWidget * parent) : QGraphicsView(parent)
 	setBackgroundBrush (Qt::white);
  	
 	m_grid =  scene()->addRect( QRect() , QPen(Qt::black, 3), QBrush() );
+	
+#ifdef QT_OPENGL_LIB
+	setViewport(new QGLWidget());
+#endif
 }
 
 KTPaintArea::~KTPaintArea()

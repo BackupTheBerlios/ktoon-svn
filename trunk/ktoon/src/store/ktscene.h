@@ -89,10 +89,12 @@ class Q_DECL_EXPORT KTScene : public QObject, public KTAbstractSerializable
 		 */
 		KTLayer *createLayer(int position);
 		
+		
+		
 		/**
-		 * Mueve el current layer, si up es verdadero lo mueve hacia arriba
+		 * Mueve el layer a la posicicion indicada
 		 */
-		void moveCurrentLayer(bool up);
+		bool moveLayer(int from, int to);
 		
 		QGraphicsScene* photogram(int index);
 		

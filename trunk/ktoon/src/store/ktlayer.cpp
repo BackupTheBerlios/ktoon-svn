@@ -99,6 +99,22 @@ bool KTLayer::removeFrame(int position)
 	return false;
 }
 
+bool KTLayer::moveFrame(int from, int to)
+{
+	if ( from < 0 || from >= m_frames.count() || to < 0 || to >= m_frames.count() )
+	{
+		return false;
+	}
+	
+	KTFrame *frame = m_frames.takeAt(from);
+	
+	m_frames.insert(to, frame);
+	
+	return true;
+}
+
+
+
 KTFrame *KTLayer::frame(int position)
 {
 	if ( position < 0 || position >= m_frames.count() )

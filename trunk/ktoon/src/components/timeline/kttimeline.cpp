@@ -299,23 +299,21 @@ void KTTimeLine::requestCommand(int action)
 // 		scenePos = 0;
 // 	}
 	
-	KTProjectEvent *event = 0;
-	
 	switch(action)
 	{
 		case KTProjectActionBar::InsertFrame:
 		{
-			event = new KTFrameEvent(KTProjectEvent::Add, scenePos, layerPos, framePos);
+			KTFrameEvent event(KTProjectEvent::Add, scenePos, layerPos, framePos);
 			
-			emit eventTriggered( event );
+			emit eventTriggered( &event );
 			
 		}
 		break;
 		case KTProjectActionBar::RemoveFrame:
 		{
-			event = new KTFrameEvent(KTProjectEvent::Remove, scenePos, layerPos, framePos );
+			KTFrameEvent event(KTProjectEvent::Remove, scenePos, layerPos, framePos );
 			
-			emit eventTriggered( event );
+			emit eventTriggered( &event );
 		}
 		break;
 		case KTProjectActionBar::MoveFrameUp:
@@ -332,15 +330,15 @@ void KTTimeLine::requestCommand(int action)
 		break;
 		case KTProjectActionBar::InsertLayer:
 		{
-			event = new KTLayerEvent(KTProjectEvent::Add, scenePos, layerPos+1);
-			emit eventTriggered( event );
+			KTLayerEvent event(KTProjectEvent::Add, scenePos, layerPos+1);
+			emit eventTriggered( &event );
 		}
 		break;
 		case KTProjectActionBar::RemoveLayer:
 		{
-			event = new KTLayerEvent(KTProjectEvent::Remove, scenePos, layerPos, this);
+			KTLayerEvent event(KTProjectEvent::Remove, scenePos, layerPos, this);
 			
-			emit eventTriggered( event );
+			emit eventTriggered( &event );
 		}
 		break;
 		case KTProjectActionBar::MoveLayerUp:
@@ -357,16 +355,16 @@ void KTTimeLine::requestCommand(int action)
 		break;
 		case KTProjectActionBar::InsertScene:
 		{
-			event = new KTSceneEvent(KTProjectEvent::Add, scenePos+1);
+			KTSceneEvent event(KTProjectEvent::Add, scenePos+1);
 			
-			emit eventTriggered( event );
+			emit eventTriggered( &event );
 		}
 		break;
 		case KTProjectActionBar::RemoveScene:
 		{
-			event = new KTSceneEvent(KTProjectEvent::Remove, scenePos);
+			KTSceneEvent event(KTProjectEvent::Remove, scenePos);
 			
-			emit eventTriggered( event );
+			emit eventTriggered( &event );
 		}
 		break;
 		case KTProjectActionBar::MoveSceneUp:
@@ -382,9 +380,6 @@ void KTTimeLine::requestCommand(int action)
 		}
 		break;
 	}
-	
-	if (event)
-	delete event;
 }
 
 
