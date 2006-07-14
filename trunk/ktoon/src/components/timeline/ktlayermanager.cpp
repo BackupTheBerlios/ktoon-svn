@@ -318,10 +318,29 @@ void KTLayerManager::moveLayer(int position, int newPosition)
 	if ( position < 0 || position >= rowCount() || newPosition < 0 || newPosition >= rowCount() ) return;
 	
 	QTableWidgetItem *item1 = takeItem(position, 0);
-	QTableWidgetItem *item2 = takeItem(newPosition, 0);
 	
-	setItem(position, 0,  item2);
-	setItem(newPosition, 0,  item1);
+	bool up = true;
+	if ( position > newPosition )
+	{
+		up = false; // down
+	}
+	
+	if ( up )
+	{
+		for(int i = position+1; i <= newPosition; i++)
+		{
+			setItem(i-1, 0, takeItem(i, 0));
+		}
+	}
+	else
+	{
+		for(int i = position-1; i >= newPosition; i-- )
+		{
+			setItem(i+1, 0, takeItem(i, 0));
+		}
+	}
+	
+	setItem(newPosition, 0, item1);
 	
 	setCurrentItem(item1);
 }

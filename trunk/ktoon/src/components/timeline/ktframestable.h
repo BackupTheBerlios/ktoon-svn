@@ -153,6 +153,8 @@ class KTFramesTable : public QTableView
 		void emitItemEntered(const QModelIndex &index);
 		void emitItemChanged(const QModelIndex &index);
 		void emitCurrentItemChanged(const QModelIndex &previous, const QModelIndex &current);
+		
+// 		void fixSectionMoved(int logical, int visual, int newVisual);
 
 	public slots:
 		void scrollToItem(const KTFramesTableItem *item, QAbstractItemView::ScrollHint hint = EnsureVisible);

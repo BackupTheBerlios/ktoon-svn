@@ -225,8 +225,6 @@ void KTTimeLine::layerEvent(KTLayerEvent *e)
 			{
 				layerManager->renameLayer( e->layerIndex(), e->data().toString() );
 			}
-			
-			
 		}
 		break;
 	}

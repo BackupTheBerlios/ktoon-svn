@@ -628,11 +628,9 @@ bool KTFramesTableItem::isLocked()
 KTFramesTable::KTFramesTable(QWidget *parent) : QTableView(parent)
 {
 	m_model = new KTFramesTableModel(0,100,this);
-	
 	m_ruler = new KTTLRuler;
 	
 	setModel( m_model );
-	
 	setup();
 }
 
@@ -674,9 +672,9 @@ void KTFramesTable::setup()
 	horizontalHeader()->setResizeMode(QHeaderView::Custom);
 	verticalHeader()->setResizeMode(QHeaderView::Custom);
 	
-#if QT_VERSION >= 0x040100
-	setAutoFillBackground(true);
-#endif
+// 	connect(verticalHeader(), SIGNAL(sectionMoved(int, int, int)), this, SLOT(fixSectionMoved(int, int, int)));
+	
+// 	setAutoFillBackground(true);
 }
 
 void KTFramesTable::setItemSize(int w, int h)
@@ -978,8 +976,42 @@ void KTFramesTable::removeLayer(int pos)
 	m_layers.removeAt(pos);
 }
 
-void KTFramesTable::moveLayer(int pos, int newPos)
+void KTFramesTable::moveLayer(int position, int newPosition)
 {
+	if ( position < 0 || position >= rowCount() || newPosition < 0 || newPosition >= rowCount() ) return;
+	
+	blockSignals(true);
+	
+	verticalHeader()->moveSection(position, newPosition);
+	
+	blockSignals(false);
+	
+// 	KTFramesTableItem *item1 = takeItem(position, 0);
+// 	
+// 	bool up = true;
+// 	if ( position > newPosition )
+// 	{
+// 		up = false; // down
+// 	}
+// 	
+// 	if ( up )
+// 	{
+// 		for(int i = position+1; i <= newPosition; i++)
+// 		{
+// 			setItem(i-1, 0, takeItem(i, 0));
+// 		}
+// 	}
+// 	else
+// 	{
+// 		for(int i = position-1; i >= newPosition; i-- )
+// 		{
+// 			setItem(i+1, 0, takeItem(i, 0));
+// 		}
+// 	}
+// 	
+// 	setItem(newPosition, 0, item1);
+// 	
+// 	setCurrentItem(item1);
 }
 
 int KTFramesTable::lastFrameByLayer(int layerPos)
@@ -992,6 +1024,7 @@ int KTFramesTable::lastFrameByLayer(int layerPos)
 void KTFramesTable::insertFrame(int layerPos, const QString &name)
 {
 	if ( layerPos < 0 || layerPos >= m_layers.count() ) return;
+	
 	
 	m_layers[layerPos].lastItem++;
 	
@@ -1058,4 +1091,9 @@ void KTFramesTable::fixSize()
 		verticalHeader()->resizeSection(row, m_rectHeight);
 	}
 }
+
+// void KTFramesTable::fixSectionMoved(int logical, int visual, int newVisual)
+// {
+// 	verticalHeader()->moveSection(newVisual, visual);
+// }
 
