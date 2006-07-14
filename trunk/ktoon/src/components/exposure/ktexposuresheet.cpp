@@ -52,8 +52,6 @@ KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, 
 	m_scenes = new DTabWidget(this);
 	connect( m_scenes , SIGNAL(currentChanged ( int )), this, SLOT(emitRequestChangeScene( int ) ));
 	addChild(m_scenes);
-	
-	
 }
 
 KTExposureSheet::~KTExposureSheet()
@@ -144,8 +142,6 @@ void KTExposureSheet::applyAction(int action)
 			
 			bool locked = m_currentTable->frameIsLocked(m_currentTable->currentLayer(),  m_currentTable->currentFrame());
 			KTFrameEvent event(KTProjectEvent::Lock, m_scenes->currentIndex(), m_currentTable->currentLayer(), m_currentTable->currentFrame(), !locked);
-			
-			
 			emit eventTriggered( &event );
 			break;
 		}
