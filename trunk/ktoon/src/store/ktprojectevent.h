@@ -37,13 +37,39 @@ class KTFrameEvent;
 class Q_DECL_EXPORT KTProjectEvent
 {
 	public:
+		struct PartPosition
+		{
+			int sceneIndex;
+			int layerIndex;
+			int frameIndex;
+		};
+		
 		enum Action
 		{
+			/**
+			 * Añade una parte, el tipo de data es nulo
+			 */
 			Add,
+			/**
+			 * Remueve una parte, el tipo de data es nulo
+			 */
 			Remove,
+			/**
+			 * Mueve una parte, el tipo de data es un entero que significa la nueva posición
+			 */
 			Move,
+			/**
+			 * Bloquea una parte, el tipo de data es booleano.
+			 */
 			Lock,
-			Rename
+			/**
+			 * Renombra una parte, el tipo de data es una cadena de texto.
+			 */
+			Rename,
+			/**
+			 * Selecciona una parte, el tipo de data es nulo
+			 */
+			Select
 		};
 		
 		enum Part
@@ -75,6 +101,8 @@ class Q_DECL_EXPORT KTProjectEvent
 		QString m_partName;
 		QVariant m_data;
 };
+
+Q_DECLARE_METATYPE(KTProjectEvent::PartPosition);
 
 #endif
 

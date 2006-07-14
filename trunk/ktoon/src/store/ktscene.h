@@ -55,9 +55,19 @@ class Q_DECL_EXPORT KTScene : public QObject, public KTAbstractSerializable
 		void setSceneName(const QString &name);
 		
 		/**
+		 * Bloquea la escena
+		 */
+		void setLocked(bool isLocked);
+		
+		/**
 		 * retorna el nombre de la escena
 		 */
 		QString sceneName() const;
+		
+		/**
+		 * Returna verdadero cuando la escena esta bloqueada
+		 */
+		bool isLocked();
 		
 		/**
 		 * Retorna la lista de layers
@@ -93,7 +103,7 @@ class Q_DECL_EXPORT KTScene : public QObject, public KTAbstractSerializable
 	private:
 		Layers m_layers;
 		QString m_name;
-		
+		bool m_isLocked;
 		int m_layerCount;
 };
 

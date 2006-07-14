@@ -142,6 +142,11 @@ void KTProjectCommand::frameCommand(const KTFrameEvent *event, bool redo)
 				m_event->setPartName(m_project->renameFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->data().toString() ));
 			}
 			break;
+			case KTProjectEvent::Select:
+			{
+				m_project->selectFrame(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->data().toBool() );
+			}
+			break;
 		}
 	}
 	else
@@ -208,6 +213,11 @@ void KTProjectCommand::layerCommand(const KTLayerEvent *event, bool redo)
 				m_event->setPartName(m_project->renameLayer( event->sceneIndex(), event->layerIndex(), event->data().toString()));
 			}
 			break;
+			case KTProjectEvent::Select:
+			{
+				m_project->selectLayer(event->sceneIndex(), event->layerIndex(), event->data().toBool() );
+			}
+			break;
 		}
 	}
 	else
@@ -272,6 +282,11 @@ void KTProjectCommand::sceneCommand(const KTSceneEvent *event, bool redo)
 			case KTProjectEvent::Rename:
 			{
 				m_event->setPartName(m_project->renameScene( event->sceneIndex(), event->data().toString()));
+			}
+			break;
+			case KTProjectEvent::Select:
+			{
+				m_project->selectScene(event->sceneIndex(), event->data().toBool() );
 			}
 			break;
 		}

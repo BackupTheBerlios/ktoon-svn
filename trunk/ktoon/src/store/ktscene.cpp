@@ -24,7 +24,7 @@
 #include <QDir>
 
 
-KTScene::KTScene(QObject *parent) : QObject(parent), m_layerCount(0)
+KTScene::KTScene(QObject *parent) : QObject(parent), m_isLocked(false),  m_layerCount(0)
 {
 }
 
@@ -41,9 +41,19 @@ void KTScene::setSceneName(const QString &name)
 	m_name = name;
 }
 
+void KTScene::setLocked(bool isLocked)
+{
+	m_isLocked = isLocked;
+}
+
 QString KTScene::sceneName() const
 {
 	return m_name;
+}
+
+bool KTScene::isLocked()
+{
+	return m_isLocked;
 }
 
 Layers KTScene::layers() const

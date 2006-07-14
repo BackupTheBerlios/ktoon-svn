@@ -22,7 +22,6 @@
 #define KTEXPOSURESHEET_H
 
 #include "ktmodulewidgetbase.h"
-#include "kttableexposure.h"
 #include "ktexposuretable.h"
 
 // Qt
@@ -47,15 +46,6 @@ class KTExposureSheet : public KTModuleWidgetBase
 	public:
 		KTExposureSheet(QWidget *parent = 0);
 		~KTExposureSheet();
-
-		void addFrame(int idLayer, const QString &name, bool addedToEnd);
-		void moveFrame(bool up);
-		
-		void removeCurrentFrame();
-		void setScene(int index);
-		void setLayer(int index);
-		void setFrameName(int indexLayer, int indexFrame, const QString& name );
-		void setLayerName(int indexLayer, const QString& name );
 		
 	private:
 		QList<KTExposureTable*> m_tables;
@@ -68,45 +58,19 @@ class KTExposureSheet : public KTModuleWidgetBase
 		virtual void layerEvent(KTLayerEvent *e);
 		virtual void frameEvent(KTFrameEvent *e);
 		
-	private:
-		void createLayerManager();
-		
 	public slots:
 		void closeAllScenes();
 		void applyAction(int action);
 		void addScene(int index, const QString &name);
-		void renameScene(const QString &name, int id);
+		void renameScene( int index, const QString &name);
+		void setScene(int index);
 		
-		
-	private slots:
+	private slots: 
 		void emitRequestChangeScene(int index);
 		void insertItem(int indexLayer, int indexFrame);
 		void renameFrame(int indexLayer, int indexFrame, const QString & name);
 		void renameLayer(int indexLayer, const QString & name);
-		
-	signals:
-		//layers
-		void requestInsertLayer();
-		void requestRemoveLayer(int index);
-		void requestInsertFrame(bool addedToEnd);
-		void layerVisibilityChanged( int idLayer, bool value);
-		void layerSelected(int);
-		void requestRenameLayer(int, const QString&);
-		
-		//frames
-		void requestRemoveFrame();
-		void requestMoveFrame(bool up);
-		void requestLockFrame();
-		void requestCopyFrame(int);
-		void requestPasteFrame(int);
-		void requestCloneFrame(int, int);
-		void requestRenameFrame(int, int, const QString&);
-		void frameSelected(int idLayer, int idFrame);
-		
-		//scenes
-		void requestChangeScene( int index );
-		
-		
+		void moveLayer(int oldIndex, int newIndex);
 };
 
 #endif

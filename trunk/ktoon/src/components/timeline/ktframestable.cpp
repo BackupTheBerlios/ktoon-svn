@@ -978,6 +978,10 @@ void KTFramesTable::removeLayer(int pos)
 	m_layers.removeAt(pos);
 }
 
+void KTFramesTable::moveLayer(int pos, int newPos)
+{
+}
+
 int KTFramesTable::lastFrameByLayer(int layerPos)
 {
 	return m_layers[layerPos].lastItem;

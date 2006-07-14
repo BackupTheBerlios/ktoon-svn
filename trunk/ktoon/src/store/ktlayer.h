@@ -64,6 +64,11 @@ class Q_DECL_EXPORT KTLayer : public QObject, public KTAbstractSerializable
 		void setLayerName(const QString &name);
 		
 		/**
+		 * Bloquea el layer
+		 */
+		void setLocked(bool isLocked);
+		
+		/**
 		 * Pone la visibilidad del layer
 		 */
 		void setVisible(bool isVisible);
@@ -72,6 +77,11 @@ class Q_DECL_EXPORT KTLayer : public QObject, public KTAbstractSerializable
 		 * Retorna el nombre del layer
 		 */
 		QString layerName() const;
+		
+		/**
+		 * Returna verdadero cuando el layer esta bloqueado
+		*/
+		bool isLocked();
 		
 		/**
 		 * Retorna verdadero si el layer es visible
@@ -90,7 +100,7 @@ class Q_DECL_EXPORT KTLayer : public QObject, public KTAbstractSerializable
 		
 	private:
 		Frames m_frames;
-		bool m_isVisible;
+		bool m_isVisible, m_isLocked;
 		QString m_name;
 		int m_framesCount;
 };

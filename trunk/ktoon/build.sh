@@ -125,7 +125,7 @@ function createLauncher() {
 	echo "#!/bin/bash" > $LAUNCHER
 	echo "export KTOON_HOME=${KTOON_HOME}" >> $LAUNCHER
 	echo "export LD_LIBRARY_PATH=$KTOON_HOME/lib" >> $LAUNCHER
-	echo "exec $KTOON_HOME/bin/ktoon \$*" >> $LAUNCHER
+	echo "exec $KTOON_HOME/bin/ktoon.bin \$*" >> $LAUNCHER
 	chmod 755 $LAUNCHER
 }
 

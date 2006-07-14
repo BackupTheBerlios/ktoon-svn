@@ -77,6 +77,10 @@ class Q_DECL_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		QString renameLayer(int scene, int position, const QString &newName);
 		QString renameFrame(int scene, int layer, int position, const QString &newName);
 		
+		void selectScene(int position, bool prioritary);
+		void selectLayer(int scene, int position, bool prioritary);
+		void selectFrame(int scene, int layer, int position, bool prioritary);
+		
 		void clear();
 		
 	protected:

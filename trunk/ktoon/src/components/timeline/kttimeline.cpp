@@ -199,7 +199,18 @@ void KTTimeLine::layerEvent(KTLayerEvent *e)
 		
 		case KTProjectEvent::Move:
 		{
-			qDebug("MOVE!!");
+			KTLayerManager *layerManager = this->layerManager( e->sceneIndex() );
+			
+			if ( layerManager )
+			{
+				layerManager->moveLayer( e->layerIndex(), e->data().toInt() );
+			}
+			
+			KTFramesTable *framesTable = this->framesTable( e->sceneIndex() );
+			if ( framesTable )
+			{
+				framesTable->moveLayer(e->layerIndex(), e->data().toInt() );
+			}
 		}
 		break;
 		case KTProjectEvent::Lock:
@@ -334,13 +345,13 @@ void KTTimeLine::requestCommand(int action)
 		break;
 		case KTProjectActionBar::MoveLayerUp:
 		{
-			KTLayerEvent event(KTProjectEvent::Move,scenePos, layerPos, layerPos+1);
+			KTLayerEvent event(KTProjectEvent::Move,scenePos, layerPos, layerPos-1);
 			emit eventTriggered(&event);
 		}
 		break;
 		case KTProjectActionBar::MoveLayerDown:
 		{
-			KTLayerEvent event(KTProjectEvent::Move,scenePos, layerPos, layerPos-1);
+			KTLayerEvent event(KTProjectEvent::Move,scenePos, layerPos, layerPos+1);
 			emit eventTriggered(&event);
 		}
 		break;
@@ -372,6 +383,7 @@ void KTTimeLine::requestCommand(int action)
 		break;
 	}
 	
+	if (event)
 	delete event;
 }
 

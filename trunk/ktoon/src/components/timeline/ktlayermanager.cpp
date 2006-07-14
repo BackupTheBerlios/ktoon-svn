@@ -313,5 +313,18 @@ void KTLayerManager::commitData ( QWidget *editor )
 }
 
 
+void KTLayerManager::moveLayer(int position, int newPosition)
+{
+	if ( position < 0 || position >= rowCount() || newPosition < 0 || newPosition >= rowCount() ) return;
+	
+	QTableWidgetItem *item1 = takeItem(position, 0);
+	QTableWidgetItem *item2 = takeItem(newPosition, 0);
+	
+	setItem(position, 0,  item2);
+	setItem(newPosition, 0,  item1);
+	
+	setCurrentItem(item1);
+}
+
 
 

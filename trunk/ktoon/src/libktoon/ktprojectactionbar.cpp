@@ -152,6 +152,17 @@ void KTProjectActionBar::setup(Actions actions)
 		m_buttonLayout->addWidget( button );
 	}
 	
+	if ( actions & LockFrame )
+	{
+		QToolButton *button = new QToolButton;
+		button->setText(tr("Lock frame") );
+		button->setIcon(QIcon(HOME_DIR+"/themes/default/icons/kilit_pic.png"));
+		
+		m_actions.addButton( button, LockFrame);
+		
+		m_buttonLayout->addWidget( button );
+	}
+	
 	if ( actions & InsertLayer )
 	{
 		QToolButton *button = new QToolButton;
@@ -200,7 +211,18 @@ void KTProjectActionBar::setup(Actions actions)
 		
 		m_buttonLayout->addWidget( button );
 	}
-	 
+	
+	if ( actions & LockLayer )
+	{
+		QToolButton *button = new QToolButton;
+		button->setText(tr("Lock layer") );
+		button->setIcon(QIcon());
+		
+		m_actions.addButton( button, LockLayer );
+		
+		m_buttonLayout->addWidget( button );
+	}
+	
 	if ( actions & InsertScene )
 	{
 		QToolButton *button = new QToolButton;
@@ -250,6 +272,17 @@ void KTProjectActionBar::setup(Actions actions)
 		button->setIcon(QIcon( ));
 		
 		m_actions.addButton(button, MoveSceneDown);
+		
+		m_buttonLayout->addWidget( button );
+	}
+	
+	if ( actions & LockScene )
+	{
+		QToolButton *button = new QToolButton;
+		button->setText(tr("Lock scene") );
+		button->setIcon(QIcon());
+		
+		m_actions.addButton( button, LockScene );
 		
 		m_buttonLayout->addWidget( button );
 	}

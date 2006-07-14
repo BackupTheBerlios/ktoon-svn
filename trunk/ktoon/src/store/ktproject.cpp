@@ -489,10 +489,12 @@ void KTProject::lockScene(int position, bool lock)
 		return;
 	}
 	
+	scene->setLocked(lock);
+	
 	KTSceneEvent event(KTProjectEvent::Lock, position, lock);
 	emit commandExecuted( &event);
 	
-// 	scene->setLocked(lock);
+	
 }
 
 void KTProject::lockLayer(int scenePosition, int position, bool lock)
@@ -509,7 +511,7 @@ void KTProject::lockLayer(int scenePosition, int position, bool lock)
 	
 	if ( layer )
 	{
-// 		layer->setLocked(lock);
+		layer->setLocked(lock);
 		
 		KTLayerEvent event(KTProjectEvent::Lock, scenePosition, position, lock);
 		emit commandExecuted( &event);
@@ -633,6 +635,23 @@ QString KTProject::renameFrame(int scenePosition, int layerPosition, int positio
 }
 
 
+void KTProject::selectScene(int position, bool prioritary)
+{
+	KTSceneEvent event(KTProjectEvent::Select, position, prioritary);
+	emit commandExecuted( &event );
+}
+
+void KTProject::selectLayer(int scene, int position, bool prioritary)
+{
+	KTLayerEvent event(KTProjectEvent::Select, scene, position, prioritary);
+	emit commandExecuted( &event );
+}
+
+void KTProject::selectFrame(int scene, int layer, int position, bool prioritary)
+{
+	KTFrameEvent event(KTProjectEvent::Select, scene, layer, position, prioritary);
+	emit commandExecuted( &event );
+}
 
 
 

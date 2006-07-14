@@ -92,6 +92,7 @@ class KTFramesTable : public QTableView
 		void insertLayer(int layerPos, const QString &name);
 		void removeCurrentLayer();
 		void removeLayer(int pos);
+		void moveLayer(int pos, int newPos);
 		
 		int lastFrameByLayer(int layerPos);
 		

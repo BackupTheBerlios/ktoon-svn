@@ -70,7 +70,6 @@ DConfig *DConfig::instance()
 
 void DConfig::init()
 {
-	dDebug() << "*********Init configuration file : " << m_dconfig->path() << endl;
 	m_dconfig->setup();
 	m_isOk = m_dconfig->isOk();
 

@@ -67,6 +67,8 @@ class KTLayerManager : public QTableWidget
 		void removeLayer(int position);
 		void renameLayer(int position, const QString &name);
 		
+		void moveLayer(int position, int newPosition);
+		
 		void setRowHeight(int rowHeight);
 		
 	protected:

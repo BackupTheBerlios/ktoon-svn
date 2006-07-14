@@ -43,7 +43,8 @@ KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, 
 			KTProjectActionBar::InsertFrame |
 			KTProjectActionBar::RemoveFrame |
 			KTProjectActionBar::MoveFrameUp |
-			KTProjectActionBar::MoveFrameDown);
+			KTProjectActionBar::MoveFrameDown| 
+			KTProjectActionBar::LockFrame);
 	
 	connect(m_actionBar, SIGNAL(actionSelected( int )), this, SLOT(applyAction( int)));
 	addChild( m_actionBar, Qt::AlignCenter );
@@ -53,16 +54,12 @@ KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, 
 	addChild(m_scenes);
 	
 	
-// 	show();
 }
 
 KTExposureSheet::~KTExposureSheet()
 {
 	DEND;
 }
-
-
-
 
 void KTExposureSheet::addScene(int index, const QString &name)
 {
@@ -75,16 +72,16 @@ void KTExposureSheet::addScene(int index, const QString &name)
 	
 	connect(newScene, SIGNAL(requestSetUsedFrame(int, int)), this, SLOT(insertItem( int, int )));
 	connect(newScene, SIGNAL(requestRenameFrame(int, int,const QString & )), this, SLOT(renameItem( int, int, const QString &  )));
-	
 	connect(newScene, SIGNAL(requestRenameLayer(int, const QString & )), this, SLOT(renameLayer( int, const QString &  )));
+	connect(newScene, SIGNAL(requestMoveLayer(int, int )), this, SLOT(moveLayer( int, int  )));
 	
 	m_currentTable = newScene;
 	m_scenes->setCurrentWidget(m_currentTable);
 }
 
-void KTExposureSheet::renameScene(const QString &name, int id)
+void KTExposureSheet::renameScene( int index, const QString &name)
 {
-	m_scenes->setTabText(id, name);
+	m_scenes->setTabText(index, name);
 }
 
 
@@ -126,16 +123,10 @@ void KTExposureSheet::applyAction(int action)
 		case KTProjectActionBar::RemoveFrame:
 		{
 			KTFrameEvent event(KTProjectEvent::Remove, m_scenes->currentIndex(), m_currentTable->currentLayer(), m_currentTable->currentFrame());
-			
 			emit eventTriggered( &event );
 			break;
 		}
-// 		case LockFrame:
-// 		{
-// // 			m_currentTable->testLockFrame();
-// 			emit requestLockFrame();
-// 			break;
-// 		}
+
 		case KTProjectActionBar::MoveFrameUp:
 		{
 			KTFrameEvent event(KTProjectEvent::Move, m_scenes->currentIndex(), m_currentTable->currentLayer(), m_currentTable->currentFrame(), m_currentTable->currentFrame()-1);
@@ -148,35 +139,20 @@ void KTExposureSheet::applyAction(int action)
 			emit eventTriggered( &event );
 			break;
 		}
+		case KTProjectActionBar::LockFrame:
+		{
+			
+			bool locked = m_currentTable->frameIsLocked(m_currentTable->currentLayer(),  m_currentTable->currentFrame());
+			dDebug() << locked;
+			KTFrameEvent event(KTProjectEvent::Lock, m_scenes->currentIndex(), m_currentTable->currentLayer(), m_currentTable->currentFrame(), !locked);
+			
+			
+			emit eventTriggered( &event );
+			break;
+		}
 	}
 }
 
-void KTExposureSheet::addFrame(int idLayer, const QString &name, bool addedToEnd)
-{
-// 	dDebug( ) << "KTExposureSheet::addFrame(" << idLayer << " , "<< name << " , "  << addedToEnd << ")" << endl;
-// 	m_currentTable->setUseFrame(idLayer, name, addedToEnd);
-}
-
-
-
-
-void KTExposureSheet::removeCurrentFrame()
-{
-// 	if ( m_currentTable )
-// 	m_currentTable->removeFrame();
-}
-
-void KTExposureSheet::moveFrame(bool up)
-{
-// 	if(up)
-// 	{
-// 		m_currentTable->moveCurrentFrame(KTTableExposure::Up );
-// 	}
-// 	else
-// 	{
-// 		m_currentTable->moveCurrentFrame(KTTableExposure::Down );
-// 	}
-}
 
 void KTExposureSheet::setScene(int index)
 {
@@ -192,7 +168,7 @@ void KTExposureSheet::emitRequestChangeScene(int index)
 {
 	if(index != m_scenes->indexOf(m_currentTable))
 	{
-		emit requestChangeScene(index);
+		//TODO
 	}
 }
 
@@ -216,6 +192,12 @@ void KTExposureSheet::renameLayer(int indexLayer, const QString & name)
 	emit eventTriggered( &event );
 }
 
+void KTExposureSheet::moveLayer(int oldIndex, int newIndex)
+{
+	KTLayerEvent event(KTProjectEvent::Move, m_scenes->currentIndex() , oldIndex, newIndex);
+	emit eventTriggered( &event );
+}
+
 void KTExposureSheet::closeAllScenes()
 {
 	D_FUNCINFO;
@@ -228,21 +210,6 @@ void KTExposureSheet::closeAllScenes()
 	m_currentTable = 0;
 }
 
-void KTExposureSheet::setLayer(int index)
-{
-}
-
-void KTExposureSheet::setFrameName(int indexLayer, int indexFrame, const QString& name )
-{
-	dDebug() << "setFrameName(" << indexLayer << "," << indexFrame << "," << name  << ")";
-	// 	m_currentTable->setFrameName(indexLayer, indexFrame, name); // setText
-}
-
-void KTExposureSheet::setLayerName(int indexLayer, const QString& name )
-{
-	dDebug() << "setLayerName(" << indexLayer << "," << name << ")";
-	// 	m_currentTable->setLayerName( indexLayer, name ); // setText
-}
 
 void KTExposureSheet::sceneEvent(KTSceneEvent *e)
 {
@@ -258,6 +225,21 @@ void KTExposureSheet::sceneEvent(KTSceneEvent *e)
 			QWidget * widget = m_scenes->widget( e->sceneIndex() );
 			m_scenes->removeTab(e->sceneIndex());
 			delete widget;
+		}
+		break;
+		case KTProjectEvent::Move:
+		{
+			
+		}
+		break;
+		case KTProjectEvent::Lock:
+		{
+			
+		}
+		break;
+		case KTProjectEvent::Rename:
+		{
+			renameScene (e->sceneIndex(), e->data().toString());
 		}
 		break;
 	}
@@ -301,9 +283,12 @@ void KTExposureSheet::layerEvent(KTLayerEvent *e)
 			KTExposureTable *scene = dynamic_cast<KTExposureTable*>(m_scenes->widget((e->sceneIndex())));
 			if(scene)
 			{
-				// FIXME LAYER NAMEEEEEEEEEEEEEE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! hasta cuando??????????????
-				scene->setNameLayer( e->layerIndex(), e->data().toString());
+				scene->setLayerName( e->layerIndex(), e->data().toString());
 			}
+		}
+		break;
+		case KTProjectEvent::Lock:
+		{
 		}
 		break;
 	}
@@ -343,6 +328,11 @@ void KTExposureSheet::frameEvent(KTFrameEvent *e)
 		break;
 		case KTProjectEvent::Lock:
 		{
+			KTExposureTable *scene = dynamic_cast<KTExposureTable*>(m_scenes->widget((e->sceneIndex())));
+			if(scene)
+			{
+				scene->setLockFrame( e->layerIndex(), e->frameIndex(),  e->data().toBool());
+			}
 		}
 		break;
 		case KTProjectEvent::Rename:

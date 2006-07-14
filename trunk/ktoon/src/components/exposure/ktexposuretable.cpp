@@ -48,10 +48,11 @@ class KTExposureHeader: public QHeaderView
 		~KTExposureHeader();
 		void paintSection(QPainter *painter, const QRect & rect, int logicalIndex ) const;
 		void insertLayer(int logicalIndex, const QString &text);
-		void setNameLayer(int logicalIndex, const QString &text);
+		void setLayerName(int logicalIndex, const QString &text);
 		void setLastFrame(int logicalIndex, int num);
 		int lastFrame(int logicalIndex);
 		void removeLayer(int logicalIndex);
+		void moveLayer(int index, int newIndex);
 		
 	private slots:
 		void changeVisibility(int section);
@@ -63,7 +64,7 @@ class KTExposureHeader: public QHeaderView
 		
 	private:
 		QVector<LayerItem> m_layers;
-		QVector<QRectF> m_rects;
+// 		QVector<QRectF> m_rects;
 		
 		QLineEdit *m_editor;
 		int m_sectionEdited;
@@ -130,10 +131,22 @@ void KTExposureHeader::insertLayer(int logicalIndex, const QString &text)
 	m_layers.insert(logicalIndex, layer);
 }
 
-void KTExposureHeader::setNameLayer(int logicalIndex, const QString &text)
+void KTExposureHeader::setLayerName(int logicalIndex, const QString &text)
 {
 	m_layers[logicalIndex].title = text;
+	
 	updateSection(logicalIndex);
+}
+
+void KTExposureHeader::moveLayer(int index, int newIndex)
+{
+	blockSignals(true);
+	moveSection ( index, newIndex );
+	LayerItem tmp = m_layers[index];
+	m_layers[index] = m_layers[newIndex];
+	m_layers[newIndex] = tmp;
+	
+	blockSignals(false);
 }
 
 int KTExposureHeader::lastFrame( int logicalIndex)
@@ -149,7 +162,6 @@ void KTExposureHeader::removeLayer(int logicalIndex)
 void KTExposureHeader::setLastFrame(int logicalIndex, int num)
 {
 	m_layers[logicalIndex].lastFrame = num;
-// 	m_layers[logicalIndex].lastFrame++;
 }
 
 void KTExposureHeader::mousePressEvent ( QMouseEvent * event )
@@ -241,6 +253,8 @@ void KTExposureItemDelegate::paint( QPainter *painter, const QStyleOptionViewIte
 	{
 		if ( item->data(KTExposureTable::IsLocked).toBool() )
 		{
+			painter->drawLine( option.rect.topLeft(),  option.rect.bottomRight());
+			painter->drawLine( option.rect.topRight(),  option.rect.bottomLeft());
 			
 		}
 		
@@ -257,7 +271,6 @@ void KTExposureItemDelegate::paint( QPainter *painter, const QStyleOptionViewIte
 
 KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent)
 {
-// 	setEditTriggers( QAbstractItemView::NoEditTriggers );
 	
 	setItemDelegate(new KTExposureItemDelegate(this));
 	
@@ -269,16 +282,17 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent)
 	
 	setItemPrototype(prototype);
 	
-// 	setColumnCount( 10 );
-	setRowCount( 10 );
+	setRowCount( 100 );
 	
 	m_header = new KTExposureHeader(this);
 	connect(m_header, SIGNAL(changedName ( int, const QString & )), this, SIGNAL(requestRenameLayer( int, const QString & )));
 	
+	connect(m_header, SIGNAL(sectionMoved ( int , int , int  )), this, SLOT(emitRequestMoveLayer( int, int , int )));
+	
+	
 	setHorizontalHeader( m_header);
 	
 	connect(this, SIGNAL(cellClicked ( int, int )), this, SLOT(emitRequestSetUsedFrame(int, int)));
-	
 	connect(this, SIGNAL(itemChanged ( QTableWidgetItem *  )), this, SLOT(emitRequestRenameFrame( QTableWidgetItem * )));
 	
 	setSelectionBehavior (QAbstractItemView::SelectItems);
@@ -289,6 +303,12 @@ void KTExposureTable::emitRequestRenameFrame( QTableWidgetItem * item )
 {
 	QModelIndex  index = indexFromItem ( item );
 	emit requestRenameFrame(index.column(), index.row(), item->text());
+}
+
+void KTExposureTable::emitRequestMoveLayer( int , int oldVisualIndex, int newVisualIndex  )
+{
+	m_header->moveLayer( newVisualIndex, oldVisualIndex);
+	emit requestMoveLayer( oldVisualIndex,  newVisualIndex );
 }
 
 KTExposureTable::~KTExposureTable()
@@ -306,13 +326,19 @@ void KTExposureTable::setName(int indexLayer, int indexFrame,const QString & nam
 	}
 }
 
-void KTExposureTable::setNameLayer(int indexLayer, const QString & name)
+void KTExposureTable::setLayerName(int indexLayer, const QString & name)
 {
-	// FIXME LAYER NAMEEEEEEEEEEEEEE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! hasta cuando??????????????
-	// FIXME LAYER NAMEEEEEEEEEEEEEE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! hasta cuando??????????????
-	// FIXME LAYER NAMEEEEEEEEEEEEEE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! hasta cuando??????????????
-	m_header->setNameLayer(indexLayer, name);
-	// FIXME LAYER NAMEEEEEEEEEEEEEE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! hasta cuando??????????????
+	m_header->setLayerName(indexLayer, name);
+}
+
+bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
+{
+	QTableWidgetItem *frame = item(indexFrame, indexLayer);
+	if(frame)
+	{
+		return frame->data(IsLocked).toBool();
+	}
+	return false;
 }
 
 int KTExposureTable::currentLayer() const
@@ -346,7 +372,7 @@ void KTExposureTable::insertLayer(int index, const QString & name)
 
 void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString & name)
 {
-	D_FUNCINFO;
+// 	D_FUNCINFO;
 	
 	QTableWidgetItem * frame = new QTableWidgetItem;
 	
@@ -363,6 +389,26 @@ void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString 
 	if(m_header->lastFrame(indexLayer)  == rowCount ())
 	{
 		setRowCount( m_header->lastFrame(indexLayer) +10 );
+	}
+}
+
+void KTExposureTable::setLockFrame(int indexLayer, int indexFrame, bool locked)
+{
+	QTableWidgetItem * frame = item(indexFrame, indexLayer);
+	if(frame)
+	{
+		if(frame->data(IsUsed).toBool())
+		{
+			if(locked)
+			{
+				frame->setBackgroundColor(Qt::red);
+			}
+			else
+			{
+				frame->setBackgroundColor(Qt::gray);
+			}
+			frame->setData(IsLocked, locked);
+		}
 	}
 }
 
@@ -405,18 +451,14 @@ void KTExposureTable::moveFrame(  int oldPosLayer, int oldPosFrame, int newPosLa
 
 void KTExposureTable::moveLayer( int oldPosLayer, int newPosLayer )
 {
-	horizontalHeader()->moveSection ( oldPosLayer, newPosLayer );
+	m_header->moveLayer( oldPosLayer, newPosLayer );
 }
 
-void KTExposureTable::setLockFrame(int indexLayer, int indexFrame, bool locked)
-{
-	
-}
 
 void KTExposureTable::emitRequestSetUsedFrame( int indexFrame,  int indexLayer)
 {
 	D_FUNCINFO;
-	dDebug() << indexFrame << " " << m_header->lastFrame(indexLayer) << " " <<  indexLayer;
+// 	dDebug() << indexFrame << " " << m_header->lastFrame(indexLayer) << " " <<  indexLayer;
 	if(indexFrame == m_header->lastFrame(indexLayer))
 	{
 		emit requestSetUsedFrame(indexLayer, indexFrame);

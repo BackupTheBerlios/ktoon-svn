@@ -58,8 +58,9 @@ class KTExposureTable : public QTableWidget
 		int numUsed() const;
 		
 		void setName(int indexLayer, int indexFrame,const QString & name);
-		// FIXME LAYER NAMEEEEEEEEEEEEEE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! hasta cuando??????????????
-		void setNameLayer(int indexLayer, const QString & name);
+		void setLayerName(int indexLayer, const QString & name);
+		
+		bool frameIsLocked(int indexLayer, int indexFrame);
 		
 	private:
 		KTExposureHeader *m_header;
@@ -67,7 +68,7 @@ class KTExposureTable : public QTableWidget
 	private slots:
 		void emitRequestSetUsedFrame(int indexFrame,  int indexLayer);
 		void emitRequestRenameFrame( QTableWidgetItem * item );
-		
+		void emitRequestMoveLayer( int logicalIndex, int oldVisualIndex, int newVisualIndex  );
 		
 	protected:
 		bool edit ( const QModelIndex & index, EditTrigger trigger, QEvent * event );
@@ -76,6 +77,7 @@ class KTExposureTable : public QTableWidget
 		void requestSetUsedFrame(int indexLayer, int indexFrame);
 		void requestRenameFrame(int indexLayer, int indexFrame,const QString & name);
 		void requestRenameLayer(int indexLayer, const QString & name);
+		void requestMoveLayer( int oldIndex, int newIndex  );
 };
 
 #endif
