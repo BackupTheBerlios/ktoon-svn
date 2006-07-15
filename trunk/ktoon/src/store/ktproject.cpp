@@ -209,6 +209,8 @@ KTLayer *KTProject::createLayer(int scenePosition, int position, const QString &
 			emit commandExecuted(&event);
 		}
 		
+		dDebug() << "Añadiendo layer en escena: " << scene->sceneName();
+		
 		return layer;
 	}
 	else
@@ -309,6 +311,8 @@ KTFrame *KTProject::createFrame(int scenePosition, int layerPosition, int positi
 			event.setPartName(frame->frameName());
 			emit commandExecuted(&event);
 		}
+		
+		dDebug() << "Añadiendo frame en layer: " << layer->layerName();
 		
 		return frame;
 	}
@@ -600,7 +604,7 @@ QString KTProject::renameLayer(int scenePosition, int position, const QString &n
 
 QString KTProject::renameFrame(int scenePosition, int layerPosition, int position, const QString &newName)
 {
-	dWarning() << "Renombrando frame: " << newName;
+	dWarning() << "Renombrando frame " << position << ": " << newName;
 	
 	QString oldName;
 	

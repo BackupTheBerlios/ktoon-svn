@@ -303,7 +303,7 @@ void KTLayerManager::emitRequestRenameLayer( QTableWidgetItem *item )
 // 	emit requestRenameEvent( item->row(), item->text() );
 }
 
-void KTLayerManager::commitData ( QWidget *editor )
+void KTLayerManager::commitData( QWidget *editor )
 {
 	QLineEdit *lineEdit = qobject_cast<QLineEdit *>(editor);
 	
@@ -320,32 +320,34 @@ void KTLayerManager::moveLayer(int position, int newPosition)
 {
 	if ( position < 0 || position >= rowCount() || newPosition < 0 || newPosition >= rowCount() ) return;
 	
-	QTableWidgetItem *item1 = takeItem(position, 0);
+	verticalHeader()->moveSection(position, newPosition);
 	
-	bool up = true;
-	if ( position > newPosition )
-	{
-		up = false; // down
-	}
-	
-	if ( up )
-	{
-		for(int i = position+1; i <= newPosition; i++)
-		{
-			setItem(i-1, 0, takeItem(i, 0));
-		}
-	}
-	else
-	{
-		for(int i = position-1; i >= newPosition; i-- )
-		{
-			setItem(i+1, 0, takeItem(i, 0));
-		}
-	}
-	
-	setItem(newPosition, 0, item1);
-	
-	setCurrentItem(item1);
+// 	QTableWidgetItem *item1 = takeItem(position, 0);
+// 	
+// 	bool up = true;
+// 	if ( position > newPosition )
+// 	{
+// 		up = false; // down
+// 	}
+// 	
+// 	if ( up )
+// 	{
+// 		for(int i = position+1; i <= newPosition; i++)
+// 		{
+// 			setItem(i-1, 0, takeItem(i, 0));
+// 		}
+// 	}
+// 	else
+// 	{
+// 		for(int i = position-1; i >= newPosition; i-- )
+// 		{
+// 			setItem(i+1, 0, takeItem(i, 0));
+// 		}
+// 	}
+// 	
+// 	setItem(newPosition, 0, item1);
+// 	
+// 	setCurrentItem(item1);
 }
 
 

@@ -34,6 +34,8 @@
 #include "crashhandler.h"
 
 #include "dconfig.h"
+#include <ddebug.h>
+
 
 class TextArea : public QTextBrowser
 {
@@ -136,6 +138,7 @@ CrashWidget::~CrashWidget ()
 
 void CrashWidget::addBacktracePage(const QString &execInfo, const QString &backtrace)
 {
+	D_FUNCINFO << execInfo << " " << backtrace;
 	QWidget *btPage = new QWidget;
 	QVBoxLayout *layout = new QVBoxLayout(btPage);
 	
@@ -144,9 +147,7 @@ void CrashWidget::addBacktracePage(const QString &execInfo, const QString &backt
 	TextArea *fileInfo = new TextArea;
 	
 // 	QFontMetrics fm(fileInfo->font());
-// 	
 // 	QSize fileInfoSize = fm.size( Qt::TextWordWrap, execInfo);
-	
 // 	fileInfo->setMaximumHeight(fileInfoSize.height());
 	
 	fileInfo->setHtml(execInfo);

@@ -45,7 +45,7 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine
 	
 	addChild( m_actionBar, Qt::AlignCenter );
 	
-	m_container = new QStackedWidget(this);
+	m_container = new DTabWidget(this);
 	addChild(m_container);
 	
 	connect(m_actionBar, SIGNAL(actionSelected( int )), this, SLOT(requestCommand(int)));
@@ -88,7 +88,7 @@ void KTTimeLine::insertScene(int position, const QString &name)
 	
 	m_layerManager->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 	
-	m_splitter->insertWidget(position, m_layerManager);
+	m_splitter->addWidget(m_layerManager);
 
 	KTFramesTable *m_framesTable = new KTFramesTable(m_splitter);
 	m_splitter->addWidget(m_framesTable);
@@ -101,7 +101,7 @@ void KTTimeLine::insertScene(int position, const QString &name)
 	
 	connect(m_layerManager, SIGNAL(requestRenameEvent( int, const QString& )), this, SLOT(emitRequestRenameLayer(int, const QString &)));
 	
-	m_container->addWidget(m_splitter);
+	m_container->insertTab(position, m_splitter, name );
 }
 
 void KTTimeLine::removeScene(int position)
@@ -109,7 +109,8 @@ void KTTimeLine::removeScene(int position)
 	if ( position >= 0 && position < m_container->count() )
 	{
 		QWidget *w = m_container->widget(position);
-		m_container->removeWidget(w);
+// 		m_container->removeWidget(w);
+		m_container->removeTab(position);
 		
 		delete w;
 	}

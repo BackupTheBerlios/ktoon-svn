@@ -48,6 +48,9 @@ class Q_DECL_EXPORT KTProjectCommand : public QUndoCommand
 		void sceneCommand(const KTSceneEvent *event, bool redo);
 		
 	private:
+		QString actionString(int action);
+		
+	private:
 		KTProject *m_project;
 		KTProjectEvent *m_event;
 		

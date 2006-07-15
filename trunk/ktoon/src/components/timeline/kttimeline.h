@@ -25,6 +25,7 @@
 #include <QSplitter>
 
 #include <QStackedWidget>
+#include "dtabwidget.h"
 
 class KTLayerManager;
 class KTFramesTable;
@@ -62,7 +63,7 @@ class KTTimeLine : public KTModuleWidgetBase
 		void emitRequestRenameLayer(int layer, const QString &name);
 		
 	private:
-		QStackedWidget *m_container;
+		DTabWidget *m_container;
 		
 		KTProjectActionBar *m_actionBar;
 };

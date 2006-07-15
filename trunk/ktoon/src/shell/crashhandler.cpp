@@ -241,7 +241,7 @@ static QString runCommand( const QString &command )
 	static const uint SIZE = 40960; //40 KiB
 	static char buf[ SIZE ];
 	
-// 	dDebug() << "Running: " << command;
+	dDebug() << "Running: " << command;
 	
 	FILE *process = ::popen( command.toLocal8Bit().data(), "r" );
 	buf[ std::fread( (void*)stdout, sizeof(char), SIZE-1, process ) ] = '\0';
@@ -294,9 +294,9 @@ void crashTrapper (int sig)
 			QString gdb;
 			gdb  = "gdb --nw -n --batch -x ";
 			gdb += temp.fileName();
-			gdb += HOME_DIR+"/bin/ktoon";
+			gdb += " "+HOME_DIR+"/bin/ktoon.bin ";
 			gdb += QString::number( ::getppid() );
-	
+			
 			bt = runCommand( gdb );
 		}
 		
@@ -304,7 +304,7 @@ void crashTrapper (int sig)
 		bt.remove( QRegExp("\\(no debugging symbols found\\)") );
 		bt = bt.simplified();
 
-		execInfo = runCommand( "file "+HOME_DIR+"/bin/ktoon");
+		execInfo = runCommand( "file "+HOME_DIR+"/bin/ktoon.bin");
 		
 		/////// Widget
 		CrashWidget widget(sig);

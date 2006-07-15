@@ -31,6 +31,67 @@ KTProjectCommand::KTProjectCommand(KTProject *project, const KTProjectEvent *eve
 	DINIT;
 	
 	m_event = event->clone();
+	
+	switch(m_event->id())
+	{
+		case KTProjectEvent::Frame:
+		{
+			setText(actionString( m_event->action() ) +" frame" );
+		}
+		break;
+		case KTProjectEvent::Layer:
+		{
+			setText(actionString( m_event->action() )+" layer");
+		}
+		break;
+		case KTProjectEvent::Scene:
+		{
+			setText(actionString( m_event->action() )+" scene");
+		}
+		break;
+	}
+}
+
+QString KTProjectCommand::actionString(int action)
+{
+	switch(action)
+	{
+		case KTProjectEvent::Add:
+		{
+			return QObject::tr("add");
+		}
+		break;
+		case KTProjectEvent::Remove:
+		{
+			return QObject::tr("remove");
+		}
+		break;
+		case KTProjectEvent::Move:
+		{
+			return QObject::tr("move");
+		}
+		break;
+		case KTProjectEvent::Lock:
+		{
+			return QObject::tr("lock");
+		}
+		break;
+		case KTProjectEvent::Rename:
+		{
+			return QObject::tr("rename");
+		}
+		break;
+		case KTProjectEvent::Select:
+		{
+			return QObject::tr("select");
+		}
+		break;
+		case KTProjectEvent::View:
+		{
+			return QObject::tr("view");
+		}
+		break;
+	}
 }
 
 

@@ -964,6 +964,7 @@ QStyleOptionViewItem KTFramesTable::viewOptions() const
 
 void KTFramesTable::insertLayer(int pos, const QString &name)
 {
+	pos = verticalHeader()->logicalIndex(pos);
 	insertRow( pos + 1);
 	
 	LayerItem layer;
@@ -975,13 +976,14 @@ void KTFramesTable::insertLayer(int pos, const QString &name)
 
 void KTFramesTable::removeCurrentLayer()
 {
-	int pos = currentRow();
+	int pos = verticalHeader()->logicalIndex(currentRow());
 	removeLayer(pos);
 }
 
 void KTFramesTable::removeLayer(int pos)
 {
-	removeRow(pos);
+	pos = verticalHeader()->logicalIndex(pos);
+	removeRow( pos );
 	m_layers.removeAt(pos);
 }
 
@@ -1025,7 +1027,7 @@ void KTFramesTable::moveLayer(int position, int newPosition)
 
 int KTFramesTable::lastFrameByLayer(int layerPos)
 {
-	return m_layers[layerPos].lastItem;
+	return m_layers[verticalHeader()->logicalIndex(layerPos)].lastItem;
 }
 
 // FRAMES
@@ -1034,6 +1036,7 @@ void KTFramesTable::insertFrame(int layerPos, const QString &name)
 {
 	if ( layerPos < 0 || layerPos >= m_layers.count() ) return;
 	
+	layerPos = verticalHeader()->logicalIndex(layerPos);
 	
 	m_layers[layerPos].lastItem++;
 	
@@ -1076,6 +1079,8 @@ void KTFramesTable::removeFrame(int layerPos, int position)
 		return;
 	}
 	
+	layerPos = verticalHeader()->logicalIndex(layerPos);
+	
 	setAttribute( layerPos, m_layers[layerPos].lastItem, KTFramesTableItem::IsUsed, false );
 	
 	m_layers[layerPos].lastItem--;
@@ -1090,6 +1095,8 @@ void KTFramesTable::lockFrame(int layerPos, int position, bool lock)
 	{
 		return;
 	}
+	
+	layerPos = verticalHeader()->logicalIndex(layerPos);
 	
 	setAttribute( layerPos, position, KTFramesTableItem::IsLocked, lock );
 	
