@@ -62,12 +62,15 @@ class KTExposureTable : public QTableWidget
 		
 		bool frameIsLocked(int indexLayer, int indexFrame);
 		
+		void selectFrame( int indexLayer, int indexFrame);
+		
 	private:
 		KTExposureHeader *m_header;
 		
 	private slots:
 		void emitRequestSetUsedFrame(int indexFrame,  int indexLayer);
 		void emitRequestRenameFrame( QTableWidgetItem * item );
+		void emitRequestSelectFrame(  int currentRow, int currentColumn, int previousRow, int previousColumn );
 		void emitRequestMoveLayer( int logicalIndex, int oldVisualIndex, int newVisualIndex  );
 		
 	protected:
@@ -78,6 +81,8 @@ class KTExposureTable : public QTableWidget
 	signals:
 		void requestSetUsedFrame(int indexLayer, int indexFrame);
 		void requestRenameFrame(int indexLayer, int indexFrame,const QString & name);
+		void requestSelectFrame(int indexLayer, int indexFrame);
+		
 		void requestRenameLayer(int indexLayer, const QString & name);
 		void requestMoveLayer( int oldIndex, int newIndex  );
 };
