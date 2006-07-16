@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QList>
+#include <QHeaderView>
 
 #include "kttimeline.h"
 #include "dapplication.h"
@@ -31,6 +32,7 @@
 #include "ktlayermanager.h"
 
 #include "ktprojectactionbar.h"
+
 
 KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine"), m_actionBar(0)
 {
@@ -292,7 +294,7 @@ void KTTimeLine::requestCommand(int action)
 	
 	if ( scenePos >= 0 )
 	{
-		layerPos = layerManager( scenePos )->currentRow();
+		layerPos = layerManager(scenePos)->verticalHeader()->visualIndex(layerManager( scenePos )->currentRow());
 		
 // 		if ( layerPos < 0 )
 // 		{

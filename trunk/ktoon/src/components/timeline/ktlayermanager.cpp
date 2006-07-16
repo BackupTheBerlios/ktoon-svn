@@ -220,10 +220,14 @@ void KTLayerManager::insertLayer(int position, const QString &name)
 	QTableWidgetItem *newLayer = new QTableWidgetItem(name);
 	newLayer->setTextAlignment(Qt::AlignCenter);
 	
+// 	position = verticalHeader()->logicalIndex(position);
+	
 	if (  position >= 0 && position <= rowCount())
 	{
 		newLayer->setBackgroundColor( palette().background().color() );
 		newLayer->setTextColor(palette().foreground().color() );
+		
+		
 		
 		insertRow (position);
 		setItem(position, 0, newLayer);
@@ -250,12 +254,12 @@ void KTLayerManager::insertLayer(int position, const QString &name)
 
 void KTLayerManager::removeLayer(int position)
 {
-	removeRow(position);
+	removeRow( verticalHeader()->logicalIndex(position) );
 }
 
 void KTLayerManager::renameLayer(int position, const QString &name)
 {
-	QTableWidgetItem *item = this->item(0, position);
+	QTableWidgetItem *item = this->item(0, verticalHeader()->logicalIndex(position));
 	
 	if ( item )
 	{
@@ -298,10 +302,6 @@ void KTLayerManager::setRowHeight(int rowHeight)
 	m_rowHeight = rowHeight;
 }
 
-void KTLayerManager::emitRequestRenameLayer( QTableWidgetItem *item )
-{
-// 	emit requestRenameEvent( item->row(), item->text() );
-}
 
 void KTLayerManager::commitData( QWidget *editor )
 {
@@ -311,7 +311,7 @@ void KTLayerManager::commitData( QWidget *editor )
 	
 	if ( lineEdit )
 	{
-		emit requestRenameEvent( currentRow() , lineEdit->text() );
+		emit requestRenameEvent( verticalHeader()->visualIndex(currentRow()), lineEdit->text() );
 	}
 }
 
@@ -320,7 +320,7 @@ void KTLayerManager::moveLayer(int position, int newPosition)
 {
 	if ( position < 0 || position >= rowCount() || newPosition < 0 || newPosition >= rowCount() ) return;
 	
-	verticalHeader()->moveSection(position, newPosition);
+	verticalHeader()->moveSection( (position), (newPosition) );
 	
 // 	QTableWidgetItem *item1 = takeItem(position, 0);
 // 	
@@ -355,7 +355,7 @@ void KTLayerManager::lockLayer(int position, bool locked)
 {
 	if ( position < 0 || position >= rowCount() ) return;
 	
-	QTableWidgetItem *item = this->item(position, LOCK_COLUMN);
+	QTableWidgetItem *item = this->item(verticalHeader()->logicalIndex(position), LOCK_COLUMN);
 	
 	if ( item )
 	{

@@ -342,7 +342,7 @@ void KTExposureTable::setFrameName(int indexLayer, int indexFrame,const QString 
 
 void KTExposureTable::setLayerName(int indexLayer, const QString & name)
 {
-	m_header->setLayerName(indexLayer, name);
+	m_header->setLayerName( m_header->logicalIndex(indexLayer), name);
 }
 
 bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
@@ -358,15 +358,12 @@ bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
 
 void KTExposureTable::selectFrame( int indexLayer, int indexFrame)
 {
-	dDebug() << "KTExposureTable::selectFrame(" << indexLayer << "," << indexFrame << ")";
 	setCurrentCell(indexFrame,  m_header->logicalIndex(indexLayer));
 }
 
 int KTExposureTable::currentLayer() const
 {
 	D_FUNCINFO;
-	SHOW_VAR(currentColumn());
-	SHOW_VAR(m_header->visualIndex(currentColumn()));
 	return m_header->visualIndex(currentColumn());
 }
 
@@ -389,7 +386,6 @@ int KTExposureTable::currentFrame() const
 
 void KTExposureTable::insertLayer(int index, const QString & name)
 {
-	dDebug() << "insertLayer ("  << index << "," <<  name << ")";
 	insertColumn( index );
 	setCurrentCell( 0, index );
 	m_header->insertLayer( index, name );
@@ -407,14 +403,13 @@ void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString 
 	
 	int logicalIndex = m_header->logicalIndex ( indexLayer);
 	
-// 	SHOW_VAR(logicalIndex);
 	
 	m_header->setLastFrame( logicalIndex, m_header->lastFrame(logicalIndex)+1 );
 	setItem(indexFrame, logicalIndex, frame);
 	setCurrentCell(indexFrame, logicalIndex);
-	if(m_header->lastFrame(indexLayer)  == rowCount ())
+	if(m_header->lastFrame(logicalIndex)  == rowCount ())
 	{
-		setRowCount( m_header->lastFrame(indexLayer) +10 );
+		setRowCount( m_header->lastFrame(logicalIndex) + 50 );
 	}
 }
 
@@ -422,8 +417,6 @@ void KTExposureTable::setLockFrame(int indexLayer, int indexFrame, bool locked)
 {
 	
 	int logicalIndex = m_header->logicalIndex ( indexLayer);
-	dDebug() << "setLockFrame(" << indexLayer << "," << indexFrame << "," << locked << ")" ;
-	SHOW_VAR(logicalIndex);
 	QTableWidgetItem * frame = item(indexFrame, logicalIndex);
 	if(frame)
 	{

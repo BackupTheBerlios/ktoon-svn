@@ -77,9 +77,6 @@ class KTLayerManager : public QTableWidget
 		void resizeEvent(QResizeEvent *e);
 		virtual void fixSize();
 		
-	private slots:
-		void emitRequestRenameLayer( QTableWidgetItem *item );
-		
 	protected slots:
 		void commitData ( QWidget * editor );
 		
