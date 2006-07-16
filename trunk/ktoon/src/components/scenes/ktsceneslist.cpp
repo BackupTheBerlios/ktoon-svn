@@ -80,7 +80,14 @@ void KTScenesList::renameScene(int index, const QString &name)
 		item->setText(0, name);
 	}
 }
-
+void KTScenesList::selectScene(int index)
+{
+	QTreeWidgetItem *item = topLevelItem ( index );
+	if(item)
+	{
+		setCurrentItem(item);
+	}
+}
 
 void KTScenesList::changeCurrentScene()
 {

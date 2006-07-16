@@ -64,8 +64,6 @@ void KTExposureSheet::addScene(int index, const QString &name)
 	D_FUNCINFO;
 	KTExposureTable *newScene = new KTExposureTable;
 	
-	m_tables << newScene;
-	
 	m_scenes->insertTab (index, newScene, name);
 	
 	connect(newScene, SIGNAL(requestSetUsedFrame(int, int)), this, SLOT(insertItem( int, int )));
@@ -74,6 +72,8 @@ void KTExposureSheet::addScene(int index, const QString &name)
 	
 	connect(newScene, SIGNAL(requestRenameLayer(int, const QString & )), this, SLOT(renameLayer( int, const QString &  )));
 	connect(newScene, SIGNAL(requestMoveLayer(int, int )), this, SLOT(moveLayer( int, int  )));
+	
+	connect(newScene, SIGNAL(requestChangeVisiblityLayer(int , bool )),  this, SLOT(changeVisiblityLayer( int, bool  )));
 	
 	
 	m_currentTable = newScene;
@@ -89,7 +89,7 @@ void KTExposureSheet::renameScene( int index, const QString &name)
 void KTExposureSheet::applyAction(int action)
 {
 	D_FUNCINFO;
-	if ( m_tables.count() == 0 || m_currentTable == 0 )
+	if (  m_currentTable == 0 )
 	{
 		dFatal() << "KTExposureSheet::applyAction: No layer view!!" << endl;
 		return;
@@ -155,19 +155,19 @@ void KTExposureSheet::applyAction(int action)
 void KTExposureSheet::setScene(int index)
 {
 	D_FUNCINFO;
-	if(index != m_scenes->indexOf(m_currentTable) && m_tables.count() >= index)
+	if(index != m_scenes->indexOf(m_currentTable) && m_scenes->count() >= index)
 	{
-		m_currentTable = m_tables[index];
-		m_scenes->setCurrentWidget(m_tables[index]);
+		m_scenes->blockSignals(true);
+		m_scenes->setCurrentIndex(index);
+		m_scenes->blockSignals(false);
 	}
 }
 
 void KTExposureSheet::emitRequestChangeScene(int index)
 {
-	if(index != m_scenes->indexOf(m_currentTable))
-	{
-		//TODO
-	}
+	dDebug() << "KTExposureSheet::emitRequestChangeScene(" << index << ")";
+	KTSceneEvent event(KTProjectEvent::Select, index);
+	emit eventTriggered( &event );
 }
 
 void KTExposureSheet::insertItem(int indexLayer, int indexFrame)
@@ -187,6 +187,12 @@ void KTExposureSheet::selectFrame(int indexLayer, int indexFrame)
 {
 	dDebug() << "KTExposureSheet::selectFrame("  << indexLayer << "," << indexFrame << ")";
 	KTFrameEvent event(KTProjectEvent::Select, m_scenes->currentIndex() , indexLayer, indexFrame, true);
+	emit eventTriggered( &event );
+}
+
+void KTExposureSheet::changeVisiblityLayer(int visualIndexLayer, bool visibility)
+{
+	KTLayerEvent event(KTProjectEvent::View, m_scenes->currentIndex() , visualIndexLayer, visibility);
 	emit eventTriggered( &event );
 }
 
@@ -210,7 +216,6 @@ void KTExposureSheet::closeAllScenes()
 	delete m_currentTable;
 	
 	m_scenes->removeAllTabs();
-	m_tables.clear();
 	
 	m_currentTable = 0;
 }
@@ -284,6 +289,7 @@ void KTExposureSheet::layerEvent(KTLayerEvent *e)
 			break;
 			case KTProjectEvent::Lock:
 			{
+				scene->setLockLayer( e->layerIndex(), e->data().toBool());
 			}
 			break;
 			case KTProjectEvent::Select:
@@ -292,6 +298,10 @@ void KTExposureSheet::layerEvent(KTLayerEvent *e)
 				scene->blockSignals(true );
 				scene->selectFrame( e->layerIndex(), 0);
 				scene->blockSignals(false );
+			}
+			case KTProjectEvent::View:
+			{
+				scene->setVisibilityChanged( e->layerIndex(), e->data().toBool());
 			}
 			break;
 		}

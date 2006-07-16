@@ -48,7 +48,6 @@ class KTExposureSheet : public KTModuleWidgetBase
 		~KTExposureSheet();
 		
 	private:
-		QList<KTExposureTable*> m_tables;
 		DTabWidget *m_scenes;
 		KTExposureTable *m_currentTable;
 		KTProjectActionBar *m_actionBar;
@@ -64,13 +63,13 @@ class KTExposureSheet : public KTModuleWidgetBase
 		void addScene(int index, const QString &name);
 		void renameScene( int index, const QString &name);
 		void setScene(int index);
+		void changeVisiblityLayer( int, bool  );
 		
 	private slots: 
 		void emitRequestChangeScene(int index);
 		void insertItem(int indexLayer, int indexFrame);
 		void renameFrame(int indexLayer, int indexFrame, const QString & name);
 		void selectFrame(int indexLayer, int indexFrame);
-		
 		void renameLayer(int indexLayer, const QString & name);
 		void moveLayer(int oldIndex, int newIndex);
 };

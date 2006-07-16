@@ -196,6 +196,11 @@ void KTScenesWidget::sceneEvent(KTSceneEvent *e)
 			m_tableScenes->renameScene(e->sceneIndex(), e->data().toString() );
 		}
 		break;
+		case KTProjectEvent::Select:
+		{
+			m_tableScenes->selectScene( e->sceneIndex() );
+		}
+		break;
 		default: break;
 	}
 }

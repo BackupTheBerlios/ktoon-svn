@@ -20,21 +20,24 @@
 
 #include "ktexposuretable.h"
 
-#include<QHeaderView>
+#include <QHeaderView>
 #include <QPainter>
 #include <QStyleOptionButton>
 #include <QMap>
 #include <QVector>
 #include <QItemDelegate>
 #include <QLineEdit>
+#include <QMouseEvent>
 
 #include <ddebug.h>
+#include <ktglobal.h>
 
 struct LayerItem
 {
 	QString title;
 	int lastFrame;
 	bool isVisible;
+	bool isLocked;
 };
 
 /**
@@ -53,26 +56,27 @@ class KTExposureHeader: public QHeaderView
 		int lastFrame(int logicalIndex);
 		void removeLayer(int logicalIndex);
 		void moveLayer(int index, int newIndex);
+		void setLockLayer(int logicalndex, bool lock);
 		bool signalMovedBlocked();
+		void setVisibilityChanged(int logicalndex, bool visibility);
 		
 	private slots:
-		void changeVisibility(int section);
+		void emitVisiblityChanged(int section);
 		void showEditorName(int section );
 		void hideEditorName();
 		
 	protected:
 		virtual void mousePressEvent ( QMouseEvent * event );
-		
+// 		
 	private:
 		QVector<LayerItem> m_layers;
-// 		QVector<QRectF> m_rects;
 		
 		QLineEdit *m_editor;
 		int m_sectionEdited, m_blockSectionMoved;
 		
 	signals:
 		void changedName(int indexLayer, const QString & name );
-		
+		void visiblityChanged(int indexLayer, bool visibility );
 };
 
 KTExposureHeader::KTExposureHeader(QWidget * parent ) : QHeaderView(Qt::Horizontal , parent), m_sectionEdited(-1), m_blockSectionMoved(false)
@@ -80,7 +84,7 @@ KTExposureHeader::KTExposureHeader(QWidget * parent ) : QHeaderView(Qt::Horizont
 	setClickable(true);
 	setMovable(true);
 	
-	connect(this, SIGNAL(sectionClicked(int)), this, SLOT(changeVisibility(int)));
+// 	connect(this, SIGNAL(sectionClicked(int)), this, SLOT(emitVisiblityChanged(int)));
 	connect(this, SIGNAL(sectionDoubleClicked( int )), this, SLOT(showEditorName(int)));
 	
 	m_editor = new QLineEdit(this);
@@ -89,14 +93,21 @@ KTExposureHeader::KTExposureHeader(QWidget * parent ) : QHeaderView(Qt::Horizont
 	m_editor->hide();
 }
 
+
 KTExposureHeader::~KTExposureHeader()
 {
 }
 
-void KTExposureHeader::changeVisibility(int section)
+void KTExposureHeader::emitVisiblityChanged(int section)
 {
-	m_layers[section].isVisible = !m_layers[section].isVisible;
-	updateSection(section);
+
+	emit visiblityChanged(visualIndex(section), !m_layers[section].isVisible );
+}
+
+void KTExposureHeader::setVisibilityChanged(int logicalndex, bool visibility)
+{
+	m_layers[logicalndex].isVisible = !m_layers[logicalndex].isVisible;
+	updateSection(logicalndex);
 }
 
 void KTExposureHeader::showEditorName(int section)
@@ -125,6 +136,7 @@ void KTExposureHeader::insertLayer(int logicalIndex, const QString &text)
 	layer.title = text;
 	layer.lastFrame = 0;
 	layer.isVisible = true;
+ 	layer.isLocked = false;
 	m_layers.insert(logicalIndex, layer);
 }
 
@@ -140,13 +152,18 @@ bool KTExposureHeader::signalMovedBlocked()
 	return m_blockSectionMoved;
 }
 
+void KTExposureHeader::setLockLayer(int logicalndex, bool lock)
+{
+	dDebug() << "KTExposureHeader::setLockLayer( " <<  logicalndex << "," << lock << ")" ;
+	m_layers[logicalndex].isLocked = lock;
+	updateSection(logicalndex);
+}
+
 void KTExposureHeader::moveLayer(int position, int newPosition)
 {
 	dDebug() << "moveLayer(" << position << "," << newPosition << ")";
 	m_blockSectionMoved = true;
-
 	moveSection ( position, newPosition );
-	
 	m_blockSectionMoved = false;
 }
 
@@ -167,7 +184,18 @@ void KTExposureHeader::setLastFrame(int logicalIndex, int num)
 
 void KTExposureHeader::mousePressEvent ( QMouseEvent * event )
 {
-	QHeaderView::mousePressEvent(event);
+	int section = logicalIndexAt(  event->pos() );
+	int x = sectionViewportPosition ( section ) + 3;
+	
+	QRect rect(x+3, 3, height()-3, height()-3);
+	if(rect.contains(event->pos()))
+	{
+		emitVisiblityChanged(section);
+	}
+	else
+	{
+		QHeaderView::mousePressEvent(event);
+	}
 }
 
 void KTExposureHeader::paintSection ( QPainter * painter, const QRect & rect, int logicalIndex ) const
@@ -216,8 +244,18 @@ void KTExposureHeader::paintSection ( QPainter * painter, const QRect & rect, in
 		buttonOption.state |= QStyle::State_Sunken;
 	}
 	
+	int pxWidth = 0;
+	if(m_layers[logicalIndex].isLocked)
+	{
+		QPixmap pixmap(HOME_DIR+"/themes/default/icons/kilit_pic.png");
+		painter->drawPixmap(x+fm.width( text )+3, 3, pixmap);
+		pxWidth =  pixmap.width();
+	}
+	
+	
 	buttonOption.rect = QRect(rect.x()+3, rect.y()+3, height, height);
 	style()->drawControl( QStyle::CE_PushButton, &buttonOption, painter);
+// 	int size = height + 3 + fm.width( text )+3 + pxWidth;
 }
 
 #include "ktexposuretable.moc"
@@ -286,7 +324,9 @@ KTExposureTable::KTExposureTable(QWidget * parent) : QTableWidget(parent)
 	setRowCount( 100 );
 	
 	m_header = new KTExposureHeader(this);
+	connect(m_header, SIGNAL(visiblityChanged ( int, bool )), this, SIGNAL(requestChangeVisiblityLayer( int, bool )));
 	connect(m_header, SIGNAL(changedName ( int, const QString & )), this, SIGNAL(requestRenameLayer( int, const QString & )));
+	
 	
 	connect(m_header, SIGNAL(sectionMoved ( int , int , int  )), this, SLOT(emitRequestMoveLayer( int, int , int )));
 	
@@ -308,7 +348,6 @@ void KTExposureTable::emitRequestRenameFrame( QTableWidgetItem * item )
 
 void KTExposureTable::emitRequestSelectFrame(  int currentRow_, int currentColumn_, int previousRow, int previousColumn )
 {
-
 	if(previousRow != currentRow_ || previousColumn != currentColumn_)
 	{
 		emit  requestSelectFrame(currentLayer(), currentRow() );
@@ -323,6 +362,8 @@ void KTExposureTable::emitRequestMoveLayer( int , int oldVisualIndex, int newVis
 		emit requestMoveLayer( oldVisualIndex,  newVisualIndex );
 	}
 }
+
+
 
 KTExposureTable::~KTExposureTable()
 {
@@ -433,6 +474,17 @@ void KTExposureTable::setLockFrame(int indexLayer, int indexFrame, bool locked)
 			frame->setData(IsLocked, locked);
 		}
 	}
+}
+
+void KTExposureTable::setLockLayer(int indexLayer,  bool locked)
+{
+	m_header->setLockLayer ( indexLayer, locked);
+}
+
+
+void KTExposureTable::setVisibilityChanged(int visualIndex, bool visibility)
+{
+	m_header->setVisibilityChanged(m_header->logicalIndex(visualIndex), visibility);
 }
 
 void KTExposureTable::removeLayer(int indexLayer )

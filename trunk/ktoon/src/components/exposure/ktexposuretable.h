@@ -55,13 +55,14 @@ class KTExposureTable : public QTableWidget
 		void moveLayer( int oldPosLayer, int newPosLayer );
 		
 		void setLockFrame(int indexLayer, int indexFrame, bool locked);
+		void setLockLayer(int indexLayer,  bool locked);
+		void setVisibilityChanged(int visualIndex, bool visibility);
 		int numUsed() const;
 		
 		void setFrameName(int indexLayer, int indexFrame,const QString & name);
 		void setLayerName(int indexLayer, const QString & name);
 		
 		bool frameIsLocked(int indexLayer, int indexFrame);
-		
 		void selectFrame( int indexLayer, int indexFrame);
 		
 	private:
@@ -72,12 +73,13 @@ class KTExposureTable : public QTableWidget
 		void emitRequestRenameFrame( QTableWidgetItem * item );
 		void emitRequestSelectFrame(  int currentRow, int currentColumn, int previousRow, int previousColumn );
 		void emitRequestMoveLayer( int logicalIndex, int oldVisualIndex, int newVisualIndex  );
-		
+
 	protected:
 		bool edit ( const QModelIndex & index, EditTrigger trigger, QEvent * event );
 		
 	protected slots:
 		void commitData ( QWidget * editor );
+		
 	signals:
 		void requestSetUsedFrame(int indexLayer, int indexFrame);
 		void requestRenameFrame(int indexLayer, int indexFrame,const QString & name);
@@ -85,6 +87,7 @@ class KTExposureTable : public QTableWidget
 		
 		void requestRenameLayer(int indexLayer, const QString & name);
 		void requestMoveLayer( int oldIndex, int newIndex  );
+		void requestChangeVisiblityLayer(int visualIndexLayer, bool visibility);
 };
 
 #endif
