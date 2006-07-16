@@ -3,11 +3,61 @@
 # Subdir relative project main directory: ./src/shell
 # Target is an application:  ../../bin/ktoon.bin
 
+QT += xml opengl svg 
 INSTALLS += ktdata \
             target 
 target.path = /bin/ 
 ktdata.files += data/* 
 ktdata.path = /data 
+KDEV_QTVER = 4 
+LIBS += -ldcore \
+        -ldgui \
+        -lktoon \
+        ../../src/components/colorpalette/libcolorpalette.a \
+        ../../src/components/scenes/libscenes.a \
+        ../../src/components/exposure/libexposure.a \
+        ../../src/components/timeline/libtimeline.a \
+        ../../src/components/library/liblibrary.a \
+        ../../src/components/gceditor/libgceditor.a \
+        ../../src/components/import/libimport.a \
+        ../../src/components/help/libhelp.a \
+        ../../src/components/kinas/libkinas.a \
+        ../../3rdparty/quazip/libquazip.a \
+        ../../src/components/pen/libpen.a \
+        ../../src/components/export/libexport.a \
+        ../../src/libktui/libktui.a \
+        -lstore \
+        -ldsound 
+INCLUDEPATH += ../../src/components/pen \
+               ../../src/components/kinas \
+               ../../src/components/help \
+               ../../src/components/gceditor \
+               ../../src/components/import \
+               ../../src/components/export \
+               ../../src/components/exposure \
+               ../../src/components/timeline \
+               ../../src/components/library \
+               ../../src/components/colorpalette \
+               ../../src/components/scenes \
+               ../../src/libktui \
+               ../../src/store \
+               ../../src/libktoon \
+               ../../src/dlib/dgui \
+               ../../src/dlib/dcore \
+               ../../3rdparty/quazip \
+               ../../src/dlib 
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj 
+QMAKE_LIBDIR = ../../src/dlib/dcore \
+               ../../src/dlib/dgui \
+               ../../src/libktoon \
+               ../../src/store \
+               ../../src/dlib/dsound
+TARGET = ../../bin/ktoon.bin 
+CONFIG += release \
+          warn_on 
+TEMPLATE = app 
 TRANSLATIONS += data/translations/ktoon_es.ts \
                 data/translations/ktoon_fr.ts \
                 data/translations/ktoon_ru.ts 
@@ -41,55 +91,6 @@ SOURCES += main.cpp \
            ktdrawingareaproperties.cpp \
            ktpluginmanager.cpp \
            ktmainwindow-gui.cpp 
-QT += xml opengl
-KDEV_QTVER = 4
-TARGETDEPS += ../../src/store/libstore.so
-LIBS += -ldcore \
--ldgui \
--lktoon \
-../../src/components/colorpalette/libcolorpalette.a \
-../../src/components/scenes/libscenes.a \
-../../src/components/exposure/libexposure.a \
-../../src/components/timeline/libtimeline.a \
-../../src/components/library/liblibrary.a \
-../../src/components/gceditor/libgceditor.a \
-../../src/components/import/libimport.a \
-../../src/components/help/libhelp.a \
-../../src/components/kinas/libkinas.a \
-../../3rdparty/quazip/libquazip.a \
-../../src/components/pen/libpen.a \
-../../src/components/export/libexport.a \
-../../src/libktui/libktui.a \
--lstore
-INCLUDEPATH += ../../src/components/pen \
-../../src/components/kinas \
-../../src/components/help \
-../../src/components/gceditor \
-../../src/components/import \
-../../src/components/export \
-../../src/components/exposure \
-../../src/components/timeline \
-../../src/components/library \
-../../src/components/colorpalette \
-../../src/components/scenes \
-../../src/libktui \
-../../src/store \
-../../src/libktoon \
-../../src/dlib/dgui \
-../../src/dlib/dcore \
-../../3rdparty/quazip \
-../../src/dlib
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-QMAKE_LIBDIR = ../../src/dlib/dcore \
-../../src/dlib/dgui \
-../../src/libktoon \
-../../src/store
-TARGET = ../../bin/ktoon.bin
-CONFIG += release \
-warn_on
-TEMPLATE = app
 linux-g++{
   TARGETDEPS += ../../src/dlib/dcore/libdcore.so \
   ../../src/dlib/dgui/libdgui.so \
@@ -108,3 +109,4 @@ linux-g++{
   ../../src/components/colorpalette/libcolorpalette.a \
   ../../src/components/scenes/libscenes.a
 }
+

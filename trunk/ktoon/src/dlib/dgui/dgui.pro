@@ -3,6 +3,10 @@
 # Subdir relative project main directory: ./src/dlib/dgui
 # Target is a library:  
 
+include(../dlibconf.pri) {
+error("Run ./configure first!")
+}
+
 INSTALLS += include \
             target 
 target.path = /lib/ 

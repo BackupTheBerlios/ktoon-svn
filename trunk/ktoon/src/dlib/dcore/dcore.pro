@@ -3,6 +3,10 @@
 # Subdir relative project main directory: ./src/dlib/dcore
 # Target is a library:  
 
+include(../dlibconf.pri ) {
+error("Run ./configure first")
+}
+
 QT += xml 
 INSTALLS += include \
             target 

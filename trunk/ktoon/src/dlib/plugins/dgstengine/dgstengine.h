@@ -26,8 +26,9 @@
 
 #include <daudioengineiface.h>
 
+#ifdef HAVE_GST10
 #include <gst/gst.h>
-
+#endif
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
@@ -81,3 +82,4 @@ class DGstEngine : public QObject, public DAudioEngineIface
 };
 
 #endif
+

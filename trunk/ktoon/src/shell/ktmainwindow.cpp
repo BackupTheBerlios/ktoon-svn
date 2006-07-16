@@ -39,8 +39,9 @@
 #include "ktprojectcommand.h"
 
 // dlslib
-#include "ditabwidget.h"
-#include "displitter.h"
+#include <dgui/ditabwidget.h>
+#include <dgui/displitter.h>
+#include <dsound/daudioplayer.h>
 
 // Qt
 #include <QImage>
