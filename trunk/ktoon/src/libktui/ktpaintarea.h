@@ -26,6 +26,7 @@
 
 
 class QGraphicsRectItem;
+
 /**
  * Esta clase provee un area para hacer dibujos.
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
@@ -36,6 +37,8 @@ class KTPaintArea : public QGraphicsView
 	public:
 		KTPaintArea(QWidget * parent = 0);
 		~KTPaintArea();
+		
+		void setPhotogram(QGraphicsScene *photogram);
 		
 	protected:
 		void mousePressEvent ( QMouseEvent * event  );

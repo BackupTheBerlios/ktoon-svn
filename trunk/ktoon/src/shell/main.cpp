@@ -57,10 +57,6 @@ int main( int argc, char ** argv )
 	
 	CrashHandler::init();
 	
-#ifdef HAVE_GST10
-	DPlayer->loadEngine("gstreamer"); // FIXME
-#endif
-
 // #ifdef ENABLE_KTOONSTYLE
 // 	QApplication::setStyle(new KToonStyle());
 // #elif defined(Q_OS_LINUX)

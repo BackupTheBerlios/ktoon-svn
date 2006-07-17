@@ -22,13 +22,13 @@
 
 #include <QDir>
 #include <QTimer>
-
-#include <QtDebug>
+#include <dcore/dglobal.h>
+#include <dcore/ddebug.h>
 
 DAudioPlayer *DAudioPlayer::s_instance = 0;
 
 
-DAudioPlayer::DAudioPlayer() : QObject()
+DAudioPlayer::DAudioPlayer() : QObject(), m_engine(0)
 {
 }
 
@@ -50,11 +50,10 @@ DAudioPlayer *DAudioPlayer::instance()
 
 void DAudioPlayer::loadEngine(const QString &engineKey)
 {
-	qDebug() << "Loading engine: " << engineKey;
+	dDebug() << "Loading engine: " << engineKey;
 	
-// 	QDir m_pluginDirectory = QDir(HOME_DIR+"/plugins/");
-	QDir m_pluginDirectory = QDir("dgstengine");
-
+	QDir m_pluginDirectory = QDir(HOME_DIR+"/plugins/");
+	
 	foreach (QString fileName, m_pluginDirectory.entryList(QDir::Files))
 	{
 		QPluginLoader loader(m_pluginDirectory.absoluteFilePath(fileName));
@@ -62,16 +61,17 @@ void DAudioPlayer::loadEngine(const QString &engineKey)
 		
 		if (plugin)
 		{
-			qDebug() << "******FILE: " << fileName;
+			dDebug() << "******FILE: " << fileName;
 			DAudioEngineIface *engine = qobject_cast<DAudioEngineIface *>(plugin);
 			
 			if ( engine )
 			{
 				if ( engine->key() == engineKey )
 				{
-					qDebug() << "Loaded!";
+					dDebug() << "Loaded!";
 					m_engine = engine;
 					m_engine->init();
+					break;
 				}
 			}
 		}
@@ -81,36 +81,58 @@ void DAudioPlayer::loadEngine(const QString &engineKey)
 
 int DAudioPlayer::load( const QUrl &url, int id )
 {
-	return m_engine->load(url, id);
+	if ( m_engine )
+	{
+		return m_engine->load(url, id);
+	}
+	return -1;
 }
 
 void DAudioPlayer::play(int offset)
 {
-	m_engine->play( offset);
+	if ( m_engine )
+	{
+		m_engine->play( offset);
+	}
 }
 
 void DAudioPlayer::pause()
 {
-	m_engine->pause();
+	if ( m_engine )
+	{
+		m_engine->pause();
+	}
 }
 
 void DAudioPlayer::setCurrentPlayer(int id)
 {
-	m_engine->setCurrentPlayer( id );
+	if ( m_engine )
+	{
+		m_engine->setCurrentPlayer( id );
+	}
 }
 
 void DAudioPlayer::stop()
 {
-	m_engine->stop();
+	if ( m_engine )
+	{
+		m_engine->stop();
+	}
 }
 
 void DAudioPlayer::seek( uint ms )
 {
-	m_engine->seek(ms);
+	if ( m_engine )
+	{
+		m_engine->seek(ms);
+	}
 }
 
 void DAudioPlayer::setVolume(int percent)
 {
-	m_engine->setVolume( percent );
+	if ( m_engine )
+	{
+		m_engine->setVolume( percent );
+	}
 }
 

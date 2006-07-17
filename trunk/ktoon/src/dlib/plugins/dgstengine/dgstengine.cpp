@@ -24,6 +24,8 @@
 #include <QTimer>
 #include <QFile>
 
+#include <dcore/ddebug.h>
+
 DGstEngine *DGstEngine::s_instance = 0;
 
 
@@ -103,6 +105,14 @@ int DGstEngine::load( const QUrl &url, int id )
 	
 	qDebug() << "LOAD: " << path.toString();
 	
+	if ( !QFile::exists(url.path()) )
+	{
+		m_currentPlayer = -1;
+		
+		dError() << "Cannot load: " << path.toString();
+		return -1;
+	}
+	
 	if ( id < 0 )
 	{
 		id = m_players.count();
@@ -145,6 +155,11 @@ bool DGstEngine::init()
 bool DGstEngine::play(int offset)
 {
 	qDebug() << "PLAY ";
+	
+	if ( m_currentPlayer < 0 )
+	{
+		return false;
+	}
 	
 	g_object_set (G_OBJECT (m_players[m_currentPlayer].player), "uri", m_players[m_currentPlayer].url.toString().toLocal8Bit().data(), NULL);
 	
@@ -209,13 +224,17 @@ bool DGstEngine::setCurrentPlayer(int id)
 void DGstEngine::destroyPlayInfo(const PlayInfo *playInfo)
 {
 	qDebug() << "Destroy play info" << playInfo->id;
+	
 	m_players.remove(playInfo->id);
 	gst_element_set_state( playInfo->player, GST_STATE_NULL );
 	gst_object_unref( GST_OBJECT( playInfo->player ) );
+	
 }
 
 void DGstEngine::setVolume(int percent)
 {
+	if ( m_currentPlayer < 0  )
+		return;
 	g_object_set( G_OBJECT(m_players[m_currentPlayer].player), "volume", percent*0.01, NULL );
 }
 

@@ -49,22 +49,24 @@ KTPaintArea::KTPaintArea(QWidget * parent) : QGraphicsView(parent)
 
 KTPaintArea::~KTPaintArea()
 {
-	
 }
 
 
 
 void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 {
+	QGraphicsView::mousePressEvent(event);
 }
 
 void KTPaintArea::mouseMoveEvent ( QMouseEvent * event )
 {
+	QGraphicsView::mouseMoveEvent(event);
 	emit cursorPosition(event->pos()  );
 }
 
 void KTPaintArea::mouseReleaseEvent(QMouseEvent *event)
 {
+	QGraphicsView::mouseReleaseEvent(event);
 }
 
 
@@ -73,4 +75,8 @@ void KTPaintArea::resizeEvent ( QResizeEvent * event )
 	scene()->setSceneRect(rect().normalized().adjusted ( 0, 0, -25, -25 ) );
 	QPoint zero(scene()->width() - 500, scene()->height() - 400);
 	m_grid->setRect(QRectF(mapToScene(zero/2), QSizeF( 500, 400) ));
+	
+	QGraphicsView::resizeEvent(event);
 }
+
+

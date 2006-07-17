@@ -3,7 +3,7 @@
 # Subdir relative project main directory: ./src/dlib/dgui
 # Target is a library:  
 
-include(../dlibconf.pri) {
+! include(../dlibconfig.pri) {
 error("Run ./configure first!")
 }
 

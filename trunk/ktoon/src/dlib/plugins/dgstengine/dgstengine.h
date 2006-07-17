@@ -24,7 +24,7 @@
 #include <QObject>
 #include <QMap>
 
-#include <daudioengineiface.h>
+#include <dsound/daudioengineiface.h>
 
 #ifdef HAVE_GST10
 #include <gst/gst.h>

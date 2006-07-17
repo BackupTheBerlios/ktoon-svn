@@ -59,6 +59,9 @@
 KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_viewDoc(0), m_animationSpace(0), m_exposureSheet(0), m_scenes(0)
 {
 	DINIT;
+	
+	DPlayer->loadEngine("gstreamer"); // FIXME: ponerlo en la configuración
+	
 	m_undoCommands = new QUndoStack(this);
 
 	setObjectName("KTMainWindow_");
@@ -68,7 +71,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_viewDoc(0), m_an
 	m_statusBar = new KTStatusBar(this);
 	setStatusBar( m_statusBar );
 	
-	setWindowTitle(tr("KToon: 2D animation toolkit"));
+	setWindowTitle( tr("KToon: 2D animation toolkit" ));
 	m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
 	
 	
@@ -78,10 +81,10 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_viewDoc(0), m_an
 	splash->setMessage( tr("Loading action manager..."));
 	m_actionManager = new DActionManager(this);
 	
-	splash->setMessage( tr("Creating menu bar..."));
+	splash->setMessage( tr("Creating menu bar...") );
 	setupActions();
 	
-	splash->setMessage( tr("Creating GUI..."));
+	splash->setMessage( tr("Creating GUI...") );
 	
 	createGUI();
 	setupMenu();
