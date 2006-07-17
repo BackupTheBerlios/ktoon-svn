@@ -1,1 +1,0 @@
-/home/krawek/Proyectos/ktoon_svn/trunk/ktoon/config.h

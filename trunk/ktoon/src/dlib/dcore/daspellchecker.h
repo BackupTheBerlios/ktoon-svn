@@ -30,7 +30,7 @@
 #include "dcore/dspellinterface.h"
 
 
-struct AspellDSpeller;
+struct AspellSpeller;
 
 /**
  * @if english
@@ -40,7 +40,7 @@ struct AspellDSpeller;
  * @endif
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DAspellChecker : public DDSpellInterface
+class DAspellChecker : public DSpellInterface
 {
 	public:
 		/**
@@ -77,7 +77,7 @@ class DAspellChecker : public DDSpellInterface
 		bool init();
 		
 	private:
-		AspellDSpeller *m_speller;
+		AspellSpeller *m_speller;
 };
 
 #endif
