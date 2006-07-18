@@ -24,18 +24,20 @@
 #include "ktabstractserializable.h"
 #include "ktlayer.h"
 
-typedef QList<KTLayer *> Layers;
 
 #include <QDomDocument>
 #include <QDomElement>
+#include <QGraphicsScene>
 
+
+typedef QVector<KTLayer *> Layers;
 
 /**
  * @brief Esta clase representa una escena
  * @author David Cuadrado \<krawek@toonka.com\>
 */
 
-class Q_DECL_EXPORT KTScene : public QObject, public KTAbstractSerializable
+class Q_DECL_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializable
 {
 	Q_OBJECT
 	public:
@@ -101,6 +103,8 @@ class Q_DECL_EXPORT KTScene : public QObject, public KTAbstractSerializable
 		bool moveLayer(int from, int to);
 		
 		QGraphicsScene* photogram(int index);
+		
+		void addGraphic(QGraphicsItem *item);
 		
 	public:
 		virtual void fromXml(const QString &xml );

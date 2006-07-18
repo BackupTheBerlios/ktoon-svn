@@ -17,28 +17,23 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "ktframegroup.h"
 
-#ifndef __KTGRAPHICALGORITHM_H__
-#define __KTGRAPHICALGORITHM_H__
-
-#include <QString>
-#include <QPolygon>
-#include <QPainterPath>
-
-/**
- * @author Jorge Cuadrado <krawek@toonka.com>
- */
-class Q_DECL_EXPORT KTGraphicalAlgorithm
+KTFrameGroup::KTFrameGroup(QObject *parent ) : KTFrame(parent)
 {
-	private:
-		KTGraphicalAlgorithm() {}
-		~KTGraphicalAlgorithm() {};
-	
-	public:
-		static QPainterPath bezierFit(QPolygonF &points_, float error);
-		static QPolygonF polygonFit(const QPolygonF &points);
-		
-};
+}
 
-#endif
+
+KTFrameGroup::~KTFrameGroup()
+{
+}
+
+void KTFrameGroup::addFrame(KTFrame *frame)
+{
+	if ( ! m_frames.contains(frame ) && frame != this )
+	{
+		m_frames << frame;
+	}
+}
+
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,27 +18,57 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __KTGRAPHICALGORITHM_H__
-#define __KTGRAPHICALGORITHM_H__
+#ifndef BRUSH_H
+#define BRUSH_H
 
-#include <QString>
-#include <QPolygon>
-#include <QPainterPath>
+#include <QObject>
+#include <kttoolplugin.h>
+#include <QSpinBox>
+#include "exactnessconfigurator.h"
+
+class QKeySequence;
 
 /**
- * @author Jorge Cuadrado <krawek@toonka.com>
- */
-class Q_DECL_EXPORT KTGraphicalAlgorithm
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+
+class Brush : public KTToolPlugin
 {
-	private:
-		KTGraphicalAlgorithm() {}
-		~KTGraphicalAlgorithm() {};
+	Q_OBJECT;
 	
 	public:
-		static QPainterPath bezierFit(QPolygonF &points_, float error);
-		static QPolygonF polygonFit(const QPolygonF &points);
+		Brush();
+		virtual ~Brush();
+		virtual QStringList keys() const;
+		virtual void press(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene);
+		virtual void move(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene);
+		virtual void release(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene);
 		
+		virtual QPainterPath path() const;
+		
+		virtual QMap<QString, DAction *>actions() const;
+		
+		int toolType() const;
+		
+		virtual QWidget *configurator();
+		
+		virtual bool isComplete() const;
+		virtual void aboutToChangeTool() ;
+		
+	private:
+		void setupActions();
+		
+		
+		
+	private:
+		QPoint m_firstPoint;
+		QPoint m_oldPos;
+		QPainterPath m_path;
+		ExactnessConfigurator * m_configurator;
+		
+		QMap<QString, DAction *> m_actions;
+		
+		QGraphicsPathItem *m_item;
 };
 
 #endif
-

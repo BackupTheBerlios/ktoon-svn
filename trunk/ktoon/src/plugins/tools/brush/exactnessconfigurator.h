@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2006 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,25 +18,38 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTPLUGINOBJECT_H
-#define KTPLUGINOBJECT_H
+#ifndef EXACTNESSCONFIGURATOR_H
+#define EXACTNESSCONFIGURATOR_H
 
-#include <QObject>
-#include <QPainterPath>
+#include <QDoubleSpinBox>
+#include <QLabel>
+
+class QTableWidget;
+class QTableWidgetItem;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author Jorge Cuadrado <krawek@toonka.com>
 */
-class KTToolPluginObject : public QObject
+class ExactnessConfigurator : public QWidget
 {
-	Q_OBJECT
+	Q_OBJECT;
 	public:
-		KTToolPluginObject();
-		~KTToolPluginObject();
+		ExactnessConfigurator(QWidget *parent = 0);
+		~ExactnessConfigurator();
+		double exactness() const;
 		
-	signals:
-		void toDrawGhostGraphic(const QPainterPath &r);
-		void requestRedraw();
+	protected:
+		void resizeEvent(QResizeEvent *e);
+		
+	private slots:
+		void addCurrentValue();
+		void removeCurrentValue();
+		
+		void updateValueFromItem(QTableWidgetItem *item);
+		
+	private:
+		QDoubleSpinBox *m_exactness;
+		QTableWidget *m_table;
 
 };
 

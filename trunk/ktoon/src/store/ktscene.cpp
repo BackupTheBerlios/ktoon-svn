@@ -24,8 +24,9 @@
 #include <QDir>
 
 
-KTScene::KTScene(QObject *parent) : QObject(parent), m_isLocked(false),  m_layerCount(0), m_isVisible(true)
+KTScene::KTScene(QObject *parent) : QGraphicsScene(parent), m_isLocked(false),  m_layerCount(0), m_isVisible(true)
 {
+	setItemIndexMethod(QGraphicsScene::NoIndex);
 }
 
 
@@ -104,7 +105,7 @@ bool KTScene::removeLayer( int position)
 	KTLayer *layer = this->layer(position);
 	if ( layer )
 	{
-		m_layers.removeAt(position);
+		m_layers.remove(position);
 		delete layer;
 		
 		return true;
@@ -219,11 +220,18 @@ bool KTScene::moveLayer(int from, int to)
 		return false;
 	}
 	
-	KTLayer *layer = m_layers.takeAt(from);
+	KTLayer *layer = m_layers[from];
 	
 	m_layers.insert(to, layer);
+	
+	m_layers.remove(from);
 	
 	return true;
 }
 
 
+void KTScene::addGraphic(QGraphicsItem *item)
+{
+	qDebug("AÑADIENDO GRAFICO!!!");
+	addItem(item); // FIXME: Esto esta mal, debe añadirse al current frame
+}

@@ -13,7 +13,8 @@ SUBDIRS += scenes \
            gceditor \
            help \
            kinas \
-           pen 
+           pen \
+           paintarea 
 CONFIG += release \
 warn_on
 TEMPLATE = subdirs

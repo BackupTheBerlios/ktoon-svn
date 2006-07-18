@@ -29,10 +29,11 @@
 #include <QToolTip>
 #include <QPainter>
 #include <QPainterPath>
+#include <QStyle>
 
 #include <ddebug.h>
 
-KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent), m_separator(0), m_toolTipShowed(false)
+KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent), m_toolTipShowed(false)
 {
 	setAllowedAreas ( Qt::RightDockWidgetArea );
 	
@@ -67,33 +68,6 @@ void KTConfigurationArea::setConfigurator(QWidget *w)
 	showConfigurator();
 }
 
-void KTConfigurationArea::findSeparator()
-{
-	D_FUNCINFO;
-	if ( m_separator )
-	{
-		return;
-	}
-	
-	QMainWindow *mw = qobject_cast<QMainWindow *>(parentWidget());
-	
-	if (mw)
-	{
-		QList<QWidget*> widgets = mw->findChildren<QWidget*>();
-		QList<QWidget*>::ConstIterator it = widgets.begin();
-		
-		while (it != widgets.end())
-		{
-			if ((*it)->metaObject()->className() == QString("QDockSeparator")) // HACK
-			{
-				m_separator = (*it);
-				break;
-			}
-			++it;
-		}
-	}
-}
-
 void KTConfigurationArea::toggleLock()
 {
 	m_locker.stop();
@@ -103,45 +77,112 @@ void KTConfigurationArea::toggleLock()
 void KTConfigurationArea::shrink()
 {
 	D_FUNCINFO;
-	if ( ! m_separator )
+	
+	QMainWindow *mainWindow = dynamic_cast<QMainWindow *>(parentWidget());
+	if ( !mainWindow || ! widget() )
 	{
-		findSeparator();
+		D_FUNCINFO << "Fatal error";
 		return;
 	}
 	
-	bool hmt = m_separator->hasMouseTracking();
+	bool hmt = mainWindow->hasMouseTracking();
 	
-	m_separator->setMouseTracking(true);
+	int pm = style()->pixelMetric(QStyle::PM_DockWidgetSeparatorExtent);
+	
+	mainWindow->setMouseTracking(true);
+	
+	int wOffset = 0, hOffset= 0;
+	
+	Qt::DockWidgetArea m_position = mainWindow->dockWidgetArea(this);
+	
+	if ( m_position == Qt::BottomDockWidgetArea )
+	{
+		wOffset = 20;
+		hOffset = -(y() * 2 + pm - 1); // FIXME FIXME FIXME
+	}
+	else if ( m_position == Qt::LeftDockWidgetArea )
+	{
+		wOffset = width()+(pm/2)+1;
+		hOffset = height() / 2;
+	}
+	else if (m_position == Qt::RightDockWidgetArea )
+	{
+		wOffset = -(pm/2)+1;
+		hOffset = height() / 2;
+	}
+	
 	QMouseEvent press(QEvent::MouseButtonPress,
-			  QPoint(m_separator->x(), m_separator->y()),
+			  mapTo(mainWindow, QPoint(this->x(), this->y())) + QPoint(wOffset, hOffset),
 			  Qt::LeftButton, 0, 0);
-	QApplication::sendEvent(m_separator, &press);
+	
+	if ( ! QApplication::sendEvent(mainWindow, &press) )
+	{
+		qWarning("Fail pressing");
+	}
+	
+	qApp->processEvents();
 	
 	int df = 0;
 	int x1 = 0, x2= 0, y1= 0, y2= 0, xRelease= 0, yRelease= 0;
-
-	df = width() - 20;
-	x1 = press.pos().x() + df;
-	y1 = press.pos().y();
 	
-	x2 = press.globalPos().x() + df;
-	y2 = press.globalPos().y();
-	
-	xRelease = width() - 20;
-	yRelease = m_separator->y();
+	if ( m_position == Qt::BottomDockWidgetArea )
+	{
+		df = widget()->height();
+		x1 = press.pos().x();
+		y1 = press.pos().y() + df;
+		
+		x2 = press.globalPos().x();
+		y2 = press.globalPos().y() + df;
+		
+		xRelease = this->x();
+		yRelease = 10;
+	}
+	else if ( m_position == Qt::LeftDockWidgetArea )
+	{
+		df = widget()->width();
+		x1 = press.pos().x() - df;
+		y1 = press.pos().y();
+		
+		x2 = press.globalPos().x() - df;
+		y2 = press.globalPos().y();
+		
+		xRelease = 10;
+		yRelease = this->y();
+	}
+	else if (m_position == Qt::RightDockWidgetArea )
+	{
+		df = widget()->width();
+		x1 = press.pos().x() + df;
+		y1 = press.pos().y();
+		
+		x2 = press.globalPos().x() + df;
+		y2 = press.globalPos().y();
+		
+		xRelease = mainWindow->width();
+		yRelease = this->y();
+	}
 	
 	QMouseEvent move(QEvent::MouseMove,
 			 QPoint(x1, y1),
 			 QPoint(x2, y2),
 			 Qt::LeftButton, 0, 0);
-	QApplication::sendEvent(m_separator, &move);
+	
+	if ( ! QApplication::sendEvent(mainWindow, &move) )
+	{
+		qWarning("Fail moving");
+	}
+	qApp->processEvents();
 
 	QMouseEvent release(QEvent::MouseButtonRelease,
 			    QPoint(xRelease, yRelease),
 			    Qt::LeftButton, 0, 0);
-	QApplication::sendEvent(m_separator, &release);
+	if ( ! QApplication::sendEvent(mainWindow, &release) )
+	{
+		qWarning("Fail releasing");
+	}
+	qApp->processEvents();
 	
-	m_separator->setMouseTracking(hmt);
+	mainWindow->setMouseTracking(hmt);
 }
 
 void KTConfigurationArea::enterEvent(QEvent *)

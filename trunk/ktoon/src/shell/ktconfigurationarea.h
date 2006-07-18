@@ -46,7 +46,6 @@ class KTConfigurationArea : public QDockWidget
 		void shrink();
 		
 	private slots:
-		void findSeparator();
 		void toggleLock();
 		
 	protected:
@@ -55,7 +54,6 @@ class KTConfigurationArea : public QDockWidget
 		void paintEvent (QPaintEvent *e);
 		
 	private:
-		QWidget *m_separator;
 		QTimer m_locker;
 		QTimer m_shower;
 		bool m_toolTipShowed;

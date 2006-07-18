@@ -83,8 +83,6 @@ class KTViewDocument : public QMainWindow
 		QToolBar *m_barGrid, *m_toolbar;
 		QSpinBox *m_zoomFactorSpin;
 		
-		
-// 		KTDocument *m_document;
 		KTPaintArea *m_paintArea;
 		QString m_title;
 		

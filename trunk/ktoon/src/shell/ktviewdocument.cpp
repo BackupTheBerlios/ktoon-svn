@@ -31,7 +31,7 @@
 #include <QTimer>
 
 #include "dvhbox.h"
-#include "kttoolpluginobject.h"
+
 #include "ktdrawingareaproperties.h"
 #include "ktpaintareaproperties.h"
 #include "ktpluginmanager.h"
@@ -54,28 +54,30 @@ KTViewDocument::KTViewDocument(const QString& title, KToon::RenderType renderTyp
 	
 	connect(m_paintArea, SIGNAL(cursorPosition(const QPoint &)),  this,  SLOT(showPos(const QPoint &)) );
 // 	
-// 	connect( m_paintAreaContainer->drawArea(), SIGNAL(changedZoomFactor(double)),  this,  SLOT(updateZoomFactor(double)) );
+// 	connect( m_paintArea, SIGNAL(changedZoomFactor(double)),  this,  SLOT(updateZoomFactor(double)) );
 // 	setWindowTitle( m_title + " - " + m_document->currentScene()->sceneName() );
 // 	
-// 	m_paintAreaContainer->drawArea()->setScene( m_document->currentScene() );
+// 	m_paintArea->setScene( m_document->currentScene() );
 	
 // 	connect(m_document, SIGNAL(sceneChanged( KTScene* )) , this, SLOT(setScene( KTScene* )  ));
-	
+	QTimer::singleShot(0, this, SLOT(loadPlugins()));
 	createActions();
-// 	
 	setupEditActions();
 	setupViewActions();
 	setupOrderActions();
-	createToolbar();
-// 	createTools();
+	
+	
+	
+	m_configurationArea = new KTConfigurationArea;
+	addDockWidget(Qt::RightDockWidgetArea, m_configurationArea);
+	
+	
+	
+
+// 	createToolbar();
+	createTools();
 // 	createMenu();
-// 	m_configurationArea = new KTConfigurationArea;
-// 	addDockWidget(Qt::RightDockWidgetArea, m_configurationArea);
-	
-	
-// 	QTimer::singleShot(0, this, SLOT(loadPlugins()));
-	
-// 	m_paintAreaContainer->drawArea()->setHistory(m_history);
+// 	m_paintArea->setHistory(m_history);
 }
 
 KTViewDocument::~KTViewDocument()
@@ -110,47 +112,47 @@ void KTViewDocument::setupEditActions()
 	
 #if 0
 	m_editGroup = new QActionGroup( parent() );
-	DAction *a = new DAction( QPixmap(THEME_DIR+"/icons/cut.png" ), tr( "&Cut" ),  QKeySequence(tr("Ctrl+X")), m_paintAreaContainer->drawArea(), SLOT(cut()),m_actionManager, "cut" );
+	DAction *a = new DAction( QPixmap(THEME_DIR+"/icons/cut.png" ), tr( "&Cut" ),  QKeySequence(tr("Ctrl+X")), m_paintArea, SLOT(cut()),m_actionManager, "cut" );
 	a->setShortcutContext ( Qt::ApplicationShortcut );
 	m_editGroup->addAction(a);
 
 	
-	a = new DAction( QPixmap(THEME_DIR+"/icons/copy.png" ), tr( "C&opy" ),  QKeySequence(tr("Ctrl+C")), m_paintAreaContainer->drawArea(), SLOT(copy()), m_actionManager, "copy");
+	a = new DAction( QPixmap(THEME_DIR+"/icons/copy.png" ), tr( "C&opy" ),  QKeySequence(tr("Ctrl+C")), m_paintArea, SLOT(copy()), m_actionManager, "copy");
 	
 	a->setShortcutContext ( Qt::ApplicationShortcut );
 	m_editGroup->addAction(a);
 	
 	a->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
 	
-	a = new DAction( QPixmap(THEME_DIR+"/icons/paste.png" ), tr( "&Paste" ),   QKeySequence(tr("Ctrl+V")), m_paintAreaContainer->drawArea(), SLOT(paste()), m_actionManager, "paste");
+	a = new DAction( QPixmap(THEME_DIR+"/icons/paste.png" ), tr( "&Paste" ),   QKeySequence(tr("Ctrl+V")), m_paintArea, SLOT(paste()), m_actionManager, "paste");
 	
 	a->setShortcutContext ( Qt::ApplicationShortcut );
 	m_editGroup->addAction(a);
 	a->setStatusTip(tr("Pastes the clipboard into the current document"));
 	
-	a = new DAction( QPixmap(THEME_DIR+"/icons/delete.png" ), tr( "&Delete" ), QKeySequence( Qt::Key_Delete ), m_paintAreaContainer->drawArea(), SLOT(removeSelectsGraphics()), m_actionManager, "delete");
+	a = new DAction( QPixmap(THEME_DIR+"/icons/delete.png" ), tr( "&Delete" ), QKeySequence( Qt::Key_Delete ), m_paintArea, SLOT(removeSelectsGraphics()), m_actionManager, "delete");
 // 	m_editGroup->addAction(a);
 	a->setShortcutContext ( Qt::ApplicationShortcut );
 	a->setStatusTip(tr("Deletes the selected object"));
 	
 	
-	a = new DAction( QPixmap(THEME_DIR+"/icons/group.png" ), tr( "&Group" ),   QKeySequence(  ), m_paintAreaContainer->drawArea(), SLOT(group()), m_actionManager, "group");
+	a = new DAction( QPixmap(THEME_DIR+"/icons/group.png" ), tr( "&Group" ),   QKeySequence(  ), m_paintArea, SLOT(group()), m_actionManager, "group");
 	a->setShortcut ( QKeySequence(tr("Ctrl+G")) );
 
 	m_editGroup->addAction(a);
 	a->setStatusTip(tr("Group the selected objects into a single one"));
 	
-	a = new DAction( QPixmap(THEME_DIR+"/icons/ungroup.png" ), tr( "&Ungroup" ),   QKeySequence(  ), m_paintAreaContainer->drawArea(), SLOT(ungroup()), m_actionManager, "ungroup");
+	a = new DAction( QPixmap(THEME_DIR+"/icons/ungroup.png" ), tr( "&Ungroup" ),   QKeySequence(  ), m_paintArea, SLOT(ungroup()), m_actionManager, "ungroup");
 	a->setShortcut ( QKeySequence(tr("Ctrl+Shift+G")) );
 	m_editGroup->addAction(a);
 	a->setStatusTip(tr("Ungroups the selected object"));
 	
-	a = new DAction( QPixmap(THEME_DIR+"/icons/" ), tr( "Select &All" ),   QKeySequence(tr("Ctrl+A")), m_paintAreaContainer->drawArea(), SLOT(selectAll()), m_actionManager, "selectAll");
+	a = new DAction( QPixmap(THEME_DIR+"/icons/" ), tr( "Select &All" ),   QKeySequence(tr("Ctrl+A")), m_paintArea, SLOT(selectAll()), m_actionManager, "selectAll");
 	a->setStatusTip(tr("selected all object"));
 	
-	DAction *flipV = new DAction(  QPixmap(THEME_DIR+"/icons/flip-vertical.png" ), tr("Flip Vertical"), QKeySequence(tr(" Ctrl + Alt + V")), m_paintAreaContainer->drawArea(), SLOT(flipVCurrentElement()), m_actionManager, "flipv");
+	DAction *flipV = new DAction(  QPixmap(THEME_DIR+"/icons/flip-vertical.png" ), tr("Flip Vertical"), QKeySequence(tr(" Ctrl + Alt + V")), m_paintArea, SLOT(flipVCurrentElement()), m_actionManager, "flipv");
 	
-	DAction *flipH = new DAction( QPixmap(THEME_DIR+"/icons/flip-horizontal.png" ),  tr("Flip Horizontal"), QKeySequence(tr(" Ctrl + Alt + H")), m_paintAreaContainer->drawArea(), SLOT(flipHCurrentElement()), m_actionManager, "fliph");
+	DAction *flipH = new DAction( QPixmap(THEME_DIR+"/icons/flip-horizontal.png" ),  tr("Flip Horizontal"), QKeySequence(tr(" Ctrl + Alt + H")), m_paintArea, SLOT(flipHCurrentElement()), m_actionManager, "fliph");
 	
 	a = new DAction( tr("Properties..."), QKeySequence(), this, SLOT(configure()), m_actionManager, "properties");
 	a->setStatusTip(tr("Configure the paint area"));
@@ -160,26 +162,26 @@ void KTViewDocument::setupEditActions()
 void KTViewDocument::setupOrderActions()
 {
 #if 0
-	DAction *bringtoFront = new DAction(QPixmap(THEME_DIR+"/icons/bring_to_front.png" ), tr( "&Bring to Front" ),  QKeySequence(Qt::CTRL+Qt::SHIFT+Qt::Key_Up), m_paintAreaContainer->drawArea(), SLOT(bringToFromSelected()), m_actionManager, "bringToFront" );
+	DAction *bringtoFront = new DAction(QPixmap(THEME_DIR+"/icons/bring_to_front.png" ), tr( "&Bring to Front" ),  QKeySequence(Qt::CTRL+Qt::SHIFT+Qt::Key_Up), m_paintArea, SLOT(bringToFromSelected()), m_actionManager, "bringToFront" );
 	
 	bringtoFront->setShortcutContext ( Qt::ApplicationShortcut );
 	bringtoFront->setStatusTip(tr("Brings the selected object to the front"));
 	
 	
-	DAction *sendToBack = new DAction(QPixmap(THEME_DIR+"/icons/send_to_back.png" ), tr( "&Send to Back" ),  QKeySequence(Qt::CTRL+Qt::SHIFT+Qt::Key_Down), m_paintAreaContainer->drawArea(), SLOT(sendToBackSelected()), m_actionManager, "sendToBack" );
+	DAction *sendToBack = new DAction(QPixmap(THEME_DIR+"/icons/send_to_back.png" ), tr( "&Send to Back" ),  QKeySequence(Qt::CTRL+Qt::SHIFT+Qt::Key_Down), m_paintArea, SLOT(sendToBackSelected()), m_actionManager, "sendToBack" );
 	
 	sendToBack->setShortcutContext ( Qt::ApplicationShortcut );
 	sendToBack->setStatusTip(tr("Sends the selected objects to the back"));
 	
 
 	
-	DAction *oneStepForward = new DAction(QPixmap(THEME_DIR+"/icons/one_forward.png" ), tr( "One Step &Forward" ),  QKeySequence(Qt::CTRL+Qt::Key_Up), m_paintAreaContainer->drawArea(), SLOT(oneStepForwardSelected()), m_actionManager, "oneStepForward" );
+	DAction *oneStepForward = new DAction(QPixmap(THEME_DIR+"/icons/one_forward.png" ), tr( "One Step &Forward" ),  QKeySequence(Qt::CTRL+Qt::Key_Up), m_paintArea, SLOT(oneStepForwardSelected()), m_actionManager, "oneStepForward" );
 	
 	oneStepForward->setShortcutContext ( Qt::ApplicationShortcut );
 	oneStepForward->setStatusTip(tr("Moves the selected object one step forward"));
 	
 	
-	DAction *oneStepBackward = new DAction(QPixmap(THEME_DIR+"/icons/one_backward.png" ), tr( "One Step B&ackward" ),  QKeySequence(Qt::CTRL+Qt::Key_Down), m_paintAreaContainer->drawArea(), SLOT(oneStepBackwardSelected()), m_actionManager, "oneStepBackward" );
+	DAction *oneStepBackward = new DAction(QPixmap(THEME_DIR+"/icons/one_backward.png" ), tr( "One Step B&ackward" ),  QKeySequence(Qt::CTRL+Qt::Key_Down), m_paintArea, SLOT(oneStepBackwardSelected()), m_actionManager, "oneStepBackward" );
 	
 	oneStepBackward->setShortcutContext ( Qt::ApplicationShortcut );
 	oneStepBackward->setStatusTip(tr("Moves the selected object one step backward"));
@@ -190,7 +192,7 @@ void KTViewDocument::setupOrderActions()
 void KTViewDocument::setupViewActions()
 {
 #if 0
-	DAction *zoomIn = new DAction( QPixmap(THEME_DIR+"/icons/zoom_in.png" ), tr( "Zoom In" ), QKeySequence(Qt::CTRL+Qt::Key_Plus), m_paintAreaContainer->drawArea(), SLOT(zoomIn()), m_actionManager, "zoom_in" );
+	DAction *zoomIn = new DAction( QPixmap(THEME_DIR+"/icons/zoom_in.png" ), tr( "Zoom In" ), QKeySequence(Qt::CTRL+Qt::Key_Plus), m_paintArea, SLOT(zoomIn()), m_actionManager, "zoom_in" );
 	
 	m_zoomFactorSpin = new QSpinBox();
 	m_zoomFactorSpin->setMaximum ( 200 );
@@ -201,7 +203,7 @@ void KTViewDocument::setupViewActions()
 	m_zoomFactorSpin->setSuffix ( "%" );
 	connect( m_zoomFactorSpin, SIGNAL( valueChanged ( int  )), this, SLOT(setZoomFactor(int )));
 	
-	DAction *zoomOut = new DAction( QPixmap(THEME_DIR+"/icons/zoom_out.png" ), tr( "Zoom Out" ), QKeySequence(Qt::CTRL+Qt::Key_Minus), m_paintAreaContainer->drawArea(), SLOT(zoomOut()), m_actionManager, "zoom_out" );
+	DAction *zoomOut = new DAction( QPixmap(THEME_DIR+"/icons/zoom_out.png" ), tr( "Zoom Out" ), QKeySequence(Qt::CTRL+Qt::Key_Minus), m_paintArea, SLOT(zoomOut()), m_actionManager, "zoom_out" );
 // 	m_viewPreviousGroup->addAction(zoomOut);
 	
 	
@@ -280,8 +282,6 @@ void KTViewDocument::createTools()
 	m_brushesMenu->setIcon( QPixmap(THEME_DIR+"/icons/brush.png") );
 	connect( m_brushesMenu, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
 	
-// 	connect(m_brushesMenu->menuAction(), SIGNAL(triggered()), this, SLOT(selectToolFromMenu()));
-	
 	m_toolbar->addAction(m_brushesMenu->menuAction());
 	
 	// Selection menu
@@ -300,57 +300,57 @@ void KTViewDocument::createTools()
 	m_toolbar->addAction(m_fillMenu->menuAction());
 	
 #if 0
-	m_toolsSelection->addAction(QPixmap(THEME_DIR+"/icons/nodes.png"), tr( "Con&tour Selection" ), m_paintAreaContainer->drawArea(), SLOT( slotContourSelection()), tr("T") );
+	m_toolsSelection->addAction(QPixmap(THEME_DIR+"/icons/nodes.png"), tr( "Con&tour Selection" ), m_paintArea, SLOT( slotContourSelection()), tr("T") );
 	
 	m_toolsDraw = new QMenu( m_toolbar );
 	connect( m_toolsDraw, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
 	
 	m_toolsDraw->setIcon(QPixmap(THEME_DIR+"/icons/brush.png"));
-	m_toolsDraw->addAction(QPixmap(THEME_DIR+"/icons/brush.png"), tr( "&Brush" ), m_paintAreaContainer->drawArea(), SLOT(slotBrush()), tr("B"));
+	m_toolsDraw->addAction(QPixmap(THEME_DIR+"/icons/brush.png"), tr( "&Brush" ), m_paintArea, SLOT(slotBrush()), tr("B"));
 	
-	m_toolsDraw->addAction(QPixmap(THEME_DIR+"/icons/pencil.png"), tr( "&Pencil" ), m_paintAreaContainer->drawArea(), SLOT( slotPencil()), tr("P"));
+	m_toolsDraw->addAction(QPixmap(THEME_DIR+"/icons/pencil.png"), tr( "&Pencil" ), m_paintArea, SLOT( slotPencil()), tr("P"));
 	
-	m_toolsDraw->addAction(QPixmap(THEME_DIR+"/icons/bezier.png"), tr( "&Pen" ), m_paintAreaContainer->drawArea(), SLOT( slotPen()), tr("N"));
+	m_toolsDraw->addAction(QPixmap(THEME_DIR+"/icons/bezier.png"), tr( "&Pen" ), m_paintArea, SLOT( slotPen()), tr("N"));
 	
-	m_toolsDraw->addAction(QPixmap(THEME_DIR+"/icons/line.png"), tr( "&line" ), m_paintAreaContainer->drawArea(), SLOT( slotLine()),tr("L"));
+	m_toolsDraw->addAction(QPixmap(THEME_DIR+"/icons/line.png"), tr( "&line" ), m_paintArea, SLOT( slotLine()),tr("L"));
 	
-	m_toolsDraw->addAction(QPixmap(THEME_DIR+"/icons/square.png"), tr( "&Rectangle" ), m_paintAreaContainer->drawArea(), SLOT( slotRectangle()), tr("R"));
+	m_toolsDraw->addAction(QPixmap(THEME_DIR+"/icons/square.png"), tr( "&Rectangle" ), m_paintArea, SLOT( slotRectangle()), tr("R"));
 	
-	m_toolsDraw->addAction(QPixmap(THEME_DIR+"/icons/ellipse.png"), tr( "&Ellipse" ), m_paintAreaContainer->drawArea(), SLOT(slotEllipse()),  tr("E"));
+	m_toolsDraw->addAction(QPixmap(THEME_DIR+"/icons/ellipse.png"), tr( "&Ellipse" ), m_paintArea, SLOT(slotEllipse()),  tr("E"));
 	
 	m_toolsFills = new QMenu( "fills", m_toolbar );
 	m_toolsFills->setIcon(QPixmap(THEME_DIR+"/icons/fill.png"));
 	connect( m_toolsFills, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
 	
-	m_toolsFills->addAction(QPixmap(THEME_DIR+"/icons/fill.png"), tr( "&Fill" ), m_paintAreaContainer->drawArea(), SLOT( slotFill()), tr("F"));
+	m_toolsFills->addAction(QPixmap(THEME_DIR+"/icons/fill.png"), tr( "&Fill" ), m_paintArea, SLOT( slotFill()), tr("F"));
 	
-	m_toolsFills->addAction(QPixmap(THEME_DIR+"/icons/removefill.png"), tr( "&Remove Fill" ), m_paintAreaContainer->drawArea(), SLOT( slotRemoveFill()), tr("Shift+F"));
+	m_toolsFills->addAction(QPixmap(THEME_DIR+"/icons/removefill.png"), tr( "&Remove Fill" ), m_paintArea, SLOT( slotRemoveFill()), tr("Shift+F"));
 	
-	m_toolsFills->addAction(QPixmap(THEME_DIR+"/icons/contour.png"), tr( "&Contour Fill" ), m_paintAreaContainer->drawArea(), SLOT( slotContourFill()), tr("Ctrl+F"));
+	m_toolsFills->addAction(QPixmap(THEME_DIR+"/icons/contour.png"), tr( "&Contour Fill" ), m_paintArea, SLOT( slotContourFill()), tr("Ctrl+F"));
  
-	m_toolsFills->addAction(QPixmap(THEME_DIR+"/icons/dropper.png"), tr( "&Dropper"), m_paintAreaContainer->drawArea(), SLOT(slotDropper()), tr("D"));
+	m_toolsFills->addAction(QPixmap(THEME_DIR+"/icons/dropper.png"), tr( "&Dropper"), m_paintArea, SLOT(slotDropper()), tr("D"));
 
 	m_toolsErasers = new QMenu(tr( "Eraser" ), m_toolbar );
 	m_toolsErasers->setIcon(QPixmap(THEME_DIR+"/icons/eraser.png"));
 	connect( m_toolsErasers, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
 	
-	m_toolsErasers->addAction(QPixmap(THEME_DIR+"/icons/eraser.png"), tr( "&Eraser"), m_paintAreaContainer->drawArea(), SLOT( slotEraser()), Qt::SHIFT+Qt::Key_Delete);
+	m_toolsErasers->addAction(QPixmap(THEME_DIR+"/icons/eraser.png"), tr( "&Eraser"), m_paintArea, SLOT( slotEraser()), Qt::SHIFT+Qt::Key_Delete);
 	
-	m_toolsErasers->addAction(QPixmap(THEME_DIR+"/icons/dropper.png"), tr( "&Slicer" ), m_paintAreaContainer->drawArea(), SLOT( slotSlicer()),  Qt::CTRL+Qt::Key_Delete);
+	m_toolsErasers->addAction(QPixmap(THEME_DIR+"/icons/dropper.png"), tr( "&Slicer" ), m_paintArea, SLOT( slotSlicer()),  Qt::CTRL+Qt::Key_Delete);
 	
 	m_toolsView = new QMenu(tr( "View" ), m_toolbar );
 	m_toolsView->setIcon(QPixmap(THEME_DIR+"/icons/magnifying.png"));
 	connect( m_toolsView, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
 	
-	m_toolsView->addAction(QPixmap(THEME_DIR+"/icons/magnifying.png"), tr("&Magnifying Glass" ), m_paintAreaContainer->drawArea(), SLOT( slotMagnifyingGlass()), tr("M"));
+	m_toolsView->addAction(QPixmap(THEME_DIR+"/icons/magnifying.png"), tr("&Magnifying Glass" ), m_paintArea, SLOT( slotMagnifyingGlass()), tr("M"));
 	
-	m_toolsView->addAction(QPixmap(THEME_DIR+"/icons/hand.png"), tr( "&Hand" ), m_paintAreaContainer->drawArea(),  SLOT( slotHand()), tr("H"));
+	m_toolsView->addAction(QPixmap(THEME_DIR+"/icons/hand.png"), tr( "&Hand" ), m_paintArea,  SLOT( slotHand()), tr("H"));
 	
 	m_toolsOrder = new QMenu(tr("Order"), m_toolbar);
 	connect( m_toolsOrder, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
 	m_toolsOrder->setIcon(QPixmap(THEME_DIR+"/icons/group.png"));
-	m_toolsOrder->addAction(QPixmap(THEME_DIR+"/icons/group.png"), tr( "&Group" ), m_paintAreaContainer->drawArea(), SLOT( slotGroup()));
-	m_toolsOrder->addAction(QPixmap(THEME_DIR+"/icons/ungroup.png"), tr( "&Ungroup" ), m_paintAreaContainer->drawArea(), SLOT( slotUngroup()));
+	m_toolsOrder->addAction(QPixmap(THEME_DIR+"/icons/group.png"), tr( "&Group" ), m_paintArea, SLOT( slotGroup()));
+	m_toolsOrder->addAction(QPixmap(THEME_DIR+"/icons/ungroup.png"), tr( "&Ungroup" ), m_paintArea, SLOT( slotUngroup()));
 	
 
 // 	a->setStatusTip(tr("Group the selected objects into a single one"));
@@ -362,15 +362,15 @@ void KTViewDocument::createTools()
 	connect( m_toolsAlign, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
 	m_toolsAlign->setIcon(QPixmap(THEME_DIR+"/icons/align_l.png"));
 	
-	m_toolsAlign->addAction( QPixmap(THEME_DIR+"/icons/align_l.png"), tr("&Left" ), m_paintAreaContainer->drawArea(), SLOT( slotAlignLeft()));
+	m_toolsAlign->addAction( QPixmap(THEME_DIR+"/icons/align_l.png"), tr("&Left" ), m_paintArea, SLOT( slotAlignLeft()));
 	
-	m_toolsAlign->addAction( QPixmap(THEME_DIR+"/icons/align_cv.png"), tr( "&Center Vertically" ),  m_paintAreaContainer->drawArea(), SLOT(slotCenterVertically()));
+	m_toolsAlign->addAction( QPixmap(THEME_DIR+"/icons/align_cv.png"), tr( "&Center Vertically" ),  m_paintArea, SLOT(slotCenterVertically()));
 	
-	m_toolsAlign->addAction( QPixmap(THEME_DIR+"/icons/align_r.png"), tr("&Right" ), m_paintAreaContainer->drawArea(), SLOT(slotAlignRight()));
+	m_toolsAlign->addAction( QPixmap(THEME_DIR+"/icons/align_r.png"), tr("&Right" ), m_paintArea, SLOT(slotAlignRight()));
 	m_toolsAlign->addSeparator();
-	m_toolsAlign->addAction( QPixmap(THEME_DIR+"/icons/align_t.png"), tr( "&Top" ), m_paintAreaContainer->drawArea(), SLOT(slotAlignTop()));
-	m_toolsAlign->addAction(QPixmap(THEME_DIR+"/icons/align_ch.png"), tr("Center &Horizontally" ), m_paintAreaContainer->drawArea(),  SLOT( slotCenterHorizontally()));
-	m_toolsAlign->addAction(QPixmap(THEME_DIR+"/icons/align_b.png"), tr( "&Bottom" ), m_paintAreaContainer->drawArea(), SLOT( slotAlignBottom()));
+	m_toolsAlign->addAction( QPixmap(THEME_DIR+"/icons/align_t.png"), tr( "&Top" ), m_paintArea, SLOT(slotAlignTop()));
+	m_toolsAlign->addAction(QPixmap(THEME_DIR+"/icons/align_ch.png"), tr("Center &Horizontally" ), m_paintArea,  SLOT( slotCenterHorizontally()));
+	m_toolsAlign->addAction(QPixmap(THEME_DIR+"/icons/align_b.png"), tr( "&Bottom" ), m_paintArea, SLOT( slotAlignBottom()));
 	
 	tools_left->setStatusTip(tr("Aligns the selected object to the left"));
 	tools_center_vertically->setStatusTip(tr("Centers vertically the selected object"));
@@ -383,14 +383,14 @@ void KTViewDocument::createTools()
 	connect( m_toolsTransform, SIGNAL(triggered ( QAction * )), this, SLOT(selectToolFromMenu( QAction*)));
 	m_toolsTransform->setIcon(QPixmap(HOME_DIR+"/images/icons/align_l.png"));
 
-	m_toolsTransform->addAction(tr( "Flip &Horizontally" ), m_paintAreaContainer->drawArea(), SLOT(slotFlipHorizontally()));
-	m_toolsTransform->addAction(tr( "Flip &Vertically" ), m_paintAreaContainer->drawArea(), SLOT(slotFlipVertically()));
+	m_toolsTransform->addAction(tr( "Flip &Horizontally" ), m_paintArea, SLOT(slotFlipHorizontally()));
+	m_toolsTransform->addAction(tr( "Flip &Vertically" ), m_paintArea, SLOT(slotFlipVertically()));
 	m_toolsTransform->addSeparator();
-	m_toolsTransform->addAction(tr( "&Rotate 90 CW" ), m_paintAreaContainer->drawArea(), SLOT( slotRotateCW90()));
-	m_toolsTransform->addAction(tr( "&Rotate 90 CCW" ), m_paintAreaContainer->drawArea(), SLOT( slotRotateCCW90()));
+	m_toolsTransform->addAction(tr( "&Rotate 90 CW" ), m_paintArea, SLOT( slotRotateCW90()));
+	m_toolsTransform->addAction(tr( "&Rotate 90 CCW" ), m_paintArea, SLOT( slotRotateCCW90()));
 	m_toolsTransform->addSeparator();
-	m_toolsTransform->addAction(tr( "&Rotate &180" ),m_paintAreaContainer->drawArea(),SLOT( slotRotate180()));
-	m_toolsTransform->addAction( QPixmap(THEME_DIR+"/icons/perspective.png"),tr( "&Perspective" ) ,m_paintAreaContainer->drawArea(), SLOT( slotRotate180()));
+	m_toolsTransform->addAction(tr( "&Rotate &180" ),m_paintArea,SLOT( slotRotate180()));
+	m_toolsTransform->addAction( QPixmap(THEME_DIR+"/icons/perspective.png"),tr( "&Perspective" ) ,m_paintArea, SLOT( slotRotate180()));
 	
 	
 	tools_flip_horizontally->setStatusTip(tr("Flips the selected object horizontally"));
@@ -415,7 +415,7 @@ void KTViewDocument::loadPlugins()
 {
 	foreach(QObject *plugin, KTPluginManager::instance()->tools() )
 	{
-		AToolInterface *tool = qobject_cast<AToolInterface *>(plugin);
+		KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(plugin);
 		
 		QStringList::iterator it;
 		QStringList keys = tool->keys();
@@ -423,15 +423,17 @@ void KTViewDocument::loadPlugins()
 		for (it = keys.begin(); it != keys.end(); ++it)
 		{
 			dDebug() << "*******Tool Loaded: " << *it;
-					
-			QAction *act = tool->actions()[*it];
+			
+			DAction *act = tool->actions()[*it];
 			if ( act )
 			{
 				connect(act, SIGNAL(triggered()), this, SLOT(selectTool()));
 				
-				switch( tool->type() )
+				act->setParent(plugin);
+				
+				switch( tool->toolType() )
 				{
-					case AToolInterface::Brush:
+					case KTToolInterface::Brush:
 					{
 						m_brushesMenu->addAction(act);
 						if ( !m_brushesMenu->activeAction() )
@@ -440,7 +442,7 @@ void KTViewDocument::loadPlugins()
 						}
 					}
 					break;
-					case AToolInterface::Selection:
+					case KTToolInterface::Selection:
 					{
 						m_selectionMenu->addAction(act);
 						if ( !m_selectionMenu->activeAction() )
@@ -449,7 +451,7 @@ void KTViewDocument::loadPlugins()
 						}
 					}
 					break;
-					case AToolInterface::Fill:
+					case KTToolInterface::Fill:
 					{
 						m_fillMenu->addAction(act);
 						if ( !m_fillMenu->activeAction() )
@@ -463,12 +465,12 @@ void KTViewDocument::loadPlugins()
 					}
 					break;
 				}
-// 				m_paintAreaContainer->drawArea()->setTool(tool, *it);
+// // 				m_paintArea->setTool(tool, *it);
 			}
 		}
 		
-// 		connect(plugin, SIGNAL(toDrawGhostGraphic(const QPainterPath &)), m_paintAreaContainer->drawArea(), SLOT(drawGhostGraphic(const QPainterPath &)));
-// 		connect(plugin, SIGNAL(requestRedraw()), m_paintAreaContainer->drawArea(), SLOT(redrawAll()));
+// 		connect(plugin, SIGNAL(toDrawGhostGraphic(const QPainterPath &)), m_paintArea, SLOT(drawGhostGraphic(const QPainterPath &)));
+// 		connect(plugin, SIGNAL(requestRedraw()), m_paintArea, SLOT(redrawAll()));
 	}
 	
 	foreach(QObject *plugin, KTPluginManager::instance()->filters() )
@@ -498,12 +500,12 @@ void KTViewDocument::selectTool()
 	
 	if ( action )
 	{
-		AToolInterface *tool = qobject_cast<AToolInterface *>(action->parent());
+		KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(action->parent());
 		QString toolStr = action->text();
 		
-		switch(tool->type())
+		switch(tool->toolType())
 		{
-			case AToolInterface::Brush:
+			case KTToolInterface::Brush:
 			{
 				m_brushesMenu->setDefaultAction(action);
 				m_brushesMenu->setActiveAction(action);
@@ -513,7 +515,7 @@ void KTViewDocument::selectTool()
 				}
 			}
 			break;
-			case AToolInterface::Fill:
+			case KTToolInterface::Fill:
 			{
 				m_fillMenu->setDefaultAction(action);
 				m_fillMenu->setActiveAction(action);
@@ -523,7 +525,7 @@ void KTViewDocument::selectTool()
 				}
 			}
 			break;
-			case AToolInterface::Selection:
+			case KTToolInterface::Selection:
 			{
 				m_selectionMenu->setDefaultAction(action);
 				m_selectionMenu->setActiveAction(action);
@@ -547,8 +549,10 @@ void KTViewDocument::selectTool()
 			}
 		}
 		
-// 		m_paintAreaContainer->drawArea()->setTool(tool, toolStr);
-// 		m_paintAreaContainer->drawArea()->setCursor(action->cursor());
+		tool->setCurrentTool( toolStr );
+		m_paintArea->setTool(tool);
+		
+		m_paintArea->setCursor(action->cursor());
 	}
 }
 
@@ -578,19 +582,19 @@ void KTViewDocument::applyFilter()
 		AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(action->parent());
 		QString filter = action->text();
 		
-// 		KTFrame *frame = m_paintAreaContainer->drawArea()->currentFrame();
+// 		KTFrame *frame = m_paintArea->currentFrame();
 // 		
 // 		if( frame)
 // 		{
 // 			aFilter->filter(action->text(), frame->components() );
-// 			m_paintAreaContainer->drawArea()->redrawAll();
+// 			m_paintArea->redrawAll();
 // 		}
 	}
 }
 
 void KTViewDocument::updateZoomFactor(double f)
 {
-// 	m_paintAreaContainer->drawArea()->setZoomFactor( f );
+// 	m_paintArea->setZoomFactor( f );
 	m_zoomFactorSpin->blockSignals(true);
 	m_zoomFactorSpin->setValue(f*100);
 	m_zoomFactorSpin->blockSignals(false);
@@ -690,77 +694,77 @@ void KTViewDocument::createMenu()
 
 void KTViewDocument::close()
 {
-// 	m_paintAreaContainer->drawArea()->close();
+// 	m_paintArea->close();
 }
 
 void KTViewDocument::setCursor(const QCursor &c)
 {
-// 	m_paintAreaContainer->drawArea()->setCursor(c);
+// 	m_paintArea->setCursor(c);
 }
 
 
 void KTViewDocument::disablePreviousOnionSkin()
 {
-// 	m_paintAreaContainer->drawArea()->setPreviousFrames( 0 );
+// 	m_paintArea->setPreviousFrames( 0 );
 }
 
 void KTViewDocument::onePreviousOnionSkin()
 {
-// 	m_paintAreaContainer->drawArea()->setPreviousFrames( 1 );
+// 	m_paintArea->setPreviousFrames( 1 );
 }
 
 void KTViewDocument::twoPreviousOnionSkin()
 {
-// 	m_paintAreaContainer->drawArea()->setPreviousFrames( 2 );
+// 	m_paintArea->setPreviousFrames( 2 );
 }
 
 void KTViewDocument::threePreviousOnionSkin()
 {
-// 	m_paintAreaContainer->drawArea()->setPreviousFrames( 3 );
+// 	m_paintArea->setPreviousFrames( 3 );
 }
 
 void KTViewDocument::setPreviousOnionSkin(int n)
 {
-// 	m_paintAreaContainer->drawArea()->setPreviousFrames(n);
+// 	m_paintArea->setPreviousFrames(n);
 }
 
 // NEXT
 void KTViewDocument::disableNextOnionSkin()
 {
-// 	m_paintAreaContainer->drawArea()->setNextFrames( 0 );
+// 	m_paintArea->setNextFrames( 0 );
 }
 
 void KTViewDocument::oneNextOnionSkin()
 {
-// 	m_paintAreaContainer->drawArea()->setNextFrames( 1 );
+// 	m_paintArea->setNextFrames( 1 );
 }
 
 void KTViewDocument::twoNextOnionSkin()
 {
-// 	m_paintAreaContainer->drawArea()->setNextFrames( 2 );
+// 	m_paintArea->setNextFrames( 2 );
 }
 
 void KTViewDocument::threeNextOnionSkin()
 {
-// 	m_paintAreaContainer->drawArea()->setNextFrames( 3 );
+// 	m_paintArea->setNextFrames( 3 );
 }
 
 
 void KTViewDocument::setNextOnionSkin(int n)
 {
-// 	m_paintAreaContainer->drawArea()->setNextFrames( n );
+// 	m_paintArea->setNextFrames( n );
 }
 
 // void KTViewDocument::setScene(KTScene* scene)
 // {
 // 	setWindowTitle( m_title + " - " + scene->sceneName() );
-// 	m_paintAreaContainer->drawArea()->setScene(  scene );
+// 	m_paintArea->setScene(  scene );
 // }
 
 void KTViewDocument::setZoomFactor(int porcent)
 {
 	m_zoomFactorSpin->blockSignals(true);
-// 	m_paintAreaContainer->drawArea()->setZoomFactor((float) porcent/100);
+// 	m_paintArea->setZoomFactor((float) porcent/100);
 	m_zoomFactorSpin->blockSignals(false);
 }
 
@@ -778,7 +782,7 @@ void KTViewDocument::configure()
 		areaProperties.onionSkinBackground = properties.onionSkinBackground();
 		areaProperties.gridSeparation = properties.gridSeparation();
 		
-// 		m_paintAreaContainer->drawArea()->setProperties(areaProperties);
+// 		m_paintArea->setProperties(areaProperties);
 	}
 }
 

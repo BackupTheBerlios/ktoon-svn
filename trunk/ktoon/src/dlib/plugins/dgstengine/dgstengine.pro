@@ -11,7 +11,8 @@ CONFIG += release \
           warn_on \
           plugin 
 TEMPLATE = lib 
-! include(../../dlibconfig.pri) {
+
+!include(../../dlibconfig.pri) {
 error("Please configure first")
 }
 

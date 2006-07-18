@@ -7,7 +7,6 @@ INSTALLS += target
 target.path = /lib/ 
 HEADERS += ktmodulewidgetbase.h \
            ktmodulewidgettitle.h \
-           kttoolpluginobject.h \
            ktexportpluginobject.h \
            ktgraphicalgorithm.h \
            ktglobal.h \
@@ -21,10 +20,11 @@ HEADERS += ktmodulewidgetbase.h \
            ktgraphicelement.h \
            ktpackagehandler.h \
            kttoolinterface.h \
-           ktprojectactionbar.h 
+           ktprojectactionbar.h \
+           kttoolplugin.h \
+           ktbrushmanager.h 
 SOURCES += ktmodulewidgetbase.cpp \
            ktmodulewidgettitle.cpp \
-           kttoolpluginobject.cpp \
            ktexportpluginobject.cpp \
            ktgraphicalgorithm.cpp \
            ktpaintareaproperties.cpp \
@@ -34,8 +34,10 @@ SOURCES += ktmodulewidgetbase.cpp \
            ktanimationarea.cpp \
            ktgraphicelement.cpp \
            ktpackagehandler.cpp \
-           ktprojectactionbar.cpp 
-QT += xml
+           ktprojectactionbar.cpp \
+           kttoolplugin.cpp \
+           ktbrushmanager.cpp 
+QT += xml gui
 KDEV_QTVER = 4
 INCLUDEPATH += ../../src/store \
 ../../src/dlib/dgui \
@@ -43,6 +45,9 @@ INCLUDEPATH += ../../src/store \
 ../../3rdparty/potrace \
 ../../3rdparty/quazip \
 ../../src/dlib
+MOC_DIR = .moc
+UI_DIR = .ui
+OBJECTS_DIR = .obj
 TARGET = ktoon
 CONFIG += release \
 warn_on \

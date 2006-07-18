@@ -18,26 +18,38 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __KTGRAPHICALGORITHM_H__
-#define __KTGRAPHICALGORITHM_H__
+#ifndef KTTOOLPLUGIN_H
+#define KTTOOLPLUGIN_H
 
-#include <QString>
-#include <QPolygon>
-#include <QPainterPath>
+#include <qobject.h>
+#include "kttoolinterface.h"
+#include "ktbrushmanager.h"
 
 /**
- * @author Jorge Cuadrado <krawek@toonka.com>
- */
-class Q_DECL_EXPORT KTGraphicalAlgorithm
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+class Q_DECL_EXPORT KTToolPlugin : public QObject, public KTToolInterface
 {
-	private:
-		KTGraphicalAlgorithm() {}
-		~KTGraphicalAlgorithm() {};
+	Q_OBJECT;
+	Q_INTERFACES(KTToolInterface);
 	
 	public:
-		static QPainterPath bezierFit(QPolygonF &points_, float error);
-		static QPolygonF polygonFit(const QPolygonF &points);
+		explicit KTToolPlugin(QObject * parent = 0);
+		~KTToolPlugin();
 		
+		void setCurrentTool(const QString &tool);
+		QString currentTool() const;
+		
+		virtual void press(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene ) = 0;
+		virtual void move(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene) = 0;
+		virtual void release(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene) = 0;
+		
+		virtual QMap<QString, DAction *> actions() const = 0;
+		
+		virtual QWidget *configurator()  = 0;
+		
+	private:
+		QString m_currentTool;
 };
 
 #endif

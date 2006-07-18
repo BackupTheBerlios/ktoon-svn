@@ -650,12 +650,8 @@ QPolygonF fillLine(const QPointF &first_, const QPointF &second_)
 	
 	m = (y2 - y1) / (x2 - x1);
 	
-	SHOW_VAR(m);
-	
 	for(int x = x1; x < qMax(first.x(), second.x()); x += 1 )
 	{
-		SHOW_VAR(x);
-		
 		QPointF point;
 		point.setX(x);
 	

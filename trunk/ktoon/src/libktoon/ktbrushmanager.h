@@ -18,16 +18,44 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "kttoolpluginobject.h"
+#ifndef KTBRUSHMANAGER_H
+#define KTBRUSHMANAGER_H
 
-KTToolPluginObject::KTToolPluginObject()
- : QObject()
+#include <QObject>
+#include <QPen>
+#include <QBrush>
+
+/**
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+class KTBrushManager : public QObject
 {
-}
+	Q_OBJECT;
+	public:
+		KTBrushManager(QObject * parent = 0);
+		KTBrushManager(const QPen &pen, const QBrush &brush, QObject * parent = 0);
+		~KTBrushManager();
+		
+		void setPen(const QPen &pen);
+		QPen pen() const;
+		void setBrush(const QBrush &brush);
+		QBrush brush() const;
+		
+		int penWidth() const;
+		QColor penColor() const;
+		QBrush penBrush() const;
+		
+		QBrush brushColor() const;
+		
+	signals:
+		void penChanged(const QPen &pen);
+		void brushChanged(const QBrush &brush);
+		
+	private:
+		QPen m_pen;
+		QBrush m_brush;
+		
 
+};
 
-KTToolPluginObject::~KTToolPluginObject()
-{
-}
-
-
+#endif

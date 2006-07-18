@@ -20,7 +20,9 @@ HEADERS += ktlayer.h \
            ktprojectmanager.h \
            ktprojectcommand.h \
            ktabstractprojecteventhandler.h \
-           ktabstractserializable.h 
+           ktabstractserializable.h \
+           ktframegroup.h \
+           ktphotogram.h 
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
@@ -32,8 +34,10 @@ SOURCES += ktlayer.cpp \
            ktproject.cpp \
            ktprojectmanager.cpp \
            ktprojectcommand.cpp \
-           ktabstractprojecteventhandler.cpp 
-QT += xml
+           ktabstractprojecteventhandler.cpp \
+           ktframegroup.cpp \
+           ktphotogram.cpp 
+QT += xml gui
 KDEV_QTVER = 4
 INCLUDEPATH += ../../src/store \
 ../../src/libktoon \

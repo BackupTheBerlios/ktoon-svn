@@ -18,27 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __KTGRAPHICALGORITHM_H__
-#define __KTGRAPHICALGORITHM_H__
+#ifndef KTFRAMEGROUP_H
+#define KTFRAMEGROUP_H
 
-#include <QString>
-#include <QPolygon>
-#include <QPainterPath>
+#include <ktframe.h>
 
 /**
- * @author Jorge Cuadrado <krawek@toonka.com>
- */
-class Q_DECL_EXPORT KTGraphicalAlgorithm
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+
+class KTFrameGroup : public KTFrame
 {
-	private:
-		KTGraphicalAlgorithm() {}
-		~KTGraphicalAlgorithm() {};
-	
 	public:
-		static QPainterPath bezierFit(QPolygonF &points_, float error);
-		static QPolygonF polygonFit(const QPolygonF &points);
+		KTFrameGroup(QObject *parent = 0);
+		~KTFrameGroup();
 		
+		void addFrame(KTFrame *frame);
+		
+		
+	private:
+		QList<KTFrame *> m_frames;
 };
 
 #endif
-

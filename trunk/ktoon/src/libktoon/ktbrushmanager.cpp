@@ -18,27 +18,61 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __KTGRAPHICALGORITHM_H__
-#define __KTGRAPHICALGORITHM_H__
+#include "ktbrushmanager.h"
 
-#include <QString>
-#include <QPolygon>
-#include <QPainterPath>
-
-/**
- * @author Jorge Cuadrado <krawek@toonka.com>
- */
-class Q_DECL_EXPORT KTGraphicalAlgorithm
+KTBrushManager::KTBrushManager(QObject * parent) : QObject(parent)
 {
-	private:
-		KTGraphicalAlgorithm() {}
-		~KTGraphicalAlgorithm() {};
-	
-	public:
-		static QPainterPath bezierFit(QPolygonF &points_, float error);
-		static QPolygonF polygonFit(const QPolygonF &points);
-		
-};
+}
 
-#endif
+KTBrushManager::KTBrushManager(const QPen &pen, const QBrush &brush, QObject * parent) : QObject(parent), m_pen(pen), m_brush(brush) 
+{
+}
+
+KTBrushManager::~KTBrushManager()
+{
+}
+
+void KTBrushManager::setPen(const QPen &pen)
+{
+	m_pen = pen;
+	emit penChanged( pen );
+}
+
+
+QPen KTBrushManager::pen() const
+{
+	return m_pen;
+}
+
+void KTBrushManager::setBrush(const QBrush &brush)
+{
+	m_brush = brush;
+	emit brushChanged( brush );
+}
+
+QBrush KTBrushManager::brush() const
+{
+	return m_brush;
+}
+
+
+int KTBrushManager::penWidth() const
+{
+	return m_pen.width();
+}
+
+QColor KTBrushManager::penColor() const
+{
+	return m_pen.color();
+}
+
+QBrush KTBrushManager::penBrush() const
+{
+	return m_pen.brush();
+}
+
+QBrush KTBrushManager::brushColor() const
+{
+	return m_brush.color();
+}
 

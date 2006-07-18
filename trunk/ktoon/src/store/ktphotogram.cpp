@@ -17,28 +17,15 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "ktphotogram.h"
 
-#ifndef __KTGRAPHICALGORITHM_H__
-#define __KTGRAPHICALGORITHM_H__
-
-#include <QString>
-#include <QPolygon>
-#include <QPainterPath>
-
-/**
- * @author Jorge Cuadrado <krawek@toonka.com>
- */
-class Q_DECL_EXPORT KTGraphicalAlgorithm
+KTPhotogram::KTPhotogram(QObject *parent) : QGraphicsScene(parent)
 {
-	private:
-		KTGraphicalAlgorithm() {}
-		~KTGraphicalAlgorithm() {};
-	
-	public:
-		static QPainterPath bezierFit(QPolygonF &points_, float error);
-		static QPolygonF polygonFit(const QPolygonF &points);
-		
-};
+}
 
-#endif
+
+KTPhotogram::~KTPhotogram()
+{
+}
+
 

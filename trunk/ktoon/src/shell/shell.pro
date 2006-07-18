@@ -3,13 +3,14 @@
 # Subdir relative project main directory: ./src/shell
 # Target is an application:  ../../bin/ktoon.bin
 
-QT += xml opengl svg 
+QT += xml opengl gui 
 INSTALLS += ktdata \
             target 
 target.path = /bin/ 
 ktdata.files += data/* 
 ktdata.path = /data 
 KDEV_QTVER = 4 
+TARGETDEPS += ../../src/components/paintarea/libpaintarea.a 
 LIBS += -ldcore \
         -ldgui \
         -lktoon \
@@ -27,8 +28,10 @@ LIBS += -ldcore \
         ../../src/components/export/libexport.a \
         ../../src/libktui/libktui.a \
         -lstore \
-        -ldsound 
-INCLUDEPATH += ../../src/components/pen \
+        -ldsound \
+        ../../src/components/paintarea/libpaintarea.a 
+INCLUDEPATH += ../../src/components/paintarea \
+               ../../src/components/pen \
                ../../src/components/kinas \
                ../../src/components/help \
                ../../src/components/gceditor \
@@ -53,7 +56,7 @@ QMAKE_LIBDIR = ../../src/dlib/dcore \
                ../../src/dlib/dgui \
                ../../src/libktoon \
                ../../src/store \
-               ../../src/dlib/dsound
+               ../../src/dlib/dsound 
 TARGET = ../../bin/ktoon.bin 
 CONFIG += release \
           warn_on 
@@ -109,4 +112,3 @@ linux-g++{
   ../../src/components/colorpalette/libcolorpalette.a \
   ../../src/components/scenes/libscenes.a
 }
-

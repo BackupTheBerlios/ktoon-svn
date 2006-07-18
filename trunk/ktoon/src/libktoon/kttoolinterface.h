@@ -31,22 +31,24 @@
 #include <QImage>
 #include <QHash>
 #include <QCursor>
+#include <QMouseEvent>
 
-#include "kttoolpluginobject.h"
 #include "ktframe.h"
 
 #include "daction.h"
 
 #include "qplugin.h" // Q_EXPORT_PLUGIN
 
+class KTScene;
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class AToolInterface
+class KTToolInterface
 {
 	public:
-		enum Type
+		enum ToolType
 		{
 			None = 0,
 			Brush,
@@ -54,24 +56,12 @@ class AToolInterface
 			Selection
 		};
 		
-		virtual ~AToolInterface() {};
+		virtual ~KTToolInterface() {};
+		
 		virtual QStringList keys() const = 0;
-		virtual QRect press(const QString &brush, QPainter &painter,const QPoint &pos, KTFrame *currentFrame = 0) = 0;
-		virtual QRect move(const QString &brush, QPainter &painter,const QPoint &oldPos, const QPoint &newPos) = 0;
-		virtual QRect release(const QString &brush, QPainter &painter, const QPoint &pos) = 0;
-		
-		virtual QHash<QString, DAction *>actions() = 0;
-		
-		virtual QPainterPath path() const = 0;
-		
-		virtual int type() const = 0;
-		
-		virtual QWidget *configurator()  = 0;
-		
-		virtual bool isComplete() const = 0;
-		virtual void aboutToChangeTool() = 0;
+		virtual int toolType() const = 0;
 };
 
-Q_DECLARE_INTERFACE( AToolInterface, "com.toonka.ktoon.AToolInterface/0.1" );
+Q_DECLARE_INTERFACE( KTToolInterface, "com.toonka.ktoon.KTToolInterface/0.2" );
 
 #endif

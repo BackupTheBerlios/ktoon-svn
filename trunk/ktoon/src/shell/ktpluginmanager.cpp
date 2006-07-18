@@ -67,7 +67,7 @@ void KTPluginManager::loadPlugins()
 		if (plugin)
 		{
 			AFilterInterface *aFilter = qobject_cast<AFilterInterface *>(plugin);
-			AToolInterface *aTool = qobject_cast<AToolInterface *>(plugin);
+			KTToolInterface *aTool = qobject_cast<KTToolInterface *>(plugin);
 			
 			if ( aFilter )
 			{

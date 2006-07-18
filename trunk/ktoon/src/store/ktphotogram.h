@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,40 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-//
-#ifndef KTPAINTAREA_H
-#define KTPAINTAREA_H
+#ifndef KTPHOTOGRAM_H
+#define KTPHOTOGRAM_H
 
-#include <QGraphicsView>
-
-
-class QGraphicsRectItem;
+#include <QGraphicsScene>
 
 /**
- * Esta clase provee un area para hacer dibujos.
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @NOTE: ESTA CLASE NO ES USADA EN ESTE MOMENTO, NO USAR!!!
+ * Esta clase es la escena dibujada en el area de dibujo, contiene los frames del mismo nivel de cada layer visible, lineas auxiliares, nodos, etc...
+ * @author David Cuadrado <krawek@gmail.com>
 */
-class KTPaintArea : public QGraphicsView
-{
-	Q_OBJECT;
-	public:
-		KTPaintArea(QWidget * parent = 0);
-		~KTPaintArea();
-		
-		void setPhotogram(QGraphicsScene *photogram);
-		
-	protected:
-		void mousePressEvent ( QMouseEvent * event  );
-		void mouseMoveEvent ( QMouseEvent * event );
-		void mouseReleaseEvent(QMouseEvent *event );
-		void resizeEvent ( QResizeEvent * event );
-		
-	private:
-		QGraphicsRectItem *m_grid;
-		
-	signals:
-		void cursorPosition(const QPoint &pos);
 
+class KTPhotogram : public QGraphicsScene
+{
+	public:
+		KTPhotogram(QObject * parent = 0);
+		~KTPhotogram();
+		
 };
 
 #endif

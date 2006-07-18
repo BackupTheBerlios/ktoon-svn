@@ -18,65 +18,56 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktpaintarea.h"
+//
+#ifndef KTPAINTAREA_H
+#define KTPAINTAREA_H
 
-#include "ddebug.h"
+#include <QGraphicsView>
+#include <kttoolplugin.h>
 
-#include <QGraphicsScene>
-#include <QMouseEvent>
-#include <QGraphicsRectItem>
-#include <QPolygon>
 
-#ifdef QT_OPENGL_LIB
-#include <QGLWidget>
+class QGraphicsRectItem;
+class KTBrushManager;
+
+/**
+ * Esta clase provee un area para hacer dibujos.
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
+*/
+
+class KTPaintArea : public QGraphicsView
+{
+	Q_OBJECT;
+	public:
+		KTPaintArea(QWidget * parent = 0);
+		~KTPaintArea();
+		void setPhotogram(QGraphicsScene *photogram);
+		
+		void setUseOpenGL(bool opengl);
+		
+		void setTool(KTToolPlugin *tool);
+		
+	protected:
+		void mousePressEvent ( QMouseEvent * event  );
+		void mouseMoveEvent ( QMouseEvent * event );
+		void mouseReleaseEvent(QMouseEvent *event );
+		void resizeEvent ( QResizeEvent * event );
+			
+	signals:
+		void cursorPosition(const QPointF &pos);
+		
+		
+	private:
+		QMouseEvent *mapMouseEvent(QMouseEvent *event) const;
+		
+	private:
+		QGraphicsRectItem *m_grid;
+		KTToolPlugin *m_tool;
+		
+		bool m_isDrawing;
+		
+		KTBrushManager *m_brushManager;
+		
+
+};
+
 #endif
-
-KTPaintArea::KTPaintArea(QWidget * parent) : QGraphicsView(parent)
-{
-	setMouseTracking(true);
-	
-	QGraphicsScene *sscene = new QGraphicsScene(QRect() , this);
-	setScene(sscene);
-	
-	setBackgroundBrush (Qt::white);
- 	
-	m_grid =  scene()->addRect( QRect() , QPen(Qt::black, 3), QBrush() );
-	
-#ifdef QT_OPENGL_LIB
-	setViewport(new QGLWidget());
-#endif
-}
-
-KTPaintArea::~KTPaintArea()
-{
-}
-
-
-
-void KTPaintArea::mousePressEvent ( QMouseEvent * event )
-{
-	QGraphicsView::mousePressEvent(event);
-}
-
-void KTPaintArea::mouseMoveEvent ( QMouseEvent * event )
-{
-	QGraphicsView::mouseMoveEvent(event);
-	emit cursorPosition(event->pos()  );
-}
-
-void KTPaintArea::mouseReleaseEvent(QMouseEvent *event)
-{
-	QGraphicsView::mouseReleaseEvent(event);
-}
-
-
-void KTPaintArea::resizeEvent ( QResizeEvent * event )
-{
-	scene()->setSceneRect(rect().normalized().adjusted ( 0, 0, -25, -25 ) );
-	QPoint zero(scene()->width() - 500, scene()->height() - 400);
-	m_grid->setRect(QRectF(mapToScene(zero/2), QSizeF( 500, 400) ));
-	
-	QGraphicsView::resizeEvent(event);
-}
-
-

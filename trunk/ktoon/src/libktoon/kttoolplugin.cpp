@@ -18,27 +18,24 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __KTGRAPHICALGORITHM_H__
-#define __KTGRAPHICALGORITHM_H__
+#include "kttoolplugin.h"
 
-#include <QString>
-#include <QPolygon>
-#include <QPainterPath>
-
-/**
- * @author Jorge Cuadrado <krawek@toonka.com>
- */
-class Q_DECL_EXPORT KTGraphicalAlgorithm
+KTToolPlugin::KTToolPlugin(QObject * parent) : QObject(parent)
 {
-	private:
-		KTGraphicalAlgorithm() {}
-		~KTGraphicalAlgorithm() {};
-	
-	public:
-		static QPainterPath bezierFit(QPolygonF &points_, float error);
-		static QPolygonF polygonFit(const QPolygonF &points);
-		
-};
+}
 
-#endif
+
+KTToolPlugin::~KTToolPlugin()
+{
+}
+
+void KTToolPlugin::setCurrentTool(const QString &tool)
+{
+	m_currentTool = tool;
+}
+
+QString KTToolPlugin::currentTool() const
+{
+	return m_currentTool;
+}
 

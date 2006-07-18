@@ -3,7 +3,8 @@
 # Subdir relative project main directory: ./src/plugins/tools
 # Target is a subdirs project 
 
-KDEV_QTVER = 4 
+SUBDIRS += brush 
+KDEV_QTVER = 4
 CONFIG += release \
-          warn_on 
-TEMPLATE = subdirs 
+warn_on
+TEMPLATE = subdirs

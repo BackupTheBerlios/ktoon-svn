@@ -110,7 +110,7 @@ check "aspell" aspell && defineDLibConf "LIBS += -laspell" && defineDLibConf  "D
 # Checking gstreamer
 export GST_LIBS=`pkg-config gstreamer-0.10 --libs --silence-errors`
 export GST_INCLUDE=`pkg-config gstreamer-0.10 --cflags --silence-errors`
-check "sound" sound "${GST_INCLUDE}" "${GST_LIBS}" && INCPATH="$INCPATH $GST_INCLUDE" LIBS="$LIBS $GST_LIBS" && defineMacro HAVE_SOUND && defineDLibConf "LIBS += ${GST_LIBS}" && defineDLibConf "QMAKE_CXXFLAGS_MT += ${GST_INCLUDE}" && defineDLibConf "DEFINES += HAVE_GST10" 
+check "sound" sound "${GST_INCLUDE}" "${GST_LIBS}" && INCPATH="$INCPATH $GST_INCLUDE" LIBS="$LIBS $GST_LIBS" && defineMacro HAVE_SOUND && defineDLibConf "LIBS += ${GST_LIBS}" && defineDLibConf "QMAKE_CXXFLAGS_RELEASE += ${GST_INCLUDE}" && defineDLibConf "DEFINES += HAVE_GST10" 
 
 # Checking gif
 check "gif" gif && LIBS="$LIBS -lgif" && defineMacro HAVE_LIBGIF
@@ -146,6 +146,8 @@ defineMacro VERSION ${APPVER}
 defineMacro VERSION_STR \"${APPVER}\"
 
 echo "#endif" >> $CONFIG_H
+
+qmake -recursive 2> /dev/null >/dev/null
 
 echo
 echo "**************************************"
