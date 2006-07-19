@@ -22,7 +22,8 @@ HEADERS += ktmodulewidgetbase.h \
            kttoolinterface.h \
            ktprojectactionbar.h \
            kttoolplugin.h \
-           ktbrushmanager.h 
+           ktbrushmanager.h \
+           ktpluginmanager.h 
 SOURCES += ktmodulewidgetbase.cpp \
            ktmodulewidgettitle.cpp \
            ktexportpluginobject.cpp \
@@ -36,7 +37,8 @@ SOURCES += ktmodulewidgetbase.cpp \
            ktpackagehandler.cpp \
            ktprojectactionbar.cpp \
            kttoolplugin.cpp \
-           ktbrushmanager.cpp 
+           ktbrushmanager.cpp \
+           ktpluginmanager.cpp 
 QT += xml gui
 KDEV_QTVER = 4
 INCLUDEPATH += ../../src/store \

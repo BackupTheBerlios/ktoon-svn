@@ -29,6 +29,10 @@ KTToolPlugin::~KTToolPlugin()
 {
 }
 
+void KTToolPlugin::init(QGraphicsView *view)
+{
+}
+
 void KTToolPlugin::setCurrentTool(const QString &tool)
 {
 	m_currentTool = tool;

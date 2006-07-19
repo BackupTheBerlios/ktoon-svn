@@ -3,8 +3,16 @@
 # Subdir relative project main directory: ./src/components/paintarea
 # Target is a library:  
 
-HEADERS += ktpaintarea.h 
-SOURCES += ktpaintarea.cpp 
+HEADERS += ktpaintarea.h \
+           ktconfigurationarea.h \
+           ktdrawingareaproperties.h \
+           ktviewdocument.h \
+           ktdocumentruler.h 
+SOURCES += ktpaintarea.cpp \
+           ktconfigurationarea.cpp \
+           ktdrawingareaproperties.cpp \
+           ktviewdocument.cpp \
+           ktdocumentruler.cpp 
 KDEV_QTVER = 4
 INCLUDEPATH += ../../../src/store \
 ../../../src/libktoon \
@@ -19,4 +27,4 @@ CONFIG += release \
 warn_on \
 staticlib
 TEMPLATE = lib
-QT += xml opengl
+QT += xml

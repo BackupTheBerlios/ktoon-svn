@@ -44,12 +44,17 @@ Brush::~Brush()
 	delete m_configurator;
 }
 
+void Brush::init(QGraphicsView *view)
+{
+	
+}
+
 QStringList Brush::keys() const
 {
 	return QStringList() << tr("Pencil") ;
 }
 
-void Brush::press(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene)
+void Brush::press(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
 	D_FUNCINFO;
 	m_firstPoint = event->pos();
@@ -63,10 +68,10 @@ void Brush::press(const QMouseEvent *event, KTBrushManager *brushManager, KTScen
 	m_item->setBrush( brushManager->brush() );
 	m_item->setPen( brushManager->pen() );
 	scene->addGraphic( m_item );
-	move(event, brushManager, scene);
+// 	move(event, brushManager, scene, view);
 }
 
-void Brush::move( const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene)
+void Brush::move( const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
 	int rad = brushManager->pen().width();
 	QRect boundingRect = QRect(m_oldPos, event->pos()).normalized().adjusted(-rad, -rad, +rad, +rad);
@@ -89,7 +94,7 @@ void Brush::move( const QMouseEvent *event, KTBrushManager *brushManager, KTScen
 	m_oldPos = event->pos();
 }
 
-void Brush::release(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene)
+void Brush::release(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
 	D_FUNCINFO;
 	

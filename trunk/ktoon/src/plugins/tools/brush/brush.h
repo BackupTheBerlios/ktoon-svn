@@ -39,10 +39,13 @@ class Brush : public KTToolPlugin
 	public:
 		Brush();
 		virtual ~Brush();
+		
+		virtual void init(QGraphicsView *view);
+		
 		virtual QStringList keys() const;
-		virtual void press(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene);
-		virtual void move(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene);
-		virtual void release(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene);
+		virtual void press(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
+		virtual void move(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
+		virtual void release(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 		
 		virtual QPainterPath path() const;
 		

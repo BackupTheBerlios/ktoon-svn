@@ -61,15 +61,19 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(p
 	setMouseTracking(true);
 	
 	m_brushManager = new KTBrushManager(this);
-	connect(m_brushManager, SIGNAL(penChanged( const QPen& )), this, SLOT(setCurrentPen(const QPen &)));
-	connect(m_brushManager, SIGNAL(brushChanged( const QBrush& )), this, SLOT(setCurrentBrush(const QBrush &)));
+	
+	connect(m_brushManager, SIGNAL(penChanged( const QPen& )), this, SLOT(updateCurrentPen(const QPen &)));
+	connect(m_brushManager, SIGNAL(brushChanged( const QBrush& )), this, SLOT(updateCurrentBrush(const QBrush &)));
+	
+	m_drawingRect =  QRectF(QPointF(0,0), QSizeF( 500, 400) ); // FIXME: parametrizable
 	
 	setCurrentScene( 0 );
 	
-	QPoint zero(scene()->width() - 500, scene()->height() - 400); // FIXME: parametrizable
-	m_drawingRect =  QRectF(mapToScene(zero/2), QSizeF( 500, 400) );
+	centerDrawingArea();
 	
-	ensureVisible(m_drawingRect);
+// 	ensureVisible(m_drawingRect);
+// 	fitInView(m_drawingRect);
+// 	centerOn(m_drawingRect.center());
 }
 
 KTPaintArea::~KTPaintArea()
@@ -87,6 +91,8 @@ void KTPaintArea::setCurrentScene(int index)
 		sscene->setItemIndexMethod(QGraphicsScene::NoIndex);
 		setScene(sscene);
 		setBackgroundBrush(Qt::gray);
+		
+		sscene->setSceneRect( m_drawingRect );
 	}
 }
 
@@ -111,6 +117,7 @@ void KTPaintArea::setUseOpenGL(bool opengl)
 void KTPaintArea::setTool(KTToolPlugin *tool )
 {
 	m_tool = tool;
+	m_tool->init(this);
 }
 
 void KTPaintArea::mousePressEvent ( QMouseEvent * event )
@@ -120,13 +127,12 @@ void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 	if (m_tool )
 	{
 		m_isDrawing = true;
-		m_tool->press(eventMapped, m_brushManager,  qobject_cast<KTScene *>(scene()) );
+		m_tool->press(eventMapped, m_brushManager,  qobject_cast<KTScene *>(scene()), this );
 	}
 	
 	delete eventMapped;
 	
 	QGraphicsView::mousePressEvent(event);
-	
 }
 
 void KTPaintArea::mouseMoveEvent ( QMouseEvent * event )
@@ -136,7 +142,7 @@ void KTPaintArea::mouseMoveEvent ( QMouseEvent * event )
 	
 	if (m_tool && m_isDrawing )
 	{
-		m_tool->move(eventMapped, m_brushManager,  qobject_cast<KTScene *>(scene()) );
+		m_tool->move(eventMapped, m_brushManager,  qobject_cast<KTScene *>(scene()), this );
 	}
 	
 	emit cursorPosition( mapToScene( eventMapped->pos() ) );
@@ -154,7 +160,7 @@ void KTPaintArea::mouseReleaseEvent(QMouseEvent *event)
 	
 	if ( m_tool )
 	{
-		m_tool->release(eventMapped, m_brushManager,  qobject_cast<KTScene *>(scene()) );
+		m_tool->release(eventMapped, m_brushManager,  qobject_cast<KTScene *>(scene()), this );
 	}
 	
 	delete eventMapped;
@@ -171,13 +177,16 @@ void KTPaintArea::resizeEvent ( QResizeEvent * event )
 // 	QPoint zero(scene()->width() - 500, scene()->height() - 400);
 // 	m_grid->setRect(QRectF(mapToScene(zero/2), QSizeF( 500, 400) ));
 	
+// 	centerOn(m_drawingRect.center());
+	
+	
 	QGraphicsView::resizeEvent(event);
 }
 
 QMouseEvent *KTPaintArea::mapMouseEvent(QMouseEvent *event) const
 {
 	QMouseEvent *e = new QMouseEvent(event->type(), this->mapToScene(event->pos()).toPoint(), this->mapToScene( event->globalPos() ).toPoint(), event->button(), event->buttons(), event->modifiers () );
-			
+	
 	return e;
 }
 
@@ -205,5 +214,22 @@ void KTPaintArea::drawBackground(QPainter *painter, const QRectF &rect)
 	painter->fillRect(m_drawingRect, Qt::white);
 	painter->drawRect( m_drawingRect );
 }
+
+void KTPaintArea::updateCurrentBrush(const QBrush &brush)
+{
+}
+
+void KTPaintArea::updateCurrentPen(const QPen &pen)
+{
+}
+
+
+void KTPaintArea::centerDrawingArea()
+{
+// 	ensureVisible(m_drawingRect, (width() - m_drawingRect.width()) /2, (height() - m_drawingRect.height()) /2  );
+	centerOn(m_drawingRect.center());
+}
+
+
 
 

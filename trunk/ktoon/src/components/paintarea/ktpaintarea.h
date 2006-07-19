@@ -63,6 +63,13 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 	private:
 		QMouseEvent *mapMouseEvent(QMouseEvent *event) const;
 		
+	public slots:
+		void centerDrawingArea();
+		
+	protected slots:
+		void updateCurrentBrush(const QBrush &brush);
+		void updateCurrentPen(const QPen &pen);
+		
 	protected:
 		void frameEvent(KTFrameEvent *event);
 		void layerEvent(KTLayerEvent *event);

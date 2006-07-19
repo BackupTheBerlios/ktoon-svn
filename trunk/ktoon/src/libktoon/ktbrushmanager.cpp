@@ -20,7 +20,7 @@
 
 #include "ktbrushmanager.h"
 
-KTBrushManager::KTBrushManager(QObject * parent) : QObject(parent)
+KTBrushManager::KTBrushManager(QObject * parent) : QObject(parent), m_pen(QPen(Qt::black, 1)), m_brush(Qt::transparent)
 {
 }
 

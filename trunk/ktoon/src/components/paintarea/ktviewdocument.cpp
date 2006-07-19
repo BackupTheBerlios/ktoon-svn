@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "ktviewdocument.h"
-#include "ktapplication.h"
+
 #include "ddebug.h"
 
 #include <QLayout>
@@ -29,6 +29,7 @@
 #include <QActionGroup>
 #include <QDockWidget>
 #include <QTimer>
+#include <QApplication>
 
 #include "dvhbox.h"
 
@@ -569,7 +570,7 @@ void KTViewDocument::selectTool()
 		tool->setCurrentTool( toolStr );
 		m_paintArea->setTool(tool);
 		
-		m_paintArea->setCursor(action->cursor());
+		m_paintArea->viewport()->setCursor(action->cursor());
 	}
 }
 
