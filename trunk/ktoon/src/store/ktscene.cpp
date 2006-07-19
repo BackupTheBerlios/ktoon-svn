@@ -235,3 +235,12 @@ void KTScene::addGraphic(QGraphicsItem *item)
 	qDebug("AÑADIENDO GRAFICO!!!");
 	addItem(item); // FIXME: Esto esta mal, debe añadirse al current frame
 }
+
+void KTScene::clean()
+{
+	foreach(QGraphicsItem *item, items() )
+	{
+		removeItem(item);
+	}
+}
+

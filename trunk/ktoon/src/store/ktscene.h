@@ -106,6 +106,8 @@ class Q_DECL_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializab
 		
 		void addGraphic(QGraphicsItem *item);
 		
+		void clean();
+		
 	public:
 		virtual void fromXml(const QString &xml );
 		virtual QDomElement toXml(QDomDocument &doc);

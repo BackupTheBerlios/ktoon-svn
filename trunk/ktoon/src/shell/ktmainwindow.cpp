@@ -141,10 +141,12 @@ void KTMainWindow::newViewDocument(const QString &title)
 // 		if ( scene )
 // 		{
 // 			m_statusBar->advance(4);
-			/*KTViewDocument **/m_viewDoc = new KTViewDocument(  title, m_renderType);
+			/*KTViewDocument **/m_viewDoc = new KTViewDocument(  m_projectManager->project(), m_renderType);
 			connectToDisplays( m_viewDoc );
 			m_viewDoc->setAttribute(Qt::WA_DeleteOnClose, true);
 			addWidget( m_viewDoc, tr("Illustration"), true);
+			connectToDisplays( m_viewDoc );
+			ui4project( m_viewDoc );
 // 			viewDocument->drawArea()->setPen( m_penWidget->pen());
 // 			
 			

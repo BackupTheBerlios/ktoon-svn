@@ -109,7 +109,10 @@ KTProjectCommand *KTProjectManager::createCommand(const KTProjectEvent *event)
 }
 
 
-
+KTProject *KTProjectManager::project() const
+{
+	return m_project;
+}
 
 
 

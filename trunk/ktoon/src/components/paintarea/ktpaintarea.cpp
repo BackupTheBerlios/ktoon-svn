@@ -54,8 +54,9 @@ class GLDevice : public QGLWidget
 #endif
 
 #include "ktscene.h"
+#include "ktproject.h"
 
-KTPaintArea::KTPaintArea(QWidget * parent) : QGraphicsView(parent), m_tool(0), m_isDrawing(false)
+KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(parent), m_grid(0), m_tool(0), m_isDrawing(false), m_project(project)
 {
 	setMouseTracking(true);
 	
@@ -63,23 +64,31 @@ KTPaintArea::KTPaintArea(QWidget * parent) : QGraphicsView(parent), m_tool(0), m
 	connect(m_brushManager, SIGNAL(penChanged( const QPen& )), this, SLOT(setCurrentPen(const QPen &)));
 	connect(m_brushManager, SIGNAL(brushChanged( const QBrush& )), this, SLOT(setCurrentBrush(const QBrush &)));
 	
-	KTScene *sscene = new KTScene(this);
-	setScene(sscene);
+	setCurrentScene( 0 );
 	
+	QPoint zero(scene()->width() - 500, scene()->height() - 400); // FIXME: parametrizable
+	m_drawingRect =  QRectF(mapToScene(zero/2), QSizeF( 500, 400) );
 	
-	
-	setBackgroundBrush(Qt::white);
-	
-	m_grid =  scene()->addRect( QRect() , QPen(Qt::black, 3), QBrush() );
-	setRenderHint ( QPainter::Antialiasing, true );
-	
-	setUseOpenGL( true );
+	ensureVisible(m_drawingRect);
 }
 
 KTPaintArea::~KTPaintArea()
 {
+	
 }
 
+void KTPaintArea::setCurrentScene(int index)
+{
+	KTScene *sscene = m_project->scene(index);
+	if ( sscene )
+	{
+		sscene->clean();
+		
+		sscene->setItemIndexMethod(QGraphicsScene::NoIndex);
+		setScene(sscene);
+		setBackgroundBrush(Qt::gray);
+	}
+}
 
 void KTPaintArea::setUseOpenGL(bool opengl)
 {
@@ -94,9 +103,10 @@ void KTPaintArea::setUseOpenGL(bool opengl)
 	}
 #else
 	Q_UNUSED(opengl);
-	qWarning("OpenGL isn't supported");
+	dWarning() << tr("OpenGL isn't supported");
 #endif
 }
+
 
 void KTPaintArea::setTool(KTToolPlugin *tool )
 {
@@ -129,7 +139,7 @@ void KTPaintArea::mouseMoveEvent ( QMouseEvent * event )
 		m_tool->move(eventMapped, m_brushManager,  qobject_cast<KTScene *>(scene()) );
 	}
 	
-	emit cursorPosition( mapToScene( event->pos() ) );
+	emit cursorPosition( mapToScene( eventMapped->pos() ) );
 	
 	delete eventMapped;
 	
@@ -141,7 +151,6 @@ void KTPaintArea::mouseReleaseEvent(QMouseEvent *event)
 	D_FUNCINFO;
 	
 	QMouseEvent *eventMapped = mapMouseEvent( event );
-	
 	
 	if ( m_tool )
 	{
@@ -158,9 +167,9 @@ void KTPaintArea::mouseReleaseEvent(QMouseEvent *event)
 
 void KTPaintArea::resizeEvent ( QResizeEvent * event )
 {
-	scene()->setSceneRect(rect().normalized().adjusted ( 0, 0, -25, -25 ) );
-	QPoint zero(scene()->width() - 500, scene()->height() - 400);
-	m_grid->setRect(QRectF(mapToScene(zero/2), QSizeF( 500, 400) ));
+// 	scene()->setSceneRect(rect().normalized().adjusted ( 0, 0, -25, -25 ) );
+// 	QPoint zero(scene()->width() - 500, scene()->height() - 400);
+// 	m_grid->setRect(QRectF(mapToScene(zero/2), QSizeF( 500, 400) ));
 	
 	QGraphicsView::resizeEvent(event);
 }
@@ -171,4 +180,30 @@ QMouseEvent *KTPaintArea::mapMouseEvent(QMouseEvent *event) const
 			
 	return e;
 }
+
+void KTPaintArea::frameEvent(KTFrameEvent *event)
+{
+}
+
+void KTPaintArea::layerEvent(KTLayerEvent *event)
+{
+}
+
+void KTPaintArea::sceneEvent(KTSceneEvent *event)
+{
+}
+
+void KTPaintArea::projectEvent(KTProjectEvent *event)
+{
+}
+
+void KTPaintArea::drawBackground(QPainter *painter, const QRectF &rect)
+{
+	QGraphicsView::drawBackground(painter, rect);
+	
+	painter->setPen( QPen( Qt::black, 3) );
+	painter->fillRect(m_drawingRect, Qt::white);
+	painter->drawRect( m_drawingRect );
+}
+
 

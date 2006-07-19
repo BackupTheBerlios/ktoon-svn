@@ -36,24 +36,41 @@
 #include "ktpaintareaproperties.h"
 #include "ktpluginmanager.h"
 #include "ktpaintarea.h"
+#include "ktframeevent.h"
 
-KTViewDocument::KTViewDocument(const QString& title, KToon::RenderType renderType, QWidget *parent ) : QMainWindow(parent), m_title(title)
+#include "ktproject.h"
+
+KTViewDocument::KTViewDocument(KTProject *project, KToon::RenderType renderType, QWidget *parent ) : QMainWindow(parent)
 {
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/layer_pic.png") ); // FIXME: new image for documents
 	
 	m_actionManager = new DActionManager(this);
 	
-// 	m_history = new DCommandHistory(m_actionManager);
-		
-// 	m_paintAreaContainer = new KTPaintAreaContainer(size,renderType,  this);
+	m_paintArea = new KTPaintArea(project, this);
+	setCentralWidget( m_paintArea );
 	
-// 	setCentralWidget ( m_paintAreaContainer );
-	m_paintArea = new KTPaintArea(this);
-	setCentralWidget( m_paintArea);
-// 	showPos(QPoint(0,0));
+	switch(renderType)
+	{
+		case KToon::OpenGL:
+		{
+			m_paintArea->setUseOpenGL( true );
+		}
+		break;
+		case KToon::Native:
+		{
+			m_paintArea->setUseOpenGL( false );
+		}
+		break;
+		default:
+		{
+			dWarning() << "Unsopported render, switching to native!";
+			m_paintArea->setUseOpenGL( false );
+		}
+		break;
+	}
 	
-	connect(m_paintArea, SIGNAL(cursorPosition(const QPoint &)),  this,  SLOT(showPos(const QPoint &)) );
-// 	
+	connect(m_paintArea, SIGNAL(cursorPosition(const QPointF &)),  this,  SLOT(showPos(const QPointF &)) );
+
 // 	connect( m_paintArea, SIGNAL(changedZoomFactor(double)),  this,  SLOT(updateZoomFactor(double)) );
 // 	setWindowTitle( m_title + " - " + m_document->currentScene()->sceneName() );
 // 	
@@ -85,10 +102,10 @@ KTViewDocument::~KTViewDocument()
 // 	delete m_history;
 }
 
-void KTViewDocument::showPos(const QPoint &p)
+void KTViewDocument::showPos(const QPointF &p)
 {
-	QString messages =  "X: " +  QString::number(p.x()) + " Y: " + QString::number(p.y() );
-	emit  sendToStatus ( messages ) ;
+	QString message =  "X: " +  QString::number(p.x()) + " Y: " + QString::number(p.y() );
+	emit sendToStatus ( message ) ;
 }
 
 void KTViewDocument::createActions()
@@ -572,6 +589,10 @@ void KTViewDocument::selectToolFromMenu(QAction *action)
 	}
 }
 
+void KTViewDocument::handleProjectEvent(KTProjectEvent *event)
+{
+	m_paintArea->handleEvent(event);
+}
 
 void KTViewDocument::applyFilter()
 {

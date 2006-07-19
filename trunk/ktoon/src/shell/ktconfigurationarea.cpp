@@ -30,6 +30,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QStyle>
+#include <QStyleOptionButton>
 
 #include <ddebug.h>
 
@@ -112,7 +113,7 @@ void KTConfigurationArea::shrink()
 	}
 	
 	QMouseEvent press(QEvent::MouseButtonPress,
-			  mapTo(mainWindow, QPoint(this->x(), this->y())) + QPoint(wOffset, hOffset),
+			  mapToParent( QPoint(this->x(), this->y()))/2 + QPoint(wOffset, hOffset),
 			  Qt::LeftButton, 0, 0);
 	
 	if ( ! QApplication::sendEvent(mainWindow, &press) )
@@ -294,29 +295,42 @@ void KTConfigurationArea::paintEvent (QPaintEvent *e)
 	if ( draw )
 	{
 		QPainter painter(this);
-		painter.setRenderHint(QPainter::Antialiasing);
+		painter.setRenderHint(QPainter::Antialiasing, true);
+		painter.setRenderHint(QPainter::TextAntialiasing, true);
 		
-		painter.setBrush( palette().highlight() );
-		QPainterPath path;
+// 		painter.setBrush( palette().highlight() );
+// 		QPainterPath path;
+// 		
+// 		QPolygon pol;
+// 		pol << rect().topRight()-QPoint(0,-40) << QPoint(2, height()/2) << rect().bottomRight()-QPoint(0,40);
+// 		path.addPolygon(pol);
+// 		
+// 		painter.drawPath(path);
 		
-		QPolygon pol;
-		pol << rect().topRight()-QPoint(0,-40) << QPoint(2, height()/2) << rect().bottomRight()-QPoint(0,40);
-		path.addPolygon(pol);
-		
-		painter.drawPath(path);
-		
-		painter.rotate(90);
+// 		painter.rotate(90);
 		
 		QFont font("Times", 16, QFont::Bold);
 		
 		painter.setFont(font);
 		
-		QString text = tr("Properties");
+		QStyleOptionButton buttonOption;
 		
-		QFontMetricsF fm(painter.font());
+		buttonOption.text = tr("Properties");
+		buttonOption.icon = QIcon();
+		buttonOption.palette = palette();
+// 		buttonOption.rect = QRect(rect().x(), rect().y(), rect().height(), rect().width());;
+		buttonOption.rect = rect();
+		buttonOption.state = QStyle::State_Sunken;
 		
+		buttonOption.features = QStyleOptionButton::DefaultButton;
 		
-		painter.drawText(QPointF(height()/2-fm.width(text)/2, -(width()-fm.height()/2) ), text );
+		style()->drawControl( QStyle::CE_PushButton, &buttonOption, &painter, this );
+		
+// 		QString text = tr("Properties");
+// 		
+// 		QFontMetricsF fm(painter.font());
+// 		
+// 		painter.drawText(QPointF(height()/2-fm.width(text)/2, -(width()-fm.height()/2) ), text );
 	}
 }
 

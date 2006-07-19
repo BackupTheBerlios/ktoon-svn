@@ -45,6 +45,8 @@ class Q_DECL_EXPORT KTProjectManager : public QObject
 		
 		bool isOpen() const;
 		
+		KTProject *project() const;
+		
 	protected slots:
 		virtual void handleProjectEvent(KTProjectEvent *event);
 		

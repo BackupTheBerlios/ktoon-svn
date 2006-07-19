@@ -25,26 +25,30 @@
 #include <QGraphicsView>
 #include <kttoolplugin.h>
 
+#include "ktabstractprojecteventhandler.h"
+
 
 class QGraphicsRectItem;
 class KTBrushManager;
+class KTProject;
 
 /**
  * Esta clase provee un area para hacer dibujos.
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
-class KTPaintArea : public QGraphicsView
+class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 {
 	Q_OBJECT;
 	public:
-		KTPaintArea(QWidget * parent = 0);
+		KTPaintArea(KTProject *project, QWidget * parent = 0);
 		~KTPaintArea();
 		void setPhotogram(QGraphicsScene *photogram);
 		
 		void setUseOpenGL(bool opengl);
-		
 		void setTool(KTToolPlugin *tool);
+		
+		void setCurrentScene(int index);
 		
 	protected:
 		void mousePressEvent ( QMouseEvent * event  );
@@ -59,6 +63,14 @@ class KTPaintArea : public QGraphicsView
 	private:
 		QMouseEvent *mapMouseEvent(QMouseEvent *event) const;
 		
+	protected:
+		void frameEvent(KTFrameEvent *event);
+		void layerEvent(KTLayerEvent *event);
+		void sceneEvent(KTSceneEvent *event);
+		void projectEvent(KTProjectEvent *event);
+		
+		void drawBackground(QPainter *painter, const QRectF &rect);
+		
 	private:
 		QGraphicsRectItem *m_grid;
 		KTToolPlugin *m_tool;
@@ -67,7 +79,9 @@ class KTPaintArea : public QGraphicsView
 		
 		KTBrushManager *m_brushManager;
 		
-
+		KTProject *m_project;
+		
+		QRectF m_drawingRect;
 };
 
 #endif

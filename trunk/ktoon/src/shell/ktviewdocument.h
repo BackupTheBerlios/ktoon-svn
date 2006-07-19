@@ -43,6 +43,8 @@
 #include <dosd.h>
 
 class KTPaintArea;
+class KTProjectEvent;
+class KTProject;
 
 /**
  * @author Jorge Cuadrado
@@ -52,7 +54,7 @@ class KTViewDocument : public QMainWindow
 {
 	Q_OBJECT
 	public:
-		KTViewDocument(   const QString& title , KToon::RenderType renderType, QWidget *parent = 0 );
+		KTViewDocument(KTProject *project, KToon::RenderType renderType, QWidget *parent = 0 );
 		~KTViewDocument();
 		void close();
 		QSize sizeHint() const;
@@ -84,7 +86,6 @@ class KTViewDocument : public QMainWindow
 		QSpinBox *m_zoomFactorSpin;
 		
 		KTPaintArea *m_paintArea;
-		QString m_title;
 		
 	private:
 		void createActions();
@@ -105,11 +106,9 @@ class KTViewDocument : public QMainWindow
 		DActionManager *m_actionManager;
 		KTConfigurationArea *m_configurationArea;
 		
-// 		DCommandHistory *m_history;
-		
 		
 	private slots:
-		void showPos(const QPoint &p);	
+		void showPos(const QPointF &p);	
 		void setCursor(const QCursor &c);
 		
 		void updateZoomFactor( double f);
@@ -118,6 +117,8 @@ class KTViewDocument : public QMainWindow
 		
 		void selectToolFromMenu(QAction *act);
 		
+		void handleProjectEvent(KTProjectEvent *event);
+		
 	public slots:
 		void selectTool();
 		void applyFilter();
@@ -125,6 +126,7 @@ class KTViewDocument : public QMainWindow
 	signals:
 		void sendToStatus(const QString& msg);
 		void sendToOSD(const QString &msg, DOsd::Level );
+		void eventTriggered(const KTProjectEvent *event);
 		
 	protected:
 // 		void closeEvent(QCloseEvent *e);
