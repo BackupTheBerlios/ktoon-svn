@@ -95,8 +95,6 @@ class Q_DECL_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializab
 		 */
 		KTLayer *createLayer(int position);
 		
-		
-		
 		/**
 		 * Mueve el layer a la posicicion indicada
 		 */
@@ -108,6 +106,16 @@ class Q_DECL_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializab
 		
 		void clean();
 		
+		int currentFrameIndex() const;
+		int currentLayerIndex() const;
+		
+	public:
+		void setCurrentFrame(int layer, int frame);
+		void drawCurrentPhotogram();
+		void drawPhotogram(int photogram);
+		
+		KTFrame *currentFrame();
+		
 	public:
 		virtual void fromXml(const QString &xml );
 		virtual QDomElement toXml(QDomDocument &doc);
@@ -118,6 +126,12 @@ class Q_DECL_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializab
 		bool m_isLocked;
 		int m_layerCount;
 		bool m_isVisible;
+		
+		struct FramePosition
+		{
+			int layer;
+			int frame;
+		} m_framePosition;
 };
 
 #endif

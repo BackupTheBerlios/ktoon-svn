@@ -27,6 +27,7 @@ class KTProjectEvent;
 class KTFrameEvent;
 class KTLayerEvent;
 class KTSceneEvent;
+class KTItemEvent;
 
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
@@ -40,6 +41,7 @@ class Q_DECL_EXPORT KTAbstractProjectEventHandler
 		virtual bool handleEvent(KTProjectEvent *event);
 		
 	protected:
+		virtual void itemEvent(KTItemEvent *itemEvent) = 0;
 		virtual void frameEvent(KTFrameEvent *frameEvent) = 0;
 		virtual void layerEvent(KTLayerEvent *layerEvent) = 0;
 		virtual void sceneEvent(KTSceneEvent *sceneEvent) = 0;

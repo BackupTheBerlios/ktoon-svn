@@ -1,6 +1,8 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Jorge Cuadrado                                  *
  *   kuadrosx@toonka.com                                                   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -30,6 +32,7 @@
 
 class QGraphicsRectItem;
 class KTBrushManager;
+class KTInputDeviceInformation;
 class KTProject;
 
 /**
@@ -54,10 +57,12 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		void mousePressEvent ( QMouseEvent * event  );
 		void mouseMoveEvent ( QMouseEvent * event );
 		void mouseReleaseEvent(QMouseEvent *event );
+		void tabletEvent ( QTabletEvent * event );
 		void resizeEvent ( QResizeEvent * event );
 			
 	signals:
 		void cursorPosition(const QPointF &pos);
+		void eventTriggered(const KTProjectEvent *event);
 		
 		
 	private:
@@ -75,6 +80,7 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		void layerEvent(KTLayerEvent *event);
 		void sceneEvent(KTSceneEvent *event);
 		void projectEvent(KTProjectEvent *event);
+		void itemEvent(KTItemEvent *event);
 		
 		void drawBackground(QPainter *painter, const QRectF &rect);
 		
@@ -85,10 +91,13 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		bool m_isDrawing;
 		
 		KTBrushManager *m_brushManager;
+		KTInputDeviceInformation *m_inputInformation;
 		
 		KTProject *m_project;
 		
 		QRectF m_drawingRect;
+		
+		int m_currentSceneIndex;
 };
 
 #endif

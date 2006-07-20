@@ -18,77 +18,53 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktabstractprojecteventhandler.h"
+#ifndef KTINPUTDEVICEINFORMATION_H
+#define KTINPUTDEVICEINFORMATION_H
+
+#include <QObject>
+#include <QPoint>
+
+class QMouseEvent;
+class QTabletEvent;
 
 
-#include "ktitemevent.h"
-#include "ktprojectevent.h"
-#include "ktframeevent.h"
-#include "ktlayerevent.h"
-#include "ktsceneevent.h"
-
-KTAbstractProjectEventHandler::KTAbstractProjectEventHandler()
+/**
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+class KTInputDeviceInformation : public QObject
 {
-}
+	public:
+		KTInputDeviceInformation(QObject *parent = 0);
+		~KTInputDeviceInformation();
+		
+		void updateFromMouseEvent(QMouseEvent *event);
+		void updateFromTabletEvent(QTabletEvent *event);
+		
+		double pressure() const;
+		double rotation() const;
+		double tangentialPressure() const;
+		Qt::MouseButton button() const;
+		Qt::MouseButtons buttons() const;
+		
+		QPoint pos() const;
+		Qt::KeyboardModifiers keyModifiers() const;
+		
+	private:
+		struct TabletInfo
+		{
+			double pressure;
+			double rotation;
+			double tangentialPressure;
+		} m_tabletInfo;
+		
+		struct MouseInfo
+		{
+			Qt::MouseButton button;
+			Qt::MouseButtons buttons;
+		} m_mouseInfo;
+		
+		QPoint m_position;
+		Qt::KeyboardModifiers m_keyModifiers;
+};
 
-
-KTAbstractProjectEventHandler::~KTAbstractProjectEventHandler()
-{
-}
-
-bool KTAbstractProjectEventHandler::handleEvent(KTProjectEvent *event)
-{
-	switch ( event->id())
-	{
-		case KTProjectEvent::Item:
-		{
-			itemEvent( static_cast<KTItemEvent *>(event) );
-		}
-		break;
-		case KTProjectEvent::Project:
-		{
-			projectEvent( event );
-		}
-		break;
-		case KTProjectEvent::Frame:
-		{
-			frameEvent( static_cast<KTFrameEvent *>(event) );
-		}
-		break;
-		case KTProjectEvent::Layer:
-		{
-			layerEvent( static_cast<KTLayerEvent *>(event) );
-		}
-		break;
-		case KTProjectEvent::Scene:
-		{
-			sceneEvent( static_cast<KTSceneEvent *>(event) );
-		}
-		break;
-		default:
-		{
-			qWarning("Unknown project event!");
-			return false;
-		}
-		break;
-	}
-	
-	return true;
-}
-
-// void KTAbstractProjectEventHandler::frameEvent(KTFrameEvent *frameEvent)
-// {
-// }
-// 
-// void KTAbstractProjectEventHandler::layerEvent(KTLayerEvent *layerEvent)
-// {
-// }
-// 
-// void KTAbstractProjectEventHandler::sceneEvent(KTSceneEvent *sceneEvent)
-// {
-// }
-// 
-// void KTAbstractProjectEventHandler::projectEvent(KTProjectEvent *projectEvent)
-// {
-// }
-
+#endif

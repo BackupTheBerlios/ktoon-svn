@@ -32,6 +32,11 @@
 
 #include "ktscene.h"
 
+
+#include <QGraphicsLineItem>
+#include <dalgorithm.h>
+
+
 Brush::Brush() : m_configurator(0), m_item(0)
 {
 	m_configurator = new ExactnessConfigurator;
@@ -54,16 +59,15 @@ QStringList Brush::keys() const
 	return QStringList() << tr("Pencil") ;
 }
 
-void Brush::press(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
-	D_FUNCINFO;
-	m_firstPoint = event->pos();
+	m_firstPoint = input->pos();
 	m_path = QPainterPath();
 	m_path.moveTo(m_firstPoint);
 	
-	m_oldPos = event->pos();
+	m_oldPos = input->pos();
 	
-	m_item = new QGraphicsPathItem();
+	m_item = new KTPathItem();
 	
 	m_item->setBrush( brushManager->brush() );
 	m_item->setPen( brushManager->pen() );
@@ -71,39 +75,36 @@ void Brush::press(const QMouseEvent *event, KTBrushManager *brushManager, KTScen
 // 	move(event, brushManager, scene, view);
 }
 
-void Brush::move( const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
-	int rad = brushManager->pen().width();
-	QRect boundingRect = QRect(m_oldPos, event->pos()).normalized().adjusted(-rad, -rad, +rad, +rad);
-	QColor color = brushManager->pen().color();
-	int thickness = brushManager->pen().width();
-	QColor transparentColor(color.red(), color.green(), color.blue(), 0);
-	
 	QPainterPath path;
 	path.setFillRule ( Qt::WindingFill );
 	
 	path.moveTo( m_oldPos);
-	path.lineTo( event->pos() );
+	path.lineTo( input->pos() );
 	
 	m_path.closeSubpath();
 	m_path.addPath(path);
 	
 	m_item->setPath(m_path);
 	
+// 	QPoint first(DAlgorithm::random() % view->width(), DAlgorithm::random() % view->height());
+// 	QPoint sec(DAlgorithm::random() % view->width(), DAlgorithm::random() % view->height());
+// 	
+// 	QGraphicsLineItem *item = new QGraphicsLineItem(QLineF(first, sec) );
+// 	scene->addItem(item);
 	
-	m_oldPos = event->pos();
+	m_oldPos = input->pos();
 }
 
-void Brush::release(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
-	D_FUNCINFO;
-	
 	int smoothness = m_configurator->exactness();
 	
-	if ( m_firstPoint == event->pos() && m_path.elementCount() == 1)
+	if ( m_firstPoint == input->pos() && m_path.elementCount() == 1)
 	{
 		smoothness = 0;
-		m_path.addEllipse(event->pos().x(), event->pos().y(), brushManager->pen().width(), brushManager->pen().width());
+		m_path.addEllipse(input->pos().x(), input->pos().y(), brushManager->pen().width(), brushManager->pen().width());
 	}
 	
 	m_firstPoint = QPoint(0,0);
@@ -138,11 +139,7 @@ void Brush::release(const QMouseEvent *event, KTBrushManager *brushManager, KTSc
 		m_path.addPolygon(pol);
 	}
 	
-	
-	
 	m_item->setPath(m_path);
-	
-// 	scene->addGraphic(m_item);
 }
 
 QPainterPath Brush::path() const
@@ -190,6 +187,12 @@ void Brush::aboutToChangeTool()
 {
 }
 
+QString Brush::itemToXml() const
+{
+	QDomDocument doc;
+	doc.appendChild(m_item->toXml( doc ));
+	return doc.toString();
+}
 
 Q_EXPORT_PLUGIN( Brush )
 

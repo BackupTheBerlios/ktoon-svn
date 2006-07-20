@@ -132,3 +132,23 @@ QDomElement KTFrame::toXml(QDomDocument &doc)
 	return root;
 }
 
+void KTFrame::addGraphic(QGraphicsItem *item)
+{
+	m_items << item;
+	addItem(item);
+}
+
+void KTFrame::removeGraphic(QGraphicsItem *item)
+{
+	m_items.removeAll(item);
+	removeItem(item);
+}
+
+void KTFrame::recoverItems()
+{
+	foreach(QGraphicsItem *item, m_items)
+	{
+		addItem(item);
+	}
+}
+

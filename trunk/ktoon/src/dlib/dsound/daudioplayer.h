@@ -55,7 +55,17 @@ class DAudioPlayer : public QObject
 		DAudioEngineIface *m_engine;
 };
 
-#define DPlayer DAudioPlayer::instance()
+namespace DPlayer
+{
+	inline int play(const QUrl &url, int seek = 0)
+	{
+		int id = DAudioPlayer::instance()->load(url);
+		
+		DAudioPlayer::instance()->play( seek );
+		
+		return id;
+	}
+};
 
 #endif
 

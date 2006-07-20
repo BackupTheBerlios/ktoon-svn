@@ -164,23 +164,26 @@ bool KTModuleWidgetBase::handleProjectEvent(KTProjectEvent *e)
 
 void KTModuleWidgetBase::frameEvent(KTFrameEvent *frameEvent)
 {
-	D_FUNCINFO;
+	Q_UNUSED(frameEvent);
 }
 
 void KTModuleWidgetBase::layerEvent(KTLayerEvent *layerEvent)
 {
-	D_FUNCINFO;
+	Q_UNUSED(layerEvent);
 }
 
 void KTModuleWidgetBase::sceneEvent(KTSceneEvent *sceneEvent)
 {
-	D_FUNCINFO;
+	Q_UNUSED(sceneEvent);
 }
 
 void KTModuleWidgetBase::projectEvent(KTProjectEvent *projectEvent)
 {
-	D_FUNCINFO;
+	Q_UNUSED(projectEvent);
 }
 
-
+void KTModuleWidgetBase::itemEvent(KTItemEvent *event)
+{
+	Q_UNUSED(event);
+}
 

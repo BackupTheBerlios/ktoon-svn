@@ -27,6 +27,9 @@
 KTScene::KTScene(QObject *parent) : QGraphicsScene(parent), m_isLocked(false),  m_layerCount(0), m_isVisible(true)
 {
 	setItemIndexMethod(QGraphicsScene::NoIndex);
+	
+	m_framePosition.frame = -1;
+	m_framePosition.layer = -1;
 }
 
 
@@ -38,7 +41,6 @@ KTScene::~KTScene()
 
 void KTScene::setSceneName(const QString &name)
 {
-	dDebug() << "Setting scene name: " << name;
 	m_name = name;
 }
 
@@ -229,11 +231,61 @@ bool KTScene::moveLayer(int from, int to)
 	return true;
 }
 
+void KTScene::setCurrentFrame(int layer, int frame)
+{
+	m_framePosition.layer = layer;
+	m_framePosition.frame = frame;
+}
 
 void KTScene::addGraphic(QGraphicsItem *item)
 {
-	qDebug("AÑADIENDO GRAFICO!!!");
-	addItem(item); // FIXME: Esto esta mal, debe añadirse al current frame
+	KTFrame *frame = currentFrame();
+	if ( frame )
+	{
+		frame->addGraphic(item);
+	}
+	
+	addItem(item);
+}
+
+KTFrame *KTScene::currentFrame()
+{
+	KTLayer *layer = this->layer( m_framePosition.layer );
+	if ( layer )
+	{
+		return layer->frame(m_framePosition.frame );
+	}
+	
+	return 0;
+}
+
+void KTScene::drawCurrentPhotogram()
+{
+	drawPhotogram( m_framePosition.frame );
+}
+
+void KTScene::drawPhotogram(int photogram)
+{
+	if ( photogram < 0 ) return;
+	
+	clean();
+	
+	foreach(KTLayer *layer, layers())
+	{
+		if ( layer->isVisible() )
+		{
+			KTFrame *frame = layer->frame( photogram );
+			
+			if ( frame )
+			{
+				frame->recoverItems();
+				foreach(QGraphicsItem *item, frame->items() )
+				{
+					addItem(item);
+				}
+			}
+		}
+	}
 }
 
 void KTScene::clean()
@@ -242,5 +294,15 @@ void KTScene::clean()
 	{
 		removeItem(item);
 	}
+}
+
+int KTScene::currentFrameIndex() const
+{
+	return m_framePosition.frame;
+}
+
+int KTScene::currentLayerIndex() const
+{
+	return m_framePosition.layer;
 }
 

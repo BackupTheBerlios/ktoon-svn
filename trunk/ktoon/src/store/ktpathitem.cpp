@@ -18,34 +18,102 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "kttoolplugin.h"
+#include "ktpathitem.h"
+#include <QGraphicsSceneDragDropEvent>
+#include <QMimeData>
+#include <QBrush>
 
-KTToolPlugin::KTToolPlugin(QObject * parent) : QObject(parent)
+KTPathItem::KTPathItem( QGraphicsItem * parent, QGraphicsScene * scene) : QGraphicsPathItem(parent, scene), m_dragOver(false)
+{
+	setAcceptDrops(true);
+}
+
+
+KTPathItem::~KTPathItem()
 {
 }
 
 
-KTToolPlugin::~KTToolPlugin()
+void KTPathItem::fromXml(const QString &xml)
 {
 }
 
-void KTToolPlugin::init(QGraphicsView *view)
+
+QDomElement KTPathItem::toXml(QDomDocument &doc)
 {
-	Q_UNUSED(view);
+	QDomElement root = doc.createElement("path");
+	
+// 	for(int i = 0; i < list.count(); i++)
+// 	{
+// 		switch(e.type)
+// 		{
+// 			case QPainterPath::MoveToElement:
+// 			{
+// 				break;
+// 			}
+// 			case QPainterPath::LineToElement:
+// 			{
+// 				break;
+// 			}
+// 			case QPainterPath::CurveToDataElement:
+// 			{
+// 				break;
+// 			}
+// 			case QPainterPath::CurveToElement:
+// 			{
+// 				break;
+// 			}
+// 		}
+// 	}
+	
+	return root;
 }
 
-void KTToolPlugin::setCurrentTool(const QString &tool)
+
+
+void KTPathItem::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
-	m_currentTool = tool;
+	if (event->mimeData()->hasColor() )
+	{
+		event->setAccepted(true);
+		m_dragOver = true;
+		update();
+	} 
+	else
+	{
+		event->setAccepted(false);
+	}
 }
 
-QString KTToolPlugin::currentTool() const
+
+void KTPathItem::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
 {
-	return m_currentTool;
+	Q_UNUSED(event);
+	m_dragOver = false;
+	update();
 }
 
-QString KTToolPlugin::itemToXml() const
+
+void KTPathItem::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
-	return QString();
+	m_dragOver = false;
+	if (event->mimeData()->hasColor())
+	{
+		setBrush(QBrush(qVariantValue<QColor>(event->mimeData()->colorData())));
+	}
+	else if (event->mimeData()->hasImage())
+	{
+		setBrush(QBrush(qVariantValue<QPixmap>(event->mimeData()->imageData())));
+	}
+	update();
 }
+
+
+
+
+
+
+
+
+
 

@@ -76,6 +76,7 @@ class KTModuleWidgetBase : public QWidget, public KTAbstractProjectEventHandler
 		virtual void layerEvent(KTLayerEvent *layerEvent);
 		virtual void sceneEvent(KTSceneEvent *sceneEvent);
 		virtual void projectEvent(KTProjectEvent *projectEvent);
+		virtual void itemEvent(KTItemEvent *event);
 		
 	signals:
 		void documentModified(bool);

@@ -38,9 +38,7 @@ KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent),
 {
 	setAllowedAreas ( Qt::RightDockWidgetArea );
 	
-	QTimer::singleShot(1000,this, SLOT(findSeparator()));
-	
-	connect(&m_locker, SIGNAL(timeout()), this, SLOT(toggleLock()));
+// 	connect(&m_locker, SIGNAL(timeout()), this, SLOT(toggleLock()));
 	connect(&m_shower, SIGNAL(timeout()), this, SLOT(showConfigurator()));
 }
 
@@ -307,20 +305,21 @@ void KTConfigurationArea::paintEvent (QPaintEvent *e)
 // 		
 // 		painter.drawPath(path);
 		
-// 		painter.rotate(90);
+// 		painter.rotate(-90);
 		
 		QFont font("Times", 16, QFont::Bold);
 		
 		painter.setFont(font);
 		
 		QStyleOptionButton buttonOption;
+		buttonOption.initFrom( this );
 		
 		buttonOption.text = tr("Properties");
 		buttonOption.icon = QIcon();
 		buttonOption.palette = palette();
-// 		buttonOption.rect = QRect(rect().x(), rect().y(), rect().height(), rect().width());;
+// 		buttonOption.rect = QRect(rect().x(), rect().y()+(rect().width()-rect().y()), rect().height(), rect().width());
 		buttonOption.rect = rect();
-		buttonOption.state = QStyle::State_Sunken;
+		buttonOption.state = QStyle::State_On;
 		
 		buttonOption.features = QStyleOptionButton::DefaultButton;
 		

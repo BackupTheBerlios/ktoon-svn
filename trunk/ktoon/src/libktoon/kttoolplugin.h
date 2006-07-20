@@ -24,6 +24,7 @@
 #include <qobject.h>
 #include "kttoolinterface.h"
 #include "ktbrushmanager.h"
+#include "ktinputdeviceinformation.h"
 
 #include <QGraphicsView>
 
@@ -44,9 +45,11 @@ class Q_DECL_EXPORT KTToolPlugin : public QObject, public KTToolInterface
 		
 		virtual void init(QGraphicsView *view);
 		
-		virtual void press(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view ) = 0;
-		virtual void move(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view) = 0;
-		virtual void release(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view) = 0;
+		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view ) = 0;
+		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view) = 0;
+		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view) = 0;
+		
+		virtual QString itemToXml() const;
 		
 		virtual QMap<QString, DAction *> actions() const = 0;
 		

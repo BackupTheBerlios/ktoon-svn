@@ -88,8 +88,10 @@ KTExposureHeader::KTExposureHeader(QWidget * parent ) : QHeaderView(Qt::Horizont
 	connect(this, SIGNAL(sectionDoubleClicked( int )), this, SLOT(showEditorName(int)));
 	
 	m_editor = new QLineEdit(this);
-	connect (m_editor, SIGNAL( returnPressed ()), this, SLOT(hideEditorName()));
-	connect (m_editor, SIGNAL( lostFocus ()), this, SLOT(hideEditorName()));
+	m_editor->setFocusPolicy( Qt::ClickFocus);
+	m_editor->setInputMask("");
+// 	connect (m_editor, SIGNAL( returnPressed ()), this, SLOT(hideEditorName()));
+	connect (m_editor, SIGNAL( editingFinished () ), this, SLOT(hideEditorName()));
 	m_editor->hide();
 }
 
@@ -100,7 +102,6 @@ KTExposureHeader::~KTExposureHeader()
 
 void KTExposureHeader::emitVisiblityChanged(int section)
 {
-
 	emit visiblityChanged(visualIndex(section), !m_layers[section].isVisible );
 }
 
@@ -117,6 +118,7 @@ void KTExposureHeader::showEditorName(int section)
 	m_sectionEdited = section;
 	m_editor->setText(m_layers[section].title);
 	m_editor->show();
+	m_editor->setFocus();
 }
 
 void KTExposureHeader::hideEditorName()

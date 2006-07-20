@@ -27,6 +27,9 @@
 #include <QDomElement>
 
 /**
+ * @if spanish
+ * Clase abstracta para clases que necesiten ser guardadas, como los frames, scenas, items, etc.
+ * @endif
  * @author David Cuadrado <krawek@gmail.com>
 */
 class Q_DECL_EXPORT KTAbstractSerializable

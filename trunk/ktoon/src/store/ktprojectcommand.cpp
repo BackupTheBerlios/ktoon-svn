@@ -25,6 +25,7 @@
 #include "ktproject.h"
 #include "ktprojectevent.h"
 #include "ktframeevent.h"
+#include "ktitemevent.h"
 
 KTProjectCommand::KTProjectCommand(KTProject *project, const KTProjectEvent *event) : QUndoCommand(), m_project(project)
 {
@@ -47,6 +48,11 @@ KTProjectCommand::KTProjectCommand(KTProject *project, const KTProjectEvent *eve
 		case KTProjectEvent::Scene:
 		{
 			setText(actionString( m_event->action() )+" scene");
+		}
+		break;
+		case KTProjectEvent::Item:
+		{
+			setText(actionString( m_event->action() )+" item");
 		}
 		break;
 	}
@@ -92,6 +98,8 @@ QString KTProjectCommand::actionString(int action)
 		}
 		break;
 	}
+	
+	return QString();
 }
 
 
@@ -129,6 +137,11 @@ void KTProjectCommand::redo()
 			sceneCommand( static_cast<const KTSceneEvent *>(m_event), true);
 		}
 		break;
+		case KTProjectEvent::Item:
+		{
+			itemCommand( static_cast<const KTItemEvent *>(m_event), true);
+		}
+		break;
 		default:
 		{
 			D_FUNCINFO << ("Unknown project event!");
@@ -162,6 +175,11 @@ void KTProjectCommand::undo()
 		case KTProjectEvent::Scene:
 		{
 			sceneCommand( static_cast<const KTSceneEvent *>(m_event), false);
+		}
+		break;
+		case KTProjectEvent::Item:
+		{
+			itemCommand( static_cast<const KTItemEvent *>(m_event), false);
 		}
 		break;
 		default:
@@ -416,5 +434,9 @@ void KTProjectCommand::sceneCommand(const KTSceneEvent *event, bool redo)
 }
 
 
+void KTProjectCommand::itemCommand(const KTItemEvent *event, bool redo)
+{
+	D_FUNCINFO << redo;
+}
 
 

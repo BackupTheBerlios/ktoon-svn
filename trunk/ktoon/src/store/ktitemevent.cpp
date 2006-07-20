@@ -17,78 +17,37 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#include "ktabstractprojecteventhandler.h"
-
-
 #include "ktitemevent.h"
-#include "ktprojectevent.h"
-#include "ktframeevent.h"
-#include "ktlayerevent.h"
-#include "ktsceneevent.h"
 
-KTAbstractProjectEventHandler::KTAbstractProjectEventHandler()
+KTItemEvent::KTItemEvent(Action action, int sceneIndex, int layerIndex, int frameIndex, const QString &xml) : KTFrameEvent(action, sceneIndex, layerIndex, frameIndex, xml)
 {
 }
 
 
-KTAbstractProjectEventHandler::~KTAbstractProjectEventHandler()
+KTItemEvent::~KTItemEvent()
 {
 }
 
-bool KTAbstractProjectEventHandler::handleEvent(KTProjectEvent *event)
+
+int KTItemEvent::id() const
 {
-	switch ( event->id())
-	{
-		case KTProjectEvent::Item:
-		{
-			itemEvent( static_cast<KTItemEvent *>(event) );
-		}
-		break;
-		case KTProjectEvent::Project:
-		{
-			projectEvent( event );
-		}
-		break;
-		case KTProjectEvent::Frame:
-		{
-			frameEvent( static_cast<KTFrameEvent *>(event) );
-		}
-		break;
-		case KTProjectEvent::Layer:
-		{
-			layerEvent( static_cast<KTLayerEvent *>(event) );
-		}
-		break;
-		case KTProjectEvent::Scene:
-		{
-			sceneEvent( static_cast<KTSceneEvent *>(event) );
-		}
-		break;
-		default:
-		{
-			qWarning("Unknown project event!");
-			return false;
-		}
-		break;
-	}
+	return KTProjectEvent::Item;
+}
+
+
+bool KTItemEvent::isValid() const
+{
+	return KTSceneEvent::isValid() && KTLayerEvent::isValid() && KTFrameEvent::isValid();
+}
+
+
+KTProjectEvent *KTItemEvent::clone() const
+{
+	KTItemEvent *event = new KTItemEvent(action(), sceneIndex(), layerIndex(), frameIndex(), data().toString() );
 	
-	return true;
+	event->setPartName( partName() );
+	
+	return event;
 }
 
-// void KTAbstractProjectEventHandler::frameEvent(KTFrameEvent *frameEvent)
-// {
-// }
-// 
-// void KTAbstractProjectEventHandler::layerEvent(KTLayerEvent *layerEvent)
-// {
-// }
-// 
-// void KTAbstractProjectEventHandler::sceneEvent(KTSceneEvent *sceneEvent)
-// {
-// }
-// 
-// void KTAbstractProjectEventHandler::projectEvent(KTProjectEvent *projectEvent)
-// {
-// }
 

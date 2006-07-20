@@ -75,6 +75,11 @@ class Q_DECL_EXPORT KTFrame : public QGraphicsScene, public KTAbstractSerializab
 		void setVisible(bool isVisible);
 		bool isVisible() const;
 		
+		void recoverItems();
+		
+		void addGraphic(QGraphicsItem *item);
+		void removeGraphic(QGraphicsItem *item);
+		
 	public:
 		virtual void fromXml(const QString &xml );
 		virtual QDomElement toXml(QDomDocument &doc);
@@ -84,6 +89,8 @@ class Q_DECL_EXPORT KTFrame : public QGraphicsScene, public KTAbstractSerializab
 		QString m_name;
 		bool m_isLocked;
 		bool m_isVisible;
+		
+		QList<QGraphicsItem *> m_items;
 };
 
 #endif

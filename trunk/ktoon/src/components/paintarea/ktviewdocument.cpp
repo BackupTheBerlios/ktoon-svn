@@ -71,6 +71,7 @@ KTViewDocument::KTViewDocument(KTProject *project, KToon::RenderType renderType,
 	}
 	
 	connect(m_paintArea, SIGNAL(cursorPosition(const QPointF &)),  this,  SLOT(showPos(const QPointF &)) );
+	connect(m_paintArea, SIGNAL(eventTriggered(const KTProjectEvent* )), this, SIGNAL(eventTriggered(const KTProjectEvent *)));
 
 // 	connect( m_paintArea, SIGNAL(changedZoomFactor(double)),  this,  SLOT(updateZoomFactor(double)) );
 // 	setWindowTitle( m_title + " - " + m_document->currentScene()->sceneName() );

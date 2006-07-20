@@ -26,6 +26,8 @@
 #include <QSpinBox>
 #include "exactnessconfigurator.h"
 
+#include "ktpathitem.h"
+
 class QKeySequence;
 
 /**
@@ -43,9 +45,11 @@ class Brush : public KTToolPlugin
 		virtual void init(QGraphicsView *view);
 		
 		virtual QStringList keys() const;
-		virtual void press(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
-		virtual void move(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
-		virtual void release(const QMouseEvent *event, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
+		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
+		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
+		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
+		
+		virtual QString itemToXml() const;
 		
 		virtual QPainterPath path() const;
 		
@@ -56,12 +60,10 @@ class Brush : public KTToolPlugin
 		virtual QWidget *configurator();
 		
 		virtual bool isComplete() const;
-		virtual void aboutToChangeTool() ;
+		virtual void aboutToChangeTool();
 		
 	private:
 		void setupActions();
-		
-		
 		
 	private:
 		QPoint m_firstPoint;
@@ -71,7 +73,7 @@ class Brush : public KTToolPlugin
 		
 		QMap<QString, DAction *> m_actions;
 		
-		QGraphicsPathItem *m_item;
+		KTPathItem *m_item;
 };
 
 #endif

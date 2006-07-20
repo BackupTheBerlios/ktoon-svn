@@ -79,9 +79,10 @@ class Q_DECL_EXPORT KTProjectEvent
 		enum Part
 		{
 			Project = 1000,
-			Frame,
+			Scene,
 			Layer,
-			Scene
+			Frame,
+			Item
 		};
 		
 		KTProjectEvent(Action action, const QVariant &data = 0);

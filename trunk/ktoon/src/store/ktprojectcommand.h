@@ -30,6 +30,7 @@ class KTProjectEvent;
 class KTFrameEvent;
 class KTLayerEvent;
 class KTSceneEvent;
+class KTItemEvent;
 
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
@@ -46,6 +47,7 @@ class Q_DECL_EXPORT KTProjectCommand : public QUndoCommand
 		void frameCommand(const KTFrameEvent *event, bool redo);
 		void layerCommand(const KTLayerEvent *event, bool redo);
 		void sceneCommand(const KTSceneEvent *event, bool redo);
+		void itemCommand(const KTItemEvent *event, bool redo);
 		
 	private:
 		QString actionString(int action);

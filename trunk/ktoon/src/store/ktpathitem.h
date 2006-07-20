@@ -18,77 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktabstractprojecteventhandler.h"
+#ifndef KTPATHITEM_H
+#define KTPATHITEM_H
 
+#include "ktabstractserializable.h"
+#include <QGraphicsPathItem>
 
-#include "ktitemevent.h"
-#include "ktprojectevent.h"
-#include "ktframeevent.h"
-#include "ktlayerevent.h"
-#include "ktsceneevent.h"
-
-KTAbstractProjectEventHandler::KTAbstractProjectEventHandler()
+/**
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+class KTPathItem : public KTAbstractSerializable, public QGraphicsPathItem
 {
-}
+	public:
+		KTPathItem( QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+		~KTPathItem();
+		
+		void fromXml(const QString &xml);
+		QDomElement toXml(QDomDocument &doc);
+		
+	protected:
+		virtual void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
+		virtual void dragLeaveEvent ( QGraphicsSceneDragDropEvent * event );
+		virtual void dropEvent ( QGraphicsSceneDragDropEvent *event );
+		
+	private:
+		bool m_dragOver;
 
+};
 
-KTAbstractProjectEventHandler::~KTAbstractProjectEventHandler()
-{
-}
-
-bool KTAbstractProjectEventHandler::handleEvent(KTProjectEvent *event)
-{
-	switch ( event->id())
-	{
-		case KTProjectEvent::Item:
-		{
-			itemEvent( static_cast<KTItemEvent *>(event) );
-		}
-		break;
-		case KTProjectEvent::Project:
-		{
-			projectEvent( event );
-		}
-		break;
-		case KTProjectEvent::Frame:
-		{
-			frameEvent( static_cast<KTFrameEvent *>(event) );
-		}
-		break;
-		case KTProjectEvent::Layer:
-		{
-			layerEvent( static_cast<KTLayerEvent *>(event) );
-		}
-		break;
-		case KTProjectEvent::Scene:
-		{
-			sceneEvent( static_cast<KTSceneEvent *>(event) );
-		}
-		break;
-		default:
-		{
-			qWarning("Unknown project event!");
-			return false;
-		}
-		break;
-	}
-	
-	return true;
-}
-
-// void KTAbstractProjectEventHandler::frameEvent(KTFrameEvent *frameEvent)
-// {
-// }
-// 
-// void KTAbstractProjectEventHandler::layerEvent(KTLayerEvent *layerEvent)
-// {
-// }
-// 
-// void KTAbstractProjectEventHandler::sceneEvent(KTSceneEvent *sceneEvent)
-// {
-// }
-// 
-// void KTAbstractProjectEventHandler::projectEvent(KTProjectEvent *projectEvent)
-// {
-// }
+#endif
 

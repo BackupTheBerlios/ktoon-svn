@@ -22,7 +22,9 @@ HEADERS += ktlayer.h \
            ktabstractprojecteventhandler.h \
            ktabstractserializable.h \
            ktframegroup.h \
-           ktphotogram.h 
+           ktphotogram.h \
+           ktpathitem.h \
+           ktitemevent.h 
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
@@ -36,7 +38,9 @@ SOURCES += ktlayer.cpp \
            ktprojectcommand.cpp \
            ktabstractprojecteventhandler.cpp \
            ktframegroup.cpp \
-           ktphotogram.cpp 
+           ktphotogram.cpp \
+           ktpathitem.cpp \
+           ktitemevent.cpp 
 QT += xml gui
 KDEV_QTVER = 4
 INCLUDEPATH += ../../src/store \

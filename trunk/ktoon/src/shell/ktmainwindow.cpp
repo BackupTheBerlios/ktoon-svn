@@ -60,7 +60,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_viewDoc(0), m_an
 {
 	DINIT;
 	
-	DPlayer->loadEngine("gstreamer"); // FIXME: ponerlo en la configuración
+	DAudioPlayer::instance()->loadEngine("gstreamer"); // FIXME: ponerlo en la configuración
 	
 	m_undoCommands = new QUndoStack(this);
 
@@ -102,6 +102,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_viewDoc(0), m_an
 	}
 	
 	KTPluginManager::instance()->loadPlugins();
+	
 }
 
 

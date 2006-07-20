@@ -27,7 +27,7 @@
 class QPushButton;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado \<krawek@toonka.com\>
 */
 class KTConfigurationArea : public QDockWidget
 {
@@ -62,3 +62,9 @@ class KTConfigurationArea : public QDockWidget
 };
 
 #endif
+
+
+
+
+
+
