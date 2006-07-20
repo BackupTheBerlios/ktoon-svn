@@ -29,14 +29,17 @@
 class KTItemEvent : public KTFrameEvent
 {
 	public:
-		KTItemEvent(Action action, int sceneIndex, int layerIndex, int frameIndex, const QString &xml);
+		KTItemEvent(Action action, int sceneIndex, int layerIndex, int frameIndex, int position, const QVariant &data);
 		~KTItemEvent();
 		
 		virtual int id() const;
 		virtual bool isValid() const;
 		virtual KTProjectEvent *clone() const;
 		
+		int itemIndex() const;
 		
+	private:
+		int m_position;
 };
 
 #endif

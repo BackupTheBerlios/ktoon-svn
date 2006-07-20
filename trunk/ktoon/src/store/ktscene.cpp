@@ -242,7 +242,7 @@ void KTScene::addGraphic(QGraphicsItem *item)
 	KTFrame *frame = currentFrame();
 	if ( frame )
 	{
-		frame->addGraphic(item);
+		frame->addGraphic(item); // FIXME: remove this function
 	}
 	
 	addItem(item);

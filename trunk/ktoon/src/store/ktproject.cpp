@@ -26,8 +26,9 @@
 #include "ktlayer.h"
 #include "ktframe.h"
 
+#include <QGraphicsItem>
 
-#include "ktframeevent.h" //events
+#include "ktitemevent.h" //events
 
 /**
  * Constructor por defecto
@@ -324,6 +325,33 @@ KTFrame *KTProject::createFrame(int scenePosition, int layerPosition, int positi
 	return 0;
 }
 
+QGraphicsItem *KTProject::createItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
+{
+	KTScene *scene = this->scene(scenePosition);
+	
+	if ( scene )
+	{
+		KTLayer *layer = scene->layer( layerPosition );
+		if ( layer )
+		{
+			KTFrame *frame = layer->frame( framePosition );
+			if ( frame )
+			{
+				if ( position == -1 )
+				{
+					position = frame->graphics().count() - 1;
+				}
+				
+				if ( frame->createItem(position, xml) )
+				{
+					KTItemEvent event(KTProjectEvent::Add, scenePosition, layerPosition, framePosition, position, xml);
+					emit commandExecuted( &event);
+				}
+			}
+		}
+	}
+}
+
 
 QString KTProject::removeFrame(int scenePos, int layerPos, int position)
 {
@@ -356,6 +384,33 @@ QString KTProject::removeFrame(int scenePos, int layerPos, int position)
 	return QString();
 }
 
+
+void KTProject::removeItem(int scenePosition, int layerPosition, int framePosition, int position)
+{
+	KTScene *scene = this->scene(scenePosition);
+	
+	if ( scene )
+	{
+		KTLayer *layer = scene->layer( layerPosition );
+		if ( layer )
+		{
+			KTFrame *frame = layer->frame( framePosition );
+			if ( frame )
+			{
+				if ( position == -1 )
+				{
+					position = frame->graphics().count() - 1;
+				}
+				
+				if( frame->removeItemAt(position) )
+				{
+					KTItemEvent event(KTProjectEvent::Remove, scenePosition, layerPosition, framePosition, position, 0);
+					emit commandExecuted( &event);
+				}
+			}
+		}
+	}
+}
 
 KTScene *KTProject::scene(int position)
 {

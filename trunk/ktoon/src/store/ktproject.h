@@ -34,8 +34,10 @@ class KTLayer;
 class KTFrame;
 class KTFrameEvent;
 class KTProjectEvent;
+class QGraphicsItem;
 
 typedef QList<KTScene *> Scenes;
+
 
 /**
  * Esta clase maneja el proyecto, además contiene las diferentes escenas que componen todo el proyecto.
@@ -60,10 +62,12 @@ class Q_DECL_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		KTScene *createScene(int position, const QString &xml = QString());
 		KTLayer *createLayer(int scene, int position, const QString &xml = QString());
 		KTFrame *createFrame(int scene, int layer, int position, const QString &xml = QString());
+		QGraphicsItem *createItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml);
 		
 		QString removeScene(int position);
 		QString removeLayer(int scene, int position);
 		QString removeFrame(int scene, int layer, int position);
+		void removeItem(int scenePosition, int layerPosition, int framePosition, int position);
 		
 		void moveScene(int position, int newPosition);
 		void moveLayer(int scene, int position, int newPosition);

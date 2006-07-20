@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "ktitemevent.h"
 
-KTItemEvent::KTItemEvent(Action action, int sceneIndex, int layerIndex, int frameIndex, const QString &xml) : KTFrameEvent(action, sceneIndex, layerIndex, frameIndex, xml)
+KTItemEvent::KTItemEvent(Action action, int sceneIndex, int layerIndex, int frameIndex, int position, const QVariant &data) : KTFrameEvent(action, sceneIndex, layerIndex, frameIndex, data), m_position(position)
 {
 }
 
@@ -37,17 +37,22 @@ int KTItemEvent::id() const
 
 bool KTItemEvent::isValid() const
 {
-	return KTSceneEvent::isValid() && KTLayerEvent::isValid() && KTFrameEvent::isValid();
+	return KTSceneEvent::isValid() && KTLayerEvent::isValid() && KTFrameEvent::isValid() && (m_position >= -1 );
 }
 
 
 KTProjectEvent *KTItemEvent::clone() const
 {
-	KTItemEvent *event = new KTItemEvent(action(), sceneIndex(), layerIndex(), frameIndex(), data().toString() );
+	KTItemEvent *event = new KTItemEvent(action(), sceneIndex(), layerIndex(), frameIndex(), m_position, data().toString() );
 	
 	event->setPartName( partName() );
 	
 	return event;
+}
+
+int KTItemEvent::itemIndex() const
+{
+	return m_position;
 }
 
 

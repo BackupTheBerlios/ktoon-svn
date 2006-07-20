@@ -37,6 +37,8 @@ class KTTextItem : public QGraphicsTextItem, public KTAbstractSerializable
 		virtual void fromXml(const QString &xml);
 		virtual QDomElement toXml(QDomDocument &doc);
 		
+		void setEditable(bool editable);
+		
 };
 
 #endif

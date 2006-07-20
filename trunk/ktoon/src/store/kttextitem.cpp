@@ -23,6 +23,8 @@ KTTextItem::KTTextItem(QGraphicsItem * parent, QGraphicsScene * scene)
  : QGraphicsTextItem(parent, scene)
 {
 	setOpenExternalLinks(true);
+	
+	setEditable( false );
 }
 
 
@@ -38,7 +40,19 @@ void KTTextItem::fromXml(const QString &xml)
 QDomElement KTTextItem::toXml(QDomDocument &doc)
 {
 	QDomElement root = doc.createElement("text");
-
+	
 	return root;
+}
+
+void KTTextItem::setEditable(bool editable)
+{
+	if ( editable )
+	{
+		setTextInteractionFlags(Qt::TextEditorInteraction);
+	}
+	else
+	{
+		setTextInteractionFlags(Qt::TextBrowserInteraction);
+	}
 }
 

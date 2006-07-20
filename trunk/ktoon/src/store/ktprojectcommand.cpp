@@ -436,7 +436,74 @@ void KTProjectCommand::sceneCommand(const KTSceneEvent *event, bool redo)
 
 void KTProjectCommand::itemCommand(const KTItemEvent *event, bool redo)
 {
-	D_FUNCINFO << redo;
+	if ( redo )
+	{
+		switch(event->action())
+		{
+			case KTProjectEvent::Add:
+			{
+				m_project->createItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
+			}
+			break;
+			case KTProjectEvent::Remove:
+			{
+				m_project->removeItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex());
+			}
+			break;
+			case KTProjectEvent::Move:
+			{
+			}
+			break;
+			case KTProjectEvent::Lock:
+			{
+			}
+			break;
+			case KTProjectEvent::Rename:
+			{
+			}
+			break;
+			case KTProjectEvent::Select:
+			{
+			}
+			break;
+			case KTProjectEvent::View:
+			{
+			}
+			break;
+		}
+	}
+	else
+	{
+		switch(event->action())
+		{
+			case KTProjectEvent::Add:
+			{
+				m_project->removeItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex());
+			}
+			break;
+			case KTProjectEvent::Remove:
+			{
+				m_project->createItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
+			}
+			break;
+			case KTProjectEvent::Move:
+			{
+			}
+			break;
+			case KTProjectEvent::Lock:
+			{
+			}
+			break;
+			case KTProjectEvent::Rename:
+			{
+			}
+			break;
+			case KTProjectEvent::View:
+			{
+			}
+			break;
+		}
+	}
 }
 
 

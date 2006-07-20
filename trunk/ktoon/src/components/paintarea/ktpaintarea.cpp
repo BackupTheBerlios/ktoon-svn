@@ -59,6 +59,7 @@ class GLDevice : public QGLWidget
 
 #include "ktscene.h"
 #include "ktproject.h"
+#include "kttextitem.h"
 
 KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(parent), m_grid(0), m_tool(0), m_isDrawing(false), m_project(project), m_currentSceneIndex(0)
 {
@@ -77,6 +78,8 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(p
 	qobject_cast<KTScene *>(scene())->setCurrentFrame( 0, 0);
 	
 	centerDrawingArea();
+	
+// 	setRenderHint(QPainter::Antialiasing, true);
 }
 
 KTPaintArea::~KTPaintArea()
@@ -170,7 +173,8 @@ void KTPaintArea::mouseReleaseEvent(QMouseEvent *event)
 	
 	if ( m_tool )
 	{
-		m_tool->release(m_inputInformation, m_brushManager,  qobject_cast<KTScene *>(scene()), this );
+		KTScene *currentScene = qobject_cast<KTScene *>(scene());
+		m_tool->release(m_inputInformation, m_brushManager,  currentScene, this );
 		
 		QString itemToXml = m_tool->itemToXml();
 		
@@ -178,7 +182,7 @@ void KTPaintArea::mouseReleaseEvent(QMouseEvent *event)
 		
 		if ( ! itemToXml.isEmpty() )
 		{
-			KTItemEvent event(KTProjectEvent::Add, m_currentSceneIndex, qobject_cast<KTScene *>(scene())->currentLayerIndex(), qobject_cast<KTScene *>(scene())->currentFrameIndex(), itemToXml);
+			KTItemEvent event(KTProjectEvent::Add, m_currentSceneIndex, currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), -1,  itemToXml);
 			
 			emit eventTriggered( &event );
 		}
@@ -253,8 +257,11 @@ void KTPaintArea::projectEvent(KTProjectEvent *event)
 
 void KTPaintArea::itemEvent(KTItemEvent *event)
 {
-	D_FUNCINFO;
-	Q_UNUSED(event);
+	if ( event->action() != KTProjectEvent::Add ||  event->action() != KTProjectEvent::Remove )
+	{
+		qobject_cast<KTScene *>(scene())->drawCurrentPhotogram();
+		viewport()->update(scene()->sceneRect().toRect() );
+	}
 }
 
 void KTPaintArea::drawBackground(QPainter *painter, const QRectF &rect)

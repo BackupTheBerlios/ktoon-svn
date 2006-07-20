@@ -21,6 +21,10 @@
 #include "ktframe.h"
 #include "ddebug.h"
 
+#include "ktitemfactory.h"
+
+// #include "ktbuttonitem.h"
+// #include "kttextitem.h"
 
 KTFrame::KTFrame(QObject *parent) : QGraphicsScene(parent), m_name("Frame"), m_isLocked(false), m_isVisible(true)
 {
@@ -150,5 +154,48 @@ void KTFrame::recoverItems()
 	{
 		addItem(item);
 	}
+}
+
+bool KTFrame::removeItemAt(int position)
+{
+	if ( position < 0 || position >= m_items.count() )
+	{
+		return false;
+	}
+	
+	QGraphicsItem *item = m_items.takeAt(position);
+	
+	return true;
+}
+
+QGraphicsItem *KTFrame::createItem(int position, const QString &xml)
+{
+	KTItemFactory itemFactory;
+	
+	QGraphicsItem *item = itemFactory.create( xml );
+	
+// 	KTButtonItem *button = new KTButtonItem(0, this);
+// 	button->setText( "JEJEJE");
+// 	
+// 	addGraphic( button );
+	
+// 	KTTextItem *text = new KTTextItem(0, this);
+// 	text->setHtml("Home: <a href=file://>click me</a>");
+// 	text->setEditable( true );
+	
+// 	addGraphic( text );
+	
+	if ( item )
+	{
+		addGraphic( item );
+	}
+	
+	return item;
+}
+
+
+QList<QGraphicsItem *> KTFrame::graphics() const
+{
+	return m_items;
 }
 

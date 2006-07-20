@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,84 +18,50 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTFRAME_H
-#define KTFRAME_H
+#ifndef KTITEMFACTORY_H
+#define KTITEMFACTORY_H
 
-#include <QGraphicsScene>
-#include "ktabstractserializable.h"
+#include <QXmlDefaultHandler>
 
-#include <QDomDocument>
-#include <QDomElement>
-
-class KTFrame;
+class QGraphicsItem;
 
 /**
- * @brief Esta clase representa un marco o frame de la animacion
- * @author David Cuadrado \<krawek@toonka.com\>
+ * @author David Cuadrado <krawek@gmail.com>
 */
-class Q_DECL_EXPORT KTFrame : public QGraphicsScene, public KTAbstractSerializable
+class KTItemFactory : public QXmlDefaultHandler
 {
 	public:
-		/**
-		 * Constructor por defecto
-		 */
-		KTFrame(QObject *parent = 0);
+		KTItemFactory();
+		~KTItemFactory();
 		
 		/**
-		 * Construye un frame con un nombre
+		 * Analiza etiquetas de apertura del documento XML
 		 */
-		KTFrame(const QString &frameName, QObject * parent = 0);
+		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
 		
 		/**
-		 * Destructor
+		 * Analiza etiquetas de cierre del documento XML
 		 */
-		~KTFrame();
+		bool endElement( const QString& ns, const QString& localname, const QString& qname);
 		
 		/**
-		 * Pone el nombre del frame
+		 * Muestra errores en el analisis del documento
 		 */
-		void setFrameName(const QString &name);
+		bool error ( const QXmlParseException & exception );
 		
 		/**
-		 * Bloquea el frame
+		 * Muestra errores fatales en el analisis del documento
 		 */
-		void setLocked(bool isLocked);
-		
-		/**
-		 * Retorna el nombre del frame
-		 */
-		QString frameName() const;
-		
-		/**
-		 * Returna verdadero cuando el frame esta bloqueado
-		 */
-		bool isLocked() const;
-		
-		
-		void setVisible(bool isVisible);
-		bool isVisible() const;
-		
-		void recoverItems();
-		
-		void addGraphic(QGraphicsItem *item);
-		void removeGraphic(QGraphicsItem *item);
-		
-		bool removeItemAt(int position);
-		QGraphicsItem *createItem(int position, const QString &xml);
-		
-		QList<QGraphicsItem *> graphics() const;
+		bool fatalError ( const QXmlParseException & exception );
 		
 	public:
-		virtual void fromXml(const QString &xml );
-		virtual QDomElement toXml(QDomDocument &doc);
+		QGraphicsItem *create(const QString &xml);
 		
 	private:
-		void init();
-		QString m_name;
-		bool m_isLocked;
-		bool m_isVisible;
+		QString m_qname;
+		QString m_root;
 		
-		QList<QGraphicsItem *> m_items;
+		QGraphicsItem *m_item;
 };
 
 #endif
