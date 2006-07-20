@@ -18,33 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTPATHITEM_H
-#define KTPATHITEM_H
+#ifndef KTTEXTITEM_H
+#define KTTEXTITEM_H
 
-#include "ktabstractserializable.h"
-#include <QGraphicsPathItem>
+#include <QGraphicsTextItem>
+#include <ktabstractserializable.h>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTPathItem : public KTAbstractSerializable, public QGraphicsPathItem
+
+class KTTextItem : public QGraphicsTextItem, public KTAbstractSerializable
 {
 	public:
-		KTPathItem( QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-		~KTPathItem();
+		KTTextItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+		~KTTextItem();
 		
 		virtual void fromXml(const QString &xml);
 		virtual QDomElement toXml(QDomDocument &doc);
 		
-	protected:
-		virtual void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dragLeaveEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dropEvent ( QGraphicsSceneDragDropEvent *event );
-		
-	private:
-		bool m_dragOver;
-
 };
 
 #endif
-

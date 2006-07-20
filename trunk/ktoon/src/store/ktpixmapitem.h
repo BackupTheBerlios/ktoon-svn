@@ -17,34 +17,26 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTPIXMAPITEM_H
+#define KTPIXMAPITEM_H
 
-#ifndef KTPATHITEM_H
-#define KTPATHITEM_H
-
+#include <QGraphicsPixmapItem>
 #include "ktabstractserializable.h"
-#include <QGraphicsPathItem>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTPathItem : public KTAbstractSerializable, public QGraphicsPathItem
+
+class KTPixmapItem : public QGraphicsPixmapItem, public KTAbstractSerializable
 {
 	public:
-		KTPathItem( QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-		~KTPathItem();
+		KTPixmapItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+		~KTPixmapItem();
 		
 		virtual void fromXml(const QString &xml);
 		virtual QDomElement toXml(QDomDocument &doc);
-		
-	protected:
-		virtual void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dragLeaveEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dropEvent ( QGraphicsSceneDragDropEvent *event );
-		
-	private:
-		bool m_dragOver;
-
 };
 
 #endif
+
 

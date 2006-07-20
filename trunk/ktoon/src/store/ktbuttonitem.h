@@ -18,33 +18,50 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTPATHITEM_H
-#define KTPATHITEM_H
+#ifndef KTBUTTONITEM_H
+#define KTBUTTONITEM_H
 
-#include "ktabstractserializable.h"
-#include <QGraphicsPathItem>
+#include <QGraphicsItem>
+#include <QIcon>
+#include <QFont>
+
+#include <ktabstractserializable.h>
+
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTPathItem : public KTAbstractSerializable, public QGraphicsPathItem
+class KTButtonItem : public QObject, public QGraphicsItem, public KTAbstractSerializable
 {
+	Q_OBJECT;
 	public:
-		KTPathItem( QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-		~KTPathItem();
+		KTButtonItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+		~KTButtonItem();
 		
 		virtual void fromXml(const QString &xml);
 		virtual QDomElement toXml(QDomDocument &doc);
 		
-	protected:
-		virtual void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dragLeaveEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dropEvent ( QGraphicsSceneDragDropEvent *event );
+		virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *w);
+		QRectF boundingRect() const;
+		
+		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+		virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+		virtual void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
+		
+	public:
+		void setIconSize(const QSize &size);
+		void setIcon(const QIcon &icon);
+		void setText(const QString &text);
+		void setFont(const QFont &font);
+		
+	signals:
+		void clicked();
 		
 	private:
-		bool m_dragOver;
-
+		QSize m_iconSize;
+		QIcon m_icon;
+		QString m_text;
+		QFont m_font;
 };
 
 #endif
-

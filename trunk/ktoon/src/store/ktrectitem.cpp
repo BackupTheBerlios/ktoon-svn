@@ -18,33 +18,69 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTPATHITEM_H
-#define KTPATHITEM_H
+#include "ktrectitem.h"
+#include <QGraphicsSceneDragDropEvent>
+#include <QMimeData>
+#include <QBrush>
 
-#include "ktabstractserializable.h"
-#include <QGraphicsPathItem>
-
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class KTPathItem : public KTAbstractSerializable, public QGraphicsPathItem
+KTRectItem::KTRectItem(QGraphicsItem * parent, QGraphicsScene * scene ) : QGraphicsRectItem(parent, scene)
 {
-	public:
-		KTPathItem( QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-		~KTPathItem();
-		
-		virtual void fromXml(const QString &xml);
-		virtual QDomElement toXml(QDomDocument &doc);
-		
-	protected:
-		virtual void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dragLeaveEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dropEvent ( QGraphicsSceneDragDropEvent *event );
-		
-	private:
-		bool m_dragOver;
+}
 
-};
 
-#endif
+KTRectItem::~KTRectItem()
+{
+}
+
+void KTRectItem::fromXml(const QString &xml)
+{
+}
+
+
+QDomElement KTRectItem::toXml(QDomDocument &doc)
+{
+	QDomElement root = doc.createElement("rect");
+
+	return root;
+}
+
+
+
+void KTRectItem::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
+{
+	if (event->mimeData()->hasColor() )
+	{
+		event->setAccepted(true);
+		m_dragOver = true;
+		update();
+	} 
+	else
+	{
+		event->setAccepted(false);
+	}
+}
+
+
+void KTRectItem::dragLeaveEvent(QGraphicsSceneDragDropEvent *event)
+{
+	Q_UNUSED(event);
+	m_dragOver = false;
+	update();
+}
+
+
+void KTRectItem::dropEvent(QGraphicsSceneDragDropEvent *event)
+{
+	m_dragOver = false;
+	if (event->mimeData()->hasColor())
+	{
+		setBrush(QBrush(qVariantValue<QColor>(event->mimeData()->colorData())));
+	}
+	else if (event->mimeData()->hasImage())
+	{
+		setBrush(QBrush(qVariantValue<QPixmap>(event->mimeData()->imageData())));
+	}
+	update();
+}
+
 

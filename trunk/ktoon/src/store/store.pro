@@ -24,7 +24,11 @@ HEADERS += ktlayer.h \
            ktframegroup.h \
            ktphotogram.h \
            ktpathitem.h \
-           ktitemevent.h 
+           ktitemevent.h \
+           ktrectitem.h \
+           ktpixmapitem.h \
+           kttextitem.h \
+           ktbuttonitem.h 
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
@@ -40,7 +44,11 @@ SOURCES += ktlayer.cpp \
            ktframegroup.cpp \
            ktphotogram.cpp \
            ktpathitem.cpp \
-           ktitemevent.cpp 
+           ktitemevent.cpp \
+           ktrectitem.cpp \
+           ktpixmapitem.cpp \
+           kttextitem.cpp \
+           ktbuttonitem.cpp 
 QT += xml gui
 KDEV_QTVER = 4
 INCLUDEPATH += ../../src/store \

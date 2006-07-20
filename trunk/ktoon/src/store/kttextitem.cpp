@@ -17,34 +17,28 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "kttextitem.h"
 
-#ifndef KTPATHITEM_H
-#define KTPATHITEM_H
-
-#include "ktabstractserializable.h"
-#include <QGraphicsPathItem>
-
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class KTPathItem : public KTAbstractSerializable, public QGraphicsPathItem
+KTTextItem::KTTextItem(QGraphicsItem * parent, QGraphicsScene * scene)
+ : QGraphicsTextItem(parent, scene)
 {
-	public:
-		KTPathItem( QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-		~KTPathItem();
-		
-		virtual void fromXml(const QString &xml);
-		virtual QDomElement toXml(QDomDocument &doc);
-		
-	protected:
-		virtual void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dragLeaveEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dropEvent ( QGraphicsSceneDragDropEvent *event );
-		
-	private:
-		bool m_dragOver;
+	setOpenExternalLinks(true);
+}
 
-};
 
-#endif
+KTTextItem::~KTTextItem()
+{
+}
+
+void KTTextItem::fromXml(const QString &xml)
+{
+}
+
+
+QDomElement KTTextItem::toXml(QDomDocument &doc)
+{
+	QDomElement root = doc.createElement("text");
+
+	return root;
+}
 
