@@ -65,8 +65,7 @@ HEADERS += danimwidget.h \
            dstylecombobox.h \
            dterm.h \
            dtermtab.h \
-           dflashwidget.h \
-           dsvg2qt.h 
+           dflashwidget.h 
 SOURCES += danimwidget.cpp \
            dapplication.cpp \
            dcellview.cpp \
@@ -123,8 +122,7 @@ SOURCES += danimwidget.cpp \
            dstylecombobox.cpp \
            dterm.cpp \
            dtermtab.cpp \
-           dflashwidget.cpp \
-           dsvg2qt.cpp 
+           dflashwidget.cpp 
 ! include(../dlibconfig.pri) {
 error("Run ./configure first!")
 }

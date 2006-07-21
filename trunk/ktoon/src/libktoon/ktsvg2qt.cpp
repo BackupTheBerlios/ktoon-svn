@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "dsvg2qt.h"
+#include "ktsvg2qt.h"
 
 #include <cmath>
 
@@ -28,12 +28,12 @@
 
 #include "ddebug.h"
 
-DSvg2Qt::DSvg2Qt()
+KTSvg2Qt::KTSvg2Qt()
 {
 }
 
 
-DSvg2Qt::~DSvg2Qt()
+KTSvg2Qt::~KTSvg2Qt()
 {
 }
 
@@ -241,7 +241,7 @@ static QList<qreal> parseNumbersList(QString::const_iterator &itr)
 	return points;
 }
 
-bool DSvg2Qt::svgpath2qtpath(const QString &data, QPainterPath &path)
+bool KTSvg2Qt::svgpath2qtpath(const QString &data, QPainterPath &path)
 {
 	QString::const_iterator itr = data.constBegin();
 	qreal x0 = 0, y0 = 0;              // starting point
@@ -495,7 +495,7 @@ bool DSvg2Qt::svgpath2qtpath(const QString &data, QPainterPath &path)
 
 // Pen
 
-void DSvg2Qt::parsePen(QPen &pen, const QXmlAttributes &attributes)
+void KTSvg2Qt::parsePen(QPen &pen, const QXmlAttributes &attributes)
 {
 	QString value = attributes.value(QLatin1String("stroke"));
 	QString dashArray = attributes.value(QLatin1String("stroke-dasharray"));
@@ -587,7 +587,7 @@ void DSvg2Qt::parsePen(QPen &pen, const QXmlAttributes &attributes)
 
 // Brush
 
-bool DSvg2Qt::parseBrush(QBrush &brush, const QXmlAttributes &attributes)
+bool KTSvg2Qt::parseBrush(QBrush &brush, const QXmlAttributes &attributes)
 {
 	QString value   = attributes.value(QLatin1String("fill"));
 	QString opacity = attributes.value(QLatin1String("fill-opacity"));

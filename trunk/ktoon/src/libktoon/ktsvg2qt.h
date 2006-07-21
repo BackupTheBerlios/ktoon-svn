@@ -17,8 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef DSVG2QT_H
-#define DSVG2QT_H
+
+#ifndef KTSVG2QT_H
+#define KTSVG2QT_H
 
 #include <QString>
 #include <QPainterPath>
@@ -29,11 +30,11 @@
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DSvg2Qt
+class KTSvg2Qt
 {
 	private:
-		DSvg2Qt();
-		~DSvg2Qt();
+		KTSvg2Qt();
+		~KTSvg2Qt();
 		
 	public:
 		static bool svgpath2qtpath(const QString &data, QPainterPath &path);

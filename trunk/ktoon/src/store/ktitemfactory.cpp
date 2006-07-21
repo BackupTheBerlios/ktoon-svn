@@ -22,7 +22,7 @@
 #include <QGraphicsItem>
 
 #include <ddebug.h>
-#include <dsvg2qt.h>
+#include <ktsvg2qt.h>
 
 #include "ktpathitem.h"
 #include "ktpixmapitem.h"
@@ -53,7 +53,7 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 		m_item = new KTPathItem;
 		
 		QPainterPath path;		
-		DSvg2Qt::svgpath2qtpath( atts.value("d"), path );
+		KTSvg2Qt::svgpath2qtpath( atts.value("d"), path );
 		qgraphicsitem_cast<KTPathItem *>(m_item)->setPath(path);
 	}
 	else if ( qname == "rect" )

@@ -24,7 +24,8 @@ HEADERS += ktmodulewidgetbase.h \
            kttoolplugin.h \
            ktbrushmanager.h \
            ktpluginmanager.h \
-           ktinputdeviceinformation.h 
+           ktinputdeviceinformation.h \
+           ktsvg2qt.h 
 SOURCES += ktmodulewidgetbase.cpp \
            ktmodulewidgettitle.cpp \
            ktexportpluginobject.cpp \
@@ -40,7 +41,8 @@ SOURCES += ktmodulewidgetbase.cpp \
            kttoolplugin.cpp \
            ktbrushmanager.cpp \
            ktpluginmanager.cpp \
-           ktinputdeviceinformation.cpp 
+           ktinputdeviceinformation.cpp \
+           ktsvg2qt.cpp 
 QT += xml gui
 KDEV_QTVER = 4
 INCLUDEPATH += ../../src/store \
