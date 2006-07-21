@@ -22,12 +22,15 @@
 #include <QGraphicsItem>
 
 #include <ddebug.h>
+#include <dsvg2qt.h>
 
 #include "ktpathitem.h"
 #include "ktpixmapitem.h"
 #include "kttextitem.h"
 #include "ktbuttonitem.h"
 #include "ktrectitem.h"
+#include "ktgraphicalgorithm.h"
+
 
 KTItemFactory::KTItemFactory() : QXmlDefaultHandler(), m_item(0)
 {
@@ -48,6 +51,10 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 	if ( qname == "path" )
 	{
 		m_item = new KTPathItem;
+		
+		QPainterPath path;		
+		DSvg2Qt::svgpath2qtpath( atts.value("d"), path );
+		qgraphicsitem_cast<KTPathItem *>(m_item)->setPath(path);
 	}
 	else if ( qname == "rect" )
 	{

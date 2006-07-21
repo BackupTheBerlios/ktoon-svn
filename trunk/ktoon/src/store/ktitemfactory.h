@@ -22,6 +22,7 @@
 #define KTITEMFACTORY_H
 
 #include <QXmlDefaultHandler>
+#include <QStack>
 
 class QGraphicsItem;
 
@@ -62,6 +63,8 @@ class KTItemFactory : public QXmlDefaultHandler
 		QString m_root;
 		
 		QGraphicsItem *m_item;
+		
+		QStack<QGraphicsItem *> m_childs;
 };
 
 #endif

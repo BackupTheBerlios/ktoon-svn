@@ -22,6 +22,7 @@
 #include <QGraphicsSceneDragDropEvent>
 #include <QMimeData>
 #include <QBrush>
+#include <ddebug.h>
 
 KTPathItem::KTPathItem( QGraphicsItem * parent, QGraphicsScene * scene) : QGraphicsPathItem(parent, scene), m_dragOver(false)
 {
@@ -43,28 +44,71 @@ QDomElement KTPathItem::toXml(QDomDocument &doc)
 {
 	QDomElement root = doc.createElement("path");
 	
-// 	for(int i = 0; i < list.count(); i++)
-// 	{
-// 		switch(e.type)
-// 		{
-// 			case QPainterPath::MoveToElement:
-// 			{
-// 				break;
-// 			}
-// 			case QPainterPath::LineToElement:
-// 			{
-// 				break;
-// 			}
-// 			case QPainterPath::CurveToDataElement:
-// 			{
-// 				break;
-// 			}
-// 			case QPainterPath::CurveToElement:
-// 			{
-// 				break;
-// 			}
-// 		}
-// 	}
+	
+	
+	QString str = "";
+	
+	QChar t;
+	SHOW_VAR( path().elementCount () );
+	for(int i = 0; i <  path().elementCount () ; i++)
+	{
+		QPainterPath::Element e = path().elementAt (i);
+		switch(e.type )
+		{
+			case QPainterPath::MoveToElement:
+			{
+// 				if(t != 'M')
+// 				{
+					t = 'M';
+					str += "M " + QString::number(e.x) + " " + QString::number(e.y) + " ";
+// 				}
+// 				else
+// 				{
+// 					str += QString::number(e.x) + " " + QString::number(e.y) + " ";
+// 				}
+				
+			}
+			break;
+			case QPainterPath::LineToElement:
+			{
+// 				if(t != 'L')
+// 				{
+					t = 'L';
+					str += " L " + QString::number(e.x) + " " + QString::number(e.y) + " ";
+// 				}
+// 				else
+// 				{
+// 					str += QString::number(e.x) + " " + QString::number(e.y) + " ";
+// 				}
+			}
+			break;
+			case QPainterPath::CurveToElement:
+			{
+				/*
+				if(t != 'C')
+				{
+				*/
+					t = 'C';
+					str += " C " + QString::number(e.x) + " " + QString::number(e.y) + " ";
+// 				}
+// 				else
+// 				{
+// 					str += "  "+ QString::number(e.x) + " " + QString::number(e.y) + " ";
+// 				}
+			}
+			break;
+			case QPainterPath::CurveToDataElement:
+			{
+				if ( t == 'C' )
+				str +=  " " +QString::number(e.x) + "  " + QString::number(e.y) + " ";
+			}
+			break;
+		}
+	}
+	
+// 	dDebug() << str;
+// 	str += "Z";
+	root.setAttribute( "d", str);
 	
 	return root;
 }

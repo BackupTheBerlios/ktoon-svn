@@ -3,10 +3,6 @@
 # Subdir relative project main directory: ./src/dlib/dgui
 # Target is a library:  
 
-! include(../dlibconfig.pri) {
-error("Run ./configure first!")
-}
-
 INSTALLS += include \
             target 
 target.path = /lib/ 
@@ -66,7 +62,11 @@ HEADERS += danimwidget.h \
            displitter.h \
            ditabwidget.h \
            dimagebutton.h \
-           dstylecombobox.h 
+           dstylecombobox.h \
+           dterm.h \
+           dtermtab.h \
+           dflashwidget.h \
+           dsvg2qt.h 
 SOURCES += danimwidget.cpp \
            dapplication.cpp \
            dcellview.cpp \
@@ -120,7 +120,14 @@ SOURCES += danimwidget.cpp \
            didockwidget.cpp \
            displitter.cpp \
            ditabwidget.cpp \
-           dstylecombobox.cpp 
+           dstylecombobox.cpp \
+           dterm.cpp \
+           dtermtab.cpp \
+           dflashwidget.cpp \
+           dsvg2qt.cpp 
+! include(../dlibconfig.pri) {
+error("Run ./configure first!")
+}
 RESOURCES += dgui_images.qrc
 QT += xml
 KDEV_QTVER = 4
@@ -137,17 +144,11 @@ warn_on \
 dll
 TEMPLATE = lib
 linux-g++{
-  TARGETDEPS += ../dcore/libdcore.so
-  HEADERS += dterm.h \
-  dtermtab.h \
-  dflashwidget.h
-  SOURCES += dterm.cpp \
-  dtermtab.cpp \
-  dflashwidget.cpp
+TARGETDEPS += ../dcore/libdcore.so
 }
 macosx{
-  TARGETDEPS += ../dcore/libdcore.dylib
+TARGETDEPS += ../dcore/libdcore.dylib
 }
 win32{
-  TARGETDEPS += ../dcore/libdcore.dll
+TARGETDEPS += ../dcore/libdcore.dll
 }

@@ -17,27 +17,28 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#ifndef __KTGRAPHICALGORITHM_H__
-#define __KTGRAPHICALGORITHM_H__
+#ifndef DSVG2QT_H
+#define DSVG2QT_H
 
 #include <QString>
-#include <QPolygon>
 #include <QPainterPath>
+#include <QPen>
+#include <QXmlAttributes>
+#include <QBrush>
 
 /**
- * @author Jorge Cuadrado <krawek@toonka.com>
- */
-class Q_DECL_EXPORT KTGraphicalAlgorithm
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+class DSvg2Qt
 {
 	private:
-		KTGraphicalAlgorithm() {}
-		~KTGraphicalAlgorithm() {};
-	
+		DSvg2Qt();
+		~DSvg2Qt();
+		
 	public:
-		static QPainterPath bezierFit(QPolygonF &points_, float error);
-		static QPolygonF polygonFit(const QPolygonF &points);
+		static bool svgpath2qtpath(const QString &data, QPainterPath &path);
+		static void parsePen(QPen &pen, const QXmlAttributes &attributes);
+		static bool parseBrush(QBrush &brush, const QXmlAttributes &attributes);
 };
 
 #endif
-
