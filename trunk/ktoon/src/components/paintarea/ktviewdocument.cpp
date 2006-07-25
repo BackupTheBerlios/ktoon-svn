@@ -792,7 +792,7 @@ void KTViewDocument::setZoomFactor(int porcent)
 
 // void KTViewDocument::configure()
 // {
-// 	KTDrawingAreaProperties properties;
+// 	KTPaintAreaConfig properties;
 // 	
 // 	if ( properties.exec() != QDialog::Rejected )
 // 	{

@@ -24,7 +24,7 @@
 
 #include "ktpreferences.h"
 
-#include "ktdrawingareaproperties.h"
+#include "ktpaintareaconfig.h"
 
 #include "dglobal.h"
 #include "ddebug.h"
@@ -183,7 +183,7 @@ KTPreferences::KTPreferences( QWidget *parent ) : DConfigurationDialog(parent )
 	addPage(m_fontChooser, tr("Font"))->setIcon(QPixmap(THEME_DIR+"/icons/font_config.png"));
 	
 	
-	m_drawingAreaProperties = new KTDrawingAreaProperties;
+	m_drawingAreaProperties = new KTPaintAreaConfig;
 	addPage(m_drawingAreaProperties, tr("Paint area"))->setIcon( QIcon(THEME_DIR+"/icons/drawing_area.png") );
 }
 
@@ -216,7 +216,7 @@ void KTPreferences::apply()
 	{
 		dApp->setFont(m_fontChooser->currentFont());
 	}
-	else if ( qobject_cast<KTDrawingAreaProperties *>(currentPage()->widget() ) == m_drawingAreaProperties )
+	else if ( qobject_cast<KTPaintAreaConfig *>(currentPage()->widget() ) == m_drawingAreaProperties )
 	{
 	}
 }

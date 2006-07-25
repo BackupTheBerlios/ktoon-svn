@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTDRAWINGAREAPROPERTIES_H
-#define KTDRAWINGAREAPROPERTIES_H
+#ifndef KTPAINTAREACONFIG_H
+#define KTPAINTAREACONFIG_H
 
 #include <QWidget>
 #include <QSpinBox>
@@ -30,12 +30,12 @@ class DColorButton;
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTDrawingAreaProperties : public QWidget
+class KTPaintAreaConfig : public QWidget
 {
 	Q_OBJECT;
 	public:
-		KTDrawingAreaProperties(QWidget *parent = 0);
-		~KTDrawingAreaProperties();
+		KTPaintAreaConfig(QWidget *parent = 0);
+		~KTPaintAreaConfig();
 		
 		QColor gridColor() const;
 		QColor backgroundColor() const;

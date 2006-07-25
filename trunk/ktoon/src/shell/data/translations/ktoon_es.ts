@@ -558,7 +558,7 @@
     </message>
 </context>
 <context>
-    <name>KTDrawingAreaProperties</name>
+    <name>KTPaintAreaConfig</name>
     <message>
         <source>Accept</source>
         <translation>Aceptar</translation>

@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktdrawingareaproperties.h"
+#include "ktpaintareaconfig.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -28,19 +28,19 @@
 #include <dcolorbutton.h>
 #include <dconfig.h>
 
-KTDrawingAreaProperties::KTDrawingAreaProperties(QWidget *parent) : QWidget(parent)
+KTPaintAreaConfig::KTPaintAreaConfig(QWidget *parent) : QWidget(parent)
 {
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 	
 	setupPage();
 }
 
-KTDrawingAreaProperties::~KTDrawingAreaProperties()
+KTPaintAreaConfig::~KTPaintAreaConfig()
 {
 }
 
 
-void KTDrawingAreaProperties::setupPage()
+void KTPaintAreaConfig::setupPage()
 {
 	
 	QFrame *page = new QFrame;
@@ -87,27 +87,27 @@ void KTDrawingAreaProperties::setupPage()
 	layout()->addWidget(page);
 }
 
-QColor KTDrawingAreaProperties::gridColor() const
+QColor KTPaintAreaConfig::gridColor() const
 {
 	return m_gridColor->color();
 }
 
-QColor KTDrawingAreaProperties::backgroundColor() const
+QColor KTPaintAreaConfig::backgroundColor() const
 {
 	return m_backgroundColor->color();
 }
 
-QColor KTDrawingAreaProperties::onionSkinColor() const
+QColor KTPaintAreaConfig::onionSkinColor() const
 {
 	return m_onionSkinColor->color();
 }
 
-QColor KTDrawingAreaProperties::onionSkinBackground() const
+QColor KTPaintAreaConfig::onionSkinBackground() const
 {
 	return m_onionSkinBackground->color();
 }
 
-int KTDrawingAreaProperties::gridSeparation() const
+int KTPaintAreaConfig::gridSeparation() const
 {
 	return m_gridSeparation->value();
 }
