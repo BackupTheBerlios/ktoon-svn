@@ -9,7 +9,7 @@ confclean:
 	cd configure.tests/ming && make clean && make distclean
 
 install_plugins:
-	cd src/modules/ && make install
+	cd src/plugins && make install
 
 build:
 	sh build.sh

@@ -35,6 +35,8 @@ class KTPathItem : public KTAbstractSerializable, public QGraphicsPathItem
 		
 		virtual void fromXml(const QString &xml);
 		virtual QDomElement toXml(QDomDocument &doc);
+		virtual void paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+		
 		
 	protected:
 		virtual void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
@@ -43,7 +45,6 @@ class KTPathItem : public KTAbstractSerializable, public QGraphicsPathItem
 		
 	private:
 		bool m_dragOver;
-
 };
 
 #endif

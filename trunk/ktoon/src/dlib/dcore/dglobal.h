@@ -22,7 +22,7 @@
 #ifndef DGLOBAL_H
 #define DGLOBAL_H
 
-#include "dcore/dapplicationproperties.h"
+#include "dapplicationproperties.h"
 
 #define DATA_DIR dAppProp->dataDir()
 #define THEME_DIR dAppProp->themeDir()

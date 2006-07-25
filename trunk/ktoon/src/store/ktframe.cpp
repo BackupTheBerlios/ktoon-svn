@@ -26,19 +26,15 @@
 // #include "ktbuttonitem.h"
 // #include "kttextitem.h"
 
-KTFrame::KTFrame(QObject *parent) : QGraphicsScene(parent), m_name("Frame"), m_isLocked(false), m_isVisible(true)
+KTFrame::KTFrame(QObject *parent) : QObject(parent), m_name("Frame"), m_isLocked(false), m_isVisible(true)
 {
 	init();
 }
 
-KTFrame::KTFrame(const QString &frameName, QObject * parent) : QGraphicsScene(parent), m_name(frameName), m_isLocked(false), m_isVisible(true)
-{	
-	init();
-}
 
 void KTFrame::init()
 {
-	setItemIndexMethod(QGraphicsScene::NoIndex);
+// 	setItemIndexMethod(QGraphicsScene::NoIndex);
 }
 
 KTFrame::~KTFrame()
@@ -123,11 +119,9 @@ QDomElement KTFrame::toXml(QDomDocument &doc)
 	root.setAttribute("name", m_name );
 	doc.appendChild(root);
 	
-	QList<QGraphicsItem *> items = this->items();
+	QList<QGraphicsItem *>::ConstIterator iterator = m_items.begin();
 	
-	QList<QGraphicsItem *>::ConstIterator iterator = items.begin();
-	
-	while ( iterator != items.end() )
+	while ( iterator != m_items.end() )
 	{
 // 		root.appendChild( (*iterator)->toXml(doc) );
 		++iterator;
@@ -139,21 +133,21 @@ QDomElement KTFrame::toXml(QDomDocument &doc)
 void KTFrame::addGraphic(QGraphicsItem *item)
 {
 	m_items << item;
-	addItem(item);
+// 	addItem(item);
 }
 
 void KTFrame::removeGraphic(QGraphicsItem *item)
 {
 	m_items.removeAll(item);
-	removeItem(item);
+// 	removeItem(item);
 }
 
 void KTFrame::recoverItems()
 {
-	foreach(QGraphicsItem *item, m_items)
-	{
-		addItem(item);
-	}
+// 	foreach(QGraphicsItem *item, m_items)
+// 	{
+// 		addItem(item);
+// 	}
 }
 
 bool KTFrame::removeItemAt(int position)
@@ -173,18 +167,6 @@ QGraphicsItem *KTFrame::createItem(int position, const QString &xml)
 	KTItemFactory itemFactory;
 	
 	QGraphicsItem *item = itemFactory.create( xml );
-	
-// 	KTButtonItem *button = new KTButtonItem(0, this);
-// 	button->setText( "JEJEJE");
-// 	
-// 	addGraphic( button );
-	
-// 	KTTextItem *text = new KTTextItem(0, this);
-// 	text->setHtml("Home: <a href=file://>click me</a>");
-// 	text->setEditable( true );
-	
-// 	addGraphic( text );
-	
 	if ( item )
 	{
 		addGraphic( item );

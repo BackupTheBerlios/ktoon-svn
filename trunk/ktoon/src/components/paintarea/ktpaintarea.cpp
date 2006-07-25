@@ -33,6 +33,8 @@
 #include "ktinputdeviceinformation.h"
 #include "ktitemevent.h"
 
+#include <cmath>
+
 #ifdef QT_OPENGL_LIB
 
 #include <QGLWidget>
@@ -52,6 +54,8 @@ class GLDevice : public QGLWidget
 			glEnable( GL_LINE_SMOOTH );
 			glEnable( GL_BLEND );
 			glEnable( GL_POINT_SMOOTH );
+			glEnable(GL_POLYGON_SMOOTH );
+			glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST  );
 		}
 };
 
@@ -78,6 +82,7 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(p
 	qobject_cast<KTScene *>(scene())->setCurrentFrame( 0, 0);
 	
 	centerDrawingArea();
+// 	setUseOpenGL(true);
 	
 // 	setRenderHint(QPainter::Antialiasing, true);
 }
@@ -126,6 +131,7 @@ void KTPaintArea::setUseOpenGL(bool opengl)
 
 void KTPaintArea::setTool(KTToolPlugin *tool )
 {
+	
 	m_tool = tool;
 	m_tool->init(this);
 }
@@ -193,8 +199,8 @@ void KTPaintArea::mouseReleaseEvent(QMouseEvent *event)
 	m_isDrawing = false;
 	
 	QGraphicsView::mouseReleaseEvent(event);
-	
-	qobject_cast<KTScene *>(scene())->drawCurrentPhotogram(); // FIXME: eliminar cuando retorne
+
+	//qobject_cast<KTScene *>(scene())->drawCurrentPhotogram(); // FIXME: eliminar cuando retorne
 }
 
 void KTPaintArea::tabletEvent ( QTabletEvent * event )
@@ -230,6 +236,11 @@ void KTPaintArea::frameEvent(KTFrameEvent *event)
 			qobject_cast<KTScene *>(scene())->setCurrentFrame(event->layerIndex(), event->frameIndex());
 			
 			qobject_cast<KTScene *>(scene())->drawPhotogram(event->frameIndex());
+			
+			if ( event->action() == KTProjectEvent::Select )
+			{
+				if ( m_tool ) m_tool->init( this );
+			}
 		}
 		break;
 		default: break;
@@ -248,6 +259,7 @@ void KTPaintArea::layerEvent(KTLayerEvent *event)
 void KTPaintArea::sceneEvent(KTSceneEvent *event)
 {
 	Q_UNUSED(event);
+	
 }
 
 void KTPaintArea::projectEvent(KTProjectEvent *event)
@@ -289,5 +301,24 @@ void KTPaintArea::centerDrawingArea()
 }
 
 
+void KTPaintArea::wheelEvent(QWheelEvent *event)
+{
+	if(event->modifiers () == Qt::ControlModifier)
+	{
+		scaleView(pow(( double)2, -event->delta() / 240.0));
+	}
+	QGraphicsView::wheelEvent(event);
+	
+	
+}
+
+void KTPaintArea::scaleView(qreal scaleFactor)
+{
+	qreal factor = matrix().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
+	if (factor < 0.07 || factor > 100)
+		return;
+
+	scale(scaleFactor, scaleFactor);
+}
 
 

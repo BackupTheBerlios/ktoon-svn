@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2006 by Jorge Cuadrado   *
+ *   kuadrosx@libano   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,48 +18,42 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTTOOLPLUGIN_H
-#define KTTOOLPLUGIN_H
+#ifndef NODE_H
+#define NODE_H
 
-#include <qobject.h>
-#include "kttoolinterface.h"
-#include "ktbrushmanager.h"
-#include "ktinputdeviceinformation.h"
+#include <QGraphicsItem>
+#include <QObject>
+#include <QPointF>
 
-#include <QGraphicsView>
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author Jorge Cuadrado <kuadrosx@libano>
 */
-class Q_DECL_EXPORT KTToolPlugin : public QObject, public KTToolInterface
+class Node : public QObject, public QGraphicsItem
 {
 	Q_OBJECT;
-	Q_INTERFACES(KTToolInterface);
 	
 	public:
-		explicit KTToolPlugin(QObject * parent = 0);
-		~KTToolPlugin();
 		
-		void setCurrentTool(const QString &tool);
-		QString currentTool() const;
+		enum TypeNode{TopLeft  = 0, TopRight, BottomLeft, BottomRight, Center   };
+		Node(TypeNode node ,const QPointF & pos = QPoint(0,0) ,QGraphicsItem * parent = 0, QGraphicsScene * scene = 0 );
+		~Node();
+		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
+		QRectF boundingRect() const;
+		enum { Type = UserType + 1 };
 		
-		virtual void init(QGraphicsView *view);
+		int type() const { return Type; }
+		int typeNode() const;
 		
-		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view ) = 0;
-		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view) = 0;
-		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view) = 0;
+	protected:
+		QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+		void mousePressEvent(QGraphicsSceneMouseEvent *event);
+		void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+		void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
 		
-		virtual QString itemToXml() const;
-		
-		virtual QMap<QString, DAction *> actions() const = 0;
-		
-		virtual QWidget *configurator()  = 0;
-		
-		virtual void aboutToChangeTool() = 0;
 		
 	private:
-		QString m_currentTool;
+		TypeNode m_typeNode;
 };
 
 #endif
-

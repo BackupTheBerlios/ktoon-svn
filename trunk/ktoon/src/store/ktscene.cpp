@@ -22,7 +22,7 @@
 #include "ddebug.h"
 
 #include <QDir>
-
+#include <QGraphicsItem>
 
 KTScene::KTScene(QObject *parent) : QGraphicsScene(parent), m_isLocked(false),  m_layerCount(0), m_isVisible(true)
 {
@@ -130,7 +130,7 @@ QGraphicsScene *KTScene::photogram(int index)
 		{
 			if(layer->frames()[index])
 			{
-				foreach(QGraphicsItem *item,  layer->frames()[index]->items())
+				foreach(QGraphicsItem *item,  layer->frames()[index]->graphics())
 				{
 					scene->addItem ( item );
 				}
@@ -268,6 +268,7 @@ void KTScene::drawPhotogram(int photogram)
 {
 	if ( photogram < 0 ) return;
 	
+	
 	clean();
 	
 	foreach(KTLayer *layer, layers())
@@ -279,7 +280,7 @@ void KTScene::drawPhotogram(int photogram)
 			if ( frame )
 			{
 				frame->recoverItems();
-				foreach(QGraphicsItem *item, frame->items() )
+				foreach(QGraphicsItem *item, frame->graphics() )
 				{
 					addItem(item);
 				}
@@ -292,7 +293,10 @@ void KTScene::clean()
 {
 	foreach(QGraphicsItem *item, items() )
 	{
-		removeItem(item);
+		if ( item->scene() == this )
+		{
+			removeItem(item);
+		}
 	}
 }
 

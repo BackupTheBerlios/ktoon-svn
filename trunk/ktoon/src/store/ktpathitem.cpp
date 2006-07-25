@@ -23,10 +23,14 @@
 #include <QMimeData>
 #include <QBrush>
 #include <ddebug.h>
+#include <QPainter>
+#include <QPainterPath>
+#include "ktsvg2qt.h"
 
 KTPathItem::KTPathItem( QGraphicsItem * parent, QGraphicsScene * scene) : QGraphicsPathItem(parent, scene), m_dragOver(false)
 {
 	setAcceptDrops(true);
+// 	setFlags (QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable );
 }
 
 
@@ -44,12 +48,21 @@ QDomElement KTPathItem::toXml(QDomDocument &doc)
 {
 	QDomElement root = doc.createElement("path");
 	
+	//FIXME:
+	QString strMatrix = "matrix(";
+	QMatrix m = matrix();
+	qreal a = m.m11();
+	qreal b = m.m12();
+	qreal c = m.m21();
+	qreal d = m.m22();
+	qreal e = m.dx();
+	qreal f = m.dy();
+	strMatrix += QString::number(a) + "," +QString::number(b) + "," + QString::number(c) + "," + QString::number(d) + "," + QString::number(e) + "," + QString::number(f) + ")" ; 
 	
+	root.setAttribute( "transform", strMatrix);
 	
-	QString str = "";
-	
+	QString strPath = "";
 	QChar t;
-	SHOW_VAR( path().elementCount () );
 	for(int i = 0; i <  path().elementCount () ; i++)
 	{
 		QPainterPath::Element e = path().elementAt (i);
@@ -57,63 +70,64 @@ QDomElement KTPathItem::toXml(QDomDocument &doc)
 		{
 			case QPainterPath::MoveToElement:
 			{
-// 				if(t != 'M')
-// 				{
+				if(t != 'M')
+				{
 					t = 'M';
-					str += "M " + QString::number(e.x) + " " + QString::number(e.y) + " ";
-// 				}
-// 				else
-// 				{
-// 					str += QString::number(e.x) + " " + QString::number(e.y) + " ";
-// 				}
+					strPath += "M " + QString::number(e.x) + " " + QString::number(e.y) + " ";
+				}
+				else
+				{
+					strPath += QString::number(e.x) + " " + QString::number(e.y) + " ";
+				}
 				
 			}
 			break;
 			case QPainterPath::LineToElement:
 			{
-// 				if(t != 'L')
-// 				{
+				if(t != 'L')
+				{
 					t = 'L';
-					str += " L " + QString::number(e.x) + " " + QString::number(e.y) + " ";
-// 				}
-// 				else
-// 				{
-// 					str += QString::number(e.x) + " " + QString::number(e.y) + " ";
-// 				}
+					strPath += " L " + QString::number(e.x) + " " + QString::number(e.y) + " ";
+				}
+				else
+				{
+					strPath += QString::number(e.x) + " " + QString::number(e.y) + " ";
+				}
 			}
 			break;
 			case QPainterPath::CurveToElement:
 			{
-				/*
+				
 				if(t != 'C')
 				{
-				*/
 					t = 'C';
-					str += " C " + QString::number(e.x) + " " + QString::number(e.y) + " ";
-// 				}
-// 				else
-// 				{
-// 					str += "  "+ QString::number(e.x) + " " + QString::number(e.y) + " ";
-// 				}
+					strPath += " C " + QString::number(e.x) + " " + QString::number(e.y) + " ";
+				}
+				else
+				{
+					strPath += "  "+ QString::number(e.x) + " " + QString::number(e.y) + " ";
+				}
 			}
 			break;
 			case QPainterPath::CurveToDataElement:
 			{
 				if ( t == 'C' )
-				str +=  " " +QString::number(e.x) + "  " + QString::number(e.y) + " ";
+					strPath +=  " " +QString::number(e.x) + "  " + QString::number(e.y) + " ";
 			}
 			break;
 		}
 	}
 	
-// 	dDebug() << str;
-// 	str += "Z";
-	root.setAttribute( "d", str);
+	root.setAttribute( "d", strPath);
 	
 	return root;
 }
 
-
+void KTPathItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
+{
+	QGraphicsPathItem::paint(painter, option,widget );
+	
+}
 
 void KTPathItem::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
 {
@@ -151,13 +165,3 @@ void KTPathItem::dropEvent(QGraphicsSceneDragDropEvent *event)
 	}
 	update();
 }
-
-
-
-
-
-
-
-
-
-

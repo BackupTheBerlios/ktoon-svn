@@ -24,6 +24,8 @@
 #include <QPointF>
 #include <QKeySequence>
 #include <QGraphicsPathItem>
+#include <QPainterPath>
+#include <QMatrix>
 
 #include <daction.h>
 
@@ -51,7 +53,13 @@ Brush::~Brush()
 
 void Brush::init(QGraphicsView *view)
 {
+	view->setDragMode ( QGraphicsView::NoDrag );
 	
+	foreach(QGraphicsItem *item, view->scene()->items() )
+	{
+		item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+		item->setFlag(QGraphicsItem::ItemIsMovable, false);
+	}
 }
 
 QStringList Brush::keys() const
@@ -77,6 +85,7 @@ void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 
 void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
+	view->setDragMode (QGraphicsView::NoDrag);
 	QPainterPath path;
 	path.setFillRule ( Qt::WindingFill );
 	
@@ -139,7 +148,21 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 		m_path.addPolygon(pol);
 	}
 	
-	m_item->setPath(m_path);
+	QPainterPath newPath = m_path;
+	QMatrix m;
+	QPainterPath::Element e = m_path.elementAt(0);
+	if(e.type == QPainterPath::MoveToElement)
+	{
+		QPointF pos = m_path.boundingRect().topLeft();
+		m.translate(-pos.x() , -pos.y());
+		newPath = m.map(newPath);
+		QMatrix mt = m_item->matrix();
+		mt.translate(pos.x() , pos.y());
+		m_item->setMatrix(mt);
+	}
+	
+	
+	m_item->setPath(newPath);
 }
 
 QPainterPath Brush::path() const
@@ -194,5 +217,5 @@ QString Brush::itemToXml() const
 	return doc.toString();
 }
 
-Q_EXPORT_PLUGIN( Brush )
+Q_EXPORT_PLUGIN2(kt_brush, Brush )
 

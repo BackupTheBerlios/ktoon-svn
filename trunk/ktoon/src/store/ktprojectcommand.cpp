@@ -436,6 +436,7 @@ void KTProjectCommand::sceneCommand(const KTSceneEvent *event, bool redo)
 
 void KTProjectCommand::itemCommand(const KTItemEvent *event, bool redo)
 {
+	D_FUNCINFO;
 	if ( redo )
 	{
 		switch(event->action())

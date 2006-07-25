@@ -53,13 +53,16 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		
 		void setCurrentScene(int index);
 		
+		void scaleView(qreal scaleFactor);
+		
 	protected:
 		void mousePressEvent ( QMouseEvent * event  );
 		void mouseMoveEvent ( QMouseEvent * event );
 		void mouseReleaseEvent(QMouseEvent *event );
 		void tabletEvent ( QTabletEvent * event );
 		void resizeEvent ( QResizeEvent * event );
-			
+		void wheelEvent(QWheelEvent *event);
+		
 	signals:
 		void cursorPosition(const QPointF &pos);
 		void eventTriggered(const KTProjectEvent *event);

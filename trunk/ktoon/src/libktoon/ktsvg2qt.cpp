@@ -633,4 +633,29 @@ bool KTSvg2Qt::parseBrush(QBrush &brush, const QXmlAttributes &attributes)
 	return false;
 }
 
+bool KTSvg2Qt::svgmatrix2qtmatrix(const QString &data, QMatrix &matrix)
+{
+	QString::const_iterator itr = data.constBegin();
+	while (itr != data.constEnd()) 
+	{
+		if ((*itr) == QLatin1Char('m')) {  //matrix
+			QString temp(QLatin1String("m"));
+			int remains = 6;
+			while (remains--) {
+				temp += *itr++;
+			}
 
+			while ((*itr).isSpace())
+				++itr;
+			++itr;// '('
+			QList<qreal> points = parseNumbersList(itr);
+			++itr; // ')'
+
+			Q_ASSERT(points.count() == 6);
+			matrix = matrix * QMatrix(points[0], points[1],
+					points[2], points[3],
+					points[4], points[5]);
+		}
+	}
+	return true;
+}

@@ -387,6 +387,7 @@ QString KTProject::removeFrame(int scenePos, int layerPos, int position)
 
 void KTProject::removeItem(int scenePosition, int layerPosition, int framePosition, int position)
 {
+	D_FUNCINFO;
 	KTScene *scene = this->scene(scenePosition);
 	
 	if ( scene )

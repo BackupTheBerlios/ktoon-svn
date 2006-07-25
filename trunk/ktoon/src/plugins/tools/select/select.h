@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2006 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,49 +17,61 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef SELECT_H
+#define SELECT_H
 
-#ifndef KTTOOLPLUGIN_H
-#define KTTOOLPLUGIN_H
+#include <QObject>
+#include <kttoolplugin.h>
+#include <QSpinBox>
 
-#include <qobject.h>
-#include "kttoolinterface.h"
-#include "ktbrushmanager.h"
-#include "ktinputdeviceinformation.h"
-
-#include <QGraphicsView>
+#include "ktpathitem.h"
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-class Q_DECL_EXPORT KTToolPlugin : public QObject, public KTToolInterface
+
+class Node;
+
+class Select : public KTToolPlugin
 {
 	Q_OBJECT;
-	Q_INTERFACES(KTToolInterface);
 	
 	public:
-		explicit KTToolPlugin(QObject * parent = 0);
-		~KTToolPlugin();
+		Select();
 		
-		void setCurrentTool(const QString &tool);
-		QString currentTool() const;
+		virtual ~Select();
 		
 		virtual void init(QGraphicsView *view);
-		
-		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view ) = 0;
-		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view) = 0;
-		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view) = 0;
+		virtual QStringList keys() const;
+		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
+		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
+		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 		
 		virtual QString itemToXml() const;
 		
-		virtual QMap<QString, DAction *> actions() const = 0;
+		virtual QPainterPath path() const;
 		
-		virtual QWidget *configurator()  = 0;
+		virtual QMap<QString, DAction *>actions() const;
 		
-		virtual void aboutToChangeTool() = 0;
+		int toolType() const;
+		
+		virtual QWidget *configurator();
+		
+		virtual bool isComplete() const;
+		virtual void aboutToChangeTool();
 		
 	private:
-		QString m_currentTool;
+		void setupActions();
+		
+	private:
+		QPoint m_firstPoint;
+		QPoint m_oldPos;
+		QPainterPath m_path;
+		
+		QMap<QString, DAction *> m_actions;
+		QList<Node *> m_nodes;
+		QGraphicsView *m_view;
+// 		KTPathItem *m_item;
 };
 
 #endif
-

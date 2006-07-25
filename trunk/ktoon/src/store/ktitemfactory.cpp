@@ -52,9 +52,23 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 	{
 		m_item = new KTPathItem;
 		
-		QPainterPath path;		
+		QPainterPath path;
 		KTSvg2Qt::svgpath2qtpath( atts.value("d"), path );
+		
+		QMatrix matrix;
+		KTSvg2Qt::svgmatrix2qtmatrix( atts.value("transform"), matrix );
+		
 		qgraphicsitem_cast<KTPathItem *>(m_item)->setPath(path);
+		qgraphicsitem_cast<KTPathItem *>(m_item)->setMatrix(matrix);
+		
+		SHOW_VAR(atts.value("transform"));
+// 		SHOW_VAR(matrix.m11());
+// 		SHOW_VAR(matrix.m22());
+// 		SHOW_VAR(matrix.dx());
+// 		SHOW_VAR(matrix.dy());
+// 		m_item->update();
+// 		m_item->translate(matrix.dx(), matrix.dy());
+// 		m_item->setPos(matrix.dx(), matrix.dy());
 	}
 	else if ( qname == "rect" )
 	{

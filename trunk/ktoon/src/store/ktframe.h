@@ -33,18 +33,13 @@ class KTFrame;
  * @brief Esta clase representa un marco o frame de la animacion
  * @author David Cuadrado \<krawek@toonka.com\>
 */
-class Q_DECL_EXPORT KTFrame : public QGraphicsScene, public KTAbstractSerializable
+class Q_DECL_EXPORT KTFrame : public QObject, public KTAbstractSerializable
 {
 	public:
 		/**
 		 * Constructor por defecto
 		 */
 		KTFrame(QObject *parent = 0);
-		
-		/**
-		 * Construye un frame con un nombre
-		 */
-		KTFrame(const QString &frameName, QObject * parent = 0);
 		
 		/**
 		 * Destructor
