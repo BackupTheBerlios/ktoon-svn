@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2006 by Jorge Cuadrado   *
- *   kuadrosx@libano   *
+ *   kuadrosx@toonka.com   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -27,7 +27,7 @@
 
 
 /**
- * @author Jorge Cuadrado <kuadrosx@libano>
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 class Node : public QObject, public QGraphicsItem
 {
@@ -53,7 +53,7 @@ class Node : public QObject, public QGraphicsItem
 		
 		
 	private:
-		TypeNode m_typeNode;
+		TypeNode m_typeNode;;
 };
 
 #endif

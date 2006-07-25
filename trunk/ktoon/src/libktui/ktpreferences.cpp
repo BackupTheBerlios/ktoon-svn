@@ -143,13 +143,13 @@ class KTPreferences::FontPage : public QWidget
 		QFont currentFont() const;
 		
 	private:
-		QFontComboBox *m_fontCombo;
+		DFontChooser *m_fontChooser;
 };
 
 KTPreferences::FontPage::FontPage()
 {
-	m_fontCombo = new QFontComboBox(this);
-	m_fontCombo->setCurrentFont(font());
+	m_fontChooser = new DFontChooser(this);
+	m_fontChooser->setCurrentFont(font());
 }
 
 KTPreferences::FontPage::~FontPage()
@@ -159,7 +159,7 @@ KTPreferences::FontPage::~FontPage()
 
 QFont KTPreferences::FontPage::currentFont() const
 {
-	return m_fontCombo->currentFont();
+	return m_fontChooser->currentFont();
 }
 
 
@@ -185,6 +185,9 @@ KTPreferences::KTPreferences( QWidget *parent ) : DConfigurationDialog(parent )
 	
 	m_drawingAreaProperties = new KTPaintAreaConfig;
 	addPage(m_drawingAreaProperties, tr("Paint area"))->setIcon( QIcon(THEME_DIR+"/icons/drawing_area.png") );
+	
+	
+	resize(400,400);
 }
 
 //-------------- DESTRUCTOR -----------------

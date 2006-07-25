@@ -53,6 +53,7 @@
 #include <QFileDialog>
 #include <QDomDocument>
 #include <QMessageBox>
+#include <QDesktopServices>
 //
 
 
@@ -102,7 +103,6 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_viewDoc(0), m_an
 	}
 	
 	KTPluginManager::instance()->loadPlugins();
-	
 }
 
 

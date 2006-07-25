@@ -21,8 +21,19 @@ function check()
 	if [ -d $CONFIGURE_TEST_DIR/$2 ]
 	then
 		cd $CONFIGURE_TEST_DIR/$2
+		
+		${MAKE} clean 2> /dev/null > /dev/null
 		$QMAKE  2>> $CONFIG_LOG >> $CONFIG_LOG
-		${MAKE} INCPATH="${3}" LIBS="${4}" 2>>$CONFIG_LOG >>$CONFIG_LOG || RESULT="no."
+		
+
+		
+		if [ "$3" != "" -a "$4" != "" ]
+		then
+			${MAKE} INCPATH="${3}" LIBS="${4}" 2>>$CONFIG_LOG >>$CONFIG_LOG || RESULT="no."
+		else
+			${MAKE} 2>>$CONFIG_LOG >>$CONFIG_LOG || RESULT="no." 
+		fi
+
 		cd - 2>> /dev/null >> /dev/null
 	else
 		RESULT="no."
@@ -102,6 +113,9 @@ INCPATH=''
 
 
 echo > $DLIB_CONFIG
+
+check "qt" qt || exit
+
 
 # Checking aspell
 check "aspell" aspell && defineDLibConf "LIBS += -laspell" && defineDLibConf  "DEFINES += HAVE_ASPELL"

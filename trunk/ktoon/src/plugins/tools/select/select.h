@@ -47,7 +47,7 @@ class Select : public KTToolPlugin
 		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 		
-		virtual QString itemToXml() const;
+		virtual QString toolToXml() const;
 		
 		virtual QPainterPath path() const;
 		

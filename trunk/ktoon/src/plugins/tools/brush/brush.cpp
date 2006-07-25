@@ -210,7 +210,7 @@ void Brush::aboutToChangeTool()
 {
 }
 
-QString Brush::itemToXml() const
+QString Brush::toolToXml() const
 {
 	QDomDocument doc;
 	doc.appendChild(m_item->toXml( doc ));

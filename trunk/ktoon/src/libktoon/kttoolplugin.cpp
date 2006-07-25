@@ -44,8 +44,12 @@ QString KTToolPlugin::currentTool() const
 	return m_currentTool;
 }
 
-QString KTToolPlugin::itemToXml() const
+QString KTToolPlugin::toolToXml() const
 {
 	return QString();
 }
 
+KTProjectEvent::Action KTToolPlugin::action() const
+{
+	return KTProjectEvent::None;
+}

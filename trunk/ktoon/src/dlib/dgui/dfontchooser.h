@@ -21,18 +21,36 @@
 #ifndef DFONTCHOOSER_H
 #define DFONTCHOOSER_H
 
+#include <QFrame>
 
-#include<QFontComboBox>
+class QComboBox;
+class QFontComboBox;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado \<krawek@gmail.com\>
 */
-class DFontChooser : public QFontComboBox
+class DFontChooser : public QFrame
 {
-	Q_OBJECT;
+	Q_OBJECT
 	public:
 		DFontChooser(QWidget *parent = 0);
 		~DFontChooser();
+		void setCurrentFont(const QFont &font);
+		QFont currentFont() const;
+		
+	signals:
+		void fontChanged();
+		
+	private slots:
+		void emitFontChanged(int = 0);
+		void loadFontInfo(const QFont &newFont);
+		
+	private:
+		QFontComboBox *m_families;
+		QComboBox *m_fontStyle;
+		QComboBox *m_fontSize;
+		
+		QFont m_currentFont;
 };
 
 #endif

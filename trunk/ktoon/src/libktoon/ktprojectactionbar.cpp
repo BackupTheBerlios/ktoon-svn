@@ -228,7 +228,7 @@ void KTProjectActionBar::setup(Actions actions)
 		QToolButton *button = new QToolButton;
 		
 		button->setText(tr("Insert scene") );
-		button->setIcon(QIcon( ));
+// 		button->setIcon(QIcon( HOME_DIR+"/themes/default/icons/add_scene.svg"));
 		
 		button->setToolTip(tr("Insert a scene"));
 		

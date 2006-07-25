@@ -48,7 +48,7 @@ class GLDevice : public QGLWidget
 	protected:
 		void initializeGL()
 		{
-			glShadeModel(GL_FLAT);
+// 			glShadeModel(GL_FLAT);
 			glDisable(GL_DEPTH_TEST);
 	
 			glEnable( GL_LINE_SMOOTH );
@@ -56,6 +56,11 @@ class GLDevice : public QGLWidget
 			glEnable( GL_POINT_SMOOTH );
 			glEnable(GL_POLYGON_SMOOTH );
 			glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST  );
+			
+// 			glDepthFunc(GL_LESS);
+// 			glEnable(GL_DEPTH_TEST);
+// 			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		}
 };
 
@@ -79,17 +84,15 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(p
 	m_drawingRect = QRectF(QPointF(0,0), QSizeF( 500, 400 ) ); // FIXME: parametrizable
 	
 	setCurrentScene( 0 );
-	qobject_cast<KTScene *>(scene())->setCurrentFrame( 0, 0);
+	qobject_cast<KTScene *>(scene())->setCurrentFrame( 0, 0 );
 	
 	centerDrawingArea();
-// 	setUseOpenGL(true);
 	
 // 	setRenderHint(QPainter::Antialiasing, true);
 }
 
 KTPaintArea::~KTPaintArea()
 {
-	
 }
 
 void KTPaintArea::setCurrentScene(int index)
@@ -113,6 +116,7 @@ void KTPaintArea::setCurrentScene(int index)
 
 void KTPaintArea::setUseOpenGL(bool opengl)
 {
+	D_FUNCINFO << opengl;
 #ifdef QT_OPENGL_LIB
 	if ( opengl )
 	{
@@ -131,7 +135,6 @@ void KTPaintArea::setUseOpenGL(bool opengl)
 
 void KTPaintArea::setTool(KTToolPlugin *tool )
 {
-	
 	m_tool = tool;
 	m_tool->init(this);
 }
@@ -182,16 +185,17 @@ void KTPaintArea::mouseReleaseEvent(QMouseEvent *event)
 		KTScene *currentScene = qobject_cast<KTScene *>(scene());
 		m_tool->release(m_inputInformation, m_brushManager,  currentScene, this );
 		
-		QString itemToXml = m_tool->itemToXml();
+		QString toolToXml = m_tool->toolToXml();
 		
-		SHOW_VAR(itemToXml);
+		SHOW_VAR(toolToXml);
 		
-		if ( ! itemToXml.isEmpty() )
+		if ( ! toolToXml.isEmpty() )
 		{
-			KTItemEvent event(KTProjectEvent::Add, m_currentSceneIndex, currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), -1,  itemToXml);
+			KTItemEvent event(m_tool->action(), m_currentSceneIndex, currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), -1,  toolToXml);
 			
 			emit eventTriggered( &event );
 		}
+		
 	}
 	
 	delete eventMapped;
@@ -280,8 +284,8 @@ void KTPaintArea::drawBackground(QPainter *painter, const QRectF &rect)
 {
 	QGraphicsView::drawBackground(painter, rect);
 	
-	painter->setPen( QPen( QColor(0,0,0,180), 3) );
-	painter->fillRect(m_drawingRect, Qt::white);
+	painter->setPen( QPen(QColor(0,0,0,180), 3) );
+	painter->fillRect( m_drawingRect, Qt::white );
 	painter->drawRect( m_drawingRect );
 }
 
@@ -307,9 +311,7 @@ void KTPaintArea::wheelEvent(QWheelEvent *event)
 	{
 		scaleView(pow(( double)2, -event->delta() / 240.0));
 	}
-	QGraphicsView::wheelEvent(event);
-	
-	
+	QGraphicsView::wheelEvent(event);	
 }
 
 void KTPaintArea::scaleView(qreal scaleFactor)
@@ -320,5 +322,10 @@ void KTPaintArea::scaleView(qreal scaleFactor)
 
 	scale(scaleFactor, scaleFactor);
 }
+
+
+
+
+
 
 

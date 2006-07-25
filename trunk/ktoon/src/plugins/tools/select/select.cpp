@@ -162,7 +162,7 @@ void Select::aboutToChangeTool()
 	m_view->setDragMode (QGraphicsView::NoDrag);
 }
 
-QString Select::itemToXml() const
+QString Select::toolToXml() const
 {
 	QDomDocument doc;
 // 	doc.appendChild(m_item->toXml( doc ));

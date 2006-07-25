@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2006 by Jorge Cuadrado   *
- *   kuadrosx@libano   *
+ *   kuadrosx@toonka.com   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -48,32 +48,28 @@ Node::~Node()
 void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *w )
 {
 	Q_UNUSED(w);
-// 	QMatrix m = painter->matrix();
-// 	QMatrix matrix(1.0f , m.m12(), m.m21(), 1.0f, m.dx(),  m.dy()  );
-	
-// 	painter->setMatrix(matrix);
-	
 	if (option->state & QStyle::State_Sunken)
 	{
 		QColor c("green");
 		c.setAlpha(150);
-		painter->setPen(QPen(c, 5));
+		painter->setBrush( c );
 	} 
 	else
 	{
 		QColor c("navy");
 		c.setAlpha(150);
-		painter->setPen(QPen(c, 5));
-		
+		painter->setBrush( c );
 	}
-	painter->drawPoint(QPoint(0,0));
+	painter->drawRect(boundingRect());
 }
 
 QRectF Node::boundingRect() const
 {
-    qreal adjust = 1;
-    QRectF r( -5/2-adjust , -5/2-adjust,
-	       5 + adjust, 5 + adjust);
+    qreal adjust = 2;
+    QMatrix matrix = parentItem()->sceneMatrix();
+    QSizeF size( 8  * 1/matrix.m11(), 8  * 1/matrix.m22());
+    QRectF r(QPointF( -size.width()/2, -size.height()/2), size);
+    
     return r;
 }
 

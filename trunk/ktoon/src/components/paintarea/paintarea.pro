@@ -25,4 +25,4 @@ CONFIG += release \
 warn_on \
 staticlib
 TEMPLATE = lib
-QT += xml
+QT += xml opengl

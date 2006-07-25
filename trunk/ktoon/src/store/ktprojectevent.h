@@ -46,6 +46,7 @@ class Q_DECL_EXPORT KTProjectEvent
 		
 		enum Action
 		{
+			None = 0,
 			/**
 			 * Añade una parte, el tipo de data es nulo
 			 */
