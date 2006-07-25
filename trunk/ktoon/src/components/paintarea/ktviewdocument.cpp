@@ -33,7 +33,6 @@
 
 #include "dvhbox.h"
 
-#include "ktdrawingareaproperties.h"
 #include "ktpaintareaproperties.h"
 #include "ktpluginmanager.h"
 #include "ktpaintarea.h"
@@ -791,23 +790,23 @@ void KTViewDocument::setZoomFactor(int porcent)
 	m_zoomFactorSpin->blockSignals(false);
 }
 
-void KTViewDocument::configure()
-{
-	KTDrawingAreaProperties properties;
-	
-	if ( properties.exec() != QDialog::Rejected )
-	{
-		KTPaintAreaProperties areaProperties;
-		
-		areaProperties.gridColor = properties.gridColor();
-		areaProperties.backgroundColor = properties.backgroundColor();
-		areaProperties.onionSkinColor = properties.onionSkinColor();
-		areaProperties.onionSkinBackground = properties.onionSkinBackground();
-		areaProperties.gridSeparation = properties.gridSeparation();
-		
-// 		m_paintArea->setProperties(areaProperties);
-	}
-}
+// void KTViewDocument::configure()
+// {
+// 	KTDrawingAreaProperties properties;
+// 	
+// 	if ( properties.exec() != QDialog::Rejected )
+// 	{
+// 		KTPaintAreaProperties areaProperties;
+// 		
+// 		areaProperties.gridColor = properties.gridColor();
+// 		areaProperties.backgroundColor = properties.backgroundColor();
+// 		areaProperties.onionSkinColor = properties.onionSkinColor();
+// 		areaProperties.onionSkinBackground = properties.onionSkinBackground();
+// 		areaProperties.gridSeparation = properties.gridSeparation();
+// 		
+// // 		m_paintArea->setProperties(areaProperties);
+// 	}
+// }
 
 // void KTViewDocument::closeEvent(QCloseEvent *e)
 // {

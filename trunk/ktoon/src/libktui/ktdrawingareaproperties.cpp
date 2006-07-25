@@ -28,27 +28,11 @@
 #include <dcolorbutton.h>
 #include <dconfig.h>
 
-KTDrawingAreaProperties::KTDrawingAreaProperties(QWidget *parent) : QDialog(parent)
+KTDrawingAreaProperties::KTDrawingAreaProperties(QWidget *parent) : QWidget(parent)
 {
-	setModal(true);
-	
 	QVBoxLayout *mainLayout = new QVBoxLayout(this);
 	
 	setupPage();
-	
-	QHBoxLayout *buttonLayout = new QHBoxLayout;
-	buttonLayout->addStretch(1);
-	
-	QPushButton *okButton = new QPushButton(tr("Accept"));
-	connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
-	buttonLayout->addWidget(okButton);
-	
-	QPushButton *cancelButton = new QPushButton(tr("Cancel"));
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject ()));
-	buttonLayout->addWidget(cancelButton);
-	
-	mainLayout->addLayout(buttonLayout);
-	
 }
 
 KTDrawingAreaProperties::~KTDrawingAreaProperties()
@@ -127,3 +111,4 @@ int KTDrawingAreaProperties::gridSeparation() const
 {
 	return m_gridSeparation->value();
 }
+

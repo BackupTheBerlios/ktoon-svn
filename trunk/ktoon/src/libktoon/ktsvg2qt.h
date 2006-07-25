@@ -38,9 +38,10 @@ class KTSvg2Qt
 		
 	public:
 		static bool svgpath2qtpath(const QString &data, QPainterPath &path);
+		static bool svgmatrix2qtmatrix(const QString &data, QMatrix &matrix);
+		
 		static void parsePen(QPen &pen, const QXmlAttributes &attributes);
 		static bool parseBrush(QBrush &brush, const QXmlAttributes &attributes);
-		static bool svgmatrix2qtmatrix(const QString &data, QMatrix &matrix);
 };
 
 #endif

@@ -21,7 +21,7 @@
 #ifndef KTDRAWINGAREAPROPERTIES_H
 #define KTDRAWINGAREAPROPERTIES_H
 
-#include <QDialog>
+#include <QWidget>
 #include <QSpinBox>
 
 
@@ -30,7 +30,7 @@ class DColorButton;
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTDrawingAreaProperties : public QDialog
+class KTDrawingAreaProperties : public QWidget
 {
 	Q_OBJECT;
 	public:

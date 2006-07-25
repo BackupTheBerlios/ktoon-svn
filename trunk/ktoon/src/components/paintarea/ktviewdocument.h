@@ -112,7 +112,7 @@ class KTViewDocument : public QMainWindow
 		void setCursor(const QCursor &c);
 		
 		void updateZoomFactor( double f);
-		void configure();
+// 		void configure();
 		
 		
 		void selectToolFromMenu(QAction *act);

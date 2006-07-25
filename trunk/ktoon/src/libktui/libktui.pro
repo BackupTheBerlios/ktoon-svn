@@ -13,12 +13,14 @@ HEADERS += ktthemeselector.h \
            ktabout.h \
            ktpreferences.h \
            ktworkspace.h \
-           ktcamerabar.h 
+           ktcamerabar.h \
+           ktdrawingareaproperties.h 
 SOURCES += ktthemeselector.cpp \
            ktabout.cpp \
            ktpreferences.cpp \
            ktworkspace.cpp \
-           ktcamerabar.cpp 
+           ktcamerabar.cpp \
+           ktdrawingareaproperties.cpp 
 QT += xml opengl gui
 KDEV_QTVER = 4
 INCLUDEPATH += ../../src/store \

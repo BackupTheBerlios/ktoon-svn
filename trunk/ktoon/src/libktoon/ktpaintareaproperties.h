@@ -21,6 +21,7 @@
 #define KTPAINTAREAPROPERTIES_H
 
 #include <QColor>
+#include "ktglobal.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -35,6 +36,8 @@ struct KTPaintAreaProperties
 		QColor onionSkinColor;
 		QColor onionSkinBackground;
 		int gridSeparation;
+		
+		KToon::RenderType renderType;
 };
 
 #endif

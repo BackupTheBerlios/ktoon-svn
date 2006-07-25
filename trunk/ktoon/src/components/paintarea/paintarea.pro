@@ -5,12 +5,10 @@
 
 HEADERS += ktpaintarea.h \
            ktconfigurationarea.h \
-           ktdrawingareaproperties.h \
            ktviewdocument.h \
            ktdocumentruler.h 
 SOURCES += ktpaintarea.cpp \
            ktconfigurationarea.cpp \
-           ktdrawingareaproperties.cpp \
            ktviewdocument.cpp \
            ktdocumentruler.cpp 
 KDEV_QTVER = 4

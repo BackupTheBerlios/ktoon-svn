@@ -39,6 +39,7 @@
 #include "ktglobal.h"
 
 class ColorSchemePref;
+class KTDrawingAreaProperties;
 
 class KTPreferences : public DConfigurationDialog
 {
@@ -56,6 +57,7 @@ class KTPreferences : public DConfigurationDialog
 		KTThemeSelector *m_themeSelector;
 		FontPage *m_fontChooser;
 		GeneralPage *m_generalPage;
+		KTDrawingAreaProperties *m_drawingAreaProperties;
 		
 	public slots:
 		void apply();
