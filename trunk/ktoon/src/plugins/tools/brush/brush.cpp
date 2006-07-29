@@ -156,11 +156,8 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 		QPointF pos = m_path.boundingRect().topLeft();
 		m.translate(-pos.x() , -pos.y());
 		newPath = m.map(newPath);
-		QMatrix mt = m_item->matrix();
-		mt.translate(pos.x() , pos.y());
-		m_item->setMatrix(mt);
+		m_item->setPos(pos);
 	}
-	
 	
 	m_item->setPath(newPath);
 }

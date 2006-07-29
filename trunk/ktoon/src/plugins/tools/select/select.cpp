@@ -89,7 +89,6 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 		scene->removeItem((*it));
 		m_nodes.erase (it);
 		delete (*it);
-			
 		++it;
 	}
 	
@@ -107,8 +106,6 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 				Node *topRight = new Node(Node::TopRight, rect.topRight(),item, scene);
 				Node *bottomLeft = new Node(Node::BottomLeft, rect.bottomLeft(),item, scene);
 				Node *bottomRight = new Node(Node::BottomRight, rect.bottomRight(),item, scene);
-				
-				
 				Node *center = new Node(Node::Center, rect.center() ,item, scene);
 				m_nodes << topLeft << topRight<< bottomLeft << bottomRight << center;
 			}
@@ -118,7 +115,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 
 QPainterPath Select::path() const
 {
-	return m_path;
+// 	return m_path;
 }
 
 void Select::setupActions()

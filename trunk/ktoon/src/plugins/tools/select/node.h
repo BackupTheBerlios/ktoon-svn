@@ -51,9 +51,10 @@ class Node : public QObject, public QGraphicsItem
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 		void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
 		
-		
 	private:
-		TypeNode m_typeNode;;
+		TypeNode m_typeNode;
+		bool m_notChange;
+		QRectF m_brParent;
 };
 
 #endif

@@ -64,14 +64,9 @@ class Select : public KTToolPlugin
 		void setupActions();
 		
 	private:
-		QPoint m_firstPoint;
-		QPoint m_oldPos;
-		QPainterPath m_path;
-		
 		QMap<QString, DAction *> m_actions;
 		QList<Node *> m_nodes;
 		QGraphicsView *m_view;
-// 		KTPathItem *m_item;
 };
 
 #endif

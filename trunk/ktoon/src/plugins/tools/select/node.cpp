@@ -31,7 +31,7 @@
 
 #define SHOW_VAR(s) qDebug() << #s << " = " << s
 
-Node::Node(TypeNode node,const QPointF & pos, QGraphicsItem * parent,  QGraphicsScene * scene  ) : QGraphicsItem(parent, scene), m_typeNode(node)
+Node::Node(TypeNode node,const QPointF & pos, QGraphicsItem * parent,  QGraphicsScene * scene  ) : QGraphicsItem(parent, scene), m_typeNode(node), m_notChange(true)
 {
 	QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor ));
 	setFlag(ItemIsMovable);
@@ -65,129 +65,109 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
 QRectF Node::boundingRect() const
 {
-    qreal adjust = 2;
-    QMatrix matrix = parentItem()->sceneMatrix();
-    QSizeF size( 8  * 1/matrix.m11(), 8  * 1/matrix.m22());
-    QRectF r(QPointF( -size.width()/2, -size.height()/2), size);
-    
-    return r;
+// 	qreal adjust = 2;
+	QMatrix matrix = parentItem()->sceneMatrix();
+	QSizeF size( 8  * 1/matrix.m11(), 8  * 1/matrix.m22());
+	QRectF r(QPointF( -size.width()/2, -size.height()/2), size);
+	//     QRectF r (QPointF(0,0), QSizeF( 5/2, 5/2));
+	return r;
 }
 
 
 QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-	switch (change) 
-	{
-		case ItemPositionChange:
-		{
-			switch(m_typeNode)
-			{
-				case TopLeft:
-				{
-					QRectF rect = parentItem()->sceneBoundingRect();
-					QRectF br =parentItem()->sceneBoundingRect();
-					rect.setTopLeft(scenePos());
-					float sx = 1, sy = 1;
-					sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
-					sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
-					
-					
-					if(sx > 0 && sy > 0)
-					{
-						
-						parentItem()->translate(pos().x(), pos().y());
-						parentItem()->scale(sx, sy);
-					}
-					break;
-				}
-				case TopRight:
-				{
-					QRectF rect = parentItem()->sceneBoundingRect();
-					QRectF br =parentItem()->sceneBoundingRect();
-					br.moveTopLeft(parentItem()->pos());
-					rect.setTopRight(scenePos());
-					float sx = 1, sy = 1;
-					sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
-					sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
-					if(sx > 0 && sy > 0)
-					{
-						parentItem()->translate(0, pos().y());
-						parentItem()->scale(sx, sy);
-					}
-					break;
-				}
-				case BottomRight:
-				{
-					QRectF rect = parentItem()->sceneBoundingRect();
-					
-					QRectF br =parentItem()->sceneBoundingRect();
-					rect.setBottomRight(scenePos());
-					rect.translate ( scenePos());
-					float sx = 1, sy = 1;
-					sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
-					sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
-					if(sx > 0 && sy > 0)
-					{
-						parentItem()->scale(sx, sy);
-					}
-					break;
-				}
-				case BottomLeft:
-				{
-					QRectF rect = parentItem()->sceneBoundingRect();
-					QRectF br =parentItem()->sceneBoundingRect();
-					br.moveTopLeft(parentItem()->pos());
-					
-					rect.setBottomLeft(scenePos());
-					float sx = 1, sy = 1;
-					sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
-					sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
-					if(sx > 0 && sy > 0)
-					{
-						parentItem()->translate(pos().x(), 0);
-						parentItem()->scale(sx, sy);
-					}
-					break;
-					
-					
-				}
-				case Center:
-				{
-					break;
-				}
-			};
-			break;
-		}
-		case QGraphicsItem::ItemMatrixChange:
-		{
-			break;
-		}
-		
-		default:
-			break;
-	};
+	
 	return QGraphicsItem::itemChange(change, value);
 }
 
 void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	update();
+	m_brParent = parentItem()->sceneBoundingRect();
 	QGraphicsItem::mousePressEvent(event);
 }
 
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-
 	update();
 	QGraphicsItem::mouseReleaseEvent(event);
-	
 }
 
 void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
-	moveBy(  event->pos().x(), event->pos().y() );
+	QPointF newPos(mapToParent(event->pos()) - matrix().map(event->buttonDownPos(Qt::LeftButton)));
+	if( m_notChange)
+	{
+		m_notChange = false;
+	}
+	else
+	{
+		QRectF rect = m_brParent;
+		QRectF br = m_brParent;
+		switch(m_typeNode)
+		{
+			case TopLeft:
+			{
+				rect.setTopLeft(event->scenePos());
+				float sx = 1, sy = 1;
+				sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
+				sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
+				if(sx > 0 && sy > 0)
+				{
+					m_brParent.setTopLeft(scenePos());
+					parentItem()->scale(sx, sy);
+					parentItem()->setPos( rect.topLeft() );
+				}
+				break;
+			}
+			case TopRight:
+			{
+				rect.setTopRight(event->scenePos());
+				float sx = 1, sy = 1;
+				sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
+				sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
+				if(sx > 0 && sy > 0)
+				{
+					m_brParent.setTopRight(event->scenePos());
+					parentItem()->setPos(rect.topLeft().x(), br.y() );
+					parentItem()->scale(sx, sy);
+				}
+				break;
+			}
+			case BottomRight:
+			{
+				rect.setBottomRight(event->scenePos ());
+				float sx = 1, sy = 1;
+				sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
+				sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
+				if(sx > 0 && sy > 0 && rect.isValid ())
+				{
+					m_brParent.setBottomRight(event->scenePos ());
+					parentItem()->scale(sx, sy);
+				}
+				break;
+			}
+			case BottomLeft:
+			{
+				rect.setBottomLeft(event->scenePos ());
+				m_brParent.setBottomLeft(event->scenePos ());
+				float sx = 1, sy = 1;
+				sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
+				sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
+				if(sx > 0 && sy > 0)
+				{
+					parentItem()->scale(sx, sy);
+					parentItem()->setPos(br.x(), rect.topLeft().y()  );
+				}
+				break;
+			}
+			case Center:
+			{
+				break;
+			}
+		};
+	}
 	update();
-// 	QGraphicsItem::mouseMoveEvent(event);
 }
 
 
