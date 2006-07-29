@@ -87,8 +87,6 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(p
 	qobject_cast<KTScene *>(scene())->setCurrentFrame( 0, 0 );
 	
 	centerDrawingArea();
-	
-// 	setRenderHint(QPainter::Antialiasing, true);
 }
 
 KTPaintArea::~KTPaintArea()
@@ -112,6 +110,12 @@ void KTPaintArea::setCurrentScene(int index)
 		
 		sscene->setSceneRect( m_drawingRect );
 	}
+}
+
+void KTPaintArea::setAntialiasing(bool use)
+{
+	setRenderHint(QPainter::Antialiasing, use);
+	setRenderHint(QPainter::TextAntialiasing, use);
 }
 
 void KTPaintArea::setUseOpenGL(bool opengl)

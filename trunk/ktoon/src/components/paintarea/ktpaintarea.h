@@ -48,6 +48,7 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		~KTPaintArea();
 		void setPhotogram(QGraphicsScene *photogram);
 		
+		void setAntialiasing(bool use);
 		void setUseOpenGL(bool opengl);
 		void setTool(KTToolPlugin *tool);
 		
@@ -58,10 +59,10 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 	protected:
 		void mousePressEvent ( QMouseEvent * event  );
 		void mouseMoveEvent ( QMouseEvent * event );
-		void mouseReleaseEvent(QMouseEvent *event );
+		void mouseReleaseEvent ( QMouseEvent *event );
 		void tabletEvent ( QTabletEvent * event );
 		void resizeEvent ( QResizeEvent * event );
-		void wheelEvent(QWheelEvent *event);
+		void wheelEvent( QWheelEvent *event );
 		
 	signals:
 		void cursorPosition(const QPointF &pos);

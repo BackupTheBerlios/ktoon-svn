@@ -59,6 +59,9 @@ class KTViewDocument : public QMainWindow
 		void close();
 		QSize sizeHint() const;
 		
+		void setAntialiasing(bool useIt );
+		void setOpenGL(bool useIt);
+		
 		
 	public slots:
 		void disablePreviousOnionSkin();

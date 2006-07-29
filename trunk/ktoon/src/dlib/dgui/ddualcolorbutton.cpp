@@ -17,7 +17,7 @@
    Boston, MA 02111-1307, USA.
 */
 
-#include "ktdualcolorbutton.h"
+#include "ddualcolorbutton.h"
 
 #include "dcolorarrow.xpm"
 #include "dcolorreset.xpm"
@@ -36,7 +36,7 @@
 #include "ddebug.h"
 #include "dbrushadjuster.h"
 
-KTDualColorButton::KTDualColorButton( QWidget *parent ) : QWidget( parent )
+DDualColorButton::DDualColorButton( QWidget *parent ) : QWidget( parent )
 {
 	arrowBitmap = new QPixmap((const char **)dcolorarrow_bits);
 	
@@ -57,7 +57,7 @@ KTDualColorButton::KTDualColorButton( QWidget *parent ) : QWidget( parent )
 	setAcceptDrops(true);
 }
 
-KTDualColorButton::KTDualColorButton(const QBrush &fgColor, const QBrush &bgColor, QWidget *parent) : QWidget(parent)
+DDualColorButton::DDualColorButton(const QBrush &fgColor, const QBrush &bgColor, QWidget *parent) : QWidget(parent)
 {
 	arrowBitmap = new QPixmap((const char **)dcolorarrow_bits);
 	arrowBitmap->setMask(*arrowBitmap);
@@ -75,39 +75,39 @@ KTDualColorButton::KTDualColorButton(const QBrush &fgColor, const QBrush &bgColo
 	setAcceptDrops(true);
 }
 
-KTDualColorButton::~KTDualColorButton()
+DDualColorButton::~DDualColorButton()
 {
 	delete arrowBitmap;
 	delete resetPixmap;
 	DEND;
 }
 
-QBrush KTDualColorButton::foreground() const
+QBrush DDualColorButton::foreground() const
 {
 	return fg;
 }
 
-QBrush KTDualColorButton::background() const
+QBrush DDualColorButton::background() const
 {
 	return bg;
 }
 
-KTDualColorButton::DualColor KTDualColorButton::current() const
+DDualColorButton::DualColor DDualColorButton::current() const
 {
 	return curColor;
 }
 
-QBrush KTDualColorButton::currentColor() const
+QBrush DDualColorButton::currentColor() const
 {
 	return (curColor == Background ? bg : fg);
 }
 
-QSize KTDualColorButton::sizeHint() const
+QSize DDualColorButton::sizeHint() const
 {
 	return QSize(34, 34);
 }
 
-void KTDualColorButton::setForeground(const QBrush &c)
+void DDualColorButton::setForeground(const QBrush &c)
 {
 	fg = c;
 	update();
@@ -115,7 +115,7 @@ void KTDualColorButton::setForeground(const QBrush &c)
 	emit fgChanged(fg.color());
 }
 
-void KTDualColorButton::setBackground(const QBrush &c)
+void DDualColorButton::setBackground(const QBrush &c)
 {
 	bg = c;
 	update();
@@ -123,7 +123,7 @@ void KTDualColorButton::setBackground(const QBrush &c)
 	emit bgChanged(bg.color());
 }
 
-void KTDualColorButton::setCurrentColor(const QBrush &c)
+void DDualColorButton::setCurrentColor(const QBrush &c)
 {
 	if(curColor == Background)
 	{
@@ -136,19 +136,19 @@ void KTDualColorButton::setCurrentColor(const QBrush &c)
 	update();
 }
 
-void KTDualColorButton::setCurrent(DualColor s)
+void DDualColorButton::setCurrent(DualColor s)
 {
 	curColor = s;
 	update();
 }
 
-void KTDualColorButton::metrics(QRect &fgRect, QRect &bgRect)
+void DDualColorButton::metrics(QRect &fgRect, QRect &bgRect)
 {
 	fgRect = QRect(0, 0, width()-14, height()-14);
 	bgRect = QRect(14, 14, width()-14, height()-14);
 }
 
-void KTDualColorButton::paintEvent(QPaintEvent *)
+void DDualColorButton::paintEvent(QPaintEvent *)
 {
 	QRect fgRect, bgRect;
 	QPainter p(this);
@@ -157,10 +157,8 @@ void KTDualColorButton::paintEvent(QPaintEvent *)
 	QBrush defBrush = palette().color(QPalette::Button);
 
 	
-	qDrawShadeRect(&p, bgRect, palette(), curColor == Background, 2, 0,
-			isEnabled() ? &DBrushAdjuster::adjustBrush(bg, bgRect) : &defBrush);
-	qDrawShadeRect(&p, fgRect,  palette(), curColor == Foreground, 2, 0,
-			isEnabled() ? &DBrushAdjuster::adjustBrush(fg, fgRect) : &defBrush);
+	qDrawShadeRect(&p, bgRect, palette(), curColor == Background, 2, 0, isEnabled() ? &DBrushAdjuster::adjustBrush(bg, bgRect) : &defBrush);
+	qDrawShadeRect(&p, fgRect,  palette(), curColor == Foreground, 2, 0, isEnabled() ? &DBrushAdjuster::adjustBrush(fg, fgRect) : &defBrush);
 	p.setPen(QPen(palette().shadow().color()));
 	
 	p.drawPixmap(fgRect.right()+2, 0, *arrowBitmap);
@@ -168,12 +166,12 @@ void KTDualColorButton::paintEvent(QPaintEvent *)
 
 }
 
-void KTDualColorButton::dragEnterEvent(QDragEnterEvent *ev)
+void DDualColorButton::dragEnterEvent(QDragEnterEvent *ev)
 {
 // 	ev->accept(isEnabled() && KColorDrag::canDecode(ev));
 }
 
-void KTDualColorButton::dropEvent(QDropEvent *ev)
+void DDualColorButton::dropEvent(QDropEvent *ev)
 {
 // 	QColor c;
 // 	if(KColorDrag::decode(ev, c))
@@ -192,7 +190,7 @@ void KTDualColorButton::dropEvent(QDropEvent *ev)
 // 	}
 }
 
-void KTDualColorButton::mousePressEvent(QMouseEvent *ev)
+void DDualColorButton::mousePressEvent(QMouseEvent *ev)
 {
 	QRect fgRect, bgRect;
 	metrics(fgRect, bgRect);
@@ -238,71 +236,4 @@ void KTDualColorButton::mousePressEvent(QMouseEvent *ev)
 	update();
 }
 
-
-void KTDualColorButton::mouseMoveEvent(QMouseEvent *ev)
-{
-// 	if(!miniCtlFlag)
-// 	{
-// 		int delay = KGlobalSettings::dndEventDelay();
-// 		if(ev->x() >= mPos.x()+delay || ev->x() <= mPos.x()-delay ||
-// 				 ev->y() >= mPos.y()+delay || ev->y() <= mPos.y()-delay)
-// 		{
-// 			KColorDrag *d = new KColorDrag( curColor == Foreground ?
-// 					fg.color() : bg.color(),
-// 			this);
-// 			d->dragCopy();
-// 			dragFlag = true;
-// 		}
-// 	}
-}
-
-void KTDualColorButton::mouseReleaseEvent(QMouseEvent *ev)
-{
-// 	if(!miniCtlFlag)
-// 	{
-// 		QRect fgRect, bgRect;
-// 
-// 		metrics(fgRect, bgRect);
-// 		if(dragFlag)
-// 			curColor = tmpColor;
-// 		else if(fgRect.contains(ev->pos()) && curColor == Foreground)
-// 		{
-// 			if(tmpColor == Background)
-// 			{
-// 				curColor = Foreground;
-// 				emit currentChanged(Foreground);
-// 			}
-// // 			else
-// // 			{
-// // 				QColor newColor = fg.color();
-// // 				if(KColorDialog::getColor(newColor, d->dialogParent) != QDialog::Rejected)
-// // 				{
-// // 					fg.setColor(newColor);
-// // 					emit fgChanged(newColor);
-// // 				}
-// // 			}
-// 		}
-// 		else if(bgRect.contains(ev->pos()) && curColor == Background)
-// 		{
-// 			if(tmpColor == Foreground)
-// 			{
-// 				curColor = Background;
-// 				emit currentChanged(Background);
-// 			}
-// // 			else
-// // 			{
-// // 				QColor newColor = bg.color();
-// // 				if(KColorDialog::getColor(newColor, d->dialogParent) != QDialog::Rejected)
-// // 				{
-// // 					bg.setColor(newColor);
-// // 					emit bgChanged(newColor);
-// // 				}
-// // 			}
-// 		}
-// 		update();
-// 		dragFlag = false;
-// 	}
-// 	else
-// 		miniCtlFlag = false;
-}
 

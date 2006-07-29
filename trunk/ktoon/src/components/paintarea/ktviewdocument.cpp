@@ -40,6 +40,8 @@
 
 #include "ktproject.h"
 
+#include "ktpaintareastatus.h"
+
 KTViewDocument::KTViewDocument(KTProject *project, KToon::RenderType renderType, QWidget *parent ) : QMainWindow(parent)
 {
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/layer_pic.png") ); // FIXME: new image for documents
@@ -96,11 +98,22 @@ KTViewDocument::KTViewDocument(KTProject *project, KToon::RenderType renderType,
 	createTools();
 // 	createMenu();
 // 	m_paintArea->setHistory(m_history);
+	setStatusBar(new KTPaintAreaStatus(this));
 }
 
 KTViewDocument::~KTViewDocument()
 {
 // 	delete m_history;
+}
+
+void KTViewDocument::setAntialiasing(bool useIt )
+{
+	m_paintArea->setAntialiasing(useIt);
+}
+
+void KTViewDocument::setOpenGL(bool useIt)
+{
+	m_paintArea->setUseOpenGL( useIt );
 }
 
 void KTViewDocument::showPos(const QPointF &p)

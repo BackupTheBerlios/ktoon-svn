@@ -62,7 +62,7 @@ DAnimWidget::DAnimWidget(const QPixmap &px, const QString &text, QWidget *parent
 {
 	resize(px.width()/2, px.height());
 	
-	setFont(QFont("Times", 24, QFont::Bold));
+// 	setFont(QFont("Times", 24, QFont::Bold));
 	
 	QPoint position = QPoint(50, px.height());
 	QFontMetricsF fontMetrics(font());

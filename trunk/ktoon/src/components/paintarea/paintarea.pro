@@ -6,11 +6,13 @@
 HEADERS += ktpaintarea.h \
            ktconfigurationarea.h \
            ktviewdocument.h \
-           ktdocumentruler.h 
+           ktdocumentruler.h \
+           ktpaintareastatus.h 
 SOURCES += ktpaintarea.cpp \
            ktconfigurationarea.cpp \
            ktviewdocument.cpp \
-           ktdocumentruler.cpp 
+           ktdocumentruler.cpp \
+           ktpaintareastatus.cpp 
 KDEV_QTVER = 4
 INCLUDEPATH += ../../../src/store \
 ../../../src/libktoon \

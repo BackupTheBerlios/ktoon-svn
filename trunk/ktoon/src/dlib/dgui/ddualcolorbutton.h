@@ -34,7 +34,7 @@ class QBitmap;
  * 
  * @short A widget for selecting two related colors.
  *
- * KTDualColorButton allows the user to select two cascaded colors (usually a
+ * DDualColorButton allows the user to select two cascaded colors (usually a
  * foreground and background color). Other features include drag and drop
  * from other KDE color widgets, a reset to black and white control, and a
  * swap colors control.
@@ -50,7 +50,7 @@ class QBitmap;
  *
  * @author Daniel M. Duley <mosfet@kde.org>
  */
-class KTDualColorButton : public QWidget
+class DDualColorButton : public QWidget
 {
 	Q_OBJECT
 	Q_ENUMS( DualColor )
@@ -63,23 +63,23 @@ class KTDualColorButton : public QWidget
 
 		enum DualColor { Foreground, Background };
     		/**
-		 * Constructs a new KTDualColorButton using the default black and white
+		 * Constructs a new DDualColorButton using the default black and white
 		 * colors.
 		 *
      		 */
 		
     		/// KDE4 remove name argument
-		KTDualColorButton(QWidget *parent=0);
+		DDualColorButton(QWidget *parent=0);
 
     		/**
-		 * Constructs a new KTDualColorButton with the supplied foreground and
+		 * Constructs a new DDualColorButton with the supplied foreground and
 		 * background colors.
      		*/
     		/// KDE4 remove name argument
-		KTDualColorButton(const QBrush &fgColor, const QBrush &bgColor,
+		DDualColorButton(const QBrush &fgColor, const QBrush &bgColor,
 				 QWidget *parent=0);
 
-		~KTDualColorButton();
+		~DDualColorButton();
     		/**
 		 * Returns the current foreground color.
      		*/
@@ -132,7 +132,7 @@ class KTDualColorButton : public QWidget
     		/**
 		 * Emitted when the user changes the current color selection.
      		*/
-		void currentChanged(KTDualColorButton::DualColor s);
+		void currentChanged(DDualColorButton::DualColor s);
 		
 // 		void selectionChanged();
 		
@@ -147,9 +147,7 @@ class KTDualColorButton : public QWidget
 		virtual void metrics(QRect &fgRect, QRect &bgRect);
 		virtual void paintEvent(QPaintEvent *ev);
 		virtual void mousePressEvent(QMouseEvent *ev);
-		virtual void mouseMoveEvent(QMouseEvent *ev);
-		virtual void mouseReleaseEvent(QMouseEvent *ev);
-    // Dnd
+		// Dnd
 		virtual void dragEnterEvent(QDragEnterEvent *ev);
 		virtual void dropEvent(QDropEvent *ev);
 

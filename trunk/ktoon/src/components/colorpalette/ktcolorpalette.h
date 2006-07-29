@@ -35,7 +35,7 @@
 #include "dvhbox.h"
 #include "ktcolorpicker.h"
 #include "ktluminancepicker.h"
-#include "ktdualcolorbutton.h"
+#include "ddualcolorbutton.h"
 #include "ktgradientcreator.h"
 #include <QMenu>
 
@@ -66,7 +66,7 @@ class KTColorPalette : public KTModuleWidgetBase
 		KTLuminancePicker *m_luminancePicker;
 		KTGradientCreator *m_gradientManager;
 		QLineEdit *m_nameColor;
-		KTDualColorButton *m_outlineAndFillColors;
+		DDualColorButton *m_outlineAndFillColors;
 		QBrush m_currentOutlineColor, m_currentFillColor;
 		QComboBox *m_labelType;
 		QSplitter *m_splitter;
@@ -87,7 +87,7 @@ class KTColorPalette : public KTModuleWidgetBase
 		void setFG(const QBrush &brush);
 		void setBG(const QBrush &brush);
 		void updateColor();
-		void changeTypeColor(KTDualColorButton::DualColor s);
+		void changeTypeColor(DDualColorButton::DualColor s);
 		void syncHsv(int h , int s , int v);
 		void setHS(int h, int s);
 		void changeBrushType(const QString& );

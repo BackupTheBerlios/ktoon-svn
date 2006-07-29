@@ -41,7 +41,7 @@
 #include <QDialog>
 #include <QMainWindow>
 #include <QDebug>
-#include <QWindowsStyle>
+#include <QPlastiqueStyle>
 #include <QMenuBar>
 #include <QStatusBar>
 
@@ -49,6 +49,47 @@
 #include "dibutton.h"
 
 #include "ddebug.h"
+
+
+class DockStyle : public QPlastiqueStyle
+{
+	public:
+		DockStyle(QObject *parent = 0);
+		~DockStyle();
+		
+		virtual int pixelMetric ( PixelMetric metric, const QStyleOption * option = 0, const QWidget * widget = 0 ) const;
+		virtual void drawControl ( ControlElement element, const QStyleOption * option, QPainter * painter, const QWidget * widget = 0 ) const;
+		
+};
+
+DockStyle::DockStyle(QObject *parent)
+{
+	setParent(parent);
+}
+
+DockStyle::~DockStyle()
+{
+}
+
+int DockStyle::pixelMetric ( PixelMetric metric, const QStyleOption * option, const QWidget * widget) const
+{
+	if ( metric == QStyle::PM_DockWidgetTitleMargin )
+	{
+		return 0;
+	}
+	
+	return QPlastiqueStyle::pixelMetric( metric, option, widget);
+}
+
+
+void DockStyle::drawControl ( ControlElement element, const QStyleOption * option, QPainter * painter, const QWidget * widget ) const
+{
+	if ( element == QStyle::CE_DockWidgetTitle )
+	{
+	}
+	
+	QPlastiqueStyle::drawControl(element, option, painter, widget);
+}
 
 DiDockWidget::DiDockWidget(QWidget *parent, Position position) : QDockWidget( parent)
 {
@@ -62,6 +103,8 @@ DiDockWidget::DiDockWidget(QWidget *parent, Position position) : QDockWidget( pa
 	layout()->setMargin(0);
 	
 	connect(this, SIGNAL(topLevelChanged ( bool)), this, SLOT(setFloatingOption(bool)));
+	
+	setStyle(new DockStyle(this));
 }
 
 DiDockWidget::~DiDockWidget()
@@ -162,9 +205,9 @@ DiDockInternalWidget::DiDockInternalWidget(QWidget *parent, DiDockWidget::Positi
 
 	m_bar = new Ideal::DiButtonBar(place, buttonMode, this);
 	m_internalLayout->addWidget(m_bar);
-
+	
 	m_bar->show();
-    
+	
 	m_widgetStack = new QStackedWidget(this);
 	m_internalLayout->addWidget(m_widgetStack);
 	connect(m_widgetStack, SIGNAL(widgetRemoved (int)), this, SLOT(dialoged(int )));
@@ -232,7 +275,7 @@ void DiDockInternalWidget::setExpanded(bool v)
 
 	if ( ! v)
 	{
-		for (int i = 0; i < 2; ++i)
+// 		for (int i = 0; i < 2; ++i)
 			qApp->processEvents();
 		shrink();
 		
@@ -285,7 +328,8 @@ void DiDockInternalWidget::addWidget(const QString &title, QWidget *widget)
 
 	m_bar->addButton(button);
 
-	QDesktopWidget *desktop = new QDesktopWidget();
+	{
+	QDesktopWidget *desktop = QApplication::desktop();
 	
 	if (widget->height() > desktop->screen(desktop->primaryScreen ())->height()-230)
 	{
@@ -305,9 +349,8 @@ void DiDockInternalWidget::addWidget(const QString &title, QWidget *widget)
 		m_widgetStack->addWidget(widget);
 		m_buttons[widget] = button;
 	}
+	}
 	
-	delete desktop;
-    
 	connect(button, SIGNAL(clicked()), this, SLOT(selectWidget()));
     
     //if the widget was selected last time the dock is deleted 
@@ -493,19 +536,19 @@ void DiDockInternalWidget::shrink()
 		y2 = press.globalPos().y() + df;
 		
 		xRelease = this->x();
-		yRelease = 10;
+		yRelease = mainWindow->height();
 	}
 	else if ( m_position == DiDockWidget::Left )
 	{
 		df = m_widgetStack->width();
-		x1 = press.pos().x() - df;
+		x1 = press.pos().x() /*- df*/;
 		y1 = press.pos().y();
 		
 		x2 = press.globalPos().x() - df;
 		y2 = press.globalPos().y();
 		
-		xRelease = 10;
-		yRelease = this->y();
+		xRelease = x1 - df;
+		yRelease = y1;
 	}
 	else if (m_position == DiDockWidget::Right )
 	{
@@ -521,23 +564,25 @@ void DiDockInternalWidget::shrink()
 	}
 	
 	QMouseEvent move(QEvent::MouseMove,
-			 QPoint(x1, y1),
-			 QPoint(x2, y2),
-			 Qt::LeftButton, 0, 0);
+			 QPoint(xRelease, yRelease),
+			 QPoint(xRelease, yRelease),
+			 Qt::LeftButton, Qt::LeftButton, 0);
 	
 	if ( ! QApplication::sendEvent(mainWindow, &move) )
 	{
 		qWarning("Fail moving");
 	}
 	qApp->processEvents();
-
+	
 	QMouseEvent release(QEvent::MouseButtonRelease,
 			    QPoint(xRelease, yRelease),
 			    Qt::LeftButton, 0, 0);
+	
 	if ( ! QApplication::sendEvent(mainWindow, &release) )
 	{
 		qWarning("Fail releasing");
 	}
+	
 	qApp->processEvents();
 	
 	mainWindow->setMouseTracking(hmt);

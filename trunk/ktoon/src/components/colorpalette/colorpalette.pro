@@ -3,29 +3,14 @@
 # Subdir relative project main directory: ./src/components/colorpalette
 # Target is a library:  
 
-QT += xml 
 INSTALLS += palettes 
 palettes.files += palettes/*.ktpl 
 palettes.path = /data/palettes/ 
-KDEV_QTVER = 4 
-INCLUDEPATH += ../../../src/store \
-               ../../../src/libktoon \
-               ../../../src/dlib/dgui \
-               ../../../src/dlib/dcore \
-               ../../../src/dlib 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-CONFIG += release \
-          warn_on \
-          staticlib 
-TEMPLATE = lib 
 HEADERS += ktcolorpicker.h \
            ktcolorpalette.h \
            ktvaluecolor.h \
            ktviewcolorcells.h \
            ktluminancepicker.h \
-           ktdualcolorbutton.h \
            ktcellscolor.h \
            ktpaletteparser.h 
 SOURCES += ktcolorpicker.cpp \
@@ -33,6 +18,19 @@ SOURCES += ktcolorpicker.cpp \
            ktvaluecolor.cpp \
            ktviewcolorcells.cpp \
            ktluminancepicker.cpp \
-           ktdualcolorbutton.cpp \
            ktcellscolor.cpp \
            ktpaletteparser.cpp 
+QT += xml
+KDEV_QTVER = 4
+INCLUDEPATH += ../../../src/store \
+../../../src/libktoon \
+../../../src/dlib/dgui \
+../../../src/dlib/dcore \
+../../../src/dlib
+MOC_DIR = .moc
+UI_DIR = .ui
+OBJECTS_DIR = .obj
+CONFIG += release \
+warn_on \
+staticlib
+TEMPLATE = lib

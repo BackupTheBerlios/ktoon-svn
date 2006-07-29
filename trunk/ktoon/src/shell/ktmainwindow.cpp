@@ -72,14 +72,14 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_viewDoc(0), m_an
 	m_statusBar = new KTStatusBar(this);
 	setStatusBar( m_statusBar );
 	
-	setWindowTitle( tr("KToon: 2D animation toolkit" ));
+	setWindowTitle( tr("KToon: 2D animation toolkit" ) );
 	m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
 	
 	
 	m_projectManager = new KTProjectManager(this);
 	splash->setMessage( tr("Setting up the project manager") );
 	
-	splash->setMessage( tr("Loading action manager..."));
+	splash->setMessage( tr("Loading action manager...") );
 	m_actionManager = new DActionManager(this);
 	
 	splash->setMessage( tr("Creating menu bar...") );
@@ -432,7 +432,7 @@ void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 	page->setDataDirs( QStringList() << m_helper->helpPath() );
 	
 // 	page->setDocument( document );
-	page->setSource( filePath);
+	page->setSource( filePath );
 	addWidget( page, tr("Help:%1").arg(title) );
 }
 

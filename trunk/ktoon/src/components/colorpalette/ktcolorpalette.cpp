@@ -143,9 +143,9 @@ void KTColorPalette::setupDisplayColor()
 	
 	vlayout->addWidget(m_labelType);
 	
-	m_outlineAndFillColors = new KTDualColorButton(m_currentOutlineColor, m_currentFillColor, viewColor);
+	m_outlineAndFillColors = new DDualColorButton(m_currentOutlineColor, m_currentFillColor, viewColor);
 	m_outlineAndFillColors->setSizePolicy ( QSizePolicy::Fixed, QSizePolicy::Fixed );
-	connect( m_outlineAndFillColors,  SIGNAL(currentChanged(KTDualColorButton::DualColor)),this, SLOT(changeTypeColor(KTDualColorButton::DualColor)));
+	connect( m_outlineAndFillColors,  SIGNAL(currentChanged(DDualColorButton::DualColor)),this, SLOT(changeTypeColor(DDualColorButton::DualColor)));
 
 connect( m_outlineAndFillColors,  SIGNAL(fgChanged(const QBrush &)),this, SLOT(
 		setFG(const QBrush &)));
@@ -225,7 +225,7 @@ void KTColorPalette::setFG(const QBrush &brush)
 	{
 		changeBrushType(tr("Gradient"));
 	}
-	m_outlineAndFillColors->setCurrent( KTDualColorButton::Foreground );
+	m_outlineAndFillColors->setCurrent( DDualColorButton::Foreground );
 	setColor(brush);
 }
 
@@ -239,14 +239,14 @@ void KTColorPalette::setBG(const QBrush &brush)
 	{
 		changeBrushType(tr("Gradient"));
 	}
-	m_outlineAndFillColors->setCurrent( KTDualColorButton::Background);
+	m_outlineAndFillColors->setCurrent( DDualColorButton::Background);
 	setColor(brush);
 }
 
 
-void KTColorPalette::changeTypeColor(KTDualColorButton::DualColor s)
+void KTColorPalette::changeTypeColor(DDualColorButton::DualColor s)
 {
-	if(s == KTDualColorButton::Background)
+	if(s == DDualColorButton::Background)
 	{
 		m_outlineAndFillColors->setCurrent( s);
 		setColor( m_outlineAndFillColors->background());
