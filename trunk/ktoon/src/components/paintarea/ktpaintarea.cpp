@@ -70,7 +70,7 @@ class GLDevice : public QGLWidget
 #include "ktproject.h"
 #include "kttextitem.h"
 
-KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(parent), m_grid(0), m_tool(0), m_isDrawing(false), m_project(project), m_currentSceneIndex(0)
+KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(parent), m_grid(0), m_tool(0), m_isDrawing(false), m_project(project), m_currentSceneIndex(0), m_drawGrid(false)
 {
 	setMouseTracking(true);
 	
@@ -136,6 +136,11 @@ void KTPaintArea::setUseOpenGL(bool opengl)
 #endif
 }
 
+void KTPaintArea::setDrawGrid(bool draw)
+{
+	m_drawGrid = draw;
+	resetCachedContent();
+}
 
 void KTPaintArea::setTool(KTToolPlugin *tool )
 {
@@ -291,6 +296,23 @@ void KTPaintArea::drawBackground(QPainter *painter, const QRectF &rect)
 	painter->setPen( QPen(QColor(0,0,0,180), 3) );
 	painter->fillRect( m_drawingRect, Qt::white );
 	painter->drawRect( m_drawingRect );
+	
+	if ( m_drawGrid )
+	{
+		painter->save();
+		
+		painter->resetMatrix();
+		painter->setPen( QPen(QColor(0,0,180, 50), 1) );
+		
+		
+		for(int i = 0; i < qMax(width(), height()); i+= 10 )
+		{
+			painter->drawLine(i, 0, i, height() );
+			painter->drawLine(0, i, width(), i );
+		}
+		
+		painter->restore();
+	}
 }
 
 void KTPaintArea::updateCurrentBrush(const QBrush &brush)
@@ -328,7 +350,10 @@ void KTPaintArea::scaleView(qreal scaleFactor)
 }
 
 
-
+KTBrushManager *KTPaintArea::brushManager() const
+{
+	return m_brushManager;
+}
 
 
 

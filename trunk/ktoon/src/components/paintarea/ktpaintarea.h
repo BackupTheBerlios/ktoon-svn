@@ -50,11 +50,14 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		
 		void setAntialiasing(bool use);
 		void setUseOpenGL(bool opengl);
+		void setDrawGrid(bool draw);
 		void setTool(KTToolPlugin *tool);
 		
 		void setCurrentScene(int index);
 		
 		void scaleView(qreal scaleFactor);
+		
+		KTBrushManager *brushManager() const;
 		
 	protected:
 		void mousePressEvent ( QMouseEvent * event  );
@@ -102,6 +105,8 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		QRectF m_drawingRect;
 		
 		int m_currentSceneIndex;
+		
+		bool m_drawGrid;
 };
 
 #endif

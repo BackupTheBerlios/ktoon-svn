@@ -832,3 +832,12 @@ QSize KTViewDocument::sizeHint() const
 	return size.expandedTo(QApplication::globalStrut());
 }
 
+
+KTBrushManager *KTViewDocument::brushManager() const
+{
+	return m_paintArea->brushManager();
+}
+
+
+
+

@@ -278,7 +278,7 @@ bool KTMainWindow::closeProject()
 	m_projectManager->closeProject();
 	
 // 	m_viewDoc->closeAllWindows();
-	m_animationSpace->closeAllWindows();
+// 	m_animationSpace->closeAllWindows();
 	
 // 	QWidgetList cameras = m_animationSpace->windowList();
 // 	
@@ -297,6 +297,8 @@ bool KTMainWindow::closeProject()
 	m_exposureSheet->closeAllScenes();
 	m_timeLine->closeAllScenes();
 	m_scenes->closeAllScenes();
+	
+	m_undoCommands->clear();
 	
 	m_fileName = QString();
 	

@@ -38,6 +38,7 @@ class KTBrushManager : public QObject
 		
 		void setPen(const QPen &pen);
 		QPen pen() const;
+		
 		void setBrush(const QBrush &brush);
 		QBrush brush() const;
 		

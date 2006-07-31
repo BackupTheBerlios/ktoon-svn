@@ -24,8 +24,48 @@
 #include <QLabel>
 #include <QHBoxLayout>
 
+#include <dseparator.h>
+
 #include "ktviewdocument.h"
 #include "ktglobal.h"
+#include "ktbrushmanager.h"
+
+
+class ColorWidget : public QWidget
+{
+	public:
+		ColorWidget() : m_brush(Qt::transparent) {};
+		~ColorWidget() {};
+		void setBrush(const QBrush &brush);
+		
+		QSize sizeHint() const;
+		
+	protected:
+		void paintEvent(QPaintEvent *);
+		
+	private:
+		QBrush m_brush;
+};
+
+QSize ColorWidget::sizeHint() const
+{
+	QSize size(40, -1);
+	
+	return size;
+}
+
+
+void ColorWidget::setBrush(const QBrush &brush)
+{
+	m_brush = brush;
+}
+
+void ColorWidget::paintEvent(QPaintEvent *)
+{
+	QPainter painter(this);
+	
+	painter.fillRect(rect(), m_brush);
+}
 
 class BrushStatus : public QWidget
 {
@@ -33,27 +73,44 @@ class BrushStatus : public QWidget
 		BrushStatus();
 		~BrushStatus();
 		
+		void setForeground(const QPen &pen);
+		void setBackground(const QBrush &brush);
+		
 	private:
-		QLabel *m_pen;
-		QLabel *m_brush;
+		ColorWidget *m_pen;
+		ColorWidget *m_brush;
 };
 
 BrushStatus::BrushStatus()
 {
 	QHBoxLayout *layout = new QHBoxLayout(this);
-	m_pen = new QLabel;
+	layout->setMargin(2);
+	layout->setSpacing(2);
 	
-	m_brush = new QLabel;
+	m_pen = new ColorWidget;
+	
+	m_brush = new ColorWidget;
 	
 	layout->addWidget(m_pen);
+	layout->addWidget( new DSeparator(Qt::Vertical ) );
 	layout->addWidget(m_brush);
-	
 }
 
 BrushStatus::~BrushStatus()
 {
 }
 
+void BrushStatus::setForeground(const QPen &pen)
+{
+	m_pen->setBrush( pen.brush() );
+}
+
+void BrushStatus::setBackground(const QBrush &brush)
+{
+	m_brush->setBrush(brush);
+}
+
+////////////////
 
 KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent), m_viewDocument(parent)
 {
@@ -82,6 +139,9 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
 	
 	connect(m_renderHint, SIGNAL(activated( int )), this, SLOT(selectRenderHint(int) ));
 	connect(m_renderer, SIGNAL(activated(int)), this, SLOT(selectRenderer(int)));
+	
+	m_brushStatus->setBackground( m_viewDocument->brushManager()->brush() );
+	m_brushStatus->setForeground( m_viewDocument->brushManager()->pen() );
 }
 
 

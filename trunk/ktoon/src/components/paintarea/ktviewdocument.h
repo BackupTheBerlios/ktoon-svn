@@ -45,6 +45,7 @@
 class KTPaintArea;
 class KTProjectEvent;
 class KTProject;
+class KTBrushManager;
 
 /**
  * @author Jorge Cuadrado
@@ -61,6 +62,8 @@ class KTViewDocument : public QMainWindow
 		
 		void setAntialiasing(bool useIt );
 		void setOpenGL(bool useIt);
+		
+		KTBrushManager *brushManager() const;
 		
 		
 	public slots:
