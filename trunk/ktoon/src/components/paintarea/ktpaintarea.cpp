@@ -42,15 +42,18 @@
 class GLDevice : public QGLWidget
 {
 	public:
-		GLDevice() {};
-		~GLDevice() {};
+		GLDevice() : QGLWidget(QGLFormat(QGL::SampleBuffers | QGL::HasOverlay | QGL::DirectRendering | QGL::AccumBuffer | QGL::Rgba |  QGL::AccumBuffer)) 
+		{
+			makeCurrent();
+		}
+		~GLDevice() {  };
 		
 	protected:
 		void initializeGL()
 		{
 // 			glShadeModel(GL_FLAT);
 			glDisable(GL_DEPTH_TEST);
-	
+			
 			glEnable( GL_LINE_SMOOTH );
 			glEnable( GL_BLEND );
 			glEnable( GL_POINT_SMOOTH );
@@ -139,13 +142,19 @@ void KTPaintArea::setUseOpenGL(bool opengl)
 void KTPaintArea::setDrawGrid(bool draw)
 {
 	m_drawGrid = draw;
-	resetCachedContent();
+// 	resetCachedContent();
+	viewport()->update();
 }
 
 void KTPaintArea::setTool(KTToolPlugin *tool )
 {
 	m_tool = tool;
 	m_tool->init(this);
+}
+
+bool KTPaintArea::drawGrid() const
+{
+	return m_drawGrid;
 }
 
 void KTPaintArea::mousePressEvent ( QMouseEvent * event )
@@ -293,14 +302,18 @@ void KTPaintArea::drawBackground(QPainter *painter, const QRectF &rect)
 {
 	QGraphicsView::drawBackground(painter, rect);
 	
+	painter->save();
+	
+	bool hasAntialiasing = painter->renderHints() & QPainter::Antialiasing;
+	
+	painter->setRenderHint(QPainter::Antialiasing, false);
+	
 	painter->setPen( QPen(QColor(0,0,0,180), 3) );
 	painter->fillRect( m_drawingRect, Qt::white );
 	painter->drawRect( m_drawingRect );
 	
 	if ( m_drawGrid )
 	{
-		painter->save();
-		
 		painter->resetMatrix();
 		painter->setPen( QPen(QColor(0,0,180, 50), 1) );
 		
@@ -310,9 +323,11 @@ void KTPaintArea::drawBackground(QPainter *painter, const QRectF &rect)
 			painter->drawLine(i, 0, i, height() );
 			painter->drawLine(0, i, width(), i );
 		}
-		
-		painter->restore();
 	}
+	
+	painter->setRenderHint(QPainter::Antialiasing, hasAntialiasing);
+	
+	painter->restore();
 }
 
 void KTPaintArea::updateCurrentBrush(const QBrush &brush)

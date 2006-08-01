@@ -56,7 +56,6 @@
 #include <QDesktopServices>
 //
 
-
 KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_viewDoc(0), m_animationSpace(0), m_exposureSheet(0), m_scenes(0)
 {
 	DINIT;
@@ -103,6 +102,8 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_viewDoc(0), m_an
 	}
 	
 	KTPluginManager::instance()->loadPlugins();
+	
+	m_pActiveTabWidget->setShowTabBar( false );
 }
 
 
@@ -132,7 +133,6 @@ void KTMainWindow::newViewDocument(const QString &title)
 	if ( m_projectManager->isOpen())
 	{
 		messageToStatus(tr("Opening a new paint area..."));
-		
 		messageToOSD(tr("Opening a new document..."));
 		
 // 		KTScene *scene = m_projectManager->currentScene();
@@ -142,7 +142,7 @@ void KTMainWindow::newViewDocument(const QString &title)
 // 		if ( scene )
 // 		{
 // 			m_statusBar->advance(4);
-			/*KTViewDocument **/m_viewDoc = new KTViewDocument(  m_projectManager->project(), m_renderType);
+			/*KTViewDocument **/m_viewDoc = new KTViewDocument(m_projectManager->project());
 			connectToDisplays( m_viewDoc );
 			m_viewDoc->setAttribute(Qt::WA_DeleteOnClose, true);
 			addWidget( m_viewDoc, tr("Illustration"), true);
@@ -502,11 +502,8 @@ void KTMainWindow::openRecentProject()
 void KTMainWindow::showAnimationMenu(const QPoint &p)
 {
 	QMenu *menu = new QMenu(tr("Animation"), m_animationSpace);
-	
 	menu->addAction(tr("New camera"), this, SLOT(newViewCamera()));
-	
 	menu->exec(p);
-	
 	delete menu;
 }
 

@@ -31,7 +31,7 @@
 #include <QTimer>
 #include <QApplication>
 
-#include "dvhbox.h"
+#include <dconfig.h>
 
 #include "ktpaintareaproperties.h"
 #include "ktpluginmanager.h"
@@ -42,7 +42,8 @@
 
 #include "ktpaintareastatus.h"
 
-KTViewDocument::KTViewDocument(KTProject *project, KToon::RenderType renderType, QWidget *parent ) : QMainWindow(parent)
+
+KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWindow(parent)
 {
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/layer_pic.png") ); // FIXME: new image for documents
 	
@@ -51,6 +52,7 @@ KTViewDocument::KTViewDocument(KTProject *project, KToon::RenderType renderType,
 	m_paintArea = new KTPaintArea(project, this);
 	setCentralWidget( m_paintArea );
 	
+	KToon::RenderType renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt()); 
 	switch(renderType)
 	{
 		case KToon::OpenGL:
@@ -94,7 +96,7 @@ KTViewDocument::KTViewDocument(KTProject *project, KToon::RenderType renderType,
 	
 	
 
-// 	createToolbar();
+	createToolBar();
 	createTools();
 // 	createMenu();
 // 	m_paintArea->setHistory(m_history);
@@ -116,6 +118,11 @@ void KTViewDocument::setOpenGL(bool useIt)
 	m_paintArea->setUseOpenGL( useIt );
 }
 
+void KTViewDocument::setDrawGrid(bool draw)
+{
+	m_paintArea->setDrawGrid(draw);
+}
+
 void KTViewDocument::showPos(const QPointF &p)
 {
 	QString message =  "X: " +  QString::number(p.x()) + " Y: " + QString::number(p.y() );
@@ -133,14 +140,10 @@ void KTViewDocument::createActions()
 // 	redo->setIcon(QPixmap(THEME_DIR+"/icons/redo.png" ));
 // 	m_actionManager->insert(redo);
 	
-
-	
-
 }
 
 void KTViewDocument::setupEditActions()
 {
-	
 #if 0
 	m_editGroup = new QActionGroup( parent() );
 	DAction *a = new DAction( QPixmap(THEME_DIR+"/icons/cut.png" ), tr( "&Cut" ),  QKeySequence(tr("Ctrl+X")), m_paintArea, SLOT(cut()),m_actionManager, "cut" );
@@ -222,6 +225,9 @@ void KTViewDocument::setupOrderActions()
 
 void KTViewDocument::setupViewActions()
 {
+	DAction *showGrid = new DAction( QPixmap(THEME_DIR+"/icons/subgrid.png" ), tr( "Show grid" ), QKeySequence(), this, SLOT(toggleShowGrid()), m_actionManager, "show_grid" );
+	showGrid->setCheckable(true);
+	
 #if 0
 	DAction *zoomIn = new DAction( QPixmap(THEME_DIR+"/icons/zoom_in.png" ), tr( "Zoom In" ), QKeySequence(Qt::CTRL+Qt::Key_Plus), m_paintArea, SLOT(zoomIn()), m_actionManager, "zoom_in" );
 	
@@ -302,8 +308,8 @@ void KTViewDocument::setupViewActions()
 
 void KTViewDocument::createTools()
 {
-	m_toolbar = new QToolBar(tr("Toolbar"), this);
-	m_toolbar->setIconSize( QSize(22,22) );
+	m_toolbar = new QToolBar(tr("Draw tools"), this);
+	m_toolbar->setIconSize( QSize(16,16) );
 	addToolBar ( Qt::LeftToolBarArea, m_toolbar );
 	
 	connect(m_toolbar, SIGNAL(actionTriggered(QAction *)), this, SLOT(selectToolFromMenu(QAction *)));
@@ -556,6 +562,7 @@ void KTViewDocument::selectTool()
 				}
 			}
 			break;
+		
 			case KTToolInterface::Selection:
 			{
 				m_selectionMenu->setDefaultAction(action);
@@ -635,11 +642,15 @@ void KTViewDocument::updateZoomFactor(double f)
 	m_zoomFactorSpin->blockSignals(false);
 }
 
-void KTViewDocument::createToolbar()
+void KTViewDocument::createToolBar()
 {
-	m_barGrid = new QToolBar(tr("Bar Actions"), this);
-	m_barGrid->setIconSize( QSize(22,22) );
+	m_barGrid = new QToolBar(tr("Paint area actions"), this);
+	m_barGrid->setIconSize( QSize(16,16) );
+	
 	addToolBar(m_barGrid);
+	
+	m_barGrid->addAction(m_actionManager->find("show_grid"));
+	
 // 	m_barGrid->addSeparator();
 // 	m_barGrid->addAction(m_actionManager->find("undo"));
 // 	m_barGrid->addAction(m_actionManager->find("redo"));
@@ -648,12 +659,9 @@ void KTViewDocument::createToolbar()
 // 	m_barGrid->addWidget(m_zoomFactorSpin);
 // 	m_barGrid->addAction(m_actionManager->find("zoom_out"));
 // 	m_barGrid->addSeparator();
-// 	
-// 	
+	
 // 	m_barGrid->addActions(m_editGroup->actions());
 // 	m_barGrid->addSeparator();
-// // 	m_barGrid->addAction(m_aNtsc);
-// // 	m_barGrid->addAction(m_aLightTable);
 // 	m_barGrid->addSeparator();
 // 	m_barGrid->addActions(m_viewPreviousGroup->actions());
 // 	
@@ -669,7 +677,6 @@ void KTViewDocument::createToolbar()
 // 	connect(nextOnionSkinSpin, SIGNAL(valueChanged ( int)), this, SLOT(setNextOnionSkin(int)));
 // 	
 // 	m_barGrid->addWidget(nextOnionSkinSpin);
-	
 }
 
 void KTViewDocument::createMenu()
@@ -788,6 +795,11 @@ void KTViewDocument::threeNextOnionSkin()
 void KTViewDocument::setNextOnionSkin(int n)
 {
 // 	m_paintArea->setNextFrames( n );
+}
+
+void KTViewDocument::toggleShowGrid()
+{
+	m_paintArea->setDrawGrid( !m_paintArea->drawGrid() );
 }
 
 // void KTViewDocument::setScene(KTScene* scene)

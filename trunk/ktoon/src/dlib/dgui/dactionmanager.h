@@ -28,8 +28,12 @@
 
 #include "dgui/daction.h"
 
-typedef QList<DAction *> QActionList;
-typedef QHash<QString, DAction *> QActionDict;
+typedef QList<DAction *> DActionList;
+typedef QHash<QString, DAction *> DActionDict;
+typedef QHash<QString, DActionDict> DActionContainer;
+
+class QToolBar;
+class QMenuBar;
 
 /**
  * @short la clase DActionManager provee de un manejador de acciones, este manejador facilita el acceso y ordenamiento a las acciones contieniendo todas las acciones de la aplicacion.
@@ -41,47 +45,23 @@ class DActionManager : public QObject
 	Q_OBJECT
 
 	public:
-		/**
-		 * Construye un manejador de acciones.
-		 * @param parent widget que contine el manejador de acciones
-		 */
+		
 		DActionManager(QWidget *parent = 0L);
-		/**
-		 * Destructor
-		 */
+		
 		~DActionManager();
-
-		/**
-		 * Inserta una accion al manejador
-		 * @param action accion para añadir
-		 * @return 
-		 */
-		bool insert(DAction *action);
-		/**
-		 * Remueve una accion del manejador
-		 * @param action para remover
-		 */
-		void remove( DAction* action );
-		/**
-		 * Remuve una accion del manejador retornando dicha accion.
-		 * @param action para remover
-		 * @return la accion removida o cero si esta no estaba en el manejador
-		 */
-		QAction *take( DAction* action );
-		/**
-		 * Busca una accion en el manejardor.
-		 * @param id asociado a la accion
-		 * @return la accion requeriada
-		 */
-		QAction *find(const QString &id) const;
-		/**
-		 * Retorna la accion asociada a id
-		 * @param id 
-		 */
+		
+		bool insert(DAction *action, const QString &container = "default" );
+		void remove( DAction* action, const QString &container = "default" );
+		
+		QAction *take( DAction* action, const QString &container = "default" );
+		QAction *find(const QString &id, const QString &container = "default") const;
 		QAction *operator[](const QString &id) const;
-
+		
+		QMenuBar *setupMenuBar(QMenuBar *menu, const QStringList &containers);
+		QToolBar *setupToolBar(QToolBar *toolBar, const QString &container = "default");
+		
 	private:
-		QActionDict m_actionDict;
+		DActionContainer m_actionContainer;
 };
 
 #endif

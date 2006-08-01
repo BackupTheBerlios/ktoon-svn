@@ -22,7 +22,6 @@
 #define KTMAINWINDOW_H
 
 #include <QMainWindow>
-// #include </*/*QWorkspace*/*/>
 #include <QMenu>
 #include <QMenuBar>
 #include <QStatusBar>

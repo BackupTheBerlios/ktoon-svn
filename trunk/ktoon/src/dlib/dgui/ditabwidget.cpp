@@ -36,7 +36,7 @@
 #include "comdefs.h"
 
 DiTabWidget::DiTabWidget(QWidget *parent)
-	: KTWCLASS(parent), m_closeButton(0)
+	: DTabWidget(parent), m_closeButton(0)
 {
 	setFocusPolicy(Qt::NoFocus);
 
@@ -100,19 +100,29 @@ void DiTabWidget::insertTab(QWidget *child, const QString &label, int index)
 	{
 		m_closeButton->show();
 	}
-	KTWCLASS::insertTab(index, child, label);
+	DTabWidget::insertTab(index, child, label);
 	if (index != -1) tabBar()->repaint();
 }
 
-void DiTabWidget::insertTab(QWidget *child, const QIcon &iconset, 
-			   const QString &label, int index)
+void DiTabWidget::insertTab(QWidget *child, const QIcon &iconset, const QString &label, int index)
 {
 	if (m_closeButton && m_closeButtonShown)
 	{
 		m_closeButton->show();
 	}
-	KTWCLASS::insertTab(index, child, iconset, label );
+	DTabWidget::insertTab(index, child, iconset, label );
 	if (index != -1) tabBar()->repaint();
+}
+
+
+void DiTabWidget::setShowTabBar(bool showit)
+{
+	tabBar()->setVisible(showit);
+}
+
+bool DiTabWidget::showTabBar() const
+{
+	return tabBar()->isVisible();
 }
 
 

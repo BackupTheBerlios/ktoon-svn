@@ -53,6 +53,8 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		void setDrawGrid(bool draw);
 		void setTool(KTToolPlugin *tool);
 		
+		bool drawGrid() const;
+		
 		void setCurrentScene(int index);
 		
 		void scaleView(qreal scaleFactor);

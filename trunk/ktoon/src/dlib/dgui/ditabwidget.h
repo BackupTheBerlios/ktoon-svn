@@ -24,38 +24,40 @@
 #define DLSTABWIDGET_H
 
 
-#include <QTabWidget>
-
-#define KTWCLASS QTabWidget
+#include <dtabwidget.h>
 
 class QToolButton;
 
-class DiTabWidget: public KTWCLASS {
-    Q_OBJECT
-public:
-    DiTabWidget(QWidget *parent=0);
-    
-    /**@return The close button at the top right corner. 
-    May be 0 if the configuration do not allow close buttons or the tabbar.*/
-    QToolButton *closeButton() const;
+class DiTabWidget: public DTabWidget
+{
+	Q_OBJECT
+	public:
+		DiTabWidget(QWidget *parent=0);
+		
+    		/**@return The close button at the top right corner. 
+		May be 0 if the configuration do not allow close buttons or the tabbar.*/
+		QToolButton *closeButton() const;
 
-    virtual void insertTab(QWidget *child, const QString &label, int index = -1 );
-    virtual void insertTab(QWidget *child, const QIcon &iconset, 
-        const QString &label, int index = -1);
+		virtual void insertTab(QWidget *child, const QString &label, int index = -1 );
+		virtual void insertTab(QWidget *child, const QIcon &iconset, 
+				       const QString &label, int index = -1);
+		
+		void setShowTabBar(bool showit);
+		bool showTabBar() const;
     
-protected:
-    virtual void loadSettings();
-    virtual void saveSettings();
+	protected:
+		virtual void loadSettings();
+		virtual void saveSettings();
     
-private slots:
-    void setFocus(QWidget *w);
+	private slots:
+		void setFocus(QWidget *w);
     
-private:
-    bool m_tabBarShown;
-    bool m_closeOnHover;
-    bool m_closeButtonShown;
+	private:
+		bool m_tabBarShown;
+		bool m_closeOnHover;
+		bool m_closeButtonShown;
 
-    QToolButton *m_closeButton;
+		QToolButton *m_closeButton;
 
 };
 

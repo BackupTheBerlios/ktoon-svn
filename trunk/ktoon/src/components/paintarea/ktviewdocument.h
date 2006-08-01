@@ -55,13 +55,14 @@ class KTViewDocument : public QMainWindow
 {
 	Q_OBJECT
 	public:
-		KTViewDocument(KTProject *project, KToon::RenderType renderType, QWidget *parent = 0 );
+		KTViewDocument(KTProject *project, QWidget *parent = 0 );
 		~KTViewDocument();
 		void close();
 		QSize sizeHint() const;
 		
 		void setAntialiasing(bool useIt );
 		void setOpenGL(bool useIt);
+		void setDrawGrid(bool draw);
 		
 		KTBrushManager *brushManager() const;
 		
@@ -78,6 +79,7 @@ class KTViewDocument : public QMainWindow
 		
 		void setNextOnionSkin(int n);
 		void setPreviousOnionSkin(int n);
+		void toggleShowGrid();
 		
 // 		void setScene(KTScene* scene);
 		
@@ -99,7 +101,7 @@ class KTViewDocument : public QMainWindow
 		void setupEditActions();
 		void setupOrderActions();
 		
-		void createToolbar();
+		void createToolBar();
 		void createMenu();
 		void createTools();
 		
