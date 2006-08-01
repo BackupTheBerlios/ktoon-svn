@@ -37,7 +37,7 @@ class DAction : public QAction
 		 * @param parent padre de la accion
 		 * @param id identificador de la accion
 		 */
-		DAction ( QObject * parent, const QString &id = QString());
+		DAction ( QObject * parent, const QString &id = QString() );
 		
 		/**
 		 * Construye una accion con un texto, un padre y un identificador.
@@ -45,7 +45,7 @@ class DAction : public QAction
 		 * @param parent padre de la accion.
 		 * @param id identificador de la accion.
 		 */
-		DAction ( const QString & text, QObject * parent, const QString &id );
+		DAction ( const QString & text, QObject * parent, const QString &id = QString());
 		/**
 		 * Construye una accion con un icono, un texto, un padre y un identificador
 		 * @param icon icono de la accion.
@@ -70,7 +70,7 @@ class DAction : public QAction
 		 * @param parent padre de la accion.
 		 * @param id identificador de la accion.
 		 */
-		DAction ( const QIcon & icon, QObject * parent, const QString &id = QString() );
+		DAction ( const QIcon & icon, QObject * parent, const QString &id = QString());
 		
 		/**
 		 * Construye una accion con un icono, una tecla rapida, un padre y un identificador
@@ -79,7 +79,7 @@ class DAction : public QAction
 		 * @param parent padre de la accion.
 		 * @param id identificador de la accion.
 		 */
-		DAction ( const QIcon & icon,  const QKeySequence &key, QObject * parent, const QString &id  = QString());
+		DAction ( const QIcon & icon,  const QKeySequence &key, QObject * parent, const QString &id = QString());
 		/**
 		 * Construye una accion con un icono, un texto, una secuencia de teclas, un objeto, un slot, un padre y un id.
 		 * por ejemplo DAction *action = new DAction(QIcon(), "accion", QKeySequence(tr("a")), obj, SLOT(close()), this, "accion");
@@ -94,69 +94,12 @@ class DAction : public QAction
 		 */
 		DAction (const QIcon & icon, const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, QObject * parent, const QString &id = QString());
 		
-		
-		/////////
-		
-		/**
-		 * Construye una accion con un manejador de acciones y un identificador, la accion es insertada automaticamente al manejador.
-		 * @param parent padre de la accion
-		 * @param id identificador de la accion
-		 */
-		DAction ( DActionManager * parent, const QString &id );
-		
-		/**
-		 * Construye una accion con un texto, un manejador de acciones y un identificador. la accion es insertada automaticamente al manejador.
-		 * @param text texto de la accion
-		 * @param parent padre de la accion
-		 * @param id identificador de la accion
-		 */
-		DAction ( const QString & text, DActionManager * parent , const QString &id);
-		/**
-		 * Construye una accion con un icono, un texto, un manejador de acciones y un identificador. la accion es insertada automaticamente al manejador.
-		 * @param icon icono de la accion
-		 * @param text texto de la accion
-		 * @param parent padre de la accion
-		 * @param id identificador de la accion
-		 */
-		DAction ( const QIcon & icon, const QString & text, DActionManager * parent , const QString &id);
-		/**
-		 * Construye una accion con un icono, un texto, string que representa una secuencia de teclas, un manejador de acciones y un identificador. la accion es insertada automaticamente al manejador.
-		 * @param icon icono de la accion
-		 * @param text texto de la accion
-		 * @param key string que define la tecla rapida que activa la accion.
-		 * @param parent padre de la accion
-		 * @param id identificador de la accion
-		 */
-		DAction ( const QIcon & icon, const QString & text, const QString &key, DActionManager * parent , const QString &id);
-		/**
-		 * Construye una accion con un icono, un manejador de acciones y un identificador. la accion es insertada automaticamente al manejador.
-		 * @param icon icono de la accion.
-		 * @param parent padre de la accion.
-		 * @param id identificador de la accion.
-		 */
-		DAction ( const QIcon & icon, DActionManager * parent , const QString &id);
-		/**
-		 * Construye una accion con un icono, secuencia de teclas, un manejador de acciones y un identificador. la accion es insertada automaticamente al manejador.
-		 * @param icon icono de la accion.
-		 * @param key teclas rapidas de la accion.
-		 * @param parent padre de la accion.
-		 * @param id identificador de la accion.
-		 */
-		DAction ( const QIcon & icon, const QKeySequence &key, DActionManager * parent , const QString &id);
-		
-		DAction(const QIcon & icon, const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, DActionManager * parent, const QString &id);
-		
-		DAction(const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, DActionManager * parent, const QString &id);
+		DAction (const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, QObject * parent, const QString &id = QString());
 		
 		/**
 		 * Destructor.
 		 */
 		~DAction();
-		
-		/**
-		 * @return el identificador de la accion.
-		 */
-		QString id() { return m_id; };
 		
 		/**
 		 * Asigna un cursor a la accion.
@@ -169,12 +112,10 @@ class DAction : public QAction
 		QCursor cursor() const;
 		
 	private:
-		void initWithManager(DActionManager * parent);
+		void initWithManager(DActionManager * parent, const QString &id);
 		void init();
 		
 	private:
-		QString m_id;
-		
 		QCursor m_cursor;
 };
 

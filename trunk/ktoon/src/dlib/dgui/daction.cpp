@@ -23,97 +23,90 @@
 #include "daction.h"
 #include "dactionmanager.h"
 
-DAction::DAction( QObject * parent, const QString &id  ) : QAction(parent), m_id(id.toLower())
+DAction::DAction( QObject * parent, const QString &id ) : QAction(parent)
 {
+	if ( DActionManager *m = dynamic_cast<DActionManager *>(parent) )
+	{
+		initWithManager( m, id );
+	}
 }
 
-DAction::DAction ( const QString & text, QObject * parent, const QString &id  ) : QAction(text, parent), m_id(id.toLower())
+DAction::DAction ( const QString & text, QObject * parent, const QString &id) : QAction(text, parent)
 {
+	if ( DActionManager *m = dynamic_cast<DActionManager *>(parent) )
+	{
+		initWithManager( m, id );
+	}
 }
 
-DAction::DAction ( const QIcon & icon, const QString & text, QObject * parent, const QString &id  ) : QAction(icon, text, parent), m_id(id.toLower())
+DAction::DAction ( const QIcon & icon, const QString & text, QObject * parent, const QString &id) : QAction(icon, text, parent)
 {
+	if ( DActionManager *m = dynamic_cast<DActionManager *>(parent) )
+	{
+		initWithManager( m, id );
+	}
 }
 
-DAction::DAction ( const QIcon & icon, QObject * parent, const QString &id ) : QAction(parent), m_id(id.toLower())
+DAction::DAction ( const QIcon & icon, QObject *parent, const QString &id ) : QAction(parent)
 {
 	setIcon(icon);
+	if ( DActionManager *m = dynamic_cast<DActionManager *>(parent) )
+	{
+		initWithManager( m , id);
+	}
 }
 
-DAction::DAction ( const QIcon & icon, const QString & text, const QString &key, QObject * parent, const QString &id ) : QAction(icon,text,parent), m_id(id.toLower())
+DAction::DAction ( const QIcon & icon, const QString & text, const QString &key, QObject * parent, const QString &id) : QAction(icon,text,parent)
 {
 	setShortcut(QKeySequence(key));
+	if ( DActionManager *m = dynamic_cast<DActionManager *>(parent) )
+	{
+		initWithManager( m , id);
+	}
 }
 
-DAction::DAction ( const QIcon & icon, const QKeySequence &key, QObject * parent, const QString &id ) : QAction(parent), m_id(id.toLower())
+DAction::DAction ( const QIcon & icon, const QKeySequence &key, QObject * parent, const QString &id) : QAction(parent)
 {
 	setIcon(icon);
 	setShortcut (key);
+	
+	if ( DActionManager *m = dynamic_cast<DActionManager *>(parent) )
+	{
+		initWithManager( m, id );
+	}
 }
 
-DAction::DAction(const QIcon & icon, const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, QObject * parent, const QString &id) : QAction(icon, text, parent), m_id(id.toLower())
+DAction::DAction(const QIcon & icon, const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, QObject * parent, const QString &id) : QAction(icon, text, parent)
 {
 	setShortcut(key);
 	connect(this, SIGNAL(triggered()), reciever, slot);
+	
+	if ( DActionManager *m = dynamic_cast<DActionManager *>(parent) )
+	{
+		initWithManager( m, id );
+	}
 }
 
-//////////
-
-DAction::DAction( DActionManager * parent, const QString &id  ) : QAction(parent), m_id(id.toLower())
-{
-	initWithManager(parent);
-}
-
-DAction::DAction ( const QString & text, DActionManager * parent, const QString &id  ) : QAction(text, parent), m_id(id.toLower())
-{
-	initWithManager(parent);
-}
-
-DAction::DAction ( const QIcon & icon, const QString & text, DActionManager * parent, const QString &id  ) : QAction(icon, text, parent), m_id(id.toLower())
-{
-	initWithManager(parent);
-}
-
-DAction::DAction ( const QIcon & icon, const QString & text, const QString &key, DActionManager * parent , const QString &id) : QAction(icon, text, parent), m_id(id.toLower())
-{
-	setShortcut(QKeySequence(key));
-	initWithManager(parent);
-}
-				
-DAction::DAction ( const QIcon & icon, DActionManager * parent, const QString &id) : QAction(parent), m_id(id.toLower())
-{
-	setIcon(icon);
-	initWithManager(parent);
-}
-
-DAction::DAction ( const QIcon & icon, const QKeySequence &key, DActionManager * parent , const QString &id) : QAction(parent), m_id(id.toLower())
-{
-	setIcon(icon);
-	setShortcut (key);
-	initWithManager(parent);
-}
-
-DAction::DAction(const QIcon & icon, const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, DActionManager * parent, const QString &id) : QAction(icon, text, parent), m_id(id.toLower())
+DAction::DAction(const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, QObject * parent, const QString &id) : QAction(text, parent)
 {
 	setShortcut(key);
 	connect(this, SIGNAL(triggered()), reciever, slot);
-	initWithManager(parent);
+	
+	if ( DActionManager *m = dynamic_cast<DActionManager *>(parent) )
+	{
+		initWithManager( m, id );
+	}
 }
 
-DAction::DAction(const QString &text, const QKeySequence &key, QObject *reciever, const char *slot, DActionManager * parent, const QString &id) : QAction(text, parent), m_id(id.toLower())
-{
-	setShortcut(key);
-	connect(this, SIGNAL(triggered()), reciever, slot);
-	initWithManager(parent);
-}
+
 
 DAction::~DAction()
 {
 }
 
-void DAction::initWithManager(DActionManager * parent)
+void DAction::initWithManager(DActionManager * parent, const QString &id)
 {
-	parent->insert(this);	
+	parent->insert(this, id);
 }
 
 void DAction::init()

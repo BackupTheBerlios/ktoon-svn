@@ -45,16 +45,24 @@ DActionManager::~DActionManager()
  * @param action accion para añadir
  * @return 
  */
-bool DActionManager::insert(DAction *action, const QString &container )
+bool DActionManager::insert(DAction *action, const QString &_id, const QString &container )
 {
-	QString id = action->id();
+	QString id = _id.toLower();
+	if ( id.isEmpty() || container.isEmpty() )
+	{
+// 		dWarning() << tr("Cannot insert action with null id or container");
+		return false;
+	}
 	
 	DAction *a = (m_actionContainer[container])[ id ];
 	if ( a == action )
 	{
+		dWarning() << tr("Cannot insert action with id: ") << id;
 		return false;
 	}
-
+	
+	action->setParent(this);
+	
 	return m_actionContainer[container].insert( id, action );
 }
 
@@ -74,9 +82,30 @@ void DActionManager::remove( DAction* action, const QString &container )
  */
 QAction *DActionManager::take( DAction* action, const QString &container  )
 {
-	QString id = action->id();
+	QAction *a = 0;
 	
-	QAction *a = m_actionContainer[container].take( id );
+	QString id = m_actionContainer[container].key(action);
+	
+	if ( ! container.isEmpty() )
+	{
+		if ( m_actionContainer[container].contains(id) )
+		{
+			a = m_actionContainer[container].take( id );
+		}
+	}
+	else
+	{
+		foreach(QString key, m_actionContainer.keys() )
+		{
+			if ( m_actionContainer[key].contains(id) )
+			{
+				a = m_actionContainer[key].take(id);
+				break;
+			}
+		}
+	}
+	
+	
 	if ( !a || a != action )
 	{
 		return 0;
@@ -90,10 +119,32 @@ QAction *DActionManager::take( DAction* action, const QString &container  )
  * @param id asociado a la accion
  * @return la accion requeriada
  */
-QAction *DActionManager::find(const QString &id, const QString &container) const
+QAction *DActionManager::find(const QString &_id, const QString &container) const
 {
-	QAction *action = m_actionContainer[container][id.toLower()];
+	QAction *action = 0;
 	
+	QString id = _id.toLower();
+	
+	
+	if ( !container.isEmpty() )
+	{
+		if ( m_actionContainer[container].contains(id) )
+		{
+			action = m_actionContainer[container][id];
+		}
+	}
+	else
+	{
+		foreach(QString key, m_actionContainer.keys() )
+		{
+			if ( m_actionContainer[key].contains(id) )
+			{
+				action = m_actionContainer[key][id];
+				break;
+			}
+		}
+	}
+		
 	if ( action == 0)
 	{
 		dError() << "DActionManager::find(): Returning NULL action: " << id << " in " << container;
@@ -108,39 +159,64 @@ QAction *DActionManager::find(const QString &id, const QString &container) const
  */
 QAction *DActionManager::operator[](const QString &id) const
 {
-	return find(id, "default");
+	return find(id);
 }
 
 
-QMenuBar *DActionManager::setupMenuBar(QMenuBar *menuBar, const QStringList &containers)
+QMenuBar *DActionManager::setupMenuBar(QMenuBar *menuBar, const QStringList &containers, bool clear)
 {
 	if (menuBar)
-		menuBar->clear();
+	{
+		if ( clear )
+		{
+			menuBar->clear();
+		}
+	}
 	else
+	{
 		menuBar = new QMenuBar( 0 );
-
+	}
+	
 	foreach(QString container, containers)
 	{
-		foreach( QAction *action, m_actionContainer[container].values() )
-		{
-			QMenu *menu = new QMenu(menuBar);
-			if ( action )
-			{
-				menu->addMenu(menu);
-			}
-		}
+		menuBar->addMenu(setupMenu(0, container, clear));
 	}
 
 	return menuBar;
 }
 
-QToolBar *DActionManager::setupToolBar(QToolBar *toolBar, const QString &container)
+QMenu *DActionManager::setupMenu(QMenu *menu, const QString &container, bool clear)
+{
+	if ( !menu )
+	{
+		menu = new QMenu(container);
+	}
+	
+	if ( clear )
+		menu->clear();
+	
+	foreach( QAction *a, m_actionContainer[container] )
+	{
+		if (a)
+		{
+			menu->addAction( a );
+		}
+	}
+	
+	
+	return menu;
+	
+}
+
+QToolBar *DActionManager::setupToolBar(QToolBar *toolBar, const QString &container, bool clear)
 {
 	if (!toolBar)
+	{
 		toolBar = new QToolBar();
-
-	toolBar->clear();
-	int i = 0;
+	}
+	
+	if ( clear )
+		toolBar->clear();
 	
 	foreach( QAction *a, m_actionContainer[container] )
 	{
@@ -148,7 +224,6 @@ QToolBar *DActionManager::setupToolBar(QToolBar *toolBar, const QString &contain
 		{
 			toolBar->addAction( a );
 		}
-		i++;
 	}
 
 	if (m_actionContainer.count() == 0)

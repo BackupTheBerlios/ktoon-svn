@@ -37,7 +37,7 @@ class QMenuBar;
 
 /**
  * @short la clase DActionManager provee de un manejador de acciones, este manejador facilita el acceso y ordenamiento a las acciones contieniendo todas las acciones de la aplicacion.
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado \<krawek@gmail.com\>
 */
 
 class DActionManager : public QObject
@@ -46,22 +46,24 @@ class DActionManager : public QObject
 
 	public:
 		
-		DActionManager(QWidget *parent = 0L);
-		
+		DActionManager(QWidget *parent = 0);
 		~DActionManager();
 		
-		bool insert(DAction *action, const QString &container = "default" );
-		void remove( DAction* action, const QString &container = "default" );
+		bool insert(DAction *action, const QString &id, const QString &container = "default" );
+		void remove( DAction* action, const QString &container = QString()  );
 		
-		QAction *take( DAction* action, const QString &container = "default" );
-		QAction *find(const QString &id, const QString &container = "default") const;
+		QAction *take( DAction* action, const QString &container = QString()  );
+		QAction *find(const QString &id, const QString &container = QString() ) const;
 		QAction *operator[](const QString &id) const;
 		
-		QMenuBar *setupMenuBar(QMenuBar *menu, const QStringList &containers);
-		QToolBar *setupToolBar(QToolBar *toolBar, const QString &container = "default");
+		QMenuBar *setupMenuBar(QMenuBar *menu, const QStringList &containers, bool clear = true);
+		QMenu *setupMenu(QMenu *menu, const QString &container, bool clear = true);
+		QToolBar *setupToolBar(QToolBar *toolBar, const QString &container, bool clear = true );
 		
 	private:
 		DActionContainer m_actionContainer;
 };
 
 #endif
+
+

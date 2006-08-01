@@ -25,8 +25,6 @@
 
 void KTMainWindow::createGUI()
 {
-	
-
 	// TODO: put setWindowIcon in each class
 	m_colorPalette = new KTColorPalette(this);
 	m_colorPalette->setWindowIcon(QPixmap(THEME_DIR+"/icons/color_palette.png") );
@@ -178,6 +176,7 @@ void KTMainWindow::setupMenu()
 {
 	// Setup the file menu
 	setupFileActions();
+	
 	m_fileMenu = new QMenu(tr("&File"), this);
 	menuBar()->addMenu(m_fileMenu);
 	
@@ -271,13 +270,17 @@ void KTMainWindow::setupActions()
 
 void KTMainWindow::setupFileActions()
 {
-	DAction *newProject = new DAction( QPixmap( THEME_DIR+"/icons/project.png" ), tr( "New project" ), QKeySequence(), this, SLOT(newProject()), m_actionManager, "newproject");
+	DAction *newProject = new DAction( QPixmap( THEME_DIR+"/icons/project.png" ), tr( "New project" ), QKeySequence(), this, SLOT(newProject()), m_actionManager );
 	newProject->setStatusTip(tr( "Opens a new project"));
+	m_actionManager->insert( newProject, "newproject", "file" );
 	
-	DAction *newArea = new DAction( QPixmap( THEME_DIR+"/icons/new.png" ), tr( "New paint area" ), QKeySequence(tr("Ctrl+A")), this, SLOT(newViewDocument()), m_actionManager, "newarea");
+	DAction *newArea = new DAction( QPixmap( THEME_DIR+"/icons/new.png" ), tr( "New paint area" ), QKeySequence(tr("Ctrl+A")), this, SLOT(newViewDocument()), m_actionManager);
 	newArea->setStatusTip(tr( "Opens a new paint area"));
+	m_actionManager->insert( newArea, "newarea", "file" );
 	
-	DAction *newCamera = new DAction( QPixmap( THEME_DIR), tr( "New view camera"), QKeySequence(), this, SLOT(newViewCamera()), m_actionManager, "newcamera");
+	DAction *newCamera = new DAction( QPixmap( THEME_DIR), tr( "New view camera"), QKeySequence(), this, SLOT(newViewCamera()), m_actionManager );
+	m_actionManager->insert( newCamera, "newcamera", "file" );
+	
 	newArea->setStatusTip(tr( "Opens a new view camera"));
 	
 	
@@ -287,27 +290,33 @@ void KTMainWindow::setupFileActions()
 	newDocument->setStatusTip(tr( "Opens a new document"));
 #endif
 	
-	DAction *openFile = new DAction( QPixmap(THEME_DIR+"/icons/open.png"), tr( "Open project" ), tr("Ctrl+O"), this, SLOT(openProject()), m_actionManager, "openproject");
+	DAction *openFile = new DAction( QPixmap(THEME_DIR+"/icons/open.png"), tr( "Open project" ), tr("Ctrl+O"), this, SLOT(openProject()), m_actionManager );
+	m_actionManager->insert( openFile, "openproject", "file" );
 	openFile->setStatusTip(tr("Loads an existent project"));
 	
-	DAction *save = new DAction( QPixmap(THEME_DIR+"/icons/save.png"), tr( "Save project" ),QKeySequence(tr("Ctrl+S")), this, SLOT(saveProject()), m_actionManager, "saveproject");
+	DAction *save = new DAction( QPixmap(THEME_DIR+"/icons/save.png"), tr( "Save project" ),QKeySequence(tr("Ctrl+S")), this, SLOT(saveProject()), m_actionManager);
+	m_actionManager->insert( save, "saveproject", "file" );
 	save->setStatusTip(tr("Saves the current project in the current location"));
 	
-	DAction *saveAs = new DAction( tr( "Save project &As..." ), m_actionManager, "saveprojectas");
+	DAction *saveAs = new DAction( tr( "Save project &As..." ), m_actionManager);
 	connect(saveAs, SIGNAL(triggered()), this, SLOT(saveProjectAs()));
 	saveAs->setStatusTip(tr("Opens a dialog box to save the current project in any location"));
+	m_actionManager->insert( saveAs, "saveprojectas", "file" );
 	
-	DAction *close = new DAction(QPixmap(THEME_DIR+"/icons/close.png"), tr( "Cl&ose project" ), QKeySequence(tr("Ctrl+W")), m_actionManager, "closeproject");
+	DAction *close = new DAction(QPixmap(THEME_DIR+"/icons/close.png"), tr( "Cl&ose project" ), QKeySequence(tr("Ctrl+W")), m_actionManager);
 	connect(close, SIGNAL(triggered()), this, SLOT(closeProject()));
 	close->setStatusTip(tr("Closes the active project"));
+	m_actionManager->insert( close, "closeproject", "file" );
 	
 	//------
 	
-	DAction *importPalette = new DAction( QPixmap(THEME_DIR+"/icons/import.png"), tr( "&Import GIMP palettes..." ),  QKeySequence(), this, SLOT(importPalettes()), m_actionManager, "ImportPalettes");
+	DAction *importPalette = new DAction( QPixmap(THEME_DIR+"/icons/import.png"), tr( "&Import GIMP palettes..." ),  QKeySequence(), this, SLOT(importPalettes()), m_actionManager);
 	importPalette->setStatusTip(tr("Imports palettes"));
+	m_actionManager->insert( importPalette, "importpalettes", "file" );
 	
-	DAction *exit = new DAction(QPixmap(THEME_DIR+"/icons/export.png"), tr( "E&xit" ),  QKeySequence(tr("Ctrl+Q")), qApp, SLOT(closeAllWindows ()),m_actionManager, "Exit");
+	DAction *exit = new DAction(QPixmap(THEME_DIR+"/icons/export.png"), tr( "E&xit" ),  QKeySequence(tr("Ctrl+Q")), qApp, SLOT(closeAllWindows ()), m_actionManager);
 	exit->setStatusTip(tr("Closes the application"));
+	m_actionManager->insert( exit, "exit", "file" );
 }
 
 void KTMainWindow::setupSettingsActions()
