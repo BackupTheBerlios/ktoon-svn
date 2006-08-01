@@ -100,7 +100,11 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
 	createTools();
 // 	createMenu();
 // 	m_paintArea->setHistory(m_history);
-	setStatusBar(new KTPaintAreaStatus(this));
+	KTPaintAreaStatus *status = new KTPaintAreaStatus(this);
+	setStatusBar(status);
+	
+	connect(m_paintArea->brushManager(), SIGNAL(brushChanged( const QBrush& )), status, SLOT(setBrush(const QBrush &)));
+	connect(m_paintArea->brushManager(), SIGNAL(penChanged( const QPen& )), status, SLOT(setPen(const QPen &)));
 }
 
 KTViewDocument::~KTViewDocument()

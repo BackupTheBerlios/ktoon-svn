@@ -1,5 +1,3 @@
-//
-// C++ Implementation: daction
 /***************************************************************************
  *   Copyright (C) 2005 by David Cuadrado   *
  *   krawek@gmail.com   *
@@ -106,7 +104,8 @@ DAction::~DAction()
 
 void DAction::initWithManager(DActionManager * parent, const QString &id)
 {
-	parent->insert(this, id);
+	if ( !id.isEmpty() )
+		parent->insert(this, id);
 }
 
 void DAction::init()

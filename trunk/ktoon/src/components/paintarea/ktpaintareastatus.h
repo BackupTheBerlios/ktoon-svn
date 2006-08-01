@@ -37,6 +37,10 @@ class KTPaintAreaStatus : public QStatusBar
 		KTPaintAreaStatus(KTViewDocument *parent);
 		~KTPaintAreaStatus();
 		
+	public slots:
+		void setBrush(const QBrush &brush);
+		void setPen(const QPen &pen);
+		
 	private slots:
 		void selectRenderHint(int id);
 		void selectRenderer(int id);

@@ -71,7 +71,6 @@ class GLDevice : public QGLWidget
 
 #include "ktscene.h"
 #include "ktproject.h"
-#include "kttextitem.h"
 
 KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(parent), m_grid(0), m_tool(0), m_isDrawing(false), m_project(project), m_currentSceneIndex(0), m_drawGrid(false)
 {
@@ -80,9 +79,6 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(p
 	m_brushManager = new KTBrushManager(this);
 	
 	m_inputInformation = new KTInputDeviceInformation(this);
-	
-	connect(m_brushManager, SIGNAL(penChanged( const QPen& )), this, SLOT(updateCurrentPen(const QPen &)));
-	connect(m_brushManager, SIGNAL(brushChanged( const QBrush& )), this, SLOT(updateCurrentBrush(const QBrush &)));
 	
 	m_drawingRect = QRectF(QPointF(0,0), QSizeF( 500, 400 ) ); // FIXME: parametrizable
 	
@@ -329,15 +325,6 @@ void KTPaintArea::drawBackground(QPainter *painter, const QRectF &rect)
 	
 	painter->restore();
 }
-
-void KTPaintArea::updateCurrentBrush(const QBrush &brush)
-{
-}
-
-void KTPaintArea::updateCurrentPen(const QPen &pen)
-{
-}
-
 
 void KTPaintArea::centerDrawingArea()
 {

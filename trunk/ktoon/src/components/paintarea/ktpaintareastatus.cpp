@@ -170,7 +170,15 @@ void KTPaintAreaStatus::selectRenderer(int id)
 }
 
 
+void KTPaintAreaStatus::setBrush(const QBrush &brush)
+{
+	m_brushStatus->setBackground( brush );
+}
 
+void KTPaintAreaStatus::setPen(const QPen &pen)
+{
+	m_brushStatus->setForeground( pen );
+}
 
 
 
