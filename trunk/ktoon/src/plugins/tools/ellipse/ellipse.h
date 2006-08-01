@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Jorge Cuadrado   *
- *   kuadrosx@toonka.com   *
+ *   Copyright (C) 2006 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,45 +17,49 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#ifndef NODE_H
-#define NODE_H
-
+#ifndef ELLIPSE_H
+#define ELLIPSE_H
+#include <kttoolplugin.h>
+#include <QSpinBox>
 #include <QGraphicsItem>
-#include <QObject>
-#include <QPointF>
-
+#include <QGraphicsEllipseItem>
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-class Node : public QObject, public QGraphicsItem
+class Ellipse: public KTToolPlugin
 {
-	Q_OBJECT;
-	
 	public:
+		Ellipse();
+		~Ellipse();
+		virtual void init(QGraphicsView *view);
 		
-		enum TypeNode{TopLeft  = 0, TopRight, BottomLeft, BottomRight, Center   };
-		Node(TypeNode node ,const QPointF & pos = QPoint(0,0) ,QGraphicsItem * parent = 0, QGraphicsScene * scene = 0 );
-		~Node();
-		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
-		QRectF boundingRect() const;
-		enum { Type = UserType + 1 };
+		virtual QStringList keys() const;
+		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
+		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
+		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 		
-		int type() const { return Type; }
-		int typeNode() const;
+		virtual QString toolToXml() const;
 		
-	protected:
-		QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-		void mousePressEvent(QGraphicsSceneMouseEvent *event);
-		void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-		void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
+		virtual QPainterPath path() const;
+		
+		virtual QMap<QString, DAction *>actions() const;
+		
+		int toolType() const;
+		
+		virtual QWidget *configurator();
+		
+		virtual bool isComplete() const;
+		virtual void aboutToChangeTool();
 		
 	private:
-		TypeNode m_typeNode;
-		bool m_notChange;
-		QRectF m_brParent;
-		QGraphicsItem * db;
+		void setupActions();
+		
+	private:
+		QPoint m_firstPoint;
+		QPoint m_oldPos;
+		QGraphicsEllipseItem  *m_ellipse;
+		QMap<QString, DAction *> m_actions;
 };
 
 #endif

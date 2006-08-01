@@ -35,7 +35,7 @@ class Node : public QObject, public QGraphicsItem
 	
 	public:
 		
-		enum TypeNode{TopLeft  = 0, TopRight, BottomLeft, BottomRight, Center   };
+		enum TypeNode{StartAngle  = 0, SpanAngle  };
 		Node(TypeNode node ,const QPointF & pos = QPoint(0,0) ,QGraphicsItem * parent = 0, QGraphicsScene * scene = 0 );
 		~Node();
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
@@ -55,7 +55,6 @@ class Node : public QObject, public QGraphicsItem
 		TypeNode m_typeNode;
 		bool m_notChange;
 		QRectF m_brParent;
-		QGraphicsItem * db;
 };
 
 #endif

@@ -4,7 +4,8 @@
 # Target is a subdirs project 
 
 SUBDIRS += brush \
-           select 
+           select \
+           ellipse 
 KDEV_QTVER = 4
 CONFIG += release \
 warn_on

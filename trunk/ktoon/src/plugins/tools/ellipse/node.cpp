@@ -26,16 +26,15 @@
 #include <QStyleOption>
 #include <QStyleOptionButton>
 #include <QApplication>
-
+#include <cmath>
 #include <QtDebug>
-#include <QCursor>
+
 #define SHOW_VAR(s) qDebug() << #s << " = " << s
 
-Node::Node(TypeNode node,const QPointF & pos, QGraphicsItem * parent,  QGraphicsScene * scene  ) : QGraphicsItem(parent, scene), m_typeNode(node), m_notChange(true), db(0)
+Node::Node(TypeNode node,const QPointF & pos, QGraphicsItem * parent,  QGraphicsScene * scene  ) : QGraphicsItem(parent, scene), m_typeNode(node), m_notChange(true)
 {
 	QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor ));
 	setFlag(ItemIsMovable);
-	
 	setPos(pos);
 }
 
@@ -83,89 +82,54 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
 void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	update();
-	m_brParent = parentItem()->boundingRect();
-	QGraphicsItem::mousePressEvent(event);
+	m_brParent = parentItem()->sceneBoundingRect();
+// 	QGraphicsItem::mousePressEvent(event);
 }
 
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	update();
-	QGraphicsItem::mouseReleaseEvent(event);
+// 	QGraphicsItem::mouseReleaseEvent(event);
 }
 
 void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
-	QPointF newPos(event->pos()+pos());
+	QPointF newPos(mapToParent(event->pos()) - matrix().map(event->buttonDownPos(Qt::LeftButton)));
 	if( m_notChange)
 	{
 		m_notChange = false;
 	}
 	else
 	{
-		QRectF rect =  parentItem()->boundingRect();
-		QRectF br =  parentItem()->boundingRect();
-		switch(m_typeNode)
+		QRectF rect = m_brParent;
+// 		QRectF br = m_brParent;
+		
+		QGraphicsEllipseItem *item = dynamic_cast< QGraphicsEllipseItem*>( parentItem());
+		
+		if(item)
 		{
-			case TopLeft:
+			
+			QPointF center = rect.center();
+			QPointF tal= event->scenePos() - center;
+// 			QGraphicsItem * parent = parentItem();
+			double a =  atan(tal.y() / tal.x())*(180/3.1416);
+			SHOW_VAR(a);
+			switch(m_typeNode)
 			{
-				rect.setTopLeft(newPos );
-				SHOW_VAR(rect.topLeft());
-				float sx = 1, sy = 1;
-				sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
-				sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
-				
-				if(sx > 0 && sy > 0)
+				case StartAngle:
 				{
-					parentItem()->setPos( parentItem()->mapToScene( rect.topLeft() ));
-					parentItem()->scale(sx, sy);
+					dynamic_cast< QGraphicsEllipseItem*>( parentItem())->setStartAngle (360+ a* 16 );
+					break;
 				}
-				break;
-			}
-			case TopRight:
-			{
-				rect.setTopRight(newPos);
-				float sx = 1, sy = 1;
-				sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
-				sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
-
-				if(sx > 0 && sy > 0)
+				case SpanAngle:
 				{
-					parentItem()->setPos( parentItem()->mapToScene( rect.topLeft() ));
-					parentItem()->scale(sx, sy);
+					dynamic_cast< QGraphicsEllipseItem*>( parentItem())->setStartAngle ( a* 16 );
+					break;
 				}
-				break;
-			}
-			case BottomRight:
-			{
-				rect.setBottomRight(newPos);
-				float sx = 1, sy = 1;
-				sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
-				sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
-				if(sx > 0 && sy > 0 && rect.isValid ())
-				{
-					parentItem()->scale(sx, sy);
-					
-				}
-				break;
-			}
-			case BottomLeft:
-			{
-				rect.setBottomLeft(newPos);
-				float sx = 1, sy = 1;
-				sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
-				sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
-				if(sx > 0 && sy > 0)
-				{
-					parentItem()->setPos( parentItem()->mapToScene( rect.topLeft() ));
-					parentItem()->scale(sx, sy);
-				}
-				break;
-			}
-			case Center:
-			{
-				break;
-			}
-		};
+						
+	// 					TypeNode
+			};
+		}
 	}
 	update();
 }
