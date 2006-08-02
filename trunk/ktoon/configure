@@ -10,6 +10,7 @@ CONFIG_H=config.h
 DLIB_CONFIG=src/dlib/dlibconfig.pri
 
 CONFIG_LOG=$(pwd)/$LOG_FILE
+PARAMETERS=""
 
 # $1 parameter is a text
 # $2 directory 
@@ -67,12 +68,29 @@ function defineDLibConf()
 function pkgconfigInclude() 
 {
 	INCPATH=''
-	for i in `pkg-config $1 --cflags --silence-errors`
+	for inc in $(pkg-config ${1} --cflags --silence-errors)
 	do
-		echo "FIXME!"
+		case $inc in
+			-I*) INCPATH="${INCPATH} $(echo $inc | sed 's/-I//g')" ;;
+			-p*) ;;
+			-D*) ;;
+		esac
 	done
-
+	
 	echo $INCPATH
+}
+
+function updateMakefiles()
+{
+	qpinfo "Updating makefiles"
+	
+	${QMAKE} ${PARAMETERS} -recursive 2> /dev/null >/dev/null
+	
+	INSTALL_DIR_STRIP=$(echo ${INSTALL_DIR} | sed 's/\//\\\//g')
+	for mkfile in `find . -iname "Makefile*"`
+	do
+		sed -i "s/\$(INSTALL_ROOT)/\$(INSTALL_ROOT)\/${INSTALL_DIR_STRIP}/g" $mkfile
+	done
 }
 
 function usage()
@@ -80,6 +98,7 @@ function usage()
 	echo "Use $0 [options]"
 	echo
 	echo "Options: "
+	echo "		-p,--prefix [PATH]	Installs KToon on PATH"
 	echo "		-k,--enable-ktoonstyle	Enables KToonStyle"
 	echo "		--enable-kinas 		Enable KINAS"
 	echo
@@ -90,7 +109,7 @@ echo "/* Generated automatically by configure script */" > $CONFIG_H
 echo "#ifndef CONFIG_H" >> $CONFIG_H
 echo "#define CONFIG_H" >> $CONFIG_H
 
-TEMP=`getopt -o kh:: --long help,enable-ktoonstyle,enable-kinas:: -n "$0" -- "$@"`
+TEMP=`getopt -o pkh:: --long prefix,help,enable-ktoonstyle,enable-kinas:: -n "$0" -- "$@"`
 
 eval set -- "$TEMP"
 while [ true ]
@@ -99,8 +118,9 @@ do
 		-h|--help) usage; shift;;
 		-k|--enable-ktoonstyle) defineMacro ENABLE_KTOONSTYLE; shift ;;
 		--enable-kinas) defineMacro ENABLE_KINAS; shift ;;
+		-p|--prefix) INSTALL_DIR=$3; shift 3 ;;
 		--) shift ; break ;;
-		*) break;
+		*) break ;;
 	esac
 done
 
@@ -161,11 +181,22 @@ defineMacro VERSION_STR \"${APPVER}\"
 
 echo "#endif" >> $CONFIG_H
 
-qmake -recursive 2> /dev/null >/dev/null
+
+updateMakefiles
+
+# write config status
+
+echo "export KTOON_HOME=${INSTALL_DIR}" > ${CONFIG_STATUS}
+# echo "export " >> ${CONFIG_STATUS}
 
 echo
-echo "**************************************"
-qpwarn "$APPNAME is configured, if you want to clean configuration, execute 'make -f Makefile.common confclean'"
-echo "**************************************"
+echo "********************************************************************************"
+qpwarn "$APPNAME is configured, if you want to clean configuration, type 'make -f Makefile.common confclean'"
+qpwarn "Just run 'make' and 'make install'."
+qpwarn "KToon will be installed in '${INSTALL_DIR}'"
+echo "********************************************************************************"
 echo
+
+
+
 

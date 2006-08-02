@@ -14,7 +14,6 @@ STAT_FILE=/tmp/ktoon_stat_file-$RANDOM
 
 . scripts/global
 
-
 function fails ()
 {
 	# Stop thread
@@ -83,26 +82,6 @@ function qtCC
 	PARAMETERS="$PARAMETERS "
 }
 
-function updateMakefiles()
-{
-#	qpinfo "Updating Makefiles with parameters ${PARAMETERS}"
-	echo -n "Wait a moment."
-	DIRS=`find . -type d`
-	for i in $DIRS
-	do
-		cd $i
-		if [ -e *.pro ]
-		then
-# 			qpinfo "Updating $i..."
-			echo -n "."
-
-			$QMAKE ${PARAMETERS} 2> /dev/null >/dev/null
-		fi
-		cd - 2> /dev/null >/dev/null
-	done
-	echo
-}
-
 function addMenuEntry()
 {
 	if [ `whoami` == "root" ]
@@ -142,15 +121,6 @@ function main()
 {
 	echo
 	echo `date` >> $LOG_FILE
-# 	qpinfo "###################################"
-# 	if [ $OPTION_GL -eq 1 ]
-# 	then
-# 		qpinfo "-> Using OpenGL version"
-# 		openglCC
-# 	else
-# 		qpinfo "-> Using NO-OpenGL version"
-# 		qtCC
-# 	fi
 	
 	if [ $OPTION_NODEBUG -eq 1 ]
 	then
@@ -173,7 +143,6 @@ function main()
 		esac
 	fi
 	
-	updateMakefiles
 	$QMAKE
 	
 	if [ $ASSUME_YES -ne 1 ]
@@ -194,8 +163,6 @@ function main()
 ########################
 	qpinfo "Compiling $APPNAME $APPVER..."
 	qpinfo "Go for a coffee cup ;)"
-	
-# 	$MAKE 2> /dev/null > /dev/null || ( fails "Compilation Error! please, try running the \"make\" command"; exit 1 )
 	
 	echo > $STAT_FILE
 	END=0
@@ -243,12 +210,8 @@ function usage()
 	echo "Usage: `basename $0` [option]"
 	echo
 	echo "Options: "
-	echo "	-p,--prefix [PREFIX]"
-	echo "	   Set the installation path"
 	echo "	-q,--quiet"
 	echo "	   Enable debug support"
-# 	echo "	-o,--use-opengl"
-# 	echo "	   Enable OpenGL support"
 	echo "	-Y,--assume-yes"
 	echo "	   Assume yes"
 	echo "	-h,--help"
@@ -257,23 +220,29 @@ function usage()
 	exit 0
 }
 
-if [ $# -eq 0 ]
+
+if [ -f ${CONFIG_STATUS} ]
 then
-	if [ ! $KTOON_HOME ]
-	then
-		usage
-	fi
+	. ${CONFIG_STATUS}
+else
+	qperror "Please run ./configure first"
+	exit 0
+fi
+
+if [ ! $KTOON_HOME ]
+then
+	qperror "Please run ./configure first"
+	exit 0
 fi
 
 
-TEMP=`getopt -o p:qoYh:: --long prefix:,help,quiet,use-opengl::,assume-yes -n "$0" -- "$@"`
+TEMP=`getopt -o :qoYh:: --long help,quiet,use-opengl::,assume-yes -n "$0" -- "$@"`
 
 eval set -- "$TEMP"
 while [ true ]
 do
         case "$1" in
 		-h|--help) usage; shift;;
-		-p|--prefix) KTOON_HOME=$2; shift 2 ;;
 		-q|--quiet) OPTION_NODEBUG=1; shift ;;
 		-Y|--assume-yes) ASSUME_YES=1; OPTION_NODEBUG=1; shift ;; 
 		--) shift ; break ;;
@@ -288,20 +257,6 @@ then
 fi
 
 
-verifyEnv
-detectQtVersion
-
-# if [ $OPTION_GL -eq -1 ]
-# then
-# 	qpelec "Do you wants compile opengl version (y/n)? "
-# 	read UOG
-# 
-# 	case $UOG in
-# 		y|Y|yes|YES|si|SI|s|S) OPTION_GL=1 ;;
-# 		*) OPTION_GL=0 ;;
-# 	esac
-# fi
-
 if [ $OPTION_NODEBUG -eq -1 ]
 then
 	qpelec "Do you want to enable Debug Support (y/n)? "
@@ -313,7 +268,8 @@ then
 fi
 
 export KTOON_HOME
-export INSTALL_ROOT=$KTOON_HOME
+# export INSTALL_ROOT=$KTOON_HOME
 
 main
+
 

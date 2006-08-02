@@ -5,6 +5,7 @@ APPVER="0.9+svn"
 
 
 KT_CONFIG=ktconfig.pri
+CONFIG_STATUS=configure.status
 
 EMAIL='krawek@toonka.com'
 
