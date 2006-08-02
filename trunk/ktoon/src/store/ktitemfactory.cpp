@@ -61,14 +61,11 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 		qgraphicsitem_cast<KTPathItem *>(m_item)->setPath(path);
 		qgraphicsitem_cast<KTPathItem *>(m_item)->setMatrix(matrix);
 		
-		SHOW_VAR(atts.value("transform"));
-// 		SHOW_VAR(matrix.m11());
-// 		SHOW_VAR(matrix.m22());
-// 		SHOW_VAR(matrix.dx());
-// 		SHOW_VAR(matrix.dy());
-// 		m_item->update();
-// 		m_item->translate(matrix.dx(), matrix.dy());
-// 		m_item->setPos(matrix.dx(), matrix.dy());
+		QPointF pos;
+		KTSvg2Qt::parsePointF(atts.value("pos"), pos );
+		
+		qgraphicsitem_cast<KTPathItem *>(m_item)->setPos( pos );
+		
 	}
 	else if ( qname == "rect" )
 	{

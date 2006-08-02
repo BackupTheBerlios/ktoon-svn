@@ -36,6 +36,7 @@ class KTPathItem : public KTAbstractSerializable, public QGraphicsPathItem
 		virtual void fromXml(const QString &xml);
 		virtual QDomElement toXml(QDomDocument &doc);
 		virtual void paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+		bool contains ( const QPointF & point ) const;
 		
 		
 	protected:

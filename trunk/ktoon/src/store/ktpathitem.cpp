@@ -57,12 +57,16 @@ QDomElement KTPathItem::toXml(QDomDocument &doc)
 	qreal d = m.m22();
 	qreal e = m.dx();
 	qreal f = m.dy();
+	
 	strMatrix += QString::number(a) + "," +QString::number(b) + "," + QString::number(c) + "," + QString::number(d) + "," + QString::number(e) + "," + QString::number(f) + ")" ; 
 	
 	root.setAttribute( "transform", strMatrix);
 	
+	
+	
 	QString strPath = "";
 	QChar t;
+	
 	for(int i = 0; i <  path().elementCount () ; i++)
 	{
 		QPainterPath::Element e = path().elementAt (i);
@@ -119,6 +123,8 @@ QDomElement KTPathItem::toXml(QDomDocument &doc)
 	}
 	
 	root.setAttribute( "d", strPath);
+		
+	root.setAttribute( "pos", "(" + QString::number(pos().x()) + "," + QString::number(pos().y()) + ")"  );
 	
 	return root;
 }
@@ -126,6 +132,24 @@ QDomElement KTPathItem::toXml(QDomDocument &doc)
 void KTPathItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
 	QGraphicsPathItem::paint(painter, option,widget );
+	
+}
+
+
+bool KTPathItem::contains ( const QPointF & point ) const
+{
+	int thickness = 5;
+	QRectF rectS(point-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
+	
+	foreach(QPointF point, shape().toFillPolygon ())
+	{
+		if(rectS.contains( point))
+		{
+			return true;
+		}
+	}
+	return false;
+	
 	
 }
 

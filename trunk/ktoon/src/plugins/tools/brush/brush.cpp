@@ -151,6 +151,7 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 	QPainterPath newPath = m_path;
 	QMatrix m;
 	QPainterPath::Element e = m_path.elementAt(0);
+	
 	if(e.type == QPainterPath::MoveToElement)
 	{
 		QPointF pos = m_path.boundingRect().topLeft();
@@ -213,6 +214,13 @@ QString Brush::toolToXml() const
 	doc.appendChild(m_item->toXml( doc ));
 	return doc.toString();
 }
+
+KTProjectEvent::Action Brush::action() const
+{
+	return KTProjectEvent::Add;
+}
+
+
 
 Q_EXPORT_PLUGIN2(kt_brush, Brush )
 

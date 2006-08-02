@@ -26,7 +26,7 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-#include "ddebug.h"
+#include <ddebug.h>
 
 KTSvg2Qt::KTSvg2Qt()
 {
@@ -638,24 +638,57 @@ bool KTSvg2Qt::svgmatrix2qtmatrix(const QString &data, QMatrix &matrix)
 	QString::const_iterator itr = data.constBegin();
 	while (itr != data.constEnd()) 
 	{
-		if ((*itr) == QLatin1Char('m')) {  //matrix
+		if ((*itr) == QLatin1Char('m')) 
+		{  //matrix
 			QString temp(QLatin1String("m"));
 			int remains = 6;
-			while (remains--) {
+			while (remains--) 
+			{
 				temp += *itr++;
 			}
 
 			while ((*itr).isSpace())
+			{
 				++itr;
+			}
+			
 			++itr;// '('
 			QList<qreal> points = parseNumbersList(itr);
 			++itr; // ')'
 
 			Q_ASSERT(points.count() == 6);
-			matrix = matrix * QMatrix(points[0], points[1],
-					points[2], points[3],
-					points[4], points[5]);
+			matrix = matrix * QMatrix(points[0], points[1],points[2], points[3], points[4], points[5]);
 		}
 	}
 	return true;
 }
+
+bool KTSvg2Qt::parsePointF(const QString &pointstr, QPointF &point)
+{
+// 	QRegExp reg("\\(\\s*(\\d+\\.{0,1}\\d+)\\s*\\,\\s*(\\d+\\.{0,1}\\d+)\\s*\\)");
+	
+// 	if ( reg.indexIn(pointstr) > -1 )
+// 	{
+// 		QStringList texts = reg.capturedTexts();
+		
+// 		if ( texts.count() != 3 ) return false;
+		
+// 		point.setX(texts[1].toDouble());
+// 		point.setY(texts[2].toDouble());
+		
+		QString::const_iterator itr = pointstr.constBegin();
+		QList<qreal> points = parseNumbersList(++itr);
+		
+		if ( points.count() != 2 ) return false;
+		
+		point.setX(points[0]);
+		point.setY(points[1]);
+// 	}
+// 	else
+// 	{
+// 		return false;
+// 	}
+	
+	return true;
+}
+

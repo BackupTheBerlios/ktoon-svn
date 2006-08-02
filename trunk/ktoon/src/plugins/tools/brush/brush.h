@@ -62,6 +62,8 @@ class Brush : public KTToolPlugin
 		virtual bool isComplete() const;
 		virtual void aboutToChangeTool();
 		
+		virtual KTProjectEvent::Action action() const;
+		
 	private:
 		void setupActions();
 		
