@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2006 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -26,17 +26,31 @@
 #include <QPainterPath>
 
 /**
- * @author Jorge Cuadrado <krawek@toonka.com>
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
  */
 class Q_DECL_EXPORT KTGraphicalAlgorithm
 {
 	private:
 		KTGraphicalAlgorithm() {}
 		~KTGraphicalAlgorithm() {};
-	
+		
 	public:
 		static QPainterPath bezierFit(QPolygonF &points_, float error);
 		static QPolygonF polygonFit(const QPolygonF &points);
+		static bool intersectLine(const QPointF &start, const QPointF& end, const QRectF& rect );
+		static char calculateCode(const QPointF &point, const QRectF &window);
+		
+	private:
+		
+		enum CohenSutherlandCode
+		{
+			Bit1 = 1<<1,
+			Bit2 = 1<<2,
+			Bit3 = 1<<3,
+			Bit4 = 1<<4
+		};
+		
+		static void printCode(char code);
 };
 
 #endif

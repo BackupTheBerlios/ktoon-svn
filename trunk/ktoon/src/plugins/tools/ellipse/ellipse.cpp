@@ -60,8 +60,8 @@ void Ellipse::press(const KTInputDeviceInformation *input, KTBrushManager *brush
 {
 	if(input->buttons () == Qt::LeftButton)
 	{
-		m_ellipse = scene->addEllipse(QRectF(QPointF(0,0), QSizeF(0.0,0.0)));
-		m_ellipse->setPos(input->pos());
+		m_ellipse = new KTEllipseItem(QRectF(QPointF(0,0), QSizeF(0.0,0.0)));		m_ellipse->setPos(input->pos());
+		scene->addItem(m_ellipse);
 	}
 }
 
@@ -92,7 +92,9 @@ void Ellipse::release(const KTInputDeviceInformation *input, KTBrushManager *bru
 
 QString Ellipse::toolToXml() const
 {
-	return QString();
+	QDomDocument doc;
+	doc.appendChild(m_ellipse->toXml( doc ));
+	return doc.toString();
 }
 
 QPainterPath Ellipse::path() const

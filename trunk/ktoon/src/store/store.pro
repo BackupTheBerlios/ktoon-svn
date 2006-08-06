@@ -29,7 +29,8 @@ HEADERS += ktlayer.h \
            ktpixmapitem.h \
            kttextitem.h \
            ktbuttonitem.h \
-           ktitemfactory.h 
+           ktitemfactory.h \
+           ktellipseitem.h 
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
@@ -50,7 +51,8 @@ SOURCES += ktlayer.cpp \
            ktpixmapitem.cpp \
            kttextitem.cpp \
            ktbuttonitem.cpp \
-           ktitemfactory.cpp 
+           ktitemfactory.cpp \
+           ktellipseitem.cpp 
 QT += xml gui
 KDEV_QTVER = 4
 INCLUDEPATH += ../../src/store \

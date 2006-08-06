@@ -32,7 +32,9 @@ class KTRectItem : public QGraphicsRectItem, public KTAbstractSerializable
 {
 	public:
 		KTRectItem( QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+		KTRectItem( const QRectF& rect, QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
 		~KTRectItem();
+		bool contains ( const QPointF & point ) const;
 		
 		virtual void fromXml(const QString &xml);
 		virtual QDomElement toXml(QDomDocument &doc);

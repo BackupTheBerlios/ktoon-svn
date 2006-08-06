@@ -20,13 +20,21 @@
 
 #include "ktrectitem.h"
 #include <QGraphicsSceneDragDropEvent>
+
 #include <QMimeData>
 #include <QBrush>
+#include <QGraphicsScene>
+#include "ktgraphicalgorithm.h"
 
 KTRectItem::KTRectItem(QGraphicsItem * parent, QGraphicsScene * scene ) : QGraphicsRectItem(parent, scene)
 {
 }
 
+KTRectItem::KTRectItem( const QRectF& rect, QGraphicsItem * parent , QGraphicsScene * scene )
+: QGraphicsRectItem(rect, parent, scene)
+{
+	
+}
 
 KTRectItem::~KTRectItem()
 {
@@ -83,4 +91,36 @@ void KTRectItem::dropEvent(QGraphicsSceneDragDropEvent *event)
 	update();
 }
 
+bool KTRectItem::contains ( const QPointF & point ) const
+{
+// 	D_FUNCINFO;
+	int thickness = 6;
+	QRectF rectS(point-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
+	
+	QPolygonF pol = shape().toFillPolygon ();
+	foreach(QPointF point, pol)
+	{
+		if(rectS.contains( point))
+		{
+			return true;
+		}
+	}
+	
+	QPolygonF::iterator it1 = pol.begin() ;
+	QPolygonF::iterator it2 = pol.begin()+1;
+	
+	while(it2 != pol.end())
+	{
+		if(KTGraphicalAlgorithm::intersectLine( (*it1), (*it2), rectS  ))
+		{
+			return true;
+		}
+		++it1;
+		++it2;
+	}
+	
+	return false;
+	
+	
+}
 

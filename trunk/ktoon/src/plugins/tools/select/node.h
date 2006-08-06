@@ -55,7 +55,6 @@ class Node : public QObject, public QGraphicsItem
 		TypeNode m_typeNode;
 		bool m_notChange;
 		QRectF m_brParent;
-		QGraphicsItem * db;
 };
 
 #endif

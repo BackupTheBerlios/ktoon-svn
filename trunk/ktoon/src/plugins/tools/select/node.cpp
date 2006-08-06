@@ -31,7 +31,7 @@
 #include <QCursor>
 #define SHOW_VAR(s) qDebug() << #s << " = " << s
 
-Node::Node(TypeNode node,const QPointF & pos, QGraphicsItem * parent,  QGraphicsScene * scene  ) : QGraphicsItem(parent, scene), m_typeNode(node), m_notChange(true), db(0)
+Node::Node(TypeNode node,const QPointF & pos, QGraphicsItem * parent,  QGraphicsScene * scene  ) : QGraphicsItem(parent, scene), m_typeNode(node), m_notChange(true)
 {
 	QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor ));
 	setFlag(ItemIsMovable);
@@ -109,56 +109,22 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 			case TopLeft:
 			{
 				rect.setTopLeft(newPos );
-				SHOW_VAR(rect.topLeft());
-				float sx = 1, sy = 1;
-				sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
-				sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
-				
-				if(sx > 0 && sy > 0)
-				{
-					parentItem()->setPos( parentItem()->mapToScene( rect.topLeft() ));
-					parentItem()->scale(sx, sy);
-				}
 				break;
+				
 			}
 			case TopRight:
 			{
 				rect.setTopRight(newPos);
-				float sx = 1, sy = 1;
-				sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
-				sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
-
-				if(sx > 0 && sy > 0)
-				{
-					parentItem()->setPos( parentItem()->mapToScene( rect.topLeft() ));
-					parentItem()->scale(sx, sy);
-				}
 				break;
 			}
 			case BottomRight:
 			{
 				rect.setBottomRight(newPos);
-				float sx = 1, sy = 1;
-				sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
-				sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
-				if(sx > 0 && sy > 0 && rect.isValid ())
-				{
-					parentItem()->scale(sx, sy);
-					
-				}
 				break;
 			}
 			case BottomLeft:
 			{
 				rect.setBottomLeft(newPos);
-				float sx = 1, sy = 1;
-				sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
-				sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
-				if(sx > 0 && sy > 0)
-				{
-					parentItem()->setPos( parentItem()->mapToScene( rect.topLeft() ));
-					parentItem()->scale(sx, sy);
-				}
 				break;
 			}
 			case Center:
@@ -166,6 +132,20 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 				break;
 			}
 		};
+		float sx = 1, sy = 1;
+		sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
+		sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
+				
+		if(sx > 0 && sy > 0)
+		{
+			parentItem()->setPos( parentItem()->mapToScene( rect.topLeft() ));
+			parentItem()->scale(sx, sy);
+		}
+	}
+	if(m_typeNode == Center)
+	{
+		parentItem()->moveBy(event->pos().x(), event->pos().y());
+		QGraphicsItem::mouseReleaseEvent(event);
 	}
 	update();
 }

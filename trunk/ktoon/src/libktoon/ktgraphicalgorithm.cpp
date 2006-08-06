@@ -40,6 +40,7 @@
 #endif
 
 #include "ddebug.h"
+#include <QDebug>
 
 
 #define MAXPOINTS	1000		/* The most points you can have */
@@ -656,7 +657,7 @@ QPolygonF fillLine(const QPointF &first_, const QPointF &second_)
 	
 	m = (y2 - y1) / (x2 - x1);
 	
-	for(int x = x1; x < qMax(first.x(), second.x()); x += 1 )
+	for(double x = x1; x < qMax(first.x(), second.x()); x += 1 )
 	{
 		QPointF point;
 		point.setX(x);
@@ -697,5 +698,67 @@ QPolygonF KTGraphicalAlgorithm::polygonFit(const QPolygonF &points)
 	return lines;
 }
 
+char KTGraphicalAlgorithm::calculateCode(const QPointF &point, const QRectF &window)
+{
+	char code = 0;
 
+	if ( point.y() > window.top() )
+	{
+		code |= Bit1;
+	}
+	else if ( point.y() < window.bottom() )
+	{
+		code |= Bit2;
+	}
 
+	if ( point.x() > window.right())
+	{
+		code |= Bit3;
+	}
+	else if ( point.x() < window.left())
+	{
+		code |= Bit4;
+	}
+	return code;
+}
+
+bool KTGraphicalAlgorithm::intersectLine(const QPointF &from, const QPointF& to, const QRectF& window )
+{
+// 	qDebug() << from << " -> "<< to << "intersect" << window ;
+	
+	//FIXME 
+	char code = calculateCode(from, window) & calculateCode( to, window);
+// 	printCode(code);
+	if ( code == (Bit1 & Bit2 & Bit3 & Bit4 ) )
+	{
+		return true;
+	}
+	return false;
+	
+}
+
+void KTGraphicalAlgorithm::printCode(char code)
+{
+	QString codestr = "0000";
+	if ( code & Bit1 )
+	{
+		codestr[0] = '1';
+	}
+
+	if ( code & Bit2 )
+	{
+		codestr[1] = '1';
+	}
+
+	if ( code & Bit3 )
+	{
+		codestr[2] = '1';
+	}
+
+	if ( code & Bit4 )
+	{
+		codestr[3] = '1';
+	}
+
+	dDebug() << codestr;
+}

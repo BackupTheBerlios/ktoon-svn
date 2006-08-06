@@ -339,7 +339,10 @@ void KTPaintArea::wheelEvent(QWheelEvent *event)
 	{
 		scaleView(pow(( double)2, -event->delta() / 240.0));
 	}
-	QGraphicsView::wheelEvent(event);	
+	else
+	{
+		QGraphicsView::wheelEvent(event);
+	}
 }
 
 void KTPaintArea::scaleView(qreal scaleFactor)

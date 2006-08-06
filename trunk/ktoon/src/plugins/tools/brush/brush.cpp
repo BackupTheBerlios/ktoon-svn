@@ -158,6 +158,7 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 		m.translate(-pos.x() , -pos.y());
 		newPath = m.map(newPath);
 		m_item->setPos(pos);
+// 		m_item->translate(pos.x(), pos.y());
 	}
 	
 	m_item->setPath(newPath);

@@ -22,7 +22,7 @@
 #include <kttoolplugin.h>
 #include <QSpinBox>
 #include <QGraphicsItem>
-#include <QGraphicsEllipseItem>
+#include "ktellipseitem.h"
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
@@ -58,7 +58,7 @@ class Ellipse: public KTToolPlugin
 	private:
 		QPoint m_firstPoint;
 		QPoint m_oldPos;
-		QGraphicsEllipseItem  *m_ellipse;
+		KTEllipseItem  *m_ellipse;
 		QMap<QString, DAction *> m_actions;
 };
 

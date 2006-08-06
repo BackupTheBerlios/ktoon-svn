@@ -26,6 +26,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include "ktsvg2qt.h"
+#include "ktgraphicalgorithm.h"
 
 KTPathItem::KTPathItem( QGraphicsItem * parent, QGraphicsScene * scene) : QGraphicsPathItem(parent, scene), m_dragOver(false)
 {
@@ -123,7 +124,7 @@ QDomElement KTPathItem::toXml(QDomDocument &doc)
 	}
 	
 	root.setAttribute( "d", strPath);
-		
+	
 	root.setAttribute( "pos", "(" + QString::number(pos().x()) + "," + QString::number(pos().y()) + ")"  );
 	
 	return root;
@@ -138,16 +139,32 @@ void KTPathItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem * op
 
 bool KTPathItem::contains ( const QPointF & point ) const
 {
+// 	D_FUNCINFO;
 	int thickness = 5;
 	QRectF rectS(point-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
 	
-	foreach(QPointF point, shape().toFillPolygon ())
+	QPolygonF pol = shape().toFillPolygon ();
+	foreach(QPointF point, pol)
 	{
 		if(rectS.contains( point))
 		{
 			return true;
 		}
 	}
+	
+	QPolygonF::iterator it1 = pol.begin() ;
+	QPolygonF::iterator it2 = pol.begin()+1;
+	
+	while(it2 != pol.end())
+	{
+		if(KTGraphicalAlgorithm::intersectLine( (*it1), (*it2), rectS  ))
+		{
+			return true;
+		}
+		++it1;
+		++it2;
+	}
+	
 	return false;
 	
 	
