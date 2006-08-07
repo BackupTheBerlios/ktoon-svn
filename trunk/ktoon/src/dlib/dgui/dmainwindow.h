@@ -23,6 +23,7 @@
 
 #include <QMainWindow>
 #include <QHash>
+#include <QMap>
 
 class DButtonBar;
 class DToolView;
@@ -35,12 +36,19 @@ class Q_GUI_EXPORT DMainWindow : public QMainWindow
 {
 	Q_OBJECT;
 	public:
+		enum
+		{
+			None = 0,
+			DefaultWorkspace
+		};
+		
 		DMainWindow(QWidget *parent = 0);
 		~DMainWindow();
 		
-		void addButtonBar(Qt::ToolBarArea area);
-		virtual DToolView *addToolView(QWidget *view, Qt::ToolBarArea defaultPlace);
+		virtual DToolView *addToolView(QWidget *view, Qt::ToolBarArea defaultPlace, int workspace = DefaultWorkspace);
 		
+		void setCurrentWorkspace(int wsp);
+		int currentWorkspace() const;
 		
 	private:
 		Qt::DockWidgetArea dockWidgetArea(Qt::ToolBarArea area);
@@ -50,13 +58,20 @@ class Q_GUI_EXPORT DMainWindow : public QMainWindow
 		void relayoutViewButton(bool topLevel);
 		void relayoutToolView();
 		
+	signals:
+		void workspaceChanged(int wps);
+		
+	protected:
+		void addButtonBar(Qt::ToolBarArea area);
+		
 	private:
 		DToolView *m_forRelayout;
 		
 	private:
 		QHash<Qt::ToolBarArea, DButtonBar *> m_buttonBars;
-		QList<DToolView*> m_toolViews;
+		QHash<DButtonBar *, QList<DToolView*> > m_toolViews;
 		
+		int m_currentWorkspace;
 };
 
 #endif

@@ -91,6 +91,7 @@ DTabbedMainWindow::DTabbedMainWindow(QWidget *parent) : DMainWindow(parent)
 	setCentralWidget(m_tabWidget);
 	
 	connect(m_tabWidget, SIGNAL(currentChanged ( int)), this, SLOT(emitWidgetChanged( int )));
+	connect(this, SIGNAL(workspaceChanged(int)), this, SLOT(setupWorkspace(int)));
 }
 
 
@@ -128,7 +129,7 @@ void DTabbedMainWindow::setupTabWidget(QTabWidget *w)
 	connect(closeButton, SIGNAL(clicked()), this, SLOT(closeCurrentTab()));
 }
 
-void DTabbedMainWindow::addWidget(QWidget *widget, bool persistant)
+void DTabbedMainWindow::addWidget(QWidget *widget, bool persistant, int workspace)
 {
 	m_tabWidget->addTab(widget, widget->windowIcon(), widget->windowTitle() );
 	
@@ -136,6 +137,9 @@ void DTabbedMainWindow::addWidget(QWidget *widget, bool persistant)
 	{
 		m_persistantWidgets << widget;
 	}
+	
+	m_pages << widget;
+	m_tabs[widget] = workspace;
 	
 	if ( QToolButton *button = dynamic_cast<QToolButton *>(m_tabWidget->cornerWidget(Qt::TopRightCorner)) )
 	{
@@ -155,6 +159,9 @@ void DTabbedMainWindow::removeWidget(QWidget *widget)
 	{
 		m_tabWidget->removeTab( index );
 	}
+	
+	m_tabs.remove(widget);
+	m_pages.removeAll(widget);
 	
 	if ( m_tabWidget->count() == 0 )
 	{
@@ -211,6 +218,64 @@ void DTabbedMainWindow::setTabWidget(QTabWidget *w)
 	
 	delete m_tabWidget;
 	m_tabWidget = 0;
+	
+	m_tabWidget = w;
+}
+
+void DTabbedMainWindow::setupWorkspace(int wps)
+{
+	// FIXME: Flickr = (
+	
+	m_tabWidget->setUpdatesEnabled( false );
+	setUpdatesEnabled( false );
+	
+	foreach(QWidget *w, m_pages )
+	{
+		int workspace = m_tabs[w];
+		
+		if ( wps & workspace )
+		{
+			m_tabWidget->addTab(w, w->windowIcon(), w->windowTitle() );
+			w->show();
+		}
+		else
+		{
+			w->hide();
+			m_tabWidget->removeTab( m_tabWidget->indexOf(w) );
+		}
+	}
+	
+	if ( QToolButton *button = dynamic_cast<QToolButton *>(m_tabWidget->cornerWidget(Qt::TopRightCorner)) )
+	{
+		if ( !button->isVisible() )
+		{
+			button->show();
+		}
+	}
+	
+	m_tabWidget->setUpdatesEnabled( true);
+	setUpdatesEnabled( true);
+	
+#if 0
+	int count = m_tabWidget->count();
+	
+	for(int index = 0; index < count; index++ )
+	{
+		QWidget *w = m_tabWidget->widget(index);
+		
+		if ( m_tabs[w] == wps )
+		{
+			w->show();
+			m_tabWidget->setTabEnabled( index, true);
+			
+		}
+		else
+		{
+			w->hide();
+			m_tabWidget->setTabEnabled( index, false);
+		}
+	}
+#endif
 }
 
 

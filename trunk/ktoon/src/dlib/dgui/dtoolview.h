@@ -41,6 +41,9 @@ class Q_GUI_EXPORT DToolView : public QDockWidget
 		DViewButton *button() const;
 		QSize sizeHint() const;
 		
+		void setWorkspace(int wsp);
+		int workspace() const;
+		
 	private:
 		void setup();
 		
@@ -51,6 +54,8 @@ class Q_GUI_EXPORT DToolView : public QDockWidget
 	private:
 		DViewButton *m_button;
 		int m_size;
+		
+		int m_workspace;
 };
 
 #endif

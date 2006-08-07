@@ -27,6 +27,7 @@
 
 class DViewButton;
 class QAction;
+class QMenu;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
@@ -43,10 +44,28 @@ class Q_GUI_EXPORT DButtonBar : public QToolBar
 		
 		bool isEmpty() const;
 		
+		void disable(DViewButton *v);
+		void enable(DViewButton *v);
+		
+	public slots:
+		void setExclusive(bool excl);
+		void setShowOnlyIcons();
+		void setShowOnlyTexts();
+		
+	private:
+		void setupMenu();
+		
+	private slots:
+		void hideOthers();
+		
+	protected:
+		virtual void mousePressEvent(QMouseEvent *e);
+		
 	private:
 		QButtonGroup m_buttons;
+		QMap<QWidget *, QAction *> m_actionForWidget;
 		
-		QMap<QWidget *, QAction *> m_actions;
+		QMenu *m_menu;
 };
 
 #endif

@@ -25,10 +25,9 @@
 #include <QAction>
 
 DToolView::DToolView(const QString &title, const QIcon &icon, QWidget * parent)
-	: QDockWidget(title, parent), m_size(-1)
+	: QDockWidget(title, parent), m_size(-1), m_workspace(0)
 {
 	setWindowIcon(icon);
-	
 	setup();
 }
 
@@ -49,8 +48,6 @@ void DToolView::setup()
 	
 	act->setText(windowTitle());
 	act->setIcon(windowIcon());
-	
-	m_button->setChecked(false);
 	connect(act, SIGNAL(toggled(bool)), this, SLOT(saveSize(bool)));
 }
 
@@ -62,7 +59,7 @@ DViewButton *DToolView::button() const
 
 void DToolView::saveSize(bool checked)
 {
-	if ( m_button->area() == Qt::LeftToolBarArea || m_button->area()  == Qt::RightToolBarArea )
+	if ( m_button->area() == Qt::LeftToolBarArea || m_button->area() == Qt::RightToolBarArea )
 	{
 		m_size = width();
 	}
@@ -70,6 +67,8 @@ void DToolView::saveSize(bool checked)
 	{
 		m_size = height();
 	}
+	
+	setVisible(checked);
 }
 
 QSize DToolView::sizeHint() const
@@ -95,5 +94,18 @@ void DToolView::setDescription(const QString &description)
 {
 	m_button->defaultAction()->setStatusTip ( description );
 }
+
+void DToolView::setWorkspace(int wsp)
+{
+	m_workspace = wsp;
+}
+
+int DToolView::workspace() const
+{
+	return m_workspace;
+}
+
+
+
 
 

@@ -304,12 +304,15 @@ void DViewButton::paintEvent(QPaintEvent *e)
 
 void DViewButton::mousePressEvent(QMouseEvent *e)
 {
+	QToolButton::mousePressEvent(e);
+	
 	if ( e->button() == Qt::RightButton )
 	{
-		m_menu->exec(e->globalPos());
+		if ( m_menu->exec(e->globalPos()) )
+		{
+			e->accept();
+		}
 	}
-	
-	QToolButton::mousePressEvent(e);
 }
 
 void DViewButton::enterEvent( QEvent* )

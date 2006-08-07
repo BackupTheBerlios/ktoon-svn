@@ -25,10 +25,11 @@
 
 #include <QTimer>
 #include <QMenu>
+#include <QApplication>
+#include <QDesktopWidget>
+
 #include <QtDebug>
 
-// TEST
-#include "qtextedit.h"
 
 DMainWindow::DMainWindow(QWidget *parent)
 	: QMainWindow(parent), m_forRelayout(0)
@@ -40,6 +41,7 @@ DMainWindow::DMainWindow(QWidget *parent)
 
 	setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
 	setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
+	
 	setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
 	setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
 	
@@ -65,18 +67,19 @@ void DMainWindow::addButtonBar(Qt::ToolBarArea area)
 }
 
 
-DToolView *DMainWindow::addToolView(QWidget *view, Qt::ToolBarArea defaultPlace)
+DToolView *DMainWindow::addToolView(QWidget *view, Qt::ToolBarArea defaultPlace, int workspace)
 {
 	DToolView *toolView = new DToolView(view->windowTitle(), view->windowIcon());
 	toolView->setWidget(view);
-	view->show();
+	toolView->setWorkspace( workspace );
+	
 	toolView->button()->setArea(defaultPlace);
 	m_buttonBars[defaultPlace]->addButton(toolView->button());
 	
 	addDockWidget(dockWidgetArea(defaultPlace), toolView);
-// 	toolView->setAllowedAreas(dockWidgetArea(defaultPlace));
+	view->show();
 	
-	m_toolViews << toolView;
+	m_toolViews[m_buttonBars[defaultPlace]] << toolView;
 	
 	connect(toolView, SIGNAL(topLevelChanged(bool)), this, SLOT(relayoutViewButton(bool)));
 	
@@ -152,30 +155,97 @@ void DMainWindow::relayoutViewButton(bool topLevel)
 		{
 			m_forRelayout = toolView;
 			QTimer::singleShot( 0, this, SLOT(relayoutToolView()));
+			
+			// if a tool view is floating the button bar isn't exclusive
+			DButtonBar *bar = m_buttonBars[m_forRelayout->button()->area()];
+			bool exclusive = true;
+			
+			foreach(DToolView *v, m_toolViews[bar] )
+			{
+				exclusive = exclusive && !v->isFloating();
+			}
+	
+			bar->setExclusive( exclusive );
 		}
 	}
+	else
+	{
+		// Floating tool views aren't exclusive
+		if ( DToolView *toolView = dynamic_cast<DToolView *>(sender()) )
+		{
+			m_buttonBars[toolView->button()->area()]->setExclusive(false);
+		}
+	}
+	
 }
 
 void DMainWindow::relayoutToolView()
 {
 	if ( !m_forRelayout ) return;
 	
-	setUpdatesEnabled( false );
 	DViewButton *button = m_forRelayout->button();
-			
+	
 	Qt::ToolBarArea area = toolBarArea( QMainWindow::dockWidgetArea(m_forRelayout) );
 	if ( area != button->area() && !m_forRelayout->isFloating() )
 	{
+		setUpdatesEnabled( false );
+		
 		m_buttonBars[button->area()]->removeButton(button);
 		button->setArea(area);
-		
 		m_buttonBars[area]->addButton(button);
+		
+		m_toolViews[m_buttonBars[button->area()]].removeAll(m_forRelayout);
+		m_toolViews[m_buttonBars[area]] << m_forRelayout;
+		
+		
+		setUpdatesEnabled( true );
 	}
-	setUpdatesEnabled( true );
 	
 	m_forRelayout = 0;
 }
 
+void DMainWindow::setCurrentWorkspace(int wsp)
+{
+	if ( m_currentWorkspace == wsp ) return;
+	
+	typedef QList<DToolView *> Views;
+	
+	QList<Views > viewsList = m_toolViews.values();
+	
+	foreach(Views views, viewsList)
+	{
+		setUpdatesEnabled( false );
+		foreach(DToolView *v, views )
+		{
+			if ( v->workspace() & wsp )
+			{
+				m_buttonBars[ v->button()->area() ]->enable( v->button() );
+				
+				if ( v->button()->isChecked() )
+				{
+					v->show();
+				}
+			}
+			else
+			{
+				m_buttonBars[ v->button()->area() ]->disable( v->button() );
+				if ( v->button()->isChecked() )
+				{
+					v->hide();
+				}
+			}
+		}
+		setUpdatesEnabled( true );
+	}
+	
+	m_currentWorkspace = wsp;
+	
+	emit workspaceChanged( m_currentWorkspace );
+}
 
+int DMainWindow::currentWorkspace() const
+{
+	return m_currentWorkspace;
+}
 
 

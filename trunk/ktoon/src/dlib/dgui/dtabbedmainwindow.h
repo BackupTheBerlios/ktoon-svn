@@ -34,7 +34,7 @@ class Q_GUI_EXPORT DTabbedMainWindow : public DMainWindow
 		DTabbedMainWindow(QWidget *parent = 0);
 		~DTabbedMainWindow();
 		
-		void addWidget(QWidget *widget, bool persistant = false);
+		void addWidget(QWidget *widget, bool persistant = false, int workspace = DefaultWorkspace);
 		void removeWidget(QWidget *widget);
 		void setTabWidget(QTabWidget *w);
 		
@@ -43,6 +43,7 @@ class Q_GUI_EXPORT DTabbedMainWindow : public DMainWindow
 		
 	protected slots:
 		void closeCurrentTab();
+		virtual void setupWorkspace(int wps);
 		
 	signals:
 		void widgetChanged(QWidget *widget);
@@ -53,6 +54,9 @@ class Q_GUI_EXPORT DTabbedMainWindow : public DMainWindow
 	private:
 		QTabWidget *m_tabWidget;
 		QWidgetList m_persistantWidgets;
+		QMap<QWidget *, int> m_tabs;
+		
+		QWidgetList m_pages;
 };
 
 #endif
