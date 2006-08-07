@@ -69,7 +69,7 @@ DToolView *DMainWindow::addToolView(QWidget *view, Qt::ToolBarArea defaultPlace)
 {
 	DToolView *toolView = new DToolView(view->windowTitle(), view->windowIcon());
 	toolView->setWidget(view);
-	
+	view->show();
 	toolView->button()->setArea(defaultPlace);
 	m_buttonBars[defaultPlace]->addButton(toolView->button());
 	

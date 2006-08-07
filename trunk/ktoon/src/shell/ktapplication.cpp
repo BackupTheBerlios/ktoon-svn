@@ -24,7 +24,7 @@
 
 #include "ddebug.h"
 
-KTApplication::KTApplication(int argc, char **argv)
+KTApplication::KTApplication(int &argc, char **argv)
  : DApplication(argc, argv)
 {
 	setApplicationName("ktoon");

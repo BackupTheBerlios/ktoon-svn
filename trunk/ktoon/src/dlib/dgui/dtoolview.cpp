@@ -50,6 +50,7 @@ void DToolView::setup()
 	act->setText(windowTitle());
 	act->setIcon(windowIcon());
 	
+	m_button->setChecked(false);
 	connect(act, SIGNAL(toggled(bool)), this, SLOT(saveSize(bool)));
 }
 

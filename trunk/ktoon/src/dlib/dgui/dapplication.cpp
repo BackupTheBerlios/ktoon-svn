@@ -36,10 +36,10 @@ DApplication::DApplication(int & argc, char ** argv) : QApplication(argc, argv)
 {
 	DINIT;
 	
-	QApplication::setEffectEnabled ( Qt::UI_AnimateMenu, true);
-	QApplication::setEffectEnabled ( Qt::UI_AnimateCombo, true);
-	QApplication::setEffectEnabled ( Qt::UI_FadeMenu, true);
-	QApplication::setEffectEnabled ( Qt::UI_FadeTooltip, true);
+	QApplication::setEffectEnabled( Qt::UI_AnimateMenu, true);
+	QApplication::setEffectEnabled( Qt::UI_AnimateCombo, true);
+	QApplication::setEffectEnabled( Qt::UI_FadeMenu, true);
+	QApplication::setEffectEnabled( Qt::UI_FadeTooltip, true);
 	
 	parseArgs(argc, argv);
 

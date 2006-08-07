@@ -30,7 +30,7 @@ class KTApplication : public DApplication
 {
 	Q_OBJECT;
 	public:
-		KTApplication(int argc, char **argv);
+		KTApplication(int &argc, char **argv);
 		~KTApplication();
 		
 		
