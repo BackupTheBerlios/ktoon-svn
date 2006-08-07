@@ -54,7 +54,7 @@
 
 #include "ktexportwidget.h"
 
-#include "dmainwindow.h"
+#include "dtabbedmainwindow.h"
 #include "ktstatusbar.h"
 
 #include "dosd.h"
@@ -71,7 +71,7 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTMainWindow : public DMainWindow
+class KTMainWindow : public DTabbedMainWindow
 {
 	Q_OBJECT
 	public:

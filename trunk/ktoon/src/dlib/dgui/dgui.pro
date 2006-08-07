@@ -3,8 +3,6 @@
 # Subdir relative project main directory: ./src/dlib/dgui
 # Target is a library:  
 
-
-DEFINES += DLIB_GUI
 INSTALLS += include \
             target 
 target.path = /lib/ 
@@ -57,21 +55,16 @@ HEADERS += danimwidget.h \
            dcirclebuttonbar.h \
            dcollapsiblewidget.h \
            dseparator.h \
-           dibutton.h \
-           dibuttonbar.h \
-           didockwidget.h \
-           displitter.h \
-           ditabwidget.h \
            dimagebutton.h \
            dstylecombobox.h \
            dterm.h \
            dtermtab.h \
            dflashwidget.h \
            ddualcolorbutton.h \
-           dibuttontoolbar.h \
-           didefs.h \
-           ditoolview.h \
-           ditoolviewwidget.h 
+           dbuttonbar.h \
+           dtabbedmainwindow.h \
+           dtoolview.h \
+           dviewbutton.h 
 SOURCES += danimwidget.cpp \
            dapplication.cpp \
            dcellview.cpp \
@@ -120,19 +113,16 @@ SOURCES += danimwidget.cpp \
            dcirclebuttonbar.cpp \
            dcollapsiblewidget.cpp \
            dseparator.cpp \
-           dibutton.cpp \
-           dibuttonbar.cpp \
-           didockwidget.cpp \
-           displitter.cpp \
-           ditabwidget.cpp \
            dstylecombobox.cpp \
            dterm.cpp \
            dtermtab.cpp \
            dflashwidget.cpp \
            ddualcolorbutton.cpp \
-           dibuttontoolbar.cpp \
-           ditoolview.cpp \
-           ditoolviewwidget.cpp 
+           dbuttonbar.cpp \
+           dtabbedmainwindow.cpp \
+           dtoolview.cpp \
+           dviewbutton.cpp 
+DEFINES += DLIB_GUI
 ! include(../dlibconfig.pri) {
 error("Run ./configure first!")
 }

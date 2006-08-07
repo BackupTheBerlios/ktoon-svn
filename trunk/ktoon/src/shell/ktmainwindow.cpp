@@ -38,9 +38,6 @@
 
 #include "ktprojectcommand.h"
 
-// dlslib
-#include <dgui/ditabwidget.h>
-#include <dgui/displitter.h>
 #include <dsound/daudioplayer.h>
 
 // Qt
@@ -56,7 +53,7 @@
 #include <QDesktopServices>
 //
 
-KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_viewDoc(0), m_animationSpace(0), m_exposureSheet(0), m_scenes(0)
+KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_viewDoc(0), m_animationSpace(0), m_exposureSheet(0), m_scenes(0)
 {
 	DINIT;
 	
@@ -90,7 +87,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_viewDoc(0), m_an
 	setupMenu();
 	setupToolBar();
 	
-	m_pActiveTabWidget->setCurrentIndex( 0 );
+// 	m_pActiveTabWidget->setCurrentIndex( 0 );
 	
 	DCONFIG->beginGroup("TipOfDay");
 	bool showTips = qvariant_cast<bool>(DCONFIG->value("ShowOnStart", true ));
@@ -103,7 +100,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_viewDoc(0), m_an
 	
 	KTPluginManager::instance()->loadPlugins();
 	
-	m_pActiveTabWidget->setShowTabBar( false );
+// 	m_pActiveTabWidget->setShowTabBar( false );
 }
 
 
@@ -145,7 +142,8 @@ void KTMainWindow::newViewDocument(const QString &title)
 			/*KTViewDocument **/m_viewDoc = new KTViewDocument(m_projectManager->project());
 			connectToDisplays( m_viewDoc );
 			m_viewDoc->setAttribute(Qt::WA_DeleteOnClose, true);
-			addWidget( m_viewDoc, tr("Illustration"), true);
+			m_viewDoc->setWindowTitle(tr("Illustration"));
+			addWidget( m_viewDoc, true);
 			connectToDisplays( m_viewDoc );
 			ui4project( m_viewDoc );
 // 			viewDocument->drawArea()->setPen( m_penWidget->pen());
@@ -158,10 +156,10 @@ void KTMainWindow::newViewDocument(const QString &title)
 			m_animationSpace->setScrollBarsEnabled ( true );
 // 	
 // 			connect(m_animationSpace, SIGNAL(contextMenu( const QPoint& )), this, SLOT(showAnimationMenu( const QPoint& )));
-// 
-			addWidget(m_animationSpace, tr("Animation"), true);
+			m_animationSpace->setWindowTitle(tr("Animation"));
+			addWidget(m_animationSpace, true);
 			
-			m_pActiveTabWidget->setCurrentWidget(m_viewDoc);
+// 			m_pActiveTabWidget->setCurrentWidget(m_viewDoc);
 			
 // 			KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->activeWindow());
 // 			
@@ -274,7 +272,7 @@ bool KTMainWindow::closeProject()
 		break;
 	}
 	
-	m_pActiveTabWidget->setCurrentWidget(m_viewDoc);
+// 	m_pActiveTabWidget->setCurrentWidget(m_viewDoc);
 	m_projectManager->closeProject();
 	
 // 	m_viewDoc->closeAllWindows();
@@ -322,7 +320,7 @@ void KTMainWindow::openProject(const QString &path)
 	{
 		if ( closeProject() )
 		{
-			m_pActiveTabWidget->setCurrentWidget(m_viewDoc);
+// 			m_pActiveTabWidget->setCurrentWidget(m_viewDoc);
 			
 // 			if ( m_projectManager->load( packageHandler.importedProjectPath() ) )
 // 			{
@@ -435,7 +433,8 @@ void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 	
 // 	page->setDocument( document );
 	page->setSource( filePath );
-	addWidget( page, tr("Help:%1").arg(title) );
+	page->setWindowTitle(tr("Help:%1").arg(title));
+	addWidget( page );
 }
 
 void KTMainWindow::saveProject()
@@ -515,10 +514,6 @@ void KTMainWindow::closeEvent( QCloseEvent *event )
 		event->ignore();
 		return;
 	}
-	
-	delete m_pBottomDock;
-	delete m_pLeftDock;
-	delete m_pRightDock;
 	
 	DCONFIG->beginGroup("General");
 	DCONFIG->setValue("recents", m_recentProjects);
