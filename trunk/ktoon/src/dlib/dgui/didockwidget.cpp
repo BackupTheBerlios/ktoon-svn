@@ -319,11 +319,11 @@ void DiDockInternalWidget::addWidget(const QString &title, QWidget *widget)
 	Ideal::DiButton *button = 0;
 	if (!pm.isNull())
 	{
-		button = new Ideal::DiButton(m_bar, title, pm);
+		button = new Ideal::DiButton(m_bar, m_bar->place(), title, pm);
 	}
 	else
 	{
-		button = new Ideal::DiButton(m_bar, title);
+		button = new Ideal::DiButton(m_bar,m_bar->place(), title);
 	}
 
 	m_bar->addButton(button);

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Alexander Dymo                                  *
+ *   Copyright (C) 2006 by Alexander Dymo                                  *
  *   adymo@kdevelop.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,94 +15,67 @@
  *   You should have received a copy of the GNU Library General Public     *
  *   License along with this program; if not, write to the                 *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-#ifndef DMAINWINDOW_H
-#define DMAINWINDOW_H
+#ifndef IDEALMAINWINDOW_H
+#define IDEALMAINWINDOW_H
 
-#include <QSettings>
-
-#include <QMainWindow>
-#define MWCLASS QMainWindow
-
-#include "dgui/didockwidget.h"
 #include <QList>
-#include <QEvent>
+#include <QMainWindow>
 
-class DiTabWidget;
+#include "didefs.h"
+#include "dibuttontoolbar.h"
+
 namespace Ideal {
-	class DiSplitter;
-}
 
-/**Main window which provides simplified IDEA mode.*/
-class DMainWindow: public MWCLASS 
-{
-	Q_OBJECT
-	public:
-		DMainWindow(QWidget *parent = 0);
-		virtual ~DMainWindow();
-    
-		/**@return The tool window in given @p position.*/
-		DiDockWidget *toolWindow(DiDockWidget::Position position) const;
-		
-		/**Adds a tabbed widget into the active (focused) tab widget. 
-		If @p widget is null then only tab is created.*/
-		virtual void addWidget(QWidget *widget, const QString &title, bool persistant = false);
-		virtual void addWidget(DiTabWidget *tab, QWidget *widget, const QString &title, bool persistant);
-		/**Removes widget. Does not delete it.*/
-		virtual void removeWidget(QWidget *widget);
-		void addDockWidget(Qt::DockWidgetArea area, DiDockWidget * dockwidget );
-    
-	public slots:
-		DiTabWidget *splitHorizontal();
-		DiTabWidget *splitVertical();
-    
-	protected slots:
-		/**This does nothing. Reimplement in subclass to close the tab 
-		when corner close button is pressed.*/
-		virtual void closeTab();
-		/**This does nothing. Reimplement in subclass to close the tab
-		when hover close button is pressed.*/
-		virtual void closeTab(QWidget*);
-		/**This does nothing. Reimplement in subclass to show tab context menu.*/
-		virtual void tabContext(QWidget*,const QPoint &);
+class DiToolView;
+class DiToolViewWidget;
 
-	signals:
-		void widgetChanged(QWidget *);
+/**
+@short Main Window for the Ideal UI.
+*/
+class Q_GUI_EXPORT DMainWindow: public QMainWindow {
+public:
+    DMainWindow(QWidget *parent = 0);
+    ~DMainWindow();
     
-	protected:
-		bool eventFilter(QObject *obj, QEvent *ev);
-		virtual void loadSettings();
-        
-		virtual void createToolWindows();
-		virtual DiTabWidget *createTab();
-    
-	protected:
-		DiDockWidget *m_pLeftDock;
-		DiDockWidget *m_pRightDock;
-		DiDockWidget *m_pBottomDock;
+    /**Adds the toolview @p view to the main window. The toolview button will not be shown
+    until the area is set for the mainwindow using @ref setArea method. The toolview
+    itself will be shown as late as possible.
+    @param defaultPlace defines where in the window the toolview will be placed (note that
+    this parameter is only a hint to mainwindow areas to place the view for the first time).
+    @param area is or-ed list of allowed areas for this toolview.*/
+    virtual void addToolView(QWidget *view, Ideal::Place defaultPlace, bool persistant = false);
+    /**Removes permanently the toolview from the main window. The current area is
+    asked to remove it from the window layout also. To set just the visibility
+    of the toolview use @ref hideToolView and @ref showToolView.*/
+    virtual void removeToolView(QWidget *view);
 
-		Ideal::DiSplitter *m_pCentral;
-		DiTabWidget *m_pActiveTabWidget;
-    
-		QList<DiTabWidget*> m_pTabs;
-    
-		bool m_pOpenTabAfterCurrent;
-		bool m_pShowIconsOnTabs;
-		bool m_pFirstRemoved;
-    
-		QList<QWidget*> m_pWidgets;
-		QMap<QWidget*, DiTabWidget*> m_pWidgetTabs;
-		QWidget *m_pCurrentWidget;
-		QList<QWidget *> m_separators;
+    /** @return the list of all available toolviews in the mainwindow including
+    hidden views and views not available in the current area.*/
+    QList<DiToolView*> toolViews() const;
+    /** @return the list of all toolviews in the given place in the
+    mainwindow including hidden views and views not available in the current area.
+    @param mode defines the or-ed list of toolview modes (DiToolView::Mode) - visible and/or enabled*/
+    QList<DiToolView*> toolViews(Ideal::Place place, int mode) const;
+    /** @return the button bar for given @p place.*/
+    DiButtonToolBar *buttonBar(Ideal::Place place);
 
-	private slots:
-		void invalidateActiveTabWidget();
-		
-	private:
-		QWidgetList m_persistantWidgets;
+protected:
+    /**Factory method to create the toolview. Reimplement this to return
+    DiToolView subclasses here.*/
+    virtual DiToolView *createToolView(QWidget *view, Ideal::Place defaultPlace, bool persistant = false);
+    /**Factory method to create the button bar for toolview buttons.
+    Reimplement this to return DiButtonToolBar subclasses here.*/
+    virtual DiButtonToolBar *createButtonBar(Ideal::Place place);
+
+private:
+    struct MainWindowPrivate *d;
+    friend class MainWindowPrivate;
+
 };
 
-#endif
+}
 
+#endif

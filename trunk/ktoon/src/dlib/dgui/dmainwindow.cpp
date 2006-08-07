@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Alexander Dymo                                  *
+ *   Copyright (C) 2005-2006 by Alexander Dymo                             *
  *   adymo@kdevelop.org                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,281 +15,120 @@
  *   You should have received a copy of the GNU Library General Public     *
  *   License along with this program; if not, write to the                 *
  *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
-
-static const char* const icon_xpm[]={
-"5 5 2 1",
-"# c black",
-". c None",
-"####.",
-"##...",
-"#.#..",
-"#..#.",
-"....#"};
 
 #include "dmainwindow.h"
 
-#include <QPixmap>
-#include <QEvent>
-#include <QApplication>
-#include <QToolButton>
-#include <QDebug>
+#include <QMap>
+#include <QLayout>
 
-#include "ditabwidget.h"
-#include "displitter.h"
-#include "comdefs.h"
+// #include "area.h"
+#include "dibuttontoolbar.h"
+#include "ditoolview.h"
 
-#include <ddebug.h>
+namespace Ideal {
+
+//==================== MainWindowPrivate =====================
+
+struct MainWindowPrivate {
+    MainWindowPrivate(DMainWindow *window)
+        :w(window)
+    {
+    }
+    ~MainWindowPrivate()
+    {
+    }
+
+    DMainWindow *w;
+    QList<DiToolView*> toolViews;
+    QMap<QWidget*, DiToolView*> toolViewsForWidget;
+    QMap<Ideal::Place, DiButtonToolBar*> buttonBars;
+    
+    void initButtonBar(Ideal::Place place);
+};
+
+void MainWindowPrivate::initButtonBar(Ideal::Place place)
+{
+    DiButtonToolBar *bar = w->createButtonBar(place);
+    w->addToolBar(bar->toolBarPlace(), bar);
+    buttonBars[place] = bar;
+}
+
+
+
+//======================== DMainWindow ========================
 
 DMainWindow::DMainWindow(QWidget *parent)
-	: MWCLASS(parent),  m_pLeftDock(0), m_pRightDock(0), m_pBottomDock(0), m_pCentral(0), m_pActiveTabWidget(0), m_pFirstRemoved(false), m_pCurrentWidget(0)
-	{
-		loadSettings();
-		createToolWindows();
-		m_pCentral = new Ideal::DiSplitter(Qt::Horizontal, 0);
-		setCentralWidget(m_pCentral);
-	
-		m_pActiveTabWidget = createTab();
-		m_pCentral->addDock(0, 0, m_pActiveTabWidget);
-	
-		m_pCentral->setMaximumSize(maximumSize());
-	}
+    :QMainWindow(parent)
+{
+    d = new MainWindowPrivate(this);
 
-	void DMainWindow::loadSettings()
-	{
-		QSettings config;
-		config.beginGroup("DLSLib");
-//     config.setPath("NewMDI", qApp->name(), QSettings::User );
-		m_pOpenTabAfterCurrent = config.value("OpenNewTabAfterCurrent", true).toBool();
-		m_pShowIconsOnTabs = config.value("ShowTabIcons", true).toBool();
-	}
+    d->initButtonBar(Ideal::Left);
+    d->initButtonBar(Ideal::Right);
+    d->initButtonBar(Ideal::Bottom);
+    d->initButtonBar(Ideal::Top);
 
-	DMainWindow::~DMainWindow()
-	{
-		for (QList<QWidget*>::iterator it = m_pWidgets.begin(); it != m_pWidgets.end(); ++it)
-		{
-			removeWidget(*it);
-		}
-	}
+    setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
+    setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
+    setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
+    setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
+}
 
-	DiDockWidget *DMainWindow::toolWindow(DiDockWidget::Position position) const
-	{
-		switch (position) 
-		{
-			case DiDockWidget::Bottom: return m_pBottomDock;
-			case DiDockWidget::Left: return m_pLeftDock;
-			case DiDockWidget::Right: return m_pRightDock;
-		}
-		return 0;
-	}
+DMainWindow::~DMainWindow()
+{
+    delete d;
+}
 
-	void DMainWindow::createToolWindows()
-	{
-		m_pBottomDock = new DiDockWidget(this, DiDockWidget::Bottom);
-		addDockWidget( Qt::BottomDockWidgetArea, m_pBottomDock );
+void DMainWindow::addToolView(QWidget *view, Ideal::Place defaultPlace, bool persistant)
+{
+    DiToolView *toolView = createToolView(view, defaultPlace, persistant);
+    d->toolViews.append(toolView);
+    d->toolViewsForWidget[view] = toolView;
     
-		m_pLeftDock = new DiDockWidget(this, DiDockWidget::Left);
-		addDockWidget( Qt::LeftDockWidgetArea, m_pLeftDock );
-    
-		m_pRightDock = new DiDockWidget(this, DiDockWidget::Right);
-		addDockWidget( Qt::RightDockWidgetArea, m_pRightDock );
-	}
+//     toolView->setViewVisible( true );
+}
 
-	void DMainWindow::addDockWidget(Qt::DockWidgetArea area, DiDockWidget * dockwidget )
-	{
-		QMainWindow::addDockWidget(area, dockwidget );
-	}
+void DMainWindow::removeToolView(QWidget *view)
+{
+    DiToolView *toolView = d->toolViewsForWidget[view];
+    if (!toolView)
+        return;
 
-	void DMainWindow::addWidget(QWidget *widget, const QString &title, bool persistant)
-	{
-		if (m_pFirstRemoved && m_pActiveTabWidget == m_pTabs.first() )
-		{
-			m_pCentral->addDock(0, 0, m_pActiveTabWidget);
-			m_pFirstRemoved = false;
-			m_pActiveTabWidget->setVisible(true);
-		}
+    d->toolViews.removeAll(toolView);
+    d->toolViewsForWidget.remove(view);
+    d->buttonBars[toolView->place()]->removeToolViewButton(toolView->button());
+}
 
-		addWidget(m_pActiveTabWidget, widget, title, persistant);
-	}
+QList<DiToolView*> DMainWindow::toolViews() const
+{
+    return d->toolViews;
+}
 
-	void DMainWindow::addWidget(DiTabWidget *tab, QWidget *widget, const QString &title, bool persistant)
-	{
-		int idx = -1;
-		if (m_pOpenTabAfterCurrent && (tab->count() > 0))
-		{
-			idx = tab->currentIndex() + 1;
-		}
+QList<DiToolView*> DMainWindow::toolViews(Ideal::Place place, int mode) const
+{
+    QList<DiToolView*> list;
+    foreach (DiToolView *view, d->toolViews)
+    {
+        if (view->mode() & mode)
+            list << view;
+    }
+    return list;
+}
 
-		if (m_pShowIconsOnTabs)
-		{
-			QPixmap pixmap = widget->windowIcon().pixmap(16,16);
-			const QIcon &icons = (!pixmap.isNull() && (pixmap.size().height() <= 16)) ? pixmap : QIcon((const char **)icon_xpm);
-			tab->insertTab(widget, icons, title, idx);
-		}
-		else
-		{
-			tab->insertTab(widget, title, idx);
-		}
-		m_pWidgets.append(widget);
-		m_pWidgetTabs[widget] = tab;
-		widget->installEventFilter(this);
-		tab->setCurrentWidget(widget);
-    
-		if ( persistant )
-		{
-			m_persistantWidgets << widget;
-		}
-    
-		widget->setFocus();
-	}
+DiButtonToolBar *DMainWindow::buttonBar(Ideal::Place place)
+{
+    return d->buttonBars[place];
+}
 
-	void DMainWindow::removeWidget(QWidget *widget)
-	{
-		if (!m_pWidgets.contains(widget))
-		{
-			return; //not a widget in main window
-		}
-    
-		if (m_pWidgetTabs.contains(widget))
-		{
-			DiTabWidget *tab = m_pWidgetTabs[widget];
-			if (tab->indexOf(widget) >= 0 && m_pActiveTabWidget->count() > 0)
-			{
-				tab->removeTab(tab->indexOf(widget));
-				widget->setParent(0);
-				if (tab->count() == 0)
-				{
-					if (tab->closeButton())
-					{
-						tab->closeButton()->hide();
-					}
-                //remove and delete tabwidget if it is not the first one
-					if (tab != m_pTabs.first())
-					{
-						QPair<int, int> idx = m_pCentral->indexOf(tab);
-						m_pTabs.removeAll(tab);
-						m_pActiveTabWidget = m_pTabs.first();
-						m_pCentral->removeDock(idx.first, idx.second, true);
-					}
-                //only temporarily remove the first tabwidget
-					else
-					{
-						m_pCentral->removeDock(0, 0, false);
-						m_pFirstRemoved = true;
-					}
-                //focus smth in m_pActiveTabWidget
-					if (m_pActiveTabWidget)
-					{
-						if (m_pActiveTabWidget->currentWidget())
-						{
-							m_pActiveTabWidget->currentWidget()->setFocus();
-						}
-					}
-				}
-			}
-		}
-    
-		m_pWidgets.removeAll(widget);
-		m_pWidgetTabs.remove(widget);
-	}
+DiToolView *DMainWindow::createToolView(QWidget *view, Ideal::Place defaultPlace, bool persistant)
+{
+    return new DiToolView(this, view, defaultPlace, persistant);
+}
 
-	DiTabWidget *DMainWindow::splitHorizontal() 
-	{
-		m_pActiveTabWidget = createTab();
-		m_pCentral->addDock(m_pCentral->numRows(), 0, m_pActiveTabWidget);
-		return m_pActiveTabWidget;
-	}
+DiButtonToolBar *DMainWindow::createButtonBar(Ideal::Place place)
+{
+    return new DiButtonToolBar(place, this);
+}
 
-	DiTabWidget *DMainWindow::splitVertical() 
-	{
-//     invalidateActiveTabWidget();
-		int row = m_pCentral->indexOf(m_pActiveTabWidget).first;
-		m_pActiveTabWidget = createTab();
-		m_pCentral->addDock(row, m_pCentral->numCols(row), m_pActiveTabWidget);
-		return m_pActiveTabWidget;
-	}
-
-	void DMainWindow::invalidateActiveTabWidget()
-	{
-/*    QWidget *focused = m_pCentral->focusWidget();
-		kdDebug() << "invalidate: " << focused << endl;
-		if (focused == 0)
-		return;
-		if (!m_pWidgets.contains(focused))
-		{
-		kdDebug() << "    focused is not in m_pWidgets" << endl;
-		return;
-	}
-		if (m_pWidgetTabs.contains(focused))
-		{
-		kdDebug() << "    focused is in m_pWidgets and m_pWidgetTabs" << endl;
-		DiTabWidget *tab = m_pWidgetTabs[focused];
-		if (tab->indexOf(focused) >= 0)
-		m_pActiveTabWidget = tab;
-		kdDebug() << "    tab: " << tab << endl;
-	}*/
-	}
-
-	DiTabWidget *DMainWindow::createTab()
-	{
-		DiTabWidget *tab = new DiTabWidget(m_pCentral);
-		m_pTabs.append(tab);
-		if (tab->closeButton())
-		{
-			connect(tab->closeButton(), SIGNAL(clicked()), this, SLOT(closeTab()));
-		}
-
-		return tab;
-	}
-
-	bool DMainWindow::eventFilter(QObject *obj, QEvent *ev)
-	{
-		QWidget *w = (QWidget*)obj;
-    
-		if (!m_pWidgets.contains(w))
-		{
-			return MWCLASS::eventFilter(obj, ev);
-		}
-    
-		if ((m_pCurrentWidget != w) && (ev->type() == QEvent::FocusIn))
-		{
-			m_pCurrentWidget = w;
-			emit widgetChanged(w);
-		}
-    
-//     else if (ev->type() == QEvent::IconChange)
-//     {
-//         if (m_pWidgetTabs.contains(w))
-//         {
-//             DiTabWidget *tab = m_pWidgetTabs[w];
-//             tab->setTabIconSet(w, w->icon() ? (*(w->icon())) : QPixmap());
-//         }
-//     }
-//     else if (ev->type() == QEvent::CaptionChange)
-//     {
-//         qDebug("caption change");
-//     }
-
-		return MWCLASS::eventFilter(obj, ev);
-	}
-
-	void DMainWindow::closeTab()
-	{
-		if ( ! m_persistantWidgets.contains(m_pCurrentWidget) )
-		{
-			QWidget *w = m_pCurrentWidget;
-			removeWidget(w);
-			delete w;
-		}
-	}
-
-	void DMainWindow::tabContext(QWidget *, const QPoint &)
-	{
-    //nothing to do here, should be reimplemented
-	}
-
-	void DMainWindow::closeTab(QWidget *w)
-	{
-		removeWidget( w );
-	}
+}

@@ -17,14 +17,24 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef COMDEFS_H
 #define COMDEFS_H
- 
-namespace Ideal {
 
-    enum Place { Left=1, Right=2, Top=4, Bottom=8 };
-    enum ButtonMode { Text, IconsAndText, Icons };
-
+namespace Ideal 
+{
+	enum Place { Left=1, Right=2, Top=4, Bottom=8 };
+	enum ButtonMode { Text, IconsAndText, Icons };
+	
+	class Settings
+	{
+		public:
+			static ButtonMode buttonMode()
+			{
+				// FIXME: Leer desde un archivo
+				return IconsAndText;
+			}
+	};
 }
 
 #endif

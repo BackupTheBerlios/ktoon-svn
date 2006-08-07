@@ -3,6 +3,8 @@
 # Subdir relative project main directory: ./src/dlib/dgui
 # Target is a library:  
 
+
+DEFINES += DLIB_GUI
 INSTALLS += include \
             target 
 target.path = /lib/ 
@@ -33,7 +35,6 @@ HEADERS += danimwidget.h \
            dxyspinbox.h \
            daction.h \
            dactionmanager.h \
-           comdefs.h \
            dmainwindow.h \
            dmdiwindow.h \
            ddatepicker.h \
@@ -66,7 +67,11 @@ HEADERS += danimwidget.h \
            dterm.h \
            dtermtab.h \
            dflashwidget.h \
-           ddualcolorbutton.h 
+           ddualcolorbutton.h \
+           dibuttontoolbar.h \
+           didefs.h \
+           ditoolview.h \
+           ditoolviewwidget.h 
 SOURCES += danimwidget.cpp \
            dapplication.cpp \
            dcellview.cpp \
@@ -124,7 +129,10 @@ SOURCES += danimwidget.cpp \
            dterm.cpp \
            dtermtab.cpp \
            dflashwidget.cpp \
-           ddualcolorbutton.cpp 
+           ddualcolorbutton.cpp \
+           dibuttontoolbar.cpp \
+           ditoolview.cpp \
+           ditoolviewwidget.cpp 
 ! include(../dlibconfig.pri) {
 error("Run ./configure first!")
 }

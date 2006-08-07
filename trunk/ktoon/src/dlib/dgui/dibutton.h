@@ -28,7 +28,7 @@
 #include <QStyleOptionButton>
 #include <QTimer>
 
-#include "dgui/comdefs.h"
+#include "dgui/didefs.h"
 
 namespace Ideal {
 
@@ -80,8 +80,9 @@ class Animation
 class DiButton : public QPushButton {
     Q_OBJECT
 public:
-    DiButton(DiButtonBar *parent, const QString text, const QIcon &icon = QIcon(),
-        const QString &description = QString::null);
+    DiButton(QWidget *parent, Ideal::Place place, const QString text, const QIcon &icon = QIcon(),
+	     const QString &description = QString() );
+    
     virtual ~DiButton();
     
     /**Sets the description used as a tooltip.*/
@@ -132,8 +133,6 @@ private:
     void disableIconSet();
     void enableText();
     void disableText();
-    
-    DiButtonBar *m_buttonBar;
     
     QString m_description;
     Place m_place;

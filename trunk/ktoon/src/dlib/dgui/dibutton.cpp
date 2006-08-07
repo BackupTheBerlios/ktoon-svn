@@ -61,10 +61,9 @@ static char * new_xpm[] = {
 
 namespace Ideal {
 	
-	DiButton::DiButton(DiButtonBar *parent, const QString text, const QIcon &icon,
-		       const QString &description)
-	: QPushButton(icon, text, parent), m_buttonBar(parent), m_description(description),
-	m_place(parent->place()), m_realText(text), m_realIconSet(icon), m_isSensible(false), m_haveIcon(true)
+	DiButton::DiButton(QWidget *parent, Ideal::Place place, const QString text, const QIcon &icon, const QString &description)
+	: QPushButton(icon, text, parent), m_description(description),
+	m_place(place), m_realText(text), m_realIconSet(icon), m_isSensible(false), m_haveIcon(true)
 	{
 		hide();
 		setFlat(true);
@@ -235,7 +234,7 @@ namespace Ideal {
 	
 	ButtonMode DiButton::mode()
 	{
-		return m_buttonBar->mode();
+		return Settings::buttonMode();
 	}
 
 	void DiButton::setPlace(Ideal::Place place)
@@ -274,35 +273,35 @@ namespace Ideal {
 	{
 		return sizeHint(text());
 	}
-
+	
 	QSize DiButton::sizeHint(const QString &text) const
 	{
-// 		constPolish();
+		ensurePolished();
 		QStyleOptionButton option = styleOption();
-		int w = option.iconSize.width(), h = option.iconSize.height();
+		int w = 0, h = 0;
 
-		if ( !icon().isNull() && m_buttonBar->mode() != Text ) 
-		{
-			int iw = option.iconSize.width();
-			int ih = option.iconSize.height();
+		if ( !icon().isNull() && (Settings::buttonMode() != Text) ) {
+			int iw = iconSize().width();
+			int ih = iconSize().height();
 			w += iw;
 			h = qMax( h, ih );
 		}
-		if (m_buttonBar->mode() != Icons) 
-		{
-			QString s( text );
-			bool empty = s.isEmpty();
-			if ( empty )
-				s = QLatin1String("XXXX");
-			QFontMetrics fm = fontMetrics();
-			QSize sz = fm.size( Qt::TextShowMnemonic, s );
-			if(!empty || !w)
-				w += sz.width();
-			if(!empty || !h)
-				h = qMax(h, sz.height());
+		if ( menu() ) {
+			w += style()->pixelMetric(QStyle::PM_MenuButtonIndicator, &option, this);
 		}
+		QString s( text );
+		bool empty = s.isEmpty();
+		if ( empty )
+			s = QLatin1String("XXXX");
+		QFontMetrics fm = fontMetrics();
+		QSize sz = fm.size( Qt::TextShowMnemonic, s );
+		if(!empty || !w)
+			w += sz.width();
+		if(!empty || !h)
+			h = qMax(h, sz.height());
 
-		return (style()->sizeFromContents(QStyle::CT_ToolButton, &option, QSize(w, h), this).expandedTo(QApplication::globalStrut()));
+		return (style()->sizeFromContents(QStyle::CT_ToolButton, &option, QSize(w, h), this).
+				expandedTo(QApplication::globalStrut()));
 	}
 
 	void Ideal::DiButton::updateSize()

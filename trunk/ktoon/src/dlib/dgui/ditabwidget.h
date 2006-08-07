@@ -39,8 +39,7 @@ class DiTabWidget: public DTabWidget
 		QToolButton *closeButton() const;
 
 		virtual void insertTab(QWidget *child, const QString &label, int index = -1 );
-		virtual void insertTab(QWidget *child, const QIcon &iconset, 
-				       const QString &label, int index = -1);
+		virtual void insertTab(QWidget *child, const QIcon &iconset, const QString &label, int index = -1);
 		
 		void setShowTabBar(bool showit);
 		bool showTabBar() const;

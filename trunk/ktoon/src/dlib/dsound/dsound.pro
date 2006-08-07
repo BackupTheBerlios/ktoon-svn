@@ -3,6 +3,7 @@
 # Subdir relative project main directory: ./src/dlib/dsound
 # Target is a library:  
 
+DEFINES += DLIB_SOUND
 INSTALLS += target 
 target.path = /lib/ 
 KDEV_QTVER = 4 

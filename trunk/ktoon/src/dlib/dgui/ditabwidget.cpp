@@ -33,7 +33,7 @@
 #include <QSettings>
 #include <QLayout>
 
-#include "comdefs.h"
+#include "didefs.h"
 
 DiTabWidget::DiTabWidget(QWidget *parent)
 	: DTabWidget(parent), m_closeButton(0)

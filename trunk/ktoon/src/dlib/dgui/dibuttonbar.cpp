@@ -95,16 +95,18 @@ DiButtonBar::~DiButtonBar()
 {
 }
 
-void DiButtonBar::addButton(DiButton *DiButton)
+void DiButtonBar::addButton(DiButton *button)
 {
     int buttonCount = m_buttons.count();
     
-    DiButton->setMode(m_mode);
-    m_buttons.append(DiButton);
-    l->insertWidget(buttonCount, DiButton);
+    button->setParent(this);
     
-    l->setAlignment(DiButton, Qt::AlignTop);
-    DiButton->show();
+    button->setMode(m_mode);
+    m_buttons.append(button);
+    l->insertWidget(buttonCount, button);
+    
+    l->setAlignment(button, Qt::AlignTop);
+    button->show();
     fixDimensions();
 }
 
@@ -318,6 +320,23 @@ void DiButtonBar::unshrink()
     }
     m_shrinked = false;
 }
+
+
+bool DiButtonBar::isEmpty() const
+{
+	return !m_buttons.count();
+}
+
+bool DiButtonBar::isVisuallyEmpty() const
+{
+	foreach (DiButton *button, m_buttons)
+	{
+		if (button->isVisible())
+			return false;
+	}
+	return true;
+}
+
 
 int DiButtonBar::originalDimension()
 {

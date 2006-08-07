@@ -29,7 +29,7 @@
 #include <QResizeEvent>
 #include <QBoxLayout>
 
-#include "dgui/comdefs.h"
+#include "dgui/didefs.h"
 
 #include <QLayout>
 
@@ -59,12 +59,11 @@ class DiButtonLayout: public QBoxLayout
 Looks like a toolbar but has another behaviour. It is suitable for
 placing on the left(right, bottom, top) corners of a window as a bar with slider.
 */
-class DiButtonBar : public QWidget 
+class DiButtonBar : public QWidget
 {
     Q_OBJECT
 public:    
-    DiButtonBar(Place place, ButtonMode mode = IconsAndText,
-        QWidget *parent = 0);
+    DiButtonBar(Place place, ButtonMode mode = IconsAndText, QWidget *parent = 0);
     virtual ~DiButtonBar();
 
     /**Adds a DiButton to the bar.*/
@@ -91,11 +90,15 @@ public:
     /**Restores the size of DiButton bar buttons.*/
     virtual void unshrink();
     
+    /** @return true if the container has no buttons inside.*/
+    bool isEmpty() const;
+    /** @return true if the container has no visible buttons inside.*/
+    bool isVisuallyEmpty() const;
+    
 	public slots:
 		void onlyIcons();
 		void onlyText();
 		void textAndIcons();
-    
 protected:
     virtual void resizeEvent ( QResizeEvent *ev );
     virtual void mousePressEvent(QMouseEvent *e);
