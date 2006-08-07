@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                *
  *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,46 +17,42 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef DTABBEDMAINWINDOW_H
+#define DTABBEDMAINWINDOW_H
 
-#ifndef DMAINWINDOW_H
-#define DMAINWINDOW_H
+#include <dmainwindow.h>
 
-#include <QMainWindow>
-#include <QHash>
-
-class DButtonBar;
-class DToolView;
+class QTabWidget;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-
-class Q_GUI_EXPORT DMainWindow : public QMainWindow
+class Q_GUI_EXPORT DTabbedMainWindow : public DMainWindow
 {
 	Q_OBJECT;
 	public:
-		DMainWindow(QWidget *parent = 0);
-		~DMainWindow();
+		DTabbedMainWindow(QWidget *parent = 0);
+		~DTabbedMainWindow();
 		
-		void addButtonBar(Qt::ToolBarArea area);
-		virtual DToolView *addToolView(QWidget *view, Qt::ToolBarArea defaultPlace);
+		void addWidget(QWidget *widget, bool persistant = false);
+		void removeWidget(QWidget *widget);
+		void setTabWidget(QTabWidget *w);
 		
+	protected:
+		virtual void setupTabWidget(QTabWidget *w);
 		
-	private:
-		Qt::DockWidgetArea dockWidgetArea(Qt::ToolBarArea area);
-		Qt::ToolBarArea toolBarArea(Qt::DockWidgetArea area);
+	protected slots:
+		void closeCurrentTab();
+		
+	signals:
+		void widgetChanged(QWidget *widget);
 		
 	private slots:
-		void relayoutViewButton(bool topLevel);
-		void relayoutToolView();
+		void emitWidgetChanged(int index);
 		
 	private:
-		DToolView *m_forRelayout;
-		
-	private:
-		QHash<Qt::ToolBarArea, DButtonBar *> m_buttonBars;
-		QList<DToolView*> m_toolViews;
-		
+		QTabWidget *m_tabWidget;
+		QWidgetList m_persistantWidgets;
 };
 
 #endif

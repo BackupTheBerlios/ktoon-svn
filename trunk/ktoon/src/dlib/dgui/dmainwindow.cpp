@@ -1,134 +1,181 @@
 /***************************************************************************
- *   Copyright (C) 2005-2006 by Alexander Dymo                             *
- *   adymo@kdevelop.org                                                    *
+ *   Copyright (C) 2006 by David Cuadrado                                *
+ *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU Library General Public License as       *
- *   published by the Free Software Foundation; either version 2 of the    *
- *   License, or (at your option) any later version.                       *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
  *                                                                         *
  *   This program is distributed in the hope that it will be useful,       *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU General Public License for more details.                          *
  *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this program; if not, write to the                 *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
 #include "dmainwindow.h"
+#include "dbuttonbar.h"
+#include "dtoolview.h"
+#include "dviewbutton.h"
 
-#include <QMap>
-#include <QLayout>
+#include <QTimer>
+#include <QMenu>
+#include <QtDebug>
 
-// #include "area.h"
-#include "dibuttontoolbar.h"
-#include "ditoolview.h"
-
-namespace Ideal {
-
-//==================== MainWindowPrivate =====================
-
-struct MainWindowPrivate {
-    MainWindowPrivate(DMainWindow *window)
-        :w(window)
-    {
-    }
-    ~MainWindowPrivate()
-    {
-    }
-
-    DMainWindow *w;
-    QList<DiToolView*> toolViews;
-    QMap<QWidget*, DiToolView*> toolViewsForWidget;
-    QMap<Ideal::Place, DiButtonToolBar*> buttonBars;
-    
-    void initButtonBar(Ideal::Place place);
-};
-
-void MainWindowPrivate::initButtonBar(Ideal::Place place)
-{
-    DiButtonToolBar *bar = w->createButtonBar(place);
-    w->addToolBar(bar->toolBarPlace(), bar);
-    buttonBars[place] = bar;
-}
-
-
-
-//======================== DMainWindow ========================
+// TEST
+#include "qtextedit.h"
 
 DMainWindow::DMainWindow(QWidget *parent)
-    :QMainWindow(parent)
+	: QMainWindow(parent), m_forRelayout(0)
 {
-    d = new MainWindowPrivate(this);
+	addButtonBar(Qt::LeftToolBarArea);
+	addButtonBar(Qt::RightToolBarArea);
+	addButtonBar(Qt::TopToolBarArea);
+	addButtonBar(Qt::BottomToolBarArea);
 
-    d->initButtonBar(Ideal::Left);
-    d->initButtonBar(Ideal::Right);
-    d->initButtonBar(Ideal::Bottom);
-    d->initButtonBar(Ideal::Top);
-
-    setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
-    setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
-    setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
-    setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
+	setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
+	setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
+	setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
+	setCorner(Qt::TopRightCorner, Qt::RightDockWidgetArea);
+	
+#if QT_VERSION >= 0x040200
+	setDockNestingEnabled (false);
+#endif
 }
+
 
 DMainWindow::~DMainWindow()
 {
-    delete d;
 }
 
-void DMainWindow::addToolView(QWidget *view, Ideal::Place defaultPlace, bool persistant)
+
+void DMainWindow::addButtonBar(Qt::ToolBarArea area)
 {
-    DiToolView *toolView = createToolView(view, defaultPlace, persistant);
-    d->toolViews.append(toolView);
-    d->toolViewsForWidget[view] = toolView;
-    
-//     toolView->setViewVisible( true );
+	DButtonBar *bar = new DButtonBar(area, this);
+	
+	addToolBar(area, bar);
+	m_buttonBars.insert(area, bar);
+	
+	bar->hide();
 }
 
-void DMainWindow::removeToolView(QWidget *view)
+
+DToolView *DMainWindow::addToolView(QWidget *view, Qt::ToolBarArea defaultPlace)
 {
-    DiToolView *toolView = d->toolViewsForWidget[view];
-    if (!toolView)
-        return;
-
-    d->toolViews.removeAll(toolView);
-    d->toolViewsForWidget.remove(view);
-    d->buttonBars[toolView->place()]->removeToolViewButton(toolView->button());
+	DToolView *toolView = new DToolView(view->windowTitle(), view->windowIcon());
+	toolView->setWidget(view);
+	
+	toolView->button()->setArea(defaultPlace);
+	m_buttonBars[defaultPlace]->addButton(toolView->button());
+	
+	addDockWidget(dockWidgetArea(defaultPlace), toolView);
+// 	toolView->setAllowedAreas(dockWidgetArea(defaultPlace));
+	
+	m_toolViews << toolView;
+	
+	connect(toolView, SIGNAL(topLevelChanged(bool)), this, SLOT(relayoutViewButton(bool)));
+	
+	return toolView;
 }
 
-QList<DiToolView*> DMainWindow::toolViews() const
+Qt::DockWidgetArea DMainWindow::dockWidgetArea(Qt::ToolBarArea area)
 {
-    return d->toolViews;
+	switch(area)
+	{
+		case Qt::LeftToolBarArea:
+		{
+			return Qt::LeftDockWidgetArea;
+		}
+		break;
+		case Qt::RightToolBarArea:
+		{
+			return Qt::RightDockWidgetArea;
+		}
+		break;
+		case Qt::TopToolBarArea:
+		{
+			return Qt::TopDockWidgetArea;
+		}
+		break;
+		case Qt::BottomToolBarArea:
+		{
+			return Qt::BottomDockWidgetArea;
+		}
+		break;
+		default: break;
+	}
+	
+	return Qt::LeftDockWidgetArea;
 }
 
-QList<DiToolView*> DMainWindow::toolViews(Ideal::Place place, int mode) const
+Qt::ToolBarArea DMainWindow::toolBarArea(Qt::DockWidgetArea area)
 {
-    QList<DiToolView*> list;
-    foreach (DiToolView *view, d->toolViews)
-    {
-        if (view->mode() & mode)
-            list << view;
-    }
-    return list;
+	switch(area)
+	{
+		case Qt::LeftDockWidgetArea:
+		{
+			return Qt::LeftToolBarArea;
+		}
+		break;
+		case Qt::RightDockWidgetArea:
+		{
+			return Qt::RightToolBarArea;
+		}
+		break;
+		case Qt::TopDockWidgetArea:
+		{
+			return Qt::TopToolBarArea;
+		}
+		break;
+		case Qt::BottomDockWidgetArea:
+		{
+			return Qt::BottomToolBarArea;
+		}
+		break;
+		default: qWarning("Floating..."); break;
+	}
+	
+	return Qt::LeftToolBarArea;
 }
 
-DiButtonToolBar *DMainWindow::buttonBar(Ideal::Place place)
+
+void DMainWindow::relayoutViewButton(bool topLevel)
 {
-    return d->buttonBars[place];
+	if ( !topLevel )
+	{
+		if ( DToolView *toolView = dynamic_cast<DToolView *>(sender()) )
+		{
+			m_forRelayout = toolView;
+			QTimer::singleShot( 0, this, SLOT(relayoutToolView()));
+		}
+	}
 }
 
-DiToolView *DMainWindow::createToolView(QWidget *view, Ideal::Place defaultPlace, bool persistant)
+void DMainWindow::relayoutToolView()
 {
-    return new DiToolView(this, view, defaultPlace, persistant);
+	if ( !m_forRelayout ) return;
+	
+	setUpdatesEnabled( false );
+	DViewButton *button = m_forRelayout->button();
+			
+	Qt::ToolBarArea area = toolBarArea( QMainWindow::dockWidgetArea(m_forRelayout) );
+	if ( area != button->area() && !m_forRelayout->isFloating() )
+	{
+		m_buttonBars[button->area()]->removeButton(button);
+		button->setArea(area);
+		
+		m_buttonBars[area]->addButton(button);
+	}
+	setUpdatesEnabled( true );
+	
+	m_forRelayout = 0;
 }
 
-DiButtonToolBar *DMainWindow::createButtonBar(Ideal::Place place)
-{
-    return new DiButtonToolBar(place, this);
-}
 
-}
+
+

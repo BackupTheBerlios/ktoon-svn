@@ -18,45 +18,83 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DMAINWINDOW_H
-#define DMAINWINDOW_H
+#include "dbuttonbar.h"
+#include "dviewbutton.h"
 
-#include <QMainWindow>
-#include <QHash>
+#include <QToolButton>
+#include <QBoxLayout>
+#include <QAction>
 
-class DButtonBar;
-class DToolView;
 
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-
-class Q_GUI_EXPORT DMainWindow : public QMainWindow
+DButtonBar::DButtonBar(Qt::ToolBarArea area, QWidget *parent) : QToolBar(parent)
 {
-	Q_OBJECT;
-	public:
-		DMainWindow(QWidget *parent = 0);
-		~DMainWindow();
-		
-		void addButtonBar(Qt::ToolBarArea area);
-		virtual DToolView *addToolView(QWidget *view, Qt::ToolBarArea defaultPlace);
-		
-		
-	private:
-		Qt::DockWidgetArea dockWidgetArea(Qt::ToolBarArea area);
-		Qt::ToolBarArea toolBarArea(Qt::DockWidgetArea area);
-		
-	private slots:
-		void relayoutViewButton(bool topLevel);
-		void relayoutToolView();
-		
-	private:
-		DToolView *m_forRelayout;
-		
-	private:
-		QHash<Qt::ToolBarArea, DButtonBar *> m_buttonBars;
-		QList<DToolView*> m_toolViews;
-		
-};
+	setMovable(false);
+	
+// 	setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+	
+	setIconSize(QSize(16,16));
+	
+	m_buttons.setExclusive( true );
+	
+	switch(area)
+	{
+		case Qt::LeftToolBarArea:
+		{
+			setWindowTitle(tr("Left Button Bar"));
+		}
+		break;
+		case Qt::RightToolBarArea:
+		{
+			setWindowTitle(tr("Right Button Bar"));
+		}
+		break;
+		case Qt::TopToolBarArea:
+		{
+			setWindowTitle(tr("Top Button Bar"));
+		}
+		break;
+		case Qt::BottomToolBarArea:
+		{
+			setWindowTitle(tr("Bottom Button Bar"));
+		}
+		break;
+		default: break;
+	}
+}
 
-#endif
+
+DButtonBar::~DButtonBar()
+{
+}
+
+void DButtonBar::addButton(DViewButton *viewButton)
+{
+	if ( m_buttons.checkedButton() )
+	{
+		m_buttons.checkedButton()->setChecked(false);
+	}
+	
+	QAction *act = addWidget(viewButton);
+	m_buttons.addButton(viewButton);
+	
+	m_actions[viewButton] = act;
+	act->setVisible(true);
+	
+	if ( !isVisible() ) show();
+}
+
+void DButtonBar::removeButton(DViewButton *viewButton)
+{
+	m_buttons.removeButton(viewButton);
+	removeAction( m_actions[viewButton] );
+	m_actions.remove(viewButton);
+	
+	if ( isEmpty() ) hide();
+}
+
+bool DButtonBar::isEmpty() const
+{
+	return m_buttons.buttons().isEmpty();
+}
+
+

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                *
  *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,45 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DMAINWINDOW_H
-#define DMAINWINDOW_H
+#ifndef DBUTTONBAR_H
+#define DBUTTONBAR_H
 
-#include <QMainWindow>
-#include <QHash>
+#include <QToolBar>
+#include <QButtonGroup>
+#include <QMap>
 
-class DButtonBar;
-class DToolView;
+class DViewButton;
+class QAction;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-
-class Q_GUI_EXPORT DMainWindow : public QMainWindow
+class Q_GUI_EXPORT DButtonBar : public QToolBar
 {
 	Q_OBJECT;
 	public:
-		DMainWindow(QWidget *parent = 0);
-		~DMainWindow();
+		DButtonBar(Qt::ToolBarArea area, QWidget *parent = 0);
+		~DButtonBar();
 		
-		void addButtonBar(Qt::ToolBarArea area);
-		virtual DToolView *addToolView(QWidget *view, Qt::ToolBarArea defaultPlace);
+		void addButton(DViewButton *viewButton);
+		void removeButton(DViewButton *viewButton);
 		
-		
-	private:
-		Qt::DockWidgetArea dockWidgetArea(Qt::ToolBarArea area);
-		Qt::ToolBarArea toolBarArea(Qt::DockWidgetArea area);
-		
-	private slots:
-		void relayoutViewButton(bool topLevel);
-		void relayoutToolView();
+		bool isEmpty() const;
 		
 	private:
-		DToolView *m_forRelayout;
+		QButtonGroup m_buttons;
 		
-	private:
-		QHash<Qt::ToolBarArea, DButtonBar *> m_buttonBars;
-		QList<DToolView*> m_toolViews;
-		
+		QMap<QWidget *, QAction *> m_actions;
 };
 
 #endif

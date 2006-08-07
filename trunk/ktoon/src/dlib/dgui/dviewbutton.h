@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                *
  *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,45 +18,55 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DMAINWINDOW_H
-#define DMAINWINDOW_H
+#ifndef DVIEWBUTTON_H
+#define DVIEWBUTTON_H
 
-#include <QMainWindow>
-#include <QHash>
-
-class DButtonBar;
-class DToolView;
+#include <QToolButton>
+#include <QStyleOptionToolButton>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-
-class Q_GUI_EXPORT DMainWindow : public QMainWindow
+class Q_GUI_EXPORT DViewButton : public QToolButton
 {
 	Q_OBJECT;
 	public:
-		DMainWindow(QWidget *parent = 0);
-		~DMainWindow();
+		DViewButton(Qt::ToolBarArea area, QWidget * parent = 0 );
+		DViewButton(QWidget *parent = 0 );
+		~DViewButton();
 		
-		void addButtonBar(Qt::ToolBarArea area);
-		virtual DToolView *addToolView(QWidget *view, Qt::ToolBarArea defaultPlace);
+		void setArea(Qt::ToolBarArea area);
+		Qt::ToolBarArea area() const;
 		
+		QSize sizeHint() const;
 		
 	private:
-		Qt::DockWidgetArea dockWidgetArea(Qt::ToolBarArea area);
-		Qt::ToolBarArea toolBarArea(Qt::DockWidgetArea area);
+		void setup();
+		QStyleOptionToolButton styleOption() const;
+		
+	protected:
+		virtual void paintEvent(QPaintEvent *e);
+		virtual void mousePressEvent(QMouseEvent *e);
+		virtual void enterEvent( QEvent* );
+		virtual void leaveEvent( QEvent* );
+		
+	public slots:
+		void setOnlyText();
+		void setOnlyIcon();
 		
 	private slots:
-		void relayoutViewButton(bool topLevel);
-		void relayoutToolView();
+		void animate();
+		void toggleSensibility();
 		
 	private:
-		DToolView *m_forRelayout;
+		Qt::ToolBarArea m_area;
 		
-	private:
-		QHash<Qt::ToolBarArea, DButtonBar *> m_buttonBars;
-		QList<DToolView*> m_toolViews;
+		QMenu *m_menu;
 		
+		class Animator;
+		Animator *m_animator;
+		
+		bool m_isSensible;
 };
 
 #endif

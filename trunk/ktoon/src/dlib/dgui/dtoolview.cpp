@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                *
  *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,45 +18,81 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DMAINWINDOW_H
-#define DMAINWINDOW_H
+#include "dtoolview.h"
+#include "dviewbutton.h"
 
-#include <QMainWindow>
-#include <QHash>
+// #include <QtDebug>
+#include <QAction>
 
-class DButtonBar;
-class DToolView;
-
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-
-class Q_GUI_EXPORT DMainWindow : public QMainWindow
+DToolView::DToolView(const QString &title, const QIcon &icon, QWidget * parent)
+	: QDockWidget(title, parent), m_size(-1)
 {
-	Q_OBJECT;
-	public:
-		DMainWindow(QWidget *parent = 0);
-		~DMainWindow();
-		
-		void addButtonBar(Qt::ToolBarArea area);
-		virtual DToolView *addToolView(QWidget *view, Qt::ToolBarArea defaultPlace);
-		
-		
-	private:
-		Qt::DockWidgetArea dockWidgetArea(Qt::ToolBarArea area);
-		Qt::ToolBarArea toolBarArea(Qt::DockWidgetArea area);
-		
-	private slots:
-		void relayoutViewButton(bool topLevel);
-		void relayoutToolView();
-		
-	private:
-		DToolView *m_forRelayout;
-		
-	private:
-		QHash<Qt::ToolBarArea, DButtonBar *> m_buttonBars;
-		QList<DToolView*> m_toolViews;
-		
-};
+	setWindowIcon(icon);
+	
+	setup();
+}
 
-#endif
+
+DToolView::~DToolView()
+{
+}
+
+void DToolView::setup()
+{
+	setFeatures(AllDockWidgetFeatures);
+	
+	m_button = new DViewButton;
+	
+	QAction *act = toggleViewAction();
+	act->setCheckable( true );
+	m_button->setDefaultAction(act);
+	
+	act->setText(windowTitle());
+	act->setIcon(windowIcon());
+	
+	connect(act, SIGNAL(toggled(bool)), this, SLOT(saveSize(bool)));
+}
+
+
+DViewButton *DToolView::button() const
+{
+	return m_button;
+}
+
+void DToolView::saveSize(bool checked)
+{
+	if ( m_button->area() == Qt::LeftToolBarArea || m_button->area()  == Qt::RightToolBarArea )
+	{
+		m_size = width();
+	}
+	else
+	{
+		m_size = height();
+	}
+}
+
+QSize DToolView::sizeHint() const
+{
+	QSize size = QDockWidget::sizeHint();
+	
+	if ( m_size < 0 ) return size;
+	
+	if ( m_button->area() == Qt::LeftToolBarArea || m_button->area()  == Qt::RightToolBarArea )
+	{
+		size.setWidth(m_size);
+	}
+	else
+	{
+		size.setHeight(m_size);
+	}
+	
+	return size;
+}
+
+
+void DToolView::setDescription(const QString &description)
+{
+	m_button->defaultAction()->setStatusTip ( description );
+}
+
+
