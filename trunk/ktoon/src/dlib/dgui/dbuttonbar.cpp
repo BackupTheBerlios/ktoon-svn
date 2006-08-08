@@ -63,11 +63,13 @@ DButtonBar::DButtonBar(Qt::ToolBarArea area, QWidget *parent) : QToolBar(parent)
 		default: break;
 	}
 	
+#if 0
 	if ( area == Qt::BottomToolBarArea || area == Qt::TopToolBarArea )
 	{
 		addAction("")->setEnabled(false); // Separator
 	}
-	
+#endif
+
 	setupMenu();
 }
 
@@ -121,6 +123,8 @@ void DButtonBar::removeButton(DViewButton *viewButton)
 	m_buttons.removeButton(viewButton);
 	removeAction( m_actionForWidget[viewButton] );
 	m_actionForWidget.remove(viewButton);
+	
+	disconnect(viewButton, SIGNAL(clicked()), this, SLOT(hideOthers()));
 	
 	if ( isEmpty() ) hide();
 }

@@ -110,7 +110,7 @@ Qt::DockWidgetArea DMainWindow::dockWidgetArea(Qt::ToolBarArea area)
 			return Qt::BottomDockWidgetArea;
 		}
 		break;
-		default: break;
+		default: qWarning("Floating..."); break;
 	}
 	
 	return Qt::LeftDockWidgetArea;
@@ -154,7 +154,7 @@ void DMainWindow::relayoutViewButton(bool topLevel)
 		if ( DToolView *toolView = dynamic_cast<DToolView *>(sender()) )
 		{
 			m_forRelayout = toolView;
-			QTimer::singleShot( 0, this, SLOT(relayoutToolView()));
+			QTimer::singleShot( 100, this, SLOT(relayoutToolView()));
 			
 			// if a tool view is floating the button bar isn't exclusive
 			DButtonBar *bar = m_buttonBars[m_forRelayout->button()->area()];
@@ -191,12 +191,12 @@ void DMainWindow::relayoutToolView()
 		setUpdatesEnabled( false );
 		
 		m_buttonBars[button->area()]->removeButton(button);
-		button->setArea(area);
-		m_buttonBars[area]->addButton(button);
 		
 		m_toolViews[m_buttonBars[button->area()]].removeAll(m_forRelayout);
 		m_toolViews[m_buttonBars[area]] << m_forRelayout;
 		
+		button->setArea(area);
+		m_buttonBars[area]->addButton(button);
 		
 		setUpdatesEnabled( true );
 	}
@@ -246,6 +246,14 @@ void DMainWindow::setCurrentWorkspace(int wsp)
 int DMainWindow::currentWorkspace() const
 {
 	return m_currentWorkspace;
+}
+
+QMenu *DMainWindow::createPopupMenu()
+{
+	QMenu *menu = QMainWindow::createPopupMenu();
+	menu->addSeparator();
+	
+	return menu;
 }
 
 

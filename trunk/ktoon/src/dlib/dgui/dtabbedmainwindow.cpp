@@ -90,7 +90,6 @@ DTabbedMainWindow::DTabbedMainWindow(QWidget *parent) : DMainWindow(parent)
 	setupTabWidget( m_tabWidget );
 	setCentralWidget(m_tabWidget);
 	
-	connect(m_tabWidget, SIGNAL(currentChanged ( int)), this, SLOT(emitWidgetChanged( int )));
 	connect(this, SIGNAL(workspaceChanged(int)), this, SLOT(setupWorkspace(int)));
 }
 
@@ -127,6 +126,7 @@ void DTabbedMainWindow::setupTabWidget(QTabWidget *w)
 	w->setCornerWidget(closeButton, Qt::TopRightCorner);
 	
 	connect(closeButton, SIGNAL(clicked()), this, SLOT(closeCurrentTab()));
+	connect(w, SIGNAL(currentChanged ( int)), this, SLOT(emitWidgetChanged( int )));
 }
 
 void DTabbedMainWindow::addWidget(QWidget *widget, bool persistant, int workspace)

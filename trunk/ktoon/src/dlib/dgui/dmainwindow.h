@@ -50,6 +50,8 @@ class Q_GUI_EXPORT DMainWindow : public QMainWindow
 		void setCurrentWorkspace(int wsp);
 		int currentWorkspace() const;
 		
+		virtual QMenu *createPopupMenu();
+		
 	private:
 		Qt::DockWidgetArea dockWidgetArea(Qt::ToolBarArea area);
 		Qt::ToolBarArea toolBarArea(Qt::DockWidgetArea area);
