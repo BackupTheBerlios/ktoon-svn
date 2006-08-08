@@ -42,33 +42,40 @@ DButtonBar::DButtonBar(Qt::ToolBarArea area, QWidget *parent) : QToolBar(parent)
 	{
 		case Qt::LeftToolBarArea:
 		{
-			setWindowTitle(tr("Left Button Bar"));
+			setWindowTitle(tr("Left button bar"));
 		}
 		break;
 		case Qt::RightToolBarArea:
 		{
-			setWindowTitle(tr("Right Button Bar"));
-		}
-		break;
-		case Qt::TopToolBarArea:
-		{
-			setWindowTitle(tr("Top Button Bar"));
+			setWindowTitle(tr("Right button bar"));
 		}
 		break;
 		case Qt::BottomToolBarArea:
 		{
-			setWindowTitle(tr("Bottom Button Bar"));
+			setWindowTitle(tr("Bottom button bar"));
+		}
+		break;
+		case Qt::TopToolBarArea:
+		{
+			setWindowTitle(tr("Top button bar"));
 		}
 		break;
 		default: break;
 	}
 	
-#if 0
-	if ( area == Qt::BottomToolBarArea || area == Qt::TopToolBarArea )
-	{
-		addAction("")->setEnabled(false); // Separator
-	}
-#endif
+	
+	setObjectName("DButtonBar-"+windowTitle());
+	
+// #if 1
+// 	if ( area == Qt::BottomToolBarArea || area == Qt::TopToolBarArea )
+// 	{
+	
+	m_separator = addAction("");
+	m_separator->setEnabled(false); // Separator
+	m_separator->setVisible( false );
+	
+// 	}
+// #endif
 
 	setupMenu();
 }
@@ -92,9 +99,9 @@ void DButtonBar::setupMenu()
 	
 	m_menu->addSeparator();
 	
-	a = m_menu->addAction(tr("Exclusive"));
-	a->setCheckable(true);
-	a->setChecked( m_buttons.exclusive() );
+	m_exclusive = m_menu->addAction(tr("Exclusive"));
+	m_exclusive->setCheckable(true);
+	m_exclusive->setChecked( m_buttons.exclusive() );
 	
 	connect(a, SIGNAL(triggered(bool)), this, SLOT(setExclusive( bool )));
 }
@@ -122,7 +129,6 @@ void DButtonBar::removeButton(DViewButton *viewButton)
 {
 	m_buttons.removeButton(viewButton);
 	removeAction( m_actionForWidget[viewButton] );
-	m_actionForWidget.remove(viewButton);
 	
 	disconnect(viewButton, SIGNAL(clicked()), this, SLOT(hideOthers()));
 	
@@ -137,6 +143,11 @@ bool DButtonBar::isEmpty() const
 
 void DButtonBar::setExclusive(bool excl)
 {
+	if ( !sender() ) // Called directly!
+	{
+		m_exclusive->setChecked( excl );
+	}
+	
 	m_buttons.setExclusive( excl );
 }
 
@@ -176,6 +187,11 @@ void DButtonBar::enable(DViewButton *v)
 	}
 }
 
+bool DButtonBar::isExclusive() const
+{
+	return m_buttons.exclusive();
+}
+
 void DButtonBar::hideOthers()
 {
 	if ( !m_buttons.exclusive() ) return;
@@ -212,6 +228,11 @@ void DButtonBar::mousePressEvent(QMouseEvent *e)
 			e->accept();
 		}
 	}
+}
+
+void DButtonBar::showSeparator(bool e)
+{
+	m_separator->setVisible(e);
 }
 
 

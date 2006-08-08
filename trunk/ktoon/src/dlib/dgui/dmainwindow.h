@@ -27,6 +27,7 @@
 
 class DButtonBar;
 class DToolView;
+class DMainWindowAbstractSettings;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
@@ -45,16 +46,27 @@ class Q_GUI_EXPORT DMainWindow : public QMainWindow
 		DMainWindow(QWidget *parent = 0);
 		~DMainWindow();
 		
-		virtual DToolView *addToolView(QWidget *view, Qt::ToolBarArea defaultPlace, int workspace = DefaultWorkspace);
+		DToolView *addToolView(QWidget *widget, Qt::DockWidgetArea area, int workspace = DefaultWorkspace);
+		void moveToolView(DToolView *view, Qt::DockWidgetArea newPlace);
 		
 		void setCurrentWorkspace(int wsp);
 		int currentWorkspace() const;
 		
+		void setAutoRestore(bool autoRestore);
+		bool autoRestore() const;
+		
 		virtual QMenu *createPopupMenu();
 		
+		void setSettingsFactory(DMainWindowAbstractSettings *settings);
+		void restoreGUI();
+		void saveGUI();
+		
+		QHash<Qt::ToolBarArea, DButtonBar *> buttonBars() const;
+		QHash<DButtonBar *, QList<DToolView*> > toolViews() const;
+		
 	private:
-		Qt::DockWidgetArea dockWidgetArea(Qt::ToolBarArea area);
-		Qt::ToolBarArea toolBarArea(Qt::DockWidgetArea area);
+		Qt::DockWidgetArea toDockWidgetArea(Qt::ToolBarArea area);
+		Qt::ToolBarArea toToolBarArea(Qt::DockWidgetArea area);
 		
 	private slots:
 		void relayoutViewButton(bool topLevel);
@@ -66,6 +78,10 @@ class Q_GUI_EXPORT DMainWindow : public QMainWindow
 	protected:
 		void addButtonBar(Qt::ToolBarArea area);
 		
+	protected:
+		virtual void closeEvent(QCloseEvent *e);
+		virtual void showEvent(QShowEvent *e);
+		
 	private:
 		DToolView *m_forRelayout;
 		
@@ -74,6 +90,10 @@ class Q_GUI_EXPORT DMainWindow : public QMainWindow
 		QHash<DButtonBar *, QList<DToolView*> > m_toolViews;
 		
 		int m_currentWorkspace;
+		
+		DMainWindowAbstractSettings *m_settings;
+		
+		bool m_autoRestore;
 };
 
 #endif

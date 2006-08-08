@@ -33,7 +33,7 @@ void KTMainWindow::createGUI()
 	
 	
 	m_colorPalette->setWindowTitle(tr("Palette"));
-	addToolView( m_colorPalette, Qt::LeftToolBarArea );
+	addToolView( m_colorPalette, Qt::LeftDockWidgetArea );
 	
 	connectToDisplays(m_colorPalette);
 	
@@ -42,7 +42,7 @@ void KTMainWindow::createGUI()
 	m_penWidget = new KTPenWidget(this);
 	
 	m_penWidget->setWindowTitle(tr("Pen"));
-	addToolView( m_penWidget, Qt::LeftToolBarArea );
+	addToolView( m_penWidget, Qt::LeftDockWidgetArea );
 	
 // 	connect(m_penWidget, SIGNAL(penChanged( const QPen& )), this, SLOT(changeCurrentPen( const QPen &)));
 	
@@ -53,7 +53,7 @@ void KTMainWindow::createGUI()
 	m_libraryWidget->setWindowIcon(QPixmap(THEME_DIR+"/icons/library.png"));
 	
 	m_libraryWidget->setWindowTitle(tr("Library"));
-	addToolView( m_libraryWidget, Qt::LeftToolBarArea );
+	addToolView( m_libraryWidget, Qt::LeftDockWidgetArea );
 	
 	connect(m_libraryWidget, SIGNAL(requestCurrentGraphic()), this, SLOT(addCurrentGraphicToLibrary()));
 	connect(m_libraryWidget, SIGNAL(sendCurrentGraphic(const KTGraphicComponent *)), this, SLOT(addGraphicComponent(const KTGraphicComponent *)));
@@ -67,7 +67,7 @@ void KTMainWindow::createGUI()
 	m_scenes->setWindowIcon(QPixmap(THEME_DIR+"/icons/scenes.png"));
 	
 	m_scenes->setWindowTitle(tr("Scenes"));
-	addToolView( m_scenes, Qt::RightToolBarArea );
+	addToolView( m_scenes, Qt::RightDockWidgetArea );
 	
 	ui4project(m_scenes);
 #if 0
@@ -85,7 +85,7 @@ void KTMainWindow::createGUI()
 	m_exposureSheet->setWindowIcon(QPixmap(THEME_DIR+"/icons/exposure_sheet.png"));
 	
 	m_exposureSheet->setWindowTitle(tr("Exposure Sheet"));
-	addToolView( m_exposureSheet, Qt::RightToolBarArea );
+	addToolView( m_exposureSheet, Qt::RightDockWidgetArea );
 	
 	ui4project( m_exposureSheet );
 	connect(m_exposureSheet, SIGNAL(requestChangeScene( int ) ), this, SLOT(changeScene(int)));
@@ -96,7 +96,7 @@ void KTMainWindow::createGUI()
 	m_helper = new KTHelpWidget(HOME_DIR+"/data/help/");
 	
 	m_helper->setWindowTitle(tr("Help"));
-	addToolView( m_helper, Qt::RightToolBarArea );
+	addToolView( m_helper, Qt::RightDockWidgetArea );
 	
 	connect(m_helper, SIGNAL(pageLoaded(const QString &, const QString &)), this, SLOT(showHelpPage(const QString &, const QString &)));
 	
@@ -111,7 +111,7 @@ void KTMainWindow::createGUI()
 	m_timeLine->setWindowIcon(QPixmap(THEME_DIR+"/icons/time_line.png"));
 	
 	m_timeLine->setWindowTitle(tr("Time Line"));
-	addToolView( m_timeLine, Qt::BottomToolBarArea );
+	addToolView( m_timeLine, Qt::BottomDockWidgetArea );
 	
 	
 	connect(m_timeLine, SIGNAL(requestChangeFPS(int)), this, SLOT(changeFPS( int )));
@@ -127,7 +127,7 @@ void KTMainWindow::createGUI()
 	m_scriptEditor->setWindowIcon(QPixmap(HOME_DIR+"/images/icons/color_palette.png") );
 	
 	m_scriptEditor->setWindowTitle(tr("Kinas"));
-	addToolView( m_scriptEditor, Qt::BottomToolBarArea );
+	addToolView( m_scriptEditor, Qt::BottomDockWidgetArea );
 #endif
 	/////////////////
 	
@@ -143,7 +143,7 @@ void KTMainWindow::createGUI()
 #endif
 	
 	m_gcEditor->setWindowTitle(tr("GC Editor"));
-	addToolView( m_gcEditor, Qt::BottomToolBarArea );
+	addToolView( m_gcEditor, Qt::BottomDockWidgetArea );
 	
 	connectToDisplays(m_gcEditor);
 	

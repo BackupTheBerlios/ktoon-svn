@@ -21,14 +21,18 @@
 #include "dtoolview.h"
 #include "dviewbutton.h"
 
-// #include <QtDebug>
+#include <QtDebug>
 #include <QAction>
+#include <QMainWindow>
+#include <QMouseEvent>
 
 DToolView::DToolView(const QString &title, const QIcon &icon, QWidget * parent)
 	: QDockWidget(title, parent), m_size(-1), m_workspace(0)
 {
 	setWindowIcon(icon);
 	setup();
+	
+	setObjectName("DToolView-"+title);
 }
 
 
@@ -38,6 +42,11 @@ DToolView::~DToolView()
 
 void DToolView::setup()
 {
+	
+#if QT_VERSION < 0x040200
+	m_area = Qt::AllDockWidgetAreas;
+#endif
+
 	setFeatures(AllDockWidgetFeatures);
 	
 	m_button = new DViewButton;
@@ -104,6 +113,47 @@ int DToolView::workspace() const
 {
 	return m_workspace;
 }
+
+int DToolView::fixedSize() const
+{
+	return m_size;
+}
+
+void DToolView::setFixedSize(int s)
+{
+	m_size = s;
+}
+
+
+#if QT_VERSION < 0x040200
+
+bool DToolView::event(QEvent *e)
+{
+	bool toReturn =  QDockWidget::event(e);
+	
+	if (e->type() == QEvent::MouseButtonPress )
+	{
+		if ( QMainWindow *mw = dynamic_cast<QMainWindow *>(parentWidget()) )
+		{
+			m_area = mw->dockWidgetArea(this);
+		}
+	}
+	else if ( e->type() == QEvent::MouseButtonRelease )
+	{
+		if ( QMainWindow *mw = dynamic_cast<QMainWindow *>(parentWidget()) )
+		{
+			if ( m_area != mw->dockWidgetArea(this) )
+			{
+				emit topLevelChanged(false);
+			}
+		}
+	}
+	
+	
+	return toReturn;
+}
+
+#endif
 
 
 

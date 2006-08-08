@@ -40,6 +40,9 @@ class Q_GUI_EXPORT DViewButton : public QToolButton
 		
 		QSize sizeHint() const;
 		
+		bool isSensible() const;
+		void setSensible(bool s);
+		
 	private:
 		void setup();
 		QStyleOptionToolButton styleOption() const;

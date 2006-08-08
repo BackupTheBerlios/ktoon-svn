@@ -251,6 +251,8 @@ QStyleOptionToolButton DViewButton::styleOption() const
 
 void DViewButton::paintEvent(QPaintEvent *e)
 {
+	Q_UNUSED(e);
+	
 	QStyleOptionToolButton opt = styleOption();
 	
 	QRect r = opt.rect;
@@ -317,8 +319,7 @@ void DViewButton::mousePressEvent(QMouseEvent *e)
 
 void DViewButton::enterEvent( QEvent* )
 {
-	bool checked = defaultAction() ? defaultAction()->isChecked() : isChecked();
-	
+// 	bool checked = defaultAction() ? defaultAction()->isChecked() : isChecked();
 // 	qDebug() << "CHECKED: " << checked << " DOWN: " << isDown();
 	
 	if ( m_isSensible )
@@ -373,3 +374,15 @@ void DViewButton::toggleSensibility()
 {
 	m_isSensible = !m_isSensible;
 }
+
+void DViewButton::setSensible(bool s)
+{
+	m_isSensible = s;
+}
+
+bool DViewButton::isSensible() const
+{
+	return m_isSensible;
+}
+
+

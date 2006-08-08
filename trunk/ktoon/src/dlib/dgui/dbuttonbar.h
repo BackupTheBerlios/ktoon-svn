@@ -47,6 +47,9 @@ class Q_GUI_EXPORT DButtonBar : public QToolBar
 		void disable(DViewButton *v);
 		void enable(DViewButton *v);
 		
+		bool isExclusive() const;
+		void showSeparator(bool e);
+		
 	public slots:
 		void setExclusive(bool excl);
 		void setShowOnlyIcons();
@@ -66,6 +69,9 @@ class Q_GUI_EXPORT DButtonBar : public QToolBar
 		QMap<QWidget *, QAction *> m_actionForWidget;
 		
 		QMenu *m_menu;
+		
+		QAction *m_exclusive;
+		QAction *m_separator;
 };
 
 #endif

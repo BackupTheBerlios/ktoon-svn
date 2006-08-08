@@ -18,55 +18,27 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DTOOLVIEW_H
-#define DTOOLVIEW_H
+#ifndef DMAINWINDOWABSTRACTSETTINGS_H
+#define DMAINWINDOWABSTRACTSETTINGS_H
 
-#include <QDockWidget>
-#include <QIcon>
+#include <QObject>
 
-class DViewButton;
+class DToolView;
+class DMainWindow;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Q_GUI_EXPORT DToolView : public QDockWidget
+
+class Q_DECL_EXPORT DMainWindowAbstractSettings : public QObject
 {
-	Q_OBJECT;
-	
 	public:
-		DToolView(const QString &title, const QIcon &icon = QIcon(), QWidget * parent = 0);
-		~DToolView();
+		DMainWindowAbstractSettings(QObject *parent = 0) : QObject(parent) {}
+		~DMainWindowAbstractSettings() {};
 		
-		void setDescription(const QString &description);
-		DViewButton *button() const;
-		QSize sizeHint() const;
+		virtual void save(DMainWindow *w) = 0;
+		virtual void restore(DMainWindow *w) = 0;
 		
-		void setWorkspace(int wsp);
-		int workspace() const;
-		
-		void setFixedSize(int s);
-		int fixedSize() const;
-		
-	private:
-		void setup();
-		
-		
-	private slots:
-		void saveSize(bool checked);
-		
-#if QT_VERSION < 0x040200
-	protected:
-		virtual bool event(QEvent *e);
-		
-	private:
-		Qt::DockWidgetArea m_area;
-#endif
-		
-	private:
-		DViewButton *m_button;
-		int m_size;
-		
-		int m_workspace;
 };
 
 #endif
