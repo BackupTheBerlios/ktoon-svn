@@ -35,22 +35,8 @@ KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWid
 
 	m_container = new QVBoxLayout(this);
 	
-	m_title = new KTModuleWidgetTitle("", this);
-	setMinimumHeight(m_title->height());
-	
-// 	m_title->setToolTip(tr("Double click for roll up"));
-	
-	m_container->addWidget(m_title);
-	m_container->setAlignment(m_title, Qt::AlignTop);
-// 	m_container->setDirection ( QBoxLayout::TopToBottom);
 	m_container->setMargin(5);
 	m_container->setSpacing(1);
-// 	m_container->setSizeConstraint(QLayout::SetFixedSize);
-
-	
-	connect(m_title, SIGNAL(doubleClicked()), SLOT(toggleView()));
-	
-// 	connect(this, SIGNAL(placeChanged(QDockWindow::Place)), SLOT(fixPosition(QDockWindow::Place)));
 	
 	adjustSize();
 	hide();
@@ -69,50 +55,8 @@ void KTModuleWidgetBase::addChild(QWidget* child, Qt::Alignment alignment)
 	m_container->addWidget(child, 0,alignment);
 }
 
-void KTModuleWidgetBase::toggleView()
-{
-#if 1
-	if ( ! m_isChildHidden )
-	{
-		QPoint position = m_title->pos();
-		setParent(0, Qt::WindowStaysOnTopHint );
-		move(mapToGlobal(position));
-		
-		show();
-	}
-#endif
-	
-// 	m_title->setMinimumWidth(m_title->width());
-// 	for( int i = 0; i < m_childs.count(); i++)
-// 	{
-// 		QObject *o = m_childs[i];
-// 		if ( o && ! m_isChildHidden )
-// 		{
-// 			static_cast<QWidget*>(o)->hide();
-// 		}
-// 		else if ( o && m_isChildHidden )
-// 		{
-// 			static_cast<QWidget*>(o)->show();
-// 		}
-// 	}
-// 	
-// 	if ( ! m_isChildHidden )
-// 	{
-// 		setMinimumSize(m_title->size());
-// 		resize(m_title->size());
-// 	}
-// 	else
-// 	{
-// 		adjustSize();
-// 	}
-	
-// 	m_isChildHidden = !m_isChildHidden;
-}
-
 void KTModuleWidgetBase::setCaption(const QString &text)
 {
- 	m_title->setText(text);
-	
 	setWindowTitle(text);
 }
 
@@ -139,17 +83,11 @@ bool KTModuleWidgetBase::event( QEvent * e )
 void KTModuleWidgetBase::enterEvent(QEvent *e)
 {
 	Q_UNUSED(e);
-	QPalette pal = palette();
-	pal.setBrush(QPalette::Background, pal.highlight ());
-	pal.setBrush(QPalette::Text, pal.base ());
-	m_title->setPalette(pal);
 }
 
 void KTModuleWidgetBase::leaveEvent(QEvent *e)
 {
 	Q_UNUSED(e);
-	QPalette pal = palette();
-	m_title->setPalette(pal);
 }
 
 QBoxLayout *KTModuleWidgetBase::boxLayout()

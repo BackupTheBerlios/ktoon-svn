@@ -132,9 +132,9 @@ void KTProjectActionBar::setup(Actions actions)
 	if ( actions & MoveFrameUp )
 	{
 		QToolButton *button = new QToolButton;
-		button->setIcon(QIcon());
+		button->setIcon(QIcon(THEME_DIR+"/icons/move_frame_up.png"));
 		button->setText( tr("Move frame up"));
-		
+		button->setToolTip(button->text());
 		
 		m_actions.addButton(button, MoveFrameUp);
 		
@@ -145,7 +145,8 @@ void KTProjectActionBar::setup(Actions actions)
 	{
 		QToolButton *button = new QToolButton;
 		button->setText(tr("Move frame down") );
-		button->setIcon(QIcon());
+		button->setIcon(QIcon(THEME_DIR+"/icons/move_frame_down.png"));
+		button->setToolTip(button->text());
 		
 		m_actions.addButton( button, MoveFrameDown);
 		
@@ -157,6 +158,7 @@ void KTProjectActionBar::setup(Actions actions)
 		QToolButton *button = new QToolButton;
 		button->setText(tr("Lock frame") );
 		button->setIcon(QIcon(HOME_DIR+"/themes/default/icons/kilit_pic.png"));
+		button->setToolTip(button->text());
 		
 		m_actions.addButton( button, LockFrame);
 		
@@ -169,6 +171,7 @@ void KTProjectActionBar::setup(Actions actions)
 		button->setText( tr("Insert layer") );
 		button->setIcon(QIcon(HOME_DIR+"/themes/default/icons/add_layer.png"));
 		button->setToolTip(tr("Insert a layer"));
+		button->setToolTip(button->text());
 		
 		m_actions.addButton(button, InsertLayer);
 		
@@ -193,7 +196,8 @@ void KTProjectActionBar::setup(Actions actions)
 		QToolButton *button = new QToolButton;
 		
 		button->setText(tr("Move layer up")  );
-		button->setIcon(QIcon( ));
+		button->setIcon(QIcon( THEME_DIR+"/icons/move_layer_up.png" ));
+		button->setToolTip(button->text());
 		
 		m_actions.addButton(button, MoveLayerUp);
 		
@@ -205,7 +209,8 @@ void KTProjectActionBar::setup(Actions actions)
 		QToolButton *button = new QToolButton;
 		
 		button->setText( tr("Move layer down"));
-		button->setIcon(QIcon( ));
+		button->setIcon(QIcon( THEME_DIR+"/icons/move_layer_down.png" ));
+		button->setToolTip(button->text());
 		
 		m_actions.addButton(button, MoveLayerDown);
 		
@@ -216,7 +221,8 @@ void KTProjectActionBar::setup(Actions actions)
 	{
 		QToolButton *button = new QToolButton;
 		button->setText(tr("Lock layer") );
-		button->setIcon(QIcon());
+		button->setIcon(QIcon(THEME_DIR+"/icons/lock_layer.png"));
+		button->setToolTip(button->text());
 		
 		m_actions.addButton( button, LockLayer );
 		
@@ -228,8 +234,8 @@ void KTProjectActionBar::setup(Actions actions)
 		QToolButton *button = new QToolButton;
 		
 		button->setText(tr("Insert scene") );
-// 		button->setIcon(QIcon( HOME_DIR+"/themes/default/icons/add_scene.svg"));
-		
+		button->setIcon(QIcon( HOME_DIR+"/themes/default/icons/add_scene.png"));  // TODO
+		button->setToolTip(button->text());
 		button->setToolTip(tr("Insert a scene"));
 		
 		m_actions.addButton(button, InsertScene);
@@ -242,11 +248,10 @@ void KTProjectActionBar::setup(Actions actions)
 		QToolButton *button = new QToolButton;
 		
 		button->setText(tr("Remove scene") );
-		button->setIcon(QIcon( ));
-		
+		button->setIcon(QIcon( THEME_DIR+"/icons/remove_scene.png" ));  // TODO
+		button->setToolTip(button->text());
 		
 		button->setToolTip(tr("Remove the scene"));
-		
 		m_actions.addButton(button, RemoveScene);
 		
 		m_buttonLayout->addWidget( button );
@@ -257,7 +262,8 @@ void KTProjectActionBar::setup(Actions actions)
 		QToolButton *button = new QToolButton;
 		
 		button->setText(tr("Move scene up")  );
-		button->setIcon(QIcon( ));
+		button->setIcon(QIcon( THEME_DIR+"/icons/move_scene_up.png" ));
+		button->setToolTip(button->text());
 		
 		m_actions.addButton(button, MoveSceneUp);
 		
@@ -269,7 +275,8 @@ void KTProjectActionBar::setup(Actions actions)
 		QToolButton *button = new QToolButton;
 		
 		button->setText( tr("Move scene down"));
-		button->setIcon(QIcon( ));
+		button->setIcon(QIcon(THEME_DIR+"/icons/move_scene_down.png" ));
+		button->setToolTip(button->text());
 		
 		m_actions.addButton(button, MoveSceneDown);
 		
@@ -280,7 +287,8 @@ void KTProjectActionBar::setup(Actions actions)
 	{
 		QToolButton *button = new QToolButton;
 		button->setText(tr("Lock scene") );
-		button->setIcon(QIcon());
+		button->setIcon(QIcon( THEME_DIR+"/icons/lock_scene.png"));
+		button->setToolTip(button->text());
 		
 		m_actions.addButton( button, LockScene );
 		

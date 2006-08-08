@@ -31,8 +31,6 @@
 
 #include "dosd.h"
 
-#include "ktmodulewidgettitle.h"
-
 #include "ktprojectevent.h"
 
 #include "ktabstractprojecteventhandler.h"
@@ -58,13 +56,9 @@ class KTModuleWidgetBase : public QWidget, public KTAbstractProjectEventHandler
 		QWidget *m_originalParent;
 		
 	protected:
-		KTModuleWidgetTitle *m_title;
-		
-	protected:
 		virtual bool event( QEvent * e );
 		
 	public slots:
-		void toggleView();
 		void setCaption(const QString &text);
 		bool handleProjectEvent(KTProjectEvent *e);
 		

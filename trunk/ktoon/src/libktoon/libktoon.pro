@@ -6,7 +6,6 @@
 INSTALLS += target 
 target.path = /lib/ 
 HEADERS += ktmodulewidgetbase.h \
-           ktmodulewidgettitle.h \
            ktexportpluginobject.h \
            ktgraphicalgorithm.h \
            ktglobal.h \
@@ -27,7 +26,6 @@ HEADERS += ktmodulewidgetbase.h \
            ktinputdeviceinformation.h \
            ktsvg2qt.h 
 SOURCES += ktmodulewidgetbase.cpp \
-           ktmodulewidgettitle.cpp \
            ktexportpluginobject.cpp \
            ktgraphicalgorithm.cpp \
            ktpaintareaproperties.cpp \
