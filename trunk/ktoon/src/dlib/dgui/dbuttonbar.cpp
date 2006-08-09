@@ -103,7 +103,7 @@ void DButtonBar::setupMenu()
 	m_exclusive->setCheckable(true);
 	m_exclusive->setChecked( m_buttons.exclusive() );
 	
-	connect(a, SIGNAL(triggered(bool)), this, SLOT(setExclusive( bool )));
+	connect(m_exclusive, SIGNAL(triggered(bool)), this, SLOT(setExclusive( bool )));
 }
 
 void DButtonBar::addButton(DViewButton *viewButton)
@@ -143,7 +143,7 @@ bool DButtonBar::isEmpty() const
 
 void DButtonBar::setExclusive(bool excl)
 {
-	if ( !sender() ) // Called directly!
+	if ( sender() != m_exclusive ) // Called directly!
 	{
 		m_exclusive->setChecked( excl );
 	}
