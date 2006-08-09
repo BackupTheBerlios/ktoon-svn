@@ -31,10 +31,9 @@
 #include "ktgraphicalgorithm.h"
 #include "ktscene.h"
 
-#include "node.h"
-
+#include "nodemanager.h"
 #include <QDebug>
-
+#include <QTimer>
 Select::Select()
 {
 	setupActions();
@@ -63,59 +62,60 @@ QStringList Select::keys() const
 
 void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
+	Q_UNUSED(input);
+	Q_UNUSED(brushManager);
+	Q_UNUSED(scene);
+	Q_UNUSED(view);
 	view->setDragMode (QGraphicsView::RubberBandDrag);
 }
 
 void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
+	Q_UNUSED(input);
+	Q_UNUSED(brushManager);
+	Q_UNUSED(scene);
+	Q_UNUSED(view);
 	static int s = 0;
 	s++;
+	if(input->buttons() == Qt::LeftButton && scene->selectedItems().count() > 0)
+	{
+		QTimer::singleShot ( 0, this, SLOT(syncNodes()));;
+	}
+	/*QTimer::singleShot ( 0, this, SLOT(*//*) );*/ ;
 }
 
 void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
-	D_FUNCINFO;
-	
-	QList<Node *>::iterator it = m_nodes.begin();
-	
-	while(it != m_nodes.end())
-	{
-		if(!(*it))
-		{
-			++it;
-			continue;
-		}
-		
-		scene->removeItem((*it));
-		m_nodes.erase (it);
-		delete (*it);
-		++it;
-	}
+// 	D_FUNCINFO;
+	Q_UNUSED(input);
+	Q_UNUSED(brushManager);
+	Q_UNUSED(view);
 	
 	if(scene->selectedItems().count() > 0)
 	{
 		QList<QGraphicsItem *> selecteds = scene->selectedItems();
-		QList<Node *>::iterator it = m_nodes.begin();
-		
+		qDeleteAll(m_nodes);
+		m_nodes.clear();
 		foreach(QGraphicsItem *item, selecteds)
 		{
 			if(item)
 			{
-				QRectF rect = item->boundingRect();
-				Node *topLeft = new Node(Node::TopLeft, rect.topLeft(),item, scene);
-				Node *topRight = new Node(Node::TopRight, rect.topRight(),item, scene);
-				Node *bottomLeft = new Node(Node::BottomLeft, rect.bottomLeft(),item, scene);
-				Node *bottomRight = new Node(Node::BottomRight, rect.bottomRight(),item, scene);
-				Node *center = new Node(Node::Center, rect.center() ,item, scene);
-				m_nodes << topLeft << topRight<< bottomLeft << bottomRight << center;
+				NodeManager *manager = new NodeManager(item, scene);
+				m_nodes << manager;
 			}
 		}
+	}
+	else
+	{
+		qDeleteAll(m_nodes);
+		m_nodes.clear();
 	}
 }
 
 QPainterPath Select::path() const
 {
-// 	return m_path;
+	return QPainterPath();
+	
 }
 
 void Select::setupActions()
@@ -143,9 +143,8 @@ QWidget *Select::configurator()
 {
 // 	if ( ! m_configurator )
 // 	{
-// 		m_configurator = new ExactnessConfigurator;;
+// 		m_configurator = new ExactnessConfigurator;
 // 	}
-	
 	return new QWidget;
 }
 		
@@ -164,6 +163,23 @@ QString Select::toolToXml() const
 	QDomDocument doc;
 // 	doc.appendChild(m_item->toXml( doc ));
 	return doc.toString();
+}
+
+
+void Select::syncNodes()
+{
+	//FIXME: tratar de optimizar esto
+	foreach(NodeManager* node, m_nodes)
+	{
+		if(node)
+		{
+			node->syncNodesFromParent();
+			if(node->parentItem())
+			{
+				node->parentItem()->setSelected(true);
+			}
+		}
+	}
 }
 
 Q_EXPORT_PLUGIN2(kt_select, Select )

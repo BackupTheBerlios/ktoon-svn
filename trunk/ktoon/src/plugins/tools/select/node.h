@@ -26,9 +26,11 @@
 #include <QPointF>
 
 
+
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
+class NodeManager;
 class Node : public QObject, public QGraphicsItem
 {
 	Q_OBJECT;
@@ -36,7 +38,7 @@ class Node : public QObject, public QGraphicsItem
 	public:
 		
 		enum TypeNode{TopLeft  = 0, TopRight, BottomLeft, BottomRight, Center   };
-		Node(TypeNode node ,const QPointF & pos = QPoint(0,0) ,QGraphicsItem * parent = 0, QGraphicsScene * scene = 0 );
+		Node(TypeNode node, const QPointF & pos = QPoint(0,0) , NodeManager *manager = 0, QGraphicsItem * parent = 0, QGraphicsScene * scene = 0 );
 		~Node();
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 		QRectF boundingRect() const;
@@ -55,6 +57,12 @@ class Node : public QObject, public QGraphicsItem
 		TypeNode m_typeNode;
 		bool m_notChange;
 		QRectF m_brParent;
+		QGraphicsItem * m_parent;
+		NodeManager *m_manager;
+		
+		QGraphicsRectItem *gb1, *gb2 ;
+		
+		
 };
 
 #endif

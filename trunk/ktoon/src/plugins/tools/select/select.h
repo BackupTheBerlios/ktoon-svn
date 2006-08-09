@@ -26,12 +26,12 @@
 
 #include "ktpathitem.h"
 
+
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
-class Node;
-
+class NodeManager;
 class Select : public KTToolPlugin
 {
 	Q_OBJECT;
@@ -63,10 +63,14 @@ class Select : public KTToolPlugin
 	private:
 		void setupActions();
 		
+		
 	private:
 		QMap<QString, DAction *> m_actions;
-		QList<Node *> m_nodes;
+		QList<NodeManager*> m_nodes;
 		QGraphicsView *m_view;
+		
+	private slots:
+		void syncNodes();
 };
 
 #endif
