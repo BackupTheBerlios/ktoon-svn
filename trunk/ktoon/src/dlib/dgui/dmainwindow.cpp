@@ -123,7 +123,7 @@ void DefaultSettings::restore(DMainWindow *w)
 			
 			bool visible = settings.value("visible", false ).toBool();
 			
-			if ( visible )
+			if ( visible && view->button()->isVisible() )
 			{
 				view->button()->setChecked(true);
 				view->show();
@@ -238,6 +238,8 @@ DToolView *DMainWindow::addToolView(QWidget *widget, Qt::DockWidgetArea area, in
 	////
 	
 	connect(toolView, SIGNAL(topLevelChanged(bool)), this, SLOT(relayoutViewButton(bool)));
+	
+	toolView->button()->click(); // Hide!
 	
 	return toolView;
 }
@@ -364,7 +366,7 @@ void DMainWindow::relayoutToolView()
 	
 	if ( !isVisible ) m_forRelayout->close();
 	
-// 	qDebug() << "Relayout: " << m_forRelayout->windowTitle() << " from " << button->area() << " to " << area;
+	qDebug() << "Relayout: " << m_forRelayout->windowTitle() << " from " << button->area() << " to " << area;
 	
 	if ( area != button->area() && !m_forRelayout->isFloating() )
 	{
@@ -406,9 +408,9 @@ void DMainWindow::setCurrentWorkspace(int wsp)
 	
 	QList<Views > viewsList = m_toolViews.values();
 	
+	setUpdatesEnabled( false );
 	foreach(Views views, viewsList)
 	{
-		setUpdatesEnabled( false );
 		foreach(DToolView *v, views )
 		{
 			if ( v->workspace() & wsp )
@@ -423,14 +425,17 @@ void DMainWindow::setCurrentWorkspace(int wsp)
 			else
 			{
 				m_buttonBars[ v->button()->area() ]->disable( v->button() );
-				if ( v->button()->isChecked() )
+				
+				if ( v->button()->isChecked() || v->isVisible() )
 				{
-					v->hide();
+					v->close();
 				}
 			}
 		}
-		setUpdatesEnabled( true );
 	}
+	setUpdatesEnabled( true );
+	
+	
 	
 	m_currentWorkspace = wsp;
 	

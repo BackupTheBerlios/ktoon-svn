@@ -37,6 +37,7 @@ class Q_GUI_EXPORT DTabbedMainWindow : public DMainWindow
 		void addWidget(QWidget *widget, bool persistant = false, int workspace = DefaultWorkspace);
 		void removeWidget(QWidget *widget);
 		void setTabWidget(QTabWidget *w);
+		QTabWidget *tabWidget() const;
 		
 	protected:
 		virtual void setupTabWidget(QTabWidget *w);

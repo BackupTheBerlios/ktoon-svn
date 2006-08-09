@@ -222,6 +222,11 @@ void DTabbedMainWindow::setTabWidget(QTabWidget *w)
 	m_tabWidget = w;
 }
 
+QTabWidget *DTabbedMainWindow::tabWidget() const
+{
+	return m_tabWidget;
+}
+
 void DTabbedMainWindow::setupWorkspace(int wps)
 {
 	// FIXME: Flickr = (

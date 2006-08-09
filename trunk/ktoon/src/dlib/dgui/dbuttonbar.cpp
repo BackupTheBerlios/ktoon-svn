@@ -127,8 +127,11 @@ void DButtonBar::addButton(DViewButton *viewButton)
 
 void DButtonBar::removeButton(DViewButton *viewButton)
 {
+	if ( ! m_buttons.buttons().contains(viewButton) ) return;
+	
 	m_buttons.removeButton(viewButton);
 	removeAction( m_actionForWidget[viewButton] );
+	viewButton->setParent(0);
 	
 	disconnect(viewButton, SIGNAL(clicked()), this, SLOT(hideOthers()));
 	
