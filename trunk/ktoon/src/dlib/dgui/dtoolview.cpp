@@ -20,6 +20,7 @@
 
 #include "dtoolview.h"
 #include "dviewbutton.h"
+#include "dmainwindow.h"
 
 #include <QtDebug>
 #include <QAction>
@@ -124,6 +125,19 @@ void DToolView::setFixedSize(int s)
 	m_size = s;
 }
 
+void DToolView::showEvent(QShowEvent *e)
+{
+	if ( DMainWindow *mw = dynamic_cast<DMainWindow *>(parentWidget() ) )
+	{
+		if ( !(mw->currentWorkspace() & m_workspace) ) 
+		{
+			e->ignore(); // make sure!
+			return;
+		}
+	}
+	
+	QDockWidget::showEvent(e);
+}
 
 #if QT_VERSION < 0x040200
 

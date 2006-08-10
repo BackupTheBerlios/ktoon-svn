@@ -114,13 +114,18 @@ void DButtonBar::addButton(DViewButton *viewButton)
 // 		static_cast<DViewButton *>(m_buttons.checkedButton())->defaultAction()->toggle();
 	}
 	
+	bool isExclusive = m_buttons.exclusive();
+	m_buttons.setExclusive(false);
+	
 	QAction *act = addWidget(viewButton);
+	
 	m_buttons.addButton(viewButton);
 	
 	m_actionForWidget[viewButton] = act;
 	act->setVisible(true);
-	
 	if ( !isVisible() ) show();
+	
+	m_buttons.setExclusive( isExclusive );
 	
 	connect(viewButton, SIGNAL(clicked()), this, SLOT(hideOthers()));
 }
@@ -226,10 +231,8 @@ void DButtonBar::mousePressEvent(QMouseEvent *e)
 	
 	if ( e->button() == Qt::RightButton )
 	{
-		if ( m_menu->exec(e->globalPos()) )
-		{
-			e->accept();
-		}
+		m_menu->exec(e->globalPos());
+		e->accept();
 	}
 }
 

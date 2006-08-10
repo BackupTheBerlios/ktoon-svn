@@ -21,6 +21,9 @@
 #ifndef DMAINWINDOW_H
 #define DMAINWINDOW_H
 
+
+// Project begin: Aug 4 2006
+
 #include <QMainWindow>
 #include <QHash>
 #include <QMap>
@@ -48,6 +51,13 @@ class Q_GUI_EXPORT DMainWindow : public QMainWindow
 		
 		DToolView *addToolView(QWidget *widget, Qt::DockWidgetArea area, int workspace = DefaultWorkspace);
 		void moveToolView(DToolView *view, Qt::DockWidgetArea newPlace);
+		
+		void addToWorkspace(QWidget *widget, int workspace = DefaultWorkspace);
+		void removeFromWorkspace(QWidget *widget);
+		
+		void addToWorkspace(QAction *action, int workspace);
+		void addToWorkspace(const QList<QAction *> &actions, int workspace);
+		void removeFromWorkspace(QAction *action);
 		
 		void setCurrentWorkspace(int wsp);
 		int currentWorkspace() const;
@@ -88,6 +98,8 @@ class Q_GUI_EXPORT DMainWindow : public QMainWindow
 	private:
 		QHash<Qt::ToolBarArea, DButtonBar *> m_buttonBars;
 		QHash<DButtonBar *, QList<DToolView*> > m_toolViews;
+		QHash<QWidget *, int> m_managedWidgets;
+		QHash<QAction *, int> m_managedActions;
 		
 		int m_currentWorkspace;
 		

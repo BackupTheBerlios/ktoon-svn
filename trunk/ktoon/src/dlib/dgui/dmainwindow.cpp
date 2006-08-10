@@ -31,6 +31,8 @@
 #include <QSettings>
 #include <QApplication>
 #include <QtDebug>
+#include <QHashIterator>
+#include <QMenuBar>
 
 #include <QCloseEvent>
 
@@ -106,6 +108,7 @@ void DefaultSettings::restore(DMainWindow *w)
 	foreach( DButtonBar *bar, buttonBars.values())
 	{
 		bar->setExclusive(false);
+		
 		foreach(DToolView *view, toolViews[bar] )
 		{
 			settings.beginGroup(view->objectName());
@@ -120,6 +123,7 @@ void DefaultSettings::restore(DMainWindow *w)
 			
 			view->button()->setToolButtonStyle( Qt::ToolButtonStyle(settings.value("style", int(view->button()->toolButtonStyle()) ).toInt()) );
 			view->button()->setSensible( settings.value("sensibility", view->button()->isSensible()).toBool() );
+			
 			
 			bool visible = settings.value("visible", false ).toBool();
 			
@@ -171,7 +175,7 @@ void DefaultSettings::restore(DMainWindow *w)
 
 
 DMainWindow::DMainWindow(QWidget *parent)
-	: QMainWindow(parent), m_forRelayout(0), m_autoRestore(false)
+	: QMainWindow(parent), m_forRelayout(0), m_currentWorkspace(DefaultWorkspace), m_autoRestore(false)
 {
 	setObjectName("DMainWindow");
 	
@@ -239,7 +243,10 @@ DToolView *DMainWindow::addToolView(QWidget *widget, Qt::DockWidgetArea area, in
 	
 	connect(toolView, SIGNAL(topLevelChanged(bool)), this, SLOT(relayoutViewButton(bool)));
 	
-	toolView->button()->click(); // Hide!
+	if ( toolView->isVisible() )
+	{
+		toolView->button()->click(); // Hide!
+	}
 	
 	return toolView;
 }
@@ -256,6 +263,58 @@ void DMainWindow::moveToolView(DToolView *view, Qt::DockWidgetArea newPlace)
 	m_forRelayout = view;
 	
 	relayoutToolView();
+}
+
+void DMainWindow::addToWorkspace(QWidget *widget, int workspace)
+{
+	if ( QToolBar *bar = dynamic_cast<QToolBar*>(widget) )
+	{
+		if ( toolBarArea(bar) == 0 )
+		{
+			addToolBar( bar );
+		}
+	}
+	
+	if ( ! m_managedWidgets.contains( widget ) )
+	{
+		m_managedWidgets.insert( widget, workspace );
+		
+		if ( workspace != m_currentWorkspace )
+		{
+			widget->hide();
+		}
+	}
+}
+
+void DMainWindow::removeFromWorkspace(QWidget *widget)
+{
+	m_managedWidgets.remove(widget);
+}
+
+void DMainWindow::addToWorkspace(const QList<QAction *> &actions, int workspace)
+{
+	foreach(QAction *a, actions)
+	{
+		addToWorkspace(a, workspace);
+	}
+}
+
+void DMainWindow::addToWorkspace(QAction *action, int workspace)
+{
+	if ( ! m_managedActions.contains( action ) )
+	{
+		m_managedActions.insert( action, workspace );
+		
+		if ( workspace != m_currentWorkspace )
+		{
+			action->setVisible(false);
+		}
+	}
+}
+
+void DMainWindow::removeFromWorkspace(QAction *action)
+{
+	m_managedActions.remove(action);
 }
 
 Qt::DockWidgetArea DMainWindow::toDockWidgetArea(Qt::ToolBarArea area)
@@ -366,14 +425,13 @@ void DMainWindow::relayoutToolView()
 	
 	if ( !isVisible ) m_forRelayout->close();
 	
-	qDebug() << "Relayout: " << m_forRelayout->windowTitle() << " from " << button->area() << " to " << area;
+// 	qDebug() << "Relayout: " << m_forRelayout->windowTitle() << " from " << button->area() << " to " << area;
 	
 	if ( area != button->area() && !m_forRelayout->isFloating() )
 	{
 		setUpdatesEnabled( false );
 		
 		m_buttonBars[button->area()]->removeButton(button);
-		
 		// Show separators
 		if ( button->area() == Qt::LeftToolBarArea )
 		{
@@ -390,12 +448,12 @@ void DMainWindow::relayoutToolView()
 		
 		m_toolViews[m_buttonBars[button->area()]].removeAll(m_forRelayout);
 		m_toolViews[m_buttonBars[area]] << m_forRelayout;
-		
 		button->setArea(area);
 		m_buttonBars[area]->addButton(button);
-		
 		setUpdatesEnabled( true );
 	}
+	
+// 	qDebug() << m_forRelayout->windowTitle() << m_forRelayout->button()->isChecked();
 	
 	m_forRelayout = 0;
 }
@@ -409,10 +467,18 @@ void DMainWindow::setCurrentWorkspace(int wsp)
 	QList<Views > viewsList = m_toolViews.values();
 	
 	setUpdatesEnabled( false );
+	centralWidget()->setUpdatesEnabled(false);
+	
+	QList<DToolView *> toHide;
 	foreach(Views views, viewsList)
 	{
 		foreach(DToolView *v, views )
 		{
+			DButtonBar *bar = m_buttonBars[ v->button()->area() ];
+			
+			bar->setUpdatesEnabled(false);
+			v->setUpdatesEnabled(false);
+			
 			if ( v->workspace() & wsp )
 			{
 				m_buttonBars[ v->button()->area() ]->enable( v->button() );
@@ -428,13 +494,49 @@ void DMainWindow::setCurrentWorkspace(int wsp)
 				
 				if ( v->button()->isChecked() || v->isVisible() )
 				{
-					v->close();
+					v->hide();
 				}
 			}
+			
+			v->setUpdatesEnabled(true);
+			bar->setUpdatesEnabled(true);
 		}
 	}
-	setUpdatesEnabled( true );
 	
+	QHashIterator<QWidget *, int> widgetIt(m_managedWidgets);
+	
+	while ( widgetIt.hasNext() )
+	{
+		widgetIt.next();
+		
+		if ( widgetIt.value() & wsp )
+		{
+			widgetIt.key()->show();
+		}
+		else
+		{
+			widgetIt.key()->hide();
+		}
+	}
+	
+	QHashIterator<QAction *, int> actionIt(m_managedActions);
+	
+	while ( actionIt.hasNext() )
+	{
+		actionIt.next();
+		
+		if ( actionIt.value() & wsp )
+		{
+			actionIt.key()->setVisible(true);
+		}
+		else
+		{
+			actionIt.key()->setVisible(false);
+		}
+	}
+	
+	centralWidget()->setUpdatesEnabled(true);
+	setUpdatesEnabled( true );
 	
 	
 	m_currentWorkspace = wsp;
@@ -488,6 +590,11 @@ void DMainWindow::showEvent(QShowEvent *e)
 	{
 		m_autoRestore = true;
 		restoreGUI();
+		
+		int cwsp = m_currentWorkspace;
+		
+		m_currentWorkspace -= 1;
+		setCurrentWorkspace( cwsp );
 	}
 }
 

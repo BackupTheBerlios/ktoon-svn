@@ -30,8 +30,10 @@
 KTViewColorCells::KTViewColorCells(QWidget *parent)
 	: QFrame(parent), m_numColorRecent(0)
 {
-	
 	QVBoxLayout *layout = new QVBoxLayout;
+	layout->setMargin(0);
+	layout->setSpacing(0);
+	
 	setLayout(layout);
 	setFrameStyle ( QFrame::Box | QFrame::Raised);
 	setupForm();
@@ -350,8 +352,11 @@ void KTViewColorCells::setupButtons()
 {
 	QGroupBox *containerButtons = new QGroupBox(this);
 	QBoxLayout *bLayout = new QBoxLayout(QBoxLayout::LeftToRight);
+	bLayout->setMargin(0);
+	bLayout->setSpacing(0);
+	
 	containerButtons->setLayout(bLayout);
-	bLayout->setMargin(3);
+	
 	DImageButton *m_addColor = new DImageButton( QPixmap(THEME_DIR  + "/icons/plussign.png" ) , 22/*, containerButtons*/);
 	connect( m_addColor, SIGNAL( clicked() ), SLOT( addCurrentColor() ));
 	m_addColor->setToolTip(tr( "Add Color" ));

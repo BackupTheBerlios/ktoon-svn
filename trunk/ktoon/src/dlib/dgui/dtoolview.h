@@ -54,6 +54,9 @@ class Q_GUI_EXPORT DToolView : public QDockWidget
 	private slots:
 		void saveSize(bool checked);
 		
+	protected:
+		virtual void showEvent(QShowEvent *e);
+		
 #if QT_VERSION < 0x040200
 	protected:
 		virtual bool event(QEvent *e);

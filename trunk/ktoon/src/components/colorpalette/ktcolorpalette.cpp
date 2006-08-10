@@ -70,6 +70,9 @@ void KTColorPalette::setupChooserTypeColor()
 	colorMixer->setFrameStyle(QFrame::Box | QFrame::Sunken );
 	
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::TopToBottom);
+	layout->setMargin(1);
+	layout->setSpacing(1);
+	
 	colorMixer->setLayout(layout);
 
 // 	layout->setSizeConstraint(QLayout::SetFixedSize);
@@ -77,6 +80,8 @@ void KTColorPalette::setupChooserTypeColor()
 	m_displayValueColor = new KTValueColor(colorMixer);
 	
 	QBoxLayout *layoutContainer = new QBoxLayout(QBoxLayout::LeftToRight);
+	layoutContainer->setMargin(0);
+	
 	layoutContainer->addStretch(2);
 	
 	m_colorPicker = new KTColorPicker(colorMixer);
@@ -131,6 +136,8 @@ void KTColorPalette::setupDisplayColor()
 	//////////
 	QFrame *viewColor = new QFrame(this);
 	QBoxLayout *vlayout = new QBoxLayout(QBoxLayout::LeftToRight);
+	vlayout->setMargin(0);
+	
 	viewColor->setLayout(vlayout);
 	
 	m_labelType = new QComboBox( viewColor);
@@ -156,6 +163,8 @@ connect( m_outlineAndFillColors,  SIGNAL(bgChanged(const QBrush &)),this, SLOT(
 	vlayout->addWidget( m_outlineAndFillColors);
 	
 	QBoxLayout *layoutName = new  QBoxLayout(QBoxLayout::TopToBottom);
+	layoutName->setMargin(0);
+	
 	layoutName->addWidget(new QLabel( "<b>HTML</b>", viewColor));
 	m_nameColor = new QLineEdit(viewColor);
 	QFontMetrics fm( font() );

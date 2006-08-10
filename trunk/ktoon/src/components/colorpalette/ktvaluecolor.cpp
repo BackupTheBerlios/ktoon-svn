@@ -27,6 +27,7 @@ KTItemValueColor::KTItemValueColor( const QString &text, QWidget *parent ) :QFra
 	QHBoxLayout * m_layout = new QHBoxLayout;
 	m_layout->setSpacing(0);
 	m_layout->setMargin(0);
+	
 	setLayout(m_layout);
 	QLabel *m_text = new QLabel( text, this);
 // 	m_text->setSizePolicy ( QSizePolicy::Fixed,  QSizePolicy::Fixed);

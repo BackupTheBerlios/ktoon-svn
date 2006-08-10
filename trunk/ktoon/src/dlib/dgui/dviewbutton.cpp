@@ -86,7 +86,7 @@ void DViewButton::setup()
 	
 	m_isSensible = false;
 	
-	m_menu = new QMenu();
+	m_menu = new QMenu(tr("Menu"), this);
 	m_menu->addAction(tr("Only icon"), this, SLOT(setOnlyIcon()) );
 	m_menu->addAction(tr("Only text"), this, SLOT(setOnlyText()) );
 	m_menu->addSeparator();
@@ -292,11 +292,11 @@ void DViewButton::paintEvent(QPaintEvent *e)
 	{
 		case Qt::LeftToolBarArea:
 			painter.rotate(-90);
-			painter.drawPixmap(1-pm.width(), 0, pm);
+			painter.drawPixmap(-pm.width(), 0, pm);
 			break;
 		case Qt::RightToolBarArea:
 			painter.rotate(90);
-			painter.drawPixmap(0, 1-pm.height(), pm);
+			painter.drawPixmap(0, -pm.height(), pm);
 			break;
 		default:
 			painter.drawPixmap(0, 0, pm);
@@ -310,10 +310,8 @@ void DViewButton::mousePressEvent(QMouseEvent *e)
 	
 	if ( e->button() == Qt::RightButton )
 	{
-		if ( m_menu->exec(e->globalPos()) )
-		{
-			e->accept();
-		}
+		m_menu->exec(e->globalPos());
+		e->accept();
 	}
 }
 
