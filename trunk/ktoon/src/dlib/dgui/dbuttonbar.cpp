@@ -66,16 +66,9 @@ DButtonBar::DButtonBar(Qt::ToolBarArea area, QWidget *parent) : QToolBar(parent)
 	
 	setObjectName("DButtonBar-"+windowTitle());
 	
-// #if 1
-// 	if ( area == Qt::BottomToolBarArea || area == Qt::TopToolBarArea )
-// 	{
-	
 	m_separator = addAction("");
 	m_separator->setEnabled(false); // Separator
 	m_separator->setVisible( false );
-	
-// 	}
-// #endif
 
 	setupMenu();
 }
@@ -108,14 +101,15 @@ void DButtonBar::setupMenu()
 
 void DButtonBar::addButton(DViewButton *viewButton)
 {
-	if ( m_buttons.checkedButton() )
-	{
-		m_buttons.checkedButton()->setChecked(false);
-// 		static_cast<DViewButton *>(m_buttons.checkedButton())->defaultAction()->toggle();
-	}
-	
 	bool isExclusive = m_buttons.exclusive();
 	m_buttons.setExclusive(false);
+	
+	if ( m_buttons.checkedButton() )
+	{
+		m_buttons.checkedButton()->setChecked( false );
+	}
+	
+	m_buttons.setExclusive( isExclusive );
 	
 	QAction *act = addWidget(viewButton);
 	
@@ -124,8 +118,6 @@ void DButtonBar::addButton(DViewButton *viewButton)
 	m_actionForWidget[viewButton] = act;
 	act->setVisible(true);
 	if ( !isVisible() ) show();
-	
-	m_buttons.setExclusive( isExclusive );
 	
 	connect(viewButton, SIGNAL(clicked()), this, SLOT(hideOthers()));
 }
@@ -145,7 +137,18 @@ void DButtonBar::removeButton(DViewButton *viewButton)
 
 bool DButtonBar::isEmpty() const
 {
-	return m_buttons.buttons().isEmpty();
+	// O(n) -> very slow...
+	
+	bool isEmpty = true;
+	
+	foreach(QAbstractButton *button, m_buttons.buttons() )
+	{
+		isEmpty = isEmpty && button->isHidden();
+		
+		if ( ! isEmpty ) break;
+	}
+	
+	return isEmpty;
 }
 
 
@@ -241,4 +244,8 @@ void DButtonBar::showSeparator(bool e)
 	m_separator->setVisible(e);
 }
 
+int DButtonBar::count() const
+{
+	return m_buttons.buttons().count();
+}
 

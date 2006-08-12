@@ -42,7 +42,7 @@
 class GLDevice : public QGLWidget
 {
 	public:
-		GLDevice() : QGLWidget(QGLFormat(QGL::SampleBuffers | QGL::HasOverlay | QGL::DirectRendering | QGL::AccumBuffer | QGL::Rgba |  QGL::AccumBuffer)) 
+		GLDevice() : QGLWidget()
 		{
 			makeCurrent();
 		}
@@ -113,6 +113,15 @@ void KTPaintArea::setCurrentScene(int index)
 
 void KTPaintArea::setAntialiasing(bool use)
 {
+#ifdef QT_OPENGL_LIB
+	if ( QGLWidget *gl = dynamic_cast<QGLWidget *>(viewport() ) )
+	{
+		gl->setUpdatesEnabled(false); // works better
+		gl->setFormat(QGLFormat(QGL::SampleBuffers | QGL::HasOverlay /*| QGL::DirectRendering | QGL::AccumBuffer | QGL::Rgba */));
+		gl->setUpdatesEnabled(true);
+	}
+#endif
+	
 	setRenderHint(QPainter::Antialiasing, use);
 	setRenderHint(QPainter::TextAntialiasing, use);
 }
@@ -120,6 +129,14 @@ void KTPaintArea::setAntialiasing(bool use)
 void KTPaintArea::setUseOpenGL(bool opengl)
 {
 	D_FUNCINFO << opengl;
+	
+	QCursor cursor(Qt::ArrowCursor);
+	if ( viewport() )
+	{
+		cursor = viewport()->cursor();
+	}
+	
+	
 #ifdef QT_OPENGL_LIB
 	if ( opengl )
 	{
@@ -133,6 +150,8 @@ void KTPaintArea::setUseOpenGL(bool opengl)
 	Q_UNUSED(opengl);
 	dWarning() << tr("OpenGL isn't supported");
 #endif
+
+	viewport()->setCursor(cursor);
 }
 
 void KTPaintArea::setDrawGrid(bool draw)
@@ -225,6 +244,8 @@ void KTPaintArea::tabletEvent ( QTabletEvent * event )
 {
 	m_inputInformation->updateFromTabletEvent( event );
 	event->ignore();
+	
+	QGraphicsView::tabletEvent(event );
 }
 
 void KTPaintArea::resizeEvent ( QResizeEvent * event )

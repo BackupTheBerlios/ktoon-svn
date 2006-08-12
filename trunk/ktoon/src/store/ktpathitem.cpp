@@ -140,6 +140,7 @@ void KTPathItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem * op
 bool KTPathItem::contains ( const QPointF & point ) const
 {
 // 	D_FUNCINFO;
+#if 0
 	int thickness = 5;
 	QRectF rectS(point-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
 	
@@ -166,7 +167,10 @@ bool KTPathItem::contains ( const QPointF & point ) const
 	}
 	
 	return false;
+#else
 	
+	return QGraphicsPathItem::contains (point );
+#endif
 	
 }
 
@@ -206,3 +210,6 @@ void KTPathItem::dropEvent(QGraphicsSceneDragDropEvent *event)
 	}
 	update();
 }
+
+
+

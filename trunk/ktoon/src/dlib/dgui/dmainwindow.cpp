@@ -436,6 +436,7 @@ void DMainWindow::relayoutToolView()
 		if ( button->area() == Qt::LeftToolBarArea )
 		{
 			m_buttonBars[Qt::BottomToolBarArea]->showSeparator(! m_buttonBars[Qt::LeftToolBarArea]->isEmpty());
+			
 			m_buttonBars[Qt::TopToolBarArea]->showSeparator(! m_buttonBars[Qt::LeftToolBarArea]->isEmpty());
 		}
 		else if ( area == Qt::LeftToolBarArea )
@@ -469,7 +470,8 @@ void DMainWindow::setCurrentWorkspace(int wsp)
 	setUpdatesEnabled( false );
 	centralWidget()->setUpdatesEnabled(false);
 	
-	QList<DToolView *> toHide;
+	QHash<DButtonBar *, int> hideButtonCount;
+	
 	foreach(Views views, viewsList)
 	{
 		foreach(DToolView *v, views )
@@ -481,7 +483,7 @@ void DMainWindow::setCurrentWorkspace(int wsp)
 			
 			if ( v->workspace() & wsp )
 			{
-				m_buttonBars[ v->button()->area() ]->enable( v->button() );
+				bar->enable( v->button() );
 				
 				if ( v->button()->isChecked() )
 				{
@@ -490,16 +492,39 @@ void DMainWindow::setCurrentWorkspace(int wsp)
 			}
 			else
 			{
-				m_buttonBars[ v->button()->area() ]->disable( v->button() );
+				bar->disable( v->button() );
 				
 				if ( v->button()->isChecked() || v->isVisible() )
 				{
 					v->hide();
 				}
+				
+				hideButtonCount[bar]++;
+			}
+			
+			if ( bar->isEmpty() )
+			{
+				bar->hide();
+			}
+			else if ( ! bar->isVisible() )
+			{
+				bar->show();
 			}
 			
 			v->setUpdatesEnabled(true);
 			bar->setUpdatesEnabled(true);
+		}
+	}
+	
+	QHashIterator<DButtonBar *, int> barIt(hideButtonCount);
+	
+	while ( barIt.hasNext() )
+	{
+		barIt.next();
+		
+		if ( barIt.key()->count() == barIt.value() )
+		{
+			barIt.key()->hide();
 		}
 	}
 	

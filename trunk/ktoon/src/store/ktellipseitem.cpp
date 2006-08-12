@@ -31,10 +31,12 @@
 
 KTEllipseItem::KTEllipseItem(QGraphicsItem * parent, QGraphicsScene * scene): QGraphicsEllipseItem(parent, scene), m_dragOver(false)
 {
+	setAcceptDrops(true);
 }
 
 KTEllipseItem::KTEllipseItem ( const QRectF & rect, QGraphicsItem * parent, QGraphicsScene * scene ): QGraphicsEllipseItem(rect, parent, scene), m_dragOver(false)
 {
+	setAcceptDrops(true);
 }
 
 

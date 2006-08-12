@@ -75,6 +75,13 @@ class KTMainWindow : public DTabbedMainWindow
 {
 	Q_OBJECT
 	public:
+		enum Workspaces
+		{
+			Drawing = 1,
+			Animation = 2,
+			All = Drawing | Animation
+		};
+		
 		KTMainWindow(KTSplash *splash = 0);
 		~KTMainWindow();
 		

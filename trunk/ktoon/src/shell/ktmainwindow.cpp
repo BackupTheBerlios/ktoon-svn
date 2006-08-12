@@ -101,6 +101,8 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_viewDoc(0)
 	KTPluginManager::instance()->loadPlugins();
 	
 // 	m_pActiveTabWidget->setShowTabBar( false );
+	
+	setCurrentWorkspace( Drawing );
 }
 
 
@@ -143,7 +145,7 @@ void KTMainWindow::newViewDocument(const QString &title)
 			connectToDisplays( m_viewDoc );
 			m_viewDoc->setAttribute(Qt::WA_DeleteOnClose, true);
 			m_viewDoc->setWindowTitle(tr("Illustration"));
-			addWidget( m_viewDoc, true);
+			addWidget( m_viewDoc, true, Drawing);
 			connectToDisplays( m_viewDoc );
 			ui4project( m_viewDoc );
 // 			viewDocument->drawArea()->setPen( m_penWidget->pen());
@@ -157,7 +159,7 @@ void KTMainWindow::newViewDocument(const QString &title)
 // 	
 // 			connect(m_animationSpace, SIGNAL(contextMenu( const QPoint& )), this, SLOT(showAnimationMenu( const QPoint& )));
 			m_animationSpace->setWindowTitle(tr("Animation"));
-			addWidget(m_animationSpace, true);
+			addWidget(m_animationSpace, true, Animation);
 			
 // 			m_pActiveTabWidget->setCurrentWidget(m_viewDoc);
 			
@@ -196,6 +198,7 @@ void KTMainWindow::newViewDocument(const QString &title)
 // 			m_statusBar->advance(0);
 // 			m_statusBar->setStatus(tr("Project not open."));
 // 		}
+			setCurrentWorkspace( Drawing );
 	}
 }
 
@@ -434,7 +437,7 @@ void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 // 	page->setDocument( document );
 	page->setSource( filePath );
 	page->setWindowTitle(tr("Help:%1").arg(title));
-	addWidget( page );
+	addWidget( page, false, All );
 }
 
 void KTMainWindow::saveProject()

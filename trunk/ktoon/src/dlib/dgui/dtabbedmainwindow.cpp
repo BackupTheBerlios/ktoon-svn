@@ -131,7 +131,10 @@ void DTabbedMainWindow::setupTabWidget(QTabWidget *w)
 
 void DTabbedMainWindow::addWidget(QWidget *widget, bool persistant, int workspace)
 {
-	m_tabWidget->addTab(widget, widget->windowIcon(), widget->windowTitle() );
+	if ( workspace == currentWorkspace() )
+	{
+		m_tabWidget->addTab(widget, widget->windowIcon(), widget->windowTitle() );
+	}
 	
 	if ( persistant )
 	{

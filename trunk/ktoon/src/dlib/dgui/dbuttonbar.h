@@ -50,6 +50,8 @@ class Q_GUI_EXPORT DButtonBar : public QToolBar
 		bool isExclusive() const;
 		void showSeparator(bool e);
 		
+		int count() const;
+		
 	public slots:
 		void setExclusive(bool excl);
 		void setShowOnlyIcons();
