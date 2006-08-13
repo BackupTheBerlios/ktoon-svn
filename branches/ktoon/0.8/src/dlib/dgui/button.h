@@ -89,7 +89,7 @@ public:
     /**Returns the description.*/
     QString description() const;
     
-    QStyleOptionButton Button::styleOption() const;
+    QStyleOptionButton styleOption() const;
     
     /**Sets the place of a button.*/
     void setPlace(Ideal::Place place);
