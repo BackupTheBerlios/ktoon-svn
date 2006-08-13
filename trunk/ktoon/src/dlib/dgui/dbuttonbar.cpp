@@ -30,7 +30,7 @@
 
 #include <QtDebug>
 
-DButtonBar::DButtonBar(Qt::ToolBarArea area, QWidget *parent) : QToolBar(parent)
+DButtonBar::DButtonBar(Qt::ToolBarArea area, QWidget *parent) : QToolBar(parent), m_autoHide(false), m_blockHider(false)
 {
 	setMovable(false);
 	
@@ -69,8 +69,8 @@ DButtonBar::DButtonBar(Qt::ToolBarArea area, QWidget *parent) : QToolBar(parent)
 	m_separator = addAction("");
 	m_separator->setEnabled(false); // Separator
 	m_separator->setVisible( false );
-
-	setupMenu();
+	
+	connect( &m_hider, SIGNAL(timeout()), this, SLOT(hide()));
 }
 
 
@@ -78,25 +78,34 @@ DButtonBar::~DButtonBar()
 {
 }
 
-void DButtonBar::setupMenu()
+QMenu *DButtonBar::createMenu()
 {
-	m_menu = new QMenu(windowTitle(), this);
+	QMenu *menu = new QMenu(windowTitle(), this);
 	
 	QAction *a = 0;
 	
-	a = m_menu->addAction(tr("Only icons"));
+	a = menu->addAction(tr("Only icons"));
 	connect(a, SIGNAL(triggered()), this, SLOT(setShowOnlyIcons()));
 	
-	a = m_menu->addAction(tr("Only texts"));
+	a = menu->addAction(tr("Only texts"));
 	connect(a, SIGNAL(triggered()), this, SLOT(setShowOnlyTexts()));
 	
-	m_menu->addSeparator();
+	menu->addSeparator();
 	
-	m_exclusive = m_menu->addAction(tr("Exclusive"));
-	m_exclusive->setCheckable(true);
-	m_exclusive->setChecked( m_buttons.exclusive() );
+	a = menu->addAction(tr("Exclusive"));
+	a->setCheckable(true);
+	a->setChecked( isExclusive() );
 	
-	connect(m_exclusive, SIGNAL(triggered(bool)), this, SLOT(setExclusive( bool )));
+	connect(a, SIGNAL(triggered(bool)), this, SLOT(setExclusive( bool )));
+	
+	a = menu->addAction(tr("Auto hide"));
+	a->setCheckable(true);
+	a->setChecked( autohide() );
+	
+	connect(a, SIGNAL(triggered(bool)), this, SLOT(setAutoHide( bool )));
+	
+	
+	return menu;
 }
 
 void DButtonBar::addButton(DViewButton *viewButton)
@@ -154,12 +163,21 @@ bool DButtonBar::isEmpty() const
 
 void DButtonBar::setExclusive(bool excl)
 {
-	if ( sender() != m_exclusive ) // Called directly!
-	{
-		m_exclusive->setChecked( excl );
-	}
-	
 	m_buttons.setExclusive( excl );
+}
+
+void DButtonBar::setAutoHide(bool autohide)
+{
+	m_autoHide = autohide;
+	if (autohide)
+	{
+		hide();
+	}
+}
+
+bool DButtonBar::autohide() const
+{
+	return m_autoHide;
 }
 
 void DButtonBar::setShowOnlyIcons()
@@ -234,8 +252,35 @@ void DButtonBar::mousePressEvent(QMouseEvent *e)
 	
 	if ( e->button() == Qt::RightButton )
 	{
-		m_menu->exec(e->globalPos());
+		m_blockHider = true;
+		createMenu()->exec(e->globalPos());
 		e->accept();
+		
+		m_blockHider = false;
+	}
+}
+
+void DButtonBar::enterEvent(QEvent *e)
+{
+	QToolBar::enterEvent(e);
+	doNotHide();
+}
+
+void DButtonBar::leaveEvent(QEvent *e)
+{
+	QToolBar::leaveEvent(e);
+	
+	if ( m_autoHide && !m_hider.isActive() && !m_blockHider )
+	{
+		m_hider.start(800);
+	}
+}
+
+void DButtonBar::doNotHide()
+{
+	if ( m_hider.isActive() )
+	{
+		m_hider.stop();
 	}
 }
 

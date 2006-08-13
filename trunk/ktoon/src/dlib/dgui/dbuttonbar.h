@@ -24,6 +24,7 @@
 #include <QToolBar>
 #include <QButtonGroup>
 #include <QMap>
+#include <QTimer>
 
 class DViewButton;
 class QAction;
@@ -48,32 +49,40 @@ class Q_GUI_EXPORT DButtonBar : public QToolBar
 		void enable(DViewButton *v);
 		
 		bool isExclusive() const;
+		bool autohide() const;
 		void showSeparator(bool e);
 		
 		int count() const;
 		
 	public slots:
 		void setExclusive(bool excl);
+		void setAutoHide(bool autohide);
 		void setShowOnlyIcons();
 		void setShowOnlyTexts();
 		
 	private:
-		void setupMenu();
+		QMenu *createMenu();
 		
 	private slots:
 		void hideOthers();
+		void doNotHide();
 		
 	protected:
 		virtual void mousePressEvent(QMouseEvent *e);
+		virtual void enterEvent(QEvent *e);
+		virtual void leaveEvent(QEvent *e);
 		
 	private:
 		QButtonGroup m_buttons;
 		QMap<QWidget *, QAction *> m_actionForWidget;
 		
-		QMenu *m_menu;
-		
-		QAction *m_exclusive;
 		QAction *m_separator;
+		
+		bool m_autoHide;
+		
+		QTimer m_hider;
+		
+		bool m_blockHider;
 };
 
 #endif

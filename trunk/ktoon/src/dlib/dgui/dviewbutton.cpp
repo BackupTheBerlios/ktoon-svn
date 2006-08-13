@@ -86,12 +86,6 @@ void DViewButton::setup()
 	
 	m_isSensible = false;
 	
-	m_menu = new QMenu(tr("Menu"), this);
-	m_menu->addAction(tr("Only icon"), this, SLOT(setOnlyIcon()) );
-	m_menu->addAction(tr("Only text"), this, SLOT(setOnlyText()) );
-	m_menu->addSeparator();
-	m_menu->addAction(tr("Mouse sensibility"), this, SLOT(toggleSensibility()))->setCheckable(true);
-	
 	m_animator = new Animator(this);
 	connect( m_animator->timer, SIGNAL( timeout() ), this, SLOT( animate() ) );
 	
@@ -304,13 +298,28 @@ void DViewButton::paintEvent(QPaintEvent *e)
 	}
 }
 
+QMenu *DViewButton::createMenu()
+{
+	QMenu *menu = new QMenu(tr("Menu"), this);
+	menu->addAction(tr("Only icon"), this, SLOT(setOnlyIcon()) );
+	menu->addAction(tr("Only text"), this, SLOT(setOnlyText()) );
+	menu->addSeparator();
+	
+	QAction *a = menu->addAction(tr("Mouse sensibility")/*, this, SLOT(toggleSensibility())*/);
+	connect(a, SIGNAL(toggled(bool)), this, SLOT(setSensible( bool ) ));
+	a->setCheckable(true);
+	a->setChecked( isSensible() );
+	
+	return menu;
+}
+
 void DViewButton::mousePressEvent(QMouseEvent *e)
 {
 	QToolButton::mousePressEvent(e);
 	
 	if ( e->button() == Qt::RightButton )
 	{
-		m_menu->exec(e->globalPos());
+		createMenu()->exec(e->globalPos());
 		e->accept();
 	}
 }
@@ -325,7 +334,7 @@ void DViewButton::enterEvent( QEvent* )
 		m_isSensible = false;
 		animateClick();
 		
-		QTimer::singleShot(1000, this, SLOT(toggleSensibility()));
+		QTimer::singleShot(300, this, SLOT(toggleSensibility()));
 	}
 		
 	m_animator->isEnter = true;

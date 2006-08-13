@@ -41,10 +41,13 @@ class Q_GUI_EXPORT DViewButton : public QToolButton
 		QSize sizeHint() const;
 		
 		bool isSensible() const;
+		
+	public slots:
 		void setSensible(bool s);
 		
 	private:
 		void setup();
+		QMenu *createMenu();
 		QStyleOptionToolButton styleOption() const;
 		
 	protected:
@@ -63,8 +66,6 @@ class Q_GUI_EXPORT DViewButton : public QToolButton
 		
 	private:
 		Qt::ToolBarArea m_area;
-		
-		QMenu *m_menu;
 		
 		class Animator;
 		Animator *m_animator;

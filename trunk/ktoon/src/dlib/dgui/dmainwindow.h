@@ -91,6 +91,7 @@ class Q_GUI_EXPORT DMainWindow : public QMainWindow
 	protected:
 		virtual void closeEvent(QCloseEvent *e);
 		virtual void showEvent(QShowEvent *e);
+		virtual bool event(QEvent *e);
 		
 	private:
 		DToolView *m_forRelayout;

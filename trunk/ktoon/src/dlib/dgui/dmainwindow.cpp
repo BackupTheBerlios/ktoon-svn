@@ -68,6 +68,10 @@ void DefaultSettings::save(DMainWindow *w)
 		settings.setValue("exclusive", bar->isExclusive() );
 		settings.endGroup();
 		
+		settings.beginGroup(bar->windowTitle());
+		settings.setValue("autohide", bar->autohide() );
+		settings.endGroup();
+		
 		foreach(DToolView *view, toolViews[bar] )
 		{
 			settings.beginGroup(view->objectName());
@@ -149,6 +153,10 @@ void DefaultSettings::restore(DMainWindow *w)
 		settings.beginGroup(bar->windowTitle());
 		bar->setExclusive(settings.value("exclusive", true ).toBool());
 		settings.endGroup();
+		
+		settings.beginGroup(bar->windowTitle());
+		bar->setAutoHide(settings.value("autohide", false ).toBool());
+		settings.endGroup();
 	}
 	
 	foreach(DToolView *v, toHide )
@@ -185,7 +193,7 @@ DMainWindow::DMainWindow(QWidget *parent)
 	addButtonBar(Qt::RightToolBarArea);
 	addButtonBar(Qt::TopToolBarArea);
 	addButtonBar(Qt::BottomToolBarArea);
-
+	
 #if 0
 	setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
 	setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
@@ -621,6 +629,43 @@ void DMainWindow::showEvent(QShowEvent *e)
 		m_currentWorkspace -= 1;
 		setCurrentWorkspace( cwsp );
 	}
+}
+
+bool DMainWindow::event(QEvent *e)
+{
+	if ( e->type() == QEvent::HoverMove )
+	{
+		QPoint pos = mapFromGlobal(QCursor::pos());
+		
+		DButtonBar *bar = 0;
+		
+		if ( pos.x() <= m_buttonBars[Qt::LeftToolBarArea]->pos().x() + 3  ) // Left
+		{
+			bar = m_buttonBars[Qt::LeftToolBarArea];
+		}
+		else if ( pos.y() <= m_buttonBars[Qt::TopToolBarArea]->pos().y() + 3 && m_buttonBars[Qt::TopToolBarArea]->pos().y() <= pos.y())
+		{
+			bar = m_buttonBars[Qt::TopToolBarArea];
+		}
+		else if ( pos.x() >= m_buttonBars[Qt::RightToolBarArea]->pos().x() + m_buttonBars[Qt::RightToolBarArea]->width() - 3 )
+		{
+			bar = m_buttonBars[Qt::RightToolBarArea];
+		}
+		else if ( pos.y() >= m_buttonBars[Qt::BottomToolBarArea]->pos().y() +  m_buttonBars[Qt::BottomToolBarArea]->height() - 3 && m_buttonBars[Qt::BottomToolBarArea]->pos().y()+m_buttonBars[Qt::BottomToolBarArea]->height() > pos.y() )
+		{
+			bar = m_buttonBars[Qt::BottomToolBarArea];
+		}
+		
+		if ( bar )
+		{
+			if ( bar->autohide() && !bar->isVisible() && !bar->isEmpty() )
+			{
+				bar->show();
+			}
+		}
+	}
+	
+	return QMainWindow::event(e);
 }
 
 void DMainWindow::saveGUI()
