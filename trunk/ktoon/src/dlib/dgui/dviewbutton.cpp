@@ -32,7 +32,7 @@
 class DViewButton::Animator
 {
 	public:
-		Animator(QObject *parent) : count(0), MAXCOUNT(20), INTERVAL(30), isEnter(false)
+		Animator(QObject *parent) : count(0), MAXCOUNT(40), INTERVAL(30), isEnter(false)
 		{
 			timer = new QTimer(parent);
 		}
@@ -52,7 +52,11 @@ class DViewButton::Animator
 			const int b = static_cast<int>( color1.blue() * factor1 + color2.blue() * factor2 );
 			
 			QColor result;
-			result.setRgb( r % 255, g % 255, b % 255 );
+			
+			if ( r > 0 && r < 255 && g > 0 && g < 255 && b > 0 && b < 255 )
+			{
+				result.setRgb( r , g , b);
+			}
 			
 			return result;
 		}
@@ -91,6 +95,8 @@ void DViewButton::setup()
 	
 	setChecked(false);
 	setDown(false);
+	
+	m_blending = true;
 }
 
 DViewButton::~DViewButton()
@@ -258,23 +264,23 @@ void DViewButton::paintEvent(QPaintEvent *e)
 	
 	if ( checked )
 	{
-		fillColor = m_animator->blendColors( palette().highlight().color(), palette().background().color(), static_cast<int>( m_animator->count * 3.5 ) % 100 );
-		textColor = m_animator->blendColors( palette().highlightedText().color(), palette().text().color(), static_cast<int>( m_animator->count * 4.5 ) % 100 );
+		fillColor = m_animator->blendColors( palette().highlight().color(), palette().background().color(), static_cast<int>( m_animator->count * 3.5 ) );
+		textColor = m_animator->blendColors( palette().highlightedText().color(), palette().text().color(), static_cast<int>( m_animator->count * 4.5 ) );
 	}
 	else
 	{
-		fillColor = m_animator->blendColors( palette().background().color(), palette().highlight().color(), static_cast<int>( m_animator->count * 3.5 ) % 100 );
-		textColor = m_animator->blendColors( palette().text().color(), palette().highlightedText().color(), static_cast<int>( m_animator->count * 4.5 ) % 100 );
+		fillColor = m_animator->blendColors( palette().background().color(), palette().highlight().color(), static_cast<int>( m_animator->count * 3.5 ) );
+		textColor = m_animator->blendColors( palette().text().color(), palette().highlightedText().color(), static_cast<int>( m_animator->count * 4.5 ) );
 	}
 	
-	opt.palette.setColor(QPalette::Background, fillColor);
+	opt.palette.setColor(QPalette::Background, fillColor.isValid() ? fillColor : m_palette.background().color() );
 // 	opt.palette.setColor(QPalette::Text, textColor);
 	
 // 	opt.palette.setColor(QPalette::Button, fillColor);
-	opt.palette.setColor(QPalette::ButtonText, textColor);
-
+	opt.palette.setColor(QPalette::ButtonText, textColor.isValid() ? textColor : m_palette.text().color() );
+	
 	QPixmap pm(r.width(), r.height());
-	pm.fill(fillColor);
+	pm.fill(fillColor.isValid() ? fillColor : m_palette.color(QPalette::Background));
 	
 	
 	QStylePainter p(&pm, this);
@@ -296,6 +302,9 @@ void DViewButton::paintEvent(QPaintEvent *e)
 			painter.drawPixmap(0, 0, pm);
 			break;
 	}
+	
+	m_palette.setBrush(QPalette::Background, opt.palette.background());
+	m_palette.setBrush(QPalette::ButtonText, opt.palette.buttonText());
 }
 
 QMenu *DViewButton::createMenu()
@@ -336,11 +345,14 @@ void DViewButton::enterEvent( QEvent* )
 		
 		QTimer::singleShot(300, this, SLOT(toggleSensibility()));
 	}
-		
+	
 	m_animator->isEnter = true;
 	m_animator->count = 1;
-
-	m_animator->start();
+	
+	if ( m_blending )
+	{
+		m_animator->start();
+	}
 }
 
 void DViewButton::leaveEvent( QEvent* )
@@ -351,7 +363,11 @@ void DViewButton::leaveEvent( QEvent* )
 	}
 	
 	m_animator->isEnter = false;
-	m_animator->timer->start();
+	
+	if ( m_blending )
+	{
+		m_animator->timer->start();
+	}
 }
 
 void DViewButton::animate()
@@ -392,4 +408,12 @@ bool DViewButton::isSensible() const
 	return m_isSensible;
 }
 
+void DViewButton::setBlending(bool e)
+{
+	m_blending = e;
+}
 
+bool DViewButton::blending() const
+{
+	return m_blending;
+}

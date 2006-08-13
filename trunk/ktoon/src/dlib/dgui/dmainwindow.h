@@ -78,6 +78,9 @@ class Q_GUI_EXPORT DMainWindow : public QMainWindow
 		Qt::DockWidgetArea toDockWidgetArea(Qt::ToolBarArea area);
 		Qt::ToolBarArea toToolBarArea(Qt::DockWidgetArea area);
 		
+	public slots:
+		void setEnableButtonBlending(bool enable);
+		
 	private slots:
 		void relayoutViewButton(bool topLevel);
 		void relayoutToolView();

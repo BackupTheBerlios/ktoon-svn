@@ -18,73 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DBUTTONBAR_H
-#define DBUTTONBAR_H
+#ifndef DMAINWINDOWFACTORY_H
+#define DMAINWINDOWFACTORY_H
 
-#include <QToolBar>
-#include <QButtonGroup>
-#include <QMap>
-#include <QTimer>
-
-class DViewButton;
-class QAction;
-class QMenu;
+class DMainWindow;
+class QMainWindow;
 
 /**
+ * This class creates a DMainWindow from other QMainWindow
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Q_GUI_EXPORT DButtonBar : public QToolBar
+class DMainWindowFactory
 {
-	Q_OBJECT;
 	public:
-		DButtonBar(Qt::ToolBarArea area, QWidget *parent = 0);
-		~DButtonBar();
+		DMainWindowFactory();
+		~DMainWindowFactory();
 		
-		void addButton(DViewButton *viewButton);
-		void removeButton(DViewButton *viewButton);
-		
-		bool isEmpty() const;
-		
-		void disable(DViewButton *v);
-		void enable(DViewButton *v);
-		
-		bool isExclusive() const;
-		bool autohide() const;
-		void showSeparator(bool e);
-		
-		int count() const;
-		
-		void setEnableButtonBlending(bool enable);
-		
-	public slots:
-		void setExclusive(bool excl);
-		void setAutoHide(bool autohide);
-		void setShowOnlyIcons();
-		void setShowOnlyTexts();
-		
-	private:
-		QMenu *createMenu();
-		
-	private slots:
-		void hideOthers();
-		void doNotHide();
-		
-	protected:
-		virtual void mousePressEvent(QMouseEvent *e);
-		virtual void enterEvent(QEvent *e);
-		virtual void leaveEvent(QEvent *e);
-		
-	private:
-		QButtonGroup m_buttons;
-		QMap<QWidget *, QAction *> m_actionForWidget;
-		
-		QAction *m_separator;
-		
-		bool m_autoHide;
-		
-		QTimer m_hider;
-		
-		bool m_blockHider;
+		static DMainWindow *create(QMainWindow *other);
 };
 
 #endif

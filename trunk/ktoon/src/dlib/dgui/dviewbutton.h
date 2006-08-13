@@ -41,9 +41,11 @@ class Q_GUI_EXPORT DViewButton : public QToolButton
 		QSize sizeHint() const;
 		
 		bool isSensible() const;
+		bool blending() const;
 		
 	public slots:
 		void setSensible(bool s);
+		void setBlending(bool e);
 		
 	private:
 		void setup();
@@ -71,6 +73,10 @@ class Q_GUI_EXPORT DViewButton : public QToolButton
 		Animator *m_animator;
 		
 		bool m_isSensible;
+		
+		bool m_blending;
+		
+		QPalette m_palette;
 };
 
 #endif

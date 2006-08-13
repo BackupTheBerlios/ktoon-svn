@@ -294,3 +294,10 @@ int DButtonBar::count() const
 	return m_buttons.buttons().count();
 }
 
+void DButtonBar::setEnableButtonBlending(bool enable)
+{
+	foreach(QAbstractButton *button, m_buttons.buttons() )
+	{
+		static_cast<DViewButton *>(button)->setBlending(enable);
+	}
+}

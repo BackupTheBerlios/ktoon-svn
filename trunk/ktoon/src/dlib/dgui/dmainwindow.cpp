@@ -385,6 +385,13 @@ Qt::ToolBarArea DMainWindow::toToolBarArea(Qt::DockWidgetArea area)
 	return Qt::LeftToolBarArea;
 }
 
+void DMainWindow::setEnableButtonBlending(bool enable)
+{
+	foreach( DButtonBar *bar, m_buttonBars.values() )
+	{
+		bar->setEnableButtonBlending(enable);
+	}
+}
 
 void DMainWindow::relayoutViewButton(bool topLevel)
 {
@@ -635,6 +642,7 @@ bool DMainWindow::event(QEvent *e)
 {
 	if ( e->type() == QEvent::HoverMove )
 	{
+		// Show bar if autohide is enabledº
 		QPoint pos = mapFromGlobal(QCursor::pos());
 		
 		DButtonBar *bar = 0;
@@ -642,6 +650,7 @@ bool DMainWindow::event(QEvent *e)
 		if ( pos.x() <= m_buttonBars[Qt::LeftToolBarArea]->pos().x() + 3  ) // Left
 		{
 			bar = m_buttonBars[Qt::LeftToolBarArea];
+			
 		}
 		else if ( pos.y() <= m_buttonBars[Qt::TopToolBarArea]->pos().y() + 3 && m_buttonBars[Qt::TopToolBarArea]->pos().y() <= pos.y())
 		{
@@ -651,7 +660,7 @@ bool DMainWindow::event(QEvent *e)
 		{
 			bar = m_buttonBars[Qt::RightToolBarArea];
 		}
-		else if ( pos.y() >= m_buttonBars[Qt::BottomToolBarArea]->pos().y() +  m_buttonBars[Qt::BottomToolBarArea]->height() - 3 && m_buttonBars[Qt::BottomToolBarArea]->pos().y()+m_buttonBars[Qt::BottomToolBarArea]->height() > pos.y() )
+		else if ( pos.y() >= m_buttonBars[Qt::BottomToolBarArea]->pos().y() +  m_buttonBars[Qt::BottomToolBarArea]->height() - 3 && m_buttonBars[Qt::BottomToolBarArea]->pos().y()+m_buttonBars[Qt::BottomToolBarArea]->height() > pos.y()  )
 		{
 			bar = m_buttonBars[Qt::BottomToolBarArea];
 		}
