@@ -5,8 +5,7 @@
 
 SUBDIRS += brush \
            select \
-           ellipse \
-           editNodes 
+           ellipse 
 KDEV_QTVER = 4
 CONFIG += release \
 warn_on
