@@ -23,11 +23,12 @@
 
 #include <QToolButton>
 #include <QStyleOptionToolButton>
+#include <dideality.h>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Q_GUI_EXPORT DViewButton : public QToolButton
+class D_IDEAL_EXPORT DViewButton : public QToolButton
 {
 	Q_OBJECT;
 	public:

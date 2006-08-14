@@ -23,13 +23,14 @@
 
 #include <QDockWidget>
 #include <QIcon>
+#include <dideality.h>
 
 class DViewButton;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Q_GUI_EXPORT DToolView : public QDockWidget
+class D_IDEAL_EXPORT DToolView : public QDockWidget
 {
 	Q_OBJECT;
 	

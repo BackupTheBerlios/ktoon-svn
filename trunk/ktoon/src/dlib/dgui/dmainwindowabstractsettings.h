@@ -22,6 +22,7 @@
 #define DMAINWINDOWABSTRACTSETTINGS_H
 
 #include <QObject>
+#include <dideality.h>
 
 class DToolView;
 class DMainWindow;
@@ -30,7 +31,7 @@ class DMainWindow;
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class Q_DECL_EXPORT DMainWindowAbstractSettings : public QObject
+class D_IDEAL_EXPORT DMainWindowAbstractSettings : public QObject
 {
 	public:
 		DMainWindowAbstractSettings(QObject *parent = 0) : QObject(parent) {}

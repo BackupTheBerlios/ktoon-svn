@@ -21,6 +21,8 @@
 #ifndef DMAINWINDOWFACTORY_H
 #define DMAINWINDOWFACTORY_H
 
+#include <dideality.h>
+
 class DMainWindow;
 class QMainWindow;
 
@@ -28,7 +30,7 @@ class QMainWindow;
  * This class creates a DMainWindow from other QMainWindow
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DMainWindowFactory
+class D_IDEAL_EXPORT DMainWindowFactory
 {
 	public:
 		DMainWindowFactory();

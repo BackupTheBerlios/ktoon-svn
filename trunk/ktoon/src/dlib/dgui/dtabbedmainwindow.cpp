@@ -83,6 +83,12 @@ void TabWidgetPrivate::wheelMove( int delta )
 
 
 // DTabbedMainWindow
+
+/**
+ * Construct a tabbed main window.
+ * @param parent 
+ * @return 
+ */
 DTabbedMainWindow::DTabbedMainWindow(QWidget *parent) : DMainWindow(parent)
 {
 	m_tabWidget = new TabWidgetPrivate;
@@ -94,38 +100,48 @@ DTabbedMainWindow::DTabbedMainWindow(QWidget *parent) : DMainWindow(parent)
 }
 
 
+/**
+ * Destructor
+ * @return 
+ */
 DTabbedMainWindow::~DTabbedMainWindow()
 {
 	
 }
 
+/**
+ * Setup the tab widget.
+ * @param w 
+ */
 void DTabbedMainWindow::setupTabWidget(QTabWidget *w)
 {
 	w->setFocusPolicy(Qt::NoFocus);
 	
-	QToolButton *closeButton = new QToolButton(w);
+	if ( ! w->cornerWidget( Qt::TopRightCorner ) )
+	{
+		QToolButton *closeButton = new QToolButton(w);
+		QPixmap closepx(16, 16);
+		closepx.fill(Qt::transparent);
+		
+		QPainter p(&closepx);
+		p.initFrom(this);
+		
+		p.setPen(QPen(palette().buttonText() , 4));
+		p.drawLine(0, 0, 15,15);
+		p.drawLine(0,15, 15, 0);
+		
+		
+		p.end();
+		
+		closeButton->setIcon(closepx);
+		closeButton->adjustSize();
+		closeButton->hide();
+		
+		w->setCornerWidget(closeButton, Qt::TopRightCorner);
+		
+		connect(closeButton, SIGNAL(clicked()), this, SLOT(closeCurrentTab()));
+	}
 	
-	
-	QPixmap closepx(16, 16);
-	closepx.fill(Qt::transparent);
-	
-	QPainter p(&closepx);
-	p.initFrom(this);
-	
-	p.setPen(QPen(palette().text() , 4));
-	p.drawLine(0, 0, 16,16);
-	p.drawLine(0,16, 16, 0);
-	
-	
-	p.end();
-	
-	closeButton->setIcon(closepx);
-	closeButton->adjustSize();
-	closeButton->hide();
-	
-	w->setCornerWidget(closeButton, Qt::TopRightCorner);
-	
-	connect(closeButton, SIGNAL(clicked()), this, SLOT(closeCurrentTab()));
 	connect(w, SIGNAL(currentChanged ( int)), this, SLOT(emitWidgetChanged( int )));
 }
 
@@ -153,6 +169,10 @@ void DTabbedMainWindow::addWidget(QWidget *widget, bool persistant, int workspac
 	}
 }
 
+/**
+ * Remove a widget from the window.
+ * @param widget 
+ */
 void DTabbedMainWindow::removeWidget(QWidget *widget)
 {
 	if ( m_persistantWidgets.contains(widget) ) return;
@@ -179,6 +199,9 @@ void DTabbedMainWindow::removeWidget(QWidget *widget)
 }
 
 
+/**
+ * Close the current tab.
+ */
 void DTabbedMainWindow::closeCurrentTab()
 {
 	int index = m_tabWidget->currentIndex();
@@ -212,24 +235,37 @@ void DTabbedMainWindow::emitWidgetChanged(int index)
 }
 
 
+/**
+ * Sets other tab widget.
+ * @param w 
+ */
 void DTabbedMainWindow::setTabWidget(QTabWidget *w)
 {
 	m_tabWidget->close();
 	
 	setupTabWidget( w );
-	setCentralWidget( w );
 	
 	delete m_tabWidget;
 	m_tabWidget = 0;
 	
+	setCentralWidget( w );
+	
 	m_tabWidget = w;
 }
 
+/**
+ * Return the current tab widget.
+ * @return 
+ */
 QTabWidget *DTabbedMainWindow::tabWidget() const
 {
 	return m_tabWidget;
 }
 
+/**
+ * Setup the workspace. Shows the pages in wps and hide others.
+ * @param wps 
+ */
 void DTabbedMainWindow::setupWorkspace(int wps)
 {
 	// FIXME: Flickr = (

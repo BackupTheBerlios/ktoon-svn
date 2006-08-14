@@ -21,6 +21,8 @@
 #ifndef DBUTTONBAR_H
 #define DBUTTONBAR_H
 
+#include <dideality.h>
+
 #include <QToolBar>
 #include <QButtonGroup>
 #include <QMap>
@@ -33,7 +35,7 @@ class QMenu;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Q_GUI_EXPORT DButtonBar : public QToolBar
+class D_IDEAL_EXPORT DButtonBar : public QToolBar
 {
 	Q_OBJECT;
 	public:

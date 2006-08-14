@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                *
- *   krawek@gmail.com                                                      *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,49 +17,28 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTIMAGEDEVICE_H
+#define KTIMAGEDEVICE_H
 
-#ifndef DTABBEDMAINWINDOW_H
-#define DTABBEDMAINWINDOW_H
-
-#include <dmainwindow.h>
-
-class QTabWidget;
+#include <qwidget.h>
+#include <QImage>
 
 /**
- * A tabbed main window.
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_IDEAL_EXPORT DTabbedMainWindow : public DMainWindow
+class KTImageDevice : public QWidget
 {
-	Q_OBJECT;
 	public:
-		DTabbedMainWindow(QWidget *parent = 0);
-		~DTabbedMainWindow();
+		KTImageDevice(QWidget *parent = 0);
+		~KTImageDevice();
 		
-		void addWidget(QWidget *widget, bool persistant = false, int workspace = DefaultWorkspace);
-		void removeWidget(QWidget *widget);
-		void setTabWidget(QTabWidget *w);
-		QTabWidget *tabWidget() const;
+		virtual QPaintEngine *paintEngine() const;
 		
 	protected:
-		virtual void setupTabWidget(QTabWidget *w);
-		
-	protected slots:
-		void closeCurrentTab();
-		virtual void setupWorkspace(int wps);
-		
-	signals:
-		void widgetChanged(QWidget *widget);
-		
-	private slots:
-		void emitWidgetChanged(int index);
+		virtual void paintEvent(QPaintEvent *e);
 		
 	private:
-		QTabWidget *m_tabWidget;
-		QWidgetList m_persistantWidgets;
-		QMap<QWidget *, int> m_tabs;
-		
-		QWidgetList m_pages;
+		QImage m_image;
 };
 
 #endif

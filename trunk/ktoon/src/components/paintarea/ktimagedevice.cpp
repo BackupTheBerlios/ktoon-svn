@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                *
- *   krawek@gmail.com                                                      *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,48 +18,43 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DTABBEDMAINWINDOW_H
-#define DTABBEDMAINWINDOW_H
+#include "ktimagedevice.h"
+#include <QPainter>
+#include <QPaintEngine>
 
-#include <dmainwindow.h>
-
-class QTabWidget;
-
-/**
- * A tabbed main window.
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class D_IDEAL_EXPORT DTabbedMainWindow : public DMainWindow
+KTImageDevice::KTImageDevice(QWidget *parent) : QWidget(parent)
 {
-	Q_OBJECT;
-	public:
-		DTabbedMainWindow(QWidget *parent = 0);
-		~DTabbedMainWindow();
-		
-		void addWidget(QWidget *widget, bool persistant = false, int workspace = DefaultWorkspace);
-		void removeWidget(QWidget *widget);
-		void setTabWidget(QTabWidget *w);
-		QTabWidget *tabWidget() const;
-		
-	protected:
-		virtual void setupTabWidget(QTabWidget *w);
-		
-	protected slots:
-		void closeCurrentTab();
-		virtual void setupWorkspace(int wps);
-		
-	signals:
-		void widgetChanged(QWidget *widget);
-		
-	private slots:
-		void emitWidgetChanged(int index);
-		
-	private:
-		QTabWidget *m_tabWidget;
-		QWidgetList m_persistantWidgets;
-		QMap<QWidget *, int> m_tabs;
-		
-		QWidgetList m_pages;
-};
+	qDebug("KTImageDevice");
+	
+	m_image = QImage(300,300, QImage::Format_RGB32);
+	m_image.fill(Qt::white);
+}
 
-#endif
+
+KTImageDevice::~KTImageDevice()
+{
+	qDebug("~KTImageDevice");
+}
+
+QPaintEngine *KTImageDevice::paintEngine() const
+{
+	qDebug("KTImageDevice: paint engine *****************************************");
+	return m_image.paintEngine();
+}
+
+void KTImageDevice::paintEvent(QPaintEvent *)
+{
+	qDebug("KTImageDevice: Paint event #####################################################");
+	QPainter p(this);
+	p.drawImage(0, 0, m_image);
+}
+
+
+
+
+
+
+
+
+
+

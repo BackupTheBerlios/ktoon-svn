@@ -182,6 +182,11 @@ void DefaultSettings::restore(DMainWindow *w)
 // DMainWindow
 
 
+/**
+ * Construct a main window
+ * @param parent 
+ * @return 
+ */
 DMainWindow::DMainWindow(QWidget *parent)
 	: QMainWindow(parent), m_forRelayout(0), m_currentWorkspace(DefaultWorkspace), m_autoRestore(false)
 {
@@ -208,9 +213,14 @@ DMainWindow::DMainWindow(QWidget *parent)
 }
 
 
+/**
+ * Default destructor
+ * @return 
+ */
 DMainWindow::~DMainWindow()
 {
 }
+
 
 void DMainWindow::addButtonBar(Qt::ToolBarArea area)
 {
@@ -223,6 +233,14 @@ void DMainWindow::addButtonBar(Qt::ToolBarArea area)
 }
 
 
+/**
+ * Adds a tool view to the main window in the area and workspace.
+ * 
+ * @param widget 
+ * @param area 
+ * @param workspace 
+ * @return 
+ */
 DToolView *DMainWindow::addToolView(QWidget *widget, Qt::DockWidgetArea area, int workspace)
 {
 	DToolView *toolView = new DToolView(widget->windowTitle(), widget->windowIcon());
@@ -259,6 +277,11 @@ DToolView *DMainWindow::addToolView(QWidget *widget, Qt::DockWidgetArea area, in
 	return toolView;
 }
 
+/**
+ * Moves a tool view to newPlace
+ * @param view 
+ * @param newPlace 
+ */
 void DMainWindow::moveToolView(DToolView *view, Qt::DockWidgetArea newPlace)
 {
 	if ( toDockWidgetArea(view->button()->area()) == newPlace || newPlace == Qt::AllDockWidgetAreas || newPlace == 0 )
@@ -273,6 +296,11 @@ void DMainWindow::moveToolView(DToolView *view, Qt::DockWidgetArea newPlace)
 	relayoutToolView();
 }
 
+/**
+ * Add a widget to workspace
+ * @param widget 
+ * @param workspace 
+ */
 void DMainWindow::addToWorkspace(QWidget *widget, int workspace)
 {
 	if ( QToolBar *bar = dynamic_cast<QToolBar*>(widget) )
@@ -294,11 +322,20 @@ void DMainWindow::addToWorkspace(QWidget *widget, int workspace)
 	}
 }
 
+/**
+ * Remove widget from workspace
+ * @param widget 
+ */
 void DMainWindow::removeFromWorkspace(QWidget *widget)
 {
 	m_managedWidgets.remove(widget);
 }
 
+/**
+ * Adds a QAction list to workspace
+ * @param actions 
+ * @param workspace 
+ */
 void DMainWindow::addToWorkspace(const QList<QAction *> &actions, int workspace)
 {
 	foreach(QAction *a, actions)
@@ -307,6 +344,11 @@ void DMainWindow::addToWorkspace(const QList<QAction *> &actions, int workspace)
 	}
 }
 
+/**
+ * Adds an action to workspace
+ * @param action 
+ * @param workspace 
+ */
 void DMainWindow::addToWorkspace(QAction *action, int workspace)
 {
 	if ( ! m_managedActions.contains( action ) )
@@ -320,6 +362,10 @@ void DMainWindow::addToWorkspace(QAction *action, int workspace)
 	}
 }
 
+/**
+ * Remove an action from workspace
+ * @param action 
+ */
 void DMainWindow::removeFromWorkspace(QAction *action)
 {
 	m_managedActions.remove(action);
@@ -385,6 +431,11 @@ Qt::ToolBarArea DMainWindow::toToolBarArea(Qt::DockWidgetArea area)
 	return Qt::LeftToolBarArea;
 }
 
+
+/**
+ * Enable/disable button blending.
+ * @param enable 
+ */
 void DMainWindow::setEnableButtonBlending(bool enable)
 {
 	foreach( DButtonBar *bar, m_buttonBars.values() )
@@ -474,6 +525,10 @@ void DMainWindow::relayoutToolView()
 	m_forRelayout = 0;
 }
 
+/**
+ * Sets the current workspace.
+ * @param wsp 
+ */
 void DMainWindow::setCurrentWorkspace(int wsp)
 {
 	if ( m_currentWorkspace == wsp ) return;
@@ -584,16 +639,28 @@ void DMainWindow::setCurrentWorkspace(int wsp)
 	emit workspaceChanged( m_currentWorkspace );
 }
 
+/**
+ * Returns the current workspace
+ * @return 
+ */
 int DMainWindow::currentWorkspace() const
 {
 	return m_currentWorkspace;
 }
 
+/**
+ * if autoRestore is true, the widgets will be loaded when main window is showed (position and properties).
+ * @param autoRestore 
+ */
 void DMainWindow::setAutoRestore(bool autoRestore)
 {
 	m_autoRestore = autoRestore;
 }
 
+/**
+ * Returns the autoRestore property.
+ * @return 
+ */
 bool DMainWindow::autoRestore() const
 {
 	return m_autoRestore;
@@ -607,7 +674,7 @@ QMenu *DMainWindow::createPopupMenu()
 	return menu;
 }
 
-void DMainWindow::setSettingsFactory(DMainWindowAbstractSettings *settings)
+void DMainWindow::setSettingsHandler(DMainWindowAbstractSettings *settings)
 {
 	delete m_settings;
 	
@@ -689,11 +756,19 @@ void DMainWindow::restoreGUI()
 	setUpdatesEnabled(true);
 }
 
+/**
+ * Returns the button bars
+ * @return 
+ */
 QHash<Qt::ToolBarArea, DButtonBar *> DMainWindow::buttonBars() const
 {
 	return m_buttonBars;
 }
 
+/**
+ * Returs the tool views.
+ * @return 
+ */
 QHash<DButtonBar *, QList<DToolView*> > DMainWindow::toolViews() const
 {
 	return m_toolViews;

@@ -2,7 +2,7 @@
  *   Copyright (C) 2005 by Jorge Cuadrado                                  *
  *   kuadrosx@toonka.com                                                   *
  *   Copyright (C) 2006 by David Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   krawek@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -38,6 +38,7 @@
 #ifdef QT_OPENGL_LIB
 
 #include <QGLWidget>
+#include "ktimagedevice.h"
 
 class GLDevice : public QGLWidget
 {
@@ -86,6 +87,8 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(p
 	qobject_cast<KTScene *>(scene())->setCurrentFrame( 0, 0 );
 	
 	centerDrawingArea();
+	
+	setViewport(new KTImageDevice() );
 }
 
 KTPaintArea::~KTPaintArea()
@@ -136,7 +139,6 @@ void KTPaintArea::setUseOpenGL(bool opengl)
 		cursor = viewport()->cursor();
 	}
 	
-	
 #ifdef QT_OPENGL_LIB
 	if ( opengl )
 	{
@@ -144,14 +146,12 @@ void KTPaintArea::setUseOpenGL(bool opengl)
 	}
 	else
 	{
-		setViewport(new QWidget());
+		setViewport( new KTImageDevice() );
 	}
 #else
 	Q_UNUSED(opengl);
 	dWarning() << tr("OpenGL isn't supported");
 #endif
-
-	viewport()->setCursor(cursor);
 }
 
 void KTPaintArea::setDrawGrid(bool draw)

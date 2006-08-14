@@ -32,7 +32,7 @@
 class DViewButton::Animator
 {
 	public:
-		Animator(QObject *parent) : count(0), MAXCOUNT(40), INTERVAL(30), isEnter(false)
+		Animator(QObject *parent) : count(0), MAXCOUNT(30), INTERVAL(30), isEnter(false)
 		{
 			timer = new QTimer(parent);
 		}

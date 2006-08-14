@@ -21,6 +21,7 @@
 #ifndef DMAINWINDOW_H
 #define DMAINWINDOW_H
 
+#include <dideality.h>
 
 // Project begin: Aug 4 2006
 
@@ -33,10 +34,11 @@ class DToolView;
 class DMainWindowAbstractSettings;
 
 /**
+ * iDeality Main Window
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class Q_GUI_EXPORT DMainWindow : public QMainWindow
+class D_IDEAL_EXPORT DMainWindow : public QMainWindow
 {
 	Q_OBJECT;
 	public:
@@ -67,7 +69,7 @@ class Q_GUI_EXPORT DMainWindow : public QMainWindow
 		
 		virtual QMenu *createPopupMenu();
 		
-		void setSettingsFactory(DMainWindowAbstractSettings *settings);
+		void setSettingsHandler(DMainWindowAbstractSettings *settings);
 		void restoreGUI();
 		void saveGUI();
 		

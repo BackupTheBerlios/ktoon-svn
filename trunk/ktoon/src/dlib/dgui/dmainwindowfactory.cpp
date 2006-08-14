@@ -25,6 +25,8 @@
 #include <QToolBar>
 #include <QTabWidget>
 #include <QEvent>
+#include <QApplication>
+#include <QShowEvent>
 
 #include <QtDebug>
 
@@ -34,6 +36,7 @@ class EventFilter : public QObject
 	public:
 		EventFilter(DMainWindow *mw, QObject *parent = 0);
 		~EventFilter();
+		
 	protected:
 		bool eventFilter(QObject *obj, QEvent *event);
 		
@@ -54,16 +57,39 @@ bool EventFilter::eventFilter(QObject *obj, QEvent *event)
 	if (event->type() == QEvent::Close)
 	{
 		m_mainWindow->close();
+		
+		return true;
+	}
+	else if ( event->type() == QEvent::Show )
+	{
+		m_mainWindow->show();
+		
+		return true;
+	}
+	else if ( event->type() == QEvent::Hide )
+	{
+		m_mainWindow->hide();
+		
+		return true;
 	}
 	
-	return QObject::eventFilter(obj, event);
+	
+	return false;
 }
 
+/**
+ * Construct a factory.
+ * @return 
+ */
 DMainWindowFactory::DMainWindowFactory()
 {
 }
 
 
+/**
+ * Destructor
+ * @return 
+ */
 DMainWindowFactory::~DMainWindowFactory()
 {
 }
@@ -76,6 +102,11 @@ DMainWindowFactory::~DMainWindowFactory()
 DMainWindow *DMainWindowFactory::create(QMainWindow *other)
 {
 	DMainWindow *mainWindow = 0;
+	
+	if ( other->isVisible() )
+	{
+		other->hide();
+	}
 	
 	if ( other->inherits( "DMainWindow" ) )
 	{
@@ -111,7 +142,7 @@ DMainWindow *DMainWindowFactory::create(QMainWindow *other)
 		{
 			area = Qt::LeftDockWidgetArea;
 		}
-
+		
 		mainWindow->addToolView( dock->widget(), area);
 	}
 	

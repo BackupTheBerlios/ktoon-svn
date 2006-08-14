@@ -18,48 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DTABBEDMAINWINDOW_H
-#define DTABBEDMAINWINDOW_H
+#ifndef DIDEALITY_H
+#define DIDEALTIY_H
 
-#include <dmainwindow.h>
+#include <qglobal.h>
 
-class QTabWidget;
-
-/**
- * A tabbed main window.
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class D_IDEAL_EXPORT DTabbedMainWindow : public DMainWindow
-{
-	Q_OBJECT;
-	public:
-		DTabbedMainWindow(QWidget *parent = 0);
-		~DTabbedMainWindow();
-		
-		void addWidget(QWidget *widget, bool persistant = false, int workspace = DefaultWorkspace);
-		void removeWidget(QWidget *widget);
-		void setTabWidget(QTabWidget *w);
-		QTabWidget *tabWidget() const;
-		
-	protected:
-		virtual void setupTabWidget(QTabWidget *w);
-		
-	protected slots:
-		void closeCurrentTab();
-		virtual void setupWorkspace(int wps);
-		
-	signals:
-		void widgetChanged(QWidget *widget);
-		
-	private slots:
-		void emitWidgetChanged(int index);
-		
-	private:
-		QTabWidget *m_tabWidget;
-		QWidgetList m_persistantWidgets;
-		QMap<QWidget *, int> m_tabs;
-		
-		QWidgetList m_pages;
-};
-
+#if defined(QT_SHARED) || defined(QT_PLUGIN)
+# define D_IDEAL_EXPORT Q_GUI_EXPORT
+#else
+# define D_IDEAL_EXPORT
 #endif
+
+
+#endif // DIDEALITY_H
+
+
