@@ -126,8 +126,6 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 					dynamic_cast< QGraphicsEllipseItem*>( parentItem())->setStartAngle ( a* 16 );
 					break;
 				}
-						
-	// 					TypeNode
 			};
 		}
 	}

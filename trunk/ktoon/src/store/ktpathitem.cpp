@@ -49,7 +49,6 @@ QDomElement KTPathItem::toXml(QDomDocument &doc)
 {
 	QDomElement root = doc.createElement("path");
 	
-	//FIXME:
 	QString strMatrix = "matrix(";
 	QMatrix m = matrix();
 	qreal a = m.m11();
@@ -137,25 +136,21 @@ void KTPathItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem * op
 }
 
 
+
+
 bool KTPathItem::contains ( const QPointF & point ) const
 {
-// 	D_FUNCINFO;
 #if 0
 	int thickness = 5;
 	QRectF rectS(point-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
+>>>>>>> .r592
 	
-	QPolygonF pol = shape().toFillPolygon ();
-	foreach(QPointF point, pol)
-	{
-		if(rectS.contains( point))
-		{
-			return true;
-		}
-	}
+// 	return false;
 	
-	QPolygonF::iterator it1 = pol.begin() ;
-	QPolygonF::iterator it2 = pol.begin()+1;
 	
+<<<<<<< .mine
+	return QGraphicsPathItem::contains ( point ) ;
+=======
 	while(it2 != pol.end())
 	{
 		if(KTGraphicalAlgorithm::intersectLine( (*it1), (*it2), rectS  ))

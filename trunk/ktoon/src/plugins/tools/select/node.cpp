@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Jorge Cuadrado   *
- *   kuadrosx@toonka.com   *
+ *   Copyright (C) 2006 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -51,27 +51,37 @@ Node::~Node()
 void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *w )
 {
 	Q_UNUSED(w);
+	QColor c;
+	
 	if (option->state & QStyle::State_Sunken)
 	{
-		QColor c("green");
+		c = QColor("green");
 		c.setAlpha(150);
 		painter->setBrush( c );
 	} 
 	else
 	{
-		QColor c("navy");
+		c = QColor("navy");
 		c.setAlpha(150);
-		painter->setBrush( c );
 	}
-	painter->drawRect(boundingRect());
+	QRectF br = boundingRect();
+
+	painter->setBrush( c );
+	painter->drawRect(br);
+	if(m_typeNode == Center)
+	{
+		painter->save();
+		painter->setPen(Qt::gray);
+		painter->drawLine(br.topLeft(), br.bottomRight()  );
+		painter->drawLine(br.bottomLeft(), br.topRight()  );
+		painter->restore();
+	}
 }
 
 QRectF Node::boundingRect() const
 {
-	QMatrix matrix = m_parent->sceneMatrix();
-	QSizeF size( 10  * 1/*/matrix.m11()*/, 10  * 1/*/matrix.m22()*/);
+	QSizeF size( 10  , 10 );
 	QRectF r(QPointF( -size.width()/2, -size.height()/2), size);
-	//     QRectF r (QPointF(0,0), QSizeF( 5/2, 5/2));
 	return r;
 }
 
@@ -109,8 +119,11 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	}
 	else
 	{
+		
+		
 		QRectF rect =  m_parent->sceneBoundingRect();
-		QRectF br =  m_parent->sceneBoundingRect();
+		QRectF br =  rect;
+		
 		switch(m_typeNode)
 		{
 			case TopLeft:
@@ -140,7 +153,7 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 			}
 		};
 
-#if 0
+#if 1
 		if(gb1)
 		{
 			scene()->removeItem(gb1);
@@ -153,7 +166,6 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 		
 		gb1 = scene()->addRect(rect, QPen(Qt::magenta));
 		gb2 = scene()->addRect(br, QPen(Qt::blue));
-		
 #endif	
 		
 		float sx = 1, sy = 1;
@@ -164,6 +176,20 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 		{
 			m_parent->setPos(  rect.topLeft());
 			m_parent->scale(sx, sy);
+		}
+		else 
+		{
+			if(sx > 0)
+			{
+				m_parent->setPos( rect.topLeft().x(),  br.topLeft().y());
+				m_parent->scale(sx, 1);
+			}
+			
+			if(sy > 0)
+			{
+				m_parent->setPos( br.topLeft().x() , rect.topLeft().y() );
+				m_parent->scale(1, sy);
+			}
 		}
 	}
 	if(m_typeNode == Center)

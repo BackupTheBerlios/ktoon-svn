@@ -51,7 +51,10 @@ void Select::init(QGraphicsView *view)
 	
 	foreach(QGraphicsItem *item, view->scene()->items() )
 	{
-		item->setFlags (QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable );
+		if(dynamic_cast<KTAbstractSerializable* >(item))
+		{
+			item->setFlags (QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable );
+		}
 	}
 }
 

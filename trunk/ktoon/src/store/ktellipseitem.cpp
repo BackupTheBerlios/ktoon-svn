@@ -67,7 +67,7 @@ QDomElement KTEllipseItem::toXml(QDomDocument &doc)
 bool KTEllipseItem::contains ( const QPointF & point ) const
 {
 // 	D_FUNCINFO;
-	int thickness = 2;
+	int thickness = 4;
 	QRectF rectS(point-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
 	
 	QPolygonF pol = shape().toFillPolygon ();

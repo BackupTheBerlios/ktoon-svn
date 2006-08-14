@@ -58,15 +58,21 @@ QStringList Ellipse::keys() const
 
 void Ellipse::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
+	Q_UNUSED(brushManager);
+	Q_UNUSED(view);
 	if(input->buttons () == Qt::LeftButton)
 	{
 		m_ellipse = new KTEllipseItem(QRectF(QPointF(0,0), QSizeF(0.0,0.0)));		m_ellipse->setPos(input->pos());
+		
 		scene->addItem(m_ellipse);
 	}
 }
 
 void Ellipse::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
+	Q_UNUSED(brushManager);
+	Q_UNUSED(scene);
+	Q_UNUSED(view);
 	if(input->buttons () == Qt::LeftButton)
 	{
 		if(m_ellipse)
@@ -80,6 +86,10 @@ void Ellipse::move(const KTInputDeviceInformation *input, KTBrushManager *brushM
 
 void Ellipse::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {	
+	Q_UNUSED(input);
+	Q_UNUSED(brushManager);
+	Q_UNUSED(scene);
+	Q_UNUSED(view);
 // 	if(m_ellipse)
 // 	{
 // 		QPainterPath path = m_ellipse->shape();
@@ -99,7 +109,7 @@ QString Ellipse::toolToXml() const
 
 QPainterPath Ellipse::path() const
 {
-	
+	return m_ellipse->shape();
 }
 
 void Ellipse::setupActions()

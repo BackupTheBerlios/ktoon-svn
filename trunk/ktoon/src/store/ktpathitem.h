@@ -39,7 +39,6 @@ class STORE_EXPORT KTPathItem : public KTAbstractSerializable, public QGraphicsP
 		virtual void paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 		bool contains ( const QPointF & point ) const;
 		
-		
 	protected:
 		virtual void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
 		virtual void dragLeaveEvent ( QGraphicsSceneDragDropEvent * event );

@@ -69,6 +69,8 @@ QStringList Brush::keys() const
 
 void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
+	Q_UNUSED(view);
+	
 	m_firstPoint = input->pos();
 	m_path = QPainterPath();
 	m_path.moveTo(m_firstPoint);
@@ -108,6 +110,8 @@ void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushMan
 
 void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
+	Q_UNUSED(scene);
+	Q_UNUSED(view);
 	int smoothness = m_configurator->exactness();
 	
 	if ( m_firstPoint == input->pos() && m_path.elementCount() == 1)
@@ -158,7 +162,6 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 		m.translate(-pos.x() , -pos.y());
 		newPath = m.map(newPath);
 		m_item->setPos(pos);
-// 		m_item->translate(pos.x(), pos.y());
 	}
 	
 	m_item->setPath(newPath);
