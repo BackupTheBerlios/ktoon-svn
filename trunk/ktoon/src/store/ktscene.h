@@ -28,6 +28,7 @@
 #include <QDomDocument>
 #include <QDomElement>
 #include <QGraphicsScene>
+#include "ktglobal_store.h"
 
 
 typedef QVector<KTLayer *> Layers;
@@ -37,7 +38,7 @@ typedef QVector<KTLayer *> Layers;
  * @author David Cuadrado \<krawek@toonka.com\>
 */
 
-class Q_DECL_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializable
+class STORE_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializable
 {
 	Q_OBJECT
 	public:

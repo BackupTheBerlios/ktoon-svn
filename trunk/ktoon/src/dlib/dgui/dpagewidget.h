@@ -24,9 +24,10 @@
 
 #include "dpageview.h"
 #include "dpagewidgetmodel.h"
+#include <dcore/dglobal.h>
 
 
-class Q_GUI_EXPORT DPageWidget : public DPageView
+class D_GUI_EXPORT DPageWidget : public DPageView
 {
   Q_OBJECT
 

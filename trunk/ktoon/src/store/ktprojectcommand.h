@@ -23,7 +23,7 @@
 #define KTPROJECTCOMMAND_H
 
 #include <QUndoCommand>
-
+#include "ktglobal_store.h"
 
 class KTProject;
 class KTProjectEvent;
@@ -35,7 +35,7 @@ class KTItemEvent;
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
 */
-class Q_DECL_EXPORT KTProjectCommand : public QUndoCommand
+class STORE_EXPORT KTProjectCommand : public QUndoCommand
 {
 	public:
 		KTProjectCommand(KTProject *project, const KTProjectEvent *event);

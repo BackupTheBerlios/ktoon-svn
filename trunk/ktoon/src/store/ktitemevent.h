@@ -22,11 +22,12 @@
 #define KTITEMEVENT_H
 
 #include <ktframeevent.h>
+#include "ktglobal_store.h"
 
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
 */
-class KTItemEvent : public KTFrameEvent
+class STORE_EXPORT KTItemEvent : public KTFrameEvent
 {
 	public:
 		KTItemEvent(Action action, int sceneIndex, int layerIndex, int frameIndex, int position, const QVariant &data);

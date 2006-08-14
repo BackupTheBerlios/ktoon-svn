@@ -26,13 +26,14 @@
 #include <QPixmap>
 #include <QIcon>
 #include <QTimer>
+#include <dcore/dglobal.h>
 
 /**
  * A image pressable
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class DImageButton : public QPushButton
+class D_GUI_EXPORT DImageButton : public QPushButton
 {
 	Q_OBJECT
 

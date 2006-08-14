@@ -24,6 +24,7 @@
 #include <QFrame>
 #include <QGradient>
 #include <QList>
+#include "ktglobal.h"
 
 /**
  * @if english
@@ -36,7 +37,7 @@
  * @endif
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-class KTGradientViewer : public QFrame
+class KTOON_EXPORT KTGradientViewer : public QFrame
 {
 	Q_OBJECT
 	public:

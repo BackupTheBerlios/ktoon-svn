@@ -24,6 +24,8 @@
 #include <QSpinBox>
 #include <QSlider>
 
+#include <dcore/dglobal.h>
+
 /**
  * @if english
  * This class represents a spinbox editable
@@ -32,7 +34,7 @@
  * @endif
  * @author Jorge Cuadrado
 */
-class DEditSpinBox : public QGroupBox
+class D_GUI_EXPORT DEditSpinBox : public QGroupBox
 {
 	Q_OBJECT
 	public:

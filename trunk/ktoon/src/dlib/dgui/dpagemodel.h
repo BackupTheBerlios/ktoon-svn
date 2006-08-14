@@ -23,6 +23,7 @@
 #define KPAGEMODEL_H
 
 #include <QtCore/QAbstractItemModel>
+#include <dcore/dglobal.h>
 
 
 /**
@@ -50,7 +51,7 @@
  *  @see DPageView
  *  @author Tobias Koenig <tokoe@kde.org>
  */
-class Q_GUI_EXPORT DPageModel : public QAbstractItemModel
+class D_GUI_EXPORT DPageModel : public QAbstractItemModel
 {
   Q_OBJECT
 

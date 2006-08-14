@@ -28,6 +28,7 @@ class QBitmap;
 #include <QDropEvent>
 #include <QBrush>
 #include <QWidget>
+#include <dcore/dglobal.h>
 
 /**
  * @note This class was adapted to KToon by David Cuadrado <krawek@toonka.com>
@@ -50,7 +51,7 @@ class QBitmap;
  *
  * @author Daniel M. Duley <mosfet@kde.org>
  */
-class DDualColorButton : public QWidget
+class D_GUI_EXPORT DDualColorButton : public QWidget
 {
 	Q_OBJECT
 	Q_ENUMS( DualColor )

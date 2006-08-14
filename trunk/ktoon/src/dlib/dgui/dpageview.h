@@ -24,6 +24,7 @@
 
 #include <QtGui/QAbstractItemView>
 #include <QtGui/QWidget>
+#include <dcore/dglobal.h>
 
 #include "dpagemodel.h"
 
@@ -50,7 +51,7 @@
  *
  * @author Tobias Koenig (tokoe@kde.org)
  */
-class Q_GUI_EXPORT DPageView : public QWidget
+class D_GUI_EXPORT DPageView : public QWidget
 {
   Q_OBJECT
 

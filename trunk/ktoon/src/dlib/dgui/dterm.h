@@ -24,11 +24,12 @@
 #include <qwidget.h>
 #include <QProcess>
 #include <QX11EmbedContainer>
+#include <dcore/dglobal.h>
 
 /**
 	@author David Cuadrado <krawek@gmail.com>
 */
-class DTerm : public QX11EmbedContainer
+class D_GUI_EXPORT DTerm : public QX11EmbedContainer
 {
 	Q_OBJECT
 	public:

@@ -24,6 +24,7 @@
 #include <qwidget.h>
 
 #include <QButtonGroup>
+#include "ktglobal.h"
 
 class QToolButton;
 class QBoxLayout;
@@ -32,7 +33,7 @@ class QBoxLayout;
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class KTProjectActionBar : public QWidget
+class KTOON_EXPORT KTProjectActionBar : public QWidget
 {
 	Q_OBJECT;
 	

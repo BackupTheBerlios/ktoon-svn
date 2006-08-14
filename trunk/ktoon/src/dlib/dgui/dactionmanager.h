@@ -27,6 +27,7 @@
 #include <QHash>
 
 #include "dgui/daction.h"
+#include "dcore/dglobal.h"
 
 typedef QList<DAction *> DActionList;
 typedef QHash<QString, DAction *> DActionDict;
@@ -40,7 +41,7 @@ class QMenuBar;
  * @author David Cuadrado \<krawek@gmail.com\>
 */
 
-class DActionManager : public QObject
+class D_GUI_EXPORT DActionManager : public QObject
 {
 	Q_OBJECT
 

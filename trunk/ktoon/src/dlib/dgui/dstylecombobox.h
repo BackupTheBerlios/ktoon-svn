@@ -22,11 +22,12 @@
 #define DSTYLECOMBOBOX_H
 
 #include <qcombobox.h>
+#include <dcore/dglobal.h>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DStyleComboBox : public QComboBox
+class D_GUI_EXPORT DStyleComboBox : public QComboBox
 {
 	Q_OBJECT;
 	public:

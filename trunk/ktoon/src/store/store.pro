@@ -30,7 +30,8 @@ HEADERS += ktlayer.h \
            kttextitem.h \
            ktbuttonitem.h \
            ktitemfactory.h \
-           ktellipseitem.h 
+           ktellipseitem.h \
+           ktglobal_store.h 
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \

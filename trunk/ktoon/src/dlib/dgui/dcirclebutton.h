@@ -26,13 +26,14 @@
  */
 #include <QPushButton>
 #include <QStyleOptionButton>
+#include "dcore/dglobal.h"
 
 /**
  * @short The DCircleButton class provides a circular button
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class DCircleButton : public QPushButton
+class D_GUI_EXPORT DCircleButton : public QPushButton
 {
 	Q_OBJECT
 	public:

@@ -24,12 +24,13 @@
 
 #include <QLineEdit>
 #include <QMouseEvent>
+#include <dcore/dglobal.h>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class DELabel : public DSqueezeLabel
+class D_GUI_EXPORT DELabel : public DSqueezeLabel
 {
 	Q_OBJECT
 

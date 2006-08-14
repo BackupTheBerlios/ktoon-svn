@@ -33,11 +33,14 @@
 #ifndef DMD5HASH_H
 #define DMD5HASH_H
 
+
+#include "dcore/dglobal.h"
+
 class QByteArray;
 class QString;
 class QFile;
 
-class DMD5Hash
+class D_CORE_EXPORT DMD5Hash
 {
 	public:
 		static QString hash(const QString &str);

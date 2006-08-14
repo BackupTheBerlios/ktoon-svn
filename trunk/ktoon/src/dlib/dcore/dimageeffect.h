@@ -29,6 +29,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __DIMAGE_EFFECT_H
 #define __DIMAGE_EFFECT_H
 
+#include "dcore/dglobal.h"
+
 class QImage;
 class QSize;
 class QColor;
@@ -43,7 +45,7 @@ class QRect;
  * just call the static methods. They are encapsulated here merely to provide
  * a common namespace.
  */
-class DImageEffect
+class D_CORE_EXPORT DImageEffect
 {
 public:
     /**

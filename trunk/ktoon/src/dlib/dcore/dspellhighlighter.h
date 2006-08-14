@@ -24,6 +24,7 @@
 #include <qsyntaxhighlighter.h>
 
 #include "dcore/dspeller.h"
+#include "dcore/dglobal.h"
 
 /**
  * @if english
@@ -40,7 +41,7 @@
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class DSpellHighlighter : public QSyntaxHighlighter
+class D_CORE_EXPORT DSpellHighlighter : public QSyntaxHighlighter
 {
 	public:
 		/**

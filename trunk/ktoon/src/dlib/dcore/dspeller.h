@@ -27,11 +27,12 @@
 #include <QString>
 
 #include "dcore/dspellinterface.h"
+#include "dcore/dglobal.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DSpeller : public QObject
+class D_CORE_EXPORT DSpeller : public QObject
 {
 	Q_OBJECT;
 	public:

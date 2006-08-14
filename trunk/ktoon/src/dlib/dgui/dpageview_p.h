@@ -27,13 +27,14 @@
 #include <QListView>
 #include <QTabBar>
 #include <QTreeView>
+#include <dcore/dglobal.h>
 
 namespace KDEPrivate {
 
 class DPageListViewDelegate;
 class DPageListViewProxy;
 
-class DPagePlainView : public QAbstractItemView
+class D_GUI_EXPORT DPagePlainView : public QAbstractItemView
 {
   public:
     DPagePlainView( QWidget *parent = 0 );

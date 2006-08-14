@@ -22,11 +22,12 @@
 #define DAPPLICATIONPROPERTIES_H
 
 #include <QString>
+#include "dglobal.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DApplicationProperties
+class D_CORE_EXPORT DApplicationProperties
 {
 	protected:
 		DApplicationProperties();

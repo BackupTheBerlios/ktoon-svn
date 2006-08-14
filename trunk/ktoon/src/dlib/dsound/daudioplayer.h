@@ -24,11 +24,12 @@
 #include <qobject.h>
 
 #include "daudioengineiface.h"
+#include <dcore/dglobal.h>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DAudioPlayer : public QObject
+class D_CORE_EXPORT DAudioPlayer : public QObject
 {
 	Q_OBJECT;
 	public:

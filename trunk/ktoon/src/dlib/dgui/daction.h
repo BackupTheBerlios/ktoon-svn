@@ -23,13 +23,15 @@
 #include <QAction>
 #include <QKeySequence>
 
+#include "dcore/dglobal.h"
+
 class DActionManager;
 
 /**
  * @brief la clase DAction hereda de QAction, para facilitar la creaccion de acciones, y dando un parametro para identificar las acciones.
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DAction : public QAction
+class D_GUI_EXPORT DAction : public QAction
 {
 	public:
 		/**

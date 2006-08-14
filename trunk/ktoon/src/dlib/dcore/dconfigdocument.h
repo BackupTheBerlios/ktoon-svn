@@ -26,12 +26,13 @@
 #include <QStringList>
 #include <QVariant>
 #include <QHash>
+#include "dcore/dglobal.h"
 
 /**
  * This class represents the doon configuration xml document
  * @author David Cuadrado
 */
-class DConfigDocument : public QDomDocument
+class D_CORE_EXPORT DConfigDocument : public QDomDocument
 {
 	public:
     		DConfigDocument(const QString &path);

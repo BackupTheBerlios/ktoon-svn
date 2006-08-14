@@ -22,6 +22,7 @@
 #define DSQUEEZELABEL_H
 
 #include <qlabel.h>
+#include <dcore/dglobal.h>
 
 /**
  * @if english
@@ -44,7 +45,7 @@
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class DSqueezeLabel : public QLabel
+class D_GUI_EXPORT DSqueezeLabel : public QLabel
 {
 	public:
 		DSqueezeLabel(QWidget *parent, const char *name=0);

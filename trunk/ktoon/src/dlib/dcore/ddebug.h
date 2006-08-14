@@ -23,6 +23,7 @@
 
 #include <QTextStream>
 #include <QColor>
+#include "dcore/dglobal.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
@@ -79,7 +80,7 @@ enum DebugType
 };
 
 #if !defined(D_NODEBUG)
-class DDebug
+class D_CORE_EXPORT DDebug
 {
 	public:
 		class Streamer : public QObject

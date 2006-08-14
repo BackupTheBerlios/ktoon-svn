@@ -24,11 +24,12 @@
 #include <QString>
 #include <QPolygon>
 #include <QPainterPath>
+#include "ktglobal.h"
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
  */
-class Q_DECL_EXPORT KTGraphicalAlgorithm
+class KTOON_EXPORT KTGraphicalAlgorithm
 {
 	private:
 		KTGraphicalAlgorithm() {}

@@ -22,6 +22,7 @@
 #define KTPHOTOGRAM_H
 
 #include <QGraphicsScene>
+#include "ktglobal_store.h"
 
 /**
  * @NOTE: ESTA CLASE NO ES USADA EN ESTE MOMENTO, NO USAR!!!
@@ -29,7 +30,7 @@
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class KTPhotogram : public QGraphicsScene
+class STORE_EXPORT KTPhotogram : public QGraphicsScene
 {
 	public:
 		KTPhotogram(QObject * parent = 0);

@@ -28,7 +28,7 @@
 #include <QString>
 
 #include "dcore/dspellinterface.h"
-
+#include "dglobal.h"
 
 struct AspellSpeller;
 
@@ -40,7 +40,7 @@ struct AspellSpeller;
  * @endif
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DAspellChecker : public DSpellInterface
+class D_CORE_EXPORT DAspellChecker : public DSpellInterface
 {
 	public:
 		/**

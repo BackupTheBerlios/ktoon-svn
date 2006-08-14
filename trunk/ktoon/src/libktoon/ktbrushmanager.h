@@ -24,11 +24,12 @@
 #include <QObject>
 #include <QPen>
 #include <QBrush>
+#include "ktglobal.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTBrushManager : public QObject
+class KTOON_EXPORT KTBrushManager : public QObject
 {
 	Q_OBJECT;
 	public:

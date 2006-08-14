@@ -24,6 +24,7 @@
 #include <QModelIndex>
 
 #include <dgui/dclicklineedit.h>
+#include <dcore/dglobal.h>
 
 class QTreeWidget;
 class QTreeWidgetItem;
@@ -37,7 +38,7 @@ class QToolButton;
  * appropriate QTreeWidgets should be needed.
  */
 
-class Q_GUI_EXPORT DTreeWidgetSearchLine : public DClickLineEdit
+class D_GUI_EXPORT DTreeWidgetSearchLine : public DClickLineEdit
 {
     Q_OBJECT
 
@@ -293,7 +294,7 @@ private:
  * Creates a widget featuring a DTreeWidgetSearchLine, a label with the text
  * "Search" and a button to clear the search.
  */
-class Q_GUI_EXPORT DTreeWidgetSearchLineWidget : public QWidget
+class D_GUI_EXPORT DTreeWidgetSearchLineWidget : public QWidget
 {
     Q_OBJECT
 

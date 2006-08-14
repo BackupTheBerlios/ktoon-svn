@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,75 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "dguiitem.h"
+#ifndef KTGLOBAL_STORE_H
+#define KTGLOBAL_STORE_H
 
-DGuiItem::DGuiItem(const QString &text, const QIcon &icon, const QString &toolTip, const QString &whatIs) : m_text(text), m_icon(icon), m_tooltip(toolTip), m_whatIs(whatIs)
-{
-}
+#include <ktglobal.h>
 
-
-DGuiItem::~DGuiItem()
-{
-}
-
-void DGuiItem::setText(const QString &text)
-{
-	m_text = text;
-}
-
-void DGuiItem::setIcon(const QIcon &icon)
-{
-	m_icon = icon;
-}
-
-void DGuiItem::setToolTip(const QString &toolTip)
-{
-	m_tooltip = toolTip;
-}
-
-void DGuiItem::setWhatIs( const QString &whatIs)
-{
-	m_whatIs = whatIs;
-}
-
-void DGuiItem::setKeySequence(const QKeySequence &key)
-{
-	m_keySequence = key;
-}
-
-void  DGuiItem::setCursor(const QCursor &cursor)
-{
-	m_cursor = cursor;
-}
+#define STORE_EXPORT D_CORE_EXPORT
 
 
-QString  DGuiItem::text() const
-{
-	return m_text;
-}
+#endif // KTGLOBAL_STORE_H
 
-QIcon  DGuiItem::icon() const
-{
-	return m_icon;
-}
 
-QString  DGuiItem::toolTip() const
-{
-	return m_tooltip;
-}
 
-QString  DGuiItem::whatIs() const
-{
-	return m_whatIs;
-}
-
-QKeySequence  DGuiItem::keySequence() const
-{
-	return m_keySequence;
-}
-
-QCursor  DGuiItem::cursor() const
-{
-	return m_cursor;
-}
 

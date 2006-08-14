@@ -23,6 +23,7 @@
 #include <qdom.h>
 #include <qmap.h>
 #include <qstringlist.h>
+#include <dcore/dglobal.h>
 
 typedef QMap<QString, QString> ThemeKey;
 
@@ -58,7 +59,7 @@ typedef QMap<QString, QString> ThemeKey;
  * @endverbatim
 */
 
-class DThemeDocument : public QDomDocument
+class D_GUI_EXPORT DThemeDocument : public QDomDocument
 {
 	public:
 		DThemeDocument();

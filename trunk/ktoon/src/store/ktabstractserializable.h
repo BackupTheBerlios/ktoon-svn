@@ -25,6 +25,7 @@
 
 #include <QDomDocument>
 #include <QDomElement>
+#include "ktglobal_store.h"
 
 /**
  * @if spanish
@@ -32,7 +33,7 @@
  * @endif
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Q_DECL_EXPORT KTAbstractSerializable
+class STORE_EXPORT KTAbstractSerializable
 {
 	public:
 		virtual void fromXml(const QString &xml) = 0;

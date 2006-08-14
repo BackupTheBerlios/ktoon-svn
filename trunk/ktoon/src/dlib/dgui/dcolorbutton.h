@@ -27,10 +27,11 @@
 #include <QDragLeaveEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
+#include "dcore/dglobal.h"
 
 class QColor;
 
-class DColorButton : public QAbstractButton
+class D_GUI_EXPORT DColorButton : public QAbstractButton
 {
 	Q_OBJECT;
 	Q_PROPERTY( QColor color READ color WRITE setColor );

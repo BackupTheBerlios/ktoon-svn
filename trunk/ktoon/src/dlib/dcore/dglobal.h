@@ -22,6 +22,17 @@
 #ifndef DGLOBAL_H
 #define DGLOBAL_H
 
+#if defined(QT_SHARED) || defined(QT_PLUGIN)
+# define D_GUI_EXPORT Q_GUI_EXPORT
+# define D_CORE_EXPORT Q_DECL_EXPORT
+# define D_SOUND_EXPORT Q_DECL_EXPORT
+#else
+# define D_GUI_EXPORT
+# define D_CORE_EXPORT
+# define D_SOUND_EXPORT
+#endif
+
+
 #include "dapplicationproperties.h"
 
 #define DATA_DIR dAppProp->dataDir()

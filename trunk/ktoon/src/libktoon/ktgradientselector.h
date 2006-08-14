@@ -34,7 +34,7 @@
 #include <QPainterPath>
 
 #include <QList>
-
+#include "ktglobal.h"
 
 
 /**
@@ -45,7 +45,7 @@
  * @endif
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
  */
-class KTGradientSelector : public QAbstractSlider
+class KTOON_EXPORT KTGradientSelector : public QAbstractSlider
 {
 	Q_OBJECT;
 	

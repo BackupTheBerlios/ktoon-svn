@@ -21,13 +21,14 @@
 #define DSEPARATOR_H
 
 #include <QFrame>
+#include <dcore/dglobal.h>
 
 /**
  * Standard horizontal or vertical separator.
  *
  * @author Michael Roth \<mroth@wirlweb.de\>
  */
-class DSeparator : public QFrame
+class D_GUI_EXPORT DSeparator : public QFrame
 {
 	Q_OBJECT;
 	Q_PROPERTY( Qt::Orientation orientation READ orientation WRITE setOrientation );

@@ -26,6 +26,7 @@
 
 #include <QDomDocument>
 #include <QDomElement>
+#include "ktglobal_store.h"
 
 typedef QList<KTFrame *> Frames;
 
@@ -34,7 +35,7 @@ typedef QList<KTFrame *> Frames;
  * @author David Cuadrado \<krawek@toonka.com\>
 */
 
-class Q_DECL_EXPORT KTLayer : public QObject, public KTAbstractSerializable
+class STORE_EXPORT KTLayer : public QObject, public KTAbstractSerializable
 {
 	Q_OBJECT
 	public:

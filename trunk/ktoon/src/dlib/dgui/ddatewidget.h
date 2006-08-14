@@ -23,6 +23,7 @@
 
 #include <qwidget.h>
 #include <QDate>
+#include "dcore/dglobal.h"
 
 class QComboBox;
 class QSpinBox;
@@ -30,7 +31,7 @@ class QSpinBox;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DDateWidget : public QWidget
+class D_GUI_EXPORT DDateWidget : public QWidget
 {
 	Q_OBJECT;
 	public:

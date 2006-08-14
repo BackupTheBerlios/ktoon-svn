@@ -28,11 +28,12 @@
 #include <QFrame>
 
 #include "ktscene.h"
+#include "ktglobal.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTAnimationArea : public QFrame
+class KTOON_EXPORT KTAnimationArea : public QFrame
 {
 	Q_OBJECT
 	public:

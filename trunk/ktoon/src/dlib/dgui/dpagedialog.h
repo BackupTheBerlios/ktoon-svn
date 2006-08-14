@@ -27,6 +27,7 @@
 
 #include <QDialog>
 #include <dpagewidget.h>
+#include <dcore/dglobal.h>
 
 /**
  * @short A dialog base class which can handle multiple pages.
@@ -60,7 +61,7 @@
  *
  * @author Tobias Koenig (tokoe@kde.org)
  */
-class Q_GUI_EXPORT DPageDialog : public QDialog
+class D_GUI_EXPORT DPageDialog : public QDialog
 {
   Q_OBJECT
 

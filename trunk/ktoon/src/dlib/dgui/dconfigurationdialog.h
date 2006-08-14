@@ -29,6 +29,7 @@
 #include "dgui/dflatbutton.h"
 
 #include "dgui/dpagedialog.h"
+#include "dcore/dglobal.h"
 
 class QStackedWidget;
 class QTreeWidget;
@@ -38,7 +39,7 @@ class QTableWidgetItem;
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class DConfigurationDialog : public DPageDialog
+class D_GUI_EXPORT DConfigurationDialog : public DPageDialog
 {
 	Q_OBJECT
 	public:

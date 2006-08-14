@@ -22,11 +22,12 @@
 #define KTSCENEEVENT_H
 
 #include <ktprojectevent.h>
+#include "ktglobal_store.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Q_DECL_EXPORT KTSceneEvent : public KTProjectEvent
+class STORE_EXPORT KTSceneEvent : public KTProjectEvent
 {
 	public:
 		KTSceneEvent(Action action, int sceneIndex, const QVariant &data = 0);

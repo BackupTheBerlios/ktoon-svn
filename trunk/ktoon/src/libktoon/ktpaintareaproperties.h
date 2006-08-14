@@ -26,7 +26,7 @@
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-struct KTPaintAreaProperties
+struct KTOON_EXPORT KTPaintAreaProperties
 {
 	public:
 		KTPaintAreaProperties();

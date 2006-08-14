@@ -23,12 +23,13 @@
 
 #include <QGraphicsTextItem>
 #include <ktabstractserializable.h>
+#include "ktglobal_store.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class KTTextItem : public QGraphicsTextItem, public KTAbstractSerializable
+class STORE_EXPORT KTTextItem : public QGraphicsTextItem, public KTAbstractSerializable
 {
 	public:
 		KTTextItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);

@@ -22,6 +22,7 @@
 #define CLICKLINEEDIT_H
 
 #include <qlineedit.h>
+#include "dcore/dglobal.h"
 
 /**
   This class provides a KLineEdit which contains a greyed-out hinting
@@ -30,7 +31,7 @@
   @short LineEdit with customizable "Click here" text
   @author Daniel Molkentin
 */
-class DClickLineEdit : public QLineEdit
+class D_GUI_EXPORT DClickLineEdit : public QLineEdit
 {
     public:
         DClickLineEdit( const QString &msg, QWidget *parent = 0 );

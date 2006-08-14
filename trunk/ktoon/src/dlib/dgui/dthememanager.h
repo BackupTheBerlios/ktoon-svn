@@ -23,13 +23,14 @@
 
 #include <QXmlDefaultHandler>
 #include <QPalette>
+#include <dcore/dglobal.h>
 
 class DThemeDocument;
 
 /**
  * @author David Cuadrado
 */
-class DThemeManager : public QXmlDefaultHandler
+class D_GUI_EXPORT DThemeManager : public QXmlDefaultHandler
 {
 	public:
 		DThemeManager();

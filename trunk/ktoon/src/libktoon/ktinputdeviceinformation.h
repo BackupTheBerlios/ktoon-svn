@@ -23,6 +23,7 @@
 
 #include <QObject>
 #include <QPoint>
+#include "ktglobal.h"
 
 class QMouseEvent;
 class QTabletEvent;
@@ -31,7 +32,7 @@ class QTabletEvent;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTInputDeviceInformation : public QObject
+class KTOON_EXPORT KTInputDeviceInformation : public QObject
 {
 	public:
 		KTInputDeviceInformation(QObject *parent = 0);

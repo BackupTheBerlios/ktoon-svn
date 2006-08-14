@@ -26,6 +26,7 @@
 #include <QHash>
 
 #include "dcore/dconfigdocument.h"
+#include "dcore/dglobal.h"
 
 class DConfig;
 
@@ -34,7 +35,7 @@ class DConfig;
  * this is a doon config handler
 */
 
-class DConfig : public QObject
+class D_CORE_EXPORT DConfig : public QObject
 {
 	protected:
 		DConfig();

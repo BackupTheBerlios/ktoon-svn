@@ -35,6 +35,7 @@
 #include <QPainterPath>
 
 #include "dbrushadjuster.h"
+#include "ktglobal.h"
 
 /**
  * @if english
@@ -44,7 +45,7 @@
  * @endif
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTGraphicElement
+class KTOON_EXPORT KTGraphicElement
 {
 	public:
 		/**

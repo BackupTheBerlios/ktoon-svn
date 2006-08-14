@@ -32,7 +32,7 @@ typedef QHash<int, QPushButton *> Buttons;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DTabDialog : public QDialog
+class D_GUI_EXPORT DTabDialog : public QDialog
 {
 	Q_OBJECT
 	public:

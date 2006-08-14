@@ -23,11 +23,12 @@
 
 #include "ktabstractserializable.h"
 #include <QGraphicsPathItem>
+#include "ktglobal_store.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTPathItem : public KTAbstractSerializable, public QGraphicsPathItem
+class STORE_EXPORT KTPathItem : public KTAbstractSerializable, public QGraphicsPathItem
 {
 	public:
 		KTPathItem( QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);

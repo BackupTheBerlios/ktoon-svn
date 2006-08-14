@@ -22,6 +22,7 @@
 #define DFONTCHOOSER_H
 
 #include <QFrame>
+#include <dcore/dglobal.h>
 
 class QComboBox;
 class QFontComboBox;
@@ -29,7 +30,7 @@ class QFontComboBox;
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
 */
-class DFontChooser : public QFrame
+class D_GUI_EXPORT DFontChooser : public QFrame
 {
 	Q_OBJECT
 	public:

@@ -28,12 +28,13 @@ class DVHBox;
 #include <QBoxLayout>
 #include <QEvent>
 #include <QMouseEvent>
+#include <dcore/dglobal.h>
 
 /**
  * @author David Cuadrado
 */
 
-class DVHBox : public QFrame
+class D_GUI_EXPORT DVHBox : public QFrame
 {
 	Q_OBJECT
 	public:

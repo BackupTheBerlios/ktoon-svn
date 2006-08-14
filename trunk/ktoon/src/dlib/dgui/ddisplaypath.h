@@ -26,6 +26,7 @@
 #include <QImage>
 #include <QPen>
 #include <QBrush>
+#include "dcore/dglobal.h"
 
 /**
  * @if english
@@ -35,7 +36,7 @@
  * @endif
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DDisplayPath : public QFrame
+class D_GUI_EXPORT DDisplayPath : public QFrame
 {
 	Q_OBJECT
 	public:

@@ -29,6 +29,7 @@
 #include <QFrame>
 #include <QPainterPath>
 #include <QImage>
+#include <dcore/dglobal.h>
 
 #define UNITCOUNT 5
 
@@ -38,7 +39,7 @@ class DRulerBase;
  * @author Jorge Cuadrado
 */
 
-class DRulerBase : public QFrame
+class D_GUI_EXPORT DRulerBase : public QFrame
 {
 	Q_OBJECT
 	

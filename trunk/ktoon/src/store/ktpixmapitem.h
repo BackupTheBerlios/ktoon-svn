@@ -22,12 +22,13 @@
 
 #include <QGraphicsPixmapItem>
 #include "ktabstractserializable.h"
+#include "ktglobal_store.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class KTPixmapItem : public QGraphicsPixmapItem, public KTAbstractSerializable
+class STORE_EXPORT KTPixmapItem : public QGraphicsPixmapItem, public KTAbstractSerializable
 {
 	public:
 		KTPixmapItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);

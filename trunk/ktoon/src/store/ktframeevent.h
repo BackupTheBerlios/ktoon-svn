@@ -22,11 +22,12 @@
 #define KTFRAMEEVENT_H
 
 #include <ktlayerevent.h>
+#include "ktglobal_store.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Q_DECL_EXPORT KTFrameEvent : public KTLayerEvent
+class STORE_EXPORT KTFrameEvent : public KTLayerEvent
 {
 	public:
 		KTFrameEvent(Action action, int sceneIndex, int layerIndex, int frameIndex, const QVariant &data = 0);

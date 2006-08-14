@@ -34,7 +34,7 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTExportInterface
+class KTOON_EXPORT KTExportInterface
 {
 	public:
 		enum Format

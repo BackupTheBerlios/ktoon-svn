@@ -23,13 +23,14 @@
 #define KPAGEWIDGETMODEL_H
 
 #include <QtGui/QIcon>
+#include <dcore/dglobal.h>
 
 
 #include "dpagemodel.h"
 
 class QWidget;
 
-class Q_GUI_EXPORT DPageWidgetItem
+class D_GUI_EXPORT DPageWidgetItem
 {
   public:
     DPageWidgetItem( QWidget *widget, const QString &name );

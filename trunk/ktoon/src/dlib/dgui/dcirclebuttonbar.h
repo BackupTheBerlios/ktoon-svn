@@ -36,6 +36,7 @@
 #include <QImage>
 
 #include "dgui/dcirclebutton.h"
+#include "dcore/dglobal.h"
 
 class QPainterPath;
 
@@ -43,7 +44,8 @@ class QPainterPath;
  * @short The DCircleButtonBar class provides a circular button bar
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DCircleButtonBar : public QFrame
+
+class D_GUI_EXPORT DCircleButtonBar : public QFrame
 {
 	public:
 		/**

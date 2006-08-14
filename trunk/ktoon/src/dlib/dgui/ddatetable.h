@@ -23,11 +23,12 @@
 
 #include <QTableWidget>
 #include <QDate>
+#include "dcore/dglobal.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DDateTable : public QTableWidget
+class D_GUI_EXPORT DDateTable : public QTableWidget
 {
 	Q_OBJECT;
 	public:

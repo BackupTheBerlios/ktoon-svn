@@ -23,6 +23,7 @@
 #define KTOONSTYLE_H
 
 #include <QPlastiqueStyle>
+#include <dcore/dglobal.h>
 
 /**
  * @if english
@@ -32,7 +33,7 @@
  * @endif
  */
 
-class DWaitStyle : public QPlastiqueStyle
+class D_GUI_EXPORT DWaitStyle : public QPlastiqueStyle
 {
 public:
     DWaitStyle();

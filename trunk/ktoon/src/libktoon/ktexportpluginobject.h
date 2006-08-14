@@ -22,11 +22,12 @@
 #define KTEXPORTPLUGINOBJECT_H
 
 #include <QObject>
+#include "ktglobal.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTExportPluginObject : public QObject
+class KTOON_EXPORT KTExportPluginObject : public QObject
 {
 	Q_OBJECT
 	public:

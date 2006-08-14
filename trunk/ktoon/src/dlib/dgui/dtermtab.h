@@ -23,6 +23,7 @@
 
 #include <dgui/dtabwidget.h>
 #include <QToolButton>
+#include <dcore/dglobal.h>
 
 
 class DTerm;
@@ -30,7 +31,7 @@ class DTerm;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DTermTab : public DTabWidget
+class D_GUI_EXPORT DTermTab : public DTabWidget
 {
 	Q_OBJECT
 	public:

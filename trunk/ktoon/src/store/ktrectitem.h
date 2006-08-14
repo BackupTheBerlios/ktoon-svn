@@ -24,11 +24,12 @@
 #include <QGraphicsRectItem>
 
 #include "ktabstractserializable.h"
+#include "ktglobal_store.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTRectItem : public QGraphicsRectItem, public KTAbstractSerializable
+class STORE_EXPORT KTRectItem : public QGraphicsRectItem, public KTAbstractSerializable
 {
 	public:
 		KTRectItem( QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);

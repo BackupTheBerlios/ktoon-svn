@@ -23,6 +23,7 @@
 
 #include <QString>
 #include <QList>
+#include "dcore/dglobal.h"
 
 /**
  * @struct DTip
@@ -51,7 +52,7 @@ struct DTip
  * @author David Cuadrado \<krawek@gmail.com\>
  */
 
-class DTipDatabase
+class D_CORE_EXPORT DTipDatabase
 {
 	public:
 		DTipDatabase(const QString &file);

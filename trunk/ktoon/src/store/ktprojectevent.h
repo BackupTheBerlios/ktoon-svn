@@ -25,6 +25,7 @@
 #include <QObject>
 #include <QString>
 #include <QVariant>
+#include "ktglobal_store.h"
 
 class KTProjectEvent;
 class KTSceneEvent;
@@ -34,7 +35,7 @@ class KTFrameEvent;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Q_DECL_EXPORT KTProjectEvent
+class STORE_EXPORT KTProjectEvent
 {
 	public:
 		struct PartPosition

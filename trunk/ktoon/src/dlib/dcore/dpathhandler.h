@@ -24,11 +24,12 @@
 #include <QPainterPath>
 #include <QChar>
 #include <QStringList>
+#include "dcore/dglobal.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DPathHandler
+class D_CORE_EXPORT DPathHandler
 {
 	public:
 		/**

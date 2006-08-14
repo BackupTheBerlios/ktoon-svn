@@ -24,10 +24,11 @@
 #include <QScrollArea>
 #include <QLabel>
 #include <QDebug>
+#include "dcore/dglobal.h"
 
 class QScrollArea;
 
-class DClickableLabel : public QLabel
+class D_GUI_EXPORT DClickableLabel : public QLabel
 {
 	Q_OBJECT
 	public:

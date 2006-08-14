@@ -22,6 +22,7 @@
 #define KTPROJECTMANAGER_H
 
 #include <QObject>
+#include "ktglobal_store.h"
 
 class KTProject;
 class KTProjectEvent;
@@ -31,7 +32,7 @@ class KTProjectCommand;
  * Clase para tratar eventos del projecto
  * @author David Cuadrado \<krawek@gmail.com\>
 */
-class Q_DECL_EXPORT KTProjectManager : public QObject
+class STORE_EXPORT KTProjectManager : public QObject
 {
 	Q_OBJECT;
 	public:

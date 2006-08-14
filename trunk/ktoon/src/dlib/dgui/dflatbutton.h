@@ -22,11 +22,12 @@
 #define DFLATBUTTON_H
 
 #include <QAbstractButton>
+#include <dcore/dglobal.h>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DFlatButton : public QAbstractButton
+class D_GUI_EXPORT DFlatButton : public QAbstractButton
 {
 	Q_OBJECT
 	public:

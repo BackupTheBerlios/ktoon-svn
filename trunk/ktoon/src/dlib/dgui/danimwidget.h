@@ -30,6 +30,7 @@
 #include <QShowEvent>
 #include <QList>
 #include <QWidget>
+#include "dcore/dglobal.h"
 
 typedef QList<QPixmap> ListOfPixmaps;
 
@@ -43,8 +44,7 @@ typedef QList<QPixmap> ListOfPixmaps;
  * @Author David Cuadrado
  * @endif
  */
- 
-class DAnimWidget : public QWidget
+class D_GUI_EXPORT DAnimWidget : public QWidget
 {
 	public:
 		enum Type { AnimText = 0, AnimPixmap };

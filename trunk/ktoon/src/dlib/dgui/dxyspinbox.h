@@ -25,11 +25,12 @@
 #include <QPushButton>
 #include <QSpinBox>
 #include <QLabel>
+#include <dcore/dglobal.h>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DXYSpinBox : public QGroupBox
+class D_GUI_EXPORT DXYSpinBox : public QGroupBox
 {
 	Q_OBJECT
 	public:
@@ -43,7 +44,7 @@ class DXYSpinBox : public QGroupBox
 		double x();
 		double y();
 		void setModifyTogether(bool enable);
-				
+		
 	private slots:
 		void updateXValue(double v);
 		void updateYValue(double v);

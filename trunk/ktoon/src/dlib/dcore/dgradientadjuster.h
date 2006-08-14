@@ -28,11 +28,13 @@
 #include <QRect>
 #include <QMatrix>
 
+#include "dcore/dglobal.h"
+
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class DGradientAdjuster
+class D_CORE_EXPORT DGradientAdjuster
 {
 	protected:
 		

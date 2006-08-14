@@ -26,12 +26,13 @@
 #include <QFont>
 
 #include <ktabstractserializable.h>
+#include "ktglobal_store.h"
 
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTButtonItem : public QObject, public QGraphicsItem, public KTAbstractSerializable
+class STORE_EXPORT KTButtonItem : public QObject, public QGraphicsItem, public KTAbstractSerializable
 {
 	Q_OBJECT;
 	public:

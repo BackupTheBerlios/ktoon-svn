@@ -25,15 +25,18 @@
 #include <QToolButton>
 
 #include "dgui/ddatetable.h"
+#include "dcore/dglobal.h"
 
 class QComboBox;
 class QLabel;
 
 /**
+ * 
  * @author David Cuadrado <krawek@gmail.com>
+ * 
 */
 
-class DDatePicker : public QFrame
+class D_GUI_EXPORT DDatePicker : public QFrame
 {
 	Q_OBJECT;
 	public:

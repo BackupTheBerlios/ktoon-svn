@@ -30,15 +30,14 @@
 #include <QDockWidget>
 
 #include "dosd.h"
-
 #include "ktprojectevent.h"
-
 #include "ktabstractprojecteventhandler.h"
+#include "ktglobal.h"
 
 /**
  * @author Jorge Cuadrado
 */
-class KTModuleWidgetBase : public QWidget, public KTAbstractProjectEventHandler
+class KTOON_EXPORT KTModuleWidgetBase : public QWidget, public KTAbstractProjectEventHandler
 {
 	Q_OBJECT
 	public:

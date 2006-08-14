@@ -22,11 +22,12 @@
 #define DTREELISTWIDGET_H
 
 #include <QTreeWidget>
+#include <dcore/dglobal.h>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DTreeListWidget : public QTreeWidget
+class D_GUI_EXPORT DTreeListWidget : public QTreeWidget
 {
 	Q_OBJECT
 	public:

@@ -22,11 +22,12 @@
 #define DTABWIDGET_H
 
 #include <QTabWidget>
+#include <dcore/dglobal.h>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DTabWidget : public QTabWidget
+class D_GUI_EXPORT DTabWidget : public QTabWidget
 {
 	Q_OBJECT
 	public:

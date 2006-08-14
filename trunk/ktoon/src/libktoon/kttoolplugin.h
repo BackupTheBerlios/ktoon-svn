@@ -28,11 +28,12 @@
 #include "ktprojectevent.h"
 
 #include <QGraphicsView>
+#include "ktglobal.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Q_DECL_EXPORT KTToolPlugin : public QObject, public KTToolInterface
+class KTOON_EXPORT KTToolPlugin : public QObject, public KTToolInterface
 {
 	Q_OBJECT;
 	Q_INTERFACES(KTToolInterface);

@@ -23,6 +23,7 @@
 
 #include <QString>
 #include <QStringList>
+#include "dcore/dglobal.h"
 
 /**
  * @if english
@@ -32,7 +33,7 @@
  * @endif
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DSpellInterface
+class D_CORE_EXPORT DSpellInterface
 {
 	public:
 		/**

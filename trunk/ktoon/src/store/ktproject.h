@@ -27,6 +27,7 @@
 #include <QObject>
 #include <QDomDocument>
 #include <QDomElement>
+#include "ktglobal_store.h"
 
 
 class KTScene;
@@ -46,7 +47,7 @@ typedef QList<KTScene *> Scenes;
  * @author David Cuadrado \<krawek@toonka.com\>
 */
 
-class Q_DECL_EXPORT KTProject : public QObject, public KTAbstractSerializable
+class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 {
 	Q_OBJECT;
 	public:

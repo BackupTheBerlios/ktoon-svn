@@ -27,13 +27,14 @@
 #ifndef __DCPUINFO_H
 #define __DCPUINFO_H
 
+#include "dcore/dglobal.h"
 
 /**
  * This class provides a means for applications to obtain information at
  * runtime about processor support for certain architecture extensions,
  * such as MMX, SSE, 3DNow and AltiVec.
  */
-class DCPUInfo
+class D_CORE_EXPORT DCPUInfo
 {
     public:
        /**

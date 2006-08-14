@@ -24,12 +24,14 @@
 #include <QString>
 #include <QColor>
 
+#include "dglobal.h"
+
 /**
  * Class that contains generic useful algorithms
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class DAlgorithm
+class D_CORE_EXPORT DAlgorithm
 {
 	public:
 // 		DAlgorithm();

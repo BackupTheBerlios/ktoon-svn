@@ -23,13 +23,14 @@
 
 #include <QXmlDefaultHandler>
 #include <QStack>
+#include "ktglobal_store.h"
 
 class QGraphicsItem;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTItemFactory : public QXmlDefaultHandler
+class STORE_EXPORT KTItemFactory : public QXmlDefaultHandler
 {
 	public:
 		KTItemFactory();

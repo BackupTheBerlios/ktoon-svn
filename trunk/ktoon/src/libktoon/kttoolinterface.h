@@ -38,6 +38,7 @@
 #include "daction.h"
 
 #include "qplugin.h" // Q_EXPORT_PLUGIN
+#include "ktglobal.h"
 
 class KTScene;
 
@@ -45,7 +46,7 @@ class KTScene;
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTToolInterface
+class KTOON_EXPORT KTToolInterface
 {
 	public:
 		enum ToolType

@@ -23,6 +23,7 @@
 
 #include <QTableWidget>
 #include <QMap>
+#include <dcore/dglobal.h>
 
 /**
  * @if spanish
@@ -31,7 +32,7 @@
  * @endif
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Q_GUI_EXPORT DWidgetListView : public QTableWidget
+class D_GUI_EXPORT DWidgetListView : public QTableWidget
 {
 	Q_OBJECT
 	public:

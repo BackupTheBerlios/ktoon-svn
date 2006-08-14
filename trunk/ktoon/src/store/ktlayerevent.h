@@ -21,11 +21,12 @@
 #define KTLAYEREVENT_H
 
 #include <ktsceneevent.h>
+#include "ktglobal_store.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Q_DECL_EXPORT KTLayerEvent : public KTSceneEvent
+class STORE_EXPORT KTLayerEvent : public KTSceneEvent
 {
 	public:
 		KTLayerEvent(Action action, int sceneIndex, int layerIndex, const QVariant &data = 0);

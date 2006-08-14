@@ -27,6 +27,7 @@
 #include <QStackedWidget>
 
 #include "dgui/dvhbox.h"
+#include <dcore/dglobal.h>
 
 class DWizardPage;
 
@@ -34,7 +35,7 @@ class DWizardPage;
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class DWizard : public QDialog
+class D_GUI_EXPORT DWizard : public QDialog
 {
 	Q_OBJECT
 

@@ -33,7 +33,7 @@ class QKeySequence;
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class AFilterInterface
+class KTOON_EXPORT AFilterInterface
 {
 	public:
 		virtual ~AFilterInterface() {}

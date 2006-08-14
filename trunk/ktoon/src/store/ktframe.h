@@ -26,6 +26,7 @@
 
 #include <QDomDocument>
 #include <QDomElement>
+#include "ktglobal_store.h"
 
 class KTFrame;
 
@@ -33,7 +34,7 @@ class KTFrame;
  * @brief Esta clase representa un marco o frame de la animacion
  * @author David Cuadrado \<krawek@toonka.com\>
 */
-class Q_DECL_EXPORT KTFrame : public QObject, public KTAbstractSerializable
+class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
 {
 	public:
 		/**

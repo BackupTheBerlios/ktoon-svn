@@ -25,12 +25,13 @@
 #include <QPluginLoader>
 #include <QUrl>
 #include <qplugin.h>
+#include <dcore/dglobal.h>
 
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DAudioEngineIface
+class D_CORE_EXPORT DAudioEngineIface
 {
 	public:
 		virtual ~DAudioEngineIface() {}

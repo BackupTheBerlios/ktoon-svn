@@ -23,6 +23,7 @@
 
 #include <QMainWindow>
 #include <QWorkspace>
+#include <dcore/dglobal.h>
 
 /**
  * @if english
@@ -32,7 +33,7 @@
  * @endif
  * @author Jorge Cuadrado
 */
-class DMdiWindow : public QMainWindow
+class D_GUI_EXPORT DMdiWindow : public QMainWindow
 {
 	Q_OBJECT
 	public:

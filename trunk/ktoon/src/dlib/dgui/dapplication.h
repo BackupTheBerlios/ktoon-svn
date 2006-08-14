@@ -35,6 +35,7 @@
 #include <QDialog>
 
 #include "dgui/dvhbox.h"
+#include "dcore/dglobal.h"
 
 #include "dgui/dwizard.h"
 
@@ -57,7 +58,7 @@ typedef QMap<QString, QString> ParseArgs;
  * @TODO
  * @li We need have a cache directory (like /tmp in un*x)
 */
-class Q_GUI_EXPORT DApplication : public QApplication
+class D_GUI_EXPORT DApplication : public QApplication
 {
 	Q_OBJECT
 	public:

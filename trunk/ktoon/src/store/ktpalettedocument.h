@@ -24,6 +24,7 @@
 #include <QDomDocument>
 #include <QBrush>
 #include <QList>
+#include "ktglobal_store.h"
 
 /**
  * Esta clase se utiliza para guardar las paletas
@@ -31,7 +32,7 @@
  * @author David Cuadrado
 */
 
-class Q_DECL_EXPORT KTPaletteDocument : public QDomDocument
+class STORE_EXPORT KTPaletteDocument : public QDomDocument
 {
 	public:
 		/**

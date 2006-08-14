@@ -26,11 +26,12 @@
 #include <QPen>
 #include <QXmlAttributes>
 #include <QBrush>
+#include "ktglobal.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTSvg2Qt
+class KTOON_EXPORT KTSvg2Qt
 {
 	private:
 		KTSvg2Qt();

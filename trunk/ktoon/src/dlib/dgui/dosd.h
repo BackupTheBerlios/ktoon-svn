@@ -26,12 +26,13 @@
 #include <QPaintEvent>
 #include <QTimer>
 #include <QTextDocument>
+#include <dcore/dglobal.h>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class DOsd : public QWidget
+class D_GUI_EXPORT DOsd : public QWidget
 {
 	Q_OBJECT
 	public:

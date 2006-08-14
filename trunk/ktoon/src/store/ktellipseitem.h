@@ -23,10 +23,11 @@
 
 #include "ktabstractserializable.h"
 #include <QGraphicsEllipseItem>
+#include "ktglobal_store.h"
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-class KTEllipseItem: public KTAbstractSerializable, public QGraphicsEllipseItem
+class STORE_EXPORT KTEllipseItem: public KTAbstractSerializable, public QGraphicsEllipseItem
 {
 	public:
 		KTEllipseItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);

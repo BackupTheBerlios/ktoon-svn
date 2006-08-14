@@ -22,12 +22,13 @@
 #define KTFRAMEGROUP_H
 
 #include <ktframe.h>
+#include "ktglobal_store.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class KTFrameGroup : public KTFrame
+class STORE_EXPORT KTFrameGroup : public KTFrame
 {
 	public:
 		KTFrameGroup(QObject *parent = 0);

@@ -21,12 +21,13 @@
 #ifndef DTOOLBOX_H
 #define DTOOLBOX_H
 
+#include <dcore/dglobal.h>
 #include <QToolBox>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DToolBox : public QToolBox
+class D_GUI_EXPORT DToolBox : public QToolBox
 {
 	Q_OBJECT
 	public:

@@ -28,6 +28,7 @@
 #include <QTableView>
 #include <QStyleOptionViewItem>
 #include <QHash>
+#include "dcore/dglobal.h"
 
 class DCellView;
 class DCellViewItem;
@@ -42,7 +43,7 @@ typedef QHash<int, QVariant> ItemData;
  * @author David Cuadrado <krawek@gmail.com>
 */
 
-class DCellViewItem
+class D_GUI_EXPORT DCellViewItem
 {
 	friend class DCellViewModel;
 	friend class DCellView;

@@ -22,6 +22,7 @@
 #define KTPACKAGEHANDLER_H
 
 #include <QString>
+#include "ktglobal.h"
 
 class QuaZip;
 
@@ -29,7 +30,7 @@ class QuaZip;
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTPackageHandler
+class KTOON_EXPORT KTPackageHandler
 {
 	public:
 		KTPackageHandler();

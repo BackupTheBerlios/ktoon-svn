@@ -22,6 +22,7 @@
 #define KTABSTRACTPROJECTEVENTHANDLER_H
 
 #include <QObject>
+#include "ktglobal_store.h"
 
 class KTProjectEvent;
 class KTFrameEvent;
@@ -32,7 +33,7 @@ class KTItemEvent;
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
 */
-class Q_DECL_EXPORT KTAbstractProjectEventHandler
+class STORE_EXPORT KTAbstractProjectEventHandler
 {
 	public:
 		KTAbstractProjectEventHandler();

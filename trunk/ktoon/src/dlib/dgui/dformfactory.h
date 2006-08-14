@@ -22,6 +22,7 @@
 
 #include <QWidget>
 #include <QStringList>
+#include <dcore/dglobal.h>
 
 class QBoxLayout;
 class QGridLayout;
@@ -29,7 +30,7 @@ class QGridLayout;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DFormFactory
+class D_GUI_EXPORT DFormFactory
 {
 	public:
 		DFormFactory();
