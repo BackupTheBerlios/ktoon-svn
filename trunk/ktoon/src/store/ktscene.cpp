@@ -24,7 +24,7 @@
 #include <QDir>
 #include <QGraphicsItem>
 
-KTScene::KTScene(QObject *parent) : QGraphicsScene(parent), m_isLocked(false),  m_layerCount(0), m_isVisible(true)
+KTScene::KTScene(KTProject *parent) : QGraphicsScene(parent), m_isLocked(false),  m_layerCount(0), m_isVisible(true)
 {
 	setItemIndexMethod(QGraphicsScene::NoIndex);
 	
@@ -309,4 +309,16 @@ int KTScene::currentLayerIndex() const
 {
 	return m_framePosition.layer;
 }
+
+
+int KTScene::index() const
+{
+	if ( KTProject *project = dynamic_cast<KTProject *>(parent()) )
+	{
+		return project->indexOf(const_cast<KTScene *>(this) );
+	}
+	
+	return -1;
+}
+
 

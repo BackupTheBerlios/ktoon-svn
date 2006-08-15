@@ -43,7 +43,10 @@ NodeManager::~NodeManager()
 	{
 		if(node)
 		{
-			node->scene()->removeItem(node);
+			if ( QGraphicsScene *scene = node->scene() )
+			{
+				scene->removeItem(node);
+			}
 		}
 		delete node;
 		node = 0;

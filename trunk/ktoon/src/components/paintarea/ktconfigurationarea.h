@@ -38,6 +38,8 @@ class KTConfigurationArea : public QDockWidget
 		
 		void setConfigurator(QWidget *widget);
 		
+		QSize sizeHint() const;
+		
 	public slots:
 		void hideConfigurator();
 		void showConfigurator();

@@ -112,7 +112,7 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 {
 	Q_UNUSED(scene);
 	Q_UNUSED(view);
-	int smoothness = m_configurator->exactness();
+	double smoothness = m_configurator->exactness();
 	
 	if ( m_firstPoint == input->pos() && m_path.elementCount() == 1)
 	{
@@ -165,21 +165,26 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 	}
 	
 	m_item->setPath(newPath);
-}
-
-QPainterPath Brush::path() const
-{
-	return m_path;
+	
+	
+	// Add KTItemEvent
+	
+	QDomDocument doc;
+	doc.appendChild(m_item->toXml( doc ));
+	
+	KTItemEvent *event = new KTItemEvent(KTProjectEvent::Add, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), -1, doc.toString()); // Adds to end
+	
+	addProjectEvent(event);
 }
 
 void Brush::setupActions()
 {
 	DAction *pencil = new DAction( QIcon(brush_xpm), tr("Pencil"), this);
 	pencil->setShortcut( QKeySequence(tr("Ctrl+B")) );
-		
+	
 	QPixmap pix(THEME_DIR+"/cursors/pencil.png");
 	pencil->setCursor( QCursor(pix, 0, pix.height()) );
-		
+	
 	m_actions.insert( tr("Pencil"), pencil );
 }
 
@@ -212,19 +217,14 @@ void Brush::aboutToChangeTool()
 {
 }
 
-QString Brush::toolToXml() const
-{
-	QDomDocument doc;
-	doc.appendChild(m_item->toXml( doc ));
-	return doc.toString();
-}
-
-KTProjectEvent::Action Brush::action() const
-{
-	return KTProjectEvent::Add;
-}
+// QString Brush::toolToXml() const
+// {
+// 	QDomDocument doc;
+// 	doc.appendChild(m_item->toXml( doc ));
+// 	return doc.toString();
+// }
 
 
 
-Q_EXPORT_PLUGIN2(kt_brush, Brush )
+Q_EXPORT_PLUGIN2(kt_brush, Brush );
 

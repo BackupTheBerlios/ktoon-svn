@@ -17,15 +17,19 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "ktitemevent.h"
+#include <ddebug.h>
 
 KTItemEvent::KTItemEvent(Action action, int sceneIndex, int layerIndex, int frameIndex, int position, const QVariant &data) : KTFrameEvent(action, sceneIndex, layerIndex, frameIndex, data), m_position(position)
 {
+	DINIT;
 }
 
 
 KTItemEvent::~KTItemEvent()
 {
+	DEND;
 }
 
 
@@ -43,7 +47,7 @@ bool KTItemEvent::isValid() const
 
 KTProjectEvent *KTItemEvent::clone() const
 {
-	KTItemEvent *event = new KTItemEvent(action(), sceneIndex(), layerIndex(), frameIndex(), m_position, data().toString() );
+	KTItemEvent *event = new KTItemEvent(action(), sceneIndex(), layerIndex(), frameIndex(), m_position, data() );
 	
 	event->setPartName( partName() );
 	

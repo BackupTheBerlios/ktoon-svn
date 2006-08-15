@@ -133,7 +133,7 @@ int Ellipse::toolType() const
 
 QWidget *Ellipse::configurator()
 {
-	return new QWidget();
+	return 0;
 }
 
 bool Ellipse::isComplete() const

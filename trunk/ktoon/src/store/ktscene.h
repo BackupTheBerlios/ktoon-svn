@@ -23,7 +23,7 @@
 
 #include "ktabstractserializable.h"
 #include "ktlayer.h"
-
+#include "ktproject.h"
 
 #include <QDomDocument>
 #include <QDomElement>
@@ -45,7 +45,7 @@ class STORE_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializabl
 		/**
 		 * Constructor por defecto
 		 */
-		KTScene(QObject *parent = 0);
+		KTScene(KTProject *parent);
 		
 		/**
 		 * Destructor
@@ -109,6 +109,8 @@ class STORE_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializabl
 		
 		int currentFrameIndex() const;
 		int currentLayerIndex() const;
+		
+		int index() const;
 		
 	public:
 		void setCurrentFrame(int layer, int frame);

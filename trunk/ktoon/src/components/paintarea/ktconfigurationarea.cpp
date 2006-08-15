@@ -51,6 +51,16 @@ KTConfigurationArea::~KTConfigurationArea()
 	}
 }
 
+QSize  KTConfigurationArea::sizeHint() const
+{
+	if ( widget() )
+	{
+		return widget()->sizeHint();
+	}
+	
+	return QDockWidget::sizeHint();
+}
+
 void KTConfigurationArea::setConfigurator(QWidget *w)
 {
 	QWidget *old = widget();

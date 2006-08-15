@@ -59,6 +59,7 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		QString projectName() const;
 		
 		KTScene *scene(int position);
+		int indexOf(KTScene *scene) const;
 		
 		KTScene *createScene(int position, const QString &xml = QString());
 		KTLayer *createLayer(int scene, int position, const QString &xml = QString());

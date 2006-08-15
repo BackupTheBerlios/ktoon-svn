@@ -39,7 +39,7 @@ Node::Node(TypeNode node, const QPointF & pos, NodeManager *manager, QGraphicsIt
 // 	setFlag(ItemIsMovable);
 	setFlag(ItemIsSelectable, false);
 	setPos(pos);
-	setZValue(1);
+	setZValue(100);
 }
 
 

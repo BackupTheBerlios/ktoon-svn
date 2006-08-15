@@ -152,6 +152,12 @@ void KTPaintArea::setUseOpenGL(bool opengl)
 	Q_UNUSED(opengl);
 	dWarning() << tr("OpenGL isn't supported");
 #endif
+	
+	// to restore the cursor.
+	if ( viewport() )
+	{
+		viewport()->setCursor(cursor);
+	}
 }
 
 void KTPaintArea::setDrawGrid(bool draw)
@@ -180,6 +186,8 @@ void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 	
 	if (m_tool )
 	{
+		m_tool->begin();
+		
 		m_isDrawing = true;
 		m_tool->press(m_inputInformation, m_brushManager,  qobject_cast<KTScene *>(scene()), this );
 	}
@@ -218,17 +226,12 @@ void KTPaintArea::mouseReleaseEvent(QMouseEvent *event)
 		KTScene *currentScene = qobject_cast<KTScene *>(scene());
 		m_tool->release(m_inputInformation, m_brushManager,  currentScene, this );
 		
-		QString toolToXml = m_tool->toolToXml();
-		
-		SHOW_VAR(toolToXml);
-		
-		if ( ! toolToXml.isEmpty() )
+		foreach( KTProjectEvent *e, m_tool->events() )
 		{
-			KTItemEvent event(m_tool->action(), m_currentSceneIndex, currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), -1,  toolToXml);
-			
-			emit eventTriggered( &event );
+			emit eventTriggered( e );
 		}
 		
+		m_tool->end();
 	}
 	
 	delete eventMapped;

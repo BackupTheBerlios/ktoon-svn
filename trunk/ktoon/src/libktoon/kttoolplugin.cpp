@@ -20,6 +20,8 @@
 
 #include "kttoolplugin.h"
 
+#include <dcore/ddebug.h>
+
 KTToolPlugin::KTToolPlugin(QObject * parent) : QObject(parent)
 {
 }
@@ -44,12 +46,44 @@ QString KTToolPlugin::currentTool() const
 	return m_currentTool;
 }
 
-QString KTToolPlugin::toolToXml() const
+void KTToolPlugin::begin()
 {
-	return QString();
+	dDebug() << "Begin: " << m_currentTool << " Crash?";
+	qDeleteAll(m_events);
+	m_events.clear();
+	
 }
 
-KTProjectEvent::Action KTToolPlugin::action() const
+void KTToolPlugin::end()
 {
-	return KTProjectEvent::None;
+	dDebug() << "End: " << m_currentTool;
 }
+
+void KTToolPlugin::addProjectEvent(KTProjectEvent *e)
+{
+	m_events << e;
+}
+
+void KTToolPlugin::insertProjectEvent(int index, KTProjectEvent *e)
+{
+	if ( index <= m_events.count() )
+	{
+		m_events.insert(index, e);
+	}
+	else
+	{
+		dWarning() << "Cannot insert event, index: " << index;
+	}
+}
+
+void KTToolPlugin::removeProjectEvent(KTProjectEvent *e)
+{
+	m_events.removeAll(e);
+}
+
+QList<KTProjectEvent *> KTToolPlugin::events() const
+{
+	return m_events;
+}
+
+

@@ -148,7 +148,7 @@ QWidget *Select::configurator()
 // 	{
 // 		m_configurator = new ExactnessConfigurator;
 // 	}
-	return new QWidget;
+	return 0;
 }
 		
 bool Select::isComplete() const

@@ -528,7 +528,7 @@ void KTMainWindow::closeEvent( QCloseEvent *event )
 
 void KTMainWindow::createCommand(const KTProjectEvent *event)
 {
-	D_FUNCINFO;
+	D_FUNCINFO << event;
 	
 	if ( !event->isValid() )
 	{

@@ -342,14 +342,18 @@ QGraphicsItem *KTProject::createItem(int scenePosition, int layerPosition, int f
 					position = frame->graphics().count() - 1;
 				}
 				
-				if ( frame->createItem(position, xml) )
+				QGraphicsItem *item = frame->createItem(position, xml);
+				if ( item )
 				{
 					KTItemEvent event(KTProjectEvent::Add, scenePosition, layerPosition, framePosition, position, xml);
 					emit commandExecuted( &event);
 				}
+				
+				return item;
 			}
 		}
 	}
+	return 0;
 }
 
 
@@ -422,6 +426,11 @@ KTScene *KTProject::scene(int position)
 	}
 	
 	return m_scenes[position];
+}
+
+int KTProject::indexOf(KTScene *scene) const
+{
+	return m_scenes.indexOf(scene);
 }
 
 void KTProject::fromXml(const QString &xml )

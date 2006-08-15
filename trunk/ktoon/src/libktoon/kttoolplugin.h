@@ -26,6 +26,7 @@
 #include "ktbrushmanager.h"
 #include "ktinputdeviceinformation.h"
 #include "ktprojectevent.h"
+#include "ktitemevent.h"
 
 #include <QGraphicsView>
 #include "ktglobal.h"
@@ -51,16 +52,26 @@ class KTOON_EXPORT KTToolPlugin : public QObject, public KTToolInterface
 		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view) = 0;
 		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view) = 0;
 		
-		virtual QString toolToXml() const;
-		virtual KTProjectEvent::Action action() const;
-		
 		virtual QMap<QString, DAction *> actions() const = 0;
 		
 		virtual QWidget *configurator()  = 0;
 		virtual void aboutToChangeTool() = 0;
 		
+		
+	public:
+		// Events
+		void begin();
+		void end();
+		
+		void addProjectEvent(KTProjectEvent *e);
+		void insertProjectEvent(int index, KTProjectEvent *e);
+		void removeProjectEvent(KTProjectEvent *e);
+		
+		QList<KTProjectEvent *> events() const;
+		
 	private:
 		QString m_currentTool;
+		QList<KTProjectEvent *> m_events;
 };
 
 #endif

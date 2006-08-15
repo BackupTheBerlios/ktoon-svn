@@ -581,13 +581,20 @@ void KTViewDocument::selectTool()
 		
 		QWidget *toolConfigurator = tool->configurator();
 		
-		if ( toolConfigurator && m_configurationArea)
+		if ( toolConfigurator)
 		{
 			m_configurationArea->setConfigurator( toolConfigurator );
 			toolConfigurator->show();
 			if ( !m_configurationArea->isVisible() )
 			{
 				m_configurationArea->show();
+			}
+		}
+		else
+		{
+			if ( m_configurationArea->isVisible() )
+			{
+				m_configurationArea->close();
 			}
 		}
 		

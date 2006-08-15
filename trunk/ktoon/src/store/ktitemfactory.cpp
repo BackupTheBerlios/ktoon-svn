@@ -49,7 +49,7 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 		m_root = qname;
 	}
 	
-	if ( qname == "path" )
+	if ( m_root == "path" )
 	{
 		m_item = new KTPathItem;
 		
@@ -69,11 +69,11 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 		qgraphicsitem_cast<KTPathItem *>(m_item)->setPos( pos );
 		
 	}
-	else if ( qname == "rect" )
+	else if ( m_root == "rect" )
 	{
 		m_item = new KTRectItem;
 	}
-	else if ( qname == "ellipse" )
+	else if ( m_root == "ellipse" )
 	{
 		m_item = new KTEllipseItem;
 		
@@ -89,13 +89,18 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 		KTSvg2Qt::svgmatrix2qtmatrix( atts.value("transform"), matrix );
 		qgraphicsitem_cast<KTPathItem *>(m_item)->setMatrix(matrix);
 	}
-	else if ( qname == "button" )
+	else if ( m_root == "button" )
 	{
 		m_item = new KTButtonItem;
 	}
-	else if ( qname == "text" )
+	else if ( m_root == "text" )
 	{
 		m_item = new KTTextItem;
+	}
+	else
+	{
+		dWarning() << QObject::tr("Unknown root: ") << m_root;
+		return false;
 	}
 	
 	m_qname = qname;
