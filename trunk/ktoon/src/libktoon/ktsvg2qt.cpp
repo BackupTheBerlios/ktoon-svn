@@ -635,6 +635,8 @@ bool KTSvg2Qt::parseBrush(QBrush &brush, const QXmlAttributes &attributes)
 
 bool KTSvg2Qt::svgmatrix2qtmatrix(const QString &data, QMatrix &matrix)
 {
+	if ( data.isEmpty() ) return false;
+	
 	QString::const_iterator itr = data.constBegin();
 	while (itr != data.constEnd()) 
 	{

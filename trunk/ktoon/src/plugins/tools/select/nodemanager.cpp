@@ -17,10 +17,10 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "nodemanager.h"
 
-#include "QDebug"
-NodeManager::NodeManager(QGraphicsItem * parent, KTScene *scene): m_parent(parent)
+NodeManager::NodeManager(QGraphicsItem * parent, KTScene *scene): m_parent(parent), m_moved(false)
 {
 	QRectF rect = parent->sceneBoundingRect();
 	Node *topLeft = new Node(Node::TopLeft, rect.topLeft(), this, parent, scene);
@@ -61,39 +61,42 @@ void NodeManager::syncNodes(const QRectF sbr)
 	{
 		return;
 	}
+	
 	QHash<Node::TypeNode, Node *>::iterator it = m_nodes.begin();
 	while(it != m_nodes.end())
 	{
 		if((*it))
 		{
-		switch(it.key())
-		{
-			case Node::TopLeft:
+			switch(it.key())
 			{
-				(*it)->setPos( sbr.topLeft() );
-				break;
+				case Node::TopLeft:
+				{
+					(*it)->setPos( sbr.topLeft() );
+					break;
+				}
+				case Node::TopRight:
+				{
+					(*it)->setPos(sbr.topRight());
+					break;
+				}
+				case Node::BottomRight:
+				{
+					(*it)->setPos(sbr.bottomRight());
+					break;
+				}
+				case Node::BottomLeft:
+				{
+					(*it)->setPos(sbr.bottomLeft());
+					break;
+				}
+				case Node::Center:
+				{
+					(*it)->setPos(sbr.center());
+					break;
+				}
 			}
-			case Node::TopRight:
-			{
-				(*it)->setPos(sbr.topRight());
-				break;
-			}
-			case Node::BottomRight:
-			{
-				(*it)->setPos(sbr.bottomRight());
-				break;
-			}
-			case Node::BottomLeft:
-			{
-				(*it)->setPos(sbr.bottomLeft());
-				break;
-			}
-			case Node::Center:
-			{
-				(*it)->setPos(sbr.center());
-				break;
-			}
-		}
+			
+			m_moved = true;
 		}
 		++it;
 	}

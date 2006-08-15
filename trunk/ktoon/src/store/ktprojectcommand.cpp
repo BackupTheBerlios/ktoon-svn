@@ -97,6 +97,11 @@ QString KTProjectCommand::actionString(int action)
 			return QObject::tr("view");
 		}
 		break;
+		case KTProjectEvent::Transform:
+		{
+			return QObject::tr("transform");
+		}
+		break;
 	}
 	
 	return QString();
@@ -471,6 +476,11 @@ void KTProjectCommand::itemCommand(const KTItemEvent *event, bool redo)
 			{
 			}
 			break;
+			case KTProjectEvent::Transform:
+			{
+				m_xml = m_project->transformItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
+			}
+			break;
 		}
 	}
 	else
@@ -501,6 +511,11 @@ void KTProjectCommand::itemCommand(const KTItemEvent *event, bool redo)
 			break;
 			case KTProjectEvent::View:
 			{
+			}
+			break;
+			case KTProjectEvent::Transform:
+			{
+				m_project->transformItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), m_xml);
 			}
 			break;
 		}

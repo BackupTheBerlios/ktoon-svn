@@ -31,6 +31,7 @@
 #include "ktrectitem.h"
 #include "ktellipseitem.h"
 #include "ktgraphicalgorithm.h"
+#include "ktitemserializer.h"
 
 
 KTItemFactory::KTItemFactory() : QXmlDefaultHandler(), m_item(0)
@@ -49,8 +50,9 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 		m_root = qname;
 	}
 	
-	if ( m_root == "path" )
+	if ( qname == "path" )
 	{
+		qDebug("PATH");
 		m_item = new KTPathItem;
 		
 		QPainterPath path;
@@ -58,49 +60,32 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 		
 		qgraphicsitem_cast<KTPathItem *>(m_item)->setPath(path);
 		
-		QMatrix matrix;
-		KTSvg2Qt::svgmatrix2qtmatrix( atts.value("transform"), matrix );
-		
-		qgraphicsitem_cast<KTPathItem *>(m_item)->setMatrix(matrix);
-		
-		QPointF pos;
-		KTSvg2Qt::parsePointF(atts.value("pos"), pos );
-		
-		qgraphicsitem_cast<KTPathItem *>(m_item)->setPos( pos );
 		
 	}
-	else if ( m_root == "rect" )
+	else if ( qname == "rect" )
 	{
 		m_item = new KTRectItem;
 	}
-	else if ( m_root == "ellipse" )
+	else if ( qname == "ellipse" )
 	{
 		m_item = new KTEllipseItem;
 		
 		QRectF rect(QPointF(0, 0), QSizeF(2 * atts.value("rx").toDouble(), 2 * atts.value("ry").toDouble() ));
 		SHOW_VAR(rect);
 		qgraphicsitem_cast<KTEllipseItem *>(m_item)->setRect(rect);
-		
-		QPointF pos;
-		KTSvg2Qt::parsePointF(atts.value("pos"), pos );
-		qgraphicsitem_cast<KTEllipseItem *>(m_item)->setPos(pos);
-		
-		QMatrix matrix;
-		KTSvg2Qt::svgmatrix2qtmatrix( atts.value("transform"), matrix );
-		qgraphicsitem_cast<KTPathItem *>(m_item)->setMatrix(matrix);
 	}
-	else if ( m_root == "button" )
+	else if ( qname == "button" )
 	{
 		m_item = new KTButtonItem;
 	}
-	else if ( m_root == "text" )
+	else if ( qname == "text" )
 	{
 		m_item = new KTTextItem;
 	}
-	else
+	
+	if ( qname == "properties" && m_item )
 	{
-		dWarning() << QObject::tr("Unknown root: ") << m_root;
-		return false;
+		KTItemSerializer::loadProperties( m_item, atts);
 	}
 	
 	m_qname = qname;
@@ -146,6 +131,7 @@ bool KTItemFactory::fatalError ( const QXmlParseException & exception )
 
 QGraphicsItem *KTItemFactory::create(const QString &xml)
 {
+	dDebug() << "Creating item: " << xml;
 	QXmlSimpleReader reader;
 	reader.setContentHandler(this);
 	reader.setErrorHandler(this);

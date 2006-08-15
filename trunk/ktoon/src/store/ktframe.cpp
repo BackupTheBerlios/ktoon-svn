@@ -181,3 +181,14 @@ QList<QGraphicsItem *> KTFrame::graphics() const
 	return m_items;
 }
 
+QGraphicsItem *KTFrame::item(int position) const
+{
+	if ( position < 0 || position >= m_items.count() )
+	{
+		D_FUNCINFO << " FATAL ERROR: index out of bound " << position;
+		return 0;
+	}
+	
+	return m_items[position];
+}
+

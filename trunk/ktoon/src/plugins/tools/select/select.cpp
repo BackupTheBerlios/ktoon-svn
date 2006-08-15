@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "select.h"
 
 #include <QPointF>
@@ -32,8 +33,11 @@
 #include "ktscene.h"
 
 #include "nodemanager.h"
-#include <QDebug>
+#include "ktitemserializer.h"
+
+#include <QDebug> // ddebug! lazy bitch
 #include <QTimer>
+
 Select::Select()
 {
 	setupActions();
@@ -78,6 +82,7 @@ void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 	Q_UNUSED(brushManager);
 	Q_UNUSED(scene);
 	Q_UNUSED(view);
+	
 	static int s = 0;
 	s++;
 	if(input->buttons() == Qt::LeftButton && scene->selectedItems().count() > 0)
@@ -94,6 +99,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 	Q_UNUSED(brushManager);
 	Q_UNUSED(view);
 	
+	
 	if(scene->selectedItems().count() > 0)
 	{
 		QList<QGraphicsItem *> selecteds = scene->selectedItems();
@@ -105,6 +111,13 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 			{
 				NodeManager *manager = new NodeManager(item, scene);
 				m_nodes << manager;
+				
+				QDomDocument doc;
+				doc.appendChild(KTItemSerializer::properties( item, doc ));
+				
+				KTItemEvent *event = new KTItemEvent(KTProjectEvent::Transform, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().indexOf(item), doc.toString() );
+				
+				addProjectEvent(event);
 			}
 		}
 	}
@@ -113,12 +126,6 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 		qDeleteAll(m_nodes);
 		m_nodes.clear();
 	}
-}
-
-QPainterPath Select::path() const
-{
-	return QPainterPath();
-	
 }
 
 void Select::setupActions()
@@ -161,14 +168,6 @@ void Select::aboutToChangeTool()
 	m_view->setDragMode (QGraphicsView::NoDrag);
 }
 
-QString Select::toolToXml() const
-{
-	QDomDocument doc;
-// 	doc.appendChild(m_item->toXml( doc ));
-	return doc.toString();
-}
-
-
 void Select::syncNodes()
 {
 	//FIXME: tratar de optimizar esto
@@ -185,4 +184,5 @@ void Select::syncNodes()
 	}
 }
 
-Q_EXPORT_PLUGIN2(kt_select, Select )
+Q_EXPORT_PLUGIN2(kt_select, Select );
+

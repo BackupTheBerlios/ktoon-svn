@@ -28,6 +28,7 @@
 
 #include "ktsvg2qt.h"
 #include "ktgraphicalgorithm.h"
+#include "ktitemserializer.h"
 
 KTEllipseItem::KTEllipseItem(QGraphicsItem * parent, QGraphicsScene * scene): QGraphicsEllipseItem(parent, scene), m_dragOver(false)
 {
@@ -59,7 +60,7 @@ QDomElement KTEllipseItem::toXml(QDomDocument &doc)
 	root.setAttribute("rx", rect().width()/2);
 	root.setAttribute("ry", rect().height()/2);
 	
-	root.setAttribute( "pos", "(" + QString::number(pos().x()) + "," + QString::number(pos().y()) + ")"  );
+	root.appendChild( KTItemSerializer::properties( this, doc));
 	
 	return root;
 }

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Jorge Cuadrado   *
- *   kuadrosx@toonka.com   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,52 +17,45 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTPROJECTPARSER_H
+#define KTPROJECTPARSER_H
 
-#ifndef NODE_H
-#define NODE_H
-
-#include <QGraphicsItem>
-#include <QObject>
-#include <QPointF>
-
-
+#include <qxml.h>
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author David Cuadrado <krawek@gmail.com>
 */
-class NodeManager;
-class Node : public QObject, public QGraphicsItem
+class Q_DECL_EXPORT KTProjectParser : public QObject, public QXmlDefaultHandler
 {
-	Q_OBJECT;
-	
 	public:
+		KTProjectParser(QObject *parent = 0);
+		~KTProjectParser();
 		
-		enum TypeNode{TopLeft  = 0, TopRight, BottomLeft, BottomRight, Center   };
-		Node(TypeNode node, const QPointF & pos = QPoint(0,0) , NodeManager *manager = 0, QGraphicsItem * parent = 0, QGraphicsScene * scene = 0 );
-		~Node();
+		/**
+		 * Analiza etiquetas de apertura del documento XML
+		 */
+		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
 		
-		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
-		QRectF boundingRect() const;
+		/**
+		 * Analiza etiquetas de cierre del documento XML
+		 */
+		bool endElement( const QString& ns, const QString& localname, const QString& qname);
 		
-		enum { Type = UserType + 1 };
+		/**
+		 * Muestra errores en el analisis del documento
+		 */
+		bool error ( const QXmlParseException & exception );
 		
-		int type() const { return Type; }
-		int typeNode() const;
+		/**
+		 * Muestra errores fatales en el analisis del documento
+		 */
+		bool fatalError ( const QXmlParseException & exception );
 		
-	protected:
-		QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-		void mousePressEvent(QGraphicsSceneMouseEvent *event);
-		void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-		void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
+		bool parse(const QString &document);
 		
 	private:
-		TypeNode m_typeNode;
-		bool m_notChange;
-		QRectF m_brParent;
-		QGraphicsItem * m_parent;
-		NodeManager *m_manager;
-		
-		QGraphicsRectItem *gb1, *gb2 ;
+		QString m_root;
+		QString m_qname;
 };
 
 #endif

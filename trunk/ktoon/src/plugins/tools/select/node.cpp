@@ -192,11 +192,14 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 			}
 		}
 	}
+	
+	
 	if(m_typeNode == Center)
 	{
 		m_parent->moveBy(event->pos().x(), event->pos().y());
 		QGraphicsItem::mouseReleaseEvent(event);
 	}
+	
 	m_manager->syncNodes( m_parent->sceneBoundingRect() );
 	update();
 	m_parent->setSelected( true);

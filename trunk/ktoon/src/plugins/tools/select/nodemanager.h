@@ -42,6 +42,7 @@ class NodeManager
 		QHash<Node::TypeNode, Node *> m_nodes;
 		QGraphicsItem * m_parent;
 		
+		bool m_moved;
 };
 
 #endif

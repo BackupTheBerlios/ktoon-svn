@@ -65,6 +65,7 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		KTLayer *createLayer(int scene, int position, const QString &xml = QString());
 		KTFrame *createFrame(int scene, int layer, int position, const QString &xml = QString());
 		QGraphicsItem *createItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml);
+		QString transformItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml);
 		
 		QString removeScene(int position);
 		QString removeLayer(int scene, int position);

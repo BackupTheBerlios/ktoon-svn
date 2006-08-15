@@ -17,10 +17,11 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "ellipse.h"
 
-#include <daction.h>
-#include <dglobal.h>
+#include <dgui/daction.h>
+#include <dcore/dglobal.h>
 
 #include <QPointF>
 #include <QKeySequence>
@@ -28,7 +29,6 @@
 
 #include "ktscene.h"
 
-// #include "node.h"
 
 Ellipse::Ellipse()
 {
@@ -60,7 +60,7 @@ void Ellipse::press(const KTInputDeviceInformation *input, KTBrushManager *brush
 {
 	Q_UNUSED(brushManager);
 	Q_UNUSED(view);
-	if(input->buttons () == Qt::LeftButton)
+	if(input->buttons() == Qt::LeftButton)
 	{
 		m_ellipse = new KTEllipseItem(QRectF(QPointF(0,0), QSizeF(0.0,0.0)));		m_ellipse->setPos(input->pos());
 		
@@ -98,18 +98,15 @@ void Ellipse::release(const KTInputDeviceInformation *input, KTBrushManager *bru
 // 		Node *spanAngle = new Node(Node::SpanAngle, poly.last(), m_ellipse, scene);
 // 	}
 	
-}
-
-QString Ellipse::toolToXml() const
-{
+	
 	QDomDocument doc;
 	doc.appendChild(m_ellipse->toXml( doc ));
-	return doc.toString();
-}
-
-QPainterPath Ellipse::path() const
-{
-	return m_ellipse->shape();
+	
+	
+	KTItemEvent *event = new KTItemEvent(KTProjectEvent::Add, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), -1, doc.toString());
+	
+	addProjectEvent(event);
+	
 }
 
 void Ellipse::setupActions()

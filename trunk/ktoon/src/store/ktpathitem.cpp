@@ -27,6 +27,7 @@
 #include <QPainterPath>
 #include "ktsvg2qt.h"
 #include "ktgraphicalgorithm.h"
+#include "ktitemserializer.h"
 
 KTPathItem::KTPathItem( QGraphicsItem * parent, QGraphicsScene * scene) : QGraphicsPathItem(parent, scene), m_dragOver(false)
 {
@@ -48,21 +49,6 @@ void KTPathItem::fromXml(const QString &xml)
 QDomElement KTPathItem::toXml(QDomDocument &doc)
 {
 	QDomElement root = doc.createElement("path");
-	
-	QString strMatrix = "matrix(";
-	QMatrix m = matrix();
-	qreal a = m.m11();
-	qreal b = m.m12();
-	qreal c = m.m21();
-	qreal d = m.m22();
-	qreal e = m.dx();
-	qreal f = m.dy();
-	
-	strMatrix += QString::number(a) + "," +QString::number(b) + "," + QString::number(c) + "," + QString::number(d) + "," + QString::number(e) + "," + QString::number(f) + ")" ; 
-	
-	root.setAttribute( "transform", strMatrix);
-	
-	
 	
 	QString strPath = "";
 	QChar t;
@@ -124,7 +110,7 @@ QDomElement KTPathItem::toXml(QDomDocument &doc)
 	
 	root.setAttribute( "d", strPath);
 	
-	root.setAttribute( "pos", "(" + QString::number(pos().x()) + "," + QString::number(pos().y()) + ")"  );
+	root.appendChild(KTItemSerializer::properties( this, doc));
 	
 	return root;
 }
