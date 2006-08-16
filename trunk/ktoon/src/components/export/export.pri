@@ -1,0 +1,5 @@
+
+INCLUDEPATH += $$EXPORT_DIR
+
+LIBS += -L$$EXPORT_DIR -lexport
+

@@ -1,0 +1,5 @@
+
+INCLUDEPATH += $$SCENES_DIR
+
+LIBS += -L$$SCENES_DIR -lscenes
+

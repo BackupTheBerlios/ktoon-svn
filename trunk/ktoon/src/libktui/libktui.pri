@@ -1,0 +1,5 @@
+
+INCLUDEPATH += $$LIBUI_DIR
+
+LIBS += -L$$LIBUI_DIR -lktui
+

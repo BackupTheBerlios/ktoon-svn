@@ -1,0 +1,5 @@
+
+INCLUDEPATH += $$IMPORT_DIR
+
+LIBS += -L$$IMPORT_DIR -limport
+

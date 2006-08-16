@@ -1,0 +1,5 @@
+
+INCLUDEPATH += $$PEN_DIR
+
+LIBS += -L$$PEN_DIR -lpen
+

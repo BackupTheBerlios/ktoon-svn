@@ -7,23 +7,12 @@ QT += xml
 INSTALLS += target 
 target.path = /plugins/ 
 KDEV_QTVER = 4 
-LIBS += -lstore \
-        -ldgui \
-        -ldsound \
-        -ldcore 
-INCLUDEPATH += ../../../../src/store \
-               ../../../../src/libktoon \
-               ../../../../src/dlib/dgui \
-               ../../../../src/dlib/dsound \
-               ../../../../src/dlib/dcore \
-               ../../../../src/dlib/ 
+
+include(../tools.pri)
+
 MOC_DIR = .moc 
 UI_DIR = .ui 
 OBJECTS_DIR = .obj 
-QMAKE_LIBDIR = ../../../../src/store \
-               ../../../../src/dlib/dgui \
-               ../../../../src/dlib/dsound \
-               ../../../../src/dlib/dcore 
 CONFIG += release \
           warn_on \
           plugin 
@@ -32,3 +21,4 @@ HEADERS += brush.h \
            exactnessconfigurator.h 
 SOURCES += brush.cpp \
            exactnessconfigurator.cpp 
+

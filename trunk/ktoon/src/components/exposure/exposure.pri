@@ -1,0 +1,5 @@
+
+INCLUDEPATH += $$EXPOSURE_DIR
+
+LIBS += -L$$EXPOSURE_DIR -lexposure
+

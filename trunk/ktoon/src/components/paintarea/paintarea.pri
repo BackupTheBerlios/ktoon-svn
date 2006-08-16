@@ -1,0 +1,5 @@
+
+INCLUDEPATH += $$PAINTAREA_DIR
+
+LIBS += -L$$PAINTAREA_DIR -lpaintarea
+

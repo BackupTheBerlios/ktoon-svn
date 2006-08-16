@@ -129,23 +129,6 @@ void KTMainWindow::createGUI()
 	m_scriptEditor->setWindowTitle(tr("Kinas"));
 	addToolView( m_scriptEditor, Qt::BottomDockWidgetArea, Drawing );
 #endif
-	/////////////////
-	
-	m_gcEditor = new KTGCEditor(this);
-#if 0
-	connect(m_gcEditor, SIGNAL(requestRotate(int)), this, SLOT(rotateCurrentElement(int)));
-	connect(m_gcEditor, SIGNAL(requestScale(double,double)), this, SLOT(scaleCurrentElement(double,double)));
-	connect(m_gcEditor, SIGNAL(requestShear(double,double)), this, SLOT(shearCurrentElement(double,double)));
-	connect(m_gcEditor, SIGNAL(requestTranslate(double,double)), this, SLOT(translateCurrentElement(double,double)));
-	
-	connect(m_gcEditor, SIGNAL(requestFlipV()), this, SLOT( flipVCurrentElement()));
-	connect(m_gcEditor, SIGNAL(requestFlipH()), this, SLOT( flipHCurrentElement()));
-#endif
-	
-	m_gcEditor->setWindowTitle(tr("GC Editor"));
-	addToolView( m_gcEditor, Qt::BottomDockWidgetArea, Drawing );
-	
-	connectToDisplays(m_gcEditor);
 	
 	//////////////
 	

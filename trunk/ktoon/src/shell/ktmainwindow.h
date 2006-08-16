@@ -49,7 +49,6 @@
 #include "ktviewdocument.h"
 #include "ktviewcamera.h"
 
-#include "ktgceditor.h"
 #include "kthelpwidget.h"
 
 #include "ktexportwidget.h"
@@ -186,7 +185,6 @@ class KTMainWindow : public DTabbedMainWindow
 		KTLibraryWidget *m_libraryWidget;
 		KTColorPalette *m_colorPalette;
 		KTPenWidget *m_penWidget;
-		KTGCEditor *m_gcEditor;
 };
 
 #endif

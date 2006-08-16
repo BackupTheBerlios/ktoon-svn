@@ -10,7 +10,6 @@ SUBDIRS += scenes \
            exposure \
            export \
            import \
-           gceditor \
            help \
            kinas \
            pen \

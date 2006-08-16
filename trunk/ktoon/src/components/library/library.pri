@@ -1,0 +1,5 @@
+
+INCLUDEPATH += $$LIBRARY_DIR
+
+LIBS += -L$$LIBRARY_DIR -llibrary
+

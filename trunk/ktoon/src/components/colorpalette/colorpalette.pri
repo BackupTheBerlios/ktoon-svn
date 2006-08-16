@@ -1,0 +1,5 @@
+
+INCLUDEPATH += $$COLORPALETTE_DIR
+
+LIBS += -L$$COLORPALETTE_DIR -lcolorpalette
+

@@ -1,0 +1,5 @@
+
+INCLUDEPATH += $$TIMELINE_DIR
+
+LIBS += -L$$TIMELINE_DIR -ltimeline
+

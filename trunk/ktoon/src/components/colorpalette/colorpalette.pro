@@ -34,3 +34,5 @@ CONFIG += release \
 warn_on \
 staticlib
 TEMPLATE = lib
+
+TARGET = colorpalette

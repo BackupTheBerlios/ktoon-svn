@@ -1,0 +1,5 @@
+
+INCLUDEPATH += $$HELP_DIR
+
+LIBS += -L$$HELP_DIR -lhelp
+

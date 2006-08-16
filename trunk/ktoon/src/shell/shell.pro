@@ -4,10 +4,23 @@
 # Target is an application:  ../../bin/ktoon.bin
 
 INSTALLS += ktdata \
-            target 
+            target
+
+include(shell.pri)
+
 target.path = /bin/ 
 ktdata.files += data/* 
 ktdata.path = /data 
+KDEV_QTVER = 4
+
+MOC_DIR = .moc 
+UI_DIR = .ui 
+OBJECTS_DIR = .obj
+
+TARGET = ../../bin/ktoon.bin
+CONFIG += release \
+          warn_on 
+TEMPLATE = app 
 TRANSLATIONS += data/translations/ktoon_es.ts \
                 data/translations/ktoon_fr.ts \
                 data/translations/ktoon_ru.ts 
@@ -30,60 +43,8 @@ SOURCES += main.cpp \
            crashwidget.cpp \
            ktapplication.cpp \
            configwizard.cpp \
-           ktmainwindow-gui.cpp 
-QT += xml opengl gui
-KDEV_QTVER = 4
-TARGETDEPS += ../../src/components/paintarea/libpaintarea.a
-LIBS += -ldcore \
--ldgui \
--lktoon \
-../../src/components/colorpalette/libcolorpalette.a \
-../../src/components/scenes/libscenes.a \
-../../src/components/exposure/libexposure.a \
-../../src/components/timeline/libtimeline.a \
-../../src/components/library/liblibrary.a \
-../../src/components/gceditor/libgceditor.a \
-../../src/components/import/libimport.a \
-../../src/components/help/libhelp.a \
-../../src/components/kinas/libkinas.a \
-../../3rdparty/quazip/libquazip.a \
-../../src/components/pen/libpen.a \
-../../src/components/export/libexport.a \
-../../src/libktui/libktui.a \
--lstore \
--ldsound \
-../../src/components/paintarea/libpaintarea.a
-INCLUDEPATH += ../../src/components/paintarea \
-../../src/components/pen \
-../../src/components/kinas \
-../../src/components/help \
-../../src/components/gceditor \
-../../src/components/import \
-../../src/components/export \
-../../src/components/exposure \
-../../src/components/timeline \
-../../src/components/library \
-../../src/components/colorpalette \
-../../src/components/scenes \
-../../src/libktui \
-../../src/store \
-../../src/libktoon \
-../../src/dlib/dgui \
-../../src/dlib/dcore \
-../../3rdparty/quazip \
-../../src/dlib
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-QMAKE_LIBDIR = ../../src/dlib/dcore \
-../../src/dlib/dgui \
-../../src/libktoon \
-../../src/store \
-../../src/dlib/dsound
-TARGET = ../../bin/ktoon.bin
-CONFIG += release \
-warn_on
-TEMPLATE = app
+           ktmainwindow-gui.cpp
+
 linux-g++{
   TARGETDEPS += ../../src/dlib/dcore/libdcore.so \
   ../../src/dlib/dgui/libdgui.so \
@@ -93,7 +54,6 @@ linux-g++{
   ../../src/components/pen/libpen.a \
   ../../src/components/kinas/libkinas.a \
   ../../src/components/help/libhelp.a \
-  ../../src/components/gceditor/libgceditor.a \
   ../../src/components/import/libimport.a \
   ../../src/components/export/libexport.a \
   ../../src/components/exposure/libexposure.a \
@@ -102,3 +62,6 @@ linux-g++{
   ../../src/components/colorpalette/libcolorpalette.a \
   ../../src/components/scenes/libscenes.a
 }
+
+
+
