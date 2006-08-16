@@ -74,6 +74,8 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 	pal.setColor(QPalette::Foreground, 0x686868);
 	
 	m_credits->setPalette(pal);
+	
+	m_credits->setFont(QFont("verdana", 24));
 
     	// 2: Ack
 	

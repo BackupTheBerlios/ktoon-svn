@@ -26,6 +26,7 @@
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @TODO: Debe ser un plugin geometrico, no solo elipse
 */
 class Ellipse: public KTToolPlugin
 {

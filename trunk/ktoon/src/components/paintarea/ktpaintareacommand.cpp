@@ -65,7 +65,15 @@ void KTPaintAreaCommand::redo()
 		{
 			m_oldData = m_paintArea->brushManager()->pen();
 			
-			m_paintArea->brushManager()->setPen( qvariant_cast<QPen>(m_event->data()));
+			QPen pen = qvariant_cast<QPen>(m_event->data());
+			if ( !pen.color().isValid() )
+			{
+				QPen old = m_paintArea->brushManager()->pen();
+				pen.setColor( old.color() );
+				pen.setBrush( old.brush() );
+			}
+			
+			m_paintArea->brushManager()->setPen( pen );
 		}
 		break;
 		case KTPaintAreaEvent::ChangePenBrush:

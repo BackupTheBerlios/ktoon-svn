@@ -28,6 +28,8 @@
 #include <deditspinbox.h>
 #include <QComboBox>
 
+class KTPaintAreaEvent;
+
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
@@ -38,6 +40,9 @@ class KTPenWidget : public KTModuleWidgetBase
 		KTPenWidget(QWidget *parent = 0);
 		~KTPenWidget();
 		QPen pen() const;
+		
+	private:
+		void emitPenChanged();
 		
 	private:
 		DEditSpinBox *m_thickness;
@@ -56,6 +61,7 @@ class KTPenWidget : public KTModuleWidgetBase
 		
 	signals:
 		void penChanged(const QPen &pen);
+		void paintAreaEventTriggered(const KTPaintAreaEvent *e);
 		
 	private:
 		QPen m_pen;

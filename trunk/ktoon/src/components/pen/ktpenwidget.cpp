@@ -22,6 +22,8 @@
 #include <dglobal.h>
 #include <ddebug.h>
 
+#include "ktpaintareaevent.h"
+
 KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 {
 	setCaption( tr("Pen"));
@@ -79,27 +81,25 @@ KTPenWidget::~KTPenWidget()
 void KTPenWidget::setThickness(int value)
 {
 	m_pen.setWidth(value);
-	
-	emit penChanged( m_pen );
+	emitPenChanged();
 }
 
 void KTPenWidget::setStyle(int s)
 {
 	m_pen.setStyle( Qt::PenStyle(m_style->itemData(s).toInt()) );
-	
-	emit penChanged( m_pen );
+	emitPenChanged();
 }
 
 void KTPenWidget::setJoinStyle(int s)
 {
 	m_pen.setJoinStyle(Qt::PenJoinStyle(m_joinStyle->itemData(s).toInt()) );
-	emit penChanged( m_pen );
+	emitPenChanged();
 }
 
 void KTPenWidget::setCapStyle(int s )
 {
 	m_pen.setCapStyle(Qt::PenCapStyle(m_capStyle->itemData(s).toInt()) );
-	emit penChanged( m_pen );
+	emitPenChanged();
 }
 
 void KTPenWidget::reset()
@@ -110,10 +110,20 @@ void KTPenWidget::reset()
 	setThickness( 3 );
 	blockSignals(false);
 	m_style->setCurrentIndex( 1 );
+	
+	m_pen.setColor(QColor() ); // invalid color
 }
 
 QPen KTPenWidget::pen() const
 {
 	return m_pen;
+}
+
+void KTPenWidget::emitPenChanged()
+{
+	emit penChanged( m_pen );
+	
+	KTPaintAreaEvent event(KTPaintAreaEvent::ChangePen, m_pen);
+	emit paintAreaEventTriggered( &event );
 }
 

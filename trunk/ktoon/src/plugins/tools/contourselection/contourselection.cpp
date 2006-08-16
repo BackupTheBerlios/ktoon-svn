@@ -201,7 +201,7 @@ QWidget *ContourSelection::configurator()
 // 	{
 // 		m_configurator = new ExactnessConfigurator;
 // 	}
-	return new QWidget;
+	return 0;
 }
 		
 bool ContourSelection::isComplete() const

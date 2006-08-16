@@ -62,11 +62,10 @@ DAnimWidget::DAnimWidget(const QPixmap &px, const QString &text, QWidget *parent
 {
 	resize(px.width()/2, px.height());
 	
-// 	setFont(QFont("Times", 24, QFont::Bold));
-	
 	QPoint position = QPoint(50, px.height());
+	
 	QFontMetricsF fontMetrics(font());
-	m_textRect = QRectF(QPointF(40, height()), fontMetrics.size(Qt::TextWordWrap, m_text));
+	m_textRect = QRectF(QPointF(40, height()), fontMetrics.size(Qt::TextWordWrap, m_text).expandedTo( QSizeF(px.width(), 0)) );
 }
 
 DAnimWidget::DAnimWidget(ListOfPixmaps lop, QWidget *parent) : QWidget(parent), m_type(AnimPixmap), m_controller(new Controller(this)), m_pixmaps(lop), m_pixmapIndex(0)

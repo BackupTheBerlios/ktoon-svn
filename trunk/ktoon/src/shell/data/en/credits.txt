@@ -1,9 +1,14 @@
-Developers
+KToon
 
 Version 0.8
 
+Main developer
+
 David A. Cuadrado
 <krawek@toonka.com>
+
+
+Developers
 
 Jorge H. Cuadrado
 <kuadrosx@toonka.com>
