@@ -31,7 +31,7 @@
 #include "ktrectitem.h"
 #include "ktellipseitem.h"
 #include "ktgraphicalgorithm.h"
-#include "ktitemserializer.h"
+#include "ktserializer.h"
 
 
 KTItemFactory::KTItemFactory() : QXmlDefaultHandler(), m_item(0)
@@ -52,7 +52,6 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 	
 	if ( qname == "path" )
 	{
-		qDebug("PATH");
 		m_item = new KTPathItem;
 		
 		QPainterPath path;
@@ -85,7 +84,29 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 	
 	if ( qname == "properties" && m_item )
 	{
-		KTItemSerializer::loadProperties( m_item, atts);
+		KTSerializer::loadProperties( m_item, atts);
+	}
+	else if ( qname == "brush" )
+	{
+		QBrush brush;
+		KTSerializer::loadBrush( brush, atts);
+		
+		if ( m_qname == "pen" )
+		{
+			QPen pen = itemPen();
+			pen.setBrush(brush);
+			setItemPen( pen );
+		}
+		else
+		{
+			setItemBrush( brush );
+		}
+	}
+	else if ( qname == "pen" )
+	{
+		QPen pen;
+		KTSerializer::loadPen( pen, atts);
+		setItemPen( pen );
 	}
 	
 	m_qname = qname;
@@ -126,6 +147,43 @@ bool KTItemFactory::fatalError ( const QXmlParseException & exception )
 	dFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
 	
 	return true;
+}
+
+
+void KTItemFactory::setItemPen(const QPen &pen)
+{
+	if ( m_root == "path" || m_root == "rect" || m_root == "ellipse" )
+	{
+		static_cast<QAbstractGraphicsShapeItem *>(m_item)->setPen(pen);
+	}
+}
+
+void KTItemFactory::setItemBrush(const QBrush &brush)
+{
+	if ( m_root == "path" || m_root == "rect" || m_root == "ellipse" )
+	{
+		static_cast<QAbstractGraphicsShapeItem *>(m_item)->setBrush(brush);
+	}
+}
+
+QPen KTItemFactory::itemPen() const
+{
+	if ( m_root == "path" || m_root == "rect" || m_root == "ellipse" )
+	{
+		return static_cast<QAbstractGraphicsShapeItem *>(m_item)->pen();
+	}
+	
+	return QPen(Qt::transparent, 0);
+}
+
+QBrush KTItemFactory::itemBrush() const
+{
+	if ( m_root == "path" || m_root == "rect" || m_root == "ellipse" )
+	{
+		return static_cast<QAbstractGraphicsShapeItem *>(m_item)->brush();
+	}
+	
+	return Qt::transparent;
 }
 
 

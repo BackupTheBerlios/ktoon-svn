@@ -46,6 +46,8 @@ class KTPaintArea;
 class KTProjectEvent;
 class KTProject;
 class KTBrushManager;
+class KTPaintAreaCommand;
+class KTPaintAreaEvent;
 
 /**
  * @author Jorge Cuadrado
@@ -65,6 +67,8 @@ class KTViewDocument : public QMainWindow
 		void setDrawGrid(bool draw);
 		
 		KTBrushManager *brushManager() const;
+		
+		KTPaintAreaCommand *createCommand(const KTPaintAreaEvent *event);
 		
 		
 	public slots:

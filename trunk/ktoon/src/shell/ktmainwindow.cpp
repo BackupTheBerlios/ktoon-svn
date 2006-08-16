@@ -27,6 +27,7 @@
 #include "ktpackagehandler.h"
 
 #include "ktpaletteimporter.h"
+#include "ktpaintareacommand.h"
 
 // KToon
 
@@ -418,6 +419,11 @@ void KTMainWindow::ui4project(QWidget *widget)
 	connect(m_projectManager, SIGNAL(commandExecuted(KTProjectEvent* )), widget, SLOT(handleProjectEvent(KTProjectEvent *)));
 }
 
+void KTMainWindow::ui4paintArea(QWidget *widget)
+{
+	connect(widget, SIGNAL(paintAreaEventTriggered(const KTPaintAreaEvent *)), this, SLOT(createCommand(const KTPaintAreaEvent *)));
+}
+
 void KTMainWindow::messageToStatus(const QString &msg)
 {
 	m_statusBar->setStatus(msg, msg.length() * 90);
@@ -543,5 +549,19 @@ void KTMainWindow::createCommand(const KTProjectEvent *event)
 		m_undoCommands->push(command);
 	}
 }
+
+void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
+{
+	if ( !m_viewDoc ) return;
+	
+	KTPaintAreaCommand *command = m_viewDoc->createCommand(event);
+	
+	
+	if ( command )
+	{
+		m_undoCommands->push(command);
+	}
+}
+
 
 

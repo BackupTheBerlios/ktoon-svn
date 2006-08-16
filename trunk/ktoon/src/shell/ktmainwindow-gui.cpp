@@ -36,6 +36,7 @@ void KTMainWindow::createGUI()
 	addToolView( m_colorPalette, Qt::LeftDockWidgetArea, Drawing );
 	
 	connectToDisplays(m_colorPalette);
+	ui4paintArea( m_colorPalette );
 	
 	////////////////////
 	
@@ -47,6 +48,7 @@ void KTMainWindow::createGUI()
 // 	connect(m_penWidget, SIGNAL(penChanged( const QPen& )), this, SLOT(changeCurrentPen( const QPen &)));
 	
 	connectToDisplays(m_penWidget);
+	ui4paintArea( m_penWidget );
 	
 	////////////////////
 	m_libraryWidget = new KTLibraryWidget( this );
@@ -61,6 +63,8 @@ void KTMainWindow::createGUI()
 	connectToDisplays(m_libraryWidget);
 	
 	new DAction( QPixmap(), tr( "Import bitmap..." ), QKeySequence(), m_libraryWidget, SLOT(importBitmap()), m_actionManager, "importbitmap");
+	
+	ui4project( m_libraryWidget );
 	
 	/////////////////
 	m_scenes = new KTScenesWidget( this);

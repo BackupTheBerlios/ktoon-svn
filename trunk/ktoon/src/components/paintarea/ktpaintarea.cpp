@@ -32,6 +32,7 @@
 #include "ktbrushmanager.h"
 #include "ktinputdeviceinformation.h"
 #include "ktitemevent.h"
+#include "ktpaintareaevent.h"
 
 #include <cmath>
 
@@ -75,7 +76,7 @@ class GLDevice : public QGLWidget
 
 KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(parent), m_grid(0), m_tool(0), m_isDrawing(false), m_project(project), m_currentSceneIndex(0), m_drawGrid(false)
 {
-	setMouseTracking(true);
+// 	setMouseTracking(true);
 	
 	m_brushManager = new KTBrushManager(this);
 	
@@ -84,11 +85,12 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(p
 	m_drawingRect = QRectF(QPointF(0,0), QSizeF( 500, 400 ) ); // FIXME: parametrizable
 	
 	setCurrentScene( 0 );
-	qobject_cast<KTScene *>(scene())->setCurrentFrame( 0, 0 );
+	qobject_cast<KTScene *>(scene())->setCurrentFrame( 0, 0 ); 
 	
 	centerDrawingArea();
 	
-	setViewport(new KTImageDevice() );
+// 	setViewport(new KTImageDevice() );
+	setUseOpenGL( false );
 }
 
 KTPaintArea::~KTPaintArea()
@@ -157,6 +159,7 @@ void KTPaintArea::setUseOpenGL(bool opengl)
 	if ( viewport() )
 	{
 		viewport()->setCursor(cursor);
+		viewport()->setAcceptDrops(true);
 	}
 }
 

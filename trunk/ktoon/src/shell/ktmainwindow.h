@@ -109,6 +109,7 @@ class KTMainWindow : public DTabbedMainWindow
 		void setupActions();
 		
 		void ui4project(QWidget *widget);
+		void ui4paintArea(QWidget *widget);
 		
 	protected:
 		/**
@@ -157,6 +158,7 @@ class KTMainWindow : public DTabbedMainWindow
 		void openRecentProject();
 		
 		void createCommand(const KTProjectEvent *event);
+		void createCommand(const KTPaintAreaEvent *event);
 		
 	private:
 		KTProjectManager *m_projectManager;

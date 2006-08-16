@@ -38,6 +38,12 @@ void KTBrushManager::setPen(const QPen &pen)
 	emit penChanged( pen );
 }
 
+void KTBrushManager::setPenBrush(const QBrush &brush)
+{
+	m_pen.setBrush(brush);
+	emit penChanged( m_pen );
+}
+
 
 QPen KTBrushManager::pen() const
 {

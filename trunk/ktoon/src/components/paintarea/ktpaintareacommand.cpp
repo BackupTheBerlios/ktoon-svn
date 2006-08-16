@@ -18,36 +18,75 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTABSTRACTPROJECTEVENTHANDLER_H
-#define KTABSTRACTPROJECTEVENTHANDLER_H
+#include "ktpaintareacommand.h"
+#include "ktpaintarea.h"
+#include "ktpaintareaevent.h"
 
-#include <QObject>
-#include "ktglobal_store.h"
 
-class KTProjectEvent;
-class KTFrameEvent;
-class KTLayerEvent;
-class KTSceneEvent;
-class KTItemEvent;
-class KTPaintAreaEvent;
-
-/**
- * @author David Cuadrado \<krawek@gmail.com\>
-*/
-class STORE_EXPORT KTAbstractProjectEventHandler
+KTPaintAreaCommand::KTPaintAreaCommand(KTPaintArea *area, const KTPaintAreaEvent *event) : QUndoCommand(), m_paintArea(area)
 {
-	public:
-		KTAbstractProjectEventHandler();
-		virtual ~KTAbstractProjectEventHandler();
-		
-		virtual bool handleEvent(KTProjectEvent *event);
-		
-	protected:
-		virtual void itemEvent(KTItemEvent *itemEvent) = 0;
-		virtual void frameEvent(KTFrameEvent *frameEvent) = 0;
-		virtual void layerEvent(KTLayerEvent *layerEvent) = 0;
-		virtual void sceneEvent(KTSceneEvent *sceneEvent) = 0;
-		virtual void projectEvent(KTProjectEvent *projectEvent) = 0;
-};
+	m_event = event->clone();
+}
 
-#endif
+
+KTPaintAreaCommand::~KTPaintAreaCommand()
+{
+}
+
+void KTPaintAreaCommand::undo()
+{
+	switch(m_event->action() )
+	{
+		case KTPaintAreaEvent::ChangePen:
+		{
+			m_paintArea->brushManager()->setPen( qvariant_cast<QPen>(m_oldData));
+		}
+		break;
+		case KTPaintAreaEvent::ChangePenBrush:
+		{
+			m_paintArea->brushManager()->setPenBrush( qvariant_cast<QBrush>(m_oldData));
+		}
+		break;
+		case KTPaintAreaEvent::ChangeBrush:
+		{
+			m_paintArea->brushManager()->setBrush( qvariant_cast<QBrush>(m_oldData));
+		}
+		break;
+		
+		default: break;
+	}
+}
+
+void KTPaintAreaCommand::redo()
+{
+	switch(m_event->action() )
+	{
+		case KTPaintAreaEvent::ChangePen:
+		{
+			m_oldData = m_paintArea->brushManager()->pen();
+			
+			m_paintArea->brushManager()->setPen( qvariant_cast<QPen>(m_event->data()));
+		}
+		break;
+		case KTPaintAreaEvent::ChangePenBrush:
+		{
+			m_oldData = m_paintArea->brushManager()->pen().brush();
+			
+			
+			m_paintArea->brushManager()->setPenBrush( qvariant_cast<QBrush>(m_event->data()));
+			
+		}
+		break;
+		case KTPaintAreaEvent::ChangeBrush:
+		{
+			m_oldData = m_paintArea->brushManager()->brush();
+			
+			
+			m_paintArea->brushManager()->setBrush( qvariant_cast<QBrush>(m_event->data()));
+		}
+		break;
+		
+		default: break;
+	}
+}
+

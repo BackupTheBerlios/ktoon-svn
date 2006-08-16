@@ -18,36 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTABSTRACTPROJECTEVENTHANDLER_H
-#define KTABSTRACTPROJECTEVENTHANDLER_H
+#ifndef KTPAINTAREAEVENT_H
+#define KTPAINTAREAEVENT_H
 
-#include <QObject>
+#include <ktprojectevent.h>
 #include "ktglobal_store.h"
 
-class KTProjectEvent;
-class KTFrameEvent;
-class KTLayerEvent;
-class KTSceneEvent;
-class KTItemEvent;
-class KTPaintAreaEvent;
-
 /**
- * @author David Cuadrado \<krawek@gmail.com\>
+ * @author David Cuadrado <krawek@gmail.com>
 */
-class STORE_EXPORT KTAbstractProjectEventHandler
+class STORE_EXPORT KTPaintAreaEvent
 {
 	public:
-		KTAbstractProjectEventHandler();
-		virtual ~KTAbstractProjectEventHandler();
+		enum Action
+		{
+			None = 0,
+			ChangePen,
+			ChangePenBrush,
+			ChangeBrush
+		};
 		
-		virtual bool handleEvent(KTProjectEvent *event);
+		KTPaintAreaEvent(Action action, const QVariant &data);
+		virtual ~KTPaintAreaEvent();
 		
-	protected:
-		virtual void itemEvent(KTItemEvent *itemEvent) = 0;
-		virtual void frameEvent(KTFrameEvent *frameEvent) = 0;
-		virtual void layerEvent(KTLayerEvent *layerEvent) = 0;
-		virtual void sceneEvent(KTSceneEvent *sceneEvent) = 0;
-		virtual void projectEvent(KTProjectEvent *projectEvent) = 0;
+		Action action() const;
+		QVariant data() const;
+		
+		virtual KTPaintAreaEvent *clone() const;
+		
+	private:
+		Action m_action;
+		QVariant m_data;
 };
 
 #endif

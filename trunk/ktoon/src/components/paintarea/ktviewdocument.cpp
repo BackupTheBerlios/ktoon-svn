@@ -37,6 +37,9 @@
 #include "ktpluginmanager.h"
 #include "ktpaintarea.h"
 #include "ktframeevent.h"
+#include "ktpaintareaevent.h"
+#include "ktpaintareacommand.h"
+
 
 #include "ktproject.h"
 
@@ -861,6 +864,13 @@ KTBrushManager *KTViewDocument::brushManager() const
 	return m_paintArea->brushManager();
 }
 
+
+KTPaintAreaCommand *KTViewDocument::createCommand(const KTPaintAreaEvent *event)
+{
+	KTPaintAreaCommand *command = new KTPaintAreaCommand(m_paintArea, event);
+	
+	return command;
+}
 
 
 

@@ -27,7 +27,7 @@
 #include <QPainterPath>
 #include "ktsvg2qt.h"
 #include "ktgraphicalgorithm.h"
-#include "ktitemserializer.h"
+#include "ktserializer.h"
 
 KTPathItem::KTPathItem( QGraphicsItem * parent, QGraphicsScene * scene) : QGraphicsPathItem(parent, scene), m_dragOver(false)
 {
@@ -110,7 +110,14 @@ QDomElement KTPathItem::toXml(QDomDocument &doc)
 	
 	root.setAttribute( "d", strPath);
 	
-	root.appendChild(KTItemSerializer::properties( this, doc));
+	root.appendChild(KTSerializer::properties( this, doc));
+	
+	QBrush brush = this->brush();
+	root.appendChild(KTSerializer::brush(&brush, doc));
+	
+	QPen pen = this->pen();
+	root.appendChild(KTSerializer::pen(&pen, doc));
+	
 	
 	return root;
 }

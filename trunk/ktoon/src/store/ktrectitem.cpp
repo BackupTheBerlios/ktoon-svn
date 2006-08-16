@@ -28,6 +28,7 @@
 
 KTRectItem::KTRectItem(QGraphicsItem * parent, QGraphicsScene * scene ) : QGraphicsRectItem(parent, scene)
 {
+	setAcceptDrops(true);
 }
 
 KTRectItem::KTRectItem( const QRectF& rect, QGraphicsItem * parent , QGraphicsScene * scene )
@@ -48,6 +49,8 @@ void KTRectItem::fromXml(const QString &xml)
 QDomElement KTRectItem::toXml(QDomDocument &doc)
 {
 	QDomElement root = doc.createElement("rect");
+	
+	
 
 	return root;
 }

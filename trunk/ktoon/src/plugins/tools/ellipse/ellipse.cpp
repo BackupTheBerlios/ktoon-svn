@@ -64,6 +64,9 @@ void Ellipse::press(const KTInputDeviceInformation *input, KTBrushManager *brush
 	{
 		m_ellipse = new KTEllipseItem(QRectF(QPointF(0,0), QSizeF(0.0,0.0)));		m_ellipse->setPos(input->pos());
 		
+		m_ellipse->setPen( brushManager->pen() );
+		m_ellipse->setBrush( brushManager->brush() );
+		
 		scene->addItem(m_ellipse);
 	}
 }

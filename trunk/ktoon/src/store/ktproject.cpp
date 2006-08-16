@@ -311,3 +311,8 @@ void KTProject::setSceneVisibility(int position, bool view)
 }
 
 
+void KTProject::reemitEvent(KTProjectEvent *event)
+{
+	emit commandExecuted( event );
+}
+

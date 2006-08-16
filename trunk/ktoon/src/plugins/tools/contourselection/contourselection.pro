@@ -7,28 +7,7 @@ QT += xml
 INSTALLS += target 
 target.path = /plugins/ 
 KDEV_QTVER = 4 
-TARGETDEPS += ../../../../src/libktui/libktui.a \
-              ../../../../src/store/libstore.so \
-              ../../../../src/libktoon/libktoon.so \
-              ../../../../src/dlib/dgui/libdgui.so \
-              ../../../../src/dlib/dsound/libdsound.so \
-              ../../../../src/dlib/dcore/libdcore.so 
-LIBS += ../../../../src/libktui/libktui.a \
-        -lstore \
-        -lktoon \
-        -ldgui \
-        -ldsound \
-        -ldcore 
-INCLUDEPATH += ../../../../src/store \
-               ../../../../src/libktoon \
-               ../../../../src/dlib/dgui \
-               ../../../../src/dlib/dcore \
-	       ../../../../src/dlib
-QMAKE_LIBDIR = ../../../../src/store \
-               ../../../../src/libktoon \
-               ../../../../src/dlib/dgui \
-               ../../../../src/dlib/dsound \
-               ../../../../src/dlib/dcore 
+include(../tools.pri)
 CONFIG += release \
           warn_on \
           plugin 

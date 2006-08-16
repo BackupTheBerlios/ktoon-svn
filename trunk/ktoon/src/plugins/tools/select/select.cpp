@@ -33,7 +33,7 @@
 #include "ktscene.h"
 
 #include "nodemanager.h"
-#include "ktitemserializer.h"
+#include "ktserializer.h"
 
 #include <QDebug> // ddebug! lazy bitch
 #include <QTimer>
@@ -113,7 +113,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 				m_nodes << manager;
 				
 				QDomDocument doc;
-				doc.appendChild(KTItemSerializer::properties( item, doc ));
+				doc.appendChild(KTSerializer::properties( item, doc ));
 				
 				KTItemEvent *event = new KTItemEvent(KTProjectEvent::Transform, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().indexOf(item), doc.toString() );
 				

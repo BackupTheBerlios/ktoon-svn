@@ -26,6 +26,7 @@
 #include "ktframeevent.h"
 #include "ktlayerevent.h"
 #include "ktsceneevent.h"
+#include "ktpaintareaevent.h"
 
 KTAbstractProjectEventHandler::KTAbstractProjectEventHandler()
 {

@@ -58,6 +58,7 @@ QSize ColorWidget::sizeHint() const
 void ColorWidget::setBrush(const QBrush &brush)
 {
 	m_brush = brush;
+	update();
 }
 
 void ColorWidget::paintEvent(QPaintEvent *)

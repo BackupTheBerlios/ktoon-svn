@@ -94,6 +94,8 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		
 		void clear();
 		
+		void reemitEvent(KTProjectEvent *event);
+		
 	protected:
 		virtual void fromXml(const QString &xml );
 		virtual QDomElement toXml(QDomDocument &doc);

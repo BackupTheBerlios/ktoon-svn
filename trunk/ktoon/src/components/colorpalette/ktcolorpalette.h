@@ -93,7 +93,7 @@ class KTColorPalette : public KTModuleWidgetBase
 		void changeBrushType(const QString& );
 		
 	signals:
-		void brushChanged(const QBrush &foreground, const QBrush &background); 
+		void paintAreaEventTriggered(const KTPaintAreaEvent *event);
 };
 
 #endif

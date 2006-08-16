@@ -23,6 +23,8 @@
 #define KTPROJECTCOMMAND_H
 
 #include <QUndoCommand>
+#include <QVariant>
+
 #include "ktglobal_store.h"
 
 class KTProject;
@@ -31,6 +33,7 @@ class KTFrameEvent;
 class KTLayerEvent;
 class KTSceneEvent;
 class KTItemEvent;
+class KTPaintAreaEvent;
 
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
@@ -48,6 +51,7 @@ class STORE_EXPORT KTProjectCommand : public QUndoCommand
 		void layerCommand(const KTLayerEvent *event, bool redo);
 		void sceneCommand(const KTSceneEvent *event, bool redo);
 		void itemCommand(const KTItemEvent *event, bool redo);
+		void paintAreaCommand(const KTPaintAreaEvent *event, bool redo);
 		
 	private:
 		QString actionString(int action);
@@ -56,7 +60,7 @@ class STORE_EXPORT KTProjectCommand : public QUndoCommand
 		KTProject *m_project;
 		KTProjectEvent *m_event;
 		
-		QString m_xml;
+		QVariant m_data;
 };
 
 #endif

@@ -38,6 +38,7 @@ class KTOON_EXPORT KTBrushManager : public QObject
 		~KTBrushManager();
 		
 		void setPen(const QPen &pen);
+		void setPenBrush(const QBrush &brush);
 		QPen pen() const;
 		
 		void setBrush(const QBrush &brush);

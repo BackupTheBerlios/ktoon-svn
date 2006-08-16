@@ -7,23 +7,9 @@ QT += xml
 INSTALLS += target 
 target.path = /plugins/ 
 KDEV_QTVER = 4 
-LIBS += -lstore \
-        -ldsound \
-        -ldcore \
-        -lktoon 
-INCLUDEPATH += ../../../../src/store \
-               ../../../../src/libktoon \
-               ../../../../src/dlib/dgui \
-               ../../../../src/dlib/dsound \
-               ../../../../src/dlib/dcore \
-               ../../../../src/dlib/ 
 MOC_DIR = .moc 
 UI_DIR = .ui 
 OBJECTS_DIR = .obj 
-QMAKE_LIBDIR = ../../../../src/store \
-               ../../../../src/dlib/dsound \
-               ../../../../src/dlib/dcore \
-               ../../../../src/libktoon 
 CONFIG += release \
           warn_on \
           plugin 
@@ -34,3 +20,5 @@ HEADERS += select.h \
 SOURCES += select.cpp \
            node.cpp \
            nodemanager.cpp 
+
+include(../tools.pri)

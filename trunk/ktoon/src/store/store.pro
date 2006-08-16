@@ -32,7 +32,8 @@ HEADERS += ktlayer.h \
            ktitemfactory.h \
            ktellipseitem.h \
            ktglobal_store.h \
-           ktitemserializer.h 
+           ktpaintareaevent.h \
+           ktserializer.h 
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
@@ -55,10 +56,11 @@ SOURCES += ktlayer.cpp \
            ktbuttonitem.cpp \
            ktitemfactory.cpp \
            ktellipseitem.cpp \
-           ktitemserializer.cpp \
            ktproject_frames.cpp \
            ktproject_layers.cpp \
-           ktproject_items.cpp 
+           ktproject_items.cpp \
+           ktpaintareaevent.cpp \
+           ktserializer.cpp 
 QT += xml gui
 KDEV_QTVER = 4
 INCLUDEPATH += ../../src/store \

@@ -17,45 +17,37 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTPROJECTPARSER_H
-#define KTPROJECTPARSER_H
 
-#include <qxml.h>
+#ifndef KTPAINTAREACOMMAND_H
+#define KTPAINTAREACOMMAND_H
+
+#include <QUndoCommand>
+#include <QVariant>
+
+class KTPaintArea;
+class KTPaintAreaEvent;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Q_DECL_EXPORT KTProjectParser : public QObject, public QXmlDefaultHandler
+
+class KTPaintAreaCommand : public QUndoCommand
 {
 	public:
-		KTProjectParser(QObject *parent = 0);
-		~KTProjectParser();
+		KTPaintAreaCommand(KTPaintArea *area, const KTPaintAreaEvent *event);
+		~KTPaintAreaCommand();
 		
-		/**
-		 * Analiza etiquetas de apertura del documento XML
-		 */
-		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
-		
-		/**
-		 * Analiza etiquetas de cierre del documento XML
-		 */
-		bool endElement( const QString& ns, const QString& localname, const QString& qname);
-		
-		/**
-		 * Muestra errores en el analisis del documento
-		 */
-		bool error ( const QXmlParseException & exception );
-		
-		/**
-		 * Muestra errores fatales en el analisis del documento
-		 */
-		bool fatalError ( const QXmlParseException & exception );
-		
-		bool parse(const QString &document);
+		void undo();
+		void redo();
 		
 	private:
-		QString m_root;
-		QString m_qname;
+		KTPaintArea *m_paintArea;
+		KTPaintAreaEvent *m_event;
+		QVariant m_oldData;
 };
 
 #endif
+
+
+
+

@@ -23,6 +23,9 @@
 
 #include <QXmlDefaultHandler>
 #include <QStack>
+#include <QPen>
+#include <QBrush>
+
 #include "ktglobal_store.h"
 
 class QGraphicsItem;
@@ -58,6 +61,12 @@ class STORE_EXPORT KTItemFactory : public QXmlDefaultHandler
 		
 	public:
 		QGraphicsItem *create(const QString &xml);
+		
+	private:
+		void setItemPen(const QPen &pen);
+		void setItemBrush(const QBrush &brush);
+		QPen itemPen() const;
+		QBrush itemBrush() const;
 		
 	private:
 		QString m_qname;

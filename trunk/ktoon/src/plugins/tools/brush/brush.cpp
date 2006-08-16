@@ -79,7 +79,6 @@ void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 	
 	m_item = new KTPathItem();
 	
-	m_item->setBrush( brushManager->brush() );
 	m_item->setPen( brushManager->pen() );
 	scene->addGraphic( m_item );
 // 	move(event, brushManager, scene, view);
@@ -164,6 +163,7 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 		m_item->setPos(pos);
 	}
 	
+	m_item->setBrush( brushManager->brush() );
 	m_item->setPath(newPath);
 	
 	

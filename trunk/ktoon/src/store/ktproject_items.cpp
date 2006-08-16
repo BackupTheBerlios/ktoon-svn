@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "ktproject.h"
-#include "ktitemserializer.h"
+#include "ktserializer.h"
 #include "ktscene.h"
 #include "ktitemevent.h"
 
@@ -105,13 +105,13 @@ QString KTProject::transformItem(int scenePosition, int layerPosition, int frame
 				{
 					QDomDocument orig;
 					
-					orig.appendChild(KTItemSerializer::properties( item, orig ));
+					orig.appendChild(KTSerializer::properties( item, orig ));
 					
 					QString current = orig.toString();
 					
 					QDomDocument doc;
 					doc.setContent( xml);
-					KTItemSerializer::loadProperties( item, doc.documentElement());
+					KTSerializer::loadProperties( item, doc.documentElement());
 					
 					
 					KTItemEvent event(KTProjectEvent::Transform, scenePosition, layerPosition, framePosition, position, xml);

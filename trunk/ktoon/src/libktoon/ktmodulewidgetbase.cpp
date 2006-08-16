@@ -125,3 +125,4 @@ void KTModuleWidgetBase::itemEvent(KTItemEvent *event)
 	Q_UNUSED(event);
 }
 
+

@@ -18,27 +18,38 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTITEMSERIALIZER_H
-#define KTITEMSERIALIZER_H
+#ifndef KTSERIALIZER_H
+#define KTSERIALIZER_H
 
 #include <QDomDocument>
 #include <QDomElement>
 #include <QXmlAttributes>
+#include <QBrush>
+#include <QPen>
 
 class QGraphicsItem;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTItemSerializer
+class KTSerializer
 {
 	public:
-		KTItemSerializer();
-		~KTItemSerializer();
+		KTSerializer();
+		~KTSerializer();
 		
 		static QDomElement properties(const QGraphicsItem *item, QDomDocument &doc);
 		static void loadProperties(QGraphicsItem *item, const QXmlAttributes &atts);
 		static void loadProperties(QGraphicsItem *item, const QDomElement &e);
+		
+		static QDomElement brush(const QBrush *brush, QDomDocument &doc);
+		static void loadBrush(QBrush &brush, const QXmlAttributes &atts);
+		static void loadBrush(QBrush &brush, const QDomElement &e);
+		
+		static QDomElement pen(const QPen *pen, QDomDocument &doc);
+		static void loadPen(QPen &pen, const QXmlAttributes &atts);
+		static void loadPen(QPen &pen, const QDomElement &e);
+		
 };
 
 #endif
