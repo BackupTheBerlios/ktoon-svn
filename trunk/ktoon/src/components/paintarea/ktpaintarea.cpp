@@ -311,10 +311,26 @@ void KTPaintArea::projectEvent(KTProjectEvent *event)
 
 void KTPaintArea::itemEvent(KTItemEvent *event)
 {
-	if ( event->action() != KTProjectEvent::Add ||  event->action() != KTProjectEvent::Remove )
+	switch(event->action())
 	{
-		qobject_cast<KTScene *>(scene())->drawCurrentPhotogram();
-		viewport()->update(scene()->sceneRect().toRect() );
+// 		case KTProjectEvent::Add:
+// 		{
+// 		}
+// 		break;
+// 		case KTProjectEvent::Remove:
+// 		{
+// 		}
+// 		break;
+// 		case KTProjectEvent::Transform:
+// 		{
+// 			viewport()->update();
+// 		}
+// 		break;
+		default:
+		{
+			qobject_cast<KTScene *>(scene())->drawCurrentPhotogram();
+			viewport()->update(scene()->sceneRect().toRect() );
+		}
 	}
 }
 

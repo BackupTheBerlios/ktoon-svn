@@ -56,6 +56,8 @@ QDomElement KTItemSerializer::properties(const QGraphicsItem *item, QDomDocument
 	
 	properties.setAttribute( "flags", item->flags());
 	
+	properties.setAttribute( "selected", item->isSelected() );
+	
 	return properties;
 }
 
@@ -70,9 +72,11 @@ void KTItemSerializer::loadProperties(QGraphicsItem *item, const QXmlAttributes 
 	KTSvg2Qt::parsePointF(atts.value("pos"), pos );
 	item->setPos( pos );
 		
-	item->setEnabled(atts.value("pos") != "0");
+	item->setEnabled(atts.value("pos") != "0"); // default true
 		
 	item->setFlags( QGraphicsItem::GraphicsItemFlags(atts.value("flags").toInt()) );
+	
+	item->setSelected( atts.value("selected") == "1" ); // default false
 }
 
 void KTItemSerializer::loadProperties(QGraphicsItem *item, const QDomElement &e)
@@ -90,6 +94,8 @@ void KTItemSerializer::loadProperties(QGraphicsItem *item, const QDomElement &e)
 		item->setEnabled(e.attribute("pos") != "0");
 		
 		item->setFlags( QGraphicsItem::GraphicsItemFlags(e.attribute("flags").toInt()) );
+		
+		item->setSelected( e.attribute("selected") == "1" ); // default false
 	}
 }
 

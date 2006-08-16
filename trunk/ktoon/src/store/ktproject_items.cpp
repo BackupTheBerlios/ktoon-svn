@@ -113,6 +113,11 @@ QString KTProject::transformItem(int scenePosition, int layerPosition, int frame
 					doc.setContent( xml);
 					KTItemSerializer::loadProperties( item, doc.documentElement());
 					
+					
+					KTItemEvent event(KTProjectEvent::Transform, scenePosition, layerPosition, framePosition, position, xml);
+					
+					emit commandExecuted( &event);
+					
 					return current;
 				}
 			}
