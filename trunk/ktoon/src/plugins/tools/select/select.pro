@@ -7,7 +7,6 @@ QT += xml
 INSTALLS += target 
 target.path = /plugins/ 
 KDEV_QTVER = 4 
-TARGETDEPS += ../../../../src/libktoon/libktoon.so 
 LIBS += -lstore \
         -ldsound \
         -ldcore \
@@ -16,8 +15,8 @@ INCLUDEPATH += ../../../../src/store \
                ../../../../src/libktoon \
                ../../../../src/dlib/dgui \
                ../../../../src/dlib/dsound \
-               ../../../../src/dlib/dcore \ 
-               ../../../../src/dlib/
+               ../../../../src/dlib/dcore \
+               ../../../../src/dlib/ 
 MOC_DIR = .moc 
 UI_DIR = .ui 
 OBJECTS_DIR = .obj 

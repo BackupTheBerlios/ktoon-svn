@@ -5,7 +5,8 @@
 
 SUBDIRS += brush \
            select \
-           ellipse 
+           ellipse \
+           contourselection 
 KDEV_QTVER = 4
 CONFIG += release \
 warn_on

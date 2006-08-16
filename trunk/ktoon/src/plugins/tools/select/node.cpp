@@ -153,7 +153,7 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 			}
 		};
 
-#if 1
+#if 0
 		if(gb1)
 		{
 			scene()->removeItem(gb1);

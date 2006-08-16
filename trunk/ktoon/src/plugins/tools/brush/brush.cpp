@@ -158,7 +158,7 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 	
 	if(e.type == QPainterPath::MoveToElement)
 	{
-		QPointF pos = m_path.boundingRect().topLeft();
+		QPointF pos = m_path.controlPointRect().topLeft();
 		m.translate(-pos.x() , -pos.y());
 		newPath = m.map(newPath);
 		m_item->setPos(pos);

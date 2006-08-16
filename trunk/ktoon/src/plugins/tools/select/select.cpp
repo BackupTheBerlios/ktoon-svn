@@ -135,7 +135,7 @@ void Select::setupActions()
 	
 // 	QPixmap pix(THEME_DIR+"/cursors/pencil.png");
 // 	select->setCursor( QCursor(pix, 0, pix.height()) );
-		
+	
 	m_actions.insert( tr("Select"), select );
 }
 

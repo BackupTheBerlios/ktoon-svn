@@ -129,14 +129,7 @@ bool KTPathItem::contains ( const QPointF & point ) const
 #if 0
 	int thickness = 5;
 	QRectF rectS(point-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
->>>>>>> .r592
-	
-// 	return false;
-	
-	
-<<<<<<< .mine
-	return QGraphicsPathItem::contains ( point ) ;
-=======
+
 	while(it2 != pol.end())
 	{
 		if(KTGraphicalAlgorithm::intersectLine( (*it1), (*it2), rectS  ))
