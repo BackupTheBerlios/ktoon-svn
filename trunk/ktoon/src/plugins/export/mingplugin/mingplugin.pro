@@ -7,20 +7,7 @@ QT += xml
 INSTALLS += target 
 target.path = /plugins/ 
 KDEV_QTVER = 4 
-LIBS += -ldcore \
-        -ldgui \
-        -lktoon \
-        -lstore 
-INCLUDEPATH += ../../../../src/store \
-               ../../../../src/libktoon \
-               ../../../../src/dlib/dgui \
-               ../../../../src/dlib/dcore \
-               ../../../../src/dlib 
-QMAKE_LIBDIR = ../../../../src/dlib/dcore \
-               ../../../../src/dlib/dgui \
-               ../../../../src/libktoon \
-               ../../../../src/store \
-               ../../../../src/ktoonlib 
+include(../export.pri)
 CONFIG += release \
           warn_on \
           plugin 
@@ -29,6 +16,4 @@ HEADERS += mingplugin.h
 SOURCES += mingplugin.cpp 
 !include(../../../../ktconfig.pri) {
 error("Please run configure first")
-}
-macx {
 }

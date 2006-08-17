@@ -18,12 +18,15 @@ SOURCES += ktpaintarea.cpp \
            ktimagedevice.cpp \
            ktpaintareacommand.cpp 
 KDEV_QTVER = 4
-INCLUDEPATH += ../../../src/store \
-../../../src/libktoon \
-../../../src/dlib/dgui \
-../../../src/dlib/dsound \
-../../../src/dlib/dcore \
-../../../src/dlib/
+
+STORE_DIR = ../../../src/store
+LIBKTOON_DIR = ../../../src/libktoon
+DLIB_DIR = ../../../src/dlib 
+
+include($$STORE_DIR/store.pri)
+include($$LIBKTOON_DIR/libktoon.pri)
+include($$DLIB_DIR/dlib.pri)
+
 MOC_DIR = .moc
 UI_DIR = .ui
 OBJECTS_DIR = .obj

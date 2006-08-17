@@ -63,11 +63,14 @@ SOURCES += ktlayer.cpp \
            ktserializer.cpp 
 QT += xml gui
 KDEV_QTVER = 4
-INCLUDEPATH += ../../src/store \
-../../src/libktoon \
-../../src/dlib/dgui \
-../../src/dlib/dcore \
-../../src/dlib
+
+STORE_DIR = ../../src/store
+LIBKTOON_DIR = ../../src/libktoon
+DLIB_DIR = ../../src/dlib
+
+include($$LIBKTOON_DIR/libktoon.pri)
+include($$DLIB_DIR/dlib.pri)
+
 MOC_DIR = .moc
 UI_DIR = .ui
 OBJECTS_DIR = .obj
@@ -75,7 +78,4 @@ CONFIG += release \
 warn_on \
 dll
 TEMPLATE = lib
-macx{
-  LIBS += -ldcore -ldgui -lktoon
-  QMAKE_LIBDIR = ../../src/dlib/dcore ../../src/dlib/dgui ../../src/ktoonlib
-}
+

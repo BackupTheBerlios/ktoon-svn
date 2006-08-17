@@ -8,11 +8,14 @@ INSTALLS += help
 help.files += help 
 help.path = /data/ 
 KDEV_QTVER = 4 
-INCLUDEPATH += ../../../src/store \
-               ../../../src/libktoon \
-               ../../../src/dlib/dgui \
-               ../../../src/dlib/dcore \
-               ../../../src/dlib 
+STORE_DIR = ../../../src/store
+LIBKTOON_DIR =../../../src/libktoon
+DLIB_DIR = ../../../src/dlib 
+
+include($$STORE_DIR/store.pri)
+include($$LIBKTOON_DIR/libktoon.pri)
+include($$DLIB_DIR/dlib.pri)
+
 CONFIG += release \
           warn_on \
           staticlib 

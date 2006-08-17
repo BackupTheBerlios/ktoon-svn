@@ -3,6 +3,17 @@
 # Subdir relative project main directory: ./src/libktoon
 # Target is a library:  ktoon
 
+
+DLIB_DIR = ../../src/dlib
+include($$DLIB_DIR/dlib.pri)
+
+QUAZIP_DIR = ../../3rdparty/quazip/
+include($$QUAZIP_DIR/quazip.pri)
+
+STORE_DIR = ../../src/store
+include($$STORE_DIR/store.pri)
+
+
 INSTALLS += target 
 target.path = /lib/ 
 HEADERS += ktmodulewidgetbase.h \
@@ -43,12 +54,6 @@ SOURCES += ktmodulewidgetbase.cpp \
            ktsvg2qt.cpp 
 QT += xml gui
 KDEV_QTVER = 4
-INCLUDEPATH += ../../src/store \
-../../src/dlib/dgui \
-../../src/dlib/dcore \
-../../3rdparty/potrace \
-../../3rdparty/quazip \
-../../src/dlib
 MOC_DIR = .moc
 UI_DIR = .ui
 OBJECTS_DIR = .obj
@@ -57,7 +62,4 @@ CONFIG += release \
 warn_on \
 dll
 TEMPLATE = lib
-macx{
-  LIBS += -ldcore -ldgui
-  QMAKE_LIBDIR = ../../src/dlib/dcore ../../src/dlib/dgui
-}
+

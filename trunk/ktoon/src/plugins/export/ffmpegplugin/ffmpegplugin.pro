@@ -7,28 +7,20 @@ QT += xml
 INSTALLS += target 
 target.path = /plugins/ 
 KDEV_QTVER = 4 
-LIBS += -ldcore \
-        -ldgui \
-        -lktoon 
-INCLUDEPATH += ../../../../src/store \
-               ../../../../src/libktoon \
-               ../../../../src/dlib/dgui \
-               ../../../../src/dlib/dcore \
-               ../../../../src/dlib 
-QMAKE_LIBDIR = ../../../../src/dlib/dcore \
-               ../../../../src/dlib/dgui \
-               ../../../../src/libktoon \
-               ../../../../src/ktoonlib 
+
+
+include(../export.pri)
+
 CONFIG += release \
           warn_on \
           plugin 
+
 TEMPLATE = lib 
+
 HEADERS += ffmpegplugin.h \
            ffmpegmanager.h 
 SOURCES += ffmpegplugin.cpp \
            ffmpegmanager.cpp 
 !include(../../../../ktconfig.pri) {
 error("Please run configure first")
-}
-macx {
 }

@@ -7,18 +7,11 @@ QT += xml
 INSTALLS += target 
 target.path = /plugins/ 
 KDEV_QTVER = 4 
-INCLUDEPATH += ../../../../src/store \
-               ../../../../src/libktoon \
-               ../../../../src/dlib/dgui \
-               ../../../../src/dlib/dcore \
-               ../../../../src/dlib 
+include(../export.pri)
+
 CONFIG += release \
           warn_on \
           plugin 
 TEMPLATE = lib 
 HEADERS += genericexportplugin.h 
-SOURCES += genericexportplugin.cpp 
-macx{
-  LIBS += -ldcore -ldgui -lktoon -lstore
-  QMAKE_LIBDIR = ../../../../src/dlib/dcore ../../../../src/dlib/dgui ../../../../src/ktoonlib ../../../../src/store
-}
+SOURCES += genericexportplugin.cpp
