@@ -165,7 +165,7 @@ void KTExposureSheet::setScene(int index)
 
 void KTExposureSheet::emitRequestChangeScene(int index)
 {
-	dDebug() << "KTExposureSheet::emitRequestChangeScene(" << index << ")";
+// 	dDebug() << "KTExposureSheet::emitRequestChangeScene(" << index << ")";
 	KTSceneEvent event(KTProjectEvent::Select, index);
 	emit eventTriggered( &event );
 }
@@ -185,7 +185,7 @@ void KTExposureSheet::renameFrame(int indexLayer, int indexFrame, const QString 
 
 void KTExposureSheet::selectFrame(int indexLayer, int indexFrame)
 {
-	dDebug() << "KTExposureSheet::selectFrame("  << indexLayer << "," << indexFrame << ")";
+// 	dDebug() << "KTExposureSheet::selectFrame("  << indexLayer << "," << indexFrame << ")";
 	KTFrameEvent event(KTProjectEvent::Select, m_scenes->currentIndex() , indexLayer, indexFrame, true);
 	emit eventTriggered( &event );
 }

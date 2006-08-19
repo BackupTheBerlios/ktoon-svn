@@ -93,7 +93,7 @@ void KTFrame::fromXml(const QString &xml )
 		
 		if(!e.isNull())
 		{
-			dDebug() << "Item??? " << e.tagName();
+// 			dDebug() << "Item??? " << e.tagName();
 #if 0
 			if ( e.tagName() == "frame" )
 			{

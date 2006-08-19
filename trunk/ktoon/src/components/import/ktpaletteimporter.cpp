@@ -82,7 +82,6 @@ void KTPaletteImporter::importGimpPalette(const QString &file)
 		while ( !stream.atEnd())
 		{
 			QString line = stream.readLine();
-			dDebug() << "Readed: " << line;
 			
 			if ( rgb.indexIn(line) != -1 )
 			{

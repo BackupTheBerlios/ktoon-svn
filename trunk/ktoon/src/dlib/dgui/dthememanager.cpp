@@ -60,7 +60,7 @@ bool DThemeManager::applyTheme(const QString &file)
 
 bool DThemeManager::applyTheme(const DThemeDocument &dd)
 {
-	dDebug() << "Applying theme" << endl;;
+// 	dDebug() << "Applying theme" << endl;;
 	bool ok = false;
 	QXmlSimpleReader reader;
 	reader.setContentHandler(this);

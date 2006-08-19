@@ -369,7 +369,6 @@ void KTGradientSelector::addArrow(QPoint position, QColor color)
 
 void KTGradientSelector::setCurrentColor(const QColor& color)
 {
-	dDebug() << color;
 	if ( m_arrows.count() > 0 )
 	{
 		DGradientArrow *arrow  = m_arrows[m_currentArrowIndex];

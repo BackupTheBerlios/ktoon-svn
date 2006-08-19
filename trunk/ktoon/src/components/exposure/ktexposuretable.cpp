@@ -156,14 +156,14 @@ bool KTExposureHeader::signalMovedBlocked()
 
 void KTExposureHeader::setLockLayer(int logicalndex, bool lock)
 {
-	dDebug() << "KTExposureHeader::setLockLayer( " <<  logicalndex << "," << lock << ")" ;
+// 	dDebug() << "KTExposureHeader::setLockLayer( " <<  logicalndex << "," << lock << ")" ;
 	m_layers[logicalndex].isLocked = lock;
 	updateSection(logicalndex);
 }
 
 void KTExposureHeader::moveLayer(int position, int newPosition)
 {
-	dDebug() << "moveLayer(" << position << "," << newPosition << ")";
+// 	dDebug() << "moveLayer(" << position << "," << newPosition << ")";
 	m_blockSectionMoved = true;
 	moveSection ( position, newPosition );
 	m_blockSectionMoved = false;

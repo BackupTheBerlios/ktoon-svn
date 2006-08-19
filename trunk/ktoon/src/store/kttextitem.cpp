@@ -21,11 +21,12 @@
 #include "kttextitem.h"
 #include "ktserializer.h"
 
+#include <QFont>
+
 KTTextItem::KTTextItem(QGraphicsItem * parent, QGraphicsScene * scene)
  : QGraphicsTextItem(parent, scene)
 {
 	setOpenExternalLinks(true);
-	
 	setEditable( false );
 }
 
@@ -47,6 +48,9 @@ QDomElement KTTextItem::toXml(QDomDocument &doc)
 	root.appendChild( text );
 	
 	root.appendChild( KTSerializer::properties( this, doc));
+	QFont font = this->font();
+	
+	root.appendChild( KTSerializer::font( &font, doc ) );
 	
 	return root;
 }

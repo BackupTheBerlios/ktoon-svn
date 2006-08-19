@@ -31,6 +31,9 @@ class QGraphicsItem;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
+ * @todo:
+ * - Serialize fonts
+ * 
 */
 class KTSerializer
 {
@@ -50,6 +53,9 @@ class KTSerializer
 		static void loadPen(QPen &pen, const QXmlAttributes &atts);
 		static void loadPen(QPen &pen, const QDomElement &e);
 		
+		static QDomElement font(const QFont *font, QDomDocument &doc);
+		static void loadFont(QFont &font, const QDomElement &e);
+		static void loadFont(QFont &font, const QXmlAttributes &atts);
 };
 
 #endif

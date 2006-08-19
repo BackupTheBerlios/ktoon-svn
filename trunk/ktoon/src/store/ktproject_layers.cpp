@@ -71,7 +71,7 @@ KTLayer *KTProject::createLayer(int scenePosition, int position, const QString &
 			emit commandExecuted(&event);
 		}
 		
-		dDebug() << "Añadiendo layer en escena: " << scene->sceneName();
+// 		dDebug() << "Añadiendo layer en escena: " << scene->sceneName();
 		
 		return layer;
 	}
@@ -114,7 +114,7 @@ QString KTProject::removeLayer(int scenePos, int position)
 
 void KTProject::moveLayer(int scenePosition, int position, int newPosition)
 {
-	dDebug() << "Move layer from " << position << " to " << newPosition;
+// 	dDebug() << "Move layer from " << position << " to " << newPosition;
 	KTScene *scene = this->scene(scenePosition);
 	
 	if ( !scene)

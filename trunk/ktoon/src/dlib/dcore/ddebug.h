@@ -79,6 +79,14 @@ enum DebugType
 	DFatalMsg 
 };
 
+enum DebugOutput
+{
+	DNone = 0x00,
+	DFileOutput,
+	DBoxOutput,
+	DShellOutput
+};
+
 #if !defined(D_NODEBUG)
 class D_CORE_EXPORT DDebug
 {
@@ -173,7 +181,7 @@ class D_CORE_EXPORT DDebug
 		} *streamer;
 		
 		
-		DDebug(DebugType t);
+		DDebug(DebugType t, DebugOutput o);
 		DDebug(const DDebug &);
 		~DDebug();
 		
@@ -287,6 +295,7 @@ class D_CORE_EXPORT DDebug
 	private:
 		DebugType m_type;
 		QString m_toWrite;
+		DebugOutput m_output;
 };
 
 template <class T> DDebug &DDebug::operator<<( const QList<T> &list )
@@ -309,24 +318,24 @@ template <class T> DDebug &DDebug::operator<<( const QList<T> &list )
 
 // DDebug(DDebugMsg) << __PRETTY_FUNCTION__ << ": "
 
-inline DDebug dDebug()
+inline DDebug dDebug(int output = DShellOutput)
 {
-	return DDebug(DDebugMsg);
+	return DDebug(DDebugMsg, DebugOutput(output));
 }
 
-inline DDebug dFatal()
+inline DDebug dFatal(int output = DShellOutput)
 {
-	return DDebug(DFatalMsg);
+	return DDebug(DFatalMsg, DebugOutput(output));
 }
 
-inline DDebug dError()
+inline DDebug dError(int output = DShellOutput)
 {
-	return DDebug(DErrorMsg);
+	return DDebug(DErrorMsg, DebugOutput(output));
 }
 
-inline DDebug dWarning()
+inline DDebug dWarning(int output = DShellOutput)
 {
-	return DDebug(DWarningMsg);
+	return DDebug(DWarningMsg, DebugOutput(output));
 }
 
 #else // D_NODEBUG
@@ -348,7 +357,7 @@ class DNDebug
 		}
 };
 
-inline DNDebug dDebug()
+inline DNDebug dDebug(int = DShellOutput)
 {
 	return DNDebug();
 }

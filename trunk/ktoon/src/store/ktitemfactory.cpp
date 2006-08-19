@@ -128,6 +128,17 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 		KTSerializer::loadPen( pen, atts);
 		setItemPen( pen );
 	}
+	else if ( qname == "font" )
+	{
+		QFont font;
+		
+		KTSerializer::loadFont( font, atts);
+		
+		if ( m_root == "text" )
+		{
+			qgraphicsitem_cast<KTTextItem *>(m_item)->setFont(font);
+		}
+	}
 	
 	m_qname = qname;
 	
@@ -223,7 +234,7 @@ QBrush KTItemFactory::itemBrush() const
 
 QGraphicsItem *KTItemFactory::create(const QString &xml)
 {
-	dDebug() << "Creating item: " << xml;
+// 	dDebug() << "Creating item: " << xml;
 	QXmlSimpleReader reader;
 	reader.setContentHandler(this);
 	reader.setErrorHandler(this);

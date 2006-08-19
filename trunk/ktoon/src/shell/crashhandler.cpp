@@ -241,7 +241,7 @@ static QString runCommand( const QString &command )
 	static const uint SIZE = 40960; //40 KiB
 	static char buf[ SIZE ];
 	
-	dDebug() << "Running: " << command;
+// 	dDebug() << "Running: " << command;
 	
 	FILE *process = ::popen( command.toLocal8Bit().data(), "r" );
 	buf[ std::fread( (void*)stdout, sizeof(char), SIZE-1, process ) ] = '\0';

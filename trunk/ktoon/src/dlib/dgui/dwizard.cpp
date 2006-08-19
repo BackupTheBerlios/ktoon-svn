@@ -114,7 +114,7 @@ void DWizard::next()
 {
 	m_history.setCurrentIndex(m_history.currentIndex()+1);
 	
-	dDebug() << m_history.currentIndex() << " " << m_history.count() << endl;
+// 	dDebug() << m_history.currentIndex() << " " << m_history.count() << endl;
 	
 	if ( m_history.currentIndex() == m_history.count()-1 )
 	{

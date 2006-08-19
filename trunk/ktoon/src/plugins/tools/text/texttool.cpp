@@ -57,6 +57,7 @@ void TextTool::move(const KTInputDeviceInformation *input, KTBrushManager *brush
 
 void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
+	
 	if ( m_configurator->isHtml() )
 	{
 		m_item->setHtml(m_configurator->text());
@@ -65,6 +66,8 @@ void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
 	{
 		m_item->setPlainText(m_configurator->text());
 	}
+	
+	m_item->setFont( m_configurator->textFont() );
 	
 	QDomDocument doc;
 	doc.appendChild(m_item->toXml( doc ));

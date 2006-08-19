@@ -73,11 +73,11 @@ void DVHBox::addWidget(QWidget *child, Qt::Alignment alignment)
 
 void DVHBox::moveWidgetUp(QWidget *widget)
 {
-	dDebug() << "Childs " << children ().count() << endl;
+// 	dDebug() << "Childs " << children ().count() << endl;
 	int position = m_pLayout->indexOf(widget);
 	
 	
-	dDebug() << "Position: " << position << endl;
+// 	dDebug() << "Position: " << position << endl;
 	
 	if (position > 0 )
 	{

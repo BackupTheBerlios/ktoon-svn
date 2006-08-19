@@ -50,7 +50,7 @@ KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidge
 	QDomDocument document;
 	QFile file( m_helpPath.path()+"/help.xml" );
 	
-	dDebug() << "Help path: " << m_helpPath.path();
+// 	dDebug() << "Help path: " << m_helpPath.path();
 	if ( file.open( QIODevice::ReadOnly ) )
 	{
 		if ( document.setContent(&file) )
@@ -121,7 +121,7 @@ void KTHelpWidget::tryToLoadPage(QTreeWidgetItem *item, int)
 
 void KTHelpWidget::loadPage(const QString &title, const QString &filePath)
 {
-	dDebug() << "Loading: "+filePath;
+// 	dDebug() << "Loading: "+filePath;
 /*	
 	QFile file(filePath);
 	QFileInfo finfo(file);

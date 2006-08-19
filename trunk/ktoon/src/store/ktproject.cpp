@@ -207,7 +207,7 @@ void KTProject::fromXml(const QString &xml )
 		
 		if(!e.isNull())
 		{
-			dDebug() << "Scene??? " << e.tagName();
+// 			dDebug() << "Scene??? " << e.tagName();
 			if ( e.tagName() == "scene" )
 			{
 				KTScene *scene = createScene( m_scenes.count() );
@@ -232,7 +232,7 @@ QDomElement KTProject::toXml(QDomDocument &doc)
 
 void KTProject::moveScene(int position, int newPosition)
 {
-	dDebug() << "Move scene from " << position << " to " << newPosition;
+// 	dDebug() << "Move scene from " << position << " to " << newPosition;
 	
 	if ( position < 0 || position >= m_scenes.count() || newPosition < 0 || newPosition >= m_scenes.count() )
 	{

@@ -62,7 +62,7 @@ KTFrame *KTProject::createFrame(int scenePosition, int layerPosition, int positi
 		
 				if(!e.isNull())
 				{
-					dDebug() << "Item??? " << e.tagName();
+// 					dDebug() << "Item??? " << e.tagName();
 #if 0
 					if ( e.tagName() == "frame" )
 {
@@ -87,7 +87,7 @@ KTFrame *KTProject::createFrame(int scenePosition, int layerPosition, int positi
 			emit commandExecuted(&event);
 		}
 		
-		dDebug() << "Añadiendo frame en layer: " << layer->layerName();
+// 		dDebug() << "Añadiendo frame en layer: " << layer->layerName();
 		
 		return frame;
 	}
@@ -133,7 +133,7 @@ QString KTProject::removeFrame(int scenePos, int layerPos, int position)
 
 void KTProject::moveFrame(int scenePosition, int layerPosition, int position, int newPosition)
 {
-	dDebug() << "Move frame from " << position << " to " << newPosition;
+// 	dDebug() << "Move frame from " << position << " to " << newPosition;
 	KTScene *scene = this->scene(scenePosition);
 	
 	if ( !scene)

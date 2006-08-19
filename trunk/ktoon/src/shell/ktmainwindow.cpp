@@ -243,7 +243,7 @@ void KTMainWindow::newProject()
 
 bool KTMainWindow::closeProject()
 {
-	dDebug() << "Closing..";
+// 	dDebug() << "Closing..";
 	
 	if(!m_projectManager->isOpen())
 	{
@@ -363,7 +363,7 @@ void KTMainWindow::openProject(const QString &path)
 
 void KTMainWindow::save()
 {
-	dDebug() << "Saving..";
+// 	dDebug() << "Saving..";
 	QTimer::singleShot(0, this, SLOT(saveProject()));
 }
 
@@ -393,7 +393,7 @@ void KTMainWindow::showTipDialog()
 
 void KTMainWindow::importPalettes()
 {
-	dDebug() << "Importing";
+// 	dDebug() << "Importing";
 	QStringList files = QFileDialog::getOpenFileNames( this, tr("Import gimp palettes"), QString(), "Gimp Palette (*.gpl)");
 	
 	m_statusBar->setStatus( tr("Importing palettes"));

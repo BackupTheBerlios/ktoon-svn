@@ -21,6 +21,7 @@
 #include "ktserializer.h"
 
 #include <QGraphicsItem>
+#include <QFont>
 
 #include "ktsvg2qt.h"
 
@@ -193,6 +194,49 @@ void KTSerializer::loadPen(QPen &pen, const QXmlAttributes &atts)
 void KTSerializer::loadPen(QPen &pen, const QDomElement &e)
 {
 	
+}
+
+
+QDomElement KTSerializer::font(const QFont *font, QDomDocument &doc)
+{
+	QDomElement fontElement = doc.createElement("font");
+	
+	fontElement.setAttribute( "family", font->family());
+	fontElement.setAttribute( "pointSize", font->pointSize());
+	fontElement.setAttribute( "weight", font->weight());
+	fontElement.setAttribute( "italic", font->italic());
+	fontElement.setAttribute( "bold", font->bold());
+	fontElement.setAttribute( "style", font->style());
+	
+	fontElement.setAttribute( "underline", font->underline());
+	fontElement.setAttribute( "overline", font->overline());
+	
+	return fontElement;
+}
+
+void KTSerializer::loadFont(QFont &font, const QDomElement &e)
+{
+	font = QFont(e.attribute( "family" ), e.attribute( "pointSize", "-1").toInt(), e.attribute( "weight", "-1").toInt(), e.attribute( "italic", "0").toInt());
+	
+	font.setBold( e.attribute( "bold", "0").toInt( ) );
+	font.setStyle( QFont::Style(e.attribute( "style").toInt()) );
+	
+	
+	font.setUnderline( e.attribute( "underline", "0").toInt() );
+	font.setOverline( e.attribute( "overline", "0").toInt() );
+	
+}
+
+void KTSerializer::loadFont(QFont &font, const QXmlAttributes &atts)
+{
+	font = QFont(atts.value( "family" ), atts.value( "pointSize", "-1").toInt(), atts.value( "weight", "-1").toInt(), atts.value( "italic", "0").toInt());
+	
+	font.setBold( atts.value( "bold", "0").toInt( ) );
+	font.setStyle( QFont::Style(atts.value( "style").toInt()) );
+	
+	
+	font.setUnderline( atts.value( "underline", "0").toInt() );
+	font.setOverline( atts.value( "overline", "0").toInt() );
 }
 
 

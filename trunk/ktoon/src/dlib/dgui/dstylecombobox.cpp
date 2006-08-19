@@ -42,6 +42,11 @@ DStyleComboBox::~DStyleComboBox()
 
 void DStyleComboBox::chooseStyle(const QString &style)
 {
-	QApplication::setStyle( style );
+	QStyle *st = QStyleFactory::create( style );
+	if(st)
+	{
+		qApp->setStyle( st );
+		qApp->setPalette(st->standardPalette());
+	}
 }
 

@@ -39,6 +39,7 @@
 #include <QWidget>
 #include <QEvent>
 #include <QTimer>
+#include <QMessageBox>
 
 #if defined(Q_OS_UNIX)
 # define SHOW_ERROR "*** \033[0;31m%s\033[0;0m ***\n"
@@ -50,7 +51,7 @@
 # define SHOW_FATAL "***** %s *****\n"
 #endif
 
-static void DDebutOutput(DebugType t, const char *data)
+static void DDebutOutput(DebugType t, DebugOutput o, const char *data)
 {
 	char *output = "%s\n";
 	switch(t)
@@ -77,21 +78,67 @@ static void DDebutOutput(DebugType t, const char *data)
 		break;
 	}
 	
-	fprintf(stderr, output, data);
+	switch(o)
+	{
+		case DShellOutput:
+		{
+			fprintf(stderr, output, data);
+		}
+		break;
+		case DFileOutput:
+		{
+			QFile outFile("ddebug.log");
+			
+			if ( outFile.open( QIODevice::WriteOnly | QIODevice::Text) )
+			{
+				outFile.write( data, strlen( data ) );
+				outFile.close();
+			}
+		}
+		break;
+		case DBoxOutput:
+		{
+			switch(t)
+			{
+				case DDebugMsg:
+				{
+					QMessageBox::information(0, QObject::tr("Information"), data,  QMessageBox::Ok );
+				}
+				break;
+				case DWarningMsg:
+				{
+					QMessageBox::warning ( 0, QObject::tr("Warning"), data);
+				}
+				break;
+				case DErrorMsg:
+				{
+					QMessageBox::critical ( 0, QObject::tr("Error"), data);
+				}
+				break;
+				case DFatalMsg:
+				{
+					QMessageBox::critical ( 0, QObject::tr("Critical"), data);
+				}
+				break;
+			}
+		}
+		break;
+		default: break;
+	}
 }
 
-DDebug::DDebug(DebugType t) : m_type(t)
+DDebug::DDebug(DebugType t, DebugOutput o) : m_type(t), m_output(o)
 {
 	streamer = new Streamer();
 };
 
-DDebug::DDebug(const DDebug & d ) : streamer(d.streamer), m_type(d.m_type)
+DDebug::DDebug(const DDebug & d ) : streamer(d.streamer), m_type(d.m_type), m_output(d.m_output)
 {
 }
 
 DDebug::~DDebug()
 {
-	::DDebutOutput( m_type, streamer->buffer.toLocal8Bit().data() );
+	::DDebutOutput( m_type, m_output, streamer->buffer.toLocal8Bit().data() );
 	delete streamer;
 }
 
@@ -311,8 +358,9 @@ DDebug& DDebug::operator << (const QGradient *g)
 			*this << static_cast<const QConicalGradient &>(*g);
 		}
 		break;
-		
+		default: break;
 	}
+	return *this;
 }
 
 void DDebug::resaltWidget(QWidget *w, const QColor &color)
