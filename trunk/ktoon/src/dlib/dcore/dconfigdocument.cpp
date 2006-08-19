@@ -20,9 +20,9 @@
 
 #include "dconfigdocument.h"
 
-#include <qfile.h>
+#include <QFile>
 #include <QTextStream>
-#include <qobject.h>
+#include <QTextDocument>
 
 #include "dcore/ddebug.h"
 
@@ -73,21 +73,35 @@ DConfigDocument::~DConfigDocument()
 
 void DConfigDocument::beginGroup(const QString & prefix )
 {
-	if ( m_groups.contains(prefix) )
+	QString stripped = Qt::escape(prefix);
+	stripped.replace(' ', "_");
+	stripped.replace('\n', "");
+	
+	m_lastGroup = m_currentGroup.tagName();
+	
+	if ( m_groups.contains(stripped) )
 	{
-		m_currentGroup = m_groups[prefix];
+		m_currentGroup = m_groups[stripped];
 	}
 	else // Create element
 	{
-		m_currentGroup = find(documentElement(), prefix);
+		m_currentGroup = find(documentElement(), stripped);
 		
 		if ( m_currentGroup.isNull() )
 		{
-			m_currentGroup = createElement(prefix);
+			m_currentGroup = createElement(stripped);
 			documentElement().appendChild(m_currentGroup);
 		}
 		
 // 		m_currentGroup = element;
+	}
+}
+
+void DConfigDocument::endGroup()
+{
+	if ( !m_lastGroup.isEmpty() )
+	{
+		beginGroup( m_lastGroup );
 	}
 }
 

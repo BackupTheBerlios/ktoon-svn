@@ -216,6 +216,8 @@ void ControlNode::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 		m_right->moveBy(event->pos().x(), event->pos().y());
 	}
 	m_parent->setSelected( true);
+	
+	event->ignore();
 }
 
 void ControlNode::setLeft( ControlNode *left)

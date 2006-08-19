@@ -111,6 +111,8 @@ KTMainWindow::~KTMainWindow()
 {
 	DEND;
 	if ( m_osd ) delete m_osd;
+	
+	delete KTPluginManager::instance();
 }
 
 

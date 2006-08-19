@@ -125,6 +125,15 @@ void DApplication::changeFont(const QFont &font)
 // 	}
 }
 
+DConfig *DApplication::config(const QString &group )
+{
+	DConfig *config = DConfig::instance();
+	
+	config->beginGroup( group );
+	
+	return config;
+}
+
 void DApplication::parseArgs(int &argc, char **argv)
 {
 	for(int i = 0; i < argc; i++)

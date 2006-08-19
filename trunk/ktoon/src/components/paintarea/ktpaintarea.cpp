@@ -187,6 +187,11 @@ void KTPaintArea::setDrawGrid(bool draw)
 
 void KTPaintArea::setTool(KTToolPlugin *tool )
 {
+	if ( m_tool )
+	{
+		m_tool->aboutToChangeTool();
+	}
+	
 	m_tool = tool;
 	m_tool->init(this);
 }

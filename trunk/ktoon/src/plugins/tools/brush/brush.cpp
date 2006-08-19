@@ -42,13 +42,14 @@
 Brush::Brush() : m_configurator(0), m_item(0)
 {
 	m_configurator = new ExactnessConfigurator;
+	
 	setupActions();
 }
 
 Brush::~Brush()
 {
-	DEND;
 	delete m_configurator;
+	m_configurator = 0;
 }
 
 void Brush::init(QGraphicsView *view)

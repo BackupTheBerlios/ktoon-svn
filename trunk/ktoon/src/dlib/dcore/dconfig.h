@@ -45,6 +45,8 @@ class D_CORE_EXPORT DConfig : public QObject
 		
 	public:
 		void beginGroup(const QString & prefix );
+		void endGroup();
+		
 		void setValue ( const QString & key, const QVariant & value );
 
 		QVariant value ( const QString & key, const QVariant & defaultValue = QVariant() ) const;

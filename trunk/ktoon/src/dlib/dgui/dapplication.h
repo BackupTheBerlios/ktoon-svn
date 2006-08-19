@@ -175,6 +175,9 @@ class D_GUI_EXPORT DApplication : public QApplication
 		 */
 		void changeFont(const QFont &font); // static?
 		
+		
+		DConfig *config(const QString &group = "General");
+		
 	public slots:
 		/**
 		 * @if english

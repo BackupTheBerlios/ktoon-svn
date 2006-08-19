@@ -37,6 +37,12 @@ KTPluginManager::KTPluginManager(QObject *parent) : QObject(parent)
 
 KTPluginManager::~KTPluginManager()
 {
+	dDebug() << "Unloading plugins...";
+	foreach(QPluginLoader *loader, m_loaders)
+	{
+		delete loader->instance();
+		delete loader;
+	}
 }
 
 KTPluginManager *KTPluginManager::instance()
@@ -59,8 +65,8 @@ void KTPluginManager::loadPlugins()
 
 	foreach (QString fileName, m_pluginDirectory.entryList(QDir::Files))
 	{
-		QPluginLoader loader(m_pluginDirectory.absoluteFilePath(fileName));
-		QObject *plugin = qobject_cast<QObject*>(loader.instance());
+		QPluginLoader *loader = new QPluginLoader(m_pluginDirectory.absoluteFilePath(fileName));
+		QObject *plugin = qobject_cast<QObject*>(loader->instance());
 		
 		dDebug() << "******FILE: " << fileName;
 		
@@ -77,6 +83,8 @@ void KTPluginManager::loadPlugins()
 			{
 				m_tools << plugin;
 			}
+			
+			m_loaders << loader;
 		}
 	}
 }

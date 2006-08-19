@@ -97,6 +97,11 @@ void DConfig::beginGroup(const QString & prefix )
 	m_dconfig->beginGroup( prefix);
 }
 
+void DConfig::endGroup()
+{
+	m_dconfig->endGroup();
+}
+
 void DConfig::setValue ( const QString & key, const QVariant & value )
 {
 	m_dconfig->setValue(key, value);

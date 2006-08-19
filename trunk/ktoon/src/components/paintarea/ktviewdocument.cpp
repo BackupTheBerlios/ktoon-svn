@@ -101,8 +101,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
 
 	createToolBar();
 	createTools();
-// 	createMenu();
-// 	m_paintArea->setHistory(m_history);
+	
 	KTPaintAreaStatus *status = new KTPaintAreaStatus(this);
 	setStatusBar(status);
 	
@@ -112,7 +111,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
 
 KTViewDocument::~KTViewDocument()
 {
-// 	delete m_history;
+	delete m_configurationArea;
 }
 
 void KTViewDocument::setAntialiasing(bool useIt )

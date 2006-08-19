@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2006 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -30,6 +30,7 @@
 #include <dimagebutton.h>
 
 #include <ddebug.h>
+#include <dconfig.h>
 
 ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 {
@@ -41,7 +42,7 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 	layout->addWidget(label);
 	m_exactness = new QDoubleSpinBox();
 	
-	m_exactness->setValue(0.1L);
+	m_exactness->setValue(0.1);
 	m_exactness->setDecimals ( 2 );
 	m_exactness->setSingleStep ( 0.1 );
 	m_exactness->setMaximum ( 100 );
@@ -97,13 +98,21 @@ ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 	
 	mainLayout->addLayout(buttonLayout);
 	
+	DCONFIG->beginGroup("Brush tool");
+	double smoothness = DCONFIG->value("smoothness", -1).toDouble();
+	
+	if ( smoothness > 0 )
+	{
+		m_exactness->setValue(smoothness);
+	}
 }
 
 
 
 ExactnessConfigurator::~ExactnessConfigurator()
 {
-	DEND;
+	DCONFIG->beginGroup("Brush tool");
+	DCONFIG->setValue("smoothness", m_exactness->value());
 }
 
 double ExactnessConfigurator::exactness() const

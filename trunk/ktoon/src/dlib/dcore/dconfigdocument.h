@@ -39,6 +39,8 @@ class D_CORE_EXPORT DConfigDocument : public QDomDocument
     		~DConfigDocument();
 		
 		void beginGroup(const QString & prefix );
+		void endGroup();
+		
 		void setValue ( const QString & key, const QVariant & value );
 		QVariant value ( const QString & key, const QVariant & defaultValue = QVariant() ) const;
 		
@@ -63,6 +65,8 @@ class D_CORE_EXPORT DConfigDocument : public QDomDocument
 		
 		QString m_path;
 		bool m_isOk;
+		
+		QString m_lastGroup;
 };
 
 #endif
