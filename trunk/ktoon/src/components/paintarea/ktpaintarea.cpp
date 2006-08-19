@@ -257,8 +257,6 @@ void KTPaintArea::mouseReleaseEvent(QMouseEvent *event)
 	m_isDrawing = false;
 	
 	QGraphicsView::mouseReleaseEvent(event);
-
-	//qobject_cast<KTScene *>(scene())->drawCurrentPhotogram(); // FIXME: eliminar cuando retorne
 }
 
 void KTPaintArea::tabletEvent ( QTabletEvent * event )

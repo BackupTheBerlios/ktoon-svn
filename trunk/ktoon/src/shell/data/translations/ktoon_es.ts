@@ -131,7 +131,7 @@
     </message>
 </context>
 <context>
-    <name>ATextTool</name>
+    <name>TextTool</name>
     <message>
         <source>Text</source>
         <translation>Texto</translation>

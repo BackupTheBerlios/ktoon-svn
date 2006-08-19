@@ -273,8 +273,6 @@ void KTProject::lockScene(int position, bool lock)
 
 QString KTProject::renameScene(int position, const QString &newName)
 {
-	dWarning() << "Renombrando scene: " << newName;
-	
 	QString oldName;
 	KTScene *scene = this->scene(position);
 	
