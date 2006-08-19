@@ -63,7 +63,7 @@
     </message>
 </context>
 <context>
-    <name>AGeometricToolPlugin</name>
+    <name>GeometricTool</name>
     <message>
         <source>Rectangle</source>
         <translation>Rectangulo</translation>

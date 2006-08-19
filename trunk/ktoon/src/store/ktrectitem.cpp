@@ -25,6 +25,7 @@
 #include <QBrush>
 #include <QGraphicsScene>
 #include "ktgraphicalgorithm.h"
+#include "ktserializer.h"
 
 KTRectItem::KTRectItem(QGraphicsItem * parent, QGraphicsScene * scene ) : QGraphicsRectItem(parent, scene)
 {
@@ -50,7 +51,18 @@ QDomElement KTRectItem::toXml(QDomDocument &doc)
 {
 	QDomElement root = doc.createElement("rect");
 	
+	root.setAttribute("x", rect().x());
+	root.setAttribute("y", rect().y());
+	root.setAttribute("h", rect().width());
+	root.setAttribute("w", rect().height());
 	
+	root.appendChild( KTSerializer::properties( this, doc));
+	
+	QBrush brush = this->brush();
+	root.appendChild(KTSerializer::brush(&brush, doc));
+	
+	QPen pen = this->pen();
+	root.appendChild(KTSerializer::pen(&pen, doc));
 
 	return root;
 }

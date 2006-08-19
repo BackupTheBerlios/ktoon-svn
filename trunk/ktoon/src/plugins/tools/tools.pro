@@ -5,9 +5,9 @@
 
 SUBDIRS += brush \
            select \
-           ellipse \
            contourselection \
-           text 
+           text \
+           geometrictool 
 KDEV_QTVER = 4
 CONFIG += release \
 warn_on

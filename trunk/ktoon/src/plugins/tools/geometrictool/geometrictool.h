@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,46 +17,48 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef ELLIPSE_H
-#define ELLIPSE_H
+
+#ifndef AGEOMETRICTOOLPLUGIN_H
+#define AGEOMETRICTOOLPLUGIN_H
+
+#include <QObject>
+#include <QLabel>
+
 #include <kttoolplugin.h>
-#include <QSpinBox>
-#include <QGraphicsItem>
-#include "ktellipseitem.h"
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
- * @TODO: Debe ser un plugin geometrico, no solo elipse
+ * @author David Cuadrado <krawek@toonka.com>
 */
-class Ellipse: public KTToolPlugin
+
+class GeometricTool : public KTToolPlugin
 {
+	Q_OBJECT;
+	
 	public:
-		Ellipse();
-		~Ellipse();
-		virtual void init(QGraphicsView *view);
+		GeometricTool();
+		~GeometricTool();
 		
 		virtual QStringList keys() const;
+		
 		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
-		
-		virtual QMap<QString, DAction *>actions() const;
+
+		virtual QMap<QString, DAction *> actions() const;
 		
 		int toolType() const;
 		
 		virtual QWidget *configurator();
-		
-		virtual bool isComplete() const;
 		virtual void aboutToChangeTool();
 		
 	private:
 		void setupActions();
 		
 	private:
-		QPoint m_firstPoint;
-		QPoint m_oldPos;
-		KTEllipseItem  *m_ellipse;
+		QRectF m_rect;
 		QMap<QString, DAction *> m_actions;
+		
+		QGraphicsItem *m_item;
 };
 
 #endif

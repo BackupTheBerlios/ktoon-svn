@@ -33,7 +33,8 @@ HEADERS += ktlayer.h \
            ktellipseitem.h \
            ktglobal_store.h \
            ktpaintareaevent.h \
-           ktserializer.h 
+           ktserializer.h \
+           ktlineitem.h 
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
@@ -60,17 +61,15 @@ SOURCES += ktlayer.cpp \
            ktproject_layers.cpp \
            ktproject_items.cpp \
            ktpaintareaevent.cpp \
-           ktserializer.cpp 
+           ktserializer.cpp \
+           ktlineitem.cpp 
 QT += xml gui
 KDEV_QTVER = 4
-
 STORE_DIR = ../../src/store
 LIBKTOON_DIR = ../../src/libktoon
 DLIB_DIR = ../../src/dlib
-
 include($$LIBKTOON_DIR/libktoon.pri)
 include($$DLIB_DIR/dlib.pri)
-
 MOC_DIR = .moc
 UI_DIR = .ui
 OBJECTS_DIR = .obj
@@ -78,4 +77,3 @@ CONFIG += release \
 warn_on \
 dll
 TEMPLATE = lib
-
