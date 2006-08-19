@@ -17,7 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "kttextitem.h"
+#include "ktserializer.h"
 
 KTTextItem::KTTextItem(QGraphicsItem * parent, QGraphicsScene * scene)
  : QGraphicsTextItem(parent, scene)
@@ -40,6 +42,11 @@ void KTTextItem::fromXml(const QString &xml)
 QDomElement KTTextItem::toXml(QDomDocument &doc)
 {
 	QDomElement root = doc.createElement("text");
+	
+	QDomText text = doc.createTextNode( toHtml() );
+	root.appendChild( text );
+	
+	root.appendChild( KTSerializer::properties( this, doc));
 	
 	return root;
 }

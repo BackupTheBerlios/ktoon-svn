@@ -44,6 +44,8 @@ class STORE_EXPORT KTItemFactory : public QXmlDefaultHandler
 		 */
 		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
 		
+		bool characters ( const QString & ch );
+		
 		/**
 		 * Analiza etiquetas de cierre del documento XML
 		 */
@@ -58,6 +60,9 @@ class STORE_EXPORT KTItemFactory : public QXmlDefaultHandler
 		 * Muestra errores fatales en el analisis del documento
 		 */
 		bool fatalError ( const QXmlParseException & exception );
+		
+		
+		
 		
 	public:
 		QGraphicsItem *create(const QString &xml);
@@ -75,6 +80,10 @@ class STORE_EXPORT KTItemFactory : public QXmlDefaultHandler
 		QGraphicsItem *m_item;
 		
 		QStack<QGraphicsItem *> m_childs;
+		
+		bool m_readChar;
+		
+		QString m_textReaded;
 };
 
 #endif

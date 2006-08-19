@@ -30,11 +30,13 @@
 #include "ktbuttonitem.h"
 #include "ktrectitem.h"
 #include "ktellipseitem.h"
+#include "ktlineitem.h"
+
 #include "ktgraphicalgorithm.h"
 #include "ktserializer.h"
 
 
-KTItemFactory::KTItemFactory() : QXmlDefaultHandler(), m_item(0)
+KTItemFactory::KTItemFactory() : QXmlDefaultHandler(), m_item(0), m_readChar(false)
 {
 }
 
@@ -64,13 +66,17 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 	else if ( qname == "rect" )
 	{
 		m_item = new KTRectItem;
+		
+		QRectF rect(atts.value("x").toDouble(), atts.value("y").toDouble(), atts.value("width").toDouble(), atts.value("height").toDouble() );
+		
+		qgraphicsitem_cast<KTRectItem *>(m_item)->setRect(rect);
+		
 	}
 	else if ( qname == "ellipse" )
 	{
 		m_item = new KTEllipseItem;
 		
 		QRectF rect(QPointF(0, 0), QSizeF(2 * atts.value("rx").toDouble(), 2 * atts.value("ry").toDouble() ));
-		SHOW_VAR(rect);
 		qgraphicsitem_cast<KTEllipseItem *>(m_item)->setRect(rect);
 	}
 	else if ( qname == "button" )
@@ -80,7 +86,21 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 	else if ( qname == "text" )
 	{
 		m_item = new KTTextItem;
+		
+		m_readChar = true;
+		m_textReaded = "";
+		
 	}
+	else if ( qname == "line" )
+	{
+		m_item = new KTLineItem;
+		
+		QLineF line(atts.value("x1").toDouble(), atts.value("y1").toDouble(), atts.value("x2").toDouble(), atts.value("y2").toDouble());
+		
+		qgraphicsitem_cast<KTLineItem *>(m_item)->setLine(line);
+	}
+	
+	//////////
 	
 	if ( qname == "properties" && m_item )
 	{
@@ -114,6 +134,16 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 	return true;
 }
 
+bool KTItemFactory::characters ( const QString & ch )
+{
+	if ( m_readChar )
+	{
+		m_textReaded += ch;
+	}
+	
+	return true;
+}
+
 bool KTItemFactory::endElement(const QString&, const QString& , const QString& qname)
 {
 	if ( qname == "path" )
@@ -130,10 +160,14 @@ bool KTItemFactory::endElement(const QString&, const QString& , const QString& q
 	}
 	else if ( qname == "text" )
 	{
+		m_readChar = false;
+		qgraphicsitem_cast<KTTextItem *>(m_item)->setHtml(m_textReaded);
 	}
 	
 	return true;
 }
+
+
 
 bool KTItemFactory::error ( const QXmlParseException & exception )
 {
@@ -154,7 +188,7 @@ void KTItemFactory::setItemPen(const QPen &pen)
 {
 	if ( m_root == "path" || m_root == "rect" || m_root == "ellipse" )
 	{
-		static_cast<QAbstractGraphicsShapeItem *>(m_item)->setPen(pen);
+		qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_item)->setPen(pen);
 	}
 }
 
@@ -162,7 +196,7 @@ void KTItemFactory::setItemBrush(const QBrush &brush)
 {
 	if ( m_root == "path" || m_root == "rect" || m_root == "ellipse" )
 	{
-		static_cast<QAbstractGraphicsShapeItem *>(m_item)->setBrush(brush);
+		qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_item)->setBrush(brush);
 	}
 }
 
@@ -170,7 +204,7 @@ QPen KTItemFactory::itemPen() const
 {
 	if ( m_root == "path" || m_root == "rect" || m_root == "ellipse" )
 	{
-		return static_cast<QAbstractGraphicsShapeItem *>(m_item)->pen();
+		return qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_item)->pen();
 	}
 	
 	return QPen(Qt::transparent, 0);
@@ -180,7 +214,7 @@ QBrush KTItemFactory::itemBrush() const
 {
 	if ( m_root == "path" || m_root == "rect" || m_root == "ellipse" )
 	{
-		return static_cast<QAbstractGraphicsShapeItem *>(m_item)->brush();
+		return qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_item)->brush();
 	}
 	
 	return Qt::transparent;

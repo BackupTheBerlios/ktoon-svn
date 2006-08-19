@@ -53,8 +53,8 @@ QDomElement KTRectItem::toXml(QDomDocument &doc)
 	
 	root.setAttribute("x", rect().x());
 	root.setAttribute("y", rect().y());
-	root.setAttribute("h", rect().width());
-	root.setAttribute("w", rect().height());
+	root.setAttribute("width", rect().width());
+	root.setAttribute("height", rect().height());
 	
 	root.appendChild( KTSerializer::properties( this, doc));
 	

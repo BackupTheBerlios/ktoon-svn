@@ -130,7 +130,12 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
 
 void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
+	QDomDocument doc;
+	doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_item)->toXml( doc ));
 	
+	KTItemEvent *event = new KTItemEvent(KTProjectEvent::Add, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), -1, doc.toString()); // Adds to end
+	
+	addProjectEvent(event);
 }
 
 QMap<QString, DAction *> GeometricTool::actions() const

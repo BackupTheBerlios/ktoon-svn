@@ -65,6 +65,13 @@ void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
 	{
 		m_item->setPlainText(m_configurator->text());
 	}
+	
+	QDomDocument doc;
+	doc.appendChild(m_item->toXml( doc ));
+	
+	KTItemEvent *event = new KTItemEvent(KTProjectEvent::Add, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), -1, doc.toString()); // Adds to end
+	
+	addProjectEvent(event);
 }
 
 
