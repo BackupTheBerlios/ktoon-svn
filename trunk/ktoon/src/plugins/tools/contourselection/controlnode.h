@@ -62,25 +62,22 @@ class ControlNode : public QObject, public QGraphicsItem
 		void mousePressEvent(QGraphicsSceneMouseEvent *event);
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 		void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
-		
+// 		virtual bool sceneEventFilter ( QGraphicsItem * watched, QEvent * event );
 	private:
 		void paintLinesToChilds(QPainter * painter);
 	
 	public slots:
 		void  repaint();
+		void setVisibleChilds(bool visible);
+		
 	signals:
 		void requestUpdateParent();
+		void showBrothers(bool show);
 		
 	private:
 		int m_index;
-		bool m_notChange;
-		QRectF m_brParent;
 		QGraphicsItem * m_parent;
 		
-// 		
-// 		QGraphicsRectItem *gb1, *gb2 ;
-		
-		bool m_repaint;
 		ControlNode *m_left, *m_right, *m_nodeParent;
 };
 

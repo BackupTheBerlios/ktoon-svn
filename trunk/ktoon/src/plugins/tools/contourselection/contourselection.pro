@@ -3,16 +3,18 @@
 # Subdir relative project main directory: ./src/plugins/tools/contourselection
 # Target is a library:  
 
-QT += xml 
 INSTALLS += target 
 target.path = /plugins/ 
-KDEV_QTVER = 4 
+HEADERS += contourselection.h \
+           controlnode.h \
+           nodegroup.h 
+SOURCES += contourselection.cpp \
+           controlnode.cpp \
+           nodegroup.cpp 
+QT += xml
+KDEV_QTVER = 4
 include(../tools.pri)
 CONFIG += release \
-          warn_on \
-          plugin 
-TEMPLATE = lib 
-HEADERS += contourselection.h \
-           controlnode.h 
-SOURCES += contourselection.cpp \
-           controlnode.cpp 
+warn_on \
+plugin
+TEMPLATE = lib

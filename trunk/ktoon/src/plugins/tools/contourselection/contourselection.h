@@ -27,10 +27,12 @@
 #include "ktpathitem.h"
 
 #include "controlnode.h"
+#include "nodegroup.h"
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
  */
 
+class ControlNode;
 class ContourSelection : public KTToolPlugin
 {
 	Q_OBJECT;
@@ -64,7 +66,7 @@ class ContourSelection : public KTToolPlugin
 		
 	private:
 		QMap<QString, DAction *> m_actions;
-		QList<ControlNode*> m_nodes;
+		QList<NodeGroup*> m_nodes;
 // 		QGraphicsView *m_view;
 		
 	private slots:

@@ -89,7 +89,6 @@ void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 	{
 		QTimer::singleShot ( 0, this, SLOT(syncNodes()));;
 	}
-	/*QTimer::singleShot ( 0, this, SLOT(*//*) );*/ ;
 }
 
 void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
@@ -109,6 +108,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 		{
 			if(item)
 			{
+				
 				NodeManager *manager = new NodeManager(item, scene);
 				m_nodes << manager;
 				
@@ -117,7 +117,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 				
 				KTItemEvent *event = new KTItemEvent(KTProjectEvent::Transform, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().indexOf(item), doc.toString() );
 				
-				addProjectEvent(event);
+// 				addProjectEvent(event);
 			}
 		}
 	}

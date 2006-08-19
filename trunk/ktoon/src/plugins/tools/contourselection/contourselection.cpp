@@ -35,6 +35,8 @@
 #include <QDebug>
 #include <QTimer>
 
+#include "nodegroup.h"
+
 ContourSelection::ContourSelection()
 {
 	setupActions();
@@ -82,7 +84,6 @@ void ContourSelection::move(const KTInputDeviceInformation *input, KTBrushManage
 	{
 		QTimer::singleShot ( 0, this, SLOT(syncNodes()));;
 	}
-	/*QTimer::singleShot ( 0, this, SLOT(*//*) );*/ ;
 }
 
 void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
@@ -95,74 +96,44 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 	if(scene->selectedItems().count() > 0)
 	{
 		QList<QGraphicsItem *> selecteds = scene->selectedItems();
-		qDeleteAll(m_nodes);
-		m_nodes.clear();
+		
+#if 1
+		QList<NodeGroup *>::iterator it = m_nodes.begin();
+		QList<NodeGroup *>::iterator itEnd = m_nodes.end();
+		while(it != itEnd)
+		{
+			int parentIndex = scene->selectedItems().indexOf((*it)->parentItem() );
+			if(parentIndex != -1 )
+			{
+				//FIXED
+				selecteds.removeAt(parentIndex);
+				SHOW_VAR(selecteds.count());
+			}
+			else
+			{
+				delete m_nodes.takeAt(m_nodes.indexOf((*it)));
+// 				m_nodes.erase(it);
+// 				SHOW_VAR(m_nodes.count());
+// 				m_nodes.removeAll((*it));
+// 				delete (*it);
+// 				(*it)=0;
+			}
+			++it;
+			
+			dDebug() << "end it";
+		}
+		dDebug() << "termino";
+#else
+// 		qDeleteAll(m_nodes);
+// 		m_nodes.clear();
+#endif
 		foreach(QGraphicsItem *item, selecteds)
 		{
 			if(item)
 			{
-// 				NodeManager *manager = new NodeManager(item, scene);
-// 				m_nodes << manager;
-				QGraphicsPathItem *tmp = dynamic_cast<QGraphicsPathItem *>(item);
 				
-				
-				if(!tmp)
-				{
-					continue;
-				}
-				QPainterPath path = item->matrix().map( tmp->path());
-				QMatrix m;
-// 				QPointF t = item->sceneBoundingRect().topLeft();
-				QPointF t = item->pos();
-				m.translate( t.x(), t.y() );
-// 				QMatrix m;
-// 				m.translate(item->scenePos().x(), item->scenePos().x());
-				path = m.map( path );
-				
-				int index = 0;
-				while(index < path.elementCount())
-				{
-					QPainterPath::Element e = path.elementAt(index);
-					if(e.type == QPainterPath::CurveToDataElement)
-					{
-						if(index - 2 < 0) continue;
-						
-						if( path.elementAt(index-2).type == QPainterPath::CurveToElement )
-						{
-							ControlNode *node = new ControlNode(index, path.elementAt(index), item, scene);
-							QPainterPath::Element e1 = path.elementAt(index-1);
-							QPainterPath::Element e2 = path.elementAt(index+1);
-							node->setLeft(new ControlNode(index-1, e1, item, scene));
-							if(index+1 < path.elementCount() && e2.type == QPainterPath::CurveToElement)
-							{
-								node->setRight(new ControlNode(index+1, e2, item, scene));
-								m_nodes << node->right();
-								index++;
-							}
-								
-							m_nodes << node;
-							m_nodes << node->left();
-						}
-					}
-					else if( (e.type == QPainterPath::LineToElement || e.type == QPainterPath::MoveToElement ) &&  path.elementAt(index+1).type == QPainterPath::CurveToElement )
-					{
-						ControlNode *node = new ControlNode(index,path.elementAt(index), item, scene);
-							
-						node->setRight(new ControlNode(index+1, path.elementAt(index+1), item, scene));
-							
-						index++;
-							
-						m_nodes << node;
-						m_nodes << node->right();
-					}
-					else
-					{
-						ControlNode *node = new ControlNode(index, path.elementAt(index), item, scene);
-						m_nodes << node;
-					}
-					index++;
-				}
-				
+				NodeGroup *node = new NodeGroup(item, scene);
+				m_nodes << node;
 			}
 		}
 	}
@@ -176,7 +147,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 
 void ContourSelection::setupActions()
 {
-	DAction *select = new DAction( QIcon(), tr("Contour Selection"), this);
+	DAction *select = new DAction( QIcon(), tr("Contour selection"), this);
 // 	pencil->setShortcut( QKeySequence(tr("")) );
 	
 // 	QPixmap pix(THEME_DIR+"/cursors/pencil.png");
@@ -224,12 +195,14 @@ QString ContourSelection::toolToXml() const
 
 void ContourSelection::syncNodes()
 {
+	
 // 	//FIXME: tratar de optimizar esto
 // 	foreach(NodeManager* node, m_nodes)
 // 	{
 // 		if(node)
 // 		{
 // 			node->syncNodesFromParent();
+			
 // 			if(node->parentItem())
 // 			{
 // 				node->parentItem()->setEditNodesed(true);

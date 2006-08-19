@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "nodemanager.h"
-
+#include <ddebug.h>
 NodeManager::NodeManager(QGraphicsItem * parent, KTScene *scene): m_parent(parent), m_moved(false)
 {
 	QRectF rect = parent->sceneBoundingRect();

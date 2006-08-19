@@ -57,7 +57,6 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 	{
 		c = QColor("green");
 		c.setAlpha(150);
-		painter->setBrush( c );
 	} 
 	else
 	{
@@ -80,7 +79,7 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
 QRectF Node::boundingRect() const
 {
-	QSizeF size( 10  , 10 );
+	QSizeF size( 8  , 8 );
 	QRectF r(QPointF( -size.width()/2, -size.height()/2), size);
 	return r;
 }
