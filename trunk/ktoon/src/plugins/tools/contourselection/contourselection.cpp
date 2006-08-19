@@ -112,17 +112,12 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 			else
 			{
 				delete m_nodes.takeAt(m_nodes.indexOf((*it)));
-// 				m_nodes.erase(it);
-// 				SHOW_VAR(m_nodes.count());
-// 				m_nodes.removeAll((*it));
-// 				delete (*it);
-// 				(*it)=0;
 			}
 			++it;
 			
-			dDebug() << "end it";
+// 			dDebug() << "end it";
 		}
-		dDebug() << "termino";
+// 		dDebug() << "termino";
 #else
 // 		qDeleteAll(m_nodes);
 // 		m_nodes.clear();

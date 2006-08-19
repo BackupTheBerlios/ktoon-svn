@@ -18,7 +18,6 @@ NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(paren
 			if(e.type == QPainterPath::CurveToDataElement)
 			{
 				if(index - 2 < 0) continue;
-							
 				if( path.elementAt(index-2).type == QPainterPath::CurveToElement )
 				{
 					ControlNode *node = new ControlNode(index, path.elementAt(index), tmp, scene);
@@ -31,7 +30,6 @@ NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(paren
 						m_nodes << node->right();
 						index++;
 					}
-									
 					m_nodes << node;
 					m_nodes << node->left();
 				}
@@ -39,11 +37,8 @@ NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(paren
 			else if( (e.type == QPainterPath::LineToElement || e.type == QPainterPath::MoveToElement ) &&  path.elementAt(index+1).type == QPainterPath::CurveToElement )
 			{
 				ControlNode *node = new ControlNode(index,path.elementAt(index), tmp, scene);
-								
 				node->setRight(new ControlNode(index+1, path.elementAt(index+1), tmp, scene));
-								
 				index++;
-								
 				m_nodes << node;
 				m_nodes << node->right();
 			}

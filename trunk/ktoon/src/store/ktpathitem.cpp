@@ -133,8 +133,8 @@ void KTPathItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem * op
 
 bool KTPathItem::contains ( const QPointF & point ) const
 {
-#if 0
-		int thickness = 4;
+#if 1
+		int thickness = 2;
 	QRectF rectS(point-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
 	
 	QPolygonF pol = shape().toFillPolygon ();

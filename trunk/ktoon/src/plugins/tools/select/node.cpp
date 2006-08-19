@@ -27,10 +27,10 @@
 #include <QStyleOptionButton>
 #include <QApplication>
 
-#include <QtDebug>
+// #include <QtDebug>
 #include <QCursor>
-#define SHOW_VAR(s) qDebug() << #s << " = " << s
-
+// #define SHOW_VAR(s) qDebug() << #s << " = " << s
+#include <ddebug.h>
 #include "nodemanager.h"
 
 Node::Node(TypeNode node, const QPointF & pos, NodeManager *manager, QGraphicsItem * parent,  QGraphicsScene * scene   ) : QGraphicsItem(0, scene), m_typeNode(node), m_notChange(true), m_parent(parent), m_manager(manager), gb1(0), gb2(0)
@@ -95,8 +95,6 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	update();
 	m_brParent = m_parent->sceneBoundingRect();
-	
-	
 	QGraphicsItem::mousePressEvent(event);
 	m_parent->setSelected( true);
 }
@@ -118,10 +116,10 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	}
 	else
 	{
-		
-		
 		QRectF rect =  m_parent->sceneBoundingRect();
-		QRectF br =  rect;
+		rect.moveTopLeft (m_parent->scenePos());
+		QRectF br =   m_parent->sceneBoundingRect();
+		
 		
 		switch(m_typeNode)
 		{
@@ -173,13 +171,14 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 		
 		if(sx > 0 && sy > 0)
 		{
-			m_parent->setPos(  rect.topLeft());
 			m_parent->scale(sx, sy);
+			m_parent->setPos(  rect.topLeft());
 		}
 		else 
 		{
 			if(sx > 0)
 			{
+				
 				m_parent->setPos( rect.topLeft().x(),  br.topLeft().y());
 				m_parent->scale(sx, 1);
 			}
@@ -192,13 +191,11 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 		}
 	}
 	
-	
 	if(m_typeNode == Center)
 	{
 		m_parent->moveBy(event->pos().x(), event->pos().y());
 		QGraphicsItem::mouseReleaseEvent(event);
 	}
-	
 	m_manager->syncNodes( m_parent->sceneBoundingRect() );
 	update();
 	m_parent->setSelected( true);
@@ -209,5 +206,3 @@ int Node::typeNode() const
 {
 	return m_typeNode;
 }
-
-

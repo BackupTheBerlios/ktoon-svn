@@ -102,13 +102,27 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 	if(scene->selectedItems().count() > 0)
 	{
 		QList<QGraphicsItem *> selecteds = scene->selectedItems();
-		qDeleteAll(m_nodes);
-		m_nodes.clear();
+		QList<NodeManager *>::iterator it = m_nodes.begin();
+		QList<NodeManager *>::iterator itEnd = m_nodes.end();
+		while(it != itEnd)
+		{
+			int parentIndex = scene->selectedItems().indexOf((*it)->parentItem() );
+			if(parentIndex != -1 )
+			{
+				//FIXED
+				selecteds.removeAt(parentIndex);
+			}
+			else
+			{
+				delete m_nodes.takeAt(m_nodes.indexOf((*it)));
+			}
+			++it;
+			
+		}
 		foreach(QGraphicsItem *item, selecteds)
 		{
-			if(item)
+			if(item && dynamic_cast<KTAbstractSerializable* > (item) )
 			{
-				
 				NodeManager *manager = new NodeManager(item, scene);
 				m_nodes << manager;
 				
