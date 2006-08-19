@@ -41,7 +41,7 @@ bool DAspellChecker::init()
 	}
 	
 	AspellConfig * config = new_aspell_config();
-	aspell_config_replace(config, "lang", locale.toLatin1().data());
+	aspell_config_replace(config, "lang", locale.toLocal8Bit().data());
 	
 	AspellCanHaveError * ret = new_aspell_speller(config);;
 	delete_aspell_config(config);
@@ -71,7 +71,7 @@ bool DAspellChecker::checkWord(const QString &word)
 {
 	if ( !m_speller ) return true;
 	
-	return aspell_speller_check(m_speller, word.toLatin1().data(), -1);
+	return aspell_speller_check(m_speller, word.toLocal8Bit().data(), -1);
 }
 
 QStringList DAspellChecker::suggestions(const QString &word)
@@ -80,7 +80,7 @@ QStringList DAspellChecker::suggestions(const QString &word)
 	
 	QStringList suggs;
 	
-	const AspellWordList *wordList = aspell_speller_suggest(m_speller, word.toLatin1().data(), -1);
+	const AspellWordList *wordList = aspell_speller_suggest(m_speller, word.toLocal8Bit().data(), -1);
 	
 	if ( wordList == 0 )
 	{

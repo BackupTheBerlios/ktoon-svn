@@ -77,7 +77,7 @@ void MingPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> 
 
 	foreach(QString image, paths)
 	{
-		SWFBitmap bitmap(image.toLatin1().data());
+		SWFBitmap bitmap(image.toLocal8Bit().data());
 		
 		SWFShape p_shape;
 		p_shape.addBitmapFill(&bitmap);
@@ -85,7 +85,7 @@ void MingPlugin::exportToFormat(const QString &filePath, const QList<KTScene *> 
 		movie.nextFrame();
 	}
 	
-	movie.save(filePath.toLatin1().data());
+	movie.save(filePath.toLocal8Bit().data());
 	
 	foreach(QString path, paths)
 	{

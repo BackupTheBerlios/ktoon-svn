@@ -253,7 +253,7 @@ static QString runCommand( const QString &command )
 
 void crashTrapper (int sig)
 {
-	qDebug("%s is crashing with signal %d :(", CHANDLER->program().toLatin1().data(), sig);
+	qDebug("%s is crashing with signal %d :(", CHANDLER->program().toLocal8Bit().data(), sig);
 	
 	CHANDLER->setTrapper(0); // Unactive crash handler
 	
@@ -285,7 +285,7 @@ void crashTrapper (int sig)
 	
 			const QString gdb_batch = "bt\n";
 	
-			::write( handle, gdb_batch.toLatin1().data(), gdb_batch.length() );
+			::write( handle, gdb_batch.toLocal8Bit().data(), gdb_batch.length() );
 			::fsync( handle );
 	
 			// so we can read stderr too

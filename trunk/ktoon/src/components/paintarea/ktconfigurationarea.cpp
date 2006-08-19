@@ -55,7 +55,7 @@ QSize  KTConfigurationArea::sizeHint() const
 {
 	if ( widget() )
 	{
-		return widget()->sizeHint();
+		return widget()->minimumSizeHint();
 	}
 	
 	return QDockWidget::sizeHint();

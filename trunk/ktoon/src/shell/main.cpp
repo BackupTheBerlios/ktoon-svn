@@ -51,6 +51,8 @@
 
 #include <dsound/daudioplayer.h>
 
+#include <dcollapsiblewidget.h>
+
 void usage();
 
 int main( int argc, char ** argv )
@@ -128,8 +130,6 @@ int main( int argc, char ** argv )
 		
 	}
 	
-// 	QWidget mainWindow;
-// 	mainWindow.show();
 	KTSplash *splash = new KTSplash;
 	splash->show();
 	splash->setMessage( QObject::tr( "Initializing..." ) );
@@ -160,33 +160,32 @@ int main( int argc, char ** argv )
 		mainWindow.openProject( project );
 	}
 	
-	
 	return application.exec();
 }
 
 void usage()
 {
 #if defined(Q_OS_UNIX)
-	puts(QString("\033[1;33m"+QApplication::applicationName() + dAppProp->version()).toLatin1());
-	puts(QString(QObject::tr("2D Animation tool kit")+"\033[0;0m" ).toLatin1());
+	puts(QString("\033[1;33m"+QApplication::applicationName() + dAppProp->version()).toLocal8Bit());
+	puts(QString(QObject::tr("2D Animation tool kit")+"\033[0;0m" ).toLocal8Bit());
 
-	puts(QString("\033[1;34m"+QObject::tr("Usage: %1 [option]").arg(dApp->argv()[0])+"\033[0;0m").toLatin1());
+	puts(QString("\033[1;34m"+QObject::tr("Usage: %1 [option]").arg(dApp->argv()[0])+"\033[0;0m").toLocal8Bit());
 	
-	puts(QString("\033[1;31m"+QObject::tr("Options: ")).toLatin1());
+	puts(QString("\033[1;31m"+QObject::tr("Options: ")).toLocal8Bit());
 	
 	puts("-r, --reconfigure");
-	puts(QObject::tr("\t\tReconfigure %1").arg(QApplication::applicationName()).toLatin1());
+	puts(QObject::tr("\t\tReconfigure %1").arg(QApplication::applicationName()).toLocal8Bit());
 	
 	puts("\033[0;0m");
 #else
-	puts(QString(QApplication::applicationName() + dApp->version()).toLatin1());
+	puts(QString(QApplication::applicationName() + dApp->version()).toLocal8Bit());
 
-	puts(QObject::tr("Usage: %1 [option]").arg(dApp->argv()[0]).toLatin1());
+	puts(QObject::tr("Usage: %1 [option]").arg(dApp->argv()[0]).toLocal8Bit());
 	
-	puts(QObject::tr("Options: ").toLatin1());
+	puts(QObject::tr("Options: ").toLocal8Bit());
 	
 	puts("-r, --reconfigure");
-	puts(QObject::tr("\t\tReconfigure %1").arg(QApplication::applicationName()).toLatin1()); 
+	puts(QObject::tr("\t\tReconfigure %1").arg(QApplication::applicationName()).toLocal8Bit()); 
 #endif
 }
 

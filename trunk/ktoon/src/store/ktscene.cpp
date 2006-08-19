@@ -23,13 +23,13 @@
 
 #include <QDir>
 #include <QGraphicsItem>
+#include <QGraphicsView>
 
 KTScene::KTScene(KTProject *parent) : QGraphicsScene(parent), m_isLocked(false),  m_layerCount(0), m_isVisible(true)
 {
 	setItemIndexMethod(QGraphicsScene::NoIndex);
 	
-	m_framePosition.frame = -1;
-	m_framePosition.layer = -1;
+	setCurrentFrame( -1, -1);
 }
 
 
@@ -235,6 +235,21 @@ void KTScene::setCurrentFrame(int layer, int frame)
 {
 	m_framePosition.layer = layer;
 	m_framePosition.frame = frame;
+	
+	if (! currentFrame() )
+	{
+		foreach(QGraphicsView *view, views() )
+		{
+			view->setDragMode(QGraphicsView::NoDrag);
+		}
+	}
+	else
+	{
+		foreach(QGraphicsView *view, views() )
+		{
+			view->setDragMode(QGraphicsView::NoDrag);
+		}
+	}
 }
 
 void KTScene::addGraphic(QGraphicsItem *item)

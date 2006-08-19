@@ -18,26 +18,150 @@
    Boston, MA 02110-1301, USA.
 */
 
-#include <QtGui>
+#include <QTextDocument>
+#include <QMimeData>
+#include <QPainter>
+#include <QMouseEvent>
+#include <QDragEnterEvent>
+#include <QVBoxLayout>
+#include <QApplication>
+#include <QGridLayout>
+#include <QPushButton>
+#include <QPainterPath>
+#include <QStyleOption>
+#include <QGroupBox>
+#include <QFontMetrics>
+
 #include <dcollapsiblewidget.h>
+
+#include <ddebug.h>
 
 /******************************************************************
  * Helper classes
  *****************************************************************/
 
-DClickableLabel::DClickableLabel( QWidget* parent )
-	: QLabel( parent ), m_isEnter(false)
+
+class CollapsibleMimeData : public QMimeData
 {
+	public:
+		CollapsibleMimeData();
+		~CollapsibleMimeData();
+		
+		void setCollapsibleWidget(DCollapsibleWidget *w);
+		DCollapsibleWidget *collapsibleWidget() const;
+		
+	private:
+		DCollapsibleWidget *m_cw;
+};
+
+
+CollapsibleMimeData::CollapsibleMimeData() : QMimeData(), m_cw(0)
+{
+}
+
+CollapsibleMimeData::~CollapsibleMimeData()
+{
+}
+
+
+void CollapsibleMimeData::setCollapsibleWidget(DCollapsibleWidget *w)
+{
+	m_cw = w;
+}
+
+DCollapsibleWidget *CollapsibleMimeData::collapsibleWidget() const
+{
+	return m_cw;
+}
+
+
+DClickableLabel::DClickableLabel( QWidget* parent )
+	: QWidget( parent ), m_isEnter(false), m_isDragging(false), m_checked(false)
+{
+	setMouseTracking( false );
+	
+	m_text = new QTextDocument(this);
 }
 
 DClickableLabel::~DClickableLabel()
 {
 }
 
-void DClickableLabel::mousePressEvent( QMouseEvent *e )
+QSize DClickableLabel::sizeHint() const
 {
-	Q_UNUSED( e );
-	emit clicked();
+	return m_text->size().toSize();
+}
+
+void DClickableLabel::setText(const QString &text)
+{
+	m_text->setHtml(text);
+}
+
+QString DClickableLabel::text() const
+{
+	return m_text->toPlainText();
+}
+
+void DClickableLabel::setChecked(bool c)
+{
+	m_checked = c;
+}
+
+bool DClickableLabel::isChecked() const
+{
+	return m_checked;
+}
+
+void DClickableLabel::mousePressEvent (QMouseEvent *e)
+{
+	m_isDragging = false;
+	
+	m_position = e->pos();
+	QWidget::mousePressEvent( e );
+}
+
+void DClickableLabel::mouseReleaseEvent( QMouseEvent *e )
+{
+	if ( ! m_isDragging )
+	{
+		m_checked = !m_checked;
+		
+		emit clicked();
+	}
+}
+
+void DClickableLabel::mouseMoveEvent(QMouseEvent* e)
+{
+	QWidget::mouseMoveEvent( e );
+
+	if ((e->pos() - m_position).manhattanLength() <  QApplication::startDragDistance())
+	{
+		return;
+	}
+	
+	QDrag *drag = new QDrag( this );
+	CollapsibleMimeData *mimeData = new CollapsibleMimeData;
+	DCollapsibleWidget *parent = dynamic_cast<DCollapsibleWidget *>(parentWidget());
+	
+	if ( ! parent ) return;
+	QWidget *inner = parent->innerWidget();
+	if ( ! inner ) return;
+	
+	mimeData->setCollapsibleWidget( parent );
+	
+	QPixmap wpx = QPixmap::grabWidget(parent);
+	QPainter p(&wpx);
+	
+	p.drawRoundRect(wpx.rect(), 10, 10);
+	
+	drag->setPixmap( wpx );
+	
+	drag->setMimeData(mimeData);
+	
+	
+	Qt::DropAction dropAction = drag->start(Qt::MoveAction);
+	
+	m_isDragging = true;
 }
 
 void DClickableLabel::paintEvent (QPaintEvent *e)
@@ -45,6 +169,8 @@ void DClickableLabel::paintEvent (QPaintEvent *e)
 	QPainter painter(this);
 	if ( m_isEnter )
 	{
+		painter.save();
+		
 		QRect r = rect();
 	
 		double h = r.height();
@@ -58,65 +184,35 @@ void DClickableLabel::paintEvent (QPaintEvent *e)
 		painter.setBrush( palette().brush(QPalette::Highlight) );
 		painter.setRenderHint(QPainter::Antialiasing);
 		painter.drawPath(path);
+		
+		painter.restore();
 	}
 	
+	QRect r = rect();
+	r.setX( (r.x() + m_text->textWidth())/2 );
+	
+#if QT_VERSION >= 0x040200
+	m_text->drawContents(&painter, r);
+#else
+	painter.drawText(r, text() );
+#endif
+	
 	painter.end();
-	QLabel::paintEvent(e);
+	QWidget::paintEvent(e);
 }
 
 void DClickableLabel::enterEvent ( QEvent * e)
 {
 	m_isEnter = true;
 	update();
-	QLabel::enterEvent(e);
+	QWidget::enterEvent(e);
 }
 
 void DClickableLabel::leaveEvent(QEvent *e)
 {
 	m_isEnter = false;
 	update();
-	QLabel::leaveEvent(e);
-}
-
-class ArrowButton : public QAbstractButton
-{
-	public:
-		ArrowButton(QWidget *parent = 0);
-		~ArrowButton();
-
-		QSize sizeHint() const { return QSize(16, 16); }
-
-	protected:
-		void paintEvent( QPaintEvent* );
-
-	private:
-};
-
-ArrowButton::ArrowButton( QWidget *parent )
-	: QAbstractButton( parent )
-{
-}
-
-
-ArrowButton::~ArrowButton()
-{
-}
-
-void ArrowButton::paintEvent( QPaintEvent *event )
-{
-	Q_UNUSED( event );
-	QPainter p( this );
-	QStyleOption opt;
-	int h = sizeHint().height();
-	opt.rect = QRect(0,( height()- h )/2, h, h);
-	opt.palette = palette();
-	if (isEnabled()) opt.state |= QStyle::State_Enabled;
-
-	if (isChecked())
-		style()->drawPrimitive(QStyle::PE_IndicatorArrowDown, &opt, &p);
-	else
-		style()->drawPrimitive(QStyle::PE_IndicatorArrowRight, &opt, &p);
-	p.end();
+	QWidget::leaveEvent(e);
 }
 
 
@@ -127,16 +223,16 @@ void ArrowButton::paintEvent( QPaintEvent *event )
 class DCollapsibleWidget::Private
 {
 	public:
-		QGridLayout    *gridLayout;
+		QGridLayout    *cwlayout;
 		QWidget        *innerWidget;
 		DClickableLabel *label;
-		ArrowButton    *colButton;
 };
 
 class DSettingsContainer::Private
 {
 	public:
 		QVBoxLayout *layout;
+		QList<DCollapsibleWidget *> collapsibles;
 };
 
 /******************************************************************
@@ -153,6 +249,8 @@ DSettingsContainer::DSettingsContainer(QWidget *parent)
 	helperLay->addStretch(2);
 	setWidget(w);
 	setWidgetResizable(true);
+	
+	setAcceptDrops(true);
 }
 
 DSettingsContainer::~DSettingsContainer()
@@ -162,7 +260,7 @@ DSettingsContainer::~DSettingsContainer()
 
 DCollapsibleWidget* DSettingsContainer::insertWidget( QWidget *w, const QString& name )
 {
-	if (w && w->layout()) 
+	if (w && w->layout())
 	{
 		QLayout *lay = w->layout();
 		lay->setMargin(2);
@@ -170,10 +268,111 @@ DCollapsibleWidget* DSettingsContainer::insertWidget( QWidget *w, const QString&
 	}
 
 	DCollapsibleWidget *cw = new DCollapsibleWidget( name );
+	
 	d->layout->addWidget( cw );
 	cw->setInnerWidget( w );
+	
+	d->collapsibles << cw;
+	
+	cw->show();
+	
 	return cw;
 }
+
+void DSettingsContainer::removeWidget(QWidget *w )
+{
+	foreach( DCollapsibleWidget *cw, d->collapsibles )
+	{
+		if ( cw->innerWidget() == w )
+		{
+			d->collapsibles.removeAll(cw );
+			d->layout->removeWidget(cw);
+			
+			break;
+		}
+	}
+}
+
+void DSettingsContainer::dragEnterEvent ( QDragEnterEvent * event )
+{
+	setFocus();
+	
+	if ( const CollapsibleMimeData *mimeData = dynamic_cast<const CollapsibleMimeData *>(event->mimeData()) )
+	{
+		if (event->source() == this)
+		{
+			event->setDropAction(Qt::MoveAction);
+			event->accept();
+		}
+		else
+		{
+			event->acceptProposedAction();
+		}
+	}
+	else
+	{
+		event->ignore();
+	}
+}
+
+void DSettingsContainer::dragMoveEvent(QDragMoveEvent* event)
+{
+	if ( const CollapsibleMimeData *mimeData = dynamic_cast<const CollapsibleMimeData *>(event->mimeData()) )
+	{
+		event->acceptProposedAction();
+	}
+	else
+	{
+		event->ignore();
+	}
+}
+
+
+void DSettingsContainer::dropEvent(QDropEvent* event)
+{
+	if (const CollapsibleMimeData *mimeData = dynamic_cast<const CollapsibleMimeData *>(event->mimeData()))
+	{
+		d->layout->removeWidget( mimeData->collapsibleWidget());
+		
+		
+		QWidget *child = childAt(event->pos());
+		
+		if (child )
+		{
+			if ( DCollapsibleWidget *prev = dynamic_cast< DCollapsibleWidget *>(child) )
+			{
+				d->layout->insertWidget( d->layout->indexOf(prev)+1, mimeData->collapsibleWidget());
+			}
+			else if ( DCollapsibleWidget *prev = dynamic_cast< DCollapsibleWidget *>(child->parentWidget()) )
+			{
+				d->layout->insertWidget( d->layout->indexOf(prev)+1, mimeData->collapsibleWidget());
+			}
+			else
+			{
+				d->layout->addWidget(mimeData->collapsibleWidget());
+			}
+		}
+		else
+		{
+			d->layout->addWidget(mimeData->collapsibleWidget());
+		}
+		
+		if (event->source() == this) 
+		{
+			event->setDropAction(Qt::MoveAction);
+			event->accept();
+		} 
+		else 
+		{
+			event->acceptProposedAction();
+		}
+	} 
+	else 
+	{
+		event->ignore();
+	}
+}
+
 
 DCollapsibleWidget::DCollapsibleWidget(QWidget *parent)
 	: QWidget(parent), d(new DCollapsibleWidget::Private)
@@ -190,26 +389,19 @@ DCollapsibleWidget::DCollapsibleWidget(const QString& caption, QWidget *parent)
 void DCollapsibleWidget::init()
 {
 	d->innerWidget = 0;
-	d->gridLayout = new QGridLayout( this );
-	d->gridLayout->setMargin(0);
-
-	d->colButton = new ArrowButton;
-	d->colButton->setCheckable(true);
-
+	d->cwlayout = new QGridLayout( this );
+	d->cwlayout->setMargin(0);
+	
 	d->label = new DClickableLabel;
-	d->label->setSizePolicy(QSizePolicy::MinimumExpanding, 
-				QSizePolicy::Preferred);
-
-	d->gridLayout->addWidget(d->colButton, 1, 1);
-	d->gridLayout->addWidget(d->label, 1, 2);
-
-
-	connect(d->label, SIGNAL(clicked()), 
-		d->colButton, SLOT(click()));
-
-	connect(d->colButton, SIGNAL(toggled(bool)), 
-		SLOT(setExpanded(bool)));
-
+	d->label->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
+	
+	
+	d->cwlayout->addWidget(d->label, 1, 1);
+	
+// 	d->label->show();
+	
+	connect(d->label, SIGNAL(clicked()), this, SLOT(toggleExpanded()));
+	
 	setExpanded(false);
 	setEnabled(false);
 }
@@ -230,13 +422,15 @@ void DCollapsibleWidget::setInnerWidget(QWidget *w)
 	
 	QGroupBox *container = new QGroupBox(this);
 	w->setParent(container);
+	
 	QVBoxLayout *containerLayout = new QVBoxLayout(container);
 	d->innerWidget = w;
 	
 	containerLayout->addWidget(w);
 
-	d->gridLayout->addWidget(container, 2, 2);
-	d->gridLayout->setRowStretch(2, 1);
+	d->cwlayout->addWidget(container, 2, 1);
+	d->cwlayout->setRowStretch(2, 1);
+	
 	setEnabled( true );
 	setExpanded(isExpanded());
 }
@@ -255,13 +449,24 @@ void DCollapsibleWidget::setExpanded(bool expanded)
 {
 	if ( d->innerWidget )
 	{
+		setUpdatesEnabled( false );
 		d->innerWidget->parentWidget()->setVisible(expanded);
 		d->innerWidget->setVisible(expanded);
+		
+		d->label->setChecked(expanded);
+		
+		setUpdatesEnabled( true );
 	}
 }
 
 bool DCollapsibleWidget::isExpanded() const
 {
-	return d->colButton->isChecked();
+	return d->label->isChecked();
 }
+
+void DCollapsibleWidget::toggleExpanded()
+{
+	setExpanded( d->label->isChecked() );
+}
+
 

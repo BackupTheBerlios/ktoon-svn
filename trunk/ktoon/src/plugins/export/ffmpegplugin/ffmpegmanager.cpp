@@ -48,7 +48,7 @@ void FFMpegManager::create(const QString &filePath, int formatId, const QStringL
 {
 #ifdef HAVE_FFMPEG
 	
-	AVOutputFormat *fmt = guess_format(0, filePath.toLatin1().data(), 0);
+	AVOutputFormat *fmt = guess_format(0, filePath.toLocal8Bit().data(), 0);
 	
 	if ( !fmt )
 	{
@@ -91,7 +91,7 @@ void FFMpegManager::create(const QString &filePath, int formatId, const QStringL
 		break;
 		case KTExportInterface::GIF:
 		{
-// 			AVImageFormat *imageFormat = guess_image_format(filePath.toLatin1().data());
+// 			AVImageFormat *imageFormat = guess_image_format(filePath.toLocal8Bit().data());
 // 			
 // 			memset(ap, 0, sizeof(*ap));
 // 			ap->image_format = imageFormat;
@@ -109,7 +109,7 @@ void FFMpegManager::create(const QString &filePath, int formatId, const QStringL
 
 	
 	oc->oformat = fmt;
-	snprintf(oc->filename, sizeof(oc->filename), "%s", filePath.toLatin1().data());
+	snprintf(oc->filename, sizeof(oc->filename), "%s", filePath.toLocal8Bit().data());
 	
 	AVStream *video_st = addVideoStream(oc, fmt->video_codec, size.width(), size.height(), fps);
 	
@@ -125,7 +125,7 @@ void FFMpegManager::create(const QString &filePath, int formatId, const QStringL
 		return ;
 	}
 	
-	dump_format(oc, 0, filePath.toLatin1().data(), 1);
+	dump_format(oc, 0, filePath.toLocal8Bit().data(), 1);
 	
 	if (!openVideo(oc, video_st) )
 	{
@@ -135,9 +135,9 @@ void FFMpegManager::create(const QString &filePath, int formatId, const QStringL
 	
 	if (!(fmt->flags & AVFMT_NOFILE))
 	{
-		if (url_fopen(&oc->pb, filePath.toLatin1().data(), URL_WRONLY) < 0) 
+		if (url_fopen(&oc->pb, filePath.toLocal8Bit().data(), URL_WRONLY) < 0) 
 		{
-			dError() << "Could not open " << filePath.toLatin1().data();
+			dError() << "Could not open " << filePath.toLocal8Bit().data();
 			return;
 		}
 	}

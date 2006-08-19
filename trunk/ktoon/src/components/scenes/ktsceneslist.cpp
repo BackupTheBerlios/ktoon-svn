@@ -21,7 +21,7 @@ KTScenesList::KTScenesList(QWidget *parent)
 	setHeaderLabels ( QStringList() << "name" );
 // 	hide();
 // 	connect(this, SIGNAL( itemSelectionChanged ()), this, SLOT(changeCurrentScene()));
-// 	connect(this, SIGNAL(itemClicked ( QTreeWidgetItem *, int)), this, SLOT(changeCurrentScene(QTreeWidgetItem *, int)));
+	connect(this, SIGNAL(itemClicked ( QTreeWidgetItem *, int)), this, SLOT(changeCurrentScene(QTreeWidgetItem *, int)));
 // 	setDragEnabled ( true);
 }
 

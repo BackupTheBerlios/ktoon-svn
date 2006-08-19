@@ -28,6 +28,8 @@
 
 #include "ktsceneevent.h" //events
 
+#include <QGraphicsView>
+
 /**
  * Constructor por defecto
  */
@@ -147,7 +149,14 @@ QString KTProject::removeScene(int position)
 		document.appendChild(toRemove->toXml(document));
 		
 		m_scenes.removeAt(position);
+		
+		foreach(QGraphicsView *view, toRemove->views() )
+		{
+			view->setScene(0);
+		}
+		
 		delete toRemove;
+		toRemove = 0;
 		
 		KTSceneEvent event(KTProjectEvent::Remove, position);
 		

@@ -102,7 +102,6 @@ void KTPaintArea::setCurrentScene(int index)
 	KTScene *sscene = m_project->scene(index);
 	if ( sscene )
 	{
-		
 		m_currentSceneIndex = index;
 		
 		sscene->clean();
@@ -113,6 +112,22 @@ void KTPaintArea::setCurrentScene(int index)
 		setBackgroundBrush(Qt::gray);
 		
 		sscene->setSceneRect( m_drawingRect );
+		
+		if ( KTScene *prev = dynamic_cast<KTScene *>(scene()) )
+		{
+			sscene->setCurrentFrame( prev->currentFrameIndex(), prev->currentLayerIndex());
+		}
+		
+		if ( m_tool )
+		{
+			m_tool->init( this );
+		}
+		
+		sscene->drawCurrentPhotogram();
+	}
+	else
+	{
+		setDragMode(QGraphicsView::NoDrag);
 	}
 }
 
@@ -303,8 +318,23 @@ void KTPaintArea::layerEvent(KTLayerEvent *event)
 
 void KTPaintArea::sceneEvent(KTSceneEvent *event)
 {
-	Q_UNUSED(event);
-	
+	switch(event->action())
+	{
+		case KTProjectEvent::Select:
+		{
+			setCurrentScene( event->sceneIndex() );
+		}
+		break;
+		case KTProjectEvent::Remove:
+		{
+			if ( event->sceneIndex() == m_currentSceneIndex )
+			{
+				setCurrentScene( m_currentSceneIndex-1 );
+			}
+		}
+		break;
+		default: break;
+	}
 }
 
 void KTPaintArea::projectEvent(KTProjectEvent *event)

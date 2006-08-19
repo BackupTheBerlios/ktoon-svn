@@ -104,21 +104,11 @@ void KTScenesWidget::sendEvent(int action)
 	}
 }
 
-void KTScenesWidget::insertScene(const QString &name, bool addedToEnd)
-{
-	D_FUNCINFO;
-	m_tableScenes->addScene(name);
-	emit sendToStatus( tr("Scene added"));
-}
-
-void KTScenesWidget::removeScene()
-{
-	m_tableScenes->removeCurrentScene();
-	emit sendToStatus( tr("Scene removed"));
-}
-
 void KTScenesWidget::selectScene(const QString & name, int index)
 {
+	KTSceneEvent event(KTProjectEvent::Select, index, this);
+	
+	emit eventTriggered( &event );
 }
 
 void KTScenesWidget::sceneDobleClick(QTreeWidgetItem * item, int )
@@ -145,32 +135,11 @@ void KTScenesWidget::emitRequestInsertScene()
 
 void KTScenesWidget::emitRequestRemoveScene()
 {
-	DCONFIG->beginGroup("Scene");
-	
-	bool noAsk = qvariant_cast<bool>(DCONFIG->value("RemoveWithoutAskScene", false));
-	if ( ! noAsk )
-	{
-		DOptionalDialog dialog(tr("Do you want to remove this scene?"),tr("Remove?"), this);
-		
-		if( dialog.exec() == QDialog::Rejected )
-		{
-			return;
-		}
-		DCONFIG->setValue("RemoveWithoutAskScene", dialog.shownAgain());
-		DCONFIG->sync();
-	}
-	
 	KTSceneEvent event(KTProjectEvent::Remove,  m_tableScenes->indexCurrentScene(), this );
 	
 	emit eventTriggered( &event );
 }
 
-
-
-void KTScenesWidget::setScene(int index)
-{
-// m_tableScenes->setCurrentItem(m_tableScenes->topLevelItem ( index ) ); // FIXME
-}
 
 void KTScenesWidget::closeAllScenes()
 {

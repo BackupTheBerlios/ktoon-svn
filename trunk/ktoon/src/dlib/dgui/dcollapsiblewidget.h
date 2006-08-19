@@ -27,32 +27,47 @@
 #include "dcore/dglobal.h"
 
 class QScrollArea;
+class QTextDocument;
 
-class D_GUI_EXPORT DClickableLabel : public QLabel
+class D_GUI_EXPORT DClickableLabel : public QWidget
 {
 	Q_OBJECT
 	public:
 		DClickableLabel( QWidget* parent = 0 );
 		~DClickableLabel();
 		
+		void setText(const QString &text);
+		QString text() const;
+		
+		void setChecked(bool c);
+		bool isChecked() const;
+		QSize sizeHint() const;
+		
 	protected:
 		void paintEvent(QPaintEvent *e);
 		void enterEvent ( QEvent * e);
 		void leaveEvent(QEvent *e);
-		void mousePressEvent( QMouseEvent *e );
+		void mousePressEvent (QMouseEvent *e);
+		void mouseReleaseEvent( QMouseEvent *e );
+		void mouseMoveEvent(QMouseEvent* e);
 		
 	signals:
 		void clicked();
 		
 	private:
 		bool m_isEnter;
+		QPoint m_position;
+		QTextDocument *m_text;
+		
+		bool m_isDragging;
+		bool m_checked;
 };
 
 /**
   @short A widget that has a caption and a collapsible widget
   @author Daniel Molkentin <molkentin@kde.org>
  */
-class Q_GUI_EXPORT DCollapsibleWidget : public QWidget
+class D_GUI_EXPORT DCollapsibleWidget : public QWidget
 {
 	Q_OBJECT
 	public:
@@ -69,8 +84,10 @@ class Q_GUI_EXPORT DCollapsibleWidget : public QWidget
 	public slots:
 		void setExpanded(bool collapsed);
 		void setCaption(const QString& caption);
-
-
+		
+	private slots:
+		void toggleExpanded();
+		
 	protected:
 		void init();
 
@@ -86,7 +103,7 @@ class Q_GUI_EXPORT DCollapsibleWidget : public QWidget
          usually in the form of DCollapsibleWidgets.
   @author Daniel Molkentin <molkentin@kde.org>
  */
-class Q_GUI_EXPORT DSettingsContainer : public QScrollArea
+class D_GUI_EXPORT DSettingsContainer : public QScrollArea
 {
 	Q_ENUMS( CollapseState );
 	Q_OBJECT;
@@ -96,6 +113,12 @@ class Q_GUI_EXPORT DSettingsContainer : public QScrollArea
 		~DSettingsContainer();
 
 		DCollapsibleWidget* insertWidget( QWidget* w, const QString& name );
+		void removeWidget(QWidget *w );
+		
+	protected:
+		void dragEnterEvent ( QDragEnterEvent * event );
+		void dragMoveEvent(QDragMoveEvent* event);
+		void dropEvent(QDropEvent* e);
 
 	private:
 		Q_DISABLE_COPY( DSettingsContainer );
