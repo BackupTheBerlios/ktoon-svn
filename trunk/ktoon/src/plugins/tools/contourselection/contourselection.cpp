@@ -192,18 +192,18 @@ void ContourSelection::syncNodes()
 {
 	
 // 	//FIXME: tratar de optimizar esto
-// 	foreach(NodeManager* node, m_nodes)
-// 	{
-// 		if(node)
-// 		{
-// 			node->syncNodesFromParent();
+	foreach(NodeGroup* node, m_nodes)
+	{
+		if(node)
+		{
+			node->syncNodesFromParent();
 			
-// 			if(node->parentItem())
-// 			{
+			if(node->parentItem())
+			{
 // 				node->parentItem()->setEditNodesed(true);
-// 			}
-// 		}
-// 	}
+			}
+		}
+	}
 }
 
 Q_EXPORT_PLUGIN2(kt_editNodes, ContourSelection )

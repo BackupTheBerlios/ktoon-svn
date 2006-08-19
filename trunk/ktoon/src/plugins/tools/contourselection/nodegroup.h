@@ -15,10 +15,13 @@ class NodeGroup
 		~NodeGroup();
 		
 		QGraphicsItem * parentItem();
+		void NodeGroup::syncNodes(const QPainterPath & path);
+		void NodeGroup::syncNodesFromParent();
 		
 	private:
 		QList<ControlNode*> m_nodes;
 		QGraphicsItem *m_parentItem;
+		
 };
 
 #endif

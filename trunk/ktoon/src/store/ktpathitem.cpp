@@ -29,6 +29,8 @@
 #include "ktgraphicalgorithm.h"
 #include "ktserializer.h"
 
+#include <QCursor>
+
 KTPathItem::KTPathItem( QGraphicsItem * parent, QGraphicsScene * scene) : QGraphicsPathItem(parent, scene), m_dragOver(false)
 {
 	setAcceptDrops(true);
@@ -138,6 +140,8 @@ bool KTPathItem::contains ( const QPointF & point ) const
 	QRectF rectS(point-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
 	
 	QPolygonF pol = shape().toFillPolygon ();
+	pol.pop_back();
+	pol.pop_front();
 	foreach(QPointF point, pol)
 {
 		if(rectS.contains( point))
@@ -150,13 +154,16 @@ bool KTPathItem::contains ( const QPointF & point ) const
 	
 	while(it2 != pol.end())
 {
+		
 		if(KTGraphicalAlgorithm::intersectLine( (*it1), (*it2), rectS  ))
-{
+		{
+// 			SHOW_VAR(*it1);
+// 			SHOW_VAR(*it2);
 			return true;
-}
+		}
 		++it1;
 		++it2;
-}
+	}
 	
 	return false;
 #else

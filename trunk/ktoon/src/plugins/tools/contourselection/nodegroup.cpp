@@ -52,6 +52,8 @@ NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(paren
 	}
 }
 
+
+
 QGraphicsItem * NodeGroup::parentItem()
 {
 	return m_parentItem;
@@ -63,4 +65,26 @@ NodeGroup::~NodeGroup()
 	m_nodes.clear();
 }
 
+
+void NodeGroup::syncNodes(const QPainterPath & path)
+{
+	
+	if(m_nodes.isEmpty())
+	{
+		return;
+	}
+	foreach(ControlNode *node, m_nodes)
+	{
+		node->setPos(path.elementAt(node->index()));
+	}
+
+}
+
+void NodeGroup::syncNodesFromParent()
+{
+	if(m_parentItem)
+	{
+		syncNodes(m_parentItem->sceneMatrix().map( m_parentItem->shape()));
+	}
+}
 
