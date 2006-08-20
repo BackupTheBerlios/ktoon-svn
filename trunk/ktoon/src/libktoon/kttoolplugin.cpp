@@ -86,4 +86,10 @@ QList<KTProjectEvent *> KTToolPlugin::events() const
 	return m_events;
 }
 
+void KTToolPlugin::itemEvent(const KTItemEvent *event)
+{
+	Q_UNUSED(event);
+}
+
+
 

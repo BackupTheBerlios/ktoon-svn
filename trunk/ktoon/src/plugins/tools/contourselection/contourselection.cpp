@@ -178,6 +178,8 @@ bool ContourSelection::isComplete() const
 void ContourSelection::aboutToChangeTool()
 {
 // 	m_view->setDragMode (QGraphicsView::NoDrag);
+	qDeleteAll(m_nodes);
+	m_nodes.clear();
 }
 
 QString ContourSelection::toolToXml() const

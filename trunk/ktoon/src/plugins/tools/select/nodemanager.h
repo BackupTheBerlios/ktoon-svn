@@ -34,15 +34,17 @@ class NodeManager
 	public:
 		NodeManager(QGraphicsItem * parent, KTScene *scene);
 		~NodeManager();
-		void syncNodes(const QRectF sbr);
+		void syncNodes(const QRectF &sbr);
 		void syncNodesFromParent();
 		QGraphicsItem *parentItem() const;
+		bool isModified() const;
+		void setModify(bool modify);
 		
 	private:
 		QHash<Node::TypeNode, Node *> m_nodes;
 		QGraphicsItem * m_parent;
 		
-		bool m_moved;
+		bool m_modify;
 };
 
 #endif

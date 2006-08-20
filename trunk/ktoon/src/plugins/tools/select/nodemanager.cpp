@@ -20,7 +20,7 @@
 
 #include "nodemanager.h"
 #include <ddebug.h>
-NodeManager::NodeManager(QGraphicsItem * parent, KTScene *scene): m_parent(parent), m_moved(false)
+NodeManager::NodeManager(QGraphicsItem * parent, KTScene *scene): m_parent(parent), m_modify(false)
 {
 	QRectF rect = parent->sceneBoundingRect();
 	Node *topLeft = new Node(Node::TopLeft, rect.topLeft(), this, parent, scene);
@@ -55,7 +55,7 @@ NodeManager::~NodeManager()
 	
 }
 
-void NodeManager::syncNodes(const QRectF sbr)
+void NodeManager::syncNodes(const QRectF &sbr)
 {
 	if(m_nodes.isEmpty())
 	{
@@ -71,32 +71,50 @@ void NodeManager::syncNodes(const QRectF sbr)
 			{
 				case Node::TopLeft:
 				{
-					(*it)->setPos( sbr.topLeft() );
+					if((*it)->scenePos() != sbr.topLeft() )
+					{
+						(*it)->setPos( sbr.topLeft() );
+						m_modify = true;
+					}
 					break;
 				}
 				case Node::TopRight:
 				{
-					(*it)->setPos(sbr.topRight());
+					if((*it)->scenePos() != sbr.topRight() )
+					{
+						(*it)->setPos( sbr.topRight() );
+						m_modify = true;
+					}
 					break;
 				}
 				case Node::BottomRight:
 				{
-					(*it)->setPos(sbr.bottomRight());
+					if((*it)->scenePos() != sbr.bottomRight() )
+					{
+						(*it)->setPos( sbr.bottomRight() );
+						m_modify = true;
+					}
 					break;
 				}
 				case Node::BottomLeft:
 				{
-					(*it)->setPos(sbr.bottomLeft());
+					if((*it)->scenePos() != sbr.bottomLeft() )
+					{
+						(*it)->setPos( sbr.bottomLeft() );
+						m_modify = true;
+					}
 					break;
 				}
 				case Node::Center:
 				{
-					(*it)->setPos(sbr.center());
+					if((*it)->scenePos() != sbr.center() )
+					{
+						(*it)->setPos( sbr.center() );
+						m_modify = true;
+					}
 					break;
 				}
 			}
-			
-			m_moved = true;
 		}
 		++it;
 	}
@@ -115,3 +133,12 @@ QGraphicsItem *NodeManager::parentItem() const
 	return m_parent;
 }
 
+bool NodeManager::isModified() const
+{
+	return m_modify;
+}
+
+void NodeManager::setModify(bool modify)
+{
+	m_modify = modify;
+}

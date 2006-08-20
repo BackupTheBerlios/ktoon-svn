@@ -357,16 +357,21 @@ void KTPaintArea::itemEvent(KTItemEvent *event)
 // 		{
 // 		}
 // 		break;
-// 		case KTProjectEvent::Transform:
-// 		{
-// 			viewport()->update();
-// 		}
-// 		break;
+		case KTProjectEvent::Transform:
+		{
+			viewport()->update();
+		}
+		break;
 		default:
 		{
 			qobject_cast<KTScene *>(scene())->drawCurrentPhotogram();
 			viewport()->update(scene()->sceneRect().toRect() );
 		}
+	}
+	
+	if ( m_tool )
+	{
+		m_tool->itemEvent( event );
 	}
 }
 

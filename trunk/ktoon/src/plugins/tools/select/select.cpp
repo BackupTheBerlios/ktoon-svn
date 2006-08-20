@@ -109,7 +109,6 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 			int parentIndex = scene->selectedItems().indexOf((*it)->parentItem() );
 			if(parentIndex != -1 )
 			{
-				//FIXED
 				selecteds.removeAt(parentIndex);
 			}
 			else
@@ -125,13 +124,28 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 			{
 				NodeManager *manager = new NodeManager(item, scene);
 				m_nodes << manager;
+			}
+		}
+		
+		foreach(NodeManager *manager, m_nodes)
+		{
+			if(manager->isModified())
+			{
 				
 				QDomDocument doc;
-				doc.appendChild(KTSerializer::properties( item, doc ));
+				doc.appendChild(KTSerializer::properties( manager->parentItem(), doc ));
 				
-				KTItemEvent *event = new KTItemEvent(KTProjectEvent::Transform, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().indexOf(item), doc.toString() );
-				
-// 				addProjectEvent(event);
+				int position  = scene->currentFrame()->graphics().indexOf(manager->parentItem());
+				if(position != -1)
+				{
+					KTItemEvent *event = new KTItemEvent(KTProjectEvent::Transform, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, doc.toString() );
+					addProjectEvent(event);
+				}
+				else
+				{
+					dDebug() << "position is " << position; 
+				}
+				manager->setModify(false);
 			}
 		}
 	}
@@ -180,6 +194,22 @@ bool Select::isComplete() const
 void Select::aboutToChangeTool()
 {
 	m_view->setDragMode (QGraphicsView::NoDrag);
+	qDeleteAll(m_nodes);
+	m_nodes.clear();
+	
+}
+
+void Select::itemEvent(const KTItemEvent *event)
+{
+	switch(event->action())
+	{
+		case KTProjectEvent::Transform:
+		{
+			QTimer::singleShot(0, this, SLOT(syncNodes()));
+		}
+		break;
+		default: break;
+	}
 }
 
 void Select::syncNodes()

@@ -57,6 +57,7 @@ class KTOON_EXPORT KTToolPlugin : public QObject, public KTToolInterface
 		virtual QWidget *configurator()  = 0;
 		virtual void aboutToChangeTool() = 0;
 		
+		virtual void itemEvent(const KTItemEvent *event);
 		
 	public:
 		// Events
