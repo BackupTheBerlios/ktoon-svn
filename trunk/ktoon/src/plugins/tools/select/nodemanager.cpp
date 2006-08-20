@@ -33,6 +33,8 @@ NodeManager::NodeManager(QGraphicsItem * parent, KTScene *scene): m_parent(paren
 	m_nodes.insert(Node::BottomLeft, bottomLeft );
 	m_nodes.insert(Node::BottomRight, bottomRight );
 	m_nodes.insert(Node::Center, center );
+	
+	beginToEdit();
 }
 
 
@@ -142,3 +144,16 @@ void NodeManager::setModify(bool modify)
 {
 	m_modify = modify;
 }
+
+void NodeManager::beginToEdit()
+{
+	m_origMatrix = m_parent->matrix();
+	m_origPos = m_parent->pos();
+}
+
+void NodeManager::restoreItem()
+{
+	m_parent->setMatrix(m_origMatrix);
+	m_parent->setPos(m_origPos);
+}
+

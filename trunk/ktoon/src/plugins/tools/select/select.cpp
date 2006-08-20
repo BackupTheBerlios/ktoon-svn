@@ -107,6 +107,8 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 		while(it != itEnd)
 		{
 			int parentIndex = scene->selectedItems().indexOf((*it)->parentItem() );
+			
+			(*it)->beginToEdit();
 			if(parentIndex != -1 )
 			{
 				selecteds.removeAt(parentIndex);
@@ -115,6 +117,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 			{
 				delete m_nodes.takeAt(m_nodes.indexOf((*it)));
 			}
+			
 			++it;
 			
 		}
@@ -140,6 +143,9 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 				{
 					KTItemEvent *event = new KTItemEvent(KTProjectEvent::Transform, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, doc.toString() );
 					addProjectEvent(event);
+					
+					// Restore matrix
+					manager->restoreItem();
 				}
 				else
 				{

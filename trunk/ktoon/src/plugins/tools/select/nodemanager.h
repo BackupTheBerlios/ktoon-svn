@@ -40,11 +40,17 @@ class NodeManager
 		bool isModified() const;
 		void setModify(bool modify);
 		
+		void beginToEdit();
+		void restoreItem();
+		
 	private:
 		QHash<Node::TypeNode, Node *> m_nodes;
 		QGraphicsItem * m_parent;
 		
 		bool m_modify;
+		
+		QMatrix m_origMatrix;
+		QPointF m_origPos;
 };
 
 #endif
