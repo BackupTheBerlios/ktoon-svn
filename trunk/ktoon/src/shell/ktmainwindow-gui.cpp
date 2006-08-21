@@ -57,9 +57,6 @@ void KTMainWindow::createGUI()
 	m_libraryWidget->setWindowTitle(tr("Library"));
 	addToolView( m_libraryWidget, Qt::LeftDockWidgetArea, Drawing );
 	
-	connect(m_libraryWidget, SIGNAL(requestCurrentGraphic()), this, SLOT(addCurrentGraphicToLibrary()));
-	connect(m_libraryWidget, SIGNAL(sendCurrentGraphic(const KTGraphicComponent *)), this, SLOT(addGraphicComponent(const KTGraphicComponent *)));
-	
 	connectToDisplays(m_libraryWidget);
 	
 	new DAction( QPixmap(), tr( "Import bitmap..." ), QKeySequence(), m_libraryWidget, SLOT(importBitmap()), m_actionManager, "importbitmap");
@@ -92,7 +89,6 @@ void KTMainWindow::createGUI()
 	addToolView( m_exposureSheet, Qt::RightDockWidgetArea, Drawing );
 	
 	ui4project( m_exposureSheet );
-	connect(m_exposureSheet, SIGNAL(requestChangeScene( int ) ), this, SLOT(changeScene(int)));
 
 	connectToDisplays(m_exposureSheet);
 	
@@ -117,9 +113,6 @@ void KTMainWindow::createGUI()
 	m_timeLine->setWindowTitle(tr("Time Line"));
 	addToolView( m_timeLine, Qt::BottomDockWidgetArea, Drawing );
 	
-	
-	connect(m_timeLine, SIGNAL(requestChangeFPS(int)), this, SLOT(changeFPS( int )));
-// 	connect(m_timeLine, SIGNAL(requestChangeScene( int ) ), this, SLOT(changeScene(int)));
 	ui4project( m_timeLine );
 	
 	connectToDisplays(m_timeLine);
@@ -263,15 +256,15 @@ void KTMainWindow::setupMenu()
 
 void KTMainWindow::setupActions()
 {
-	DAction *next = new DAction( QPixmap(), tr( "Back Frame" ), QKeySequence(Qt::Key_PageUp), this, SLOT(selectBackFrame()), m_actionManager, "BackFrame");
-	next->setShortcutContext ( Qt::ApplicationShortcut );
-	
-	
-	DAction *back = new DAction( QPixmap(), tr( "Next Frame" ), QKeySequence(Qt::Key_PageDown), this, SLOT(selectNextFrame()), m_actionManager, "Next Frame");
-	back->setShortcutContext ( Qt::ApplicationShortcut );
-	
-	addAction(back);
-	addAction(next);
+// 	DAction *next = new DAction( QPixmap(), tr( "Back Frame" ), QKeySequence(Qt::Key_PageUp), this, SLOT(selectBackFrame()), m_actionManager, "BackFrame");
+// 	next->setShortcutContext ( Qt::ApplicationShortcut );
+// 	
+// 	
+// 	DAction *back = new DAction( QPixmap(), tr( "Next Frame" ), QKeySequence(Qt::Key_PageDown), this, SLOT(selectNextFrame()), m_actionManager, "Next Frame");
+// 	back->setShortcutContext ( Qt::ApplicationShortcut );
+// 	
+// 	addAction(back);
+// 	addAction(next);
 }
 
 

@@ -11,6 +11,7 @@ DLIB_CONFIG=src/dlib/dlibconfig.pri
 
 CONFIG_LOG=$(pwd)/$LOG_FILE
 PARAMETERS=""
+INSTALL_DIR=${KTOON_HOME}
 
 # $1 parameter is a text
 # $2 directory 
