@@ -38,9 +38,9 @@
 
 KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 {
-	DINIT;
-	
 //	Q_INIT_RESOURCE(ktui_images);
+	
+// 	tabWidget()->setTabPosition(QTabWidget::West);
 	
 	setWindowTitle( tr( "About" ) + QString( " KToon..." ) );
 
@@ -135,7 +135,6 @@ KTAbout::KTAbout( QWidget *parent ) : DTabDialog( Cancel, parent )
 
 KTAbout::~KTAbout()
 {
-	DEND;
 }
 
 

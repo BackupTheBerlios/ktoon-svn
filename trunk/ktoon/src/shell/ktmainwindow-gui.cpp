@@ -194,7 +194,7 @@ void KTMainWindow::setupMenu()
 	m_fileMenu->addAction(m_actionManager->find("openproject"));
 	
 	QMenu *recents = new QMenu(tr("Recents"), this );
-	connect( recents, SIGNAL( activated( int ) ), SLOT( openRecent( int ) ) );
+	connect( recents, SIGNAL( activated(int) ), this, SLOT( openRecent( int ) ) );
 	
 	updateOpenRecentMenu(recents);
 	
@@ -354,11 +354,11 @@ void KTMainWindow::setupWindowActions()
 
 void KTMainWindow::setupInsertActions()
 {
-	new DAction( QPixmap(THEME_DIR+"/icons/scene.png"), tr( "Insert scene" ), QKeySequence(), m_projectManager, SLOT(createScene()), m_actionManager, "InsertScene");
-	
-	new DAction( QPixmap(THEME_DIR+"/icons/layer.png"), tr( "Insert layer" ), QKeySequence(), m_projectManager, SLOT(createLayer()), m_actionManager, "InsertLayer");
-	
-	new DAction( QPixmap(THEME_DIR+"/icons/frame.png"), tr( "Insert frame" ), QKeySequence(), m_projectManager, SLOT(createFrame()), m_actionManager, "InsertFrame");
+// 	new DAction( QPixmap(THEME_DIR+"/icons/scene.png"), tr( "Insert scene" ), QKeySequence(), m_projectManager, SLOT(createScene()), m_actionManager, "InsertScene");
+// 	
+// 	new DAction( QPixmap(THEME_DIR+"/icons/layer.png"), tr( "Insert layer" ), QKeySequence(), m_projectManager, SLOT(createLayer()), m_actionManager, "InsertLayer");
+// 	
+// 	new DAction( QPixmap(THEME_DIR+"/icons/frame.png"), tr( "Insert frame" ), QKeySequence(), m_projectManager, SLOT(createFrame()), m_actionManager, "InsertFrame");
 }
 
 void KTMainWindow::setupToolBar()
@@ -460,4 +460,5 @@ void KTMainWindow::showWidgetPage()
 // 		}
 // 	}
 }
+
 

@@ -59,6 +59,8 @@ class D_GUI_EXPORT DTabDialog : public QDialog
 		void setButtonText(Button b, const QString &text);
 		QPushButton *button(Button b);
 		
+		DTabWidget *tabWidget() const;
+		
 	private:
 		void setupButtons(int buttons);
 		

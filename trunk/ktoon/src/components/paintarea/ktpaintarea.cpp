@@ -391,7 +391,13 @@ void KTPaintArea::drawBackground(QPainter *painter, const QRectF &rect)
 	
 	if ( m_drawGrid )
 	{
+		int sx = painter->matrix().m11();
+		int sy = painter->matrix().m22();
+		
 		painter->resetMatrix();
+		
+		painter->scale(sx, sy);
+		
 		painter->setPen( QPen(QColor(0,0,180, 50), 1) );
 		
 		

@@ -23,13 +23,11 @@
 
 KTItemEvent::KTItemEvent(Action action, int sceneIndex, int layerIndex, int frameIndex, int position, const QVariant &data) : KTFrameEvent(action, sceneIndex, layerIndex, frameIndex, data), m_position(position)
 {
-	DINIT;
 }
 
 
 KTItemEvent::~KTItemEvent()
 {
-	DEND;
 }
 
 

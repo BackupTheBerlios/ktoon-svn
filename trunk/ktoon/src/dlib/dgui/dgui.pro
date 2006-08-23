@@ -144,9 +144,5 @@ TEMPLATE = lib
 linux-g++{
 TARGETDEPS += ../dcore/libdcore.so
 }
-macosx{
-TARGETDEPS += ../dcore/libdcore.dylib
-}
-win32{
-TARGETDEPS += ../dcore/libdcore.dll
-}
+
+QT += opengl

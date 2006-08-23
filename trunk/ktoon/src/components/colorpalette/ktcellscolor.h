@@ -35,7 +35,7 @@ Q_OBJECT
 		enum Type{Color = 0, Gradient};
 		KTCellsColor(QWidget *parent = 0, Type type= Color);
 		virtual ~KTCellsColor();
-		void addColor(const QBrush&);
+		
 		void setReadOnly(bool enable);
 		void setType(Type type);
 		bool isReadOnly();
@@ -47,10 +47,9 @@ Q_OBJECT
 	private:
 		Type m_type;
 		QString m_name;
-		int m_countColor;
+		
 		bool m_readOnly;
-		int m_col, m_row;
-		const int MAX_COLUMNS;
+		
 		
 	protected:
 		void mousePressEvent(QMouseEvent* e);

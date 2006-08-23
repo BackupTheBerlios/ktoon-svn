@@ -23,6 +23,8 @@
 
 #include "ktitemfactory.h"
 
+#include <QGraphicsItem>
+
 // #include "ktbuttonitem.h"
 // #include "kttextitem.h"
 
@@ -132,6 +134,11 @@ QDomElement KTFrame::toXml(QDomDocument &doc)
 
 void KTFrame::addGraphic(QGraphicsItem *item)
 {
+	if ( m_items.count() )
+	{
+		item->setZValue(m_items.last()->zValue()+1);
+	}
+	
 	m_items << item;
 // 	addItem(item);
 }

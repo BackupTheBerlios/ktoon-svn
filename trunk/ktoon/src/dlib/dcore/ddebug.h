@@ -368,4 +368,10 @@ inline DNDebug dDebug(int = DShellOutput)
 
 #endif // D_NODEBUG
 
+#ifdef __GNUC__
+#define dfDebug dDebug() << __FILE__ << ":" <<__FUNCTION__ << ":: "
+#else
+#define dfDebug dDebug() << __FILE__<<":"<<__LINE__<<":: "
+#endif
+
 #endif

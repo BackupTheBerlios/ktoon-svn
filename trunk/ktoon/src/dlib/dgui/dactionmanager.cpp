@@ -63,7 +63,9 @@ bool DActionManager::insert(DAction *action, const QString &_id, const QString &
 	
 	action->setParent(this);
 	
-	return m_actionContainer[container].insert( id, action );
+	m_actionContainer[container].insert( id, action );
+	
+	return true;
 }
 
 /**

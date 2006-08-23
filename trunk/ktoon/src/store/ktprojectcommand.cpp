@@ -30,8 +30,6 @@
 
 KTProjectCommand::KTProjectCommand(KTProject *project, const KTProjectEvent *event) : QUndoCommand(), m_project(project)
 {
-	DINIT;
-	
 	m_event = event->clone();
 	
 	switch(m_event->id())
@@ -111,8 +109,6 @@ QString KTProjectCommand::actionString(int action)
 
 KTProjectCommand::~KTProjectCommand()
 {
-	DEND;
-	
 	if ( m_event ) delete m_event;
 }
 
@@ -533,6 +529,7 @@ void KTProjectCommand::itemCommand(const KTItemEvent *event, bool redo)
 
 void KTProjectCommand::paintAreaCommand(const KTPaintAreaEvent *event, bool redo)
 {
+	Q_UNUSED(event);
 	if ( redo )
 	{
 		m_project->reemitEvent( m_event );

@@ -32,7 +32,7 @@
 
 
 KTCellsColor::KTCellsColor(QWidget *parent, Type type)
-	: DCellView(parent), m_type(type), m_countColor(0), m_readOnly(false),  m_col(0), m_row(0), MAX_COLUMNS(16)
+	: DCellView(16, parent), m_type(type), m_readOnly(false)
 {
 	setAcceptDrops(true);
 }
@@ -43,29 +43,6 @@ KTCellsColor::~KTCellsColor()
 	
 }
 
-void KTCellsColor::addColor(const QBrush& b)
-{
-	DCellViewItem *item = new DCellViewItem;
-	
-	if( columnCount() < MAX_COLUMNS)
-	{
-		insertColumn( columnCount()+1);
-	}
-	
-	if( m_countColor % MAX_COLUMNS == 0)
-	{
-		insertRow( (rowCount()+1));
-		m_row++;
-		m_col = 0;
-	}
-	else
-	{
-		m_col++;
-	}
-	item->setBackground(b);
-	m_countColor++;
-	setItem(m_row-1 , m_col , item);
-}
 
 void KTCellsColor::setReadOnly(bool enable)
 {
@@ -106,7 +83,7 @@ void KTCellsColor::save( const QString &path)
 	{
 		for (int  j = 0; j < rowCount() ; j++)
 		{
-			DCellViewItem *tmpItem = itemAt(i*25, j*25);
+			QTableWidgetItem *tmpItem = itemAt(i*25, j*25);
 			if(tmpItem)
 			{
 				if(tmpItem->background().gradient())
@@ -185,7 +162,7 @@ void KTCellsColor::mouseMoveEvent(QMouseEvent* e)
 {
 	DCellView::mouseMoveEvent(e);
 	
-	if ((e->pos() - m_startDragPosition).manhattanLength() <  QApplication::startDragDistance())
+	if ((e->pos() - m_startDragPosition).manhattanLength() <  QApplication::startDragDistance() || !currentItem() )
 		return;
 
 	QDrag *drag = new QDrag( this );

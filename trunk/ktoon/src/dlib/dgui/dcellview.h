@@ -25,148 +25,60 @@
  * @brief Include this file if you need the class DCellView, DCellViewItem,  DCellViewItemDelegate or DCellViewModel
  */
 
-#include <QTableView>
+#include <QTableWidget>
 #include <QStyleOptionViewItem>
-#include <QHash>
 #include "dcore/dglobal.h"
 
-class DCellView;
-class DCellViewItem;
 class DCellViewItemDelegate;
-class DCellViewModel;
 
-typedef QHash<int, QVariant> ItemData;
 
-/**
- * 
- * @short The DCellViewItem class provides an item for use with the DCellView class.
- * @author David Cuadrado <krawek@gmail.com>
-*/
-
-class D_GUI_EXPORT DCellViewItem
+class DCellViewItem : public QTableWidgetItem
 {
-	friend class DCellViewModel;
-	friend class DCellView;
-	
 	public:
-		/**
-		 * construye un DCellViewItem
-		 */
 		DCellViewItem();
-		virtual ~DCellViewItem();
-
-		virtual DCellViewItem *clone() const;
-
-		inline DCellView *tableWidget() const { return m_view; }
-
-		inline Qt::ItemFlags flags() const { return m_itemFlags; }
-		inline void setFlags(Qt::ItemFlags flags);
-
-		virtual QVariant data(int role) const;
+		~DCellViewItem();
 		
-		void setImage(const QImage &);
 		QImage image() const;
-		
-		void setBackground(const QBrush &);
 		QBrush background() const;
 		
-		virtual void setData(int role, const QVariant &value);
-	
-	private:
-		ItemData m_values;
-		DCellView *m_view;
-		DCellViewModel *m_model;
-		Qt::ItemFlags m_itemFlags;
 };
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
  */
-class DCellView : public QTableView
+class DCellView : public QTableWidget
 {
-	Q_OBJECT
+	Q_OBJECT;
 	public:
-		DCellView( QWidget *parent = 0);
-		DCellView(int rows, int columns, QWidget *parent = 0);
+		DCellView( int MAX_COLUMNS = 16, QWidget *parent = 0);
+		DCellView(int rows, int columns, int MAX_COLUMNS = 16, QWidget *parent = 0);
 		~DCellView();
-
-		void setRowCount(int rows);
-		int rowCount() const;
-
-		void setColumnCount(int columns);
-		int columnCount() const;
-
-		int row(const DCellViewItem *item) const;
-		int column(const DCellViewItem *item) const;
-
-		DCellViewItem *item(int row, int column) const;
-		
-		void setItem(int row, int column, DCellViewItem *item);
-		DCellViewItem *takeItem(int row, int column);
-		
-		int currentRow() const;
-		int currentColumn() const;
-		DCellViewItem *currentItem() const;
-		void setCurrentItem(DCellViewItem *item);
-
-		bool isItemSelected(const DCellViewItem *item) const;
-		void setItemSelected(const DCellViewItem *item, bool select);
-
-		QList<DCellViewItem*> selectedItems();
-		QList<DCellViewItem*> findItems(const QString &text, Qt::MatchFlags flags) const;
-		
-		DCellViewItem *itemAt(const QPoint &p) const;
-		inline DCellViewItem *itemAt(int x, int y) const { return itemAt(QPoint(x, y)); };
-		QRect visualItemRect(const DCellViewItem *item) const;
-
-		virtual int verticalOffset () const;
-		virtual int horizontalOffset () const;
 		
 		void setItemSize(int w, int h);
+		
+		void addItem(DCellViewItem *item);
+		void addItem(const QBrush &brush);
+		void addItem(const QImage &image);
 		
 	private:
 		void setup();
 		
 	private slots:
-		void emitItemPressed(const QModelIndex &index);
-		void emitItemClicked(const QModelIndex &index);
-		void emitItemDoubleClicked(const QModelIndex &index);
-		void emitItemActivated(const QModelIndex &index);
-		void emitItemEntered(const QModelIndex &index);
-		void emitItemChanged(const QModelIndex &index);
-		void emitCurrentItemChanged(const QModelIndex &previous, const QModelIndex &current);
-
-	public slots:
-		void scrollToItem(const DCellViewItem *item, QAbstractItemView::ScrollHint hint = EnsureVisible);
-		void insertRow(int row);
-		void insertColumn(int column);
-		void removeRow(int row);
-		void removeColumn(int column);
-
-		void clear();
-		void selectCell(int row, int column);
+		void fixSize();
 		
-	signals:
-		void itemPressed(DCellViewItem *item);
-		void itemClicked(DCellViewItem *item);
-		void itemDoubleClicked(DCellViewItem *item);
-
-		void itemActivated(DCellViewItem *item);
-		void itemEntered(DCellViewItem *item);
-		void itemChanged(DCellViewItem *item);
-
-		void currentItemChanged(DCellViewItem *current, DCellViewItem *previous);
-		void itemSelectionChanged();
-
 	protected:
-		QModelIndex indexFromItem(DCellViewItem *item) const;
-		DCellViewItem *itemFromIndex(const QModelIndex &index) const;
-		
 		virtual QStyleOptionViewItem viewOptions() const;
+		virtual void wheelEvent(QWheelEvent *e);
 		
 	private:
-		DCellViewModel *m_model;
 		int m_rectWidth, m_rectHeight;
+		
+		
+	private:
+		int m_countColor;
+		int m_col, m_row;
+		const int MAX_COLUMNS;
+		
 };
 
 #endif

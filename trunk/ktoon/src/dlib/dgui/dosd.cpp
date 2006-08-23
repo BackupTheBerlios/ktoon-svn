@@ -107,8 +107,8 @@ void DOsd::display( const QString &message, Level level, int ms )
 	
 	QSizeF textSize = m_document->size();
 	
-	int width = textSize.width()+10;
-	int height = textSize.height()+10;
+	int width = (int)textSize.width()+10;
+	int height = (int)textSize.height()+10;
 	
 	QDesktopWidget desktop;
 	move ( (desktop.screenGeometry().width() - textSize.width() ) - 50, 50 );
@@ -226,8 +226,8 @@ void DOsd::drawPixmap(const QBrush &background, const QBrush &foreground)
 	
 	QSizeF textSize = m_document->size();
 	
-	int width = textSize.width()+10;
-	int height = textSize.height()+10;
+	int width = (int)textSize.width()+10;
+	int height = (int)textSize.height()+10;
 	
 	int textXOffset = 0;
 	int shadowOffset = QApplication::isRightToLeft() ? -1 : 1;

@@ -164,3 +164,10 @@ QPushButton *DTabDialog::button(Button b)
 	return m_buttons[b];
 }
 
+
+DTabWidget *DTabDialog::tabWidget() const
+{
+	return m_tabWidget;
+}
+
+

@@ -151,14 +151,16 @@ void DDualColorButton::metrics(QRect &fgRect, QRect &bgRect)
 void DDualColorButton::paintEvent(QPaintEvent *)
 {
 	QRect fgRect, bgRect;
-	QPainter p(this);
-
-	metrics(fgRect, bgRect);
-	QBrush defBrush = palette().color(QPalette::Button);
-
 	
-	qDrawShadeRect(&p, bgRect, palette(), curColor == Background, 2, 0, isEnabled() ? &DBrushAdjuster::adjustBrush(bg, bgRect) : &defBrush);
-	qDrawShadeRect(&p, fgRect,  palette(), curColor == Foreground, 2, 0, isEnabled() ? &DBrushAdjuster::adjustBrush(fg, fgRect) : &defBrush);
+	QPalette pal = palette();
+	QPainter p(this);
+	
+	metrics(fgRect, bgRect);
+	QBrush defBrush = pal.color(QPalette::Button);
+	
+	
+	qDrawShadeRect(&p, bgRect, pal, curColor == Background, 2, 0, isEnabled() ? &DBrushAdjuster::adjustBrush(bg, bgRect) : &defBrush);
+	qDrawShadeRect(&p, fgRect,  pal, curColor == Foreground, 2, 0, isEnabled() ? &DBrushAdjuster::adjustBrush(fg, fgRect) : &defBrush);
 	p.setPen(QPen(palette().shadow().color()));
 	
 	p.drawPixmap(fgRect.right()+2, 0, *arrowBitmap);
@@ -169,10 +171,12 @@ void DDualColorButton::paintEvent(QPaintEvent *)
 void DDualColorButton::dragEnterEvent(QDragEnterEvent *ev)
 {
 // 	ev->accept(isEnabled() && KColorDrag::canDecode(ev));
+	Q_UNUSED(ev);
 }
 
 void DDualColorButton::dropEvent(QDropEvent *ev)
 {
+	Q_UNUSED(ev);
 // 	QColor c;
 // 	if(KColorDrag::decode(ev, c))
 // 	{

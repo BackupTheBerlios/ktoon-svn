@@ -172,7 +172,7 @@ void KTViewColorCells::addPalette(const QString & name, const QList<QBrush> & br
 		
 		while(it != brushes.end())
 		{
-			m_customColorPalette->addColor( *it);
+			m_customColorPalette->addItem( *it);
 			++it;
 		}
 	}
@@ -182,7 +182,7 @@ void KTViewColorCells::addPalette(const QString & name, const QList<QBrush> & br
 		
 		while(it != brushes.end())
 		{
-			m_customGradientPalette->addColor( *it);
+			m_customGradientPalette->addItem( *it);
 			++it;
 		}
 	}
@@ -193,7 +193,7 @@ void KTViewColorCells::addPalette(const QString & name, const QList<QBrush> & br
 		
 		while(it != brushes.end())
 		{
-			palette->addColor( *it);
+			palette->addItem( *it);
 			++it;
 		}
 		palette->setName(name);
@@ -205,14 +205,14 @@ void KTViewColorCells::addPalette(const QString & name, const QList<QBrush> & br
 
 void KTViewColorCells::addPalette(KTCellsColor *palette)
 {
-	connect(palette, SIGNAL(itemEntered(DCellViewItem *)), this, SLOT(changeColor(DCellViewItem *)));
-	connect(palette, SIGNAL(itemPressed(DCellViewItem *)), this, SLOT(changeColor(DCellViewItem *)));
+	connect(palette, SIGNAL(itemEntered(QTableWidgetItem *)), this, SLOT(changeColor(QTableWidgetItem *)));
+	connect(palette, SIGNAL(itemPressed(QTableWidgetItem *)), this, SLOT(changeColor(QTableWidgetItem *)));
 	m_chooserPalette->addItem(palette->name());
 	m_containerPalette->addWidget(palette);
 }
 
 
-void KTViewColorCells::changeColor(DCellViewItem* item)
+void KTViewColorCells::changeColor(QTableWidgetItem* item)
 {
 	D_FUNCINFO;
 	if(item)
@@ -228,22 +228,22 @@ void KTViewColorCells::fillDefaultColors()
     //First column, first 6 rows, a gray scale
 	for ( i = 0; i <= 5; i++ )
 	{
-		m_defaultPalette->addColor(QColor( i * 51, i * 51, i * 51 ));
+		m_defaultPalette->addItem(QColor( i * 51, i * 51, i * 51 ));
 	}
     //First column, last 6 rows, basic colors
-	m_defaultPalette->addColor(QColor( 255, 0, 0 ));
-	m_defaultPalette->addColor(QColor( 0, 255, 0 ));
-	m_defaultPalette->addColor(QColor( 0, 0, 255 ));
-	m_defaultPalette->addColor(QColor( 255, 255, 0 ));
-	m_defaultPalette->addColor(QColor( 0, 255, 255 ));
-	m_defaultPalette->addColor(QColor( 255, 0, 255 ));
+	m_defaultPalette->addItem(QColor( 255, 0, 0 ));
+	m_defaultPalette->addItem(QColor( 0, 255, 0 ));
+	m_defaultPalette->addItem(QColor( 0, 0, 255 ));
+	m_defaultPalette->addItem(QColor( 255, 255, 0 ));
+	m_defaultPalette->addItem(QColor( 0, 255, 255 ));
+	m_defaultPalette->addItem(QColor( 255, 0, 255 ));
 
     //Segment from column 1 to 6 and row 0 to 5
 	for ( i = 0; i <= 5; i++ )
 	{
 		for ( j = 1; j <= 6; j++ )
 		{
-			m_defaultPalette->addColor(QColor( 0, ( j - 1 ) * 51, i * 51 ));
+			m_defaultPalette->addItem(QColor( 0, ( j - 1 ) * 51, i * 51 ));
 		}
 	}
 
@@ -252,7 +252,7 @@ void KTViewColorCells::fillDefaultColors()
 	{
 		for ( j = 1; j <= 6; j++ )
 		{
-			m_defaultPalette->addColor(QColor( 153, ( j - 1 ) * 51, ( i - 6 ) * 51 ));
+			m_defaultPalette->addItem(QColor( 153, ( j - 1 ) * 51, ( i - 6 ) * 51 ));
 		}
 	}
 
@@ -261,7 +261,7 @@ void KTViewColorCells::fillDefaultColors()
 	{
 		for ( j = 7; j <= 12; j++ )
 		{
-			m_defaultPalette->addColor(QColor( 51, ( j - 7 ) * 51, i * 51 ));
+			m_defaultPalette->addItem(QColor( 51, ( j - 7 ) * 51, i * 51 ));
 		}
 	}
 
@@ -270,7 +270,7 @@ void KTViewColorCells::fillDefaultColors()
 	{
 		for ( j = 7; j <= 12; j++ )
 		{
-			m_defaultPalette->addColor(QColor( 204, ( j - 7 ) * 51, ( i - 6 ) * 51 ));
+			m_defaultPalette->addItem(QColor( 204, ( j - 7 ) * 51, ( i - 6 ) * 51 ));
 		}
 	}
 
@@ -279,7 +279,7 @@ void KTViewColorCells::fillDefaultColors()
 	{
 		for ( j = 13; j <= 18; j++ )
 		{
-			m_defaultPalette->addColor(QColor( 102, ( j - 13 ) * 51, i * 51 ));
+			m_defaultPalette->addItem(QColor( 102, ( j - 13 ) * 51, i * 51 ));
 		}
 	}
 
@@ -288,7 +288,7 @@ void KTViewColorCells::fillDefaultColors()
 	{
 		for ( j = 13; j <= 18; j++ )
 		{
-			m_defaultPalette->addColor(QColor( 255, ( j - 13 ) * 51, ( i - 6 ) * 51 ));
+			m_defaultPalette->addItem(QColor( 255, ( j - 13 ) * 51, ( i - 6 ) * 51 ));
 		}
 	}
 	
@@ -301,12 +301,12 @@ void KTViewColorCells::fillNamedColor()
 	
 	while(it != strColors.end() )
 	{
-		m_qtColorPalette->addColor( QColor(*it) );
+		m_qtColorPalette->addItem( QColor(*it) );
 		++it;
 	}
 	
-	m_qtColorPalette->addColor(QColor(0,0,0,0));
-	m_qtColorPalette->addColor(QColor(0,0,0,50));
+	m_qtColorPalette->addItem(QColor(0,0,0,0));
+	m_qtColorPalette->addItem(QColor(0,0,0,50));
 }
 
 void KTViewColorCells::addCurrentColor()
@@ -332,7 +332,7 @@ void KTViewColorCells::addCurrentColor()
 				m_containerPalette->setCurrentWidget ( m_customColorPalette );
 			}
 		}
-		palette->addColor(m_currentColor);
+		palette->addItem(m_currentColor);
 	}
 }
 
@@ -357,10 +357,10 @@ void KTViewColorCells::setupButtons()
 	
 	containerButtons->setLayout(bLayout);
 	
-	DImageButton *m_addColor = new DImageButton( QPixmap(THEME_DIR  + "/icons/plussign.png" ) , 22/*, containerButtons*/);
-	connect( m_addColor, SIGNAL( clicked() ), SLOT( addCurrentColor() ));
-	m_addColor->setToolTip(tr( "Add Color" ));
-	bLayout->addWidget(m_addColor);
+	DImageButton *m_addItem = new DImageButton( QPixmap(THEME_DIR  + "/icons/plussign.png" ) , 22/*, containerButtons*/);
+	connect( m_addItem, SIGNAL( clicked() ), SLOT( addCurrentColor() ));
+	m_addItem->setToolTip(tr( "Add Color" ));
+	bLayout->addWidget(m_addItem);
 	
 	DImageButton *m_removeColor = new DImageButton( QPixmap( THEME_DIR + "/icons/minussign.png"), 22/*, containerButtons*/);
 	

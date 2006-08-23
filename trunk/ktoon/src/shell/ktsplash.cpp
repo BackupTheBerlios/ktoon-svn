@@ -36,11 +36,6 @@
 
 KTSplash::KTSplash() : QSplashScreen( 0 ), m_size(3), m_state(0), m_position(0)
 {
-	DINIT;
-	QTimer *timer = new QTimer( this );
-	QObject::connect(timer, SIGNAL(timeout()), this, SLOT(animate()));
-	timer->start(500);
-	
 	QImage image(THEME_DIR+"/images/splash.png");
 	
 // 	DImageEffect::addNoise( image, DImageEffect::LaplacianNoise );
@@ -49,14 +44,14 @@ KTSplash::KTSplash() : QSplashScreen( 0 ), m_size(3), m_state(0), m_position(0)
 	setPixmap(QPixmap::fromImage(image));
 	m_version = tr("Version ")+dAppProp->version();
 	
-	connect( &m_timer, SIGNAL(timeout()), this, SLOT(animate()));
-	
-	m_timer.start(10);
+	m_timer = new QTimer( this );
+	connect(m_timer, SIGNAL(timeout()), this, SLOT(animate()));
+	m_timer->start(100);
 }
 
 KTSplash::~KTSplash()
 {
-	DEND;
+	delete m_timer;
 }
 
 void KTSplash::animate()
@@ -71,7 +66,10 @@ void KTSplash::setMessage(const QString &msg)
 {
 	QSplashScreen::showMessage(msg,Qt::AlignTop, palette().text().color() );
 	m_message = msg;
+	
 	animate();
+	
+	QTimer::singleShot( 10, this, SLOT(animate()));
 }
 
 void KTSplash::drawContents ( QPainter * painter )

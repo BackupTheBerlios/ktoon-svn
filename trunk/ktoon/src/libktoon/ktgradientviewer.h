@@ -101,7 +101,8 @@ class KTOON_EXPORT KTGradientViewer : public QFrame
 		QGradientStops m_gradientStops;
 		QGradient m_gradient;
 		
-		int m_angle, m_radius;
+		int m_angle;
+		double m_radius;
 		QGradient::Type m_type;
 		QGradient::Spread m_spread;
 		
