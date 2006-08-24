@@ -10,56 +10,37 @@ include($$DLIB_DIR/dlib.pri)
 QUAZIP_DIR = ../../3rdparty/quazip/
 include($$QUAZIP_DIR/quazip.pri)
 
-STORE_DIR = ../../src/store
-include($$STORE_DIR/store.pri)
-
 
 INSTALLS += target 
 target.path = /lib/ 
-HEADERS += ktmodulewidgetbase.h \
-           ktexportpluginobject.h \
-           ktgraphicalgorithm.h \
+
+HEADERS += ktgraphicalgorithm.h \
            ktglobal.h \
            ktpaintareaproperties.h \
            ktgradientcreator.h \
            ktgradientselector.h \
            ktgradientviewer.h \
-           ktanimationarea.h \
-           ktexportinterface.h \
-           ktfilterinterface.h \
            ktgraphicelement.h \
            ktpackagehandler.h \
-           kttoolinterface.h \
            ktprojectactionbar.h \
-           kttoolplugin.h \
            ktbrushmanager.h \
-           ktpluginmanager.h \
            ktinputdeviceinformation.h \
            ktsvg2qt.h 
-SOURCES += ktmodulewidgetbase.cpp \
-           ktexportpluginobject.cpp \
-           ktgraphicalgorithm.cpp \
+SOURCES += ktgraphicalgorithm.cpp \
            ktpaintareaproperties.cpp \
            ktgradientcreator.cpp \
            ktgradientselector.cpp \
            ktgradientviewer.cpp \
-           ktanimationarea.cpp \
            ktgraphicelement.cpp \
            ktpackagehandler.cpp \
            ktprojectactionbar.cpp \
-           kttoolplugin.cpp \
            ktbrushmanager.cpp \
-           ktpluginmanager.cpp \
            ktinputdeviceinformation.cpp \
            ktsvg2qt.cpp 
-QT += xml gui
 KDEV_QTVER = 4
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
 TARGET = ktoon
-CONFIG += release \
-warn_on \
-dll
+CONFIG += dll
 TEMPLATE = lib
+
+include(../../ktconfig.pri)
 

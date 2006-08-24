@@ -17,6 +17,7 @@ STORE_DIR = ../../src/store
 LIBKTOON_DIR = ../../src/libktoon 
 QUAZIP_DIR = ../../3rdparty/quazip 
 DLIB_DIR = ../../src/dlib 
+LIBBASE_DIR = ../../src/libbase
 
 include($$COLORPALETTE_DIR/colorpalette.pri)
 include($$PAINTAREA_DIR/paintarea.pri)
@@ -34,4 +35,4 @@ include($$STORE_DIR/store.pri)
 include($$LIBKTOON_DIR/libktoon.pri)
 include($$QUAZIP_DIR/quazip.pri)
 include($$DLIB_DIR/dlib.pri)
-
+include($$LIBBASE_DIR/libbase.pri)

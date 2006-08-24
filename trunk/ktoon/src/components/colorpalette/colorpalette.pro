@@ -21,23 +21,14 @@ SOURCES += ktcolorpicker.cpp \
            ktluminancepicker.cpp \
            ktcellscolor.cpp \
            ktpaletteparser.cpp 
-QT += xml
 KDEV_QTVER = 4
-STORE_DIR = ../../../src/store 
-LIBKTOON_DIR = ../../../src/libktoon 
-DLIB_DIR = ../../../src/dlib
 
-include($$STORE_DIR/store.pri)
-include($$LIBKTOON_DIR/libktoon.pri)
-include($$DLIB_DIR/dlib.pri)
 
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-CONFIG += release \
-warn_on \
-staticlib
+
+CONFIG += static
 TEMPLATE = lib
 
 TARGET = colorpalette
+
+include(../components_config.pri)
 

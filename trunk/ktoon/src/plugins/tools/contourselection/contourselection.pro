@@ -11,10 +11,9 @@ HEADERS += contourselection.h \
 SOURCES += contourselection.cpp \
            controlnode.cpp \
            nodegroup.cpp 
-QT += xml
+
 KDEV_QTVER = 4
-include(../tools.pri)
-CONFIG += release \
-warn_on \
-plugin
+include(../tools_config.pri)
+include(../../../../ktconfig.pri)
+CONFIG += plugin
 TEMPLATE = lib

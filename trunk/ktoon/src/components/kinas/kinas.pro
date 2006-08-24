@@ -3,22 +3,11 @@
 # Subdir relative project main directory: ./src/components/kinas
 # Target is a library:  
 
-QT += xml 
 KDEV_QTVER = 4 
-STORE_DIR = ../../../src/store
-LIBKTOON_DIR =../../../src/libktoon
-DLIB_DIR = ../../../src/dlib 
+include(../components_config.pri)
 
-include($$STORE_DIR/store.pri)
-include($$LIBKTOON_DIR/libktoon.pri)
-include($$DLIB_DIR/dlib.pri)
+CONFIG += static
 
-MOC_DIR = .moc 
-UI_DIR = .ui 
-OBJECTS_DIR = .obj 
-CONFIG += release \
-          warn_on \
-          staticlib 
 TEMPLATE = lib 
 HEADERS += ktseditor.h \
            ktsfunctionview.h \

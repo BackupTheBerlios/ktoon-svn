@@ -7,10 +7,8 @@ QT += xml
 INSTALLS += target 
 target.path = /plugins/ 
 KDEV_QTVER = 4 
-include(../export.pri)
-CONFIG += release \
-          warn_on \
-          plugin 
+include(../export_config.pri)
+CONFIG += plugin 
 TEMPLATE = lib 
 HEADERS += mingplugin.h 
 SOURCES += mingplugin.cpp 

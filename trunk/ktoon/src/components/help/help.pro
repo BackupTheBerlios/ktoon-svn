@@ -3,24 +3,16 @@
 # Subdir relative project main directory: ./src/components/help
 # Target is a library:  
 
-QT += xml 
 INSTALLS += help 
 help.files += help 
 help.path = /data/ 
 KDEV_QTVER = 4 
-STORE_DIR = ../../../src/store
-LIBKTOON_DIR =../../../src/libktoon
-DLIB_DIR = ../../../src/dlib 
+include(../components_config.pri)
 
-include($$STORE_DIR/store.pri)
-include($$LIBKTOON_DIR/libktoon.pri)
-include($$DLIB_DIR/dlib.pri)
-
-CONFIG += release \
-          warn_on \
-          staticlib 
+CONFIG += static
 TEMPLATE = lib 
 HEADERS += kthelpwidget.h \
            kthelpbrowser.h 
 SOURCES += kthelpwidget.cpp \
            kthelpbrowser.cpp 
+

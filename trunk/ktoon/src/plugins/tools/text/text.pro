@@ -3,17 +3,15 @@
 # Subdir relative project main directory: ./src/modules/arthury/plugins/tools/atexttoolplugin
 # Target is a library:  
 
-QT += xml 
 INSTALLS += target 
 target.path = /plugins/ 
 KDEV_QTVER = 4 
-CONFIG += release \
-          warn_on \
-          plugin 
+CONFIG += plugin 
+include(../../../../ktconfig.pri)
 TEMPLATE = lib 
 HEADERS += texttool.h \
            textconfigurator.h 
 SOURCES += texttool.cpp \
            textconfigurator.cpp 
 
-include(../tools.pri)
+include(../tools_config.pri)

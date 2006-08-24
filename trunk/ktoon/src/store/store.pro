@@ -63,17 +63,15 @@ SOURCES += ktlayer.cpp \
            ktpaintareaevent.cpp \
            ktserializer.cpp \
            ktlineitem.cpp 
-QT += xml gui
 KDEV_QTVER = 4
 STORE_DIR = ../../src/store
 LIBKTOON_DIR = ../../src/libktoon
 DLIB_DIR = ../../src/dlib
 include($$LIBKTOON_DIR/libktoon.pri)
 include($$DLIB_DIR/dlib.pri)
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-CONFIG += release \
-warn_on \
-dll
+
+CONFIG += dll
 TEMPLATE = lib
+
+
+include(../../ktconfig.pri)

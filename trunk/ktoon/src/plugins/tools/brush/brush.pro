@@ -3,19 +3,17 @@
 # Subdir relative project main directory: ./src/plugins/tools/brush
 # Target is a library:  
 
-QT += xml 
 INSTALLS += target 
-target.path = /plugins/ 
+target.path = /plugins/
 KDEV_QTVER = 4 
 
-include(../tools.pri)
+include(../tools_config.pri)
 
 MOC_DIR = .moc 
 UI_DIR = .ui 
 OBJECTS_DIR = .obj 
-CONFIG += release \
-          warn_on \
-          plugin 
+CONFIG += plugin 
+include(../../../../ktconfig.pri)
 TEMPLATE = lib 
 HEADERS += brush.h \
            exactnessconfigurator.h 

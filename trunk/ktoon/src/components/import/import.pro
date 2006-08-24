@@ -3,20 +3,11 @@
 # Subdir relative project main directory: ./src/components/import
 # Target is a library:  
 
-QT += xml 
 KDEV_QTVER = 4 
+include(../components_config.pri)
 
-STORE_DIR = ../../../src/store
-LIBKTOON_DIR =../../../src/libktoon
-DLIB_DIR = ../../../src/dlib 
-
-include($$STORE_DIR/store.pri)
-include($$LIBKTOON_DIR/libktoon.pri)
-include($$DLIB_DIR/dlib.pri)
-
-CONFIG += release \
-          warn_on \
-          staticlib 
+CONFIG += static
 TEMPLATE = lib 
 HEADERS += ktpaletteimporter.h 
-SOURCES += ktpaletteimporter.cpp 
+SOURCES += ktpaletteimporter.cpp
+

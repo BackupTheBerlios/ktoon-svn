@@ -3,17 +3,15 @@
 # Subdir relative project main directory: ./src/plugins/export/smilexportplugin
 # Target is a library:  
 
-QT += xml 
 INSTALLS += target 
 target.path = /plugins/ 
 KDEV_QTVER = 4 
-include(../export.pri)
+include(../export_config.pri)
 MOC_DIR = .moc 
 UI_DIR = .ui 
 OBJECTS_DIR = .obj 
-CONFIG += release \
-          warn_on \
-          plugin 
+CONFIG += plugin 
 TEMPLATE = lib 
 HEADERS += smilexportplugin.h 
 SOURCES += smilexportplugin.cpp
+include(../../../../ktconfig.pri)

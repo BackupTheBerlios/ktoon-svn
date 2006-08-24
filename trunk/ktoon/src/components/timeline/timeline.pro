@@ -11,22 +11,11 @@ SOURCES += kttimeline.cpp \
            ktlayermanager.cpp \
            kttlruler.cpp \
            ktframestable.cpp 
-QT += xml
+
 KDEV_QTVER = 4
 
-STORE_DIR = ../../../src/store
-LIBKTOON_DIR = ../../../src/libktoon
-DLIB_DIR = ../../../src/dlib 
+CONFIG += static
 
-include($$STORE_DIR/store.pri)
-include($$LIBKTOON_DIR/libktoon.pri)
-include($$DLIB_DIR/dlib.pri)
-
-MOC_DIR = .moc
-UI_DIR = .ui
-OBJECTS_DIR = .obj
-CONFIG += release \
-warn_on \
-qt \
-staticlib
 TEMPLATE = lib
+
+include(../components_config.pri)

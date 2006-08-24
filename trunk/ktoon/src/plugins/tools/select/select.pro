@@ -3,16 +3,14 @@
 # Subdir relative project main directory: ./src/plugins/tools/select
 # Target is a library:  
 
-QT += xml 
 INSTALLS += target 
 target.path = /plugins/ 
 KDEV_QTVER = 4 
 MOC_DIR = .moc 
 UI_DIR = .ui 
 OBJECTS_DIR = .obj 
-CONFIG += release \
-          warn_on \
-          plugin 
+CONFIG += plugin 
+include(../../../../ktconfig.pri)
 TEMPLATE = lib 
 HEADERS += select.h \
            node.h \
@@ -21,4 +19,4 @@ SOURCES += select.cpp \
            node.cpp \
            nodemanager.cpp 
 
-include(../tools.pri)
+include(../tools_config.pri)
