@@ -32,6 +32,7 @@
 #include <QMouseEvent>
 #include <QPaintEvent>
 #include <QDropEvent>
+#include <QApplication>
 
 #include "ddebug.h"
 #include "dbrushadjuster.h"
@@ -238,6 +239,48 @@ void DDualColorButton::mousePressEvent(QMouseEvent *ev)
 		miniCtlFlag = true;
 	}
 	update();
+}
+
+void DDualColorButton::mouseMoveEvent(QMouseEvent* ev)
+{
+	QWidget::mouseMoveEvent( ev );
+
+	if ((ev->pos() - mPos).manhattanLength() <  QApplication::startDragDistance())
+		return;
+
+	QDrag *drag = new QDrag( this );
+	QPixmap pix( 25, 25 );
+	
+	QRect fgRect, bgRect;
+	metrics(fgRect, bgRect);
+	QPainter painter( &pix );
+	
+	QBrush curr;
+	if ( fgRect.contains( mPos ) )
+	{
+		curr = foreground();
+	}
+	else if ( bgRect.contains( mPos ) )
+	{
+		curr = background();
+	}
+	else
+	{
+		return;
+	}
+	
+	
+	painter.fillRect( pix.rect(), curr );
+	painter.drawRect( 0, 0, pix.width(), pix.height() );
+	painter.end();
+	
+	QMimeData *mimeData = new QMimeData;
+	mimeData->setColorData( curr.color() );
+	
+	drag->setMimeData(mimeData);
+	drag->setPixmap( pix );
+	
+	Qt::DropAction dropAction = drag->start(Qt::MoveAction);
 }
 
 

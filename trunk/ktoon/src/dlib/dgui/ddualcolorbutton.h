@@ -148,6 +148,7 @@ class D_GUI_EXPORT DDualColorButton : public QWidget
 		virtual void metrics(QRect &fgRect, QRect &bgRect);
 		virtual void paintEvent(QPaintEvent *ev);
 		virtual void mousePressEvent(QMouseEvent *ev);
+		virtual void mouseMoveEvent(QMouseEvent* ev);
 		// Dnd
 		virtual void dragEnterEvent(QDragEnterEvent *ev);
 		virtual void dropEvent(QDropEvent *ev);
