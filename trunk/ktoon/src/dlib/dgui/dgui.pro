@@ -64,7 +64,8 @@ HEADERS += danimwidget.h \
            dbuttonbar.h \
            dtabbedmainwindow.h \
            dtoolview.h \
-           dviewbutton.h 
+           dviewbutton.h \
+           dcommandhistory.h 
 SOURCES += danimwidget.cpp \
            dapplication.cpp \
            dcellview.cpp \
@@ -121,11 +122,9 @@ SOURCES += danimwidget.cpp \
            dbuttonbar.cpp \
            dtabbedmainwindow.cpp \
            dtoolview.cpp \
-           dviewbutton.cpp 
+           dviewbutton.cpp \
+           dcommandhistory.cpp 
 DEFINES += DLIB_GUI
-! include(../dlibconfig.pri) {
-error("Run ./configure first!")
-}
 RESOURCES += dgui_images.qrc
 QT += xml
 KDEV_QTVER = 4
@@ -141,8 +140,10 @@ CONFIG += release \
 warn_on \
 dll
 TEMPLATE = lib
-linux-g++{
-TARGETDEPS += ../dcore/libdcore.so
-}
-
 QT += opengl
+! include(../dlibconfig.pri){
+  error("Run ./configure first!")
+}
+linux-g++{
+  TARGETDEPS += ../dcore/libdcore.so
+}

@@ -29,7 +29,7 @@
 
 #include <qobject.h>
 
-KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent), KTAbstractProjectEventHandler(), m_isChildHidden(false), m_originalParent(parent)
+KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent), KTAbstractProjectEventHandler()
 {
 	setObjectName(name);
 

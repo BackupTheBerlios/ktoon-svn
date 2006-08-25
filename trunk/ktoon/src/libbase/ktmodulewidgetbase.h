@@ -51,8 +51,6 @@ class KTOON_EXPORT KTModuleWidgetBase : public QWidget, public KTAbstractProject
 	private:
 		QBoxLayout *m_container;
 		QObjectList m_childs;
-		bool m_isChildHidden;
-		QWidget *m_originalParent;
 		
 	protected:
 		virtual bool event( QEvent * e );

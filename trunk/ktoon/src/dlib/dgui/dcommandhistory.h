@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,39 +18,55 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef DCOMMANDHISTORY_H
+#define DCOMMANDHISTORY_H
 
-#ifndef DCONFIGURATIONDIALOG_H
-#define DCONFIGURATIONDIALOG_H
+#include <QObject>
+#include <QHash>
 
-#include <QDialog>
-#include <QMap>
-#include <QButtonGroup>
-
-#include "dgui/dwidgetlistview.h"
-#include "dgui/dflatbutton.h"
-
-#include "dgui/dpagedialog.h"
-#include "dcore/dglobal.h"
-
-class QStackedWidget;
-class QTreeWidget;
-class QTableWidgetItem;
+class QUndoStack;
+class QMenu;
+class QAction;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-
-class D_GUI_EXPORT DConfigurationDialog : public DPageDialog
+class DCommandHistory : public QObject
 {
-	Q_OBJECT
+	Q_OBJECT;
+	
 	public:
-		DConfigurationDialog(QWidget *parent = 0);
-		~DConfigurationDialog();
+		DCommandHistory(QUndoStack *stack, QObject *parent = 0);
+		~DCommandHistory();
+		
+		QAction *redoAction() const;
+		QAction *undoAction() const;
+		
+		QUndoStack *stack() const;
 		
 	public slots:
-		virtual void ok();
-		virtual void cancel();
-		virtual void apply();
+		void enableRedoMenu(bool e);
+		void enableUndoMenu(bool e);
+		
+	private:
+		void updateMenu();
+		
+	private slots:
+		void updateFromIndex(int idx);
+		void undoFromAction(QAction *a);
+		void redoFromAction(QAction *a);
+		
+	private:
+		QUndoStack *m_stack;
+		QMenu *m_redoMenu;
+		QMenu *m_undoMenu;
+		
+		int m_currentIndex;
+		
+		QHash<int, QAction *> m_actions;
 };
 
 #endif
+
+
+
