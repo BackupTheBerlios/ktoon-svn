@@ -24,6 +24,8 @@
 #include <QObject>
 #include <kttoolplugin.h>
 #include <QSpinBox>
+#include <QTimer>
+
 #include "exactnessconfigurator.h"
 
 #include "ktpathitem.h"
@@ -60,6 +62,8 @@ class Brush : public KTToolPlugin
 		
 	private:
 		void setupActions();
+		void smoothPath(QPainterPath &path, double smoothness, int from = 0, int to = -1);
+		
 		
 	private:
 		QPoint m_firstPoint;

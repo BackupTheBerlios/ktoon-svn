@@ -368,28 +368,23 @@ void KTMainWindow::setupToolBar()
 	toolbar->setIconSize( QSize(22,22) );
 	addToolBar(Qt::TopToolBarArea, toolbar);
 	
-	DCommandHistory *history = new DCommandHistory(m_undoCommands, this);
+// 	DCommandHistory *history = new DCommandHistory(m_undoCommands, this);
 	
-	QAction *undo = history->undoAction();
+	
+	QAction * undo = m_undoCommands->createUndoAction( this, tr("Undo"));
+	
+// 	QAction *undo = history->undoAction();
 	undo->setShortcut(QKeySequence(QKeySequence::Undo));
 	
 	toolbar->addAction(undo);
 	
-	QAction *redo = history->redoAction();
+	
+	QAction *redo =  m_undoCommands->createRedoAction ( this );
+// 	QAction *redo = history->redoAction();
 	redo->setShortcut(QKeySequence(QKeySequence::Redo));
 	toolbar->addAction(redo);
 	
-	
-// 	QAction * undo = m_undoCommands->createUndoAction( this, tr("Undo"));
-	
-// 	toolbar->addAction(undo);
-// 	QAction *redo =  m_undoCommands->createRedoAction ( this );
-	
-// 	toolbar->addAction(redo);
-	
-	
-	
-	
+// 	
 	undo->setIcon( QPixmap(THEME_DIR+"/icons/undo.png" ));
 	redo->setIcon(QPixmap(THEME_DIR+"/icons/redo.png" ));
 	

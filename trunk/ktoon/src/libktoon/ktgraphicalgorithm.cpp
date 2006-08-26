@@ -572,28 +572,37 @@ QPointF *fitCubic(QPolygonF &points,int first,int last,FitVector tHat1,FitVector
 }
 
 
-QPainterPath KTGraphicalAlgorithm::bezierFit( QPolygonF &points_,float error)
+QPainterPath KTGraphicalAlgorithm::bezierFit( QPolygonF &points_,float error, int from, int to)
 {
 	QPolygonF points = KTGraphicalAlgorithm::polygonFit( points_ );
 	
 	FitVector tHat1, tHat2;
-
-	tHat1 = computeLeftTangent(points,0);
-	tHat2 = computeRightTangent(points, points.count()-1);
+	
+	if ( to < 0 )
+	{
+		to = points.count()-1;
+	}
+	if ( from < 0 )
+	{
+		from = 0;
+	}
+	
+	tHat1 = computeLeftTangent(points, from);
+	tHat2 = computeRightTangent(points, to);
 	
 	int width=0;
 	QPointF *curve;
 	
 	if ( points.count() < MAXPOINTS )
 	{
-		curve = fitCubic(points,0,points.count()-1,tHat1,tHat2,error,width);
+		curve = fitCubic(points,from,to,tHat1,tHat2,error,width);
 	}
 	else
 	{
 		QPainterPath path;
 		
 		QPolygonF tmp;
-		for(int i = 0; i < points.count(); i++)
+		for(int i = from; i < to+1; i++)
 		{
 			tmp << points[i];
 			
@@ -605,7 +614,7 @@ QPainterPath KTGraphicalAlgorithm::bezierFit( QPolygonF &points_,float error)
 		}
 		
 		
-		if ( (points.count() - 200 ) % 200 != 0)
+		if ( (to+1 - 200 ) % 200 != 0)
 		{
 			path.addPolygon(tmp);
 		}

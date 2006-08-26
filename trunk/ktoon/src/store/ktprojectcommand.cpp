@@ -103,7 +103,7 @@ QString KTProjectCommand::actionString(int action)
 		break;
 	}
 	
-	return QString();
+	return QString("Unknown");
 }
 
 

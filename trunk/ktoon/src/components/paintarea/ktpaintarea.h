@@ -63,6 +63,7 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		
 	protected:
 		void mousePressEvent ( QMouseEvent * event  );
+		void mouseDoubleClickEvent( QMouseEvent *event);
 		void mouseMoveEvent ( QMouseEvent * event );
 		void mouseReleaseEvent ( QMouseEvent *event );
 		void tabletEvent ( QTabletEvent * event );
@@ -79,6 +80,8 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		
 	public slots:
 		void centerDrawingArea();
+		
+	private slots:
 		
 	protected:
 		void frameEvent(KTFrameEvent *event);

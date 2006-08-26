@@ -28,18 +28,22 @@
 #include <QMouseEvent>
 #include <QGraphicsRectItem>
 #include <QPolygon>
+#include <QApplication>
+#include <QTimer>
 
 #include "ktbrushmanager.h"
 #include "ktinputdeviceinformation.h"
 #include "ktitemevent.h"
 #include "ktpaintareaevent.h"
+#include "ktimagedevice.h"
 
 #include <cmath>
+
+#include "kttextitem.h"
 
 #ifdef QT_OPENGL_LIB
 
 #include <QGLWidget>
-#include "ktimagedevice.h"
 
 class GLDevice : public QGLWidget
 {
@@ -203,21 +207,51 @@ bool KTPaintArea::drawGrid() const
 
 void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 {
+	QGraphicsView::mousePressEvent(event);
+	
 	QMouseEvent *eventMapped = mapMouseEvent( event );
 	
 	m_inputInformation->updateFromMouseEvent( eventMapped );
 	
-	if (m_tool )
+	delete eventMapped;
+	
+	QList<QGraphicsItem *> items = scene()->items(eventMapped->pos());
+	bool handled = false;
+	
+	if ( items.count() > 0 )
+	{
+		QGraphicsItem *itemPressed = items[0];
+		
+		if ( m_tool )
+		{
+			handled = m_tool->itemPressEvent(itemPressed);
+		}
+	}
+	
+	if (m_tool && !handled )
 	{
 		m_tool->begin();
 		
 		m_isDrawing = true;
 		m_tool->press(m_inputInformation, m_brushManager,  qobject_cast<KTScene *>(scene()), this );
 	}
+}
+
+
+void KTPaintArea::mouseDoubleClickEvent( QMouseEvent *event)
+{
+	QGraphicsView::mouseDoubleClickEvent(event);
+	
+	QMouseEvent *eventMapped = mapMouseEvent( event );
+	
+	m_inputInformation->updateFromMouseEvent( eventMapped );
+	
+	if (m_tool)
+	{
+		m_tool->doubleClick( m_inputInformation,  qobject_cast<KTScene *>(scene()), this );
+	}
 	
 	delete eventMapped;
-	
-	QGraphicsView::mousePressEvent(event);
 }
 
 void KTPaintArea::mouseMoveEvent ( QMouseEvent * event )
@@ -244,7 +278,7 @@ void KTPaintArea::mouseReleaseEvent(QMouseEvent *event)
 	
 	m_inputInformation->updateFromMouseEvent( eventMapped );
 	
-	if ( m_tool )
+	if ( m_tool && m_isDrawing )
 	{
 		KTScene *currentScene = qobject_cast<KTScene *>(scene());
 		m_tool->release(m_inputInformation, m_brushManager,  currentScene, this );

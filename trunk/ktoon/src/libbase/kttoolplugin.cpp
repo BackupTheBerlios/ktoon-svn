@@ -48,7 +48,7 @@ QString KTToolPlugin::currentTool() const
 
 void KTToolPlugin::begin()
 {
-	dDebug() << "Begin: " << m_currentTool << " Crash?";
+	dDebug() << "Begin: " << m_currentTool;
 	qDeleteAll(m_events);
 	m_events.clear();
 	
@@ -92,4 +92,12 @@ void KTToolPlugin::itemEvent(const KTItemEvent *event)
 }
 
 
+void KTToolPlugin::doubleClick(const KTInputDeviceInformation *, KTScene *, QGraphicsView * )
+{
+}
+
+bool KTToolPlugin::itemPressEvent(QGraphicsItem *)
+{
+	return false;
+}
 

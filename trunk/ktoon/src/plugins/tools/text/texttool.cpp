@@ -47,8 +47,25 @@ void TextTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 	m_item = new KTTextItem;
 	
 	m_item->setPos(input->pos());
+}
+
+void TextTool::doubleClick(const KTInputDeviceInformation *input, KTScene *scene, QGraphicsView *view )
+{
+	Q_UNUSED(input);
+	Q_UNUSED(scene);
+	Q_UNUSED(view);
+}
+
+bool TextTool::itemPressEvent(QGraphicsItem *item)
+{
+	if ( KTTextItem *text = qgraphicsitem_cast<KTTextItem *>( item ) )
+	{
+		text->setEditable( true );
+		text->setFocus();
+		return true;
+	}
 	
-	scene->addGraphic(m_item);
+	return false;
 }
 
 void TextTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
@@ -57,6 +74,11 @@ void TextTool::move(const KTInputDeviceInformation *input, KTBrushManager *brush
 
 void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
+	if ( m_configurator->text().isEmpty() )
+	{
+		delete m_item;
+		return;
+	}
 	
 	if ( m_configurator->isHtml() )
 	{
@@ -68,6 +90,8 @@ void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
 	}
 	
 	m_item->setFont( m_configurator->textFont() );
+	
+	scene->addGraphic(m_item);
 	
 	QDomDocument doc;
 	doc.appendChild(m_item->toXml( doc ));

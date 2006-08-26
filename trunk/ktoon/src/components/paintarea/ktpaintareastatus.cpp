@@ -127,7 +127,9 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
 	
 	
 	m_renderer = new QComboBox;
+#ifdef QT_OPENGL_LIB
 	m_renderer->addItem(tr("OpenGL"), KToon::OpenGL );
+#endif
 	m_renderer->addItem(tr("Native"), KToon::Native );
 	
 	m_renderer->setCurrentIndex(1);

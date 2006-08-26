@@ -36,7 +36,7 @@ class KTOON_EXPORT KTGraphicalAlgorithm
 		~KTGraphicalAlgorithm() {};
 		
 	public:
-		static QPainterPath bezierFit(QPolygonF &points_, float error);
+		static QPainterPath bezierFit(QPolygonF &points_, float error, int from = 0, int to = -1);
 		static QPolygonF polygonFit(const QPolygonF &points);
 		static bool intersectLine(const QPointF &start, const QPointF& end, const QRectF& rect );
 		static char calculateCode(const QPointF &point, const QRectF &window);

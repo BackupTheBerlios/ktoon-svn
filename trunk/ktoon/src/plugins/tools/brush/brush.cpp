@@ -83,6 +83,7 @@ void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 	m_item->setPen( brushManager->pen() );
 	scene->addGraphic( m_item );
 // 	move(event, brushManager, scene, view);
+	
 }
 
 void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
@@ -95,6 +96,7 @@ void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushMan
 	path.lineTo( input->pos() );
 	
 	m_path.closeSubpath();
+	
 	m_path.addPath(path);
 	
 	m_item->setPath(m_path);
@@ -112,6 +114,7 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 {
 	Q_UNUSED(scene);
 	Q_UNUSED(view);
+	
 	double smoothness = m_configurator->exactness();
 	
 	if ( m_firstPoint == input->pos() && m_path.elementCount() == 1)
@@ -122,35 +125,7 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 	
 	m_firstPoint = QPoint(0,0);
 	
-	
-	QPolygonF pol;
-	QList<QPolygonF> polygons = m_path.toSubpathPolygons();
-	
-	QList<QPolygonF>::iterator it = polygons.begin();
-	
-	
-	QPolygonF::iterator pointIt;
-	while(it != polygons.end() )
-	{
-		pointIt = (*it).begin();
-		
-		while(pointIt <= (*it).end()-2)
-		{
-			pol << (*pointIt);
-			pointIt += 2;
-		}
-		++it;
-	}
-	
-	if(smoothness > 0)
-	{
-		m_path = KTGraphicalAlgorithm::bezierFit(pol, smoothness);
-	}
-	else
-	{
-		m_path = QPainterPath();
-		m_path.addPolygon(pol);
-	}
+	smoothPath( m_path, smoothness );
 	
 	QPainterPath newPath = m_path;
 	QMatrix m;
@@ -176,6 +151,38 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 	KTItemEvent *event = new KTItemEvent(KTProjectEvent::Add, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), -1, doc.toString()); // Adds to end
 	
 	addProjectEvent(event);
+}
+
+void Brush::smoothPath(QPainterPath &path, double smoothness, int from, int to)
+{
+	QPolygonF pol;
+	QList<QPolygonF> polygons = path.toSubpathPolygons();
+	
+	QList<QPolygonF>::iterator it = polygons.begin();
+	
+	
+	QPolygonF::iterator pointIt;
+	while(it != polygons.end() )
+	{
+		pointIt = (*it).begin();
+		
+		while(pointIt <= (*it).end()-2)
+		{
+			pol << (*pointIt);
+			pointIt += 2;
+		}
+		++it;
+	}
+	
+	if(smoothness > 0)
+	{
+		path = KTGraphicalAlgorithm::bezierFit(pol, smoothness, from, to);
+	}
+	else
+	{
+		path = QPainterPath();
+		path.addPolygon(pol);
+	}
 }
 
 void Brush::setupActions()

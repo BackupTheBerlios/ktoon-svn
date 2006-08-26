@@ -48,6 +48,9 @@ class DCommandHistory : public QObject
 		void enableRedoMenu(bool e);
 		void enableUndoMenu(bool e);
 		
+		void undo();
+		void redo();
+		
 	private:
 		void updateMenu();
 		
@@ -64,6 +67,8 @@ class DCommandHistory : public QObject
 		int m_currentIndex;
 		
 		QHash<int, QAction *> m_actions;
+		
+		bool m_isLastRedo;
 };
 
 #endif

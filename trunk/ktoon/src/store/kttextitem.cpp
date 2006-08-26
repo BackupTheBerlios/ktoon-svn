@@ -22,9 +22,11 @@
 #include "ktserializer.h"
 
 #include <QFont>
+#include <QFocusEvent>
+#include <QTimer>
 
 KTTextItem::KTTextItem(QGraphicsItem * parent, QGraphicsScene * scene)
- : QGraphicsTextItem(parent, scene)
+	: QGraphicsTextItem(parent, scene), m_flags(flags()), m_isEditable(false)
 {
 	setOpenExternalLinks(true);
 	setEditable( false );
@@ -57,13 +59,40 @@ QDomElement KTTextItem::toXml(QDomDocument &doc)
 
 void KTTextItem::setEditable(bool editable)
 {
+	m_isEditable = editable;
+	
 	if ( editable )
 	{
+		m_flags = flags(); // save flags
 		setTextInteractionFlags(Qt::TextEditorInteraction);
+		setFlags( QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable );
+		setFocus(Qt::MouseFocusReason);
 	}
 	else
 	{
 		setTextInteractionFlags(Qt::TextBrowserInteraction);
+		setFlags(  QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable ); // restore flags
 	}
+	update();
+}
+
+void KTTextItem::toggleEditable()
+{
+	setEditable( !m_isEditable );
+}
+
+void KTTextItem::focusOutEvent(QFocusEvent * event )
+{
+	QGraphicsTextItem::focusOutEvent(event);
+	if ( textInteractionFlags() & Qt::TextEditorInteraction && m_isEditable )
+	{
+		QTimer::singleShot( 0, this, SLOT(toggleEditable()));
+		emit edited();
+	}
+}
+
+void KTTextItem::mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event )
+{
+	setEditable( true );
 }
 

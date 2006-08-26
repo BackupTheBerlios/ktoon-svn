@@ -24,7 +24,7 @@
 
 #include <ddebug.h>
 
-DCommandHistory::DCommandHistory(QUndoStack *stack, QObject *parent) : QObject(parent), m_stack(stack), m_currentIndex(0)
+DCommandHistory::DCommandHistory(QUndoStack *stack, QObject *parent) : QObject(parent), m_stack(stack), m_currentIndex(0), m_isLastRedo(false)
 {
 	m_undoMenu = new QMenu(tr("Undo"));
 	m_redoMenu = new QMenu(tr("Redo"));
@@ -33,8 +33,8 @@ DCommandHistory::DCommandHistory(QUndoStack *stack, QObject *parent) : QObject(p
 	m_undoMenu->menuAction()->setEnabled(false);
 	m_redoMenu->menuAction()->setEnabled(false);
 	
-	connect(m_undoMenu->menuAction(), SIGNAL(triggered()), m_stack, SLOT(undo()));
-	connect(m_redoMenu->menuAction(), SIGNAL(triggered()), m_stack, SLOT(redo()));
+	connect(m_undoMenu->menuAction(), SIGNAL(triggered()), this, SLOT(undo()));
+	connect(m_redoMenu->menuAction(), SIGNAL(triggered()), this, SLOT(redo()));
 	
 	connect(m_undoMenu, SIGNAL(triggered(QAction *)), this, SLOT(undoFromAction(QAction *)));
 	connect(m_redoMenu, SIGNAL(triggered(QAction *)), this, SLOT(redoFromAction(QAction *)));
@@ -84,14 +84,30 @@ void DCommandHistory::updateMenu()
 
 void DCommandHistory::updateFromIndex(int idx)
 {
-	dfDebug << idx;
-	if ( idx == m_stack->count() ) // Added
+	qDebug("HEY!!!!!!!!!!!");
+	
+// 	idx--;
+	
+	dfDebug << idx << " == " << m_stack->count() << " == " << m_currentIndex;
+	dDebug() << m_stack->text(idx-1);
+	
+	if (idx > m_stack->count() )
 	{
+		qDebug("OUT!!!");
+// 		m_stack->blockSignals(true);
+		m_stack->setIndex(m_stack->count());
+// 		m_stack->blockSignals(false);
+		return;
+	}
+	
+	if ( idx == m_stack->count()  && !m_isLastRedo) // Added
+	{
+		qDebug("ADDING!!!!");
 		QAction *a = m_undoMenu->addAction(m_stack->text(idx-1));
-		a->setData(idx-1);
-		a->setText(m_stack->text(idx-1));
+		a->setData(idx/*-1*/);
+		a->setText(QString::number(idx)+": "+m_stack->text(idx-1));
 		
-		m_actions.insert(idx-1, a);
+		m_actions.insert(idx/*-1*/, a);
 		
 		m_undoMenu->menuAction()->setEnabled(true);
 		m_undoMenu->setDefaultAction(a);
@@ -105,10 +121,15 @@ void DCommandHistory::updateFromIndex(int idx)
 		qDebug("REDO");
 		dDebug() << idx << " " << m_currentIndex;
 		
-		m_redoMenu->removeAction(m_actions[idx] );
-		m_undoMenu->addAction(m_actions[idx] );
+		if ( m_actions.contains(idx) )
+		{
+			m_redoMenu->removeAction(m_actions[idx] );
+			m_undoMenu->addAction(m_actions[idx] );
 		
-		m_undoMenu->menuAction()->setEnabled(true);
+			m_undoMenu->menuAction()->setEnabled(true);
+		}
+		else
+			dError() << "Error!";
 	}
 	else if ( idx < m_currentIndex )
 	{
@@ -116,10 +137,15 @@ void DCommandHistory::updateFromIndex(int idx)
 		qDebug("UNDO");
 		dDebug() << idx << " " << m_currentIndex;
 		
-		m_undoMenu->removeAction(m_actions[idx] );
-		m_redoMenu->addAction(m_actions[idx] );
-		
-		m_redoMenu->menuAction()->setEnabled(true);
+		if ( m_actions.contains(idx-1) )
+		{
+			m_undoMenu->removeAction(m_actions[idx-1] );
+			m_redoMenu->addAction(m_actions[idx-1] );
+			
+			m_redoMenu->menuAction()->setEnabled(true);
+		}
+		else
+			dError() << "Error!";
 	}
 	
 	m_currentIndex = m_stack->index();
@@ -137,14 +163,27 @@ void DCommandHistory::undoFromAction(QAction *a)
 	m_stack->blockSignals(true);
 	for(int i = qMin(idx, m_currentIndex); i < qMax(idx, m_currentIndex); i++ )
 	{
+		if ( !m_stack->canUndo() )
+		{
+			dError() << "Cannot undo!!!";
+			break;
+		}
+		
 		m_stack->undo();
 		
-		m_undoMenu->removeAction(m_actions[i]);
-		m_redoMenu->addAction(m_actions[i]);
+		if ( m_actions.contains(i) )
+		{
+			m_undoMenu->removeAction(m_actions[i]);
+			m_redoMenu->addAction(m_actions[i]);
+		}
+		else
+			qDebug("NO LO CONTIENE!!!!!!!!!");
 	}
 	
-	if ( m_undoMenu->isEmpty() ) m_undoMenu->menuAction()->setEnabled(false);
-	else m_undoMenu->menuAction()->setEnabled(true);
+	if ( m_undoMenu->isEmpty() ) 
+		m_undoMenu->menuAction()->setEnabled(false);
+	else 
+		m_undoMenu->menuAction()->setEnabled(true);
 	
 	if ( !m_redoMenu->isEmpty() ) m_redoMenu->menuAction()->setEnabled(true);
 	
@@ -157,20 +196,37 @@ void DCommandHistory::redoFromAction(QAction *a)
 	int idx = a->data().toInt();
 	
 	m_stack->blockSignals(true);
-	for(int i = qMax(idx, m_currentIndex); i >= qMin(idx, m_currentIndex); i-- )
+	for(int i = qMax(idx, m_currentIndex)-1; i >= qMin(idx, m_currentIndex)-1; i--)
 	{
+		SHOW_VAR(i);
+		if ( !m_stack->canRedo() )
+		{
+			dError() << "Cannot redo!!!";
+			break;
+		}
+		
 		m_stack->redo();
 		
-		m_redoMenu->removeAction(m_actions[i]);
-		m_undoMenu->addAction(m_actions[i]);
+		if (m_actions.contains(i) )
+		{
+			m_redoMenu->removeAction(m_actions[i]);
+			m_undoMenu->addAction(m_actions[i]);
+		}
+		else
+			qDebug("ERROR REDO");
 	}
 	
-	if ( m_redoMenu->isEmpty() ) m_redoMenu->menuAction()->setEnabled(false);
-	else m_redoMenu->menuAction()->setEnabled(true);
+	if ( m_redoMenu->isEmpty() )
+		m_redoMenu->menuAction()->setEnabled(false);
+	else
+		m_redoMenu->menuAction()->setEnabled(true);
 	
 	if ( !m_undoMenu->isEmpty() ) m_undoMenu->menuAction()->setEnabled(true);
 	
-	m_redoMenu->setDefaultAction(m_actions[m_stack->index()+1]);
+	if ( m_actions.contains(m_stack->index()+1 ) )
+	{
+		m_redoMenu->setDefaultAction(m_actions[m_stack->index()+1]);
+	}
 	
 	m_stack->blockSignals(false);
 }
@@ -187,3 +243,20 @@ void DCommandHistory::enableUndoMenu(bool e)
 	D_FUNCINFO;
 	m_undoMenu->menuAction()->setEnabled(e);
 }
+
+void DCommandHistory::undo()
+{
+	m_isLastRedo = false;
+// 	m_stack->blockSignals(true);
+	m_stack->undo();
+// 	m_stack->blockSignals(false);
+}
+
+void DCommandHistory::redo()
+{
+	m_isLastRedo = true;
+// 	m_stack->blockSignals(true);
+	m_stack->redo();
+// 	m_stack->blockSignals(false);
+}
+
