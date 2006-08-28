@@ -36,8 +36,9 @@
 Node::Node(TypeNode node, const QPointF & pos, NodeManager *manager, QGraphicsItem * parent,  QGraphicsScene * scene   ) : QGraphicsItem(0, scene), m_typeNode(node), m_notChange(true), m_parent(parent), m_manager(manager), gb1(0), gb2(0)
 {
 	QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor ));
-// 	setFlag(ItemIsMovable);
+	
 	setFlag(ItemIsSelectable, false);
+	
 	setPos(pos);
 	setZValue(100);
 }

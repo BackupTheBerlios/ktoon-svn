@@ -48,6 +48,7 @@ class ContourSelection : public KTToolPlugin
 		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 		
+		
 		virtual QString toolToXml() const;
 		
 		

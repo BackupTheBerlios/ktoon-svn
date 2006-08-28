@@ -1,16 +1,20 @@
 #include "nodegroup.h"
+
+#include <ddebug.h>
+
 #include <QGraphicsPathItem>
+#include <QAbstractGraphicsShapeItem>
+
 
 NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(parent)
 {
-	QGraphicsPathItem *tmp = dynamic_cast<QGraphicsPathItem *>(parent);
+	QAbstractGraphicsShapeItem *tmp = dynamic_cast<QAbstractGraphicsShapeItem *>(parent);
+
 	if(tmp)
 	{
-		QPainterPath path = tmp->matrix().map( tmp->path());
-		QMatrix m;
-		QPointF t = tmp->pos();
-		m.translate( t.x(), t.y() );
-		path = m.map( path );
+// 		QPainterPath path = tmp->sceneMatrix().map( tmp->path());
+		QPainterPath path = tmp->sceneMatrix().map( tmp->shape());
+		
 		int index = 0;
 		while(index < path.elementCount())
 		{
@@ -20,13 +24,13 @@ NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(paren
 				if(index - 2 < 0) continue;
 				if( path.elementAt(index-2).type == QPainterPath::CurveToElement )
 				{
-					ControlNode *node = new ControlNode(index, path.elementAt(index), tmp, scene);
+					ControlNode *node = new ControlNode(index, this,  path.elementAt(index), tmp, scene);
 					QPainterPath::Element e1 = path.elementAt(index-1);
 					QPainterPath::Element e2 = path.elementAt(index+1);
-					node->setLeft(new ControlNode(index-1, e1, tmp, scene));
+					node->setLeft(new ControlNode(index-1,this, e1, tmp, scene));
 					if(index+1 < path.elementCount() && e2.type == QPainterPath::CurveToElement)
 					{
-						node->setRight(new ControlNode(index+1, e2, tmp, scene));
+						node->setRight(new ControlNode(index+1, this, e2, tmp, scene));
 						m_nodes << node->right();
 						index++;
 					}
@@ -36,15 +40,15 @@ NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(paren
 			}
 			else if( (e.type == QPainterPath::LineToElement || e.type == QPainterPath::MoveToElement ) &&  path.elementAt(index+1).type == QPainterPath::CurveToElement )
 			{
-				ControlNode *node = new ControlNode(index,path.elementAt(index), tmp, scene);
-				node->setRight(new ControlNode(index+1, path.elementAt(index+1), tmp, scene));
+				ControlNode *node = new ControlNode(index, this, path.elementAt(index), tmp, scene);
+				node->setRight(new ControlNode(index+1,this, path.elementAt(index+1), tmp, scene));
 				index++;
 				m_nodes << node;
 				m_nodes << node->right();
 			}
 			else
 			{
-				ControlNode *node = new ControlNode(index, path.elementAt(index), tmp, scene);
+				ControlNode *node = new ControlNode(index, this, path.elementAt(index), tmp, scene);
 				m_nodes << node;
 			}
 			index++;
@@ -84,7 +88,18 @@ void NodeGroup::syncNodesFromParent()
 {
 	if(m_parentItem)
 	{
-		syncNodes(m_parentItem->sceneMatrix().map( m_parentItem->shape()));
+// 		syncNodes(m_parentItem->sceneMatrix().map( m_parentItem->shape()));
 	}
 }
+
+void NodeGroup::setParentItem(QGraphicsItem *newParent)
+{
+	D_FUNCINFO;
+	m_parentItem = newParent;
+	foreach(ControlNode *node, m_nodes)
+	{
+		node->setParentI(newParent);
+	}
+}
+
 

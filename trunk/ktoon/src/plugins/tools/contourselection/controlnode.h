@@ -30,14 +30,15 @@
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-
+class NodeGroup;
 class ControlNode : public QObject, public QGraphicsItem
 {
 	Q_OBJECT;
 	
 	public:
 		
-		ControlNode(int index, const QPointF & pos = QPoint(0,0) ,  QGraphicsItem * parent = 0, QGraphicsScene * scene = 0 );
+		ControlNode(int index, NodeGroup *nodeGroup, const QPointF & pos = QPoint(0,0) ,  QGraphicsItem * parent = 0, QGraphicsScene * scene = 0 );
+		
 		~ControlNode();
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 		QRectF boundingRect() const;
@@ -51,8 +52,10 @@ class ControlNode : public QObject, public QGraphicsItem
 		void setNodeParent( ControlNode *nodeParent);
 		int index() const;
 		
-
-		QGraphicsItem *parent();
+		void setParentI( QGraphicsItem * newParent );
+		QGraphicsItem *parentI();
+		
+		
 		ControlNode *left();
 		ControlNode *right();
 		ControlNode *nodeParent();
@@ -79,6 +82,8 @@ class ControlNode : public QObject, public QGraphicsItem
 		QGraphicsItem * m_parent;
 		
 		ControlNode *m_left, *m_right, *m_nodeParent;
+		bool m_notChange;
+		NodeGroup *m_nodeGroup;
 };
 
 #endif

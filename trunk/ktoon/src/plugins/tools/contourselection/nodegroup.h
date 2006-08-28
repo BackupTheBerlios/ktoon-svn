@@ -18,6 +18,8 @@ class NodeGroup
 		void NodeGroup::syncNodes(const QPainterPath & path);
 		void NodeGroup::syncNodesFromParent();
 		
+		void setParentItem(QGraphicsItem *);
+		
 	private:
 		QList<ControlNode*> m_nodes;
 		QGraphicsItem *m_parentItem;

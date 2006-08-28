@@ -80,10 +80,12 @@ void ContourSelection::move(const KTInputDeviceInformation *input, KTBrushManage
 	Q_UNUSED(view);
 	static int s = 0;
 	s++;
-	if(input->buttons() == Qt::LeftButton && scene->selectedItems().count() > 0)
+	if(scene->selectedItems().count() > 0)
 	{
 		QTimer::singleShot ( 0, this, SLOT(syncNodes()));;
 	}
+	
+	
 }
 
 void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
@@ -105,9 +107,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 			int parentIndex = scene->selectedItems().indexOf((*it)->parentItem() );
 			if(parentIndex != -1 )
 			{
-				//FIXED
 				selecteds.removeAt(parentIndex);
-				SHOW_VAR(selecteds.count());
 			}
 			else
 			{
@@ -115,20 +115,33 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 			}
 			++it;
 			
-// 			dDebug() << "end it";
 		}
-// 		dDebug() << "termino";
 #else
 // 		qDeleteAll(m_nodes);
 // 		m_nodes.clear();
 #endif
 		foreach(QGraphicsItem *item, selecteds)
 		{
-			if(item)
+			if(item  )
 			{
+				if(!dynamic_cast<ControlNode *>(item))
+				{
+				NodeGroup *node;
 				
-				NodeGroup *node = new NodeGroup(item, scene);
+// 				if(!dynamic_cast<KTPathItem *>(item))
+// 				{
+// 					item->setSelected(false);
+// 					KTPathItem *tmp = new KTPathItem();
+// 					tmp->setPath(item->shape());
+// 					scene->addItem(tmp);
+// 					tmp->setMatrix(item->matrix());
+// 					tmp->setPos(item->scenePos());
+// 					delete item;
+// 					item = tmp;
+// 				}
+				node = new NodeGroup(item, scene);
 				m_nodes << node;
+				}
 			}
 		}
 	}
