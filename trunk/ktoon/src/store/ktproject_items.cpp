@@ -122,10 +122,10 @@ QString KTProject::convertItem(int scenePosition, int layerPosition, int framePo
 							tmp->setMatrix(item->matrix());
 							tmp->setPos(item->scenePos());
 							tmp->setFlags(item->flags() );
-							if(qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item))
+							if(QAbstractGraphicsShapeItem *shape =  qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item))
 							{
-								tmp->setBrush( qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item)->brush() );
-								tmp->setPen( qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item)->pen() );
+								tmp->setBrush( shape->brush() );
+								tmp->setPen(shape->pen() );
 							}
 							
 							frame->replaceGraphic(position, tmp);
@@ -158,10 +158,10 @@ QString KTProject::convertItem(int scenePosition, int layerPosition, int framePo
 							
 							rect->setPos(item->scenePos());
 							rect->setFlags(item->flags() );
-							if(qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item))
+							if(QAbstractGraphicsShapeItem *shape =  qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item))
 							{
-								rect->setBrush( qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item)->brush() );
-								rect->setPen( qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item)->pen() );
+								rect->setBrush( shape->brush() );
+								rect->setPen(shape->pen() );
 							}
 							
 							frame->replaceGraphic(position, rect);
@@ -190,10 +190,10 @@ QString KTProject::convertItem(int scenePosition, int layerPosition, int framePo
 							
 							ellipse->setPos(item->scenePos());
 							ellipse->setFlags(item->flags() );
-							if(qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item))
+							if(QAbstractGraphicsShapeItem *shape =  qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item))
 							{
-								ellipse->setBrush( qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item)->brush() );
-								ellipse->setPen( qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item)->pen() );
+								ellipse->setBrush( shape->brush() );
+								ellipse->setPen(shape->pen() );
 							}
 							
 							frame->replaceGraphic(position, ellipse);
