@@ -71,7 +71,7 @@ void ContourSelection::press(const KTInputDeviceInformation *input, KTBrushManag
 	Q_UNUSED(view);
 	view->setDragMode (QGraphicsView::RubberBandDrag);
 	
-	m_project = dynamic_cast<KTProject*>( scene->parent());
+	m_project = scene->project();
 }
 
 void ContourSelection::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
@@ -130,9 +130,10 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 				{
 					NodeGroup *node;
 					
-					if( !dynamic_cast<KTPathItem*>(item) )
+					if( !qgraphicsitem_cast<KTPathItem*>(item) )
 					{
-						KTItemEvent *event = new KTItemEvent(KTProjectEvent::Rename, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().indexOf(item), " " );
+						QString conv = "<convert type=\"2\" />"; // to path type
+						KTItemEvent *event = new KTItemEvent(KTProjectEvent::Convert, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().indexOf(item), conv);
 						addProjectEvent(event);
 					}
 					else
@@ -157,7 +158,7 @@ void ContourSelection::itemEvent(const KTItemEvent *event)
 	switch(event->action())
 	{
 		
-		case KTProjectEvent::Rename:
+		case KTProjectEvent::Convert:
 		{
 			if(m_project)
 			{

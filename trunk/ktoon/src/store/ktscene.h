@@ -112,6 +112,8 @@ class STORE_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializabl
 		
 		int index() const;
 		
+		KTProject *project() const;
+		
 	public:
 		void setCurrentFrame(int layer, int frame);
 		void drawCurrentPhotogram();

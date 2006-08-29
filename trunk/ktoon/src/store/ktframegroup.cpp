@@ -19,7 +19,7 @@
  ***************************************************************************/
 #include "ktframegroup.h"
 
-KTFrameGroup::KTFrameGroup(QObject *parent ) : KTFrame(parent)
+KTFrameGroup::KTFrameGroup(KTLayer *parent ) : KTFrame(parent)
 {
 }
 

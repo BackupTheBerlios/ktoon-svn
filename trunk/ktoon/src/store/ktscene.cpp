@@ -336,4 +336,9 @@ int KTScene::index() const
 	return -1;
 }
 
+KTProject *KTScene::project() const
+{
+	return static_cast<KTProject *>(parent());
+}
+
 

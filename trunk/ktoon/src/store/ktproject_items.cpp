@@ -23,6 +23,8 @@
 #include "ktscene.h"
 #include "ktitemevent.h"
 #include "ktpathitem.h"
+#include "ktrectitem.h"
+#include "ktellipseitem.h"
 
 #include <dcore/ddebug.h>
 
@@ -88,7 +90,7 @@ void KTProject::removeItem(int scenePosition, int layerPosition, int framePositi
 	}
 }
 
-void KTProject::convertItemToPathItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
+QString KTProject::convertItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
 {
 	D_FUNCINFO;
 	KTScene *scene = this->scene(scenePosition);
@@ -103,31 +105,117 @@ void KTProject::convertItemToPathItem(int scenePosition, int layerPosition, int 
 				QGraphicsItem *item = frame->item(position);
 				if ( item )
 				{
-					scene->removeItem(item);
-					KTPathItem *tmp = new KTPathItem( item->parentItem(), scene);
-					tmp->setPath(item->shape());
-					tmp->setMatrix(item->matrix());
-					tmp->setPos(item->scenePos());
-					tmp->setFlags(item->flags() );
-					if(qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item))
-					{
-						tmp->setBrush( qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item)->brush() );
-						tmp->setPen( qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item)->pen() );
-					}
-					frame->replaceGraphic(position, tmp);
+					QDomDocument doc;
+					if ( ! doc.setContent( xml ) ) return QString();
+					int toType = doc.documentElement().attribute( "type").toInt();
 					
-					KTItemEvent event(KTProjectEvent::Rename, scenePosition, layerPosition, framePosition, position, 0);
+					if ( toType == item->type() ) return QString();
+					
+					scene->removeItem(item);
+					
+					switch(toType)
+					{
+						case 2:
+						{
+							KTPathItem *tmp = new KTPathItem( item->parentItem(), scene);
+							tmp->setPath(item->shape());
+							tmp->setMatrix(item->matrix());
+							tmp->setPos(item->scenePos());
+							tmp->setFlags(item->flags() );
+							if(qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item))
+							{
+								tmp->setBrush( qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item)->brush() );
+								tmp->setPen( qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item)->pen() );
+							}
+							
+							frame->replaceGraphic(position, tmp);
+							
+							tmp->setSelected(item->isSelected());
+							//FIXME
+		// 					item->setSelected(false);
+		// 					delete item;
+		// 					item = 0;
+						}
+						break;
+						case 3: // Rect
+						{
+							KTRectItem *rect = new KTRectItem(item->parentItem(), scene);
+							rect->setMatrix(item->matrix());
+							
+							switch(item->type() )
+							{
+								case 2:
+								{
+									rect->setRect(qgraphicsitem_cast<QGraphicsPathItem *>(item)->path().boundingRect());
+								}
+								break;
+								case 4:
+								{
+									rect->setRect(qgraphicsitem_cast<QGraphicsEllipseItem *>(item)->rect());
+								}
+								break;
+							}
+							
+							rect->setPos(item->scenePos());
+							rect->setFlags(item->flags() );
+							if(qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item))
+							{
+								rect->setBrush( qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item)->brush() );
+								rect->setPen( qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item)->pen() );
+							}
+							
+							frame->replaceGraphic(position, rect);
+							
+							rect->setSelected(item->isSelected());
+						}
+						break;
+						case 4: // Ellipse
+						{
+							KTEllipseItem *ellipse = new KTEllipseItem(item->parentItem(), scene);
+							ellipse->setMatrix(item->matrix());
+							
+							switch(item->type() )
+							{
+								case 2:
+								{
+									ellipse->setRect(qgraphicsitem_cast<QGraphicsPathItem *>(item)->path().boundingRect());
+								}
+								break;
+								case 4:
+								{
+									ellipse->setRect(qgraphicsitem_cast<QGraphicsEllipseItem *>(item)->rect());
+								}
+								break;
+							}
+							
+							ellipse->setPos(item->scenePos());
+							ellipse->setFlags(item->flags() );
+							if(qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item))
+							{
+								ellipse->setBrush( qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item)->brush() );
+								ellipse->setPen( qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item)->pen() );
+							}
+							
+							frame->replaceGraphic(position, ellipse);
+							
+							ellipse->setSelected(item->isSelected());
+						}
+						break;
+						
+					}
+					
+					
+					KTItemEvent event(KTProjectEvent::Convert, scenePosition, layerPosition, framePosition, position, xml);
 					
 					emit commandExecuted( &event);
-					tmp->setSelected(item->isSelected());
-					//FIXME
-// 					item->setSelected(false);
-// 					delete item;
-// 					item = 0;
+					
+					return "<convert type=\""+QString::number(item->type())+"\" />";
 				}
 			}
 		}
 	}
+	
+	return QString();
 }
 
 QString KTProject::transformItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)

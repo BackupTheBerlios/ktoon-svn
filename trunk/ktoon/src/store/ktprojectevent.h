@@ -76,7 +76,10 @@ class STORE_EXPORT KTProjectEvent
 			 * Cambia la visibilidad
 			 */
 			View,
-			Transform
+			
+			// Items
+			Transform,
+			Convert
 		};
 		
 		enum Part

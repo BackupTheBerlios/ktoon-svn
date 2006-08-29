@@ -101,6 +101,11 @@ QString KTProjectCommand::actionString(int action)
 			return QObject::tr("transform");
 		}
 		break;
+		case KTProjectEvent::Convert:
+		{
+			return QObject::tr("convert");
+		}
+		break;
 	}
 	
 	return QString("Unknown");
@@ -469,7 +474,11 @@ void KTProjectCommand::itemCommand(const KTItemEvent *event, bool redo)
 			break;
 			case KTProjectEvent::Rename:
 			{
-				m_project->convertItemToPathItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
+			}
+			break;
+			case KTProjectEvent::Convert:
+			{
+				m_data = m_project->convertItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
 			}
 			break;
 			case KTProjectEvent::Select:
@@ -512,6 +521,11 @@ void KTProjectCommand::itemCommand(const KTItemEvent *event, bool redo)
 			break;
 			case KTProjectEvent::Rename:
 			{
+			}
+			break;
+			case KTProjectEvent::Convert:
+			{
+				m_project->convertItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), m_data.toString());
 			}
 			break;
 			case KTProjectEvent::View:

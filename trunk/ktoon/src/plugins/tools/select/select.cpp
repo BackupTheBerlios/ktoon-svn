@@ -74,6 +74,11 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 	Q_UNUSED(scene);
 	Q_UNUSED(view);
 	view->setDragMode (QGraphicsView::RubberBandDrag);
+	
+	if ( input->keyModifiers() != Qt::ControlModifier )
+	{
+		scene->clearSelection();
+	}
 }
 
 void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)

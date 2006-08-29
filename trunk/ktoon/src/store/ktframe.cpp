@@ -19,6 +19,8 @@
  ***************************************************************************/
 
 #include "ktframe.h"
+#include "ktlayer.h"
+
 #include "ddebug.h"
 
 #include "ktitemfactory.h"
@@ -28,7 +30,7 @@
 // #include "ktbuttonitem.h"
 // #include "kttextitem.h"
 
-KTFrame::KTFrame(QObject *parent) : QObject(parent), m_name("Frame"), m_isLocked(false), m_isVisible(true)
+KTFrame::KTFrame(KTLayer *parent) : QObject(parent), m_name("Frame"), m_isLocked(false), m_isVisible(true)
 {
 	init();
 }
@@ -202,5 +204,10 @@ QGraphicsItem *KTFrame::item(int position) const
 	}
 	
 	return m_items[position];
+}
+
+KTLayer *KTFrame::layer() const
+{
+	return static_cast<KTLayer *>(parent());
 }
 

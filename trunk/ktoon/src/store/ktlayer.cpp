@@ -19,9 +19,11 @@
  ***************************************************************************/
 
 #include "ktlayer.h"
+#include "ktscene.h"
+
 #include "ddebug.h"
 
-KTLayer::KTLayer(QObject *parent) : QObject(parent), m_isVisible(true), m_name(tr("Layer")), m_framesCount(0), m_isLocked(false)
+KTLayer::KTLayer(KTScene *parent) : QObject(parent), m_isVisible(true), m_name(tr("Layer")), m_framesCount(0), m_isLocked(false)
 {
 }
 
@@ -185,6 +187,11 @@ QDomElement KTLayer::toXml(QDomDocument &doc)
 	}
 	
 	return root;
+}
+
+KTScene *KTLayer::scene() const
+{
+	return static_cast<KTScene *>(parent());
 }
 
 

@@ -223,7 +223,7 @@ void ControlNode::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
 	foreach(QGraphicsItem *item, scene()->selectedItems())
 	{
-		if(dynamic_cast<ControlNode*>(item))
+		if(qgraphicsitem_cast<ControlNode*>(item))
 		{
 			if(item != this)
 			{

@@ -30,6 +30,8 @@
 
 typedef QList<KTFrame *> Frames;
 
+class KTScene;
+
 /**
  * @brief Esta clase representa un layer, los layers estan contenidos en KTDocument y contienen KTFrame's
  * @author David Cuadrado \<krawek@toonka.com\>
@@ -42,7 +44,7 @@ class STORE_EXPORT KTLayer : public QObject, public KTAbstractSerializable
 		/**
 		 * Constructor por defecto
 		 */
-		KTLayer(QObject *parent = 0);
+		KTLayer(KTScene *parent);
 		
 		/**
 		 * Destructor
@@ -96,6 +98,8 @@ class STORE_EXPORT KTLayer : public QObject, public KTAbstractSerializable
 		bool moveFrame(int from, int to);
 		
 		KTFrame *frame(int position);
+		
+		KTScene *scene() const;
 		
 	public:
 		virtual void fromXml(const QString &xml );

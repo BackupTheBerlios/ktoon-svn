@@ -31,7 +31,7 @@
 class STORE_EXPORT KTFrameGroup : public KTFrame
 {
 	public:
-		KTFrameGroup(QObject *parent = 0);
+		KTFrameGroup(KTLayer *parent = 0);
 		~KTFrameGroup();
 		
 		void addFrame(KTFrame *frame);

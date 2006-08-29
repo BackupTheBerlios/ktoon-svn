@@ -29,6 +29,7 @@
 #include "ktglobal_store.h"
 
 class KTFrame;
+class KTLayer;
 
 /**
  * @brief Esta clase representa un marco o frame de la animacion
@@ -40,7 +41,7 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
 		/**
 		 * Constructor por defecto
 		 */
-		KTFrame(QObject *parent = 0);
+		KTFrame(KTLayer *parent);
 		
 		/**
 		 * Destructor
@@ -84,6 +85,8 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
 		
 		
 		QGraphicsItem *item(int position) const;
+		
+		KTLayer *layer() const;
 		
 	public:
 		virtual void fromXml(const QString &xml );
