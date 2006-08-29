@@ -8,8 +8,8 @@
 
 NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(parent)
 {
-	QAbstractGraphicsShapeItem *tmp = dynamic_cast<QAbstractGraphicsShapeItem *>(parent);
-
+// 	QAbstractGraphicsShapeItem *tmp = dynamic_cast<QAbstractGraphicsShapeItem *>(parent);
+	QGraphicsPathItem *tmp = qgraphicsitem_cast<QGraphicsPathItem *>(parent);
 	if(tmp)
 	{
 // 		QPainterPath path = tmp->sceneMatrix().map( tmp->path());
@@ -54,6 +54,10 @@ NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(paren
 			index++;
 		}
 	}
+	else
+	{
+		dDebug() << "Item not item path";
+	}
 }
 
 
@@ -72,7 +76,6 @@ NodeGroup::~NodeGroup()
 
 void NodeGroup::syncNodes(const QPainterPath & path)
 {
-	
 	if(m_nodes.isEmpty())
 	{
 		return;
@@ -81,7 +84,6 @@ void NodeGroup::syncNodes(const QPainterPath & path)
 	{
 		node->setPos(path.elementAt(node->index()));
 	}
-
 }
 
 void NodeGroup::syncNodesFromParent()
@@ -98,8 +100,15 @@ void NodeGroup::setParentItem(QGraphicsItem *newParent)
 	m_parentItem = newParent;
 	foreach(ControlNode *node, m_nodes)
 	{
-		node->setParentI(newParent);
+		if(node)
+		{
+			node->setParentI(newParent);
+		}
 	}
 }
 
+void NodeGroup::emitEvent(KTItemEvent *event)
+{
+	emit sendEvent(event );
+}
 

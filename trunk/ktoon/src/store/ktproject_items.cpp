@@ -22,6 +22,7 @@
 #include "ktserializer.h"
 #include "ktscene.h"
 #include "ktitemevent.h"
+#include "ktpathitem.h"
 
 #include <dcore/ddebug.h>
 
@@ -87,6 +88,47 @@ void KTProject::removeItem(int scenePosition, int layerPosition, int framePositi
 	}
 }
 
+void KTProject::convertItemToPathItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
+{
+	D_FUNCINFO;
+	KTScene *scene = this->scene(scenePosition);
+	if ( scene )
+	{
+		KTLayer *layer = scene->layer( layerPosition );
+		if ( layer )
+		{
+			KTFrame *frame = layer->frame( framePosition );
+			if ( frame )
+			{
+				QGraphicsItem *item = frame->item(position);
+				if ( item )
+				{
+					scene->removeItem(item);
+					KTPathItem *tmp = new KTPathItem( item->parentItem(), scene);
+					tmp->setPath(item->shape());
+					tmp->setMatrix(item->matrix());
+					tmp->setPos(item->scenePos());
+					tmp->setFlags(item->flags() );
+					if(qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item))
+					{
+						tmp->setBrush( qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item)->brush() );
+						tmp->setPen( qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item)->pen() );
+					}
+					frame->replaceGraphic(position, tmp);
+					
+					KTItemEvent event(KTProjectEvent::Rename, scenePosition, layerPosition, framePosition, position, 0);
+					
+					emit commandExecuted( &event);
+					tmp->setSelected(item->isSelected());
+					//FIXME
+// 					item->setSelected(false);
+// 					delete item;
+// 					item = 0;
+				}
+			}
+		}
+	}
+}
 
 QString KTProject::transformItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
 {

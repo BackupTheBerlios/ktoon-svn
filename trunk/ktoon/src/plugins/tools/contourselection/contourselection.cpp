@@ -67,9 +67,11 @@ void ContourSelection::press(const KTInputDeviceInformation *input, KTBrushManag
 {
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
-	Q_UNUSED(scene);
+// 	Q_UNUSED(scene);
 	Q_UNUSED(view);
 	view->setDragMode (QGraphicsView::RubberBandDrag);
+	
+	m_project = dynamic_cast<KTProject*>( scene->parent());
 }
 
 void ContourSelection::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
@@ -124,23 +126,20 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 		{
 			if(item  )
 			{
-				if(!dynamic_cast<ControlNode *>(item))
+				if(!qgraphicsitem_cast<ControlNode *>(item))
 				{
-				NodeGroup *node;
-				
-// 				if(!dynamic_cast<KTPathItem *>(item))
-// 				{
-// 					item->setSelected(false);
-// 					KTPathItem *tmp = new KTPathItem();
-// 					tmp->setPath(item->shape());
-// 					scene->addItem(tmp);
-// 					tmp->setMatrix(item->matrix());
-// 					tmp->setPos(item->scenePos());
-// 					delete item;
-// 					item = tmp;
-// 				}
-				node = new NodeGroup(item, scene);
-				m_nodes << node;
+					NodeGroup *node;
+					
+					if( !dynamic_cast<KTPathItem*>(item) )
+					{
+						KTItemEvent *event = new KTItemEvent(KTProjectEvent::Rename, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().indexOf(item), " " );
+						addProjectEvent(event);
+					}
+					else
+					{
+						node = new NodeGroup(item, scene);
+						m_nodes << node;
+					}
 				}
 			}
 		}
@@ -152,6 +151,51 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 	}
 }
 
+void ContourSelection::itemEvent(const KTItemEvent *event)
+{
+	D_FUNCINFO;
+	switch(event->action())
+	{
+		
+		case KTProjectEvent::Rename:
+		{
+			if(m_project)
+			{
+				KTScene *scene = m_project->scene(event->sceneIndex());
+				if ( scene )
+				{
+					
+					KTLayer *layer = scene->layer( event->layerIndex() );
+					
+					if ( layer )
+					{
+						
+						KTFrame *frame = layer->frame( event->frameIndex() );
+						
+						if ( frame )
+						{
+							QGraphicsItem *item = frame->item(event->itemIndex());
+							if ( item )
+							{
+								NodeGroup *node = new NodeGroup(item, scene);
+								m_nodes << node;
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				dFatal() << "Project not exist";
+			}
+		}
+// 		{
+// 			QTimer::singleShot(0, this, SLOT(syncNodes()));
+// 		}
+		break;
+		default: break;
+	}
+}
 
 void ContourSelection::setupActions()
 {
@@ -220,5 +264,11 @@ void ContourSelection::syncNodes()
 		}
 	}
 }
+
+void ContourSelection::slotAddProjectEvent(KTProjectEvent *e)
+{
+	addProjectEvent(e);
+}
+
 
 Q_EXPORT_PLUGIN2(kt_editNodes, ContourSelection )

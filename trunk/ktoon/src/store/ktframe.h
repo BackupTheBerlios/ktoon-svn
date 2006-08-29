@@ -75,11 +75,13 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
 		
 		void addGraphic(QGraphicsItem *item);
 		void removeGraphic(QGraphicsItem *item);
+		void replaceGraphic(int position, QGraphicsItem *item);
 		
 		bool removeItemAt(int position);
 		QGraphicsItem *createItem(int position, const QString &xml);
 		
 		QList<QGraphicsItem *> graphics() const;
+		
 		
 		QGraphicsItem *item(int position) const;
 		

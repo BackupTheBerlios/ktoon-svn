@@ -127,7 +127,6 @@ QDomElement KTPathItem::toXml(QDomDocument &doc)
 void KTPathItem::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
 	QGraphicsPathItem::paint(painter, option,widget );
-	
 }
 
 

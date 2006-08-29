@@ -28,6 +28,8 @@
 
 #include "controlnode.h"
 #include "nodegroup.h"
+#include "ktproject.h"
+
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
  */
@@ -61,6 +63,10 @@ class ContourSelection : public KTToolPlugin
 		virtual bool isComplete() const;
 		virtual void aboutToChangeTool();
 		
+		
+		virtual void itemEvent(const KTItemEvent *event);
+		
+		
 	private:
 		void setupActions();
 		
@@ -68,10 +74,12 @@ class ContourSelection : public KTToolPlugin
 	private:
 		QMap<QString, DAction *> m_actions;
 		QList<NodeGroup*> m_nodes;
+		KTProject *m_project;
 // 		QGraphicsView *m_view;
 		
 	private slots:
 		void syncNodes();
+		void slotAddProjectEvent( KTProjectEvent *e );
 };
 
 #endif

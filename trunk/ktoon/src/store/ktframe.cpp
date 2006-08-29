@@ -149,6 +149,11 @@ void KTFrame::removeGraphic(QGraphicsItem *item)
 // 	removeItem(item);
 }
 
+void KTFrame::replaceGraphic(int position, QGraphicsItem *item)
+{
+	m_items.replace(position, item);
+}
+
 void KTFrame::recoverItems()
 {
 // 	foreach(QGraphicsItem *item, m_items)

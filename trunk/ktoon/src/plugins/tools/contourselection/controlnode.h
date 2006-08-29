@@ -24,7 +24,7 @@
 #include <QGraphicsItem>
 #include <QObject>
 #include <QPointF>
-
+#include "ktscene.h"
 
 
 /**
@@ -37,7 +37,7 @@ class ControlNode : public QObject, public QGraphicsItem
 	
 	public:
 		
-		ControlNode(int index, NodeGroup *nodeGroup, const QPointF & pos = QPoint(0,0) ,  QGraphicsItem * parent = 0, QGraphicsScene * scene = 0 );
+		ControlNode(int index, NodeGroup *nodeGroup, const QPointF & pos = QPoint(0,0) ,  QGraphicsItem * parent = 0, KTScene * scene = 0 );
 		
 		~ControlNode();
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
@@ -84,6 +84,7 @@ class ControlNode : public QObject, public QGraphicsItem
 		ControlNode *m_left, *m_right, *m_nodeParent;
 		bool m_notChange;
 		NodeGroup *m_nodeGroup;
+		KTScene *m_scene;
 };
 
 #endif

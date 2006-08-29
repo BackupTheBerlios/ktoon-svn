@@ -537,13 +537,11 @@ void KTMainWindow::closeEvent( QCloseEvent *event )
 void KTMainWindow::createCommand(const KTProjectEvent *event)
 {
 	D_FUNCINFO << event;
-	
 	if ( !event->isValid() )
 	{
 		dDebug() << "Invalid event!";
 		return;
 	}
-	
 	KTProjectCommand *command = m_projectManager->createCommand(event);
 	
 	if ( command )
@@ -557,7 +555,6 @@ void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
 	if ( !m_viewDoc ) return;
 	
 	KTPaintAreaCommand *command = m_viewDoc->createCommand(event);
-	
 	
 	if ( command )
 	{

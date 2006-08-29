@@ -469,6 +469,7 @@ void KTProjectCommand::itemCommand(const KTItemEvent *event, bool redo)
 			break;
 			case KTProjectEvent::Rename:
 			{
+				m_project->convertItemToPathItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
 			}
 			break;
 			case KTProjectEvent::Select:

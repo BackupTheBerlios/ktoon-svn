@@ -33,7 +33,7 @@
 #include  "ktpathitem.h"
 #include "nodegroup.h"
 
-ControlNode::ControlNode(int index, NodeGroup *nodeGroup, const QPointF & pos, QGraphicsItem * parent,  QGraphicsScene * scene   ) : QGraphicsItem(0, scene), m_index(index), m_parent(parent),  m_left(0),  m_right(0), m_nodeParent(0), m_notChange(true) ,m_nodeGroup(nodeGroup)
+ControlNode::ControlNode(int index, NodeGroup *nodeGroup, const QPointF & pos, QGraphicsItem * parent,  KTScene * scene   ) : QGraphicsItem(0, scene), m_index(index), m_parent(parent),  m_left(0),  m_right(0), m_nodeParent(0), m_notChange(true) ,m_nodeGroup(nodeGroup), m_scene(scene)
 {
 	QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor ));
 // 	setFlags(ItemIsMovable);
@@ -128,42 +128,7 @@ QVariant ControlNode::itemChange(GraphicsItemChange change, const QVariant &valu
 	{
 		if(!m_notChange)
 		{
-// 			dDebug() << "0";
-// 			dDebug() << m_parent->type();
-// // 			dDebug() << QGraphicsPathItem().type();
-// 			if(!m_parent)
-// 			{
-// 				dDebug() << m_parent->type();
-				
-// 			}
-// 			dDebug() << m_parent;
-// 			if( !dynamic_cast<KTPathItem*>(m_parent) )
-// 			{
-// 				dDebug() << "1";
-// 				scene()->removeItem(m_parent);
-// 				
-// 				KTPathItem *tmp = new KTPathItem( m_parent->parentItem(), scene());
-// // 				dDebug() << "2";
-// 				tmp->setPath(m_parent->shape());
-// // 				tmp->setMatrix(m_parent->matrix());
-// 				tmp->setPos(m_parent->scenePos());
-// 				tmp->setFlags(m_parent->flags() );
-// 				if(dynamic_cast<QAbstractGraphicsShapeItem*>(m_parent))
-// 				{
-// 					tmp->setBrush( dynamic_cast<QAbstractGraphicsShapeItem*>(m_parent)->brush() );
-// 					tmp->setPen( dynamic_cast<QAbstractGraphicsShapeItem*>(m_parent)->pen() );
-// 				}
-// // 				tmp->setSelected(m_parent->isSelected());
-// 				tmp->setSelected(true);
-// // 				dDebug() << "3";
-// // 				delete m_parent;
-// 				m_parent = tmp;
-// 				m_nodeGroup->setParentItem( tmp );
-// 				dDebug() << "4";
-// 				setParent();
-// 			}
-// 			dDebug() << "5";
-// 			else
+			if( qgraphicsitem_cast<KTPathItem*>(m_parent) )
 			{
 				QPointF diff = value.toPointF() - pos() ;
 				if(m_left)
@@ -175,7 +140,7 @@ QVariant ControlNode::itemChange(GraphicsItemChange change, const QVariant &valu
 					m_right->moveBy(diff.x(), diff.y());
 				}
 				QPointF scenePos = m_parent->mapFromScene ( value.toPointF());
-				QPainterPath path = static_cast<QGraphicsPathItem *>(m_parent)->path();
+				QPainterPath path = qgraphicsitem_cast<QGraphicsPathItem *>(m_parent)->path();
 				path.setElementPositionAt(m_index,
 					scenePos.x(),
 					scenePos.y() );
@@ -185,7 +150,7 @@ QVariant ControlNode::itemChange(GraphicsItemChange change, const QVariant &valu
 				m.translate(-pos.x(), -pos.y());
 				path = m.map(path);
 				m_parent->setPos(m_parent->mapToScene(pos));
-				static_cast<QGraphicsPathItem *>( m_parent)->setPath(path);
+				qgraphicsitem_cast<QGraphicsPathItem *>( m_parent)->setPath(path);
 			}
 		}
 		else
@@ -273,7 +238,7 @@ void ControlNode::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	}
 	else
 	{
-		dDebug() << "HEEREE";
+		dDebug() << "Not parent";
 	}
 	event->ignore();
 }
@@ -350,7 +315,6 @@ void  ControlNode::setParentI(QGraphicsItem *newParent)
 {
 	m_parent = newParent;
 }
-
 
 QGraphicsItem * ControlNode::parentI()
 {

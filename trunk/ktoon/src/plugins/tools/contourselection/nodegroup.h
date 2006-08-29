@@ -4,12 +4,18 @@
 #include "controlnode.h"
 #include "ktscene.h"
 
+#include <QObject>
+
+#include "ktitemevent.h"
+
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
-class NodeGroup
+
+class NodeGroup : public QObject
 {
+	Q_OBJECT
 	public:
 		NodeGroup(QGraphicsItem * parent, KTScene *scene);
 		~NodeGroup();
@@ -20,10 +26,14 @@ class NodeGroup
 		
 		void setParentItem(QGraphicsItem *);
 		
+		void emitEvent(KTItemEvent *event);
+		
 	private:
 		QList<ControlNode*> m_nodes;
 		QGraphicsItem *m_parentItem;
 		
+	signals:
+		void sendEvent( KTProjectEvent *event );
 };
 
 #endif
