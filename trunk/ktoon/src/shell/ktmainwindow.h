@@ -74,10 +74,10 @@ class KTMainWindow : public DTabbedMainWindow
 {
 	Q_OBJECT
 	public:
-		enum Workspaces
+		enum Perspective
 		{
-			Drawing = 1,
-			Animation = 2,
+			Drawing = 0x01,
+			Animation = 0x02,
 			All = Drawing | Animation
 		};
 		

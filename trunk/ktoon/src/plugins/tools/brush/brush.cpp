@@ -232,6 +232,12 @@ void Brush::aboutToChangeTool()
 // 	return doc.toString();
 // }
 
+bool Brush::itemPressed(QGraphicsItem *item)
+{
+	// TODO: seria interesante que si el item es un pixmap tratar de seguir un patron!
+	return false;
+}
+
 
 
 Q_EXPORT_PLUGIN2(kt_brush, Brush );

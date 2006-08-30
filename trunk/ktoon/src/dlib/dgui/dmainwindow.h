@@ -45,24 +45,24 @@ class D_IDEAL_EXPORT DMainWindow : public QMainWindow
 		enum
 		{
 			None = 0,
-			DefaultWorkspace
+			DefaultPerspective
 		};
 		
 		DMainWindow(QWidget *parent = 0);
 		~DMainWindow();
 		
-		DToolView *addToolView(QWidget *widget, Qt::DockWidgetArea area, int workspace = DefaultWorkspace);
+		DToolView *addToolView(QWidget *widget, Qt::DockWidgetArea area, int perspective = DefaultPerspective);
 		void moveToolView(DToolView *view, Qt::DockWidgetArea newPlace);
 		
-		void addToWorkspace(QWidget *widget, int workspace = DefaultWorkspace);
-		void removeFromWorkspace(QWidget *widget);
+		void addToPerspective(QWidget *widget, int perspective = DefaultPerspective);
+		void removeFromPerspective(QWidget *widget);
 		
-		void addToWorkspace(QAction *action, int workspace);
-		void addToWorkspace(const QList<QAction *> &actions, int workspace);
-		void removeFromWorkspace(QAction *action);
+		void addToPerspective(QAction *action, int perspective);
+		void addToPerspective(const QList<QAction *> &actions, int perspective);
+		void removeFromPerspective(QAction *action);
 		
-		void setCurrentWorkspace(int wsp);
-		int currentWorkspace() const;
+		void setCurrentPerspective(int wsp);
+		int currentPerspective() const;
 		
 		void setAutoRestore(bool autoRestore);
 		bool autoRestore() const;
@@ -88,7 +88,7 @@ class D_IDEAL_EXPORT DMainWindow : public QMainWindow
 		void relayoutToolView();
 		
 	signals:
-		void workspaceChanged(int wps);
+		void perspectiveChanged(int wps);
 		
 	protected:
 		void addButtonBar(Qt::ToolBarArea area);
@@ -107,7 +107,7 @@ class D_IDEAL_EXPORT DMainWindow : public QMainWindow
 		QHash<QWidget *, int> m_managedWidgets;
 		QHash<QAction *, int> m_managedActions;
 		
-		int m_currentWorkspace;
+		int m_currentPerspective;
 		
 		DMainWindowAbstractSettings *m_settings;
 		

@@ -18,75 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DBUTTONBAR_H
-#define DBUTTONBAR_H
+#include "dworkspacemainwindow.h"
+#include <QWorkspace>
 
-#include <dideality.h>
-
-#include <QToolBar>
-#include <QButtonGroup>
-#include <QMap>
-#include <QTimer>
-
-class DViewButton;
-class QAction;
-class QMenu;
-
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class D_IDEAL_EXPORT DButtonBar : public QToolBar
+DWorkspaceMainWindow::DWorkspaceMainWindow(QWidget *parent) : DMainWindow(parent)
 {
-	Q_OBJECT;
-	public:
-		DButtonBar(Qt::ToolBarArea area, QWidget *parent = 0);
-		~DButtonBar();
-		
-		void addButton(DViewButton *viewButton);
-		void removeButton(DViewButton *viewButton);
-		
-		bool isEmpty() const;
-		
-		void disable(DViewButton *v);
-		void enable(DViewButton *v);
-		
-		bool isExclusive() const;
-		bool autohide() const;
-		void showSeparator(bool e);
-		
-		int count() const;
-		
-		void setEnableButtonBlending(bool enable);
-		
-	public slots:
-		void setExclusive(bool excl);
-		void setAutoHide(bool autohide);
-		void setShowOnlyIcons();
-		void setShowOnlyTexts();
-		
-	private:
-		QMenu *createMenu();
-		
-	private slots:
-		void hideOthers(QAbstractButton *source);
-		void doNotHide();
-		
-	protected:
-		virtual void mousePressEvent(QMouseEvent *e);
-		virtual void enterEvent(QEvent *e);
-		virtual void leaveEvent(QEvent *e);
-		
-	private:
-		QButtonGroup m_buttons;
-		QMap<QWidget *, QAction *> m_actionForWidget;
-		
-		QAction *m_separator;
-		
-		bool m_autoHide;
-		
-		QTimer m_hider;
-		
-		bool m_blockHider;
-};
+	m_workspace = new QWorkspace;
+	
+	setCentralWidget( m_workspace );
+}
 
-#endif
+
+DWorkspaceMainWindow::~DWorkspaceMainWindow()
+{
+}
+
+void DWorkspaceMainWindow::addWidget(QWidget *widget, int perspective)
+{
+	addToPerspective( widget, perspective );
+	
+	m_workspace->addWindow(widget);
+}
+
+void DWorkspaceMainWindow::removeWidget(QWidget *widget)
+{
+	removeFromPerspective( widget );
+	
+	widget->setParent(0);
+}
+

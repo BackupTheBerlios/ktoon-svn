@@ -25,6 +25,8 @@
 #include <QStyleOptionToolButton>
 #include <dideality.h>
 
+class DToolView;
+
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
@@ -32,8 +34,8 @@ class D_IDEAL_EXPORT DViewButton : public QToolButton
 {
 	Q_OBJECT;
 	public:
-		DViewButton(Qt::ToolBarArea area, QWidget * parent = 0 );
-		DViewButton(QWidget *parent = 0 );
+		DViewButton(Qt::ToolBarArea area, DToolView *toolView, QWidget * parent = 0 );
+		DViewButton(DToolView *toolView, QWidget *parent = 0 );
 		~DViewButton();
 		
 		void setArea(Qt::ToolBarArea area);
@@ -43,6 +45,8 @@ class D_IDEAL_EXPORT DViewButton : public QToolButton
 		
 		bool isSensible() const;
 		bool blending() const;
+		
+		DToolView *toolView() const;
 		
 	public slots:
 		void setSensible(bool s);
@@ -63,6 +67,8 @@ class D_IDEAL_EXPORT DViewButton : public QToolButton
 		void setOnlyText();
 		void setOnlyIcon();
 		
+		void toggleView();
+		
 	private slots:
 		void animate();
 		void toggleSensibility();
@@ -78,6 +84,8 @@ class D_IDEAL_EXPORT DViewButton : public QToolButton
 		bool m_blending;
 		
 		QPalette m_palette;
+		
+		DToolView *m_toolView;
 };
 
 #endif

@@ -96,7 +96,7 @@ DTabbedMainWindow::DTabbedMainWindow(QWidget *parent) : DMainWindow(parent)
 	setupTabWidget( m_tabWidget );
 	setCentralWidget(m_tabWidget);
 	
-	connect(this, SIGNAL(workspaceChanged(int)), this, SLOT(setupWorkspace(int)));
+	connect(this, SIGNAL(perspectiveChanged(int)), this, SLOT(setupPerspective(int)));
 }
 
 
@@ -145,9 +145,9 @@ void DTabbedMainWindow::setupTabWidget(QTabWidget *w)
 	connect(w, SIGNAL(currentChanged ( int)), this, SLOT(emitWidgetChanged( int )));
 }
 
-void DTabbedMainWindow::addWidget(QWidget *widget, bool persistant, int workspace)
+void DTabbedMainWindow::addWidget(QWidget *widget, bool persistant, int perspective)
 {
-	if ( workspace == currentWorkspace() )
+	if ( perspective == currentPerspective() )
 	{
 		m_tabWidget->addTab(widget, widget->windowIcon(), widget->windowTitle() );
 	}
@@ -158,7 +158,7 @@ void DTabbedMainWindow::addWidget(QWidget *widget, bool persistant, int workspac
 	}
 	
 	m_pages << widget;
-	m_tabs[widget] = workspace;
+	m_tabs[widget] = perspective;
 	
 	if ( QToolButton *button = dynamic_cast<QToolButton *>(m_tabWidget->cornerWidget(Qt::TopRightCorner)) )
 	{
@@ -263,10 +263,10 @@ QTabWidget *DTabbedMainWindow::tabWidget() const
 }
 
 /**
- * Setup the workspace. Shows the pages in wps and hide others.
+ * Setup the perspective. Shows the pages in wps and hide others.
  * @param wps 
  */
-void DTabbedMainWindow::setupWorkspace(int wps)
+void DTabbedMainWindow::setupPerspective(int wps)
 {
 	// FIXME: Flickr = (
 	
@@ -275,9 +275,9 @@ void DTabbedMainWindow::setupWorkspace(int wps)
 	
 	foreach(QWidget *w, m_pages )
 	{
-		int workspace = m_tabs[w];
+		int perspective = m_tabs[w];
 		
-		if ( wps & workspace )
+		if ( wps & perspective )
 		{
 			m_tabWidget->addTab(w, w->windowIcon(), w->windowTitle() );
 			w->show();

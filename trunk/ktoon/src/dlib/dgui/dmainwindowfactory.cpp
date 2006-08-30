@@ -21,6 +21,9 @@
 #include "dmainwindowfactory.h"
 
 #include <dtabbedmainwindow.h>
+#include <dstackedmainwindow.h>
+#include <dworkspacemainwindow.h>
+
 #include <QDockWidget>
 #include <QToolBar>
 #include <QTabWidget>
@@ -164,7 +167,7 @@ DMainWindow *DMainWindowFactory::create(QMainWindow *other)
 	
 	mainWindow->setStatusBar(other->statusBar());
 	mainWindow->setMenuBar(other->menuBar());
-	mainWindow->setCurrentWorkspace( DMainWindow::DefaultWorkspace );
+	mainWindow->setCurrentPerspective( DMainWindow::DefaultPerspective );
 	
 	
 	

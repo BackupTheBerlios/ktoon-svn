@@ -17,76 +17,28 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef DWORKSPACEMAINWINDOW_H
+#define DWORKSPACEMAINWINDOW_H
 
-#ifndef DBUTTONBAR_H
-#define DBUTTONBAR_H
-
-#include <dideality.h>
-
-#include <QToolBar>
-#include <QButtonGroup>
-#include <QMap>
-#include <QTimer>
-
-class DViewButton;
-class QAction;
-class QMenu;
+#include <dmainwindow.h>
+#include <QWorkspace>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class D_IDEAL_EXPORT DButtonBar : public QToolBar
+class D_IDEAL_EXPORT DWorkspaceMainWindow : public DMainWindow
 {
 	Q_OBJECT;
 	public:
-		DButtonBar(Qt::ToolBarArea area, QWidget *parent = 0);
-		~DButtonBar();
-		
-		void addButton(DViewButton *viewButton);
-		void removeButton(DViewButton *viewButton);
-		
-		bool isEmpty() const;
-		
-		void disable(DViewButton *v);
-		void enable(DViewButton *v);
-		
-		bool isExclusive() const;
-		bool autohide() const;
-		void showSeparator(bool e);
-		
-		int count() const;
-		
-		void setEnableButtonBlending(bool enable);
-		
-	public slots:
-		void setExclusive(bool excl);
-		void setAutoHide(bool autohide);
-		void setShowOnlyIcons();
-		void setShowOnlyTexts();
+		DWorkspaceMainWindow(QWidget *parent = 0);
+		~DWorkspaceMainWindow();
+		void addWidget(QWidget *widget, int perspective = DefaultPerspective);
+		void removeWidget(QWidget *widget);
 		
 	private:
-		QMenu *createMenu();
-		
-	private slots:
-		void hideOthers(QAbstractButton *source);
-		void doNotHide();
-		
-	protected:
-		virtual void mousePressEvent(QMouseEvent *e);
-		virtual void enterEvent(QEvent *e);
-		virtual void leaveEvent(QEvent *e);
-		
-	private:
-		QButtonGroup m_buttons;
-		QMap<QWidget *, QAction *> m_actionForWidget;
-		
-		QAction *m_separator;
-		
-		bool m_autoHide;
-		
-		QTimer m_hider;
-		
-		bool m_blockHider;
+		QWorkspace *m_workspace;
+
 };
 
 #endif
+

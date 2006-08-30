@@ -18,75 +18,46 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DBUTTONBAR_H
-#define DBUTTONBAR_H
+#include "dstackedmainwindow.h"
 
-#include <dideality.h>
+#include <QStackedWidget>
 
-#include <QToolBar>
-#include <QButtonGroup>
-#include <QMap>
-#include <QTimer>
-
-class DViewButton;
-class QAction;
-class QMenu;
-
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class D_IDEAL_EXPORT DButtonBar : public QToolBar
+DStackedMainWindow::DStackedMainWindow(QWidget *parent) : DMainWindow(parent)
 {
-	Q_OBJECT;
-	public:
-		DButtonBar(Qt::ToolBarArea area, QWidget *parent = 0);
-		~DButtonBar();
-		
-		void addButton(DViewButton *viewButton);
-		void removeButton(DViewButton *viewButton);
-		
-		bool isEmpty() const;
-		
-		void disable(DViewButton *v);
-		void enable(DViewButton *v);
-		
-		bool isExclusive() const;
-		bool autohide() const;
-		void showSeparator(bool e);
-		
-		int count() const;
-		
-		void setEnableButtonBlending(bool enable);
-		
-	public slots:
-		void setExclusive(bool excl);
-		void setAutoHide(bool autohide);
-		void setShowOnlyIcons();
-		void setShowOnlyTexts();
-		
-	private:
-		QMenu *createMenu();
-		
-	private slots:
-		void hideOthers(QAbstractButton *source);
-		void doNotHide();
-		
-	protected:
-		virtual void mousePressEvent(QMouseEvent *e);
-		virtual void enterEvent(QEvent *e);
-		virtual void leaveEvent(QEvent *e);
-		
-	private:
-		QButtonGroup m_buttons;
-		QMap<QWidget *, QAction *> m_actionForWidget;
-		
-		QAction *m_separator;
-		
-		bool m_autoHide;
-		
-		QTimer m_hider;
-		
-		bool m_blockHider;
-};
+	m_stack = new QStackedWidget;
+	setCentralWidget( m_stack );
+	
+	connect(this, SIGNAL(perspectiveChanged( int )), this, SLOT(setupPerspective(int)));
+}
 
-#endif
+
+DStackedMainWindow::~DStackedMainWindow()
+{
+}
+
+void DStackedMainWindow::addWidget(QWidget *widget, int perspective)
+{
+	if ( m_widgets.contains( perspective ) ) return;
+	
+	m_widgets.insert(perspective, widget);
+	
+	m_stack->addWidget(widget);
+}
+
+void DStackedMainWindow::removeWidget(QWidget *widget)
+{
+	m_stack->removeWidget(widget);
+	
+	m_widgets.remove( m_widgets.key(widget) );
+}
+
+void DStackedMainWindow::setupPerspective(int perspective)
+{
+	if ( m_widgets.contains(perspective) )
+	{
+		QWidget *w = m_widgets[perspective];
+		m_stack->setCurrentWidget(w);
+	}
+}
+
+

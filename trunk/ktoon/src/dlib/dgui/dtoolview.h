@@ -42,8 +42,8 @@ class D_IDEAL_EXPORT DToolView : public QDockWidget
 		DViewButton *button() const;
 		QSize sizeHint() const;
 		
-		void setWorkspace(int wsp);
-		int workspace() const;
+		void setPerspective(int wsp);
+		int perspective() const;
 		
 		void setFixedSize(int s);
 		int fixedSize() const;
@@ -70,7 +70,7 @@ class D_IDEAL_EXPORT DToolView : public QDockWidget
 		DViewButton *m_button;
 		int m_size;
 		
-		int m_workspace;
+		int m_perspective;
 };
 
 #endif

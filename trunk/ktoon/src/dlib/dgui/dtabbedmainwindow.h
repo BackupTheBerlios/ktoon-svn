@@ -36,7 +36,7 @@ class D_IDEAL_EXPORT DTabbedMainWindow : public DMainWindow
 		DTabbedMainWindow(QWidget *parent = 0);
 		~DTabbedMainWindow();
 		
-		void addWidget(QWidget *widget, bool persistant = false, int workspace = DefaultWorkspace);
+		void addWidget(QWidget *widget, bool persistant = false, int perspective = DefaultPerspective);
 		void removeWidget(QWidget *widget);
 		void setTabWidget(QTabWidget *w);
 		QTabWidget *tabWidget() const;
@@ -46,7 +46,7 @@ class D_IDEAL_EXPORT DTabbedMainWindow : public DMainWindow
 		
 	protected slots:
 		void closeCurrentTab();
-		virtual void setupWorkspace(int wps);
+		virtual void setupPerspective(int wps);
 		
 	signals:
 		void widgetChanged(QWidget *widget);

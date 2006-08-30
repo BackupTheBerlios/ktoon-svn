@@ -20,6 +20,7 @@
 
 #include "dbuttonbar.h"
 #include "dviewbutton.h"
+#include "dtoolview.h"
 
 #include <QToolButton>
 #include <QBoxLayout>
@@ -71,6 +72,7 @@ DButtonBar::DButtonBar(Qt::ToolBarArea area, QWidget *parent) : QToolBar(parent)
 	m_separator->setVisible( false );
 	
 	connect( &m_hider, SIGNAL(timeout()), this, SLOT(hide()));
+	connect(&m_buttons, SIGNAL(buttonClicked(QAbstractButton *)), this, SLOT(hideOthers(QAbstractButton *)));
 }
 
 
@@ -110,25 +112,21 @@ QMenu *DButtonBar::createMenu()
 
 void DButtonBar::addButton(DViewButton *viewButton)
 {
-	bool isExclusive = m_buttons.exclusive();
-	m_buttons.setExclusive(false);
-	
-	if ( m_buttons.checkedButton() )
-	{
-		m_buttons.checkedButton()->setChecked( false );
-	}
-	
-	m_buttons.setExclusive( isExclusive );
-	
 	QAction *act = addWidget(viewButton);
 	
 	m_buttons.addButton(viewButton);
+	
+	if ( viewButton->toolView()->isVisible() )
+	{
+		hideOthers( viewButton );
+		viewButton->toggleView();
+	}
 	
 	m_actionForWidget[viewButton] = act;
 	act->setVisible(true);
 	if ( !isVisible() ) show();
 	
-	connect(viewButton, SIGNAL(clicked()), this, SLOT(hideOthers()));
+	
 }
 
 void DButtonBar::removeButton(DViewButton *viewButton)
@@ -138,8 +136,6 @@ void DButtonBar::removeButton(DViewButton *viewButton)
 	m_buttons.removeButton(viewButton);
 	removeAction( m_actionForWidget[viewButton] );
 	viewButton->setParent(0);
-	
-	disconnect(viewButton, SIGNAL(clicked()), this, SLOT(hideOthers()));
 	
 	if ( isEmpty() ) hide();
 }
@@ -221,27 +217,36 @@ bool DButtonBar::isExclusive() const
 	return m_buttons.exclusive();
 }
 
-void DButtonBar::hideOthers()
+void DButtonBar::hideOthers(QAbstractButton *source)
 {
-	if ( !m_buttons.exclusive() ) return;
+	if ( !m_buttons.exclusive() )
+	{
+		static_cast<DViewButton *>(source)->toggleView();
+		return;
+	}
 	
-	QAbstractButton *source = static_cast<QAbstractButton *>(sender());
+	m_buttons.setExclusive( false );
 	
 	setUpdatesEnabled( false );
-	foreach(QAbstractButton *button, m_buttons.buttons())
+	
+	foreach(QAbstractButton *b, m_buttons.buttons())
 	{
+		DViewButton *button = static_cast<DViewButton *>(b);
 		if ( source != button )
 		{
-			if ( button->isChecked() )
+			if ( button->toolView()->isVisible() )
 			{
 				button->blockSignals(true);
-				button->click();
+				button->toggleView();
 				button->blockSignals(false);
 				break;
 			}
 		}
 	}
 	
+	static_cast<DViewButton *>(source)->toggleView();
+	
+	m_buttons.setExclusive(true);
 	setUpdatesEnabled( true);
 }
 

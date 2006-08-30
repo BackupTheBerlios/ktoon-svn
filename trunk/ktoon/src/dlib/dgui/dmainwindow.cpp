@@ -188,7 +188,7 @@ void DefaultSettings::restore(DMainWindow *w)
  * @return 
  */
 DMainWindow::DMainWindow(QWidget *parent)
-	: QMainWindow(parent), m_forRelayout(0), m_currentWorkspace(DefaultWorkspace), m_autoRestore(false)
+	: QMainWindow(parent), m_forRelayout(0), m_currentPerspective(DefaultPerspective), m_autoRestore(false)
 {
 	setObjectName("DMainWindow");
 	
@@ -234,18 +234,18 @@ void DMainWindow::addButtonBar(Qt::ToolBarArea area)
 
 
 /**
- * Adds a tool view to the main window in the area and workspace.
+ * Adds a tool view to the main window in the area and perspective.
  * 
  * @param widget 
  * @param area 
- * @param workspace 
+ * @param perspective 
  * @return 
  */
-DToolView *DMainWindow::addToolView(QWidget *widget, Qt::DockWidgetArea area, int workspace)
+DToolView *DMainWindow::addToolView(QWidget *widget, Qt::DockWidgetArea area, int perspective)
 {
 	DToolView *toolView = new DToolView(widget->windowTitle(), widget->windowIcon());
 	toolView->setWidget(widget);
-	toolView->setWorkspace( workspace );
+	toolView->setPerspective( perspective );
 	
 	toolView->button()->setArea( toToolBarArea( area ) );
 	m_buttonBars[toToolBarArea( area) ]->addButton(toolView->button());
@@ -297,11 +297,11 @@ void DMainWindow::moveToolView(DToolView *view, Qt::DockWidgetArea newPlace)
 }
 
 /**
- * Add a widget to workspace
+ * Add a widget to perspective
  * @param widget 
- * @param workspace 
+ * @param perspective 
  */
-void DMainWindow::addToWorkspace(QWidget *widget, int workspace)
+void DMainWindow::addToPerspective(QWidget *widget, int perspective)
 {
 	if ( QToolBar *bar = dynamic_cast<QToolBar*>(widget) )
 	{
@@ -313,9 +313,9 @@ void DMainWindow::addToWorkspace(QWidget *widget, int workspace)
 	
 	if ( ! m_managedWidgets.contains( widget ) )
 	{
-		m_managedWidgets.insert( widget, workspace );
+		m_managedWidgets.insert( widget, perspective );
 		
-		if ( workspace != m_currentWorkspace )
+		if ( perspective != m_currentPerspective )
 		{
 			widget->hide();
 		}
@@ -323,39 +323,39 @@ void DMainWindow::addToWorkspace(QWidget *widget, int workspace)
 }
 
 /**
- * Remove widget from workspace
+ * Remove widget from perspective
  * @param widget 
  */
-void DMainWindow::removeFromWorkspace(QWidget *widget)
+void DMainWindow::removeFromPerspective(QWidget *widget)
 {
 	m_managedWidgets.remove(widget);
 }
 
 /**
- * Adds a QAction list to workspace
+ * Adds a QAction list to perspective
  * @param actions 
- * @param workspace 
+ * @param perspective 
  */
-void DMainWindow::addToWorkspace(const QList<QAction *> &actions, int workspace)
+void DMainWindow::addToPerspective(const QList<QAction *> &actions, int perspective)
 {
 	foreach(QAction *a, actions)
 	{
-		addToWorkspace(a, workspace);
+		addToPerspective(a, perspective);
 	}
 }
 
 /**
- * Adds an action to workspace
+ * Adds an action to perspective
  * @param action 
- * @param workspace 
+ * @param perspective 
  */
-void DMainWindow::addToWorkspace(QAction *action, int workspace)
+void DMainWindow::addToPerspective(QAction *action, int perspective)
 {
 	if ( ! m_managedActions.contains( action ) )
 	{
-		m_managedActions.insert( action, workspace );
+		m_managedActions.insert( action, perspective );
 		
-		if ( workspace != m_currentWorkspace )
+		if ( perspective != m_currentPerspective )
 		{
 			action->setVisible(false);
 		}
@@ -363,10 +363,10 @@ void DMainWindow::addToWorkspace(QAction *action, int workspace)
 }
 
 /**
- * Remove an action from workspace
+ * Remove an action from perspective
  * @param action 
  */
-void DMainWindow::removeFromWorkspace(QAction *action)
+void DMainWindow::removeFromPerspective(QAction *action)
 {
 	m_managedActions.remove(action);
 }
@@ -517,6 +517,8 @@ void DMainWindow::relayoutToolView()
 		m_toolViews[m_buttonBars[area]] << m_forRelayout;
 		button->setArea(area);
 		m_buttonBars[area]->addButton(button);
+		
+		m_buttonBars[area]->repaint();
 		setUpdatesEnabled( true );
 	}
 	
@@ -526,12 +528,12 @@ void DMainWindow::relayoutToolView()
 }
 
 /**
- * Sets the current workspace.
+ * Sets the current perspective.
  * @param wsp 
  */
-void DMainWindow::setCurrentWorkspace(int wsp)
+void DMainWindow::setCurrentPerspective(int wsp)
 {
-	if ( m_currentWorkspace == wsp ) return;
+	if ( m_currentPerspective == wsp ) return;
 	
 	typedef QList<DToolView *> Views;
 	
@@ -551,7 +553,7 @@ void DMainWindow::setCurrentWorkspace(int wsp)
 			bar->setUpdatesEnabled(false);
 			v->setUpdatesEnabled(false);
 			
-			if ( v->workspace() & wsp )
+			if ( v->perspective() & wsp )
 			{
 				bar->enable( v->button() );
 				
@@ -566,7 +568,7 @@ void DMainWindow::setCurrentWorkspace(int wsp)
 				
 				if ( v->button()->isChecked() || v->isVisible() )
 				{
-					v->hide();
+					v->close();
 				}
 				
 				hideButtonCount[bar]++;
@@ -634,18 +636,18 @@ void DMainWindow::setCurrentWorkspace(int wsp)
 	setUpdatesEnabled( true );
 	
 	
-	m_currentWorkspace = wsp;
+	m_currentPerspective = wsp;
 	
-	emit workspaceChanged( m_currentWorkspace );
+	emit perspectiveChanged( m_currentPerspective );
 }
 
 /**
- * Returns the current workspace
+ * Returns the current perspective
  * @return 
  */
-int DMainWindow::currentWorkspace() const
+int DMainWindow::currentPerspective() const
 {
-	return m_currentWorkspace;
+	return m_currentPerspective;
 }
 
 /**
@@ -698,10 +700,10 @@ void DMainWindow::showEvent(QShowEvent *e)
 		m_autoRestore = true;
 		restoreGUI();
 		
-		int cwsp = m_currentWorkspace;
+		int cwsp = m_currentPerspective;
 		
-		m_currentWorkspace -= 1;
-		setCurrentWorkspace( cwsp );
+		m_currentPerspective -= 1;
+		setCurrentPerspective( cwsp );
 	}
 }
 

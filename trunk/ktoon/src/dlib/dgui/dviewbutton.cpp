@@ -20,11 +20,14 @@
 
 #include "dviewbutton.h"
 
+#include "dtoolview.h"
+
 #include <QToolBar>
 #include <QStylePainter>
 #include <QMenu>
 #include <QIcon>
 #include <QMouseEvent>
+#include <QMainWindow>
 
 #include <QTimer>
 #include <QtDebug>
@@ -69,21 +72,22 @@ class DViewButton::Animator
 		bool isEnter;
 };
 
-DViewButton::DViewButton(Qt::ToolBarArea area, QWidget * parent) : QToolButton(parent), m_area(area)
+DViewButton::DViewButton(Qt::ToolBarArea area, DToolView *toolView, QWidget * parent) : QToolButton(parent), m_area(area), m_toolView(toolView)
 {
 	setup();
 }
 
 
-DViewButton::DViewButton(QWidget *parent) : QToolButton(parent), m_area(Qt::LeftToolBarArea)
+DViewButton::DViewButton(DToolView *toolView, QWidget *parent) : QToolButton(parent), m_area(Qt::LeftToolBarArea), m_toolView(toolView)
 {
 	setup();
 }
 
 void DViewButton::setup()
 {
-	setAutoExclusive(true);
+// 	setAutoExclusive(true);
 	setCheckable( true );
+	setAutoRaise(true);
 	
 	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 	setFocusPolicy(Qt::NoFocus);
@@ -94,9 +98,20 @@ void DViewButton::setup()
 	connect( m_animator->timer, SIGNAL( timeout() ), this, SLOT( animate() ) );
 	
 	setChecked(false);
-	setDown(false);
+// 	setDown(false);
 	
 	m_blending = true;
+	
+	///
+	QAction *act = m_toolView->toggleViewAction();
+	
+	setText(m_toolView->windowTitle());
+	setIcon(m_toolView->windowIcon());
+	
+	if ( !isChecked() )
+	{
+		m_toolView->close();
+	}
 }
 
 DViewButton::~DViewButton()
@@ -416,4 +431,32 @@ void DViewButton::setBlending(bool e)
 bool DViewButton::blending() const
 {
 	return m_blending;
+}
+
+
+void DViewButton::toggleView()
+{
+	QMainWindow *mw = static_cast<QMainWindow *>(m_toolView->parentWidget());
+	
+	m_toolView->setUpdatesEnabled(false);
+	if ( mw  )
+	{
+		mw->setUpdatesEnabled( false );
+	}
+	
+	m_toolView->toggleViewAction()->trigger();
+	setChecked( m_toolView->isVisible() );
+	
+	
+	m_toolView->setUpdatesEnabled(true);
+	if ( mw )
+	{
+		mw->setUpdatesEnabled(true);
+	}
+}
+
+
+DToolView *DViewButton::toolView() const
+{
+	return m_toolView;
 }

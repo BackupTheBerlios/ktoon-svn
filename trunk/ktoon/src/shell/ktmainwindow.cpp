@@ -103,7 +103,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_viewDoc(0)
 	
 // 	m_pActiveTabWidget->setShowTabBar( false );
 	
-	setCurrentWorkspace( Drawing );
+	setCurrentPerspective( Drawing );
 }
 
 
@@ -201,7 +201,7 @@ void KTMainWindow::newViewDocument(const QString &title)
 // 			m_statusBar->advance(0);
 // 			m_statusBar->setStatus(tr("Project not open."));
 // 		}
-			setCurrentWorkspace( Drawing );
+			setCurrentPerspective( Drawing );
 	}
 }
 

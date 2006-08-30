@@ -28,7 +28,7 @@
 #include <QMouseEvent>
 
 DToolView::DToolView(const QString &title, const QIcon &icon, QWidget * parent)
-	: QDockWidget(title, parent), m_size(-1), m_workspace(0)
+	: QDockWidget(title, parent), m_size(-1), m_perspective(0)
 {
 	setWindowIcon(icon);
 	setup();
@@ -50,15 +50,9 @@ void DToolView::setup()
 
 	setFeatures(AllDockWidgetFeatures);
 	
-	m_button = new DViewButton;
+	m_button = new DViewButton(this);
 	
-	QAction *act = toggleViewAction();
-	act->setCheckable( true );
-	m_button->setDefaultAction(act);
-	
-	act->setText(windowTitle());
-	act->setIcon(windowIcon());
-	connect(act, SIGNAL(toggled(bool)), this, SLOT(saveSize(bool)));
+	connect(toggleViewAction(), SIGNAL(toggled(bool)), this, SLOT(saveSize(bool)));
 }
 
 
@@ -105,14 +99,14 @@ void DToolView::setDescription(const QString &description)
 	m_button->defaultAction()->setStatusTip ( description );
 }
 
-void DToolView::setWorkspace(int wsp)
+void DToolView::setPerspective(int wsp)
 {
-	m_workspace = wsp;
+	m_perspective = wsp;
 }
 
-int DToolView::workspace() const
+int DToolView::perspective() const
 {
-	return m_workspace;
+	return m_perspective;
 }
 
 int DToolView::fixedSize() const
@@ -129,7 +123,7 @@ void DToolView::showEvent(QShowEvent *e)
 {
 	if ( DMainWindow *mw = dynamic_cast<DMainWindow *>(parentWidget() ) )
 	{
-		if ( !(mw->currentWorkspace() & m_workspace) ) 
+		if ( !(mw->currentPerspective() & m_perspective) ) 
 		{
 			e->ignore(); // make sure!
 			return;
