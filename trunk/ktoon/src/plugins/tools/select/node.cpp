@@ -38,9 +38,10 @@ Node::Node(TypeNode node, const QPointF & pos, NodeManager *manager, QGraphicsIt
 	QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor ));
 	
 	setFlag(ItemIsSelectable, false);
+	setFlag(ItemIsMovable, true);
 	
 	setPos(pos);
-	setZValue(100);
+	setZValue(1000);
 }
 
 

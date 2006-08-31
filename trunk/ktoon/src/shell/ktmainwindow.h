@@ -143,6 +143,8 @@ class KTMainWindow : public DTabbedMainWindow
 		
 		void showAnimationMenu(const QPoint &p);
 		
+		void changePerspective(QAction *a);
+		
 	private slots:
 		void messageToStatus(const QString &);
 		void messageToOSD(const QString &, DOsd::Level level = DOsd::Info );

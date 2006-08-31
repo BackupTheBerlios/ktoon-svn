@@ -237,6 +237,30 @@ void KTMainWindow::setupMenu()
 	m_windowMenu->addSeparator();
 	
 	
+	// Setup perspective menu
+	
+	QMenu *perspectiveMenu = new QMenu(tr("Perspective"),this);
+	
+	QActionGroup *group = new QActionGroup(this);
+	group->setExclusive(true);
+
+	QAction *drawingPerspective = new QAction(tr("Drawing"), this);
+	drawingPerspective->setCheckable(true);
+	drawingPerspective->setChecked(true);
+	drawingPerspective->setData(Drawing);
+	group->addAction(drawingPerspective);
+
+	QAction *animationPerspective = new QAction(tr("Animation"), this);
+	drawingPerspective->setCheckable(true);
+	group->addAction(animationPerspective);
+	animationPerspective->setData(Animation);
+	
+	perspectiveMenu->addActions(group->actions());
+	
+	connect(group, SIGNAL(triggered(QAction *)), this, SLOT(changePerspective(QAction *)));
+	
+	menuBar()->addMenu(perspectiveMenu);
+	
 	// Setup the Settings menu
 	setupSettingsActions();
 	m_settingsMenu = new QMenu(tr( "&Settings" ), this);
@@ -469,6 +493,11 @@ void KTMainWindow::showWidgetPage()
 // 			}
 // 		}
 // 	}
+}
+
+void KTMainWindow::changePerspective(QAction *a)
+{
+	setCurrentPerspective(a->data().toInt());
 }
 
 

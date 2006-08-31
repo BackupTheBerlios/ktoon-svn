@@ -52,7 +52,7 @@ class ControlNode : public QObject, public QGraphicsItem
 		void setNodeParent( ControlNode *nodeParent);
 		int index() const;
 		
-		void setParentI( QGraphicsItem * newParent );
+		void setParentI( QGraphicsItem * newParent ); // ### setParentI no es una convencion, buscar un mejor nombre
 		QGraphicsItem *parentI();
 		
 		

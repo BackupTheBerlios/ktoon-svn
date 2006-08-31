@@ -33,13 +33,17 @@
 #include  "ktpathitem.h"
 #include "nodegroup.h"
 
-ControlNode::ControlNode(int index, NodeGroup *nodeGroup, const QPointF & pos, QGraphicsItem * parent,  KTScene * scene   ) : QGraphicsItem(0, scene), m_index(index), m_parent(parent),  m_left(0),  m_right(0), m_nodeParent(0), m_notChange(true) ,m_nodeGroup(nodeGroup), m_scene(scene)
+ControlNode::ControlNode(int index, NodeGroup *nodeGroup, const QPointF & pos, QGraphicsItem * parent,  KTScene * scene   ) : QGraphicsItem(0, scene), m_index(index), m_parent(0),  m_left(0),  m_right(0), m_nodeParent(0), m_notChange(true) ,m_nodeGroup(nodeGroup), m_scene(scene)
 {
 	QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor ));
 // 	setFlags(ItemIsMovable);
 	setFlag(ItemIsSelectable, true);
+	setFlag(ItemIsMovable, false);
+	
 	setPos(pos);
 	setZValue(1000);
+	
+	setParentI(parent);
 }
 
 
@@ -198,12 +202,12 @@ QVariant ControlNode::itemChange(GraphicsItemChange change, const QVariant &valu
 void ControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 
-	update();
+// 	update();
 	
 	if(m_nodeParent)
 	{
 		m_nodeParent->setSelected( true);
-		setSelected(true);
+// 		setSelected(true);
 	}
 	
 	QGraphicsItem::mousePressEvent(event);
@@ -214,7 +218,7 @@ void ControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void ControlNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	update();
+// 	update();
 	QGraphicsItem::mouseReleaseEvent(event);
 	m_parent->setSelected( true);
 }
@@ -240,7 +244,9 @@ void ControlNode::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	{
 		dDebug() << "Not parent";
 	}
+	
 	event->ignore();
+	update();
 }
 
 void ControlNode::setLeft( ControlNode *left)
@@ -252,6 +258,7 @@ void ControlNode::setLeft( ControlNode *left)
 	m_left = left;
 	m_left->setVisible(false);
 	m_left->setNodeParent(this);
+	
 	connect( m_left, SIGNAL(requestUpdateParent()), this, SLOT(repaint()));
 }
 
@@ -264,6 +271,7 @@ void ControlNode::setRight( ControlNode *right)
 	m_right = right;
 	m_right->setVisible(false);
 	m_right->setNodeParent(this);
+	
 	connect( m_right, SIGNAL(requestUpdateParent()), this, SLOT(repaint()));
 }
 
