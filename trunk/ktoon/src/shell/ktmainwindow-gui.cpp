@@ -245,13 +245,12 @@ void KTMainWindow::setupMenu()
 	group->setExclusive(true);
 
 	QAction *drawingPerspective = new QAction(tr("Drawing"), this);
-	drawingPerspective->setCheckable(true);
-	drawingPerspective->setChecked(true);
+	
 	drawingPerspective->setData(Drawing);
 	group->addAction(drawingPerspective);
 
 	QAction *animationPerspective = new QAction(tr("Animation"), this);
-	drawingPerspective->setCheckable(true);
+// 	drawingPerspective->setCheckable(true);
 	group->addAction(animationPerspective);
 	animationPerspective->setData(Animation);
 	
@@ -498,6 +497,7 @@ void KTMainWindow::showWidgetPage()
 void KTMainWindow::changePerspective(QAction *a)
 {
 	setCurrentPerspective(a->data().toInt());
+	a->setChecked(true);
 }
 
 

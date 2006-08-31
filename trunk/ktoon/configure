@@ -92,7 +92,7 @@ function updateMakefiles()
 	INSTALL_DIR_STRIP=$(echo ${INSTALL_DIR} | sed 's/\//\\\//g')
 	for mkfile in `find . -iname "Makefile*"`
 	do
-		sed -i "s/\$(INSTALL_ROOT)/\$(INSTALL_ROOT)\/${INSTALL_DIR_STRIP}/g" $mkfile
+		sed -i "s/\$(INSTALL_ROOT)/${INSTALL_DIR_STRIP}/g" $mkfile
 	done
 }
 

@@ -105,7 +105,7 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	update();
 	QGraphicsItem::mouseReleaseEvent(event);
-	m_parent->setSelected( true);
+// 	m_parent->setSelected( true);
 }
 
 void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
@@ -121,7 +121,6 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 		QRectF rect =  m_parent->sceneBoundingRect();
 		rect.moveTopLeft (m_parent->scenePos());
 		QRectF br =   m_parent->sceneBoundingRect();
-		
 		
 		switch(m_typeNode)
 		{
@@ -200,7 +199,7 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	}
 	m_manager->syncNodes( m_parent->sceneBoundingRect() );
 	update();
-	m_parent->setSelected( true);
+// 	m_parent->setSelected( true);
 }
 
 

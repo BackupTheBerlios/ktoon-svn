@@ -54,7 +54,10 @@ void ContourSelection::init(QGraphicsView *view)
 	
 	foreach(QGraphicsItem *item, view->scene()->items() )
 	{
-		item->setFlags (QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable );
+		if(!qgraphicsitem_cast<ControlNode *>(item))
+		{
+			item->setFlags (QGraphicsItem::ItemIsSelectable /*| QGraphicsItem::ItemIsMovable*/ );
+		}
 	}
 }
 
@@ -128,8 +131,6 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 			{
 				if(!qgraphicsitem_cast<ControlNode *>(item))
 				{
-					NodeGroup *node;
-					
 					if( !qgraphicsitem_cast<KTPathItem*>(item) )
 					{
 						QString conv = "<convert type=\"2\" />"; // to path type
@@ -138,8 +139,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 					}
 					else
 					{
-						node = new NodeGroup(item, scene);
-						m_nodes << node;
+						m_nodes << new NodeGroup(item, scene);
 					}
 				}
 			}

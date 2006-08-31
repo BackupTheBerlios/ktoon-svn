@@ -8,12 +8,13 @@
 
 NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(parent)
 {
+	DINIT;
 // 	QAbstractGraphicsShapeItem *tmp = dynamic_cast<QAbstractGraphicsShapeItem *>(parent);
 	QGraphicsPathItem *tmp = qgraphicsitem_cast<QGraphicsPathItem *>(parent);
 	if(tmp)
 	{
-// 		QPainterPath path = tmp->sceneMatrix().map( tmp->path());
-		QPainterPath path = tmp->sceneMatrix().map( tmp->shape());
+		QPainterPath path = tmp->sceneMatrix().map( tmp->path());
+// 		QPainterPath path = tmp->sceneMatrix().map( tmp->shape());
 		
 		int index = 0;
 		while(index < path.elementCount())
@@ -69,6 +70,7 @@ QGraphicsItem * NodeGroup::parentItem()
 
 NodeGroup::~NodeGroup()
 {
+	DEND;
 	qDeleteAll(m_nodes);
 	m_nodes.clear();
 }

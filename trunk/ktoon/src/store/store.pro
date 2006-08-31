@@ -34,7 +34,8 @@ HEADERS += ktlayer.h \
            ktglobal_store.h \
            ktpaintareaevent.h \
            ktserializer.h \
-           ktlineitem.h 
+           ktlineitem.h \
+           ktitemconverter.h 
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
@@ -62,16 +63,14 @@ SOURCES += ktlayer.cpp \
            ktproject_items.cpp \
            ktpaintareaevent.cpp \
            ktserializer.cpp \
-           ktlineitem.cpp 
+           ktlineitem.cpp \
+           ktitemconverter.cpp 
 KDEV_QTVER = 4
 STORE_DIR = ../../src/store
 LIBKTOON_DIR = ../../src/libktoon
 DLIB_DIR = ../../src/dlib
 include($$LIBKTOON_DIR/libktoon.pri)
 include($$DLIB_DIR/dlib.pri)
-
 CONFIG += dll
 TEMPLATE = lib
-
-
 include(../../ktconfig.pri)

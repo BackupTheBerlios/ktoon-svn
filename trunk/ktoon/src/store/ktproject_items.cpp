@@ -25,6 +25,7 @@
 #include "ktpathitem.h"
 #include "ktrectitem.h"
 #include "ktellipseitem.h"
+#include "ktitemconverter.h"
 
 #include <dcore/ddebug.h>
 
@@ -115,10 +116,13 @@ QString KTProject::convertItem(int scenePosition, int layerPosition, int framePo
 					
 					switch(toType)
 					{
-						case 2:
+						case 2: // Path
 						{
 							KTPathItem *tmp = new KTPathItem( item->parentItem(), scene);
+							
+							
 							tmp->setPath(item->shape());
+							
 							tmp->setMatrix(item->matrix());
 							tmp->setPos(item->scenePos());
 							tmp->setFlags(item->flags() );

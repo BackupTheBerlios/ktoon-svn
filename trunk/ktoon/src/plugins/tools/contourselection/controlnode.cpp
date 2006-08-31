@@ -38,7 +38,7 @@ ControlNode::ControlNode(int index, NodeGroup *nodeGroup, const QPointF & pos, Q
 	QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor ));
 // 	setFlags(ItemIsMovable);
 	setFlag(ItemIsSelectable, true);
-	setFlag(ItemIsMovable, false);
+	setFlag(ItemIsMovable, true);
 	
 	setPos(pos);
 	setZValue(1000);
@@ -202,23 +202,41 @@ QVariant ControlNode::itemChange(GraphicsItemChange change, const QVariant &valu
 void ControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 
-// 	update();
-	
+	update();
 	if(m_nodeParent)
 	{
+		setSelected(true);
 		m_nodeParent->setSelected( true);
-// 		setSelected(true);
+		if(m_nodeParent->left())
+		{
+			if(m_nodeParent->left() != this)
+			{
+				m_nodeParent->left()->setSelected(false);
+			}
+		}
+		if(m_nodeParent->right())
+		{
+			if(m_nodeParent->right() != this)
+			{
+				m_nodeParent->right()->setSelected(false);
+			}
+		}
 	}
-	
+	else
+	{
+		setSeletedChilds(false);
+	}
 	QGraphicsItem::mousePressEvent(event);
 	
 	m_parent->setSelected( true);
 	setVisibleChilds(true);
 }
 
+
+
 void ControlNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-// 	update();
+	update();
 	QGraphicsItem::mouseReleaseEvent(event);
 	m_parent->setSelected( true);
 }
@@ -229,25 +247,32 @@ void ControlNode::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	{
 		if(qgraphicsitem_cast<ControlNode*>(item))
 		{
-			if(item != this)
+			if(m_nodeParent)
 			{
-				item->moveBy(event->pos().x(), event->pos().y());
+			}
+			else
+			{
+				if(item != this)
+				{
+					item->moveBy(event->pos().x(), event->pos().y());
+				}
 			}
 		}
 	}
 	setPos(event->scenePos());
-	if(m_parent)
-	{
-		m_parent->setSelected( true);
-	}
-	else
-	{
-		dDebug() << "Not parent";
-	}
+// 	if(m_parent)
+// 	{
+// 		m_parent->setSelected( true);
+// 	}
+// 	else
+// 	{
+// 		dDebug() << "Not parent";
+// 	}
 	
-	event->ignore();
+// 	event->ignore();
 	update();
 }
+
 
 void ControlNode::setLeft( ControlNode *left)
 {
@@ -258,7 +283,7 @@ void ControlNode::setLeft( ControlNode *left)
 	m_left = left;
 	m_left->setVisible(false);
 	m_left->setNodeParent(this);
-	
+	m_left->setZValue(zValue()+1);
 	connect( m_left, SIGNAL(requestUpdateParent()), this, SLOT(repaint()));
 }
 
@@ -271,7 +296,7 @@ void ControlNode::setRight( ControlNode *right)
 	m_right = right;
 	m_right->setVisible(false);
 	m_right->setNodeParent(this);
-	
+	m_right->setZValue(zValue()+2);
 	connect( m_right, SIGNAL(requestUpdateParent()), this, SLOT(repaint()));
 }
 
@@ -290,6 +315,18 @@ void ControlNode::setVisibleChilds(bool visible)
 	if(m_right)
 	{
 		m_right->setVisible(visible);
+	}
+}
+
+void ControlNode::setSeletedChilds(bool select)
+{
+	if(m_left)
+	{
+		m_left->setSelected(select);
+	}
+	if(m_right)
+	{
+		m_right->setSelected(select);
 	}
 }
 
