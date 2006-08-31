@@ -17,40 +17,32 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTITEMCONVERTER_H
+#define KTITEMCONVERTER_H
 
-#ifndef KTPAINTAREASTATUS_H
-#define KTPAINTAREASTATUS_H
+#include <QAbstractGraphicsShapeItem>
 
-#include <qstatusbar.h>
-
-class QComboBox;
-class KTViewDocument;
-class BrushStatus;
-class QPushButton;
+class KTPathItem;
+class KTEllipseItem;
+class KTRectItem;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTPaintAreaStatus : public QStatusBar
+class KTItemConverter
 {
-	Q_OBJECT;
-	public:
-		KTPaintAreaStatus(KTViewDocument *parent);
-		~KTPaintAreaStatus();
-		
-	public slots:
-		void setBrush(const QBrush &brush);
-		void setPen(const QPen &pen);
-		
-	private slots:
-		void selectAntialiasingHint(bool use);
-		void selectRenderer(int id);
-		
 	private:
-		KTViewDocument *m_viewDocument;
-		QPushButton *m_antialiasHint;
-		QComboBox *m_renderer;
-		BrushStatus *m_brushStatus;
+		KTItemConverter();
+		
+	public:
+		~KTItemConverter();
+		
+		static void copyProperties(QGraphicsItem *src, QGraphicsItem *dest);
+		
+		static KTPathItem *convertToPath(QGraphicsItem *item);
+		static KTEllipseItem *convertToEllipse(QGraphicsItem *item);
+		static KTRectItem *convertToRect(QGraphicsItem *item);
+		
 };
 
 #endif

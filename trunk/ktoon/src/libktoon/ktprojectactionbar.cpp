@@ -20,7 +20,6 @@
 
 #include "ktprojectactionbar.h"
 
-#include <QToolButton>
 #include <QVBoxLayout>
 #include <QVariant>
 
@@ -30,8 +29,9 @@
 #include <dseparator.h>
 #include <dconfig.h>
 #include <doptionaldialog.h>
+#include <dimagebutton.h>
 
-KTProjectActionBar::KTProjectActionBar(Actions actions, Qt::Orientation orientation, QWidget *parent) : QWidget(parent ), m_orientation(orientation)
+KTProjectActionBar::KTProjectActionBar(Actions actions, Qt::Orientation orientation, QWidget *parent) : QWidget(parent ), m_orientation(orientation), m_isAnimated(true)
 {
 	connect(&m_actions, SIGNAL(buttonClicked(int)), this, SLOT(emitActionSelected(int)));
 	
@@ -50,24 +50,24 @@ void KTProjectActionBar::setFixedSize(int s)
 {
 	m_fixedSize = s;
 	
-	switch(m_orientation )
-	{
-		case Qt::Horizontal:
-		{
-			setMaximumHeight( s );
-		}
-		break;
-		case Qt::Vertical:
-		{
-			setMaximumWidth( s );
-		}
-		break;
-	}
+// 	switch(m_orientation )
+// 	{
+// 		case Qt::Horizontal:
+// 		{
+// 			setMaximumHeight( s );
+// 		}
+// 		break;
+// 		case Qt::Vertical:
+// 		{
+// 			setMaximumWidth( s );
+// 		}
+// 		break;
+// 	}
 	
-	foreach( QAbstractButton *button, m_actions.buttons() )
-	{
-		button->setIconSize(QSize(m_fixedSize, m_fixedSize));
-	}
+// 	foreach( QAbstractButton *button, m_actions.buttons() )
+// 	{
+// 		button->setIconSize(QSize(m_fixedSize, m_fixedSize));
+// 	}
 }
 
 
@@ -96,30 +96,30 @@ void KTProjectActionBar::setup(Actions actions)
 	mainLayout->setSpacing( 0);
 	mainLayout->setMargin( 1);
 	
-	m_buttonLayout->setSpacing( 0);
+	m_buttonLayout->setSpacing(1  );
 	m_buttonLayout->setMargin( 1);
 	
 	m_buttonLayout->addStretch();
 	
+	int size = 16;
+	
 	if ( actions & InsertFrame )
 	{
-		QToolButton *button = new QToolButton;
-		button->setIcon(QIcon(THEME_DIR+"/icons/add_frame.png" ));
-		button->setText(tr("Insert frame") );
-		button->setToolTip(tr("Insert a frame"));
+		DImageButton *button = new DImageButton(QIcon(THEME_DIR+"/icons/add_frame.png" ), size);
+		button->setToolTip(tr("Insert frame") );
 		
 		button->setShortcut(QKeySequence(Qt::Key_Plus));
 		
 		m_actions.addButton(button, InsertFrame);
 		
 		m_buttonLayout->addWidget( button );
+		
+		button->setAnimated(m_isAnimated);
 	}
 	
 	if ( actions & RemoveFrame )
 	{
-		QToolButton *button = new QToolButton;
-		button->setIcon(QIcon(THEME_DIR+"/icons/remove_frame.png"));
-		button->setText(tr("Remove frame") );
+		DImageButton *button = new DImageButton(QIcon(THEME_DIR+"/icons/remove_frame.png"), size);
 		button->setToolTip(tr("Remove the frame"));
 		
 		m_actions.addButton(button, RemoveFrame);
@@ -127,172 +127,159 @@ void KTProjectActionBar::setup(Actions actions)
 		button->setShortcut(QKeySequence(Qt::Key_Minus));
 		
 		m_buttonLayout->addWidget( button );
+		
+		button->setAnimated(m_isAnimated);
 	}
 	 
 	if ( actions & MoveFrameUp )
 	{
-		QToolButton *button = new QToolButton;
-		button->setIcon(QIcon(THEME_DIR+"/icons/move_frame_up.png"));
-		button->setText( tr("Move frame up"));
-		button->setToolTip(button->text());
+		DImageButton *button = new DImageButton(QIcon(THEME_DIR+"/icons/move_frame_up.png"), size);
+		button->setToolTip( tr("Move frame up"));
 		
 		m_actions.addButton(button, MoveFrameUp);
 		
 		m_buttonLayout->addWidget( button );
+		
+		button->setAnimated(m_isAnimated);
 	}
 	
 	if ( actions & MoveFrameDown )
 	{
-		QToolButton *button = new QToolButton;
-		button->setText(tr("Move frame down") );
-		button->setIcon(QIcon(THEME_DIR+"/icons/move_frame_down.png"));
-		button->setToolTip(button->text());
+		DImageButton *button = new DImageButton(QIcon(THEME_DIR+"/icons/move_frame_down.png"), size);
+		button->setToolTip(tr("Move frame down") );
 		
 		m_actions.addButton( button, MoveFrameDown);
 		
 		m_buttonLayout->addWidget( button );
+		
+		button->setAnimated(m_isAnimated);
 	}
 	
 	if ( actions & LockFrame )
 	{
-		QToolButton *button = new QToolButton;
-		button->setText(tr("Lock frame") );
-		button->setIcon(QIcon(HOME_DIR+"/themes/default/icons/kilit_pic.png"));
-		button->setToolTip(button->text());
+		DImageButton *button = new DImageButton(QIcon(HOME_DIR+"/themes/default/icons/kilit_pic.png"), size);
+		button->setToolTip(tr("Lock frame") );
 		
 		m_actions.addButton( button, LockFrame);
 		
 		m_buttonLayout->addWidget( button );
+		button->setAnimated(m_isAnimated);
 	}
 	
 	if ( actions & InsertLayer )
 	{
-		QToolButton *button = new QToolButton;
-		button->setText( tr("Insert layer") );
-		button->setIcon(QIcon(HOME_DIR+"/themes/default/icons/add_layer.png"));
+		DImageButton *button = new DImageButton(QIcon(HOME_DIR+"/themes/default/icons/add_layer.png"), size);
 		button->setToolTip(tr("Insert a layer"));
-		button->setToolTip(button->text());
 		
 		m_actions.addButton(button, InsertLayer);
 		
 		m_buttonLayout->addWidget( button );
+		button->setAnimated(m_isAnimated);
 	}
 	 
 	if ( actions & RemoveLayer )
 	{
-		QToolButton *button = new QToolButton;
-		button->setText( tr("Remove layer") );
-		button->setIcon(QIcon( HOME_DIR+"/themes/default/icons/remove_layer.png"));
+		DImageButton *button = new DImageButton(QIcon( HOME_DIR+"/themes/default/icons/remove_layer.png"), size);
 		button->setToolTip(tr("Remove the layer"));
 		
 		m_actions.addButton(button, RemoveLayer);
 		
 		m_buttonLayout->addWidget( button );
+		button->setAnimated(m_isAnimated);
 		
 	}
 	 
 	if ( actions & MoveLayerUp )
 	{
-		QToolButton *button = new QToolButton;
+		DImageButton *button = new DImageButton(QIcon( THEME_DIR+"/icons/move_layer_up.png" ), size);
 		
-		button->setText(tr("Move layer up")  );
-		button->setIcon(QIcon( THEME_DIR+"/icons/move_layer_up.png" ));
-		button->setToolTip(button->text());
+		button->setToolTip(tr("Move layer up")  );
 		
 		m_actions.addButton(button, MoveLayerUp);
 		
 		m_buttonLayout->addWidget( button );
+		button->setAnimated(true);
 	}
 	 
 	if ( actions & MoveLayerDown )
 	{
-		QToolButton *button = new QToolButton;
+		DImageButton *button = new DImageButton(QIcon( THEME_DIR+"/icons/move_layer_down.png" ), size);
 		
-		button->setText( tr("Move layer down"));
-		button->setIcon(QIcon( THEME_DIR+"/icons/move_layer_down.png" ));
-		button->setToolTip(button->text());
+		button->setToolTip( tr("Move layer down"));
 		
 		m_actions.addButton(button, MoveLayerDown);
 		
 		m_buttonLayout->addWidget( button );
+		button->setAnimated(m_isAnimated);
 	}
 	
 	if ( actions & LockLayer )
 	{
-		QToolButton *button = new QToolButton;
-		button->setText(tr("Lock layer") );
-		button->setIcon(QIcon(THEME_DIR+"/icons/lock_layer.png"));
-		button->setToolTip(button->text());
+		DImageButton *button = new DImageButton(QIcon( THEME_DIR+"/icons/move_layer_down.png" ), 22);
+		button->setToolTip(tr("Lock layer") );
 		
 		m_actions.addButton( button, LockLayer );
 		
 		m_buttonLayout->addWidget( button );
+		button->setAnimated(m_isAnimated);
 	}
 	
 	if ( actions & InsertScene )
 	{
-		QToolButton *button = new QToolButton;
+		DImageButton *button = new DImageButton(QIcon( HOME_DIR+"/themes/default/icons/add_scene.png"), size);  // TODO
 		
-		button->setText(tr("Insert scene") );
-		button->setIcon(QIcon( HOME_DIR+"/themes/default/icons/add_scene.png"));  // TODO
-		button->setToolTip(button->text());
 		button->setToolTip(tr("Insert a scene"));
 		
 		m_actions.addButton(button, InsertScene);
 		
 		m_buttonLayout->addWidget( button );
+		button->setAnimated(m_isAnimated);
 	}
 	 
 	if ( actions & RemoveScene )
 	{
-		QToolButton *button = new QToolButton;
-		
-		button->setText(tr("Remove scene") );
-		button->setIcon(QIcon( THEME_DIR+"/icons/remove_scene.png" ));  // TODO
-		button->setToolTip(button->text());
+		DImageButton *button = new DImageButton(QIcon( THEME_DIR+"/icons/remove_scene.png" ), size);  // TODO
 		
 		button->setToolTip(tr("Remove the scene"));
 		m_actions.addButton(button, RemoveScene);
 		
 		m_buttonLayout->addWidget( button );
+		button->setAnimated(m_isAnimated);
 	}
 	 
 	if ( actions & MoveSceneUp )
 	{
-		QToolButton *button = new QToolButton;
+		DImageButton *button = new DImageButton(QIcon( THEME_DIR+"/icons/move_scene_up.png" ), size);
 		
-		button->setText(tr("Move scene up")  );
-		button->setIcon(QIcon( THEME_DIR+"/icons/move_scene_up.png" ));
-		button->setToolTip(button->text());
+		button->setToolTip(tr("Move scene up")  );
 		
 		m_actions.addButton(button, MoveSceneUp);
 		
 		m_buttonLayout->addWidget( button );
+		button->setAnimated(m_isAnimated);
 	}
 	 
 	if ( actions & MoveSceneDown )
 	{
-		QToolButton *button = new QToolButton;
+		DImageButton *button = new DImageButton(QIcon(THEME_DIR+"/icons/move_scene_down.png" ), size);
 		
-		button->setText( tr("Move scene down"));
-		button->setIcon(QIcon(THEME_DIR+"/icons/move_scene_down.png" ));
-		button->setToolTip(button->text());
+		button->setToolTip( tr("Move scene down"));
 		
 		m_actions.addButton(button, MoveSceneDown);
 		
 		m_buttonLayout->addWidget( button );
+		button->setAnimated(m_isAnimated);
 	}
 	
 	if ( actions & LockScene )
 	{
-		QToolButton *button = new QToolButton;
-		button->setText(tr("Lock scene") );
-		button->setIcon(QIcon( THEME_DIR+"/icons/lock_scene.png"));
-		button->setToolTip(button->text());
+		DImageButton *button = new DImageButton(QIcon( THEME_DIR+"/icons/lock_scene.png"), size);
+		button->setToolTip(tr("Lock scene") );
 		
 		m_actions.addButton( button, LockScene );
 		
 		m_buttonLayout->addWidget( button );
+		button->setAnimated(m_isAnimated);
 	}
 	
 	m_buttonLayout->addStretch();
@@ -327,9 +314,9 @@ void KTProjectActionBar::insertSeparator(int position)
 }
 
 
-QToolButton *KTProjectActionBar::button(Action action)
+DImageButton *KTProjectActionBar::button(Action action)
 {
-	return qobject_cast<QToolButton *>(m_actions.button(action));
+	return qobject_cast<DImageButton *>(m_actions.button(action));
 }
 
 void KTProjectActionBar::emitActionSelected(int action)

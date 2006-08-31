@@ -84,14 +84,13 @@ void DImageButton::setup()
 {
 	setFlat( true );
 	setAutoDefault( false );
+	setIconSize( QSize(m_imageSize, m_imageSize) );
 	setMaximumSize(m_imageSize, m_imageSize);
 	setMinimumSize(m_imageSize, m_imageSize);
+	m_animator = new Animation(m_imageSize);
+	connect(m_animator->aTimer, SIGNAL(timeout()), this, SLOT(animate()));
 	
-	if ( m_isAnimated )
-	{
-		m_animator = new Animation(m_imageSize);
-		connect(m_animator->aTimer, SIGNAL(timeout()), this, SLOT(animate()));
-	}
+	setFocusPolicy( Qt::NoFocus );
 }
 
 void DImageButton::enterEvent(QEvent *)
@@ -194,3 +193,10 @@ void DImageButton::setImage ( const QIcon & icon)
 // 	QStylePainter p(this);
 // 	p.drawControl(QStyle::CE_PushButton, opt);
 // }
+
+
+void DImageButton::setAnimated(bool anim)
+{
+	m_isAnimated = anim;
+}
+

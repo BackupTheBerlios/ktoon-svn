@@ -21,6 +21,7 @@
 #include "ktpaintareastatus.h"
 
 #include <QComboBox>
+#include <QPushButton>
 #include <QLabel>
 #include <QHBoxLayout>
 
@@ -117,13 +118,12 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
 {
 	setSizeGripEnabled(false);
 	
-	m_renderHint = new QComboBox;
-	m_renderHint->addItem(tr("Antialiasing"), true );
-	m_renderHint->addItem(tr("No antialiasing"), false );
-	
-	m_renderHint->setCurrentIndex(1);
-	
-	addPermanentWidget(m_renderHint/*,1*/);
+	m_antialiasHint = new QPushButton;
+	m_antialiasHint->setFocusPolicy( Qt::NoFocus);
+// 	m_antialiasHint->setFlat(true);
+	m_antialiasHint->setText(tr("Antialiasing"));
+	m_antialiasHint->setCheckable(true);
+	addPermanentWidget(m_antialiasHint/*,1*/);
 	
 	
 	m_renderer = new QComboBox;
@@ -140,7 +140,7 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
 	m_brushStatus = new BrushStatus;
 	addPermanentWidget(m_brushStatus);
 	
-	connect(m_renderHint, SIGNAL(activated( int )), this, SLOT(selectRenderHint(int) ));
+	connect(m_antialiasHint, SIGNAL(toggled(bool)), this, SLOT(selectAntialiasingHint(bool) ));
 	connect(m_renderer, SIGNAL(activated(int)), this, SLOT(selectRenderer(int)));
 	
 	m_brushStatus->setBackground( m_viewDocument->brushManager()->brush() );
@@ -153,14 +153,14 @@ KTPaintAreaStatus::~KTPaintAreaStatus()
 }
 
 
-void KTPaintAreaStatus::selectRenderHint(int id)
+void KTPaintAreaStatus::selectAntialiasingHint(bool use)
 {
-	m_viewDocument->setAntialiasing( m_renderHint->itemData(id ).toBool() ); 
+	m_viewDocument->setAntialiasing( use ); 
 }
 
 void KTPaintAreaStatus::selectRenderer(int id)
 {
-	KToon::RenderType type = KToon::RenderType(m_renderHint->itemData(id ).toInt());
+	KToon::RenderType type = KToon::RenderType(m_renderer->itemData(id ).toInt());
 	
 	if ( type == KToon::OpenGL )
 	{

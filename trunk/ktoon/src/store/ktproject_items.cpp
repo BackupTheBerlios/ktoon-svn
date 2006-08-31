@@ -118,91 +118,27 @@ QString KTProject::convertItem(int scenePosition, int layerPosition, int framePo
 					{
 						case 2: // Path
 						{
-							KTPathItem *tmp = new KTPathItem( item->parentItem(), scene);
+							KTPathItem *path = KTItemConverter::convertToPath( item );
+							scene->addItem(path);
 							
-							
-							tmp->setPath(item->shape());
-							
-							tmp->setMatrix(item->matrix());
-							tmp->setPos(item->scenePos());
-							tmp->setFlags(item->flags() );
-							if(QAbstractGraphicsShapeItem *shape =  qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item))
-							{
-								tmp->setBrush( shape->brush() );
-								tmp->setPen(shape->pen() );
-							}
-							
-							frame->replaceGraphic(position, tmp);
-							
-							tmp->setSelected(item->isSelected());
-							//FIXME
-		// 					item->setSelected(false);
-		// 					delete item;
-		// 					item = 0;
+							frame->replaceGraphic(position, path);
 						}
 						break;
 						case 3: // Rect
 						{
-							KTRectItem *rect = new KTRectItem(item->parentItem(), scene);
-							rect->setMatrix(item->matrix());
-							
-							switch(item->type() )
-							{
-								case 2:
-								{
-									rect->setRect(qgraphicsitem_cast<QGraphicsPathItem *>(item)->path().boundingRect());
-								}
-								break;
-								case 4:
-								{
-									rect->setRect(qgraphicsitem_cast<QGraphicsEllipseItem *>(item)->rect());
-								}
-								break;
-							}
-							
-							rect->setPos(item->scenePos());
-							rect->setFlags(item->flags() );
-							if(QAbstractGraphicsShapeItem *shape =  qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item))
-							{
-								rect->setBrush( shape->brush() );
-								rect->setPen(shape->pen() );
-							}
+							KTRectItem *rect = KTItemConverter::convertToRect( item );
+							scene->addItem(rect);
 							
 							frame->replaceGraphic(position, rect);
-							
-							rect->setSelected(item->isSelected());
 						}
 						break;
 						case 4: // Ellipse
 						{
-							KTEllipseItem *ellipse = new KTEllipseItem(item->parentItem(), scene);
-							ellipse->setMatrix(item->matrix());
+							KTEllipseItem *ellipse = KTItemConverter::convertToEllipse( item );
 							
-							switch(item->type() )
-							{
-								case 2:
-								{
-									ellipse->setRect(qgraphicsitem_cast<QGraphicsPathItem *>(item)->path().boundingRect());
-								}
-								break;
-								case 4:
-								{
-									ellipse->setRect(qgraphicsitem_cast<QGraphicsEllipseItem *>(item)->rect());
-								}
-								break;
-							}
-							
-							ellipse->setPos(item->scenePos());
-							ellipse->setFlags(item->flags() );
-							if(QAbstractGraphicsShapeItem *shape =  qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(item))
-							{
-								ellipse->setBrush( shape->brush() );
-								ellipse->setPen(shape->pen() );
-							}
+							scene->addItem(ellipse);
 							
 							frame->replaceGraphic(position, ellipse);
-							
-							ellipse->setSelected(item->isSelected());
 						}
 						break;
 						

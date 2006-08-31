@@ -43,10 +43,12 @@ class D_GUI_EXPORT DImageButton : public QPushButton
 		~DImageButton();
 		virtual void setImage( const QIcon &icon);
 		
+		void setAnimated(bool anim);
+		
 	protected:
 		void enterEvent(QEvent *e);
 		void leaveEvent(QEvent *e);
-// 		void paintEvent(QPaintEvent *e);
+		
 		
 	private slots:
 		void animate();

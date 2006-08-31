@@ -26,7 +26,7 @@
 #include <QButtonGroup>
 #include "ktglobal.h"
 
-class QToolButton;
+class DImageButton;
 class QBoxLayout;
 
 /**
@@ -73,7 +73,7 @@ class KTOON_EXPORT KTProjectActionBar : public QWidget
 		
 		void insertSeparator(int position);
 		
-		QToolButton *button(Action action);
+		DImageButton *button(Action action);
 		
 	private slots:
 		void emitActionSelected(int action);
@@ -91,6 +91,8 @@ class KTOON_EXPORT KTProjectActionBar : public QWidget
 		QButtonGroup m_actions;
 		
 		QBoxLayout *m_buttonLayout;
+		
+		bool m_isAnimated;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(KTProjectActionBar::Actions);

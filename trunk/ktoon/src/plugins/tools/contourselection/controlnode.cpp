@@ -89,7 +89,7 @@ void ControlNode::paintLinesToChilds(QPainter * painter)
 {
 	QMatrix inverted = sceneMatrix().inverted();
 	painter->save();
-	painter->setPen(QPen(Qt::gray));
+	painter->setPen(QPen(QColor(0x8080FF)));
 	if(m_right)
 	{
 		if(m_right->isVisible())
