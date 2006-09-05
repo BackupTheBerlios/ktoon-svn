@@ -92,6 +92,8 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		
 		void drawBackground(QPainter *painter, const QRectF &rect);
 		
+		
+		
 	private:
 		QGraphicsRectItem *m_grid;
 		KTToolPlugin *m_tool;
@@ -108,6 +110,7 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		int m_currentSceneIndex;
 		
 		bool m_drawGrid;
+		double m_angle;
 };
 
 #endif

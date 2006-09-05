@@ -91,7 +91,7 @@ class KTViewDocument : public QMainWindow
 		
 	private:
 		QActionGroup *m_gridGroup, *m_editGroup, *m_viewNextGroup, *m_viewZoomGroup, *m_viewPreviousGroup;
-		QMenu *m_brushesMenu, *m_selectionMenu, *m_fillMenu, *m_filterMenu;
+		QMenu *m_brushesMenu, *m_selectionMenu, *m_fillMenu, *m_filterMenu, *m_viewToolMenu;
 		QMenu *m_toolsMenu, *m_editMenu, *m_viewMenu, *m_orderMenu;
 		QAction *m_aUndo, *m_aRedo, *m_aClose;
 		QToolBar *m_barGrid, *m_toolbar;

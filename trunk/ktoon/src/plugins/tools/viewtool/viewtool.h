@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2005 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,53 +17,45 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef VIEWTOOL_H
+#define VIEWTOOL_H
 
-#ifndef ATOOLINTERFACE_H
-#define ATOOLINTERFACE_H
+#include <QObject>
+#include <QLabel>
 
-#include <QStringList>
-#include <QRect>
-#include <QPoint>
-#include <QPainter>
-#include <QBrush>
-#include <QPen>
-#include <QPainterPath>
-#include <QImage>
-#include <QHash>
-#include <QCursor>
-#include <QMouseEvent>
-
-#include "ktframe.h"
-
-#include "daction.h"
-
-#include "qplugin.h" // Q_EXPORT_PLUGIN
-#include "ktglobal.h"
-
-class KTScene;
-
+#include <kttoolplugin.h>
+#include <QGraphicsRectItem>
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-
-class KTOON_EXPORT KTToolInterface
+class ViewTool: public KTToolPlugin
 {
 	public:
-		enum ToolType
-		{
-			None = 0,
-			Brush,
-			Fill,
-			Selection,
-			View
-		};
+		ViewTool();
+		~ViewTool();
 		
-		virtual ~KTToolInterface() {};
+		virtual QStringList keys() const;
 		
-		virtual QStringList keys() const = 0;
-		virtual int toolType() const = 0;
-};
+		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
+		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
+		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 
-Q_DECLARE_INTERFACE( KTToolInterface, "com.toonka.ktoon.KTToolInterface/0.2" );
+		virtual QMap<QString, DAction *> actions() const;
+		
+		int toolType() const;
+		
+		virtual QWidget *configurator();
+		virtual void aboutToChangeTool();
+		
+	private:
+		void setupActions();
+		
+	private:
+		QMap<QString, DAction *> m_actions;
+		
+		QGraphicsRectItem *m_rect;
+		QGraphicsView *m_view;
+};
 
 #endif

@@ -78,7 +78,7 @@ class GLDevice : public QGLWidget
 #include "ktscene.h"
 #include "ktproject.h"
 
-KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(parent), m_grid(0), m_tool(0), m_isDrawing(false), m_project(project), m_currentSceneIndex(0), m_drawGrid(false)
+KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(parent), m_grid(0), m_tool(0), m_isDrawing(false), m_project(project), m_currentSceneIndex(0), m_drawGrid(false), m_angle(0)
 {
 // 	setMouseTracking(true);
 	
@@ -95,6 +95,7 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(p
 	
 // 	setViewport(new KTImageDevice() );
 	setUseOpenGL( false );
+	setInteractive ( true );
 }
 
 KTPaintArea::~KTPaintArea()
@@ -259,8 +260,28 @@ void KTPaintArea::mouseMoveEvent ( QMouseEvent * event )
 	QMouseEvent *eventMapped = mapMouseEvent( event );
 	
 	m_inputInformation->updateFromMouseEvent( eventMapped );
+	//Rotate
+	if(  event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
+	{
+		setDragMode (QGraphicsView::NoDrag);
+		QPointF p1 = event->pos();
+		QPointF p2 = rect().center();
 	
-	if (m_tool && m_isDrawing )
+		QPointF d = p1 - p2;
+	
+		if(d.x() != 0 )
+		{
+			double a =  atan(d.y() / d.x())*(180/3.141592653589793116);
+			if(d.x() < 0)
+			{
+				dDebug() << a - m_angle +180;
+				a += 180;
+			}
+			rotate(a - m_angle );
+			m_angle = a;
+		}
+	}
+	else if (m_tool && m_isDrawing )
 	{
 		m_tool->move(m_inputInformation, m_brushManager,  qobject_cast<KTScene *>(scene()), this );
 	}
@@ -287,7 +308,6 @@ void KTPaintArea::mouseReleaseEvent(QMouseEvent *event)
 		{
 			emit eventTriggered( e );
 		}
-		
 		m_tool->end();
 	}
 	

@@ -342,6 +342,13 @@ void KTViewDocument::createTools()
 	
 	m_toolbar->addAction(m_fillMenu->menuAction());
 	
+	// View menu
+	m_viewToolMenu = new QMenu(tr("View"), m_toolbar);
+	m_viewToolMenu->setIcon(QPixmap(THEME_DIR+"/icons/magnifying.png"));
+	connect(m_fillMenu, SIGNAL(triggered(QAction *)), this, SLOT(selectToolFromMenu( QAction* )));
+	
+	m_toolbar->addAction(m_viewToolMenu->menuAction());
+	
 #if 0
 	m_toolsSelection->addAction(QPixmap(THEME_DIR+"/icons/nodes.png"), tr( "Con&tour Selection" ), m_paintArea, SLOT( slotContourSelection()), tr("T") );
 	
@@ -503,6 +510,15 @@ void KTViewDocument::loadPlugins()
 						}
 					}
 					break;
+					case KTToolInterface::View:
+					{
+						m_viewToolMenu->addAction(act);
+						if ( !m_viewToolMenu->activeAction() )
+						{
+							act->trigger();
+						}
+					}
+					break;
 					default:
 					{
 					}
@@ -576,6 +592,17 @@ void KTViewDocument::selectTool()
 				if ( !action->icon().isNull() )
 				{
 					m_selectionMenu->menuAction()->setIcon(action->icon());
+				}
+			}
+			break;
+			
+			case KTToolInterface::View:
+			{
+				m_viewToolMenu->setDefaultAction(action);
+				m_viewToolMenu->setActiveAction(action);
+				if ( !action->icon().isNull() )
+				{
+					m_viewToolMenu->menuAction()->setIcon(action->icon());
 				}
 			}
 			break;
