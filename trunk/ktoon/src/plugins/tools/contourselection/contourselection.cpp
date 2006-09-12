@@ -85,11 +85,6 @@ void ContourSelection::move(const KTInputDeviceInformation *input, KTBrushManage
 	Q_UNUSED(view);
 	static int s = 0;
 	s++;
-	if(scene->selectedItems().count() > 0)
-	{
-		QTimer::singleShot ( 0, this, SLOT(syncNodes()));;
-	}
-	
 	
 }
 
@@ -119,7 +114,6 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 				delete m_nodes.takeAt(m_nodes.indexOf((*it)));
 			}
 			++it;
-			
 		}
 #else
 // 		qDeleteAll(m_nodes);
@@ -266,10 +260,6 @@ void ContourSelection::syncNodes()
 	}
 }
 
-void ContourSelection::slotAddProjectEvent(KTProjectEvent *e)
-{
-	addProjectEvent(e);
-}
 
 
 Q_EXPORT_PLUGIN2(kt_editNodes, ContourSelection )

@@ -64,6 +64,11 @@ KTPathItem *KTItemConverter::convertToPath(QGraphicsItem *item)
 	
 	switch(item->type() )
 	{
+		case 2:
+		{
+			ppath = qgraphicsitem_cast<QGraphicsPathItem *>(item)->path();
+		}
+		break;
 		case 3: // Rect
 		{
 			ppath.addRect( qgraphicsitem_cast<QGraphicsRectItem *>(item)->rect());

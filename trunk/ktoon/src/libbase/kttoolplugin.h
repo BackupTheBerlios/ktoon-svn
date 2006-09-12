@@ -53,8 +53,6 @@ class KTOON_EXPORT KTToolPlugin : public QObject, public KTToolInterface
 		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view) = 0;
 		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view) = 0;
 		
-		virtual bool itemPressEvent(QGraphicsItem *item);
-		
 		virtual QMap<QString, DAction *> actions() const = 0;
 		
 		virtual QWidget *configurator()  = 0;

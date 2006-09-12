@@ -216,20 +216,9 @@ void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 	
 	delete eventMapped;
 	
-	QList<QGraphicsItem *> items = scene()->items(eventMapped->pos());
-	bool handled = false;
+
 	
-	if ( items.count() > 0 )
-	{
-		QGraphicsItem *itemPressed = items[0];
-		
-		if ( m_tool )
-		{
-			handled = m_tool->itemPressEvent(itemPressed);
-		}
-	}
-	
-	if (m_tool && !handled )
+	if (m_tool )
 	{
 		m_tool->begin();
 		

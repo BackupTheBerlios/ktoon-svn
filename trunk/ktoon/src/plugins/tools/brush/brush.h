@@ -60,8 +60,6 @@ class Brush : public KTToolPlugin
 		virtual bool isComplete() const;
 		virtual void aboutToChangeTool();
 		
-		virtual bool itemPressed(QGraphicsItem *item);
-		
 	private:
 		void setupActions();
 		void smoothPath(QPainterPath &path, double smoothness, int from = 0, int to = -1);

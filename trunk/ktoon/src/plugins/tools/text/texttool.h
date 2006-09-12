@@ -43,7 +43,7 @@ class TextTool : public KTToolPlugin
 		virtual void doubleClick(const KTInputDeviceInformation *input, KTScene *scene, QGraphicsView *view );
 		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
-		virtual bool itemPressEvent(QGraphicsItem *item);
+		virtual bool itemPressed(QGraphicsItem *item);
 		
 		virtual QMap<QString, DAction *>actions() const;
 		

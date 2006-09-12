@@ -8,7 +8,8 @@ SUBDIRS += brush \
            contourselection \
            text \
            geometrictool \
-           viewtool 
+           viewtool \
+           filltool 
 KDEV_QTVER = 4
 CONFIG += release \
 warn_on

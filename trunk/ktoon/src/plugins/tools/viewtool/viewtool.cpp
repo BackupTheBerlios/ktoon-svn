@@ -35,7 +35,7 @@
 
 #include "ktscene.h"
 
-ViewTool::ViewTool()
+ViewTool::ViewTool() : m_rect(0), m_view(0)
 {
 	setupActions();
 }
@@ -64,7 +64,7 @@ void ViewTool::setupActions()
 
 void ViewTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
-	if(input->buttons() == Qt::LeftButton)
+// 	if(input->buttons() == Qt::LeftButton)
 	{
 		m_rect = new QGraphicsRectItem(QRectF(input->pos(), QSize(0,0)));
 		scene->addItem(m_rect);
@@ -91,7 +91,17 @@ void ViewTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
 {
 	if( currentTool() == tr("Zoom"))
 	{
-		view->fitInView( m_rect->rect(), Qt::KeepAspectRatio);
+		QRectF rect = m_rect->rect();
+		if ( input->button() == Qt::LeftButton )
+		{
+			view->fitInView( rect, Qt::KeepAspectRatio);
+		}
+		else 
+		{
+			QRect visibleRect = view->visibleRegion().boundingRect();
+			
+			view->fitInView( visibleRect.adjusted((rect.width()+50), 0, 0, (rect.height()+50)), Qt::KeepAspectRatio ); // FIXME
+		}
 	}
 	delete m_rect;
 }
@@ -106,7 +116,7 @@ int ViewTool::toolType() const
 	return View;
 }
 
-QWidget  *ViewTool::configurator()
+QWidget *ViewTool::configurator()
 {
 	return  0;
 }
@@ -122,4 +132,4 @@ void ViewTool::aboutToChangeTool()
 	}
 }
 
-Q_EXPORT_PLUGIN2( kt_geometric, ViewTool )
+Q_EXPORT_PLUGIN2( kt_view, ViewTool )

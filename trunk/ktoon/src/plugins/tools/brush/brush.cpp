@@ -70,6 +70,8 @@ QStringList Brush::keys() const
 
 void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
+	// TODO: seria interesante que si el item presionado es un pixmap tratar de seguir un patron!
+	
 	Q_UNUSED(view);
 	
 	m_firstPoint = input->pos();
@@ -224,20 +226,6 @@ bool Brush::isComplete() const
 void Brush::aboutToChangeTool() 
 {
 }
-
-// QString Brush::toolToXml() const
-// {
-// 	QDomDocument doc;
-// 	doc.appendChild(m_item->toXml( doc ));
-// 	return doc.toString();
-// }
-
-bool Brush::itemPressed(QGraphicsItem *item)
-{
-	// TODO: seria interesante que si el item es un pixmap tratar de seguir un patron!
-	return false;
-}
-
 
 
 Q_EXPORT_PLUGIN2(kt_brush, Brush );

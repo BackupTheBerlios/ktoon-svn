@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,69 +17,49 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef CONTOURSELECTION_H
-#define CONTOURSELECTION_H
+
+#ifndef AFillToolPLUGIN_H
+#define AFillToolPLUGIN_H
 
 #include <QObject>
+#include <QLabel>
+
 #include <kttoolplugin.h>
-#include <QSpinBox>
 
-#include "ktpathitem.h"
-
-#include "controlnode.h"
-#include "nodegroup.h"
-#include "ktproject.h"
+class KTPathItem;
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
- */
+ * @author David Cuadrado <krawek@toonka.com>
+*/
 
-class ControlNode;
-class ContourSelection : public KTToolPlugin
+class FillTool : public KTToolPlugin
 {
 	Q_OBJECT;
 	
 	public:
-		ContourSelection();
+		FillTool();
+		~FillTool();
 		
-		virtual ~ContourSelection();
-		
-		virtual void init(QGraphicsView *view);
 		virtual QStringList keys() const;
+		
 		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 		
+		KTPathItem *itemPressed(QGraphicsItem *item, const KTBrushManager *brush);
 		
-		virtual QString toolToXml() const;
-		
-		
-		virtual QMap<QString, DAction *>actions() const;
+		virtual QMap<QString, DAction *> actions() const;
 		
 		int toolType() const;
 		
 		virtual QWidget *configurator();
-		
-		virtual bool isComplete() const;
 		virtual void aboutToChangeTool();
-		
-		
-		virtual void itemEvent(const KTItemEvent *event);
-		
 		
 	private:
 		void setupActions();
 		
-		
 	private:
 		QMap<QString, DAction *> m_actions;
-		QList<NodeGroup*> m_nodes;
-		KTProject *m_project;
-// 		QGraphicsView *m_view;
-		
-	private slots:
-		void syncNodes();
 };
 
 #endif
-

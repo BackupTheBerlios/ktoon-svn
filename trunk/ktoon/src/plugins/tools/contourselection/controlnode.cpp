@@ -153,6 +153,7 @@ QVariant ControlNode::itemChange(GraphicsItemChange change, const QVariant &valu
 				QMatrix m;
 				m.translate(-pos.x(), -pos.y());
 				path = m.map(path);
+				
 				m_parent->setPos(m_parent->mapToScene(pos));
 				qgraphicsitem_cast<QGraphicsPathItem *>( m_parent)->setPath(path);
 			}
@@ -238,7 +239,6 @@ void ControlNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	update();
 	QGraphicsItem::mouseReleaseEvent(event);
-	m_parent->setSelected( true);
 }
 
 void ControlNode::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )

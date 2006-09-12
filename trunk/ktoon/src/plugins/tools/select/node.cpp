@@ -104,8 +104,9 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	update();
+	m_parent->setSelected( true);
 	QGraphicsItem::mouseReleaseEvent(event);
-// 	m_parent->setSelected( true);
+	m_parent->setSelected( true);
 }
 
 void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
@@ -199,7 +200,7 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	}
 	m_manager->syncNodes( m_parent->sceneBoundingRect() );
 	update();
-// 	m_parent->setSelected( true);
+	m_parent->setSelected( true);
 }
 
 

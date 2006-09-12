@@ -1,0 +1,47 @@
+
+- Herramientas -
+	* de Relleno
+	* de Borrado
+	* de Seleccion
+		- rotate/shear
+		- Normal(flip)
+	* de Trazo
+		- Polyline
+		- Trazado de Bitmaps(seguir patrones)
+	* de Vista
+		- Lupa
+		- Mano	
+		
+- Filtros -
+	* Sombras
+	
+- Componentes GUI-
+	* Sonido
+	* PaintArea
+		- Rotar
+		- Agrupar
+		- Copy, Paste and Cut
+		- Delete
+		- Reglas
+		- Lineas de ayuda
+	* Paleta
+		- Gradientes
+	* Camara
+	* Tweening
+	* Library(No olvidar soporte para red)
+	
+	
+- Store -
+	* Item
+		- flip
+		- Copy, Paste and Cut
+		
+- General -
+	* Serializar
+	* Exportar e importar a SVG
+	* Importar Bitmaps
+	* Trazar Bitmaps
+	
+
+
+

@@ -96,8 +96,4 @@ void KTToolPlugin::doubleClick(const KTInputDeviceInformation *, KTScene *, QGra
 {
 }
 
-bool KTToolPlugin::itemPressEvent(QGraphicsItem *)
-{
-	return false;
-}
 

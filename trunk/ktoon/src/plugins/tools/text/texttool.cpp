@@ -44,6 +44,18 @@ QStringList TextTool::keys() const
 
 void TextTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
+	QList<QGraphicsItem *> items = scene->items(input->pos());
+	
+	if ( items.count() > 0 )
+	{
+		QGraphicsItem *itemPress = items[0];
+		if  ( itemPressed(itemPress) )
+		{
+			return;
+		}
+	}
+	
+	
 	m_item = new KTTextItem;
 	
 	m_item->setPos(input->pos());
@@ -56,7 +68,7 @@ void TextTool::doubleClick(const KTInputDeviceInformation *input, KTScene *scene
 	Q_UNUSED(view);
 }
 
-bool TextTool::itemPressEvent(QGraphicsItem *item)
+bool TextTool::itemPressed(QGraphicsItem *item)
 {
 	if ( KTTextItem *text = qgraphicsitem_cast<KTTextItem *>( item ) )
 	{
