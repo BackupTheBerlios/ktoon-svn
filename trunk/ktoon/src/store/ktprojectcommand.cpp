@@ -91,6 +91,11 @@ QString KTProjectCommand::actionString(int action)
 			return QObject::tr("select");
 		}
 		break;
+		case KTProjectEvent::EditNodes:
+		{
+			return QObject::tr("edit node");
+		}
+		break;
 		case KTProjectEvent::View:
 		{
 			return QObject::tr("view");
@@ -481,6 +486,11 @@ void KTProjectCommand::itemCommand(const KTItemEvent *event, bool redo)
 				m_data = m_project->convertItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
 			}
 			break;
+			case KTProjectEvent::EditNodes:
+			{
+				m_data =  m_project->setPathItem( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString() );
+			}
+			break;
 			case KTProjectEvent::Select:
 			{
 			}
@@ -528,6 +538,10 @@ void KTProjectCommand::itemCommand(const KTItemEvent *event, bool redo)
 				m_project->convertItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), m_data.toString());
 			}
 			break;
+			case KTProjectEvent::EditNodes:
+			{
+				m_data =  m_project->setPathItem( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), m_data.toString() );
+			}
 			case KTProjectEvent::View:
 			{
 			}

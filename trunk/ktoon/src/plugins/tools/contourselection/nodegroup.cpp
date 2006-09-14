@@ -6,16 +6,15 @@
 #include <QAbstractGraphicsShapeItem>
 
 
-NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(parent)
+NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(parent), m_scene(scene)
 {
 	DINIT;
-// 	QAbstractGraphicsShapeItem *tmp = dynamic_cast<QAbstractGraphicsShapeItem *>(parent);
 	QGraphicsPathItem *tmp = qgraphicsitem_cast<QGraphicsPathItem *>(parent);
 	if(tmp)
 	{
 		QPainterPath path = tmp->sceneMatrix().map( tmp->path());
-// 		QPainterPath path = tmp->sceneMatrix().map( tmp->shape());
-		
+		m_path = tmp->path();
+		m_pos = tmp->scenePos();
 		int index = 0;
 		while(index < path.elementCount())
 		{
@@ -73,6 +72,7 @@ NodeGroup::~NodeGroup()
 	DEND;
 	qDeleteAll(m_nodes);
 	m_nodes.clear();
+	
 }
 
 
@@ -84,6 +84,7 @@ void NodeGroup::syncNodes(const QPainterPath & path)
 	}
 	foreach(ControlNode *node, m_nodes)
 	{
+		node->setNotChange(true);
 		node->setPos(path.elementAt(node->index()));
 	}
 }
@@ -92,7 +93,10 @@ void NodeGroup::syncNodesFromParent()
 {
 	if(m_parentItem)
 	{
-// 		syncNodes(m_parentItem->sceneMatrix().map( m_parentItem->shape()));
+		if(qgraphicsitem_cast<QGraphicsPathItem *>(m_parentItem))
+		{
+			syncNodes(m_parentItem->sceneMatrix().map( qgraphicsitem_cast<QGraphicsPathItem *>(m_parentItem)->path()));
+		}
 	}
 }
 
@@ -109,8 +113,67 @@ void NodeGroup::setParentItem(QGraphicsItem *newParent)
 	}
 }
 
-void NodeGroup::emitEvent(KTItemEvent *event)
+void NodeGroup::moveElemetTo(int index, const QPointF& pos )
 {
-	emit sendEvent(event );
+
+	QPainterPath path = qgraphicsitem_cast<QGraphicsPathItem *>(m_parentItem)->path();
+	path.setElementPositionAt(index,
+				  pos.x(),
+				  pos.y() );
+	QPainterPath::Element e = path.elementAt(0);
+	QPointF poss = path. controlPointRect().topLeft();
+	QMatrix m;
+	m.translate(-poss.x(), -poss.y());
+	path = m.map(path);
+	m_parentItem->setPos(m_parentItem->mapToScene(poss));
+	qgraphicsitem_cast<QGraphicsPathItem *>( m_parentItem)->setPath(path);
+	
+	if(m_changedsNodes.contains (index))
+	{
+		(*m_changedsNodes.find(index)) = pos;
+	}
+	else
+	{
+		m_changedsNodes.insert(index, pos);
+	}
+	
 }
 
+QHash<int, QPointF > NodeGroup::changedsNodes()
+{
+	return m_changedsNodes;
+}
+
+void NodeGroup::clearChangesNodes()
+{
+	m_changedsNodes.clear();
+}
+
+void NodeGroup::restoreItem()
+{
+	qgraphicsitem_cast<QGraphicsPathItem *>( m_parentItem)->setPath(m_path);
+	m_parentItem->setPos(m_pos);
+}
+
+void NodeGroup::show()
+{
+	foreach(ControlNode *node, m_nodes)
+	{
+		if(qgraphicsitem_cast<QGraphicsPathItem *>( m_parentItem))
+		{
+			if(!node->scene())
+			{
+				m_scene->addItem(node);
+			}
+		}
+	}
+}
+
+void NodeGroup::saveParentProperties()
+{
+	if(qgraphicsitem_cast<QGraphicsPathItem *>(m_parentItem))
+	{
+		m_path = qgraphicsitem_cast<QGraphicsPathItem *>(m_parentItem)->path();
+		m_pos = m_parentItem->scenePos();
+	}
+}

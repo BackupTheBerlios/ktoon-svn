@@ -67,6 +67,8 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		QGraphicsItem *createItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml);
 		QString transformItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml);
 		QString convertItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml);
+		QString setPathItem( int scenePosition, int layerPosition, int framePosition, int position, const QString &path );
+		
 		
 		QString removeScene(int position);
 		QString removeLayer(int scene, int position);
@@ -92,6 +94,7 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		void setFrameVisibility(int scenePos, int layerPos, int position, bool view);
 		void setLayerVisibility(int scenePos, int position, bool view);
 		void setSceneVisibility(int position, bool view);
+		
 		
 		void clear();
 		

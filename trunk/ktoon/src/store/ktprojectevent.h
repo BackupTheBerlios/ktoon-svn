@@ -79,7 +79,8 @@ class STORE_EXPORT KTProjectEvent
 			
 			// Items
 			Transform,
-			Convert
+			Convert,
+			EditNodes
 		};
 		
 		enum Part
@@ -114,6 +115,7 @@ class STORE_EXPORT KTProjectEvent
 };
 
 Q_DECLARE_METATYPE(KTProjectEvent::PartPosition);
+
 
 #endif
 

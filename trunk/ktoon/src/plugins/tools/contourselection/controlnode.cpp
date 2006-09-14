@@ -30,7 +30,7 @@
 #include <ddebug.h>
 #include <QCursor>
 
-#include  "ktpathitem.h"
+#include "ktpathitem.h"
 #include "nodegroup.h"
 
 ControlNode::ControlNode(int index, NodeGroup *nodeGroup, const QPointF & pos, QGraphicsItem * parent,  KTScene * scene   ) : QGraphicsItem(0, scene), m_index(index), m_parent(0),  m_left(0),  m_right(0), m_nodeParent(0), m_notChange(true) ,m_nodeGroup(nodeGroup), m_scene(scene)
@@ -144,18 +144,7 @@ QVariant ControlNode::itemChange(GraphicsItemChange change, const QVariant &valu
 					m_right->moveBy(diff.x(), diff.y());
 				}
 				QPointF scenePos = m_parent->mapFromScene ( value.toPointF());
-				QPainterPath path = qgraphicsitem_cast<QGraphicsPathItem *>(m_parent)->path();
-				path.setElementPositionAt(m_index,
-					scenePos.x(),
-					scenePos.y() );
-				QPainterPath::Element e = path.elementAt(0);
-				QPointF pos = path. controlPointRect().topLeft();
-				QMatrix m;
-				m.translate(-pos.x(), -pos.y());
-				path = m.map(path);
-				
-				m_parent->setPos(m_parent->mapToScene(pos));
-				qgraphicsitem_cast<QGraphicsPathItem *>( m_parent)->setPath(path);
+				m_nodeGroup->moveElemetTo(m_index, scenePos );
 			}
 		}
 		else
@@ -364,4 +353,9 @@ void  ControlNode::setParentI(QGraphicsItem *newParent)
 QGraphicsItem * ControlNode::parentI()
 {
 	return m_parent;
+}
+
+void ControlNode::setNotChange(bool notChange)
+{
+	m_notChange = notChange;
 }

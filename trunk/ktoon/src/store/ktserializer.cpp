@@ -24,6 +24,7 @@
 #include <QFont>
 
 #include "ktsvg2qt.h"
+#include "ddebug.h"
 
 KTSerializer::KTSerializer()
 {
@@ -238,6 +239,4 @@ void KTSerializer::loadFont(QFont &font, const QXmlAttributes &atts)
 	font.setUnderline( atts.value( "underline", "0").toInt() );
 	font.setOverline( atts.value( "overline", "0").toInt() );
 }
-
-
 

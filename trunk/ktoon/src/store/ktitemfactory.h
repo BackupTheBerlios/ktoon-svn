@@ -66,6 +66,7 @@ class STORE_EXPORT KTItemFactory : public QXmlDefaultHandler
 		
 	public:
 		QGraphicsItem *create(const QString &xml);
+		bool loadItem(QGraphicsItem *item, const QString &xml);
 		
 	private:
 		void setItemPen(const QPen &pen);
@@ -73,7 +74,7 @@ class STORE_EXPORT KTItemFactory : public QXmlDefaultHandler
 		QPen itemPen() const;
 		QBrush itemBrush() const;
 		
-		bool loadItem(QGraphicsItem *item, const QString &xml);
+		
 		void createItem(const QString &xml);
 		
 	private:

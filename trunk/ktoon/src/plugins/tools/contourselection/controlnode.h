@@ -60,6 +60,8 @@ class ControlNode : public QObject, public QGraphicsItem
 		ControlNode *right();
 		ControlNode *nodeParent();
 		
+		void setNotChange(bool notChange);
+		
 	protected:
 		QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 		void mousePressEvent(QGraphicsSceneMouseEvent *event);
@@ -68,11 +70,12 @@ class ControlNode : public QObject, public QGraphicsItem
 // 		virtual bool sceneEventFilter ( QGraphicsItem * watched, QEvent * event );
 	private:
 		void paintLinesToChilds(QPainter * painter);
-	
+		
 	public slots:
 		void repaint();
 		void setVisibleChilds(bool visible);
 		void setSeletedChilds(bool select);
+		
 	signals:
 		void requestUpdateParent();
 		void showBrothers(bool show);

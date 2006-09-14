@@ -26,6 +26,8 @@
 #include "ktrectitem.h"
 #include "ktellipseitem.h"
 #include "ktitemconverter.h"
+#include "ktsvg2qt.h"
+#include "ktitemfactory.h"
 
 #include <dcore/ddebug.h>
 
@@ -93,7 +95,7 @@ void KTProject::removeItem(int scenePosition, int layerPosition, int framePositi
 
 QString KTProject::convertItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
 {
-	D_FUNCINFO;
+	D_FUNCINFO; 
 	KTScene *scene = this->scene(scenePosition);
 	if ( scene )
 	{
@@ -197,7 +199,44 @@ QString KTProject::transformItem(int scenePosition, int layerPosition, int frame
 	return "";
 }
 
-
+QString KTProject::setPathItem( int scenePosition, int layerPosition, int framePosition, int position, const QString &xml )
+{
+	KTScene *scene = this->scene(scenePosition);
+	
+	if ( scene )
+	{
+		KTLayer *layer = scene->layer( layerPosition );
+		if ( layer )
+		{
+			KTFrame *frame = layer->frame( framePosition );
+			if ( frame )
+			{
+				QGraphicsItem *item = frame->item(position);
+				if ( item )
+				{
+// 					
+					if(qgraphicsitem_cast<QGraphicsPathItem *>(item));
+					{
+						QDomDocument orig;
+						
+						orig.appendChild(qgraphicsitem_cast<KTPathItem*>(item)->toXml(orig));
+						
+						QString current = orig.toString();
+						QDomDocument doc;
+						doc.setContent( xml);
+						
+						KTItemFactory factory;
+						factory.loadItem(item, xml);
+						KTItemEvent event(KTProjectEvent::EditNodes,	scenePosition, layerPosition, framePosition, position, xml);
+						emit commandExecuted( &event);
+						return current;
+					}
+				}
+			}
+		}
+	}
+	return "";
+}
 
 
 

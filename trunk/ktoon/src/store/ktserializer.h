@@ -26,6 +26,7 @@
 #include <QXmlAttributes>
 #include <QBrush>
 #include <QPen>
+#include "ktpathitem.h"
 
 class QGraphicsItem;
 
@@ -56,6 +57,7 @@ class KTSerializer
 		static QDomElement font(const QFont *font, QDomDocument &doc);
 		static void loadFont(QFont &font, const QDomElement &e);
 		static void loadFont(QFont &font, const QXmlAttributes &atts);
-};
+		
+};		
 
 #endif

@@ -5,7 +5,7 @@
 #include "ktscene.h"
 
 #include <QObject>
-
+#include <QHash>
 #include "ktitemevent.h"
 
 /**
@@ -25,15 +25,21 @@ class NodeGroup : public QObject
 		void NodeGroup::syncNodesFromParent();
 		
 		void setParentItem(QGraphicsItem *);
-		
-		void emitEvent(KTItemEvent *event);
+		void moveElemetTo(int index, const QPointF& pos );
+		QHash<int, QPointF > changedsNodes();
+		void clearChangesNodes();
+		void restoreItem();
+		void show();
+		void saveParentProperties();
 		
 	private:
 		QList<ControlNode*> m_nodes;
 		QGraphicsItem *m_parentItem;
+		QPainterPath m_path;
+		QPointF m_pos;
+		QHash<int, QPointF > m_changedsNodes;
+		KTScene *m_scene;
 		
-	signals:
-		void sendEvent( KTProjectEvent *event );
 };
 
 #endif
