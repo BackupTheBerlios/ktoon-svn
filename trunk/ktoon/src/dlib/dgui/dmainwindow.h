@@ -96,7 +96,9 @@ class D_IDEAL_EXPORT DMainWindow : public QMainWindow
 	protected:
 		virtual void closeEvent(QCloseEvent *e);
 		virtual void showEvent(QShowEvent *e);
+#if QT_VERSION >= 0x040200
 		virtual bool event(QEvent *e);
+#endif
 		
 	private:
 		DToolView *m_forRelayout;

@@ -100,12 +100,13 @@ QMenu *DButtonBar::createMenu()
 	
 	connect(a, SIGNAL(triggered(bool)), this, SLOT(setExclusive( bool )));
 	
+#if QT_VERSION >= 0x040200
 	a = menu->addAction(tr("Auto hide"));
 	a->setCheckable(true);
 	a->setChecked( autohide() );
 	
 	connect(a, SIGNAL(triggered(bool)), this, SLOT(setAutoHide( bool )));
-	
+#endif 
 	
 	return menu;
 }
@@ -215,6 +216,20 @@ void DButtonBar::enable(DViewButton *v)
 bool DButtonBar::isExclusive() const
 {
 	return m_buttons.exclusive();
+}
+
+void DButtonBar::onlyShow(DToolView *tool, bool ensureVisible)
+{
+	DViewButton *button = tool->button();
+	
+	if ( ensureVisible )
+	{
+		if ( tool->isVisible() )
+		{
+			button->click();
+		}
+	}
+	hideOthers( button );
 }
 
 void DButtonBar::hideOthers(QAbstractButton *source)

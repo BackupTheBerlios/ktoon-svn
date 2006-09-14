@@ -29,8 +29,10 @@
 #include <QTimer>
 
 class DViewButton;
+class DToolView;
 class QAction;
 class QMenu;
+
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
@@ -59,6 +61,8 @@ class D_IDEAL_EXPORT DButtonBar : public QToolBar
 		void setEnableButtonBlending(bool enable);
 		
 	public slots:
+		void onlyShow(DToolView *tool, bool ensureVisible = false);
+		
 		void setExclusive(bool excl);
 		void setAutoHide(bool autohide);
 		void setShowOnlyIcons();

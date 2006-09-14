@@ -28,6 +28,8 @@ KTImageDevice::KTImageDevice(QWidget *parent) : QWidget(parent)
 	
 	m_image = QImage(300,300, QImage::Format_RGB32);
 	m_image.fill(Qt::white);
+	
+	setAttribute(Qt::WA_PaintOnScreen, true);
 }
 
 

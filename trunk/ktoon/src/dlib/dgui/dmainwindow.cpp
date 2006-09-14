@@ -154,9 +154,11 @@ void DefaultSettings::restore(DMainWindow *w)
 		bar->setExclusive(settings.value("exclusive", true ).toBool());
 		settings.endGroup();
 		
+#if QT_VERSION >= 0x040200
 		settings.beginGroup(bar->windowTitle());
 		bar->setAutoHide(settings.value("autohide", false ).toBool());
 		settings.endGroup();
+#endif
 	}
 	
 	foreach(DToolView *v, toHide )
@@ -453,17 +455,22 @@ void DMainWindow::relayoutViewButton(bool topLevel)
 			m_forRelayout = toolView;
 			
 			QTimer::singleShot( 0, this, SLOT(relayoutToolView()));
+// 			relayoutToolView();
 			
 			// if a tool view is floating the button bar isn't exclusive
 			DButtonBar *bar = m_buttonBars[m_forRelayout->button()->area()];
+			
+			qDebug() << (m_forRelayout->button()->area());
 			bool exclusive = true;
 			
 			foreach(DToolView *v, m_toolViews[bar] )
 			{
 				exclusive = exclusive && !v->isFloating();
 			}
-	
+			
 			bar->setExclusive( exclusive );
+			
+			bar->onlyShow( m_forRelayout, true );
 		}
 	}
 	else
@@ -707,11 +714,12 @@ void DMainWindow::showEvent(QShowEvent *e)
 	}
 }
 
+#if QT_VERSION >= 0x040200
 bool DMainWindow::event(QEvent *e)
 {
 	if ( e->type() == QEvent::HoverMove )
 	{
-		// Show bar if autohide is enabledº
+		// Show bar if autohide is enabled
 		QPoint pos = mapFromGlobal(QCursor::pos());
 		
 		DButtonBar *bar = 0;
@@ -745,6 +753,8 @@ bool DMainWindow::event(QEvent *e)
 	
 	return QMainWindow::event(e);
 }
+
+#endif
 
 void DMainWindow::saveGUI()
 {

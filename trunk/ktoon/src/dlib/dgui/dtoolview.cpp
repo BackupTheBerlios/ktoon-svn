@@ -26,6 +26,8 @@
 #include <QAction>
 #include <QMainWindow>
 #include <QMouseEvent>
+#include <QLayout>
+#include <QEvent>
 
 DToolView::DToolView(const QString &title, const QIcon &icon, QWidget * parent)
 	: QDockWidget(title, parent), m_size(-1), m_perspective(0)
@@ -96,7 +98,7 @@ QSize DToolView::sizeHint() const
 
 void DToolView::setDescription(const QString &description)
 {
-	m_button->defaultAction()->setStatusTip ( description );
+	m_button->setStatusTip ( description );
 }
 
 void DToolView::setPerspective(int wsp)
@@ -150,8 +152,12 @@ bool DToolView::event(QEvent *e)
 	{
 		if ( QMainWindow *mw = dynamic_cast<QMainWindow *>(parentWidget()) )
 		{
-			if ( m_area != mw->dockWidgetArea(this) )
+			Qt::DockWidgetArea newArea = mw->dockWidgetArea(this);
+			if ( m_area !=  newArea)
 			{
+				mw->removeDockWidget(this);
+				mw->addDockWidget(newArea, this );
+				
 				emit topLevelChanged(false);
 			}
 		}

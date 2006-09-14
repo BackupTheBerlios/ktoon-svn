@@ -132,8 +132,6 @@ void FillTool::aboutToChangeTool()
 
 KTPathItem *FillTool::itemPressed(QGraphicsItem *item, const KTBrushManager *brush)
 {
-	dDebug() << "Pressing item " << item->type();
-	
 	KTPathItem *fillItem = 0;
 	
 	QList<QGraphicsItem *> collides = item->collidingItems();
