@@ -66,6 +66,8 @@ class KTViewDocument : public QMainWindow
 		void setOpenGL(bool useIt);
 		void setDrawGrid(bool draw);
 		
+		void setRotationAngle(int angle);
+		
 		KTBrushManager *brushManager() const;
 		
 		KTPaintAreaCommand *createCommand(const KTPaintAreaEvent *event);

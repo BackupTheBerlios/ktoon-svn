@@ -24,6 +24,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QHBoxLayout>
+#include <QIntValidator>
 
 #include <dseparator.h>
 
@@ -118,6 +119,34 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
 {
 	setSizeGripEnabled(false);
 	
+	QWidget *rotContainer = new QWidget;
+	QHBoxLayout *rotLayout = new QHBoxLayout(rotContainer);
+	rotLayout->setSpacing(3);
+	rotLayout->setMargin(1);
+	
+	rotLayout->addWidget(new QLabel(tr("Rotate")));
+	
+	m_rotation = new QComboBox();
+	m_rotation->setEditable(true);
+	
+	m_rotation->addItem("0", 0);
+	m_rotation->addItem("90", 90);
+	m_rotation->addItem("180", 180);
+	m_rotation->addItem("270", 270);
+	m_rotation->setValidator(new QIntValidator(0, 360,this));
+	
+	rotLayout->addWidget( m_rotation);
+	
+	addPermanentWidget(rotContainer);
+	
+	connect(m_rotation, SIGNAL(activated(const QString &)), this, SLOT(applyRotationFromItem(const QString &)));
+	
+	
+	
+	
+	
+	///////
+	
 	m_antialiasHint = new QPushButton;
 	m_antialiasHint->setFocusPolicy( Qt::NoFocus);
 // 	m_antialiasHint->setFlat(true);
@@ -183,5 +212,12 @@ void KTPaintAreaStatus::setPen(const QPen &pen)
 	m_brushStatus->setForeground( pen );
 }
 
+
+void KTPaintAreaStatus::applyRotationFromItem(const QString & text)
+{
+	int angle = text.toInt();
+	
+	m_viewDocument->setRotationAngle(angle);
+}
 
 

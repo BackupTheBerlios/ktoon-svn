@@ -73,6 +73,9 @@ class STORE_EXPORT KTItemFactory : public QXmlDefaultHandler
 		QPen itemPen() const;
 		QBrush itemBrush() const;
 		
+		bool loadItem(QGraphicsItem *item, const QString &xml);
+		void createItem(const QString &xml);
+		
 	private:
 		QString m_qname;
 		QString m_root;

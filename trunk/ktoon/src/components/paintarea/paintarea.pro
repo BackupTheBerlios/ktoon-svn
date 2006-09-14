@@ -9,20 +9,18 @@ HEADERS += ktpaintarea.h \
            ktdocumentruler.h \
            ktpaintareastatus.h \
            ktimagedevice.h \
-           ktpaintareacommand.h 
+           ktpaintareacommand.h \
+           ktpaintarearotator.h 
 SOURCES += ktpaintarea.cpp \
            ktconfigurationarea.cpp \
            ktviewdocument.cpp \
            ktdocumentruler.cpp \
            ktpaintareastatus.cpp \
            ktimagedevice.cpp \
-           ktpaintareacommand.cpp 
+           ktpaintareacommand.cpp \
+           ktpaintarearotator.cpp 
 KDEV_QTVER = 4
-
 include(../components_config.pri)
-
-
 CONFIG += static
-
 TEMPLATE = lib
 TARGET = paintarea

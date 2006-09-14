@@ -5,43 +5,45 @@
 	* de Seleccion
 		- rotate/shear
 		- Normal(flip)
+
 	* de Trazo
 		- Polyline
 		- Trazado de Bitmaps(seguir patrones)
+
 	* de Vista
-		- Lupa
-		- Mano	
-		
+		- Lupa +
+		- Mano +
+
 - Filtros -
 	* Sombras
-	
-- Componentes GUI-
+
+- Componentes GUI -
 	* Sonido
 	* PaintArea
-		- Rotar
-		- Agrupar
-		- Copy, Paste and Cut
-		- Delete
+		- Rotar +
+		- Agrupar 					PRIORIDAD
+		- Copy, Paste and Cut 				PRIORIDAD
+		- Delete 					PRIORIDAD
 		- Reglas
 		- Lineas de ayuda
+		- Papel cebolla 				PRIORIDAD
 	* Paleta
 		- Gradientes
 	* Camara
 	* Tweening
 	* Library(No olvidar soporte para red)
-	
-	
+
+
 - Store -
 	* Item
-		- flip
-		- Copy, Paste and Cut
-		
+		- Flip
+		- Copy, Paste and Cut 				PRIORIDAD
+
 - General -
 	* Serializar
 	* Exportar e importar a SVG
 	* Importar Bitmaps
 	* Trazar Bitmaps
-	
 
 
 

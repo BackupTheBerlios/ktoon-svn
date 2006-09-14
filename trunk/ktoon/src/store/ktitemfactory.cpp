@@ -45,6 +45,37 @@ KTItemFactory::~KTItemFactory()
 {
 }
 
+void KTItemFactory::createItem(const QString &root)
+{
+	if ( m_item )
+		return;
+	
+	if ( root == "path" )
+	{
+		m_item = new KTPathItem;
+	}
+	else if ( root == "rect" )
+	{
+		m_item = new KTRectItem;
+	}
+	else if ( root == "ellipse" )
+	{
+		m_item = new KTEllipseItem;
+	}
+	else if ( root == "button" )
+	{
+		m_item = new KTButtonItem;
+	}
+	else if ( root == "text" )
+	{
+		m_item = new KTTextItem;
+	}
+	else if ( root == "line" )
+	{
+		m_item = new KTLineItem;
+	}
+}
+
 bool KTItemFactory::startElement( const QString& , const QString& , const QString& qname, const QXmlAttributes& atts)
 {
 	if (m_root.isNull() )
@@ -54,7 +85,7 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 	
 	if ( qname == "path" )
 	{
-		m_item = new KTPathItem;
+		createItem( qname );
 		
 		QPainterPath path;
 		KTSvg2Qt::svgpath2qtpath( atts.value("d"), path );
@@ -65,7 +96,7 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 	}
 	else if ( qname == "rect" )
 	{
-		m_item = new KTRectItem;
+		createItem( qname );
 		
 		QRectF rect(atts.value("x").toDouble(), atts.value("y").toDouble(), atts.value("width").toDouble(), atts.value("height").toDouble() );
 		
@@ -74,18 +105,18 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 	}
 	else if ( qname == "ellipse" )
 	{
-		m_item = new KTEllipseItem;
+		createItem( qname );
 		
 		QRectF rect(QPointF(0, 0), QSizeF(2 * atts.value("rx").toDouble(), 2 * atts.value("ry").toDouble() ));
 		qgraphicsitem_cast<KTEllipseItem *>(m_item)->setRect(rect);
 	}
 	else if ( qname == "button" )
 	{
-		m_item = new KTButtonItem;
+		createItem( qname );
 	}
 	else if ( qname == "text" )
 	{
-		m_item = new KTTextItem;
+		createItem( qname );
 		
 		m_readChar = true;
 		m_textReaded = "";
@@ -93,7 +124,7 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 	}
 	else if ( qname == "line" )
 	{
-		m_item = new KTLineItem;
+		createItem( qname );
 		
 		QLineF line(atts.value("x1").toDouble(), atts.value("y1").toDouble(), atts.value("x2").toDouble(), atts.value("y2").toDouble());
 		
@@ -231,10 +262,8 @@ QBrush KTItemFactory::itemBrush() const
 	return Qt::transparent;
 }
 
-
-QGraphicsItem *KTItemFactory::create(const QString &xml)
+bool KTItemFactory::loadItem(QGraphicsItem *item, const QString &xml)
 {
-// 	dDebug() << "Creating item: " << xml;
 	QXmlSimpleReader reader;
 	reader.setContentHandler(this);
 	reader.setErrorHandler(this);
@@ -242,9 +271,14 @@ QGraphicsItem *KTItemFactory::create(const QString &xml)
 	QXmlInputSource xmlsource;
 	xmlsource.setData(xml);
 	
-	m_item = 0;
+	m_item = item;
 	
-	if( reader.parse(&xmlsource) )
+	return reader.parse(&xmlsource);
+}
+
+QGraphicsItem *KTItemFactory::create(const QString &xml)
+{
+	if( loadItem(0, xml) )
 	{
 		return m_item;
 	}

@@ -17,29 +17,34 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTIMAGEDEVICE_H
-#define KTIMAGEDEVICE_H
+#include "ktpaintarearotator.h"
+#include "ktpaintarea.h"
 
-#include <qwidget.h>
-#include <QImage>
-
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class KTImageDevice : public QWidget
+KTPaintAreaRotator::KTPaintAreaRotator(QObject *parent, KTPaintArea *view) : QObject(parent), m_view(view)
 {
-	Q_OBJECT;
-	public:
-		KTImageDevice(QWidget *parent = 0);
-		~KTImageDevice();
-		
-		virtual QPaintEngine *paintEngine() const;
-		
-	protected:
-		virtual void paintEvent(QPaintEvent *e);
-		
-	private:
-		QImage m_image;
-};
+	connect(&m_timer, SIGNAL(timeout()), this, SLOT(applyRotation()));
+}
 
-#endif
+
+KTPaintAreaRotator::~KTPaintAreaRotator()
+{
+}
+
+
+void KTPaintAreaRotator::rotateTo(int angle)
+{
+	m_rotationAngle = angle;
+	
+	if ( !m_timer.isActive() )
+	{
+		m_timer.start(50);
+	}
+}
+
+
+void KTPaintAreaRotator::applyRotation()
+{
+	m_view->setRotationAngle(m_rotationAngle);
+	m_timer.stop();
+}
+

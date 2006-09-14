@@ -129,6 +129,11 @@ void KTViewDocument::setDrawGrid(bool draw)
 	m_paintArea->setDrawGrid(draw);
 }
 
+void KTViewDocument::setRotationAngle(int angle)
+{
+	m_paintArea->setRotationAngle(angle);
+}
+
 void KTViewDocument::showPos(const QPointF &p)
 {
 	QString message =  "X: " +  QString::number(p.x()) + " Y: " + QString::number(p.y() );

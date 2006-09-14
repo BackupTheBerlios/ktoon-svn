@@ -35,6 +35,7 @@
 #include "ktinputdeviceinformation.h"
 #include "ktitemevent.h"
 #include "ktpaintareaevent.h"
+#include "ktpaintarearotator.h"
 #include "ktimagedevice.h"
 
 #include <cmath>
@@ -83,7 +84,7 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(p
 // 	setMouseTracking(true);
 	
 	m_brushManager = new KTBrushManager(this);
-	
+	m_rotator = new KTPaintAreaRotator(this, this);
 	m_inputInformation = new KTInputDeviceInformation(this);
 	
 	m_drawingRect = QRectF(QPointF(0,0), QSizeF( 500, 400 ) ); // FIXME: parametrizable
@@ -217,8 +218,14 @@ void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 	delete eventMapped;
 	
 
-	
-	if (m_tool )
+	if ( event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
+	{
+		m_isDrawing = false;
+		
+// 		setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+// 		setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	}
+	else if (m_tool )
 	{
 		m_tool->begin();
 		
@@ -250,25 +257,31 @@ void KTPaintArea::mouseMoveEvent ( QMouseEvent * event )
 	
 	m_inputInformation->updateFromMouseEvent( eventMapped );
 	//Rotate
-	if(  event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
+	if(  !m_isDrawing && event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
 	{
+		setUpdatesEnabled(false);
+		
+		
 		setDragMode (QGraphicsView::NoDrag);
+		
 		QPointF p1 = event->pos();
-		QPointF p2 = rect().center();
-	
+		QPointF p2 = m_drawingRect.center();
+		
 		QPointF d = p1 - p2;
-	
-		if(d.x() != 0 )
+		
+// 		if( d.x() < -40 || d.x() > 40  )
+		if(d.x() != 0)
 		{
-			double a =  atan(d.y() / d.x())*(180/3.141592653589793116);
+			double a =  atan(d.y() / d.x())*(180/M_PI);
 			if(d.x() < 0)
 			{
-				dDebug() << a - m_angle +180;
 				a += 180;
 			}
-			rotate(a - m_angle );
-			m_angle = a;
+			m_rotator->rotateTo( a );
+// 			setRotationAngle( a );
 		}
+		
+		setUpdatesEnabled(true);
 	}
 	else if (m_tool && m_isDrawing )
 	{
@@ -315,15 +328,6 @@ void KTPaintArea::tabletEvent ( QTabletEvent * event )
 	QGraphicsView::tabletEvent(event );
 }
 
-void KTPaintArea::resizeEvent ( QResizeEvent * event )
-{
-// 	scene()->setSceneRect(rect().normalized().adjusted ( 0, 0, -25, -25 ) );
-// 	QPoint zero(scene()->width() - 500, scene()->height() - 400);
-// 	m_grid->setRect(QRectF(mapToScene(zero/2), QSizeF( 500, 400) ));
-	
-	
-	QGraphicsView::resizeEvent(event);
-}
 
 QMouseEvent *KTPaintArea::mapMouseEvent(QMouseEvent *event) const
 {
@@ -484,6 +488,11 @@ void KTPaintArea::scaleView(qreal scaleFactor)
 	scale(scaleFactor, scaleFactor);
 }
 
+void KTPaintArea::setRotationAngle(int angle)
+{
+	rotate(angle - m_angle );
+	m_angle = angle;
+}
 
 KTBrushManager *KTPaintArea::brushManager() const
 {

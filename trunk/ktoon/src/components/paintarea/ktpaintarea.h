@@ -34,7 +34,7 @@ class QGraphicsRectItem;
 class KTBrushManager;
 class KTInputDeviceInformation;
 class KTProject;
-
+class KTPaintAreaRotator;
 /**
  * Esta clase provee un area para hacer dibujos.
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
@@ -59,6 +59,8 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		
 		void scaleView(qreal scaleFactor);
 		
+		void setRotationAngle(int angle);
+		
 		KTBrushManager *brushManager() const;
 		
 	protected:
@@ -67,7 +69,6 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		void mouseMoveEvent ( QMouseEvent * event );
 		void mouseReleaseEvent ( QMouseEvent *event );
 		void tabletEvent ( QTabletEvent * event );
-		void resizeEvent ( QResizeEvent * event );
 		void wheelEvent( QWheelEvent *event );
 		
 	signals:
@@ -111,6 +112,8 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		
 		bool m_drawGrid;
 		double m_angle;
+		
+		KTPaintAreaRotator *m_rotator;
 };
 
 #endif

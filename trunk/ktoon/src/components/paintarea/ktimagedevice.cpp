@@ -21,6 +21,7 @@
 #include "ktimagedevice.h"
 #include <QPainter>
 #include <QPaintEngine>
+#include <QTimer>
 
 KTImageDevice::KTImageDevice(QWidget *parent) : QWidget(parent)
 {
@@ -29,7 +30,10 @@ KTImageDevice::KTImageDevice(QWidget *parent) : QWidget(parent)
 	m_image = QImage(300,300, QImage::Format_RGB32);
 	m_image.fill(Qt::white);
 	
-	setAttribute(Qt::WA_PaintOnScreen, true);
+// 	setAttribute(Qt::WA_PaintOnScreen);
+// 	setAttribute(Qt::WA_NoSystemBackground);
+// 	setAttribute(Qt::WA_OpaquePaintEvent);
+// 	setAutoFillBackground(true);
 }
 
 
@@ -41,7 +45,10 @@ KTImageDevice::~KTImageDevice()
 QPaintEngine *KTImageDevice::paintEngine() const
 {
 	qDebug("KTImageDevice: paint engine *****************************************");
-	return m_image.paintEngine();
+	
+// 	return m_image.paintEngine();
+	
+	return QWidget::paintEngine();
 }
 
 void KTImageDevice::paintEvent(QPaintEvent *)

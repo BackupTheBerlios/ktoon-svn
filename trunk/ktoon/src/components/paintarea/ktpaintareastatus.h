@@ -45,12 +45,15 @@ class KTPaintAreaStatus : public QStatusBar
 	private slots:
 		void selectAntialiasingHint(bool use);
 		void selectRenderer(int id);
+		void applyRotationFromItem(const QString & text);
 		
 	private:
 		KTViewDocument *m_viewDocument;
 		QPushButton *m_antialiasHint;
 		QComboBox *m_renderer;
 		BrushStatus *m_brushStatus;
+		
+		QComboBox *m_rotation;
 };
 
 #endif
