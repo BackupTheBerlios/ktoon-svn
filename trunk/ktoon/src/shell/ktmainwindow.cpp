@@ -156,6 +156,7 @@ void KTMainWindow::newViewDocument(const QString &title)
 			
 // 			m_statusBar->advance(7);
 // 			
+			// <FIXME>
 			m_animationSpace = new KTWorkspace;
 			m_animationSpace->setWindowIcon(QIcon(THEME_DIR+"/icons/animation_mode.png"));
 			m_animationSpace->setScrollBarsEnabled ( true );
@@ -164,31 +165,31 @@ void KTMainWindow::newViewDocument(const QString &title)
 			m_animationSpace->setWindowTitle(tr("Animation"));
 			addWidget(m_animationSpace, true, Animation);
 			
-// 			m_pActiveTabWidget->setCurrentWidget(m_viewDoc);
-			
-// 			KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->activeWindow());
+			KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->activeWindow());
 // 			
-// 			if ( camera )
-// 			{
+			if ( camera )
+			{
 // 				camera->animationArea()->setScene( scene );
-// 			}
-// 			else
-// 			{
-// 				QWidgetList cameras = m_animationSpace->windowList();
-// 				
-// 				if ( cameras.count() > 0 )
-// 				{
-// 					camera = qobject_cast<KTViewCamera *>(cameras[0]);
-// 					if(camera)
-// 					{
+			}
+			else
+			{
+				QWidgetList cameras = m_animationSpace->windowList();
+				
+				if ( cameras.count() > 0 )
+				{
+					camera = qobject_cast<KTViewCamera *>(cameras[0]);
+					if(camera)
+					{
 // 						camera->animationArea()->setScene(scene);
-// 					}
-// 				}
-// 				else
-// 				{
-// 					newViewCamera(scene);
-// 				}
-// 			}
+					}
+				}
+				else
+				{
+					newViewCamera(/*scene*/);
+				}
+			}
+			
+			// </FIXME>
 // 			
 // 			m_viewDoc->show();
 // 			
@@ -209,12 +210,12 @@ void KTMainWindow::newViewCamera(KTScene *scene)
 {
 	if ( m_projectManager->isOpen() )
 	{
-// 		KTViewCamera *viewCamera = new KTViewCamera(m_projectManager->documentSize() , m_animationSpace);
-// 		viewCamera->setAttribute(Qt::WA_DeleteOnClose, true);
+		KTViewCamera *viewCamera = new KTViewCamera;
+		viewCamera->setAttribute(Qt::WA_DeleteOnClose, true);
 // 		connect(viewCamera, SIGNAL(sendMessage(const QString &, int)), m_statusBar, SLOT(setStatus(const QString &, int)));
 // 		connect(viewCamera, SIGNAL(sendProgress(int, int)), m_statusBar, SLOT(advance(int, int)));
-// 		
-// 		m_animationSpace->addWindow(viewCamera);
+		
+		m_animationSpace->addWindow(viewCamera);
 // 		
 // 		if ( scene )
 // 		{
@@ -225,7 +226,7 @@ void KTMainWindow::newViewCamera(KTScene *scene)
 // 			viewCamera->animationArea()->setScene(m_projectManager->currentScene());
 // 		}
 // 		
-// 		viewCamera->show();
+		viewCamera->show();
 	}
 }
 

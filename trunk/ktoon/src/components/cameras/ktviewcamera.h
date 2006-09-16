@@ -39,7 +39,7 @@ class KTViewCamera : public DMdiWindow
 {
 	Q_OBJECT
 	public:
-		KTViewCamera(const QSize& size, QWorkspace *parent = 0);
+		KTViewCamera(QWorkspace *parent = 0);
 		~KTViewCamera();
 		
 		KTAnimationArea *animationArea();

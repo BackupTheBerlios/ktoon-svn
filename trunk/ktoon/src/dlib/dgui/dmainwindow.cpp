@@ -317,7 +317,7 @@ void DMainWindow::addToPerspective(QWidget *widget, int perspective)
 	{
 		m_managedWidgets.insert( widget, perspective );
 		
-		if ( perspective != m_currentPerspective )
+		if ( !(perspective & m_currentPerspective) )
 		{
 			widget->hide();
 		}
@@ -357,7 +357,7 @@ void DMainWindow::addToPerspective(QAction *action, int perspective)
 	{
 		m_managedActions.insert( action, perspective );
 		
-		if ( perspective != m_currentPerspective )
+		if ( !(perspective & m_currentPerspective) )
 		{
 			action->setVisible(false);
 		}
@@ -460,7 +460,7 @@ void DMainWindow::relayoutViewButton(bool topLevel)
 			// if a tool view is floating the button bar isn't exclusive
 			DButtonBar *bar = m_buttonBars[m_forRelayout->button()->area()];
 			
-			qDebug() << (m_forRelayout->button()->area());
+// 			qDebug() << (m_forRelayout->button()->area());
 			bool exclusive = true;
 			
 			foreach(DToolView *v, m_toolViews[bar] )

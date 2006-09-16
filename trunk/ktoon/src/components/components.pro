@@ -13,7 +13,8 @@ SUBDIRS += scenes \
            help \
            kinas \
            pen \
-           paintarea 
+           paintarea \
+           cameras 
 CONFIG += release \
 warn_on
 TEMPLATE = subdirs

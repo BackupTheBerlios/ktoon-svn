@@ -13,28 +13,20 @@ HEADERS += ktthemeselector.h \
            ktabout.h \
            ktpreferences.h \
            ktworkspace.h \
-           ktcamerabar.h \
            ktpaintareaconfig.h 
 SOURCES += ktthemeselector.cpp \
            ktabout.cpp \
            ktpreferences.cpp \
            ktworkspace.cpp \
-           ktcamerabar.cpp \
            ktpaintareaconfig.cpp 
-
 KDEV_QTVER = 4
 STORE_DIR = ../../src/store
 LIBKTOON_DIR = ../../src/libktoon
 DLIB_DIR = ../../src/dlib
-
 include($$STORE_DIR/store.pri)
 include($$LIBKTOON_DIR/libktoon.pri)
 include($$DLIB_DIR/dlib.pri)
-
-
 TARGET = ktui
 CONFIG += static
 include(../../ktconfig.pri)
-
 TEMPLATE = lib
-

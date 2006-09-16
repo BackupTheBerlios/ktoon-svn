@@ -147,7 +147,7 @@ void DTabbedMainWindow::setupTabWidget(QTabWidget *w)
 
 void DTabbedMainWindow::addWidget(QWidget *widget, bool persistant, int perspective)
 {
-	if ( perspective == currentPerspective() )
+	if ( perspective & currentPerspective() )
 	{
 		m_tabWidget->addTab(widget, widget->windowIcon(), widget->windowTitle() );
 	}

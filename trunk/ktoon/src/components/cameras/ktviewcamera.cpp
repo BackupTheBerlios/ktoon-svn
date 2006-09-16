@@ -19,12 +19,12 @@
  ***************************************************************************/
 
 #include "ktviewcamera.h"
-#include "ktapplication.h"
 #include <ddebug.h>
 
 #include <QStatusBar>
 #include <QLabel>
 #include <QHBoxLayout>
+#include <QApplication>
 #include <QCheckBox>
 
 class KTViewCamera::Status : public QStatusBar
@@ -100,7 +100,7 @@ void KTViewCamera::Status::addWidget(QWidget *widget, int stretch )
 	m_sceneInfoLayout->addWidget(widget, stretch);
 }
 
-KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : DMdiWindow(parent)
+KTViewCamera::KTViewCamera(QWorkspace *parent) : DMdiWindow(parent)
 {
 	DINIT;
 	
@@ -131,7 +131,7 @@ KTViewCamera::KTViewCamera(const QSize& size, QWorkspace *parent) : DMdiWindow(p
 	animationAreaLayout->setMargin(0);
 	
 	
-	m_animationArea = new KTAnimationArea(size );
+	m_animationArea = new KTAnimationArea(QSize(100,100));// FIXME: size
 	animationAreaLayout->addWidget(m_animationArea);
 	
 	
