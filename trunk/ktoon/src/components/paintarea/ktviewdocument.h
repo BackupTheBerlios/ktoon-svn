@@ -55,7 +55,8 @@ class KTPaintAreaEvent;
 
 class KTViewDocument : public QMainWindow
 {
-	Q_OBJECT
+	Q_OBJECT;
+	
 	public:
 		KTViewDocument(KTProject *project, QWidget *parent = 0 );
 		~KTViewDocument();
@@ -131,11 +132,11 @@ class KTViewDocument : public QMainWindow
 		
 		void selectToolFromMenu(QAction *act);
 		
-		void handleProjectEvent(KTProjectEvent *event);
-		
 	public slots:
 		void selectTool();
 		void applyFilter();
+		
+		bool handleProjectEvent(KTProjectEvent *event);
 		
 	signals:
 		void sendToStatus(const QString& msg);

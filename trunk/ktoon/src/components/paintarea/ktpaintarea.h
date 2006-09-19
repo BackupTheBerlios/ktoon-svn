@@ -81,9 +81,7 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		
 	public slots:
 		void centerDrawingArea();
-		
-	private slots:
-		
+			
 	protected:
 		void frameEvent(KTFrameEvent *event);
 		void layerEvent(KTLayerEvent *event);

@@ -655,9 +655,9 @@ void KTViewDocument::selectToolFromMenu(QAction *action)
 	}
 }
 
-void KTViewDocument::handleProjectEvent(KTProjectEvent *event)
+bool KTViewDocument::handleProjectEvent(KTProjectEvent *event)
 {
-	m_paintArea->handleEvent(event);
+	return m_paintArea->handleEvent(event);
 }
 
 void KTViewDocument::applyFilter()

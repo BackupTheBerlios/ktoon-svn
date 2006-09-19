@@ -29,35 +29,42 @@
 
 #include "ktscene.h"
 #include "ktglobal.h"
+#include "ktabstractprojecteventhandler.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTOON_EXPORT KTAnimationArea : public QFrame
+class KTOON_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectEventHandler
 {
 	Q_OBJECT
 	public:
-		KTAnimationArea(const QSize& size, QWidget *parent = 0);
+		KTAnimationArea(KTProject *project, QWidget *parent = 0);
 		~KTAnimationArea();
-		void setScene(KTScene *scene);
 		
 		QSize sizeHint() const;
 		int photogramsCount() const;
 		
 		void setLoop(bool l);
 		
-		const KTScene *currentScene() const;
+		void setCurrentScene(int index);
+		
+		KTScene *currentScene() const;
 		
 	public slots:
 		virtual void render();
 		virtual void play();
 		virtual void stop();
 		
-	private:
-// 		void renderGraphic(KTGraphicComponent *graphicComponent, QPainter *painter );
 		
 	private slots:
 		void advance();
+		
+	protected:
+		void frameEvent(KTFrameEvent *event);
+		void layerEvent(KTLayerEvent *event);
+		void sceneEvent(KTSceneEvent *event);
+		void projectEvent(KTProjectEvent *event);
+		void itemEvent(KTItemEvent *event);
 		
 	signals:
 		void progressStep(int, int);
@@ -65,17 +72,17 @@ class KTOON_EXPORT KTAnimationArea : public QFrame
 		
 		void sceneChanged(const KTScene *newScene );
 		
+		void eventTriggered(const KTProjectEvent *event);
+		
 	protected:
 		void paintEvent(QPaintEvent *e);
-		virtual void drawFrames(QPainter *painter);
 		void resizeEvent ( QResizeEvent * event );
 		
 	private:
 		QFrame *m_container;
 		QImage m_renderCamera;
 		
-// 		KTFrame *m_currentFrame;
-		KTScene *m_scene;
+		KTProject *m_project;
 		
 		bool m_draw, m_ciclicAnimation;
 		
@@ -84,8 +91,9 @@ class KTOON_EXPORT KTAnimationArea : public QFrame
 		QTimer *m_timer;
 		
 		QList<QImage> m_photograms;
-		QSize m_size;
 		bool m_isRendered;
+		
+		int m_currentSceneIndex;
 };
 
 #endif

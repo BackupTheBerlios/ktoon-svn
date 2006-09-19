@@ -42,7 +42,7 @@
 
 class KTExposureSheet : public KTModuleWidgetBase
 {
-	Q_OBJECT
+	Q_OBJECT;
 	public:
 		KTExposureSheet(QWidget *parent = 0);
 		~KTExposureSheet();

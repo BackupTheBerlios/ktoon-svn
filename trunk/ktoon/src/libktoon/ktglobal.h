@@ -25,7 +25,8 @@
 
 #define KTOON_EXPORT D_GUI_EXPORT
 
-# define LIBRARY_DIR CONFIG_DIR+"/libraries"
+#define LIBRARY_DIR CONFIG_DIR+"/libraries"
+
 
 namespace KToon
 {
@@ -44,6 +45,7 @@ namespace KToon
 		Critical
 	};
 };
+
 
 
 #endif

@@ -29,29 +29,36 @@
 
 #include "dcirclebuttonbar.h"
 
+#include "ktabstractprojecteventhandler.h"
+
 
 class QCheckBox;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado \<krawek@toonka.com\>
 */
-class KTViewCamera : public DMdiWindow
+class KTViewCamera : public QMainWindow
 {
 	Q_OBJECT
 	public:
-		KTViewCamera(QWorkspace *parent = 0);
+		KTViewCamera(KTProject *project, QWidget *parent = 0);
 		~KTViewCamera();
 		
-		KTAnimationArea *animationArea();
-		
 		QSize sizeHint() const;
-
 		void updateSceneInfo();
+		
+		
 		
 	private slots:
 		void showSceneInfo(const KTScene *scene);
 		void setLoop();
 		void doPlay();
+		
+	public slots:
+		bool handleProjectEvent(KTProjectEvent *event);
+		
+	signals:
+		void eventTriggered(const KTProjectEvent *event);
 		
 	private:
 		QFrame *m_container;

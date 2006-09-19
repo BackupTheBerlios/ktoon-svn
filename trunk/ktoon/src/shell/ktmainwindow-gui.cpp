@@ -24,6 +24,8 @@
 #include "ktapplication.h"
 #include "dcommandhistory.h"
 
+#include <QKeySequence>
+
 void KTMainWindow::createGUI()
 {
 	// TODO: put setWindowIcon in each class
@@ -245,11 +247,13 @@ void KTMainWindow::setupMenu()
 	group->setExclusive(true);
 
 	QAction *drawingPerspective = new QAction(tr("Drawing"), this);
+	drawingPerspective->setShortcut(QKeySequence(Qt::Key_F9));
 	
 	drawingPerspective->setData(Drawing);
 	group->addAction(drawingPerspective);
 
 	QAction *animationPerspective = new QAction(tr("Animation"), this);
+	animationPerspective->setShortcut(QKeySequence(Qt::Key_F10));
 // 	drawingPerspective->setCheckable(true);
 	group->addAction(animationPerspective);
 	animationPerspective->setData(Animation);

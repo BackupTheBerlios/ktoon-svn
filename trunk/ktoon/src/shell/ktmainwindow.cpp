@@ -167,6 +167,7 @@ void KTMainWindow::newViewDocument(const QString &title)
 			
 			KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->activeWindow());
 // 			
+			
 			if ( camera )
 			{
 // 				camera->animationArea()->setScene( scene );
@@ -210,8 +211,10 @@ void KTMainWindow::newViewCamera(KTScene *scene)
 {
 	if ( m_projectManager->isOpen() )
 	{
-		KTViewCamera *viewCamera = new KTViewCamera;
+		KTViewCamera *viewCamera = new KTViewCamera( m_projectManager->project() );
 		viewCamera->setAttribute(Qt::WA_DeleteOnClose, true);
+		ui4project( viewCamera );
+		
 // 		connect(viewCamera, SIGNAL(sendMessage(const QString &, int)), m_statusBar, SLOT(setStatus(const QString &, int)));
 // 		connect(viewCamera, SIGNAL(sendProgress(int, int)), m_statusBar, SLOT(advance(int, int)));
 		

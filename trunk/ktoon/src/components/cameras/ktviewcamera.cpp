@@ -100,7 +100,7 @@ void KTViewCamera::Status::addWidget(QWidget *widget, int stretch )
 	m_sceneInfoLayout->addWidget(widget, stretch);
 }
 
-KTViewCamera::KTViewCamera(QWorkspace *parent) : DMdiWindow(parent)
+KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QMainWindow(parent)
 {
 	DINIT;
 	
@@ -131,7 +131,7 @@ KTViewCamera::KTViewCamera(QWorkspace *parent) : DMdiWindow(parent)
 	animationAreaLayout->setMargin(0);
 	
 	
-	m_animationArea = new KTAnimationArea(QSize(100,100));// FIXME: size
+	m_animationArea = new KTAnimationArea(project);
 	animationAreaLayout->addWidget(m_animationArea);
 	
 	
@@ -141,7 +141,7 @@ KTViewCamera::KTViewCamera(QWorkspace *parent) : DMdiWindow(parent)
 	
 	layout->addWidget( animationAreaContainer/*, 0, Qt::AlignTop | Qt::AlignCenter*/ );
 	
-#if 0
+#if 1
 	KTCameraBar *m_bar = new KTCameraBar;
 	layout->addWidget( m_bar, 0, Qt::AlignTop | Qt::AlignCenter );
 	m_bar->show();
@@ -187,12 +187,6 @@ void KTViewCamera::showSceneInfo(const KTScene *scene)
 	}
 }
 
-KTAnimationArea *KTViewCamera::animationArea()
-{
-	return m_animationArea;
-}
-
-
 void KTViewCamera::setLoop()
 {
 	m_animationArea->setLoop(m_loop->isChecked());
@@ -215,3 +209,10 @@ void KTViewCamera::updateSceneInfo()
 {
 	showSceneInfo(m_animationArea->currentScene());
 }
+
+bool KTViewCamera::handleProjectEvent(KTProjectEvent *event)
+{
+	return m_animationArea->handleEvent( event );
+}
+
+

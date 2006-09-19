@@ -39,7 +39,8 @@
 */
 class KTOON_EXPORT KTModuleWidgetBase : public QWidget, public KTAbstractProjectEventHandler
 {
-	Q_OBJECT
+	Q_OBJECT;
+	
 	public:
 		KTModuleWidgetBase(QWidget *parent, const char *name = 0);
 		~KTModuleWidgetBase();
@@ -57,8 +58,7 @@ class KTOON_EXPORT KTModuleWidgetBase : public QWidget, public KTAbstractProject
 		
 	public slots:
 		void setCaption(const QString &text);
-		bool handleProjectEvent(KTProjectEvent *e);
-		
+		bool handleProjectEvent(KTProjectEvent *event);
 		
 	protected:
 		virtual void enterEvent(QEvent *e);

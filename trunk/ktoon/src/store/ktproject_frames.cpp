@@ -223,10 +223,26 @@ QString KTProject::renameFrame(int scenePosition, int layerPosition, int positio
 
 
 
-void KTProject::selectFrame(int scene, int layer, int position, bool prioritary)
+void KTProject::selectFrame(int scenePosition, int layerPosition, int position, bool prioritary)
 {
-	KTFrameEvent event(KTProjectEvent::Select, scene, layer, position, prioritary);
-	emit commandExecuted( &event );
+	KTScene *scene = this->scene(scenePosition);
+	
+	if ( !scene)
+	{
+		return;
+	}
+	
+	KTLayer *layer = scene->layer(layerPosition);
+	
+	if ( layer )
+	{
+		KTFrame *frame = layer->frame(position-1);
+		
+		if ( ! frame ) return;
+		
+		KTFrameEvent event(KTProjectEvent::Select, scenePosition, layerPosition, position, prioritary);
+		emit commandExecuted( &event );
+	}
 }
 
 void KTProject::setFrameVisibility(int scenePos, int layerPos, int position, bool view)
