@@ -96,4 +96,7 @@ void KTToolPlugin::doubleClick(const KTInputDeviceInformation *, KTScene *, QGra
 {
 }
 
-
+void KTToolPlugin::keyPressEvent(QKeyEvent *event)
+{
+	Q_UNUSED(event);
+}

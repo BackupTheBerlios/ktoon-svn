@@ -67,6 +67,8 @@ class KTViewDocument : public QMainWindow
 		void setOpenGL(bool useIt);
 		void setDrawGrid(bool draw);
 		
+		QPainter::RenderHints renderHints() const;
+		
 		void setRotationAngle(int angle);
 		
 		KTBrushManager *brushManager() const;

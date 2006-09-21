@@ -51,7 +51,7 @@ class ContourSelection : public KTToolPlugin
 		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 		
 		
-		virtual QString toolToXml() const;
+		virtual QString toolToXml() const; //###: creo que ya no se usa.
 		
 		
 		virtual QMap<QString, DAction *>actions() const;
@@ -65,7 +65,7 @@ class ContourSelection : public KTToolPlugin
 		
 		
 		virtual void itemEvent(const KTItemEvent *event);
-		
+		virtual void keyPressEvent(QKeyEvent *event);
 		
 	private:
 		void setupActions();
@@ -73,7 +73,7 @@ class ContourSelection : public KTToolPlugin
 		
 	private:
 		QMap<QString, DAction *> m_actions;
-		QList<NodeGroup*> m_nodes;
+		QList<NodeGroup*> m_nodes; // ###: nodos? o grupo de nodos? o lista de grupos de nodos?
 		KTProject *m_project;
 // 		QGraphicsView *m_view;
 		

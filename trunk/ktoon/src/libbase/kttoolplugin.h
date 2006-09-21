@@ -60,6 +60,8 @@ class KTOON_EXPORT KTToolPlugin : public QObject, public KTToolInterface
 		
 		virtual void itemEvent(const KTItemEvent *event);
 		
+		virtual void keyPressEvent(QKeyEvent *event);
+		
 	public:
 		// Events
 		void begin();

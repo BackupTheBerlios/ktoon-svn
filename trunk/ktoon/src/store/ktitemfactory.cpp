@@ -97,15 +97,16 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 		if ( !m_item )
 		{
 			m_item = createItem( qname );
-			qgraphicsitem_cast<KTPathItem *>(m_item)->setPath(path);
 		}
-		else
-		{
-			QGraphicsItem *item = createItem(qname);
-			qgraphicsitem_cast<KTPathItem *>(item)->setPath(path);
-			
-			qgraphicsitem_cast<QGraphicsItemGroup *>(m_item)->addToGroup(item );
-		}
+// 		else if ( m_addToGroup )
+// 		{
+// 			QGraphicsItem *item = createItem(qname);
+// 			qgraphicsitem_cast<KTPathItem *>(item)->setPath(path);
+// 			
+// 			qgraphicsitem_cast<QGraphicsItemGroup *>(m_item)->addToGroup(item );
+// 		}
+		
+		qgraphicsitem_cast<KTPathItem *>(m_item)->setPath(path);
 	}
 	else if ( qname == "rect" )
 	{

@@ -72,8 +72,6 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
 		void setVisible(bool isVisible);
 		bool isVisible() const;
 		
-		void recoverItems();
-		
 		void addGraphic(QGraphicsItem *item);
 		void removeGraphic(QGraphicsItem *item);
 		void replaceGraphic(int position, QGraphicsItem *item);
@@ -86,7 +84,7 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
 		
 		QGraphicsItem *item(int position) const;
 		
-		QGraphicsItemGroup *createItemGroupAt( int position, const QList<qreal> & group );
+		QGraphicsItemGroup *createItemGroupAt( int position, QList<qreal> group );
 		
 		KTLayer *layer() const;
 		

@@ -364,19 +364,19 @@ void KTMainWindow::setupHelpActions()
 
 void KTMainWindow::setupWindowActions()
 {
-	new DAction(QPixmap(), tr("Show TimeLine widget"), QKeySequence("Shift+T"), this, SLOT(showWidgetPage()), m_actionManager, "show timeline");
+	addToPerspective(new DAction(QPixmap(), tr("Show TimeLine widget"), QKeySequence("Shift+T"), this, SLOT(showWidgetPage()), m_actionManager, "show timeline"), Drawing);
 	
-	new DAction(QPixmap(), tr("Show exposure sheet widget"), QKeySequence("Shift+E"), this, SLOT(showWidgetPage()), m_actionManager, "show exposure");
+	addToPerspective(new DAction(QPixmap(), tr("Show exposure sheet widget"), QKeySequence("Shift+E"), this, SLOT(showWidgetPage()), m_actionManager, "show exposure"), Drawing);
 	
 	new DAction(QPixmap(), tr("Show scenes widget"), QKeySequence("Shift+S"), this, SLOT(showWidgetPage()), m_actionManager, "show scenes");
 	
-	new DAction(QPixmap(), tr("Show brushes widget"), QKeySequence("Shift+B"), this, SLOT(showWidgetPage()), m_actionManager, "show brushes");
+	addToPerspective(new DAction(QPixmap(), tr("Show brushes widget"), QKeySequence("Shift+B"), this, SLOT(showWidgetPage()), m_actionManager, "show brushes"), Drawing);
 	
-	new DAction(QPixmap(), tr("Show library widget"), QKeySequence("Shift+L"), this, SLOT(showWidgetPage()), m_actionManager, "show library");
+	addToPerspective(new DAction(QPixmap(), tr("Show library widget"), QKeySequence("Shift+L"), this, SLOT(showWidgetPage()), m_actionManager, "show library"), Drawing);
 	
 	new DAction(QPixmap(), tr("Show help widget"), QKeySequence("F1"), this, SLOT(showWidgetPage()), m_actionManager, "show help");
 	
-	new DAction(QPixmap(), tr("Show color palette widget"), QKeySequence(tr("Shift+P")), this, SLOT(showWidgetPage()), m_actionManager, "show palette");
+	addToPerspective(new DAction(QPixmap(), tr("Show color palette widget"), QKeySequence(tr("Shift+P")), this, SLOT(showWidgetPage()), m_actionManager, "show palette"), Drawing);
 	
 }
 

@@ -31,6 +31,34 @@ KTItemGroup::~KTItemGroup()
 	
 }
 
+Q_DECLARE_METATYPE(QGraphicsItem *);
+
+QVariant KTItemGroup::itemChange ( GraphicsItemChange change, const QVariant & value )
+{
+	if ( change == QGraphicsItem::ItemChildRemovedChange )
+	{
+// 		m_childs.removeAll( qvariant_cast<QGraphicsItem *>(value) );
+	}
+	else if ( change == QGraphicsItem::ItemChildAddedChange )
+	{
+		m_childs << qvariant_cast<QGraphicsItem *>(value);
+	}
+	
+	return QGraphicsItemGroup::itemChange(change, value);
+}
+
+
+void KTItemGroup::recoverChilds()
+{
+	foreach(QGraphicsItem *item, m_childs )
+	{
+		if ( item->parentItem() != this )
+		{
+			addToGroup(item);
+		}
+	}
+}
+
 void KTItemGroup::fromXml(const QString &xml)
 {
 }
@@ -44,6 +72,6 @@ QDomElement KTItemGroup::toXml(QDomDocument &doc)
 	{
 		root.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml( doc ));
 	}
-	dDebug() << doc.toString();
+	
 	return root;
 }

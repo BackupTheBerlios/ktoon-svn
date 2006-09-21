@@ -27,19 +27,26 @@
 #include <QPoint>
 #include <QPointF>
 #include <QRect>
-#include <QRegion>
 #include <QStringList>
+#include <QVariant>
+#include <QSize>
+#include <QEvent>
+#include <QTimer>
+
+#ifdef QT_GUI_LIB
+
+#include <QRegion>
 #include <QPen>
 #include <QBrush>
-#include <QSize>
-#include <QVariant>
 #include <QImage>
 #include <QIcon>
 #include <QPixmap>
 #include <QWidget>
-#include <QEvent>
-#include <QTimer>
 #include <QMessageBox>
+
+#endif
+
+#include <QSettings>
 
 #if defined(Q_OS_UNIX)
 # define SHOW_ERROR "*** \033[0;31m%s\033[0;0m ***\n"
@@ -96,6 +103,7 @@ static void DDebutOutput(DebugType t, DebugOutput o, const char *data)
 			}
 		}
 		break;
+#ifdef QT_GUI_LIB
 		case DBoxOutput:
 		{
 			switch(t)
@@ -123,42 +131,60 @@ static void DDebutOutput(DebugType t, DebugOutput o, const char *data)
 			}
 		}
 		break;
+#endif
 		default: break;
 	}
 }
 
-DDebug::DDebug(DebugType t, DebugOutput o) : m_type(t), m_output(o)
+DDebug::DDebug(DebugType t, const QString &area, DebugOutput o) : m_type(t), m_output(o), m_area(area)
 {
 	streamer = new Streamer();
+	
+	QSettings settings("ddebug");
+	
+	settings.beginGroup("Iface");
+	
+	m_areas = settings.value("areas", QStringList()).toStringList();
+	
+	m_showArea = settings.value("show_area", false).toBool();
+	
+	m_showAll = settings.value("show_all", true).toBool();
+	
+	if ( m_showArea && !m_area.isEmpty())
+	{
+		*streamer << m_area << ": ";
+	}
 };
 
-DDebug::DDebug(const DDebug & d ) : streamer(d.streamer), m_type(d.m_type), m_output(d.m_output)
+DDebug::DDebug(const DDebug & d ) : streamer(d.streamer), m_type(d.m_type), m_output(d.m_output), m_areas(d.m_areas), m_area(d.m_area), m_showArea(d.m_showArea)
 {
 }
 
 DDebug::~DDebug()
 {
-	::DDebutOutput( m_type, m_output, streamer->buffer.toLocal8Bit().data() );
+	if ( m_area.isEmpty() && m_showAll || m_areas.contains(m_area )  )
+	{
+		::DDebutOutput( m_type, m_output, streamer->buffer.toLocal8Bit().data() );
+	}
+	
 	delete streamer;
+	
+	QSettings settings("ddebug");
+	settings.beginGroup("Iface");
+	
+	if ( m_areas.isEmpty() )
+	{
+		settings.setValue("areas", "");
+	}
+	else
+	{
+		settings.setValue("areas", m_areas);
+	}
+	
+	settings.setValue("show_area", m_showArea);
+	settings.setValue("show_all", m_showAll);
 }
 
-DDebug& DDebug::operator<<( const QPixmap& p ) 
-{
-	*this << "(" << p.width() << ", " << p.height() << ")";
-	return *this;
-}
-
-DDebug& DDebug::operator<<( const QIcon& p )
-{
-	*this << "(" << p.pixmap(QSize() ).width() << ", " << p.pixmap(QSize()).height() << ")";
-	return *this;
-}
-
-DDebug& DDebug::operator<<( const QImage& p ) 
-{
-	*this << "(" << p.width() << ", " << p.height() << ")";
-	return *this;
-}
 
 DDebug& DDebug::operator<<( const QDateTime& time) 
 {
@@ -191,6 +217,7 @@ DDebug& DDebug::operator<<( const QPointF & p)
 	return *this;
 }
 
+
 DDebug& DDebug::operator<<( const QSize & s)  
 {
 	*this << "[" << s.width() << "x" << s.height() << "]";
@@ -203,6 +230,56 @@ DDebug& DDebug::operator<<( const QRect & r)
 	return *this;
 }
 
+DDebug& DDebug::operator<<( const QStringList & l) 
+{
+	*this << "(";
+	*this << l.join(",");
+	*this << ")";
+
+	return *this;
+}
+
+
+DDebug& DDebug::operator<<( const QVariant & v) 
+{
+	*this << "[variant: ";
+	*this << v.typeName();
+	*this << " toString=";
+	*this << v.toString();
+	*this << "]";
+	return *this;
+}
+
+
+DDebug& DDebug::operator << (const QEvent* e)
+{
+	*this << "[Event " << e->type() << "]";
+	
+	return *this;
+}
+
+
+#ifdef QT_GUI_LIB
+DDebug& DDebug::operator<<( const QPixmap& p ) 
+{
+	*this << "(" << p.width() << ", " << p.height() << ")";
+	return *this;
+}
+
+DDebug& DDebug::operator<<( const QIcon& p )
+{
+	*this << "(" << p.pixmap(QSize() ).width() << ", " << p.pixmap(QSize()).height() << ")";
+	return *this;
+}
+
+DDebug& DDebug::operator<<( const QImage& p ) 
+{
+	*this << "(" << p.width() << ", " << p.height() << ")";
+	return *this;
+}
+
+
+
 DDebug& DDebug::operator<<( const QRegion & reg) 
 {
 	*this<< "[ ";
@@ -214,15 +291,6 @@ DDebug& DDebug::operator<<( const QRegion & reg)
 	}
 
 	*this <<"]";
-	return *this;
-}
-
-DDebug& DDebug::operator<<( const QStringList & l) 
-{
-	*this << "(";
-	*this << l.join(",");
-	*this << ")";
-
 	return *this;
 }
 
@@ -290,16 +358,7 @@ DDebug& DDebug::operator<<( const QBrush & b)
 	return *this;
 }
 
-DDebug& DDebug::operator<<( const QVariant & v) 
-{
-	*this << "[variant: ";
-	*this << v.typeName();
-	*this << " toString=";
-	*this << v.toString();
-	*this << "]";
-	return *this;
-}
-// 5580379
+// angie: 5580379
 DDebug& DDebug::operator << (const QWidget* t) 
 {
 	if ( t )
@@ -312,14 +371,6 @@ DDebug& DDebug::operator << (const QWidget* t)
 	}
 	return *this; 
 }
-
-DDebug& DDebug::operator << (const QEvent* e)
-{
-	*this << "[Event " << e->type() << "]";
-	
-	return *this;
-}
-
 
 DDebug& DDebug::operator << (const QLinearGradient &g)
 {
@@ -369,6 +420,8 @@ void DDebug::resaltWidget(QWidget *w, const QColor &color)
 	pal.setColor(QPalette::Background, color);
 	w->setPalette(pal);
 }
+
+#endif // QT_GUI_LIB
 
 #endif // D_NODEBUG
 

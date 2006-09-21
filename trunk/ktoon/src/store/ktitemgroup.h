@@ -39,15 +39,14 @@ class STORE_EXPORT KTItemGroup: public KTAbstractSerializable, public QGraphicsI
 		~KTItemGroup();
 		virtual void fromXml(const QString &xml);
 		virtual QDomElement toXml(QDomDocument &doc);
-// 		bool contains ( const QPointF & point ) const;
+		
+		void recoverChilds();
 		
 	protected:
-// 		virtual void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
-// 		virtual void dragLeaveEvent ( QGraphicsSceneDragDropEvent * event );
-// 		virtual void dropEvent ( QGraphicsSceneDragDropEvent *event );
+		QVariant itemChange ( GraphicsItemChange change, const QVariant & value );
 		
 	private:
-// 		bool m_dragOver;
+		QList<QGraphicsItem *> m_childs;
 };
 
 #endif

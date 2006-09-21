@@ -22,7 +22,12 @@
 #define DDEBUG_H
 
 #include <QTextStream>
+#include <QStringList>
+
+#ifdef QT_GUI_LIB
 #include <QColor>
+#endif
+
 #include "dcore/dglobal.h"
 
 /**
@@ -181,11 +186,9 @@ class D_CORE_EXPORT DDebug
 		} *streamer;
 		
 		
-		DDebug(DebugType t, DebugOutput o);
+		DDebug(DebugType t, const QString &area, DebugOutput o);
 		DDebug(const DDebug &);
 		~DDebug();
-		
-		void resaltWidget(QWidget *w, const QColor &color = QColor(Qt::magenta));
 		
 		inline DDebug &operator<<(QTextStreamManipulator /*m*/)
 		{ 
@@ -262,9 +265,7 @@ class D_CORE_EXPORT DDebug
 			*streamer << t; 
 			return *this; 
 		}
-		DDebug& operator<<( const QPixmap& p );
-		DDebug& operator<<( const QIcon& p );
-		DDebug& operator<<( const QImage& p ) ;
+		
 		DDebug& operator<<( const QDateTime& );
 		DDebug& operator<<( const QDate&     );
 		DDebug& operator<<( const QTime&     );
@@ -272,19 +273,27 @@ class D_CORE_EXPORT DDebug
 		DDebug& operator<<( const QPointF & ) ;
 		DDebug& operator<<( const QSize & ) ;
 		DDebug& operator<<( const QRect & ) ;
-		DDebug& operator<<( const QRegion & );
+		DDebug& operator<<( const QVariant & );
+		DDebug& operator << (const QEvent*);
 		DDebug& operator<<( const QStringList & );
+		
+		
+#ifdef QT_GUI_LIB
+		void resaltWidget(QWidget *w, const QColor &color = QColor(Qt::magenta));
+		
+		DDebug& operator<<( const QPixmap& p );
+		DDebug& operator<<( const QIcon& p );
+		DDebug& operator<<( const QImage& p );
+		DDebug& operator<<( const QRegion & );
 		DDebug& operator<<( const QColor & );
 		DDebug& operator<<( const QPen & );
 		DDebug& operator<<( const QBrush & );
-		DDebug& operator<<( const QVariant & );
 		DDebug& operator << (const QWidget*);
-		DDebug& operator << (const QEvent*);
-		
 		DDebug& operator << (const QLinearGradient &);
 		DDebug& operator << (const QRadialGradient &);
 		DDebug& operator << (const QConicalGradient &);
 		DDebug& operator << (const QGradient *);
+#endif
 		
 		
 		template <class T> DDebug& operator << ( const QList<T> &list );
@@ -296,6 +305,12 @@ class D_CORE_EXPORT DDebug
 		DebugType m_type;
 		QString m_toWrite;
 		DebugOutput m_output;
+		
+		QStringList m_areas;
+		QString m_area;
+		
+		bool m_showArea;
+		bool m_showAll;
 };
 
 template <class T> DDebug &DDebug::operator<<( const QList<T> &list )
@@ -316,26 +331,44 @@ template <class T> DDebug &DDebug::operator<<( const QList<T> &list )
 
 // Global functions
 
-// DDebug(DDebugMsg) << __PRETTY_FUNCTION__ << ": "
-
-inline DDebug dDebug(int output = DShellOutput)
+inline DDebug dDebug(const QString &area = QString(), int output = DShellOutput)
 {
-	return DDebug(DDebugMsg, DebugOutput(output));
+	return DDebug(DDebugMsg, area, DebugOutput(output));
 }
 
-inline DDebug dFatal(int output = DShellOutput)
+inline DDebug dDebug(int area, int output = DShellOutput)
 {
-	return DDebug(DFatalMsg, DebugOutput(output));
+	return DDebug(DDebugMsg, QString::number(area), DebugOutput(output));
 }
 
-inline DDebug dError(int output = DShellOutput)
+inline DDebug dFatal(const QString &area = QString(), int output = DShellOutput)
 {
-	return DDebug(DErrorMsg, DebugOutput(output));
+	return DDebug(DFatalMsg, area, DebugOutput(output));
 }
 
-inline DDebug dWarning(int output = DShellOutput)
+inline DDebug dFatal(int area, int output = DShellOutput)
 {
-	return DDebug(DWarningMsg, DebugOutput(output));
+	return DDebug(DFatalMsg, QString::number(area), DebugOutput(output));
+}
+
+inline DDebug dError(const QString &area = QString(), int output = DShellOutput)
+{
+	return DDebug(DErrorMsg, area, DebugOutput(output));
+}
+
+inline DDebug dError(int area, int output = DShellOutput)
+{
+	return DDebug(DErrorMsg, QString::number(area), DebugOutput(output));
+}
+
+inline DDebug dWarning(const QString &area = QString(), int output = DShellOutput)
+{
+	return DDebug(DWarningMsg, area, DebugOutput(output));
+}
+
+inline DDebug dWarning(int area, int output = DShellOutput)
+{
+	return DDebug(DWarningMsg, QString::number(area), DebugOutput(output));
 }
 
 #else // D_NODEBUG
@@ -357,7 +390,7 @@ class DNDebug
 		}
 };
 
-inline DNDebug dDebug(int = DShellOutput)
+inline DNDebug dDebug(int = 0,int = DShellOutput)
 {
 	return DNDebug();
 }

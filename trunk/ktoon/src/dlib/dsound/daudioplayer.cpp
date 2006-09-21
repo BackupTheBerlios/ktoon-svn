@@ -50,7 +50,7 @@ DAudioPlayer *DAudioPlayer::instance()
 
 void DAudioPlayer::loadEngine(const QString &engineKey)
 {
-	dDebug() << "Loading engine: " << engineKey;
+	dDebug("audio engine") << "Loading engine: " << engineKey;
 	
 	QDir m_pluginDirectory = QDir(HOME_DIR+"/plugins/");
 	
@@ -61,14 +61,14 @@ void DAudioPlayer::loadEngine(const QString &engineKey)
 		
 		if (plugin)
 		{
-			dDebug() << "******FILE: " << fileName;
+			dDebug("audio engine") << "******FILE: " << fileName;
 			DAudioEngineIface *engine = qobject_cast<DAudioEngineIface *>(plugin);
 			
 			if ( engine )
 			{
 				if ( engine->key() == engineKey )
 				{
-					dDebug() << "Loaded!";
+					dDebug("audio engine") << "Loaded!";
 					m_engine = engine;
 					m_engine->init();
 					break;

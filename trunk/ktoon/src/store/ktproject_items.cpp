@@ -148,6 +148,8 @@ QStringList KTProject::removeItems(int scenePosition, int layerPosition, int fra
 			}
 		}
 	}
+	
+	return QStringList();
 }
 
 QStringList KTProject::groupItems(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml )
@@ -163,7 +165,6 @@ QStringList KTProject::groupItems(int scenePosition, int layerPosition, int fram
 			KTFrame *frame = layer->frame( framePosition );
 			if ( frame )
 			{
-				
 // 				if ( position == -1 )
 // 				{
 // 					position = frame->graphics().count() - 1;
@@ -177,9 +178,8 @@ QStringList KTProject::groupItems(int scenePosition, int layerPosition, int fram
 				QString::const_iterator itr = strList.constBegin();
 				
 				QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
-				qSort(positions.begin(), positions.end());
 				
-				dDebug() << positions;
+// 				dDebug() << positions;
 				int count = 0;
 // 				foreach(qreal pos, positions )
 // 				{
@@ -203,6 +203,8 @@ QStringList KTProject::groupItems(int scenePosition, int layerPosition, int fram
 			}
 		}
 	}
+	
+	return QStringList();
 }
 
 QString KTProject::convertItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)

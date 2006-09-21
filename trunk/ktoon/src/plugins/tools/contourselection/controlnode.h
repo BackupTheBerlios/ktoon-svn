@@ -67,7 +67,7 @@ class ControlNode : public QObject, public QGraphicsItem
 		void mousePressEvent(QGraphicsSceneMouseEvent *event);
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 		void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
-// 		virtual bool sceneEventFilter ( QGraphicsItem * watched, QEvent * event );
+		
 	private:
 		void paintLinesToChilds(QPainter * painter);
 		

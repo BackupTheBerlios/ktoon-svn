@@ -127,12 +127,15 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
 	rotLayout->addWidget(new QLabel(tr("Rotate")));
 	
 	m_rotation = new QComboBox();
+	m_rotation->setDuplicatesEnabled(false);
 	m_rotation->setEditable(true);
 	
-	m_rotation->addItem("0", 0);
-	m_rotation->addItem("90", 90);
-	m_rotation->addItem("180", 180);
-	m_rotation->addItem("270", 270);
+	
+	for(int i = 0; i < 360; i+=30)
+	{
+		m_rotation->addItem(QString::number(i), i);
+	}
+	
 	m_rotation->setValidator(new QIntValidator(0, 360,this));
 	
 	rotLayout->addWidget( m_rotation);
@@ -149,9 +152,12 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
 	
 	m_antialiasHint = new QPushButton;
 	m_antialiasHint->setFocusPolicy( Qt::NoFocus);
-// 	m_antialiasHint->setFlat(true);
+	
 	m_antialiasHint->setText(tr("Antialiasing"));
 	m_antialiasHint->setCheckable(true);
+	
+	m_antialiasHint->setChecked( parent->renderHints() & QPainter::Antialiasing );
+	
 	addPermanentWidget(m_antialiasHint/*,1*/);
 	
 	

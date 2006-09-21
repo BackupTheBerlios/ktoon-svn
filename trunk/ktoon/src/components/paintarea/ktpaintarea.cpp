@@ -40,6 +40,9 @@
 #include "ktpaintarearotator.h"
 #include "ktimagedevice.h"
 
+#include "dcore/dconfig.h"
+#include "dgui/dapplication.h"
+
 #include <cmath>
 
 #include "kttextitem.h"
@@ -99,10 +102,29 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(p
 // 	setViewport(new KTImageDevice() );
 	setUseOpenGL( false );
 	setInteractive ( true );
+	
+	restoreState();
+}
+
+void KTPaintArea::saveState()
+{
+	DConfig *config = dApp->config( "PaintArea" );
+	config->setValue("RenderHints", int(renderHints()));
+	
+}
+
+void KTPaintArea::restoreState()
+{
+	DConfig *config = dApp->config( "PaintArea" );
+	
+	int renderHints = config->value("RenderHints", int(this->renderHints())).toInt();
+	setRenderHints(QPainter::RenderHints(renderHints));
+	
 }
 
 KTPaintArea::~KTPaintArea()
 {
+	saveState();
 }
 
 void KTPaintArea::setCurrentScene(int index)
@@ -325,7 +347,6 @@ void KTPaintArea::mouseReleaseEvent(QMouseEvent *event)
 void KTPaintArea::tabletEvent ( QTabletEvent * event )
 {
 	m_inputInformation->updateFromTabletEvent( event );
-	event->ignore();
 	
 	QGraphicsView::tabletEvent(event );
 }
@@ -667,6 +688,21 @@ void KTPaintArea::wheelEvent(QWheelEvent *event)
 	{
 		QGraphicsView::wheelEvent(event);
 	}
+}
+
+void KTPaintArea::keyPressEvent(QKeyEvent *event)
+{
+	if ( m_tool )
+	{
+		m_tool->keyPressEvent(event);
+		
+		if ( event->isAccepted() )
+		{
+			return;
+		}
+	}
+	
+	QGraphicsView::keyPressEvent(event);
 }
 
 void KTPaintArea::scaleView(qreal scaleFactor)

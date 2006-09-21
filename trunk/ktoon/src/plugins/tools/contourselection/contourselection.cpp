@@ -73,8 +73,8 @@ void ContourSelection::press(const KTInputDeviceInformation *input, KTBrushManag
 {
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
-// 	Q_UNUSED(scene);
 	Q_UNUSED(view);
+	
 	view->setDragMode (QGraphicsView::RubberBandDrag);
 	
 	m_project = scene->project();
@@ -239,6 +239,27 @@ void ContourSelection::itemEvent(const KTItemEvent *event)
 		}
 		break;
 		default: break;
+	}
+}
+
+void ContourSelection::keyPressEvent(QKeyEvent *event)
+{
+	if ( event->key() != Qt::Key_Delete )
+	{
+		event->ignore();
+		return;
+	}
+	
+	bool deleted = false;
+	
+	foreach(NodeGroup *nodegroup, m_nodes )
+	{
+		deleted = deleted || (nodegroup->removeSelectedNodes() > 0);
+	}
+	
+	if ( deleted )
+	{
+		event->accept();
 	}
 }
 

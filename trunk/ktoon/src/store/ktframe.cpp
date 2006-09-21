@@ -158,23 +158,29 @@ void KTFrame::removeGraphic(QGraphicsItem *item)
 }
 
 
-QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, const QList<qreal> & group )
+QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group )
 {
 	D_FUNCINFO;
-	KTItemGroup *g = new KTItemGroup;
+	
 	int count = 0;
-	dDebug() << group;
+	
+	qSort(group.begin(), group.end());
+	
+	KTItemGroup *g = new KTItemGroup(0, item(group[0])->scene());
+	
 	foreach( int pos, group )
 	{
-		g->addToGroup( this->item(pos-count) );
-		removeItemAt(pos-count);
-		dDebug() << pos-count;
+		QGraphicsItem *item = this->item(pos-count);
+		
+// 		removeItemAt(pos-count);
+		
+		g->addToGroup( item );
 		count++;
 	}
+	
 	m_items.insert(position, g);
 	
 	return g;
-// // 	addGraphic( g );
 }
 
 void KTFrame::replaceGraphic(int position, QGraphicsItem *item)
@@ -185,14 +191,6 @@ void KTFrame::replaceGraphic(int position, QGraphicsItem *item)
 	{
 		m_items.replace(position, item);
 	}
-}
-
-void KTFrame::recoverItems()
-{
-// 	foreach(QGraphicsItem *item, m_items)
-// 	{
-// 		addItem(item);
-// 	}
 }
 
 bool KTFrame::removeItemAt(int position)

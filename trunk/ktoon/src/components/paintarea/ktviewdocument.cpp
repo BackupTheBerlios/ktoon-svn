@@ -129,6 +129,11 @@ void KTViewDocument::setDrawGrid(bool draw)
 	m_paintArea->setDrawGrid(draw);
 }
 
+QPainter::RenderHints KTViewDocument::renderHints() const
+{
+	return m_paintArea->renderHints();
+}
+
 void KTViewDocument::setRotationAngle(int angle)
 {
 	m_paintArea->setRotationAngle(angle);
@@ -240,6 +245,10 @@ void KTViewDocument::setupViewActions()
 	showGrid->setCheckable(true);
 	
 	DAction *del = new DAction( QPixmap(THEME_DIR+"/icons/delete.png" ), tr( "Delete" ), QKeySequence( Qt::Key_Delete ), m_paintArea, SLOT(deleteItems()), m_actionManager, "delete" );
+	
+// 	del->setShortcutContext(Qt::WidgetShortcut);
+// 	m_paintArea->addAction(del);
+	
 	del->setStatusTip(tr("Deletes the selected object"));
 	
 	DAction *group = new DAction( QPixmap(THEME_DIR+"/icons/group.png" ), tr( "&Group" ),   QKeySequence(tr("Ctrl+G") ), m_paintArea, SLOT(groupItems()), m_actionManager, "group");
@@ -496,7 +505,7 @@ void KTViewDocument::loadPlugins()
 			
 		for (it = keys.begin(); it != keys.end(); ++it)
 		{
-			dDebug() << "*******Tool Loaded: " << *it;
+			dDebug("plugins") << "*******Tool Loaded: " << *it;
 			
 			DAction *act = tool->actions()[*it];
 			if ( act )
@@ -564,7 +573,7 @@ void KTViewDocument::loadPlugins()
 				
 		for (it = keys.begin(); it != keys.end(); ++it)
 		{
-			dDebug() << "*******Filter Loaded: " << *it;
+			dDebug("plugins") << "*******Filter Loaded: " << *it;
 					
 			DAction *act = filter->actions()[*it];
 			if ( act )

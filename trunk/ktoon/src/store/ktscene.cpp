@@ -25,6 +25,8 @@
 #include <QGraphicsItem>
 #include <QGraphicsView>
 
+#include "ktitemgroup.h"
+
 KTScene::KTScene(KTProject *parent) : QGraphicsScene(parent), m_isLocked(false),  m_layerCount(0), m_isVisible(true)
 {
 	setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -283,7 +285,6 @@ void KTScene::drawPhotogram(int photogram)
 {
 	if ( photogram < 0 ) return;
 	
-	
 	clean();
 	
 	foreach(KTLayer *layer, layers())
@@ -294,10 +295,14 @@ void KTScene::drawPhotogram(int photogram)
 			
 			if ( frame )
 			{
-				frame->recoverItems();
 				foreach(QGraphicsItem *item, frame->graphics() )
 				{
 					addItem(item);
+					
+					if ( KTItemGroup *group = qgraphicsitem_cast<KTItemGroup *>(item) )
+					{
+						group->recoverChilds();
+					}
 				}
 			}
 		}

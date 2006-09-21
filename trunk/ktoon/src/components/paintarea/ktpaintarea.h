@@ -37,8 +37,9 @@ class KTProject;
 class KTPaintAreaRotator;
 /**
  * Esta clase provee un area para hacer dibujos.
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado \<kuadrosx@toonka.com\>
 */
+
 
 class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 {
@@ -63,6 +64,10 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		
 		KTBrushManager *brushManager() const;
 		
+	private:
+		void saveState();
+		void restoreState();
+		
 	protected:
 		void mousePressEvent ( QMouseEvent * event  );
 		void mouseDoubleClickEvent( QMouseEvent *event);
@@ -70,6 +75,7 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		void mouseReleaseEvent ( QMouseEvent *event );
 		void tabletEvent ( QTabletEvent * event );
 		void wheelEvent( QWheelEvent *event );
+		void keyPressEvent(QKeyEvent *event);
 		
 	signals:
 		void cursorPosition(const QPointF &pos);

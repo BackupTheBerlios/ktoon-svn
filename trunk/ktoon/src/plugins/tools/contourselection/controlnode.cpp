@@ -144,7 +144,7 @@ QVariant ControlNode::itemChange(GraphicsItemChange change, const QVariant &valu
 					m_right->moveBy(diff.x(), diff.y());
 				}
 				QPointF scenePos = m_parent->mapFromScene ( value.toPointF());
-				m_nodeGroup->moveElemetTo(m_index, scenePos );
+				m_nodeGroup->moveElementTo(m_index, scenePos );
 			}
 		}
 		else

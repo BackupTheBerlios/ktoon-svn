@@ -21,16 +21,18 @@ class NodeGroup : public QObject
 		~NodeGroup();
 		
 		QGraphicsItem * parentItem();
-		void NodeGroup::syncNodes(const QPainterPath & path);
-		void NodeGroup::syncNodesFromParent();
+		void syncNodes(const QPainterPath & path);
+		void syncNodesFromParent();
 		
 		void setParentItem(QGraphicsItem *);
-		void moveElemetTo(int index, const QPointF& pos );
+		void moveElementTo(int index, const QPointF& pos );
 		QHash<int, QPointF > changedsNodes();
 		void clearChangesNodes();
 		void restoreItem();
 		void show();
 		void saveParentProperties();
+		
+		int removeSelectedNodes();
 		
 	private:
 		QList<ControlNode*> m_nodes;

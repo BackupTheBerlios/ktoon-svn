@@ -113,7 +113,7 @@ void NodeGroup::setParentItem(QGraphicsItem *newParent)
 	}
 }
 
-void NodeGroup::moveElemetTo(int index, const QPointF& pos )
+void NodeGroup::moveElementTo(int index, const QPointF& pos )
 {
 
 	QPainterPath path = qgraphicsitem_cast<QGraphicsPathItem *>(m_parentItem)->path();
@@ -177,3 +177,22 @@ void NodeGroup::saveParentProperties()
 		m_pos = m_parentItem->scenePos();
 	}
 }
+
+int NodeGroup::removeSelectedNodes()
+{
+	int count = 0;
+	foreach(ControlNode *node, m_nodes )
+	{
+		if ( node->isSelected() )
+		{
+			count++;
+			
+			m_nodes.removeAll(node);
+			// FIXME: re-crear el path.
+		}
+	}
+	
+	return count;
+}
+
+
