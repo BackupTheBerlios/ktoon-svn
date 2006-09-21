@@ -13,7 +13,7 @@ Developers
 Jorge H. Cuadrado
 <kuadrosx@toonka.com>
 
-Old versions
+Version <= 0.7
 
 Simena Dinas
 <dsimena@gmail.com>

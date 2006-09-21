@@ -236,7 +236,7 @@ void KTProject::selectFrame(int scenePosition, int layerPosition, int position, 
 	
 	if ( layer )
 	{
-		KTFrame *frame = layer->frame(position-1);
+		KTFrame *frame = layer->frame(position);
 		
 		if ( ! frame ) return;
 		

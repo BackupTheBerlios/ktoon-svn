@@ -61,6 +61,7 @@ QGraphicsItem *KTProject::createItem(int scenePosition, int layerPosition, int f
 			}
 		}
 	}
+	
 	return 0;
 }
 
@@ -68,6 +69,7 @@ QGraphicsItem *KTProject::createItem(int scenePosition, int layerPosition, int f
 void KTProject::removeItem(int scenePosition, int layerPosition, int framePosition, int position)
 {
 	D_FUNCINFO;
+	
 	KTScene *scene = this->scene(scenePosition);
 	
 	if ( scene )
@@ -82,6 +84,7 @@ void KTProject::removeItem(int scenePosition, int layerPosition, int framePositi
 				{
 					position = frame->graphics().count() - 1;
 				}
+				
 				if( frame->removeItemAt(position) )
 				{
 					KTItemEvent event(KTProjectEvent::Remove, scenePosition, layerPosition, framePosition, position, 0);
@@ -106,10 +109,11 @@ QStringList KTProject::removeItems(int scenePosition, int layerPosition, int fra
 			if ( frame )
 			{
 				
-// 				if ( position == -1 )
-// 				{
-// 					position = frame->graphics().count() - 1;
-// 				}
+				if ( position == -1 )
+				{
+					position = frame->graphics().count() - 1;
+				}
+				
 				QStringList infoItems;
 				QDomDocument doc;
 				doc.setContent(xml);
@@ -120,7 +124,7 @@ QStringList KTProject::removeItems(int scenePosition, int layerPosition, int fra
 				QString::const_iterator itr = strList.constBegin();
 				QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
 				qSort(positions.begin(), positions.end());
-				dDebug() << positions;
+// 				dDebug() << positions;
 				int count = 0;
 				foreach(qreal pos, positions )
 				{

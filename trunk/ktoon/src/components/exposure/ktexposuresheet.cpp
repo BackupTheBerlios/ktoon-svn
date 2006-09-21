@@ -174,6 +174,8 @@ void KTExposureSheet::insertItem(int indexLayer, int indexFrame)
 {
 	KTFrameEvent event(KTProjectEvent::Add, m_scenes->currentIndex() , indexLayer, indexFrame);
 	emit eventTriggered( &event );
+	
+	
 }
 
 

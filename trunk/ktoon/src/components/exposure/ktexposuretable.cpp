@@ -541,6 +541,7 @@ void KTExposureTable::emitRequestSetUsedFrame( int indexFrame,  int indexLayer)
 	if(indexFrame == m_header->lastFrame(indexLayer))
 	{
 		emit requestSetUsedFrame(visualIndex, indexFrame);
+		emit requestSelectFrame( visualIndex, indexFrame);
 	}
 }
 

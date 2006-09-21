@@ -149,7 +149,12 @@ void KTFrame::addGraphic(QGraphicsItem *item)
 void KTFrame::removeGraphic(QGraphicsItem *item)
 {
 	m_items.removeAll(item);
-// 	removeItem(item);
+	
+	QGraphicsScene *scene = item->scene();
+	if( scene )
+	{
+		scene->removeItem(item);
+	}
 }
 
 
@@ -198,6 +203,13 @@ bool KTFrame::removeItemAt(int position)
 	}
 	
 	QGraphicsItem *item = m_items.takeAt(position);
+	
+	QGraphicsScene *scene = item->scene();
+	
+	if(scene)
+	{
+		scene->removeItem(item);
+	}
 	
 	return true;
 }
