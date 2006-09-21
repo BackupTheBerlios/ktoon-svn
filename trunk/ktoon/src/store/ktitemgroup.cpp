@@ -17,35 +17,33 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef KTELLIPSEITEM_H
-#define KTELLIPSEITEM_H
+#include "ktitemgroup.h"
+#include "ddebug.h"
 
-#include "ktabstractserializable.h"
-#include <QGraphicsEllipseItem>
-#include "ktglobal_store.h"
-
-/**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
-*/
-
-class STORE_EXPORT KTEllipseItem: public KTAbstractSerializable, public QGraphicsEllipseItem
+KTItemGroup::KTItemGroup(QGraphicsItem * parent , QGraphicsScene * scene): QGraphicsItemGroup(parent, scene)
 {
-	public:
-		KTEllipseItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-		KTEllipseItem(const QRectF & rect, QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-		~KTEllipseItem();
-		virtual void fromXml(const QString &xml);
-		virtual QDomElement toXml(QDomDocument &doc);
-		bool contains ( const QPointF & point ) const;
-		
-	protected:
-		virtual void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dragLeaveEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dropEvent ( QGraphicsSceneDragDropEvent *event );
-		
-	private:
-		bool m_dragOver;
-};
+	
+}
 
-#endif
+
+KTItemGroup::~KTItemGroup()
+{
+	
+}
+
+void KTItemGroup::fromXml(const QString &xml)
+{
+}
+
+
+QDomElement KTItemGroup::toXml(QDomDocument &doc)
+{
+	QDomElement root = doc.createElement("g");
+	
+	foreach(QGraphicsItem *item, children())
+	{
+		root.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml( doc ));
+	}
+	dDebug() << doc.toString();
+	return root;
+}

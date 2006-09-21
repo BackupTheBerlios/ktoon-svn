@@ -82,12 +82,120 @@ void KTProject::removeItem(int scenePosition, int layerPosition, int framePositi
 				{
 					position = frame->graphics().count() - 1;
 				}
-				
 				if( frame->removeItemAt(position) )
 				{
 					KTItemEvent event(KTProjectEvent::Remove, scenePosition, layerPosition, framePosition, position, 0);
 					emit commandExecuted( &event);
 				}
+			}
+		}
+	}
+}
+
+QStringList KTProject::removeItems(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
+{
+	D_FUNCINFO;
+	KTScene *scene = this->scene(scenePosition);
+	
+	if ( scene )
+	{
+		KTLayer *layer = scene->layer( layerPosition );
+		if ( layer )
+		{
+			KTFrame *frame = layer->frame( framePosition );
+			if ( frame )
+			{
+				
+// 				if ( position == -1 )
+// 				{
+// 					position = frame->graphics().count() - 1;
+// 				}
+				QStringList infoItems;
+				QDomDocument doc;
+				doc.setContent(xml);
+				
+				QDomElement root = doc.documentElement();
+				QString strList = root. attribute ( "positions"); 
+				
+				QString::const_iterator itr = strList.constBegin();
+				QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
+				qSort(positions.begin(), positions.end());
+				dDebug() << positions;
+				int count = 0;
+				foreach(qreal pos, positions )
+				{
+					QGraphicsItem *item = frame->item(pos-count);
+					QDomDocument orig;
+					
+					if(item)
+					{
+						orig.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml( orig ));
+						infoItems << orig.toString();
+						frame->removeItemAt(pos-count);
+						
+						count++;
+					}
+				}
+				
+				KTItemEvent event(KTProjectEvent::Remove, scenePosition, layerPosition, framePosition, position, strList);
+				emit commandExecuted( &event);
+				
+				return infoItems;
+			}
+		}
+	}
+}
+
+QStringList KTProject::groupItems(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml )
+{
+	D_FUNCINFO << xml;
+	KTScene *scene = this->scene(scenePosition);
+	
+	if ( scene )
+	{
+		KTLayer *layer = scene->layer( layerPosition );
+		if ( layer )
+		{
+			KTFrame *frame = layer->frame( framePosition );
+			if ( frame )
+			{
+				
+// 				if ( position == -1 )
+// 				{
+// 					position = frame->graphics().count() - 1;
+// 				}
+				QStringList infoItems;
+				QDomDocument doc;
+				doc.setContent(xml);
+				QDomElement root = doc.documentElement();
+				QString strList = root.attribute ( "positions");
+				
+				QString::const_iterator itr = strList.constBegin();
+				
+				QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
+				qSort(positions.begin(), positions.end());
+				
+				dDebug() << positions;
+				int count = 0;
+// 				foreach(qreal pos, positions )
+// 				{
+// 					QGraphicsItem *item = frame->item(pos-count);
+// 					QDomDocument orig;
+// 					
+// 					if(item)
+// 					{
+// 						orig.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml( orig ));
+// 						infoItems << orig.toString();
+// 						
+// 						count++;
+// 					}
+// 				}
+				frame->createItemGroupAt( position, positions);
+				
+				KTItemEvent event(KTProjectEvent::Group, scenePosition, layerPosition, framePosition, position, xml);
+				emit commandExecuted( &event);
+				
+				return infoItems;
 			}
 		}
 	}
@@ -237,8 +345,4 @@ QString KTProject::setPathItem( int scenePosition, int layerPosition, int frameP
 	}
 	return "";
 }
-
-
-
-
 

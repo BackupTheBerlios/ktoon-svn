@@ -402,8 +402,9 @@ void KTPaintArea::itemEvent(KTItemEvent *event)
 // 		break;
 // 		case KTProjectEvent::Remove:
 // 		{
+// 			
 // 		}
-// 		break;
+		break;
 		case KTProjectEvent::Transform:
 		{
 			viewport()->update();
@@ -467,6 +468,157 @@ void KTPaintArea::centerDrawingArea()
 }
 
 
+void KTPaintArea::deleteItems()
+{
+	QList<QGraphicsItem *> selecteds = scene()->selectedItems ();
+	
+	if(!selecteds.empty())
+	{
+		QString strItems= "";
+		
+		KTScene* currentScene = static_cast<KTScene*>(scene());
+		int firstItem = -1;
+		if(currentScene)
+		{
+			foreach(QGraphicsItem *item, selecteds)
+			{
+				if(currentScene->currentFrame()->graphics().indexOf(item) != -1)
+				{
+					if(strItems.isEmpty())
+					{
+						strItems +="("+ QString::number(currentScene->currentFrame()->graphics().indexOf(item)) ;
+						firstItem = currentScene->currentFrame()->graphics().indexOf(item);
+					}
+					else
+					{
+						
+						strItems += " , "+ QString::number(currentScene->currentFrame()->graphics().indexOf(item)) ;
+					}
+				}
+			}
+			strItems+= ")";
+		}
+		
+		QDomDocument doc;
+		QDomElement root = doc.createElement("group");
+		root.setAttribute("positions", strItems );
+		doc.appendChild(root);
+		
+		KTItemEvent *event = new KTItemEvent(KTProjectEvent::Remove, currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, doc.toString());
+		emit eventTriggered(event);
+		dDebug() << strItems;
+	}
+}
+
+void KTPaintArea::groupItems()
+{
+// 	D_FUNCINFO;
+	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
+	if(!selecteds.isEmpty())
+	{
+		QString strItems= "";
+		
+		KTScene* currentScene = static_cast<KTScene*>(scene());
+		int firstItem = -1;
+		if(currentScene)
+		{
+			foreach(QGraphicsItem *item, selecteds)
+			{
+				if(currentScene->currentFrame()->graphics().indexOf(item) != -1)
+				{
+					if(strItems.isEmpty())
+					{
+						strItems +="("+ QString::number(currentScene->currentFrame()->graphics().indexOf(item)) ;
+						firstItem = currentScene->currentFrame()->graphics().indexOf(item);
+					}
+					else
+					{
+						strItems += " , "+ QString::number(currentScene->currentFrame()->graphics().indexOf(item));
+					}
+				}
+			}
+			strItems+= ")";
+		}
+		
+		QDomDocument doc;
+		QDomElement root = doc.createElement("group");
+		root.setAttribute("positions", strItems );
+		doc.appendChild(root);
+		
+		
+		KTItemEvent *event = new KTItemEvent(KTProjectEvent::Group, currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, doc.toString());
+		emit eventTriggered(event);
+	}
+	
+	/*D_FUNCINFO;
+	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
+	QDomDocument doc;
+	if(!selecteds.isEmpty())
+	{
+		KTScene* currentScene = static_cast<KTScene*>(scene());
+		
+		if(currentScene)
+		{
+			foreach(QGraphicsItem *item, selecteds)
+			{
+				doc.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml( doc ));
+			}
+		}
+	}
+	
+	KTScene* currentScene = static_cast<KTScene*>(scene());
+	
+	KTItemEvent *event = new KTItemEvent(KTProjectEvent::Group, currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), -1, doc.toString());
+	emit eventTriggered(event);
+									     */
+}
+
+void KTPaintArea::ungroupItems()
+{
+}
+
+void KTPaintArea::copyItems()
+{
+	
+	D_FUNCINFO;
+	m_copiesXml.clear();
+	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
+	if(!selecteds.isEmpty())
+	{
+		KTScene* currentScene = static_cast<KTScene*>(scene());
+		int firstItem = -1;
+		if(currentScene)
+		{
+			foreach(QGraphicsItem *item, selecteds)
+			{
+				QDomDocument orig;
+				orig.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml( orig ));
+				m_copiesXml << orig.toString();
+			}
+		}
+	}
+	
+}
+
+void KTPaintArea::pasteItems()
+{
+	D_FUNCINFO;
+	foreach(QString xml, m_copiesXml)
+	{
+		KTScene* currentScene = static_cast<KTScene*>(scene());
+		KTItemEvent *event = new KTItemEvent(KTProjectEvent::Add, currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), -1, xml);
+		emit eventTriggered(event);
+	}
+}
+
+void KTPaintArea::cutItems()
+{
+	D_FUNCINFO;
+	copyItems();
+	deleteItems();
+	
+}
+
 void KTPaintArea::wheelEvent(QWheelEvent *event)
 {
 	if(event->modifiers () == Qt::ControlModifier)
@@ -498,7 +650,4 @@ KTBrushManager *KTPaintArea::brushManager() const
 {
 	return m_brushManager;
 }
-
-
-
 

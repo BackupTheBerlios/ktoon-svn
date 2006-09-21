@@ -75,7 +75,7 @@ class STORE_EXPORT KTItemFactory : public QXmlDefaultHandler
 		QBrush itemBrush() const;
 		
 		
-		void createItem(const QString &xml);
+		QGraphicsItem* createItem(const QString &xml);
 		
 	private:
 		QString m_qname;
@@ -85,7 +85,7 @@ class STORE_EXPORT KTItemFactory : public QXmlDefaultHandler
 		
 		QStack<QGraphicsItem *> m_childs;
 		
-		bool m_readChar;
+		bool m_readChar, m_addToGroup;
 		
 		QString m_textReaded;
 };

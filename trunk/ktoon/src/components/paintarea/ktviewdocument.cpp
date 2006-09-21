@@ -239,6 +239,25 @@ void KTViewDocument::setupViewActions()
 	DAction *showGrid = new DAction( QPixmap(THEME_DIR+"/icons/subgrid.png" ), tr( "Show grid" ), QKeySequence(), this, SLOT(toggleShowGrid()), m_actionManager, "show_grid" );
 	showGrid->setCheckable(true);
 	
+	DAction *del = new DAction( QPixmap(THEME_DIR+"/icons/delete.png" ), tr( "Delete" ), QKeySequence( Qt::Key_Delete ), m_paintArea, SLOT(deleteItems()), m_actionManager, "delete" );
+	del->setStatusTip(tr("Deletes the selected object"));
+	
+	DAction *group = new DAction( QPixmap(THEME_DIR+"/icons/group.png" ), tr( "&Group" ),   QKeySequence(tr("Ctrl+G") ), m_paintArea, SLOT(groupItems()), m_actionManager, "group");
+	group->setStatusTip(tr("Group the selected objects into a single one"));
+	
+	DAction *ungroup = new DAction( QPixmap(THEME_DIR+"/icons/ungroup.png" ), tr( "&Ungroup" ), QKeySequence(tr("Ctrl+Shift+G")) , m_paintArea, SLOT(ungroupItems()), m_actionManager, "ungroup");
+	ungroup->setStatusTip(tr("Ungroups the selected object"));
+	
+	DAction *copy = new DAction( QPixmap(THEME_DIR+"/icons/copy.png" ), tr( "C&opy" ),  QKeySequence(tr("Ctrl+C")), m_paintArea, SLOT(copyItems()), m_actionManager, "copy");
+	copy->setStatusTip(tr("Copies the selection and puts it onto the clipboard"));
+	
+	
+	DAction *paste = new DAction( QPixmap(THEME_DIR+"/icons/paste.png" ), tr( "&Paste" ),   QKeySequence(tr("Ctrl+V")), m_paintArea, SLOT(pasteItems()), m_actionManager, "paste");
+	paste->setStatusTip(tr("Pastes the clipboard into the current document"));
+	
+	
+	DAction *cut = new DAction( QPixmap(THEME_DIR+"/icons/cut.png" ), tr( "&Cut" ),  QKeySequence(tr("Ctrl+X")), m_paintArea, SLOT(cutItems()),m_actionManager, "cut" );
+	
 #if 0
 	DAction *zoomIn = new DAction( QPixmap(THEME_DIR+"/icons/zoom_in.png" ), tr( "Zoom In" ), QKeySequence(Qt::CTRL+Qt::Key_Plus), m_paintArea, SLOT(zoomIn()), m_actionManager, "zoom_in" );
 	
@@ -695,6 +714,13 @@ void KTViewDocument::createToolBar()
 	addToolBar(m_barGrid);
 	
 	m_barGrid->addAction(m_actionManager->find("show_grid"));
+	m_barGrid->addAction(m_actionManager->find("delete"));
+	m_barGrid->addAction(m_actionManager->find("group"));
+	m_barGrid->addAction(m_actionManager->find("ungroup"));
+	m_barGrid->addAction(m_actionManager->find("copy"));
+	m_barGrid->addAction(m_actionManager->find("paste"));
+	
+	m_barGrid->addAction(m_actionManager->find("cut"));
 	
 // 	m_barGrid->addSeparator();
 // 	m_barGrid->addAction(m_actionManager->find("undo"));

@@ -74,6 +74,8 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		QString removeLayer(int scene, int position);
 		QString removeFrame(int scene, int layer, int position);
 		void removeItem(int scenePosition, int layerPosition, int framePosition, int position);
+		QStringList removeItems(int scenePosition, int layerPosition, int framePosition, int position, const QString &strList );
+		QStringList groupItems(int scenePosition, int layerPosition, int framePosition, int position, const QString &strList );
 		
 		void moveScene(int position, int newPosition);
 		void moveLayer(int scene, int position, int newPosition);

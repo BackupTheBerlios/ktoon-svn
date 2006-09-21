@@ -26,6 +26,7 @@
 #include "ktitemfactory.h"
 
 #include <QGraphicsItem>
+#include "ktitemgroup.h"
 
 // #include "ktbuttonitem.h"
 // #include "kttextitem.h"
@@ -149,6 +150,26 @@ void KTFrame::removeGraphic(QGraphicsItem *item)
 {
 	m_items.removeAll(item);
 // 	removeItem(item);
+}
+
+
+QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, const QList<qreal> & group )
+{
+	D_FUNCINFO;
+	KTItemGroup *g = new KTItemGroup;
+	int count = 0;
+	dDebug() << group;
+	foreach( int pos, group )
+	{
+		g->addToGroup( this->item(pos-count) );
+		removeItemAt(pos-count);
+		dDebug() << pos-count;
+		count++;
+	}
+	m_items.insert(position, g);
+	
+	return g;
+// // 	addGraphic( g );
 }
 
 void KTFrame::replaceGraphic(int position, QGraphicsItem *item)

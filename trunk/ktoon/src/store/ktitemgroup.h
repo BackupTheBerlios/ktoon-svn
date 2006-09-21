@@ -17,35 +17,37 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef KTELLIPSEITEM_H
-#define KTELLIPSEITEM_H
-
-#include "ktabstractserializable.h"
-#include <QGraphicsEllipseItem>
-#include "ktglobal_store.h"
+#ifndef KTITEMGROUP_H
+#define KTITEMGROUP_H
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
-class STORE_EXPORT KTEllipseItem: public KTAbstractSerializable, public QGraphicsEllipseItem
+#include "ktabstractserializable.h"
+#include <QGraphicsItemGroup>
+#include "ktglobal_store.h"
+
+/**
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ */
+
+class STORE_EXPORT KTItemGroup: public KTAbstractSerializable, public QGraphicsItemGroup
 {
 	public:
-		KTEllipseItem(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-		KTEllipseItem(const QRectF & rect, QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
-		~KTEllipseItem();
+		KTItemGroup(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
+		~KTItemGroup();
 		virtual void fromXml(const QString &xml);
 		virtual QDomElement toXml(QDomDocument &doc);
-		bool contains ( const QPointF & point ) const;
+// 		bool contains ( const QPointF & point ) const;
 		
 	protected:
-		virtual void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dragLeaveEvent ( QGraphicsSceneDragDropEvent * event );
-		virtual void dropEvent ( QGraphicsSceneDragDropEvent *event );
+// 		virtual void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
+// 		virtual void dragLeaveEvent ( QGraphicsSceneDragDropEvent * event );
+// 		virtual void dropEvent ( QGraphicsSceneDragDropEvent *event );
 		
 	private:
-		bool m_dragOver;
+// 		bool m_dragOver;
 };
 
 #endif

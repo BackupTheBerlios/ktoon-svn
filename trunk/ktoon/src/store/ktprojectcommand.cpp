@@ -28,6 +28,8 @@
 #include "ktitemevent.h"
 #include "ktpaintareaevent.h"
 
+#include "ktsvg2qt.h"
+
 KTProjectCommand::KTProjectCommand(KTProject *project, const KTProjectEvent *event) : QUndoCommand(), m_project(project)
 {
 	m_event = event->clone();
@@ -466,7 +468,7 @@ void KTProjectCommand::itemCommand(const KTItemEvent *event, bool redo)
 			break;
 			case KTProjectEvent::Remove:
 			{
-				m_project->removeItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex());
+				m_data = m_project->removeItems( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
 			}
 			break;
 			case KTProjectEvent::Move:
@@ -479,6 +481,7 @@ void KTProjectCommand::itemCommand(const KTItemEvent *event, bool redo)
 			break;
 			case KTProjectEvent::Rename:
 			{
+				
 			}
 			break;
 			case KTProjectEvent::Convert:
@@ -504,6 +507,11 @@ void KTProjectCommand::itemCommand(const KTItemEvent *event, bool redo)
 				m_data = m_project->transformItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
 			}
 			break;
+			case KTProjectEvent::Group:
+			{
+				m_data = m_project->groupItems(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
+			}
+			break;
 			default: break;
 		}
 	}
@@ -518,7 +526,16 @@ void KTProjectCommand::itemCommand(const KTItemEvent *event, bool redo)
 			break;
 			case KTProjectEvent::Remove:
 			{
-				m_project->createItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
+				QString::const_iterator itr = event->data().toString().constBegin();
+				QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
+				qSort(positions.begin(), positions.end());
+				int count = 0;
+				
+				foreach(QString xml, m_data.toStringList())
+				{
+					m_project->createItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), positions[count], xml);
+					count++;
+				}
 			}
 			break;
 			case KTProjectEvent::Move:

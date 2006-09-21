@@ -44,6 +44,8 @@ class KTOON_EXPORT KTSvg2Qt
 		
 		static void parsePen(QPen &pen, const QXmlAttributes &attributes);
 		static bool parseBrush(QBrush &brush, const QXmlAttributes &attributes);
+		
+		static QList<qreal> parseNumbersList(QString::const_iterator &itr);
 };
 
 #endif

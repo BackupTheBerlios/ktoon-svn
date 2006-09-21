@@ -180,7 +180,7 @@ static void pathArc(QPainterPath &path,
 	}
 }
 
-static QList<qreal> parseNumbersList(QString::const_iterator &itr)
+QList<qreal> KTSvg2Qt::parseNumbersList(QString::const_iterator &itr)
 {
 	QList<qreal> points;
 	QString temp;
@@ -693,4 +693,5 @@ bool KTSvg2Qt::parsePointF(const QString &pointstr, QPointF &point)
 	
 	return true;
 }
+
 

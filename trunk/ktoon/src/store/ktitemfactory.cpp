@@ -31,12 +31,14 @@
 #include "ktrectitem.h"
 #include "ktellipseitem.h"
 #include "ktlineitem.h"
+#include "ktitemgroup.h"
 
 #include "ktgraphicalgorithm.h"
 #include "ktserializer.h"
 
 
-KTItemFactory::KTItemFactory() : QXmlDefaultHandler(), m_item(0), m_readChar(false)
+
+KTItemFactory::KTItemFactory() : QXmlDefaultHandler(), m_item(0), m_readChar(false), m_addToGroup(false)
 {
 }
 
@@ -45,35 +47,39 @@ KTItemFactory::~KTItemFactory()
 {
 }
 
-void KTItemFactory::createItem(const QString &root)
+QGraphicsItem* KTItemFactory::createItem(const QString &root)
 {
-	if ( m_item )
-		return;
-	
+	QGraphicsItem* item = 0;
 	if ( root == "path" )
 	{
-		m_item = new KTPathItem;
+		item = new KTPathItem;
 	}
 	else if ( root == "rect" )
 	{
-		m_item = new KTRectItem;
+		item = new KTRectItem;
 	}
 	else if ( root == "ellipse" )
 	{
-		m_item = new KTEllipseItem;
+		item = new KTEllipseItem;
 	}
 	else if ( root == "button" )
 	{
-		m_item = new KTButtonItem;
+		item = new KTButtonItem;
 	}
 	else if ( root == "text" )
 	{
-		m_item = new KTTextItem;
+		item = new KTTextItem;
 	}
 	else if ( root == "line" )
 	{
-		m_item = new KTLineItem;
+		item = new KTLineItem;
 	}
+	else if ( root == "g" )
+	{
+		item = new KTItemGroup;
+	}
+	
+	return item;
 }
 
 bool KTItemFactory::startElement( const QString& , const QString& , const QString& qname, const QXmlAttributes& atts)
@@ -85,18 +91,28 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 	
 	if ( qname == "path" )
 	{
-		createItem( qname );
-		
 		QPainterPath path;
 		KTSvg2Qt::svgpath2qtpath( atts.value("d"), path );
 		
-		qgraphicsitem_cast<KTPathItem *>(m_item)->setPath(path);
-		
-		
+		if ( !m_item )
+		{
+			m_item = createItem( qname );
+			qgraphicsitem_cast<KTPathItem *>(m_item)->setPath(path);
+		}
+		else
+		{
+			QGraphicsItem *item = createItem(qname);
+			qgraphicsitem_cast<KTPathItem *>(item)->setPath(path);
+			
+			qgraphicsitem_cast<QGraphicsItemGroup *>(m_item)->addToGroup(item );
+		}
 	}
 	else if ( qname == "rect" )
 	{
-		createItem( qname );
+		if ( !m_item )
+		{
+			m_item = createItem( qname );
+		}
 		
 		QRectF rect(atts.value("x").toDouble(), atts.value("y").toDouble(), atts.value("width").toDouble(), atts.value("height").toDouble() );
 		
@@ -105,18 +121,27 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 	}
 	else if ( qname == "ellipse" )
 	{
-		createItem( qname );
+		if ( !m_item )
+		{
+			m_item = createItem( qname );
+		}
 		
 		QRectF rect(QPointF(0, 0), QSizeF(2 * atts.value("rx").toDouble(), 2 * atts.value("ry").toDouble() ));
 		qgraphicsitem_cast<KTEllipseItem *>(m_item)->setRect(rect);
 	}
 	else if ( qname == "button" )
 	{
-		createItem( qname );
+		if ( !m_item )
+		{
+			m_item = createItem( qname );
+		}
 	}
 	else if ( qname == "text" )
 	{
-		createItem( qname );
+		if ( !m_item )
+		{
+			m_item = createItem( qname );
+		}
 		
 		m_readChar = true;
 		m_textReaded = "";
@@ -124,11 +149,23 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 	}
 	else if ( qname == "line" )
 	{
-		createItem( qname );
+		if ( !m_item )
+		{
+			m_item = createItem( qname );
+		}
 		
 		QLineF line(atts.value("x1").toDouble(), atts.value("y1").toDouble(), atts.value("x2").toDouble(), atts.value("y2").toDouble());
 		
 		qgraphicsitem_cast<KTLineItem *>(m_item)->setLine(line);
+	}
+	else if ( qname == "g" )
+	{
+		if ( !m_item )
+		{
+			m_item = createItem( qname );
+		}
+		
+		m_addToGroup = true;
 	}
 	
 	//////////
@@ -204,6 +241,10 @@ bool KTItemFactory::endElement(const QString&, const QString& , const QString& q
 	{
 		m_readChar = false;
 		qgraphicsitem_cast<KTTextItem *>(m_item)->setHtml(m_textReaded);
+	}
+	else if ( qname == "g" )
+	{
+		m_addToGroup = false;
 	}
 	
 	return true;

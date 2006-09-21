@@ -75,20 +75,24 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		void cursorPosition(const QPointF &pos);
 		void eventTriggered(const KTProjectEvent *event);
 		
-		
 	private:
 		QMouseEvent *mapMouseEvent(QMouseEvent *event) const;
 		
 	public slots:
 		void centerDrawingArea();
-			
+		void deleteItems();
+		void groupItems();
+		void ungroupItems();
+		void copyItems();
+		void pasteItems();
+		void cutItems();
+		
 	protected:
 		void frameEvent(KTFrameEvent *event);
 		void layerEvent(KTLayerEvent *event);
 		void sceneEvent(KTSceneEvent *event);
 		void projectEvent(KTProjectEvent *event);
 		void itemEvent(KTItemEvent *event);
-		
 		void drawBackground(QPainter *painter, const QRectF &rect);
 		
 		
@@ -112,6 +116,8 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		double m_angle;
 		
 		KTPaintAreaRotator *m_rotator;
+		
+		QStringList m_copiesXml;
 };
 
 #endif

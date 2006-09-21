@@ -35,7 +35,8 @@ HEADERS += ktlayer.h \
            ktpaintareaevent.h \
            ktserializer.h \
            ktlineitem.h \
-           ktitemconverter.h 
+           ktitemconverter.h \
+           ktitemgroup.h 
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
@@ -64,7 +65,8 @@ SOURCES += ktlayer.cpp \
            ktpaintareaevent.cpp \
            ktserializer.cpp \
            ktlineitem.cpp \
-           ktitemconverter.cpp 
+           ktitemconverter.cpp \
+           ktitemgroup.cpp 
 KDEV_QTVER = 4
 STORE_DIR = ../../src/store
 LIBKTOON_DIR = ../../src/libktoon

@@ -86,6 +86,8 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
 		
 		QGraphicsItem *item(int position) const;
 		
+		QGraphicsItemGroup *createItemGroupAt( int position, const QList<qreal> & group );
+		
 		KTLayer *layer() const;
 		
 	public:

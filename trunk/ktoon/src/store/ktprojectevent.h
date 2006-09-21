@@ -77,6 +77,9 @@ class STORE_EXPORT KTProjectEvent
 			 */
 			View,
 			
+			Group,
+			Ungroup,
+			
 			// Items
 			Transform,
 			Convert,
