@@ -43,6 +43,8 @@
 #include <QPixmap>
 #include <QWidget>
 #include <QMessageBox>
+#include <QTextBrowser>
+#include <QSyntaxHighlighter>
 
 #endif
 
@@ -58,7 +60,121 @@
 # define SHOW_FATAL "***** %s *****\n"
 #endif
 
-static void DDebutOutput(DebugType t, DebugOutput o, const char *data)
+#ifdef QT_GUI_LIB
+	static QTextBrowser *debugBrowser = 0;
+#endif
+
+static class ConfigReader
+{
+	public:
+		ConfigReader();
+		~ConfigReader();
+		
+		QStringList areas;
+		
+		bool showArea;
+		bool showAll;
+		
+		DebugOutput defaultOutput;
+} configReader;
+
+ConfigReader::ConfigReader()
+{
+	QSettings settings("ddebug");
+	
+	settings.beginGroup("Iface");
+	areas = settings.value("areas", QStringList()).toStringList();
+	showArea = settings.value("show_area", false).toBool();
+	showAll = settings.value("show_all", true).toBool();
+	
+	defaultOutput= DebugOutput(settings.value("default", DShellOutput).toInt());
+}
+
+ConfigReader::~ConfigReader()
+{
+	QSettings settings("ddebug");
+	settings.beginGroup("Iface");
+	
+	if ( areas.isEmpty() )
+	{
+		settings.setValue("areas", "");
+	}
+	else
+	{
+		settings.setValue("areas", areas);
+	}
+	
+	settings.setValue("show_area", showArea);
+	settings.setValue("show_all", showAll);
+	
+	settings.setValue("default", defaultOutput);
+	
+	if ( debugBrowser )
+	{
+		if  (debugBrowser->parentWidget() == 0 )
+		{
+			delete debugBrowser;
+		}
+	}
+}
+
+#ifdef QT_GUI_LIB
+
+class DebugBrowserHighlighter : public QSyntaxHighlighter
+{
+	Q_OBJECT;
+	public:
+		DebugBrowserHighlighter(QTextDocument *doc);
+		~DebugBrowserHighlighter() {};
+		
+	protected:
+		virtual void highlightBlock ( const QString & text );
+		
+	private:
+		QMap<QString, QColor> m_colors;
+};
+
+#include "ddebug.moc"
+
+
+DebugBrowserHighlighter::DebugBrowserHighlighter(QTextDocument *doc) : QSyntaxHighlighter(doc)
+{
+	QVector<int> colorIndexes = QVector<int>() << 7 << 13 << 8 << 14 <<
+			9 <<
+			15 <<
+			10 <<
+			16 <<
+			11 <<
+			17 <<
+			18;
+	
+	int count = 0;
+	foreach(QString area, configReader.areas)
+	{
+		m_colors.insert(area, QColor(Qt::GlobalColor(colorIndexes[count++ % colorIndexes.count()])) );
+	}
+}
+
+void DebugBrowserHighlighter::highlightBlock ( const QString &text )
+{
+	int sepIndex = text.indexOf(":");
+	
+	if ( sepIndex < 0 ) return;
+	
+	QString area = text.left(sepIndex);
+	
+	if ( !m_colors.contains(area) ) return;
+	
+	QTextCharFormat format;
+	format.setFontWeight(QFont::Bold);
+	format.setForeground( m_colors[area] );
+	
+	setFormat(0, sepIndex, format);
+}
+
+#endif // QT_GUI_LIB
+
+static void dDebugOutput(DebugType t, DebugOutput o, const char *data)
 {
 	char *output = "%s\n";
 	switch(t)
@@ -131,6 +247,11 @@ static void DDebutOutput(DebugType t, DebugOutput o, const char *data)
 			}
 		}
 		break;
+		case DBrowserOutput:
+		{
+			DDebug::browser()->append(QString(data));
+		}
+		break;
 #endif
 		default: break;
 	}
@@ -140,49 +261,34 @@ DDebug::DDebug(DebugType t, const QString &area, DebugOutput o) : m_type(t), m_o
 {
 	streamer = new Streamer();
 	
-	QSettings settings("ddebug");
-	
-	settings.beginGroup("Iface");
-	
-	m_areas = settings.value("areas", QStringList()).toStringList();
-	
-	m_showArea = settings.value("show_area", false).toBool();
-	
-	m_showAll = settings.value("show_all", true).toBool();
-	
-	if ( m_showArea && !m_area.isEmpty())
+	if ( configReader.showArea && !m_area.isEmpty())
 	{
 		*streamer << m_area << ": ";
 	}
+	
+	if ( m_output == DDefault )
+	{
+		m_output = configReader.defaultOutput;
+	}
+	
+// 	if ( m_output == DBrowserOutput )
+// 	{
+// 		browser()->show();
+// 	}
 };
 
-DDebug::DDebug(const DDebug & d ) : streamer(d.streamer), m_type(d.m_type), m_output(d.m_output), m_areas(d.m_areas), m_area(d.m_area), m_showArea(d.m_showArea)
+DDebug::DDebug(const DDebug & d ) : streamer(d.streamer), m_type(d.m_type), m_output(d.m_output), m_area(d.m_area)
 {
 }
 
 DDebug::~DDebug()
 {
-	if ( m_area.isEmpty() && m_showAll || m_areas.contains(m_area )  )
+	if ( m_area.isEmpty() && configReader.showAll || configReader.areas.contains(m_area )  )
 	{
-		::DDebutOutput( m_type, m_output, streamer->buffer.toLocal8Bit().data() );
+		::dDebugOutput( m_type, m_output, streamer->buffer.toLocal8Bit().data() );
 	}
 	
 	delete streamer;
-	
-	QSettings settings("ddebug");
-	settings.beginGroup("Iface");
-	
-	if ( m_areas.isEmpty() )
-	{
-		settings.setValue("areas", "");
-	}
-	else
-	{
-		settings.setValue("areas", m_areas);
-	}
-	
-	settings.setValue("show_area", m_showArea);
-	settings.setValue("show_all", m_showAll);
 }
 
 
@@ -420,6 +526,19 @@ void DDebug::resaltWidget(QWidget *w, const QColor &color)
 	pal.setColor(QPalette::Background, color);
 	w->setPalette(pal);
 }
+
+QTextBrowser *DDebug::browser()
+{
+	if ( !debugBrowser)
+	{
+		debugBrowser = new QTextBrowser;
+		new DebugBrowserHighlighter(debugBrowser->document());
+// 		debugBrowser->setWindowFlags(Qt::WindowStaysOnTopHint);
+	}
+	
+	return debugBrowser;
+}
+
 
 #endif // QT_GUI_LIB
 

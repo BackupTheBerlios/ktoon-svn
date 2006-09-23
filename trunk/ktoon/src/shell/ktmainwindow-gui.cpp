@@ -25,6 +25,7 @@
 #include "dcommandhistory.h"
 
 #include <QKeySequence>
+#include <QTextBrowser>
 
 void KTMainWindow::createGUI()
 {
@@ -229,6 +230,7 @@ void KTMainWindow::setupMenu()
 	setupWindowActions();
 	m_windowMenu = new QMenu(tr( "&Window" ),this);
 	menuBar()->addMenu(  m_windowMenu );
+	m_windowMenu->addAction(m_actionManager->find("show debug"));
 	m_windowMenu->addAction(m_actionManager->find("show palette"));
 	m_windowMenu->addAction(m_actionManager->find("show brushes"));
 	m_windowMenu->addAction(m_actionManager->find("show library"));
@@ -378,6 +380,8 @@ void KTMainWindow::setupWindowActions()
 	
 	addToPerspective(new DAction(QPixmap(), tr("Show color palette widget"), QKeySequence(tr("Shift+P")), this, SLOT(showWidgetPage()), m_actionManager, "show palette"), Drawing);
 	
+	
+	new DAction(QPixmap(), tr("Show debug dialog"), QKeySequence(), DDebug::browser(), SLOT(show()), m_actionManager, "show debug");
 }
 
 void KTMainWindow::setupInsertActions()

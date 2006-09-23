@@ -73,6 +73,7 @@ class QLinearGradient;
 class QRadialGradient;
 class QConicalGradient;
 class QGradient;
+class QTextBrowser;
 
 template <class T> class QList;
 
@@ -81,15 +82,17 @@ enum DebugType
 	DDebugMsg = 0,
 	DWarningMsg,
 	DErrorMsg,
-	DFatalMsg 
+	DFatalMsg
 };
 
 enum DebugOutput
 {
-	DNone = 0x00,
+	DDefault = -1,
+	DNone = 0,
 	DFileOutput,
 	DBoxOutput,
-	DShellOutput
+	DShellOutput,
+	DBrowserOutput
 };
 
 #if !defined(D_NODEBUG)
@@ -293,6 +296,8 @@ class D_CORE_EXPORT DDebug
 		DDebug& operator << (const QRadialGradient &);
 		DDebug& operator << (const QConicalGradient &);
 		DDebug& operator << (const QGradient *);
+		
+		static QTextBrowser *browser();
 #endif
 		
 		
@@ -306,11 +311,7 @@ class D_CORE_EXPORT DDebug
 		QString m_toWrite;
 		DebugOutput m_output;
 		
-		QStringList m_areas;
 		QString m_area;
-		
-		bool m_showArea;
-		bool m_showAll;
 };
 
 template <class T> DDebug &DDebug::operator<<( const QList<T> &list )
@@ -331,42 +332,42 @@ template <class T> DDebug &DDebug::operator<<( const QList<T> &list )
 
 // Global functions
 
-inline DDebug dDebug(const QString &area = QString(), int output = DShellOutput)
+inline DDebug dDebug(const QString &area = QString(), int output = DDefault)
 {
 	return DDebug(DDebugMsg, area, DebugOutput(output));
 }
 
-inline DDebug dDebug(int area, int output = DShellOutput)
+inline DDebug dDebug(int area, int output = DDefault)
 {
 	return DDebug(DDebugMsg, QString::number(area), DebugOutput(output));
 }
 
-inline DDebug dFatal(const QString &area = QString(), int output = DShellOutput)
+inline DDebug dFatal(const QString &area = QString(), int output = DDefault)
 {
 	return DDebug(DFatalMsg, area, DebugOutput(output));
 }
 
-inline DDebug dFatal(int area, int output = DShellOutput)
+inline DDebug dFatal(int area, int output = DDefault)
 {
 	return DDebug(DFatalMsg, QString::number(area), DebugOutput(output));
 }
 
-inline DDebug dError(const QString &area = QString(), int output = DShellOutput)
+inline DDebug dError(const QString &area = QString(), int output = DDefault)
 {
 	return DDebug(DErrorMsg, area, DebugOutput(output));
 }
 
-inline DDebug dError(int area, int output = DShellOutput)
+inline DDebug dError(int area, int output = DDefault)
 {
 	return DDebug(DErrorMsg, QString::number(area), DebugOutput(output));
 }
 
-inline DDebug dWarning(const QString &area = QString(), int output = DShellOutput)
+inline DDebug dWarning(const QString &area = QString(), int output = DDefault)
 {
 	return DDebug(DWarningMsg, area, DebugOutput(output));
 }
 
-inline DDebug dWarning(int area, int output = DShellOutput)
+inline DDebug dWarning(int area, int output = DDefault)
 {
 	return DDebug(DWarningMsg, QString::number(area), DebugOutput(output));
 }
@@ -385,12 +386,17 @@ class DNDebug
 		inline DNDebug &nospace() { return *this; }
 		inline DNDebug &maybeSpace() { return *this; }
 		template<typename T> inline DNDebug &operator<<(const T &) { return *this; }
+		
+#ifdef QT_GUI_LIB
 		void resaltWidget(QWidget */*w*/, const QColor &/*color*/ = QColor(Qt::magenta))
 		{
 		}
+		
+		static QTextBrowser *browser() { return 0; };
+#endif
 };
 
-inline DNDebug dDebug(int = 0,int = DShellOutput)
+inline DNDebug dDebug(int = 0,int = DDefault)
 {
 	return DNDebug();
 }
