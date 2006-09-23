@@ -146,7 +146,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 				int position  = scene->currentFrame()->graphics().indexOf(manager->parentItem());
 				if(position != -1)
 				{
-					KTItemEvent *event = new KTItemEvent(KTProjectEvent::Transform, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, doc.toString() );
+					KTItemRequest *event = new KTItemRequest(KTProjectRequest::Transform, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, doc.toString() );
 					addProjectEvent(event);
 					
 					// Restore matrix
@@ -210,11 +210,11 @@ void Select::aboutToChangeTool()
 	
 }
 
-void Select::itemEvent(const KTItemEvent *event)
+void Select::itemRequest(const KTItemRequest *event)
 {
 	switch(event->action())
 	{
-		case KTProjectEvent::Transform:
+		case KTProjectRequest::Transform:
 		{
 			QTimer::singleShot(0, this, SLOT(syncNodes()));
 		}

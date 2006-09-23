@@ -33,7 +33,7 @@
 #include <QLabel>
 #include <QToolButton>
 
-#include "ktsceneevent.h"
+#include "ktscenerequest.h"
 
 #include "ktprojectactionbar.h"
 
@@ -106,9 +106,9 @@ void KTScenesWidget::sendEvent(int action)
 
 void KTScenesWidget::selectScene(const QString & name, int index)
 {
-	KTSceneEvent event(KTProjectEvent::Select, index, this);
+	KTSceneRequest event(KTProjectRequest::Select, index, this);
 	
-	emit eventTriggered( &event );
+	emit requestTriggered( &event );
 }
 
 void KTScenesWidget::sceneDobleClick(QTreeWidgetItem * item, int )
@@ -128,16 +128,16 @@ void KTScenesWidget::emitRequestInsertScene()
 	}
 	
 	
-	KTSceneEvent event(KTProjectEvent::Add,  index, this);
+	KTSceneRequest event(KTProjectRequest::Add,  index, this);
 	
-	emit eventTriggered( &event );
+	emit requestTriggered( &event );
 }
 
 void KTScenesWidget::emitRequestRemoveScene()
 {
-	KTSceneEvent event(KTProjectEvent::Remove,  m_tableScenes->indexCurrentScene(), this );
+	KTSceneRequest event(KTProjectRequest::Remove,  m_tableScenes->indexCurrentScene(), this );
 	
-	emit eventTriggered( &event );
+	emit requestTriggered( &event );
 }
 
 
@@ -146,26 +146,26 @@ void KTScenesWidget::closeAllScenes()
 	m_tableScenes->removeAll();
 }
 
-void KTScenesWidget::sceneEvent(KTSceneEvent *e)
+void KTScenesWidget::sceneRequest(KTSceneRequest *e)
 {
 	switch(e->action() )
 	{
-		case KTProjectEvent::Add:
+		case KTProjectRequest::Add:
 		{
 			m_tableScenes->insertScene(e->sceneIndex(), e->partName());
 		}
 		break;
-		case KTProjectEvent::Remove:
+		case KTProjectRequest::Remove:
 		{
 			m_tableScenes->removeScene(e->sceneIndex());
 		}
 		break;
-		case KTProjectEvent::Rename:
+		case KTProjectRequest::Rename:
 		{
 			m_tableScenes->renameScene(e->sceneIndex(), e->data().toString() );
 		}
 		break;
-		case KTProjectEvent::Select:
+		case KTProjectRequest::Select:
 		{
 			m_tableScenes->selectScene( e->sceneIndex() );
 		}
@@ -176,8 +176,8 @@ void KTScenesWidget::sceneEvent(KTSceneEvent *e)
 
 void KTScenesWidget::emitRequestRenameScene(QTreeWidgetItem *item)
 {
-	KTSceneEvent event(KTProjectEvent::Rename, m_tableScenes->indexOfTopLevelItem (item), item->text(0));
+	KTSceneRequest event(KTProjectRequest::Rename, m_tableScenes->indexOfTopLevelItem (item), item->text(0));
 	
-	emit eventTriggered( &event);
+	emit requestTriggered( &event);
 }
 

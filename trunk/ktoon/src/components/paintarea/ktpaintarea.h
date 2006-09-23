@@ -27,7 +27,7 @@
 #include <QGraphicsView>
 #include <kttoolplugin.h>
 
-#include "ktabstractprojecteventhandler.h"
+#include "ktabstractprojectrequesthandler.h"
 
 
 class QGraphicsRectItem;
@@ -41,7 +41,7 @@ class KTPaintAreaRotator;
 */
 
 
-class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
+class KTPaintArea : public QGraphicsView, public KTAbstractProjectRequestHandler
 {
 	Q_OBJECT;
 	public:
@@ -79,7 +79,7 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		
 	signals:
 		void cursorPosition(const QPointF &pos);
-		void eventTriggered(const KTProjectEvent *event);
+		void requestTriggered(const KTProjectRequest *event);
 		
 	private:
 		QMouseEvent *mapMouseEvent(QMouseEvent *event) const;
@@ -94,11 +94,11 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectEventHandler
 		void cutItems();
 		
 	protected:
-		void frameEvent(KTFrameEvent *event);
-		void layerEvent(KTLayerEvent *event);
-		void sceneEvent(KTSceneEvent *event);
-		void projectEvent(KTProjectEvent *event);
-		void itemEvent(KTItemEvent *event);
+		void frameRequest(KTFrameRequest *event);
+		void layerRequest(KTLayerRequest *event);
+		void sceneRequest(KTSceneRequest *event);
+		void projectRequest(KTProjectRequest *event);
+		void itemRequest(KTItemRequest *event);
 		void drawBackground(QPainter *painter, const QRectF &rect);
 		
 		

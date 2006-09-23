@@ -29,7 +29,7 @@
 
 #include "dcirclebuttonbar.h"
 
-#include "ktabstractprojecteventhandler.h"
+#include "ktabstractprojectrequesthandler.h"
 
 
 class QCheckBox;
@@ -55,10 +55,10 @@ class KTViewCamera : public QMainWindow
 		void doPlay();
 		
 	public slots:
-		bool handleProjectEvent(KTProjectEvent *event);
+		bool handleProjectRequest(KTProjectRequest *event);
 		
 	signals:
-		void eventTriggered(const KTProjectEvent *event);
+		void requestTriggered(const KTProjectRequest *event);
 		
 	private:
 		QFrame *m_container;

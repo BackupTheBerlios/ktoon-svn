@@ -11,20 +11,20 @@ headers.path = /include/
 HEADERS += ktlayer.h \
            ktpalettedocument.h \
            ktframe.h \
-           ktframeevent.h \
-           ktlayerevent.h \
-           ktprojectevent.h \
-           ktsceneevent.h \
+           ktframerequest.h \
+           ktlayerrequest.h \
+           ktprojectrequest.h \
+           ktscenerequest.h \
            ktscene.h \
            ktproject.h \
            ktprojectmanager.h \
            ktprojectcommand.h \
-           ktabstractprojecteventhandler.h \
+           ktabstractprojectrequesthandler.h \
            ktabstractserializable.h \
            ktframegroup.h \
            ktphotogram.h \
            ktpathitem.h \
-           ktitemevent.h \
+           ktitemrequest.h \
            ktrectitem.h \
            ktpixmapitem.h \
            kttextitem.h \
@@ -40,19 +40,19 @@ HEADERS += ktlayer.h \
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
-           ktframeevent.cpp \
-           ktlayerevent.cpp \
-           ktprojectevent.cpp \
-           ktsceneevent.cpp \
+           ktframerequest.cpp \
+           ktlayerrequest.cpp \
+           ktprojectrequest.cpp \
+           ktscenerequest.cpp \
            ktscene.cpp \
            ktproject.cpp \
            ktprojectmanager.cpp \
            ktprojectcommand.cpp \
-           ktabstractprojecteventhandler.cpp \
+           ktabstractprojectrequesthandler.cpp \
            ktframegroup.cpp \
            ktphotogram.cpp \
            ktpathitem.cpp \
-           ktitemevent.cpp \
+           ktitemrequest.cpp \
            ktrectitem.cpp \
            ktpixmapitem.cpp \
            kttextitem.cpp \

@@ -28,11 +28,11 @@
 #include "ktglobal_store.h"
 
 class KTProject;
-class KTProjectEvent;
-class KTFrameEvent;
-class KTLayerEvent;
-class KTSceneEvent;
-class KTItemEvent;
+class KTProjectRequest;
+class KTFrameRequest;
+class KTLayerRequest;
+class KTSceneRequest;
+class KTItemRequest;
 class KTPaintAreaEvent;
 
 /**
@@ -41,16 +41,16 @@ class KTPaintAreaEvent;
 class STORE_EXPORT KTProjectCommand : public QUndoCommand
 {
 	public:
-		KTProjectCommand(KTProject *project, const KTProjectEvent *event);
+		KTProjectCommand(KTProject *project, const KTProjectRequest *event);
 		~KTProjectCommand();
 		
 		virtual void redo();
 		virtual void undo();
 		
-		void frameCommand(const KTFrameEvent *event, bool redo);
-		void layerCommand(const KTLayerEvent *event, bool redo);
-		void sceneCommand(const KTSceneEvent *event, bool redo);
-		void itemCommand(const KTItemEvent *event, bool redo);
+		void frameCommand(const KTFrameRequest *event, bool redo);
+		void layerCommand(const KTLayerRequest *event, bool redo);
+		void sceneCommand(const KTSceneRequest *event, bool redo);
+		void itemCommand(const KTItemRequest *event, bool redo);
 		void paintAreaCommand(const KTPaintAreaEvent *event, bool redo);
 		
 	private:
@@ -58,7 +58,7 @@ class STORE_EXPORT KTProjectCommand : public QUndoCommand
 		
 	private:
 		KTProject *m_project;
-		KTProjectEvent *m_event;
+		KTProjectRequest *m_event;
 		
 		QVariant m_data;
 };

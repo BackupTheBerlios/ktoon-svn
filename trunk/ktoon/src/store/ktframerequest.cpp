@@ -18,38 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktlayerevent.h"
+#include "ktframerequest.h"
 #include <ddebug.h>
 
-KTLayerEvent::KTLayerEvent(Action action, int sceneIndex, int layerIndex, const QVariant &data) : KTSceneEvent(action, sceneIndex, data), m_layerIndex(layerIndex)
+KTFrameRequest::KTFrameRequest(Action action, int sceneIndex, int layerIndex, int frameIndex, const QVariant &data ) : KTLayerRequest(action, sceneIndex, layerIndex, data), m_frameIndex(frameIndex)
 {
 }
 
 
-KTLayerEvent::~KTLayerEvent()
+KTFrameRequest::~KTFrameRequest()
 {
 }
 
-int KTLayerEvent::id() const
+int KTFrameRequest::id() const
 {
-	return KTProjectEvent::Layer;
+	return KTProjectRequest::Frame;
 }
 
-int KTLayerEvent::layerIndex() const
+int KTFrameRequest::frameIndex() const
 {
-	return m_layerIndex;
+	return m_frameIndex;
 }
 
-bool KTLayerEvent::isValid() const
+
+bool KTFrameRequest::isValid() const
 {
-	return KTSceneEvent::isValid() && (m_layerIndex >= 0 );
+	return KTSceneRequest::isValid() && KTLayerRequest::isValid() && (m_frameIndex >= 0);
 }
 
-KTProjectEvent *KTLayerEvent::clone() const
+
+KTProjectRequest *KTFrameRequest::clone() const
 {
-	KTLayerEvent *event = new KTLayerEvent(action(), sceneIndex(), m_layerIndex, data());
+	KTFrameRequest *event = new KTFrameRequest(action(), sceneIndex(), layerIndex(), m_frameIndex, data());
 	
-	event->setPartName( partName());
+	event->setPartName( partName() );
 	
 	return event;
 }

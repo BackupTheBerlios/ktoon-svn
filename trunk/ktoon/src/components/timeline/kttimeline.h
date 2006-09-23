@@ -48,9 +48,9 @@ class KTTimeLine : public KTModuleWidgetBase
 		KTFramesTable *framesTable(int sceneIndex);
 		
 	protected:
-		void sceneEvent(KTSceneEvent *e);
-		void layerEvent(KTLayerEvent *e);
-		void frameEvent(KTFrameEvent *e);
+		void sceneRequest(KTSceneRequest *e);
+		void layerRequest(KTLayerRequest *e);
+		void frameRequest(KTFrameRequest *e);
 		
 	public slots:
 		void insertScene(int position, const QString &name);

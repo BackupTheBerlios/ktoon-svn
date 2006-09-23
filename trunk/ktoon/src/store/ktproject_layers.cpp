@@ -21,7 +21,7 @@
 #include "ktproject.h"
 #include "ktscene.h"
 
-#include "ktlayerevent.h"
+#include "ktlayerrequest.h"
 #include <dcore/ddebug.h>
 
 KTLayer *KTProject::createLayer(int scenePosition, int position, const QString &xml)
@@ -34,7 +34,7 @@ KTLayer *KTProject::createLayer(int scenePosition, int position, const QString &
 		
 		if ( ! layer ) return 0;
 		
-		KTLayerEvent event(KTProjectEvent::Add, scenePosition, position );
+		KTLayerRequest event(KTProjectRequest::Add, scenePosition, position );
 		QDomDocument document;
 		if ( document.setContent(xml) )
 		{
@@ -99,7 +99,7 @@ QString KTProject::removeLayer(int scenePos, int position)
 			
 			if ( scene->removeLayer(position) )
 			{
-				KTLayerEvent event(KTProjectEvent::Remove, scenePos, position);
+				KTLayerRequest event(KTProjectRequest::Remove, scenePos, position);
 				
 				emit commandExecuted( &event );
 				
@@ -128,7 +128,7 @@ void KTProject::moveLayer(int scenePosition, int position, int newPosition)
 	}
 	else
 	{
-		KTLayerEvent event(KTProjectEvent::Move,scenePosition, position, newPosition);
+		KTLayerRequest event(KTProjectRequest::Move,scenePosition, position, newPosition);
 		emit commandExecuted( &event);
 	}
 	
@@ -150,7 +150,7 @@ void KTProject::lockLayer(int scenePosition, int position, bool lock)
 	{
 		layer->setLocked(lock);
 		
-		KTLayerEvent event(KTProjectEvent::Lock, scenePosition, position, lock);
+		KTLayerRequest event(KTProjectRequest::Lock, scenePosition, position, lock);
 		emit commandExecuted( &event);
 	}
 }
@@ -175,7 +175,7 @@ QString KTProject::renameLayer(int scenePosition, int position, const QString &n
 	if ( layer )
 	{
 		
-		KTLayerEvent event(KTProjectEvent::Rename, scenePosition, position, newName);
+		KTLayerRequest event(KTProjectRequest::Rename, scenePosition, position, newName);
 		event.setPartName( layer->layerName());
 		
 		oldName = layer->layerName();
@@ -192,7 +192,7 @@ QString KTProject::renameLayer(int scenePosition, int position, const QString &n
 
 void KTProject::selectLayer(int scene, int position, bool prioritary)
 {
-	KTLayerEvent event(KTProjectEvent::Select, scene, position, prioritary);
+	KTLayerRequest event(KTProjectRequest::Select, scene, position, prioritary);
 	emit commandExecuted( &event );
 }
 
@@ -212,7 +212,7 @@ void KTProject::setLayerVisibility(int scenePos, int position, bool view)
 	{
 		layer->setVisible(view);
 		
-		KTLayerEvent event(KTProjectEvent::View, scenePos, position, view);
+		KTLayerRequest event(KTProjectRequest::View, scenePos, position, view);
 		emit commandExecuted( &event );
 	}
 }

@@ -35,7 +35,7 @@
 
 #include "ktbrushmanager.h"
 #include "ktinputdeviceinformation.h"
-#include "ktitemevent.h"
+#include "ktitemrequest.h"
 #include "ktpaintareaevent.h"
 #include "ktpaintarearotator.h"
 #include "ktimagedevice.h"
@@ -330,9 +330,9 @@ void KTPaintArea::mouseReleaseEvent(QMouseEvent *event)
 		KTScene *currentScene = qobject_cast<KTScene *>(scene());
 		m_tool->release(m_inputInformation, m_brushManager,  currentScene, this );
 		
-		foreach( KTProjectEvent *e, m_tool->events() )
+		foreach( KTProjectRequest *e, m_tool->events() )
 		{
-			emit eventTriggered( e );
+			emit requestTriggered( e );
 		}
 		m_tool->end();
 	}
@@ -359,18 +359,18 @@ QMouseEvent *KTPaintArea::mapMouseEvent(QMouseEvent *event) const
 	return e;
 }
 
-void KTPaintArea::frameEvent(KTFrameEvent *event)
+void KTPaintArea::frameRequest(KTFrameRequest *event)
 {
 	switch(event->action())
 	{
-		case KTProjectEvent::Select:
+		case KTProjectRequest::Select:
 		{
 			setCurrentScene( event->sceneIndex() );
 			qobject_cast<KTScene *>(scene())->setCurrentFrame(event->layerIndex(), event->frameIndex());
 			
 			qobject_cast<KTScene *>(scene())->drawPhotogram(event->frameIndex());
 			
-			if ( event->action() == KTProjectEvent::Select )
+			if ( event->action() == KTProjectRequest::Select )
 			{
 				if ( m_tool ) m_tool->init( this );
 			}
@@ -382,25 +382,25 @@ void KTPaintArea::frameEvent(KTFrameEvent *event)
 	}
 }
 
-void KTPaintArea::layerEvent(KTLayerEvent *event)
+void KTPaintArea::layerRequest(KTLayerRequest *event)
 {
-	if ( event->action() != KTProjectEvent::Add ||  event->action() != KTProjectEvent::Remove )
+	if ( event->action() != KTProjectRequest::Add ||  event->action() != KTProjectRequest::Remove )
 	{
 		qobject_cast<KTScene *>(scene())->drawCurrentPhotogram();
 		viewport()->update(scene()->sceneRect().toRect() );
 	}
 }
 
-void KTPaintArea::sceneEvent(KTSceneEvent *event)
+void KTPaintArea::sceneRequest(KTSceneRequest *event)
 {
 	switch(event->action())
 	{
-		case KTProjectEvent::Select:
+		case KTProjectRequest::Select:
 		{
 			setCurrentScene( event->sceneIndex() );
 		}
 		break;
-		case KTProjectEvent::Remove:
+		case KTProjectRequest::Remove:
 		{
 			if ( event->sceneIndex() == m_currentSceneIndex )
 			{
@@ -412,25 +412,25 @@ void KTPaintArea::sceneEvent(KTSceneEvent *event)
 	}
 }
 
-void KTPaintArea::projectEvent(KTProjectEvent *event)
+void KTPaintArea::projectRequest(KTProjectRequest *event)
 {
 	Q_UNUSED(event);
 }
 
-void KTPaintArea::itemEvent(KTItemEvent *event)
+void KTPaintArea::itemRequest(KTItemRequest *event)
 {
 	switch(event->action())
 	{
-// 		case KTProjectEvent::Add:
+// 		case KTProjectRequest::Add:
 // 		{
 // 		}
 // 		break;
-// 		case KTProjectEvent::Remove:
+// 		case KTProjectRequest::Remove:
 // 		{
 // 			
 // 		}
 		break;
-		case KTProjectEvent::Transform:
+		case KTProjectRequest::Transform:
 		{
 			viewport()->update();
 		}
@@ -444,7 +444,7 @@ void KTPaintArea::itemEvent(KTItemEvent *event)
 	
 	if ( m_tool )
 	{
-		m_tool->itemEvent( event );
+		m_tool->itemRequest( event );
 	}
 }
 
@@ -530,11 +530,11 @@ void KTPaintArea::deleteItems()
 		root.setAttribute("positions", strItems );
 		doc.appendChild(root);
 		
-		KTItemEvent event(KTProjectEvent::Remove, currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, doc.toString());
+		KTItemRequest event(KTProjectRequest::Remove, currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, doc.toString());
 		
 // 		dDebug(2) << "Borrando del frame " << currentScene->currentFrameIndex() << "\n" << doc.toString();
 		
-		emit eventTriggered(&event);
+		emit requestTriggered(&event);
 	}
 }
 
@@ -574,8 +574,8 @@ void KTPaintArea::groupItems()
 		doc.appendChild(root);
 		
 		
-		KTItemEvent event(KTProjectEvent::Group, currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, doc.toString());
-		emit eventTriggered(&event);
+		KTItemRequest event(KTProjectRequest::Group, currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, doc.toString());
+		emit requestTriggered(&event);
 	}
 	
 	/*D_FUNCINFO;
@@ -596,8 +596,8 @@ void KTPaintArea::groupItems()
 	
 	KTScene* currentScene = static_cast<KTScene*>(scene());
 	
-	KTItemEvent *event = new KTItemEvent(KTProjectEvent::Group, currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), -1, doc.toString());
-	emit eventTriggered(event);
+	KTItemRequest *event = new KTItemRequest(KTProjectRequest::Group, currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), -1, doc.toString());
+	emit requestTriggered(event);
 									     */
 }
 
@@ -664,8 +664,8 @@ void KTPaintArea::pasteItems()
 	
 	foreach(QString xml, m_copiesXml)
 	{
-		KTItemEvent event(KTProjectEvent::Add, currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), -1, xml);
-		emit eventTriggered(&event);
+		KTItemRequest event(KTProjectRequest::Add, currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), -1, xml);
+		emit requestTriggered(&event);
 	}
 	
 // 	dDebug(2) << "Paste in : " << currentScene->currentFrameIndex();

@@ -64,7 +64,7 @@ class ContourSelection : public KTToolPlugin
 		virtual void aboutToChangeTool();
 		
 		
-		virtual void itemEvent(const KTItemEvent *event);
+		virtual void itemRequest(const KTItemRequest *event);
 		virtual void keyPressEvent(QKeyEvent *event);
 		
 	private:

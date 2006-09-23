@@ -17,109 +17,29 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTLAYERREQUEST_H
+#define KTLAYERREQUEST_H
 
-
-#ifndef KTPROJECTEVENT_H
-#define KTPROJECTEVENT_H
-
-#include <QObject>
-#include <QString>
-#include <QVariant>
+#include <ktscenerequest.h>
 #include "ktglobal_store.h"
-
-class KTProjectEvent;
-class KTSceneEvent;
-class KTLayerEvent;
-class KTFrameEvent;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class STORE_EXPORT KTProjectEvent
+class STORE_EXPORT KTLayerRequest : public KTSceneRequest
 {
 	public:
-		struct PartPosition
-		{
-			int sceneIndex;
-			int layerIndex;
-			int frameIndex;
-		};
-		
-		enum Action
-		{
-			None = 0,
-			/**
-			 * Añade una parte, el tipo de data es nulo
-			 */
-			Add,
-			/**
-			 * Remueve una parte, el tipo de data es nulo
-			 */
-			Remove,
-			/**
-			 * Mueve una parte, el tipo de data es un entero que significa la nueva posición
-			 */
-			Move,
-			/**
-			 * Bloquea una parte, el tipo de data es booleano.
-			 */
-			Lock,
-			/**
-			 * Renombra una parte, el tipo de data es una cadena de texto.
-			 */
-			Rename,
-			/**
-			 * Selecciona una parte, el tipo de data es nulo
-			 */
-			Select,
-			/**
-			 * Cambia la visibilidad
-			 */
-			View,
-			
-			Group,
-			Ungroup,
-			
-			// Items
-			Transform,
-			Convert,
-			EditNodes
-		};
-		
-		enum Part
-		{
-			Project = 1000,
-			Scene,
-			Layer,
-			Frame,
-			Item
-		};
-		
-		KTProjectEvent(Action action, const QVariant &data = 0);
-		virtual ~KTProjectEvent();
-		
-		
-		Action action() const;
-		
-		void setPartName(const QString &name);
-		QString partName() const;
+		KTLayerRequest(Action action, int sceneIndex, int layerIndex, const QVariant &data = 0);
+		~KTLayerRequest();
 		
 		virtual int id() const;
+		int layerIndex() const;
 		virtual bool isValid() const;
-		
-		virtual KTProjectEvent *clone() const;
-		
-		QVariant data() const;
+		virtual KTProjectRequest *clone() const;
 		
 	private:
-		Action m_action;
-		QString m_partName;
-		QVariant m_data;
+		int m_layerIndex;
 };
-
-Q_DECLARE_METATYPE(KTProjectEvent::PartPosition);
 
 
 #endif
-
-

@@ -36,7 +36,7 @@
 #include "ktpaintareaproperties.h"
 #include "ktpluginmanager.h"
 #include "ktpaintarea.h"
-#include "ktframeevent.h"
+#include "ktframerequest.h"
 #include "ktpaintareaevent.h"
 #include "ktpaintareacommand.h"
 
@@ -77,7 +77,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
 	}
 	
 	connect(m_paintArea, SIGNAL(cursorPosition(const QPointF &)),  this,  SLOT(showPos(const QPointF &)) );
-	connect(m_paintArea, SIGNAL(eventTriggered(const KTProjectEvent* )), this, SIGNAL(eventTriggered(const KTProjectEvent *)));
+	connect(m_paintArea, SIGNAL(requestTriggered(const KTProjectRequest* )), this, SIGNAL(requestTriggered(const KTProjectRequest *)));
 
 // 	connect( m_paintArea, SIGNAL(changedZoomFactor(double)),  this,  SLOT(updateZoomFactor(double)) );
 // 	setWindowTitle( m_title + " - " + m_document->currentScene()->sceneName() );
@@ -683,9 +683,9 @@ void KTViewDocument::selectToolFromMenu(QAction *action)
 	}
 }
 
-bool KTViewDocument::handleProjectEvent(KTProjectEvent *event)
+bool KTViewDocument::handleProjectRequest(KTProjectRequest *event)
 {
-	return m_paintArea->handleEvent(event);
+	return m_paintArea->handleRequest(event);
 }
 
 void KTViewDocument::applyFilter()

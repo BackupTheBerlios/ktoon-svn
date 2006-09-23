@@ -21,7 +21,7 @@
 #include "ktproject.h"
 #include "ktserializer.h"
 #include "ktscene.h"
-#include "ktitemevent.h"
+#include "ktitemrequest.h"
 #include "ktpathitem.h"
 #include "ktrectitem.h"
 #include "ktellipseitem.h"
@@ -53,7 +53,7 @@ QGraphicsItem *KTProject::createItem(int scenePosition, int layerPosition, int f
 				QGraphicsItem *item = frame->createItem(position, xml);
 				if ( item )
 				{
-					KTItemEvent event(KTProjectEvent::Add, scenePosition, layerPosition, framePosition, position, xml);
+					KTItemRequest event(KTProjectRequest::Add, scenePosition, layerPosition, framePosition, position, xml);
 					emit commandExecuted( &event);
 				}
 				
@@ -87,7 +87,7 @@ void KTProject::removeItem(int scenePosition, int layerPosition, int framePositi
 				
 				if( frame->removeItemAt(position) )
 				{
-					KTItemEvent event(KTProjectEvent::Remove, scenePosition, layerPosition, framePosition, position, 0);
+					KTItemRequest event(KTProjectRequest::Remove, scenePosition, layerPosition, framePosition, position, 0);
 					emit commandExecuted( &event);
 				}
 			}
@@ -141,7 +141,7 @@ QStringList KTProject::removeItems(int scenePosition, int layerPosition, int fra
 					}
 				}
 				
-				KTItemEvent event(KTProjectEvent::Remove, scenePosition, layerPosition, framePosition, position, strList);
+				KTItemRequest event(KTProjectRequest::Remove, scenePosition, layerPosition, framePosition, position, strList);
 				emit commandExecuted( &event);
 				
 				return infoItems;
@@ -196,7 +196,7 @@ QStringList KTProject::groupItems(int scenePosition, int layerPosition, int fram
 // 				}
 				frame->createItemGroupAt( position, positions);
 				
-				KTItemEvent event(KTProjectEvent::Group, scenePosition, layerPosition, framePosition, position, xml);
+				KTItemRequest event(KTProjectRequest::Group, scenePosition, layerPosition, framePosition, position, xml);
 				emit commandExecuted( &event);
 				
 				return infoItems;
@@ -261,7 +261,7 @@ QString KTProject::convertItem(int scenePosition, int layerPosition, int framePo
 					}
 					
 					
-					KTItemEvent event(KTProjectEvent::Convert, scenePosition, layerPosition, framePosition, position, xml);
+					KTItemRequest event(KTProjectRequest::Convert, scenePosition, layerPosition, framePosition, position, xml);
 					
 					emit commandExecuted( &event);
 					
@@ -300,7 +300,7 @@ QString KTProject::transformItem(int scenePosition, int layerPosition, int frame
 					KTSerializer::loadProperties( item, doc.documentElement());
 					
 					
-					KTItemEvent event(KTProjectEvent::Transform, scenePosition, layerPosition, framePosition, position, xml);
+					KTItemRequest event(KTProjectRequest::Transform, scenePosition, layerPosition, framePosition, position, xml);
 					
 					emit commandExecuted( &event);
 					
@@ -341,7 +341,7 @@ QString KTProject::setPathItem( int scenePosition, int layerPosition, int frameP
 						
 						KTItemFactory factory;
 						factory.loadItem(item, xml);
-						KTItemEvent event(KTProjectEvent::EditNodes,	scenePosition, layerPosition, framePosition, position, xml);
+						KTItemRequest event(KTProjectRequest::EditNodes,	scenePosition, layerPosition, framePosition, position, xml);
 						emit commandExecuted( &event);
 						return current;
 					}

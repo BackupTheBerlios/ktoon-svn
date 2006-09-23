@@ -20,7 +20,7 @@
 
 #include "ktanimationarea.h"
 
-#include "ktsceneevent.h"
+#include "ktscenerequest.h"
 
 #include "ddebug.h"
 
@@ -102,25 +102,25 @@ void KTAnimationArea::advance()
 	}
 }
 
-void KTAnimationArea::frameEvent(KTFrameEvent *event)
+void KTAnimationArea::frameRequest(KTFrameRequest *event)
 {
 }
 
-void KTAnimationArea::layerEvent(KTLayerEvent *event)
+void KTAnimationArea::layerRequest(KTLayerRequest *event)
 {
 	
 }
 
-void KTAnimationArea::sceneEvent(KTSceneEvent *event)
+void KTAnimationArea::sceneRequest(KTSceneRequest *event)
 {
 	switch(event->action())
 	{
-		case KTProjectEvent::Select:
+		case KTProjectRequest::Select:
 		{
 			setCurrentScene( event->sceneIndex() );
 		}
 		break;
-		case KTProjectEvent::Remove:
+		case KTProjectRequest::Remove:
 		{
 			if ( event->sceneIndex() == m_currentSceneIndex )
 			{
@@ -132,12 +132,12 @@ void KTAnimationArea::sceneEvent(KTSceneEvent *event)
 	}
 }
 
-void KTAnimationArea::projectEvent(KTProjectEvent *event)
+void KTAnimationArea::projectRequest(KTProjectRequest *event)
 {
 	
 }
 
-void KTAnimationArea::itemEvent(KTItemEvent *event)
+void KTAnimationArea::itemRequest(KTItemRequest *event)
 {
 	
 }

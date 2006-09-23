@@ -159,7 +159,7 @@ class KTMainWindow : public DTabbedMainWindow
 		
 		void openRecentProject();
 		
-		void createCommand(const KTProjectEvent *event);
+		void createCommand(const KTProjectRequest *event);
 		void createCommand(const KTPaintAreaEvent *event);
 		
 	private:

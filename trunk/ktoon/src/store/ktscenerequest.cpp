@@ -18,29 +18,44 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTITEMEVENT_H
-#define KTITEMEVENT_H
+#include "ktscenerequest.h"
+#include <ddebug.h>
 
-#include <ktframeevent.h>
-#include "ktglobal_store.h"
-
-/**
- * @author David Cuadrado \<krawek@gmail.com\>
-*/
-class STORE_EXPORT KTItemEvent : public KTFrameEvent
+KTSceneRequest::KTSceneRequest(Action action, int sceneIndex, const QVariant &data) : KTProjectRequest(action, data), m_sceneIndex(sceneIndex)
 {
-	public:
-		KTItemEvent(Action action, int sceneIndex, int layerIndex, int frameIndex, int position, const QVariant &data);
-		~KTItemEvent();
-		
-		virtual int id() const;
-		virtual bool isValid() const;
-		virtual KTProjectEvent *clone() const;
-		
-		int itemIndex() const;
-		
-	private:
-		int m_position;
-};
+}
 
-#endif
+
+KTSceneRequest::~KTSceneRequest()
+{
+}
+
+int KTSceneRequest::id() const
+{
+	return KTProjectRequest::Scene;
+}
+
+
+int KTSceneRequest::sceneIndex() const
+{
+	return m_sceneIndex;
+}
+
+bool KTSceneRequest::isValid() const
+{
+	if ( m_sceneIndex < 0 )
+		return false;
+	
+	return true;
+}
+
+KTProjectRequest *KTSceneRequest::clone() const
+{
+	KTSceneRequest *event = new KTSceneRequest(action(), sceneIndex(), data() );
+	
+	event->setPartName( partName() );
+	
+	return event;
+}
+
+

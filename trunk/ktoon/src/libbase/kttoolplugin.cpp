@@ -59,12 +59,12 @@ void KTToolPlugin::end()
 	dDebug("tools") << "End: " << m_currentTool;
 }
 
-void KTToolPlugin::addProjectEvent(KTProjectEvent *e)
+void KTToolPlugin::addProjectEvent(KTProjectRequest *e)
 {
 	m_events << e;
 }
 
-void KTToolPlugin::insertProjectEvent(int index, KTProjectEvent *e)
+void KTToolPlugin::insertProjectEvent(int index, KTProjectRequest *e)
 {
 	if ( index <= m_events.count() )
 	{
@@ -76,17 +76,17 @@ void KTToolPlugin::insertProjectEvent(int index, KTProjectEvent *e)
 	}
 }
 
-void KTToolPlugin::removeProjectEvent(KTProjectEvent *e)
+void KTToolPlugin::removeProjectEvent(KTProjectRequest *e)
 {
 	m_events.removeAll(e);
 }
 
-QList<KTProjectEvent *> KTToolPlugin::events() const
+QList<KTProjectRequest *> KTToolPlugin::events() const
 {
 	return m_events;
 }
 
-void KTToolPlugin::itemEvent(const KTItemEvent *event)
+void KTToolPlugin::itemRequest(const KTItemRequest *event)
 {
 	Q_UNUSED(event);
 }

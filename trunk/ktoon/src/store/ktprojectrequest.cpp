@@ -18,56 +18,56 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktprojectevent.h"
+#include "ktprojectrequest.h"
 
 #include <ddebug.h>
 
-KTProjectEvent::KTProjectEvent(Action action, const QVariant &data) : m_action(action), m_data(data)
+KTProjectRequest::KTProjectRequest(Action action, const QVariant &data) : m_action(action), m_data(data)
 {
 }
 
 
-KTProjectEvent::~KTProjectEvent()
+KTProjectRequest::~KTProjectRequest()
 {
 }
 
 
-KTProjectEvent::Action KTProjectEvent::action() const
+KTProjectRequest::Action KTProjectRequest::action() const
 {
 	return m_action;
 }
 
-QString KTProjectEvent::partName() const
+QString KTProjectRequest::partName() const
 {
 	return m_partName;
 }
 
-int KTProjectEvent::id() const
+int KTProjectRequest::id() const
 {
 	return Project;
 }
 
 
-void KTProjectEvent::setPartName(const QString &name)
+void KTProjectRequest::setPartName(const QString &name)
 {
 	m_partName = name;
 }
 
-bool KTProjectEvent::isValid() const
+bool KTProjectRequest::isValid() const
 {
 	return false;
 }
 
-KTProjectEvent *KTProjectEvent::clone() const
+KTProjectRequest *KTProjectRequest::clone() const
 {
-	KTProjectEvent *event = new KTProjectEvent( m_action, data() );
+	KTProjectRequest *event = new KTProjectRequest( m_action, data() );
 	
 	event->setPartName( partName() );
 	
 	return event;
 }
 
-QVariant KTProjectEvent::data() const
+QVariant KTProjectRequest::data() const
 {
 	return m_data;
 }

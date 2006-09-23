@@ -421,8 +421,8 @@ void KTMainWindow::importPalettes()
 
 void KTMainWindow::ui4project(QWidget *widget)
 {
-	connect(widget, SIGNAL(eventTriggered(const KTProjectEvent *)), this, SLOT(createCommand(const KTProjectEvent *)));
-	connect(m_projectManager, SIGNAL(commandExecuted(KTProjectEvent* )), widget, SLOT(handleProjectEvent(KTProjectEvent *)));
+	connect(widget, SIGNAL(requestTriggered(const KTProjectRequest *)), this, SLOT(createCommand(const KTProjectRequest *)));
+	connect(m_projectManager, SIGNAL(commandExecuted(KTProjectRequest* )), widget, SLOT(handleProjectRequest(KTProjectRequest *)));
 }
 
 void KTMainWindow::ui4paintArea(QWidget *widget)
@@ -538,7 +538,7 @@ void KTMainWindow::closeEvent( QCloseEvent *event )
 	DMainWindow::closeEvent(event);
 }
 
-void KTMainWindow::createCommand(const KTProjectEvent *event)
+void KTMainWindow::createCommand(const KTProjectRequest *event)
 {
 	D_FUNCINFO << event;
 	if ( !event->isValid() )

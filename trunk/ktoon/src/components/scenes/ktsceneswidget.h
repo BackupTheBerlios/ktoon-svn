@@ -61,7 +61,7 @@ class KTScenesWidget : public KTModuleWidgetBase
 		void emitRequestRenameScene(QTreeWidgetItem *item);
 		
 	protected:
-		virtual void sceneEvent(KTSceneEvent *e);
+		virtual void sceneRequest(KTSceneRequest *e);
 		
 	public slots:
 		void sendEvent(int action);

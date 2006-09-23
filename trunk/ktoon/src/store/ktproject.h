@@ -33,8 +33,8 @@
 class KTScene;
 class KTLayer;
 class KTFrame;
-class KTFrameEvent;
-class KTProjectEvent;
+class KTFrameRequest;
+class KTProjectRequest;
 class QGraphicsItem;
 
 typedef QList<KTScene *> Scenes;
@@ -100,14 +100,14 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		
 		void clear();
 		
-		void reemitEvent(KTProjectEvent *event);
+		void reemitEvent(KTProjectRequest *event);
 		
 	protected:
 		virtual void fromXml(const QString &xml );
 		virtual QDomElement toXml(QDomDocument &doc);
 		
 	signals:
-		void commandExecuted(KTProjectEvent *command );
+		void commandExecuted(KTProjectRequest *command );
 		
 	private:
 		Scenes m_scenes;

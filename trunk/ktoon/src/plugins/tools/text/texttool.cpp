@@ -108,7 +108,7 @@ void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
 	QDomDocument doc;
 	doc.appendChild(m_item->toXml( doc ));
 	
-	KTItemEvent *event = new KTItemEvent(KTProjectEvent::Add, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), -1, doc.toString()); // Adds to end
+	KTItemRequest *event = new KTItemRequest(KTProjectRequest::Add, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), -1, doc.toString()); // Adds to end
 	
 	addProjectEvent(event);
 }

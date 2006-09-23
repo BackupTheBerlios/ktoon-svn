@@ -131,7 +131,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 					if( !qgraphicsitem_cast<KTPathItem*>(item) )
 					{
 						QString conv = "<convert type=\"2\" />"; // to path type
-						KTItemEvent *event = new KTItemEvent(KTProjectEvent::Convert, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().indexOf(item), conv);
+						KTItemRequest *event = new KTItemRequest(KTProjectRequest::Convert, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().indexOf(item), conv);
 						addProjectEvent(event);
 					}
 					else
@@ -152,7 +152,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 					QDomDocument doc;
 					doc.appendChild(qgraphicsitem_cast<KTPathItem *>(group->parentItem())->toXml(doc));
 					
-					KTItemEvent *event = new KTItemEvent(KTProjectEvent::EditNodes, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, doc.toString() );
+					KTItemRequest *event = new KTItemRequest(KTProjectRequest::EditNodes, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, doc.toString() );
 					addProjectEvent(event);
 					group->restoreItem();
 				}
@@ -171,7 +171,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 	}
 }
 
-void ContourSelection::itemEvent(const KTItemEvent *event)
+void ContourSelection::itemRequest(const KTItemRequest *event)
 {
 	D_FUNCINFO;
 	QGraphicsItem *item = 0;
@@ -207,7 +207,7 @@ void ContourSelection::itemEvent(const KTItemEvent *event)
 	switch(event->action())
 	{
 		
-		case KTProjectEvent::Convert:
+		case KTProjectRequest::Convert:
 		{
 			
 			if ( item && scene)
@@ -218,7 +218,7 @@ void ContourSelection::itemEvent(const KTItemEvent *event)
 		
 		}
 		break;
-		case KTProjectEvent::EditNodes:
+		case KTProjectRequest::EditNodes:
 		{
 			if ( item )
 			{

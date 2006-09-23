@@ -25,8 +25,8 @@
 #include "dapplication.h"
 #include "ddebug.h"
 
-#include "ktlayerevent.h"
-#include "ktframeevent.h"
+#include "ktlayerrequest.h"
+#include "ktframerequest.h"
 
 #include "ktframestable.h"
 #include "ktlayermanager.h"
@@ -133,31 +133,31 @@ void KTTimeLine::closeAllScenes()
 }
 
 
-void KTTimeLine::sceneEvent(KTSceneEvent *e)
+void KTTimeLine::sceneRequest(KTSceneRequest *e)
 {
 	switch(e->action())
 	{
-		case KTProjectEvent::Add:
+		case KTProjectRequest::Add:
 		{
 			insertScene( e->sceneIndex(), e->partName());
 		}
 		break;
-		case KTProjectEvent::Remove:
+		case KTProjectRequest::Remove:
 		{
 			removeScene(e->sceneIndex());
 		}
 		break;
-		case KTProjectEvent::Move:
+		case KTProjectRequest::Move:
 		{
 			
 		}
 		break;
-		case KTProjectEvent::Lock:
+		case KTProjectRequest::Lock:
 		{
 			
 		}
 		break;
-		case KTProjectEvent::Rename:
+		case KTProjectRequest::Rename:
 		{
 			
 		}
@@ -167,11 +167,11 @@ void KTTimeLine::sceneEvent(KTSceneEvent *e)
 }
 
 
-void KTTimeLine::layerEvent(KTLayerEvent *e)
+void KTTimeLine::layerRequest(KTLayerRequest *e)
 {
 	switch(e->action())
 	{
-		case KTProjectEvent::Add:
+		case KTProjectRequest::Add:
 		{
 			KTLayerManager *layerManager = this->layerManager( e->sceneIndex() );
 			if ( layerManager )
@@ -186,7 +186,7 @@ void KTTimeLine::layerEvent(KTLayerEvent *e)
 			}
 		}
 		break;
-		case KTProjectEvent::Remove:
+		case KTProjectRequest::Remove:
 		{
 			KTLayerManager *layerManager = this->layerManager( e->sceneIndex() );
 			
@@ -203,7 +203,7 @@ void KTTimeLine::layerEvent(KTLayerEvent *e)
 		}
 		break;
 		
-		case KTProjectEvent::Move:
+		case KTProjectRequest::Move:
 		{
 			KTLayerManager *layerManager = this->layerManager( e->sceneIndex() );
 			
@@ -219,7 +219,7 @@ void KTTimeLine::layerEvent(KTLayerEvent *e)
 			}
 		}
 		break;
-		case KTProjectEvent::Lock:
+		case KTProjectRequest::Lock:
 		{
 			KTLayerManager *layerManager = this->layerManager( e->sceneIndex() );
 			
@@ -229,7 +229,7 @@ void KTTimeLine::layerEvent(KTLayerEvent *e)
 			}
 		}
 		break;
-		case KTProjectEvent::Rename:
+		case KTProjectRequest::Rename:
 		{
 			KTLayerManager *layerManager = this->layerManager( e->sceneIndex() );
 			
@@ -243,11 +243,11 @@ void KTTimeLine::layerEvent(KTLayerEvent *e)
 }
 
 
-void KTTimeLine::frameEvent(KTFrameEvent *e)
+void KTTimeLine::frameRequest(KTFrameRequest *e)
 {
 	switch(e->action())
 	{
-		case KTProjectEvent::Add:
+		case KTProjectRequest::Add:
 		{
 			KTFramesTable *framesTable = this->framesTable( e->sceneIndex() );
 			if ( framesTable )
@@ -256,7 +256,7 @@ void KTTimeLine::frameEvent(KTFrameEvent *e)
 			}
 		}
 		break;
-		case KTProjectEvent::Remove:
+		case KTProjectRequest::Remove:
 		{
 			KTFramesTable *framesTable = this->framesTable( e->sceneIndex() );
 			
@@ -266,11 +266,11 @@ void KTTimeLine::frameEvent(KTFrameEvent *e)
 			}
 		}
 		break;
-		case KTProjectEvent::Move:
+		case KTProjectRequest::Move:
 		{
 		}
 		break;
-		case KTProjectEvent::Lock:
+		case KTProjectRequest::Lock:
 		{
 			KTFramesTable *framesTable = this->framesTable( e->sceneIndex() );
 			if ( framesTable )
@@ -279,7 +279,7 @@ void KTTimeLine::frameEvent(KTFrameEvent *e)
 			}
 		}
 		break;
-		case KTProjectEvent::Rename:
+		case KTProjectRequest::Rename:
 		{
 		}
 		break;
@@ -318,80 +318,80 @@ void KTTimeLine::requestCommand(int action)
 	{
 		case KTProjectActionBar::InsertFrame:
 		{
-			KTFrameEvent event(KTProjectEvent::Add, scenePos, layerPos, framePos);
+			KTFrameRequest event(KTProjectRequest::Add, scenePos, layerPos, framePos);
 			
-			emit eventTriggered( &event );
+			emit requestTriggered( &event );
 			
 		}
 		break;
 		case KTProjectActionBar::RemoveFrame:
 		{
-			KTFrameEvent event(KTProjectEvent::Remove, scenePos, layerPos, framePos );
+			KTFrameRequest event(KTProjectRequest::Remove, scenePos, layerPos, framePos );
 			
-			emit eventTriggered( &event );
+			emit requestTriggered( &event );
 		}
 		break;
 		case KTProjectActionBar::MoveFrameUp:
 		{
-			KTFrameEvent event(KTProjectEvent::Move, scenePos, layerPos, framePos, framePos+1);
-			emit eventTriggered(&event);
+			KTFrameRequest event(KTProjectRequest::Move, scenePos, layerPos, framePos, framePos+1);
+			emit requestTriggered(&event);
 		}
 		break;
 		case KTProjectActionBar::MoveFrameDown:
 		{
-			KTFrameEvent event(KTProjectEvent::Move,scenePos, layerPos, framePos, framePos-1);
-			emit eventTriggered(&event);
+			KTFrameRequest event(KTProjectRequest::Move,scenePos, layerPos, framePos, framePos-1);
+			emit requestTriggered(&event);
 		}
 		break;
 		case KTProjectActionBar::InsertLayer:
 		{
-			KTLayerEvent event(KTProjectEvent::Add, scenePos, layerPos+1);
-			emit eventTriggered( &event );
+			KTLayerRequest event(KTProjectRequest::Add, scenePos, layerPos+1);
+			emit requestTriggered( &event );
 		}
 		break;
 		case KTProjectActionBar::RemoveLayer:
 		{
-			KTLayerEvent event(KTProjectEvent::Remove, scenePos, layerPos, this);
+			KTLayerRequest event(KTProjectRequest::Remove, scenePos, layerPos, this);
 			
-			emit eventTriggered( &event );
+			emit requestTriggered( &event );
 		}
 		break;
 		case KTProjectActionBar::MoveLayerUp:
 		{
-			KTLayerEvent event(KTProjectEvent::Move,scenePos, layerPos, layerPos-1);
-			emit eventTriggered(&event);
+			KTLayerRequest event(KTProjectRequest::Move,scenePos, layerPos, layerPos-1);
+			emit requestTriggered(&event);
 		}
 		break;
 		case KTProjectActionBar::MoveLayerDown:
 		{
-			KTLayerEvent event(KTProjectEvent::Move,scenePos, layerPos, layerPos+1);
-			emit eventTriggered(&event);
+			KTLayerRequest event(KTProjectRequest::Move,scenePos, layerPos, layerPos+1);
+			emit requestTriggered(&event);
 		}
 		break;
 		case KTProjectActionBar::InsertScene:
 		{
-			KTSceneEvent event(KTProjectEvent::Add, scenePos+1);
+			KTSceneRequest event(KTProjectRequest::Add, scenePos+1);
 			
-			emit eventTriggered( &event );
+			emit requestTriggered( &event );
 		}
 		break;
 		case KTProjectActionBar::RemoveScene:
 		{
-			KTSceneEvent event(KTProjectEvent::Remove, scenePos);
+			KTSceneRequest event(KTProjectRequest::Remove, scenePos);
 			
-			emit eventTriggered( &event );
+			emit requestTriggered( &event );
 		}
 		break;
 		case KTProjectActionBar::MoveSceneUp:
 		{
-			KTSceneEvent event(KTProjectEvent::Move,scenePos, scenePos+1);
-			emit eventTriggered(&event);
+			KTSceneRequest event(KTProjectRequest::Move,scenePos, scenePos+1);
+			emit requestTriggered(&event);
 		}
 		break;
 		case KTProjectActionBar::MoveSceneDown:
 		{
-			KTSceneEvent event(KTProjectEvent::Move,scenePos, scenePos-1);
-			emit eventTriggered(&event);
+			KTSceneRequest event(KTProjectRequest::Move,scenePos, scenePos-1);
+			emit requestTriggered(&event);
 		}
 		break;
 	}
@@ -403,9 +403,9 @@ void KTTimeLine::emitRequestRenameLayer(int layer, const QString &name)
 	D_FUNCINFO << name;
 	int scenePos = m_container->currentIndex();
 	
-	KTLayerEvent event(KTProjectEvent::Rename, scenePos, layer, name);
+	KTLayerRequest event(KTProjectRequest::Rename, scenePos, layer, name);
 	
-	emit eventTriggered( &event );
+	emit requestTriggered( &event );
 }
 
 

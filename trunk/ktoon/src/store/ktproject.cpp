@@ -26,7 +26,7 @@
 #include "ktlayer.h"
 #include "ktframe.h"
 
-#include "ktsceneevent.h" //events
+#include "ktscenerequest.h" //events
 
 #include <QGraphicsView>
 
@@ -89,7 +89,7 @@ KTScene *KTProject::createScene(int position, const QString &xml)
 	m_scenes.insert(position, scene);
 	m_sceneCounter++;
 	
-	KTSceneEvent event(KTProjectEvent::Add, position);
+	KTSceneRequest event(KTProjectRequest::Add, position);
 	
 	
 	QDomDocument document;
@@ -158,7 +158,7 @@ QString KTProject::removeScene(int position)
 		delete toRemove;
 		toRemove = 0;
 		
-		KTSceneEvent event(KTProjectEvent::Remove, position);
+		KTSceneRequest event(KTProjectRequest::Remove, position);
 		
 		m_sceneCounter--;
 		
@@ -245,7 +245,7 @@ void KTProject::moveScene(int position, int newPosition)
 	m_scenes.insert(newPosition, scene);
 	
 	
-	KTSceneEvent event(KTProjectEvent::Move, position, newPosition);
+	KTSceneRequest event(KTProjectRequest::Move, position, newPosition);
 	emit commandExecuted( &event);
 	
 }
@@ -264,7 +264,7 @@ void KTProject::lockScene(int position, bool lock)
 	
 	scene->setLocked(lock);
 	
-	KTSceneEvent event(KTProjectEvent::Lock, position, lock);
+	KTSceneRequest event(KTProjectRequest::Lock, position, lock);
 	emit commandExecuted( &event);
 	
 	
@@ -281,7 +281,7 @@ QString KTProject::renameScene(int position, const QString &newName)
 		return oldName;
 	}
 	
-	KTSceneEvent event(KTProjectEvent::Rename, position, newName);
+	KTSceneRequest event(KTProjectRequest::Rename, position, newName);
 	event.setPartName( scene->sceneName() );
 	
 	oldName = scene->sceneName();
@@ -297,7 +297,7 @@ QString KTProject::renameScene(int position, const QString &newName)
 
 void KTProject::selectScene(int position, bool prioritary)
 {
-	KTSceneEvent event(KTProjectEvent::Select, position, prioritary);
+	KTSceneRequest event(KTProjectRequest::Select, position, prioritary);
 	emit commandExecuted( &event );
 }
 
@@ -313,12 +313,12 @@ void KTProject::setSceneVisibility(int position, bool view)
 	
 	scene->setVisible(view);
 	
-	KTSceneEvent event(KTProjectEvent::View, position, view);
+	KTSceneRequest event(KTProjectRequest::View, position, view);
 	emit commandExecuted( &event );
 }
 
 
-void KTProject::reemitEvent(KTProjectEvent *event)
+void KTProject::reemitEvent(KTProjectRequest *event)
 {
 	emit commandExecuted( event );
 }

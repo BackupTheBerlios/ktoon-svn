@@ -18,44 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktsceneevent.h"
-#include <ddebug.h>
+#ifndef KTFRAMEREQUEST_H
+#define KTFRAMEREQUEST_H
 
-KTSceneEvent::KTSceneEvent(Action action, int sceneIndex, const QVariant &data) : KTProjectEvent(action, data), m_sceneIndex(sceneIndex)
+#include <ktlayerrequest.h>
+#include "ktglobal_store.h"
+
+/**
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+class STORE_EXPORT KTFrameRequest : public KTLayerRequest
 {
-}
+	public:
+		KTFrameRequest(Action action, int sceneIndex, int layerIndex, int frameIndex, const QVariant &data = 0);
+		~KTFrameRequest();
+		
+		virtual int id() const;
+		int frameIndex() const;
+		virtual bool isValid() const;
+		virtual KTProjectRequest *clone() const;
+		
+	private:
+		int m_frameIndex;
+		
+		Q_DISABLE_COPY(KTFrameRequest);
+};
 
 
-KTSceneEvent::~KTSceneEvent()
-{
-}
-
-int KTSceneEvent::id() const
-{
-	return KTProjectEvent::Scene;
-}
-
-
-int KTSceneEvent::sceneIndex() const
-{
-	return m_sceneIndex;
-}
-
-bool KTSceneEvent::isValid() const
-{
-	if ( m_sceneIndex < 0 )
-		return false;
-	
-	return true;
-}
-
-KTProjectEvent *KTSceneEvent::clone() const
-{
-	KTSceneEvent *event = new KTSceneEvent(action(), sceneIndex(), data() );
-	
-	event->setPartName( partName() );
-	
-	return event;
-}
+#endif
 
 

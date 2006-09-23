@@ -21,7 +21,7 @@
 
 #include "ktproject.h"
 #include "ktscene.h"
-#include "ktframeevent.h"
+#include "ktframerequest.h"
 #include <dcore/ddebug.h>
 
 KTFrame *KTProject::createFrame(int scenePosition, int layerPosition, int position, const QString &xml)
@@ -41,7 +41,7 @@ KTFrame *KTProject::createFrame(int scenePosition, int layerPosition, int positi
 		
 		if ( ! frame ) return 0;
 		
-		KTFrameEvent event(KTProjectEvent::Add, scenePosition, layerPosition, position );
+		KTFrameRequest event(KTProjectRequest::Add, scenePosition, layerPosition, position );
 		
 		
 		QDomDocument document;
@@ -117,7 +117,7 @@ QString KTProject::removeFrame(int scenePos, int layerPos, int position)
 				
 				if ( layer->removeFrame(position) )
 				{
-					KTFrameEvent event(KTProjectEvent::Remove, scenePos, layerPos, position);
+					KTFrameRequest event(KTProjectRequest::Remove, scenePos, layerPos, position);
 					
 					emit commandExecuted( &event );
 					
@@ -152,7 +152,7 @@ void KTProject::moveFrame(int scenePosition, int layerPosition, int position, in
 		}
 		else
 		{
-			KTFrameEvent event(KTProjectEvent::Move, scenePosition, layerPosition, position, newPosition);
+			KTFrameRequest event(KTProjectRequest::Move, scenePosition, layerPosition, position, newPosition);
 			emit commandExecuted( &event );
 		}
 	}
@@ -179,7 +179,7 @@ void KTProject::lockFrame(int scenePosition, int layerPosition, int position, bo
 		
 		frame->setLocked( lock );
 		
-		KTFrameEvent event(KTProjectEvent::Lock, scenePosition, layerPosition, position, lock);
+		KTFrameRequest event(KTProjectRequest::Lock, scenePosition, layerPosition, position, lock);
 		emit commandExecuted( &event );
 	}
 }
@@ -207,7 +207,7 @@ QString KTProject::renameFrame(int scenePosition, int layerPosition, int positio
 		if ( ! frame ) return oldName;
 		
 		
-		KTFrameEvent event(KTProjectEvent::Rename, scenePosition, layerPosition, position, newName);
+		KTFrameRequest event(KTProjectRequest::Rename, scenePosition, layerPosition, position, newName);
 		event.setPartName(frame->frameName());
 		
 		oldName = frame->frameName();
@@ -240,7 +240,7 @@ void KTProject::selectFrame(int scenePosition, int layerPosition, int position, 
 		
 		if ( ! frame ) return;
 		
-		KTFrameEvent event(KTProjectEvent::Select, scenePosition, layerPosition, position, prioritary);
+		KTFrameRequest event(KTProjectRequest::Select, scenePosition, layerPosition, position, prioritary);
 		emit commandExecuted( &event );
 	}
 }
@@ -263,7 +263,7 @@ void KTProject::setFrameVisibility(int scenePos, int layerPos, int position, boo
 		if ( ! frame ) return;
 		
 		
-		KTFrameEvent event(KTProjectEvent::View, scenePos, layerPos, position, view);
+		KTFrameRequest event(KTProjectRequest::View, scenePos, layerPos, position, view);
 		
 		frame->setVisible(view);
 		

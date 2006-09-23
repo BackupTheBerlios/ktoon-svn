@@ -145,12 +145,12 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 	m_item->setPath(newPath);
 	
 	
-	// Add KTItemEvent
+	// Add KTItemRequest
 	
 	QDomDocument doc;
 	doc.appendChild(m_item->toXml( doc ));
 	
-	KTItemEvent *event = new KTItemEvent(KTProjectEvent::Add, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), -1, doc.toString()); // Adds to end
+	KTItemRequest *event = new KTItemRequest(KTProjectRequest::Add, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), -1, doc.toString()); // Adds to end
 	
 	addProjectEvent(event);
 }

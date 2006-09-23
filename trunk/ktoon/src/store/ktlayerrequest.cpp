@@ -18,36 +18,39 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTABSTRACTPROJECTEVENTHANDLER_H
-#define KTABSTRACTPROJECTEVENTHANDLER_H
+#include "ktlayerrequest.h"
+#include <ddebug.h>
 
-#include <QObject>
-#include "ktglobal_store.h"
-
-class KTProjectEvent;
-class KTFrameEvent;
-class KTLayerEvent;
-class KTSceneEvent;
-class KTItemEvent;
-class KTPaintAreaEvent;
-
-/**
- * @author David Cuadrado \<krawek@gmail.com\>
-*/
-class STORE_EXPORT KTAbstractProjectEventHandler
+KTLayerRequest::KTLayerRequest(Action action, int sceneIndex, int layerIndex, const QVariant &data) : KTSceneRequest(action, sceneIndex, data), m_layerIndex(layerIndex)
 {
-	public:
-		KTAbstractProjectEventHandler();
-		virtual ~KTAbstractProjectEventHandler();
-		
-		virtual bool handleEvent(KTProjectEvent *event);
-		
-	protected:
-		virtual void itemEvent(KTItemEvent *itemEvent) = 0;
-		virtual void frameEvent(KTFrameEvent *frameEvent) = 0;
-		virtual void layerEvent(KTLayerEvent *layerEvent) = 0;
-		virtual void sceneEvent(KTSceneEvent *sceneEvent) = 0;
-		virtual void projectEvent(KTProjectEvent *projectEvent) = 0;
-};
+}
 
-#endif
+
+KTLayerRequest::~KTLayerRequest()
+{
+}
+
+int KTLayerRequest::id() const
+{
+	return KTProjectRequest::Layer;
+}
+
+int KTLayerRequest::layerIndex() const
+{
+	return m_layerIndex;
+}
+
+bool KTLayerRequest::isValid() const
+{
+	return KTSceneRequest::isValid() && (m_layerIndex >= 0 );
+}
+
+KTProjectRequest *KTLayerRequest::clone() const
+{
+	KTLayerRequest *event = new KTLayerRequest(action(), sceneIndex(), m_layerIndex, data());
+	
+	event->setPartName( partName());
+	
+	return event;
+}
+

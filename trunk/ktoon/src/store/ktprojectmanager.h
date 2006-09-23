@@ -25,7 +25,7 @@
 #include "ktglobal_store.h"
 
 class KTProject;
-class KTProjectEvent;
+class KTProjectRequest;
 class KTProjectCommand;
 
 /**
@@ -39,7 +39,7 @@ class STORE_EXPORT KTProjectManager : public QObject
 		KTProjectManager(QObject *parent = 0);
 		~KTProjectManager();
 		
-		virtual KTProjectCommand *createCommand(const KTProjectEvent *event);
+		virtual KTProjectCommand *createCommand(const KTProjectRequest *event);
 		
 		void setupNewProject(const QString &projectName);
 		void closeProject();
@@ -49,10 +49,10 @@ class STORE_EXPORT KTProjectManager : public QObject
 		KTProject *project() const;
 		
 	protected slots:
-		virtual void handleProjectEvent(KTProjectEvent *event);
+		virtual void handleProjectRequest(KTProjectRequest *event);
 		
 	signals:
-		void commandExecuted(KTProjectEvent *event);
+		void commandExecuted(KTProjectRequest *event);
 		
 	private:
 		KTProject *m_project;

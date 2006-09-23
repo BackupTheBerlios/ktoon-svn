@@ -18,41 +18,78 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktframeevent.h"
-#include <ddebug.h>
+#include "ktabstractprojectrequesthandler.h"
 
-KTFrameEvent::KTFrameEvent(Action action, int sceneIndex, int layerIndex, int frameIndex, const QVariant &data ) : KTLayerEvent(action, sceneIndex, layerIndex, data), m_frameIndex(frameIndex)
+
+#include "ktitemrequest.h"
+#include "ktprojectrequest.h"
+#include "ktframerequest.h"
+#include "ktlayerrequest.h"
+#include "ktscenerequest.h"
+#include "ktpaintareaevent.h"
+
+KTAbstractProjectRequestHandler::KTAbstractProjectRequestHandler()
 {
 }
 
 
-KTFrameEvent::~KTFrameEvent()
+KTAbstractProjectRequestHandler::~KTAbstractProjectRequestHandler()
 {
 }
 
-int KTFrameEvent::id() const
+bool KTAbstractProjectRequestHandler::handleRequest(KTProjectRequest *event)
 {
-	return KTProjectEvent::Frame;
-}
-
-int KTFrameEvent::frameIndex() const
-{
-	return m_frameIndex;
-}
-
-
-bool KTFrameEvent::isValid() const
-{
-	return KTSceneEvent::isValid() && KTLayerEvent::isValid() && (m_frameIndex >= 0);
-}
-
-
-KTProjectEvent *KTFrameEvent::clone() const
-{
-	KTFrameEvent *event = new KTFrameEvent(action(), sceneIndex(), layerIndex(), m_frameIndex, data());
+	switch ( event->id())
+	{
+		case KTProjectRequest::Item:
+		{
+			itemRequest( static_cast<KTItemRequest *>(event) );
+		}
+		break;
+		case KTProjectRequest::Project:
+		{
+			projectRequest( event );
+		}
+		break;
+		case KTProjectRequest::Frame:
+		{
+			frameRequest( static_cast<KTFrameRequest *>(event) );
+		}
+		break;
+		case KTProjectRequest::Layer:
+		{
+			layerRequest( static_cast<KTLayerRequest *>(event) );
+		}
+		break;
+		case KTProjectRequest::Scene:
+		{
+			sceneRequest( static_cast<KTSceneRequest *>(event) );
+		}
+		break;
+		default:
+		{
+			qWarning("Unknown project event!");
+			return false;
+		}
+		break;
+	}
 	
-	event->setPartName( partName() );
-	
-	return event;
+	return true;
 }
+
+// void KTAbstractProjectRequestHandler::frameRequest(KTFrameRequest *frameRequest)
+// {
+// }
+// 
+// void KTAbstractProjectRequestHandler::layerRequest(KTLayerRequest *layerRequest)
+// {
+// }
+// 
+// void KTAbstractProjectRequestHandler::sceneRequest(KTSceneRequest *sceneRequest)
+// {
+// }
+// 
+// void KTAbstractProjectRequestHandler::projectRequest(KTProjectRequest *projectRequest)
+// {
+// }
 

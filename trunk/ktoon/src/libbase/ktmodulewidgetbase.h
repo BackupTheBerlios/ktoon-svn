@@ -30,14 +30,14 @@
 #include <QDockWidget>
 
 #include "dosd.h"
-#include "ktprojectevent.h"
-#include "ktabstractprojecteventhandler.h"
+#include "ktprojectrequest.h"
+#include "ktabstractprojectrequesthandler.h"
 #include "ktglobal.h"
 
 /**
  * @author Jorge Cuadrado
 */
-class KTOON_EXPORT KTModuleWidgetBase : public QWidget, public KTAbstractProjectEventHandler
+class KTOON_EXPORT KTModuleWidgetBase : public QWidget, public KTAbstractProjectRequestHandler
 {
 	Q_OBJECT;
 	
@@ -58,16 +58,16 @@ class KTOON_EXPORT KTModuleWidgetBase : public QWidget, public KTAbstractProject
 		
 	public slots:
 		void setCaption(const QString &text);
-		bool handleProjectEvent(KTProjectEvent *event);
+		bool handleProjectRequest(KTProjectRequest *event);
 		
 	protected:
 		virtual void enterEvent(QEvent *e);
 		virtual void leaveEvent(QEvent *e);
-		virtual void frameEvent(KTFrameEvent *frameEvent);
-		virtual void layerEvent(KTLayerEvent *layerEvent);
-		virtual void sceneEvent(KTSceneEvent *sceneEvent);
-		virtual void projectEvent(KTProjectEvent *projectEvent);
-		virtual void itemEvent(KTItemEvent *event);
+		virtual void frameRequest(KTFrameRequest *frameRequest);
+		virtual void layerRequest(KTLayerRequest *layerRequest);
+		virtual void sceneRequest(KTSceneRequest *sceneRequest);
+		virtual void projectRequest(KTProjectRequest *projectRequest);
+		virtual void itemRequest(KTItemRequest *event);
 		
 	signals:
 		void documentModified(bool);
@@ -76,7 +76,7 @@ class KTOON_EXPORT KTModuleWidgetBase : public QWidget, public KTAbstractProject
 		void toggle();
 		void activate(bool);
 		
-		void eventTriggered(const KTProjectEvent *event);
+		void requestTriggered(const KTProjectRequest *event);
 };
 
 #endif

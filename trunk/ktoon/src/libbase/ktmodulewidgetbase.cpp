@@ -29,7 +29,7 @@
 
 #include <qobject.h>
 
-KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent), KTAbstractProjectEventHandler()
+KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent), KTAbstractProjectRequestHandler()
 {
 	setObjectName(name);
 
@@ -95,32 +95,32 @@ QBoxLayout *KTModuleWidgetBase::boxLayout()
 	return m_container;
 }
 
-bool KTModuleWidgetBase::handleProjectEvent(KTProjectEvent *e)
+bool KTModuleWidgetBase::handleProjectRequest(KTProjectRequest *e)
 {
-	return handleEvent(e);
+	return handleRequest(e);
 }
 
-void KTModuleWidgetBase::frameEvent(KTFrameEvent *frameEvent)
+void KTModuleWidgetBase::frameRequest(KTFrameRequest *frameRequest)
 {
-	Q_UNUSED(frameEvent);
+	Q_UNUSED(frameRequest);
 }
 
-void KTModuleWidgetBase::layerEvent(KTLayerEvent *layerEvent)
+void KTModuleWidgetBase::layerRequest(KTLayerRequest *layerRequest)
 {
-	Q_UNUSED(layerEvent);
+	Q_UNUSED(layerRequest);
 }
 
-void KTModuleWidgetBase::sceneEvent(KTSceneEvent *sceneEvent)
+void KTModuleWidgetBase::sceneRequest(KTSceneRequest *sceneRequest)
 {
-	Q_UNUSED(sceneEvent);
+	Q_UNUSED(sceneRequest);
 }
 
-void KTModuleWidgetBase::projectEvent(KTProjectEvent *projectEvent)
+void KTModuleWidgetBase::projectRequest(KTProjectRequest *projectRequest)
 {
-	Q_UNUSED(projectEvent);
+	Q_UNUSED(projectRequest);
 }
 
-void KTModuleWidgetBase::itemEvent(KTItemEvent *event)
+void KTModuleWidgetBase::itemRequest(KTItemRequest *event)
 {
 	Q_UNUSED(event);
 }

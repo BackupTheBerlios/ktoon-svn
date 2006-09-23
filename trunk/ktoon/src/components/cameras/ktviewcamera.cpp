@@ -210,9 +210,9 @@ void KTViewCamera::updateSceneInfo()
 	showSceneInfo(m_animationArea->currentScene());
 }
 
-bool KTViewCamera::handleProjectEvent(KTProjectEvent *event)
+bool KTViewCamera::handleProjectRequest(KTProjectRequest *event)
 {
-	return m_animationArea->handleEvent( event );
+	return m_animationArea->handleRequest( event );
 }
 
 

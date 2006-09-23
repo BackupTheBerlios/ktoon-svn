@@ -43,7 +43,7 @@
 #include <dosd.h>
 
 class KTPaintArea;
-class KTProjectEvent;
+class KTProjectRequest;
 class KTProject;
 class KTBrushManager;
 class KTPaintAreaCommand;
@@ -138,12 +138,12 @@ class KTViewDocument : public QMainWindow
 		void selectTool();
 		void applyFilter();
 		
-		bool handleProjectEvent(KTProjectEvent *event);
+		bool handleProjectRequest(KTProjectRequest *event);
 		
 	signals:
 		void sendToStatus(const QString& msg);
 		void sendToOSD(const QString &msg, DOsd::Level );
-		void eventTriggered(const KTProjectEvent *event);
+		void requestTriggered(const KTProjectRequest *event);
 		
 	protected:
 // 		void closeEvent(QCloseEvent *e);

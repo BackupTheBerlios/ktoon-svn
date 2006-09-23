@@ -18,43 +18,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktitemevent.h"
-#include <ddebug.h>
+#ifndef KTABSTRACTPROJECTEVENTHANDLER_H
+#define KTABSTRACTPROJECTEVENTHANDLER_H
 
-KTItemEvent::KTItemEvent(Action action, int sceneIndex, int layerIndex, int frameIndex, int position, const QVariant &data) : KTFrameEvent(action, sceneIndex, layerIndex, frameIndex, data), m_position(position)
+#include <QObject>
+#include "ktglobal_store.h"
+
+class KTProjectRequest;
+class KTFrameRequest;
+class KTLayerRequest;
+class KTSceneRequest;
+class KTItemRequest;
+class KTPaintAreaEvent;
+
+/**
+ * @author David Cuadrado \<krawek@gmail.com\>
+*/
+class STORE_EXPORT KTAbstractProjectRequestHandler
 {
-}
+	public:
+		KTAbstractProjectRequestHandler();
+		virtual ~KTAbstractProjectRequestHandler();
+		
+		virtual bool handleRequest(KTProjectRequest *event);
+		
+	protected:
+		virtual void itemRequest(KTItemRequest *itemRequest) = 0;
+		virtual void frameRequest(KTFrameRequest *frameRequest) = 0;
+		virtual void layerRequest(KTLayerRequest *layerRequest) = 0;
+		virtual void sceneRequest(KTSceneRequest *sceneRequest) = 0;
+		virtual void projectRequest(KTProjectRequest *projectRequest) = 0;
+};
 
-
-KTItemEvent::~KTItemEvent()
-{
-}
-
-
-int KTItemEvent::id() const
-{
-	return KTProjectEvent::Item;
-}
-
-
-bool KTItemEvent::isValid() const
-{
-	return KTSceneEvent::isValid() && KTLayerEvent::isValid() && KTFrameEvent::isValid() && (m_position >= -1 );
-}
-
-
-KTProjectEvent *KTItemEvent::clone() const
-{
-	KTItemEvent *event = new KTItemEvent(action(), sceneIndex(), layerIndex(), frameIndex(), m_position, data() );
-	
-	event->setPartName( partName() );
-	
-	return event;
-}
-
-int KTItemEvent::itemIndex() const
-{
-	return m_position;
-}
-
-
+#endif

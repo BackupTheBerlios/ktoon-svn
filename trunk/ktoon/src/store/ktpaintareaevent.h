@@ -21,7 +21,7 @@
 #ifndef KTPAINTAREAEVENT_H
 #define KTPAINTAREAEVENT_H
 
-#include <ktprojectevent.h>
+#include <ktprojectrequest.h>
 #include "ktglobal_store.h"
 
 /**

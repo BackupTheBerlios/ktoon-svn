@@ -53,9 +53,9 @@ class KTExposureSheet : public KTModuleWidgetBase
 		KTProjectActionBar *m_actionBar;
 		
 	protected:
-		virtual void sceneEvent(KTSceneEvent *e);
-		virtual void layerEvent(KTLayerEvent *e);
-		virtual void frameEvent(KTFrameEvent *e);
+		virtual void sceneRequest(KTSceneRequest *e);
+		virtual void layerRequest(KTLayerRequest *e);
+		virtual void frameRequest(KTFrameRequest *e);
 		
 	public slots:
 		void closeAllScenes();

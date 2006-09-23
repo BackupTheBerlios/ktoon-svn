@@ -17,29 +17,35 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTLAYEREVENT_H
-#define KTLAYEREVENT_H
 
-#include <ktsceneevent.h>
+#ifndef KTSCENEREQUEST_H
+#define KTSCENEREQUEST_H
+
+#include <ktprojectrequest.h>
 #include "ktglobal_store.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class STORE_EXPORT KTLayerEvent : public KTSceneEvent
+class STORE_EXPORT KTSceneRequest : public KTProjectRequest
 {
 	public:
-		KTLayerEvent(Action action, int sceneIndex, int layerIndex, const QVariant &data = 0);
-		~KTLayerEvent();
+		KTSceneRequest(Action action, int sceneIndex, const QVariant &data = 0);
+		~KTSceneRequest();
 		
 		virtual int id() const;
-		int layerIndex() const;
+		int sceneIndex() const;
+		
 		virtual bool isValid() const;
-		virtual KTProjectEvent *clone() const;
+		
+		virtual KTProjectRequest *clone() const;
 		
 	private:
-		int m_layerIndex;
+		int m_sceneIndex;
 };
 
 
+
 #endif
+
+

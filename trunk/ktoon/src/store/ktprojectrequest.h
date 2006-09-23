@@ -18,31 +18,106 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTFRAMEEVENT_H
-#define KTFRAMEEVENT_H
 
-#include <ktlayerevent.h>
+#ifndef KTPROJECTREQUEST_H
+#define KTPROJECTREQUEST_H
+
+#include <QObject>
+#include <QString>
+#include <QVariant>
 #include "ktglobal_store.h"
+
+class KTProjectRequest;
+class KTSceneRequest;
+class KTLayerRequest;
+class KTFrameRequest;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class STORE_EXPORT KTFrameEvent : public KTLayerEvent
+class STORE_EXPORT KTProjectRequest
 {
 	public:
-		KTFrameEvent(Action action, int sceneIndex, int layerIndex, int frameIndex, const QVariant &data = 0);
-		~KTFrameEvent();
+		struct PartPosition
+		{
+			int sceneIndex;
+			int layerIndex;
+			int frameIndex;
+		};
+		
+		enum Action
+		{
+			None = 0,
+			/**
+			 * Añade una parte, el tipo de data es nulo
+			 */
+			Add,
+			/**
+			 * Remueve una parte, el tipo de data es nulo
+			 */
+			Remove,
+			/**
+			 * Mueve una parte, el tipo de data es un entero que significa la nueva posición
+			 */
+			Move,
+			/**
+			 * Bloquea una parte, el tipo de data es booleano.
+			 */
+			Lock,
+			/**
+			 * Renombra una parte, el tipo de data es una cadena de texto.
+			 */
+			Rename,
+			/**
+			 * Selecciona una parte, el tipo de data es nulo
+			 */
+			Select,
+			/**
+			 * Cambia la visibilidad
+			 */
+			View,
+			
+			Group,
+			Ungroup,
+			
+			// Items
+			Transform,
+			Convert,
+			EditNodes
+		};
+		
+		enum Part
+		{
+			Project = 1000,
+			Scene,
+			Layer,
+			Frame,
+			Item
+		};
+		
+		KTProjectRequest(Action action, const QVariant &data = 0);
+		virtual ~KTProjectRequest();
+		
+		
+		Action action() const;
+		
+		void setPartName(const QString &name);
+		QString partName() const;
 		
 		virtual int id() const;
-		int frameIndex() const;
 		virtual bool isValid() const;
-		virtual KTProjectEvent *clone() const;
+		
+		virtual KTProjectRequest *clone() const;
+		
+		QVariant data() const;
 		
 	private:
-		int m_frameIndex;
-		
-		Q_DISABLE_COPY(KTFrameEvent);
+		Action m_action;
+		QString m_partName;
+		QVariant m_data;
 };
+
+Q_DECLARE_METATYPE(KTProjectRequest::PartPosition);
 
 
 #endif

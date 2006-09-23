@@ -21,7 +21,7 @@
 #include "ktprojectmanager.h"
 
 #include "ktproject.h"
-#include "ktprojectevent.h"
+#include "ktprojectrequest.h"
 #include "ktprojectcommand.h"
 
 #include <ddebug.h>
@@ -30,7 +30,7 @@ KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(
 {
 	m_project = new KTProject(this);
 	
-	connect(m_project,SIGNAL(commandExecuted( KTProjectEvent* )), this, SLOT(handleProjectEvent( KTProjectEvent *)));
+	connect(m_project,SIGNAL(commandExecuted( KTProjectRequest* )), this, SLOT(handleProjectRequest( KTProjectRequest *)));
 }
 
 
@@ -78,7 +78,7 @@ bool KTProjectManager::isOpen() const
  * Por defecto, envia el evento por medio del signal commandExecuted
  * @param event 
  */
-void KTProjectManager::handleProjectEvent(KTProjectEvent *event)
+void KTProjectManager::handleProjectRequest(KTProjectRequest *event)
 {
 	D_FUNCINFO;
 	
@@ -94,7 +94,7 @@ void KTProjectManager::handleProjectEvent(KTProjectEvent *event)
  * @param event 
  * @return 
  */
-KTProjectCommand *KTProjectManager::createCommand(const KTProjectEvent *event)
+KTProjectCommand *KTProjectManager::createCommand(const KTProjectRequest *event)
 {
 	D_FUNCINFO;
 	
