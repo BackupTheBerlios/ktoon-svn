@@ -86,7 +86,7 @@ void DVHBox::moveWidgetUp(QWidget *widget)
 	}
 	else
 	{
-		dDebug() << "The widget isn't in the layout" << endl;
+		dError() << "The widget isn't in the layout" << endl;
 	}
 }
 

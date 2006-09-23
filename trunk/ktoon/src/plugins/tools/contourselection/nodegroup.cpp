@@ -56,7 +56,7 @@ NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(paren
 	}
 	else
 	{
-		dDebug() << "Item not item path";
+		dDebug("selection") << "Item not item path";
 	}
 }
 

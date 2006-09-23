@@ -158,7 +158,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 				}
 				else
 				{
-					dDebug() << "position is " << position; 
+					dDebug("selection") << "position is " << position; 
 				}
 				group->clearChangesNodes();
 			}

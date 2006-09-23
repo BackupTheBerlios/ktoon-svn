@@ -56,7 +56,7 @@ void KTAnimationArea::paintEvent(QPaintEvent *e)
 
 void KTAnimationArea::play()
 {
-	dDebug() << "Playing!";
+	dDebug("camera") << "Playing!";
 	
 	m_draw = true;
 	
@@ -71,7 +71,7 @@ void KTAnimationArea::play()
 
 void KTAnimationArea::stop()
 {
-	dDebug() << "Stopping";
+	dDebug("camera") << "Stopping";
 	m_timer->stop();
 // 	m_draw = false;
 	m_currentFramePosition = 0;

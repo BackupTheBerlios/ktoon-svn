@@ -73,7 +73,7 @@ void KTPaletteImporter::importGimpPalette(const QString &file)
 		
 		if ( ! string.contains("#") )
 		{
-// 			dDebug() << "Don't have \'#\' " << string;
+// 			dDebug("palette") << "Don't have \'#\' " << string;
 // 			return;
 			stream.readLine();
 		}

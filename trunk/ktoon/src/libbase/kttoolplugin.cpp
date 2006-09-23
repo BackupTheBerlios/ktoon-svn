@@ -48,7 +48,7 @@ QString KTToolPlugin::currentTool() const
 
 void KTToolPlugin::begin()
 {
-	dDebug() << "Begin: " << m_currentTool;
+	dDebug("tools") << "Begin: " << m_currentTool;
 	qDeleteAll(m_events);
 	m_events.clear();
 	
@@ -56,7 +56,7 @@ void KTToolPlugin::begin()
 
 void KTToolPlugin::end()
 {
-	dDebug() << "End: " << m_currentTool;
+	dDebug("tools") << "End: " << m_currentTool;
 }
 
 void KTToolPlugin::addProjectEvent(KTProjectEvent *e)

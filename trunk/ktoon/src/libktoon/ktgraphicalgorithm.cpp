@@ -768,6 +768,5 @@ void KTGraphicalAlgorithm::printCode(char code)
 	{
 		codestr[3] = '1';
 	}
-
-	dDebug() << codestr;
+	
 }

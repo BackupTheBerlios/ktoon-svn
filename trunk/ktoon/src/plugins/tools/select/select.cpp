@@ -154,7 +154,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 				}
 				else
 				{
-					dDebug() << "position is " << position; 
+					dDebug("selection") << "position is " << position; 
 				}
 				manager->setModify(false);
 			}

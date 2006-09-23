@@ -36,13 +36,13 @@
 
 #ifdef __GNUC__
 #define D_FUNCINFO dDebug() << "[" << __PRETTY_FUNCTION__ << "] "
-#define DINIT dDebug() << "[Initializing " << __FUNCTION__ << "]"
-#define DEND dDebug() << "[Destroying " << __FUNCTION__ << "]"
+#define DINIT dDebug("class") << "[Initializing " << __FUNCTION__ << "]"
+#define DEND dDebug("class") << "[Destroying " << __FUNCTION__ << "]"
 #define FUNC_NOT_IMPLEMENTED dWarning() << __FILE__ << ":" << __LINE__ << " " << __PRETTY_FUNCTION__ << " not implemented yet";
 #else
 #define D_FUNCINFO
-#define DINIT dDebug() << "[Initializing " << __FILE__ << ":" << __LINE__ << "] "
-#define DEND dDebug() << "[Destroying " << __FILE__ << ":" << __LINE__ << "] "
+#define DINIT dDebug("class") << "[Initializing " << __FILE__ << ":" << __LINE__ << "] "
+#define DEND dDebug("class") << "[Destroying " << __FILE__ << ":" << __LINE__ << "] "
 #define FUNC_NOT_IMPLEMENTED dWarning() << __FILE__<<":"<<__LINE__ << " not implemented yet";
 #endif
 

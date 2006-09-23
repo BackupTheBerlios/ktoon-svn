@@ -285,11 +285,11 @@ void KTExportWidget::exportIt()
 		
 		if ( file.isNull() ) return;
 		
-		dDebug() << "Exporting to file: " << file;
+		dDebug("export") << "Exporting to file: " << file;
 		
 // 		QList<KTScene *> scenes = scenesToExport();
 // 		
-// 		dDebug() << "Exporting " << scenes.count() << " scenas";
+// 		dDebug("export") << "Exporting " << scenes.count() << " scenas";
 // 		
 // 		if ( scenes.count() > 0)
 // 		{
