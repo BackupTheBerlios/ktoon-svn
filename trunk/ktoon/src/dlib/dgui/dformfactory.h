@@ -38,7 +38,7 @@ class D_GUI_EXPORT DFormFactory
 		
 	public:
 		static QBoxLayout *makeLine(const QString &text, QWidget *widget,  Qt::Orientation = Qt::Vertical);
-		static QGridLayout *makeGrid(const QStringList &texts, const QWidgetList &widgets);
+		static QGridLayout *makeGrid(const QStringList &texts, const QWidgetList &widgets, Qt::Alignment alignment = 0);
 
 };
 

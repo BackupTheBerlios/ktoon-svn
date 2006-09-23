@@ -50,6 +50,8 @@ class KTOON_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectRequ
 		
 		KTScene *currentScene() const;
 		
+		void setFPS(int fps);
+		
 	public slots:
 		virtual void render();
 		virtual void play();
@@ -94,6 +96,8 @@ class KTOON_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectRequ
 		bool m_isRendered;
 		
 		int m_currentSceneIndex;
+		
+		int m_fps;
 };
 
 #endif

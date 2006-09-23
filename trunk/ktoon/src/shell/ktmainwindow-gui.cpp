@@ -144,30 +144,17 @@ void KTMainWindow::createGUI()
 	//////////////
 	
 	
-#if 0
-	// Connect the project manager with the components...
-	connect(m_projectManager, SIGNAL(sceneCreated(const QString &, bool)), this, SLOT( insertScene(const QString &, bool)));
+	/////////////////////
 	
-	connect(m_projectManager, SIGNAL(frameCreated( const QString &, bool)), this, SLOT(insertFrame( const QString &, bool)));
+	m_cameraWidget = new KTCameraWidget(m_projectManager->project());
+	m_cameraWidget->setWindowTitle(tr("Camera"));
 	
-	connect(m_projectManager, SIGNAL(layerCreated(const QString &, bool)), this, SLOT(insertLayer(const QString &, bool)));
+	addToolView( m_cameraWidget, Qt::BottomDockWidgetArea, Animation );
 	
-	connect(m_projectManager, SIGNAL(layerVisibilityChanged(int, bool)), this, SLOT(setLayerVisibilityChanged(int, bool)));
+	ui4project( m_cameraWidget );
+	connectToDisplays( m_cameraWidget );
 	
-	connect(m_projectManager, SIGNAL(frameMoved(bool)), this, SLOT(moveFrame(bool)));
-	
-	connect(m_projectManager, SIGNAL(frameRemoved()), this, SLOT(removeFrame()));
-	connect(m_projectManager, SIGNAL(frameLocked()), this, SLOT(lockFrame()));
-	
-	connect(m_projectManager, SIGNAL(layerRemoved(int )), this, SLOT(removeLayer(int)));
-	connect(m_projectManager, SIGNAL(layerSelected(int )), this, SLOT(selectLayer(int)));
-	connect(m_projectManager, SIGNAL(layerMoved(bool)), this, SLOT(moveLayer(bool)));
-	
-	
-	connect(m_projectManager, SIGNAL(layerRenamed(int, const QString & )), this, SLOT(setLayerName(int, const QString &)));
-	
-	connect(m_projectManager, SIGNAL(frameRenamed(int , int , const QString & )), this, SLOT(setFrameName( int, int, const QString& )));
-#endif
+	/////////////////////
 }
 
 void KTMainWindow::connectToDisplays(const QWidget *widget)
@@ -192,9 +179,6 @@ void KTMainWindow::setupMenu()
 	newMenu->addAction(m_actionManager->find("newdocument")); // TODO: Documents
 #endif
 	newMenu->addSeparator();
-	newMenu->addAction(m_actionManager->find("newarea") );
-	newMenu->addAction(m_actionManager->find("newcamera") );
-	
 	m_fileMenu->addAction(m_actionManager->find("openproject"));
 	
 	QMenu *recents = new QMenu(tr("Recents"), this );
@@ -304,21 +288,6 @@ void KTMainWindow::setupFileActions()
 	newProject->setStatusTip(tr( "Opens a new project"));
 	m_actionManager->insert( newProject, "newproject", "file" );
 	
-	DAction *newArea = new DAction( QPixmap( THEME_DIR+"/icons/new.png" ), tr( "New paint area" ), QKeySequence(tr("Ctrl+A")), this, SLOT(newViewDocument()), m_actionManager);
-	newArea->setStatusTip(tr( "Opens a new paint area"));
-	m_actionManager->insert( newArea, "newarea", "file" );
-	
-	DAction *newCamera = new DAction( QPixmap( THEME_DIR), tr( "New view camera"), QKeySequence(), this, SLOT(newViewCamera()), m_actionManager );
-	m_actionManager->insert( newCamera, "newcamera", "file" );
-	
-	newArea->setStatusTip(tr( "Opens a new view camera"));
-	
-	
-#if 0
-	// TODO: to implement
-	DAction *newDocument = new DAction( QPixmap( THEME_DIR+"/icons/new.png" ), tr( "New document" ), QKeySequence(tr("Ctrl+N")), this, SLOT(), m_actionManager, "newdocument");
-	newDocument->setStatusTip(tr( "Opens a new document"));
-#endif
 	
 	DAction *openFile = new DAction( QPixmap(THEME_DIR+"/icons/open.png"), tr( "Open project" ), tr("Ctrl+O"), this, SLOT(openProject()), m_actionManager );
 	m_actionManager->insert( openFile, "openproject", "file" );

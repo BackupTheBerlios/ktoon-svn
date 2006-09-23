@@ -20,13 +20,17 @@
 
 #include "ktanimationarea.h"
 
+
+#include <QGraphicsItem>
+
 #include "ktscenerequest.h"
+
 
 #include "ddebug.h"
 
 #include "dgradientadjuster.h"
 
-KTAnimationArea::KTAnimationArea(KTProject *project, QWidget *parent) : QFrame(parent), m_project(project), m_draw(false), m_ciclicAnimation(false), m_currentFramePosition(0), m_isRendered(false), m_currentSceneIndex(-1)
+KTAnimationArea::KTAnimationArea(KTProject *project, QWidget *parent) : QFrame(parent), m_project(project), m_draw(false), m_ciclicAnimation(false), m_currentFramePosition(0), m_isRendered(false), m_currentSceneIndex(-1), m_fps(14)
 {
 	setAttribute(Qt::WA_StaticContents);
 
@@ -43,6 +47,17 @@ KTAnimationArea::KTAnimationArea(KTProject *project, QWidget *parent) : QFrame(p
 
 KTAnimationArea::~KTAnimationArea()
 {
+}
+
+void KTAnimationArea::setFPS(int fps)
+{
+	m_fps = fps;
+	
+	if ( m_timer->isActive()  )
+	{
+		m_timer->stop();
+		play();
+	}
 }
 
 
@@ -63,7 +78,7 @@ void KTAnimationArea::play()
 	if ( m_project && !m_timer->isActive() )
 	{
 		render();
-		m_timer->start(1000 / 14/*FIXME fps*/ );
+		m_timer->start(1000 / m_fps);
 	}
 	
 // 	emit toStatusBar( tr("Playing... "), 2000 );
@@ -163,7 +178,7 @@ void KTAnimationArea::render() // TODO: Extend to scenes
 	
 	while ( ! m_isRendered )
 	{
-		QGraphicsScene *scn = new QGraphicsScene(rect(), this);
+		QGraphicsScene *scn = new QGraphicsScene(scene->sceneRect(), this);
 		
 		Layers::iterator layerIterator = layers.begin();
 		bool ok = true;
@@ -184,13 +199,16 @@ void KTAnimationArea::render() // TODO: Extend to scenes
 				
 				foreach(QGraphicsItem *item, frame->graphics())
 				{
+					item->setSelected(false);
 					scn->addItem(item);
 				}
 			}
 			++layerIterator;
 		}
 		
-		scn->render(&painter, renderized.rect(), scn->sceneRect() );
+		
+		dDebug("camera") << renderized.rect() << " " << scn->sceneRect().toRect();
+		scn->render(&painter, renderized.rect(), scn->sceneRect().toRect(), Qt::IgnoreAspectRatio );
 		
 		emit progressStep( nPhotogramsRenderized, totalPhotograms);
 		m_photograms << renderized;
@@ -260,6 +278,7 @@ void KTAnimationArea::setLoop(bool l)
 void KTAnimationArea::setCurrentScene(int index)
 {
 	m_currentSceneIndex = index;
+	
 }
 
 KTScene *KTAnimationArea::currentScene() const

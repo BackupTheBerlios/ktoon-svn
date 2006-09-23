@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,63 +17,41 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "dformfactory.h"
 
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QGridLayout>
+#ifndef KTCAMERAWIDGET_H
+#define KTCAMERAWIDGET_H
 
-#include <QLabel>
+#include <ktmodulewidgetbase.h>
 
-DFormFactory::DFormFactory()
+class KTProject;
+class KTViewCamera;
+class QSpinBox;
+
+/**
+ * @author David Cuadrado <krawek@gmail.com>
+ * @todo:
+ * @li
+ * - range of frames
+ * - aspect ratio
+*/
+
+class KTCameraWidget : public KTModuleWidgetBase
 {
-}
+	Q_OBJECT;
+	
+	public:
+		KTCameraWidget(KTProject *project, QWidget *parent = 0);
+		~KTCameraWidget();
+		
+		KTViewCamera *viewCamera();
+		
+	public slots:
+		void setFPS(int fps);
+		
+	private:
+		KTViewCamera *m_viewCamera;
+		
+		QSpinBox *m_fps;
+};
 
-
-DFormFactory::~DFormFactory()
-{
-}
-
-QBoxLayout *DFormFactory::makeLine(const QString &text, QWidget *widget,  Qt::Orientation o)
-{
-	QBoxLayout *layout;
-	
-	if ( o == Qt::Vertical )
-	{
-		layout = new QVBoxLayout;
-	}
-	else
-	{
-		layout = new QHBoxLayout;
-	}
-	
-	layout->addWidget(new QLabel(text));
-	layout->addWidget(widget);
-	
-	if ( o == Qt::Vertical )
-	{
-		layout->addStretch(3);
-	}
-	
-	return layout;
-}
-
-QGridLayout *DFormFactory::makeGrid(const QStringList &texts, const QWidgetList &widgets, Qt::Alignment alignment)
-{
-	Q_ASSERT(texts.count() != widgets.count());
-	
-	QGridLayout *layout = new QGridLayout;
-	
-// 	layout->setColumnStretch(0, 1);
-	
-	for(int i = 0; i < widgets.count(); i++ )
-	{
-		layout->addWidget(new QLabel(texts[i]), i, 0, Qt::AlignLeft);
-		layout->addWidget(widgets[i], i, 1, alignment);
-	}
-	
-	layout->setColumnStretch(2, 1);
-	
-	return layout;
-}
-
+#endif

@@ -5,10 +5,12 @@
 
 HEADERS += ktviewcamera.h \
            ktcamerabar.h \
-           ktanimationarea.h 
+           ktanimationarea.h \
+           ktcamerawidget.h 
 SOURCES += ktviewcamera.cpp \
            ktcamerabar.cpp \
-           ktanimationarea.cpp 
+           ktanimationarea.cpp \
+           ktcamerawidget.cpp 
 KDEV_QTVER = 4
 include(../components_config.pri)
 CONFIG += static

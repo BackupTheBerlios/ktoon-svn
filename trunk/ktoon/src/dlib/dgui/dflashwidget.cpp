@@ -50,7 +50,6 @@ DFlashWidget::~DFlashWidget()
 
 void DFlashWidget::play()
 {
-	qDebug("Playing");
 	QStringList args;
 
 	args << QStringList() << "-x" << QString::number(winId()) << "-s" << "1.5" << m_movie;
@@ -73,7 +72,6 @@ void DFlashWidget::play()
 
 void DFlashWidget::stop()
 {
-	qDebug("Stopping");
 	m_process->terminate();
 	m_process->waitForFinished();
 }

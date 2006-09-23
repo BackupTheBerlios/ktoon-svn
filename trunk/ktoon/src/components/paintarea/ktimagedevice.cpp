@@ -23,9 +23,11 @@
 #include <QPaintEngine>
 #include <QTimer>
 
+#include <ddebug.h>
+
 KTImageDevice::KTImageDevice(QWidget *parent) : QWidget(parent)
 {
-	qDebug("KTImageDevice");
+	DINIT;
 	
 	m_image = QImage(300,300, QImage::Format_RGB32);
 	m_image.fill(Qt::white);
@@ -39,7 +41,7 @@ KTImageDevice::KTImageDevice(QWidget *parent) : QWidget(parent)
 
 KTImageDevice::~KTImageDevice()
 {
-	qDebug("~KTImageDevice");
+	DEND;
 }
 
 QPaintEngine *KTImageDevice::paintEngine() const

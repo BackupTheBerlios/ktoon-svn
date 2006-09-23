@@ -137,104 +137,31 @@ void KTMainWindow::newViewDocument(const QString &title)
 		messageToStatus(tr("Opening a new paint area..."));
 		messageToOSD(tr("Opening a new document..."));
 		
-// 		KTScene *scene = m_projectManager->currentScene();
-// 		
-// 		m_renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt());
-// 		
-// 		if ( scene )
-// 		{
-// 			m_statusBar->advance(4);
-			/*KTViewDocument **/m_viewDoc = new KTViewDocument(m_projectManager->project());
-			connectToDisplays( m_viewDoc );
-			m_viewDoc->setAttribute(Qt::WA_DeleteOnClose, true);
-			m_viewDoc->setWindowTitle(tr("Illustration"));
-			addWidget( m_viewDoc, true, Drawing);
-			connectToDisplays( m_viewDoc );
-			ui4project( m_viewDoc );
-// 			viewDocument->drawArea()->setPen( m_penWidget->pen());
-// 			
-			
-// 			m_statusBar->advance(7);
-// 			
-			// <FIXME>
-			m_animationSpace = new KTWorkspace;
-			m_animationSpace->setWindowIcon(QIcon(THEME_DIR+"/icons/animation_mode.png"));
-			m_animationSpace->setScrollBarsEnabled ( true );
-// 	
-// 			connect(m_animationSpace, SIGNAL(contextMenu( const QPoint& )), this, SLOT(showAnimationMenu( const QPoint& )));
-			m_animationSpace->setWindowTitle(tr("Animation"));
-			addWidget(m_animationSpace, true, Animation);
-			
-			KTViewCamera *camera = qobject_cast<KTViewCamera *>(m_animationSpace->activeWindow());
-// 			
-			
-			if ( camera )
-			{
-// 				camera->animationArea()->setScene( scene );
-			}
-			else
-			{
-				QWidgetList cameras = m_animationSpace->windowList();
-				
-				if ( cameras.count() > 0 )
-				{
-					camera = qobject_cast<KTViewCamera *>(cameras[0]);
-					if(camera)
-					{
-// 						camera->animationArea()->setScene(scene);
-					}
-				}
-				else
-				{
-					newViewCamera(/*scene*/);
-				}
-			}
-			
-			// </FIXME>
-// 			
-// 			m_viewDoc->show();
-// 			
-// 			m_statusBar->advance(10);
-// 			
-// 			m_statusBar->setStatus(tr("Opened."));
-// 		}
-// 		else
-// 		{
-// 			m_statusBar->advance(0);
-// 			m_statusBar->setStatus(tr("Project not open."));
-// 		}
-			setCurrentPerspective( Drawing );
-	}
-}
-
-void KTMainWindow::newViewCamera(KTScene *scene)
-{
-	if ( m_projectManager->isOpen() )
-	{
-		KTViewCamera *viewCamera = new KTViewCamera( m_projectManager->project() );
-		viewCamera->setAttribute(Qt::WA_DeleteOnClose, true);
+		m_viewDoc = new KTViewDocument(m_projectManager->project());
+		connectToDisplays( m_viewDoc );
+		
+// 		m_viewDoc->setAttribute(Qt::WA_DeleteOnClose, true);
+		m_viewDoc->setWindowTitle(tr("Illustration"));
+		addWidget( m_viewDoc, true, Drawing);
+		connectToDisplays( m_viewDoc );
+		ui4project( m_viewDoc );
+		
+		m_animationSpace = new KTWorkspace;
+		m_animationSpace->setWindowIcon(QIcon(THEME_DIR+"/icons/animation_mode.png"));
+		m_animationSpace->setScrollBarsEnabled ( true );
+		
+		m_animationSpace->setWindowTitle(tr("Animation"));
+		addWidget(m_animationSpace, true, Animation);
+		
+		KTViewCamera *viewCamera = m_cameraWidget->viewCamera();
 		ui4project( viewCamera );
 		
-// 		connect(viewCamera, SIGNAL(sendMessage(const QString &, int)), m_statusBar, SLOT(setStatus(const QString &, int)));
-// 		connect(viewCamera, SIGNAL(sendProgress(int, int)), m_statusBar, SLOT(advance(int, int)));
-		
 		m_animationSpace->addWindow(viewCamera);
-// 		
-// 		if ( scene )
-// 		{
-// 			viewCamera->animationArea()->setScene( scene );
-// 		}
-// 		else
-// 		{
-// 			viewCamera->animationArea()->setScene(m_projectManager->currentScene());
-// 		}
-// 		
-		viewCamera->show();
+		viewCamera->showMaximized();
+		
+		setCurrentPerspective( Drawing );
 	}
 }
-
-
-
 
 void KTMainWindow::newProject()
 {

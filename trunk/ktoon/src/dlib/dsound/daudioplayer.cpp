@@ -35,7 +35,6 @@ DAudioPlayer::DAudioPlayer() : QObject(), m_engine(0)
 
 DAudioPlayer::~DAudioPlayer()
 {
-	qDebug("~AudioPlayer");
 }
 
 DAudioPlayer *DAudioPlayer::instance()

@@ -32,26 +32,23 @@
 #include "ktviewdocument.h"
 
 #include "ktworkspace.h"
+#include "ktpreferences.h"
 
+// modules
 #include "ktexposuresheet.h"
 #include "kinaswidget.h"
-
 #include "ktpenwidget.h"
-
-#include "ktpreferences.h"
-#include "ktsceneswidget.h"
-
+#include "ktcamerawidget.h"
 #include "ktcolorpalette.h"
-
+#include "ktsceneswidget.h"
 #include "ktlibrarywidget.h"
 #include "kttimeline.h"
+#include "ktviewcamera.h"
+#include "kthelpwidget.h"
+#include "ktexportwidget.h"
+
 
 #include "ktviewdocument.h"
-#include "ktviewcamera.h"
-
-#include "kthelpwidget.h"
-
-#include "ktexportwidget.h"
 
 #include "dtabbedmainwindow.h"
 #include "ktstatusbar.h"
@@ -64,6 +61,7 @@
 
 #include "config.h"
 #include "ktviewdocument.h"
+
 
 /**
  * Ventana principal de la aplicación
@@ -132,7 +130,6 @@ class KTMainWindow : public DTabbedMainWindow
 	private slots:
 		void createNewProject(const QString &name, const QSize &size = QSize(-1,-1),  const int fps = 24  );
 		void newViewDocument(const QString &name = QString::null);
-		void newViewCamera(KTScene *scene = 0);
 		void newProject();
 		bool closeProject();
 		void openProject();
@@ -189,6 +186,7 @@ class KTMainWindow : public DTabbedMainWindow
 		KTLibraryWidget *m_libraryWidget;
 		KTColorPalette *m_colorPalette;
 		KTPenWidget *m_penWidget;
+		KTCameraWidget *m_cameraWidget;
 };
 
 #endif

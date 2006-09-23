@@ -205,7 +205,7 @@ KTLayerManager::KTLayerManager(QWidget *parent) : QTableWidget(0, 3, parent), m_
 	setHorizontalHeader(new KTLayerManagerHeader(this));
 	setItemDelegate(new KTLayerManagerItemDelegate(this));
 	
-	connect(this, SIGNAL(itemChanged ( QTableWidgetItem *  )), this, SLOT(emitRequestRenameLayer( QTableWidgetItem * )));
+// 	connect(this, SIGNAL(itemChanged ( QTableWidgetItem *  )), this, SLOT(emitRequestRenameLayer( QTableWidgetItem * )));
 }
 
 

@@ -46,7 +46,7 @@ class KTViewCamera : public QMainWindow
 		
 		QSize sizeHint() const;
 		void updateSceneInfo();
-		
+		void setFPS(int fps);
 		
 		
 	private slots:

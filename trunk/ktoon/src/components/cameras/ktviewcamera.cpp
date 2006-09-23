@@ -27,13 +27,15 @@
 #include <QApplication>
 #include <QCheckBox>
 
+#include "ktscenerequest.h"
+
 class KTViewCamera::Status : public QStatusBar
 {
 	public:
 		Status(QWidget *parent = 0);
 		~Status();
 		
-		void setFps(int fps);
+		void setFPS(int fps);
 		void setSceneName(const QString &name);
 		
 		void addWidget(QWidget *widget, int stretch = 0);
@@ -82,7 +84,7 @@ KTViewCamera::Status::~Status()
 	
 }
 
-void KTViewCamera::Status::setFps(int fps)
+void KTViewCamera::Status::setFPS(int fps)
 {
 	m_fps->setText(QString::number(fps));
 }
@@ -135,9 +137,9 @@ KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QMainWindow(pa
 	animationAreaLayout->addWidget(m_animationArea);
 	
 	
-	connect(m_animationArea, SIGNAL(sceneChanged(const KTScene *)), this, SLOT(showSceneInfo(const KTScene *)));
-	connect(m_animationArea, SIGNAL(progressStep(int, int)), this, SIGNAL(sendProgress(int, int)));
-	connect(m_animationArea, SIGNAL(toStatusBar(const QString &, int)), this, SIGNAL(sendMessage( const QString &, int)));
+// 	connect(m_animationArea, SIGNAL(sceneChanged(const KTScene *)), this, SLOT(showSceneInfo(const KTScene *)));
+// 	connect(m_animationArea, SIGNAL(progressStep(int, int)), this, SIGNAL(sendProgress(int, int)));
+// 	connect(m_animationArea, SIGNAL(toStatusBar(const QString &, int)), this, SIGNAL(sendMessage( const QString &, int)));
 	
 	layout->addWidget( animationAreaContainer/*, 0, Qt::AlignTop | Qt::AlignCenter*/ );
 	
@@ -212,7 +214,15 @@ void KTViewCamera::updateSceneInfo()
 
 bool KTViewCamera::handleProjectRequest(KTProjectRequest *event)
 {
+	if ( event->id() == KTProjectRequest::Scene )
+	{
+		updateSceneInfo();
+	}
 	return m_animationArea->handleRequest( event );
 }
 
-
+void KTViewCamera::setFPS(int fps)
+{
+	m_status->setFPS(fps);
+	m_animationArea->setFPS(fps);
+}

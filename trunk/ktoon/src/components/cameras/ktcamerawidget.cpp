@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                     *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,63 +17,42 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "dformfactory.h"
 
+#include "ktcamerawidget.h"
+#include "ktviewcamera.h"
+#include "ktproject.h"
+
+#include <dgui/dformfactory.h>
+
+#include <QSpinBox>
 #include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QGridLayout>
 
-#include <QLabel>
-
-DFormFactory::DFormFactory()
+KTCameraWidget::KTCameraWidget(KTProject *project, QWidget *parent) : KTModuleWidgetBase(parent)
 {
+	setWindowIcon(QPixmap(THEME_DIR+"/icons/camera_preview.png") );
+	
+	m_viewCamera = new KTViewCamera(project);
+	
+	m_fps = new QSpinBox;
+	boxLayout()->addLayout(DFormFactory::makeGrid( QStringList() << "FPS", QWidgetList() << m_fps ));
+	connect(m_fps, SIGNAL(valueChanged(int)), this, SLOT(setFPS(int)));
+	
+	m_fps->setValue(14);
 }
 
 
-DFormFactory::~DFormFactory()
+KTCameraWidget::~KTCameraWidget()
 {
 }
 
-QBoxLayout *DFormFactory::makeLine(const QString &text, QWidget *widget,  Qt::Orientation o)
+KTViewCamera *KTCameraWidget::viewCamera()
 {
-	QBoxLayout *layout;
-	
-	if ( o == Qt::Vertical )
-	{
-		layout = new QVBoxLayout;
-	}
-	else
-	{
-		layout = new QHBoxLayout;
-	}
-	
-	layout->addWidget(new QLabel(text));
-	layout->addWidget(widget);
-	
-	if ( o == Qt::Vertical )
-	{
-		layout->addStretch(3);
-	}
-	
-	return layout;
+	return m_viewCamera;
 }
 
-QGridLayout *DFormFactory::makeGrid(const QStringList &texts, const QWidgetList &widgets, Qt::Alignment alignment)
+void KTCameraWidget::setFPS(int fps)
 {
-	Q_ASSERT(texts.count() != widgets.count());
-	
-	QGridLayout *layout = new QGridLayout;
-	
-// 	layout->setColumnStretch(0, 1);
-	
-	for(int i = 0; i < widgets.count(); i++ )
-	{
-		layout->addWidget(new QLabel(texts[i]), i, 0, Qt::AlignLeft);
-		layout->addWidget(widgets[i], i, 1, alignment);
-	}
-	
-	layout->setColumnStretch(2, 1);
-	
-	return layout;
+	m_viewCamera->setFPS( fps );
 }
+
 
