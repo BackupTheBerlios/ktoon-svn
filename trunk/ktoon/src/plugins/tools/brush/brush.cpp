@@ -83,7 +83,7 @@ void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 	m_item = new KTPathItem();
 	
 	m_item->setPen( brushManager->pen() );
-	scene->addGraphic( m_item );
+	scene->addItem( m_item );
 // 	move(event, brushManager, scene, view);
 	
 }

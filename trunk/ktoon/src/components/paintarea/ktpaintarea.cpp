@@ -375,7 +375,7 @@ void KTPaintArea::frameRequest(KTFrameRequest *event)
 				if ( m_tool ) m_tool->init( this );
 			}
 			
-// 			dDebug(2) << "frame: " << event->frameIndex() << " " << "layer: " << event->layerIndex();
+			dDebug("paint area") << "frame: " << event->frameIndex() << " " << "layer: " << event->layerIndex();
 		}
 		break;
 		default: break;

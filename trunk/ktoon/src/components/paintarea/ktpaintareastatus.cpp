@@ -136,7 +136,7 @@ KTPaintAreaStatus::KTPaintAreaStatus(KTViewDocument *parent) : QStatusBar(parent
 		m_rotation->addItem(QString::number(i), i);
 	}
 	
-	m_rotation->setValidator(new QIntValidator(0, 360,this));
+	m_rotation->setValidator(new QIntValidator(-360, 360,this));
 	
 	rotLayout->addWidget( m_rotation);
 	
@@ -222,6 +222,11 @@ void KTPaintAreaStatus::setPen(const QPen &pen)
 void KTPaintAreaStatus::applyRotationFromItem(const QString & text)
 {
 	int angle = text.toInt();
+	
+	if ( angle < 0 )
+	{
+		angle += 360;
+	}
 	
 	m_viewDocument->setRotationAngle(angle);
 }

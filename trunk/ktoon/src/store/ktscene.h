@@ -28,8 +28,13 @@
 #include <QDomDocument>
 #include <QDomElement>
 #include <QGraphicsScene>
+#include <QMap>
+
 #include "ktglobal_store.h"
 
+class QGraphicsItem;
+class QPainter;
+class QStyleOptionGraphicsItem;
 
 typedef QVector<KTLayer *> Layers;
 
@@ -103,8 +108,6 @@ class STORE_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializabl
 		
 		QGraphicsScene* photogram(int index);
 		
-		void addGraphic(QGraphicsItem *item);
-		
 		void clean();
 		
 		int currentFrameIndex() const;
@@ -126,6 +129,12 @@ class STORE_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializabl
 		virtual QDomElement toXml(QDomDocument &doc);
 		
 	private:
+		void addFrame(KTFrame *frame, double opacity = 1.0);
+		
+	protected:
+		void drawItems(QPainter *painter, int numItems, QGraphicsItem *items[], const QStyleOptionGraphicsItem options[], QWidget * widget = 0 );
+		
+	private:
 		Layers m_layers;
 		QString m_name;
 		bool m_isLocked;
@@ -137,6 +146,14 @@ class STORE_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializabl
 			int layer;
 			int frame;
 		} m_framePosition;
+		
+		struct OnionSkin
+		{
+			int previous;
+			int next;
+			QMap<QGraphicsItem *, double> opacityMap;
+			
+		} m_onionSkin;
 };
 
 #endif

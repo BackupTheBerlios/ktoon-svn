@@ -103,7 +103,7 @@ void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
 	
 	m_item->setFont( m_configurator->textFont() );
 	
-	scene->addGraphic(m_item);
+	scene->addItem(m_item);
 	
 	QDomDocument doc;
 	doc.appendChild(m_item->toXml( doc ));

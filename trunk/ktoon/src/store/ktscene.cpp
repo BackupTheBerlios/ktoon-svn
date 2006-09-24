@@ -24,14 +24,17 @@
 #include <QDir>
 #include <QGraphicsItem>
 #include <QGraphicsView>
+#include <QStyleOptionGraphicsItem>
 
 #include "ktitemgroup.h"
 
 KTScene::KTScene(KTProject *parent) : QGraphicsScene(parent), m_isLocked(false),  m_layerCount(0), m_isVisible(true)
 {
 	setItemIndexMethod(QGraphicsScene::NoIndex);
-	
 	setCurrentFrame( -1, -1);
+	
+	m_onionSkin.next = 0;
+	m_onionSkin.previous = 0;
 }
 
 
@@ -254,17 +257,6 @@ void KTScene::setCurrentFrame(int layer, int frame)
 	}
 }
 
-void KTScene::addGraphic(QGraphicsItem *item)
-{
-	KTFrame *frame = currentFrame();
-	if ( frame )
-	{
-// 		frame->addGraphic(item); // FIXME: remove this function
-	}
-	
-	addItem(item);
-}
-
 KTFrame *KTScene::currentFrame()
 {
 	KTLayer *layer = this->layer( m_framePosition.layer );
@@ -281,6 +273,25 @@ void KTScene::drawCurrentPhotogram()
 	drawPhotogram( m_framePosition.frame );
 }
 
+void KTScene::drawItems(QPainter *painter, int numItems, QGraphicsItem *items[], const QStyleOptionGraphicsItem options[], QWidget *widget)
+{
+	for (int i = 0; i < numItems; ++i)
+	{
+		QGraphicsItem *item = items[i];
+		painter->save();
+		painter->setMatrix(item->sceneMatrix(), true);
+		
+		if ( m_onionSkin.opacityMap.contains(item) )
+		{
+			painter->setOpacity( m_onionSkin.opacityMap[item] );
+		}
+		
+		item->paint(painter, &options[i], widget);
+		
+		painter->restore();
+	}
+}
+
 void KTScene::drawPhotogram(int photogram)
 {
 	if ( photogram < 0 ) return;
@@ -291,19 +302,45 @@ void KTScene::drawPhotogram(int photogram)
 	{
 		if ( layer->isVisible() )
 		{
-			KTFrame *frame = layer->frame( photogram );
+			double opacityFactor = 0.5 / (double)m_onionSkin.previous;
 			
-			if ( frame )
+			double opacity = 0.6;
+			
+			for(int frameIndex = photogram-1; frameIndex > photogram-m_onionSkin.previous-1; frameIndex-- )
 			{
-				foreach(QGraphicsItem *item, frame->graphics() )
-				{
-					addItem(item);
-					
-					if ( KTItemGroup *group = qgraphicsitem_cast<KTItemGroup *>(item) )
-					{
-						group->recoverChilds();
-					}
-				}
+				addFrame( layer->frame(frameIndex), opacity );
+				
+				opacity -= opacityFactor;
+			}
+			
+			opacityFactor = 0.5 / (double)m_onionSkin.next;
+			opacity = 0.6;
+			
+			for(int frameIndex = photogram+1; frameIndex < photogram+m_onionSkin.next+1; frameIndex++ )
+			{
+				addFrame( layer->frame(frameIndex), opacity );
+				
+				opacity -= opacityFactor;
+			}
+			
+			addFrame(layer->frame( photogram ));
+		}
+	}
+}
+
+void KTScene::addFrame(KTFrame *frame, double opacity)
+{
+	if ( frame )
+	{
+		foreach(QGraphicsItem *item, frame->graphics() )
+		{
+			m_onionSkin.opacityMap.insert(item, opacity);
+			
+			addItem(item);
+			
+			if ( KTItemGroup *group = qgraphicsitem_cast<KTItemGroup *>(item) )
+			{
+				group->recoverChilds();
 			}
 		}
 	}
@@ -311,6 +348,8 @@ void KTScene::drawPhotogram(int photogram)
 
 void KTScene::clean()
 {
+	m_onionSkin.opacityMap.clear();
+	
 	foreach(QGraphicsItem *item, items() )
 	{
 		if ( item->scene() == this )
