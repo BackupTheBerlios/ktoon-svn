@@ -18,7 +18,8 @@ HEADERS += ktmainwindow.h \
            crashhandler.h \
            crashwidget.h \
            ktapplication.h \
-           configwizard.h 
+           configwizard.h \
+           ktlocalprojectmanagerhandler.h 
 SOURCES += main.cpp \
            ktmainwindow.cpp \
            ktstatusbar.cpp \
@@ -28,7 +29,8 @@ SOURCES += main.cpp \
            crashwidget.cpp \
            ktapplication.cpp \
            configwizard.cpp \
-           ktmainwindow-gui.cpp 
+           ktmainwindow-gui.cpp \
+           ktlocalprojectmanagerhandler.cpp 
 include(shell_config.pri)
 include(../../ktconfig.pri)
 KDEV_QTVER = 4

@@ -27,6 +27,8 @@
 #include "dtabdialog.h"
 #include <QLineEdit>
 
+class KTProjectManagerParams;
+
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
@@ -38,9 +40,13 @@ class KTNewProject : public DTabDialog
 	public:
 		KTNewProject(QWidget *parent = 0);
 		~KTNewProject();
-		QString projectName() const;
-		QSize dimension() const;
-		int fps() const;
+// 		QString projectName() const;
+// 		QSize dimension() const;
+// 		int fps() const;
+		
+		KTProjectManagerParams *params();
+		
+		bool useNetwork() const;
 		
 	signals:
 		void sendToStatus(const QString &);
@@ -52,6 +58,9 @@ class KTNewProject : public DTabDialog
 		QSpinBox *m_fps;
 		
 		DXYSpinBox *m_size;
+		
+		
+		bool m_useNetwork;
 		
 };
 #if 0

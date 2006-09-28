@@ -18,31 +18,41 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTABSTRACTSERIALIZABLE_H
-#define KTABSTRACTSERIALIZABLE_H
+#include "ktnetprojectmanagerhandler.h"
+#include "ktnetprojectmanagerparams.h"
 
-#include <QString>
+#include "ktprojectrequest.h"
 
-#include <QDomDocument>
-#include <QDomElement>
-#include "ktglobal_store.h"
+#include <ddebug.h>
 
-/**
- * @if spanish
- * Clase abstracta para clases que necesiten ser guardadas, como los frames, scenas, items, etc.
- * @endif
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class STORE_EXPORT KTAbstractSerializable
+KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent)
 {
-	protected:
-		KTAbstractSerializable() {};
-		
-	public:
-		virtual ~KTAbstractSerializable() {};
-		
-		virtual void fromXml(const QString &xml) = 0;
-		virtual QDomElement toXml(QDomDocument &doc) = 0;
-};
+}
 
-#endif
+
+KTNetProjectManagerHandler::~KTNetProjectManagerHandler()
+{
+}
+
+
+void KTNetProjectManagerHandler::handleProjectRequest(KTProjectRequest* event)
+{
+	dDebug("net") << "Sending: " << event->data().toString();
+}
+
+
+bool KTNetProjectManagerHandler::setupNewProject(const KTProjectManagerParams *params)
+{
+	KTNetProjectManagerParams *netparams = static_cast<const KTNetProjectManagerParams*>(params);
+	
+	SHOW_VAR(netparams->projectName());
+	
+	return true;
+}
+
+bool KTNetProjectManagerHandler::closeProject()
+{
+	return KTAbstractProjectHandler::closeProject();
+}
+
+

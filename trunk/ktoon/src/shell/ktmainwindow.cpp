@@ -38,6 +38,9 @@
 #include "ktpluginmanager.h"
 
 #include "ktprojectcommand.h"
+#include "ktnetprojectmanagerhandler.h"
+#include "ktnetprojectmanagerparams.h"
+#include "ktlocalprojectmanagerhandler.h"
 
 #include <dsound/daudioplayer.h>
 
@@ -54,7 +57,7 @@
 #include <QDesktopServices>
 //
 
-KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_viewDoc(0), m_animationSpace(0), m_exposureSheet(0), m_scenes(0)
+KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_projectManager(0), m_viewDoc(0), m_animationSpace(0), m_exposureSheet(0), m_scenes(0)
 {
 	DINIT;
 	
@@ -74,6 +77,9 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_viewDoc(0)
 	
 	
 	m_projectManager = new KTProjectManager(this);
+	
+// 	setProjectManager( projectManager );
+	
 	splash->setMessage( tr("Setting up the project manager") );
 	
 	splash->setMessage( tr("Loading action manager...") );
@@ -115,19 +121,18 @@ KTMainWindow::~KTMainWindow()
 	delete KTPluginManager::instance();
 }
 
-
 // Modal
 
-void KTMainWindow::createNewProject(const QString &name, const QSize &size, const int fps)
+void KTMainWindow::createNewProject(KTProjectManagerParams *params)
 {
 	if(!closeProject())
 	{
 		return;
 	}
 	
-	m_projectManager->setupNewProject(name);
+	m_projectManager->setupNewProject(params);
 	
-	newViewDocument( name);
+	newViewDocument( params->projectName() );
 }
 
 void KTMainWindow::newViewDocument(const QString &title)
@@ -169,7 +174,16 @@ void KTMainWindow::newProject()
 	connectToDisplays(wizard);
 	if ( wizard->exec() != QDialog::Rejected )
 	{
-		createNewProject( wizard->projectName(), wizard->dimension(), wizard->fps() );
+		if ( wizard->useNetwork() )
+		{
+			m_projectManager->setHandler( new KTNetProjectManagerHandler );
+		}
+		else
+		{
+			m_projectManager->setHandler( new KTLocalProjectManagerHandler );
+		}
+		
+		createNewProject( wizard->params() );
 	}
 	delete wizard;
 }

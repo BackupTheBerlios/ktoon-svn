@@ -27,6 +27,8 @@
 class KTProject;
 class KTProjectRequest;
 class KTProjectCommand;
+class KTProjectManagerParams;
+class KTAbstractProjectHandler;
 
 /**
  * Clase para tratar eventos del projecto
@@ -37,16 +39,19 @@ class STORE_EXPORT KTProjectManager : public QObject
 	Q_OBJECT;
 	public:
 		KTProjectManager(QObject *parent = 0);
-		~KTProjectManager();
+		virtual ~KTProjectManager();
 		
 		virtual KTProjectCommand *createCommand(const KTProjectRequest *event);
 		
-		void setupNewProject(const QString &projectName);
-		void closeProject();
+		virtual void setupNewProject(KTProjectManagerParams *params );
+		virtual void closeProject();
 		
 		bool isOpen() const;
 		
 		KTProject *project() const;
+		
+		void setHandler(KTAbstractProjectHandler *handler);
+		
 		
 	protected slots:
 		virtual void handleProjectRequest(KTProjectRequest *event);
@@ -57,6 +62,8 @@ class STORE_EXPORT KTProjectManager : public QObject
 	private:
 		KTProject *m_project;
 		bool m_isOpen;
+		
+		KTAbstractProjectHandler *m_handler;
 };
 
 #endif

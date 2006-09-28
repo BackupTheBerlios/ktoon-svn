@@ -18,31 +18,27 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTABSTRACTSERIALIZABLE_H
-#define KTABSTRACTSERIALIZABLE_H
+#include "ktprojectmanagerparams.h"
 
-#include <QString>
 
-#include <QDomDocument>
-#include <QDomElement>
-#include "ktglobal_store.h"
-
-/**
- * @if spanish
- * Clase abstracta para clases que necesiten ser guardadas, como los frames, scenas, items, etc.
- * @endif
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class STORE_EXPORT KTAbstractSerializable
+KTProjectManagerParams::KTProjectManagerParams()
 {
-	protected:
-		KTAbstractSerializable() {};
-		
-	public:
-		virtual ~KTAbstractSerializable() {};
-		
-		virtual void fromXml(const QString &xml) = 0;
-		virtual QDomElement toXml(QDomDocument &doc) = 0;
-};
+}
 
-#endif
+
+KTProjectManagerParams::~KTProjectManagerParams()
+{
+}
+
+
+void KTProjectManagerParams::setProjectName(const QString &name)
+{
+	m_projectName = name;
+}
+
+QString KTProjectManagerParams::projectName() const
+{
+	return m_projectName;
+}
+
+

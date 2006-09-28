@@ -24,9 +24,13 @@
 #include "ktprojectrequest.h"
 #include "ktprojectcommand.h"
 
+#include "ktprojectmanagerparams.h"
+
+#include "ktabstractprojectmanagerhandler.h"
+
 #include <ddebug.h>
 
-KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(false)
+KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(false), m_handler(0)
 {
 	m_project = new KTProject(this);
 	
@@ -38,11 +42,40 @@ KTProjectManager::~KTProjectManager()
 {
 }
 
-void KTProjectManager::setupNewProject(const QString &projectName)
+void KTProjectManager::setHandler(KTAbstractProjectHandler *handler)
 {
+	if ( m_handler )
+	{
+		disconnect(m_handler, SIGNAL(sendRequestToClients(KTProjectRequest *)), this, SIGNAL(commandExecuted(KTProjectRequest *)));
+		
+		delete m_handler;
+		m_handler = 0;
+	}
+	
+	m_handler = handler;
+	m_handler->setParent(this);
+	
+	connect(m_handler, SIGNAL(sendRequestToClients(KTProjectRequest *)), this, SIGNAL(commandExecuted(KTProjectRequest *)));
+	
+}
+
+void KTProjectManager::setupNewProject(KTProjectManagerParams *params)
+{
+	if ( !m_handler )
+	{
+		qDebug("ERROR: HANDLER!");
+		return;
+	}
+	
 	closeProject();
 	
-	m_project->setProjectName( projectName );
+	m_project->setProjectName( params->projectName() );
+	
+	if ( ! m_handler->setupNewProject(params) )
+	{
+		qDebug("ERROR WHILE SETUP PROJECT");
+		return;
+	}
 	
 	m_isOpen = true;
 	
@@ -53,10 +86,19 @@ void KTProjectManager::setupNewProject(const QString &projectName)
 	m_project->createFrame(0,0,0);
 }
 
+
 void KTProjectManager::closeProject()
 {
+	if ( !m_handler ) return;
+	
 	if ( m_isOpen )
 	{
+		if ( ! m_handler->closeProject() )
+		{
+			qDebug("ERROR: WHILE CLOSING THE PROJECT");
+			return;
+		}
+		
 		m_project->clear();
 	}
 	
@@ -78,12 +120,18 @@ bool KTProjectManager::isOpen() const
  * Por defecto, envia el evento por medio del signal commandExecuted
  * @param event 
  */
-void KTProjectManager::handleProjectRequest(KTProjectRequest *event)
+void KTProjectManager::handleProjectRequest(KTProjectRequest *request)
 {
 	D_FUNCINFO;
 	
-	if ( event->isValid() )
-		emit commandExecuted(event);
+	if ( m_handler )
+	{
+		m_handler->handleProjectRequest( request );
+	}
+	else
+	{
+		qDebug("ERROR: NO HANDLER");
+	}
 }
 
 

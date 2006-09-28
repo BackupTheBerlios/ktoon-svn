@@ -17,10 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "ktnewproject.h"
 
+#include "ktnetprojectmanagerparams.h"
+
 KTNewProject::KTNewProject(QWidget *parent)
-	: DTabDialog(parent)
+	: DTabDialog(parent), m_useNetwork(false)
 {
 	setWindowTitle(tr("Create a new project"));
 	setModal(true);
@@ -73,21 +76,45 @@ KTNewProject::~KTNewProject()
 {
 }
 
-QString KTNewProject::projectName() const
+KTProjectManagerParams *KTNewProject::params()
 {
-	return m_projectName->text();
+	if ( m_useNetwork )
+	{
+		KTNetProjectManagerParams *params = new KTNetProjectManagerParams;
+		params->setProjectName( m_projectName->text() );
+		params->setServer("localhost");
+		params->setPort(31337);
+		
+		return params;
+	}
+	
+	KTProjectManagerParams *params = new KTProjectManagerParams;
+	
+	params->setProjectName(m_projectName->text());
+	
+	return params;
 }
 
-QSize KTNewProject::dimension() const
+bool KTNewProject::useNetwork() const
 {
-	QSize size( (int)m_size->x(), (int)m_size->y() );
-	return size;
+	return m_useNetwork;
 }
 
-int  KTNewProject::fps() const
-{
-	return m_fps->value();
-}
+// QString KTNewProject::projectName() const
+// {
+// 	return m_projectName->text();
+// }
+// 
+// QSize KTNewProject::dimension() const
+// {
+// 	QSize size( (int)m_size->x(), (int)m_size->y() );
+// 	return size;
+// }
+// 
+// int  KTNewProject::fps() const
+// {
+// 	return m_fps->value();
+// }
 
 #if 0
 #include <QLabel>

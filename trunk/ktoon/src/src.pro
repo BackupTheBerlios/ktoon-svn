@@ -7,11 +7,12 @@ SUBDIRS += themes \
            dlib \
            libktoon \
            store \
-	   libbase \
+           net \ 
+           libbase \
            libktui \
            components \
            shell \
-           plugins 
+           plugins
 KDEV_QTVER = 4
 CONFIG += release \
 warn_on

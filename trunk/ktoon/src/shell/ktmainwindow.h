@@ -62,6 +62,8 @@
 #include "config.h"
 #include "ktviewdocument.h"
 
+class KTProjectManagerParams;
+
 
 /**
  * Ventana principal de la aplicación
@@ -128,7 +130,7 @@ class KTMainWindow : public DTabbedMainWindow
 		void updateOpenRecentMenu(QMenu *menu);
 		
 	private slots:
-		void createNewProject(const QString &name, const QSize &size = QSize(-1,-1),  const int fps = 24  );
+		void createNewProject( KTProjectManagerParams *params );
 		void newViewDocument(const QString &name = QString::null);
 		void newProject();
 		bool closeProject();

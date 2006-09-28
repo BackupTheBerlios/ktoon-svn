@@ -17,32 +17,36 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "ktnetprojectmanagerparams.h"
 
-#ifndef KTABSTRACTSERIALIZABLE_H
-#define KTABSTRACTSERIALIZABLE_H
-
-#include <QString>
-
-#include <QDomDocument>
-#include <QDomElement>
-#include "ktglobal_store.h"
-
-/**
- * @if spanish
- * Clase abstracta para clases que necesiten ser guardadas, como los frames, scenas, items, etc.
- * @endif
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class STORE_EXPORT KTAbstractSerializable
+KTNetProjectManagerParams::KTNetProjectManagerParams()
+ : KTProjectManagerParams()
 {
-	protected:
-		KTAbstractSerializable() {};
-		
-	public:
-		virtual ~KTAbstractSerializable() {};
-		
-		virtual void fromXml(const QString &xml) = 0;
-		virtual QDomElement toXml(QDomDocument &doc) = 0;
-};
+}
 
-#endif
+
+KTNetProjectManagerParams::~KTNetProjectManagerParams()
+{
+}
+
+void KTNetProjectManagerParams::setServer(const QString &server)
+{
+	m_server = server;
+}
+
+QString KTNetProjectManagerParams::server() const
+{
+	return m_server;
+}
+
+
+void KTNetProjectManagerParams::setPort(int port)
+{
+	m_port = port;
+}
+
+int KTNetProjectManagerParams::port() const
+{
+	return m_port;
+}
+

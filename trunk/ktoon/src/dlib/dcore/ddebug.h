@@ -181,7 +181,7 @@ class D_CORE_EXPORT DDebug
 					buffer += string;
 					return *this;
 				}
-				Streamer & operator<< ( const void * ptr )
+				Streamer & operator<< ( const void * /*ptr*/ )
 				{
 					
 					return *this;
