@@ -64,6 +64,11 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectRequestHandler
 		
 		KTBrushManager *brushManager() const;
 		
+	public slots:
+		void setNextFramesOnionSkinCount(int n);
+		void setPreviousFramesOnionSkinCount(int n);
+		
+		
 	private:
 		void saveState();
 		void restoreState();

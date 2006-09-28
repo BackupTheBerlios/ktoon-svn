@@ -124,6 +124,9 @@ class STORE_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializabl
 		
 		KTFrame *currentFrame();
 		
+		void setNextOnionSkinCount(int n);
+		void setPreviousOnionSkinCount(int n);
+		
 	public:
 		virtual void fromXml(const QString &xml );
 		virtual QDomElement toXml(QDomDocument &doc);

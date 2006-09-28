@@ -302,7 +302,7 @@ void KTScene::drawPhotogram(int photogram)
 	{
 		if ( layer->isVisible() )
 		{
-			double opacityFactor = 0.5 / (double)m_onionSkin.previous;
+			double opacityFactor = 0.5 / (double)qMin(layer->frames().count(),m_onionSkin.previous);
 			
 			double opacity = 0.6;
 			
@@ -313,7 +313,7 @@ void KTScene::drawPhotogram(int photogram)
 				opacity -= opacityFactor;
 			}
 			
-			opacityFactor = 0.5 / (double)m_onionSkin.next;
+			opacityFactor = 0.5 / (double)qMin(layer->frames().count(), m_onionSkin.next);
 			opacity = 0.6;
 			
 			for(int frameIndex = photogram+1; frameIndex < photogram+m_onionSkin.next+1; frameIndex++ )
@@ -385,4 +385,16 @@ KTProject *KTScene::project() const
 	return static_cast<KTProject *>(parent());
 }
 
+void KTScene::setNextOnionSkinCount(int n)
+{
+	m_onionSkin.next = n;
+	drawCurrentPhotogram();
+}
+
+void KTScene::setPreviousOnionSkinCount(int n)
+{
+	m_onionSkin.previous = n;
+	
+	drawCurrentPhotogram();
+}
 

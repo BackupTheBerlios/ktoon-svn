@@ -725,3 +725,20 @@ KTBrushManager *KTPaintArea::brushManager() const
 	return m_brushManager;
 }
 
+void KTPaintArea::setNextFramesOnionSkinCount(int n)
+{
+	if ( KTScene* currentScene = static_cast<KTScene*>(scene()) )
+	{
+		currentScene->setNextOnionSkinCount( n );
+	}
+}
+
+void KTPaintArea::setPreviousFramesOnionSkinCount(int n)
+{
+	if ( KTScene* currentScene = static_cast<KTScene*>(scene()) )
+	{
+		currentScene->setPreviousOnionSkinCount( n );
+	}
+}
+
+

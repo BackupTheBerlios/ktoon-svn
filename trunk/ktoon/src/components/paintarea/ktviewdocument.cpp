@@ -282,7 +282,7 @@ void KTViewDocument::setupViewActions()
 	DAction *zoomOut = new DAction( QPixmap(THEME_DIR+"/icons/zoom_out.png" ), tr( "Zoom Out" ), QKeySequence(Qt::CTRL+Qt::Key_Minus), m_paintArea, SLOT(zoomOut()), m_actionManager, "zoom_out" );
 // 	m_viewPreviousGroup->addAction(zoomOut);
 	
-	
+#endif
 	m_viewPreviousGroup = new QActionGroup( this );
 	m_viewPreviousGroup->setExclusive( true );
 	DAction *noPrevious = new DAction( QPixmap(THEME_DIR+"/icons/no_previous.png" ), tr( "No Previous" ), QKeySequence(Qt::Key_1), this, SLOT(disablePreviousOnionSkin()), m_actionManager, "no_previous" );
@@ -341,7 +341,6 @@ void KTViewDocument::setupViewActions()
 	
 	threeNext->setCheckable(true );
 	threeNext->setStatusTip(tr("Shows the next 3 onion skins"));
-#endif
 }
 
 
@@ -742,21 +741,21 @@ void KTViewDocument::createToolBar()
 	
 // 	m_barGrid->addActions(m_editGroup->actions());
 // 	m_barGrid->addSeparator();
-// 	m_barGrid->addSeparator();
-// 	m_barGrid->addActions(m_viewPreviousGroup->actions());
-// 	
-// 	QSpinBox *prevOnionSkinSpin = new QSpinBox(this);
-// 	connect(prevOnionSkinSpin, SIGNAL(valueChanged ( int)), this, SLOT(setPreviousOnionSkin(int)));
-// 	
-// 	m_barGrid->addWidget(prevOnionSkinSpin);
-// 	
-// 	m_barGrid->addSeparator();
-// 	m_barGrid->addActions(m_viewNextGroup->actions());
-// 	
-// 	QSpinBox *nextOnionSkinSpin = new QSpinBox(this);
-// 	connect(nextOnionSkinSpin, SIGNAL(valueChanged ( int)), this, SLOT(setNextOnionSkin(int)));
-// 	
-// 	m_barGrid->addWidget(nextOnionSkinSpin);
+	m_barGrid->addSeparator();
+	m_barGrid->addActions(m_viewPreviousGroup->actions());
+	
+	QSpinBox *prevOnionSkinSpin = new QSpinBox(this);
+	connect(prevOnionSkinSpin, SIGNAL(valueChanged ( int)), this, SLOT(setPreviousOnionSkin(int)));
+	
+	m_barGrid->addWidget(prevOnionSkinSpin);
+	
+	m_barGrid->addSeparator();
+	m_barGrid->addActions(m_viewNextGroup->actions());
+	
+	QSpinBox *nextOnionSkinSpin = new QSpinBox(this);
+	connect(nextOnionSkinSpin, SIGNAL(valueChanged ( int)), this, SLOT(setNextOnionSkin(int)));
+	
+	m_barGrid->addWidget(nextOnionSkinSpin);
 }
 
 void KTViewDocument::createMenu()
@@ -827,54 +826,54 @@ void KTViewDocument::setCursor(const QCursor &c)
 
 void KTViewDocument::disablePreviousOnionSkin()
 {
-// 	m_paintArea->setPreviousFrames( 0 );
+	m_paintArea->setPreviousFramesOnionSkinCount( 0 );
 }
 
 void KTViewDocument::onePreviousOnionSkin()
 {
-// 	m_paintArea->setPreviousFrames( 1 );
+	m_paintArea->setPreviousFramesOnionSkinCount( 1 );
 }
 
 void KTViewDocument::twoPreviousOnionSkin()
 {
-// 	m_paintArea->setPreviousFrames( 2 );
+	m_paintArea->setPreviousFramesOnionSkinCount( 2 );
 }
 
 void KTViewDocument::threePreviousOnionSkin()
 {
-// 	m_paintArea->setPreviousFrames( 3 );
+	m_paintArea->setPreviousFramesOnionSkinCount( 3 );
 }
 
 void KTViewDocument::setPreviousOnionSkin(int n)
 {
-// 	m_paintArea->setPreviousFrames(n);
+	m_paintArea->setPreviousFramesOnionSkinCount(n);
 }
 
 // NEXT
 void KTViewDocument::disableNextOnionSkin()
 {
-// 	m_paintArea->setNextFrames( 0 );
+	m_paintArea->setNextFramesOnionSkinCount( 0 );
 }
 
 void KTViewDocument::oneNextOnionSkin()
 {
-// 	m_paintArea->setNextFrames( 1 );
+	m_paintArea->setNextFramesOnionSkinCount( 1 );
 }
 
 void KTViewDocument::twoNextOnionSkin()
 {
-// 	m_paintArea->setNextFrames( 2 );
+	m_paintArea->setNextFramesOnionSkinCount( 2 );
 }
 
 void KTViewDocument::threeNextOnionSkin()
 {
-// 	m_paintArea->setNextFrames( 3 );
+	m_paintArea->setNextFramesOnionSkinCount( 3 );
 }
 
 
 void KTViewDocument::setNextOnionSkin(int n)
 {
-// 	m_paintArea->setNextFrames( n );
+	m_paintArea->setNextFramesOnionSkinCount( n );
 }
 
 void KTViewDocument::toggleShowGrid()
