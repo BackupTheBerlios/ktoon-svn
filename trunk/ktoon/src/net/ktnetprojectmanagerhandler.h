@@ -23,9 +23,10 @@
 #include <ktabstractprojectmanagerhandler.h>
 
 class KTProjectCommand;
+class KTNetSocket;
 
 /**
-	@author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado <krawek@gmail.com>
 */
 class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 {
@@ -34,10 +35,16 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		KTNetProjectManagerHandler(QObject *parent = 0);
 		~KTNetProjectManagerHandler();
 		
-		virtual bool setupNewProject(const KTProjectManagerParams *params);
+		virtual bool setupNewProject(KTProjectManagerParams *params);
 		virtual bool closeProject();
 		
 		virtual void handleProjectRequest(KTProjectRequest* event);
+		
+	private slots:
+		void sendHello();
+		
+	private:
+		KTNetSocket *m_socket;
 
 };
 

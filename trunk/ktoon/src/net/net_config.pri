@@ -1,5 +1,5 @@
 
-QT += xml opengl svg
+QT += xml network
 
 STORE_DIR = ../../src/store 
 LIBKTOON_DIR = ../../src/libktoon 

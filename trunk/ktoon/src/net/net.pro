@@ -4,9 +4,13 @@
 # Target is a library:  ktnet
 
 HEADERS += ktnetprojectmanagerparams.h \
-           ktnetprojectmanagerhandler.h 
+           ktnetprojectmanagerhandler.h \
+           ktnetsocket.h \
+           ktrequestpackage.h 
 SOURCES += ktnetprojectmanagerparams.cpp \
-           ktnetprojectmanagerhandler.cpp 
+           ktnetprojectmanagerhandler.cpp \
+           ktnetsocket.cpp \
+           ktrequestpackage.cpp 
 CONFIG += release \
 warn_on \
 staticlib

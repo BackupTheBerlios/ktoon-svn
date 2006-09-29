@@ -72,7 +72,7 @@ class KTProjectManagerParams;
 
 class KTMainWindow : public DTabbedMainWindow
 {
-	Q_OBJECT
+	Q_OBJECT;
 	public:
 		enum Perspective
 		{

@@ -30,6 +30,7 @@
 class KTProjectManagerParams;
 
 
+
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
@@ -48,6 +49,12 @@ class KTNewProject : public DTabDialog
 		
 		bool useNetwork() const;
 		
+	private:
+		void setupNetOptions();
+		
+	public slots:
+		void activateNetOptions(bool no);
+		
 	signals:
 		void sendToStatus(const QString &);
 		void sendToOSD(const QString &, int);
@@ -62,6 +69,10 @@ class KTNewProject : public DTabDialog
 		
 		bool m_useNetwork;
 		
+		QGroupBox *m_netOptions;
+		
+		QLineEdit *m_server;
+		QSpinBox *m_port;
 };
 #if 0
 class KTNewProject : public DWizard

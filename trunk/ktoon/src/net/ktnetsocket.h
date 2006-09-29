@@ -18,38 +18,24 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTABSTRACTPROJECTHANDLER_H
-#define KTABSTRACTPROJECTHANDLER_H
+#ifndef KTNETSOCKET_H
+#define KTNETSOCKET_H
 
-#include <qobject.h>
-#include "ktglobal_store.h"
-
-class KTProjectRequest;
-class KTProjectRequest;
-class KTProjectManagerParams;
+#include <QTcpSocket>
+#include <QDomDocument>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class STORE_EXPORT KTAbstractProjectHandler : public QObject
+class KTNetSocket : public QTcpSocket
 {
-	Q_OBJECT;
-	
 	public:
-		KTAbstractProjectHandler(QObject *parent = 0);
-		virtual ~KTAbstractProjectHandler();
+		KTNetSocket(QObject *parent = 0);
+		~KTNetSocket();
 		
-		virtual bool setupNewProject(KTProjectManagerParams *params);
-		virtual bool closeProject();
-		virtual void handleProjectRequest(KTProjectRequest *request) = 0;
+		void sendToServer(const QString &str);
+		void sendToServer(const QDomDocument &doc);
 		
-	signals:
-		void sendRequestToClients(KTProjectRequest *event);
-
 };
 
-// 46.500 - sin permancia 120.000 inicialmente.
-
 #endif
-
-

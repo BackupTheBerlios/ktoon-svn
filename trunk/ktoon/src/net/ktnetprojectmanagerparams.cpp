@@ -20,7 +20,7 @@
 #include "ktnetprojectmanagerparams.h"
 
 KTNetProjectManagerParams::KTNetProjectManagerParams()
- : KTProjectManagerParams()
+	: KTProjectManagerParams(), m_server("localhost"), m_port(31337)
 {
 }
 

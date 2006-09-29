@@ -17,39 +17,32 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTREQUESTPACKAGE_H
+#define KTREQUESTPACKAGE_H
 
-#ifndef KTABSTRACTPROJECTHANDLER_H
-#define KTABSTRACTPROJECTHANDLER_H
+#include <QDomDocument>
 
-#include <qobject.h>
-#include "ktglobal_store.h"
-
-class KTProjectRequest;
-class KTProjectRequest;
-class KTProjectManagerParams;
+#include "ktprojectrequest.h"
+#include "ktabstractprojectrequesthandler.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class STORE_EXPORT KTAbstractProjectHandler : public QObject
+class KTRequestPackage : public QDomDocument, public KTAbstractProjectRequestHandler
 {
-	Q_OBJECT;
-	
 	public:
-		KTAbstractProjectHandler(QObject *parent = 0);
-		virtual ~KTAbstractProjectHandler();
+		KTRequestPackage(KTProjectRequest *request );
+		~KTRequestPackage();
 		
-		virtual bool setupNewProject(KTProjectManagerParams *params);
-		virtual bool closeProject();
-		virtual void handleProjectRequest(KTProjectRequest *request) = 0;
+	private:
+		void appendData(QDomElement &element, const QVariant &data);
 		
-	signals:
-		void sendRequestToClients(KTProjectRequest *event);
-
+	protected:
+		virtual void itemRequest(KTItemRequest *itemRequest);
+		virtual void frameRequest(KTFrameRequest *frameRequest);
+		virtual void layerRequest(KTLayerRequest *layerRequest);
+		virtual void sceneRequest(KTSceneRequest *sceneRequest);
+		virtual void projectRequest(KTProjectRequest *projectRequest);
 };
 
-// 46.500 - sin permancia 120.000 inicialmente.
-
 #endif
-
-

@@ -21,6 +21,12 @@
 #include "ktnewproject.h"
 
 #include "ktnetprojectmanagerparams.h"
+#include "dformfactory.h"
+#include "dconfig.h"
+#include "dapplication.h"
+
+#include <QLineEdit>
+#include <QCheckBox>
 
 KTNewProject::KTNewProject(QWidget *parent)
 	: DTabDialog(parent), m_useNetwork(false)
@@ -52,7 +58,7 @@ KTNewProject::KTNewProject(QWidget *parent)
 	
 	layout->addWidget(m_size, 2, 0);
 	
-	QGroupBox *renderAndFps= new QGroupBox();
+	QGroupBox *renderAndFps= new QGroupBox(tr("Options"));
 	
 	QBoxLayout *subLayout = new QBoxLayout(QBoxLayout::TopToBottom);
 	renderAndFps->setLayout(subLayout);
@@ -67,13 +73,50 @@ KTNewProject::KTNewProject(QWidget *parent)
 	fpsLayout->addWidget(m_fps);
 	subLayout->addLayout(fpsLayout);
 	
-	layout->addWidget(renderAndFps, 2, 1);
+	QWidget *mcont = new QWidget;
+	QVBoxLayout *mcontly = new QVBoxLayout(mcont);
+	
+	mcontly->addWidget(renderAndFps);
 	addTab( container, tr("Project info"));
 	
+	setupNetOptions();
+	mcontly->addWidget(m_netOptions);
 	
+	layout->addWidget( mcont, 2, 1);
+	
+	m_netOptions->setVisible(false);
+	
+	QCheckBox *activeNetOptions = new QCheckBox( tr("Create a network project") );
+	layout->addWidget( activeNetOptions, 3, 1);
+	
+	connect(activeNetOptions, SIGNAL(toggled( bool )), this, SLOT(activateNetOptions(bool)));
 }
+
 KTNewProject::~KTNewProject()
 {
+	DConfig *config = dApp->config("Network");
+	
+	config->setValue("server", m_server->text());
+	config->setValue("port", m_port->value());
+}
+
+void KTNewProject::setupNetOptions()
+{
+	m_netOptions = new QGroupBox(tr("Network"));
+	QVBoxLayout *layout = new QVBoxLayout(m_netOptions);
+	
+	m_server = new QLineEdit;
+	m_port = new QSpinBox;
+	m_port->setMinimum(1024);
+	m_port->setMaximum(65000);
+	
+	DConfig *config = dApp->config("Network");
+	
+	m_server->setText(config->value("server", "localhost").toString());
+	m_port->setValue(config->value("port", 31337).toInt());
+	
+	
+	layout->addLayout( DFormFactory::makeGrid( QStringList() << tr("Server") << tr("Port"), QWidgetList() << m_server << m_port ) );
 }
 
 KTProjectManagerParams *KTNewProject::params()
@@ -82,8 +125,8 @@ KTProjectManagerParams *KTNewProject::params()
 	{
 		KTNetProjectManagerParams *params = new KTNetProjectManagerParams;
 		params->setProjectName( m_projectName->text() );
-		params->setServer("localhost");
-		params->setPort(31337);
+		params->setServer(m_server->text());
+		params->setPort(m_port->value());
 		
 		return params;
 	}
@@ -99,6 +142,13 @@ bool KTNewProject::useNetwork() const
 {
 	return m_useNetwork;
 }
+
+void KTNewProject::activateNetOptions(bool no)
+{
+	m_netOptions->setVisible(no);
+	m_useNetwork = no;
+}
+
 
 // QString KTNewProject::projectName() const
 // {
