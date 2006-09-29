@@ -22,8 +22,11 @@
 #include <QTextStream>
 #include <QDataStream>
 
+#include <ddebug.h>
+
 KTNetSocket::KTNetSocket(QObject *parent) : QTcpSocket(parent)
 {
+	connect(this, SIGNAL(readyRead ()), this, SLOT(readFromServer()) );
 }
 
 
@@ -45,4 +48,28 @@ void KTNetSocket::sendToServer(const QDomDocument &doc)
 	sendToServer(doc.toString(0));
 }
 
+void KTNetSocket::readFromServer()
+{
+	D_FUNCINFO;
+	
+	while(canReadLine())
+	{
+		m_readed += readLine();
+
+		if ( m_readed.endsWith("%%\n") )
+		{
+			break;
+		}
+	}
+	if ( m_readed.isEmpty() )
+	{
+		return;
+	}
+	
+	
+	dDebug("net") << "Readed from server: " << m_readed;
+	
+	m_readed = "";
+	if( canReadLine() ) emit readyRead();
+}
 

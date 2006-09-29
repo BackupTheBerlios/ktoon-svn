@@ -29,12 +29,20 @@
 */
 class KTNetSocket : public QTcpSocket
 {
+	Q_OBJECT;
+	
 	public:
 		KTNetSocket(QObject *parent = 0);
 		~KTNetSocket();
 		
 		void sendToServer(const QString &str);
 		void sendToServer(const QDomDocument &doc);
+		
+	protected slots:
+		virtual void readFromServer();
+		
+	private:
+		QString m_readed;
 		
 };
 
