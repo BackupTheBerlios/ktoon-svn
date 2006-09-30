@@ -26,6 +26,8 @@ KTRequestPackage::KTRequestPackage(KTProjectRequest *request)
 {
 	QDomElement root = createElement( "request" );
 	root.setAttribute( "action", request->action());
+	root.setAttribute( "id", request->id() );
+	root.setAttribute( "name", request->partName() );
 	
 	appendChild( root );
 	

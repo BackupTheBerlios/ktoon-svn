@@ -80,7 +80,7 @@ bool KTNetProjectManagerHandler::closeProject()
 
 void KTNetProjectManagerHandler::sendHello()
 {
-	m_socket->sendToServer( "<cnx>helo ktoon server!</cnx>");
+	m_socket->sendToServer( "<cnx>helo ktoon server!</cnx>\n");
 }
 
 

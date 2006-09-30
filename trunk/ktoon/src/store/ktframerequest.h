@@ -31,7 +31,7 @@ class STORE_EXPORT KTFrameRequest : public KTLayerRequest
 {
 	public:
 		KTFrameRequest(Action action, int sceneIndex, int layerIndex, int frameIndex, const QVariant &data = 0);
-		~KTFrameRequest();
+		virtual ~KTFrameRequest();
 		
 		virtual int id() const;
 		int frameIndex() const;

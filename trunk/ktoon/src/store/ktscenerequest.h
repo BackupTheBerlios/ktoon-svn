@@ -31,7 +31,7 @@ class STORE_EXPORT KTSceneRequest : public KTProjectRequest
 {
 	public:
 		KTSceneRequest(Action action, int sceneIndex, const QVariant &data = 0);
-		~KTSceneRequest();
+		virtual ~KTSceneRequest();
 		
 		virtual int id() const;
 		int sceneIndex() const;

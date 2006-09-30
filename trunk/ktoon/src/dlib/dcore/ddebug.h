@@ -193,6 +193,8 @@ class D_CORE_EXPORT DDebug
 		DDebug(const DDebug &);
 		~DDebug();
 		
+		static void setForceDisableGUI();
+		
 		inline DDebug &operator<<(QTextStreamManipulator /*m*/)
 		{ 
 // 			streamer->ts << m; 

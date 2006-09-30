@@ -31,7 +31,7 @@ class KTProjectManagerParams;
 class KTAbstractProjectHandler;
 
 /**
- * Clase para tratar eventos del projecto
+ * Clase para tratar eventos del proyecto
  * @author David Cuadrado \<krawek@gmail.com\>
 */
 class STORE_EXPORT KTProjectManager : public QObject

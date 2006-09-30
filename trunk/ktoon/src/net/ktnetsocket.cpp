@@ -39,7 +39,7 @@ void KTNetSocket::sendToServer(const QString &str)
 	if ( state() == QAbstractSocket::ConnectedState )
 	{
 		QTextStream stream(this);
-		stream << str << endl;
+		stream << str << "%%" << endl;
 	}
 }
 

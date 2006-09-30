@@ -3,17 +3,11 @@
 # Subdir relative project main directory: ./src/libktoon
 # Target is a library:  ktoon
 
-
-DLIB_DIR = ../../src/dlib
-include($$DLIB_DIR/dlib.pri)
-
-QUAZIP_DIR = ../../3rdparty/quazip/
-include($$QUAZIP_DIR/quazip.pri)
-
-
-INSTALLS += target 
+INSTALLS += headers \
+            target 
 target.path = /lib/ 
-
+headers.files += *.h 
+headers.path = /include/ktoon 
 HEADERS += ktgraphicalgorithm.h \
            ktglobal.h \
            ktpaintareaproperties.h \
@@ -37,10 +31,12 @@ SOURCES += ktgraphicalgorithm.cpp \
            ktbrushmanager.cpp \
            ktinputdeviceinformation.cpp \
            ktsvg2qt.cpp 
+DLIB_DIR = ../../src/dlib
+include($$DLIB_DIR/dlib.pri)
+QUAZIP_DIR = ../../3rdparty/quazip/
+include($$QUAZIP_DIR/quazip.pri)
 KDEV_QTVER = 4
 TARGET = ktoon
 CONFIG += dll
 TEMPLATE = lib
-
 include(../../ktconfig.pri)
-

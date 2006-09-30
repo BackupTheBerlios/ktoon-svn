@@ -74,7 +74,7 @@ static class ConfigReader
 		
 		bool showArea;
 		bool showAll;
-		
+		bool forceDisableGUI;
 		DebugOutput defaultOutput;
 } configReader;
 
@@ -88,6 +88,8 @@ ConfigReader::ConfigReader()
 	showAll = settings.value("show_all", true).toBool();
 	
 	defaultOutput= DebugOutput(settings.value("default", DShellOutput).toInt());
+	
+	forceDisableGUI = false;
 }
 
 ConfigReader::~ConfigReader()
@@ -176,6 +178,12 @@ void DebugBrowserHighlighter::highlightBlock ( const QString &text )
 
 static void dDebugOutput(DebugType t, DebugOutput o, const char *data)
 {
+	if ( o == DBoxOutput || o == DBrowserOutput && configReader.forceDisableGUI )
+	{
+		o == DShellOutput;
+		configReader.defaultOutput = DShellOutput;
+	}
+	
 	char *output = "%s\n";
 	switch(t)
 	{
@@ -289,6 +297,11 @@ DDebug::~DDebug()
 	}
 	
 	delete streamer;
+}
+
+void DDebug::setForceDisableGUI()
+{
+	configReader.forceDisableGUI = true;
 }
 
 
@@ -529,6 +542,7 @@ void DDebug::resaltWidget(QWidget *w, const QColor &color)
 
 QTextBrowser *DDebug::browser()
 {
+	qDebug("HERE");
 	if ( !debugBrowser)
 	{
 		debugBrowser = new QTextBrowser;

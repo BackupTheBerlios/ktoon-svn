@@ -7,7 +7,7 @@ INSTALLS += headers \
             target 
 target.path = /lib/ 
 headers.files += *.h 
-headers.path = /include/ 
+headers.path = /include/store/ 
 HEADERS += ktlayer.h \
            ktpalettedocument.h \
            ktframe.h \

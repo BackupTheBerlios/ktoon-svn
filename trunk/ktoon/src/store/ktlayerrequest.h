@@ -30,7 +30,7 @@ class STORE_EXPORT KTLayerRequest : public KTSceneRequest
 {
 	public:
 		KTLayerRequest(Action action, int sceneIndex, int layerIndex, const QVariant &data = 0);
-		~KTLayerRequest();
+		virtual ~KTLayerRequest();
 		
 		virtual int id() const;
 		int layerIndex() const;

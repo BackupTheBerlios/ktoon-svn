@@ -3,8 +3,11 @@
 # Subdir relative project main directory: ./src/libbase
 # Target is a library:  ktbase
 
-INSTALLS += target 
+INSTALLS += headers \
+            target 
 target.path = /lib/ 
+headers.files += *.h 
+headers.path = /include/base 
 HEADERS += ktexportinterface.h \
            ktexportpluginobject.h \
            ktfilterinterface.h \

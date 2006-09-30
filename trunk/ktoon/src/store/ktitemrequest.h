@@ -31,7 +31,7 @@ class STORE_EXPORT KTItemRequest : public KTFrameRequest
 {
 	public:
 		KTItemRequest(Action action, int sceneIndex, int layerIndex, int frameIndex, int position, const QVariant &data);
-		~KTItemRequest();
+		virtual ~KTItemRequest();
 		
 		virtual int id() const;
 		virtual bool isValid() const;
