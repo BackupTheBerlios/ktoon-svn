@@ -1,0 +1,12 @@
+#!/bin/bash
+
+
+export LD_LIBRARY_PATH=$KTOON_HOME/lib
+
+export QT_NO_GLIB=1
+
+#gdb -ex run -ex bt --batch --args bin/ktoond.bin "$*"
+bin/ktoond.bin
+
+
+

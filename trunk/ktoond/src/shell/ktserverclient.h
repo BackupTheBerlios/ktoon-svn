@@ -39,3 +39,5 @@ class KTServerClient : public QTcpSocket
 };
 
 #endif
+
+

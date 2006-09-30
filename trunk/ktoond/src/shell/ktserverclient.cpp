@@ -21,8 +21,7 @@
 #include "ktserverclient.h"
 
 #include <QDataStream>
-
-// #include <ddebug.h>
+#include <ddebug.h>
 
 KTServerClient::KTServerClient(QObject *parent) : QTcpSocket(parent)
 {

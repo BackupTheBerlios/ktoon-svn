@@ -18,26 +18,15 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QCoreApplication>
+#include "sproject.h"
 
-#include <ddebug.h>
-#include "ktserver.h"
-
-int main(int argc, char **argv)
+SProject::SProject(QObject *parent) : KTProject(parent)
 {
-	DDebug::setForceDisableGUI();
-	
-	QCoreApplication app(argc, argv);
-	app.setApplicationName("dtserver");
-	
-	KTServer server;
-	server.openConnection( "localhost" );
-	
-	dDebug() << "Running!";
-	
-	return app.exec();
 }
 
 
+SProject::~SProject()
+{
+}
 
 

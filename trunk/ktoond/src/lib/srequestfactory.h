@@ -18,26 +18,54 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QCoreApplication>
+#ifndef SREQUESTFACTORY_H
+#define SREQUESTFACTORY_H
 
-#include <ddebug.h>
-#include "ktserver.h"
+#include <QXmlDefaultHandler>
+#include <QString>
 
-int main(int argc, char **argv)
+class KTProjectRequest;
+
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+class SRequestFactory : public QXmlDefaultHandler
 {
-	DDebug::setForceDisableGUI();
-	
-	QCoreApplication app(argc, argv);
-	app.setApplicationName("dtserver");
-	
-	KTServer server;
-	server.openConnection( "localhost" );
-	
-	dDebug() << "Running!";
-	
-	return app.exec();
-}
+	public:
+		SRequestFactory();
+		~SRequestFactory();
+		
+		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
+		
+		bool endElement( const QString& ns, const QString& localname, const QString& qname);
+		
+		bool characters ( const QString & ch );
+		
+		bool error ( const QXmlParseException & exception );
+		bool fatalError ( const QXmlParseException & exception );
+		
+		KTProjectRequest *build(const QString &doc);
+		
+	private:
+		KTProjectRequest *createRequest();
+		
+	private:
+		QString m_qname;
+		
+		bool m_isParsing;
+		bool m_readCharacters;
+		
+		struct RequestData
+		{
+			QString data;
+			QString name;
+			int id;
+			int action;
+			int scene;
+			int layer;
+			int frame;
+			int item;
+		} m_requestData;
+};
 
-
-
-
+#endif

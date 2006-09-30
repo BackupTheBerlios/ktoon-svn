@@ -57,3 +57,5 @@ class KTServerConnection : public QThread
 };
 
 #endif
+
+

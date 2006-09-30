@@ -23,8 +23,12 @@
 
 #include <QHostInfo>
 
+#include <ddebug.h>
+#include <QDebug>
+
 KTServer::KTServer(QObject *parent) : QTcpServer(parent)
 {
+	DINIT;
 }
 
 KTServer::KTServer(const QString &host, QObject *parent) : QTcpServer(parent)
@@ -34,34 +38,34 @@ KTServer::KTServer(const QString &host, QObject *parent) : QTcpServer(parent)
 
 KTServer::~KTServer()
 {
+	DEND;
 }
 
 bool KTServer::openConnection(const QString &host)
 {
 	QList<QHostAddress> addrs = QHostInfo::fromName(host).addresses();
-	
+	qDebug() << addrs;
 	if ( !addrs.isEmpty() )
 	{
 		int port = 31337;
 		
 		if(! listen(QHostAddress(addrs[0]), port) )
 		{
-// 			dError() << "Can't connect to " << host<<":"<<port<< " error was: " << errorString();
+			dError() << "Can't connect to " << host<<":"<<port<< " error was: " << errorString();
 			return false;
 		}
 	}
 	else
 	{
-// 		dError() << "Error while try to resolve " << host;
+		dError() << "Error while try to resolve " << host;
 		return false;
 	}
-	
 	return true;
 }
 
 void KTServer::incomingConnection(int socketDescriptor)
 {
-// 	SHOW_VAR(m_connections.count());
+	SHOW_VAR(m_connections.count());
 	
 	KTServerConnection *newConnection = new KTServerConnection(socketDescriptor,this);
 	
@@ -77,7 +81,7 @@ void KTServer::handle(const KTServerConnection *cnx)
 	connect(cnx, SIGNAL(finished()), cnx, SLOT(deleteLater()));
 	
 	connect(cnx, SIGNAL(requestSendToAll( const QString& )), this, SLOT(sendToAll( const QString& )));
-	connect(cnx, SIGNAL(requestSendToAll( const QDomDocument& )), this, SLOT(sendToAll( const QDomDocument& )));
+// 	connect(cnx, SIGNAL(requestSendToAll( const QDomDocument& )), this, SLOT(sendToAll( const QDomDocument& )));
 }
 
 
@@ -91,7 +95,7 @@ void KTServer::sendToAll(const QString &msg)
 
 void KTServer::sendToAll(const QDomDocument &pkg)
 {
-// 	D_FUNCINFO;
+	D_FUNCINFO;
 	foreach(KTServerConnection *connection, m_connections)
 	{
 		connection->sendToClient(pkg);
@@ -100,9 +104,10 @@ void KTServer::sendToAll(const QDomDocument &pkg)
 
 void KTServer::removeConnection(KTServerConnection *cnx)
 {
-// 	D_FUNCINFO;
+	D_FUNCINFO;
 	cnx->close();
 // 	cnx->setLogin(0);
 	m_connections.removeAll(cnx);
 }
+
 

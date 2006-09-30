@@ -22,8 +22,10 @@
 
 #include <QtNetwork>
 
-// #include <ddebug.h>
-#include <QtDebug>
+#include <ddebug.h>
+
+#include "srequestfactory.h"
+#include <ktprojectrequest.h>
 
 KTServerConnection::KTServerConnection(int socketDescriptor, QObject *parent) : QThread(parent)
 {
@@ -54,7 +56,27 @@ void KTServerConnection::run()
 		{
 			readed.remove(readed.lastIndexOf("%%"), 2);
 			
-			qDebug() << "READED: " << readed;
+			dDebug() << "READED: " << readed;
+			
+			QDomDocument doc;
+			
+			if ( doc.setContent(readed) )
+			{
+				QString root = doc.documentElement().tagName();
+				
+				
+				if ( root == "request" )
+				{
+					SRequestFactory factory;
+					KTProjectRequest *request = factory.build( readed );
+					
+					if ( request )
+					{
+						
+						delete request;
+					}
+				}
+			}
 		}
 	}
 	
@@ -66,7 +88,7 @@ void KTServerConnection::sendToClient(const QString &msg)
 {
 // 	dDebug() << "SENDING: " << msg;
 	
-	qDebug() << "sending: " << msg;
+	dDebug() << "sending: " << msg;
 	m_client->reset();
 	
 	QTextStream out(m_client);

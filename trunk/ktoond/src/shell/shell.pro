@@ -10,7 +10,7 @@ SOURCES += main.cpp \
            ktserver.cpp \
            ktserverclient.cpp \
            ktserverconnection.cpp 
-TARGET = ../../bin/ktoond 
+TARGET = ../../bin/ktoond.bin 
 CONFIG += release \
           warn_on 
 TEMPLATE = app 

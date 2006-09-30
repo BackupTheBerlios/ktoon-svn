@@ -18,26 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QCoreApplication>
+#ifndef SPROJECT_H
+#define SPROJECT_H
 
-#include <ddebug.h>
-#include "ktserver.h"
+#include <ktproject.h>
 
-int main(int argc, char **argv)
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+class SProject : public KTProject
 {
-	DDebug::setForceDisableGUI();
+	Q_OBJECT;
 	
-	QCoreApplication app(argc, argv);
-	app.setApplicationName("dtserver");
-	
-	KTServer server;
-	server.openConnection( "localhost" );
-	
-	dDebug() << "Running!";
-	
-	return app.exec();
-}
+	public:
+		SProject(QObject *parent = 0);
+		~SProject();
+};
 
-
-
-
+#endif
