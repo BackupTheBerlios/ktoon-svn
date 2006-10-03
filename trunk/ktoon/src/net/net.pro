@@ -5,12 +5,10 @@
 
 HEADERS += ktnetprojectmanagerparams.h \
            ktnetprojectmanagerhandler.h \
-           ktnetsocket.h \
-           ktrequestpackage.h 
+           ktnetsocket.h 
 SOURCES += ktnetprojectmanagerparams.cpp \
            ktnetprojectmanagerhandler.cpp \
-           ktnetsocket.cpp \
-           ktrequestpackage.cpp 
+           ktnetsocket.cpp 
 CONFIG += release \
 warn_on \
 staticlib

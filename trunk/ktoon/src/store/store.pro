@@ -38,7 +38,9 @@ HEADERS += ktlayer.h \
            ktitemconverter.h \
            ktitemgroup.h \
            ktprojectmanagerparams.h \
-           ktabstractprojectmanagerhandler.h 
+           ktabstractprojectmanagerhandler.h \
+           ktrequestpackage.h \
+           ktrequestfactory.h 
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
@@ -70,7 +72,9 @@ SOURCES += ktlayer.cpp \
            ktitemconverter.cpp \
            ktitemgroup.cpp \
            ktprojectmanagerparams.cpp \
-           ktabstractprojectmanagerhandler.cpp 
+           ktabstractprojectmanagerhandler.cpp \
+           ktrequestpackage.cpp \
+           ktrequestfactory.cpp 
 KDEV_QTVER = 4
 STORE_DIR = ../../src/store
 LIBKTOON_DIR = ../../src/libktoon

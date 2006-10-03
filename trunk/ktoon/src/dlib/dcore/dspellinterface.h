@@ -36,6 +36,7 @@
 class D_CORE_EXPORT DSpellInterface
 {
 	public:
+		virtual ~DSpellInterface() {}
 		/**
 		 * @if english
 		 * This function must check if a word is right

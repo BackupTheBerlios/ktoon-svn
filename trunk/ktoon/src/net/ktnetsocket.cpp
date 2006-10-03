@@ -24,7 +24,11 @@
 
 #include <ddebug.h>
 
-KTNetSocket::KTNetSocket(QObject *parent) : QTcpSocket(parent)
+#include "ktrequestfactory.h"
+#include "ktprojectrequest.h"
+#include "ktnetprojectmanagerhandler.h"
+
+KTNetSocket::KTNetSocket(KTNetProjectManagerHandler *handler) : QTcpSocket(handler), m_handler(handler)
 {
 	connect(this, SIGNAL(readyRead ()), this, SLOT(readFromServer()) );
 }
@@ -64,6 +68,35 @@ void KTNetSocket::readFromServer()
 	if ( m_readed.isEmpty() )
 	{
 		return;
+	}
+	
+	m_readed.remove(m_readed.lastIndexOf("%%"), 2);
+	
+	QDomDocument doc;
+	
+	if ( doc.setContent(m_readed) )
+	{
+		QString root = doc.documentElement().tagName();
+		if ( root == "request" )
+		{
+			KTRequestFactory factory;
+			KTProjectRequest *request = factory.build( m_readed );
+			
+			if ( request )
+			{
+				qDebug("EMITIENDO REQUEST!!!!!!!");
+				m_handler->emitRequest( request );
+				delete request;
+			}
+			else
+			{
+				qDebug("FAILS BUILDING!");
+			}
+		}
+	}
+	else
+	{
+		qDebug("Isn't a document");
 	}
 	
 	

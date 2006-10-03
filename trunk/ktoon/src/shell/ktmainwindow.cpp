@@ -63,8 +63,6 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_projectMan
 	
 	DAudioPlayer::instance()->loadEngine("gstreamer"); // FIXME: ponerlo en la configuración
 	
-	m_undoCommands = new QUndoStack(this);
-
 	setObjectName("KTMainWindow_");
 	
 	m_osd = new DOsd( 0 );
@@ -247,8 +245,6 @@ bool KTMainWindow::closeProject()
 	m_timeLine->closeAllScenes();
 	m_scenes->closeAllScenes();
 	
-	m_undoCommands->clear();
-	
 	m_fileName = QString();
 	
 	return true;
@@ -362,7 +358,8 @@ void KTMainWindow::importPalettes()
 
 void KTMainWindow::ui4project(QWidget *widget)
 {
-	connect(widget, SIGNAL(requestTriggered(const KTProjectRequest *)), this, SLOT(createCommand(const KTProjectRequest *)));
+	// FIXME: Arreglar totalmente esto, las peticiones del widget deben ser tratadas por los manejadores y a partir de esto crear los comandos necesarios.
+	connect(widget, SIGNAL(requestTriggered(const KTProjectRequest *)), m_projectManager, SLOT(createCommand(const KTProjectRequest *)));
 	connect(m_projectManager, SIGNAL(commandExecuted(KTProjectRequest* )), widget, SLOT(handleProjectRequest(KTProjectRequest *)));
 }
 
@@ -479,32 +476,16 @@ void KTMainWindow::closeEvent( QCloseEvent *event )
 	DMainWindow::closeEvent(event);
 }
 
-void KTMainWindow::createCommand(const KTProjectRequest *event)
-{
-	D_FUNCINFO << event;
-	if ( !event->isValid() )
-	{
-		dDebug() << "Invalid event!";
-		return;
-	}
-	KTProjectCommand *command = m_projectManager->createCommand(event);
-	
-	if ( command )
-	{
-		m_undoCommands->push(command);
-	}
-}
-
 void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
 {
-	if ( !m_viewDoc ) return;
-	
-	KTPaintAreaCommand *command = m_viewDoc->createCommand(event);
-	
-	if ( command )
-	{
-		m_undoCommands->push(command);
-	}
+// 	if ( !m_viewDoc ) return;
+// 	
+// 	KTPaintAreaCommand *command = m_viewDoc->createCommand(event);
+// 	
+// 	if ( command )
+// 	{
+// 		m_undoCommands->push(command);
+// 	}
 }
 
 

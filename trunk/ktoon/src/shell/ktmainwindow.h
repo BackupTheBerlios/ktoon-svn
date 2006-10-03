@@ -158,7 +158,6 @@ class KTMainWindow : public DTabbedMainWindow
 		
 		void openRecentProject();
 		
-		void createCommand(const KTProjectRequest *event);
 		void createCommand(const KTPaintAreaEvent *event);
 		
 	private:
@@ -167,8 +166,6 @@ class KTMainWindow : public DTabbedMainWindow
 		QString m_fileName;
 		
 	private:
-		QUndoStack *m_undoCommands;
-		
 		KTViewDocument *m_viewDoc;
 		KTWorkspace *m_animationSpace;
 		KTStatusBar *m_statusBar;

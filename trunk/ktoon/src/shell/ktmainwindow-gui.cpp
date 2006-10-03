@@ -371,7 +371,7 @@ void KTMainWindow::setupToolBar()
 // 	DCommandHistory *history = new DCommandHistory(m_undoCommands, this);
 	
 	
-	QAction * undo = m_undoCommands->createUndoAction( this, tr("Undo"));
+	QAction * undo = m_projectManager->undoHistory()->createUndoAction( this, tr("Undo"));
 	
 // 	QAction *undo = history->undoAction();
 	undo->setShortcut(QKeySequence(QKeySequence::Undo));
@@ -379,7 +379,7 @@ void KTMainWindow::setupToolBar()
 	toolbar->addAction(undo);
 	
 	
-	QAction *redo =  m_undoCommands->createRedoAction ( this );
+	QAction *redo =  m_projectManager->undoHistory()->createRedoAction ( this );
 // 	QAction *redo = history->redoAction();
 	redo->setShortcut(QKeySequence(QKeySequence::Redo));
 	toolbar->addAction(redo);

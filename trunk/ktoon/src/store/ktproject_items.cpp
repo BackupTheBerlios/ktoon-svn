@@ -59,7 +59,19 @@ QGraphicsItem *KTProject::createItem(int scenePosition, int layerPosition, int f
 				
 				return item;
 			}
+			else
+			{
+				dError() << tr("Frame doesn't exists!");
+			}
 		}
+		else
+		{
+			dError() << tr("Layer doesn't exists!");
+		}
+	}
+	else
+	{
+		dError() << tr("Scene doesn't exists!");
 	}
 	
 	return 0;

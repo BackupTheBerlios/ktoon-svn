@@ -61,7 +61,6 @@ void KTRequestPackage::itemRequest(KTItemRequest *itemRequest)
 	QDomElement item = createElement("item");
 	item.setAttribute("index", itemRequest->itemIndex() );
 	
-	
 	frame.appendChild( item );
 	
 	appendData( item, itemRequest->data() );
@@ -104,6 +103,7 @@ void KTRequestPackage::layerRequest(KTLayerRequest *layerRequest)
 	
 	appendData( layer, layerRequest->data() );
 	
+	
 	scene.appendChild( layer );
 	
 	documentElement().appendChild( scene );
@@ -113,7 +113,6 @@ void KTRequestPackage::sceneRequest(KTSceneRequest *sceneRequest)
 {
 	QDomElement scene = createElement("scene");
 	scene.setAttribute("index", sceneRequest->sceneIndex() );
-	
 	
 	appendData( scene, sceneRequest->data() );
 	

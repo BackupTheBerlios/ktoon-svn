@@ -20,6 +20,8 @@
 
 #include "ktprojectmanager.h"
 
+#include <QUndoStack>
+
 #include "ktproject.h"
 #include "ktprojectrequest.h"
 #include "ktprojectcommand.h"
@@ -32,7 +34,10 @@
 
 KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(false), m_handler(0)
 {
+	DINIT;
 	m_project = new KTProject(this);
+	
+	m_undoStack = new QUndoStack(this);
 	
 	connect(m_project,SIGNAL(commandExecuted( KTProjectRequest* )), this, SLOT(handleProjectRequest( KTProjectRequest *)));
 }
@@ -40,13 +45,14 @@ KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(
 
 KTProjectManager::~KTProjectManager()
 {
+	DEND;
 }
 
 void KTProjectManager::setHandler(KTAbstractProjectHandler *handler)
 {
 	if ( m_handler )
 	{
-		disconnect(m_handler, SIGNAL(sendRequestToClients(KTProjectRequest *)), this, SIGNAL(commandExecuted(KTProjectRequest *)));
+		disconnect(m_handler, SIGNAL(sendRequestToClients(KTProjectRequest *)), this, SIGNAL(commandExecuted( KTProjectRequest *)));
 		
 		delete m_handler;
 		m_handler = 0;
@@ -59,8 +65,16 @@ void KTProjectManager::setHandler(KTAbstractProjectHandler *handler)
 	
 }
 
+void KTProjectManager::executeRequest(KTProjectRequest *request)
+{
+	KTProjectCommand command(m_project, request);
+	command.redo();
+}
+
 void KTProjectManager::setupNewProject(KTProjectManagerParams *params)
 {
+	D_FUNCINFO;
+	
 	if ( !m_handler )
 	{
 		qDebug("ERROR: HANDLER!");
@@ -81,6 +95,7 @@ void KTProjectManager::setupNewProject(KTProjectManagerParams *params)
 	
 // 	// Add by default a scene, layer, frame
 	
+	// Hacer mediante comandos!
 	m_project->createScene(0);
 	m_project->createLayer(0,0);
 	m_project->createFrame(0,0,0);
@@ -103,6 +118,8 @@ void KTProjectManager::closeProject()
 	}
 	
 	m_isOpen = false;
+	
+	m_undoStack->clear();
 }
 
 /**
@@ -142,18 +159,20 @@ void KTProjectManager::handleProjectRequest(KTProjectRequest *request)
  * @param event 
  * @return 
  */
-KTProjectCommand *KTProjectManager::createCommand(const KTProjectRequest *event)
+void KTProjectManager::createCommand(const KTProjectRequest *request)
 {
 	D_FUNCINFO;
 	
-	if ( event->isValid() )
+	if ( request->isValid() )
 	{
-		KTProjectCommand *command = new KTProjectCommand(m_project, event);
+		KTProjectCommand *command = m_handler->createCommand(m_project, request);
 		
-		return command;
+		if ( command )
+		{
+			qDebug("ADDING");
+			m_undoStack->push(command);
+		}
 	}
-	
-	return 0;
 }
 
 
@@ -163,5 +182,9 @@ KTProject *KTProjectManager::project() const
 }
 
 
+QUndoStack *KTProjectManager::undoHistory() const
+{
+	return m_undoStack;
+}
 
 

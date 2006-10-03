@@ -29,6 +29,7 @@ class KTProjectRequest;
 class KTProjectCommand;
 class KTProjectManagerParams;
 class KTAbstractProjectHandler;
+class QUndoStack;
 
 /**
  * Clase para tratar eventos del proyecto
@@ -41,8 +42,6 @@ class STORE_EXPORT KTProjectManager : public QObject
 		KTProjectManager(QObject *parent = 0);
 		virtual ~KTProjectManager();
 		
-		virtual KTProjectCommand *createCommand(const KTProjectRequest *event);
-		
 		virtual void setupNewProject(KTProjectManagerParams *params );
 		virtual void closeProject();
 		
@@ -52,9 +51,17 @@ class STORE_EXPORT KTProjectManager : public QObject
 		
 		void setHandler(KTAbstractProjectHandler *handler);
 		
+		QUndoStack *undoHistory() const;
+		
+		
+	public slots:
+		virtual void createCommand(const KTProjectRequest *event);
 		
 	protected slots:
 		virtual void handleProjectRequest(KTProjectRequest *event);
+		
+	private slots:
+		void executeRequest(KTProjectRequest *request);
 		
 	signals:
 		void commandExecuted(KTProjectRequest *event);
@@ -64,6 +71,8 @@ class STORE_EXPORT KTProjectManager : public QObject
 		bool m_isOpen;
 		
 		KTAbstractProjectHandler *m_handler;
+		
+		QUndoStack *m_undoStack;
 };
 
 #endif

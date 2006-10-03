@@ -40,6 +40,11 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		
 		virtual void handleProjectRequest(KTProjectRequest* event);
 		
+		void emitRequest(KTProjectRequest *request);
+		
+	public slots:
+		virtual KTProjectCommand *createCommand(KTProject *project, const KTProjectRequest *request);
+		
 	private slots:
 		void sendHello();
 		

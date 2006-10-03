@@ -18,25 +18,55 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTLOCALPROJECTMANAGERHANDLER_H
-#define KTLOCALPROJECTMANAGERHANDLER_H
+#ifndef KTREQUESTFACTORY_H
+#define KTREQUESTFACTORY_H
 
-#include <ktabstractprojectmanagerhandler.h>
+#include <QXmlDefaultHandler>
+#include <QString>
+#include <QVariant>
+
+class KTProjectRequest;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado <krawek@toonka.com>
 */
-class KTLocalProjectManagerHandler : public KTAbstractProjectHandler
+class KTRequestFactory : public QXmlDefaultHandler
 {
-	Q_OBJECT;
 	public:
-		KTLocalProjectManagerHandler(QObject *parent = 0);
-		~KTLocalProjectManagerHandler();
+		KTRequestFactory();
+		~KTRequestFactory();
 		
-		void handleProjectRequest(KTProjectRequest *request);
+		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
 		
-	public slots:
-		virtual KTProjectCommand *createCommand(KTProject *project, const KTProjectRequest *request);
+		bool endElement( const QString& ns, const QString& localname, const QString& qname);
+		
+		bool characters ( const QString & ch );
+		
+		bool error ( const QXmlParseException & exception );
+		bool fatalError ( const QXmlParseException & exception );
+		
+		KTProjectRequest *build(const QString &doc);
+		
+	private:
+		KTProjectRequest *createRequest();
+		
+	private:
+		QString m_qname;
+		
+		bool m_isParsing;
+		bool m_readCharacters;
+		
+		struct RequestData
+		{
+			QVariant data;
+			QString name;
+			int id;
+			int action;
+			int scene;
+			int layer;
+			int frame;
+			int item;
+		} m_requestData;
 };
 
 #endif

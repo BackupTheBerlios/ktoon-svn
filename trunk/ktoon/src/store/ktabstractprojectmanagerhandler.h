@@ -27,6 +27,8 @@
 class KTProjectRequest;
 class KTProjectRequest;
 class KTProjectManagerParams;
+class KTProjectCommand;
+class KTProject;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
@@ -43,12 +45,14 @@ class STORE_EXPORT KTAbstractProjectHandler : public QObject
 		virtual bool closeProject();
 		virtual void handleProjectRequest(KTProjectRequest *request) = 0;
 		
+	public slots:
+		virtual KTProjectCommand *createCommand(KTProject *project, const KTProjectRequest *request) = 0;
+		
 	signals:
 		void sendRequestToClients(KTProjectRequest *event);
 
 };
 
-// 46.500 - sin permancia 120.000 inicialmente.
 
 #endif
 

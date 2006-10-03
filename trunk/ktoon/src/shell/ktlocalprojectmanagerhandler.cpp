@@ -20,6 +20,7 @@
 
 #include "ktlocalprojectmanagerhandler.h"
 #include "ktprojectrequest.h"
+#include "ktprojectcommand.h"
 
 #include <ddebug.h>
 
@@ -39,5 +40,13 @@ void KTLocalProjectManagerHandler::handleProjectRequest(KTProjectRequest *reques
 	D_FUNCINFO;
 	if ( request->isValid() )
 		emit sendRequestToClients( request);
+}
+
+KTProjectCommand *KTLocalProjectManagerHandler::createCommand(KTProject *project, const KTProjectRequest *request)
+{
+	KTProjectCommand *command = new KTProjectCommand(project, request);
+	
+	
+	return command;
 }
 

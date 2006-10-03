@@ -24,6 +24,8 @@
 #include <QTcpSocket>
 #include <QDomDocument>
 
+class KTNetProjectManagerHandler;
+
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
@@ -32,7 +34,7 @@ class KTNetSocket : public QTcpSocket
 	Q_OBJECT;
 	
 	public:
-		KTNetSocket(QObject *parent = 0);
+		KTNetSocket(KTNetProjectManagerHandler *handler);
 		~KTNetSocket();
 		
 		void sendToServer(const QString &str);
@@ -43,6 +45,8 @@ class KTNetSocket : public QTcpSocket
 		
 	private:
 		QString m_readed;
+		
+		KTNetProjectManagerHandler *m_handler;
 		
 };
 
