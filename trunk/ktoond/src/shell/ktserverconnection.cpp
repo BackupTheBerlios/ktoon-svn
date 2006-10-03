@@ -24,10 +24,14 @@
 
 #include <ddebug.h>
 
-#include "srequestfactory.h"
-#include <ktprojectrequest.h>
 
-KTServerConnection::KTServerConnection(int socketDescriptor, QObject *parent) : QThread(parent)
+#include <ktprojectrequest.h>
+#include <ktrequestpackage.h>
+
+#include "ktrequestfactory.h"
+#include "ktserver.h"
+
+KTServerConnection::KTServerConnection(int socketDescriptor, KTServer *server) : QThread(server), m_server(server)
 {
 	m_client = new KTServerClient(this);
 	m_client->setSocketDescriptor(socketDescriptor);
@@ -67,12 +71,12 @@ void KTServerConnection::run()
 				
 				if ( root == "request" )
 				{
-					SRequestFactory factory;
+					KTRequestFactory factory;
 					KTProjectRequest *request = factory.build( readed );
 					
 					if ( request )
 					{
-						
+						m_server->sendToAll( KTRequestPackage(request) );
 						delete request;
 					}
 				}
@@ -96,7 +100,7 @@ void KTServerConnection::sendToClient(const QString &msg)
 	QString toSend(msg);
 	toSend.remove('\n');
 	
-	out << toSend+"%%" << endl;
+	out << toSend << "%%" << endl;
 	m_client->flush();
 }
 

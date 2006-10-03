@@ -27,6 +27,8 @@
 
 #include "ktserverclient.h"
 
+class KTServer;
+
 /**
  * Esta clase representa cada conexion de un cliente al servidor, es un hilo.
  * @author David Cuadrado \<krawek@gmail.com\>
@@ -36,7 +38,7 @@ class KTServerConnection : public QThread
 	Q_OBJECT;
 
 	public:
-		KTServerConnection(int socketDescriptor, QObject *parent);
+		KTServerConnection(int socketDescriptor, KTServer *server);
 		~KTServerConnection();
 		void run();
 		
@@ -53,6 +55,7 @@ class KTServerConnection : public QThread
 
 	private:
 		KTServerClient *m_client;
+		KTServer *m_server;
 		bool m_isLogged;
 };
 

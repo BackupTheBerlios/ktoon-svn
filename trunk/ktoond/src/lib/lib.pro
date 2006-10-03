@@ -3,10 +3,8 @@
 # Subdir relative project main directory: ./src/lib
 # Target is a library:  ktserver
 
-HEADERS += sproject.h \
-           srequestfactory.h 
-SOURCES += sproject.cpp \
-           srequestfactory.cpp 
+HEADERS += sproject.h 
+SOURCES += sproject.cpp 
 TARGET = ktserver
 CONFIG += release \
 warn_on \
