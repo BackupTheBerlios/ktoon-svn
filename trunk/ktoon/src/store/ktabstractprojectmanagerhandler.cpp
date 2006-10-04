@@ -43,3 +43,9 @@ bool KTAbstractProjectHandler::closeProject()
 	return true;
 }
 
+bool KTAbstractProjectHandler::commandExecuted(KTProjectRequest *request, bool isRedo)
+{
+	return true;
+}
+
+

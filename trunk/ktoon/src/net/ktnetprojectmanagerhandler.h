@@ -38,12 +38,12 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		virtual bool setupNewProject(KTProjectManagerParams *params);
 		virtual bool closeProject();
 		
-		virtual void handleProjectRequest(KTProjectRequest* event);
+		virtual void handleProjectRequest(const KTProjectRequest* event);
+		bool commandExecuted(KTProjectRequest *request, bool isRedo);
 		
 		void emitRequest(KTProjectRequest *request);
 		
-	public slots:
-		virtual KTProjectCommand *createCommand(KTProject *project, const KTProjectRequest *request);
+		
 		
 	private slots:
 		void sendHello();

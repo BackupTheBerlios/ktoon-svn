@@ -34,6 +34,7 @@ class KTLayerRequest;
 class KTSceneRequest;
 class KTItemRequest;
 class KTPaintAreaEvent;
+class KTCommandExecutor;
 
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
@@ -41,7 +42,7 @@ class KTPaintAreaEvent;
 class STORE_EXPORT KTProjectCommand : public QUndoCommand
 {
 	public:
-		KTProjectCommand(KTProject *project, const KTProjectRequest *event);
+		KTProjectCommand(KTCommandExecutor *executor, const KTProjectRequest *event);
 		~KTProjectCommand();
 		
 		virtual void redo();
@@ -57,7 +58,7 @@ class STORE_EXPORT KTProjectCommand : public QUndoCommand
 		QString actionString(int action);
 		
 	private:
-		KTProject *m_project;
+		KTCommandExecutor *m_executor;
 		KTProjectRequest *m_event;
 		
 		QVariant m_data;

@@ -24,8 +24,7 @@
 
 #include <ddebug.h>
 
-KTLocalProjectManagerHandler::KTLocalProjectManagerHandler(QObject *parent)
- : KTAbstractProjectHandler(parent)
+KTLocalProjectManagerHandler::KTLocalProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent)
 {
 }
 
@@ -35,18 +34,20 @@ KTLocalProjectManagerHandler::~KTLocalProjectManagerHandler()
 }
 
 
-void KTLocalProjectManagerHandler::handleProjectRequest(KTProjectRequest *request)
+void KTLocalProjectManagerHandler::handleProjectRequest(const KTProjectRequest *request)
 {
 	D_FUNCINFO;
 	if ( request->isValid() )
-		emit sendRequestToClients( request);
+	{
+		qDebug("EMITIENDO");
+		emit sendCommand( request, true );
+	}
+	else
+	{
+		qDebug("invalid");
+	}
 }
 
-KTProjectCommand *KTLocalProjectManagerHandler::createCommand(KTProject *project, const KTProjectRequest *request)
-{
-	KTProjectCommand *command = new KTProjectCommand(project, request);
-	
-	
-	return command;
-}
+
+
 

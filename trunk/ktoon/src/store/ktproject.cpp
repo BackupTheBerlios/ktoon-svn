@@ -78,8 +78,9 @@ QString KTProject::projectName() const
 }
 
 
-KTScene *KTProject::createScene(int position, const QString &xml)
+KTScene *KTProject::createScene(int position )
 {
+	dDebug("project") << "Creando escena en " << position;
 	if ( position < 0 || position > m_scenes.count() )
 	{
 		return 0;
@@ -89,65 +90,20 @@ KTScene *KTProject::createScene(int position, const QString &xml)
 	m_scenes.insert(position, scene);
 	m_sceneCounter++;
 	
-	KTSceneRequest event(KTProjectRequest::Add, position);
-	
-	
-	QDomDocument document;
-	if ( document.setContent(xml) )
-	{
-		QDomElement root = document.documentElement();
-	
-		scene->setSceneName( root.attribute( "name", scene->sceneName()) );
-		
-		
-		event.setPartName(scene->sceneName());
-		emit commandExecuted(&event);
-		
-		QDomNode n = root.firstChild();
-	
-		while( !n.isNull() )
-		{
-			QDomElement e = n.toElement();
-		
-			if(!e.isNull())
-			{
-				if ( e.tagName() == "layer" )
-				{
-					int layerPos = scene->layers().count();
-					QDomDocument newDoc;
-					newDoc.appendChild(newDoc.importNode(n, true ));
-					
-					createLayer(position, layerPos, newDoc.toString(0) );
-				}
-			}
-		
-			n = n.nextSibling();
-		}
-	}
-	else
-	{
-		scene->setSceneName(tr("Scene %1").arg(m_sceneCounter));
-		
-		event.setPartName(scene->sceneName());
-		emit commandExecuted(&event);
-	}
-	
-	
+	scene->setSceneName(tr("Scene %1").arg(m_sceneCounter));
 	
 	return scene;
 }
 
-QString KTProject::removeScene(int position)
+
+
+bool KTProject::removeScene(int position)
 {
 	D_FUNCINFO;
 	KTScene *toRemove = scene(position);
 	
 	if ( toRemove )
 	{
-		QDomDocument document;
-		
-		document.appendChild(toRemove->toXml(document));
-		
 		m_scenes.removeAt(position);
 		
 		foreach(QGraphicsView *view, toRemove->views() )
@@ -158,17 +114,31 @@ QString KTProject::removeScene(int position)
 		delete toRemove;
 		toRemove = 0;
 		
-		KTSceneRequest event(KTProjectRequest::Remove, position);
-		
 		m_sceneCounter--;
 		
-		emit commandExecuted( &event );
-		
-		return document.toString( 0 );
+		return true;
 	}
 	
-	return QString();
+	return false;
 }
+
+
+bool KTProject::moveScene(int position, int newPosition)
+{
+	if ( position < 0 || position >= m_scenes.count() || newPosition < 0 || newPosition >= m_scenes.count() )
+	{
+		dWarning() << "Failed moving scene!";
+		return false;
+	}
+	
+	KTScene *scene = m_scenes.takeAt(position);
+	
+	m_scenes.insert(newPosition, scene);
+	
+	return true;
+}
+
+
 
 KTScene *KTProject::scene(int position)
 {
@@ -230,96 +200,9 @@ QDomElement KTProject::toXml(QDomDocument &doc)
 	return QDomElement();
 }
 
-void KTProject::moveScene(int position, int newPosition)
+Scenes KTProject::scenes() const
 {
-// 	dDebug() << "Move scene from " << position << " to " << newPosition;
-	
-	if ( position < 0 || position >= m_scenes.count() || newPosition < 0 || newPosition >= m_scenes.count() )
-	{
-		dWarning() << "Failed moving scene!";
-		return;
-	}
-	
-	KTScene *scene = m_scenes.takeAt(position);
-	
-	m_scenes.insert(newPosition, scene);
-	
-	
-	KTSceneRequest event(KTProjectRequest::Move, position, newPosition);
-	emit commandExecuted( &event);
-	
+	return m_scenes;
 }
 
-
-
-void KTProject::lockScene(int position, bool lock)
-{
-	dWarning() << "Lock scene: " << lock;
-	KTScene *scene = this->scene(position);
-	
-	if ( !scene)
-	{
-		return;
-	}
-	
-	scene->setLocked(lock);
-	
-	KTSceneRequest event(KTProjectRequest::Lock, position, lock);
-	emit commandExecuted( &event);
-	
-	
-}
-
-
-QString KTProject::renameScene(int position, const QString &newName)
-{
-	QString oldName;
-	KTScene *scene = this->scene(position);
-	
-	if ( !scene)
-	{
-		return oldName;
-	}
-	
-	KTSceneRequest event(KTProjectRequest::Rename, position, newName);
-	event.setPartName( scene->sceneName() );
-	
-	oldName = scene->sceneName();
-	
-	scene->setSceneName( newName);
-	
-	emit commandExecuted( &event );
-	
-	
-	return oldName;
-}
-
-
-void KTProject::selectScene(int position, bool prioritary)
-{
-	KTSceneRequest event(KTProjectRequest::Select, position, prioritary);
-	emit commandExecuted( &event );
-}
-
-
-void KTProject::setSceneVisibility(int position, bool view)
-{
-	KTScene *scene = this->scene(position);
-	
-	if ( !scene)
-	{
-		return;
-	}
-	
-	scene->setVisible(view);
-	
-	KTSceneRequest event(KTProjectRequest::View, position, view);
-	emit commandExecuted( &event );
-}
-
-
-void KTProject::reemitEvent(KTProjectRequest *event)
-{
-	emit commandExecuted( event );
-}
 

@@ -61,46 +61,15 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		KTScene *scene(int position);
 		int indexOf(KTScene *scene) const;
 		
-		KTScene *createScene(int position, const QString &xml = QString());
-		KTLayer *createLayer(int scene, int position, const QString &xml = QString());
-		KTFrame *createFrame(int scene, int layer, int position, const QString &xml = QString());
-		QGraphicsItem *createItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml);
-		QString transformItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml);
-		QString convertItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml);
-		QString setPathItem( int scenePosition, int layerPosition, int framePosition, int position, const QString &path );
+		Scenes scenes() const;
 		
-		
-		QString removeScene(int position);
-		QString removeLayer(int scene, int position);
-		QString removeFrame(int scene, int layer, int position);
-		void removeItem(int scenePosition, int layerPosition, int framePosition, int position);
-		QStringList removeItems(int scenePosition, int layerPosition, int framePosition, int position, const QString &strList );
-		QStringList groupItems(int scenePosition, int layerPosition, int framePosition, int position, const QString &strList );
-		
-		void moveScene(int position, int newPosition);
-		void moveLayer(int scene, int position, int newPosition);
-		void moveFrame(int scene, int layer, int position, int newPosition);
-		
-		void lockScene(int position, bool lock);
-		void lockLayer(int scene, int position, bool lock);
-		void lockFrame(int scene, int layer, int position, bool lock);
-		
-		QString renameScene(int position, const QString &newName);
-		QString renameLayer(int scene, int position, const QString &newName);
-		QString renameFrame(int scene, int layer, int position, const QString &newName);
-		
-		void selectScene(int position, bool prioritary);
-		void selectLayer(int scene, int position, bool prioritary);
-		void selectFrame(int scene, int layer, int position, bool prioritary);
-		
-		void setFrameVisibility(int scenePos, int layerPos, int position, bool view);
-		void setLayerVisibility(int scenePos, int position, bool view);
-		void setSceneVisibility(int position, bool view);
-		
+		KTScene *createScene(int position);
+		bool removeScene(int position);
+		bool moveScene(int position, int newPosition);
 		
 		void clear();
 		
-		void reemitEvent(KTProjectRequest *event);
+		
 		
 	protected:
 		virtual void fromXml(const QString &xml );

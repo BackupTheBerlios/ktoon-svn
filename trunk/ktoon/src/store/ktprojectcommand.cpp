@@ -22,7 +22,8 @@
 
 #include <ddebug.h>
 
-#include "ktproject.h"
+#include "ktcommandexecutor.h"
+
 #include "ktprojectrequest.h"
 #include "ktframerequest.h"
 #include "ktitemrequest.h"
@@ -30,7 +31,7 @@
 
 #include "ktsvg2qt.h"
 
-KTProjectCommand::KTProjectCommand(KTProject *project, const KTProjectRequest *event) : QUndoCommand(), m_project(project)
+KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, const KTProjectRequest *event) : QUndoCommand(), m_executor(executor)
 {
 	m_event = event->clone();
 	
@@ -129,6 +130,9 @@ void KTProjectCommand::redo()
 {
 	D_FUNCINFO << m_data.toString();
 	
+	
+	m_executor->setIsRedo( true );
+	
 	switch(m_event->id() )
 	{
 		case KTProjectRequest::Project:
@@ -169,6 +173,9 @@ void KTProjectCommand::redo()
 void KTProjectCommand::undo()
 {
 	D_FUNCINFO << m_data.toString();
+	
+	m_executor->setIsRedo( false );
+	
 	switch(m_event->id() )
 	{
 		case KTProjectRequest::Project:
@@ -212,37 +219,37 @@ void KTProjectCommand::frameCommand(const KTFrameRequest *event, bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_project->createFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), m_data.toString() );
+				m_executor->createFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), m_data.toString() );
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_data = m_project->removeFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex() );
+				m_data = m_executor->removeFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex() );
 			}
 			break;
 			case KTProjectRequest::Move:
 			{
-				m_project->moveFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->data().toInt() );
+				m_executor->moveFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->data().toInt() );
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				m_project->lockFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->data().toBool() );
+				m_executor->lockFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->data().toBool() );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
-				m_event->setPartName(m_project->renameFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->data().toString() ));
+				m_event->setPartName(m_executor->renameFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->data().toString() ));
 			}
 			break;
 			case KTProjectRequest::Select:
 			{
-				m_project->selectFrame(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->data().toBool() );
+				m_executor->selectFrame(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->data().toBool() );
 			}
 			break;
 			case KTProjectRequest::View:
 			{
-				m_project->setFrameVisibility(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->data().toBool());
+				m_executor->setFrameVisibility(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->data().toBool());
 			}
 			break;
 			default: break;
@@ -254,32 +261,32 @@ void KTProjectCommand::frameCommand(const KTFrameRequest *event, bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_data = m_project->removeFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex());
+				m_data = m_executor->removeFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex());
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_project->createFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), m_data.toString());
+				m_executor->createFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), m_data.toString());
 			}
 			break;
 			case KTProjectRequest::Move:
 			{
-				m_project->moveFrame(event->sceneIndex(), event->layerIndex(), event->data().toInt(), event->frameIndex() );
+				m_executor->moveFrame(event->sceneIndex(), event->layerIndex(), event->data().toInt(), event->frameIndex() );
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				m_project->lockFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), !event->data().toBool() );
+				m_executor->lockFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), !event->data().toBool() );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
-				m_project->renameFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->partName() );
+				m_executor->renameFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->partName() );
 			}
 			break;
 			case KTProjectRequest::View:
 			{
-				m_project->setFrameVisibility(event->sceneIndex(), event->layerIndex(), event->frameIndex(), !event->data().toBool());
+				m_executor->setFrameVisibility(event->sceneIndex(), event->layerIndex(), event->frameIndex(), !event->data().toBool());
 			}
 			break;
 			default: break;
@@ -295,37 +302,37 @@ void KTProjectCommand::layerCommand(const KTLayerRequest *event, bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_project->createLayer( event->sceneIndex(), event->layerIndex(), m_data.toString());
+				m_executor->createLayer( event->sceneIndex(), event->layerIndex(), m_data.toString());
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_data = m_project->removeLayer( event->sceneIndex(), event->layerIndex());
+				m_data = m_executor->removeLayer( event->sceneIndex(), event->layerIndex());
 			}
 			break;
 			case KTProjectRequest::Move:
 			{
-				m_project->moveLayer( event->sceneIndex(), event->layerIndex(), event->data().toInt() );
+				m_executor->moveLayer( event->sceneIndex(), event->layerIndex(), event->data().toInt() );
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				m_project->lockLayer( event->sceneIndex(), event->layerIndex(), event->data().toBool() );
+				m_executor->lockLayer( event->sceneIndex(), event->layerIndex(), event->data().toBool() );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
-				m_event->setPartName(m_project->renameLayer( event->sceneIndex(), event->layerIndex(), event->data().toString()));
+				m_event->setPartName(m_executor->renameLayer( event->sceneIndex(), event->layerIndex(), event->data().toString()));
 			}
 			break;
 			case KTProjectRequest::Select:
 			{
-				m_project->selectLayer(event->sceneIndex(), event->layerIndex(), event->data().toBool() );
+				m_executor->selectLayer(event->sceneIndex(), event->layerIndex(), event->data().toBool() );
 			}
 			break;
 			case KTProjectRequest::View:
 			{
-				m_project->setLayerVisibility(event->sceneIndex(), event->layerIndex(), event->data().toBool());
+				m_executor->setLayerVisibility(event->sceneIndex(), event->layerIndex(), event->data().toBool());
 			}
 			break;
 			default: break;
@@ -337,32 +344,32 @@ void KTProjectCommand::layerCommand(const KTLayerRequest *event, bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_data = m_project->removeLayer( event->sceneIndex(), event->layerIndex());
+				m_data = m_executor->removeLayer( event->sceneIndex(), event->layerIndex());
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_project->createLayer( event->sceneIndex(), event->layerIndex(), m_data.toString());
+				m_executor->createLayer( event->sceneIndex(), event->layerIndex(), m_data.toString());
 			}
 			break;
 			case KTProjectRequest::Move:
 			{
-				m_project->moveLayer( event->sceneIndex(), event->data().toInt(),event->layerIndex()  );
+				m_executor->moveLayer( event->sceneIndex(), event->data().toInt(),event->layerIndex()  );
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				m_project->lockLayer( event->sceneIndex(), event->layerIndex(), !event->data().toBool() );
+				m_executor->lockLayer( event->sceneIndex(), event->layerIndex(), !event->data().toBool() );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
-				m_project->renameLayer( event->sceneIndex(), event->layerIndex(), event->partName() );
+				m_executor->renameLayer( event->sceneIndex(), event->layerIndex(), event->partName() );
 			}
 			break;
 			case KTProjectRequest::View:
 			{
-				m_project->setLayerVisibility(event->sceneIndex(), event->layerIndex(), !event->data().toBool());
+				m_executor->setLayerVisibility(event->sceneIndex(), event->layerIndex(), !event->data().toBool());
 			}
 			break;
 			default: break;
@@ -378,37 +385,37 @@ void KTProjectCommand::sceneCommand(const KTSceneRequest *event, bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_project->createScene( event->sceneIndex(), m_data.toString() );
+				m_executor->createScene( event->sceneIndex(), m_data.toString() );
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_data = m_project->removeScene( event->sceneIndex() );
+				m_data = m_executor->removeScene( event->sceneIndex() );
 			}
 			break;
 			case KTProjectRequest::Move:
 			{
-				m_project->moveScene( event->sceneIndex(), event->data().toInt() );
+				m_executor->moveScene( event->sceneIndex(), event->data().toInt() );
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				m_project->lockScene( event->sceneIndex(), event->data().toBool() );
+				m_executor->lockScene( event->sceneIndex(), event->data().toBool() );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
-				m_event->setPartName(m_project->renameScene( event->sceneIndex(), event->data().toString()));
+				m_event->setPartName(m_executor->renameScene( event->sceneIndex(), event->data().toString()));
 			}
 			break;
 			case KTProjectRequest::Select:
 			{
-				m_project->selectScene(event->sceneIndex(), event->data().toBool() );
+				m_executor->selectScene(event->sceneIndex(), event->data().toBool() );
 			}
 			break;
 			case KTProjectRequest::View:
 			{
-				m_project->setSceneVisibility(event->sceneIndex(),  event->data().toBool());
+				m_executor->setSceneVisibility(event->sceneIndex(),  event->data().toBool());
 			}
 			break;
 			default: break;
@@ -420,32 +427,32 @@ void KTProjectCommand::sceneCommand(const KTSceneRequest *event, bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_data = m_project->removeScene( event->sceneIndex() );
+				m_data = m_executor->removeScene( event->sceneIndex() );
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_project->createScene( event->sceneIndex(), m_data.toString() );
+				m_executor->createScene( event->sceneIndex(), m_data.toString() );
 			}
 			break;
 			case KTProjectRequest::Move:
 			{
-				m_project->moveScene( event->data().toInt(), event->sceneIndex() );
+				m_executor->moveScene( event->data().toInt(), event->sceneIndex() );
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				m_project->lockScene( event->sceneIndex(), !event->data().toBool() );
+				m_executor->lockScene( event->sceneIndex(), !event->data().toBool() );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
-				m_project->renameScene( event->sceneIndex(), event->partName() );
+				m_executor->renameScene( event->sceneIndex(), event->partName() );
 			}
 			break;
 			case KTProjectRequest::View:
 			{
-				m_project->setSceneVisibility(event->sceneIndex(),  !event->data().toBool());
+				m_executor->setSceneVisibility(event->sceneIndex(),  !event->data().toBool());
 			}
 			break;
 			default: break;
@@ -463,12 +470,12 @@ void KTProjectCommand::itemCommand(const KTItemRequest *event, bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_project->createItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
+				m_executor->createItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_data = m_project->removeItems( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
+				m_data = m_executor->removeItems( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
 			}
 			break;
 			case KTProjectRequest::Move:
@@ -486,12 +493,12 @@ void KTProjectCommand::itemCommand(const KTItemRequest *event, bool redo)
 			break;
 			case KTProjectRequest::Convert:
 			{
-				m_data = m_project->convertItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
+				m_data = m_executor->convertItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
 			}
 			break;
 			case KTProjectRequest::EditNodes:
 			{
-				m_data =  m_project->setPathItem( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString() );
+				m_data =  m_executor->setPathItem( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString() );
 			}
 			break;
 			case KTProjectRequest::Select:
@@ -504,12 +511,12 @@ void KTProjectCommand::itemCommand(const KTItemRequest *event, bool redo)
 			break;
 			case KTProjectRequest::Transform:
 			{
-				m_data = m_project->transformItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
+				m_data = m_executor->transformItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
 			}
 			break;
 			case KTProjectRequest::Group:
 			{
-				m_data = m_project->groupItems(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
+				m_data = m_executor->groupItems(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
 			}
 			break;
 			default: break;
@@ -521,7 +528,7 @@ void KTProjectCommand::itemCommand(const KTItemRequest *event, bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_project->removeItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex());
+				m_executor->removeItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex());
 			}
 			break;
 			case KTProjectRequest::Remove:
@@ -533,7 +540,7 @@ void KTProjectCommand::itemCommand(const KTItemRequest *event, bool redo)
 				
 				foreach(QString xml, m_data.toStringList())
 				{
-					m_project->createItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), positions[count], xml);
+					m_executor->createItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), positions[count], xml);
 					count++;
 				}
 			}
@@ -552,12 +559,12 @@ void KTProjectCommand::itemCommand(const KTItemRequest *event, bool redo)
 			break;
 			case KTProjectRequest::Convert:
 			{
-				m_project->convertItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), m_data.toString());
+				m_executor->convertItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), m_data.toString());
 			}
 			break;
 			case KTProjectRequest::EditNodes:
 			{
-				m_data =  m_project->setPathItem( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), m_data.toString() );
+				m_data =  m_executor->setPathItem( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), m_data.toString() );
 			}
 			case KTProjectRequest::View:
 			{
@@ -565,7 +572,7 @@ void KTProjectCommand::itemCommand(const KTItemRequest *event, bool redo)
 			break;
 			case KTProjectRequest::Transform:
 			{
-				m_project->transformItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), m_data.toString());
+				m_executor->transformItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), m_data.toString());
 			}
 			break;
 			default: break;
@@ -578,11 +585,11 @@ void KTProjectCommand::paintAreaCommand(const KTPaintAreaEvent *event, bool redo
 	Q_UNUSED(event);
 	if ( redo )
 	{
-		m_project->reemitEvent( m_event );
+		m_executor->reemitEvent( m_event );
 	}
 	else
 	{
-		m_project->reemitEvent( m_event );
+		m_executor->reemitEvent( m_event );
 	}
 }
 

@@ -2,31 +2,32 @@
  *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
+ *   m_project program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
+ *   m_project program is distributed in the hope that it will be useful,       *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
+ *   along with m_project program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktproject.h"
+#include "ktcommandexecutor.h"
+
 #include "ktscene.h"
 
 #include "ktlayerrequest.h"
 #include <dcore/ddebug.h>
 
-KTLayer *KTProject::createLayer(int scenePosition, int position, const QString &xml)
+QString KTCommandExecutor::createLayer(int scenePosition, int position, const QString &xml)
 {
-	KTScene *scene = this->scene(scenePosition);
+	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( scene )
 	{
@@ -45,7 +46,7 @@ KTLayer *KTProject::createLayer(int scenePosition, int position, const QString &
 			QDomNode n = root.firstChild();
 			
 			event.setPartName(layer->layerName());
-			emit commandExecuted(&event);
+			emit commandExecuted(&event, m_isRedo);
 	
 			while( !n.isNull() )
 			{
@@ -68,12 +69,12 @@ KTLayer *KTProject::createLayer(int scenePosition, int position, const QString &
 		else
 		{
 			event.setPartName(layer->layerName());
-			emit commandExecuted(&event);
+			emit commandExecuted(&event, m_isRedo);
 		}
 		
 // 		dDebug() << "Añadiendo layer en escena: " << scene->sceneName();
 		
-		return layer;
+		return document.toString(0);
 	}
 	else
 	{
@@ -84,9 +85,9 @@ KTLayer *KTProject::createLayer(int scenePosition, int position, const QString &
 }
 
 
-QString KTProject::removeLayer(int scenePos, int position)
+QString KTCommandExecutor::removeLayer(int scenePos, int position)
 {
-	KTScene *scene = this->scene(scenePos);
+	KTScene *scene = m_project->scene(scenePos);
 	
 	if ( scene )
 	{
@@ -101,7 +102,7 @@ QString KTProject::removeLayer(int scenePos, int position)
 			{
 				KTLayerRequest event(KTProjectRequest::Remove, scenePos, position);
 				
-				emit commandExecuted( &event );
+				emit commandExecuted(&event, m_isRedo);
 				
 				return document.toString(0);
 			}
@@ -112,14 +113,14 @@ QString KTProject::removeLayer(int scenePos, int position)
 }
 
 
-void KTProject::moveLayer(int scenePosition, int position, int newPosition)
+QString KTCommandExecutor::moveLayer(int scenePosition, int position, int newPosition)
 {
 // 	dDebug() << "Move layer from " << position << " to " << newPosition;
-	KTScene *scene = this->scene(scenePosition);
+	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( !scene)
 	{
-		return;
+		return QString();
 	}
 	
 	if ( ! scene->moveLayer(position, newPosition) )
@@ -129,19 +130,22 @@ void KTProject::moveLayer(int scenePosition, int position, int newPosition)
 	else
 	{
 		KTLayerRequest event(KTProjectRequest::Move,scenePosition, position, newPosition);
-		emit commandExecuted( &event);
+		emit commandExecuted(&event, m_isRedo);
 	}
 	
+	
+	return QString();
+
 }
 
-void KTProject::lockLayer(int scenePosition, int position, bool lock)
+QString KTCommandExecutor::lockLayer(int scenePosition, int position, bool lock)
 {
 	dWarning() << "Lock layer: " << lock;
-	KTScene *scene = this->scene(scenePosition);
+	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( !scene)
 	{
-		return;
+		return QString();
 	}
 	
 	KTLayer *layer = scene->layer(position);
@@ -151,19 +155,21 @@ void KTProject::lockLayer(int scenePosition, int position, bool lock)
 		layer->setLocked(lock);
 		
 		KTLayerRequest event(KTProjectRequest::Lock, scenePosition, position, lock);
-		emit commandExecuted( &event);
+		emit commandExecuted(&event, m_isRedo);
 	}
+	
+	return QString();
 }
 
 
 
-QString KTProject::renameLayer(int scenePosition, int position, const QString &newName)
+QString KTCommandExecutor::renameLayer(int scenePosition, int position, const QString &newName)
 {
 	dWarning() << "Renombrando layer: " << newName;
 	
 	QString oldName;
 	
-	KTScene *scene = this->scene(scenePosition);
+	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( !scene)
 	{
@@ -182,7 +188,7 @@ QString KTProject::renameLayer(int scenePosition, int position, const QString &n
 		
 		layer->setLayerName( newName );
 		
-		emit commandExecuted( &event);
+		emit commandExecuted(&event, m_isRedo);
 	}
 	
 	return oldName;
@@ -190,20 +196,22 @@ QString KTProject::renameLayer(int scenePosition, int position, const QString &n
 
 
 
-void KTProject::selectLayer(int scene, int position, bool prioritary)
+QString KTCommandExecutor::selectLayer(int scene, int position, bool prioritary)
 {
 	KTLayerRequest event(KTProjectRequest::Select, scene, position, prioritary);
-	emit commandExecuted( &event );
+	emit commandExecuted(&event, m_isRedo);
+	
+	return QString();
 }
 
 
-void KTProject::setLayerVisibility(int scenePos, int position, bool view)
+QString KTCommandExecutor::setLayerVisibility(int scenePos, int position, bool view)
 {
-	KTScene *scene = this->scene(scenePos);
+	KTScene *scene = m_project->scene(scenePos);
 	
 	if ( !scene)
 	{
-		return;
+		return QString();;
 	}
 	
 	KTLayer *layer = scene->layer(position);
@@ -213,8 +221,10 @@ void KTProject::setLayerVisibility(int scenePos, int position, bool view)
 		layer->setVisible(view);
 		
 		KTLayerRequest event(KTProjectRequest::View, scenePos, position, view);
-		emit commandExecuted( &event );
+		emit commandExecuted(&event, m_isRedo);
 	}
+	
+	return QString();
 }
 
 

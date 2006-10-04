@@ -43,13 +43,39 @@ KTNetProjectManagerHandler::~KTNetProjectManagerHandler()
 }
 
 
-void KTNetProjectManagerHandler::handleProjectRequest(KTProjectRequest* request)
+void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* request)
 {
 	// Esto llega desde el proyecto una vez ejecutado el comando
 // 	dDebug("net") << "Sending: " << request->data().toString();
 	
-	emit sendRequestToClients( request );
+	KTProjectRequest *toPackage = request->clone();
+	KTRequestPackage package(toPackage);
+	
+	// TODO: Guardar una copia de los eventos o paquetes en una cola y reenviar a la GUI cuando llegue el paquete de que todo va bien desde el servidor!
+	
+	if ( m_socket->state() == QAbstractSocket::ConnectedState )
+	{
+		m_socket->sendToServer( package );
+	}
+	
+	delete toPackage;
 }
+
+
+bool KTNetProjectManagerHandler::commandExecuted(KTProjectRequest *request, bool isRedo)
+{
+	if ( isRedo ) return true;
+	
+	KTRequestPackage package(request);
+	if ( m_socket->state() == QAbstractSocket::ConnectedState )
+	{
+		qDebug("ENVIANDO AL SERVER");
+		m_socket->sendToServer( package );
+	}
+	
+	return false;
+}
+
 
 
 bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
@@ -80,27 +106,8 @@ void KTNetProjectManagerHandler::sendHello()
 
 void KTNetProjectManagerHandler::emitRequest(KTProjectRequest *request)
 {
-	emit sendRequestToClients( request );
+	emit sendCommand( request, true );
 }
-
-KTProjectCommand *KTNetProjectManagerHandler::createCommand(KTProject *project, const KTProjectRequest *request)
-{
-// 	KTProjectCommand command(project, request);
-// 	command.redo();
-	
-	KTRequestPackage package(request->clone());
-	
-	// TODO: Guardar una copia de los eventos o paquetes en una cola y reenviar a la GUI cuando llegue el paquete de que todo va bien desde el servidor!
-	
-	if ( m_socket->state() == QAbstractSocket::ConnectedState )
-	{
-		m_socket->sendToServer( package );
-	}
-	
-	return 0;
-}
-
-
 
 
 

@@ -2,23 +2,24 @@
  *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
+ *   m_project program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
+ *   m_project program is distributed in the hope that it will be useful,       *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
+ *   along with m_project program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktproject.h"
+#include "ktcommandexecutor.h"
+
 #include "ktserializer.h"
 #include "ktscene.h"
 #include "ktitemrequest.h"
@@ -33,9 +34,10 @@
 
 #include <QGraphicsItem>
 
-QGraphicsItem *KTProject::createItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
+QString KTCommandExecutor::createItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
 {
-	KTScene *scene = this->scene(scenePosition);
+	D_FUNCINFO;
+	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( scene )
 	{
@@ -54,10 +56,8 @@ QGraphicsItem *KTProject::createItem(int scenePosition, int layerPosition, int f
 				if ( item )
 				{
 					KTItemRequest event(KTProjectRequest::Add, scenePosition, layerPosition, framePosition, position, xml);
-					emit commandExecuted( &event);
+					emit commandExecuted(&event, m_isRedo);
 				}
-				
-				return item;
 			}
 			else
 			{
@@ -74,15 +74,15 @@ QGraphicsItem *KTProject::createItem(int scenePosition, int layerPosition, int f
 		dError() << tr("Scene doesn't exists!");
 	}
 	
-	return 0;
+	return QString();
 }
 
 
-void KTProject::removeItem(int scenePosition, int layerPosition, int framePosition, int position)
+QString KTCommandExecutor::removeItem(int scenePosition, int layerPosition, int framePosition, int position)
 {
 	D_FUNCINFO;
 	
-	KTScene *scene = this->scene(scenePosition);
+	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( scene )
 	{
@@ -100,17 +100,19 @@ void KTProject::removeItem(int scenePosition, int layerPosition, int framePositi
 				if( frame->removeItemAt(position) )
 				{
 					KTItemRequest event(KTProjectRequest::Remove, scenePosition, layerPosition, framePosition, position, 0);
-					emit commandExecuted( &event);
+					emit commandExecuted(&event, m_isRedo);
 				}
 			}
 		}
 	}
+	
+	return QString();
 }
 
-QStringList KTProject::removeItems(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
+QStringList KTCommandExecutor::removeItems(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
 {
 	D_FUNCINFO;
-	KTScene *scene = this->scene(scenePosition);
+	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( scene )
 	{
@@ -140,21 +142,21 @@ QStringList KTProject::removeItems(int scenePosition, int layerPosition, int fra
 				int count = 0;
 				foreach(qreal pos, positions )
 				{
-					QGraphicsItem *item = frame->item(pos-count);
+					QGraphicsItem *item = frame->item((int)pos-count);
 					QDomDocument orig;
 					
 					if(item)
 					{
 						orig.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml( orig ));
 						infoItems << orig.toString();
-						frame->removeItemAt(pos-count);
+						frame->removeItemAt((int)pos-count);
 						
 						count++;
 					}
 				}
 				
 				KTItemRequest event(KTProjectRequest::Remove, scenePosition, layerPosition, framePosition, position, strList);
-				emit commandExecuted( &event);
+				emit commandExecuted(&event, m_isRedo);
 				
 				return infoItems;
 			}
@@ -164,10 +166,10 @@ QStringList KTProject::removeItems(int scenePosition, int layerPosition, int fra
 	return QStringList();
 }
 
-QStringList KTProject::groupItems(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml )
+QStringList KTCommandExecutor::groupItems(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml )
 {
 	D_FUNCINFO << xml;
-	KTScene *scene = this->scene(scenePosition);
+	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( scene )
 	{
@@ -192,7 +194,7 @@ QStringList KTProject::groupItems(int scenePosition, int layerPosition, int fram
 				QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
 				
 // 				dDebug() << positions;
-				int count = 0;
+// 				int count = 0;
 // 				foreach(qreal pos, positions )
 // 				{
 // 					QGraphicsItem *item = frame->item(pos-count);
@@ -209,7 +211,7 @@ QStringList KTProject::groupItems(int scenePosition, int layerPosition, int fram
 				frame->createItemGroupAt( position, positions);
 				
 				KTItemRequest event(KTProjectRequest::Group, scenePosition, layerPosition, framePosition, position, xml);
-				emit commandExecuted( &event);
+				emit commandExecuted(&event, m_isRedo);
 				
 				return infoItems;
 			}
@@ -219,10 +221,10 @@ QStringList KTProject::groupItems(int scenePosition, int layerPosition, int fram
 	return QStringList();
 }
 
-QString KTProject::convertItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
+QString KTCommandExecutor::convertItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
 {
 	D_FUNCINFO; 
-	KTScene *scene = this->scene(scenePosition);
+	KTScene *scene = m_project->scene(scenePosition);
 	if ( scene )
 	{
 		KTLayer *layer = scene->layer( layerPosition );
@@ -275,7 +277,7 @@ QString KTProject::convertItem(int scenePosition, int layerPosition, int framePo
 					
 					KTItemRequest event(KTProjectRequest::Convert, scenePosition, layerPosition, framePosition, position, xml);
 					
-					emit commandExecuted( &event);
+					emit commandExecuted(&event, m_isRedo);
 					
 					return "<convert type=\""+QString::number(item->type())+"\" />";
 				}
@@ -286,9 +288,9 @@ QString KTProject::convertItem(int scenePosition, int layerPosition, int framePo
 	return QString();
 }
 
-QString KTProject::transformItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
+QString KTCommandExecutor::transformItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
 {
-	KTScene *scene = this->scene(scenePosition);
+	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( scene )
 	{
@@ -314,7 +316,7 @@ QString KTProject::transformItem(int scenePosition, int layerPosition, int frame
 					
 					KTItemRequest event(KTProjectRequest::Transform, scenePosition, layerPosition, framePosition, position, xml);
 					
-					emit commandExecuted( &event);
+					emit commandExecuted(&event, m_isRedo);
 					
 					return current;
 				}
@@ -325,9 +327,9 @@ QString KTProject::transformItem(int scenePosition, int layerPosition, int frame
 	return "";
 }
 
-QString KTProject::setPathItem( int scenePosition, int layerPosition, int framePosition, int position, const QString &xml )
+QString KTCommandExecutor::setPathItem( int scenePosition, int layerPosition, int framePosition, int position, const QString &xml )
 {
-	KTScene *scene = this->scene(scenePosition);
+	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( scene )
 	{
@@ -354,13 +356,13 @@ QString KTProject::setPathItem( int scenePosition, int layerPosition, int frameP
 						KTItemFactory factory;
 						factory.loadItem(item, xml);
 						KTItemRequest event(KTProjectRequest::EditNodes,	scenePosition, layerPosition, framePosition, position, xml);
-						emit commandExecuted( &event);
+						emit commandExecuted(&event, m_isRedo);
 						return current;
 					}
 				}
 			}
 		}
 	}
-	return "";
+	return QString();
 }
 

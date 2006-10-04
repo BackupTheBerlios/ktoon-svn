@@ -25,6 +25,7 @@
 #include "ktproject.h"
 #include "ktprojectrequest.h"
 #include "ktprojectcommand.h"
+#include "ktcommandexecutor.h"
 
 #include "ktprojectmanagerparams.h"
 
@@ -36,10 +37,13 @@ KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(
 {
 	DINIT;
 	m_project = new KTProject(this);
-	
 	m_undoStack = new QUndoStack(this);
 	
-	connect(m_project,SIGNAL(commandExecuted( KTProjectRequest* )), this, SLOT(handleProjectRequest( KTProjectRequest *)));
+	m_commandExecutor = new KTCommandExecutor(m_project);
+	
+// 	connect(m_project,SIGNAL(commandExecuted( KTProjectRequest* )), this, SIGNAL(commandExecuted( KTProjectRequest *)));
+	
+	connect(m_commandExecutor, SIGNAL(commandExecuted( KTProjectRequest*, bool )), this, SLOT(emitCommandExecuted( KTProjectRequest *, bool)));
 }
 
 
@@ -52,7 +56,7 @@ void KTProjectManager::setHandler(KTAbstractProjectHandler *handler)
 {
 	if ( m_handler )
 	{
-		disconnect(m_handler, SIGNAL(sendRequestToClients(KTProjectRequest *)), this, SIGNAL(commandExecuted( KTProjectRequest *)));
+		disconnect(m_handler, SIGNAL(sendCommand(const KTProjectRequest *, bool)), this, SLOT(createCommand(const KTProjectRequest *, bool)));
 		
 		delete m_handler;
 		m_handler = 0;
@@ -61,14 +65,7 @@ void KTProjectManager::setHandler(KTAbstractProjectHandler *handler)
 	m_handler = handler;
 	m_handler->setParent(this);
 	
-	connect(m_handler, SIGNAL(sendRequestToClients(KTProjectRequest *)), this, SIGNAL(commandExecuted(KTProjectRequest *)));
-	
-}
-
-void KTProjectManager::executeRequest(KTProjectRequest *request)
-{
-	KTProjectCommand command(m_project, request);
-	command.redo();
+	connect(m_handler, SIGNAL(sendCommand(const KTProjectRequest *, bool)), this, SLOT(createCommand(const KTProjectRequest *, bool)));
 }
 
 void KTProjectManager::setupNewProject(KTProjectManagerParams *params)
@@ -96,9 +93,11 @@ void KTProjectManager::setupNewProject(KTProjectManagerParams *params)
 // 	// Add by default a scene, layer, frame
 	
 	// Hacer mediante comandos!
-	m_project->createScene(0);
-	m_project->createLayer(0,0);
-	m_project->createFrame(0,0,0);
+	
+	
+	m_commandExecutor->createScene( 0);
+	m_commandExecutor->createLayer(0, 0);
+	m_commandExecutor->createFrame( 0, 0, 0);
 }
 
 
@@ -137,9 +136,11 @@ bool KTProjectManager::isOpen() const
  * Por defecto, envia el evento por medio del signal commandExecuted
  * @param event 
  */
-void KTProjectManager::handleProjectRequest(KTProjectRequest *request)
+void KTProjectManager::handleProjectRequest(const KTProjectRequest *request)
 {
 	D_FUNCINFO;
+	
+	// TODO: el handler debe decir cuando construir el comando
 	
 	if ( m_handler )
 	{
@@ -159,17 +160,16 @@ void KTProjectManager::handleProjectRequest(KTProjectRequest *request)
  * @param event 
  * @return 
  */
-void KTProjectManager::createCommand(const KTProjectRequest *request)
+void KTProjectManager::createCommand(const KTProjectRequest *request, bool addToStack)
 {
 	D_FUNCINFO;
 	
 	if ( request->isValid() )
 	{
-		KTProjectCommand *command = m_handler->createCommand(m_project, request);
+		KTProjectCommand *command = new KTProjectCommand(m_commandExecutor, request);
 		
-		if ( command )
+		if ( addToStack )
 		{
-			qDebug("ADDING");
 			m_undoStack->push(command);
 		}
 	}
@@ -185,6 +185,18 @@ KTProject *KTProjectManager::project() const
 QUndoStack *KTProjectManager::undoHistory() const
 {
 	return m_undoStack;
+}
+
+void KTProjectManager::emitCommandExecuted( KTProjectRequest *request, bool redo)
+{
+	if ( !m_handler )
+	{
+		emit commandExecuted( request );
+	}
+	else if ( m_handler->commandExecuted(request, redo ) )
+	{
+		emit commandExecuted( request );
+	}
 }
 
 

@@ -2,31 +2,33 @@
  *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
+ *   m_project program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
+ *   m_project program is distributed in the hope that it will be useful,       *
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
  *   GNU General Public License for more details.                          *
  *                                                                         *
  *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
+ *   along with m_project program; if not, write to the                         *
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
 
-#include "ktproject.h"
+#include "ktcommandexecutor.h"
+
 #include "ktscene.h"
 #include "ktframerequest.h"
+
 #include <dcore/ddebug.h>
 
-KTFrame *KTProject::createFrame(int scenePosition, int layerPosition, int position, const QString &xml)
+QString KTCommandExecutor::createFrame(int scenePosition, int layerPosition, int position, const QString &xml)
 {
-	KTScene *scene = this->scene(scenePosition);
+	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( !scene)
 	{
@@ -52,7 +54,7 @@ KTFrame *KTProject::createFrame(int scenePosition, int layerPosition, int positi
 			frame->setFrameName( root.attribute( "name", frame->frameName() ) );
 			
 			event.setPartName(frame->frameName());
-			emit commandExecuted(&event);
+			emit commandExecuted(&event, m_isRedo);
 			
 			QDomNode n = root.firstChild();
 	
@@ -84,24 +86,24 @@ KTFrame *KTProject::createFrame(int scenePosition, int layerPosition, int positi
 		else
 		{
 			event.setPartName(frame->frameName());
-			emit commandExecuted(&event);
+			emit commandExecuted(&event, m_isRedo);
 		}
 		
 // 		dDebug() << "Añadiendo frame en layer: " << layer->layerName();
 		
-		return frame;
+		return document.toString(0);
 	}
 	else
 	{
 		D_CHECKPTR(layer);
 	}
 	
-	return 0;
+	return QString();
 }
 
-QString KTProject::removeFrame(int scenePos, int layerPos, int position)
+QString KTCommandExecutor::removeFrame(int scenePos, int layerPos, int position)
 {
-	KTScene *scene = this->scene(scenePos);
+	KTScene *scene = m_project->scene(scenePos);
 	
 	if ( scene )
 	{
@@ -119,7 +121,7 @@ QString KTProject::removeFrame(int scenePos, int layerPos, int position)
 				{
 					KTFrameRequest event(KTProjectRequest::Remove, scenePos, layerPos, position);
 					
-					emit commandExecuted( &event );
+					emit commandExecuted(&event, m_isRedo);
 					
 					return document.toString(0);
 				}
@@ -131,14 +133,14 @@ QString KTProject::removeFrame(int scenePos, int layerPos, int position)
 }
 
 
-void KTProject::moveFrame(int scenePosition, int layerPosition, int position, int newPosition)
+QString KTCommandExecutor::moveFrame(int scenePosition, int layerPosition, int position, int newPosition)
 {
 // 	dDebug() << "Move frame from " << position << " to " << newPosition;
-	KTScene *scene = this->scene(scenePosition);
+	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( !scene)
 	{
-		return;
+		return QString();
 	}
 	
 	KTLayer *layer = scene->layer(layerPosition);
@@ -148,25 +150,27 @@ void KTProject::moveFrame(int scenePosition, int layerPosition, int position, in
 		if ( ! layer->moveFrame(position, newPosition) )
 		{
 			dWarning() << "Failed moving frame";
-			return;
+			return QString();
 		}
 		else
 		{
 			KTFrameRequest event(KTProjectRequest::Move, scenePosition, layerPosition, position, newPosition);
-			emit commandExecuted( &event );
+			emit commandExecuted(&event, m_isRedo);
 		}
 	}
+	
+	return QString();
 }
 
 
-void KTProject::lockFrame(int scenePosition, int layerPosition, int position, bool lock)
+QString KTCommandExecutor::lockFrame(int scenePosition, int layerPosition, int position, bool lock)
 {
 	dWarning() << "Lock frame: " << lock;
-	KTScene *scene = this->scene(scenePosition);
+	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( !scene)
 	{
-		return;
+		return QString();
 	}
 	
 	KTLayer *layer = scene->layer(layerPosition);
@@ -175,23 +179,25 @@ void KTProject::lockFrame(int scenePosition, int layerPosition, int position, bo
 	{
 		KTFrame *frame = layer->frame(position);
 		
-		if ( ! frame ) return;
+		if ( ! frame ) return QString();
 		
 		frame->setLocked( lock );
 		
 		KTFrameRequest event(KTProjectRequest::Lock, scenePosition, layerPosition, position, lock);
-		emit commandExecuted( &event );
+		emit commandExecuted(&event, m_isRedo);
 	}
+	
+	return QString();
 }
 
 
-QString KTProject::renameFrame(int scenePosition, int layerPosition, int position, const QString &newName)
+QString KTCommandExecutor::renameFrame(int scenePosition, int layerPosition, int position, const QString &newName)
 {
 	dWarning() << "Renombrando frame " << position << ": " << newName;
 	
 	QString oldName;
 	
-	KTScene *scene = this->scene(scenePosition);
+	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( !scene)
 	{
@@ -214,7 +220,7 @@ QString KTProject::renameFrame(int scenePosition, int layerPosition, int positio
 		
 		frame->setFrameName( newName );
 		
-		emit commandExecuted( &event );
+		emit commandExecuted(&event, m_isRedo);
 	}
 	
 	return oldName;
@@ -223,13 +229,13 @@ QString KTProject::renameFrame(int scenePosition, int layerPosition, int positio
 
 
 
-void KTProject::selectFrame(int scenePosition, int layerPosition, int position, bool prioritary)
+QString KTCommandExecutor::selectFrame(int scenePosition, int layerPosition, int position, bool prioritary)
 {
-	KTScene *scene = this->scene(scenePosition);
+	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( !scene)
 	{
-		return;
+		return QString();
 	}
 	
 	KTLayer *layer = scene->layer(layerPosition);
@@ -238,20 +244,20 @@ void KTProject::selectFrame(int scenePosition, int layerPosition, int position, 
 	{
 		KTFrame *frame = layer->frame(position);
 		
-		if ( ! frame ) return;
+		if ( ! frame ) return QString();;
 		
 		KTFrameRequest event(KTProjectRequest::Select, scenePosition, layerPosition, position, prioritary);
-		emit commandExecuted( &event );
+		emit commandExecuted(&event, m_isRedo);
 	}
 }
 
-void KTProject::setFrameVisibility(int scenePos, int layerPos, int position, bool view)
+QString KTCommandExecutor::setFrameVisibility(int scenePos, int layerPos, int position, bool view)
 {
-	KTScene *scene = this->scene(scenePos);
+	KTScene *scene = m_project->scene(scenePos);
 	
 	if ( !scene)
 	{
-		return;
+		return QString();;
 	}
 	
 	KTLayer *layer = scene->layer(layerPos);
@@ -260,15 +266,17 @@ void KTProject::setFrameVisibility(int scenePos, int layerPos, int position, boo
 	{
 		KTFrame *frame = layer->frame(position);
 		
-		if ( ! frame ) return;
+		if ( ! frame ) return QString();;
 		
 		
 		KTFrameRequest event(KTProjectRequest::View, scenePos, layerPos, position, view);
 		
 		frame->setVisible(view);
 		
-		emit commandExecuted( &event );
+		emit commandExecuted(&event, m_isRedo);
 	}
+	
+	return QString();
 }
 
 

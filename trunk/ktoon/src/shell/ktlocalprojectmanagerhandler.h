@@ -33,10 +33,8 @@ class KTLocalProjectManagerHandler : public KTAbstractProjectHandler
 		KTLocalProjectManagerHandler(QObject *parent = 0);
 		~KTLocalProjectManagerHandler();
 		
-		void handleProjectRequest(KTProjectRequest *request);
+		void handleProjectRequest(const KTProjectRequest *request);
 		
-	public slots:
-		virtual KTProjectCommand *createCommand(KTProject *project, const KTProjectRequest *request);
 };
 
 #endif

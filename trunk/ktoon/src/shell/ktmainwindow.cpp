@@ -358,8 +358,8 @@ void KTMainWindow::importPalettes()
 
 void KTMainWindow::ui4project(QWidget *widget)
 {
-	// FIXME: Arreglar totalmente esto, las peticiones del widget deben ser tratadas por los manejadores y a partir de esto crear los comandos necesarios.
-	connect(widget, SIGNAL(requestTriggered(const KTProjectRequest *)), m_projectManager, SLOT(createCommand(const KTProjectRequest *)));
+	connect(widget, SIGNAL(requestTriggered(const KTProjectRequest *)), m_projectManager, SLOT(handleProjectRequest(const KTProjectRequest *)));
+	
 	connect(m_projectManager, SIGNAL(commandExecuted(KTProjectRequest* )), widget, SLOT(handleProjectRequest(KTProjectRequest *)));
 }
 

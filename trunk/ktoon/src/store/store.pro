@@ -40,7 +40,8 @@ HEADERS += ktlayer.h \
            ktprojectmanagerparams.h \
            ktabstractprojectmanagerhandler.h \
            ktrequestpackage.h \
-           ktrequestfactory.h 
+           ktrequestfactory.h \
+           ktcommandexecutor.h 
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
@@ -63,9 +64,6 @@ SOURCES += ktlayer.cpp \
            ktbuttonitem.cpp \
            ktitemfactory.cpp \
            ktellipseitem.cpp \
-           ktproject_frames.cpp \
-           ktproject_layers.cpp \
-           ktproject_items.cpp \
            ktpaintareaevent.cpp \
            ktserializer.cpp \
            ktlineitem.cpp \
@@ -74,7 +72,11 @@ SOURCES += ktlayer.cpp \
            ktprojectmanagerparams.cpp \
            ktabstractprojectmanagerhandler.cpp \
            ktrequestpackage.cpp \
-           ktrequestfactory.cpp 
+           ktrequestfactory.cpp \
+           ktcommandexecutor.cpp \
+           ktcommandexecutor_frames.cpp \
+           ktcommandexecutor_items.cpp \
+           ktcommandexecutor_layers.cpp 
 KDEV_QTVER = 4
 STORE_DIR = ../../src/store
 LIBKTOON_DIR = ../../src/libktoon
