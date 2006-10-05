@@ -95,7 +95,10 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(p
 	m_drawingRect = QRectF(QPointF(0,0), QSizeF( 500, 400 ) ); // FIXME: parametrizable
 	
 	setCurrentScene( 0 );
-	qobject_cast<KTScene *>(scene())->setCurrentFrame( 0, 0 ); 
+	if ( scene() )
+	{
+		qobject_cast<KTScene *>(scene())->setCurrentFrame( 0, 0 );
+	}
 	
 	centerDrawingArea();
 	
@@ -217,6 +220,8 @@ void KTPaintArea::setDrawGrid(bool draw)
 
 void KTPaintArea::setTool(KTToolPlugin *tool )
 {
+	if ( !scene() ) return;
+	
 	if ( m_tool )
 	{
 		m_tool->aboutToChangeTool();
@@ -233,6 +238,8 @@ bool KTPaintArea::drawGrid() const
 
 void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 {
+	if ( !scene() ) return;
+	
 	QGraphicsView::mousePressEvent(event);
 	
 	QMouseEvent *eventMapped = mapMouseEvent( event );
@@ -361,6 +368,8 @@ QMouseEvent *KTPaintArea::mapMouseEvent(QMouseEvent *event) const
 
 void KTPaintArea::frameRequest(KTFrameRequest *event)
 {
+	if ( !scene() ) return;
+	
 	switch(event->action())
 	{
 		case KTProjectRequest::Select:
@@ -378,12 +387,20 @@ void KTPaintArea::frameRequest(KTFrameRequest *event)
 			dDebug("paint area") << "frame: " << event->frameIndex() << " " << "layer: " << event->layerIndex();
 		}
 		break;
-		default: break;
+		default:
+		{
+			if ( m_tool )
+			{
+				m_tool->init( this );
+			}
+		}
+		break;
 	}
 }
 
 void KTPaintArea::layerRequest(KTLayerRequest *event)
 {
+	if ( !scene() ) return;
 	if ( event->action() != KTProjectRequest::Add ||  event->action() != KTProjectRequest::Remove )
 	{
 		qobject_cast<KTScene *>(scene())->drawCurrentPhotogram();
@@ -398,6 +415,7 @@ void KTPaintArea::sceneRequest(KTSceneRequest *event)
 		case KTProjectRequest::Select:
 		{
 			setCurrentScene( event->sceneIndex() );
+			
 		}
 		break;
 		case KTProjectRequest::Remove:
@@ -526,7 +544,7 @@ void KTPaintArea::deleteItems()
 		}
 		
 		QDomDocument doc;
-		QDomElement root = doc.createElement("group");
+		QDomElement root = doc.createElement("delete");
 		root.setAttribute("positions", strItems );
 		doc.appendChild(root);
 		

@@ -43,7 +43,7 @@ KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(
 	
 // 	connect(m_project,SIGNAL(commandExecuted( KTProjectRequest* )), this, SIGNAL(commandExecuted( KTProjectRequest *)));
 	
-	connect(m_commandExecutor, SIGNAL(commandExecuted( KTProjectRequest*, bool )), this, SLOT(emitCommandExecuted( KTProjectRequest *, bool)));
+	connect(m_commandExecutor, SIGNAL(commandExecuted( KTProjectRequest*, int )), this, SLOT(emitCommandExecuted( KTProjectRequest *, int)));
 }
 
 
@@ -95,9 +95,9 @@ void KTProjectManager::setupNewProject(KTProjectManagerParams *params)
 	// Hacer mediante comandos!
 	
 	
-	m_commandExecutor->createScene( 0);
-	m_commandExecutor->createLayer(0, 0);
-	m_commandExecutor->createFrame( 0, 0, 0);
+// 	m_commandExecutor->createScene( 0);
+// 	m_commandExecutor->createLayer(0, 0);
+// 	m_commandExecutor->createFrame( 0, 0, 0);
 }
 
 
@@ -172,6 +172,10 @@ void KTProjectManager::createCommand(const KTProjectRequest *request, bool addTo
 		{
 			m_undoStack->push(command);
 		}
+		else
+		{
+			command->redo();
+		}
 	}
 }
 
@@ -187,13 +191,14 @@ QUndoStack *KTProjectManager::undoHistory() const
 	return m_undoStack;
 }
 
-void KTProjectManager::emitCommandExecuted( KTProjectRequest *request, bool redo)
+void KTProjectManager::emitCommandExecuted( KTProjectRequest *request, int state)
 {
+	D_FUNCINFO;
 	if ( !m_handler )
 	{
 		emit commandExecuted( request );
 	}
-	else if ( m_handler->commandExecuted(request, redo ) )
+	else if ( m_handler->commandExecuted(request, state ) )
 	{
 		emit commandExecuted( request );
 	}

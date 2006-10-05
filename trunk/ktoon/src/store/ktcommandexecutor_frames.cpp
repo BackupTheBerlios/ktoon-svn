@@ -54,7 +54,7 @@ QString KTCommandExecutor::createFrame(int scenePosition, int layerPosition, int
 			frame->setFrameName( root.attribute( "name", frame->frameName() ) );
 			
 			event.setPartName(frame->frameName());
-			emit commandExecuted(&event, m_isRedo);
+			emit commandExecuted(&event, m_state);
 			
 			QDomNode n = root.firstChild();
 	
@@ -86,7 +86,7 @@ QString KTCommandExecutor::createFrame(int scenePosition, int layerPosition, int
 		else
 		{
 			event.setPartName(frame->frameName());
-			emit commandExecuted(&event, m_isRedo);
+			emit commandExecuted(&event, m_state);
 		}
 		
 // 		dDebug() << "Añadiendo frame en layer: " << layer->layerName();
@@ -121,7 +121,7 @@ QString KTCommandExecutor::removeFrame(int scenePos, int layerPos, int position)
 				{
 					KTFrameRequest event(KTProjectRequest::Remove, scenePos, layerPos, position);
 					
-					emit commandExecuted(&event, m_isRedo);
+					emit commandExecuted(&event, m_state);
 					
 					return document.toString(0);
 				}
@@ -155,7 +155,7 @@ QString KTCommandExecutor::moveFrame(int scenePosition, int layerPosition, int p
 		else
 		{
 			KTFrameRequest event(KTProjectRequest::Move, scenePosition, layerPosition, position, newPosition);
-			emit commandExecuted(&event, m_isRedo);
+			emit commandExecuted(&event, m_state);
 		}
 	}
 	
@@ -184,7 +184,7 @@ QString KTCommandExecutor::lockFrame(int scenePosition, int layerPosition, int p
 		frame->setLocked( lock );
 		
 		KTFrameRequest event(KTProjectRequest::Lock, scenePosition, layerPosition, position, lock);
-		emit commandExecuted(&event, m_isRedo);
+		emit commandExecuted(&event, m_state);
 	}
 	
 	return QString();
@@ -220,7 +220,7 @@ QString KTCommandExecutor::renameFrame(int scenePosition, int layerPosition, int
 		
 		frame->setFrameName( newName );
 		
-		emit commandExecuted(&event, m_isRedo);
+		emit commandExecuted(&event, m_state);
 	}
 	
 	return oldName;
@@ -247,8 +247,10 @@ QString KTCommandExecutor::selectFrame(int scenePosition, int layerPosition, int
 		if ( ! frame ) return QString();;
 		
 		KTFrameRequest event(KTProjectRequest::Select, scenePosition, layerPosition, position, prioritary);
-		emit commandExecuted(&event, m_isRedo);
+		emit commandExecuted(&event, m_state);
 	}
+	
+	return QString();
 }
 
 QString KTCommandExecutor::setFrameVisibility(int scenePos, int layerPos, int position, bool view)
@@ -273,7 +275,7 @@ QString KTCommandExecutor::setFrameVisibility(int scenePos, int layerPos, int po
 		
 		frame->setVisible(view);
 		
-		emit commandExecuted(&event, m_isRedo);
+		emit commandExecuted(&event, m_state);
 	}
 	
 	return QString();

@@ -44,7 +44,7 @@ class STORE_EXPORT KTAbstractProjectHandler : public QObject
 		virtual bool setupNewProject(KTProjectManagerParams *params);
 		virtual bool closeProject();
 		virtual void handleProjectRequest(const KTProjectRequest *request) = 0;
-		virtual bool commandExecuted(KTProjectRequest *request, bool isRedo);
+		virtual bool commandExecuted(KTProjectRequest *request, int state);
 		
 	signals:
 		void sendCommand(const KTProjectRequest *event, bool addToStack);

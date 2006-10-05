@@ -39,7 +39,7 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		virtual bool closeProject();
 		
 		virtual void handleProjectRequest(const KTProjectRequest* event);
-		bool commandExecuted(KTProjectRequest *request, bool isRedo);
+		bool commandExecuted(KTProjectRequest *request, int state);
 		
 		void emitRequest(KTProjectRequest *request);
 		

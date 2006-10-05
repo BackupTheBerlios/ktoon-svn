@@ -93,6 +93,10 @@ void KTNetSocket::readFromServer()
 				qDebug("FAILS BUILDING!");
 			}
 		}
+		else
+		{
+			dDebug("net") << "Unknown package: " << root;
+		}
 	}
 	else
 	{

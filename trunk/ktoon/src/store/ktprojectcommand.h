@@ -62,6 +62,8 @@ class STORE_EXPORT KTProjectCommand : public QUndoCommand
 		KTProjectRequest *m_event;
 		
 		QVariant m_data;
+		
+		bool m_executed;
 };
 
 #endif

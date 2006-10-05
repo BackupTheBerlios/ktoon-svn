@@ -39,12 +39,7 @@ void KTLocalProjectManagerHandler::handleProjectRequest(const KTProjectRequest *
 	D_FUNCINFO;
 	if ( request->isValid() )
 	{
-		qDebug("EMITIENDO");
 		emit sendCommand( request, true );
-	}
-	else
-	{
-		qDebug("invalid");
 	}
 }
 

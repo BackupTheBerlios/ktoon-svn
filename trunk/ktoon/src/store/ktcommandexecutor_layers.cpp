@@ -46,7 +46,7 @@ QString KTCommandExecutor::createLayer(int scenePosition, int position, const QS
 			QDomNode n = root.firstChild();
 			
 			event.setPartName(layer->layerName());
-			emit commandExecuted(&event, m_isRedo);
+			emit commandExecuted(&event, m_state);
 	
 			while( !n.isNull() )
 			{
@@ -69,7 +69,7 @@ QString KTCommandExecutor::createLayer(int scenePosition, int position, const QS
 		else
 		{
 			event.setPartName(layer->layerName());
-			emit commandExecuted(&event, m_isRedo);
+			emit commandExecuted(&event, m_state);
 		}
 		
 // 		dDebug() << "Añadiendo layer en escena: " << scene->sceneName();
@@ -102,7 +102,7 @@ QString KTCommandExecutor::removeLayer(int scenePos, int position)
 			{
 				KTLayerRequest event(KTProjectRequest::Remove, scenePos, position);
 				
-				emit commandExecuted(&event, m_isRedo);
+				emit commandExecuted(&event, m_state);
 				
 				return document.toString(0);
 			}
@@ -130,7 +130,7 @@ QString KTCommandExecutor::moveLayer(int scenePosition, int position, int newPos
 	else
 	{
 		KTLayerRequest event(KTProjectRequest::Move,scenePosition, position, newPosition);
-		emit commandExecuted(&event, m_isRedo);
+		emit commandExecuted(&event, m_state);
 	}
 	
 	
@@ -155,7 +155,7 @@ QString KTCommandExecutor::lockLayer(int scenePosition, int position, bool lock)
 		layer->setLocked(lock);
 		
 		KTLayerRequest event(KTProjectRequest::Lock, scenePosition, position, lock);
-		emit commandExecuted(&event, m_isRedo);
+		emit commandExecuted(&event, m_state);
 	}
 	
 	return QString();
@@ -188,7 +188,7 @@ QString KTCommandExecutor::renameLayer(int scenePosition, int position, const QS
 		
 		layer->setLayerName( newName );
 		
-		emit commandExecuted(&event, m_isRedo);
+		emit commandExecuted(&event, m_state);
 	}
 	
 	return oldName;
@@ -199,7 +199,7 @@ QString KTCommandExecutor::renameLayer(int scenePosition, int position, const QS
 QString KTCommandExecutor::selectLayer(int scene, int position, bool prioritary)
 {
 	KTLayerRequest event(KTProjectRequest::Select, scene, position, prioritary);
-	emit commandExecuted(&event, m_isRedo);
+	emit commandExecuted(&event, m_state);
 	
 	return QString();
 }
@@ -221,7 +221,7 @@ QString KTCommandExecutor::setLayerVisibility(int scenePos, int position, bool v
 		layer->setVisible(view);
 		
 		KTLayerRequest event(KTProjectRequest::View, scenePos, position, view);
-		emit commandExecuted(&event, m_isRedo);
+		emit commandExecuted(&event, m_state);
 	}
 	
 	return QString();

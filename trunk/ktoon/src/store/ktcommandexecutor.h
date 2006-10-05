@@ -33,6 +33,14 @@ class KTCommandExecutor : public QObject
 {
 	Q_OBJECT;
 	public:
+		enum State
+		{
+			None = 0x00,
+			Do,
+			Redo,
+			Undo
+		};
+		
 		KTCommandExecutor(KTProject *project);
 		~KTCommandExecutor();
 		
@@ -49,7 +57,7 @@ class KTCommandExecutor : public QObject
 		QString removeLayer(int scene, int position);
 		QString removeFrame(int scene, int layer, int position);
 		
-		QString removeItem(int scenePosition, int layerPosition, int framePosition, int position);
+// 		QString removeItem(int scenePosition, int layerPosition, int framePosition, int position);
 		QStringList removeItems(int scenePosition, int layerPosition, int framePosition, int position, const QString &strList );
 		
 		QStringList groupItems(int scenePosition, int layerPosition, int framePosition, int position, const QString &strList );
@@ -77,14 +85,14 @@ class KTCommandExecutor : public QObject
 		
 		void reemitEvent(KTProjectRequest *event);
 		
-		void setIsRedo(bool isRedo);
+		void setState(KTCommandExecutor::State state);
 		
 	signals:
-		void commandExecuted(KTProjectRequest *event, bool isRedo);
+		void commandExecuted(KTProjectRequest *event, int state);
 		
 	private:
 		KTProject *m_project;
-		bool m_isRedo;
+		State m_state;
 
 };
 

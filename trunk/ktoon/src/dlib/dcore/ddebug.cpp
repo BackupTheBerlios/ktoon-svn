@@ -542,7 +542,6 @@ void DDebug::resaltWidget(QWidget *w, const QColor &color)
 
 QTextBrowser *DDebug::browser()
 {
-	qDebug("HERE");
 	if ( !debugBrowser)
 	{
 		debugBrowser = new QTextBrowser;

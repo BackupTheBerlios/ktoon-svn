@@ -26,7 +26,7 @@
 
 #include <ddebug.h>
 
-KTCommandExecutor::KTCommandExecutor(KTProject *project) : QObject(project), m_project(project), m_isRedo(true)
+KTCommandExecutor::KTCommandExecutor(KTProject *project) : QObject(project), m_project(project), m_state(None)
 {
 }
 
@@ -58,7 +58,7 @@ QString KTCommandExecutor::createScene(int position, const QString &xml)
 		scene->setSceneName( root.attribute( "name", scene->sceneName()) );
 		event.setPartName(scene->sceneName());
 		
-		emit commandExecuted(&event, m_isRedo);
+		emit commandExecuted(&event, m_state);
 		
 		QDomNode n = root.firstChild();
 	
@@ -85,7 +85,7 @@ QString KTCommandExecutor::createScene(int position, const QString &xml)
 	{
 		event.setPartName(scene->sceneName());
 		
-		emit commandExecuted(&event, m_isRedo);
+		emit commandExecuted(&event, m_state);
 	}
 	
 	
@@ -104,7 +104,7 @@ QString KTCommandExecutor::removeScene(int position)
 		document.appendChild(toRemove->toXml(document));
 		KTSceneRequest event(KTProjectRequest::Remove, position);
 		
-		emit commandExecuted(&event, m_isRedo);
+		emit commandExecuted(&event, m_state);
 		
 		m_project->removeScene( position );
 		return document.toString( 0 );
@@ -120,7 +120,7 @@ QString KTCommandExecutor::moveScene(int position, int newPosition)
 	if ( m_project->moveScene( position, newPosition ) )
 	{
 		KTSceneRequest event(KTProjectRequest::Move, position, newPosition);
-		emit commandExecuted(&event, m_isRedo);
+		emit commandExecuted(&event, m_state);
 	}
 	
 	return QString();
@@ -142,7 +142,7 @@ QString KTCommandExecutor::lockScene(int position, bool lock)
 	scene->setLocked(lock);
 	
 	KTSceneRequest event(KTProjectRequest::Lock, position, lock);
-	emit commandExecuted(&event, m_isRedo);
+	emit commandExecuted(&event, m_state);
 	
 	return QString();
 }
@@ -165,7 +165,7 @@ QString KTCommandExecutor::renameScene(int position, const QString &newName)
 	
 	scene->setSceneName( newName);
 	
-	emit commandExecuted(&event, m_isRedo);
+	emit commandExecuted(&event, m_state);
 	
 	return oldName;
 }
@@ -174,7 +174,7 @@ QString KTCommandExecutor::renameScene(int position, const QString &newName)
 QString KTCommandExecutor::selectScene(int position, bool prioritary)
 {
 	KTSceneRequest event(KTProjectRequest::Select, position, prioritary);
-	emit commandExecuted(&event, m_isRedo);
+	emit commandExecuted(&event, m_state);
 	
 	return QString();
 }
@@ -192,7 +192,7 @@ QString KTCommandExecutor::setSceneVisibility(int position, bool view)
 	scene->setVisible(view);
 	
 	KTSceneRequest event(KTProjectRequest::View, position, view);
-	emit commandExecuted(&event, m_isRedo);
+	emit commandExecuted(&event, m_state);
 	
 	return QString();
 }
@@ -200,12 +200,12 @@ QString KTCommandExecutor::setSceneVisibility(int position, bool view)
 
 void KTCommandExecutor::reemitEvent(KTProjectRequest *event)
 {
-	emit commandExecuted(event, m_isRedo);
+	emit commandExecuted(event, m_state);
 }
 
-void KTCommandExecutor::setIsRedo(bool isRedo)
+void KTCommandExecutor::setState(State state)
 {
-	m_isRedo = isRedo;
+	m_state = state;
 }
 
 

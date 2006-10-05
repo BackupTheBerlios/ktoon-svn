@@ -23,6 +23,7 @@
 
 #include "ktprojectrequest.h"
 #include "ktprojectcommand.h"
+#include "ktcommandexecutor.h"
 
 #include "ktnetsocket.h"
 
@@ -62,9 +63,9 @@ void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* re
 }
 
 
-bool KTNetProjectManagerHandler::commandExecuted(KTProjectRequest *request, bool isRedo)
+bool KTNetProjectManagerHandler::commandExecuted(KTProjectRequest *request, int state)
 {
-	if ( isRedo ) return true;
+	if ( state == KTCommandExecutor::Do ) return true;
 	
 	KTRequestPackage package(request);
 	if ( m_socket->state() == QAbstractSocket::ConnectedState )

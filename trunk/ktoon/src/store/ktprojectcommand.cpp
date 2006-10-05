@@ -31,7 +31,7 @@
 
 #include "ktsvg2qt.h"
 
-KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, const KTProjectRequest *event) : QUndoCommand(), m_executor(executor)
+KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, const KTProjectRequest *event) : QUndoCommand(), m_executor(executor), m_executed(false)
 {
 	m_event = event->clone();
 	
@@ -130,8 +130,15 @@ void KTProjectCommand::redo()
 {
 	D_FUNCINFO << m_data.toString();
 	
-	
-	m_executor->setIsRedo( true );
+	if ( m_executed )
+	{
+		m_executor->setState( KTCommandExecutor::Redo );
+	}
+	else
+	{
+		m_executor->setState(KTCommandExecutor::Do );
+		m_executed = true;
+	}
 	
 	switch(m_event->id() )
 	{
@@ -174,7 +181,7 @@ void KTProjectCommand::undo()
 {
 	D_FUNCINFO << m_data.toString();
 	
-	m_executor->setIsRedo( false );
+	m_executor->setState( KTCommandExecutor::Undo );
 	
 	switch(m_event->id() )
 	{
@@ -528,7 +535,7 @@ void KTProjectCommand::itemCommand(const KTItemRequest *event, bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->removeItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex());
+				m_executor->removeItems(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), "<delete positions=\"("+QString::number(event->itemIndex())+")\"/>" );
 			}
 			break;
 			case KTProjectRequest::Remove:

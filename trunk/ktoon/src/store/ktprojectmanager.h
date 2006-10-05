@@ -23,6 +23,7 @@
 
 #include <QObject>
 #include "ktglobal_store.h"
+// #include "ktcommandexecutor.h"
 
 class KTProject;
 class KTProjectRequest;
@@ -59,7 +60,7 @@ class STORE_EXPORT KTProjectManager : public QObject
 		virtual void createCommand(const KTProjectRequest *event, bool addToStack);
 		
 	private slots:
-		void emitCommandExecuted( KTProjectRequest *request, bool redo);
+		void emitCommandExecuted( KTProjectRequest *request, int state);
 		
 	signals:
 		void commandExecuted(KTProjectRequest *event);
