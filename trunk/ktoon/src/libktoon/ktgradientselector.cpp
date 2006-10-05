@@ -125,7 +125,7 @@ void KTGradientSelector::init()
 	setMaximumWidth(100);
 	setMinimumWidth(100);
 
-	connect(this, SIGNAL(valueChanged (int)), this, SLOT(valueChange(int)));
+// 	connect(this, SIGNAL(valueChanged (int)), this, SLOT(valueChange(int)));
 	
 // 	show();
 	

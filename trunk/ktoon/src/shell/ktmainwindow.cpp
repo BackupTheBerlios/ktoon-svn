@@ -478,14 +478,14 @@ void KTMainWindow::closeEvent( QCloseEvent *event )
 
 void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
 {
-// 	if ( !m_viewDoc ) return;
-// 	
-// 	KTPaintAreaCommand *command = m_viewDoc->createCommand(event);
-// 	
-// 	if ( command )
-// 	{
-// 		m_undoCommands->push(command);
-// 	}
+	if ( !m_viewDoc ) return;
+	
+	KTPaintAreaCommand *command = m_viewDoc->createCommand(event);
+	
+	if ( command )
+	{
+		m_projectManager->undoHistory()->push(command);
+	}
 }
 
 

@@ -179,7 +179,7 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 	{
 		QBrush brush;
 		KTSerializer::loadBrush( brush, atts);
-		
+		m_loading = qname;
 		if ( m_qname == "pen" )
 		{
 			QPen pen = itemPen();
@@ -194,6 +194,7 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 	else if ( qname == "pen" )
 	{
 		QPen pen;
+		m_loading = qname;
 		KTSerializer::loadPen( pen, atts);
 		setItemPen( pen );
 	}
@@ -208,6 +209,21 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 			qgraphicsitem_cast<KTTextItem *>(m_item)->setFont(font);
 		}
 	}
+	else if(qname == "stop")
+	{
+		if(m_gradient)
+		{
+			QColor c(atts.value("colorName"));
+			c.setAlpha(atts.value("alpha").toInt());
+			m_gradient->setColorAt ( atts.value("value").toDouble(), c);
+		}
+		
+	}
+	else if(qname == "gradient")
+	{
+		m_gradient = KTSerializer::createGradient( atts);
+	}
+	
 	
 	m_qname = qname;
 	
@@ -247,6 +263,17 @@ bool KTItemFactory::endElement(const QString&, const QString& , const QString& q
 	{
 		m_addToGroup = false;
 	}
+	else if( qname == "gradient")
+	{
+		if(m_loading == "brush")
+		{
+			setItemGradient(*m_gradient, true);
+		}
+		else
+		{
+			setItemGradient(*m_gradient, false);
+		}
+	}
 	
 	return true;
 }
@@ -281,6 +308,24 @@ void KTItemFactory::setItemBrush(const QBrush &brush)
 	if ( m_root == "path" || m_root == "rect" || m_root == "ellipse" )
 	{
 		qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_item)->setBrush(brush);
+	}
+}
+
+void  KTItemFactory::setItemGradient(const QGradient& gradient, bool brush)
+{
+	if ( m_root == "path" || m_root == "rect" || m_root == "ellipse" )
+	{
+		QAbstractGraphicsShapeItem * tmp = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_item);
+		if(brush)
+		{
+			tmp->setBrush( QBrush(gradient)  );
+		}
+		else
+		{
+			QPen pen = tmp->pen();
+			pen.setBrush(QBrush(gradient));
+			tmp->setPen(pen);
+		}
 	}
 }
 

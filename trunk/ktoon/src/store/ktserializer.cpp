@@ -103,6 +103,108 @@ void KTSerializer::loadProperties(QGraphicsItem *item, const QDomElement &e)
 }
 
 
+QDomElement KTSerializer::gradient(const QGradient *gradient, QDomDocument &doc)
+{
+	QDomElement element = doc.createElement("gradient");
+	element.setAttribute("type", gradient->type() );
+	element.setAttribute("spread", gradient->spread() );
+	
+	switch(gradient->type() )
+	{
+		case QGradient::LinearGradient:
+		{
+			element.setAttribute("startX", static_cast<const QLinearGradient *>(gradient)->start().x() );
+			element.setAttribute("startY", static_cast<const QLinearGradient *>(gradient)->start().y() );
+
+			element.setAttribute("finalX", static_cast<const QLinearGradient *>(gradient)->finalStop().x() );
+			element.setAttribute("finalY", static_cast<const QLinearGradient *>(gradient)->finalStop().y() );
+		}
+		break;
+		case QGradient::RadialGradient:
+		{
+			element.setAttribute("centerX", static_cast<const QRadialGradient *>(gradient)->center().x() );
+			element.setAttribute("centerY", static_cast<const QRadialGradient *>(gradient)->center().y() );
+
+			element.setAttribute("focalX", static_cast<const QRadialGradient *>(gradient)->focalPoint().x() );
+			element.setAttribute("focalY", static_cast<const QRadialGradient *>(gradient)->focalPoint().y() );
+
+			element.setAttribute("radius", static_cast<const QRadialGradient *>(gradient)->radius() );
+		}
+		break;
+		case QGradient::ConicalGradient:
+		{
+			element.setAttribute("centerX", static_cast<const QRadialGradient *>(gradient)->center().x() );
+			element.setAttribute("centerY", static_cast<const QRadialGradient *>(gradient)->center().y() );
+
+			element.setAttribute("angle", static_cast<const QConicalGradient *>(gradient)->angle() );
+		}
+		break;
+		case QGradient::NoGradient:
+		{
+
+		}
+		break;
+	}
+
+	QGradientStops stops = gradient->stops();
+
+	foreach(QGradientStop stop, stops)
+	{
+		QDomElement stopElement = doc.createElement("stop");
+		stopElement.setAttribute("value", stop.first );
+		stopElement.setAttribute("colorName", stop.second.name());
+		stopElement.setAttribute("alpha", stop.second.alpha());
+		element.appendChild(stopElement);
+	}
+	
+	return element;
+}
+
+
+
+
+QGradient * KTSerializer::createGradient(const QXmlAttributes &atts)
+{
+	
+	QGradient *result;
+	switch(atts.value("type").toInt() )
+	{
+		case QGradient::LinearGradient:
+		{
+			result = new QLinearGradient(QPointF(atts.value("startX").toDouble(),
+					atts.value("startY").toDouble()),
+				QPointF(atts.value("finalX").toDouble(),
+					atts.value("finalX").toDouble()));
+		}
+		break;
+		case QGradient::RadialGradient:
+		{
+			result = new QRadialGradient(
+					QPointF(atts.value("centerX").toDouble(),atts.value("centerX").toDouble()),
+					atts.value("radius").toDouble(),
+					QPointF(atts.value("focalX").toDouble(), atts.value("focalY").toDouble()));
+		}
+		break;
+		case QGradient::ConicalGradient:
+		{
+			result = new QRadialGradient(QPointF(atts.value("centerX").toDouble(),atts.value("centerX").toDouble()), atts.value("angle").toDouble());
+		}
+		break;
+		case QGradient::NoGradient:
+		{
+			result = 0;
+		}
+		break;
+	}
+	
+	if(!result)
+	{
+		return 0;
+	}
+	result->setSpread(QGradient::Spread( atts.value("spread").toInt() ) );
+	return result;
+}
+
 QDomElement KTSerializer::brush(const QBrush *brush, QDomDocument &doc)
 {
 	QDomElement brushElement = doc.createElement("brush");
@@ -110,12 +212,16 @@ QDomElement KTSerializer::brush(const QBrush *brush, QDomDocument &doc)
 // 	matrix () const
 	
 	brushElement.setAttribute( "style", brush->style());
-	brushElement.setAttribute( "color", brush->color().name() );
-	brushElement.setAttribute( "alpha", brush->color().alpha());
+	
 	
 	if ( brush->gradient() )
 	{
-		qDebug("NOT IMPLEMENTED YET!!!");
+		brushElement.appendChild( gradient( brush->gradient() , doc));
+	}
+	else if(brush->color().isValid())
+	{
+		brushElement.setAttribute( "color", brush->color().name() );
+		brushElement.setAttribute( "alpha", brush->color().alpha());
 	}
 	
 	QString strMatrix = "matrix(";
@@ -130,18 +236,23 @@ QDomElement KTSerializer::brush(const QBrush *brush, QDomDocument &doc)
 	strMatrix += QString::number(a) + "," +QString::number(b) + "," + QString::number(c) + "," + QString::number(d) + "," + QString::number(e) + "," + QString::number(f) + ")" ; 
 	
 	brushElement.setAttribute( "transform", strMatrix);
-	
 	return brushElement;
 }
+
+
 
 void KTSerializer::loadBrush(QBrush &brush, const QXmlAttributes &atts)
 {
 	brush.setStyle(Qt::BrushStyle(atts.value("style").toInt()) );
 	
-	QColor color(atts.value("color"));
-	color.setAlpha(atts.value("alpha").toInt());
 	
-	brush.setColor(color);
+	SHOW_VAR(atts.value("color"));
+	if(!atts.value("color").isEmpty())
+	{
+		QColor color(atts.value("color"));
+		color.setAlpha(atts.value("alpha").toInt());
+		brush.setColor(color);
+	}
 	
 	QMatrix matrix;
 	KTSvg2Qt::svgmatrix2qtmatrix( atts.value("transform"), matrix );
@@ -151,9 +262,14 @@ void KTSerializer::loadBrush(QBrush &brush, const QXmlAttributes &atts)
 void KTSerializer::loadBrush(QBrush &brush, const QDomElement &e)
 {
 	brush.setStyle(Qt::BrushStyle(e.attribute("style").toInt()) );
-	
-	brush.setColor(QColor(e.attribute("color")));
-	
+	if(!e.attribute("color").isEmpty())
+	{
+		brush.setColor(QColor(e.attribute("color")));
+	}
+	else
+	{
+		
+	}
 	QMatrix matrix;
 	KTSvg2Qt::svgmatrix2qtmatrix( e.attribute("transform"), matrix );
 	brush.setMatrix(matrix);
@@ -186,8 +302,11 @@ void KTSerializer::loadPen(QPen &pen, const QXmlAttributes &atts)
 	pen.setWidth( atts.value("width").toInt() );
 	pen.setMiterLimit( atts.value("miterLimit").toInt() );
 	
-	QColor color(atts.value("color") );
-	color.setAlpha(atts.value("alpha").toInt() );
+	if(!atts.value("color").isEmpty())
+	{
+		QColor color(atts.value("color") );
+		color.setAlpha(atts.value("alpha").toInt() );
+	}
 	
 	
 }

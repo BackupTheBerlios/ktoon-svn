@@ -364,8 +364,8 @@ void KTViewColorCells::setupButtons()
 	
 	DImageButton *m_removeColor = new DImageButton( QPixmap( THEME_DIR + "/icons/minussign.png"), 22/*, containerButtons*/);
 	
-	connect( m_removeColor, SIGNAL( clicked() ), SLOT( removeColor() ) );
-	m_removeColor->setToolTip(tr( "Add Color" ));
+	connect( m_removeColor, SIGNAL( clicked() ), SLOT( removeCurrentColor() ) );
+	m_removeColor->setToolTip(tr( "Remove Color" ));
 	bLayout->addWidget(m_removeColor);
 	
 #if 0

@@ -61,9 +61,6 @@ class STORE_EXPORT KTItemFactory : public QXmlDefaultHandler
 		 */
 		bool fatalError ( const QXmlParseException & exception );
 		
-		
-		
-		
 	public:
 		QGraphicsItem *create(const QString &xml);
 		bool loadItem(QGraphicsItem *item, const QString &xml);
@@ -71,9 +68,10 @@ class STORE_EXPORT KTItemFactory : public QXmlDefaultHandler
 	private:
 		void setItemPen(const QPen &pen);
 		void setItemBrush(const QBrush &brush);
+		void setItemGradient(const QGradient& gradient, bool brush );
+		
 		QPen itemPen() const;
 		QBrush itemBrush() const;
-		
 		
 		QGraphicsItem* createItem(const QString &xml);
 		
@@ -82,6 +80,8 @@ class STORE_EXPORT KTItemFactory : public QXmlDefaultHandler
 		QString m_root;
 		
 		QGraphicsItem *m_item;
+		QGradient *m_gradient;
+		QString m_loading;//brush or pen
 		
 		QStack<QGraphicsItem *> m_childs;
 		

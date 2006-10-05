@@ -254,10 +254,10 @@ class KTOON_EXPORT KTGradientSelector : public QAbstractSlider
 		
 	public slots:
 		void addArrow(QPoint position, QColor color);
-		
+		virtual void valueChange( int value);
 	protected:
 		virtual void drawContents( QPainter * );
-		virtual void valueChange( int value);
+		
 		virtual void paintEvent( QPaintEvent * );
 		virtual void mousePressEvent( QMouseEvent *e );
 		virtual void mouseMoveEvent( QMouseEvent *e );

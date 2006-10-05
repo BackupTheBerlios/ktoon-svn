@@ -224,11 +224,16 @@ void KTColorPalette::setColor(const QBrush& brush)
 // 	emit brushChanged( m_outlineAndFillColors->foreground(),m_outlineAndFillColors->background() );
 		
 	// FIXME: emitir estos eventos independientemente segun sea escogido.
-	KTPaintAreaEvent event(KTPaintAreaEvent::ChangeBrush, m_outlineAndFillColors->background());
-	emit paintAreaEventTriggered( &event );
-	
-	KTPaintAreaEvent event2(KTPaintAreaEvent::ChangePenBrush, m_outlineAndFillColors->foreground());
-	emit paintAreaEventTriggered( &event2 );
+// 	if(m_outlineAndFillColors->current() == DDualColorButton::Background)
+// 	{
+		KTPaintAreaEvent event(KTPaintAreaEvent::ChangeBrush, m_outlineAndFillColors->background());
+		emit paintAreaEventTriggered( &event );
+// 	}
+// 	else
+// 	{
+		KTPaintAreaEvent event2(KTPaintAreaEvent::ChangePenBrush, m_outlineAndFillColors->foreground());
+		emit paintAreaEventTriggered( &event2 );
+// 	}
 }
 
 void KTColorPalette::setFG(const QBrush &brush)
