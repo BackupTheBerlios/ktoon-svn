@@ -10,7 +10,16 @@ CONFIG_STATUS=configure.status
 EMAIL='krawek@toonka.com'
 
 MAKE=`which make`
-QMAKE=`which qmake`
+
+if [ ! "$QTDIR" = "" ]
+then
+        if [ -x "$QTDIR/bin/qmake" ]
+        then
+		QMAKE="$QTDIR/bin/qmake"
+        fi
+else
+	QMAKE=`which qmake`
+fi
 
 LOG_FILE=build.log
 

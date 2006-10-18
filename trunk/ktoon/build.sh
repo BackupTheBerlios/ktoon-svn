@@ -50,6 +50,16 @@ function verifyEnv()
 		qperror "Program \"qmake\" is missing in your path variable!"
                 qperror "Have you installed qmake?"
 		exit -1
+        else
+                VERSION=`$QMAKE -query QT_VERSION` 
+                if [ ! "$VERSION" = "4.2.0" ]
+                then
+			qperror "Qt version required to compile KToon is 4.2.0"
+                        qperror "Qt version detected: $VERSION"
+			qperror "If you have installed Qt 4.2.0, please define the QTDIR variable"
+			qperror "pointing to the path where it is installed."
+			exit -1
+                fi
 	fi
 	
 	if [ ! -x $MAKE -a $MAKE ]
@@ -58,15 +68,15 @@ function verifyEnv()
                 qperror "Have you installed make?"
 		exit -1
 	fi
-	
-	if [ ! $QMAKE ]
-	then
+
+        if [ ! "$QTDIR" = "" ]
+        then
 		if [ -x "$QTDIR/bin/qmake" ]
 		then
 			QMAKE="$QTDIR/bin/qmake"
 		else
 			qperror "Ooops... it looks like the \"Qtlibs\" package is missing in your system"
-                        qperror "Please install it and try to compile KToon again"
+               		qperror "Please install it and try to compile KToon again"
 			exit 1
 		fi
 	fi
