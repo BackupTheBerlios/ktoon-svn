@@ -58,23 +58,23 @@ DDockWindow::DDockWindow(QWidget *parent, Position position) : QDockWidget( pare
 	
 	connect(this, SIGNAL(topLevelChanged ( bool)), this, SLOT(setFloatingOption(bool)));
 	
-#if QT_VERSION >= 0x040100
-	setStyle(new QWindowsStyle());
-#else
-	QList<QWidget*> widgets = findChildren<QWidget*>();
-	QList<QWidget*>::ConstIterator it = widgets.begin();
-	
-	while (it != widgets.end())
-	{
-		if ((*it)->metaObject()->className() == QString("QDockWidgetTitle"))
-		{
-			(*it)->setStyle("windows");
-			(*it)->hide();
-			break;
-		}
-		++it;
-	}
-#endif
+// #if QT_VERSION >= 0x040100
+// 	setStyle(new QWindowsStyle());
+// #else
+// 	QList<QWidget*> widgets = findChildren<QWidget*>();
+// 	QList<QWidget*>::ConstIterator it = widgets.begin();
+// 	
+// 	while (it != widgets.end())
+// 	{
+// 		if ((*it)->metaObject()->className() == QString("QDockWidgetTitle"))
+// 		{
+// // 			(*it)->setStyle("windows");
+// 			(*it)->hide();
+// 			break;
+// 		}
+// 		++it;
+// 	}
+// #endif
 }
 
 DDockWindow::~DDockWindow()
@@ -513,10 +513,13 @@ void DDockInternalWidget::shrink()
 
 void DDockInternalWidget::setSeparator(QWidget *separator)
 {
+#if QT_VERSION >= 0x040100 && QT_VERSION < 0x040200
 	Q_CHECK_PTR(separator);
 	m_separator = separator;
 	
+
 	m_separator->setStyle(new QWindowsStyle());
+#endif
 }
 
 void DDockInternalWidget::dialoged(int index)

@@ -5,8 +5,8 @@
 
 QT += xml svg opengl 
 KDEV_QTVER = 4 
-INSTALLS += ktdata 
-#target.path = /bin/ 
+INSTALLS += ktdata target
+target.path = /bin/ 
 ktdata.files += data/* 
 ktdata.path = /data 
 unix {

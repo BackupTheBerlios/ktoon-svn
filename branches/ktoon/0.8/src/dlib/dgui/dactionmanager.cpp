@@ -40,7 +40,9 @@ bool DActionManager::insert(DAction *action)
 		return false;
 	}
 
-	return m_actionDict.insert( id, action );
+	m_actionDict.insert( id, action );
+	
+	return true;
 }
 
 void DActionManager::remove( DAction* action )
