@@ -17,12 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "ktitemgroup.h"
 #include "ddebug.h"
 
-KTItemGroup::KTItemGroup(QGraphicsItem * parent , QGraphicsScene * scene): QGraphicsItemGroup(parent, scene)
+KTItemGroup::KTItemGroup(QGraphicsItem *parent , QGraphicsScene *scene) : QGraphicsItemGroup(parent, scene)
 {
-	
 }
 
 
@@ -30,8 +30,6 @@ KTItemGroup::~KTItemGroup()
 {
 	
 }
-
-Q_DECLARE_METATYPE(QGraphicsItem *);
 
 QVariant KTItemGroup::itemChange ( GraphicsItemChange change, const QVariant & value )
 {

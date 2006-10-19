@@ -95,9 +95,9 @@ void KTProjectManager::setupNewProject(KTProjectManagerParams *params)
 	// Hacer mediante comandos!
 	
 	
-// 	m_commandExecutor->createScene( 0);
-// 	m_commandExecutor->createLayer(0, 0);
-// 	m_commandExecutor->createFrame( 0, 0, 0);
+	m_commandExecutor->createScene( 0 );
+	m_commandExecutor->createLayer( 0, 0 );
+	m_commandExecutor->createFrame( 0, 0, 0 );
 }
 
 
