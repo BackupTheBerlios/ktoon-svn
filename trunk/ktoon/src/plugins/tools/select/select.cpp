@@ -143,7 +143,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 				QDomDocument doc;
 				doc.appendChild(KTSerializer::properties( manager->parentItem(), doc ));
 				
-				int position  = scene->currentFrame()->graphics().indexOf(manager->parentItem());
+				int position  = scene->currentFrame()->indexOf(manager->parentItem());
 				if(position != -1)
 				{
 					KTItemRequest *event = new KTItemRequest(KTProjectRequest::Transform, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, doc.toString() );

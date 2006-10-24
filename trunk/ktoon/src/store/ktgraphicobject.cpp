@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,48 +18,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef FILLTOOLPLUGIN_H
-#define FILLTOOLPLUGIN_H
+#include "ktgraphicobject.h"
 
-#include <QObject>
-#include <QLabel>
-
-#include <kttoolplugin.h>
-
-class KTPathItem;
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-
-class FillTool : public KTToolPlugin
+KTGraphicObject::KTGraphicObject(QGraphicsItem *item, QObject *parent)
+	: QObject(parent), m_item(item)
 {
-	Q_OBJECT;
-	
-	public:
-		FillTool();
-		~FillTool();
-		
-		virtual QStringList keys() const;
-		
-		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
-		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
-		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
-		
-		KTPathItem *itemPressed(QGraphicsItem *item, const KTBrushManager *brush);
-		
-		virtual QMap<QString, DAction *> actions() const;
-		
-		int toolType() const;
-		
-		virtual QWidget *configurator();
-		virtual void aboutToChangeTool();
-		
-	private:
-		void setupActions();
-		
-	private:
-		QMap<QString, DAction *> m_actions;
-};
+}
 
-#endif
+
+KTGraphicObject::~KTGraphicObject()
+{
+}
+
+void KTGraphicObject::fromXml(const QString &xml )
+{
+}
+
+QDomElement KTGraphicObject::toXml(QDomDocument &doc)
+{
+}
+
+
+void KTGraphicObject::setItem(QGraphicsItem *item)
+{
+	m_item = item;
+}
+
+QGraphicsItem *KTGraphicObject::item() const
+{
+	return m_item;
+}
+
+
+

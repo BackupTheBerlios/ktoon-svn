@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "filltool.h"
+#include "erasertool.h"
 
 #include <QKeySequence>
 #include <QDebug>
@@ -39,27 +39,27 @@
 
 #include "ktscene.h"
 
-FillTool::FillTool()
+EraserTool::EraserTool()
 {
 	setupActions();
 }
 
-FillTool::~FillTool()
+EraserTool::~EraserTool()
 {
 }
 
-QStringList FillTool::keys() const
+QStringList EraserTool::keys() const
 {
-	return QStringList() << tr("Fill");
+	return QStringList() << tr("Eraser");
 }
 
-void FillTool::setupActions()
+void EraserTool::setupActions()
 {
-	DAction *action1 = new DAction( QIcon(THEME_DIR+"/icons/fill.png"), tr("Fill"), this);
-	action1->setShortcut( QKeySequence(tr("Ctrl+F")) );
-	action1->setCursor( QCursor(THEME_DIR+"/cursors/paint.png") );
+	DAction *action1 = new DAction( QIcon(THEME_DIR+"/icons/eraser.png"), tr("Eraser"), this);
+// 	action1->setShortcut( QKeySequence(tr("Ctrl+F")) );
+	action1->setCursor( QCursor(THEME_DIR+"/cursors/eraser.png") );
 	
-	m_actions.insert( tr("Fill"), action1 );
+	m_actions.insert( tr("Eraser"), action1 );
 	
 // 	DAction *action2 = new DAction(QIcon(THEME_DIR+"/icons/ellipse.png"), tr("Ellipse"), this);
 // 	action2->setShortcut( QKeySequence(tr("Ctrl+E")) );
@@ -73,84 +73,78 @@ void FillTool::setupActions()
 // 	m_actions.insert(tr("Line"), action3);
 }
 
-void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void EraserTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
 	if(input->buttons() == Qt::LeftButton)
 	{
 		QPoint pos = input->pos();
 		
-		if ( currentTool() == tr("Fill") )
+		if ( currentTool() == tr("Eraser") )
 		{
 			QList<QGraphicsItem *> items = scene->items(input->pos());
 	
 			if ( items.count() > 0 )
 			{
 				QGraphicsItem *itemPress = items[0];
-				if  ( KTPathItem *fillItem = itemPressed(itemPress, brushManager) )
-				{
-					QDomDocument doc;
-					doc.appendChild(fillItem->toXml( doc ));
-		
-					KTItemRequest *event = new KTItemRequest(KTProjectRequest::Add, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), doc.toString()); // Adds to end
-	
-					addProjectEvent(event);
-					
-					return;
-				}
+				itemPressed(itemPress, brushManager, pos);
 			}
 		}
 	}
 }
 
-void FillTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void EraserTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
 }
 
-void FillTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void EraserTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
 }
 
-QMap<QString, DAction *> FillTool::actions() const
+QMap<QString, DAction *> EraserTool::actions() const
 {
 	return m_actions;
 }
 
-int FillTool::toolType() const
+int EraserTool::toolType() const
 {
-	return Fill;
+	return Brush;
 }
 		
-QWidget  *FillTool::configurator()
+QWidget  *EraserTool::configurator()
 {
 	return  0;
 }
 
-void FillTool::aboutToChangeTool() 
+void EraserTool::aboutToChangeTool() 
 {
 	
 }
 
-KTPathItem *FillTool::itemPressed(QGraphicsItem *item, const KTBrushManager *brush)
+void EraserTool::itemPressed(QGraphicsItem *item, const KTBrushManager *brush, const QPoint &pos)
 {
-	KTPathItem *fillItem = 0;
-	
 	QList<QGraphicsItem *> collides = item->collidingItems();
 	
 	if ( collides.count() == 0)
 	{
-		fillItem = KTItemConverter::convertToPath( item );
+		QRect intersectRect(pos.x()-(brush->pen().width()/2), pos.y()-(brush->pen().width())/2, brush->pen().width(), brush->pen().width());
 		
-		fillItem->setBrush(brush->pen().brush());
-		fillItem->setPen(Qt::NoPen);
+		KTPathItem *path = qgraphicsitem_cast<KTPathItem*>(item);
 		
-		fillItem->setZValue(item->zValue()+1);
-		
-		item->scene()->addItem(fillItem );
+		if ( !path )
+		{
+// 			QString conv = "<convert type=\"2\" />"; // to path type
+// 			KTItemRequest *event = new KTItemRequest(KTProjectRequest::Convert, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().indexOf(item), conv);
+// 			addProjectEvent(event);
+		}
+		else
+		{
+			QPainterPath ppath = path->path();
+			
+			
+			
+		}
 	}
-	
-	
-	return fillItem;
 }
 
-Q_EXPORT_PLUGIN2( kt_fill, FillTool )
+Q_EXPORT_PLUGIN2( kt_eraser, EraserTool )
 

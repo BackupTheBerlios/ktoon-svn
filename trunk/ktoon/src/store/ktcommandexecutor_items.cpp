@@ -120,7 +120,7 @@ QStringList KTCommandExecutor::removeItems(int scenePosition, int layerPosition,
 					{
 						orig.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml( orig ));
 						infoItems << orig.toString();
-						frame->removeItemAt(pstn-count);
+						frame->removeGraphicAt(pstn-count);
 						
 						count++;
 					}
@@ -222,7 +222,7 @@ QString KTCommandExecutor::convertItem(int scenePosition, int layerPosition, int
 							KTPathItem *path = KTItemConverter::convertToPath( item );
 							scene->addItem(path);
 							
-							frame->replaceGraphic(position, path);
+							frame->replaceItem(position, path);
 						}
 						break;
 						case 3: // Rect
@@ -230,7 +230,7 @@ QString KTCommandExecutor::convertItem(int scenePosition, int layerPosition, int
 							KTRectItem *rect = KTItemConverter::convertToRect( item );
 							scene->addItem(rect);
 							
-							frame->replaceGraphic(position, rect);
+							frame->replaceItem(position, rect);
 						}
 						break;
 						case 4: // Ellipse
@@ -239,7 +239,7 @@ QString KTCommandExecutor::convertItem(int scenePosition, int layerPosition, int
 							
 							scene->addItem(ellipse);
 							
-							frame->replaceGraphic(position, ellipse);
+							frame->replaceItem(position, ellipse);
 						}
 						break;
 						

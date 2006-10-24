@@ -26,6 +26,8 @@
 #include <QGraphicsView>
 #include <QStyleOptionGraphicsItem>
 
+#include "ktgraphicobject.h"
+
 #include "ktitemgroup.h"
 
 KTScene::KTScene(KTProject *parent) : QGraphicsScene(parent), m_isLocked(false),  m_layerCount(0), m_isVisible(true)
@@ -135,9 +137,9 @@ QGraphicsScene *KTScene::photogram(int index)
 		{
 			if(layer->frames()[index])
 			{
-				foreach(QGraphicsItem *item,  layer->frames()[index]->graphics())
+				foreach(KTGraphicObject *object,  layer->frames()[index]->graphics())
 				{
-					scene->addItem ( item );
+					scene->addItem ( object->item() );
 				}
 			}
 		}
@@ -334,8 +336,10 @@ void KTScene::addFrame(KTFrame *frame, double opacity)
 {
 	if ( frame )
 	{
-		foreach(QGraphicsItem *item, frame->graphics() )
+		foreach(KTGraphicObject *object, frame->graphics() )
 		{
+			QGraphicsItem *item = object->item();
+			
 			m_onionSkin.opacityMap.insert(item, opacity);
 			
 			addItem(item);

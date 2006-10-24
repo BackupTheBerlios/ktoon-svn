@@ -26,20 +26,12 @@
 #include "ktitemfactory.h"
 
 #include <QGraphicsItem>
-#include "ktitemgroup.h"
+#include "ktgraphicobject.h"
 
-// #include "ktbuttonitem.h"
-// #include "kttextitem.h"
+#include "ktitemgroup.h"
 
 KTFrame::KTFrame(KTLayer *parent) : QObject(parent), m_name("Frame"), m_isLocked(false), m_isVisible(true)
 {
-	init();
-}
-
-
-void KTFrame::init()
-{
-// 	setItemIndexMethod(QGraphicsScene::NoIndex);
 }
 
 KTFrame::~KTFrame()
@@ -124,9 +116,9 @@ QDomElement KTFrame::toXml(QDomDocument &doc)
 	root.setAttribute("name", m_name );
 	doc.appendChild(root);
 	
-	QList<QGraphicsItem *>::ConstIterator iterator = m_items.begin();
+	QList<KTGraphicObject *>::ConstIterator iterator = m_graphics.begin();
 	
-	while ( iterator != m_items.end() )
+	while ( iterator != m_graphics.end() )
 	{
 // 		root.appendChild( (*iterator)->toXml(doc) );
 		++iterator;
@@ -135,26 +127,19 @@ QDomElement KTFrame::toXml(QDomDocument &doc)
 	return root;
 }
 
-void KTFrame::addGraphic(QGraphicsItem *item)
+void KTFrame::addItem(QGraphicsItem *item)
 {
-	if ( m_items.count() )
+	if ( m_graphics.count() )
 	{
-		item->setZValue(m_items.last()->zValue()+1);
+		if ( QGraphicsItem *lastItem = m_graphics.last()->item() )
+		{
+			item->setZValue(lastItem->zValue()+1);
+		}
 	}
 	
-	m_items << item;
-// 	addItem(item);
-}
-
-void KTFrame::removeGraphic(QGraphicsItem *item)
-{
-	m_items.removeAll(item);
 	
-	QGraphicsScene *scene = item->scene();
-	if( scene )
-	{
-		scene->removeItem(item);
-	}
+	KTGraphicObject *object = new KTGraphicObject(item);
+	m_graphics << object;
 }
 
 
@@ -166,50 +151,56 @@ QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group 
 	
 	qSort(group.begin(), group.end());
 	
-	KTItemGroup *g = new KTItemGroup(0, item(group[0])->scene());
+	
+	KTItemGroup *g = new KTItemGroup(0);
 	
 	foreach( int pos, group )
 	{
 		QGraphicsItem *item = this->item(pos-count);
 		
-// 		removeItemAt(pos-count);
-		
 		g->addToGroup( item );
 		count++;
 	}
 	
-	m_items.insert(position, g);
+	m_graphics.insert(position, new KTGraphicObject(g));
 	
 	return g;
 }
 
-void KTFrame::replaceGraphic(int position, QGraphicsItem *item)
+void KTFrame::replaceItem(int position, QGraphicsItem *item)
 {
-	QGraphicsItem *toReplace = this->item(position);
+	KTGraphicObject *toReplace = this->graphic(position);
 	
 	if ( toReplace )
 	{
-		m_items.replace(position, item);
+		toReplace->setItem(item);
 	}
 }
 
-bool KTFrame::removeItemAt(int position)
+bool KTFrame::removeGraphicAt(int position)
 {
-	if ( position < 0 || position >= m_items.count() )
+	if ( position < 0 || position >= m_graphics.count() )
 	{
 		return false;
 	}
 	
-	QGraphicsItem *item = m_items.takeAt(position);
+	KTGraphicObject *object = m_graphics.takeAt(position);
 	
-	QGraphicsScene *scene = item->scene();
+	QGraphicsItem *item = object->item();
 	
-	if(scene)
+	if ( item )
 	{
-		scene->removeItem(item);
+		QGraphicsScene *scene = item->scene();
+		
+		if(scene)
+		{
+			scene->removeItem(item);
+		}
+		
+		return true;
 	}
 	
-	return true;
+	return false;
 }
 
 QGraphicsItem *KTFrame::createItem(int position, const QString &xml)
@@ -219,31 +210,66 @@ QGraphicsItem *KTFrame::createItem(int position, const QString &xml)
 	QGraphicsItem *item = itemFactory.create( xml );
 	if ( item )
 	{
-		addGraphic( item );
+		addItem( item );
 	}
 	
 	return item;
 }
 
 
-QList<QGraphicsItem *> KTFrame::graphics() const
+QList<KTGraphicObject *> KTFrame::graphics() const
 {
-	return m_items;
+	return m_graphics;
 }
 
-QGraphicsItem *KTFrame::item(int position) const
+KTGraphicObject *KTFrame::graphic(int position) const
 {
-	if ( position < 0 || position >= m_items.count() )
+	if ( position < 0 || position >= m_graphics.count() )
 	{
 		D_FUNCINFO << " FATAL ERROR: index out of bound " << position;
 		return 0;
 	}
 	
-	return m_items[position];
+	return m_graphics[position];
 }
+
+QGraphicsItem *KTFrame::item(int position) const
+{
+	KTGraphicObject *object = graphic(position);
+	
+	if ( object )
+	{
+		return object->item();
+	}
+	
+	return 0;
+}
+
+int KTFrame::indexOf(KTGraphicObject *object)
+{
+	return m_graphics.indexOf(object);
+}
+
+int KTFrame::indexOf(QGraphicsItem *item)
+{
+	int index = -1;
+	foreach(KTGraphicObject *object, m_graphics)
+	{
+		if (object->item() == item )
+		{
+			return index;
+		}
+		
+		index++;
+	}
+	
+	return index;
+}
+
 
 KTLayer *KTFrame::layer() const
 {
 	return static_cast<KTLayer *>(parent());
 }
+
 

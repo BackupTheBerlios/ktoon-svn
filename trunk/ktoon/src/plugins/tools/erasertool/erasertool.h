@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef FILLTOOLPLUGIN_H
-#define FILLTOOLPLUGIN_H
+#ifndef ERASERTOOLPLUGIN_H
+#define ERASERTOOLPLUGIN_H
 
 #include <QObject>
 #include <QLabel>
@@ -32,13 +32,13 @@ class KTPathItem;
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class FillTool : public KTToolPlugin
+class EraserTool : public KTToolPlugin
 {
 	Q_OBJECT;
 	
 	public:
-		FillTool();
-		~FillTool();
+		EraserTool();
+		~EraserTool();
 		
 		virtual QStringList keys() const;
 		
@@ -46,7 +46,7 @@ class FillTool : public KTToolPlugin
 		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 		
-		KTPathItem *itemPressed(QGraphicsItem *item, const KTBrushManager *brush);
+		void itemPressed(QGraphicsItem *item, const KTBrushManager *brush, const QPoint &pos);
 		
 		virtual QMap<QString, DAction *> actions() const;
 		

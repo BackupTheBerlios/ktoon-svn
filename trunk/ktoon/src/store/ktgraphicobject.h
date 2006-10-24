@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,92 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTFRAME_H
-#define KTFRAME_H
+#ifndef KTGRAPHICOBJECT_H
+#define KTGRAPHICOBJECT_H
 
-#include <QGraphicsScene>
+#include <QObject>
 #include "ktabstractserializable.h"
-
-#include <QDomDocument>
-#include <QDomElement>
 #include "ktglobal_store.h"
 
-class KTFrame;
-class KTLayer;
-class KTGraphicObject;
+class QGraphicsItem;
+
 
 /**
- * @brief Esta clase representa un marco o frame de la animacion
- * @author David Cuadrado \<krawek@toonka.com\>
+ * @author David Cuadrado <krawek@gmail.com>
 */
-class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
+class STORE_EXPORT KTGraphicObject : public QObject, public KTAbstractSerializable
 {
 	public:
-		/**
-		 * Constructor por defecto
-		 */
-		KTFrame(KTLayer *parent);
+		KTGraphicObject(QGraphicsItem *item = 0, QObject *parent = 0);
+		~KTGraphicObject();
 		
-		/**
-		 * Destructor
-		 */
-		~KTFrame();
-		
-		/**
-		 * Pone el nombre del frame
-		 */
-		void setFrameName(const QString &name);
-		
-		/**
-		 * Bloquea el frame
-		 */
-		void setLocked(bool isLocked);
-		
-		/**
-		 * Retorna el nombre del frame
-		 */
-		QString frameName() const;
-		
-		/**
-		 * Returna verdadero cuando el frame esta bloqueado
-		 */
-		bool isLocked() const;
-		
-		
-		void setVisible(bool isVisible);
-		bool isVisible() const;
-		
-		void addItem(QGraphicsItem *item);
-		
-		void replaceItem(int position, QGraphicsItem *item);
-		
-		bool removeGraphicAt(int position);
-		QGraphicsItem *createItem(int position, const QString &xml);
-		
-		QList<KTGraphicObject *> graphics() const;
-		
-		
-		KTGraphicObject *graphic(int position) const;
-		QGraphicsItem *item(int position) const;
-		
-		QGraphicsItemGroup *createItemGroupAt( int position, QList<qreal> group );
-		
-		KTLayer *layer() const;
-		
-		int indexOf(KTGraphicObject *object);
-		int indexOf(QGraphicsItem *item);
+		void setItem(QGraphicsItem *item);
+		QGraphicsItem *item() const;
 		
 	public:
 		virtual void fromXml(const QString &xml );
 		virtual QDomElement toXml(QDomDocument &doc);
 		
 	private:
-		QString m_name;
-		bool m_isLocked;
-		bool m_isVisible;
-		
-		QList<QGraphicsItem *> m_items;
-		QList<KTGraphicObject *> m_graphics;
+		QGraphicsItem *m_item;
 };
 
 #endif

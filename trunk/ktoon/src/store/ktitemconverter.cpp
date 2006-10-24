@@ -46,12 +46,17 @@ void KTItemConverter::copyProperties(QGraphicsItem *src, QGraphicsItem *dest)
 	
 	
 	// Shapes
-	QAbstractGraphicsShapeItem *shape =  qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(src);
+	QAbstractGraphicsShapeItem *shape =  dynamic_cast<QAbstractGraphicsShapeItem*>(src);
 	QAbstractGraphicsShapeItem *shapeDst = qgraphicsitem_cast<QAbstractGraphicsShapeItem*>(dest);
 	
 	if ( shape && dest )
 	{
-		shapeDst->setBrush( shape->brush() );
+		QBrush shapeBrush = shape->brush();
+		
+		if ( shapeBrush.color().isValid() || shapeBrush.gradient() || 
+		!shapeBrush.texture().isNull() )
+			shapeDst->setBrush( shape->brush() );
+		
 		shapeDst->setPen(shape->pen() );
 	}
 }

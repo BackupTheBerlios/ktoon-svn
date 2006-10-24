@@ -133,7 +133,7 @@ void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManage
 	QDomDocument doc;
 	doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_item)->toXml( doc ));
 	
-	KTItemRequest *event = new KTItemRequest(KTProjectRequest::Add, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), -1, doc.toString()); // Adds to end
+	KTItemRequest *event = new KTItemRequest(KTProjectRequest::Add, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), doc.toString()); // Adds to end
 	
 	addProjectEvent(event);
 }

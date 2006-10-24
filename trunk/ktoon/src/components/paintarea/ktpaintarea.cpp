@@ -319,7 +319,7 @@ void KTPaintArea::mouseMoveEvent ( QMouseEvent * event )
 		m_tool->move(m_inputInformation, m_brushManager,  qobject_cast<KTScene *>(scene()), this );
 	}
 	
-	emit cursorPosition( mapToScene( eventMapped->pos() ) );
+	emit cursorPosition( mapToScene( event->pos() ) );
 	
 	delete eventMapped;
 	

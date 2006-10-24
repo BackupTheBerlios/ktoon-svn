@@ -9,7 +9,8 @@ SUBDIRS += brush \
            text \
            geometrictool \
            viewtool \
-           filltool 
+           filltool \
+           erasertool 
 KDEV_QTVER = 4
 CONFIG += release \
 warn_on

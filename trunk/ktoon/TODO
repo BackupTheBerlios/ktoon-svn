@@ -1,6 +1,6 @@
 
 - Herramientas -
-	* de Relleno
+	* de Relleno ~
 	* de Borrado
 	* de Seleccion
 		- rotate/shear
@@ -19,8 +19,6 @@
 		- Agrupar 					PRIORIDAD
 		- Reglas
 		- Lineas de ayuda
-	* Paleta
-		- Gradientes
 	* Tweening
 	* Library(No olvidar soporte para red)
 
