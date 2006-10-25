@@ -525,7 +525,7 @@ void KTPaintArea::deleteItems()
 		{
 			foreach(QGraphicsItem *item, selecteds)
 			{
-				int indexOfItem = currentScene->currentFrame()->graphics().indexOf(item);
+				int indexOfItem = currentScene->currentFrame()->indexOf(item);
 				if(indexOfItem != -1)
 				{
 					if(strItems.isEmpty())
@@ -535,7 +535,6 @@ void KTPaintArea::deleteItems()
 					}
 					else
 					{
-						
 						strItems += " , "+ QString::number(indexOfItem);
 					}
 				}
@@ -570,16 +569,16 @@ void KTPaintArea::groupItems()
 		{
 			foreach(QGraphicsItem *item, selecteds)
 			{
-				if(currentScene->currentFrame()->graphics().indexOf(item) != -1)
+				if(currentScene->currentFrame()->indexOf(item) != -1)
 				{
 					if(strItems.isEmpty())
 					{
-						strItems +="("+ QString::number(currentScene->currentFrame()->graphics().indexOf(item)) ;
-						firstItem = currentScene->currentFrame()->graphics().indexOf(item);
+						strItems +="("+ QString::number(currentScene->currentFrame()->indexOf(item)) ;
+						firstItem = currentScene->currentFrame()->indexOf(item);
 					}
 					else
 					{
-						strItems += " , "+ QString::number(currentScene->currentFrame()->graphics().indexOf(item));
+						strItems += " , "+ QString::number(currentScene->currentFrame()->indexOf(item));
 					}
 				}
 			}
@@ -682,7 +681,7 @@ void KTPaintArea::pasteItems()
 	
 	foreach(QString xml, m_copiesXml)
 	{
-		KTItemRequest event(KTProjectRequest::Add, currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), -1, xml);
+		KTItemRequest event(KTProjectRequest::Add, currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), currentScene->currentFrame()->graphics().count(), xml);
 		emit requestTriggered(&event);
 	}
 	

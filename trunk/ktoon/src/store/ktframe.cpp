@@ -255,12 +255,13 @@ int KTFrame::indexOf(QGraphicsItem *item)
 	int index = -1;
 	foreach(KTGraphicObject *object, m_graphics)
 	{
+		index++;
+		
 		if (object->item() == item )
 		{
 			return index;
 		}
 		
-		index++;
 	}
 	
 	return index;
