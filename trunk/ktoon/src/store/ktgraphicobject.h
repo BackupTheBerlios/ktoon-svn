@@ -40,11 +40,15 @@ class STORE_EXPORT KTGraphicObject : public QObject, public KTAbstractSerializab
 		void setItem(QGraphicsItem *item);
 		QGraphicsItem *item() const;
 		
+		void setObjectName(const QString &name);
+		QString objectName() const;
+		
 	public:
 		virtual void fromXml(const QString &xml );
 		virtual QDomElement toXml(QDomDocument &doc);
 		
 	private:
+		QString m_name;
 		QGraphicsItem *m_item;
 };
 

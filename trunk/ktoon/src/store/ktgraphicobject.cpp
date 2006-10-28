@@ -20,6 +20,9 @@
 
 #include "ktgraphicobject.h"
 
+#include <QMatrix>
+#include <QGraphicsItem>
+
 KTGraphicObject::KTGraphicObject(QGraphicsItem *item, QObject *parent)
 	: QObject(parent), m_item(item)
 {
@@ -36,6 +39,7 @@ void KTGraphicObject::fromXml(const QString &xml )
 
 QDomElement KTGraphicObject::toXml(QDomDocument &doc)
 {
+	return QDomElement();
 }
 
 
@@ -50,4 +54,14 @@ QGraphicsItem *KTGraphicObject::item() const
 }
 
 
+
+void KTGraphicObject::setObjectName(const QString &name)
+{
+	m_name = name;
+}
+
+QString KTGraphicObject::objectName() const
+{
+	return m_name;
+}
 

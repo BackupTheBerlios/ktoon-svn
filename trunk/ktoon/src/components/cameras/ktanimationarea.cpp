@@ -24,7 +24,7 @@
 #include <QGraphicsItem>
 
 #include "ktscenerequest.h"
-
+#include "ktgraphicobject.h"
 
 #include "ddebug.h"
 
@@ -197,8 +197,9 @@ void KTAnimationArea::render() // TODO: Extend to scenes
 			{
 				KTFrame *frame = (*layerIterator)->frames()[nPhotogramsRenderized];
 				
-				foreach(QGraphicsItem *item, frame->graphics())
+				foreach(KTGraphicObject *object, frame->graphics())
 				{
+					QGraphicsItem *item = object->item();
 					item->setSelected(false);
 					scn->addItem(item);
 				}

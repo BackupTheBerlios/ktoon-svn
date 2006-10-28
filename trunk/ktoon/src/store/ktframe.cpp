@@ -261,7 +261,6 @@ int KTFrame::indexOf(QGraphicsItem *item)
 		{
 			return index;
 		}
-		
 	}
 	
 	return index;
