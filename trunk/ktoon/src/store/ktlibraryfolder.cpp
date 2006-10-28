@@ -18,48 +18,67 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktgraphicobject.h"
+#include "ktlibraryfolder.h"
+#include "ktlibraryobject.h"
 
-#include <QMatrix>
-#include <QGraphicsItem>
-
-KTGraphicObject::KTGraphicObject(QGraphicsItem *item, QObject *parent)
-	: QObject(parent), m_item(item)
+KTLibraryFolder::KTLibraryFolder(const QString &id, QObject *parent) : QObject(parent), m_id(id)
 {
 }
 
 
-KTGraphicObject::~KTGraphicObject()
+KTLibraryFolder::~KTLibraryFolder()
 {
 }
 
-void KTGraphicObject::fromXml(const QString &xml )
+void KTLibraryFolder::addObject(KTLibraryObject *object)
 {
+	m_objects << object;
 }
 
-QDomElement KTGraphicObject::toXml(QDomDocument &doc)
+bool KTLibraryFolder::removeObject(KTLibraryObject *object)
 {
-	return QDomElement();
+	int c = m_objects.removeAll(object);
+	
+	if (c == 0 )
+	{
+		return false;
+	}
+	
+	return true;
+}
+
+bool KTLibraryFolder::moveObject(KTLibraryObject *object, KTLibraryFolder *folder)
+{
+	LibraryObjects::iterator obit = m_objects.begin();
+	
+	while ( obit != m_objects.end())
+	{
+		if ( *obit == object )
+		{
+			m_objects.erase(obit);
+			
+			folder->addObject( object );
+			
+			return true;
+			
+			break;
+		}
+		
+		++obit;
+	}
+	
+	return false;
+}
+
+void KTLibraryFolder::setId(const QString &id)
+{
+	m_id = id;
+}
+
+QString KTLibraryFolder::id() const
+{
+	return m_id;
 }
 
 
-void KTGraphicObject::setItem(QGraphicsItem *item)
-{
-	m_item = item;
-}
-
-QGraphicsItem *KTGraphicObject::item() const
-{
-	return m_item;
-}
-
-void KTGraphicObject::setObjectName(const QString &name)
-{
-	m_name = name;
-}
-
-QString KTGraphicObject::objectName() const
-{
-	return m_name;
-}
 

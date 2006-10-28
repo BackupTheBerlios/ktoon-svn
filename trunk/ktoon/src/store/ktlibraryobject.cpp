@@ -18,48 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktgraphicobject.h"
+#include "ktlibraryobject.h"
 
-#include <QMatrix>
-#include <QGraphicsItem>
-
-KTGraphicObject::KTGraphicObject(QGraphicsItem *item, QObject *parent)
-	: QObject(parent), m_item(item)
+KTLibraryObject::KTLibraryObject(const QString &id, QObject *parent) : QObject(parent), m_id(id)
 {
 }
 
 
-KTGraphicObject::~KTGraphicObject()
+KTLibraryObject::~KTLibraryObject()
 {
 }
 
-void KTGraphicObject::fromXml(const QString &xml )
+void KTLibraryObject::setData(const QVariant &data)
 {
+	m_data = data;
 }
 
-QDomElement KTGraphicObject::toXml(QDomDocument &doc)
+QVariant KTLibraryObject::data() const
 {
-	return QDomElement();
+	return m_data;
 }
 
-
-void KTGraphicObject::setItem(QGraphicsItem *item)
+void KTLibraryObject::setId(const QString &id)
 {
-	m_item = item;
+	m_id = id;
 }
 
-QGraphicsItem *KTGraphicObject::item() const
+QString KTLibraryObject::id() const
 {
-	return m_item;
+	return m_id;
 }
 
-void KTGraphicObject::setObjectName(const QString &name)
-{
-	m_name = name;
-}
-
-QString KTGraphicObject::objectName() const
-{
-	return m_name;
-}
 

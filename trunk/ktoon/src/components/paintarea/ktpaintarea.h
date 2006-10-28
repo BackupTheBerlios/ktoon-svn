@@ -36,7 +36,7 @@ class KTInputDeviceInformation;
 class KTProject;
 class KTPaintAreaRotator;
 /**
- * Esta clase provee un area para hacer dibujos.
+ * Esta clase provee un area para realizar diferentes trazos
  * @author Jorge Cuadrado \<kuadrosx@toonka.com\>
 */
 

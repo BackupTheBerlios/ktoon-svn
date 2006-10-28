@@ -18,48 +18,45 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktgraphicobject.h"
+#ifndef KTLIBRARYFOLDER_H
+#define KTLIBRARYFOLDER_H
 
-#include <QMatrix>
-#include <QGraphicsItem>
+#include <QObject>
 
-KTGraphicObject::KTGraphicObject(QGraphicsItem *item, QObject *parent)
-	: QObject(parent), m_item(item)
+class KTLibraryFolder;
+class KTLibraryObject;
+
+typedef QList<KTLibraryFolder *> Folders;
+typedef QList<KTLibraryObject *> LibraryObjects;
+
+/**
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+class KTLibraryFolder : public QObject
 {
-}
+	Q_OBJECT;
+	
+	public:
+		KTLibraryFolder(const QString &id, QObject *parent = 0);
+		~KTLibraryFolder();
+		
+		void setId(const QString &id);
+		QString id() const;
+		
+		virtual void addObject(KTLibraryObject *object);
+		virtual bool removeObject(KTLibraryObject *object);
+		
+		bool moveObject(KTLibraryObject *object, KTLibraryFolder *folder);
+		
+	private:
+		QString m_id;
+		Folders m_folders;
+		LibraryObjects m_objects;
+};
 
 
-KTGraphicObject::~KTGraphicObject()
-{
-}
-
-void KTGraphicObject::fromXml(const QString &xml )
-{
-}
-
-QDomElement KTGraphicObject::toXml(QDomDocument &doc)
-{
-	return QDomElement();
-}
+#endif
 
 
-void KTGraphicObject::setItem(QGraphicsItem *item)
-{
-	m_item = item;
-}
 
-QGraphicsItem *KTGraphicObject::item() const
-{
-	return m_item;
-}
-
-void KTGraphicObject::setObjectName(const QString &name)
-{
-	m_name = name;
-}
-
-QString KTGraphicObject::objectName() const
-{
-	return m_name;
-}
 
