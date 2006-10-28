@@ -188,8 +188,6 @@ void KTMainWindow::newProject()
 
 bool KTMainWindow::closeProject()
 {
-// 	dDebug() << "Closing..";
-	
 	if(!m_projectManager->isOpen())
 	{
 		return true;
@@ -221,24 +219,7 @@ bool KTMainWindow::closeProject()
 		break;
 	}
 	
-// 	m_pActiveTabWidget->setCurrentWidget(m_viewDoc);
 	m_projectManager->closeProject();
-	
-// 	m_viewDoc->closeAllWindows();
-// 	m_animationSpace->closeAllWindows();
-	
-// 	QWidgetList cameras = m_animationSpace->windowList();
-// 	
-// 	foreach (QWidget *widget, cameras)
-// 	{
-// 		KTViewCamera *view = qobject_cast<KTViewCamera *>(widget);
-// 		
-// 		if ( view )
-// 		{
-// 			view->animationArea()->setScene(0);
-// 			view->animationArea()->setSize(m_projectManager->documentSize());
-// 		}
-// 	}
 	
 	// Clean widgets
 	m_exposureSheet->closeAllScenes();
@@ -306,7 +287,7 @@ void KTMainWindow::openProject(const QString &path)
 
 void KTMainWindow::save()
 {
-// 	dDebug() << "Saving..";
+	dDebug("project") << "Saving..";
 	QTimer::singleShot(0, this, SLOT(saveProject()));
 }
 
@@ -336,7 +317,6 @@ void KTMainWindow::showTipDialog()
 
 void KTMainWindow::importPalettes()
 {
-// 	dDebug() << "Importing";
 	QStringList files = QFileDialog::getOpenFileNames( this, tr("Import gimp palettes"), QString(), "Gimp Palette (*.gpl)");
 	
 	m_statusBar->setStatus( tr("Importing palettes"));

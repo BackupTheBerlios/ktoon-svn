@@ -36,7 +36,8 @@
 KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, "Exposure Sheet"), m_currentTable(0)
 {
 	DINIT;
-	setCaption( tr( "Exposure Sheet" ) );
+	setWindowTitle( tr( "Exposure Sheet" ) );
+	setWindowIcon(QPixmap(THEME_DIR+"/icons/exposure_sheet.png"));
 	
 	m_actionBar = new KTProjectActionBar( KTProjectActionBar::InsertLayer |
 			KTProjectActionBar::RemoveLayer |

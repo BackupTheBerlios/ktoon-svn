@@ -25,7 +25,9 @@
 
 KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidgetBase(parent)
 {
+	setWindowTitle( tr("Help"));
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/help.png"));
+	
 	if (QString(QLocale::system().name()).length() > 1 )
 	{
 		m_helpPath = path+"/"+QString(QLocale::system().name()).left(2);
@@ -35,7 +37,7 @@ KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidge
 		m_helpPath = path+"/en";
 	}
 	
-	setCaption( tr("Help system"));
+	
 	QTreeWidget *contentsListView = new QTreeWidget(this);
 	contentsListView->setHeaderLabels ( QStringList() << tr("") );
 	contentsListView->header()->hide();

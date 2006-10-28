@@ -21,6 +21,7 @@
 #include "daction.h"
 #include "dactionmanager.h"
 
+
 DAction::DAction( QObject * parent, const QString &id ) : QAction(parent)
 {
 	if ( DActionManager *m = dynamic_cast<DActionManager *>(parent) )

@@ -31,12 +31,6 @@ void KTMainWindow::createGUI()
 {
 	// TODO: put setWindowIcon in each class
 	m_colorPalette = new KTColorPalette(this);
-	m_colorPalette->setWindowIcon(QPixmap(THEME_DIR+"/icons/color_palette.png") );
-	
-// 	connect(m_colorPalette, SIGNAL(brushChanged(const QBrush &, const QBrush &)), this, SLOT(changeCurrentColors(const QBrush &, const QBrush &)));
-	
-	
-	m_colorPalette->setWindowTitle(tr("Palette"));
 	addToolView( m_colorPalette, Qt::LeftDockWidgetArea, Drawing );
 	
 	connectToDisplays(m_colorPalette);
@@ -45,20 +39,14 @@ void KTMainWindow::createGUI()
 	////////////////////
 	
 	m_penWidget = new KTPenWidget(this);
-	
-	m_penWidget->setWindowTitle(tr("Pen"));
 	addToolView( m_penWidget, Qt::LeftDockWidgetArea, Drawing );
-	
-// 	connect(m_penWidget, SIGNAL(penChanged( const QPen& )), this, SLOT(changeCurrentPen( const QPen &)));
 	
 	connectToDisplays(m_penWidget);
 	ui4paintArea( m_penWidget );
 	
 	////////////////////
 	m_libraryWidget = new KTLibraryWidget( this );
-	m_libraryWidget->setWindowIcon(QPixmap(THEME_DIR+"/icons/library.png"));
 	
-	m_libraryWidget->setWindowTitle(tr("Library"));
 	addToolView( m_libraryWidget, Qt::LeftDockWidgetArea, Drawing );
 	
 	connectToDisplays(m_libraryWidget);
@@ -69,27 +57,16 @@ void KTMainWindow::createGUI()
 	
 	/////////////////
 	m_scenes = new KTScenesWidget( this);
-	m_scenes->setWindowIcon(QPixmap(THEME_DIR+"/icons/scenes.png"));
 	
-	m_scenes->setWindowTitle(tr("Scenes"));
 	addToolView( m_scenes, Qt::RightDockWidgetArea, All );
 	
 	ui4project(m_scenes);
-#if 0
-	connect(m_scenes, SIGNAL(requestInsertScene()), m_projectManager, SLOT(createScene()));
-	connect(m_scenes, SIGNAL(requestInsertLayer()), m_projectManager, SLOT(createLayer()));
-	connect(m_scenes, SIGNAL(requestInsertFrame()), m_projectManager, SLOT(createFrame()));
-	connect(m_scenes, SIGNAL(requestRemoveScene()), m_projectManager, SLOT(removeScene()));
-	connect(m_scenes, SIGNAL(changeCurrentScene( int )), this, SLOT(changeScene(int)));
-#endif
 	
 	connectToDisplays(m_scenes);
 	
 	/////////////////////
 	m_exposureSheet = new KTExposureSheet(this);
-	m_exposureSheet->setWindowIcon(QPixmap(THEME_DIR+"/icons/exposure_sheet.png"));
 	
-	m_exposureSheet->setWindowTitle(tr("Exposure Sheet"));
 	addToolView( m_exposureSheet, Qt::RightDockWidgetArea, Drawing );
 	
 	ui4project( m_exposureSheet );
@@ -98,8 +75,6 @@ void KTMainWindow::createGUI()
 	
 	///////////////////////
 	m_helper = new KTHelpWidget(HOME_DIR+"/data/help/");
-	
-	m_helper->setWindowTitle(tr("Help"));
 	addToolView( m_helper, Qt::RightDockWidgetArea, All );
 	
 	connect(m_helper, SIGNAL(pageLoaded(const QString &, const QString &)), this, SLOT(showHelpPage(const QString &, const QString &)));
@@ -112,9 +87,7 @@ void KTMainWindow::createGUI()
 	
 	//////////////////////
 	m_timeLine = new KTTimeLine(this);
-	m_timeLine->setWindowIcon(QPixmap(THEME_DIR+"/icons/time_line.png"));
 	
-	m_timeLine->setWindowTitle(tr("Time Line"));
 	addToolView( m_timeLine, Qt::BottomDockWidgetArea, Drawing );
 	
 	ui4project( m_timeLine );
@@ -125,9 +98,6 @@ void KTMainWindow::createGUI()
 	//////////////////
 #ifdef ENABLE_KINAS
 	KinasWidget *m_scriptEditor = new KinasWidget(this);
-	m_scriptEditor->setWindowIcon(QPixmap(HOME_DIR+"/images/icons/color_palette.png") );
-	
-	m_scriptEditor->setWindowTitle(tr("Kinas"));
 	addToolView( m_scriptEditor, Qt::BottomDockWidgetArea, Drawing );
 #endif
 	
@@ -147,7 +117,6 @@ void KTMainWindow::createGUI()
 	/////////////////////
 	
 	m_cameraWidget = new KTCameraWidget(m_projectManager->project());
-	m_cameraWidget->setWindowTitle(tr("Camera"));
 	
 	addToolView( m_cameraWidget, Qt::BottomDockWidgetArea, Animation );
 	
@@ -373,20 +342,20 @@ void KTMainWindow::setupToolBar()
 	
 	QAction * undo = m_projectManager->undoHistory()->createUndoAction( this, tr("Undo"));
 	
-// 	QAction *undo = history->undoAction();
 	undo->setShortcut(QKeySequence(QKeySequence::Undo));
 	
 	toolbar->addAction(undo);
 	
 	
 	QAction *redo =  m_projectManager->undoHistory()->createRedoAction ( this );
-// 	QAction *redo = history->redoAction();
 	redo->setShortcut(QKeySequence(QKeySequence::Redo));
 	toolbar->addAction(redo);
 	
-// 	
 	undo->setIcon( QPixmap(THEME_DIR+"/icons/undo.png" ));
 	redo->setIcon(QPixmap(THEME_DIR+"/icons/redo.png" ));
+	
+	dApp->insertGlobalAction(undo, "undo");
+	dApp->insertGlobalAction(redo, "redo");
 	
 }
 

@@ -57,7 +57,6 @@ class KTOON_EXPORT KTModuleWidgetBase : public QWidget, public KTAbstractProject
 		virtual bool event( QEvent * e );
 		
 	public slots:
-		void setCaption(const QString &text);
 		bool handleProjectRequest(KTProjectRequest *event);
 		
 	protected:

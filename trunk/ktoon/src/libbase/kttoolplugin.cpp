@@ -100,3 +100,8 @@ void KTToolPlugin::keyPressEvent(QKeyEvent *event)
 {
 	Q_UNUSED(event);
 }
+
+QMenu *KTToolPlugin::menu() const
+{
+	return 0;
+}

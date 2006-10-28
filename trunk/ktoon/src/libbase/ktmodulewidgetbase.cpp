@@ -55,11 +55,6 @@ void KTModuleWidgetBase::addChild(QWidget* child, Qt::Alignment alignment)
 	m_container->addWidget(child, 0,alignment);
 }
 
-void KTModuleWidgetBase::setCaption(const QString &text)
-{
-	setWindowTitle(text);
-}
-
 void KTModuleWidgetBase::setFont( const QFont &f)
 {
 	QWidget::setFont(f);

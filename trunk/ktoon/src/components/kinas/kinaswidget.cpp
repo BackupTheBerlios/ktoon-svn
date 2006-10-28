@@ -17,7 +17,8 @@ KinasWidget::KinasWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 {
 	DINIT;
 	
-	setCaption(tr("KToon Script"));
+	setWindowTitle(tr("KToon Script"));
+	setWindowIcon(QPixmap(HOME_DIR+"/images/icons/color_palette.png") );
 	
 	m_splitter = new QSplitter(this);
 	addChild(m_splitter);

@@ -29,8 +29,8 @@
 #include "dgui/daction.h"
 #include "dcore/dglobal.h"
 
-typedef QList<DAction *> DActionList;
-typedef QHash<QString, DAction *> DActionDict;
+typedef QList<QAction *> DActionList;
+typedef QHash<QString, QAction *> DActionDict;
 typedef QHash<QString, DActionDict> DActionContainer;
 
 class QToolBar;
@@ -47,13 +47,13 @@ class D_GUI_EXPORT DActionManager : public QObject
 
 	public:
 		
-		DActionManager(QWidget *parent = 0);
+		DActionManager(QObject *parent = 0);
 		~DActionManager();
 		
-		bool insert(DAction *action, const QString &id, const QString &container = "default" );
-		void remove( DAction* action, const QString &container = QString()  );
+		bool insert(QAction *action, const QString &id, const QString &container = "default" );
+		void remove( QAction* action, const QString &container = QString()  );
 		
-		QAction *take( DAction* action, const QString &container = QString()  );
+		QAction *take( QAction* action, const QString &container = QString()  );
 		QAction *find(const QString &id, const QString &container = QString() ) const;
 		QAction *operator[](const QString &id) const;
 		

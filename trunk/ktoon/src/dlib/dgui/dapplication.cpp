@@ -31,6 +31,7 @@
 #include <QMap>
 
 #include "ddebug.h"
+#include "dactionmanager.h"
 
 DApplication::DApplication(int & argc, char ** argv) : QApplication(argc, argv)
 {
@@ -42,7 +43,8 @@ DApplication::DApplication(int & argc, char ** argv) : QApplication(argc, argv)
 	QApplication::setEffectEnabled( Qt::UI_FadeTooltip, true);
 	
 	parseArgs(argc, argv);
-
+	
+	m_actionManager = new DActionManager(this);
 }
 
 
@@ -172,5 +174,26 @@ QString DApplication::getParam(const QString &arg)
 bool DApplication::firstRun() 
 {
 	return false;
+}
+
+bool DApplication::insertGlobalAction(QAction *action, const QString& id)
+{
+	if (m_actionManager->insert( action, id, "global") )
+	{
+		action->setShortcutContext(Qt::ApplicationShortcut);
+		return true;
+	}
+	
+	return false;
+}
+
+void DApplication::removeGlobalAction(QAction *action)
+{
+	m_actionManager->remove( action, "global");
+}
+
+QAction *DApplication::findGlobalAction(const QString &id)
+{
+	return m_actionManager->find( id, "global");
 }
 

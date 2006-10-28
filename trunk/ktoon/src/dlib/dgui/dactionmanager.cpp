@@ -28,7 +28,7 @@
  * Construye un manejador de acciones.
  * @param parent widget que contine el manejador de acciones
  */
-DActionManager::DActionManager(QWidget *parent) : QObject(parent)
+DActionManager::DActionManager(QObject *parent) : QObject(parent)
 {
 	setObjectName( "DActionManager"+parent->objectName() );
 }
@@ -45,7 +45,7 @@ DActionManager::~DActionManager()
  * @param action accion para añadir
  * @return 
  */
-bool DActionManager::insert(DAction *action, const QString &_id, const QString &container )
+bool DActionManager::insert(QAction *action, const QString &_id, const QString &container )
 {
 	QString id = _id.toLower();
 	if ( id.isEmpty() || container.isEmpty() )
@@ -54,7 +54,7 @@ bool DActionManager::insert(DAction *action, const QString &_id, const QString &
 		return false;
 	}
 	
-	DAction *a = (m_actionContainer[container])[ id ];
+	QAction *a = (m_actionContainer[container])[ id ];
 	if ( a == action )
 	{
 		dWarning() << tr("Cannot insert action with id: ") << id;
@@ -72,7 +72,7 @@ bool DActionManager::insert(DAction *action, const QString &_id, const QString &
  * Remueve una accion del manejador
  * @param action para remover
  */
-void DActionManager::remove( DAction* action, const QString &container )
+void DActionManager::remove( QAction* action, const QString &container )
 {
 	delete take( action, container );
 }
@@ -82,7 +82,7 @@ void DActionManager::remove( DAction* action, const QString &container )
  * @param action para remover
  * @return la accion removida o cero si esta no estaba en el manejador
  */
-QAction *DActionManager::take( DAction* action, const QString &container  )
+QAction *DActionManager::take( QAction* action, const QString &container  )
 {
 	QAction *a = 0;
 	

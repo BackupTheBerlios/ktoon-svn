@@ -39,7 +39,7 @@
 KTExportWidget::KTExportWidget(const KTProject *manager, QWidget *parent) : KTModuleWidgetBase(parent), m_manager(manager), m_currentExporter(0), m_currentFormat(KTExportInterface::NONE)
 {
 	DINIT;
-	setCaption(tr("Export"));
+	setWindowTitle(tr("Export"));
 	
 	setWindowIcon(QIcon(THEME_DIR+"/icons/export.png"));
 	

@@ -35,8 +35,10 @@
 KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), m_childCount(0)
 {
 	DINIT;
-	srand(time(0));
-	setCaption(tr("Library"));
+	
+	setWindowIcon(QPixmap(THEME_DIR+"/icons/library.png"));
+	setWindowTitle(tr("Library"));
+	
 	
 	m_libraryDir = QDir(CONFIG_DIR+"/libraries");
 	
@@ -293,7 +295,7 @@ void KTLibraryWidget::renameObject( QTreeWidgetItem* item)
 // 				{
 // 					// Invalid name
 // 					item->setFlags(item->flags() | Qt::ItemIsEditable );
-// 					item->setText(0, item->text(0)+QString::number(rand() % 999) );
+// 					item->setText(0, item->text(0)+QString::number(() % 999) );
 // 					m_libraryTree->editItem( item, 0);
 // 					break;
 // 				}

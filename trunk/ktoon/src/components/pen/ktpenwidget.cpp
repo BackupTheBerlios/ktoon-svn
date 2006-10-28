@@ -26,7 +26,7 @@
 
 KTPenWidget::KTPenWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 {
-	setCaption( tr("Pen"));
+	setWindowTitle( tr("Pen"));
 	
 	m_thickness = new DEditSpinBox( 3, 1, 100, 1, tr("Thickness") );
 	

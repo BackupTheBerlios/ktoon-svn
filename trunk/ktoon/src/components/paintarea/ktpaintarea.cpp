@@ -32,6 +32,7 @@
 #include <QTimer>
 #include <QStyleOptionGraphicsItem>
 #include <QClipboard>
+#include <QMenu>
 
 #include "ktbrushmanager.h"
 #include "ktinputdeviceinformation.h"
@@ -260,8 +261,34 @@ void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 	{
 		m_tool->begin();
 		
-		m_isDrawing = true;
-		m_tool->press(m_inputInformation, m_brushManager,  qobject_cast<KTScene *>(scene()), this );
+		if ( event->buttons() == Qt::LeftButton )
+		{
+			m_isDrawing = true;
+			m_tool->press(m_inputInformation, m_brushManager,  qobject_cast<KTScene *>(scene()), this );
+		}
+		else if ( event->buttons() == Qt::RightButton ) 
+		{
+			QMenu *menu = new QMenu(tr("Drawing area"));
+			
+			menu->addAction(dApp->findGlobalAction("undo"));
+			menu->addAction(dApp->findGlobalAction("redo"));
+			
+			menu->addSeparator();
+			menu->addAction(tr("Cut"), this, SLOT(cutItems()));
+			menu->addAction(tr("Copy"), this, SLOT(copyItems()));
+			menu->addAction(tr("Paste"), this, SLOT(pasteItems()));
+			
+			menu->addSeparator();
+			menu->addAction(tr("Delete"), this, SLOT(deleteItems()));
+			
+			if ( QMenu *toolMenu = m_tool->menu() )
+			{
+				menu->addSeparator();
+				menu->addMenu(toolMenu);
+			}
+			
+			menu->exec(event->globalPos());
+		}
 	}
 }
 

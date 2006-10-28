@@ -39,10 +39,14 @@
 
 #include "dgui/dwizard.h"
 
+
+
 class QApplication;
 class QString;
 class DThemeDocument;
 class QPalette;
+class DActionManager;
+class DAction;
 
 typedef QMap<QString, QString> ParseArgs;
 
@@ -178,6 +182,11 @@ class D_GUI_EXPORT DApplication : public QApplication
 		
 		DConfig *config(const QString &group = "General");
 		
+		
+		bool insertGlobalAction(QAction *action, const QString& id);
+		void removeGlobalAction(QAction *action);
+		QAction *findGlobalAction(const QString &id);
+		
 	public slots:
 		/**
 		 * @if english
@@ -193,6 +202,7 @@ class D_GUI_EXPORT DApplication : public QApplication
 	private:
 		ParseArgs m_parseArgs;
 		DThemeManager m_themeManager;
+		DActionManager *m_actionManager;
 };
 
 #include <dcore/dglobal.h>
