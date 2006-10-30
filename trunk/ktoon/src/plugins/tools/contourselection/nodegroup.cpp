@@ -117,15 +117,8 @@ void NodeGroup::moveElementTo(int index, const QPointF& pos )
 {
 
 	QPainterPath path = qgraphicsitem_cast<QGraphicsPathItem *>(m_parentItem)->path();
-	path.setElementPositionAt(index,
-				  pos.x(),
-				  pos.y() );
+	path.setElementPositionAt(index,pos.x(), pos.y() );
 	QPainterPath::Element e = path.elementAt(0);
-	QPointF poss = path. controlPointRect().topLeft();
-	QMatrix m;
-	m.translate(-poss.x(), -poss.y());
-	path = m.map(path);
-	m_parentItem->setPos(m_parentItem->mapToScene(poss));
 	qgraphicsitem_cast<QGraphicsPathItem *>( m_parentItem)->setPath(path);
 	
 	if(m_changedsNodes.contains (index))

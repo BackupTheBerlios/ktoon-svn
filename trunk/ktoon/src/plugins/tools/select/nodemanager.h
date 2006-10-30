@@ -47,10 +47,13 @@ class NodeManager
 		
 		void setAnchor(const QPointF& point);
 		void scale(float sx, float sy);
-		
+		void rotate(double a);
 		
 		void setPress(bool press);
 		bool isPress();
+		
+		void toggleAction();
+		
 		
 	private:
 		QHash<Node::TypeNode, Node *> m_nodes;
@@ -64,6 +67,7 @@ class NodeManager
 		QMatrix m_origMatrix;
 		QPointF m_origPos;
 		QPointF m_anchor;
+		
 		
 		bool m_press;
 };

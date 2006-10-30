@@ -35,7 +35,6 @@
 #include "nodemanager.h"
 #include "ktserializer.h"
 
-#include <QDebug> // ddebug! lazy bitch
 #include <QTimer>
 
 Select::Select()
@@ -51,8 +50,6 @@ Select::~Select()
 
 void Select::init(QGraphicsView *view)
 {
-// 	m_view = view;
-	
 	foreach(QGraphicsItem *item, view->scene()->items() )
 	{
 		if(!qgraphicsitem_cast<Node *>(item))
@@ -81,12 +78,12 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 	
 	if ( input->keyModifiers() != Qt::ControlModifier )
 	{
-		foreach(NodeManager *nodeManager, m_nodes)
+		foreach(NodeManager *nodeManager, m_nodeManagers)
 		{
 			if(!nodeManager->isPress())
 			{
 				nodeManager->parentItem()->setSelected(false);
-				m_nodes.removeAll(nodeManager);
+				m_nodeManagers.removeAll(nodeManager);
 				delete nodeManager;
 			}
 		}
@@ -119,8 +116,8 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 	if(scene->selectedItems().count() > 0)
 	{
 		QList<QGraphicsItem *> selecteds = scene->selectedItems();
-		QList<NodeManager *>::iterator it = m_nodes.begin();
-		QList<NodeManager *>::iterator itEnd = m_nodes.end();
+		QList<NodeManager *>::iterator it = m_nodeManagers.begin();
+		QList<NodeManager *>::iterator itEnd = m_nodeManagers.end();
 		while(it != itEnd)
 		{
 			int parentIndex = scene->selectedItems().indexOf((*it)->parentItem() );
@@ -131,7 +128,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 			}
 			else
 			{
-				delete m_nodes.takeAt(m_nodes.indexOf((*it)));
+				delete m_nodeManagers.takeAt(m_nodeManagers.indexOf((*it)));
 			}
 			++it;
 			
@@ -141,11 +138,11 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 			if(item && dynamic_cast<KTAbstractSerializable* > (item) )
 			{
 				NodeManager *manager = new NodeManager(item, scene);
-				m_nodes << manager;
+				m_nodeManagers << manager;
 			}
 		}
 		
-		foreach(NodeManager *manager, m_nodes)
+		foreach(NodeManager *manager, m_nodeManagers)
 		{
 			if(manager->isModified())
 			{
@@ -172,8 +169,8 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 	}
 	else
 	{
-		qDeleteAll(m_nodes);
-		m_nodes.clear();
+		qDeleteAll(m_nodeManagers);
+		m_nodeManagers.clear();
 	}
 }
 
@@ -210,9 +207,8 @@ bool Select::isComplete() const
 
 void Select::aboutToChangeTool()
 {
-// 	m_view->setDragMode (QGraphicsView::NoDrag);
-	qDeleteAll(m_nodes);
-	m_nodes.clear();
+	qDeleteAll(m_nodeManagers);
+	m_nodeManagers.clear();
 }
 
 void Select::itemRequest(const KTItemRequest *event)
@@ -255,7 +251,7 @@ void Select::itemRequest(const KTItemRequest *event)
 		{
 			if ( item )
 			{
-				foreach(NodeManager* node, m_nodes)
+				foreach(NodeManager* node, m_nodeManagers)
 				{
 					node->show();
 					node->syncNodesFromParent();
@@ -264,7 +260,6 @@ void Select::itemRequest(const KTItemRequest *event)
 					break;
 				}
 			}
-// 			QTimer::singleShot(0, this, SLOT(syncNodes()));
 		}
 		break;
 		default: break;
@@ -273,7 +268,7 @@ void Select::itemRequest(const KTItemRequest *event)
 
 void Select::syncNodes()
 {
-	foreach(NodeManager* node, m_nodes)
+	foreach(NodeManager* node, m_nodeManagers)
 	{
 		if(node)
 		{

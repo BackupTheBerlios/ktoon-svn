@@ -23,11 +23,11 @@
 NodeManager::NodeManager(QGraphicsItem * parent, KTScene *scene): m_parent(parent), m_scene(scene), m_modify(false), m_anchor(0,0), m_press(false)
 {
 	QRectF rect = parent->sceneBoundingRect();
-	Node *topLeft = new Node(Node::TopLeft, rect.topLeft(), this, parent, scene);
-	Node *topRight = new Node(Node::TopRight, rect.topRight(), this, parent, scene);
-	Node *bottomLeft = new Node(Node::BottomLeft, rect.bottomLeft(),this, parent, scene);
-	Node *bottomRight = new Node(Node::BottomRight, rect.bottomRight(),this, parent, scene);
-	Node *center = new Node(Node::Center, rect.center() ,this,parent, scene);
+	Node *topLeft = new Node(Node::TopLeft, Node::Scale, rect.topLeft(), this, parent, scene);
+	Node *topRight = new Node(Node::TopRight, Node::Scale, rect.topRight(), this, parent, scene);
+	Node *bottomLeft = new Node(Node::BottomLeft,Node::Scale, rect.bottomLeft(),this, parent, scene);
+	Node *bottomRight = new Node(Node::BottomRight,Node::Scale, rect.bottomRight(),this, parent, scene);
+	Node *center = new Node(Node::Center, Node::Scale, rect.center(), this,parent, scene);
 	m_nodes.insert(Node::TopLeft, topLeft);
 	m_nodes.insert(Node::TopRight, topRight);
 	m_nodes.insert(Node::BottomLeft, bottomLeft );
@@ -173,6 +173,16 @@ void NodeManager::scale(float sx, float sy)
 	syncNodesFromParent();
 }
 
+void NodeManager::rotate(double a)
+{
+	QMatrix m = m_parent->matrix();
+	m.translate(m_anchor.x(),m_anchor.y());
+	m.rotate(a);
+	m.translate(-m_anchor.x(),-m_anchor.y());
+	m_parent->setMatrix(m);
+	syncNodesFromParent();
+}
+
 void NodeManager::show()
 {
 	foreach(Node *node, m_nodes)
@@ -193,3 +203,19 @@ bool NodeManager::isPress()
 {
 	return m_press;
 }
+
+void NodeManager::toggleAction()
+{
+	foreach(Node *node, m_nodes)
+	{
+		if(node->actionNode() == Node::Scale)
+		{
+			node->setAction(Node::Rotate);
+		}
+		else if(node->actionNode() == Node::Rotate)
+		{
+			node->setAction( Node::Scale);
+		}
+	}
+}
+

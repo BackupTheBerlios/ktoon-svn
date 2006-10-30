@@ -73,9 +73,8 @@ class ContourSelection : public KTToolPlugin
 		
 	private:
 		QMap<QString, DAction *> m_actions;
-		QList<NodeGroup*> m_nodes; // ###: nodos? o grupo de nodos? o lista de grupos de nodos?
+		QList<NodeGroup*> m_nodeGroups; 
 		KTProject *m_project;
-// 		QGraphicsView *m_view;
 		
 	private slots:
 		void syncNodes();

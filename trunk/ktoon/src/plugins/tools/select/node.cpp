@@ -27,13 +27,13 @@
 #include <QStyleOptionButton>
 #include <QApplication>
 
-// #include <QtDebug>
 #include <QCursor>
-// #define SHOW_VAR(s) qDebug() << #s << " = " << s
 #include <ddebug.h>
 #include "nodemanager.h"
 
-Node::Node(TypeNode node, const QPointF & pos, NodeManager *manager, QGraphicsItem * parent,  QGraphicsScene * scene   ) : QGraphicsItem(0, scene), m_typeNode(node), m_notChange(true), m_parent(parent), m_manager(manager), gb1(0), gb2(0)
+#include <cmath> //atan
+
+Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *manager, QGraphicsItem * parent,  QGraphicsScene * scene   ) : QGraphicsItem(0, scene), m_typeNode(node), m_action(action), m_notChange(true), m_parent(parent), m_manager(manager)
 {
 	QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor ));
 	
@@ -64,6 +64,11 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 	{
 		c = QColor("navy");
 		c.setAlpha(150);
+	}
+	
+	if(m_action == Rotate)
+	{
+		c.setGreen(200);
 	}
 	QRectF br = boundingRect();
 
@@ -108,7 +113,6 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	D_FUNCINFO;
 	update();
-// 	m_brParent = m_parent->sceneBoundingRect();
 	m_manager->setPress( true);
 	QGraphicsItem::mousePressEvent(event);
 }
@@ -123,8 +127,16 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
+	QPointF newPos(mapToItem(m_parent,event->pos()));
+// 	QMatrix m = m_parent->sceneMatrix();
 	
-	QPointF newPos(event->pos()+pos());
+// 	double arc = asin(m.m21())*(180/3.141592653589793116);
+// 	SHOW_VAR(arc);
+// 	QMatrix m1(m.m11()-cos(arc),0,0,m.m22()-cos(arc),m.dx(),m.dy() );
+	
+// 	newPos = m1.map( newPos );
+	
+	
 	
 	if( m_notChange)
 	{
@@ -132,76 +144,107 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	}
 	else
 	{
-		QRectF rect =  m_parent->sceneBoundingRect();
-		rect.moveTopLeft (m_parent->scenePos());
-		QRectF br =   m_parent->sceneBoundingRect();
-		
-		QRectF br1 = m_parent->boundingRect();
-		switch(m_typeNode)
+		if(m_action == Scale)
 		{
-			case TopLeft:
+			QRectF rect = m_parent->boundingRect();
+			QRectF br = m_parent->boundingRect();
+			switch(m_typeNode)
 			{
-				m_manager->setAnchor( br1.bottomRight());
-				rect.setTopLeft( newPos );
-				break;
-			}
-			case TopRight:
-			{
-				m_manager->setAnchor( br1.bottomLeft());
-				rect.setTopRight(newPos);
-				break;
-			}
-			case BottomRight:
-			{
-				m_manager->setAnchor( br1.topLeft());
-				rect.setBottomRight(newPos);
-				break;
-			}
-			case BottomLeft:
-			{
-				m_manager->setAnchor( br1.topRight());
-				rect.setBottomLeft(newPos);
-				break;
-			}
-			case Center:
-			{
-				break;
-			}
-		};
+				case TopLeft:
+				{
+					m_manager->setAnchor(br.bottomRight());
+					rect.setTopLeft( newPos );
+					
+					break;
+				}
+				case TopRight:
+				{
+					m_manager->setAnchor( br.bottomLeft());
+					rect.setTopRight(newPos);
+					break;
+				}
+				case BottomRight:
+				{
+					m_manager->setAnchor( br.topLeft());
+					rect.setBottomRight(newPos);
+					break;
+				}
+				case BottomLeft:
+				{
+					m_manager->setAnchor( br.topRight());
+					rect.setBottomLeft(newPos);
+					break;
+				}
+				case Center:
+				{
+					break;
+				}
+			};
+			float sx = 1, sy = 1;
+			sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
+			sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
 		
-		float sx = 1, sy = 1;
-		sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
-		sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
-		
-		if(sx > 0 && sy > 0)
-		{
-			m_manager->scale( sx,sy);
+			if(sx > 0 && sy > 0)
+			{
+				m_manager->scale( sx,sy);
+			}
+			else 
+			{
+				if(sx > 0)
+				{
+					m_manager->scale(sx, 1);
+				}
+				if(sy > 0)
+				{
+					m_manager->scale(1, sy);
+				}
+			}
 		}
-		else 
+		else
 		{
-			if(sx > 0)
+			QPointF p1 = newPos;
+			QPointF p2 = m_parent->boundingRect().center();
+			m_manager->setAnchor( p2 );
+			QPointF d = p1 - p2;
+			if(d.x() != 0)
 			{
-				m_parent->scale(sx, 1);
-			}
-			
-			if(sy > 0)
-			{
-				m_parent->scale(1, sy);
+				double a =  atan(d.y() / d.x())*(180/3.141592653589793116);
+				if(d.x() < 0)
+				{
+					a += 180;
+				}
+				m_manager->rotate( a );
 			}
 		}
+		
 	}
 	
 	if(m_typeNode == Center)
 	{
 		m_parent->moveBy(event->pos().x(), event->pos().y());
-		QGraphicsItem::mouseReleaseEvent(event);
 	}
 	update();
 	m_parent->setSelected(true);
 }
 
 
+void Node::mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * )
+{
+	update();
+	m_manager->toggleAction();
+}
+
 int Node::typeNode() const
 {
 	return m_typeNode;
+}
+
+void Node::setAction(ActionNode action)
+{
+	m_action = action;
+}
+
+int Node::actionNode()
+{
+	return m_action;
 }

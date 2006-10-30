@@ -64,7 +64,7 @@ class Select : public KTToolPlugin
 		
 	private:
 		QMap<QString, DAction *> m_actions;
-		QList<NodeManager*> m_nodes;
+		QList<NodeManager*> m_nodeManagers;
 		QGraphicsView *m_view;
 		KTProject *m_project;
 		

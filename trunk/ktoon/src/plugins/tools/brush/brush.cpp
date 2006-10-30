@@ -129,20 +129,8 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 	
 	smoothPath( m_path, smoothness );
 	
-	QPainterPath newPath = m_path;
-	QMatrix m;
-	QPainterPath::Element e = m_path.elementAt(0);
-	
-	if(e.type == QPainterPath::MoveToElement)
-	{
-		QPointF pos = m_path.controlPointRect().topLeft();
-		m.translate(-pos.x() , -pos.y());
-		newPath = m.map(newPath);
-		m_item->setPos(pos);
-	}
-	
 	m_item->setBrush( brushManager->brush() );
-	m_item->setPath(newPath);
+	m_item->setPath(m_path);
 	
 	
 	// Add KTItemRequest

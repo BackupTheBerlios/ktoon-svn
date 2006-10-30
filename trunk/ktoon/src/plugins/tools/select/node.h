@@ -38,11 +38,19 @@ class Node : public QObject, public QGraphicsItem
 	public:
 		
 		enum TypeNode{TopLeft  = 0, TopRight, BottomLeft, BottomRight, Center   };
-		Node(TypeNode node, const QPointF & pos = QPoint(0,0) , NodeManager *manager = 0, QGraphicsItem * parent = 0, QGraphicsScene * scene = 0 );
+		enum ActionNode{Scale = 0, Rotate};
+		
+		Node(TypeNode node, ActionNode action, const QPointF & pos = QPoint(0,0) , NodeManager *manager = 0, QGraphicsItem * parent = 0, QGraphicsScene * scene = 0 );
 		~Node();
+		
+		
 		
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 		QRectF boundingRect() const;
+		
+		
+		void setAction(ActionNode action);
+		int actionNode();
 		
 		enum { Type = UserType + 1 };
 		
@@ -54,15 +62,14 @@ class Node : public QObject, public QGraphicsItem
 		void mousePressEvent(QGraphicsSceneMouseEvent *event);
 		void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 		void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
+		void mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event );
 		
 	private:
 		TypeNode m_typeNode;
+		ActionNode m_action;
 		bool m_notChange;
-		QRectF m_brParent;
 		QGraphicsItem * m_parent;
 		NodeManager *m_manager;
-		
-		QGraphicsRectItem *gb1, *gb2 ;
 };
 
 #endif
