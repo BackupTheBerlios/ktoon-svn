@@ -51,11 +51,11 @@ Select::~Select()
 
 void Select::init(QGraphicsView *view)
 {
-	m_view = view;
+// 	m_view = view;
 	
 	foreach(QGraphicsItem *item, view->scene()->items() )
 	{
-		if(dynamic_cast<KTAbstractSerializable* >(item))
+		if(!qgraphicsitem_cast<Node *>(item))
 		{
 			item->setFlags (QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable );
 		}
@@ -69,16 +69,30 @@ QStringList Select::keys() const
 
 void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
+	D_FUNCINFO;
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
 	Q_UNUSED(scene);
 	Q_UNUSED(view);
+	
 	view->setDragMode (QGraphicsView::RubberBandDrag);
+	
+	
 	
 	if ( input->keyModifiers() != Qt::ControlModifier )
 	{
-		scene->clearSelection();
+		foreach(NodeManager *nodeManager, m_nodes)
+		{
+			if(!nodeManager->isPress())
+			{
+				nodeManager->parentItem()->setSelected(false);
+				m_nodes.removeAll(nodeManager);
+				delete nodeManager;
+			}
+		}
 	}
+	
+	m_project = scene->project();
 }
 
 void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
@@ -98,11 +112,9 @@ void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 
 void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
-// 	D_FUNCINFO;
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
 	Q_UNUSED(view);
-	
 	
 	if(scene->selectedItems().count() > 0)
 	{
@@ -112,7 +124,6 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 		while(it != itEnd)
 		{
 			int parentIndex = scene->selectedItems().indexOf((*it)->parentItem() );
-			
 			(*it)->beginToEdit();
 			if(parentIndex != -1 )
 			{
@@ -122,7 +133,6 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 			{
 				delete m_nodes.takeAt(m_nodes.indexOf((*it)));
 			}
-			
 			++it;
 			
 		}
@@ -190,10 +200,6 @@ int Select::toolType() const
 
 QWidget *Select::configurator() 
 {
-// 	if ( ! m_configurator )
-// 	{
-// 		m_configurator = new ExactnessConfigurator;
-// 	}
 	return 0;
 }
 		
@@ -204,19 +210,61 @@ bool Select::isComplete() const
 
 void Select::aboutToChangeTool()
 {
-	m_view->setDragMode (QGraphicsView::NoDrag);
+// 	m_view->setDragMode (QGraphicsView::NoDrag);
 	qDeleteAll(m_nodes);
 	m_nodes.clear();
-	
 }
 
 void Select::itemRequest(const KTItemRequest *event)
 {
+	D_FUNCINFO;
+	
+	QGraphicsItem *item = 0;
+	KTScene *scene = 0;
+	KTLayer *layer = 0;
+	KTFrame *frame = 0;
+	if(m_project)
+	{
+		scene = m_project->scene(event->sceneIndex());
+		if ( scene )
+		{
+			layer = scene->layer( event->layerIndex() );
+			if ( layer )
+			{
+				
+				frame = layer->frame( event->frameIndex() );
+				
+				if ( frame )
+				{
+					item = frame->item(event->itemIndex());
+					
+				}
+			}
+		}
+	}
+	else
+	{
+		dFatal() << "Project not exist";
+	}
+	
+	
 	switch(event->action())
 	{
+		
 		case KTProjectRequest::Transform:
 		{
-			QTimer::singleShot(0, this, SLOT(syncNodes()));
+			if ( item )
+			{
+				foreach(NodeManager* node, m_nodes)
+				{
+					node->show();
+					node->syncNodesFromParent();
+					node->beginToEdit();
+					node->parentItem()->setSelected(true);
+					break;
+				}
+			}
+// 			QTimer::singleShot(0, this, SLOT(syncNodes()));
 		}
 		break;
 		default: break;
@@ -225,15 +273,16 @@ void Select::itemRequest(const KTItemRequest *event)
 
 void Select::syncNodes()
 {
-	//FIXME: tratar de optimizar esto
 	foreach(NodeManager* node, m_nodes)
 	{
 		if(node)
 		{
-			node->syncNodesFromParent();
+			
+			node->show();
 			if(node->parentItem())
 			{
 				node->parentItem()->setSelected(true);
+				node->syncNodesFromParent();
 			}
 		}
 	}

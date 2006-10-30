@@ -40,6 +40,8 @@ class GeometricTool : public KTToolPlugin
 		
 		virtual QStringList keys() const;
 		
+		virtual void init(QGraphicsView *view);
+		
 		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);

@@ -43,14 +43,29 @@ class NodeManager
 		void beginToEdit();
 		void restoreItem();
 		
+		void show();
+		
+		void setAnchor(const QPointF& point);
+		void scale(float sx, float sy);
+		
+		
+		void setPress(bool press);
+		bool isPress();
+		
 	private:
 		QHash<Node::TypeNode, Node *> m_nodes;
 		QGraphicsItem * m_parent;
+		
+		KTScene *m_scene;
+		
 		
 		bool m_modify;
 		
 		QMatrix m_origMatrix;
 		QPointF m_origPos;
+		QPointF m_anchor;
+		
+		bool m_press;
 };
 
 #endif

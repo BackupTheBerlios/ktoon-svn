@@ -36,7 +36,6 @@
 ControlNode::ControlNode(int index, NodeGroup *nodeGroup, const QPointF & pos, QGraphicsItem * parent,  KTScene * scene   ) : QGraphicsItem(0, scene), m_index(index), m_parent(0),  m_left(0),  m_right(0), m_nodeParent(0), m_notChange(true) ,m_nodeGroup(nodeGroup), m_scene(scene)
 {
 	QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor ));
-// 	setFlags(ItemIsMovable);
 	setFlag(ItemIsSelectable, true);
 	setFlag(ItemIsMovable, true);
 	
@@ -127,7 +126,6 @@ QRectF ControlNode::boundingRect() const
 
 QVariant ControlNode::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-	
 	if(change == ItemPositionChange )
 	{
 		if(!m_notChange)
@@ -191,7 +189,6 @@ QVariant ControlNode::itemChange(GraphicsItemChange change, const QVariant &valu
 
 void ControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-
 	update();
 	if(m_nodeParent)
 	{
@@ -249,16 +246,6 @@ void ControlNode::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 		}
 	}
 	setPos(event->scenePos());
-// 	if(m_parent)
-// 	{
-// 		m_parent->setSelected( true);
-// 	}
-// 	else
-// 	{
-// 		dDebug() << "Not parent";
-// 	}
-	
-// 	event->ignore();
 	update();
 }
 

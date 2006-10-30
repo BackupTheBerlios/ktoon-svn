@@ -50,6 +50,11 @@ QStringList GeometricTool::keys() const
 	return QStringList() << tr("Rectangle") << tr("Ellipse") << tr("Line");
 }
 
+void GeometricTool::init(QGraphicsView *view)
+{
+	view->setDragMode (QGraphicsView::NoDrag);
+}
+
 void GeometricTool::setupActions()
 {
 	DAction *action1 = new DAction( QIcon(THEME_DIR+"/icons/square.png"), tr("Rectangle"), this);

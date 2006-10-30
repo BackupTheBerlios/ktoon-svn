@@ -89,28 +89,41 @@ QRectF Node::boundingRect() const
 
 QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
 {
-	
+	if(change ==  ItemSelectedChange)
+	{
+		D_FUNCINFO;
+		SHOW_VAR(value.toBool());
+		setVisible(true);
+		
+		if(value.toBool())
+		{
+			m_parent->setSelected(true);
+		}
+		m_manager->show();
+	}
 	return QGraphicsItem::itemChange(change, value);
 }
 
 void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	D_FUNCINFO;
 	update();
-	m_brParent = m_parent->sceneBoundingRect();
+// 	m_brParent = m_parent->sceneBoundingRect();
+	m_manager->setPress( true);
 	QGraphicsItem::mousePressEvent(event);
-	m_parent->setSelected( true);
 }
 
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	update();
-	m_parent->setSelected( true);
 	QGraphicsItem::mouseReleaseEvent(event);
-	m_parent->setSelected( true);
+	m_parent->setSelected(true);
+	m_manager->setPress(false);
 }
 
 void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
+	
 	QPointF newPos(event->pos()+pos());
 	
 	if( m_notChange)
@@ -123,26 +136,30 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 		rect.moveTopLeft (m_parent->scenePos());
 		QRectF br =   m_parent->sceneBoundingRect();
 		
+		QRectF br1 = m_parent->boundingRect();
 		switch(m_typeNode)
 		{
 			case TopLeft:
 			{
+				m_manager->setAnchor( br1.bottomRight());
 				rect.setTopLeft( newPos );
 				break;
-				
 			}
 			case TopRight:
 			{
+				m_manager->setAnchor( br1.bottomLeft());
 				rect.setTopRight(newPos);
 				break;
 			}
 			case BottomRight:
 			{
+				m_manager->setAnchor( br1.topLeft());
 				rect.setBottomRight(newPos);
 				break;
 			}
 			case BottomLeft:
 			{
+				m_manager->setAnchor( br1.topRight());
 				rect.setBottomLeft(newPos);
 				break;
 			}
@@ -151,21 +168,6 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 				break;
 			}
 		};
-
-#if 0
-		if(gb1)
-		{
-			scene()->removeItem(gb1);
-		}
-		
-		if(gb2)
-		{
-			scene()->removeItem(gb2);
-		}
-		
-		gb1 = scene()->addRect(rect, QPen(Qt::magenta));
-		gb2 = scene()->addRect(br, QPen(Qt::blue));
-#endif	
 		
 		float sx = 1, sy = 1;
 		sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
@@ -173,21 +175,17 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 		
 		if(sx > 0 && sy > 0)
 		{
-			m_parent->scale(sx, sy);
-			m_parent->setPos(  rect.topLeft());
+			m_manager->scale( sx,sy);
 		}
 		else 
 		{
 			if(sx > 0)
 			{
-				
-				m_parent->setPos( rect.topLeft().x(),  br.topLeft().y());
 				m_parent->scale(sx, 1);
 			}
 			
 			if(sy > 0)
 			{
-				m_parent->setPos( br.topLeft().x() , rect.topLeft().y() );
 				m_parent->scale(1, sy);
 			}
 		}
@@ -198,9 +196,8 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 		m_parent->moveBy(event->pos().x(), event->pos().y());
 		QGraphicsItem::mouseReleaseEvent(event);
 	}
-	m_manager->syncNodes( m_parent->sceneBoundingRect() );
 	update();
-	m_parent->setSelected( true);
+	m_parent->setSelected(true);
 }
 
 

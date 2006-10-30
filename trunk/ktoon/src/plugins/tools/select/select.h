@@ -25,7 +25,7 @@
 #include <QSpinBox>
 
 #include "ktpathitem.h"
-
+#include "ktproject.h"
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
@@ -66,6 +66,7 @@ class Select : public KTToolPlugin
 		QMap<QString, DAction *> m_actions;
 		QList<NodeManager*> m_nodes;
 		QGraphicsView *m_view;
+		KTProject *m_project;
 		
 	private slots:
 		void syncNodes();

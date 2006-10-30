@@ -78,6 +78,7 @@ void ContourSelection::press(const KTInputDeviceInformation *input, KTBrushManag
 	view->setDragMode (QGraphicsView::RubberBandDrag);
 	
 	m_project = scene->project();
+	
 }
 
 void ContourSelection::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
@@ -93,7 +94,6 @@ void ContourSelection::move(const KTInputDeviceInformation *input, KTBrushManage
 
 void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
-// 	D_FUNCINFO;
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
 	Q_UNUSED(view);
@@ -101,8 +101,6 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 	if(scene->selectedItems().count() > 0)
 	{
 		QList<QGraphicsItem *> selecteds = scene->selectedItems();
-		
-#if 1
 		QList<NodeGroup *>::iterator it = m_nodes.begin();
 		QList<NodeGroup *>::iterator itEnd = m_nodes.end();
 		while(it != itEnd)
@@ -118,10 +116,6 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 			}
 			++it;
 		}
-#else
-// 		qDeleteAll(m_nodes);
-// 		m_nodes.clear();
-#endif
 		foreach(QGraphicsItem *item, selecteds)
 		{
 			if(item  )
@@ -188,7 +182,7 @@ void ContourSelection::itemRequest(const KTItemRequest *event)
 					
 			if ( layer )
 			{
-						
+				
 				frame = layer->frame( event->frameIndex() );
 				
 				if ( frame )
@@ -232,10 +226,8 @@ void ContourSelection::itemRequest(const KTItemRequest *event)
 						node->parentItem()->setSelected(true);
 						break;
 					}
-									
 				}
 			}
-// 			QTimer::singleShot(0, this, SLOT(syncNodes()));
 		}
 		break;
 		default: break;
@@ -286,10 +278,6 @@ int ContourSelection::toolType() const
 
 QWidget *ContourSelection::configurator() 
 {
-// 	if ( ! m_configurator )
-// 	{
-// 		m_configurator = new ExactnessConfigurator;
-// 	}
 	return 0;
 }
 		

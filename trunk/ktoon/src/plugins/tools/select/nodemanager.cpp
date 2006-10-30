@@ -20,7 +20,7 @@
 
 #include "nodemanager.h"
 #include <ddebug.h>
-NodeManager::NodeManager(QGraphicsItem * parent, KTScene *scene): m_parent(parent), m_modify(false)
+NodeManager::NodeManager(QGraphicsItem * parent, KTScene *scene): m_parent(parent), m_scene(scene), m_modify(false), m_anchor(0,0), m_press(false)
 {
 	QRectF rect = parent->sceneBoundingRect();
 	Node *topLeft = new Node(Node::TopLeft, rect.topLeft(), this, parent, scene);
@@ -157,3 +157,39 @@ void NodeManager::restoreItem()
 	m_parent->setPos(m_origPos);
 }
 
+
+void NodeManager::setAnchor(const QPointF& point)
+{
+	m_anchor = point;
+}
+
+void NodeManager::scale(float sx, float sy)
+{
+	QMatrix m = m_parent->matrix();
+	m.translate(m_anchor.x(),m_anchor.y());
+	m.scale(sx,sy);
+	m.translate(-m_anchor.x(),-m_anchor.y());
+	m_parent->setMatrix(m);
+	syncNodesFromParent();
+}
+
+void NodeManager::show()
+{
+	foreach(Node *node, m_nodes)
+	{
+		if(!node->scene())
+		{
+			m_scene->addItem(node);
+		}
+	}
+}
+
+void NodeManager::setPress(bool press)
+{
+	m_press = press;
+}
+
+bool NodeManager::isPress()
+{
+	return m_press;
+}
