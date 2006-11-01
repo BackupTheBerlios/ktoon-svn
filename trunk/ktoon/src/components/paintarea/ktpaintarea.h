@@ -98,6 +98,8 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectRequestHandler
 		void pasteItems();
 		void cutItems();
 		
+		void addSelectedItemsToLibrary();
+		
 	protected:
 		void frameRequest(KTFrameRequest *event);
 		void layerRequest(KTLayerRequest *event);

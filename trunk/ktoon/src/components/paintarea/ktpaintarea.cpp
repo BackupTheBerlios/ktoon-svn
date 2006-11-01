@@ -241,8 +241,6 @@ void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 {
 	if ( !scene() ) return;
 	
-	QGraphicsView::mousePressEvent(event);
-	
 	QMouseEvent *eventMapped = mapMouseEvent( event );
 	
 	m_inputInformation->updateFromMouseEvent( eventMapped );
@@ -253,9 +251,6 @@ void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 	if ( event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
 	{
 		m_isDrawing = false;
-		
-// 		setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-// 		setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	}
 	else if (m_tool )
 	{
@@ -263,10 +258,11 @@ void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 		
 		if ( event->buttons() == Qt::LeftButton )
 		{
+			QGraphicsView::mousePressEvent(event);
 			m_isDrawing = true;
 			m_tool->press(m_inputInformation, m_brushManager,  qobject_cast<KTScene *>(scene()), this );
 		}
-		else if ( event->buttons() == Qt::RightButton ) 
+		else if ( event->buttons() == Qt::RightButton )
 		{
 			QMenu *menu = new QMenu(tr("Drawing area"));
 			
@@ -274,12 +270,33 @@ void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 			menu->addAction(dApp->findGlobalAction("redo"));
 			
 			menu->addSeparator();
-			menu->addAction(tr("Cut"), this, SLOT(cutItems()));
-			menu->addAction(tr("Copy"), this, SLOT(copyItems()));
-			menu->addAction(tr("Paste"), this, SLOT(pasteItems()));
+			
+			QAction *cut = menu->addAction(tr("Cut"), this, SLOT(cutItems()));
+			
+			QAction *copy = menu->addAction(tr("Copy"), this, SLOT(copyItems()));
+			
+			QAction *paste = menu->addAction(tr("Paste"), this, SLOT(pasteItems()));
 			
 			menu->addSeparator();
-			menu->addAction(tr("Delete"), this, SLOT(deleteItems()));
+			QAction *del = menu->addAction(tr("Delete"), this, SLOT(deleteItems()));
+			
+			menu->addSeparator();
+			
+			QAction *addToLib = menu->addAction(tr("Add to library..."), this, SLOT(addSelectedItemsToLibrary()));
+			
+			if ( scene()->selectedItems().isEmpty() )
+			{
+				del->setEnabled(false);
+				cut->setEnabled(false);
+				copy->setEnabled(false);
+			}
+			
+			
+			if ( m_copiesXml.isEmpty() )
+			{
+				paste->setEnabled(false);
+			}
+			
 			
 			if ( QMenu *toolMenu = m_tool->menu() )
 			{
@@ -288,6 +305,8 @@ void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 			}
 			
 			menu->exec(event->globalPos());
+			
+			QGraphicsView::mousePressEvent(event);
 		}
 	}
 }
@@ -783,6 +802,13 @@ void KTPaintArea::setPreviousFramesOnionSkinCount(int n)
 	{
 		currentScene->setPreviousOnionSkinCount( n );
 	}
+}
+
+void KTPaintArea::addSelectedItemsToLibrary()
+{
+	dDebug("paint area") << "Adding to library";
+	// TODO: crear un request para añadir a la lib
+	
 }
 
 
