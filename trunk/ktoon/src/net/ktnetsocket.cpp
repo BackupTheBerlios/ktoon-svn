@@ -28,6 +28,8 @@
 #include "ktprojectrequest.h"
 #include "ktnetprojectmanagerhandler.h"
 
+#include "ktcompress.h"
+
 KTNetSocket::KTNetSocket(KTNetProjectManagerHandler *handler) : QTcpSocket(handler), m_handler(handler)
 {
 	connect(this, SIGNAL(readyRead ()), this, SLOT(readFromServer()) );
@@ -43,7 +45,7 @@ void KTNetSocket::sendToServer(const QString &str)
 	if ( state() == QAbstractSocket::ConnectedState )
 	{
 		QTextStream stream(this);
-		stream << str << "%%" << endl;
+		stream << KTCompress::compressAndHash( str ) << "%%" << endl;
 	}
 }
 
@@ -71,6 +73,9 @@ void KTNetSocket::readFromServer()
 	}
 	
 	m_readed.remove(m_readed.lastIndexOf("%%"), 2);
+	
+	
+	m_readed = KTCompress::uncompressAndUnhash( m_readed );
 	
 	QDomDocument doc;
 	
