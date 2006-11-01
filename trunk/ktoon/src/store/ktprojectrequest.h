@@ -38,13 +38,6 @@ class KTFrameRequest;
 class STORE_EXPORT KTProjectRequest
 {
 	public:
-		struct PartPosition
-		{
-			int sceneIndex;
-			int layerIndex;
-			int frameIndex;
-		};
-		
 		enum Action
 		{
 			None = 0,
@@ -92,7 +85,8 @@ class STORE_EXPORT KTProjectRequest
 			Scene,
 			Layer,
 			Frame,
-			Item
+			Item,
+			Library
 		};
 		
 		KTProjectRequest(Action action, const QVariant &data = 0);
@@ -104,6 +98,7 @@ class STORE_EXPORT KTProjectRequest
 		void setPartName(const QString &name);
 		QString partName() const;
 		
+		void setId(int id);
 		virtual int id() const;
 		virtual bool isValid() const;
 		
@@ -115,9 +110,9 @@ class STORE_EXPORT KTProjectRequest
 		Action m_action;
 		QString m_partName;
 		QVariant m_data;
+		
+		int m_id;
 };
-
-Q_DECLARE_METATYPE(KTProjectRequest::PartPosition);
 
 
 #endif

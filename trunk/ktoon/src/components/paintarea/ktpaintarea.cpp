@@ -48,6 +48,8 @@
 
 #include "kttextitem.h"
 
+#include "librarydialog.h"
+
 #ifdef QT_OPENGL_LIB
 
 #include <QGLWidget>
@@ -809,6 +811,39 @@ void KTPaintArea::addSelectedItemsToLibrary()
 	dDebug("paint area") << "Adding to library";
 	// TODO: crear un request para añadir a la lib
 	
+	LibraryDialog dialog;
+	
+	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
+	
+	foreach (QGraphicsItem *item, selecteds )
+	{
+		dialog.addItem( item );
+	}
+	
+	if ( dialog.exec() != QDialog::Accepted )
+	{
+		return;
+	}
+	
+	
+	QDomDocument doc;
+	
+	foreach (QGraphicsItem *item, selecteds )
+	{
+		QString symName = dialog.symbolName( item );
+		
+		QDomElement library = doc.createElement("symbol");
+		library.setAttribute("name", symName);
+		
+		doc.appendChild( library );
+	}
+	
+	dDebug("paint area") << doc.toString();
+	
+	KTProjectRequest event(KTProjectRequest::Add, doc.toString(0));
+	event.setId(KTProjectRequest::Library);
+		
+	emit requestTriggered(&event);
 }
 
 

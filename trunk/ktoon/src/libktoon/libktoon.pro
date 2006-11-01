@@ -20,7 +20,8 @@ HEADERS += ktgraphicalgorithm.h \
            ktbrushmanager.h \
            ktinputdeviceinformation.h \
            ktsvg2qt.h \
-           ktitempreview.h 
+           ktitempreview.h \
+           ktcompress.h 
 SOURCES += ktgraphicalgorithm.cpp \
            ktpaintareaproperties.cpp \
            ktgradientcreator.cpp \
@@ -32,7 +33,8 @@ SOURCES += ktgraphicalgorithm.cpp \
            ktbrushmanager.cpp \
            ktinputdeviceinformation.cpp \
            ktsvg2qt.cpp \
-           ktitempreview.cpp 
+           ktitempreview.cpp \
+           ktcompress.cpp 
 DLIB_DIR = ../../src/dlib
 include($$DLIB_DIR/dlib.pri)
 QUAZIP_DIR = ../../3rdparty/quazip/

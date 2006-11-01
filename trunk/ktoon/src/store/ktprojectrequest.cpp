@@ -22,7 +22,7 @@
 
 #include <ddebug.h>
 
-KTProjectRequest::KTProjectRequest(Action action, const QVariant &data) : m_action(action), m_data(data)
+KTProjectRequest::KTProjectRequest(Action action, const QVariant &data) : m_action(action), m_data(data), m_id(Project)
 {
 }
 
@@ -42,9 +42,14 @@ QString KTProjectRequest::partName() const
 	return m_partName;
 }
 
+void KTProjectRequest::setId(int id)
+{
+	m_id = id;
+}
+
 int KTProjectRequest::id() const
 {
-	return Project;
+	return m_id;
 }
 
 

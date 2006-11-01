@@ -17,66 +17,23 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTCOMPRESS_H
+#define KTCOMPRESS_H
 
-#include "ktitempreview.h"
+#include <QString>
 
-#include <QGraphicsItem>
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
-
-KTItemPreview::KTItemPreview(QWidget *parent) : QWidget(parent), m_item(0)
+/**
+ * This class (un)compress and (un)hash a string
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+class KTCompress
 {
-}
-
-
-KTItemPreview::~KTItemPreview()
-{
-}
-
-QSize KTItemPreview::sizeHint() const
-{
-	if ( m_item )
-	{
-		return m_item->boundingRect().size().toSize();
-	}
-	
-	return QWidget::sizeHint();
-}
-
-
-void KTItemPreview::render(QGraphicsItem *item)
-{
-	m_item = item;
-	update();
-}
-
-void KTItemPreview::paintEvent(QPaintEvent *)
-{
-	QPainter p(this);
-	
-	if ( m_item )
-	{
-		QStyleOptionGraphicsItem opt;
-		opt.state = QStyle::State_None;
+	public:
+		KTCompress();
+		~KTCompress();
 		
-		if (m_item->isEnabled())
-			opt.state |= QStyle::State_Enabled;
-		
-		opt.exposedRect = QRectF(QPointF(0,0), m_item->boundingRect().size());
-		opt.levelOfDetail = 1;
-		
-		QMatrix matrix;
-		
-		opt.matrix = matrix;
-		
-		// TODO: poner una matrix al 'opt' para que el item se escale lo suficiente en el widget y transladarlo al origen.
-		
-		opt.palette = palette();
-		
-		m_item->paint ( &p, &opt, this ); // paint isn't const...
-	}
-}
+		static QString compressAndHash(const QString &str, int level = 7);
+		static QString uncompressAndUnhash(const QString &str);
+};
 
-
-
-
+#endif

@@ -18,65 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktitempreview.h"
+#include "ktcompress.h"
+#include <QByteArray>
 
-#include <QGraphicsItem>
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
-
-KTItemPreview::KTItemPreview(QWidget *parent) : QWidget(parent), m_item(0)
+KTCompress::KTCompress()
 {
 }
 
 
-KTItemPreview::~KTItemPreview()
+KTCompress::~KTCompress()
 {
 }
 
-QSize KTItemPreview::sizeHint() const
+
+QString KTCompress::compressAndHash(const QString &str, int level)
 {
-	if ( m_item )
-	{
-		return m_item->boundingRect().size().toSize();
-	}
-	
-	return QWidget::sizeHint();
+	return QString::fromLocal8Bit(qCompress(str.toLocal8Bit(), level).toBase64() );
 }
 
-
-void KTItemPreview::render(QGraphicsItem *item)
+QString KTCompress::uncompressAndUnhash(const QString &str)
 {
-	m_item = item;
-	update();
+	return QString::fromLocal8Bit( qUncompress(QByteArray::fromBase64(str.toLocal8Bit())) );
 }
-
-void KTItemPreview::paintEvent(QPaintEvent *)
-{
-	QPainter p(this);
-	
-	if ( m_item )
-	{
-		QStyleOptionGraphicsItem opt;
-		opt.state = QStyle::State_None;
-		
-		if (m_item->isEnabled())
-			opt.state |= QStyle::State_Enabled;
-		
-		opt.exposedRect = QRectF(QPointF(0,0), m_item->boundingRect().size());
-		opt.levelOfDetail = 1;
-		
-		QMatrix matrix;
-		
-		opt.matrix = matrix;
-		
-		// TODO: poner una matrix al 'opt' para que el item se escale lo suficiente en el widget y transladarlo al origen.
-		
-		opt.palette = palette();
-		
-		m_item->paint ( &p, &opt, this ); // paint isn't const...
-	}
-}
-
-
-
 

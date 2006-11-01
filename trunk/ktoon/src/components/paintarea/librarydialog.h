@@ -18,65 +18,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktitempreview.h"
+#ifndef LIBRARYDIALOG_H
+#define LIBRARYDIALOG_H
 
-#include <QGraphicsItem>
-#include <QPainter>
-#include <QStyleOptionGraphicsItem>
+#include <QDialog>
+#include <QMap>
 
-KTItemPreview::KTItemPreview(QWidget *parent) : QWidget(parent), m_item(0)
+class QToolBox;
+class QGraphicsItem;
+class QLineEdit;
+
+/**
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+class LibraryDialog : public QDialog
 {
-}
-
-
-KTItemPreview::~KTItemPreview()
-{
-}
-
-QSize KTItemPreview::sizeHint() const
-{
-	if ( m_item )
-	{
-		return m_item->boundingRect().size().toSize();
-	}
-	
-	return QWidget::sizeHint();
-}
-
-
-void KTItemPreview::render(QGraphicsItem *item)
-{
-	m_item = item;
-	update();
-}
-
-void KTItemPreview::paintEvent(QPaintEvent *)
-{
-	QPainter p(this);
-	
-	if ( m_item )
-	{
-		QStyleOptionGraphicsItem opt;
-		opt.state = QStyle::State_None;
+	Q_OBJECT;
+	public:
+		LibraryDialog();
+		~LibraryDialog();
 		
-		if (m_item->isEnabled())
-			opt.state |= QStyle::State_Enabled;
+		void addItem(QGraphicsItem *item);
+		QString symbolName(QGraphicsItem *item) const;
 		
-		opt.exposedRect = QRectF(QPointF(0,0), m_item->boundingRect().size());
-		opt.levelOfDetail = 1;
+	private slots:
+		void checkNames();
 		
-		QMatrix matrix;
-		
-		opt.matrix = matrix;
-		
-		// TODO: poner una matrix al 'opt' para que el item se escale lo suficiente en el widget y transladarlo al origen.
-		
-		opt.palette = palette();
-		
-		m_item->paint ( &p, &opt, this ); // paint isn't const...
-	}
-}
+	private:
+		QToolBox *m_toolBox;
+		QMap<QGraphicsItem *, QLineEdit *> m_symbolNames;
+		QMap<int, QLineEdit *> m_tabs;
+};
 
-
-
-
+#endif

@@ -34,11 +34,10 @@ class KTItemPreview : public QWidget
 	Q_OBJECT;
 	
 	public:
-		KTItemPreview();
+		KTItemPreview(QWidget *parent = 0);
 		~KTItemPreview();
 		
 		void render(QGraphicsItem *item);
-		
 		QSize sizeHint() const;
 		
 	protected:

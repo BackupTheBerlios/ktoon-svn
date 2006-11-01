@@ -10,7 +10,8 @@ HEADERS += ktpaintarea.h \
            ktpaintareastatus.h \
            ktimagedevice.h \
            ktpaintareacommand.h \
-           ktpaintarearotator.h 
+           ktpaintarearotator.h \
+           librarydialog.h 
 SOURCES += ktpaintarea.cpp \
            ktconfigurationarea.cpp \
            ktviewdocument.cpp \
@@ -18,7 +19,8 @@ SOURCES += ktpaintarea.cpp \
            ktpaintareastatus.cpp \
            ktimagedevice.cpp \
            ktpaintareacommand.cpp \
-           ktpaintarearotator.cpp 
+           ktpaintarearotator.cpp \
+           librarydialog.cpp 
 KDEV_QTVER = 4
 include(../components_config.pri)
 CONFIG += static
