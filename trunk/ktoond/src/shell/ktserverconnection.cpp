@@ -31,6 +31,8 @@
 #include "ktrequestfactory.h"
 #include "ktserver.h"
 
+#include "ktcompress.h"
+
 KTServerConnection::KTServerConnection(int socketDescriptor, KTServer *server) : QThread(server), m_server(server)
 {
 	m_client = new KTServerClient(this);
@@ -60,7 +62,8 @@ void KTServerConnection::run()
 		{
 			readed.remove(readed.lastIndexOf("%%"), 2);
 			
-			dDebug() << "READED: " << readed;
+			readed = KTCompress::uncompressAndUnhash(readed);
+			dDebug("server") << "READED: " << readed;
 			
 			QDomDocument doc;
 			
@@ -92,7 +95,7 @@ void KTServerConnection::sendToClient(const QString &msg)
 {
 // 	dDebug() << "SENDING: " << msg;
 	
-	dDebug() << "sending: " << msg;
+	dDebug("server") << "sending: " << msg;
 	m_client->reset();
 	
 	QTextStream out(m_client);
@@ -100,7 +103,7 @@ void KTServerConnection::sendToClient(const QString &msg)
 	QString toSend(msg);
 	toSend.remove('\n');
 	
-	out << toSend << "%%" << endl;
+	out << KTCompress::compressAndHash(toSend) << "%%" << endl;
 	m_client->flush();
 }
 
