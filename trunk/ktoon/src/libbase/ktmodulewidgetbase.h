@@ -67,6 +67,7 @@ class KTOON_EXPORT KTModuleWidgetBase : public QWidget, public KTAbstractProject
 		virtual void sceneRequest(KTSceneRequest *sceneRequest);
 		virtual void projectRequest(KTProjectRequest *projectRequest);
 		virtual void itemRequest(KTItemRequest *event);
+		virtual void libraryRequest(KTProjectRequest *libraryRequest);
 		
 	signals:
 		void documentModified(bool);

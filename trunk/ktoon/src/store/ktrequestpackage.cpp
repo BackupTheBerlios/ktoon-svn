@@ -124,6 +124,14 @@ void KTRequestPackage::projectRequest(KTProjectRequest *projectRequest)
 	Q_UNUSED(projectRequest);
 }
 
+void KTRequestPackage::libraryRequest(KTProjectRequest *libraryRequest)
+{
+	QDomDocument doc;
+	doc.setContent(libraryRequest->data().toString());
+	
+	
+	documentElement().appendChild(importNode(doc.documentElement(), true));
+}
 
 void KTRequestPackage::appendData(QDomElement &element, const QVariant &data)
 {

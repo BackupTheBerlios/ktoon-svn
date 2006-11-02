@@ -48,6 +48,7 @@ class STORE_EXPORT KTAbstractProjectRequestHandler
 		virtual void layerRequest(KTLayerRequest *layerRequest) = 0;
 		virtual void sceneRequest(KTSceneRequest *sceneRequest) = 0;
 		virtual void projectRequest(KTProjectRequest *projectRequest) = 0;
+		virtual void libraryRequest(KTProjectRequest *libraryRequest) = 0;
 };
 
 #endif

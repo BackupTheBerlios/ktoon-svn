@@ -82,6 +82,7 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectRequestHandler
 		void wheelEvent( QWheelEvent *event );
 		void keyPressEvent(QKeyEvent *event);
 		
+		
 	signals:
 		void cursorPosition(const QPointF &pos);
 		void requestTriggered(const KTProjectRequest *event);
@@ -106,6 +107,7 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectRequestHandler
 		void sceneRequest(KTSceneRequest *event);
 		void projectRequest(KTProjectRequest *event);
 		void itemRequest(KTItemRequest *event);
+		void libraryRequest(KTProjectRequest *request);
 		void drawBackground(QPainter *painter, const QRectF &rect);
 		
 		

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,59 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTLIBRARYWIDGET_H
-#define KTLIBRARYWIDGET_H
+#include "ktcommandexecutor.h"
+#include "ktproject.h"
+#include "ktprojectrequest.h"
 
-#include <ktmodulewidgetbase.h>
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
-#include <QMap>
-#include <QDir>
-
-#include "ktdisplaygraphic.h"
-#include "dimagebutton.h"
-
-#include "ktgctable.h"
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-
-class KTLibraryWidget : public KTModuleWidgetBase
+QString KTCommandExecutor::createSymbol(const QString &xml)
 {
-	Q_OBJECT
-	public:
-		KTLibraryWidget(QWidget *parent = 0);
-		~KTLibraryWidget();
-		void addBitmap(const QString &path);
+	if ( m_project->createSymbol( xml ) )
+	{
+		KTProjectRequest request(KTProjectRequest::Add, xml);
+		request.setId( KTProjectRequest::Library);
 		
-	private:
-		void setup();
-		
-	protected:
-		virtual void libraryRequest(KTProjectRequest *request);
-		
-	private slots:
-		void addFolder(const QString &name);
-		void drawCurrentItem(QTreeWidgetItem *, int);
-		void emitSelectedComponent();
-		void removeCurrentGraphic();
-		void renameObject( QTreeWidgetItem* item);
-		
-		
-	public slots:
-		void importBitmap();
-		
-	signals:
-		void requestCurrentGraphic();
+		emit commandExecuted( &request, m_state );
+	}
+	else
+	{
+	}
 	
-	private:
-		KTDisplayGraphic *m_display;
-		KTGCTable *m_libraryTree;
-		
-		int m_childCount;
-		
-		QDir m_libraryDir;
-};
+	return QString();
+}
 
-#endif
+
+QString KTCommandExecutor::removeSymbol(const QString &xml)
+{
+	if ( m_project->removeSymbol( xml ) )
+	{
+	}
+	else
+	{
+	}
+	
+	return QString();
+}
+
+

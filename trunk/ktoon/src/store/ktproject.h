@@ -36,6 +36,7 @@ class KTFrame;
 class KTFrameRequest;
 class KTProjectRequest;
 class QGraphicsItem;
+class KTLibrary;
 
 typedef QList<KTScene *> Scenes;
 
@@ -67,8 +68,12 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		bool removeScene(int position);
 		bool moveScene(int position, int newPosition);
 		
+		bool createSymbol(const QString &xml);
+		bool removeSymbol(const QString &xml);
+		
 		void clear();
 		
+		void loadLibrary();
 		
 		
 	protected:
@@ -83,6 +88,9 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		QString m_name;
 		
 		int m_sceneCounter;
+		
+		KTLibrary *m_library;
+		
 };
 
 #endif

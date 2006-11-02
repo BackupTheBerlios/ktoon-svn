@@ -51,7 +51,7 @@ class KTThemeSelector : public DVHBox
 		DThemeDocument document() const;
 		QString lastFile() const;
 		bool applyColors() const;
-		void setPalette(const QPalette &pal) {}; 
+		void setPalette(const QPalette &/*pal*/) {};
 		
 		
 	private slots:

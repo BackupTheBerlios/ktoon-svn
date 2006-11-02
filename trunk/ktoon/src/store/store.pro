@@ -84,7 +84,8 @@ SOURCES += ktlayer.cpp \
            ktgraphicobject.cpp \
            ktlibrary.cpp \
            ktlibraryobject.cpp \
-           ktlibraryfolder.cpp 
+           ktlibraryfolder.cpp \
+           ktcommandexecutor_library.cpp 
 KDEV_QTVER = 4
 STORE_DIR = ../../src/store
 LIBKTOON_DIR = ../../src/libktoon

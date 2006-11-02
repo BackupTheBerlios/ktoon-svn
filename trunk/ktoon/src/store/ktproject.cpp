@@ -25,8 +25,12 @@
 #include "ktscene.h"
 #include "ktlayer.h"
 #include "ktframe.h"
+#include "ktlibrary.h"
+#include "ktlibraryobject.h"
+#include "ktitemfactory.h"
 
-#include "ktscenerequest.h" //events
+#include "ktscenerequest.h" // requests
+
 
 #include <QGraphicsView>
 
@@ -36,6 +40,10 @@
 KTProject::KTProject(QObject *parent) : QObject(parent), m_sceneCounter(0)
 {
 	DINIT;
+	
+	m_library = new KTLibrary("library", this);
+	
+	loadLibrary();
 }
 
 
@@ -45,6 +53,13 @@ KTProject::KTProject(QObject *parent) : QObject(parent), m_sceneCounter(0)
 KTProject::~KTProject()
 {
 	DEND;
+}
+
+/**
+ * Esta funcion carga la libreria local
+ */
+void KTProject::loadLibrary()
+{
 }
 
 /**
@@ -205,4 +220,58 @@ Scenes KTProject::scenes() const
 	return m_scenes;
 }
 
+
+bool KTProject::createSymbol(const QString &xml)
+{
+	QDomDocument doc;
+	if ( !doc.setContent(xml) )
+	{
+		dfDebug << "Cannot set content!";
+		return false;
+	}
+	
+	QDomElement root = doc.documentElement();
+	
+	if ( root.tagName() == "library" )
+	{
+		QDomNode n = root.firstChild();
+		while(!n.isNull())
+		{
+			QDomElement e = n.toElement();
+			if(!e.isNull())
+			{
+				if ( e.tagName() == "symbol" )
+				{
+					KTLibraryObject *object = new KTLibraryObject(m_library);
+					object->setType( e.attribute( "type" ).toInt() );
+					
+					QDomDocument buildDoc;
+					buildDoc.appendChild(buildDoc.importNode(n.firstChild(), true));
+					
+					switch(object->type())
+					{
+						case KTLibraryObject::Item:
+						{
+							KTItemFactory factory;
+							QGraphicsItem *item = factory.create(buildDoc.toString(0));
+							
+							object->setData( item );
+						}
+						break;
+					}
+					
+					m_library->addObject( object, e.attribute( "name"));
+				}
+			}
+			n = n.nextSibling();
+		}
+	}
+	
+	return true;
+}
+
+bool KTProject::removeSymbol(const QString &xml)
+{
+	return false;
+}
 

@@ -41,6 +41,10 @@ void KTLocalProjectManagerHandler::handleProjectRequest(const KTProjectRequest *
 	{
 		emit sendCommand( request, true );
 	}
+	else
+	{
+		dfDebug << "INVALID REQUEST! ID: " << request->id();
+	}
 }
 
 

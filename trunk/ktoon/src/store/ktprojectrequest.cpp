@@ -60,7 +60,7 @@ void KTProjectRequest::setPartName(const QString &name)
 
 bool KTProjectRequest::isValid() const
 {
-	return false;
+	return m_data.isValid();
 }
 
 KTProjectRequest *KTProjectRequest::clone() const
@@ -68,6 +68,8 @@ KTProjectRequest *KTProjectRequest::clone() const
 	KTProjectRequest *event = new KTProjectRequest( m_action, data() );
 	
 	event->setPartName( partName() );
+	event->setId( m_id );
+	
 	
 	return event;
 }

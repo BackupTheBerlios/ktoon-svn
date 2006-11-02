@@ -49,6 +49,7 @@
 #include "kttextitem.h"
 
 #include "librarydialog.h"
+#include "ktlibraryobject.h"
 
 #ifdef QT_OPENGL_LIB
 
@@ -389,6 +390,7 @@ void KTPaintArea::mouseReleaseEvent(QMouseEvent *event)
 		{
 			emit requestTriggered( e );
 		}
+		
 		m_tool->end();
 	}
 	
@@ -512,6 +514,10 @@ void KTPaintArea::itemRequest(KTItemRequest *event)
 	{
 		m_tool->itemRequest( event );
 	}
+}
+
+void KTPaintArea::libraryRequest(KTProjectRequest *request)
+{
 }
 
 void KTPaintArea::drawBackground(QPainter *painter, const QRectF &rect)
@@ -827,22 +833,30 @@ void KTPaintArea::addSelectedItemsToLibrary()
 	
 	
 	QDomDocument doc;
+	QDomElement library = doc.createElement("library");
+	doc.appendChild( library );
 	
 	foreach (QGraphicsItem *item, selecteds )
 	{
-		QString symName = dialog.symbolName( item );
-		
-		QDomElement library = doc.createElement("symbol");
-		library.setAttribute("name", symName);
-		
-		doc.appendChild( library );
+		if ( KTAbstractSerializable *itemSerializable = dynamic_cast<KTAbstractSerializable *>(item) )
+		{
+			QString symName = dialog.symbolName( item );
+			
+			QDomElement symbol = doc.createElement("symbol");
+			symbol.setAttribute("name", symName);
+			symbol.setAttribute("type", KTLibraryObject::Item);
+			
+			symbol.appendChild(itemSerializable->toXml(doc));
+			
+			library.appendChild( symbol );
+		}
 	}
 	
 	dDebug("paint area") << doc.toString();
 	
 	KTProjectRequest event(KTProjectRequest::Add, doc.toString(0));
 	event.setId(KTProjectRequest::Library);
-		
+	
 	emit requestTriggered(&event);
 }
 

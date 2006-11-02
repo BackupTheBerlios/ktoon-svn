@@ -22,12 +22,13 @@
 #define KTLIBRARYFOLDER_H
 
 #include <QObject>
+#include <QHash>
 
 class KTLibraryFolder;
 class KTLibraryObject;
 
 typedef QList<KTLibraryFolder *> Folders;
-typedef QList<KTLibraryObject *> LibraryObjects;
+typedef QHash<QString, KTLibraryObject *> LibraryObjects;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
@@ -43,10 +44,10 @@ class KTLibraryFolder : public QObject
 		void setId(const QString &id);
 		QString id() const;
 		
-		virtual void addObject(KTLibraryObject *object);
-		virtual bool removeObject(KTLibraryObject *object);
+		virtual bool addObject(KTLibraryObject *object, const QString &id);
+		virtual bool removeObject(const QString &id);
 		
-		bool moveObject(KTLibraryObject *object, KTLibraryFolder *folder);
+		bool moveObject(const QString &id, KTLibraryFolder *folder);
 		
 	private:
 		QString m_id;

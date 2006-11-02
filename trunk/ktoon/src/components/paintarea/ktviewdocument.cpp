@@ -266,6 +266,7 @@ void KTViewDocument::setupViewActions()
 	
 	
 	DAction *cut = new DAction( QPixmap(THEME_DIR+"/icons/cut.png" ), tr( "&Cut" ),  QKeySequence(tr("Ctrl+X")), m_paintArea, SLOT(cutItems()),m_actionManager, "cut" );
+	cut->setStatusTip(tr("Cuts the selected items"));
 	
 #if 0
 	DAction *zoomIn = new DAction( QPixmap(THEME_DIR+"/icons/zoom_in.png" ), tr( "Zoom In" ), QKeySequence(Qt::CTRL+Qt::Key_Plus), m_paintArea, SLOT(zoomIn()), m_actionManager, "zoom_in" );
@@ -818,7 +819,7 @@ void KTViewDocument::close()
 // 	m_paintArea->close();
 }
 
-void KTViewDocument::setCursor(const QCursor &c)
+void KTViewDocument::setCursor(const QCursor &)
 {
 // 	m_paintArea->setCursor(c);
 }
@@ -887,7 +888,7 @@ void KTViewDocument::toggleShowGrid()
 // 	m_paintArea->setScene(  scene );
 // }
 
-void KTViewDocument::setZoomFactor(int porcent)
+void KTViewDocument::setZoomFactor(int /*percent*/)
 {
 	m_zoomFactorSpin->blockSignals(true);
 // 	m_paintArea->setZoomFactor((float) porcent/100);

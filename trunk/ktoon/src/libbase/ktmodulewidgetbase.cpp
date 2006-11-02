@@ -115,9 +115,13 @@ void KTModuleWidgetBase::projectRequest(KTProjectRequest *projectRequest)
 	Q_UNUSED(projectRequest);
 }
 
-void KTModuleWidgetBase::itemRequest(KTItemRequest *event)
+void KTModuleWidgetBase::itemRequest(KTItemRequest *itemRequest)
 {
-	Q_UNUSED(event);
+	Q_UNUSED(itemRequest);
 }
 
+void KTModuleWidgetBase::libraryRequest(KTProjectRequest *libraryRequest)
+{
+	Q_UNUSED(libraryRequest);
+}
 

@@ -67,6 +67,8 @@ void LibraryDialog::addItem(QGraphicsItem *item)
 	layout->addWidget(preview);
 	
 	QLineEdit *name = new QLineEdit;
+	connect(name, SIGNAL(returnPressed()), this, SLOT(checkNames()));
+	
 	QLayout *grid = DFormFactory::makeGrid( QStringList() << tr("Name"), QWidgetList() << name );
 	
 	layout->addLayout(grid);
@@ -89,6 +91,7 @@ void LibraryDialog::checkNames()
 		if ( m_tabs[i]->text().isEmpty())
 		{
 			m_toolBox->setCurrentIndex (i);
+			m_tabs[i]->setFocus();
 			return;
 		}
 	}

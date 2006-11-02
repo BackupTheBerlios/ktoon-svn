@@ -20,7 +20,7 @@
 
 #include "ktlibraryobject.h"
 
-KTLibraryObject::KTLibraryObject(const QString &id, QObject *parent) : QObject(parent), m_id(id)
+KTLibraryObject::KTLibraryObject(QObject *parent) : QObject(parent)
 {
 }
 
@@ -39,14 +39,14 @@ QVariant KTLibraryObject::data() const
 	return m_data;
 }
 
-void KTLibraryObject::setId(const QString &id)
+void KTLibraryObject::setType(int type)
 {
-	m_id = id;
+	m_type = type;
 }
 
-QString KTLibraryObject::id() const
+int KTLibraryObject::type() const
 {
-	return m_id;
+	return m_type;
 }
 
 

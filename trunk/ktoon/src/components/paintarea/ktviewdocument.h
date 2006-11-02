@@ -100,7 +100,7 @@ class KTViewDocument : public QMainWindow
 		QMenu *m_toolsMenu, *m_editMenu, *m_viewMenu, *m_orderMenu;
 		QAction *m_aUndo, *m_aRedo, *m_aClose;
 		QToolBar *m_barGrid, *m_toolbar;
-		QSpinBox *m_zoomFactorSpin;
+		QDoubleSpinBox *m_zoomFactorSpin;
 		
 		KTPaintArea *m_paintArea;
 		

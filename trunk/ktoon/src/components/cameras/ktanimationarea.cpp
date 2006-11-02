@@ -61,7 +61,7 @@ void KTAnimationArea::setFPS(int fps)
 }
 
 
-void KTAnimationArea::paintEvent(QPaintEvent *e)
+void KTAnimationArea::paintEvent(QPaintEvent *)
 {
 	QPainter painter;
 
@@ -117,11 +117,11 @@ void KTAnimationArea::advance()
 	}
 }
 
-void KTAnimationArea::frameRequest(KTFrameRequest *event)
+void KTAnimationArea::frameRequest(KTFrameRequest *)
 {
 }
 
-void KTAnimationArea::layerRequest(KTLayerRequest *event)
+void KTAnimationArea::layerRequest(KTLayerRequest *)
 {
 	
 }
@@ -147,16 +147,17 @@ void KTAnimationArea::sceneRequest(KTSceneRequest *event)
 	}
 }
 
-void KTAnimationArea::projectRequest(KTProjectRequest *event)
+void KTAnimationArea::projectRequest(KTProjectRequest *)
 {
-	
 }
 
-void KTAnimationArea::itemRequest(KTItemRequest *event)
+void KTAnimationArea::itemRequest(KTItemRequest *)
 {
-	
 }
 
+void KTAnimationArea::libraryRequest(KTProjectRequest *)
+{
+}
 
 void KTAnimationArea::render() // TODO: Extend to scenes
 {
@@ -262,7 +263,7 @@ QSize KTAnimationArea::sizeHint() const
 }
 
 
-void  KTAnimationArea::resizeEvent ( QResizeEvent * event )
+void  KTAnimationArea::resizeEvent ( QResizeEvent * )
 {
 	stop();
 	m_renderCamera = QImage(size(), QImage::Format_RGB32);

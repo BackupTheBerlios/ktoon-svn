@@ -52,6 +52,8 @@ class STORE_EXPORT KTProjectCommand : public QUndoCommand
 		void layerCommand(const KTLayerRequest *event, bool redo);
 		void sceneCommand(const KTSceneRequest *event, bool redo);
 		void itemCommand(const KTItemRequest *event, bool redo);
+		
+		void libraryCommand(const KTProjectRequest *event, bool redo);
 		void paintAreaCommand(const KTPaintAreaEvent *event, bool redo);
 		
 	private:

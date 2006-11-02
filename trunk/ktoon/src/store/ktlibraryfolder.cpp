@@ -30,14 +30,21 @@ KTLibraryFolder::~KTLibraryFolder()
 {
 }
 
-void KTLibraryFolder::addObject(KTLibraryObject *object)
+bool KTLibraryFolder::addObject(KTLibraryObject *object, const QString &id)
 {
-	m_objects << object;
+	if ( !m_objects.contains(id ) )
+	{
+		m_objects.insert(id, object);
+		
+		return true;
+	}
+	
+	return false;
 }
 
-bool KTLibraryFolder::removeObject(KTLibraryObject *object)
+bool KTLibraryFolder::removeObject(const QString &id)
 {
-	int c = m_objects.removeAll(object);
+	int c = m_objects.remove(id);
 	
 	if (c == 0 )
 	{
@@ -47,24 +54,16 @@ bool KTLibraryFolder::removeObject(KTLibraryObject *object)
 	return true;
 }
 
-bool KTLibraryFolder::moveObject(KTLibraryObject *object, KTLibraryFolder *folder)
+bool KTLibraryFolder::moveObject(const QString &id, KTLibraryFolder *folder)
 {
-	LibraryObjects::iterator obit = m_objects.begin();
-	
-	while ( obit != m_objects.end())
+	if ( m_objects.contains(id) )
 	{
-		if ( *obit == object )
-		{
-			m_objects.erase(obit);
-			
-			folder->addObject( object );
-			
-			return true;
-			
-			break;
-		}
+		KTLibraryObject *object = m_objects[id];
+		removeObject( id );
 		
-		++obit;
+		folder->addObject( object, id);
+		
+		return true;
 	}
 	
 	return false;

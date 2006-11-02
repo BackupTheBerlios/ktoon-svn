@@ -57,6 +57,18 @@ KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, const KTProjectR
 			setText(actionString( m_event->action() )+" item");
 		}
 		break;
+		
+		case KTProjectRequest::Library:
+		{
+			setText(actionString( m_event->action() )+" symbol");
+		}
+		break;
+		
+		default:
+		{
+			dfDebug << "CAN'T HANDLE ID: " << m_event->id();
+		}
+		break;
 	}
 }
 
@@ -167,6 +179,11 @@ void KTProjectCommand::redo()
 			itemCommand( static_cast<const KTItemRequest *>(m_event), true);
 		}
 		break;
+		case KTProjectRequest::Library:
+		{
+			libraryCommand(m_event, true);
+		}
+		break;
 		default:
 		{
 			D_FUNCINFO << ("Unknown project event!");
@@ -210,6 +227,13 @@ void KTProjectCommand::undo()
 			itemCommand( static_cast<const KTItemRequest *>(m_event), false);
 		}
 		break;
+		
+		case KTProjectRequest::Library:
+		{
+			libraryCommand(m_event, false);
+		}
+		break;
+		
 		default:
 		{
 			D_FUNCINFO << ("Unknown project event!");
@@ -585,6 +609,43 @@ void KTProjectCommand::itemCommand(const KTItemRequest *event, bool redo)
 			default: break;
 		}
 	}
+}
+
+void KTProjectCommand::libraryCommand(const KTProjectRequest *event, bool redo)
+{
+	if ( redo )
+	{
+		switch(event->action())
+		{
+			case KTProjectRequest::Add:
+			{
+				m_executor->createSymbol(event->data().toString());
+			}
+			break;
+			case KTProjectRequest::Remove:
+			{
+				m_executor->removeSymbol(event->data().toString());
+			}
+			break;
+		}
+	}
+	else
+	{
+		switch(event->action())
+		{
+			case KTProjectRequest::Add:
+			{
+				m_executor->removeSymbol(event->data().toString());
+			}
+			break;
+			case KTProjectRequest::Remove:
+			{
+				m_executor->createSymbol(event->data().toString());
+			}
+			break;
+		}
+	}
+	
 }
 
 void KTProjectCommand::paintAreaCommand(const KTPaintAreaEvent *event, bool redo)

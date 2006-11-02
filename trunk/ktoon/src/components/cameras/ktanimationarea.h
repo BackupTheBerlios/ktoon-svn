@@ -67,6 +67,7 @@ class KTOON_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectRequ
 		void sceneRequest(KTSceneRequest *event);
 		void projectRequest(KTProjectRequest *event);
 		void itemRequest(KTItemRequest *event);
+		void libraryRequest(KTProjectRequest *request);
 		
 	signals:
 		void progressStep(int, int);

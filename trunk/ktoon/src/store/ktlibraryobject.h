@@ -31,17 +31,22 @@ class KTLibraryObject;
 class KTLibraryObject : public QObject
 {
 	public:
-		KTLibraryObject(const QString &id, QObject *parent = 0);
+		enum Type
+		{
+			Item = 0x01
+		};
+		
+		KTLibraryObject(QObject *parent = 0);
 		~KTLibraryObject();
 		
-		void setId(const QString &id);
-		QString id() const;
+		void setType(int type);
+		int type() const;
 		
 		void setData(const QVariant &data);
 		QVariant data() const;
 		
 	private:
-		QString m_id;
+		int m_type;
 		QVariant m_data;
 		
 };

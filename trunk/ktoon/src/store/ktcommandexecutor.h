@@ -51,11 +51,13 @@ class KTCommandExecutor : public QObject
 		QString transformItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml);
 		QString convertItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml);
 		QString setPathItem( int scenePosition, int layerPosition, int framePosition, int position, const QString &path );
+		QString createSymbol(const QString &xml);
 		
 		
 		QString removeScene(int position);
 		QString removeLayer(int scene, int position);
 		QString removeFrame(int scene, int layer, int position);
+		QString removeSymbol(const QString &xml);
 		
 // 		QString removeItem(int scenePosition, int layerPosition, int framePosition, int position);
 		QStringList removeItems(int scenePosition, int layerPosition, int framePosition, int position, const QString &strList );

@@ -66,6 +66,11 @@ bool KTAbstractProjectRequestHandler::handleRequest(KTProjectRequest *event)
 			sceneRequest( static_cast<KTSceneRequest *>(event) );
 		}
 		break;
+		case KTProjectRequest::Library:
+		{
+			libraryRequest( event );
+		}
+		break;
 		default:
 		{
 			qWarning("Unknown project event!");

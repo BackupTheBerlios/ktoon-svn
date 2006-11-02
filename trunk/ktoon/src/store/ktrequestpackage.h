@@ -43,6 +43,7 @@ class KTRequestPackage : public QDomDocument, public KTAbstractProjectRequestHan
 		virtual void layerRequest(KTLayerRequest *layerRequest);
 		virtual void sceneRequest(KTSceneRequest *sceneRequest);
 		virtual void projectRequest(KTProjectRequest *projectRequest);
+		virtual void libraryRequest(KTProjectRequest *libraryRequest);
 };
 
 #endif
