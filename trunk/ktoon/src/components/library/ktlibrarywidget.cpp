@@ -27,12 +27,15 @@
 
 #include <QGroupBox>
 #include <QFileDialog>
+#include <QGraphicsItem>
 
 #include <cstdlib>
 #include <ctime>
 
+#include "ktlibrary.h"
+#include "ktlibraryobject.h"
 
-KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), m_childCount(0)
+KTLibraryWidget::KTLibraryWidget(const KTLibrary *library,QWidget *parent) : KTModuleWidgetBase(parent), m_library(library), m_childCount(0)
 {
 	DINIT;
 	
@@ -42,14 +45,13 @@ KTLibraryWidget::KTLibraryWidget(QWidget *parent) : KTModuleWidgetBase(parent), 
 	
 	m_libraryDir = QDir(CONFIG_DIR+"/libraries");
 	
-	m_display = new KTDisplayGraphic(this);
+	m_display = new KTItemPreview(this);
 	
 	m_libraryTree = new KTGCTable(this);
 
-	connect(m_libraryTree, SIGNAL(itemClicked ( QTreeWidgetItem *, int)), this, SLOT(drawCurrentItem(QTreeWidgetItem *, int)));
+	connect(m_libraryTree, SIGNAL(itemClicked ( QTreeWidgetItem *, int)), this, SLOT(previewItem(QTreeWidgetItem *, int)));
 	connect(m_libraryTree, SIGNAL(itemRenamed( QTreeWidgetItem* )), this, SLOT(renameObject( QTreeWidgetItem* )));
 	
-// 	m_libraryTree->createFolder( tr("Custom") );
 	
 	setup();
 	
@@ -200,20 +202,35 @@ void KTLibraryWidget::addFolder(const QString &name)
 	m_libraryTree->createFolder(name);
 }
 
-void KTLibraryWidget::drawCurrentItem(QTreeWidgetItem *item, int)
+void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 {
 	D_FUNCINFO;
 	if ( item )
 	{
-// 		KTGraphicComponent *gc = m_graphics[item];
-// 		if ( gc )
-// 		{
-// 			m_display->addGraphicComponent( gc);
-// 		}
-// 		else
-// 		{
-// 			m_libraryTree->setCurrentFolder(item);
-// 		}
+		KTLibraryObject *object = m_library->findObject(item->text(0));
+		
+		if ( !object )
+		{
+			dDebug("library") << "Cannot find the object";
+			return;
+		}
+		
+		switch (object->type() )
+		{
+			case KTLibraryObject::Item:
+			{	
+				if ( object->data().canConvert<QGraphicsItem *>() )
+				{
+					m_display->render( qvariant_cast<QGraphicsItem *>(object->data()));
+				}
+			}
+			break;
+			default:
+			{
+				dDebug("library") << "Unknown symbol id: " << object->type();
+			}
+			break;
+		}
 	}
 }
 
@@ -340,7 +357,47 @@ void KTLibraryWidget::addBitmap(const QString &bitmap)
 
 void KTLibraryWidget::libraryRequest(KTProjectRequest *request)
 {
+	switch(request->action())
+	{
+		case KTProjectRequest::Add:
+		{
+			QDomDocument doc;
+			if ( !doc.setContent(request->data().toString()) )
+			{
+				dfDebug << "Cannot set content!";
+				return;
+			}
 	
+			QDomElement root = doc.documentElement();
+	
+			if ( root.tagName() == "library" )
+			{
+				QStringList syms;
+				
+				QDomNode n = root.firstChild();
+				while(!n.isNull())
+				{
+					QDomElement e = n.toElement();
+					if(!e.isNull())
+					{
+						if ( e.tagName() == "symbol" )
+						{
+							syms << e.attribute( "name" );
+						}
+					}
+					n = n.nextSibling();
+				}
+				
+				m_libraryTree->addItems( syms );
+			}
+		}
+		break;
+		default:
+		{
+			qFatal("IMPLEMENT ME");
+		}
+		break;
+	}
 }
 
 

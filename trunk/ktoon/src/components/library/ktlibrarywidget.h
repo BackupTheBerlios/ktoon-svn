@@ -27,10 +27,12 @@
 #include <QMap>
 #include <QDir>
 
-#include "ktdisplaygraphic.h"
+#include "ktitempreview.h"
 #include "dimagebutton.h"
 
 #include "ktgctable.h"
+
+class KTLibrary;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -40,7 +42,7 @@ class KTLibraryWidget : public KTModuleWidgetBase
 {
 	Q_OBJECT
 	public:
-		KTLibraryWidget(QWidget *parent = 0);
+		KTLibraryWidget(const KTLibrary *library, QWidget *parent = 0);
 		~KTLibraryWidget();
 		void addBitmap(const QString &path);
 		
@@ -52,7 +54,7 @@ class KTLibraryWidget : public KTModuleWidgetBase
 		
 	private slots:
 		void addFolder(const QString &name);
-		void drawCurrentItem(QTreeWidgetItem *, int);
+		void previewItem(QTreeWidgetItem *, int);
 		void emitSelectedComponent();
 		void removeCurrentGraphic();
 		void renameObject( QTreeWidgetItem* item);
@@ -65,7 +67,10 @@ class KTLibraryWidget : public KTModuleWidgetBase
 		void requestCurrentGraphic();
 	
 	private:
-		KTDisplayGraphic *m_display;
+		const KTLibrary *m_library;
+		
+		KTItemPreview *m_display;
+		
 		KTGCTable *m_libraryTree;
 		
 		int m_childCount;

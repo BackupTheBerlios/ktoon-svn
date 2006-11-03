@@ -45,7 +45,7 @@ void KTMainWindow::createGUI()
 	ui4paintArea( m_penWidget );
 	
 	////////////////////
-	m_libraryWidget = new KTLibraryWidget( this );
+	m_libraryWidget = new KTLibraryWidget( m_projectManager->project()->library(), this );
 	
 	addToolView( m_libraryWidget, Qt::LeftDockWidgetArea, Drawing );
 	

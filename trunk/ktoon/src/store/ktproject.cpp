@@ -255,7 +255,7 @@ bool KTProject::createSymbol(const QString &xml)
 							KTItemFactory factory;
 							QGraphicsItem *item = factory.create(buildDoc.toString(0));
 							
-							object->setData( item );
+							object->setData( QVariant::fromValue(item) );
 						}
 						break;
 					}
@@ -272,6 +272,12 @@ bool KTProject::createSymbol(const QString &xml)
 
 bool KTProject::removeSymbol(const QString &xml)
 {
+	qFatal("Implement me");
 	return false;
+}
+
+KTLibrary *KTProject::library() const
+{
+	return m_library;
 }
 

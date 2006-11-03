@@ -75,6 +75,8 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		
 		void loadLibrary();
 		
+		KTLibrary *library() const;
+		
 		
 	protected:
 		virtual void fromXml(const QString &xml );

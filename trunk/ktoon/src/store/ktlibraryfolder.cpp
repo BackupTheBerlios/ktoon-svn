@@ -21,6 +21,8 @@
 #include "ktlibraryfolder.h"
 #include "ktlibraryobject.h"
 
+#include "ddebug.h"
+
 KTLibraryFolder::KTLibraryFolder(const QString &id, QObject *parent) : QObject(parent), m_id(id)
 {
 }
@@ -79,5 +81,38 @@ QString KTLibraryFolder::id() const
 	return m_id;
 }
 
+KTLibraryObject *KTLibraryFolder::findObject(const QString &id) const
+{
+	foreach ( QString oid, m_objects.keys())
+	{
+		if ( oid == id )
+		{
+			return m_objects[oid];
+		}
+	}
+	
+	foreach ( KTLibraryFolder *folder, m_folders )
+	{
+		KTLibraryObject *object = folder->findObject(id);
+		
+		if ( object )
+		{
+			return object;
+		}
+	}
+	
+	dDebug() << "Cannot find symbol with id: " << id;
+	
+	return 0;
+}
 
+int KTLibraryFolder::objectsCount() const
+{
+	return m_objects.count();
+}
+
+int KTLibraryFolder::foldersCount() const
+{
+	return m_folders.count();
+}
 

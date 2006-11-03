@@ -22,6 +22,7 @@
 #define KTLIBRARYOBJECT_H
 
 #include <QVariant>
+#include <QGraphicsItem>
 
 class KTLibraryObject;
 

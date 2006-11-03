@@ -109,7 +109,7 @@ void KTRectItem::dropEvent(QGraphicsSceneDragDropEvent *event)
 bool KTRectItem::contains ( const QPointF & point ) const
 {
 // 	D_FUNCINFO;
-	int thickness = 6;
+	double thickness = pen().widthF()+2;
 	QRectF rectS(point-QPointF(thickness/2,thickness/2) , QSizeF(thickness,thickness));
 	
 	QPolygonF pol = shape().toFillPolygon ();
@@ -121,12 +121,15 @@ bool KTRectItem::contains ( const QPointF & point ) const
 		}
 	}
 	
-	QPolygonF::iterator it1 = pol.begin() ;
+	QPolygonF::iterator it1 = pol.begin();
 	QPolygonF::iterator it2 = pol.begin()+1;
 	
 	while(it2 != pol.end())
 	{
-		if(KTGraphicalAlgorithm::intersectLine( (*it1), (*it2), rectS  ))
+		QRectF rect( (*it1).x(), (*it1).y(), (*it2).x()-(*it1).x(), (*it2).y()-(*it1).y() );
+		
+// 		if(KTGraphicalAlgorithm::intersectLine( (*it1), (*it2), rectS  ))
+		if ( rect.intersects(rectS))
 		{
 			return true;
 		}

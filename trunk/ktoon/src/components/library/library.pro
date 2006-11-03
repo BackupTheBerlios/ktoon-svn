@@ -4,16 +4,10 @@
 # Target is a library:  
 
 HEADERS += ktlibrarywidget.h \
-           ktgctable.h \
-           ktdisplaygraphic.h 
+           ktgctable.h 
 SOURCES += ktlibrarywidget.cpp \
-           ktgctable.cpp \
-           ktdisplaygraphic.cpp 
-
+           ktgctable.cpp 
 KDEV_QTVER = 4
 include(../components_config.pri)
-
-
 CONFIG += static
-
 TEMPLATE = lib

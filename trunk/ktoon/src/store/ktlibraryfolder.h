@@ -49,6 +49,12 @@ class KTLibraryFolder : public QObject
 		
 		bool moveObject(const QString &id, KTLibraryFolder *folder);
 		
+		KTLibraryObject *findObject(const QString &id) const;
+		
+		
+		int objectsCount() const;
+		int foldersCount() const;
+		
 	private:
 		QString m_id;
 		Folders m_folders;

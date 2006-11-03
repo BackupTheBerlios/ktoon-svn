@@ -50,6 +50,7 @@ Select::~Select()
 
 void Select::init(QGraphicsView *view)
 {
+	view->setDragMode (QGraphicsView::RubberBandDrag);
 	foreach(QGraphicsItem *item, view->scene()->items() )
 	{
 		if(!qgraphicsitem_cast<Node *>(item))

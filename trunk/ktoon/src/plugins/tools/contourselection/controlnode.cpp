@@ -59,17 +59,35 @@ void ControlNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	if (option->state & QStyle::State_Sunken || option->state & QStyle::State_Selected )
 	{
 		painter->save();
-		painter->setPen(QPen( Qt::gray));
-
+		painter->setPen(QPen(Qt::gray) );
+		
 		paintLinesToChilds(painter);
 		painter->restore();
-
-		c = QColor("green");
+		
+		if ( QAbstractGraphicsShapeItem *it = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_parent))
+		{
+			QColor nc = it->pen().brush().color();
+			c = QColor(nc.red()+180 % 255, nc.green()+180 % 255, nc.blue()+180 % 255);
+		}
+		else
+		{
+			c = QColor("green");
+		}
+		
 		c.setAlpha(150);
 	}
 	else
 	{
-		c = QColor("navy");
+		if ( QAbstractGraphicsShapeItem *it = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_parent))
+		{
+			QColor nc = it->pen().brush().color();
+			c = QColor(nc.red()+254 % 255, nc.green()+254 % 255, nc.blue()+254 % 255);
+		}
+		else
+		{
+			c = QColor("navy");
+		}
+		
 		c.setAlpha(150);
 	}
 	

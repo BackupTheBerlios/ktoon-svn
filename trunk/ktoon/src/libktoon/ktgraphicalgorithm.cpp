@@ -711,11 +711,11 @@ char KTGraphicalAlgorithm::calculateCode(const QPointF &point, const QRectF &win
 {
 	char code = 0;
 
-	if ( point.y() > window.top() )
+	if ( point.y() >= window.top() )
 	{
 		code |= Bit1;
 	}
-	else if ( point.y() < window.bottom() )
+	else if ( point.y() <= window.bottom() )
 	{
 		code |= Bit2;
 	}
@@ -742,6 +742,7 @@ bool KTGraphicalAlgorithm::intersectLine(const QPointF &from, const QPointF& to,
 	{
 		return true;
 	}
+	
 	return false;
 	
 }

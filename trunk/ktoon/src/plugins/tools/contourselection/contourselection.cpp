@@ -54,6 +54,7 @@ ContourSelection::~ContourSelection()
 void ContourSelection::init(QGraphicsView *view)
 {
 // 	m_view = view;
+	view->setDragMode (QGraphicsView::RubberBandDrag);
 	
 	foreach(QGraphicsItem *item, view->scene()->items() )
 	{
@@ -74,8 +75,6 @@ void ContourSelection::press(const KTInputDeviceInformation *input, KTBrushManag
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
 	Q_UNUSED(view);
-	
-	view->setDragMode (QGraphicsView::RubberBandDrag);
 	
 	m_project = scene->project();
 	

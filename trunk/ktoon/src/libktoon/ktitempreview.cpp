@@ -24,6 +24,8 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 
+#include <ddebug.h>
+
 KTItemPreview::KTItemPreview(QWidget *parent) : QWidget(parent), m_item(0)
 {
 }
@@ -37,15 +39,17 @@ QSize KTItemPreview::sizeHint() const
 {
 	if ( m_item )
 	{
-		return m_item->boundingRect().size().toSize();
+		return m_item->boundingRect().size().toSize() + QSize(10,10);
 	}
 	
-	return QWidget::sizeHint();
+	return QWidget::sizeHint().expandedTo(QSize(100,100));
 }
 
 
 void KTItemPreview::render(QGraphicsItem *item)
 {
+	Q_CHECK_PTR(item);
+	
 	m_item = item;
 	update();
 }
@@ -53,6 +57,7 @@ void KTItemPreview::render(QGraphicsItem *item)
 void KTItemPreview::paintEvent(QPaintEvent *)
 {
 	QPainter p(this);
+	p.setRenderHint(QPainter::Antialiasing, true);
 	
 	if ( m_item )
 	{
@@ -65,14 +70,25 @@ void KTItemPreview::paintEvent(QPaintEvent *)
 		opt.exposedRect = QRectF(QPointF(0,0), m_item->boundingRect().size());
 		opt.levelOfDetail = 1;
 		
-		QMatrix matrix;
+		QMatrix matrix = m_item->sceneMatrix();
+		
+		QRect r(15,15, rect().width()-15 , rect().height()-15);
+		p.drawRect(r);
+		
+		QRectF br = m_item->boundingRect();
+		double offset = qMin(br.width(), br.height());
+		
+		matrix.translate((-m_item->pos().x()-br.center().x())+r.center().x(), (-m_item->pos().y()-br.center().y())+r.center().y());
+		matrix.scale(r.width()/offset, r.height()/offset);
 		
 		opt.matrix = matrix;
 		
-		// TODO: poner una matrix al 'opt' para que el item se escale lo suficiente en el widget y transladarlo al origen.
+		// TODO: escalar y centrar
+		
 		
 		opt.palette = palette();
 		
+		p.setMatrix(matrix);
 		m_item->paint ( &p, &opt, this ); // paint isn't const...
 	}
 }
