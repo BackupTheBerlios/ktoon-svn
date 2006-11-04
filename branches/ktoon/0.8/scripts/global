@@ -3,13 +3,41 @@
 APPNAME="KToon"
 APPVER="0.8.0"
 
+function findQMake
+{
+	for p in $*
+	do
+		qmake=`which $p 2>/dev/null`
+		if [ -x $qmake ]
+		then
+			version=`$qmake -query QT_VERSION 2>/dev/null | grep -o "\\w" `
+			count=0
+			for v in $version
+			do
+				if [ $count -eq 0 ]
+				then
+					if [ $v -eq "4" ]
+					then
+						echo $qmake
+						return 0
+					else
+						break
+					fi
+				fi
+				
+				let count=$count+1
+			done
+		fi
+	done
+}
+
 
 KT_CONFIG=ktconfig.pri
 
 EMAIL='krawek@toonka.com'
 
 MAKE=`which make`
-QMAKE=`which qmake`
+QMAKE=$(findQMake qmake-qt4 qmake4 qmake)
 
 LOG_FILE=build.log
 

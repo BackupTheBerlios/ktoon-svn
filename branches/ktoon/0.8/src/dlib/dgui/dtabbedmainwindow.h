@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2006 by David Cuadrado                                *
+ *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,51 +18,48 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef FFMPEGMANAGER_H
-#define FFMPEGMANAGER_H
+#ifndef DTABBEDMAINWINDOW_H
+#define DTABBEDMAINWINDOW_H
 
-#include <QtGlobal>
+#include <dmainwindow.h>
 
-#ifdef Q_OS_WIN32
-#warning HARDBIT: crear un configure.bat para windows
-#endif
-
-#ifdef Q_OS_UNIX
-#include <config.h>
-#endif
-
-#include <QString>
-#include <QSize>
-
-#ifdef HAVE_FFMPEG
-#include <ffmpeg/avcodec.h>
-#include <ffmpeg/avformat.h>
-#endif
+class QTabWidget;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * A tabbed main window.
+ * @author David Cuadrado <krawek@gmail.com>
 */
-class FFMpegManager
+class D_IDEAL_EXPORT DTabbedMainWindow : public DMainWindow
 {
+	Q_OBJECT;
 	public:
-		FFMpegManager();
-		~FFMpegManager();
+		DTabbedMainWindow(QWidget *parent = 0);
+		~DTabbedMainWindow();
 		
-		void create(const QString &filePath, int formatId, const QStringList &paths, const QSize &size, int fps );
-#ifdef HAVE_FFMPEG
-		bool openVideo(AVFormatContext *oc, AVStream *st);
-		void closeVideo(AVFormatContext *oc, AVStream *st);
-		bool writeVideoFrame(const QString &imagePath,AVFormatContext *oc, AVStream *st, int fps);
-		AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, int height, int fps);
+		void addWidget(QWidget *widget, bool persistant = false, int perspective = DefaultPerspective);
+		void removeWidget(QWidget *widget);
+		void setTabWidget(QTabWidget *w);
+		QTabWidget *tabWidget() const;
 		
-		AVFrame *allocPicture(int pix_fmt, int width, int height);
+	protected:
+		virtual void setupTabWidget(QTabWidget *w);
+		
+	protected slots:
+		void closeCurrentTab();
+		virtual void setupPerspective(int wps);
+		
+	signals:
+		void widgetChanged(QWidget *widget);
+		
+	private slots:
+		void emitWidgetChanged(int index);
 		
 	private:
-		AVFrame *m_picture, *m_tmpPicture;
-		uint8_t *videOutbuf;
-		int m_frameCount, videOutbufSize;
-		double m_streamDuration;
-#endif
+		QTabWidget *m_tabWidget;
+		QWidgetList m_persistantWidgets;
+		QMap<QWidget *, int> m_tabs;
+		
+		QWidgetList m_pages;
 };
 
 #endif

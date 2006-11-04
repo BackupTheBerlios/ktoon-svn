@@ -53,7 +53,7 @@ class KTThemeSelector : public DVHBox
 		
 		bool applyColors();
 		
-		void setPalette(const QPalette &pal) {}; 
+		void setPalette(const QPalette &/*pal*/) {}; 
 		
 		
 	private slots:

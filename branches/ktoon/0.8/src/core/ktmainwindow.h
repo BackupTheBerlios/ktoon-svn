@@ -55,7 +55,7 @@
 
 #include "ktexportwidget.h"
 
-#include "dmainwindow.h"
+#include "dtabbedmainwindow.h"
 #include "ktstatusbar.h"
 
 #include "ktosd.h"
@@ -72,7 +72,7 @@
  * @author David Cuadrado <krawek@toonka.com>
 */
 
-class KTMainWindow : public DMainWindow
+class KTMainWindow : public DTabbedMainWindow
 {
 	Q_OBJECT
 	public:
@@ -135,7 +135,6 @@ class KTMainWindow : public DMainWindow
 		
 		void save();
 		void showHelpPage(const QString &title, const QString &document);
-		void showWidgetPage();
 		
 		void showAnimationMenu(const QPoint &p);
 		

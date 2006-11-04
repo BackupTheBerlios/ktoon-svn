@@ -22,8 +22,6 @@
 // TODO: port to windows
 #if Q_OS_UNIX
 #include <config.h>
-#else
-#define VERSION_STR "0.8"
 #endif
 
 #include <qfile.h>

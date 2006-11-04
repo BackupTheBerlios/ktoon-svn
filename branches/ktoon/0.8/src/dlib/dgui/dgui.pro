@@ -39,21 +39,22 @@ HEADERS += ccbar.h \
            kseparator.h \
            daction.h \
            dactionmanager.h \
-           comdefs.h \
-           ddockwindow.h \
-           dlstabwidget.h \
            dmainwindow.h \
-           docksplitter.h \
            dmdiwindow.h \
-           button.h \
-           buttonbar.h \
            ddatepicker.h \
            ddatetable.h \
            dcommand.h \
            dthemedocument.h \
            dthememanager.h \
            dclicklineedit.h \
-           dtreewidgetsearchline.h 
+           dtreewidgetsearchline.h \
+           dbuttonbar.h \
+           dideality.h \
+           dstackedmainwindow.h \
+           dtabbedmainwindow.h \
+           dtoolview.h \
+           dviewbutton.h \
+           dworkspacemainwindow.h 
 SOURCES += ccbar.cpp \
            ccbutton.cpp \
            collapsiblewidget.cpp \
@@ -85,20 +86,21 @@ SOURCES += ccbar.cpp \
            kseparator.cpp \
            daction.cpp \
            dactionmanager.cpp \
-           ddockwindow.cpp \
-           dlstabwidget.cpp \
-           dmainwindow.cpp \
-           docksplitter.cpp \
            dmdiwindow.cpp \
-           button.cpp \
-           buttonbar.cpp \
            ddatepicker.cpp \
            ddatetable.cpp \
            dcommand.cpp \
            dthemedocument.cpp \
            dthememanager.cpp \
            dclicklineedit.cpp \
-           dtreewidgetsearchline.cpp 
+           dtreewidgetsearchline.cpp \
+           dbuttonbar.cpp \
+           dstackedmainwindow.cpp \
+           dtabbedmainwindow.cpp \
+           dtoolview.cpp \
+           dviewbutton.cpp \
+           dworkspacemainwindow.cpp \
+           dmainwindow.cpp 
 RESOURCES += images.qrc
 QT += xml
 KDEV_QTVER = 4
@@ -119,8 +121,6 @@ win32{
   LIBS += -ldcore
   RCC_DIR = ../../../src/dlib/dgui
 }
-!include(../dlibconfig.pri) {
-error("Please configure first")
+!include(../dlibconfig.pri){
+  error("Please configure first")
 }
-
-

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2006 by David Cuadrado                                *
+ *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,51 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef FFMPEGMANAGER_H
-#define FFMPEGMANAGER_H
+#ifndef DIDEALITY_H
+#define DIDEALTIY_H
 
-#include <QtGlobal>
+#include <qglobal.h>
 
-#ifdef Q_OS_WIN32
-#warning HARDBIT: crear un configure.bat para windows
+#if defined(QT_SHARED) || defined(QT_PLUGIN)
+# define D_IDEAL_EXPORT Q_GUI_EXPORT
+#else
+# define D_IDEAL_EXPORT
 #endif
 
-#ifdef Q_OS_UNIX
-#include <config.h>
-#endif
 
-#include <QString>
-#include <QSize>
+#endif // DIDEALITY_H
 
-#ifdef HAVE_FFMPEG
-#include <ffmpeg/avcodec.h>
-#include <ffmpeg/avformat.h>
-#endif
 
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-class FFMpegManager
-{
-	public:
-		FFMpegManager();
-		~FFMpegManager();
-		
-		void create(const QString &filePath, int formatId, const QStringList &paths, const QSize &size, int fps );
-#ifdef HAVE_FFMPEG
-		bool openVideo(AVFormatContext *oc, AVStream *st);
-		void closeVideo(AVFormatContext *oc, AVStream *st);
-		bool writeVideoFrame(const QString &imagePath,AVFormatContext *oc, AVStream *st, int fps);
-		AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, int height, int fps);
-		
-		AVFrame *allocPicture(int pix_fmt, int width, int height);
-		
-	private:
-		AVFrame *m_picture, *m_tmpPicture;
-		uint8_t *videOutbuf;
-		int m_frameCount, videOutbufSize;
-		double m_streamDuration;
-#endif
-};
-
-#endif

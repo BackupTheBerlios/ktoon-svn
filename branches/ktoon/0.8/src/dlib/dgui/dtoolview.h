@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2006 by David Cuadrado                                *
+ *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,51 +18,59 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef FFMPEGMANAGER_H
-#define FFMPEGMANAGER_H
+#ifndef DTOOLVIEW_H
+#define DTOOLVIEW_H
 
-#include <QtGlobal>
+#include <QDockWidget>
+#include <QIcon>
+#include <dideality.h>
 
-#ifdef Q_OS_WIN32
-#warning HARDBIT: crear un configure.bat para windows
-#endif
-
-#ifdef Q_OS_UNIX
-#include <config.h>
-#endif
-
-#include <QString>
-#include <QSize>
-
-#ifdef HAVE_FFMPEG
-#include <ffmpeg/avcodec.h>
-#include <ffmpeg/avformat.h>
-#endif
+class DViewButton;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@gmail.com>
 */
-class FFMpegManager
+class D_IDEAL_EXPORT DToolView : public QDockWidget
 {
+	Q_OBJECT;
+	
 	public:
-		FFMpegManager();
-		~FFMpegManager();
+		DToolView(const QString &title, const QIcon &icon = QIcon(), QWidget * parent = 0);
+		~DToolView();
 		
-		void create(const QString &filePath, int formatId, const QStringList &paths, const QSize &size, int fps );
-#ifdef HAVE_FFMPEG
-		bool openVideo(AVFormatContext *oc, AVStream *st);
-		void closeVideo(AVFormatContext *oc, AVStream *st);
-		bool writeVideoFrame(const QString &imagePath,AVFormatContext *oc, AVStream *st, int fps);
-		AVStream *addVideoStream(AVFormatContext *oc, int codec_id, int width, int height, int fps);
+		void setDescription(const QString &description);
+		DViewButton *button() const;
+		QSize sizeHint() const;
 		
-		AVFrame *allocPicture(int pix_fmt, int width, int height);
+		void setPerspective(int wsp);
+		int perspective() const;
+		
+		void setFixedSize(int s);
+		int fixedSize() const;
 		
 	private:
-		AVFrame *m_picture, *m_tmpPicture;
-		uint8_t *videOutbuf;
-		int m_frameCount, videOutbufSize;
-		double m_streamDuration;
+		void setup();
+		
+		
+	private slots:
+		void saveSize(bool checked);
+		
+	protected:
+		virtual void showEvent(QShowEvent *e);
+		
+#if QT_VERSION < 0x040200
+	protected:
+		virtual bool event(QEvent *e);
+		
+	private:
+		Qt::DockWidgetArea m_area;
 #endif
+		
+	private:
+		DViewButton *m_button;
+		int m_size;
+		
+		int m_perspective;
 };
 
 #endif

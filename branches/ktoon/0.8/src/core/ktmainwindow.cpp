@@ -36,10 +36,6 @@
 #include "ktapplication.h"
 #include "ktpluginmanager.h"
 
-// dlslib
-#include "dlstabwidget.h"
-#include "docksplitter.h"
-
 // Qt
 #include <QImage>
 #include <QPixmap>
@@ -52,7 +48,7 @@
 #include <QMessageBox>
 //
 
-KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0), m_scenes(0)
+KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_exposureSheet(0), m_scenes(0)
 {
 	DINIT;
 	
@@ -73,16 +69,18 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	m_drawingSpace = new KTWorkspace;
 	m_drawingSpace->setWindowIcon(QIcon(THEME_DIR+"/icons/illustration_mode.png"));
 	m_drawingSpace->setScrollBarsEnabled( true );
+	m_drawingSpace->setWindowTitle(tr("Illustration"));
 	
-	addWidget(m_drawingSpace, tr("Illustration"), true);
+	addWidget(m_drawingSpace, true);
 	
 	m_animationSpace = new KTWorkspace;
 	m_animationSpace->setWindowIcon(QIcon(THEME_DIR+"/icons/animation_mode.png"));
 	m_animationSpace->setScrollBarsEnabled ( true );
 	
 	connect(m_animationSpace, SIGNAL(contextMenu( const QPoint& )), this, SLOT(showAnimationMenu( const QPoint& )));
-
-	addWidget(m_animationSpace, tr("Animation"), true);
+	
+	m_animationSpace->setWindowTitle(tr("Animation"));
+	addWidget(m_animationSpace, true);
 	
 	splash->setMessage( tr("Loading action manager..."));
 	m_actionManager = new DActionManager(this);
@@ -97,7 +95,7 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DMainWindow(), m_exposureSheet(0)
 	
 	setupMenu();
 	
-	m_pActiveTabWidget->setCurrentIndex( 0 );
+// 	m_pActiveTabWidget->setCurrentIndex( 0 );
 	
 	DCONFIG->beginGroup("TipOfDay");
 	bool showTips = qvariant_cast<bool>(DCONFIG->value("ShowOnStart", true ));
@@ -280,7 +278,7 @@ bool KTMainWindow::closeProject()
 		break;
 	}
 	
-	m_pActiveTabWidget->setCurrentWidget(m_drawingSpace);
+// 	m_pActiveTabWidget->setCurrentWidget(m_drawingSpace);
 	m_projectManager->close();
 	
 	m_drawingSpace->closeAllWindows();
@@ -326,7 +324,7 @@ void KTMainWindow::openProject(const QString &path)
 	{
 		if ( closeProject() )
 		{
-			m_pActiveTabWidget->setCurrentWidget(m_drawingSpace);
+// 			m_pActiveTabWidget->setCurrentWidget(m_drawingSpace);
 			
 			if ( m_projectManager->load( packageHandler.importedProjectPath() ) )
 			{
@@ -500,7 +498,8 @@ void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 	
 // 	page->setDocument( document );
 	page->setSource( filePath);
-	addWidget( page, tr("Help:%1").arg(title) );
+	page->setWindowTitle(tr("Help:%1").arg(title));
+	addWidget( page );
 }
 
 void KTMainWindow::saveProject()
@@ -583,10 +582,6 @@ void KTMainWindow::closeEvent( QCloseEvent *event )
 		event->ignore();
 		return;
 	}
-	
-	delete m_pBottomDock;
-	delete m_pLeftDock;
-	delete m_pRightDock;
 	
 	DCONFIG->beginGroup("General");
 	DCONFIG->setValue("recents", m_recentProjects);

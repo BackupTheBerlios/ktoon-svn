@@ -29,14 +29,16 @@ void KTMainWindow::createGUI()
 	m_colorPalette = new KTColorPalette(this);
 	m_colorPalette->setWindowIcon(QPixmap(THEME_DIR+"/icons/color_palette.png") );
 	connect(m_colorPalette, SIGNAL(brushChanged(const QBrush &, const QBrush &)), this, SLOT(changeCurrentColors(const QBrush &, const QBrush &)));
-	toolWindow(DDockWindow::Left)->addWidget(tr("Palette"),m_colorPalette);
+	
+	addToolView( m_colorPalette, Qt::LeftDockWidgetArea);
 	
 	connectToDisplays(m_colorPalette);
 	
 	////////////////////
 	
 	m_penWidget = new KTPenWidget(this);
-	toolWindow(DDockWindow::Left)->addWidget(tr("Pen"),m_penWidget);
+	m_penWidget->setWindowTitle(tr("Pen"));
+	addToolView( m_penWidget, Qt::LeftDockWidgetArea);
 	
 	connect(m_penWidget, SIGNAL(penChanged( const QPen& )), this, SLOT(changeCurrentPen( const QPen &)));
 	
@@ -45,7 +47,8 @@ void KTMainWindow::createGUI()
 	////////////////////
 	m_libraryWidget = new KTLibraryWidget( this );
 	m_libraryWidget->setWindowIcon(QPixmap(THEME_DIR+"/icons/library.png"));
-	toolWindow(DDockWindow::Left)->addWidget(tr("Library"),m_libraryWidget);
+// 	tr("Library")
+	addToolView(m_libraryWidget, Qt::LeftDockWidgetArea);
 	
 	connect(m_libraryWidget, SIGNAL(requestCurrentGraphic()), this, SLOT(addCurrentGraphicToLibrary()));
 	connect(m_libraryWidget, SIGNAL(sendCurrentGraphic(const AGraphicComponent *)), this, SLOT(addGraphicComponent(const AGraphicComponent *)));
@@ -57,7 +60,8 @@ void KTMainWindow::createGUI()
 	/////////////////
 	m_scenes = new KTScenesWidget( this);
 	m_scenes->setWindowIcon(QPixmap(THEME_DIR+"/icons/scenes.png"));
-	toolWindow(DDockWindow::Right)->addWidget(tr("Scenes"),m_scenes);
+// 	toolWindow(DDockWindow::Right)->addWidget(tr("Scenes"),);
+	addToolView(m_scenes, Qt::RightDockWidgetArea);
 	
 	connect(m_scenes, SIGNAL(requestInsertScene()), m_projectManager, SLOT(createScene()));
 	connect(m_scenes, SIGNAL(requestInsertLayer()), m_projectManager, SLOT(createLayer()));
@@ -71,7 +75,8 @@ void KTMainWindow::createGUI()
 	/////////////////////
 	m_exposureSheet = new KTExposureSheet(this);
 	m_exposureSheet->setWindowIcon(QPixmap(THEME_DIR+"/icons/exposure_sheet.png"));
-	toolWindow(DDockWindow::Right)->addWidget(tr("Exposure Sheet"),m_exposureSheet);
+// 	toolWindow(DDockWindow::Right)->addWidget(tr("Exposure Sheet"),m_exposureSheet);
+	addToolView(m_exposureSheet, Qt::RightDockWidgetArea);
 	
 	ui4project( m_exposureSheet );
 	connect(m_exposureSheet, SIGNAL(requestChangeScene( int ) ), this, SLOT(changeScene(int)));
@@ -80,7 +85,8 @@ void KTMainWindow::createGUI()
 	
 	///////////////////////
 	m_helper = new KTHelpWidget(HOME+"/data/help/");
-	toolWindow(DDockWindow::Right)->addWidget(tr("Help"),m_helper);
+// 	toolWindow(DDockWindow::Right)->addWidget(tr("Help"),m_helper);
+	addToolView(m_helper, Qt::RightDockWidgetArea);
 	connect(m_helper, SIGNAL(pageLoaded(const QString &, const QString &)), this, SLOT(showHelpPage(const QString &, const QString &)));
 	
 	connectToDisplays(m_helper);
@@ -92,7 +98,8 @@ void KTMainWindow::createGUI()
 	//////////////////////
 	m_timeLine = new KTTimeLine(this);
 	m_timeLine->setWindowIcon(QPixmap(THEME_DIR+"/icons/time_line.png"));
-	toolWindow(DDockWindow::Bottom)->addWidget(tr("Time Line"),m_timeLine);
+// 	toolWindow(DDockWindow::Bottom)->addWidget(tr("Time Line"),m_timeLine);
+	addToolView(m_timeLine, Qt::BottomDockWidgetArea);
 	connect(m_timeLine, SIGNAL(requestChangeFPS(int)), this, SLOT(changeFPS( int )));
 // 	connect(m_timeLine, SIGNAL(requestChangeScene( int ) ), this, SLOT(changeScene(int)));
 	ui4project( m_timeLine );
@@ -104,7 +111,8 @@ void KTMainWindow::createGUI()
 #ifdef ENABLE_KINAS
 	KinasWidget *m_scriptEditor = new KinasWidget(this);
 	m_scriptEditor->setWindowIcon(QPixmap(HOME+"/images/icons/color_palette.png") );
-	toolWindow(DDockWindow::Bottom)->addWidget(tr("Kinas"), m_scriptEditor);
+// 	toolWindow(DDockWindow::Bottom)->addWidget(tr("Kinas"), m_scriptEditor);
+	addToolView(m_scriptEditor, Qt::BottomDockWidgetArea);
 #endif
 	/////////////////
 	
@@ -118,15 +126,16 @@ void KTMainWindow::createGUI()
 	connect(m_gcEditor, SIGNAL(requestFlipH()), this, SLOT( flipHCurrentElement()));
 	
 	
-	toolWindow(DDockWindow::Bottom)->addWidget(tr("GC Editor"), m_gcEditor);
-	
+// 	toolWindow(DDockWindow::Bottom)->addWidget(tr("GC Editor"), m_gcEditor);
+	addToolView(m_gcEditor, Qt::BottomDockWidgetArea);
 	connectToDisplays(m_gcEditor);
 	
 	//////////////
 	
 	KTExportWidget *m_exportWidget = new KTExportWidget(m_projectManager, this);
 	
-	toolWindow(DDockWindow::Bottom)->addWidget(tr("Export"), m_exportWidget);
+// 	toolWindow(DDockWindow::Bottom)->addWidget(tr("Export"), m_exportWidget);
+	addToolView(m_exportWidget, Qt::BottomDockWidgetArea);
 	
 	connectToDisplays(m_exportWidget);
 	
@@ -214,17 +223,18 @@ void KTMainWindow::setupMenu()
 	m_insertMenu->addAction(m_actionManager->find("importbitmap"));
 	
 	// Setup the window menu
-	setupWindowActions();
-	m_windowMenu = new QMenu(tr( "&Window" ),this);
-	menuBar()->addMenu(  m_windowMenu );
-	m_windowMenu->addAction(m_actionManager->find("show palette"));
-	m_windowMenu->addAction(m_actionManager->find("show brushes"));
-	m_windowMenu->addAction(m_actionManager->find("show library"));
-	m_windowMenu->addAction(m_actionManager->find("show timeline"));
-	m_windowMenu->addAction(m_actionManager->find("show scenes"));
-	m_windowMenu->addAction(m_actionManager->find("show exposure"));
-	m_windowMenu->addAction(m_actionManager->find("show help"));
-	m_windowMenu->addSeparator();
+// 	setupWindowActions();
+	
+// 	m_windowMenu = new QMenu(tr( "&Window" ),this);
+// 	menuBar()->addMenu(  m_windowMenu );
+// 	m_windowMenu->addAction(m_actionManager->find("show palette"));
+// 	m_windowMenu->addAction(m_actionManager->find("show brushes"));
+// 	m_windowMenu->addAction(m_actionManager->find("show library"));
+// 	m_windowMenu->addAction(m_actionManager->find("show timeline"));
+// 	m_windowMenu->addAction(m_actionManager->find("show scenes"));
+// 	m_windowMenu->addAction(m_actionManager->find("show exposure"));
+// 	m_windowMenu->addAction(m_actionManager->find("show help"));
+// 	m_windowMenu->addSeparator();
 	
 	
 	// Setup the Settings menu
@@ -363,68 +373,5 @@ void KTMainWindow::updateOpenRecentMenu(QMenu *menu)
 		}
 	}
 	
-}
-
-void KTMainWindow::showWidgetPage()
-{
-	DAction *action = qobject_cast<DAction *>(sender());
-	
-	if ( action )
-	{
-		QWidget *widget = 0;
-		DDockWindow::Position position;
-		QString actionText = "";
-		
-		if ( action == m_actionManager->find("show timeline") )
-		{
-			widget = m_timeLine;
-			position = DDockWindow::Bottom;
-			actionText = "time line widget";
-		}
-		else if ( action == m_actionManager->find("show exposure") )
-		{
-			widget = m_exposureSheet;
-			position = DDockWindow::Right;
-			actionText = "exposure widget";
-		}
-		else if ( action == m_actionManager->find("show library") )
-		{
-			widget = m_libraryWidget;
-			position = DDockWindow::Left;
-			actionText = "library widget";
-		}
-		else if ( action == m_actionManager->find("show scenes") )
-		{
-			widget = m_scenes;
-			position = DDockWindow::Right;
-			actionText = "scenes widget";
-		}
-		else if ( action == m_actionManager->find("show help") )
-		{
-			widget = m_helper;
-			position = DDockWindow::Right;
-			actionText = "help widget";
-		}
-		
-		else if ( action == m_actionManager->find("show palette") )
-		{
-			widget = m_colorPalette;
-			position = DDockWindow::Left;
-			actionText = "color palette widget";
-		}
-		if ( widget )
-		{
-			if ( widget->isVisible() )
-			{
-				toolWindow( position)->centralWidget()->setExpanded(false);
-				action->setText("Show "+actionText);
-			}
-			else
-			{
-				toolWindow( position)->centralWidget()->raiseWidget(widget);
-				action->setText("Hide "+actionText);
-			}
-		}
-	}
 }
 
