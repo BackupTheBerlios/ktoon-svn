@@ -3,13 +3,13 @@
 # Version: 0.1
 # This help to generate the ts file
 
-if [ ! "$0" == "translate.sh" ]
-then
-	echo "Use: sh translate.sh [output.ts]"
-	exit 0
-fi
+#if [ ! "$0" == "translate.sh" ]
+#then
+#	echo "Use: sh translate.sh [output.ts]"
+#	exit 0
+#fi
 
-KTDIR=$(pwd)/..
+KTDIR="`dirname $0`/.."
 KTTS=/tmp/ktoon_untranslated.ts
 TRPRO=trans.pro
 
