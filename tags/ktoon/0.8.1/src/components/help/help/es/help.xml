@@ -1,0 +1,11 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<DHelpSystem>
+	<Section title="Introduccíon">
+		<SubSection title="Sobre KToon..." file="sobre.html" />
+	</Section>
+	<Section title="Dibujando">
+		<SubSection title="Como se dibuja?" file="comodibujar.html" />
+		<SubSection title="Como se anima?" file="comoanimar.html" />
+	</Section>
+</DHelpSystem>
+

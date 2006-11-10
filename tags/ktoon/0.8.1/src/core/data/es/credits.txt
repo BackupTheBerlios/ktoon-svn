@@ -1,0 +1,58 @@
+Desarrolladores
+
+Version 0.8
+
+David A. Cuadrado
+<krawek@toonka.com>
+
+Jorge H. Cuadrado
+<kuadrosx@toonka.com>
+
+Versiones anteriores
+
+Simena Dinas
+<dsimena@gmail.com>
+
+Fernando Jose Roldan Correa
+<froldan@parquesoft.com>
+
+
+Parche para compilar en Mac
+--------------------------
+Daniel Lurie 
+<dl1021@optonline.net>
+
+----------------------------
+Technical Advisor
+
+Gustavo Gonzalez Giron
+<xtingray@kazak.ws>
+
+----------------------------
+Documentación para desarrolladores
+
+David A. Cuadrado
+<krawek@toonka.com>
+
+Jorge H. Cuadrado
+<kuadrosx@toonka.com>
+
+----------------------------
+Traductores
+
+(Español) David A. Cuadrado
+<krawek@toonka.com>
+
+----------------------------
+Diseño de iconos
+
+Carlos Andres Cajigas
+
+
+----------------------------
+Muchas gracias a:
+
+Markus Bongard por su apoyo incondicional
+
+2005-2006
+
