@@ -854,10 +854,10 @@ void KTPaintArea::addSelectedItemsToLibrary()
 	
 	dDebug("paint area") << doc.toString();
 	
-	KTProjectRequest event(KTProjectRequest::Add, doc.toString(0));
-	event.setId(KTProjectRequest::Library);
-	
-	emit requestTriggered(&event);
+	// FIXME FIXME FIXME
+// 	KTProjectRequest event(KTProjectRequest::Add, KTProjectRequest::Library, doc.toString(0));
+// 	
+// 	emit requestTriggered(&event);
 }
 
 

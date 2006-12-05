@@ -334,13 +334,13 @@ void KTTimeLine::requestCommand(int action)
 		break;
 		case KTProjectActionBar::MoveFrameUp:
 		{
-			KTFrameRequest event(KTProjectRequest::Move, scenePos, layerPos, framePos, framePos+1);
+			KTFrameRequest event(KTProjectRequest::Move, scenePos, layerPos, framePos, QString("<move position=\"%1\" />").arg(framePos+1));
 			emit requestTriggered(&event);
 		}
 		break;
 		case KTProjectActionBar::MoveFrameDown:
 		{
-			KTFrameRequest event(KTProjectRequest::Move,scenePos, layerPos, framePos, framePos-1);
+			KTFrameRequest event(KTProjectRequest::Move,scenePos, layerPos, framePos, QString("<move position=\"%1\" />").arg(framePos-1));
 			emit requestTriggered(&event);
 		}
 		break;
@@ -352,20 +352,20 @@ void KTTimeLine::requestCommand(int action)
 		break;
 		case KTProjectActionBar::RemoveLayer:
 		{
-			KTLayerRequest event(KTProjectRequest::Remove, scenePos, layerPos, this);
+			KTLayerRequest event(KTProjectRequest::Remove, scenePos, layerPos);
 			
 			emit requestTriggered( &event );
 		}
 		break;
 		case KTProjectActionBar::MoveLayerUp:
 		{
-			KTLayerRequest event(KTProjectRequest::Move,scenePos, layerPos, layerPos-1);
+			KTLayerRequest event(KTProjectRequest::Move,scenePos, layerPos, QString("<move position=\"%1\" />").arg(layerPos-1));
 			emit requestTriggered(&event);
 		}
 		break;
 		case KTProjectActionBar::MoveLayerDown:
 		{
-			KTLayerRequest event(KTProjectRequest::Move,scenePos, layerPos, layerPos+1);
+			KTLayerRequest event(KTProjectRequest::Move,scenePos, layerPos, QString("<move position=\"%1\" />").arg(layerPos+1));
 			emit requestTriggered(&event);
 		}
 		break;
@@ -385,13 +385,13 @@ void KTTimeLine::requestCommand(int action)
 		break;
 		case KTProjectActionBar::MoveSceneUp:
 		{
-			KTSceneRequest event(KTProjectRequest::Move,scenePos, scenePos+1);
+			KTSceneRequest event(KTProjectRequest::Move,scenePos, QString("<move position=\"%1\" />").arg(scenePos+1));
 			emit requestTriggered(&event);
 		}
 		break;
 		case KTProjectActionBar::MoveSceneDown:
 		{
-			KTSceneRequest event(KTProjectRequest::Move,scenePos, scenePos-1);
+			KTSceneRequest event(KTProjectRequest::Move,scenePos, QString("<move position=\"%1\" />").arg(scenePos-1));
 			emit requestTriggered(&event);
 		}
 		break;

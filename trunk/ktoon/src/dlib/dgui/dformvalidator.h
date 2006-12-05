@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2006 by David Cuadrado   *
+ *   krawek@gmail.com   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,60 +18,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTLIBRARYWIDGET_H
-#define KTLIBRARYWIDGET_H
+#ifndef DVALIDATES_H
+#define DVALIDATES_H
 
-#include <ktmodulewidgetbase.h>
-#include <QTreeWidget>
-#include <QTreeWidgetItem>
-#include <QMap>
-#include <QDir>
+#include <qobject.h>
 
-#include "ktitempreview.h"
-#include "dimagebutton.h"
-
-#include "ktgctable.h"
-
-class KTLibrary;
+#define D_GIVE_NAME(obj) obj->setObjectName( #obj );
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado <krawek@gmail.com>
 */
-
-class KTLibraryWidget : public KTModuleWidgetBase
+class DFormValidator : public QObject
 {
-	Q_OBJECT
 	public:
-		KTLibraryWidget(const KTLibrary *library, QWidget *parent = 0);
-		~KTLibraryWidget();
-		void addBitmap(const QString &path);
+		DFormValidator(QWidget *parent);
+		~DFormValidator();
+		
+		bool validatesNumerically(bool real);
+		bool validatesRange(int i, int e);
+		bool validatesRegExp( const QString &regexp);
+		
+		
+		bool validatesNumericallyOf(bool real, const QString &name);
+		bool validatesRangeOf(int i, int e, const QString &name);
+		bool validatesRegExpOf( const QString &regexp, const QString &name);
 		
 	private:
-		void setup();
 		
-	protected:
-		virtual void libraryRequest(KTProjectRequest *request);
-		
-	private slots:
-		void addFolder(const QString &name);
-		void previewItem(QTreeWidgetItem *, int);
-		void emitSelectedComponent();
-		void removeCurrentGraphic();
-		void renameObject( QTreeWidgetItem* item);
-		
-		
-	public slots:
-		void importBitmap();
-		
-	signals:
-		void requestCurrentGraphic();
-	
 	private:
-		const KTLibrary *m_library;
-		KTItemPreview *m_display;
-		KTGCTable *m_libraryTree;
-		int m_childCount;
-		QDir m_libraryDir;
+		QWidget *m_parent;
 };
 
 #endif
+

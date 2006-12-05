@@ -65,7 +65,8 @@ HEADERS += danimwidget.h \
            dtabbedmainwindow.h \
            dtoolview.h \
            dviewbutton.h \
-           dcommandhistory.h 
+           dcommandhistory.h \
+           dformvalidator.h 
 SOURCES += danimwidget.cpp \
            dapplication.cpp \
            dcellview.cpp \
@@ -123,7 +124,8 @@ SOURCES += danimwidget.cpp \
            dtabbedmainwindow.cpp \
            dtoolview.cpp \
            dviewbutton.cpp \
-           dcommandhistory.cpp 
+           dcommandhistory.cpp \
+           dformvalidator.cpp 
 DEFINES += DLIB_GUI
 RESOURCES += dgui_images.qrc
 QT += xml

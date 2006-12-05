@@ -131,13 +131,13 @@ void KTExposureSheet::applyAction(int action)
 
 		case KTProjectActionBar::MoveFrameUp:
 		{
-			KTFrameRequest event(KTProjectRequest::Move, m_scenes->currentIndex(), m_currentTable->currentLayer(), m_currentTable->currentFrame(), m_currentTable->currentFrame()-1);
+			KTFrameRequest event(KTProjectRequest::Move, m_scenes->currentIndex(), m_currentTable->currentLayer(), m_currentTable->currentFrame(), QString("<move position=\"%1\" />").arg(m_currentTable->currentFrame()-1));
 			emit requestTriggered( &event );
 			break;
 		}
 		case KTProjectActionBar::MoveFrameDown:
 		{
-			KTFrameRequest event(KTProjectRequest::Move, m_scenes->currentIndex(), m_currentTable->currentLayer(), m_currentTable->currentFrame(), m_currentTable->currentFrame()+1);
+			KTFrameRequest event(KTProjectRequest::Move, m_scenes->currentIndex(), m_currentTable->currentLayer(), m_currentTable->currentFrame(), QString("<move position=\"%1\" />").arg(m_currentTable->currentFrame()+1));
 			emit requestTriggered( &event );
 			break;
 		}
@@ -145,7 +145,13 @@ void KTExposureSheet::applyAction(int action)
 		{
 			bool locked = m_currentTable->frameIsLocked(m_currentTable->currentColumn(),  m_currentTable->currentFrame());
 			
-			KTFrameRequest event(KTProjectRequest::Lock, m_scenes->currentIndex(), m_currentTable->currentLayer(), m_currentTable->currentFrame(), !locked);
+			QString lockStr = "0";
+			if ( locked )
+			{
+				lockStr = "1";
+			}
+			
+			KTFrameRequest event(KTProjectRequest::Lock, m_scenes->currentIndex(), m_currentTable->currentLayer(), m_currentTable->currentFrame(), "<lock value=\""+lockStr+"\"/>");
 			emit requestTriggered( &event );
 			break;
 		}
@@ -189,13 +195,19 @@ void KTExposureSheet::renameFrame(int indexLayer, int indexFrame, const QString 
 void KTExposureSheet::selectFrame(int indexLayer, int indexFrame)
 {
 // 	dDebug() << "KTExposureSheet::selectFrame("  << indexLayer << "," << indexFrame << ")";
-	KTFrameRequest event(KTProjectRequest::Select, m_scenes->currentIndex() , indexLayer, indexFrame, true);
+	KTFrameRequest event(KTProjectRequest::Select, m_scenes->currentIndex() , indexLayer, indexFrame, ""); // FIXME
 	emit requestTriggered( &event );
 }
 
 void KTExposureSheet::changeVisiblityLayer(int visualIndexLayer, bool visibility)
 {
-	KTLayerRequest event(KTProjectRequest::View, m_scenes->currentIndex() , visualIndexLayer, visibility);
+	QString viewStr = "0";
+	if ( visibility )
+	{
+		viewStr = "1";
+	}
+	
+	KTLayerRequest event(KTProjectRequest::View, m_scenes->currentIndex() , visualIndexLayer,  "<view value\""+viewStr+"\"/>");
 	emit requestTriggered( &event );
 }
 
@@ -208,7 +220,7 @@ void KTExposureSheet::renameLayer(int indexLayer, const QString & name)
 
 void KTExposureSheet::moveLayer(int oldIndex, int newIndex)
 {
-	KTLayerRequest event(KTProjectRequest::Move, m_scenes->currentIndex() , oldIndex, newIndex);
+	KTLayerRequest event(KTProjectRequest::Move, m_scenes->currentIndex() , oldIndex, QString("<move position=\"%1\" />").arg(newIndex));
 	emit requestTriggered( &event );
 }
 

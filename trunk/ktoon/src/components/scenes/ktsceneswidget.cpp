@@ -107,7 +107,7 @@ void KTScenesWidget::sendEvent(int action)
 
 void KTScenesWidget::selectScene(const QString & name, int index)
 {
-	KTSceneRequest event(KTProjectRequest::Select, index, this);
+	KTSceneRequest event(KTProjectRequest::Select, index);
 	
 	emit requestTriggered( &event );
 }
@@ -129,14 +129,14 @@ void KTScenesWidget::emitRequestInsertScene()
 	}
 	
 	
-	KTSceneRequest event(KTProjectRequest::Add,  index, this);
+	KTSceneRequest event(KTProjectRequest::Add,  index);
 	
 	emit requestTriggered( &event );
 }
 
 void KTScenesWidget::emitRequestRemoveScene()
 {
-	KTSceneRequest event(KTProjectRequest::Remove,  m_tableScenes->indexCurrentScene(), this );
+	KTSceneRequest event(KTProjectRequest::Remove,  m_tableScenes->indexCurrentScene() );
 	
 	emit requestTriggered( &event );
 }

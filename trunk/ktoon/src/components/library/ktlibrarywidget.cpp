@@ -218,7 +218,7 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 		switch (object->type() )
 		{
 			case KTLibraryObject::Item:
-			{	
+			{
 				if ( object->data().canConvert<QGraphicsItem *>() )
 				{
 					m_display->render( qvariant_cast<QGraphicsItem *>(object->data()));
@@ -236,12 +236,12 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 
 void KTLibraryWidget::emitSelectedComponent()
 {
-// 	KTGraphicComponent *gc = m_graphics[ m_libraryTree->currentItem() ];
-// 	
-// 	if ( gc )
-// 	{
-// 		emit sendCurrentGraphic( gc );
-// 	}
+	QString symKey = m_libraryTree->currentItem()->text(0);
+	
+	// FIXME FIXME FIXME
+// 	KTProjectRequest request(KTProjectRequest::AddSymbol, KTProjectRequest::Library, "<symbol key=\""+symKey+"\" />");
+	
+// 	emit requestTriggered( &request);
 }
 
 void KTLibraryWidget::removeCurrentGraphic()
