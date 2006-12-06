@@ -29,44 +29,48 @@
 #include "ktitemrequest.h"
 #include "ktpaintareaevent.h"
 
+
+#include "ktrequestparser.h"
+
 #include "ktsvg2qt.h"
 
 KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, const KTProjectRequest *event) : QUndoCommand(), m_executor(executor), m_executed(false)
 {
-	m_event = event->clone();
+	m_parser = new KTRequestParser;
+	m_parser->parse( event->data().toString() );
 	
-	switch(m_event->id())
+	switch( m_parser->part() )
 	{
 		case KTProjectRequest::Frame:
 		{
-			setText(actionString( m_event->action() ) +" frame" );
+			setText(actionString( m_parser->action() ) +" frame" );
 		}
 		break;
 		case KTProjectRequest::Layer:
 		{
-			setText(actionString( m_event->action() )+" layer");
+			setText(actionString( m_parser->action() )+" layer");
 		}
 		break;
 		case KTProjectRequest::Scene:
 		{
-			setText(actionString( m_event->action() )+" scene");
+			setText(actionString( m_parser->action() )+" scene");
 		}
 		break;
 		case KTProjectRequest::Item:
 		{
-			setText(actionString( m_event->action() )+" item");
+			setText(actionString( m_parser->action() )+" item");
 		}
 		break;
 		
 		case KTProjectRequest::Library:
 		{
-			setText(actionString( m_event->action() )+" symbol");
+			setText(actionString( m_parser->action() )+" symbol");
 		}
 		break;
 		
 		default:
 		{
-			dfDebug << "CAN'T HANDLE ID: " << m_event->id();
+			dfDebug << "CAN'T HANDLE ID: " << m_parser->part();
 		}
 		break;
 	}
@@ -134,13 +138,14 @@ QString KTProjectCommand::actionString(int action)
 
 KTProjectCommand::~KTProjectCommand()
 {
-	if ( m_event ) delete m_event;
+	delete m_parser;
 }
 
 
 void KTProjectCommand::redo()
 {
-	D_FUNCINFO << m_data.toString();
+	D_FUNCINFO << m_data;
+	
 	
 	if ( m_executed )
 	{
@@ -152,41 +157,41 @@ void KTProjectCommand::redo()
 		m_executed = true;
 	}
 	
-	switch(m_event->id() )
+	switch(m_parser->part() )
 	{
 		case KTProjectRequest::Project:
 		{
-			dDebug() << "Project event isn't handle";
+			dDebug() << "Project m_parser isn't handle";
 		}
 		break;
 		case KTProjectRequest::Frame:
 		{
-			frameCommand( static_cast<const KTFrameRequest *>(m_event), true);
+			frameCommand(true);
 		}
 		break;
 		case KTProjectRequest::Layer:
 		{
-			layerCommand( static_cast<const KTLayerRequest *>(m_event), true);
+			layerCommand(true);
 		}
 		break;
 		case KTProjectRequest::Scene:
 		{
-			sceneCommand( static_cast<const KTSceneRequest *>(m_event), true);
+			sceneCommand(true);
 		}
 		break;
 		case KTProjectRequest::Item:
 		{
-			itemCommand( static_cast<const KTItemRequest *>(m_event), true);
+			itemCommand( true );
 		}
 		break;
 		case KTProjectRequest::Library:
 		{
-			libraryCommand(m_event, true);
+			libraryCommand(true);
 		}
 		break;
 		default:
 		{
-			D_FUNCINFO << ("Unknown project event!");
+			D_FUNCINFO << ("Unknown project m_parser!");
 		}
 		break;
 	}
@@ -196,91 +201,91 @@ void KTProjectCommand::redo()
 
 void KTProjectCommand::undo()
 {
-	D_FUNCINFO << m_data.toString();
+	D_FUNCINFO << m_data;
 	
 	m_executor->setState( KTCommandExecutor::Undo );
 	
-	switch(m_event->id() )
+	switch(m_parser->part() )
 	{
 		case KTProjectRequest::Project:
 		{
-			dDebug() << "Project event isn't handle";
+			dDebug() << "Project m_parser isn't handle";
 		}
 		break;
 		case KTProjectRequest::Frame:
 		{
-			frameCommand( static_cast<const KTFrameRequest *>(m_event), false);
+			frameCommand(false);
 		}
 		break;
 		case KTProjectRequest::Layer:
 		{
-			layerCommand( static_cast<const KTLayerRequest *>(m_event), false);
+			layerCommand( false);
 		}
 		break;
 		case KTProjectRequest::Scene:
 		{
-			sceneCommand( static_cast<const KTSceneRequest *>(m_event), false);
+			sceneCommand( false);
 		}
 		break;
 		case KTProjectRequest::Item:
 		{
-			itemCommand( static_cast<const KTItemRequest *>(m_event), false);
+			itemCommand( false);
 		}
 		break;
 		
 		case KTProjectRequest::Library:
 		{
-			libraryCommand(m_event, false);
+			libraryCommand(false);
 		}
 		break;
 		
 		default:
 		{
-			D_FUNCINFO << ("Unknown project event!");
+			D_FUNCINFO << ("Unknown project m_parser!");
 		}
 		break;
 	}
 }
 
-void KTProjectCommand::frameCommand(const KTFrameRequest *event, bool redo)
+void KTProjectCommand::frameCommand(bool redo)
 {
 	if ( redo )
 	{
-		switch(event->action())
+		switch(m_parser->action())
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->createFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), m_data.toString() );
+				m_executor->createFrame( m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), m_parser->arg().toString() );
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_data = m_executor->removeFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex() );
+				m_data = m_executor->removeFrame( m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex() );
 			}
 			break;
 			case KTProjectRequest::Move:
 			{
-				m_executor->moveFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->data().toInt() );
+				m_executor->moveFrame( m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), m_parser->arg().toInt() );
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				m_executor->lockFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->data().toBool() );
+				m_executor->lockFrame( m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), m_parser->arg().toBool() );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
-				m_event->setPartName(m_executor->renameFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->data().toString() ));
+				m_data = m_executor->renameFrame( m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), m_parser->arg().toString() );
 			}
 			break;
 			case KTProjectRequest::Select:
 			{
-				m_executor->selectFrame(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->data().toBool() );
+				m_executor->selectFrame(m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), m_parser->arg().toBool() );
 			}
 			break;
 			case KTProjectRequest::View:
 			{
-				m_executor->setFrameVisibility(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->data().toBool());
+				m_executor->setFrameVisibility(m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), m_parser->arg().toBool());
 			}
 			break;
 			default: break;
@@ -288,36 +293,36 @@ void KTProjectCommand::frameCommand(const KTFrameRequest *event, bool redo)
 	}
 	else
 	{
-		switch(event->action())
+		switch(m_parser->action())
 		{
 			case KTProjectRequest::Add:
 			{
-				m_data = m_executor->removeFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex());
+				m_data = m_executor->removeFrame( m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex());
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_executor->createFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), m_data.toString());
+				m_executor->createFrame( m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), m_data );
 			}
 			break;
 			case KTProjectRequest::Move:
 			{
-				m_executor->moveFrame(event->sceneIndex(), event->layerIndex(), event->data().toInt(), event->frameIndex() );
+				m_executor->moveFrame(m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->arg().toInt(), m_parser->frameIndex() );
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				m_executor->lockFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), !event->data().toBool() );
+				m_executor->lockFrame( m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), !m_parser->arg().toBool() );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
-				m_executor->renameFrame( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->partName() );
+				m_executor->renameFrame( m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), m_parser->arg().toString() );
 			}
 			break;
 			case KTProjectRequest::View:
 			{
-				m_executor->setFrameVisibility(event->sceneIndex(), event->layerIndex(), event->frameIndex(), !event->data().toBool());
+				m_executor->setFrameVisibility(m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), !m_parser->arg().toBool());
 			}
 			break;
 			default: break;
@@ -325,45 +330,45 @@ void KTProjectCommand::frameCommand(const KTFrameRequest *event, bool redo)
 	}
 }
 
-void KTProjectCommand::layerCommand(const KTLayerRequest *event, bool redo)
+void KTProjectCommand::layerCommand(bool redo)
 {
 	if ( redo )
 	{
-		switch(event->action())
+		switch(m_parser->action())
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->createLayer( event->sceneIndex(), event->layerIndex(), m_data.toString());
+				m_executor->createLayer( m_parser->sceneIndex(), m_parser->layerIndex(), m_data);
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_data = m_executor->removeLayer( event->sceneIndex(), event->layerIndex());
+				m_data = m_executor->removeLayer( m_parser->sceneIndex(), m_parser->layerIndex());
 			}
 			break;
 			case KTProjectRequest::Move:
 			{
-				m_executor->moveLayer( event->sceneIndex(), event->layerIndex(), event->data().toInt() );
+				m_executor->moveLayer( m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->arg().toInt() );
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				m_executor->lockLayer( event->sceneIndex(), event->layerIndex(), event->data().toBool() );
+				m_executor->lockLayer( m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->arg().toBool() );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
-				m_event->setPartName(m_executor->renameLayer( event->sceneIndex(), event->layerIndex(), event->data().toString()));
+				m_data = m_executor->renameLayer( m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->arg().toString());
 			}
 			break;
 			case KTProjectRequest::Select:
 			{
-				m_executor->selectLayer(event->sceneIndex(), event->layerIndex(), event->data().toBool() );
+				m_executor->selectLayer(m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->arg().toBool() );
 			}
 			break;
 			case KTProjectRequest::View:
 			{
-				m_executor->setLayerVisibility(event->sceneIndex(), event->layerIndex(), event->data().toBool());
+				m_executor->setLayerVisibility(m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->arg().toBool());
 			}
 			break;
 			default: break;
@@ -371,36 +376,36 @@ void KTProjectCommand::layerCommand(const KTLayerRequest *event, bool redo)
 	}
 	else
 	{
-		switch(event->action())
+		switch(m_parser->action())
 		{
 			case KTProjectRequest::Add:
 			{
-				m_data = m_executor->removeLayer( event->sceneIndex(), event->layerIndex());
+				m_data = m_executor->removeLayer( m_parser->sceneIndex(), m_parser->layerIndex());
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_executor->createLayer( event->sceneIndex(), event->layerIndex(), m_data.toString());
+				m_executor->createLayer( m_parser->sceneIndex(), m_parser->layerIndex(), m_data);
 			}
 			break;
 			case KTProjectRequest::Move:
 			{
-				m_executor->moveLayer( event->sceneIndex(), event->data().toInt(),event->layerIndex()  );
+				m_executor->moveLayer( m_parser->sceneIndex(), m_parser->arg().toInt(),m_parser->layerIndex()  );
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				m_executor->lockLayer( event->sceneIndex(), event->layerIndex(), !event->data().toBool() );
+				m_executor->lockLayer( m_parser->sceneIndex(), m_parser->layerIndex(), !m_parser->arg().toBool() );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
-				m_executor->renameLayer( event->sceneIndex(), event->layerIndex(), event->partName() );
+				m_executor->renameLayer( m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->arg().toString() );
 			}
 			break;
 			case KTProjectRequest::View:
 			{
-				m_executor->setLayerVisibility(event->sceneIndex(), event->layerIndex(), !event->data().toBool());
+				m_executor->setLayerVisibility(m_parser->sceneIndex(), m_parser->layerIndex(), !m_parser->arg().toBool());
 			}
 			break;
 			default: break;
@@ -408,45 +413,45 @@ void KTProjectCommand::layerCommand(const KTLayerRequest *event, bool redo)
 	}
 }
 
-void KTProjectCommand::sceneCommand(const KTSceneRequest *event, bool redo)
+void KTProjectCommand::sceneCommand(bool redo)
 {
 	if ( redo )
 	{
-		switch(event->action())
+		switch(m_parser->action())
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->createScene( event->sceneIndex(), m_data.toString() );
+				m_executor->createScene( m_parser->sceneIndex(), m_data );
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_data = m_executor->removeScene( event->sceneIndex() );
+				m_data = m_executor->removeScene( m_parser->sceneIndex() );
 			}
 			break;
 			case KTProjectRequest::Move:
 			{
-				m_executor->moveScene( event->sceneIndex(), event->data().toInt() );
+				m_executor->moveScene( m_parser->sceneIndex(), m_parser->arg().toInt() );
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				m_executor->lockScene( event->sceneIndex(), event->data().toBool() );
+				m_executor->lockScene( m_parser->sceneIndex(), m_parser->arg().toBool() );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
-				m_event->setPartName(m_executor->renameScene( event->sceneIndex(), event->data().toString()));
+				m_data = m_executor->renameScene( m_parser->sceneIndex(), m_parser->arg().toString());
 			}
 			break;
 			case KTProjectRequest::Select:
 			{
-				m_executor->selectScene(event->sceneIndex(), event->data().toBool() );
+				m_executor->selectScene(m_parser->sceneIndex(), m_parser->arg().toBool() );
 			}
 			break;
 			case KTProjectRequest::View:
 			{
-				m_executor->setSceneVisibility(event->sceneIndex(),  event->data().toBool());
+				m_executor->setSceneVisibility(m_parser->sceneIndex(),  m_parser->arg().toBool());
 			}
 			break;
 			default: break;
@@ -454,36 +459,36 @@ void KTProjectCommand::sceneCommand(const KTSceneRequest *event, bool redo)
 	}
 	else
 	{
-		switch(event->action())
+		switch(m_parser->action())
 		{
 			case KTProjectRequest::Add:
 			{
-				m_data = m_executor->removeScene( event->sceneIndex() );
+				m_data = m_executor->removeScene( m_parser->sceneIndex() );
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_executor->createScene( event->sceneIndex(), m_data.toString() );
+				m_executor->createScene( m_parser->sceneIndex(), m_data );
 			}
 			break;
 			case KTProjectRequest::Move:
 			{
-				m_executor->moveScene( event->data().toInt(), event->sceneIndex() );
+				m_executor->moveScene( m_parser->arg().toInt(), m_parser->sceneIndex() );
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				m_executor->lockScene( event->sceneIndex(), !event->data().toBool() );
+				m_executor->lockScene( m_parser->sceneIndex(), !m_parser->arg().toBool() );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
-				m_executor->renameScene( event->sceneIndex(), event->partName() );
+				m_executor->renameScene( m_parser->sceneIndex(), m_parser->arg().toString() );
 			}
 			break;
 			case KTProjectRequest::View:
 			{
-				m_executor->setSceneVisibility(event->sceneIndex(),  !event->data().toBool());
+				m_executor->setSceneVisibility(m_parser->sceneIndex(),  !m_parser->arg().toBool());
 			}
 			break;
 			default: break;
@@ -492,21 +497,21 @@ void KTProjectCommand::sceneCommand(const KTSceneRequest *event, bool redo)
 }
 
 
-void KTProjectCommand::itemCommand(const KTItemRequest *event, bool redo)
+void KTProjectCommand::itemCommand(bool redo)
 {
 	D_FUNCINFO;
 	if ( redo )
 	{
-		switch(event->action())
+		switch(m_parser->action())
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->createItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
+				m_executor->createItem(m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), m_parser->itemIndex(), m_parser->arg().toString());
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_data = m_executor->removeItems( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
+				m_data = m_executor->removeItems( m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), m_parser->itemIndex(), m_parser->arg().toString()).join(",");
 			}
 			break;
 			case KTProjectRequest::Move:
@@ -524,12 +529,12 @@ void KTProjectCommand::itemCommand(const KTItemRequest *event, bool redo)
 			break;
 			case KTProjectRequest::Convert:
 			{
-				m_data = m_executor->convertItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
+				m_data = m_executor->convertItem(m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), m_parser->itemIndex(), m_parser->arg().toString());
 			}
 			break;
 			case KTProjectRequest::EditNodes:
 			{
-				m_data =  m_executor->setPathItem( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString() );
+				m_data =  m_executor->setPathItem( m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), m_parser->itemIndex(), m_parser->arg().toString() );
 			}
 			break;
 			case KTProjectRequest::Select:
@@ -542,12 +547,12 @@ void KTProjectCommand::itemCommand(const KTItemRequest *event, bool redo)
 			break;
 			case KTProjectRequest::Transform:
 			{
-				m_data = m_executor->transformItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
+				m_data = m_executor->transformItem(m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), m_parser->itemIndex(), m_parser->arg().toString());
 			}
 			break;
 			case KTProjectRequest::Group:
 			{
-				m_data = m_executor->groupItems(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), event->data().toString());
+				m_data = m_executor->groupItems(m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), m_parser->itemIndex(), m_parser->arg().toString()).join(",");
 			}
 			break;
 			default: break;
@@ -555,23 +560,23 @@ void KTProjectCommand::itemCommand(const KTItemRequest *event, bool redo)
 	}
 	else
 	{
-		switch(event->action())
+		switch(m_parser->action())
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->removeItems(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), "<delete positions=\"("+QString::number(event->itemIndex())+")\"/>" );
+				m_executor->removeItems(m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), m_parser->itemIndex(), "<delete positions=\"("+QString::number(m_parser->itemIndex())+")\"/>" );
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				QString::const_iterator itr = event->data().toString().constBegin();
+				QString::const_iterator itr = m_parser->arg().toString().constBegin();
 				QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
 				qSort(positions.begin(), positions.end());
 				int count = 0;
 				
-				foreach(QString xml, m_data.toStringList())
+				foreach(QString xml, m_data.split(","))
 				{
-					m_executor->createItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), positions[count], xml);
+					m_executor->createItem(m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), positions[count], xml);
 					count++;
 				}
 			}
@@ -590,12 +595,12 @@ void KTProjectCommand::itemCommand(const KTItemRequest *event, bool redo)
 			break;
 			case KTProjectRequest::Convert:
 			{
-				m_executor->convertItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), m_data.toString());
+				m_executor->convertItem(m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), m_parser->itemIndex(), m_data);
 			}
 			break;
 			case KTProjectRequest::EditNodes:
 			{
-				m_data =  m_executor->setPathItem( event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), m_data.toString() );
+				m_data =  m_executor->setPathItem( m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), m_parser->itemIndex(), m_data );
 			}
 			case KTProjectRequest::View:
 			{
@@ -603,7 +608,7 @@ void KTProjectCommand::itemCommand(const KTItemRequest *event, bool redo)
 			break;
 			case KTProjectRequest::Transform:
 			{
-				m_executor->transformItem(event->sceneIndex(), event->layerIndex(), event->frameIndex(), event->itemIndex(), m_data.toString());
+				m_executor->transformItem(m_parser->sceneIndex(), m_parser->layerIndex(), m_parser->frameIndex(), m_parser->itemIndex(), m_data);
 			}
 			break;
 			default: break;
@@ -611,36 +616,36 @@ void KTProjectCommand::itemCommand(const KTItemRequest *event, bool redo)
 	}
 }
 
-void KTProjectCommand::libraryCommand(const KTProjectRequest *event, bool redo)
+void KTProjectCommand::libraryCommand(bool redo)
 {
 	if ( redo )
 	{
-		switch(event->action())
+		switch(m_parser->action())
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->createSymbol(event->data().toString());
+				m_executor->createSymbol(m_parser->arg().toString());
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_executor->removeSymbol(event->data().toString());
+				m_executor->removeSymbol(m_parser->arg().toString());
 			}
 			break;
 		}
 	}
 	else
 	{
-		switch(event->action())
+		switch(m_parser->action())
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->removeSymbol(event->data().toString());
+				m_executor->removeSymbol(m_parser->arg().toString());
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_executor->createSymbol(event->data().toString());
+				m_executor->createSymbol(m_parser->arg().toString());
 			}
 			break;
 		}
@@ -648,17 +653,18 @@ void KTProjectCommand::libraryCommand(const KTProjectRequest *event, bool redo)
 	
 }
 
-void KTProjectCommand::paintAreaCommand(const KTPaintAreaEvent *event, bool redo)
+void KTProjectCommand::paintAreaCommand(bool redo)
 {
-	Q_UNUSED(event);
-	if ( redo )
-	{
-		m_executor->reemitEvent( m_event );
-	}
-	else
-	{
-		m_executor->reemitEvent( m_event );
-	}
+	Q_UNUSED(m_parser);
+	qFatal("FIX ME in ktprojectcommand.cpp ");
+// 	if ( redo )
+// 	{
+// 		m_executor->reemitEvent( m_parser );
+// 	}
+// 	else
+// 	{
+// 		m_executor->reemitEvent( m_parser );
+// 	}
 }
 
 

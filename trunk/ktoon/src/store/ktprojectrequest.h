@@ -32,6 +32,21 @@ class KTSceneRequest;
 class KTLayerRequest;
 class KTFrameRequest;
 
+class STORE_EXPORT KTProjectRequestArgument
+{
+	public:
+		KTProjectRequestArgument(const QString &v);
+		~KTProjectRequestArgument();
+		
+		bool toBool();
+		int toInt();
+		double toReal();
+		QString toString();
+		
+	private:
+		QString m_value;
+};
+
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
@@ -90,6 +105,8 @@ class STORE_EXPORT KTProjectRequest
 		};
 		
 		KTProjectRequest(Action action, const QVariant &data = 0);
+		
+		KTProjectRequest(const QString &doc);
 		virtual ~KTProjectRequest();
 		
 		

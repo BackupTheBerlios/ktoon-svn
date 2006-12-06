@@ -33,6 +33,8 @@
 #include "ktlayerrequest.h"
 #include "ktframerequest.h"
 
+#include "ktrequestbuilder.h"
+
 KTExposureSheet::KTExposureSheet( QWidget *parent) : KTModuleWidgetBase(parent, "Exposure Sheet"), m_currentTable(0)
 {
 	DINIT;
@@ -179,10 +181,8 @@ void KTExposureSheet::emitRequestChangeScene(int index)
 
 void KTExposureSheet::insertItem(int indexLayer, int indexFrame)
 {
-	KTFrameRequest event(KTProjectRequest::Add, m_scenes->currentIndex() , indexLayer, indexFrame);
-	emit requestTriggered( &event );
-	
-	
+	KTProjectRequest request = KTRequestBuilder::createFrameRequest( m_scenes->currentIndex() , indexLayer, indexFrame, KTProjectRequest::Add );
+	emit requestTriggered( &request );
 }
 
 
@@ -194,9 +194,9 @@ void KTExposureSheet::renameFrame(int indexLayer, int indexFrame, const QString 
 
 void KTExposureSheet::selectFrame(int indexLayer, int indexFrame)
 {
-// 	dDebug() << "KTExposureSheet::selectFrame("  << indexLayer << "," << indexFrame << ")";
-	KTFrameRequest event(KTProjectRequest::Select, m_scenes->currentIndex() , indexLayer, indexFrame, ""); // FIXME
-	emit requestTriggered( &event );
+	KTProjectRequest request = KTRequestBuilder::createFrameRequest( m_scenes->currentIndex() , indexLayer, indexFrame,KTProjectRequest::Select, "1" );
+	
+	emit requestTriggered( &request );
 }
 
 void KTExposureSheet::changeVisiblityLayer(int visualIndexLayer, bool visibility)

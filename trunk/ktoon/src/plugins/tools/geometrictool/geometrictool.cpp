@@ -140,7 +140,7 @@ void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManage
 	
 	KTItemRequest *event = new KTItemRequest(KTProjectRequest::Add, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), doc.toString()); // Adds to end
 	
-	addProjectEvent(event);
+	emit requested(event);
 }
 
 QMap<QString, DAction *> GeometricTool::actions() const

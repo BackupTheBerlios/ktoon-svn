@@ -134,7 +134,7 @@ void EraserTool::itemPressed(QGraphicsItem *item, const KTBrushManager *brush, c
 		{
 // 			QString conv = "<convert type=\"2\" />"; // to path type
 // 			KTItemRequest *event = new KTItemRequest(KTProjectRequest::Convert, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().indexOf(item), conv);
-// 			addProjectEvent(event);
+// 			addProjectRequest(event);
 		}
 		else
 		{

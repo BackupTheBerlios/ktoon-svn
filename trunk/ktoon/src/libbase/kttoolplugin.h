@@ -64,20 +64,16 @@ class KTOON_EXPORT KTToolPlugin : public QObject, public KTToolInterface
 		
 		virtual QMenu *menu() const;
 		
+	signals:
+		void requested(const KTProjectRequest *request);
+		
 	public:
 		// Events
 		void begin();
 		void end();
 		
-		void addProjectEvent(KTProjectRequest *e);
-		void insertProjectEvent(int index, KTProjectRequest *e);
-		void removeProjectEvent(KTProjectRequest *e);
-		
-		QList<KTProjectRequest *> events() const;
-		
 	private:
 		QString m_currentTool;
-		QList<KTProjectRequest *> m_events;
 };
 
 #endif

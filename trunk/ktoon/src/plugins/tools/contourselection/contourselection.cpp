@@ -125,7 +125,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 					{
 						QString conv = "<convert type=\"2\" />"; // to path type
 						KTItemRequest *event = new KTItemRequest(KTProjectRequest::Convert, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->indexOf(item), conv);
-						addProjectEvent(event);
+						emit requested(event);
 					}
 					else
 					{
@@ -146,7 +146,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 					doc.appendChild(qgraphicsitem_cast<KTPathItem *>(group->parentItem())->toXml(doc));
 					
 					KTItemRequest *event = new KTItemRequest(KTProjectRequest::EditNodes, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, doc.toString() );
-					addProjectEvent(event);
+					emit requested(event);
 					group->restoreItem();
 				}
 				else

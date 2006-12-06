@@ -26,7 +26,7 @@ QString KTCommandExecutor::createSymbol(const QString &xml)
 {
 	if ( m_project->createSymbol( xml ) )
 	{
-		KTProjectRequest request(KTProjectRequest::Add, xml);
+		KTProjectRequest request( KTProjectRequest::Add, xml);
 		request.setId( KTProjectRequest::Library);
 		
 		emit commandExecuted( &request, m_state );

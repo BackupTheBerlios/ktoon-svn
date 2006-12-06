@@ -110,7 +110,7 @@ void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
 	
 	KTItemRequest *event = new KTItemRequest(KTProjectRequest::Add, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), doc.toString()); // Adds to end
 	
-	addProjectEvent(event);
+	emit requested(event);
 }
 
 

@@ -36,6 +36,7 @@
 
 QString KTCommandExecutor::createItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
 {
+	dDebug() << "CONTRUYENDO CON: " << xml;
 	D_FUNCINFOX("items");
 	
 	KTScene *scene = m_project->scene(scenePosition);

@@ -229,10 +229,13 @@ void KTPaintArea::setTool(KTToolPlugin *tool )
 	if ( m_tool )
 	{
 		m_tool->aboutToChangeTool();
+		disconnect(m_tool,SIGNAL(requested(const KTProjectRequest *)), this, SIGNAL(requestTriggered( const KTProjectRequest* )));
 	}
 	
 	m_tool = tool;
 	m_tool->init(this);
+	
+	connect(m_tool,SIGNAL(requested(const KTProjectRequest *)), this, SIGNAL(requestTriggered( const KTProjectRequest* )));
 }
 
 bool KTPaintArea::drawGrid() const
@@ -336,7 +339,7 @@ void KTPaintArea::mouseMoveEvent ( QMouseEvent * event )
 	QMouseEvent *eventMapped = mapMouseEvent( event );
 	
 	m_inputInformation->updateFromMouseEvent( eventMapped );
-	//Rotate
+	// Rotate
 	if(  !m_isDrawing && event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
 	{
 		setUpdatesEnabled(false);
@@ -386,10 +389,6 @@ void KTPaintArea::mouseReleaseEvent(QMouseEvent *event)
 		KTScene *currentScene = qobject_cast<KTScene *>(scene());
 		m_tool->release(m_inputInformation, m_brushManager,  currentScene, this );
 		
-		foreach( KTProjectRequest *e, m_tool->events() )
-		{
-			emit requestTriggered( e );
-		}
 		
 		m_tool->end();
 	}

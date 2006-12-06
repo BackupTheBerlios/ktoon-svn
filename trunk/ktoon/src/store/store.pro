@@ -45,7 +45,9 @@ HEADERS += ktlayer.h \
            ktgraphicobject.h \
            ktlibrary.h \
            ktlibraryobject.h \
-           ktlibraryfolder.h 
+           ktlibraryfolder.h \
+           ktrequestbuilder.h \
+           ktrequestparser.h 
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
@@ -85,7 +87,9 @@ SOURCES += ktlayer.cpp \
            ktlibrary.cpp \
            ktlibraryobject.cpp \
            ktlibraryfolder.cpp \
-           ktcommandexecutor_library.cpp 
+           ktcommandexecutor_library.cpp \
+           ktrequestbuilder.cpp \
+           ktrequestparser.cpp 
 KDEV_QTVER = 4
 STORE_DIR = ../../src/store
 LIBKTOON_DIR = ../../src/libktoon

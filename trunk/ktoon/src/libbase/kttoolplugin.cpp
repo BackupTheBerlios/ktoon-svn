@@ -49,41 +49,12 @@ QString KTToolPlugin::currentTool() const
 void KTToolPlugin::begin()
 {
 	dDebug("tools") << "Begin: " << m_currentTool;
-	qDeleteAll(m_events);
-	m_events.clear();
 	
 }
 
 void KTToolPlugin::end()
 {
 	dDebug("tools") << "End: " << m_currentTool;
-}
-
-void KTToolPlugin::addProjectEvent(KTProjectRequest *e)
-{
-	m_events << e;
-}
-
-void KTToolPlugin::insertProjectEvent(int index, KTProjectRequest *e)
-{
-	if ( index <= m_events.count() )
-	{
-		m_events.insert(index, e);
-	}
-	else
-	{
-		dWarning() << "Cannot insert event, index: " << index;
-	}
-}
-
-void KTToolPlugin::removeProjectEvent(KTProjectRequest *e)
-{
-	m_events.removeAll(e);
-}
-
-QList<KTProjectRequest *> KTToolPlugin::events() const
-{
-	return m_events;
 }
 
 void KTToolPlugin::itemRequest(const KTItemRequest *event)

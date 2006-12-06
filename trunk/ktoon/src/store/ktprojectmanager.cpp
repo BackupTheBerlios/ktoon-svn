@@ -92,7 +92,7 @@ void KTProjectManager::setupNewProject(KTProjectManagerParams *params)
 	
 // 	// Add by default a scene, layer, frame
 	
-	// Hacer mediante comandos!
+	// FIXME: Hacer mediante comandos!
 	
 	
 	m_commandExecutor->createScene( 0 );

@@ -38,6 +38,8 @@
 #include <QGraphicsLineItem>
 #include <dalgorithm.h>
 
+#include "ktrequestbuilder.h"
+
 
 Brush::Brush() : m_configurator(0), m_item(0)
 {
@@ -138,9 +140,9 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 	QDomDocument doc;
 	doc.appendChild(m_item->toXml( doc ));
 	
-	KTItemRequest *event = new KTItemRequest(KTProjectRequest::Add, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), doc.toString() ); // Adds to end
+	KTProjectRequest request = KTRequestBuilder::createItemRequest( scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString() );
 	
-	addProjectEvent(event);
+	emit requested(&request);
 }
 
 void Brush::smoothPath(QPainterPath &path, double smoothness, int from, int to)

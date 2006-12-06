@@ -22,10 +22,47 @@
 
 #include <ddebug.h>
 
+KTProjectRequestArgument::KTProjectRequestArgument(const QString &v) : m_value(v)
+{
+}
+
+KTProjectRequestArgument::~KTProjectRequestArgument()
+{
+}
+
+
+bool KTProjectRequestArgument::toBool()
+{
+	if ( m_value == "false" || m_value == "0" )
+	{
+		return false;
+	}
+	
+	return true;
+}
+
+int KTProjectRequestArgument::toInt()
+{
+	return m_value.toInt();
+}
+
+double KTProjectRequestArgument::toReal()
+{
+	return m_value.toDouble();
+}
+
+QString KTProjectRequestArgument::toString()
+{
+	return m_value;
+}
+
 KTProjectRequest::KTProjectRequest(Action action, const QVariant &data) : m_action(action), m_data(data), m_id(Project)
 {
 }
 
+KTProjectRequest::KTProjectRequest(const QString &doc) : m_data(doc) // FIXME
+{
+}
 
 KTProjectRequest::~KTProjectRequest()
 {

@@ -155,7 +155,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 				if(position != -1)
 				{
 					KTItemRequest *event = new KTItemRequest(KTProjectRequest::Transform, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, doc.toString() );
-					addProjectEvent(event);
+					emit requested(event);
 					
 					// Restore matrix
 					manager->restoreItem();

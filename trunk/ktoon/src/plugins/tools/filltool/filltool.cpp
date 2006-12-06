@@ -93,7 +93,7 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 		
 					KTItemRequest *event = new KTItemRequest(KTProjectRequest::Add, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), doc.toString()); // Adds to end
 	
-					addProjectEvent(event);
+					emit requested(event);
 					
 					return;
 				}
