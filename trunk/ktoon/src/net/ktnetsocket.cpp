@@ -24,7 +24,7 @@
 
 #include <ddebug.h>
 
-#include "ktrequestfactory.h"
+// #include "ktrequestfactory.h"
 #include "ktprojectrequest.h"
 #include "ktnetprojectmanagerhandler.h"
 
@@ -84,16 +84,16 @@ void KTNetSocket::readFromServer()
 		QString root = doc.documentElement().tagName();
 		if ( root == "request" )
 		{
-			KTRequestFactory factory;
-			KTProjectRequest *request = factory.build( m_readed );
+// 			KTRequestFactory factory;
+// 			KTProjectRequest *request = factory.build( m_readed );
 			
-			if ( request )
+// 			if ( request )
 			{
 				qDebug("EMITIENDO REQUEST!!!!!!!");
-				m_handler->emitRequest( request );
-				delete request;
+// 				m_handler->emitRequest( request );
+// 				delete request;
 			}
-			else
+// 			else
 			{
 				qDebug("FAILS BUILDING!");
 			}

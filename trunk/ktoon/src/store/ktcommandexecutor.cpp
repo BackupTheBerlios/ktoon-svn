@@ -22,7 +22,9 @@
 
 #include <ktproject.h>
 #include <ktscene.h>
-#include <ktscenerequest.h>
+
+#include "ktrequestbuilder.h"
+#include "ktprojectrequest.h"
 
 #include <ddebug.h>
 
@@ -41,14 +43,11 @@ QString KTCommandExecutor::createScene(int position, const QString &xml)
 	
 	if ( position < 0 || position > m_project->scenes().count() )
 	{
-		return QString();;
+		return QString();
 	}
 	
 	KTScene *scene = m_project->createScene( position );
 	if ( !scene ) return QString();
-	
-	
-	KTSceneRequest event(KTProjectRequest::Add, position);
 	
 	QDomDocument document;
 	if ( document.setContent(xml) )
@@ -56,9 +55,9 @@ QString KTCommandExecutor::createScene(int position, const QString &xml)
 		QDomElement root = document.documentElement();
 	
 		scene->setSceneName( root.attribute( "name", scene->sceneName()) );
-		event.setPartName(scene->sceneName());
 		
-		emit commandExecuted(&event, m_state);
+		KTProjectRequest request = KTRequestBuilder::createSceneRequest( position, KTProjectRequest::Add, scene->sceneName() );
+		emit commandExecuted(&request, m_state);
 		
 		QDomNode n = root.firstChild();
 	
@@ -81,12 +80,6 @@ QString KTCommandExecutor::createScene(int position, const QString &xml)
 			n = n.nextSibling();
 		}
 	}
-	else
-	{
-		event.setPartName(scene->sceneName());
-		
-		emit commandExecuted(&event, m_state);
-	}
 	
 	
 	return QString();
@@ -102,9 +95,9 @@ QString KTCommandExecutor::removeScene(int position)
 		QDomDocument document;
 		
 		document.appendChild(toRemove->toXml(document));
-		KTSceneRequest event(KTProjectRequest::Remove, position);
+		KTProjectRequest request = KTRequestBuilder::createSceneRequest( position, KTProjectRequest::Remove );
 		
-		emit commandExecuted(&event, m_state);
+		emit commandExecuted(&request, m_state);
 		
 		m_project->removeScene( position );
 		return document.toString( 0 );
@@ -119,8 +112,8 @@ QString KTCommandExecutor::moveScene(int position, int newPosition)
 {
 	if ( m_project->moveScene( position, newPosition ) )
 	{
-		KTSceneRequest event(KTProjectRequest::Move, position, newPosition);
-		emit commandExecuted(&event, m_state);
+		KTProjectRequest request = KTRequestBuilder::createSceneRequest( position, KTProjectRequest::Move, QString::number(newPosition) );
+		emit commandExecuted(&request, m_state);
 	}
 	
 	return QString();
@@ -141,8 +134,8 @@ QString KTCommandExecutor::lockScene(int position, bool lock)
 	
 	scene->setLocked(lock);
 	
-	KTSceneRequest event(KTProjectRequest::Lock, position, lock);
-	emit commandExecuted(&event, m_state);
+	KTProjectRequest request = KTRequestBuilder::createSceneRequest( position, KTProjectRequest::Lock, "1");
+	emit commandExecuted(&request, m_state);
 	
 	return QString();
 }
@@ -158,14 +151,13 @@ QString KTCommandExecutor::renameScene(int position, const QString &newName)
 		return oldName;
 	}
 	
-	KTSceneRequest event(KTProjectRequest::Rename, position, newName);
-	event.setPartName( scene->sceneName() );
+	KTProjectRequest request = KTRequestBuilder::createSceneRequest( position, KTProjectRequest::Rename, newName);
 	
 	oldName = scene->sceneName();
 	
-	scene->setSceneName( newName);
+	scene->setSceneName( newName );
 	
-	emit commandExecuted(&event, m_state);
+	emit commandExecuted(&request, m_state);
 	
 	return oldName;
 }
@@ -173,8 +165,8 @@ QString KTCommandExecutor::renameScene(int position, const QString &newName)
 
 QString KTCommandExecutor::selectScene(int position, bool prioritary)
 {
-	KTSceneRequest event(KTProjectRequest::Select, position, prioritary);
-	emit commandExecuted(&event, m_state);
+	KTProjectRequest request = KTRequestBuilder::createSceneRequest( position, KTProjectRequest::Select, prioritary ? "1" : "0" );
+	emit commandExecuted(&request, m_state);
 	
 	return QString();
 }
@@ -191,8 +183,8 @@ QString KTCommandExecutor::setSceneVisibility(int position, bool view)
 	
 	scene->setVisible(view);
 	
-	KTSceneRequest event(KTProjectRequest::View, position, view);
-	emit commandExecuted(&event, m_state);
+	KTProjectRequest request = KTRequestBuilder::createSceneRequest( position, KTProjectRequest::View, view ? "1" : "0");
+	emit commandExecuted(&request, m_state);
 	
 	return QString();
 }

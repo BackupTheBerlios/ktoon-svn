@@ -22,7 +22,9 @@
 
 #include "ktscene.h"
 
-#include "ktlayerrequest.h"
+#include "ktprojectrequest.h"
+#include "ktrequestbuilder.h"
+
 #include <dcore/ddebug.h>
 
 QString KTCommandExecutor::createLayer(int scenePosition, int position, const QString &xml)
@@ -35,18 +37,19 @@ QString KTCommandExecutor::createLayer(int scenePosition, int position, const QS
 		
 		if ( ! layer ) return 0;
 		
-		KTLayerRequest event(KTProjectRequest::Add, scenePosition, position );
 		QDomDocument document;
 		if ( document.setContent(xml) )
 		{
 			QDomElement root = document.documentElement();
 	
 			layer->setLayerName( root.attribute( "name", layer->layerName() ) );
-	
+			
+			
+			KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePosition, position, KTProjectRequest::Add, layer->layerName() );
+			
 			QDomNode n = root.firstChild();
 			
-			event.setPartName(layer->layerName());
-			emit commandExecuted(&event, m_state);
+			emit commandExecuted(&request, m_state);
 	
 			while( !n.isNull() )
 			{
@@ -65,11 +68,6 @@ QString KTCommandExecutor::createLayer(int scenePosition, int position, const QS
 		
 				n = n.nextSibling();
 			}
-		}
-		else
-		{
-			event.setPartName(layer->layerName());
-			emit commandExecuted(&event, m_state);
 		}
 		
 // 		dDebug() << "Añadiendo layer en escena: " << scene->sceneName();
@@ -100,9 +98,9 @@ QString KTCommandExecutor::removeLayer(int scenePos, int position)
 			
 			if ( scene->removeLayer(position) )
 			{
-				KTLayerRequest event(KTProjectRequest::Remove, scenePos, position);
+				KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePos, position, KTProjectRequest::Remove );
 				
-				emit commandExecuted(&event, m_state);
+				emit commandExecuted(&request, m_state);
 				
 				return document.toString(0);
 			}
@@ -129,8 +127,8 @@ QString KTCommandExecutor::moveLayer(int scenePosition, int position, int newPos
 	}
 	else
 	{
-		KTLayerRequest event(KTProjectRequest::Move,scenePosition, position, newPosition);
-		emit commandExecuted(&event, m_state);
+		KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePosition, position, KTProjectRequest::Move, QString::number(newPosition)  );
+		emit commandExecuted(&request, m_state);
 	}
 	
 	
@@ -154,8 +152,8 @@ QString KTCommandExecutor::lockLayer(int scenePosition, int position, bool lock)
 	{
 		layer->setLocked(lock);
 		
-		KTLayerRequest event(KTProjectRequest::Lock, scenePosition, position, lock);
-		emit commandExecuted(&event, m_state);
+		KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePosition, position, KTProjectRequest::Lock, lock ? "1" : "0" );
+		emit commandExecuted(&request, m_state);
 	}
 	
 	return QString();
@@ -181,14 +179,13 @@ QString KTCommandExecutor::renameLayer(int scenePosition, int position, const QS
 	if ( layer )
 	{
 		
-		KTLayerRequest event(KTProjectRequest::Rename, scenePosition, position, newName);
-		event.setPartName( layer->layerName());
+		KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePosition, position, KTProjectRequest::Rename, newName);
 		
 		oldName = layer->layerName();
 		
 		layer->setLayerName( newName );
 		
-		emit commandExecuted(&event, m_state);
+		emit commandExecuted(&request, m_state);
 	}
 	
 	return oldName;
@@ -198,8 +195,8 @@ QString KTCommandExecutor::renameLayer(int scenePosition, int position, const QS
 
 QString KTCommandExecutor::selectLayer(int scene, int position, bool prioritary)
 {
-	KTLayerRequest event(KTProjectRequest::Select, scene, position, prioritary);
-	emit commandExecuted(&event, m_state);
+	KTProjectRequest request = KTRequestBuilder::createLayerRequest( scene, position, KTProjectRequest::Select, prioritary ? "1" : "0" );
+	emit commandExecuted(&request, m_state);
 	
 	return QString();
 }
@@ -220,8 +217,8 @@ QString KTCommandExecutor::setLayerVisibility(int scenePos, int position, bool v
 	{
 		layer->setVisible(view);
 		
-		KTLayerRequest event(KTProjectRequest::View, scenePos, position, view);
-		emit commandExecuted(&event, m_state);
+		KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePos, position, KTProjectRequest::View, view ? "1" : "0" );
+		emit commandExecuted(&request, m_state);
 	}
 	
 	return QString();

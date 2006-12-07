@@ -62,11 +62,11 @@ class KTOON_EXPORT KTModuleWidgetBase : public QWidget, public KTAbstractProject
 	protected:
 		virtual void enterEvent(QEvent *e);
 		virtual void leaveEvent(QEvent *e);
-		virtual void frameRequest(KTFrameRequest *frameRequest);
-		virtual void layerRequest(KTLayerRequest *layerRequest);
-		virtual void sceneRequest(KTSceneRequest *sceneRequest);
+		virtual void frameRequest(KTProjectRequest *frameRequest);
+		virtual void layerRequest(KTProjectRequest *layerRequest);
+		virtual void sceneRequest(KTProjectRequest *sceneRequest);
 		virtual void projectRequest(KTProjectRequest *projectRequest);
-		virtual void itemRequest(KTItemRequest *event);
+		virtual void itemRequest(KTProjectRequest *event);
 		virtual void libraryRequest(KTProjectRequest *libraryRequest);
 		
 	signals:

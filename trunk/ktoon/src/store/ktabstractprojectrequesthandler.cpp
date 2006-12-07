@@ -21,11 +21,7 @@
 #include "ktabstractprojectrequesthandler.h"
 
 
-#include "ktitemrequest.h"
 #include "ktprojectrequest.h"
-#include "ktframerequest.h"
-#include "ktlayerrequest.h"
-#include "ktscenerequest.h"
 #include "ktpaintareaevent.h"
 
 KTAbstractProjectRequestHandler::KTAbstractProjectRequestHandler()
@@ -43,7 +39,7 @@ bool KTAbstractProjectRequestHandler::handleRequest(KTProjectRequest *event)
 	{
 		case KTProjectRequest::Item:
 		{
-			itemRequest( static_cast<KTItemRequest *>(event) );
+			itemRequest( event );
 		}
 		break;
 		case KTProjectRequest::Project:
@@ -53,17 +49,17 @@ bool KTAbstractProjectRequestHandler::handleRequest(KTProjectRequest *event)
 		break;
 		case KTProjectRequest::Frame:
 		{
-			frameRequest( static_cast<KTFrameRequest *>(event) );
+			frameRequest( event );
 		}
 		break;
 		case KTProjectRequest::Layer:
 		{
-			layerRequest( static_cast<KTLayerRequest *>(event) );
+			layerRequest(event);
 		}
 		break;
 		case KTProjectRequest::Scene:
 		{
-			sceneRequest( static_cast<KTSceneRequest *>(event) );
+			sceneRequest( event );
 		}
 		break;
 		case KTProjectRequest::Library:
@@ -81,20 +77,4 @@ bool KTAbstractProjectRequestHandler::handleRequest(KTProjectRequest *event)
 	
 	return true;
 }
-
-// void KTAbstractProjectRequestHandler::frameRequest(KTFrameRequest *frameRequest)
-// {
-// }
-// 
-// void KTAbstractProjectRequestHandler::layerRequest(KTLayerRequest *layerRequest)
-// {
-// }
-// 
-// void KTAbstractProjectRequestHandler::sceneRequest(KTSceneRequest *sceneRequest)
-// {
-// }
-// 
-// void KTAbstractProjectRequestHandler::projectRequest(KTProjectRequest *projectRequest)
-// {
-// }
 

@@ -57,7 +57,7 @@ void KTToolPlugin::end()
 	dDebug("tools") << "End: " << m_currentTool;
 }
 
-void KTToolPlugin::itemRequest(const KTItemRequest *event)
+void KTToolPlugin::itemRequest(const KTProjectRequest *event)
 {
 	Q_UNUSED(event);
 }

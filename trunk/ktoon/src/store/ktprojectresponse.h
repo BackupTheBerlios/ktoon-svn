@@ -18,55 +18,20 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTREQUESTFACTORY_H
-#define KTREQUESTFACTORY_H
-
-#include <QXmlDefaultHandler>
-#include <QString>
-#include <QVariant>
-
-class KTProjectRequest;
+#ifndef KTPROJECTRESPONSE_H
+#define KTPROJECTRESPONSE_H
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * Response to request (aka KTProjectRequest)
+ * @author David Cuadrado <krawek@gmail.com>
 */
-class KTRequestFactory : public QXmlDefaultHandler
+class KTProjectResponse
 {
 	public:
-		KTRequestFactory();
-		~KTRequestFactory();
+		KTProjectResponse();
+		virtual ~KTProjectResponse();
 		
-		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
-		
-		bool endElement( const QString& ns, const QString& localname, const QString& qname);
-		
-		bool characters ( const QString & ch );
-		
-		bool error ( const QXmlParseException & exception );
-		bool fatalError ( const QXmlParseException & exception );
-		
-		KTProjectRequest *build(const QString &doc);
-		
-	private:
-		KTProjectRequest *createRequest();
-		
-	private:
-		QString m_qname;
-		
-		bool m_isParsing;
-		bool m_readCharacters;
-		
-		struct RequestData
-		{
-			QVariant data;
-			QString name;
-			int id;
-			int action;
-			int scene;
-			int layer;
-			int frame;
-			int item;
-		} m_requestData;
 };
 
 #endif
+

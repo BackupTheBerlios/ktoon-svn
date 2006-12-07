@@ -17,40 +17,15 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#include "ktprojectresponse.h"
 
-#include "ktlayerrequest.h"
-#include <ddebug.h>
-
-KTLayerRequest::KTLayerRequest(Action action, int sceneIndex, int layerIndex, const QVariant &data) : KTSceneRequest(action, sceneIndex, data), m_layerIndex(layerIndex)
+KTProjectResponse::KTProjectResponse()
 {
 }
 
 
-KTLayerRequest::~KTLayerRequest()
+KTProjectResponse::~KTProjectResponse()
 {
 }
 
-int KTLayerRequest::id() const
-{
-	return KTProjectRequest::Layer;
-}
-
-int KTLayerRequest::layerIndex() const
-{
-	return m_layerIndex;
-}
-
-bool KTLayerRequest::isValid() const
-{
-	return KTSceneRequest::isValid() && (m_layerIndex >= 0 );
-}
-
-KTProjectRequest *KTLayerRequest::clone() const
-{
-	KTLayerRequest *event = new KTLayerRequest(action(), sceneIndex(), m_layerIndex, data());
-	
-	event->setPartName( partName());
-	
-	return event;
-}
 

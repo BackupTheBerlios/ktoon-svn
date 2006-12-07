@@ -22,12 +22,15 @@
 
 #include "ktserializer.h"
 #include "ktscene.h"
-#include "ktitemrequest.h"
+
 #include "ktpathitem.h"
 #include "ktrectitem.h"
 #include "ktellipseitem.h"
 #include "ktitemconverter.h"
 #include "ktsvg2qt.h"
+
+#include "ktprojectrequest.h"
+#include "ktrequestbuilder.h"
 #include "ktitemfactory.h"
 
 #include <dcore/ddebug.h>
@@ -57,8 +60,8 @@ QString KTCommandExecutor::createItem(int scenePosition, int layerPosition, int 
 				QGraphicsItem *item = frame->createItem(position, xml);
 				if ( item )
 				{
-					KTItemRequest event(KTProjectRequest::Add, scenePosition, layerPosition, framePosition, position, xml);
-					emit commandExecuted(&event, m_state);
+					KTProjectRequest request = KTRequestBuilder::createItemRequest( scenePosition, layerPosition, framePosition, position, KTProjectRequest::Add, xml);
+					emit commandExecuted(&request, m_state);
 				}
 			}
 			else
@@ -127,8 +130,8 @@ QStringList KTCommandExecutor::removeItems(int scenePosition, int layerPosition,
 					}
 				}
 				
-				KTItemRequest event(KTProjectRequest::Remove, scenePosition, layerPosition, framePosition, position, xml);
-				emit commandExecuted(&event, m_state);
+				KTProjectRequest request = KTRequestBuilder::createItemRequest( scenePosition, layerPosition, framePosition, position, KTProjectRequest::Remove, xml);
+				emit commandExecuted(&request, m_state);
 				
 				return infoItems;
 			}
@@ -182,8 +185,8 @@ QStringList KTCommandExecutor::groupItems(int scenePosition, int layerPosition, 
 // 				}
 				frame->createItemGroupAt( position, positions);
 				
-				KTItemRequest event(KTProjectRequest::Group, scenePosition, layerPosition, framePosition, position, xml);
-				emit commandExecuted(&event, m_state);
+				KTProjectRequest request = KTRequestBuilder::createItemRequest( scenePosition, layerPosition, framePosition, position, KTProjectRequest::Group, xml);
+				emit commandExecuted(&request, m_state);
 				
 				return infoItems;
 			}
@@ -247,9 +250,9 @@ QString KTCommandExecutor::convertItem(int scenePosition, int layerPosition, int
 					}
 					
 					
-					KTItemRequest event(KTProjectRequest::Convert, scenePosition, layerPosition, framePosition, position, xml);
+					KTProjectRequest request = KTRequestBuilder::createItemRequest( scenePosition, layerPosition, framePosition, position,KTProjectRequest::Convert,  xml);
 					
-					emit commandExecuted(&event, m_state);
+					emit commandExecuted(&request, m_state);
 					
 					return "<convert type=\""+QString::number(item->type())+"\" />";
 				}
@@ -287,9 +290,9 @@ QString KTCommandExecutor::transformItem(int scenePosition, int layerPosition, i
 					KTSerializer::loadProperties( item, doc.documentElement());
 					
 					
-					KTItemRequest event(KTProjectRequest::Transform, scenePosition, layerPosition, framePosition, position, xml);
+					KTProjectRequest request = KTRequestBuilder::createItemRequest( scenePosition, layerPosition, framePosition, position, KTProjectRequest::Transform, xml);
 					
-					emit commandExecuted(&event, m_state);
+					emit commandExecuted(&request, m_state);
 					
 					return current;
 				}
@@ -329,8 +332,8 @@ QString KTCommandExecutor::setPathItem( int scenePosition, int layerPosition, in
 						
 						KTItemFactory factory;
 						factory.loadItem(item, xml);
-						KTItemRequest event(KTProjectRequest::EditNodes,	scenePosition, layerPosition, framePosition, position, xml);
-						emit commandExecuted(&event, m_state);
+						KTProjectRequest request = KTRequestBuilder::createItemRequest(scenePosition, layerPosition, framePosition, position, KTProjectRequest::EditNodes, xml);
+						emit commandExecuted(&request, m_state);
 						return current;
 					}
 				}

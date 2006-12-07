@@ -11,10 +11,7 @@ headers.path = /include/store/
 HEADERS += ktlayer.h \
            ktpalettedocument.h \
            ktframe.h \
-           ktframerequest.h \
-           ktlayerrequest.h \
            ktprojectrequest.h \
-           ktscenerequest.h \
            ktscene.h \
            ktproject.h \
            ktprojectmanager.h \
@@ -24,7 +21,6 @@ HEADERS += ktlayer.h \
            ktframegroup.h \
            ktphotogram.h \
            ktpathitem.h \
-           ktitemrequest.h \
            ktrectitem.h \
            ktpixmapitem.h \
            kttextitem.h \
@@ -39,22 +35,18 @@ HEADERS += ktlayer.h \
            ktitemgroup.h \
            ktprojectmanagerparams.h \
            ktabstractprojectmanagerhandler.h \
-           ktrequestpackage.h \
-           ktrequestfactory.h \
            ktcommandexecutor.h \
            ktgraphicobject.h \
            ktlibrary.h \
            ktlibraryobject.h \
            ktlibraryfolder.h \
            ktrequestbuilder.h \
-           ktrequestparser.h 
+           ktrequestparser.h \
+           ktprojectresponse.h 
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
-           ktframerequest.cpp \
-           ktlayerrequest.cpp \
            ktprojectrequest.cpp \
-           ktscenerequest.cpp \
            ktscene.cpp \
            ktproject.cpp \
            ktprojectmanager.cpp \
@@ -63,12 +55,10 @@ SOURCES += ktlayer.cpp \
            ktframegroup.cpp \
            ktphotogram.cpp \
            ktpathitem.cpp \
-           ktitemrequest.cpp \
            ktrectitem.cpp \
            ktpixmapitem.cpp \
            kttextitem.cpp \
            ktbuttonitem.cpp \
-           ktitemfactory.cpp \
            ktellipseitem.cpp \
            ktpaintareaevent.cpp \
            ktserializer.cpp \
@@ -77,8 +67,6 @@ SOURCES += ktlayer.cpp \
            ktitemgroup.cpp \
            ktprojectmanagerparams.cpp \
            ktabstractprojectmanagerhandler.cpp \
-           ktrequestpackage.cpp \
-           ktrequestfactory.cpp \
            ktcommandexecutor.cpp \
            ktcommandexecutor_frames.cpp \
            ktcommandexecutor_items.cpp \
@@ -89,7 +77,8 @@ SOURCES += ktlayer.cpp \
            ktlibraryfolder.cpp \
            ktcommandexecutor_library.cpp \
            ktrequestbuilder.cpp \
-           ktrequestparser.cpp 
+           ktrequestparser.cpp \
+           ktprojectresponse.cpp 
 KDEV_QTVER = 4
 STORE_DIR = ../../src/store
 LIBKTOON_DIR = ../../src/libktoon

@@ -117,16 +117,16 @@ void KTAnimationArea::advance()
 	}
 }
 
-void KTAnimationArea::frameRequest(KTFrameRequest *)
+void KTAnimationArea::frameRequest(KTProjectRequest *)
 {
 }
 
-void KTAnimationArea::layerRequest(KTLayerRequest *)
+void KTAnimationArea::layerRequest(KTProjectRequest *)
 {
 	
 }
 
-void KTAnimationArea::sceneRequest(KTSceneRequest *event)
+void KTAnimationArea::sceneRequest(KTProjectRequest *event)
 {
 	switch(event->action())
 	{
@@ -151,7 +151,7 @@ void KTAnimationArea::projectRequest(KTProjectRequest *)
 {
 }
 
-void KTAnimationArea::itemRequest(KTItemRequest *)
+void KTAnimationArea::itemRequest(KTProjectRequest *)
 {
 }
 

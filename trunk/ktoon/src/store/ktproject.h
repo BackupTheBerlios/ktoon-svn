@@ -33,7 +33,7 @@
 class KTScene;
 class KTLayer;
 class KTFrame;
-class KTFrameRequest;
+class KTProjectRequest;
 class KTProjectRequest;
 class QGraphicsItem;
 class KTLibrary;

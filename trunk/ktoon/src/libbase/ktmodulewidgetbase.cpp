@@ -95,17 +95,17 @@ bool KTModuleWidgetBase::handleProjectRequest(KTProjectRequest *e)
 	return handleRequest(e);
 }
 
-void KTModuleWidgetBase::frameRequest(KTFrameRequest *frameRequest)
+void KTModuleWidgetBase::frameRequest(KTProjectRequest *frameRequest)
 {
 	Q_UNUSED(frameRequest);
 }
 
-void KTModuleWidgetBase::layerRequest(KTLayerRequest *layerRequest)
+void KTModuleWidgetBase::layerRequest(KTProjectRequest *layerRequest)
 {
 	Q_UNUSED(layerRequest);
 }
 
-void KTModuleWidgetBase::sceneRequest(KTSceneRequest *sceneRequest)
+void KTModuleWidgetBase::sceneRequest(KTProjectRequest *sceneRequest)
 {
 	Q_UNUSED(sceneRequest);
 }
@@ -115,7 +115,7 @@ void KTModuleWidgetBase::projectRequest(KTProjectRequest *projectRequest)
 	Q_UNUSED(projectRequest);
 }
 
-void KTModuleWidgetBase::itemRequest(KTItemRequest *itemRequest)
+void KTModuleWidgetBase::itemRequest(KTProjectRequest *itemRequest)
 {
 	Q_UNUSED(itemRequest);
 }

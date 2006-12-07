@@ -29,10 +29,10 @@
 
 class KTProject;
 class KTProjectRequest;
-class KTFrameRequest;
-class KTLayerRequest;
-class KTSceneRequest;
-class KTItemRequest;
+class KTProjectRequest;
+class KTProjectRequest;
+class KTProjectRequest;
+class KTProjectRequest;
 class KTPaintAreaEvent;
 class KTCommandExecutor;
 class KTRequestParser;

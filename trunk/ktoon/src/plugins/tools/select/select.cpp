@@ -154,7 +154,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 				int position  = scene->currentFrame()->indexOf(manager->parentItem());
 				if(position != -1)
 				{
-					KTItemRequest *event = new KTItemRequest(KTProjectRequest::Transform, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, doc.toString() );
+					KTProjectRequest *event = new KTProjectRequest(KTProjectRequest::Transform, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, doc.toString() );
 					emit requested(event);
 					
 					// Restore matrix
@@ -212,7 +212,7 @@ void Select::aboutToChangeTool()
 	m_nodeManagers.clear();
 }
 
-void Select::itemRequest(const KTItemRequest *event)
+void Select::itemRequest(const KTProjectRequest *event)
 {
 	D_FUNCINFO;
 	

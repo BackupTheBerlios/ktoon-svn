@@ -135,7 +135,7 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 	m_item->setPath(m_path);
 	
 	
-	// Add KTItemRequest
+	// Add KTProjectRequest
 	
 	QDomDocument doc;
 	doc.appendChild(m_item->toXml( doc ));

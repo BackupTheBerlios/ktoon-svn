@@ -56,7 +56,7 @@ class Select : public KTToolPlugin
 		virtual bool isComplete() const;
 		virtual void aboutToChangeTool();
 		
-		virtual void itemRequest(const KTItemRequest *event);
+		virtual void itemRequest(const KTProjectRequest *event);
 		
 	private:
 		void setupActions();

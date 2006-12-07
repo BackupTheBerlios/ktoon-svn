@@ -25,10 +25,10 @@
 #include "ktglobal_store.h"
 
 class KTProjectRequest;
-class KTFrameRequest;
-class KTLayerRequest;
-class KTSceneRequest;
-class KTItemRequest;
+class KTProjectRequest;
+class KTProjectRequest;
+class KTProjectRequest;
+class KTProjectRequest;
 class KTPaintAreaEvent;
 
 /**
@@ -43,10 +43,10 @@ class STORE_EXPORT KTAbstractProjectRequestHandler
 		virtual bool handleRequest(KTProjectRequest *event);
 		
 	protected:
-		virtual void itemRequest(KTItemRequest *itemRequest) = 0;
-		virtual void frameRequest(KTFrameRequest *frameRequest) = 0;
-		virtual void layerRequest(KTLayerRequest *layerRequest) = 0;
-		virtual void sceneRequest(KTSceneRequest *sceneRequest) = 0;
+		virtual void itemRequest(KTProjectRequest *itemRequest) = 0;
+		virtual void frameRequest(KTProjectRequest *frameRequest) = 0;
+		virtual void layerRequest(KTProjectRequest *layerRequest) = 0;
+		virtual void sceneRequest(KTProjectRequest *sceneRequest) = 0;
 		virtual void projectRequest(KTProjectRequest *projectRequest) = 0;
 		virtual void libraryRequest(KTProjectRequest *libraryRequest) = 0;
 };

@@ -25,8 +25,6 @@
 #include "ktcommandexecutor.h"
 
 #include "ktprojectrequest.h"
-#include "ktframerequest.h"
-#include "ktitemrequest.h"
 #include "ktpaintareaevent.h"
 
 

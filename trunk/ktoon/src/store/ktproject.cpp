@@ -29,7 +29,7 @@
 #include "ktlibraryobject.h"
 #include "ktitemfactory.h"
 
-#include "ktscenerequest.h" // requests
+#include "ktprojectrequest.h" // requests
 
 
 #include <QGraphicsView>

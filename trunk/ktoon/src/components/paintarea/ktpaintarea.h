@@ -102,11 +102,11 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectRequestHandler
 		void addSelectedItemsToLibrary();
 		
 	protected:
-		void frameRequest(KTFrameRequest *event);
-		void layerRequest(KTLayerRequest *event);
-		void sceneRequest(KTSceneRequest *event);
+		void frameRequest(KTProjectRequest *event);
+		void layerRequest(KTProjectRequest *event);
+		void sceneRequest(KTProjectRequest *event);
 		void projectRequest(KTProjectRequest *event);
-		void itemRequest(KTItemRequest *event);
+		void itemRequest(KTProjectRequest *event);
 		void libraryRequest(KTProjectRequest *request);
 		void drawBackground(QPainter *painter, const QRectF &rect);
 		

@@ -33,12 +33,10 @@
 #include <QLabel>
 #include <QToolButton>
 
-#include "ktscenerequest.h"
+#include "ktprojectrequest.h"
 
 #include "ktprojectactionbar.h"
 
-
-//--------------- CONSTRUCTOR --------------------
 
 KTScenesWidget::KTScenesWidget( QWidget *parent) : KTModuleWidgetBase( parent, "KTScenesWidget")
 {
@@ -107,7 +105,7 @@ void KTScenesWidget::sendEvent(int action)
 
 void KTScenesWidget::selectScene(const QString & name, int index)
 {
-	KTSceneRequest event(KTProjectRequest::Select, index);
+	KTProjectRequest event(KTProjectRequest::Select, index);
 	
 	emit requestTriggered( &event );
 }
@@ -129,14 +127,14 @@ void KTScenesWidget::emitRequestInsertScene()
 	}
 	
 	
-	KTSceneRequest event(KTProjectRequest::Add,  index);
+	KTProjectRequest event(KTProjectRequest::Add,  index);
 	
 	emit requestTriggered( &event );
 }
 
 void KTScenesWidget::emitRequestRemoveScene()
 {
-	KTSceneRequest event(KTProjectRequest::Remove,  m_tableScenes->indexCurrentScene() );
+	KTProjectRequest event(KTProjectRequest::Remove,  m_tableScenes->indexCurrentScene() );
 	
 	emit requestTriggered( &event );
 }
@@ -147,7 +145,7 @@ void KTScenesWidget::closeAllScenes()
 	m_tableScenes->removeAll();
 }
 
-void KTScenesWidget::sceneRequest(KTSceneRequest *e)
+void KTScenesWidget::sceneRequest(KTProjectRequest *e)
 {
 	switch(e->action() )
 	{
@@ -177,7 +175,7 @@ void KTScenesWidget::sceneRequest(KTSceneRequest *e)
 
 void KTScenesWidget::emitRequestRenameScene(QTreeWidgetItem *item)
 {
-	KTSceneRequest event(KTProjectRequest::Rename, m_tableScenes->indexOfTopLevelItem (item), item->text(0));
+	KTProjectRequest event(KTProjectRequest::Rename, m_tableScenes->indexOfTopLevelItem (item), item->text(0));
 	
 	emit requestTriggered( &event);
 }

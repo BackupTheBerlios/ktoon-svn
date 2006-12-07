@@ -28,9 +28,9 @@
 #include "ktglobal_store.h"
 
 class KTProjectRequest;
-class KTSceneRequest;
-class KTLayerRequest;
-class KTFrameRequest;
+class KTProjectRequest;
+class KTProjectRequest;
+class KTProjectRequest;
 
 class STORE_EXPORT KTProjectRequestArgument
 {
