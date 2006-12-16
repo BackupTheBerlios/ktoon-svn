@@ -35,7 +35,7 @@ class KTProjectRequest;
 class KTProjectRequest;
 class KTPaintAreaEvent;
 class KTCommandExecutor;
-class KTRequestParser;
+class KTProjectResponse;
 
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
@@ -63,7 +63,7 @@ class STORE_EXPORT KTProjectCommand : public QUndoCommand
 	private:
 		KTCommandExecutor *m_executor;
 		
-		KTRequestParser *m_parser;
+		KTProjectResponse *m_response;
 		
 		QString m_data;
 		

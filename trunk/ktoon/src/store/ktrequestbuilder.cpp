@@ -32,7 +32,7 @@ KTRequestBuilder::~KTRequestBuilder()
 {
 }
 
-KTProjectRequest KTRequestBuilder::createItemRequest(int sceneIndex, int layerIndex, int frameIndex, int itemIndex, int actionId, const QString &arg, const QByteArray &data)
+KTProjectRequest KTRequestBuilder::createItemRequest(int sceneIndex, int layerIndex, int frameIndex, int itemIndex, int actionId, const QVariant &arg, const QByteArray &data)
 {
 	QDomDocument doc;
 	
@@ -52,12 +52,12 @@ KTProjectRequest KTRequestBuilder::createItemRequest(int sceneIndex, int layerIn
 	
 	QDomElement action = doc.createElement("action");
 	action.setAttribute( "id", actionId);
-	action.setAttribute( "arg", arg);
+	action.setAttribute( "arg", arg.toString());
 	action.setAttribute( "part", KTProjectRequest::Item );
 	
 	
 	KTRequestBuilder::appendData( doc, action, data);
-	item.appendChild( action );
+	root.appendChild( action );
 	frame.appendChild(item);
 	layer.appendChild(frame);
 	scene.appendChild(layer);
@@ -68,7 +68,7 @@ KTProjectRequest KTRequestBuilder::createItemRequest(int sceneIndex, int layerIn
 	return KTProjectRequest(doc.toString(0));
 }
 
-KTProjectRequest KTRequestBuilder::createFrameRequest(int sceneIndex, int layerIndex, int frameIndex, int actionId, const QString &arg, const QByteArray &data)
+KTProjectRequest KTRequestBuilder::createFrameRequest(int sceneIndex, int layerIndex, int frameIndex, int actionId, const QVariant &arg, const QByteArray &data)
 {
 	QDomDocument doc;
 	
@@ -85,12 +85,12 @@ KTProjectRequest KTRequestBuilder::createFrameRequest(int sceneIndex, int layerI
 	
 	QDomElement action = doc.createElement("action");
 	action.setAttribute( "id", actionId);
-	action.setAttribute( "arg", arg);
+	action.setAttribute( "arg", arg.toString());
 	action.setAttribute( "part", KTProjectRequest::Frame );
 	
 	KTRequestBuilder::appendData( doc, action, data);
 	
-	frame.appendChild( action );
+	root.appendChild( action );
 	layer.appendChild(frame);
 	scene.appendChild(layer);
 	root.appendChild(scene);
@@ -101,7 +101,7 @@ KTProjectRequest KTRequestBuilder::createFrameRequest(int sceneIndex, int layerI
 }
 
 
-KTProjectRequest KTRequestBuilder::createLayerRequest(int sceneIndex, int layerIndex, int actionId, const QString &arg, const QByteArray &data)
+KTProjectRequest KTRequestBuilder::createLayerRequest(int sceneIndex, int layerIndex, int actionId, const QVariant &arg, const QByteArray &data)
 {
 	QDomDocument doc;
 	
@@ -115,12 +115,12 @@ KTProjectRequest KTRequestBuilder::createLayerRequest(int sceneIndex, int layerI
 	
 	QDomElement action = doc.createElement("action");
 	action.setAttribute( "id", actionId);
-	action.setAttribute( "arg", arg);
+	action.setAttribute( "arg", arg.toString());
 	action.setAttribute( "part", KTProjectRequest::Layer );
 	
 	KTRequestBuilder::appendData( doc, action, data);
 	
-	layer.appendChild( action );
+	root.appendChild( action );
 	scene.appendChild(layer);
 	root.appendChild(scene);
 	
@@ -130,7 +130,7 @@ KTProjectRequest KTRequestBuilder::createLayerRequest(int sceneIndex, int layerI
 }
 
 
-KTProjectRequest KTRequestBuilder::createSceneRequest(int sceneIndex, int actionId, const QString &arg, const QByteArray &data)
+KTProjectRequest KTRequestBuilder::createSceneRequest(int sceneIndex, int actionId, const QVariant &arg, const QByteArray &data)
 {
 	QDomDocument doc;
 	
@@ -141,12 +141,12 @@ KTProjectRequest KTRequestBuilder::createSceneRequest(int sceneIndex, int action
 	
 	QDomElement action = doc.createElement("action");
 	action.setAttribute( "id", actionId);
-	action.setAttribute( "arg", arg);
+	action.setAttribute( "arg", arg.toString());
 	action.setAttribute( "part", KTProjectRequest::Scene );
 	
 	KTRequestBuilder::appendData( doc, action, data);
 	
-	scene.appendChild(action);
+	root.appendChild(action);
 	root.appendChild(scene);
 	
 	doc.appendChild(root);

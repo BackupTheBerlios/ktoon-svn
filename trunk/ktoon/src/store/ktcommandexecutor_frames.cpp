@@ -25,15 +25,25 @@
 #include "ktprojectrequest.h"
 #include "ktrequestbuilder.h"
 
+#include "ktprojectresponse.h"
+
 #include <dcore/ddebug.h>
 
-QString KTCommandExecutor::createFrame(int scenePosition, int layerPosition, int position, const QString &xml)
+bool KTCommandExecutor::createFrame(KTProjectResponse *response)
 {
+	KTFrameResponse *frameResponse = static_cast<KTFrameResponse *>(response);
+	
+	int scenePosition = frameResponse->sceneIndex();
+	int layerPosition = frameResponse->layerIndex();
+	int position = frameResponse->frameIndex();
+	QString name = frameResponse->arg().toString();
+	QString state = frameResponse->state();
+	
 	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( !scene)
 	{
-		return 0;
+		return false;
 	}
 	
 	KTLayer *layer = scene->layer(layerPosition);
@@ -42,40 +52,31 @@ QString KTCommandExecutor::createFrame(int scenePosition, int layerPosition, int
 	{
 		KTFrame *frame = layer->createFrame(position);
 		
-		if ( ! frame ) return 0;
+		if ( ! frame ) return false;
 		
-		QDomDocument document;
-		if ( document.setContent(xml) )
+		if (!name.isEmpty())
 		{
-			QDomElement root = document.documentElement();
-	
-			frame->setFrameName( root.attribute( "name", frame->frameName() ) );
-			
-			KTProjectRequest request = KTRequestBuilder::createFrameRequest(scenePosition, layerPosition, position, KTProjectRequest::Add, frame->frameName() );
-			
-			emit commandExecuted(&request, m_state);
+			frame->setFrameName( name );
 		}
-		else
-		{
-			KTProjectRequest request = KTRequestBuilder::createFrameRequest(scenePosition, layerPosition, position, KTProjectRequest::Add, frame->frameName() );
-			
-			emit commandExecuted(&request, m_state);
-		}
+		frame->fromXml( state );
 		
-// 		dDebug() << "Añadiendo frame en layer: " << layer->layerName();
+		emit responsed( response, m_state );
 		
-		return document.toString(0);
-	}
-	else
-	{
-		D_CHECKPTR(layer);
+		return true;
 	}
 	
-	return QString();
+	return false;
 }
 
-QString KTCommandExecutor::removeFrame(int scenePos, int layerPos, int position)
+bool KTCommandExecutor::removeFrame(KTProjectResponse *response)
 {
+	KTFrameResponse *frameResponse = static_cast<KTFrameResponse *>(response);
+	
+	int scenePos = frameResponse->sceneIndex();
+	int layerPos = frameResponse->layerIndex();
+	int position = frameResponse->frameIndex();
+	
+	
 	KTScene *scene = m_project->scene(scenePos);
 	
 	if ( scene )
@@ -86,23 +87,21 @@ QString KTCommandExecutor::removeFrame(int scenePos, int layerPos, int position)
 			KTFrame *frame = layer->frame( position );
 			if ( frame )
 			{
-				QDomDocument document;
-				
-				document.appendChild(frame->toXml(document));
+				QDomDocument doc;
+				doc.appendChild(frame->toXml( doc ));
 				
 				if ( layer->removeFrame(position) )
 				{
-					KTProjectRequest request = KTRequestBuilder::createFrameRequest( scenePos, layerPos, position, KTProjectRequest::Remove);
+					frameResponse->setState(doc.toString(0));
+					emit responsed( response, m_state );
 					
-					emit commandExecuted(&request, m_state);
-					
-					return document.toString(0);
+					return true;
 				}
 			}
 		}
 	}
 	
-	return QString();
+	return false;
 }
 
 

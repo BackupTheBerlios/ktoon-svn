@@ -36,6 +36,7 @@
 #include "ktpathitem.h"
 
 #include "ktitemconverter.h"
+#include "ktrequestbuilder.h"
 
 #include "ktscene.h"
 
@@ -91,9 +92,9 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 					QDomDocument doc;
 					doc.appendChild(fillItem->toXml( doc ));
 		
-					KTProjectRequest *event = new KTProjectRequest(KTProjectRequest::Add, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), doc.toString()); // Adds to end
+					KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString()); // Adds to end
 	
-					emit requested(event);
+					emit requested(&event);
 					
 					return;
 				}

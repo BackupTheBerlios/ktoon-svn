@@ -30,11 +30,14 @@
 #include "nodegroup.h"
 #include "ktproject.h"
 
+
+class ControlNode;
+class KTItemResponse;
+
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
  */
 
-class ControlNode;
 class ContourSelection : public KTToolPlugin
 {
 	Q_OBJECT;
@@ -64,7 +67,7 @@ class ContourSelection : public KTToolPlugin
 		virtual void aboutToChangeTool();
 		
 		
-		virtual void itemRequest(const KTProjectRequest *event);
+		virtual void itemResponse(const KTItemResponse *event);
 		virtual void keyPressEvent(QKeyEvent *event);
 		
 	private:

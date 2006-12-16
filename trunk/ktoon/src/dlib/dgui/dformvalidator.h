@@ -21,7 +21,8 @@
 #ifndef DVALIDATES_H
 #define DVALIDATES_H
 
-#include <qobject.h>
+#include <QWidget>
+class QLineEdit;
 
 #define D_GIVE_NAME(obj) obj->setObjectName( #obj );
 
@@ -30,6 +31,7 @@
 */
 class DFormValidator : public QObject
 {
+	Q_OBJECT;
 	public:
 		DFormValidator(QWidget *parent);
 		~DFormValidator();
@@ -37,16 +39,30 @@ class DFormValidator : public QObject
 		bool validatesNumerically(bool real);
 		bool validatesRange(int i, int e);
 		bool validatesRegExp( const QString &regexp);
+		bool validatesLength(int max);
+		bool validatesMask(const QString &mask);
 		
-		
+		bool validatesMaskOf(const QString &mask, const QString &name);
+		bool validatesLengthOf(int max, const QString &name);
 		bool validatesNumericallyOf(bool real, const QString &name);
 		bool validatesRangeOf(int i, int e, const QString &name);
 		bool validatesRegExpOf( const QString &regexp, const QString &name);
 		
-	private:
+		void validatesMaskOf(const QString &mask, QLineEdit *line);
+		void validatesLengthOf(int max, QLineEdit *line);
+		void validatesNumericallyOf(bool real, QLineEdit *line);
+		void validatesRangeOf(int i, int e, QLineEdit *line);
+		void validatesRegExpOf(const QString &regexp, QLineEdit *line);
+		
+	protected:
+		virtual bool validate(QLineEdit *line);
+		
+	public slots:
+		bool validate();
 		
 	private:
 		QWidget *m_parent;
+		QList<QLineEdit *> m_childs;
 };
 
 #endif

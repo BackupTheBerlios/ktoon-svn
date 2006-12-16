@@ -31,6 +31,8 @@
 
 #include "ktabstractprojectmanagerhandler.h"
 
+#include "ktprojectresponse.h"
+
 #include <ddebug.h>
 
 KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(false), m_handler(0)
@@ -43,7 +45,7 @@ KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(
 	
 // 	connect(m_project,SIGNAL(commandExecuted( KTProjectRequest* )), this, SIGNAL(commandExecuted( KTProjectRequest *)));
 	
-	connect(m_commandExecutor, SIGNAL(commandExecuted( KTProjectRequest*, int )), this, SLOT(emitCommandExecuted( KTProjectRequest *, int)));
+	connect(m_commandExecutor, SIGNAL(responsed( KTProjectResponse*, int )), this, SLOT(emitResponse( KTProjectResponse *, int)));
 }
 
 
@@ -95,9 +97,9 @@ void KTProjectManager::setupNewProject(KTProjectManagerParams *params)
 	// FIXME: Hacer mediante comandos!
 	
 	
-	m_commandExecutor->createScene( 0 );
-	m_commandExecutor->createLayer( 0, 0 );
-	m_commandExecutor->createFrame( 0, 0, 0 );
+// 	m_commandExecutor->createScene( 0 );
+// 	m_commandExecutor->createLayer( 0, 0 );
+// 	m_commandExecutor->createFrame( 0, 0, 0 );
 }
 
 
@@ -191,17 +193,18 @@ QUndoStack *KTProjectManager::undoHistory() const
 	return m_undoStack;
 }
 
-void KTProjectManager::emitCommandExecuted( KTProjectRequest *request, int state)
+
+void KTProjectManager::emitResponse( KTProjectResponse *response, int state)
 {
 	D_FUNCINFO;
-	if ( !m_handler )
-	{
-		emit commandExecuted( request );
-	}
-	else if ( m_handler->commandExecuted(request, state ) )
-	{
-		emit commandExecuted( request );
-	}
+// 	if ( !m_handler )
+// 	{
+		emit responsed( response );
+// 	}
+// 	else if ( m_handler->commandExecuted(response, state ) )
+// 	{
+// 		emit responsed( response );
+// 	}
 }
 
 

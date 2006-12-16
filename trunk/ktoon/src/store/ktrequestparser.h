@@ -24,11 +24,14 @@
 #include <QXmlDefaultHandler>
 
 #include "ktprojectrequest.h"
+#include "ktglobal_store.h"
+
+class KTProjectResponse;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTRequestParser : public QXmlDefaultHandler
+class STORE_EXPORT KTRequestParser : public QXmlDefaultHandler
 {
 	public:
 		KTRequestParser();
@@ -45,14 +48,7 @@ class KTRequestParser : public QXmlDefaultHandler
 		
 		bool parse(const QString &doc);
 		
-		KTProjectRequestArgument arg() const;
-		int action() const;
-		int part() const;
-		int sceneIndex() const;
-		int layerIndex() const;
-		int frameIndex() const;
-		int itemIndex() const;
-		QByteArray data() const;
+		KTProjectResponse *response() const;
 		
 		
 	private:
@@ -61,19 +57,7 @@ class KTRequestParser : public QXmlDefaultHandler
 		bool m_isParsing;
 		bool m_readCharacters;
 		
-		struct RequestData
-		{
-			QByteArray data;
-			int action;
-			int scene;
-			int layer;
-			int frame;
-			int item;
-			
-			int part;
-			KTProjectRequestArgument *arg;
-		} m_requestData;
-	
+		KTProjectResponse *m_response;
 };
 
 #endif

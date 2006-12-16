@@ -18,61 +18,63 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "kttoolplugin.h"
+#include "ktabstractprojectresponsehandler.h"
 
-#include <dcore/ddebug.h>
 
-KTToolPlugin::KTToolPlugin(QObject * parent) : QObject(parent)
+#include "ktprojectresponse.h"
+#include "ktpaintareaevent.h"
+
+KTAbstractProjectResponseHandler::KTAbstractProjectResponseHandler()
 {
 }
 
 
-KTToolPlugin::~KTToolPlugin()
+KTAbstractProjectResponseHandler::~KTAbstractProjectResponseHandler()
 {
 }
 
-void KTToolPlugin::init(QGraphicsView *view)
+bool KTAbstractProjectResponseHandler::handleResponse(KTProjectResponse *response)
 {
-	Q_UNUSED(view);
-}
-
-void KTToolPlugin::setCurrentTool(const QString &tool)
-{
-	m_currentTool = tool;
-}
-
-QString KTToolPlugin::currentTool() const
-{
-	return m_currentTool;
-}
-
-void KTToolPlugin::begin()
-{
-	dDebug("tools") << "Begin: " << m_currentTool;
+	switch ( response->part())
+	{
+		case KTProjectRequest::Item:
+		{
+			itemResponse( static_cast<KTItemResponse *>(response) );
+		}
+		break;
+		case KTProjectRequest::Project:
+		{
+			projectResponse( response );
+		}
+		break;
+		case KTProjectRequest::Frame:
+		{
+			frameResponse( static_cast<KTFrameResponse *>(response) );
+		}
+		break;
+		case KTProjectRequest::Layer:
+		{
+			layerResponse(static_cast<KTLayerResponse *>(response));
+		}
+		break;
+		case KTProjectRequest::Scene:
+		{
+			sceneResponse( static_cast<KTSceneResponse *>(response) );
+		}
+		break;
+		case KTProjectRequest::Library:
+		{
+// 			libraryResponse( response );
+		}
+		break;
+		default:
+		{
+			qWarning("Unknown project response!");
+			return false;
+		}
+		break;
+	}
 	
+	return true;
 }
 
-void KTToolPlugin::end()
-{
-	dDebug("tools") << "End: " << m_currentTool;
-}
-
-void KTToolPlugin::itemResponse( const KTItemResponse *event)
-{
-	Q_UNUSED(event);
-}
-
-
-void KTToolPlugin::doubleClick(const KTInputDeviceInformation *, KTScene *, QGraphicsView * )
-{
-}
-
-void KTToolPlugin::keyPressEvent(QKeyEvent *event)
-{
-	Q_UNUSED(event);
-}
-
-QMenu *KTToolPlugin::menu() const
-{
-	return 0;
-}

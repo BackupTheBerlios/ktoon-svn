@@ -36,6 +36,7 @@
 #include "ktprojectrequest.h"
 
 #include "ktprojectactionbar.h"
+#include "ktrequestbuilder.h"
 
 
 KTScenesWidget::KTScenesWidget( QWidget *parent) : KTModuleWidgetBase( parent, "KTScenesWidget")
@@ -105,7 +106,7 @@ void KTScenesWidget::sendEvent(int action)
 
 void KTScenesWidget::selectScene(const QString & name, int index)
 {
-	KTProjectRequest event(KTProjectRequest::Select, index);
+	KTProjectRequest event = KTRequestBuilder::createSceneRequest( index, KTProjectRequest::Select);
 	
 	emit requestTriggered( &event );
 }
@@ -127,14 +128,14 @@ void KTScenesWidget::emitRequestInsertScene()
 	}
 	
 	
-	KTProjectRequest event(KTProjectRequest::Add,  index);
+	KTProjectRequest event = KTRequestBuilder::createSceneRequest(  index, KTProjectRequest::Add);
 	
 	emit requestTriggered( &event );
 }
 
 void KTScenesWidget::emitRequestRemoveScene()
 {
-	KTProjectRequest event(KTProjectRequest::Remove,  m_tableScenes->indexCurrentScene() );
+	KTProjectRequest event = KTRequestBuilder::createSceneRequest( m_tableScenes->indexCurrentScene(), KTProjectRequest::Remove );
 	
 	emit requestTriggered( &event );
 }
@@ -145,13 +146,13 @@ void KTScenesWidget::closeAllScenes()
 	m_tableScenes->removeAll();
 }
 
-void KTScenesWidget::sceneRequest(KTProjectRequest *e)
+void KTScenesWidget::sceneResponse(KTSceneResponse *e)
 {
 	switch(e->action() )
 	{
 		case KTProjectRequest::Add:
 		{
-			m_tableScenes->insertScene(e->sceneIndex(), e->partName());
+			m_tableScenes->insertScene(e->sceneIndex(), e->arg().toString() );
 		}
 		break;
 		case KTProjectRequest::Remove:
@@ -161,7 +162,7 @@ void KTScenesWidget::sceneRequest(KTProjectRequest *e)
 		break;
 		case KTProjectRequest::Rename:
 		{
-			m_tableScenes->renameScene(e->sceneIndex(), e->data().toString() );
+			m_tableScenes->renameScene(e->sceneIndex(), e->arg().toString() );
 		}
 		break;
 		case KTProjectRequest::Select:
@@ -175,8 +176,8 @@ void KTScenesWidget::sceneRequest(KTProjectRequest *e)
 
 void KTScenesWidget::emitRequestRenameScene(QTreeWidgetItem *item)
 {
-	KTProjectRequest event(KTProjectRequest::Rename, m_tableScenes->indexOfTopLevelItem (item), item->text(0));
+// 	KTProjectRequest event(KTProjectRequest::Rename, m_tableScenes->indexOfTopLevelItem (item), item->text(0));
 	
-	emit requestTriggered( &event);
+// 	emit requestTriggered( &event);
 }
 

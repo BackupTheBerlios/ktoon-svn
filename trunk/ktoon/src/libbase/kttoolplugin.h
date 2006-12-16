@@ -25,8 +25,8 @@
 #include "kttoolinterface.h"
 #include "ktbrushmanager.h"
 #include "ktinputdeviceinformation.h"
-#include "ktprojectrequest.h"
-#include "ktprojectrequest.h"
+
+#include "ktprojectresponse.h"
 
 #include <QGraphicsView>
 #include "ktglobal.h"
@@ -58,7 +58,7 @@ class KTOON_EXPORT KTToolPlugin : public QObject, public KTToolInterface
 		virtual QWidget *configurator()  = 0;
 		virtual void aboutToChangeTool() = 0;
 		
-		virtual void itemRequest(const KTProjectRequest *event);
+		virtual void itemResponse(const KTItemResponse *event);
 		
 		virtual void keyPressEvent(QKeyEvent *event);
 		

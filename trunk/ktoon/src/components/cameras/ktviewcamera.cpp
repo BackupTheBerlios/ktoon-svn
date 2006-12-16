@@ -27,7 +27,7 @@
 #include <QApplication>
 #include <QCheckBox>
 
-#include "ktscenerequest.h"
+#include "ktprojectresponse.h"
 
 class KTViewCamera::Status : public QStatusBar
 {
@@ -212,13 +212,13 @@ void KTViewCamera::updateSceneInfo()
 	showSceneInfo(m_animationArea->currentScene());
 }
 
-bool KTViewCamera::handleProjectRequest(KTProjectRequest *event)
+bool KTViewCamera::handleProjectResponse(KTProjectResponse *response)
 {
-	if ( event->id() == KTProjectRequest::Scene )
+	if ( response->part() == KTProjectRequest::Scene )
 	{
 		updateSceneInfo();
 	}
-	return m_animationArea->handleRequest( event );
+	return m_animationArea->handleResponse( response );
 }
 
 void KTViewCamera::setFPS(int fps)

@@ -23,7 +23,7 @@
 
 #include <QGraphicsItem>
 
-#include "ktscenerequest.h"
+#include "ktprojectresponse.h"
 #include "ktgraphicobject.h"
 
 #include "ddebug.h"
@@ -117,16 +117,16 @@ void KTAnimationArea::advance()
 	}
 }
 
-void KTAnimationArea::frameRequest(KTProjectRequest *)
+void KTAnimationArea::frameResponse(KTFrameResponse *)
 {
 }
 
-void KTAnimationArea::layerRequest(KTProjectRequest *)
+void KTAnimationArea::layerResponse(KTLayerResponse *)
 {
 	
 }
 
-void KTAnimationArea::sceneRequest(KTProjectRequest *event)
+void KTAnimationArea::sceneResponse(KTSceneResponse *event)
 {
 	switch(event->action())
 	{
@@ -147,17 +147,17 @@ void KTAnimationArea::sceneRequest(KTProjectRequest *event)
 	}
 }
 
-void KTAnimationArea::projectRequest(KTProjectRequest *)
+void KTAnimationArea::projectResponse(KTProjectResponse *)
 {
 }
 
-void KTAnimationArea::itemRequest(KTProjectRequest *)
+void KTAnimationArea::itemResponse(KTItemResponse *)
 {
 }
 
-void KTAnimationArea::libraryRequest(KTProjectRequest *)
-{
-}
+// void KTAnimationArea::libraryResponse(KTProjectResponse *)
+// {
+// }
 
 void KTAnimationArea::render() // TODO: Extend to scenes
 {

@@ -18,61 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "kttoolplugin.h"
+#ifndef KTABSTRACTPROJECTRESPONSEHANDLER_H
+#define KTABSTRACTPROJECTRESPONSEHANDLER_H
 
-#include <dcore/ddebug.h>
+#include <QObject>
+#include "ktglobal_store.h"
 
-KTToolPlugin::KTToolPlugin(QObject * parent) : QObject(parent)
+class KTPaintAreaEvent;
+class KTProjectResponse;
+class KTItemResponse;
+class KTFrameResponse;
+class KTSceneResponse;
+class KTLayerResponse;
+
+/**
+ * @author David Cuadrado \<krawek@gmail.com\>
+*/
+class STORE_EXPORT KTAbstractProjectResponseHandler
 {
-}
+	public:
+		KTAbstractProjectResponseHandler();
+		virtual ~KTAbstractProjectResponseHandler();
+		
+		virtual bool handleResponse(KTProjectResponse *response);
+		
+	protected:
+		virtual void itemResponse(KTItemResponse *itemResponse) = 0;
+		virtual void frameResponse(KTFrameResponse *frameResponse) = 0;
+		virtual void layerResponse(KTLayerResponse *layerResponse) = 0;
+		virtual void sceneResponse(KTSceneResponse *sceneResponse) = 0;
+		virtual void projectResponse(KTProjectResponse *projectResponse) = 0;
+// 		virtual void libraryResponse(KTLibraryResponse *libraryResponse) = 0;
+};
 
-
-KTToolPlugin::~KTToolPlugin()
-{
-}
-
-void KTToolPlugin::init(QGraphicsView *view)
-{
-	Q_UNUSED(view);
-}
-
-void KTToolPlugin::setCurrentTool(const QString &tool)
-{
-	m_currentTool = tool;
-}
-
-QString KTToolPlugin::currentTool() const
-{
-	return m_currentTool;
-}
-
-void KTToolPlugin::begin()
-{
-	dDebug("tools") << "Begin: " << m_currentTool;
-	
-}
-
-void KTToolPlugin::end()
-{
-	dDebug("tools") << "End: " << m_currentTool;
-}
-
-void KTToolPlugin::itemResponse( const KTItemResponse *event)
-{
-	Q_UNUSED(event);
-}
-
-
-void KTToolPlugin::doubleClick(const KTInputDeviceInformation *, KTScene *, QGraphicsView * )
-{
-}
-
-void KTToolPlugin::keyPressEvent(QKeyEvent *event)
-{
-	Q_UNUSED(event);
-}
-
-QMenu *KTToolPlugin::menu() const
-{
-	return 0;
-}
+#endif

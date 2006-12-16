@@ -30,14 +30,16 @@
 #include <QDockWidget>
 
 #include "dosd.h"
-#include "ktprojectrequest.h"
-#include "ktabstractprojectrequesthandler.h"
+#include "ktprojectresponse.h"
+#include "ktabstractprojectresponsehandler.h"
 #include "ktglobal.h"
+
+
 
 /**
  * @author Jorge Cuadrado
 */
-class KTOON_EXPORT KTModuleWidgetBase : public QWidget, public KTAbstractProjectRequestHandler
+class KTOON_EXPORT KTModuleWidgetBase : public QWidget, public KTAbstractProjectResponseHandler
 {
 	Q_OBJECT;
 	
@@ -57,17 +59,17 @@ class KTOON_EXPORT KTModuleWidgetBase : public QWidget, public KTAbstractProject
 		virtual bool event( QEvent * e );
 		
 	public slots:
-		bool handleProjectRequest(KTProjectRequest *event);
+		bool handleProjectResponse(KTProjectResponse *response);
 		
 	protected:
 		virtual void enterEvent(QEvent *e);
 		virtual void leaveEvent(QEvent *e);
-		virtual void frameRequest(KTProjectRequest *frameRequest);
-		virtual void layerRequest(KTProjectRequest *layerRequest);
-		virtual void sceneRequest(KTProjectRequest *sceneRequest);
-		virtual void projectRequest(KTProjectRequest *projectRequest);
-		virtual void itemRequest(KTProjectRequest *event);
-		virtual void libraryRequest(KTProjectRequest *libraryRequest);
+		virtual void frameResponse(KTFrameResponse *frameRequest);
+		virtual void layerResponse(KTLayerResponse  *layerRequest);
+		virtual void sceneResponse(KTSceneResponse  *sceneRequest);
+		virtual void projectResponse(KTProjectResponse  *projectRequest);
+		virtual void itemResponse(KTItemResponse  *event);
+// 		virtual void libraryRequest(KTProjectRequest *libraryRequest);
 		
 	signals:
 		void documentModified(bool);

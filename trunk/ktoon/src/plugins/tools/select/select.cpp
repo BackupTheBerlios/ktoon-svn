@@ -35,6 +35,10 @@
 #include "nodemanager.h"
 #include "ktserializer.h"
 
+
+#include "ktrequestbuilder.h"
+#include "ktprojectresponse.h"
+
 #include <QTimer>
 
 Select::Select()
@@ -154,8 +158,8 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 				int position  = scene->currentFrame()->indexOf(manager->parentItem());
 				if(position != -1)
 				{
-					KTProjectRequest *event = new KTProjectRequest(KTProjectRequest::Transform, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, doc.toString() );
-					emit requested(event);
+					KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, KTProjectRequest::Transform, doc.toString() );
+					emit requested(&event);
 					
 					// Restore matrix
 					manager->restoreItem();
@@ -212,7 +216,7 @@ void Select::aboutToChangeTool()
 	m_nodeManagers.clear();
 }
 
-void Select::itemRequest(const KTProjectRequest *event)
+void Select::itemResponse(const KTItemResponse *event)
 {
 	D_FUNCINFO;
 	

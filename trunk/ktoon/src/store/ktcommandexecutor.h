@@ -25,6 +25,11 @@
 
 class KTProject;
 class KTProjectRequest;
+class KTFrameResponse;
+class KTItemResponse;
+class KTSceneResponse;
+class KTLayerResponse;
+class KTProjectResponse;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
@@ -46,7 +51,8 @@ class KTCommandExecutor : public QObject
 		
 		QString createScene(int position, const QString &xml = QString());
 		QString createLayer(int scene, int position, const QString &xml = QString());
-		QString createFrame(int scene, int layer, int position, const QString &xml = QString());
+		bool createFrame(KTProjectResponse *response );
+		
 		QString createItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml);
 		QString transformItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml);
 		QString convertItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml);
@@ -56,7 +62,7 @@ class KTCommandExecutor : public QObject
 		
 		QString removeScene(int position);
 		QString removeLayer(int scene, int position);
-		QString removeFrame(int scene, int layer, int position);
+		bool removeFrame(KTProjectResponse *response);
 		QString removeSymbol(const QString &xml);
 		
 // 		QString removeItem(int scenePosition, int layerPosition, int framePosition, int position);
@@ -90,7 +96,8 @@ class KTCommandExecutor : public QObject
 		void setState(KTCommandExecutor::State state);
 		
 	signals:
-		void commandExecuted(KTProjectRequest *event, int state);
+		void commandExecuted(KTProjectRequest *event, int state); // FIXME: remove
+		void responsed(KTProjectResponse *response, int state);
 		
 	private:
 		KTProject *m_project;

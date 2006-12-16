@@ -21,16 +21,93 @@
 #ifndef KTPROJECTRESPONSE_H
 #define KTPROJECTRESPONSE_H
 
+#include "ktglobal_store.h"
+#include "ktprojectrequest.h"
+
 /**
  * Response to request (aka KTProjectRequest)
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTProjectResponse
+class STORE_EXPORT KTProjectResponse
 {
 	public:
-		KTProjectResponse();
+		KTProjectResponse(int part, int action);
 		virtual ~KTProjectResponse();
 		
+		int part() const;
+		int action() const;
+		
+		void setArg(const QString &value);
+		void setData(const QByteArray &data);
+		
+		KTProjectRequestArgument arg() const;
+		QByteArray data() const;
+		
+	private:
+		int m_part;
+		int m_action;
+		KTProjectRequestArgument m_arg;
+		QByteArray m_data;
+};
+
+class KTSceneResponse : public KTProjectResponse
+{
+	public:
+		KTSceneResponse(int part, int action);
+		~KTSceneResponse();
+		int sceneIndex() const;
+		void setSceneIndex(int index);
+		
+		void setState(const QString &state);
+		QString state() const;
+		
+	private:
+		int m_sceneIndex;
+		QString m_state;
+};
+
+class KTLayerResponse : public KTSceneResponse
+{
+	public:
+		KTLayerResponse(int part, int action);
+		~KTLayerResponse();
+		int layerIndex() const;
+		void setLayerIndex(int index);
+	private:
+		int m_layerIndex;
+};
+
+class KTFrameResponse : public KTLayerResponse
+{
+	public:
+		KTFrameResponse(int part, int action);
+		~KTFrameResponse();
+		int frameIndex() const;
+		void setFrameIndex(int index);
+	private:
+		int m_frameIndex;
+};
+
+class KTItemResponse : public KTFrameResponse
+{
+	public:
+		KTItemResponse(int part, int action);
+		~KTItemResponse();
+		int itemIndex() const;
+		void setItemIndex(int index);
+	private:
+		int m_itemIndex;
+};
+
+class KTProjectResponseFactory
+{
+	private:
+		KTProjectResponseFactory();
+		
+	public:
+		~KTProjectResponseFactory();
+		
+		static KTProjectResponse *create(int part, int action);
 };
 
 #endif

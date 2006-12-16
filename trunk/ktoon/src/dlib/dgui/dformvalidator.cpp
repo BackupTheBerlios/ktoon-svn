@@ -26,6 +26,8 @@
 #include <QSpinBox>
 #include <QDoubleSpinBox>
 
+#include <QtDebug>
+
 DFormValidator::DFormValidator(QWidget *parent) : QObject(parent), m_parent(parent)
 {
 }
@@ -88,7 +90,7 @@ bool DFormValidator::validatesRegExp( const QString &regexp)
 		if ( QLineEdit *line = qobject_cast<QLineEdit *>(child) )
 		{
 			line->setValidator(new QRegExpValidator(QRegExp(regexp), line));
-			ok = false;
+			ok = true;
 		}
 	}
 	
@@ -162,3 +164,173 @@ bool DFormValidator::validatesRegExpOf( const QString &regexp, const QString &na
 	return ok;
 }
 
+bool DFormValidator::validatesLength(int max)
+{
+        bool ok = false;
+        foreach(QObject *child, m_parent->children())
+        {
+                if ( QLineEdit *line = qobject_cast<QLineEdit *>(child) )
+                {
+                        line->setMaxLength(max);
+                        ok = true;
+                }
+        }
+
+        return ok;
+}
+
+bool DFormValidator::validatesLengthOf(int max, const QString &name)
+{
+        bool ok = false;
+        foreach(QObject *child, m_parent->children())
+        {
+                if( child->objectName() == name)
+                {
+                        if ( QLineEdit *line = qobject_cast<QLineEdit *>(child) )
+                        {
+                                line->setMaxLength(max);
+                                ok = true;
+                        }
+
+			break;
+                }
+        }
+
+        return ok;
+}
+
+bool DFormValidator::validatesMask(const QString &mask)
+{
+        bool ok = false;
+        foreach(QObject *child, m_parent->children())
+        {
+                if ( QLineEdit *line = qobject_cast<QLineEdit *>(child) )
+                {
+                        line->setInputMask(mask);
+                        ok = true;
+                }
+        }
+
+        return ok;
+}
+
+bool DFormValidator::validatesMaskOf(const QString &mask, const QString &name)
+{
+        bool ok = false;
+        foreach(QObject *child, m_parent->children())
+        {
+                if( child->objectName() == name)
+                {
+                        if ( QLineEdit *line = qobject_cast<QLineEdit *>(child) )
+                        {
+                                line->setInputMask(mask);
+                                ok = true;
+                        }
+
+                        break;
+                }
+        }
+        return ok;
+}
+
+
+void DFormValidator::validatesMaskOf(const QString &mask, QLineEdit *line)
+{
+	line->setInputMask(mask);
+	m_childs << line;
+}
+
+void DFormValidator::validatesLengthOf(int max, QLineEdit *line)
+{
+	line->setMaxLength(max);
+	m_childs << line;
+}
+
+void DFormValidator::validatesNumericallyOf(bool real, QLineEdit *line)
+{
+	if ( real )
+	{
+		line->setValidator(new QDoubleValidator(line));
+	}
+	else
+	{
+		line->setValidator(new QIntValidator(line));
+	}
+	m_childs << line;
+}
+
+void DFormValidator::validatesRangeOf(int i, int e, QLineEdit *line)
+{
+	line->setValidator(new QIntValidator(i, e, line));
+	m_childs << line;
+}
+
+void DFormValidator::validatesRegExpOf(const QString &regexp, QLineEdit *line)
+{
+	line->setValidator(new QRegExpValidator(QRegExp(regexp), line));
+	m_childs << line;
+}
+
+
+bool DFormValidator::validate()
+{
+	bool ok = true;
+	
+	foreach(QLineEdit *child, m_childs)
+	{
+		ok = validate( child );
+	}
+	
+	foreach(QObject *child, m_parent->children())
+	{
+		if ( QLineEdit *line = qobject_cast<QLineEdit *>(child) )
+		{
+			ok = validate(line);
+		}
+	}
+	
+	return ok;
+}
+
+bool DFormValidator::validate(QLineEdit *line)
+{
+	bool ok = true;
+	if ( line->validator() != 0 )
+	{
+		int pos = 0;
+		QString text = line->text();
+				
+		QValidator::State state = line->validator()->validate(text, pos);
+				
+		if ( text.isEmpty() )
+		{
+			state = QValidator::Invalid;
+		}
+				
+		QPalette pal = line->palette();
+				
+		switch(state)
+		{
+			case QValidator::Acceptable:
+			{
+				pal.setBrush(QPalette::Base, Qt::green);
+			}
+			break;
+			case QValidator::Intermediate:
+			{
+				pal.setBrush(QPalette::Base, Qt::yellow);
+				ok = false;
+			}
+			break;
+			case QValidator::Invalid:
+			{
+				pal.setBrush(QPalette::Base, Qt::red);
+				ok = false;
+			}
+			break;
+		}
+		line->setPalette(pal);
+	}
+	
+	return ok;
+}

@@ -62,7 +62,7 @@ QString KTCommandExecutor::createLayer(int scenePosition, int position, const QS
 						int framePos = layer->frames().count();
 						QDomDocument newDoc;
 						newDoc.appendChild(newDoc.importNode(n, true ));
-						createFrame(scenePosition, position, framePos, newDoc.toString(0) );
+// 						createFrame(scenePosition, position, framePos, newDoc.toString(0) );
 					}
 				}
 		

@@ -340,7 +340,8 @@ void KTMainWindow::ui4project(QWidget *widget)
 {
 	connect(widget, SIGNAL(requestTriggered(const KTProjectRequest *)), m_projectManager, SLOT(handleProjectRequest(const KTProjectRequest *)));
 	
-	connect(m_projectManager, SIGNAL(commandExecuted(KTProjectRequest* )), widget, SLOT(handleProjectRequest(KTProjectRequest *)));
+// 	connect(m_projectManager, SIGNAL(commandExecuted(KTProjectRequest* )), widget, SLOT(handleProjectRequest(KTProjectRequest *)));
+	connect(m_projectManager, SIGNAL(responsed( KTProjectResponse* )), widget, SLOT(handleProjectResponse(KTProjectResponse *)));
 }
 
 void KTMainWindow::ui4paintArea(QWidget *widget)

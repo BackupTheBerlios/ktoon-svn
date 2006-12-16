@@ -27,6 +27,8 @@
 #include <dglobal.h>
 #include "ktscene.h"
 
+#include "ktrequestbuilder.h"
+
 TextTool::TextTool()
 {
 	m_configurator = new TextConfigurator;
@@ -108,9 +110,9 @@ void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
 	QDomDocument doc;
 	doc.appendChild(m_item->toXml( doc ));
 	
-	KTProjectRequest *event = new KTProjectRequest(KTProjectRequest::Add, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), doc.toString()); // Adds to end
+	KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString()); // Adds to end
 	
-	emit requested(event);
+	emit requested(&event);
 }
 
 

@@ -27,7 +27,7 @@
 #include <QGraphicsView>
 #include <kttoolplugin.h>
 
-#include "ktabstractprojectrequesthandler.h"
+#include "ktabstractprojectresponsehandler.h"
 
 
 class QGraphicsRectItem;
@@ -41,7 +41,7 @@ class KTPaintAreaRotator;
 */
 
 
-class KTPaintArea : public QGraphicsView, public KTAbstractProjectRequestHandler
+class KTPaintArea : public QGraphicsView, public KTAbstractProjectResponseHandler
 {
 	Q_OBJECT;
 	public:
@@ -102,12 +102,13 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectRequestHandler
 		void addSelectedItemsToLibrary();
 		
 	protected:
-		void frameRequest(KTProjectRequest *event);
-		void layerRequest(KTProjectRequest *event);
-		void sceneRequest(KTProjectRequest *event);
+		void frameResponse(KTFrameResponse *event);
+		void layerResponse(KTLayerResponse *event);
+		void sceneResponse(KTSceneResponse *event);
 		void projectRequest(KTProjectRequest *event);
-		void itemRequest(KTProjectRequest *event);
-		void libraryRequest(KTProjectRequest *request);
+		void itemResponse(KTItemResponse *event);
+// 		void libraryRequest(KTLibraryRequest *request);
+		void projectResponse(KTProjectResponse *projectResponse);
 		void drawBackground(QPainter *painter, const QRectF &rect);
 		
 		

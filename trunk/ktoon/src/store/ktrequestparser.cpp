@@ -24,16 +24,17 @@
 #include <QXmlSimpleReader>
 #include <QXmlInputSource>
 
+#include "ktprojectresponse.h"
+
 KTRequestParser::KTRequestParser()
 	: QXmlDefaultHandler()
 {
-	m_requestData.arg = 0;
+	m_response = 0;
 }
 
 
 KTRequestParser::~KTRequestParser()
 {
-	delete m_requestData.arg;
 }
 
 
@@ -42,15 +43,16 @@ bool KTRequestParser::startElement( const QString& , const QString& , const QStr
 	if (!m_isParsing)
 	{
 		m_isParsing = true;
+		m_response = 0;
 	}
 	
 	if ( qname == "item" )
 	{
-		m_requestData.item = atts.value("index").toInt();
+		static_cast<KTItemResponse *>(m_response)->setSceneIndex(atts.value("index").toInt());
 	}
 	else if ( qname == "frame" )
 	{
-		m_requestData.frame = atts.value("index").toInt();
+		static_cast<KTFrameResponse *>(m_response)->setSceneIndex(atts.value("index").toInt());
 	}
 	else if ( qname == "data" )
 	{
@@ -58,17 +60,16 @@ bool KTRequestParser::startElement( const QString& , const QString& , const QStr
 	}
 	else if ( qname == "layer" )
 	{
-		m_requestData.layer = atts.value("index").toInt();
+		static_cast<KTLayerResponse *>(m_response)->setSceneIndex(atts.value("index").toInt());
 	}
 	else if ( qname == "scene" )
 	{
-		m_requestData.scene = atts.value("index").toInt();
+		static_cast<KTSceneResponse *>(m_response)->setSceneIndex(atts.value("index").toInt());
 	}
 	else if ( qname == "action" )
 	{
-		m_requestData.action = atts.value("id").toInt();
-		m_requestData.arg = new KTProjectRequestArgument(atts.value("arg"));
-		m_requestData.part = atts.value("part").toInt();
+		m_response = KTProjectResponseFactory::create( atts.value("part").toInt(), atts.value("id").toInt());
+		m_response->setArg(atts.value("arg"));
 	}
 	
 	m_qname = qname;
@@ -94,7 +95,7 @@ bool KTRequestParser::characters ( const QString & ch )
 		
 		if ( m_qname == "data" )
 		{
-			m_requestData.data = QByteArray::fromBase64( QByteArray(ch.toLocal8Bit()) );
+			m_response->setData( QByteArray::fromBase64( QByteArray(ch.toLocal8Bit()) ) );
 		}
 	}
 	else
@@ -120,47 +121,10 @@ bool KTRequestParser::fatalError ( const QXmlParseException & exception )
 	return true;
 }
 
-KTProjectRequestArgument KTRequestParser::arg() const
+KTProjectResponse *KTRequestParser::response() const
 {
-	return *m_requestData.arg;
+	return m_response;
 }
-
-int KTRequestParser::action() const
-{
-	return m_requestData.action;
-}
-
-int KTRequestParser::part() const
-{
-	return m_requestData.part;
-}
-
-
-int KTRequestParser::sceneIndex() const
-{
-	return m_requestData.scene;
-}
-
-int KTRequestParser::layerIndex() const
-{
-	return m_requestData.layer;
-}
-
-int KTRequestParser::frameIndex() const
-{
-	return m_requestData.frame;
-}
-
-int KTRequestParser::itemIndex() const
-{
-	return m_requestData.item;
-}
-
-QByteArray KTRequestParser::data() const
-{
-	return m_requestData.data;
-}
-
 
 
 bool KTRequestParser::parse(const QString &document)

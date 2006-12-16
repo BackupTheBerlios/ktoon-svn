@@ -35,8 +35,13 @@ class KTProjectRequest;
 class STORE_EXPORT KTProjectRequestArgument
 {
 	public:
+		KTProjectRequestArgument();
 		KTProjectRequestArgument(const QString &v);
 		~KTProjectRequestArgument();
+		
+		void operator = (const QString &value);
+		
+		void setValue(const QString &value);
 		
 		bool toBool();
 		int toInt();

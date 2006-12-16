@@ -48,6 +48,7 @@ class KTProject;
 class KTBrushManager;
 class KTPaintAreaCommand;
 class KTPaintAreaEvent;
+class KTProjectResponse;
 
 /**
  * @author Jorge Cuadrado
@@ -138,7 +139,7 @@ class KTViewDocument : public QMainWindow
 		void selectTool();
 		void applyFilter();
 		
-		bool handleProjectRequest(KTProjectRequest *event);
+		bool handleProjectResponse(KTProjectResponse *event);
 		
 	signals:
 		void sendToStatus(const QString& msg);

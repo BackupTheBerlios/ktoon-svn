@@ -27,6 +27,8 @@
 #include "ktpathitem.h"
 #include "ktproject.h"
 
+class KTItemResponse;
+
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
@@ -56,7 +58,7 @@ class Select : public KTToolPlugin
 		virtual bool isComplete() const;
 		virtual void aboutToChangeTool();
 		
-		virtual void itemRequest(const KTProjectRequest *event);
+		virtual void itemResponse(const KTItemResponse *event);
 		
 	private:
 		void setupActions();

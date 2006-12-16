@@ -6,7 +6,6 @@
 
 #include <QObject>
 #include <QHash>
-#include "ktitemrequest.h"
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>

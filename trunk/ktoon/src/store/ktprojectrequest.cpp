@@ -22,6 +22,10 @@
 
 #include <ddebug.h>
 
+KTProjectRequestArgument::KTProjectRequestArgument()
+{
+}
+
 KTProjectRequestArgument::KTProjectRequestArgument(const QString &v) : m_value(v)
 {
 }
@@ -30,6 +34,15 @@ KTProjectRequestArgument::~KTProjectRequestArgument()
 {
 }
 
+void KTProjectRequestArgument::operator = (const QString &value)
+{
+	setValue(value);
+}
+
+void KTProjectRequestArgument::setValue(const QString &value)
+{
+	m_value = value;
+}
 
 bool KTProjectRequestArgument::toBool()
 {

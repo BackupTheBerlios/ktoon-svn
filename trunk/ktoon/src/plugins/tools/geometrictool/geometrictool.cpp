@@ -34,6 +34,8 @@
 #include "ktellipseitem.h"
 #include "ktlineitem.h"
 
+#include "ktrequestbuilder.h"
+
 #include "ktscene.h"
 
 GeometricTool::GeometricTool()
@@ -138,9 +140,9 @@ void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManage
 	QDomDocument doc;
 	doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_item)->toXml( doc ));
 	
-	KTProjectRequest *event = new KTProjectRequest(KTProjectRequest::Add, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), doc.toString()); // Adds to end
+	KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString()); // Adds to end
 	
-	emit requested(event);
+	emit requested(&event);
 }
 
 QMap<QString, DAction *> GeometricTool::actions() const

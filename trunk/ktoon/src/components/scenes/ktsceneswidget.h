@@ -35,6 +35,9 @@
 #include <QPixmap>
 #include <QList>
 
+
+class KTSceneResponse;
+
 class KTScenesWidget : public KTModuleWidgetBase
 {
 	Q_OBJECT
@@ -61,7 +64,7 @@ class KTScenesWidget : public KTModuleWidgetBase
 		void emitRequestRenameScene(QTreeWidgetItem *item);
 		
 	protected:
-		virtual void sceneRequest(KTProjectRequest *e);
+		virtual void sceneResponse(KTSceneResponse *e);
 		
 	public slots:
 		void sendEvent(int action);

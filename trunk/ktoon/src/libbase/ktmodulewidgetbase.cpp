@@ -29,7 +29,7 @@
 
 #include <qobject.h>
 
-KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent), KTAbstractProjectRequestHandler()
+KTModuleWidgetBase::KTModuleWidgetBase(QWidget *parent, const char *name) : QWidget(parent), KTAbstractProjectResponseHandler()
 {
 	setObjectName(name);
 
@@ -90,38 +90,38 @@ QBoxLayout *KTModuleWidgetBase::boxLayout()
 	return m_container;
 }
 
-bool KTModuleWidgetBase::handleProjectRequest(KTProjectRequest *e)
+bool KTModuleWidgetBase::handleProjectResponse(KTProjectResponse *response)
 {
-	return handleRequest(e);
+	return handleResponse(response);
 }
 
-void KTModuleWidgetBase::frameRequest(KTProjectRequest *frameRequest)
+void KTModuleWidgetBase::frameResponse(KTFrameResponse *frameResponse)
 {
-	Q_UNUSED(frameRequest);
+	Q_UNUSED(frameResponse);
 }
 
-void KTModuleWidgetBase::layerRequest(KTProjectRequest *layerRequest)
+void KTModuleWidgetBase::layerResponse(KTLayerResponse *layerResponse)
 {
-	Q_UNUSED(layerRequest);
+	Q_UNUSED(layerResponse);
 }
 
-void KTModuleWidgetBase::sceneRequest(KTProjectRequest *sceneRequest)
+void KTModuleWidgetBase::sceneResponse(KTSceneResponse *sceneResponse)
 {
-	Q_UNUSED(sceneRequest);
+	Q_UNUSED(sceneResponse);
 }
 
-void KTModuleWidgetBase::projectRequest(KTProjectRequest *projectRequest)
+void KTModuleWidgetBase::projectResponse(KTProjectResponse *projectResponse)
 {
-	Q_UNUSED(projectRequest);
+	Q_UNUSED(projectResponse);
 }
 
-void KTModuleWidgetBase::itemRequest(KTProjectRequest *itemRequest)
+void KTModuleWidgetBase::itemResponse(KTItemResponse *itemResponse)
 {
-	Q_UNUSED(itemRequest);
+	Q_UNUSED(itemResponse);
 }
 
-void KTModuleWidgetBase::libraryRequest(KTProjectRequest *libraryRequest)
-{
-	Q_UNUSED(libraryRequest);
-}
+// void KTModuleWidgetBase::libraryResponse(KTProjectResponse *libraryResponse)
+// {
+// 	Q_UNUSED(libraryResponse);
+// }
 

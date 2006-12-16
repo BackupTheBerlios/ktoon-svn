@@ -29,12 +29,12 @@
 
 #include "ktscene.h"
 #include "ktglobal.h"
-#include "ktabstractprojectrequesthandler.h"
+#include "ktabstractprojectresponsehandler.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class KTOON_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectRequestHandler
+class KTOON_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectResponseHandler
 {
 	Q_OBJECT
 	public:
@@ -62,12 +62,12 @@ class KTOON_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectRequ
 		void advance();
 		
 	protected:
-		void frameRequest(KTProjectRequest *event);
-		void layerRequest(KTProjectRequest *event);
-		void sceneRequest(KTProjectRequest *event);
-		void projectRequest(KTProjectRequest *event);
-		void itemRequest(KTProjectRequest *event);
-		void libraryRequest(KTProjectRequest *request);
+		void frameResponse(KTFrameResponse *event);
+		void layerResponse(KTLayerResponse *event);
+		void sceneResponse(KTSceneResponse *event);
+		void projectResponse(KTProjectResponse *event);
+		void itemResponse(KTItemResponse *event);
+// 		void libraryResponse(KTProjectResponse *request);
 		
 	signals:
 		void progressStep(int, int);

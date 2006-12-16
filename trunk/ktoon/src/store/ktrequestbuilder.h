@@ -23,13 +23,16 @@
 
 #include <QString>
 #include <QDomDocument>
+#include <QVariant>
+
+#include "ktglobal_store.h"
 
 class KTProjectRequest;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTRequestBuilder
+class STORE_EXPORT KTRequestBuilder
 {
 	protected:
 		KTRequestBuilder();
@@ -37,13 +40,13 @@ class KTRequestBuilder
 	public:
 		~KTRequestBuilder();
 		
-		static KTProjectRequest createItemRequest(int sceneIndex, int layerIndex, int frameIndex, int itemIndex, int action, const QString &arg = QString(), const QByteArray &data = QByteArray());
+		static KTProjectRequest createItemRequest(int sceneIndex, int layerIndex, int frameIndex, int itemIndex, int action, const QVariant &arg = QString(), const QByteArray &data = QByteArray());
 		
-		static KTProjectRequest createFrameRequest(int sceneIndex, int layerIndex, int frameIndex, int action, const QString &arg= QString(), const QByteArray &data = QByteArray());
+		static KTProjectRequest createFrameRequest(int sceneIndex, int layerIndex, int frameIndex, int action, const QVariant &arg= QString(), const QByteArray &data = QByteArray());
 		
-		static KTProjectRequest createLayerRequest(int sceneIndex, int layerIndex, int action, const QString &arg= QString(), const QByteArray &data = QByteArray());
+		static KTProjectRequest createLayerRequest(int sceneIndex, int layerIndex, int action, const QVariant &arg= QString(), const QByteArray &data = QByteArray());
 		
-		static KTProjectRequest createSceneRequest(int sceneIndex, int action, const QString &arg= QString(), const QByteArray &data = QByteArray());
+		static KTProjectRequest createSceneRequest(int sceneIndex, int action, const QVariant &arg= QString(), const QByteArray &data = QByteArray());
 		
 	private:
 		static void appendData(QDomDocument &doc, QDomElement &element, const QByteArray &data);

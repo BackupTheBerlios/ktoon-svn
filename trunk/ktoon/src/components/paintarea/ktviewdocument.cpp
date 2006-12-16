@@ -36,7 +36,7 @@
 #include "ktpaintareaproperties.h"
 #include "ktpluginmanager.h"
 #include "ktpaintarea.h"
-#include "ktframerequest.h"
+#include "ktprojectresponse.h"
 #include "ktpaintareaevent.h"
 #include "ktpaintareacommand.h"
 
@@ -683,9 +683,9 @@ void KTViewDocument::selectToolFromMenu(QAction *action)
 	}
 }
 
-bool KTViewDocument::handleProjectRequest(KTProjectRequest *event)
+bool KTViewDocument::handleProjectResponse(KTProjectResponse *event)
 {
-	return m_paintArea->handleRequest(event);
+	return m_paintArea->handleResponse(event);
 }
 
 void KTViewDocument::applyFilter()

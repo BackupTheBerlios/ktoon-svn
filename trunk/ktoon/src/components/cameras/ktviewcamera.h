@@ -29,9 +29,8 @@
 
 #include "dcirclebuttonbar.h"
 
-#include "ktabstractprojectrequesthandler.h"
 
-
+class KTProjectResponse;
 class QCheckBox;
 
 /**
@@ -55,7 +54,7 @@ class KTViewCamera : public QMainWindow
 		void doPlay();
 		
 	public slots:
-		bool handleProjectRequest(KTProjectRequest *event);
+		bool handleProjectResponse(KTProjectResponse *event);
 		
 	signals:
 		void requestTriggered(const KTProjectRequest *event);
