@@ -88,13 +88,13 @@ void KTExposureSheet::renameScene( int index, const QString &name)
 
 void KTExposureSheet::applyAction(int action)
 {
-	D_FUNCINFO;
+	D_FUNCINFO<< "action: " << action;
 	if (  m_currentTable == 0 )
 	{
 		dFatal() << "KTExposureSheet::applyAction: No layer view!!" << endl;
 		return;
 	}
-	m_currentTable = static_cast<KTExposureTable*>( m_scenes->currentWidget());
+	m_currentTable = static_cast<KTExposureTable*>( m_scenes->currentWidget());	
 	switch(action)
 	{
 		case KTProjectActionBar::InsertLayer:

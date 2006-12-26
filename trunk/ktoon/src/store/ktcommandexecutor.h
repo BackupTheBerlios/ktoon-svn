@@ -32,7 +32,7 @@ class KTLayerResponse;
 class KTProjectResponse;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado \<krawek@gmail.com\>
 */
 class KTCommandExecutor : public QObject
 {
@@ -53,50 +53,49 @@ class KTCommandExecutor : public QObject
 		bool createLayer(KTLayerResponse *response);
 		bool createFrame(KTFrameResponse *response );
 		
-		QString createItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml);
-		QString transformItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml);
-		QString convertItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml);
-		QString setPathItem( int scenePosition, int layerPosition, int framePosition, int position, const QString &path );
+		bool createItem(KTItemResponse *response);
+		
+		
+		bool convertItem(KTItemResponse *response);
+		bool transformItem(KTItemResponse *response);
+		bool setPathItem(KTItemResponse *response);
 		QString createSymbol(const QString &xml);
 		
 		
-		QString removeScene(int position);
-		QString removeLayer(int scene, int position);
+		bool removeScene(KTSceneResponse *response);
+		bool removeLayer(KTLayerResponse *response);
 		bool removeFrame(KTFrameResponse *response);
 		QString removeSymbol(const QString &xml);
 		
 // 		QString removeItem(int scenePosition, int layerPosition, int framePosition, int position);
-		QStringList removeItems(int scenePosition, int layerPosition, int framePosition, int position, const QString &strList );
+		bool removeItems(KTItemResponse *response);
+		bool groupItems(KTItemResponse *response);
 		
-		QStringList groupItems(int scenePosition, int layerPosition, int framePosition, int position, const QString &strList );
+		bool moveScene(KTSceneResponse *response);
+		bool moveLayer(KTLayerResponse *response);
+		bool moveFrame(KTFrameResponse *response);
 		
-		QString moveScene(int position, int newPosition);
-		QString moveLayer(int scene, int position, int newPosition);
-		QString moveFrame(int scene, int layer, int position, int newPosition);
 		
-		QString lockScene(int position, bool lock);
-		QString lockLayer(int scene, int position, bool lock);
-		QString lockFrame(int scene, int layer, int position, bool lock);
+		bool lockScene(KTSceneResponse *response);
+		bool lockLayer(KTLayerResponse *response);
+		bool lockFrame(KTFrameResponse *response);
 		
-		QString renameScene(int position, const QString &newName);
-		QString renameLayer(int scene, int position, const QString &newName);
-		QString renameFrame(int scene, int layer, int position, const QString &newName);
+		bool renameScene(KTSceneResponse *response);
+		bool renameLayer(KTLayerResponse *response);
+		bool renameFrame(KTFrameResponse *response);
 		
 		void selectScene(KTSceneResponse *response);
-		QString selectLayer(int scene, int position, bool prioritary);
-		QString selectFrame(int scene, int layer, int position, bool prioritary);
+		bool selectLayer(KTLayerResponse *response);
+		bool selectFrame(KTFrameResponse *response);
 		
-		QString setFrameVisibility(int scenePos, int layerPos, int position, bool view);
-		QString setLayerVisibility(int scenePos, int position, bool view);
-		QString setSceneVisibility(int position, bool view);
+		bool setFrameVisibility(KTFrameResponse *response);
+		bool setLayerVisibility(KTLayerResponse *response);
+		bool setSceneVisibility(KTSceneResponse *response);
 		
-		
-		void reemitEvent(KTProjectRequest *event);
 		
 		void setState(KTCommandExecutor::State state);
 		
 	signals:
-		void commandExecuted(KTProjectRequest *event, int state); // FIXME: remove
 		void responsed(KTProjectResponse *response, int state);
 		
 	private:

@@ -72,7 +72,6 @@ QStringList Select::keys() const
 void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
 	D_FUNCINFO;
-	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
 	Q_UNUSED(scene);
 	Q_UNUSED(view);
@@ -80,12 +79,16 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 	view->setDragMode (QGraphicsView::RubberBandDrag);
 	
 	
-	
+	SHOW_VAR(input->pos());
 	if ( input->keyModifiers() != Qt::ControlModifier )
 	{
 		foreach(NodeManager *nodeManager, m_nodeManagers)
 		{
-			if(!nodeManager->isPress())
+			if(scene->mouseGrabberItem() == nodeManager->parentItem())
+			{
+				nodeManager->toggleAction();
+			}
+			else if(!nodeManager->isPress())
 			{
 				nodeManager->parentItem()->setSelected(false);
 				m_nodeManagers.removeAll(nodeManager);
@@ -93,6 +96,7 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 			}
 		}
 	}
+	
 	
 	m_project = scene->project();
 }

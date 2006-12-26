@@ -123,19 +123,20 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	QGraphicsItem::mouseReleaseEvent(event);
 	m_parent->setSelected(true);
 	m_manager->setPress(false);
+// 	m_manager->setVisible(true);
 }
 
 void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
-	QPointF newPos(mapToItem(m_parent,event->pos()));
-// 	QMatrix m = m_parent->sceneMatrix();
+	QPointF newPos(mapToItem(m_parent, event->pos()));
 	
-// 	double arc = asin(m.m21())*(180/3.141592653589793116);
-// 	SHOW_VAR(arc);
-// 	QMatrix m1(m.m11()-cos(arc),0,0,m.m22()-cos(arc),m.dx(),m.dy() );
+	QMatrix m = m_parent->matrix();
+	dDebug() << "|" << m.m11() << "|" << m.m12() << "|" << m.dx() << "|";
+	dDebug() << "|" << m.m21() << "|" << m.m22() << "|" << m.dy() << "|";
+	dDebug() << "|" << 0 << "|" << 0 << "|" << 1 << "|";
+	dDebug() << "-------------------------";
 	
-// 	newPos = m1.map( newPos );
-	
+	SHOW_VAR(asin(m.m12()) * (180/M_PI));
 	
 	
 	if( m_notChange)
@@ -154,7 +155,6 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 				{
 					m_manager->setAnchor(br.bottomRight());
 					rect.setTopLeft( newPos );
-					
 					break;
 				}
 				case TopRight:
@@ -202,18 +202,29 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 		}
 		else
 		{
-			QPointF p1 = newPos;
-			QPointF p2 = m_parent->boundingRect().center();
-			m_manager->setAnchor( p2 );
-			QPointF d = p1 - p2;
-			if(d.x() != 0)
+			
+			if(m_typeNode != Center)
 			{
-				double a =  atan(d.y() / d.x())*(180/3.141592653589793116);
-				if(d.x() < 0)
+// 				m_manager->setVisible(false);
+				QPointF p1 = newPos;
+				QPointF p2 = m_parent->boundingRect().center();
+				m_manager->setAnchor( p2 );
+				QPointF d = p1 - p2;
+				if(d.x() != 0)
 				{
-					a += 180;
+					double a =  atan(d.y() / d.x())*(180/M_PI)+45;
+					if(d.x() < 0)
+					{
+						a += 180;
+					}
+					
+					m_manager->rotate(a );
 				}
-				m_manager->rotate( a );
+				
+			}
+			else
+			{
+				
 			}
 		}
 		
@@ -224,7 +235,7 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 		m_parent->moveBy(event->pos().x(), event->pos().y());
 	}
 	update();
-	m_parent->setSelected(true);
+// 	m_parent->setSelected(true);
 }
 
 
@@ -242,6 +253,7 @@ int Node::typeNode() const
 void Node::setAction(ActionNode action)
 {
 	m_action = action;
+	update();
 }
 
 int Node::actionNode()

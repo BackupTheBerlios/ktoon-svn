@@ -79,6 +79,9 @@ void GeometricTool::setupActions()
 
 void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
+	Q_UNUSED(input);
+	Q_UNUSED(brushManager);
+	Q_UNUSED(view);
 	if(input->buttons() == Qt::LeftButton)
 	{
 		QPoint pos = input->pos();
@@ -112,6 +115,9 @@ void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager 
 
 void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
+	Q_UNUSED(input);
+	Q_UNUSED(brushManager);
+	Q_UNUSED(view);
 	if (currentTool() == tr("Rectangle") )
 	{
 		m_rect = static_cast<KTRectItem *>(m_item)->rect();
@@ -137,6 +143,10 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
 
 void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
+	Q_UNUSED(input);
+	Q_UNUSED(brushManager);
+	Q_UNUSED(view);
+	Q_UNUSED(input);
 	QDomDocument doc;
 	doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_item)->toXml( doc ));
 	

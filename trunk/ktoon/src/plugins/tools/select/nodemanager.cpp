@@ -219,3 +219,11 @@ void NodeManager::toggleAction()
 	}
 }
 
+void NodeManager::setVisible(bool visible)
+{
+	foreach(Node *node, m_nodes)
+	{
+		node->setVisible(visible);
+	}
+}
+

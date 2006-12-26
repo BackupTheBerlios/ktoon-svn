@@ -255,18 +255,19 @@ void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 	
 	delete eventMapped;
 	
-
 	if ( event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
 	{
+		
 		m_isDrawing = false;
 	}
 	else if (m_tool )
 	{
-		m_tool->begin();
-		
 		if ( event->buttons() == Qt::LeftButton )
 		{
 			QGraphicsView::mousePressEvent(event);
+			
+			m_tool->begin();
+			
 			m_isDrawing = true;
 			m_tool->press(m_inputInformation, m_brushManager,  qobject_cast<KTScene *>(scene()), this );
 		}
@@ -354,7 +355,6 @@ void KTPaintArea::mouseMoveEvent ( QMouseEvent * event )
 		
 		QPointF d = p1 - p2;
 		
-// 		if( d.x() < -40 || d.x() > 40  )
 		if(d.x() != 0)
 		{
 			double a =  atan(d.y() / d.x())*(180/M_PI);
@@ -363,7 +363,6 @@ void KTPaintArea::mouseMoveEvent ( QMouseEvent * event )
 				a += 180;
 			}
 			m_rotator->rotateTo( a );
-// 			setRotationAngle( a );
 		}
 		
 		setUpdatesEnabled(true);

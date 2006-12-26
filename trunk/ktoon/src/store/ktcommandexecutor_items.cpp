@@ -32,15 +32,21 @@
 #include "ktprojectrequest.h"
 #include "ktrequestbuilder.h"
 #include "ktitemfactory.h"
+#include "ktprojectresponse.h"
 
 #include <dcore/ddebug.h>
 
 #include <QGraphicsItem>
 
-QString KTCommandExecutor::createItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
+bool KTCommandExecutor::createItem(KTItemResponse *response)
 {
-	dDebug() << "CONTRUYENDO CON: " << xml;
-	D_FUNCINFOX("items");
+// 	D_FUNCINFOX("items");
+	
+	int scenePosition = response->sceneIndex();
+	int layerPosition = response->layerIndex();
+	int framePosition = response->frameIndex();
+	int position = response->frameIndex();
+	QString xml = response->arg().toString();
 	
 	KTScene *scene = m_project->scene(scenePosition);
 	
@@ -60,31 +66,39 @@ QString KTCommandExecutor::createItem(int scenePosition, int layerPosition, int 
 				QGraphicsItem *item = frame->createItem(position, xml);
 				if ( item )
 				{
-					KTProjectRequest request = KTRequestBuilder::createItemRequest( scenePosition, layerPosition, framePosition, position, KTProjectRequest::Add, xml);
-					emit commandExecuted(&request, m_state);
+					emit responsed(response, m_state);
 				}
 			}
 			else
 			{
 				dError() << tr("Frame doesn't exists!");
+				return false;
 			}
 		}
 		else
 		{
 			dError() << tr("Layer doesn't exists!");
+			return false;
 		}
 	}
 	else
 	{
 		dError() << tr("Scene doesn't exists!");
+		return false;
 	}
 	
-	return QString();
+	return true;
 }
 
-QStringList KTCommandExecutor::removeItems(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
+bool KTCommandExecutor::removeItems(KTItemResponse *response)
 {
-	D_FUNCINFOX("items");
+// 	D_FUNCINFOX("items");
+	int scenePosition = response->sceneIndex();
+	int layerPosition = response->layerIndex();
+	int framePosition = response->frameIndex();
+// 	int position = response->frameIndex();
+	QString xml = response->arg().toString();
+// 	int scenePosition , int layerPosition, int framePosition, int position, const QString &xml
 	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( scene )
@@ -130,20 +144,25 @@ QStringList KTCommandExecutor::removeItems(int scenePosition, int layerPosition,
 					}
 				}
 				
-				KTProjectRequest request = KTRequestBuilder::createItemRequest( scenePosition, layerPosition, framePosition, position, KTProjectRequest::Remove, xml);
-				emit commandExecuted(&request, m_state);
+				emit responsed(response, m_state);
 				
-				return infoItems;
+				return true;
 			}
 		}
 	}
 	
-	return QStringList();
+	return false;
 }
 
-QStringList KTCommandExecutor::groupItems(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml )
+bool KTCommandExecutor::groupItems(KTItemResponse *response)
 {
-	D_FUNCINFOX("items");
+// 	D_FUNCINFOX("items");
+	int scenePosition = response->sceneIndex();
+	int layerPosition = response->layerIndex();
+	int framePosition = response->frameIndex();
+	int position = response->frameIndex();
+	QString xml = response->arg().toString();
+	
 	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( scene )
@@ -186,19 +205,26 @@ QStringList KTCommandExecutor::groupItems(int scenePosition, int layerPosition, 
 				frame->createItemGroupAt( position, positions);
 				
 				KTProjectRequest request = KTRequestBuilder::createItemRequest( scenePosition, layerPosition, framePosition, position, KTProjectRequest::Group, xml);
-				emit commandExecuted(&request, m_state);
+				emit responsed(response, m_state);
 				
-				return infoItems;
+				return true;
 			}
 		}
 	}
 	
-	return QStringList();
+	return false;
 }
 
-QString KTCommandExecutor::convertItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
+bool KTCommandExecutor::convertItem(KTItemResponse *response)
 {
-	D_FUNCINFOX("items");
+// 	D_FUNCINFOX("items");
+	
+	int scenePosition = response->sceneIndex();
+	int layerPosition = response->layerIndex();
+	int framePosition = response->frameIndex();
+	int position = response->frameIndex();
+	QString xml = response->arg().toString();
+	
 	KTScene *scene = m_project->scene(scenePosition);
 	if ( scene )
 	{
@@ -212,10 +238,10 @@ QString KTCommandExecutor::convertItem(int scenePosition, int layerPosition, int
 				if ( item )
 				{
 					QDomDocument doc;
-					if ( ! doc.setContent( xml ) ) return QString();
+					if ( ! doc.setContent( xml ) ) return false;
 					int toType = doc.documentElement().attribute( "type").toInt();
 					
-					if ( toType == item->type() ) return QString();
+					if ( toType == item->type() ) return false;
 					
 					scene->removeItem(item);
 					
@@ -250,22 +276,28 @@ QString KTCommandExecutor::convertItem(int scenePosition, int layerPosition, int
 					}
 					
 					
-					KTProjectRequest request = KTRequestBuilder::createItemRequest( scenePosition, layerPosition, framePosition, position,KTProjectRequest::Convert,  xml);
+// 					KTProjectRequest request = KTRequestBuilder::createItemRequest( scenePosition, layerPosition, framePosition, position,KTProjectRequest::Convert,  xml);
 					
-					emit commandExecuted(&request, m_state);
+					emit responsed(response, m_state);
 					
-					return "<convert type=\""+QString::number(item->type())+"\" />";
+					return true;
 				}
 			}
 		}
 	}
 	
-	return QString();
+	return false;
 }
 
-QString KTCommandExecutor::transformItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml)
+bool KTCommandExecutor::transformItem(KTItemResponse *response)
 {
-	D_FUNCINFOX("items");
+// 	D_FUNCINFOX("items");
+	int scenePosition = response->sceneIndex();
+	int layerPosition = response->layerIndex();
+	int framePosition = response->frameIndex();
+	int position = response->frameIndex();
+	QString xml = response->arg().toString();
+	
 	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( scene )
@@ -289,23 +321,26 @@ QString KTCommandExecutor::transformItem(int scenePosition, int layerPosition, i
 					doc.setContent( xml);
 					KTSerializer::loadProperties( item, doc.documentElement());
 					
+					emit responsed(response, m_state);
 					
-					KTProjectRequest request = KTRequestBuilder::createItemRequest( scenePosition, layerPosition, framePosition, position, KTProjectRequest::Transform, xml);
-					
-					emit commandExecuted(&request, m_state);
-					
-					return current;
+					return true;
 				}
 			}
 		}
 	}
 	
-	return "";
+	return false;
 }
 
-QString KTCommandExecutor::setPathItem( int scenePosition, int layerPosition, int framePosition, int position, const QString &xml )
+bool KTCommandExecutor::setPathItem( KTItemResponse *response )
 {
-	D_FUNCINFOX("items");
+// D_FUNCINFOX("items");
+	int scenePosition = response->sceneIndex();
+	int layerPosition = response->layerIndex();
+	int framePosition = response->frameIndex();
+	int position = response->frameIndex();
+	QString xml = response->arg().toString();
+	
 	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( scene )
@@ -332,14 +367,14 @@ QString KTCommandExecutor::setPathItem( int scenePosition, int layerPosition, in
 						
 						KTItemFactory factory;
 						factory.loadItem(item, xml);
-						KTProjectRequest request = KTRequestBuilder::createItemRequest(scenePosition, layerPosition, framePosition, position, KTProjectRequest::EditNodes, xml);
-						emit commandExecuted(&request, m_state);
-						return current;
+						
+						emit responsed(response, m_state);
+						return true;
 					}
 				}
 			}
 		}
 	}
-	return QString();
+	return false;
 }
 

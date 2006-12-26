@@ -97,7 +97,6 @@ bool KTEllipseItem::contains ( const QPointF & point ) const
 		++it1;
 		++it2;
 	}
-	
 	return false;
 	
 	

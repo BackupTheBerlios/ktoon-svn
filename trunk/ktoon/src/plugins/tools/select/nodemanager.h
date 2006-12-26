@@ -54,7 +54,7 @@ class NodeManager
 		
 		void toggleAction();
 		
-		
+		void setVisible(bool visible);
 	private:
 		QHash<Node::TypeNode, Node *> m_nodes;
 		QGraphicsItem * m_parent;

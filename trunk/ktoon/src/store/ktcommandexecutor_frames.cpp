@@ -102,132 +102,54 @@ bool KTCommandExecutor::removeFrame(KTFrameResponse *response)
 }
 
 
-QString KTCommandExecutor::moveFrame(int scenePosition, int layerPosition, int position, int newPosition)
+bool KTCommandExecutor::moveFrame(KTFrameResponse *response)
 {
+	int scenePos = response->sceneIndex();
+	int layerPos = response->layerIndex();
+	int position = response->frameIndex();
+	int newPosition = response->arg().toInt();
+	
 // 	dDebug() << "Move frame from " << position << " to " << newPosition;
-	KTScene *scene = m_project->scene(scenePosition);
+	KTScene *scene = m_project->scene(scenePos);
 	
 	if ( !scene)
 	{
-		return QString();
+		return false;
 	}
 	
-	KTLayer *layer = scene->layer(layerPosition);
+	KTLayer *layer = scene->layer(layerPos);
 	
 	if ( layer )
 	{
 		if ( ! layer->moveFrame(position, newPosition) )
 		{
 			dWarning() << "Failed moving frame";
-			return QString();
+			return false;
 		}
 		else
 		{
-			KTProjectRequest request = KTRequestBuilder::createFrameRequest( scenePosition, layerPosition, position, KTProjectRequest::Move, QString::number( newPosition) );
-			emit commandExecuted(&request, m_state);
+			emit responsed(response, m_state);
+			return true;
 		}
 	}
 	
-	return QString();
+	return false;
 }
 
 
-QString KTCommandExecutor::lockFrame(int scenePosition, int layerPosition, int position, bool lock)
+bool KTCommandExecutor::lockFrame(KTFrameResponse *response)
 {
-	dWarning() << "Lock frame: " << lock;
-	KTScene *scene = m_project->scene(scenePosition);
+// 	dWarning() << "Lock frame: " << lock;
+	int scenePos = response->sceneIndex();
+	int layerPos = response->layerIndex();
+	int position = response->frameIndex();
+	bool lock = response->arg().toBool();
 	
-	if ( !scene)
-	{
-		return QString();
-	}
-	
-	KTLayer *layer = scene->layer(layerPosition);
-	
-	if ( layer )
-	{
-		KTFrame *frame = layer->frame(position);
-		
-		if ( ! frame ) return QString();
-		
-		frame->setLocked( lock );
-		
-		KTProjectRequest request = KTRequestBuilder::createFrameRequest( scenePosition, layerPosition, position, KTProjectRequest::Lock, lock ? "1" : "0" );
-		emit commandExecuted(&request, m_state);
-	}
-	
-	return QString();
-}
-
-
-QString KTCommandExecutor::renameFrame(int scenePosition, int layerPosition, int position, const QString &newName)
-{
-	dWarning() << "Renombrando frame " << position << ": " << newName;
-	
-	QString oldName;
-	
-	KTScene *scene = m_project->scene(scenePosition);
-	
-	if ( !scene)
-	{
-		return oldName;
-	}
-	
-	KTLayer *layer = scene->layer(layerPosition);
-	
-	if ( layer )
-	{
-		KTFrame *frame = layer->frame(position);
-		
-		if ( ! frame ) return oldName;
-		
-		
-		KTProjectRequest request = KTRequestBuilder::createFrameRequest( scenePosition, layerPosition, position, KTProjectRequest::Rename, newName);
-		
-		oldName = frame->frameName();
-		
-		frame->setFrameName( newName );
-		
-		emit commandExecuted(&request, m_state);
-	}
-	
-	return oldName;
-}
-
-
-
-
-QString KTCommandExecutor::selectFrame(int scenePosition, int layerPosition, int position, bool prioritary)
-{
-	KTScene *scene = m_project->scene(scenePosition);
-	
-	if ( !scene)
-	{
-		return QString();
-	}
-	
-	KTLayer *layer = scene->layer(layerPosition);
-	
-	if ( layer )
-	{
-		KTFrame *frame = layer->frame(position);
-		
-		if ( ! frame ) return QString();;
-		
-		KTProjectRequest request = KTRequestBuilder::createFrameRequest( scenePosition, layerPosition, position, KTProjectRequest::Select, prioritary ? "1" : "0" );
-		emit commandExecuted(&request, m_state);
-	}
-	
-	return QString();
-}
-
-QString KTCommandExecutor::setFrameVisibility(int scenePos, int layerPos, int position, bool view)
-{
 	KTScene *scene = m_project->scene(scenePos);
 	
 	if ( !scene)
 	{
-		return QString();;
+		return false;
 	}
 	
 	KTLayer *layer = scene->layer(layerPos);
@@ -236,17 +158,126 @@ QString KTCommandExecutor::setFrameVisibility(int scenePos, int layerPos, int po
 	{
 		KTFrame *frame = layer->frame(position);
 		
-		if ( ! frame ) return QString();;
+		if ( ! frame ) return false;
 		
+		frame->setLocked( lock );
 		
-		KTProjectRequest request = KTRequestBuilder::createFrameRequest( scenePos, layerPos, position, KTProjectRequest::View, view ? "1" : "0" );
-		
-		frame->setVisible(view);
-		
-		emit commandExecuted(&request, m_state);
+// 		KTProjectRequest request = KTRequestBuilder::createFrameRequest( scenePosition, layerPosition, position, KTProjectRequest::Lock, lock ? "1" : "0" );
+		emit responsed(response, m_state);
+		return true;
 	}
 	
-	return QString();
+	return false;
+}
+
+
+bool KTCommandExecutor::renameFrame(KTFrameResponse *response)
+{
+// 	dWarning() << "Renombrando frame " << position << ": " << newName;
+	
+	int scenePos = response->sceneIndex();
+	int layerPos = response->layerIndex();
+	int position = response->frameIndex();
+	QString newName= response->arg().toString();
+	
+	QString oldName;
+	
+	KTScene *scene = m_project->scene(scenePos);
+	
+	if ( !scene)
+	{
+// 		return oldName;
+		return false;
+	}
+	
+	KTLayer *layer = scene->layer(layerPos);
+	
+	if ( layer )
+	{
+		KTFrame *frame = layer->frame(position);
+		
+		if ( ! frame ) return false;
+		
+		
+// 		KTProjectRequest request = KTRequestBuilder::createFrameRequest( scenePosition, layerPosition, position, KTProjectRequest::Rename, newName);
+		
+		oldName = frame->frameName();
+		
+		frame->setFrameName( newName );
+		
+		emit responsed(response, m_state);
+		return true;
+	}
+	
+// 	return oldName;
+	return false;
+}
+
+
+bool KTCommandExecutor::selectFrame(KTFrameResponse *response)
+{
+	int scenePos = response->sceneIndex();
+	int layerPos = response->layerIndex();
+	int position = response->frameIndex();
+	bool prioritary = response->arg().toBool();
+	
+	KTScene *scene = m_project->scene(scenePos);
+	
+	if ( !scene)
+	{
+		return false;
+	}
+	
+	KTLayer *layer = scene->layer(layerPos);
+	
+	if ( layer )
+	{
+		KTFrame *frame = layer->frame(position);
+		
+		if ( ! frame ) return false;
+		
+// 		KTProjectRequest request = KTRequestBuilder::createFrameRequest( scenePosition, layerPosition, position, KTProjectRequest::Select, prioritary ? "1" : "0" );
+		emit responsed(response, m_state);
+		return true;
+	}
+	
+	return false;
+}
+
+
+bool KTCommandExecutor::setFrameVisibility(KTFrameResponse *response)
+{
+	int scenePos = response->sceneIndex();
+	int layerPos = response->layerIndex();
+	int position = response->frameIndex();
+	bool view = response->arg().toBool();
+	
+	
+	
+	KTScene *scene = m_project->scene(scenePos);
+	
+	if ( !scene)
+	{
+		return false;
+	}
+	
+	KTLayer *layer = scene->layer(layerPos);
+	
+	if ( layer )
+	{
+		KTFrame *frame = layer->frame(position);
+		
+		if ( ! frame ) return false;
+		
+		
+// 		KTProjectRequest request = KTRequestBuilder::createFrameRequest( scenePos, layerPos, position, KTProjectRequest::View, view ? "1" : "0" );
+		
+		frame->setVisible(view);
+		emit responsed(response , m_state);
+		return true;
+	}
+	
+	return false;
 }
 
 

@@ -52,13 +52,17 @@ bool KTCommandExecutor::createLayer(KTLayerResponse *response)
 		
 		response->setArg(layer->layerName());
 		emit responsed(response, m_state);
+		return true;
 	}
 	return false;
 }
 
 
-QString KTCommandExecutor::removeLayer(int scenePos, int position)
+bool KTCommandExecutor::removeLayer(KTLayerResponse *response)
 {
+	int scenePos = response->sceneIndex();
+	int position = response->layerIndex();
+	
 	KTScene *scene = m_project->scene(scenePos);
 	
 	if ( scene )
@@ -72,52 +76,62 @@ QString KTCommandExecutor::removeLayer(int scenePos, int position)
 			
 			if ( scene->removeLayer(position) )
 			{
-				KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePos, position, KTProjectRequest::Remove );
+// 				KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePos, position, KTProjectRequest::Remove );
 				
-				emit commandExecuted(&request, m_state);
+				emit responsed(response, m_state);
 				
-				return document.toString(0);
+				return true;
 			}
 		}
 	}
 	
-	return QString();
+	return false;
 }
 
 
-QString KTCommandExecutor::moveLayer(int scenePosition, int position, int newPosition)
+bool KTCommandExecutor::moveLayer(KTLayerResponse *response)
 {
 // 	dDebug() << "Move layer from " << position << " to " << newPosition;
-	KTScene *scene = m_project->scene(scenePosition);
+	int scenePos = response->sceneIndex();
+	int position = response->layerIndex();
+	int newPosition = response->arg().toInt();
+	
+	
+	KTScene *scene = m_project->scene(scenePos);
 	
 	if ( !scene)
 	{
-		return QString();
+		return false;
 	}
 	
 	if ( ! scene->moveLayer(position, newPosition) )
 	{
 		dWarning() << "Failed moving layer";
+		return false;
 	}
 	else
 	{
-		KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePosition, position, KTProjectRequest::Move, QString::number(newPosition)  );
-		emit commandExecuted(&request, m_state);
+// 		KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePosition, position, KTProjectRequest::Move, QString::number(newPosition)  );
+		emit responsed(response, m_state);
+		return true;
+		
 	}
-	
-	
-	return QString();
-
+	return false;
 }
 
-QString KTCommandExecutor::lockLayer(int scenePosition, int position, bool lock)
+
+bool KTCommandExecutor::lockLayer(KTLayerResponse *response)
 {
+	int scenePos = response->sceneIndex();
+	int position = response->layerIndex();
+	bool lock = response->arg().toBool();
+	
 	dWarning() << "Lock layer: " << lock;
-	KTScene *scene = m_project->scene(scenePosition);
+	KTScene *scene = m_project->scene(scenePos);
 	
 	if ( !scene)
 	{
-		return QString();
+		return false;
 	}
 	
 	KTLayer *layer = scene->layer(position);
@@ -126,26 +140,31 @@ QString KTCommandExecutor::lockLayer(int scenePosition, int position, bool lock)
 	{
 		layer->setLocked(lock);
 		
-		KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePosition, position, KTProjectRequest::Lock, lock ? "1" : "0" );
-		emit commandExecuted(&request, m_state);
+// 		KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePosition, position, KTProjectRequest::Lock, lock ? "1" : "0" );
+		emit responsed(response, m_state);
+		return true;
 	}
 	
-	return QString();
+	return false;
 }
 
 
 
-QString KTCommandExecutor::renameLayer(int scenePosition, int position, const QString &newName)
+bool KTCommandExecutor::renameLayer(KTLayerResponse *response)
 {
+	int scenePos = response->sceneIndex();
+	int position = response->layerIndex();
+	QString newName = response->arg().toString();
+	
 	dWarning() << "Renombrando layer: " << newName;
 	
 	QString oldName;
 	
-	KTScene *scene = m_project->scene(scenePosition);
+	KTScene *scene = m_project->scene(scenePos);
 	
 	if ( !scene)
 	{
-		return oldName;
+		return false;
 	}
 	
 	KTLayer *layer = scene->layer(position);
@@ -153,36 +172,40 @@ QString KTCommandExecutor::renameLayer(int scenePosition, int position, const QS
 	if ( layer )
 	{
 		
-		KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePosition, position, KTProjectRequest::Rename, newName);
+// 		KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePosition, position, KTProjectRequest::Rename, newName);
 		
-		oldName = layer->layerName();
+// 		oldName = layer->layerName();
 		
 		layer->setLayerName( newName );
-		
-		emit commandExecuted(&request, m_state);
+		emit responsed(response, m_state);
+		return true;
 	}
 	
-	return oldName;
+	return false;
 }
 
 
 
-QString KTCommandExecutor::selectLayer(int scene, int position, bool prioritary)
+bool KTCommandExecutor::selectLayer(KTLayerResponse *response)
 {
-	KTProjectRequest request = KTRequestBuilder::createLayerRequest( scene, position, KTProjectRequest::Select, prioritary ? "1" : "0" );
-	emit commandExecuted(&request, m_state);
+// 	KTProjectRequest request = KTRequestBuilder::createLayerRequest( scene, position, KTProjectRequest::Select, prioritary ? "1" : "0" );
+// 	emit commandExecuted(&request, m_state);
+	emit responsed(response, m_state);
+	return true;
+}
+
+
+bool KTCommandExecutor::setLayerVisibility(KTLayerResponse *response)
+{
+	int scenePos = response->sceneIndex();
+	int position = response->layerIndex();
+	bool view = response->arg().toBool();
 	
-	return QString();
-}
-
-
-QString KTCommandExecutor::setLayerVisibility(int scenePos, int position, bool view)
-{
 	KTScene *scene = m_project->scene(scenePos);
 	
 	if ( !scene)
 	{
-		return QString();;
+		return false;
 	}
 	
 	KTLayer *layer = scene->layer(position);
@@ -190,12 +213,11 @@ QString KTCommandExecutor::setLayerVisibility(int scenePos, int position, bool v
 	if ( layer )
 	{
 		layer->setVisible(view);
-		
-		KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePos, position, KTProjectRequest::View, view ? "1" : "0" );
-		emit commandExecuted(&request, m_state);
+		responsed(response, m_state);
+		return true;
 	}
 	
-	return QString();
+	return false;
 }
 
 
