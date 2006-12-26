@@ -37,9 +37,9 @@ KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, const KTProjectR
 {
 	KTRequestParser parser;
 	
-	if ( ! parser.parse( event->data().toString() ) )
+	if ( ! parser.parse( event->xml() ) )
 	{
-		qFatal("KTProjectCommand::KTProjectCommand()");
+		qFatal("==> KTProjectCommand::KTProjectCommand()");
 	}
 	
 	m_response = parser.response();
@@ -261,12 +261,12 @@ void KTProjectCommand::frameCommand(bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->createFrame( m_response );
+				m_executor->createFrame( response );
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_data = m_executor->removeFrame( m_response);
+				m_data = m_executor->removeFrame( response);
 			}
 			break;
 			case KTProjectRequest::Move:
@@ -303,12 +303,12 @@ void KTProjectCommand::frameCommand(bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_data = m_executor->removeFrame( m_response );
+				m_data = m_executor->removeFrame( response );
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_executor->createFrame( m_response );
+				m_executor->createFrame( response );
 			}
 			break;
 			case KTProjectRequest::Move:
@@ -345,7 +345,7 @@ void KTProjectCommand::layerCommand(bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->createLayer( response->sceneIndex(), response->layerIndex(), m_data);
+				m_executor->createLayer( response );
 			}
 			break;
 			case KTProjectRequest::Remove:
@@ -392,7 +392,7 @@ void KTProjectCommand::layerCommand(bool redo)
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_executor->createLayer( response->sceneIndex(), response->layerIndex(), m_data);
+				m_executor->createLayer( response );
 			}
 			break;
 			case KTProjectRequest::Move:
@@ -429,7 +429,7 @@ void KTProjectCommand::sceneCommand(bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->createScene( response->sceneIndex(), m_data );
+				m_executor->createScene( response );
 			}
 			break;
 			case KTProjectRequest::Remove:
@@ -454,7 +454,7 @@ void KTProjectCommand::sceneCommand(bool redo)
 			break;
 			case KTProjectRequest::Select:
 			{
-				m_executor->selectScene(response->sceneIndex(), response->arg().toBool() );
+				m_executor->selectScene(response );
 			}
 			break;
 			case KTProjectRequest::View:
@@ -476,7 +476,7 @@ void KTProjectCommand::sceneCommand(bool redo)
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_executor->createScene( response->sceneIndex(), m_data );
+				m_executor->createScene( response );
 			}
 			break;
 			case KTProjectRequest::Move:

@@ -49,9 +49,9 @@ class KTCommandExecutor : public QObject
 		KTCommandExecutor(KTProject *project);
 		~KTCommandExecutor();
 		
-		QString createScene(int position, const QString &xml = QString());
-		QString createLayer(int scene, int position, const QString &xml = QString());
-		bool createFrame(KTProjectResponse *response );
+		bool createScene(KTSceneResponse *response);
+		bool createLayer(KTLayerResponse *response);
+		bool createFrame(KTFrameResponse *response );
 		
 		QString createItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml);
 		QString transformItem(int scenePosition, int layerPosition, int framePosition, int position, const QString &xml);
@@ -62,7 +62,7 @@ class KTCommandExecutor : public QObject
 		
 		QString removeScene(int position);
 		QString removeLayer(int scene, int position);
-		bool removeFrame(KTProjectResponse *response);
+		bool removeFrame(KTFrameResponse *response);
 		QString removeSymbol(const QString &xml);
 		
 // 		QString removeItem(int scenePosition, int layerPosition, int framePosition, int position);
@@ -82,7 +82,7 @@ class KTCommandExecutor : public QObject
 		QString renameLayer(int scene, int position, const QString &newName);
 		QString renameFrame(int scene, int layer, int position, const QString &newName);
 		
-		QString selectScene(int position, bool prioritary);
+		void selectScene(KTSceneResponse *response);
 		QString selectLayer(int scene, int position, bool prioritary);
 		QString selectFrame(int scene, int layer, int position, bool prioritary);
 		

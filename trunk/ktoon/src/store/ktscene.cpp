@@ -92,8 +92,10 @@ void KTScene::setLayers(const Layers &layers)
 KTLayer *KTScene::createLayer(int position)
 {
 	D_FUNCINFO << position;
+	
 	if ( position < 0 || position > m_layers.count() )
 	{
+		dDebug() << "Error in createLayer";
 		return 0;
 	}
 	

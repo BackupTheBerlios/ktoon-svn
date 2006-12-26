@@ -48,11 +48,11 @@ bool KTRequestParser::startElement( const QString& , const QString& , const QStr
 	
 	if ( qname == "item" )
 	{
-		static_cast<KTItemResponse *>(m_response)->setSceneIndex(atts.value("index").toInt());
+		static_cast<KTItemResponse *>(m_response)->setItemIndex(atts.value("index").toInt());
 	}
 	else if ( qname == "frame" )
 	{
-		static_cast<KTFrameResponse *>(m_response)->setSceneIndex(atts.value("index").toInt());
+		static_cast<KTFrameResponse *>(m_response)->setFrameIndex(atts.value("index").toInt());
 	}
 	else if ( qname == "data" )
 	{
@@ -60,7 +60,7 @@ bool KTRequestParser::startElement( const QString& , const QString& , const QStr
 	}
 	else if ( qname == "layer" )
 	{
-		static_cast<KTLayerResponse *>(m_response)->setSceneIndex(atts.value("index").toInt());
+		static_cast<KTLayerResponse *>(m_response)->setLayerIndex(atts.value("index").toInt());
 	}
 	else if ( qname == "scene" )
 	{

@@ -109,30 +109,17 @@ class STORE_EXPORT KTProjectRequest
 			Library
 		};
 		
-		KTProjectRequest(Action action, const QVariant &data = 0);
-		
-		KTProjectRequest(const QString &doc);
+		KTProjectRequest(const QString &xml = 0);
 		virtual ~KTProjectRequest();
-		
-		
-		Action action() const;
-		
-		void setPartName(const QString &name);
-		QString partName() const;
 		
 		void setId(int id);
 		virtual int id() const;
 		virtual bool isValid() const;
 		
-		virtual KTProjectRequest *clone() const;
-		
-		QVariant data() const;
+		QString xml() const; // FIXME: cambiar nombre a XML
 		
 	private:
-		Action m_action;
-		QString m_partName;
-		QVariant m_data;
-		
+		QString m_xml;
 		int m_id;
 };
 

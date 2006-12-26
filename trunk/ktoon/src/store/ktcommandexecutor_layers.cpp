@@ -24,62 +24,36 @@
 
 #include "ktprojectrequest.h"
 #include "ktrequestbuilder.h"
+#include "ktprojectresponse.h"
 
 #include <dcore/ddebug.h>
 
-QString KTCommandExecutor::createLayer(int scenePosition, int position, const QString &xml)
+bool KTCommandExecutor::createLayer(KTLayerResponse *response)
 {
+	int scenePosition = response->sceneIndex();
+	int position = response->layerIndex();
+	QString name = response->arg().toString();
+	QString state = response->state();
+	
 	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( scene )
 	{
 		KTLayer *layer = scene->createLayer(position);
 		
-		if ( ! layer ) return 0;
+		if ( ! layer ) return false;
 		
-		QDomDocument document;
-		if ( document.setContent(xml) )
+		if (!name.isEmpty())
 		{
-			QDomElement root = document.documentElement();
-	
-			layer->setLayerName( root.attribute( "name", layer->layerName() ) );
-			
-			
-			KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePosition, position, KTProjectRequest::Add, layer->layerName() );
-			
-			QDomNode n = root.firstChild();
-			
-			emit commandExecuted(&request, m_state);
-	
-			while( !n.isNull() )
-			{
-				QDomElement e = n.toElement();
-		
-				if(!e.isNull())
-				{
-					if ( e.tagName() == "frame" )
-					{
-						int framePos = layer->frames().count();
-						QDomDocument newDoc;
-						newDoc.appendChild(newDoc.importNode(n, true ));
-// 						createFrame(scenePosition, position, framePos, newDoc.toString(0) );
-					}
-				}
-		
-				n = n.nextSibling();
-			}
+			layer->setLayerName( name );
 		}
 		
-// 		dDebug() << "Añadiendo layer en escena: " << scene->sceneName();
+		layer->fromXml( state );
 		
-		return document.toString(0);
+		response->setArg(layer->layerName());
+		emit responsed(response, m_state);
 	}
-	else
-	{
-		D_CHECKPTR(scene);
-	}
-	
-	return 0;
+	return false;
 }
 
 

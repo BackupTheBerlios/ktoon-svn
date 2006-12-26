@@ -29,15 +29,13 @@
 
 #include <dcore/ddebug.h>
 
-bool KTCommandExecutor::createFrame(KTProjectResponse *response)
+bool KTCommandExecutor::createFrame(KTFrameResponse *response)
 {
-	KTFrameResponse *frameResponse = static_cast<KTFrameResponse *>(response);
-	
-	int scenePosition = frameResponse->sceneIndex();
-	int layerPosition = frameResponse->layerIndex();
-	int position = frameResponse->frameIndex();
-	QString name = frameResponse->arg().toString();
-	QString state = frameResponse->state();
+	int scenePosition = response->sceneIndex();
+	int layerPosition = response->layerIndex();
+	int position = response->frameIndex();
+	QString name = response->arg().toString();
+	QString state = response->state();
 	
 	KTScene *scene = m_project->scene(scenePosition);
 	
@@ -60,6 +58,7 @@ bool KTCommandExecutor::createFrame(KTProjectResponse *response)
 		}
 		frame->fromXml( state );
 		
+		response->setArg(frame->frameName());
 		emit responsed( response, m_state );
 		
 		return true;
@@ -68,13 +67,11 @@ bool KTCommandExecutor::createFrame(KTProjectResponse *response)
 	return false;
 }
 
-bool KTCommandExecutor::removeFrame(KTProjectResponse *response)
+bool KTCommandExecutor::removeFrame(KTFrameResponse *response)
 {
-	KTFrameResponse *frameResponse = static_cast<KTFrameResponse *>(response);
-	
-	int scenePos = frameResponse->sceneIndex();
-	int layerPos = frameResponse->layerIndex();
-	int position = frameResponse->frameIndex();
+	int scenePos = response->sceneIndex();
+	int layerPos = response->layerIndex();
+	int position = response->frameIndex();
 	
 	
 	KTScene *scene = m_project->scene(scenePos);
@@ -92,7 +89,7 @@ bool KTCommandExecutor::removeFrame(KTProjectResponse *response)
 				
 				if ( layer->removeFrame(position) )
 				{
-					frameResponse->setState(doc.toString(0));
+					response->setState(doc.toString(0));
 					emit responsed( response, m_state );
 					
 					return true;

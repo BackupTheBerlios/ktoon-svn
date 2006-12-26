@@ -61,10 +61,10 @@ KTExposureSheet::~KTExposureSheet()
 
 void KTExposureSheet::addScene(int index, const QString &name)
 {
-	D_FUNCINFO;
+	D_FUNCINFO << " index: " << index << " name: " << name;
 	KTExposureTable *newScene = new KTExposureTable;
 	
-	m_scenes->insertTab (index, newScene, name);
+	m_scenes->insertTab(index, newScene, name);
 	
 	connect(newScene, SIGNAL(requestSetUsedFrame(int, int)), this, SLOT(insertItem( int, int )));
 	connect(newScene, SIGNAL(requestRenameFrame(int, int,const QString & )), this, SLOT(renameFrame( int, int, const QString &  )));
@@ -99,8 +99,12 @@ void KTExposureSheet::applyAction(int action)
 	{
 		case KTProjectActionBar::InsertLayer:
 		{
-			KTProjectRequest event = KTRequestBuilder::createLayerRequest( m_scenes->currentIndex(), m_currentTable->currentLayer()+1, KTProjectRequest::Add);
+			int layer = m_currentTable->currentLayer()+1;
+			
+			KTProjectRequest event = KTRequestBuilder::createLayerRequest( m_scenes->currentIndex(), layer, KTProjectRequest::Add);
+			
 			emit requestTriggered( &event );
+			
 			break;
 		}
 		case KTProjectActionBar::RemoveLayer:
@@ -114,11 +118,12 @@ void KTExposureSheet::applyAction(int action)
 		{
 			int used = m_currentTable->numUsed();
 			int finish = m_currentTable->currentFrame()+1;
+			
+			
 			for(int i = used; i <= finish; i++)
 			{
 				insertItem( m_currentTable->currentLayer(), i);
 			}
-			
 			break;
 		}
 		case KTProjectActionBar::RemoveFrame:
@@ -165,9 +170,8 @@ void KTExposureSheet::setScene(int index)
 
 void KTExposureSheet::emitRequestChangeScene(int index)
 {
-// 	dDebug() << "KTExposureSheet::emitRequestChangeScene(" << index << ")";
-	KTProjectRequest event(KTProjectRequest::Select, index);
-	emit requestTriggered( &event );
+	KTProjectRequest request = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Select);
+	emit requestTriggered( &request );
 }
 
 void KTExposureSheet::insertItem(int indexLayer, int indexFrame)
@@ -269,6 +273,7 @@ void KTExposureSheet::layerResponse(KTLayerResponse *e)
 		{
 			case KTProjectRequest::Add:
 			{
+				dDebug() << "INSERT LAYER: " << e->layerIndex();
 				scene->insertLayer(e->layerIndex(),  e->arg().toString());
 			}
 			break;

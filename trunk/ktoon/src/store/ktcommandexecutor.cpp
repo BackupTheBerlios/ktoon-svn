@@ -26,6 +26,8 @@
 #include "ktrequestbuilder.h"
 #include "ktprojectrequest.h"
 
+#include "ktprojectresponse.h"
+
 #include <ddebug.h>
 
 KTCommandExecutor::KTCommandExecutor(KTProject *project) : QObject(project), m_project(project), m_state(None)
@@ -37,52 +39,59 @@ KTCommandExecutor::~KTCommandExecutor()
 }
 
 
-QString KTCommandExecutor::createScene(int position, const QString &xml)
+bool KTCommandExecutor::createScene(KTSceneResponse *response)
 {
 	D_FUNCINFO;
 	
+	int position = response->sceneIndex();
+	QString xml = response->arg().toString();
+	
 	if ( position < 0 || position > m_project->scenes().count() )
 	{
-		return QString();
+		return false;
 	}
 	
 	KTScene *scene = m_project->createScene( position );
-	if ( !scene ) return QString();
+	if ( !scene ) return false;
 	
-	QDomDocument document;
-	if ( document.setContent(xml) )
-	{
-		QDomElement root = document.documentElement();
+	response->setArg( scene->sceneName() );
 	
-		scene->setSceneName( root.attribute( "name", scene->sceneName()) );
-		
-		KTProjectRequest request = KTRequestBuilder::createSceneRequest( position, KTProjectRequest::Add, scene->sceneName() );
-		emit commandExecuted(&request, m_state);
-		
-		QDomNode n = root.firstChild();
+	emit responsed( response, m_state );
 	
-		while( !n.isNull() )
-		{
-			QDomElement e = n.toElement();
-		
-			if(!e.isNull())
-			{
-				if ( e.tagName() == "layer" )
-				{
-					int layerPos = scene->layers().count();
-					QDomDocument newDoc;
-					newDoc.appendChild(newDoc.importNode(n, true ));
-					
-					createLayer(position, layerPos, newDoc.toString(0) );
-				}
-			}
-		
-			n = n.nextSibling();
-		}
-	}
+// 	QDomDocument document;
+// 	if ( document.setContent(xml) )
+// 	{
+// 		QDomElement root = document.documentElement();
+// 	
+// 		scene->setSceneName( root.attribute( "name", scene->sceneName()) );
+// 		
+// 		KTProjectRequest request = KTRequestBuilder::createSceneRequest( position, KTProjectRequest::Add, scene->sceneName() );
+// 		emit commandExecuted(&request, m_state);
+// 		
+// 		QDomNode n = root.firstChild();
+// 	
+// 		while( !n.isNull() )
+// 		{
+// 			QDomElement e = n.toElement();
+// 		
+// 			if(!e.isNull())
+// 			{
+// 				if ( e.tagName() == "layer" )
+// 				{
+// 					int layerPos = scene->layers().count();
+// 					QDomDocument newDoc;
+// 					newDoc.appendChild(newDoc.importNode(n, true ));
+// 					
+// 					createLayer(position, layerPos, newDoc.toString(0) );
+// 				}
+// 			}
+// 		
+// 			n = n.nextSibling();
+// 		}
+// 	}
 	
 	
-	return QString();
+	return true;
 }
 
 QString KTCommandExecutor::removeScene(int position)
@@ -163,12 +172,9 @@ QString KTCommandExecutor::renameScene(int position, const QString &newName)
 }
 
 
-QString KTCommandExecutor::selectScene(int position, bool prioritary)
+void KTCommandExecutor::selectScene(KTSceneResponse *response)
 {
-	KTProjectRequest request = KTRequestBuilder::createSceneRequest( position, KTProjectRequest::Select, prioritary ? "1" : "0" );
-	emit commandExecuted(&request, m_state);
-	
-	return QString();
+	emit responsed(response, m_state);
 }
 
 

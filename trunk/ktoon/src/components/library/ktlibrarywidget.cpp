@@ -357,47 +357,47 @@ void KTLibraryWidget::addBitmap(const QString &bitmap)
 
 void KTLibraryWidget::libraryRequest(KTProjectRequest *request)
 {
-	switch(request->action())
-	{
-		case KTProjectRequest::Add:
-		{
-			QDomDocument doc;
-			if ( !doc.setContent(request->data().toString()) )
-			{
-				dfDebug << "Cannot set content!";
-				return;
-			}
-	
-			QDomElement root = doc.documentElement();
-	
-			if ( root.tagName() == "library" )
-			{
-				QStringList syms;
-				
-				QDomNode n = root.firstChild();
-				while(!n.isNull())
-				{
-					QDomElement e = n.toElement();
-					if(!e.isNull())
-					{
-						if ( e.tagName() == "symbol" )
-						{
-							syms << e.attribute( "name" );
-						}
-					}
-					n = n.nextSibling();
-				}
-				
-				m_libraryTree->addItems( syms );
-			}
-		}
-		break;
-		default:
-		{
-			qFatal("IMPLEMENT ME");
-		}
-		break;
-	}
+// 	switch(request->action())
+// 	{
+// 		case KTProjectRequest::Add:
+// 		{
+// 			QDomDocument doc;
+// 			if ( !doc.setContent(request->data().toString()) )
+// 			{
+// 				dfDebug << "Cannot set content!";
+// 				return;
+// 			}
+// 	
+// 			QDomElement root = doc.documentElement();
+// 	
+// 			if ( root.tagName() == "library" )
+// 			{
+// 				QStringList syms;
+// 				
+// 				QDomNode n = root.firstChild();
+// 				while(!n.isNull())
+// 				{
+// 					QDomElement e = n.toElement();
+// 					if(!e.isNull())
+// 					{
+// 						if ( e.tagName() == "symbol" )
+// 						{
+// 							syms << e.attribute( "name" );
+// 						}
+// 					}
+// 					n = n.nextSibling();
+// 				}
+// 				
+// 				m_libraryTree->addItems( syms );
+// 			}
+// 		}
+// 		break;
+// 		default:
+// 		{
+// 			qFatal("IMPLEMENT ME");
+// 		}
+// 		break;
+// 	}
 }
 
 

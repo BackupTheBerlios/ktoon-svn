@@ -57,7 +57,7 @@ void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* re
 	
 	if ( m_socket->state() == QAbstractSocket::ConnectedState )
 	{
-		m_socket->sendToServer( request->data().toString() );
+		m_socket->sendToServer( request->xml() );
 	}
 // 	
 // 	delete toPackage;

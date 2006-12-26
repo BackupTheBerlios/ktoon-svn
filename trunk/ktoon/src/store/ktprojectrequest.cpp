@@ -69,28 +69,15 @@ QString KTProjectRequestArgument::toString()
 	return m_value;
 }
 
-KTProjectRequest::KTProjectRequest(Action action, const QVariant &data) : m_action(action), m_data(data), m_id(Project)
+KTProjectRequest::KTProjectRequest(const QString &xml) : m_xml(xml), m_id(Project)
 {
 }
 
-KTProjectRequest::KTProjectRequest(const QString &doc) : m_data(doc) // FIXME
-{
-}
 
 KTProjectRequest::~KTProjectRequest()
 {
 }
 
-
-KTProjectRequest::Action KTProjectRequest::action() const
-{
-	return m_action;
-}
-
-QString KTProjectRequest::partName() const
-{
-	return m_partName;
-}
 
 void KTProjectRequest::setId(int id)
 {
@@ -103,30 +90,16 @@ int KTProjectRequest::id() const
 }
 
 
-void KTProjectRequest::setPartName(const QString &name)
-{
-	m_partName = name;
-}
 
 bool KTProjectRequest::isValid() const
 {
-	return m_data.isValid();
+	return !m_xml.isEmpty(); // TODO: Verficar que sea XML
 }
 
-KTProjectRequest *KTProjectRequest::clone() const
-{
-	KTProjectRequest *event = new KTProjectRequest( m_action, data() );
-	
-	event->setPartName( partName() );
-	event->setId( m_id );
-	
-	
-	return event;
-}
 
-QVariant KTProjectRequest::data() const
+QString KTProjectRequest::xml() const
 {
-	return m_data;
+	return m_xml;
 }
 
 
