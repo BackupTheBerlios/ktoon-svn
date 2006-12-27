@@ -59,7 +59,6 @@
 #include "ktprojectmanager.h"
 #include "ktsplash.h"
 
-#include "config.h"
 #include "ktviewdocument.h"
 
 class KTProjectManagerParams;

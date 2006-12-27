@@ -21,7 +21,6 @@
 #ifndef FFMPEGMANAGER_H
 #define FFMPEGMANAGER_H
 
-#include <config.h>
 #include <QString>
 #include <QSize>
 

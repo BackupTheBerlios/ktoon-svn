@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<qonf>
+	<test name="Aspell">
+		<dir path="." />
+	</test>
+	<provide>
+		<defines>
+			<define value="HAVE_ASPELL" />
+		</defines>
+		<libs>
+			<lib path="-laspell" />
+		</libs>
+	</provide>
+	<solution>
+		<linux package="aspell" url="" comment="" >
+			<distribution name="gentoo" package="aspell" url="" comment="" />
+			<distribution name="ubuntu" package="aspell-dev" url="" comment="" />
+		</linux>
+		<windows package="aspell" url="" comment="" />
+		<macosx package="aspell" url="" comment="" />
+	</solution>
+</qonf>

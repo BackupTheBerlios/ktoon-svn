@@ -20,7 +20,6 @@
 
 #include <ktapplication.h>
 
-#include <config.h>
 
 #include <qfile.h>
 #include <qtextstream.h>
