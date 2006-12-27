@@ -32,7 +32,7 @@ class KTFramesTable;
 class KTProjectActionBar;
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+ * @author David Cuadrado \<krawek@toonka.com\>
 */
 
 class KTTimeLine : public KTModuleWidgetBase

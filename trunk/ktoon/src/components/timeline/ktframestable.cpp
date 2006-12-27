@@ -1027,10 +1027,16 @@ void KTFramesTable::moveLayer(int position, int newPosition)
 
 int KTFramesTable::lastFrameByLayer(int layerPos)
 {
-	return m_layers[verticalHeader()->logicalIndex(layerPos)].lastItem;
+	int pos = verticalHeader()->logicalIndex(layerPos);
+	if ( pos < 0 || pos > m_layers.count() )
+	{
+		return -1;
+	}
+	return m_layers[pos].lastItem;
 }
 
 // FRAMES
+
 
 void KTFramesTable::insertFrame(int layerPos, const QString &name)
 {

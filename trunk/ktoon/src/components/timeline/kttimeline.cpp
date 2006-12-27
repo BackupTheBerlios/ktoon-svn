@@ -303,7 +303,7 @@ void KTTimeLine::requestCommand(int action)
 // 			layerPos = 0;
 // 		}
 		
-		framePos = framesTable( scenePos )->currentColumn();
+		framePos = framesTable( scenePos )->lastFrameByLayer(layerPos);
 		
 // 		if ( framePos < 0 )
 // 		{
@@ -320,10 +320,9 @@ void KTTimeLine::requestCommand(int action)
 	{
 		case KTProjectActionBar::InsertFrame:
 		{
-			KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos, KTProjectRequest::Add);
+			KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos+1, KTProjectRequest::Add);
 			
 			emit requestTriggered( &event );
-			
 		}
 		break;
 		case KTProjectActionBar::RemoveFrame:

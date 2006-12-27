@@ -142,6 +142,8 @@ void KTProjectManager::handleProjectRequest(const KTProjectRequest *request)
 {
 	D_FUNCINFO;
 	
+	dWarning() << request->xml();
+	
 	// TODO: el handler debe decir cuando construir el comando
 	
 	if ( m_handler )

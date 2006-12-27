@@ -279,6 +279,37 @@ DToolView *DMainWindow::addToolView(QWidget *widget, Qt::DockWidgetArea area, in
 	return toolView;
 }
 
+void DMainWindow::removeToolView(DToolView *view)
+{
+	bool findIt = false;
+	foreach( DButtonBar *bar, m_buttonBars.values())
+	{
+		QList<DToolView *> views = m_toolViews[bar];
+		QList<DToolView *>::iterator it = views.begin();
+		
+		
+		while ( it != views.end() )
+		{
+			DToolView *v = *it;
+			if ( v == view )
+			{
+				views.erase( it );
+				bar->removeButton(view->button());
+				findIt = true;
+				break;
+			}
+			++it;
+		}
+		
+		if (findIt ) break;
+	}
+	
+	if ( findIt )
+	{
+		removeDockWidget(view);
+	}
+}
+
 /**
  * Moves a tool view to newPlace
  * @param view 
@@ -547,7 +578,10 @@ void DMainWindow::setCurrentPerspective(int wsp)
 	QList<Views > viewsList = m_toolViews.values();
 	
 	setUpdatesEnabled( false );
-	centralWidget()->setUpdatesEnabled(false);
+	if ( centralWidget() )
+	{
+		centralWidget()->setUpdatesEnabled(false);
+	}
 	
 	QHash<DButtonBar *, int> hideButtonCount;
 	
@@ -639,7 +673,10 @@ void DMainWindow::setCurrentPerspective(int wsp)
 		}
 	}
 	
-	centralWidget()->setUpdatesEnabled(true);
+	if ( centralWidget() )
+	{
+		centralWidget()->setUpdatesEnabled(true);
+	}
 	setUpdatesEnabled( true );
 	
 	

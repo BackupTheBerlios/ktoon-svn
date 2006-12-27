@@ -24,6 +24,7 @@
 #include <QToolButton>
 #include <QPainter>
 #include <QWheelEvent>
+#include <QTabBar>
 
 #include <QtDebug>
 
@@ -50,7 +51,13 @@ TabWidgetPrivate::~TabWidgetPrivate()
 
 void TabWidgetPrivate::wheelEvent( QWheelEvent *ev )
 {
-	wheelMove( ev->delta() );
+	QRect rect = tabBar()->rect();
+	rect.setWidth( width() );
+	
+	if ( rect.contains(ev->pos()) )
+	{
+		wheelMove( ev->delta() );
+	}
 }
 
 void TabWidgetPrivate::wheelMove( int delta )
