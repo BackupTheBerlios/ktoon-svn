@@ -108,8 +108,6 @@ bool KTCommandExecutor::moveFrame(KTFrameResponse *response)
 	int layerPos = response->layerIndex();
 	int position = response->frameIndex();
 	int newPosition = response->arg().toInt();
-	
-// 	dDebug() << "Move frame from " << position << " to " << newPosition;
 	KTScene *scene = m_project->scene(scenePos);
 	
 	if ( !scene)
@@ -139,7 +137,6 @@ bool KTCommandExecutor::moveFrame(KTFrameResponse *response)
 
 bool KTCommandExecutor::lockFrame(KTFrameResponse *response)
 {
-// 	dWarning() << "Lock frame: " << lock;
 	int scenePos = response->sceneIndex();
 	int layerPos = response->layerIndex();
 	int position = response->frameIndex();
@@ -161,8 +158,6 @@ bool KTCommandExecutor::lockFrame(KTFrameResponse *response)
 		if ( ! frame ) return false;
 		
 		frame->setLocked( lock );
-		
-// 		KTProjectRequest request = KTRequestBuilder::createFrameRequest( scenePosition, layerPosition, position, KTProjectRequest::Lock, lock ? "1" : "0" );
 		emit responsed(response, m_state);
 		return true;
 	}
@@ -173,8 +168,6 @@ bool KTCommandExecutor::lockFrame(KTFrameResponse *response)
 
 bool KTCommandExecutor::renameFrame(KTFrameResponse *response)
 {
-// 	dWarning() << "Renombrando frame " << position << ": " << newName;
-	
 	int scenePos = response->sceneIndex();
 	int layerPos = response->layerIndex();
 	int position = response->frameIndex();
@@ -186,7 +179,6 @@ bool KTCommandExecutor::renameFrame(KTFrameResponse *response)
 	
 	if ( !scene)
 	{
-// 		return oldName;
 		return false;
 	}
 	
@@ -198,9 +190,6 @@ bool KTCommandExecutor::renameFrame(KTFrameResponse *response)
 		
 		if ( ! frame ) return false;
 		
-		
-// 		KTProjectRequest request = KTRequestBuilder::createFrameRequest( scenePosition, layerPosition, position, KTProjectRequest::Rename, newName);
-		
 		oldName = frame->frameName();
 		
 		frame->setFrameName( newName );
@@ -209,7 +198,6 @@ bool KTCommandExecutor::renameFrame(KTFrameResponse *response)
 		return true;
 	}
 	
-// 	return oldName;
 	return false;
 }
 
@@ -236,7 +224,6 @@ bool KTCommandExecutor::selectFrame(KTFrameResponse *response)
 		
 		if ( ! frame ) return false;
 		
-// 		KTProjectRequest request = KTRequestBuilder::createFrameRequest( scenePosition, layerPosition, position, KTProjectRequest::Select, prioritary ? "1" : "0" );
 		emit responsed(response, m_state);
 		return true;
 	}
@@ -270,8 +257,6 @@ bool KTCommandExecutor::setFrameVisibility(KTFrameResponse *response)
 		if ( ! frame ) return false;
 		
 		
-// 		KTProjectRequest request = KTRequestBuilder::createFrameRequest( scenePos, layerPos, position, KTProjectRequest::View, view ? "1" : "0" );
-		
 		frame->setVisible(view);
 		emit responsed(response , m_state);
 		return true;
@@ -279,8 +264,6 @@ bool KTCommandExecutor::setFrameVisibility(KTFrameResponse *response)
 	
 	return false;
 }
-
-
 
 
 

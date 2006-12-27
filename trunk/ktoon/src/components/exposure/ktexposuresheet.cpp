@@ -132,7 +132,6 @@ void KTExposureSheet::applyAction(int action)
 			emit requestTriggered( &event );
 			break;
 		}
-
 		case KTProjectActionBar::MoveFrameUp:
 		{
 			KTProjectRequest event = KTRequestBuilder::createFrameRequest( m_scenes->currentIndex(), m_currentTable->currentLayer(), m_currentTable->currentFrame(), KTProjectRequest::Move, m_currentTable->currentFrame()-1);
@@ -149,7 +148,7 @@ void KTExposureSheet::applyAction(int action)
 		{
 			bool locked = m_currentTable->frameIsLocked(m_currentTable->currentColumn(),  m_currentTable->currentFrame());
 			
-			KTProjectRequest event = KTRequestBuilder::createFrameRequest (m_scenes->currentIndex(), m_currentTable->currentLayer(), m_currentTable->currentFrame(), KTProjectRequest::Lock, locked);
+			KTProjectRequest event = KTRequestBuilder::createFrameRequest (m_scenes->currentIndex(), m_currentTable->currentLayer(), m_currentTable->currentFrame(), KTProjectRequest::Lock, !locked);
 			emit requestTriggered( &event );
 			break;
 		}
@@ -196,7 +195,7 @@ void KTExposureSheet::selectFrame(int indexLayer, int indexFrame)
 
 void KTExposureSheet::changeVisiblityLayer(int visualIndexLayer, bool visibility)
 {
-	KTProjectRequest event = KTRequestBuilder::createLayerRequest(KTProjectRequest::View, m_scenes->currentIndex() , visualIndexLayer,  visibility );
+	KTProjectRequest event = KTRequestBuilder::createLayerRequest( m_scenes->currentIndex(), visualIndexLayer, KTProjectRequest::View,  visibility );
 	emit requestTriggered( &event );
 }
 
@@ -258,6 +257,7 @@ void KTExposureSheet::sceneResponse(KTSceneResponse *e)
 		break;
 		case KTProjectRequest::Select:
 		{
+			dFatal() << "Select scene " << e->sceneIndex();
 			setScene( e->sceneIndex() );
 		}
 		break;
@@ -333,7 +333,7 @@ void KTExposureSheet::frameResponse(KTFrameResponse *e)
 			break;
 			case KTProjectRequest::Move:
 			{
-				scene->moveFrame( e->layerIndex(), e->frameIndex(), e->layerIndex(), e->data().toInt());
+				scene->moveFrame( e->layerIndex(), e->frameIndex(), e->layerIndex(), e->arg().toInt());
 			}
 			break;
 			case KTProjectRequest::Lock:

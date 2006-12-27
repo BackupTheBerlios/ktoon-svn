@@ -76,7 +76,6 @@ bool KTCommandExecutor::removeLayer(KTLayerResponse *response)
 			
 			if ( scene->removeLayer(position) )
 			{
-// 				KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePos, position, KTProjectRequest::Remove );
 				
 				emit responsed(response, m_state);
 				
@@ -91,7 +90,6 @@ bool KTCommandExecutor::removeLayer(KTLayerResponse *response)
 
 bool KTCommandExecutor::moveLayer(KTLayerResponse *response)
 {
-// 	dDebug() << "Move layer from " << position << " to " << newPosition;
 	int scenePos = response->sceneIndex();
 	int position = response->layerIndex();
 	int newPosition = response->arg().toInt();
@@ -111,7 +109,6 @@ bool KTCommandExecutor::moveLayer(KTLayerResponse *response)
 	}
 	else
 	{
-// 		KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePosition, position, KTProjectRequest::Move, QString::number(newPosition)  );
 		emit responsed(response, m_state);
 		return true;
 		
@@ -126,7 +123,6 @@ bool KTCommandExecutor::lockLayer(KTLayerResponse *response)
 	int position = response->layerIndex();
 	bool lock = response->arg().toBool();
 	
-	dWarning() << "Lock layer: " << lock;
 	KTScene *scene = m_project->scene(scenePos);
 	
 	if ( !scene)
@@ -139,8 +135,6 @@ bool KTCommandExecutor::lockLayer(KTLayerResponse *response)
 	if ( layer )
 	{
 		layer->setLocked(lock);
-		
-// 		KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePosition, position, KTProjectRequest::Lock, lock ? "1" : "0" );
 		emit responsed(response, m_state);
 		return true;
 	}
@@ -171,11 +165,6 @@ bool KTCommandExecutor::renameLayer(KTLayerResponse *response)
 	
 	if ( layer )
 	{
-		
-// 		KTProjectRequest request = KTRequestBuilder::createLayerRequest( scenePosition, position, KTProjectRequest::Rename, newName);
-		
-// 		oldName = layer->layerName();
-		
 		layer->setLayerName( newName );
 		emit responsed(response, m_state);
 		return true;
@@ -188,8 +177,6 @@ bool KTCommandExecutor::renameLayer(KTLayerResponse *response)
 
 bool KTCommandExecutor::selectLayer(KTLayerResponse *response)
 {
-// 	KTProjectRequest request = KTRequestBuilder::createLayerRequest( scene, position, KTProjectRequest::Select, prioritary ? "1" : "0" );
-// 	emit commandExecuted(&request, m_state);
 	emit responsed(response, m_state);
 	return true;
 }
@@ -200,6 +187,7 @@ bool KTCommandExecutor::setLayerVisibility(KTLayerResponse *response)
 	int scenePos = response->sceneIndex();
 	int position = response->layerIndex();
 	bool view = response->arg().toBool();
+	
 	
 	KTScene *scene = m_project->scene(scenePos);
 	

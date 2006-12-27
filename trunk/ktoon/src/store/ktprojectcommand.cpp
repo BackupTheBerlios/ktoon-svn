@@ -149,7 +149,7 @@ KTProjectCommand::~KTProjectCommand()
 
 void KTProjectCommand::redo()
 {
-	D_FUNCINFO << m_data;
+	D_FUNCINFO << m_response->part();
 	
 	
 	if ( m_executed )
@@ -266,18 +266,18 @@ void KTProjectCommand::frameCommand(bool redo)
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_data = m_executor->removeFrame( response);
+				m_executor->removeFrame( response);
 			}
 			break;
 			case KTProjectRequest::Move:
 			{
-// // 				m_executor->moveFrame( response);
+				SHOW_VAR(m_executor->moveFrame( response));
 // 				m_executor->moveFrame( response->sceneIndex(), response->layerIndex(), response->frameIndex(), response->arg().toInt() );
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				m_executor->lockFrame( response );
+				SHOW_VAR(m_executor->lockFrame( response ));
 // 				m_executor->lockFrame( response->sceneIndex(), response->layerIndex(), response->frameIndex(), response->arg().toBool() );
 			}
 			break;
@@ -295,7 +295,7 @@ void KTProjectCommand::frameCommand(bool redo)
 			break;
 			case KTProjectRequest::View:
 			{
-				m_executor->setFrameVisibility(response);
+				SHOW_VAR(m_executor->setFrameVisibility(response));
 			}
 			break;
 			default: break;
@@ -346,6 +346,7 @@ void KTProjectCommand::frameCommand(bool redo)
 void KTProjectCommand::layerCommand(bool redo)
 {
 	KTLayerResponse *response = static_cast<KTLayerResponse *>(m_response);
+	
 	if ( redo )
 	{
 		switch(response->action())
@@ -357,7 +358,7 @@ void KTProjectCommand::layerCommand(bool redo)
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_data = m_executor->removeLayer( response);
+				m_executor->removeLayer( response);
 			}
 			break;
 			case KTProjectRequest::Move:
@@ -372,7 +373,7 @@ void KTProjectCommand::layerCommand(bool redo)
 			break;
 			case KTProjectRequest::Rename:
 			{
-				m_data = m_executor->renameLayer( response);
+				m_executor->renameLayer( response);
 			}
 			break;
 			case KTProjectRequest::Select:
@@ -382,7 +383,7 @@ void KTProjectCommand::layerCommand(bool redo)
 			break;
 			case KTProjectRequest::View:
 			{
-				m_executor->setLayerVisibility(response);
+				SHOW_VAR(m_executor->setLayerVisibility(response));
 			}
 			break;
 			default: break;
@@ -419,7 +420,7 @@ void KTProjectCommand::layerCommand(bool redo)
 			break;
 			case KTProjectRequest::View:
 			{
-				m_executor->setLayerVisibility(response);
+				SHOW_VAR(m_executor->setLayerVisibility(response));
 			}
 			break;
 			default: break;

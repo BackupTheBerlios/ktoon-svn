@@ -179,6 +179,10 @@ void KTProjectManager::createCommand(const KTProjectRequest *request, bool addTo
 			command->redo();
 		}
 	}
+	else
+	{
+		dWarning() << "request invalid";
+	}
 }
 
 

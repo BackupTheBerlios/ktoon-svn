@@ -395,6 +395,10 @@ bool KTExposureTable::frameIsLocked(int indexLayer, int indexFrame)
 	{
 		return frame->data(IsLocked).toBool();
 	}
+	else
+	{
+		dWarning() << "frame " << indexLayer << "," << indexFrame << " not exist";
+	}
 	return false;
 }
 
