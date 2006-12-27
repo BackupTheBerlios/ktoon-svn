@@ -52,6 +52,8 @@
 
 #include "librarydialog.h"
 #include "ktlibraryobject.h"
+#include "ktrequestbuilder.h"
+
 
 #ifdef QT_OPENGL_LIB
 
@@ -571,6 +573,7 @@ void KTPaintArea::centerDrawingArea()
 
 void KTPaintArea::deleteItems()
 {
+// 	D_FUNCINFO;
 	QList<QGraphicsItem *> selecteds = scene()->selectedItems ();
 	
 	if(!selecteds.empty())
@@ -598,18 +601,12 @@ void KTPaintArea::deleteItems()
 				}
 			}
 			strItems+= ")";
+			
+			KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, KTProjectRequest::Remove, strItems );
+			
+			dDebug(2) << "Borrando del frame " << currentScene->currentFrameIndex() << "\n" << "lo items " << strItems ;
+			emit requestTriggered(&event);
 		}
-		
-		QDomDocument doc;
-		QDomElement root = doc.createElement("delete");
-		root.setAttribute("positions", strItems );
-		doc.appendChild(root);
-		
-// 		KTProjectRequest event(KTProjectRequest::Remove, currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, doc.toString());
-		
-// 		dDebug(2) << "Borrando del frame " << currentScene->currentFrameIndex() << "\n" << doc.toString();
-		
-// 		emit requestTriggered(&event);
 	}
 }
 

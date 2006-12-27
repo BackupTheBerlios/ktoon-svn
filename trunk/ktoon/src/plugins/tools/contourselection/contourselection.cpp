@@ -165,7 +165,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 	}
 }
 
-void ContourSelection::itemResponse(const KTItemResponse *event)
+void ContourSelection::itemResponse(const KTItemResponse *response)
 {
 	D_FUNCINFO;
 	QGraphicsItem *item = 0;
@@ -174,21 +174,19 @@ void ContourSelection::itemResponse(const KTItemResponse *event)
 	KTFrame *frame = 0;
 	if(m_project)
 	{
-		scene = m_project->scene(event->sceneIndex());
+		scene = m_project->scene(response->sceneIndex());
 		if ( scene )
 		{
-					
-			layer = scene->layer( event->layerIndex() );
-					
+			layer = scene->layer( response->layerIndex() );
+			
 			if ( layer )
 			{
 				
-				frame = layer->frame( event->frameIndex() );
+				frame = layer->frame( response->frameIndex() );
 				
 				if ( frame )
 				{
-					item = frame->item(event->itemIndex());
-					
+					item = frame->item(response->itemIndex());
 				}
 			}
 		}
@@ -198,32 +196,31 @@ void ContourSelection::itemResponse(const KTItemResponse *event)
 		dFatal() << "Project not exist";
 	}
 	
-	switch(event->action())
+	switch(response->action())
 	{
 		
 		case KTProjectRequest::Convert:
 		{
-			
 			if ( item && scene)
 			{
 				NodeGroup *node = new NodeGroup(item, scene);
 				m_nodeGroups << node;
 			}
-		
 		}
 		break;
 		case KTProjectRequest::EditNodes:
 		{
+			
 			if ( item )
 			{
-				foreach(NodeGroup* node, m_nodeGroups)
+				foreach(NodeGroup* group, m_nodeGroups)
 				{
-					if(qgraphicsitem_cast<QGraphicsPathItem *>(node->parentItem()) == item)
+					if(qgraphicsitem_cast<QGraphicsPathItem *>(group->parentItem()) == item)
 					{
-						node->show();
-						node->syncNodesFromParent();
-						node->saveParentProperties();
-						node->parentItem()->setSelected(true);
+						group->show();
+						group->syncNodesFromParent();
+						group->saveParentProperties();
+// 						group->parentItem()->setSelected(true);
 						break;
 					}
 				}

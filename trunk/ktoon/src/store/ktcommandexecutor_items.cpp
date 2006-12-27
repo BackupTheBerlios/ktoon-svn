@@ -40,12 +40,12 @@
 
 bool KTCommandExecutor::createItem(KTItemResponse *response)
 {
-// 	D_FUNCINFOX("items");
+	D_FUNCINFOX("items");
 	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
-	int position = response->frameIndex();
+	int position = response->itemIndex();
 	QString xml = response->arg().toString();
 	
 	KTScene *scene = m_project->scene(scenePosition);
@@ -96,8 +96,11 @@ bool KTCommandExecutor::removeItems(KTItemResponse *response)
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
-// 	int position = response->frameIndex();
-	QString xml = response->arg().toString();
+// 	int position = response->itemIndex();
+	QString strList = response->arg().toString();
+	
+	dFatal() << "removeItems = " << strList;
+	
 // 	int scenePosition , int layerPosition, int framePosition, int position, const QString &xml
 	KTScene *scene = m_project->scene(scenePosition);
 	
@@ -110,16 +113,16 @@ bool KTCommandExecutor::removeItems(KTItemResponse *response)
 			if ( frame )
 			{
 				QStringList infoItems;
-				QDomDocument doc;
-				doc.setContent(xml);
+// 				QDomDocument doc;
+// 				doc.setContent(xml);
 				
 // 				if ( position == -1)
 // 				{
 // 					qFatal("DO NOT SEND -1");
 // 				}
 				
-				QDomElement root = doc.documentElement();
-				QString strList = root.attribute ( "positions");
+// 				QDomElement root = doc.documentElement();
+// 				QString strList = root.attribute ( "positions");
 				
 				QString::const_iterator itr = strList.constBegin();
 				QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
@@ -156,11 +159,11 @@ bool KTCommandExecutor::removeItems(KTItemResponse *response)
 
 bool KTCommandExecutor::groupItems(KTItemResponse *response)
 {
-// 	D_FUNCINFOX("items");
+	D_FUNCINFOX("items");
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
-	int position = response->frameIndex();
+	int position = response->itemIndex();
 	QString xml = response->arg().toString();
 	
 	KTScene *scene = m_project->scene(scenePosition);
@@ -217,13 +220,13 @@ bool KTCommandExecutor::groupItems(KTItemResponse *response)
 
 bool KTCommandExecutor::convertItem(KTItemResponse *response)
 {
-// 	D_FUNCINFOX("items");
+	D_FUNCINFOX("items");
 	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
-	int position = response->frameIndex();
-	QString xml = response->arg().toString();
+	int position = response->itemIndex();
+	int toType = response->arg().toInt();
 	
 	KTScene *scene = m_project->scene(scenePosition);
 	if ( scene )
@@ -237,9 +240,9 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
 				QGraphicsItem *item = frame->item(position);
 				if ( item )
 				{
-					QDomDocument doc;
-					if ( ! doc.setContent( xml ) ) return false;
-					int toType = doc.documentElement().attribute( "type").toInt();
+// 					QDomDocument doc;
+// 					if ( ! doc.setContent( xml ) ) return false;
+// 					int toType = doc.documentElement().attribute( "type").toInt();
 					
 					if ( toType == item->type() ) return false;
 					
@@ -291,11 +294,11 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
 
 bool KTCommandExecutor::transformItem(KTItemResponse *response)
 {
-// 	D_FUNCINFOX("items");
+	D_FUNCINFOX("items");
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
-	int position = response->frameIndex();
+	int position = response->itemIndex();
 	QString xml = response->arg().toString();
 	
 	KTScene *scene = m_project->scene(scenePosition);
@@ -334,12 +337,14 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
 
 bool KTCommandExecutor::setPathItem( KTItemResponse *response )
 {
-// D_FUNCINFOX("items");
+	D_FUNCINFOX("items");
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
-	int position = response->frameIndex();
+	int position = response->itemIndex();
 	QString xml = response->arg().toString();
+	SHOW_VAR(position);
+	
 	
 	KTScene *scene = m_project->scene(scenePosition);
 	
