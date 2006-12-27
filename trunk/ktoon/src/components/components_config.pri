@@ -12,3 +12,5 @@ include($$DLIB_DIR/dlib.pri)
 
 include(../../../ktconfig.pri)
 
+QT += xml
+

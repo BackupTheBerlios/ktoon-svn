@@ -183,7 +183,6 @@ bool KTCommandExecutor::renameScene(KTSceneResponse *response)
 	
 	scene->setSceneName( newName );
 	
-// 	emit commandExecuted(&request, m_state);
 	emit responsed(response,m_state);
 	return true;
 }
