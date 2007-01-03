@@ -33,6 +33,7 @@ class KTPaintAreaEvent;
 
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
+ * @todo REMOVE!!
 */
 class STORE_EXPORT KTAbstractProjectRequestHandler
 {

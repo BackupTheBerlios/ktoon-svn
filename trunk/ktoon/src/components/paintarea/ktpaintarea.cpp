@@ -58,6 +58,7 @@
 #ifdef QT_OPENGL_LIB
 
 #include <QGLWidget>
+#include <QGLFramebufferObject>
 
 class GLDevice : public QGLWidget
 {
@@ -66,24 +67,12 @@ class GLDevice : public QGLWidget
 		{
 			makeCurrent();
 		}
-		~GLDevice() {  };
+		~GLDevice() {};
 		
 	protected:
 		void initializeGL()
 		{
-// 			glShadeModel(GL_FLAT);
 			glDisable(GL_DEPTH_TEST);
-			
-			glEnable( GL_LINE_SMOOTH );
-			glEnable( GL_BLEND );
-			glEnable( GL_POINT_SMOOTH );
-			glEnable(GL_POLYGON_SMOOTH );
-			glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST  );
-			
-// 			glDepthFunc(GL_LESS);
-// 			glEnable(GL_DEPTH_TEST);
-// 			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		}
 };
 
@@ -94,13 +83,11 @@ class GLDevice : public QGLWidget
 
 KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(parent), m_grid(0), m_tool(0), m_isDrawing(false), m_project(project), m_currentSceneIndex(0), m_drawGrid(false), m_angle(0)
 {
-// 	setMouseTracking(true);
-	
 	m_brushManager = new KTBrushManager(this);
 	m_rotator = new KTPaintAreaRotator(this, this);
 	m_inputInformation = new KTInputDeviceInformation(this);
 	
-	m_drawingRect = QRectF(QPointF(0,0), QSizeF( 500, 400 ) ); // FIXME: parametrizable
+	m_drawingRect = QRectF(QPointF(0,0), QSizeF( 500, 400 ) ); // FIXME: configurable
 	
 	setCurrentScene( 0 );
 	if ( scene() )
@@ -110,7 +97,6 @@ KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : QGraphicsView(p
 	
 	centerDrawingArea();
 	
-// 	setViewport(new KTImageDevice() );
 	setUseOpenGL( false );
 	setInteractive ( true );
 	
@@ -169,6 +155,7 @@ void KTPaintArea::setCurrentScene(int index)
 	else
 	{
 		setDragMode(QGraphicsView::NoDrag);
+		setScene(0);
 	}
 }
 
@@ -249,7 +236,7 @@ bool KTPaintArea::drawGrid() const
 
 void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 {
-	if ( !scene() ) return;
+	if ( !canPaint() ) return;
 	
 	QMouseEvent *eventMapped = mapMouseEvent( event );
 	
@@ -259,19 +246,19 @@ void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 	
 	if ( event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
 	{
-		
 		m_isDrawing = false;
 	}
 	else if (m_tool )
 	{
-		if ( event->buttons() == Qt::LeftButton )
+		KTScene *sscene = qobject_cast<KTScene *>(scene());
+		QGraphicsView::mousePressEvent(event);
+		
+		if ( event->buttons() == Qt::LeftButton && !sscene->currentFrame()->isLocked() )
 		{
-			QGraphicsView::mousePressEvent(event);
-			
 			m_tool->begin();
 			
 			m_isDrawing = true;
-			m_tool->press(m_inputInformation, m_brushManager,  qobject_cast<KTScene *>(scene()), this );
+			m_tool->press(m_inputInformation, m_brushManager, sscene, this );
 		}
 		else if ( event->buttons() == Qt::RightButton )
 		{
@@ -302,12 +289,10 @@ void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 				copy->setEnabled(false);
 			}
 			
-			
 			if ( m_copiesXml.isEmpty() )
 			{
 				paste->setEnabled(false);
 			}
-			
 			
 			if ( QMenu *toolMenu = m_tool->menu() )
 			{
@@ -317,7 +302,7 @@ void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 			
 			menu->exec(event->globalPos());
 			
-			QGraphicsView::mousePressEvent(event);
+// 			QGraphicsView::mousePressEvent(event);
 		}
 	}
 }
@@ -341,6 +326,8 @@ void KTPaintArea::mouseDoubleClickEvent( QMouseEvent *event)
 
 void KTPaintArea::mouseMoveEvent ( QMouseEvent * event )
 {
+	if ( !canPaint()) return;
+	
 	QMouseEvent *eventMapped = mapMouseEvent( event );
 	
 	m_inputInformation->updateFromMouseEvent( eventMapped );
@@ -383,6 +370,7 @@ void KTPaintArea::mouseMoveEvent ( QMouseEvent * event )
 
 void KTPaintArea::mouseReleaseEvent(QMouseEvent *event)
 {
+	if ( !canPaint()) return;
 	QMouseEvent *eventMapped = mapMouseEvent( event );
 	
 	m_inputInformation->updateFromMouseEvent( eventMapped );
@@ -420,23 +408,35 @@ QMouseEvent *KTPaintArea::mapMouseEvent(QMouseEvent *event) const
 
 void KTPaintArea::frameResponse(KTFrameResponse *event)
 {
-	if ( !scene() ) return;
-	
 	switch(event->action())
 	{
 		case KTProjectRequest::Select:
 		{
 			setCurrentScene( event->sceneIndex() );
-			qobject_cast<KTScene *>(scene())->setCurrentFrame(event->layerIndex(), event->frameIndex());
 			
-			qobject_cast<KTScene *>(scene())->drawPhotogram(event->frameIndex());
+			if ( !scene() ) return;
+			
+			KTScene *sscene = dynamic_cast<KTScene *>(scene());
+			
+			sscene->setCurrentFrame(event->layerIndex(), event->frameIndex());
+			sscene->drawPhotogram(event->frameIndex());
 			
 			if ( event->action() == KTProjectRequest::Select )
 			{
 				if ( m_tool ) m_tool->init( this );
 			}
 			
-			dDebug("paint area") << "frame: " << event->frameIndex() << " " << "layer: " << event->layerIndex();
+			dDebug("paintarea") << "frame: " << event->frameIndex() << " " << "layer: " << event->layerIndex();
+		}
+		break;
+		case KTProjectRequest::Lock:
+		{
+			KTScene *sscene = dynamic_cast<KTScene *>(scene());
+			
+			if ( sscene->currentFrameIndex() == event->frameIndex() )
+			{
+				viewport()->update();
+			}
 		}
 		break;
 		default:
@@ -562,6 +562,38 @@ void KTPaintArea::drawBackground(QPainter *painter, const QRectF &rect)
 	painter->setRenderHint(QPainter::Antialiasing, hasAntialiasing);
 	
 	painter->restore();
+}
+
+void KTPaintArea::drawForeground( QPainter *painter, const QRectF &rect )
+{
+	if ( KTScene *sscene = qobject_cast<KTScene *>(scene()) )
+	{
+		if ( KTFrame *frame = sscene->currentFrame() )
+		{
+			if ( frame->isLocked() )
+			{
+				painter->fillRect(rect, QColor(201,201,201, 200));
+				
+				painter->setFont(QFont("Arial", 30) );
+				QFontMetricsF fm(painter->font());
+				QString text = tr("Locked");
+				
+				painter->drawText(QPointF(sscene->sceneRect().topRight().x() - fm.width(text), (sscene->sceneRect().topRight().y() + fm.height()) / 2), text);
+			}
+		}
+	}
+}
+
+bool KTPaintArea::canPaint() const
+{
+	if ( ! scene() ) return false;
+	
+	if ( KTScene *sscene = dynamic_cast<KTScene *>(scene()) )
+	{
+		if (sscene->currentFrameIndex() >= 0 && sscene->currentLayerIndex() >= 0) return true;
+	}
+	
+	return false;
 }
 
 void KTPaintArea::centerDrawingArea()
@@ -736,11 +768,10 @@ void KTPaintArea::pasteItems()
 	
 	foreach(QString xml, m_copiesXml)
 	{
-// 		KTProjectRequest event(KTProjectRequest::Add, currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), currentScene->currentFrame()->graphics().count(), xml);
-// 		emit requestTriggered(&event);
+		KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), currentScene->currentFrame()->graphics().count(), KTProjectRequest::Add, xml);
+		
+		emit requestTriggered(&event);
 	}
-	
-// 	dDebug(2) << "Paste in : " << currentScene->currentFrameIndex();
 }
 
 void KTPaintArea::cutItems()
@@ -815,11 +846,9 @@ void KTPaintArea::setPreviousFramesOnionSkinCount(int n)
 
 void KTPaintArea::addSelectedItemsToLibrary()
 {
-	dDebug("paint area") << "Adding to library";
-	// TODO: crear un request para añadir a la lib
+	dDebug("paintarea") << "Adding to library";
 	
 	LibraryDialog dialog;
-	
 	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
 	
 	foreach (QGraphicsItem *item, selecteds )
@@ -832,33 +861,17 @@ void KTPaintArea::addSelectedItemsToLibrary()
 		return;
 	}
 	
-	
-	QDomDocument doc;
-	QDomElement library = doc.createElement("library");
-	doc.appendChild( library );
-	
 	foreach (QGraphicsItem *item, selecteds )
 	{
 		if ( KTAbstractSerializable *itemSerializable = dynamic_cast<KTAbstractSerializable *>(item) )
 		{
 			QString symName = dialog.symbolName( item );
 			
-			QDomElement symbol = doc.createElement("symbol");
-			symbol.setAttribute("name", symName);
-			symbol.setAttribute("type", KTLibraryObject::Item);
+			KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTLibraryObject::Item, KTProjectRequest::Add, symName );
 			
-			symbol.appendChild(itemSerializable->toXml(doc));
-			
-			library.appendChild( symbol );
+			emit requestTriggered(&request);
 		}
 	}
-	
-	dDebug("paint area") << doc.toString();
-	
-	// FIXME FIXME FIXME
-// 	KTProjectRequest event(KTProjectRequest::Add, KTProjectRequest::Library, doc.toString(0));
-// 	
-// 	emit requestTriggered(&event);
 }
 
 

@@ -242,8 +242,6 @@ bool KTScene::moveLayer(int from, int to)
 
 void KTScene::setCurrentFrame(int layer, int frame)
 {
-	if ( layer < 0 || frame < 0 ) return;
-	
 	m_framePosition.layer = layer;
 	m_framePosition.frame = frame;
 	

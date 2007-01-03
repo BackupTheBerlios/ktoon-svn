@@ -48,23 +48,16 @@ void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* re
 {
 	// Esto llega desde el proyecto antes de ejecutar el comando!
 	
-// 	dDebug("net") << "Sending: " << request->data().toString();
-	
-// 	KTProjectRequest *toPackage = request->clone();
-// 	KTRequestPackage package(toPackage);
-	
 	// TODO: Guardar una copia de los eventos o paquetes en una cola y reenviar a la GUI cuando llegue el paquete de que todo va bien desde el servidor!
 	
 	if ( m_socket->state() == QAbstractSocket::ConnectedState )
 	{
 		m_socket->sendToServer( request->xml() );
 	}
-// 	
-// 	delete toPackage;
 }
 
 
-bool KTNetProjectManagerHandler::commandExecuted(KTProjectRequest *request, int state)
+bool KTNetProjectManagerHandler::commandExecuted(KTProjectResponse *response, int state)
 {
 	if ( state == KTCommandExecutor::Do ) return true;
 	
@@ -86,9 +79,7 @@ bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
 	dDebug("net") << "Connecting to " << netparams->server() << ":" << netparams->port();
 	
 	m_socket->connectToHost(netparams->server(), netparams->port());
-	m_socket->waitForConnected(1000);
-	
-	return true;
+	return m_socket->waitForConnected(1000);
 }
 
 bool KTNetProjectManagerHandler::closeProject()

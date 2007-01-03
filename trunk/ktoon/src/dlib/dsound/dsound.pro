@@ -17,4 +17,4 @@ HEADERS += daudioengineiface.h \
            daudioplayer.h 
 SOURCES += daudioplayer.cpp 
 
-
+include(../dlibconfig.pri)

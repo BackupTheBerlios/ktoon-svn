@@ -1,5 +1,6 @@
 
 require 'qmake'
+require 'detectos'
 require 'rexml/parsers/sax2parser'
 require 'rexml/sax2listener'
 
@@ -11,16 +12,22 @@ class Test
 	include REXML
 	
 	attr_reader :rules
+	attr_reader :optional
 	
-	def initialize(rulesPath)
+	def initialize(rulesPath, qmake)
 		@rules = rulesPath
-		@qmake = QMake.new
+		@qmake = qmake
+		
+		@optional = false
 	end
 	
 	def run(config)
 		parser = Parser.new
+		parser.os = DetectOS::OS[DetectOS.whatOS].to_s.downcase
 		
 		return false if not parser.parse(@rules) or parser.name.empty?
+		
+		@optional = parser.optional
 		
 		Info.info << "Checking for " << parser.name << "... "
 		
@@ -37,17 +44,27 @@ class Test
 				@qmake.run( "'INCLUDEPATH += #{parser.includes.join(" ")}' 'LIBS += #{parser.libs.join(" ")}'" ,true)
 				if not @qmake.compile
 					Dir.chdir(cwd)
+					
 					print "[ FAIL ]\n"
+					
+					# Enviar solución
+					solution = parser.solution
+					
+					Info.warn << "Seems like you are running " << parser.os << $endl
+					Info.warn << "You will need to install " << solution[:package] << $endl
+					Info.warn << "URL: " << solution[:url] << $endl
+					Info.warn << solution[:comment] << $endl
+					
 					return false
 				end
 			else
 				Dir.chdir(cwd)
-				print "[ FAIL ]\n"
+				raise QonfException.new("'#{dir}' isn't a directory!")
 				return false
 			end
 		else
 			Dir.chdir(cwd)
-			print "[ FAIL ]\n"
+			raise QonfException.new("'#{dir}' doesn't exists!")
 			return false
 		end
 		
@@ -64,10 +81,18 @@ class Test
 		parser.defines.each { |define|
 			config.addDefine(define)
 		}
+
+		parser.modules.each { |mod|
+			config.addModule(mod)
+		}
 		
 		print "[ OK ]\n"
 		
 		return true
+	end
+	
+	def to_s
+		@rules
 	end
 	
 	private
@@ -79,6 +104,10 @@ class Test
 		attr_reader :defines
 		attr_reader :includes
 		attr_reader :libs
+		attr_reader :modules
+		attr_accessor :os
+		attr_reader :solution
+		attr_reader :optional
 		
 		def initialize
 			@name = ""
@@ -88,6 +117,10 @@ class Test
 			@defines = []
 			@includes = []
 			@libs = []
+			@modules = []
+			@solution = {}
+			@os = ""
+			@optional = false
 		end
 		
 		def start_document
@@ -97,8 +130,9 @@ class Test
 		end
 		
 		def start_element( uri, localname, qname, attributes)
-			
 			case qname
+				when "qonf"
+					@optional = (attributes["optional"] == "true")
 				when "test"
 					@section = qname
 					@name = attributes["name"].to_s
@@ -119,6 +153,10 @@ class Test
 				when "lib"
 					if @section  == "provide"
 						@libs << attributes["path"]
+					end
+				when "module"
+					if @section == "provide"
+						@modules << attributes["value"]
 					end
 				when "command"
 					if @section == "provide"
@@ -149,6 +187,24 @@ class Test
 							}
 						end
 					end
+				when "solution"
+					@section = "solution"
+				when "windows"
+					if @os == qname and @solution.size == 0
+						fillSolution(attributes)
+					end
+				when "macosx"
+					if @os == qname and @solution.size == 0
+						fillSolution(attributes)
+					end
+				when "linux"
+					if @os == qname and @solution.size == 0
+						fillSolution(attributes)
+					end
+				when "distribution"
+					if @os == attributes["name"].to_s.downcase and @solution.size == 0
+						fillSolution(attributes)
+					end
 			end
 			
 			@current_tag = qname
@@ -178,6 +234,13 @@ class Test
 			end
 			
 			return true
+		end
+		
+		private
+		def fillSolution(attributes)
+			@solution[:package] = attributes["package"]
+			@solution[:url] = attributes["url"]
+			@solution[:comment] = attributes["comment"]
 		end
 	end
 end

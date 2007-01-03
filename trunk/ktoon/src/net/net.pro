@@ -15,3 +15,5 @@ staticlib
 TEMPLATE = lib
 include(net_config.pri)
 TARGET = ktnet
+
+include(../../ktconfig.pri)

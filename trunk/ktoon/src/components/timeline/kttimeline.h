@@ -30,6 +30,7 @@
 class KTLayerManager;
 class KTFramesTable;
 class KTProjectActionBar;
+class KTFramesTableItem;
 
 /**
  * @author David Cuadrado \<krawek@toonka.com\>
@@ -60,6 +61,10 @@ class KTTimeLine : public KTModuleWidgetBase
 		
 	private slots:
 		void requestCommand(int action);
+		bool requestFrameAction(int action, int framePos = -1, int layerPos = -1, int scenePos = -1, const QVariant &arg = QVariant());
+		bool requestLayerAction(int action, int layerPos = -1, int scenePos = -1, const QVariant &arg = QVariant());
+		bool requestSceneAction(int action, int scenePos = -1, const QVariant &arg = QVariant());
+		
 		void emitRequestRenameLayer(int layer, const QString &name);
 		
 	private:

@@ -19,9 +19,9 @@
  ***************************************************************************/
 
 #include "ktabstractprojectmanagerhandler.h"
+#include "ktprojectresponse.h"
 
-KTAbstractProjectHandler::KTAbstractProjectHandler(QObject *parent)
-	: QObject(parent)
+KTAbstractProjectHandler::KTAbstractProjectHandler(QObject *parent) : QObject(parent)
 {
 }
 
@@ -43,7 +43,7 @@ bool KTAbstractProjectHandler::closeProject()
 	return true;
 }
 
-bool KTAbstractProjectHandler::commandExecuted(KTProjectRequest *request, int state)
+bool KTAbstractProjectHandler::commandExecuted(KTProjectResponse *response, int state)
 {
 	return true;
 }

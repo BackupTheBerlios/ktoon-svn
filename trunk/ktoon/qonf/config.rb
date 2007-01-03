@@ -2,13 +2,7 @@
 module RQonf
 
 class Config
-	def initialize(path)
-		if path[0].chr == File::SEPARATOR
-			@path = path
-		else
-			@path = "#{Dir.getwd}/#{path}"
-		end
-		
+	def initialize
 		@includePath = []
 		@libs = []
 		@modules = []
@@ -39,8 +33,14 @@ class Config
 		scope
 	end
 	
-	def save
-		File.open(@path, "w") { |f|
+	def save(path)
+		if path[0].chr == File::SEPARATOR
+			path = path
+		else
+			path = "#{Dir.getwd}/#{path}"
+		end
+		
+		File.open(path, "w") { |f|
 			f << "# Generated automatically at #{Time.now}! PLEASE DO NOT EDIT!"<< $endl
 			if not @includePath.empty?
 				f << "INCLUDEPATH += " << @includePath.uniq.join(" ") << $endl

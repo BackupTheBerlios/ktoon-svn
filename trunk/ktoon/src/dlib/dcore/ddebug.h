@@ -407,6 +407,11 @@ inline DNDebug dDebug(int = 0,int = DDefault)
 	return DNDebug();
 }
 
+inline DNDebug dDebug(const QString &, int = DDefault)
+{
+	return DNDebug();
+}
+
 #define dFatal dDebug
 #define dError dDebug
 #define dWarning dDebug

@@ -32,10 +32,13 @@ class KTLibrary : public KTLibraryFolder
 	Q_OBJECT;
 	
 	public:
+		enum Class
+		{
+			Symbol = 0x01,
+			Folder
+		};
 		KTLibrary(const QString &id, QObject *parent = 0);
 		~KTLibrary();
-		
-		
 };
 
 #endif

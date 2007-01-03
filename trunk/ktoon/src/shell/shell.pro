@@ -4,10 +4,17 @@
 # Target is an application:  ../../bin/ktoon.bin
 
 INSTALLS += ktdata \
-            target 
+            target \
+	    launcher
+
 target.path = /bin/ 
 ktdata.files += data/* 
 ktdata.path = /data 
+
+launcher.path = /
+launcher.files += "../../install/ktoon"
+
+
 TRANSLATIONS += data/translations/ktoon_es.ts \
                 data/translations/ktoon_fr.ts \
                 data/translations/ktoon_ru.ts 
@@ -33,9 +40,9 @@ SOURCES += main.cpp \
            ktlocalprojectmanagerhandler.cpp 
 include(shell_config.pri)
 include(../../ktconfig.pri)
-KDEV_QTVER = 4
 TARGET = ../../bin/ktoon.bin
 TEMPLATE = app
+
 linux-g++{
   TARGETDEPS += ../../src/dlib/dcore/libdcore.so \
   ../../src/dlib/dgui/libdgui.so \
@@ -53,3 +60,4 @@ linux-g++{
   ../../src/components/colorpalette/libcolorpalette.a \
   ../../src/components/scenes/libscenes.a
 }
+

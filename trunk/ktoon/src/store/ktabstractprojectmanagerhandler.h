@@ -24,7 +24,7 @@
 #include <qobject.h>
 #include "ktglobal_store.h"
 
-class KTProjectRequest;
+class KTProjectResponse;
 class KTProjectRequest;
 class KTProjectManagerParams;
 class KTProjectCommand;
@@ -44,7 +44,7 @@ class STORE_EXPORT KTAbstractProjectHandler : public QObject
 		virtual bool setupNewProject(KTProjectManagerParams *params);
 		virtual bool closeProject();
 		virtual void handleProjectRequest(const KTProjectRequest *request) = 0;
-		virtual bool commandExecuted(KTProjectRequest *request, int state);
+		virtual bool commandExecuted(KTProjectResponse *response, int state);
 		
 	signals:
 		void sendCommand(const KTProjectRequest *event, bool addToStack);

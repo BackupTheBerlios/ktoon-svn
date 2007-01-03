@@ -58,6 +58,8 @@ int main( int argc, char ** argv )
 {
 	KTApplication application( argc, argv );
 	
+	qsrand( ::time(0) );
+	
 	CrashHandler::init();
 	
 #ifdef ENABLE_KTOONSTYLE

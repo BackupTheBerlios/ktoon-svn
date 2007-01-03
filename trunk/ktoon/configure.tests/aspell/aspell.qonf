@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<qonf>
+<qonf optional="true" >
 	<test name="Aspell">
 		<dir path="." />
 	</test>
@@ -12,11 +12,11 @@
 		</libs>
 	</provide>
 	<solution>
-		<linux package="aspell" url="" comment="" >
-			<distribution name="gentoo" package="aspell" url="" comment="" />
-			<distribution name="ubuntu" package="aspell-dev" url="" comment="" />
+		<linux package="aspell" url="http://aspell.net/" comment="" >
+			<distribution name="gentoo" package="aspell" url="http://aspell.net/" comment="Try: emerge aspell" />
+			<distribution name="ubuntu" package="libaspell-dev" url="http://aspell.net/" comment="Try: apt-get install libaspell-dev" />
 		</linux>
-		<windows package="aspell" url="" comment="" />
-		<macosx package="aspell" url="" comment="" />
+		<windows package="aspell" url="http://aspell.net/" comment="" />
+		<macosx package="aspell" url="http://aspell.net/" comment="" />
 	</solution>
 </qonf>

@@ -99,6 +99,13 @@ class KTItemResponse : public KTFrameResponse
 		int m_itemIndex;
 };
 
+class KTLibraryResponse : public KTProjectResponse
+{
+	public:
+		KTLibraryResponse(int part, int action);
+		~KTLibraryResponse();
+};
+
 class KTProjectResponseFactory
 {
 	private:

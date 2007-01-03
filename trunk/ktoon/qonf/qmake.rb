@@ -5,37 +5,53 @@ require 'extensions'
 module RQonf
 
 class QMake
-	def initialize(path = nil)
-		if path.nil?
-			paths = [ "qmake-qt4", "qmake4", "qmake" ]
-			
-			close_stderr
-			paths.each { |path|
-				begin
-					version = []
-					
-					IO.popen("#{path} -query QT_VERSION") { |prc|
-						version = prc.readlines.join("").split(".")
-					}
-					
-					if version.first == "4"
-						@path = path
-						break
-					end
-				end
-			}
-			
-			open_stderr
-			
-		else
-			@path = path
-		end
-		
-		if @path.nil?
-			raise Exception.exception("Can't find valid qmake - qt4")
+	def initialize
+		if not findQMake("4.0.0")
+			raise QonfException.new("Can't find valid qmake - qt4")
 		end
 		
 		@make = "make"
+	end
+	
+	def findQMake(minqtversion)
+		paths = [ "qmake-qt4", "qmake4", "qmake" ]
+		
+		close_stderr
+		
+		minver = minqtversion.split(".")
+		paths.each { |path|
+			begin
+				version = []
+				ok = true
+				
+				IO.popen("#{path} -query QT_VERSION") { |prc|
+					version = prc.readlines.join("").split(".")
+				}
+				
+				next if $? != 0
+				
+				version.size.times { |i|
+					if version.size < i and minver.size >= 2
+						break
+					end
+					
+					if version[i] < minver[i]
+						ok = false
+						break
+					end 
+				}
+				
+				if ok
+					@path = path
+					open_stderr
+					return ok
+				end
+			end
+		}
+		
+		open_stderr
+
+		return false
 	end
 	
 	def query(var)
@@ -64,11 +80,14 @@ class QMake
 		}
 		
 		times = 0
-		while $? == 512 and times <= 10
+		endcode = 512
+		
+		while endcode == 512 and times <= 3
 			IO.popen("#{@make}", "r") { |c|
 				output = c.readlines
 			}
 			
+			endcode = $?
 			times += 1
 		end
 		

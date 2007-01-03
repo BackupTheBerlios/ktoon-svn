@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<qonf>
+<qonf optional="true">
 	<test name="FFmpeg">
 		<dir path="." />
 	</test>
@@ -13,11 +13,11 @@
 		</libs>
 	</provide>
 	<solution>
-		<linux package="ffmpeg" url="" comment="" >
-			<distribution name="gentoo" package="ffmpeg" url="" comment="" />
-			<distribution name="ubuntu" package="ffmpeg-dev" url="" comment="" />
+		<linux package="ffmpeg" url="http://ffmpeg.sourceforge.net/" comment="" >
+			<distribution name="gentoo" package="ffmpeg" url="http://ffmpeg.sourceforge.net/" comment="Try: emerge ffmpeg" />
+			<distribution name="ubuntu" package="libavcodec-dev libavformat-dev" url="http://ffmpeg.sourceforge.net/" comment="Try: apt-get install libavformat-dev libavcodec-dev" />
 		</linux>
-		<windows package="ffmpeg" url="" comment="" />
-		<macosx package="ffmpeg" url="" comment="" />
+		<windows package="ffmpeg" url="http://ffmpeg.sourceforge.net/" comment="" />
+		<macosx package="ffmpeg" url="http://ffmpeg.sourceforge.net/" comment="" />
 	</solution>
 </qonf>

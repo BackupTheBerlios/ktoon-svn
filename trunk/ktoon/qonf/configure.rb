@@ -2,6 +2,7 @@
 require 'test'
 require 'config'
 require 'info'
+require 'qonfexception'
 
 module RQonf
 
@@ -13,6 +14,15 @@ class Configure
 		@options = {}
 		parseArgs(args)
 		
+		@qmake = QMake.new
+	end
+
+	def hasArgument?(arg)
+		@options.has_key?(arg)
+	end
+
+	def argumentValue(arg)
+		@options[arg].to_s
 	end
 	
 	def setTestDir(dir)
@@ -22,32 +32,11 @@ class Configure
 	def verifyQtVersion(minqtversion)
 		Info.info << "Checking for Qt >= " << minqtversion << "... "
 		
-		ok = true
-		begin
-			qmake = QMake.new
-			minver = minqtversion.split(".")
-			qtver = qmake.query("QT_VERSION").split(".")
-			
-			qtver.size.times { |i|
-				if minver.size < i and minver.size >= 2
-					break
-				end
-				
-				if qtver[i] < minver[i]
-					ok = false
-					break
-				end 
-			}
-		rescue
-			ok = false
-		end
-		
-		if ok
+		if @qmake.findQMake(minqtversion)
 			print "[OK]\n"
 		else
 			print "[FAILED]\n"
-			
-			raise Exception.exception("Invalid Qt version")
+			raise QonfException.new("Invalid Qt version")
 		end
 	end
 	
@@ -56,24 +45,17 @@ class Configure
 		findTest(@testsDir)
 	end
 	
-	def createConfig(path)
-		config = RQonf::Config.new(path)
-		
-		
+	def runTests(config)
 		@tests.each { |test|
-			if not test.run(config)
-				puts "Fallo #{test.rules}"
+			if not test.run(config) and not test.optional
+				raise QonfException.new("Required")
 			end
 		}
-		
-		config
 	end
 	
 	def createMakefiles
-		qmake = QMake.new
-		
 		Info.info << "Creating makefiles..." << $endl
-		qmake.run("", true)
+		@qmake.run("", true)
 		
 		return if @options['prefix'].nil?
 		
@@ -106,16 +88,16 @@ class Configure
 		while args.size > optc
 			arg = args[optc].strip
 			
-			if arg =~ /^--(\w*)={0,1}([\W\w]*)/
-				opt = $1
-				val = $2
-				
+			if arg =~ /^--([\w-]*)={0,1}([\W\w]*)/
+				opt = $1.strip
+				val = $2.strip
+
 				@options[opt] = val
 				
 				last_opt = opt
 			elsif arg =~ /^-(\w)/
-				@options[$1] = nil
-				last_opt = $1
+				@options[$1.strip] = nil
+				last_opt = $1.strip
 			else
 				# arg is an arg for option
 				if not last_opt.to_s.empty? and @options[last_opt].to_s.empty?
@@ -142,7 +124,7 @@ class Configure
 					findTest(file)
 				end
 			elsif file =~ /.qonf$/
-				@tests << Test.new(file)
+				@tests << Test.new(file, @qmake)
 			end
 		}
 	end
@@ -172,8 +154,10 @@ if __FILE__ == $0
 		conf.verifyQtVersion("4.2.0")
 		conf.createTests
 		conf.createConfig("config.pri")
-	rescue => err
+	rescue QonfException => err
 		Info.error << "Configure failed. error was: #{err.message}\n"
+	rescue => err
+		Info.error << "General failure: #{err.message}\n" << err.backtrace
 	end
 end
 

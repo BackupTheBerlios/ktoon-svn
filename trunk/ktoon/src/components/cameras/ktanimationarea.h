@@ -56,6 +56,8 @@ class KTOON_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectResp
 		virtual void render();
 		virtual void play();
 		virtual void stop();
+		virtual void nextFrame();
+		virtual void previousFrame();
 		
 		
 	private slots:

@@ -150,6 +150,8 @@ KTViewCamera::KTViewCamera(KTProject *project, QWidget *parent) : QMainWindow(pa
 	
 	connect(m_bar, SIGNAL(play()), this, SLOT(doPlay()));
 	connect(m_bar, SIGNAL(stop()), m_animationArea, SLOT(stop()));
+	connect(m_bar, SIGNAL(ff()), m_animationArea, SLOT(nextFrame()));
+	connect(m_bar, SIGNAL(rew()), m_animationArea, SLOT(previousFrame()));
 #else
 	DCircleButtonBar *m_bar = new DCircleButtonBar(40);
 	layout->addWidget(m_bar, 0, Qt::AlignTop | Qt::AlignCenter );

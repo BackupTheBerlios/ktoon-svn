@@ -110,8 +110,9 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectResponseHandle
 // 		void libraryRequest(KTLibraryRequest *request);
 		void projectResponse(KTProjectResponse *projectResponse);
 		void drawBackground(QPainter *painter, const QRectF &rect);
+		void drawForeground( QPainter *painter, const QRectF &rect );
 		
-		
+		bool canPaint() const;
 		
 	private:
 		QGraphicsRectItem *m_grid;

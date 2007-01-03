@@ -180,6 +180,9 @@ class KTFramesTable : public QTableView
 
 		void currentItemChanged(KTFramesTableItem *current, KTFramesTableItem *previous);
 		void itemSelectionChanged();
+		
+		void frameRequest(int action, int frame, int layer, int scene, const QVariant &argument = QVariant());
+		
 
 	protected:
 		QModelIndex indexFromItem(KTFramesTableItem *item) const;

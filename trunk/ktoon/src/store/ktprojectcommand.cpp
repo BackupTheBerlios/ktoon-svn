@@ -44,6 +44,8 @@ KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, const KTProjectR
 	
 	m_response = parser.response();
 	
+	if ( !m_response ) qFatal("Unparsed response!");
+	
 	switch( m_response->part() )
 	{
 		case KTProjectRequest::Frame:

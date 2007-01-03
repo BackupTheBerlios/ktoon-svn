@@ -66,7 +66,7 @@ QByteArray KTProjectResponse::data() const
 
 // SCENE
 
-KTSceneResponse::KTSceneResponse(int part, int action) : KTProjectResponse(part, action), m_sceneIndex(0)
+KTSceneResponse::KTSceneResponse(int part, int action) : KTProjectResponse(part, action), m_sceneIndex(-1)
 {
 }
 
@@ -156,6 +156,15 @@ void KTItemResponse::setItemIndex(int index)
 	m_itemIndex = index;
 }
 
+KTLibraryResponse::KTLibraryResponse(int part, int action) : KTProjectResponse(part, action)
+{
+}
+
+KTLibraryResponse::~KTLibraryResponse()
+{
+}
+
+
 
 
 KTProjectResponseFactory::KTProjectResponseFactory()
@@ -190,9 +199,14 @@ KTProjectResponse *KTProjectResponseFactory::create(int part, int action)
 			return new KTItemResponse(part, action);
 		}
 		break;
+		case KTProjectRequest::Library:
+		{
+			return new KTLibraryResponse(part, action);
+		}
+		break;
 		default:
 		{
-			qFatal("Unknown PART");
+			qFatal("Unknown PART"); // TODO: REMOVE ME
 		}
 		break;
 	}

@@ -32,6 +32,8 @@
 #include "ktabstractprojectmanagerhandler.h"
 
 #include "ktprojectresponse.h"
+#include "ktrequestbuilder.h"
+#include "ktrequestparser.h"
 
 #include <ddebug.h>
 
@@ -92,14 +94,16 @@ void KTProjectManager::setupNewProject(KTProjectManagerParams *params)
 	
 	m_isOpen = true;
 	
-// 	// Add by default a scene, layer, frame
+	KTProjectRequest request = KTRequestBuilder::createSceneRequest(0, KTProjectRequest::Add, QString());
 	
-	// FIXME: Hacer mediante comandos!
+	handleProjectRequest(&request);
 	
+	request = KTRequestBuilder::createLayerRequest(0, 0, KTProjectRequest::Add, QString());
 	
-// 	m_commandExecutor->createScene( 0 );
-// 	m_commandExecutor->createLayer( 0, 0 );
-// 	m_commandExecutor->createFrame( 0, 0, 0 );
+	handleProjectRequest(&request);
+	
+	request = KTRequestBuilder::createFrameRequest(0, 0, 0, KTProjectRequest::Add, QString());
+	handleProjectRequest(&request);
 }
 
 
@@ -203,14 +207,14 @@ QUndoStack *KTProjectManager::undoHistory() const
 void KTProjectManager::emitResponse( KTProjectResponse *response, int state)
 {
 	D_FUNCINFO;
-// 	if ( !m_handler )
-// 	{
+	if ( !m_handler )
+	{
 		emit responsed( response );
-// 	}
-// 	else if ( m_handler->commandExecuted(response, state ) )
-// 	{
-// 		emit responsed( response );
-// 	}
+	}
+	else if ( m_handler->commandExecuted(response, state ) )
+	{
+		emit responsed( response );
+	}
 }
 
 

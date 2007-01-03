@@ -63,8 +63,13 @@ void KTAnimationArea::setFPS(int fps)
 
 void KTAnimationArea::paintEvent(QPaintEvent *)
 {
+	if ( m_currentFramePosition >= 0 && m_currentFramePosition < m_photograms.count() )
+	{
+		m_renderCamera = m_photograms[m_currentFramePosition];
+	}
+	
 	QPainter painter;
-
+	
 	painter.begin(this);
 	painter.drawImage(QPoint(0, 0), m_renderCamera);
 }
@@ -94,6 +99,25 @@ void KTAnimationArea::stop()
 	repaint();
 }
 
+void KTAnimationArea::nextFrame()
+{
+	if ( ! m_isRendered ) render();
+	
+	if ( m_currentFramePosition >= m_photograms.count() ) return;
+	
+	m_currentFramePosition += 1;
+	repaint();
+}
+
+void KTAnimationArea::previousFrame()
+{
+	if ( ! m_isRendered ) render();
+	
+	if ( m_currentFramePosition < 1 ) return;
+	m_currentFramePosition -= 1;
+	repaint();
+}
+
 
 void KTAnimationArea::advance()
 {
@@ -106,7 +130,6 @@ void KTAnimationArea::advance()
 		
 		if ( m_currentFramePosition < m_photograms.count() )
 		{
-			m_renderCamera = m_photograms[m_currentFramePosition];
 			repaint();
 			m_currentFramePosition++;
 		}
@@ -123,7 +146,6 @@ void KTAnimationArea::frameResponse(KTFrameResponse *)
 
 void KTAnimationArea::layerResponse(KTLayerResponse *)
 {
-	
 }
 
 void KTAnimationArea::sceneResponse(KTSceneResponse *event)

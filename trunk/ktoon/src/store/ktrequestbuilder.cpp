@@ -154,6 +154,34 @@ KTProjectRequest KTRequestBuilder::createSceneRequest(int sceneIndex, int action
 	return KTProjectRequest(doc.toString(0));
 }
 
+KTProjectRequest KTRequestBuilder::createLibraryRequest(int type, int actionId, const QVariant &arg, const QByteArray &data)
+{
+	QDomDocument doc;
+	
+	QDomElement root = doc.createElement("request");
+	
+	QDomElement library = doc.createElement("library");
+	
+	QDomElement symbol = doc.createElement("symbol");
+	symbol.setAttribute("type", type);
+	
+	QDomElement action = doc.createElement("action");
+	action.setAttribute( "id", actionId);
+	action.setAttribute( "arg", arg.toString());
+	action.setAttribute( "part", KTProjectRequest::Library );
+	
+	KTRequestBuilder::appendData( doc, action, data);
+	
+	library.appendChild(action);
+	
+	library.appendChild(symbol);
+	root.appendChild(library);
+	
+	doc.appendChild(root);
+	
+	return KTProjectRequest(doc.toString(0));
+}
+
 void KTRequestBuilder::appendData(QDomDocument &doc, QDomElement &element, const QByteArray &data)
 {
 	if ( !data.isNull() && !data.isEmpty())

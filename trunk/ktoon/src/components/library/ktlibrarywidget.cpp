@@ -236,6 +236,8 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 
 void KTLibraryWidget::emitSelectedComponent()
 {
+	if ( !m_libraryTree->currentItem() ) return;
+	
 	QString symKey = m_libraryTree->currentItem()->text(0);
 	
 	// FIXME FIXME FIXME

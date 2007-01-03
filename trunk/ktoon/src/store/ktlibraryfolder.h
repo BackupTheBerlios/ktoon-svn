@@ -23,9 +23,9 @@
 
 #include <QObject>
 #include <QHash>
+#include "ktlibraryobject.h"
 
 class KTLibraryFolder;
-class KTLibraryObject;
 
 typedef QList<KTLibraryFolder *> Folders;
 typedef QHash<QString, KTLibraryObject *> LibraryObjects;

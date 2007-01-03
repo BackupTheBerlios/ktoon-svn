@@ -64,6 +64,36 @@
 	static QTextBrowser *debugBrowser = 0;
 #endif
 
+
+#ifdef Q_OS_UNIX
+
+static class Colors
+{
+	public:
+		Colors()
+		{
+			m_psb << "\033[90m" << "\033[91m" << "\033[92m" << "\033[93m" << "\033[94m" << "\033[95m" << "\033[96m" << "\033[97m" << "\033[31m" << "\033[32m" << "\033[33m" << "\033[34m" << "\033[35m" << "\033[36m" << "\033[44m" << "\033[38m" << "\033[43m";
+			
+			qsrand(::time(0));
+		}
+		~Colors() {}
+		
+		QString colorize(const QString &area)
+		{
+			if( ! m_colors.contains(area) )
+			{
+				m_colors[area] = m_psb[qrand() % m_psb.size()];
+			}
+			return QString("%1%2\033[0m").arg(m_colors[area]).arg(area);
+		}
+		
+	private:
+		QMap<QString, QString> m_colors;
+		QVector<QString> m_psb;
+} colors;
+
+#endif
+
 static class ConfigReader
 {
 	public:
@@ -180,7 +210,7 @@ static void dDebugOutput(DebugType t, DebugOutput o, const char *data)
 {
 	if ( o == DBoxOutput || o == DBrowserOutput && configReader.forceDisableGUI )
 	{
-		o == DShellOutput;
+		o = DShellOutput;
 		configReader.defaultOutput = DShellOutput;
 	}
 	
@@ -271,7 +301,13 @@ DDebug::DDebug(DebugType t, const QString &area, DebugOutput o) : m_type(t), m_o
 	
 	if ( configReader.showArea && !m_area.isEmpty())
 	{
-		*streamer << m_area << ": ";
+		*streamer << 
+#ifdef Q_OS_UNIX
+				colors.colorize(m_area)
+#else
+				m_area
+#endif
+				<< ": ";
 	}
 	
 	if ( m_output == DDefault )
@@ -477,7 +513,6 @@ DDebug& DDebug::operator<<( const QBrush & b)
 	return *this;
 }
 
-// angie: 5580379
 DDebug& DDebug::operator << (const QWidget* t) 
 {
 	if ( t )

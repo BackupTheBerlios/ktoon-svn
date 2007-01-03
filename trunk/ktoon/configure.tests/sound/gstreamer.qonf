@@ -1,11 +1,12 @@
 <?xml version="1.0" ?>
-<qonf>
+<qonf optional="true">
 	<test name="Gstreamer 0.10">
 		<dir path="." />
 	</test>
 	<provide>
 		<defines>
 			<define value="HAVE_SOUND" />
+			<define value="HAVE_GST10" />
 		</defines>
 		<includes>
 			<command value="pkg-config gstreamer-0.10 --cflags --silence-errors" />
@@ -15,12 +16,12 @@
 		</libs>
 	</provide>
 	<solution>
-		<linux package="aspell" url="" comment="" >
-			<distribution name="gentoo" package="aspell" url="" comment="" />
-			<distribution name="ubuntu" package="aspell-dev" url="" comment="" />
+		<linux package="gstreamer" url="http://gstreamer.sourceforge.net" comment="" >
+			<distribution name="gentoo" package="gstreamer" url="http://gstreamer.sourceforge.net" comment="Try: emerge gstreamer" />
+			<distribution name="ubuntu" package="libgstreamer0.10-dev" url="http://gstreamer.sourceforge.net" comment="Try: apt-get install libgstreamer0.10-dev" />
 		</linux>
-		<windows package="aspell" url="" comment="" />
-		<macosx package="aspell" url="" comment="" />
+		<windows package="aspell" url="http://gstreamer.sourceforge.net" comment="FIXME" />
+		<macosx package="aspell" url="http://gstreamer.sourceforge.net" comment="FIXME" />
 	</solution>
 </qonf>
 

@@ -48,6 +48,8 @@ class STORE_EXPORT KTRequestBuilder
 		
 		static KTProjectRequest createSceneRequest(int sceneIndex, int action, const QVariant &arg= QString(), const QByteArray &data = QByteArray());
 		
+		static KTProjectRequest createLibraryRequest(int type, int actionId, const QVariant &arg, const QByteArray &data = QByteArray() );
+		
 	private:
 		static void appendData(QDomDocument &doc, QDomElement &element, const QByteArray &data);
 };

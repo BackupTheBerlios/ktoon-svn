@@ -45,7 +45,13 @@ void DTabWidget::removeAllTabs()
 #ifndef QT_NO_WHEELEVENT
 void DTabWidget::wheelEvent( QWheelEvent *ev )
 {
-	wheelMove( ev->delta() );
+	QRect rect = tabBar()->rect();
+	rect.setWidth( width() );
+	
+	if ( rect.contains(ev->pos()) )
+	{
+		wheelMove( ev->delta() );
+	}
 }
 
 void DTabWidget::wheelMove( int delta )

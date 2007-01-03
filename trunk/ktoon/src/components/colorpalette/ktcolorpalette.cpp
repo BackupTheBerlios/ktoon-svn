@@ -35,7 +35,7 @@
 KTColorPalette::KTColorPalette(QWidget *parent) : KTModuleWidgetBase(parent), m_currentOutlineColor(Qt::black), m_currentFillColor(Qt::transparent), m_flagGradient(true), m_type(Solid)
 {
 	DINIT;
-	setWindowTitle( tr( "Color Palette" ) );
+	setWindowTitle( tr( "&Color Palette" ) );
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/color_palette.png") );
 
 	m_splitter = new QSplitter(Qt::Vertical, this);

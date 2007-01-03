@@ -137,7 +137,7 @@ KTPathItem *FillTool::itemPressed(QGraphicsItem *item, const KTBrushManager *bru
 	
 	QList<QGraphicsItem *> collides = item->collidingItems();
 	
-	if ( collides.count() == 0)
+// 	if ( collides.count() == 0)
 	{
 		fillItem = KTItemConverter::convertToPath( item );
 		

@@ -29,6 +29,7 @@
 
 #include "ddebug.h"
 #include "kttlruler.h"
+#include "ktprojectrequest.h"
 
 //////////// KTFramesTableModel
 
@@ -701,7 +702,17 @@ void KTFramesTable::emitItemPressed(const QModelIndex &index)
 
 void KTFramesTable::emitItemClicked(const QModelIndex &index)
 {
-	emit itemClicked(m_model->item(index));
+	KTFramesTableItem *item = m_model->item(index);
+	
+	if (item)
+	{
+		if ( item->isUsed() )
+		{
+			emit frameRequest(KTProjectRequest::Select, this->column(item), verticalHeader()->visualIndex(this->row(item)),  -1);
+		}
+	
+		emit itemClicked(item);
+	}
 }
 
 void KTFramesTable::emitItemDoubleClicked(const QModelIndex &index)
@@ -964,14 +975,13 @@ QStyleOptionViewItem KTFramesTable::viewOptions() const
 
 void KTFramesTable::insertLayer(int pos, const QString &name)
 {
-	pos = verticalHeader()->logicalIndex(pos);
-	insertRow( pos + 1);
+	insertRow( pos );
 	
 	LayerItem layer;
 	
 	m_layers.insert(pos, layer);
 	
-	selectCell( pos, 0);
+	selectCell( pos, 0 );
 }
 
 void KTFramesTable::removeCurrentLayer()

@@ -24,9 +24,9 @@
 
 #include <ddebug.h>
 
-// #include "ktrequestfactory.h"
 #include "ktprojectrequest.h"
 #include "ktnetprojectmanagerhandler.h"
+#include "ktrequestparser.h"
 
 #include "ktcompress.h"
 
@@ -45,7 +45,7 @@ void KTNetSocket::sendToServer(const QString &str)
 	if ( state() == QAbstractSocket::ConnectedState )
 	{
 		QTextStream stream(this);
-		stream << KTCompress::compressAndHash( str ) << "%%" << endl;
+		stream << str.toLocal8Bit().toBase64() << "%%" << endl;
 	}
 }
 
@@ -75,7 +75,7 @@ void KTNetSocket::readFromServer()
 	m_readed.remove(m_readed.lastIndexOf("%%"), 2);
 	
 	
-	m_readed = KTCompress::uncompressAndUnhash( m_readed );
+	m_readed = QString::fromLocal8Bit( QByteArray::fromBase64(m_readed.toLocal8Bit()) );
 	
 	QDomDocument doc;
 	
@@ -84,18 +84,15 @@ void KTNetSocket::readFromServer()
 		QString root = doc.documentElement().tagName();
 		if ( root == "request" )
 		{
-// 			KTRequestFactory factory;
-// 			KTProjectRequest *request = factory.build( m_readed );
-			
-// 			if ( request )
+			KTRequestParser parser;
+			if ( parser.parse(m_readed) )
 			{
-				qDebug("EMITIENDO REQUEST!!!!!!!");
-// 				m_handler->emitRequest( request );
-// 				delete request;
+				KTProjectRequest request(m_readed); // FIXME: construir con el response y no con el xml.
+				m_handler->emitRequest(&request);
 			}
-// 			else
+			else // TODO: mostrar error
 			{
-				qDebug("FAILS BUILDING!");
+				dError() << "Error parsing";
 			}
 		}
 		else

@@ -32,8 +32,8 @@ class KTCompress
 		KTCompress();
 		~KTCompress();
 		
-		static QString compressAndHash(const QString &str, int level = 7);
-		static QString uncompressAndUnhash(const QString &str);
+		static QString compressAndEncode64(const QString &str, int level = 7);
+		static QString uncompressAndDecode64(const QString &str);
 };
 
 #endif

@@ -29,6 +29,10 @@ KTLibraryObject::~KTLibraryObject()
 {
 }
 
+/**
+ * Items, pics, text, and so...
+ * @param data 
+ */
 void KTLibraryObject::setData(const QVariant &data)
 {
 	m_data = data;

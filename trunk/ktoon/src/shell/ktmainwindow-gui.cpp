@@ -24,6 +24,8 @@
 #include "ktapplication.h"
 #include "dcommandhistory.h"
 
+#include "dtoolview.h"
+
 #include <QKeySequence>
 #include <QTextBrowser>
 
@@ -31,7 +33,10 @@ void KTMainWindow::createGUI()
 {
 	// TODO: put setWindowIcon in each class
 	m_colorPalette = new KTColorPalette(this);
-	addToolView( m_colorPalette, Qt::LeftDockWidgetArea, Drawing );
+	DToolView *view = addToolView( m_colorPalette, Qt::LeftDockWidgetArea, Drawing );
+	
+	m_actionManager->insert( view->toggleViewAction(), "show palette");
+	addToPerspective(view->toggleViewAction(), Drawing);
 	
 	connectToDisplays(m_colorPalette);
 	ui4paintArea( m_colorPalette );
@@ -39,7 +44,10 @@ void KTMainWindow::createGUI()
 	////////////////////
 	
 	m_penWidget = new KTPenWidget(this);
-	addToolView( m_penWidget, Qt::LeftDockWidgetArea, Drawing );
+	view = addToolView( m_penWidget, Qt::LeftDockWidgetArea, Drawing );
+	
+	m_actionManager->insert( view->toggleViewAction(), "show pen");
+	addToPerspective(view->toggleViewAction(), Drawing);
 	
 	connectToDisplays(m_penWidget);
 	ui4paintArea( m_penWidget );
@@ -47,7 +55,10 @@ void KTMainWindow::createGUI()
 	////////////////////
 	m_libraryWidget = new KTLibraryWidget( m_projectManager->project()->library(), this );
 	
-	addToolView( m_libraryWidget, Qt::LeftDockWidgetArea, Drawing );
+	view = addToolView( m_libraryWidget, Qt::LeftDockWidgetArea, Drawing );
+	
+	m_actionManager->insert( view->toggleViewAction(), "show library");
+	addToPerspective(view->toggleViewAction(), Drawing);
 	
 	connectToDisplays(m_libraryWidget);
 	
@@ -58,7 +69,9 @@ void KTMainWindow::createGUI()
 	/////////////////
 	m_scenes = new KTScenesWidget( this);
 	
-	addToolView( m_scenes, Qt::RightDockWidgetArea, All );
+	view = addToolView( m_scenes, Qt::RightDockWidgetArea, All );
+	
+	m_actionManager->insert( view->toggleViewAction(), "show scenes");
 	
 	ui4project(m_scenes);
 	
@@ -67,7 +80,10 @@ void KTMainWindow::createGUI()
 	/////////////////////
 	m_exposureSheet = new KTExposureSheet(this);
 	
-	addToolView( m_exposureSheet, Qt::RightDockWidgetArea, Drawing );
+	view = addToolView( m_exposureSheet, Qt::RightDockWidgetArea, Drawing );
+	
+	m_actionManager->insert( view->toggleViewAction(), "show exposure");
+	addToPerspective(view->toggleViewAction(), Drawing);
 	
 	ui4project( m_exposureSheet );
 
@@ -75,7 +91,8 @@ void KTMainWindow::createGUI()
 	
 	///////////////////////
 	m_helper = new KTHelpWidget(HOME_DIR+"/data/help/");
-	addToolView( m_helper, Qt::RightDockWidgetArea, All );
+	view = addToolView( m_helper, Qt::RightDockWidgetArea, All );
+	m_actionManager->insert( view->toggleViewAction(), "show help");
 	
 	connect(m_helper, SIGNAL(pageLoaded(const QString &, const QString &)), this, SLOT(showHelpPage(const QString &, const QString &)));
 	
@@ -88,7 +105,10 @@ void KTMainWindow::createGUI()
 	//////////////////////
 	m_timeLine = new KTTimeLine(this);
 	
-	addToolView( m_timeLine, Qt::BottomDockWidgetArea, Drawing );
+	view = addToolView( m_timeLine, Qt::BottomDockWidgetArea, Drawing );
+	
+	m_actionManager->insert( view->toggleViewAction(), "show timeline");
+	addToPerspective(view->toggleViewAction(), Drawing);
 	
 	ui4project( m_timeLine );
 	
@@ -118,7 +138,10 @@ void KTMainWindow::createGUI()
 	
 	m_cameraWidget = new KTCameraWidget(m_projectManager->project());
 	
-	addToolView( m_cameraWidget, Qt::BottomDockWidgetArea, Animation );
+	view = addToolView( m_cameraWidget, Qt::BottomDockWidgetArea, Animation );
+	
+	m_actionManager->insert( view->toggleViewAction(), "show camera");
+	addToPerspective(view->toggleViewAction(), Drawing);
 	
 	ui4project( m_cameraWidget );
 	connectToDisplays( m_cameraWidget );
@@ -185,7 +208,7 @@ void KTMainWindow::setupMenu()
 	menuBar()->addMenu(  m_windowMenu );
 	m_windowMenu->addAction(m_actionManager->find("show debug"));
 	m_windowMenu->addAction(m_actionManager->find("show palette"));
-	m_windowMenu->addAction(m_actionManager->find("show brushes"));
+	m_windowMenu->addAction(m_actionManager->find("show pen"));
 	m_windowMenu->addAction(m_actionManager->find("show library"));
 	m_windowMenu->addAction(m_actionManager->find("show timeline"));
 	m_windowMenu->addAction(m_actionManager->find("show scenes"));
@@ -304,22 +327,9 @@ void KTMainWindow::setupHelpActions()
 
 void KTMainWindow::setupWindowActions()
 {
-	addToPerspective(new DAction(QPixmap(), tr("Show TimeLine widget"), QKeySequence("Shift+T"), this, SLOT(showWidgetPage()), m_actionManager, "show timeline"), Drawing);
-	
-	addToPerspective(new DAction(QPixmap(), tr("Show exposure sheet widget"), QKeySequence("Shift+E"), this, SLOT(showWidgetPage()), m_actionManager, "show exposure"), Drawing);
-	
-	new DAction(QPixmap(), tr("Show scenes widget"), QKeySequence("Shift+S"), this, SLOT(showWidgetPage()), m_actionManager, "show scenes");
-	
-	addToPerspective(new DAction(QPixmap(), tr("Show brushes widget"), QKeySequence("Shift+B"), this, SLOT(showWidgetPage()), m_actionManager, "show brushes"), Drawing);
-	
-	addToPerspective(new DAction(QPixmap(), tr("Show library widget"), QKeySequence("Shift+L"), this, SLOT(showWidgetPage()), m_actionManager, "show library"), Drawing);
-	
-	new DAction(QPixmap(), tr("Show help widget"), QKeySequence("F1"), this, SLOT(showWidgetPage()), m_actionManager, "show help");
-	
-	addToPerspective(new DAction(QPixmap(), tr("Show color palette widget"), QKeySequence(tr("Shift+P")), this, SLOT(showWidgetPage()), m_actionManager, "show palette"), Drawing);
-	
-	
+#if defined(QT_GUI_LIB) && !defined(D_NODEBUG)
 	new DAction(QPixmap(), tr("Show debug dialog"), QKeySequence(), DDebug::browser(), SLOT(show()), m_actionManager, "show debug");
+#endif
 }
 
 void KTMainWindow::setupInsertActions()
