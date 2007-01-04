@@ -409,17 +409,6 @@ void KTMainWindow::saveProjectAs()
 	}
 	
 	m_projectManager->saveProject(m_fileName);
-	
-// 	
-// 	KTPackageHandler packageHandler;
-// 	
-// 	bool ok = packageHandler.makePackage(CACHE_DIR+"/"+m_projectManager->projectName(), m_fileName);
-// 	
-// 	
-// 	if ( ok )
-// 	{
-// 		messageToOSD( tr("Project saved in %1!").arg(m_fileName) );
-// 	}
 }
 
 void KTMainWindow::openRecentProject()
