@@ -169,12 +169,12 @@ bool KTPackageHandler::importPackage(const QString &packagePath)
 		
 		name = CACHE_DIR+"/"+file.getActualFileName();
 		
-		if( name.endsWith(".ktp") )
+// 		if( name.endsWith(".ktp") )
 		{
-			m_importedProjectPath = name;
+			m_importedProjectPath = QFileInfo(name).path();
 		}
 		
-		if(file.getZipError()!=UNZ_OK)
+		if(file.getZipError() != UNZ_OK)
 		{
 			dError() << "Error while open package " << file.getZipError();
 			return false;

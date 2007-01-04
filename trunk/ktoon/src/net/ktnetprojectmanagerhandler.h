@@ -42,6 +42,7 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		virtual bool commandExecuted(KTProjectResponse *response, int state);
 		
 		virtual bool saveProject(const QString &fileName, const KTProject *project);
+		virtual bool loadProject(const QString &fileName, KTProject *project);
 		
 		void emitRequest(KTProjectRequest *request);
 		

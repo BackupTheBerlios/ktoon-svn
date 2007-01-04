@@ -71,5 +71,26 @@ bool KTLocalProjectManagerHandler::saveProject(const QString &fileName, const KT
 	return result;
 }
 
-
+bool KTLocalProjectManagerHandler::loadProject(const QString &fileName, KTProject *project)
+{
+	bool result = false;
+	
+	KTSaveProject *loader = 0;
+	
+	if ( fileName.endsWith(".ktn") )
+	{
+		loader = new KTSaveProject;
+		result = true;
+		
+		loader->load(fileName, project);
+		
+		delete loader;
+	}
+	else
+	{
+		result = false;
+	}
+	
+	return result;
+}
 

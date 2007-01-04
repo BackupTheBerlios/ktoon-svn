@@ -47,7 +47,7 @@ class STORE_EXPORT KTAbstractProjectHandler : public QObject
 		virtual bool commandExecuted(KTProjectResponse *response, int state);
 		
 		virtual bool saveProject(const QString &fileName, const KTProject *project) = 0;
-		
+		virtual bool loadProject(const QString &fileName, KTProject *project) = 0;
 	signals:
 		void sendCommand(const KTProjectRequest *event, bool addToStack);
 

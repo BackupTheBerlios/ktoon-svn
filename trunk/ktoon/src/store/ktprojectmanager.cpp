@@ -125,9 +125,20 @@ void KTProjectManager::closeProject()
 	m_undoStack->clear();
 }
 
-bool KTProjectManager::saveProject(const QString &filename)
+bool KTProjectManager::saveProject(const QString &fileName)
 {
-	return m_handler->saveProject(filename, m_project);
+	return m_handler->saveProject(fileName, m_project);
+}
+
+bool KTProjectManager::loadProject(const QString &fileName)
+{
+	if ( ! m_handler )
+	{
+		dFatal() << "NO HANDLER!";
+		return false;
+	}
+	
+	return m_handler->loadProject(fileName, m_project);
 }
 
 /**

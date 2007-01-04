@@ -76,6 +76,8 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_projectMan
 	
 	m_projectManager = new KTProjectManager(this);
 	
+	m_projectManager->setHandler( new KTLocalProjectManagerHandler );
+	
 // 	setProjectManager( projectManager );
 	
 	splash->setMessage( tr("Setting up the project manager") );
@@ -92,8 +94,6 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_projectMan
 	setupMenu();
 	setupToolBar();
 	
-// 	m_pActiveTabWidget->setCurrentIndex( 0 );
-	
 	DCONFIG->beginGroup("TipOfDay");
 	bool showTips = qvariant_cast<bool>(DCONFIG->value("ShowOnStart", true ));
 	
@@ -104,9 +104,6 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_projectMan
 	}
 	
 	KTPluginManager::instance()->loadPlugins();
-	
-// 	m_pActiveTabWidget->setShowTabBar( false );
-	
 	setCurrentPerspective( Drawing );
 }
 
@@ -233,32 +230,34 @@ bool KTMainWindow::closeProject()
 
 void KTMainWindow::openProject()
 {
-	QString package = QFileDialog::getOpenFileName ( this, tr("Import project package"), CACHE_DIR, tr("KToon Project Package (*.ktn)"));
+	QString package = QFileDialog::getOpenFileName( this, tr("Import project package"), CACHE_DIR, tr("KToon Project Package (*.ktn)"));
 	
-	if ( package.isEmpty() ) return;
+	if( package.isEmpty() ) return;
 	
 	openProject( package );
 }
 
 void KTMainWindow::openProject(const QString &path)
 {
-	KTPackageHandler packageHandler;
-
-	if ( packageHandler.importPackage(path) )
+	dWarning() << "Opening project: " << path;
+	
+	if(path.isEmpty() ) return;
+	
+	if ( closeProject() )
 	{
-		if ( closeProject() )
+		tabWidget()->setCurrentWidget(m_viewDoc);
+		
+		if ( m_projectManager->loadProject( path ) )
 		{
-// 			m_pActiveTabWidget->setCurrentWidget(m_viewDoc);
-			
-// 			if ( m_projectManager->load( packageHandler.importedProjectPath() ) )
-// 			{
-// 				m_fileName = path;
-// 				
-// 				if ( QDir::isRelativePath(path) )
-// 				{
-// 					m_fileName = QDir::currentPath()+"/"+path;
-// 				}
-// 				
+			if ( QDir::isRelativePath(path) )
+			{
+				m_fileName = QDir::currentPath()+"/"+path;
+			}
+			else
+			{
+				m_fileName = path;
+			}
+				
 // 				int pos = m_recentProjects.indexOf(m_fileName);
 // 				if ( pos == -1 )
 // 				{
@@ -279,7 +278,6 @@ void KTMainWindow::openProject(const QString &path)
 // 				newViewDocument();
 // 				
 // 				messageToOSD( tr("Project opened!"));
-// 			}
 		}
 	}
 }

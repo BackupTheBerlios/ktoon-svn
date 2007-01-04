@@ -68,7 +68,12 @@ bool KTNetProjectManagerHandler::commandExecuted(KTProjectResponse *response, in
 
 bool KTNetProjectManagerHandler::saveProject(const QString &fileName, const KTProject *project)
 {
-	qFatal("ktnetprojectmanagerhandler.h");
+	qFatal("ktnetprojectmanagerhandler.h: Can't save");
+}
+
+bool KTNetProjectManagerHandler::loadProject(const QString &fileName, KTProject *project)
+{
+	qFatal("ktnetprojectmanagerhandler.h: Can't load");
 }
 
 bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)

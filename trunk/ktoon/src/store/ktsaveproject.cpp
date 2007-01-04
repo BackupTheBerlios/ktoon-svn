@@ -57,7 +57,7 @@ void KTSaveProject::save(const QString &fileName, const KTProject *project)
 		doc.appendChild(scene->toXml(doc));
 		
 		
-		QFile scn(projectDir.path()+"/scene"+QString::number(index));
+		QFile scn(projectDir.path()+"/scene"+QString::number(index)+".kts");
 		
 		if ( scn.open(QIODevice::WriteOnly | QIODevice::Text) )
 		{
@@ -82,5 +82,37 @@ void KTSaveProject::save(const QString &fileName, const KTProject *project)
 	}
 }
 
+void KTSaveProject::load(const QString &fileName, KTProject *project)
+{
+	D_FUNCINFO << fileName;
+	KTPackageHandler packageHandler;
+	
+	if ( packageHandler.importPackage(fileName) )
+	{
+		QDir projectDir(packageHandler.importedProjectPath());
+		
+		QStringList scenes = projectDir.entryList(QStringList() << "*.kts", QDir::Readable | QDir::Files);
+		
+		int index = 0;
+		foreach(QString scenePath, scenes)
+		{
+			scenePath = projectDir.path() + "/" + scenePath;
+			
+			KTScene *scene = project->createScene(index);
+			
+			QFile f(scenePath);
+			
+			if ( f.open(QIODevice::ReadOnly | QIODevice::Text) )
+			{
+				QString xml = QString::fromLocal8Bit(f.readAll());
+				scene->fromXml(xml);
+				
+				index += 1;
+				
+				f.close();
+			}
+		}
+	}
+}
 
 

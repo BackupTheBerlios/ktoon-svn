@@ -35,6 +35,7 @@ class KTLocalProjectManagerHandler : public KTAbstractProjectHandler
 		
 		virtual void handleProjectRequest(const KTProjectRequest *request);
 		virtual bool saveProject(const QString &fileName, const KTProject *project);
+		virtual bool loadProject(const QString &fileName, KTProject *project);
 };
 
 #endif

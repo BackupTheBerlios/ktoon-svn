@@ -54,7 +54,8 @@ class STORE_EXPORT KTProjectManager : public QObject
 		
 		QUndoStack *undoHistory() const;
 		
-		bool saveProject(const QString &filename);
+		bool saveProject(const QString &fileName);
+		bool loadProject(const QString &fileName);
 		
 	protected slots:
 		virtual void handleProjectRequest(const KTProjectRequest *event);
