@@ -44,9 +44,7 @@ KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(
 	m_undoStack = new QUndoStack(this);
 	
 	m_commandExecutor = new KTCommandExecutor(m_project);
-	
-// 	connect(m_project,SIGNAL(commandExecuted( KTProjectRequest* )), this, SIGNAL(commandExecuted( KTProjectRequest *)));
-	
+		
 	connect(m_commandExecutor, SIGNAL(responsed( KTProjectResponse*, int )), this, SLOT(emitResponse( KTProjectResponse *, int)));
 }
 
@@ -125,6 +123,11 @@ void KTProjectManager::closeProject()
 	m_isOpen = false;
 	
 	m_undoStack->clear();
+}
+
+bool KTProjectManager::saveProject(const QString &filename)
+{
+	return m_handler->saveProject(filename, m_project);
 }
 
 /**

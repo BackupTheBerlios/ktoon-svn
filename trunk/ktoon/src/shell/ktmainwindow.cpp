@@ -373,21 +373,19 @@ void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 
 void KTMainWindow::saveProject()
 {
-// 	m_projectManager->save();
-// 	
-// 	if ( m_fileName.isEmpty() )
-// 	{
-// 		saveProjectAs();
-// 		return;
-// 	}
-// 	
-// 	if( !m_fileName.endsWith(".ktn"))
-// 	{
-// 		m_fileName += ".ktn";
-// 	}
-// 	
-// 	dDebug() << "Saving " << m_fileName;
-// 	
+	if ( m_fileName.isEmpty() )
+	{
+		saveProjectAs();
+		return;
+	}
+	
+	if( !m_fileName.endsWith(".ktn"))
+	{
+		m_fileName += ".ktn"; // FIXME
+	}
+	
+	m_projectManager->saveProject(m_fileName);
+	
 // 	KTPackageHandler packageHandler;
 // 	
 // 	bool ok = packageHandler.makePackage(CACHE_DIR+"/"+m_projectManager->projectName(), m_fileName);
@@ -401,16 +399,17 @@ void KTMainWindow::saveProject()
 
 void KTMainWindow::saveProjectAs()
 {
-// 	m_projectManager->save();
-// 	
-// 	m_fileName = QFileDialog::getSaveFileName( this, tr("Build project package"), CACHE_DIR, "KToon Project Package (*.ktn)");
-// 	
-// 	if ( m_fileName.isEmpty() ) return;
-// 	
-// 	if( !m_fileName.endsWith(".ktn"))
-// 	{
-// 		m_fileName += ".ktn";
-// 	}
+	m_fileName = QFileDialog::getSaveFileName( this, tr("Build project package"), CACHE_DIR, "KToon Project Package (*.ktn)");
+	
+	if ( m_fileName.isEmpty() ) return;
+	
+	if( !m_fileName.endsWith(".ktn"))
+	{
+		m_fileName += ".ktn"; // FIXME
+	}
+	
+	m_projectManager->saveProject(m_fileName);
+	
 // 	
 // 	KTPackageHandler packageHandler;
 // 	

@@ -49,12 +49,12 @@ class STORE_EXPORT KTProjectManager : public QObject
 		virtual void closeProject();
 		
 		bool isOpen() const;
-		
 		KTProject *project() const;
-		
 		void setHandler(KTAbstractProjectHandler *handler);
 		
 		QUndoStack *undoHistory() const;
+		
+		bool saveProject(const QString &filename);
 		
 	protected slots:
 		virtual void handleProjectRequest(const KTProjectRequest *event);

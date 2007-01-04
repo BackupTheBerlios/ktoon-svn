@@ -22,6 +22,8 @@
 #include "ktprojectrequest.h"
 #include "ktprojectcommand.h"
 
+#include "ktsaveproject.h"
+
 #include <ddebug.h>
 
 KTLocalProjectManagerHandler::KTLocalProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent)
@@ -47,6 +49,27 @@ void KTLocalProjectManagerHandler::handleProjectRequest(const KTProjectRequest *
 	}
 }
 
+bool KTLocalProjectManagerHandler::saveProject(const QString &fileName, const KTProject *project)
+{
+	bool result = false;
+	KTSaveProject *saver = 0;
+	
+	if ( fileName.endsWith(".ktn") )
+	{
+		saver = new KTSaveProject;
+		result = true;
+		
+		saver->save(fileName, project);
+		
+		delete saver;
+	}
+	else
+	{
+		result = false;
+	}
+	
+	return result;
+}
 
 
 

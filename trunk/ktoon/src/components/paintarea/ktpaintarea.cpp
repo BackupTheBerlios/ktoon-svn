@@ -499,7 +499,7 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
 // 		{
 // 			
 // 		}
-		break;
+// 		break;
 		case KTProjectRequest::Transform:
 		{
 			viewport()->update();
@@ -546,11 +546,8 @@ void KTPaintArea::drawBackground(QPainter *painter, const QRectF &rect)
 		int sy = painter->matrix().m22();
 		
 		painter->resetMatrix();
-		
 		painter->scale(sx, sy);
-		
 		painter->setPen( QPen(QColor(0,0,180, 50), 1) );
-		
 		
 		for(int i = 0; i < qMax(width(), height()); i+= 10 )
 		{

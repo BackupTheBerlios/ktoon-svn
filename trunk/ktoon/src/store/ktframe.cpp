@@ -120,7 +120,7 @@ QDomElement KTFrame::toXml(QDomDocument &doc)
 	
 	while ( iterator != m_graphics.end() )
 	{
-// 		root.appendChild( (*iterator)->toXml(doc) );
+		root.appendChild( (*iterator)->toXml(doc) );
 		++iterator;
 	}
 	

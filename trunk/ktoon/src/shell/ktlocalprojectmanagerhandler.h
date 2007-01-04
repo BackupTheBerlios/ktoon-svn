@@ -33,8 +33,8 @@ class KTLocalProjectManagerHandler : public KTAbstractProjectHandler
 		KTLocalProjectManagerHandler(QObject *parent = 0);
 		~KTLocalProjectManagerHandler();
 		
-		void handleProjectRequest(const KTProjectRequest *request);
-		
+		virtual void handleProjectRequest(const KTProjectRequest *request);
+		virtual bool saveProject(const QString &fileName, const KTProject *project);
 };
 
 #endif

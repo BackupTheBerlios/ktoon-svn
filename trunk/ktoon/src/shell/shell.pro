@@ -36,7 +36,7 @@ SOURCES += main.cpp \
            crashwidget.cpp \
            ktapplication.cpp \
            configwizard.cpp \
-           ktmainwindow-gui.cpp \
+           ktmainwindow_gui.cpp \
            ktlocalprojectmanagerhandler.cpp 
 include(shell_config.pri)
 include(../../ktconfig.pri)

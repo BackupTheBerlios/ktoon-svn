@@ -39,6 +39,11 @@ void KTGraphicObject::fromXml(const QString &xml )
 
 QDomElement KTGraphicObject::toXml(QDomDocument &doc)
 {
+	if ( KTAbstractSerializable *is = dynamic_cast<KTAbstractSerializable *>(m_item) )
+	{
+		return is->toXml(doc);
+	}
+	
 	return QDomElement();
 }
 

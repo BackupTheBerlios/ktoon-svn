@@ -18,42 +18,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTABSTRACTPROJECTHANDLER_H
-#define KTABSTRACTPROJECTHANDLER_H
+#include "ktsaveproject.h"
+#include "ktproject.h"
+#include "ktscene.h"
 
-#include <qobject.h>
-#include "ktglobal_store.h"
+#include "ddebug.h"
 
-class KTProjectResponse;
-class KTProjectRequest;
-class KTProjectManagerParams;
-class KTProjectCommand;
-class KTProject;
-
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class STORE_EXPORT KTAbstractProjectHandler : public QObject
+KTSaveProject::KTSaveProject() : QObject()
 {
-	Q_OBJECT;
-	
-	public:
-		KTAbstractProjectHandler(QObject *parent = 0);
-		virtual ~KTAbstractProjectHandler();
-		
-		virtual bool setupNewProject(KTProjectManagerParams *params);
-		virtual bool closeProject();
-		virtual void handleProjectRequest(const KTProjectRequest *request) = 0;
-		virtual bool commandExecuted(KTProjectResponse *response, int state);
-		
-		virtual bool saveProject(const QString &fileName, const KTProject *project) = 0;
-		
-	signals:
-		void sendCommand(const KTProjectRequest *event, bool addToStack);
-
-};
+}
 
 
-#endif
+KTSaveProject::~KTSaveProject()
+{
+}
+
+void KTSaveProject::save(const QString &filename, const KTProject *project)
+{
+	foreach ( KTScene *scene, project->scenes() )
+	{
+		QDomDocument doc;
+		doc.appendChild(scene->toXml(doc));
+		
+		dWarning() << doc.toString();
+	}
+}
+
 
 
