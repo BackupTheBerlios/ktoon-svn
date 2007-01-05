@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Jorge Cuadrado   *
- *   kuadrosx@toonka.com   *
+ *   Copyright (C) 2006 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -70,6 +70,7 @@ class Node : public QObject, public QGraphicsItem
 		bool m_notChange;
 		QGraphicsItem * m_parent;
 		NodeManager *m_manager;
+		
 };
 
 #endif

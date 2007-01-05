@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2006 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -771,3 +771,20 @@ void KTGraphicalAlgorithm::printCode(char code)
 	}
 	
 }
+
+
+double KTGraphicalAlgorithm::distanceToPoint(const QPointF &pos)
+{
+    return ::sqrt(pos.x() * pos.x() + pos.y() * pos.y());
+}
+
+double KTGraphicalAlgorithm::angleForPos(const QPointF &pos, const QPointF &anchor )
+{
+	qreal angle = ::acos( (pos.x()-anchor.x()) / distanceToPoint(pos - anchor));
+	if(pos.y()-anchor.y() > 0)
+		angle = M_PI * 2.0 - angle;
+	return angle;
+}
+
+
+

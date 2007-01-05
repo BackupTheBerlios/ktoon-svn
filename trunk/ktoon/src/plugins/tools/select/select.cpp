@@ -140,7 +140,6 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 				delete m_nodeManagers.takeAt(m_nodeManagers.indexOf((*it)));
 			}
 			++it;
-			
 		}
 		foreach(QGraphicsItem *item, selecteds)
 		{

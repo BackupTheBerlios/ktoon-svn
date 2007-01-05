@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2006 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -46,6 +46,8 @@ class NodeManager
 		void show();
 		
 		void setAnchor(const QPointF& point);
+		QPointF anchor() const;
+		
 		void scale(float sx, float sy);
 		void rotate(double a);
 		
@@ -55,6 +57,9 @@ class NodeManager
 		void toggleAction();
 		
 		void setVisible(bool visible);
+		
+		double rotation();
+		
 	private:
 		QHash<Node::TypeNode, Node *> m_nodes;
 		QGraphicsItem * m_parent;
@@ -68,8 +73,9 @@ class NodeManager
 		QPointF m_origPos;
 		QPointF m_anchor;
 		
-		
 		bool m_press;
+		double m_rotation;
+
 };
 
 #endif

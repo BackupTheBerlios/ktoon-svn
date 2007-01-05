@@ -32,11 +32,17 @@
 #include "nodemanager.h"
 
 #include <cmath> //atan
+#include "ktgraphicalgorithm.h"
+
+#include "ktgraphicobject.h"
+
+
+#define DEBUG 0
 
 Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *manager, QGraphicsItem * parent,  QGraphicsScene * scene   ) : QGraphicsItem(0, scene), m_typeNode(node), m_action(action), m_notChange(true), m_parent(parent), m_manager(manager)
 {
 	QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor ));
-	
+// 	setParent(m_parent);
 	setFlag(ItemIsSelectable, false);
 	setFlag(ItemIsMovable, true);
 	
@@ -74,6 +80,11 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
 	painter->setBrush( c );
 	painter->drawRect(br);
+	//DEBUG
+#if DEBUG
+	painter->setFont( QFont( painter->font().family(), 5 ));
+	painter->drawText( br, QString::number(m_typeNode));
+#endif
 	if(m_typeNode == Center)
 	{
 		painter->save();
@@ -97,7 +108,6 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
 	if(change ==  ItemSelectedChange)
 	{
 		D_FUNCINFO;
-		SHOW_VAR(value.toBool());
 		setVisible(true);
 		
 		if(value.toBool())
@@ -111,10 +121,19 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
 
 void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+// 	dDebug() << "press";
+// 	dFatal() << "press";
 	D_FUNCINFO;
 	update();
 	m_manager->setPress( true);
+	
 	QGraphicsItem::mousePressEvent(event);
+	
+#if DEBUG
+	QRectF r = m_parent->sceneMatrix().inverted().mapRect( m_parent->sceneBoundingRect() );
+	scene()->addRect(r, QPen(Qt::magenta), QBrush(QColor(100,100,200,50)));
+	scene()->update(r);
+#endif
 }
 
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -123,21 +142,12 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	QGraphicsItem::mouseReleaseEvent(event);
 	m_parent->setSelected(true);
 	m_manager->setPress(false);
-// 	m_manager->setVisible(true);
 }
 
 void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
-	QPointF newPos(mapToItem(m_parent, event->pos()));
-	
-	QMatrix m = m_parent->matrix();
-	dDebug() << "|" << m.m11() << "|" << m.m12() << "|" << m.dx() << "|";
-	dDebug() << "|" << m.m21() << "|" << m.m22() << "|" << m.dy() << "|";
-	dDebug() << "|" << 0 << "|" << 0 << "|" << 1 << "|";
-	dDebug() << "-------------------------";
-	
-	SHOW_VAR(asin(m.m12()) * (180/M_PI));
-	
+	D_FUNCINFO;
+	QPointF newPos(/*mapToItem(m_parent,*/ event->scenePos())/*)*/;
 	
 	if( m_notChange)
 	{
@@ -147,31 +157,39 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	{
 		if(m_action == Scale)
 		{
-			QRectF rect = m_parent->boundingRect();
-			QRectF br = m_parent->boundingRect();
+			QRectF rect = m_parent->sceneBoundingRect();
+			QRectF br = m_parent->sceneBoundingRect();
+			QRectF br1 = m_parent->boundingRect();
+			
+			//Debug
+// 			scene()->addRect(rect, QPen(Qt::red));
+// 			scene()->addRect(br, QPen(Qt::green));
+			//Debug
+			
+			
 			switch(m_typeNode)
 			{
 				case TopLeft:
 				{
-					m_manager->setAnchor(br.bottomRight());
+					m_manager->setAnchor(br1.bottomRight());
 					rect.setTopLeft( newPos );
 					break;
 				}
 				case TopRight:
 				{
-					m_manager->setAnchor( br.bottomLeft());
+					m_manager->setAnchor( br1.bottomLeft());
 					rect.setTopRight(newPos);
 					break;
 				}
 				case BottomRight:
 				{
-					m_manager->setAnchor( br.topLeft());
+					m_manager->setAnchor( br1.topLeft());
 					rect.setBottomRight(newPos);
 					break;
 				}
 				case BottomLeft:
 				{
-					m_manager->setAnchor( br.topRight());
+					m_manager->setAnchor( br1.topRight());
 					rect.setBottomLeft(newPos);
 					break;
 				}
@@ -180,15 +198,16 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 					break;
 				}
 			};
+			
 			float sx = 1, sy = 1;
 			sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
 			sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
-		
+			
 			if(sx > 0 && sy > 0)
 			{
 				m_manager->scale( sx,sy);
 			}
-			else 
+			else
 			{
 				if(sx > 0)
 				{
@@ -207,35 +226,24 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 			{
 // 				m_manager->setVisible(false);
 				QPointF p1 = newPos;
-				QPointF p2 = m_parent->boundingRect().center();
-				m_manager->setAnchor( p2 );
-				QPointF d = p1 - p2;
-				if(d.x() != 0)
-				{
-					double a =  atan(d.y() / d.x())*(180/M_PI)+45;
-					if(d.x() < 0)
-					{
-						a += 180;
-					}
-					
-					m_manager->rotate(a );
-				}
+				QPointF p2 = m_parent->sceneBoundingRect().center();
+				m_manager->setAnchor( m_parent->boundingRect().center() );
 				
+				double a = (180 * KTGraphicalAlgorithm::angleForPos(p1, p2)) / M_PI;
+				m_manager->rotate(a-45 );
 			}
 			else
 			{
 				
 			}
 		}
-		
 	}
 	
 	if(m_typeNode == Center)
 	{
-		m_parent->moveBy(event->pos().x(), event->pos().y());
+		m_parent->moveBy(event->pos().x(), event->pos().y() );
 	}
 	update();
-// 	m_parent->setSelected(true);
 }
 
 

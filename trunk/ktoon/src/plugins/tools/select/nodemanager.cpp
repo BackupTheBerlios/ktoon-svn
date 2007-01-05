@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2006 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -19,8 +19,12 @@
  ***************************************************************************/
 
 #include "nodemanager.h"
+
+#include "ktgraphicobject.h"
+
+
 #include <ddebug.h>
-NodeManager::NodeManager(QGraphicsItem * parent, KTScene *scene): m_parent(parent), m_scene(scene), m_modify(false), m_anchor(0,0), m_press(false)
+NodeManager::NodeManager(QGraphicsItem * parent, KTScene *scene): m_parent(parent), m_scene(scene), m_modify(false), m_anchor(0,0), m_press(false), m_rotation(0)
 {
 	QRectF rect = parent->sceneBoundingRect();
 	Node *topLeft = new Node(Node::TopLeft, Node::Scale, rect.topLeft(), this, parent, scene);
@@ -163,13 +167,21 @@ void NodeManager::setAnchor(const QPointF& point)
 	m_anchor = point;
 }
 
+QPointF NodeManager::anchor() const
+{
+	return m_anchor;
+}
+
 void NodeManager::scale(float sx, float sy)
 {
-	QMatrix m = m_parent->matrix();
+	QMatrix m;
+// 	SHOW_VAR(m_parent->data(KTGraphicObject::Rotate).toDouble());
+// 	m.rotate(m_parent->data(KTGraphicObject::Rotate).toDouble());
 	m.translate(m_anchor.x(),m_anchor.y());
 	m.scale(sx,sy);
 	m.translate(-m_anchor.x(),-m_anchor.y());
-	m_parent->setMatrix(m);
+// 	m.rotate(-m_parent->data(KTGraphicObject::Rotate).toDouble());
+	m_parent->setMatrix(m, true);
 	syncNodesFromParent();
 }
 
@@ -177,10 +189,17 @@ void NodeManager::rotate(double a)
 {
 	QMatrix m = m_parent->matrix();
 	m.translate(m_anchor.x(),m_anchor.y());
-	m.rotate(a);
+	m.rotate(m_rotation-a);
 	m.translate(-m_anchor.x(),-m_anchor.y());
 	m_parent->setMatrix(m);
+	
+	m_parent->setData( KTGraphicObject::Rotate,m_rotation- a);
+	
+	
 	syncNodesFromParent();
+	
+	m_rotation = a;
+	
 }
 
 void NodeManager::show()
@@ -226,4 +245,10 @@ void NodeManager::setVisible(bool visible)
 		node->setVisible(visible);
 	}
 }
+
+double NodeManager::rotation()
+{
+	return m_rotation;
+}
+
 

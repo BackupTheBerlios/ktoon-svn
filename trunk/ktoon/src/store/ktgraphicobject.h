@@ -34,6 +34,7 @@ class QGraphicsItem;
 class STORE_EXPORT KTGraphicObject : public QObject, public KTAbstractSerializable
 {
 	public:
+		enum Transformations{ScaleX = 1, ScaleY, Rotate, TranslateX, TranslateY };
 		KTGraphicObject(QGraphicsItem *item = 0, QObject *parent = 0);
 		~KTGraphicObject();
 		
@@ -50,6 +51,9 @@ class STORE_EXPORT KTGraphicObject : public QObject, public KTAbstractSerializab
 	private:
 		QString m_name;
 		QGraphicsItem *m_item;
+		
+		void initItemData();
+		
 };
 
 #endif

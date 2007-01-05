@@ -104,28 +104,34 @@ void KTExposureSheet::applyAction(int action)
 			KTProjectRequest event = KTRequestBuilder::createLayerRequest( m_scenes->currentIndex(), layer, KTProjectRequest::Add);
 			
 			emit requestTriggered( &event );
-			
-			break;
 		}
+		break;
 		case KTProjectActionBar::RemoveLayer:
 		{
 			KTProjectRequest event = KTRequestBuilder::createLayerRequest(m_scenes->currentIndex(), m_currentTable->currentLayer(), KTProjectRequest::Remove);
 			
 			emit requestTriggered( &event );
-			break;
 		}
+		break;
 		case KTProjectActionBar::InsertFrame:
 		{
 			int used = m_currentTable->numUsed();
 			int finish = m_currentTable->currentFrame()+1;
 			
-			
-			for(int i = used; i <= finish; i++)
+			if(used < finish)
 			{
-				insertItem( m_currentTable->currentLayer(), i);
+				for(int i = used; i <= finish; i++)
+				{
+					insertItem( m_currentTable->currentLayer(), i);
+				}
 			}
-			break;
+			else
+			{
+				insertItem( m_currentTable->currentLayer(), finish);
+			}
+			
 		}
+		break;
 		case KTProjectActionBar::RemoveFrame:
 		{
 			KTProjectRequest event = KTRequestBuilder::createFrameRequest( m_scenes->currentIndex(), m_currentTable->currentLayer(), m_currentTable->currentFrame(), KTProjectRequest::Remove);
@@ -136,22 +142,22 @@ void KTExposureSheet::applyAction(int action)
 		{
 			KTProjectRequest event = KTRequestBuilder::createFrameRequest( m_scenes->currentIndex(), m_currentTable->currentLayer(), m_currentTable->currentFrame(), KTProjectRequest::Move, m_currentTable->currentFrame()-1);
 			emit requestTriggered( &event );
-			break;
 		}
+		break;
 		case KTProjectActionBar::MoveFrameDown:
 		{
 			KTProjectRequest event = KTRequestBuilder::createFrameRequest( m_scenes->currentIndex(), m_currentTable->currentLayer(), m_currentTable->currentFrame(), KTProjectRequest::Move, m_currentTable->currentFrame()+1 );
 			emit requestTriggered( &event );
-			break;
 		}
+		break;
 		case KTProjectActionBar::LockFrame:
 		{
 			bool locked = m_currentTable->frameIsLocked(m_currentTable->currentColumn(),  m_currentTable->currentFrame());
 			
 			KTProjectRequest event = KTRequestBuilder::createFrameRequest (m_scenes->currentIndex(), m_currentTable->currentLayer(), m_currentTable->currentFrame(), KTProjectRequest::Lock, !locked);
 			emit requestTriggered( &event );
-			break;
 		}
+		break;
 	}
 }
 

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2006 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -40,6 +40,8 @@ class KTOON_EXPORT KTGraphicalAlgorithm
 		static QPolygonF polygonFit(const QPolygonF &points);
 		static bool intersectLine(const QPointF &start, const QPointF& end, const QRectF& rect );
 		static char calculateCode(const QPointF &point, const QRectF &window);
+		static double distanceToPoint(const QPointF &pos);
+		static double angleForPos(const QPointF &pos, const QPointF &anchor);
 		
 	private:
 		

@@ -26,6 +26,7 @@
 KTGraphicObject::KTGraphicObject(QGraphicsItem *item, QObject *parent)
 	: QObject(parent), m_item(item)
 {
+	initItemData();
 }
 
 
@@ -51,6 +52,7 @@ QDomElement KTGraphicObject::toXml(QDomDocument &doc)
 void KTGraphicObject::setItem(QGraphicsItem *item)
 {
 	m_item = item;
+	initItemData();
 }
 
 QGraphicsItem *KTGraphicObject::item() const
@@ -68,3 +70,27 @@ QString KTGraphicObject::objectName() const
 	return m_name;
 }
 
+void KTGraphicObject::initItemData()
+{
+	
+	if(! m_item->data(ScaleX).isValid())
+	{
+		m_item->setData(ScaleX, 1.0);
+	}
+	if(! m_item->data(ScaleY).isValid())
+	{
+		m_item->setData(ScaleY, 1.0);
+	}
+	if(! m_item->data(Rotate).isValid())
+	{
+		m_item->setData(Rotate, 0.0);
+	}
+	if(! m_item->data(TranslateX).isValid())
+	{
+		m_item->setData(TranslateX, 0.0);
+	}
+	if(! m_item->data(TranslateY).isValid())
+	{
+		m_item->setData(TranslateY, 0.0);
+	}
+}

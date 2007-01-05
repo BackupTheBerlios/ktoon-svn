@@ -447,13 +447,22 @@ void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString 
 	frame->setData(IsUsed, true);
 	frame->setTextAlignment(Qt::AlignCenter);
 	
-	
-	int logicalIndex = m_header->logicalIndex ( indexLayer);
+// 	
+			
+	int logicalIndex = m_header->logicalIndex( indexLayer);
 	
 	
 	m_header->setLastFrame( logicalIndex, m_header->lastFrame(logicalIndex)+1 );
-	setItem(indexFrame, logicalIndex, frame);
-	setCurrentCell(indexFrame, logicalIndex);
+	
+	setItem(m_header->lastFrame(logicalIndex)-1, logicalIndex, frame);
+	
+	setCurrentCell(m_header->lastFrame(logicalIndex)-1, logicalIndex);
+	
+	for(int i = m_header->lastFrame(logicalIndex)-1; i > indexFrame; i--)
+	{
+		moveFrame(  indexLayer, i , indexLayer, i-1);
+	}
+	
 	if(m_header->lastFrame(logicalIndex)  == rowCount ())
 	{
 		setRowCount( m_header->lastFrame(logicalIndex) + 50 );
