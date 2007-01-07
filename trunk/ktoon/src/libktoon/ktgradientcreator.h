@@ -195,20 +195,20 @@ class KTOON_EXPORT SpinControl: public QGroupBox
 				}
 				case  QGradient::RadialGradient:
 				{
-// 					show();
+					setVisible(true);
 					m_radius->show();
 					m_angle->hide();
 					m_title->show();
-					m_title->setText("radius");
+					m_title->setText(tr("radius"));
 					break;
 				}
 				case  QGradient::ConicalGradient:
 				{
-// 					show();
+					setVisible(true);
 					m_radius->hide();
 					m_angle->show();
 					m_title->show();
-					m_title->setText("angle");
+					m_title->setText(tr("angle"));
 					break;
 				}
 				default: break;

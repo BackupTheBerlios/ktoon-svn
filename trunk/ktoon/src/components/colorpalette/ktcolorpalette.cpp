@@ -158,8 +158,7 @@ void KTColorPalette::setupDisplayColor()
 
 connect( m_outlineAndFillColors,  SIGNAL(fgChanged(const QBrush &)),this, SLOT(
 		setFG(const QBrush &)));
-connect( m_outlineAndFillColors,  SIGNAL(bgChanged(const QBrush &)),this, SLOT(
-		setBG( (const QBrush &))));
+connect( m_outlineAndFillColors,  SIGNAL(bgChanged(const QBrush &)),this, SLOT(setBG( const QBrush &)));
 	
 	
 	vlayout->addWidget( m_outlineAndFillColors);

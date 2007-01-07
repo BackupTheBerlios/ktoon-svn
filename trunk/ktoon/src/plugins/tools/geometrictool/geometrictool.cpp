@@ -125,12 +125,46 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
 		m_rect.setBottomRight(m_item->mapFromScene(input->pos()) );
 		
 		static_cast<KTRectItem *>(m_item)->setRect(m_rect);
+		
+		QBrush brush = static_cast<QAbstractGraphicsShapeItem *>(m_item)->brush();
+		QMatrix m;
+		m.scale( m_rect.width() / 100, m_rect.height() / 100);
+		brush.setMatrix(m);
+		static_cast<QAbstractGraphicsShapeItem *>(m_item)->setBrush(brush);
+		
+		QPen pen = static_cast<QAbstractGraphicsShapeItem *>(m_item)->pen();
+		brush = pen.brush();
+		m.reset();
+		
+		m.scale( m_rect.width() / 100, m_rect.height() / 100);
+		brush.setMatrix(m);
+		pen.setBrush(brush );
+		
+		static_cast<QAbstractGraphicsShapeItem *>(m_item)->setPen(pen);
+		
 	}
 	else if ( currentTool() == tr("Ellipse"))
 	{
 		m_rect = static_cast<KTEllipseItem *>(m_item)->rect();
 		m_rect.setBottomRight(m_item->mapFromScene(input->pos()) );
 		static_cast<KTEllipseItem *>(m_item)->setRect(m_rect);
+		QBrush brush = static_cast<QAbstractGraphicsShapeItem *>(m_item)->brush();
+		QMatrix m;
+		
+		m.scale( m_rect.width() / 100, m_rect.height() / 100);
+		brush.setMatrix(m);
+		static_cast<QAbstractGraphicsShapeItem *>(m_item)->setBrush(brush);
+		
+		QPen pen = static_cast<QAbstractGraphicsShapeItem *>(m_item)->pen();
+		brush = pen.brush();
+		m.reset();
+		
+		m.scale( m_rect.width() / 100, m_rect.height() / 100);
+		brush.setMatrix(m);
+		pen.setBrush(brush );
+		
+		static_cast<QAbstractGraphicsShapeItem *>(m_item)->setPen(pen);
+		
 	}
 	else if( currentTool() == tr("Line"))
 	{

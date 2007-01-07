@@ -78,8 +78,8 @@ KTGradientViewer::KTGradientViewer(QWidget *parent)
 {
 
 	m_controlPoint = new ControlPoint();
-	setMaximumSize(100,100);
-	setMinimumSize(100,100);
+// 	setMaximumSize(100,100);
+// 	setMinimumSize(100,100);
 	m_type = QGradient::LinearGradient;
 	m_spread =  QGradient::PadSpread;
 	setMidLineWidth(2);
@@ -115,6 +115,12 @@ void KTGradientViewer::paintEvent( QPaintEvent* e)
 QSize KTGradientViewer::sizeHint() const
 {
 	return QSize(100,100);
+}
+
+void KTGradientViewer::resizeEvent ( QResizeEvent * event )
+{
+	int s = qMin(event->size().width(), event->size().height());
+	resize(QSize(s,s));
 }
 
 void KTGradientViewer::createGradient()
@@ -171,7 +177,33 @@ void KTGradientViewer::setSpread(int spread)
 
 QGradient KTGradientViewer::gradient()
 {
-	return m_gradient;
+	QGradient gradientNormalized;
+	switch(m_gradient.type())
+	{
+		case  QGradient::LinearGradient:
+		{
+			gradientNormalized = QLinearGradient(
+					normalizePoint(m_controlPoint->points[0]), normalizePoint(m_controlPoint->points[1]));
+			break;
+		}
+		case QGradient::RadialGradient:
+		{
+			gradientNormalized = QRadialGradient(normalizePoint(m_controlPoint->points[0]), m_radius, normalizePoint(m_controlPoint->points[1]) );
+			break;
+		}
+		case QGradient::ConicalGradient:
+		{
+			gradientNormalized = QConicalGradient(normalizePoint(m_controlPoint->points[0]), m_angle);
+			break;
+		}
+		default:
+		{
+			dFatal() << "Fatal error, the gradient type doesn't exists!";
+		}
+	}
+	gradientNormalized.setStops( m_gradientStops);
+	gradientNormalized.setSpread(m_spread);
+	return gradientNormalized;
 }
 
 void KTGradientViewer::mousePressEvent(QMouseEvent *e)
@@ -236,3 +268,9 @@ void KTGradientViewer::setGradient(const QGradient* gradient)
 	}
 	repaint();
 }
+
+QPointF KTGradientViewer::normalizePoint(const QPointF & point)
+{
+	return QPointF(point.x()*(100/width()), point.y()*(100/height()));
+}
+

@@ -29,23 +29,21 @@ KTGradientCreator::KTGradientCreator(QWidget *parent)
  : QFrame(parent)
 {
 	QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight);
+
 	layout->setSpacing(2);
 	layout->setMargin(2);
 	setLayout(layout);
 	
-	
-	
 	QBoxLayout *selectorAndViewer = new QBoxLayout(QBoxLayout::TopToBottom);
-	
 	m_selector = new KTGradientSelector(this);
 	m_viewer = new KTGradientViewer(this);
+	
 	connect(m_viewer, SIGNAL(gradientChanged()), this, SLOT(emitGradientChanged()));
 	layout->addLayout(selectorAndViewer);
 	
 	selectorAndViewer->addWidget(m_viewer);
 	selectorAndViewer->addWidget(m_selector);
 	selectorAndViewer->addStretch(2);
-// 	subLayout->addLayout(selectorAndViewer);
 	
 	connect( m_selector, SIGNAL(gradientChanged(  const QGradientStops& )),this, SLOT(changeGradientStops( const QGradientStops& )));
 	connect(m_selector, SIGNAL(arrowAdded()), this, SIGNAL(controlArrowAdded()));

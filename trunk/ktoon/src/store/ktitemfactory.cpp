@@ -179,15 +179,18 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 	{
 		QBrush brush;
 		KTSerializer::loadBrush( brush, atts);
-		m_loading = qname;
+		
+		
 		if ( m_qname == "pen" )
 		{
+			m_loading = "pen";
 			QPen pen = itemPen();
 			pen.setBrush(brush);
 			setItemPen( pen );
 		}
 		else
 		{
+			m_loading = qname;
 			setItemBrush( brush );
 		}
 	}
@@ -217,7 +220,6 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 			c.setAlpha(atts.value("alpha").toInt());
 			m_gradient->setColorAt ( atts.value("value").toDouble(), c);
 		}
-		
 	}
 	else if(qname == "gradient")
 	{
@@ -301,6 +303,10 @@ void KTItemFactory::setItemPen(const QPen &pen)
 	{
 		qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_item)->setPen(pen);
 	}
+	else if(m_root == "line")
+	{
+		qgraphicsitem_cast<QGraphicsLineItem *>(m_item)->setPen(pen);
+	}
 }
 
 void KTItemFactory::setItemBrush(const QBrush &brush)
@@ -309,23 +315,37 @@ void KTItemFactory::setItemBrush(const QBrush &brush)
 	{
 		qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_item)->setBrush(brush);
 	}
+
 }
 
 void  KTItemFactory::setItemGradient(const QGradient& gradient, bool brush)
 {
+	
+	QBrush gBrush(gradient);
 	if ( m_root == "path" || m_root == "rect" || m_root == "ellipse" )
 	{
 		QAbstractGraphicsShapeItem * tmp = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_item);
+		
 		if(brush)
 		{
-			tmp->setBrush( QBrush(gradient)  );
+			gBrush.setMatrix(tmp->brush().matrix());
+			tmp->setBrush( gBrush );
 		}
 		else
 		{
+			gBrush.setMatrix(tmp->pen().brush().matrix());
 			QPen pen = tmp->pen();
-			pen.setBrush(QBrush(gradient));
+			pen.setBrush(gBrush);
 			tmp->setPen(pen);
 		}
+	}
+	else if(m_root == "line")
+	{
+		QGraphicsLineItem * tmp = qgraphicsitem_cast<QGraphicsLineItem *>(m_item);
+		gBrush.setMatrix(tmp->pen().brush().matrix());
+		QPen pen = tmp->pen();
+		pen.setBrush(gBrush);
+		tmp->setPen(pen);
 	}
 }
 
@@ -335,7 +355,10 @@ QPen KTItemFactory::itemPen() const
 	{
 		return qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_item)->pen();
 	}
-	
+	else if(m_root == "line")
+	{
+		return qgraphicsitem_cast<QGraphicsLineItem *>(m_item)->pen();
+	}
 	return QPen(Qt::transparent, 0);
 }
 
@@ -359,8 +382,9 @@ bool KTItemFactory::loadItem(QGraphicsItem *item, const QString &xml)
 	xmlsource.setData(xml);
 	
 	m_item = item;
-	
-	return reader.parse(&xmlsource);
+	bool ok = reader.parse(&xmlsource);
+	QAbstractGraphicsShapeItem *tmp =  qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_item);
+	return ok;
 }
 
 QGraphicsItem *KTItemFactory::create(const QString &xml)

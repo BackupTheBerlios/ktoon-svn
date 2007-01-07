@@ -174,20 +174,20 @@ QGradient * KTSerializer::createGradient(const QXmlAttributes &atts)
 			result = new QLinearGradient(QPointF(atts.value("startX").toDouble(),
 					atts.value("startY").toDouble()),
 				QPointF(atts.value("finalX").toDouble(),
-					atts.value("finalX").toDouble()));
+					atts.value("finalY").toDouble()));
 		}
 		break;
 		case QGradient::RadialGradient:
 		{
 			result = new QRadialGradient(
-					QPointF(atts.value("centerX").toDouble(),atts.value("centerX").toDouble()),
+					QPointF(atts.value("centerX").toDouble(),atts.value("centerY").toDouble()),
 					atts.value("radius").toDouble(),
 					QPointF(atts.value("focalX").toDouble(), atts.value("focalY").toDouble()));
 		}
 		break;
 		case QGradient::ConicalGradient:
 		{
-			result = new QRadialGradient(QPointF(atts.value("centerX").toDouble(),atts.value("centerX").toDouble()), atts.value("angle").toDouble());
+			result = new QConicalGradient(QPointF(atts.value("centerX").toDouble(),atts.value("centerY").toDouble()), atts.value("angle").toDouble());
 		}
 		break;
 		case QGradient::NoGradient:
@@ -246,7 +246,6 @@ void KTSerializer::loadBrush(QBrush &brush, const QXmlAttributes &atts)
 	brush.setStyle(Qt::BrushStyle(atts.value("style").toInt()) );
 	
 	
-	SHOW_VAR(atts.value("color"));
 	if(!atts.value("color").isEmpty())
 	{
 		QColor color(atts.value("color"));

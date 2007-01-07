@@ -57,7 +57,7 @@ class KTOON_EXPORT KTGradientViewer : public QFrame
 		 * @if english
 		 * Translate
 		 * @elseif spanish
-		 * Devuelve el gradiente actualmente visualizado.
+		 * Devuelve el gradiente actualmente visualizado, normalizado a un cuadro de 100x100, por ejemplo: si se quiere ubicar en un cuadro de 200x300 se debe de escalar el gradiente a sx=200/100 y sy=300/100.
 		 * @endif
 		 */
 		QGradient gradient();
@@ -94,6 +94,10 @@ class KTOON_EXPORT KTGradientViewer : public QFrame
 		virtual void mousePressEvent(QMouseEvent *e);
 		virtual void mouseMoveEvent( QMouseEvent * e );
 		virtual QSize sizeHint() const;
+		virtual void resizeEvent ( QResizeEvent * event );
+		
+	private:
+		QPointF normalizePoint(const QPointF &);
 		
 	private:
 		class ControlPoint;

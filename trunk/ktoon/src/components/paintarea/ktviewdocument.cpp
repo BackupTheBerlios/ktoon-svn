@@ -364,7 +364,7 @@ void KTViewDocument::createTools()
 	
 	m_selectionMenu = new QMenu( tr("selection"), m_toolbar );
 	m_selectionMenu->setIcon(QPixmap(THEME_DIR+"/icons/selection.png"));
-	connect( m_selectionMenu, SIGNAL(triggered ()), this, SLOT(selectTool()));
+	connect( m_selectionMenu, SIGNAL(triggered (QAction*)), this, SLOT(selectToolFromMenu( QAction*)));
 	
 	m_toolbar->addAction(m_selectionMenu->menuAction());
 	

@@ -26,6 +26,7 @@
 #include <QSpinBox>
 #include "dtabdialog.h"
 #include <QLineEdit>
+#include "dosd.h"
 
 class KTProjectManagerParams;
 
@@ -57,7 +58,7 @@ class KTNewProject : public DTabDialog
 		
 	signals:
 		void sendToStatus(const QString &);
-		void sendToOSD(const QString &, int);
+		void sendToOSD(const QString &, DOsd::Level);
 	
 	private:
 		QLineEdit *m_projectName;
