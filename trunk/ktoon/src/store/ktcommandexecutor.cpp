@@ -56,40 +56,14 @@ bool KTCommandExecutor::createScene(KTSceneResponse *response)
 	
 	response->setArg( scene->sceneName() );
 	
+	QString state =  response->state();
+	
+	if ( ! state.isEmpty() )
+	{
+		scene->fromXml(state);
+	}
+	
 	emit responsed( response, m_state );
-	
-// 	QDomDocument document;
-// 	if ( document.setContent(xml) )
-// 	{
-// 		QDomElement root = document.documentElement();
-// 	
-// 		scene->setSceneName( root.attribute( "name", scene->sceneName()) );
-// 		
-// 		KTProjectRequest request = KTRequestBuilder::createSceneRequest( position, KTProjectRequest::Add, scene->sceneName() );
-// 		emit commandExecuted(&request, m_state);
-// 		
-// 		QDomNode n = root.firstChild();
-// 	
-// 		while( !n.isNull() )
-// 		{
-// 			QDomElement e = n.toElement();
-// 		
-// 			if(!e.isNull())
-// 			{
-// 				if ( e.tagName() == "layer" )
-// 				{
-// 					int layerPos = scene->layers().count();
-// 					QDomDocument newDoc;
-// 					newDoc.appendChild(newDoc.importNode(n, true ));
-// 					
-// 					createLayer(position, layerPos, newDoc.toString(0) );
-// 				}
-// 			}
-// 		
-// 			n = n.nextSibling();
-// 		}
-// 	}
-	
 	
 	return true;
 }

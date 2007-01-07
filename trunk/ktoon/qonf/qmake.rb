@@ -75,21 +75,28 @@ class QMake
 	end
 	
 	def compile
-		IO.popen("#{@make} clean") { |c|
-			output = c.readlines.join("")
-		}
-		
-		times = 0
-		endcode = 512
-		
-		while endcode == 512 and times <= 3
-			IO.popen("#{@make}", "r") { |c|
+		fork do
+			IO.popen("#{@make} clean  2>/dev/null") { |c|
 				output = c.readlines
 			}
 			
-			endcode = $?
-			times += 1
+			times = 0
+			endcode = 2
+			
+			while endcode == 2 and times <= 3
+				IO.popen("#{@make} 2>/dev/null", "r") { |c|
+					output = c.readlines
+				}
+				
+				endcode = $? >> 8
+				
+				times += 1
+			end
+			
+			exit -1 if endcode != 0
 		end
+		
+		Process.wait
 		
 		if $? != 0
 			return false

@@ -194,4 +194,7 @@ KTScene *KTLayer::scene() const
 	return static_cast<KTScene *>(parent());
 }
 
-
+KTProject *KTLayer::project() const
+{
+	return scene()->project();
+}

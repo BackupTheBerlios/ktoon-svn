@@ -23,7 +23,9 @@
 #include <QMatrix>
 #include <QGraphicsItem>
 
-KTGraphicObject::KTGraphicObject(QGraphicsItem *item, QObject *parent)
+#include "ktframe.h"
+
+KTGraphicObject::KTGraphicObject(QGraphicsItem *item, KTFrame *parent)
 	: QObject(parent), m_item(item)
 {
 	initItemData();

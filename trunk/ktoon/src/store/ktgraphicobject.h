@@ -24,6 +24,7 @@
 #include <QObject>
 #include "ktabstractserializable.h"
 #include "ktglobal_store.h"
+#include "ktframe.h"
 
 class QGraphicsItem;
 
@@ -35,7 +36,8 @@ class STORE_EXPORT KTGraphicObject : public QObject, public KTAbstractSerializab
 {
 	public:
 		enum Transformations{ScaleX = 1, ScaleY, Rotate, TranslateX, TranslateY };
-		KTGraphicObject(QGraphicsItem *item = 0, QObject *parent = 0);
+		
+		KTGraphicObject(QGraphicsItem *item, KTFrame *parent);
 		~KTGraphicObject();
 		
 		void setItem(QGraphicsItem *item);

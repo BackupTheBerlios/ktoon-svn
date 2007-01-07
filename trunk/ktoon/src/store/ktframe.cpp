@@ -138,7 +138,7 @@ void KTFrame::addItem(QGraphicsItem *item)
 	}
 	
 	
-	KTGraphicObject *object = new KTGraphicObject(item);
+	KTGraphicObject *object = new KTGraphicObject(item, this);
 	m_graphics << object;
 }
 
@@ -162,7 +162,7 @@ QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group 
 		count++;
 	}
 	
-	m_graphics.insert(position, new KTGraphicObject(g));
+	m_graphics.insert(position, new KTGraphicObject(g, this));
 	
 	return g;
 }

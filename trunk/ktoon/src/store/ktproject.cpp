@@ -95,7 +95,7 @@ QString KTProject::projectName() const
 
 KTScene *KTProject::createScene(int position )
 {
-	dDebug("project") << "Creando escena en " << position;
+	dDebug("project") << "Creating scene " << position;
 	if ( position < 0 || position > m_scenes.count() )
 	{
 		return 0;
@@ -192,7 +192,6 @@ void KTProject::fromXml(const QString &xml )
 		
 		if(!e.isNull())
 		{
-// 			dDebug() << "Scene??? " << e.tagName();
 			if ( e.tagName() == "scene" )
 			{
 				KTScene *scene = createScene( m_scenes.count() );
@@ -200,7 +199,7 @@ void KTProject::fromXml(const QString &xml )
 				if ( scene )
 				{
 					QDomDocument newDoc;
-					newDoc.appendChild( e );
+					newDoc.appendChild( newDoc.importNode(n, true ));
 					scene->fromXml( newDoc.toString(0) );
 				}
 			}

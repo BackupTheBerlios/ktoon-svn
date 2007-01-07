@@ -79,3 +79,5 @@ class STORE_EXPORT KTProjectManager : public QObject
 };
 
 #endif
+
+

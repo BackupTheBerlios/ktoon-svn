@@ -31,6 +31,7 @@
 typedef QList<KTFrame *> Frames;
 
 class KTScene;
+class KTProject;
 
 /**
  * @brief Esta clase representa un layer, los layers estan contenidos en KTDocument y contienen KTFrame's
@@ -100,6 +101,7 @@ class STORE_EXPORT KTLayer : public QObject, public KTAbstractSerializable
 		KTFrame *frame(int position);
 		
 		KTScene *scene() const;
+		KTProject *project() const;
 		
 	public:
 		virtual void fromXml(const QString &xml );
