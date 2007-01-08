@@ -92,7 +92,7 @@ class STORE_EXPORT KTLayer : public QObject, public KTAbstractSerializable
 		 */
 		bool isVisible() const;
 		
-		KTFrame *createFrame(int position);
+		KTFrame *createFrame(int position, bool loaded = false);
 		
 		bool removeFrame(int position);
 		
@@ -102,6 +102,9 @@ class STORE_EXPORT KTLayer : public QObject, public KTAbstractSerializable
 		
 		KTScene *scene() const;
 		KTProject *project() const;
+		
+		int indexOf(KTFrame *frame) const;
+		int index() const;
 		
 	public:
 		virtual void fromXml(const QString &xml );

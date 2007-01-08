@@ -46,6 +46,8 @@ KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(
 	m_commandExecutor = new KTCommandExecutor(m_project);
 		
 	connect(m_commandExecutor, SIGNAL(responsed( KTProjectResponse*, int )), this, SLOT(emitResponse( KTProjectResponse *, int))); // FIXME: cuando carga hay problemas
+	
+	connect(m_project, SIGNAL(responsed(KTProjectResponse*)), this, SIGNAL(responsed(KTProjectResponse *)));
 }
 
 
@@ -142,10 +144,10 @@ bool KTProjectManager::loadProject(const QString &fileName)
 	
 	if ( ok )
 	{
-		
+		m_isOpen = true;
 	}
 	
-	return false;
+	return ok;
 }
 
 /**

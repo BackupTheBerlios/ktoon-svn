@@ -31,6 +31,8 @@
 class KTFrame;
 class KTLayer;
 class KTGraphicObject;
+class KTProject;
+class KTScene;
 
 /**
  * @brief Esta clase representa un marco o frame de la animacion
@@ -78,7 +80,7 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
 		void replaceItem(int position, QGraphicsItem *item);
 		
 		bool removeGraphicAt(int position);
-		QGraphicsItem *createItem(int position, const QString &xml);
+		QGraphicsItem *createItem(int position, const QString &xml, bool loaded = false);
 		
 		QList<KTGraphicObject *> graphics() const;
 		
@@ -89,9 +91,12 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
 		QGraphicsItemGroup *createItemGroupAt( int position, QList<qreal> group );
 		
 		KTLayer *layer() const;
+		KTScene *scene() const;
+		KTProject *project() const;
 		
 		int indexOf(KTGraphicObject *object);
 		int indexOf(QGraphicsItem *item);
+		int index() const;
 		
 	public:
 		virtual void fromXml(const QString &xml );

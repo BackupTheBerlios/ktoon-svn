@@ -29,6 +29,10 @@
 #include "ktgraphicobject.h"
 
 #include "ktitemgroup.h"
+#include "ktprojectloader.h"
+
+#include "ktscene.h"
+#include "ktlayer.h"
 
 KTFrame::KTFrame(KTLayer *parent) : QObject(parent), m_name("Frame"), m_isLocked(false), m_isVisible(true)
 {
@@ -90,20 +94,10 @@ void KTFrame::fromXml(const QString &xml )
 		
 		if(!e.isNull())
 		{
-// 			dDebug() << "Item??? " << e.tagName();
-#if 0
-			if ( e.tagName() == "frame" )
-			{
-				KTFrame *frame = createFrame( m_frames.count() );
-				
-				if ( frame )
-				{
-					QDomDocument newDoc;
-					newDoc.appendChild(newDoc.importNode(n, true ));
-					frame->fromXml( newDoc.toString(0) );
-				}
-			}
-#endif
+			QDomDocument newDoc;
+			newDoc.appendChild(newDoc.importNode(n, true ));
+			
+			createItem(m_items.count(), newDoc.toString(0));
 		}
 		
 		n = n.nextSibling();
@@ -203,7 +197,7 @@ bool KTFrame::removeGraphicAt(int position)
 	return false;
 }
 
-QGraphicsItem *KTFrame::createItem(int position, const QString &xml)
+QGraphicsItem *KTFrame::createItem(int position, const QString &xml, bool loaded)
 {
 	KTItemFactory itemFactory;
 	
@@ -211,6 +205,11 @@ QGraphicsItem *KTFrame::createItem(int position, const QString &xml)
 	if ( item )
 	{
 		addItem( item );
+	}
+	
+	if ( loaded )
+	{
+		KTProjectLoader::createItem( scene()->index(), layer()->index(), index(), position, xml, project());
 	}
 	
 	return item;
@@ -266,10 +265,23 @@ int KTFrame::indexOf(QGraphicsItem *item)
 	return index;
 }
 
+int KTFrame::index() const
+{
+	return layer()->indexOf(const_cast<KTFrame *>(this));
+}
 
 KTLayer *KTFrame::layer() const
 {
 	return static_cast<KTLayer *>(parent());
 }
 
+KTScene *KTFrame::scene() const
+{
+	return layer()->scene();
+}
+
+KTProject *KTFrame::project() const
+{
+	return layer()->project();
+}
 

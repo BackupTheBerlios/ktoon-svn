@@ -466,6 +466,7 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
 	{
 		case KTProjectRequest::Select:
 		{
+			
 			setCurrentScene( event->sceneIndex() );
 			
 		}

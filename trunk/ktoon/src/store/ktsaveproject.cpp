@@ -98,7 +98,7 @@ void KTSaveProject::load(const QString &fileName, KTProject *project)
 		{
 			scenePath = projectDir.path() + "/" + scenePath;
 			
-			KTScene *scene = project->createScene(index);
+			KTScene *scene = project->createScene(index, true);
 			
 			QFile f(scenePath);
 			

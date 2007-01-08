@@ -116,7 +116,7 @@ class STORE_EXPORT KTProjectRequest
 		virtual int id() const;
 		virtual bool isValid() const;
 		
-		QString xml() const; // FIXME: cambiar nombre a XML
+		QString xml() const;
 		
 	private:
 		QString m_xml;

@@ -34,7 +34,7 @@ class KTScene;
 class KTLayer;
 class KTFrame;
 class KTProjectRequest;
-class KTProjectRequest;
+class KTProjectResponse;
 class QGraphicsItem;
 class KTLibrary;
 
@@ -64,7 +64,7 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		
 		Scenes scenes() const;
 		
-		KTScene *createScene(int position);
+		KTScene *createScene(int position, bool loaded = false);
 		bool removeScene(int position);
 		bool moveScene(int position, int newPosition);
 		
@@ -76,23 +76,21 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		void loadLibrary();
 		
 		KTLibrary *library() const;
-		
+		void emitResponse(KTProjectResponse *response);
 		
 	protected:
 		virtual void fromXml(const QString &xml );
 		virtual QDomElement toXml(QDomDocument &doc);
 		
 	signals:
-		void commandExecuted(KTProjectRequest *command );
+		void responsed(KTProjectResponse *response);
 		
 	private:
 		Scenes m_scenes;
 		QString m_name;
 		
 		int m_sceneCounter;
-		
 		KTLibrary *m_library;
-		
 };
 
 #endif

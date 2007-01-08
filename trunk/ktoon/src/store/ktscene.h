@@ -99,7 +99,7 @@ class STORE_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializabl
 		/**
 		 * Crea una layer, si addToEnd es verdadero el layer se creara al final, sino se creara despues del layer actual
 		 */
-		KTLayer *createLayer(int position);
+		KTLayer *createLayer(int position, bool loaded = false);
 		
 		/**
 		 * Mueve el layer a la posicicion indicada
@@ -114,6 +114,7 @@ class STORE_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializabl
 		int currentLayerIndex() const;
 		
 		int index() const;
+		int indexOf(KTLayer *layer) const;
 		
 		KTProject *project() const;
 		

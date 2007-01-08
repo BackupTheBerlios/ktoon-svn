@@ -29,7 +29,9 @@
 #include "ktlibraryobject.h"
 #include "ktitemfactory.h"
 
-#include "ktprojectrequest.h" // requests
+#include "ktprojectresponse.h"
+
+#include "ktprojectloader.h"
 
 
 #include <QGraphicsView>
@@ -93,7 +95,7 @@ QString KTProject::projectName() const
 }
 
 
-KTScene *KTProject::createScene(int position )
+KTScene *KTProject::createScene(int position, bool loaded )
 {
 	dDebug("project") << "Creating scene " << position;
 	if ( position < 0 || position > m_scenes.count() )
@@ -106,6 +108,11 @@ KTScene *KTProject::createScene(int position )
 	m_sceneCounter++;
 	
 	scene->setSceneName(tr("Scene %1").arg(m_sceneCounter));
+	
+	if ( loaded )
+	{
+		KTProjectLoader::createScene(position, scene->sceneName(), this);
+	}
 	
 	return scene;
 }
@@ -194,7 +201,8 @@ void KTProject::fromXml(const QString &xml )
 		{
 			if ( e.tagName() == "scene" )
 			{
-				KTScene *scene = createScene( m_scenes.count() );
+				int pos = m_scenes.count();
+				KTScene *scene = createScene( pos, true );
 				
 				if ( scene )
 				{
@@ -278,5 +286,10 @@ bool KTProject::removeSymbol(const QString &xml)
 KTLibrary *KTProject::library() const
 {
 	return m_library;
+}
+
+void KTProject::emitResponse(KTProjectResponse *response)
+{
+	emit responsed(response);
 }
 

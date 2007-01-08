@@ -257,7 +257,9 @@ void KTMainWindow::openProject(const QString &path)
 			{
 				m_fileName = path;
 			}
-				
+			
+			newViewDocument( m_projectManager->project()->projectName() );
+			
 // 				int pos = m_recentProjects.indexOf(m_fileName);
 // 				if ( pos == -1 )
 // 				{

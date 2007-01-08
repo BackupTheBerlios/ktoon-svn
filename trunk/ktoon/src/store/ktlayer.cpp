@@ -23,6 +23,8 @@
 
 #include "ddebug.h"
 
+#include "ktprojectloader.h"
+
 KTLayer::KTLayer(KTScene *parent) : QObject(parent), m_isVisible(true), m_name(tr("Layer")), m_framesCount(0), m_isLocked(false)
 {
 }
@@ -74,22 +76,27 @@ bool KTLayer::isVisible() const
 	return m_isVisible;
 }
 
-KTFrame *KTLayer::createFrame(int position)
+KTFrame *KTLayer::createFrame(int position, bool loaded)
 {
 	if ( position < 0 || position > m_frames.count() )
 	{
 		return 0;
 	}
 	
-	KTFrame *keyFrame = new KTFrame(this);
+	KTFrame *frame = new KTFrame(this);
 	
 	m_framesCount++;
 	
-	keyFrame->setFrameName(tr("Drawing %1").arg(m_framesCount));
+	frame->setFrameName(tr("Drawing %1").arg(m_framesCount));
 	
-	m_frames.insert(position, keyFrame);
+	m_frames.insert(position, frame);
 	
-	return keyFrame;
+	if ( loaded )
+	{
+		KTProjectLoader::createFrame( scene()->index(), index(), position, frame->frameName(), project());
+	}
+	
+	return frame;
 }
 
 bool KTLayer::removeFrame(int position)
@@ -157,7 +164,7 @@ void KTLayer::fromXml(const QString &xml )
 		{
 			if ( e.tagName() == "frame" )
 			{
-				KTFrame *frame = createFrame( m_frames.count() );
+				KTFrame *frame = createFrame( m_frames.count(), true );
 				
 				if ( frame )
 				{
@@ -197,4 +204,14 @@ KTScene *KTLayer::scene() const
 KTProject *KTLayer::project() const
 {
 	return scene()->project();
+}
+
+int KTLayer::indexOf(KTFrame *frame) const
+{
+	return m_frames.indexOf(frame);
+}
+
+int KTLayer::index() const
+{
+	return scene()->indexOf(const_cast<KTLayer *>(this));
 }

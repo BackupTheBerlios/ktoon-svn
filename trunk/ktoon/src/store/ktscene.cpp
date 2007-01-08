@@ -29,6 +29,7 @@
 #include "ktgraphicobject.h"
 
 #include "ktitemgroup.h"
+#include "ktprojectloader.h"
 
 KTScene::KTScene(KTProject *parent) : QGraphicsScene(parent), m_isLocked(false),  m_layerCount(0), m_isVisible(true)
 {
@@ -89,7 +90,7 @@ void KTScene::setLayers(const Layers &layers)
 	m_layers = layers;
 }
 
-KTLayer *KTScene::createLayer(int position)
+KTLayer *KTScene::createLayer(int position, bool loaded)
 {
 	D_FUNCINFO << position;
 	
@@ -106,6 +107,11 @@ KTLayer *KTScene::createLayer(int position)
 	layer->setLayerName(tr("Layer %1").arg(m_layerCount));
 	
 	m_layers.insert( position, layer);
+	
+	if ( loaded )
+	{
+		KTProjectLoader::createLayer( project()->indexOf(this), position, layer->layerName(), project() );
+	}
 	
 	return layer;
 }
@@ -189,7 +195,8 @@ void KTScene::fromXml(const QString &xml )
 		{
 			if ( e.tagName() == "layer" )
 			{
-				KTLayer *layer = createLayer( m_layers.count() );
+				int pos = m_layers.count();
+				KTLayer *layer = createLayer( pos, true );
 				
 				if ( layer )
 				{
@@ -198,6 +205,8 @@ void KTScene::fromXml(const QString &xml )
 					
 					layer->fromXml( newDoc.toString(0) );
 				}
+				
+				
 			}
 		}
 		
@@ -384,6 +393,11 @@ int KTScene::index() const
 	}
 	
 	return -1;
+}
+
+int KTScene::indexOf(KTLayer *layer) const
+{
+	return m_layers.indexOf(layer);
 }
 
 KTProject *KTScene::project() const
