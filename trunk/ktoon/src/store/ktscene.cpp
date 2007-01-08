@@ -44,7 +44,19 @@ KTScene::KTScene(KTProject *parent) : QGraphicsScene(parent), m_isLocked(false),
 KTScene::~KTScene()
 {
 	DEND;
+	
+	clearFocus();
+	clearSelection();
+	
+	foreach(QGraphicsItem *item, items())
+	{
+		removeItem(item);
+	}
+	
 	qDeleteAll(m_layers);
+	m_layers.clear();
+	
+	
 }
 
 void KTScene::setSceneName(const QString &name)
@@ -214,7 +226,7 @@ void KTScene::fromXml(const QString &xml )
 	}
 }
 
-QDomElement KTScene::toXml(QDomDocument &doc)
+QDomElement KTScene::toXml(QDomDocument &doc) const
 {
 	QDomElement root = doc.createElement("scene");
 	root.setAttribute("name", m_name );

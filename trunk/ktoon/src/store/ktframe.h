@@ -100,7 +100,7 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
 		
 	public:
 		virtual void fromXml(const QString &xml );
-		virtual QDomElement toXml(QDomDocument &doc);
+		virtual QDomElement toXml(QDomDocument &doc) const;
 		
 	private:
 		QString m_name;

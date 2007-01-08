@@ -130,7 +130,7 @@ class STORE_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializabl
 		
 	public:
 		virtual void fromXml(const QString &xml );
-		virtual QDomElement toXml(QDomDocument &doc);
+		virtual QDomElement toXml(QDomDocument &doc) const;
 		
 	private:
 		void addFrame(KTFrame *frame, double opacity = 1.0);

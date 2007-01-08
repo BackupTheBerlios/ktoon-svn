@@ -47,7 +47,7 @@ void KTRectItem::fromXml(const QString &xml)
 }
 
 
-QDomElement KTRectItem::toXml(QDomDocument &doc)
+QDomElement KTRectItem::toXml(QDomDocument &doc) const
 {
 	QDomElement root = doc.createElement("rect");
 	

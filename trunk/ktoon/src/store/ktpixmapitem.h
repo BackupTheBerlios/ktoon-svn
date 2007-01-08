@@ -35,7 +35,7 @@ class STORE_EXPORT KTPixmapItem : public QGraphicsPixmapItem, public KTAbstractS
 		~KTPixmapItem();
 		
 		virtual void fromXml(const QString &xml);
-		virtual QDomElement toXml(QDomDocument &doc);
+		virtual QDomElement toXml(QDomDocument &doc) const;
 };
 
 #endif

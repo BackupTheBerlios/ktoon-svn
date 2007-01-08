@@ -51,7 +51,7 @@ void KTEllipseItem::fromXml(const QString &xml)
 }
 
 
-QDomElement KTEllipseItem::toXml(QDomDocument &doc)
+QDomElement KTEllipseItem::toXml(QDomDocument &doc) const
 {
 	QDomElement root = doc.createElement("ellipse");
 	

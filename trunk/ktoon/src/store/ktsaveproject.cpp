@@ -39,16 +39,31 @@ KTSaveProject::~KTSaveProject()
 
 void KTSaveProject::save(const QString &fileName, const KTProject *project)
 {
-// 	Crear un directorio en QDir::tempPath(), guardar todo ahi, y comprimir con KTPackageHandler
-	
 	QDir projectDir = QDir::temp();
 	
-	if ( ! projectDir.mkdir(project->projectName()) )
+	if ( !projectDir.exists(project->projectName()) )
 	{
-		qFatal("Can't create");
+		if ( ! projectDir.mkdir(project->projectName()) )
+		{
+			qFatal("Can't create");
+		}
 	}
 	
 	projectDir.cd(project->projectName());
+	
+	QFile prj(projectDir.path()+"/project.ktp");
+	
+	if ( prj.open(QIODevice::WriteOnly | QIODevice::Text))
+	{
+		QTextStream ts(&prj);
+		
+		QDomDocument doc;
+		doc.appendChild(project->toXml(doc));
+		
+		ts << doc.toString();
+		
+		prj.close();
+	}
 	
 	int index = 0;
 	foreach ( KTScene *scene, project->scenes() )
@@ -90,6 +105,18 @@ void KTSaveProject::load(const QString &fileName, KTProject *project)
 	if ( packageHandler.importPackage(fileName) )
 	{
 		QDir projectDir(packageHandler.importedProjectPath());
+		
+		QFile pfile(projectDir.path()+"/project.ktp");
+		
+		if ( pfile.open(QIODevice::ReadOnly | QIODevice::Text))
+		{
+			project->fromXml(QString::fromLocal8Bit(pfile.readAll()));
+			pfile.close();
+		}
+		else
+		{
+			qFatal("Can't find project file!!");
+		}
 		
 		QStringList scenes = projectDir.entryList(QStringList() << "*.kts", QDir::Readable | QDir::Files);
 		

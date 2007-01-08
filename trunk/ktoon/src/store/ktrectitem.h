@@ -38,7 +38,7 @@ class STORE_EXPORT KTRectItem : public QGraphicsRectItem, public KTAbstractSeria
 		bool contains ( const QPointF & point ) const;
 		
 		virtual void fromXml(const QString &xml);
-		virtual QDomElement toXml(QDomDocument &doc);
+		virtual QDomElement toXml(QDomDocument &doc) const;
 		
 	protected:
 		virtual void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );

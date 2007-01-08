@@ -38,7 +38,7 @@ class STORE_EXPORT KTItemGroup: public KTAbstractSerializable, public QGraphicsI
 		KTItemGroup(QGraphicsItem * parent = 0, QGraphicsScene * scene = 0);
 		~KTItemGroup();
 		virtual void fromXml(const QString &xml);
-		virtual QDomElement toXml(QDomDocument &doc);
+		virtual QDomElement toXml(QDomDocument &doc) const;
 		
 		void recoverChilds();
 		

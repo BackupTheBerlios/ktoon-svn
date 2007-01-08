@@ -32,6 +32,8 @@ KTLayer::KTLayer(KTScene *parent) : QObject(parent), m_isVisible(true), m_name(t
 KTLayer::~KTLayer()
 {
 	qDeleteAll(m_frames);
+	m_frames.clear();
+	
 }
 
 Frames KTLayer::frames()
@@ -179,7 +181,7 @@ void KTLayer::fromXml(const QString &xml )
 	}
 }
 
-QDomElement KTLayer::toXml(QDomDocument &doc)
+QDomElement KTLayer::toXml(QDomDocument &doc) const
 {
 	QDomElement root = doc.createElement("layer");
 	root.setAttribute("name", m_name );

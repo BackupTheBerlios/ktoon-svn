@@ -42,7 +42,7 @@ void KTTextItem::fromXml(const QString &xml)
 }
 
 
-QDomElement KTTextItem::toXml(QDomDocument &doc)
+QDomElement KTTextItem::toXml(QDomDocument &doc) const
 {
 	QDomElement root = doc.createElement("text");
 	

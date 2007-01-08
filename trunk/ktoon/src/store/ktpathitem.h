@@ -35,7 +35,7 @@ class STORE_EXPORT KTPathItem : public KTAbstractSerializable, public QGraphicsP
 		~KTPathItem();
 		
 		virtual void fromXml(const QString &xml);
-		virtual QDomElement toXml(QDomDocument &doc);
+		virtual QDomElement toXml(QDomDocument &doc) const;
 		virtual void paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 		bool contains ( const QPointF & point ) const;
 		

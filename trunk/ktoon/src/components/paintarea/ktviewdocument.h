@@ -61,7 +61,7 @@ class KTViewDocument : public QMainWindow
 	public:
 		KTViewDocument(KTProject *project, QWidget *parent = 0 );
 		~KTViewDocument();
-		void close();
+		void closeArea();
 		QSize sizeHint() const;
 		
 		void setAntialiasing(bool useIt );

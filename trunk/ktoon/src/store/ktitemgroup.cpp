@@ -62,7 +62,7 @@ void KTItemGroup::fromXml(const QString &xml)
 }
 
 
-QDomElement KTItemGroup::toXml(QDomDocument &doc)
+QDomElement KTItemGroup::toXml(QDomDocument &doc) const
 {
 	QDomElement root = doc.createElement("g");
 	

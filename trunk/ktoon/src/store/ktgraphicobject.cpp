@@ -34,13 +34,14 @@ KTGraphicObject::KTGraphicObject(QGraphicsItem *item, KTFrame *parent)
 
 KTGraphicObject::~KTGraphicObject()
 {
+	delete m_item;
 }
 
 void KTGraphicObject::fromXml(const QString &xml )
 {
 }
 
-QDomElement KTGraphicObject::toXml(QDomDocument &doc)
+QDomElement KTGraphicObject::toXml(QDomDocument &doc) const
 {
 	if ( KTAbstractSerializable *is = dynamic_cast<KTAbstractSerializable *>(m_item) )
 	{

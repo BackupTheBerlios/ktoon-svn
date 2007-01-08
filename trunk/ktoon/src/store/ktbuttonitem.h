@@ -40,7 +40,7 @@ class STORE_EXPORT KTButtonItem : public QObject, public QGraphicsItem, public K
 		~KTButtonItem();
 		
 		virtual void fromXml(const QString &xml);
-		virtual QDomElement toXml(QDomDocument &doc);
+		virtual QDomElement toXml(QDomDocument &doc) const;
 		
 		virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *w);
 		QRectF boundingRect() const;

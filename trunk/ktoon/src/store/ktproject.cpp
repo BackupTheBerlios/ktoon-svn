@@ -70,6 +70,7 @@ void KTProject::loadLibrary()
 void KTProject::clear()
 {
 	qDeleteAll(m_scenes);
+	m_scenes.clear();
 }
 
 /**
@@ -189,8 +190,6 @@ void KTProject::fromXml(const QString &xml )
 	
 	QDomElement root = document.documentElement();
 	
-	setProjectName( root.attribute( "name", projectName() ) );
-	
 	QDomNode n = root.firstChild();
 	
 	while( !n.isNull() )
@@ -199,17 +198,9 @@ void KTProject::fromXml(const QString &xml )
 		
 		if(!e.isNull())
 		{
-			if ( e.tagName() == "scene" )
+			if ( e.tagName() == "Project" )
 			{
-				int pos = m_scenes.count();
-				KTScene *scene = createScene( pos, true );
-				
-				if ( scene )
-				{
-					QDomDocument newDoc;
-					newDoc.appendChild( newDoc.importNode(n, true ));
-					scene->fromXml( newDoc.toString(0) );
-				}
+				setProjectName( e.attribute( "name", projectName() ) );
 			}
 		}
 		
@@ -217,9 +208,25 @@ void KTProject::fromXml(const QString &xml )
 	}
 }
 
-QDomElement KTProject::toXml(QDomDocument &doc)
+QDomElement KTProject::toXml(QDomDocument &doc) const
 {
-	return QDomElement();
+	QDomElement ktoon = doc.createElement("KToon");
+	ktoon.setAttribute("version", "1");
+	
+	QDomElement project = doc.createElement("Project");
+	project.setAttribute("name", m_name);
+	
+	QDomElement meta = doc.createElement("meta");
+	
+	QDomElement author = doc.createElement("author");
+	author.setAttribute("value", "");
+	
+	
+	meta.appendChild(author);
+	project.appendChild(meta);
+	ktoon.appendChild(project);
+	
+	return ktoon;
 }
 
 Scenes KTProject::scenes() const

@@ -35,7 +35,7 @@ class STORE_EXPORT KTLineItem : public QGraphicsLineItem, public KTAbstractSeria
 		~KTLineItem();
 		
 		virtual void fromXml(const QString &xml);
-		virtual QDomElement toXml(QDomDocument &doc);
+		virtual QDomElement toXml(QDomDocument &doc) const;
 };
 
 #endif

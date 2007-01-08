@@ -40,6 +40,8 @@ KTFrame::KTFrame(KTLayer *parent) : QObject(parent), m_name("Frame"), m_isLocked
 
 KTFrame::~KTFrame()
 {
+	qDeleteAll(m_graphics);
+	m_graphics.clear();
 }
 
 void KTFrame::setFrameName(const QString &name)
@@ -104,7 +106,7 @@ void KTFrame::fromXml(const QString &xml )
 	}
 }
 
-QDomElement KTFrame::toXml(QDomDocument &doc)
+QDomElement KTFrame::toXml(QDomDocument &doc) const
 {
 	QDomElement root = doc.createElement("frame");
 	root.setAttribute("name", m_name );

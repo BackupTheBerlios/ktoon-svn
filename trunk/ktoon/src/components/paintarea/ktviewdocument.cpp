@@ -814,9 +814,10 @@ void KTViewDocument::createMenu()
 	menuBar()->addMenu(m_filterMenu);
 }
 
-void KTViewDocument::close()
+void KTViewDocument::closeArea()
 {
-// 	m_paintArea->close();
+	m_paintArea->setScene(0);
+	close();
 }
 
 void KTViewDocument::setCursor(const QCursor &)

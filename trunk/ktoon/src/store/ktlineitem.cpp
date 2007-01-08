@@ -37,7 +37,7 @@ void KTLineItem::fromXml(const QString &xml)
 }
 
 
-QDomElement KTLineItem::toXml(QDomDocument &doc)
+QDomElement KTLineItem::toXml(QDomDocument &doc) const
 {
 	QDomElement root = doc.createElement("line");
 	

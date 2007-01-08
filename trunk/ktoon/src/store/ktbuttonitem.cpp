@@ -47,7 +47,7 @@ void KTButtonItem::fromXml(const QString &xml)
 }
 
 
-QDomElement KTButtonItem::toXml(QDomDocument &doc)
+QDomElement KTButtonItem::toXml(QDomDocument &doc) const
 {
 	QDomElement root = doc.createElement("button");
 	

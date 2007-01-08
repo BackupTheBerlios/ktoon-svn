@@ -216,9 +216,15 @@ bool KTMainWindow::closeProject()
 		break;
 	}
 	
+	m_viewDoc->closeArea();
+	removeWidget(m_viewDoc);
+	delete m_viewDoc;
+	m_viewDoc = 0;
+	
 	m_projectManager->closeProject();
 	
 	// Clean widgets
+	
 	m_exposureSheet->closeAllScenes();
 	m_timeLine->closeAllScenes();
 	m_scenes->closeAllScenes();
@@ -260,6 +266,15 @@ void KTMainWindow::openProject(const QString &path)
 			
 			newViewDocument( m_projectManager->project()->projectName() );
 			
+			// HACK
+			KTFrameResponse response(KTProjectRequest::Frame, KTProjectRequest::Select);
+			response.setFrameIndex(0);
+			response.setSceneIndex(0);
+			response.setLayerIndex(0);
+			m_viewDoc->handleProjectResponse(&response);
+			m_exposureSheet->handleProjectResponse(&response);
+			m_timeLine->handleProjectResponse(&response);
+			
 // 				int pos = m_recentProjects.indexOf(m_fileName);
 // 				if ( pos == -1 )
 // 				{
@@ -279,7 +294,7 @@ void KTMainWindow::openProject(const QString &path)
 // 				
 // 				newViewDocument();
 // 				
-// 				messageToOSD( tr("Project opened!"));
+			messageToOSD( tr("Project opened!"));
 		}
 	}
 }

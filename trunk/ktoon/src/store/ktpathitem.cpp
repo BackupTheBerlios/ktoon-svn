@@ -48,7 +48,7 @@ void KTPathItem::fromXml(const QString &xml)
 }
 
 
-QDomElement KTPathItem::toXml(QDomDocument &doc)
+QDomElement KTPathItem::toXml(QDomDocument &doc) const
 {
 	QDomElement root = doc.createElement("path");
 	

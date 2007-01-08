@@ -37,7 +37,7 @@ class STORE_EXPORT KTTextItem : public QGraphicsTextItem, public KTAbstractSeria
 		~KTTextItem();
 		
 		virtual void fromXml(const QString &xml);
-		virtual QDomElement toXml(QDomDocument &doc);
+		virtual QDomElement toXml(QDomDocument &doc) const;
 		
 		void setEditable(bool editable);
 		

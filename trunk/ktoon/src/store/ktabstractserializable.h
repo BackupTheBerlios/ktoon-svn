@@ -42,7 +42,7 @@ class STORE_EXPORT KTAbstractSerializable
 		virtual ~KTAbstractSerializable() {};
 		
 		virtual void fromXml(const QString &xml) = 0;
-		virtual QDomElement toXml(QDomDocument &doc) = 0;
+		virtual QDomElement toXml(QDomDocument &doc) const = 0;
 };
 
 #endif

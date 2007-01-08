@@ -48,7 +48,7 @@ class STORE_EXPORT KTGraphicObject : public QObject, public KTAbstractSerializab
 		
 	public:
 		virtual void fromXml(const QString &xml );
-		virtual QDomElement toXml(QDomDocument &doc);
+		virtual QDomElement toXml(QDomDocument &doc)  const;
 		
 	private:
 		QString m_name;
