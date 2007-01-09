@@ -39,7 +39,7 @@ KTTimeLine::KTTimeLine(QWidget *parent) : KTModuleWidgetBase(parent, "KTTimeLine
 {
 	DINIT;
 	
-	setWindowTitle(tr("Time Line"));
+	setWindowTitle(tr("&Time Line"));
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/time_line.png"));
 	
 	m_actionBar = new KTProjectActionBar(KTProjectActionBar::AllActions );

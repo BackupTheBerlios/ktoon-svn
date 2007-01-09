@@ -29,6 +29,8 @@
 
 #include "dcore/ddebug.h"
 
+DOsd *DOsd::s_osd = 0;
+
 DOsd::DOsd( QWidget * parent ) : QWidget( parent), m_timer( 0 )
 {
 	setFocusPolicy( Qt::NoFocus );
@@ -100,7 +102,7 @@ void DOsd::display( const QString &message, Level level, int ms )
 	
 	if ( ms < 0 )
 	{
-		ms = m_document->toPlainText().length() * 80;
+		ms = m_document->toPlainText().length() * 90;
 	}
 	
 	m_animator->level = level;
@@ -150,6 +152,16 @@ void DOsd::display( const QString &message, Level level, int ms )
 	{
 		m_timer->stop();
 	}
+}
+
+DOsd *DOsd::self()
+{
+	if ( ! s_osd )
+	{
+		s_osd = new DOsd(QApplication::desktop() );
+	}
+	
+	return s_osd;
 }
 
 void DOsd::paintEvent( QPaintEvent * e )

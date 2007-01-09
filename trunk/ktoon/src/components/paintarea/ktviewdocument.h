@@ -143,7 +143,6 @@ class KTViewDocument : public QMainWindow
 		
 	signals:
 		void sendToStatus(const QString& msg);
-		void sendToOSD(const QString &msg, DOsd::Level );
 		void requestTriggered(const KTProjectRequest *event);
 		
 	protected:

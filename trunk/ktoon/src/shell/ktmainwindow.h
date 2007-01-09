@@ -145,7 +145,6 @@ class KTMainWindow : public DTabbedMainWindow
 		
 	private slots:
 		void messageToStatus(const QString &);
-		void messageToOSD(const QString &, DOsd::Level level = DOsd::Info );
 		void preferences();
 		void aboutKToon();
 		void showTipDialog();
@@ -170,8 +169,6 @@ class KTMainWindow : public DTabbedMainWindow
 		KTStatusBar *m_statusBar;
 		DActionManager *m_actionManager;
 		QMenu *m_fileMenu,*m_settingsMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
-		
-		DOsd *m_osd;
 		
 		QStringList m_recentProjects;
 		

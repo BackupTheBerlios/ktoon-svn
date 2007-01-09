@@ -55,10 +55,6 @@ class KTNewProject : public DTabDialog
 		
 	public slots:
 		void activateNetOptions(bool no);
-		
-	signals:
-		void sendToStatus(const QString &);
-		void sendToOSD(const QString &, DOsd::Level);
 	
 	private:
 		QLineEdit *m_projectName;

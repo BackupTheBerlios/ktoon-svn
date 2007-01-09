@@ -40,7 +40,7 @@ KTLibraryWidget::KTLibraryWidget(const KTLibrary *library,QWidget *parent) : KTM
 	DINIT;
 	
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/library.png"));
-	setWindowTitle(tr("Library"));
+	setWindowTitle(tr("&Library"));
 	
 	
 	m_libraryDir = QDir(CONFIG_DIR+"/libraries");

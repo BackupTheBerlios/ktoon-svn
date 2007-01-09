@@ -43,7 +43,7 @@ KTScenesWidget::KTScenesWidget( QWidget *parent) : KTModuleWidgetBase( parent, "
 {
 	DINIT;
 	
-	setWindowTitle( tr( "Scenes manager" ) );
+	setWindowTitle( tr( "Sce&nes manager" ) );
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/scenes.png"));
 	
 	setupButtons();

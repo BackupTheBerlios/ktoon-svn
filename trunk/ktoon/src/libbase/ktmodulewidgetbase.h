@@ -74,7 +74,6 @@ class KTOON_EXPORT KTModuleWidgetBase : public QWidget, public KTAbstractProject
 	signals:
 		void documentModified(bool);
 		void sendToStatus(const QString &);
-		void sendToOSD(const QString &msg, DOsd::Level level);
 		void toggle();
 		void activate(bool);
 		

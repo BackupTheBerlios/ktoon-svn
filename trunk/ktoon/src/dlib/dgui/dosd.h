@@ -34,7 +34,11 @@
 
 class D_GUI_EXPORT DOsd : public QWidget
 {
-	Q_OBJECT
+	Q_OBJECT;
+	
+	private:
+		DOsd(QWidget *parent = 0);
+		
 	public:
 		enum Level
 		{
@@ -44,10 +48,11 @@ class D_GUI_EXPORT DOsd : public QWidget
 			Error,
 			Fatal
 		};
-		DOsd(QWidget *parent = 0);
 		~DOsd();
 		
 		void display( const QString & message, Level level = Info, int ms = -1 );
+		
+		static DOsd *self();
 		
 	private slots:
 		void animate();
@@ -60,6 +65,7 @@ class D_GUI_EXPORT DOsd : public QWidget
 		void drawPixmap(const QBrush &background, const QBrush &foreground);
 
 	private:
+		static DOsd *s_osd;
 		QPixmap m_pixmap;
 		QTimer *m_timer;
 		

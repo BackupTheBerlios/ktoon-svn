@@ -39,7 +39,7 @@
 KTExportWidget::KTExportWidget(const KTProject *manager, QWidget *parent) : KTModuleWidgetBase(parent), m_manager(manager), m_currentExporter(0), m_currentFormat(KTExportInterface::NONE)
 {
 	DINIT;
-	setWindowTitle(tr("Export"));
+	setWindowTitle(tr("E&xport"));
 	
 	setWindowIcon(QIcon(THEME_DIR+"/icons/export.png"));
 	
@@ -298,7 +298,7 @@ void KTExportWidget::exportIt()
 	}
 	else
 	{
-		emit sendToOSD( tr("Please choose the format before export"), DOsd::Error );
+		DOsd::self()->display( tr("Please choose the format before export"), DOsd::Error );
 	}
 }
 

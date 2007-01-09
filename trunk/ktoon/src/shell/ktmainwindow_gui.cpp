@@ -152,7 +152,6 @@ void KTMainWindow::createGUI()
 void KTMainWindow::connectToDisplays(const QWidget *widget)
 {
 	connect(widget, SIGNAL(sendToStatus(const QString &)), this, SLOT(messageToStatus(const QString &)));
-	connect(widget, SIGNAL(sendToOSD(const QString &, DOsd::Level)), this, SLOT(messageToOSD(const QString &, DOsd::Level )));
 }
 
 void KTMainWindow::setupMenu()

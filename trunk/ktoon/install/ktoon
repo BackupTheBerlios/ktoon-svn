@@ -1,6 +1,17 @@
 #!/bin/bash
 
-KTOON_HOME=`dirname $0`
+OUTPUT=`ls -l $0 | egrep '\-> (\w*\W*)+' -o | awk '{ print $2 }'`
+
+
+if [ "$OUTPUT" == "" ]
+then
+	KTOON_HOME=`dirname $0`
+elif [ "${OUTPUT::1}" == "/" ]
+then
+	KTOON_HOME=`dirname ${OUTPUT}`
+else 
+	KTOON_HOME="`dirname $0`/${OUTPUT}"
+fi
 
 LD_LIBRARY_PATH="${KTOON_HOME}/lib/:$LD_LIBRARY_PATH"
 exec ${KTOON_HOME}/bin/ktoon.bin $*

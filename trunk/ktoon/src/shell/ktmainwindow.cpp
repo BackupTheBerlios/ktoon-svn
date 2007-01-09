@@ -65,8 +65,6 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_projectMan
 	
 	setObjectName("KTMainWindow_");
 	
-	m_osd = new DOsd( 0 );
-	
 	m_statusBar = new KTStatusBar(this);
 	setStatusBar( m_statusBar );
 	
@@ -111,9 +109,8 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_projectMan
 KTMainWindow::~KTMainWindow()
 {
 	DEND;
-	if ( m_osd ) delete m_osd;
-	
 	delete KTPluginManager::instance();
+	delete DOsd::self();
 }
 
 // Modal
@@ -135,7 +132,7 @@ void KTMainWindow::newViewDocument(const QString &title)
 	if ( m_projectManager->isOpen())
 	{
 		messageToStatus(tr("Opening a new paint area..."));
-		messageToOSD(tr("Opening a new document..."));
+		DOsd::self()->display(tr("Opening a new document..."));
 		
 		m_viewDoc = new KTViewDocument(m_projectManager->project());
 		connectToDisplays( m_viewDoc );
@@ -294,7 +291,7 @@ void KTMainWindow::openProject(const QString &path)
 // 				
 // 				newViewDocument();
 // 				
-			messageToOSD( tr("Project opened!"));
+			DOsd::self()->display( tr("Project opened!"));
 		}
 	}
 }
@@ -355,7 +352,6 @@ void KTMainWindow::ui4project(QWidget *widget)
 {
 	connect(widget, SIGNAL(requestTriggered(const KTProjectRequest *)), m_projectManager, SLOT(handleProjectRequest(const KTProjectRequest *)));
 	
-// 	connect(m_projectManager, SIGNAL(commandExecuted(KTProjectRequest* )), widget, SLOT(handleProjectRequest(KTProjectRequest *)));
 	connect(m_projectManager, SIGNAL(responsed( KTProjectResponse* )), widget, SLOT(handleProjectResponse(KTProjectResponse *)));
 }
 
@@ -367,11 +363,6 @@ void KTMainWindow::ui4paintArea(QWidget *widget)
 void KTMainWindow::messageToStatus(const QString &msg)
 {
 	m_statusBar->setStatus(msg, msg.length() * 90);
-}
-
-void KTMainWindow::messageToOSD(const QString &msg, DOsd::Level level)
-{
-	m_osd->display( msg, level, msg.length()*90);
 }
 
 void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
@@ -454,8 +445,6 @@ void KTMainWindow::closeEvent( QCloseEvent *event )
 	
 	DCONFIG->beginGroup("General");
 	DCONFIG->setValue("recents", m_recentProjects);
-	
-	m_osd->close();
 	
 	DMainWindow::closeEvent(event);
 }
