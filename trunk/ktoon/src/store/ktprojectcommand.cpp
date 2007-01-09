@@ -577,7 +577,12 @@ void KTProjectCommand::itemCommand(bool redo)
 			{
 				
 				m_executor->groupItems(response);
-// 				m_data = m_executor->groupItems(response->sceneIndex(), response->layerIndex(), response->frameIndex(), response->itemIndex(), response->arg().toString()).join(",");
+			}
+			break;
+			case KTProjectRequest::Ungroup:
+			{
+				
+				m_executor->ungroupItems(response);
 			}
 			break;
 			default: break;

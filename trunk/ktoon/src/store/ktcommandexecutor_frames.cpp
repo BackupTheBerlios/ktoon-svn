@@ -239,8 +239,6 @@ bool KTCommandExecutor::setFrameVisibility(KTFrameResponse *response)
 	int position = response->frameIndex();
 	bool view = response->arg().toBool();
 	
-	
-	
 	KTScene *scene = m_project->scene(scenePos);
 	
 	if ( !scene)

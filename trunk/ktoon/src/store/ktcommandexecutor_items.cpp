@@ -112,7 +112,7 @@ bool KTCommandExecutor::removeItems(KTItemResponse *response)
 			KTFrame *frame = layer->frame( framePosition );
 			if ( frame )
 			{
-				QStringList infoItems;
+// 				QStringList infoItems;
 // 				QDomDocument doc;
 // 				doc.setContent(xml);
 				
@@ -135,12 +135,12 @@ bool KTCommandExecutor::removeItems(KTItemResponse *response)
 					int pstn = (int) pos;
 					
 					QGraphicsItem *item = frame->item(pstn-count);
-					QDomDocument orig;
+// 					QDomDocument orig;
 					
 					if(item)
 					{
-						orig.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml( orig ));
-						infoItems << orig.toString();
+// 						orig.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml( orig ));
+// 						infoItems << orig.toString();
 						frame->removeGraphicAt(pstn-count);
 						
 						count++;
@@ -164,7 +164,7 @@ bool KTCommandExecutor::groupItems(KTItemResponse *response)
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
 	int position = response->itemIndex();
-	QString xml = response->arg().toString();
+	QString strList = response->arg().toString();
 	
 	KTScene *scene = m_project->scene(scenePosition);
 	
@@ -176,38 +176,11 @@ bool KTCommandExecutor::groupItems(KTItemResponse *response)
 			KTFrame *frame = layer->frame( framePosition );
 			if ( frame )
 			{
-// 				if ( position == -1 )
-// 				{
-// 					position = frame->graphics().count() - 1;
-// 				}
-				QStringList infoItems;
-				QDomDocument doc;
-				doc.setContent(xml);
-				QDomElement root = doc.documentElement();
-				QString strList = root.attribute ( "positions");
-				
 				QString::const_iterator itr = strList.constBegin();
-				
 				QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
-				
-// 				dDebug() << positions;
-// 				int count = 0;
-// 				foreach(qreal pos, positions )
-// 				{
-// 					QGraphicsItem *item = frame->item(pos-count);
-// 					QDomDocument orig;
-// 					
-// 					if(item)
-// 					{
-// 						orig.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml( orig ));
-// 						infoItems << orig.toString();
-// 						
-// 						count++;
-// 					}
-// 				}
+		
 				frame->createItemGroupAt( position, positions);
 				
-				KTProjectRequest request = KTRequestBuilder::createItemRequest( scenePosition, layerPosition, framePosition, position, KTProjectRequest::Group, xml);
 				emit responsed(response, m_state);
 				
 				return true;
@@ -217,6 +190,41 @@ bool KTCommandExecutor::groupItems(KTItemResponse *response)
 	
 	return false;
 }
+
+bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
+{
+	D_FUNCINFOX("items");
+	int scenePosition = response->sceneIndex();
+	int layerPosition = response->layerIndex();
+	int framePosition = response->frameIndex();
+	int position = response->itemIndex();
+	QString strList = response->arg().toString();
+	
+	KTScene *scene = m_project->scene(scenePosition);
+	
+	if ( scene )
+	{
+		KTLayer *layer = scene->layer( layerPosition );
+		if ( layer )
+		{
+			KTFrame *frame = layer->frame( framePosition );
+			if ( frame )
+			{
+				QString::const_iterator itr = strList.constBegin();
+				QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
+				foreach(qreal pos, positions)
+				{
+					int posint = (int)(pos);
+					frame->destroyItemGroup(posint);
+				}
+				emit responsed(response, m_state);
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
 
 bool KTCommandExecutor::convertItem(KTItemResponse *response)
 {

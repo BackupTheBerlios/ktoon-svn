@@ -355,6 +355,7 @@ void KTScene::drawPhotogram(int photogram)
 
 void KTScene::addFrame(KTFrame *frame, double opacity)
 {
+	D_FUNCINFO;
 	if ( frame )
 	{
 		foreach(KTGraphicObject *object, frame->graphics() )
@@ -363,8 +364,10 @@ void KTScene::addFrame(KTFrame *frame, double opacity)
 			
 			m_onionSkin.opacityMap.insert(item, opacity);
 			
-			addItem(item);
-			
+			if(!qgraphicsitem_cast<KTItemGroup *>(item->parentItem ()))
+			{
+				addItem(item);
+			}
 			if ( KTItemGroup *group = qgraphicsitem_cast<KTItemGroup *>(item) )
 			{
 				group->recoverChilds();

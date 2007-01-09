@@ -138,7 +138,6 @@ void KTFrame::addItem(QGraphicsItem *item)
 	m_graphics << object;
 }
 
-
 QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group )
 {
 	D_FUNCINFO;
@@ -152,15 +151,17 @@ QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group 
 	
 	foreach( int pos, group )
 	{
-		QGraphicsItem *item = this->item(pos-count);
+		QGraphicsItem *item = this->item(pos);
 		
 		g->addToGroup( item );
 		count++;
 	}
-	
-	m_graphics.insert(position, new KTGraphicObject(g, this));
-	
+	addItem( g );
 	return g;
+}
+
+void KTFrame::destroyItemGroup(int position)
+{
 }
 
 void KTFrame::replaceItem(int position, QGraphicsItem *item)

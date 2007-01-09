@@ -39,7 +39,10 @@ QVariant KTItemGroup::itemChange ( GraphicsItemChange change, const QVariant & v
 	}
 	else if ( change == QGraphicsItem::ItemChildAddedChange )
 	{
-		m_childs << qvariant_cast<QGraphicsItem *>(value);
+		if(!m_childs.contains(qvariant_cast<QGraphicsItem *>(value)))
+		{
+			m_childs << qvariant_cast<QGraphicsItem *>(value);
+		}
 	}
 	
 	return QGraphicsItemGroup::itemChange(change, value);
@@ -52,9 +55,15 @@ void KTItemGroup::recoverChilds()
 	{
 		if ( item->parentItem() != this )
 		{
-			addToGroup(item);
+// 			addToGroup(item);
+			item->setParentItem(this);
 		}
 	}
+}
+
+QList<QGraphicsItem *> KTItemGroup::childs()
+{
+	return m_childs;
 }
 
 void KTItemGroup::fromXml(const QString &xml)

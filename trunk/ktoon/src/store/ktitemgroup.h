@@ -20,10 +20,6 @@
 #ifndef KTITEMGROUP_H
 #define KTITEMGROUP_H
 
-/**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
-*/
-
 #include "ktabstractserializable.h"
 #include <QGraphicsItemGroup>
 #include "ktglobal_store.h"
@@ -41,6 +37,7 @@ class STORE_EXPORT KTItemGroup: public KTAbstractSerializable, public QGraphicsI
 		virtual QDomElement toXml(QDomDocument &doc) const;
 		
 		void recoverChilds();
+		QList<QGraphicsItem *> childs();
 		
 	protected:
 		QVariant itemChange ( GraphicsItemChange change, const QVariant & value );

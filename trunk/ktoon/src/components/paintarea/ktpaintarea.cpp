@@ -631,11 +631,13 @@ void KTPaintArea::deleteItems()
 				}
 			}
 			strItems+= ")";
-			
+			if(strItems != ")")
+			{
 			KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, KTProjectRequest::Remove, strItems );
 			
 			dDebug(2) << "Borrando del frame " << currentScene->currentFrameIndex() << "\n" << "lo items " << strItems ;
 			emit requestTriggered(&event);
+			}
 		}
 	}
 }
@@ -669,42 +671,48 @@ void KTPaintArea::groupItems()
 			}
 			strItems+= ")";
 		}
-		
-		QDomDocument doc;
-		QDomElement root = doc.createElement("group");
-		root.setAttribute("positions", strItems );
-		doc.appendChild(root);
-		
-		
-// 		KTProjectRequest event(KTProjectRequest::Group, currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, doc.toString());
-// 		emit requestTriggered(&event);
-	}
-	
-	/*D_FUNCINFO;
-	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
-	QDomDocument doc;
-	if(!selecteds.isEmpty())
-	{
-		KTScene* currentScene = static_cast<KTScene*>(scene());
-		
-		if(currentScene)
+		if(strItems != ")")
 		{
-			foreach(QGraphicsItem *item, selecteds)
-			{
-				doc.appendChild(dynamic_cast<KTAbstractSerializable *>(item)->toXml( doc ));
-			}
+			KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, KTProjectRequest::Group, strItems );
+			emit requestTriggered(&event);
 		}
 	}
-	
-	KTScene* currentScene = static_cast<KTScene*>(scene());
-	
-	KTProjectRequest *event = new KTProjectRequest(KTProjectRequest::Group, currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), -1, doc.toString());
-	emit requestTriggered(event);
-									     */
 }
 
 void KTPaintArea::ungroupItems()
 {
+	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
+	if(!selecteds.isEmpty())
+	{
+		QString strItems= "";
+		
+		KTScene* currentScene = static_cast<KTScene*>(scene());
+		int firstItem = -1;
+		if(currentScene)
+		{
+			foreach(QGraphicsItem *item, selecteds)
+			{
+				if(currentScene->currentFrame()->indexOf(item) != -1 && qgraphicsitem_cast<QGraphicsItemGroup *>(item) )
+				{
+					if(strItems.isEmpty())
+					{
+						strItems +="("+ QString::number(currentScene->currentFrame()->indexOf(item)) ;
+						firstItem = currentScene->currentFrame()->indexOf(item);
+					}
+					else
+					{
+						strItems += " , "+ QString::number(currentScene->currentFrame()->indexOf(item));
+					}
+				}
+			}
+			strItems+= ")";
+		}
+		if(strItems != ")")
+		{
+			KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, KTProjectRequest::Ungroup, strItems );
+			emit requestTriggered(&event);
+		}
+	}
 }
 
 void KTPaintArea::copyItems()
