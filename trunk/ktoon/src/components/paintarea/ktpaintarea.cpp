@@ -54,6 +54,8 @@
 #include "ktlibraryobject.h"
 #include "ktrequestbuilder.h"
 
+#include "dosd.h"
+
 
 #ifdef QT_OPENGL_LIB
 
@@ -251,10 +253,11 @@ void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 	else if (m_tool )
 	{
 		KTScene *sscene = qobject_cast<KTScene *>(scene());
-		QGraphicsView::mousePressEvent(event);
 		
 		if ( event->buttons() == Qt::LeftButton && !sscene->currentFrame()->isLocked() )
 		{
+			QGraphicsView::mousePressEvent(event);
+			
 			m_tool->begin();
 			
 			m_isDrawing = true;
@@ -633,10 +636,10 @@ void KTPaintArea::deleteItems()
 			strItems+= ")";
 			if(strItems != ")")
 			{
-			KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, KTProjectRequest::Remove, strItems );
-			
-			dDebug(2) << "Borrando del frame " << currentScene->currentFrameIndex() << "\n" << "lo items " << strItems ;
-			emit requestTriggered(&event);
+				KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, KTProjectRequest::Remove, strItems );
+				
+				dDebug(2) << "Deleting frame: " << currentScene->currentFrameIndex() << "\n" << "Items: " << strItems ;
+				emit requestTriggered(&event);
 			}
 		}
 	}
@@ -854,9 +857,15 @@ void KTPaintArea::addSelectedItemsToLibrary()
 {
 	dDebug("paintarea") << "Adding to library";
 	
-	LibraryDialog dialog;
 	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
 	
+	if ( selecteds.isEmpty() )
+	{
+		DOsd::self()->display(tr("No items selected"), DOsd::Error);
+		return;
+	}
+	
+	LibraryDialog dialog;
 	foreach (QGraphicsItem *item, selecteds )
 	{
 		dialog.addItem( item );
@@ -869,7 +878,7 @@ void KTPaintArea::addSelectedItemsToLibrary()
 	
 	foreach (QGraphicsItem *item, selecteds )
 	{
-		if ( KTAbstractSerializable *itemSerializable = dynamic_cast<KTAbstractSerializable *>(item) )
+		if( KTAbstractSerializable *itemSerializable = dynamic_cast<KTAbstractSerializable *>(item) )
 		{
 			QString symName = dialog.symbolName( item );
 			

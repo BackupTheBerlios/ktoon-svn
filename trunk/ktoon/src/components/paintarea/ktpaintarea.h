@@ -37,7 +37,7 @@ class KTProject;
 class KTPaintAreaRotator;
 /**
  * Esta clase provee un area para realizar diferentes trazos
- * @author Jorge Cuadrado \<kuadrosx@toonka.com\>
+ * @author Jorge Cuadrado \<kuadrosx@toonka.com\> - David Cuadrado \<krawek@toonka.com\>
 */
 
 

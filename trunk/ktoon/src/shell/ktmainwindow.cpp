@@ -103,6 +103,9 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_projectMan
 	
 	KTPluginManager::instance()->loadPlugins();
 	setCurrentPerspective( Drawing );
+	
+	DCONFIG->beginGroup("General");
+	openProject(DCONFIG->value("last").toString());
 }
 
 
@@ -135,10 +138,11 @@ void KTMainWindow::newViewDocument(const QString &title)
 		DOsd::self()->display(tr("Opening a new document..."));
 		
 		m_viewDoc = new KTViewDocument(m_projectManager->project());
+		
 		connectToDisplays( m_viewDoc );
 		
 // 		m_viewDoc->setAttribute(Qt::WA_DeleteOnClose, true);
-		m_viewDoc->setWindowTitle(tr("Illustration"));
+		m_viewDoc->setWindowTitle(tr("Illustration: %1").arg(title) );
 		addWidget( m_viewDoc, true, Drawing);
 		connectToDisplays( m_viewDoc );
 		ui4project( m_viewDoc );
@@ -187,30 +191,33 @@ bool KTMainWindow::closeProject()
 		return true;
 	}
 	
-	QMessageBox mb(QApplication::applicationName (), tr("Do you want to save?"),
-		       QMessageBox::Information,
-		       QMessageBox::Yes | QMessageBox::Default,
-		       QMessageBox::No,
-		       QMessageBox::Cancel | QMessageBox::Escape);
-	mb.setButtonText(QMessageBox::Yes, tr("Save"));
-	mb.setButtonText(QMessageBox::No, tr("Discard"));
-	
-	switch(mb.exec())
+	if ( m_projectManager->isModified() )
 	{
-		case QMessageBox::Yes:
+		QMessageBox mb(QApplication::applicationName (), tr("Do you want to save?"),
+			QMessageBox::Information,
+			QMessageBox::Yes | QMessageBox::Default,
+			QMessageBox::No,
+			QMessageBox::Cancel | QMessageBox::Escape);
+		mb.setButtonText(QMessageBox::Yes, tr("Save"));
+		mb.setButtonText(QMessageBox::No, tr("Discard"));
+		
+		switch(mb.exec())
 		{
-			saveProject();
+			case QMessageBox::Yes:
+			{
+				saveProject();
+			}
+			break;
+			case QMessageBox::No:
+			{
+			}
+			break;
+			case QMessageBox::Cancel:
+			{
+				return false;
+			}
+			break;
 		}
-		break;
-		case QMessageBox::No:
-		{
-		}
-		break;
-		case QMessageBox::Cancel:
-		{
-			return false;
-		}
-		break;
 	}
 	
 	setUpdatesEnabled(false);
@@ -447,6 +454,8 @@ void KTMainWindow::showAnimationMenu(const QPoint &p)
 
 void KTMainWindow::closeEvent( QCloseEvent *event )
 {
+	QString lastProject = m_fileName;
+	
 	if (! closeProject() )
 	{
 		event->ignore();
@@ -454,6 +463,7 @@ void KTMainWindow::closeEvent( QCloseEvent *event )
 	}
 	
 	DCONFIG->beginGroup("General");
+	DCONFIG->setValue("last", lastProject);
 	DCONFIG->setValue("recents", m_recentProjects);
 	
 	DMainWindow::closeEvent(event);

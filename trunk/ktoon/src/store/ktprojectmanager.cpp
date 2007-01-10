@@ -37,7 +37,7 @@
 
 #include <ddebug.h>
 
-KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(false), m_handler(0)
+KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(false), m_isModified(false), m_handler(0)
 {
 	DINIT;
 	m_project = new KTProject(this);
@@ -123,13 +123,18 @@ void KTProjectManager::closeProject()
 	}
 	
 	m_isOpen = false;
+	m_isModified = false;
 	
 	m_undoStack->clear();
 }
 
 bool KTProjectManager::saveProject(const QString &fileName)
 {
-	return m_handler->saveProject(fileName, m_project);
+	bool result = m_handler->saveProject(fileName, m_project);
+	
+	m_isModified = !result;
+	
+	return result;
 }
 
 bool KTProjectManager::loadProject(const QString &fileName)
@@ -145,6 +150,7 @@ bool KTProjectManager::loadProject(const QString &fileName)
 	if ( ok )
 	{
 		m_isOpen = true;
+		m_isModified = false;
 	}
 	
 	return ok;
@@ -156,6 +162,11 @@ bool KTProjectManager::loadProject(const QString &fileName)
 bool KTProjectManager::isOpen() const
 {
 	return m_isOpen;
+}
+
+bool KTProjectManager::isModified() const
+{
+	return m_isModified;
 }
 
 
@@ -210,7 +221,7 @@ void KTProjectManager::createCommand(const KTProjectRequest *request, bool addTo
 	}
 	else
 	{
-		dWarning() << "request invalid";
+		dWarning() << "invalid request";
 	}
 }
 
@@ -229,7 +240,13 @@ QUndoStack *KTProjectManager::undoHistory() const
 
 void KTProjectManager::emitResponse( KTProjectResponse *response, int state)
 {
-	D_FUNCINFO;
+	D_FUNCINFO << response->action();
+	
+	if( response->action() != KTProjectRequest::Select )
+	{
+		m_isModified = true;
+	}
+	
 	if ( !m_handler )
 	{
 		emit responsed( response );

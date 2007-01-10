@@ -128,7 +128,6 @@ bool KTSaveProject::load(const QString &fileName, KTProject *project)
 		foreach(QString scenePath, scenes)
 		{
 			scenePath = projectDir.path() + "/" + scenePath;
-			
 			KTScene *scene = project->createScene(index, true);
 			
 			QFile f(scenePath);

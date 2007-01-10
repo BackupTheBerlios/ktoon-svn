@@ -49,6 +49,7 @@ class STORE_EXPORT KTProjectManager : public QObject
 		virtual void closeProject();
 		
 		bool isOpen() const;
+		bool isModified() const;
 		KTProject *project() const;
 		void setHandler(KTAbstractProjectHandler *handler);
 		
@@ -70,6 +71,7 @@ class STORE_EXPORT KTProjectManager : public QObject
 	private:
 		KTProject *m_project;
 		bool m_isOpen;
+		bool m_isModified;
 		
 		KTAbstractProjectHandler *m_handler;
 		
