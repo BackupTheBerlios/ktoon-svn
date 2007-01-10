@@ -199,7 +199,7 @@ bool KTMainWindow::closeProject()
 	{
 		case QMessageBox::Yes:
 		{
-// 			m_projectManager->save();
+			saveProject();
 		}
 		break;
 		case QMessageBox::No:
@@ -212,6 +212,8 @@ bool KTMainWindow::closeProject()
 		}
 		break;
 	}
+	
+	setUpdatesEnabled(false);
 	
 	m_viewDoc->closeArea();
 	removeWidget(m_viewDoc);
@@ -227,6 +229,8 @@ bool KTMainWindow::closeProject()
 	m_scenes->closeAllScenes();
 	
 	m_fileName = QString();
+	
+	setUpdatesEnabled(true);
 	
 	return true;
 }
@@ -248,6 +252,7 @@ void KTMainWindow::openProject(const QString &path)
 	
 	if ( closeProject() )
 	{
+		setUpdatesEnabled(false);
 		tabWidget()->setCurrentWidget(m_viewDoc);
 		
 		if ( m_projectManager->loadProject( path ) )
@@ -272,26 +277,35 @@ void KTMainWindow::openProject(const QString &path)
 			m_exposureSheet->handleProjectResponse(&response);
 			m_timeLine->handleProjectResponse(&response);
 			
-// 				int pos = m_recentProjects.indexOf(m_fileName);
-// 				if ( pos == -1 )
-// 				{
-// 					if ( m_recentProjects.count() <= 6 )
-// 					{
-// 						m_recentProjects << m_fileName;
-// 					}
-// 					else
-// 					{
-// 						m_recentProjects.push_front(m_fileName);
-// 					}
-// 				}
-// 				else
-// 				{
-// 					m_recentProjects.push_front(m_recentProjects.takeAt(pos));
-// 				}
-// 				
-// 				newViewDocument();
-// 				
-			DOsd::self()->display( tr("Project opened!"));
+			{
+				int pos = m_recentProjects.indexOf(m_fileName);
+				if ( pos == -1 )
+				{
+					if ( m_recentProjects.count() <= 6 )
+					{
+						m_recentProjects << m_fileName;
+					}
+					else
+					{
+						m_recentProjects.push_front(m_fileName);
+					}
+				}
+				else
+				{
+					m_recentProjects.push_front(m_recentProjects.takeAt(pos));
+				}
+				
+				updateOpenRecentMenu(m_recentProjectsMenu, m_recentProjects);
+			}
+			
+			setUpdatesEnabled(true);
+			
+			DOsd::self()->display( tr("Project %1 opened!").arg(m_projectManager->project()->projectName()) );
+		}
+		else
+		{
+			setUpdatesEnabled(true);
+			DOsd::self()->display( tr("Cannot open project!"), DOsd::Error );
 		}
 	}
 }
@@ -377,11 +391,24 @@ void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 	addWidget( page, false, All );
 }
 
+void KTMainWindow::saveAs()
+{
+	QString fileName = QFileDialog::getSaveFileName( this, tr("Build project package"), CACHE_DIR, "KToon Project Package (*.ktn)");
+	
+	if ( fileName.isEmpty() )
+	{
+		return;
+	}
+	
+	m_fileName = fileName;
+	save();
+}
+
 void KTMainWindow::saveProject()
 {
 	if ( m_fileName.isEmpty() )
 	{
-		saveProjectAs();
+		saveAs();
 		return;
 	}
 	
@@ -390,31 +417,14 @@ void KTMainWindow::saveProject()
 		m_fileName += ".ktn"; // FIXME
 	}
 	
-	m_projectManager->saveProject(m_fileName);
-	
-// 	KTPackageHandler packageHandler;
-// 	
-// 	bool ok = packageHandler.makePackage(CACHE_DIR+"/"+m_projectManager->projectName(), m_fileName);
-// 	
-// 	if ( ok )
-// 	{
-// 		messageToOSD( tr("Project saved!"));
-// 	}
-	
-}
-
-void KTMainWindow::saveProjectAs()
-{
-	m_fileName = QFileDialog::getSaveFileName( this, tr("Build project package"), CACHE_DIR, "KToon Project Package (*.ktn)");
-	
-	if ( m_fileName.isEmpty() ) return;
-	
-	if( !m_fileName.endsWith(".ktn"))
+	if ( m_projectManager->saveProject(m_fileName) )
 	{
-		m_fileName += ".ktn"; // FIXME
+		DOsd::self()->display(tr("Project %1 saved").arg(m_projectManager->project()->projectName()), DOsd::Info);
 	}
-	
-	m_projectManager->saveProject(m_fileName);
+	else
+	{
+		DOsd::self()->display(tr("Cannot save the project!"), DOsd::Error );
+	}
 }
 
 void KTMainWindow::openRecentProject()

@@ -35,8 +35,8 @@ class KTSaveProject : public QObject
 		KTSaveProject();
 		~KTSaveProject();
 		
-		virtual void save(const QString &filename, const KTProject *project);
-		virtual void load(const QString &filename, KTProject *project);
+		virtual bool save(const QString &filename, const KTProject *project);
+		virtual bool load(const QString &filename, KTProject *project);
 };
 
 #endif

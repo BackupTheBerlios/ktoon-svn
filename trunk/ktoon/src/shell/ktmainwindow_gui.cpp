@@ -172,12 +172,15 @@ void KTMainWindow::setupMenu()
 	newMenu->addSeparator();
 	m_fileMenu->addAction(m_actionManager->find("openproject"));
 	
-	QMenu *recents = new QMenu(tr("Recents"), this );
-	connect( recents, SIGNAL( activated(int) ), this, SLOT( openRecent( int ) ) );
+	m_recentProjectsMenu = new QMenu(tr("Recents"), this );
+	connect( m_recentProjectsMenu, SIGNAL( activated(int) ), this, SLOT( openRecent( int ) ) );
 	
-	updateOpenRecentMenu(recents);
+	DCONFIG->beginGroup("General");
+	QStringList recents = DCONFIG->value("recents").toString().split(';');
 	
-	m_fileMenu->addMenu( recents );
+	updateOpenRecentMenu(m_recentProjectsMenu, recents);
+	
+	m_fileMenu->addMenu( m_recentProjectsMenu );
 
 	m_fileMenu->addAction(m_actionManager->find("saveproject"));
 	m_fileMenu->addAction(m_actionManager->find("saveprojectas"));
@@ -289,7 +292,7 @@ void KTMainWindow::setupFileActions()
 	save->setStatusTip(tr("Saves the current project in the current location"));
 	
 	DAction *saveAs = new DAction( tr( "Save project &As..." ), m_actionManager);
-	connect(saveAs, SIGNAL(triggered()), this, SLOT(saveProjectAs()));
+	connect(saveAs, SIGNAL(triggered()), this, SLOT(saveAs()));
 	saveAs->setStatusTip(tr("Opens a dialog box to save the current project in any location"));
 	m_actionManager->insert( saveAs, "saveprojectas", "file" );
 	
@@ -368,11 +371,9 @@ void KTMainWindow::setupToolBar()
 	
 }
 
-void KTMainWindow::updateOpenRecentMenu(QMenu *menu)
-{
-	DCONFIG->beginGroup("General");
-	QStringList recents = DCONFIG->value("recents").toString().split(';');
-	
+void KTMainWindow::updateOpenRecentMenu(QMenu *menu, QStringList recents)
+{	
+	menu->clear();
 	m_recentProjects.clear();
 	
 	foreach(QString recent, recents)
@@ -380,7 +381,6 @@ void KTMainWindow::updateOpenRecentMenu(QMenu *menu)
 		if ( !recent.isEmpty() && m_recentProjects.indexOf(recent) == -1 )
 		{
 			m_recentProjects << recent;
-// 			m_recentProjects.push_front(recent);
 			connect(menu->addAction(recent), SIGNAL(triggered()), this, SLOT(openRecentProject()));
 		}
 	}

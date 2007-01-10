@@ -37,7 +37,7 @@ KTSaveProject::~KTSaveProject()
 {
 }
 
-void KTSaveProject::save(const QString &fileName, const KTProject *project)
+bool KTSaveProject::save(const QString &fileName, const KTProject *project)
 {
 	QDir projectDir = QDir::temp();
 	
@@ -45,7 +45,8 @@ void KTSaveProject::save(const QString &fileName, const KTProject *project)
 	{
 		if ( ! projectDir.mkdir(project->projectName()) )
 		{
-			qFatal("Can't create");
+			dFatal() <<("Can't create");
+			return false;
 		}
 	}
 	
@@ -95,9 +96,11 @@ void KTSaveProject::save(const QString &fileName, const KTProject *project)
 	{
 		dWarning() << tr("Project saved in %1!").arg(fileName);
 	}
+	
+	return ok;
 }
 
-void KTSaveProject::load(const QString &fileName, KTProject *project)
+bool KTSaveProject::load(const QString &fileName, KTProject *project)
 {
 	D_FUNCINFO << fileName;
 	KTPackageHandler packageHandler;
@@ -115,7 +118,8 @@ void KTSaveProject::load(const QString &fileName, KTProject *project)
 		}
 		else
 		{
-			qFatal("Can't find project file!!");
+			dFatal() << "Can't find project file!!";
+			return false;
 		}
 		
 		QStringList scenes = projectDir.entryList(QStringList() << "*.kts", QDir::Readable | QDir::Files);
@@ -139,7 +143,10 @@ void KTSaveProject::load(const QString &fileName, KTProject *project)
 				f.close();
 			}
 		}
+		return true;
 	}
+	
+	return false;
 }
 
 

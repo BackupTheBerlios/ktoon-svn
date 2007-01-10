@@ -126,7 +126,7 @@ class KTMainWindow : public DTabbedMainWindow
 		/**
 		 *  Updates the open recent menu item names according to the @a recent_names list of file names
 		 */
-		void updateOpenRecentMenu(QMenu *menu);
+		void updateOpenRecentMenu(QMenu *menu, QStringList recents);
 		
 	private slots:
 		void createNewProject( KTProjectManagerParams *params );
@@ -136,6 +136,8 @@ class KTMainWindow : public DTabbedMainWindow
 		void openProject();
 		
 		void save();
+		void saveAs();
+		
 		void showHelpPage(const QString &title, const QString &document);
 		void showWidgetPage();
 		
@@ -152,7 +154,6 @@ class KTMainWindow : public DTabbedMainWindow
 		void connectToDisplays(const QWidget *widget);
 		
 		void saveProject();
-		void saveProjectAs();
 		
 		void openRecentProject();
 		
@@ -171,6 +172,8 @@ class KTMainWindow : public DTabbedMainWindow
 		QMenu *m_fileMenu,*m_settingsMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
 		
 		QStringList m_recentProjects;
+		
+		QMenu *m_recentProjectsMenu;
 		
 	// Components
 	private:
