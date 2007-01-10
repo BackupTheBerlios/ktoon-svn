@@ -67,8 +67,9 @@ class KTCommandExecutor : public QObject
 		bool removeFrame(KTFrameResponse *response);
 		QString removeSymbol(const QString &xml);
 		
-// 		QString removeItem(int scenePosition, int layerPosition, int framePosition, int position);
-		bool removeItems(KTItemResponse *response);
+		bool removeItem(KTItemResponse *response);
+		bool removeItems(KTItemResponse *response); // FIXME: remove me
+		
 		
 		bool groupItems(KTItemResponse *response);
 		bool ungroupItems(KTItemResponse *response);

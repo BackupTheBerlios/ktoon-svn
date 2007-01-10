@@ -37,7 +37,7 @@ class D_IDEAL_EXPORT DTabbedMainWindow : public DMainWindow
 		~DTabbedMainWindow();
 		
 		void addWidget(QWidget *widget, bool persistant = false, int perspective = DefaultPerspective);
-		void removeWidget(QWidget *widget);
+		void removeWidget(QWidget *widget, bool force = false);
 		void setTabWidget(QTabWidget *w);
 		QTabWidget *tabWidget() const;
 		
@@ -57,7 +57,7 @@ class D_IDEAL_EXPORT DTabbedMainWindow : public DMainWindow
 	private:
 		QTabWidget *m_tabWidget;
 		QWidgetList m_persistantWidgets;
-		QMap<QWidget *, int> m_tabs;
+		QHash<QWidget *, int> m_tabs;
 		
 		QWidgetList m_pages;
 };

@@ -31,10 +31,13 @@
 
 bool KTCommandExecutor::createFrame(KTFrameResponse *response)
 {
+	response->setAction(KTProjectRequest::Add);
+	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int position = response->frameIndex();
 	QString name = response->arg().toString();
+	
 	QString state = response->state();
 	
 	KTScene *scene = m_project->scene(scenePosition);
@@ -56,10 +59,11 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
 		{
 			frame->setFrameName( name );
 		}
-		frame->fromXml( state );
 		
-		response->setArg(frame->frameName());
 		emit responsed( response, m_state );
+		
+		frame->fromXml( state );
+		response->setArg(frame->frameName());
 		
 		return true;
 	}
@@ -69,10 +73,11 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
 
 bool KTCommandExecutor::removeFrame(KTFrameResponse *response)
 {
+	response->setAction(KTProjectRequest::Remove);
+	
 	int scenePos = response->sceneIndex();
 	int layerPos = response->layerIndex();
 	int position = response->frameIndex();
-	
 	
 	KTScene *scene = m_project->scene(scenePos);
 	
@@ -86,6 +91,7 @@ bool KTCommandExecutor::removeFrame(KTFrameResponse *response)
 			{
 				QDomDocument doc;
 				doc.appendChild(frame->toXml( doc ));
+				response->setArg(frame->frameName());
 				
 				if ( layer->removeFrame(position) )
 				{
@@ -104,6 +110,8 @@ bool KTCommandExecutor::removeFrame(KTFrameResponse *response)
 
 bool KTCommandExecutor::moveFrame(KTFrameResponse *response)
 {
+	response->setAction(KTProjectRequest::Move);
+	
 	int scenePos = response->sceneIndex();
 	int layerPos = response->layerIndex();
 	int position = response->frameIndex();
@@ -137,6 +145,8 @@ bool KTCommandExecutor::moveFrame(KTFrameResponse *response)
 
 bool KTCommandExecutor::lockFrame(KTFrameResponse *response)
 {
+	response->setAction(KTProjectRequest::Lock);
+	
 	int scenePos = response->sceneIndex();
 	int layerPos = response->layerIndex();
 	int position = response->frameIndex();
@@ -168,6 +178,8 @@ bool KTCommandExecutor::lockFrame(KTFrameResponse *response)
 
 bool KTCommandExecutor::renameFrame(KTFrameResponse *response)
 {
+	response->setAction(KTProjectRequest::Rename);
+	
 	int scenePos = response->sceneIndex();
 	int layerPos = response->layerIndex();
 	int position = response->frameIndex();
@@ -204,6 +216,8 @@ bool KTCommandExecutor::renameFrame(KTFrameResponse *response)
 
 bool KTCommandExecutor::selectFrame(KTFrameResponse *response)
 {
+	response->setAction(KTProjectRequest::Select);
+	
 	int scenePos = response->sceneIndex();
 	int layerPos = response->layerIndex();
 	int position = response->frameIndex();
@@ -234,6 +248,7 @@ bool KTCommandExecutor::selectFrame(KTFrameResponse *response)
 
 bool KTCommandExecutor::setFrameVisibility(KTFrameResponse *response)
 {
+	response->setAction(KTProjectRequest::View);
 	int scenePos = response->sceneIndex();
 	int layerPos = response->layerIndex();
 	int position = response->frameIndex();

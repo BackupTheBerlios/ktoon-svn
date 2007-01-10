@@ -105,7 +105,13 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_projectMan
 	setCurrentPerspective( Drawing );
 	
 	DCONFIG->beginGroup("General");
-	openProject(DCONFIG->value("last").toString());
+	
+	bool openLast = DCONFIG->value("OpenLastProject", true).toBool();
+	
+	if ( openLast )
+	{
+		openProject(DCONFIG->value("LastProject").toString());
+	}
 }
 
 
@@ -223,7 +229,11 @@ bool KTMainWindow::closeProject()
 	setUpdatesEnabled(false);
 	
 	m_viewDoc->closeArea();
-	removeWidget(m_viewDoc);
+	m_animationSpace->closeAllWindows();
+	
+	removeWidget(m_animationSpace, true);
+	
+	removeWidget(m_viewDoc, true);
 	delete m_viewDoc;
 	m_viewDoc = 0;
 	
@@ -463,7 +473,7 @@ void KTMainWindow::closeEvent( QCloseEvent *event )
 	}
 	
 	DCONFIG->beginGroup("General");
-	DCONFIG->setValue("last", lastProject);
+	DCONFIG->setValue("LastProject", lastProject);
 	DCONFIG->setValue("recents", m_recentProjects);
 	
 	DMainWindow::closeEvent(event);

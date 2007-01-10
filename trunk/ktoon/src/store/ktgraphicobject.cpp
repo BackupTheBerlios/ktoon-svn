@@ -34,6 +34,11 @@ KTGraphicObject::KTGraphicObject(QGraphicsItem *item, KTFrame *parent)
 
 KTGraphicObject::~KTGraphicObject()
 {
+	if ( QGraphicsScene *scene = m_item->scene() )
+	{
+		scene->removeItem(m_item);
+	}
+	
 	delete m_item;
 }
 

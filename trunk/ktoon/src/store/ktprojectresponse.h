@@ -39,6 +39,7 @@ class STORE_EXPORT KTProjectResponse
 		
 		void setArg(const QString &value);
 		void setData(const QByteArray &data);
+		void setAction(int action);
 		
 		KTProjectRequestArgument arg() const;
 		QByteArray data() const;

@@ -33,6 +33,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QComboBox>
+#include <QCheckBox>
 
 #include "dformfactory.h"
 
@@ -50,6 +51,7 @@ class KTPreferences::GeneralPage : public QWidget
 	private:
 		QLineEdit *m_home, *m_repository, *m_browser;
 		QComboBox *m_renderType;
+		QCheckBox *m_openLastProject;
 		
 		
 // 	private slots:
@@ -95,8 +97,12 @@ KTPreferences::GeneralPage::GeneralPage()
 	{
 		m_renderType->setCurrentIndex ( str.toInt() );
 	}
+	
+	bool openLast = DCONFIG->value("OpenLastProject", true).toBool();
+	m_openLastProject = new QCheckBox();
+	m_openLastProject->setChecked(openLast);
 
-	QLayout *form = DFormFactory::makeGrid( QStringList() << tr("KToon Home") << tr("Cache") << tr("Browser") << tr("Render Type"), QWidgetList() << m_home << m_repository << m_browser << m_renderType);
+	QLayout *form = DFormFactory::makeGrid( QStringList() << tr("KToon Home") << tr("Cache") << tr("Browser") << tr("Render Type") << tr("Open last project"), QWidgetList() << m_home << m_repository << m_browser << m_renderType << m_openLastProject);
 	
 	layout->addLayout(form);
 	
@@ -130,6 +136,8 @@ void KTPreferences::GeneralPage::saveValues()
 	}
 	
 	DCONFIG->setValue("RenderType", QString::number((m_renderType->itemData(m_renderType->currentIndex ()).toInt())));
+	
+	DCONFIG->setValue("OpenLastProject", m_openLastProject->isChecked());
 	
 	DCONFIG->sync();
 }

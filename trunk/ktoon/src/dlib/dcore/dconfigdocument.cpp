@@ -150,7 +150,18 @@ QVariant DConfigDocument::value ( const QString & key, const QVariant & defaultV
 		return defaultValue;
 	}
 	
-	return element.attribute("value");
+	QVariant v = element.attribute("value");
+	
+	if ( v.toString() == "false" )
+	{
+		return false;
+	}
+	else if ( v.toString() == "true" )
+	{
+		return true;
+	}
+	
+	return v;
 }
 
 

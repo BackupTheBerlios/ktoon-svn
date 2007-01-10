@@ -41,6 +41,7 @@
 bool KTCommandExecutor::createItem(KTItemResponse *response)
 {
 	D_FUNCINFOX("items");
+	response->setAction(KTProjectRequest::Add);
 	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
@@ -90,18 +91,60 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
 	return true;
 }
 
-bool KTCommandExecutor::removeItems(KTItemResponse *response)
+bool KTCommandExecutor::removeItem(KTItemResponse *response)
 {
-// 	D_FUNCINFOX("items");
+	response->setAction(KTProjectRequest::Remove);
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
-// 	int position = response->itemIndex();
+	
+	KTScene *scene = m_project->scene(scenePosition);
+	
+	if ( scene )
+	{
+		KTLayer *layer = scene->layer( layerPosition );
+		if ( layer )
+		{
+			KTFrame *frame = layer->frame( framePosition );
+			if ( frame )
+			{
+				QGraphicsItem *item = frame->item( response->itemIndex() );
+				if( KTAbstractSerializable *itemSerializable = dynamic_cast<KTAbstractSerializable *>(item) )
+				{
+					QDomDocument orig;
+					orig.appendChild(itemSerializable->toXml(orig));
+					
+					response->setArg(orig.toString());
+					frame->removeGraphicAt(response->itemIndex());
+				}
+				else
+				{
+					return false;
+				}
+				
+				emit responsed(response, m_state);
+				
+				return true;
+			}
+		}
+	}
+	
+	return false;
+}
+
+bool KTCommandExecutor::removeItems(KTItemResponse *response) // FIXME: no es estandar.
+{
+	D_FUNCINFOX("items");
+	
+	response->setAction(KTProjectRequest::Remove);
+	int scenePosition = response->sceneIndex();
+	int layerPosition = response->layerIndex();
+	int framePosition = response->frameIndex();
+	
 	QString strList = response->arg().toString();
 	
 	dFatal() << "removeItems = " << strList;
 	
-// 	int scenePosition , int layerPosition, int framePosition, int position, const QString &xml
 	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( scene )
@@ -160,6 +203,8 @@ bool KTCommandExecutor::removeItems(KTItemResponse *response)
 bool KTCommandExecutor::groupItems(KTItemResponse *response)
 {
 	D_FUNCINFOX("items");
+	response->setAction(KTProjectRequest::Group);
+	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
@@ -194,6 +239,9 @@ bool KTCommandExecutor::groupItems(KTItemResponse *response)
 bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
 {
 	D_FUNCINFOX("items");
+	
+	response->setAction(KTProjectRequest::Ungroup);
+	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
@@ -229,6 +277,8 @@ bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
 bool KTCommandExecutor::convertItem(KTItemResponse *response)
 {
 	D_FUNCINFOX("items");
+	
+	response->setAction(KTProjectRequest::Convert);
 	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
@@ -286,9 +336,6 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
 						
 					}
 					
-					
-// 					KTProjectRequest request = KTRequestBuilder::createItemRequest( scenePosition, layerPosition, framePosition, position,KTProjectRequest::Convert,  xml);
-					
 					emit responsed(response, m_state);
 					
 					return true;
@@ -303,6 +350,8 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
 bool KTCommandExecutor::transformItem(KTItemResponse *response)
 {
 	D_FUNCINFOX("items");
+	response->setAction(KTProjectRequest::Transform);
+	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
@@ -323,16 +372,17 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
 				if ( item )
 				{
 					QDomDocument orig;
-					
 					orig.appendChild(KTSerializer::properties( item, orig ));
-					
 					QString current = orig.toString();
 					
 					QDomDocument doc;
 					doc.setContent( xml);
 					KTSerializer::loadProperties( item, doc.documentElement());
 					
+					
 					emit responsed(response, m_state);
+					
+					response->setArg(current);
 					
 					return true;
 				}
@@ -346,13 +396,14 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
 bool KTCommandExecutor::setPathItem( KTItemResponse *response )
 {
 	D_FUNCINFOX("items");
+	
+	response->setAction(KTProjectRequest::EditNodes);
+	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
 	int position = response->itemIndex();
 	QString xml = response->arg().toString();
-	SHOW_VAR(position);
-	
 	
 	KTScene *scene = m_project->scene(scenePosition);
 	
@@ -372,9 +423,10 @@ bool KTCommandExecutor::setPathItem( KTItemResponse *response )
 					{
 						QDomDocument orig;
 						
-						orig.appendChild(qgraphicsitem_cast<KTPathItem*>(item)->toXml(orig));
+						orig.appendChild(qgraphicsitem_cast<KTPathItem *>(item)->toXml(orig));
 						
 						QString current = orig.toString();
+						
 						QDomDocument doc;
 						doc.setContent( xml);
 						
@@ -382,6 +434,8 @@ bool KTCommandExecutor::setPathItem( KTItemResponse *response )
 						factory.loadItem(item, xml);
 						
 						emit responsed(response, m_state);
+						
+						response->setArg(current);
 						return true;
 					}
 				}

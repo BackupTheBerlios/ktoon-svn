@@ -208,8 +208,6 @@ void KTProjectCommand::redo()
 
 void KTProjectCommand::undo()
 {
-	D_FUNCINFO << m_data;
-	
 	m_executor->setState( KTCommandExecutor::Undo );
 	
 	switch(m_response->part() )
@@ -273,31 +271,27 @@ void KTProjectCommand::frameCommand(bool redo)
 			break;
 			case KTProjectRequest::Move:
 			{
-				SHOW_VAR(m_executor->moveFrame( response));
-// 				m_executor->moveFrame( response->sceneIndex(), response->layerIndex(), response->frameIndex(), response->arg().toInt() );
+				m_executor->moveFrame( response);
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				SHOW_VAR(m_executor->lockFrame( response ));
-// 				m_executor->lockFrame( response->sceneIndex(), response->layerIndex(), response->frameIndex(), response->arg().toBool() );
+				m_executor->lockFrame( response );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
 				m_executor->renameFrame( response );
-// 				m_data = m_executor->renameFrame( response->sceneIndex(), response->layerIndex(), response->frameIndex(), response->arg().toString() );
 			}
 			break;
 			case KTProjectRequest::Select:
 			{
 				m_executor->selectFrame(response );
-// 				m_executor->selectFrame(response->sceneIndex(), response->layerIndex(), response->frameIndex(), response->arg().toBool() );
 			}
 			break;
 			case KTProjectRequest::View:
 			{
-				SHOW_VAR(m_executor->setFrameVisibility(response));
+				m_executor->setFrameVisibility(response);
 			}
 			break;
 			default: break;
@@ -309,7 +303,7 @@ void KTProjectCommand::frameCommand(bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_data = m_executor->removeFrame( response );
+				m_executor->removeFrame( response );
 			}
 			break;
 			case KTProjectRequest::Remove:
@@ -320,19 +314,16 @@ void KTProjectCommand::frameCommand(bool redo)
 			case KTProjectRequest::Move:
 			{
 				m_executor->moveFrame( response);
-// 				m_executor->moveFrame(response->sceneIndex(), response->layerIndex(), response->arg().toInt(), response->frameIndex() );
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
 				m_executor->lockFrame( response );
-// 				m_executor->lockFrame( response->sceneIndex(), response->layerIndex(), response->frameIndex(), !response->arg().toBool() );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
 				m_executor->renameFrame( response );
-// 				m_executor->renameFrame( response->sceneIndex(), response->layerIndex(), response->frameIndex(), response->arg().toString() );
 			}
 			break;
 			case KTProjectRequest::View:
@@ -385,7 +376,7 @@ void KTProjectCommand::layerCommand(bool redo)
 			break;
 			case KTProjectRequest::View:
 			{
-				SHOW_VAR(m_executor->setLayerVisibility(response));
+				m_executor->setLayerVisibility(response);
 			}
 			break;
 			default: break;
@@ -397,7 +388,7 @@ void KTProjectCommand::layerCommand(bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_data = m_executor->removeLayer( response);
+				m_executor->removeLayer( response);
 			}
 			break;
 			case KTProjectRequest::Remove:
@@ -422,7 +413,7 @@ void KTProjectCommand::layerCommand(bool redo)
 			break;
 			case KTProjectRequest::View:
 			{
-				SHOW_VAR(m_executor->setLayerVisibility(response));
+				m_executor->setLayerVisibility(response);
 			}
 			break;
 			default: break;
@@ -531,7 +522,7 @@ void KTProjectCommand::itemCommand(bool redo)
 			break;
 			case KTProjectRequest::Remove:
 			{
-				 m_executor->removeItems( response );
+				 m_executor->removeItem( response );
 			}
 			break;
 			case KTProjectRequest::Move:
@@ -549,14 +540,12 @@ void KTProjectCommand::itemCommand(bool redo)
 			break;
 			case KTProjectRequest::Convert:
 			{
-// 				m_data = m_executor->convertItem(response->sceneIndex(), response->layerIndex(), response->frameIndex(), response->itemIndex(), response->arg().toString());
 				 m_executor->convertItem(response);
 			}
 			break;
 			case KTProjectRequest::EditNodes:
 			{
 				m_executor->setPathItem( response);
-// 				m_data =  m_executor->setPathItem( response->sceneIndex(), response->layerIndex(), response->frameIndex(), response->itemIndex(), response->arg().toString() );
 			}
 			break;
 			case KTProjectRequest::Select:
@@ -570,12 +559,10 @@ void KTProjectCommand::itemCommand(bool redo)
 			case KTProjectRequest::Transform:
 			{
 				m_executor->transformItem(response);
-// 				m_data = m_executor->transformItem(response->sceneIndex(), response->layerIndex(), response->frameIndex(), response->itemIndex(), response->arg().toString());
 			}
 			break;
 			case KTProjectRequest::Group:
 			{
-				
 				m_executor->groupItems(response);
 			}
 			break;
@@ -594,23 +581,12 @@ void KTProjectCommand::itemCommand(bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->removeItems(response);
-// 				m_executor->removeItems(response->sceneIndex(), response->layerIndex(), response->frameIndex(), response->itemIndex(), "<delete positions=\"("+QString::number(response->itemIndex())+")\"/>" );
+				m_executor->removeItem(response);
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
 				m_executor->createItem(response);
-// 				QString::const_iterator itr = response->arg().toString().constBegin();
-// 				QList<qreal> positions = KTSvg2Qt::parseNumbersList(++itr);
-// 				qSort(positions.begin(), positions.end());
-// 				int count = 0;
-				
-// 				foreach(QString xml, m_data.split(","))
-// 				{
-// 					m_executor->createItem(response->sceneIndex(), response->layerIndex(), response->frameIndex(), positions[count], xml);
-// 					count++;
-// 				}
 			}
 			break;
 			case KTProjectRequest::Move:
@@ -627,14 +603,12 @@ void KTProjectCommand::itemCommand(bool redo)
 			break;
 			case KTProjectRequest::Convert:
 			{
-// 				m_executor->convertItem(response->sceneIndex(), response->layerIndex(), response->frameIndex(), response->itemIndex(), m_data);
 				m_executor->convertItem(response);
 			}
 			break;
 			case KTProjectRequest::EditNodes:
 			{
 				m_executor->setPathItem(response);
-// 				m_data =  m_executor->setPathItem( response->sceneIndex(), response->layerIndex(), response->frameIndex(), response->itemIndex(), m_data );
 			}
 			case KTProjectRequest::View:
 			{
@@ -643,7 +617,6 @@ void KTProjectCommand::itemCommand(bool redo)
 			case KTProjectRequest::Transform:
 			{
 				m_executor->transformItem(response);
-// 				m_executor->transformItem(response->sceneIndex(), response->layerIndex(), response->frameIndex(), response->itemIndex(), m_data);
 			}
 			break;
 			default: break;

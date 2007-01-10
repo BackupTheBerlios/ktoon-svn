@@ -40,6 +40,10 @@ int KTProjectResponse::action() const
 	return m_action;
 }
 
+void KTProjectResponse::setAction(int action)
+{
+	m_action = action;
+}
 
 void KTProjectResponse::setArg(const QString &value)
 {

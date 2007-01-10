@@ -180,8 +180,9 @@ void DTabbedMainWindow::addWidget(QWidget *widget, bool persistant, int perspect
  * Remove a widget from the window.
  * @param widget 
  */
-void DTabbedMainWindow::removeWidget(QWidget *widget)
+void DTabbedMainWindow::removeWidget(QWidget *widget, bool force)
 {
+	if ( force ) m_persistantWidgets.removeAll(widget);
 	if ( m_persistantWidgets.contains(widget) ) return;
 	
 	int index = m_tabWidget->indexOf(widget);

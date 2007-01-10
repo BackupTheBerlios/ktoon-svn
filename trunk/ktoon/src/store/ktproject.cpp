@@ -71,6 +71,8 @@ void KTProject::clear()
 {
 	qDeleteAll(m_scenes);
 	m_scenes.clear();
+	
+	m_sceneCounter = 0;
 }
 
 /**

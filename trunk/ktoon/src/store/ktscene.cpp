@@ -48,6 +48,11 @@ KTScene::~KTScene()
 	clearFocus();
 	clearSelection();
 	
+	foreach ( QGraphicsView *view, this->views() )
+	{
+		view->setScene(0);
+	}
+	
 	foreach(QGraphicsItem *item, items())
 	{
 		removeItem(item);
@@ -55,8 +60,6 @@ KTScene::~KTScene()
 	
 	qDeleteAll(m_layers);
 	m_layers.clear();
-	
-	
 }
 
 void KTScene::setSceneName(const QString &name)

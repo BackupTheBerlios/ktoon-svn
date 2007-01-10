@@ -64,9 +64,6 @@ class STORE_EXPORT KTProjectCommand : public QUndoCommand
 		KTCommandExecutor *m_executor;
 		
 		KTProjectResponse *m_response;
-		
-		QString m_data;
-		
 		bool m_executed;
 };
 
