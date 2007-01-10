@@ -43,6 +43,7 @@ class KTOON_EXPORT KTPluginManager : public QObject
 		static KTPluginManager *s_instance;
 		
 		void loadPlugins();
+		void unloadPlugins();
 		
 		QObjectList tools() const;
 		QObjectList filters() const;

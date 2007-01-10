@@ -58,10 +58,14 @@ void Brush::init(QGraphicsView *view)
 {
 	view->setDragMode ( QGraphicsView::NoDrag );
 	
-	foreach(QGraphicsItem *item, view->scene()->items() )
+	Q_CHECK_PTR(view->scene());
+	if ( QGraphicsScene *scene = qobject_cast<QGraphicsScene *>(view->scene()) )
 	{
-		item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-		item->setFlag(QGraphicsItem::ItemIsMovable, false);
+		foreach(QGraphicsItem *item, scene->items() )
+		{
+			item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+			item->setFlag(QGraphicsItem::ItemIsMovable, false);
+		}
 	}
 }
 

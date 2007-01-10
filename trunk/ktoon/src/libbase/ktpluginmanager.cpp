@@ -37,12 +37,7 @@ KTPluginManager::KTPluginManager(QObject *parent) : QObject(parent)
 
 KTPluginManager::~KTPluginManager()
 {
-	dDebug("plugins") << "Unloading plugins...";
-	foreach(QPluginLoader *loader, m_loaders)
-	{
-		delete loader->instance();
-		delete loader;
-	}
+	unloadPlugins();
 }
 
 KTPluginManager *KTPluginManager::instance()
@@ -86,6 +81,16 @@ void KTPluginManager::loadPlugins()
 			
 			m_loaders << loader;
 		}
+	}
+}
+
+void KTPluginManager::unloadPlugins()
+{
+	dDebug("plugins") << "Unloading plugins...";
+	foreach(QPluginLoader *loader, m_loaders)
+	{
+		delete loader->instance();
+		delete loader;
 	}
 }
 

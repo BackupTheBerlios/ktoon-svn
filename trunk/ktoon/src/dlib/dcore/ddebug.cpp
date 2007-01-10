@@ -102,6 +102,7 @@ static class ConfigReader
 		
 		QStringList areas;
 		
+		bool colorize;
 		bool showArea;
 		bool showAll;
 		bool forceDisableGUI;
@@ -120,6 +121,16 @@ ConfigReader::ConfigReader()
 	defaultOutput= DebugOutput(settings.value("default", DShellOutput).toInt());
 	
 	forceDisableGUI = false;
+	
+	colorize = false;
+	
+#ifdef Q_OS_UNIX
+	QString terminal = QString::fromLocal8Bit(::getenv("TERM"));
+	if ( terminal == "linux" || terminal == "xterm" )
+	{
+		colorize = true;
+	}
+#endif
 }
 
 ConfigReader::~ConfigReader()
@@ -215,28 +226,32 @@ static void dDebugOutput(DebugType t, DebugOutput o, const char *data)
 	}
 	
 	char *output = "%s\n";
-	switch(t)
+	
+	if( configReader.colorize )
 	{
-		case DDebugMsg:
+		switch(t)
 		{
-// 			output = "%s\n";
+			case DDebugMsg:
+			{
+	// 			output = "%s\n";
+			}
+			break;
+			case DWarningMsg:
+			{
+				output = SHOW_WARNING;
+			}
+			break;
+			case DErrorMsg:
+			{
+				output = SHOW_ERROR;
+			}
+			break;
+			case DFatalMsg:
+			{
+				output = SHOW_FATAL;
+			}
+			break;
 		}
-		break;
-		case DWarningMsg:
-		{
-			output = SHOW_WARNING;
-		}
-		break;
-		case DErrorMsg:
-		{
-			output = SHOW_ERROR;
-		}
-		break;
-		case DFatalMsg:
-		{
-			output = SHOW_FATAL;
-		}
-		break;
 	}
 	
 	switch(o)
@@ -301,13 +316,18 @@ DDebug::DDebug(DebugType t, const QString &area, DebugOutput o) : m_type(t), m_o
 	
 	if ( configReader.showArea && !m_area.isEmpty())
 	{
-		*streamer << 
-#ifdef Q_OS_UNIX
-				colors.colorize(m_area)
-#else
-				m_area
-#endif
-				<< ": ";
+		QString init = "";
+		
+		if ( configReader.colorize )
+		{
+			init = colors.colorize(m_area);
+		}
+		else
+		{
+			init = m_area;
+		}
+		
+		*streamer << init << ": ";
 	}
 	
 	if ( m_output == DDefault )

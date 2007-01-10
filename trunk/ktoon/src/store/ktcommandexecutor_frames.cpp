@@ -57,13 +57,21 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
 		
 		if (!name.isEmpty())
 		{
+			dDebug("items") << name;
 			frame->setFrameName( name );
+		}
+		else
+		{
+			response->setArg(frame->frameName());
 		}
 		
 		emit responsed( response, m_state );
 		
-		frame->fromXml( state );
-		response->setArg(frame->frameName());
+		if ( !state.isEmpty() )
+		{
+			frame->fromXml( state );
+			response->setArg(frame->frameName());
+		}
 		
 		return true;
 	}

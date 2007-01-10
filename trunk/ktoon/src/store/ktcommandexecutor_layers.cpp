@@ -49,6 +49,10 @@ bool KTCommandExecutor::createLayer(KTLayerResponse *response)
 		{
 			layer->setLayerName( name );
 		}
+		else
+		{
+			response->setArg(layer->layerName());
+		}
 		
 		emit responsed(response, m_state);
 		
