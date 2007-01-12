@@ -162,6 +162,14 @@ QGraphicsItemGroup *KTFrame::createItemGroupAt(int position, QList<qreal> group 
 
 void KTFrame::destroyItemGroup(int position)
 {
+	if ( KTItemGroup *group = qgraphicsitem_cast<KTItemGroup *>(item(position)) )
+	{
+		foreach(QGraphicsItem *child, group->childs())
+		{
+			group->removeFromGroup(child);
+		}
+		removeGraphicAt(position);
+	}
 }
 
 void KTFrame::replaceItem(int position, QGraphicsItem *item)
