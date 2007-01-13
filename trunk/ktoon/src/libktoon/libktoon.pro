@@ -39,8 +39,9 @@ DLIB_DIR = ../../src/dlib
 include($$DLIB_DIR/dlib.pri)
 QUAZIP_DIR = ../../3rdparty/quazip/
 include($$QUAZIP_DIR/quazip.pri)
-KDEV_QTVER = 4
 TARGET = ktoon
 CONFIG += dll
 TEMPLATE = lib
 include(../../ktconfig.pri)
+
+

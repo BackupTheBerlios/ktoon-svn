@@ -52,7 +52,8 @@ void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* re
 	
 	if ( m_socket->state() == QAbstractSocket::ConnectedState )
 	{
-		m_socket->sendToServer( request->xml() );
+		dDebug("server") << "SENDING: " << request->xml();
+		m_socket->send( request->xml() );
 	}
 }
 
@@ -97,7 +98,7 @@ bool KTNetProjectManagerHandler::closeProject()
 
 void KTNetProjectManagerHandler::sendHello()
 {
-	m_socket->sendToServer( "<cnx>helo ktoon server!</cnx>\n");
+	m_socket->send( "<cnx>helo ktoon server!</cnx>\n");
 }
 
 void KTNetProjectManagerHandler::emitRequest(KTProjectRequest *request)

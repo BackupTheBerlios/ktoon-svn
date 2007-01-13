@@ -45,7 +45,8 @@ HEADERS += ktlayer.h \
            ktprojectresponse.h \
            ktabstractprojectresponsehandler.h  \
            ktsaveproject.h \
-           ktprojectloader.h
+           ktprojectloader.h \
+           ktsocketbase.h
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
@@ -85,7 +86,8 @@ SOURCES += ktlayer.cpp \
            ktabstractprojectresponsehandler.cpp \
            ktitemfactory.cpp  \
            ktsaveproject.cpp \
-           ktprojectloader.cpp
+           ktprojectloader.cpp \
+           ktsocketbase.cpp
 KDEV_QTVER = 4
 STORE_DIR = ../../src/store
 LIBKTOON_DIR = ../../src/libktoon

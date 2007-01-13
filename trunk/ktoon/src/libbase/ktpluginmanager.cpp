@@ -58,7 +58,7 @@ void KTPluginManager::loadPlugins()
 	
 	QDir m_pluginDirectory = QDir(HOME_DIR+"/plugins/");
 
-	foreach (QString fileName, m_pluginDirectory.entryList(QDir::Files))
+	foreach(QString fileName, m_pluginDirectory.entryList(QDir::Files))
 	{
 		QPluginLoader *loader = new QPluginLoader(m_pluginDirectory.absoluteFilePath(fileName));
 		QObject *plugin = qobject_cast<QObject*>(loader->instance());
@@ -80,6 +80,10 @@ void KTPluginManager::loadPlugins()
 			}
 			
 			m_loaders << loader;
+		}
+		else
+		{
+			dFatal("plugins") << "Cannot load plugin, error was: " << loader->errorString();
 		}
 	}
 }

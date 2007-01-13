@@ -18,57 +18,55 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktnetsocket.h"
+#include "ktsocketbase.h"
+
 #include <QTextStream>
-#include <QDataStream>
 
-#include <ddebug.h>
-
-#include "ktprojectrequest.h"
-#include "ktnetprojectmanagerhandler.h"
-#include "ktrequestparser.h"
-
-#include "ktcompress.h"
-
-KTNetSocket::KTNetSocket(KTNetProjectManagerHandler *handler) : KTSocketBase(handler), m_handler(handler)
+KTSocketBase::KTSocketBase(QObject *parent)
+ : QTcpSocket(parent)
 {
+	connect(this, SIGNAL(readyRead ()), this, SLOT(readFromServer()) );
 }
 
 
-KTNetSocket::~KTNetSocket()
+KTSocketBase::~KTSocketBase()
 {
 }
 
-void KTNetSocket::readed(const QString &readed)
+void KTSocketBase::send(const QString &str)
 {
-	dDebug("net") << "READED: " << readed;
-	QDomDocument doc;
-	
-	if ( doc.setContent(readed) )
+	if ( state() == QAbstractSocket::ConnectedState )
 	{
-		QString root = doc.documentElement().tagName();
-		if ( root == "request" )
+		QTextStream stream(this);
+		stream << str.toLocal8Bit().toBase64() << "%%" << endl;
+	}
+}
+
+void KTSocketBase::send(const QDomDocument &doc)
+{
+	send(doc.toString(0));
+}
+
+void KTSocketBase::readFromServer()
+{
+	QString readed;
+	while(this->canReadLine())
+	{
+		readed += this->readLine();
+		if ( readed.endsWith("%%\n") )
 		{
-			KTRequestParser parser;
-			if ( parser.parse(readed) )
-			{
-				KTProjectRequest request(readed); // FIXME: construir con el response y no con el xml.
-				m_handler->emitRequest(&request);
-			}
-			else // TODO: mostrar error
-			{
-				dError() << "Error parsing";
-			}
-		}
-		else
-		{
-			dDebug("net") << "Unknown package: " << root;
+			break;
 		}
 	}
-	else
+	
+	if ( !readed.isEmpty() )
 	{
-		qDebug("Isn't a document");
+		readed.remove(readed.lastIndexOf("%%"), 2);
+		readed = QString::fromLocal8Bit( QByteArray::fromBase64(readed.toLocal8Bit()) );
+		
+		this->readed(readed);
 	}
 	
+	if (this->canReadLine()) readFromServer();
 }
 

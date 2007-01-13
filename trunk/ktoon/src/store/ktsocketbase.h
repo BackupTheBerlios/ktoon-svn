@@ -18,57 +18,29 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktnetsocket.h"
-#include <QTextStream>
-#include <QDataStream>
+#ifndef KTSOCKETBASE_H
+#define KTSOCKETBASE_H
 
-#include <ddebug.h>
+#include <QTcpSocket>
+#include <QDomDocument>
 
-#include "ktprojectrequest.h"
-#include "ktnetprojectmanagerhandler.h"
-#include "ktrequestparser.h"
-
-#include "ktcompress.h"
-
-KTNetSocket::KTNetSocket(KTNetProjectManagerHandler *handler) : KTSocketBase(handler), m_handler(handler)
+/**
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+class KTSocketBase : public QTcpSocket
 {
-}
+	Q_OBJECT;
+	public:
+		KTSocketBase(QObject *parent = 0);
+		~KTSocketBase();
+		
+		void send(const QString &str);
+		void send(const QDomDocument &doc);
+		
+		virtual void readed(const QString &readed) = 0;
+		
+	protected slots:
+		virtual void readFromServer();
+};
 
-
-KTNetSocket::~KTNetSocket()
-{
-}
-
-void KTNetSocket::readed(const QString &readed)
-{
-	dDebug("net") << "READED: " << readed;
-	QDomDocument doc;
-	
-	if ( doc.setContent(readed) )
-	{
-		QString root = doc.documentElement().tagName();
-		if ( root == "request" )
-		{
-			KTRequestParser parser;
-			if ( parser.parse(readed) )
-			{
-				KTProjectRequest request(readed); // FIXME: construir con el response y no con el xml.
-				m_handler->emitRequest(&request);
-			}
-			else // TODO: mostrar error
-			{
-				dError() << "Error parsing";
-			}
-		}
-		else
-		{
-			dDebug("net") << "Unknown package: " << root;
-		}
-	}
-	else
-	{
-		qDebug("Isn't a document");
-	}
-	
-}
-
+#endif

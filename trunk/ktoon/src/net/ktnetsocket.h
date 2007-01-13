@@ -21,15 +21,14 @@
 #ifndef KTNETSOCKET_H
 #define KTNETSOCKET_H
 
-#include <QTcpSocket>
-#include <QDomDocument>
+#include "ktsocketbase.h"
 
 class KTNetProjectManagerHandler;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTNetSocket : public QTcpSocket
+class KTNetSocket : public KTSocketBase
 {
 	Q_OBJECT;
 	
@@ -37,15 +36,9 @@ class KTNetSocket : public QTcpSocket
 		KTNetSocket(KTNetProjectManagerHandler *handler);
 		~KTNetSocket();
 		
-		void sendToServer(const QString &str);
-		void sendToServer(const QDomDocument &doc);
-		
-	protected slots:
-		virtual void readFromServer();
+		virtual void readed(const QString &readed);
 		
 	private:
-		QString m_readed;
-		
 		KTNetProjectManagerHandler *m_handler;
 		
 };

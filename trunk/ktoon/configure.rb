@@ -31,6 +31,7 @@ _EOH_
 	config.addModule("gui")
 	config.addModule("svg")
 	config.addModule("xml")
+	config.addModule("network")
 	
 	config.addDefine("VERSION=0.9+svn")
 	config.addDefine('VERSION_STR=\\\\\"0.9+svn\\\\\"')
