@@ -20,15 +20,24 @@
 
 #include "ktserverclient.h"
 
+#include "ktserverconnection.h"
+
 #include <QDataStream>
+#include <QStringList>
+
 #include <ddebug.h>
 
-KTServerClient::KTServerClient(QObject *parent) : QTcpSocket(parent)
+KTServerClient::KTServerClient(KTServerConnection *connection) : KTSocketBase(), m_connection(connection)
 {
 }
 
 KTServerClient::~KTServerClient()
 {
+}
+
+void KTServerClient::readed(const QString &readed)
+{
+	m_connection->appendTextReaded(readed);
 }
 
 

@@ -21,21 +21,25 @@
 #ifndef DOMSERVERCLIENT_H
 #define DOMSERVERCLIENT_H
 
-#include <QTcpSocket>
-#include <QDomDocument>
-#include <QStringList>
+#include "ktsocketbase.h"
+
+class KTServerConnection;
 
 /**
  * Esta clase representa los clientes del servidor
  * @author David Cuadrado \<krawek@gmail.com\>
 */
-class KTServerClient : public QTcpSocket
+class KTServerClient : public KTSocketBase
 {
 	Q_OBJECT;
 	public:
-		KTServerClient(QObject *parent = 0);
+		KTServerClient(KTServerConnection *connection);
 		~KTServerClient();
-
+		
+		virtual void readed(const QString &readed);
+		
+	private:
+		KTServerConnection *m_connection;
 };
 
 #endif

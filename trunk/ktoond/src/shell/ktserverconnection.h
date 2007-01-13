@@ -22,8 +22,7 @@
 #define DOMSERVERCONNECTION_H
 
 #include <QThread>
-#include <QTcpSocket>
-#include <QDomDocument>
+#include <QQueue>
 
 #include "ktserverclient.h"
 
@@ -40,23 +39,31 @@ class KTServerConnection : public QThread
 	public:
 		KTServerConnection(int socketDescriptor, KTServer *server);
 		~KTServerConnection();
+		
 		void run();
 		
 		void close();
 		bool isLogged() const;
 		
+		void appendTextReaded(const QString &readed);
+		
+		inline void sendToClient(const QString &text) { m_client->send(text); }
+		
 	public slots:
-		void sendToClient(const QString &msg);
-		void sendToClient(const QDomDocument &doc);
-
+		void disconnect();
+		
+		
 	signals:
 		void error(QTcpSocket::SocketError socketError);
 		void requestSendToAll(const QString &msg);
+		void connectionClosed(KTServerConnection *cnn);
 
 	private:
 		KTServerClient *m_client;
 		KTServer *m_server;
 		bool m_isLogged;
+		
+		QQueue<QString> m_readed;
 };
 
 #endif

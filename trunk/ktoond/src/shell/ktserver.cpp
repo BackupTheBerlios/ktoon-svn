@@ -68,25 +68,22 @@ void KTServer::incomingConnection(int socketDescriptor)
 	SHOW_VAR(m_connections.count());
 	
 	KTServerConnection *newConnection = new KTServerConnection(socketDescriptor,this);
-	
 	handle(newConnection);
-	
 	m_connections << newConnection;
-	
 	newConnection->start();
 }
 
 void KTServer::handle(const KTServerConnection *cnx)
 {
 	connect(cnx, SIGNAL(finished()), cnx, SLOT(deleteLater()));
-	
 	connect(cnx, SIGNAL(requestSendToAll( const QString& )), this, SLOT(sendToAll( const QString& )));
-// 	connect(cnx, SIGNAL(requestSendToAll( const QDomDocument& )), this, SLOT(sendToAll( const QDomDocument& )));
+	connect(cnx, SIGNAL(connectionClosed(KTServerConnection*)), this, SLOT(removeConnection(KTServerConnection*)));
 }
 
 
 void KTServer::sendToAll(const QString &msg)
 {
+	dDebug("server") << "SENDING TO ALL: " << msg;
 	foreach(KTServerConnection *connection, m_connections)
 	{
 		connection->sendToClient(msg);
@@ -96,9 +93,11 @@ void KTServer::sendToAll(const QString &msg)
 void KTServer::sendToAll(const QDomDocument &pkg)
 {
 	D_FUNCINFO;
+	QString doc = pkg.toString(0);
+	
 	foreach(KTServerConnection *connection, m_connections)
 	{
-		connection->sendToClient(pkg);
+		connection->sendToClient(doc);
 	}
 }
 

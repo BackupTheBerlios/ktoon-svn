@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 	app.setApplicationName("dtserver");
 	
 	KTServer server;
-	server.openConnection( "localhost" );
+	server.openConnection( "192.168.0.2" );
 	
 	dDebug() << "Running!";
 	

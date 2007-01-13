@@ -23,20 +23,19 @@
 #include <QtNetwork>
 
 #include <ddebug.h>
-
-
-#include <ktprojectrequest.h>
-#include <ktrequestpackage.h>
-
-#include "ktrequestfactory.h"
 #include "ktserver.h"
-
+#include "ktrequestparser.h"
 #include "ktcompress.h"
+
+#include "ktprojectrequest.h"
+#include "ktprojectresponse.h"
 
 KTServerConnection::KTServerConnection(int socketDescriptor, KTServer *server) : QThread(server), m_server(server)
 {
 	m_client = new KTServerClient(this);
 	m_client->setSocketDescriptor(socketDescriptor);
+	
+	connect(m_client, SIGNAL(disconnected()), this, SLOT(disconnect()));
 }
 
 KTServerConnection::~KTServerConnection()
@@ -48,74 +47,53 @@ void KTServerConnection::run()
 {
 	while(m_client->state() != QAbstractSocket::UnconnectedState)
 	{
-		QString readed;
-		while(m_client->canReadLine())
-		{
-			readed += m_client->readLine();
-			if ( readed.endsWith("%%\n") )
-			{
-				break;
-			}
-		}
+		if ( m_readed.isEmpty() ) continue;
 		
-		if ( !readed.isEmpty() )
+		QString readed = m_readed.dequeue();
+		
+		dDebug("server") << "Reicived: " << readed;
+		
+		QDomDocument doc;
+		
+		if ( doc.setContent(readed.trimmed()) )
 		{
-			readed.remove(readed.lastIndexOf("%%"), 2);
+			QString root = doc.documentElement().tagName();
 			
-			readed = KTCompress::uncompressAndUnhash(readed);
-			dDebug("server") << "READED: " << readed;
-			
-			QDomDocument doc;
-			
-			if ( doc.setContent(readed) )
+			if ( root == "request" )
 			{
-				QString root = doc.documentElement().tagName();
-				
-				
-				if ( root == "request" )
+				KTRequestParser parser;
+				if ( parser.parse(readed) )
 				{
-					KTRequestFactory factory;
-					KTProjectRequest *request = factory.build( readed );
-					
-					if ( request )
+					if ( KTProjectResponse *response = parser.response() )
 					{
-						m_server->sendToAll( KTRequestPackage(request) );
-						delete request;
+// 						m_server->sendToAll( readed );
+						emit requestSendToAll(readed);
 					}
 				}
+				else // TODO: enviar error
+				{
+					dError() << "Error parsing";
+				}
 			}
+		}
+		else
+		{
+			dError("server") << "Cannot set document content!";
 		}
 	}
 	
 	// Finish connection
-// 	emit requestRemoveConnection( this );
+	disconnect();
 }
 
-void KTServerConnection::sendToClient(const QString &msg)
-{
-// 	dDebug() << "SENDING: " << msg;
-	
-	dDebug("server") << "sending: " << msg;
-	m_client->reset();
-	
-	QTextStream out(m_client);
-	
-	QString toSend(msg);
-	toSend.remove('\n');
-	
-	out << KTCompress::compressAndHash(toSend) << "%%" << endl;
-	m_client->flush();
-}
 
-void KTServerConnection::sendToClient(const QDomDocument &doc)
+void KTServerConnection::disconnect()
 {
-	sendToClient( doc.toString(0));
+	emit connectionClosed(this);
 }
 
 void KTServerConnection::close()
 {
-// 	D_FUNCINFO;
-	
 	m_client->disconnectFromHost();
 	m_client->close();
 	
@@ -125,5 +103,11 @@ void KTServerConnection::close()
 bool KTServerConnection::isLogged() const
 {
 	return m_isLogged;
+}
+
+void KTServerConnection::appendTextReaded(const QString &readed)
+{
+	dDebug("server") << "Enqueing: " << readed;
+	m_readed.enqueue(readed);
 }
 

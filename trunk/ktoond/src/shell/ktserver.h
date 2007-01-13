@@ -43,6 +43,8 @@ class KTServer : public QTcpServer
 		void sendToAll(const QDomDocument &pkg);
 		bool openConnection(const QString &host);
 		
+		
+		
 	public slots:
 		void sendToAll(const QString &msg);
 		void removeConnection(KTServerConnection *cnx);
