@@ -22,32 +22,53 @@
 #include <qdir.h>
 
 #include <QCoreApplication>
+#include <QTextDocument>
+#include <QDomDocument>
+
 
 #include "dcore/ddebug.h"
 
+
+class DConfig::Private
+{
+	public:
+		QDomDocument document;
+		QString path;
+		
+		bool isOk;
+		QDir configDirectory;
+		
+		
+		QHash<QString, QDomElement> groups;
+		QDomElement currentGroup;
+		QString lastGroup;
+};
+
+
 DConfig* DConfig::m_instance = 0;
 
-DConfig::DConfig() : QObject()
+DConfig::DConfig() : QObject(), d(new Private)
 {
 	DINIT;
+	
 #ifdef Q_WS_X11
-	configDirectory.setPath(QDir::homePath()+"/."+QCoreApplication::applicationName ());
+	d->configDirectory.setPath(QDir::homePath()+"/."+QCoreApplication::applicationName ());
 #elif defined(Q_WS_WIN)
-	configDirectory.setPath(QDir::homePath()+"/"+QCoreApplication::applicationName ());
+	d->configDirectory.setPath(QDir::homePath()+"/"+QCoreApplication::applicationName ());
 #elif defined(Q_WS_MAC)
-	configDirectory.setPath(QDir::homePath()+"/."+QCoreApplication::applicationName ());
+	d->configDirectory.setPath(QDir::homePath()+"/."+QCoreApplication::applicationName ());
 #endif
 
-	if ( !configDirectory.exists() )
+	if ( !d->configDirectory.exists() )
 	{
-		dDebug() << tr("%1 not exists... creating...").arg(configDirectory.path()) << endl;
-		if(!configDirectory.mkdir(configDirectory.path()))
+		dDebug() << tr("%1 not exists... creating...").arg(d->configDirectory.path()) << endl;
+		if(!d->configDirectory.mkdir(d->configDirectory.path()))
 		{
-			dError() << tr("I can't create %1").arg(configDirectory.path()) << endl;
+			dError() << tr("I can't create %1").arg(d->configDirectory.path()) << endl;
 		}
 	}
-
-	m_dconfig = new DConfigDocument( configDirectory.path() + "/"+QCoreApplication::applicationName().toLower()+".cfg" );
+	
+	d->path = d->configDirectory.path() + "/"+QCoreApplication::applicationName().toLower()+".cfg";
 	
 	init();
 }
@@ -70,47 +91,179 @@ DConfig *DConfig::instance()
 
 void DConfig::init()
 {
-	m_dconfig->setup();
-	m_isOk = m_dconfig->isOk();
-
+	QFile config( d->path );
+	d->isOk = false;
+	
+	if ( config.exists() )
+	{
+		QString errorMsg = "";
+		int errorLine = 0;
+		int errorColumn = 0;
+		
+		d->isOk = d->document.setContent(&config, &errorMsg, &errorLine, &errorColumn);
+		
+		if ( !d->isOk )
+		{
+			dDebug() << QObject::tr("Configuration file is corrupted %1:%2: %3").arg(errorLine).arg(errorColumn).arg(errorMsg);
+		}
+		config.close();
+	}
+	
+	if ( !d->isOk )
+	{
+		QDomProcessingInstruction header = d->document.createProcessingInstruction("xml","version=\"1.0\" encoding=\"UTF-8\"");
+		d->document.appendChild(header);
+		
+		QDomElement root = d->document.createElement( "DConfig" );
+		d->document.appendChild( root );
+	}
 }
 
 bool DConfig::isOk()
 {
-	return m_isOk;
+	return d->isOk;
 }
 
-DConfigDocument *DConfig::configDocument()
+QDomDocument DConfig::document()
 {
-	return m_dconfig;
+	return d->document;
 }
 
 void DConfig::sync()
 {
-	m_dconfig->saveConfig();
+	QFile f(d->path);
+	
+	if ( f.open(QIODevice::WriteOnly) )
+	{
+		QTextStream st( &f );
+		st << d->document.toString() << endl;
+		
+		d->isOk = true;
+		
+		f.close();
+	}
+	else
+	{
+		d->isOk = false;
+	}
+	
 	init();
-	m_isOk = m_isOk && m_dconfig->isOk();
 }
 
 void DConfig::beginGroup(const QString & prefix )
 {
-	m_dconfig->beginGroup( prefix);
+	QString stripped = Qt::escape(prefix);
+	
+	stripped.replace(' ', "_");
+	stripped.replace('\n', "");
+	
+	d->lastGroup = d->currentGroup.tagName();
+	
+	if ( d->groups.contains(stripped) )
+	{
+		d->currentGroup = d->groups[stripped];
+	}
+	else
+	{
+		d->currentGroup = find(d->document.documentElement(), stripped);
+		
+		if ( d->currentGroup.isNull() )
+		{
+			d->currentGroup = d->document.createElement(stripped);
+			d->document.documentElement().appendChild(d->currentGroup);
+		}
+		
+	}
 }
 
 void DConfig::endGroup()
 {
-	m_dconfig->endGroup();
+	if ( !d->lastGroup.isEmpty() )
+	{
+		beginGroup( d->lastGroup );
+	}
 }
 
 void DConfig::setValue ( const QString & key, const QVariant & value )
 {
-	m_dconfig->setValue(key, value);
+	QDomElement element = find(d->currentGroup, key);
+	
+	if ( !element.isNull () )
+	{
+		if ( value.canConvert( QVariant::StringList ) )
+		{
+			QStringList list = value.toStringList();
+			
+			element.setAttribute("value", list.join(";"));
+		}
+		else
+		{
+			element.setAttribute("value", value.toString());
+		}
+	}
+	else
+	{
+		element = d->document.createElement(key);
+		
+		if ( value.canConvert( QVariant::StringList ) )
+		{
+			QStringList list = value.toStringList();
+			
+			element.setAttribute("value", list.join(";"));
+		}
+		else
+		{
+			element.setAttribute("value", value.toString());
+		}
+		
+		d->currentGroup.appendChild(element);
+	}
 }
 
 QVariant DConfig::value ( const QString & key, const QVariant & defaultValue) const
 {
-	return m_dconfig->value(key, defaultValue);
+	QDomElement element = find(d->currentGroup, key); // Current group or root?
+	
+	if ( element.isNull() )
+	{
+		return defaultValue;
+	}
+	
+	QVariant v = element.attribute("value");
+	
+	if ( v.toString() == "false" )
+	{
+		return false;
+	}
+	else if ( v.toString() == "true" )
+	{
+		return true;
+	}
+	
+	return v;
 }
 
 
+
+QDomElement DConfig::find(const QDomElement &element, const QString &key) const 
+{
+	QDomElement recent;
+	QDomNode n = element.firstChild();
+	
+	while( !n.isNull() )
+	{
+		QDomElement e = n.toElement();
+		if( !e.isNull() )
+		{
+			if ( e.tagName() == key )
+			{
+				recent = e;
+				break;
+			}
+		}
+		n = n.nextSibling();
+	}
+	
+	return recent;
+}
 

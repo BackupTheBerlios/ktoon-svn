@@ -56,7 +56,14 @@ bool KTCommandExecutor::createScene(KTSceneResponse *response)
 	KTScene *scene = m_project->createScene( position );
 	if ( !scene ) return false;
 	
-	scene->setSceneName(name);
+	if ( !name.isEmpty() )
+	{
+		scene->setSceneName(name);
+	}
+	else
+	{
+		response->setArg(scene->sceneName());
+	}
 	
 	emit responsed( response, m_state );
 	

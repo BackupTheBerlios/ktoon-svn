@@ -34,7 +34,6 @@
 #include "dapplicationproperties.h"
 
 #include "ktsplash.h"
-#include "dconfigdocument.h"
 
 #include "ddebug.h"
 

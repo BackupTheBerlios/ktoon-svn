@@ -24,22 +24,25 @@
 #include <QObject>
 #include <QDir>
 #include <QHash>
+#include <QDomDocument>
+#include <QVariant>
 
-#include "dcore/dconfigdocument.h"
 #include "dcore/dglobal.h"
+
 
 class DConfig;
 
 /**
  * @author David Cuadrado
- * this is a doon config handler
+ * this is a dom config handler
 */
 
 class D_CORE_EXPORT DConfig : public QObject
 {
+	public:
+		~DConfig();
 	protected:
 		DConfig();
-		~DConfig();
 		void init();
 		
 		
@@ -54,19 +57,21 @@ class D_CORE_EXPORT DConfig : public QObject
 		static DConfig *instance();
 		
 		bool isOk();
-		DConfigDocument *configDocument();
+		QDomDocument document();
 		
 		void sync();
 		
 	private:
-		static DConfig *m_instance;
-		DConfigDocument *m_dconfig;
+		QDomElement find(const QDomElement &element, const QString &key) const;
 		
-		bool m_isOk;
-		QDir configDirectory;
+	private:
+		static DConfig *m_instance;
+		
+		class Private;
+		Private * const d;
 
 };
 
-#define DCONFIG static_cast<DConfig*>(DConfig::instance())
+#define DCONFIG DConfig::instance()
 
 #endif

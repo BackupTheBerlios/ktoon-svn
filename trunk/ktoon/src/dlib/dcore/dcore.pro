@@ -11,7 +11,6 @@ include.path = /include/dcore
 HEADERS += dalgorithm.h \
            dbrushadjuster.h \
            dconfig.h \
-           dconfigdocument.h \
            ddebug.h \
            dmd5hash.h \
            dapplicationproperties.h \
@@ -24,11 +23,10 @@ HEADERS += dalgorithm.h \
            dimageeffect.h \
            dspeller.h \
            dspellhighlighter.h \
-           dpathhandler.h 
+           dpathhandler.h
 SOURCES += dalgorithm.cpp \
            dbrushadjuster.cpp \
            dconfig.cpp \
-           dconfigdocument.cpp \
            ddebug.cpp \
            dgradientadjuster.cpp \
            dmd5hash.cpp \
@@ -39,9 +37,9 @@ SOURCES += dalgorithm.cpp \
            dimageeffect.cpp \
            dspeller.cpp \
            dspellhighlighter.cpp \
-           dpathhandler.cpp 
-! include(../dlibconfig.pri ) {
-error("Run ./configure first")
+           dpathhandler.cpp
+!{include(../dlibconfig.pri ){
+    error("Run ./configure first")
 }
 DEFINES += DLIB_CORE
 QT += xml
