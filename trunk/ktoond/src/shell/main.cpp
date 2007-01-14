@@ -23,15 +23,30 @@
 #include <ddebug.h>
 #include "ktserver.h"
 
+#include <dapplicationproperties.h>
+#include <dconfig.h>
+
 int main(int argc, char **argv)
 {
 	DDebug::setForceDisableGUI();
 	
 	QCoreApplication app(argc, argv);
-	app.setApplicationName("dtserver");
+	app.setApplicationName("ktoond");
+	
+	DCONFIG->beginGroup("Connection");
+	
+	if ( !DCONFIG->isOk() )
+	{
+		DCONFIG->setValue("host", "127.0.0.1");
+		DCONFIG->setValue("port", "6502");
+		DCONFIG->sync();
+	}
+	
+	QString host = DCONFIG->value("host").toString();
+	int port = DCONFIG->value("port").toInt();
 	
 	KTServer server;
-	server.openConnection( "192.168.0.2" );
+	server.openConnection( host, port );
 	
 	dDebug() << "Running!";
 	

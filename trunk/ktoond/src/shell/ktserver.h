@@ -38,10 +38,9 @@ class KTServer : public QTcpServer
 	
 	public:
 		KTServer(QObject *parent = 0);
-		KTServer(const QString &host, QObject *parent = 0);
 		~KTServer();
 		void sendToAll(const QDomDocument &pkg);
-		bool openConnection(const QString &host);
+		bool openConnection(const QString &host, int port);
 		
 		
 		

@@ -31,24 +31,18 @@ KTServer::KTServer(QObject *parent) : QTcpServer(parent)
 	DINIT;
 }
 
-KTServer::KTServer(const QString &host, QObject *parent) : QTcpServer(parent)
-{
-	openConnection( host);
-}
 
 KTServer::~KTServer()
 {
 	DEND;
 }
 
-bool KTServer::openConnection(const QString &host)
+bool KTServer::openConnection(const QString &host, int port)
 {
 	QList<QHostAddress> addrs = QHostInfo::fromName(host).addresses();
 	qDebug() << addrs;
 	if ( !addrs.isEmpty() )
 	{
-		int port = 31337;
-		
 		if(! listen(QHostAddress(addrs[0]), port) )
 		{
 			dError() << "Can't connect to " << host<<":"<<port<< " error was: " << errorString();
