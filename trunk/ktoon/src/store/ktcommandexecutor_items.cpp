@@ -245,7 +245,7 @@ bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
-	int position = response->itemIndex();
+// 	int position = response->itemIndex();
 	QString strList = response->arg().toString();
 	
 	KTScene *scene = m_project->scene(scenePosition);
@@ -379,6 +379,7 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
 					doc.setContent( xml);
 					KTSerializer::loadProperties( item, doc.documentElement());
 					
+					KTItemConverter::copyProperties(item, item);
 					
 					emit responsed(response, m_state);
 					
@@ -418,7 +419,6 @@ bool KTCommandExecutor::setPathItem( KTItemResponse *response )
 				QGraphicsItem *item = frame->item(position);
 				if ( item )
 				{
-// 					
 					if(qgraphicsitem_cast<QGraphicsPathItem *>(item));
 					{
 						QDomDocument orig;

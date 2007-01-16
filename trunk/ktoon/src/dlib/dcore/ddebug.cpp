@@ -45,6 +45,7 @@
 #include <QMessageBox>
 #include <QTextBrowser>
 #include <QSyntaxHighlighter>
+#include <QMatrix>
 
 #endif
 
@@ -585,6 +586,16 @@ DDebug& DDebug::operator << (const QGradient *g)
 		break;
 		default: break;
 	}
+	return *this;
+}
+
+DDebug& DDebug::operator << (const QMatrix &m)
+{
+	*this << "\n";
+	*this << "|" << m.m11() << "\t" << m.m12() << "\t" << 0 << "\t|\n";
+	*this << "|" << m.m21() << "\t" << m.m22() << "\t" << 0<< "\t|\n";
+	*this << "|" << m.dx() << "\t" << m.dy() << "\t" << 1<< "\t|\n";
+	
 	return *this;
 }
 

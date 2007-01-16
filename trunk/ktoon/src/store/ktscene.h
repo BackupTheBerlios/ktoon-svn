@@ -106,8 +106,6 @@ class STORE_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializabl
 		 */
 		bool moveLayer(int from, int to);
 		
-		QGraphicsScene* photogram(int index);
-		
 		void clean();
 		
 		int currentFrameIndex() const;

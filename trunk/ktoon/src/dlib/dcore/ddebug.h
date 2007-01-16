@@ -72,6 +72,7 @@ class QVariant;
 class QPixmap;
 class QIcon;
 class QImage;
+class QMatrix;
 
 class QLinearGradient;
 class QRadialGradient;
@@ -302,6 +303,7 @@ class D_CORE_EXPORT DDebug
 		DDebug& operator << (const QRadialGradient &);
 		DDebug& operator << (const QConicalGradient &);
 		DDebug& operator << (const QGradient *);
+		DDebug& operator << (const QMatrix &);
 		
 		static QTextBrowser *browser();
 #endif

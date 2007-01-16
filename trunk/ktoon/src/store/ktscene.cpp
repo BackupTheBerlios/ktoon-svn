@@ -30,6 +30,7 @@
 
 #include "ktitemgroup.h"
 #include "ktprojectloader.h"
+#include "ktitemfactory.h"
 
 KTScene::KTScene(KTProject *parent) : QGraphicsScene(parent), m_isLocked(false),  m_layerCount(0), m_isVisible(true)
 {
@@ -146,30 +147,6 @@ bool KTScene::removeLayer( int position)
 	return false;
 }
 
-/**
- * Retorna el fotograma de la posicición marcada por index
- * @param index 
- * @return 
- */
-QGraphicsScene *KTScene::photogram(int index)
-{
-	QGraphicsScene *scene = 0;
-	foreach(KTLayer *layer, m_layers)
-	{
-		if( 0 < index &&  index < layer->frames().count())
-		{
-			if(layer->frames()[index])
-			{
-				foreach(KTGraphicObject *object,  layer->frames()[index]->graphics())
-				{
-					scene->addItem ( object->item() );
-				}
-			}
-		}
-	}
-	
-	return scene;
-}
 
 /**
  * Retorna el layer que se encuentra en la posición indicada
@@ -364,13 +341,20 @@ void KTScene::addFrame(KTFrame *frame, double opacity)
 		foreach(KTGraphicObject *object, frame->graphics() )
 		{
 			QGraphicsItem *item = object->item();
-			
 			m_onionSkin.opacityMap.insert(item, opacity);
 			
-			if(!qgraphicsitem_cast<KTItemGroup *>(item->parentItem ()))
+// 			KTItemFactory factory;
+// 			QDomDocument doc;
+			
+			
+			if( ! qgraphicsitem_cast<KTItemGroup *>(item->parentItem()))
 			{
+// 				doc.appendChild(object->toXml(doc));
+// 				addItem(factory.create( doc.toString() ));
 				addItem(item);
 			}
+			
+			
 			if ( KTItemGroup *group = qgraphicsitem_cast<KTItemGroup *>(item) )
 			{
 				group->recoverChilds();

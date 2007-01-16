@@ -444,12 +444,13 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 		break;
 		default:
 		{
-			if ( m_tool )
-			{
-				m_tool->init( this );
-			}
 		}
 		break;
+	}
+	
+	if ( m_tool )
+	{
+		m_tool->init( this );
 	}
 }
 
@@ -519,6 +520,7 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
 	if ( m_tool )
 	{
 		m_tool->itemResponse( event );
+		m_tool->init(this);
 	}
 }
 

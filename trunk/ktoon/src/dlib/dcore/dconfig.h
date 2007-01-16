@@ -42,7 +42,7 @@ class D_CORE_EXPORT DConfig : public QObject
 	public:
 		~DConfig();
 	protected:
-		DConfig();
+		explicit DConfig();
 		void init();
 		
 		

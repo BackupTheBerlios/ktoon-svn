@@ -638,9 +638,9 @@ bool KTSvg2Qt::svgmatrix2qtmatrix(const QString &data, QMatrix &matrix)
 	if ( data.isEmpty() ) return false;
 	
 	QString::const_iterator itr = data.constBegin();
-	while (itr != data.constEnd()) 
+	while (itr != data.constEnd())
 	{
-		if ((*itr) == QLatin1Char('m')) 
+		if ((*itr) == QLatin1Char('m'))
 		{  //matrix
 			QString temp(QLatin1String("m"));
 			int remains = 6;
@@ -662,6 +662,7 @@ bool KTSvg2Qt::svgmatrix2qtmatrix(const QString &data, QMatrix &matrix)
 			matrix = matrix * QMatrix(points[0], points[1],points[2], points[3], points[4], points[5]);
 		}
 	}
+	
 	return true;
 }
 

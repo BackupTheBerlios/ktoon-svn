@@ -88,6 +88,7 @@ void KTSerializer::loadProperties(QGraphicsItem *item, const QDomElement &e)
 	{
 		QMatrix matrix;
 		KTSvg2Qt::svgmatrix2qtmatrix( e.attribute( "transform"), matrix );
+		
 		item->setMatrix(matrix);
 		
 		QPointF pos;

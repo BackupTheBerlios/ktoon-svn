@@ -3,11 +3,8 @@
 # Subdir relative project main directory: ./src/dlib
 # Target is a subdirs project 
 
-SUBDIRS += dcore \
-           dsound \
-           dgui \
-           plugins 
-KDEV_QTVER = 4
+SUBDIRS += dcore dsound dgui plugins
 CONFIG += release \
 warn_on
 TEMPLATE = subdirs
+

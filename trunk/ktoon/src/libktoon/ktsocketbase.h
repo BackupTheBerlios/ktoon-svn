@@ -17,15 +17,32 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "ktphotogram.h"
 
-KTPhotogram::KTPhotogram(QObject *parent) : QGraphicsScene(parent)
+#ifndef KTSOCKETBASE_H
+#define KTSOCKETBASE_H
+
+#include <QTcpSocket>
+#include <QDomDocument>
+
+#include "ktglobal.h"
+
+/**
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+class KTOON_EXPORT KTSocketBase : public QTcpSocket
 {
-}
+	Q_OBJECT;
+	public:
+		KTSocketBase(QObject *parent = 0);
+		~KTSocketBase();
+		
+		void send(const QString &str);
+		void send(const QDomDocument &doc);
+		
+		virtual void readed(const QString &readed) = 0;
+		
+	protected slots:
+		virtual void readFromServer();
+};
 
-
-KTPhotogram::~KTPhotogram()
-{
-}
-
-
+#endif
