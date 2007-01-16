@@ -621,6 +621,12 @@ void KTPaintArea::deleteItems()
 		{
 			foreach(QGraphicsItem *item, selecteds)
 			{
+				KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), currentScene->currentFrame()->indexOf(item), KTProjectRequest::Remove );
+				emit requestTriggered(&event);
+			}
+			
+			/*foreach(QGraphicsItem *item, selecteds)
+			{
 				int indexOfItem = currentScene->currentFrame()->indexOf(item);
 				if(indexOfItem != -1)
 				{
@@ -642,7 +648,7 @@ void KTPaintArea::deleteItems()
 				
 				dDebug(2) << "Deleting frame: " << currentScene->currentFrameIndex() << "\n" << "Items: " << strItems ;
 				emit requestTriggered(&event);
-			}
+		}*/
 		}
 	}
 }
@@ -689,10 +695,18 @@ void KTPaintArea::ungroupItems()
 	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
 	if(!selecteds.isEmpty())
 	{
-		QString strItems= "";
+// 		QString strItems= "";
 		
 		KTScene* currentScene = static_cast<KTScene*>(scene());
-		int firstItem = -1;
+		if(currentScene)
+		{
+			foreach(QGraphicsItem *item, selecteds)
+			{
+				KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), currentScene->currentFrame()->indexOf(item), KTProjectRequest::Ungroup);
+				emit requestTriggered(&event);
+			}
+		}
+		/*int firstItem = -1;
 		if(currentScene)
 		{
 			foreach(QGraphicsItem *item, selecteds)
@@ -716,7 +730,7 @@ void KTPaintArea::ungroupItems()
 		{
 			KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, KTProjectRequest::Ungroup, strItems );
 			emit requestTriggered(&event);
-		}
+	}*/
 	}
 }
 

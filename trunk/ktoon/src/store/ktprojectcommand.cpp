@@ -619,6 +619,17 @@ void KTProjectCommand::itemCommand(bool redo)
 				m_executor->transformItem(response);
 			}
 			break;
+			case KTProjectRequest::Group:
+			{
+				m_executor->ungroupItems(response);
+			}
+			break;
+			case KTProjectRequest::Ungroup:
+			{
+				
+				m_executor->groupItems(response);
+			}
+			break;
 			default: break;
 		}
 	}

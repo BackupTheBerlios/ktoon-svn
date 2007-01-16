@@ -42,7 +42,7 @@
 Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *manager, QGraphicsItem * parent,  QGraphicsScene * scene   ) : QGraphicsItem(0, scene), m_typeNode(node), m_action(action), m_notChange(true), m_parent(parent), m_manager(manager)
 {
 	QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor ));
-// 	setParent(m_parent);
+// 	setParentItem(m_parent);
 	setFlag(ItemIsSelectable, false);
 	setFlag(ItemIsMovable, true);
 	
@@ -121,8 +121,6 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
 
 void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-// 	dDebug() << "press";
-// 	dFatal() << "press";
 	D_FUNCINFO;
 	update();
 	m_manager->setPress( true);
@@ -138,6 +136,7 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+	D_FUNCINFO;
 	update();
 	QGraphicsItem::mouseReleaseEvent(event);
 	m_parent->setSelected(true);
@@ -146,9 +145,8 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
-	D_FUNCINFO;
-	QPointF newPos(/*mapToItem(m_parent,*/ event->scenePos())/*)*/;
 	
+	QPointF newPos(/*mapToItem(m_parent,*/ event->scenePos())/*)*/;
 	if( m_notChange)
 	{
 		m_notChange = false;
@@ -247,10 +245,14 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 }
 
 
-void Node::mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * )
+void Node::mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * e)
 {
+	D_FUNCINFO;
 	update();
 	m_manager->toggleAction();
+	e->setAccepted (false);
+	QGraphicsItem::mouseDoubleClickEvent(e);
+	
 }
 
 int Node::typeNode() const

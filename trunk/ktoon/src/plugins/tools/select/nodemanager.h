@@ -38,7 +38,7 @@ class NodeManager
 		void syncNodesFromParent();
 		QGraphicsItem *parentItem() const;
 		bool isModified() const;
-		void setModify(bool modify);
+// 		void setModify(bool modify);
 		
 		void beginToEdit();
 		void restoreItem();
@@ -67,7 +67,7 @@ class NodeManager
 		KTScene *m_scene;
 		
 		
-		bool m_modify;
+// 		bool m_modify;
 		
 		QMatrix m_origMatrix;
 		QPointF m_origPos;

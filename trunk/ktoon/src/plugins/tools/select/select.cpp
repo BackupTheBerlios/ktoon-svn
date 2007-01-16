@@ -79,7 +79,7 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 	view->setDragMode (QGraphicsView::RubberBandDrag);
 	
 	
-	SHOW_VAR(input->pos());
+// 	SHOW_VAR(input->pos());
 	if ( input->keyModifiers() != Qt::ControlModifier )
 	{
 		foreach(NodeManager *nodeManager, m_nodeManagers)
@@ -118,6 +118,7 @@ void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 
 void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
 {
+	D_FUNCINFO;
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
 	Q_UNUSED(view);
@@ -130,7 +131,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 		while(it != itEnd)
 		{
 			int parentIndex = scene->selectedItems().indexOf((*it)->parentItem() );
-			(*it)->beginToEdit();
+// 			(*it)->beginToEdit();
 			if(parentIndex != -1 )
 			{
 				selecteds.removeAt(parentIndex);
@@ -161,17 +162,18 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 				int position  = scene->currentFrame()->indexOf(manager->parentItem());
 				if(position != -1)
 				{
+					// Restore matrix
+					manager->restoreItem();
+					
 					KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, KTProjectRequest::Transform, doc.toString() );
 					emit requested(&event);
 					
-					// Restore matrix
-					manager->restoreItem();
+					
 				}
 				else
 				{
 					dDebug("selection") << "position is " << position; 
 				}
-				manager->setModify(false);
 			}
 		}
 	}

@@ -24,7 +24,7 @@
 
 
 #include <ddebug.h>
-NodeManager::NodeManager(QGraphicsItem * parent, KTScene *scene): m_parent(parent), m_scene(scene), m_modify(false), m_anchor(0,0), m_press(false), m_rotation(0)
+NodeManager::NodeManager(QGraphicsItem * parent, KTScene *scene): m_parent(parent), m_scene(scene), m_anchor(0,0), m_press(false), m_rotation(0)
 {
 	QRectF rect = parent->sceneBoundingRect();
 	Node *topLeft = new Node(Node::TopLeft, Node::Scale, rect.topLeft(), this, parent, scene);
@@ -80,7 +80,6 @@ void NodeManager::syncNodes(const QRectF &sbr)
 					if((*it)->scenePos() != sbr.topLeft() )
 					{
 						(*it)->setPos( sbr.topLeft() );
-						m_modify = true;
 					}
 					break;
 				}
@@ -89,7 +88,6 @@ void NodeManager::syncNodes(const QRectF &sbr)
 					if((*it)->scenePos() != sbr.topRight() )
 					{
 						(*it)->setPos( sbr.topRight() );
-						m_modify = true;
 					}
 					break;
 				}
@@ -98,7 +96,6 @@ void NodeManager::syncNodes(const QRectF &sbr)
 					if((*it)->scenePos() != sbr.bottomRight() )
 					{
 						(*it)->setPos( sbr.bottomRight() );
-						m_modify = true;
 					}
 					break;
 				}
@@ -107,7 +104,6 @@ void NodeManager::syncNodes(const QRectF &sbr)
 					if((*it)->scenePos() != sbr.bottomLeft() )
 					{
 						(*it)->setPos( sbr.bottomLeft() );
-						m_modify = true;
 					}
 					break;
 				}
@@ -116,7 +112,7 @@ void NodeManager::syncNodes(const QRectF &sbr)
 					if((*it)->scenePos() != sbr.center() )
 					{
 						(*it)->setPos( sbr.center() );
-						m_modify = true;
+// 						m_modify = true;
 					}
 					break;
 				}
@@ -141,12 +137,7 @@ QGraphicsItem *NodeManager::parentItem() const
 
 bool NodeManager::isModified() const
 {
-	return m_modify;
-}
-
-void NodeManager::setModify(bool modify)
-{
-	m_modify = modify;
+	return !((m_parent->matrix() == m_origMatrix) && (m_parent->pos() == m_origPos));
 }
 
 void NodeManager::beginToEdit()
@@ -175,7 +166,6 @@ QPointF NodeManager::anchor() const
 void NodeManager::scale(float sx, float sy)
 {
 	QMatrix m;
-// 	SHOW_VAR(m_parent->data(KTGraphicObject::Rotate).toDouble());
 // 	m.rotate(m_parent->data(KTGraphicObject::Rotate).toDouble());
 	m.translate(m_anchor.x(),m_anchor.y());
 	m.scale(sx,sy);

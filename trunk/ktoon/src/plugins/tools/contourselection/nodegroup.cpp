@@ -13,8 +13,7 @@ NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(paren
 	if(tmp)
 	{
 		QPainterPath path = tmp->sceneMatrix().map( tmp->path());
-		m_path = tmp->path();
-		m_pos = tmp->scenePos();
+		saveParentProperties();
 		int index = 0;
 		while(index < path.elementCount())
 		{
@@ -58,6 +57,7 @@ NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(paren
 	{
 		dDebug("selection") << "Item not item path";
 	}
+	
 }
 
 

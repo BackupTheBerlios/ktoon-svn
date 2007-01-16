@@ -89,7 +89,7 @@ class STORE_EXPORT KTFrame : public QObject, public KTAbstractSerializable
 		QGraphicsItem *item(int position) const;
 		
 		QGraphicsItemGroup *createItemGroupAt( int position, QList<qreal> group );
-		void destroyItemGroup(int position);
+		QList<QGraphicsItem *> destroyItemGroup(int position);
 				
 		KTLayer *layer() const;
 		KTScene *scene() const;
