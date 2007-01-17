@@ -26,7 +26,13 @@
 #include <ddebug.h>
 #include <QDebug>
 
-KTServer::KTServer(QObject *parent) : QTcpServer(parent)
+class KTServer::Private
+{
+	public:
+		QList<KTServerConnection *> connections;
+};
+
+KTServer::KTServer(QObject *parent) : QTcpServer(parent), d(new Private)
 {
 	DINIT;
 }
@@ -35,6 +41,7 @@ KTServer::KTServer(QObject *parent) : QTcpServer(parent)
 KTServer::~KTServer()
 {
 	DEND;
+	delete d;
 }
 
 bool KTServer::openConnection(const QString &host, int port)
@@ -59,11 +66,11 @@ bool KTServer::openConnection(const QString &host, int port)
 
 void KTServer::incomingConnection(int socketDescriptor)
 {
-	SHOW_VAR(m_connections.count());
+	SHOW_VAR(d->connections.count());
 	
 	KTServerConnection *newConnection = new KTServerConnection(socketDescriptor,this);
 	handle(newConnection);
-	m_connections << newConnection;
+	d->connections << newConnection;
 	newConnection->start();
 }
 
@@ -78,7 +85,7 @@ void KTServer::handle(const KTServerConnection *cnx)
 void KTServer::sendToAll(const QString &msg)
 {
 	dDebug("server") << "SENDING TO ALL: " << msg;
-	foreach(KTServerConnection *connection, m_connections)
+	foreach(KTServerConnection *connection, d->connections)
 	{
 		connection->sendToClient(msg);
 	}
@@ -89,7 +96,7 @@ void KTServer::sendToAll(const QDomDocument &pkg)
 	D_FUNCINFO;
 	QString doc = pkg.toString(0);
 	
-	foreach(KTServerConnection *connection, m_connections)
+	foreach(KTServerConnection *connection, d->connections)
 	{
 		connection->sendToClient(doc);
 	}
@@ -100,7 +107,7 @@ void KTServer::removeConnection(KTServerConnection *cnx)
 	D_FUNCINFO;
 	cnx->close();
 // 	cnx->setLogin(0);
-	m_connections.removeAll(cnx);
+	d->connections.removeAll(cnx);
 }
 
 

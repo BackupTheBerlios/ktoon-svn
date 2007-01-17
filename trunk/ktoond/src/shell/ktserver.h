@@ -56,7 +56,8 @@ class KTServer : public QTcpServer
 		void incomingConnection(int socketDescriptor);
 		
 	private:
-		QList<KTServerConnection *> m_connections;
+		class Private;
+		Private * const d;
 };
 
 #endif
