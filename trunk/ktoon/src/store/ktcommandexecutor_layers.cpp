@@ -54,7 +54,7 @@ bool KTCommandExecutor::createLayer(KTLayerResponse *response)
 			response->setArg(layer->layerName());
 		}
 		
-		emit responsed(response, m_state);
+		emit responsed(response);
 		
 		layer->fromXml( state );
 		response->setArg(layer->layerName());
@@ -85,7 +85,7 @@ bool KTCommandExecutor::removeLayer(KTLayerResponse *response)
 			
 			if ( scene->removeLayer(position) )
 			{
-				emit responsed(response, m_state);
+				emit responsed(response);
 				
 				return true;
 			}
@@ -118,7 +118,7 @@ bool KTCommandExecutor::moveLayer(KTLayerResponse *response)
 	}
 	else
 	{
-		emit responsed(response, m_state);
+		emit responsed(response);
 		return true;
 		
 	}
@@ -145,7 +145,7 @@ bool KTCommandExecutor::lockLayer(KTLayerResponse *response)
 	if ( layer )
 	{
 		layer->setLocked(lock);
-		emit responsed(response, m_state);
+		emit responsed(response);
 		return true;
 	}
 	
@@ -180,7 +180,7 @@ bool KTCommandExecutor::renameLayer(KTLayerResponse *response)
 		QString current = layer->layerName();
 		
 		layer->setLayerName( newName );
-		emit responsed(response, m_state);
+		emit responsed(response);
 		
 		response->setArg(current);
 		
@@ -195,7 +195,7 @@ bool KTCommandExecutor::renameLayer(KTLayerResponse *response)
 bool KTCommandExecutor::selectLayer(KTLayerResponse *response)
 {
 	response->setAction(KTProjectRequest::Select);
-	emit responsed(response, m_state);
+	emit responsed(response);
 	return true;
 }
 
@@ -220,7 +220,7 @@ bool KTCommandExecutor::setLayerVisibility(KTLayerResponse *response)
 	if ( layer )
 	{
 		layer->setVisible(view);
-		responsed(response, m_state);
+		responsed(response);
 		return true;
 	}
 	

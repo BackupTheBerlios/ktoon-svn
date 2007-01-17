@@ -43,7 +43,7 @@ bool KTAbstractProjectHandler::closeProject()
 	return true;
 }
 
-bool KTAbstractProjectHandler::commandExecuted(KTProjectResponse *response, int state)
+bool KTAbstractProjectHandler::commandExecuted(KTProjectResponse *response)
 {
 	return true;
 }

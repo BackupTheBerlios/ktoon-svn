@@ -286,7 +286,7 @@ bool KTProject::createSymbol(const QString &xml)
 	return true;
 }
 
-bool KTProject::removeSymbol(const QString &xml)
+bool KTProject::removeSymbol(const QString &/*xml*/)
 {
 	qFatal("Implement me");
 	return false;

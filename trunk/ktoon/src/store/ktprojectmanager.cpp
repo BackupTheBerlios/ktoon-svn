@@ -45,7 +45,7 @@ KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(
 	
 	m_commandExecutor = new KTCommandExecutor(m_project);
 		
-	connect(m_commandExecutor, SIGNAL(responsed( KTProjectResponse*, int )), this, SLOT(emitResponse( KTProjectResponse *, int))); // FIXME: cuando carga hay problemas
+	connect(m_commandExecutor, SIGNAL(responsed( KTProjectResponse* )), this, SLOT(emitResponse( KTProjectResponse *))); // FIXME: cuando carga hay problemas
 	
 	connect(m_project, SIGNAL(responsed(KTProjectResponse*)), this, SIGNAL(responsed(KTProjectResponse *)));
 }
@@ -238,7 +238,7 @@ QUndoStack *KTProjectManager::undoHistory() const
 }
 
 
-void KTProjectManager::emitResponse( KTProjectResponse *response, int state)
+void KTProjectManager::emitResponse( KTProjectResponse *response)
 {
 	D_FUNCINFO << response->action();
 	
@@ -251,7 +251,7 @@ void KTProjectManager::emitResponse( KTProjectResponse *response, int state)
 	{
 		emit responsed( response );
 	}
-	else if ( m_handler->commandExecuted(response, state ) )
+	else if ( m_handler->commandExecuted(response ) )
 	{
 		emit responsed( response );
 	}

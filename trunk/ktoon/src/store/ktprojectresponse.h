@@ -31,6 +31,14 @@
 class STORE_EXPORT KTProjectResponse
 {
 	public:
+		enum Mode
+		{
+			None = 0x00,
+			Do,
+			Redo,
+			Undo
+		};
+		
 		KTProjectResponse(int part, int action);
 		virtual ~KTProjectResponse();
 		
@@ -40,15 +48,16 @@ class STORE_EXPORT KTProjectResponse
 		void setArg(const QString &value);
 		void setData(const QByteArray &data);
 		void setAction(int action);
+		void setMode(Mode mode);
+		
+		Mode mode() const;
 		
 		KTProjectRequestArgument arg() const;
 		QByteArray data() const;
 		
 	private:
-		int m_part;
-		int m_action;
-		KTProjectRequestArgument m_arg;
-		QByteArray m_data;
+		class Private;
+		Private *const d;
 };
 
 class KTSceneResponse : public KTProjectResponse

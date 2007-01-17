@@ -153,18 +153,17 @@ void KTProjectCommand::redo()
 {
 	D_FUNCINFO << m_response->part();
 	
-	
 	if ( m_executed )
 	{
-		m_executor->setState( KTCommandExecutor::Redo );
+		m_response->setMode( KTProjectResponse::Redo );
 	}
 	else
 	{
-		m_executor->setState(KTCommandExecutor::Do );
+		m_response->setMode( KTProjectResponse::Do );
 		m_executed = true;
 	}
 	
-	switch(m_response->part() )
+	switch( m_response->part() )
 	{
 		case KTProjectRequest::Project:
 		{
@@ -202,13 +201,11 @@ void KTProjectCommand::redo()
 		}
 		break;
 	}
-	
-	
 }
 
 void KTProjectCommand::undo()
 {
-	m_executor->setState( KTCommandExecutor::Undo );
+	m_response->setMode( KTProjectResponse::Undo );
 	
 	switch(m_response->part() )
 	{

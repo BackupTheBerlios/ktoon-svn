@@ -38,14 +38,6 @@ class KTCommandExecutor : public QObject
 {
 	Q_OBJECT;
 	public:
-		enum State
-		{
-			None = 0x00,
-			Do,
-			Redo,
-			Undo
-		};
-		
 		KTCommandExecutor(KTProject *project);
 		~KTCommandExecutor();
 		
@@ -95,15 +87,11 @@ class KTCommandExecutor : public QObject
 		bool setLayerVisibility(KTLayerResponse *response);
 		bool setSceneVisibility(KTSceneResponse *response);
 		
-		
-		void setState(KTCommandExecutor::State state);
-		
 	signals:
-		void responsed(KTProjectResponse *response, int state);
+		void responsed(KTProjectResponse *response);
 		
 	private:
 		KTProject *m_project;
-		State m_state;
 
 };
 

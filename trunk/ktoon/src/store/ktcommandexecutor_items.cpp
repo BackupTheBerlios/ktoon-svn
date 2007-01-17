@@ -48,8 +48,7 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
 	int framePosition = response->frameIndex();
 	int position = response->itemIndex();
 	QString xml = response->arg().toString();
-	dDebug() << "xml" << xml;
-	dDebug() << "state" << m_state;
+	
 	KTScene *scene = m_project->scene(scenePosition);
 	
 	if ( scene )
@@ -68,7 +67,7 @@ bool KTCommandExecutor::createItem(KTItemResponse *response)
 				QGraphicsItem *item = frame->createItem(position, xml);
 				if ( item )
 				{
-					emit responsed(response, m_state);
+					emit responsed(response);
 					response->setItemIndex( frame->indexOf( item ));
 				}
 			}
@@ -124,7 +123,7 @@ bool KTCommandExecutor::removeItem(KTItemResponse *response)
 					return false;
 				}
 				
-				emit responsed(response, m_state);
+				emit responsed(response);
 				
 				return true;
 			}
@@ -192,7 +191,7 @@ bool KTCommandExecutor::removeItems(KTItemResponse *response) // FIXME: no es es
 					}
 				}
 				
-				emit responsed(response, m_state);
+				emit responsed(response);
 				
 				return true;
 			}
@@ -228,7 +227,7 @@ bool KTCommandExecutor::groupItems(KTItemResponse *response)
 		
 				response->setItemIndex( frame->indexOf( frame->createItemGroupAt( position, positions)));
 				
-				emit responsed(response, m_state);
+				emit responsed(response);
 				
 				
 				return true;
@@ -286,7 +285,7 @@ bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
 				strItems+= ")";
 // 				}
 				response->setArg(strItems);
-				emit responsed(response, m_state);
+				emit responsed(response);
 				return true;
 			}
 		}
@@ -357,7 +356,7 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
 						
 					}
 					response->setArg( QString::number(item->type()));
-					emit responsed(response, m_state);
+					emit responsed(response);
 					
 					return true;
 				}
@@ -401,7 +400,7 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
 					KTSerializer::loadProperties( item, doc.documentElement());
 					
 					
-					emit responsed(response, m_state);
+					emit responsed(response);
 					
 					response->setArg(current);
 					
@@ -454,7 +453,7 @@ bool KTCommandExecutor::setPathItem( KTItemResponse *response )
 						KTItemFactory factory;
 						factory.loadItem(item, xml);
 						
-						emit responsed(response, m_state);
+						emit responsed(response);
 						response->setArg(current);
 						
 						return true;

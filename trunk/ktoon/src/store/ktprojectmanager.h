@@ -63,7 +63,7 @@ class STORE_EXPORT KTProjectManager : public QObject
 		virtual void createCommand(const KTProjectRequest *event, bool addToStack);
 		
 	private slots:
-		void emitResponse( KTProjectResponse *response, int state);
+		void emitResponse( KTProjectResponse *response);
 		
 	signals:
 		void responsed(KTProjectResponse *reponse );

@@ -8,15 +8,15 @@
 	
 	* de Trazo
 		- Polyline
-		- Trazado de Bitmaps(seguir patrones)
+		- Trazado de Bitmaps(seguir patrones, por ejemplo de color)
 
-- Filtros -
+- Filtros >Despues<
 	* Sombras
 
 - Componentes GUI -
 	* Sonido
 	* PaintArea
-		- Agrupar 					+
+		- Agrupar +
 		- Reglas
 		- Lineas de ayuda
 	* Tweening
@@ -28,7 +28,7 @@
 		- Flip
 		
 	* Frames/Layers/Scenes
-		- Copy, Paste and Cut 				PRIORIDAD
+		- Copy, Paste and Cut PRIORIDAD
 
 - General -
 	* Serializar +

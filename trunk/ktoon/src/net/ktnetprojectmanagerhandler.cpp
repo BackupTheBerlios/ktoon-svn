@@ -21,7 +21,7 @@
 #include "ktnetprojectmanagerhandler.h"
 #include "ktnetprojectmanagerparams.h"
 
-#include "ktprojectrequest.h"
+#include "ktprojectresponse.h"
 #include "ktprojectcommand.h"
 #include "ktcommandexecutor.h"
 
@@ -58,9 +58,9 @@ void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* re
 }
 
 
-bool KTNetProjectManagerHandler::commandExecuted(KTProjectResponse *response, int state)
+bool KTNetProjectManagerHandler::commandExecuted(KTProjectResponse *response)
 {
-	if ( state == KTCommandExecutor::Do ) return true;
+	if ( response->mode() == KTProjectResponse::Do ) return true;
 	
 	// FIXME: ESTO LLEGA DESDE EL SERVIDOR!
 	

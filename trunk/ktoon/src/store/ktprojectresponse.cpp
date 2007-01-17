@@ -20,49 +20,72 @@
 
 #include "ktprojectresponse.h"
 
-KTProjectResponse::KTProjectResponse(int part, int action) : m_part(part), m_action(action)
+class KTProjectResponse::Private
+{
+	public:
+		Private(int part, int action) : part(part), action(action) {}
+		
+		int part;
+		int action;
+		KTProjectRequestArgument arg;
+		QByteArray data;
+		Mode mode;
+};
+
+KTProjectResponse::KTProjectResponse(int part, int action) : d(new Private(part, action))
 {
 }
 
 
 KTProjectResponse::~KTProjectResponse()
 {
+	delete d;
 }
 
 
 int KTProjectResponse::part() const
 {
-	return m_part;
+	return d->part;
 }
 
 int KTProjectResponse::action() const
 {
-	return m_action;
+	return d->action;
 }
 
 void KTProjectResponse::setAction(int action)
 {
-	m_action = action;
+	d->action = action;
+}
+
+void KTProjectResponse::setMode(Mode mode)
+{
+	d->mode = mode;
+}
+
+KTProjectResponse::Mode KTProjectResponse::mode() const
+{
+	return d->mode;
 }
 
 void KTProjectResponse::setArg(const QString &value)
 {
-	m_arg = value;
+	d->arg = value;
 }
 
 void KTProjectResponse::setData(const QByteArray &data)
 {
-	m_data = data;
+	d->data = data;
 }
 
 KTProjectRequestArgument KTProjectResponse::arg() const
 {
-	return m_arg;
+	return d->arg;
 }
 
 QByteArray KTProjectResponse::data() const
 {
-	return m_data;
+	return d->data;
 }
 
 

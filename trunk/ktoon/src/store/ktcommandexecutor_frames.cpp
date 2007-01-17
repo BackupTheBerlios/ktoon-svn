@@ -65,7 +65,7 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
 			response->setArg(frame->frameName());
 		}
 		
-		emit responsed( response, m_state );
+		emit responsed( response );
 		
 		if ( !state.isEmpty() )
 		{
@@ -104,7 +104,7 @@ bool KTCommandExecutor::removeFrame(KTFrameResponse *response)
 				if ( layer->removeFrame(position) )
 				{
 					response->setState(doc.toString(0));
-					emit responsed( response, m_state );
+					emit responsed( response );
 					
 					return true;
 				}
@@ -142,7 +142,7 @@ bool KTCommandExecutor::moveFrame(KTFrameResponse *response)
 		}
 		else
 		{
-			emit responsed(response, m_state);
+			emit responsed(response);
 			return true;
 		}
 	}
@@ -176,7 +176,7 @@ bool KTCommandExecutor::lockFrame(KTFrameResponse *response)
 		if ( ! frame ) return false;
 		
 		frame->setLocked( lock );
-		emit responsed(response, m_state);
+		emit responsed(response);
 		return true;
 	}
 	
@@ -214,7 +214,7 @@ bool KTCommandExecutor::renameFrame(KTFrameResponse *response)
 		
 		frame->setFrameName( newName );
 		
-		emit responsed(response, m_state);
+		emit responsed(response);
 		return true;
 	}
 	
@@ -246,7 +246,7 @@ bool KTCommandExecutor::selectFrame(KTFrameResponse *response)
 		
 		if ( ! frame ) return false;
 		
-		emit responsed(response, m_state);
+		emit responsed(response);
 		return true;
 	}
 	
@@ -279,7 +279,7 @@ bool KTCommandExecutor::setFrameVisibility(KTFrameResponse *response)
 		
 		
 		frame->setVisible(view);
-		emit responsed(response , m_state);
+		emit responsed(response);
 		return true;
 	}
 	

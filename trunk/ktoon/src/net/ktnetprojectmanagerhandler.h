@@ -39,7 +39,7 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		virtual bool closeProject();
 		
 		virtual void handleProjectRequest(const KTProjectRequest* event);
-		virtual bool commandExecuted(KTProjectResponse *response, int state);
+		virtual bool commandExecuted(KTProjectResponse *response);
 		
 		virtual bool saveProject(const QString &fileName, const KTProject *project);
 		virtual bool loadProject(const QString &fileName, KTProject *project);
