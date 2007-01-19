@@ -22,6 +22,8 @@
 
 #include <ddebug.h>
 #include "ktserver.h"
+#include "handlerpackages.h"
+
 
 #include <dapplicationproperties.h>
 #include <dconfig.h>
@@ -34,18 +36,29 @@ int main(int argc, char **argv)
 	app.setApplicationName("ktoond");
 	
 	DCONFIG->beginGroup("Connection");
-	
+// 	
 	if ( !DCONFIG->isOk() )
 	{
 		DCONFIG->setValue("host", "127.0.0.1");
 		DCONFIG->setValue("port", "6502");
+		DCONFIG->setValue("repository", QDir::homePath ()+"/repository");
 		DCONFIG->sync();
 	}
 	
 	QString host = DCONFIG->value("host").toString();
 	int port = DCONFIG->value("port").toInt();
+	dAppProp->setCacheDir(DCONFIG->value("repository").toString());
 	
+	QDir cache(dAppProp->cacheDir());
+	if(!cache.exists ())
+	{
+		cache.mkdir(dAppProp->cacheDir());
+	}
 	KTServer server;
+	HandlerPackages handler;
+	server.setHandler(&handler);
+	
+	
 	server.openConnection( host, port );
 	
 	dDebug() << "Running!";

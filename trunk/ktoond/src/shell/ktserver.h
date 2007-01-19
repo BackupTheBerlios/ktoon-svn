@@ -25,8 +25,10 @@
 #include <QTcpServer>
 #include <QDomDocument>
 
-class KTServerConnection;
+#include "ktprojectrequest.h"
 
+class KTServerConnection;
+class AbstractHandlerPackages;
 
 /**
  * Esta es la clase controladora, esta clase representa el servidor.
@@ -41,16 +43,16 @@ class KTServer : public QTcpServer
 		~KTServer();
 		void sendToAll(const QDomDocument &pkg);
 		bool openConnection(const QString &host, int port);
-		
+		void setHandler( AbstractHandlerPackages *handler );
 		
 		
 	public slots:
 		void sendToAll(const QString &msg);
 		void removeConnection(KTServerConnection *cnx);
-		
+		void handlerPackages( const KTServerConnection *cnn, const QString & packages  );
+	
 	private:
 		void handle(const KTServerConnection *cnx);
-		
 		
 	protected:
 		void incomingConnection(int socketDescriptor);

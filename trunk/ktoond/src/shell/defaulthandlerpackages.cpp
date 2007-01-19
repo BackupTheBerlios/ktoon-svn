@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosxx@gmail.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,59 +17,27 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#include "defaulthandlerpackages.h"
+#include <ddebug.h>
 
-#ifndef DOMSERVERCONNECTION_H
-#define DOMSERVERCONNECTION_H
-
-#include <QThread>
-#include <QQueue>
-
-#include "ktserverclient.h"
-// #include <QDomDocument>
-
-class KTServer;
-class KTProjectRequest;
-/**
- * Esta clase representa cada conexion de un cliente al servidor, es un hilo.
- * @author David Cuadrado \<krawek@gmail.com\>
- */
-class KTServerConnection : public QThread
+DefaultHandlerPackages::DefaultHandlerPackages(	KTServer * server )
+ : AbstractHandlerPackages(server)
 {
-	Q_OBJECT;
+	
+}
 
-	public:
-		KTServerConnection(int socketDescriptor, KTServer *server);
-		~KTServerConnection();
-		
-		void run();
-		
-		void close();
-		bool isLogged() const;
-		
-		void appendTextReaded(const QString &readed);
-		QString projectName() const;
-		
-		inline void sendToClient(const QString &text) const { m_client->send(text); }
-		
-		
-	public slots:
-		void disconnect();
-		
-		
-	signals:
-		void error(QTcpSocket::SocketError socketError);
-		void requestSendToAll(const QString &msg);
-		void connectionClosed( KTServerConnection *cnn);
-		void packagesReaded(const KTServerConnection *cnn, const QString & packages  );
-		
-	private:
-		KTServerClient *m_client;
-		KTServer *m_server;
-		bool m_isLogged;
-		QString m_projectName;
-		QQueue<QString> m_readed;
-};
 
-#endif
+DefaultHandlerPackages::~DefaultHandlerPackages()
+{
+}
+
+void DefaultHandlerPackages::handle(const KTServerConnection *cnx , const QString &package )
+{
+	dWarning() << "DefaultHandlerPackages";
+	
+	dDebug() << package;
+	
+}
 
 

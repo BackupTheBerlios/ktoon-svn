@@ -26,15 +26,21 @@
 #include <ddebug.h>
 #include <QDebug>
 
+#include "abstracthandlerpackages.h"
+#include "defaulthandlerpackages.h"
+
 class KTServer::Private
 {
 	public:
 		QList<KTServerConnection *> connections;
+		AbstractHandlerPackages *handler;
+
 };
 
 KTServer::KTServer(QObject *parent) : QTcpServer(parent), d(new Private)
 {
 	DINIT;
+	d->handler = new DefaultHandlerPackages(this);
 }
 
 
@@ -64,6 +70,12 @@ bool KTServer::openConnection(const QString &host, int port)
 	return true;
 }
 
+void KTServer::setHandler( AbstractHandlerPackages *handler )
+{
+	d->handler = handler;
+	handler->setServer(this);
+}
+
 void KTServer::incomingConnection(int socketDescriptor)
 {
 	SHOW_VAR(d->connections.count());
@@ -78,7 +90,12 @@ void KTServer::handle(const KTServerConnection *cnx)
 {
 	connect(cnx, SIGNAL(finished()), cnx, SLOT(deleteLater()));
 	connect(cnx, SIGNAL(requestSendToAll( const QString& )), this, SLOT(sendToAll( const QString& )));
+	connect(cnx, SIGNAL(packagesReaded(const KTServerConnection*, const QString&)), this, SLOT(handlerPackages(const KTServerConnection*, const QString&)));
 	connect(cnx, SIGNAL(connectionClosed(KTServerConnection*)), this, SLOT(removeConnection(KTServerConnection*)));
+	
+	
+// 	d->projects.createProject(cnx);
+	
 }
 
 
@@ -104,10 +121,16 @@ void KTServer::sendToAll(const QDomDocument &pkg)
 
 void KTServer::removeConnection(KTServerConnection *cnx)
 {
-	D_FUNCINFO;
-	cnx->close();
-// 	cnx->setLogin(0);
-	d->connections.removeAll(cnx);
+        D_FUNCINFO;
+        cnx->close();
+//      cnx->setLogin(0);
+        d->connections.removeAll(cnx);
+}
+
+
+void KTServer::handlerPackages(const KTServerConnection* cnx, const QString&package)
+{
+	d->handler->handle(cnx, package);
 }
 
 

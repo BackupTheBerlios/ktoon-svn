@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosxx@gmail.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,59 +17,30 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef ABSTRACTHANDLERPACKAGES_H
+#define ABSTRACTHANDLERPACKAGES_H
 
-#ifndef DOMSERVERCONNECTION_H
-#define DOMSERVERCONNECTION_H
-
-#include <QThread>
-#include <QQueue>
-
-#include "ktserverclient.h"
-// #include <QDomDocument>
-
-class KTServer;
-class KTProjectRequest;
 /**
- * Esta clase representa cada conexion de un cliente al servidor, es un hilo.
- * @author David Cuadrado \<krawek@gmail.com\>
- */
-class KTServerConnection : public QThread
-{
-	Q_OBJECT;
+	@author Jorge Cuadrado <kuadrosx@toonka.com>
+*/
 
+#include <QDomDocument>
+#include "ktserverconnection.h"
+#include "ktserver.h"
+
+class AbstractHandlerPackages
+{
 	public:
-		KTServerConnection(int socketDescriptor, KTServer *server);
-		~KTServerConnection();
+		AbstractHandlerPackages(KTServer *server = 0 );
 		
-		void run();
+		virtual ~AbstractHandlerPackages();
+		virtual void handle(const KTServerConnection *, const QString & ) = 0;
+		virtual void setServer(KTServer *server);
 		
-		void close();
-		bool isLogged() const;
+	protected:
+		KTServer *m_pServer;
 		
-		void appendTextReaded(const QString &readed);
-		QString projectName() const;
-		
-		inline void sendToClient(const QString &text) const { m_client->send(text); }
-		
-		
-	public slots:
-		void disconnect();
-		
-		
-	signals:
-		void error(QTcpSocket::SocketError socketError);
-		void requestSendToAll(const QString &msg);
-		void connectionClosed( KTServerConnection *cnn);
-		void packagesReaded(const KTServerConnection *cnn, const QString & packages  );
-		
-	private:
-		KTServerClient *m_client;
-		KTServer *m_server;
-		bool m_isLogged;
-		QString m_projectName;
-		QQueue<QString> m_readed;
 };
 
 #endif
-
-

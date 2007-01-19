@@ -30,12 +30,17 @@
 #include "ktprojectrequest.h"
 #include "ktprojectresponse.h"
 
+
+#include "ktrequestparser.h"
 KTServerConnection::KTServerConnection(int socketDescriptor, KTServer *server) : QThread(server), m_server(server)
 {
 	m_client = new KTServerClient(this);
 	m_client->setSocketDescriptor(socketDescriptor);
 	
 	connect(m_client, SIGNAL(disconnected()), this, SLOT(disconnect()));
+	
+	m_projectName = "prueba.ktn";
+	
 }
 
 KTServerConnection::~KTServerConnection()
@@ -52,36 +57,16 @@ void KTServerConnection::run()
 		QString readed = m_readed.dequeue();
 		
 		dDebug("server") << "Reicived: " << readed;
-		
 		QDomDocument doc;
-		
-		if ( doc.setContent(readed.trimmed()) )
+		if (doc.setContent(readed.trimmed()) )
 		{
-			QString root = doc.documentElement().tagName();
-			
-			if ( root == "request" )
-			{
-				KTRequestParser parser;
-				if ( parser.parse(readed) )
-				{
-					if ( KTProjectResponse *response = parser.response() )
-					{
-// 						m_server->sendToAll( readed );
-						emit requestSendToAll(readed);
-					}
-				}
-				else // TODO: enviar error
-				{
-					dError() << "Error parsing";
-				}
-			}
+			emit packagesReaded(this, readed);
 		}
 		else
 		{
 			dError("server") << "Cannot set document content!";
 		}
 	}
-	
 	// Finish connection
 	disconnect();
 }
@@ -111,3 +96,7 @@ void KTServerConnection::appendTextReaded(const QString &readed)
 	m_readed.enqueue(readed);
 }
 
+QString KTServerConnection::projectName() const
+{
+	return m_projectName;
+}
