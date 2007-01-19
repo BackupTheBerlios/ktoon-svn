@@ -44,7 +44,7 @@ KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(
 	m_undoStack = new QUndoStack(this);
 	
 	m_commandExecutor = new KTCommandExecutor(m_project);
-		
+	
 	connect(m_commandExecutor, SIGNAL(responsed( KTProjectResponse* )), this, SLOT(emitResponse( KTProjectResponse *))); // FIXME: cuando carga hay problemas
 	
 	connect(m_project, SIGNAL(responsed(KTProjectResponse*)), this, SIGNAL(responsed(KTProjectResponse *)));

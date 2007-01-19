@@ -27,7 +27,7 @@
 #include "ktprojectresponse.h"
 
 KTRequestParser::KTRequestParser()
-	: QXmlDefaultHandler()
+	: KTXmlParserBase()
 {
 	m_response = 0;
 }
@@ -37,15 +37,14 @@ KTRequestParser::~KTRequestParser()
 {
 }
 
-
-bool KTRequestParser::startElement( const QString& , const QString& , const QString& qname, const QXmlAttributes& atts)
+void KTRequestParser::initialize()
 {
-	if (!m_isParsing)
-	{
-		m_isParsing = true;
-		m_response = 0;
-	}
-	
+	m_response = 0;
+}
+
+
+bool KTRequestParser::startTag(const QString& qname, const QXmlAttributes& atts)
+{
 	if ( qname == "item" )
 	{
 		static_cast<KTItemResponse *>(m_response)->setItemIndex(atts.value("index").toInt());
@@ -56,7 +55,7 @@ bool KTRequestParser::startElement( const QString& , const QString& , const QStr
 	}
 	else if ( qname == "data" )
 	{
-		m_readCharacters = true;
+		setReadText(true);
 	}
 	else if ( qname == "layer" )
 	{
@@ -72,72 +71,25 @@ bool KTRequestParser::startElement( const QString& , const QString& , const QStr
 		m_response->setArg(atts.value("arg"));
 	}
 	
-	m_qname = qname;
-	
 	return true;
 }
 
-bool KTRequestParser::endElement(const QString&, const QString& , const QString& qname)
+bool KTRequestParser::endTag(const QString& qname)
 {
-	if ( qname == "request" )
+	return true;
+}
+
+void KTRequestParser::text( const QString & ch )
+{
+	if ( currentTag() == "data" )
 	{
-		m_isParsing = false;
+		m_response->setData( QByteArray::fromBase64( QByteArray(ch.toLocal8Bit()) ) );
 	}
-	
-	return true;
-}
-
-bool KTRequestParser::characters ( const QString & ch )
-{
-	if (m_readCharacters )
-	{
-		m_readCharacters = false;
-		
-		if ( m_qname == "data" )
-		{
-			m_response->setData( QByteArray::fromBase64( QByteArray(ch.toLocal8Bit()) ) );
-		}
-	}
-	else
-	{
-		Q_UNUSED(ch);
-	}
-	
-	return true;
-}
-
-bool KTRequestParser::error ( const QXmlParseException & exception )
-{
-	dError() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
-	
-	return true;
-}
-
-
-bool KTRequestParser::fatalError ( const QXmlParseException & exception )
-{
-	dFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
-	
-	return true;
 }
 
 KTProjectResponse *KTRequestParser::response() const
 {
 	return m_response;
-}
-
-
-bool KTRequestParser::parse(const QString &document)
-{
-	QXmlSimpleReader m_reader;
-	m_reader.setContentHandler(this);
-	m_reader.setErrorHandler(this);
-	
-	QXmlInputSource xmlsource;
-	xmlsource.setData(document);
-	
-	
-	return m_reader.parse(&xmlsource);
 }
 
 

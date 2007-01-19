@@ -38,7 +38,7 @@
 
 
 
-KTItemFactory::KTItemFactory() : QXmlDefaultHandler(), m_item(0), m_readChar(false), m_addToGroup(false)
+KTItemFactory::KTItemFactory() : KTXmlParserBase(), m_item(0), m_addToGroup(false)
 {
 }
 
@@ -82,13 +82,8 @@ QGraphicsItem* KTItemFactory::createItem(const QString &root)
 	return item;
 }
 
-bool KTItemFactory::startElement( const QString& , const QString& , const QString& qname, const QXmlAttributes& atts)
+bool KTItemFactory::startTag( const QString& qname, const QXmlAttributes& atts)
 {
-	if (m_root.isNull() )
-	{
-		m_root = qname;
-	}
-	
 	if ( qname == "path" )
 	{
 		QPainterPath path;
@@ -144,7 +139,7 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 			m_item = createItem( qname );
 		}
 		
-		m_readChar = true;
+		setReadText(true);
 		m_textReaded = "";
 		
 	}
@@ -181,7 +176,7 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 		KTSerializer::loadBrush( brush, atts);
 		
 		
-		if ( m_qname == "pen" )
+		if ( currentTag() == "pen" )
 		{
 			m_loading = "pen";
 			QPen pen = itemPen();
@@ -207,7 +202,7 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 		
 		KTSerializer::loadFont( font, atts);
 		
-		if ( m_root == "text" )
+		if ( root() == "text" )
 		{
 			qgraphicsitem_cast<KTTextItem *>(m_item)->setFont(font);
 		}
@@ -226,23 +221,15 @@ bool KTItemFactory::startElement( const QString& , const QString& , const QStrin
 		m_gradient = KTSerializer::createGradient( atts);
 	}
 	
-	
-	m_qname = qname;
-	
 	return true;
 }
 
-bool KTItemFactory::characters ( const QString & ch )
+void KTItemFactory::text ( const QString & ch )
 {
-	if ( m_readChar )
-	{
-		m_textReaded += ch;
-	}
-	
-	return true;
+	m_textReaded += ch;
 }
 
-bool KTItemFactory::endElement(const QString&, const QString& , const QString& qname)
+bool KTItemFactory::endTag(const QString& qname)
 {
 	if ( qname == "path" )
 	{
@@ -258,7 +245,6 @@ bool KTItemFactory::endElement(const QString&, const QString& , const QString& q
 	}
 	else if ( qname == "text" )
 	{
-		m_readChar = false;
 		qgraphicsitem_cast<KTTextItem *>(m_item)->setHtml(m_textReaded);
 	}
 	else if ( qname == "g" )
@@ -280,30 +266,13 @@ bool KTItemFactory::endElement(const QString&, const QString& , const QString& q
 	return true;
 }
 
-
-
-bool KTItemFactory::error ( const QXmlParseException & exception )
-{
-	dError() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
-	return true;
-}
-
-
-bool KTItemFactory::fatalError ( const QXmlParseException & exception )
-{
-	dFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
-	
-	return true;
-}
-
-
 void KTItemFactory::setItemPen(const QPen &pen)
 {
-	if ( m_root == "path" || m_root == "rect" || m_root == "ellipse" )
+	if ( root() == "path" || root() == "rect" || root() == "ellipse" )
 	{
 		qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_item)->setPen(pen);
 	}
-	else if(m_root == "line")
+	else if(root() == "line")
 	{
 		qgraphicsitem_cast<QGraphicsLineItem *>(m_item)->setPen(pen);
 	}
@@ -311,7 +280,7 @@ void KTItemFactory::setItemPen(const QPen &pen)
 
 void KTItemFactory::setItemBrush(const QBrush &brush)
 {
-	if ( m_root == "path" || m_root == "rect" || m_root == "ellipse" )
+	if ( root() == "path" || root() == "rect" || root() == "ellipse" )
 	{
 		qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_item)->setBrush(brush);
 	}
@@ -322,7 +291,7 @@ void  KTItemFactory::setItemGradient(const QGradient& gradient, bool brush)
 {
 	
 	QBrush gBrush(gradient);
-	if ( m_root == "path" || m_root == "rect" || m_root == "ellipse" )
+	if ( root() == "path" || root() == "rect" || root() == "ellipse" )
 	{
 		QAbstractGraphicsShapeItem * tmp = qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_item);
 		
@@ -339,7 +308,7 @@ void  KTItemFactory::setItemGradient(const QGradient& gradient, bool brush)
 			tmp->setPen(pen);
 		}
 	}
-	else if(m_root == "line")
+	else if(root() == "line")
 	{
 		QGraphicsLineItem * tmp = qgraphicsitem_cast<QGraphicsLineItem *>(m_item);
 		gBrush.setMatrix(tmp->pen().brush().matrix());
@@ -351,11 +320,11 @@ void  KTItemFactory::setItemGradient(const QGradient& gradient, bool brush)
 
 QPen KTItemFactory::itemPen() const
 {
-	if ( m_root == "path" || m_root == "rect" || m_root == "ellipse" )
+	if ( root() == "path" || root() == "rect" || root() == "ellipse" )
 	{
 		return qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_item)->pen();
 	}
-	else if(m_root == "line")
+	else if(root() == "line")
 	{
 		return qgraphicsitem_cast<QGraphicsLineItem *>(m_item)->pen();
 	}
@@ -364,7 +333,7 @@ QPen KTItemFactory::itemPen() const
 
 QBrush KTItemFactory::itemBrush() const
 {
-	if ( m_root == "path" || m_root == "rect" || m_root == "ellipse" )
+	if ( root() == "path" || root() == "rect" || root() == "ellipse" )
 	{
 		return qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_item)->brush();
 	}
@@ -374,16 +343,9 @@ QBrush KTItemFactory::itemBrush() const
 
 bool KTItemFactory::loadItem(QGraphicsItem *item, const QString &xml)
 {
-	QXmlSimpleReader reader;
-	reader.setContentHandler(this);
-	reader.setErrorHandler(this);
-	
-	QXmlInputSource xmlsource;
-	xmlsource.setData(xml);
-	
 	m_item = item;
-	bool ok = reader.parse(&xmlsource);
-	QAbstractGraphicsShapeItem *tmp =  qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_item);
+	bool ok = parse(xml);
+// 	QAbstractGraphicsShapeItem *tmp =  qgraphicsitem_cast<QAbstractGraphicsShapeItem *>(m_item);
 	return ok;
 }
 

@@ -21,7 +21,7 @@
 #ifndef KTREQUESTPARSER_H
 #define KTREQUESTPARSER_H
 
-#include <QXmlDefaultHandler>
+#include <ktxmlparserbase.h>
 
 #include "ktprojectrequest.h"
 #include "ktglobal_store.h"
@@ -31,32 +31,20 @@ class KTProjectResponse;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class STORE_EXPORT KTRequestParser : public QXmlDefaultHandler
+class STORE_EXPORT KTRequestParser : public KTXmlParserBase
 {
 	public:
 		KTRequestParser();
 		~KTRequestParser();
 		
-		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
+		void initialize();
 		
-		bool endElement( const QString& ns, const QString& localname, const QString& qname);
-		
-		bool characters( const QString & ch );
-		
-		bool error( const QXmlParseException & exception );
-		bool fatalError( const QXmlParseException & exception );
-		
-		bool parse(const QString &doc);
-		
+		bool startTag(const QString& qname, const QXmlAttributes& atts);
+		bool endTag( const QString& qname);
+		void text( const QString & ch );
 		KTProjectResponse *response() const;
 		
-		
 	private:
-		QString m_qname;
-		
-		bool m_isParsing;
-		bool m_readCharacters;
-		
 		KTProjectResponse *m_response;
 };
 

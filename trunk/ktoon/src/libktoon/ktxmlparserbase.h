@@ -18,64 +18,52 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTITEMFACTORY_H
-#define KTITEMFACTORY_H
+#ifndef KTXMLPARSERBASE_H
+#define KTXMLPARSERBASE_H
 
-#include <QStack>
-#include <QPen>
-#include <QBrush>
-
-#include "ktxmlparserbase.h"
-
-#include "ktglobal_store.h"
-
-class QGraphicsItem;
+#include <QXmlDefaultHandler>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class STORE_EXPORT KTItemFactory : public KTXmlParserBase
+class KTXmlParserBase : public QXmlDefaultHandler
 {
 	public:
-		KTItemFactory();
-		~KTItemFactory();
+		~KTXmlParserBase();
 		
-		/**
-		 * Analiza etiquetas de apertura del documento XML
-		 */
-		bool startTag(const QString& qname, const QXmlAttributes& atts);
 		
-		void text( const QString & ch );
+	protected:
+		KTXmlParserBase();
 		
-		/**
-		 * Analiza etiquetas de cierre del documento XML
-		 */
-		bool endTag(const QString& qname);
+		bool startDocument();
+		bool endDocument();
+		
+		bool startElement(const QString& , const QString& , const QString& qname, const QXmlAttributes& atts);
+		bool characters(const QString & ch);
+		bool endElement( const QString& ns, const QString& localname, const QString& qname);
+		bool error ( const QXmlParseException & exception );
+		bool fatalError ( const QXmlParseException & exception );
+		
+	protected:
+		void setReadText(bool read);
+		void setIgnore(bool ignore);
 		
 	public:
-		QGraphicsItem *create(const QString &xml);
-		bool loadItem(QGraphicsItem *item, const QString &xml);
+		virtual void initialize();
+		virtual bool startTag(const QString &tag, const QXmlAttributes &atts) = 0;
+		virtual bool endTag(const QString &tag) = 0;
+		virtual void text(const QString &text) = 0;
+		
+	public:
+		QString currentTag() const;
+		QString root() const;
+		
+		bool parse(const QString &doc);
+		bool parse(QFile *file);
 		
 	private:
-		void setItemPen(const QPen &pen);
-		void setItemBrush(const QBrush &brush);
-		void setItemGradient(const QGradient& gradient, bool brush );
-		
-		QPen itemPen() const;
-		QBrush itemBrush() const;
-		
-		QGraphicsItem* createItem(const QString &xml);
-		
-	private:
-		QGraphicsItem *m_item;
-		QGradient *m_gradient;
-		QString m_loading;//brush or pen
-		
-		QStack<QGraphicsItem *> m_childs;
-		
-		bool m_addToGroup;
-		
-		QString m_textReaded;
+		struct Private;
+		Private *const d;
 };
 
 #endif
