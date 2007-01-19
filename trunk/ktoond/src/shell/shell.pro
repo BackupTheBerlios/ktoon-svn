@@ -17,3 +17,4 @@ TEMPLATE = app
 
 include("shell_config.pri")
 
+
