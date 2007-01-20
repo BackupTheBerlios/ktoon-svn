@@ -44,6 +44,7 @@ class STORE_EXPORT KTProjectCommand : public QUndoCommand
 {
 	public:
 		KTProjectCommand(KTCommandExecutor *executor, const KTProjectRequest *event);
+		KTProjectCommand(KTCommandExecutor *executor, KTProjectResponse *response);
 		~KTProjectCommand();
 		
 		virtual void redo();
@@ -59,6 +60,7 @@ class STORE_EXPORT KTProjectCommand : public QUndoCommand
 		
 	private:
 		QString actionString(int action);
+		void initText();
 		
 	private:
 		KTCommandExecutor *m_executor;

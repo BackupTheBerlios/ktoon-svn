@@ -32,7 +32,6 @@
 bool KTCommandExecutor::createFrame(KTFrameResponse *response)
 {
 	response->setAction(KTProjectRequest::Add);
-	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int position = response->frameIndex();
@@ -64,7 +63,7 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
 		{
 			response->setArg(frame->frameName());
 		}
-		
+		response->setFrameIndex( layer->indexOf(frame));
 		emit responsed( response );
 		
 		if ( !state.isEmpty() )
@@ -82,7 +81,6 @@ bool KTCommandExecutor::createFrame(KTFrameResponse *response)
 bool KTCommandExecutor::removeFrame(KTFrameResponse *response)
 {
 	response->setAction(KTProjectRequest::Remove);
-	
 	int scenePos = response->sceneIndex();
 	int layerPos = response->layerIndex();
 	int position = response->frameIndex();

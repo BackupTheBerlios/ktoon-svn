@@ -46,6 +46,17 @@ KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, const KTProjectR
 	
 	if ( !m_response ) qFatal("Unparsed response!");
 	
+	initText();
+}
+
+KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, KTProjectResponse *response) : QUndoCommand(), m_executor(executor), m_response(response), m_executed(false)
+{
+	initText();
+}
+
+
+void KTProjectCommand::initText()
+{
 	switch( m_response->part() )
 	{
 		case KTProjectRequest::Frame:
