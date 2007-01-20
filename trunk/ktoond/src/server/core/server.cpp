@@ -123,7 +123,7 @@ void TcpServer::removeConnection(Server::Connection *cnx)
 
 void TcpServer::handlePackage(Server::Connection* client, const QString&package)
 {
-	m_handler->handle(client, package);
+	m_handler->handlePackage(client, package);
 }
 
 }

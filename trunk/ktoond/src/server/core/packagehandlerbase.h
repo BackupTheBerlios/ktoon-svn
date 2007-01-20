@@ -37,8 +37,9 @@ class PackageHandlerBase
 		PackageHandlerBase();
 		
 		virtual ~PackageHandlerBase();
-		virtual void handle(Server::Connection *client, const QString &package ) = 0;
+		void handlePackage(Server::Connection *client, const QString &package );
 		
+		virtual void handle(Server::Connection *client, const QString &root, const QString &package ) = 0;
 		
 };
 

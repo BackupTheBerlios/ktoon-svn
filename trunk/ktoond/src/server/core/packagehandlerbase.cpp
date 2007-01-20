@@ -19,7 +19,7 @@
  ***************************************************************************/
  
 #include "packagehandlerbase.h"
-
+#include <ddebug.h>
 
 namespace Server {
 
@@ -30,6 +30,37 @@ PackageHandlerBase::PackageHandlerBase()
 
 PackageHandlerBase::~PackageHandlerBase()
 {
+}
+
+void PackageHandlerBase::handlePackage(Server::Connection *client, const QString &package )
+{
+	QDomDocument doc;
+	if ( !doc.setContent(package) )
+	{
+		dWarning() << "ERROR"; // FIXME
+		return;
+	}
+	
+	QString root = doc.documentElement().tagName();
+	
+	
+	if ( root == "connect" )
+	{
+	}
+	else if ( root == "chat" )
+	{
+		
+	}
+	else if ( root == "notice" )
+	{
+	}
+	else if ( root == "wall" )
+	{
+	}
+	else
+	{
+		handle(client, root, package);
+	}
 }
 
 }
