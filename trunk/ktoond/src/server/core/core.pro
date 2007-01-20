@@ -15,5 +15,10 @@ server.h \
 serverclient.h
 
 
-include(../../ktoond_config.pri)
+!include(../../../ktoond_config.pri) {
+error("configure first")
+}
+include(../server_config.pri)
+
+TARGET = server
 

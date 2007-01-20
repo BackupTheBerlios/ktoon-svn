@@ -1,6 +1,6 @@
 
-!include(../../ktoond_config.pri) {
-error("Please run \"./configure --help\" first")
+!include(../../ktoond_config.pri){
+    error("Please run \"./configure --help\" first")
 }
 QT += network xml
 

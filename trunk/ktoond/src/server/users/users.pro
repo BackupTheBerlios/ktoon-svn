@@ -12,5 +12,5 @@ manager.h
 SOURCES += parser.cpp \
 user.cpp \
 manager.cpp
-include(../../ktoond_config.pri)
+include(../../../ktoond_config.pri)
 
