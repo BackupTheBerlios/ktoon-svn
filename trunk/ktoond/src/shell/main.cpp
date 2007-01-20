@@ -35,18 +35,25 @@ int main(int argc, char **argv)
 	QCoreApplication app(argc, argv);
 	app.setApplicationName("ktoond");
 	
-	DCONFIG->beginGroup("Connection");
-// 	
 	if ( !DCONFIG->isOk() )
 	{
+		DCONFIG->beginGroup("Connection");
 		DCONFIG->setValue("host", "127.0.0.1");
 		DCONFIG->setValue("port", "6502");
-		DCONFIG->setValue("repository", QDir::homePath ()+"/repository");
+		
+		DCONFIG->beginGroup("General");
+		DCONFIG->setValue("repository", dAppProp->configDir()+ "/repository");
+		
+		
 		DCONFIG->sync();
 	}
 	
+	DCONFIG->beginGroup("Connection");	
 	QString host = DCONFIG->value("host").toString();
 	int port = DCONFIG->value("port").toInt();
+	
+	
+	DCONFIG->beginGroup("General");
 	dAppProp->setCacheDir(DCONFIG->value("repository").toString());
 	
 	QDir cache(dAppProp->cacheDir());
@@ -54,6 +61,7 @@ int main(int argc, char **argv)
 	{
 		cache.mkdir(dAppProp->cacheDir());
 	}
+	
 	Server::TcpServer server;
 	server.createHandler<PackageHandler>();
 	

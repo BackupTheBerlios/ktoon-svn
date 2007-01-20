@@ -51,12 +51,8 @@ PackageHandler::~PackageHandler()
 	delete d;
 }
 
-void PackageHandler::handle(Server::Connection *cnx , const QString &package )
+void PackageHandler::handle(Server::Connection *cnx , const QString &root, const QString &package )
 {
-	QDomDocument doc;
-	doc.setContent(package);
-	QString root = doc.documentElement().tagName();
-	
 	if ( root == "request" )
 	{
 		if(!cnx->data(Info::ProjectName).toString().isNull())
@@ -76,18 +72,6 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &package )
 	{
 		cnx->setData(Info::ProjectName, "name");
 // 		Abrir proyecto
-	}
-	else if( root == "chat")
-	{
-// 		Mensaje de chat
-	}
-	else if( root == "notice")
-	{
-// 		Noticia
-	}
-	else if( root == "wall")
-	{
-// 	mensaje para todos
 	}
 }
 
