@@ -28,13 +28,15 @@
 */
 
 
-class DefaultHandlerPackages : public AbstractHandlerPackages
+class DefaultPackageHandler : public PackageHandlerBase
 {
 	public:
-		DefaultHandlerPackages(KTServer * server = 0 );
-		~DefaultHandlerPackages();
-		void handle(KTServerConnection *cnx , const QString &package );
+		DefaultPackageHandler(Server::TcpServer * server = 0 );
+		~DefaultPackageHandler();
+		void handle(Server::Connection *cnx , const QString &package );
 
 };
 
 #endif
+
+

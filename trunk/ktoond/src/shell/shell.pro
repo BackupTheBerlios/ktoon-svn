@@ -3,21 +3,21 @@
 # Subdir relative project main directory: ./src/shell
 # Target is an application:  ../../bin/ktoond.bin
 
-HEADERS += ktserver.h \
-           ktserverclient.h \
-           ktserverconnection.h \
-           projectcollection.h \
+HEADERS += projectcollection.h \
            handlerpackages.h \
            abstracthandlerpackages.h \
-           defaulthandlerpackages.h
+           defaulthandlerpackages.h \
+           server.h \
+           serverclient.h \
+           connection.h
 SOURCES += main.cpp \
-           ktserver.cpp \
-           ktserverclient.cpp \
-           ktserverconnection.cpp \
            projectcollection.cpp \
            handlerpackages.cpp \
            abstracthandlerpackages.cpp \
-           defaulthandlerpackages.cpp
+           defaulthandlerpackages.cpp \
+           server.cpp \
+           serverclient.cpp \
+           connection.cpp
 TARGET = ../../bin/ktoond.bin
 CONFIG += release \
 warn_on

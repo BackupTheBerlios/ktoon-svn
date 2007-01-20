@@ -27,7 +27,7 @@
 #include <ktcommandexecutor.h>
 #include <ktprojectcommand.h>
 
-#include "ktserverconnection.h"
+#include "connection.h"
 #include <dapplicationproperties.h>
 
 #include <QDir>
@@ -42,7 +42,7 @@ ProjectCollection::~ProjectCollection()
 {
 }
 
-void ProjectCollection::createProject( KTServerConnection *cnn )
+void ProjectCollection::createProject( Server::Connection *cnn )
 {
 	QString projectName = cnn->data(Info::ProjectName).toString();
 	if(!m_projects.contains( projectName ))
@@ -60,7 +60,7 @@ void ProjectCollection::createProject( KTServerConnection *cnn )
 	}
 }
 
-void ProjectCollection::openProject( KTServerConnection *cnn )
+void ProjectCollection::openProject( Server::Connection *cnn )
 {
  	QString projectName = cnn->data(Info::ProjectName).toString();
 	if(!m_projects.contains( projectName ))
@@ -109,7 +109,7 @@ void ProjectCollection::saveProject(const QString & name)
 	}
 }
 
-void ProjectCollection::handleProjectRequest(KTServerConnection *cnn, const QString strRequest)
+void ProjectCollection::handleProjectRequest(Server::Connection *cnn, const QString strRequest)
 {
 	QString projectName = cnn->data(Info::ProjectName).toString();
 	KTRequestParser parser;

@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktserver.h"
-#include "ktserverconnection.h"
+#include "server.h"
+#include "connection.h"
 
 #include <QHostInfo>
 
@@ -29,28 +29,30 @@
 #include "abstracthandlerpackages.h"
 #include "defaulthandlerpackages.h"
 
-class KTServer::Private
+namespace Server {
+
+class TcpServer::Private
 {
 	public:
-		QList<KTServerConnection *> connections;
-		AbstractHandlerPackages *handler;
+		QList<Server::Connection *> connections;
+		PackageHandlerBase *handler;
 
 };
 
-KTServer::KTServer(QObject *parent) : QTcpServer(parent), d(new Private)
+TcpServer::TcpServer(QObject *parent) : QTcpServer(parent), d(new Private)
 {
 	DINIT;
-	d->handler = new DefaultHandlerPackages(this);
+	d->handler = new DefaultPackageHandler(this);
 }
 
 
-KTServer::~KTServer()
+TcpServer::~TcpServer()
 {
 	DEND;
 	delete d;
 }
 
-bool KTServer::openConnection(const QString &host, int port)
+bool TcpServer::openConnection(const QString &host, int port)
 {
 	QList<QHostAddress> addrs = QHostInfo::fromName(host).addresses();
 	qDebug() << addrs;
@@ -70,28 +72,28 @@ bool KTServer::openConnection(const QString &host, int port)
 	return true;
 }
 
-void KTServer::setHandler( AbstractHandlerPackages *handler )
+void TcpServer::setHandler( PackageHandlerBase *handler )
 {
 	d->handler = handler;
 	handler->setServer(this);
 }
 
-void KTServer::incomingConnection(int socketDescriptor)
+void TcpServer::incomingConnection(int socketDescriptor)
 {
 	SHOW_VAR(d->connections.count());
 	
-	KTServerConnection *newConnection = new KTServerConnection(socketDescriptor,this);
+	Server::Connection *newConnection = new Server::Connection(socketDescriptor,this);
 	handle(newConnection);
 	d->connections << newConnection;
 	newConnection->start();
 }
 
-void KTServer::handle(KTServerConnection *cnx)
+void TcpServer::handle(Server::Connection *cnx)
 {
 	connect(cnx, SIGNAL(finished()), cnx, SLOT(deleteLater()));
 	connect(cnx, SIGNAL(requestSendToAll( const QString& )), this, SLOT(sendToAll( const QString& )));
-	connect(cnx, SIGNAL(packagesReaded(KTServerConnection*, const QString&)), this, SLOT(handlerPackages(KTServerConnection*, const QString&)));
-	connect(cnx, SIGNAL(connectionClosed(KTServerConnection*)), this, SLOT(removeConnection(KTServerConnection*)));
+	connect(cnx, SIGNAL(packagesReaded(Server::Connection*, const QString&)), this, SLOT(handlerPackages(Server::Connection*, const QString&)));
+	connect(cnx, SIGNAL(connectionClosed(Server::Connection*)), this, SLOT(removeConnection(Server::Connection*)));
 	
 	
 // 	d->projects.createProject(cnx);
@@ -99,27 +101,27 @@ void KTServer::handle(KTServerConnection *cnx)
 }
 
 
-void KTServer::sendToAll(const QString &msg)
+void TcpServer::sendToAll(const QString &msg)
 {
 	dDebug("server") << "SENDING TO ALL: " << msg;
-	foreach(KTServerConnection *connection, d->connections)
+	foreach(Server::Connection *connection, d->connections)
 	{
 		connection->sendToClient(msg);
 	}
 }
 
-void KTServer::sendToAll(const QDomDocument &pkg)
+void TcpServer::sendToAll(const QDomDocument &pkg)
 {
 	D_FUNCINFO;
 	QString doc = pkg.toString(0);
 	
-	foreach(KTServerConnection *connection, d->connections)
+	foreach(Server::Connection *connection, d->connections)
 	{
 		connection->sendToClient(doc);
 	}
 }
 
-void KTServer::removeConnection(KTServerConnection *cnx)
+void TcpServer::removeConnection(Server::Connection *cnx)
 {
         D_FUNCINFO;
         cnx->close();
@@ -128,9 +130,11 @@ void KTServer::removeConnection(KTServerConnection *cnx)
 }
 
 
-void KTServer::handlerPackages(KTServerConnection* cnx, const QString&package)
+void TcpServer::handlerPackages(Server::Connection* cnx, const QString&package)
 {
 	d->handler->handle(cnx, package);
+}
+
 }
 
 

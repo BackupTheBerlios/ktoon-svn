@@ -26,21 +26,21 @@
 */
 
 #include <QDomDocument>
-#include "ktserverconnection.h"
-#include "ktserver.h"
+#include "connection.h"
+#include "server.h"
 
 
-class AbstractHandlerPackages
+class PackageHandlerBase
 {
 	public:
-		AbstractHandlerPackages(KTServer *server = 0 );
+		PackageHandlerBase(Server::TcpServer *server = 0 );
 		
-		virtual ~AbstractHandlerPackages();
-		virtual void handle(KTServerConnection *, const QString & ) = 0;
-		virtual void setServer(KTServer *server);
+		virtual ~PackageHandlerBase();
+		virtual void handle(Server::Connection *, const QString & ) = 0;
+		virtual void setServer(Server::TcpServer *server);
 		
 	protected:
-		KTServer *m_pServer;
+		Server::TcpServer *m_pServer;
 		
 };
 

@@ -18,23 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktserverconnection.h"
+#include "connection.h"
 
 #include <QtNetwork>
 
 #include <ddebug.h>
-#include "ktserver.h"
+
+#include "server.h"
 #include "ktrequestparser.h"
 #include "ktcompress.h"
 
 #include "ktprojectrequest.h"
 #include "ktprojectresponse.h"
-
-
 #include "ktrequestparser.h"
-KTServerConnection::KTServerConnection(int socketDescriptor, KTServer *server) : QThread(server), m_server(server)
+
+
+namespace Server {
+
+Connection::Connection(int socketDescriptor, Server::TcpServer *server) : QThread(server), m_server(server)
 {
-	m_client = new KTServerClient(this);
+	m_client = new Server::Client(this);
 	m_client->setSocketDescriptor(socketDescriptor);
 	
 	connect(m_client, SIGNAL(disconnected()), this, SLOT(disconnect()));
@@ -43,12 +46,12 @@ KTServerConnection::KTServerConnection(int socketDescriptor, KTServer *server) :
 	
 }
 
-KTServerConnection::~KTServerConnection()
+Connection::~Connection()
 {
 	delete m_client;
 }
 
-void KTServerConnection::run()
+void Connection::run()
 {
 	while(m_client->state() != QAbstractSocket::UnconnectedState)
 	{
@@ -72,12 +75,12 @@ void KTServerConnection::run()
 }
 
 
-void KTServerConnection::disconnect()
+void Connection::disconnect()
 {
 	emit connectionClosed(this);
 }
 
-void KTServerConnection::close()
+void Connection::close()
 {
 	m_client->disconnectFromHost();
 	m_client->close();
@@ -85,24 +88,29 @@ void KTServerConnection::close()
 	m_isLogged = false;
 }
 
-bool KTServerConnection::isLogged() const
+bool Connection::isLogged() const
 {
 	return m_isLogged;
 }
 
-void KTServerConnection::appendTextReaded(const QString &readed)
+void Connection::appendTextReaded(const QString &readed)
 {
 	dDebug("server") << "Enqueing: " << readed;
 	m_readed.enqueue(readed);
 }
 
-void KTServerConnection::setData(int key, const QVariant &value)
+void Connection::setData(int key, const QVariant &value)
 {
 	m_datas.insert(key, value);
 }
 
-QVariant KTServerConnection::data(int key) const
+QVariant Connection::data(int key) const
 {
 	return m_datas[key];
 }
+
+
+}
+
+
 

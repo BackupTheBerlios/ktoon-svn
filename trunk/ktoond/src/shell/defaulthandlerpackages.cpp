@@ -21,20 +21,20 @@
 #include "defaulthandlerpackages.h"
 #include <ddebug.h>
 
-DefaultHandlerPackages::DefaultHandlerPackages(	KTServer * server )
- : AbstractHandlerPackages(server)
+DefaultPackageHandler::DefaultPackageHandler(	Server::TcpServer * server )
+ : PackageHandlerBase(server)
 {
 	
 }
 
 
-DefaultHandlerPackages::~DefaultHandlerPackages()
+DefaultPackageHandler::~DefaultPackageHandler()
 {
 }
 
-void DefaultHandlerPackages::handle(KTServerConnection *cnx , const QString &package )
+void DefaultPackageHandler::handle(Server::Connection *cnx , const QString &package )
 {
-	dWarning() << "DefaultHandlerPackages";
+	dWarning() << "DefaultPackageHandler";
 	
 	dDebug() << package;
 	

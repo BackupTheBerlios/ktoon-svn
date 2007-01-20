@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef FORTUNESERVER_H
-#define FORTUNESERVER_H
+#ifndef _SERVER_H__
+#define _SERVER_H__
 
 #include <QStringList>
 #include <QTcpServer>
@@ -27,32 +27,38 @@
 
 #include "ktprojectrequest.h"
 
-class KTServerConnection;
-class AbstractHandlerPackages;
+namespace Server {
+class Connection;
+}
+
+class PackageHandlerBase;
+
+
+namespace Server {
 
 /**
  * Esta es la clase controladora, esta clase representa el servidor.
  * @author David Cuadrado \<krawek@gmail.com\>
  */
-class KTServer : public QTcpServer
+class TcpServer : public QTcpServer
 {
 	Q_OBJECT;
 	
 	public:
-		KTServer(QObject *parent = 0);
-		~KTServer();
+		TcpServer(QObject *parent = 0);
+		~TcpServer();
 		void sendToAll(const QDomDocument &pkg);
 		bool openConnection(const QString &host, int port);
-		void setHandler( AbstractHandlerPackages *handler );
+		void setHandler( PackageHandlerBase *handler );
 		
 		
 	public slots:
 		void sendToAll(const QString &msg);
-		void removeConnection(KTServerConnection *cnx);
-		void handlerPackages( KTServerConnection *cnn, const QString & packages  );
+		void removeConnection(Server::Connection *cnx);
+		void handlerPackages( Server::Connection *cnn, const QString & packages  );
 	
 	private:
-		void handle(KTServerConnection *cnx);
+		void handle(Server::Connection *cnx);
 		
 	protected:
 		void incomingConnection(int socketDescriptor);
@@ -61,6 +67,8 @@ class KTServer : public QTcpServer
 		class Private;
 		Private * const d;
 };
+
+}
 
 #endif
 

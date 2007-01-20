@@ -18,62 +18,31 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef DOMSERVERCONNECTION_H
-#define DOMSERVERCONNECTION_H
+#include "serverclient.h"
 
-#include <QThread>
-#include <QQueue>
-#include <QHash>
-#include <QVariant>
-#include "ktserverclient.h"
-// #include <QDomDocument>
+#include "connection.h"
 
-class KTServer;
-class KTProjectRequest;
-/**
- * Esta clase representa cada conexion de un cliente al servidor, es un hilo.
- * @author David Cuadrado \<krawek@gmail.com\>
- */
-class KTServerConnection : public QThread
+#include <QDataStream>
+#include <QStringList>
+
+#include <ddebug.h>
+
+namespace Server {
+
+Client::Client(Server::Connection *connection) : KTSocketBase(), m_connection(connection)
 {
-	Q_OBJECT;
+}
 
-	public:
-		KTServerConnection(int socketDescriptor, KTServer *server);
-		~KTServerConnection();
-		
-		void run();
-		
-		void close();
-		bool isLogged() const;
-		
-		void appendTextReaded(const QString &readed);
-		
-		inline void sendToClient(const QString &text) const { m_client->send(text); }
-		
-		void setData(int key, const QVariant &value);
-		QVariant data(int key) const;
-		
-		
-	public slots:
-		void disconnect();
-		
-		
-	signals:
-		void error(QTcpSocket::SocketError socketError);
-		void requestSendToAll(const QString &msg);
-		void connectionClosed( KTServerConnection *cnn);
-		void packagesReaded(KTServerConnection *cnn, const QString & packages  );
-		
-	private:
-		KTServerClient *m_client;
-		KTServer *m_server;
-		bool m_isLogged;
-		QQueue<QString> m_readed;
-		QHash<int, QVariant> m_datas;
-		
-};
+Client::~Client()
+{
+}
 
-#endif
+void Client::readed(const QString &readed)
+{
+	m_connection->appendTextReaded(readed);
+}
+
+
+}
 
 

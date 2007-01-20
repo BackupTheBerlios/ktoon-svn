@@ -20,16 +20,16 @@
  
 #include "abstracthandlerpackages.h"
 
-AbstractHandlerPackages::AbstractHandlerPackages(KTServer *server ): m_pServer(server)
+PackageHandlerBase::PackageHandlerBase(Server::TcpServer *server ): m_pServer(server)
 {
 	
 }
 
-AbstractHandlerPackages::~AbstractHandlerPackages()
+PackageHandlerBase::~PackageHandlerBase()
 {
 }
 
-void AbstractHandlerPackages::setServer(KTServer *server)
+void PackageHandlerBase::setServer(Server::TcpServer *server)
 {
 	m_pServer = server;
 }

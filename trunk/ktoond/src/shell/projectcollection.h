@@ -27,7 +27,10 @@
 #include <QHash>
 #include <ktproject.h>
 
-class KTServerConnection ;
+namespace Server {
+class Connection;
+}
+
 
 class ProjectCollection 
 {
@@ -35,9 +38,9 @@ class ProjectCollection
 		ProjectCollection();
 		~ProjectCollection();
 		
-		void createProject(KTServerConnection *cnn);
-		void openProject(KTServerConnection *cnn);
-		void handleProjectRequest(KTServerConnection *cnn, const QString strRequest);
+		void createProject(Server::Connection *cnn);
+		void openProject(Server::Connection *cnn);
+		void handleProjectRequest(Server::Connection *cnn, const QString strRequest);
 		QStringList projects() const;
 		void closeProject(const QString & name);
 		void saveProject(const QString & name);

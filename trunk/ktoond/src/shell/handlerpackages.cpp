@@ -21,21 +21,21 @@
 #include "projectcollection.h"
 
 
-#include "ktserverconnection.h"
+#include "connection.h"
 #include "global.h"
 #include <ddebug.h>
 
-HandlerPackages::HandlerPackages( KTServer* server ) : AbstractHandlerPackages( server )
+PackageHandler::PackageHandler( Server::TcpServer* server ) : PackageHandlerBase( server )
 {
 	m_projects = new ProjectCollection();
 }
 
-HandlerPackages::~HandlerPackages()
+PackageHandler::~PackageHandler()
 {
 	delete m_projects;
 }
 
-void HandlerPackages::handle(KTServerConnection *cnx , const QString &package )
+void PackageHandler::handle(Server::Connection *cnx , const QString &package )
 {
 	QDomDocument doc;
 	doc.setContent(package);
@@ -75,7 +75,7 @@ void HandlerPackages::handle(KTServerConnection *cnx , const QString &package )
 	}
 }
 
-void HandlerPackages::handleProjectRequest(KTServerConnection *cnn, const QString &strRequest)
+void PackageHandler::handleProjectRequest(Server::Connection *cnn, const QString &strRequest)
 {
 	m_projects->handleProjectRequest( cnn , strRequest);
 	if(m_pServer)

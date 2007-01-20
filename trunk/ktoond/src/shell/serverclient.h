@@ -23,24 +23,29 @@
 
 #include "ktsocketbase.h"
 
-class KTServerConnection;
+namespace Server {
+
+class Connection;
 
 /**
  * Esta clase representa los clientes del servidor
  * @author David Cuadrado \<krawek@gmail.com\>
 */
-class KTServerClient : public KTSocketBase
+class Client : public KTSocketBase
 {
 	Q_OBJECT;
 	public:
-		KTServerClient(KTServerConnection *connection);
-		~KTServerClient();
+		Client(Server::Connection *connection);
+		~Client();
 		
 		virtual void readed(const QString &readed);
 		
 	private:
-		KTServerConnection *m_connection;
+		Server::Connection *m_connection;
 };
+
+
+}
 
 #endif
 

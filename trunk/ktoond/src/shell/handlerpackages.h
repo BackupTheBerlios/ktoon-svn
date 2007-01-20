@@ -27,23 +27,25 @@
 
 #include <QString>
 #include "abstracthandlerpackages.h"
-#include "ktserverconnection.h"
+#include "connection.h"
 
 class ProjectCollection;
 
-class HandlerPackages : public AbstractHandlerPackages
+class PackageHandler : public PackageHandlerBase
 {
 	public:
-		HandlerPackages(KTServer *parent = 0 );
-		~HandlerPackages();
+		PackageHandler(Server::TcpServer *parent = 0 );
+		~PackageHandler();
 		
-		void handle(KTServerConnection *, const QString & );
+		void handle(Server::Connection *, const QString & );
 		
 	private:
-		void handleProjectRequest(KTServerConnection *cnn, const QString &request);
+		void handleProjectRequest(Server::Connection *cnn, const QString &request);
 		
 	private:
 		ProjectCollection *m_projects;
 };
 
 #endif
+
+

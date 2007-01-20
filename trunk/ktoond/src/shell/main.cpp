@@ -21,7 +21,7 @@
 #include <QCoreApplication>
 
 #include <ddebug.h>
-#include "ktserver.h"
+#include "server.h"
 #include "handlerpackages.h"
 
 
@@ -54,8 +54,8 @@ int main(int argc, char **argv)
 	{
 		cache.mkdir(dAppProp->cacheDir());
 	}
-	KTServer server;
-	HandlerPackages handler;
+	Server::TcpServer server;
+	PackageHandler handler;
 	server.setHandler(&handler);
 	
 	
