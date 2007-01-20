@@ -18,25 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef DEFAULTHANDLERPACKAGES_H
-#define DEFAULTHANDLERPACKAGES_H
+#include "defaultpackagehandler.h"
+#include <ddebug.h>
 
-#include "abstracthandlerpackages.h"
-
-/**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
-*/
-
-
-class DefaultPackageHandler : public PackageHandlerBase
+DefaultPackageHandler::DefaultPackageHandler(	Server::TcpServer * server )
+ : PackageHandlerBase(server)
 {
-	public:
-		DefaultPackageHandler(Server::TcpServer * server = 0 );
-		~DefaultPackageHandler();
-		void handle(Server::Connection *cnx , const QString &package );
+	
+}
 
-};
 
-#endif
+DefaultPackageHandler::~DefaultPackageHandler()
+{
+}
+
+void DefaultPackageHandler::handle(Server::Connection *cnx , const QString &package )
+{
+	dWarning() << "DefaultPackageHandler";
+	
+	dDebug() << package;
+	
+}
 
 

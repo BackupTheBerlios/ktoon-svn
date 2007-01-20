@@ -26,8 +26,8 @@
 #include <ddebug.h>
 #include <QDebug>
 
-#include "abstracthandlerpackages.h"
-#include "defaulthandlerpackages.h"
+#include "packagehandlerbase.h"
+#include "defaultpackagehandler.h"
 
 namespace Server {
 

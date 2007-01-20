@@ -4,17 +4,17 @@
 # Target is an application:  ../../bin/ktoond.bin
 
 HEADERS += projectcollection.h \
-           handlerpackages.h \
-           abstracthandlerpackages.h \
-           defaulthandlerpackages.h \
+           packagehandler.h \
+           packagehandlerbase.h \
+           defaultpackagehandler.h \
            server.h \
            serverclient.h \
            connection.h
 SOURCES += main.cpp \
            projectcollection.cpp \
-           handlerpackages.cpp \
-           abstracthandlerpackages.cpp \
-           defaulthandlerpackages.cpp \
+           packagehandler.cpp \
+           packagehandlerbase.cpp \
+           defaultpackagehandler.cpp \
            server.cpp \
            serverclient.cpp \
            connection.cpp

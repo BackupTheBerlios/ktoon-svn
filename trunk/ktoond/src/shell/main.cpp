@@ -22,7 +22,7 @@
 
 #include <ddebug.h>
 #include "server.h"
-#include "handlerpackages.h"
+#include "packagehandler.h"
 
 
 #include <dapplicationproperties.h>

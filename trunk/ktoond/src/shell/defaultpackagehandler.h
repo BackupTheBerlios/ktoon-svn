@@ -17,33 +17,24 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef DEFAULTHANDLERPACKAGES_H
+#define DEFAULTHANDLERPACKAGES_H
 
-#ifndef HANDLERPACKGES_H
-#define HANDLERPACKGES_H
+#include "packagehandlerbase.h"
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
-#include <QString>
-#include "abstracthandlerpackages.h"
-#include "connection.h"
 
-class ProjectCollection;
-
-class PackageHandler : public PackageHandlerBase
+class DefaultPackageHandler : public PackageHandlerBase
 {
 	public:
-		PackageHandler(Server::TcpServer *parent = 0 );
-		~PackageHandler();
-		
-		void handle(Server::Connection *, const QString & );
-		
-	private:
-		void handleProjectRequest(Server::Connection *cnn, const QString &request);
-		
-	private:
-		ProjectCollection *m_projects;
+		DefaultPackageHandler(Server::TcpServer * server = 0 );
+		~DefaultPackageHandler();
+		void handle(Server::Connection *cnx , const QString &package );
+
 };
 
 #endif

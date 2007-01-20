@@ -18,26 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#include "defaulthandlerpackages.h"
-#include <ddebug.h>
+#include "packagehandlerbase.h"
 
-DefaultPackageHandler::DefaultPackageHandler(	Server::TcpServer * server )
- : PackageHandlerBase(server)
+PackageHandlerBase::PackageHandlerBase(Server::TcpServer *server ): m_pServer(server)
 {
 	
 }
 
-
-DefaultPackageHandler::~DefaultPackageHandler()
+PackageHandlerBase::~PackageHandlerBase()
 {
 }
 
-void DefaultPackageHandler::handle(Server::Connection *cnx , const QString &package )
+void PackageHandlerBase::setServer(Server::TcpServer *server)
 {
-	dWarning() << "DefaultPackageHandler";
-	
-	dDebug() << package;
-	
+	m_pServer = server;
 }
-
-
