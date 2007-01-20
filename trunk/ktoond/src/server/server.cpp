@@ -40,7 +40,7 @@ class TcpServer::Private
 TcpServer::TcpServer(QObject *parent) : QTcpServer(parent), d(new Private)
 {
 	DINIT;
-	m_handler = new DefaultPackageHandler();
+	m_handler = new Server::DefaultPackageHandler();
 }
 
 
@@ -117,7 +117,6 @@ void TcpServer::removeConnection(Server::Connection *cnx)
 {
         D_FUNCINFO;
         cnx->close();
-//      cnx->setLogin(0);
         d->connections.removeAll(cnx);
 }
 

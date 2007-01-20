@@ -31,7 +31,7 @@
 
 class ProjectCollection;
 
-class PackageHandler : public PackageHandlerBase
+class PackageHandler : public Server::PackageHandlerBase
 {
 	public:
 		PackageHandler();
@@ -43,7 +43,8 @@ class PackageHandler : public PackageHandlerBase
 		void handleProjectRequest(Server::Connection *cnn, const QString &request);
 		
 	private:
-		ProjectCollection *m_projects;
+		class Private;
+		Private *const d;
 };
 
 #endif

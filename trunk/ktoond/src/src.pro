@@ -3,7 +3,7 @@
 # Subdir relative project main directory: ./src
 # Target is a subdirs project 
 
-SUBDIRS += lib users shell
+SUBDIRS += lib users server shell 
 CONFIG += release \
           warn_on 
 TEMPLATE = subdirs 

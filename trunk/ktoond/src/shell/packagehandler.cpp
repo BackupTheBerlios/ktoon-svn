@@ -25,14 +25,30 @@
 #include "global.h"
 #include <ddebug.h>
 
-PackageHandler::PackageHandler() : PackageHandlerBase()
+
+class PackageHandler::Private
 {
-	m_projects = new ProjectCollection();
+	public:
+		Private()
+		{
+		}
+		
+		~Private()
+		{
+			delete projects;
+		}
+		
+		ProjectCollection *projects;
+};
+
+PackageHandler::PackageHandler() : PackageHandlerBase(), d(new Private)
+{
+	d->projects = new ProjectCollection();
 }
 
 PackageHandler::~PackageHandler()
 {
-	delete m_projects;
+	delete d;
 }
 
 void PackageHandler::handle(Server::Connection *cnx , const QString &package )
@@ -77,7 +93,7 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &package )
 
 void PackageHandler::handleProjectRequest(Server::Connection *cnn, const QString &strRequest)
 {
-	m_projects->handleProjectRequest( cnn , strRequest);
+	d->projects->handleProjectRequest( cnn , strRequest);
 	
 	if ( cnn->server() )
 	{

@@ -30,9 +30,8 @@
 namespace Server {
 class Connection;
 class Client;
-}
-
 class PackageHandlerBase;
+}
 
 
 namespace Server {

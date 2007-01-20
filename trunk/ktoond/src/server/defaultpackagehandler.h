@@ -23,10 +23,11 @@
 
 #include "packagehandlerbase.h"
 
+namespace Server {
+
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-
 
 class DefaultPackageHandler : public PackageHandlerBase
 {
@@ -36,6 +37,8 @@ class DefaultPackageHandler : public PackageHandlerBase
 		void handle(Server::Connection *cnx , const QString &package );
 
 };
+
+}
 
 #endif
 

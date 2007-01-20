@@ -21,6 +21,8 @@
 #include "defaultpackagehandler.h"
 #include <ddebug.h>
 
+namespace Server {
+
 DefaultPackageHandler::DefaultPackageHandler() : PackageHandlerBase()
 {
 	
@@ -40,4 +42,6 @@ void DefaultPackageHandler::handle(Server::Connection *cnx , const QString &pack
 	
 }
 
+
+}
 

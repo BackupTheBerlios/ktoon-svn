@@ -20,6 +20,9 @@
  
 #include "packagehandlerbase.h"
 
+
+namespace Server {
+
 PackageHandlerBase::PackageHandlerBase()
 {
 	
@@ -27,5 +30,7 @@ PackageHandlerBase::PackageHandlerBase()
 
 PackageHandlerBase::~PackageHandlerBase()
 {
+}
+
 }
 

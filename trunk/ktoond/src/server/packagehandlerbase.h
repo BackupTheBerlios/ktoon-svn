@@ -29,9 +29,7 @@
 #include "server.h"
 
 namespace Server {
-	class Connection;
-}
-
+class Connection;
 
 class PackageHandlerBase
 {
@@ -43,5 +41,7 @@ class PackageHandlerBase
 		
 		
 };
+
+}
 
 #endif

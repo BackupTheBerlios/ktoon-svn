@@ -4,22 +4,22 @@
 # Target is an application:  ../../bin/ktoond.bin
 
 HEADERS += projectcollection.h \
-           packagehandler.h \
-           packagehandlerbase.h \
-           defaultpackagehandler.h \
-           server.h \
-           serverclient.h \
-           connection.h
+           packagehandler.h
 SOURCES += main.cpp \
            projectcollection.cpp \
-           packagehandler.cpp \
-           packagehandlerbase.cpp \
-           defaultpackagehandler.cpp \
-           server.cpp \
-           serverclient.cpp \
-           connection.cpp
+           packagehandler.cpp
 TARGET = ../../bin/ktoond.bin
 CONFIG += release \
 warn_on
 TEMPLATE = app
-include("shell_config.pri")
+
+include(shell_config.pri)
+
+
+LIB_DIR = ../lib
+include($$LIB_DIR/lib.pri)
+
+SERVER_DIR = ../server
+include($$SERVER_DIR/server.pri)
+
+
