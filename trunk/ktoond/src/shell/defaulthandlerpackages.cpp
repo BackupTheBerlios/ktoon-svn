@@ -32,7 +32,7 @@ DefaultHandlerPackages::~DefaultHandlerPackages()
 {
 }
 
-void DefaultHandlerPackages::handle(const KTServerConnection *cnx , const QString &package )
+void DefaultHandlerPackages::handle(KTServerConnection *cnx , const QString &package )
 {
 	dWarning() << "DefaultHandlerPackages";
 	

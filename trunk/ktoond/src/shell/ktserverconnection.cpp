@@ -39,7 +39,7 @@ KTServerConnection::KTServerConnection(int socketDescriptor, KTServer *server) :
 	
 	connect(m_client, SIGNAL(disconnected()), this, SLOT(disconnect()));
 	
-	m_projectName = "prueba.ktn";
+// 	m_projectName = "prueba.ktn";
 	
 }
 
@@ -96,7 +96,13 @@ void KTServerConnection::appendTextReaded(const QString &readed)
 	m_readed.enqueue(readed);
 }
 
-QString KTServerConnection::projectName() const
+void KTServerConnection::setData(int key, const QVariant &value)
 {
-	return m_projectName;
+	m_datas.insert(key, value);
 }
+
+QVariant KTServerConnection::data(int key) const
+{
+	return m_datas[key];
+}
+

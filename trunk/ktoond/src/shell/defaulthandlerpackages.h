@@ -33,7 +33,7 @@ class DefaultHandlerPackages : public AbstractHandlerPackages
 	public:
 		DefaultHandlerPackages(KTServer * server = 0 );
 		~DefaultHandlerPackages();
-		void handle(const KTServerConnection *cnx , const QString &package );
+		void handle(KTServerConnection *cnx , const QString &package );
 
 };
 

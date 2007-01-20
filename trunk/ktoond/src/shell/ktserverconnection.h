@@ -23,7 +23,8 @@
 
 #include <QThread>
 #include <QQueue>
-
+#include <QHash>
+#include <QVariant>
 #include "ktserverclient.h"
 // #include <QDomDocument>
 
@@ -47,9 +48,11 @@ class KTServerConnection : public QThread
 		bool isLogged() const;
 		
 		void appendTextReaded(const QString &readed);
-		QString projectName() const;
 		
 		inline void sendToClient(const QString &text) const { m_client->send(text); }
+		
+		void setData(int key, const QVariant &value);
+		QVariant data(int key) const;
 		
 		
 	public slots:
@@ -60,14 +63,15 @@ class KTServerConnection : public QThread
 		void error(QTcpSocket::SocketError socketError);
 		void requestSendToAll(const QString &msg);
 		void connectionClosed( KTServerConnection *cnn);
-		void packagesReaded(const KTServerConnection *cnn, const QString & packages  );
+		void packagesReaded(KTServerConnection *cnn, const QString & packages  );
 		
 	private:
 		KTServerClient *m_client;
 		KTServer *m_server;
 		bool m_isLogged;
-		QString m_projectName;
 		QQueue<QString> m_readed;
+		QHash<int, QVariant> m_datas;
+		
 };
 
 #endif

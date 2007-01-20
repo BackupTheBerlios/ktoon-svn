@@ -49,10 +49,10 @@ class KTServer : public QTcpServer
 	public slots:
 		void sendToAll(const QString &msg);
 		void removeConnection(KTServerConnection *cnx);
-		void handlerPackages( const KTServerConnection *cnn, const QString & packages  );
+		void handlerPackages( KTServerConnection *cnn, const QString & packages  );
 	
 	private:
-		void handle(const KTServerConnection *cnx);
+		void handle(KTServerConnection *cnx);
 		
 	protected:
 		void incomingConnection(int socketDescriptor);

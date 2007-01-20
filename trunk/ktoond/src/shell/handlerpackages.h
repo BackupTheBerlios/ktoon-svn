@@ -37,10 +37,10 @@ class HandlerPackages : public AbstractHandlerPackages
 		HandlerPackages(KTServer *parent = 0 );
 		~HandlerPackages();
 		
-		void handle(const KTServerConnection *, const QString & );
+		void handle(KTServerConnection *, const QString & );
 		
 	private:
-		void handleProjectRequest(const KTServerConnection *cnn, const QString &request);
+		void handleProjectRequest(KTServerConnection *cnn, const QString &request);
 		
 	private:
 		ProjectCollection *m_projects;

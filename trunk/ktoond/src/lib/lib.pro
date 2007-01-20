@@ -3,7 +3,8 @@
 # Subdir relative project main directory: ./src/lib
 # Target is a library:  ktserver
 
-HEADERS += sproject.h
+HEADERS += sproject.h \
+global.h
 SOURCES += sproject.cpp 
 TARGET = ktserver
 CONFIG += release \

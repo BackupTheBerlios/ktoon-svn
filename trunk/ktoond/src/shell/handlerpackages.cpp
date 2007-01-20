@@ -22,7 +22,7 @@
 
 
 #include "ktserverconnection.h"
-
+#include "global.h"
 #include <ddebug.h>
 
 HandlerPackages::HandlerPackages( KTServer* server ) : AbstractHandlerPackages( server )
@@ -35,21 +35,47 @@ HandlerPackages::~HandlerPackages()
 	delete m_projects;
 }
 
-void HandlerPackages::handle(const KTServerConnection *cnx , const QString &package )
+void HandlerPackages::handle(KTServerConnection *cnx , const QString &package )
 {
 	QDomDocument doc;
 	doc.setContent(package);
 	QString root = doc.documentElement().tagName();
+	
 	if ( root == "request" )
 	{
-		if(!cnx->projectName().isNull())
+		if(!cnx->data(Info::ProjectName).toString().isNull())
 		{
 			handleProjectRequest( cnx , package);
 		}
 	}
+	else if( root == "connect" )
+	{
+		//Peticion de conexion al servidor
+	}
+	else if( root == "list")
+	{
+		//Lista de items, por ejemplo proyectos
+	}
+	else if( root == "open")
+	{
+		cnx->setData(Info::ProjectName, "name");
+// 		Abrir proyecto
+	}
+	else if( root == "chat")
+	{
+// 		Mensaje de chat
+	}
+	else if( root == "notice")
+	{
+// 		Noticia
+	}
+	else if( root == "wall")
+	{
+// 	mensaje para todos
+	}
 }
 
-void HandlerPackages::handleProjectRequest(const KTServerConnection *cnn, const QString &strRequest)
+void HandlerPackages::handleProjectRequest(KTServerConnection *cnn, const QString &strRequest)
 {
 	m_projects->handleProjectRequest( cnn , strRequest);
 	if(m_pServer)
@@ -57,6 +83,4 @@ void HandlerPackages::handleProjectRequest(const KTServerConnection *cnn, const 
 		m_pServer->sendToAll(strRequest);
 	}
 }
-
-
 

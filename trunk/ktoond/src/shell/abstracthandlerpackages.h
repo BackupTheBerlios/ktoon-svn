@@ -29,13 +29,14 @@
 #include "ktserverconnection.h"
 #include "ktserver.h"
 
+
 class AbstractHandlerPackages
 {
 	public:
 		AbstractHandlerPackages(KTServer *server = 0 );
 		
 		virtual ~AbstractHandlerPackages();
-		virtual void handle(const KTServerConnection *, const QString & ) = 0;
+		virtual void handle(KTServerConnection *, const QString & ) = 0;
 		virtual void setServer(KTServer *server);
 		
 	protected:

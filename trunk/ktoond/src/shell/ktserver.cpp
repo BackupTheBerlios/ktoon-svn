@@ -86,11 +86,11 @@ void KTServer::incomingConnection(int socketDescriptor)
 	newConnection->start();
 }
 
-void KTServer::handle(const KTServerConnection *cnx)
+void KTServer::handle(KTServerConnection *cnx)
 {
 	connect(cnx, SIGNAL(finished()), cnx, SLOT(deleteLater()));
 	connect(cnx, SIGNAL(requestSendToAll( const QString& )), this, SLOT(sendToAll( const QString& )));
-	connect(cnx, SIGNAL(packagesReaded(const KTServerConnection*, const QString&)), this, SLOT(handlerPackages(const KTServerConnection*, const QString&)));
+	connect(cnx, SIGNAL(packagesReaded(KTServerConnection*, const QString&)), this, SLOT(handlerPackages(KTServerConnection*, const QString&)));
 	connect(cnx, SIGNAL(connectionClosed(KTServerConnection*)), this, SLOT(removeConnection(KTServerConnection*)));
 	
 	
@@ -128,7 +128,7 @@ void KTServer::removeConnection(KTServerConnection *cnx)
 }
 
 
-void KTServer::handlerPackages(const KTServerConnection* cnx, const QString&package)
+void KTServer::handlerPackages(KTServerConnection* cnx, const QString&package)
 {
 	d->handler->handle(cnx, package);
 }

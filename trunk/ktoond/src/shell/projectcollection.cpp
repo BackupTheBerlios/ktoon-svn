@@ -31,6 +31,8 @@
 #include <dapplicationproperties.h>
 
 #include <QDir>
+#include "global.h"
+
 ProjectCollection::ProjectCollection()
 {
 }
@@ -40,9 +42,9 @@ ProjectCollection::~ProjectCollection()
 {
 }
 
-void ProjectCollection::createProject( const KTServerConnection *cnn )
+void ProjectCollection::createProject( KTServerConnection *cnn )
 {
-	QString projectName = cnn->projectName();
+	QString projectName = cnn->data(Info::ProjectName).toString();
 	if(!m_projects.contains( projectName ))
 	{
 		KTProject *project = new KTProject;
@@ -56,12 +58,11 @@ void ProjectCollection::createProject( const KTServerConnection *cnn )
 	{
 		//TODO: enviar paquete de error
 	}
-	
 }
 
-void ProjectCollection::openProject(const KTServerConnection *cnn )
+void ProjectCollection::openProject( KTServerConnection *cnn )
 {
-	QString projectName = cnn->projectName();
+ 	QString projectName = cnn->data(Info::ProjectName).toString();
 	if(!m_projects.contains( projectName ))
 	{
 		KTSaveProject *loader = new KTSaveProject;
@@ -74,8 +75,6 @@ void ProjectCollection::openProject(const KTServerConnection *cnn )
 		{
 			m_projects.insert(projectName, project);
 		}
-		
-		
 	}
 	
 	QFile file(dAppProp->cacheDir() + "/" + projectName);
@@ -86,8 +85,10 @@ void ProjectCollection::openProject(const KTServerConnection *cnn )
 }
 QStringList ProjectCollection::projects() const
 {
+	
 	QDir dir(dAppProp->cacheDir());
 	return dir.entryList();
+	
 }
 
 void ProjectCollection::closeProject(const QString & name)
@@ -108,9 +109,9 @@ void ProjectCollection::saveProject(const QString & name)
 	}
 }
 
-void ProjectCollection::handleProjectRequest(const KTServerConnection *cnn, const QString strRequest)
+void ProjectCollection::handleProjectRequest(KTServerConnection *cnn, const QString strRequest)
 {
-	QString projectName = cnn->projectName();
+	QString projectName = cnn->data(Info::ProjectName).toString();
 	KTRequestParser parser;
 	if ( parser.parse(strRequest) )
 	{

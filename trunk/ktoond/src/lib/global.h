@@ -18,34 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef PROJECTCOLLECTION_H
-#define PROJECTCOLLECTION_H
-
-/**
- * @author Jorge Cuadrado \<kuadrosxx@gmail.com\>
-*/
-#include <QHash>
-#include <ktproject.h>
-
-class KTServerConnection ;
-
-class ProjectCollection 
+namespace Info
 {
-	public:
-		ProjectCollection();
-		~ProjectCollection();
-		
-		void createProject(KTServerConnection *cnn);
-		void openProject(KTServerConnection *cnn);
-		void handleProjectRequest(KTServerConnection *cnn, const QString strRequest);
-		QStringList projects() const;
-		void closeProject(const QString & name);
-		void saveProject(const QString & name);
-		
-		
-	private:
-		QHash<QString, KTProject * > m_projects;
-		
-};
-
-#endif
+	enum Keys { ProjectName = 0 , User  };
+}
