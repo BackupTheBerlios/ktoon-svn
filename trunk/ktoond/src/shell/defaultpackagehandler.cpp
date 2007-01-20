@@ -21,8 +21,7 @@
 #include "defaultpackagehandler.h"
 #include <ddebug.h>
 
-DefaultPackageHandler::DefaultPackageHandler(	Server::TcpServer * server )
- : PackageHandlerBase(server)
+DefaultPackageHandler::DefaultPackageHandler() : PackageHandlerBase()
 {
 	
 }
@@ -34,6 +33,7 @@ DefaultPackageHandler::~DefaultPackageHandler()
 
 void DefaultPackageHandler::handle(Server::Connection *cnx , const QString &package )
 {
+	Q_UNUSED(cnx);
 	dWarning() << "DefaultPackageHandler";
 	
 	dDebug() << package;

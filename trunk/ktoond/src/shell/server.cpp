@@ -35,14 +35,12 @@ class TcpServer::Private
 {
 	public:
 		QList<Server::Connection *> connections;
-		PackageHandlerBase *handler;
-
 };
 
 TcpServer::TcpServer(QObject *parent) : QTcpServer(parent), d(new Private)
 {
 	DINIT;
-	d->handler = new DefaultPackageHandler(this);
+	m_handler = new DefaultPackageHandler();
 }
 
 
@@ -70,12 +68,6 @@ bool TcpServer::openConnection(const QString &host, int port)
 		return false;
 	}
 	return true;
-}
-
-void TcpServer::setHandler( PackageHandlerBase *handler )
-{
-	d->handler = handler;
-	handler->setServer(this);
 }
 
 void TcpServer::incomingConnection(int socketDescriptor)
@@ -130,9 +122,9 @@ void TcpServer::removeConnection(Server::Connection *cnx)
 }
 
 
-void TcpServer::handlerPackages(Server::Connection* cnx, const QString&package)
+void TcpServer::handlePackage(Server::Connection* client, const QString&package)
 {
-	d->handler->handle(cnx, package);
+	m_handler->handle(client, package);
 }
 
 }

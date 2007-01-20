@@ -52,10 +52,13 @@ class Connection : public QThread
 		
 		void appendTextReaded(const QString &readed);
 		
-		inline void sendToClient(const QString &text) const { m_client->send(text); }
+		void sendToClient(const QString &text) const;
 		
 		void setData(int key, const QVariant &value);
 		QVariant data(int key) const;
+		
+		Client *client() const;
+		TcpServer *server() const;
 		
 		
 	public slots:
@@ -69,12 +72,8 @@ class Connection : public QThread
 		void packagesReaded(Server::Connection *cnn, const QString & packages  );
 		
 	private:
-		Server::Client *m_client;
-		Server::TcpServer *m_server;
-		bool m_isLogged;
-		QQueue<QString> m_readed;
-		QHash<int, QVariant> m_datas;
-		
+		class Private;
+		Private *const d;
 };
 
 }

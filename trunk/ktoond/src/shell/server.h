@@ -29,6 +29,7 @@
 
 namespace Server {
 class Connection;
+class Client;
 }
 
 class PackageHandlerBase;
@@ -49,13 +50,17 @@ class TcpServer : public QTcpServer
 		~TcpServer();
 		void sendToAll(const QDomDocument &pkg);
 		bool openConnection(const QString &host, int port);
-		void setHandler( PackageHandlerBase *handler );
+		template<typename klass> void createHandler()
+		{
+			if ( m_handler ) delete m_handler;
+			m_handler = new klass;
+		}
 		
 		
 	public slots:
 		void sendToAll(const QString &msg);
 		void removeConnection(Server::Connection *cnx);
-		void handlerPackages( Server::Connection *cnn, const QString & packages  );
+		void handlePackage( Server::Connection *client, const QString & packages  );
 	
 	private:
 		void handle(Server::Connection *cnx);
@@ -66,6 +71,7 @@ class TcpServer : public QTcpServer
 	private:
 		class Private;
 		Private * const d;
+		PackageHandlerBase *m_handler;
 };
 
 }

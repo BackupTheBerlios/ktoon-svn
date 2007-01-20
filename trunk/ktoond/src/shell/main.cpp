@@ -55,8 +55,7 @@ int main(int argc, char **argv)
 		cache.mkdir(dAppProp->cacheDir());
 	}
 	Server::TcpServer server;
-	PackageHandler handler;
-	server.setHandler(&handler);
+	server.createHandler<PackageHandler>();
 	
 	
 	server.openConnection( host, port );

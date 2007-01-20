@@ -34,7 +34,7 @@ class ProjectCollection;
 class PackageHandler : public PackageHandlerBase
 {
 	public:
-		PackageHandler(Server::TcpServer *parent = 0 );
+		PackageHandler();
 		~PackageHandler();
 		
 		void handle(Server::Connection *, const QString & );

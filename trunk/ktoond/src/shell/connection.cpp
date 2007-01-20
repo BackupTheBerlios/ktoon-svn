@@ -35,29 +35,47 @@
 
 namespace Server {
 
-Connection::Connection(int socketDescriptor, Server::TcpServer *server) : QThread(server), m_server(server)
+class Connection::Private
 {
-	m_client = new Server::Client(this);
-	m_client->setSocketDescriptor(socketDescriptor);
+	public:
+		Private(TcpServer *server) : server(server)
+		{
+		}
+		
+		~Private()
+		{
+			delete client;
+			delete server;
+		}
+		
+		Server::Client *client;
+		Server::TcpServer *server;
+		bool isLogged;
+		QQueue<QString> readed;
+		QHash<int, QVariant> datas;
+};
+
+Connection::Connection(int socketDescriptor, Server::TcpServer *server) : QThread(server), d(new Private(server))
+{
+	d->client = new Server::Client(this);
+	d->client->setSocketDescriptor(socketDescriptor);
 	
-	connect(m_client, SIGNAL(disconnected()), this, SLOT(disconnect()));
-	
-// 	m_projectName = "prueba.ktn";
+	connect(d->client, SIGNAL(disconnected()), this, SLOT(disconnect()));
 	
 }
 
 Connection::~Connection()
 {
-	delete m_client;
+	delete d->client;
 }
 
 void Connection::run()
 {
-	while(m_client->state() != QAbstractSocket::UnconnectedState)
+	while(d->client->state() != QAbstractSocket::UnconnectedState)
 	{
-		if ( m_readed.isEmpty() ) continue;
+		if ( d->readed.isEmpty() ) continue;
 		
-		QString readed = m_readed.dequeue();
+		QString readed = d->readed.dequeue();
 		
 		dDebug("server") << "Reicived: " << readed;
 		QDomDocument doc;
@@ -82,33 +100,47 @@ void Connection::disconnect()
 
 void Connection::close()
 {
-	m_client->disconnectFromHost();
-	m_client->close();
+	d->client->disconnectFromHost();
+	d->client->close();
 	
-	m_isLogged = false;
+	d->isLogged = false;
 }
 
 bool Connection::isLogged() const
 {
-	return m_isLogged;
+	return d->isLogged;
 }
 
 void Connection::appendTextReaded(const QString &readed)
 {
 	dDebug("server") << "Enqueing: " << readed;
-	m_readed.enqueue(readed);
+	d->readed.enqueue(readed);
+}
+
+void Connection::sendToClient(const QString &text) const
+{
+	d->client->send(text);
 }
 
 void Connection::setData(int key, const QVariant &value)
 {
-	m_datas.insert(key, value);
+	d->datas.insert(key, value);
 }
 
 QVariant Connection::data(int key) const
 {
-	return m_datas[key];
+	return d->datas[key];
 }
 
+Client *Connection::client() const
+{
+	return d->client;
+}
+
+TcpServer *Connection::server() const
+{
+	return d->server;
+}
 
 }
 

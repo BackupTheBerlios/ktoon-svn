@@ -20,7 +20,7 @@
  
 #include "packagehandlerbase.h"
 
-PackageHandlerBase::PackageHandlerBase(Server::TcpServer *server ): m_pServer(server)
+PackageHandlerBase::PackageHandlerBase()
 {
 	
 }
@@ -29,7 +29,3 @@ PackageHandlerBase::~PackageHandlerBase()
 {
 }
 
-void PackageHandlerBase::setServer(Server::TcpServer *server)
-{
-	m_pServer = server;
-}

@@ -25,7 +25,7 @@
 #include "global.h"
 #include <ddebug.h>
 
-PackageHandler::PackageHandler( Server::TcpServer* server ) : PackageHandlerBase( server )
+PackageHandler::PackageHandler() : PackageHandlerBase()
 {
 	m_projects = new ProjectCollection();
 }
@@ -78,9 +78,11 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &package )
 void PackageHandler::handleProjectRequest(Server::Connection *cnn, const QString &strRequest)
 {
 	m_projects->handleProjectRequest( cnn , strRequest);
-	if(m_pServer)
+	
+	if ( cnn->server() )
 	{
-		m_pServer->sendToAll(strRequest);
+		cnn->server()->sendToAll(strRequest);
 	}
+	
 }
 

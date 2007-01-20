@@ -26,21 +26,21 @@
 */
 
 #include <QDomDocument>
-#include "connection.h"
 #include "server.h"
+
+namespace Server {
+	class Connection;
+}
 
 
 class PackageHandlerBase
 {
 	public:
-		PackageHandlerBase(Server::TcpServer *server = 0 );
+		PackageHandlerBase();
 		
 		virtual ~PackageHandlerBase();
-		virtual void handle(Server::Connection *, const QString & ) = 0;
-		virtual void setServer(Server::TcpServer *server);
+		virtual void handle(Server::Connection *client, const QString &package ) = 0;
 		
-	protected:
-		Server::TcpServer *m_pServer;
 		
 };
 
