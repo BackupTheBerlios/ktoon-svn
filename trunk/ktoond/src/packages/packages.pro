@@ -3,12 +3,10 @@
 # Subdir relative project main directory: ./src/packages
 # Target is a library:  
 
-HEADERS += error.h \
-           package.h \
+HEADERS += package.h \
            items.h \
            project.h 
-SOURCES += error.cpp \
-           package.cpp \
+SOURCES += package.cpp \
            items.cpp \
            project.cpp 
 CONFIG += release \

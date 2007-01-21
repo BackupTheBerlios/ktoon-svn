@@ -1,6 +1,6 @@
-/****************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+/***************************************************************************
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,37 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "error.h"
-namespace Packages
+#ifndef DATABASE_H
+#define DATABASE_H
+
+#include <QString>
+
+namespace Users {
+
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+
+class Database
 {
-	
-Error::Error(const QString &message, int level)
-	: Package()
-{
-	QDomElement root = createElement ( "error" );
-	root.setAttribute ( "version",  "0" );
-	appendChild(root);
-	
-	m_message = createElement("message");
-	root.appendChild(m_message);
-	m_message.appendChild( createTextNode(message) );
-	m_message.setAttribute("level", level );
+	public:
+		Database(const QString &dbfile);
+		~Database();
+		
+		
+	private:
+		void init(const QString &dbfile);
+		
+	private:
+		struct Private;
+		Private *const d;
+};
+
 }
 
+#endif
 
-Error::~Error()
-{
-}
-
-
-void Error::setMessage(const QString &message)
-{
-	m_text.setData(message);
-}
-
-void Error::setLevel(int level)
-{
-	m_message.setAttribute("level", level );
-}
-
-}

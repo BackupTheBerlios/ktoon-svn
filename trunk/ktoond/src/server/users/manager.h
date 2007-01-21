@@ -31,10 +31,11 @@ namespace Users {
 class Manager
 {
 	public:
-		Manager();
+		Manager(const QString &dbfile);
 		~Manager();
 		
 		bool auth(const QString &login, const QString &password);
+		
 		
 	private:
 		struct Private;

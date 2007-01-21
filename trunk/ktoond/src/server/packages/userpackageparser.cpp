@@ -18,73 +18,73 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "manager.h"
+#include "userpackageparser.h"
 
-#include <QHash>
+namespace Parsers {
 
-#include "parser.h"
-#include "user.h"
-#include "database.h"
-
-#include "dcore/dmd5hash.h"
-
-namespace Users {
-
-class Manager::Private
+class UserPackageParser::Private
 {
 	public:
-		Private()
-		{
-		}
-		
-		~Private()
-		{
-			delete parser;
-			delete database;
-		}
-		
-		Parser *parser;
-		QHash<QString, User *> users;
-		Database *database;
+		QString login;
+		QString password;
 };
 
-Manager::Manager(const QString &dbfile) : d(new Private())
+UserPackageParser::UserPackageParser() : KTXmlParserBase(), d(new Private)
 {
-	d->database = new Database(dbfile);
-	d->parser = new Parser(dbfile);
 }
 
 
-Manager::~Manager()
+UserPackageParser::~UserPackageParser()
 {
 	delete d;
 }
 
-
-bool Manager::auth(const QString &login, const QString &password)
+bool UserPackageParser::startTag(const QString &tag, const QXmlAttributes &)
 {
-	if ( d->users.contains(login) ) return true;
-	
-	if ( User *user = d->parser->user(login) )
+	if ( root() == "connect" )
 	{
-		if( user->password() == DMD5Hash::hash(password) )
+		if ( tag == "login" )
 		{
-			d->users.insert(login, user);
-			return true;
+			setReadText(true);
 		}
-		
-		delete user;
-		return false;
+		else if ( tag == "password")
+		{
+			
+		}
 	}
 	
-	return false;
+	
+	return true;
+}
+
+bool UserPackageParser::endTag(const QString &)
+{
+	return true;
+}
+
+void UserPackageParser::text(const QString &text)
+{
+	if ( currentTag() == "login" )
+	{
+		d->login = text;
+	}
+	else if ( currentTag() == "password")
+	{
+		d->password = text;
+	}
 }
 
 
-
-
+QString UserPackageParser::login() const
+{
+	return d->login;
 }
 
+QString UserPackageParser::password() const
+{
+	return d->password;
+}
 
+}
 
 

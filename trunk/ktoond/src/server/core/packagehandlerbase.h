@@ -41,6 +41,9 @@ class PackageHandlerBase
 		
 		virtual void handle(Server::Connection *client, const QString &root, const QString &package ) = 0;
 		
+	private:
+		struct Private;
+		Private *const d;
 };
 
 }

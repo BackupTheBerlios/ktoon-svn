@@ -1,3 +1,6 @@
 
+
 QT += network
+INCLUDEPATH += ..
+
 

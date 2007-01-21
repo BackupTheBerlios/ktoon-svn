@@ -3,4 +3,5 @@ TEMPLATE = subdirs
 CONFIG += warn_on
 
 SUBDIRS += core \
-users
+users \
+packages

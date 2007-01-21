@@ -18,73 +18,58 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "manager.h"
-
-#include <QHash>
-
-#include "parser.h"
-#include "user.h"
 #include "database.h"
+#include <QDomDocument>
+#include <QFile>
+#include <QTextStream>
 
-#include "dcore/dmd5hash.h"
+#include <ddebug.h>
 
 namespace Users {
 
-class Manager::Private
+struct Database::Private
 {
-	public:
-		Private()
-		{
-		}
-		
-		~Private()
-		{
-			delete parser;
-			delete database;
-		}
-		
-		Parser *parser;
-		QHash<QString, User *> users;
-		Database *database;
+	QDomDocument document;
 };
 
-Manager::Manager(const QString &dbfile) : d(new Private())
+Database::Database(const QString &dbfile) : d(new Private)
 {
-	d->database = new Database(dbfile);
-	d->parser = new Parser(dbfile);
+	init(dbfile);
 }
 
 
-Manager::~Manager()
+Database::~Database()
 {
 	delete d;
 }
 
 
-bool Manager::auth(const QString &login, const QString &password)
+void Database::init(const QString &dbfile)
 {
-	if ( d->users.contains(login) ) return true;
+	QFile file(dbfile);
 	
-	if ( User *user = d->parser->user(login) )
+	if( !file.exists() )
 	{
-		if( user->password() == DMD5Hash::hash(password) )
+		if ( file.open(QIODevice::WriteOnly | QIODevice::Text) )
 		{
-			d->users.insert(login, user);
-			return true;
+			QTextStream ts(&file);
+			ts << d->document.toString();
+			file.close();
 		}
-		
-		delete user;
-		return false;
 	}
 	
-	return false;
+	if ( file.open(QIODevice::ReadOnly | QIODevice::Text) )
+	{
+		if ( ! d->document.setContent(file.readAll()) )
+		{
+			dWarning() << file.fileName() << " is corrupted!";
+		}
+		file.close();
+	}
 }
 
 
-
-
 }
-
 
 
 

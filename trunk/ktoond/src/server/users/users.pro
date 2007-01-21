@@ -3,14 +3,13 @@ TEMPLATE = lib
 CONFIG += staticlib \
 warn_on
 
-LIBDIR = "../lib"
-include($$LIBDIR/lib.pri)
-
 HEADERS += parser.h \
 user.h \
-manager.h
+manager.h \
+database.h
 SOURCES += parser.cpp \
 user.cpp \
-manager.cpp
+manager.cpp \
+database.cpp
 include(../../../ktoond_config.pri)
 

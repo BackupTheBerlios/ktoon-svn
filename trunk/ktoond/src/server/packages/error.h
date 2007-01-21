@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosxx@gmail.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,73 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "manager.h"
+#ifndef PACKAGESERROR_H
+#define PACKAGESERROR_H
 
-#include <QHash>
+#include <QDomDocument>
 
-#include "parser.h"
-#include "user.h"
-#include "database.h"
+/**
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
+*/
+namespace Packages
+{
 
-#include "dcore/dmd5hash.h"
-
-namespace Users {
-
-class Manager::Private
+class Error : public QDomDocument
 {
 	public:
-		Private()
-		{
-		}
+		Error(const QString &message, int level );
+		~Error();
 		
-		~Private()
-		{
-			delete parser;
-			delete database;
-		}
+		void setMessage(const QString &message);
+		void setLevel(int level);
 		
-		Parser *parser;
-		QHash<QString, User *> users;
-		Database *database;
+	private:
+		QDomElement m_message;
+		QDomText m_text;
 };
 
-Manager::Manager(const QString &dbfile) : d(new Private())
-{
-	d->database = new Database(dbfile);
-	d->parser = new Parser(dbfile);
 }
-
-
-Manager::~Manager()
-{
-	delete d;
-}
-
-
-bool Manager::auth(const QString &login, const QString &password)
-{
-	if ( d->users.contains(login) ) return true;
-	
-	if ( User *user = d->parser->user(login) )
-	{
-		if( user->password() == DMD5Hash::hash(password) )
-		{
-			d->users.insert(login, user);
-			return true;
-		}
-		
-		delete user;
-		return false;
-	}
-	
-	return false;
-}
-
-
-
-
-}
-
-
-
-
+#endif

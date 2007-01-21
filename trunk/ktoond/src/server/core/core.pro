@@ -13,6 +13,7 @@ packagehandlerbase.h \
 server.h \
 serverclient.h \
 defaultpackagehandler.h
+
 !include(../../../ktoond_config.pri){
     error("configure first")
 }

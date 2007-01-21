@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,30 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef ERROR_H
-#define ERROR_H
+#ifndef PARSERSUSERS_H
+#define PARSERSUSERS_H
 
-#include "package.h"
+#include <ktxmlparserbase.h>
+
+namespace Parsers {
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author David Cuadrado <krawek@toonka.com>
 */
-namespace Packages
-{
 
-class Error : public Package
+class UserPackageParser : public KTXmlParserBase
 {
 	public:
-		Error(const QString &message, int level );
-		~Error();
+		UserPackageParser();
+		~UserPackageParser();
 		
-		void setMessage(const QString &message);
-		void setLevel(int level);
+		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+		virtual bool endTag(const QString &tag);
+		virtual void text(const QString &text);
+		
+		QString login() const;
+		QString password() const;
 		
 	private:
-		QDomElement m_message;
-		QDomText m_text;
+		struct Private;
+		Private *const d;
 };
 
 }
+
 #endif

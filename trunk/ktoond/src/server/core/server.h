@@ -25,7 +25,7 @@
 #include <QTcpServer>
 #include <QDomDocument>
 
-#include "ktprojectrequest.h"
+// #include "ktprojectrequest.h"
 
 namespace Server {
 class Connection;
@@ -49,6 +49,10 @@ class TcpServer : public QTcpServer
 		~TcpServer();
 		void sendToAll(const QDomDocument &pkg);
 		bool openConnection(const QString &host, int port);
+		
+		void setDatabaseDirPath(const QString &dbdir);
+		QString databaseDirPath() const;
+		
 		template<typename klass> void createHandler()
 		{
 			if ( m_handler ) delete m_handler;

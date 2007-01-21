@@ -62,8 +62,14 @@ int main(int argc, char **argv)
 		cache.mkdir(dAppProp->cacheDir());
 	}
 	
+	QString dbdir = dAppProp->configDir()+"/database";
+	QDir db(dbdir);
+	if( !db.exists() ) db.mkdir(dbdir);
+	
 	Server::TcpServer server;
 	server.createHandler<PackageHandler>();
+	
+	server.setDatabaseDirPath(dbdir);
 	
 	
 	server.openConnection( host, port );

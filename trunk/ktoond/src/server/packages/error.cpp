@@ -1,6 +1,6 @@
-/***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+/****************************************************************************
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosxx@gmail.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,73 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "manager.h"
-
-#include <QHash>
-
-#include "parser.h"
-#include "user.h"
-#include "database.h"
-
-#include "dcore/dmd5hash.h"
-
-namespace Users {
-
-class Manager::Private
+#include "error.h"
+namespace Packages
 {
-	public:
-		Private()
-		{
-		}
-		
-		~Private()
-		{
-			delete parser;
-			delete database;
-		}
-		
-		Parser *parser;
-		QHash<QString, User *> users;
-		Database *database;
-};
-
-Manager::Manager(const QString &dbfile) : d(new Private())
-{
-	d->database = new Database(dbfile);
-	d->parser = new Parser(dbfile);
-}
-
-
-Manager::~Manager()
-{
-	delete d;
-}
-
-
-bool Manager::auth(const QString &login, const QString &password)
-{
-	if ( d->users.contains(login) ) return true;
 	
-	if ( User *user = d->parser->user(login) )
-	{
-		if( user->password() == DMD5Hash::hash(password) )
-		{
-			d->users.insert(login, user);
-			return true;
-		}
-		
-		delete user;
-		return false;
-	}
+Error::Error(const QString &message, int level)
+	: QDomDocument()
+{
+	QDomElement root = createElement ( "error" );
+	root.setAttribute ( "version",  "0" );
+	appendChild(root);
 	
-	return false;
+	m_message = createElement("message");
+	root.appendChild(m_message);
+	m_message.appendChild( createTextNode(message) );
+	m_message.setAttribute("level", level );
 }
 
 
-
-
+Error::~Error()
+{
 }
 
 
+void Error::setMessage(const QString &message)
+{
+	m_text.setData(message);
+}
 
+void Error::setLevel(int level)
+{
+	m_message.setAttribute("level", level );
+}
 
+}

@@ -21,15 +21,28 @@
 #include "packagehandlerbase.h"
 #include <ddebug.h>
 
+#include "users/manager.h"
+#include "packages/userpackageparser.h"
+
+#include "connection.h"
+#include "dapplicationproperties.h"
+
 namespace Server {
 
-PackageHandlerBase::PackageHandlerBase()
+struct PackageHandlerBase::Private
 {
-	
+	Users::Manager *manager;
+};
+
+PackageHandlerBase::PackageHandlerBase() : d(new Private())
+{
+	d->manager = 0;
 }
 
 PackageHandlerBase::~PackageHandlerBase()
 {
+	delete d->manager;
+	delete d;
 }
 
 void PackageHandlerBase::handlePackage(Server::Connection *client, const QString &package )
@@ -46,6 +59,20 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 	
 	if ( root == "connect" )
 	{
+		if ( !d->manager )
+		{
+			d->manager = new Users::Manager(client->server()->databaseDirPath()+"/users.xml" );
+		}
+		
+		Parsers::UserPackageParser parser;
+		if ( parser.parse(package) )
+		{
+			if ( d->manager->auth(parser.login(), parser.password()) )
+			{
+				// TODO: Enviar paquete de reconocimiento
+			}
+		}
+		
 	}
 	else if ( root == "chat" )
 	{

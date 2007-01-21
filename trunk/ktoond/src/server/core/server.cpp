@@ -35,6 +35,7 @@ class TcpServer::Private
 {
 	public:
 		QList<Server::Connection *> connections;
+		QString dbdir;
 };
 
 TcpServer::TcpServer(QObject *parent) : QTcpServer(parent), d(new Private)
@@ -124,6 +125,19 @@ void TcpServer::removeConnection(Server::Connection *cnx)
 void TcpServer::handlePackage(Server::Connection* client, const QString&package)
 {
 	m_handler->handlePackage(client, package);
+}
+
+
+
+void TcpServer::setDatabaseDirPath(const QString &dbdir)
+{
+	d->dbdir = dbdir;
+}
+
+
+QString TcpServer::databaseDirPath() const
+{
+	return d->dbdir;
 }
 
 }
