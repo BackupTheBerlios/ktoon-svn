@@ -26,7 +26,8 @@
 #include <ddebug.h>
 NodeManager::NodeManager(QGraphicsItem * parent, KTScene *scene): m_parent(parent), m_scene(scene), m_anchor(0,0), m_press(false), m_rotation(0)
 {
-	QRectF rect = parent->sceneBoundingRect();
+// 	QRectF rect = parent->sceneBoundingRect();
+	QRectF rect = parent->boundingRect();
 	Node *topLeft = new Node(Node::TopLeft, Node::Scale, rect.topLeft(), this, parent, scene);
 	Node *topRight = new Node(Node::TopRight, Node::Scale, rect.topRight(), this, parent, scene);
 	Node *bottomLeft = new Node(Node::BottomLeft,Node::Scale, rect.bottomLeft(),this, parent, scene);
@@ -126,7 +127,8 @@ void NodeManager::syncNodesFromParent()
 {
 	if(m_parent)
 	{
-		syncNodes(m_parent->sceneBoundingRect());
+// 		syncNodes(m_parent->sceneBoundingRect());
+		syncNodes(m_parent->boundingRect());
 	}
 }
 

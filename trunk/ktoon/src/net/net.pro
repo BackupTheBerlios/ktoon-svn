@@ -5,15 +5,22 @@
 
 HEADERS += ktnetprojectmanagerparams.h \
            ktnetprojectmanagerhandler.h \
-           ktnetsocket.h 
+           ktnetsocket.h \
+           ktconnectpackage.h \
+           ktlistpackage.h \
+           ktopenpackage.h \
+           ktnewprojectpackage.h 
 SOURCES += ktnetprojectmanagerparams.cpp \
            ktnetprojectmanagerhandler.cpp \
-           ktnetsocket.cpp 
+           ktnetsocket.cpp \
+           ktconnectpackage.cpp \
+           ktlistpackage.cpp \
+           ktopenpackage.cpp \
+           ktnewprojectpackage.cpp 
 CONFIG += release \
 warn_on \
 staticlib
 TEMPLATE = lib
 include(net_config.pri)
 TARGET = ktnet
-
 include(../../ktconfig.pri)

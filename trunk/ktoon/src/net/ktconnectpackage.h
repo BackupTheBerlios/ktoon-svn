@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,39 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktnetsocket.h"
-#include <QTextStream>
-#include <QDataStream>
+#ifndef KTCONNECTPACKAGE_H
+#define KTCONNECTPACKAGE_H
 
-#include <ddebug.h>
+#include <QDomDocument>
 
-#include "ktnetprojectmanagerhandler.h"
+/**
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
+*/
 
-#include "ktcompress.h"
 
-KTNetSocket::KTNetSocket(KTNetProjectManagerHandler *handler) : KTSocketBase(handler), m_handler(handler)
+class KTConnectPackage : public QDomDocument
 {
-}
+	public:
+		KTConnectPackage(const QString & login, const QString& passwd );
+		~KTConnectPackage();
+};
 
-
-KTNetSocket::~KTNetSocket()
-{
-}
-
-void KTNetSocket::readed(const QString &readed)
-{
-	dDebug("net") << "READED: " << readed;
-	QDomDocument doc;
-	
-	if ( doc.setContent(readed) )
-	{
-		QString root = doc.documentElement().tagName();
-		m_handler->handlePackage( root, readed);
-	}
-	else
-	{
-		qDebug("Isn't a document");
-	}
-	
-}
-
+#endif

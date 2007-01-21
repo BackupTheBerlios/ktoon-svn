@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,40 +17,37 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#include "ktnewprojectpackage.h"
 
-#include "ktnetsocket.h"
-#include <QTextStream>
-#include <QDataStream>
-
-#include <ddebug.h>
-
-#include "ktnetprojectmanagerhandler.h"
-
-#include "ktcompress.h"
-
-KTNetSocket::KTNetSocket(KTNetProjectManagerHandler *handler) : KTSocketBase(handler), m_handler(handler)
+KTNewProjectPackage::KTNewProjectPackage(const QString & name, const QString & author )
+ : QDomDocument()
 {
-}
-
-
-KTNetSocket::~KTNetSocket()
-{
-}
-
-void KTNetSocket::readed(const QString &readed)
-{
-	dDebug("net") << "READED: " << readed;
-	QDomDocument doc;
+	QDomElement root = createElement("open");
+	root.setAttribute("version", "0");
 	
-	if ( doc.setContent(readed) )
-	{
-		QString root = doc.documentElement().tagName();
-		m_handler->handlePackage( root, readed);
-	}
-	else
-	{
-		qDebug("Isn't a document");
-	}
+	m_name = createTextNode(name);
+	m_author = createTextNode(author);
+	
+	root.appendChild(createElement("name").appendChild(m_name));
+	root.appendChild(createElement("author").appendChild(m_author));
+	
 	
 }
 
+
+KTNewProjectPackage::~KTNewProjectPackage()
+{
+}
+
+
+void KTNewProjectPackage::setName(const QString & name)
+{
+	m_name.setData(name);
+}
+
+void KTNewProjectPackage::setAuthor(const QString & author)
+{
+	
+	m_author.setData(author);
+}

@@ -71,6 +71,9 @@ class Node : public QObject, public QGraphicsItem
 		QGraphicsItem * m_parent;
 		NodeManager *m_manager;
 		
+		double m_newRotation, m_newScale;
+		
+		
 };
 
 #endif

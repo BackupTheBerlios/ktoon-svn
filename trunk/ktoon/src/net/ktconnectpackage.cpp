@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,39 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktnetsocket.h"
-#include <QTextStream>
-#include <QDataStream>
+#include "ktconnectpackage.h"
 
-#include <ddebug.h>
-
-#include "ktnetprojectmanagerhandler.h"
-
-#include "ktcompress.h"
-
-KTNetSocket::KTNetSocket(KTNetProjectManagerHandler *handler) : KTSocketBase(handler), m_handler(handler)
+#include <dmd5hash.h>
+/*
+<connect version="0" >
+        <login>the_login</login>
+        <password>the_hashed_password_md5</password>
+</connect>
+*/
+KTConnectPackage::KTConnectPackage(const QString & login, const QString& passwd)
+ : QDomDocument()
 {
-}
-
-
-KTNetSocket::~KTNetSocket()
-{
-}
-
-void KTNetSocket::readed(const QString &readed)
-{
-	dDebug("net") << "READED: " << readed;
-	QDomDocument doc;
+	QDomElement root = createElement("connect");
+	root.setAttribute("version", "0");
+	appendChild(root);
 	
-	if ( doc.setContent(readed) )
-	{
-		QString root = doc.documentElement().tagName();
-		m_handler->handlePackage( root, readed);
-	}
-	else
-	{
-		qDebug("Isn't a document");
-	}
+	root.appendChild(createElement("login").appendChild(createTextNode(login)));
+	root.appendChild(createElement("password").appendChild(createTextNode(DMD5Hash::hash( passwd))));
 	
 }
+
+
+KTConnectPackage::~KTConnectPackage()
+{
+}
+
 

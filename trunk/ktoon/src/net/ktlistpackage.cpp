@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Jorge Cuadrado                                  *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
  *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,43 +18,62 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef __KTGRAPHICALGORITHM_H__
-#define __KTGRAPHICALGORITHM_H__
+#include "ktlistpackage.h"
 
-#include <QString>
-#include <QPolygon>
-#include <QPainterPath>
-#include "ktglobal.h"
+/*
+<list version="0" >
+        <options pattern="string or regexp" type="0">
+                <caseSensitive enabled="0" />
+                <regexp enabled="0" />
+        </options>
+<list/>
+*/
 
-/**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
- */
-class KTOON_EXPORT KTGraphicalAlgorithm
+KTListPackage::KTListPackage(const QString & pattern, int type, bool regexp, bool caseSensitive)
+ : QDomDocument()
 {
-	private:
-		KTGraphicalAlgorithm() {}
-		~KTGraphicalAlgorithm() {};
-		
-	public:
-		static QPainterPath bezierFit(QPolygonF &points_, float error, int from = 0, int to = -1);
-		static QPolygonF polygonFit(const QPolygonF &points);
-		static bool intersectLine(const QPointF &start, const QPointF& end, const QRectF& rect );
-		static char calculateCode(const QPointF &point, const QRectF &window);
-		static double distanceToPoint(const QPointF &pos);
-		static double angleForPos(const QPointF &pos, const QPointF &anchor = QPointF(0,0));
-		
-	private:
-		
-		enum CohenSutherlandCode
-		{
-			Bit1 = 1<<1,
-			Bit2 = 1<<2,
-			Bit3 = 1<<3,
-			Bit4 = 1<<4
-		};
-		
-		static void printCode(char code);
-};
+	QDomElement root = createElement("list");
+	root.setAttribute("version", "0");
+	appendChild(root);
+	
+	m_options = createElement("options");
+	m_options.setAttribute("pattern", pattern);
+	m_options.setAttribute("type", type);
+	root.appendChild(m_options);
+	
+	m_caseSensitive = createElement("caseSensitive");
+	m_caseSensitive.setAttribute("enabled", caseSensitive);
+	m_options.appendChild(m_caseSensitive);
+	
+	m_regexp = createElement("regexp");
+	m_caseSensitive.setAttribute("enabled", regexp);
+	m_options.appendChild(m_regexp);
+}
 
-#endif
+KTListPackage::~KTListPackage()
+{
+}
+
+
+void KTListPackage::setPattern(const QString & pattern)
+{
+	m_options.setAttribute("pattern", pattern);
+	
+}
+
+void KTListPackage::setType(int type)
+{
+	m_options.setAttribute("type", type);
+	
+}
+
+void KTListPackage::setCaseSensitive(bool caseSensitive)
+{
+	m_caseSensitive.setAttribute("enabled", caseSensitive);
+}
+
+void KTListPackage::setRegexp(bool regexp)
+{
+	m_caseSensitive.setAttribute("enabled", regexp);
+}
 

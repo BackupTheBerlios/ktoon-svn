@@ -780,6 +780,7 @@ double KTGraphicalAlgorithm::distanceToPoint(const QPointF &pos)
 
 double KTGraphicalAlgorithm::angleForPos(const QPointF &pos, const QPointF &anchor )
 {
+	
 	qreal angle = ::acos( (pos.x()-anchor.x()) / distanceToPoint(pos - anchor));
 	if(pos.y()-anchor.y() > 0)
 		angle = M_PI * 2.0 - angle;

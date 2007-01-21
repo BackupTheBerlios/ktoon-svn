@@ -45,14 +45,15 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		virtual bool loadProject(const QString &fileName, KTProject *project);
 		
 		void emitRequest(KTProjectRequest *request);
-		
-		
+	
+		void handlePackage(const QString &root, const QString &package);
 		
 	private slots:
 		void sendHello();
 		
 	private:
 		KTNetSocket *m_socket;
+		QString m_projectName, m_author;
 
 };
 

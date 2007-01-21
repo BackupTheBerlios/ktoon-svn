@@ -27,9 +27,13 @@
 
 #include "ktnetsocket.h"
 
-// #include "ktrequestpackage.h"
+#include "ktprojectrequest.h"
 
+#include "ktrequestparser.h"
 #include <ddebug.h>
+
+#include "ktnewprojectpackage.h"
+#include "ktconnectpackage.h"
 
 KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent)
 {
@@ -76,6 +80,7 @@ bool KTNetProjectManagerHandler::saveProject(const QString &fileName, const KTPr
 bool KTNetProjectManagerHandler::loadProject(const QString &fileName, KTProject *project)
 {
 	qFatal("ktnetprojectmanagerhandler.h: Can't load");
+	
 	return false;
 }
 
@@ -86,12 +91,22 @@ bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
 	if ( ! netparams ) return false;
 	
 	SHOW_VAR(netparams->projectName());
-	
+	m_projectName = netparams->projectName();
+// 	m_author = netparams->author();
 	dDebug("net") << "Connecting to " << netparams->server() << ":" << netparams->port();
 	
 	m_socket->connectToHost(netparams->server(), netparams->port());
-	return m_socket->waitForConnected(1000);
+	
+	bool connected = m_socket->waitForConnected(1000);
+	if(connected)
+	{
+		KTConnectPackage connectPackage( netparams->login(), netparams->password());
+		m_socket->send( connectPackage );
+	}
+	
 }
+
+
 
 bool KTNetProjectManagerHandler::closeProject()
 {
@@ -108,6 +123,31 @@ void KTNetProjectManagerHandler::emitRequest(KTProjectRequest *request)
 	emit sendCommand( request, true );
 }
 
-
+void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QString &package )
+{
+	if ( root == "request" )
+	{
+		KTRequestParser parser;
+		if ( parser.parse(package) )
+		{
+			KTProjectRequest request(package); // FIXME: construir con el response y no con el xml.
+			emitRequest(&request);
+		}
+		else // TODO: mostrar error
+		{
+			dError() << "Error parsing";
+		}
+	}
+	else if( root == "ack")
+	{
+		//analizar el paquete
+		KTNewProjectPackage newProjectPackage(m_projectName, "");
+		m_socket->send(newProjectPackage);
+	}
+	else
+	{
+		dDebug("net") << "Unknown package: " << root;
+	}
+}
 
 

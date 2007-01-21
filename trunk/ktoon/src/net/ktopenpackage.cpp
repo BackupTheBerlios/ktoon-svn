@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,40 +17,32 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#include "ktopenpackage.h"
 
-#include "ktnetsocket.h"
-#include <QTextStream>
-#include <QDataStream>
+// <open version="0">
+//         <project name="proyecto 1" />
+// </open>
 
-#include <ddebug.h>
-
-#include "ktnetprojectmanagerhandler.h"
-
-#include "ktcompress.h"
-
-KTNetSocket::KTNetSocket(KTNetProjectManagerHandler *handler) : KTSocketBase(handler), m_handler(handler)
+KTOpenPackage::KTOpenPackage(const QString& projectName): QDomDocument()
 {
+	QDomElement root = createElement("open");
+	root.setAttribute("version", "0");
+	appendChild(root);
+	
+	QDomElement m_project = createElement("project");
+	m_project.setAttribute("name", projectName);
+	root.appendChild(m_project);
+	
 }
 
 
-KTNetSocket::~KTNetSocket()
+KTOpenPackage::~KTOpenPackage()
 {
 }
 
-void KTNetSocket::readed(const QString &readed)
+void KTOpenPackage::setProjectName( const QString& projectName )
 {
-	dDebug("net") << "READED: " << readed;
-	QDomDocument doc;
-	
-	if ( doc.setContent(readed) )
-	{
-		QString root = doc.documentElement().tagName();
-		m_handler->handlePackage( root, readed);
-	}
-	else
-	{
-		qDebug("Isn't a document");
-	}
-	
+	m_project.setAttribute("name", projectName);
 }
 
