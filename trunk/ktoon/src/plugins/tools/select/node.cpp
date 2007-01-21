@@ -39,7 +39,7 @@
 
 #define DEBUG 0
 
-Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *manager, QGraphicsItem * parent,  QGraphicsScene * scene   ) : QGraphicsItem(parent, scene), m_typeNode(node), m_action(action), m_notChange(true), m_parent(parent), m_manager(manager), m_newRotation(0), m_newScale(1)
+Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *manager, QGraphicsItem * parent,  QGraphicsScene * scene   ) : QGraphicsItem(0, scene), m_typeNode(node), m_action(action), m_notChange(true), m_parent(parent), m_manager(manager)
 {
 	QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor ));
 // 	setParentItem(m_parent);
@@ -141,37 +141,107 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	QGraphicsItem::mouseReleaseEvent(event);
 	m_parent->setSelected(true);
 	m_manager->setPress(false);
-	
-	SHOW_VAR(m_newScale);
-	m_parent->setData( KTGraphicObject::Rotate, m_newRotation);
-	m_parent->setData( KTGraphicObject::ScaleX, m_newScale );
 }
 
 void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
-	QPointF buttonDownPos = m_parent->mapFromScene(event->buttonDownPos(Qt::LeftButton));
-	QPointF newPos = m_parent->mapFromScene(event->scenePos());
 	
-// 	scene()->addRect(QRectF(buttonDownPos - QPointF(2,2), QSizeF(4,4)),QPen( Qt::red));
-// 	scene()->update(QRectF(buttonDownPos - QPointF(2,2), QSizeF(4,4)));
-// 	scene()->addRect(QRectF(newPos - QPointF(2,2), QSizeF(4,4)), QPen(Qt::green));
-// 	scene()->update(QRectF(newPos - QPointF(2,2), QSizeF(4,4)));
+	QPointF newPos(/*mapToItem(m_parent,*/ event->scenePos())/*)*/;
+	if( m_notChange)
+	{
+		m_notChange = false;
+	}
+	else
+	{
+		if(m_action == Scale)
+		{
+			QRectF rect = m_parent->sceneBoundingRect();
+			QRectF br = m_parent->sceneBoundingRect();
+			QRectF br1 = m_parent->boundingRect();
+			
+			//Debug
+// 			scene()->addRect(rect, QPen(Qt::red));
+// 			scene()->addRect(br, QPen(Qt::green));
+			//Debug
+			
+			
+			switch(m_typeNode)
+			{
+				case TopLeft:
+				{
+					m_manager->setAnchor(br1.bottomRight());
+					rect.setTopLeft( newPos );
+					break;
+				}
+				case TopRight:
+				{
+					m_manager->setAnchor( br1.bottomLeft());
+					rect.setTopRight(newPos);
+					break;
+				}
+				case BottomRight:
+				{
+					m_manager->setAnchor( br1.topLeft());
+					rect.setBottomRight(newPos);
+					break;
+				}
+				case BottomLeft:
+				{
+					m_manager->setAnchor( br1.topRight());
+					rect.setBottomLeft(newPos);
+					break;
+				}
+				case Center:
+				{
+					break;
+				}
+			};
+			
+			float sx = 1, sy = 1;
+			sx = static_cast<float>(rect.width()) / static_cast<float>(br.width());
+			sy = static_cast<float>(rect.height()) / static_cast<float>(br.height());
+			
+			if(sx > 0 && sy > 0)
+			{
+				m_manager->scale( sx,sy);
+			}
+			else
+			{
+				if(sx > 0)
+				{
+					m_manager->scale(sx, 1);
+				}
+				if(sy > 0)
+				{
+					m_manager->scale(1, sy);
+				}
+			}
+		}
+		else
+		{
+			
+			if(m_typeNode != Center)
+			{
+// 				m_manager->setVisible(false);
+				QPointF p1 = newPos;
+				QPointF p2 = m_parent->sceneBoundingRect().center();
+				m_manager->setAnchor( m_parent->boundingRect().center() );
+				
+				double a = (180 * KTGraphicalAlgorithm::angleForPos(p1, p2)) / M_PI;
+				m_manager->rotate(a-45 );
+			}
+			else
+			{
+				
+			}
+		}
+	}
 	
-	QPointF m_anchor = m_parent->boundingRect().center();
-	m_newScale = m_parent->data(KTGraphicObject::ScaleX).toDouble()  * KTGraphicalAlgorithm::distanceToPoint(newPos - m_anchor ) / KTGraphicalAlgorithm::distanceToPoint(buttonDownPos - m_anchor);
-	QMatrix m = QMatrix();
-	qreal oldAngle = (180 * KTGraphicalAlgorithm::angleForPos(buttonDownPos, m_anchor )) / M_PI;
-	qreal newAngle = (180 * KTGraphicalAlgorithm::angleForPos(newPos,m_anchor)) / M_PI;
-	m_newRotation = m_parent->data(KTGraphicObject::Rotate).toDouble() + oldAngle - newAngle;
-	
-	SHOW_VAR(m_parent->data(KTGraphicObject::ScaleX).toDouble());
-	
-	m.translate(m_anchor.x(), m_anchor.y());
-	m.rotate(m_newRotation);
-	m.scale(m_newScale, m_newScale);
-	m.translate(-m_anchor.x(), -m_anchor.y());
-	m_parent->setMatrix(m);
-
+	if(m_typeNode == Center)
+	{
+		m_parent->moveBy(event->pos().x(), event->pos().y() );
+	}
+	update();
 }
 
 
