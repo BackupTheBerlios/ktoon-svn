@@ -24,6 +24,7 @@
 
 class KTProjectCommand;
 class KTNetSocket;
+class KTNetProjectManagerParams;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
@@ -35,6 +36,7 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		KTNetProjectManagerHandler(QObject *parent = 0);
 		~KTNetProjectManagerHandler();
 		
+		virtual bool initialize(KTProjectManagerParams *params);
 		virtual bool setupNewProject(KTProjectManagerParams *params);
 		virtual bool closeProject();
 		
@@ -45,15 +47,13 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		virtual bool loadProject(const QString &fileName, KTProject *project);
 		
 		void emitRequest(KTProjectRequest *request);
-	
 		void handlePackage(const QString &root, const QString &package);
-		
-	private slots:
-		void sendHello();
 		
 	private:
 		KTNetSocket *m_socket;
 		QString m_projectName, m_author;
+		
+		KTNetProjectManagerParams *m_params;
 
 };
 

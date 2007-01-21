@@ -26,7 +26,7 @@
 
 KTOpenPackage::KTOpenPackage(const QString& projectName): QDomDocument()
 {
-	QDomElement root = createElement("open");
+	QDomElement root = createElement("openproject");
 	root.setAttribute("version", "0");
 	appendChild(root);
 	

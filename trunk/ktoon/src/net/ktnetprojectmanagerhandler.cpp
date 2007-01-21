@@ -35,11 +35,11 @@
 #include "ktnewprojectpackage.h"
 #include "ktconnectpackage.h"
 
+#include "ktsavenetproject.h"
+
 KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent)
 {
 	m_socket = new KTNetSocket(this);
-	
-	connect(m_socket, SIGNAL(connected()), this, SLOT(sendHello()));
 }
 
 
@@ -56,7 +56,7 @@ void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* re
 	
 	if ( m_socket->state() == QAbstractSocket::ConnectedState )
 	{
-		dDebug("server") << "SENDING: " << request->xml();
+		dDebug("net") << "SENDING: " << request->xml();
 		m_socket->send( request->xml() );
 	}
 }
@@ -73,8 +73,9 @@ bool KTNetProjectManagerHandler::commandExecuted(KTProjectResponse *response)
 
 bool KTNetProjectManagerHandler::saveProject(const QString &fileName, const KTProject *project)
 {
-	qFatal("ktnetprojectmanagerhandler.h: Can't save");
-	return false;
+	KTSaveNetProject saver(m_params->server(), m_params->port());
+	
+	return saver.save(fileName, project);
 }
 
 bool KTNetProjectManagerHandler::loadProject(const QString &fileName, KTProject *project)
@@ -82,6 +83,27 @@ bool KTNetProjectManagerHandler::loadProject(const QString &fileName, KTProject 
 	qFatal("ktnetprojectmanagerhandler.h: Can't load");
 	
 	return false;
+}
+
+bool KTNetProjectManagerHandler::initialize(KTProjectManagerParams *params)
+{
+	KTNetProjectManagerParams *netparams = dynamic_cast<KTNetProjectManagerParams*>(params);
+	if ( ! netparams ) return false;
+	
+	m_params = netparams;
+	
+	dDebug("net") << "Connecting to " << netparams->server() << ":" << netparams->port();
+	
+	m_socket->connectToHost(m_params->server(), m_params->port());
+	
+	bool connected = m_socket->waitForConnected(1000);
+	if(connected)
+	{
+		KTConnectPackage connectPackage( m_params->login(), m_params->password());
+		m_socket->send( connectPackage );
+	}
+	
+	return connected;
 }
 
 bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
@@ -93,17 +115,17 @@ bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
 	SHOW_VAR(netparams->projectName());
 	m_projectName = netparams->projectName();
 // 	m_author = netparams->author();
-	dDebug("net") << "Connecting to " << netparams->server() << ":" << netparams->port();
 	
-	m_socket->connectToHost(netparams->server(), netparams->port());
-	
-	bool connected = m_socket->waitForConnected(1000);
-	if(connected)
+	if ( ! m_socket->isOpen() )
 	{
-		KTConnectPackage connectPackage( netparams->login(), netparams->password());
-		m_socket->send( connectPackage );
+		bool connected = initialize(params);
+		if ( !connected ) return false;
 	}
 	
+	
+	// TODO: enviar paquete de crear proyecto
+	
+	return true;
 }
 
 
@@ -113,10 +135,6 @@ bool KTNetProjectManagerHandler::closeProject()
 	return KTAbstractProjectHandler::closeProject();
 }
 
-void KTNetProjectManagerHandler::sendHello()
-{
-	m_socket->send( "<cnx>helo ktoon server!</cnx>\n");
-}
 
 void KTNetProjectManagerHandler::emitRequest(KTProjectRequest *request)
 {

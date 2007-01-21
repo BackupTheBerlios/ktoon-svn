@@ -37,46 +37,89 @@
 
 #include <ddebug.h>
 
-KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), m_isOpen(false), m_isModified(false), m_handler(0)
+
+class KTProjectManager::Private
+{
+	public:
+		Private() : handler(0), params(0)
+		{
+		}
+		~Private()
+		{
+			delete handler;
+			delete undoStack;
+			delete commandExecutor;
+			delete params;
+		}
+		
+	public:
+		KTProject *project;
+		bool isOpen;
+		bool isModified;
+		KTAbstractProjectHandler *handler;
+		QUndoStack *undoStack;
+		KTCommandExecutor *commandExecutor;
+		
+		KTProjectManagerParams *params;
+};
+
+KTProjectManager::KTProjectManager(QObject *parent) : QObject(parent), d(new Private())
 {
 	DINIT;
-	m_project = new KTProject(this);
-	m_undoStack = new QUndoStack(this);
 	
-	m_commandExecutor = new KTCommandExecutor(m_project);
+	d->isOpen = false;
+	d->isModified = false;
+	d->handler = 0;
 	
-	connect(m_commandExecutor, SIGNAL(responsed( KTProjectResponse* )), this, SLOT(emitResponse( KTProjectResponse *))); // FIXME: cuando carga hay problemas
+	d->project = new KTProject(this);
+	d->undoStack = new QUndoStack(this);
 	
-	connect(m_project, SIGNAL(responsed(KTProjectResponse*)), this, SIGNAL(responsed(KTProjectResponse *)));
+	d->commandExecutor = new KTCommandExecutor(d->project);
+	
+	connect(d->commandExecutor, SIGNAL(responsed( KTProjectResponse* )), this, SLOT(emitResponse( KTProjectResponse *)));
+	
+	connect(d->project, SIGNAL(responsed(KTProjectResponse*)), this, SIGNAL(responsed(KTProjectResponse *)));
 }
 
 
 KTProjectManager::~KTProjectManager()
 {
 	DEND;
+	delete d;
+}
+
+void KTProjectManager::setParams(KTProjectManagerParams *params)
+{
+	if ( d->params ) delete d->params;
+	d->params = params;
+}
+
+KTProjectManagerParams *KTProjectManager::params() const
+{
+	return d->params;
 }
 
 void KTProjectManager::setHandler(KTAbstractProjectHandler *handler)
 {
-	if ( m_handler )
+	if ( d->handler )
 	{
-		disconnect(m_handler, SIGNAL(sendCommand(const KTProjectRequest *, bool)), this, SLOT(createCommand(const KTProjectRequest *, bool)));
+		disconnect(d->handler, SIGNAL(sendCommand(const KTProjectRequest *, bool)), this, SLOT(createCommand(const KTProjectRequest *, bool)));
 		
-		delete m_handler;
-		m_handler = 0;
+		delete d->handler;
+		d->handler = 0;
 	}
 	
-	m_handler = handler;
-	m_handler->setParent(this);
+	d->handler = handler;
+	d->handler->setParent(this);
 	
-	connect(m_handler, SIGNAL(sendCommand(const KTProjectRequest *, bool)), this, SLOT(createCommand(const KTProjectRequest *, bool)));
+	connect(d->handler, SIGNAL(sendCommand(const KTProjectRequest *, bool)), this, SLOT(createCommand(const KTProjectRequest *, bool)));
 }
 
-void KTProjectManager::setupNewProject(KTProjectManagerParams *params)
+void KTProjectManager::setupNewProject()
 {
 	D_FUNCINFO;
 	
-	if ( !m_handler )
+	if ( !d->handler || !d->params)
 	{
 		qDebug("ERROR: HANDLER!");
 		return;
@@ -84,15 +127,15 @@ void KTProjectManager::setupNewProject(KTProjectManagerParams *params)
 	
 	closeProject();
 	
-	m_project->setProjectName( params->projectName() );
+	d->project->setProjectName( d->params->projectName() );
 	
-	if ( ! m_handler->setupNewProject(params) )
+	if ( ! d->handler->setupNewProject(d->params) )
 	{
 		qDebug("ERROR WHILE SETUP PROJECT");
 		return;
 	}
 	
-	m_isOpen = true;
+	d->isOpen = true;
 	
 	KTProjectRequest request = KTRequestBuilder::createSceneRequest(0, KTProjectRequest::Add, QString());
 	
@@ -109,48 +152,48 @@ void KTProjectManager::setupNewProject(KTProjectManagerParams *params)
 
 void KTProjectManager::closeProject()
 {
-	if ( !m_handler ) return;
+	if ( !d->handler ) return;
 	
-	if ( m_isOpen )
+	if ( d->isOpen )
 	{
-		if ( ! m_handler->closeProject() )
+		if ( ! d->handler->closeProject() )
 		{
 			qDebug("ERROR: WHILE CLOSING THE PROJECT");
 			return;
 		}
 		
-		m_project->clear();
+		d->project->clear();
 	}
 	
-	m_isOpen = false;
-	m_isModified = false;
+	d->isOpen = false;
+	d->isModified = false;
 	
-	m_undoStack->clear();
+	d->undoStack->clear();
 }
 
 bool KTProjectManager::saveProject(const QString &fileName)
 {
-	bool result = m_handler->saveProject(fileName, m_project);
+	bool result = d->handler->saveProject(fileName, d->project);
 	
-	m_isModified = !result;
+	d->isModified = !result;
 	
 	return result;
 }
 
 bool KTProjectManager::loadProject(const QString &fileName)
 {
-	if ( ! m_handler )
+	if ( ! d->handler )
 	{
 		dFatal() << "NO HANDLER!";
 		return false;
 	}
 	
-	bool ok = m_handler->loadProject(fileName, m_project);
+	bool ok = d->handler->loadProject(fileName, d->project);
 	
 	if ( ok )
 	{
-		m_isOpen = true;
-		m_isModified = false;
+		d->isOpen = true;
+		d->isModified = false;
 	}
 	
 	return ok;
@@ -161,12 +204,12 @@ bool KTProjectManager::loadProject(const QString &fileName)
  */
 bool KTProjectManager::isOpen() const
 {
-	return m_isOpen;
+	return d->isOpen;
 }
 
 bool KTProjectManager::isModified() const
 {
-	return m_isModified;
+	return d->isModified;
 }
 
 
@@ -184,9 +227,9 @@ void KTProjectManager::handleProjectRequest(const KTProjectRequest *request)
 	
 	// TODO: el handler debe decir cuando construir el comando
 	
-	if ( m_handler )
+	if ( d->handler )
 	{
-		m_handler->handleProjectRequest( request );
+		d->handler->handleProjectRequest( request );
 	}
 	else
 	{
@@ -208,11 +251,11 @@ void KTProjectManager::createCommand(const KTProjectRequest *request, bool addTo
 	
 	if ( request->isValid() )
 	{
-		KTProjectCommand *command = new KTProjectCommand(m_commandExecutor, request);
+		KTProjectCommand *command = new KTProjectCommand(d->commandExecutor, request);
 		
 		if ( addToStack )
 		{
-			m_undoStack->push(command);
+			d->undoStack->push(command);
 		}
 		else
 		{
@@ -228,13 +271,13 @@ void KTProjectManager::createCommand(const KTProjectRequest *request, bool addTo
 
 KTProject *KTProjectManager::project() const
 {
-	return m_project;
+	return d->project;
 }
 
 
 QUndoStack *KTProjectManager::undoHistory() const
 {
-	return m_undoStack;
+	return d->undoStack;
 }
 
 
@@ -244,14 +287,14 @@ void KTProjectManager::emitResponse( KTProjectResponse *response)
 	
 	if( response->action() != KTProjectRequest::Select )
 	{
-		m_isModified = true;
+		d->isModified = true;
 	}
 	
-	if ( !m_handler )
+	if ( !d->handler )
 	{
 		emit responsed( response );
 	}
-	else if ( m_handler->commandExecuted(response ) )
+	else if ( d->handler->commandExecuted(response ) )
 	{
 		emit responsed( response );
 	}

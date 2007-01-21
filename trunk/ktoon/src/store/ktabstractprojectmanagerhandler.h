@@ -41,6 +41,7 @@ class STORE_EXPORT KTAbstractProjectHandler : public QObject
 		KTAbstractProjectHandler(QObject *parent = 0);
 		virtual ~KTAbstractProjectHandler();
 		
+		virtual bool initialize(KTProjectManagerParams *params);
 		virtual bool setupNewProject(KTProjectManagerParams *params);
 		virtual bool closeProject();
 		virtual void handleProjectRequest(const KTProjectRequest *request) = 0;
@@ -50,7 +51,6 @@ class STORE_EXPORT KTAbstractProjectHandler : public QObject
 		virtual bool loadProject(const QString &fileName, KTProject *project) = 0;
 	signals:
 		void sendCommand(const KTProjectRequest *event, bool addToStack);
-
 };
 
 

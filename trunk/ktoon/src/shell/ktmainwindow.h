@@ -77,6 +77,7 @@ class KTMainWindow : public DTabbedMainWindow
 		{
 			Drawing = 0x01,
 			Animation = 0x02,
+			Net = 0x04,
 			All = Drawing | Animation
 		};
 		

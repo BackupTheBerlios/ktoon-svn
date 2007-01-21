@@ -18,63 +18,76 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktabstractprojectrequesthandler.h"
+#include "ktsavenetproject.h"
 
+#include <QFile>
+#include <QTextStream>
+#include <QDomDocument>
+#include <QDomElement>
 
-#include "ktprojectrequest.h"
-#include "ktpaintareaevent.h"
+#include "ktproject.h"
 
-KTAbstractProjectRequestHandler::KTAbstractProjectRequestHandler()
+KTSaveNetProject::KTSaveNetProject() : KTSaveProject()
+{
+}
+
+KTSaveNetProject::KTSaveNetProject(const QString &server, int port)
+ : KTSaveProject(), m_server(server), m_port(port)
 {
 }
 
 
-KTAbstractProjectRequestHandler::~KTAbstractProjectRequestHandler()
+KTSaveNetProject::~KTSaveNetProject()
 {
 }
 
-bool KTAbstractProjectRequestHandler::handleRequest(KTProjectRequest *event)
+bool KTSaveNetProject::save(const QString &filename, const KTProject *project)
 {
-	switch ( event->id())
-	{
-		case KTProjectRequest::Item:
-		{
-			itemRequest( event );
-		}
-		break;
-		case KTProjectRequest::Project:
-		{
-			projectRequest( event );
-		}
-		break;
-		case KTProjectRequest::Frame:
-		{
-			frameRequest( event );
-		}
-		break;
-		case KTProjectRequest::Layer:
-		{
-			layerRequest(event);
-		}
-		break;
-		case KTProjectRequest::Scene:
-		{
-			sceneRequest( event );
-		}
-		break;
-		case KTProjectRequest::Library:
-		{
-			libraryRequest( event );
-		}
-		break;
-		default:
-		{
-			qWarning("Unknown project event!");
-			return false;
-		}
-		break;
-	}
+	QFile file(filename);
+	
+	if ( !file.open(QIODevice::WriteOnly | QIODevice::Text))
+		return false;
+	
+	
+	QTextStream ts(&file);
+	
+	QDomDocument doc;
+	QDomElement root = doc.createElement("NetProject");
+	
+	QDomElement projectElement = doc.createElement("project");
+	projectElement.setAttribute("name", project->projectName());
+	
+	root.appendChild(projectElement);
+	
+	QDomElement connection = doc.createElement("connection");
+	
+	QDomElement server = doc.createElement("server");
+	QDomText serverValue = doc.createTextNode(m_server);
+	
+	server.appendChild(serverValue);
+	
+	QDomElement port = doc.createElement("port");
+	QDomText portValue = doc.createTextNode(QString::number(m_port));
+	
+	port.appendChild(portValue);
+	
+	connection.appendChild(server);
+	connection.appendChild(port);
+	
+	root.appendChild(connection);
+	
+	doc.appendChild(root);
+	
+	file.close();
+	
 	
 	return true;
 }
+
+bool KTSaveNetProject::load(const QString &fileName, KTProject *)
+{
+	
+	return false;
+}
+
 

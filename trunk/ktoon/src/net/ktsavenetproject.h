@@ -17,39 +17,29 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTSAVENETPROJECT_H
+#define KTSAVENETPROJECT_H
 
-#ifndef KTABSTRACTPROJECTEVENTHANDLER_H
-#define KTABSTRACTPROJECTEVENTHANDLER_H
-
-#include <QObject>
-#include "ktglobal_store.h"
-
-class KTProjectRequest;
-class KTProjectRequest;
-class KTProjectRequest;
-class KTProjectRequest;
-class KTProjectRequest;
-class KTPaintAreaEvent;
+#include <ktsaveproject.h>
+#include <QString>
 
 /**
- * @author David Cuadrado \<krawek@gmail.com\>
- * @todo REMOVE!!
+ * @author David Cuadrado <krawek@gmail.com>
 */
-class STORE_EXPORT KTAbstractProjectRequestHandler
+class KTSaveNetProject : public KTSaveProject
 {
 	public:
-		KTAbstractProjectRequestHandler();
-		virtual ~KTAbstractProjectRequestHandler();
+		KTSaveNetProject();
+		KTSaveNetProject(const QString &server, int port);
+		~KTSaveNetProject();
 		
-		virtual bool handleRequest(KTProjectRequest *event);
+		virtual bool save(const QString &filename, const KTProject *project);
+		virtual bool load(const QString &filename, KTProject *project);
 		
-	protected:
-		virtual void itemRequest(KTProjectRequest *itemRequest) = 0;
-		virtual void frameRequest(KTProjectRequest *frameRequest) = 0;
-		virtual void layerRequest(KTProjectRequest *layerRequest) = 0;
-		virtual void sceneRequest(KTProjectRequest *sceneRequest) = 0;
-		virtual void projectRequest(KTProjectRequest *projectRequest) = 0;
-		virtual void libraryRequest(KTProjectRequest *libraryRequest) = 0;
+	private:
+		QString m_server;
+		int m_port;
+
 };
 
 #endif

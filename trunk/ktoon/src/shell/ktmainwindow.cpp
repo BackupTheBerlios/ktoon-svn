@@ -131,7 +131,9 @@ void KTMainWindow::createNewProject(KTProjectManagerParams *params)
 		return;
 	}
 	
-	m_projectManager->setupNewProject(params);
+	m_projectManager->setParams(params);
+	
+	m_projectManager->setupNewProject();
 	
 	newViewDocument( params->projectName() );
 }

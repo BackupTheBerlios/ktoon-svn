@@ -45,7 +45,10 @@ class STORE_EXPORT KTProjectManager : public QObject
 		KTProjectManager(QObject *parent = 0);
 		virtual ~KTProjectManager();
 		
-		virtual void setupNewProject(KTProjectManagerParams *params );
+		void setParams(KTProjectManagerParams *params);
+		KTProjectManagerParams *params() const;
+		
+		virtual void setupNewProject();
 		virtual void closeProject();
 		
 		bool isOpen() const;
@@ -55,8 +58,8 @@ class STORE_EXPORT KTProjectManager : public QObject
 		
 		QUndoStack *undoHistory() const;
 		
-		bool saveProject(const QString &fileName);
-		bool loadProject(const QString &fileName);
+		virtual bool saveProject(const QString &fileName);
+		virtual bool loadProject(const QString &fileName);
 		
 	protected slots:
 		virtual void handleProjectRequest(const KTProjectRequest *event);
@@ -69,15 +72,8 @@ class STORE_EXPORT KTProjectManager : public QObject
 		void responsed(KTProjectResponse *reponse );
 		
 	private:
-		KTProject *m_project;
-		bool m_isOpen;
-		bool m_isModified;
-		
-		KTAbstractProjectHandler *m_handler;
-		
-		QUndoStack *m_undoStack;
-		
-		KTCommandExecutor *m_commandExecutor;
+		class Private;
+		Private *const d;
 };
 
 #endif

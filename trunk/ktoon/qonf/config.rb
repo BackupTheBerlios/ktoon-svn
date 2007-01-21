@@ -8,6 +8,7 @@ class Config
 		@modules = []
 		@defines = []
 		@scopes = []
+		@options = []
 	end
 	
 	def addIncludePath(path)
@@ -31,6 +32,10 @@ class Config
 		@scopes << scope
 		
 		scope
+	end
+
+	def addOption(opt)
+		@options << opt
 	end
 	
 	def save(path)
@@ -62,6 +67,10 @@ class Config
 				@scopes.each { |scope|
 					f << scope.to_s
 				}
+			end
+
+			if not @options.empty?
+				f << "CONFIG += " << @options.uniq.join(" ") << $endl
 			end
 		}
 	end

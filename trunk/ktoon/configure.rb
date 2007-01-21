@@ -37,6 +37,7 @@ _EOH_
 	config.addDefine('VERSION_STR=\\\\\"0.9+svn\\\\\"')
 	if not conf.hasArgument?("with-debug")
 		config.addDefine("D_NODEBUG")
+		config.addOption("silent")
 	end
 	
 	unix = config.addScope("unix")

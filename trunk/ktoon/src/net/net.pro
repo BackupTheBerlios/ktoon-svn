@@ -9,14 +9,16 @@ HEADERS += ktnetprojectmanagerparams.h \
            ktconnectpackage.h \
            ktlistpackage.h \
            ktopenpackage.h \
-           ktnewprojectpackage.h 
+           ktnewprojectpackage.h  \
+           ktsavenetproject.h
 SOURCES += ktnetprojectmanagerparams.cpp \
            ktnetprojectmanagerhandler.cpp \
            ktnetsocket.cpp \
            ktconnectpackage.cpp \
            ktlistpackage.cpp \
            ktopenpackage.cpp \
-           ktnewprojectpackage.cpp 
+           ktnewprojectpackage.cpp  \
+           ktsavenetproject.cpp
 CONFIG += release \
 warn_on \
 staticlib

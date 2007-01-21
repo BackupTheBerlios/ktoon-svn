@@ -30,11 +30,13 @@ KTAbstractProjectHandler::~KTAbstractProjectHandler()
 {
 }
 
+bool KTAbstractProjectHandler::initialize(KTProjectManagerParams *params)
+{
+	return true;
+}
 
 bool KTAbstractProjectHandler::setupNewProject(KTProjectManagerParams *params)
 {
-	Q_UNUSED(params);
-	
 	return true;
 }
 
