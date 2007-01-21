@@ -20,7 +20,7 @@
 #include "ktnetprojectmanagerparams.h"
 
 KTNetProjectManagerParams::KTNetProjectManagerParams()
-	: KTProjectManagerParams(), m_server("localhost"), m_port(31337)
+	: KTProjectManagerParams(), m_server("localhost"), m_port(6502)
 {
 }
 
@@ -28,6 +28,32 @@ KTNetProjectManagerParams::KTNetProjectManagerParams()
 KTNetProjectManagerParams::~KTNetProjectManagerParams()
 {
 }
+
+void KTNetProjectManagerParams::setLogin(const QString &login)
+{
+	m_login = login;
+}
+
+
+QString KTNetProjectManagerParams::login() const
+{
+	return m_login;
+}
+
+
+
+void KTNetProjectManagerParams::setPassword(const QString &passwd)
+{
+	m_password = passwd;
+}
+
+
+QString KTNetProjectManagerParams::password() const
+{
+	return m_password;
+}
+
+
 
 void KTNetProjectManagerParams::setServer(const QString &server)
 {

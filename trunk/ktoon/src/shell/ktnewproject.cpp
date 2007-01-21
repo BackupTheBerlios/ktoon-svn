@@ -98,6 +98,8 @@ KTNewProject::~KTNewProject()
 	
 	config->setValue("server", m_server->text());
 	config->setValue("port", m_port->value());
+	config->setValue("login", m_login->text());
+	config->setValue("password", m_password->text());
 }
 
 void KTNewProject::setupNetOptions()
@@ -110,13 +112,20 @@ void KTNewProject::setupNetOptions()
 	m_port->setMinimum(1024);
 	m_port->setMaximum(65000);
 	
+	m_login = new QLineEdit;
+	m_password = new QLineEdit;
+	
 	DConfig *config = dApp->config("Network");
 	
 	m_server->setText(config->value("server", "localhost").toString());
-	m_port->setValue(config->value("port", 31337).toInt());
+	m_port->setValue(config->value("port", 6502).toInt());
 	
+	m_login->setText(config->value("login", "").toString());
+	m_password->setText(config->value("password", "").toString());
 	
-	layout->addLayout( DFormFactory::makeGrid( QStringList() << tr("Server") << tr("Port"), QWidgetList() << m_server << m_port ) );
+	m_password->setEchoMode( QLineEdit::Password );
+	
+	layout->addLayout( DFormFactory::makeGrid( QStringList() << tr("Login") << tr("Password") <<tr("Server") << tr("Port"), QWidgetList() << m_login << m_password << m_server << m_port ) );
 }
 
 KTProjectManagerParams *KTNewProject::params()
@@ -127,6 +136,10 @@ KTProjectManagerParams *KTNewProject::params()
 		params->setProjectName( m_projectName->text() );
 		params->setServer(m_server->text());
 		params->setPort(m_port->value());
+		
+		params->setLogin(m_login->text());
+		params->setPassword(m_password->text());
+		
 		
 		return params;
 	}

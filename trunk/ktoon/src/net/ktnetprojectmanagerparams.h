@@ -32,6 +32,12 @@ class KTNetProjectManagerParams : public KTProjectManagerParams
 		KTNetProjectManagerParams();
 		~KTNetProjectManagerParams();
 		
+		void setLogin(const QString &login);
+		QString login() const;
+		
+		void setPassword(const QString &passwd);
+		QString password() const;
+		
 		void setServer(const QString &server);
 		QString server() const;
 		
@@ -39,7 +45,10 @@ class KTNetProjectManagerParams : public KTProjectManagerParams
 		int port() const;
 		
 	private:
+		QString m_login;
+		QString m_password;
 		QString m_server;
+		
 		int m_port;
 };
 

@@ -70,6 +70,8 @@ class KTNewProject : public DTabDialog
 		
 		QLineEdit *m_server;
 		QSpinBox *m_port;
+		QLineEdit *m_login;
+		QLineEdit *m_password;
 };
 #if 0
 class KTNewProject : public DWizard
