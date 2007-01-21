@@ -29,8 +29,8 @@ KTNewProjectPackage::KTNewProjectPackage(const QString & name, const QString & a
 	m_name = createTextNode(name);
 	m_author = createTextNode(author);
 	
-	root.appendChild(createElement("name").appendChild(m_name));
-	root.appendChild(createElement("author").appendChild(m_author));
+	root.appendChild(createElement("name")).appendChild(m_name);
+	root.appendChild(createElement("author")).appendChild(m_author);
 	
 	
 }

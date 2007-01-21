@@ -34,8 +34,8 @@ KTConnectPackage::KTConnectPackage(const QString & login, const QString& passwd)
 	root.setAttribute("version", "0");
 	appendChild(root);
 	
-	root.appendChild(createElement("login").appendChild(createTextNode(login)));
-	root.appendChild(createElement("password").appendChild(createTextNode(DMD5Hash::hash( passwd))));
+	root.appendChild( createElement("login") ).appendChild(createTextNode(login));
+	root.appendChild( createElement("password")).appendChild(createTextNode(DMD5Hash::hash( passwd)));
 	
 }
 
