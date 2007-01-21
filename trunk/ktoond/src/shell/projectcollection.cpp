@@ -77,8 +77,7 @@ void ProjectCollection::openProject( Server::Connection *cnn )
 		}
 	}
 	
-	QFile file(dAppProp->cacheDir() + "/" + projectName);
-	QByteArray data = file.readAll().toBase64();
+
 	//TODO: enviar el paquete project
 	
 	
