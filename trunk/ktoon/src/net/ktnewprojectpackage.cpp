@@ -23,7 +23,7 @@
 KTNewProjectPackage::KTNewProjectPackage(const QString & name, const QString & author )
  : QDomDocument()
 {
-	QDomElement root = createElement("open");
+	QDomElement root = createElement("newproject");
 	root.setAttribute("version", "0");
 	
 	m_name = createTextNode(name);
@@ -32,7 +32,7 @@ KTNewProjectPackage::KTNewProjectPackage(const QString & name, const QString & a
 	root.appendChild(createElement("name")).appendChild(m_name);
 	root.appendChild(createElement("author")).appendChild(m_author);
 	
-	
+	appendChild(root);
 }
 
 

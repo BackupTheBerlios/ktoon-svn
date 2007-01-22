@@ -25,7 +25,7 @@
 #include <QDomDocument>
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado \<kuadrosx@toonka.com\>
 */
 class KTNewProjectPackage : public QDomDocument
 {

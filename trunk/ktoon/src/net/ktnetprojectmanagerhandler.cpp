@@ -125,6 +125,9 @@ bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
 	
 	// TODO: enviar paquete de crear proyecto
 	
+	KTNewProjectPackage newProjectPackage(netparams->projectName(), "");
+	m_socket->send(newProjectPackage);
+	
 	return true;
 }
 
@@ -143,6 +146,7 @@ void KTNetProjectManagerHandler::emitRequest(KTProjectRequest *request)
 
 void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QString &package )
 {
+	D_FUNCINFOX("net");
 	if ( root == "request" )
 	{
 		KTRequestParser parser;
@@ -159,8 +163,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 	else if( root == "ack")
 	{
 		//analizar el paquete
-		KTNewProjectPackage newProjectPackage(m_projectName, "");
-		m_socket->send(newProjectPackage);
+		
 	}
 	else
 	{

@@ -21,16 +21,44 @@
 #include "ktsocketbase.h"
 
 #include <QTextStream>
+#include <QQueue>
+
+#include <ddebug.h>
+
+struct KTSocketBase::Private
+{
+	QQueue<QString> queue;
+};
 
 KTSocketBase::KTSocketBase(QObject *parent)
- : QTcpSocket(parent)
+ : QTcpSocket(parent), d(new Private)
 {
 	connect(this, SIGNAL(readyRead ()), this, SLOT(readFromServer()) );
+	connect(this, SIGNAL(connected()), this, SLOT(sendQueue()));
+	connect(this, SIGNAL(disconnected()), this, SLOT(clearQueue()));
 }
 
 
 KTSocketBase::~KTSocketBase()
 {
+	delete d;
+}
+
+void KTSocketBase::sendQueue()
+{
+	while( d->queue.count() > 0 )
+	{
+		if ( state() == QAbstractSocket::ConnectedState )
+		{
+			send(d->queue.dequeue());
+		}
+		else break;
+	}
+}
+
+void KTSocketBase::clearQueue()
+{
+	d->queue.clear();
 }
 
 void KTSocketBase::send(const QString &str)
@@ -39,6 +67,10 @@ void KTSocketBase::send(const QString &str)
 	{
 		QTextStream stream(this);
 		stream << str.toLocal8Bit().toBase64() << "%%" << endl;
+	}
+	else
+	{
+		d->queue.enqueue(str);
 	}
 }
 

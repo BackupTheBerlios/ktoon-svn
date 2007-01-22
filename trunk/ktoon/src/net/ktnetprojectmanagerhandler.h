@@ -54,7 +54,6 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		QString m_projectName, m_author;
 		
 		KTNetProjectManagerParams *m_params;
-
 };
 
 #endif
