@@ -45,17 +45,9 @@ PackageHandlerBase::~PackageHandlerBase()
 	delete d;
 }
 
-void PackageHandlerBase::handlePackage(Server::Connection *client, const QString &package )
+void PackageHandlerBase::handlePackage(Server::Connection *client, const QString &root, const QString &package )
 {
-	QDomDocument doc;
-	if ( !doc.setContent(package) )
-	{
-		dWarning() << "ERROR"; // FIXME
-		return;
-	}
-	
-	QString root = doc.documentElement().tagName();
-	
+	dWarning("server") << "PACKAGE: " << package;
 	
 	if ( root == "connect" )
 	{
@@ -71,6 +63,10 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 			{
 				// TODO: Enviar paquete de reconocimiento
 			}
+		}
+		else
+		{
+			dError() << "ERROR PARSING CONNECT PACKAGE!";
 		}
 		
 	}

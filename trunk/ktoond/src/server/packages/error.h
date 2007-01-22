@@ -26,8 +26,7 @@
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-namespace Packages
-{
+namespace Packages {
 
 class Error : public QDomDocument
 {
@@ -44,4 +43,5 @@ class Error : public QDomDocument
 };
 
 }
+
 #endif

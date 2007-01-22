@@ -27,6 +27,7 @@
 #include "database.h"
 
 #include "dcore/dmd5hash.h"
+#include "dcore/ddebug.h"
 
 namespace Users {
 
@@ -75,6 +76,10 @@ bool Manager::auth(const QString &login, const QString &password)
 		
 		delete user;
 		return false;
+	}
+	else
+	{
+		dWarning() << "ERROR PARSING USER DATABASE";
 	}
 	
 	return false;

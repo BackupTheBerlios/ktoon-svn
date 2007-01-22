@@ -60,7 +60,7 @@ Connection::Connection(int socketDescriptor, Server::TcpServer *server) : QThrea
 	d->client = new Server::Client(this);
 	d->client->setSocketDescriptor(socketDescriptor);
 	
-	connect(d->client, SIGNAL(disconnected()), this, SLOT(disconnect()));
+	connect(d->client, SIGNAL(disconnected()), this, SLOT(removeConnection()));
 	
 }
 
@@ -81,7 +81,7 @@ void Connection::run()
 		QDomDocument doc;
 		if (doc.setContent(readed.trimmed()) )
 		{
-			emit packagesReaded(this, readed);
+			d->server->handlePackage(this, doc.documentElement().tagName(), readed);
 		}
 		else
 		{
@@ -89,11 +89,11 @@ void Connection::run()
 		}
 	}
 	// Finish connection
-	disconnect();
+	removeConnection();
 }
 
 
-void Connection::disconnect()
+void Connection::removeConnection()
 {
 	emit connectionClosed(this);
 }

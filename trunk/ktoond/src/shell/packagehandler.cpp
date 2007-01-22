@@ -17,6 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "packagehandler.h"
 #include "projectcollection.h"
 
@@ -59,6 +60,10 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 		{
 			handleProjectRequest( cnx , package);
 		}
+		else
+		{
+			dWarning() << "NO PROJECT NAME!";
+		}
 	}
 	else if( root == "connect" )
 	{
@@ -77,12 +82,14 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 
 void PackageHandler::handleProjectRequest(Server::Connection *cnn, const QString &strRequest)
 {
-	d->projects->handleProjectRequest( cnn , strRequest);
-	
-	if ( cnn->server() )
+	if ( d->projects->handleProjectRequest( cnn , strRequest) )
 	{
 		cnn->server()->sendToAll(strRequest);
 	}
-	
+	else
+	{
+		// TODO: error
+		dWarning() << "CANNOT HANDLE PROJECT REQUEST";
+	}
 }
 

@@ -40,7 +40,7 @@ class ProjectCollection
 		
 		void createProject(Server::Connection *cnn);
 		void openProject(Server::Connection *cnn);
-		void handleProjectRequest(Server::Connection *cnn, const QString strRequest);
+		bool handleProjectRequest(Server::Connection *cnn, const QString strRequest);
 		QStringList projects() const;
 		void closeProject(const QString & name);
 		void saveProject(const QString & name);

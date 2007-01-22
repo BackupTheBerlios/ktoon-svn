@@ -36,6 +36,7 @@ DefaultPackageHandler::~DefaultPackageHandler()
 void DefaultPackageHandler::handle(Server::Connection *cnx, const QString &root, const QString &package )
 {
 	Q_UNUSED(cnx);
+	Q_UNUSED(root);
 	dWarning() << "DefaultPackageHandler";
 	
 	dDebug() << package;

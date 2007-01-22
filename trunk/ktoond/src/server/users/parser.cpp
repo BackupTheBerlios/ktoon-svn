@@ -79,8 +79,9 @@ User *Parser::user(const QString &login)
 {
 	d->user = new User;
 	d->user->setLogin(login);
+	QFile file(d->dbfile);
 	
-	if ( parse(d->dbfile) )
+	if ( parse(&file) )
 		return d->user;
 	
 	return 0;

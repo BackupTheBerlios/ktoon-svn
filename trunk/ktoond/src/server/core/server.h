@@ -63,7 +63,7 @@ class TcpServer : public QTcpServer
 	public slots:
 		void sendToAll(const QString &msg);
 		void removeConnection(Server::Connection *cnx);
-		void handlePackage( Server::Connection *client, const QString & packages  );
+		void handlePackage( Server::Connection *client, const QString &root, const QString & packages  );
 	
 	private:
 		void handle(Server::Connection *cnx);

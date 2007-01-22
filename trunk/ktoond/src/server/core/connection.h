@@ -62,14 +62,14 @@ class Connection : public QThread
 		
 		
 	public slots:
-		void disconnect();
+		void removeConnection();
 		
 		
 	signals:
 		void error(QTcpSocket::SocketError socketError);
 		void requestSendToAll(const QString &msg);
 		void connectionClosed( Server::Connection *cnn);
-		void packagesReaded(Server::Connection *cnn, const QString & packages  );
+		void packageReaded(Server::Connection *cnn, const QString & packages  );
 		
 	private:
 		class Private;

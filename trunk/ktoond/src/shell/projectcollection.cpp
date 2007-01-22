@@ -108,7 +108,7 @@ void ProjectCollection::saveProject(const QString & name)
 	}
 }
 
-void ProjectCollection::handleProjectRequest(Server::Connection *cnn, const QString strRequest)
+bool ProjectCollection::handleProjectRequest(Server::Connection *cnn, const QString strRequest)
 {
 	QString projectName = cnn->data(Info::ProjectName).toString();
 	KTRequestParser parser;
@@ -123,7 +123,10 @@ void ProjectCollection::handleProjectRequest(Server::Connection *cnn, const QStr
 			delete commandExecutor;
 			//debug
 // 			saveProject(projectName);
+			
+			return true;
 		}
 	}
 	
+	return false;
 }
