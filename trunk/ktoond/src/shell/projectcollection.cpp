@@ -33,6 +33,8 @@
 #include <QDir>
 #include "global.h"
 
+#include <ddebug.h>
+
 ProjectCollection::ProjectCollection()
 {
 }
@@ -111,6 +113,7 @@ void ProjectCollection::saveProject(const QString & name)
 bool ProjectCollection::handleProjectRequest(Server::Connection *cnn, const QString strRequest)
 {
 	QString projectName = cnn->data(Info::ProjectName).toString();
+	
 	KTRequestParser parser;
 	if ( parser.parse(strRequest) )
 	{
@@ -125,6 +128,10 @@ bool ProjectCollection::handleProjectRequest(Server::Connection *cnn, const QStr
 // 			saveProject(projectName);
 			
 			return true;
+		}
+		else
+		{
+			dWarning() << "NO PROJECT FOR: " << projectName;
 		}
 	}
 	

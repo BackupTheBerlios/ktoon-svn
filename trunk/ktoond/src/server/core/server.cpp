@@ -22,6 +22,8 @@
 #include "connection.h"
 
 #include <QHostInfo>
+#include <QTimer>
+#include <QQueue>
 
 #include <ddebug.h>
 #include <QDebug>
@@ -98,7 +100,6 @@ void TcpServer::handle(Server::Connection *cnx)
 
 void TcpServer::sendToAll(const QString &msg)
 {
-	dDebug("server") << "SENDING TO ALL: " << msg;
 	foreach(Server::Connection *connection, d->connections)
 	{
 		connection->sendToClient(msg);
@@ -108,12 +109,7 @@ void TcpServer::sendToAll(const QString &msg)
 void TcpServer::sendToAll(const QDomDocument &pkg)
 {
 	D_FUNCINFO;
-	QString doc = pkg.toString(0);
-	
-	foreach(Server::Connection *connection, d->connections)
-	{
-		connection->sendToClient(doc);
-	}
+	sendToAll(pkg.toString(0));
 }
 
 void TcpServer::removeConnection(Server::Connection *cnx)
@@ -128,8 +124,6 @@ void TcpServer::handlePackage(Server::Connection* client, const QString &root, c
 {
 	m_handler->handlePackage(client, root, package);
 }
-
-
 
 void TcpServer::setDatabaseDirPath(const QString &dbdir)
 {

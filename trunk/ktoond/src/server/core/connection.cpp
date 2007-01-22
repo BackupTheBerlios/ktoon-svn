@@ -61,7 +61,6 @@ Connection::Connection(int socketDescriptor, Server::TcpServer *server) : QThrea
 	d->client->setSocketDescriptor(socketDescriptor);
 	
 	connect(d->client, SIGNAL(disconnected()), this, SLOT(removeConnection()));
-	
 }
 
 Connection::~Connection()
@@ -140,6 +139,11 @@ Client *Connection::client() const
 TcpServer *Connection::server() const
 {
 	return d->server;
+}
+
+void Connection::sendToAll(const QString &text)
+{
+	emit requestSendToAll(text);
 }
 
 }

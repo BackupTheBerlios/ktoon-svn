@@ -75,14 +75,18 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 	}
 	else if( root == "open")
 	{
-		cnx->setData(Info::ProjectName, "name");
+		cnx->setData(Info::ProjectName, "name"); // FIXME
 // 		Abrir proyecto
+	}
+	else if ( root == "newproject" )
+	{
+		cnx->setData(Info::ProjectName, "name"); // FIXME
 	}
 }
 
 void PackageHandler::handleProjectRequest(Server::Connection *cnn, const QString &strRequest)
 {
-	if ( d->projects->handleProjectRequest( cnn , strRequest) )
+	if ( d->projects->handleProjectRequest( cnn, strRequest) )
 	{
 		cnn->server()->sendToAll(strRequest);
 	}
@@ -90,6 +94,10 @@ void PackageHandler::handleProjectRequest(Server::Connection *cnn, const QString
 	{
 		// TODO: error
 		dWarning() << "CANNOT HANDLE PROJECT REQUEST";
+		
+// 		cnn->server()->sendToAll(strRequest); // FIXME BORRAR ESTO
+		
+		cnn->sendToAll(strRequest);
 	}
 }
 

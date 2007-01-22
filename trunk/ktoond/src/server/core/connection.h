@@ -58,8 +58,9 @@ class Connection : public QThread
 		QVariant data(int key) const;
 		
 		Client *client() const;
-		TcpServer *server() const;
+		TcpServer *server() const; // FIXME: REMOVER, NO USAR
 		
+		void sendToAll(const QString &text);
 		
 	public slots:
 		void removeConnection();

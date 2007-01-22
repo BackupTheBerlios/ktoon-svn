@@ -50,7 +50,7 @@ class TcpServer : public QTcpServer
 		void sendToAll(const QDomDocument &pkg);
 		bool openConnection(const QString &host, int port);
 		
-		void setDatabaseDirPath(const QString &dbdir);
+		void setDatabaseDirPath(const QString &dbdir); // FIXME: REMOVER, BUSCAR UNA MEJOR UBICACION
 		QString databaseDirPath() const;
 		
 		template<typename klass> void createHandler()
