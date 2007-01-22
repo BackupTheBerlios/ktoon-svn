@@ -20,7 +20,7 @@
 
 #include "ktxmlparserbase.h"
 
-#include <QtDebug>
+#include <ddebug.h>
 
 struct KTXmlParserBase::Private
 {
@@ -29,6 +29,7 @@ struct KTXmlParserBase::Private
 	bool isParsing;
 	bool readText;
 	bool ignore;
+	QString document;
 };
 
 KTXmlParserBase::KTXmlParserBase() : QXmlDefaultHandler(), d(new Private)
@@ -103,13 +104,15 @@ bool KTXmlParserBase::characters(const QString & ch)
 
 bool KTXmlParserBase::error ( const QXmlParseException & exception )
 {
-	qWarning() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	dWarning() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	dWarning() << "Document: " << d->document;
 	return true;
 }
 
 bool KTXmlParserBase::fatalError ( const QXmlParseException & exception )
 {
-	qWarning() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	dFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
+	dWarning() << "Document: " << d->document;
 	return true;
 }
 
@@ -144,6 +147,8 @@ bool KTXmlParserBase::parse(const QString &doc)
 	QXmlInputSource xmlsource;
 	xmlsource.setData(doc);
 	
+	d->document = doc;
+	
 	return reader.parse(&xmlsource);
 }
 
@@ -154,7 +159,7 @@ bool KTXmlParserBase::parse(QFile *file)
 	{
 		if( ! file->open(QIODevice::ReadOnly | QIODevice::Text) )
 		{
-			qWarning() << "Cannot open file " << file->fileName();
+			dWarning() << "Cannot open file " << file->fileName();
 			return false;
 		}
 	}

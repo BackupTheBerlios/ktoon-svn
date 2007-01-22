@@ -175,7 +175,7 @@ void KTMainWindow::newViewDocument(const QString &title)
 void KTMainWindow::newProject()
 {
 	KTNewProject *wizard = new KTNewProject;
-	connectToDisplays(wizard);
+// 	connectToDisplays(wizard);
 	if ( wizard->exec() != QDialog::Rejected )
 	{
 		if ( wizard->useNetwork() )

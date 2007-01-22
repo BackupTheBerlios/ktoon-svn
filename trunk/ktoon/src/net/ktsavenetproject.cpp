@@ -43,14 +43,6 @@ KTSaveNetProject::~KTSaveNetProject()
 
 bool KTSaveNetProject::save(const QString &filename, const KTProject *project)
 {
-	QFile file(filename);
-	
-	if ( !file.open(QIODevice::WriteOnly | QIODevice::Text))
-		return false;
-	
-	
-	QTextStream ts(&file);
-	
 	QDomDocument doc;
 	QDomElement root = doc.createElement("NetProject");
 	
@@ -77,6 +69,16 @@ bool KTSaveNetProject::save(const QString &filename, const KTProject *project)
 	root.appendChild(connection);
 	
 	doc.appendChild(root);
+	
+	QFile file(filename);
+	
+	if ( !file.open(QIODevice::WriteOnly | QIODevice::Text))
+		return false;
+	
+	
+	QTextStream ts(&file);
+	
+	ts << doc.toString();
 	
 	file.close();
 	
