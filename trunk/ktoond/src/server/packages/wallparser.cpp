@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,74 +17,52 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#include "packagehandlerbase.h"
-#include <ddebug.h>
+#include "wallparser.h"
 
-#include "users/manager.h"
-#include "packages/connectparser.h"
+namespace Parsers {
 
-#include "connection.h"
-#include "dapplicationproperties.h"
-
-namespace Server {
-
-struct PackageHandlerBase::Private
+struct WallParser::Private
 {
-	Users::Manager *manager;
+	QString message;
 };
 
-PackageHandlerBase::PackageHandlerBase() : d(new Private())
+WallParser::WallParser()
+ : KTXmlParserBase(), d( new Private())
 {
-	d->manager = 0;
 }
 
-PackageHandlerBase::~PackageHandlerBase()
+
+WallParser::~WallParser()
 {
-	delete d->manager;
-	delete d;
 }
 
-void PackageHandlerBase::handlePackage(Server::Connection *client, const QString &root, const QString &package )
+bool WallParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	dWarning("server") << "PACKAGE: " << package;
+	if ( root() == "wall" )
+	{
+		if ( tag == "message" )
+		{
+			d->message = atts.value("text");
+		}
+	}
 	
-	if ( root == "connect" )
-	{
-		if ( !d->manager )
-		{
-			d->manager = new Users::Manager(client->server()->databaseDirPath()+"/users.xml" );
-		}
-		
-		Parsers::ConnectParser parser;
-		if ( parser.parse(package) )
-		{
-			if ( d->manager->auth(parser.login(), parser.password()) )
-			{
-				// TODO: Enviar paquete de reconocimiento
-			}
-		}
-		else
-		{
-			dError() << "ERROR PARSING CONNECT PACKAGE!";
-		}
-		
-	}
-	else if ( root == "chat" )
-	{
-		
-	}
-	else if ( root == "notice" )
-	{
-	}
-	else if ( root == "wall" )
-	{
-	}
-	else
-	{
-		handle(client, root, package);
-	}
+	
+	return true;
 }
 
+bool WallParser::endTag(const QString &)
+{
+	return true;
 }
 
+void WallParser::text(const QString &)
+{
+}
+
+QString WallParser::message() const
+{
+	return d->message;
+}
+
+
+}

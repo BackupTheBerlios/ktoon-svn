@@ -1,0 +1,107 @@
+<!--
+Notas generales:
+- Todos los paquetes tienen una version, por si en un futuro cambia un poco su sintaxis se tenga conocimiento de como manejarlos
+- Los archivos binarios seràn codificados usando Base64 y estaran en un seccion CDATA dentro del tag <data>
+- Los passwords estaran codificados con md5
+- Los mensajes de chat y noticias solo estaran disponibles para los miembros del proyecto
+- Los booleanos seran representados por 0 (falso) y 1 (verdadero)
+
+-->
+
+
+<!-- ************************** PETICIONES ************************** -->
+
+<!-- Peticion de conexion al servidor -->
+<connect version="0" >
+	<login>the_login</login>
+	<password>the_hashed_password_md5</password>
+</connect>
+
+<newproject>
+	<author>dfsda</author>
+	<name>dafds</name>
+</newproject>
+
+<!-- Lista de items, por ejemplo proyectos -->
+<!-- Proyectos (tipo 0), usuarios ( tipo 1), ... -->
+<list version="0" >
+	<options pattern="string or regexp" type="0">
+		<caseSensitive enabled="0" />
+		<regexp enabled="0" />
+	</options>
+<list/>
+
+
+<!-- Abrir proyecto -->
+<openproject version="0">
+	<project name="proyecto 1" />
+</openproject>
+
+
+<!-- Mensaje de chat (Solo para los miembros del proyecto perteneciente a nick) -->
+<chat version="0">
+	<message plain="0" text="" />
+</chat>
+
+<!-- Noticia -->
+<notice version="0">
+	<message text="" />
+</notice>
+
+<!-- Wall (mensaje para todos) -->
+<wall version="0">
+	<message text="" />
+</wall>
+
+<!-- ************************** RESPUESTAS ************************** -->
+
+
+<!-- Mensaje de error -->
+<error version="0" >
+	<message level="0">Error message</msg>
+</error>
+
+
+<!-- Respuesta a una petición valida de conexion -->
+<ack version="0">
+	<motd>Message of the day</motd>
+	<permissions>
+		<perm module="" read="0" write="0" />
+		<perm module="" read="0" write="0" />
+		<perm module="" read="0" write="0" />
+	</permissions>
+</ack>
+
+<!-- Respuesta a una peticion <list> -->
+<items version="0">
+	<item>proyecto1.ktn</item>
+	<item>proyecto2.ktn</item>
+	<item>proyecto3.ktn</item>
+	<item>proyecto4.ktn</item>
+</items>
+
+
+<!-- Respuesta a una peticion open valida -->
+<project version="0">
+	<data>
+		<![CDATA[KTN encoded with Base64]]>
+	</data>
+</project>
+
+
+<!-- Mensaje de chat -->
+<chat version="0">
+	<message from="nick" text="" />
+</chat>
+
+<!-- Noticia -->
+<notice version="0">
+	<message from="nick" text="" />
+</notice>
+
+<!-- Wall (mensaje para todos) -->
+<wall version="0">
+	<message from="nick" text="" />
+</wall>
+
+

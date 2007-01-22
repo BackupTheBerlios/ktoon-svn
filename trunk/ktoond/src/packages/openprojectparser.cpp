@@ -18,35 +18,58 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef PARSERSUSERS_H
-#define PARSERSUSERS_H
-
-#include <ktxmlparserbase.h>
+#include "openprojectparser.h"
 
 namespace Parsers {
 
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-
-class UserPackageParser : public KTXmlParserBase
+struct OpenProjectParser::Private
 {
-	public:
-		UserPackageParser();
-		~UserPackageParser();
-		
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-		virtual bool endTag(const QString &tag);
-		virtual void text(const QString &text);
-		
-		QString login() const;
-		QString password() const;
-		
-	private:
-		struct Private;
-		Private *const d;
+	QString name;
 };
+
+OpenProjectParser::OpenProjectParser()
+ : KTXmlParserBase(), d( new Private() )
+{
+}
+
+
+OpenProjectParser::~OpenProjectParser()
+{
+	delete d;
+}
+
+
+bool OpenProjectParser::startTag(const QString &tag, const QXmlAttributes &atts)
+{
+	if ( root() == "openproject" )
+	{
+		if ( tag == "name")
+		{
+			d->name = atts.value("name");
+		}
+	}
+	
+	
+	return true;
+}
+
+bool OpenProjectParser::endTag(const QString &)
+{
+	return true;
+}
+
+void OpenProjectParser::text(const QString &)
+{
+}
+
+
+QString OpenProjectParser::name() const
+{
+	return d->name;
+}
+
+
 
 }
 
-#endif
+

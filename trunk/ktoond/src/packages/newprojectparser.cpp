@@ -17,39 +17,41 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#include "userpackageparser.h"
+#include "newprojectparser.h"
 
 namespace Parsers {
 
-class UserPackageParser::Private
+struct NewProjectParser::Private
 {
-	public:
-		QString login;
-		QString password;
+	QString author;
+	QString name;
 };
 
-UserPackageParser::UserPackageParser() : KTXmlParserBase(), d(new Private)
+NewProjectParser::NewProjectParser()
+ : KTXmlParserBase(), d( new Private())
 {
 }
 
 
-UserPackageParser::~UserPackageParser()
+NewProjectParser::~NewProjectParser()
 {
 	delete d;
 }
 
-bool UserPackageParser::startTag(const QString &tag, const QXmlAttributes &)
+
+
+
+bool NewProjectParser::startTag(const QString &tag, const QXmlAttributes &)
 {
-	if ( root() == "connect" )
+	if ( root() == "newproject" )
 	{
-		if ( tag == "login" )
+		if ( tag == "author" )
 		{
 			setReadText(true);
 		}
-		else if ( tag == "password")
+		else if ( tag == "name")
 		{
-			
+			setReadText(true);
 		}
 	}
 	
@@ -57,34 +59,32 @@ bool UserPackageParser::startTag(const QString &tag, const QXmlAttributes &)
 	return true;
 }
 
-bool UserPackageParser::endTag(const QString &)
+bool NewProjectParser::endTag(const QString &)
 {
 	return true;
 }
 
-void UserPackageParser::text(const QString &text)
+void NewProjectParser::text(const QString &text)
 {
-	if ( currentTag() == "login" )
+	if ( currentTag() == "name" )
 	{
-		d->login = text;
+		d->name = text;
 	}
-	else if ( currentTag() == "password")
+	else if ( currentTag() == "author")
 	{
-		d->password = text;
+		d->author = text;
 	}
 }
 
-
-QString UserPackageParser::login() const
+QString NewProjectParser::author() const
 {
-	return d->login;
+	return d->author;
 }
 
-QString UserPackageParser::password() const
+QString NewProjectParser::name() const
 {
-	return d->password;
+	return d->name;
 }
 
+
 }
-
-

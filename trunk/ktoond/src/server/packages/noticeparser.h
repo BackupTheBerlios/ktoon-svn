@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,74 +17,35 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#include "packagehandlerbase.h"
-#include <ddebug.h>
+#ifndef PARSERSNOTICEPARSER_H
+#define PARSERSNOTICEPARSER_H
 
-#include "users/manager.h"
-#include "packages/connectparser.h"
+#include <ktxmlparserbase.h>
 
-#include "connection.h"
-#include "dapplicationproperties.h"
+namespace Parsers {
 
-namespace Server {
-
-struct PackageHandlerBase::Private
+/**
+	@author David Cuadrado <krawek@toonka.com>
+*/
+class NoticeParser : public KTXmlParserBase
 {
-	Users::Manager *manager;
+	public:
+		NoticeParser();
+		~NoticeParser();
+		
+		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+		virtual bool endTag(const QString &tag);
+		virtual void text(const QString &text);
+		
+	public:
+		QString message() const;
+		
+	private:
+		struct Private;
+		Private *const d;
+
 };
 
-PackageHandlerBase::PackageHandlerBase() : d(new Private())
-{
-	d->manager = 0;
 }
 
-PackageHandlerBase::~PackageHandlerBase()
-{
-	delete d->manager;
-	delete d;
-}
-
-void PackageHandlerBase::handlePackage(Server::Connection *client, const QString &root, const QString &package )
-{
-	dWarning("server") << "PACKAGE: " << package;
-	
-	if ( root == "connect" )
-	{
-		if ( !d->manager )
-		{
-			d->manager = new Users::Manager(client->server()->databaseDirPath()+"/users.xml" );
-		}
-		
-		Parsers::ConnectParser parser;
-		if ( parser.parse(package) )
-		{
-			if ( d->manager->auth(parser.login(), parser.password()) )
-			{
-				// TODO: Enviar paquete de reconocimiento
-			}
-		}
-		else
-		{
-			dError() << "ERROR PARSING CONNECT PACKAGE!";
-		}
-		
-	}
-	else if ( root == "chat" )
-	{
-		
-	}
-	else if ( root == "notice" )
-	{
-	}
-	else if ( root == "wall" )
-	{
-	}
-	else
-	{
-		handle(client, root, package);
-	}
-}
-
-}
-
+#endif

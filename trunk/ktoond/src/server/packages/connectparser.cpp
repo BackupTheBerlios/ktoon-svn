@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,74 +17,74 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#include "packagehandlerbase.h"
-#include <ddebug.h>
 
-#include "users/manager.h"
-#include "packages/connectparser.h"
+#include "connectparser.h"
 
-#include "connection.h"
-#include "dapplicationproperties.h"
+namespace Parsers {
 
-namespace Server {
-
-struct PackageHandlerBase::Private
+class ConnectParser::Private
 {
-	Users::Manager *manager;
+	public:
+		QString login;
+		QString password;
 };
 
-PackageHandlerBase::PackageHandlerBase() : d(new Private())
+ConnectParser::ConnectParser() : KTXmlParserBase(), d(new Private)
 {
-	d->manager = 0;
 }
 
-PackageHandlerBase::~PackageHandlerBase()
+
+ConnectParser::~ConnectParser()
 {
-	delete d->manager;
 	delete d;
 }
 
-void PackageHandlerBase::handlePackage(Server::Connection *client, const QString &root, const QString &package )
+bool ConnectParser::startTag(const QString &tag, const QXmlAttributes &)
 {
-	dWarning("server") << "PACKAGE: " << package;
+	if ( root() == "connect" )
+	{
+		if ( tag == "login" )
+		{
+			setReadText(true);
+		}
+		else if ( tag == "password")
+		{
+			
+		}
+	}
 	
-	if ( root == "connect" )
+	
+	return true;
+}
+
+bool ConnectParser::endTag(const QString &)
+{
+	return true;
+}
+
+void ConnectParser::text(const QString &text)
+{
+	if ( currentTag() == "login" )
 	{
-		if ( !d->manager )
-		{
-			d->manager = new Users::Manager(client->server()->databaseDirPath()+"/users.xml" );
-		}
-		
-		Parsers::ConnectParser parser;
-		if ( parser.parse(package) )
-		{
-			if ( d->manager->auth(parser.login(), parser.password()) )
-			{
-				// TODO: Enviar paquete de reconocimiento
-			}
-		}
-		else
-		{
-			dError() << "ERROR PARSING CONNECT PACKAGE!";
-		}
-		
+		d->login = text;
 	}
-	else if ( root == "chat" )
+	else if ( currentTag() == "password")
 	{
-		
-	}
-	else if ( root == "notice" )
-	{
-	}
-	else if ( root == "wall" )
-	{
-	}
-	else
-	{
-		handle(client, root, package);
+		d->password = text;
 	}
 }
 
+
+QString ConnectParser::login() const
+{
+	return d->login;
 }
+
+QString ConnectParser::password() const
+{
+	return d->password;
+}
+
+}
+
 
