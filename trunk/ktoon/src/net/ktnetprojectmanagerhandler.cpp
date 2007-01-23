@@ -22,6 +22,10 @@
 #include "ktnetprojectmanagerparams.h"
 
 #include "ktprojectresponse.h"
+
+
+#include <ddebug.h>
+
 #include "ktprojectcommand.h"
 #include "ktcommandexecutor.h"
 
@@ -29,14 +33,17 @@
 
 #include "ktprojectrequest.h"
 
-#include "ktrequestparser.h"
-#include <ddebug.h>
 
 #include "ktnewprojectpackage.h"
 #include "ktconnectpackage.h"
 
 #include "ktsavenetproject.h"
 #include "ktopenpackage.h"
+
+#include "ktprojectparser.h"
+#include "ktrequestparser.h"
+
+#include <QTemporaryFile>
 
 KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent)
 {
@@ -87,7 +94,8 @@ bool KTNetProjectManagerHandler::loadProject(const QString &fileName, KTProject 
 	KTOpenPackage package(m_params->projectName());
 	
 	m_socket->send(package);
-	
+	m_project = project;
+			
 	return true;
 }
 
@@ -170,6 +178,26 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 	{
 		//analizar el paquete
 		
+	}
+	else if(root == "project")
+	{
+		KTProjectParser parser;
+		if(parser.parse(package) )
+		{
+			QTemporaryFile file;
+			if(file.open ())
+			{
+				file.write(parser.data() );
+				file.flush();
+				
+				KTSaveProject *loader = 0;
+				
+				loader = new KTSaveProject;
+				loader->load(file.fileName (), m_project);
+				delete loader;
+				
+			}
+		}
 	}
 	else
 	{

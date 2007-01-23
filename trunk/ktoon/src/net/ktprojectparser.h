@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,39 +17,31 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef KTPROJECTPARSER_H
+#define KTPROJECTPARSER_H
 
-#include "ktnetsocket.h"
-#include <QTextStream>
-#include <QDataStream>
+/**
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
+*/
 
-#include <ddebug.h>
+#include "ktxmlparserbase.h"
 
-#include "ktnetprojectmanagerhandler.h"
-
-#include "ktcompress.h"
-
-KTNetSocket::KTNetSocket(KTNetProjectManagerHandler *handler) : KTSocketBase(handler), m_handler(handler)
+class KTProjectParser : public KTXmlParserBase
 {
-}
+	public:
+		KTProjectParser();
+		virtual ~KTProjectParser();
+		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+		virtual bool endTag(const QString &tag);
+		virtual void text(const QString &text);
+		
+		QByteArray data();
+		
+	private:
+		struct Private;
+		Private *const d;
 
+};
 
-KTNetSocket::~KTNetSocket()
-{
-}
-
-void KTNetSocket::readed(const QString &readed)
-{
-	dDebug("net") << "READED: " << readed;
-	QDomDocument doc;
-	
-	if ( doc.setContent(readed) )
-	{
-		QString root = doc.documentElement().tagName();
-		m_handler->handlePackage( root, readed);
-	}
-	else
-	{
-		qDebug("Isn't a document");
-	}
-}
-
+#endif

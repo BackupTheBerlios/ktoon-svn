@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,38 +18,55 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktnetsocket.h"
-#include <QTextStream>
-#include <QDataStream>
-
+#include "ktprojectparser.h"
 #include <ddebug.h>
 
-#include "ktnetprojectmanagerhandler.h"
+struct KTProjectParser::Private
+{
+	QByteArray data;
+};
 
-#include "ktcompress.h"
-
-KTNetSocket::KTNetSocket(KTNetProjectManagerHandler *handler) : KTSocketBase(handler), m_handler(handler)
+KTProjectParser::KTProjectParser(): KTXmlParserBase() , d( new Private())
 {
 }
 
 
-KTNetSocket::~KTNetSocket()
+KTProjectParser::~KTProjectParser()
 {
 }
 
-void KTNetSocket::readed(const QString &readed)
+
+bool KTProjectParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	dDebug("net") << "READED: " << readed;
-	QDomDocument doc;
+	if(root() == "project")
+	{
+		if(tag == "data")
+		{
+			setReadText(true);
+		}
+		
+	}
+	return true;
+}
+
+bool KTProjectParser::endTag(const QString &tag)
+{
+	Q_UNUSED(tag);
+	return true;
 	
-	if ( doc.setContent(readed) )
+}
+
+void KTProjectParser::text(const QString &text)
+{
+// 	Q_UNUSED(text);
+	dDebug() << text;
+	if ( currentTag() == "data" )
 	{
-		QString root = doc.documentElement().tagName();
-		m_handler->handlePackage( root, readed);
-	}
-	else
-	{
-		qDebug("Isn't a document");
+		d->data = QByteArray::fromBase64(text.toLocal8Bit());
 	}
 }
 
+QByteArray KTProjectParser::data()
+{
+	return d->data;
+}
