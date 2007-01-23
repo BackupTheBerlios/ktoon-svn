@@ -68,12 +68,17 @@ void ProjectCollection::createProject( Server::Connection *cnn, const QString &a
 void ProjectCollection::openProject( Server::Connection *cnn )
 {
  	QString projectName = cnn->data(Info::ProjectName).toString();
+	QString fileName = dAppProp->cacheDir() + "/" + projectName ;
+	if ( !fileName.endsWith(".ktn") )
+	{
+		fileName += ".ktn";
+	}
 	if(!m_projects.contains( projectName ))
 	{
 		KTSaveProject *loader = new KTSaveProject;
-		SProject *project = 0;
+		SProject *project = new SProject;
 		
-		loader->load(dAppProp->cacheDir() + "/" + projectName, project);
+		loader->load(fileName, project);
 		
 		delete loader;
 		if(project)
@@ -82,13 +87,11 @@ void ProjectCollection::openProject( Server::Connection *cnn )
 		}
 	}
 	
-	QString fileName = dAppProp->cacheDir() + "/" + projectName ;
-	if ( !fileName.endsWith(".ktn") )
-	{
-		fileName += ".ktn";
-	}
+
 	
 	Packages::Project project(fileName);
+	
+	SHOW_VAR(project.toString());
 	cnn->sendToClient(project.toString());
 	
 }

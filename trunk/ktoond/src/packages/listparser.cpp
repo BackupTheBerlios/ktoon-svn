@@ -29,7 +29,7 @@ struct ListParser::Private
 };
 
 
-ListParser::ListParser() :KTXmlParserBase(), d( new Private())
+ListParser::ListParser(): KTXmlParserBase(), d( new Private())
 {
 }
 

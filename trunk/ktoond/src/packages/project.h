@@ -38,6 +38,7 @@ class Project : public Package
 		void setProject(const QString & projectPath);
 		
 	private:
+		QDomElement m_root;
 		QDomElement m_data;
 };
 }

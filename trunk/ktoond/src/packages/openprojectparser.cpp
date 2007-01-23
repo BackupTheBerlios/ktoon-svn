@@ -43,7 +43,7 @@ bool OpenProjectParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
 	if ( root() == "openproject" )
 	{
-		if ( tag == "name")
+		if ( tag == "project")
 		{
 			d->name = atts.value("name");
 		}

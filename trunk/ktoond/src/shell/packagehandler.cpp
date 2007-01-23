@@ -80,12 +80,14 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 		}
 		
 	}
-	else if( root == "open")
+	else if( root == "openproject")
 	{
 		Parsers::OpenProjectParser parser;
 		if(parser.parse(package))
 		{
+			SHOW_VAR(parser.name());
 			cnx->setData(Info::ProjectName, parser.name());
+			d->projects->openProject(cnx);
 		}
 // 		Abrir proyecto
 	}

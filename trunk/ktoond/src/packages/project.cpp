@@ -37,9 +37,9 @@ namespace Packages
 Project::Project(const QString & projectPath)
  : Package()
 {
-	QDomElement root = createElement ( "project" );
-	root.setAttribute ( "version",  "0" );
-	appendChild(root);
+	m_root = createElement ( "project" );
+	m_root.setAttribute ( "version",  "0" );
+	appendChild(m_root);
 	setProject(projectPath);
 }
 
@@ -51,12 +51,13 @@ Project::~Project()
 void Project::setProject(const QString & projectPath)
 {
 	QFile file(projectPath);
+	file.open(QIODevice::ReadOnly);
 	QByteArray data = file.readAll().toBase64();
 	
 	removeChild(m_data);
 	m_data = createElement("data");
 	m_data.appendChild(createCDATASection ( data ));
-	appendChild(m_data);
+	m_root.appendChild(m_data);
 }
 
 }
