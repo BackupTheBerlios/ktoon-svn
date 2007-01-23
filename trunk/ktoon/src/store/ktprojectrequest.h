@@ -31,6 +31,7 @@ class KTProjectRequest;
 class KTProjectRequest;
 class KTProjectRequest;
 class KTProjectRequest;
+class KTProjectResponse;
 
 class STORE_EXPORT KTProjectRequestArgument
 {
@@ -118,6 +119,7 @@ class STORE_EXPORT KTProjectRequest
 		
 		QString xml() const;
 		
+
 	private:
 		QString m_xml;
 		int m_id;

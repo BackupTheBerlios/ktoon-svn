@@ -19,9 +19,15 @@
  ***************************************************************************/
 
 #include "ktrequestbuilder.h"
+
 #include <QDomDocument>
 
+#include <ddebug.h>
+
 #include "ktprojectrequest.h"
+#include "ktprojectresponse.h"
+
+
 
 KTRequestBuilder::KTRequestBuilder()
 {
@@ -191,5 +197,38 @@ void KTRequestBuilder::appendData(QDomDocument &doc, QDomElement &element, const
 		
 		element.appendChild( cdata );
 	}
+}
+
+KTProjectRequest KTRequestBuilder::fromResponse(KTProjectResponse *response)
+{
+	KTProjectRequest request;
+	switch(response->part())
+	{
+		case KTProjectRequest::Item:
+		{
+			request = KTRequestBuilder::createItemRequest( static_cast<KTItemResponse*> ( response)->sceneIndex(), static_cast<KTItemResponse*> ( response)->layerIndex(), static_cast<KTItemResponse*> ( response)->frameIndex(), static_cast<KTItemResponse*> ( response)->itemIndex(), response->action(), response->arg().toString(), response->data());
+		}
+		break;
+		case KTProjectRequest::Frame:
+		{
+			request = KTRequestBuilder::createFrameRequest( static_cast<KTFrameResponse*> ( response)->sceneIndex(), static_cast<KTFrameResponse*> ( response)->layerIndex(), static_cast<KTFrameResponse*> ( response)->frameIndex(), response->action(), response->arg().toString(), response->data());
+		}
+		break;
+		case KTProjectRequest::Layer:
+		{
+			request = KTRequestBuilder::createLayerRequest( static_cast<KTLayerResponse*> ( response)->sceneIndex(), static_cast<KTLayerResponse*> ( response)->layerIndex(), response->action(), response->arg().toString(), response->data());
+		}
+		break;
+		case KTProjectRequest::Scene:
+		{
+			request = KTRequestBuilder::createSceneRequest( static_cast<KTSceneResponse*> ( response)->sceneIndex(), response->action(), response->arg().toString(), response->data());
+		}
+		break;
+		default:
+		{
+			dWarning() << "Unknown response";
+		}
+	}
+	return request;
 }
 

@@ -42,6 +42,7 @@
 
 #include "ktprojectparser.h"
 #include "ktrequestparser.h"
+#include "ktrequestbuilder.h"
 
 #include <QTemporaryFile>
 
@@ -72,7 +73,10 @@ void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* re
 
 bool KTNetProjectManagerHandler::commandExecuted(KTProjectResponse *response)
 {
+	dFatal() << "commandExecuted";
 	if ( response->mode() == KTProjectResponse::Do ) return true;
+	/*
+	*/
 	
 	// FIXME: ESTO LLEGA DESDE EL SERVIDOR!
 	
@@ -166,8 +170,9 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 		KTRequestParser parser;
 		if ( parser.parse(package) )
 		{
-			KTProjectRequest request(package); // FIXME: construir con el response y no con el xml.
-			emitRequest(&request);
+			
+			emitRequest(&KTRequestBuilder::fromResponse(parser.response() ));
+			
 		}
 		else // TODO: mostrar error
 		{

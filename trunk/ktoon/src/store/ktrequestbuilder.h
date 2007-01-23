@@ -28,7 +28,7 @@
 #include "ktglobal_store.h"
 
 class KTProjectRequest;
-
+class KTProjectResponse;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
@@ -49,6 +49,8 @@ class STORE_EXPORT KTRequestBuilder
 		static KTProjectRequest createSceneRequest(int sceneIndex, int action, const QVariant &arg= QString(), const QByteArray &data = QByteArray());
 		
 		static KTProjectRequest createLibraryRequest(int type, int actionId, const QVariant &arg, const QByteArray &data = QByteArray() );
+		
+		static KTProjectRequest fromResponse(KTProjectResponse *response);
 		
 	private:
 		static void appendData(QDomDocument &doc, QDomElement &element, const QByteArray &data);

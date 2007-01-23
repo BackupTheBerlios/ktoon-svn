@@ -20,6 +20,9 @@
 
 #include "ktprojectrequest.h"
 
+#include "ktprojectresponse.h"
+#include "ktrequestbuilder.h"
+
 #include <ddebug.h>
 
 KTProjectRequestArgument::KTProjectRequestArgument()
