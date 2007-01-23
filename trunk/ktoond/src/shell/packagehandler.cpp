@@ -120,3 +120,7 @@ void PackageHandler::handleProjectRequest(Server::Connection *cnn, const QString
 	}
 }
 
+void PackageHandler::connectionClosed(Server::Connection *client)
+{
+	d->projects->closeProject(client->data(Info::ProjectName).toString());
+}

@@ -38,6 +38,7 @@ class PackageHandler : public Server::PackageHandlerBase
 		~PackageHandler();
 		
 		void handle(Server::Connection *, const QString &root, const QString &package );
+		void connectionClosed(Server::Connection *client);
 		
 	private:
 		void handleProjectRequest(Server::Connection *cnn, const QString &request);

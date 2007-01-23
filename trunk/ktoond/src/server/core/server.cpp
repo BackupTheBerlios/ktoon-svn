@@ -113,7 +113,9 @@ void TcpServer::removeConnection(Server::Connection *cnx)
 {
         D_FUNCINFO;
         cnx->close();
+	
         d->connections.removeAll(cnx);
+	m_handler->connectionClosed(cnx);
 }
 
 

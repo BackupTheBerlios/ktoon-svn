@@ -51,7 +51,7 @@ void ProjectCollection::createProject( Server::Connection *cnn, const QString &a
 	QString projectName = cnn->data(Info::ProjectName).toString();
 	if(!m_projects.contains( projectName ))
 	{
-		KTProject *project = new KTProject;
+		SProject *project = new SProject;
 		
 		project->setProjectName(projectName);
 		m_projects.insert(projectName, project);
@@ -64,13 +64,14 @@ void ProjectCollection::createProject( Server::Connection *cnn, const QString &a
 	}
 }
 
+
 void ProjectCollection::openProject( Server::Connection *cnn )
 {
  	QString projectName = cnn->data(Info::ProjectName).toString();
 	if(!m_projects.contains( projectName ))
 	{
 		KTSaveProject *loader = new KTSaveProject;
-		KTProject *project = 0;
+		SProject *project = 0;
 		
 		loader->load(dAppProp->cacheDir() + "/" + projectName, project);
 		
@@ -81,7 +82,13 @@ void ProjectCollection::openProject( Server::Connection *cnn )
 		}
 	}
 	
-	Packages::Project project(dAppProp->cacheDir() + "/" + projectName );
+	QString fileName = dAppProp->cacheDir() + "/" + projectName ;
+	if ( !fileName.endsWith(".ktn") )
+	{
+		fileName += ".ktn";
+	}
+	
+	Packages::Project project(fileName);
 	cnn->sendToClient(project.toString());
 	
 }
@@ -96,18 +103,17 @@ QStringList ProjectCollection::projects() const
 void ProjectCollection::closeProject(const QString & name)
 {
 	//FIXME: verificar que no hay otros con el proyecto abierto, antes de ejecutar esta funcion
-	m_projects.remove (name);
+	saveProject(name);
+	delete m_projects.take(name);
+	
+	
 }
 
 void ProjectCollection::saveProject(const QString & name)
 {
 	if(m_projects.contains( name ))
 	{
-		KTSaveProject *saver = new KTSaveProject;
-		
-		saver->save(dAppProp->cacheDir() + "/" + name, m_projects[name]);
-		
-		delete saver;
+		m_projects[name]->save();
 	}
 }
 
@@ -125,6 +131,7 @@ bool ProjectCollection::handleProjectRequest(Server::Connection *cnn, const QStr
 			KTProjectCommand command(commandExecutor, parser.response());
 			command.redo();
 			delete commandExecutor;
+			m_projects[projectName]->resetTimer();
 			//debug
 // 			saveProject(projectName);
 			

@@ -25,7 +25,7 @@
  * @author Jorge Cuadrado \<kuadrosxx@gmail.com\>
 */
 #include <QHash>
-#include <ktproject.h>
+#include <sproject.h>
 
 namespace Server {
 class Connection;
@@ -47,7 +47,7 @@ class ProjectCollection
 		
 		
 	private:
-		QHash<QString, KTProject * > m_projects;
+		QHash<QString, SProject * > m_projects;
 		
 };
 

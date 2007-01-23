@@ -40,6 +40,7 @@ class PackageHandlerBase
 		void handlePackage(Server::Connection *client, const QString &root, const QString &package );
 		
 		virtual void handle(Server::Connection *client, const QString &root, const QString &package ) = 0;
+		virtual void connectionClosed(Server::Connection *client) = 0;
 		
 	private:
 		struct Private;

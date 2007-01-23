@@ -26,6 +26,10 @@
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
+
+#include <QTimer>
+
+
 class SProject : public KTProject
 {
 	Q_OBJECT;
@@ -33,6 +37,17 @@ class SProject : public KTProject
 	public:
 		SProject(QObject *parent = 0);
 		~SProject();
+		void resetTimer();
+		
+	private:
+		QTimer *m_saver;
+		
+		
+	public slots:
+		void save();
+		
+	protected:
+		void timerEvent ( QTimerEvent * event );
 };
 
 #endif

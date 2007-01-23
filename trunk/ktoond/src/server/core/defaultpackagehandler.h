@@ -35,7 +35,7 @@ class DefaultPackageHandler : public PackageHandlerBase
 		DefaultPackageHandler();
 		~DefaultPackageHandler();
 		void handle(Server::Connection *cnx , const QString &root, const QString &package );
-
+		void connectionClosed(Server::Connection *client);
 };
 
 }
