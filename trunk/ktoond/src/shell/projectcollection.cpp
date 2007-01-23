@@ -86,7 +86,10 @@ void ProjectCollection::openProject( Server::Connection *cnn )
 			m_projects.insert(projectName, project);
 		}
 	}
-	
+	else
+	{
+		m_projects[projectName]->save();
+	}
 
 	
 	Packages::Project project(fileName);
