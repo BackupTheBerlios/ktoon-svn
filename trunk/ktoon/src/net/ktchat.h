@@ -17,33 +17,34 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTSAVENETPROJECT_H
-#define KTSAVENETPROJECT_H
 
-#include <ktsaveproject.h>
-#include <QString>
+#ifndef KTCHAT_H
+#define KTCHAT_H
 
-class KTNetProjectManagerParams;
+#include <QDialog>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTSaveNetProject : public KTSaveProject
+class KTChat : public QDialog
 {
+	Q_OBJECT;
+	
 	public:
-		KTSaveNetProject();
-		KTSaveNetProject(const QString &server, int port);
-		~KTSaveNetProject();
+		KTChat(QWidget *parent = 0);
+		~KTChat();
 		
-		virtual bool save(const QString &filename, const KTProject *project);
-		virtual bool load(const QString &filename, KTProject *project);
+		void addMessage(const QString &from, const QString &message);
 		
-		KTNetProjectManagerParams *params(const QString &filename);
+	signals:
+		void requestSendMessage(const QString &message);
+		
+	protected slots:
+		void sendMessage();
 		
 	private:
-		QString m_server;
-		int m_port;
-
+		struct Private;
+		Private *const d;
 };
 
 #endif

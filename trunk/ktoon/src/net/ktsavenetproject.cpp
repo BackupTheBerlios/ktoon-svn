@@ -26,6 +26,7 @@
 #include <QDomElement>
 
 #include "ktproject.h"
+#include "ktnetprojectmanagerparams.h"
 
 KTSaveNetProject::KTSaveNetProject() : KTSaveProject()
 {
@@ -41,8 +42,16 @@ KTSaveNetProject::~KTSaveNetProject()
 {
 }
 
-bool KTSaveNetProject::save(const QString &filename, const KTProject *project)
+bool KTSaveNetProject::save(const QString &_filename, const KTProject *project)
 {
+	QString filename = _filename;
+	
+	if( !filename.endsWith(".ktnet") )
+	{
+		filename += ".ktnet";
+	}
+	
+	
 	QDomDocument doc;
 	QDomElement root = doc.createElement("NetProject");
 	
@@ -86,10 +95,71 @@ bool KTSaveNetProject::save(const QString &filename, const KTProject *project)
 	return true;
 }
 
-bool KTSaveNetProject::load(const QString &fileName, KTProject *)
+bool KTSaveNetProject::load(const QString &, KTProject *)
 {
 	
 	return false;
 }
+
+
+KTNetProjectManagerParams *KTSaveNetProject::params(const QString &filename)
+{
+	KTNetProjectManagerParams *params = new KTNetProjectManagerParams;
+	
+	QFile file(filename);
+	
+	if( file.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		QDomDocument doc;
+		if ( doc.setContent(file.readAll()) )
+		{
+			QDomElement docElem = doc.documentElement();
+			
+			QDomNode n = docElem.firstChild();
+			while(!n.isNull())
+			{
+				QDomElement e = n.toElement();
+				if(!e.isNull())
+				{
+					if ( e.tagName() == "project")
+					{
+						params->setProjectName( e.attributeNode("name").value() );
+					}
+					else if ( e.tagName() == "connection" )
+					{
+						QDomNode n1 = e.firstChild();
+						
+						while (! n1.isNull() )
+						{
+							QDomElement e1 = n1.toElement();
+							
+							if ( !e1.isNull())
+							{
+								if ( e.tagName() == "server")
+								{
+									params->setServer(e.text());
+								}
+								else if ( e.tagName() == "port" )
+								{
+									params->setPort(e.text().toInt());
+								}
+							}
+							
+							n1 = n1.nextSibling();
+						}
+						
+					}
+				}
+				n = n.nextSibling();
+			}
+
+		}
+		
+		file.close();
+	}
+	
+	return params;
+}
+
 
 

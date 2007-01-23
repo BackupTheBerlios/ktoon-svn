@@ -92,6 +92,8 @@ void KTProjectManager::setParams(KTProjectManagerParams *params)
 {
 	if ( d->params ) delete d->params;
 	d->params = params;
+	
+	d->handler->initialize(d->params);
 }
 
 KTProjectManagerParams *KTProjectManager::params() const

@@ -41,6 +41,8 @@
 #include "ktnetprojectmanagerhandler.h"
 #include "ktnetprojectmanagerparams.h"
 #include "ktlocalprojectmanagerhandler.h"
+#include "ktconnectdialog.h"
+#include "ktsavenetproject.h"
 
 #include <dsound/daudioplayer.h>
 
@@ -56,6 +58,8 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 //
+
+#include "ktchat.h"
 
 KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_projectManager(0), m_viewDoc(0), m_animationSpace(0), m_exposureSheet(0), m_scenes(0)
 {
@@ -256,7 +260,7 @@ bool KTMainWindow::closeProject()
 
 void KTMainWindow::openProject()
 {
-	QString package = QFileDialog::getOpenFileName( this, tr("Import project package"), CACHE_DIR, tr("KToon Project Package (*.ktn)"));
+	QString package = QFileDialog::getOpenFileName( this, tr("Import project package"), CACHE_DIR, tr("KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)"));
 	
 	if( package.isEmpty() ) return;
 	
@@ -268,6 +272,26 @@ void KTMainWindow::openProject(const QString &path)
 	dWarning() << "Opening project: " << path;
 	
 	if(path.isEmpty() ) return;
+	
+	if ( path.endsWith(".ktnet"))
+	{
+		KTSaveNetProject loader;
+		KTNetProjectManagerParams *params = loader.params(path);
+		
+		KTConnectDialog cndialog;
+		cndialog.setServer(params->server());
+		cndialog.setPort(params->port());
+		
+		if ( cndialog.exec() == QDialog::Accepted )
+		{
+			m_projectManager->setHandler( new KTNetProjectManagerHandler );
+			m_projectManager->setParams(params);
+		}
+		else
+		{
+			return;
+		}
+	}
 	
 	if ( closeProject() )
 	{
@@ -412,7 +436,7 @@ void KTMainWindow::showHelpPage(const QString &title, const QString &filePath)
 
 void KTMainWindow::saveAs()
 {
-	QString fileName = QFileDialog::getSaveFileName( this, tr("Build project package"), CACHE_DIR, "KToon Project Package (*.ktn)");
+	QString fileName = QFileDialog::getSaveFileName( this, tr("Build project package"), CACHE_DIR, "KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)");
 	
 	if ( fileName.isEmpty() )
 	{

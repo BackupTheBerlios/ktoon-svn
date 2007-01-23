@@ -36,6 +36,7 @@
 #include "ktconnectpackage.h"
 
 #include "ktsavenetproject.h"
+#include "ktopenpackage.h"
 
 KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent)
 {
@@ -80,9 +81,14 @@ bool KTNetProjectManagerHandler::saveProject(const QString &fileName, const KTPr
 
 bool KTNetProjectManagerHandler::loadProject(const QString &fileName, KTProject *project)
 {
-	qFatal("ktnetprojectmanagerhandler.h: Can't load");
+	if ( m_socket->state() != QAbstractSocket::ConnectedState  )
+		return false;
 	
-	return false;
+	KTOpenPackage package(m_params->projectName());
+	
+	m_socket->send(package);
+	
+	return true;
 }
 
 bool KTNetProjectManagerHandler::initialize(KTProjectManagerParams *params)

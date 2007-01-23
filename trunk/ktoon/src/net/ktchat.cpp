@@ -17,33 +17,63 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTSAVENETPROJECT_H
-#define KTSAVENETPROJECT_H
 
-#include <ktsaveproject.h>
-#include <QString>
+#include "ktchat.h"
 
-class KTNetProjectManagerParams;
+#include <QTextBrowser>
+#include <QLineEdit>
 
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class KTSaveNetProject : public KTSaveProject
+#include <QGridLayout>
+
+class KTChat::Private
 {
 	public:
-		KTSaveNetProject();
-		KTSaveNetProject(const QString &server, int port);
-		~KTSaveNetProject();
+		Private()
+		{
+		}
 		
-		virtual bool save(const QString &filename, const KTProject *project);
-		virtual bool load(const QString &filename, KTProject *project);
+		~Private()
+		{
+			delete lineEdit;
+			delete browser;
+		}
 		
-		KTNetProjectManagerParams *params(const QString &filename);
-		
-	private:
-		QString m_server;
-		int m_port;
-
+		QLineEdit *lineEdit;
+		QTextBrowser *browser;
 };
 
-#endif
+KTChat::KTChat(QWidget *parent) : QDialog(parent), d(new Private)
+{
+	QGridLayout *layout = new QGridLayout(this);
+	
+	
+	d->browser = new QTextBrowser;
+	layout->addWidget(d->browser, 0, 1);
+	
+	d->lineEdit = new QLineEdit;
+	layout->addWidget(d->lineEdit, 1, 1);
+	
+	
+	connect(d->lineEdit, SIGNAL(returnPressed()), this, SLOT(sendMessage()));
+}
+
+
+KTChat::~KTChat()
+{
+	delete d;
+}
+
+
+void KTChat::addMessage(const QString &from, const QString &message)
+{
+	d->browser->append(QString("<%1> %2").arg(from).arg(message));
+}
+
+void KTChat::sendMessage()
+{
+	QString text = d->lineEdit->text();
+	d->lineEdit->clear();
+	
+	emit requestSendMessage(text);
+}
+
