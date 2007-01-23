@@ -17,38 +17,39 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#ifndef PROJECTCOLLECTION_H
-#define PROJECTCOLLECTION_H
+#ifndef PARSERSLISTPARSER_H
+#define PARSERSLISTPARSER_H
 
 /**
- * @author Jorge Cuadrado \<kuadrosxx@gmail.com\>
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-#include <QHash>
-#include <ktproject.h>
 
-namespace Server {
-class Connection;
-}
+#include <ktxmlparserbase.h>
 
+namespace Parsers {
 
-class ProjectCollection 
+class ListParser: public KTXmlParserBase
 {
 	public:
-		ProjectCollection();
-		~ProjectCollection();
+		ListParser();
 		
-		void createProject(Server::Connection *cnn, const QString& author);
-		void openProject(Server::Connection *cnn);
-		bool handleProjectRequest(Server::Connection *cnn, const QString strRequest);
-		QStringList projects() const;
-		void closeProject(const QString & name);
-		void saveProject(const QString & name);
+		virtual ~ListParser();
+		
+		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+		virtual bool endTag(const QString &tag);
+		virtual void text(const QString &text);
+		
+		bool isRegexp();
+		bool isCaseSensitive();
+		QString pattern();
+		int type();
 		
 		
 	private:
-		QHash<QString, KTProject * > m_projects;
+		struct Private;
+		Private *const d;
 		
-};
 
+};
+}
 #endif

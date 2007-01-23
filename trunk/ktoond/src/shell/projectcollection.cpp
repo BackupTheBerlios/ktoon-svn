@@ -35,6 +35,8 @@
 
 #include <ddebug.h>
 
+#include "project.h"
+
 ProjectCollection::ProjectCollection()
 {
 }
@@ -44,7 +46,7 @@ ProjectCollection::~ProjectCollection()
 {
 }
 
-void ProjectCollection::createProject( Server::Connection *cnn )
+void ProjectCollection::createProject( Server::Connection *cnn, const QString &author )
 {
 	QString projectName = cnn->data(Info::ProjectName).toString();
 	if(!m_projects.contains( projectName ))
@@ -79,9 +81,8 @@ void ProjectCollection::openProject( Server::Connection *cnn )
 		}
 	}
 	
-
-	//TODO: enviar el paquete project
-	
+	Packages::Project project(dAppProp->cacheDir() + "/" + projectName );
+	cnn->sendToClient(project.toString());
 	
 }
 QStringList ProjectCollection::projects() const
@@ -103,9 +104,9 @@ void ProjectCollection::saveProject(const QString & name)
 	if(m_projects.contains( name ))
 	{
 		KTSaveProject *saver = new KTSaveProject;
-			
+		
 		saver->save(dAppProp->cacheDir() + "/" + name, m_projects[name]);
-			
+		
 		delete saver;
 	}
 }
@@ -113,7 +114,7 @@ void ProjectCollection::saveProject(const QString & name)
 bool ProjectCollection::handleProjectRequest(Server::Connection *cnn, const QString strRequest)
 {
 	QString projectName = cnn->data(Info::ProjectName).toString();
-	
+	SHOW_VAR(projectName);
 	KTRequestParser parser;
 	if ( parser.parse(strRequest) )
 	{

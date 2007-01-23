@@ -16,3 +16,6 @@ HEADERS += error.h connectparser.h \
 chatparser.h \
 noticeparser.h \
 wallparser.h
+
+TARGET = serverpackages
+

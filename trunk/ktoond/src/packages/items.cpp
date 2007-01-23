@@ -50,7 +50,7 @@ Items::~Items()
 
 void Items::addItem(const QString& item )
 {
-	m_root.appendChild(createElement("item").appendChild( createTextNode ( item )));
+	m_root.appendChild(createElement("item")).appendChild( createTextNode ( item ));
 }
 
 void Items::addItems(const QStringList& items)

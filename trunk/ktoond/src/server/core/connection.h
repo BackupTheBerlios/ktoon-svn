@@ -70,7 +70,7 @@ class Connection : public QThread
 		void error(QTcpSocket::SocketError socketError);
 		void requestSendToAll(const QString &msg);
 		void connectionClosed( Server::Connection *cnn);
-		void packageReaded(Server::Connection *cnn, const QString & packages  );
+		void packageReaded(Server::Connection *cnn, const QString& root,const QString & packages  );
 		
 	private:
 		class Private;

@@ -5,18 +5,18 @@
 
 HEADERS += package.h \
            items.h \
-           project.h  \
+           project.h \
            newprojectparser.h \
-           openprojectparser.h
+           openprojectparser.h \
+           listparser.h 
 SOURCES += package.cpp \
            items.cpp \
-           project.cpp  \
+           project.cpp \
            newprojectparser.cpp \
-           openprojectparser.cpp
+           openprojectparser.cpp \
+           listparser.cpp 
 CONFIG += release \
-          warn_on \
-          staticlib 
+warn_on \
+staticlib
 TEMPLATE = lib
-
 include(packages_config.pri)
-

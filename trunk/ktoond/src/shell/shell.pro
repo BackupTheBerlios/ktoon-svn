@@ -22,4 +22,9 @@ include($$LIB_DIR/lib.pri)
 SERVER_DIR = ../server
 include($$SERVER_DIR/server.pri)
 
+PACKAGES_DIR = ../packages/
+include($$PACKAGES_DIR/packages.pri)
+
+
+
 

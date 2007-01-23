@@ -88,12 +88,9 @@ void TcpServer::handle(Server::Connection *cnx)
 	connect(cnx, SIGNAL(finished()), cnx, SLOT(deleteLater()));
 	connect(cnx, SIGNAL(requestSendToAll( const QString& )), this, SLOT(sendToAll( const QString& )));
 	
-// 	connect(cnx, SIGNAL(packageReaded(Server::Connection*, const QString&)), this, SLOT(handlePackage(Server::Connection*, const QString&)));
+	connect(cnx, SIGNAL(packageReaded(Server::Connection*, const QString&, const QString&)), this, SLOT(handlePackage(Server::Connection*, const QString&, const QString&)));
 	
 	connect(cnx, SIGNAL(connectionClosed(Server::Connection*)), this, SLOT(removeConnection(Server::Connection*)));
-	
-	
-// 	d->projects.createProject(cnx);
 	
 }
 

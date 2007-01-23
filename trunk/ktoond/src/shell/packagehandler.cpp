@@ -27,6 +27,11 @@
 #include <ddebug.h>
 
 
+#include "newprojectparser.h"
+#include "openprojectparser.h"
+#include "listparser.h"
+
+
 class PackageHandler::Private
 {
 	public:
@@ -65,22 +70,36 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 			dWarning() << "NO PROJECT NAME!";
 		}
 	}
-	else if( root == "connect" )
-	{
-		//Peticion de conexion al servidor
-	}
 	else if( root == "list")
 	{
 		//Lista de items, por ejemplo proyectos
+		Parsers::ListParser parser;
+		if(parser.parse(package))
+		{
+			
+		}
+		
 	}
 	else if( root == "open")
 	{
-		cnx->setData(Info::ProjectName, "name"); // FIXME
+		Parsers::OpenProjectParser parser;
+		if(parser.parse(package))
+		{
+			cnx->setData(Info::ProjectName, parser.name());
+		}
 // 		Abrir proyecto
 	}
 	else if ( root == "newproject" )
 	{
-		cnx->setData(Info::ProjectName, "name"); // FIXME
+		Parsers::NewProjectParser parser;
+		if(parser.parse(package))
+		{
+			cnx->setData(Info::ProjectName, parser.name());
+			d->projects->createProject(cnx, parser.author());
+		}
+		else
+		{
+		}
 	}
 }
 

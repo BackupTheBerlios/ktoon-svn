@@ -80,7 +80,7 @@ void Connection::run()
 		QDomDocument doc;
 		if (doc.setContent(readed.trimmed()) )
 		{
-			d->server->handlePackage(this, doc.documentElement().tagName(), readed);
+			emit packageReaded(this, doc.documentElement().tagName(), readed);
 		}
 		else
 		{
