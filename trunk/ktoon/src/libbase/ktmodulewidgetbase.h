@@ -78,6 +78,7 @@ class KTOON_EXPORT KTModuleWidgetBase : public QWidget, public KTAbstractProject
 		void activate(bool);
 		
 		void requestTriggered(const KTProjectRequest *event);
+		void localRequestTriggered(const KTProjectRequest *event);
 };
 
 #endif

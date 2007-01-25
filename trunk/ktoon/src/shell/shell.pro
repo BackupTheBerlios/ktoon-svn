@@ -4,17 +4,13 @@
 # Target is an application:  ../../bin/ktoon.bin
 
 INSTALLS += ktdata \
-            target \
-	    launcher
-
+            launcher \
+            target 
 target.path = /bin/ 
+launcher.files += "../../install/ktoon" 
+launcher.path = / 
 ktdata.files += data/* 
 ktdata.path = /data 
-
-launcher.path = /
-launcher.files += "../../install/ktoon"
-
-
 TRANSLATIONS += data/translations/ktoon_es.ts \
                 data/translations/ktoon_fr.ts \
                 data/translations/ktoon_ru.ts 
@@ -26,7 +22,8 @@ HEADERS += ktmainwindow.h \
            crashwidget.h \
            ktapplication.h \
            configwizard.h \
-           ktlocalprojectmanagerhandler.h 
+           ktlocalprojectmanagerhandler.h \
+           kthandlerlocalrequest.h 
 SOURCES += main.cpp \
            ktmainwindow.cpp \
            ktstatusbar.cpp \
@@ -37,12 +34,12 @@ SOURCES += main.cpp \
            ktapplication.cpp \
            configwizard.cpp \
            ktmainwindow_gui.cpp \
-           ktlocalprojectmanagerhandler.cpp 
+           ktlocalprojectmanagerhandler.cpp \
+           kthandlerlocalrequest.cpp 
 include(shell_config.pri)
 include(../../ktconfig.pri)
 TARGET = ../../bin/ktoon.bin
 TEMPLATE = app
-
 linux-g++{
   TARGETDEPS += ../../src/dlib/dcore/libdcore.so \
   ../../src/dlib/dgui/libdgui.so \
@@ -60,4 +57,3 @@ linux-g++{
   ../../src/components/colorpalette/libcolorpalette.a \
   ../../src/components/scenes/libscenes.a
 }
-

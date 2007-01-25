@@ -73,10 +73,7 @@ void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* re
 
 bool KTNetProjectManagerHandler::commandExecuted(KTProjectResponse *response)
 {
-	dFatal() << "commandExecuted";
 	if ( response->mode() == KTProjectResponse::Do ) return true;
-	/*
-	*/
 	
 	// FIXME: ESTO LLEGA DESDE EL SERVIDOR!
 	

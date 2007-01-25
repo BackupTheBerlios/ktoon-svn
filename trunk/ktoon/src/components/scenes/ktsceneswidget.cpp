@@ -108,7 +108,7 @@ void KTScenesWidget::selectScene(const QString & name, int index)
 {
 	KTProjectRequest event = KTRequestBuilder::createSceneRequest( index, KTProjectRequest::Select);
 	
-	emit requestTriggered( &event );
+	emit localRequestTriggered( &event );
 }
 
 void KTScenesWidget::sceneDobleClick(QTreeWidgetItem * item, int )

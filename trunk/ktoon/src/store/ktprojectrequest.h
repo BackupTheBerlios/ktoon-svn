@@ -118,11 +118,11 @@ class STORE_EXPORT KTProjectRequest
 		virtual bool isValid() const;
 		
 		QString xml() const;
-		
 
 	private:
 		QString m_xml;
 		int m_id;
+		bool m_local;
 };
 
 

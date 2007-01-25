@@ -457,11 +457,21 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 void KTPaintArea::layerResponse(KTLayerResponse *event)
 {
 	if ( !scene() ) return;
+	
+	KTScene *sscene = dynamic_cast<KTScene *>(scene());
+	if( event->action() == KTProjectRequest::View)
+	{
+		sscene->layers()[event->layerIndex()]->setVisible(event->arg().toBool());
+	}
+	
 	if ( event->action() != KTProjectRequest::Add ||  event->action() != KTProjectRequest::Remove )
 	{
 		qobject_cast<KTScene *>(scene())->drawCurrentPhotogram();
 		viewport()->update(scene()->sceneRect().toRect() );
 	}
+	
+	
+	
 }
 
 void KTPaintArea::sceneResponse(KTSceneResponse *event)

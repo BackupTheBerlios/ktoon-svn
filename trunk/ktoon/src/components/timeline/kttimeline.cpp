@@ -375,7 +375,7 @@ bool KTTimeLine::requestFrameAction(int action, int framePos, int layerPos, int 
 		{
 			KTProjectRequest event = KTRequestBuilder::createFrameRequest(scenePos, layerPos, framePos, KTProjectRequest::Select, arg);
 		
-			emit requestTriggered( &event );
+			emit localRequestTriggered( &event );
 			return true;
 		}
 		break;

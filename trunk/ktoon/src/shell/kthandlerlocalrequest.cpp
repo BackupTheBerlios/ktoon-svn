@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,92 +17,26 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#include "kthandlerlocalrequest.h"
 
-#include "ktprojectrequest.h"
-
+#include "ktrequestparser.h"
 #include "ktprojectresponse.h"
-#include "ktrequestbuilder.h"
+#include "ktprojectmanager.h"
 
-#include <ddebug.h>
-
-KTProjectRequestArgument::KTProjectRequestArgument()
+KTHandlerLocalRequest::KTHandlerLocalRequest(const KTProjectManager *projectManager, QObject *parent ) : QObject(parent), m_projectManager(projectManager)
 {
 }
 
-KTProjectRequestArgument::KTProjectRequestArgument(const QString &v) : m_value(v)
+
+KTHandlerLocalRequest::~KTHandlerLocalRequest()
 {
 }
 
-KTProjectRequestArgument::~KTProjectRequestArgument()
+void KTHandlerLocalRequest::handle(const KTProjectRequest *request)
 {
-}
-
-void KTProjectRequestArgument::operator = (const QString &value)
-{
-	setValue(value);
-}
-
-void KTProjectRequestArgument::setValue(const QString &value)
-{
-	m_value = value;
-}
-
-bool KTProjectRequestArgument::toBool()
-{
-	if ( m_value == "false" || m_value == "0" )
-	{
-		return false;
-	}
+	KTRequestParser parser;
+	parser.parse( request->xml());
 	
-	return true;
+	emit responsed(parser.response());
 }
-
-int KTProjectRequestArgument::toInt()
-{
-	return m_value.toInt();
-}
-
-double KTProjectRequestArgument::toReal()
-{
-	return m_value.toDouble();
-}
-
-QString KTProjectRequestArgument::toString()
-{
-	return m_value;
-}
-
-KTProjectRequest::KTProjectRequest(const QString &xml) : m_xml(xml), m_id(Project), m_local(false)
-{
-}
-
-
-KTProjectRequest::~KTProjectRequest()
-{
-}
-
-
-void KTProjectRequest::setId(int id)
-{
-	m_id = id;
-}
-
-int KTProjectRequest::id() const
-{
-	return m_id;
-}
-
-
-
-bool KTProjectRequest::isValid() const
-{
-	return !m_xml.isEmpty(); // TODO: Verficar que sea XML
-}
-
-
-QString KTProjectRequest::xml() const
-{
-	return m_xml;
-}
-
-

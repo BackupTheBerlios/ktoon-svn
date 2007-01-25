@@ -57,12 +57,13 @@
 
 // Projects
 #include "ktprojectmanager.h"
+#include "kthandlerlocalrequest.h"
 #include "ktsplash.h"
 
 #include "ktviewdocument.h"
 
 class KTProjectManagerParams;
-
+class KTProjectResponse;
 
 /**
  * Ventana principal de la aplicación
@@ -110,6 +111,7 @@ class KTMainWindow : public DTabbedMainWindow
 		
 		void ui4project(QWidget *widget);
 		void ui4paintArea(QWidget *widget);
+		void ui4handlerLocalRequest(QWidget *widget);
 		
 	protected:
 		/**
@@ -161,6 +163,7 @@ class KTMainWindow : public DTabbedMainWindow
 		
 		void createCommand(const KTPaintAreaEvent *event);
 		
+		
 	private:
 		KTProjectManager *m_projectManager;
 		KToon::RenderType m_renderType;
@@ -172,7 +175,7 @@ class KTMainWindow : public DTabbedMainWindow
 		KTStatusBar *m_statusBar;
 		DActionManager *m_actionManager;
 		QMenu *m_fileMenu,*m_settingsMenu, *m_viewMenu, *m_insertMenu, *m_toolsMenu, *m_windowMenu,*m_helpMenu;
-		
+		KTHandlerLocalRequest *m_handlerLocalRequest;
 		QStringList m_recentProjects;
 		
 		QMenu *m_recentProjectsMenu;
@@ -187,6 +190,9 @@ class KTMainWindow : public DTabbedMainWindow
 		KTColorPalette *m_colorPalette;
 		KTPenWidget *m_penWidget;
 		KTCameraWidget *m_cameraWidget;
+		
+	signals:
+		void responsed( KTProjectResponse *);
 };
 
 #endif

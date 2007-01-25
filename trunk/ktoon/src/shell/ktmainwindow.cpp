@@ -86,6 +86,8 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_projectMan
 	
 	m_projectManager->setHandler( new KTLocalProjectManagerHandler );
 	
+	m_handlerLocalRequest = new KTHandlerLocalRequest( m_projectManager, this);
+	
 // 	setProjectManager( projectManager );
 	
 	splash->setMessage( tr("Setting up the project manager") );
@@ -164,6 +166,7 @@ void KTMainWindow::newViewDocument(const QString &title)
 		addWidget( m_viewDoc, true, Drawing);
 		connectToDisplays( m_viewDoc );
 		ui4project( m_viewDoc );
+		ui4handlerLocalRequest(m_viewDoc );
 		
 		m_animationSpace = new KTWorkspace;
 		m_animationSpace->setWindowIcon(QIcon(THEME_DIR+"/icons/animation_mode.png"));
@@ -434,6 +437,13 @@ void KTMainWindow::ui4paintArea(QWidget *widget)
 	connect(widget, SIGNAL(paintAreaEventTriggered(const KTPaintAreaEvent *)), this, SLOT(createCommand(const KTPaintAreaEvent *)));
 }
 
+void KTMainWindow::ui4handlerLocalRequest(QWidget *widget)
+{
+	connect(widget, SIGNAL(localRequestTriggered(const KTProjectRequest *)), m_handlerLocalRequest, SLOT(handle(const KTProjectRequest *)));
+	
+	connect(m_handlerLocalRequest, SIGNAL(responsed( KTProjectResponse* )), widget, SLOT(handleProjectResponse(KTProjectResponse *)));
+}
+
 void KTMainWindow::messageToStatus(const QString &msg)
 {
 	m_statusBar->setStatus(msg, msg.length() * 90);
@@ -528,6 +538,7 @@ void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
 		m_projectManager->undoHistory()->push(command);
 	}
 }
+
 
 
 

@@ -144,6 +144,7 @@ class KTViewDocument : public QMainWindow
 	signals:
 		void sendToStatus(const QString& msg);
 		void requestTriggered(const KTProjectRequest *event);
+		void localRequestTriggered(const KTProjectRequest *event);
 		
 	protected:
 // 		void closeEvent(QCloseEvent *e);

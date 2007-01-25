@@ -70,8 +70,8 @@ KTProjectRequest KTRequestBuilder::createItemRequest(int sceneIndex, int layerIn
 	root.appendChild(scene);
 	
 	doc.appendChild(root);
-	
-	return KTProjectRequest(doc.toString(0));
+	KTProjectRequest request(doc.toString(0));
+	return request;
 }
 
 KTProjectRequest KTRequestBuilder::createFrameRequest(int sceneIndex, int layerIndex, int frameIndex, int actionId, const QVariant &arg, const QByteArray &data)

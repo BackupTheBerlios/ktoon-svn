@@ -165,7 +165,7 @@ void KTExposureSheet::applyAction(int action)
 void KTExposureSheet::setScene(int index)
 {
 	D_FUNCINFO;
-	if(index != m_scenes->indexOf(m_currentTable) && m_scenes->count() >= index)
+	if(m_scenes->count() >= index)
 	{
 		m_scenes->blockSignals(true);
 		m_scenes->setCurrentIndex(index);
@@ -176,7 +176,7 @@ void KTExposureSheet::setScene(int index)
 void KTExposureSheet::emitRequestChangeScene(int index)
 {
 	KTProjectRequest request = KTRequestBuilder::createSceneRequest(index, KTProjectRequest::Select);
-	emit requestTriggered( &request );
+	emit localRequestTriggered( &request );
 }
 
 void KTExposureSheet::insertItem(int indexLayer, int indexFrame)
@@ -196,7 +196,7 @@ void KTExposureSheet::selectFrame(int indexLayer, int indexFrame)
 {
 	KTProjectRequest request = KTRequestBuilder::createFrameRequest( m_scenes->currentIndex() , indexLayer, indexFrame,KTProjectRequest::Select, "1" );
 	
-	emit requestTriggered( &request );
+	emit localRequestTriggered( &request );
 }
 
 void KTExposureSheet::changeVisiblityLayer(int visualIndexLayer, bool visibility)
