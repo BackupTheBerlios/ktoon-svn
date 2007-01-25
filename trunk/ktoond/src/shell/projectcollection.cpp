@@ -36,26 +36,30 @@
 #include <ddebug.h>
 
 #include "project.h"
-
+namespace Projects
+{
+	
 ProjectCollection::ProjectCollection()
 {
+	m_db = new Database(dAppProp->configDir() + "/projects.xml");
 }
 
 
 ProjectCollection::~ProjectCollection()
 {
+	delete m_db;
 }
 
 void ProjectCollection::createProject( Server::Connection *cnn, const QString &author )
 {
 	QString projectName = cnn->data(Info::ProjectName).toString();
+	
 	if(!m_projects.contains( projectName ))
 	{
-		SProject *project = new SProject;
-		
+		SProject *project = new SProject( dAppProp->cacheDir() +"/"+ m_db->nextFileName());
 		project->setProjectName(projectName);
 		m_projects.insert(projectName, project);
-		
+		m_db->addProject(project);
 		saveProject(projectName);
 	}
 	else
@@ -68,15 +72,13 @@ void ProjectCollection::createProject( Server::Connection *cnn, const QString &a
 void ProjectCollection::openProject( Server::Connection *cnn )
 {
  	QString projectName = cnn->data(Info::ProjectName).toString();
-	QString fileName = dAppProp->cacheDir() + "/" + projectName ;
-	if ( !fileName.endsWith(".ktn") )
-	{
-		fileName += ".ktn";
-	}
+	
+	QString fileName = m_db->fileName(projectName);
 	if(!m_projects.contains( projectName ))
 	{
 		KTSaveProject *loader = new KTSaveProject;
-		SProject *project = new SProject;
+		
+		SProject *project = new SProject(fileName);
 		
 		loader->load(fileName, project);
 		
@@ -100,10 +102,8 @@ void ProjectCollection::openProject( Server::Connection *cnn )
 }
 QStringList ProjectCollection::projects() const
 {
-	
 	QDir dir(dAppProp->cacheDir());
 	return dir.entryList();
-	
 }
 
 void ProjectCollection::closeProject(const QString & name)
@@ -111,8 +111,6 @@ void ProjectCollection::closeProject(const QString & name)
 	//FIXME: verificar que no hay otros con el proyecto abierto, antes de ejecutar esta funcion
 	saveProject(name);
 	delete m_projects.take(name);
-	
-	
 }
 
 void ProjectCollection::saveProject(const QString & name)
@@ -150,4 +148,5 @@ bool ProjectCollection::handleProjectRequest(Server::Connection *cnn, const QStr
 	}
 	
 	return false;
+}
 }

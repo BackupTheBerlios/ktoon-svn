@@ -35,13 +35,14 @@ class SProject : public KTProject
 	Q_OBJECT;
 	
 	public:
-		SProject(QObject *parent = 0);
+		SProject(const QString & filename , QObject *parent = 0);
 		~SProject();
 		void resetTimer();
+		QDomElement info(QDomDocument &doc) const;
 		
 	private:
 		QTimer *m_saver;
-		
+		QString m_filename;
 		
 	public slots:
 		void save();

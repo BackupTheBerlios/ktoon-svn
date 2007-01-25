@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef PROJECTCOLLECTION_H
-#define PROJECTCOLLECTION_H
+#ifndef PROJECTSPROJECTCOLLECTION_H
+#define PROJECTSPROJECTCOLLECTION_H
 
 /**
  * @author Jorge Cuadrado \<kuadrosxx@gmail.com\>
@@ -27,11 +27,14 @@
 #include <QHash>
 #include <sproject.h>
 
+#include "database.h"
+
 namespace Server {
 class Connection;
 }
 
-
+namespace Projects
+{
 class ProjectCollection 
 {
 	public:
@@ -48,7 +51,8 @@ class ProjectCollection
 		
 	private:
 		QHash<QString, SProject * > m_projects;
+		Database *m_db;
 		
 };
-
+}
 #endif

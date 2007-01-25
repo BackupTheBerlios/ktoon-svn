@@ -44,12 +44,12 @@ class PackageHandler::Private
 			delete projects;
 		}
 		
-		ProjectCollection *projects;
+		Projects::ProjectCollection *projects;
 };
 
 PackageHandler::PackageHandler() : PackageHandlerBase(), d(new Private)
 {
-	d->projects = new ProjectCollection();
+	d->projects = new Projects::ProjectCollection();
 }
 
 PackageHandler::~PackageHandler()

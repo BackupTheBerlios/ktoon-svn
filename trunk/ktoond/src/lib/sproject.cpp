@@ -24,7 +24,7 @@
 #include <dapplicationproperties.h>
 #include <ddebug.h>
 
-SProject::SProject(QObject *parent) : KTProject(parent)
+SProject::SProject(const QString & filename, QObject *parent) : KTProject(parent), m_filename(filename)
 {
 	m_saver = new QTimer(this);
 	m_saver->setInterval( 30000 );
@@ -46,21 +46,30 @@ SProject::~SProject()
 void SProject::save()
 {
 	D_FUNCINFOX("server");
-	bool result = false;
-	QString fileName = dAppProp->cacheDir() + "/" + projectName();
-	SHOW_VAR(fileName);
-	KTSaveProject *saver = 0;
+	KTSaveProject *saver = new KTSaveProject;
+	saver->save(m_filename, this);
+	delete saver;
+}
+
+void SProject::timerEvent ( QTimerEvent *  )
+{
+	save();
+}
+
+QDomElement SProject::info(QDomDocument &doc) const
+{
 	
+	QDomElement project = doc.createElement("project");
+	
+	project.setAttribute("name", projectName());
+	
+	QString fileName = dAppProp->cacheDir() + "/" + projectName();
 	if ( !fileName.endsWith(".ktn") )
 	{
 		fileName += ".ktn";
 	}
-	saver = new KTSaveProject;
-	result = saver->save(fileName, this);
-	delete saver;
-}
-
-void SProject::timerEvent ( QTimerEvent * event )
-{
-	save();
+	
+	project.setAttribute("filename", m_filename);
+	
+	return project;
 }
