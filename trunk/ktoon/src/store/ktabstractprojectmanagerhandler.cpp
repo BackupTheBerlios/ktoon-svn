@@ -50,4 +50,7 @@ bool KTAbstractProjectHandler::commandExecuted(KTProjectResponse *response)
 	return true;
 }
 
-
+bool KTAbstractProjectHandler::isValid() const
+{
+	return true;
+}

@@ -170,8 +170,8 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 		KTRequestParser parser;
 		if ( parser.parse(package) )
 		{
-			
-			emitRequest(&KTRequestBuilder::fromResponse(parser.response() ));
+			KTProjectRequest request = KTRequestBuilder::fromResponse(parser.response() );
+			emitRequest(&request);
 			
 		}
 		else // TODO: mostrar error
@@ -211,3 +211,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 }
 
 
+bool KTNetProjectManagerHandler::isValid() const
+{
+	return m_socket->isOpen();
+}

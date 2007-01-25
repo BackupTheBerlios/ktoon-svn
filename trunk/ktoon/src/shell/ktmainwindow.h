@@ -135,6 +135,7 @@ class KTMainWindow : public DTabbedMainWindow
 		void newProject();
 		bool closeProject();
 		void openProject();
+		void openProjectFromServer();
 		
 		void save();
 		void saveAs();

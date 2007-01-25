@@ -38,11 +38,17 @@
 #include "ktpluginmanager.h"
 
 #include "ktprojectcommand.h"
+#include "ktlocalprojectmanagerhandler.h"
+
+
+// #ifdef USE_NET
 #include "ktnetprojectmanagerhandler.h"
 #include "ktnetprojectmanagerparams.h"
-#include "ktlocalprojectmanagerhandler.h"
 #include "ktconnectdialog.h"
 #include "ktsavenetproject.h"
+#include "ktlistpackage.h"
+// #end
+
 
 #include <dsound/daudioplayer.h>
 
@@ -292,6 +298,10 @@ void KTMainWindow::openProject(const QString &path)
 			return;
 		}
 	}
+	else if ( path.endsWith(".ktn") )
+	{
+		m_projectManager->setHandler( new KTLocalProjectManagerHandler );
+	}
 	
 	if ( closeProject() )
 	{
@@ -350,6 +360,13 @@ void KTMainWindow::openProject(const QString &path)
 			setUpdatesEnabled(true);
 			DOsd::self()->display( tr("Cannot open project!"), DOsd::Error );
 		}
+	}
+}
+
+void KTMainWindow::openProjectFromServer()
+{
+	if(!m_projectManager->isValid())
+	{
 	}
 }
 
@@ -453,11 +470,6 @@ void KTMainWindow::saveProject()
 	{
 		saveAs();
 		return;
-	}
-	
-	if( !m_fileName.endsWith(".ktn"))
-	{
-		m_fileName += ".ktn"; // FIXME
 	}
 	
 	if ( m_projectManager->saveProject(m_fileName) )

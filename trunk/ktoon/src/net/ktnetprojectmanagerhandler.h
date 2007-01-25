@@ -49,6 +49,8 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		void emitRequest(KTProjectRequest *request);
 		void handlePackage(const QString &root, const QString &package);
 		
+		virtual bool isValid() const;
+		
 	private:
 		KTNetSocket *m_socket;
 		QString m_projectName, m_author;

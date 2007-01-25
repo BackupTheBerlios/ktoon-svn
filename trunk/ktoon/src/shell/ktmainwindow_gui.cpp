@@ -171,6 +171,7 @@ void KTMainWindow::setupMenu()
 #endif
 	newMenu->addSeparator();
 	m_fileMenu->addAction(m_actionManager->find("openproject"));
+	m_fileMenu->addAction(m_actionManager->find("opennetproject"));
 	
 	m_recentProjectsMenu = new QMenu(tr("Recents"), this );
 	connect( m_recentProjectsMenu, SIGNAL( activated(int) ), this, SLOT( openRecent( int ) ) );
@@ -238,6 +239,11 @@ void KTMainWindow::setupMenu()
 	group->addAction(animationPerspective);
 	animationPerspective->setData(Animation);
 	
+	
+	QAction *netPerspective = new QAction(tr("Network"), this);
+	group->addAction(netPerspective);
+	netPerspective->setData(Net);
+	
 	perspectiveMenu->addActions(group->actions());
 	
 	connect(group, SIGNAL(triggered(QAction *)), this, SLOT(changePerspective(QAction *)));
@@ -286,6 +292,9 @@ void KTMainWindow::setupFileActions()
 	DAction *openFile = new DAction( QPixmap(THEME_DIR+"/icons/open.png"), tr( "Open project" ), tr("Ctrl+O"), this, SLOT(openProject()), m_actionManager );
 	m_actionManager->insert( openFile, "openproject", "file" );
 	openFile->setStatusTip(tr("Loads an existent project"));
+	
+	DAction *openNetFile = new DAction(QPixmap(THEME_DIR+"/icons/open.png"), tr("Open project from server..."), tr(""), this, SLOT(openProjectFromServer()), m_actionManager);
+	m_actionManager->insert(openNetFile, "opennetproject", "file");
 	
 	DAction *save = new DAction( QPixmap(THEME_DIR+"/icons/save.png"), tr( "Save project" ),QKeySequence(tr("Ctrl+S")), this, SLOT(saveProject()), m_actionManager);
 	m_actionManager->insert( save, "saveproject", "file" );
@@ -451,7 +460,17 @@ void KTMainWindow::showWidgetPage()
 
 void KTMainWindow::changePerspective(QAction *a)
 {
-	setCurrentPerspective(a->data().toInt());
+	int perspective = a->data().toInt();
+	
+	if ( perspective == Net )
+	{
+		
+	}
+	else
+	{
+		setCurrentPerspective(perspective);
+	}
+	
 	a->setChecked(true);
 }
 

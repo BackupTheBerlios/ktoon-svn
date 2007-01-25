@@ -61,6 +61,8 @@ class STORE_EXPORT KTProjectManager : public QObject
 		virtual bool saveProject(const QString &fileName);
 		virtual bool loadProject(const QString &fileName);
 		
+		bool isValid() const;
+		
 	protected slots:
 		virtual void handleProjectRequest(const KTProjectRequest *event);
 		virtual void createCommand(const KTProjectRequest *event, bool addToStack);

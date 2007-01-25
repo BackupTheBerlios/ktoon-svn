@@ -29,8 +29,7 @@
 <list/>
 */
 
-KTListPackage::KTListPackage(const QString & pattern, int type, bool regexp, bool caseSensitive)
- : QDomDocument()
+KTListPackage::KTListPackage(Type type, const QString & pattern, bool regexp, bool caseSensitive) : QDomDocument()
 {
 	QDomElement root = createElement("list");
 	root.setAttribute("version", "0");

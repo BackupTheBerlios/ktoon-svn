@@ -215,6 +215,14 @@ bool KTProjectManager::isModified() const
 }
 
 
+bool KTProjectManager::isValid() const
+{
+	if ( !d->handler ) return false;
+	
+	return d->handler->isValid();
+}
+
+
 /**
  * Esta función es ejecutada cuando un evento es disparado por el proyecto.
  * Debe reimplementarse si se quiere dar un trato distinto al evento, como por ejemplo enviarlo por la red.

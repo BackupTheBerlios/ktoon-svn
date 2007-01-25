@@ -29,7 +29,12 @@
 class KTListPackage : public QDomDocument
 {
 	public:
-		KTListPackage(const QString & pattern, int type,  bool  regexp = false, bool caseSensitive= false);
+		enum Type {
+			Project = 0x01,
+			Files
+		};
+		
+		KTListPackage(Type type, const QString &pattern,  bool  regexp = false, bool caseSensitive= false);
 		~KTListPackage();
 		
 		void setPattern(const QString & pattern);
