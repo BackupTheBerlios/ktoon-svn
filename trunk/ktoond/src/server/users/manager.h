@@ -24,6 +24,7 @@
 #include <QString>
 
 namespace Users {
+class User;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
@@ -35,7 +36,8 @@ class Manager
 		~Manager();
 		
 		bool auth(const QString &login, const QString &password);
-		
+		User *user(const QString &login);
+		QList<User*> users() const;
 		
 	private:
 		struct Private;

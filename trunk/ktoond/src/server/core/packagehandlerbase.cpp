@@ -27,6 +27,8 @@
 #include "connection.h"
 #include "dapplicationproperties.h"
 
+#include "packages/error.h"
+
 namespace Server {
 
 struct PackageHandlerBase::Private
@@ -62,6 +64,13 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 			if ( d->manager->auth(parser.login(), parser.password()) )
 			{
 				// TODO: Enviar paquete de reconocimiento
+				client->setUser(d->manager->user(parser.login()));
+			}
+			else
+			{
+				Packages::Error error(QObject::tr("Invalid login or password"), 0);
+				client->sendToClient(error);
+				client->removeConnection();
 			}
 		}
 		else

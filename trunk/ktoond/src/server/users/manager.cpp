@@ -85,7 +85,15 @@ bool Manager::auth(const QString &login, const QString &password)
 	return false;
 }
 
+User *Manager::user(const QString &login)
+{
+	return d->users[login];
+}
 
+QList<User*> Manager::users() const
+{
+	return d->users.values();
+}
 
 
 }

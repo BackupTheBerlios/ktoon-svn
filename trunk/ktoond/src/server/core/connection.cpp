@@ -32,13 +32,18 @@
 #include "ktprojectresponse.h"
 #include "ktrequestparser.h"
 
+#include "users/user.h"
+
+#include "dmd5hash.h"
+#include "dalgorithm.h"
+
 
 namespace Server {
 
 class Connection::Private
 {
 	public:
-		Private(TcpServer *server) : server(server)
+		Private(TcpServer *server) : server(server), user(0)
 		{
 		}
 		
@@ -53,6 +58,9 @@ class Connection::Private
 		bool isLogged;
 		QQueue<QString> readed;
 		QHash<int, QVariant> datas;
+		QString sign;
+		
+		Users::User *user;
 };
 
 Connection::Connection(int socketDescriptor, Server::TcpServer *server) : QThread(server), d(new Private(server))
@@ -76,7 +84,7 @@ void Connection::run()
 		
 		QString readed = d->readed.dequeue();
 		
-		dDebug("server") << "Reicived: " << readed;
+		dDebug("server") << "Reicieved: " << readed;
 		QDomDocument doc;
 		if (doc.setContent(readed.trimmed()) )
 		{
@@ -145,6 +153,43 @@ void Connection::sendToAll(const QString &text)
 {
 	emit requestSendToAll(text);
 }
+
+void Connection::sendToClient(QDomDocument &doc)
+{
+	signPackage(doc);
+	d->client->send(doc);
+}
+
+void Connection::sendToAll(QDomDocument &doc)
+{
+	signPackage(doc);
+	emit requestSendToAll(doc.toString(0));
+}
+
+void Connection::signPackage(QDomDocument &doc)
+{
+	doc.documentElement().setAttribute("sign", d->sign);
+}
+
+void Connection::setUser(Users::User *user)
+{
+	d->user = user;
+	generateSign();
+}
+
+Users::User *Connection::user() const
+{
+	return d->user;
+}
+
+void Connection::generateSign()
+{
+	if ( d->user )
+	{
+		d->sign = DMD5Hash::hash(d->user->login()+d->user->password()+DAlgorithm::randomString(DAlgorithm::random() % 10));
+	}
+}
+
 
 }
 

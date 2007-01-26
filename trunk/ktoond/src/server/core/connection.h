@@ -26,9 +26,12 @@
 #include <QHash>
 #include <QVariant>
 #include "serverclient.h"
-// #include <QDomDocument>
 
 class KTProjectRequest;
+
+namespace Users {
+	class User;
+}
 
 namespace Server {
 class TcpServer;
@@ -53,6 +56,10 @@ class Connection : public QThread
 		void appendTextReaded(const QString &readed);
 		
 		void sendToClient(const QString &text) const;
+		void sendToAll(const QString &text);
+		
+		void sendToClient(QDomDocument &doc);
+		void sendToAll(QDomDocument &doc);
 		
 		void setData(int key, const QVariant &value);
 		QVariant data(int key) const;
@@ -60,7 +67,13 @@ class Connection : public QThread
 		Client *client() const;
 		TcpServer *server() const; // FIXME: REMOVER, NO USAR
 		
-		void sendToAll(const QString &text);
+		void setUser(Users::User *user);
+		Users::User *user() const;
+		
+		void generateSign();
+		
+	protected:
+		void signPackage(QDomDocument &doc);
 		
 	public slots:
 		void removeConnection();

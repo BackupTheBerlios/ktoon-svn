@@ -31,6 +31,7 @@ Notas generales:
 	</options>
 <list/>
 
+<listprojects />
 
 <!-- Abrir proyecto -->
 <openproject version="0">
@@ -87,6 +88,15 @@ Notas generales:
 		<![CDATA[KTN encoded with Base64]]>
 	</data>
 </project>
+
+
+<!-- Respuesta a <listprojects /> -->
+<projects>
+	<project name="" author="" description="" />
+	<project name="" author="" description="" />
+	<project name="" author="" description="" />
+</projects>
+
 
 
 <!-- Mensaje de chat -->

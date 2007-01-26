@@ -35,14 +35,9 @@
 class PackageHandler::Private
 {
 	public:
-		Private()
-		{
-		}
+		Private(){}
 		
-		~Private()
-		{
-			delete projects;
-		}
+		~Private() { delete projects; }
 		
 		Projects::ProjectCollection *projects;
 };
@@ -109,16 +104,15 @@ void PackageHandler::handleProjectRequest(Server::Connection *cnn, const QString
 {
 	if ( d->projects->handleProjectRequest( cnn, strRequest) )
 	{
-		cnn->server()->sendToAll(strRequest);
+		QDomDocument request;
+		request.setContent(strRequest);
+		
+		cnn->sendToAll(request); // FIXME: solo para los miembros del proyecto
 	}
 	else
 	{
-		// TODO: error
+		// TODO: enviar error
 		dWarning() << "CANNOT HANDLE PROJECT REQUEST";
-		
-// 		cnn->server()->sendToAll(strRequest); // FIXME BORRAR ESTO
-		
-		cnn->sendToAll(strRequest);
 	}
 }
 
