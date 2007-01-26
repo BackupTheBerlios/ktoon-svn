@@ -63,6 +63,7 @@
 #include "ktviewdocument.h"
 
 class KTProjectManagerParams;
+class KTNetProjectManagerParams;
 class KTProjectResponse;
 
 /**
@@ -113,6 +114,12 @@ class KTMainWindow : public DTabbedMainWindow
 		void ui4paintArea(QWidget *widget);
 		void ui4handlerLocalRequest(QWidget *widget);
 		
+		
+	private:
+		bool setupNetworkProject(const QString &server = QString(), int port = -1);
+		bool setupNetworkProject(KTProjectManagerParams *params);
+		bool setupLocalProject(KTProjectManagerParams *params);
+		
 	protected:
 		/**
 	 	 *  Event for main window closing control
@@ -132,7 +139,7 @@ class KTMainWindow : public DTabbedMainWindow
 		void updateOpenRecentMenu(QMenu *menu, QStringList recents);
 		
 	private slots:
-		void createNewProject( KTProjectManagerParams *params );
+		void createNewProject();
 		void newViewDocument(const QString &name = QString::null);
 		void newProject();
 		bool closeProject();
@@ -179,6 +186,9 @@ class KTMainWindow : public DTabbedMainWindow
 		QStringList m_recentProjects;
 		
 		QMenu *m_recentProjectsMenu;
+		
+	private: // Network
+		bool m_isNetworkProject;
 		
 	// Components
 	private:

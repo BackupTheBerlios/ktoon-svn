@@ -47,6 +47,7 @@
 #include "ktconnectdialog.h"
 #include "ktsavenetproject.h"
 #include "ktlistpackage.h"
+#include "ktlistprojectspackage.h"
 // #end
 
 
@@ -136,18 +137,16 @@ KTMainWindow::~KTMainWindow()
 
 // Modal
 
-void KTMainWindow::createNewProject(KTProjectManagerParams *params)
+void KTMainWindow::createNewProject()
 {
 	if(!closeProject())
 	{
 		return;
 	}
 	
-	m_projectManager->setParams(params);
-	
 	m_projectManager->setupNewProject();
 	
-	newViewDocument( params->projectName() );
+	newViewDocument( tr("Document") );
 }
 
 void KTMainWindow::newViewDocument(const QString &title)
@@ -193,14 +192,14 @@ void KTMainWindow::newProject()
 	{
 		if ( wizard->useNetwork() )
 		{
-			m_projectManager->setHandler( new KTNetProjectManagerHandler );
+			setupNetworkProject(wizard->params());
 		}
 		else
 		{
-			m_projectManager->setHandler( new KTLocalProjectManagerHandler );
+			setupLocalProject(wizard->params() );
 		}
 		
-		createNewProject( wizard->params() );
+		createNewProject();
 	}
 	delete wizard;
 }
@@ -267,6 +266,56 @@ bool KTMainWindow::closeProject()
 	return true;
 }
 
+bool KTMainWindow::setupNetworkProject(const QString &server, int port)
+{
+	KTConnectDialog cndialog;
+	if( !server.isEmpty() )
+		cndialog.setServer(server);
+	if ( port != -1 )
+		cndialog.setPort(port);
+	
+	KTNetProjectManagerParams *params = new KTNetProjectManagerParams;
+	
+	if ( cndialog.exec() == QDialog::Accepted )
+	{
+		params->setServer(cndialog.server());
+		params->setPort(cndialog.port());
+		params->setLogin(cndialog.login());
+		params->setPassword(cndialog.password());
+		
+		return setupNetworkProject(params);
+	}
+	return false;
+}
+
+bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
+{
+	if ( closeProject() )
+	{
+		m_projectManager->setHandler( new KTNetProjectManagerHandler );
+		m_projectManager->setParams(params);
+		m_isNetworkProject = true;
+		return true;
+	}
+	
+	return false;
+}
+
+bool KTMainWindow::setupLocalProject(KTProjectManagerParams *params)
+{
+	if ( closeProject() )
+	{
+		m_projectManager->setHandler( new KTLocalProjectManagerHandler );
+		m_projectManager->setParams(params);
+		
+		m_isNetworkProject = false;
+		
+		return true;
+	}
+	
+	return false;
+}
+
 void KTMainWindow::openProject()
 {
 	QString package = QFileDialog::getOpenFileName( this, tr("Import project package"), CACHE_DIR, tr("KToon Project Package (*.ktn);;KToon Net Project (*.ktnet)"));
@@ -287,23 +336,13 @@ void KTMainWindow::openProject(const QString &path)
 		KTSaveNetProject loader;
 		KTNetProjectManagerParams *params = loader.params(path);
 		
-		KTConnectDialog cndialog;
-		cndialog.setServer(params->server());
-		cndialog.setPort(params->port());
-		
-		if ( cndialog.exec() == QDialog::Accepted )
-		{
-			m_projectManager->setHandler( new KTNetProjectManagerHandler );
-			m_projectManager->setParams(params);
-		}
-		else
-		{
-			return;
-		}
+		setupNetworkProject(params->server(), params->port());
+		delete params;
 	}
 	else if ( path.endsWith(".ktn") )
 	{
 		m_projectManager->setHandler( new KTLocalProjectManagerHandler );
+		m_isNetworkProject = false;
 	}
 	
 	if ( closeProject() )
@@ -368,8 +407,16 @@ void KTMainWindow::openProject(const QString &path)
 
 void KTMainWindow::openProjectFromServer()
 {
-	if(!m_projectManager->isValid())
+	if ( setupNetworkProject() )
 	{
+		KTNetProjectManagerHandler *handler = static_cast<KTNetProjectManagerHandler *>(m_projectManager->handler());
+		
+		if ( handler->isValid() )
+		{
+			KTListProjectsPackage package;
+			
+			handler->sendPackage(package);
+		}
 	}
 }
 

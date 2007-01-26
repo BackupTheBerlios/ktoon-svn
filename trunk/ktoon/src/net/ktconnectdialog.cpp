@@ -32,6 +32,8 @@
 
 #include <QDialogButtonBox>
 
+#include <dconfig.h>
+
 class KTConnectDialog::Private
 {
 	public:
@@ -77,11 +79,14 @@ KTConnectDialog::KTConnectDialog(QWidget *parent) : QDialog(parent), d(new Priva
 	mainLayout->addWidget(box);
 	
 	setLayout(mainLayout);
+	
+	loadSettings();
 }
 
 
 KTConnectDialog::~KTConnectDialog()
 {
+	saveSettings();
 }
 
 void KTConnectDialog::setServer(const QString &server)
@@ -115,4 +120,26 @@ int KTConnectDialog::port() const
 	return d->port->value();
 }
 
+
+void KTConnectDialog::loadSettings()
+{
+	DCONFIG->beginGroup("Network");
+	d->server->setText(DCONFIG->value("server", "localhost").toString());
+	d->port->setValue(DCONFIG->value("port", 6502).toInt());
+	d->login->setText(DCONFIG->value("login", "").toString());
+	d->password->setText(DCONFIG->value("password", "").toString());
+}
+
+void KTConnectDialog::saveSettings()
+{
+	DCONFIG->beginGroup("Network");
+	
+	DCONFIG->setValue("server", d->server->text() );
+	DCONFIG->setValue("port", d->port->value());
+	DCONFIG->setValue("login", d->login->text());
+	DCONFIG->setValue("password", d->password->text());
+	
+	DCONFIG->sync();
+	
+}
 

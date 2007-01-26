@@ -43,6 +43,10 @@ class KTConnectDialog : public QDialog
 		QString server() const;
 		int port() const;
 		
+	protected:
+		void loadSettings();
+		void saveSettings();
+		
 	private:
 		class Private;
 		Private *const d;

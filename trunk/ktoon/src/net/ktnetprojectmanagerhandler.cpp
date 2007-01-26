@@ -76,6 +76,8 @@ bool KTNetProjectManagerHandler::commandExecuted(KTProjectResponse *response)
 	if ( response->mode() == KTProjectResponse::Do ) return true;
 	
 	// FIXME: ESTO LLEGA DESDE EL SERVIDOR!
+	KTProjectRequest request = KTRequestBuilder::fromResponse(response);
+	handleProjectRequest( &request );
 	
 	return false;
 }
@@ -210,5 +212,12 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 
 bool KTNetProjectManagerHandler::isValid() const
 {
-	return m_socket->isOpen();
+	return m_socket->state() == QAbstractSocket::ConnectedState;
 }
+
+void KTNetProjectManagerHandler::sendPackage(const QDomDocument &doc)
+{
+	m_socket->send(doc);
+}
+
+

@@ -18,67 +18,18 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef KTPROJECTMANAGER_H
-#define KTPROJECTMANAGER_H
+#include "ktlistprojectspackage.h"
 
-#include <QObject>
-#include "ktglobal_store.h"
-// #include "ktcommandexecutor.h"
-
-class KTProject;
-class KTProjectRequest;
-class KTProjectCommand;
-class KTProjectManagerParams;
-class KTAbstractProjectHandler;
-class QUndoStack;
-class KTCommandExecutor;
-class KTProjectResponse;
-
-/**
- * Clase para tratar eventos del proyecto
- * @author David Cuadrado \<krawek@gmail.com\>
-*/
-class STORE_EXPORT KTProjectManager : public QObject
+KTListProjectsPackage::KTListProjectsPackage() : QDomDocument()
 {
-	Q_OBJECT;
-	public:
-		KTProjectManager(QObject *parent = 0);
-		virtual ~KTProjectManager();
-		
-		void setParams(KTProjectManagerParams *params);
-		KTProjectManagerParams *params() const;
-		
-		virtual void setupNewProject();
-		virtual void closeProject();
-		
-		bool isOpen() const;
-		bool isModified() const;
-		KTProject *project() const;
-		void setHandler(KTAbstractProjectHandler *handler);
-		KTAbstractProjectHandler *handler() const;
-		
-		QUndoStack *undoHistory() const;
-		
-		virtual bool saveProject(const QString &fileName);
-		virtual bool loadProject(const QString &fileName);
-		
-		bool isValid() const;
-		
-	protected slots:
-		virtual void handleProjectRequest(const KTProjectRequest *event);
-		virtual void createCommand(const KTProjectRequest *event, bool addToStack);
-		
-	private slots:
-		void emitResponse( KTProjectResponse *response);
-		
-	signals:
-		void responsed(KTProjectResponse *reponse );
-		
-	private:
-		class Private;
-		Private *const d;
-};
+	QDomElement root = createElement("listprojects");
+	
+	appendChild(root);
+}
 
-#endif
+
+KTListProjectsPackage::~KTListProjectsPackage()
+{
+}
 
 

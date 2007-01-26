@@ -117,6 +117,11 @@ void KTProjectManager::setHandler(KTAbstractProjectHandler *handler)
 	connect(d->handler, SIGNAL(sendCommand(const KTProjectRequest *, bool)), this, SLOT(createCommand(const KTProjectRequest *, bool)));
 }
 
+KTAbstractProjectHandler *KTProjectManager::handler() const
+{
+	return d->handler;
+}
+
 void KTProjectManager::setupNewProject()
 {
 	D_FUNCINFO;

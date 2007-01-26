@@ -20,6 +20,7 @@
 #ifndef KTNETPROJECTMANAGER_H
 #define KTNETPROJECTMANAGER_H
 
+#include <QDomDocument>
 #include <ktabstractprojectmanagerhandler.h>
 
 class KTProjectCommand;
@@ -50,6 +51,8 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		void handlePackage(const QString &root, const QString &package);
 		
 		virtual bool isValid() const;
+		
+		void sendPackage(const QDomDocument &doc);
 		
 	private:
 		KTNetSocket *m_socket;
