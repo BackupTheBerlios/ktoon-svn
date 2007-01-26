@@ -21,6 +21,8 @@
 #define PARSERSDATABASEPARSE_H
 
 #include <ktxmlparserbase.h>
+#include <QHash>
+#include "database.h"
 
 namespace Parsers
 {
@@ -41,12 +43,20 @@ class DatabaseParser : public KTXmlParserBase
 		QString fileName(const QString& nameproject, const QString &db);
 		QString lastFileName();
 		
+		QList< Projects::Database::ProjectInfo > projectsInfoOfUser(const QString & login, const QString &db );
+		
+		
 	private:
 		QString m_lastFileName;
 		
-		QString m_nameproject; 
 		QString m_fileName;
-		bool m_readFilename;
+		QString m_condition;
+		
+		QStringList m_users;
+		
+		bool m_findFilename, m_findProjectsUser;
+		QList< Projects::Database::ProjectInfo > m_projectsInfo;
+		Projects::Database::ProjectInfo tmpInfo;
 		
 };
 

@@ -31,7 +31,6 @@
 #include "openprojectparser.h"
 #include "listparser.h"
 
-
 class PackageHandler::Private
 {
 	public:
@@ -54,6 +53,8 @@ PackageHandler::~PackageHandler()
 
 void PackageHandler::handle(Server::Connection *cnx , const QString &root, const QString &package )
 {
+	
+	dFatal() << root;
 	if ( root == "request" )
 	{
 		if(!cnx->data(Info::ProjectName).toString().isNull())
@@ -97,6 +98,10 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 		else
 		{
 		}
+	}
+	else if(root == "listprojects")
+	{
+		d->projects->listProjects(cnx);
 	}
 }
 

@@ -22,7 +22,7 @@
 namespace Parsers {
 
 DatabaseParser::DatabaseParser()
-	: KTXmlParserBase(), m_readFilename(false)
+	: KTXmlParserBase(), m_findFilename(false), m_findProjectsUser(false)
 {
 }
 
@@ -37,17 +37,32 @@ bool DatabaseParser::startTag(const QString &tag, const QXmlAttributes &atts)
 	{
 		if(tag == "project")
 		{
-			QString filename = atts.value("filename");
+			
+			
+			tmpInfo.name = atts.value("name");
+			tmpInfo.author = atts.value("author");
+			tmpInfo.description = atts.value("descrition");
+			
+		}
+		else if(tag == "user")
+		{
+			m_users << atts.value("login");
+		}
+		else if(tag == "file")
+		{
+			QString filename = atts.value("name");
+			
 			if(filename > m_lastFileName)
 			{
 				m_lastFileName = filename;
 			}
-			if(m_readFilename)
+			
+			if(m_findFilename)
 			{
-				if(atts.value("name") == m_nameproject)
+				if(tmpInfo.name == m_condition)
 				{
 					m_fileName = filename;
-					m_readFilename = false;
+					m_findFilename = false;
 				}
 			}
 		}
@@ -57,6 +72,21 @@ bool DatabaseParser::startTag(const QString &tag, const QXmlAttributes &atts)
 
 bool DatabaseParser::endTag(const QString &tag)
 {
+	if(tag == "project")
+	{
+		if(m_findProjectsUser)
+		{
+			if(m_users.contains(m_condition))
+			{
+				m_projectsInfo <<  tmpInfo;
+			}
+		}
+		else
+		{
+			m_projectsInfo <<  tmpInfo;
+		}
+		m_users.clear();
+	}
 	return true;
 }
 
@@ -67,8 +97,8 @@ void DatabaseParser::text(const QString &text)
 
 QString DatabaseParser::fileName(const QString & nameproject, const QString& db)
 {
-	m_nameproject = nameproject;
-	m_readFilename = true;
+	m_condition = nameproject;
+	m_findFilename = true;
 	parse(db);
 	return m_fileName;
 }
@@ -78,5 +108,13 @@ QString DatabaseParser::lastFileName()
 	return m_lastFileName;
 }
 
+QList< Projects::Database::ProjectInfo > DatabaseParser::projectsInfoOfUser(const QString& login, const QString& db)
+{
+	m_condition = login;
+	m_findProjectsUser = true;
+	parse(db);
+	m_findProjectsUser = false;
+	return m_projectsInfo;
+}
 
 }

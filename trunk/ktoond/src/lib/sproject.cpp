@@ -63,13 +63,17 @@ QDomElement SProject::info(QDomDocument &doc) const
 	
 	project.setAttribute("name", projectName());
 	
+	QDomElement file = doc.createElement("file");
+	
 	QString fileName = dAppProp->cacheDir() + "/" + projectName();
 	if ( !fileName.endsWith(".ktn") )
 	{
 		fileName += ".ktn";
 	}
 	
-	project.setAttribute("filename", m_filename);
+	file.setAttribute("name", m_filename);
+	
+	project.appendChild(file);
 	
 	return project;
 }

@@ -17,51 +17,34 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef PROJECTSDATABASE_H
-#define PROJECTSDATABASE_H
-
-#include <QString>
-
-#include "sproject.h"
-
-namespace Projects {
-
-/**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
-*/
 
 
-
-class Database
+#include "projects.h"
+namespace Packages
 {
 
-	public:
-		
-		Database(const QString &dbfile = 0);
-		~Database();
-		
-		void addProject(const SProject * project);
-		
-		void setDBFile( const QString& dbfile);
-		
-		QString nextFileName();
-		QString fileName(const QString& nameProject);
-		
-		struct ProjectInfo
-		{
-			QString name;
-			QString author;
-			QString description;
-		};
-		QList<Database::ProjectInfo> projectsInfoOfUser(const QString& nameProject);
-		
-	private:
-		QDomDocument loadDataBase();
-		QString m_dbfile;
-		QString m_lastFileName;
-		
-};
-
+Projects::Projects() : Package()
+{
+	QDomElement root = createElement ( "projects" );
+	root.setAttribute ( "version",  "0" );
+	appendChild(root);
 }
 
-#endif
+
+Projects::~Projects()
+{
+}
+
+void Projects::addProject(const QString & name, const QString &author, const QString &description )
+{
+	QDomNode root = firstChild ();
+	
+	QDomElement projectE = createElement( "project" );
+	projectE.setAttribute("name", name);
+	projectE.setAttribute("author", author);
+	projectE.setAttribute("description", description);
+	
+	root.appendChild(projectE);
+}
+
+}

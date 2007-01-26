@@ -36,6 +36,8 @@
 #include <ddebug.h>
 
 #include "project.h"
+#include "user.h"
+
 
 #include <QHash>
 #include <sproject.h>
@@ -53,7 +55,7 @@ struct ProjectCollection::Private
 
 ProjectCollection::ProjectCollection() : d(new Private())
 {
-	d->db = new Database(dAppProp->configDir() + "/projects.xml");
+	d->db = new Database(dAppProp->configDir() + "/database/projects.xml");
 }
 
 
@@ -179,6 +181,16 @@ bool ProjectCollection::handleProjectRequest(Server::Connection *cnn, const QStr
 	}
 	
 	return false;
+}
+
+void ProjectCollection::listProjects(Server::Connection *cnn)
+{
+	Packages::Projects list;
+	foreach(Database::ProjectInfo info, d->db->projectsInfoOfUser(cnn->user()->login()))
+	{
+		list.addProject(info.name, info.author, info.description);
+	}
+	cnn->sendToClient(list.toString());
 }
 
 void ProjectCollection::sendToProjectMembers(Server::Connection *cnn, QDomDocument &doc)

@@ -24,6 +24,7 @@
 #include <QString>
 #include <QDomDocument>
 
+#include "projects.h"
 namespace Server {
 class Connection;
 }
@@ -43,6 +44,7 @@ class ProjectCollection
 		void openProject(Server::Connection *cnn);
 		bool handleProjectRequest(Server::Connection *cnn, const QString strRequest);
 		QStringList projects() const;
+		void listProjects(Server::Connection *cnn);
 		void closeProject(const QString & name);
 		void saveProject(const QString & name);
 		

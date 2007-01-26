@@ -17,51 +17,29 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef PROJECTSDATABASE_H
-#define PROJECTSDATABASE_H
 
-#include <QString>
 
-#include "sproject.h"
+#ifndef PACKAGESPROJECTS_H
+#define PACKAGESPROJECTS_H
 
-namespace Projects {
-
+#include <package.h>
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
-
-
-class Database
+namespace Packages
 {
-
+class Projects : public Package
+{
 	public:
+		Projects();
+		~Projects();
 		
-		Database(const QString &dbfile = 0);
-		~Database();
-		
-		void addProject(const SProject * project);
-		
-		void setDBFile( const QString& dbfile);
-		
-		QString nextFileName();
-		QString fileName(const QString& nameProject);
-		
-		struct ProjectInfo
-		{
-			QString name;
-			QString author;
-			QString description;
-		};
-		QList<Database::ProjectInfo> projectsInfoOfUser(const QString& nameProject);
+		void addProject(const QString & name, const QString &author = QString::null, const QString &description = QString::null);
 		
 	private:
-		QDomDocument loadDataBase();
-		QString m_dbfile;
-		QString m_lastFileName;
 		
 };
-
 }
 
 #endif

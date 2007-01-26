@@ -50,6 +50,7 @@ void Database::setDBFile( const QString& dbfile)
 
 QDomDocument Database::loadDataBase()
 {
+	dDebug() << "loading database of " << m_dbfile;
 	QFile file(m_dbfile);
 	QDomDocument document;
 	if( !file.exists() )
@@ -123,6 +124,14 @@ void Database::addProject(const SProject * project)
 		ts << db.toString();
 		file.close();
 	}
+}
+
+QList< Database::ProjectInfo> Database::projectsInfoOfUser(const QString& user)
+{
+	
+	Parsers::DatabaseParser parser;
+	QList<ProjectInfo> list = parser.projectsInfoOfUser(user, loadDataBase().toString());
+	return list;
 }
 
 }

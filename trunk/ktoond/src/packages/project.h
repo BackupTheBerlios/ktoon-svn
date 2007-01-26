@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 
-#ifndef PROJECT_H
-#define PROJECT_H
+#ifndef PACKAGESPROJECT_H
+#define PACKAGESPROJECT_H
 
 #include <package.h>
 
