@@ -21,20 +21,18 @@
 #ifndef PROJECTSPROJECTCOLLECTION_H
 #define PROJECTSPROJECTCOLLECTION_H
 
-/**
- * @author Jorge Cuadrado \<kuadrosxx@gmail.com\>
-*/
-#include <QHash>
-#include <sproject.h>
-
-#include "database.h"
+#include <QString>
+#include <QDomDocument>
 
 namespace Server {
 class Connection;
 }
 
-namespace Projects
-{
+namespace Projects {
+
+/**
+ * @author Jorge Cuadrado \<kuadrosxx@gmail.com\>
+*/
 class ProjectCollection 
 {
 	public:
@@ -48,11 +46,14 @@ class ProjectCollection
 		void closeProject(const QString & name);
 		void saveProject(const QString & name);
 		
+		void removeConnection(Server::Connection *cnn);
+		void sendToProjectMembers(Server::Connection *cnn, QDomDocument &doc);
 		
 	private:
-		QHash<QString, SProject * > m_projects;
-		Database *m_db;
+		struct Private;
+		Private *const d;
 		
 };
+
 }
 #endif

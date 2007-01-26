@@ -72,7 +72,6 @@ class Connection : public QThread
 		
 		void generateSign();
 		
-	protected:
 		void signPackage(QDomDocument &doc);
 		
 	public slots:

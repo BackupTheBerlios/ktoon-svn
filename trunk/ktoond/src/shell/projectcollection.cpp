@@ -36,31 +36,46 @@
 #include <ddebug.h>
 
 #include "project.h"
-namespace Projects
+
+#include <QHash>
+#include <sproject.h>
+
+#include "database.h"
+
+namespace Projects {
+
+struct ProjectCollection::Private
 {
-	
-ProjectCollection::ProjectCollection()
+	QHash<QString, SProject * > projects;
+	Database *db;
+	QHash<QString, QList<Server::Connection *> > connections;
+};
+
+ProjectCollection::ProjectCollection() : d(new Private())
 {
-	m_db = new Database(dAppProp->configDir() + "/projects.xml");
+	d->db = new Database(dAppProp->configDir() + "/projects.xml");
 }
 
 
 ProjectCollection::~ProjectCollection()
 {
-	delete m_db;
+	delete d->db;
+	delete d;
 }
 
 void ProjectCollection::createProject( Server::Connection *cnn, const QString &author )
 {
 	QString projectName = cnn->data(Info::ProjectName).toString();
 	
-	if(!m_projects.contains( projectName ))
+	if(!d->projects.contains( projectName ))
 	{
-		SProject *project = new SProject( dAppProp->cacheDir() +"/"+ m_db->nextFileName());
+		SProject *project = new SProject( dAppProp->cacheDir() +"/"+ d->db->nextFileName());
 		project->setProjectName(projectName);
-		m_projects.insert(projectName, project);
-		m_db->addProject(project);
+		d->projects.insert(projectName, project);
+		d->db->addProject(project);
 		saveProject(projectName);
+		
+		d->connections.insert(projectName, QList<Server::Connection *>() << cnn);
 	}
 	else
 	{
@@ -73,8 +88,9 @@ void ProjectCollection::openProject( Server::Connection *cnn )
 {
  	QString projectName = cnn->data(Info::ProjectName).toString();
 	
-	QString fileName = m_db->fileName(projectName);
-	if(!m_projects.contains( projectName ))
+	QString fileName = d->db->fileName(projectName);
+	
+	if(!d->projects.contains( projectName ))
 	{
 		KTSaveProject *loader = new KTSaveProject;
 		
@@ -85,19 +101,20 @@ void ProjectCollection::openProject( Server::Connection *cnn )
 		delete loader;
 		if(project)
 		{
-			m_projects.insert(projectName, project);
+			d->projects.insert(projectName, project);
 		}
 	}
 	else
 	{
-		m_projects[projectName]->save();
+		d->projects[projectName]->save();
 	}
-
+	
+	
 	
 	Packages::Project project(fileName);
-	
-	SHOW_VAR(project.toString());
 	cnn->sendToClient(project.toString());
+	
+	d->connections[projectName].append( cnn );
 	
 }
 QStringList ProjectCollection::projects() const
@@ -110,14 +127,28 @@ void ProjectCollection::closeProject(const QString & name)
 {
 	//FIXME: verificar que no hay otros con el proyecto abierto, antes de ejecutar esta funcion
 	saveProject(name);
-	delete m_projects.take(name);
+	delete d->projects.take(name);
+	
+	d->connections.remove(name);
 }
 
 void ProjectCollection::saveProject(const QString & name)
 {
-	if(m_projects.contains( name ))
+	if(d->projects.contains( name ))
 	{
-		m_projects[name]->save();
+		d->projects[name]->save();
+	}
+}
+
+void ProjectCollection::removeConnection(Server::Connection *cnn)
+{
+	QString projectName = cnn->data(Info::ProjectName).toString();
+	
+	d->connections[projectName].removeAll(cnn);
+	
+	if ( d->connections[projectName].isEmpty() )
+	{
+		closeProject(projectName);
 	}
 }
 
@@ -128,14 +159,14 @@ bool ProjectCollection::handleProjectRequest(Server::Connection *cnn, const QStr
 	KTRequestParser parser;
 	if ( parser.parse(strRequest) )
 	{
-		KTProject *project = m_projects[projectName];
+		KTProject *project = d->projects[projectName];
 		if(project)
 		{
 			KTCommandExecutor * commandExecutor = new KTCommandExecutor(project);
 			KTProjectCommand command(commandExecutor, parser.response());
 			command.redo();
 			delete commandExecutor;
-			m_projects[projectName]->resetTimer();
+			d->projects[projectName]->resetTimer();
 			//debug
 // 			saveProject(projectName);
 			
@@ -149,4 +180,17 @@ bool ProjectCollection::handleProjectRequest(Server::Connection *cnn, const QStr
 	
 	return false;
 }
+
+void ProjectCollection::sendToProjectMembers(Server::Connection *cnn, QDomDocument &doc)
+{
+	QString projectName = cnn->data(Info::ProjectName).toString();
+	cnn->signPackage(doc);
+	
+	foreach(Server::Connection *cnn, d->connections[projectName])
+	{
+		cnn->sendToClient(doc.toString(0));
+	}
+}
+
+
 }
