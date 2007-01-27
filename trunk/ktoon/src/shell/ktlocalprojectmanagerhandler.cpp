@@ -91,3 +91,9 @@ bool KTLocalProjectManagerHandler::loadProject(const QString &fileName, KTProjec
 	return result;
 }
 
+void KTLocalProjectManagerHandler::setProject(KTProject *)
+{
+	
+}
+
+

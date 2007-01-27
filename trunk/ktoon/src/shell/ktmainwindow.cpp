@@ -84,7 +84,6 @@ KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_projectMan
 	
 	
 	m_projectManager = new KTProjectManager(this);
-	
 	m_projectManager->setHandler( new KTLocalProjectManagerHandler );
 	
 	m_handlerLocalRequest = new KTHandlerLocalRequest( m_projectManager, this);
@@ -151,6 +150,8 @@ void KTMainWindow::createNewProject()
 
 void KTMainWindow::newViewDocument(const QString &title)
 {
+	D_FUNCINFO;
+	dDebug() << m_projectManager->isOpen();
 	if ( m_projectManager->isOpen())
 	{
 		messageToStatus(tr("Opening a new paint area..."));
@@ -192,7 +193,7 @@ void KTMainWindow::newProject()
 	{
 		if ( wizard->useNetwork() )
 		{
-			setupNetworkProject(wizard->params());
+			setupNetworkProject( wizard->params());
 		}
 		else
 		{
@@ -266,7 +267,7 @@ bool KTMainWindow::closeProject()
 	return true;
 }
 
-bool KTMainWindow::setupNetworkProject(const QString &server, int port)
+bool KTMainWindow::setupNetworkProject(const QString& projectName  ,const QString &server, int port)
 {
 	KTConnectDialog cndialog;
 	if( !server.isEmpty() )
@@ -282,7 +283,7 @@ bool KTMainWindow::setupNetworkProject(const QString &server, int port)
 		params->setPort(cndialog.port());
 		params->setLogin(cndialog.login());
 		params->setPassword(cndialog.password());
-		
+		params->setProjectName( projectName );
 		return setupNetworkProject(params);
 	}
 	return false;
@@ -292,7 +293,9 @@ bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 {
 	if ( closeProject() )
 	{
-		m_projectManager->setHandler( new KTNetProjectManagerHandler );
+		KTNetProjectManagerHandler *netProjectManagerHandler =  new KTNetProjectManagerHandler;
+		connect(netProjectManagerHandler, SIGNAL(openNewArea(const QString&)), this, SLOT(newViewDocument(const QString&)));
+		m_projectManager->setHandler( netProjectManagerHandler );
 		m_projectManager->setParams(params);
 		m_isNetworkProject = true;
 		return true;
@@ -336,7 +339,7 @@ void KTMainWindow::openProject(const QString &path)
 		KTSaveNetProject loader;
 		KTNetProjectManagerParams *params = loader.params(path);
 		
-		setupNetworkProject(params->server(), params->port());
+		setupNetworkProject(params->projectName(), params->server(), params->port());
 		delete params;
 	}
 	else if ( path.endsWith(".ktn") )

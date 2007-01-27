@@ -73,6 +73,7 @@ class STORE_EXPORT KTProjectManager : public QObject
 		
 	signals:
 		void responsed(KTProjectResponse *reponse );
+		void requestOpenProject(const QString& filename);
 		
 	private:
 		class Private;

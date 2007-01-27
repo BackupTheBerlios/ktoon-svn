@@ -86,7 +86,6 @@ class KTMainWindow : public DTabbedMainWindow
 		KTMainWindow(KTSplash *splash = 0);
 		~KTMainWindow();
 		
-		void openProject(const QString &path);
 		
 	private:
 		/**
@@ -116,7 +115,7 @@ class KTMainWindow : public DTabbedMainWindow
 		
 		
 	private:
-		bool setupNetworkProject(const QString &server = QString(), int port = -1);
+		bool setupNetworkProject(const QString& projectName = QString(), const QString &server = QString(), int port = -1);
 		bool setupNetworkProject(KTProjectManagerParams *params);
 		bool setupLocalProject(KTProjectManagerParams *params);
 		
@@ -138,9 +137,12 @@ class KTMainWindow : public DTabbedMainWindow
 		 */
 		void updateOpenRecentMenu(QMenu *menu, QStringList recents);
 		
+	public slots:
+		void openProject(const QString &path);
+		
 	private slots:
-		void createNewProject();
 		void newViewDocument(const QString &name = QString::null);
+		void createNewProject();
 		void newProject();
 		bool closeProject();
 		void openProject();

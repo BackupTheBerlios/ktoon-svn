@@ -40,15 +40,21 @@
 #include "ktsavenetproject.h"
 #include "ktopenpackage.h"
 
+#include "ktprojectsparser.h"
 #include "ktprojectparser.h"
 #include "ktrequestparser.h"
 #include "ktrequestbuilder.h"
+
+#include "ktlistprojectdialog.h"
+
+#include "ktproject.h"
 
 #include <QTemporaryFile>
 
 KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent)
 {
 	m_socket = new KTNetSocket(this);
+	m_project = 0;
 }
 
 
@@ -94,11 +100,15 @@ bool KTNetProjectManagerHandler::loadProject(const QString &fileName, KTProject 
 	if ( m_socket->state() != QAbstractSocket::ConnectedState  )
 		return false;
 	
-	KTOpenPackage package(m_params->projectName());
+	return loadProjectFromServer(m_params->projectName());
+}
+
+
+bool KTNetProjectManagerHandler::loadProjectFromServer(const QString &name)
+{
 	
+	KTOpenPackage package(name);
 	m_socket->send(package);
-	m_project = project;
-			
 	return true;
 }
 
@@ -194,12 +204,33 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 				file.write(parser.data() );
 				file.flush();
 				
-				KTSaveProject *loader = 0;
 				
-				loader = new KTSaveProject;
-				loader->load(file.fileName (), m_project);
-				delete loader;
-				
+				if(m_project)
+				{
+					KTSaveProject *loader = 0;
+					loader = new KTSaveProject;
+					loader->load(file.fileName (), m_project);
+					m_project->setOpen(true);
+					emit openNewArea(m_project->projectName());
+					delete loader;
+				}
+			}
+		}
+	}
+	else if(root == "projects")
+	{
+		KTProjectsParser parser;
+		if(parser.parse(package) )
+		{
+			KTListProjectDialog dialog;
+			foreach(KTProjectsParser::ProjectInfo info, parser.projectsInfo())
+			{
+				dialog.addProject( info.name, info.author, info.description);
+			}
+			if(dialog.exec () == QDialog::Accepted && !dialog.currentProject().isEmpty())
+			{
+				dDebug() << "opening " << dialog.currentProject() << "project";
+				loadProjectFromServer(dialog.currentProject() );
 			}
 		}
 	}
@@ -220,4 +251,8 @@ void KTNetProjectManagerHandler::sendPackage(const QDomDocument &doc)
 	m_socket->send(doc);
 }
 
+void KTNetProjectManagerHandler::setProject(KTProject *project)
+{
+	m_project = project;
+}
 

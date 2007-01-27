@@ -39,7 +39,7 @@
 /**
  * Constructor por defecto
  */
-KTProject::KTProject(QObject *parent) : QObject(parent), m_sceneCounter(0)
+KTProject::KTProject(QObject *parent) : QObject(parent), m_sceneCounter(0), m_isOpen(false)
 {
 	DINIT;
 	
@@ -302,3 +302,12 @@ void KTProject::emitResponse(KTProjectResponse *response)
 	emit responsed(response);
 }
 
+void KTProject::setOpen(bool open)
+{
+	m_isOpen = open;
+}
+
+bool KTProject::isOpen()
+{
+	return m_isOpen;
+}

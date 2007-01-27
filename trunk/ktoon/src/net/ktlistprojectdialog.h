@@ -18,32 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef KTPROJECTPARSER_H
-#define KTPROJECTPARSER_H
+#ifndef KTLISTPROJECTDIALOG_H
+#define KTLISTPROJECTDIALOG_H
+
+#include <QDialog>
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-
-#include "ktxmlparserbase.h"
-
-class KTProjectParser : public KTXmlParserBase
+class QTreeWidgetItem;
+class KTListProjectDialog : public QDialog
 {
+	Q_OBJECT;
 	public:
+		KTListProjectDialog();
+		~KTListProjectDialog();
+		
+		void addProject(const QString& name, const QString& author, const QString& description);
+		
+		QString currentProject();
 		
 		
-		KTProjectParser();
-		virtual ~KTProjectParser();
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-		virtual bool endTag(const QString &tag);
-		virtual void text(const QString &text);
-		
-		QByteArray data();
-		
+	private slots:
+		void execAccept(QTreeWidgetItem * , int );
+	
 	private:
 		struct Private;
 		Private *const d;
+		
 
+		
+		
 };
 
 #endif

@@ -18,32 +18,50 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef KTPROJECTPARSER_H
-#define KTPROJECTPARSER_H
+#include "ktprojectsparser.h"
 
-/**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
-*/
-
-#include "ktxmlparserbase.h"
-
-class KTProjectParser : public KTXmlParserBase
+struct KTProjectsParser::Private
 {
-	public:
-		
-		
-		KTProjectParser();
-		virtual ~KTProjectParser();
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-		virtual bool endTag(const QString &tag);
-		virtual void text(const QString &text);
-		
-		QByteArray data();
-		
-	private:
-		struct Private;
-		Private *const d;
-
+	QList<KTProjectsParser::ProjectInfo> projectsInfo;
 };
 
-#endif
+KTProjectsParser::KTProjectsParser()
+	: KTXmlParserBase(), d( new Private())
+{
+}
+
+
+KTProjectsParser::~KTProjectsParser()
+{
+}
+
+bool KTProjectsParser::startTag(const QString &tag, const QXmlAttributes &atts)
+{
+	if(root() == "projects")
+	{
+		if(tag == "project")
+		{
+			ProjectInfo info;
+			info.name = atts.value("name");
+			info.author = atts.value("author");
+			info.description = atts.value("description");
+			d->projectsInfo << info;
+		}
+	}
+	return true;
+}
+
+bool KTProjectsParser::endTag(const QString &tag)
+{
+	return true;
+}
+
+void KTProjectsParser::text(const QString &text)
+{
+	
+}
+
+QList<KTProjectsParser::ProjectInfo> KTProjectsParser::projectsInfo()
+{
+	return d->projectsInfo;
+}

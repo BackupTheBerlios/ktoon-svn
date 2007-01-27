@@ -45,7 +45,10 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		virtual bool commandExecuted(KTProjectResponse *response);
 		
 		virtual bool saveProject(const QString &fileName, const KTProject *project);
+		
 		virtual bool loadProject(const QString &fileName, KTProject *project);
+		
+		bool loadProjectFromServer(const QString &name);
 		
 		void emitRequest(KTProjectRequest *request);
 		void handlePackage(const QString &root, const QString &package);
@@ -53,6 +56,7 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		virtual bool isValid() const;
 		
 		void sendPackage(const QDomDocument &doc);
+		void setProject(KTProject *project);
 		
 	private:
 		KTNetSocket *m_socket;
@@ -60,6 +64,9 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		
 		KTNetProjectManagerParams *m_params;
 		KTProject *m_project;
+		
+	signals:
+		void openNewArea(const QString &name);
 		
 };
 

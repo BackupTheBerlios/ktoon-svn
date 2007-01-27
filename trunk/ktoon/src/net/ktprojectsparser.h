@@ -17,28 +17,33 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef KTPROJECTPARSER_H
-#define KTPROJECTPARSER_H
+
+#ifndef KTPROJECTSPARSER_H
+#define KTPROJECTSPARSER_H
+
+#include <ktxmlparserbase.h>
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-
-#include "ktxmlparserbase.h"
-
-class KTProjectParser : public KTXmlParserBase
+class KTProjectsParser : public KTXmlParserBase
 {
 	public:
+		struct ProjectInfo
+		{
+			QString name;
+			QString author;
+			QString description;
+		};
 		
+		KTProjectsParser();
+		virtual ~KTProjectsParser();
 		
-		KTProjectParser();
-		virtual ~KTProjectParser();
 		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
 		virtual bool endTag(const QString &tag);
 		virtual void text(const QString &text);
 		
-		QByteArray data();
+		QList<ProjectInfo> projectsInfo();
 		
 	private:
 		struct Private;
