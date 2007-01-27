@@ -66,6 +66,7 @@ Notas generales:
 <!-- Respuesta a una petición valida de conexion -->
 <ack version="0">
 	<motd>Message of the day</motd>
+	<sign>la firma del paquete</sign>
 	<permissions>
 		<perm module="" read="0" write="0" />
 		<perm module="" read="0" write="0" />

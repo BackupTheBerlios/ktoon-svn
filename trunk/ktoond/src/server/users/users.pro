@@ -6,10 +6,12 @@ warn_on
 HEADERS += parser.h \
 user.h \
 manager.h \
-database.h
+database.h \
+right.h
 SOURCES += parser.cpp \
 user.cpp \
 manager.cpp \
-database.cpp
+database.cpp \
+right.cpp
 include(../../../ktoond_config.pri)
 

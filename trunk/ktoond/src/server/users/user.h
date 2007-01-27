@@ -22,6 +22,9 @@
 #define USER_H
 
 #include <QString>
+#include <QList>
+
+#include "right.h"
 
 namespace Users {
 
@@ -42,10 +45,11 @@ class User
 		QString login() const;
 		QString password() const;
 		
+		QList<Right> rights() const;
+		
 	private:
-		QString m_name;
-		QString m_login;
-		QString m_password;
+		struct Private;
+		Private *const d;
 };
 
 }

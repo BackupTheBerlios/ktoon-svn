@@ -154,21 +154,28 @@ void Connection::sendToAll(const QString &text)
 	emit requestSendToAll(text);
 }
 
-void Connection::sendToClient(QDomDocument &doc)
+void Connection::sendToClient(QDomDocument &doc, bool sign)
 {
-	signPackage(doc);
+	if ( sign)
+		signPackage(doc);
 	d->client->send(doc);
 }
 
-void Connection::sendToAll(QDomDocument &doc)
+void Connection::sendToAll(QDomDocument &doc, bool sign)
 {
-	signPackage(doc);
+	if( sign )
+		signPackage(doc);
 	emit requestSendToAll(doc.toString(0));
 }
 
 void Connection::signPackage(QDomDocument &doc)
 {
 	doc.documentElement().setAttribute("sign", d->sign);
+}
+
+QString Connection::sign() const
+{
+	return d->sign;
 }
 
 void Connection::setUser(Users::User *user)

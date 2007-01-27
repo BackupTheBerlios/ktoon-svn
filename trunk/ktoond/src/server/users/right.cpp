@@ -18,67 +18,69 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "user.h"
 #include "right.h"
-
-#include <QList>
 
 namespace Users {
 
-struct User::Private
+struct Right::Private
 {
-	QString name;
-	QString login;
-	QString password;
-	
-	QList<Right> rights;
+	QString module;
+	bool read;
+	bool write;
 };
 
-User::User() : d(new Private)
+Right::Right(const QString &module) : d(new Private())
 {
+	d->module = module;
+	d->read = false;
+	d->write = false;
+}
+
+Right::Right(const QString &module, bool read, bool write) : d(new Private)
+{
+	d->module = module;
+	d->read = read;
+	d->write = write;
 }
 
 
-User::~User()
+Right::~Right()
 {
 	delete d;
 }
 
-void User::setName(const QString &name)
+void Right::setRead(bool enable)
 {
-	d->name = name;
+	d->read = enable;
 }
 
-void User::setLogin(const QString &login)
+
+void Right::setWrite(bool enable)
 {
-	d->login = login;
+	d->write = enable;
 }
 
-void User::setPassword(const QString &password)
+
+QString Right::module() const
 {
-	d->password = password;
+	return d->module;
 }
 
-
-QString User::name() const
+bool Right::write() const
 {
-	return d->name;
+	return d->write;
 }
 
-QString User::login() const
+bool Right::read() const
 {
-	return d->login;
+	return d->read;
 }
 
-QString User::password() const
-{
-	return d->password;
-}
 
-QList<Right> User::rights() const
-{
-	return d->rights;
-}
 
 }
+
+
+
+
 

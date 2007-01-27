@@ -18,67 +18,48 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "user.h"
-#include "right.h"
+#include "ack.h"
 
-#include <QList>
 
-namespace Users {
+namespace Packages {
 
-struct User::Private
+Ack::Ack(const QString &motd, const QString &sign) : QDomDocument()
 {
-	QString name;
-	QString login;
-	QString password;
+	QDomElement root = createElement("ack");
 	
-	QList<Right> rights;
-};
+	QDomElement motde = createElement("motd");
+	QDomText motdetext = createTextNode(motd);
+	motde.appendChild(motdetext);
+	
+	QDomElement signe = createElement("sign");
+	QDomText singetext = createTextNode(sign);
+	signe.appendChild(singetext);
+	
+	root.appendChild(motde);
+	root.appendChild(signe);
+	
+	m_perms = createElement("permissions");
+	root.appendChild(m_perms);
+	
+	appendChild(root);
+}
 
-User::User() : d(new Private)
+
+Ack::~Ack()
 {
 }
 
 
-User::~User()
+void Ack::addPermission(Users::Right right)
 {
-	delete d;
-}
-
-void User::setName(const QString &name)
-{
-	d->name = name;
-}
-
-void User::setLogin(const QString &login)
-{
-	d->login = login;
-}
-
-void User::setPassword(const QString &password)
-{
-	d->password = password;
-}
-
-
-QString User::name() const
-{
-	return d->name;
-}
-
-QString User::login() const
-{
-	return d->login;
-}
-
-QString User::password() const
-{
-	return d->password;
-}
-
-QList<Right> User::rights() const
-{
-	return d->rights;
+	QDomElement righte = createElement("perm");
+	righte.setAttribute("module", right.module());
+	righte.setAttribute("read", right.read());
+	righte.setAttribute("write", right.write());
+	
+	m_perms.appendChild(righte);
 }
 
 }
+
 

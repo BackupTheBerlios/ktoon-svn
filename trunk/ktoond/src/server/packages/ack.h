@@ -17,68 +17,30 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef PACKAGEACK_H
+#define PACKAGEACK_H
 
-#include "user.h"
-#include "right.h"
+#include <QDomDocument>
+#include "../users/right.h"
 
-#include <QList>
 
-namespace Users {
+namespace Packages {
 
-struct User::Private
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+class Ack : public QDomDocument
 {
-	QString name;
-	QString login;
-	QString password;
-	
-	QList<Right> rights;
+	public:
+		Ack(const QString &motd, const QString &sign);
+		~Ack();
+		
+		void addPermission(Users::Right right);
+		
+	private:
+		QDomElement m_perms;
 };
 
-User::User() : d(new Private)
-{
 }
 
-
-User::~User()
-{
-	delete d;
-}
-
-void User::setName(const QString &name)
-{
-	d->name = name;
-}
-
-void User::setLogin(const QString &login)
-{
-	d->login = login;
-}
-
-void User::setPassword(const QString &password)
-{
-	d->password = password;
-}
-
-
-QString User::name() const
-{
-	return d->name;
-}
-
-QString User::login() const
-{
-	return d->login;
-}
-
-QString User::password() const
-{
-	return d->password;
-}
-
-QList<Right> User::rights() const
-{
-	return d->rights;
-}
-
-}
-
+#endif

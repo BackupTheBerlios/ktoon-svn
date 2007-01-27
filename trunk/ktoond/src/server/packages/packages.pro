@@ -11,11 +11,12 @@ warn_on
 SOURCES += error.cpp connectparser.cpp \
 chatparser.cpp \
 noticeparser.cpp \
-wallparser.cpp
+wallparser.cpp \
+ack.cpp
 HEADERS += error.h connectparser.h \
 chatparser.h \
 noticeparser.h \
-wallparser.h
-
+wallparser.h \
+ack.h
 TARGET = serverpackages
 

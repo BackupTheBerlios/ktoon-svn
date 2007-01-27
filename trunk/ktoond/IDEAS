@@ -4,6 +4,5 @@
 * En lo posible loguear la actividad de un usuario sobre el proyecto
 * Implementar una blacklist
 * Hacer backups del proyecto
-* Guardar el proyecto cuando no haya actividad sobre el por 20 segundos o se cierre
 
 

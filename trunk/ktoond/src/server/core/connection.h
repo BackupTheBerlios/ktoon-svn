@@ -58,8 +58,8 @@ class Connection : public QThread
 		void sendToClient(const QString &text) const;
 		void sendToAll(const QString &text);
 		
-		void sendToClient(QDomDocument &doc);
-		void sendToAll(QDomDocument &doc);
+		void sendToClient(QDomDocument &doc, bool sign = true);
+		void sendToAll(QDomDocument &doc, bool sign = true);
 		
 		void setData(int key, const QVariant &value);
 		QVariant data(int key) const;
@@ -73,6 +73,8 @@ class Connection : public QThread
 		void generateSign();
 		
 		void signPackage(QDomDocument &doc);
+		
+		QString sign() const;
 		
 	public slots:
 		void removeConnection();

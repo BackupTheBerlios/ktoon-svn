@@ -22,12 +22,16 @@
 #include <ddebug.h>
 
 #include "users/manager.h"
+#include "users/user.h"
+#include "users/right.h"
+
 #include "packages/connectparser.h"
 
 #include "connection.h"
 #include "dapplicationproperties.h"
 
 #include "packages/error.h"
+#include "packages/ack.h"
 
 namespace Server {
 
@@ -64,7 +68,18 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 			if ( d->manager->auth(parser.login(), parser.password()) )
 			{
 				// TODO: Enviar paquete de reconocimiento
-				client->setUser(d->manager->user(parser.login()));
+				Users::User *user = d->manager->user(parser.login());
+				
+				client->setUser(user);
+				
+				Packages::Ack ack("Message of the day FIXME", client->sign());
+				
+				foreach(Users::Right right, user->rights())
+				{
+					ack.addPermission(right);
+				}
+				
+				client->sendToClient(ack, false);
 			}
 			else
 			{

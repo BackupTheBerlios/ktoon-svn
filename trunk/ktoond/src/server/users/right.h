@@ -18,67 +18,42 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "user.h"
-#include "right.h"
+#ifndef USERSRIGHT_H
+#define USERSRIGHT_H
 
-#include <QList>
+#include <QString>
 
 namespace Users {
 
-struct User::Private
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+class Right
 {
-	QString name;
-	QString login;
-	QString password;
-	
-	QList<Right> rights;
+	public:
+		Right(const QString &module);
+		Right(const QString &module, bool read, bool write);
+		~Right();
+		
+		void setRead(bool enable);
+		void setWrite(bool enable);
+		
+		QString module() const;
+		bool write() const;
+		bool read() const;
+		
+	private:
+		struct Private;
+		Private *const d;
 };
 
-User::User() : d(new Private)
-{
-}
-
-
-User::~User()
-{
-	delete d;
-}
-
-void User::setName(const QString &name)
-{
-	d->name = name;
-}
-
-void User::setLogin(const QString &login)
-{
-	d->login = login;
-}
-
-void User::setPassword(const QString &password)
-{
-	d->password = password;
-}
-
-
-QString User::name() const
-{
-	return d->name;
-}
-
-QString User::login() const
-{
-	return d->login;
-}
-
-QString User::password() const
-{
-	return d->password;
-}
-
-QList<Right> User::rights() const
-{
-	return d->rights;
-}
 
 }
+
+#endif
+
+
+
+
+
 
