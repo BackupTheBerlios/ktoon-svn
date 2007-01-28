@@ -55,6 +55,8 @@ class Database
 		};
 		QList<Database::ProjectInfo> projectsInfoOfUser(const QString& nameProject);
 		
+		bool exists( const QString &projectName );
+		
 	private:
 		QDomDocument loadDataBase();
 		QString m_dbfile;

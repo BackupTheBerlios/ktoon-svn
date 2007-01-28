@@ -18,7 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef GLOBAL_H
+#define GLOBAL_H
+
 namespace Info
 {
-	enum Keys { ProjectName = 0 , User  };
+	enum Keys { ProjectName = 0 };
 }
+#endif
+

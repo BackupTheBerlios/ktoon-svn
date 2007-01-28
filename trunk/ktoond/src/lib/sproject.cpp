@@ -47,7 +47,15 @@ void SProject::save()
 {
 	D_FUNCINFOX("server");
 	KTSaveProject *saver = new KTSaveProject;
-	saver->save(m_filename, this);
+	
+	if(saver->save(m_filename, this))
+	{
+// 		emit requestSendMessage( QObject::tr( "project saved"), Packages::Error::Info );
+	}
+	else
+	{
+// 		emit requestSendMessage( QObject::tr( "Error saving project"), Packages::Error::Err );
+	}
 	delete saver;
 }
 

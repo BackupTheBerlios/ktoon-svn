@@ -31,9 +31,9 @@ namespace Packages {
 class Error : public QDomDocument
 {
 	public:
-		Error(const QString &message, int level );
+		enum Level{ None = -1, Info, Warning, Err, Fatal };
+		Error(const QString &message, Level level );
 		~Error();
-		
 		void setMessage(const QString &message);
 		void setLevel(int level);
 		

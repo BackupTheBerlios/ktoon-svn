@@ -43,6 +43,8 @@
 #include <sproject.h>
 
 #include "database.h"
+#include "error.h"
+
 
 namespace Projects {
 
@@ -68,20 +70,24 @@ ProjectCollection::~ProjectCollection()
 void ProjectCollection::createProject( Server::Connection *cnn, const QString &author )
 {
 	QString projectName = cnn->data(Info::ProjectName).toString();
-	
-	if(!d->projects.contains( projectName ))
+	if(d->db->exists(projectName))
 	{
-		SProject *project = new SProject( dAppProp->cacheDir() +"/"+ d->db->nextFileName());
-		project->setProjectName(projectName);
-		d->projects.insert(projectName, project);
-		d->db->addProject(project);
-		saveProject(projectName);
+		cnn->sendErrorPackageToClient(QObject::tr("Project %1 exists").arg(projectName), Packages::Error::Warning );
 		
-		d->connections.insert(projectName, QList<Server::Connection *>() << cnn);
+		cnn->removeConnection();
 	}
 	else
 	{
-		//TODO: enviar paquete de error
+		if(!d->projects.contains( projectName ) )
+		{
+			SProject *project = new SProject( dAppProp->cacheDir() +"/"+ d->db->nextFileName());
+			QObject::connect(project, SIGNAL(requestSendMessages(const QString&, Packages::Error::Level)), cnn, SLOT(sendErrorPackageToClient(const QString&, Packages::Error::Level)));
+			project->setProjectName(projectName);
+			d->projects.insert(projectName, project);
+			d->db->addProject(project);
+			saveProject(projectName);
+			d->connections.insert(projectName, QList<Server::Connection *>() << cnn);
+		}
 	}
 }
 
@@ -92,15 +98,25 @@ void ProjectCollection::openProject( Server::Connection *cnn )
 	
 	QString fileName = d->db->fileName(projectName);
 	
-	if(!d->projects.contains( projectName ))
+	if(fileName.isEmpty())
+	{
+		cnn->sendErrorPackageToClient(QObject::tr("Project %1 not exists").arg(projectName), Packages::Error::Err);
+		cnn->close();
+		return;
+	}
+	
+	if(!d->projects.contains( projectName ) )
 	{
 		KTSaveProject *loader = new KTSaveProject;
-		
 		SProject *project = new SProject(fileName);
-		
-		loader->load(fileName, project);
-		
+		QObject::connect(project, SIGNAL(requestSendMessages(const QString&, Packages::Error::Level)), cnn, SLOT(sendErrorPackageToClient(const QString&, Packages::Error::Level)));
+		bool ok  =loader->load(fileName, project);
 		delete loader;
+		if(!ok)
+		{
+			cnn->sendErrorPackageToClient(QObject::tr("Project %1 not exists").arg(projectName), Packages::Error::Err);
+			return;
+		}
 		if(project)
 		{
 			d->projects.insert(projectName, project);
@@ -109,9 +125,8 @@ void ProjectCollection::openProject( Server::Connection *cnn )
 	else
 	{
 		d->projects[projectName]->save();
+		QObject::connect(d->projects[projectName], SIGNAL(requestSendMessages(const QString&, int)), cnn, SLOT(sendErrorPackageToClient(const QString&, int)));
 	}
-	
-	
 	
 	Packages::Project project(fileName);
 	cnn->sendToClient(project.toString());
@@ -136,7 +151,7 @@ void ProjectCollection::closeProject(const QString & name)
 
 void ProjectCollection::saveProject(const QString & name)
 {
-	if(d->projects.contains( name ))
+	if(d->projects[name])
 	{
 		d->projects[name]->save();
 	}
@@ -203,6 +218,5 @@ void ProjectCollection::sendToProjectMembers(Server::Connection *cnn, QDomDocume
 		cnn->sendToClient(doc.toString(0));
 	}
 }
-
 
 }

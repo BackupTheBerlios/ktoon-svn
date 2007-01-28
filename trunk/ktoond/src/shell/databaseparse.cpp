@@ -22,7 +22,7 @@
 namespace Parsers {
 
 DatabaseParser::DatabaseParser()
-	: KTXmlParserBase(), m_findFilename(false), m_findProjectsUser(false)
+	: KTXmlParserBase(), m_projectExists(false), m_findFilename(false), m_findProjectsUser(false),  m_findProject(false)
 {
 }
 
@@ -37,12 +37,16 @@ bool DatabaseParser::startTag(const QString &tag, const QXmlAttributes &atts)
 	{
 		if(tag == "project")
 		{
-			
-			
 			tmpInfo.name = atts.value("name");
 			tmpInfo.author = atts.value("author");
 			tmpInfo.description = atts.value("descrition");
-			
+			if(m_findProject)
+			{
+				if(tmpInfo.name == m_condition)
+				{
+					m_projectExists = true;
+				}
+			}
 		}
 		else if(tag == "user")
 		{
@@ -117,4 +121,15 @@ QList< Projects::Database::ProjectInfo > DatabaseParser::projectsInfoOfUser(cons
 	return m_projectsInfo;
 }
 
+bool DatabaseParser::exists(const QString& projectName, const QString& db)
+{
+	m_condition = projectName;
+	m_findProject = true;
+	parse(db);
+	m_findProject = false;
+	return m_projectExists;
 }
+
+}
+
+

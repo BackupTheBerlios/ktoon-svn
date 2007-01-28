@@ -37,6 +37,8 @@
 #include "dmd5hash.h"
 #include "dalgorithm.h"
 
+#include "packages/error.h"
+
 
 namespace Server {
 
@@ -108,8 +110,8 @@ void Connection::removeConnection()
 void Connection::close()
 {
 	d->client->disconnectFromHost();
+	d->readed.clear();
 	d->client->close();
-	
 	d->isLogged = false;
 }
 
@@ -158,7 +160,11 @@ void Connection::sendToClient(QDomDocument &doc, bool sign)
 {
 	if ( sign)
 		signPackage(doc);
+	
+	dDebug() << "sending " << doc.toString();
+	
 	d->client->send(doc);
+	
 }
 
 void Connection::sendToAll(QDomDocument &doc, bool sign)
@@ -195,6 +201,13 @@ void Connection::generateSign()
 	{
 		d->sign = DMD5Hash::hash(d->user->login()+d->user->password()+DAlgorithm::randomString(DAlgorithm::random() % 10));
 	}
+}
+
+
+void Connection::sendErrorPackageToClient(const QString & message, Packages::Error::Level level)
+{
+	Packages::Error error(message, level);
+	sendToClient(error);
 }
 
 

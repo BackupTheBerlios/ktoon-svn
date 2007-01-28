@@ -83,7 +83,7 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 			}
 			else
 			{
-				Packages::Error error(QObject::tr("Invalid login or password"), 0);
+				Packages::Error error(QObject::tr("Invalid login or password"), Packages::Error::Info);
 				client->sendToClient(error);
 				client->removeConnection();
 			}

@@ -45,16 +45,17 @@ class DatabaseParser : public KTXmlParserBase
 		
 		QList< Projects::Database::ProjectInfo > projectsInfoOfUser(const QString & login, const QString &db );
 		
+		bool exists(const QString & nameProject, const QString &db );
 		
 	private:
 		QString m_lastFileName;
 		
 		QString m_fileName;
 		QString m_condition;
-		
+		bool m_projectExists;
 		QStringList m_users;
 		
-		bool m_findFilename, m_findProjectsUser;
+		bool m_findFilename, m_findProjectsUser, m_findProject;
 		QList< Projects::Database::ProjectInfo > m_projectsInfo;
 		Projects::Database::ProjectInfo tmpInfo;
 		

@@ -128,10 +128,19 @@ void Database::addProject(const SProject * project)
 
 QList< Database::ProjectInfo> Database::projectsInfoOfUser(const QString& user)
 {
-	
 	Parsers::DatabaseParser parser;
 	QList<ProjectInfo> list = parser.projectsInfoOfUser(user, loadDataBase().toString());
 	return list;
+}
+
+bool Database::exists( const QString &projectName )
+{
+	
+	Parsers::DatabaseParser parser;
+	return parser.exists(projectName, loadDataBase().toString());
+	
+	
+	
 }
 
 }

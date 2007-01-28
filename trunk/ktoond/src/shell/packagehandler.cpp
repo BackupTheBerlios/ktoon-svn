@@ -30,6 +30,7 @@
 #include "newprojectparser.h"
 #include "openprojectparser.h"
 #include "listparser.h"
+#include "error.h"
 
 class PackageHandler::Private
 {
@@ -53,8 +54,6 @@ PackageHandler::~PackageHandler()
 
 void PackageHandler::handle(Server::Connection *cnx , const QString &root, const QString &package )
 {
-	
-	dFatal() << root;
 	if ( root == "request" )
 	{
 		if(!cnx->data(Info::ProjectName).toString().isNull())
@@ -81,7 +80,6 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 		Parsers::OpenProjectParser parser;
 		if(parser.parse(package))
 		{
-			SHOW_VAR(parser.name());
 			cnx->setData(Info::ProjectName, parser.name());
 			d->projects->openProject(cnx);
 		}
@@ -94,6 +92,7 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 		{
 			cnx->setData(Info::ProjectName, parser.name());
 			d->projects->createProject(cnx, parser.author());
+			
 		}
 		else
 		{
@@ -117,6 +116,9 @@ void PackageHandler::handleProjectRequest(Server::Connection *cnn, const QString
 	else
 	{
 		// TODO: enviar error
+		
+		Packages::Error error("Cannot handle project request", Packages::Error::Warning );
+		
 		dWarning() << "CANNOT HANDLE PROJECT REQUEST";
 	}
 }

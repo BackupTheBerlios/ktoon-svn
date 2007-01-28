@@ -22,7 +22,7 @@
 namespace Packages
 {
 	
-Error::Error(const QString &message, int level)
+Error::Error(const QString &message, Level level)
 	: QDomDocument()
 {
 	QDomElement root = createElement ( "error" );

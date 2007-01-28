@@ -27,6 +27,8 @@
 #include <QVariant>
 #include "serverclient.h"
 
+#include "../packages/error.h"
+
 class KTProjectRequest;
 
 namespace Users {
@@ -78,13 +80,14 @@ class Connection : public QThread
 		
 	public slots:
 		void removeConnection();
-		
+		void sendErrorPackageToClient(const QString & message, Packages::Error::Level level);
 		
 	signals:
 		void error(QTcpSocket::SocketError socketError);
 		void requestSendToAll(const QString &msg);
 		void connectionClosed( Server::Connection *cnn);
 		void packageReaded(Server::Connection *cnn, const QString& root,const QString & packages  );
+		
 		
 	private:
 		class Private;

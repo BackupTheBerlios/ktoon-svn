@@ -29,6 +29,8 @@
 
 #include <QTimer>
 
+// #include "error.h"
+
 
 class SProject : public KTProject
 {
@@ -46,6 +48,10 @@ class SProject : public KTProject
 		
 	public slots:
 		void save();
+	
+	signals:
+// 		void requestSendMessage(const QString &message, Packages::Error::Level level);
+		
 		
 	protected:
 		void timerEvent ( QTimerEvent * event );
