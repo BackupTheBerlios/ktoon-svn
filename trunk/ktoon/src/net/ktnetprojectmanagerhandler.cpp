@@ -25,6 +25,8 @@
 
 
 #include <ddebug.h>
+#include <dosd.h>
+
 
 #include "ktprojectcommand.h"
 #include "ktcommandexecutor.h"
@@ -40,6 +42,7 @@
 #include "ktsavenetproject.h"
 #include "ktopenpackage.h"
 
+#include "kterrorparser.h"
 #include "ktprojectsparser.h"
 #include "ktprojectparser.h"
 #include "ktrequestparser.h"
@@ -192,6 +195,14 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 	{
 		//analizar el paquete
 		
+	}
+	else if(root == "error")
+	{
+		KTErrorParser parser;
+		if(parser.parse(package) )
+		{
+			DOsd::self()->display(parser.error().message, DOsd::Level(parser.error().level));
+		}
 	}
 	else if(root == "project")
 	{
