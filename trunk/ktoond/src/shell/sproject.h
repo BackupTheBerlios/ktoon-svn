@@ -29,7 +29,7 @@
 
 #include <QTimer>
 
-// #include "error.h"
+#include "error.h"
 
 
 class SProject : public KTProject
@@ -50,7 +50,7 @@ class SProject : public KTProject
 		void save();
 	
 	signals:
-// 		void requestSendMessage(const QString &message, Packages::Error::Level level);
+		void requestSendErrorMessage(const QString &message, Packages::Error::Level level);
 		
 		
 	protected:

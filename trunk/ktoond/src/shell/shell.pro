@@ -6,12 +6,14 @@
 HEADERS += projectcollection.h \
            packagehandler.h \
            database.h \
-           databaseparse.h 
+           databaseparse.h  \
+           sproject.h
 SOURCES += main.cpp \
            projectcollection.cpp \
            packagehandler.cpp \
            database.cpp \
-           databaseparse.cpp 
+           databaseparse.cpp  \
+           sproject.cpp
 TARGET = ../../bin/ktoond.bin
 CONFIG += release \
 warn_on

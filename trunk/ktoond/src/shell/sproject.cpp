@@ -50,11 +50,11 @@ void SProject::save()
 	
 	if(saver->save(m_filename, this))
 	{
-// 		emit requestSendMessage( QObject::tr( "project saved"), Packages::Error::Info );
+		emit requestSendErrorMessage( QObject::tr( "project saved"), Packages::Error::Info );
 	}
 	else
 	{
-// 		emit requestSendMessage( QObject::tr( "Error saving project"), Packages::Error::Err );
+		emit requestSendErrorMessage( QObject::tr( "Error saving project"), Packages::Error::Err );
 	}
 	delete saver;
 }
