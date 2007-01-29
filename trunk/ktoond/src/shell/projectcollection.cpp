@@ -81,7 +81,7 @@ void ProjectCollection::createProject( Server::Connection *cnn, const QString &a
 		if(!d->projects.contains( projectName ) )
 		{
 			SProject *project = new SProject( dAppProp->cacheDir() +"/"+ d->db->nextFileName());
-			QObject::connect(project, SIGNAL(requestSendMessages(const QString&, Packages::Error::Level)), cnn, SLOT(sendErrorPackageToClient(const QString&, Packages::Error::Level)));
+			QObject::connect(project, SIGNAL(requestSendErrorMessage(const QString&, Packages::Error::Level)), cnn, SLOT(sendErrorPackageToClient(const QString&, Packages::Error::Level)));
 			project->setProjectName(projectName);
 			d->projects.insert(projectName, project);
 			d->db->addProject(project);
@@ -109,7 +109,7 @@ void ProjectCollection::openProject( Server::Connection *cnn )
 	{
 		KTSaveProject *loader = new KTSaveProject;
 		SProject *project = new SProject(fileName);
-		QObject::connect(project, SIGNAL(requestSendMessages(const QString&, Packages::Error::Level)), cnn, SLOT(sendErrorPackageToClient(const QString&, Packages::Error::Level)));
+		QObject::connect(project, SIGNAL(requestSendErrorMessage(const QString&, Packages::Error::Level)), cnn, SLOT(sendErrorPackageToClient(const QString&, Packages::Error::Level)));
 		bool ok  =loader->load(fileName, project);
 		delete loader;
 		if(!ok)
@@ -125,7 +125,7 @@ void ProjectCollection::openProject( Server::Connection *cnn )
 	else
 	{
 		d->projects[projectName]->save();
-		QObject::connect(d->projects[projectName], SIGNAL(requestSendMessages(const QString&, int)), cnn, SLOT(sendErrorPackageToClient(const QString&, int)));
+		QObject::connect(d->projects[projectName], SIGNAL(requestSendErrorMessage(const QString&, int)), cnn, SLOT(sendErrorPackageToClient(const QString&, int)));
 	}
 	
 	Packages::Project project(fileName);

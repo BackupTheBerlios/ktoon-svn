@@ -52,7 +52,6 @@ class Connection::Private
 		~Private()
 		{
 			delete client;
-			delete server;
 		}
 		
 		Server::Client *client;
@@ -70,12 +69,12 @@ Connection::Connection(int socketDescriptor, Server::TcpServer *server) : QThrea
 	d->client = new Server::Client(this);
 	d->client->setSocketDescriptor(socketDescriptor);
 	
-	connect(d->client, SIGNAL(disconnected()), this, SLOT(removeConnection()));
+// 	connect(d->client, SIGNAL(disconnected()), this, SLOT(removeConnection()));
 }
 
 Connection::~Connection()
 {
-	delete d->client;
+	delete d;
 }
 
 void Connection::run()
@@ -109,9 +108,16 @@ void Connection::removeConnection()
 
 void Connection::close()
 {
-	d->client->disconnectFromHost();
+	if ( d->client->state() != QAbstractSocket::UnconnectedState )
+	{
+		d->client->flush();
+		
+		d->client->disconnectFromHost();
+		d->client->waitForDisconnected();
+		d->client->close();
+	}
+	
 	d->readed.clear();
-	d->client->close();
 	d->isLogged = false;
 }
 

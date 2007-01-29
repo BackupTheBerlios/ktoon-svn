@@ -52,7 +52,6 @@ class Connection : public QThread
 		
 		void run();
 		
-		void close();
 		bool isLogged() const;
 		
 		void appendTextReaded(const QString &readed);
@@ -79,8 +78,11 @@ class Connection : public QThread
 		QString sign() const;
 		
 	public slots:
-		void removeConnection();
+		void close();
 		void sendErrorPackageToClient(const QString & message, Packages::Error::Level level);
+		
+	private slots:
+		void removeConnection();
 		
 	signals:
 		void error(QTcpSocket::SocketError socketError);
