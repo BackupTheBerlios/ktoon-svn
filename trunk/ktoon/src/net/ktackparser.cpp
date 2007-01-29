@@ -17,54 +17,64 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTNETPROJECTMANAGER_H
-#define KTNETPROJECTMANAGER_H
 
-#include <QDomDocument>
-#include <ktabstractprojectmanagerhandler.h>
+#include "ktackparser.h"
 
-class KTProjectCommand;
-class KTNetSocket;
-class KTNetProjectManagerParams;
-
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class KTNetProjectManagerHandler : public KTAbstractProjectHandler
+struct KTAckParser::Private
 {
-	Q_OBJECT;
-	public:
-		KTNetProjectManagerHandler(QObject *parent = 0);
-		~KTNetProjectManagerHandler();
-		
-		virtual bool initialize(KTProjectManagerParams *params);
-		virtual bool setupNewProject(KTProjectManagerParams *params);
-		virtual bool closeProject();
-		
-		virtual void handleProjectRequest(const KTProjectRequest* event);
-		virtual bool commandExecuted(KTProjectResponse *response);
-		
-		virtual bool saveProject(const QString &fileName, const KTProject *project);
-		
-		virtual bool loadProject(const QString &fileName, KTProject *project);
-		
-		void handlePackage(const QString &root, const QString &package);
-		
-		virtual bool isValid() const;
-		
-	signals:
-		void openNewArea(const QString &name);
-		
-	private:
-		bool loadProjectFromServer(const QString &name);
-		void emitRequest(KTProjectRequest *request);
-		
-		void sendPackage(const QDomDocument &doc);
-		void setProject(KTProject *project);
-		
-	private:
-		struct Private;
-		Private *const d;
+	QString motd;
+	QString sign;
 };
 
-#endif
+KTAckParser::KTAckParser() : KTXmlParserBase(), d(new Private())
+{
+}
+
+
+KTAckParser::~KTAckParser()
+{
+	delete d;
+}
+
+bool KTAckParser::startTag(const QString &tag, const QXmlAttributes &atts)
+{
+	if( tag == "motd" )
+	{
+		setReadText(true);
+	}
+	else if ( tag == "sign" )
+	{
+		setReadText(true);
+	}
+	
+	return true;
+}
+
+bool KTAckParser::endTag(const QString &)
+{
+	return true;
+}
+
+void KTAckParser::text(const QString &msg)
+{
+	if( currentTag() == "motd" )
+	{
+		d->motd = msg;
+	}
+	else if ( currentTag() == "sign" )
+	{
+		d->sign = msg;
+	}
+}
+
+QString KTAckParser::sign() const
+{
+	return d->sign;
+}
+
+
+QString KTAckParser::motd() const
+{
+	return d->motd;
+}
+

@@ -43,9 +43,11 @@ class STORE_EXPORT KTRequestParser : public KTXmlParserBase
 		bool endTag( const QString& qname);
 		void text( const QString & ch );
 		KTProjectResponse *response() const;
+		QString sign() const;
 		
 	private:
-		KTProjectResponse *m_response;
+		struct Private;
+		Private *const d;
 };
 
 #endif

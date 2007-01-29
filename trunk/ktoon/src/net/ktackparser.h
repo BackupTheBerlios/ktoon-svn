@@ -17,50 +17,27 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTNETPROJECTMANAGER_H
-#define KTNETPROJECTMANAGER_H
+#ifndef KTACKPARSER_H
+#define KTACKPARSER_H
 
-#include <QDomDocument>
-#include <ktabstractprojectmanagerhandler.h>
-
-class KTProjectCommand;
-class KTNetSocket;
-class KTNetProjectManagerParams;
+#include <ktxmlparserbase.h>
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado \<krawek@gmail.com\>
 */
-class KTNetProjectManagerHandler : public KTAbstractProjectHandler
+class KTAckParser : public KTXmlParserBase
 {
-	Q_OBJECT;
 	public:
-		KTNetProjectManagerHandler(QObject *parent = 0);
-		~KTNetProjectManagerHandler();
+		KTAckParser();
+		~KTAckParser();
 		
-		virtual bool initialize(KTProjectManagerParams *params);
-		virtual bool setupNewProject(KTProjectManagerParams *params);
-		virtual bool closeProject();
+		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+		virtual bool endTag(const QString &tag);
 		
-		virtual void handleProjectRequest(const KTProjectRequest* event);
-		virtual bool commandExecuted(KTProjectResponse *response);
+		virtual void text(const QString &msg);
 		
-		virtual bool saveProject(const QString &fileName, const KTProject *project);
-		
-		virtual bool loadProject(const QString &fileName, KTProject *project);
-		
-		void handlePackage(const QString &root, const QString &package);
-		
-		virtual bool isValid() const;
-		
-	signals:
-		void openNewArea(const QString &name);
-		
-	private:
-		bool loadProjectFromServer(const QString &name);
-		void emitRequest(KTProjectRequest *request);
-		
-		void sendPackage(const QDomDocument &doc);
-		void setProject(KTProject *project);
+		QString sign() const;
+		QString motd() const;
 		
 	private:
 		struct Private;

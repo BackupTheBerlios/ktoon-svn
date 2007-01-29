@@ -26,32 +26,43 @@
 
 #include "ktprojectresponse.h"
 
-KTRequestParser::KTRequestParser()
-	: KTXmlParserBase()
+struct KTRequestParser::Private
 {
-	m_response = 0;
+	QString sign;
+	KTProjectResponse *response;
+};
+
+KTRequestParser::KTRequestParser()
+	: KTXmlParserBase(), d(new Private())
+{
+	d->response = 0;
 }
 
 
 KTRequestParser::~KTRequestParser()
 {
+	delete d;
 }
 
 void KTRequestParser::initialize()
 {
-	m_response = 0;
+	d->response = 0;
 }
 
 
 bool KTRequestParser::startTag(const QString& qname, const QXmlAttributes& atts)
 {
-	if ( qname == "item" )
+	if( qname == "request" )
 	{
-		static_cast<KTItemResponse *>(m_response)->setItemIndex(atts.value("index").toInt());
+		d->sign = atts.value("sign");
+	}
+	else if ( qname == "item" )
+	{
+		static_cast<KTItemResponse *>(d->response)->setItemIndex(atts.value("index").toInt());
 	}
 	else if ( qname == "frame" )
 	{
-		static_cast<KTFrameResponse *>(m_response)->setFrameIndex(atts.value("index").toInt());
+		static_cast<KTFrameResponse *>(d->response)->setFrameIndex(atts.value("index").toInt());
 	}
 	else if ( qname == "data" )
 	{
@@ -59,16 +70,16 @@ bool KTRequestParser::startTag(const QString& qname, const QXmlAttributes& atts)
 	}
 	else if ( qname == "layer" )
 	{
-		static_cast<KTLayerResponse *>(m_response)->setLayerIndex(atts.value("index").toInt());
+		static_cast<KTLayerResponse *>(d->response)->setLayerIndex(atts.value("index").toInt());
 	}
 	else if ( qname == "scene" )
 	{
-		static_cast<KTSceneResponse *>(m_response)->setSceneIndex(atts.value("index").toInt());
+		static_cast<KTSceneResponse *>(d->response)->setSceneIndex(atts.value("index").toInt());
 	}
 	else if ( qname == "action" )
 	{
-		m_response = KTProjectResponseFactory::create( atts.value("part").toInt(), atts.value("id").toInt());
-		m_response->setArg(atts.value("arg"));
+		d->response = KTProjectResponseFactory::create( atts.value("part").toInt(), atts.value("id").toInt());
+		d->response->setArg(atts.value("arg"));
 	}
 	
 	return true;
@@ -83,13 +94,16 @@ void KTRequestParser::text( const QString & ch )
 {
 	if ( currentTag() == "data" )
 	{
-		m_response->setData( QByteArray::fromBase64( QByteArray(ch.toLocal8Bit()) ) );
+		d->response->setData( QByteArray::fromBase64( QByteArray(ch.toLocal8Bit()) ) );
 	}
 }
 
 KTProjectResponse *KTRequestParser::response() const
 {
-	return m_response;
+	return d->response;
 }
 
-
+QString KTRequestParser::sign() const
+{
+	return d->sign;
+}

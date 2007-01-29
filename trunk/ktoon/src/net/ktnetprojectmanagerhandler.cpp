@@ -48,21 +48,38 @@
 #include "ktrequestparser.h"
 #include "ktrequestbuilder.h"
 
+#include "ktackparser.h"
+
 #include "ktlistprojectdialog.h"
 
 #include "ktproject.h"
 
 #include <QTemporaryFile>
 
-KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent)
+struct KTNetProjectManagerHandler::Private
 {
-	m_socket = new KTNetSocket(this);
-	m_project = 0;
+	KTNetSocket *socket;
+	QString projectName, author;
+	
+	KTNetProjectManagerParams *params;
+	KTProject *project;
+	
+	QString sign;
+	bool ownPackage;
+};
+
+KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent), d(new Private)
+{
+	d->socket = new KTNetSocket(this);
+	d->project = 0;
+	d->params = 0;
+	d->ownPackage = false;
 }
 
 
 KTNetProjectManagerHandler::~KTNetProjectManagerHandler()
 {
+	delete d;
 }
 
 
@@ -72,19 +89,19 @@ void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* re
 	
 	// TODO: Guardar una copia de los eventos o paquetes en una cola y reenviar a la GUI cuando llegue el paquete de que todo va bien desde el servidor!
 	
-	if ( m_socket->state() == QAbstractSocket::ConnectedState )
+	if ( d->socket->state() == QAbstractSocket::ConnectedState )
 	{
 		dDebug("net") << "SENDING: " << request->xml();
-		m_socket->send( request->xml() );
+		d->socket->send( request->xml() );
 	}
 }
 
 
 bool KTNetProjectManagerHandler::commandExecuted(KTProjectResponse *response)
 {
-	if ( response->mode() == KTProjectResponse::Do ) return true;
+	if ( response->mode() == KTProjectResponse::Do || d->ownPackage /*FIXME*/) return true;
 	
-	// FIXME: ESTO LLEGA DESDE EL SERVIDOR!
+	
 	KTProjectRequest request = KTRequestBuilder::fromResponse(response);
 	handleProjectRequest( &request );
 	
@@ -93,25 +110,24 @@ bool KTNetProjectManagerHandler::commandExecuted(KTProjectResponse *response)
 
 bool KTNetProjectManagerHandler::saveProject(const QString &fileName, const KTProject *project)
 {
-	KTSaveNetProject saver(m_params->server(), m_params->port());
+	KTSaveNetProject saver(d->params->server(), d->params->port());
 	
 	return saver.save(fileName, project);
 }
 
 bool KTNetProjectManagerHandler::loadProject(const QString &fileName, KTProject *project)
 {
-	if ( m_socket->state() != QAbstractSocket::ConnectedState  )
+	if ( d->socket->state() != QAbstractSocket::ConnectedState  )
 		return false;
 	
-	return loadProjectFromServer(m_params->projectName());
+	return loadProjectFromServer(d->params->projectName());
 }
 
 
 bool KTNetProjectManagerHandler::loadProjectFromServer(const QString &name)
 {
-	
 	KTOpenPackage package(name);
-	m_socket->send(package);
+	d->socket->send(package);
 	return true;
 }
 
@@ -120,17 +136,17 @@ bool KTNetProjectManagerHandler::initialize(KTProjectManagerParams *params)
 	KTNetProjectManagerParams *netparams = dynamic_cast<KTNetProjectManagerParams*>(params);
 	if ( ! netparams ) return false;
 	
-	m_params = netparams;
+	d->params = netparams;
 	
 	dDebug("net") << "Connecting to " << netparams->server() << ":" << netparams->port();
 	
-	m_socket->connectToHost(m_params->server(), m_params->port());
+	d->socket->connectToHost(d->params->server(), d->params->port());
 	
-	bool connected = m_socket->waitForConnected(1000);
+	bool connected = d->socket->waitForConnected(1000);
 	if(connected)
 	{
-		KTConnectPackage connectPackage( m_params->login(), m_params->password());
-		m_socket->send( connectPackage );
+		KTConnectPackage connectPackage( d->params->login(), d->params->password());
+		d->socket->send( connectPackage );
 	}
 	
 	return connected;
@@ -143,10 +159,10 @@ bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
 	if ( ! netparams ) return false;
 	
 	SHOW_VAR(netparams->projectName());
-	m_projectName = netparams->projectName();
-// 	m_author = netparams->author();
+	d->projectName = netparams->projectName();
+// 	d->author = netparams->author();
 	
-	if ( ! m_socket->isOpen() )
+	if ( ! d->socket->isOpen() )
 	{
 		bool connected = initialize(params);
 		if ( !connected ) return false;
@@ -156,7 +172,7 @@ bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
 	// TODO: enviar paquete de crear proyecto
 	
 	KTNewProjectPackage newProjectPackage(netparams->projectName(), "");
-	m_socket->send(newProjectPackage);
+	d->socket->send(newProjectPackage);
 	
 	return true;
 }
@@ -182,6 +198,15 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 		KTRequestParser parser;
 		if ( parser.parse(package) )
 		{
+			if ( parser.sign() == d->sign )
+			{
+				d->ownPackage = true;
+			}
+			else
+			{
+				d->ownPackage = false;
+			}
+			
 			KTProjectRequest request = KTRequestBuilder::fromResponse(parser.response() );
 			emitRequest(&request);
 			
@@ -194,6 +219,11 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 	else if( root == "ack")
 	{
 		//analizar el paquete
+		KTAckParser parser;
+		if ( parser.parse(package) )
+		{
+			d->sign = parser.sign();
+		}
 		
 	}
 	else if(root == "error")
@@ -216,13 +246,13 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 				file.flush();
 				
 				
-				if(m_project)
+				if(d->project)
 				{
 					KTSaveProject *loader = 0;
 					loader = new KTSaveProject;
-					loader->load(file.fileName (), m_project);
-					m_project->setOpen(true);
-					emit openNewArea(m_project->projectName());
+					loader->load(file.fileName (), d->project);
+					d->project->setOpen(true);
+					emit openNewArea(d->project->projectName());
 					delete loader;
 				}
 			}
@@ -254,16 +284,16 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 
 bool KTNetProjectManagerHandler::isValid() const
 {
-	return m_socket->state() == QAbstractSocket::ConnectedState;
+	return d->socket->state() == QAbstractSocket::ConnectedState;
 }
 
 void KTNetProjectManagerHandler::sendPackage(const QDomDocument &doc)
 {
-	m_socket->send(doc);
+	d->socket->send(doc);
 }
 
 void KTNetProjectManagerHandler::setProject(KTProject *project)
 {
-	m_project = project;
+	d->project = project;
 }
 
