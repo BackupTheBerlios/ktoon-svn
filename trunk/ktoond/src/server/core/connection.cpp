@@ -68,8 +68,6 @@ Connection::Connection(int socketDescriptor, Server::TcpServer *server) : QThrea
 {
 	d->client = new Server::Client(this);
 	d->client->setSocketDescriptor(socketDescriptor);
-	
-// 	connect(d->client, SIGNAL(disconnected()), this, SLOT(removeConnection()));
 }
 
 Connection::~Connection()

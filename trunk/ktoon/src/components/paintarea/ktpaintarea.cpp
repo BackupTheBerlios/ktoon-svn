@@ -326,7 +326,7 @@ void KTPaintArea::mousePressEvent ( QMouseEvent * event )
 			
 			menu->addSeparator();
 			
-			QAction *addToLib = menu->addAction(tr("Add to library..."), this, SLOT(addSelectedItemsToLibrary()));
+			/*QAction *addToLib = */menu->addAction(tr("Add to library..."), this, SLOT(addSelectedItemsToLibrary()));
 			
 			if ( scene()->selectedItems().isEmpty() )
 			{
@@ -397,7 +397,7 @@ void KTPaintArea::mouseMoveEvent ( QMouseEvent * event )
 			{
 				a += 180;
 			}
-			d->rotator->rotateTo( a );
+			d->rotator->rotateTo( (int)a );
 		}
 		
 		setUpdatesEnabled(true);
@@ -601,8 +601,8 @@ void KTPaintArea::drawBackground(QPainter *painter, const QRectF &rect)
 	
 	if ( d->drawGrid )
 	{
-		int sx = painter->matrix().m11();
-		int sy = painter->matrix().m22();
+		int sx = (int)painter->matrix().m11();
+		int sy = (int)painter->matrix().m22();
 		
 		painter->resetMatrix();
 		painter->scale(sx, sy);
@@ -669,7 +669,7 @@ void KTPaintArea::deleteItems()
 		QString strItems= "";
 		
 		KTScene* currentScene = static_cast<KTScene*>(scene());
-		int firstItem = -1;
+// 		int firstItem = -1;
 		if(currentScene)
 		{
 			foreach(QGraphicsItem *item, selecteds)
@@ -795,7 +795,7 @@ void KTPaintArea::copyItems()
 	if(!selecteds.isEmpty())
 	{
 		KTScene* currentScene = static_cast<KTScene*>(scene());
-		int firstItem = -1;
+// 		int firstItem = -1;
 		
 		if(currentScene)
 		{
@@ -947,7 +947,7 @@ void KTPaintArea::addSelectedItemsToLibrary()
 	
 	foreach (QGraphicsItem *item, selecteds )
 	{
-		if( KTAbstractSerializable *itemSerializable = dynamic_cast<KTAbstractSerializable *>(item) )
+		if( /*KTAbstractSerializable *itemSerializable = */dynamic_cast<KTAbstractSerializable *>(item) )
 		{
 			QString symName = dialog.symbolName( item );
 			
