@@ -99,7 +99,7 @@ void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* re
 
 bool KTNetProjectManagerHandler::commandExecuted(KTProjectResponse *response)
 {
-	if ( response->mode() == KTProjectResponse::Do || d->ownPackage /*FIXME*/) return true;
+	if ( response->mode() == KTProjectResponse::Do ) return true;
 	
 	
 	KTProjectRequest request = KTRequestBuilder::fromResponse(response);
@@ -240,7 +240,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 		if(parser.parse(package) )
 		{
 			QTemporaryFile file;
-			if(file.open ())
+			if(file.open())
 			{
 				file.write(parser.data() );
 				file.flush();
@@ -248,10 +248,9 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 				
 				if(d->project)
 				{
-					KTSaveProject *loader = 0;
-					loader = new KTSaveProject;
-					loader->load(file.fileName (), d->project);
-					d->project->setOpen(true);
+					KTSaveProject *loader = new KTSaveProject;
+					loader->load(file.fileName(), d->project);
+					
 					emit openNewArea(d->project->projectName());
 					delete loader;
 				}

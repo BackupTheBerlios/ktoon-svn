@@ -47,7 +47,6 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectResponseHandle
 	public:
 		KTPaintArea(KTProject *project, QWidget * parent = 0);
 		~KTPaintArea();
-		void setPhotogram(QGraphicsScene *photogram);
 		
 		void setAntialiasing(bool use);
 		void setUseOpenGL(bool opengl);
@@ -115,26 +114,8 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectResponseHandle
 		bool canPaint() const;
 		
 	private:
-		QGraphicsRectItem *m_grid;
-		KTToolPlugin *m_tool;
-		
-		bool m_isDrawing;
-		
-		KTBrushManager *m_brushManager;
-		KTInputDeviceInformation *m_inputInformation;
-		
-		KTProject *m_project;
-		
-		QRectF m_drawingRect;
-		
-		int m_currentSceneIndex;
-		
-		bool m_drawGrid;
-		double m_angle;
-		
-		KTPaintAreaRotator *m_rotator;
-		
-		QStringList m_copiesXml;
+		struct Private;
+		Private *const d;
 };
 
 #endif

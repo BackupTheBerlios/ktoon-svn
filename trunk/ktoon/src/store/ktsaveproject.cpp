@@ -142,6 +142,9 @@ bool KTSaveProject::load(const QString &fileName, KTProject *project)
 				f.close();
 			}
 		}
+		
+		project->setOpen(true);
+		
 		return true;
 	}
 	
