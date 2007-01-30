@@ -21,15 +21,16 @@
 #ifndef KTHANDLERLOCALREQUEST_H
 #define KTHANDLERLOCALREQUEST_H
 
-/**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
-*/
 #include<QObject>
 
 class KTProjectRequest;
 class KTProjectResponse;
 class KTProjectManager;
 
+/**
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @TODO cambiar nombre a LocalRequesHandler
+*/
 class KTHandlerLocalRequest : public QObject
 {
 	Q_OBJECT

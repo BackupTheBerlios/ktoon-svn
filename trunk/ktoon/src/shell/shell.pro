@@ -22,7 +22,7 @@ HEADERS += ktmainwindow.h \
            crashwidget.h \
            ktapplication.h \
            configwizard.h \
-           kthandlerlocalrequest.h 
+           ktlocalprojectmanagerhandler.h
 SOURCES += main.cpp \
            ktmainwindow.cpp \
            ktstatusbar.cpp \
@@ -33,13 +33,13 @@ SOURCES += main.cpp \
            ktapplication.cpp \
            configwizard.cpp \
            ktmainwindow_gui.cpp \
-           kthandlerlocalrequest.cpp 
+           ktlocalprojectmanagerhandler.cpp
 include(shell_config.pri)
 include(../../ktconfig.pri)
 TARGET = ../../bin/ktoon.bin
 TEMPLATE = app
 linux-g++{
-  TARGETDEPS += ../../src/dlib/dcore/libdcore.so \
+    TARGETDEPS += ../../src/dlib/dcore/libdcore.so \
   ../../src/dlib/dgui/libdgui.so \
   ../../src/libktoon/libktoon.so \
   ../../src/libktui/libktui.a \

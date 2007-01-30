@@ -52,20 +52,20 @@ void KTLocalProjectManagerHandler::handleProjectRequest(const KTProjectRequest *
 bool KTLocalProjectManagerHandler::saveProject(const QString &fileName, const KTProject *project)
 {
 	bool result = false;
-	KTSaveProject *saver = 0;
 	
-	if ( fileName.endsWith(".ktn") )
+	QString fn = fileName;
+	
+	if ( !fileName.endsWith(".ktn") )
 	{
-		saver = new KTSaveProject;
-		
-		result = saver->save(fileName, project);
-		
-		delete saver;
+		fn+=".ktn";
 	}
-	else
-	{
-		result = false;
-	}
+	
+	
+	KTSaveProject *saver = new KTSaveProject;
+	
+	result = saver->save(fn, project);
+	
+	delete saver;
 	
 	return result;
 }
