@@ -22,7 +22,6 @@ HEADERS += ktmainwindow.h \
            crashwidget.h \
            ktapplication.h \
            configwizard.h \
-           ktlocalprojectmanagerhandler.h \
            kthandlerlocalrequest.h 
 SOURCES += main.cpp \
            ktmainwindow.cpp \
@@ -34,7 +33,6 @@ SOURCES += main.cpp \
            ktapplication.cpp \
            configwizard.cpp \
            ktmainwindow_gui.cpp \
-           ktlocalprojectmanagerhandler.cpp \
            kthandlerlocalrequest.cpp 
 include(shell_config.pri)
 include(../../ktconfig.pri)

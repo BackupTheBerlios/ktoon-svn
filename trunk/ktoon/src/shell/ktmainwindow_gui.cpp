@@ -172,7 +172,7 @@ void KTMainWindow::setupMenu()
 	newMenu->addSeparator();
 	m_fileMenu->addAction(m_actionManager->find("openproject"));
 	m_fileMenu->addAction(m_actionManager->find("opennetproject"));
-	
+	m_fileMenu->addAction(m_actionManager->find("importprojectserver"));
 	m_recentProjectsMenu = new QMenu(tr("Recents"), this );
 	connect( m_recentProjectsMenu, SIGNAL( activated(int) ), this, SLOT( openRecent( int ) ) );
 	
@@ -295,6 +295,9 @@ void KTMainWindow::setupFileActions()
 	
 	DAction *openNetFile = new DAction(QPixmap(THEME_DIR+"/icons/open.png"), tr("Open project from server..."), tr(""), this, SLOT(openProjectFromServer()), m_actionManager);
 	m_actionManager->insert(openNetFile, "opennetproject", "file");
+	
+	DAction *importNetFile = new DAction(QPixmap(THEME_DIR+""), tr("Import project to server..."), tr(""), this, SLOT(importProjectToServer()), m_actionManager);
+	m_actionManager->insert(importNetFile, "importprojectserver", "file");
 	
 	DAction *save = new DAction( QPixmap(THEME_DIR+"/icons/save.png"), tr( "Save project" ),QKeySequence(tr("Ctrl+S")), this, SLOT(saveProject()), m_actionManager);
 	m_actionManager->insert( save, "saveproject", "file" );

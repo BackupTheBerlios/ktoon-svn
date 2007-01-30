@@ -41,10 +41,10 @@ HEADERS += ktlayer.h \
            ktrequestbuilder.h \
            ktrequestparser.h \
            ktprojectresponse.h \
-           ktabstractprojectresponsehandler.h  \
+           ktabstractprojectresponsehandler.h \
            ktsaveproject.h \
            ktprojectloader.h \
-           ktgraphiclibraryitem.h
+           ktlocalprojectmanagerhandler.h 
 SOURCES += ktlayer.cpp \
            ktpalettedocument.cpp \
            ktframe.cpp \
@@ -80,10 +80,10 @@ SOURCES += ktlayer.cpp \
            ktrequestparser.cpp \
            ktprojectresponse.cpp \
            ktabstractprojectresponsehandler.cpp \
-           ktitemfactory.cpp  \
+           ktitemfactory.cpp \
            ktsaveproject.cpp \
            ktprojectloader.cpp \
-           ktgraphiclibraryitem.cpp
+           ktlocalprojectmanagerhandler.cpp 
 KDEV_QTVER = 4
 STORE_DIR = ../../src/store
 LIBKTOON_DIR = ../../src/libktoon

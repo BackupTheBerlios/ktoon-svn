@@ -47,6 +47,7 @@
 #include "ktconnectdialog.h"
 #include "ktsavenetproject.h"
 #include "ktlistpackage.h"
+#include "ktimportprojectpackage.h"
 #include "ktlistprojectspackage.h"
 // #end
 
@@ -417,6 +418,23 @@ void KTMainWindow::openProjectFromServer()
 		if ( handler->isValid() )
 		{
 			KTListProjectsPackage package;
+			
+			handler->sendPackage(package);
+		}
+	}
+}
+
+void KTMainWindow::importProjectToServer()
+{
+	if ( setupNetworkProject() )
+	{
+		KTNetProjectManagerHandler *handler = static_cast<KTNetProjectManagerHandler *>(m_projectManager->handler());
+		
+		if ( handler->isValid() )
+		{
+			
+			QString file = QFileDialog::getOpenFileName( this, tr("Import project package"), CACHE_DIR, tr("KToon Project Package (*.ktn)"));
+			KTImportProjectPackage package(file);
 			
 			handler->sendPackage(package);
 		}
