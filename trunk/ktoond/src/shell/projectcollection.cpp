@@ -85,9 +85,11 @@ void ProjectCollection::createProject( Server::Connection *cnn, const QString &a
 			SProject *project = new SProject( dAppProp->cacheDir() +"/"+ d->db->nextFileName());
 			QObject::connect(project, SIGNAL(requestSendErrorMessage(const QString&, Packages::Error::Level)), cnn, SLOT(sendErrorPackageToClient(const QString&, Packages::Error::Level)));
 			project->setProjectName(projectName);
+			project->addUser( cnn->user()->login(), SProject::Owner);
 			d->projects.insert(projectName, project);
 			d->db->addProject(project);
 			saveProject(projectName);
+			
 			d->connections.insert(projectName, QList<Server::Connection *>() << cnn);
 		}
 	}
@@ -98,43 +100,44 @@ void ProjectCollection::openProject( Server::Connection *cnn )
 {
  	QString projectName = cnn->data(Info::ProjectName).toString();
 	
-	QString fileName = d->db->fileName(projectName);
+	SProject *project = d->db->loadProject(projectName);
 	
-	if(fileName.isEmpty())
+	if(project)
 	{
-		cnn->sendErrorPackageToClient(QObject::tr("Project %1 not exists").arg(projectName), Packages::Error::Err);
-		cnn->close();
-		return;
-	}
-	
-	if(!d->projects.contains( projectName ) )
-	{
-		KTSaveProject *loader = new KTSaveProject;
-		SProject *project = new SProject(fileName);
-		QObject::connect(project, SIGNAL(requestSendErrorMessage(const QString&, Packages::Error::Level)), cnn, SLOT(sendErrorPackageToClient(const QString&, Packages::Error::Level)));
-		bool ok  =loader->load(fileName, project);
-		delete loader;
-		if(!ok)
+		project->isOwner( cnn->user());
+		SHOW_VAR(project->fileName());
+		if(!d->projects.contains( projectName ) )
 		{
-			cnn->sendErrorPackageToClient(QObject::tr("Project %1 not exists").arg(projectName), Packages::Error::Err);
-			return;
+			KTSaveProject *loader = new KTSaveProject;
+			QObject::connect(project, SIGNAL(requestSendErrorMessage(const QString&, Packages::Error::Level)), cnn, SLOT(sendErrorPackageToClient(const QString&, Packages::Error::Level)));
+			bool ok  = loader->load(project->fileName(), project);
+			delete loader;
+			if(!ok)
+			{
+				cnn->sendErrorPackageToClient(QObject::tr("Project %1 not exists").arg(projectName), Packages::Error::Err);
+				return;
+			}
+			if(project)
+			{
+				d->projects.insert(projectName, project);
+			}
 		}
-		if(project)
+		else
 		{
-			d->projects.insert(projectName, project);
+			d->projects[projectName]->save();
+			QObject::connect(d->projects[projectName], SIGNAL(requestSendErrorMessage(const QString&, int)), cnn, SLOT(sendErrorPackageToClient(const QString&, int)));
 		}
+		
+		Packages::Project projectPackage(project->fileName());
+		cnn->sendToClient(projectPackage.toString());
+		
+		d->connections[projectName].append( cnn );
 	}
 	else
 	{
-		d->projects[projectName]->save();
-		QObject::connect(d->projects[projectName], SIGNAL(requestSendErrorMessage(const QString&, int)), cnn, SLOT(sendErrorPackageToClient(const QString&, int)));
+		cnn->sendErrorPackageToClient(QObject::tr("Project %1 not exists").arg(projectName), Packages::Error::Err);
+		cnn->close();
 	}
-	
-	Packages::Project project(fileName);
-	cnn->sendToClient(project.toString());
-	
-	d->connections[projectName].append( cnn );
-	
 }
 QStringList ProjectCollection::projects() const
 {
@@ -224,4 +227,27 @@ void ProjectCollection::sendToProjectMembers(Server::Connection *cnn, QDomDocume
 	}
 }
 
+void ProjectCollection::addUser(Server::Connection *cnn, const QString & login, SProject::UserType type  )
+{
+	QString projectName = cnn->data(Info::ProjectName).toString();
+	
+	SProject *project = 0;
+	if(d->projects.contains( projectName ))
+	{
+		project = d->projects[projectName];
+
+	}
+
+	if(project)
+	{
+		if(project->isOwner(cnn->user()))
+		{
+			project->addUser(login, type);
+			d->db->updateProject(project);
+		}
+	}
 }
+
+}
+
+

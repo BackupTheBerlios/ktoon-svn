@@ -41,11 +41,12 @@ class Database
 		~Database();
 		
 		void addProject(const SProject * project);
+		void updateProject( const SProject * project);
+		void removeProject(  const SProject * project);
 		
 		void setDBFile( const QString& dbfile);
 		
 		QString nextFileName();
-		QString fileName(const QString& nameProject);
 		
 		struct ProjectInfo
 		{
@@ -56,6 +57,9 @@ class Database
 		QList<Database::ProjectInfo> projectsInfoOfUser(const QString& nameProject);
 		
 		bool exists( const QString &projectName );
+		
+		SProject *loadProject(const QString &projectName );
+		
 		
 	private:
 		QDomDocument loadDataBase();

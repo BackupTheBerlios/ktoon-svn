@@ -24,30 +24,40 @@
 #include <ktproject.h>
 #include <QTimer>
 #include "error.h"
+#include <QMultiHash>
+#include "user.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
-*/
+ */
+
+
 class SProject : public KTProject
 {
 	Q_OBJECT;
 	
 	public:
-		SProject(const QString & filename , QObject *parent = 0);
+		enum UserType{Owner = 0, Desiger};
+		SProject(const QString & filename, QObject *parent = 0);
 		~SProject();
 		void resetTimer();
 		QDomElement toXml(QDomDocument &doc) const;
+		void addUser( const QString& login, UserType type );
+		QString fileName();
+		
+		bool isOwner(const Users::User* user);
+		
 		
 	private:
 		QTimer *m_saver;
 		QString m_filename;
+		QMultiHash<UserType, QString> m_users;
 		
 	public slots:
 		void save();
-	
+		
 	signals:
 		void requestSendErrorMessage(const QString &message, Packages::Error::Level level);
-		
 		
 	protected:
 		void timerEvent(QTimerEvent * event );

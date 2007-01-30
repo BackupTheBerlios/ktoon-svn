@@ -26,7 +26,7 @@
 
 #include <ddebug.h>
 
-#include "databaseparse.h"
+#include "databaseparser.h"
 
 namespace Projects 
 {
@@ -101,14 +101,6 @@ QString Database::nextFileName()
 	return m_lastFileName;
 }
 
-QString Database::fileName(const QString& nameProject)
-{
-	Parsers::DatabaseParser parser;
-	return parser.fileName(nameProject, loadDataBase().toString());
-	
-}
-
-
 void Database::addProject(const SProject * project)
 {
 	QDomDocument db = loadDataBase();
@@ -126,6 +118,69 @@ void Database::addProject(const SProject * project)
 	}
 }
 
+void Database::updateProject( const SProject * project)
+{
+	QDomDocument doc = loadDataBase();
+	
+	QDomElement docElem = doc.documentElement();
+
+	QDomNode n = docElem.firstChild();
+	while(!n.isNull())
+	{
+		QDomElement e = n.toElement(); 
+		if(!e.isNull()) 
+		{
+			if(e.attribute("name") == project->projectName())
+			{
+				doc.removeChild(e);
+				doc.appendChild(project->toXml(doc));
+			}
+		}
+		n = n.nextSibling();
+	}
+	
+	QFile file(m_dbfile);
+	
+	if ( file.open(QIODevice::WriteOnly| QIODevice::Text) )
+	{
+		QTextStream ts(&file);
+		ts << doc.toString();
+		file.close();
+	}
+}
+
+void Database::removeProject(  const SProject * project)
+{
+	QDomDocument doc = loadDataBase();
+	
+	QDomElement docElem = doc.documentElement();
+
+	QDomNode n = docElem.firstChild();
+	while(!n.isNull())
+	{
+		QDomElement e = n.toElement(); 
+		if(!e.isNull()) 
+		{
+			if(e.attribute("name") == project->projectName())
+			{
+				doc.removeChild(e);
+			}
+		}
+		n = n.nextSibling();
+	}
+	QFile file(m_dbfile);
+	
+	if ( file.open(QIODevice::WriteOnly| QIODevice::Text) )
+	{
+		QTextStream ts(&file);
+		ts << doc.toString();
+		file.close();
+	}
+}
+
+
+
+
 QList< Database::ProjectInfo> Database::projectsInfoOfUser(const QString& user)
 {
 	Parsers::DatabaseParser parser;
@@ -137,9 +192,13 @@ bool Database::exists( const QString &projectName )
 {
 	Parsers::DatabaseParser parser;
 	return parser.exists(projectName, loadDataBase().toString());
-	
-	
-	
+}
+
+
+SProject *Database::loadProject(const QString &projectName )
+{
+	Parsers::DatabaseParser parser;
+	return parser.loadProject( projectName, loadDataBase().toString());
 }
 
 }

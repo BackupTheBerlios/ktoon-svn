@@ -17,12 +17,12 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "databaseparse.h"
+#include "databaseparser.h"
 #include <ddebug.h>
 namespace Parsers {
 
 DatabaseParser::DatabaseParser()
-	: KTXmlParserBase(), m_projectExists(false), m_findFilename(false), m_findProjectsUser(false),  m_findProject(false)
+	: KTXmlParserBase(), m_projectExists(false), m_findProjectsUser(false),  m_findProject(false), m_loadProject(true), m_project(0)
 {
 }
 
@@ -50,7 +50,8 @@ bool DatabaseParser::startTag(const QString &tag, const QXmlAttributes &atts)
 		}
 		else if(tag == "user")
 		{
-			m_users << atts.value("login");
+			m_typeUser = SProject::UserType(atts.value("type").toInt());
+			setReadText(true);
 		}
 		else if(tag == "file")
 		{
@@ -61,12 +62,12 @@ bool DatabaseParser::startTag(const QString &tag, const QXmlAttributes &atts)
 				m_lastFileName = filename;
 			}
 			
-			if(m_findFilename)
+			if(m_loadProject)
 			{
 				if(tmpInfo.name == m_condition)
 				{
-					m_fileName = filename;
-					m_findFilename = false;
+					m_project = new SProject(filename);
+					m_project->setProjectName(tmpInfo.name);
 				}
 			}
 		}
@@ -85,6 +86,10 @@ bool DatabaseParser::endTag(const QString &tag)
 				m_projectsInfo <<  tmpInfo;
 			}
 		}
+		else if(tmpInfo.name == m_condition)
+		{
+			m_loadProject = false;
+		}
 		else
 		{
 			m_projectsInfo <<  tmpInfo;
@@ -96,15 +101,17 @@ bool DatabaseParser::endTag(const QString &tag)
 
 void DatabaseParser::text(const QString &text)
 {
-	
-}
-
-QString DatabaseParser::fileName(const QString & nameproject, const QString& db)
-{
-	m_condition = nameproject;
-	m_findFilename = true;
-	parse(db);
-	return m_fileName;
+	if(currentTag() == "user")
+	{
+		m_users << text;
+		if(m_loadProject)
+		{
+			if(m_project)
+			{
+				m_project->addUser( text, m_typeUser);
+			}
+		}
+	}
 }
 
 QString DatabaseParser::lastFileName()
@@ -128,6 +135,15 @@ bool DatabaseParser::exists(const QString& projectName, const QString& db)
 	parse(db);
 	m_findProject = false;
 	return m_projectExists;
+}
+
+SProject * DatabaseParser::loadProject(const QString& projectName, const QString &db)
+{
+	m_condition = projectName;
+	m_loadProject = true;
+	parse(db);
+	m_loadProject = false;
+	return m_project;
 }
 
 }

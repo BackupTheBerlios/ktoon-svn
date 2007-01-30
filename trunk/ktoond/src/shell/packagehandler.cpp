@@ -121,6 +121,7 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 		if ( cnx->user()->canReadOn("project") )
 		{
 			d->projects->listProjects(cnx);
+			
 		}
 		else
 		{

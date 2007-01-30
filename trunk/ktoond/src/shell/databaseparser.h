@@ -40,24 +40,30 @@ class DatabaseParser : public KTXmlParserBase
 		virtual bool endTag(const QString &tag);
 		virtual void text(const QString &text);
 		
-		QString fileName(const QString& nameproject, const QString &db);
 		QString lastFileName();
 		
 		QList< Projects::Database::ProjectInfo > projectsInfoOfUser(const QString & login, const QString &db );
 		
 		bool exists(const QString & nameProject, const QString &db );
 		
+		SProject *loadProject(const QString &projectName, const QString &db);
+		
 	private:
 		QString m_lastFileName;
 		
-		QString m_fileName;
 		QString m_condition;
 		bool m_projectExists;
-		QStringList m_users;
+		QStringList  m_users;
 		
-		bool m_findFilename, m_findProjectsUser, m_findProject;
+		bool m_findProjectsUser, m_findProject, m_loadProject;
 		QList< Projects::Database::ProjectInfo > m_projectsInfo;
+		
+		SProject *m_project;
+		
 		Projects::Database::ProjectInfo tmpInfo;
+		SProject::UserType m_typeUser;
+		
+		
 		
 };
 

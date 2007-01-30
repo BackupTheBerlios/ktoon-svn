@@ -25,6 +25,8 @@
 #include <QDomDocument>
 
 #include "projects.h"
+#include "sproject.h"
+
 namespace Server {
 class Connection;
 }
@@ -47,6 +49,7 @@ class ProjectCollection
 		void listProjects(Server::Connection *cnn);
 		void closeProject(const QString & name);
 		void saveProject(const QString & name);
+		void addUser(Server::Connection *cnn, const QString & login, SProject::UserType type  );
 		
 		void removeConnection(Server::Connection *cnn);
 		void sendToProjectMembers(Server::Connection *cnn, QDomDocument &doc);

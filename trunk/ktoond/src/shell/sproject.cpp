@@ -47,7 +47,7 @@ void SProject::save()
 {
 	D_FUNCINFOX("server");
 	KTSaveProject *saver = new KTSaveProject;
-	
+	SHOW_VAR(m_filename);
 	if(saver->save(m_filename, this))
 	{
 		emit requestSendErrorMessage( QObject::tr( "project saved"), Packages::Error::Info );
@@ -81,6 +81,36 @@ QDomElement SProject::toXml(QDomDocument &doc) const
 	file.setAttribute("name", m_filename);
 	
 	project.appendChild(file);
+	QDomElement usersE = doc.createElement("users");
+	project.appendChild(usersE);
 	
+	foreach(UserType key, m_users.uniqueKeys())
+	{
+		foreach(QString login, m_users.values(key))
+		{
+			QDomElement userE = doc.createElement("user");
+			userE.setAttribute("type", key);
+			userE.appendChild(doc.createTextNode(login));
+			usersE.appendChild(userE);
+		}
+	}
 	return project;
 }
+
+void SProject::addUser( const QString& login, UserType type )
+{
+	m_users.insert(type, login);
+}
+
+QString SProject::fileName()
+{
+	return m_filename;
+}
+
+bool SProject::isOwner(const Users::User* user)
+{
+	SHOW_VAR(m_users.count());
+	SHOW_VAR(m_users.values(Owner));
+	return m_users.values(Owner).contains(user->login());
+}
+
