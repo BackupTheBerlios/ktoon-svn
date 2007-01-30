@@ -68,8 +68,8 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		bool removeScene(int position);
 		bool moveScene(int position, int newPosition);
 		
-		bool createSymbol(const QString &xml);
-		bool removeSymbol(const QString &xml);
+		bool createSymbol(int type, const QString &name, const QByteArray &data);
+		bool removeSymbol(const QString &name);
 		
 		void clear();
 		

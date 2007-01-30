@@ -183,7 +183,7 @@ void KTItemResponse::setItemIndex(int index)
 	m_itemIndex = index;
 }
 
-KTLibraryResponse::KTLibraryResponse(int part, int action) : KTProjectResponse(part, action)
+KTLibraryResponse::KTLibraryResponse(int part, int action) : KTProjectResponse(part, action), m_symtype(-1)
 {
 }
 
@@ -191,7 +191,15 @@ KTLibraryResponse::~KTLibraryResponse()
 {
 }
 
+void KTLibraryResponse::setSymtype(int symtype)
+{
+	m_symtype = symtype;
+}
 
+int KTLibraryResponse::symtype() const
+{
+	return m_symtype;
+}
 
 
 KTProjectResponseFactory::KTProjectResponseFactory()

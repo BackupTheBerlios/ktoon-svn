@@ -114,6 +114,12 @@ class KTLibraryResponse : public KTProjectResponse
 	public:
 		KTLibraryResponse(int part, int action);
 		~KTLibraryResponse();
+		
+		void setSymtype(int symtype);
+		int symtype() const;
+		
+	private:
+		int m_symtype;
 };
 
 class KTProjectResponseFactory

@@ -34,7 +34,11 @@ class KTLibraryObject : public QObject
 	public:
 		enum Type
 		{
-			Item = 0x01
+			Item = 0x01,
+			Image,
+			Sound,
+			Svg,
+			Text
 		};
 		
 		KTLibraryObject(QObject *parent = 0);
@@ -47,8 +51,8 @@ class KTLibraryObject : public QObject
 		QVariant data() const;
 		
 	private:
-		int m_type;
-		QVariant m_data;
+		struct Private;
+		Private *const d;
 		
 };
 

@@ -17,97 +17,35 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef KTGRAPHICLIBRARYITEM_H
+#define KTGRAPHICLIBRARYITEM_H
 
-#include "ktlibraryfolder.h"
-#include "ktlibraryobject.h"
+#include <QGraphicsItem>
+#include <ktabstractserializable.h>
 
-#include "ddebug.h"
+class KTLibraryObject;
 
-KTLibraryFolder::KTLibraryFolder(const QString &id, QObject *parent) : QObject(parent), m_id(id)
+/**
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+class KTGraphicLibraryItem : public QGraphicsItem, public KTAbstractSerializable
 {
-}
-
-
-KTLibraryFolder::~KTLibraryFolder()
-{
-}
-
-bool KTLibraryFolder::addObject(KTLibraryObject *object, const QString &id)
-{
-	if ( !m_objects.contains(id ) )
-	{
-		m_objects.insert(id, object);
-		object->setParent(this);
-		return true;
-	}
-	
-	return false;
-}
-
-bool KTLibraryFolder::removeObject(const QString &id)
-{
-	int c = m_objects.remove(id);
-	
-	return c > 0;
-}
-
-bool KTLibraryFolder::moveObject(const QString &id, KTLibraryFolder *folder)
-{
-	if ( m_objects.contains(id) )
-	{
-		KTLibraryObject *object = m_objects[id];
-		removeObject( id );
+	public:
+		KTGraphicLibraryItem(KTLibraryObject *object);
+		~KTGraphicLibraryItem();
 		
-		folder->addObject( object, id);
+		virtual QRectF boundingRect() const;
+		virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 		
-		return true;
-	}
-	
-	return false;
-}
-
-void KTLibraryFolder::setId(const QString &id)
-{
-	m_id = id;
-}
-
-QString KTLibraryFolder::id() const
-{
-	return m_id;
-}
-
-KTLibraryObject *KTLibraryFolder::findObject(const QString &id) const
-{
-	foreach ( QString oid, m_objects.keys())
-	{
-		if ( oid == id )
-		{
-			return m_objects[oid];
-		}
-	}
-	
-	foreach ( KTLibraryFolder *folder, m_folders )
-	{
-		KTLibraryObject *object = folder->findObject(id);
+	public:
+		virtual void fromXml(const QString &xml );
+		virtual QDomElement toXml(QDomDocument &doc) const;
 		
-		if ( object )
-		{
-			return object;
-		}
-	}
-	
-	dDebug() << "Cannot find symbol with id: " << id;
-	
-	return 0;
-}
+	private:
+		struct Private;
+		Private *const d;
+};
 
-int KTLibraryFolder::objectsCount() const
-{
-	return m_objects.count();
-}
+#endif
 
-int KTLibraryFolder::foldersCount() const
-{
-	return m_folders.count();
-}
 

@@ -20,13 +20,21 @@
 
 #include "ktlibraryobject.h"
 
-KTLibraryObject::KTLibraryObject(QObject *parent) : QObject(parent)
+
+struct KTLibraryObject::Private
+{
+	int type;
+	QVariant data;
+};
+
+KTLibraryObject::KTLibraryObject(QObject *parent) : QObject(parent), d(new Private)
 {
 }
 
 
 KTLibraryObject::~KTLibraryObject()
 {
+	delete d;
 }
 
 /**
@@ -35,22 +43,21 @@ KTLibraryObject::~KTLibraryObject()
  */
 void KTLibraryObject::setData(const QVariant &data)
 {
-	m_data = data;
+	d->data = data;
 }
 
 QVariant KTLibraryObject::data() const
 {
-	return m_data;
+	return d->data;
 }
 
 void KTLibraryObject::setType(int type)
 {
-	m_type = type;
+	d->type = type;
 }
 
 int KTLibraryObject::type() const
 {
-	return m_type;
+	return d->type;
 }
-
 

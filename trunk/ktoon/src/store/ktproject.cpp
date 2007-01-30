@@ -35,6 +35,8 @@
 
 
 #include <QGraphicsView>
+#include <QGraphicsSvgItem>
+#include <QSvgRenderer>
 
 
 struct KTProject::Private
@@ -252,59 +254,66 @@ Scenes KTProject::scenes() const
 }
 
 
-bool KTProject::createSymbol(const QString &xml)
+bool KTProject::createSymbol(int type, const QString &name, const QByteArray &data)
 {
-	QDomDocument doc;
-	if ( !doc.setContent(xml) )
-	{
-		dfDebug << "Cannot set content!";
-		return false;
-	}
+	KTLibraryObject *object = new KTLibraryObject(d->library);
 	
-	QDomElement root = doc.documentElement();
-	
-	if ( root.tagName() == "library" )
+	bool ok = true;
+	switch(type)
 	{
-		QDomNode n = root.firstChild();
-		while(!n.isNull())
+		case KTLibraryObject::Item:
 		{
-			QDomElement e = n.toElement();
-			if(!e.isNull())
-			{
-				if ( e.tagName() == "symbol" )
-				{
-					KTLibraryObject *object = new KTLibraryObject(d->library);
-					object->setType( e.attribute( "type" ).toInt() );
-					
-					QDomDocument buildDoc;
-					buildDoc.appendChild(buildDoc.importNode(n.firstChild(), true));
-					
-					switch(object->type())
-					{
-						case KTLibraryObject::Item:
-						{
-							KTItemFactory factory;
-							QGraphicsItem *item = factory.create(buildDoc.toString(0));
-							
-							object->setData( QVariant::fromValue(item) );
-						}
-						break;
-					}
-					
-					d->library->addObject( object, e.attribute( "name"));
-				}
-			}
-			n = n.nextSibling();
+			KTItemFactory factory;
+			QGraphicsItem *item = factory.create(QString::fromLocal8Bit(data));
+			
+			object->setData( QVariant::fromValue(item) );
+		};
+		break;
+		case KTLibraryObject::Image:
+		{
+			object->setData(data);
 		}
+		break;
+		case KTLibraryObject::Sound:
+		{
+			object->setData(data);
+		}
+		break;
+		case KTLibraryObject::Svg:
+		{
+			QGraphicsSvgItem *svg = new QGraphicsSvgItem;
+			svg->renderer()->load(data);
+			
+			object->setData(QVariant::fromValue(static_cast<QGraphicsItem*>(svg)));
+		}
+		break;
+		case KTLibraryObject::Text:
+		{
+			object->setData(QString::fromLocal8Bit(data));
+		}
+		break;
+		
+		default:
+		{
+			ok = false;
+		}
+		break;
 	}
+	
+	
+	if ( !ok)
+		return false;
+	
+	object->setType(KTLibraryObject::Type(type));
+	
+	d->library->addObject( object, name);
 	
 	return true;
 }
 
-bool KTProject::removeSymbol(const QString &/*xml*/)
+bool KTProject::removeSymbol(const QString &name)
 {
-	qFatal("Implement me");
-	return false;
+	return d->library->removeObject(name);
 }
 
 KTLibrary *KTProject::library() const

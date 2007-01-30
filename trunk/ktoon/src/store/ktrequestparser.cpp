@@ -76,6 +76,10 @@ bool KTRequestParser::startTag(const QString& qname, const QXmlAttributes& atts)
 	{
 		static_cast<KTSceneResponse *>(d->response)->setSceneIndex(atts.value("index").toInt());
 	}
+	else if ( qname == "symbol" )
+	{
+		static_cast<KTLibraryResponse*>(d->response)->setSymtype(atts.value("type").toInt());
+	}
 	else if ( qname == "action" )
 	{
 		d->response = KTProjectResponseFactory::create( atts.value("part").toInt(), atts.value("id").toInt());

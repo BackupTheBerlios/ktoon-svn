@@ -26,8 +26,7 @@
 
 bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
 {
-	QString xml = QString::fromLocal8Bit(response->data());
-	if ( m_project->createSymbol( xml ) )
+	if ( m_project->createSymbol( response->symtype(), response->arg().toString(), response->data() ) )
 	{
 		emit responsed(response);
 		

@@ -18,96 +18,53 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktlibraryfolder.h"
+#include "ktgraphiclibraryitem.h"
+
 #include "ktlibraryobject.h"
 
-#include "ddebug.h"
-
-KTLibraryFolder::KTLibraryFolder(const QString &id, QObject *parent) : QObject(parent), m_id(id)
+struct KTGraphicLibraryItem::Private 
 {
-}
+	KTLibraryObject *object;
+	QGraphicsItem *realItem;
+};
 
-
-KTLibraryFolder::~KTLibraryFolder()
+KTGraphicLibraryItem::KTGraphicLibraryItem(KTLibraryObject *object) : QGraphicsItem(), d(new Private)
 {
-}
-
-bool KTLibraryFolder::addObject(KTLibraryObject *object, const QString &id)
-{
-	if ( !m_objects.contains(id ) )
+	d->object = object;
+	
+	if ( d->object->type() == KTLibraryObject::Item || d->object->type() == KTLibraryObject::Svg )
 	{
-		m_objects.insert(id, object);
-		object->setParent(this);
-		return true;
+		d->realItem = qvariant_cast<QGraphicsItem *>(d->object->data());
 	}
-	
-	return false;
-}
-
-bool KTLibraryFolder::removeObject(const QString &id)
-{
-	int c = m_objects.remove(id);
-	
-	return c > 0;
-}
-
-bool KTLibraryFolder::moveObject(const QString &id, KTLibraryFolder *folder)
-{
-	if ( m_objects.contains(id) )
+	else
 	{
-		KTLibraryObject *object = m_objects[id];
-		removeObject( id );
-		
-		folder->addObject( object, id);
-		
-		return true;
+		qFatal("UNKNOWN TYPE: IMPLEMENT ME: KTGraphicLibraryItem");
 	}
-	
-	return false;
 }
 
-void KTLibraryFolder::setId(const QString &id)
+
+KTGraphicLibraryItem::~KTGraphicLibraryItem()
 {
-	m_id = id;
 }
 
-QString KTLibraryFolder::id() const
+
+QRectF KTGraphicLibraryItem::boundingRect() const
 {
-	return m_id;
+	return d->realItem->boundingRect();
 }
 
-KTLibraryObject *KTLibraryFolder::findObject(const QString &id) const
+void KTGraphicLibraryItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
-	foreach ( QString oid, m_objects.keys())
-	{
-		if ( oid == id )
-		{
-			return m_objects[oid];
-		}
-	}
-	
-	foreach ( KTLibraryFolder *folder, m_folders )
-	{
-		KTLibraryObject *object = folder->findObject(id);
-		
-		if ( object )
-		{
-			return object;
-		}
-	}
-	
-	dDebug() << "Cannot find symbol with id: " << id;
-	
-	return 0;
+	d->realItem->paint(painter, option, widget);
 }
 
-int KTLibraryFolder::objectsCount() const
+void KTGraphicLibraryItem::fromXml(const QString &xml )
 {
-	return m_objects.count();
 }
 
-int KTLibraryFolder::foldersCount() const
+QDomElement KTGraphicLibraryItem::toXml(QDomDocument &doc) const
 {
-	return m_folders.count();
+	return QDomElement();
 }
+
 
