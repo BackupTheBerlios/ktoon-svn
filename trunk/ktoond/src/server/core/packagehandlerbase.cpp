@@ -20,6 +20,7 @@
  
 #include "packagehandlerbase.h"
 #include <ddebug.h>
+#include <dfortunegenerator.h>
 
 #include "users/manager.h"
 #include "users/user.h"
@@ -74,7 +75,7 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 				
 				client->setUser(user);
 				
-				Packages::Ack ack("Message of the day FIXME", client->sign());
+				Packages::Ack ack(DFortuneGenerator::self()->generate(), client->sign());
 				
 				foreach(Users::Right *right, user->rights())
 				{

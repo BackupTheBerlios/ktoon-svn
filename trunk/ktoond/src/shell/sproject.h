@@ -22,16 +22,12 @@
 #define SPROJECT_H
 
 #include <ktproject.h>
+#include <QTimer>
+#include "error.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-
-#include <QTimer>
-
-#include "error.h"
-
-
 class SProject : public KTProject
 {
 	Q_OBJECT;
