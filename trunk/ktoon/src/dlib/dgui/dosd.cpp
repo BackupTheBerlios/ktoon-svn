@@ -62,6 +62,8 @@ DOsd::~DOsd()
 
 void DOsd::display( const QString &message, Level level, int ms )
 {
+	if (message.isEmpty()) return;
+	
 	QBrush background = palette().background();
 	QBrush foreground = palette().foreground();
 	

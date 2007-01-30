@@ -23,7 +23,8 @@ HEADERS += dalgorithm.h \
            dimageeffect.h \
            dspeller.h \
            dspellhighlighter.h \
-           dpathhandler.h
+           dpathhandler.h \
+           dfortunegenerator.h
 SOURCES += dalgorithm.cpp \
            dbrushadjuster.cpp \
            dconfig.cpp \
@@ -37,9 +38,9 @@ SOURCES += dalgorithm.cpp \
            dimageeffect.cpp \
            dspeller.cpp \
            dspellhighlighter.cpp \
-           dpathhandler.cpp
-
-!include(../dlibconfig.pri) {
+           dpathhandler.cpp \
+           dfortunegenerator.cpp
+!include(../dlibconfig.pri){
     error("Run ./configure first")
 }
 

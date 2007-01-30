@@ -223,6 +223,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 		if ( parser.parse(package) )
 		{
 			d->sign = parser.sign();
+			DOsd::self()->display(parser.motd(), DOsd::Info);
 		}
 		
 	}
