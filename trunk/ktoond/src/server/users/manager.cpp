@@ -68,7 +68,9 @@ bool Manager::auth(const QString &login, const QString &password)
 	
 	if ( User *user = d->parser->user(login) )
 	{
-		if( user->password() == DMD5Hash::hash(password) )
+		dDebug() << "login: " << user->login() << " pass: " << user->password();
+		dDebug() << "comp: " << password;
+		if( user->password() == password )
 		{
 			d->users.insert(login, user);
 			return true;

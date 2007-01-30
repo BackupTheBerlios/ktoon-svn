@@ -49,7 +49,7 @@ bool ConnectParser::startTag(const QString &tag, const QXmlAttributes &)
 		}
 		else if ( tag == "password")
 		{
-			
+			setReadText(true);
 		}
 	}
 	
