@@ -52,6 +52,7 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		
 		virtual bool isValid() const;
 		
+		void sendPackage(const QDomDocument &doc);
 	signals:
 		void openNewArea(const QString &name);
 		
@@ -59,7 +60,6 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		bool loadProjectFromServer(const QString &name);
 		void emitRequest(KTProjectRequest *request);
 		
-		void sendPackage(const QDomDocument &doc);
 		void setProject(KTProject *project);
 		
 	private:
