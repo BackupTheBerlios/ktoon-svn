@@ -17,68 +17,44 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#include <QCoreApplication>
-
-#include <ddebug.h>
-#include "server.h"
-#include "packagehandler.h"
 #include "settings.h"
 
+namespace Server {
 
-#include <dapplicationproperties.h>
-#include <dconfig.h>
+Settings *Settings::s_settings = 0;
 
-int main(int argc, char **argv)
+struct Settings::Private 
 {
-	DDebug::setForceDisableGUI();
-	
-	QCoreApplication app(argc, argv);
-	app.setApplicationName("ktoond");
-	
-	if ( !DCONFIG->isOk() )
-	{
-		DCONFIG->beginGroup("Connection");
-		DCONFIG->setValue("host", "127.0.0.1");
-		DCONFIG->setValue("port", "6502");
-		
-		DCONFIG->beginGroup("General");
-		DCONFIG->setValue("repository", dAppProp->configDir()+ "/repository");
-		
-		
-		DCONFIG->sync();
-	}
-	
-	DCONFIG->beginGroup("Connection");	
-	QString host = DCONFIG->value("host").toString();
-	int port = DCONFIG->value("port").toInt();
-	
-	
-	DCONFIG->beginGroup("General");
-	dAppProp->setCacheDir(DCONFIG->value("repository").toString());
-	
-	QDir cache(dAppProp->cacheDir());
-	if(!cache.exists ())
-	{
-		cache.mkdir(dAppProp->cacheDir());
-	}
-	
-	QString dbdir = dAppProp->configDir()+"/database";
-	QDir db(dbdir);
-	if( !db.exists() ) db.mkdir(dbdir);
-	Server::Settings::self()->setDatabaseDirPath(dbdir);
-	
-	
-	Server::TcpServer server;
-	server.createHandler<PackageHandler>();
-	
-	server.openConnection( host, port );
-	
-	dDebug() << "Running!";
-	
-	return app.exec();
+	QString databaseDirPath;
+};
+
+Settings::Settings() : d(new Private())
+{
 }
 
 
+Settings::~Settings()
+{
+	delete d;
+}
+
+Settings *Settings::self()
+{
+	if( ! s_settings )
+		s_settings = new Settings();
+	
+	return s_settings;
+}
 
 
+void Settings::setDatabaseDirPath(const QString &dbdir)
+{
+	d->databaseDirPath = dbdir;
+}
+
+QString Settings::databaseDirPath() const
+{
+	return d->databaseDirPath;
+}
+
+}

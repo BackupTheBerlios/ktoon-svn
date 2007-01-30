@@ -30,6 +30,7 @@
 
 #include "packagehandlerbase.h"
 #include "defaultpackagehandler.h"
+#include "settings.h"
 
 namespace Server {
 
@@ -37,7 +38,6 @@ class TcpServer::Private
 {
 	public:
 		QList<Server::Connection *> connections;
-		QString dbdir;
 };
 
 TcpServer::TcpServer(QObject *parent) : QTcpServer(parent), d(new Private)
@@ -51,6 +51,7 @@ TcpServer::~TcpServer()
 {
 	DEND;
 	delete d;
+	delete Settings::self();
 }
 
 bool TcpServer::openConnection(const QString &host, int port)
@@ -124,16 +125,6 @@ void TcpServer::handlePackage(Server::Connection* client, const QString &root, c
 	m_handler->handlePackage(client, root, package);
 }
 
-void TcpServer::setDatabaseDirPath(const QString &dbdir)
-{
-	d->dbdir = dbdir;
-}
-
-
-QString TcpServer::databaseDirPath() const
-{
-	return d->dbdir;
-}
 
 }
 

@@ -40,7 +40,7 @@ class SProject : public KTProject
 		SProject(const QString & filename , QObject *parent = 0);
 		~SProject();
 		void resetTimer();
-		QDomElement info(QDomDocument &doc) const;
+		QDomElement toXml(QDomDocument &doc) const;
 		
 	private:
 		QTimer *m_saver;
@@ -54,7 +54,7 @@ class SProject : public KTProject
 		
 		
 	protected:
-		void timerEvent ( QTimerEvent * event );
+		void timerEvent(QTimerEvent * event );
 };
 
 #endif

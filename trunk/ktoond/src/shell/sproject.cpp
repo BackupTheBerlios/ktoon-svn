@@ -64,9 +64,8 @@ void SProject::timerEvent ( QTimerEvent *  )
 	save();
 }
 
-QDomElement SProject::info(QDomDocument &doc) const
+QDomElement SProject::toXml(QDomDocument &doc) const
 {
-	
 	QDomElement project = doc.createElement("project");
 	
 	project.setAttribute("name", projectName());

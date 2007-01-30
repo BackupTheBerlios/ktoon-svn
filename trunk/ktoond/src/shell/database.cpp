@@ -114,7 +114,7 @@ void Database::addProject(const SProject * project)
 	QDomDocument db = loadDataBase();
 	QDomNode  root = db.firstChild();
 	
-	root.appendChild(project->info(db));
+	root.appendChild(project->toXml(db));
 	
 	QFile file(m_dbfile);
 	
@@ -135,7 +135,6 @@ QList< Database::ProjectInfo> Database::projectsInfoOfUser(const QString& user)
 
 bool Database::exists( const QString &projectName )
 {
-	
 	Parsers::DatabaseParser parser;
 	return parser.exists(projectName, loadDataBase().toString());
 	

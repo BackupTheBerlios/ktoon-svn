@@ -28,10 +28,12 @@
 #include "packages/connectparser.h"
 
 #include "connection.h"
+#include "settings.h"
 #include "dapplicationproperties.h"
 
 #include "packages/error.h"
 #include "packages/ack.h"
+
 
 namespace Server {
 
@@ -59,7 +61,7 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 	{
 		if ( !d->manager )
 		{
-			d->manager = new Users::Manager(client->server()->databaseDirPath()+"/users.xml" );
+			d->manager = new Users::Manager(Server::Settings::self()->databaseDirPath()+"/users.xml" );
 		}
 		
 		Parsers::ConnectParser parser;

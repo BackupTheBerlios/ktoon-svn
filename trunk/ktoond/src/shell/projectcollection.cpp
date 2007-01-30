@@ -45,6 +45,8 @@
 #include "database.h"
 #include "error.h"
 
+#include "settings.h"
+
 
 namespace Projects {
 
@@ -57,7 +59,7 @@ struct ProjectCollection::Private
 
 ProjectCollection::ProjectCollection() : d(new Private())
 {
-	d->db = new Database(dAppProp->configDir() + "/database/projects.xml");
+	d->db = new Database(Server::Settings::self()->databaseDirPath() + "/projects.xml");
 }
 
 
