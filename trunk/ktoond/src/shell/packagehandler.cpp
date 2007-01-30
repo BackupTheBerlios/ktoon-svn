@@ -29,6 +29,7 @@
 
 #include "newprojectparser.h"
 #include "openprojectparser.h"
+#include "importprojectparser.h"
 #include "listparser.h"
 #include "error.h"
 
@@ -116,12 +117,22 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 			}
 		}
 	}
+	else if(root == "importproject")
+	{
+		if ( cnx->user()->canWriteOn("project") )
+		{
+			Parsers::ImportProjectParser parser;
+			if(parser.parse(package))
+			{
+				d->projects->importProject(cnx, parser.data());
+			}
+		}
+	}
 	else if(root == "listprojects")
 	{
 		if ( cnx->user()->canReadOn("project") )
 		{
 			d->projects->listProjects(cnx);
-			
 		}
 		else
 		{

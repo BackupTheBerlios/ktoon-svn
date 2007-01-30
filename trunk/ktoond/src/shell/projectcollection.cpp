@@ -139,6 +139,29 @@ void ProjectCollection::openProject( Server::Connection *cnn )
 		cnn->close();
 	}
 }
+
+void ProjectCollection::importProject(Server::Connection *cnn, const QByteArray& data)
+{
+	QString filename = d->db->nextFileName();
+	QFile file(filename);
+	if(file.open(QIODevice::WriteOnly))
+	{
+		file.write(data);
+		file.close();
+		SProject *project = new SProject(filename);
+		QObject::connect(project, SIGNAL(requestSendErrorMessage(const QString&, Packages::Error::Level)), cnn, SLOT(sendErrorPackageToClient(const QString&, Packages::Error::Level)));
+		KTSaveProject *loader = new KTSaveProject;
+		bool ok  = loader->load(filename, project);
+		cnn->setData( Info::ProjectName , project->projectName());
+		d->projects.insert(project->projectName(), project);
+		d->db->addProject(project);
+		d->connections.insert(project->projectName(), QList<Server::Connection *>() << cnn);
+		
+		Packages::Project projectPackage(project->fileName());
+		cnn->sendToClient(projectPackage.toString());
+	}
+}
+
 QStringList ProjectCollection::projects() const
 {
 	QDir dir(dAppProp->cacheDir());
@@ -230,12 +253,10 @@ void ProjectCollection::sendToProjectMembers(Server::Connection *cnn, QDomDocume
 void ProjectCollection::addUser(Server::Connection *cnn, const QString & login, SProject::UserType type  )
 {
 	QString projectName = cnn->data(Info::ProjectName).toString();
-	
 	SProject *project = 0;
 	if(d->projects.contains( projectName ))
 	{
 		project = d->projects[projectName];
-
 	}
 
 	if(project)
@@ -245,6 +266,14 @@ void ProjectCollection::addUser(Server::Connection *cnn, const QString & login, 
 			project->addUser(login, type);
 			d->db->updateProject(project);
 		}
+		else
+		{
+			dDebug() << cnn->user()->login()  + " no es el owner";
+		}
+	}
+	else
+	{
+		dDebug() << "no cargo el proyecto";
 	}
 }
 

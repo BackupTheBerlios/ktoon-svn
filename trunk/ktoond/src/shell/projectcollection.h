@@ -44,6 +44,8 @@ class ProjectCollection
 		
 		void createProject(Server::Connection *cnn, const QString& author);
 		void openProject(Server::Connection *cnn);
+		void importProject(Server::Connection *cnn, const QByteArray& data);
+		
 		bool handleProjectRequest(Server::Connection *cnn, const QString strRequest);
 		QStringList projects() const;
 		void listProjects(Server::Connection *cnn);

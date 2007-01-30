@@ -132,8 +132,8 @@ void Database::updateProject( const SProject * project)
 		{
 			if(e.attribute("name") == project->projectName())
 			{
-				doc.removeChild(e);
-				doc.appendChild(project->toXml(doc));
+				docElem.removeChild(n);
+				docElem.appendChild(project->toXml(doc));
 			}
 		}
 		n = n.nextSibling();
@@ -154,7 +154,6 @@ void Database::removeProject(  const SProject * project)
 	QDomDocument doc = loadDataBase();
 	
 	QDomElement docElem = doc.documentElement();
-
 	QDomNode n = docElem.firstChild();
 	while(!n.isNull())
 	{
@@ -163,7 +162,7 @@ void Database::removeProject(  const SProject * project)
 		{
 			if(e.attribute("name") == project->projectName())
 			{
-				doc.removeChild(e);
+				docElem.removeChild(n);
 			}
 		}
 		n = n.nextSibling();
