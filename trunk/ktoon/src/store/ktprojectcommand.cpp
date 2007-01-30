@@ -33,8 +33,18 @@
 
 #include "ktsvg2qt.h"
 
-KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, const KTProjectRequest *event) : QUndoCommand(), m_executor(executor), m_executed(false)
+struct KTProjectCommand::Private 
 {
+	KTCommandExecutor *executor;
+	KTProjectResponse *response;
+	bool executed;
+};
+
+KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, const KTProjectRequest *event) : QUndoCommand(), d(new Private())
+{
+	d->executor = executor;
+	d->executed = false;
+	
 	KTRequestParser parser;
 	
 	if ( ! parser.parse( event->xml() ) )
@@ -42,53 +52,56 @@ KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, const KTProjectR
 		qFatal("==> KTProjectCommand::KTProjectCommand()");
 	}
 	
-	m_response = parser.response();
+	d->response = parser.response();
 	
-	if ( !m_response ) qFatal("Unparsed response!");
+	if ( !d->response ) qFatal("Unparsed response!");
 	
 	initText();
 }
 
-KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, KTProjectResponse *response) : QUndoCommand(), m_executor(executor), m_response(response), m_executed(false)
+KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, KTProjectResponse *response) : QUndoCommand(), d(new Private)
 {
+	d->executor = executor;
+	d->response = response;
+	d->executed = false;
 	initText();
 }
 
 
 void KTProjectCommand::initText()
 {
-	switch( m_response->part() )
+	switch( d->response->part() )
 	{
 		case KTProjectRequest::Frame:
 		{
-			setText(actionString( m_response->action() ) +" frame" );
+			setText(actionString( d->response->action() ) +" frame" );
 		}
 		break;
 		case KTProjectRequest::Layer:
 		{
-			setText(actionString( m_response->action() )+" layer");
+			setText(actionString( d->response->action() )+" layer");
 		}
 		break;
 		case KTProjectRequest::Scene:
 		{
-			setText(actionString( m_response->action() )+" scene");
+			setText(actionString( d->response->action() )+" scene");
 		}
 		break;
 		case KTProjectRequest::Item:
 		{
-			setText(actionString( m_response->action() )+" item");
+			setText(actionString( d->response->action() )+" item");
 		}
 		break;
 		
 		case KTProjectRequest::Library:
 		{
-			setText(actionString( m_response->action() )+" symbol");
+			setText(actionString( d->response->action() )+" symbol");
 		}
 		break;
 		
 		default:
 		{
-			dfDebug << "CAN'T HANDLE ID: " << m_response->part();
+			dfDebug << "CAN'T HANDLE ID: " << d->response->part();
 		}
 		break;
 	}
@@ -156,25 +169,26 @@ QString KTProjectCommand::actionString(int action)
 
 KTProjectCommand::~KTProjectCommand()
 {
-	delete m_response;
+	delete d->response;
+	delete d;
 }
 
 
 void KTProjectCommand::redo()
 {
-	D_FUNCINFO << m_response->part();
+	D_FUNCINFO << d->response->part();
 	
-	if ( m_executed )
+	if ( d->executed )
 	{
-		m_response->setMode( KTProjectResponse::Redo );
+		d->response->setMode( KTProjectResponse::Redo );
 	}
 	else
 	{
-		m_response->setMode( KTProjectResponse::Do );
-		m_executed = true;
+		d->response->setMode( KTProjectResponse::Do );
+		d->executed = true;
 	}
 	
-	switch( m_response->part() )
+	switch( d->response->part() )
 	{
 		case KTProjectRequest::Project:
 		{
@@ -216,9 +230,9 @@ void KTProjectCommand::redo()
 
 void KTProjectCommand::undo()
 {
-	m_response->setMode( KTProjectResponse::Undo );
+	d->response->setMode( KTProjectResponse::Undo );
 	
-	switch(m_response->part() )
+	switch(d->response->part() )
 	{
 		case KTProjectRequest::Project:
 		{
@@ -262,44 +276,44 @@ void KTProjectCommand::undo()
 
 void KTProjectCommand::frameCommand(bool redo)
 {
-	KTFrameResponse *response = static_cast<KTFrameResponse *>(m_response);
+	KTFrameResponse *response = static_cast<KTFrameResponse *>(d->response);
 	if ( redo )
 	{
 		switch(response->action())
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->createFrame( response );
+				d->executor->createFrame( response );
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_executor->removeFrame( response);
+				d->executor->removeFrame( response);
 			}
 			break;
 			case KTProjectRequest::Move:
 			{
-				m_executor->moveFrame( response);
+				d->executor->moveFrame( response);
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				m_executor->lockFrame( response );
+				d->executor->lockFrame( response );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
-				m_executor->renameFrame( response );
+				d->executor->renameFrame( response );
 			}
 			break;
 			case KTProjectRequest::Select:
 			{
-				m_executor->selectFrame(response );
+				d->executor->selectFrame(response );
 			}
 			break;
 			case KTProjectRequest::View:
 			{
-				m_executor->setFrameVisibility(response);
+				d->executor->setFrameVisibility(response);
 			}
 			break;
 			default: break;
@@ -311,32 +325,32 @@ void KTProjectCommand::frameCommand(bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->removeFrame( response );
+				d->executor->removeFrame( response );
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_executor->createFrame( response );
+				d->executor->createFrame( response );
 			}
 			break;
 			case KTProjectRequest::Move:
 			{
-				m_executor->moveFrame( response);
+				d->executor->moveFrame( response);
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				m_executor->lockFrame( response );
+				d->executor->lockFrame( response );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
-				m_executor->renameFrame( response );
+				d->executor->renameFrame( response );
 			}
 			break;
 			case KTProjectRequest::View:
 			{
-				m_executor->setFrameVisibility(response);
+				d->executor->setFrameVisibility(response);
 			}
 			break;
 			default: break;
@@ -346,7 +360,7 @@ void KTProjectCommand::frameCommand(bool redo)
 
 void KTProjectCommand::layerCommand(bool redo)
 {
-	KTLayerResponse *response = static_cast<KTLayerResponse *>(m_response);
+	KTLayerResponse *response = static_cast<KTLayerResponse *>(d->response);
 	
 	if ( redo )
 	{
@@ -354,37 +368,37 @@ void KTProjectCommand::layerCommand(bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->createLayer( response );
+				d->executor->createLayer( response );
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_executor->removeLayer( response);
+				d->executor->removeLayer( response);
 			}
 			break;
 			case KTProjectRequest::Move:
 			{
-				m_executor->moveLayer( response );
+				d->executor->moveLayer( response );
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				m_executor->lockLayer( response );
+				d->executor->lockLayer( response );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
-				m_executor->renameLayer( response);
+				d->executor->renameLayer( response);
 			}
 			break;
 			case KTProjectRequest::Select:
 			{
-				m_executor->selectLayer(response);
+				d->executor->selectLayer(response);
 			}
 			break;
 			case KTProjectRequest::View:
 			{
-				m_executor->setLayerVisibility(response);
+				d->executor->setLayerVisibility(response);
 			}
 			break;
 			default: break;
@@ -396,32 +410,32 @@ void KTProjectCommand::layerCommand(bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->removeLayer( response);
+				d->executor->removeLayer( response);
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_executor->createLayer( response );
+				d->executor->createLayer( response );
 			}
 			break;
 			case KTProjectRequest::Move:
 			{
-				m_executor->moveLayer( response  );
+				d->executor->moveLayer( response  );
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				m_executor->lockLayer( response );
+				d->executor->lockLayer( response );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
-				m_executor->renameLayer( response );
+				d->executor->renameLayer( response );
 			}
 			break;
 			case KTProjectRequest::View:
 			{
-				m_executor->setLayerVisibility(response);
+				d->executor->setLayerVisibility(response);
 			}
 			break;
 			default: break;
@@ -431,44 +445,44 @@ void KTProjectCommand::layerCommand(bool redo)
 
 void KTProjectCommand::sceneCommand(bool redo)
 {
-	KTSceneResponse *response = static_cast<KTSceneResponse *>(m_response);
+	KTSceneResponse *response = static_cast<KTSceneResponse *>(d->response);
 	if ( redo )
 	{
 		switch(response->action())
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->createScene( response );
+				d->executor->createScene( response );
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_executor->removeScene( response );
+				d->executor->removeScene( response );
 			}
 			break;
 			case KTProjectRequest::Move:
 			{
-				m_executor->moveScene( response);
+				d->executor->moveScene( response);
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				m_executor->lockScene( response );
+				d->executor->lockScene( response );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
-				m_executor->renameScene( response);
+				d->executor->renameScene( response);
 			}
 			break;
 			case KTProjectRequest::Select:
 			{
-				m_executor->selectScene(response );
+				d->executor->selectScene(response );
 			}
 			break;
 			case KTProjectRequest::View:
 			{
-				m_executor->setSceneVisibility(response);
+				d->executor->setSceneVisibility(response);
 			}
 			break;
 			default: break;
@@ -480,32 +494,32 @@ void KTProjectCommand::sceneCommand(bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->removeScene( response );
+				d->executor->removeScene( response );
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_executor->createScene( response );
+				d->executor->createScene( response );
 			}
 			break;
 			case KTProjectRequest::Move:
 			{
-				m_executor->moveScene( response );
+				d->executor->moveScene( response );
 			}
 			break;
 			case KTProjectRequest::Lock:
 			{
-				m_executor->lockScene( response );
+				d->executor->lockScene( response );
 			}
 			break;
 			case KTProjectRequest::Rename:
 			{
-				m_executor->renameScene( response);
+				d->executor->renameScene( response);
 			}
 			break;
 			case KTProjectRequest::View:
 			{
-				m_executor->setSceneVisibility(response);
+				d->executor->setSceneVisibility(response);
 			}
 			break;
 			default: break;
@@ -518,19 +532,19 @@ void KTProjectCommand::itemCommand(bool redo)
 {
 	D_FUNCINFO;
 	
-	KTItemResponse *response = static_cast<KTItemResponse *>(m_response);
+	KTItemResponse *response = static_cast<KTItemResponse *>(d->response);
 	if ( redo )
 	{
 		switch(response->action())
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->createItem(response);
+				d->executor->createItem(response);
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				 m_executor->removeItem( response );
+				 d->executor->removeItem( response );
 			}
 			break;
 			case KTProjectRequest::Move:
@@ -548,12 +562,12 @@ void KTProjectCommand::itemCommand(bool redo)
 			break;
 			case KTProjectRequest::Convert:
 			{
-				 m_executor->convertItem(response);
+				 d->executor->convertItem(response);
 			}
 			break;
 			case KTProjectRequest::EditNodes:
 			{
-				m_executor->setPathItem( response);
+				d->executor->setPathItem( response);
 			}
 			break;
 			case KTProjectRequest::Select:
@@ -566,18 +580,18 @@ void KTProjectCommand::itemCommand(bool redo)
 			break;
 			case KTProjectRequest::Transform:
 			{
-				m_executor->transformItem(response);
+				d->executor->transformItem(response);
 			}
 			break;
 			case KTProjectRequest::Group:
 			{
-				m_executor->groupItems(response);
+				d->executor->groupItems(response);
 			}
 			break;
 			case KTProjectRequest::Ungroup:
 			{
 				
-				m_executor->ungroupItems(response);
+				d->executor->ungroupItems(response);
 			}
 			break;
 			default: break;
@@ -589,12 +603,12 @@ void KTProjectCommand::itemCommand(bool redo)
 		{
 			case KTProjectRequest::Add:
 			{
-				m_executor->removeItem(response);
+				d->executor->removeItem(response);
 			}
 			break;
 			case KTProjectRequest::Remove:
 			{
-				m_executor->createItem(response);
+				d->executor->createItem(response);
 			}
 			break;
 			case KTProjectRequest::Move:
@@ -611,12 +625,12 @@ void KTProjectCommand::itemCommand(bool redo)
 			break;
 			case KTProjectRequest::Convert:
 			{
-				m_executor->convertItem(response);
+				d->executor->convertItem(response);
 			}
 			break;
 			case KTProjectRequest::EditNodes:
 			{
-				m_executor->setPathItem(response);
+				d->executor->setPathItem(response);
 			}
 			case KTProjectRequest::View:
 			{
@@ -624,18 +638,18 @@ void KTProjectCommand::itemCommand(bool redo)
 			break;
 			case KTProjectRequest::Transform:
 			{
-				m_executor->transformItem(response);
+				d->executor->transformItem(response);
 			}
 			break;
 			case KTProjectRequest::Group:
 			{
-				m_executor->ungroupItems(response);
+				d->executor->ungroupItems(response);
 			}
 			break;
 			case KTProjectRequest::Ungroup:
 			{
 				
-				m_executor->groupItems(response);
+				d->executor->groupItems(response);
 			}
 			break;
 			default: break;
@@ -645,40 +659,39 @@ void KTProjectCommand::itemCommand(bool redo)
 
 void KTProjectCommand::libraryCommand(bool redo)
 {
-	// FIXME FIXME FIXME
-// 	KTLibraryResponse *response = static_cast<KTLibraryResponse *>(response);
-// 	if ( redo )
-// 	{
-// 		switch(response->action())
-// 		{
-// 			case KTProjectRequest::Add:
-// 			{
-// 				m_executor->createSymbol(response->arg().toString());
-// 			}
-// 			break;
-// 			case KTProjectRequest::Remove:
-// 			{
-// 				m_executor->removeSymbol(response->arg().toString());
-// 			}
-// 			break;
-// 		}
-// 	}
-// 	else
-// 	{
-// 		switch(response->action())
-// 		{
-// 			case KTProjectRequest::Add:
-// 			{
-// 				m_executor->removeSymbol(response->arg().toString());
-// 			}
-// 			break;
-// 			case KTProjectRequest::Remove:
-// 			{
-// 				m_executor->createSymbol(response->arg().toString());
-// 			}
-// 			break;
-// 		}
-// 	}
+	KTLibraryResponse *response = static_cast<KTLibraryResponse *>(response);
+	if ( redo )
+	{
+		switch(response->action())
+		{
+			case KTProjectRequest::Add:
+			{
+				d->executor->createSymbol(response);
+			}
+			break;
+			case KTProjectRequest::Remove:
+			{
+				d->executor->removeSymbol(response);
+			}
+			break;
+		}
+	}
+	else
+	{
+		switch(response->action())
+		{
+			case KTProjectRequest::Add:
+			{
+				d->executor->removeSymbol(response);
+			}
+			break;
+			case KTProjectRequest::Remove:
+			{
+				d->executor->createSymbol(response);
+			}
+			break;
+		}
+	}
 	
 }
 
@@ -687,11 +700,11 @@ void KTProjectCommand::paintAreaCommand(bool redo)
 	qFatal("FIX ME in ktprojectcommand.cpp ");
 // 	if ( redo )
 // 	{
-// 		m_executor->reemitEvent( response );
+// 		d->executor->reemitEvent( response );
 // 	}
 // 	else
 // 	{
-// 		m_executor->reemitEvent( response );
+// 		d->executor->reemitEvent( response );
 // 	}
 }
 

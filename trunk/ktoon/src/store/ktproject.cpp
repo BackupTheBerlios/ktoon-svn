@@ -36,14 +36,28 @@
 
 #include <QGraphicsView>
 
+
+struct KTProject::Private
+{
+	Scenes scenes;
+	QString name;
+	
+	int sceneCounter;
+	KTLibrary *library;
+	bool isOpen;
+};
+
 /**
  * Constructor por defecto
  */
-KTProject::KTProject(QObject *parent) : QObject(parent), m_sceneCounter(0), m_isOpen(false)
+KTProject::KTProject(QObject *parent) : QObject(parent), d(new Private)
 {
 	DINIT;
 	
-	m_library = new KTLibrary("library", this);
+	d->sceneCounter = 0;
+	d->isOpen = false;
+	
+	d->library = new KTLibrary("library", this);
 	
 	loadLibrary();
 }
@@ -55,6 +69,7 @@ KTProject::KTProject(QObject *parent) : QObject(parent), m_sceneCounter(0), m_is
 KTProject::~KTProject()
 {
 	DEND;
+	delete d;
 }
 
 /**
@@ -69,10 +84,10 @@ void KTProject::loadLibrary()
  */
 void KTProject::clear()
 {
-	qDeleteAll(m_scenes);
-	m_scenes.clear();
+	qDeleteAll(d->scenes);
+	d->scenes.clear();
 	
-	m_sceneCounter = 0;
+	d->sceneCounter = 0;
 }
 
 /**
@@ -80,7 +95,7 @@ void KTProject::clear()
  */
 void KTProject::setProjectName(const QString &name)
 {
-	m_name = name;
+	d->name = name;
 }
 
 /**
@@ -94,23 +109,23 @@ void KTProject::setProjectName(const QString &name)
  */
 QString KTProject::projectName() const
 {
-	return m_name;
+	return d->name;
 }
 
 
 KTScene *KTProject::createScene(int position, bool loaded )
 {
 	dDebug("project") << "Creating scene " << position;
-	if ( position < 0 || position > m_scenes.count() )
+	if ( position < 0 || position > d->scenes.count() )
 	{
 		return 0;
 	}
 	
 	KTScene *scene = new KTScene(this);
-	m_scenes.insert(position, scene);
-	m_sceneCounter++;
+	d->scenes.insert(position, scene);
+	d->sceneCounter++;
 	
-	scene->setSceneName(tr("Scene %1").arg(m_sceneCounter));
+	scene->setSceneName(tr("Scene %1").arg(d->sceneCounter));
 	
 	if ( loaded )
 	{
@@ -129,7 +144,7 @@ bool KTProject::removeScene(int position)
 	
 	if ( toRemove )
 	{
-		m_scenes.removeAt(position);
+		d->scenes.removeAt(position);
 		
 		foreach(QGraphicsView *view, toRemove->views() )
 		{
@@ -139,7 +154,7 @@ bool KTProject::removeScene(int position)
 		delete toRemove;
 		toRemove = 0;
 		
-		m_sceneCounter--;
+		d->sceneCounter--;
 		
 		return true;
 	}
@@ -150,15 +165,15 @@ bool KTProject::removeScene(int position)
 
 bool KTProject::moveScene(int position, int newPosition)
 {
-	if ( position < 0 || position >= m_scenes.count() || newPosition < 0 || newPosition >= m_scenes.count() )
+	if ( position < 0 || position >= d->scenes.count() || newPosition < 0 || newPosition >= d->scenes.count() )
 	{
 		dWarning() << "Failed moving scene!";
 		return false;
 	}
 	
-	KTScene *scene = m_scenes.takeAt(position);
+	KTScene *scene = d->scenes.takeAt(position);
 	
-	m_scenes.insert(newPosition, scene);
+	d->scenes.insert(newPosition, scene);
 	
 	return true;
 }
@@ -167,18 +182,18 @@ bool KTProject::moveScene(int position, int newPosition)
 
 KTScene *KTProject::scene(int position)
 {
-	if ( position < 0 || position >= m_scenes.count() )
+	if ( position < 0 || position >= d->scenes.count() )
 	{
 		D_FUNCINFO << " FATAL ERROR: index out of bound " << position;
 		return 0;
 	}
 	
-	return m_scenes[position];
+	return d->scenes[position];
 }
 
 int KTProject::indexOf(KTScene *scene) const
 {
-	return m_scenes.indexOf(scene);
+	return d->scenes.indexOf(scene);
 }
 
 void KTProject::fromXml(const QString &xml )
@@ -216,7 +231,7 @@ QDomElement KTProject::toXml(QDomDocument &doc) const
 	ktoon.setAttribute("version", "1");
 	
 	QDomElement project = doc.createElement("Project");
-	project.setAttribute("name", m_name);
+	project.setAttribute("name", d->name);
 	
 	QDomElement meta = doc.createElement("meta");
 	
@@ -233,7 +248,7 @@ QDomElement KTProject::toXml(QDomDocument &doc) const
 
 Scenes KTProject::scenes() const
 {
-	return m_scenes;
+	return d->scenes;
 }
 
 
@@ -258,7 +273,7 @@ bool KTProject::createSymbol(const QString &xml)
 			{
 				if ( e.tagName() == "symbol" )
 				{
-					KTLibraryObject *object = new KTLibraryObject(m_library);
+					KTLibraryObject *object = new KTLibraryObject(d->library);
 					object->setType( e.attribute( "type" ).toInt() );
 					
 					QDomDocument buildDoc;
@@ -276,7 +291,7 @@ bool KTProject::createSymbol(const QString &xml)
 						break;
 					}
 					
-					m_library->addObject( object, e.attribute( "name"));
+					d->library->addObject( object, e.attribute( "name"));
 				}
 			}
 			n = n.nextSibling();
@@ -294,7 +309,7 @@ bool KTProject::removeSymbol(const QString &/*xml*/)
 
 KTLibrary *KTProject::library() const
 {
-	return m_library;
+	return d->library;
 }
 
 void KTProject::emitResponse(KTProjectResponse *response)
@@ -304,10 +319,10 @@ void KTProject::emitResponse(KTProjectResponse *response)
 
 void KTProject::setOpen(bool open)
 {
-	m_isOpen = open;
+	d->isOpen = open;
 }
 
 bool KTProject::isOpen()
 {
-	return m_isOpen;
+	return d->isOpen;
 }

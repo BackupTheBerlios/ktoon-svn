@@ -63,10 +63,8 @@ class STORE_EXPORT KTProjectCommand : public QUndoCommand
 		void initText();
 		
 	private:
-		KTCommandExecutor *m_executor;
-		
-		KTProjectResponse *m_response;
-		bool m_executed;
+		struct Private;
+		Private *const d;
 };
 
 #endif

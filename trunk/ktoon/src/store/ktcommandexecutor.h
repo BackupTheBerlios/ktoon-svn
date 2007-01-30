@@ -30,6 +30,7 @@ class KTItemResponse;
 class KTSceneResponse;
 class KTLayerResponse;
 class KTProjectResponse;
+class KTLibraryResponse;
 
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
@@ -51,13 +52,13 @@ class KTCommandExecutor : public QObject
 		bool convertItem(KTItemResponse *response);
 		bool transformItem(KTItemResponse *response);
 		bool setPathItem(KTItemResponse *response);
-		QString createSymbol(const QString &xml);
+		bool createSymbol(KTLibraryResponse *response);
 		
 		
 		bool removeScene(KTSceneResponse *response);
 		bool removeLayer(KTLayerResponse *response);
 		bool removeFrame(KTFrameResponse *response);
-		QString removeSymbol(const QString &xml);
+		bool removeSymbol(KTLibraryResponse *response);
 		
 		bool removeItem(KTItemResponse *response);
 		bool removeItems(KTItemResponse *response); // FIXME: remove me

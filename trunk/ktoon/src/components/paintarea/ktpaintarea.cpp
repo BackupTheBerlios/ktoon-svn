@@ -947,11 +947,15 @@ void KTPaintArea::addSelectedItemsToLibrary()
 	
 	foreach (QGraphicsItem *item, selecteds )
 	{
-		if( /*KTAbstractSerializable *itemSerializable = */dynamic_cast<KTAbstractSerializable *>(item) )
+		if( KTAbstractSerializable *itemSerializable = dynamic_cast<KTAbstractSerializable *>(item) )
 		{
 			QString symName = dialog.symbolName( item );
 			
-			KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTLibraryObject::Item, KTProjectRequest::Add, symName );
+			QDomDocument doc;
+			doc.appendChild(itemSerializable->toXml(doc));
+			
+			
+			KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTLibraryObject::Item, KTProjectRequest::Add, symName,  doc.toString().toLocal8Bit());
 			
 			emit requestTriggered(&request);
 		}

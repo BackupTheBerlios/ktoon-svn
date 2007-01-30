@@ -88,12 +88,8 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		void responsed(KTProjectResponse *response);
 		
 	private:
-		Scenes m_scenes;
-		QString m_name;
-		
-		int m_sceneCounter;
-		KTLibrary *m_library;
-		bool m_isOpen;
+		struct Private;
+		Private *const d;
 };
 
 #endif

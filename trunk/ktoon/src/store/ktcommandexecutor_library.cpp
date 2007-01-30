@@ -22,32 +22,40 @@
 #include "ktproject.h"
 #include "ktprojectrequest.h"
 
-QString KTCommandExecutor::createSymbol(const QString &xml)
+#include "ktprojectresponse.h"
+
+bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
 {
+	QString xml = QString::fromLocal8Bit(response->data());
 	if ( m_project->createSymbol( xml ) )
 	{
-// 		KTProjectRequest request( KTProjectRequest::Add, xml);
-// 		request.setId( KTProjectRequest::Library);
-// 		emit commandExecuted( &request, m_state );
+		emit responsed(response);
+		
+		return true;
 	}
 	else
 	{
 	}
 	
-	return QString();
+	return false;
 }
 
 
-QString KTCommandExecutor::removeSymbol(const QString &xml)
+bool KTCommandExecutor::removeSymbol(KTLibraryResponse *response)
 {
+	QString xml = QString::fromLocal8Bit(response->data());
+	
 	if ( m_project->removeSymbol( xml ) )
 	{
+		emit responsed(response);
+		
+		return true;
 	}
 	else
 	{
 	}
 	
-	return QString();
+	return false;
 }
 
 
