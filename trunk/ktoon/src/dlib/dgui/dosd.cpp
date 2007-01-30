@@ -64,6 +64,10 @@ void DOsd::display( const QString &message, Level level, int ms )
 {
 	if (message.isEmpty()) return;
 	
+	QString htmlMessage = message;
+	
+	htmlMessage.replace('\n', "<br/>");
+	
 	QBrush background = palette().background();
 	QBrush foreground = palette().foreground();
 	
@@ -74,29 +78,29 @@ void DOsd::display( const QString &message, Level level, int ms )
 			case Info:
 			{
 				background = QColor(0x678eae);
-				m_document->setHtml("<font size=+3 >"+tr("Information")+"</font><br><font size=+2>"+message+"</font>");
+				m_document->setHtml("<font size=+3 >"+tr("Information")+"</font><br><font size=+2>"+htmlMessage+"</font>");
 			}
 			break;
 			case Warning:
 			{
-				m_document->setHtml("<font size=+3>"+tr("Attention")+"</font><br><font size=+2>"+message+"</font>");
+				m_document->setHtml("<font size=+3>"+tr("Attention")+"</font><br><font size=+2>"+htmlMessage+"</font>");
 			}
 			break;
 			case Error:
 			{
 				background = Qt::red;
-				m_document->setHtml("<font size=+3>"+tr("Error")+"</font><br><font size=+2>"+message+"</font>");
+				m_document->setHtml("<font size=+3>"+tr("Error")+"</font><br><font size=+2>"+htmlMessage+"</font>");
 			}
 			break;
 			case Fatal:
 			{
 				background = Qt::magenta;
-				m_document->setHtml("<font size=+3>"+tr("Error")+"</font><br><font size=+2>"+message+"</font>");
+				m_document->setHtml("<font size=+3>"+tr("Error")+"</font><br><font size=+2>"+htmlMessage+"</font>");
 			}
 			break;
 			default:
 			{
-				m_document->setHtml(message);
+				m_document->setHtml(htmlMessage);
 			}
 			break;
 		}
