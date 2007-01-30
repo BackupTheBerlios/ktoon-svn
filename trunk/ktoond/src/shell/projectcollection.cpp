@@ -67,14 +67,14 @@ ProjectCollection::~ProjectCollection()
 	delete d;
 }
 
-void ProjectCollection::createProject( Server::Connection *cnn, const QString &author )
+void ProjectCollection::createProject( Server::Connection *cnn, const QString &author ) 
 {
 	QString projectName = cnn->data(Info::ProjectName).toString();
 	if(d->db->exists(projectName))
 	{
 		cnn->sendErrorPackageToClient(QObject::tr("Project %1 exists").arg(projectName), Packages::Error::Warning );
 		
-		cnn->removeConnection();
+		cnn->close();
 	}
 	else
 	{
@@ -215,7 +215,10 @@ void ProjectCollection::sendToProjectMembers(Server::Connection *cnn, QDomDocume
 	
 	foreach(Server::Connection *cnn, d->connections[projectName])
 	{
-		cnn->sendToClient(doc.toString(0));
+		if( cnn->user()->canReadOn("project") )
+		{
+			cnn->sendToClient(doc.toString(0));
+		}
 	}
 }
 

@@ -45,7 +45,11 @@ class User
 		QString login() const;
 		QString password() const;
 		
-		QList<Right> rights() const;
+		bool canReadOn(const QString &module);
+		bool canWriteOn(const QString &module);
+		
+		void addRight(Right *right);
+		QList<Right *> rights() const;
 		
 	private:
 		struct Private;

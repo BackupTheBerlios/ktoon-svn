@@ -50,12 +50,12 @@ Ack::~Ack()
 }
 
 
-void Ack::addPermission(Users::Right right)
+void Ack::addPermission(const Users::Right *right)
 {
 	QDomElement righte = createElement("perm");
-	righte.setAttribute("module", right.module());
-	righte.setAttribute("read", right.read());
-	righte.setAttribute("write", right.write());
+	righte.setAttribute("module", right->module());
+	righte.setAttribute("read", right->read());
+	righte.setAttribute("write", right->write());
 	
 	m_perms.appendChild(righte);
 }

@@ -32,6 +32,8 @@
 #include "listparser.h"
 #include "error.h"
 
+#include "user.h"
+
 class PackageHandler::Private
 {
 	public:
@@ -56,13 +58,20 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 {
 	if ( root == "request" )
 	{
-		if(!cnx->data(Info::ProjectName).toString().isNull())
+		if ( cnx->user()->canWriteOn("project") )
 		{
-			handleProjectRequest( cnx , package);
+			if(!cnx->data(Info::ProjectName).toString().isNull())
+			{
+				handleProjectRequest( cnx , package);
+			}
+			else
+			{
+				dWarning() << "NO PROJECT NAME!";
+			}
 		}
 		else
 		{
-			dWarning() << "NO PROJECT NAME!";
+			cnx->sendErrorPackageToClient(QObject::tr("You doen't have rights on project."), Packages::Error::Warning );
 		}
 	}
 	else if( root == "list")
@@ -77,30 +86,46 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 	}
 	else if( root == "openproject")
 	{
-		Parsers::OpenProjectParser parser;
-		if(parser.parse(package))
+		if ( cnx->user()->canReadOn("project") )
 		{
-			cnx->setData(Info::ProjectName, parser.name());
-			d->projects->openProject(cnx);
-		}
-// 		Abrir proyecto
-	}
-	else if ( root == "newproject" )
-	{
-		Parsers::NewProjectParser parser;
-		if(parser.parse(package))
-		{
-			cnx->setData(Info::ProjectName, parser.name());
-			d->projects->createProject(cnx, parser.author());
-			
+			Parsers::OpenProjectParser parser;
+			if(parser.parse(package))
+			{
+				cnx->setData(Info::ProjectName, parser.name());
+				d->projects->openProject(cnx);
+			}
 		}
 		else
 		{
+			cnx->sendErrorPackageToClient(QObject::tr("You doen't have rights on project."), Packages::Error::Warning );
+		}
+	}
+	else if ( root == "newproject" )
+	{
+		if ( cnx->user()->canWriteOn("project") )
+		{
+			Parsers::NewProjectParser parser;
+			if(parser.parse(package))
+			{
+				cnx->setData(Info::ProjectName, parser.name());
+				d->projects->createProject(cnx, parser.author());
+			}
+			else
+			{
+				cnx->sendErrorPackageToClient(QObject::tr("You doen't have rights on project."), Packages::Error::Warning );
+			}
 		}
 	}
 	else if(root == "listprojects")
 	{
-		d->projects->listProjects(cnx);
+		if ( cnx->user()->canReadOn("project") )
+		{
+			d->projects->listProjects(cnx);
+		}
+		else
+		{
+			cnx->sendErrorPackageToClient(QObject::tr("You doen't have rights on project."), Packages::Error::Warning );
+		}
 	}
 }
 
@@ -112,14 +137,13 @@ void PackageHandler::handleProjectRequest(Server::Connection *cnn, const QString
 		request.setContent(strRequest);
 		
 		d->projects->sendToProjectMembers(cnn, request);
+// 		cnn->sendToAll(request); // test
 	}
 	else
 	{
 		// TODO: enviar error
 		
-		Packages::Error error("Cannot handle project request", Packages::Error::Warning );
-		
-		dWarning() << "CANNOT HANDLE PROJECT REQUEST";
+		cnn->sendErrorPackageToClient(QObject::tr("Cannot handle project request"), Packages::Error::Warning );
 	}
 }
 

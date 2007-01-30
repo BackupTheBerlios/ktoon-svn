@@ -31,7 +31,7 @@ struct User::Private
 	QString login;
 	QString password;
 	
-	QList<Right> rights;
+	QList<Right *> rights;
 };
 
 User::User() : d(new Private)
@@ -41,6 +41,7 @@ User::User() : d(new Private)
 
 User::~User()
 {
+	qDeleteAll(d->rights);
 	delete d;
 }
 
@@ -75,7 +76,38 @@ QString User::password() const
 	return d->password;
 }
 
-QList<Right> User::rights() const
+bool User::canReadOn(const QString &module)
+{
+	foreach(Right *right, d->rights)
+	{
+		if ( right->module() == module )
+		{
+			return right->read();
+		}
+	}
+	
+	return false;
+}
+
+bool User::canWriteOn(const QString &module)
+{
+	foreach(Right *right, d->rights)
+	{
+		if ( right->module() == module )
+		{
+			return right->write();
+		}
+	}
+	
+	return false;
+}
+
+void User::addRight(Right *right)
+{
+	d->rights << right;
+}
+
+QList<Right *> User::rights() const
 {
 	return d->rights;
 }

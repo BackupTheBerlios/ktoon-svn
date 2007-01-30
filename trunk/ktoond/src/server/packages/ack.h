@@ -35,7 +35,7 @@ class Ack : public QDomDocument
 		Ack(const QString &motd, const QString &sign);
 		~Ack();
 		
-		void addPermission(Users::Right right);
+		void addPermission(const Users::Right *right);
 		
 	private:
 		QDomElement m_perms;

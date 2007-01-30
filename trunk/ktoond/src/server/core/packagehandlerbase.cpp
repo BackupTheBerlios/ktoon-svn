@@ -74,7 +74,7 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 				
 				Packages::Ack ack("Message of the day FIXME", client->sign());
 				
-				foreach(Users::Right right, user->rights())
+				foreach(Users::Right *right, user->rights())
 				{
 					ack.addPermission(right);
 				}

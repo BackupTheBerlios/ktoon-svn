@@ -31,7 +31,7 @@ namespace Users {
 class Right
 {
 	public:
-		Right(const QString &module);
+		explicit Right();
 		Right(const QString &module, bool read, bool write);
 		~Right();
 		
@@ -41,6 +41,8 @@ class Right
 		QString module() const;
 		bool write() const;
 		bool read() const;
+		
+		Q_DISABLE_COPY(Right);
 		
 	private:
 		struct Private;

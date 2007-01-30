@@ -29,9 +29,8 @@ struct Right::Private
 	bool write;
 };
 
-Right::Right(const QString &module) : d(new Private())
+Right::Right() : d(new Private())
 {
-	d->module = module;
 	d->read = false;
 	d->write = false;
 }

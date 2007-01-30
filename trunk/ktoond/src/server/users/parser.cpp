@@ -54,9 +54,12 @@ bool Parser::startTag(const QString& tag, const QXmlAttributes& atts)
 		{
 			d->user->setName( atts.value("name") );
 			d->user->setPassword(atts.value("password"));
-			
-			setIgnore(true);
 		}
+	}
+	else if ( tag == "perm" )
+	{
+		Right *right = new Right(atts.value("module"), atts.value("read").toInt(), atts.value("write").toInt());
+		d->user->addRight(right);
 	}
 	
 	return true;
