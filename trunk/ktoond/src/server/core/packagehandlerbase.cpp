@@ -70,12 +70,13 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 		{
 			if ( d->manager->auth(parser.login(), parser.password()) )
 			{
-				// TODO: Enviar paquete de reconocimiento
 				Users::User *user = d->manager->user(parser.login());
 				
 				client->setUser(user);
 				
-				Packages::Ack ack(DFortuneGenerator::self()->generate(), client->sign());
+				QString fortune = DFortuneGenerator::self()->generate();
+				fortune.replace("\n", "<br/>");
+				Packages::Ack ack(QObject::tr("<center><b>Message of the day:</b></center></br> ")+fortune, client->sign());
 				
 				foreach(Users::Right *right, user->rights())
 				{
@@ -99,10 +100,23 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 	}
 	else if ( root == "chat" )
 	{
+		QDomDocument doc;
+		doc.setContent(package);
 		
+		QDomElement element = doc.firstChildElement("message");
+		element.setAttribute("from", client->user()->login());
+		
+		client->sendToAll(doc);
 	}
 	else if ( root == "notice" )
 	{
+		QDomDocument doc;
+		doc.setContent(package);
+		
+		QDomElement element = doc.firstChildElement("message");
+		element.setAttribute("from", client->user()->login());
+		
+		client->sendToAll(doc);
 	}
 	else if ( root == "wall" )
 	{
