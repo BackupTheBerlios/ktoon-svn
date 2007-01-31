@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Copyright (C) 2006 by David Cuadrado       krawek@gmail.com           *
+ *                                                                         *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,35 +17,46 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef USERSMODULEWIDGET_H
-#define USERSMODULEWIDGET_H
 
-#include <modulewidgetbase.h>
-#include <package.h>
-#include "form.h"
+#ifndef BASEMODULEBUTTONBAR_H
+#define BASEMODULEBUTTONBAR_H
 
-namespace Users {
+#include <QFrame>
 
+
+#include <QButtonGroup>
+
+namespace Base {
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * Abstraccion de una barra de botones.
+ * @author David Cuadrado \<krawek@gmail.com\>
 */
-class ModuleWidget : public Base::ModuleWidgetBase
+
+class ModuleButtonBar : public QFrame
 {
 	Q_OBJECT;
 	public:
-		ModuleWidget(QWidget *parent = 0);
+		enum Button
+		{
+			Add = 1<<0,
+			Del = 1<<1,
+			Query = 1 << 2,
+			Modify = 1 << 3
+		};
 		
-		~ModuleWidget();
-		virtual void handlePackage(Base::Package *const pkg);
+		ModuleButtonBar(int buttons, QWidget *parent = 0);
+		~ModuleButtonBar();
 		
-	private slots:
-		void requestAction( int action);
+	signals:
+		void buttonClicked ( QAbstractButton *button);
+		void buttonClicked(int id);
+		
 		
 	private:
-		struct Private;
-		Private *const d;
+		void setupButtons(int buttons);
+		
+	private:
+		QButtonGroup m_buttons;
 };
-
 }
-
 #endif

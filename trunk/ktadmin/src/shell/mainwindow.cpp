@@ -26,6 +26,7 @@
 #include <QApplication>
 
 #include <dtoolview.h>
+#include <ddebug.h>
 
 #include "users/modulewidget.h"
 #include "projects/modulewidget.h"
@@ -67,6 +68,7 @@ void MainWindow::createModules()
 {
 	d->usersModule = new Users::ModuleWidget;
 	addToolView(d->usersModule, Qt::LeftDockWidgetArea)->setDescription(tr("Administer users"));
+	setupModule(d->usersModule);
 	
 	d->projectsModule = new Projects::ModuleWidget;
 	addToolView(d->projectsModule, Qt::LeftDockWidgetArea)->setDescription(tr("Administer projects"));

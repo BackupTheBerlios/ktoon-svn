@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosxx@gmail.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,33 +17,30 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef USERSMODULEWIDGET_H
-#define USERSMODULEWIDGET_H
+ 
+#ifndef PACKAGESADDUSER_H
+#define PACKAGESADDUSER_H
 
-#include <modulewidgetbase.h>
-#include <package.h>
-#include "form.h"
+#include <QDomDocument>
 
-namespace Users {
+namespace Packages {
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author Jorge Cuadrado <kuadrosxx@gmail.com>
 */
-class ModuleWidget : public Base::ModuleWidgetBase
+class AddUser : public QDomDocument
 {
-	Q_OBJECT;
 	public:
-		ModuleWidget(QWidget *parent = 0);
+		AddUser(const QString& login, const QString& password, const QString& name );
+		~AddUser();
 		
-		~ModuleWidget();
-		virtual void handlePackage(Base::Package *const pkg);
-		
-	private slots:
-		void requestAction( int action);
+		void setLogin(const QString& login);
+		void setPassword(const QString& password);
+		void setName(const QString& name);
 		
 	private:
-		struct Private;
-		Private *const d;
+		QDomElement m_info;
+
 };
 
 }

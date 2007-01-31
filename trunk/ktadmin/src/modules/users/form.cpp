@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosxx@gmail.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,35 +17,41 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef USERSMODULEWIDGET_H
-#define USERSMODULEWIDGET_H
-
-#include <modulewidgetbase.h>
-#include <package.h>
+ 
 #include "form.h"
+#include <dformfactory.h>
+
+#include <QLineEdit>
+#include <QVBoxLayout>
 
 namespace Users {
 
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class ModuleWidget : public Base::ModuleWidgetBase
+struct Form::Private
 {
-	Q_OBJECT;
-	public:
-		ModuleWidget(QWidget *parent = 0);
-		
-		~ModuleWidget();
-		virtual void handlePackage(Base::Package *const pkg);
-		
-	private slots:
-		void requestAction( int action);
-		
-	private:
-		struct Private;
-		Private *const d;
+	QLineEdit *name;
+	QLineEdit *login;
+	QLineEdit *password;
 };
 
+Form::Form(QWidget *parent) : QWidget(parent), d(new Private)
+{
+	QVBoxLayout *layout = new QVBoxLayout(this);
+	d->login = new QLineEdit;
+	layout->addLayout(DFormFactory::makeLine(tr("login"), d->login ));
+	
+	d->password = new QLineEdit;
+	d->password->setEchoMode(QLineEdit::Password);
+	layout->addLayout(DFormFactory::makeLine(tr("password"),  d->password ));
+	
+	d->name = new QLineEdit;
+	layout->addLayout(DFormFactory::makeLine(tr("name"), d->name ));
+	
 }
 
-#endif
+
+Form::~Form()
+{
+}
+
+
+}

@@ -24,6 +24,8 @@
 #include "modulewidgetbase.h"
 #include "package.h"
 
+#include "ddebug.h"
+
 #include <QList>
 
 struct Manager::Private
@@ -34,6 +36,9 @@ struct Manager::Private
 
 Manager::Manager(QObject *parent) : QObject(parent), d(new Private)
 {
+	d->socket = new Socket(this);
+	//TODO connect to host
+
 }
 
 

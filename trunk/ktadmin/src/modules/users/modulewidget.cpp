@@ -19,13 +19,60 @@
  ***************************************************************************/
 
 #include "modulewidget.h"
+#include "modulebuttonbar.h"
+
+#include <dtreelistwidget.h>
+#include <dtreewidgetsearchline.h>
+#include <ddebug.h>
+
+#include <QToolButton>
+#include <QTreeWidget>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QHeaderView>
+#include <QPushButton>
+
+#include <QMainWindow>
+
 
 namespace Users {
 
+
+struct ModuleWidget::Private
+{
+	QTreeWidget *tree;
+	DTreeWidgetSearchLine *search;
+	Base::ModuleButtonBar *buttonBar;
+};
+
 ModuleWidget::ModuleWidget(QWidget *parent)
- : Base::ModuleWidgetBase(parent)
+	: Base::ModuleWidgetBase(parent), d(new Private)
 {
 	setWindowTitle(tr("Users"));
+	
+	QVBoxLayout *layout = new QVBoxLayout(this);
+	setLayout(layout);
+	QHBoxLayout *search = new QHBoxLayout;
+
+	QToolButton *button = new QToolButton;
+	button->setIcon( QIcon(THEME_DIR+"/icons/clear_right.png"));
+	
+	search->addWidget(button);
+	d->tree = new  QTreeWidget;
+	
+	
+	d->tree->setHeaderLabels( QStringList() << tr("Login") << tr("Name") );
+	d->tree->header()->show();
+	d->search = new DTreeWidgetSearchLine(this,d->tree);
+	search->addWidget( d->search );
+	connect(button, SIGNAL(clicked()), d->search, SLOT(clear()));
+	
+	layout->addLayout(search);
+	layout->addWidget(d->tree);
+	
+	d->buttonBar = new Base::ModuleButtonBar(Base::ModuleButtonBar::Add | Base::ModuleButtonBar::Del | Base::ModuleButtonBar::Modify);
+	layout->addWidget(d->buttonBar);
+	connect(d->buttonBar, SIGNAL(buttonClicked( int )), this, SLOT(requestAction(int)));
 }
 
 
@@ -33,5 +80,33 @@ ModuleWidget::~ModuleWidget()
 {
 }
 
+void ModuleWidget::requestAction( int action)
+{
+// 	SHOW_VAR(action);
+	switch(action)
+	{
+		case Base::ModuleButtonBar::Add:
+		{
+			Form *form = new Form();
+			form->show();
+			emit postWidget(form);
+		}
+		break;
+		case Base::ModuleButtonBar::Del:
+		{
+		}
+		break;
+		case Base::ModuleButtonBar::Modify:
+		{
+		}
+		break;
+	}
+}
+
+void ModuleWidget::handlePackage(Base::Package *const pkg)
+{
+	SHOW_VAR(pkg->xml());
+	//TODO si es un paquete de añadir un usuario se añade a la lista
+}
 
 }

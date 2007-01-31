@@ -53,4 +53,13 @@ bool Package::isAccepted() const
 	return d->accepted;
 }
 
+QString Package::root() const
+{
+	return d->root;
+}
+
+QString Package::xml() const
+{
+	return d->xml;
+}
 }

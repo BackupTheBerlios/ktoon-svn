@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosxx@gmail.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,35 +17,41 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef USERSMODULEWIDGET_H
-#define USERSMODULEWIDGET_H
+ 
+#include "adduser.h"
 
-#include <modulewidgetbase.h>
-#include <package.h>
-#include "form.h"
+namespace Packages {
 
-namespace Users {
-
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class ModuleWidget : public Base::ModuleWidgetBase
+AddUser::AddUser(const QString& login, const QString& password, const QString&name)
 {
-	Q_OBJECT;
-	public:
-		ModuleWidget(QWidget *parent = 0);
-		
-		~ModuleWidget();
-		virtual void handlePackage(Base::Package *const pkg);
-		
-	private slots:
-		void requestAction( int action);
-		
-	private:
-		struct Private;
-		Private *const d;
-};
-
+	QDomElement root = createElement ( "adduser" );
+	root.setAttribute ( "version",  "0" );
+	m_info = createElement ("info");
+	root.appendChild(m_info);
+	m_info.setAttribute("login", login);
+	m_info.setAttribute("password", password);
+	m_info.setAttribute("name", name);
+	appendChild(root);
 }
 
-#endif
+
+AddUser::~AddUser()
+{
+}
+
+void AddUser::setLogin(const QString& login)
+{
+	m_info.setAttribute("login", login);
+}
+
+void AddUser::setPassword(const QString& password)
+{
+	m_info.setAttribute("password", password);
+}
+
+void AddUser::setName(const QString& name)
+{
+	m_info.setAttribute("name", name);
+}
+
+}
