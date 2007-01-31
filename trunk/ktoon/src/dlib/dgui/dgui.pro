@@ -66,7 +66,9 @@ HEADERS += danimwidget.h \
            dtoolview.h \
            dviewbutton.h \
            dcommandhistory.h \
-           dformvalidator.h 
+           dformvalidator.h  \
+           dstackedmainwindow.h \
+           dworkspacemainwindow.h
 SOURCES += danimwidget.cpp \
            dapplication.cpp \
            dcellview.cpp \
@@ -125,7 +127,9 @@ SOURCES += danimwidget.cpp \
            dtoolview.cpp \
            dviewbutton.cpp \
            dcommandhistory.cpp \
-           dformvalidator.cpp 
+           dformvalidator.cpp  \
+           dstackedmainwindow.cpp \
+           dworkspacemainwindow.cpp
 DEFINES += DLIB_GUI
 RESOURCES += dgui_images.qrc
 QT += xml
@@ -143,9 +147,9 @@ warn_on \
 dll
 TEMPLATE = lib
 QT += opengl
-! include(../dlibconfig.pri){
-  error("Run ./configure first!")
+!{include(../dlibconfig.pri){
+    error("Run ./configure first!")
 }
 linux-g++{
-  TARGETDEPS += ../dcore/libdcore.so
+    TARGETDEPS += ../dcore/libdcore.so
 }
