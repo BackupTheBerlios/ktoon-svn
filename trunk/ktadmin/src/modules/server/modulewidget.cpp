@@ -24,6 +24,7 @@ namespace Server {
 ModuleWidget::ModuleWidget(QWidget *parent)
  : Base::ModuleWidgetBase(parent)
 {
+	setWindowTitle(tr("Server"));
 }
 
 

@@ -17,23 +17,36 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "modulewidgetbase.h"
+#ifndef MANAGER_H
+#define MANAGER_H
+
+#include <QObject>
 
 namespace Base {
+	class  ModuleWidgetBase;
+}
 
-ModuleWidgetBase::ModuleWidgetBase(QWidget *parent) : QWidget(parent)
+/**
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+class Manager : QObject
 {
-}
+	Q_OBJECT;
+	public:
+		Manager(QObject *parent = 0);
+		~Manager();
+		
+		void handlePackage(const QString &root, const QString &xml);
+		
+		void addObserver(Base::ModuleWidgetBase *obs);
+		void removeObserver(Base::ModuleWidgetBase *obs);
+		
+	public slots:
+		void sendPackage(const QString &pkg);
+		
+	private:
+		struct Private;
+		Private *const d;
+};
 
-
-ModuleWidgetBase::~ModuleWidgetBase()
-{
-}
-
-void ModuleWidgetBase::handlePackage(Package *const pkg)
-{
-	Q_UNUSED(pkg);
-}
-
-}
-
+#endif

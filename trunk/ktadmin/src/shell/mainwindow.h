@@ -21,17 +21,31 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <dstackedmainwindow.h>
+#include <dworkspacemainwindow.h>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class MainWindow : public DStackedMainWindow
+class MainWindow : public DWorkspaceMainWindow
 {
 	Q_OBJECT;
 	public:
 		MainWindow(QWidget *parent = 0);
 		~MainWindow();
+		
+	private:
+		void createModules();
+		void createMenuBar();
+		
+	protected:
+		void setupModule(const QWidget *w);
+		
+	private slots:
+		void addWidgetAsWindow(QWidget *w);
+		
+	private:
+		struct Private;
+		Private *const d;
 
 };
 

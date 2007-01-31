@@ -17,23 +17,27 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "modulewidgetbase.h"
+#ifndef SOCKET_H
+#define SOCKET_H
 
-namespace Base {
+#include <ktsocketbase.h>
+class Manager;
 
-ModuleWidgetBase::ModuleWidgetBase(QWidget *parent) : QWidget(parent)
+/**
+ * @author David Cuadrado \<krawek@gmail.com\>
+*/
+class Socket : public KTSocketBase
 {
-}
+	Q_OBJECT;
+	public:
+		Socket(Manager *manager, QObject *parent = 0);
+		~Socket();
+		
+		virtual void readed(const QString &readed);
+		
+	private:
+		struct Private;
+		Private *const d;
+};
 
-
-ModuleWidgetBase::~ModuleWidgetBase()
-{
-}
-
-void ModuleWidgetBase::handlePackage(Package *const pkg)
-{
-	Q_UNUSED(pkg);
-}
-
-}
-
+#endif

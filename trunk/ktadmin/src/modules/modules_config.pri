@@ -8,4 +8,3 @@ LIB_DIR = ../../lib
 	error("err");
 }
 
-print("here")

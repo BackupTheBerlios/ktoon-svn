@@ -24,6 +24,7 @@ namespace Projects {
 ModuleWidget::ModuleWidget(QWidget *parent)
  : Base::ModuleWidgetBase(parent)
 {
+	setWindowTitle(tr("Projects"));
 }
 
 

@@ -17,23 +17,57 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#include "manager.h"
+
+#include "socket.h"
 #include "modulewidgetbase.h"
+#include "package.h"
 
-namespace Base {
+#include <QList>
 
-ModuleWidgetBase::ModuleWidgetBase(QWidget *parent) : QWidget(parent)
+struct Manager::Private
+{
+	Socket *socket;
+	QList<Base::ModuleWidgetBase *> observers;
+};
+
+Manager::Manager(QObject *parent) : QObject(parent), d(new Private)
 {
 }
 
 
-ModuleWidgetBase::~ModuleWidgetBase()
+Manager::~Manager()
 {
+	delete d;
 }
 
-void ModuleWidgetBase::handlePackage(Package *const pkg)
+
+void Manager::sendPackage(const QString &pkg)
 {
-	Q_UNUSED(pkg);
+	d->socket->send(pkg);
 }
 
+void Manager::handlePackage(const QString &root, const QString &xml)
+{
+	Base::Package *package = new Base::Package(root, xml);
+	
+	foreach(Base::ModuleWidgetBase *observer, d->observers)
+	{
+		observer->handlePackage(package);
+		if( package->isAccepted() )
+			break;
+	}
+	
+	delete package;
 }
 
+void Manager::addObserver(Base::ModuleWidgetBase *obs)
+{
+	d->observers << obs;
+}
+
+void Manager::removeObserver(Base::ModuleWidgetBase *obs)
+{
+	d->observers.removeAll(obs);
+}

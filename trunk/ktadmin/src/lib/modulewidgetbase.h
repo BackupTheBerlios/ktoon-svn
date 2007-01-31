@@ -21,6 +21,7 @@
 #define BASEMODULEWIDGETBASE_H
 
 #include <QWidget>
+#include "package.h"
 
 namespace Base {
 
@@ -29,11 +30,16 @@ namespace Base {
 */
 class ModuleWidgetBase : public QWidget
 {
-	Q_OBJECT
+	Q_OBJECT;
 	public:
 		ModuleWidgetBase(QWidget *parent = 0);
 		~ModuleWidgetBase();
-
+		
+		virtual void handlePackage(Package *const pkg);
+		
+	signals:
+		void postWidget(QWidget *w);
+		void sendPackage(const QString &pkg);
 };
 
 }

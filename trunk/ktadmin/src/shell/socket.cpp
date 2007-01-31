@@ -17,23 +17,43 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "modulewidgetbase.h"
 
-namespace Base {
+#include "socket.h"
 
-ModuleWidgetBase::ModuleWidgetBase(QWidget *parent) : QWidget(parent)
+#include <ddebug.h>
+#include "manager.h"
+
+struct Socket::Private 
 {
-}
+	Manager *manager;
+};
 
-
-ModuleWidgetBase::~ModuleWidgetBase()
+Socket::Socket(Manager *manager,QObject *parent) : KTSocketBase(parent), d(new Private)
 {
+	d->manager = manager;
 }
 
-void ModuleWidgetBase::handlePackage(Package *const pkg)
+
+Socket::~Socket()
 {
-	Q_UNUSED(pkg);
+	delete d;
 }
 
+void Socket::readed(const QString &readed)
+{
+	dDebug("net") << "READED: " << readed;
+	QDomDocument doc;
+	
+	if ( doc.setContent(readed) )
+	{
+		QString root = doc.documentElement().tagName();
+		
+		d->manager->handlePackage( root, readed);
+	}
+	else
+	{
+		qDebug("Isn't a document");
+	}
 }
+
 

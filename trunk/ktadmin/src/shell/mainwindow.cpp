@@ -20,14 +20,83 @@
 
 #include "mainwindow.h"
 
-MainWindow::MainWindow(QWidget *parent)
- : DStackedMainWindow(parent)
+#include <QMenuBar>
+#include <QMenu>
+#include <QStatusBar>
+#include <QApplication>
+
+#include <dtoolview.h>
+
+#include "users/modulewidget.h"
+#include "projects/modulewidget.h"
+#include "server/modulewidget.h"
+
+#include "manager.h"
+
+struct MainWindow::Private
 {
+	Users::ModuleWidget *usersModule;
+	Projects::ModuleWidget *projectsModule;
+	Server::ModuleWidget *serverModule;
+	
+	Manager *manager;
+};
+
+
+MainWindow::MainWindow(QWidget *parent)
+ : DWorkspaceMainWindow(parent), d(new Private)
+{
+	setWindowTitle(tr("KToonD Admin"));
+	
+	d->manager = new Manager(this);
+	
+	createModules();
+	createMenuBar();
+	
+	statusBar()->show();
 }
 
 
 MainWindow::~MainWindow()
 {
+	delete d;
 }
 
+
+void MainWindow::createModules()
+{
+	d->usersModule = new Users::ModuleWidget;
+	addToolView(d->usersModule, Qt::LeftDockWidgetArea)->setDescription(tr("Administer users"));
+	
+	d->projectsModule = new Projects::ModuleWidget;
+	addToolView(d->projectsModule, Qt::LeftDockWidgetArea)->setDescription(tr("Administer projects"));
+	
+	d->serverModule = new Server::ModuleWidget;
+	addToolView(d->serverModule, Qt::RightDockWidgetArea)->setDescription(tr("Administer server"));
+	
+	d->manager->addObserver(d->usersModule);
+	d->manager->addObserver(d->projectsModule);
+	d->manager->addObserver(d->serverModule);
+}
+
+void MainWindow::createMenuBar()
+{
+	QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
+	
+	fileMenu->addSeparator();
+	fileMenu->addAction(tr("&Quit"), qApp, SLOT(closeAllWindows()));
+	
+}
+
+
+void MainWindow::addWidgetAsWindow(QWidget *w)
+{
+	addWidget(w);
+}
+
+void MainWindow::setupModule(const QWidget *w)
+{
+	connect(w, SIGNAL(postWidget(QWidget *)), this, SLOT(addWidgetAsWindow(QWidget *)));
+// 	connect(d->manager, 
+}
 

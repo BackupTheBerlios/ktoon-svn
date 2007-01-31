@@ -17,23 +17,35 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "modulewidgetbase.h"
+
+#ifndef BASEPACKAGE_H
+#define BASEPACKAGE_H
+
+#include <QString>
 
 namespace Base {
 
-ModuleWidgetBase::ModuleWidgetBase(QWidget *parent) : QWidget(parent)
+/**
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+class Package
 {
+	public:
+		Package(const QString &root, const QString &xml);
+		~Package();
+		
+		QString root() const;
+		QString xml() const;
+		
+		void accept();
+		
+		bool isAccepted() const;
+		
+	private:
+		struct Private;
+		Private *const d;
+};
+
 }
 
-
-ModuleWidgetBase::~ModuleWidgetBase()
-{
-}
-
-void ModuleWidgetBase::handlePackage(Package *const pkg)
-{
-	Q_UNUSED(pkg);
-}
-
-}
-
+#endif

@@ -4,7 +4,7 @@ CONFIG += staticlib \
 warn_on
 TARGET = ktadmin
 
-HEADERS += modulewidgetbase.h
-
-SOURCES += modulewidgetbase.cpp
-
+HEADERS += modulewidgetbase.h \
+package.h
+SOURCES += modulewidgetbase.cpp \
+package.cpp
