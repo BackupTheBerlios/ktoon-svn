@@ -23,7 +23,7 @@
 #include <QObject>
 
 namespace Base {
-	class  ModuleWidgetBase;
+	class  ModuleWidget;
 }
 
 /**
@@ -38,8 +38,8 @@ class Manager : public QObject
 		
 		void handlePackage(const QString &root, const QString &xml);
 		
-		void addObserver(Base::ModuleWidgetBase *obs);
-		void removeObserver(Base::ModuleWidgetBase *obs);
+		void addObserver(Base::ModuleWidget *obs);
+		void removeObserver(Base::ModuleWidget *obs);
 		
 		bool connectToServer(const QString &server, int port);
 		void authenticate(const QString &login, const QString &password);

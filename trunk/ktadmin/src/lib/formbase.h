@@ -17,8 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef BASEFORMBASE_H
-#define BASEFORMBASE_H
+#ifndef BASEForm_H
+#define BASEForm_H
 
 #include <QFrame>
 #include <QDialogButtonBox>
@@ -30,12 +30,12 @@ namespace Base {
 /**
  * @author Jorge Cuadrado <kuadrosxx@gmail.com>
 */
-class FormBase : public QFrame
+class Form : public QFrame
 {
 	Q_OBJECT
 	public:
-		FormBase( QDialogButtonBox::StandardButtons buttons, const QString &title,  QWidget *parent=0);
-		virtual ~FormBase();
+		Form( QDialogButtonBox::StandardButtons buttons, const QString &title,  QWidget *parent=0);
+		virtual ~Form();
 		virtual void applyAction( QDialogButtonBox::ButtonRole ) = 0;
 		
 		void setCentralWidget(QWidget *widget);
@@ -44,7 +44,7 @@ class FormBase : public QFrame
 		void setTitle( const QString &title);
 		
 	private slots:
-		void handleCliked(QAbstractButton * button );
+		void buttonCliked(QAbstractButton * button );
 		
 	private:
 		struct Private;

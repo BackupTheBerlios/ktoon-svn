@@ -17,8 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef BASEMODULEWIDGETBASE_H
-#define BASEMODULEWIDGETBASE_H
+#ifndef BASEModuleWidget_H
+#define BASEModuleWidget_H
 
 #include <QWidget>
 #include "package.h"
@@ -28,12 +28,12 @@ namespace Base {
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class ModuleWidgetBase : public QWidget
+class ModuleWidget : public QWidget
 {
 	Q_OBJECT;
 	public:
-		ModuleWidgetBase(QWidget *parent = 0);
-		~ModuleWidgetBase();
+		ModuleWidget(QWidget *parent = 0);
+		~ModuleWidget();
 		
 		virtual void handlePackage(Package *const pkg);
 		

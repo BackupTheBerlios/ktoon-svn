@@ -24,7 +24,7 @@
 
 namespace Base {
 
-struct FormBase::Private
+struct Form::Private
 {
 	QLabel *title;
 	QWidget *center;
@@ -32,7 +32,7 @@ struct FormBase::Private
 	QVBoxLayout *layout;
 };
 
-FormBase::FormBase(QDialogButtonBox::StandardButtons buttons, const QString &title, QWidget *parent) : QFrame(parent), d(new Private)
+Form::Form(QDialogButtonBox::StandardButtons buttons, const QString &title, QWidget *parent) : QFrame(parent), d(new Private)
 {
 	d->layout = new QVBoxLayout(this);
 	d->title = new QLabel(title);
@@ -42,25 +42,25 @@ FormBase::FormBase(QDialogButtonBox::StandardButtons buttons, const QString &tit
 	d->buttons = new QDialogButtonBox(buttons);
 	d->layout->addWidget(d->buttons);
 	
-	connect(d->buttons, SIGNAL(clicked(QAbstractButton *)), this, SLOT(handleCliked( QAbstractButton* )));
+	connect(d->buttons, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonCliked( QAbstractButton* )));
 	
 	setAttribute(Qt::WA_DeleteOnClose);
 }
 
 
-void FormBase::handleCliked(QAbstractButton * button )
+void Form::buttonCliked(QAbstractButton * button )
 {
 	applyAction(d->buttons->buttonRole(button));
 }
 
 
-FormBase::~FormBase()
+Form::~Form()
 {
 	
 }
 
 
-void FormBase::setCentralWidget(QWidget *widget)
+void Form::setCentralWidget(QWidget *widget)
 {
 	d->center->hide();
 	d->layout->removeWidget ( d->center );
@@ -73,14 +73,14 @@ void FormBase::setCentralWidget(QWidget *widget)
 	
 }
 
-void FormBase::setButtons(QDialogButtonBox::StandardButtons buttons)
+void Form::setButtons(QDialogButtonBox::StandardButtons buttons)
 {
 	d->buttons->setStandardButtons (  buttons );
 }
 
-void FormBase::setTitle( const QString &title)
+void Form::setTitle( const QString &title)
 {
-	d->title->setText(title);
+	d->title->setText("<h1>"+title+"</h1>");
 }
 
 }

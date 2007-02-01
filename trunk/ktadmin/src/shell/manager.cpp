@@ -35,7 +35,7 @@
 struct Manager::Private
 {
 	Socket *socket;
-	QList<Base::ModuleWidgetBase *> observers;
+	QList<Base::ModuleWidget *> observers;
 	
 	bool enabled;
 	
@@ -81,7 +81,7 @@ void Manager::handlePackage(const QString &root, const QString &xml)
 	{
 		Base::Package *package = new Base::Package(root, xml);
 		
-		foreach(Base::ModuleWidgetBase *observer, d->observers)
+		foreach(Base::ModuleWidget *observer, d->observers)
 		{
 			observer->handlePackage(package);
 			if( package->isAccepted() )
@@ -96,7 +96,7 @@ bool Manager::tryToHandle(const QString &root, const QString &xml)
 {
 	if( root == "ack" )
 	{
-		AckParser parser;
+		Packages::AckParser parser;
 		if ( parser.parse(xml) )
 		{
 			DOsd::self()->display(parser.motd());
@@ -110,12 +110,12 @@ bool Manager::tryToHandle(const QString &root, const QString &xml)
 	return false;
 }
 
-void Manager::addObserver(Base::ModuleWidgetBase *obs)
+void Manager::addObserver(Base::ModuleWidget *obs)
 {
 	d->observers << obs;
 }
 
-void Manager::removeObserver(Base::ModuleWidgetBase *obs)
+void Manager::removeObserver(Base::ModuleWidget *obs)
 {
 	d->observers.removeAll(obs);
 }

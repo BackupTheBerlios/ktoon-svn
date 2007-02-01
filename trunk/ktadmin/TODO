@@ -4,3 +4,8 @@
 - Backup de proyectos
 - Configurar servidor (max-conn, desconectar clientes...)
 - Gestionar blacklists
+
+Opcionales
+- Aplicacion web para solicitar registro en un proyecto, ver estado de proyectos, etc...
+
+

@@ -46,7 +46,7 @@ struct ModuleWidget::Private
 };
 
 ModuleWidget::ModuleWidget(QWidget *parent)
-	: Base::ModuleWidgetBase(parent), d(new Private)
+	: Base::ModuleWidget(parent), d(new Private)
 {
 	setWindowTitle(tr("Users"));
 	

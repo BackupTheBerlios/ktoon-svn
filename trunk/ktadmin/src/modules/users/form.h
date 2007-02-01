@@ -29,7 +29,7 @@ namespace Users {
 /**
  * @author Jorge Cuadrado <kuadrosxx@gmail.com>
 */
-class Form : public Base::FormBase
+class Form : public Base::Form
 {
 	Q_OBJECT
 	public:

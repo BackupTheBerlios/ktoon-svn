@@ -22,6 +22,8 @@
 
 #include <ktxmlparserbase.h>
 
+namespace Packages {
+
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
 */
@@ -43,5 +45,7 @@ class AckParser : public KTXmlParserBase
 		struct Private;
 		Private *const d;
 };
+
+}
 
 #endif

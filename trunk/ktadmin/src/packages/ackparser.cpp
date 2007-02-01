@@ -20,6 +20,8 @@
 
 #include "ackparser.h"
 
+namespace Packages {
+
 struct AckParser::Private
 {
 	QString motd;
@@ -78,3 +80,4 @@ QString AckParser::motd() const
 	return d->motd;
 }
 
+}

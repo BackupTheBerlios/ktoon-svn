@@ -21,16 +21,16 @@
 
 namespace Base {
 
-ModuleWidgetBase::ModuleWidgetBase(QWidget *parent) : QWidget(parent)
+ModuleWidget::ModuleWidget(QWidget *parent) : QWidget(parent)
 {
 }
 
 
-ModuleWidgetBase::~ModuleWidgetBase()
+ModuleWidget::~ModuleWidget()
 {
 }
 
-void ModuleWidgetBase::handlePackage(Package *const pkg)
+void ModuleWidget::handlePackage(Package *const pkg)
 {
 	Q_UNUSED(pkg);
 }

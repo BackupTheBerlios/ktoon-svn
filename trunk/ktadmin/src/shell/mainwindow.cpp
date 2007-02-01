@@ -24,6 +24,7 @@
 #include <QMenu>
 #include <QStatusBar>
 #include <QApplication>
+#include <QToolBar>
 
 #include <dtoolview.h>
 #include <ddebug.h>
@@ -65,7 +66,6 @@ MainWindow::~MainWindow()
 	delete d;
 }
 
-
 void MainWindow::createModules()
 {
 	d->usersModule = new Users::ModuleWidget;
@@ -85,13 +85,22 @@ void MainWindow::createModules()
 
 void MainWindow::createMenuBar()
 {
+	// Create file menu
 	QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
 	
-	fileMenu->addAction(tr("Connect..."), this, SLOT(connectToServer()));
+	QAction *connectAction = fileMenu->addAction(tr("Connect..."), this, SLOT(connectToServer()));
 	
 	fileMenu->addSeparator();
 	fileMenu->addAction(tr("&Quit"), qApp, SLOT(closeAllWindows()));
 	
+	
+	
+	// Add actions to toolbar
+	QToolBar *mainToolBar = new QToolBar(this);
+	mainToolBar->addAction(connectAction);
+	
+	
+	addToolBar(Qt::TopToolBarArea, mainToolBar);
 }
 
 
@@ -112,6 +121,7 @@ void MainWindow::connectToServer()
 	
 	if ( cnndialog.exec() != QDialog::Accepted )
 	{
+		return;
 	}
 	
 	if ( d->manager->connectToServer(cnndialog.server(), cnndialog.port()) )

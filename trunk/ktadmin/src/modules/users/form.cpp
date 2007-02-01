@@ -38,7 +38,7 @@ struct Form::Private
 	QDialogButtonBox *buttons;
 };
 
-Form::Form(QWidget *parent) : Base::FormBase( QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Reset, "Users", parent ), d(new Private)
+Form::Form(QWidget *parent) : Base::Form( QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Reset, "Users", parent ), d(new Private)
 {
 	QWidget *container = new QWidget;
 	QVBoxLayout *layout = new QVBoxLayout(container);

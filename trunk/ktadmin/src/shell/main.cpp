@@ -18,13 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QApplication>
+#include <dapplication.h>
 
 #include "mainwindow.h"
 
 int main(int argc, char **argv)
 {
-	QApplication app(argc, argv);
+	DApplication app(argc, argv);
 	app.setApplicationName("ktadmin");
 	
 	MainWindow mw;

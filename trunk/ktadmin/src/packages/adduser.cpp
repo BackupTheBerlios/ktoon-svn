@@ -24,8 +24,8 @@ namespace Packages {
 
 AddUser::AddUser(const QString& login, const QString& password, const QString&name)
 {
-	QDomElement root = createElement ( "adduser" );
-	root.setAttribute ( "version",  "0" );
+	QDomElement root = createElement( "adduser" );
+	root.setAttribute( "version",  "0" );
 	m_info = createElement ("info");
 	root.appendChild(m_info);
 	m_info.setAttribute("login", login);

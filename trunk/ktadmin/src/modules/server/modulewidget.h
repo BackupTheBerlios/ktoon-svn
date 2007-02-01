@@ -27,7 +27,7 @@ namespace Server {
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class ModuleWidget : public Base::ModuleWidgetBase
+class ModuleWidget : public Base::ModuleWidget
 {
 	Q_OBJECT;
 	public:
