@@ -51,6 +51,8 @@ class KTConnectDialog::Private
 		QLineEdit *server;
 		QSpinBox *port;
 		
+		QCheckBox *storePassword;
+		
 };
 
 KTConnectDialog::KTConnectDialog(QWidget *parent) : QDialog(parent), d(new Private())
@@ -65,6 +67,9 @@ KTConnectDialog::KTConnectDialog(QWidget *parent) : QDialog(parent), d(new Priva
 	d->port->setMaximum(65000);
 	
 	QGridLayout *layout = DFormFactory::makeGrid(QStringList() << tr("Login") << tr("Password") << tr("Server") << tr("Port"), QWidgetList() << d->login << d->password << d->server << d->port);
+	
+	d->storePassword = new QCheckBox(tr("Store password"));
+	layout->addWidget(d->storePassword, 5, 1);
 	
 	QDialogButtonBox *box = new QDialogButtonBox;
 	
@@ -128,6 +133,8 @@ void KTConnectDialog::loadSettings()
 	d->port->setValue(DCONFIG->value("port", 6502).toInt());
 	d->login->setText(DCONFIG->value("login", "").toString());
 	d->password->setText(DCONFIG->value("password", "").toString());
+	
+	d->storePassword->setChecked(DCONFIG->value("storePassword").toInt());
 }
 
 void KTConnectDialog::saveSettings()
@@ -137,7 +144,17 @@ void KTConnectDialog::saveSettings()
 	DCONFIG->setValue("server", d->server->text() );
 	DCONFIG->setValue("port", d->port->value());
 	DCONFIG->setValue("login", d->login->text());
-	DCONFIG->setValue("password", d->password->text());
+	
+	if ( d->storePassword->isChecked() )
+	{
+		DCONFIG->setValue("password", d->password->text());
+	}
+	else
+	{
+		DCONFIG->setValue("password", "");
+	}
+	
+	DCONFIG->setValue("storePassword", d->storePassword->isChecked() ? 1 : 0);
 	
 	DCONFIG->sync();
 	
