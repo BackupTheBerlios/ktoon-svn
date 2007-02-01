@@ -24,19 +24,27 @@
 #include <dapplicationproperties.h>
 #include <ddebug.h>
 
-SProject::SProject(const QString & filename, QObject *parent) : KTProject(parent), m_filename(filename)
+struct SProject::Private
 {
-	m_saver = new QTimer(this);
-	m_saver->setInterval( 30000 );
-	m_saver->start();
-	QObject::connect(m_saver, SIGNAL(timeout ()), this, SLOT(save()));
+	QTimer *saver;
+	QString filename;
+	QMultiHash<UserType, QString> users;
+};
+
+SProject::SProject(const QString & filename, QObject *parent) : KTProject(parent), d( new Private() )
+{
+	d->filename = filename;
+	d->saver = new QTimer(this);
+	d->saver->setInterval( 30000 );
+	d->saver->start();
+	QObject::connect(d->saver, SIGNAL(timeout ()), this, SLOT(save()));
 	startTimer(300000);
 }
 
 void SProject::resetTimer()
 {
-	m_saver->stop();
-	m_saver->start();
+	d->saver->stop();
+	d->saver->start();
 }
 
 SProject::~SProject()
@@ -47,8 +55,8 @@ void SProject::save()
 {
 	D_FUNCINFOX("server");
 	KTSaveProject *saver = new KTSaveProject;
-	SHOW_VAR(m_filename);
-	if(saver->save(m_filename, this))
+	SHOW_VAR(d->filename);
+	if(saver->save(d->filename, this))
 	{
 		emit requestSendErrorMessage( QObject::tr( "project saved"), Packages::Error::Info );
 	}
@@ -78,15 +86,15 @@ QDomElement SProject::toXml(QDomDocument &doc) const
 		fileName += ".ktn";
 	}
 	
-	file.setAttribute("name", m_filename);
+	file.setAttribute("name", d->filename);
 	
 	project.appendChild(file);
 	QDomElement usersE = doc.createElement("users");
 	project.appendChild(usersE);
 	
-	foreach(UserType key, m_users.uniqueKeys())
+	foreach(UserType key, d->users.uniqueKeys())
 	{
-		foreach(QString login, m_users.values(key))
+		foreach(QString login, d->users.values(key))
 		{
 			QDomElement userE = doc.createElement("user");
 			userE.setAttribute("type", key);
@@ -99,18 +107,18 @@ QDomElement SProject::toXml(QDomDocument &doc) const
 
 void SProject::addUser( const QString& login, UserType type )
 {
-	m_users.insert(type, login);
+	d->users.insert(type, login);
 }
 
 QString SProject::fileName()
 {
-	return m_filename;
+	return d->filename;
 }
 
 bool SProject::isOwner(const Users::User* user)
 {
-	SHOW_VAR(m_users.count());
-	SHOW_VAR(m_users.values(Owner));
-	return m_users.values(Owner).contains(user->login());
+	SHOW_VAR(d->users.count());
+	SHOW_VAR(d->users.values(Owner));
+	return d->users.values(Owner).contains(user->login());
 }
 

@@ -49,10 +49,9 @@ class SProject : public KTProject
 		
 		
 	private:
-		QTimer *m_saver;
-		QString m_filename;
-		QMultiHash<UserType, QString> m_users;
-		
+		struct Private;
+		Private *const d;
+	
 	public slots:
 		void save();
 		

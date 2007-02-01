@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,56 +17,55 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef PROJECTSDATABASE_H
-#define PROJECTSDATABASE_H
+ 
+#include "importprojectparser.h"
 
-#include <QString>
+namespace Parsers {
 
-#include "sproject.h"
-
-namespace Projects {
-
-/**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
-*/
-
-
-
-class Database
+struct ImportProjectParser::Private
 {
-
-	public:
-		
-		Database(const QString &dbfile = 0);
-		~Database();
-		
-		void addProject(const SProject * project);
-		void updateProject( const SProject * project);
-		void removeProject(  const SProject * project);
-		
-		void setDBFile( const QString& dbfile);
-		
-		QString nextFileName();
-		
-		struct ProjectInfo
-		{
-			QString name;
-			QString author;
-			QString description;
-		};
-		QList<Database::ProjectInfo> projectsInfoOfUser(const QString& nameProject);
-		
-		bool exists( const QString &projectName );
-		
-		SProject *loadProject(const QString &projectName );
-		
-		
-	private:
-		QDomDocument loadDataBase();
-		QString m_dbfile;
-		QString m_lastFileName;
+	QByteArray data;
 };
 
+
+ImportProjectParser::ImportProjectParser()
+	: KTXmlParserBase(), d(new Private())
+{
 }
 
-#endif
+
+ImportProjectParser::~ImportProjectParser()
+{
+}
+
+
+bool ImportProjectParser::startTag(const QString &tag, const QXmlAttributes &atts)
+{
+	if(root() == "importproject")
+	{
+		if(tag == "data")
+		{
+			setReadText(true);
+		}
+	}
+	return true;
+}
+
+bool ImportProjectParser::endTag(const QString &tag)
+{
+	return true;
+}
+
+void ImportProjectParser::text(const QString &text)
+{
+	d->data = QByteArray::fromBase64(text.toLocal8Bit());;
+}
+
+
+QByteArray ImportProjectParser::data() const
+{
+	return d->data;
+	
+}
+
+}

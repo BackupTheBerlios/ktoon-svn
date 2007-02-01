@@ -21,16 +21,15 @@
 #ifndef HANDLERPACKGES_H
 #define HANDLERPACKGES_H
 
-/**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
-*/
 
 #include <QString>
 #include "packagehandlerbase.h"
 #include "connection.h"
 
 class ProjectCollection;
-
+/**
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ */
 class PackageHandler : public Server::PackageHandlerBase
 {
 	public:

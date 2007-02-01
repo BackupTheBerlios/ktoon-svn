@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,54 +17,33 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef PROJECTSDATABASE_H
-#define PROJECTSDATABASE_H
 
-#include <QString>
 
-#include "sproject.h"
+#ifndef PARSERSIMPORTPROJECTPARSER_H
+#define PARSERSIMPORTPROJECTPARSER_H
 
-namespace Projects {
+#include <ktxmlparserbase.h>
+
+namespace Parsers {
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
-
-
-class Database
+class ImportProjectParser : public KTXmlParserBase
 {
-
 	public:
+		ImportProjectParser();
+		~ImportProjectParser();
 		
-		Database(const QString &dbfile = 0);
-		~Database();
+		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+		virtual bool endTag(const QString &tag);
+		virtual void text(const QString &text);
 		
-		void addProject(const SProject * project);
-		void updateProject( const SProject * project);
-		void removeProject(  const SProject * project);
-		
-		void setDBFile( const QString& dbfile);
-		
-		QString nextFileName();
-		
-		struct ProjectInfo
-		{
-			QString name;
-			QString author;
-			QString description;
-		};
-		QList<Database::ProjectInfo> projectsInfoOfUser(const QString& nameProject);
-		
-		bool exists( const QString &projectName );
-		
-		SProject *loadProject(const QString &projectName );
-		
-		
+		QByteArray data() const;
 	private:
-		QDomDocument loadDataBase();
-		QString m_dbfile;
-		QString m_lastFileName;
+		struct Private;
+		Private *const d;
 };
 
 }

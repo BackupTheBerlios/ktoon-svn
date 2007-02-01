@@ -38,6 +38,14 @@ Notas generales:
 	<project name="proyecto 1" />
 </openproject>
 
+<!-- Importar un proyecto -->
+<importproject>
+	<data>
+		<![CDATA[KTN encoded with Base64]]>
+	</data>
+</importproject>
+
+
 
 <!-- Mensaje de chat (Solo para los miembros del proyecto perteneciente a nick) -->
 <chat version="0">

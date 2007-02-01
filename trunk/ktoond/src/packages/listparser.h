@@ -20,11 +20,11 @@
 #ifndef PARSERSLISTPARSER_H
 #define PARSERSLISTPARSER_H
 
+#include <ktxmlparserbase.h>
+
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-
-#include <ktxmlparserbase.h>
 
 namespace Parsers {
 

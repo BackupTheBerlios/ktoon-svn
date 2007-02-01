@@ -152,13 +152,20 @@ void ProjectCollection::importProject(Server::Connection *cnn, const QByteArray&
 		QObject::connect(project, SIGNAL(requestSendErrorMessage(const QString&, Packages::Error::Level)), cnn, SLOT(sendErrorPackageToClient(const QString&, Packages::Error::Level)));
 		KTSaveProject *loader = new KTSaveProject;
 		bool ok  = loader->load(filename, project);
-		cnn->setData( Info::ProjectName , project->projectName());
-		d->projects.insert(project->projectName(), project);
-		d->db->addProject(project);
-		d->connections.insert(project->projectName(), QList<Server::Connection *>() << cnn);
-		
-		Packages::Project projectPackage(project->fileName());
-		cnn->sendToClient(projectPackage.toString());
+		if(ok)
+		{
+			cnn->setData( Info::ProjectName , project->projectName());
+			d->projects.insert(project->projectName(), project);
+			d->db->addProject(project);
+			d->connections.insert(project->projectName(), QList<Server::Connection *>() << cnn);
+			
+			Packages::Project projectPackage(project->fileName());
+			cnn->sendToClient(projectPackage.toString());
+		}
+		else
+		{
+			//TODO: enviar error
+		}
 	}
 }
 

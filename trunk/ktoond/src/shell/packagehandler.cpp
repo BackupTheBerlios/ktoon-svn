@@ -153,8 +153,6 @@ void PackageHandler::handleProjectRequest(Server::Connection *cnn, const QString
 	}
 	else
 	{
-		// TODO: enviar error
-		
 		cnn->sendErrorPackageToClient(QObject::tr("Cannot handle project request"), Packages::Error::Warning );
 	}
 }
