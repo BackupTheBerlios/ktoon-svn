@@ -116,3 +116,143 @@ Notas generales:
 </wall>
 
 
+
+======================== ADMIN ======================
+
+=== REQUESTS ===
+
+<adduser>
+	<login>the login</login>
+	<password>crypted passwd md5</password>
+	<name>the name</name>
+	<permissions>
+		<perm module="[module id]" read="[0|1]" write="[0|1]" />
+	</permissions>
+</adduser>
+
+
+<removeuser>
+	<login>the login</login>
+</removeuser>
+
+
+<!-- Todo es opcional, excepto el login -->
+<updateuser>
+	<login>the login</login>
+	<!-- opcional -->
+	<password>crypted passwd md5</password>
+	<name>the name</name>
+	<permissions>
+		<perm module="[module id]" read="[0|1]" write="[0|1]" />
+	</permissions>
+	<!-- /opcional -->
+</updateuser>
+
+
+<removeproject>
+	<project>name</project>
+</removeproject>
+
+
+<backup>
+	<project>project name 1</project>
+	<project>project name 2</project>
+	<project>project name 3</project>
+</backup>
+
+<restore>
+	<project>project name 1</project>
+	<project>project name 2</project>
+	<project>project name 3</project>
+</restore>
+
+<!-- Cualquiera, IP o LOGIN, o AMBOS -->
+<ban>
+	<ip>la ip</ip>
+	<login>login</login>
+</ban>
+
+<!-- Cualquiera IP o Login -->
+<removeban>
+	<ip>la ip</ip>
+	<login>login</login>
+</removeban>
+
+<!-- List bans -->
+<bans/>
+
+<clients />
+
+=== RESPONSES ===
+
+
+<adduser>
+	<login>the login</login>
+	<password>crypted passwd md5</password>
+	<name>the name</name>
+	<permissions>
+		<perm module="[module id]" read="[0|1]" write="[0|1]" />
+	</permissions>
+</adduser>
+
+
+<removeuser>
+	<login>the login</login>
+</removeuser>
+
+
+<!-- Todo es opcional, excepto el login -->
+<updateuser>
+	<login>the login</login>
+	<!-- opcional -->
+	<password>crypted passwd md5</password>
+	<name>the name</name>
+	<permissions>
+		<perm module="[module id]" read="[0|1]" write="[0|1]" />
+	</permissions>
+	<!-- /opcional -->
+</updateuser>
+
+<removeproject>
+	<project>name</project>
+</removeproject>
+
+
+<!-- Respuesta a bans -->
+<listbans>
+	<ip>
+		<entry>ip1</entry>
+		<entry>ip2</entry>
+		<entry>ip3</entry>
+		<entry>ip4</entry>
+	</ip>
+	<login>
+		<entry>login1</entry>
+		<entry>login2</entry>
+		<entry>login3</entry>
+		<entry>login4</entry>
+	</login>
+</listbans>
+
+
+<!-- Respuesta a clients -->
+<listclients>
+	<client>
+		<user>
+			<login>the login</login>
+			<name>the name</name>
+		</user>
+		<ip>la ip</ip>
+	</client>
+	<!-- Se repite -->
+</listclients>
+
+
+
+
+
+
+
+
+
+

@@ -22,7 +22,7 @@
 #define ABSTRACTHANDLERPACKAGES_H
 
 /**
-	@author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 
 #include <QDomDocument>

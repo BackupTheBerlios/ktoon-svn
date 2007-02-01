@@ -75,7 +75,7 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 				client->setUser(user);
 				
 				QString fortune = DFortuneGenerator::self()->generate();
-				fortune.replace("\n", "<br/>");
+				fortune.replace("\n", "</br>");
 				Packages::Ack ack(QObject::tr("<center><b>Message of the day:</b></center></br> ")+fortune, client->sign());
 				
 				foreach(Users::Right *right, user->rights())
