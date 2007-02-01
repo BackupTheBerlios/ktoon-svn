@@ -33,6 +33,7 @@
 #include "server/modulewidget.h"
 
 #include "manager.h"
+#include "connectdialog.h"
 
 struct MainWindow::Private
 {
@@ -85,6 +86,8 @@ void MainWindow::createMenuBar()
 {
 	QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
 	
+	fileMenu->addAction(tr("Connect..."), this, SLOT(connectToServer()));
+	
 	fileMenu->addSeparator();
 	fileMenu->addAction(tr("&Quit"), qApp, SLOT(closeAllWindows()));
 	
@@ -100,5 +103,20 @@ void MainWindow::setupModule(const QWidget *w)
 {
 	connect(w, SIGNAL(postWidget(QWidget *)), this, SLOT(addWidgetAsWindow(QWidget *)));
 // 	connect(d->manager, 
+}
+
+void MainWindow::connectToServer()
+{
+	ConnectDialog cnndialog;
+	
+	if ( cnndialog.exec() != QDialog::Accepted )
+	{
+	}
+	
+	if ( d->manager->connectToServer(cnndialog.server(), cnndialog.port()) )
+	{
+		d->manager->authenticate(cnndialog.login(), cnndialog.password());
+	}
+	
 }
 

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,21 +17,31 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef AckParser_H
+#define AckParser_H
 
-#include <QApplication>
+#include <ktxmlparserbase.h>
 
-#include "mainwindow.h"
-
-int main(int argc, char **argv)
+/**
+ * @author David Cuadrado \<krawek@gmail.com\>
+*/
+class AckParser : public KTXmlParserBase
 {
-	QApplication app(argc, argv);
-	app.setApplicationName("ktadmin");
-	
-	MainWindow mw;
-	mw.show();
-	
-	return app.exec();
-}
+	public:
+		AckParser();
+		~AckParser();
+		
+		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+		virtual bool endTag(const QString &tag);
+		
+		virtual void text(const QString &msg);
+		
+		QString sign() const;
+		QString motd() const;
+		
+	private:
+		struct Private;
+		Private *const d;
+};
 
-
-
+#endif

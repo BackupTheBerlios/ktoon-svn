@@ -24,7 +24,11 @@
 #include "modulewidgetbase.h"
 #include "package.h"
 
-#include "ddebug.h"
+#include <ddebug.h>
+#include <dosd.h>
+
+#include "packages/connect.h"
+#include "packages/ackparser.h"
 
 #include <QList>
 
@@ -32,13 +36,18 @@ struct Manager::Private
 {
 	Socket *socket;
 	QList<Base::ModuleWidgetBase *> observers;
+	
+	bool enabled;
+	
+	QString sign;
 };
 
 Manager::Manager(QObject *parent) : QObject(parent), d(new Private)
 {
 	d->socket = new Socket(this);
-	//TODO connect to host
-
+	
+	connect(d->socket, SIGNAL(connected()), this, SLOT(enable()));
+	connect(d->socket, SIGNAL(disconnected()), this, SLOT(disable()));
 }
 
 
@@ -47,24 +56,55 @@ Manager::~Manager()
 	delete d;
 }
 
+void Manager::enable()
+{
+	d->enabled = true;
+}
+
+void Manager::disable()
+{
+	d->enabled = false;
+}
 
 void Manager::sendPackage(const QString &pkg)
 {
-	d->socket->send(pkg);
+	if ( d->enabled )
+		d->socket->send(pkg);
 }
 
 void Manager::handlePackage(const QString &root, const QString &xml)
 {
-	Base::Package *package = new Base::Package(root, xml);
-	
-	foreach(Base::ModuleWidgetBase *observer, d->observers)
+	if ( !tryToHandle(root, xml) )
 	{
-		observer->handlePackage(package);
-		if( package->isAccepted() )
-			break;
+		Base::Package *package = new Base::Package(root, xml);
+		
+		foreach(Base::ModuleWidgetBase *observer, d->observers)
+		{
+			observer->handlePackage(package);
+			if( package->isAccepted() )
+				break;
+		}
+		
+		delete package;
+	}
+}
+
+bool Manager::tryToHandle(const QString &root, const QString &xml)
+{
+	if( root == "ack" )
+	{
+		AckParser parser;
+		if ( parser.parse(xml) )
+		{
+			DOsd::self()->display(parser.motd());
+			d->sign = parser.sign();
+			
+			return true;
+		}
 	}
 	
-	delete package;
+	
+	return false;
 }
 
 void Manager::addObserver(Base::ModuleWidgetBase *obs)
@@ -76,3 +116,20 @@ void Manager::removeObserver(Base::ModuleWidgetBase *obs)
 {
 	d->observers.removeAll(obs);
 }
+
+bool Manager::connectToServer(const QString &server, int port)
+{
+	d->socket->connectToHost(server, port);
+	
+	return d->socket->waitForConnected(1000);
+}
+
+
+void Manager::authenticate(const QString &login, const QString &password)
+{
+	Packages::Connect cnn(login, password);
+	d->socket->send(cnn);
+}
+
+
+

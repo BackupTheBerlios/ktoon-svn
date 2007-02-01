@@ -41,8 +41,17 @@ class Manager : QObject
 		void addObserver(Base::ModuleWidgetBase *obs);
 		void removeObserver(Base::ModuleWidgetBase *obs);
 		
+		bool connectToServer(const QString &server, int port);
+		void authenticate(const QString &login, const QString &password);
+		
+		
 	public slots:
+		void enable();
+		void disable();
 		void sendPackage(const QString &pkg);
+		
+	protected:
+		bool tryToHandle(const QString &root, const QString &xml);
 		
 	private:
 		struct Private;

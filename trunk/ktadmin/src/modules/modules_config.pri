@@ -8,3 +8,6 @@ LIB_DIR = ../../lib
 	error("err");
 }
 
+PACKAGES_DIR = ../../packages
+include($$PACKAGES_DIR/packages.pri)
+

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,20 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QApplication>
+#include "connect.h"
 
-#include "mainwindow.h"
+#include <dmd5hash.h>
+/*
+<connect version="0" >
+        <login>the_login</login>
+        <password>the_hashed_password_md5</password>
+</connect>
+*/
 
-int main(int argc, char **argv)
+namespace Packages {
+
+Connect::Connect(const QString & login, const QString& passwd)
+ : QDomDocument()
 {
-	QApplication app(argc, argv);
-	app.setApplicationName("ktadmin");
+	QDomElement root = createElement("connect");
+	root.setAttribute("version", "0");
+	appendChild(root);
 	
-	MainWindow mw;
-	mw.show();
+	root.appendChild( createElement("login") ).appendChild(createTextNode(login));
+	root.appendChild( createElement("password")).appendChild(createTextNode(DMD5Hash::hash( passwd)));
 	
-	return app.exec();
 }
 
 
+Connect::~Connect()
+{
+}
+
+
+}
 

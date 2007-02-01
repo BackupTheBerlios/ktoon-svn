@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,20 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QApplication>
+#ifndef CONNECTDIALOG_H
+#define CONNECTDIALOG_H
 
-#include "mainwindow.h"
+#include <QDialog>
 
-int main(int argc, char **argv)
+/**
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+class ConnectDialog : public QDialog
 {
-	QApplication app(argc, argv);
-	app.setApplicationName("ktadmin");
-	
-	MainWindow mw;
-	mw.show();
-	
-	return app.exec();
-}
+	Q_OBJECT
+	public:
+		ConnectDialog(QWidget *parent = 0);
+		~ConnectDialog();
+		
+		void setServer(const QString &server);
+		void setPort(int port);
+		
+		QString login() const;
+		QString password() const;
+		QString server() const;
+		int port() const;
+		
+	protected:
+		void loadSettings();
+		void saveSettings();
+		
+	private:
+		class Private;
+		Private *const d;
 
+};
 
-
+#endif

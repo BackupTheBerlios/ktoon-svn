@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado   *
- *   krawek@gmail.com   *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosx@toonka.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,20 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QApplication>
+#ifndef CONNECTPACKAGE_H
+#define CONNECTPACKAGE_H
 
-#include "mainwindow.h"
+#include <QDomDocument>
 
-int main(int argc, char **argv)
+namespace Packages {
+
+/**
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
+*/
+class Connect : public QDomDocument
 {
-	QApplication app(argc, argv);
-	app.setApplicationName("ktadmin");
-	
-	MainWindow mw;
-	mw.show();
-	
-	return app.exec();
+	public:
+		Connect(const QString & login, const QString& passwd );
+		~Connect();
+};
+
 }
 
-
-
+#endif

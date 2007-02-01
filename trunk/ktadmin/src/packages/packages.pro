@@ -3,8 +3,12 @@
 # Subdir relative project main directory: ./src/packages
 # Target is a library:  
 
-HEADERS += adduser.h 
-SOURCES += adduser.cpp 
+HEADERS += adduser.h  \
+connect.h \
+ackparser.h
+SOURCES += adduser.cpp  \
+connect.cpp \
+ackparser.cpp
 CONFIG += release \
 warn_on \
 staticlib

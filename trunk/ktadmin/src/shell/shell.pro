@@ -9,10 +9,12 @@ network
 SOURCES += main.cpp \
 mainwindow.cpp \
 manager.cpp \
-socket.cpp
+socket.cpp \
+connectdialog.cpp
 HEADERS += mainwindow.h \
 manager.h \
-socket.h
+socket.h \
+connectdialog.h
 TARGET = ktadmin
 
 DESTDIR = ../../bin
@@ -25,3 +27,10 @@ include($$MODULES_DIR/modules.pri)
 
 LIB_DIR = ../lib
 include($$LIB_DIR/lib.pri)
+
+PACKAGES_DIR = ../packages
+include($$PACKAGES_DIR/packages.pri)
+
+
+
+
