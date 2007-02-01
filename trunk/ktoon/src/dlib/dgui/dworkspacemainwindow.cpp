@@ -38,6 +38,7 @@ void DWorkspaceMainWindow::addWidget(QWidget *widget, int perspective)
 	addToPerspective( widget, perspective );
 	
 	m_workspace->addWindow(widget);
+	widget->show();
 }
 
 void DWorkspaceMainWindow::removeWidget(QWidget *widget)
