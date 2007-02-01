@@ -17,86 +17,70 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#include "form.h"
-#include <dformfactory.h>
-#include <ddebug.h>
+#include "formbase.h"
 
-#include <QLineEdit>
 #include <QVBoxLayout>
-#include <QDialogButtonBox>
-#include <QAbstractButton>
-#include "packages/adduser.h"
+#include <QLabel>
 
-namespace Users {
+namespace Base {
 
-struct Form::Private
+struct FormBase::Private
 {
-	QLineEdit *name;
-	QLineEdit *login;
-	QLineEdit *password;
+	QLabel *title;
+	QWidget *center;
 	QDialogButtonBox *buttons;
+	QVBoxLayout *layout;
 };
 
-Form::Form(QWidget *parent) : Base::FormBase( QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Reset, "Users", parent ), d(new Private)
+FormBase::FormBase(QDialogButtonBox::StandardButtons buttons, const QString &title, QWidget *parent) : QFrame(parent), d(new Private)
 {
-	QWidget *container = new QWidget;
-	QVBoxLayout *layout = new QVBoxLayout(container);
-	d->login = new QLineEdit;
-	layout->addLayout(DFormFactory::makeLine(tr("login"), d->login ));
+	d->layout = new QVBoxLayout(this);
+	d->title = new QLabel(title);
+	d->layout->addWidget(d->title);
+	d->center = new QWidget();
+	d->layout->addWidget(d->center);
+	d->buttons = new QDialogButtonBox(buttons);
+	d->layout->addWidget(d->buttons);
 	
-	d->password = new QLineEdit;
-	d->password->setEchoMode(QLineEdit::Password);
-	layout->addLayout(DFormFactory::makeLine(tr("password"),  d->password ));
+	connect(d->buttons, SIGNAL(clicked(QAbstractButton *)), this, SLOT(handleCliked( QAbstractButton* )));
 	
-	d->name = new QLineEdit;
-	layout->addLayout(DFormFactory::makeLine(tr("name"), d->name ));
-	
-	d->buttons = new QDialogButtonBox();
-	layout->addWidget(d->buttons);
-	
-	setCentralWidget(container);
-
+	setAttribute(Qt::WA_DeleteOnClose);
 }
 
-void Form::applyAction( QDialogButtonBox::ButtonRole role )
+
+void FormBase::handleCliked(QAbstractButton * button )
 {
-	switch(role)
+	applyAction(d->buttons->buttonRole(button));
+}
+
+
+FormBase::~FormBase()
+{
+	
+}
+
+
+void FormBase::setCentralWidget(QWidget *widget)
+{
+	d->center->hide();
+	d->layout->removeWidget ( d->center );
+	d->layout->insertWidget(1, widget);
+	if(d->center)
 	{
-		case QDialogButtonBox::AcceptRole:
-		{
-			//TODO:validar con DFormValidator
-			Packages::AddUser adduser(d->login->text(), d->password->text(),d->name->text());
-			emit sendPackage(adduser.toString());
-			clear();
-		}
-		break;
-		case QDialogButtonBox::RejectRole:
-		{
-			close();
-		}
-		break;
-		case QDialogButtonBox::ResetRole:
-		{
-			clear();
-		}
-		break;
-		default:
-		{
-		}
-		break;
+		delete d->center;
 	}
+	d->center = widget;	
+	
 }
 
-Form::~Form()
+void FormBase::setButtons(QDialogButtonBox::StandardButtons buttons)
 {
+	d->buttons->setStandardButtons (  buttons );
 }
 
-void Form::clear()
+void FormBase::setTitle( const QString &title)
 {
-	d->password->clear();
-	d->name->clear();
-	d->login->clear();
+	d->title->setText(title);
 }
 
 }

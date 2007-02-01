@@ -5,14 +5,14 @@
 
 HEADERS += modulewidgetbase.h \
            package.h \
-           modulebuttonbar.h 
+           modulebuttonbar.h \
+           formbase.h 
 SOURCES += modulewidgetbase.cpp \
            package.cpp \
-           modulebuttonbar.cpp 
+           modulebuttonbar.cpp \
+           formbase.cpp 
 TEMPLATE = lib
 CONFIG += staticlib \
 warn_on
 TARGET = ktadmin
-
 include(../../ktadmin_config.pri)
-

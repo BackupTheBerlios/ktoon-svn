@@ -40,7 +40,6 @@ class AddUser : public QDomDocument
 		
 	private:
 		QDomElement m_info;
-
 };
 
 }

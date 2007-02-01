@@ -69,7 +69,10 @@ void Manager::disable()
 void Manager::sendPackage(const QString &pkg)
 {
 	if ( d->enabled )
+	{
+		dDebug() << "sending " << pkg;
 		d->socket->send(pkg);
+	}
 }
 
 void Manager::handlePackage(const QString &root, const QString &xml)

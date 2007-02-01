@@ -29,7 +29,7 @@ namespace Base {
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Manager : QObject
+class Manager : public QObject
 {
 	Q_OBJECT;
 	public:

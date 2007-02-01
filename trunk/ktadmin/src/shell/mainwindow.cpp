@@ -56,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
 	createMenuBar();
 	
 	statusBar()->show();
+	setCurrentPerspective(DefaultPerspective);
 }
 
 
@@ -102,7 +103,7 @@ void MainWindow::addWidgetAsWindow(QWidget *w)
 void MainWindow::setupModule(const QWidget *w)
 {
 	connect(w, SIGNAL(postWidget(QWidget *)), this, SLOT(addWidgetAsWindow(QWidget *)));
-// 	connect(d->manager, 
+	connect(w, SIGNAL(sendPackage(const QString &)),  d->manager, SLOT(sendPackage(const QString &)));
 }
 
 void MainWindow::connectToServer()

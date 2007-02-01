@@ -17,35 +17,38 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef USERSFORM_H
-#define USERSFORM_H
+#ifndef BASEFORMBASE_H
+#define BASEFORMBASE_H
+
+#include <QFrame>
+#include <QDialogButtonBox>
 
 
-#include "formbase.h"
+namespace Base {
 
-namespace Users {
 
 /**
  * @author Jorge Cuadrado <kuadrosxx@gmail.com>
 */
-class Form : public Base::FormBase
+class FormBase : public QFrame
 {
 	Q_OBJECT
 	public:
-		Form(QWidget *parent = 0);
-		~Form();
-		void applyAction( QDialogButtonBox::ButtonRole );
-		void clear();
+		FormBase( QDialogButtonBox::StandardButtons buttons, const QString &title,  QWidget *parent=0);
+		virtual ~FormBase();
+		virtual void applyAction( QDialogButtonBox::ButtonRole ) = 0;
+		
+		void setCentralWidget(QWidget *widget);
+		
+		void setButtons(QDialogButtonBox::StandardButtons buttons);
+		void setTitle( const QString &title);
+		
+	private slots:
+		void handleCliked(QAbstractButton * button );
 		
 	private:
 		struct Private;
-		Private *const d;
-		
-	signals:
-		void sendPackage( const QString &  );
-		
-		
+		Private  * const d;
 };
 
 }

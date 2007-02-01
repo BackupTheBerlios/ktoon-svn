@@ -82,14 +82,13 @@ ModuleWidget::~ModuleWidget()
 
 void ModuleWidget::requestAction( int action)
 {
-// 	SHOW_VAR(action);
 	switch(action)
 	{
 		case Base::ModuleButtonBar::Add:
 		{
 			Form *form = new Form();
-			form->show();
 			emit postWidget(form);
+			connect(form, SIGNAL(sendPackage(const QString &)), this, SIGNAL(sendPackage(const QString &)));
 		}
 		break;
 		case Base::ModuleButtonBar::Del:
