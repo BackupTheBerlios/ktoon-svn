@@ -20,18 +20,34 @@
  
 #include "adduser.h"
 
+#include <dmd5hash.h>
+
 namespace Packages {
 
-AddUser::AddUser(const QString& login, const QString& password, const QString&name)
+struct AddUser::Private
+{
+	QDomText login;
+	QDomText password;
+	QDomText name;
+	QDomElement premissions;
+};
+
+AddUser::AddUser(const QString& login, const QString& password, const QString&name): QDomDocument(), d(new Private)
 {
 	QDomElement root = createElement( "adduser" );
 	root.setAttribute( "version",  "0" );
-	m_info = createElement ("info");
-	root.appendChild(m_info);
-	m_info.setAttribute("login", login);
-	m_info.setAttribute("password", password);
-	m_info.setAttribute("name", name);
 	appendChild(root);
+	d->login = createTextNode(login);
+	root.appendChild(createElement("login")).appendChild(d->login);
+	
+	d->password = createTextNode(DMD5Hash::hash(password));
+	root.appendChild(createElement("password")).appendChild(d->password);
+	
+	d->name = createTextNode(name);
+	root.appendChild(createElement("name")).appendChild(d->name);
+	
+	d->premissions = createElement("permissions");
+	root.appendChild(d->premissions);
 }
 
 
@@ -41,17 +57,27 @@ AddUser::~AddUser()
 
 void AddUser::setLogin(const QString& login)
 {
-	m_info.setAttribute("login", login);
+	d->login.setData(login);
 }
 
 void AddUser::setPassword(const QString& password)
 {
-	m_info.setAttribute("password", password);
+	d->password.setData(password);
 }
 
 void AddUser::setName(const QString& name)
 {
-	m_info.setAttribute("name", name);
+	d->name.setData(name);
 }
 
+void  AddUser::addPermission(const QString &module, bool read, bool write)
+{
+	QDomElement perm = createElement("perm");
+	perm.setAttribute("module", module);
+	perm.setAttribute("read", read);
+	perm.setAttribute("write", write);
+	d->premissions.appendChild(perm);
+	
+}
+	
 }

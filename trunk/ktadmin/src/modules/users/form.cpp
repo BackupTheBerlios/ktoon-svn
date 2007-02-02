@@ -26,7 +26,12 @@
 #include <QVBoxLayout>
 #include <QDialogButtonBox>
 #include <QAbstractButton>
+
 #include "packages/adduser.h"
+#include "packages/updateuser.h"
+
+#include "permissionschooser.h"
+#include "permission.h"
 
 namespace Users {
 
@@ -36,9 +41,30 @@ struct Form::Private
 	QLineEdit *login;
 	QLineEdit *password;
 	QDialogButtonBox *buttons;
+	PermissionsChooser *permissions;
+	bool update;
 };
 
-Form::Form(QWidget *parent) : Base::Form( QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Reset, "Users", parent ), d(new Private)
+Form::Form(QWidget *parent) : Base::Form( QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Reset, "<h2>Add users</h2>", parent ), d(new Private)
+{
+	d->update = false;
+	init();
+}
+
+Form::Form(const QString &login, const QString name, const QList<Permission> & permissions,  QWidget *parent) : Base::Form( QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Reset, "<h2>Update ser</h2>", parent ), d(new Private)
+{
+	d->update = true;
+	init();
+	d->login->setDisabled(true);
+	d->login->setText(login);
+	d->name->setText(name);
+	
+	d->permissions->setPermissions(permissions);
+	
+	
+}
+
+void Form::init()
 {
 	QWidget *container = new QWidget;
 	QVBoxLayout *layout = new QVBoxLayout(container);
@@ -52,11 +78,10 @@ Form::Form(QWidget *parent) : Base::Form( QDialogButtonBox::Ok | QDialogButtonBo
 	d->name = new QLineEdit;
 	layout->addLayout(DFormFactory::makeLine(tr("name"), d->name ));
 	
-	d->buttons = new QDialogButtonBox();
-	layout->addWidget(d->buttons);
+	d->permissions = new PermissionsChooser(QStringList() << "project" << "admin");
+	layout->addWidget(d->permissions);
 	
 	setCentralWidget(container);
-
 }
 
 void Form::applyAction( QDialogButtonBox::ButtonRole role )
@@ -66,9 +91,34 @@ void Form::applyAction( QDialogButtonBox::ButtonRole role )
 		case QDialogButtonBox::AcceptRole:
 		{
 			//TODO:validar con DFormValidator
-			Packages::AddUser adduser(d->login->text(), d->password->text(),d->name->text());
-			emit sendPackage(adduser.toString());
-			clear();
+			if(d->update)
+			{
+				Packages::UpdateUser updateuser(d->login->text());
+				
+				if(!d->password->text().isNull())
+				{
+					updateuser.setPassword(d->password->text());
+				}
+				
+				updateuser.setName(d->name->text());
+				
+				foreach(Users::Permission perm, d->permissions->permissions())
+				{
+					updateuser.addPermission( perm.module(), perm.read(), perm.write());
+				}
+				emit sendPackage(updateuser.toString());
+			}
+			else
+			{
+				Packages::AddUser adduser(d->login->text(), d->password->text(),d->name->text());
+				
+				foreach(Users::Permission perm, d->permissions->permissions())
+				{
+					adduser.addPermission( perm.module(), perm.read(), perm.write());
+				}
+				emit sendPackage(adduser.toString());
+				clear();
+			}
 		}
 		break;
 		case QDialogButtonBox::RejectRole:

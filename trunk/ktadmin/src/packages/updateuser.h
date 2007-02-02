@@ -18,34 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef PACKAGESADDUSER_H
-#define PACKAGESADDUSER_H
+#ifndef PACKAGESUPDATEUSER_H
+#define PACKAGESUPDATEUSER_H
 
 #include <QDomDocument>
 
-namespace Packages {
+namespace Packages{
 
 /**
  * @author Jorge Cuadrado <kuadrosxx@gmail.com>
-*/
-class AddUser : public QDomDocument
+ */
+class UpdateUser : public QDomDocument
 {
 	public:
-		AddUser(const QString& login, const QString& password, const QString& name );
-		~AddUser();
-		
+		UpdateUser(const QString& login);
+		~UpdateUser();
 		void setLogin(const QString& login);
 		void setPassword(const QString& password);
 		void setName(const QString& name);
+		
 		void addPermission( const QString &module, bool read, bool write );
 		
 	private:
 		struct Private;
 		Private  * const d;
-		
-		
+
 };
 
 }
-
 #endif

@@ -18,34 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef PACKAGESADDUSER_H
-#define PACKAGESADDUSER_H
-
-#include <QDomDocument>
+#include "queryuser.h"
 
 namespace Packages {
 
-/**
- * @author Jorge Cuadrado <kuadrosxx@gmail.com>
-*/
-class AddUser : public QDomDocument
+struct QueryUser::Private
 {
-	public:
-		AddUser(const QString& login, const QString& password, const QString& name );
-		~AddUser();
-		
-		void setLogin(const QString& login);
-		void setPassword(const QString& password);
-		void setName(const QString& name);
-		void addPermission( const QString &module, bool read, bool write );
-		
-	private:
-		struct Private;
-		Private  * const d;
-		
-		
+	QDomText login;
 };
 
+QueryUser::QueryUser(const QString& login) : QDomDocument(), d(new Private())
+{
+	QDomElement root = createElement( "queryuser" );
+	root.setAttribute( "version",  "0" );
+	appendChild(root);
+	d->login = createTextNode(login);
+	root.appendChild(createElement("login")).appendChild(d->login);
 }
 
-#endif
+
+QueryUser::~QueryUser()
+{
+}
+
+void QueryUser::setLogin(const QString& login)
+{
+	d->login.setData(login);
+}
+
+}

@@ -17,35 +17,69 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef PACKAGESADDUSER_H
-#define PACKAGESADDUSER_H
 
-#include <QDomDocument>
+#include "updateuser.h"
+#include <dmd5hash.h>
+namespace Packages{
 
-namespace Packages {
-
-/**
- * @author Jorge Cuadrado <kuadrosxx@gmail.com>
-*/
-class AddUser : public QDomDocument
+struct UpdateUser::Private
 {
-	public:
-		AddUser(const QString& login, const QString& password, const QString& name );
-		~AddUser();
-		
-		void setLogin(const QString& login);
-		void setPassword(const QString& password);
-		void setName(const QString& name);
-		void addPermission( const QString &module, bool read, bool write );
-		
-	private:
-		struct Private;
-		Private  * const d;
-		
-		
+	QDomText login;
+	QDomElement password;
+	QDomElement name;
+	QDomElement premissions;
 };
+
+UpdateUser::UpdateUser(const QString& login): QDomDocument(), d(new Private)
+{
+	QDomElement root = createElement( "updateuser" );
+	root.setAttribute( "version",  "0" );
+	appendChild(root);
+	d->login = createTextNode(login);
+	root.appendChild(createElement("login")).appendChild(d->login);
+}
+
+
+UpdateUser::~UpdateUser()
+{
+}
+
+void UpdateUser::setLogin(const QString& login)
+{
+	d->login.setData(login);
+}
+
+void UpdateUser::setPassword(const QString& password)
+{
+	firstChild().removeChild(d->password);
+	d->password = createElement("password");
+	d->password.appendChild(createTextNode(DMD5Hash::hash(password)));
+	firstChild().appendChild(d->password);
+	
+}
+
+void UpdateUser::setName(const QString& name)
+{
+	firstChild().removeChild(d->name);
+	d->name = createElement("name");
+	d->name.appendChild(createTextNode(name));
+	firstChild().appendChild(d->name);
+}
+
+void  UpdateUser::addPermission(const QString &module, bool read, bool write)
+{
+	if(d->premissions.isNull())
+	{
+		d->premissions = createElement("permissions");
+		firstChild().appendChild(d->premissions);
+	}
+	
+	QDomElement perm = createElement("perm");
+	perm.setAttribute("module", module);
+	perm.setAttribute("read", read);
+	perm.setAttribute("write", write);
+	d->premissions.appendChild(perm);
+}
 
 }
 
-#endif

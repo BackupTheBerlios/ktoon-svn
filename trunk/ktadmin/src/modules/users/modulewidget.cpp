@@ -34,6 +34,10 @@
 
 #include <QMainWindow>
 
+#include <packages/removeuser.h>
+#include <packages/queryuser.h>
+#include <usersinfoparser.h>
+#include <userparser.h>
 
 namespace Users {
 
@@ -93,10 +97,22 @@ void ModuleWidget::requestAction( int action)
 		break;
 		case Base::ModuleButtonBar::Del:
 		{
+			QTreeWidgetItem *item = d->tree->currentItem ();
+			if(item)
+			{
+				Packages::RemoveUser removeuser(item->text(0));
+				emit sendPackage(removeuser.toString());
+			}
 		}
 		break;
 		case Base::ModuleButtonBar::Modify:
 		{
+			QTreeWidgetItem *item = d->tree->currentItem ();
+			if(item)
+			{
+				Packages::QueryUser query(item->text(0));
+				emit sendPackage(query.toString());
+			}
 		}
 		break;
 	}
@@ -104,8 +120,139 @@ void ModuleWidget::requestAction( int action)
 
 void ModuleWidget::handlePackage(Base::Package *const pkg)
 {
+	if(pkg->root() == "adduser")
+	{
+		QDomDocument doc;
+		doc.setContent(pkg->xml());
+		
+		QString login, name;
+		
+// 		
+	
+		QDomElement loginE = doc.firstChild().firstChildElement("login");
+		if(!loginE.isNull())
+		{
+			QDomNode loginText = loginE.firstChild();
+			if(loginText.isText())
+			{
+				
+				login =  loginText.toText().data();
+			}
+		}
+		
+		QDomElement nameE = doc.firstChild().firstChildElement("name");
+		
+		if(!nameE.isNull())
+		{
+			QDomNode nameText = nameE.firstChild();
+			if(nameText.isText())
+			{
+				name =  nameText.toText().data();
+			}
+		}
+		
+		if(!(name.isNull() || login.isNull()))
+		{
+			QTreeWidgetItem *item = new QTreeWidgetItem(d->tree);
+			item->setText(0, login);
+			item->setText(1, name);
+		}
+		
+	}
+	else if(pkg->root() == "removeuser")
+	{
+		QDomDocument doc;
+		doc.setContent(pkg->xml());
+		QDomElement login = doc.firstChild().firstChildElement("login");
+		if(!login.isNull())
+		{
+			QDomNode loginText = login.firstChild();
+			if(loginText.isText())
+			{
+				removeUser(loginText.toText().data()); 
+			}
+		}
+	}
+	else if(pkg->root() == "updateuser")
+	{
+		QDomDocument doc;
+		doc.setContent(pkg->xml());
+	
+		QString login, name;
+		
+		QDomElement loginE = doc.firstChild().firstChildElement("login");
+		if(!loginE.isNull())
+		{
+			QDomNode loginText = loginE.firstChild();
+			if(loginText.isText())
+			{
+			
+				login =  loginText.toText().data();
+			}
+		}
+	
+		QDomElement nameE = doc.firstChild().firstChildElement("name");
+	
+		if(!nameE.isNull())
+		{
+			QDomNode nameText = nameE.firstChild();
+			if(nameText.isText())
+			{
+				name =  nameText.toText().data();
+			}
+		}
+	
+		if(!(name.isNull() || login.isNull()))
+		{
+			removeUser(login);
+			
+			QTreeWidgetItem *item = new QTreeWidgetItem(d->tree);
+			item->setText(0, login);
+			item->setText(1, name);
+		}
+	}
+	else if(pkg->root() == "usersinfo")
+	{
+		Parsers::UsersInfoParser parser;
+		if(parser.parse(pkg->xml()))
+		{
+			foreach(QStringList values, parser.info())
+			{
+				int count = 0;
+				QTreeWidgetItem *item = new QTreeWidgetItem(d->tree);
+				foreach(QString value, values)
+				{
+					item->setText(count, value);
+					count++;
+				}
+			}
+		}
+	}
+	else if(pkg->root() == "user")
+	{
+		Parsers::UserParser parser;
+		if(parser.parse(pkg->xml()))
+		{
+			Form *form = new Form(parser.login(), parser.name(), parser.permissions());
+			emit postWidget(form);
+			connect(form, SIGNAL(sendPackage(const QString &)), this, SIGNAL(sendPackage(const QString &)));
+		}
+	}
 	SHOW_VAR(pkg->xml());
-	//TODO si es un paquete de añadir un usuario se añade a la lista
+}
+
+void ModuleWidget::removeUser(const QString& login)
+{
+	QTreeWidgetItemIterator it(d->tree);
+	while( (*it) )
+	{
+		if( login == (*it)->text(0) )
+		{
+			delete (*it);
+			break;
+		}
+		++it;
+	}
 }
 
 }

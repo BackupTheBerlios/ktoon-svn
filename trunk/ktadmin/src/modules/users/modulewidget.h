@@ -40,6 +40,7 @@ class ModuleWidget : public Base::ModuleWidget
 		
 	private slots:
 		void requestAction( int action);
+		void removeUser(const QString& login);
 		
 	private:
 		struct Private;

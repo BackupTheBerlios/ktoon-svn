@@ -3,22 +3,26 @@
 # Subdir relative project main directory: ./src/packages
 # Target is a library:  
 
-HEADERS += adduser.h  \
-connect.h \
-ackparser.h \
-addban.h \
-removeban.h \
-banlistparser.h
-SOURCES += adduser.cpp  \
-connect.cpp \
-ackparser.cpp \
-addban.cpp \
-removeban.cpp \
-banlistparser.cpp
+HEADERS += adduser.h \
+           connect.h \
+           ackparser.h \
+           addban.h \
+           removeban.h \
+           removeuser.h \
+           banlistparser.h \
+           updateuser.h \
+           queryuser.h 
+SOURCES += adduser.cpp \
+           connect.cpp \
+           ackparser.cpp \
+           addban.cpp \
+           removeban.cpp \
+           banlistparser.cpp \
+           removeuser.cpp \
+           updateuser.cpp \
+           queryuser.cpp 
 CONFIG += release \
 warn_on \
 staticlib
 TEMPLATE = lib
-
 include(packages_config.pri)
-

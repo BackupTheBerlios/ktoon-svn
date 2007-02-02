@@ -4,9 +4,17 @@
 # Target is a library:  
 
 HEADERS += modulewidget.h \
-           form.h 
+           form.h \
+           permissionschooser.h \
+           userparser.h \
+           usersinfoparser.h \
+           permission.h 
 SOURCES += modulewidget.cpp \
-           form.cpp 
+           form.cpp \
+           permissionschooser.cpp \
+           userparser.cpp \
+           usersinfoparser.cpp \
+           permission.cpp 
 TEMPLATE = lib
 CONFIG += staticlib \
 warn_on

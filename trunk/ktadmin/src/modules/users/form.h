@@ -26,6 +26,7 @@
 
 namespace Users {
 
+class Permission;
 /**
  * @author Jorge Cuadrado <kuadrosxx@gmail.com>
 */
@@ -34,11 +35,13 @@ class Form : public Base::Form
 	Q_OBJECT
 	public:
 		Form(QWidget *parent = 0);
+		Form(const QString &login, const QString name, const QList<Permission> & permissions,  QWidget *parent = 0);
 		~Form();
 		void applyAction( QDialogButtonBox::ButtonRole );
 		void clear();
 		
 	private:
+		void init();
 		struct Private;
 		Private *const d;
 		
