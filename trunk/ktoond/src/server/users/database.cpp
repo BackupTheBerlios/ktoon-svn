@@ -29,12 +29,14 @@ namespace Users {
 
 struct Database::Private
 {
-	QDomDocument document;
+// 	QDomDocument document;
+	QString dbfile;
 };
 
 Database::Database(const QString &dbfile) : d(new Private)
 {
-	init(dbfile);
+	d->dbfile = dbfile;
+// 	init(dbfile);
 }
 
 
@@ -44,30 +46,110 @@ Database::~Database()
 }
 
 
-void Database::init(const QString &dbfile)
+QDomDocument Database::loadDataBase()
 {
-	QFile file(dbfile);
-	
+	dDebug() << "loading database of " << d->dbfile;
+	QFile file(d->dbfile);
+	QDomDocument document;
 	if( !file.exists() )
 	{
 		if ( file.open(QIODevice::WriteOnly | QIODevice::Text) )
 		{
 			QTextStream ts(&file);
-			ts << d->document.toString();
+			document.appendChild(document.createElement("projects"));
+			
+			ts << document.toString();
 			file.close();
 		}
 	}
 	
 	if ( file.open(QIODevice::ReadOnly | QIODevice::Text) )
 	{
-		if ( ! d->document.setContent(file.readAll()) )
+		if ( !document.setContent(file.readAll()) )
 		{
 			dWarning() << file.fileName() << " is corrupted!";
 		}
 		file.close();
 	}
+	return document;
 }
 
+void Database::addUser(const Users::User &user)
+{
+	QDomDocument db = loadDataBase();
+	QDomNode  root = db.firstChild();
+	
+	root.appendChild(user.toXml(db));
+	
+	QFile file(d->dbfile);
+	
+	if ( file.open(QIODevice::WriteOnly| QIODevice::Text) )
+	{
+		QTextStream ts(&file);
+		ts << db.toString();
+		file.close();
+	}
+}
+
+
+void Database::updateUser(const Users::User &user)
+{
+	QDomDocument doc = loadDataBase();
+	
+	QDomElement docElem = doc.documentElement();
+
+	QDomNode n = docElem.firstChild();
+	while(!n.isNull())
+	{
+		QDomElement e = n.toElement(); 
+		if(!e.isNull()) 
+		{
+			if(e.attribute("login") == user.login())
+			{
+				docElem.removeChild(n);
+				docElem.appendChild(user.toXml(doc));
+			}
+		}
+		n = n.nextSibling();
+	}
+	
+	QFile file(d->dbfile);
+	
+	if ( file.open(QIODevice::WriteOnly| QIODevice::Text) )
+	{
+		QTextStream ts(&file);
+		ts << doc.toString();
+		file.close();
+	}
+}
+
+void Database::removeUser(const QString &login)
+{
+	QDomDocument doc = loadDataBase();
+	
+	QDomElement docElem = doc.documentElement();
+	QDomNode n = docElem.firstChild();
+	while(!n.isNull())
+	{
+		QDomElement e = n.toElement(); 
+		if(!e.isNull()) 
+		{
+			if(e.attribute("login") == login)
+			{
+				docElem.removeChild(n);
+			}
+		}
+		n = n.nextSibling();
+	}
+	QFile file(d->dbfile);
+	
+	if ( file.open(QIODevice::WriteOnly| QIODevice::Text) )
+	{
+		QTextStream ts(&file);
+		ts << doc.toString();
+		file.close();
+	}
+}
 
 }
 

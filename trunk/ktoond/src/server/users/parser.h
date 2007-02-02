@@ -43,6 +43,7 @@ class Parser : public KTXmlParserBase
 		
 	public:
 		User *user(const QString &login);
+		QList<User *> listUsers();
 		
 	private:
 		struct Private;

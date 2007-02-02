@@ -34,7 +34,6 @@ namespace Projects {
 
 class Database
 {
-
 	public:
 		
 		Database(const QString &dbfile = 0);

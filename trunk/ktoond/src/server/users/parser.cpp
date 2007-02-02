@@ -27,7 +27,7 @@ namespace Users {
 
 struct Parser::Private {
 	QString dbfile;
-	User *user;
+	QList<User *> users;
 };
 
 Parser::Parser(const QString &dbfile) : KTXmlParserBase(), d(new Private)
@@ -50,16 +50,16 @@ bool Parser::startTag(const QString& tag, const QXmlAttributes& atts)
 {
 	if ( tag == "user" )
 	{
-		if ( d->user->login() == atts.value("login") )
-		{
-			d->user->setName( atts.value("name") );
-			d->user->setPassword(atts.value("password"));
-		}
+		User *u = new User;
+		u->setLogin( atts.value("login") );
+		u->setPassword( atts.value("password") );
+		u->setName( atts.value("name") );
+		d->users << u;
 	}
 	else if ( tag == "perm" )
 	{
 		Right *right = new Right(atts.value("module"), atts.value("read").toInt(), atts.value("write").toInt());
-		d->user->addRight(right);
+		d->users.last()->addRight(right);
 	}
 	
 	return true;
@@ -80,16 +80,31 @@ void Parser::text(const QString & /*ch*/ )
 
 User *Parser::user(const QString &login)
 {
-	d->user = new User;
-	d->user->setLogin(login);
 	QFile file(d->dbfile);
 	
 	if ( parse(&file) )
-		return d->user;
-	
+	{
+		foreach(User * user, d->users)
+		{
+			qDebug() << user->login() << "==" << login;
+			if(user->login() == login)
+			{
+				return user;
+			}
+		}
+	}
 	return 0;
 }
 
+QList<User *> Parser::listUsers()
+{
+	d->users.clear();
+	QFile file(d->dbfile);
+	if ( parse(&file) )
+		return d->users;
+	return QList<User *>();
+	
+}
 
 }
 

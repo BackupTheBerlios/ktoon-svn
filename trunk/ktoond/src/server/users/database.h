@@ -22,6 +22,7 @@
 #define DATABASE_H
 
 #include <QString>
+#include "user.h"
 
 namespace Users {
 
@@ -34,10 +35,13 @@ class Database
 	public:
 		Database(const QString &dbfile);
 		~Database();
+		void addUser(const Users::User &user);
+		void updateUser(const Users::User &user);
+		void removeUser(const QString &login);
 		
 		
 	private:
-		void init(const QString &dbfile);
+		QDomDocument loadDataBase();
 		
 	private:
 		struct Private;

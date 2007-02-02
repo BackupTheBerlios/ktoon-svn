@@ -39,6 +39,8 @@
 #include "packages/ack.h"
 #include "packages/banlist.h"
 
+#include "packages/useractionparser.h"
+#include "packages/usersinfo.h"
 #include "banmanager.h"
 
 
@@ -91,6 +93,13 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 				}
 				
 				client->sendToClient(ack, false);
+				Packages::UsersInfo info;
+				foreach(Users::User *u, d->manager->listUsers())
+				{
+					info.addUser(u);
+				}
+				client->sendToClient(info);
+				
 			}
 			else
 			{
@@ -131,6 +140,47 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 	}
 	else if ( root == "wall" )
 	{
+	}
+	else if(root == "adduser")
+	{
+		Parsers::UserActionParser parser;
+		if(parser.parse(package))
+		{
+			d->manager->addUser(parser.user());
+			client->sendToAll(package);
+		}
+	}
+	else if(root == "removeuser")
+	{
+		Parsers::UserActionParser parser;
+		if(parser.parse(package))
+		{
+			d->manager->removeUser(parser.user().login());
+			client->sendToAll(package);
+		}
+	}
+	else if(root == "queryuser")
+	{
+		Parsers::UserActionParser parser;
+		if(parser.parse(package))
+		{
+			Users::User * user = d->manager->loadUser(parser.user().login());
+			if(user)
+			{
+				QDomDocument doc;
+				doc.appendChild(user->toXml(doc, false));
+				client->sendToClient (doc.toString());
+			}
+		}
+	}
+	else if(root == "updateuser")
+	{
+		Parsers::UserActionParser parser;
+		if(parser.parse(package))
+		{
+			d->manager->updateUser(parser.user());
+			client->sendToClient(package);
+		}
 	}
 	else if ( root == "bans" )
 	{

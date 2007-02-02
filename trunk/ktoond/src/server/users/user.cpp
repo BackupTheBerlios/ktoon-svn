@@ -22,6 +22,7 @@
 #include "right.h"
 
 #include <QList>
+#include <QDomDocument>
 
 namespace Users {
 
@@ -112,5 +113,29 @@ QList<Right *> User::rights() const
 	return d->rights;
 }
 
+QDomElement User::toXml(QDomDocument &doc, bool password ) const
+{
+	QDomElement userE = doc.createElement("user");
+	userE.setAttribute("name", d->name);
+	userE.setAttribute("login", d->login);
+	if(password)
+	{
+		userE.setAttribute("password", d->password);
+	}
+	QDomElement permissionsE = doc.createElement("permissions");
+	userE.appendChild(permissionsE);
+	foreach(Right *right, d->rights)
+	{
+		QDomElement perm = doc.createElement("perm");
+		perm.setAttribute("module", right->module());
+		perm.setAttribute("read", right->read());
+		perm.setAttribute("write", right->write());
+		
+		permissionsE.appendChild(perm);
+	}
+	return userE;
 }
+
+}
+
 

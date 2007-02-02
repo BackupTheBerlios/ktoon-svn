@@ -92,11 +92,37 @@ User *Manager::user(const QString &login)
 	return d->users[login];
 }
 
+User *Manager::loadUser(const QString &login)
+{
+	return d->parser->user(login);
+}
+
 QList<User*> Manager::users() const
 {
 	return d->users.values();
 }
 
+void Manager::addUser( const User & user )
+{
+	d->database->addUser(user);
+}
+
+void Manager::updateUser( const User & user )
+{
+	d->database->updateUser(user);
+}
+
+void Manager::removeUser(const QString &login)
+{
+	d->database->removeUser(login);
+}
+
+
+
+QList<User *> Manager::listUsers()
+{
+	return d->parser->listUsers();
+}
 
 }
 

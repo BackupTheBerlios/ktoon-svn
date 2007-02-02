@@ -26,6 +26,9 @@
 
 #include "right.h"
 
+class QDomDocument;
+class QDomElement;
+
 namespace Users {
 
 /**
@@ -50,6 +53,8 @@ class User
 		
 		void addRight(Right *right);
 		QList<Right *> rights() const;
+		
+		QDomElement toXml(QDomDocument &doc, bool password = true) const;
 		
 	private:
 		struct Private;
