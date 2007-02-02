@@ -36,7 +36,7 @@
 
 #include <packages/removeuser.h>
 #include <packages/queryuser.h>
-#include <usersinfoparser.h>
+#include <userlistparser.h>
 #include <userparser.h>
 
 namespace Users {
@@ -44,39 +44,16 @@ namespace Users {
 
 struct ModuleWidget::Private
 {
-	QTreeWidget *tree;
-	DTreeWidgetSearchLine *search;
-	Base::ModuleButtonBar *buttonBar;
 };
 
 ModuleWidget::ModuleWidget(QWidget *parent)
-	: Base::ModuleWidget(parent), d(new Private)
+	: Base::ModuleListWidget(Base::ModuleButtonBar::Add | Base::ModuleButtonBar::Del | Base::ModuleButtonBar::Modify, parent), d(new Private)
 {
 	setWindowTitle(tr("Users"));
 	
-	QVBoxLayout *layout = new QVBoxLayout(this);
-	setLayout(layout);
-	QHBoxLayout *search = new QHBoxLayout;
-
-	QToolButton *button = new QToolButton;
-	button->setIcon( QIcon(THEME_DIR+"/icons/clear_right.png"));
 	
-	search->addWidget(button);
-	d->tree = new  QTreeWidget;
+	setHeaders( QStringList() << tr("Login") << tr("Name") );
 	
-	
-	d->tree->setHeaderLabels( QStringList() << tr("Login") << tr("Name") );
-	d->tree->header()->show();
-	d->search = new DTreeWidgetSearchLine(this,d->tree);
-	search->addWidget( d->search );
-	connect(button, SIGNAL(clicked()), d->search, SLOT(clear()));
-	
-	layout->addLayout(search);
-	layout->addWidget(d->tree);
-	
-	d->buttonBar = new Base::ModuleButtonBar(Base::ModuleButtonBar::Add | Base::ModuleButtonBar::Del | Base::ModuleButtonBar::Modify);
-	layout->addWidget(d->buttonBar);
-	connect(d->buttonBar, SIGNAL(buttonClicked( int )), this, SLOT(requestAction(int)));
 }
 
 
@@ -84,37 +61,30 @@ ModuleWidget::~ModuleWidget()
 {
 }
 
-void ModuleWidget::requestAction( int action)
+
+void ModuleWidget::addActionSelected(QTreeWidgetItem *current)
 {
-	switch(action)
+	Form *form = new Form();
+	emit postWidget(form);
+	connect(form, SIGNAL(sendPackage(const QString &)), this, SIGNAL(sendPackage(const QString &)));
+}
+
+void ModuleWidget::delActionSelected(QTreeWidgetItem *current)
+{
+	if(current)
 	{
-		case Base::ModuleButtonBar::Add:
-		{
-			Form *form = new Form();
-			emit postWidget(form);
-			connect(form, SIGNAL(sendPackage(const QString &)), this, SIGNAL(sendPackage(const QString &)));
-		}
-		break;
-		case Base::ModuleButtonBar::Del:
-		{
-			QTreeWidgetItem *item = d->tree->currentItem ();
-			if(item)
-			{
-				Packages::RemoveUser removeuser(item->text(0));
-				emit sendPackage(removeuser.toString());
-			}
-		}
-		break;
-		case Base::ModuleButtonBar::Modify:
-		{
-			QTreeWidgetItem *item = d->tree->currentItem ();
-			if(item)
-			{
-				Packages::QueryUser query(item->text(0));
-				emit sendPackage(query.toString());
-			}
-		}
-		break;
+		Packages::RemoveUser removeuser(current->text(0));
+		emit sendPackage(removeuser.toString());
+	}
+}
+
+
+void ModuleWidget::modifyActionSelected(QTreeWidgetItem *current)
+{
+	if(current)
+	{
+		Packages::QueryUser query(current->text(0));
+		emit sendPackage(query.toString());
 	}
 }
 
@@ -126,8 +96,6 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 		doc.setContent(pkg->xml());
 		
 		QString login, name;
-		
-// 		
 	
 		QDomElement loginE = doc.firstChild().firstChildElement("login");
 		if(!loginE.isNull())
@@ -153,11 +121,11 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 		
 		if(!(name.isNull() || login.isNull()))
 		{
-			QTreeWidgetItem *item = new QTreeWidgetItem(d->tree);
+			QTreeWidgetItem *item = new QTreeWidgetItem(tree());
 			item->setText(0, login);
 			item->setText(1, name);
 		}
-		
+		pkg->accept();
 	}
 	else if(pkg->root() == "removeuser")
 	{
@@ -172,6 +140,7 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 				removeUser(loginText.toText().data()); 
 			}
 		}
+		pkg->accept();
 	}
 	else if(pkg->root() == "updateuser")
 	{
@@ -206,44 +175,49 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 		{
 			removeUser(login);
 			
-			QTreeWidgetItem *item = new QTreeWidgetItem(d->tree);
+			QTreeWidgetItem *item = new QTreeWidgetItem(tree());
 			item->setText(0, login);
 			item->setText(1, name);
 		}
+		pkg->accept();
 	}
-	else if(pkg->root() == "usersinfo")
+	else if(pkg->root() == "userlist")
 	{
-		Parsers::UsersInfoParser parser;
+		Packages::UserListParser parser;
 		if(parser.parse(pkg->xml()))
 		{
 			foreach(QStringList values, parser.info())
 			{
 				int count = 0;
-				QTreeWidgetItem *item = new QTreeWidgetItem(d->tree);
+				QTreeWidgetItem *item = new QTreeWidgetItem(tree());
 				foreach(QString value, values)
 				{
 					item->setText(count, value);
 					count++;
 				}
 			}
+			setFilled( true);
 		}
+		pkg->accept();
 	}
 	else if(pkg->root() == "user")
 	{
-		Parsers::UserParser parser;
+		Packages::UserParser parser;
 		if(parser.parse(pkg->xml()))
 		{
 			Form *form = new Form(parser.login(), parser.name(), parser.permissions());
 			emit postWidget(form);
 			connect(form, SIGNAL(sendPackage(const QString &)), this, SIGNAL(sendPackage(const QString &)));
 		}
+		pkg->accept();
 	}
+	
 	SHOW_VAR(pkg->xml());
 }
 
 void ModuleWidget::removeUser(const QString& login)
 {
-	QTreeWidgetItemIterator it(d->tree);
+	QTreeWidgetItemIterator it(tree());
 	while( (*it) )
 	{
 		if( login == (*it)->text(0) )
@@ -253,6 +227,13 @@ void ModuleWidget::removeUser(const QString& login)
 		}
 		++it;
 	}
+}
+
+
+void ModuleWidget::updateList()
+{
+	tree()->clear();
+	emit sendPackage("<listusers/>");
 }
 
 }

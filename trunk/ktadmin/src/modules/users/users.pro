@@ -7,14 +7,14 @@ HEADERS += modulewidget.h \
            form.h \
            permissionschooser.h \
            userparser.h \
-           usersinfoparser.h \
-           permission.h 
+           permission.h \
+           userlistparser.h 
 SOURCES += modulewidget.cpp \
            form.cpp \
            permissionschooser.cpp \
            userparser.cpp \
-           usersinfoparser.cpp \
-           permission.cpp 
+           permission.cpp \
+           userlistparser.cpp 
 TEMPLATE = lib
 CONFIG += staticlib \
 warn_on

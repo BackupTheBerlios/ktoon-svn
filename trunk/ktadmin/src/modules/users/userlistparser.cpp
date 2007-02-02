@@ -18,69 +18,51 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#include "userparser.h"
+#include "userlistparser.h"
 
 namespace Packages {
 
-struct UserParser::Private
+struct UserListParser::Private
 {
-	QString login;
-	QString name;
-	QList<Users::Permission> permissions;
+	QList<QStringList> info;
 };
 
-UserParser::UserParser(): KTXmlParserBase() , d(new Private)
-{
-	
-}
-
-
-UserParser::~UserParser()
+UserListParser::UserListParser() : KTXmlParserBase() , d(new Private)
 {
 }
 
-bool UserParser::startTag(const QString &tag, const QXmlAttributes &atts)
+
+UserListParser::~UserListParser()
 {
-	if(root() == "user")
+}
+
+bool UserListParser::startTag(const QString &tag, const QXmlAttributes &atts)
+{
+	if(root() == "userlist")
 	{
 		if(tag == "user")
 		{
-			d->login = atts.value("login");
-			d->name = atts.value("name");
-		}
-		else if(tag == "perm")
-		{
-			d->permissions << Users::Permission(atts.value("module"), bool(atts.value("read").toInt()), bool(atts.value("write").toInt()));
+			QStringList values;
+			values << atts.value("login") << atts.value("name");
+			d->info << values;
 		}
 	}
 	return true;
 }
 
-bool UserParser::endTag(const QString &)
+bool UserListParser::endTag(const QString &)
 {
 	return true;
 }
 
-void UserParser::text(const QString &)
+void UserListParser::text(const QString &)
 {
 	
 }
 
-QString UserParser::login()
+QList<QStringList> UserListParser::info()
 {
-	return d->login;
+	return d->info;
 }
-
-QString UserParser::name()
-{
-	return d->name;
-}
-
-QList<Users::Permission> UserParser::permissions()
-{
-	return d->permissions;
-}
-
-
 
 }

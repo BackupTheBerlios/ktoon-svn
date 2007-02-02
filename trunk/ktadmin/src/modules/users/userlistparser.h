@@ -18,69 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#include "userparser.h"
+#ifndef PACKAGESUSERSINFOPARSER_H
+#define PACKAGESUSERSINFOPARSER_H
+
+#include <ktxmlparserbase.h>
 
 namespace Packages {
 
-struct UserParser::Private
+/**
+ * @author Jorge Cuadrado <kuadrosxx@gmail.com>
+*/
+class UserListParser : public KTXmlParserBase
 {
-	QString login;
-	QString name;
-	QList<Users::Permission> permissions;
+	public:
+		UserListParser();
+		~UserListParser();
+		
+		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+		virtual bool endTag(const QString &tag);
+		virtual void text(const QString &text);
+		
+		QList<QStringList> info();
+		
+	private:
+		struct Private;
+		Private *const d;
+		
 };
 
-UserParser::UserParser(): KTXmlParserBase() , d(new Private)
-{
-	
 }
 
-
-UserParser::~UserParser()
-{
-}
-
-bool UserParser::startTag(const QString &tag, const QXmlAttributes &atts)
-{
-	if(root() == "user")
-	{
-		if(tag == "user")
-		{
-			d->login = atts.value("login");
-			d->name = atts.value("name");
-		}
-		else if(tag == "perm")
-		{
-			d->permissions << Users::Permission(atts.value("module"), bool(atts.value("read").toInt()), bool(atts.value("write").toInt()));
-		}
-	}
-	return true;
-}
-
-bool UserParser::endTag(const QString &)
-{
-	return true;
-}
-
-void UserParser::text(const QString &)
-{
-	
-}
-
-QString UserParser::login()
-{
-	return d->login;
-}
-
-QString UserParser::name()
-{
-	return d->name;
-}
-
-QList<Users::Permission> UserParser::permissions()
-{
-	return d->permissions;
-}
-
-
-
-}
+#endif

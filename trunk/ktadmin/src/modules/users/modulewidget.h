@@ -17,10 +17,11 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
 #ifndef USERSMODULEWIDGET_H
 #define USERSMODULEWIDGET_H
 
-#include <modulewidgetbase.h>
+#include <modulelistwidget.h>
 #include <package.h>
 #include "form.h"
 
@@ -29,7 +30,7 @@ namespace Users {
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class ModuleWidget : public Base::ModuleWidget
+class ModuleWidget : public Base::ModuleListWidget
 {
 	Q_OBJECT;
 	public:
@@ -39,8 +40,15 @@ class ModuleWidget : public Base::ModuleWidget
 		virtual void handlePackage(Base::Package *const pkg);
 		
 	private slots:
-		void requestAction( int action);
 		void removeUser(const QString& login);
+		
+	protected slots:
+		virtual void addActionSelected(QTreeWidgetItem *current);
+		virtual void delActionSelected(QTreeWidgetItem *current);
+		virtual void modifyActionSelected(QTreeWidgetItem *current);
+		
+	protected:
+		virtual void updateList();
 		
 	private:
 		struct Private;

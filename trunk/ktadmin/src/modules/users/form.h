@@ -47,8 +47,6 @@ class Form : public Base::Form
 		
 	signals:
 		void sendPackage( const QString &  );
-		
-		
 };
 
 }
