@@ -123,6 +123,12 @@ void Manager::removeObserver(Base::PackageObserver *obs)
 
 bool Manager::connectToServer(const QString &server, int port)
 {
+	if ( d->socket->state() == QAbstractSocket::ConnectedState )
+	{
+		d->socket->disconnectFromHost();
+		d->socket->waitForDisconnected();
+	}
+	
 	d->socket->connectToHost(server, port);
 	
 	return d->socket->waitForConnected(1000);

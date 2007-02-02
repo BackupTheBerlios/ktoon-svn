@@ -35,7 +35,9 @@ struct Form::Private
 Form::Form(QDialogButtonBox::StandardButtons buttons, const QString &title, QWidget *parent) : QFrame(parent), d(new Private)
 {
 	d->layout = new QVBoxLayout(this);
-	d->title = new QLabel(title);
+	d->title = new QLabel;
+	setTitle(title);
+	
 	d->layout->addWidget(d->title);
 	d->center = new QWidget();
 	d->layout->addWidget(d->center);

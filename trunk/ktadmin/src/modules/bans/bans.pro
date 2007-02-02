@@ -5,6 +5,11 @@ warn_on
 
 include(../modules_config.pri)
 
-HEADERS += modulewidget.h
-SOURCES += modulewidget.cpp
-
+HEADERS += modulewidget.h \
+removebanparser.h \
+banlistparser.h \
+form.h
+SOURCES += modulewidget.cpp \
+removebanparser.cpp \
+banlistparser.cpp \
+form.cpp

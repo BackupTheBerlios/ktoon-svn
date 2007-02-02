@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+ *   Copyright (C) 2007 by David Cuadrado                                  *
+ *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,42 +17,32 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef BASEForm_H
-#define BASEForm_H
 
-#include <QFrame>
-#include <QDialogButtonBox>
+#ifndef PACKAGESBANLISTPARSER_H
+#define PACKAGESBANLISTPARSER_H
 
+#include <ktxmlparserbase.h>
 
-namespace Base {
-
+namespace Bans {
 
 /**
- * @author Jorge Cuadrado <kuadrosxx@gmail.com>
+	@author David Cuadrado <krawek@gmail.com>
 */
-class Form : public QFrame
+class BanListParser : public KTXmlParserBase
 {
-	Q_OBJECT
 	public:
-		Form( QDialogButtonBox::StandardButtons buttons, const QString &title,  QWidget *parent=0);
-		virtual ~Form();
-		virtual void applyAction( QDialogButtonBox::ButtonRole ) = 0;
+		BanListParser();
+		~BanListParser();
 		
-		void setCentralWidget(QWidget *widget);
+		bool startTag(const QString &tag, const QXmlAttributes &atts);
+		bool endTag(const QString &tag);
+		void text(const QString &) {}
 		
-		void setButtons(QDialogButtonBox::StandardButtons buttons);
-		void setTitle( const QString &title);
-		
-	public slots:
-// 		virtual void clear() = 0;
-		
-		
-	private slots:
-		void buttonCliked(QAbstractButton * button );
+		QStringList bans() const;
 		
 	private:
-		struct Private;
-		Private  * const d;
+		QStringList m_bans;
+
 };
 
 }

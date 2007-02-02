@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,33 +18,39 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef PACKAGESBANLISTPARSER_H
-#define PACKAGESBANLISTPARSER_H
+#include "removebanparser.h"
 
-#include <ktxmlparserbase.h>
+namespace Bans {
 
-namespace Packages {
-
-/**
-	@author David Cuadrado <krawek@gmail.com>
-*/
-class BanListParser : public KTXmlParserBase
+RemoveBanParser::RemoveBanParser()
+ : KTXmlParserBase()
 {
-	public:
-		BanListParser();
-		~BanListParser();
-		
-		bool startTag(const QString &tag, const QXmlAttributes &atts);
-		bool endTag(const QString &tag);
-		void text(const QString &) {}
-		
-		QStringList bans() const;
-		
-	private:
-		QStringList m_bans;
-
-};
-
 }
 
-#endif
+
+RemoveBanParser::~RemoveBanParser()
+{
+}
+
+bool RemoveBanParser::startTag(const QString &tag, const QXmlAttributes &atts)
+{
+	if ( tag == "pattern" )
+	{
+		m_pattern = atts.value("value");
+	}
+	return true;
+}
+
+bool RemoveBanParser::endTag(const QString &)
+{
+	
+	return true;
+}
+
+QString RemoveBanParser::pattern() const
+{
+	return m_pattern;
+}
+
+
+}

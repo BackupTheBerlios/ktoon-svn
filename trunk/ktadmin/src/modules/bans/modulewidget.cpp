@@ -22,14 +22,24 @@
 
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
+#include <QHash>
 
 #include "package.h"
 
-#include "packages/banlistparser.h"
+#include "packages/removeban.h"
+
+#include "banlistparser.h"
+#include "removebanparser.h"
+#include "form.h"
 
 namespace Bans {
 
-ModuleWidget::ModuleWidget(QWidget *parent) : Base::ModuleListWidget(Base::ModuleButtonBar::Add | Base::ModuleButtonBar::Del | Base::ModuleButtonBar::Modify, parent)
+struct ModuleWidget::Private
+{
+	QHash<QString, QTreeWidgetItem *> items;
+};
+
+ModuleWidget::ModuleWidget(QWidget *parent) : Base::ModuleListWidget(Base::ModuleButtonBar::Add | Base::ModuleButtonBar::Del | Base::ModuleButtonBar::Modify, parent), d(new Private)
 {
 	setWindowTitle(tr("Bans"));
 	
@@ -39,21 +49,39 @@ ModuleWidget::ModuleWidget(QWidget *parent) : Base::ModuleListWidget(Base::Modul
 
 ModuleWidget::~ModuleWidget()
 {
+	delete d;
 }
 
 void ModuleWidget::handlePackage(Base::Package *const pkg)
 {
-	if( pkg->root() == "bans" )
+	if( pkg->root() == "banlist" )
 	{
-		Packages::BanListParser parser;
+		BanListParser parser;
 		if ( parser.parse(pkg->xml()) )
 		{
 			foreach(QString ban, parser.bans())
 			{
 				QTreeWidgetItem *item = new QTreeWidgetItem(tree());
 				item->setText(0, ban);
+				
+				d->items.insert(ban, item);
 			}
 			setFilled(true);
+			pkg->accept();
+		}
+	}
+	else if ( pkg->root() == "removeban" )
+	{
+		RemoveBanParser parser;
+		if( parser.parse(pkg->xml()))
+		{
+			QString pattern = parser.pattern();
+			
+			if(d->items.contains(pattern))
+			{
+				delete d->items.take(pattern);
+			}
+			
 			pkg->accept();
 		}
 	}
@@ -62,16 +90,26 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 void ModuleWidget::updateList()
 {
 	tree()->clear();
-	emit sendPackage("<bans/>");
+	emit sendPackage("<listbans/>");
 }
 
-void ModuleWidget::addActionSelected(QTreeWidgetItem *current)
+void ModuleWidget::addActionSelected(QTreeWidgetItem */*current*/)
 {
+	Form *form = new Form;
+	
+	emit postWidget(form);
 }
 
 
-void ModuleWidget::delActionSelected(QTreeWidgetItem */*current*/)
+void ModuleWidget::delActionSelected(QTreeWidgetItem *current)
 {
+	if( current )
+	{
+		QString pattern = current->text(0);
+		Packages::RemoveBan removeBan(pattern);
+		
+		emit sendPackage(removeBan.toString());
+	}
 }
 
 

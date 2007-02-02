@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+ *   Copyright (C) 2007 by David Cuadrado                                  *
+ *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,44 +17,39 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef BASEForm_H
-#define BASEForm_H
 
-#include <QFrame>
-#include <QDialogButtonBox>
+#include "banlistparser.h"
 
+namespace Bans {
 
-namespace Base {
-
-
-/**
- * @author Jorge Cuadrado <kuadrosxx@gmail.com>
-*/
-class Form : public QFrame
+BanListParser::BanListParser() : KTXmlParserBase()
 {
-	Q_OBJECT
-	public:
-		Form( QDialogButtonBox::StandardButtons buttons, const QString &title,  QWidget *parent=0);
-		virtual ~Form();
-		virtual void applyAction( QDialogButtonBox::ButtonRole ) = 0;
-		
-		void setCentralWidget(QWidget *widget);
-		
-		void setButtons(QDialogButtonBox::StandardButtons buttons);
-		void setTitle( const QString &title);
-		
-	public slots:
-// 		virtual void clear() = 0;
-		
-		
-	private slots:
-		void buttonCliked(QAbstractButton * button );
-		
-	private:
-		struct Private;
-		Private  * const d;
-};
-
 }
 
-#endif
+
+BanListParser::~BanListParser()
+{
+}
+
+bool BanListParser::startTag(const QString &tag, const QXmlAttributes &atts)
+{
+	if( tag == "entry" )
+	{
+		m_bans << atts.value("value");
+	}
+	
+	return true;
+}
+
+
+bool BanListParser::endTag(const QString &)
+{
+	return true;
+}
+
+QStringList BanListParser::bans() const
+{
+	return m_bans;
+}
+
+}

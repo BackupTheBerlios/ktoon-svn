@@ -9,18 +9,16 @@ HEADERS += adduser.h \
            addban.h \
            removeban.h \
            removeuser.h \
-           banlistparser.h \
            updateuser.h \
-           queryuser.h 
+           queryuser.h
 SOURCES += adduser.cpp \
            connect.cpp \
            ackparser.cpp \
            addban.cpp \
            removeban.cpp \
-           banlistparser.cpp \
            removeuser.cpp \
            updateuser.cpp \
-           queryuser.cpp 
+           queryuser.cpp
 CONFIG += release \
 warn_on \
 staticlib

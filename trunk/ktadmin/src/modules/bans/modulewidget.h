@@ -43,6 +43,10 @@ class ModuleWidget : public Base::ModuleListWidget
 		void delActionSelected(QTreeWidgetItem *current);
 		void modifyActionSelected(QTreeWidgetItem *current);
 		void queryActionSelected(QTreeWidgetItem *current);
+		
+	private:
+		struct Private;
+		Private *const d;
 };
 
 }

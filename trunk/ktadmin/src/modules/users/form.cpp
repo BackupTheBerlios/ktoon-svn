@@ -40,7 +40,6 @@ struct Form::Private
 	QLineEdit *name;
 	QLineEdit *login;
 	QLineEdit *password;
-	QDialogButtonBox *buttons;
 	PermissionsChooser *permissions;
 	bool update;
 };
