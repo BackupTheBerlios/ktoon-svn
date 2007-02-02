@@ -13,12 +13,14 @@ chatparser.cpp \
 noticeparser.cpp \
 wallparser.cpp \
 ack.cpp \
-error.cpp
+error.cpp \
+banlist.cpp
 HEADERS += connectparser.h \
 chatparser.h \
 noticeparser.h \
 wallparser.h \
 ack.h \
-error.h
+error.h \
+banlist.h
 TARGET = serverpackages
 

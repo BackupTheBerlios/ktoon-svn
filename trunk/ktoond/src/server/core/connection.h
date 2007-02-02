@@ -75,12 +75,11 @@ class Connection : public QThread
 		
 		QString sign() const;
 		
-		bool isFault() const;
 		void setValid(bool v);
 		bool isValid() const;
 		
 	public slots:
-		void close(bool fault = false);
+		void close();
 		void sendErrorPackageToClient(const QString & message, Packages::Error::Level level);
 		
 	private slots:

@@ -37,6 +37,9 @@
 
 #include "packages/error.h"
 #include "packages/ack.h"
+#include "packages/banlist.h"
+
+#include "banmanager.h"
 
 
 namespace Server {
@@ -79,8 +82,8 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 				client->setUser(user);
 				
 				QString fortune = DFortuneGenerator::self()->generate();
-				fortune.replace("\n", "</br>");
-				Packages::Ack ack(QObject::tr("<center><b>Message of the day:</b></center></br> ")+fortune, client->sign());
+				fortune.replace("\n", "<br/>");
+				Packages::Ack ack(QObject::tr("<center><b>Message of the day:</b></center><br/> ")+fortune, client->sign());
 				
 				foreach(Users::Right *right, user->rights())
 				{
@@ -93,9 +96,11 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 			{
 				Packages::Error error(QObject::tr("Invalid login or password"), Packages::Error::Err);
 				client->sendToClient(error);
-				client->close(true);
 				
+				BanManager::self()->failed(client->client()->peerAddress().toString());
 				Server::Logger::self()->error(QObject::tr("Invalid login or password"));
+				
+				client->close();
 			}
 		}
 		else
@@ -126,6 +131,22 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 	}
 	else if ( root == "wall" )
 	{
+	}
+	else if ( root == "bans" )
+	{
+		if ( client->user()->canReadOn("admin") )
+		{
+			QStringList bans = BanManager::self()->allBanned();
+			
+			Packages::BanList pkg;
+			pkg.setBans(bans);
+			
+			client->sendToClient(pkg, true);
+		}
+		else
+		{
+			client->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
+		}
 	}
 	else
 	{

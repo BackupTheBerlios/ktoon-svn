@@ -22,6 +22,9 @@
 
 #include <QHash>
 #include <QString>
+#include <QApplication>
+
+#include <ddebug.h>
 
 namespace Server {
 
@@ -31,10 +34,16 @@ struct BanManager::Private
 	QHash<QString, int> fails;
 };
 
+BanManager *BanManager::s_self = 0;
 
 BanManager::BanManager(QObject *parent) : QObject(parent), d(new Private)
 {
 	d->maxFails = 10;
+	
+	d->fails.insert("hola", 11);
+	d->fails.insert("prueba", 11);
+	d->fails.insert("hotr", 11);
+	d->fails.insert("banned", 11);
 }
 
 
@@ -64,7 +73,10 @@ bool BanManager::isBanned(const QString &pt) const
 
 void BanManager::failed(const QString &pt)
 {
+	dDebug() << "FAILED: " << pt;
 	d->fails[pt] += 1;
+	
+	dDebug() << "COUNT: " << d->fails[pt];
 }
 
 void BanManager::ban(const QString &pt)
@@ -75,6 +87,30 @@ void BanManager::ban(const QString &pt)
 void BanManager::unban(const QString &pt)
 {
 	d->fails[pt] = 0;
+}
+
+QStringList BanManager::allBanned() const
+{
+	QStringList allBanned;
+	
+	QHash<QString, int>::const_iterator i = d->fails.constBegin();
+	
+	while (i != d->fails.constEnd())
+	{
+		if ( isBanned(i.key()))
+			allBanned << i.key();
+		++i;
+	}
+	
+	return allBanned;
+}
+
+BanManager *BanManager::self()
+{
+	if ( !s_self)
+		s_self = new BanManager(qApp);
+	
+	return s_self;
 }
 
 }

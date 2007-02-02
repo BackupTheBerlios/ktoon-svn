@@ -65,15 +65,12 @@ class Connection::Private
 		QString sign;
 		
 		Users::User *user;
-		
-		bool isFault;
 };
 
 Connection::Connection(int socketDescriptor, Server::TcpServer *server) : QThread(server), d(new Private(server))
 {
 	d->client = new Server::Client(this);
 	d->client->setSocketDescriptor(socketDescriptor);
-	d->isFault = false;
 	d->isValid = true;
 }
 
@@ -114,10 +111,9 @@ void Connection::removeConnection()
 	emit connectionClosed(this);
 }
 
-void Connection::close(bool fault)
+void Connection::close()
 {
 	d->isValid = false;
-	d->isFault = fault;
 	
 	d->readed.clear();
 	if ( d->client->state() != QAbstractSocket::UnconnectedState )
@@ -220,11 +216,6 @@ void Connection::sendErrorPackageToClient(const QString & message, Packages::Err
 {
 	Packages::Error error(message, level);
 	sendToClient(error);
-}
-
-bool Connection::isFault() const
-{
-	return d->isFault;
 }
 
 void Connection::setValid(bool v)

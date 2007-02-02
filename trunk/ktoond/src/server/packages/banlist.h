@@ -17,44 +17,26 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef PACKAGESBANLIST_H
+#define PACKAGESBANLIST_H
 
-#ifndef SERVERBANMANAGER_H
-#define SERVERBANMANAGER_H
-
-#include <QObject>
+#include <QDomDocument>
 #include <QStringList>
 
-namespace Server {
+namespace Packages {
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class BanManager : public QObject
+class BanList : public QDomDocument
 {
-	protected:
-		BanManager(QObject *parent = 0);
 	public:
-		~BanManager();
+		BanList();
+		~BanList();
 		
-		void initialize(const QString &pt);
-		bool isBanned(const QString &pt) const;
-		
-		void failed(const QString &pt);
-		void ban(const QString &pt);
-		void unban(const QString &pt);
-		
-		QStringList allBanned() const;
-		
-		static BanManager *self();
-		
-	private:
-		static BanManager *s_self;
-		struct Private;
-		Private *const d;
+		void setBans(const QStringList &bans);
 };
 
 }
 
 #endif
-
-

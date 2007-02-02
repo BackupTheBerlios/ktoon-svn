@@ -18,43 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SERVERBANMANAGER_H
-#define SERVERBANMANAGER_H
+#include "banlist.h"
+#include <ddebug.h>
 
-#include <QObject>
-#include <QStringList>
+namespace Packages {
 
-namespace Server {
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-class BanManager : public QObject
+BanList::BanList()
+ : QDomDocument()
 {
-	protected:
-		BanManager(QObject *parent = 0);
-	public:
-		~BanManager();
-		
-		void initialize(const QString &pt);
-		bool isBanned(const QString &pt) const;
-		
-		void failed(const QString &pt);
-		void ban(const QString &pt);
-		void unban(const QString &pt);
-		
-		QStringList allBanned() const;
-		
-		static BanManager *self();
-		
-	private:
-		static BanManager *s_self;
-		struct Private;
-		Private *const d;
-};
-
+	QDomElement root = createElement("bans");
+	
+	appendChild(root);
 }
 
-#endif
+
+BanList::~BanList()
+{
+}
+
+void BanList::setBans(const QStringList &bans)
+{
+	foreach(QString ban, bans)
+	{
+		QDomElement be = createElement("entry");
+		be.setAttribute("value", ban);
+		
+		documentElement().appendChild(be);
+	}
+}
 
 
+}

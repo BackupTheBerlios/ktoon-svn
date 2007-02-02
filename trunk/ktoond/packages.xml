@@ -176,19 +176,18 @@ Notas generales:
 
 <!-- Cualquiera, IP o LOGIN, o AMBOS -->
 <ban>
-	<ip>la ip</ip>
-	<login>login</login>
+	<pattern value="[ip|login]" />
 </ban>
 
 <!-- Cualquiera IP o Login -->
 <removeban>
-	<ip>la ip</ip>
-	<login>login</login>
+	<pattern value="[ip|login]" />
 </removeban>
 
 <!-- List bans -->
 <bans/>
 
+<!-- Lista clientes actualmente conectados -->
 <clients />
 
 === RESPONSES ===
@@ -227,24 +226,15 @@ Notas generales:
 
 
 <!-- Respuesta a bans -->
-<listbans>
-	<ip>
-		<entry>ip1</entry>
-		<entry>ip2</entry>
-		<entry>ip3</entry>
-		<entry>ip4</entry>
-	</ip>
-	<login>
-		<entry>login1</entry>
-		<entry>login2</entry>
-		<entry>login3</entry>
-		<entry>login4</entry>
-	</login>
-</listbans>
+<banlist>
+	<entry value="ip1" />
+	<entry value="ip2" />
+	<entry value="ip3" />
+</banlist>
 
 
 <!-- Respuesta a clients -->
-<listclients>
+<clientlist>
 	<client>
 		<user>
 			<login>the login</login>
@@ -253,7 +243,7 @@ Notas generales:
 		<ip>la ip</ip>
 	</client>
 	<!-- Se repite -->
-</listclients>
+</clientlist>
 
 
 

@@ -27,7 +27,6 @@
 #include <QHostAddress>
 
 #include <ddebug.h>
-#include <QDebug>
 
 #include "packagehandlerbase.h"
 #include "defaultpackagehandler.h"
@@ -41,14 +40,12 @@ class TcpServer::Private
 {
 	public:
 		QList<Server::Connection *> connections;
-		BanManager *banManager;
 };
 
 TcpServer::TcpServer(QObject *parent) : QTcpServer(parent), d(new Private)
 {
 	DINIT;
 	m_handler = new DefaultPackageHandler();
-	d->banManager = new BanManager(this);
 }
 
 
@@ -68,7 +65,6 @@ bool TcpServer::openConnection(const QString &host, int port)
 	Logger::self()->info(QObject::tr("Initialized server on %1:%2").arg(host).arg(port));
 	
 	QList<QHostAddress> addrs = QHostInfo::fromName(host).addresses();
-	qDebug() << addrs;
 	if ( !addrs.isEmpty() )
 	{
 		if(! listen(QHostAddress(addrs[0]), port) )
@@ -93,17 +89,19 @@ void TcpServer::incomingConnection(int socketDescriptor)
 	
 	QString ip = newConnection->client()->peerAddress().toString();
 	
-	d->banManager->initialize(ip);
+	BanManager::self()->initialize(ip);
 	
-	if ( !d->banManager->isBanned(ip) )
+	if ( !BanManager::self()->isBanned(ip) )
 	{
+		BanManager::self()->unban(ip);
+		
 		handle(newConnection);
 		d->connections << newConnection;
 		newConnection->start();
 	}
 	else
 	{
-		newConnection->sendErrorPackageToClient(tr("You're banned, get out!"), Packages::Error::Err);
+		newConnection->sendErrorPackageToClient(tr("You're banned, Please contact to server administrator if you think is an error!"), Packages::Error::Err);
 		newConnection->close();
 	}
 }
@@ -137,10 +135,10 @@ void TcpServer::sendToAll(const QDomDocument &pkg)
 void TcpServer::removeConnection(Server::Connection *cnx)
 {
         D_FUNCINFO;
-        cnx->close();
 	
-	if ( cnx->isFault() )
-		d->banManager->failed(cnx->client()->peerAddress().toString());
+	cnx->blockSignals(true);
+	cnx->close();
+	cnx->blockSignals(false);
         d->connections.removeAll(cnx);
 	m_handler->connectionClosed(cnx);
 }
