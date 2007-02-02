@@ -1,7 +1,4 @@
 
-!include(../../../ktadmin_config.pri) {
-	error("configure first")
-}
 
 LIB_DIR = ../../lib
 !include($$LIB_DIR/lib.pri) {
@@ -10,4 +7,8 @@ LIB_DIR = ../../lib
 
 PACKAGES_DIR = ../../packages
 include($$PACKAGES_DIR/packages.pri)
+
+!include(../../ktadmin_config.pri) {
+	error("configure first")
+}
 

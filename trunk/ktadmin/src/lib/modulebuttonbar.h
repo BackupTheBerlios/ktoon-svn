@@ -23,8 +23,7 @@
 
 #include <QFrame>
 
-
-#include <QButtonGroup>
+class QAbstractButton;
 
 namespace Base {
 /**
@@ -44,8 +43,15 @@ class ModuleButtonBar : public QFrame
 			Modify = 1 << 3
 		};
 		
-		ModuleButtonBar(int buttons, QWidget *parent = 0);
+		Q_DECLARE_FLAGS(Buttons, Button)
+		
+		ModuleButtonBar(Buttons buttons, QWidget *parent = 0);
 		~ModuleButtonBar();
+		
+		bool hasButton(Button button) const;
+		
+		void setText(Button button, const QString &text);
+		void setIcon(Button button, const QIcon &icon);
 		
 	signals:
 		void buttonClicked ( QAbstractButton *button);
@@ -53,10 +59,14 @@ class ModuleButtonBar : public QFrame
 		
 		
 	private:
-		void setupButtons(int buttons);
+		void setupButtons(Buttons buttons);
 		
 	private:
-		QButtonGroup m_buttons;
+		struct Private;
+		Private *const d;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(ModuleButtonBar::Buttons)
+
 }
 #endif

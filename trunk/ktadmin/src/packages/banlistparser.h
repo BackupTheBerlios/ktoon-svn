@@ -17,45 +17,34 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef MANAGER_H
-#define MANAGER_H
 
-#include <QObject>
+#ifndef PACKAGESBANLISTPARSER_H
+#define PACKAGESBANLISTPARSER_H
 
-namespace Base {
-	class  PackageObserver;
-}
+#include <ktxmlparserbase.h>
+
+namespace Packages {
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+	@author David Cuadrado <krawek@gmail.com>
 */
-class Manager : public QObject
+class BanListParser : public KTXmlParserBase
 {
-	Q_OBJECT;
 	public:
-		Manager(QObject *parent = 0);
-		~Manager();
+		BanListParser();
+		~BanListParser();
 		
-		void handlePackage(const QString &root, const QString &xml);
+		bool startTag(const QString &tag, const QXmlAttributes &atts);
+		bool endTag(const QString &tag);
+		void text(const QString &) {}
 		
-		void addObserver(Base::PackageObserver *obs);
-		void removeObserver(Base::PackageObserver *obs);
-		
-		bool connectToServer(const QString &server, int port);
-		void authenticate(const QString &login, const QString &password);
-		
-		
-	public slots:
-		void enable();
-		void disable();
-		void sendPackage(const QString &pkg);
-		
-	protected:
-		bool tryToHandle(const QString &root, const QString &xml);
+		QStringList bans() const;
 		
 	private:
-		struct Private;
-		Private *const d;
+		QStringList m_bans;
+
 };
+
+}
 
 #endif

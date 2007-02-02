@@ -22,26 +22,59 @@
 
 #include <QToolButton>
 #include <QHBoxLayout>
+#include <QButtonGroup>
 
 #include <dglobal.h>
 #include <ddebug.h>
+
 namespace Base {
-ModuleButtonBar::ModuleButtonBar(int buttons, QWidget *parent) : QFrame( parent )
+
+struct ModuleButtonBar::Private
 {
+	QButtonGroup buttons;
+	Buttons buttonFlags;
+};
+
+ModuleButtonBar::ModuleButtonBar(Buttons buttons, QWidget *parent) : QFrame( parent ), d(new Private)
+{
+	d->buttonFlags = buttons;
+	
 	setupButtons( buttons );
 	
 	setFrameStyle( QFrame::Box | QFrame::Raised );
 	
-	connect(&m_buttons, SIGNAL(buttonClicked ( QAbstractButton *)), this, SIGNAL(buttonClicked ( QAbstractButton *)));
-	connect(&m_buttons, SIGNAL(buttonClicked (int)), this, SIGNAL(buttonClicked (int)));
+	connect(&d->buttons, SIGNAL(buttonClicked ( QAbstractButton *)), this, SIGNAL(buttonClicked ( QAbstractButton *)));
+	connect(&d->buttons, SIGNAL(buttonClicked (int)), this, SIGNAL(buttonClicked (int)));
 }
 
 
 ModuleButtonBar::~ModuleButtonBar()
 {
+	delete d;
 }
 
-void ModuleButtonBar::setupButtons(int buttons)
+bool ModuleButtonBar::hasButton(Button button) const
+{
+	return d->buttonFlags & button;
+}
+
+void ModuleButtonBar::setText(Button button, const QString &text)
+{
+	QAbstractButton *target = d->buttons.button(button);
+	
+	if( target )
+		target->setText(text);
+}
+
+void ModuleButtonBar::setIcon(Button button, const QIcon &icon)
+{
+	QAbstractButton *target = d->buttons.button(button);
+	
+	if( target )
+		target->setIcon(icon);
+}
+
+void ModuleButtonBar::setupButtons(Buttons buttons)
 {
 	QHBoxLayout *buttonLayout = new QHBoxLayout(this);
 	buttonLayout->setSpacing(0);
@@ -56,7 +89,7 @@ void ModuleButtonBar::setupButtons(int buttons)
 		
 		but1->setIcon(QIcon(THEME_DIR+"/icons/plussing.png"));
 		buttonLayout->addWidget(but1);
-		m_buttons.addButton( but1,Add);
+		d->buttons.addButton( but1,Add);
 	}
 	
 	if ( buttons & Del)
@@ -66,7 +99,7 @@ void ModuleButtonBar::setupButtons(int buttons)
 		but2->setStatusTip(tr("Remove an item"));
 		but2->setIcon(QIcon(THEME_DIR+"/icons/del.png"));
 		buttonLayout->addWidget(but2);
-		m_buttons.addButton( but2,Del );
+		d->buttons.addButton( but2,Del );
 	}
 	
 	if ( buttons & Query)
@@ -76,7 +109,7 @@ void ModuleButtonBar::setupButtons(int buttons)
 		but3->setStatusTip(tr("Query an item"));
 		but3->setIcon(QIcon(THEME_DIR+"/icons/query.png"));
 		buttonLayout->addWidget(but3);
-		m_buttons.addButton( but3, Query);
+		d->buttons.addButton( but3, Query);
 	}
 	
 	if ( buttons & Modify )
@@ -86,10 +119,13 @@ void ModuleButtonBar::setupButtons(int buttons)
 		but4->setStatusTip(tr("Modify an item"));
 		but4->setIcon(QIcon(THEME_DIR+"/icons/reload.png"));
 		buttonLayout->addWidget(but4);
-		m_buttons.addButton( but4, Modify);
+		d->buttons.addButton( but4, Modify);
 	}
 	
 	
 	buttonLayout->addStretch( 2) ;
 }
+
+
+
 }

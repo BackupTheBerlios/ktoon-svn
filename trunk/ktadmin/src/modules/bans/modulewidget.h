@@ -17,45 +17,34 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef MANAGER_H
-#define MANAGER_H
 
-#include <QObject>
+#ifndef BANSMODULEWIDGET_H
+#define BANSMODULEWIDGET_H
 
-namespace Base {
-	class  PackageObserver;
-}
+#include <modulelistwidget.h>
+
+namespace Bans {
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Manager : public QObject
+class ModuleWidget : public Base::ModuleListWidget
 {
 	Q_OBJECT;
 	public:
-		Manager(QObject *parent = 0);
-		~Manager();
+		ModuleWidget(QWidget *parent = 0);
+		~ModuleWidget();
 		
-		void handlePackage(const QString &root, const QString &xml);
+		void handlePackage(Base::Package *const pkg);
+		void updateList();
 		
-		void addObserver(Base::PackageObserver *obs);
-		void removeObserver(Base::PackageObserver *obs);
-		
-		bool connectToServer(const QString &server, int port);
-		void authenticate(const QString &login, const QString &password);
-		
-		
-	public slots:
-		void enable();
-		void disable();
-		void sendPackage(const QString &pkg);
-		
-	protected:
-		bool tryToHandle(const QString &root, const QString &xml);
-		
-	private:
-		struct Private;
-		Private *const d;
+	protected slots:
+		void addActionSelected(QTreeWidgetItem *current);
+		void delActionSelected(QTreeWidgetItem *current);
+		void modifyActionSelected(QTreeWidgetItem *current);
+		void queryActionSelected(QTreeWidgetItem *current);
 };
+
+}
 
 #endif

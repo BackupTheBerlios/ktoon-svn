@@ -32,6 +32,7 @@
 #include "users/modulewidget.h"
 #include "projects/modulewidget.h"
 #include "server/modulewidget.h"
+#include "bans/modulewidget.h"
 
 #include "manager.h"
 #include "connectdialog.h"
@@ -41,6 +42,7 @@ struct MainWindow::Private
 	Users::ModuleWidget *usersModule;
 	Projects::ModuleWidget *projectsModule;
 	Server::ModuleWidget *serverModule;
+	Bans::ModuleWidget *bansModule;
 	
 	Manager *manager;
 };
@@ -74,13 +76,20 @@ void MainWindow::createModules()
 	
 	d->projectsModule = new Projects::ModuleWidget;
 	addToolView(d->projectsModule, Qt::LeftDockWidgetArea)->setDescription(tr("Administer projects"));
+	setupModule(d->projectsModule);
 	
 	d->serverModule = new Server::ModuleWidget;
 	addToolView(d->serverModule, Qt::RightDockWidgetArea)->setDescription(tr("Administer server"));
+	setupModule(d->serverModule);
+	
+	d->bansModule = new Bans::ModuleWidget;
+	addToolView(d->bansModule, Qt::RightDockWidgetArea)->setDescription(tr("Administer bans"));
+	setupModule(d->bansModule);
 	
 	d->manager->addObserver(d->usersModule);
 	d->manager->addObserver(d->projectsModule);
 	d->manager->addObserver(d->serverModule);
+	d->manager->addObserver(d->bansModule);
 }
 
 void MainWindow::createMenuBar()

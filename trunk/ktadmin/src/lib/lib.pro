@@ -6,11 +6,15 @@
 HEADERS += modulewidgetbase.h \
            package.h \
            modulebuttonbar.h \
-           formbase.h 
+           formbase.h  \
+           packageobserver.h \
+           modulelistwidget.h
 SOURCES += modulewidgetbase.cpp \
            package.cpp \
            modulebuttonbar.cpp \
-           formbase.cpp 
+           formbase.cpp  \
+           packageobserver.cpp \
+           modulelistwidget.cpp
 TEMPLATE = lib
 CONFIG += staticlib \
 warn_on

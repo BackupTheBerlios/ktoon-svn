@@ -17,45 +17,39 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef MANAGER_H
-#define MANAGER_H
 
-#include <QObject>
+#include "banlistparser.h"
 
-namespace Base {
-	class  PackageObserver;
+namespace Packages {
+
+BanListParser::BanListParser() : KTXmlParserBase()
+{
 }
 
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class Manager : public QObject
-{
-	Q_OBJECT;
-	public:
-		Manager(QObject *parent = 0);
-		~Manager();
-		
-		void handlePackage(const QString &root, const QString &xml);
-		
-		void addObserver(Base::PackageObserver *obs);
-		void removeObserver(Base::PackageObserver *obs);
-		
-		bool connectToServer(const QString &server, int port);
-		void authenticate(const QString &login, const QString &password);
-		
-		
-	public slots:
-		void enable();
-		void disable();
-		void sendPackage(const QString &pkg);
-		
-	protected:
-		bool tryToHandle(const QString &root, const QString &xml);
-		
-	private:
-		struct Private;
-		Private *const d;
-};
 
-#endif
+BanListParser::~BanListParser()
+{
+}
+
+bool BanListParser::startTag(const QString &tag, const QXmlAttributes &atts)
+{
+	if( tag == "entry" )
+	{
+		m_bans << atts.value("value");
+	}
+	
+	return true;
+}
+
+
+bool BanListParser::endTag(const QString &)
+{
+	return true;
+}
+
+QStringList BanListParser::bans() const
+{
+	return m_bans;
+}
+
+}

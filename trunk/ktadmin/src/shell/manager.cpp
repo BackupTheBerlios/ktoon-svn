@@ -23,6 +23,7 @@
 #include "socket.h"
 #include "modulewidgetbase.h"
 #include "package.h"
+#include "packageobserver.h"
 
 #include <ddebug.h>
 #include <dosd.h>
@@ -35,7 +36,7 @@
 struct Manager::Private
 {
 	Socket *socket;
-	QList<Base::ModuleWidget *> observers;
+	QList<Base::PackageObserver *> observers;
 	
 	bool enabled;
 	
@@ -81,7 +82,7 @@ void Manager::handlePackage(const QString &root, const QString &xml)
 	{
 		Base::Package *package = new Base::Package(root, xml);
 		
-		foreach(Base::ModuleWidget *observer, d->observers)
+		foreach(Base::PackageObserver *observer, d->observers)
 		{
 			observer->handlePackage(package);
 			if( package->isAccepted() )
@@ -110,12 +111,12 @@ bool Manager::tryToHandle(const QString &root, const QString &xml)
 	return false;
 }
 
-void Manager::addObserver(Base::ModuleWidget *obs)
+void Manager::addObserver(Base::PackageObserver *obs)
 {
 	d->observers << obs;
 }
 
-void Manager::removeObserver(Base::ModuleWidget *obs)
+void Manager::removeObserver(Base::PackageObserver *obs)
 {
 	d->observers.removeAll(obs);
 }

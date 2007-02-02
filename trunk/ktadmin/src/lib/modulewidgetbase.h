@@ -21,14 +21,14 @@
 #define BASEModuleWidget_H
 
 #include <QWidget>
-#include "package.h"
+#include "packageobserver.h"
 
 namespace Base {
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class ModuleWidget : public QWidget
+class ModuleWidget : public QWidget, public PackageObserver
 {
 	Q_OBJECT;
 	public:

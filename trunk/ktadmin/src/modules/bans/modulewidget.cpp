@@ -17,45 +17,73 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef MANAGER_H
-#define MANAGER_H
 
-#include <QObject>
+#include "modulewidget.h"
 
-namespace Base {
-	class  PackageObserver;
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
+
+#include "package.h"
+
+#include "packages/banlistparser.h"
+
+namespace Bans {
+
+ModuleWidget::ModuleWidget(QWidget *parent) : Base::ModuleListWidget(Base::ModuleButtonBar::Add | Base::ModuleButtonBar::Del | Base::ModuleButtonBar::Modify, parent)
+{
+	setWindowTitle(tr("Bans"));
+	
+	setHeaders(QStringList() << tr("Ban"));
 }
 
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class Manager : public QObject
-{
-	Q_OBJECT;
-	public:
-		Manager(QObject *parent = 0);
-		~Manager();
-		
-		void handlePackage(const QString &root, const QString &xml);
-		
-		void addObserver(Base::PackageObserver *obs);
-		void removeObserver(Base::PackageObserver *obs);
-		
-		bool connectToServer(const QString &server, int port);
-		void authenticate(const QString &login, const QString &password);
-		
-		
-	public slots:
-		void enable();
-		void disable();
-		void sendPackage(const QString &pkg);
-		
-	protected:
-		bool tryToHandle(const QString &root, const QString &xml);
-		
-	private:
-		struct Private;
-		Private *const d;
-};
 
-#endif
+ModuleWidget::~ModuleWidget()
+{
+}
+
+void ModuleWidget::handlePackage(Base::Package *const pkg)
+{
+	if( pkg->root() == "bans" )
+	{
+		Packages::BanListParser parser;
+		if ( parser.parse(pkg->xml()) )
+		{
+			foreach(QString ban, parser.bans())
+			{
+				QTreeWidgetItem *item = new QTreeWidgetItem(tree());
+				item->setText(0, ban);
+			}
+			setFilled(true);
+			pkg->accept();
+		}
+	}
+}
+
+void ModuleWidget::updateList()
+{
+	tree()->clear();
+	emit sendPackage("<bans/>");
+}
+
+void ModuleWidget::addActionSelected(QTreeWidgetItem *current)
+{
+}
+
+
+void ModuleWidget::delActionSelected(QTreeWidgetItem */*current*/)
+{
+}
+
+
+void ModuleWidget::modifyActionSelected(QTreeWidgetItem */*current*/)
+{
+}
+
+
+void ModuleWidget::queryActionSelected(QTreeWidgetItem */*current*/)
+{
+}
+
+
+
+}

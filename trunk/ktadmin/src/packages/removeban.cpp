@@ -17,45 +17,27 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef MANAGER_H
-#define MANAGER_H
+#include "removeban.h"
 
-#include <QObject>
+namespace Packages {
 
-namespace Base {
-	class  PackageObserver;
+RemoveBan::RemoveBan(const QString &pattern)
+ : QDomDocument()
+{
+	QDomElement root = createElement("removeban");
+	
+	QDomElement patterne = createElement("pattern");
+	patterne.setAttribute("value", pattern);
+	
+	root.appendChild(patterne);
+	
+	appendChild(root);
 }
 
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class Manager : public QObject
-{
-	Q_OBJECT;
-	public:
-		Manager(QObject *parent = 0);
-		~Manager();
-		
-		void handlePackage(const QString &root, const QString &xml);
-		
-		void addObserver(Base::PackageObserver *obs);
-		void removeObserver(Base::PackageObserver *obs);
-		
-		bool connectToServer(const QString &server, int port);
-		void authenticate(const QString &login, const QString &password);
-		
-		
-	public slots:
-		void enable();
-		void disable();
-		void sendPackage(const QString &pkg);
-		
-	protected:
-		bool tryToHandle(const QString &root, const QString &xml);
-		
-	private:
-		struct Private;
-		Private *const d;
-};
 
-#endif
+RemoveBan::~RemoveBan()
+{
+}
+
+
+}

@@ -17,45 +17,61 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef MANAGER_H
-#define MANAGER_H
 
-#include <QObject>
+#ifndef BASEMODULELISTWIDGET_H
+#define BASEMODULELISTWIDGET_H
+
+#include <modulewidgetbase.h>
+#include "modulebuttonbar.h"
+
+class QTreeWidget;
+class QTreeWidgetItem;
+class QMenu;
+
 
 namespace Base {
-	class  PackageObserver;
-}
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class Manager : public QObject
+class ModuleListWidget : public ModuleWidget
 {
-	Q_OBJECT;
+	Q_OBJECT
 	public:
-		Manager(QObject *parent = 0);
-		~Manager();
+		ModuleListWidget(ModuleButtonBar::Buttons buttons, QWidget *parent = 0);
+		~ModuleListWidget();
 		
-		void handlePackage(const QString &root, const QString &xml);
+		void setHeaders(const QStringList &headers);
 		
-		void addObserver(Base::PackageObserver *obs);
-		void removeObserver(Base::PackageObserver *obs);
+		QTreeWidget *tree() const;
 		
-		bool connectToServer(const QString &server, int port);
-		void authenticate(const QString &login, const QString &password);
+		void setFilled(bool f);
+		bool filled() const;
 		
+		virtual QMenu *createMenu();
 		
-	public slots:
-		void enable();
-		void disable();
-		void sendPackage(const QString &pkg);
+	private slots:
+		void actionSelected(int action);
+		void showMenu(const QPoint &pos);
+		void selectFromAction();
+		
+	protected slots:
+		virtual void addActionSelected(QTreeWidgetItem *current);
+		virtual void delActionSelected(QTreeWidgetItem *current);
+		virtual void queryActionSelected(QTreeWidgetItem *current);
+		virtual void modifyActionSelected(QTreeWidgetItem *current);
 		
 	protected:
-		bool tryToHandle(const QString &root, const QString &xml);
+		virtual void updateList() = 0;
+		
+	protected:
+		virtual void showEvent(QShowEvent *ev);
 		
 	private:
 		struct Private;
 		Private *const d;
 };
+
+}
 
 #endif

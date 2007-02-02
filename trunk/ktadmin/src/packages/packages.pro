@@ -5,10 +5,16 @@
 
 HEADERS += adduser.h  \
 connect.h \
-ackparser.h
+ackparser.h \
+addban.h \
+removeban.h \
+banlistparser.h
 SOURCES += adduser.cpp  \
 connect.cpp \
-ackparser.cpp
+ackparser.cpp \
+addban.cpp \
+removeban.cpp \
+banlistparser.cpp
 CONFIG += release \
 warn_on \
 staticlib
