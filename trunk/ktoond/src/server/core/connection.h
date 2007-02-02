@@ -52,8 +52,6 @@ class Connection : public QThread
 		
 		void run();
 		
-		bool isLogged() const;
-		
 		void appendTextReaded(const QString &readed);
 		
 		void sendToClient(const QString &text) const;
@@ -77,8 +75,12 @@ class Connection : public QThread
 		
 		QString sign() const;
 		
+		bool isFault() const;
+		void setValid(bool v);
+		bool isValid() const;
+		
 	public slots:
-		void close();
+		void close(bool fault = false);
 		void sendErrorPackageToClient(const QString & message, Packages::Error::Level level);
 		
 	private slots:

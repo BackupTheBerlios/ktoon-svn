@@ -8,13 +8,17 @@ packagehandlerbase.cpp \
 server.cpp \
 serverclient.cpp \
 defaultpackagehandler.cpp \
-settings.cpp
+settings.cpp \
+logger.cpp \
+banmanager.cpp
 HEADERS += connection.h \
 packagehandlerbase.h \
 server.h \
 serverclient.h \
 defaultpackagehandler.h \
-settings.h
+settings.h \
+logger.h \
+banmanager.h
 !include(../../../ktoond_config.pri){
     error("configure first")
 }

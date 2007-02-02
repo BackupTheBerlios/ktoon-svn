@@ -25,6 +25,8 @@
 #include <ddebug.h>
 
 #include "server.h"
+#include "logger.h"
+
 #include "ktrequestparser.h"
 #include "ktcompress.h"
 
@@ -52,22 +54,27 @@ class Connection::Private
 		~Private()
 		{
 			delete client;
+			delete user;
 		}
 		
 		Server::Client *client;
 		Server::TcpServer *server;
-		bool isLogged;
+		bool isValid;
 		QQueue<QString> readed;
 		QHash<int, QVariant> datas;
 		QString sign;
 		
 		Users::User *user;
+		
+		bool isFault;
 };
 
 Connection::Connection(int socketDescriptor, Server::TcpServer *server) : QThread(server), d(new Private(server))
 {
 	d->client = new Server::Client(this);
 	d->client->setSocketDescriptor(socketDescriptor);
+	d->isFault = false;
+	d->isValid = true;
 }
 
 Connection::~Connection()
@@ -79,7 +86,10 @@ void Connection::run()
 {
 	while(d->client->state() != QAbstractSocket::UnconnectedState)
 	{
-		if ( d->readed.isEmpty() ) continue;
+		if ( d->readed.isEmpty() || !d->isValid ) continue;
+		
+		if( !d->user )
+			d->isValid = false;
 		
 		QString readed = d->readed.dequeue();
 		
@@ -94,7 +104,7 @@ void Connection::run()
 			dError("server") << "Cannot set document content!";
 		}
 	}
-	// Finish connection
+	
 	removeConnection();
 }
 
@@ -104,8 +114,12 @@ void Connection::removeConnection()
 	emit connectionClosed(this);
 }
 
-void Connection::close()
+void Connection::close(bool fault)
 {
+	d->isValid = false;
+	d->isFault = fault;
+	
+	d->readed.clear();
 	if ( d->client->state() != QAbstractSocket::UnconnectedState )
 	{
 		d->client->flush();
@@ -114,14 +128,6 @@ void Connection::close()
 		d->client->waitForDisconnected();
 		d->client->close();
 	}
-	
-	d->readed.clear();
-	d->isLogged = false;
-}
-
-bool Connection::isLogged() const
-{
-	return d->isLogged;
 }
 
 void Connection::appendTextReaded(const QString &readed)
@@ -192,6 +198,8 @@ void Connection::setUser(Users::User *user)
 {
 	d->user = user;
 	generateSign();
+	
+	d->isValid = true;
 }
 
 Users::User *Connection::user() const
@@ -214,6 +222,20 @@ void Connection::sendErrorPackageToClient(const QString & message, Packages::Err
 	sendToClient(error);
 }
 
+bool Connection::isFault() const
+{
+	return d->isFault;
+}
+
+void Connection::setValid(bool v)
+{
+	d->isValid = v;
+}
+
+bool Connection::isValid() const
+{
+	return d->isValid;
+}
 
 }
 

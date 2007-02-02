@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QCoreApplication>
+#include <QApplication>
 
 #include <ddebug.h>
 #include "server.h"
@@ -29,12 +29,26 @@
 #include <dapplicationproperties.h>
 #include <dconfig.h>
 
+#ifdef Q_OS_UNIX
+#include <unistd.h>
+#include <signal.h>
+#include <sys/wait.h>
+
+static void cleanup(int);
+#endif
+
 int main(int argc, char **argv)
 {
 	DDebug::setForceDisableGUI();
 	
-	QCoreApplication app(argc, argv);
+	QApplication app(argc, argv); // FIXME: Use QCoreApplication with Qt 4.3
 	app.setApplicationName("ktoond");
+	
+#ifdef Q_OS_UNIX
+	signal (SIGINT, cleanup);
+	signal (SIGTERM, cleanup);
+	signal( SIGSEGV, cleanup);
+#endif
 	
 	if ( !DCONFIG->isOk() )
 	{
@@ -80,5 +94,10 @@ int main(int argc, char **argv)
 }
 
 
-
+#ifdef Q_OS_UNIX
+void cleanup(int )
+{
+	QApplication::exit(0);
+}
+#endif
 

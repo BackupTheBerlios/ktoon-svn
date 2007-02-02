@@ -30,6 +30,9 @@
 
 #include "connection.h"
 #include "settings.h"
+#include "logger.h"
+
+
 #include "dapplicationproperties.h"
 
 #include "packages/error.h"
@@ -60,6 +63,7 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 	
 	if ( root == "connect" )
 	{
+		client->setValid(false);
 		if ( !d->manager )
 		{
 			d->manager = new Users::Manager(Server::Settings::self()->databaseDirPath()+"/users.xml" );
@@ -89,7 +93,9 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 			{
 				Packages::Error error(QObject::tr("Invalid login or password"), Packages::Error::Err);
 				client->sendToClient(error);
-				client->close();
+				client->close(true);
+				
+				Server::Logger::self()->error(QObject::tr("Invalid login or password"));
 			}
 		}
 		else

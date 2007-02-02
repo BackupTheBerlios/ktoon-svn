@@ -24,6 +24,7 @@
 #include <QHostInfo>
 #include <QTimer>
 #include <QQueue>
+#include <QHostAddress>
 
 #include <ddebug.h>
 #include <QDebug>
@@ -31,6 +32,8 @@
 #include "packagehandlerbase.h"
 #include "defaultpackagehandler.h"
 #include "settings.h"
+#include "banmanager.h"
+#include "logger.h"
 
 namespace Server {
 
@@ -38,24 +41,32 @@ class TcpServer::Private
 {
 	public:
 		QList<Server::Connection *> connections;
+		BanManager *banManager;
 };
 
 TcpServer::TcpServer(QObject *parent) : QTcpServer(parent), d(new Private)
 {
 	DINIT;
-	m_handler = new Server::DefaultPackageHandler();
+	m_handler = new DefaultPackageHandler();
+	d->banManager = new BanManager(this);
 }
 
 
 TcpServer::~TcpServer()
 {
 	DEND;
+	
+	Logger::self()->info("Server finished");
+	
 	delete d;
 	delete Settings::self();
+	delete Logger::self();
 }
 
 bool TcpServer::openConnection(const QString &host, int port)
 {
+	Logger::self()->info(QObject::tr("Initialized server on %1:%2").arg(host).arg(port));
+	
 	QList<QHostAddress> addrs = QHostInfo::fromName(host).addresses();
 	qDebug() << addrs;
 	if ( !addrs.isEmpty() )
@@ -79,9 +90,22 @@ void TcpServer::incomingConnection(int socketDescriptor)
 	SHOW_VAR(d->connections.count());
 	
 	Server::Connection *newConnection = new Server::Connection(socketDescriptor,this);
-	handle(newConnection);
-	d->connections << newConnection;
-	newConnection->start();
+	
+	QString ip = newConnection->client()->peerAddress().toString();
+	
+	d->banManager->initialize(ip);
+	
+	if ( !d->banManager->isBanned(ip) )
+	{
+		handle(newConnection);
+		d->connections << newConnection;
+		newConnection->start();
+	}
+	else
+	{
+		newConnection->sendErrorPackageToClient(tr("You're banned, get out!"), Packages::Error::Err);
+		newConnection->close();
+	}
 }
 
 void TcpServer::handle(Server::Connection *cnx)
@@ -115,6 +139,8 @@ void TcpServer::removeConnection(Server::Connection *cnx)
         D_FUNCINFO;
         cnx->close();
 	
+	if ( cnx->isFault() )
+		d->banManager->failed(cnx->client()->peerAddress().toString());
         d->connections.removeAll(cnx);
 	m_handler->connectionClosed(cnx);
 }
