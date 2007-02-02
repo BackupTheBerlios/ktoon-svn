@@ -200,6 +200,9 @@ Las respuesta a una peticion queryX sera X
 <!-- Lista clientes actualmente conectados -->
 <listclients />
 
+<!-- Lista los usuarios que tiene registrados el servidor  -->
+<listuser/>
+
 === RESPONSES ===
 
 
@@ -255,8 +258,19 @@ Las respuesta a una peticion queryX sera X
 	<!-- Se repite -->
 </clientlist>
 
+<!--  lista de usuarios -->
+<userlist>
+	<user login="myLogin" name="myName"/>
+	<!-- Se repite -->
+</userlistt>
 
+<!--usuario -->
 
+<user login="myLogin" name="myName" > 
+	<permissions>
+		<perm module="[module id]" read="[0|1]" write="[0|1]" />
+	</permissions>
+</user>
 
 
 

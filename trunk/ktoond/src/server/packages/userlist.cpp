@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosxx@gmail.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,42 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef USERMANAGER_H_
-#define USERMANAGER_H_
+#include "userlist.h"
+#include "../users/user.h"
 
-#include <QString>
+namespace Packages{
 
-namespace Users {
-class User;
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-class Manager
+UserList::UserList(): QDomDocument()
 {
-	public:
-		Manager(const QString &dbfile);
-		~Manager();
-		
-		bool auth(const QString &login, const QString &password);
-		User *user(const QString &login);
-		User *loadUser(const QString &login);
-		
-		QList<User*> users() const;
-		
-		void addUser( const User & user );
-		void updateUser( const User & user );
-		void removeUser(const QString &login);
-		
-		QList<User*> listUsers();
-		
-	private:
-		struct Private;
-		Private *const d;
-};
-
+	QDomElement root = createElement("userlist");
+	root.setAttribute("version", 0);
+	appendChild(root);
 }
 
-#endif
+
+UserList::~UserList()
+{
+}
 
 
+void UserList::addUser(const Users::User *user)
+{
+	QDomElement userE = createElement("user");
+	userE.setAttribute("login",  user->login());
+	userE.setAttribute("name",  user->name());
+	firstChild().appendChild(userE);
+}
+
+}

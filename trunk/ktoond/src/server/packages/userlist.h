@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosxx@gmail.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,43 +17,30 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef PACKAGESINFOUSERS_H
+#define PACKAGESINFOUSERS_H
 
-#ifndef USERMANAGER_H_
-#define USERMANAGER_H_
+#include <QDomDocument>
 
-#include <QString>
-
-namespace Users {
-class User;
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-class Manager
+namespace Users
 {
-	public:
-		Manager(const QString &dbfile);
-		~Manager();
-		
-		bool auth(const QString &login, const QString &password);
-		User *user(const QString &login);
-		User *loadUser(const QString &login);
-		
-		QList<User*> users() const;
-		
-		void addUser( const User & user );
-		void updateUser( const User & user );
-		void removeUser(const QString &login);
-		
-		QList<User*> listUsers();
-		
-	private:
-		struct Private;
-		Private *const d;
-};
-
+	class User;
 }
 
+namespace Packages{
+
+/**
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ */
+class UserList : public QDomDocument
+{
+	public:
+		UserList();
+		~UserList();
+		
+		void addUser(const Users::User *user);
+
+};
+}
 #endif
-
-
