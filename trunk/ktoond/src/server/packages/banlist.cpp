@@ -26,7 +26,7 @@ namespace Packages {
 BanList::BanList()
  : QDomDocument()
 {
-	QDomElement root = createElement("bans");
+	QDomElement root = createElement("banlist");
 	
 	appendChild(root);
 }

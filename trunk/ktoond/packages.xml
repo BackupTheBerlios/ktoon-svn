@@ -6,6 +6,16 @@ Notas generales:
 - Los mensajes de chat y noticias solo estaran disponibles para los miembros del proyecto
 - Los booleanos seran representados por 0 (falso) y 1 (verdadero)
 
+Para solicitar el listado de X se envia un tag asi:
+<listXs/>
+
+y la raiz de la respuesta sera:
+<Xlist>
+	cuerpo
+</Xlist>
+
+Las respuesta a una peticion queryX sera X
+
 -->
 
 
@@ -100,11 +110,11 @@ Notas generales:
 
 
 <!-- Respuesta a <listprojects /> -->
-<projects>
+<projectlist> <!-- TODO: FALTA POR ACTUALIZAR-->
 	<project name="" author="" description="" />
 	<project name="" author="" description="" />
 	<project name="" author="" description="" />
-</projects>
+</projectlist>
 
 
 
@@ -185,10 +195,10 @@ Notas generales:
 </removeban>
 
 <!-- List bans -->
-<bans/>
+<listbans/>
 
 <!-- Lista clientes actualmente conectados -->
-<clients />
+<listclients />
 
 === RESPONSES ===
 

@@ -73,10 +73,7 @@ bool BanManager::isBanned(const QString &pt) const
 
 void BanManager::failed(const QString &pt)
 {
-	dDebug() << "FAILED: " << pt;
 	d->fails[pt] += 1;
-	
-	dDebug() << "COUNT: " << d->fails[pt];
 }
 
 void BanManager::ban(const QString &pt)

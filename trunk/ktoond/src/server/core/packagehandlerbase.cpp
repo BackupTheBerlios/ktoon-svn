@@ -41,6 +41,8 @@
 
 #include "packages/useractionparser.h"
 #include "packages/usersinfo.h"
+#include "packages/removebanparser.h"
+
 #include "banmanager.h"
 
 
@@ -182,7 +184,7 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 			client->sendToClient(package);
 		}
 	}
-	else if ( root == "bans" )
+	else if ( root == "listbans" )
 	{
 		if ( client->user()->canReadOn("admin") )
 		{
@@ -192,6 +194,23 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 			pkg.setBans(bans);
 			
 			client->sendToClient(pkg, true);
+		}
+		else
+		{
+			client->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
+		}
+	}
+	else if ( root == "removeban" )
+	{
+		if( client->user()->canWriteOn("admin") )
+		{
+			Parsers::RemoveBanParser parser;
+			if ( parser.parse(package) )
+			{
+				BanManager::self()->unban(parser.pattern());
+				
+				client->sendToClient(package);
+			}
 		}
 		else
 		{

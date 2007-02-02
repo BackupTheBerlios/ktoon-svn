@@ -11,7 +11,8 @@ HEADERS += connectparser.h \
            error.h \
 	   banlist.h \
            useractionparser.h \
-           usersinfo.h 
+           usersinfo.h  \
+           removebanparser.h
 SOURCES += connectparser.cpp \
            chatparser.cpp \
            noticeparser.cpp \
@@ -20,13 +21,14 @@ SOURCES += connectparser.cpp \
            error.cpp \
            banlist.cpp \
            useractionparser.cpp \
-           usersinfo.cpp 
+           usersinfo.cpp  \
+           removebanparser.cpp
 TEMPLATE = lib
 CONFIG += staticlib \
 warn_on
 TARGET = serverpackages
 !include(../../../ktoond_config.pri){
-  error("Configure first")
+    error("Configure first")
 }
 
 TARGET = serverpackages
