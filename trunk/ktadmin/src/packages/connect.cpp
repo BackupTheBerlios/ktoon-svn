@@ -37,6 +37,10 @@ Connect::Connect(const QString & login, const QString& passwd)
 	root.setAttribute("version", "0");
 	appendChild(root);
 	
+	QDomElement client = createElement("client");
+	client.setAttribute("type", 1);
+	root.appendChild(client);
+	
 	root.appendChild( createElement("login") ).appendChild(createTextNode(login));
 	root.appendChild( createElement("password")).appendChild(createTextNode(DMD5Hash::hash( passwd)));
 	
