@@ -81,7 +81,8 @@ QString Database::nextFileName()
 	if(m_lastFileName.isEmpty())
 	{
 		Parsers::DatabaseParser parser;
-		parser.parse(&QFile(m_dbfile));
+		QFile dbf(m_dbfile);
+		parser.parse(&dbf);
 		m_lastFileName = parser.lastFileName();
 	}
 	

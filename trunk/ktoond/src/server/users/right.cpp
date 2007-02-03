@@ -20,6 +20,8 @@
 
 #include "right.h"
 
+#include <ddebug.h>
+
 namespace Users {
 
 struct Right::Private
@@ -31,12 +33,14 @@ struct Right::Private
 
 Right::Right() : d(new Private())
 {
+	DINIT;
 	d->read = false;
 	d->write = false;
 }
 
 Right::Right(const QString &module, bool read, bool write) : d(new Private)
 {
+	DEND;
 	d->module = module;
 	d->read = read;
 	d->write = write;

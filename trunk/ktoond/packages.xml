@@ -22,7 +22,10 @@ Las respuesta a una peticion queryX sera X
 <!-- ************************** PETICIONES ************************** -->
 
 <!-- Peticion de conexion al servidor -->
+<!-- 0: Cliente -->
+<!-- 1: Admin -->
 <connect version="0" >
+	<client type="[0|1]" />
 	<login>the_login</login>
 	<password>the_hashed_password_md5</password>
 </connect>

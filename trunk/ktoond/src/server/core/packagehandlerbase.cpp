@@ -55,7 +55,7 @@ struct PackageHandlerBase::Private
 
 PackageHandlerBase::PackageHandlerBase() : d(new Private())
 {
-	d->manager = 0;
+	d->manager = new Users::Manager(Server::Settings::self()->databaseDirPath()+"/users.xml" );
 }
 
 PackageHandlerBase::~PackageHandlerBase()
@@ -64,17 +64,15 @@ PackageHandlerBase::~PackageHandlerBase()
 	delete d;
 }
 
-void PackageHandlerBase::handlePackage(Server::Connection *client, const QString &root, const QString &package )
+void PackageHandlerBase::handlePackage(Server::Connection *cnn, const QString &root, const QString &package )
 {
 	dWarning("server") << "PACKAGE: " << package;
 	
+	TcpServer *server = cnn->server();
+	
 	if ( root == "connect" )
 	{
-		client->setValid(false);
-		if ( !d->manager )
-		{
-			d->manager = new Users::Manager(Server::Settings::self()->databaseDirPath()+"/users.xml" );
-		}
+		cnn->setValid(false);
 		
 		Parsers::ConnectParser parser;
 		if ( parser.parse(package) )
@@ -83,28 +81,33 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 			{
 				Users::User *user = d->manager->user(parser.login());
 				
-				client->setUser(user);
+				cnn->setUser(user);
 				
 				QString fortune = DFortuneGenerator::self()->generate();
 				fortune.replace("\n", "<br/>");
-				Packages::Ack ack(QObject::tr("<center><b>Message of the day:</b></center><br/> ")+fortune, client->sign());
+				Packages::Ack ack(QObject::tr("<center><b>Message of the day:</b></center><br/> ")+fortune, cnn->sign());
 				
 				foreach(Users::Right *right, user->rights())
 				{
 					ack.addPermission(right);
 				}
 				
-				client->sendToClient(ack, false);
+				if ( parser.client() == 1 )
+				{
+					server->addAdmin(cnn);
+				}
+				
+				cnn->sendToClient(ack, false);
 			}
 			else
 			{
 				Packages::Error error(QObject::tr("Invalid login or password"), Packages::Error::Err);
-				client->sendToClient(error);
+				cnn->sendToClient(error);
 				
-				BanManager::self()->failed(client->client()->peerAddress().toString());
+				BanManager::self()->failed(cnn->client()->peerAddress().toString());
 				Server::Logger::self()->error(QObject::tr("Invalid login or password"));
 				
-				client->close();
+				cnn->close();
 			}
 		}
 		else
@@ -119,9 +122,9 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 		doc.setContent(package);
 		
 		QDomElement element = doc.firstChildElement("message");
-		element.setAttribute("from", client->user()->login());
+		element.setAttribute("from", cnn->user()->login());
 		
-		client->sendToAll(doc);
+		cnn->sendToAll(doc);
 	}
 	else if ( root == "notice" )
 	{
@@ -129,134 +132,135 @@ void PackageHandlerBase::handlePackage(Server::Connection *client, const QString
 		doc.setContent(package);
 		
 		QDomElement element = doc.firstChildElement("message");
-		element.setAttribute("from", client->user()->login());
+		element.setAttribute("from", cnn->user()->login());
 		
-		client->sendToAll(doc);
+		cnn->sendToAll(doc);
 	}
 	else if ( root == "wall" )
 	{
 	}
 	else if(root == "adduser")
 	{
-		if ( client->user()->canWriteOn("admin") )
+		if ( cnn->user()->canWriteOn("admin") )
 		{
 			Parsers::UserActionParser parser;
 			if(parser.parse(package))
 			{
 				d->manager->addUser(parser.user());
-				client->sendToAll(package);
+				server->sendToAdmins(package);
 			}
 		}
 		else
 		{
-			client->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
+			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
 		}
 	}
 	else if(root == "removeuser")
 	{
-		if ( client->user()->canWriteOn("admin") )
+		if ( cnn->user()->canWriteOn("admin") )
 		{
 			Parsers::UserActionParser parser;
 			if(parser.parse(package))
 			{
 				d->manager->removeUser(parser.user().login());
-				client->sendToAll(package);
+				server->sendToAdmins(package);
 			}
 		}
 		else
 		{
-			client->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
+			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
 		}
 	}
 	else if(root == "queryuser")
 	{
-		if ( client->user()->canReadOn("admin") )
+		if ( cnn->user()->canReadOn("admin") )
 		{
 			Parsers::UserActionParser parser;
 			if(parser.parse(package))
 			{
-				Users::User * user = d->manager->loadUser(parser.user().login());
+				Users::User * user = d->manager->user(parser.user().login());
 				if(user)
 				{
 					QDomDocument doc;
 					doc.appendChild(user->toXml(doc, false));
-					client->sendToClient (doc.toString());
+					cnn->sendToClient (doc.toString());
 				}
 			}
 		}
 		else
 		{
-			client->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
+			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
 		}
 	}
 	else if(root == "updateuser")
 	{
-		if ( client->user()->canWriteOn("admin") )
+		if ( cnn->user()->canWriteOn("admin") )
 		{
 			Parsers::UserActionParser parser;
 			if(parser.parse(package))
 			{
 				d->manager->updateUser(parser.user());
-				client->sendToClient(package);
+				
+				server->sendToAdmins(package);
 			}
 		}
 		else
 		{
-			client->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
+			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
 		}
 	}
 	else if ( root == "listusers" )
 	{
-		if ( client->user()->canReadOn("admin") )
+		if ( cnn->user()->canReadOn("admin") )
 		{
 			Packages::UserList info;
 			foreach(Users::User *u, d->manager->listUsers())
 			{
 				info.addUser(u);
 			}
-			client->sendToClient(info);
+			cnn->sendToClient(info);
 		}
 		else
 		{
-			client->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
+			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
 		}
 	}
 	else if ( root == "listbans" )
 	{
-		if ( client->user()->canReadOn("admin") )
+		if ( cnn->user()->canReadOn("admin") )
 		{
 			QStringList bans = BanManager::self()->allBanned();
 			
 			Packages::BanList pkg;
 			pkg.setBans(bans);
 			
-			client->sendToClient(pkg, true);
+			cnn->sendToClient(pkg, true);
 		}
 		else
 		{
-			client->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
+			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
 		}
 	}
 	else if ( root == "removeban" )
 	{
-		if( client->user()->canWriteOn("admin") )
+		if( cnn->user()->canWriteOn("admin") )
 		{
 			Parsers::RemoveBanParser parser;
 			if ( parser.parse(package) )
 			{
 				BanManager::self()->unban(parser.pattern());
 				
-				client->sendToClient(package);
+				server->sendToAdmins(package);
 			}
 		}
 		else
 		{
-			client->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
+			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
 		}
 	}
 	else
 	{
-		handle(client, root, package);
+		handle(cnn, root, package);
 	}
 }
 

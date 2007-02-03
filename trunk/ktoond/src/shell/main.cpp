@@ -95,9 +95,12 @@ int main(int argc, char **argv)
 
 
 #ifdef Q_OS_UNIX
-void cleanup(int )
+void cleanup(int s)
 {
+	dDebug("server") << "Finishing with signal: " << s;
+	
 	QApplication::exit(0);
+	exit(0);
 }
 #endif
 

@@ -37,7 +37,7 @@ namespace Users {
 class User
 {
 	public:
-		User();
+		explicit User();
 		~User();
 		
 		void setName(const QString &name);

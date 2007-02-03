@@ -41,6 +41,7 @@ class ConnectParser : public KTXmlParserBase
 		
 		QString login() const;
 		QString password() const;
+		int client() const;
 		
 	private:
 		struct Private;

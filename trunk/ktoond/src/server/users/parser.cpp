@@ -86,9 +86,9 @@ User *Parser::user(const QString &login)
 	{
 		foreach(User * user, d->users)
 		{
-			qDebug() << user->login() << "==" << login;
 			if(user->login() == login)
 			{
+				d->users.clear();
 				return user;
 			}
 		}

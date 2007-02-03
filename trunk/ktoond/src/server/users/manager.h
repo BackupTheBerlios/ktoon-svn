@@ -37,9 +37,6 @@ class Manager
 		
 		bool auth(const QString &login, const QString &password);
 		User *user(const QString &login);
-		User *loadUser(const QString &login);
-		
-		QList<User*> users() const;
 		
 		void addUser( const User & user );
 		void updateUser( const User & user );

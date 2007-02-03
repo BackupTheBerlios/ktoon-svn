@@ -69,6 +69,7 @@ class Connection::Private
 
 Connection::Connection(int socketDescriptor, Server::TcpServer *server) : QThread(server), d(new Private(server))
 {
+	DINIT;
 	d->client = new Server::Client(this);
 	d->client->setSocketDescriptor(socketDescriptor);
 	d->isValid = true;
@@ -76,6 +77,7 @@ Connection::Connection(int socketDescriptor, Server::TcpServer *server) : QThrea
 
 Connection::~Connection()
 {
+	DEND;
 	delete d;
 }
 

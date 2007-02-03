@@ -45,7 +45,6 @@ class Manager::Private
 		}
 		
 		Parser *parser;
-		QHash<QString, User *> users;
 		Database *database;
 };
 
@@ -64,15 +63,12 @@ Manager::~Manager()
 
 bool Manager::auth(const QString &login, const QString &password)
 {
-	if ( d->users.contains(login) ) return true;
-	
 	if ( User *user = d->parser->user(login) )
 	{
 		dDebug() << "login: " << user->login() << " pass: " << user->password();
 		dDebug() << "comp: " << password;
 		if( user->password() == password )
 		{
-			d->users.insert(login, user);
 			return true;
 		}
 		
@@ -89,17 +85,7 @@ bool Manager::auth(const QString &login, const QString &password)
 
 User *Manager::user(const QString &login)
 {
-	return d->users[login];
-}
-
-User *Manager::loadUser(const QString &login)
-{
 	return d->parser->user(login);
-}
-
-QList<User*> Manager::users() const
-{
-	return d->users.values();
 }
 
 void Manager::addUser( const User & user )

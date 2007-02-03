@@ -27,10 +27,12 @@ class ConnectParser::Private
 	public:
 		QString login;
 		QString password;
+		int client;
 };
 
 ConnectParser::ConnectParser() : KTXmlParserBase(), d(new Private)
 {
+	d->client = 0;
 }
 
 
@@ -39,7 +41,7 @@ ConnectParser::~ConnectParser()
 	delete d;
 }
 
-bool ConnectParser::startTag(const QString &tag, const QXmlAttributes &)
+bool ConnectParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
 	if ( root() == "connect" )
 	{
@@ -50,6 +52,10 @@ bool ConnectParser::startTag(const QString &tag, const QXmlAttributes &)
 		else if ( tag == "password")
 		{
 			setReadText(true);
+		}
+		else if ( tag == "client" )
+		{
+			d->client = atts.value("type").toInt();
 		}
 	}
 	
@@ -83,6 +89,11 @@ QString ConnectParser::login() const
 QString ConnectParser::password() const
 {
 	return d->password;
+}
+
+int ConnectParser::client() const
+{
+	return d->client;
 }
 
 }

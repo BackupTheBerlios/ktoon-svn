@@ -50,11 +50,15 @@ class TcpServer : public QTcpServer
 		void sendToAll(const QDomDocument &pkg);
 		bool openConnection(const QString &host, int port);
 		
+		void sendToAdmins(const QString &str);
+		
 		template<typename klass> void createHandler()
 		{
 			if ( m_handler ) delete m_handler;
 			m_handler = new klass;
 		}
+		
+		void addAdmin(Server::Connection *cnx);
 		
 		
 	public slots:

@@ -40,6 +40,7 @@ class TcpServer::Private
 {
 	public:
 		QList<Server::Connection *> connections;
+		QList<Server::Connection *> admins;
 };
 
 TcpServer::TcpServer(QObject *parent) : QTcpServer(parent), d(new Private)
@@ -79,6 +80,11 @@ bool TcpServer::openConnection(const QString &host, int port)
 		return false;
 	}
 	return true;
+}
+
+void TcpServer::addAdmin(Server::Connection *cnx)
+{
+	d->admins << cnx;
 }
 
 void TcpServer::incomingConnection(int socketDescriptor)
@@ -132,15 +138,33 @@ void TcpServer::sendToAll(const QDomDocument &pkg)
 	sendToAll(pkg.toString(0));
 }
 
+void TcpServer::sendToAdmins(const QString &str)
+{
+	foreach(Server::Connection *cnn, d->admins)
+	{
+		cnn->sendToClient(str);
+	}
+}
+
 void TcpServer::removeConnection(Server::Connection *cnx)
 {
         D_FUNCINFO;
 	
+        d->connections.removeAll(cnx);
+	d->admins.removeAll(cnx);
+	
 	cnx->blockSignals(true);
 	cnx->close();
 	cnx->blockSignals(false);
-        d->connections.removeAll(cnx);
+	
+	
 	m_handler->connectionClosed(cnx);
+	
+	if( !cnx->isRunning())
+	{
+		delete cnx;
+		cnx = 0;
+	}
 }
 
 
