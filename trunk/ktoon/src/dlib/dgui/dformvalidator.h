@@ -29,12 +29,13 @@ class QLineEdit;
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class DFormValidator : public QObject
+class DFormValidator
 {
-	Q_OBJECT;
 	public:
-		DFormValidator(QWidget *parent);
-		~DFormValidator();
+		DFormValidator(QWidget *form);
+		virtual ~DFormValidator();
+		
+		void setForm(QWidget *form);
 		
 		bool validatesNumerically(bool real);
 		bool validatesRange(int i, int e);

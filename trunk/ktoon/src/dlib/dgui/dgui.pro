@@ -133,23 +133,26 @@ SOURCES += danimwidget.cpp \
 DEFINES += DLIB_GUI
 RESOURCES += dgui_images.qrc
 QT += xml
-KDEV_QTVER = 4
 LIBS += -ldcore
-INCLUDEPATH += ../dcore \
-../
+
+INCLUDEPATH += ../dcore ../
+
 MOC_DIR = .moc
 UI_DIR = .ui
 OBJECTS_DIR = .obj
-QMAKE_LIBDIR = ../../../src/dlib/dcore \
-../dcore
+
+LIBS += -L../../../src/dlib/dcore -L../dcore
 CONFIG += release \
 warn_on \
 dll
 TEMPLATE = lib
 QT += opengl
-!{include(../dlibconfig.pri){
+
+!include(../dlibconfig.pri){
     error("Run ./configure first!")
 }
+
 linux-g++{
     TARGETDEPS += ../dcore/libdcore.so
 }
+

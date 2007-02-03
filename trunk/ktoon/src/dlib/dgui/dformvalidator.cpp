@@ -28,13 +28,18 @@
 
 #include <QtDebug>
 
-DFormValidator::DFormValidator(QWidget *parent) : QObject(parent), m_parent(parent)
+DFormValidator::DFormValidator(QWidget *form) : m_parent(form)
 {
 }
 
 
 DFormValidator::~DFormValidator()
 {
+}
+
+void DFormValidator::setForm(QWidget *form)
+{
+	m_parent = form;
 }
 
 bool DFormValidator::validatesNumerically(bool real)
