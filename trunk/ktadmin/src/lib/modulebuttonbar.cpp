@@ -87,7 +87,7 @@ void ModuleButtonBar::setupButtons(Buttons buttons)
 		
 		but1->setStatusTip(tr("Add an item"));
 		
-		but1->setIcon(QIcon(THEME_DIR+"/icons/plussing.png"));
+		but1->setIcon(QIcon(THEME_DIR+"/icons/add.png"));
 		buttonLayout->addWidget(but1);
 		d->buttons.addButton( but1,Add);
 	}

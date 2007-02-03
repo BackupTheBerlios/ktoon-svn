@@ -20,19 +20,22 @@
 #ifndef PROJECTSMODULEWIDGET_H
 #define PROJECTSMODULEWIDGET_H
 
-#include <modulewidgetbase.h>
+#include <modulelistwidget.h>
 
 namespace Projects {
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class ModuleWidget : public Base::ModuleWidget
+class ModuleWidget : public Base::ModuleListWidget
 {
 	Q_OBJECT
 	public:
 		ModuleWidget(QWidget *parent = 0);
 		~ModuleWidget();
+		
+	private:
+		void updateList();
 };
 
 }

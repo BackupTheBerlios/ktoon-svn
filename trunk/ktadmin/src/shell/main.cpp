@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <dapplication.h>
+#include <dapplicationproperties.h>
 
 #include "mainwindow.h"
 
@@ -26,6 +27,8 @@ int main(int argc, char **argv)
 {
 	DApplication app(argc, argv);
 	app.setApplicationName("ktadmin");
+	
+	dAppProp->setThemeDir("data/");
 	
 	MainWindow mw;
 	mw.show();

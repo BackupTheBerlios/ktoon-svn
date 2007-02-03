@@ -20,19 +20,22 @@
 #ifndef SERVERMODULEWIDGET_H
 #define SERVERMODULEWIDGET_H
 
-#include <modulewidgetbase.h>
+#include <modulelistwidget.h>
 
 namespace Server {
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class ModuleWidget : public Base::ModuleWidget
+class ModuleWidget : public Base::ModuleListWidget
 {
 	Q_OBJECT;
 	public:
 		ModuleWidget(QWidget *parent = 0);
 		~ModuleWidget();
+		
+	private:
+		void updateList();
 };
 
 }

@@ -20,6 +20,8 @@
 #include "modulewidgetbase.h"
 #include "package.h"
 
+#include "formbase.h"
+
 namespace Base {
 
 ModuleWidget::ModuleWidget(QWidget *parent) : QWidget(parent)
@@ -29,6 +31,13 @@ ModuleWidget::ModuleWidget(QWidget *parent) : QWidget(parent)
 
 ModuleWidget::~ModuleWidget()
 {
+}
+
+void ModuleWidget::registerForm(Form *form)
+{
+	connect(form, SIGNAL(sendPackage(const QString&)), this, SIGNAL(sendPackage(const QString&)));
+	
+	emit postWidget(form);
 }
 
 void ModuleWidget::handlePackage(Package *const pkg)

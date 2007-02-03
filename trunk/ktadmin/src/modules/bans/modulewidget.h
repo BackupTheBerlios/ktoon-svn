@@ -36,6 +36,8 @@ class ModuleWidget : public Base::ModuleListWidget
 		~ModuleWidget();
 		
 		void handlePackage(Base::Package *const pkg);
+		
+	private:
 		void updateList();
 		
 	protected slots:

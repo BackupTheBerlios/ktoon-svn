@@ -22,7 +22,9 @@
 
 #include <QFrame>
 #include <QDialogButtonBox>
+#include <dformvalidator.h>
 
+class QTreeWidgetItem;
 
 namespace Base {
 
@@ -30,25 +32,34 @@ namespace Base {
 /**
  * @author Jorge Cuadrado <kuadrosxx@gmail.com>
 */
-class Form : public QFrame
+class Form : public QFrame, public DFormValidator
 {
 	Q_OBJECT
 	public:
-		Form( QDialogButtonBox::StandardButtons buttons, const QString &title,  QWidget *parent=0);
+		Form(const QString &title,  QWidget *parent=0);
 		virtual ~Form();
-		virtual void applyAction( QDialogButtonBox::ButtonRole ) = 0;
 		
 		void setCentralWidget(QWidget *widget);
 		
 		void setButtons(QDialogButtonBox::StandardButtons buttons);
 		void setTitle( const QString &title);
 		
-	public slots:
-// 		virtual void clear() = 0;
+		virtual void itemDropped(QTreeWidgetItem *item);
 		
+	public slots:
+		virtual void resetForm() = 0;
+		virtual void acceptForm() = 0;
+		virtual void showHelp();
 		
 	private slots:
-		void buttonCliked(QAbstractButton * button );
+		void _acceptForm();
+		
+	protected:
+		void dragEnterEvent(QDragEnterEvent *event);
+		void dropEvent(QDropEvent *event);
+		
+	signals:
+		void sendPackage(const QString &pkg);
 		
 	private:
 		struct Private;

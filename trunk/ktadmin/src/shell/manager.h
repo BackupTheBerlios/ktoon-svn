@@ -44,11 +44,15 @@ class Manager : public QObject
 		bool connectToServer(const QString &server, int port);
 		void authenticate(const QString &login, const QString &password);
 		
+		bool isEnabled() const;
 		
 	public slots:
 		void enable();
 		void disable();
 		void sendPackage(const QString &pkg);
+		
+	signals:
+		void connected();
 		
 	protected:
 		bool tryToHandle(const QString &root, const QString &xml);

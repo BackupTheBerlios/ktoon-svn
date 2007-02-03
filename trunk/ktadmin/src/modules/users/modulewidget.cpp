@@ -25,6 +25,9 @@
 #include <dtreewidgetsearchline.h>
 #include <ddebug.h>
 
+#include <package.h>
+#include "form.h"
+
 #include <QToolButton>
 #include <QTreeWidget>
 #include <QVBoxLayout>
@@ -50,7 +53,7 @@ ModuleWidget::ModuleWidget(QWidget *parent)
 	: Base::ModuleListWidget(Base::ModuleButtonBar::Add | Base::ModuleButtonBar::Del | Base::ModuleButtonBar::Modify, parent), d(new Private)
 {
 	setWindowTitle(tr("Users"));
-	
+	setWindowIcon(QIcon(THEME_DIR+"/icons/users.png"));
 	
 	setHeaders( QStringList() << tr("Login") << tr("Name") );
 	
@@ -65,8 +68,8 @@ ModuleWidget::~ModuleWidget()
 void ModuleWidget::addActionSelected(QTreeWidgetItem *current)
 {
 	Form *form = new Form();
-	emit postWidget(form);
-	connect(form, SIGNAL(sendPackage(const QString &)), this, SIGNAL(sendPackage(const QString &)));
+	registerForm(form);
+	
 }
 
 void ModuleWidget::delActionSelected(QTreeWidgetItem *current)

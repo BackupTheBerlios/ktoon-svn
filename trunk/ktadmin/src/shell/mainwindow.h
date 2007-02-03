@@ -41,6 +41,7 @@ class MainWindow : public DWorkspaceMainWindow
 		void setupModule(const QWidget *w);
 		
 	private slots:
+		void updateModules();
 		void addWidgetAsWindow(QWidget *w);
 		void connectToServer();
 		

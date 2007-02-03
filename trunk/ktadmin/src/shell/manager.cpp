@@ -47,7 +47,7 @@ Manager::Manager(QObject *parent) : QObject(parent), d(new Private)
 {
 	d->socket = new Socket(this);
 	
-	connect(d->socket, SIGNAL(connected()), this, SLOT(enable()));
+// 	connect(d->socket, SIGNAL(connected()), this, SLOT(enable()));
 	connect(d->socket, SIGNAL(disconnected()), this, SLOT(disable()));
 }
 
@@ -55,6 +55,11 @@ Manager::Manager(QObject *parent) : QObject(parent), d(new Private)
 Manager::~Manager()
 {
 	delete d;
+}
+
+bool Manager::isEnabled() const
+{
+	return d->enabled;
 }
 
 void Manager::enable()
@@ -102,6 +107,9 @@ bool Manager::tryToHandle(const QString &root, const QString &xml)
 		{
 			DOsd::self()->display(parser.motd());
 			d->sign = parser.sign();
+			
+			d->enabled = true;
+			emit connected();
 			
 			return true;
 		}

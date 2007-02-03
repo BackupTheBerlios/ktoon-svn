@@ -22,8 +22,6 @@
 #define USERSMODULEWIDGET_H
 
 #include <modulelistwidget.h>
-#include <package.h>
-#include "form.h"
 
 namespace Users {
 
@@ -39,6 +37,9 @@ class ModuleWidget : public Base::ModuleListWidget
 		~ModuleWidget();
 		virtual void handlePackage(Base::Package *const pkg);
 		
+	private:
+		virtual void updateList();
+		
 	private slots:
 		void removeUser(const QString& login);
 		
@@ -47,8 +48,6 @@ class ModuleWidget : public Base::ModuleListWidget
 		virtual void delActionSelected(QTreeWidgetItem *current);
 		virtual void modifyActionSelected(QTreeWidgetItem *current);
 		
-	protected:
-		virtual void updateList();
 		
 	private:
 		struct Private;

@@ -1,4 +1,5 @@
-SUBDIRS += src
+SUBDIRS += src \
+data
 TEMPLATE = subdirs 
 CONFIG += warn_on \
           qt \

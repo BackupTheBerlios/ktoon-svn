@@ -24,12 +24,15 @@
 #include <QTreeWidgetItem>
 #include <QHash>
 
+#include <dapplicationproperties.h>
+
 #include "package.h"
 
 #include "packages/removeban.h"
 
 #include "banlistparser.h"
 #include "removebanparser.h"
+#include "addbanparser.h"
 #include "form.h"
 
 namespace Bans {
@@ -42,6 +45,7 @@ struct ModuleWidget::Private
 ModuleWidget::ModuleWidget(QWidget *parent) : Base::ModuleListWidget(Base::ModuleButtonBar::Add | Base::ModuleButtonBar::Del | Base::ModuleButtonBar::Modify, parent), d(new Private)
 {
 	setWindowTitle(tr("Bans"));
+	setWindowIcon(QIcon(THEME_DIR+"/icons/admin.png"));
 	
 	setHeaders(QStringList() << tr("Ban"));
 }
@@ -85,6 +89,18 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 			pkg->accept();
 		}
 	}
+	else if ( pkg->root() == "addban" )
+	{
+		AddBanParser parser;
+		
+		if ( parser.parse(pkg->xml()) )
+		{
+			QTreeWidgetItem *item = new QTreeWidgetItem(tree());
+			item->setText(0, parser.pattern());
+			
+			pkg->accept();
+		}
+	}
 }
 
 void ModuleWidget::updateList()
@@ -97,7 +113,7 @@ void ModuleWidget::addActionSelected(QTreeWidgetItem */*current*/)
 {
 	Form *form = new Form;
 	
-	emit postWidget(form);
+	registerForm(form);
 }
 
 

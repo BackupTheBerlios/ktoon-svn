@@ -37,16 +37,14 @@ class Form : public Base::Form
 		Form(QWidget *parent = 0);
 		Form(const QString &login, const QString name, const QList<Permission> & permissions,  QWidget *parent = 0);
 		~Form();
-		void applyAction( QDialogButtonBox::ButtonRole );
-		void clear();
+		
+		void resetForm();
+		void acceptForm();
 		
 	private:
 		void init();
 		struct Private;
 		Private *const d;
-		
-	signals:
-		void sendPackage( const QString &  );
 };
 
 }

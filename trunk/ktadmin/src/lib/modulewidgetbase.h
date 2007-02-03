@@ -25,6 +25,8 @@
 
 namespace Base {
 
+class Form;
+
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
@@ -36,6 +38,9 @@ class ModuleWidget : public QWidget, public PackageObserver
 		~ModuleWidget();
 		
 		virtual void handlePackage(Package *const pkg);
+		virtual void update() = 0;
+		
+		void registerForm(Form *form);
 		
 	signals:
 		void postWidget(QWidget *w);

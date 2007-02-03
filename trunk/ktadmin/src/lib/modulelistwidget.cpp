@@ -67,6 +67,7 @@ ModuleListWidget::ModuleListWidget(ModuleButtonBar::Buttons buttons, QWidget *pa
 	d->tree->setContextMenuPolicy(Qt::CustomContextMenu);
 	
 	connect(d->tree, SIGNAL(customContextMenuRequested( const QPoint& )), this, SLOT(showMenu(const QPoint &)));
+	connect(d->tree, SIGNAL(itemActivated( QTreeWidgetItem*, int )), this, SLOT(defaultBehavior(QTreeWidgetItem*, int)));
 	
 	d->tree->header()->hide();
 	
@@ -208,7 +209,7 @@ void ModuleListWidget::modifyActionSelected(QTreeWidgetItem *current)
 void ModuleListWidget::showEvent(QShowEvent *)
 {
 	if ( !d->filled )
-		updateList();
+		update();
 }
 
 void ModuleListWidget::setFilled(bool f)
@@ -221,6 +222,17 @@ bool ModuleListWidget::filled() const
 	return d->filled;
 }
 
+void ModuleListWidget::update()
+{
+	d->tree->clear();
+	updateList();
+}
+
+
+void ModuleListWidget::defaultBehavior(QTreeWidgetItem *item, int)
+{
+	modifyActionSelected(item);
+}
 
 }
 

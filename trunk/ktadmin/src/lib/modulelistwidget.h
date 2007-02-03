@@ -47,6 +47,7 @@ class ModuleListWidget : public ModuleWidget
 		
 		void setFilled(bool f);
 		bool filled() const;
+		void update();
 		
 		virtual QMenu *createMenu();
 		
@@ -55,13 +56,15 @@ class ModuleListWidget : public ModuleWidget
 		void showMenu(const QPoint &pos);
 		void selectFromAction();
 		
+		void defaultBehavior(QTreeWidgetItem*, int);
+		
 	protected slots:
 		virtual void addActionSelected(QTreeWidgetItem *current);
 		virtual void delActionSelected(QTreeWidgetItem *current);
 		virtual void queryActionSelected(QTreeWidgetItem *current);
 		virtual void modifyActionSelected(QTreeWidgetItem *current);
 		
-	protected:
+	private:
 		virtual void updateList() = 0;
 		
 	protected:

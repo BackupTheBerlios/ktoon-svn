@@ -17,14 +17,18 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #include "modulewidget.h"
+#include <dapplicationproperties.h>
+#include <QIcon>
 
 namespace Projects {
 
 ModuleWidget::ModuleWidget(QWidget *parent)
- : Base::ModuleWidget(parent)
+ : Base::ModuleListWidget(Base::ModuleButtonBar::Add | Base::ModuleButtonBar::Del | Base::ModuleButtonBar::Modify, parent)
 {
 	setWindowTitle(tr("Projects"));
+	setWindowIcon(QIcon(THEME_DIR+"/icons/attach.png"));
 }
 
 
@@ -32,5 +36,8 @@ ModuleWidget::~ModuleWidget()
 {
 }
 
+void ModuleWidget::updateList()
+{
+}
 
 }

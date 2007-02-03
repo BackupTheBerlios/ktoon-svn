@@ -28,6 +28,7 @@
 
 #include <dtoolview.h>
 #include <ddebug.h>
+#include <dosd.h>
 
 #include "users/modulewidget.h"
 #include "projects/modulewidget.h"
@@ -54,6 +55,7 @@ MainWindow::MainWindow(QWidget *parent)
 	setWindowTitle(tr("KToonD Admin"));
 	
 	d->manager = new Manager(this);
+	connect(d->manager, SIGNAL(connected()), this, SLOT(updateModules()));
 	
 	createModules();
 	createMenuBar();
@@ -98,6 +100,8 @@ void MainWindow::createMenuBar()
 	QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
 	
 	QAction *connectAction = fileMenu->addAction(tr("Connect..."), this, SLOT(connectToServer()));
+	connectAction->setIcon(QIcon(THEME_DIR+"/icons/connect.png"));
+	connectAction->setStatusTip(tr("Connect to server..."));
 	
 	fileMenu->addSeparator();
 	fileMenu->addAction(tr("&Quit"), qApp, SLOT(closeAllWindows()));
@@ -115,13 +119,44 @@ void MainWindow::createMenuBar()
 
 void MainWindow::addWidgetAsWindow(QWidget *w)
 {
-	addWidget(w);
+	if ( d->manager->isEnabled() )
+	{
+		addWidget(w);
+	}
+	else
+	{
+		DOsd::self()->display(tr("Please connect to server"));
+	}
 }
 
 void MainWindow::setupModule(const QWidget *w)
 {
 	connect(w, SIGNAL(postWidget(QWidget *)), this, SLOT(addWidgetAsWindow(QWidget *)));
 	connect(w, SIGNAL(sendPackage(const QString &)),  d->manager, SLOT(sendPackage(const QString &)));
+}
+
+void MainWindow::updateModules()
+{
+	if ( d->usersModule->isVisible() )
+	{
+		d->usersModule->update();
+	}
+	
+	if ( d->projectsModule->isVisible() )
+	{
+		d->projectsModule->update();
+	}
+	
+	if ( d->serverModule->isVisible() )
+	{
+		d->serverModule->update();
+	}
+	
+	if ( d->bansModule->isVisible() )
+	{
+		d->bansModule->update();
+	}
+	
 }
 
 void MainWindow::connectToServer()
