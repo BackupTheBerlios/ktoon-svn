@@ -42,6 +42,7 @@
 #include "packages/useractionparser.h"
 #include "packages/userlist.h"
 #include "packages/removebanparser.h"
+#include "packages/addbanparser.h"
 
 #include "banmanager.h"
 
@@ -146,8 +147,14 @@ void PackageHandlerBase::handlePackage(Server::Connection *cnn, const QString &r
 			Parsers::UserActionParser parser;
 			if(parser.parse(package))
 			{
-				d->manager->addUser(parser.user());
-				server->sendToAdmins(package);
+				if( d->manager->addUser(parser.user()) )
+				{
+					server->sendToAdmins(package);
+				}
+				else
+				{
+					cnn->sendErrorPackageToClient(QObject::tr("Error adding user"), Packages::Error::Err);
+				}
 			}
 		}
 		else
@@ -162,8 +169,8 @@ void PackageHandlerBase::handlePackage(Server::Connection *cnn, const QString &r
 			Parsers::UserActionParser parser;
 			if(parser.parse(package))
 			{
-				d->manager->removeUser(parser.user().login());
-				server->sendToAdmins(package);
+				if ( d->manager->removeUser(parser.user().login()) )
+					server->sendToAdmins(package);
 			}
 		}
 		else
@@ -199,9 +206,8 @@ void PackageHandlerBase::handlePackage(Server::Connection *cnn, const QString &r
 			Parsers::UserActionParser parser;
 			if(parser.parse(package))
 			{
-				d->manager->updateUser(parser.user());
-				
-				server->sendToAdmins(package);
+				if ( d->manager->updateUser(parser.user()) )
+					server->sendToAdmins(package);
 			}
 		}
 		else
@@ -250,6 +256,22 @@ void PackageHandlerBase::handlePackage(Server::Connection *cnn, const QString &r
 			{
 				BanManager::self()->unban(parser.pattern());
 				
+				server->sendToAdmins(package);
+			}
+		}
+		else
+		{
+			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
+		}
+	}
+	else if ( root == "addban" )
+	{
+		if( cnn->user()->canWriteOn("admin" ) )
+		{
+			Parsers::AddBanParser parser;
+			if ( parser.parse(package) )
+			{
+				BanManager::self()->ban(parser.pattern());
 				server->sendToAdmins(package);
 			}
 		}

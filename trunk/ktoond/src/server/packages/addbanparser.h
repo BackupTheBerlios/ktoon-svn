@@ -18,39 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef USERMANAGER_H_
-#define USERMANAGER_H_
+#ifndef PARSERSADDBANPARSER_H
+#define PARSERSADDBANPARSER_H
 
-#include <QString>
+#include <ktxmlparserbase.h>
 
-namespace Users {
-class User;
+namespace Parsers {
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
+	@author David Cuadrado <krawek@toonka.com>
 */
-class Manager
+class AddBanParser : public KTXmlParserBase
 {
 	public:
-		Manager(const QString &dbfile);
-		~Manager();
+		AddBanParser();
+		~AddBanParser();
 		
-		bool auth(const QString &login, const QString &password);
-		User *user(const QString &login);
+		bool startTag(const QString &tag, const QXmlAttributes &atts);
+		bool endTag(const QString &tag);
+		void text(const QString &) {};
 		
-		bool addUser( const User & user );
-		bool updateUser( const User & user );
-		bool removeUser(const QString &login);
-		
-		QList<User*> listUsers();
+		QString pattern() const;
 		
 	private:
-		struct Private;
-		Private *const d;
+		QString m_pattern;
 };
 
 }
 
 #endif
-
-

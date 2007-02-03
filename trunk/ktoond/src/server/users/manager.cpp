@@ -88,19 +88,19 @@ User *Manager::user(const QString &login)
 	return d->parser->user(login);
 }
 
-void Manager::addUser( const User & user )
+bool Manager::addUser( const User & user )
 {
-	d->database->addUser(user);
+	return d->database->addUser(user);
 }
 
-void Manager::updateUser( const User & user )
+bool Manager::updateUser( const User & user )
 {
-	d->database->updateUser(user);
+	return d->database->updateUser(user);
 }
 
-void Manager::removeUser(const QString &login)
+bool Manager::removeUser(const QString &login)
 {
-	d->database->removeUser(login);
+	return d->database->removeUser(login);
 }
 
 

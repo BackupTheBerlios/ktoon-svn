@@ -35,9 +35,9 @@ class Database
 	public:
 		Database(const QString &dbfile);
 		~Database();
-		void addUser(const Users::User &user);
-		void updateUser(const Users::User &user);
-		void removeUser(const QString &login);
+		bool addUser(const Users::User &user);
+		bool updateUser(const Users::User &user);
+		bool removeUser(const QString &login);
 		
 		
 	private:

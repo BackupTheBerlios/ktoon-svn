@@ -48,7 +48,7 @@ Database::~Database()
 
 QDomDocument Database::loadDataBase()
 {
-	dDebug() << "loading database of " << d->dbfile;
+	dDebug() << "loading database from " << d->dbfile;
 	QFile file(d->dbfile);
 	QDomDocument document;
 	if( !file.exists() )
@@ -74,10 +74,13 @@ QDomDocument Database::loadDataBase()
 	return document;
 }
 
-void Database::addUser(const Users::User &user)
+bool Database::addUser(const Users::User &user)
 {
+	if ( user.login().isEmpty() )
+		return false;
+	
 	QDomDocument db = loadDataBase();
-	QDomNode  root = db.firstChild();
+	QDomElement root = db.documentElement();
 	
 	root.appendChild(user.toXml(db));
 	
@@ -88,11 +91,14 @@ void Database::addUser(const Users::User &user)
 		QTextStream ts(&file);
 		ts << db.toString();
 		file.close();
+		return true;
 	}
+	
+	return false;
 }
 
 
-void Database::updateUser(const Users::User &user)
+bool Database::updateUser(const Users::User &user)
 {
 	QDomDocument doc = loadDataBase();
 	
@@ -120,10 +126,14 @@ void Database::updateUser(const Users::User &user)
 		QTextStream ts(&file);
 		ts << doc.toString();
 		file.close();
+		
+		return true;
 	}
+	
+	return false;
 }
 
-void Database::removeUser(const QString &login)
+bool Database::removeUser(const QString &login)
 {
 	QDomDocument doc = loadDataBase();
 	
@@ -148,7 +158,10 @@ void Database::removeUser(const QString &login)
 		QTextStream ts(&file);
 		ts << doc.toString();
 		file.close();
+		return true;
 	}
+	
+	return false;
 }
 
 }

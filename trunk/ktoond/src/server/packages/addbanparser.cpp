@@ -18,39 +18,42 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef USERMANAGER_H_
-#define USERMANAGER_H_
+#include "addbanparser.h"
 
-#include <QString>
-
-namespace Users {
-class User;
-
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-class Manager
+namespace Parsers {
+	
+AddBanParser::AddBanParser()
+ : KTXmlParserBase()
 {
-	public:
-		Manager(const QString &dbfile);
-		~Manager();
-		
-		bool auth(const QString &login, const QString &password);
-		User *user(const QString &login);
-		
-		bool addUser( const User & user );
-		bool updateUser( const User & user );
-		bool removeUser(const QString &login);
-		
-		QList<User*> listUsers();
-		
-	private:
-		struct Private;
-		Private *const d;
-};
-
 }
 
-#endif
+
+AddBanParser::~AddBanParser()
+{
+}
+
+
+bool AddBanParser::startTag(const QString &tag, const QXmlAttributes &atts)
+{
+	if ( tag == "pattern" )
+	{
+		m_pattern = atts.value("value");
+	}
+	return true;
+}
+
+bool AddBanParser::endTag(const QString &)
+{
+	
+	return true;
+}
+
+QString AddBanParser::pattern() const
+{
+	return m_pattern;
+}
+
+
+}
 
 
