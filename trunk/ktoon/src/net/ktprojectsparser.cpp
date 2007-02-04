@@ -37,7 +37,7 @@ KTProjectsParser::~KTProjectsParser()
 
 bool KTProjectsParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	if(root() == "projects")
+	if(root() == "projectlist")
 	{
 		if(tag == "project")
 		{

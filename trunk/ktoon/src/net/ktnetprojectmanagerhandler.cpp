@@ -193,6 +193,7 @@ void KTNetProjectManagerHandler::emitRequest(KTProjectRequest *request)
 void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QString &package )
 {
 	D_FUNCINFOX("net");
+	dDebug() << "read " << package;
 	if ( root == "request" )
 	{
 		KTRequestParser parser;
@@ -258,7 +259,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 			}
 		}
 	}
-	else if(root == "projects")
+	else if(root == "projectlist")
 	{
 		KTProjectsParser parser;
 		if(parser.parse(package) )
