@@ -34,6 +34,7 @@
 #include "projects/modulewidget.h"
 #include "server/modulewidget.h"
 #include "bans/modulewidget.h"
+#include "backups/modulewidget.h"
 
 #include "manager.h"
 #include "connectdialog.h"
@@ -44,6 +45,7 @@ struct MainWindow::Private
 	Projects::ModuleWidget *projectsModule;
 	Server::ModuleWidget *serverModule;
 	Bans::ModuleWidget *bansModule;
+	Backups::ModuleWidget *backupsModule;
 	
 	Manager *manager;
 };
@@ -88,10 +90,16 @@ void MainWindow::createModules()
 	addToolView(d->bansModule, Qt::RightDockWidgetArea)->setDescription(tr("Administer bans"));
 	setupModule(d->bansModule);
 	
+	d->backupsModule = new Backups::ModuleWidget;
+	addToolView(d->backupsModule, Qt::RightDockWidgetArea)->setDescription(tr("Administer backups"));
+	setupModule(d->backupsModule);
+	
+	
 	d->manager->addObserver(d->usersModule);
 	d->manager->addObserver(d->projectsModule);
 	d->manager->addObserver(d->serverModule);
 	d->manager->addObserver(d->bansModule);
+	d->manager->addObserver(d->backupsModule);
 }
 
 void MainWindow::createMenuBar()

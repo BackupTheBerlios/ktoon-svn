@@ -49,6 +49,8 @@ class ModuleListWidget : public ModuleWidget
 		bool filled() const;
 		void update();
 		
+		ModuleButtonBar *buttonBar() const;
+		
 		virtual QMenu *createMenu();
 		
 	private slots:
@@ -56,13 +58,15 @@ class ModuleListWidget : public ModuleWidget
 		void showMenu(const QPoint &pos);
 		void selectFromAction();
 		
-		void defaultBehavior(QTreeWidgetItem*, int);
+		virtual void defaultBehavior(QTreeWidgetItem*, int);
 		
 	protected slots:
 		virtual void addActionSelected(QTreeWidgetItem *current);
 		virtual void delActionSelected(QTreeWidgetItem *current);
 		virtual void queryActionSelected(QTreeWidgetItem *current);
 		virtual void modifyActionSelected(QTreeWidgetItem *current);
+		virtual void custom1ActionSelected(QTreeWidgetItem *current);
+		virtual void custom2ActionSelected(QTreeWidgetItem *current);
 		
 	private:
 		virtual void updateList() = 0;

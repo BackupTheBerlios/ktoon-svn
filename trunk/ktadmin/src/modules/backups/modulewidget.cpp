@@ -22,36 +22,41 @@
 #include <dapplicationproperties.h>
 #include <QIcon>
 #include <QTreeWidget>
+#include <QTreeWidgetItem>
+#include <QTreeWidgetItemIterator>
+
 #include <QDomDocument>
 
-#include <package.h>
 #include "packages/projectlistparser.h"
+#include "package.h"
 
-#include "form.h"
+#include "backuplistparser.h"
 
-namespace Projects {
+namespace Backups {
 
 struct ModuleWidget::Private
 {
+	bool initialized;
 };
 
 ModuleWidget::ModuleWidget(QWidget *parent)
-	: Base::ModuleListWidget(Base::ModuleButtonBar::Add | Base::ModuleButtonBar::Del | Base::ModuleButtonBar::Modify, parent), d(new Private())
+ : Base::ModuleListWidget(Base::ModuleButtonBar::Add | Base::ModuleButtonBar::Del | Base::ModuleButtonBar::Custom1 | Base::ModuleButtonBar::Query, parent), d(new Private)
 {
-	setWindowTitle(tr("Projects"));
-	setWindowIcon(QIcon(THEME_DIR+"/icons/attach.png"));
-	setHeaders( QStringList() << tr("Name") << tr("Author") << tr("Description"));
+	d->initialized = false;
+	
+	setWindowTitle(tr("Backups"));
+	setWindowIcon(QIcon(THEME_DIR+"/icons/people.png"));
+	setHeaders( QStringList() << tr("Project") << tr("Date"));
+	
+	buttonBar()->setText(Base::ModuleButtonBar::Custom1, tr("Restore"));
+	buttonBar()->setStatusTip(Base::ModuleButtonBar::Custom1, tr("Restore backup"));
+	buttonBar()->setIcon(Base::ModuleButtonBar::Custom1, QIcon(THEME_DIR+"/icons/reload.png"));
 }
 
 
 ModuleWidget::~ModuleWidget()
 {
-}
-
-void ModuleWidget::updateList()
-{
-	tree()->clear();
-	emit sendPackage("<listprojects/>");
+	delete d;
 }
 
 void ModuleWidget::handlePackage(Base::Package *const pkg)
@@ -61,22 +66,39 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 		Packages::ProjectListParser parser;
 		if(parser.parse(pkg->xml()))
 		{
-			if(parser.parse(pkg->xml()))
+			typedef QHash<QString, QString> Hash;
+			foreach(Hash values, parser.info())
 			{
-				typedef QHash<QString, QString> Hash;
-				foreach(Hash values, parser.info())
+				QTreeWidgetItem *item = new QTreeWidgetItem(tree());
+				item->setText(0, values["name"]);
+			}
+		}
+		
+		d->initialized = true;
+		emit sendPackage("<listbackups />");
+	}
+	else if( pkg->root() == "backuplist" )
+	{
+		Backups::BackupListParser parser;
+		
+		if( parser.parse(pkg->xml()) )
+		{
+			for(int i = 0; i < tree()->topLevelItemCount(); i++)
+			{
+				QTreeWidgetItem *project = tree()->topLevelItem(i);
+				
+				QStringList backups = parser.backups(project->text(0));
+				
+				foreach(QString backup, backups)
 				{
-					QTreeWidgetItem *item = new QTreeWidgetItem(tree());
-					
-					item->setText(0, values["name"]);
-					item->setText(1, values["author"]);
-					item->setText(2, values["description"]);
+					QTreeWidgetItem *item = new QTreeWidgetItem(project);
+					item->setText(1, backup);
 				}
 			}
-			setFilled( true);
+			setFilled(true);
 		}
 	}
-	if(pkg->root() == "addproject")
+	else if(pkg->root() == "addproject")
 	{
 		QDomDocument doc;
 		doc.setContent(pkg->xml());
@@ -87,25 +109,38 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 		{
 			QTreeWidgetItem *item = new QTreeWidgetItem(tree());
 			item->setText(0, infoE.attribute("name"));
-			item->setText(1, infoE.attribute("author"));
-			item->setText(2, infoE.attribute("description"));
 		}
 	}
 }
 
-void ModuleWidget::addActionSelected(QTreeWidgetItem *)
+void ModuleWidget::updateList()
 {
-	Form *form = new Form();
-	registerForm(form);
+	if( !d->initialized )
+	{
+		tree()->clear();
+		emit sendPackage("<listprojects />");
+	}
+	else
+	{
+		emit sendPackage("<listbackups />");
+	}
+}
+
+void ModuleWidget::addActionSelected(QTreeWidgetItem *current)
+{
 }
 
 void ModuleWidget::delActionSelected(QTreeWidgetItem *current)
 {
 }
 
-void ModuleWidget::modifyActionSelected(QTreeWidgetItem *current)
+void ModuleWidget::queryActionSelected(QTreeWidgetItem *current)
 {
-	
 }
+
+void ModuleWidget::custom1ActionSelected(QTreeWidgetItem *current)
+{
+}
+
 
 }

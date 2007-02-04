@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado       krawek@gmail.com           *
- *                                                                         *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosxx@gmail.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,59 +17,57 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#include "projectlistparser.h"
 
-#ifndef BASEMODULEBUTTONBAR_H
-#define BASEMODULEBUTTONBAR_H
+#include <QStringList>
 
-#include <QFrame>
+namespace Packages {
 
-class QAbstractButton;
-
-namespace Base {
-/**
- * Abstraccion de una barra de botones.
- * @author David Cuadrado \<krawek@gmail.com\>
-*/
-
-class ModuleButtonBar : public QFrame
+struct ProjectListParser::Private
 {
-	Q_OBJECT;
-	public:
-		enum Button
-		{
-			Add = 0x01,
-			Del = 0x02,
-			Query = 0x04,
-			Modify = 0x8,
-			Custom1 = 0x10,
-			Custom2 = 0x20
-		};
-		
-		Q_DECLARE_FLAGS(Buttons, Button)
-		
-		ModuleButtonBar(Buttons buttons, QWidget *parent = 0);
-		~ModuleButtonBar();
-		
-		bool hasButton(Button button) const;
-		
-		void setText(Button button, const QString &text);
-		void setStatusTip(Button button, const QString &text);
-		void setIcon(Button button, const QIcon &icon);
-		
-	signals:
-		void buttonClicked ( QAbstractButton *button);
-		void buttonClicked(int id);
-		
-		
-	private:
-		void setupButtons(Buttons buttons);
-		
-	private:
-		struct Private;
-		Private *const d;
+	QList<QHash<QString, QString> > info;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(ModuleButtonBar::Buttons)
+ProjectListParser::ProjectListParser() : KTXmlParserBase(), d(new Private())
+{
+}
+
+
+ProjectListParser::~ProjectListParser()
+{
+}
+
+bool ProjectListParser::startTag(const QString &tag, const QXmlAttributes &atts)
+{
+	if(root() == "projectlist")
+	{
+		if(tag == "project")
+		{
+			QHash<QString, QString> values;
+			values["name"] = atts.value("name");
+			values["author"] = atts.value("author");
+			values["description"] = atts.value("description");
+			
+			d->info << values;
+		}
+	}
+	return true;
+}
+
+bool ProjectListParser::endTag(const QString &)
+{
+	return true;
+}
+
+void ProjectListParser::text(const QString &)
+{
+	
+}
+
+QList<QHash<QString, QString> > ProjectListParser::info()
+{
+	return d->info;
+}
 
 }
-#endif

@@ -5,4 +5,5 @@ CONFIG += warn_on
 SUBDIRS += users \
 projects \
 server \
-bans
+bans \
+backups

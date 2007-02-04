@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado       krawek@gmail.com           *
- *                                                                         *
+ *   Copyright (C) 2007 by David Cuadrado                                  *
+ *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,59 +17,39 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef BACKUPSMODULEWIDGET_H
+#define BACKUPSMODULEWIDGET_H
 
-#ifndef BASEMODULEBUTTONBAR_H
-#define BASEMODULEBUTTONBAR_H
+#include <modulelistwidget.h>
 
-#include <QFrame>
+namespace Backups {
 
-class QAbstractButton;
-
-namespace Base {
 /**
- * Abstraccion de una barra de botones.
- * @author David Cuadrado \<krawek@gmail.com\>
+	@author David Cuadrado <krawek@gmail.com>
 */
-
-class ModuleButtonBar : public QFrame
+class ModuleWidget : public Base::ModuleListWidget
 {
-	Q_OBJECT;
+	Q_OBJECT
 	public:
-		enum Button
-		{
-			Add = 0x01,
-			Del = 0x02,
-			Query = 0x04,
-			Modify = 0x8,
-			Custom1 = 0x10,
-			Custom2 = 0x20
-		};
-		
-		Q_DECLARE_FLAGS(Buttons, Button)
-		
-		ModuleButtonBar(Buttons buttons, QWidget *parent = 0);
-		~ModuleButtonBar();
-		
-		bool hasButton(Button button) const;
-		
-		void setText(Button button, const QString &text);
-		void setStatusTip(Button button, const QString &text);
-		void setIcon(Button button, const QIcon &icon);
-		
-	signals:
-		void buttonClicked ( QAbstractButton *button);
-		void buttonClicked(int id);
-		
+		ModuleWidget(QWidget *parent = 0);
+		~ModuleWidget();
+		void handlePackage(Base::Package *const pkg);
 		
 	private:
-		void setupButtons(Buttons buttons);
+		void updateList();
+		
+	protected:
+		void addActionSelected(QTreeWidgetItem *current);
+		void delActionSelected(QTreeWidgetItem *current);
+		void queryActionSelected(QTreeWidgetItem *current);
+		void custom1ActionSelected(QTreeWidgetItem *current);
 		
 	private:
 		struct Private;
 		Private *const d;
+
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(ModuleButtonBar::Buttons)
-
 }
+
 #endif

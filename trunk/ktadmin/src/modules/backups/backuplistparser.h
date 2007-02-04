@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+ *   Copyright (C) 2007 by David Cuadrado                                  *
+ *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,34 +17,30 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef PACKAGESPROJECTLISTPARSER_H
-#define PACKAGESPROJECTLISTPARSER_H
+#ifndef BACKUPSBACKUPLISTPARSER_H
+#define BACKUPSBACKUPLISTPARSER_H
 
 #include <ktxmlparserbase.h>
 
-namespace Packages {
-
+namespace Backups {
 
 /**
- * @author Jorge Cuadrado <kuadrosxx@gmail.com>
+	@author David Cuadrado <krawek@gmail.com>
 */
-
-class ProjectListParser : public KTXmlParserBase
+class BackupListParser : public KTXmlParserBase
 {
 	public:
-		ProjectListParser();
-		~ProjectListParser();
+		BackupListParser();
+		~BackupListParser();
 		
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-		virtual bool endTag(const QString &tag);
-		virtual void text(const QString &text);
+		bool startTag(const QString &tag, const QXmlAttributes &atts);
+		bool endTag(const QString &tag);
+		void text(const QString &msg);
 		
-		QList<QStringList> info();
+		QStringList backups(const QString &project) const;
 	private:
 		struct Private;
 		Private *const d;
-		
 };
 
 }

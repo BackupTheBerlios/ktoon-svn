@@ -161,6 +161,16 @@ void ModuleListWidget::actionSelected(int action)
 			modifyActionSelected(currentItem);
 		}
 		break;
+		case ModuleButtonBar::Custom1:
+		{
+			custom1ActionSelected(currentItem);
+		}
+		break;
+		case ModuleButtonBar::Custom2:
+		{
+			custom2ActionSelected(currentItem);
+		}
+		break;
 		default: break;
 	}
 }
@@ -206,10 +216,21 @@ void ModuleListWidget::modifyActionSelected(QTreeWidgetItem *current)
 	Q_UNUSED(current);
 }
 
-void ModuleListWidget::showEvent(QShowEvent *)
+void ModuleListWidget::custom1ActionSelected(QTreeWidgetItem *current)
+{
+	Q_UNUSED(current);
+}
+
+void ModuleListWidget::custom2ActionSelected(QTreeWidgetItem *current)
+{
+	Q_UNUSED(current);
+}
+
+void ModuleListWidget::showEvent(QShowEvent *e)
 {
 	if ( !d->filled )
 		update();
+	ModuleWidget::showEvent(e);
 }
 
 void ModuleListWidget::setFilled(bool f)
@@ -228,6 +249,10 @@ void ModuleListWidget::update()
 	updateList();
 }
 
+ModuleButtonBar *ModuleListWidget::buttonBar() const
+{
+	return d->buttonBar;
+}
 
 void ModuleListWidget::defaultBehavior(QTreeWidgetItem *item, int)
 {

@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado       krawek@gmail.com           *
- *                                                                         *
+ *   Copyright (C) 2007 by David Cuadrado                                  *
+ *   krawek@gmail.com                                                      *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,58 +18,53 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef BASEMODULEBUTTONBAR_H
-#define BASEMODULEBUTTONBAR_H
+#include "backuplistparser.h"
+#include <QHash>
 
-#include <QFrame>
+namespace Backups {
 
-class QAbstractButton;
-
-namespace Base {
-/**
- * Abstraccion de una barra de botones.
- * @author David Cuadrado \<krawek@gmail.com\>
-*/
-
-class ModuleButtonBar : public QFrame
+struct BackupListParser::Private
 {
-	Q_OBJECT;
-	public:
-		enum Button
-		{
-			Add = 0x01,
-			Del = 0x02,
-			Query = 0x04,
-			Modify = 0x8,
-			Custom1 = 0x10,
-			Custom2 = 0x20
-		};
-		
-		Q_DECLARE_FLAGS(Buttons, Button)
-		
-		ModuleButtonBar(Buttons buttons, QWidget *parent = 0);
-		~ModuleButtonBar();
-		
-		bool hasButton(Button button) const;
-		
-		void setText(Button button, const QString &text);
-		void setStatusTip(Button button, const QString &text);
-		void setIcon(Button button, const QIcon &icon);
-		
-	signals:
-		void buttonClicked ( QAbstractButton *button);
-		void buttonClicked(int id);
-		
-		
-	private:
-		void setupButtons(Buttons buttons);
-		
-	private:
-		struct Private;
-		Private *const d;
+	QString current;
+	QHash<QString, QStringList> backups;
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(ModuleButtonBar::Buttons)
+BackupListParser::BackupListParser()
+ : KTXmlParserBase(), d(new Private)
+{
+}
+
+
+BackupListParser::~BackupListParser()
+{
+	delete d;
+}
+
+bool BackupListParser::startTag(const QString &tag, const QXmlAttributes &atts)
+{
+	if( tag == "project" )
+	{
+		d->current = atts.value("name");
+	}
+	else if ( tag == "backup" )
+	{
+		d->backups[d->current] << atts.value("date");
+	}
+	return true;
+}
+
+bool BackupListParser::endTag(const QString &)
+{
+	return true;
+}
+
+void BackupListParser::text(const QString &)
+{
+}
+
+QStringList BackupListParser::backups(const QString &project) const
+{
+	return d->backups[project];
+}
 
 }
-#endif

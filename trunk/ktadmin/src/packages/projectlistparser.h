@@ -18,53 +18,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#include "projectlistparser.h"
+#ifndef PACKAGESPROJECTLISTPARSER_H
+#define PACKAGESPROJECTLISTPARSER_H
 
-#include <QStringList>
+#include <ktxmlparserbase.h>
+#include <QHash>
 
 namespace Packages {
 
-struct ProjectListParser::Private
+
+/**
+ * @author Jorge Cuadrado <kuadrosxx@gmail.com>
+*/
+
+class ProjectListParser : public KTXmlParserBase
 {
-	QList<QStringList> info;
+	public:
+		ProjectListParser();
+		~ProjectListParser();
+		
+		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+		virtual bool endTag(const QString &tag);
+		virtual void text(const QString &text);
+		
+		QList<QHash<QString, QString> > info();
+	private:
+		struct Private;
+		Private *const d;
+		
 };
 
-ProjectListParser::ProjectListParser() : KTXmlParserBase(), d(new Private())
-{
 }
 
-
-ProjectListParser::~ProjectListParser()
-{
-}
-
-bool ProjectListParser::startTag(const QString &tag, const QXmlAttributes &atts)
-{
-	if(root() == "projectlist")
-	{
-		if(tag == "project")
-		{
-			QStringList values;
-			values << atts.value("name") << atts.value("author") << atts.value("description");
-			d->info << values;
-		}
-	}
-	return true;
-}
-
-bool ProjectListParser::endTag(const QString &)
-{
-	return true;
-}
-
-void ProjectListParser::text(const QString &)
-{
-	
-}
-
-QList<QStringList> ProjectListParser::info()
-{
-	return d->info;
-}
-
-}
+#endif

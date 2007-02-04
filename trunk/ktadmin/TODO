@@ -1,9 +1,9 @@
 
-- Gestionar usuarios
+- Gestionar usuarios +
 - Gestionar proyectos
 - Backup de proyectos
 - Configurar servidor (max-conn, desconectar clientes...)
-- Gestionar blacklists
+- Gestionar blacklists + 
 
 Opcionales
 - Aplicacion web para solicitar registro en un proyecto, ver estado de proyectos, etc...

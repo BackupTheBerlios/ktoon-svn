@@ -66,6 +66,14 @@ void ModuleButtonBar::setText(Button button, const QString &text)
 		target->setText(text);
 }
 
+void ModuleButtonBar::setStatusTip(Button button, const QString &text)
+{
+	QAbstractButton *target = d->buttons.button(button);
+	
+	if( target )
+		target->setStatusTip(text);
+}
+
 void ModuleButtonBar::setIcon(Button button, const QIcon &icon)
 {
 	QAbstractButton *target = d->buttons.button(button);
@@ -117,9 +125,23 @@ void ModuleButtonBar::setupButtons(Buttons buttons)
 		QToolButton *but4 = new QToolButton;
 		
 		but4->setStatusTip(tr("Modify an item"));
-		but4->setIcon(QIcon(THEME_DIR+"/icons/reload.png"));
+		but4->setIcon(QIcon(THEME_DIR+"/icons/modify.png"));
 		buttonLayout->addWidget(but4);
 		d->buttons.addButton( but4, Modify);
+	}
+	
+	if( buttons & Custom1 )
+	{
+		QToolButton *but5 = new QToolButton;
+		buttonLayout->addWidget(but5);
+		d->buttons.addButton( but5, Custom1);
+	}
+	
+	if( buttons & Custom2 )
+	{
+		QToolButton *but6 = new QToolButton;
+		buttonLayout->addWidget(but6);
+		d->buttons.addButton( but6, Custom2);
 	}
 	
 	
