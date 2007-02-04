@@ -85,7 +85,7 @@ QString Database::nextFileName()
 		parser.parse(&dbf);
 		m_lastFileName = parser.lastFileName();
 	}
-	
+	dDebug() << m_lastFileName;
 	if(m_lastFileName.isEmpty())
 	{
 		m_lastFileName = "project0.ktn";
@@ -102,7 +102,7 @@ QString Database::nextFileName()
 	return m_lastFileName;
 }
 
-void Database::addProject(const SProject * project)
+bool Database::addProject(const SProject * project)
 {
 	QDomDocument db = loadDataBase();
 	QDomNode  root = db.firstChild();
@@ -117,9 +117,14 @@ void Database::addProject(const SProject * project)
 		ts << db.toString();
 		file.close();
 	}
+	else
+	{
+		return false;
+	}
+	return true;
 }
 
-void Database::updateProject( const SProject * project)
+bool Database::updateProject( const SProject * project)
 {
 	QDomDocument doc = loadDataBase();
 	
@@ -148,9 +153,14 @@ void Database::updateProject( const SProject * project)
 		ts << doc.toString();
 		file.close();
 	}
+	else
+	{
+		return false;
+	}
+	return true;
 }
 
-void Database::removeProject(  const SProject * project)
+bool Database::removeProject(  const SProject * project)
 {
 	QDomDocument doc = loadDataBase();
 	
@@ -176,6 +186,11 @@ void Database::removeProject(  const SProject * project)
 		ts << doc.toString();
 		file.close();
 	}
+	else
+	{
+		return false;
+	}
+	return true;
 }
 
 

@@ -60,6 +60,7 @@ class Connection : public QThread
 		void sendToClient(QDomDocument &doc, bool sign = true);
 		void sendToAll(QDomDocument &doc, bool sign = true);
 		
+		
 		void setData(int key, const QVariant &value);
 		QVariant data(int key) const;
 		

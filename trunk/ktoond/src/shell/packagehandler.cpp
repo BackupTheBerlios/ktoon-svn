@@ -26,7 +26,7 @@
 #include "global.h"
 #include <ddebug.h>
 
-
+#include "projectactionparser.h"
 #include "newprojectparser.h"
 #include "openprojectparser.h"
 #include "importprojectparser.h"
@@ -139,6 +139,24 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 			cnx->sendErrorPackageToClient(QObject::tr("You doen't have rights on project."), Packages::Error::Warning );
 		}
 	}
+	if(root == "addproject")
+	{
+		if ( cnx->user()->canReadOn("project") && cnx->user()->canReadOn("admin"))
+		{
+			Parsers::ProjectActionParser parser;
+			if(parser.parse(package))
+			{
+				cnx->setData(Info::ProjectName, parser.name());
+				if(!d->projects->addProject( parser.name(), parser.author(), parser.description(), cnx->user()))
+				{
+					cnx->sendErrorPackageToClient(QObject::tr("Cannot create project %1").arg(parser.name()), Packages::Error::Warning );
+				}
+				//TODO: enviar a todos los administradores el paquete
+			}
+			
+		}
+	}
+	
 }
 
 void PackageHandler::handleProjectRequest(Server::Connection *cnn, const QString &strRequest)

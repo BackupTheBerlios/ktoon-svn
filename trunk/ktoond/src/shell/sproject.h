@@ -53,7 +53,7 @@ class SProject : public KTProject
 		Private *const d;
 	
 	public slots:
-		void save();
+		bool save();
 		
 	signals:
 		void requestSendErrorMessage(const QString &message, Packages::Error::Level level);

@@ -19,6 +19,8 @@
  ***************************************************************************/
 #include "databaseparser.h"
 #include <ddebug.h>
+#include <QDir>
+
 namespace Parsers {
 
 DatabaseParser::DatabaseParser()

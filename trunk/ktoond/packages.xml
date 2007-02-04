@@ -236,6 +236,14 @@ Las respuesta a una peticion queryX sera X
 	<!-- /opcional -->
 </updateuser>
 
+<addproject>
+	<info name="name" author="author" description="">
+	<users>
+		<user login="login">
+		<!-- Se repite -->
+	</users>
+</addproject>
+
 <removeproject>
 	<project>name</project>
 </removeproject>

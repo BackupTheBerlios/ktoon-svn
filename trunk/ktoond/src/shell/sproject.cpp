@@ -51,20 +51,24 @@ SProject::~SProject()
 {
 }
 
-void SProject::save()
+bool SProject::save()
 {
 	D_FUNCINFOX("server");
 	KTSaveProject *saver = new KTSaveProject;
 	SHOW_VAR(d->filename);
-	if(saver->save(d->filename, this))
+	bool ok = saver->save(d->filename, this);
+	
+	if(ok)
 	{
 		emit requestSendErrorMessage( QObject::tr( "project saved"), Packages::Error::Info );
+		
 	}
 	else
 	{
 		emit requestSendErrorMessage( QObject::tr( "Error saving project"), Packages::Error::Err );
 	}
 	delete saver;
+	return ok;
 }
 
 void SProject::timerEvent ( QTimerEvent *  )

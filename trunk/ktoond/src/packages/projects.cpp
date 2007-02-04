@@ -23,19 +23,19 @@
 namespace Packages
 {
 
-Projects::Projects() : Package()
+ProjectList::ProjectList() : Package()
 {
-	QDomElement root = createElement ( "projects" );
+	QDomElement root = createElement ( "projectlist" );
 	root.setAttribute ( "version",  "0" );
 	appendChild(root);
 }
 
 
-Projects::~Projects()
+ProjectList::~ProjectList()
 {
 }
 
-void Projects::addProject(const QString & name, const QString &author, const QString &description )
+void ProjectList::addProject(const QString & name, const QString &author, const QString &description )
 {
 	QDomNode root = firstChild ();
 	

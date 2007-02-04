@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,29 +17,80 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#include "projectactionparser.h"
 
+namespace Parsers {
 
-#ifndef PACKAGESPROJECTS_H
-#define PACKAGESPROJECTS_H
-
-#include <package.h>
-/**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
-*/
-
-namespace Packages
+struct ProjectActionParser::Private
 {
-class ProjectList : public Package
-{
-	public:
-		ProjectList();
-		~ProjectList();
-		
-		void addProject(const QString & name, const QString &author = QString::null, const QString &description = QString::null);
-		
-	private:
-		
+	QString name;
+	QString author;
+	QString description;
+	QStringList users;
 };
+
+ProjectActionParser::ProjectActionParser() : KTXmlParserBase(), d(new Private())
+{
+	
 }
 
-#endif
+
+ProjectActionParser::~ProjectActionParser()
+{
+}
+
+bool ProjectActionParser::startTag(const QString &tag, const QXmlAttributes &atts)
+{
+	if(root() == "addproject" || root() == "removeproject" || root() == "updateproject" || root() == "queryproject")
+	{
+		if(tag == "info")
+		{
+			d->name = atts.value("name");
+			d->author = atts.value("author");
+			d->description = atts.value("description");
+		}
+		else if(tag == "user")
+		{
+			setReadText(true);
+		}
+	}
+	return true;
+}
+
+bool ProjectActionParser::endTag(const QString &)
+{
+	return true;
+}
+
+void ProjectActionParser::text(const QString &text)
+{
+	if(currentTag() == "user")
+	{
+		d->users << text;
+	}
+}
+
+QString ProjectActionParser::name()
+{
+	return d->name;
+}
+
+QString ProjectActionParser::author()
+{
+	return d->author;
+}
+
+QString ProjectActionParser::description()
+{
+	return d->description;
+}
+
+QStringList ProjectActionParser::users()
+{
+	return d->users;
+}
+
+
+
+}

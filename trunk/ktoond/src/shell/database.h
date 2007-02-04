@@ -39,9 +39,9 @@ class Database
 		Database(const QString &dbfile = 0);
 		~Database();
 		
-		void addProject(const SProject * project);
-		void updateProject( const SProject * project);
-		void removeProject(  const SProject * project);
+		bool addProject(const SProject * project);
+		bool updateProject( const SProject * project);
+		bool removeProject(  const SProject * project);
 		
 		void setDBFile( const QString& dbfile);
 		

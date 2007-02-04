@@ -72,31 +72,40 @@ ProjectCollection::~ProjectCollection()
 void ProjectCollection::createProject( Server::Connection *cnn, const QString &author ) 
 {
 	QString projectName = cnn->data(Info::ProjectName).toString();
-	if(d->db->exists(projectName))
+	if(!addProject(projectName, author, "new project", cnn->user()))
 	{
-		cnn->sendErrorPackageToClient(QObject::tr("Project %1 exists").arg(projectName), Packages::Error::Warning );
-		
-		cnn->close();
+		cnn->sendErrorPackageToClient(QObject::tr("Cannot create project %1").arg(projectName), Packages::Error::Warning );
 	}
-	else
-	{
-		if(!d->projects.contains( projectName ) )
-		{
-			SProject *project = new SProject( dAppProp->cacheDir() +"/"+ d->db->nextFileName());
-			QObject::connect(project, SIGNAL(requestSendErrorMessage(const QString&, Packages::Error::Level)), cnn, SLOT(sendErrorPackageToClient(const QString&, Packages::Error::Level)));
-			project->setProjectName(projectName);
-			project->addUser( cnn->user()->login(), SProject::Owner);
-			d->projects.insert(projectName, project);
-			d->db->addProject(project);
-			saveProject(projectName);
-			
-			d->connections.insert(projectName, QList<Server::Connection *>() << cnn);
-		}
-	}
+	openProject( cnn );
 }
 
+bool ProjectCollection::addProject(const QString& name, const QString& author, const QString& description, const Users::User *owner )
+{
+	
+	if(!d->db->exists(name))
+	{
+		if(!d->projects.contains( name ) )
+		{
+			SProject *project = new SProject( dAppProp->cacheDir() +"/"+ d->db->nextFileName());
+			project->setProjectName(name);
+			bool okAddProject = false;
+			project->addUser( owner->login(), SProject::Owner); 
+			
+			bool okSaveProject = project->save();
+			if(okSaveProject)
+			{
+				okAddProject = d->db->addProject(project);
+			}
+			delete project;
+			
+			return okAddProject;
+		}
+	}
+	return false;
+	
+}
 
-void ProjectCollection::openProject( Server::Connection *cnn )
+bool ProjectCollection::openProject( Server::Connection *cnn )
 {
  	QString projectName = cnn->data(Info::ProjectName).toString();
 	
@@ -105,7 +114,6 @@ void ProjectCollection::openProject( Server::Connection *cnn )
 	if(project)
 	{
 		project->isOwner( cnn->user());
-		SHOW_VAR(project->fileName());
 		if(!d->projects.contains( projectName ) )
 		{
 			KTSaveProject *loader = new KTSaveProject;
@@ -115,8 +123,9 @@ void ProjectCollection::openProject( Server::Connection *cnn )
 			if(!ok)
 			{
 				cnn->sendErrorPackageToClient(QObject::tr("Project %1 not exists").arg(projectName), Packages::Error::Err);
-				return;
+				return false;
 			}
+			
 			if(project)
 			{
 				d->projects.insert(projectName, project);
@@ -131,13 +140,14 @@ void ProjectCollection::openProject( Server::Connection *cnn )
 		Packages::Project projectPackage(project->fileName());
 		cnn->sendToClient(projectPackage.toString());
 		
-		d->connections[projectName].append( cnn );
+		d->connections[projectName].append(cnn);
+		return true;
 	}
-	else
-	{
-		cnn->sendErrorPackageToClient(QObject::tr("Project %1 not exists").arg(projectName), Packages::Error::Err);
-		cnn->close();
-	}
+	
+	cnn->sendErrorPackageToClient(QObject::tr("Project %1 not exists").arg(projectName), Packages::Error::Err);
+	cnn->close();
+	return false;
+	
 }
 
 void ProjectCollection::importProject(Server::Connection *cnn, const QByteArray& data)
@@ -184,12 +194,13 @@ void ProjectCollection::closeProject(const QString & name)
 	d->connections.remove(name);
 }
 
-void ProjectCollection::saveProject(const QString & name)
+bool ProjectCollection::saveProject(const QString & name)
 {
 	if(d->projects[name])
 	{
-		d->projects[name]->save();
+		return d->projects[name]->save();
 	}
+	return false;
 }
 
 void ProjectCollection::removeConnection(Server::Connection *cnn)
@@ -235,7 +246,7 @@ bool ProjectCollection::handleProjectRequest(Server::Connection *cnn, const QStr
 
 void ProjectCollection::listProjects(Server::Connection *cnn)
 {
-	Packages::Projects list;
+	Packages::ProjectList list;
 	foreach(Database::ProjectInfo info, d->db->projectsInfoOfUser(cnn->user()->login()))
 	{
 		list.addProject(info.name, info.author, info.description);

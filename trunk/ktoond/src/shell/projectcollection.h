@@ -31,6 +31,9 @@ namespace Server {
 class Connection;
 }
 
+namespace Users {
+	class User;
+}
 namespace Projects {
 
 /**
@@ -43,14 +46,16 @@ class ProjectCollection
 		~ProjectCollection();
 		
 		void createProject(Server::Connection *cnn, const QString& author);
-		void openProject(Server::Connection *cnn);
+		bool addProject(const QString& name, const QString& author, const QString& description, const Users::User *owner );
+		
+		bool openProject(Server::Connection *cnn);
 		void importProject(Server::Connection *cnn, const QByteArray& data);
 		
 		bool handleProjectRequest(Server::Connection *cnn, const QString strRequest);
 		QStringList projects() const;
 		void listProjects(Server::Connection *cnn);
 		void closeProject(const QString & name);
-		void saveProject(const QString & name);
+		bool saveProject(const QString & name);
 		void addUser(Server::Connection *cnn, const QString & login, SProject::UserType type  );
 		
 		void removeConnection(Server::Connection *cnn);
