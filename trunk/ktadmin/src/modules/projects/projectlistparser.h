@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosxx@gmail.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,33 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef PROJECTSMODULEWIDGET_H
-#define PROJECTSMODULEWIDGET_H
+#ifndef PACKAGESPROJECTLISTPARSER_H
+#define PACKAGESPROJECTLISTPARSER_H
 
-#include <modulelistwidget.h>
+#include <ktxmlparserbase.h>
 
-namespace Projects {
+namespace Packages {
+
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author Jorge Cuadrado <kuadrosxx@gmail.com>
 */
-class ModuleWidget : public Base::ModuleListWidget
+
+class ProjectListParser : public KTXmlParserBase
 {
-	Q_OBJECT
 	public:
-		ModuleWidget(QWidget *parent = 0);
-		~ModuleWidget();
-		virtual void handlePackage(Base::Package *const pkg);
+		ProjectListParser();
+		~ProjectListParser();
 		
+		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+		virtual bool endTag(const QString &tag);
+		virtual void text(const QString &text);
+		
+		QList<QStringList> info();
 	private:
-		void updateList();
 		struct Private;
-		Private * const d;
+		Private *const d;
 		
-	protected slots:
-		virtual void addActionSelected(QTreeWidgetItem *current);
-		virtual void delActionSelected(QTreeWidgetItem *current);
-		virtual void modifyActionSelected(QTreeWidgetItem *current);
 };
 
 }

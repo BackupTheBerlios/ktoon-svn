@@ -24,8 +24,6 @@
 
 #include <QLineEdit>
 #include <QVBoxLayout>
-#include <QDialogButtonBox>
-#include <QAbstractButton>
 
 #include "packages/adduser.h"
 #include "packages/updateuser.h"

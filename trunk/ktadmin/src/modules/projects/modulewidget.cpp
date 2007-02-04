@@ -21,14 +21,26 @@
 #include "modulewidget.h"
 #include <dapplicationproperties.h>
 #include <QIcon>
+#include <QTreeWidget>
+#include <QDomDocument>
+
+#include <package.h>
+#include "projectlistparser.h"
+
+#include "form.h"
 
 namespace Projects {
 
+struct ModuleWidget::Private
+{
+};
+
 ModuleWidget::ModuleWidget(QWidget *parent)
- : Base::ModuleListWidget(Base::ModuleButtonBar::Add | Base::ModuleButtonBar::Del | Base::ModuleButtonBar::Modify, parent)
+	: Base::ModuleListWidget(Base::ModuleButtonBar::Add | Base::ModuleButtonBar::Del | Base::ModuleButtonBar::Modify, parent), d(new Private())
 {
 	setWindowTitle(tr("Projects"));
 	setWindowIcon(QIcon(THEME_DIR+"/icons/attach.png"));
+	setHeaders( QStringList() << tr("Name") << tr("Author") << tr("Description"));
 }
 
 
@@ -38,6 +50,61 @@ ModuleWidget::~ModuleWidget()
 
 void ModuleWidget::updateList()
 {
+	tree()->clear();
+	emit sendPackage("<listprojects/>");
+}
+
+void ModuleWidget::handlePackage(Base::Package *const pkg)
+{
+	if(pkg->root() == "projectlist")
+	{
+		Packages::ProjectListParser parser;
+		if(parser.parse(pkg->xml()))
+		{
+			foreach(QStringList values, parser.info())
+			{
+				int count = 0;
+				QTreeWidgetItem *item = new QTreeWidgetItem(tree());
+				foreach(QString value, values)
+				{
+					item->setText(count, value);
+					count++;
+				}
+			}
+			setFilled( true);
+		}
+		pkg->accept();
+	}
+	if(pkg->root() == "addproject")
+	{
+		QDomDocument doc;
+		doc.setContent(pkg->xml());
+		
+		QDomElement infoE = doc.firstChildElement("info");
+		
+		if(!infoE.isNull())
+		{
+			QTreeWidgetItem *item = new QTreeWidgetItem(tree());
+			item->setText(0, infoE.attribute("name"));
+			item->setText(1, infoE.attribute("author"));
+			item->setText(2, infoE.attribute("description"));
+		}
+	}
+}
+
+void ModuleWidget::addActionSelected(QTreeWidgetItem *)
+{
+	Form *form = new Form();
+	registerForm(form);
+}
+
+void ModuleWidget::delActionSelected(QTreeWidgetItem *current)
+{
+}
+
+void ModuleWidget::modifyActionSelected(QTreeWidgetItem *current)
+{
+	
 }
 
 }

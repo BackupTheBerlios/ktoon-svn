@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosxx@gmail.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,35 +18,53 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef PROJECTSMODULEWIDGET_H
-#define PROJECTSMODULEWIDGET_H
+#include "projectlistparser.h"
 
-#include <modulelistwidget.h>
+#include <QStringList>
 
-namespace Projects {
+namespace Packages {
 
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class ModuleWidget : public Base::ModuleListWidget
+struct ProjectListParser::Private
 {
-	Q_OBJECT
-	public:
-		ModuleWidget(QWidget *parent = 0);
-		~ModuleWidget();
-		virtual void handlePackage(Base::Package *const pkg);
-		
-	private:
-		void updateList();
-		struct Private;
-		Private * const d;
-		
-	protected slots:
-		virtual void addActionSelected(QTreeWidgetItem *current);
-		virtual void delActionSelected(QTreeWidgetItem *current);
-		virtual void modifyActionSelected(QTreeWidgetItem *current);
+	QList<QStringList> info;
 };
 
+ProjectListParser::ProjectListParser() : KTXmlParserBase(), d(new Private())
+{
 }
 
-#endif
+
+ProjectListParser::~ProjectListParser()
+{
+}
+
+bool ProjectListParser::startTag(const QString &tag, const QXmlAttributes &atts)
+{
+	if(root() == "projectlist")
+	{
+		if(tag == "project")
+		{
+			QStringList values;
+			values << atts.value("name") << atts.value("author") << atts.value("description");
+			d->info << values;
+		}
+	}
+	return true;
+}
+
+bool ProjectListParser::endTag(const QString &)
+{
+	return true;
+}
+
+void ProjectListParser::text(const QString &)
+{
+	
+}
+
+QList<QStringList> ProjectListParser::info()
+{
+	return d->info;
+}
+
+}

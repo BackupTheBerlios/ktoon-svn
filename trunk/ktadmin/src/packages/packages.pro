@@ -10,7 +10,8 @@ HEADERS += adduser.h \
            removeban.h \
            removeuser.h \
            updateuser.h \
-           queryuser.h
+           queryuser.h \
+           addproject.h 
 SOURCES += adduser.cpp \
            connect.cpp \
            ackparser.cpp \
@@ -18,7 +19,8 @@ SOURCES += adduser.cpp \
            removeban.cpp \
            removeuser.cpp \
            updateuser.cpp \
-           queryuser.cpp
+           queryuser.cpp \
+           addproject.cpp 
 CONFIG += release \
 warn_on \
 staticlib

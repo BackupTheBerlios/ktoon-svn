@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosxx@gmail.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,35 +18,43 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef PROJECTSMODULEWIDGET_H
-#define PROJECTSMODULEWIDGET_H
+#include "addproject.h"
 
-#include <modulelistwidget.h>
+namespace Packages {
 
-namespace Projects {
-
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class ModuleWidget : public Base::ModuleListWidget
+struct AddProject::Private
 {
-	Q_OBJECT
-	public:
-		ModuleWidget(QWidget *parent = 0);
-		~ModuleWidget();
-		virtual void handlePackage(Base::Package *const pkg);
-		
-	private:
-		void updateList();
-		struct Private;
-		Private * const d;
-		
-	protected slots:
-		virtual void addActionSelected(QTreeWidgetItem *current);
-		virtual void delActionSelected(QTreeWidgetItem *current);
-		virtual void modifyActionSelected(QTreeWidgetItem *current);
+	QDomElement info;
+	QDomElement users;
 };
 
+AddProject::AddProject(const QString & name, const QString & author, const QString& description )
+	: QDomDocument(), d(new Private())
+{
+	QDomElement root = createElement( "addproject" );
+	root.setAttribute( "version",  "0" );
+	appendChild(root);
+	d->info = createElement("info");
+	d->info.setAttribute("name", name);
+	d->info.setAttribute("author", author);
+	d->info.setAttribute("description", description);
+	d->users = createElement("users");
+	root.appendChild(d->info);
 }
 
-#endif
+
+void AddProject::addUser( const QString& login )
+{
+	//TODO agregar los tipos de roles sobre el proyecto Owner, Designer ...
+	QDomElement user = createElement("user");
+	user.appendChild(createTextNode(login));
+	d->users.appendChild(user);
+}
+
+
+AddProject::~AddProject()
+{
+}
+
+
+}

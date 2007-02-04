@@ -65,7 +65,7 @@ ModuleWidget::~ModuleWidget()
 }
 
 
-void ModuleWidget::addActionSelected(QTreeWidgetItem *current)
+void ModuleWidget::addActionSelected(QTreeWidgetItem *)
 {
 	Form *form = new Form();
 	registerForm(form);

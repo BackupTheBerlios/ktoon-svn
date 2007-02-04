@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosxx@gmail.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,33 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef PROJECTSMODULEWIDGET_H
-#define PROJECTSMODULEWIDGET_H
+#ifndef PACKAGESADDPROJECT_H
+#define PACKAGESADDPROJECT_H
 
-#include <modulelistwidget.h>
+#include <QDomDocument>
 
-namespace Projects {
+namespace Packages {
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+	@author Jorge Cuadrado <kuadrosxx@gmail.com>
 */
-class ModuleWidget : public Base::ModuleListWidget
+class AddProject : public QDomDocument
 {
-	Q_OBJECT
 	public:
-		ModuleWidget(QWidget *parent = 0);
-		~ModuleWidget();
-		virtual void handlePackage(Base::Package *const pkg);
+		AddProject(const QString & name, const QString & author, const QString& description );
+		~AddProject();
+		void addUser( const QString& login );
 		
 	private:
-		void updateList();
 		struct Private;
-		Private * const d;
-		
-	protected slots:
-		virtual void addActionSelected(QTreeWidgetItem *current);
-		virtual void delActionSelected(QTreeWidgetItem *current);
-		virtual void modifyActionSelected(QTreeWidgetItem *current);
+		Private *const d;
 };
 
 }
