@@ -1,0 +1,52 @@
+
+Para Jorge Cuadrado:
+
+==========================
+
+Para solicitar el listado de X se envia un tag asi:
+<listXs/>
+
+y la raiz de la respuesta sera:
+<Xlist>
+	cuerpo
+</Xlist>
+
+de este modo el paquete para listar usuarios no es <listuser/> sino <listusers/>
+
+
+==========================
+
+ningun paquete lleva atributos en la raiz, conservar la coherencia
+
+Las respuesta a una peticion queryX sera Xquery
+
+actualizar el paquete <userquery>
+
+==========================
+
+actualizar el paquete <projectlist>
+
+==========================
+
+Si la clase esta en el directorio del modulo, el namespace debe ser el mismo que el modulo
+
+
+==========================
+
+	}
+	if(pkg->root() == "addproject")
+	{
+
+Utilizar else
+
+
+==========================
+
+Si no se esta deacuerdo co la observacion, escribir las razones
+Indicar que la observacion fue cumplida sin removerla
+
+EXTREMADAMENTE IMPORTANTE!!! IMPORTANTE!!! IMPORTANTE!!! IMPORTANTE!!! REMOVER LOS "TO-DOs" CUANDO ESTEN TERMINADOS,
+
+==========================
+
+
