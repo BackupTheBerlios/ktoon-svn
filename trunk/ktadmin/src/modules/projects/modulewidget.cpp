@@ -26,6 +26,7 @@
 
 #include <package.h>
 #include "packages/projectlistparser.h"
+#include "packages/listprojects.h"
 
 #include "form.h"
 
@@ -50,28 +51,29 @@ ModuleWidget::~ModuleWidget()
 
 void ModuleWidget::updateList()
 {
-	tree()->clear();
-	emit sendPackage("<listprojects/>");
+	Packages::ListProjects pkg;
+	pkg.requestAll();
+	
+	emit sendPackage(pkg.toString());
 }
 
 void ModuleWidget::handlePackage(Base::Package *const pkg)
 {
 	if(pkg->root() == "projectlist")
 	{
+		if( filled() ) return;
+		
 		Packages::ProjectListParser parser;
 		if(parser.parse(pkg->xml()))
 		{
-			if(parser.parse(pkg->xml()))
+			typedef QHash<QString, QString> Hash;
+			foreach(Hash values, parser.info())
 			{
-				typedef QHash<QString, QString> Hash;
-				foreach(Hash values, parser.info())
-				{
-					QTreeWidgetItem *item = new QTreeWidgetItem(tree());
-					
-					item->setText(0, values["name"]);
-					item->setText(1, values["author"]);
-					item->setText(2, values["description"]);
-				}
+				QTreeWidgetItem *item = new QTreeWidgetItem(tree());
+				
+				item->setText(0, values["name"]);
+				item->setText(1, values["author"]);
+				item->setText(2, values["description"]);
 			}
 			setFilled( true);
 		}

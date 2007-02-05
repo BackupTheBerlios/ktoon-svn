@@ -28,9 +28,12 @@
 #include <QDomDocument>
 
 #include "packages/projectlistparser.h"
+#include "packages/listprojects.h"
 #include "package.h"
 
 #include "backuplistparser.h"
+
+#include <ddebug.h>
 
 namespace Backups {
 
@@ -63,6 +66,8 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 {
 	if(pkg->root() == "projectlist")
 	{
+		d->initialized = true;
+		
 		Packages::ProjectListParser parser;
 		if(parser.parse(pkg->xml()))
 		{
@@ -73,8 +78,13 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 				item->setText(0, values["name"]);
 			}
 		}
+		else
+		{
+			d->initialized = false;
+		}
 		
-		d->initialized = true;
+		setClearOnUpdate(!d->initialized);
+		
 		emit sendPackage("<listbackups />");
 	}
 	else if( pkg->root() == "backuplist" )
@@ -118,7 +128,10 @@ void ModuleWidget::updateList()
 	if( !d->initialized )
 	{
 		tree()->clear();
-		emit sendPackage("<listprojects />");
+		Packages::ListProjects pkg;
+		pkg.requestAll();
+		
+		emit sendPackage(pkg.toString());
 	}
 	else
 	{

@@ -53,6 +53,9 @@ class ModuleListWidget : public ModuleWidget
 		
 		virtual QMenu *createMenu();
 		
+		void setClearOnUpdate(bool cou);
+		bool clearOnUpdate() const;
+		
 	private slots:
 		void actionSelected(int action);
 		void showMenu(const QPoint &pos);

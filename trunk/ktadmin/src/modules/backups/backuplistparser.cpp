@@ -21,6 +21,8 @@
 #include "backuplistparser.h"
 #include <QHash>
 
+#include <ddebug.h>
+
 namespace Backups {
 
 struct BackupListParser::Private
@@ -40,9 +42,14 @@ BackupListParser::~BackupListParser()
 	delete d;
 }
 
+void BackupListParser::initialize()
+{
+	d->backups.clear();
+}
+
 bool BackupListParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	if( tag == "project" )
+	if( tag == "entry" )
 	{
 		d->current = atts.value("name");
 	}

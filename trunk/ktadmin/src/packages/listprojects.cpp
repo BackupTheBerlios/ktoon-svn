@@ -17,33 +17,31 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef BACKUPSBACKUPLISTPARSER_H
-#define BACKUPSBACKUPLISTPARSER_H
+#include "listprojects.h"
 
-#include <ktxmlparserbase.h>
+namespace Packages {
 
-namespace Backups {
-
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class BackupListParser : public KTXmlParserBase
+ListProjects::ListProjects()
+ : QDomDocument()
 {
-	public:
-		BackupListParser();
-		~BackupListParser();
-		
-		void initialize();
-		bool startTag(const QString &tag, const QXmlAttributes &atts);
-		bool endTag(const QString &tag);
-		void text(const QString &msg);
-		
-		QStringList backups(const QString &project) const;
-	private:
-		struct Private;
-		Private *const d;
-};
-
+	QDomElement root = createElement("listprojects");
+	
+	appendChild(root);
 }
 
-#endif
+
+ListProjects::~ListProjects()
+{
+}
+
+void ListProjects::requestAll()
+{
+	QDomElement option = createElement("option");
+	QDomText text = createTextNode("all");
+	
+	option.appendChild(text);
+	
+	documentElement().appendChild(option);
+}
+
+}

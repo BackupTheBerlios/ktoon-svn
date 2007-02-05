@@ -42,12 +42,13 @@ struct ModuleListWidget::Private
 	ModuleButtonBar *buttonBar;
 	
 	bool filled;
+	bool clearOnUpdate;
 };
 
 ModuleListWidget::ModuleListWidget(ModuleButtonBar::Buttons buttons, QWidget *parent) : ModuleWidget(parent), d(new Private)
 {
 	d->filled = false;
-	
+	d->clearOnUpdate = true;
 	
 	QVBoxLayout *layout = new QVBoxLayout(this);
 	layout->setMargin(2);
@@ -133,6 +134,16 @@ QMenu *ModuleListWidget::createMenu()
 	
 	
 	return menu;
+}
+
+void ModuleListWidget::setClearOnUpdate(bool cou)
+{
+	d->clearOnUpdate = cou;
+}
+
+bool ModuleListWidget::clearOnUpdate() const
+{
+	return d->clearOnUpdate;
 }
 
 void ModuleListWidget::actionSelected(int action)
@@ -245,7 +256,8 @@ bool ModuleListWidget::filled() const
 
 void ModuleListWidget::update()
 {
-	d->tree->clear();
+	if( d->clearOnUpdate )
+		d->tree->clear();
 	updateList();
 }
 
