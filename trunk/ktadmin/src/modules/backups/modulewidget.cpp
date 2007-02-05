@@ -32,6 +32,7 @@
 #include "packages/projectlistparser.h"
 #include "packages/listprojects.h"
 #include "packages/addbackup.h"
+#include "packages/removebackup.h"
 
 #include "package.h"
 
@@ -71,6 +72,8 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 {
 	if(pkg->root() == "projectlist")
 	{
+		if ( d->initialized ) return;
+		
 		d->initialized = true;
 		
 		Packages::ProjectListParser parser;
@@ -94,6 +97,7 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 	}
 	else if( pkg->root() == "backuplist" )
 	{
+		if ( filled() ) return;
 		Backups::BackupListParser parser;
 		
 		if( parser.parse(pkg->xml()) )
@@ -146,6 +150,32 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 			}
 		}
 	}
+	else if ( pkg->root() == "removebackup" )
+	{
+		Backups::AddBackupParser parser;
+		
+		if(! parser.parse(pkg->xml()) ) return;
+		
+		QHash<QString, QDateTime> entries = parser.entries();
+		
+		for(int i = 0; i < tree()->topLevelItemCount(); i++)
+		{
+			QTreeWidgetItem *project = tree()->topLevelItem(i);
+			
+			if ( !entries.contains(project->text(0)) ) continue;
+			
+			QString date = entries[project->text(0)].toString(Qt::ISODate);
+			for(int i = 0; i < project->childCount(); i++)
+			{
+				QTreeWidgetItem *child = project->child(i);
+				if(child->text(1) == date)
+				{
+					delete child;
+					break;
+				}
+			}
+		}
+	}
 }
 
 void ModuleWidget::updateList()
@@ -180,6 +210,15 @@ void ModuleWidget::addActionSelected(QTreeWidgetItem *current)
 
 void ModuleWidget::delActionSelected(QTreeWidgetItem *current)
 {
+	if( !current ) return;
+	
+	if( QTreeWidgetItem *project = current->parent() )
+	{
+		Packages::RemoveBackup pkg;
+		pkg.addEntry(project->text(0), QDateTime::fromString(current->text(1), Qt::ISODate));
+		
+		emit sendPackage(pkg.toString());
+	}
 }
 
 void ModuleWidget::queryActionSelected(QTreeWidgetItem *current)

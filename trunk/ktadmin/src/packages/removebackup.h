@@ -17,58 +17,28 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "addbackupparser.h"
+#ifndef PACKAGESREMOVEBACKUP_H
+#define PACKAGESREMOVEBACKUP_H
 
+#include <QDomDocument>
 
-namespace Backups {
+#include <QDateTime>
 
+namespace Packages {
 
-struct AddBackupParser::Private
+/**
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+class RemoveBackup : public QDomDocument
 {
-	QString currentDate;
-	QHash<QString, QDateTime> entries;
+	public:
+		RemoveBackup();
+		~RemoveBackup();
+		
+		void addEntry(const QString &name, const QDateTime &date);
+
 };
 
-
-AddBackupParser::AddBackupParser()
- : KTXmlParserBase(), d(new Private)
-{
 }
 
-
-AddBackupParser::~AddBackupParser()
-{
-	delete d;
-}
-
-bool AddBackupParser::startTag(const QString &tag, const QXmlAttributes &atts)
-{
-	if( tag == "addbackup" )
-	{
-		d->entries.clear();
-	}
-	else if( tag == "entry" )
-	{
-		d->currentDate = atts.value("date");
-		setReadText(true);
-	}
-	
-	return true;
-}
-
-bool AddBackupParser::endTag(const QString &)
-{
-	return true;
-}
-
-void AddBackupParser::text(const QString &text)
-{
-	d->entries[text] = QDateTime::fromString(d->currentDate, Qt::ISODate);
-}
-
-QHash<QString, QDateTime > AddBackupParser::entries() const
-{
-	return d->entries;
-}
-
-}
+#endif

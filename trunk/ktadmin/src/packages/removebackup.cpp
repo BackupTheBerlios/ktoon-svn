@@ -17,58 +17,35 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "addbackupparser.h"
+#include "removebackup.h"
 
+namespace Packages {
 
-namespace Backups {
-
-
-struct AddBackupParser::Private
+RemoveBackup::RemoveBackup()
+ : QDomDocument()
 {
-	QString currentDate;
-	QHash<QString, QDateTime> entries;
-};
-
-
-AddBackupParser::AddBackupParser()
- : KTXmlParserBase(), d(new Private)
-{
-}
-
-
-AddBackupParser::~AddBackupParser()
-{
-	delete d;
-}
-
-bool AddBackupParser::startTag(const QString &tag, const QXmlAttributes &atts)
-{
-	if( tag == "addbackup" )
-	{
-		d->entries.clear();
-	}
-	else if( tag == "entry" )
-	{
-		d->currentDate = atts.value("date");
-		setReadText(true);
-	}
+	QDomElement root = createElement("removebackup");
 	
-	return true;
+	appendChild(root);
 }
 
-bool AddBackupParser::endTag(const QString &)
+
+RemoveBackup::~RemoveBackup()
 {
-	return true;
 }
 
-void AddBackupParser::text(const QString &text)
+void RemoveBackup::addEntry(const QString &name, const QDateTime &date)
 {
-	d->entries[text] = QDateTime::fromString(d->currentDate, Qt::ISODate);
+	QDomElement entry = createElement("entry");
+	entry.setAttribute("date", date.toString(Qt::ISODate));
+	
+	QDomText text = createTextNode(name);
+	
+	entry.appendChild(text);
+	
+	documentElement().appendChild(entry);
 }
 
-QHash<QString, QDateTime > AddBackupParser::entries() const
-{
-	return d->entries;
 }
 
-}
+
