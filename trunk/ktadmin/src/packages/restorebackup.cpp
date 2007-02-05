@@ -18,41 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#include "restorebackup.h"
 
-#include <dworkspacemainwindow.h>
+namespace Packages {
 
-namespace Base {
-class ModuleWidget;
+RestoreBackup::RestoreBackup()
+ : QDomDocument()
+{
+	QDomElement root = createElement("restorebackup");
+	
+	appendChild(root);
 }
 
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class MainWindow : public DWorkspaceMainWindow
+
+RestoreBackup::~RestoreBackup()
 {
-	Q_OBJECT;
-	public:
-		MainWindow(QWidget *parent = 0);
-		~MainWindow();
-		
-	private:
-		void createModules();
-		void createMenuBar();
-		
-	protected:
-		void registerModule(Base::ModuleWidget *w);
-		
-	private slots:
-		void updateModules();
-		void addWidgetAsWindow(QWidget *w);
-		void connectToServer();
-		
-	private:
-		struct Private;
-		Private *const d;
+}
 
-};
+void RestoreBackup::addEntry(const QString &name, const QDateTime &date)
+{
+	QDomElement entry = createElement("entry");
+	entry.setAttribute("date", date.toString(Qt::ISODate));
+	
+	QDomText text = createTextNode(name);
+	
+	entry.appendChild(text);
+	
+	documentElement().appendChild(entry);
+}
 
-#endif
+}
+
+

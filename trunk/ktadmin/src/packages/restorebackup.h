@@ -18,41 +18,28 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef PACKAGESRESTOREBACKUP_H
+#define PACKAGESRESTOREBACKUP_H
 
-#include <dworkspacemainwindow.h>
+#include <QDomDocument>
 
-namespace Base {
-class ModuleWidget;
-}
+#include <QDateTime>
+
+namespace Packages {
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class MainWindow : public DWorkspaceMainWindow
+class RestoreBackup : public QDomDocument
 {
-	Q_OBJECT;
 	public:
-		MainWindow(QWidget *parent = 0);
-		~MainWindow();
+		RestoreBackup();
+		~RestoreBackup();
 		
-	private:
-		void createModules();
-		void createMenuBar();
-		
-	protected:
-		void registerModule(Base::ModuleWidget *w);
-		
-	private slots:
-		void updateModules();
-		void addWidgetAsWindow(QWidget *w);
-		void connectToServer();
-		
-	private:
-		struct Private;
-		Private *const d;
+		void addEntry(const QString &name, const QDateTime &date);
 
 };
+
+}
 
 #endif

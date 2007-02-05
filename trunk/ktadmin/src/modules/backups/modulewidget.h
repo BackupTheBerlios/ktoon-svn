@@ -41,7 +41,6 @@ class ModuleWidget : public Base::ModuleListWidget
 	protected:
 		void addActionSelected(QTreeWidgetItem *current);
 		void delActionSelected(QTreeWidgetItem *current);
-		void queryActionSelected(QTreeWidgetItem *current);
 		void custom1ActionSelected(QTreeWidgetItem *current);
 		
 	private:

@@ -33,6 +33,7 @@
 #include "packages/listprojects.h"
 #include "packages/addbackup.h"
 #include "packages/removebackup.h"
+#include "packages/restorebackup.h"
 
 #include "package.h"
 
@@ -40,6 +41,7 @@
 #include "addbackupparser.h"
 
 #include <ddebug.h>
+#include <dosd.h>
 
 namespace Backups {
 
@@ -49,7 +51,7 @@ struct ModuleWidget::Private
 };
 
 ModuleWidget::ModuleWidget(QWidget *parent)
- : Base::ModuleListWidget(Base::ModuleButtonBar::Add | Base::ModuleButtonBar::Del | Base::ModuleButtonBar::Custom1 | Base::ModuleButtonBar::Query, parent), d(new Private)
+ : Base::ModuleListWidget(Base::ModuleButtonBar::Add | Base::ModuleButtonBar::Del | Base::ModuleButtonBar::Custom1, parent), d(new Private)
 {
 	d->initialized = false;
 	
@@ -97,7 +99,7 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 	}
 	else if( pkg->root() == "backuplist" )
 	{
-		if ( filled() ) return;
+		if ( filled() || !d->initialized ) return;
 		Backups::BackupListParser parser;
 		
 		if( parser.parse(pkg->xml()) )
@@ -176,6 +178,25 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 			}
 		}
 	}
+	else if ( pkg->root() == "restorebackup" )
+	{
+		Backups::AddBackupParser parser;
+		
+		if(! parser.parse(pkg->xml()) ) return;
+		
+		QHash<QString, QDateTime> entries = parser.entries();
+		
+		QHashIterator<QString, QDateTime> it(entries);
+		
+		QString message = tr("Restored:")+"\n";
+		while(it.hasNext())
+		{
+			it.next();
+			
+			message += it.key()+"-"+it.value().toString(Qt::ISODate);
+		}
+		DOsd::self()->display(message, DOsd::Info);
+	}
 }
 
 void ModuleWidget::updateList()
@@ -221,12 +242,18 @@ void ModuleWidget::delActionSelected(QTreeWidgetItem *current)
 	}
 }
 
-void ModuleWidget::queryActionSelected(QTreeWidgetItem *current)
-{
-}
 
-void ModuleWidget::custom1ActionSelected(QTreeWidgetItem *current)
+void ModuleWidget::custom1ActionSelected(QTreeWidgetItem *current) // RESTORE
 {
+	if( !current ) return;
+	
+	if( QTreeWidgetItem *project = current->parent() )
+	{
+		Packages::RestoreBackup pkg;
+		pkg.addEntry(project->text(0), QDateTime::fromString(current->text(1), Qt::ISODate));
+		
+		emit sendPackage(pkg.toString());
+	}
 }
 
 

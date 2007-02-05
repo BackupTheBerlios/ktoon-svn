@@ -15,7 +15,8 @@ HEADERS += adduser.h \
            projectlistparser.h \
            listprojects.h \
            addbackup.h \
-           removebackup.h
+           removebackup.h \
+           restorebackup.h
 SOURCES += adduser.cpp \
            connect.cpp \
            ackparser.cpp \
@@ -28,7 +29,8 @@ SOURCES += adduser.cpp \
            projectlistparser.cpp \
            listprojects.cpp \
            addbackup.cpp \
-           removebackup.cpp
+           removebackup.cpp \
+           restorebackup.cpp
 CONFIG += release \
 warn_on \
 staticlib

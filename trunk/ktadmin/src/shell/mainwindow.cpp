@@ -41,12 +41,7 @@
 
 struct MainWindow::Private
 {
-	Users::ModuleWidget *usersModule;
-	Projects::ModuleWidget *projectsModule;
-	Server::ModuleWidget *serverModule;
-	Bans::ModuleWidget *bansModule;
-	Backups::ModuleWidget *backupsModule;
-	
+	QList<Base::ModuleWidget *> modules;
 	Manager *manager;
 };
 
@@ -74,32 +69,25 @@ MainWindow::~MainWindow()
 
 void MainWindow::createModules()
 {
-	d->usersModule = new Users::ModuleWidget;
-	addToolView(d->usersModule, Qt::LeftDockWidgetArea)->setDescription(tr("Administer users"));
-	setupModule(d->usersModule);
+	Users::ModuleWidget *usersModule = new Users::ModuleWidget;
+	addToolView(usersModule, Qt::LeftDockWidgetArea)->setDescription(tr("Administer users"));
+	registerModule(usersModule);
 	
-	d->projectsModule = new Projects::ModuleWidget;
-	addToolView(d->projectsModule, Qt::LeftDockWidgetArea)->setDescription(tr("Administer projects"));
-	setupModule(d->projectsModule);
+	Projects::ModuleWidget *projectsModule = new Projects::ModuleWidget;
+	addToolView(projectsModule, Qt::LeftDockWidgetArea)->setDescription(tr("Administer projects"));
+	registerModule(projectsModule);
 	
-	d->serverModule = new Server::ModuleWidget;
-	addToolView(d->serverModule, Qt::RightDockWidgetArea)->setDescription(tr("Administer server"));
-	setupModule(d->serverModule);
+	Server::ModuleWidget *serverModule = new Server::ModuleWidget;
+	addToolView(serverModule, Qt::RightDockWidgetArea)->setDescription(tr("Administer server"));
+	registerModule(serverModule);
 	
-	d->bansModule = new Bans::ModuleWidget;
-	addToolView(d->bansModule, Qt::RightDockWidgetArea)->setDescription(tr("Administer bans"));
-	setupModule(d->bansModule);
+	Bans::ModuleWidget *bansModule = new Bans::ModuleWidget;
+	addToolView(bansModule, Qt::RightDockWidgetArea)->setDescription(tr("Administer bans"));
+	registerModule(bansModule);
 	
-	d->backupsModule = new Backups::ModuleWidget;
-	addToolView(d->backupsModule, Qt::RightDockWidgetArea)->setDescription(tr("Administer backups"));
-	setupModule(d->backupsModule);
-	
-	
-	d->manager->addObserver(d->usersModule);
-	d->manager->addObserver(d->projectsModule);
-	d->manager->addObserver(d->serverModule);
-	d->manager->addObserver(d->bansModule);
-	d->manager->addObserver(d->backupsModule);
+	Backups::ModuleWidget *backupsModule = new Backups::ModuleWidget;
+	addToolView(backupsModule, Qt::RightDockWidgetArea)->setDescription(tr("Administer backups"));
+	registerModule(backupsModule);
 }
 
 void MainWindow::createMenuBar()
@@ -137,34 +125,24 @@ void MainWindow::addWidgetAsWindow(QWidget *w)
 	}
 }
 
-void MainWindow::setupModule(const QWidget *w)
+void MainWindow::registerModule(Base::ModuleWidget *w)
 {
+	d->manager->addObserver(w);
+	d->modules << w;
+	
 	connect(w, SIGNAL(postWidget(QWidget *)), this, SLOT(addWidgetAsWindow(QWidget *)));
 	connect(w, SIGNAL(sendPackage(const QString &)),  d->manager, SLOT(sendPackage(const QString &)));
 }
 
 void MainWindow::updateModules()
 {
-	if ( d->usersModule->isVisible() )
+	foreach(Base::ModuleWidget *module, d->modules)
 	{
-		d->usersModule->update();
+		if( module->isVisible() )
+		{
+			module->update();
+		}
 	}
-	
-	if ( d->projectsModule->isVisible() )
-	{
-		d->projectsModule->update();
-	}
-	
-	if ( d->serverModule->isVisible() )
-	{
-		d->serverModule->update();
-	}
-	
-	if ( d->bansModule->isVisible() )
-	{
-		d->bansModule->update();
-	}
-	
 }
 
 void MainWindow::connectToServer()
