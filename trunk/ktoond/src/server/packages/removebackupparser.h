@@ -17,30 +17,29 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef PARSERSREMOVEBACKUPPARSER_H
+#define PARSERSREMOVEBACKUPPARSER_H
 
-#ifndef SERVERBACKUPMANAGER_H
-#define SERVERBACKUPMANAGER_H
+#include <ktxmlparserbase.h>
+#include <QDateTime>
+#include <QHash>
 
-#include <QString>
-#include "backupdatabase.h"
-
-namespace Server {
+namespace Parsers {
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class BackupManager
+class RemoveBackupParser : public KTXmlParserBase
 {
 	public:
-		BackupManager();
-		~BackupManager();
+		RemoveBackupParser();
+		~RemoveBackupParser();
 		
-		bool makeBackup(const QString &filepath, const QDateTime &date, const QString &name);
-		bool removeBackup(const QString &name, const QDateTime &date);
+		bool startTag(const QString &tag, const QXmlAttributes &atts);
+		bool endTag(const QString &tag);
+		void text(const QString &msg);
 		
-		QHash<QString, QList<BackupDatabase::Entry> > entries();
-		
-		QDateTime date(const QString &name);
+		QHash<QString, QDateTime > entries() const;
 		
 	private:
 		struct Private;
@@ -50,5 +49,3 @@ class BackupManager
 }
 
 #endif
-
-

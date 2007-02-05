@@ -33,6 +33,20 @@ struct BackupManager::Private
 {
 	QString dbfile;
 	BackupDatabase *database;
+	
+	QString fileName(const QString &origFile, const QDateTime &date)
+	{
+		QFileInfo fi(origFile);
+		
+		QString destfile = fi.baseName()+"-"+date.toString(Qt::ISODate);
+		
+		if( ! fi.completeSuffix().isEmpty() )
+		{
+			destfile += "."+fi.completeSuffix();
+		}
+		
+		return destfile;
+	}
 };
 
 BackupManager::BackupManager() : d(new Private)
@@ -57,24 +71,40 @@ BackupManager::~BackupManager()
 bool BackupManager::makeBackup(const QString &filepath, const QDateTime &date, const QString &name)
 {
 	dDebug() << "Making backup: " << filepath;
-	QFileInfo fi(filepath);
+	QFile file(filepath);
 	
-	if( fi.exists() )
+	if( file.exists() )
 	{
-		QString destfile = fi.baseName()+"-"+date.toString(Qt::ISODate);
-		
-		if( ! fi.completeSuffix().isEmpty() )
-		{
-			destfile += "."+fi.completeSuffix();
-		}
-		
-		QFile file(filepath);
+		QString destfile = d->fileName(filepath, date);
 		
 		if ( file.copy(Settings::self()->backupDirPath()+"/"+ destfile) )
 		{
 			d->database->addEntry(destfile, name, date);
 			
 			return true;
+		}
+	}
+	
+	return false;
+}
+
+bool BackupManager::removeBackup(const QString &name, const QDateTime &date)
+{
+	QHash<QString, QList<BackupDatabase::Entry> > entries = d->database->entries();
+	
+	if ( entries.contains(name) )
+	{
+		QList<BackupDatabase::Entry> backups = entries[name];
+		
+		foreach(BackupDatabase::Entry backup, backups)
+		{
+			if(backup.date == date)
+			{
+				if( d->database->removeEntry(name, date) )
+				{
+					return QFile::remove(Settings::self()->backupDirPath()+"/"+backup.file);
+				}
+			}
 		}
 	}
 	

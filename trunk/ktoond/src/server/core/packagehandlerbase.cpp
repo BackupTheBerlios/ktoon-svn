@@ -47,7 +47,7 @@
 #include "packages/removebanparser.h"
 #include "packages/addbanparser.h"
 #include "packages/backuplist.h"
-
+#include "packages/removebackupparser.h"
 
 #include "banmanager.h"
 #include "backupmanager.h"
@@ -287,7 +287,7 @@ void PackageHandlerBase::handlePackage(Server::Connection *cnn, const QString &r
 	}
 	else if ( root == "listbackups" )
 	{
-		if( cnn->user()->canWriteOn("admin" ) )
+		if( cnn->user()->canReadOn("admin" ) )
 		{
 			Server::BackupManager *bm = server->backupManager();
 			
@@ -311,6 +311,31 @@ void PackageHandlerBase::handlePackage(Server::Connection *cnn, const QString &r
 			}
 			
 			cnn->sendToClient(pkg);
+		}
+		else
+		{
+			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
+		}
+	}
+	else if( root == "removebackup" )
+	{
+		if( cnn->user()->canWriteOn("admin" ) )
+		{
+			Server::BackupManager *bm = server->backupManager();
+			Parsers::RemoveBackupParser parser;
+			
+			if(parser.parse(package))
+			{
+				QHashIterator<QString, QDateTime > it(parser.entries());
+				
+				while(it.hasNext())
+				{
+					it.next();
+					bm->removeBackup(it.key(), it.value());
+				}
+				
+				server->sendToAdmins(package);
+			}
 		}
 		else
 		{

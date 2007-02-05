@@ -18,37 +18,57 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SERVERBACKUPMANAGER_H
-#define SERVERBACKUPMANAGER_H
+#include "removebackupparser.h"
 
-#include <QString>
-#include "backupdatabase.h"
 
-namespace Server {
+namespace Parsers {
 
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-class BackupManager
+struct RemoveBackupParser::Private
 {
-	public:
-		BackupManager();
-		~BackupManager();
-		
-		bool makeBackup(const QString &filepath, const QDateTime &date, const QString &name);
-		bool removeBackup(const QString &name, const QDateTime &date);
-		
-		QHash<QString, QList<BackupDatabase::Entry> > entries();
-		
-		QDateTime date(const QString &name);
-		
-	private:
-		struct Private;
-		Private *const d;
+	QString currentDate;
+	QHash<QString, QDateTime> entries;
 };
 
+RemoveBackupParser::RemoveBackupParser()
+ : KTXmlParserBase(), d(new Private)
+{
 }
 
-#endif
+
+RemoveBackupParser::~RemoveBackupParser()
+{
+	delete d;
+}
+
+bool RemoveBackupParser::startTag(const QString &tag, const QXmlAttributes &atts)
+{
+	if( tag == "removebackup" )
+	{
+		d->entries.clear();
+	}
+	else if( tag == "entry" )
+	{
+		d->currentDate = atts.value("date");
+		setReadText(true);
+	}
+	
+	return true;
+}
+
+bool RemoveBackupParser::endTag(const QString &)
+{
+	return true;
+}
+
+void RemoveBackupParser::text(const QString &msg)
+{
+	d->entries[msg] = QDateTime::fromString(d->currentDate, Qt::ISODate);
+}
+
+QHash<QString, QDateTime > RemoveBackupParser::entries() const
+{
+	return d->entries;
+}
 
 
+}

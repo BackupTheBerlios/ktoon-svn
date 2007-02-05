@@ -206,7 +206,10 @@ Las respuesta a una peticion queryX sera Xquery
 	<entry>project name 3</entry>
 </addbackup>
 
-
+<removebackup>
+	<entry date="" >name</entry>
+	<entry date="" >name</entry>
+</removebackup>
 
 === RESPONSES ===
 

@@ -146,6 +146,69 @@ bool BackupDatabase::addEntry(const QString &filename, const QString &name, cons
 	return false;
 }
 
+bool BackupDatabase::removeEntry(const QString &name, const QDateTime &date)
+{
+	QDomDocument doc;
+	QFile dbf(d->dbfile);
+	
+	if( doc.setContent(&dbf) )
+	{
+		dbf.close();
+		
+		QDomElement root = doc.documentElement();
+		QDomNode n = root.firstChild();
+		QDomElement target;
+		
+		while(!n.isNull())
+		{
+			QDomElement e = n.toElement();
+			
+			if(!e.isNull())
+			{
+				if( e.attribute("name") == name )
+				{
+					target = e;
+				}
+			}
+			
+			n = n.nextSibling();
+		}
+		
+		if( target.isNull() ) return false;
+		
+		QString dateStr = date.toString(Qt::ISODate);
+		
+		n = target.firstChild();
+		while(!n.isNull())
+		{
+			QDomElement e = n.toElement();
+			if(!e.isNull())
+			{
+				dDebug() << e.tagName();
+				
+				if ( e.attribute("date") == dateStr )
+				{
+					target.removeChild(e);
+				}
+			}
+			n = n.nextSibling();
+		}
+		
+		
+		dbf.open(QIODevice::WriteOnly | QIODevice::Text);
+		
+		QTextStream ts(&dbf);
+		
+		ts << doc.toString();
+		
+		dbf.close();
+		
+		return true;
+	}
+	
+	return false;
+}
+
 QHash<QString, QList<BackupDatabase::Entry> > BackupDatabase::entries()
 {
 	d->entries.clear();

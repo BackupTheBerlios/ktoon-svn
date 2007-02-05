@@ -66,6 +66,8 @@ PackageHandler::~PackageHandler()
 
 void PackageHandler::handle(Server::Connection *cnx , const QString &root, const QString &package )
 {
+	Server::TcpServer *server = cnx->server();
+	
 	if ( root == "request" )
 	{
 		if ( cnx->user()->canWriteOn("project") )
@@ -186,7 +188,7 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 			{
 				Packages::AddBackup pkg;
 				
-				Server::BackupManager *bm = cnx->server()->backupManager();
+				Server::BackupManager *bm = server->backupManager();
 				
 				foreach(QString project, parser.backups())
 				{
@@ -198,7 +200,7 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 					pkg.addEntry(info.name, date);
 				}
 				
-				cnx->server()->sendToAdmins(pkg.toString());
+				server->sendToAdmins(pkg.toString());
 			}
 		}
 		else
