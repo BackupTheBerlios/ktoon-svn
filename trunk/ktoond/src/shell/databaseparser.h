@@ -42,7 +42,8 @@ class DatabaseParser : public KTXmlParserBase
 		
 		QString lastFileName();
 		
-		QList< Projects::Database::ProjectInfo > projectsInfoOfUser(const QString & login, const QString &db );
+		QList< Projects::Database::ProjectInfo > userProjects(const QString & login, const QString &db );
+		QList< Projects::Database::ProjectInfo > allProjects(const QString &db );
 		
 		bool exists(const QString & nameProject, const QString &db );
 		
@@ -55,7 +56,7 @@ class DatabaseParser : public KTXmlParserBase
 		bool m_projectExists;
 		QStringList  m_users;
 		
-		bool m_findProjectsUser, m_findProject, m_loadProject;
+		bool m_findUserProjects, m_findProject, m_loadProject;
 		QList< Projects::Database::ProjectInfo > m_projectsInfo;
 		
 		SProject *m_project;

@@ -44,6 +44,8 @@ Las respuesta a una peticion queryX sera Xquery
 	</options>
 <list/>
 
+<listprojects>
+	<option>all</option>
 <listprojects />
 
 <!-- Abrir proyecto -->
@@ -199,9 +201,9 @@ Las respuesta a una peticion queryX sera Xquery
 
 
 <backup>
-	<project>project name 1</project>
-	<project>project name 2</project>
-	<project>project name 3</project>
+	<entry>project name 1</entry>
+	<entry>project name 2</entry>
+	<entry>project name 3</entry>
 </backup>
 
 
@@ -289,18 +291,18 @@ Las respuesta a una peticion queryX sera Xquery
 <!-- Respuesta a listbackups -->
 
 <backuplist>
-	<project name="">
+	<entry name="">
 		<backup date="" />
 		<backup date="" />
 		<backup date="" />
 		...
-	</project>
-	<project name="">
+	</entry>
+	<entry name="">
 		<backup date="" />
 		<backup date="" />
 		<backup date="" />
 		...
-	</project>
+	</entry>
 	....
 </backuplist>
 

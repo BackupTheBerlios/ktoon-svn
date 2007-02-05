@@ -244,10 +244,22 @@ bool ProjectCollection::handleProjectRequest(Server::Connection *cnn, const QStr
 	return false;
 }
 
-void ProjectCollection::listProjects(Server::Connection *cnn)
+void ProjectCollection::listAllProjects(Server::Connection *cnn)
 {
 	Packages::ProjectList list;
-	foreach(Database::ProjectInfo info, d->db->projectsInfoOfUser(cnn->user()->login()))
+	
+	foreach(Database::ProjectInfo info, d->db->allProjects())
+	{
+		list.addProject(info.name, info.author, info.description);
+	}
+	
+	cnn->sendToAll(list);
+}
+
+void ProjectCollection::listUserProjects(Server::Connection *cnn)
+{
+	Packages::ProjectList list;
+	foreach(Database::ProjectInfo info, d->db->userProjects(cnn->user()->login()))
 	{
 		list.addProject(info.name, info.author, info.description);
 	}

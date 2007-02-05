@@ -11,7 +11,8 @@ HEADERS += package.h \
            listparser.h \
            projects.h \
            importprojectparser.h \
-           projectactionparser.h 
+           projectactionparser.h  \
+           listprojectsparser.h
 SOURCES += package.cpp \
            items.cpp \
            project.cpp \
@@ -20,7 +21,8 @@ SOURCES += package.cpp \
            listparser.cpp \
            projects.cpp \
            importprojectparser.cpp \
-           projectactionparser.cpp 
+           projectactionparser.cpp  \
+           listprojectsparser.cpp
 CONFIG += release \
 warn_on \
 staticlib

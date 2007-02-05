@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,58 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef PROJECTSPROJECTCOLLECTION_H
-#define PROJECTSPROJECTCOLLECTION_H
+#ifndef SERVERBACKUPMANAGER_H
+#define SERVERBACKUPMANAGER_H
 
 #include <QString>
-#include <QDomDocument>
-
-#include "projects.h"
-#include "sproject.h"
+#include "backupdatabase.h"
 
 namespace Server {
-class Connection;
-}
-
-namespace Users {
-	class User;
-}
-namespace Projects {
 
 /**
- * @author Jorge Cuadrado \<kuadrosxx@gmail.com\>
+ * @author David Cuadrado <krawek@toonka.com>
 */
-class ProjectCollection 
+class BackupManager
 {
 	public:
-		ProjectCollection();
-		~ProjectCollection();
+		BackupManager();
+		~BackupManager();
 		
-		void createProject(Server::Connection *cnn, const QString& author);
-		bool addProject(const QString& name, const QString& author, const QString& description, const Users::User *owner );
+		bool makeBackup(const QString &filepath);
 		
-		bool openProject(Server::Connection *cnn);
-		void importProject(Server::Connection *cnn, const QByteArray& data);
-		
-		bool handleProjectRequest(Server::Connection *cnn, const QString strRequest);
-		QStringList projects() const;
-		
-		void listAllProjects(Server::Connection *cnn);
-		void listUserProjects(Server::Connection *cnn);
-		
-		
-		void closeProject(const QString & name);
-		bool saveProject(const QString & name);
-		void addUser(Server::Connection *cnn, const QString & login, SProject::UserType type  );
-		
-		void removeConnection(Server::Connection *cnn);
-		void sendToProjectMembers(Server::Connection *cnn, QDomDocument &doc);
+		QHash<QString, QList<BackupDatabase::Entry> > entries();
 		
 	private:
 		struct Private;
 		Private *const d;
-		
 };
 
 }
+
 #endif
+
+

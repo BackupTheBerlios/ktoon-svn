@@ -37,8 +37,11 @@ class Settings
 		
 		static Settings *self();
 		
-		void setDatabaseDirPath(const QString &dbdir);
+		void setDatabaseDirPath(const QString &dir);
 		QString databaseDirPath() const;
+		
+		void setBackupDirPath(const QString &dir);
+		QString backupDirPath() const;
 		
 	private:
 		static Settings *s_settings;

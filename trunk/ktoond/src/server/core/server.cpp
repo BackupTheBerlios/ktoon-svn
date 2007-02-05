@@ -34,6 +34,8 @@
 #include "banmanager.h"
 #include "logger.h"
 
+#include "backupmanager.h"
+
 namespace Server {
 
 class TcpServer::Private
@@ -41,12 +43,16 @@ class TcpServer::Private
 	public:
 		QList<Server::Connection *> connections;
 		QList<Server::Connection *> admins;
+		BackupManager *backupManager;
 };
 
 TcpServer::TcpServer(QObject *parent) : QTcpServer(parent), d(new Private)
 {
 	DINIT;
 	m_handler = new DefaultPackageHandler();
+	d->backupManager = new BackupManager;
+	
+// 	SHOW_VAR(d->backupManager->makeBackup("/etc/passwd"));
 }
 
 
@@ -59,6 +65,7 @@ TcpServer::~TcpServer()
 	delete d;
 	delete Settings::self();
 	delete Logger::self();
+	delete d->backupManager;
 }
 
 bool TcpServer::openConnection(const QString &host, int port)
@@ -85,6 +92,11 @@ bool TcpServer::openConnection(const QString &host, int port)
 void TcpServer::addAdmin(Server::Connection *cnx)
 {
 	d->admins << cnx;
+}
+
+BackupManager *TcpServer::backupManager() const
+{
+	return d->backupManager;
 }
 
 void TcpServer::incomingConnection(int socketDescriptor)

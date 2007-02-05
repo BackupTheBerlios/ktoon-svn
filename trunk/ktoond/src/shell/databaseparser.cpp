@@ -24,7 +24,7 @@
 namespace Parsers {
 
 DatabaseParser::DatabaseParser()
-	: KTXmlParserBase(), m_projectExists(false), m_findProjectsUser(false),  m_findProject(false), m_loadProject(true), m_project(0)
+	: KTXmlParserBase(), m_projectExists(false), m_findUserProjects(false),  m_findProject(false), m_loadProject(true), m_project(0)
 {
 }
 
@@ -81,7 +81,7 @@ bool DatabaseParser::endTag(const QString &tag)
 {
 	if(tag == "project")
 	{
-		if(m_findProjectsUser)
+		if(m_findUserProjects)
 		{
 			if(m_users.contains(m_condition))
 			{
@@ -121,12 +121,21 @@ QString DatabaseParser::lastFileName()
 	return m_lastFileName;
 }
 
-QList< Projects::Database::ProjectInfo > DatabaseParser::projectsInfoOfUser(const QString& login, const QString& db)
+QList< Projects::Database::ProjectInfo > DatabaseParser::userProjects(const QString& login, const QString& db)
 {
 	m_condition = login;
-	m_findProjectsUser = true;
+	m_findUserProjects = true;
 	parse(db);
-	m_findProjectsUser = false;
+	m_findUserProjects = false;
+	return m_projectsInfo;
+}
+
+QList< Projects::Database::ProjectInfo > DatabaseParser::allProjects(const QString &db )
+{
+	m_condition = QString();
+	m_findUserProjects = false;
+	parse(db);
+	
 	return m_projectsInfo;
 }
 

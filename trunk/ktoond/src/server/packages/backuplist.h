@@ -17,55 +17,27 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "settings.h"
+#ifndef PACKAGESBACKUPLIST_H
+#define PACKAGESBACKUPLIST_H
 
-namespace Server {
+#include <QDomDocument>
 
-Settings *Settings::s_settings = 0;
+#include <QStringList>
 
-struct Settings::Private 
+namespace Packages {
+
+/**
+	@author David Cuadrado <krawek@toonka.com>
+*/
+class BackupList : public QDomDocument
 {
-	QString databaseDirPath;
-	QString backupDirPath;
+	public:
+		BackupList();
+		~BackupList();
+		
+		void addEntry(const QString &name, const QStringList &backups);
 };
 
-Settings::Settings() : d(new Private())
-{
 }
 
-
-Settings::~Settings()
-{
-	delete d;
-}
-
-Settings *Settings::self()
-{
-	if( ! s_settings )
-		s_settings = new Settings();
-	
-	return s_settings;
-}
-
-
-void Settings::setDatabaseDirPath(const QString &dbdir)
-{
-	d->databaseDirPath = dbdir;
-}
-
-QString Settings::databaseDirPath() const
-{
-	return d->databaseDirPath;
-}
-
-void Settings::setBackupDirPath(const QString &dir)
-{
-	d->backupDirPath = dir;
-}
-
-QString Settings::backupDirPath() const
-{
-	return d->backupDirPath;
-}
-
-}
+#endif

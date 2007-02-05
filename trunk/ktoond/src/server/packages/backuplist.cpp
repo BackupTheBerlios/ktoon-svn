@@ -17,55 +17,42 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "settings.h"
 
-namespace Server {
+#include "backuplist.h"
 
-Settings *Settings::s_settings = 0;
+namespace Packages {
 
-struct Settings::Private 
+BackupList::BackupList() : QDomDocument()
 {
-	QString databaseDirPath;
-	QString backupDirPath;
-};
-
-Settings::Settings() : d(new Private())
-{
-}
-
-
-Settings::~Settings()
-{
-	delete d;
-}
-
-Settings *Settings::self()
-{
-	if( ! s_settings )
-		s_settings = new Settings();
+	QDomElement root = createElement("backuplist");
 	
-	return s_settings;
+	
+	
+	appendChild(root);
 }
 
 
-void Settings::setDatabaseDirPath(const QString &dbdir)
+BackupList::~BackupList()
 {
-	d->databaseDirPath = dbdir;
 }
 
-QString Settings::databaseDirPath() const
+void BackupList::addEntry(const QString &name, const QStringList &backups)
 {
-	return d->databaseDirPath;
+	QDomElement entry = createElement("entry");
+	entry.setAttribute("name", name);
+	
+	foreach(QString bk, backups)
+	{
+		QDomElement backup = createElement("backup");
+		
+		backup.setAttribute("date", bk);
+		
+		entry.appendChild(backup);
+	}
+	
+	documentElement().appendChild(entry);
 }
 
-void Settings::setBackupDirPath(const QString &dir)
-{
-	d->backupDirPath = dir;
 }
 
-QString Settings::backupDirPath() const
-{
-	return d->backupDirPath;
-}
 
-}

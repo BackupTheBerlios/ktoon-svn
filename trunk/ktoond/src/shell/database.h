@@ -53,7 +53,9 @@ class Database
 			QString author;
 			QString description;
 		};
-		QList<Database::ProjectInfo> projectsInfoOfUser(const QString& nameProject);
+		
+		QList<Database::ProjectInfo> allProjects();
+		QList<Database::ProjectInfo> userProjects(const QString& user);
 		
 		bool exists( const QString &projectName );
 		

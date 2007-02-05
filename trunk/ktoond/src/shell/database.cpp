@@ -194,13 +194,16 @@ bool Database::removeProject(  const SProject * project)
 }
 
 
-
-
-QList< Database::ProjectInfo> Database::projectsInfoOfUser(const QString& user)
+QList<Database::ProjectInfo> Database::allProjects()
 {
 	Parsers::DatabaseParser parser;
-	QList<ProjectInfo> list = parser.projectsInfoOfUser(user, loadDataBase().toString());
-	return list;
+	return parser.allProjects(loadDataBase().toString());
+}
+
+QList< Database::ProjectInfo> Database::userProjects(const QString& user)
+{
+	Parsers::DatabaseParser parser;
+	return parser.userProjects(user, loadDataBase().toString());
 }
 
 bool Database::exists( const QString &projectName )

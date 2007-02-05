@@ -17,55 +17,74 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
+#include "backupmanager.h"
 #include "settings.h"
+
+#include <QDir>
+#include <QFileInfo>
+#include <QDateTime>
+
+#include <ddebug.h>
 
 namespace Server {
 
-Settings *Settings::s_settings = 0;
-
-struct Settings::Private 
+struct BackupManager::Private
 {
-	QString databaseDirPath;
-	QString backupDirPath;
+	QString dbfile;
+	BackupDatabase *database;
 };
 
-Settings::Settings() : d(new Private())
+BackupManager::BackupManager() : d(new Private)
 {
+	d->dbfile = Settings::self()->databaseDirPath()+"/backups.xml";
+	
+	QDir dir(Settings::self()->backupDirPath());
+	if( ! dir.exists() )
+	{
+		dir.mkpath(Settings::self()->backupDirPath());
+	}
+	
+	d->database = new BackupDatabase(d->dbfile);
 }
 
 
-Settings::~Settings()
+BackupManager::~BackupManager()
 {
 	delete d;
 }
 
-Settings *Settings::self()
+bool BackupManager::makeBackup(const QString &filepath)
 {
-	if( ! s_settings )
-		s_settings = new Settings();
+	QFileInfo fi(filepath);
 	
-	return s_settings;
+	if( fi.exists() )
+	{
+		QDateTime date = QDateTime::currentDateTime();
+		
+		QString destfile = fi.baseName()+"-"+date.toString(Qt::ISODate);
+		
+		if( ! fi.completeSuffix().isEmpty() )
+		{
+			destfile += "."+fi.completeSuffix();
+		}
+		
+		QFile file(filepath);
+		
+		if ( file.copy(Settings::self()->backupDirPath()+"/"+ destfile) )
+		{
+			d->database->addEntry(destfile, fi.baseName(), date);
+			
+			return true;
+		}
+	}
+	
+	return false;
 }
 
-
-void Settings::setDatabaseDirPath(const QString &dbdir)
+QHash<QString, QList<BackupDatabase::Entry> > BackupManager::entries()
 {
-	d->databaseDirPath = dbdir;
-}
-
-QString Settings::databaseDirPath() const
-{
-	return d->databaseDirPath;
-}
-
-void Settings::setBackupDirPath(const QString &dir)
-{
-	d->backupDirPath = dir;
-}
-
-QString Settings::backupDirPath() const
-{
-	return d->backupDirPath;
+	return d->database->entries();
 }
 
 }

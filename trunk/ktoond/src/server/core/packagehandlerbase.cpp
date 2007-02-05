@@ -22,6 +22,9 @@
 #include <ddebug.h>
 #include <dfortunegenerator.h>
 
+#include <QHashIterator>
+#include <QHash>
+
 #include "users/manager.h"
 #include "users/user.h"
 #include "users/right.h"
@@ -43,9 +46,10 @@
 #include "packages/userlist.h"
 #include "packages/removebanparser.h"
 #include "packages/addbanparser.h"
+#include "packages/backuplist.h"
 
 #include "banmanager.h"
-
+#include "backupmanager.h"
 
 namespace Server {
 
@@ -274,6 +278,40 @@ void PackageHandlerBase::handlePackage(Server::Connection *cnn, const QString &r
 				BanManager::self()->ban(parser.pattern());
 				server->sendToAdmins(package);
 			}
+		}
+		else
+		{
+			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
+		}
+	}
+	else if ( root == "listbackups" )
+	{
+		if( cnn->user()->canWriteOn("admin" ) )
+		{
+			Server::BackupManager *bm = server->backupManager();
+			
+			QHash<QString, QList<BackupDatabase::Entry> > entries = bm->entries();
+			QHashIterator<QString, QList<BackupDatabase::Entry> > it(entries);
+			
+			Packages::BackupList pkg;
+			
+			while(it.hasNext())
+			{
+				it.next();
+				QList<BackupDatabase::Entry> pentries = it.value();
+				
+				SHOW_VAR(it.key());
+				
+				QStringList backups;
+				foreach(BackupDatabase::Entry e, pentries)
+				{
+					backups << e.date.toString(Qt::ISODate);
+				}
+				
+				pkg.addEntry(it.key(), backups);
+			}
+			
+			cnn->sendToClient(pkg);
 		}
 		else
 		{

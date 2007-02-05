@@ -31,6 +31,7 @@ namespace Server {
 class Connection;
 class Client;
 class PackageHandlerBase;
+class BackupManager;
 }
 
 
@@ -59,6 +60,7 @@ class TcpServer : public QTcpServer
 		}
 		
 		void addAdmin(Server::Connection *cnx);
+		BackupManager *backupManager() const;
 		
 		
 	public slots:

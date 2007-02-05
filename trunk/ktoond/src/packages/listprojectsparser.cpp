@@ -17,55 +17,57 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "settings.h"
+#include "listprojectsparser.h"
 
-namespace Server {
+namespace Parsers {
 
-Settings *Settings::s_settings = 0;
-
-struct Settings::Private 
+struct ListProjectsParser::Private
 {
-	QString databaseDirPath;
-	QString backupDirPath;
+	bool readAll;
 };
 
-Settings::Settings() : d(new Private())
+ListProjectsParser::ListProjectsParser()
+ : KTXmlParserBase(), d(new Private)
 {
 }
 
 
-Settings::~Settings()
+ListProjectsParser::~ListProjectsParser()
 {
 	delete d;
 }
 
-Settings *Settings::self()
+bool ListProjectsParser::startTag(const QString &tag, const QXmlAttributes &)
 {
-	if( ! s_settings )
-		s_settings = new Settings();
+	if( tag == "listprojects")
+	{
+		d->readAll = false;
+	}
+	else if( tag == "option" )
+	{
+		setReadText(true);
+	}
 	
-	return s_settings;
+	return true;
+}
+bool ListProjectsParser::endTag(const QString &)
+{
+	return true;
+}
+void ListProjectsParser::text(const QString &text)
+{
+	if ( currentTag() == "option" )
+	{
+		if ( text == "all" )
+		{
+			d->readAll = true;
+		}
+	}
 }
 
-
-void Settings::setDatabaseDirPath(const QString &dbdir)
+bool ListProjectsParser::readAll() const
 {
-	d->databaseDirPath = dbdir;
-}
-
-QString Settings::databaseDirPath() const
-{
-	return d->databaseDirPath;
-}
-
-void Settings::setBackupDirPath(const QString &dir)
-{
-	d->backupDirPath = dir;
-}
-
-QString Settings::backupDirPath() const
-{
-	return d->backupDirPath;
+	return d->readAll;
 }
 
 }

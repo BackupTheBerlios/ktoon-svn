@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,59 +17,33 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef PARSERSLISTPROJECTSPARSER_H
+#define PARSERSLISTPROJECTSPARSER_H
 
-#ifndef PROJECTSPROJECTCOLLECTION_H
-#define PROJECTSPROJECTCOLLECTION_H
+#include <ktxmlparserbase.h>
 
-#include <QString>
-#include <QDomDocument>
-
-#include "projects.h"
-#include "sproject.h"
-
-namespace Server {
-class Connection;
-}
-
-namespace Users {
-	class User;
-}
-namespace Projects {
+namespace Parsers {
 
 /**
- * @author Jorge Cuadrado \<kuadrosxx@gmail.com\>
+	@author David Cuadrado <krawek@toonka.com>
 */
-class ProjectCollection 
+class ListProjectsParser : public KTXmlParserBase
 {
 	public:
-		ProjectCollection();
-		~ProjectCollection();
+		ListProjectsParser();
 		
-		void createProject(Server::Connection *cnn, const QString& author);
-		bool addProject(const QString& name, const QString& author, const QString& description, const Users::User *owner );
+		~ListProjectsParser();
+		bool startTag(const QString &tag, const QXmlAttributes &atts);
+		bool endTag(const QString &tag);
+		void text(const QString &msg);
 		
-		bool openProject(Server::Connection *cnn);
-		void importProject(Server::Connection *cnn, const QByteArray& data);
-		
-		bool handleProjectRequest(Server::Connection *cnn, const QString strRequest);
-		QStringList projects() const;
-		
-		void listAllProjects(Server::Connection *cnn);
-		void listUserProjects(Server::Connection *cnn);
-		
-		
-		void closeProject(const QString & name);
-		bool saveProject(const QString & name);
-		void addUser(Server::Connection *cnn, const QString & login, SProject::UserType type  );
-		
-		void removeConnection(Server::Connection *cnn);
-		void sendToProjectMembers(Server::Connection *cnn, QDomDocument &doc);
+		bool readAll() const;
 		
 	private:
 		struct Private;
 		Private *const d;
-		
 };
 
 }
+
 #endif

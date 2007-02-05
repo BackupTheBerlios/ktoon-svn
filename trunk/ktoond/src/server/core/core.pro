@@ -11,7 +11,8 @@ defaultpackagehandler.cpp \
 settings.cpp \
 logger.cpp \
 banmanager.cpp \
-backupmanager.cpp
+backupmanager.cpp \
+backupdatabase.cpp
 HEADERS += connection.h \
 packagehandlerbase.h \
 server.h \
@@ -20,7 +21,8 @@ defaultpackagehandler.h \
 settings.h \
 logger.h \
 banmanager.h \
-backupmanager.h
+backupmanager.h \
+backupdatabase.h
 !include(../../../ktoond_config.pri){
     error("configure first")
 }

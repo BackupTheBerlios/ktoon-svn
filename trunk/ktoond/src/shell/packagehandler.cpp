@@ -33,6 +33,8 @@
 #include "listparser.h"
 #include "error.h"
 
+#include "listprojectsparser.h"
+
 #include "user.h"
 
 class PackageHandler::Private
@@ -132,7 +134,19 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 	{
 		if ( cnx->user()->canReadOn("project") )
 		{
-			d->projects->listProjects(cnx);
+			Parsers::ListProjectsParser parser;
+			
+			if( parser.parse(package) )
+			{
+				if( parser.readAll())
+				{
+					d->projects->listAllProjects(cnx);
+				}
+				else
+				{
+					d->projects->listUserProjects(cnx);
+				}
+			}
 		}
 		else
 		{
