@@ -49,6 +49,9 @@ void SProject::resetTimer()
 
 SProject::~SProject()
 {
+	delete d->saver;
+	
+	delete d;
 }
 
 bool SProject::save()

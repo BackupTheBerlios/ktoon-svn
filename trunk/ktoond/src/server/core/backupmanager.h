@@ -37,6 +37,7 @@ class BackupManager
 		
 		bool makeBackup(const QString &filepath, const QDateTime &date, const QString &name);
 		bool removeBackup(const QString &name, const QDateTime &date);
+		bool restoreBackup(const QString &name, const QDateTime &date);
 		
 		QHash<QString, QList<BackupDatabase::Entry> > entries();
 		

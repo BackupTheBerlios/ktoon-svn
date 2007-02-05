@@ -211,6 +211,12 @@ Las respuesta a una peticion queryX sera Xquery
 	<entry date="" >name</entry>
 </removebackup>
 
+<restorebackup>
+	<entry date="" >name</entry>
+	<entry date="" >name</entry>
+	<entry date="" >name</entry>
+</restorebackup>
+
 === RESPONSES ===
 
 

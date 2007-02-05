@@ -38,6 +38,7 @@ class BackupDatabase : public KTXmlParserBase
 		{
 			QString file;
 			QDateTime date;
+			QString origin;
 		};
 		
 		BackupDatabase(const QString &file);
@@ -47,7 +48,7 @@ class BackupDatabase : public KTXmlParserBase
 		bool endTag(const QString &tag);
 		void text(const QString &msg);
 		
-		bool addEntry(const QString &filename, const QString &name, const QDateTime &date);
+		bool addEntry(const QString &origFile, const QString &filename, const QString &name, const QDateTime &date);
 		bool removeEntry(const QString &name, const QDateTime &date);
 		
 		QHash<QString, QList<Entry> > entries();

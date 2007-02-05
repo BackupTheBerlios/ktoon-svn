@@ -79,7 +79,7 @@ bool BackupManager::makeBackup(const QString &filepath, const QDateTime &date, c
 		
 		if ( file.copy(Settings::self()->backupDirPath()+"/"+ destfile) )
 		{
-			d->database->addEntry(destfile, name, date);
+			d->database->addEntry(filepath, destfile, name, date);
 			
 			return true;
 		}
@@ -104,6 +104,27 @@ bool BackupManager::removeBackup(const QString &name, const QDateTime &date)
 				{
 					return QFile::remove(Settings::self()->backupDirPath()+"/"+backup.file);
 				}
+			}
+		}
+	}
+	
+	return false;
+}
+
+bool BackupManager::restoreBackup(const QString &name, const QDateTime &date)
+{
+	QHash<QString, QList<BackupDatabase::Entry> > entries = d->database->entries();
+	
+	if ( entries.contains(name) )
+	{
+		QList<BackupDatabase::Entry> backups = entries[name];
+		
+		foreach(BackupDatabase::Entry backup, backups)
+		{
+			if(backup.date == date)
+			{
+				QFile::remove(backup.origin);
+				QFile::copy(Settings::self()->backupDirPath()+"/"+backup.file, backup.origin);
 			}
 		}
 	}

@@ -75,6 +75,7 @@ bool BackupDatabase::startTag(const QString &tag, const QXmlAttributes &atts)
 		Entry entry;
 		entry.date = QDateTime::fromString(atts.value("date"), Qt::ISODate);
 		entry.file = atts.value("file");
+		entry.origin = atts.value("origin");
 		
 		d->entries[d->current] << entry;
 	}
@@ -90,7 +91,7 @@ void BackupDatabase::text(const QString &)
 {
 }
 
-bool BackupDatabase::addEntry(const QString &filename, const QString &name, const QDateTime &date)
+bool BackupDatabase::addEntry(const QString &origFile, const QString &filename, const QString &name, const QDateTime &date)
 {
 	QDomDocument doc;
 	QFile dbf(d->dbfile);
@@ -129,6 +130,7 @@ bool BackupDatabase::addEntry(const QString &filename, const QString &name, cons
 		QDomElement entry = doc.createElement("backup");
 		entry.setAttribute("date", date.toString(Qt::ISODate) );
 		entry.setAttribute("file", filename);
+		entry.setAttribute("origin", origFile);
 		
 		target.appendChild(entry);
 		

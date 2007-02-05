@@ -342,6 +342,31 @@ void PackageHandlerBase::handlePackage(Server::Connection *cnn, const QString &r
 			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
 		}
 	}
+	else if ( root == "restorebackup" )
+	{
+		if( cnn->user()->canWriteOn("admin" ) )
+		{
+			Server::BackupManager *bm = server->backupManager();
+			Parsers::RemoveBackupParser parser;
+			
+			if(parser.parse(package))
+			{
+				QHashIterator<QString, QDateTime > it(parser.entries());
+				
+				while(it.hasNext())
+				{
+					it.next();
+					bm->restoreBackup(it.key(), it.value());
+				}
+				
+				server->sendToAdmins(package);
+			}
+		}
+		else
+		{
+			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
+		}
+	}
 	else
 	{
 		handle(cnn, root, package);
