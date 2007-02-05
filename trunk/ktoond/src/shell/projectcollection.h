@@ -26,6 +26,7 @@
 
 #include "projects.h"
 #include "sproject.h"
+#include "database.h"
 
 namespace Server {
 class Connection;
@@ -61,6 +62,8 @@ class ProjectCollection
 		void closeProject(const QString & name);
 		bool saveProject(const QString & name);
 		void addUser(Server::Connection *cnn, const QString & login, SProject::UserType type  );
+		
+		Database::ProjectInfo projectInfo(const QString &projectName);
 		
 		void removeConnection(Server::Connection *cnn);
 		void sendToProjectMembers(Server::Connection *cnn, QDomDocument &doc);

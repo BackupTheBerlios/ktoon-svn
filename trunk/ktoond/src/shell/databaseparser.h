@@ -49,7 +49,10 @@ class DatabaseParser : public KTXmlParserBase
 		
 		SProject *loadProject(const QString &projectName, const QString &db);
 		
+		Projects::Database::ProjectInfo projectInfo(const QString &projectName, const QString &db);
+		
 	private:
+		// TODO: Poner esto en un struct Private
 		QString m_lastFileName;
 		
 		QString m_condition;
@@ -61,7 +64,7 @@ class DatabaseParser : public KTXmlParserBase
 		
 		SProject *m_project;
 		
-		Projects::Database::ProjectInfo tmpInfo;
+		Projects::Database::ProjectInfo tmpInfo; // ????
 		SProject::UserType m_typeUser;
 		
 		

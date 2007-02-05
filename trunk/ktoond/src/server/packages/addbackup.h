@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,57 +17,24 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef PROJECTSDATABASE_H
-#define PROJECTSDATABASE_H
+#ifndef PACKAGESADDBACKUP_H
+#define PACKAGESADDBACKUP_H
 
-#include <QString>
+#include <QDomDocument>
+#include <QDateTime>
 
-#include "sproject.h"
-
-namespace Projects {
+namespace Packages {
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+	@author David Cuadrado <krawek@toonka.com>
 */
-
-
-
-class Database
+class AddBackup : public QDomDocument
 {
 	public:
+		AddBackup();
+		~AddBackup();
 		
-		Database(const QString &dbfile = 0);
-		~Database();
-		
-		bool addProject(const SProject * project);
-		bool updateProject( const SProject * project);
-		bool removeProject(  const SProject * project);
-		
-		void setDBFile( const QString& dbfile);
-		
-		QString nextFileName();
-		
-		struct ProjectInfo
-		{
-			QString name;
-			QString author;
-			QString description;
-			QString file;
-		};
-		
-		QList<Database::ProjectInfo> allProjects();
-		QList<Database::ProjectInfo> userProjects(const QString& user);
-		Database::ProjectInfo projectInfo(const QString &project);
-		
-		bool exists( const QString &projectName );
-		
-		SProject *loadProject(const QString &projectName );
-		
-		
-	private:
-		QDomDocument loadDataBase();
-		QString m_dbfile;
-		QString m_lastFileName;
+		void addEntry(const QString &name, const QDateTime &date);
 };
 
 }

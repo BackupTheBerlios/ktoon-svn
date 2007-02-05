@@ -35,9 +35,11 @@ class BackupManager
 		BackupManager();
 		~BackupManager();
 		
-		bool makeBackup(const QString &filepath);
+		bool makeBackup(const QString &filepath, const QDateTime &date, const QString &name);
 		
 		QHash<QString, QList<BackupDatabase::Entry> > entries();
+		
+		QDateTime date(const QString &name);
 		
 	private:
 		struct Private;

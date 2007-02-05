@@ -48,6 +48,7 @@
 #include "packages/addbanparser.h"
 #include "packages/backuplist.h"
 
+
 #include "banmanager.h"
 #include "backupmanager.h"
 
@@ -299,8 +300,6 @@ void PackageHandlerBase::handlePackage(Server::Connection *cnn, const QString &r
 			{
 				it.next();
 				QList<BackupDatabase::Entry> pentries = it.value();
-				
-				SHOW_VAR(it.key());
 				
 				QStringList backups;
 				foreach(BackupDatabase::Entry e, pentries)

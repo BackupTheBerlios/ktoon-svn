@@ -28,7 +28,7 @@ actualizar el paquete <projectlist>
 
 ==========================
 
-Si la clase esta en el directorio del modulo, el namespace debe ser el mismo que el modulo
+Si el parser esta en el directorio del modulo, el namespace debe ser el mismo que el modulo, poner los paquetes en packages
 
 
 ==========================

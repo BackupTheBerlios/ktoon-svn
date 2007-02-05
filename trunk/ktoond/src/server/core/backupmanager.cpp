@@ -54,14 +54,13 @@ BackupManager::~BackupManager()
 	delete d;
 }
 
-bool BackupManager::makeBackup(const QString &filepath)
+bool BackupManager::makeBackup(const QString &filepath, const QDateTime &date, const QString &name)
 {
+	dDebug() << "Making backup: " << filepath;
 	QFileInfo fi(filepath);
 	
 	if( fi.exists() )
 	{
-		QDateTime date = QDateTime::currentDateTime();
-		
 		QString destfile = fi.baseName()+"-"+date.toString(Qt::ISODate);
 		
 		if( ! fi.completeSuffix().isEmpty() )
@@ -73,7 +72,7 @@ bool BackupManager::makeBackup(const QString &filepath)
 		
 		if ( file.copy(Settings::self()->backupDirPath()+"/"+ destfile) )
 		{
-			d->database->addEntry(destfile, fi.baseName(), date);
+			d->database->addEntry(destfile, name, date);
 			
 			return true;
 		}

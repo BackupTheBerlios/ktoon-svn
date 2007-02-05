@@ -307,6 +307,11 @@ void ProjectCollection::addUser(Server::Connection *cnn, const QString & login, 
 	}
 }
 
+Database::ProjectInfo ProjectCollection::projectInfo(const QString &projectName)
+{
+	return d->db->projectInfo(projectName);
+}
+
 }
 
 

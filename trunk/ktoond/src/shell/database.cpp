@@ -206,6 +206,12 @@ QList< Database::ProjectInfo> Database::userProjects(const QString& user)
 	return parser.userProjects(user, loadDataBase().toString());
 }
 
+Database::ProjectInfo Database::projectInfo(const QString &project)
+{
+	Parsers::DatabaseParser parser;
+	return parser.projectInfo(project, loadDataBase().toString());
+}
+
 bool Database::exists( const QString &projectName )
 {
 	Parsers::DatabaseParser parser;
@@ -218,6 +224,7 @@ SProject *Database::loadProject(const QString &projectName )
 	Parsers::DatabaseParser parser;
 	return parser.loadProject( projectName, loadDataBase().toString());
 }
+
 
 }
 

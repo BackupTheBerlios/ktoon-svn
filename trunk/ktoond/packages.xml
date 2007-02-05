@@ -200,11 +200,11 @@ Las respuesta a una peticion queryX sera Xquery
 <listbackups />
 
 
-<backup>
+<addbackup>
 	<entry>project name 1</entry>
 	<entry>project name 2</entry>
 	<entry>project name 3</entry>
-</backup>
+</addbackup>
 
 
 
@@ -306,4 +306,9 @@ Las respuesta a una peticion queryX sera Xquery
 	....
 </backuplist>
 
-
+<!-- Respuesa a addbackup -->
+<addbackup>
+	<entry date="[date]">project name</entry>
+	<entry date="[date]">project name</entry>
+	<entry date="[date]">project name</entry>
+</addbackup

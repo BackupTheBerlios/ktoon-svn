@@ -33,9 +33,16 @@
 #include "listparser.h"
 #include "error.h"
 
+#include "addbackupparser.h"
+
+#include "backupmanager.h"
+
 #include "listprojectsparser.h"
 
 #include "user.h"
+#include "database.h"
+
+#include "addbackup.h"
 
 class PackageHandler::Private
 {
@@ -153,7 +160,7 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 			cnx->sendErrorPackageToClient(QObject::tr("You doen't have rights on project."), Packages::Error::Warning );
 		}
 	}
-	if(root == "addproject")
+	else if(root == "addproject")
 	{
 		if ( cnx->user()->canReadOn("project") && cnx->user()->canReadOn("admin"))
 		{
@@ -170,7 +177,35 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 			
 		}
 	}
-	
+	else if ( root == "addbackup" )
+	{
+		if ( cnx->user()->canWriteOn("admin") )
+		{
+			Parsers::AddBackupParser parser;
+			if( parser.parse(package))
+			{
+				Packages::AddBackup pkg;
+				
+				Server::BackupManager *bm = cnx->server()->backupManager();
+				
+				foreach(QString project, parser.backups())
+				{
+					QDateTime date = QDateTime::currentDateTime();
+					
+					Projects::Database::ProjectInfo info = d->projects->projectInfo(project);
+					bm->makeBackup(info.file, date, info.name);
+					
+					pkg.addEntry(info.name, date);
+				}
+				
+				cnx->server()->sendToAdmins(pkg.toString());
+			}
+		}
+		else
+		{
+			cnx->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
+		}
+	}
 }
 
 void PackageHandler::handleProjectRequest(Server::Connection *cnn, const QString &strRequest)

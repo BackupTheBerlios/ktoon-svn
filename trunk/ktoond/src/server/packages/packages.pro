@@ -14,7 +14,9 @@ HEADERS += connectparser.h \
            userlist.h \
            removebanparser.h \
            addbanparser.h \
-           backuplist.h
+           backuplist.h \
+           addbackupparser.h \
+           addbackup.h
 SOURCES += connectparser.cpp \
            chatparser.cpp \
            noticeparser.cpp \
@@ -26,7 +28,9 @@ SOURCES += connectparser.cpp \
            userlist.cpp \
            removebanparser.cpp \
            addbanparser.cpp \
-           backuplist.cpp
+           backuplist.cpp \
+           addbackupparser.cpp \
+           addbackup.cpp
 TEMPLATE = lib
 CONFIG += staticlib \
 warn_on

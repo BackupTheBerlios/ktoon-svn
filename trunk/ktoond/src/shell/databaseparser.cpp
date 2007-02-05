@@ -59,6 +59,8 @@ bool DatabaseParser::startTag(const QString &tag, const QXmlAttributes &atts)
 		{
 			QString filename = atts.value("name");
 			
+			tmpInfo.file = filename;
+			
 			if(filename > m_lastFileName)
 			{
 				m_lastFileName = filename;
@@ -137,6 +139,19 @@ QList< Projects::Database::ProjectInfo > DatabaseParser::allProjects(const QStri
 	parse(db);
 	
 	return m_projectsInfo;
+}
+
+Projects::Database::ProjectInfo DatabaseParser::projectInfo(const QString &projectName, const QString &db)
+{
+	QList< Projects::Database::ProjectInfo > list = allProjects(db);
+	
+	foreach(Projects::Database::ProjectInfo info, list)
+	{
+		if( info.name == projectName)
+			return info;
+	}
+	
+	return Projects::Database::ProjectInfo();
 }
 
 bool DatabaseParser::exists(const QString& projectName, const QString& db)
