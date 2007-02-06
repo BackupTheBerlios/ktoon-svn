@@ -32,11 +32,11 @@ struct UpdateProject::Private
 
 UpdateProject::UpdateProject(const QString &name): QDomDocument(), d(new Private)
 {
-	QDomElement root = createElement( "removeproject" );
+	QDomElement root = createElement( "updateproject" );
 	root.setAttribute( "version",  "0" );
 	appendChild(root);
 	d->name = createTextNode(name);
-	root.appendChild(createElement("name").appendChild(d->name));
+	root.appendChild(createElement("name")).appendChild(d->name);
 }
 
 
@@ -55,6 +55,7 @@ void UpdateProject::setAuthor(const QString &author)
 	{
 		d->author = createElement("author");
 		d->author.appendChild(createTextNode(author));
+		firstChild().appendChild(d->author);
 	}
 	else
 	{
@@ -68,6 +69,7 @@ void UpdateProject::setDescription(const QString &description)
 	{
 		d->description = createElement("description");
 		d->description.appendChild(createTextNode(description));
+		firstChild().appendChild(d->description);
 	}
 	else
 	{
@@ -80,6 +82,7 @@ void UpdateProject::addUser(const QString& login)
 	if(d->users.isNull())
 	{
 		d->users = createElement("users");
+		firstChild().appendChild(d->users);
 	}
 	
 	QDomElement userE = createElement("user");
