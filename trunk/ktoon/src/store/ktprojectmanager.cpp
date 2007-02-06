@@ -137,7 +137,7 @@ void KTProjectManager::setupNewProject()
 	closeProject();
 	
 	d->project->setProjectName( d->params->projectName() );
-	
+	d->project->setAuthor( d->params->author() );
 	if ( ! d->handler->setupNewProject(d->params) )
 	{
 		qDebug("ERROR WHILE SETUP PROJECT");

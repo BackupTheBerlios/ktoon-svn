@@ -134,6 +134,7 @@ KTProjectManagerParams *KTNewProject::params()
 	{
 		KTNetProjectManagerParams *params = new KTNetProjectManagerParams;
 		params->setProjectName( m_projectName->text() );
+		params->setAuthor( m_authorName->text());
 		params->setServer(m_server->text());
 		params->setPort(m_port->value());
 		
@@ -147,6 +148,7 @@ KTProjectManagerParams *KTNewProject::params()
 	KTProjectManagerParams *params = new KTProjectManagerParams;
 	
 	params->setProjectName(m_projectName->text());
+	params->setAuthor( m_authorName->text());
 	
 	return params;
 }

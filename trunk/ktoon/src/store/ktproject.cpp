@@ -47,6 +47,8 @@ struct KTProject::Private
 	int sceneCounter;
 	KTLibrary *library;
 	bool isOpen;
+	QString author;
+	QString description;
 };
 
 /**
@@ -100,6 +102,23 @@ void KTProject::setProjectName(const QString &name)
 	d->name = name;
 }
 
+
+/**
+ * Pone el autor del proyecto
+ */
+void KTProject::setAuthor(const QString &author)
+{
+	d->author = author;
+}
+
+/**
+ * Pone la descripcion del proyecto
+ */
+void KTProject::setDescription(const QString& description)
+{
+	d->description = description;
+}
+
 /**
  * @if spanish
  * Retorna el nombre del proyecto
@@ -112,6 +131,25 @@ void KTProject::setProjectName(const QString &name)
 QString KTProject::projectName() const
 {
 	return d->name;
+}
+
+
+/**
+ * retorna el autor del proyecto
+ * @return 
+ */
+QString KTProject::author() const
+{
+	return d->author;
+}
+
+/**
+ * retorna la descripcion del proyecto
+ * @return 
+ */
+QString KTProject::description() const
+{
+	return d->description;
 }
 
 
@@ -221,6 +259,29 @@ void KTProject::fromXml(const QString &xml )
 			{
 				setProjectName( e.attribute( "name", projectName() ) );
 			}
+			else if ( e.tagName() == "meta")
+			{
+				QDomNode n1 = e.firstChild();
+				while( !n1.isNull() )
+				{
+					QDomElement e1 = n1.toElement();
+					if ( e1.tagName() == "author")
+					{
+						if(e1.firstChild().isText())
+						{
+							setAuthor(e1.text());
+						}
+					}
+					else if ( e1.tagName() == "description")
+					{
+						if(e1.firstChild().isText())
+						{
+							setDescription( e1.text());
+						}
+					}
+					n1 = n1.nextSibling();
+				}
+			}
 		}
 		
 		n = n.nextSibling();
@@ -235,10 +296,14 @@ QDomElement KTProject::toXml(QDomDocument &doc) const
 	QDomElement project = doc.createElement("Project");
 	project.setAttribute("name", d->name);
 	
+	
 	QDomElement meta = doc.createElement("meta");
 	
 	QDomElement author = doc.createElement("author");
-	author.setAttribute("value", "");
+	author.appendChild(doc.createTextNode(d->author));
+	
+	QDomElement description = doc.createElement("description");
+	author.appendChild(doc.createTextNode(d->description));
 	
 	
 	meta.appendChild(author);

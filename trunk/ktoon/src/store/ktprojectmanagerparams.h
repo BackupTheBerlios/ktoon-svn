@@ -35,8 +35,13 @@ class KTProjectManagerParams
 		void setProjectName(const QString &name);
 		QString projectName() const;
 		
+		void setAuthor(const QString &author);
+		QString author() const;
+		
+		
 	private:
-		QString m_projectName;
+		struct Private;
+		Private *const d;
 };
 
 #endif

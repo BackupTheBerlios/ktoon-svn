@@ -160,7 +160,7 @@ bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
 	
 	SHOW_VAR(netparams->projectName());
 	d->projectName = netparams->projectName();
-// 	d->author = netparams->author();
+	d->author = netparams->author();
 	
 	if ( ! d->socket->isOpen() )
 	{
@@ -168,10 +168,7 @@ bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
 		if ( !connected ) return false;
 	}
 	
-	
-	// TODO: enviar paquete de crear proyecto
-	
-	KTNewProjectPackage newProjectPackage(netparams->projectName(), "");
+	KTNewProjectPackage newProjectPackage(netparams->projectName(), netparams->author());
 	d->socket->send(newProjectPackage);
 	
 	return true;

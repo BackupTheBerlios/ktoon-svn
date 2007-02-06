@@ -56,8 +56,12 @@ class STORE_EXPORT KTProject : public QObject, public KTAbstractSerializable
 		~KTProject();
 		
 		void setProjectName(const QString &name);
+		void setAuthor(const QString &author);
+		void setDescription(const QString& description);
 		
 		QString projectName() const;
+		QString author() const;
+		QString description() const;
 		
 		KTScene *scene(int position);
 		int indexOf(KTScene *scene) const;

@@ -20,8 +20,15 @@
 
 #include "ktprojectmanagerparams.h"
 
+struct KTProjectManagerParams::Private
+{
+	QString projectName;
+	QString author;
+};
 
-KTProjectManagerParams::KTProjectManagerParams()
+
+
+KTProjectManagerParams::KTProjectManagerParams(): d(new Private)
 {
 }
 
@@ -33,12 +40,22 @@ KTProjectManagerParams::~KTProjectManagerParams()
 
 void KTProjectManagerParams::setProjectName(const QString &name)
 {
-	m_projectName = name;
+	d->projectName = name;
 }
 
 QString KTProjectManagerParams::projectName() const
 {
-	return m_projectName;
+	return d->projectName;
 }
 
+
+void KTProjectManagerParams::setAuthor(const QString &author)
+{
+	d->author = author;
+}
+
+QString KTProjectManagerParams::author() const
+{
+	return d->author;
+}
 
