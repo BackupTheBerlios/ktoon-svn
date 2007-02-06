@@ -199,6 +199,12 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 	}
 }
 
+void ModuleWidget::clear()
+{
+	Base::ModuleListWidget::clear();
+	d->initialized = false;
+}
+
 void ModuleWidget::updateList()
 {
 	if( !d->initialized )

@@ -53,6 +53,7 @@ MainWindow::MainWindow(QWidget *parent)
 	
 	d->manager = new Manager(this);
 	connect(d->manager, SIGNAL(connected()), this, SLOT(updateModules()));
+	connect(d->manager, SIGNAL(disconnected()), this, SLOT(clearModules()));
 	
 	createModules();
 	createMenuBar();
@@ -142,6 +143,14 @@ void MainWindow::updateModules()
 		{
 			module->update();
 		}
+	}
+}
+
+void MainWindow::clearModules()
+{
+	foreach(Base::ModuleWidget *module, d->modules)
+	{
+		module->clear();
 	}
 }
 

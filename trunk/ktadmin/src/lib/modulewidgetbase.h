@@ -39,6 +39,7 @@ class ModuleWidget : public QWidget, public PackageObserver
 		
 		virtual void handlePackage(Package *const pkg);
 		virtual void update() = 0;
+		virtual void clear() = 0;
 		
 		void registerForm(Form *form);
 		

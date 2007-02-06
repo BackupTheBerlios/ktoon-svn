@@ -261,6 +261,12 @@ void ModuleListWidget::update()
 	updateList();
 }
 
+void ModuleListWidget::clear()
+{
+	d->filled = false;
+	d->tree->clear();
+}
+
 ModuleButtonBar *ModuleListWidget::buttonBar() const
 {
 	return d->buttonBar;

@@ -69,7 +69,10 @@ void Manager::enable()
 
 void Manager::disable()
 {
+	DOsd::self()->display(tr("Disconnected!"), DOsd::Warning);
 	d->enabled = false;
+	
+	emit disconnected();
 }
 
 void Manager::sendPackage(const QString &pkg)
@@ -139,7 +142,17 @@ bool Manager::connectToServer(const QString &server, int port)
 	
 	d->socket->connectToHost(server, port);
 	
-	return d->socket->waitForConnected(1000);
+	bool connected =  d->socket->waitForConnected(1000);
+	if( connected )
+	{
+		DOsd::self()->display(tr("Connected!"));
+	}
+	else
+	{
+		DOsd::self()->display(tr("Cannot connect to server!"), DOsd::Error);
+	}
+	
+	return connected;
 }
 
 

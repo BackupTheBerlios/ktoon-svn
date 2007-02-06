@@ -47,7 +47,8 @@ class ModuleListWidget : public ModuleWidget
 		
 		void setFilled(bool f);
 		bool filled() const;
-		void update();
+		virtual void update();
+		virtual void clear();
 		
 		ModuleButtonBar *buttonBar() const;
 		

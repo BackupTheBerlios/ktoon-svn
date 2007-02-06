@@ -34,6 +34,7 @@ class ModuleWidget : public Base::ModuleListWidget
 		ModuleWidget(QWidget *parent = 0);
 		~ModuleWidget();
 		void handlePackage(Base::Package *const pkg);
+		void clear();
 		
 	private:
 		void updateList();

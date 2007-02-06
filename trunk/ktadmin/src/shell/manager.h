@@ -53,6 +53,7 @@ class Manager : public QObject
 		
 	signals:
 		void connected();
+		void disconnected();
 		
 	protected:
 		bool tryToHandle(const QString &root, const QString &xml);
