@@ -105,6 +105,50 @@ bool ProjectCollection::addProject(const QString& name, const QString& author, c
 	
 }
 
+bool ProjectCollection::removeProject( Server::Connection *cnn, const QString& name )
+{
+	if(!d->projects[name])
+	{
+		SProject *project = d->db->loadProject(name);
+		if(project)
+		{
+			bool ok = d->db->removeProject(project);
+			delete project;
+			return ok;
+		}
+		else
+		{
+			cnn->sendErrorPackageToClient(QObject::tr("project not exist"), Packages::Error::Err);
+			return false;
+		}
+	}
+	
+	cnn->sendErrorPackageToClient( QObject::tr("project is busy"), Packages::Error::Err);
+	return false;
+}
+
+bool ProjectCollection::updateProject( Server::Connection *cnn, const QString& name, const QString& author, const QString& description, const QStringList &users)
+{
+	SProject *p = d->db->loadProject(name);
+	if(p)
+	{
+		if(!author.isNull())
+		{
+// 			p->setAuthor(author);
+		}
+		if(!description.isNull())
+		{
+// 			p->setDescription(description);
+		}
+	}
+	return true;
+}
+
+SProject *ProjectCollection::project(const QString &name)
+{
+	return d->db->loadProject(name);
+}
+
 bool ProjectCollection::openProject( Server::Connection *cnn )
 {
  	QString projectName = cnn->data(Info::ProjectName).toString();

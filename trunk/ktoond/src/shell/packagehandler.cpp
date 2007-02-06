@@ -164,7 +164,7 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 	}
 	else if(root == "addproject")
 	{
-		if ( cnx->user()->canReadOn("project") && cnx->user()->canReadOn("admin"))
+		if ( cnx->user()->canWriteOn("project") && cnx->user()->canReadOn("admin"))
 		{
 			Parsers::ProjectActionParser parser;
 			if(parser.parse(package))
@@ -174,9 +174,77 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 				{
 					cnx->sendErrorPackageToClient(QObject::tr("Cannot create project %1").arg(parser.name()), Packages::Error::Warning );
 				}
-				//TODO: enviar a todos los administradores el paquete
+				cnx->server()->sendToAdmins(package); //TODO: Enviar un paquete diferente
 			}
-			
+		}
+		else
+		{
+			cnx->sendErrorPackageToClient(QObject::tr("You doen't have rights on project."), Packages::Error::Warning );
+		}
+	}
+	else if ( root == "removeproject")
+	{
+		if ( cnx->user()->canWriteOn("project") && cnx->user()->canReadOn("admin"))
+		{
+			Parsers::ProjectActionParser parser;
+			if(parser.parse(package))
+			{
+				if(!d->projects->removeProject( cnx ,parser.name()))
+				{
+					cnx->sendErrorPackageToClient(QObject::tr("Cannot remove project %1").arg(parser.name()), Packages::Error::Warning );
+				}
+			}
+			cnx->server()->sendToAdmins(package);//TODO: Enviar un paquete diferente
+		}
+		else
+		{
+			cnx->sendErrorPackageToClient(QObject::tr("You doen't have rights on project."), Packages::Error::Warning );
+		}
+	}
+	else if( root == "queryproject" )
+	{
+		
+		if ( cnx->user()->canWriteOn("project") && cnx->user()->canReadOn("admin"))
+		{
+			Parsers::ProjectActionParser parser;
+			if(parser.parse(package))
+			{
+				SProject *project = d->projects->project( parser.name() );
+				if(project)
+				{
+					QDomDocument doc;
+					QDomElement projectquery = doc.createElement("projectquery");
+					
+					projectquery.appendChild(project->toXml(doc));
+					doc.appendChild(projectquery);
+					
+					cnx->sendToClient(doc.toString());
+					delete project;
+				}
+			}
+		}
+		else
+		{
+			cnx->sendErrorPackageToClient(QObject::tr("You doen't have rights on project."), Packages::Error::Warning );
+		}
+	}
+	else if(root == "updateproject")
+	{
+		if ( cnx->user()->canWriteOn("project") && cnx->user()->canReadOn("admin"))
+		{
+			Parsers::ProjectActionParser parser;
+			if(parser.parse(package))
+			{
+				SProject *project = d->projects->project( parser.name() );
+				if(project)
+				{
+					
+				}
+			}
+		}
+		else
+		{
+			cnx->sendErrorPackageToClient(QObject::tr("You doen't have rights on project."), Packages::Error::Warning );
 		}
 	}
 	else if ( root == "addbackup" )

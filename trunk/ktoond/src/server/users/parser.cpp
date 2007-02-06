@@ -51,10 +51,11 @@ bool Parser::startTag(const QString& tag, const QXmlAttributes& atts)
 	if ( tag == "user" )
 	{
 		User *u = new User;
-		u->setLogin( atts.value("login") );
-		u->setPassword( atts.value("password") );
-		u->setName( atts.value("name") );
 		d->users << u;
+	}
+	else if( tag == "login" || tag == "password" || tag == "name")
+	{
+		setReadText(true);
 	}
 	else if ( tag == "perm" )
 	{
@@ -73,8 +74,20 @@ bool Parser::endTag(const QString& /*tag*/)
 }
 
 
-void Parser::text(const QString & /*ch*/ )
+void Parser::text(const QString & text )
 {
+	if(currentTag() == "login")
+	{
+		d->users.last()->setLogin(text);
+	}
+	else if(currentTag() == "password")
+	{
+		d->users.last()->setPassword(text);
+	}
+	else if(currentTag() == "name")
+	{
+		d->users.last()->setName(text);
+	}
 }
 
 

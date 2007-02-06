@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
- *   krawek@toonka.com                                                     *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosxx@gmail.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -44,11 +44,9 @@ bool ProjectActionParser::startTag(const QString &tag, const QXmlAttributes &att
 {
 	if(root() == "addproject" || root() == "removeproject" || root() == "updateproject" || root() == "queryproject")
 	{
-		if(tag == "info")
+		if(tag == "name" || tag == "author" || tag == "description")
 		{
-			d->name = atts.value("name");
-			d->author = atts.value("author");
-			d->description = atts.value("description");
+			setReadText(true);
 		}
 		else if(tag == "user")
 		{
@@ -68,6 +66,18 @@ void ProjectActionParser::text(const QString &text)
 	if(currentTag() == "user")
 	{
 		d->users << text;
+	}
+	else if( currentTag() == "name" )
+	{
+		d->name = text;
+	}
+	else if( currentTag() == "author" )
+	{
+		d->author = text;
+	}
+	else if( currentTag() == "description" )
+	{
+		d->description = text;
 	}
 }
 

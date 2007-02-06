@@ -112,9 +112,14 @@ QDomElement SProject::toXml(QDomDocument &doc) const
 	return project;
 }
 
-void SProject::addUser( const QString& login, UserType type )
+bool SProject::addUser( const QString& login, UserType type )
 {
-	d->users.insert(type, login);
+	if(!d->users.values(type).contains(login))
+	{
+		d->users.insert(type, login);
+		return true;
+	}
+	return false;
 }
 
 QString SProject::fileName()

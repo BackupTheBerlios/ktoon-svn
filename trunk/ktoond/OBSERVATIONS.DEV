@@ -13,6 +13,7 @@ y la raiz de la respuesta sera:
 
 de este modo el paquete para listar usuarios no es <listuser/> sino <listusers/>
 
+Respuesta: no se, creo que nunca existio listuser
 
 ==========================
 
@@ -22,14 +23,19 @@ Las respuesta a una peticion queryX sera Xquery
 
 actualizar el paquete <userquery>
 
+Respuesta: la verdad era para utilizar el mismo formato de user que tenias en la base de datos, ya actualize el userquery, por esta razon cambia el formato de la base de datos de usuarios
+
 ==========================
 
 actualizar el paquete <projectlist>
+
+Respuesta: el paquete ya estaba actualizado solo le cambie el nombre a los archivos.
 
 ==========================
 
 Si el parser esta en el directorio del modulo, el namespace debe ser el mismo que el modulo, poner los paquetes en packages
 
+Respuesta: ok
 
 ==========================
 
@@ -39,6 +45,7 @@ Si el parser esta en el directorio del modulo, el namespace debe ser el mismo qu
 
 Utilizar else
 
+Respuesta: ok
 
 ==========================
 
@@ -47,6 +54,22 @@ Indicar que la observacion fue cumplida sin removerla
 
 EXTREMADAMENTE IMPORTANTE!!! IMPORTANTE!!! IMPORTANTE!!! IMPORTANTE!!! REMOVER LOS "TO-DOs" CUANDO ESTEN TERMINADOS,
 
+Respuesta: es porque los borro  o porque no los borro, yo siempre borro los TODO que me parece que estan terminados, aveces me encuentro con todos que estan terminados y vos no los has borrado.
+
 ==========================
+
+Para David Cuadrado:
+en connection.h me encuentro con esto
+TcpServer *server() const; // FIXME: REMOVER, NO USAR
+
+pero en packagehandler.cpp me encuantro con esto
+cnx->server()->sendToAdmins(pkg.toString());
+
+entonces se puede usar o no??
+
+
+
+
+
 
 

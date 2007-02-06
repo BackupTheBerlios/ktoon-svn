@@ -194,7 +194,11 @@ void PackageHandlerBase::handlePackage(Server::Connection *cnn, const QString &r
 				if(user)
 				{
 					QDomDocument doc;
-					doc.appendChild(user->toXml(doc, false));
+					QDomElement userquery = doc.createElement("userquery");
+					
+					userquery.appendChild(user->toXml(doc, false));
+					doc.appendChild(userquery);
+					
 					cnn->sendToClient (doc.toString());
 				}
 			}

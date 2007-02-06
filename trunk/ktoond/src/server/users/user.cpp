@@ -116,12 +116,15 @@ QList<Right *> User::rights() const
 QDomElement User::toXml(QDomDocument &doc, bool password ) const
 {
 	QDomElement userE = doc.createElement("user");
-	userE.setAttribute("name", d->name);
-	userE.setAttribute("login", d->login);
+	
+	userE.appendChild(  doc.createElement("login") ).appendChild( doc.createTextNode(d->login));
+	userE.appendChild(  doc.createElement("name" ) ).appendChild( doc.createTextNode(d->name));
+	
 	if(password)
 	{
-		userE.setAttribute("password", d->password);
+		userE.appendChild(  doc.createElement("password" ) ).appendChild( doc.createTextNode(d->password));
 	}
+	
 	QDomElement permissionsE = doc.createElement("permissions");
 	userE.appendChild(permissionsE);
 	foreach(Right *right, d->rights)

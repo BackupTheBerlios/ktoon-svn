@@ -42,7 +42,7 @@ class SProject : public KTProject
 		~SProject();
 		void resetTimer();
 		QDomElement toXml(QDomDocument &doc) const;
-		void addUser( const QString& login, UserType type );
+		bool addUser( const QString& login, UserType type );
 		QString fileName();
 		
 		bool isOwner(const Users::User* user);

@@ -115,7 +115,7 @@ Las respuesta a una peticion queryX sera Xquery
 
 
 <!-- Respuesta a <listprojects /> -->
-<projectlist> <!-- TODO: FALTA POR ACTUALIZAR EN EL CODIGO -->
+<projectlist>
 	<project name="" author="" description="" />
 	<project name="" author="" description="" />
 	<project name="" author="" description="" />
@@ -194,7 +194,7 @@ Las respuesta a una peticion queryX sera Xquery
 <listclients />
 
 <!-- Lista los usuarios que tiene registrados el servidor  -->
-<listusers/> <!-- TODO: Esta desactualizado en el codigo -->
+<listusers/>
 
 <!-- Lista los backups -->
 <listbackups />
@@ -248,15 +248,17 @@ Las respuesta a una peticion queryX sera Xquery
 </updateuser>
 
 <addproject>
-	<info name="name" author="author" description="">
+	<name>name</name>
+	<author>author</author>
+	<description>description</descirption>
 	<users>
-		<user login="login">
+		<user type="0|1" >login</user>
 		<!-- Se repite -->
 	</users>
 </addproject>
 
 <removeproject>
-	<project>name</project>
+	<name>name</name>
 </removeproject>
 
 
@@ -288,7 +290,7 @@ Las respuesta a una peticion queryX sera Xquery
 
 <!--usuario -->
 
-<userquery> <!-- TODO: ESTA DESACTULIZADO EN EL CODIGO -->
+<userquery>
 	<login>myLogin</login>
 	<name>myName</name>
 	<permissions>
@@ -320,4 +322,5 @@ Las respuesta a una peticion queryX sera Xquery
 	<entry date="[date]">project name</entry>
 	<entry date="[date]">project name</entry>
 	<entry date="[date]">project name</entry>
-</addbackup
+</addbackup>
+

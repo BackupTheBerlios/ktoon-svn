@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 
-#include "projects.h"
+#include "projectlist.h"
 namespace Packages
 {
 

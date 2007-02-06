@@ -24,7 +24,7 @@
 #include <QString>
 #include <QDomDocument>
 
-#include "projects.h"
+#include "projectlist.h"
 #include "sproject.h"
 #include "database.h"
 
@@ -47,13 +47,20 @@ class ProjectCollection
 		~ProjectCollection();
 		
 		void createProject(Server::Connection *cnn, const QString& author);
+		
 		bool addProject(const QString& name, const QString& author, const QString& description, const Users::User *owner );
+		bool removeProject( Server::Connection *cnn, const QString& name );
+		
+		bool updateProject( Server::Connection *cnn, const QString& name, const QString& author, const QString& description, const QStringList &users );
+		
+		SProject *project(const QString &name);
 		
 		bool openProject(Server::Connection *cnn);
 		void importProject(Server::Connection *cnn, const QByteArray& data);
 		
 		bool handleProjectRequest(Server::Connection *cnn, const QString strRequest);
 		QStringList projects() const;
+		
 		
 		void listAllProjects(Server::Connection *cnn);
 		void listUserProjects(Server::Connection *cnn);

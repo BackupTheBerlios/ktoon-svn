@@ -90,7 +90,11 @@ User *Manager::user(const QString &login)
 
 bool Manager::addUser( const User & user )
 {
-	return d->database->addUser(user);
+	if(!d->parser->user( user.login() ))
+	{
+		return d->database->addUser(user);
+	}
+	return false;
 }
 
 bool Manager::updateUser( const User & user )
