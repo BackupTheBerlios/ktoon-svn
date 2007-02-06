@@ -72,25 +72,45 @@ ProjectCollection::~ProjectCollection()
 void ProjectCollection::createProject( Server::Connection *cnn, const QString &author ) 
 {
 	QString projectName = cnn->data(Info::ProjectName).toString();
-	if(!addProject(projectName, author, "new project", cnn->user()))
+	
+	QMultiHash<int, QString> user;
+	user.insert(int(SProject::Owner), cnn->user()->login());
+	
+	if(!addProject(projectName, author, "new project", user))
 	{
 		cnn->sendErrorPackageToClient(QObject::tr("Cannot create project %1").arg(projectName), Packages::Error::Warning );
 	}
 	openProject( cnn );
 }
 
-bool ProjectCollection::addProject(const QString& name, const QString& author, const QString& description, const Users::User *owner )
+bool ProjectCollection::addProject(const QString& name, const QString& author, const QString& description, const QMultiHash<int, QString> & users )
 {
-	if(!d->db->exists(name))
+	if(!d->db->exists(name) )
 	{
 		if(!d->projects.contains( name ) )
 		{
+			
+			QMultiHash<SProject::UserType, QString> newusers; 
+			foreach(int type, users.uniqueKeys())
+			{
+				foreach(QString login, users.values(type))
+				{
+					newusers.insert( SProject::UserType(type), login);
+				}
+			}
+			if(newusers.values(SProject::Owner).empty())
+			{
+				return false;
+			}
+			
 			SProject *project = new SProject( dAppProp->cacheDir() +"/"+ d->db->nextFileName());
 			project->setProjectName(name);
 			project->setAuthor(author);
 			project->setDescription(description);
 			bool okAddProject = false;
-			project->addUser( owner->login(), SProject::Owner); 
+			
+			
+			project->setUsers(newusers);
 			
 			bool okSaveProject = project->save();
 			if(okSaveProject)
@@ -98,7 +118,6 @@ bool ProjectCollection::addProject(const QString& name, const QString& author, c
 				okAddProject = d->db->addProject(project);
 			}
 			delete project;
-			
 			return okAddProject;
 		}
 	}
@@ -128,7 +147,7 @@ bool ProjectCollection::removeProject( Server::Connection *cnn, const QString& n
 	return false;
 }
 
-bool ProjectCollection::updateProject( Server::Connection *cnn, const QString& name, const QString& author, const QString& description, const QStringList &users)
+bool ProjectCollection::updateProject( Server::Connection *cnn, const QString& name, const QString& author, const QString& description, const QMultiHash<int, QString> &users)
 {
 	SProject *p = d->db->loadProject(name);
 	if(p)
@@ -141,6 +160,18 @@ bool ProjectCollection::updateProject( Server::Connection *cnn, const QString& n
 		{
 			p->setDescription(description);
 		}
+		
+		QMultiHash<SProject::UserType, QString> newusers; 
+		foreach(int type, users.uniqueKeys())
+		{
+			foreach(QString login, users.values(type))
+			{
+				newusers.insert( SProject::UserType(type), login);
+			}
+		}
+		
+		p->setUsers(newusers);
+		
 		
 		bool ok = d->db->updateProject(p);
 		delete p;

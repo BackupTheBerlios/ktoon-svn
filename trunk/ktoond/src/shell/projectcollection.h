@@ -48,10 +48,10 @@ class ProjectCollection
 		
 		void createProject(Server::Connection *cnn, const QString& author);
 		
-		bool addProject(const QString& name, const QString& author, const QString& description, const Users::User *owner );
+		bool addProject(const QString& name, const QString& author, const QString& description, const QMultiHash<int, QString> & users );
 		bool removeProject( Server::Connection *cnn, const QString& name );
 		
-		bool updateProject( Server::Connection *cnn, const QString& name, const QString& author, const QString& description, const QStringList &users );
+		bool updateProject( Server::Connection *cnn, const QString& name, const QString& author, const QString& description, const QMultiHash<int, QString> & users );
 		
 		SProject *project(const QString &name);
 		

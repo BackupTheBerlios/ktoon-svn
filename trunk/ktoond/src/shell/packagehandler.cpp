@@ -170,11 +170,19 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 			if(parser.parse(package))
 			{
 				cnx->setData(Info::ProjectName, parser.name());
-				if(!d->projects->addProject( parser.name(), parser.author(), parser.description(), cnx->user()))
+				
+				if(!d->projects->addProject( parser.name(), parser.author(), parser.description(), parser.users()))
 				{
 					cnx->sendErrorPackageToClient(QObject::tr("Cannot create project %1").arg(parser.name()), Packages::Error::Warning );
 				}
-				cnx->server()->sendToAdmins(package); //TODO: Enviar un paquete diferente
+				else
+				{
+					cnx->server()->sendToAdmins(package); //TODO: Enviar un paquete diferente
+				}
+				
+				
+				
+				
 			}
 		}
 		else

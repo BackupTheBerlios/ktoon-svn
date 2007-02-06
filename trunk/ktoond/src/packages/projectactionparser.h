@@ -22,6 +22,7 @@
 #define PARSERSPROJECTACTIONPARSER_H
 
 #include <ktxmlparserbase.h>
+#include <QMultiHash>
 
 namespace Parsers {
 
@@ -41,8 +42,7 @@ class ProjectActionParser : public KTXmlParserBase
 		QString name();
 		QString author();
 		QString description();
-		QStringList users();
-		
+		QMultiHash<int, QString> users();
 		
 	private:
 		struct Private;

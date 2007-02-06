@@ -85,7 +85,6 @@ QString Database::nextFileName()
 		parser.parse(&dbf);
 		m_lastFileName = parser.lastFileName();
 	}
-	dDebug() << m_lastFileName;
 	if(m_lastFileName.isEmpty())
 	{
 		m_lastFileName = "project0.ktn";
@@ -149,17 +148,14 @@ bool Database::updateProject( const SProject * project)
 	
 	if ( file.open(QIODevice::WriteOnly| QIODevice::Text) )
 	{
-		dDebug() << "here";
 		QTextStream ts(&file);
 		ts << doc.toString();
 		file.close();
 	}
 	else
 	{
-		dDebug() << "asdfffffffffffffffff" << file.error();
 		return false;
 	}
-	dDebug() << "xx";
 	return true;
 }
 

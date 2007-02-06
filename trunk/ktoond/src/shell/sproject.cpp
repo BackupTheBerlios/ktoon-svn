@@ -125,6 +125,11 @@ bool SProject::addUser( const QString& login, UserType type )
 	return false;
 }
 
+void SProject::setUsers( const QMultiHash<SProject::UserType, QString> & users)
+{
+	d->users = users;
+}
+
 QString SProject::fileName()
 {
 	return d->filename;

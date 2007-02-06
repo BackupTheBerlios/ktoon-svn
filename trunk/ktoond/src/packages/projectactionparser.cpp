@@ -27,7 +27,8 @@ struct ProjectActionParser::Private
 	QString name;
 	QString author;
 	QString description;
-	QStringList users;
+	QMultiHash<int, QString> users;
+	int type;
 };
 
 ProjectActionParser::ProjectActionParser() : KTXmlParserBase(), d(new Private())
@@ -50,6 +51,7 @@ bool ProjectActionParser::startTag(const QString &tag, const QXmlAttributes &att
 		}
 		else if(tag == "user")
 		{
+			d->type = atts.value("type").toInt();
 			setReadText(true);
 		}
 	}
@@ -65,7 +67,7 @@ void ProjectActionParser::text(const QString &text)
 {
 	if(currentTag() == "user")
 	{
-		d->users << text;
+		d->users.insert(d->type, text);
 	}
 	else if( currentTag() == "name" )
 	{
@@ -96,7 +98,7 @@ QString ProjectActionParser::description()
 	return d->description;
 }
 
-QStringList ProjectActionParser::users()
+QMultiHash<int, QString> ProjectActionParser::users()
 {
 	return d->users;
 }
