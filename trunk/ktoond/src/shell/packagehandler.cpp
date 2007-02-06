@@ -235,11 +235,7 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 			Parsers::ProjectActionParser parser;
 			if(parser.parse(package))
 			{
-				SProject *project = d->projects->project( parser.name() );
-				if(project)
-				{
-					
-				}
+				d->projects->updateProject(cnx, parser.name(), parser.author(), parser.description(), parser.users());
 			}
 		}
 		else

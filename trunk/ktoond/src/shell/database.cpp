@@ -149,14 +149,17 @@ bool Database::updateProject( const SProject * project)
 	
 	if ( file.open(QIODevice::WriteOnly| QIODevice::Text) )
 	{
+		dDebug() << "here";
 		QTextStream ts(&file);
 		ts << doc.toString();
 		file.close();
 	}
 	else
 	{
+		dDebug() << "asdfffffffffffffffff" << file.error();
 		return false;
 	}
+	dDebug() << "xx";
 	return true;
 }
 

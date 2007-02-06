@@ -41,7 +41,7 @@ bool DatabaseParser::startTag(const QString &tag, const QXmlAttributes &atts)
 		{
 			tmpInfo.name = atts.value("name");
 			tmpInfo.author = atts.value("author");
-			tmpInfo.description = atts.value("descrition");
+			tmpInfo.description = atts.value("description");
 			if(m_findProject)
 			{
 				if(tmpInfo.name == m_condition)
@@ -72,6 +72,8 @@ bool DatabaseParser::startTag(const QString &tag, const QXmlAttributes &atts)
 				{
 					m_project = new SProject(filename);
 					m_project->setProjectName(tmpInfo.name);
+					m_project->setAuthor(tmpInfo.author);
+					m_project->setDescription(tmpInfo.description);
 				}
 			}
 		}

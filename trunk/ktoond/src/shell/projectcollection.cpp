@@ -81,13 +81,14 @@ void ProjectCollection::createProject( Server::Connection *cnn, const QString &a
 
 bool ProjectCollection::addProject(const QString& name, const QString& author, const QString& description, const Users::User *owner )
 {
-	
 	if(!d->db->exists(name))
 	{
 		if(!d->projects.contains( name ) )
 		{
 			SProject *project = new SProject( dAppProp->cacheDir() +"/"+ d->db->nextFileName());
 			project->setProjectName(name);
+			project->setAuthor(author);
+			project->setDescription(description);
 			bool okAddProject = false;
 			project->addUser( owner->login(), SProject::Owner); 
 			
@@ -134,14 +135,25 @@ bool ProjectCollection::updateProject( Server::Connection *cnn, const QString& n
 	{
 		if(!author.isNull())
 		{
-// 			p->setAuthor(author);
+			p->setAuthor(author);
 		}
 		if(!description.isNull())
 		{
-// 			p->setDescription(description);
+			p->setDescription(description);
 		}
+		
+		bool ok = d->db->updateProject(p);
+		delete p;
+		if(!ok)
+		{
+			cnn->sendErrorPackageToClient( QObject::tr("cannot update project"), Packages::Error::Err);
+			return false;
+		}
+		return true;
 	}
-	return true;
+	
+	cnn->sendErrorPackageToClient(QObject::tr("Project %1 not exist").arg(name), Packages::Error::Err);
+	return false;
 }
 
 SProject *ProjectCollection::project(const QString &name)

@@ -84,6 +84,9 @@ QDomElement SProject::toXml(QDomDocument &doc) const
 	QDomElement project = doc.createElement("project");
 	
 	project.setAttribute("name", projectName());
+	project.setAttribute("author", author());
+	project.setAttribute("description", description());
+	
 	
 	QDomElement file = doc.createElement("file");
 	
