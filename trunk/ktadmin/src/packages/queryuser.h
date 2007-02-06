@@ -35,6 +35,7 @@ class QueryUser : public QDomDocument
 		~QueryUser();
 		
 		void setLogin(const QString& login);
+		
 	private:
 		struct Private;
 		Private * const d;

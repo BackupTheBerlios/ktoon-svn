@@ -32,6 +32,7 @@ class Form : public Base::Form
 {
 	public:
 		Form(QWidget *parent = 0);
+		Form(const QString &name, const QString &author, const QString & description, const QStringList& users ,QWidget *parent = 0);
 		~Form();
 		
 		void resetForm();

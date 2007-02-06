@@ -34,12 +34,12 @@ AddProject::AddProject(const QString & name, const QString & author, const QStri
 	QDomElement root = createElement( "addproject" );
 	root.setAttribute( "version",  "0" );
 	appendChild(root);
-	d->info = createElement("info");
-	d->info.setAttribute("name", name);
-	d->info.setAttribute("author", author);
-	d->info.setAttribute("description", description);
+	
+	root.appendChild(createElement("name")).appendChild(createTextNode(name));
+	root.appendChild(createElement("author")).appendChild(createTextNode(author));
+	root.appendChild(createElement("description")).appendChild(createTextNode(description));
+	
 	d->users = createElement("users");
-	root.appendChild(d->info);
 }
 
 

@@ -18,12 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef PACKAGESUSERSINFOPARSER_H
-#define PACKAGESUSERSINFOPARSER_H
+#ifndef USERSUSERSINFOPARSER_H
+#define USERSUSERSINFOPARSER_H
 
 #include <ktxmlparserbase.h>
 
-namespace Packages {
+namespace Users {
 
 /**
  * @author Jorge Cuadrado <kuadrosxx@gmail.com>

@@ -4,9 +4,13 @@
 # Target is a library:  
 
 HEADERS += modulewidget.h \
-           form.h
+           form.h \
+           projectqueryparser.h \
+           projectactionparser.h 
 SOURCES += modulewidget.cpp \
-           form.cpp
+           form.cpp \
+           projectqueryparser.cpp \
+           projectactionparser.cpp 
 TEMPLATE = lib
 CONFIG += staticlib \
 warn_on

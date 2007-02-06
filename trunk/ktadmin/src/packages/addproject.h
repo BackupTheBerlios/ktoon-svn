@@ -26,7 +26,7 @@
 namespace Packages {
 
 /**
-	@author Jorge Cuadrado <kuadrosxx@gmail.com>
+ * @author Jorge Cuadrado <kuadrosxx@gmail.com>
 */
 class AddProject : public QDomDocument
 {

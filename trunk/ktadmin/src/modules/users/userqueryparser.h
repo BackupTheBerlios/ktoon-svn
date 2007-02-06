@@ -18,23 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef PACKAGESUSERPARSER_H
-#define PACKAGESUSERPARSER_H
+#ifndef USERSUSERQUERYPARSER_H
+#define USERSUSERQUERYPARSER_H
 
 #include <ktxmlparserbase.h>
 #include "permission.h"
 
 
-namespace Packages {
+namespace Users {
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-class UserParser : public KTXmlParserBase
+class UserQueryParser : public KTXmlParserBase
 {
 	public:
-		UserParser();
-		~UserParser();
+		UserQueryParser();
+		~UserQueryParser();
 		
 		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
 		virtual bool endTag(const QString &tag);

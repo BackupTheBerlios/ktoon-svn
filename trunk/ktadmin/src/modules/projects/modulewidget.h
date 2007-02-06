@@ -35,6 +35,7 @@ class ModuleWidget : public Base::ModuleListWidget
 		ModuleWidget(QWidget *parent = 0);
 		~ModuleWidget();
 		virtual void handlePackage(Base::Package *const pkg);
+		void removeProject(const QString& name);
 		
 	private:
 		void updateList();

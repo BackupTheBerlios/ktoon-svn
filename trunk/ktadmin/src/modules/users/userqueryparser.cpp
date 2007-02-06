@@ -18,35 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#include "userparser.h"
+#include "userqueryparser.h"
 
-namespace Packages {
+namespace Users {
 
-struct UserParser::Private
+struct UserQueryParser::Private
 {
 	QString login;
 	QString name;
 	QList<Users::Permission> permissions;
 };
 
-UserParser::UserParser(): KTXmlParserBase() , d(new Private)
+UserQueryParser::UserQueryParser(): KTXmlParserBase() , d(new Private)
 {
 	
 }
 
 
-UserParser::~UserParser()
+UserQueryParser::~UserQueryParser()
 {
 }
 
-bool UserParser::startTag(const QString &tag, const QXmlAttributes &atts)
+bool UserQueryParser::startTag(const QString &tag, const QXmlAttributes &atts)
 {
-	if(root() == "user")
+	if(root() == "userquery")
 	{
-		if(tag == "user")
+		if(tag == "login" || tag == "name" )
 		{
-			d->login = atts.value("login");
-			d->name = atts.value("name");
+			setReadText(true);
 		}
 		else if(tag == "perm")
 		{
@@ -56,27 +55,34 @@ bool UserParser::startTag(const QString &tag, const QXmlAttributes &atts)
 	return true;
 }
 
-bool UserParser::endTag(const QString &)
+bool UserQueryParser::endTag(const QString &)
 {
 	return true;
 }
 
-void UserParser::text(const QString &)
+void UserQueryParser::text(const QString &text)
 {
-	
+	if(currentTag() == "login")
+	{
+		d->login = text;
+	}
+	else if(currentTag() == "name")
+	{
+		d->name = text;
+	}
 }
 
-QString UserParser::login()
+QString UserQueryParser::login()
 {
 	return d->login;
 }
 
-QString UserParser::name()
+QString UserQueryParser::name()
 {
 	return d->name;
 }
 
-QList<Users::Permission> UserParser::permissions()
+QList<Users::Permission> UserQueryParser::permissions()
 {
 	return d->permissions;
 }

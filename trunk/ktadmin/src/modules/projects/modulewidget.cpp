@@ -27,6 +27,10 @@
 #include <package.h>
 #include "packages/projectlistparser.h"
 #include "packages/listprojects.h"
+#include "packages/removeproject.h"
+#include "packages/queryproject.h"
+#include "projectqueryparser.h"
+#include "projectactionparser.h"
 
 #include "form.h"
 
@@ -78,22 +82,48 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 			setFilled( true);
 		}
 	}
-	if(pkg->root() == "addproject")
+	else if(pkg->root() == "addproject" )
 	{
-		QDomDocument doc;
-		doc.setContent(pkg->xml());
-		
-		QDomElement infoE = doc.firstChildElement("info");
-		
-		if(!infoE.isNull())
+		Projects::ProjectActionParser parser;
+		if(parser.parse(pkg->xml()))
 		{
 			QTreeWidgetItem *item = new QTreeWidgetItem(tree());
-			item->setText(0, infoE.attribute("name"));
-			item->setText(1, infoE.attribute("author"));
-			item->setText(2, infoE.attribute("description"));
+			item->setText(0, parser.name());
+			item->setText(1, parser.author());
+			item->setText(2, parser.description());
+		}
+	}
+	else if(pkg->root() == "updateproject")
+	{
+		Projects::ProjectActionParser parser;
+		if(parser.parse(pkg->xml()))
+		{
+			removeProject(parser.name());
+			QTreeWidgetItem *item = new QTreeWidgetItem(tree());
+			item->setText(0, parser.name());
+			item->setText(1, parser.author());
+			item->setText(2, parser.description());
+		}
+	}
+	else if(pkg->root() == "removeproject")
+	{
+		Projects::ProjectActionParser parser;
+		if(parser.parse(pkg->xml()))
+		{
+			removeProject(parser.name());
+		}
+	}
+	else if(pkg->root() == "projectquery")
+	{
+		Projects::ProjectQueryParser parser;
+		if(parser.parse(pkg->xml()))
+		{
+			Form *form = new Form(parser.name(), parser.author(), parser.description(), parser.users());
+			registerForm(form);
 		}
 	}
 }
+
 
 void ModuleWidget::addActionSelected(QTreeWidgetItem *)
 {
@@ -103,11 +133,34 @@ void ModuleWidget::addActionSelected(QTreeWidgetItem *)
 
 void ModuleWidget::delActionSelected(QTreeWidgetItem *current)
 {
+	if(current)
+	{
+		Packages::RemoveProject remove(current->text(0));
+		emit sendPackage(remove.toString());
+	}
 }
 
 void ModuleWidget::modifyActionSelected(QTreeWidgetItem *current)
 {
-	
+	if(current)
+	{
+		Packages::QueryProject query(current->text(0));
+		emit sendPackage(query.toString());
+	}
+}
+
+void ModuleWidget::removeProject(const QString& name)
+{
+	QTreeWidgetItemIterator it(tree());
+	while( (*it) )
+	{
+		if( name == (*it)->text(0) )
+		{
+			delete (*it);
+			break;
+		}
+		++it;
+	}
 }
 
 }

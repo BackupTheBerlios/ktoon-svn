@@ -27,6 +27,7 @@
 #include <dformfactory.h>
 
 #include "packages/addproject.h"
+#include "packages/updateproject.h"
 
 namespace Projects {
 
@@ -46,6 +47,17 @@ Form::Form(QWidget *parent): Base::Form(tr("Add project"), parent), d(new Privat
 }
 
 
+Form::Form(const QString &name, const QString &author, const QString & description, const QStringList& users, QWidget *parent): Base::Form(tr("Modify project"), parent), d(new Private())
+{
+	d->update = true;
+	init();
+	d->name->setText(name);
+	d->name->setDisabled(true);
+	
+	d->author->setText(author);
+	d->description->setText(description);
+}
+
 Form::~Form()
 {
 	
@@ -60,9 +72,24 @@ void Form::resetForm()
 
 void Form::acceptForm()
 {
-	Packages::AddProject project(d->name->text(), d->author->text(), d->description->toPlainText()) ;
-	
-	emit sendPackage(project.toString());
+	if(d->update)
+	{
+		Packages::UpdateProject update(d->name->text());
+		
+		if( d->author->isModified ())
+		{
+			update.setAuthor(d->author->text());
+		}
+		
+		update.setDescription(d->description->toPlainText());
+		
+		emit sendPackage(update.toString());
+	}
+	else
+	{
+		Packages::AddProject project(d->name->text(), d->author->text(), d->description->toPlainText());
+		emit sendPackage(project.toString());
+	}
 }
 
 //private

@@ -20,7 +20,7 @@
  
 #include "userlistparser.h"
 
-namespace Packages {
+namespace Users {
 
 struct UserListParser::Private
 {
