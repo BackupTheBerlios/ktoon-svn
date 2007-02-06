@@ -22,6 +22,7 @@
 
 #include <ddebug.h>
 #include "server.h"
+#include "logger.h"
 #include "packagehandler.h"
 #include "settings.h"
 
@@ -100,8 +101,15 @@ void cleanup(int s)
 {
 	dDebug("server") << "Finishing with signal: " << s;
 	
+	QApplication::flush();
 	QApplication::exit(0);
-	exit(0);
+	
+	Server::Logger::self()->info(QObject::tr("Finishing with signal: ")+QString::number(s));
+	
+	if( s == 11 )
+	{
+		exit(-256);
+	}
 }
 #endif
 

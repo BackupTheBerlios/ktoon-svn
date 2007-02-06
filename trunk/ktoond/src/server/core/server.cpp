@@ -51,8 +51,6 @@ TcpServer::TcpServer(QObject *parent) : QTcpServer(parent), d(new Private)
 	DINIT;
 	m_handler = new DefaultPackageHandler();
 	d->backupManager = new BackupManager;
-	
-// 	SHOW_VAR(d->backupManager->makeBackup("/etc/passwd"));
 }
 
 

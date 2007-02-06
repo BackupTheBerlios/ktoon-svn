@@ -33,7 +33,7 @@ namespace Users {
 class Database
 {
 	public:
-		Database(const QString &dbfile);
+		explicit Database(const QString &dbfile);
 		~Database();
 		bool addUser(const Users::User &user);
 		bool updateUser(const Users::User &user);
