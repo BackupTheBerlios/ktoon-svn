@@ -19,7 +19,11 @@
  ***************************************************************************/
 
 #include "modulewidget.h"
+
 #include <dapplicationproperties.h>
+#include <ddebug.h>
+
+
 #include <QIcon>
 #include <QTreeWidget>
 #include <QDomDocument>
@@ -29,6 +33,8 @@
 #include "packages/listprojects.h"
 #include "packages/removeproject.h"
 #include "packages/queryproject.h"
+#include "packages/userlistparser.h"
+
 #include "projectqueryparser.h"
 #include "projectactionparser.h"
 
@@ -38,6 +44,7 @@ namespace Projects {
 
 struct ModuleWidget::Private
 {
+	QStringList users;
 };
 
 ModuleWidget::ModuleWidget(QWidget *parent)
@@ -118,16 +125,28 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 		Projects::ProjectQueryParser parser;
 		if(parser.parse(pkg->xml()))
 		{
-			Form *form = new Form(parser.name(), parser.author(), parser.description(), parser.users());
+			Form *form = new Form(parser.name(), parser.author(), parser.description(), d->users, parser.users());
 			registerForm(form);
 		}
 	}
+	else if(pkg->root() == "userlist")
+	{
+		Packages::UserListParser parser;
+		if(parser.parse(pkg->xml()))
+		{
+			foreach(QStringList values, parser.info())
+			{
+				d->users << values[0];
+			}
+		}
+	}
+	
 }
 
 
 void ModuleWidget::addActionSelected(QTreeWidgetItem *)
 {
-	Form *form = new Form();
+	Form *form = new Form(d->users);
 	registerForm(form);
 }
 

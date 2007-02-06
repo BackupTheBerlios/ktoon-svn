@@ -7,13 +7,11 @@ HEADERS += modulewidget.h \
            form.h \
            permissionschooser.h \
            permission.h \
-           userlistparser.h \
            userqueryparser.h 
 SOURCES += modulewidget.cpp \
            form.cpp \
            permissionschooser.cpp \
            permission.cpp \
-           userlistparser.cpp \
            userqueryparser.cpp 
 TEMPLATE = lib
 CONFIG += staticlib \

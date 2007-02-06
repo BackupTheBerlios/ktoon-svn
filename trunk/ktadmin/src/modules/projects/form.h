@@ -23,6 +23,8 @@
 
 #include "formbase.h"
 
+#include "userselector.h"
+
 namespace Projects {
 
 /**
@@ -31,17 +33,19 @@ namespace Projects {
 class Form : public Base::Form
 {
 	public:
-		Form(QWidget *parent = 0);
-		Form(const QString &name, const QString &author, const QString & description, const QStringList& users ,QWidget *parent = 0);
+		Form(const QStringList& availableUsers, QWidget *parent = 0);
+		Form(const QString &name, const QString &author, const QString & description,const QStringList& availableUsers, const QMultiHash<UserSelector::UserType, QString>& users ,QWidget *parent = 0);
 		~Form();
 		
 		void resetForm();
 		void acceptForm();
 		
+		
 	private:
 		void init();
 		struct Private;
 		Private *const d;
+		
 };
 }
 #endif

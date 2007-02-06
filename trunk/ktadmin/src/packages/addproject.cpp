@@ -40,13 +40,14 @@ AddProject::AddProject(const QString & name, const QString & author, const QStri
 	root.appendChild(createElement("description")).appendChild(createTextNode(description));
 	
 	d->users = createElement("users");
+	root.appendChild(d->users);
 }
 
 
-void AddProject::addUser( const QString& login )
+void AddProject::addUser( const QString& login, int type )
 {
-	//TODO agregar los tipos de roles sobre el proyecto Owner, Designer ...
 	QDomElement user = createElement("user");
+	user.setAttribute("type", type);
 	user.appendChild(createTextNode(login));
 	d->users.appendChild(user);
 }

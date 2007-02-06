@@ -27,7 +27,8 @@ struct ProjectQueryParser::Private
 	QString name;
 	QString author;
 	QString description;
-	QStringList users;
+	QMultiHash<UserSelector::UserType, QString> users;
+	UserSelector::UserType tmpType;
 };
 
 ProjectQueryParser::ProjectQueryParser() : KTXmlParserBase(), d(new Private)
@@ -51,7 +52,8 @@ bool ProjectQueryParser::startTag(const QString &tag, const QXmlAttributes &atts
 		}
 		else if(tag == "user")
 		{
-			setReadText(true);//TODO: leer el tipo de usuario
+			d->tmpType = UserSelector::UserType(atts.value("type").toInt());
+			setReadText(true);
 		}
 	}
 	return true;
@@ -64,7 +66,7 @@ bool ProjectQueryParser::endTag(const QString &)
 
 void ProjectQueryParser::text(const QString &text)
 {
-	d->users << text;
+	d->users.insert(d->tmpType, text);
 }
 
 
@@ -83,7 +85,7 @@ QString ProjectQueryParser::description()
 	return d->description;
 }
 
-QStringList ProjectQueryParser::users()
+QMultiHash<UserSelector::UserType, QString> ProjectQueryParser::users()
 {
 	return d->users;
 }

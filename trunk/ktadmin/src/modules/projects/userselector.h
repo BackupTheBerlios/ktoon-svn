@@ -18,51 +18,44 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#include "userlistparser.h"
+#ifndef PROJECTSUSERSELECTOR_H
+#define PROJECTSUSERSELECTOR_H
 
-namespace Users {
+#include <QFrame>
+#include <QMultiHash>
+class QTreeWidget;
 
-struct UserListParser::Private
+namespace Projects {
+
+/**
+ * @author Jorge Cuadrado <kuadrosxx@gmail.com>
+*/
+class UserSelector : public QFrame
 {
-	QList<QStringList> info;
+	Q_OBJECT;
+	public:
+		enum UserType { Owner =0, Designer };
+		UserSelector();
+		~UserSelector();
+		
+		QTreeWidget *leftTree();
+		QTreeWidget *rightTree();
+		
+		void addUserAvailable(const QString& login);
+		void addUserSelected(const QString& login, UserType type );
+		
+		QMultiHash<UserType, QString> selectedUsers();
+		
+	public slots:
+		void moveSelectedItemsToLeft();
+		void moveSelectedItemsToRight();
+		
+	private:
+		struct Private;
+		Private * const d;
+
 };
 
-UserListParser::UserListParser() : KTXmlParserBase() , d(new Private)
-{
 }
 
-
-UserListParser::~UserListParser()
-{
-}
-
-bool UserListParser::startTag(const QString &tag, const QXmlAttributes &atts)
-{
-	if(root() == "userlist")
-	{
-		if(tag == "user")
-		{
-			QStringList values;
-			values << atts.value("login") << atts.value("name");
-			d->info << values;
-		}
-	}
-	return true;
-}
-
-bool UserListParser::endTag(const QString &)
-{
-	return true;
-}
-
-void UserListParser::text(const QString &)
-{
-	
-}
-
-QList<QStringList> UserListParser::info()
-{
-	return d->info;
-}
-
-}
+#endif

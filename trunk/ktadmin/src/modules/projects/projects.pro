@@ -6,11 +6,13 @@
 HEADERS += modulewidget.h \
            form.h \
            projectqueryparser.h \
-           projectactionparser.h 
+           projectactionparser.h \
+           userselector.h 
 SOURCES += modulewidget.cpp \
            form.cpp \
            projectqueryparser.cpp \
-           projectactionparser.cpp 
+           projectactionparser.cpp \
+           userselector.cpp 
 TEMPLATE = lib
 CONFIG += staticlib \
 warn_on

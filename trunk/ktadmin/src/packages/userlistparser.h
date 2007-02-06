@@ -18,37 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef PROJECTSPROJECTQUERYPARSER_H
-#define PROJECTSPROJECTQUERYPARSER_H
+#ifndef PACKAGESUSERSINFOPARSER_H
+#define PACKAGESUSERSINFOPARSER_H
 
 #include <ktxmlparserbase.h>
 
-#include "userselector.h"
-
-namespace Projects {
+namespace Packages {
 
 /**
- * @author Jorge Cuadrado <kuadrosxx@kuadrosx.com>
+ * @author Jorge Cuadrado <kuadrosxx@gmail.com>
 */
-class ProjectQueryParser : public KTXmlParserBase
+class UserListParser : public KTXmlParserBase
 {
 	public:
-		ProjectQueryParser();
-		~ProjectQueryParser();
+		UserListParser();
+		~UserListParser();
 		
 		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
 		virtual bool endTag(const QString &tag);
 		virtual void text(const QString &text);
 		
-		QString name();
-		QString author();
-		QString description();
-		QMultiHash<UserSelector::UserType, QString> users();
+		QList<QStringList> info();
 		
 	private:
 		struct Private;
 		Private *const d;
-
+		
 };
 
 }

@@ -38,7 +38,7 @@ class UpdateProject : public QDomDocument
 		void setAuthor(const QString &author);
 		void setDescription(const QString &description);
 		
-		void addUser(const QString& login);
+		void addUser(const QString& login, int type);
 		
 	private:
 		struct Private;

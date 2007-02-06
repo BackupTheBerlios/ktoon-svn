@@ -33,7 +33,7 @@ class AddProject : public QDomDocument
 	public:
 		AddProject(const QString & name, const QString & author, const QString& description );
 		~AddProject();
-		void addUser( const QString& login );
+		void addUser( const QString& login, int type );
 		
 	private:
 		struct Private;

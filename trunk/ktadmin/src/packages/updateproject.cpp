@@ -77,7 +77,7 @@ void UpdateProject::setDescription(const QString &description)
 	}
 }
 
-void UpdateProject::addUser(const QString& login)
+void UpdateProject::addUser(const QString& login, int type)
 {
 	if(d->users.isNull())
 	{
@@ -86,10 +86,9 @@ void UpdateProject::addUser(const QString& login)
 	}
 	
 	QDomElement userE = createElement("user");
+	userE.setAttribute("type", type);
 	userE.appendChild(createTextNode(login));
 	d->users.appendChild( userE );
-	
-	
 }
 
 }

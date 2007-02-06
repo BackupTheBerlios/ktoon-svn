@@ -39,7 +39,7 @@
 
 #include <packages/removeuser.h>
 #include <packages/queryuser.h>
-#include <userlistparser.h>
+#include <packages/userlistparser.h>
 #include <userqueryparser.h>
 
 namespace Users {
@@ -186,7 +186,7 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 	}
 	else if(pkg->root() == "userlist")
 	{
-		Users::UserListParser parser;
+		Packages::UserListParser parser;
 		if(parser.parse(pkg->xml()))
 		{
 			foreach(QStringList values, parser.info())
@@ -201,7 +201,6 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 			}
 			setFilled( true);
 		}
-		pkg->accept();
 	}
 	else if(pkg->root() == "userquery")
 	{

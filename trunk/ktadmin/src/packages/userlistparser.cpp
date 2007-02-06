@@ -18,34 +18,51 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef USERSUSERSINFOPARSER_H
-#define USERSUSERSINFOPARSER_H
+#include "userlistparser.h"
 
-#include <ktxmlparserbase.h>
+namespace Packages {
 
-namespace Users {
-
-/**
- * @author Jorge Cuadrado <kuadrosxx@gmail.com>
-*/
-class UserListParser : public KTXmlParserBase
+struct UserListParser::Private
 {
-	public:
-		UserListParser();
-		~UserListParser();
-		
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-		virtual bool endTag(const QString &tag);
-		virtual void text(const QString &text);
-		
-		QList<QStringList> info();
-		
-	private:
-		struct Private;
-		Private *const d;
-		
+	QList<QStringList> info;
 };
 
+UserListParser::UserListParser() : KTXmlParserBase() , d(new Private)
+{
 }
 
-#endif
+
+UserListParser::~UserListParser()
+{
+}
+
+bool UserListParser::startTag(const QString &tag, const QXmlAttributes &atts)
+{
+	if(root() == "userlist")
+	{
+		if(tag == "user")
+		{
+			QStringList values;
+			values << atts.value("login") << atts.value("name");
+			d->info << values;
+		}
+	}
+	return true;
+}
+
+bool UserListParser::endTag(const QString &)
+{
+	return true;
+}
+
+void UserListParser::text(const QString &)
+{
+	
+}
+
+QList<QStringList> UserListParser::info()
+{
+	return d->info;
+}
+
+}
