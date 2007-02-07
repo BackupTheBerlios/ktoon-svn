@@ -65,7 +65,7 @@ class Connection : public QThread
 		QVariant data(int key) const;
 		
 		Client *client() const;
-		TcpServer *server() const; // FIXME: REMOVER, NO USAR
+		TcpServer *server() const;
 		
 		void setUser(Users::User *user);
 		Users::User *user() const;
