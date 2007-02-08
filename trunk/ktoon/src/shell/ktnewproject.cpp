@@ -27,7 +27,7 @@
 
 #include <QLineEdit>
 #include <QCheckBox>
-
+//TODO añadir un campo para ingresar la descripcion del proyecto 
 KTNewProject::KTNewProject(QWidget *parent)
 	: DTabDialog(parent), m_useNetwork(false)
 {
@@ -149,7 +149,6 @@ KTProjectManagerParams *KTNewProject::params()
 	
 	params->setProjectName(m_projectName->text());
 	params->setAuthor( m_authorName->text());
-	
 	return params;
 }
 

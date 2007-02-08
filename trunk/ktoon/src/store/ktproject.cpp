@@ -255,7 +255,7 @@ void KTProject::fromXml(const QString &xml )
 		
 		if(!e.isNull())
 		{
-			if ( e.tagName() == "Project" )
+			if ( e.tagName() == "project" )
 			{
 				setProjectName( e.attribute( "name", projectName() ) );
 			}
@@ -293,7 +293,7 @@ QDomElement KTProject::toXml(QDomDocument &doc) const
 	QDomElement ktoon = doc.createElement("KToon");
 	ktoon.setAttribute("version", "1");
 	
-	QDomElement project = doc.createElement("Project");
+	QDomElement project = doc.createElement("project");
 	project.setAttribute("name", d->name);
 	
 	
@@ -303,10 +303,11 @@ QDomElement KTProject::toXml(QDomDocument &doc) const
 	author.appendChild(doc.createTextNode(d->author));
 	
 	QDomElement description = doc.createElement("description");
-	author.appendChild(doc.createTextNode(d->description));
+	description.appendChild(doc.createTextNode(d->description));
 	
 	
 	meta.appendChild(author);
+	meta.appendChild(description);
 	project.appendChild(meta);
 	ktoon.appendChild(project);
 	

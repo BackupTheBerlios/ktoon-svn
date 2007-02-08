@@ -168,7 +168,7 @@ bool KTNetProjectManagerHandler::setupNewProject(KTProjectManagerParams *params)
 		if ( !connected ) return false;
 	}
 	
-	KTNewProjectPackage newProjectPackage(netparams->projectName(), netparams->author());
+	KTNewProjectPackage newProjectPackage(netparams->projectName(), netparams->author(), netparams->description() );
 	d->socket->send(newProjectPackage);
 	
 	return true;
@@ -249,8 +249,8 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 				{
 					KTSaveProject *loader = new KTSaveProject;
 					loader->load(file.fileName(), d->project);
-					
 					emit openNewArea(d->project->projectName());
+					
 					delete loader;
 				}
 			}

@@ -33,6 +33,7 @@ class KTImportProjectPackage : public QDomDocument
 		KTImportProjectPackage(const QString &projectPath);
 		~KTImportProjectPackage();
 		void setProject(const QString & projectPath);
+		
 	private:
 		QDomElement m_data;
 };

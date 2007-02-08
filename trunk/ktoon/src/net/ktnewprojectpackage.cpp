@@ -20,18 +20,23 @@
  
 #include "ktnewprojectpackage.h"
 
-KTNewProjectPackage::KTNewProjectPackage(const QString & name, const QString & author )
- : QDomDocument()
+struct KTNewProjectPackage::Private
+{
+	QDomText name, author, description;
+};
+
+KTNewProjectPackage::KTNewProjectPackage(const QString & name, const QString & author, const QString & description ): QDomDocument(), d(new Private)
 {
 	QDomElement root = createElement("newproject");
 	root.setAttribute("version", "0");
 	
-	m_name = createTextNode(name);
-	m_author = createTextNode(author);
+	d->name = createTextNode(name);
+	d->author = createTextNode(author);
+	d->description = createTextNode(description);
 	
-	root.appendChild(createElement("name")).appendChild(m_name);
-	root.appendChild(createElement("author")).appendChild(m_author);
-	
+	root.appendChild(createElement("name")).appendChild(d->name);
+	root.appendChild(createElement("author")).appendChild(d->author);
+	root.appendChild(createElement("description")).appendChild(d->description);
 	appendChild(root);
 }
 
@@ -43,11 +48,16 @@ KTNewProjectPackage::~KTNewProjectPackage()
 
 void KTNewProjectPackage::setName(const QString & name)
 {
-	m_name.setData(name);
+	d->name.setData(name);
 }
 
 void KTNewProjectPackage::setAuthor(const QString & author)
 {
-	
-	m_author.setData(author);
+	d->author.setData(author);
 }
+
+void KTNewProjectPackage::setDescription(const QString & description)
+{
+	d->description.setData(description);
+}
+

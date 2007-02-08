@@ -44,7 +44,6 @@ bool KTProjectParser::startTag(const QString &tag, const QXmlAttributes &atts)
 		{
 			setReadText(true);
 		}
-		
 	}
 	return true;
 }
@@ -58,8 +57,6 @@ bool KTProjectParser::endTag(const QString &tag)
 
 void KTProjectParser::text(const QString &text)
 {
-// 	Q_UNUSED(text);
-	dDebug() << text;
 	if ( currentTag() == "data" )
 	{
 		d->data = QByteArray::fromBase64(text.toLocal8Bit());

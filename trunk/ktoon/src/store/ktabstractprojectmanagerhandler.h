@@ -56,6 +56,7 @@ class STORE_EXPORT KTAbstractProjectHandler : public QObject
 		
 	signals:
 		void sendCommand(const KTProjectRequest *event, bool addToStack);
+		void openNewArea(const QString &name);
 };
 
 

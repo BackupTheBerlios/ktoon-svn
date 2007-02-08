@@ -24,6 +24,7 @@ struct KTProjectManagerParams::Private
 {
 	QString projectName;
 	QString author;
+	QString description;
 };
 
 
@@ -59,3 +60,13 @@ QString KTProjectManagerParams::author() const
 	return d->author;
 }
 
+
+void KTProjectManagerParams::setDescription(const QString &description)
+{
+	d->description = description;
+}
+
+QString KTProjectManagerParams::description() const
+{
+	return d->description;
+}

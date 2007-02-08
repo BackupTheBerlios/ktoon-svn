@@ -30,14 +30,16 @@
 class KTNewProjectPackage : public QDomDocument
 {
 	public:
-		KTNewProjectPackage(const QString & name, const QString & author );
+		KTNewProjectPackage(const QString & name, const QString & author, const QString & description );
 		~KTNewProjectPackage();
 		
 		void setName(const QString & name);
 		void setAuthor(const QString & author);
+		void setDescription(const QString & description);
 		
 	private:
-		QDomText m_name, m_author;
+		struct Private;
+		Private *const d;
 		
 };
 
