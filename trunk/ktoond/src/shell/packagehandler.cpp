@@ -177,12 +177,9 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 				}
 				else
 				{
-					cnx->server()->sendToAdmins(package); //TODO: Enviar un paquete diferente
+					
+					cnx->server()->sendToAdmins(package);
 				}
-				
-				
-				
-				
 			}
 		}
 		else
@@ -223,7 +220,7 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 					QDomDocument doc;
 					QDomElement projectquery = doc.createElement("projectquery");
 					
-					projectquery.appendChild(project->toXml(doc));
+					projectquery.appendChild(project->infoToXml(doc));
 					doc.appendChild(projectquery);
 					
 					cnx->sendToClient(doc.toString());

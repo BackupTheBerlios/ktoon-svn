@@ -41,6 +41,7 @@ class NewProjectParser : public KTXmlParserBase
 	public:
 		QString author() const;
 		QString name() const;
+		QString description() const;
 		
 	private:
 		struct Private;

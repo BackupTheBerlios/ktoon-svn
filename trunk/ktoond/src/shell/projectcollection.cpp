@@ -225,6 +225,10 @@ bool ProjectCollection::openProject( Server::Connection *cnn )
 		}
 		
 		Packages::Project projectPackage(project->fileName());
+		if(!projectPackage.isValid())
+		{
+			return false;
+		}
 		cnn->sendToClient(projectPackage.toString());
 		
 		d->connections[projectName].append(cnn);

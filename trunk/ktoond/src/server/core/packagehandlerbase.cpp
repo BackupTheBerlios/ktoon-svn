@@ -154,7 +154,12 @@ void PackageHandlerBase::handlePackage(Server::Connection *cnn, const QString &r
 			{
 				if( d->manager->addUser(parser.user()) )
 				{
-					server->sendToAdmins(package);
+					QDomDocument doc;
+					doc.setContent(package);
+					
+					doc.firstChild().removeChild( doc.firstChild().firstChildElement ("password"));
+					
+					server->sendToAdmins(doc.toString());
 				}
 				else
 				{
@@ -216,7 +221,14 @@ void PackageHandlerBase::handlePackage(Server::Connection *cnn, const QString &r
 			if(parser.parse(package))
 			{
 				if ( d->manager->updateUser(parser.user()) )
-					server->sendToAdmins(package);
+				{
+					QDomDocument doc;
+					doc.setContent(package);
+					
+					doc.firstChild().removeChild( doc.firstChild().firstChildElement ("password"));
+					
+					server->sendToAdmins(doc.toString());
+				}
 			}
 		}
 		else

@@ -41,7 +41,8 @@ class SProject : public KTProject
 		SProject(const QString & filename, QObject *parent = 0);
 		~SProject();
 		void resetTimer();
-		QDomElement toXml(QDomDocument &doc) const;
+		QDomElement infoToXml(QDomDocument &doc) const;
+		
 		bool addUser( const QString& login, UserType type );
 		void setUsers( const QMultiHash<SProject::UserType, QString> & users);
 		QString fileName();

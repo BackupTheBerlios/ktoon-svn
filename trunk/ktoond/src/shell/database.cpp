@@ -106,7 +106,7 @@ bool Database::addProject(const SProject * project)
 	QDomDocument db = loadDataBase();
 	QDomNode  root = db.firstChild();
 	
-	root.appendChild(project->toXml(db));
+	root.appendChild(project->infoToXml(db));
 	
 	QFile file(m_dbfile);
 	
@@ -138,7 +138,7 @@ bool Database::updateProject( const SProject * project)
 			if(e.attribute("name") == project->projectName())
 			{
 				docElem.removeChild(n);
-				docElem.appendChild(project->toXml(doc));
+				docElem.appendChild(project->infoToXml(doc));
 			}
 		}
 		n = n.nextSibling();

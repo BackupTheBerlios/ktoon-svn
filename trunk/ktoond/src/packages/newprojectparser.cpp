@@ -25,6 +25,7 @@ struct NewProjectParser::Private
 {
 	QString author;
 	QString name;
+	QString description;
 };
 
 NewProjectParser::NewProjectParser()
@@ -53,6 +54,10 @@ bool NewProjectParser::startTag(const QString &tag, const QXmlAttributes &)
 		{
 			setReadText(true);
 		}
+		else if (tag == "description")
+		{
+			setReadText(true);
+		}
 	}
 	
 	
@@ -74,6 +79,10 @@ void NewProjectParser::text(const QString &text)
 	{
 		d->author = text;
 	}
+	else if (currentTag() == "description")
+	{
+		d->description = text;
+	}
 }
 
 QString NewProjectParser::author() const
@@ -86,5 +95,9 @@ QString NewProjectParser::name() const
 	return d->name;
 }
 
+QString NewProjectParser::description() const
+{
+	return d->name;
+}
 
 }

@@ -20,8 +20,10 @@
 
 
 #include "project.h"
-
+#include "ktsaveproject.h"
+#include "ktproject.h"
 #include <QFile>
+#include <ddebug.h>
 /*
 <!-- Respuesta a una peticion open valida -->
 <project version="0">
@@ -33,13 +35,18 @@
 
 namespace Packages
 {
-	
-Project::Project(const QString & projectPath)
- : Package()
+struct Project::Private
 {
-	m_root = createElement ( "project" );
-	m_root.setAttribute ( "version",  "0" );
-	appendChild(m_root);
+	QDomElement root;
+	QDomElement data;
+	bool isValid;
+};
+
+Project::Project(const QString & projectPath): Package(), d(new Private)
+{
+	d->root = createElement ( "project" );
+	d->root.setAttribute ( "version",  "0" );
+	appendChild(d->root);
 	setProject(projectPath);
 }
 
@@ -51,13 +58,24 @@ Project::~Project()
 void Project::setProject(const QString & projectPath)
 {
 	QFile file(projectPath);
-	file.open(QIODevice::ReadOnly);
-	QByteArray data = file.readAll().toBase64();
-	
-	removeChild(m_data);
-	m_data = createElement("data");
-	m_data.appendChild(createCDATASection ( data ));
-	m_root.appendChild(m_data);
+	KTSaveProject loader;
+	KTProject *project = new KTProject;
+	d->isValid = loader.load(projectPath, project );
+	if(d->isValid)
+	{
+		file.open(QIODevice::ReadOnly);
+		QByteArray data = file.readAll().toBase64();
+		
+		removeChild(d->data);
+		d->data = createElement("data");
+		d->data.appendChild(createCDATASection ( data ));
+		d->root.appendChild(d->data);
+	}
+}
+
+bool Project::isValid()
+{
+	return d->isValid;
 }
 
 }

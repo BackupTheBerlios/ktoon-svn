@@ -33,13 +33,15 @@ namespace Packages
 class Project : public Package
 {
 	public:
-		Project( const QString &projectPath );
+		Project(const QString & projectPath);
 		~Project();
 		void setProject(const QString & projectPath);
+		bool isValid();
 		
 	private:
-		QDomElement m_root;
-		QDomElement m_data;
+		struct Private;
+		Private *const d;
+		
 };
 }
 #endif
