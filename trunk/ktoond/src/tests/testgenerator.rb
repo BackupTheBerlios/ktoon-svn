@@ -93,7 +93,7 @@ class Engine
 			f << "TARGET = #{basename}" << endl
 			f << "DEPENDPATH += ." << endl
 			f << "INCLUDEPATH += ." << endl
-			f << "CONFIG += qtestlib" << endl
+			f << "CONFIG += qtestlib release" << endl
 			f << "SOURCES += #{path}" << endl
 			f << "include(tests_config.pri)" << endl
 		}
