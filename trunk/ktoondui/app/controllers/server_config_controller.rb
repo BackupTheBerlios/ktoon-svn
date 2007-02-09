@@ -1,6 +1,7 @@
 require 'ktoond/serverconfig.rb'
 
 class ServerConfigController < ApplicationController
+	before_filter :loadConfig
 	layout :determine_layout
 	
 	def index
@@ -9,7 +10,6 @@ class ServerConfigController < ApplicationController
 	end
 	
 	def show
-		@serverConfig = KToonD::ServerConfig.new
 	end
 	
 	def create
@@ -18,5 +18,21 @@ class ServerConfigController < ApplicationController
 	def edit
 	end
 	
+	def update
+		config = params[:config]
+		
+		@serverConfig.repository = config[:repository]
+		@serverConfig.host = config[:host]
+		@serverConfig.port = config[:port]
+		
+		@serverConfig.save
+		
+		redirect_to :action => 'show'
+	end
 	
+	
+	private
+	def loadConfig
+		@serverConfig = KToonD::ServerConfig.new
+	end
 end
