@@ -3,12 +3,14 @@
 export LD_LIBRARY_PATH=$KTOON_HOME/lib
 export QT_NO_GLIB=1
 
+BASE=`dirname $0`
+
 if [ "$1" == "-g" ]
 then
-	bin/ktoond.bin $*
+	${BASE}/bin/ktoond.bin $*
 else
 	shift 1
-	gdb -ex run -ex bt --batch --args bin/ktoond.bin "$*"
+	gdb -ex run -ex bt --batch --args ${BASE}/bin/ktoond.bin "$*"
 fi
 
 

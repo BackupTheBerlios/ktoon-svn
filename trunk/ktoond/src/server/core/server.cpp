@@ -60,10 +60,11 @@ TcpServer::~TcpServer()
 	
 	Logger::self()->info("Server finished");
 	
-	delete d;
 	delete Settings::self();
 	delete Logger::self();
+	
 	delete d->backupManager;
+	delete d;
 }
 
 bool TcpServer::openConnection(const QString &host, int port)
