@@ -139,6 +139,12 @@ QDomElement User::toXml(QDomDocument &doc, bool password ) const
 	return userE;
 }
 
+
+bool User::operator==(const User& user)
+{
+	return (d->login == user.d->login) && (d->password == user.d->password) && (d->name == user.d->name);
+}
+
 }
 
 

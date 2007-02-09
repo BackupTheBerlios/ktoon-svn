@@ -56,6 +56,8 @@ class User
 		
 		QDomElement toXml(QDomDocument &doc, bool password = true) const;
 		
+		bool operator==(const User& user);
+		
 	private:
 		struct Private;
 		Private *const d;

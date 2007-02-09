@@ -97,7 +97,7 @@ QString NewProjectParser::name() const
 
 QString NewProjectParser::description() const
 {
-	return d->name;
+	return d->description;
 }
 
 }
