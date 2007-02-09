@@ -26,7 +26,7 @@ namespace Packages {
 Ack::Ack(const QString &motd, const QString &sign) : QDomDocument()
 {
 	QDomElement root = createElement("ack");
-	
+	root.setAttribute("version", 0);
 	QDomElement motde = createElement("motd");
 	QDomText motdetext = createTextNode(motd);
 	motde.appendChild(motdetext);
