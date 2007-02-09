@@ -1,0 +1,19 @@
+<html>
+	<head>
+		<title>KToonD Config</title>
+		<%= stylesheet_link_tag "scaffold", "depot", :media => "all" %>
+	</head>
+	<body>
+		<div id="main">
+			<% if flash[:notice] -%>
+				<div id="notice"><%= h flash[:notice] %></div>
+			<% end -%>
+			<%= @content_for_layout %>
+		</div>
+		<div id="final">
+			<hr />
+			Copyright (C) 2006
+		</div>
+	</body>
+</html>
+
