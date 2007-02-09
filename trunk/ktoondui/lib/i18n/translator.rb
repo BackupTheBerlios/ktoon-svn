@@ -18,9 +18,6 @@ class Translator
 	end
 	
 	def traduction(word)
-		word.downcase!
-		word.strip!
-		
 		if @words.has_key?(word)
 			return @words[word]
 		end

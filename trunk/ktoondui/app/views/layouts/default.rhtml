@@ -1,18 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 	<head>
 		<title>KToonD Config</title>
-		<%= stylesheet_link_tag "scaffold", "depot", :media => "all" %>
+		<%= stylesheet_link_tag "master", "depot", :media => "all" %>
 	</head>
-	<body>
+	<body class="about">
 		<div id="main">
-			<% if flash[:notice] -%>
-				<div id="notice"><%= h flash[:notice] %></div>
-			<% end -%>
-			<%= @content_for_layout %>
-		</div>
-		<div id="final">
-			<hr />
-			Copyright (C) 2006
+			<div id="main-nav">
+				<dl>
+					<dt id="about"><%= link_to i18n("About"), { :controller => 'mainpage', :action => 'index' } %></dt>
+					<dt id="services"><%= link_to i18n("Server config"), { :controller => 'server_config', :action => 'show' } %></dt>
+				</dl>
+			</div>
+			<div id="header">
+				<h1><img src="/images/general/logo.png" width="236" height="36" alt="ktoon" border="0" /></h1>
+			</div>
+			
+			<div id="sidebar-a">
+				<div class="padding">
+					<% if not flash[:sidebar].nil? %>
+						<dl>
+						<% flash[:sidebar].keys.reverse_each { |link| %>
+							<dt> <%= link_to link, flash[:sidebar][link] %> </dt>
+						<% } %>
+						</dl>
+					<% end -%>
+				</div>
+			</div>
+			
+			<div id="content">
+				<% if flash[:notice] -%>
+					<div id="notice">
+						<%= h flash[:notice] %>
+					</div>
+				<% end -%>
+				<%= @content_for_layout %>
+			</div>
+			
+			<div id="footer">
+				<div id="altnav">
+					<%= link_to i18n("About"), { :action => 'about' } %> - 
+					<%= link_to i18n("Server config"), { :controller => 'server_config', :action => 'show' } %> - 
+				</div>
+				Copyright &copy; KToon Team
+			</div>
 		</div>
 	</body>
 </html>

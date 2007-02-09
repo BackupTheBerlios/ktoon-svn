@@ -22,13 +22,13 @@ class Scanner
 	
 	def scanStrings
 		Dir.foreach(@path) { |path|
-			if path =~ /.rb$/
+			if path =~ /(\.rhtml|\.rb)$/
 				File.open(path, "r") { |file|
 					file.each_line { |line|
 						line.split(",").each { |sentence|
 							if sentence =~ /i18n\s*(\(|\s+)\s*\"(.*)\"\s*(\)|\s+)/
 								if not $2.empty?
-									@toTranslate << $2.strip.downcase
+									@toTranslate << $2.strip
 								end
 							end
 						}

@@ -1,4 +1,5 @@
 require 'ktoond/serverconfig.rb'
+require 'ktoond/serverrunner.rb'
 
 class ServerConfigController < ApplicationController
 	before_filter :loadConfig
@@ -12,14 +13,16 @@ class ServerConfigController < ApplicationController
 	def show
 	end
 	
-	def create
-	end
-	
 	def edit
 	end
 	
 	def update
-		config = params[:config]
+		config = params[:serverConfig]
+		
+		if config.nil?
+			render :action => 'edit'
+			return
+		end
 		
 		@serverConfig.repository = config[:repository]
 		@serverConfig.host = config[:host]
@@ -27,9 +30,22 @@ class ServerConfigController < ApplicationController
 		
 		@serverConfig.save
 		
+		runner = KToonD::Runner.new
+		runner.restart
+		
 		redirect_to :action => 'show'
 	end
 	
+	protected
+	def createMenu
+		menu = {
+			i18n("Show") => { :action => 'show' },
+			i18n("Edit") => { :action => 'edit' }
+			
+		}
+		
+		flash[:sidebar] = menu
+	end
 	
 	private
 	def loadConfig

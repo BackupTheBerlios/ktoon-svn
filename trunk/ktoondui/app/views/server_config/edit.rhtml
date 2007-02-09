@@ -1,13 +1,6 @@
 
 <!--[form:usuario]-->
 <%= start_form_tag :action => 'update' %>
-	<p><label for="config_repository">Repository</label><br/>
-	<%= text_field 'config', 'repository'  %></p>
-	
-	<p><label for="config_host">Host</label><br/>
-	<%= text_field 'config', 'host'  %></p>
-	
-	<p><label for="config_port">Port</label><br/>
-	<%= text_field 'config', 'port'  %></p>
+	<%= render :partial => 'form', :object => @serverConfig %>
 	<%= submit_tag 'Edit' %>
 <%= end_form_tag %>

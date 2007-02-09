@@ -108,6 +108,7 @@ class ServerConfig
 	attr_accessor :repository
 	
 	def initialize(path = nil)
+		@errors = {}
 		@binpath = "ktoond"
 		
 		if path.to_s.empty?

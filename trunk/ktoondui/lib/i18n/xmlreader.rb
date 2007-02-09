@@ -63,9 +63,9 @@ class XmlReader
 			if not text.empty?
 				case @current_tag
 					when 'source'
-						@words.last[:source] = text.downcase
+						@words.last[:source] = text
 					when 'tr'
-						@words.last[:tr] = text.downcase
+						@words.last[:tr] = text
 				end
 			end
 			
