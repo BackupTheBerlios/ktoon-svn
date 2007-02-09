@@ -54,6 +54,7 @@ class Engine
 	def compile
 		puts "Compiling... "
 		@files.each { |path|
+			puts "##########################################################"
 			project = File.basename(path, ".cpp")+".pro"
 			`qmake #{project}`
 			`make clean 2>/dev/null`
