@@ -2,14 +2,15 @@
 <html>
 	<head>
 		<title>KToonD Config</title>
-		<%= stylesheet_link_tag "master", "depot", :media => "all" %>
+		<%= stylesheet_link_tag "master", :media => "all" %>
 	</head>
 	<body class="about">
 		<div id="main">
 			<div id="main-nav">
 				<dl>
-					<dt id="about"><%= link_to i18n("About"), { :controller => 'mainpage', :action => 'index' } %></dt>
-					<dt id="services"><%= link_to i18n("Server config"), { :controller => 'server_config', :action => 'show' } %></dt>
+					<dt id="navitem"><%= link_to i18n("About"), { :controller => 'mainpage', :action => 'index' } %></dt>
+					<dt id="navitem"><%= link_to i18n("Server config"), { :controller => 'server_config', :action => 'show' } %></dt>
+					<dt id="navitem"><%= link_to i18n("Register"), { :controller => 'register', :action => 'index' } %></dt>
 				</dl>
 			</div>
 			<div id="header">
@@ -19,11 +20,13 @@
 			<div id="sidebar-a">
 				<div class="padding">
 					<% if not flash[:sidebar].nil? %>
+						<div class="side-menu">
 						<dl>
 						<% flash[:sidebar].keys.reverse_each { |link| %>
 							<dt> <%= link_to link, flash[:sidebar][link] %> </dt>
 						<% } %>
 						</dl>
+						</div>
 					<% end -%>
 				</div>
 			</div>
@@ -41,6 +44,7 @@
 				<div id="altnav">
 					<%= link_to i18n("About"), { :action => 'about' } %> - 
 					<%= link_to i18n("Server config"), { :controller => 'server_config', :action => 'show' } %> - 
+					<%= link_to i18n("Register"), { :controller => 'register', :action => 'index' } %>
 				</div>
 				Copyright &copy; KToon Team
 			</div>

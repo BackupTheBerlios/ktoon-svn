@@ -33,6 +33,8 @@ class ServerConfigController < ApplicationController
 		runner = KToonD::Runner.new
 		runner.restart
 		
+		flash[:notice] = i18n("Server updated and running")
+		
 		redirect_to :action => 'show'
 	end
 	

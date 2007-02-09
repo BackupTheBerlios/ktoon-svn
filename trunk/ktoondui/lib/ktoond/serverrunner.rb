@@ -3,7 +3,7 @@ module KToonD
 
 class Runner
 	def initialize
-		@path = "ktoond.bin"
+		@path = "ktoond"
 	end
 	
 	def run

@@ -24,12 +24,14 @@ html, body {
 #main-nav dt a {
 	display: block;
 	height: 50px;
-	padding: 50px 0 0 0;
+	padding: 13px 0 0 0;
 	overflow: hidden;
 	background-repeat: no-repeat;
 	/*new*/
 	margin-left: 40px;
-	font-size: 12pt;
+	font-size: 13pt;
+	font: bold;
+	
 }
 
 #main-nav dt { float: left; }
@@ -58,16 +60,20 @@ body.contact dt#contact a {
 
 #sidebar-a {
 	float: right;
-        width: 280px;
-        line-height: 18px;
+	width: 90px;
+	line-height: 18px;
+}
+
+#sidebar-a .side-menu {
+	background: #FFCE73
 }
 
 #sidebar-a .padding {
-        padding: 25px;
+	padding-left: 25px;
 }
 
 #content {
-        margin-right: 280px; /* sidebar */
+        margin-right: 90px; /* sidebar */
         line-height: 18px;
 }
 
@@ -126,5 +132,13 @@ h1 {
         float: right;
         margin-top: 57px;
         padding-right: 31px;
+}
+
+#notice {
+  border: 2px solid red;
+  padding: 1em;
+  margin-bottom: 2em;
+  background-color: #f0f0f0;
+  font: bold smaller sans-serif;
 }
 
