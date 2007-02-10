@@ -25,7 +25,7 @@ RemoveBackup::RemoveBackup()
  : QDomDocument()
 {
 	QDomElement root = createElement("removebackup");
-	
+	root.setAttribute("version", "0");
 	appendChild(root);
 }
 

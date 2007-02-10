@@ -26,7 +26,7 @@ AddBackup::AddBackup()
  : QDomDocument()
 {
 	QDomElement root = createElement("addbackup");
-	
+	root.setAttribute("version", "0");
 	appendChild(root);
 }
 

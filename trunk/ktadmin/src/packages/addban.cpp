@@ -26,7 +26,7 @@ AddBan::AddBan(const QString &pattern)
  : QDomDocument()
 {
 	QDomElement root = createElement("addban");
-	
+	root.setAttribute("version", "0");
 	QDomElement patterne = createElement("pattern");
 	patterne.setAttribute("value", pattern);
 	

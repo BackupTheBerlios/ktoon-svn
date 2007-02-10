@@ -25,7 +25,7 @@ RemoveBan::RemoveBan(const QString &pattern)
  : QDomDocument()
 {
 	QDomElement root = createElement("removeban");
-	
+	root.setAttribute("version", "0");
 	QDomElement patterne = createElement("pattern");
 	patterne.setAttribute("value", pattern);
 	

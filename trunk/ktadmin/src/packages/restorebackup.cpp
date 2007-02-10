@@ -26,7 +26,7 @@ RestoreBackup::RestoreBackup()
  : QDomDocument()
 {
 	QDomElement root = createElement("restorebackup");
-	
+	root.setAttribute("version", "0");
 	appendChild(root);
 }
 
