@@ -61,12 +61,12 @@ end
 
 require 'i18n/translator'
 
-require 'ktoond/connection'
-require 'ktoond/connectpackage'
+#require 'ktoond/connection'
+#require 'ktoond/connectpackage'
 
-$connection = KToonD::Connection.new "localhost", "6502"
+#$connection = KToonD::Connection.new "localhost", "6502"
 
-if not $connection.closed?
-	$connection.sendToServer KToonD::ConnectPackage.new("krawek", "d41d8cd98f00b204e9800998ecf8427e")
-end
+#if not $connection.closed?
+#	$connection.sendToServer KToonD::ConnectPackage.new("krawek", "d41d8cd98f00b204e9800998ecf8427e")
+#end
 

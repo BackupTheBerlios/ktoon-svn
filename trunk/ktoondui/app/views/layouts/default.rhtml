@@ -42,7 +42,7 @@
 			
 			<div id="footer">
 				<div id="altnav">
-					<%= link_to i18n("About"), { :action => 'about' } %> - 
+					<%= link_to i18n("About"), { :controller => 'mainpage', :action => 'index' } %> - 
 					<%= link_to i18n("Server config"), { :controller => 'server_config', :action => 'show' } %> - 
 					<%= link_to i18n("Register"), { :controller => 'register', :action => 'index' } %>
 				</div>

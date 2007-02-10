@@ -11,9 +11,9 @@ body {
 }
 
 html, body {
-        margin: 0;
-        padding: 0;
-        background: white;
+	margin: 0;
+	padding: 0;
+	background: white;
 }
 
 /* Main Navigation */
@@ -31,7 +31,6 @@ html, body {
 	margin-left: 40px;
 	font-size: 13pt;
 	font: bold;
-	
 }
 
 #main-nav dt { float: left; }
@@ -73,8 +72,9 @@ body.contact dt#contact a {
 }
 
 #content {
-        margin-right: 90px; /* sidebar */
-        line-height: 18px;
+	margin-right: 90px; /* sidebar */
+	line-height: 18px;
+	margin-top: 5px;
 }
 
 
