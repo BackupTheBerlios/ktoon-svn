@@ -78,9 +78,11 @@ void MainWindow::createModules()
 	addToolView(projectsModule, Qt::LeftDockWidgetArea)->setDescription(tr("Administer projects"));
 	registerModule(projectsModule);
 	
+#if 0
 	Server::ModuleWidget *serverModule = new Server::ModuleWidget;
 	addToolView(serverModule, Qt::RightDockWidgetArea)->setDescription(tr("Administer server"));
 	registerModule(serverModule);
+#endif
 	
 	Bans::ModuleWidget *bansModule = new Bans::ModuleWidget;
 	addToolView(bansModule, Qt::RightDockWidgetArea)->setDescription(tr("Administer bans"));
