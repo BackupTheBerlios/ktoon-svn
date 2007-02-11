@@ -99,6 +99,12 @@ int main(int argc, char **argv)
 #ifdef Q_OS_UNIX
 void cleanup(int s)
 {
+	static bool finishing = false;
+
+	if ( finishing ) return;
+
+	finishing = true;
+	
 	dDebug("server") << "Finishing with signal: " << s;
 	
 	QApplication::flush();

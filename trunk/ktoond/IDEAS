@@ -1,10 +1,11 @@
 
-* No borrar proyectos
-* El dueno del proyecto debera seleccionar personas que pueden abrir un proyecto
-* En lo posible loguear la actividad de un usuario sobre el proyecto
-* Implementar una blacklist
-* Hacer backups del proyecto
+* No borrar proyectos +
+* El dueno del proyecto debera seleccionar personas que pueden abrir un proyecto +
+* En lo posible loguear la actividad de un usuario sobre el proyecto +
+* Implementar una blacklist +
+* Hacer backups del proyecto +
+* Permitir observadores de proyectos +
 
 
-* Permitir observadores de proyectos
+
 
