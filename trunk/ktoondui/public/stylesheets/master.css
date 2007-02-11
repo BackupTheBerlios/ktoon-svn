@@ -4,16 +4,17 @@
 }
 
 body {
-        font-family: Arial, Helvetica, Verdana, Sans-serif;
-        font-size: 12px;
-        color: #666666;
-        background: #ffffff;
+	font-family: Arial, Helvetica, Verdana, Sans-serif;
+	font-size: 12px;
+	color: #666666;
+	background: #ffffff;
+	background-image: url(/images/background.png) ;
 }
 
 html, body {
 	margin: 0;
 	padding: 0;
-	background: white;
+/* 	background: white; */
 }
 
 /* Main Navigation */
@@ -23,7 +24,7 @@ html, body {
 
 #main-nav dt a {
 	display: block;
-	height: 50px;
+/* 	height: 50px; */
 	padding: 13px 0 0 0;
 	overflow: hidden;
 	background-repeat: no-repeat;
@@ -31,20 +32,30 @@ html, body {
 	margin-left: 40px;
 	font-size: 13pt;
 	font: bold;
+	
+	border-bottom: 5px solid #cacaca;
+	line-height: 15px;
 }
 
 #main-nav dt { float: left; }
 
 #main-nav dt a:hover {
-        background-position: 0 -50px;
-        color: #666666;
+	background-position: 0 -50px;
+	color: #666666;
+	border-bottom: 5px solid #FFB553;
 }
 
 
 body.about #header {
-        height: 150px;
-        background: #db6d16 url(/images/headers/about.png);
+	height: 150px;
+	background: #db6d16 url(/images/headers/about.png);
 }
+
+body.about #header a {
+	color: #999999;
+	text-decoration: none;
+}
+
 
 body.about dt#about,
 body.about dt#about a,
@@ -54,7 +65,7 @@ body.portfolio dt#portfolio,
 body.portfolio dt#portfolio a,
 body.contact dt#contact,
 body.contact dt#contact a {
-        background-position: 0 -100px;
+	background-position: 0 -100px;
 }
 
 #sidebar-a {
@@ -79,19 +90,19 @@ body.contact dt#contact a {
 
 
 #content h2 {
-        margin: 0;
-        padding: 0;
-        padding-bottom: 15px;
+	margin: 0;
+	padding: 0;
+	padding-bottom: 15px;
 }
 
 #content .padding {
-        padding: 25px;
+	padding: 25px;
 }
 
 #content p {
-        margin: 0;
-        padding: 0;
-        padding-bottom: 15px;
+	margin: 0;
+	padding: 0;
+	padding-bottom: 15px;
 }
 
 
@@ -101,8 +112,8 @@ body.contact dt#contact a {
 	height: 66px;
 	font-family: Tahoma, Arial, Helvetica, Sans-serif;
 	font-size: 10px;
-	color: #c9c9c9;
-	border-top: 1px solid #efefef;
+	color: #a4a4a4;
+	border-top: 1px solid #cacaca;
 	padding: 13px 25px;
 	line-height: 18px;
 }
@@ -114,31 +125,31 @@ body.contact dt#contact a {
 }
 
 #footer a {
-        color: #c9c9c9;
-        text-decoration: none;
+	color: #999999;
+	text-decoration: none;
 }
 
 #footer a:hover {
-        color: #db6d16;
+	color: #db6d16;
 }
 
 .hidden {
-        display: none;
+	display: none;
 }
 
 h1 {
-        margin: 0;
-        padding: 0;
-        float: right;
-        margin-top: 57px;
-        padding-right: 31px;
+	margin: 0;
+	padding: 0;
+	float: right;
+	margin-top: 57px;
+	padding-right: 31px;
 }
 
 #notice {
-  border: 2px solid red;
-  padding: 1em;
-  margin-bottom: 2em;
-  background-color: #f0f0f0;
-  font: bold smaller sans-serif;
+border: 2px solid red;
+padding: 1em;
+margin-bottom: 2em;
+background-color: #f0f0f0;
+font: bold smaller sans-serif;
 }
 
