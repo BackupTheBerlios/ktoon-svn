@@ -113,7 +113,7 @@ void KTScenesWidget::selectScene(const QString & name, int index)
 
 void KTScenesWidget::sceneDobleClick(QTreeWidgetItem * item, int )
 {
-	
+	D_FUNCINFO;
 }
 
 void KTScenesWidget::emitRequestInsertScene()

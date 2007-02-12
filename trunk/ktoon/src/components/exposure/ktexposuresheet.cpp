@@ -76,8 +76,8 @@ void KTExposureSheet::addScene(int index, const QString &name)
 	connect(newScene, SIGNAL(requestChangeVisiblityLayer(int , bool )),  this, SLOT(changeVisiblityLayer( int, bool  )));
 	
 	
-	m_currentTable = newScene;
-	m_scenes->setCurrentWidget(m_currentTable);
+// 	m_currentTable = newScene;
+// 	m_scenes->setCurrentWidget(m_currentTable);
 }
 
 void KTExposureSheet::renameScene( int index, const QString &name)
@@ -169,6 +169,8 @@ void KTExposureSheet::setScene(int index)
 	{
 		m_scenes->blockSignals(true);
 		m_scenes->setCurrentIndex(index);
+		
+		m_currentTable = qobject_cast<KTExposureTable *>(m_scenes-> currentWidget());
 		m_scenes->blockSignals(false);
 	}
 }
@@ -241,9 +243,11 @@ void KTExposureSheet::sceneResponse(KTSceneResponse *e)
 		break;
 		case KTProjectRequest::Remove:
 		{
+			m_scenes->blockSignals(true);
 			QWidget * widget = m_scenes->widget( e->sceneIndex() );
 			m_scenes->removeTab(e->sceneIndex());
 			delete widget;
+			m_scenes->blockSignals(false);
 		}
 		break;
 		case KTProjectRequest::Move:

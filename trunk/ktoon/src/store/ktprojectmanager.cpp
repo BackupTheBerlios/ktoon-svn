@@ -104,7 +104,6 @@ void KTProjectManager::setHandler(KTAbstractProjectHandler *handler)
 	if ( d->handler )
 	{
 		disconnect(d->handler, SIGNAL(sendCommand(const KTProjectRequest *, bool)), this, SLOT(createCommand(const KTProjectRequest *, bool)));
-		disconnect(d->handler, SIGNAL(requestOpenProject(const QString& )), this, SIGNAL(requestOpenProject(const QString& )));
 		
 		delete d->handler;
 		d->handler = 0;
@@ -116,7 +115,6 @@ void KTProjectManager::setHandler(KTAbstractProjectHandler *handler)
 	d->handler->setProject(d->project);
 	
 	connect(d->handler, SIGNAL(sendCommand(const KTProjectRequest *, bool)), this, SLOT(createCommand(const KTProjectRequest *, bool)));
-	connect(d->handler, SIGNAL(requestOpenProject(const QString& )), this, SIGNAL(requestOpenProject(const QString& )));
 }
 
 KTAbstractProjectHandler *KTProjectManager::handler() const

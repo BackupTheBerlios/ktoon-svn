@@ -434,7 +434,6 @@ int KTExposureTable::currentFrame() const
 void KTExposureTable::insertLayer(int index, const QString & name)
 {
 	insertColumn( index );
-	setCurrentCell( 0, index );
 	m_header->insertLayer( index, name );
 }
 
@@ -447,16 +446,11 @@ void KTExposureTable::setUseFrame(int indexLayer, int indexFrame, const QString 
 	frame->setData(IsUsed, true);
 	frame->setTextAlignment(Qt::AlignCenter);
 	
-// 	
-			
 	int logicalIndex = m_header->logicalIndex( indexLayer);
-	
 	
 	m_header->setLastFrame( logicalIndex, m_header->lastFrame(logicalIndex)+1 );
 	
 	setItem(m_header->lastFrame(logicalIndex)-1, logicalIndex, frame);
-	
-	setCurrentCell(m_header->lastFrame(logicalIndex)-1, logicalIndex);
 	
 	for(int i = m_header->lastFrame(logicalIndex)-1; i > indexFrame; i--)
 	{
@@ -536,9 +530,9 @@ void KTExposureTable::moveFrame(  int oldPosLayer, int oldPosFrame, int newPosLa
 	
 	setItem(newPosFrame, newPosLayer, oldItem);
 	setItem(oldPosFrame, oldPosLayer, newItem);
-	
+	//FIXME remover esto
 	setCurrentItem(oldItem);
-	
+	//
 }
 
 void KTExposureTable::moveLayer( int oldPosLayer, int newPosLayer )

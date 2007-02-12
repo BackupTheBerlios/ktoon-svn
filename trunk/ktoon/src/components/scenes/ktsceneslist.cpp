@@ -19,10 +19,8 @@ KTScenesList::KTScenesList(QWidget *parent)
 	: DTreeListWidget(parent)
 {
 	setHeaderLabels ( QStringList() << "name" );
-// 	hide();
 // 	connect(this, SIGNAL( itemSelectionChanged ()), this, SLOT(changeCurrentScene()));
 	connect(this, SIGNAL(itemClicked ( QTreeWidgetItem *, int)), this, SLOT(changeCurrentScene(QTreeWidgetItem *, int)));
-// 	setDragEnabled ( true);
 }
 
 
@@ -36,7 +34,7 @@ void KTScenesList::addScene( const QString &name)
 	QTreeWidgetItem *newScene = new QTreeWidgetItem( this);
 	
 	newScene->setText(0, name);
-	setCurrentItem(newScene);
+	
 }
 
 void KTScenesList::insertScene(int index, const QString &name)
@@ -54,15 +52,18 @@ void KTScenesList::changeCurrentName(QString name)
 int KTScenesList::removeCurrentScene()
 {
 	int index = indexCurrentScene();
-	delete currentItem();
-	if(index < 1)
+	if(currentItem())
+	{
+		delete currentItem();
+	}
+/*	if(index < 1)
 	{
 		setCurrentItem( topLevelItem ( 0 ) );
 	}
 	else
 	{
 		setCurrentItem( topLevelItem ( index -1 ) );
-	}
+	}*/
 	return index;
 }
 
@@ -109,7 +110,7 @@ int KTScenesList::moveCurrentSceneUp()
 	if(index > 0)
 	{
 		insertTopLevelItem(  index-1, takeTopLevelItem( index ) );
-		setCurrentItem( topLevelItem ( index-1 ) );
+// 		setCurrentItem( topLevelItem ( index-1 ) );
 	}
 	return index;
 }
@@ -120,7 +121,7 @@ int KTScenesList::moveCurrentSceneDown()
 	if(index < topLevelItemCount()-1)
 	{
 		insertTopLevelItem(  index+1, takeTopLevelItem( index ) );
-		setCurrentItem( topLevelItem ( index+1 ) );
+// 		setCurrentItem( topLevelItem ( index+1 ) );
 	}
 	return index;
 }
