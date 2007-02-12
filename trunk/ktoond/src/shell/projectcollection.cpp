@@ -109,7 +109,6 @@ bool ProjectCollection::addProject(const QString& name, const QString& author, c
 			project->setDescription(description);
 			bool okAddProject = false;
 			
-			
 			project->setUsers(newusers);
 			
 			bool okSaveProject = project->save();
@@ -194,14 +193,13 @@ SProject *ProjectCollection::project(const QString &name)
 
 bool ProjectCollection::openProject( Server::Connection *cnn )
 {
- 	QString projectName = cnn->data(Info::ProjectName).toString();
+	QString projectName = cnn->data(Info::ProjectName).toString();
+	SProject *project;
 	
-	SProject *project = d->db->loadProject(projectName);
-	
-	if(project)
+	if(!d->projects.contains( projectName ) )
 	{
-		project->isOwner( cnn->user());
-		if(!d->projects.contains( projectName ) )
+		project = d->db->loadProject(projectName);
+		if(project)
 		{
 			KTSaveProject *loader = new KTSaveProject;
 			QObject::connect(project, SIGNAL(requestSendErrorMessage(const QString&, Packages::Error::Level)), cnn, SLOT(sendErrorPackageToClient(const QString&, Packages::Error::Level)));
@@ -213,32 +211,31 @@ bool ProjectCollection::openProject( Server::Connection *cnn )
 				return false;
 			}
 			
-			if(project)
-			{
-				d->projects.insert(projectName, project);
-			}
+			d->projects.insert(projectName, project);
 		}
 		else
 		{
-			d->projects[projectName]->save();
-			QObject::connect(d->projects[projectName], SIGNAL(requestSendErrorMessage(const QString&, int)), cnn, SLOT(sendErrorPackageToClient(const QString&, int)));
-		}
-		
-		Packages::Project projectPackage(project->fileName());
-		if(!projectPackage.isValid())
-		{
+			cnn->sendErrorPackageToClient(QObject::tr("Project %1 not exists").arg(projectName), Packages::Error::Err);
+			cnn->close();
 			return false;
 		}
-		cnn->sendToClient(projectPackage.toString());
-		
-		d->connections[projectName].append(cnn);
-		return true;
+	}
+	else
+	{
+		project = d->projects[projectName];
+		d->projects[projectName]->save();
+		QObject::connect(d->projects[projectName], SIGNAL(requestSendErrorMessage(const QString&, int)), cnn, SLOT(sendErrorPackageToClient(const QString&, int)));
 	}
 	
-	cnn->sendErrorPackageToClient(QObject::tr("Project %1 not exists").arg(projectName), Packages::Error::Err);
-	cnn->close();
-	return false;
+	Packages::Project projectPackage(project->fileName());
+	if(!projectPackage.isValid())
+	{
+		return false;
+	}
+	cnn->sendToClient(projectPackage.toString());
 	
+	d->connections[projectName].append(cnn);
+	return true;
 }
 
 void ProjectCollection::importProject(Server::Connection *cnn, const QByteArray& data)
