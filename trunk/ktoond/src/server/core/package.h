@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,31 +17,31 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef ABSTRACTHANDLERPACKAGES_H
-#define ABSTRACTHANDLERPACKAGES_H
 
-/**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
-*/
+#ifndef SERVERPACKAGE_H
+#define SERVERPACKAGE_H
 
-#include <QDomDocument>
-#include "observer.h"
-#include "server.h"
+#include <QString>
 
 namespace Server {
 class Connection;
 
-class PackageHandlerBase : public Observer
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+class Package
 {
 	public:
-		PackageHandlerBase();
+		Package(const QString &root, const QString &xml, Connection *cnx);
+		~Package();
 		
-		virtual ~PackageHandlerBase();
-		void handlePackage(Package *const pkg);
+		QString root() const;
+		QString xml() const;
+		Connection *source() const;
+		bool accepted() const;
 		
-		virtual void handle(Server::Connection *client, const QString &root, const QString &package ) = 0;
-		virtual void connectionClosed(Server::Connection *client) = 0;
+		void accept();
+		void ignore();
 		
 	private:
 		struct Private;

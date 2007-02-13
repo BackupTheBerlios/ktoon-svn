@@ -32,6 +32,7 @@ class Connection;
 class Client;
 class PackageHandlerBase;
 class BackupManager;
+class Observer;
 }
 
 
@@ -53,15 +54,11 @@ class TcpServer : public QTcpServer
 		
 		void sendToAdmins(const QString &str);
 		
-		template<typename klass> void createHandler()
-		{
-			if ( m_handler ) delete m_handler;
-			m_handler = new klass;
-		}
-		
 		void addAdmin(Server::Connection *cnx);
 		BackupManager *backupManager() const;
 		
+		void addObserver(Observer *observer);
+		bool removeObserver(Observer *observer);
 		
 	public slots:
 		void sendToAll(const QString &msg);
@@ -77,7 +74,6 @@ class TcpServer : public QTcpServer
 	private:
 		class Private;
 		Private * const d;
-		PackageHandlerBase *m_handler;
 };
 
 }

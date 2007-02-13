@@ -4,9 +4,11 @@
 # Target is a subdirs project 
 
 SUBDIRS += lib \
-           packages \ 
+           packages \
            server \
+           modules \
            shell
 CONFIG += release \
 warn_on
 TEMPLATE = subdirs
+

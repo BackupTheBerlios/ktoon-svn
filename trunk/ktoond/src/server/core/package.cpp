@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,37 +17,65 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef ABSTRACTHANDLERPACKAGES_H
-#define ABSTRACTHANDLERPACKAGES_H
 
-/**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
-*/
-
-#include <QDomDocument>
-#include "observer.h"
-#include "server.h"
+#include "package.h"
+#include "connection.h"
 
 namespace Server {
-class Connection;
 
-class PackageHandlerBase : public Observer
+struct Package::Private
 {
-	public:
-		PackageHandlerBase();
-		
-		virtual ~PackageHandlerBase();
-		void handlePackage(Package *const pkg);
-		
-		virtual void handle(Server::Connection *client, const QString &root, const QString &package ) = 0;
-		virtual void connectionClosed(Server::Connection *client) = 0;
-		
-	private:
-		struct Private;
-		Private *const d;
+	Private(const QString &root, const QString &xml, Connection *cnx) : root(root), xml(xml), connection(cnx), accepted(false)
+	{
+	}
+	QString root;
+	QString xml;
+	Connection *connection;
+	
+	bool accepted;
 };
+
+Package::Package(const QString &root, const QString &xml, Connection *cnx) : d(new Private(root, xml, cnx))
+{
+}
+
+
+Package::~Package()
+{
+	delete d;
+}
+
+QString Package::root() const
+{
+	return d->root;
+}
+
+QString Package::xml() const
+{
+	return d->xml;
+}
+
+Connection *Package::source() const
+{
+	return d->connection;
+}
+
+bool Package::accepted() const
+{
+	return d->accepted;
+}
+
+
+void Package::accept()
+{
+	d->accepted = true;
+}
+
+void Package::ignore()
+{
+	d->accepted = false;
+}
 
 }
 
-#endif
+

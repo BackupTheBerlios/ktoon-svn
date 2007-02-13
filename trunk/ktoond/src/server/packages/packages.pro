@@ -39,5 +39,5 @@ warn_on
 TARGET = serverpackages
 TARGET = serverpackages
 !include(../../../ktoond_config.pri){
-  error("Configure first")
+    error("Configure first")
 }

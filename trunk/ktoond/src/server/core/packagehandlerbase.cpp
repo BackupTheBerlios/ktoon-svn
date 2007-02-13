@@ -52,6 +52,8 @@
 #include "banmanager.h"
 #include "backupmanager.h"
 
+#include "package.h"
+
 namespace Server {
 
 struct PackageHandlerBase::Private
@@ -70,8 +72,12 @@ PackageHandlerBase::~PackageHandlerBase()
 	delete d;
 }
 
-void PackageHandlerBase::handlePackage(Server::Connection *cnn, const QString &root, const QString &package )
+void PackageHandlerBase::handlePackage(Package *const pkg)
 {
+	Server::Connection *cnn = pkg->source();
+	QString root = pkg->root();
+	QString package = pkg->xml();
+	
 	dWarning("server") << "PACKAGE: " << package;
 	
 	TcpServer *server = cnn->server();

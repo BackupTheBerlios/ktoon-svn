@@ -82,11 +82,11 @@ int main(int argc, char **argv)
 	QDir db(dbdir);
 	if( !db.exists() ) db.mkdir(dbdir);
 	Server::Settings::self()->setDatabaseDirPath(dbdir);
-	
 	Server::Settings::self()->setBackupDirPath(dAppProp->configDir()+"/backups");
 	
 	Server::TcpServer server;
-	server.createHandler<PackageHandler>();
+	
+	server.addObserver(new PackageHandler());
 	
 	server.openConnection( host, port );
 	

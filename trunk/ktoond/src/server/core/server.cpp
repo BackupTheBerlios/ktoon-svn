@@ -36,6 +36,9 @@
 
 #include "backupmanager.h"
 
+#include "package.h"
+#include "observer.h"
+
 namespace Server {
 
 class TcpServer::Private
@@ -44,12 +47,13 @@ class TcpServer::Private
 		QList<Server::Connection *> connections;
 		QList<Server::Connection *> admins;
 		BackupManager *backupManager;
+		
+		QList<Server::Observer *> observers;
 };
 
 TcpServer::TcpServer(QObject *parent) : QTcpServer(parent), d(new Private)
 {
 	DINIT;
-	m_handler = new DefaultPackageHandler();
 	d->backupManager = new BackupManager;
 }
 
@@ -64,6 +68,9 @@ TcpServer::~TcpServer()
 	delete Logger::self();
 	
 	delete d->backupManager;
+	qDeleteAll(d->observers);
+	
+	
 	delete d;
 }
 
@@ -96,6 +103,16 @@ void TcpServer::addAdmin(Server::Connection *cnx)
 BackupManager *TcpServer::backupManager() const
 {
 	return d->backupManager;
+}
+
+void TcpServer::addObserver(Observer *observer)
+{
+	d->observers << observer;
+}
+
+bool TcpServer::removeObserver(Observer *observer)
+{
+	return d->observers.removeAll(observer) > 0;
 }
 
 void TcpServer::incomingConnection(int socketDescriptor)
@@ -169,7 +186,10 @@ void TcpServer::removeConnection(Server::Connection *cnx)
 	cnx->blockSignals(false);
 	
 	
-	m_handler->connectionClosed(cnx);
+	foreach(Observer *observer, d->observers)
+	{
+		observer->connectionClosed(cnx);
+	}
 	
 	if( !cnx->isRunning())
 	{
@@ -181,7 +201,17 @@ void TcpServer::removeConnection(Server::Connection *cnx)
 
 void TcpServer::handlePackage(Server::Connection* client, const QString &root, const QString&package)
 {
-	m_handler->handlePackage(client, root, package);
+	Package *pkg = new Package(root, package, client);
+	
+	foreach(Observer *observer, d->observers)
+	{
+		observer->handlePackage(pkg);
+		
+		if ( pkg->accepted() )
+			break;
+	}
+	
+	delete pkg;
 }
 
 

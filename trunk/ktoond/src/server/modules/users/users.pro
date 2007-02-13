@@ -13,5 +13,6 @@ user.cpp \
 manager.cpp \
 database.cpp \
 right.cpp
-include(../../../ktoond_config.pri)
+
+include(../modules_config.pri)
 
