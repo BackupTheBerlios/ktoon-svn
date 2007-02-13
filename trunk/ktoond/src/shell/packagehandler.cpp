@@ -39,7 +39,7 @@
 
 #include "listprojectsparser.h"
 
-#include "user.h"
+#include "users/user.h"
 #include "database.h"
 
 #include "addbackup.h"

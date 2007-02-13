@@ -21,7 +21,7 @@
 #define PACKAGEACK_H
 
 #include <QDomDocument>
-#include "../users/right.h"
+#include "users/right.h"
 
 
 namespace Packages {

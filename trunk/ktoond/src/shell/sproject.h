@@ -25,7 +25,7 @@
 #include <QTimer>
 #include "error.h"
 #include <QMultiHash>
-#include "user.h"
+#include "users/user.h"
 
 /**
  * @author David Cuadrado <krawek@toonka.com>

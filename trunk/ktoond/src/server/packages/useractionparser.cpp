@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 #include "useractionparser.h"
-#include "../users/user.h"
-#include "../users/right.h"
+#include "users/user.h"
+#include "users/right.h"
 
 namespace Parsers {
 

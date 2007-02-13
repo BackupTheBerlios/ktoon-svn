@@ -1,6 +1,6 @@
 
 
 QT += network
-INCLUDEPATH += ..
+INCLUDEPATH += .. ../modules
 
 

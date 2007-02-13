@@ -41,3 +41,6 @@ TARGET = serverpackages
 !include(../../../ktoond_config.pri){
     error("Configure first")
 }
+
+include(../server_config.pri)
+

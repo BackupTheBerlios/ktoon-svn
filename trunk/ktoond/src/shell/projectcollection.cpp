@@ -36,7 +36,7 @@
 #include <ddebug.h>
 
 #include "project.h"
-#include "user.h"
+#include "users/user.h"
 
 
 #include <QHash>

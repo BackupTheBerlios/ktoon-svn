@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "userlist.h"
-#include "../users/user.h"
+#include "users/user.h"
 
 namespace Packages{
 
