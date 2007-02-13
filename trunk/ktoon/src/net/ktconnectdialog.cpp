@@ -63,7 +63,7 @@ KTConnectDialog::KTConnectDialog(QWidget *parent) : QDialog(parent), d(new Priva
 	
 	d->server = new QLineEdit;
 	d->port = new QSpinBox;
-	d->port->setMinimum(1024);
+	d->port->setMinimum(1);
 	d->port->setMaximum(65000);
 	
 	QGridLayout *layout = DFormFactory::makeGrid(QStringList() << tr("Login") << tr("Password") << tr("Server") << tr("Port"), QWidgetList() << d->login << d->password << d->server << d->port);
