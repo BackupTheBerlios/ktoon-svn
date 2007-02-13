@@ -8,7 +8,7 @@
 	\ds
 	Para que el sistema funcione bien, es necesario proveer un sistema seguro de concurrencia que permita bloquear las áreas u objetos de trabajo para que otras animadores no destruyan o modifiquen la labor que se esta realizando. De esta misma manera, es necesario restringir el acceso a los documentos para evitar que cualquier persona pueda modificar, dañar o hurtar los mismos.
 	\ds
-	Asimismo, es necesario implementar una aplicación cliente, que será la interfaz sobre la cual el animador trabajará, esta aplicación deberá contar con \nuevo{algunas} características de dibujo \nuevo{y deberá permitir extender o crear nuevas herramientas mediante plugins. \\
+	Asimismo, es necesario implementar una aplicación cliente, que será la interfaz sobre la cual el animador trabajará, esta aplicación deberá contar con algunas características de dibujo y deberá permitir extender o crear nuevas herramientas mediante plugins. \\
 	
 	Las herramientas básicas que debe contener la aplicación son:
 	\begin{itemize}
@@ -29,13 +29,11 @@
 	\item Hacer y rehacer acciones realizadas.
 	\end{itemize}
 	
-	Respecto al cliente, con este proyecto de grado no se pretende construir una solución definitiva para la creación de animaciones, en principio no necesariamente se incluirán todas las herramientas para construir animaciones de gran calidad, pero si soportará su extensión, es decir, el cliente algún día podrá alcanzar la madurez necesaria para realizar animaciones de gran calidad.
-	\ds
-	Una tercera y más sencilla aplicación será el cliente administrador, encargado de labores como gestionar usuarios, configuración del servidor y copias de seguridad.}
+	Una tercera y más sencilla aplicación será el cliente administrador, encargado de labores como gestionar usuarios, configuración del servidor y copias de seguridad.
 	\ds
 	Como el sistema deberá permitir el trabajo desde diferentes lugares, es decir, no es necesario que los animadores se concentren en un mismo lugar a trabajar, el sistema deberá proveer un mecanismo de comunicación para que los animadores puedan dialogar sobre los aspectos referentes al proyecto en curso, este mecanismo se implementara por medio de texto y no de voz.
 	\ds
-	\nuevo{En sintesis, este trabajo desarrollara los siguientes aspectos:}
+	En sintesis, este trabajo desarrollara los siguientes aspectos:
 	\begin{itemize}
 	\item El diseño y desarrollo de un servidor que soporte todos los diversos proyectos que desarrollan los clientes.
 	\item Proveerá interfaces seguras para su almacenamiento y manipulación, sin permitir que ocurran daños en los diversos proyectos.
@@ -50,7 +48,7 @@
 	\subsection{Objetivo general}
 	{
 		\begin{itemize}
-		\item \nuevo{Desarrollar una herramienta para producir animaciones de forma colaborativa, para contribuir a la mejora y ahorro en los tiempos de producción de animaciones.}
+		\item Desarrollar una herramienta para producir animaciones de forma colaborativa, para contribuir a la mejora y ahorro en los tiempos de producción de animaciones.
 		\end{itemize}
 	}
 	
@@ -59,10 +57,10 @@
 	{
 		\begin{itemize}
 		\item Desarrollar un servidor de transacciones, apoyado en un protocolo de comunicaciones, para sincronizar clientes del servidor y gestionar la persistencia del proyecto.
-		\item Definir el protocolo de comunicación con el servidor, \nuevo{mediante el análisis de las posibles acciones que se pueden realizar}, para establecer un estándar a seguir.
+		\item Definir el protocolo de comunicación con el servidor, mediante el análisis de las posibles acciones que se pueden realizar, para establecer un estándar a seguir.
 		\item Desarrollar un editor genérico extendido de componentes gráficos que permita al animador visualizar la creación colaborativa de la animación.
 		\item Desarrollar un mecanismo de comunicación o charla entre animadores, basado en el protocolo de comunicaciones, para permitir a los miembros del equipo la fácil comunicación.
-		\item Analizar las características de los componentes gráficos de la aplicación, \nuevo{abstrayendo} los elementos mas importantes que serán enviados a todos los clientes del servidor.
+		\item Analizar las características de los componentes gráficos de la aplicación, abstrayendo los elementos mas importantes que serán enviados a todos los clientes del servidor.
 		\item Desarrollar un sistema de persistencia remota administrada por el servidor, basada en la jerarquía del proyecto para evitar la redundancia de información entre los clientes del servidor.
 		\end{itemize}
 	}
