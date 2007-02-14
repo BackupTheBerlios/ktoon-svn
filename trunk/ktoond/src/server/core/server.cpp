@@ -48,6 +48,7 @@ class TcpServer::Private
 		QList<Server::Connection *> connections;
 		QList<Server::Connection *> admins;
 		Backups::Manager *backupManager;
+		Bans::Manager *banManager;
 		
 		QList<Base::Observer *> observers;
 };
@@ -58,6 +59,10 @@ TcpServer::TcpServer(QObject *parent) : QTcpServer(parent), d(new Private)
 	d->backupManager = new Backups::Manager;
 	
 	d->observers << d->backupManager;
+	
+	d->banManager = new Bans::Manager;
+	
+	d->observers << d->banManager;
 }
 
 
@@ -107,6 +112,11 @@ Backups::Manager *TcpServer::backupManager() const
 	return d->backupManager;
 }
 
+Bans::Manager *TcpServer::banManager() const
+{
+	return d->banManager;
+}
+
 void TcpServer::addObserver(Base::Observer *observer)
 {
 	d->observers << observer;
@@ -125,11 +135,11 @@ void TcpServer::incomingConnection(int socketDescriptor)
 	
 	QString ip = newConnection->client()->peerAddress().toString();
 	
-	Bans::Manager::self()->initialize(ip);
+	d->banManager->initialize(ip);
 	
-	if ( !Bans::Manager::self()->isBanned(ip) )
+	if ( !d->banManager->isBanned(ip) )
 	{
-		Bans::Manager::self()->unban(ip);
+		d->banManager->unban(ip);
 		
 		handle(newConnection);
 		d->connections << newConnection;

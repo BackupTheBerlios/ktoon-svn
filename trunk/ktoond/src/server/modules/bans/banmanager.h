@@ -24,16 +24,17 @@
 #include <QObject>
 #include <QStringList>
 
+#include "base/observer.h"
+
 namespace Bans {
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class Manager : public QObject
+class Manager : public Base::Observer
 {
-	protected:
-		Manager(QObject *parent = 0);
 	public:
+		Manager();
 		~Manager();
 		
 		void initialize(const QString &pt);
@@ -45,10 +46,9 @@ class Manager : public QObject
 		
 		QStringList allBanned() const;
 		
-		static Manager *self();
+		void handlePackage(Base::Package *const pkg);
 		
 	private:
-		static Manager *s_self;
 		struct Private;
 		Private *const d;
 };

@@ -40,12 +40,11 @@
 
 #include "packages/error.h"
 #include "packages/ack.h"
-#include "packages/banlist.h"
+
 
 #include "packages/useractionparser.h"
 #include "packages/userlist.h"
-#include "packages/removebanparser.h"
-#include "packages/addbanparser.h"
+
 
 
 #include "bans/banmanager.h"
@@ -115,7 +114,7 @@ void PackageHandlerBase::handlePackage(Base::Package *const pkg)
 				Packages::Error error(QObject::tr("Invalid login or password"), Packages::Error::Err);
 				cnn->sendToClient(error);
 				
-				Bans::Manager::self()->failed(cnn->client()->peerAddress().toString());
+				server->banManager()->failed(cnn->client()->peerAddress().toString());
 				Base::Logger::self()->error(QObject::tr("Invalid login or password"));
 				
 				cnn->close();
@@ -251,55 +250,6 @@ void PackageHandlerBase::handlePackage(Base::Package *const pkg)
 				info.addUser(u);
 			}
 			cnn->sendToClient(info);
-		}
-		else
-		{
-			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
-		}
-	}
-	else if ( root == "listbans" )
-	{
-		if ( cnn->user()->canReadOn("admin") )
-		{
-			QStringList bans = Bans::Manager::self()->allBanned();
-			
-			Packages::BanList pkg;
-			pkg.setBans(bans);
-			
-			cnn->sendToClient(pkg, true);
-		}
-		else
-		{
-			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
-		}
-	}
-	else if ( root == "removeban" )
-	{
-		if( cnn->user()->canWriteOn("admin") )
-		{
-			Parsers::RemoveBanParser parser;
-			if ( parser.parse(package) )
-			{
-				Bans::Manager::self()->unban(parser.pattern());
-				
-				server->sendToAdmins(package);
-			}
-		}
-		else
-		{
-			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
-		}
-	}
-	else if ( root == "addban" )
-	{
-		if( cnn->user()->canWriteOn("admin" ) )
-		{
-			Parsers::AddBanParser parser;
-			if ( parser.parse(package) )
-			{
-				Bans::Manager::self()->ban(parser.pattern());
-				server->sendToAdmins(package);
-			}
 		}
 		else
 		{

@@ -26,6 +26,20 @@
 
 #include <ddebug.h>
 
+#include "base/package.h"
+
+#include "core/connection.h"
+#include "core/server.h"
+
+#include "users/user.h"
+
+#include "banlist.h"
+#include "removebanparser.h"
+#include "addbanparser.h"
+
+#include "banmanager.h"
+
+
 namespace Bans {
 
 struct Manager::Private
@@ -34,9 +48,7 @@ struct Manager::Private
 	QHash<QString, int> fails;
 };
 
-Manager *Manager::s_self = 0;
-
-Manager::Manager(QObject *parent) : QObject(parent), d(new Private)
+Manager::Manager() : d(new Private)
 {
 	d->maxFails = 10;
 }
@@ -97,12 +109,68 @@ QStringList Manager::allBanned() const
 	return allBanned;
 }
 
-Manager *Manager::self()
+void Manager::handlePackage(Base::Package *const pkg)
 {
-	if ( !s_self)
-		s_self = new Manager(qApp);
+	QString root = pkg->root();
+	QString package = pkg->xml();
+	Server::Connection *cnn = pkg->source();
+	Server::TcpServer *server = cnn->server();
 	
-	return s_self;
+	pkg->accept();
+	
+	if ( root == "listbans" )
+	{
+		if ( cnn->user()->canReadOn("admin") )
+		{
+			QStringList bans = server->banManager()->allBanned();
+			
+			Packages::BanList pkg;
+			pkg.setBans(bans);
+			
+			cnn->sendToClient(pkg, true);
+		}
+		else
+		{
+			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
+		}
+	}
+	else if ( root == "removeban" )
+	{
+		if( cnn->user()->canWriteOn("admin") )
+		{
+			Parsers::RemoveBanParser parser;
+			if ( parser.parse(package) )
+			{
+				server->banManager()->unban(parser.pattern());
+				
+				server->sendToAdmins(package);
+			}
+		}
+		else
+		{
+			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
+		}
+	}
+	else if ( root == "addban" )
+	{
+		if( cnn->user()->canWriteOn("admin" ) )
+		{
+			Parsers::AddBanParser parser;
+			if ( parser.parse(package) )
+			{
+				server->banManager()->ban(parser.pattern());
+				server->sendToAdmins(package);
+			}
+		}
+		else
+		{
+			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
+		}
+	}
+	else
+	{
+		pkg->ignore();
+	}
 }
 
 }

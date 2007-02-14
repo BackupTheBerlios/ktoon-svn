@@ -9,11 +9,8 @@ HEADERS += connectparser.h \
            wallparser.h \
            ack.h \
            error.h \
-           banlist.h \
            useractionparser.h \
            userlist.h \
-           removebanparser.h \
-           addbanparser.h \
            addbackupparser.h
 SOURCES += connectparser.cpp \
            chatparser.cpp \
@@ -21,11 +18,8 @@ SOURCES += connectparser.cpp \
            wallparser.cpp \
            ack.cpp \
            error.cpp \
-           banlist.cpp \
            useractionparser.cpp \
            userlist.cpp \
-           removebanparser.cpp \
-           addbanparser.cpp \
            addbackupparser.cpp
 TEMPLATE = lib
 CONFIG += staticlib \
