@@ -24,6 +24,7 @@
 #include <QTreeWidgetItem>
 #include <QHash>
 
+#include <ddebug.h>
 #include <dapplicationproperties.h>
 
 #include "package.h"
@@ -80,7 +81,6 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 		if( parser.parse(pkg->xml()))
 		{
 			QString pattern = parser.pattern();
-			
 			if(d->items.contains(pattern))
 			{
 				delete d->items.take(pattern);
@@ -97,6 +97,8 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 		{
 			QTreeWidgetItem *item = new QTreeWidgetItem(tree());
 			item->setText(0, parser.pattern());
+			
+			d->items.insert(parser.pattern(), item);
 			
 			pkg->accept();
 		}
