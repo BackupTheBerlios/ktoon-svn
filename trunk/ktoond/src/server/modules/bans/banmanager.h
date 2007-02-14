@@ -18,40 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SERVERLOGGER_H
-#define SERVERLOGGER_H
+#ifndef SERVERBANMANAGER_H
+#define SERVERBANMANAGER_H
 
-#include <QString>
-#include <QByteArray>
+#include <QObject>
+#include <QStringList>
 
-namespace Server {
+namespace Bans {
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class Logger
+class Manager : public QObject
 {
 	protected:
-		Logger();
-		
+		Manager(QObject *parent = 0);
 	public:
-		~Logger();
+		~Manager();
 		
-		static Logger *self();
+		void initialize(const QString &pt);
+		bool isBanned(const QString &pt) const;
 		
+		void failed(const QString &pt);
+		void ban(const QString &pt);
+		void unban(const QString &pt);
 		
-		void setLogFile(const QString &logfile);
-		QString logFile() const;
-		void warn(const QString &log);
-		void error(const QString &err);
-		void info(const QString &inf);
-		void fatal(const QString &fatal);
+		QStringList allBanned() const;
 		
-	protected:
-		void write(const QByteArray &msg);
+		static Manager *self();
 		
 	private:
-		static Logger *s_self;
+		static Manager *s_self;
 		struct Private;
 		Private *const d;
 };
@@ -59,3 +56,5 @@ class Logger
 }
 
 #endif
+
+

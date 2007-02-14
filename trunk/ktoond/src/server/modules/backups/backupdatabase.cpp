@@ -26,17 +26,17 @@
 
 #include <ddebug.h>
 
-namespace Server {
+namespace Backups {
 
-struct BackupDatabase::Private
+struct Database::Private
 {
 	QString dbfile;
 	
-	QHash<QString, QList<BackupDatabase::Entry> > entries;
+	QHash<QString, QList<Database::Entry> > entries;
 	QString current;
 };
 
-BackupDatabase::BackupDatabase(const QString &file)
+Database::Database(const QString &file)
  : KTXmlParserBase(), d(new Private)
 {
 	d->dbfile = file;
@@ -59,12 +59,12 @@ BackupDatabase::BackupDatabase(const QString &file)
 }
 
 
-BackupDatabase::~BackupDatabase()
+Database::~Database()
 {
 	delete d;
 }
 
-bool BackupDatabase::startTag(const QString &tag, const QXmlAttributes &atts)
+bool Database::startTag(const QString &tag, const QXmlAttributes &atts)
 {
 	if( tag == "entry" )
 	{
@@ -82,16 +82,16 @@ bool BackupDatabase::startTag(const QString &tag, const QXmlAttributes &atts)
 	return true;
 }
 
-bool BackupDatabase::endTag(const QString &)
+bool Database::endTag(const QString &)
 {
 	return true;
 }
 
-void BackupDatabase::text(const QString &)
+void Database::text(const QString &)
 {
 }
 
-bool BackupDatabase::addEntry(const QString &origFile, const QString &filename, const QString &name, const QDateTime &date)
+bool Database::addEntry(const QString &origFile, const QString &filename, const QString &name, const QDateTime &date)
 {
 	QDomDocument doc;
 	QFile dbf(d->dbfile);
@@ -148,7 +148,7 @@ bool BackupDatabase::addEntry(const QString &origFile, const QString &filename, 
 	return false;
 }
 
-bool BackupDatabase::removeEntry(const QString &name, const QDateTime &date)
+bool Database::removeEntry(const QString &name, const QDateTime &date)
 {
 	QDomDocument doc;
 	QFile dbf(d->dbfile);
@@ -211,7 +211,7 @@ bool BackupDatabase::removeEntry(const QString &name, const QDateTime &date)
 	return false;
 }
 
-QHash<QString, QList<BackupDatabase::Entry> > BackupDatabase::entries()
+QHash<QString, QList<Database::Entry> > Database::entries()
 {
 	d->entries.clear();
 	

@@ -27,7 +27,7 @@
 #include <ktcommandexecutor.h>
 #include <ktprojectcommand.h>
 
-#include "connection.h"
+#include "core/connection.h"
 #include <dapplicationproperties.h>
 
 #include <QDir>
@@ -45,7 +45,7 @@
 #include "database.h"
 #include "error.h"
 
-#include "settings.h"
+#include "base/settings.h"
 
 
 namespace Projects {
@@ -59,7 +59,7 @@ struct ProjectCollection::Private
 
 ProjectCollection::ProjectCollection() : d(new Private())
 {
-	d->db = new Database(Server::Settings::self()->databaseDirPath() + "/projects.xml");
+	d->db = new Database(Base::Settings::self()->databaseDirPath() + "/projects.xml");
 }
 
 

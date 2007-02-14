@@ -18,26 +18,42 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
+#ifndef BACKUPMANAGER_H
+#define BACKUPMANAGER_H
 
-#ifndef SERVEROBSERVER_H
-#define SERVEROBSERVER_H
+#include <QString>
+#include "backupdatabase.h"
 
-namespace Server {
+#include "base/observer.h"
 
+namespace Base {
 class Package;
-class Connection;
+}
+
+namespace Backups {
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class Observer
+class Manager : public Base::Observer
 {
 	public:
-		Observer();
-		virtual ~Observer();
+		Manager();
+		~Manager();
 		
-		virtual void handlePackage(Package *const pkg) = 0;
-		virtual void connectionClosed(Connection *const cnx);
+		bool makeBackup(const QString &filepath, const QDateTime &date, const QString &name);
+		bool removeBackup(const QString &name, const QDateTime &date);
+		bool restoreBackup(const QString &name, const QDateTime &date);
+		
+		QHash<QString, QList<Backups::Database::Entry> > entries();
+		
+		void handlePackage(Base::Package *const pkg);
+		
+		QDateTime date(const QString &name);
+		
+	private:
+		struct Private;
+		Private *const d;
 };
 
 }

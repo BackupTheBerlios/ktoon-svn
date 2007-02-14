@@ -18,30 +18,40 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SERVERBACKUPMANAGER_H
-#define SERVERBACKUPMANAGER_H
+#ifndef SERVERBACKUPDATABASE_H
+#define SERVERBACKUPDATABASE_H
 
-#include <QString>
-#include "backupdatabase.h"
+#include <ktxmlparserbase.h>
 
-namespace Server {
+#include <QDateTime>
+#include <QHash>
+
+namespace Backups {
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class BackupManager
+class Database : public KTXmlParserBase
 {
 	public:
-		BackupManager();
-		~BackupManager();
+		struct Entry
+		{
+			QString file;
+			QDateTime date;
+			QString origin;
+		};
 		
-		bool makeBackup(const QString &filepath, const QDateTime &date, const QString &name);
-		bool removeBackup(const QString &name, const QDateTime &date);
-		bool restoreBackup(const QString &name, const QDateTime &date);
+		Database(const QString &file);
+		~Database();
 		
-		QHash<QString, QList<BackupDatabase::Entry> > entries();
+		bool startTag(const QString &tag, const QXmlAttributes &atts);
+		bool endTag(const QString &tag);
+		void text(const QString &msg);
 		
-		QDateTime date(const QString &name);
+		bool addEntry(const QString &origFile, const QString &filename, const QString &name, const QDateTime &date);
+		bool removeEntry(const QString &name, const QDateTime &date);
+		
+		QHash<QString, QList<Entry> > entries();
 		
 	private:
 		struct Private;
@@ -51,5 +61,3 @@ class BackupManager
 }
 
 #endif
-
-

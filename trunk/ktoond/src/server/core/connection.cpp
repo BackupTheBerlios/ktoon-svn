@@ -25,7 +25,7 @@
 #include <ddebug.h>
 
 #include "server.h"
-#include "logger.h"
+#include "base/logger.h"
 
 #include "ktrequestparser.h"
 #include "ktcompress.h"

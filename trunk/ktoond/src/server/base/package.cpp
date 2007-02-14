@@ -17,39 +17,65 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef SERVERSETTINGS_H
-#define SERVERSETTINGS_H
 
-#include <QString>
+#include "package.h"
+#include "../core/connection.h"
 
-namespace Server {
+namespace Base {
 
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-class Settings
+struct Package::Private
 {
-	protected:
-		Settings();
-		
-	public:
-		~Settings();
-		
-		static Settings *self();
-		
-		void setDatabaseDirPath(const QString &dir);
-		QString databaseDirPath() const;
-		
-		void setBackupDirPath(const QString &dir);
-		QString backupDirPath() const;
-		
-	private:
-		static Settings *s_settings;
-		
-		struct Private;
-		Private *const d;
+	Private(const QString &root, const QString &xml, Server::Connection *cnx) : root(root), xml(xml), connection(cnx), accepted(false)
+	{
+	}
+	QString root;
+	QString xml;
+	Server::Connection *connection;
+	
+	bool accepted;
 };
+
+Package::Package(const QString &root, const QString &xml, Server::Connection *cnx) : d(new Private(root, xml, cnx))
+{
+}
+
+
+Package::~Package()
+{
+	delete d;
+}
+
+QString Package::root() const
+{
+	return d->root;
+}
+
+QString Package::xml() const
+{
+	return d->xml;
+}
+
+Server::Connection *Package::source() const
+{
+	return d->connection;
+}
+
+bool Package::accepted() const
+{
+	return d->accepted;
+}
+
+
+void Package::accept()
+{
+	d->accepted = true;
+}
+
+void Package::ignore()
+{
+	d->accepted = false;
+}
 
 }
 
-#endif
+

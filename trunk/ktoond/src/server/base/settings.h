@@ -17,33 +17,35 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
-#ifndef SERVERPACKAGE_H
-#define SERVERPACKAGE_H
+#ifndef SERVERSETTINGS_H
+#define SERVERSETTINGS_H
 
 #include <QString>
 
-namespace Server {
-class Connection;
+namespace Base {
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class Package
+class Settings
 {
+	protected:
+		Settings();
+		
 	public:
-		Package(const QString &root, const QString &xml, Connection *cnx);
-		~Package();
+		~Settings();
 		
-		QString root() const;
-		QString xml() const;
-		Connection *source() const;
-		bool accepted() const;
+		static Settings *self();
 		
-		void accept();
-		void ignore();
+		void setDatabaseDirPath(const QString &dir);
+		QString databaseDirPath() const;
+		
+		void setBackupDirPath(const QString &dir);
+		QString backupDirPath() const;
 		
 	private:
+		static Settings *s_settings;
+		
 		struct Private;
 		Private *const d;
 };

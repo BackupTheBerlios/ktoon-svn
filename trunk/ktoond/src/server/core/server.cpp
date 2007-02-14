@@ -30,14 +30,15 @@
 
 #include "packagehandlerbase.h"
 #include "defaultpackagehandler.h"
-#include "settings.h"
-#include "banmanager.h"
-#include "logger.h"
+#include "base/settings.h"
+#include "bans/banmanager.h"
 
-#include "backupmanager.h"
 
-#include "package.h"
-#include "observer.h"
+#include "backups/backupmanager.h"
+
+#include "base/package.h"
+#include "base/observer.h"
+#include "base/logger.h"
 
 namespace Server {
 
@@ -46,15 +47,17 @@ class TcpServer::Private
 	public:
 		QList<Server::Connection *> connections;
 		QList<Server::Connection *> admins;
-		BackupManager *backupManager;
+		Backups::Manager *backupManager;
 		
-		QList<Server::Observer *> observers;
+		QList<Base::Observer *> observers;
 };
 
 TcpServer::TcpServer(QObject *parent) : QTcpServer(parent), d(new Private)
 {
 	DINIT;
-	d->backupManager = new BackupManager;
+	d->backupManager = new Backups::Manager;
+	
+	d->observers << d->backupManager;
 }
 
 
@@ -62,12 +65,11 @@ TcpServer::~TcpServer()
 {
 	DEND;
 	
-	Logger::self()->info("Server finished");
+	Base::Logger::self()->info("Server finished");
 	
-	delete Settings::self();
-	delete Logger::self();
+	delete Base::Settings::self();
+	delete Base::Logger::self();
 	
-	delete d->backupManager;
 	qDeleteAll(d->observers);
 	
 	
@@ -76,7 +78,7 @@ TcpServer::~TcpServer()
 
 bool TcpServer::openConnection(const QString &host, int port)
 {
-	Logger::self()->info(QObject::tr("Initialized server on %1:%2").arg(host).arg(port));
+	Base::Logger::self()->info(QObject::tr("Initialized server on %1:%2").arg(host).arg(port));
 	
 	QList<QHostAddress> addrs = QHostInfo::fromName(host).addresses();
 	if ( !addrs.isEmpty() )
@@ -100,17 +102,17 @@ void TcpServer::addAdmin(Server::Connection *cnx)
 	d->admins << cnx;
 }
 
-BackupManager *TcpServer::backupManager() const
+Backups::Manager *TcpServer::backupManager() const
 {
 	return d->backupManager;
 }
 
-void TcpServer::addObserver(Observer *observer)
+void TcpServer::addObserver(Base::Observer *observer)
 {
 	d->observers << observer;
 }
 
-bool TcpServer::removeObserver(Observer *observer)
+bool TcpServer::removeObserver(Base::Observer *observer)
 {
 	return d->observers.removeAll(observer) > 0;
 }
@@ -123,11 +125,11 @@ void TcpServer::incomingConnection(int socketDescriptor)
 	
 	QString ip = newConnection->client()->peerAddress().toString();
 	
-	BanManager::self()->initialize(ip);
+	Bans::Manager::self()->initialize(ip);
 	
-	if ( !BanManager::self()->isBanned(ip) )
+	if ( !Bans::Manager::self()->isBanned(ip) )
 	{
-		BanManager::self()->unban(ip);
+		Bans::Manager::self()->unban(ip);
 		
 		handle(newConnection);
 		d->connections << newConnection;
@@ -186,7 +188,7 @@ void TcpServer::removeConnection(Server::Connection *cnx)
 	cnx->blockSignals(false);
 	
 	
-	foreach(Observer *observer, d->observers)
+	foreach(Base::Observer *observer, d->observers)
 	{
 		observer->connectionClosed(cnx);
 	}
@@ -201,9 +203,9 @@ void TcpServer::removeConnection(Server::Connection *cnx)
 
 void TcpServer::handlePackage(Server::Connection* client, const QString &root, const QString&package)
 {
-	Package *pkg = new Package(root, package, client);
+	Base::Package *pkg = new Base::Package(root, package, client);
 	
-	foreach(Observer *observer, d->observers)
+	foreach(Base::Observer *observer, d->observers)
 	{
 		observer->handlePackage(pkg);
 		

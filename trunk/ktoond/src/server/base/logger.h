@@ -17,55 +17,45 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "settings.h"
 
-namespace Server {
+#ifndef SERVERLOGGER_H
+#define SERVERLOGGER_H
 
-Settings *Settings::s_settings = 0;
+#include <QString>
+#include <QByteArray>
 
-struct Settings::Private 
+namespace Base {
+
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+class Logger
 {
-	QString databaseDirPath;
-	QString backupDirPath;
+	protected:
+		Logger();
+		
+	public:
+		~Logger();
+		
+		static Logger *self();
+		
+		
+		void setLogFile(const QString &logfile);
+		QString logFile() const;
+		void warn(const QString &log);
+		void error(const QString &err);
+		void info(const QString &inf);
+		void fatal(const QString &fatal);
+		
+	protected:
+		void write(const QByteArray &msg);
+		
+	private:
+		static Logger *s_self;
+		struct Private;
+		Private *const d;
 };
 
-Settings::Settings() : d(new Private())
-{
 }
 
-
-Settings::~Settings()
-{
-	delete d;
-}
-
-Settings *Settings::self()
-{
-	if( ! s_settings )
-		s_settings = new Settings();
-	
-	return s_settings;
-}
-
-
-void Settings::setDatabaseDirPath(const QString &dbdir)
-{
-	d->databaseDirPath = dbdir;
-}
-
-QString Settings::databaseDirPath() const
-{
-	return d->databaseDirPath;
-}
-
-void Settings::setBackupDirPath(const QString &dir)
-{
-	d->backupDirPath = dir;
-}
-
-QString Settings::backupDirPath() const
-{
-	return d->backupDirPath;
-}
-
-}
+#endif

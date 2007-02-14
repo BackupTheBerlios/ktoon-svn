@@ -1,7 +1,7 @@
 #include <QtTest/QtTest>
 #include <QDomDocument>
 
-#include <addbackup.h>
+#include <backups/addbackup.h>
 
 #include <ddebug.h>
 

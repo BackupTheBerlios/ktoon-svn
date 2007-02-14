@@ -18,46 +18,33 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SERVERBACKUPDATABASE_H
-#define SERVERBACKUPDATABASE_H
 
-#include <ktxmlparserbase.h>
-
-#include <QDateTime>
-#include <QHash>
+#ifndef SERVEROBSERVER_H
+#define SERVEROBSERVER_H
 
 namespace Server {
+	class Connection;
+}
+
+namespace Base {
+
+class Package;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class BackupDatabase : public KTXmlParserBase
+class Observer
 {
 	public:
-		struct Entry
-		{
-			QString file;
-			QDateTime date;
-			QString origin;
-		};
+		Observer();
+		virtual ~Observer();
 		
-		BackupDatabase(const QString &file);
-		~BackupDatabase();
-		
-		bool startTag(const QString &tag, const QXmlAttributes &atts);
-		bool endTag(const QString &tag);
-		void text(const QString &msg);
-		
-		bool addEntry(const QString &origFile, const QString &filename, const QString &name, const QDateTime &date);
-		bool removeEntry(const QString &name, const QDateTime &date);
-		
-		QHash<QString, QList<Entry> > entries();
-		
-	private:
-		struct Private;
-		Private *const d;
+		virtual void handlePackage(Package *const pkg) = 0;
+		virtual void connectionClosed(Server::Connection *const cnx);
 };
 
 }
 
 #endif
+
+

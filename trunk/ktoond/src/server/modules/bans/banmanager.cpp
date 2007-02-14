@@ -18,43 +18,95 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SERVERBANMANAGER_H
-#define SERVERBANMANAGER_H
+#include "banmanager.h"
 
-#include <QObject>
-#include <QStringList>
+#include <QHash>
+#include <QString>
+#include <QApplication>
 
-namespace Server {
+#include <ddebug.h>
 
-/**
- * @author David Cuadrado <krawek@toonka.com>
-*/
-class BanManager : public QObject
+namespace Bans {
+
+struct Manager::Private
 {
-	protected:
-		BanManager(QObject *parent = 0);
-	public:
-		~BanManager();
-		
-		void initialize(const QString &pt);
-		bool isBanned(const QString &pt) const;
-		
-		void failed(const QString &pt);
-		void ban(const QString &pt);
-		void unban(const QString &pt);
-		
-		QStringList allBanned() const;
-		
-		static BanManager *self();
-		
-	private:
-		static BanManager *s_self;
-		struct Private;
-		Private *const d;
+	int maxFails;
+	QHash<QString, int> fails;
 };
+
+Manager *Manager::s_self = 0;
+
+Manager::Manager(QObject *parent) : QObject(parent), d(new Private)
+{
+	d->maxFails = 10;
+}
+
+
+Manager::~Manager()
+{
+	delete d;
+}
+
+void Manager::initialize(const QString &pt)
+{
+	if ( !d->fails.contains(pt) )
+		d->fails.insert(pt, 0);
+}
+
+bool Manager::isBanned(const QString &pt) const
+{
+	if ( d->fails.contains(pt) )
+	{
+		if ( d->fails[pt] >= d->maxFails )
+		{
+			return true;
+		}
+		
+	}
+	return false;
+}
+
+void Manager::failed(const QString &pt)
+{
+	d->fails[pt] += 1;
+}
+
+void Manager::ban(const QString &pt)
+{
+	d->fails[pt] = d->maxFails;
+}
+
+void Manager::unban(const QString &pt)
+{
+	d->fails[pt] = 0;
+}
+
+QStringList Manager::allBanned() const
+{
+	QStringList allBanned;
+	
+	QHash<QString, int>::const_iterator i = d->fails.constBegin();
+	
+	while (i != d->fails.constEnd())
+	{
+		if ( isBanned(i.key()))
+			allBanned << i.key();
+		++i;
+	}
+	
+	return allBanned;
+}
+
+Manager *Manager::self()
+{
+	if ( !s_self)
+		s_self = new Manager(qApp);
+	
+	return s_self;
+}
 
 }
 
-#endif
+
 
 

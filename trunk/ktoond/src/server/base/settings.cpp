@@ -18,64 +18,55 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "package.h"
-#include "connection.h"
+#include "settings.h"
 
-namespace Server {
+namespace Base {
 
-struct Package::Private
+Settings *Settings::s_settings = 0;
+
+struct Settings::Private 
 {
-	Private(const QString &root, const QString &xml, Connection *cnx) : root(root), xml(xml), connection(cnx), accepted(false)
-	{
-	}
-	QString root;
-	QString xml;
-	Connection *connection;
-	
-	bool accepted;
+	QString databaseDirPath;
+	QString backupDirPath;
 };
 
-Package::Package(const QString &root, const QString &xml, Connection *cnx) : d(new Private(root, xml, cnx))
+Settings::Settings() : d(new Private())
 {
 }
 
 
-Package::~Package()
+Settings::~Settings()
 {
 	delete d;
 }
 
-QString Package::root() const
+Settings *Settings::self()
 {
-	return d->root;
+	if( ! s_settings )
+		s_settings = new Settings();
+	
+	return s_settings;
 }
 
-QString Package::xml() const
+
+void Settings::setDatabaseDirPath(const QString &dbdir)
 {
-	return d->xml;
+	d->databaseDirPath = dbdir;
 }
 
-Connection *Package::source() const
+QString Settings::databaseDirPath() const
 {
-	return d->connection;
+	return d->databaseDirPath;
 }
 
-bool Package::accepted() const
+void Settings::setBackupDirPath(const QString &dir)
 {
-	return d->accepted;
+	d->backupDirPath = dir;
 }
 
-
-void Package::accept()
+QString Settings::backupDirPath() const
 {
-	d->accepted = true;
-}
-
-void Package::ignore()
-{
-	d->accepted = false;
+	return d->backupDirPath;
 }
 
 }
-
-

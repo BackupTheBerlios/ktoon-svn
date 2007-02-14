@@ -12,7 +12,7 @@ class TestProjectList: public QObject
 void TestProjectList::createProjectList()
 {
 	QDomDocument result;
-	result.setContent(QString("<projectlist><project description=\"animaciones de prueba\" author=\"Animaciones S.A.\" name=\"proyecto 1\"/></projectlist>"));
+	result.setContent(QString("<projectlist version=\"0\"><project description=\"animaciones de prueba\" author=\"Animaciones S.A.\" name=\"proyecto 1\"/></projectlist>"));
 	
 	
 	Packages::ProjectList projectlist;

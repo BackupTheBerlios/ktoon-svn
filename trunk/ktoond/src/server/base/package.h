@@ -18,100 +18,39 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "banmanager.h"
+#ifndef SERVERPACKAGE_H
+#define SERVERPACKAGE_H
 
-#include <QHash>
 #include <QString>
-#include <QApplication>
-
-#include <ddebug.h>
 
 namespace Server {
+	class Connection;
+}
 
-struct BanManager::Private
+namespace Base {
+
+/**
+ * @author David Cuadrado <krawek@toonka.com>
+*/
+class Package
 {
-	int maxFails;
-	QHash<QString, int> fails;
+	public:
+		Package(const QString &root, const QString &xml, Server::Connection *cnx);
+		~Package();
+		
+		QString root() const;
+		QString xml() const;
+		Server::Connection *source() const;
+		bool accepted() const;
+		
+		void accept();
+		void ignore();
+		
+	private:
+		struct Private;
+		Private *const d;
 };
 
-BanManager *BanManager::s_self = 0;
-
-BanManager::BanManager(QObject *parent) : QObject(parent), d(new Private)
-{
-	d->maxFails = 10;
-	
-	d->fails.insert("hola", 11);
-	d->fails.insert("prueba", 11);
-	d->fails.insert("hotr", 11);
-	d->fails.insert("banned", 11);
 }
 
-
-BanManager::~BanManager()
-{
-	delete d;
-}
-
-void BanManager::initialize(const QString &pt)
-{
-	if ( !d->fails.contains(pt) )
-		d->fails.insert(pt, 0);
-}
-
-bool BanManager::isBanned(const QString &pt) const
-{
-	if ( d->fails.contains(pt) )
-	{
-		if ( d->fails[pt] >= d->maxFails )
-		{
-			return true;
-		}
-		
-	}
-	return false;
-}
-
-void BanManager::failed(const QString &pt)
-{
-	d->fails[pt] += 1;
-}
-
-void BanManager::ban(const QString &pt)
-{
-	d->fails[pt] = d->maxFails;
-}
-
-void BanManager::unban(const QString &pt)
-{
-	d->fails[pt] = 0;
-}
-
-QStringList BanManager::allBanned() const
-{
-	QStringList allBanned;
-	
-	QHash<QString, int>::const_iterator i = d->fails.constBegin();
-	
-	while (i != d->fails.constEnd())
-	{
-		if ( isBanned(i.key()))
-			allBanned << i.key();
-		++i;
-	}
-	
-	return allBanned;
-}
-
-BanManager *BanManager::self()
-{
-	if ( !s_self)
-		s_self = new BanManager(qApp);
-	
-	return s_self;
-}
-
-}
-
-
-
-
+#endif

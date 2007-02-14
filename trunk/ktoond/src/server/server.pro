@@ -2,6 +2,4 @@ TEMPLATE = subdirs
 
 CONFIG += warn_on
 
-SUBDIRS += core \
-modules \
-packages
+SUBDIRS += base core modules packages

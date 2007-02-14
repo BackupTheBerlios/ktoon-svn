@@ -32,8 +32,8 @@
 #include "packages/connectparser.h"
 
 #include "connection.h"
-#include "settings.h"
-#include "logger.h"
+#include "base/settings.h"
+#include "base/logger.h"
 
 
 #include "dapplicationproperties.h"
@@ -46,13 +46,12 @@
 #include "packages/userlist.h"
 #include "packages/removebanparser.h"
 #include "packages/addbanparser.h"
-#include "packages/backuplist.h"
-#include "packages/removebackupparser.h"
 
-#include "banmanager.h"
-#include "backupmanager.h"
 
-#include "package.h"
+#include "bans/banmanager.h"
+#include "backups/backupmanager.h"
+
+#include "base/package.h"
 
 namespace Server {
 
@@ -63,7 +62,7 @@ struct PackageHandlerBase::Private
 
 PackageHandlerBase::PackageHandlerBase() : d(new Private())
 {
-	d->manager = new Users::Manager(Server::Settings::self()->databaseDirPath()+"/users.xml" );
+	d->manager = new Users::Manager(Base::Settings::self()->databaseDirPath()+"/users.xml" );
 }
 
 PackageHandlerBase::~PackageHandlerBase()
@@ -72,7 +71,7 @@ PackageHandlerBase::~PackageHandlerBase()
 	delete d;
 }
 
-void PackageHandlerBase::handlePackage(Package *const pkg)
+void PackageHandlerBase::handlePackage(Base::Package *const pkg)
 {
 	Server::Connection *cnn = pkg->source();
 	QString root = pkg->root();
@@ -116,8 +115,8 @@ void PackageHandlerBase::handlePackage(Package *const pkg)
 				Packages::Error error(QObject::tr("Invalid login or password"), Packages::Error::Err);
 				cnn->sendToClient(error);
 				
-				BanManager::self()->failed(cnn->client()->peerAddress().toString());
-				Server::Logger::self()->error(QObject::tr("Invalid login or password"));
+				Bans::Manager::self()->failed(cnn->client()->peerAddress().toString());
+				Base::Logger::self()->error(QObject::tr("Invalid login or password"));
 				
 				cnn->close();
 			}
@@ -262,7 +261,7 @@ void PackageHandlerBase::handlePackage(Package *const pkg)
 	{
 		if ( cnn->user()->canReadOn("admin") )
 		{
-			QStringList bans = BanManager::self()->allBanned();
+			QStringList bans = Bans::Manager::self()->allBanned();
 			
 			Packages::BanList pkg;
 			pkg.setBans(bans);
@@ -281,7 +280,7 @@ void PackageHandlerBase::handlePackage(Package *const pkg)
 			Parsers::RemoveBanParser parser;
 			if ( parser.parse(package) )
 			{
-				BanManager::self()->unban(parser.pattern());
+				Bans::Manager::self()->unban(parser.pattern());
 				
 				server->sendToAdmins(package);
 			}
@@ -298,89 +297,7 @@ void PackageHandlerBase::handlePackage(Package *const pkg)
 			Parsers::AddBanParser parser;
 			if ( parser.parse(package) )
 			{
-				BanManager::self()->ban(parser.pattern());
-				server->sendToAdmins(package);
-			}
-		}
-		else
-		{
-			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
-		}
-	}
-	else if ( root == "listbackups" )
-	{
-		if( cnn->user()->canReadOn("admin" ) )
-		{
-			Server::BackupManager *bm = server->backupManager();
-			
-			QHash<QString, QList<BackupDatabase::Entry> > entries = bm->entries();
-			QHashIterator<QString, QList<BackupDatabase::Entry> > it(entries);
-			
-			Packages::BackupList pkg;
-			
-			while(it.hasNext())
-			{
-				it.next();
-				QList<BackupDatabase::Entry> pentries = it.value();
-				
-				QStringList backups;
-				foreach(BackupDatabase::Entry e, pentries)
-				{
-					backups << e.date.toString(Qt::ISODate);
-				}
-				
-				pkg.addEntry(it.key(), backups);
-			}
-			
-			cnn->sendToClient(pkg);
-		}
-		else
-		{
-			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
-		}
-	}
-	else if( root == "removebackup" )
-	{
-		if( cnn->user()->canWriteOn("admin" ) )
-		{
-			Server::BackupManager *bm = server->backupManager();
-			Parsers::RemoveBackupParser parser;
-			
-			if(parser.parse(package))
-			{
-				QHashIterator<QString, QDateTime > it(parser.entries());
-				
-				while(it.hasNext())
-				{
-					it.next();
-					bm->removeBackup(it.key(), it.value());
-				}
-				
-				server->sendToAdmins(package);
-			}
-		}
-		else
-		{
-			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
-		}
-	}
-	else if ( root == "restorebackup" )
-	{
-		if( cnn->user()->canWriteOn("admin" ) )
-		{
-			Server::BackupManager *bm = server->backupManager();
-			Parsers::RemoveBackupParser parser;
-			
-			if(parser.parse(package))
-			{
-				QHashIterator<QString, QDateTime > it(parser.entries());
-				
-				while(it.hasNext())
-				{
-					it.next();
-					bm->restoreBackup(it.key(), it.value());
-				}
-				
+				Bans::Manager::self()->ban(parser.pattern());
 				server->sendToAdmins(package);
 			}
 		}

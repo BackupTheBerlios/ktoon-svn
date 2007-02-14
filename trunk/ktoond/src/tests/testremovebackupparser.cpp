@@ -1,5 +1,5 @@
 #include <QtTest/QtTest>
-#include <removebackupparser.h>
+#include <backups/removebackupparser.h>
 #include <QHash>
 #include <QDateTime>
 

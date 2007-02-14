@@ -7,26 +7,12 @@ SOURCES += connection.cpp \
 packagehandlerbase.cpp \
 server.cpp \
 serverclient.cpp \
-defaultpackagehandler.cpp \
-settings.cpp \
-logger.cpp \
-banmanager.cpp \
-backupmanager.cpp \
-backupdatabase.cpp \
-package.cpp \
-observer.cpp
+defaultpackagehandler.cpp
 HEADERS += connection.h \
 packagehandlerbase.h \
 server.h \
 serverclient.h \
-defaultpackagehandler.h \
-settings.h \
-logger.h \
-banmanager.h \
-backupmanager.h \
-backupdatabase.h \
-package.h \
-observer.h
+defaultpackagehandler.h
 !include(../../../ktoond_config.pri){
     error("configure first")
 }

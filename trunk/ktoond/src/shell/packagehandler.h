@@ -23,8 +23,8 @@
 
 
 #include <QString>
-#include "packagehandlerbase.h"
-#include "connection.h"
+#include "core/packagehandlerbase.h"
+#include "core/connection.h"
 
 class ProjectCollection;
 /**

@@ -22,7 +22,7 @@
 #include "projectcollection.h"
 
 
-#include "connection.h"
+#include "core/connection.h"
 #include "global.h"
 #include <ddebug.h>
 
@@ -33,16 +33,16 @@
 #include "listparser.h"
 #include "error.h"
 
-#include "addbackupparser.h"
+#include "packages/addbackupparser.h"
 
-#include "backupmanager.h"
+#include "backups/backupmanager.h"
 
 #include "listprojectsparser.h"
 
 #include "users/user.h"
 #include "database.h"
 
-#include "addbackup.h"
+#include "backups/addbackup.h"
 
 class PackageHandler::Private
 {
@@ -257,7 +257,7 @@ void PackageHandler::handle(Server::Connection *cnx , const QString &root, const
 			{
 				Packages::AddBackup pkg;
 				
-				Server::BackupManager *bm = server->backupManager();
+				Backups::Manager *bm = server->backupManager();
 				
 				foreach(QString project, parser.backups())
 				{

@@ -2,7 +2,7 @@
 #include <QDomDocument>
 #include <userlist.h>
 
-#include "user.h"
+#include "users/user.h"
 
 class TestUserList: public QObject
 {

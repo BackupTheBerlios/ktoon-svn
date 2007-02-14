@@ -23,7 +23,7 @@
 
 #include <ktproject.h>
 #include <QTimer>
-#include "error.h"
+#include "packages/error.h"
 #include <QMultiHash>
 #include "users/user.h"
 

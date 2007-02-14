@@ -21,14 +21,14 @@
 #include <QApplication>
 
 #include <ddebug.h>
-#include "server.h"
-#include "logger.h"
+#include "core/server.h"
 #include "packagehandler.h"
-#include "settings.h"
-
 
 #include <dapplicationproperties.h>
 #include <dconfig.h>
+
+#include "base/logger.h"
+#include "base/settings.h"
 
 #ifdef Q_OS_UNIX
 #include <unistd.h>
@@ -81,8 +81,8 @@ int main(int argc, char **argv)
 	QString dbdir = dAppProp->configDir()+"/database";
 	QDir db(dbdir);
 	if( !db.exists() ) db.mkdir(dbdir);
-	Server::Settings::self()->setDatabaseDirPath(dbdir);
-	Server::Settings::self()->setBackupDirPath(dAppProp->configDir()+"/backups");
+	Base::Settings::self()->setDatabaseDirPath(dbdir);
+	Base::Settings::self()->setBackupDirPath(dAppProp->configDir()+"/backups");
 	
 	Server::TcpServer server;
 	
@@ -101,7 +101,11 @@ void cleanup(int s)
 {
 	static bool finishing = false;
 
-	if ( finishing ) return;
+	if ( finishing )
+	{
+		if ( s == 11 ) exit(-256);
+		return;
+	}
 
 	finishing = true;
 	
@@ -110,7 +114,7 @@ void cleanup(int s)
 	QApplication::flush();
 	QApplication::exit(0);
 	
-	Server::Logger::self()->info(QObject::tr("Finishing with signal: ")+QString::number(s));
+	Base::Logger::self()->info(QObject::tr("Finishing with signal: ")+QString::number(s));
 	
 	if( s == 11 )
 	{

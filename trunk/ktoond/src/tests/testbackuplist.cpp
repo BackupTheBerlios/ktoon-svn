@@ -1,6 +1,6 @@
 #include <QtTest/QtTest>
 #include <QDomDocument>
-#include <backuplist.h>
+#include <backups/backuplist.h>
 
 class TestBackupList: public QObject
 {

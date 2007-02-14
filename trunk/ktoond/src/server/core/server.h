@@ -31,8 +31,14 @@ namespace Server {
 class Connection;
 class Client;
 class PackageHandlerBase;
-class BackupManager;
-class Observer;
+}
+
+namespace Base {
+	class Observer;
+}
+
+namespace Backups {
+	class Manager;
 }
 
 
@@ -55,10 +61,10 @@ class TcpServer : public QTcpServer
 		void sendToAdmins(const QString &str);
 		
 		void addAdmin(Server::Connection *cnx);
-		BackupManager *backupManager() const;
+		Backups::Manager *backupManager() const;
 		
-		void addObserver(Observer *observer);
-		bool removeObserver(Observer *observer);
+		void addObserver(Base::Observer *observer);
+		bool removeObserver(Base::Observer *observer);
 		
 	public slots:
 		void sendToAll(const QString &msg);

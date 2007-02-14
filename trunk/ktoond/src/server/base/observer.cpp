@@ -18,80 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "logger.h"
+#include "observer.h"
+#include <QObject>
 
-#include <QFile>
-#include <QDateTime>
+namespace Base {
 
-namespace Server {
-
-struct Logger::Private
+Observer::Observer()
 {
-	QFile file;
-};
-
-Logger *Logger::s_self = 0;
-
-Logger::Logger() : d(new Private)
-{
-	d->file.setFileName("/tmp/server.log");
 }
 
 
-Logger::~Logger()
+Observer::~Observer()
 {
-	delete d;
 }
 
-Logger *Logger::self()
+void Observer::connectionClosed(Server::Connection *const cnx)
 {
-	if ( ! s_self )
-		s_self = new Logger;
-	
-	return s_self;
-}
-
-void Logger::setLogFile(const QString &logfile)
-{
-	d->file.setFileName(logfile);
-}
-
-QString Logger::logFile() const
-{
-	return d->file.fileName();
-}
-
-
-void Logger::warn(const QString &log)
-{
-	write(QString(QDateTime::currentDateTime().toString(Qt::ISODate)+ " WARNING:  "+log+"\n").toLocal8Bit());
-}
-
-void Logger::error(const QString &log)
-{
-	write(QString(QDateTime::currentDateTime().toString(Qt::ISODate)+ " ERROR:  "+log+"\n").toLocal8Bit());
-}
-
-void Logger::info(const QString &log)
-{
-	write(QString(QDateTime::currentDateTime().toString(Qt::ISODate)+ " INFO:  "+log+"\n").toLocal8Bit());
-}
-
-void Logger::fatal(const QString &log)
-{
-	write(QString(QDateTime::currentDateTime().toString(Qt::ISODate)+ " FATAL:  "+log+"\n").toLocal8Bit());
-}
-
-void Logger::write(const QByteArray &msg)
-{
-	if ( d->file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text))
-	{
-		d->file.write(msg.data(), msg.size());
-		d->file.close();
-	}
+	Q_UNUSED(cnx);
 }
 
 }
-
 
 

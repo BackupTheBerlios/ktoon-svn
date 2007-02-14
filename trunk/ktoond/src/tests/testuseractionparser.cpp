@@ -1,6 +1,6 @@
 #include <QtTest/QtTest>
 #include <useractionparser.h>
-#include <user.h>
+#include <users/user.h>
 
 class TestUserActionParser: public QObject
 {
