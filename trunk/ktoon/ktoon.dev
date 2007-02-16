@@ -1,14 +1,17 @@
 #!/bin/bash
 
-export LD_LIBRARY_PATH=src/dlib/dgui:src/dlib/dcore:src/dlib/dsound/:src/store:src/libktoon:src/libbase
+BASE=`dirname $0`
+
+export LD_LIBRARY_PATH=$BASE/src/dlib/dgui:$BASE/src/dlib/dcore:$BASE/src/dlib/dsound/:$BASE/src/store:$BASE/src/libktoon:$BASE/src/libbase
 export QT_NO_GLIB=1
+
 
 if [ "$1" == "-g" ]
 then
 	shift 1
-	bin/ktoon.bin $*
+	$BASE/bin/ktoon.bin $*
 else
-	gdb -ex run -ex bt --batch --args bin/ktoon.bin "$*"
+	gdb -ex run -ex bt --batch --args $BASE/bin/ktoon.bin "$*"
 fi
 
 
