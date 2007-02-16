@@ -1,4 +1,5 @@
 require 'rexml/document'
+require 'ktoond/serverconfig.rb'
 
 class RegisterController < ApplicationController
 	def index
@@ -28,11 +29,13 @@ class RegisterController < ApplicationController
 	end
 	
 	def saveReg(reg)
-		path = "/tmp/registros"
+		serverConfig = KToonD::ServerConfig.new
+		
+		path = serverConfig.repository+"/../database/petitions.xml" # FIXME FIXME FIXME
 		
 		if not File.exists?(path)
 			doc = REXML::Document.new
-			doc.add_element "Registers"
+			doc.add_element "registerlist"
 			
 			File.open(path, "w") { |f|
 				f << doc
