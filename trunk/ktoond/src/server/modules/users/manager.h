@@ -23,16 +23,22 @@
 
 #include <QString>
 
+#include "base/observer.h"
+
+namespace Base {
+	class Package;
+}
+
 namespace Users {
 class User;
 
 /**
  * @author David Cuadrado <krawek@toonka.com>
 */
-class Manager
+class Manager : public Base::Observer
 {
 	public:
-		explicit Manager(const QString &dbfile);
+		explicit Manager();
 		~Manager();
 		
 		bool auth(const QString &login, const QString &password);
@@ -43,6 +49,8 @@ class Manager
 		bool removeUser(const QString &login);
 		
 		QList<User*> listUsers();
+		
+		void handlePackage(Base::Package *const pkg);
 		
 	private:
 		struct Private;

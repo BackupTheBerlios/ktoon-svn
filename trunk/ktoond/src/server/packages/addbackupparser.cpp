@@ -39,7 +39,7 @@ AddBackupParser::~AddBackupParser()
 	delete d;
 }
 
-bool AddBackupParser::startTag(const QString &tag, const QXmlAttributes &atts)
+bool AddBackupParser::startTag(const QString &tag, const QXmlAttributes &)
 {
 	if( tag == "addbackup" )
 	{

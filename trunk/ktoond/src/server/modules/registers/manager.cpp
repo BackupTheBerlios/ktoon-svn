@@ -22,30 +22,51 @@
 
 #include <QFile>
 
+#include <dcore/dmd5hash.h>
+#include <dcore/ddebug.h>
+
 #include "base/package.h"
 #include "base/settings.h"
 
 #include "core/connection.h"
+#include "core/server.h"
+
+#include "actionregisteruserparser.h"
+#include "database.h"
+
+#include "users/manager.h"
+#include "users/user.h"
+
+#include "adduser.h"
+
 
 namespace Registers {
 
-Manager::Manager() : Base::Observer()
+struct Manager::Private
 {
+	Database *db;
+};
+
+Manager::Manager() : Base::Observer(),d( new Private)
+{
+	d->db = new Database(Base::Settings::self()->databaseDirPath() + "/petitions.xml");
 }
 
 
 Manager::~Manager()
 {
+	delete d->db;
+	delete d;
 }
 
 
 void Manager::handlePackage(Base::Package* const pkg)
 {
+	Server::TcpServer *server = pkg->source()->server();
 	
 	if( pkg->root() == "listregisters" )
 	{
-		// FIXME FIXME
-		QString fname = Base::Settings::self()->databaseDirPath() + "/petitions.xml";
+		QString fname = d->db->fileName();
 		
 		QFile f(fname);
 		if( f.exists() )
@@ -54,6 +75,33 @@ void Manager::handlePackage(Base::Package* const pkg)
 			{
 				pkg->source()->sendToClient(f.readAll());
 			}
+		}
+	}
+	else if ( pkg->root() == "registeruser" )
+	{
+		Parsers::ActionRegisterUserParser parser;
+		
+		if( parser.parse(pkg->xml()))
+		{
+			QHash<QString, QString> data = parser.data();
+			QString email = data["email"];
+			
+			data = d->db->findRegisterByEmail(email);
+			d->db->removeRegister(email);
+			
+			dDebug() << data["login"];
+			
+			Users::Manager *manager = server->userManager();
+			
+			Users::User user;
+			user.setLogin(data["login"]);
+			user.setName(data["name"]);
+			user.setPassword(DMD5Hash::hash(""));
+			manager->addUser(user);
+			
+			server->sendToAdmins(pkg->xml());
+			Packages::AddUser adduser(data["login"], data["name"]);
+			server->sendToAdmins(adduser.toString());
 		}
 	}
 }

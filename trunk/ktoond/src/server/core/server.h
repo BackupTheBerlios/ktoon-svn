@@ -45,6 +45,9 @@ namespace Bans {
 	class Manager;
 }
 
+namespace Users {
+	class Manager;
+}
 
 namespace Server {
 
@@ -67,7 +70,7 @@ class TcpServer : public QTcpServer
 		void addAdmin(Server::Connection *cnx);
 		Backups::Manager *backupManager() const;
 		Bans::Manager *banManager() const;
-		
+		Users::Manager *userManager() const;
 		
 		void addObserver(Base::Observer *observer);
 		bool removeObserver(Base::Observer *observer);

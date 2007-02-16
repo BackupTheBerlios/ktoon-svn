@@ -18,28 +18,60 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef REGISTERSMANAGER_H
-#define REGISTERSMANAGER_H
+#include "actionregisteruserparser.h"
 
-#include <base/observer.h>
+namespace Parsers {
 
-namespace Registers {
-
-/**
- * @author David Cuadrado \<krawek@toonka.com\>
-*/
-class Manager : public Base::Observer
+struct ActionRegisterUserParser::Private
 {
-	public:
-		Manager();
-		~Manager();
-		
-		virtual void handlePackage(Base::Package* const pkg);
-	private:
-		struct Private;
-		Private *const d;
+	QHash<QString, QString> data;
 };
 
+ActionRegisterUserParser::ActionRegisterUserParser()
+ : KTXmlParserBase(), d( new Private )
+{
 }
 
-#endif
+
+ActionRegisterUserParser::~ActionRegisterUserParser()
+{
+	delete d;
+}
+
+bool ActionRegisterUserParser::startTag(const QString &tag, const QXmlAttributes &)
+{
+	if( tag == "login" )
+	{
+		setReadText(true);
+	}
+	else if ( tag == "email" )
+	{
+		setReadText(true);
+	}
+	
+	return true;
+}
+
+bool ActionRegisterUserParser::endTag(const QString &)
+{
+	return true;
+}
+
+void ActionRegisterUserParser::text(const QString &text)
+{
+	if (currentTag() == "login" )
+	{
+		d->data["login"] = text;
+	}
+	else if( currentTag() == "email" )
+	{
+		d->data["email"] = text;
+	}
+}
+
+QHash<QString, QString> ActionRegisterUserParser::data() const
+{
+	return d->data;
+}
+
+}

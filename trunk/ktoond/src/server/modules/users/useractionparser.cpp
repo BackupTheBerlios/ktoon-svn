@@ -68,7 +68,7 @@ bool UserActionParser::startTag(const QString &tag, const QXmlAttributes &atts)
 	return true;
 }
 
-bool UserActionParser::endTag(const QString &tag)
+bool UserActionParser::endTag(const QString &)
 {
 	return true;
 }

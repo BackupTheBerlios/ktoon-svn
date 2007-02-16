@@ -20,16 +20,12 @@
  
 #include "packagehandlerbase.h"
 #include <ddebug.h>
-#include <dfortunegenerator.h>
+
 
 #include <QHashIterator>
 #include <QHash>
 
-#include "users/manager.h"
 #include "users/user.h"
-#include "users/right.h"
-
-#include "packages/connectparser.h"
 
 #include "connection.h"
 #include "base/settings.h"
@@ -39,12 +35,6 @@
 #include "dapplicationproperties.h"
 
 #include "packages/error.h"
-#include "packages/ack.h"
-
-
-#include "packages/useractionparser.h"
-#include "packages/userlist.h"
-
 
 
 #include "bans/banmanager.h"
@@ -56,17 +46,14 @@ namespace Server {
 
 struct PackageHandlerBase::Private
 {
-	Users::Manager *manager;
 };
 
 PackageHandlerBase::PackageHandlerBase() : d(new Private())
 {
-	d->manager = new Users::Manager(Base::Settings::self()->databaseDirPath()+"/users.xml" );
 }
 
 PackageHandlerBase::~PackageHandlerBase()
 {
-	delete d->manager;
 	delete d;
 }
 
@@ -80,53 +67,8 @@ void PackageHandlerBase::handlePackage(Base::Package *const pkg)
 	
 	TcpServer *server = cnn->server();
 	
-	if ( root == "connect" )
-	{
-		cnn->setValid(false);
-		
-		Parsers::ConnectParser parser;
-		if ( parser.parse(package) )
-		{
-			if ( d->manager->auth(parser.login(), parser.password()) )
-			{
-				Users::User *user = d->manager->user(parser.login());
-				
-				cnn->setUser(user);
-				
-				QString fortune = DFortuneGenerator::self()->generate();
-				fortune.replace("\n", "<br/>");
-				Packages::Ack ack(QObject::tr("<center><b>Message of the day:</b></center><br/> ")+fortune, cnn->sign());
-				
-				foreach(Users::Right *right, user->rights())
-				{
-					ack.addPermission(right);
-				}
-				
-				if ( parser.client() == 1 )
-				{
-					server->addAdmin(cnn);
-				}
-				
-				cnn->sendToClient(ack, false);
-			}
-			else
-			{
-				Packages::Error error(QObject::tr("Invalid login or password"), Packages::Error::Err);
-				cnn->sendToClient(error);
-				
-				server->banManager()->failed(cnn->client()->peerAddress().toString());
-				Base::Logger::self()->error(QObject::tr("Invalid login or password"));
-				
-				cnn->close();
-			}
-		}
-		else
-		{
-			dError() << "ERROR PARSING CONNECT PACKAGE!";
-		}
-		
-	}
-	else if ( root == "chat" )
+	
+	if ( root == "chat" )
 	{
 		QDomDocument doc;
 		doc.setContent(package);
@@ -148,113 +90,6 @@ void PackageHandlerBase::handlePackage(Base::Package *const pkg)
 	}
 	else if ( root == "wall" )
 	{
-	}
-	else if(root == "adduser")
-	{
-		if ( cnn->user()->canWriteOn("admin") )
-		{
-			Parsers::UserActionParser parser;
-			if(parser.parse(package))
-			{
-				if( d->manager->addUser(parser.user()) )
-				{
-					QDomDocument doc;
-					doc.setContent(package);
-					
-					doc.firstChild().removeChild( doc.firstChild().firstChildElement ("password"));
-					
-					server->sendToAdmins(doc.toString());
-				}
-				else
-				{
-					cnn->sendErrorPackageToClient(QObject::tr("Error adding user"), Packages::Error::Err);
-				}
-			}
-		}
-		else
-		{
-			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
-		}
-	}
-	else if(root == "removeuser")
-	{
-		if ( cnn->user()->canWriteOn("admin") )
-		{
-			Parsers::UserActionParser parser;
-			if(parser.parse(package))
-			{
-				if ( d->manager->removeUser(parser.user().login()) )
-					server->sendToAdmins(package);
-			}
-		}
-		else
-		{
-			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
-		}
-	}
-	else if(root == "queryuser")
-	{
-		if ( cnn->user()->canReadOn("admin") )
-		{
-			Parsers::UserActionParser parser;
-			if(parser.parse(package))
-			{
-				Users::User * user = d->manager->user(parser.user().login());
-				if(user)
-				{
-					QDomDocument doc;
-					QDomElement userquery = doc.createElement("userquery");
-					
-					userquery.appendChild(user->toXml(doc, false));
-					doc.appendChild(userquery);
-					
-					cnn->sendToClient (doc.toString());
-				}
-			}
-		}
-		else
-		{
-			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
-		}
-	}
-	else if(root == "updateuser")
-	{
-		if ( cnn->user()->canWriteOn("admin") )
-		{
-			Parsers::UserActionParser parser;
-			if(parser.parse(package))
-			{
-				if ( d->manager->updateUser(parser.user()) )
-				{
-					QDomDocument doc;
-					doc.setContent(package);
-					
-					doc.firstChild().removeChild( doc.firstChild().firstChildElement ("password"));
-					
-					server->sendToAdmins(doc.toString());
-				}
-			}
-		}
-		else
-		{
-			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
-		}
-	}
-	else if ( root == "listusers" )
-	{
-		if ( cnn->user()->canReadOn("admin") )
-		{
-			Packages::UserList info;
-			foreach(Users::User *u, d->manager->listUsers())
-			{
-				info.addUser(u);
-			}
-			cnn->sendToClient(info);
-		}
-		else
-		{
-			cnn->sendErrorPackageToClient(QObject::tr("Permission denied."), Packages::Error::Err);
-		}
 	}
 	else
 	{

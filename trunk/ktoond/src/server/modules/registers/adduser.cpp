@@ -18,28 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef REGISTERSMANAGER_H
-#define REGISTERSMANAGER_H
+#include "adduser.h"
 
-#include <base/observer.h>
+namespace Packages {
 
-namespace Registers {
-
-/**
- * @author David Cuadrado \<krawek@toonka.com\>
-*/
-class Manager : public Base::Observer
+AddUser::AddUser(const QString &login, const QString &name)
+ : QDomDocument()
 {
-	public:
-		Manager();
-		~Manager();
-		
-		virtual void handlePackage(Base::Package* const pkg);
-	private:
-		struct Private;
-		Private *const d;
-};
-
+	QDomElement root = createElement("adduser");
+	
+	root.appendChild(createElement("login") ).appendChild(createTextNode(login));
+	root.appendChild(createElement("name") ).appendChild(createTextNode(name));
+	
+	appendChild(root);
 }
 
-#endif
+
+AddUser::~AddUser()
+{
+}
+
+
+}

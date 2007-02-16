@@ -30,12 +30,12 @@
 
 #include "packagehandlerbase.h"
 #include "defaultpackagehandler.h"
-#include "base/settings.h"
+
 #include "bans/banmanager.h"
-
-
 #include "backups/backupmanager.h"
+#include "users/manager.h"
 
+#include "base/settings.h"
 #include "base/package.h"
 #include "base/observer.h"
 #include "base/logger.h"
@@ -47,8 +47,10 @@ class TcpServer::Private
 	public:
 		QList<Server::Connection *> connections;
 		QList<Server::Connection *> admins;
+		
 		Backups::Manager *backupManager;
 		Bans::Manager *banManager;
+		Users::Manager *userManager;
 		
 		QList<Base::Observer *> observers;
 };
@@ -57,12 +59,13 @@ TcpServer::TcpServer(QObject *parent) : QTcpServer(parent), d(new Private)
 {
 	DINIT;
 	d->backupManager = new Backups::Manager;
-	
 	d->observers << d->backupManager;
 	
 	d->banManager = new Bans::Manager;
-	
 	d->observers << d->banManager;
+	
+	d->userManager = new Users::Manager;
+	d->observers << d->userManager;
 }
 
 
@@ -115,6 +118,11 @@ Backups::Manager *TcpServer::backupManager() const
 Bans::Manager *TcpServer::banManager() const
 {
 	return d->banManager;
+}
+
+Users::Manager *TcpServer::userManager() const
+{
+	return d->userManager;
 }
 
 void TcpServer::addObserver(Base::Observer *observer)

@@ -3,23 +3,15 @@
 # Subdir relative project main directory: ./src/server/packages
 # Target is a library:  serverpackages
 
-HEADERS += connectparser.h \
-           chatparser.h \
+HEADERS += chatparser.h \
            noticeparser.h \
            wallparser.h \
-           ack.h \
            error.h \
-           useractionparser.h \
-           userlist.h \
            addbackupparser.h
-SOURCES += connectparser.cpp \
-           chatparser.cpp \
+SOURCES += chatparser.cpp \
            noticeparser.cpp \
            wallparser.cpp \
-           ack.cpp \
            error.cpp \
-           useractionparser.cpp \
-           userlist.cpp \
            addbackupparser.cpp
 TEMPLATE = lib
 CONFIG += staticlib \

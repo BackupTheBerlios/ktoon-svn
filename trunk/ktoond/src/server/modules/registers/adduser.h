@@ -17,27 +17,22 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef PACKAGESADDUSER_H
+#define PACKAGESADDUSER_H
 
-#ifndef REGISTERSMANAGER_H
-#define REGISTERSMANAGER_H
+#include <QDomDocument>
 
-#include <base/observer.h>
-
-namespace Registers {
+namespace Packages {
 
 /**
- * @author David Cuadrado \<krawek@toonka.com\>
+	@author David Cuadrado <krawek@toonka.com>
 */
-class Manager : public Base::Observer
+class AddUser : public QDomDocument
 {
 	public:
-		Manager();
-		~Manager();
-		
-		virtual void handlePackage(Base::Package* const pkg);
-	private:
-		struct Private;
-		Private *const d;
+		AddUser(const QString &login, const QString &name);
+		~AddUser();
+
 };
 
 }

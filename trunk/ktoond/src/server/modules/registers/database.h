@@ -17,24 +17,33 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef REGISTERSDATABASE_H
+#define REGISTERSDATABASE_H
 
-#ifndef REGISTERSMANAGER_H
-#define REGISTERSMANAGER_H
-
-#include <base/observer.h>
+#include <QString>
+#include <QHash>
+#include <ktxmlparserbase.h>
 
 namespace Registers {
 
 /**
- * @author David Cuadrado \<krawek@toonka.com\>
+ * @author David Cuadrado <krawek@toonka.com>
 */
-class Manager : public Base::Observer
+class Database : public KTXmlParserBase
 {
 	public:
-		Manager();
-		~Manager();
+		Database(const QString &dbfile);
+		~Database();
 		
-		virtual void handlePackage(Base::Package* const pkg);
+		QString fileName() const;
+		void removeRegister(const QString &email);
+		
+		bool startTag(const QString &tag, const QXmlAttributes &atts);
+		bool endTag(const QString &tag);
+		void text(const QString &msg);
+		
+		QHash<QString, QString> findRegisterByEmail(const QString &email);
+		
 	private:
 		struct Private;
 		Private *const d;
