@@ -35,6 +35,7 @@
 #include "server/modulewidget.h"
 #include "bans/modulewidget.h"
 #include "backups/modulewidget.h"
+#include "registers/modulewidget.h"
 
 #include "manager.h"
 #include "connectdialog.h"
@@ -91,6 +92,10 @@ void MainWindow::createModules()
 	Backups::ModuleWidget *backupsModule = new Backups::ModuleWidget;
 	addToolView(backupsModule, Qt::RightDockWidgetArea)->setDescription(tr("Administer backups"));
 	registerModule(backupsModule);
+	
+	Registers::ModuleWidget *registersModule = new Registers::ModuleWidget;
+	addToolView(registersModule, Qt::RightDockWidgetArea)->setDescription(tr("Administer registers"));
+	registerModule(registersModule);
 }
 
 void MainWindow::createMenuBar()

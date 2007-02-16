@@ -6,4 +6,5 @@ SUBDIRS += users \
 projects \
 server \
 bans \
-backups
+backups \
+registers
