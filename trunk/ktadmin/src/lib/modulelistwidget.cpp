@@ -146,6 +146,18 @@ bool ModuleListWidget::clearOnUpdate() const
 	return d->clearOnUpdate;
 }
 
+void ModuleListWidget::addItem(const QStringList &itemData)
+{
+	QTreeWidgetItem *item = new QTreeWidgetItem(d->tree);
+	int col = 0;
+	
+	foreach(QString data, itemData)
+	{
+		item->setText(col, data);
+		col++;
+	}
+}
+
 void ModuleListWidget::actionSelected(int action)
 {
 	QTreeWidgetItem *currentItem = d->tree->currentItem();

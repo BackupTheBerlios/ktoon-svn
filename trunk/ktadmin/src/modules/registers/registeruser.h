@@ -17,72 +17,21 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef PACKAGESREGISTERUSER_H
+#define PACKAGESREGISTERUSER_H
 
-#ifndef BASEMODULELISTWIDGET_H
-#define BASEMODULELISTWIDGET_H
+#include <QDomDocument>
 
-#include <modulewidgetbase.h>
-#include "modulebuttonbar.h"
-
-class QTreeWidget;
-class QTreeWidgetItem;
-class QMenu;
-
-
-namespace Base {
+namespace Packages {
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+	@author David Cuadrado <krawek@gmail.com>
 */
-class ModuleListWidget : public ModuleWidget
+class RegisterUser : public QDomDocument
 {
-	Q_OBJECT
 	public:
-		ModuleListWidget(ModuleButtonBar::Buttons buttons, QWidget *parent = 0);
-		~ModuleListWidget();
-		
-		void setHeaders(const QStringList &headers);
-		
-		QTreeWidget *tree() const;
-		
-		void setFilled(bool f);
-		bool filled() const;
-		virtual void update();
-		virtual void clear();
-		
-		ModuleButtonBar *buttonBar() const;
-		
-		virtual QMenu *createMenu();
-		
-		void setClearOnUpdate(bool cou);
-		bool clearOnUpdate() const;
-		
-		void addItem(const QStringList &itemData);
-		
-	private slots:
-		void actionSelected(int action);
-		void showMenu(const QPoint &pos);
-		void selectFromAction();
-		
-		virtual void defaultBehavior(QTreeWidgetItem*, int);
-		
-	protected slots:
-		virtual void addActionSelected(QTreeWidgetItem *current);
-		virtual void delActionSelected(QTreeWidgetItem *current);
-		virtual void queryActionSelected(QTreeWidgetItem *current);
-		virtual void modifyActionSelected(QTreeWidgetItem *current);
-		virtual void custom1ActionSelected(QTreeWidgetItem *current);
-		virtual void custom2ActionSelected(QTreeWidgetItem *current);
-		
-	private:
-		virtual void updateList() = 0;
-		
-	protected:
-		virtual void showEvent(QShowEvent *ev);
-		
-	private:
-		struct Private;
-		Private *const d;
+		RegisterUser(const QString &login, const QString &email);
+		~RegisterUser();
 };
 
 }

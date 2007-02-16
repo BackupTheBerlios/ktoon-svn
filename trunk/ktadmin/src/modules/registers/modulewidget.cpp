@@ -28,13 +28,15 @@
 #include "package.h"
 
 #include "registerlistparser.h"
+#include "registeruser.h"
+#include "actionregisteruserparser.h"
 
 
 namespace Registers {
 
 struct ModuleWidget::Private
 {
-	
+	QHash<QString, QTreeWidgetItem *> items;
 };
 
 ModuleWidget::ModuleWidget(QWidget *parent)
@@ -62,13 +64,25 @@ void ModuleWidget::handlePackage(Base::Package *const pkg)
 			typedef QHash<QString, QString> Hash;
 			foreach(Hash hash, parser.registers())
 			{
-				QTreeWidgetItem *login = new QTreeWidgetItem(tree());
-				login->setText(0, hash["login"]);
-				login->setText(1, hash["email"]);
+				QTreeWidgetItem *item = new QTreeWidgetItem(tree());
+				item->setText(0, hash["login"]);
+				item->setText(1, hash["email"]);
+				
+				d->items.insert(hash["login"]+"-"+hash["email"], item);
 			}
 			
 			setFilled(true);
 			pkg->accept();
+		}
+	}
+	else if( pkg->root() == "registeruser" )
+	{
+		Packages::ActionRegisterUserParser parser;
+		
+		if( parser.parse(pkg->xml()) )
+		{
+			QHash<QString, QString> hash = parser.data();
+			delete d->items.take(hash["login"]+"-"+hash["email"]);
 		}
 	}
 }
@@ -81,7 +95,11 @@ void ModuleWidget::updateList()
 
 void ModuleWidget::addActionSelected(QTreeWidgetItem* current)
 {
-	ModuleListWidget::addActionSelected(current);
+	if( ! current ) return;
+	
+	Packages::RegisterUser reg(current->text(0), current->text(1));
+	
+	emit sendPackage(reg.toString());
 }
 
 void ModuleWidget::delActionSelected(QTreeWidgetItem* current)
