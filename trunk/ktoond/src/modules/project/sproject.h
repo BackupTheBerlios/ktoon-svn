@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,35 +18,51 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef HANDLERPACKGES_H
-#define HANDLERPACKGES_H
+#ifndef SPROJECT_H
+#define SPROJECT_H
+
+#include <ktproject.h>
+#include <QTimer>
+#include "packages/error.h"
+#include <QMultiHash>
+#include "users/user.h"
 
 
-#include <QString>
-#include "core/packagehandlerbase.h"
-#include "core/connection.h"
-
-namespace Projects {
-class ProjectCollection; }
+// namespace Projects {
 
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
- * @TODO Remove me when packagehandlerbase is ported to new architecture
+ * @author David Cuadrado <krawek@toonka.com>
  */
-class PackageHandler : public Server::PackageHandlerBase
+class SProject : public KTProject
 {
+	Q_OBJECT;
+	
 	public:
-		PackageHandler();
-		~PackageHandler();
+		enum UserType{Owner = 0, Desiger};
+		SProject(const QString & filename, QObject *parent = 0);
+		~SProject();
+		void resetTimer();
+		QDomElement infoToXml(QDomDocument &doc) const;
 		
-		void handle(Server::Connection *, const QString &root, const QString &package );
-		void connectionClosed(Server::Connection *) {}
+		bool addUser( const QString& login, UserType type );
+		void setUsers( const QMultiHash<SProject::UserType, QString> & users);
+		QString fileName();
+		
+		bool isOwner(const Users::User* user);
+		
 		
 	private:
-		class Private;
+		struct Private;
 		Private *const d;
+	
+	public slots:
+		bool save();
+		
+	signals:
+		void requestSendErrorMessage(const QString &message, Packages::Error::Level level);
+		
+	protected:
+		void timerEvent(QTimerEvent * event );
 };
 
 #endif
-
-

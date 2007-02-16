@@ -174,6 +174,13 @@ SProject * DatabaseParser::loadProject(const QString& projectName, const QString
 	return m_project;
 }
 
+void DatabaseParser::gc()
+{
+	D_FUNCINFO;
+	delete m_project;
+	m_projectExists = 0;
+}
+
 }
 
 

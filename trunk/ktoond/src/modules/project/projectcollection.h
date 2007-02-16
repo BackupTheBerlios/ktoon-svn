@@ -28,6 +28,12 @@
 #include "sproject.h"
 #include "database.h"
 
+#include "base/observer.h"
+
+namespace Base {
+class Package;
+}
+
 namespace Server {
 class Connection;
 }
@@ -40,7 +46,7 @@ namespace Projects {
 /**
  * @author Jorge Cuadrado \<kuadrosxx@gmail.com\>
 */
-class ProjectCollection 
+class ProjectCollection : public Base::Observer
 {
 	public:
 		ProjectCollection();
@@ -62,6 +68,8 @@ class ProjectCollection
 		QStringList projects() const;
 		
 		
+		void handlePackage(Base::Package *const pkg);
+		
 		void listAllProjects(Server::Connection *cnn);
 		void listUserProjects(Server::Connection *cnn);
 		
@@ -72,7 +80,7 @@ class ProjectCollection
 		
 		Database::ProjectInfo projectInfo(const QString &projectName);
 		
-		void removeConnection(Server::Connection *cnn);
+		void connectionClosed(Server::Connection *cnn);
 		void sendToProjectMembers(Server::Connection *cnn, QDomDocument &doc);
 		
 	private:

@@ -4,4 +4,5 @@ CONFIG += warn_on
 
 SUBDIRS += users \
 backups \
-bans
+bans \
+registers

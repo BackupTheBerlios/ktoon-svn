@@ -3,17 +3,9 @@
 # Subdir relative project main directory: ./src/shell
 # Target is an application:  ../../bin/ktoond.bin
 
-HEADERS += projectcollection.h \
-           packagehandler.h \
-           database.h \
-           sproject.h \
-           databaseparser.h 
+HEADERS += packagehandler.h
 SOURCES += main.cpp \
-           projectcollection.cpp \
-           packagehandler.cpp \
-           database.cpp \
-           sproject.cpp \
-           databaseparser.cpp 
+           packagehandler.cpp
 TARGET = ../../bin/ktoond.bin
 CONFIG += release \
 warn_on

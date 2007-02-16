@@ -50,7 +50,7 @@ void Database::setDBFile( const QString& dbfile)
 
 QDomDocument Database::loadDataBase()
 {
-	dDebug() << "loading database of " << m_dbfile;
+	dDebug() << "loading database: " << m_dbfile;
 	QFile file(m_dbfile);
 	QDomDocument document;
 	if( !file.exists() )
@@ -83,6 +83,8 @@ QString Database::nextFileName()
 		Parsers::DatabaseParser parser;
 		QFile dbf(m_dbfile);
 		parser.parse(&dbf);
+		parser.gc();
+		
 		m_lastFileName = parser.lastFileName();
 	}
 	if(m_lastFileName.isEmpty())

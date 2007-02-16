@@ -30,6 +30,10 @@
 #include "base/logger.h"
 #include "base/settings.h"
 
+#include "project/projectcollection.h"
+
+#include "registers/manager.h"
+
 #ifdef Q_OS_UNIX
 #include <unistd.h>
 #include <signal.h>
@@ -86,7 +90,9 @@ int main(int argc, char **argv)
 	
 	Server::TcpServer server;
 	
+	server.addObserver(new Projects::ProjectCollection);
 	server.addObserver(new PackageHandler());
+	server.addObserver(new Registers::Manager);
 	
 	server.openConnection( host, port );
 	
@@ -103,7 +109,11 @@ void cleanup(int s)
 
 	if ( finishing )
 	{
-		if ( s == 11 ) exit(-256);
+		if ( s == 11 )
+		{
+			qDebug("Crashed! Exiting!...");
+			exit(-256);
+		}
 		return;
 	}
 

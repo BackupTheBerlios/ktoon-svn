@@ -18,50 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef SPROJECT_H
-#define SPROJECT_H
+#ifndef REGISTERSMANAGER_H
+#define REGISTERSMANAGER_H
 
-#include <ktproject.h>
-#include <QTimer>
-#include "packages/error.h"
-#include <QMultiHash>
-#include "users/user.h"
+#include <base/observer.h>
+
+namespace Registers {
 
 /**
- * @author David Cuadrado <krawek@toonka.com>
- */
-
-
-class SProject : public KTProject
+ * @author David Cuadrado \<krawek@toonka.com\>
+*/
+class Manager : public Base::Observer
 {
-	Q_OBJECT;
-	
 	public:
-		enum UserType{Owner = 0, Desiger};
-		SProject(const QString & filename, QObject *parent = 0);
-		~SProject();
-		void resetTimer();
-		QDomElement infoToXml(QDomDocument &doc) const;
+		Manager();
+		~Manager();
 		
-		bool addUser( const QString& login, UserType type );
-		void setUsers( const QMultiHash<SProject::UserType, QString> & users);
-		QString fileName();
-		
-		bool isOwner(const Users::User* user);
-		
-		
-	private:
-		struct Private;
-		Private *const d;
-	
-	public slots:
-		bool save();
-		
-	signals:
-		void requestSendErrorMessage(const QString &message, Packages::Error::Level level);
-		
-	protected:
-		void timerEvent(QTimerEvent * event );
+		virtual void handlePackage(Base::Package* const pkg);
+
 };
+
+}
 
 #endif

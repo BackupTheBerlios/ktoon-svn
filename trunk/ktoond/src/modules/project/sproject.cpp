@@ -29,16 +29,19 @@ struct SProject::Private
 	QTimer *saver;
 	QString filename;
 	QMultiHash<UserType, QString> users;
+	
+	int timerId;
 };
 
 SProject::SProject(const QString & filename, QObject *parent) : KTProject(parent), d( new Private() )
 {
+	DINIT;
 	d->filename = filename;
 	d->saver = new QTimer(this);
 	d->saver->setInterval( 30000 );
 	d->saver->start();
 	QObject::connect(d->saver, SIGNAL(timeout ()), this, SLOT(save()));
-	startTimer(300000);
+	d->timerId = startTimer(300000);
 }
 
 void SProject::resetTimer()
@@ -50,7 +53,7 @@ void SProject::resetTimer()
 SProject::~SProject()
 {
 	delete d->saver;
-	
+	killTimer(d->timerId);
 	delete d;
 }
 

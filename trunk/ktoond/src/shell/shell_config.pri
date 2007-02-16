@@ -11,3 +11,7 @@ include($$LIB_DIR/lib.pri)
 PACKAGES_DIR = ../packages/
 include($$PACKAGES_DIR/packages.pri)
 
+MODULES_DIR = ../modules/
+include($$MODULES_DIR/modules.pri)
+
+

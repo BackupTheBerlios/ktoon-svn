@@ -51,6 +51,8 @@ class DatabaseParser : public KTXmlParserBase
 		
 		Projects::Database::ProjectInfo projectInfo(const QString &projectName, const QString &db);
 		
+		void gc();
+		
 	private:
 		// TODO: Poner esto en un struct Private
 		QString m_lastFileName;

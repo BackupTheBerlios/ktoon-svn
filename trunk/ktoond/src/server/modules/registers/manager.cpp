@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosxx@gmail.com                                                   *
+ *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,35 +18,45 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef HANDLERPACKGES_H
-#define HANDLERPACKGES_H
+#include "manager.h"
 
+#include <QFile>
 
-#include <QString>
-#include "core/packagehandlerbase.h"
+#include "base/package.h"
+#include "base/settings.h"
+
 #include "core/connection.h"
 
-namespace Projects {
-class ProjectCollection; }
+namespace Registers {
 
-/**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
- * @TODO Remove me when packagehandlerbase is ported to new architecture
- */
-class PackageHandler : public Server::PackageHandlerBase
+Manager::Manager() : Base::Observer()
 {
-	public:
-		PackageHandler();
-		~PackageHandler();
-		
-		void handle(Server::Connection *, const QString &root, const QString &package );
-		void connectionClosed(Server::Connection *) {}
-		
-	private:
-		class Private;
-		Private *const d;
-};
+}
 
-#endif
 
+Manager::~Manager()
+{
+}
+
+
+void Manager::handlePackage(Base::Package* const pkg)
+{
+	
+	if( pkg->root() == "listregisters" )
+	{
+		// FIXME FIXME
+		QString fname = Base::Settings::self()->databaseDirPath() + "/petitions.xml";
+		
+		QFile f(fname);
+		if( f.exists() )
+		{
+			if( f.open(QIODevice::ReadOnly | QIODevice::Text) )
+			{
+				pkg->source()->sendToClient(f.readAll());
+			}
+		}
+	}
+}
+
+}
 
