@@ -16,7 +16,6 @@
 - Componentes GUI -
 	* Sonido
 	* PaintArea
-		- Agrupar +
 		- Reglas
 		- Lineas de ayuda
 	* Tweening
@@ -31,7 +30,6 @@
 		- Copy, Paste and Cut PRIORIDAD
 
 - General -
-	* Serializar +
 	* Exportar e importar a SVG
 	* Importar Bitmaps
 	* Trazar Bitmaps
