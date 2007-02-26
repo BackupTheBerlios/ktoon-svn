@@ -82,7 +82,7 @@ void PackageHandlerBase::handlePackage(Base::Package *const pkg)
 		QDomDocument doc;
 		doc.setContent(package);
 		
-		QDomElement element = doc.firstChildElement("message");
+		QDomElement element = doc.firstChild().firstChildElement("message");
 		element.setAttribute("from", cnn->user()->login());
 		
 		cnn->sendToAll(doc);
