@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosxx@gmail.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,45 +17,57 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#include "noticedialog.h"
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#include <QLineEdit>
 
-#include <dworkspacemainwindow.h>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QPushButton>
+#include "../packages/notice.h"
 
-namespace Base {
-class ModuleWidget;
-}
+namespace Notices {
 
-/**
- * @author David Cuadrado <krawek@gmail.com>
-*/
-class MainWindow : public DWorkspaceMainWindow
+struct NoticeDialog::Private
 {
-	Q_OBJECT;
-	public:
-		MainWindow(QWidget *parent = 0);
-		~MainWindow();
-		
-	private:
-		void createModules();
-		void createMenuBar();
-		
-	protected:
-		void registerModule(Base::ModuleWidget *w);
-		
-	private slots:
-		void updateModules();
-		void clearModules();
-		void addWidgetAsWindow(QWidget *w);
-		void connectToServer();
-		void showNoticeDialog();
-		
-		
-	private:
-		struct Private;
-		Private *const d;
-
+	QLineEdit *message;
+	QPushButton *send, *close;
 };
 
-#endif
+NoticeDialog::NoticeDialog(QWidget * parent): QFrame( parent), d(new Private)
+{
+	setWindowTitle( "Send notice" );
+	setAttribute(Qt::WA_DeleteOnClose);
+	
+	QVBoxLayout *layout = new QVBoxLayout( this );
+	d->message = new QLineEdit();
+	
+	layout->addWidget(d->message);
+	
+	QHBoxLayout *buttons = new QHBoxLayout();
+	d->send = new QPushButton("send");
+	buttons->addWidget(d->send);
+	d->close = new QPushButton("close");
+	
+	buttons->addWidget(d->close);
+	connect(d->close, SIGNAL(clicked()), this, SLOT(close()));
+	connect(d->send, SIGNAL(clicked()), this, SLOT(send()));
+	connect(d->message, SIGNAL(returnPressed()), d->send, SLOT(animateClick ()));
+	
+	layout->addLayout(buttons);
+}
+
+
+NoticeDialog::~NoticeDialog()
+{
+}
+
+
+void NoticeDialog::send()
+{
+	emit requestSendNotice( Packages::Notice(d->message->text()).toString());
+	d->message->clear();
+}
+
+}

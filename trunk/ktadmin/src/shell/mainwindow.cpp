@@ -36,6 +36,8 @@
 #include "bans/modulewidget.h"
 #include "backups/modulewidget.h"
 #include "registers/modulewidget.h"
+#include "notices/noticedialog.h"
+
 
 #include "manager.h"
 #include "connectdialog.h"
@@ -107,8 +109,12 @@ void MainWindow::createMenuBar()
 	connectAction->setIcon(QIcon(THEME_DIR+"/icons/connect.png"));
 	connectAction->setStatusTip(tr("Connect to server..."));
 	
+	QAction *notice = fileMenu->addAction(tr("Show notice dialog"), this, SLOT(showNoticeDialog()));
+	
+	
 	fileMenu->addSeparator();
 	fileMenu->addAction(tr("&Quit"), qApp, SLOT(closeAllWindows()));
+	
 	
 	
 	
@@ -177,3 +183,12 @@ void MainWindow::connectToServer()
 	
 }
 
+void MainWindow::showNoticeDialog()
+{
+	Notices::NoticeDialog *dialog = new Notices::NoticeDialog(this) ;
+	addWidgetAsWindow(dialog);
+	
+	
+	connect(dialog, SIGNAL(requestSendNotice(const QString &)),  d->manager, SLOT(sendPackage(const QString &)));
+	
+}

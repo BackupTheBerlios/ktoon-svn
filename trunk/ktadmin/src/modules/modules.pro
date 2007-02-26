@@ -7,4 +7,5 @@ projects \
 server \
 bans \
 backups \
-registers
+registers \
+notices

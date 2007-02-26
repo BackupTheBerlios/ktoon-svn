@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2007 by David Cuadrado                                  *
- *   krawek@gmail.com                                                      *
+ *   Copyright (C) 2007 by Jorge Cuadrado                                  *
+ *   kuadrosxx@gmail.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,44 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef NOTICESNOTICEDIALOG_H
+#define NOTICESNOTICEDIALOG_H
 
-#include <dworkspacemainwindow.h>
 
-namespace Base {
-class ModuleWidget;
-}
+#include <QFrame>
+
+namespace Notices {
+
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author Jorge Cuadrado <kuadrosxx@gmail.com>
 */
-class MainWindow : public DWorkspaceMainWindow
+class NoticeDialog: public QFrame
 {
-	Q_OBJECT;
+	Q_OBJECT
 	public:
-		MainWindow(QWidget *parent = 0);
-		~MainWindow();
+		NoticeDialog(QWidget * parent = 0);
+		~NoticeDialog();
 		
-	private:
-		void createModules();
-		void createMenuBar();
+	public slots:
+		void send();
 		
-	protected:
-		void registerModule(Base::ModuleWidget *w);
-		
-	private slots:
-		void updateModules();
-		void clearModules();
-		void addWidgetAsWindow(QWidget *w);
-		void connectToServer();
-		void showNoticeDialog();
-		
-		
+	signals:
+		void requestSendNotice(const QString& notice);
+
 	private:
 		struct Private;
 		Private *const d;
-
+		
 };
+
+}
 
 #endif
