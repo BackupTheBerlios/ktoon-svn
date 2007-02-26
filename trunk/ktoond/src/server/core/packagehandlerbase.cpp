@@ -67,13 +67,12 @@ void PackageHandlerBase::handlePackage(Base::Package *const pkg)
 	
 	TcpServer *server = cnn->server();
 	
-	
 	if ( root == "chat" )
 	{
 		QDomDocument doc;
 		doc.setContent(package);
 		
-		QDomElement element = doc.firstChildElement("message");
+		QDomElement element = doc.firstChild().firstChildElement("message");
 		element.setAttribute("from", cnn->user()->login());
 		
 		cnn->sendToAll(doc);

@@ -36,7 +36,7 @@ class Client : public KTSocketBase
 	Q_OBJECT;
 	public:
 		Client(Server::Connection *connection);
-		~Client();
+		virtual ~Client();
 		
 		virtual void readed(const QString &readed);
 		
