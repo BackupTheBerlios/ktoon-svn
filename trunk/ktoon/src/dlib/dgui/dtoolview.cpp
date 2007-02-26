@@ -162,8 +162,6 @@ bool DToolView::event(QEvent *e)
 			}
 		}
 	}
-	
-	
 	return toReturn;
 }
 

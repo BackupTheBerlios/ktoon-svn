@@ -44,8 +44,10 @@ class KTChat::Private
 
 KTChat::KTChat(QWidget *parent) : QDialog(parent), d(new Private)
 {
+	setAttribute(Qt::WA_DeleteOnClose);
 	QGridLayout *layout = new QGridLayout(this);
 	
+	setWindowTitle("chat");
 	
 	d->browser = new QTextBrowser;
 	layout->addWidget(d->browser, 0, 1);

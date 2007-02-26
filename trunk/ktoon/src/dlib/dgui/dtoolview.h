@@ -36,7 +36,7 @@ class D_IDEAL_EXPORT DToolView : public QDockWidget
 	
 	public:
 		DToolView(const QString &title, const QIcon &icon = QIcon(), QWidget * parent = 0);
-		~DToolView();
+		virtual ~DToolView();
 		
 		void setDescription(const QString &description);
 		DViewButton *button() const;

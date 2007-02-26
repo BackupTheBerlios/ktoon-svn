@@ -23,6 +23,8 @@
 #include <QDomDocument>
 #include <ktabstractprojectmanagerhandler.h>
 
+
+class KTChat;
 class KTProjectCommand;
 class KTNetSocket;
 class KTNetProjectManagerParams;
@@ -54,6 +56,7 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		
 		void sendPackage(const QDomDocument &doc);
 		
+		KTChat *chat();
 		
 	private:
 		bool loadProjectFromServer(const QString &name);
@@ -61,9 +64,13 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		
 		void setProject(KTProject *project);
 		
+	private slots:
+		void sendChatMessage(const QString & message);
+		
 	private:
 		struct Private;
 		Private *const d;
+		
 };
 
 #endif

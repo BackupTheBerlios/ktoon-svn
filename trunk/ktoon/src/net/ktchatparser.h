@@ -17,30 +17,32 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef KTCHATPARSER_H
+#define KTCHATPARSER_H
 
-#include "ktconnectpackage.h"
+#include <ktxmlparserbase.h>
 
-#include <dmd5hash.h>
-/*
-<connect version="0" >
-        <login>the_login</login>
-        <password>the_hashed_password_md5</password>
-</connect>
+/**
+	@author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-KTConnectPackage::KTConnectPackage(const QString & login, const QString& passwd)
- : QDomDocument()
+class KTChatParser : public KTXmlParserBase
 {
-	QDomElement root = createElement("connect");
-	root.setAttribute("version", "0");
-	appendChild(root);
-	
-	root.appendChild( createElement("login") ).appendChild(createTextNode(login));
-	root.appendChild( createElement("password")).appendChild(createTextNode(DMD5Hash::hash( passwd)));
-}
+	public:
+		KTChatParser();
+		virtual ~KTChatParser();
+		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
+		virtual bool endTag(const QString &tag);
+		virtual void text(const QString &text);
+		
+	public:
+		QString message() const;
+		QString login() const;
+		
+	private:
+		struct Private;
+		Private *const d;
 
+};
 
-KTConnectPackage::~KTConnectPackage()
-{
-}
-
-
+#endif

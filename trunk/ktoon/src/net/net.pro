@@ -19,7 +19,9 @@ HEADERS += ktnetprojectmanagerparams.h \
            ktlistprojectdialog.h \
            kterrorparser.h \
            ktackparser.h \
-           ktimportprojectpackage.h 
+           ktimportprojectpackage.h \
+           ktchatpackage.h \
+           ktchatparser.h
 SOURCES += ktnetprojectmanagerparams.cpp \
            ktnetprojectmanagerhandler.cpp \
            ktnetsocket.cpp \
@@ -36,7 +38,9 @@ SOURCES += ktnetprojectmanagerparams.cpp \
            ktlistprojectdialog.cpp \
            kterrorparser.cpp \
            ktackparser.cpp \
-           ktimportprojectpackage.cpp 
+           ktimportprojectpackage.cpp \
+           ktchatpackage.cpp \
+           ktchatparser.cpp
 CONFIG += release \
 warn_on \
 staticlib

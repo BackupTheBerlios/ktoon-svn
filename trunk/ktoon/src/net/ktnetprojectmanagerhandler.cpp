@@ -41,18 +41,21 @@
 
 #include "ktsavenetproject.h"
 #include "ktopenpackage.h"
+#include "ktchatpackage.h"
 
 #include "kterrorparser.h"
 #include "ktprojectsparser.h"
 #include "ktprojectparser.h"
 #include "ktrequestparser.h"
+#include "ktackparser.h"
+#include "ktchatparser.h"
+
 #include "ktrequestbuilder.h"
 
-#include "ktackparser.h"
+#include "ktproject.h"
 
 #include "ktlistprojectdialog.h"
-
-#include "ktproject.h"
+#include "ktchat.h"
 
 #include <QTemporaryFile>
 
@@ -66,6 +69,7 @@ struct KTNetProjectManagerHandler::Private
 	
 	QString sign;
 	bool ownPackage;
+	KTChat *chat;
 };
 
 KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent), d(new Private)
@@ -74,11 +78,15 @@ KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbst
 	d->project = 0;
 	d->params = 0;
 	d->ownPackage = false;
+	d->chat = new KTChat;
+	d->chat->setVisible(false);
+	connect(d->chat, SIGNAL(requestSendMessage(const QString&)), this, SLOT(sendChatMessage(const QString&)));
 }
 
 
 KTNetProjectManagerHandler::~KTNetProjectManagerHandler()
 {
+	d->chat->close();
 	delete d;
 }
 
@@ -207,7 +215,6 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 			
 			KTProjectRequest request = KTRequestBuilder::fromResponse(parser.response() );
 			emitRequest(&request);
-			
 		}
 		else // TODO: mostrar error
 		{
@@ -271,6 +278,18 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 				dDebug() << "opening " << dialog.currentProject() << "project";
 				loadProjectFromServer(dialog.currentProject() );
 			}
+			else
+			{
+				//TODO: disconnect
+			}
+		}
+	}
+	else if (root == "chat")
+	{
+		KTChatParser parser;
+		if(parser.parse(package))
+		{
+			d->chat->addMessage(parser.login(), parser.message());
 		}
 	}
 	else
@@ -290,8 +309,20 @@ void KTNetProjectManagerHandler::sendPackage(const QDomDocument &doc)
 	d->socket->send(doc);
 }
 
+KTChat *KTNetProjectManagerHandler::chat()
+{
+	return d->chat;
+}
+
 void KTNetProjectManagerHandler::setProject(KTProject *project)
 {
 	d->project = project;
 }
+
+void KTNetProjectManagerHandler::sendChatMessage(const QString & message)
+{
+	KTChatPackage package(message);
+	sendPackage(package);
+}
+
 

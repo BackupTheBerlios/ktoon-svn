@@ -69,7 +69,7 @@
 
 #include "ktchat.h"
 
-KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_projectManager(0), m_viewDoc(0), m_animationSpace(0), m_exposureSheet(0), m_scenes(0)
+KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_projectManager(0), m_viewDoc(0), m_animationSpace(0), m_exposureSheet(0), m_scenes(0), m_viewChat(0)
 {
 	DINIT;
 	
@@ -299,6 +299,14 @@ bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 		m_projectManager->setHandler( netProjectManagerHandler );
 		m_projectManager->setParams(params);
 		m_isNetworkProject = true;
+		
+		if(m_viewChat)
+		{
+			removeToolView(m_viewChat);
+		}
+		m_viewChat = addToolView( netProjectManagerHandler->chat(),  Qt::RightDockWidgetArea, All);
+		
+		
 		return true;
 	}
 	

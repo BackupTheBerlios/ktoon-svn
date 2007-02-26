@@ -192,6 +192,7 @@ class KTMainWindow : public DTabbedMainWindow
 		
 	private: // Network
 		bool m_isNetworkProject;
+		DToolView *m_viewChat;
 		
 	// Components
 	private:

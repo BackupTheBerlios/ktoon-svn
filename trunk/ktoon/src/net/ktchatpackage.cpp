@@ -17,29 +17,23 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#include "ktchatpackage.h"
 
-#include "ktconnectpackage.h"
-
-#include <dmd5hash.h>
-/*
-<connect version="0" >
-        <login>the_login</login>
-        <password>the_hashed_password_md5</password>
-</connect>
-*/
-KTConnectPackage::KTConnectPackage(const QString & login, const QString& passwd)
- : QDomDocument()
+KTChatPackage::KTChatPackage(const QString &text) : QDomDocument()
 {
-	QDomElement root = createElement("connect");
+	QDomElement root = createElement("chat");
 	root.setAttribute("version", "0");
 	appendChild(root);
 	
-	root.appendChild( createElement("login") ).appendChild(createTextNode(login));
-	root.appendChild( createElement("password")).appendChild(createTextNode(DMD5Hash::hash( passwd)));
+	QDomElement message = createElement("message");
+	message.setAttribute("text", text);
+	
+	root.appendChild(message);
 }
 
 
-KTConnectPackage::~KTConnectPackage()
+KTChatPackage::~KTChatPackage()
 {
 }
 

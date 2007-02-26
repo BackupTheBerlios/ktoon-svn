@@ -17,30 +17,60 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
 
-#include "ktconnectpackage.h"
+#include "ktchatparser.h"
 
-#include <dmd5hash.h>
-/*
-<connect version="0" >
-        <login>the_login</login>
-        <password>the_hashed_password_md5</password>
-</connect>
-*/
-KTConnectPackage::KTConnectPackage(const QString & login, const QString& passwd)
- : QDomDocument()
+struct KTChatParser::Private
 {
-	QDomElement root = createElement("connect");
-	root.setAttribute("version", "0");
-	appendChild(root);
+	QString message;
+	QString login;
+};
+
+
+KTChatParser::KTChatParser() : KTXmlParserBase(), d(new Private())
+{
 	
-	root.appendChild( createElement("login") ).appendChild(createTextNode(login));
-	root.appendChild( createElement("password")).appendChild(createTextNode(DMD5Hash::hash( passwd)));
 }
 
 
-KTConnectPackage::~KTConnectPackage()
+KTChatParser::~KTChatParser()
+{
+	
+}
+
+
+bool KTChatParser::startTag(const QString &tag, const QXmlAttributes &atts)
+{
+	if ( root() == "chat" )
+	{
+		if ( tag == "message" )
+		{
+			d->message = atts.value("text");
+			d->login = atts.value("from");
+		}
+	}
+	
+	
+	return true;
+}
+
+bool KTChatParser::endTag(const QString &)
+{
+	return true;
+}
+
+void KTChatParser::text(const QString &)
 {
 }
 
+QString KTChatParser::message() const
+{
+	return d->message;
+}
+
+QString KTChatParser::login() const
+{
+	return d->login;
+}
 
