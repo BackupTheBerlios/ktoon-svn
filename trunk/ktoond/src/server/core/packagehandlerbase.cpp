@@ -84,11 +84,11 @@ void PackageHandlerBase::handlePackage(Base::Package *const pkg)
 		
 		QDomElement element = doc.firstChild().firstChildElement("message");
 		element.setAttribute("from", cnn->user()->login());
-		
 		cnn->sendToAll(doc);
 	}
 	else if ( root == "wall" )
 	{
+		
 	}
 	else
 	{

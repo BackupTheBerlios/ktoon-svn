@@ -43,7 +43,6 @@ class ChatParser : public KTXmlParserBase
 	private:
 		struct Private;
 		Private *const d;
-
 };
 
 }
