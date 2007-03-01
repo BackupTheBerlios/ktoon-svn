@@ -21,7 +21,6 @@
 #ifndef NOTICESNOTICEDIALOG_H
 #define NOTICESNOTICEDIALOG_H
 
-
 #include <QFrame>
 
 namespace Notices {
@@ -35,7 +34,7 @@ class NoticeDialog: public QFrame
 	Q_OBJECT
 	public:
 		NoticeDialog(QWidget * parent = 0);
-		~NoticeDialog();
+		virtual ~NoticeDialog();
 		
 	public slots:
 		void send();

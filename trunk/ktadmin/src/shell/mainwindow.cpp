@@ -37,6 +37,7 @@
 #include "backups/modulewidget.h"
 #include "registers/modulewidget.h"
 #include "notices/noticedialog.h"
+#include "notices/noticeobserver.h"
 
 
 #include "manager.h"
@@ -46,6 +47,12 @@ struct MainWindow::Private
 {
 	QList<Base::ModuleWidget *> modules;
 	Manager *manager;
+	
+	~Private()
+	{
+		qDeleteAll (modules);
+	};
+	
 };
 
 
@@ -98,6 +105,9 @@ void MainWindow::createModules()
 	Registers::ModuleWidget *registersModule = new Registers::ModuleWidget;
 	addToolView(registersModule, Qt::RightDockWidgetArea)->setDescription(tr("Administer registers"));
 	registerModule(registersModule);
+	
+	Notices::NoticeObserver *observer = new Notices::NoticeObserver;
+	d->manager->addObserver(observer );
 }
 
 void MainWindow::createMenuBar()
@@ -111,17 +121,12 @@ void MainWindow::createMenuBar()
 	
 	QAction *notice = fileMenu->addAction(tr("Show notice dialog"), this, SLOT(showNoticeDialog()));
 	
-	
 	fileMenu->addSeparator();
 	fileMenu->addAction(tr("&Quit"), qApp, SLOT(closeAllWindows()));
-	
-	
-	
 	
 	// Add actions to toolbar
 	QToolBar *mainToolBar = new QToolBar(this);
 	mainToolBar->addAction(connectAction);
-	
 	
 	addToolBar(Qt::TopToolBarArea, mainToolBar);
 }
@@ -188,7 +193,5 @@ void MainWindow::showNoticeDialog()
 	Notices::NoticeDialog *dialog = new Notices::NoticeDialog(this) ;
 	addWidgetAsWindow(dialog);
 	
-	
 	connect(dialog, SIGNAL(requestSendNotice(const QString &)),  d->manager, SLOT(sendPackage(const QString &)));
-	
 }

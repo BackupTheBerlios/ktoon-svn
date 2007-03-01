@@ -38,7 +38,6 @@ struct NoticeDialog::Private
 NoticeDialog::NoticeDialog(QWidget * parent): QFrame( parent), d(new Private)
 {
 	setWindowTitle( "Send notice" );
-	setAttribute(Qt::WA_DeleteOnClose);
 	
 	QVBoxLayout *layout = new QVBoxLayout( this );
 	d->message = new QLineEdit();
@@ -56,6 +55,7 @@ NoticeDialog::NoticeDialog(QWidget * parent): QFrame( parent), d(new Private)
 	connect(d->message, SIGNAL(returnPressed()), d->send, SLOT(animateClick ()));
 	
 	layout->addLayout(buttons);
+	hide();
 }
 
 

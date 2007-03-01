@@ -38,7 +38,6 @@ class RegisterListParser : public KTXmlParserBase
 		bool endTag(const QString &tag);
 		void text(const QString &msg);
 		
-		
 		QList<QHash<QString, QString> > registers() const;
 		
 	private:
