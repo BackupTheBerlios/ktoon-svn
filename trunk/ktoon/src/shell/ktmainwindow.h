@@ -54,6 +54,7 @@
 #include "ktstatusbar.h"
 
 #include "dosd.h"
+#include "dtoolview.h"
 
 // Projects
 #include "ktprojectmanager.h"

@@ -20,6 +20,7 @@
 
 #include "ktmainwindow.h"
 
+
 #include "ktnewproject.h"
 #include "ktabout.h"
 #include "kthelpbrowser.h"
@@ -67,9 +68,8 @@
 #include <QDesktopServices>
 //
 
-#include "ktchat.h"
 
-KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(), m_projectManager(0), m_viewDoc(0), m_animationSpace(0), m_exposureSheet(0), m_scenes(0), m_viewChat(0)
+KTMainWindow::KTMainWindow(KTSplash *splash) : DTabbedMainWindow(),  m_projectManager(0), m_viewDoc(0), m_animationSpace(0),  m_viewChat(0), m_exposureSheet(0),  m_scenes(0)
 {
 	DINIT;
 	
@@ -303,8 +303,9 @@ bool KTMainWindow::setupNetworkProject(KTProjectManagerParams *params)
 		if(m_viewChat)
 		{
 			removeToolView(m_viewChat);
+			delete m_viewChat;
 		}
-		m_viewChat = addToolView( netProjectManagerHandler->chat(),  Qt::RightDockWidgetArea, All);
+		m_viewChat = addToolView( netProjectManagerHandler->comunicationWidget(),  Qt::RightDockWidgetArea, All);
 		
 		
 		return true;
@@ -614,7 +615,4 @@ void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
 		m_projectManager->undoHistory()->push(command);
 	}
 }
-
-
-
 

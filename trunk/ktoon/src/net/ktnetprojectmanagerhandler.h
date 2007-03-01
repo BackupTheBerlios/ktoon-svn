@@ -22,7 +22,7 @@
 
 #include <QDomDocument>
 #include <ktabstractprojectmanagerhandler.h>
-
+#include <QTabWidget>
 
 class KTChat;
 class KTProjectCommand;
@@ -56,7 +56,7 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		
 		void sendPackage(const QDomDocument &doc);
 		
-		KTChat *chat();
+		QTabWidget *comunicationWidget();
 		
 	private:
 		bool loadProjectFromServer(const QString &name);
@@ -70,7 +70,6 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 	private:
 		struct Private;
 		Private *const d;
-		
 };
 
 #endif

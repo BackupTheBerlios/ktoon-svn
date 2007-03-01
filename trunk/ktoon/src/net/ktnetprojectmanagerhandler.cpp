@@ -49,6 +49,7 @@
 #include "ktrequestparser.h"
 #include "ktackparser.h"
 #include "ktchatparser.h"
+#include "ktnoticeparser.h"
 
 #include "ktrequestbuilder.h"
 
@@ -58,6 +59,7 @@
 #include "ktchat.h"
 
 #include <QTemporaryFile>
+#include <QTabWidget>
 
 struct KTNetProjectManagerHandler::Private
 {
@@ -69,6 +71,9 @@ struct KTNetProjectManagerHandler::Private
 	
 	QString sign;
 	bool ownPackage;
+	
+	QTabWidget *comunicationModule;
+	
 	KTChat *chat;
 };
 
@@ -78,7 +83,12 @@ KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbst
 	d->project = 0;
 	d->params = 0;
 	d->ownPackage = false;
+	
+	d->comunicationModule = new QTabWidget;
+	
 	d->chat = new KTChat;
+	d->comunicationModule->addTab(d->chat, "chat");
+	
 	d->chat->setVisible(false);
 	connect(d->chat, SIGNAL(requestSendMessage(const QString&)), this, SLOT(sendChatMessage(const QString&)));
 }
@@ -292,6 +302,15 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 			d->chat->addMessage(parser.login(), parser.message());
 		}
 	}
+	else if (root == "notice")
+	{
+		KTNoticeParser parser;
+		if(parser.parse(package))
+		{
+			QString message = QObject::tr("From") + ": "+ parser.from() + "\n" + parser.message();
+			DOsd::self()->display(message);
+		}
+	}
 	else
 	{
 		dDebug("net") << "Unknown package: " << root;
@@ -309,9 +328,9 @@ void KTNetProjectManagerHandler::sendPackage(const QDomDocument &doc)
 	d->socket->send(doc);
 }
 
-KTChat *KTNetProjectManagerHandler::chat()
+QTabWidget *KTNetProjectManagerHandler::comunicationWidget()
 {
-	return d->chat;
+	return d->comunicationModule;
 }
 
 void KTNetProjectManagerHandler::setProject(KTProject *project)

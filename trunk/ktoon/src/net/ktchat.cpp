@@ -24,6 +24,8 @@
 #include <QLineEdit>
 
 #include <QGridLayout>
+#include <QPushButton>
+#include <QHBoxLayout>
 
 class KTChat::Private
 {
@@ -40,6 +42,8 @@ class KTChat::Private
 		
 		QLineEdit *lineEdit;
 		QTextBrowser *browser;
+		QPushButton *send;
+		
 };
 
 KTChat::KTChat(QWidget *parent) : QDialog(parent), d(new Private)
@@ -50,13 +54,21 @@ KTChat::KTChat(QWidget *parent) : QDialog(parent), d(new Private)
 	setWindowTitle("chat");
 	
 	d->browser = new QTextBrowser;
-	layout->addWidget(d->browser, 0, 1);
+	layout->addWidget(d->browser, 0, 0 );
+	
+	
+	QHBoxLayout *box = new QHBoxLayout;
 	
 	d->lineEdit = new QLineEdit;
-	layout->addWidget(d->lineEdit, 1, 1);
+	box->addWidget(d->lineEdit);
 	
+	d->send = new QPushButton(tr("Send"));
+	box->addWidget(d->send);
 	
-	connect(d->lineEdit, SIGNAL(returnPressed()), this, SLOT(sendMessage()));
+	layout->addLayout( box, 1, 0);
+	
+	connect(d->lineEdit, SIGNAL(returnPressed()), d->send, SLOT(animateClick()));
+	connect(d->send, SIGNAL(clicked()), this, SLOT(sendMessage()));
 }
 
 
@@ -75,7 +87,9 @@ void KTChat::sendMessage()
 {
 	QString text = d->lineEdit->text();
 	d->lineEdit->clear();
-	
-	emit requestSendMessage(text);
+	if(!text.isEmpty())
+	{
+		emit requestSendMessage(text);
+	}
 }
 
