@@ -120,8 +120,8 @@ void KTModuleWidgetBase::itemResponse(KTItemResponse *itemResponse)
 	Q_UNUSED(itemResponse);
 }
 
-// void KTModuleWidgetBase::libraryResponse(KTProjectResponse *libraryResponse)
-// {
-// 	Q_UNUSED(libraryResponse);
-// }
+void KTModuleWidgetBase::libraryResponse(KTLibraryResponse *libraryResponse)
+{
+	Q_UNUSED(libraryResponse);
+}
 

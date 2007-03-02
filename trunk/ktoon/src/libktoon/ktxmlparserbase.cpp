@@ -105,14 +105,14 @@ bool KTXmlParserBase::characters(const QString & ch)
 bool KTXmlParserBase::error ( const QXmlParseException & exception )
 {
 	dWarning() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
-	dWarning() << "Document: " << d->document;
+	dWarning() << __PRETTY_FUNCTION__ << " Document: " << d->document;
 	return true;
 }
 
 bool KTXmlParserBase::fatalError ( const QXmlParseException & exception )
 {
 	dFatal() << exception.lineNumber() << "x" << exception.columnNumber() << ": " << exception.message();
-	dWarning() << "Document: " << d->document;
+	dWarning() << __PRETTY_FUNCTION__ << " Document: " << d->document;
 	return true;
 }
 

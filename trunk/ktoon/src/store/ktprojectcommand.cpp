@@ -659,7 +659,9 @@ void KTProjectCommand::itemCommand(bool redo)
 
 void KTProjectCommand::libraryCommand(bool redo)
 {
-	KTLibraryResponse *response = static_cast<KTLibraryResponse *>(response);
+	D_FUNCINFO;
+	
+	KTLibraryResponse *response = static_cast<KTLibraryResponse *>(d->response);
 	if ( redo )
 	{
 		switch(response->action())

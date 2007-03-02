@@ -35,6 +35,7 @@ class KTBrushManager;
 class KTInputDeviceInformation;
 class KTProject;
 class KTPaintAreaRotator;
+
 /**
  * Esta clase provee un area para realizar diferentes trazos
  * @author Jorge Cuadrado \<kuadrosx@toonka.com\> - David Cuadrado \<krawek@toonka.com\>
@@ -104,9 +105,9 @@ class KTPaintArea : public QGraphicsView, public KTAbstractProjectResponseHandle
 		void frameResponse(KTFrameResponse *event);
 		void layerResponse(KTLayerResponse *event);
 		void sceneResponse(KTSceneResponse *event);
-		void projectRequest(KTProjectRequest *event);
+		
 		void itemResponse(KTItemResponse *event);
-// 		void libraryRequest(KTLibraryRequest *request);
+		void libraryResponse(KTLibraryResponse *request);
 		void projectResponse(KTProjectResponse *projectResponse);
 		void drawBackground(QPainter *painter, const QRectF &rect);
 		void drawForeground( QPainter *painter, const QRectF &rect );

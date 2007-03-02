@@ -64,7 +64,7 @@ bool KTAbstractProjectResponseHandler::handleResponse(KTProjectResponse *respons
 		break;
 		case KTProjectRequest::Library:
 		{
-// 			libraryResponse( response );
+			libraryResponse(static_cast<KTLibraryResponse *>(response) );
 		}
 		break;
 		default:

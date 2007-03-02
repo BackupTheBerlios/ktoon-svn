@@ -50,7 +50,7 @@ class KTLibraryWidget : public KTModuleWidgetBase
 		void setup();
 		
 	protected:
-		virtual void libraryRequest(KTProjectRequest *request);
+		virtual void libraryResponse(KTLibraryResponse *response);
 		
 	private slots:
 		void addFolder(const QString &name);

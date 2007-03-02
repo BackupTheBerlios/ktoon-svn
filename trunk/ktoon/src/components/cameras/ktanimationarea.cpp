@@ -177,9 +177,9 @@ void KTAnimationArea::itemResponse(KTItemResponse *)
 {
 }
 
-// void KTAnimationArea::libraryResponse(KTProjectResponse *)
-// {
-// }
+void KTAnimationArea::libraryResponse(KTLibraryResponse *)
+{
+}
 
 void KTAnimationArea::render() // TODO: Extend to scenes
 {

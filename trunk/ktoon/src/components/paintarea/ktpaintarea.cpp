@@ -540,10 +540,6 @@ void KTPaintArea::sceneResponse(KTSceneResponse *event)
 	}
 }
 
-void KTPaintArea::projectRequest(KTProjectRequest *event)
-{
-	Q_UNUSED(event);
-}
 
 void KTPaintArea::itemResponse(KTItemResponse *event)
 {
@@ -581,9 +577,10 @@ void KTPaintArea::projectResponse(KTProjectResponse *)
 {
 }
 
-// void KTPaintArea::libraryRequest(KTProjectRequest *request)
-// {
-// }
+void KTPaintArea::libraryResponse(KTLibraryResponse *request)
+{
+	Q_UNUSED(request);
+}
 
 void KTPaintArea::drawBackground(QPainter *painter, const QRectF &rect)
 {

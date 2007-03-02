@@ -357,7 +357,7 @@ void KTLibraryWidget::addBitmap(const QString &bitmap)
 // 	}
 }
 
-void KTLibraryWidget::libraryRequest(KTProjectRequest *request)
+void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 {
 // 	switch(request->action())
 // 	{

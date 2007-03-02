@@ -30,6 +30,7 @@ class KTItemResponse;
 class KTFrameResponse;
 class KTSceneResponse;
 class KTLayerResponse;
+class KTLibraryResponse;
 
 /**
  * @author David Cuadrado \<krawek@gmail.com\>
@@ -48,7 +49,7 @@ class STORE_EXPORT KTAbstractProjectResponseHandler
 		virtual void layerResponse(KTLayerResponse *layerResponse) = 0;
 		virtual void sceneResponse(KTSceneResponse *sceneResponse) = 0;
 		virtual void projectResponse(KTProjectResponse *projectResponse) = 0;
-// 		virtual void libraryResponse(KTLibraryResponse *libraryResponse) = 0;
+		virtual void libraryResponse(KTLibraryResponse *libraryResponse) = 0;
 };
 
 #endif
