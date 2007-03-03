@@ -67,11 +67,8 @@ class KTLibraryWidget : public KTModuleWidgetBase
 		void requestCurrentGraphic();
 	
 	private:
-		const KTLibrary *m_library;
-		KTItemPreview *m_display;
-		KTGCTable *m_libraryTree;
-		int m_childCount;
-		QDir m_libraryDir;
+		struct Private;
+		Private *const d;
 };
 
 #endif

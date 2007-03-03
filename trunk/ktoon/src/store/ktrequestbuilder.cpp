@@ -192,10 +192,13 @@ void KTRequestBuilder::appendData(QDomDocument &doc, QDomElement &element, const
 {
 	if ( !data.isNull() && !data.isEmpty())
 	{
-		QDomCDATASection cdata = doc.createCDATASection( "data" );
-		cdata.setData( QString(data.toBase64()) );
+		QDomElement edata = doc.createElement("data");
 		
-		element.appendChild( cdata );
+		QDomCDATASection cdata = doc.createCDATASection( QString(data.toBase64()) );
+// 		cdata.setData( QString(data.toBase64()) );
+		
+		edata.appendChild( cdata );
+		element.appendChild(edata);
 	}
 }
 

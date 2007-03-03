@@ -35,67 +35,79 @@
 #include "ktlibrary.h"
 #include "ktlibraryobject.h"
 
-KTLibraryWidget::KTLibraryWidget(const KTLibrary *library,QWidget *parent) : KTModuleWidgetBase(parent), m_library(library), m_childCount(0)
+struct KTLibraryWidget::Private
+{
+	const KTLibrary *library;
+	KTItemPreview *display;
+	KTGCTable *libraryTree;
+	int childCount;
+	QDir libraryDir;
+};
+
+KTLibraryWidget::KTLibraryWidget(const KTLibrary *library,QWidget *parent) : KTModuleWidgetBase(parent), d(new Private)
 {
 	DINIT;
+	
+	d->library = library;
+	d->childCount = 0;
 	
 	setWindowIcon(QPixmap(THEME_DIR+"/icons/library.png"));
 	setWindowTitle(tr("&Library"));
 	
 	
-	m_libraryDir = QDir(CONFIG_DIR+"/libraries");
+	d->libraryDir = QDir(CONFIG_DIR+"/libraries");
 	
-	m_display = new KTItemPreview(this);
+	d->display = new KTItemPreview(this);
 	
-	m_libraryTree = new KTGCTable(this);
+	d->libraryTree = new KTGCTable(this);
 
-	connect(m_libraryTree, SIGNAL(itemClicked ( QTreeWidgetItem *, int)), this, SLOT(previewItem(QTreeWidgetItem *, int)));
-	connect(m_libraryTree, SIGNAL(itemRenamed( QTreeWidgetItem* )), this, SLOT(renameObject( QTreeWidgetItem* )));
+	connect(d->libraryTree, SIGNAL(itemClicked ( QTreeWidgetItem *, int)), this, SLOT(previewItem(QTreeWidgetItem *, int)));
+	connect(d->libraryTree, SIGNAL(itemRenamed( QTreeWidgetItem* )), this, SLOT(renameObject( QTreeWidgetItem* )));
 	
 	
 	setup();
 	
-	QGroupBox *m_buttons = new QGroupBox(this);
-	QHBoxLayout *buttonLayout = new QHBoxLayout(m_buttons);
+	QGroupBox *buttons = new QGroupBox(this);
+	QHBoxLayout *buttonLayout = new QHBoxLayout(buttons);
 	buttonLayout->setMargin(0);
 	buttonLayout->setSpacing(0);
 	
-	DImageButton *addGC = new DImageButton(QPixmap(THEME_DIR+"/icons/plussign.png" ), 22, m_buttons);
+	DImageButton *addGC = new DImageButton(QPixmap(THEME_DIR+"/icons/plussign.png" ), 22, buttons);
 	connect(addGC, SIGNAL(clicked()), this, SIGNAL(requestCurrentGraphic()));
 	
 	buttonLayout->addWidget(addGC);
 	addGC->setToolTip(tr( "Add the current graphic to Library" ));
 	
-	DImageButton *delGC = new DImageButton(QPixmap(THEME_DIR+"/icons/minussign.png" ), 22, m_buttons);
+	DImageButton *delGC = new DImageButton(QPixmap(THEME_DIR+"/icons/minussign.png" ), 22, buttons);
 	connect(delGC, SIGNAL(clicked()), this, SLOT(removeCurrentGraphic()));
 	
 	delGC->setToolTip(tr( "Remove the selected Symbol from Library" ));
 	buttonLayout->addWidget(delGC);
 	
-	DImageButton *gctoDrawingArea = new DImageButton(QPixmap(THEME_DIR+"/icons/insert_cg.png" ), 22, m_buttons);
+	DImageButton *gctoDrawingArea = new DImageButton(QPixmap(THEME_DIR+"/icons/insert_cg.png" ), 22, buttons);
 	connect(gctoDrawingArea, SIGNAL(clicked()), this, SLOT(emitSelectedComponent()));
 	gctoDrawingArea->setToolTip(tr( "Inserts the selected symbol into the drawing area" ) );
 	buttonLayout->addWidget(gctoDrawingArea);
 	
-	DImageButton *addFolderGC = new DImageButton(QPixmap(THEME_DIR+"/icons/addfolder.png" ), 22, m_buttons);
-	connect(addFolderGC, SIGNAL(clicked()), m_libraryTree, SLOT(createFolder()));
+	DImageButton *addFolderGC = new DImageButton(QPixmap(THEME_DIR+"/icons/addfolder.png" ), 22, buttons);
+	connect(addFolderGC, SIGNAL(clicked()), d->libraryTree, SLOT(createFolder()));
 	addFolderGC->setToolTip(tr( "Adds a folder to the symbol list" ));
 	buttonLayout->addWidget(addFolderGC);
 	
-	m_buttons->setLayout(buttonLayout);
+	buttons->setLayout(buttonLayout);
 	
-	addChild( m_display );
-	addChild( m_buttons );
-	addChild( m_libraryTree );
+	addChild( d->display );
+	addChild( buttons );
+	addChild( d->libraryTree );
 }
 
 void KTLibraryWidget::setup()
 {
-// 	if ( m_libraryDir.exists() )
+// 	if ( d->libraryDir.exists() )
 // 	{
 // 		// Parse!
 // 		
-// 		QStringList files = m_libraryDir.entryList(QStringList() << "*.ktlbr");
+// 		QStringList files = d->libraryDir.entryList(QStringList() << "*.ktlbr");
 // 		
 // 		foreach( QString file, files)
 // 		{
@@ -106,7 +118,7 @@ void KTLibraryWidget::setup()
 // 			reader.setContentHandler(&parser);
 // 			reader.setErrorHandler(&parser);
 // 			
-// 			QFile libFile(m_libraryDir.path() +"/"+ file );
+// 			QFile libFile(d->libraryDir.path() +"/"+ file );
 // 			QXmlInputSource xmlsource(&libFile);
 // 			
 // 			if ( reader.parse(&xmlsource) )
@@ -124,12 +136,12 @@ void KTLibraryWidget::setup()
 // 	}
 // 	else
 // 	{
-// 		m_libraryDir.mkdir(m_libraryDir.path() );
+// 		d->libraryDir.mkdir(d->libraryDir.path() );
 // 	}
 // 	
-// 	if ( !m_libraryDir.exists(m_libraryDir.path()+"/resources") )
+// 	if ( !d->libraryDir.exists(d->libraryDir.path()+"/resources") )
 // 	{
-// 		m_libraryDir.mkdir(m_libraryDir.path()+"/resources" );
+// 		d->libraryDir.mkdir(d->libraryDir.path()+"/resources" );
 // 	}
 }
 
@@ -137,7 +149,7 @@ KTLibraryWidget::~KTLibraryWidget()
 {
 	DEND;
 
-// 	QList<QTreeWidgetItem *> folders = m_libraryTree->topLevelItems();
+// 	QList<QTreeWidgetItem *> folders = d->libraryTree->topLevelItems();
 // 	QList<QTreeWidgetItem *>::ConstIterator folderIterator = folders.begin();
 // 	
 // 	while ( folderIterator != folders.end() )
@@ -148,7 +160,7 @@ KTLibraryWidget::~KTLibraryWidget()
 // 		
 // 		for ( int index = 0; index < (*folderIterator)->childCount(); index++)
 // 		{
-// 			root.appendChild( m_graphics[(*folderIterator)->child(index) ]->createXML(doc));
+// 			root.appendChild( d->graphics[(*folderIterator)->child(index) ]->createXML(doc));
 // 		}
 // 		
 // 		QFile custom(CONFIG_DIR+"/libraries/"+(*folderIterator)->text(0)+".ktlbr");
@@ -168,38 +180,40 @@ KTLibraryWidget::~KTLibraryWidget()
 // 		}
 // 		++folderIterator;
 // 	}
+	
+	delete d;
 }
 
 // void KTLibraryWidget::addGraphic(const KTGraphicComponent *graphic)
 // {
 // 	D_FUNCINFO;
-// 	if ( !m_libraryTree->currentFolder() )
+// 	if ( !d->libraryTree->currentFolder() )
 // 	{
 // 		addFolder( tr("General") );
 // 	}
 // 	
 // 	KTGraphicComponent *copy = new KTGraphicComponent(*graphic);
 // 	
-// 	m_display->addGraphicComponent( copy);
+// 	d->display->addGraphicComponent( copy);
 // 	
-// 	QTreeWidgetItem *item = new QTreeWidgetItem(m_libraryTree->currentFolder() );
+// 	QTreeWidgetItem *item = new QTreeWidgetItem(d->libraryTree->currentFolder() );
 // 	
 // 	if( graphic->componentName().isNull() )
 // 	{
-// 		item->setText(0, tr("Component #%1").arg(m_childCount++));
+// 		item->setText(0, tr("Component #%1").arg(d->childCount++));
 // 	}
 // 	else
 // 	{
 // 		item->setText(0, graphic->componentName());
 // 	}
 // 	
-// 	m_graphics.insert(item, copy);
-// 	m_libraryTree->setCurrentItem(item);
+// 	d->graphics.insert(item, copy);
+// 	d->libraryTree->setCurrentItem(item);
 // }
 
 void KTLibraryWidget::addFolder(const QString &name)
 {
-	m_libraryTree->createFolder(name);
+	d->libraryTree->createFolder(name);
 }
 
 void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
@@ -207,7 +221,7 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 	D_FUNCINFO;
 	if ( item )
 	{
-		KTLibraryObject *object = m_library->findObject(item->text(0));
+		KTLibraryObject *object = d->library->findObject(item->text(0));
 		
 		if ( !object )
 		{
@@ -221,7 +235,7 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 			{
 				if ( object->data().canConvert<QGraphicsItem *>() )
 				{
-					m_display->render( qvariant_cast<QGraphicsItem *>(object->data()));
+					d->display->render( qvariant_cast<QGraphicsItem *>(object->data()));
 				}
 			}
 			break;
@@ -236,9 +250,9 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 
 void KTLibraryWidget::emitSelectedComponent()
 {
-	if ( !m_libraryTree->currentItem() ) return;
+	if ( !d->libraryTree->currentItem() ) return;
 	
-	QString symKey = m_libraryTree->currentItem()->text(0);
+	QString symKey = d->libraryTree->currentItem()->text(0);
 	
 	// FIXME FIXME FIXME
 // 	KTProjectRequest request(KTProjectRequest::AddSymbol, KTProjectRequest::Library, "<symbol key=\""+symKey+"\" />");
@@ -265,33 +279,33 @@ void KTLibraryWidget::removeCurrentGraphic()
 // 		DCONFIG->sync();
 // 	}
 // 	
-// 	KTGraphicComponent *gc = m_graphics.take(m_libraryTree->currentItem());
+// 	KTGraphicComponent *gc = d->graphics.take(d->libraryTree->currentItem());
 // 	if ( gc )
 // 	{
-// 		QTreeWidgetItem *item = m_libraryTree->currentItem();
+// 		QTreeWidgetItem *item = d->libraryTree->currentItem();
 // 		if ( item )
 // 		{
 // 			delete item;
-// 			m_libraryTree->setCurrentItem(m_libraryTree->currentFolder());
-// 			m_display->removeGraphic();
+// 			d->libraryTree->setCurrentItem(d->libraryTree->currentFolder());
+// 			d->display->removeGraphic();
 // 		}
 // 	}
 // 	else
 // 	{
-// 		QTreeWidgetItem *currentFolder = m_libraryTree->currentFolder();
+// 		QTreeWidgetItem *currentFolder = d->libraryTree->currentFolder();
 // 		
 // 		if ( currentFolder )
 // 		{
 // 			for(int item = 0; item < currentFolder->childCount(); item++)
 // 			{
 // 				QTreeWidgetItem *child = currentFolder->child(item);
-// 				m_graphics.remove(child);
+// 				d->graphics.remove(child);
 // 			}
 // 			
-// 			QString folder = m_libraryDir.path()+"/"+currentFolder->text(0)+".ktlbr";
+// 			QString folder = d->libraryDir.path()+"/"+currentFolder->text(0)+".ktlbr";
 // 			
 // 			QFile::remove(folder);
-// 			m_libraryTree->removeCurrentFolder();
+// 			d->libraryTree->removeCurrentFolder();
 // 		}
 // 	}
 }
@@ -300,7 +314,7 @@ void KTLibraryWidget::renameObject( QTreeWidgetItem* item)
 {
 // 	if ( item )
 // 	{
-// 		KTGraphicComponent *graphic = m_graphics[item];
+// 		KTGraphicComponent *graphic = d->graphics[item];
 // 		
 // 		if ( graphic )
 // 		{
@@ -308,14 +322,14 @@ void KTLibraryWidget::renameObject( QTreeWidgetItem* item)
 // 		}
 // 		else // A Folder
 // 		{
-// 			foreach( QTreeWidgetItem *folder, m_libraryTree->topLevelItems() )
+// 			foreach( QTreeWidgetItem *folder, d->libraryTree->topLevelItems() )
 // 			{
 // 				if ( folder != item && folder->text(0) == item->text(0) )
 // 				{
 // 					// Invalid name
 // 					item->setFlags(item->flags() | Qt::ItemIsEditable );
 // 					item->setText(0, item->text(0)+QString::number(() % 999) );
-// 					m_libraryTree->editItem( item, 0);
+// 					d->libraryTree->editItem( item, 0);
 // 					break;
 // 				}
 // 			}
@@ -347,7 +361,7 @@ void KTLibraryWidget::addBitmap(const QString &bitmap)
 // 		path.addRect(toImport.rect());
 // 		imageComponent->addGraphic(path , Qt::NoPen, Qt::NoBrush,toImport);
 // 		
-// 		if ( !file.copy(m_libraryDir.path()+"/resources/"+ imageComponent->graphics()[0]->pixmapHash() ) )
+// 		if ( !file.copy(d->libraryDir.path()+"/resources/"+ imageComponent->graphics()[0]->pixmapHash() ) )
 // 		{
 // 			emit sendToOSD(tr("Cannot import ")+finfo.fileName(), 2);
 // 			return;
@@ -359,47 +373,36 @@ void KTLibraryWidget::addBitmap(const QString &bitmap)
 
 void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 {
-// 	switch(request->action())
-// 	{
-// 		case KTProjectRequest::Add:
-// 		{
-// 			QDomDocument doc;
-// 			if ( !doc.setContent(request->data().toString()) )
-// 			{
-// 				dfDebug << "Cannot set content!";
-// 				return;
-// 			}
-// 	
-// 			QDomElement root = doc.documentElement();
-// 	
-// 			if ( root.tagName() == "library" )
-// 			{
-// 				QStringList syms;
-// 				
-// 				QDomNode n = root.firstChild();
-// 				while(!n.isNull())
-// 				{
-// 					QDomElement e = n.toElement();
-// 					if(!e.isNull())
-// 					{
-// 						if ( e.tagName() == "symbol" )
-// 						{
-// 							syms << e.attribute( "name" );
-// 						}
-// 					}
-// 					n = n.nextSibling();
-// 				}
-// 				
-// 				m_libraryTree->addItems( syms );
-// 			}
-// 		}
-// 		break;
-// 		default:
-// 		{
-// 			qFatal("IMPLEMENT ME");
-// 		}
-// 		break;
-// 	}
+	switch(response->action())
+	{
+		case KTProjectRequest::Add:
+		{
+			QString key = response->arg().toString();
+			KTLibraryObject *obj = d->library->findObject(key);
+			
+			QTreeWidgetItem *item = new QTreeWidgetItem(d->libraryTree);
+			item->setText(0, key);
+			
+			if( obj )
+			{
+				switch(obj->type())
+				{
+					case KTLibraryObject::Item:
+					{
+						qvariant_cast<QGraphicsItem *>(obj->data());
+					}
+					break;
+					
+				}
+			}
+		}
+		break;
+		default:
+		{
+			qFatal("IMPLEMENT ME");
+		}
+		break;
+	}
 }
 
 
