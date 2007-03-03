@@ -18,57 +18,68 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#include "packagehandlerbase.h"
-#include <ddebug.h>
-
-
-#include <QHashIterator>
-#include <QHash>
-
-#include "users/user.h"
-
-#include "connection.h"
+#include "comunicationmanager.h"
+//base
+#include "base/package.h"
 #include "base/settings.h"
 #include "base/logger.h"
 
+//Qt
+#include <QDomDocument>
 
-#include "dapplicationproperties.h"
+//server/core
+#include "core/server.h"
+#include "core/connection.h"
 
-#include "packages/error.h"
+//server/users
+#include "users/user.h"
 
-
-#include "bans/banmanager.h"
-#include "backups/backupmanager.h"
-
-#include "base/package.h"
-
-namespace Server {
-
-struct PackageHandlerBase::Private
-{
-};
-
-PackageHandlerBase::PackageHandlerBase() : d(new Private())
+namespace Comunications {
+	
+Manager::Manager()
+ : Base::Observer()
 {
 }
 
-PackageHandlerBase::~PackageHandlerBase()
+
+Manager::~Manager()
 {
-	delete d;
 }
 
-void PackageHandlerBase::handlePackage(Base::Package *const pkg)
+void Manager::handlePackage(Base::Package *const pkg)
 {
+	
 	Server::Connection *cnn = pkg->source();
-	QString root = pkg->root();
-	QString package = pkg->xml();
+	Server::TcpServer *server = cnn->server();
 	
-	dWarning("server") << "PACKAGE: " << package;
-	
-	TcpServer *server = cnn->server();
-	if(!pkg->accepted())
+	if ( pkg->root() == "chat" )
 	{
-		handle(cnn, root, package);
+		QDomDocument doc;
+		doc.setContent(pkg->xml());
+		
+		QDomElement element = doc.firstChild().firstChildElement("message");
+		element.setAttribute("from", cnn->user()->login());
+		cnn->sendToAll(doc);
+		pkg->accept();
+	}
+	else if ( pkg->root() == "notice" )
+	{
+		QDomDocument doc;
+		doc.setContent(pkg->xml());
+		
+		QDomElement element = doc.firstChild().firstChildElement("message");
+		element.setAttribute("from", cnn->user()->login());
+		cnn->sendToAll(doc);//TODO: enviar a todos los clientes del proyecto
+		pkg->accept();
+	}
+	else if ( pkg->root() == "wall" )
+	{
+		QDomDocument doc;
+		doc.setContent(pkg->xml());
+		QDomElement element = doc.firstChild().firstChildElement("message");
+		element.setAttribute("from", cnn->user()->login());
+		cnn->sendToAll(doc);
+		pkg->accept();
 	}
 }
 

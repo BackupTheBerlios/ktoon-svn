@@ -17,60 +17,29 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#include "packagehandlerbase.h"
-#include <ddebug.h>
 
+#ifndef COMUNICATIONSMANAGER_H
+#define COMUNICATIONSMANAGER_H
 
-#include <QHashIterator>
-#include <QHash>
+#include <base/observer.h>
 
-#include "users/user.h"
+namespace Base {
+	class Package;
+}
 
-#include "connection.h"
-#include "base/settings.h"
-#include "base/logger.h"
+namespace Comunications {
+/**
+ * @author Jorge Cuadrado <kuadrosxx@gmail.com>
+*/
 
-
-#include "dapplicationproperties.h"
-
-#include "packages/error.h"
-
-
-#include "bans/banmanager.h"
-#include "backups/backupmanager.h"
-
-#include "base/package.h"
-
-namespace Server {
-
-struct PackageHandlerBase::Private
+class Manager : public Base::Observer
 {
+	public:
+		Manager();
+		~Manager();
+		
+		void handlePackage(Base::Package *const pkg);
 };
 
-PackageHandlerBase::PackageHandlerBase() : d(new Private())
-{
 }
-
-PackageHandlerBase::~PackageHandlerBase()
-{
-	delete d;
-}
-
-void PackageHandlerBase::handlePackage(Base::Package *const pkg)
-{
-	Server::Connection *cnn = pkg->source();
-	QString root = pkg->root();
-	QString package = pkg->xml();
-	
-	dWarning("server") << "PACKAGE: " << package;
-	
-	TcpServer *server = cnn->server();
-	if(!pkg->accepted())
-	{
-		handle(cnn, root, package);
-	}
-}
-
-}
-
+#endif

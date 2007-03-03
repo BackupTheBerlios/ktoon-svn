@@ -34,13 +34,14 @@
 #include "bans/banmanager.h"
 #include "backups/backupmanager.h"
 #include "users/manager.h"
+#include "comunications/comunicationmanager.h"
 
 #include "base/settings.h"
 #include "base/package.h"
 #include "base/observer.h"
 #include "base/logger.h"
 
-namespace Server {
+namespace Server{
 
 class TcpServer::Private
 {
@@ -51,6 +52,7 @@ class TcpServer::Private
 		Backups::Manager *backupManager;
 		Bans::Manager *banManager;
 		Users::Manager *userManager;
+		Comunications::Manager *comunicationManager;
 		
 		QList<Base::Observer *> observers;
 };
@@ -66,6 +68,11 @@ TcpServer::TcpServer(QObject *parent) : QTcpServer(parent), d(new Private)
 	
 	d->userManager = new Users::Manager;
 	d->observers << d->userManager;
+	
+	d->comunicationManager = new Comunications::Manager;
+	d->observers << d->comunicationManager;
+	
+	
 }
 
 
