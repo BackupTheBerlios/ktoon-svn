@@ -92,4 +92,3 @@ void KTChat::sendMessage()
 		emit requestSendMessage(text);
 	}
 }
-

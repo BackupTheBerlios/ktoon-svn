@@ -21,8 +21,9 @@ HEADERS += ktnetprojectmanagerparams.h \
            ktackparser.h \
            ktimportprojectpackage.h \
            ktchatpackage.h \
-           ktchatparser.h \
-           ktnoticeparser.h
+           ktnotice.h \
+           ktnoticepackage.h \
+           ktcomunicationparser.h
 SOURCES += ktnetprojectmanagerparams.cpp \
            ktnetprojectmanagerhandler.cpp \
            ktnetsocket.cpp \
@@ -41,8 +42,9 @@ SOURCES += ktnetprojectmanagerparams.cpp \
            ktackparser.cpp \
            ktimportprojectpackage.cpp \
            ktchatpackage.cpp \
-           ktchatparser.cpp \
-           ktnoticeparser.cpp
+           ktnotice.cpp \
+           ktnoticepackage.cpp \
+           ktcomunicationparser.cpp
 CONFIG += release \
 warn_on \
 staticlib

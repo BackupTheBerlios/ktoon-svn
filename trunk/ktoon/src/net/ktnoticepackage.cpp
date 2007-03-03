@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   kuadrosxx@gmail.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,55 +17,21 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#include "ktnoticepackage.h"
 
-#include "ktnoticeparser.h"
-
-struct KTNoticeParser::Private
+KTNoticePackage::KTNoticePackage(const QString &text): QDomDocument()
 {
-	QString message, from;
-};
-
-KTNoticeParser::KTNoticeParser() : KTXmlParserBase(), d(new Private)
-{
-}
-
-
-KTNoticeParser::~KTNoticeParser()
-{
+	QDomElement root = createElement("notice");
+	root.setAttribute("version", 0);
+	appendChild(root);
 	
-}
-
-bool KTNoticeParser::startTag(const QString &tag, const QXmlAttributes &atts)
-{
-	if( root() == "notice")
-	{
-		if(tag == "message")
-		{
-			d->message = atts.value("text");
-			d->from = atts.value("from");
-		}
-	}
-	return true;
-}
-
-bool KTNoticeParser::endTag(const QString &tag)
-{
-	Q_UNUSED(tag);
-	return true;
-}
-
-void KTNoticeParser::text(const QString &msg)
-{
-	Q_UNUSED(msg);
+	QDomElement message = createElement("message");
+	message.setAttribute("text", text); 
+	root.appendChild(message);
 }
 
 
-QString KTNoticeParser::message() const
+KTNoticePackage::~KTNoticePackage()
 {
-	return d->message;
-}
-
-QString KTNoticeParser::from() const
-{
-	return d->from;
 }

@@ -42,14 +42,14 @@
 #include "ktsavenetproject.h"
 #include "ktopenpackage.h"
 #include "ktchatpackage.h"
+#include "ktnoticepackage.h"
 
 #include "kterrorparser.h"
 #include "ktprojectsparser.h"
 #include "ktprojectparser.h"
 #include "ktrequestparser.h"
 #include "ktackparser.h"
-#include "ktchatparser.h"
-#include "ktnoticeparser.h"
+#include "ktcomunicationparser.h"
 
 #include "ktrequestbuilder.h"
 
@@ -57,6 +57,7 @@
 
 #include "ktlistprojectdialog.h"
 #include "ktchat.h"
+#include "ktnotice.h"
 
 #include <QTemporaryFile>
 #include <QTabWidget>
@@ -75,6 +76,7 @@ struct KTNetProjectManagerHandler::Private
 	QTabWidget *comunicationModule;
 	
 	KTChat *chat;
+	KTNotice *notices;
 };
 
 KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent), d(new Private)
@@ -87,10 +89,16 @@ KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbst
 	d->comunicationModule = new QTabWidget;
 	
 	d->chat = new KTChat;
-	d->comunicationModule->addTab(d->chat, "chat");
-	
+	d->comunicationModule->addTab(d->chat, tr("chat"));
 	d->chat->setVisible(false);
+	
 	connect(d->chat, SIGNAL(requestSendMessage(const QString&)), this, SLOT(sendChatMessage(const QString&)));
+	
+	d->notices = new KTNotice;
+	d->comunicationModule->addTab(d->notices, tr("notices"));
+	d->notices->setVisible(false);
+	
+	connect(d->notices, SIGNAL(requestSendMessage(const QString&)), this, SLOT(sendNoticeMessage(const QString&)));
 }
 
 
@@ -296,7 +304,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 	}
 	else if (root == "chat")
 	{
-		KTChatParser parser;
+		KTComunicationParser parser;
 		if(parser.parse(package))
 		{
 			d->chat->addMessage(parser.login(), parser.message());
@@ -304,10 +312,21 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 	}
 	else if (root == "notice")
 	{
-		KTNoticeParser parser;
+		KTComunicationParser parser;
 		if(parser.parse(package))
 		{
-			QString message = QObject::tr("From") + ": "+ parser.from() + "\n" + parser.message();
+			QString message = QObject::tr("From") + ": "+ parser.login() + "\n" + parser.message();
+			DOsd::self()->display(message);
+			
+			d->notices->addMessage(parser.login(), parser.message());
+		}
+	}
+	else if (root == "wall")
+	{
+		KTComunicationParser parser;
+		if(parser.parse(package))
+		{
+			QString message = QObject::tr("From") + ": "+ parser.login() + "\n" + parser.message();
 			DOsd::self()->display(message);
 		}
 	}
@@ -344,4 +363,10 @@ void KTNetProjectManagerHandler::sendChatMessage(const QString & message)
 	sendPackage(package);
 }
 
+
+void KTNetProjectManagerHandler::sendNoticeMessage(const QString & message)
+{
+	KTNoticePackage package(message);
+	sendPackage(package);
+}
 

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   kuadrosxx@gmail.com                                                   *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,32 +17,20 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
- 
-#ifndef KTCHATPARSER_H
-#define KTCHATPARSER_H
+#ifndef KTNOTICEPACKAGE_H
+#define KTNOTICEPACKAGE_H
 
-#include <ktxmlparserbase.h>
+#include <QDomDocument>
 
 /**
-	@author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado <kuadrosxx@gmail.com>
 */
-class KTChatParser : public KTXmlParserBase
+class KTNoticePackage : public QDomDocument
 {
 	public:
-		KTChatParser();
-		virtual ~KTChatParser();
-		virtual bool startTag(const QString &tag, const QXmlAttributes &atts);
-		virtual bool endTag(const QString &tag);
-		virtual void text(const QString &text);
-		
-	public:
-		QString message() const;
-		QString login() const;
-		
-	private:
-		struct Private;
-		Private *const d;
-
+		KTNoticePackage(const QString &text);
+		~KTNoticePackage();
 };
+
 
 #endif

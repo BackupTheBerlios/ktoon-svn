@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2007 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                   *
+ *   kuadrosx@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,32 +17,32 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+ 
+#ifndef KTNOTICE_H
+#define KTNOTICE_H
 
-#ifndef KTNOTICEPARSER_H
-#define KTNOTICEPARSER_H
-
-#include <ktxmlparserbase.h>
+#include <QDialog>
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-class KTNoticeParser : public KTXmlParserBase
+class KTNotice: public QDialog
 {
+	Q_OBJECT
 	public:
-		KTNoticeParser();
-		~KTNoticeParser();
+		KTNotice(QWidget *parent = 0);
+		~KTNotice();
+		void addMessage(const QString &from, const QString &message);
 		
-		bool startTag(const QString &tag, const QXmlAttributes &atts);
-		bool endTag(const QString &tag);
-		void text(const QString &msg);
+	signals:
+		void requestSendMessage(const QString &message);
 		
-		QString message() const;
-		QString from() const;
+	protected slots:
+		void sendMessage();
 		
 	private:
 		struct Private;
-		Private * const d;
+		Private *const d;
 };
-
 
 #endif

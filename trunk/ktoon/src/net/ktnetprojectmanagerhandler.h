@@ -66,6 +66,7 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		
 	private slots:
 		void sendChatMessage(const QString & message);
+		void sendNoticeMessage(const QString & message);
 		
 	private:
 		struct Private;
