@@ -203,9 +203,8 @@ void TcpServer::sendToAdmins(const QString &str)
 
 void TcpServer::removeConnection(Server::Connection *cnx)
 {
-        D_FUNCINFO;
-	
-        d->connections.removeAll(cnx);
+	D_FUNCINFO;
+	d->connections.removeAll(cnx);
 	d->admins.removeAll(cnx);
 	
 	cnx->blockSignals(true);

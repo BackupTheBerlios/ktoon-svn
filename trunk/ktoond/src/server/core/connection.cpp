@@ -103,7 +103,6 @@ void Connection::run()
 			dError("server") << "Cannot set document content!";
 		}
 	}
-	
 	removeConnection();
 }
 
