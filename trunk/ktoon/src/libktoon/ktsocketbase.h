@@ -44,7 +44,7 @@ class KTOON_EXPORT KTSocketBase : public QTcpSocket
 	protected slots:
 		virtual void readFromServer();
 		
-	private slots:
+	public slots:
 		void sendQueue();
 		void clearQueue();
 		

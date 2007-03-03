@@ -315,7 +315,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 		KTComunicationParser parser;
 		if(parser.parse(package))
 		{
-			QString message = QObject::tr("From") + ": "+ parser.login() + "\n" + parser.message();
+			QString message = QObject::tr("Notice From") + ": "+ parser.login() + "\n" + parser.message();
 			DOsd::self()->display(message);
 			
 			d->notices->addMessage(parser.login(), parser.message());
@@ -326,7 +326,7 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 		KTComunicationParser parser;
 		if(parser.parse(package))
 		{
-			QString message = QObject::tr("From") + ": "+ parser.login() + "\n" + parser.message();
+			QString message = QObject::tr("Wall From") + ": "+ parser.login() + "\n" + parser.message();
 			DOsd::self()->display(message);
 		}
 	}
