@@ -18,58 +18,36 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "noticeparser.h"
+#ifndef COMUNICATIONSWALLDIALOG_H
+#define COMUNICATIONSWALLDIALOG_H
 
-namespace Notices {
+#include <QFrame>
 
-struct NoticeParser::Private
+namespace Comunications {
+
+
+/**
+ * @author Jorge Cuadrado <kuadrosxx@gmail.com>
+*/
+class WallDialog: public QFrame
 {
-	QString message, from;
+	Q_OBJECT
+	public:
+		WallDialog(QWidget * parent = 0);
+		virtual ~WallDialog();
+		
+	public slots:
+		void send();
+		
+	signals:
+		void requestSendWall(const QString& notice);
+
+	private:
+		struct Private;
+		Private *const d;
+		
 };
 
-NoticeParser::NoticeParser() : KTXmlParserBase(), d(new Private)
-{
 }
 
-
-NoticeParser::~NoticeParser()
-{
-	
-}
-
-bool NoticeParser::startTag(const QString &tag, const QXmlAttributes &atts)
-{
-	if( root() == "notice")
-	{
-		if(tag == "message")
-		{
-			d->message = atts.value("text");
-			d->from = atts.value("from");
-		}
-	}
-	return true;
-}
-
-bool NoticeParser::endTag(const QString &tag)
-{
-	Q_UNUSED(tag);
-	return true;
-}
-
-void NoticeParser::text(const QString &msg)
-{
-	Q_UNUSED(msg);
-}
-
-
-QString NoticeParser::message() const
-{
-	return d->message;
-}
-
-QString NoticeParser::from() const
-{
-	return d->from;
-}
-
-}
+#endif

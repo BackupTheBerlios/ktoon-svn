@@ -18,26 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef NOTICESNOTICEOBSERVER_H
-#define NOTICESNOTICEOBSERVER_H
+#include "wall.h"
 
-#include <packageobserver.h>
-#include "package.h"
+namespace Packages {
 
-namespace Notices {
-
-/**
- * @author Jorge Cuadrado <kuadrosxx@gmail.com>
-*/
-class NoticeObserver : public Base::PackageObserver
+Wall::Wall(const QString &text): QDomDocument()
 {
-	public:
-		NoticeObserver();
-		~NoticeObserver();
-		
-		virtual void handlePackage(Base::Package *const pkg);
-};
-
+	QDomElement root = createElement("wall");
+	root.setAttribute("version", 0);
+	appendChild(root);
+	
+	QDomElement message = createElement("message");
+	message.setAttribute("text", text); 
+	root.appendChild(message);
 }
 
-#endif
+
+Wall::~Wall()
+{
+}
+
+
+}

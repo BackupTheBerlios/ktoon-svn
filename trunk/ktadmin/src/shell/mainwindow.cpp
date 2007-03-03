@@ -36,9 +36,8 @@
 #include "bans/modulewidget.h"
 #include "backups/modulewidget.h"
 #include "registers/modulewidget.h"
-#include "notices/noticedialog.h"
-#include "notices/noticeobserver.h"
-
+#include "comunications/walldialog.h"
+#include "comunications/observer.h"
 
 #include "manager.h"
 #include "connectdialog.h"
@@ -52,7 +51,6 @@ struct MainWindow::Private
 	{
 		qDeleteAll (modules);
 	};
-	
 };
 
 
@@ -106,7 +104,7 @@ void MainWindow::createModules()
 	addToolView(registersModule, Qt::RightDockWidgetArea)->setDescription(tr("Administer registers"));
 	registerModule(registersModule);
 	
-	Notices::NoticeObserver *observer = new Notices::NoticeObserver;
+	Comunications::Observer *observer = new Comunications::Observer;
 	d->manager->addObserver(observer );
 }
 
@@ -119,7 +117,7 @@ void MainWindow::createMenuBar()
 	connectAction->setIcon(QIcon(THEME_DIR+"/icons/connect.png"));
 	connectAction->setStatusTip(tr("Connect to server..."));
 	
-	QAction *notice = fileMenu->addAction(tr("Show notice dialog"), this, SLOT(showNoticeDialog()));
+	QAction *wall = fileMenu->addAction(tr("Show wall dialog"), this, SLOT(showWallDialog()));
 	
 	fileMenu->addSeparator();
 	fileMenu->addAction(tr("&Quit"), qApp, SLOT(closeAllWindows()));
@@ -188,10 +186,10 @@ void MainWindow::connectToServer()
 	
 }
 
-void MainWindow::showNoticeDialog()
+void MainWindow::showWallDialog()
 {
-	Notices::NoticeDialog *dialog = new Notices::NoticeDialog(this) ;
+	Comunications::WallDialog *dialog = new Comunications::WallDialog(this) ;
 	addWidgetAsWindow(dialog);
 	
-	connect(dialog, SIGNAL(requestSendNotice(const QString &)),  d->manager, SLOT(sendPackage(const QString &)));
+	connect(dialog, SIGNAL(requestSendWall(const QString &)),  d->manager, SLOT(sendPackage(const QString &)));
 }

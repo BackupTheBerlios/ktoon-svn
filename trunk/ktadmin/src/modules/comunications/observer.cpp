@@ -18,56 +18,35 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#include "noticedialog.h"
+#include "observer.h"
+// #include "noticeparser.h"
 
-#include <QLineEdit>
+#include <dosd.h>
+#include <QObject>
 
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QPushButton>
-#include "../packages/notice.h"
+namespace Comunications {
 
-namespace Notices {
-
-struct NoticeDialog::Private
-{
-	QLineEdit *message;
-	QPushButton *send, *close;
-};
-
-NoticeDialog::NoticeDialog(QWidget * parent): QFrame( parent), d(new Private)
-{
-	setWindowTitle( "Send notice" );
-	
-	QVBoxLayout *layout = new QVBoxLayout( this );
-	d->message = new QLineEdit();
-	
-	layout->addWidget(d->message);
-	
-	QHBoxLayout *buttons = new QHBoxLayout();
-	d->send = new QPushButton("send");
-	buttons->addWidget(d->send);
-	d->close = new QPushButton("close");
-	
-	buttons->addWidget(d->close);
-	connect(d->close, SIGNAL(clicked()), this, SLOT(close()));
-	connect(d->send, SIGNAL(clicked()), this, SLOT(send()));
-	connect(d->message, SIGNAL(returnPressed()), d->send, SLOT(animateClick ()));
-	
-	layout->addLayout(buttons);
-	hide();
-}
-
-
-NoticeDialog::~NoticeDialog()
+Observer::Observer()
+ : Base::PackageObserver()
 {
 }
 
 
-void NoticeDialog::send()
+Observer::~Observer()
 {
-	emit requestSendNotice( Packages::Notice(d->message->text()).toString());
-	d->message->clear();
 }
 
+void Observer::handlePackage(Base::Package *const pkg)
+{
+// 	if(pkg->root() == "notice")
+// 	{
+// 		NoticeParser parser;
+// 		if(parser.parse(pkg->xml()))
+// 		{
+// 			QString message = QObject::tr("From") + ": "+ parser.from() + "\n" + parser.message();
+// 			DOsd::self()->display(message);
+// 			pkg->accept();
+// 		}
+// 	}
+}
 }

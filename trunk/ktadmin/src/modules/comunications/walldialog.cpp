@@ -18,36 +18,56 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#include "noticeobserver.h"
-#include "noticeparser.h"
+#include "walldialog.h"
 
-#include <dosd.h>
-#include <QObject>
+#include <QLineEdit>
 
-namespace Notices {
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QPushButton>
+#include "../packages/wall.h"
 
-NoticeObserver::NoticeObserver()
- : Base::PackageObserver()
+namespace Comunications {
+
+struct WallDialog::Private
 {
+	QLineEdit *message;
+	QPushButton *send, *close;
+};
+
+WallDialog::WallDialog(QWidget * parent): QFrame( parent), d(new Private)
+{
+	setWindowTitle( "Send wall" );
 	
+	QVBoxLayout *layout = new QVBoxLayout( this );
+	d->message = new QLineEdit();
+	
+	layout->addWidget(d->message);
+	
+	QHBoxLayout *buttons = new QHBoxLayout();
+	d->send = new QPushButton("send");
+	buttons->addWidget(d->send);
+	d->close = new QPushButton("close");
+	
+	buttons->addWidget(d->close);
+	connect(d->close, SIGNAL(clicked()), this, SLOT(close()));
+	connect(d->send, SIGNAL(clicked()), this, SLOT(send()));
+	connect(d->message, SIGNAL(returnPressed()), d->send, SLOT(animateClick ()));
+	
+	layout->addLayout(buttons);
+	hide();
 }
 
 
-NoticeObserver::~NoticeObserver()
+WallDialog::~WallDialog()
 {
 }
 
-void NoticeObserver::handlePackage(Base::Package *const pkg)
+
+void WallDialog::send()
 {
-	if(pkg->root() == "notice")
-	{
-		NoticeParser parser;
-		if(parser.parse(pkg->xml()))
-		{
-			QString message = QObject::tr("From") + ": "+ parser.from() + "\n" + parser.message();
-			DOsd::self()->display(message);
-			pkg->accept();
-		}
-	}
+	emit requestSendWall( Packages::Wall(d->message->text()).toString());
+	d->message->clear();
 }
+
 }

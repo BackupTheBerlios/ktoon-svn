@@ -20,8 +20,8 @@ HEADERS += adduser.h \
            removeproject.h \
            updateproject.h \
            queryproject.h \
-           userlistparser.h  \
-           notice.h
+           userlistparser.h \
+           wall.h
 SOURCES += adduser.cpp \
            connect.cpp \
            ackparser.cpp \
@@ -39,8 +39,8 @@ SOURCES += adduser.cpp \
            removeproject.cpp \
            updateproject.cpp \
            queryproject.cpp \
-           userlistparser.cpp  \
-           notice.cpp
+           userlistparser.cpp \
+           wall.cpp
 CONFIG += release \
 warn_on \
 staticlib

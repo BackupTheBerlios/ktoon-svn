@@ -17,34 +17,20 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+#ifndef PACKAGESNOTICE_H
+#define PACKAGESNOTICE_H
 
-#ifndef NOTICESNOTICEPARSER_H
-#define NOTICESNOTICEPARSER_H
+#include <QDomDocument>
 
-#include <ktxmlparserbase.h>
-
-namespace Notices
-{
-
+namespace Packages {
 /**
- * @author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado <kuadrosxx@gmail.com>
 */
-class NoticeParser : public KTXmlParserBase
+class Wall : public QDomDocument
 {
 	public:
-		NoticeParser();
-		~NoticeParser();
-		
-		bool startTag(const QString &tag, const QXmlAttributes &atts);
-		bool endTag(const QString &tag);
-		void text(const QString &msg);
-		
-		QString message() const;
-		QString from() const;
-		
-	private:
-		struct Private;
-		Private * const d;
+		Wall(const QString &text);
+		~Wall();
 };
 
 }

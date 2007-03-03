@@ -8,4 +8,4 @@ server \
 bans \
 backups \
 registers \
-notices
+comunications

@@ -49,7 +49,7 @@ class MainWindow : public DWorkspaceMainWindow
 		void clearModules();
 		void addWidgetAsWindow(QWidget *w);
 		void connectToServer();
-		void showNoticeDialog();
+		void showWallDialog();
 		
 		
 	private:
