@@ -27,7 +27,7 @@ namespace Base {
 }
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado \<krawek@gmail.com\>
 */
 class Manager : public QObject
 {

@@ -140,6 +140,8 @@ bool Manager::connectToServer(const QString &server, int port)
 		d->socket->waitForDisconnected();
 	}
 	
+	d->socket->clearQueue();
+	
 	d->socket->connectToHost(server, port);
 	
 	bool connected =  d->socket->waitForConnected(1000);
