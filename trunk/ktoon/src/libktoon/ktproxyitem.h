@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2006 by David Cuadrado                                  *
+ *   Copyright (C) 2007 by David Cuadrado                                  *
  *   krawek@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,8 +17,9 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTGRAPHICLIBRARYITEM_H
-#define KTGRAPHICLIBRARYITEM_H
+
+#ifndef KTPROXYITEM_H
+#define KTPROXYITEM_H
 
 #include <QGraphicsItem>
 
@@ -28,7 +29,7 @@
 class KTProxyItem : public QGraphicsItem
 {
 	public:
-		KTProxyItem(QGraphicsItem *item);
+		KTProxyItem(QGraphicsItem *item = 0);
 		~KTProxyItem();
 		
 		void setItem(QGraphicsItem *item);

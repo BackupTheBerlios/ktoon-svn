@@ -18,41 +18,26 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktproxyitem.h"
+#ifndef KTGRAPHICLIBRARYITEM_H
+#define KTGRAPHICLIBRARYITEM_H
 
-struct KTProxyItem::Private 
+#include <ktproxyitem.h>
+
+class KTLibraryObject;
+
+/**
+ * @author David Cuadrado <krawek@gmail.com>
+*/
+class KTGraphicLibraryItem : public KTProxyItem
 {
-	QGraphicsItem *realItem;
+	public:
+		KTGraphicLibraryItem(KTLibraryObject *object);
+		~KTGraphicLibraryItem();
+		
+	private:
+		struct Private;
+		Private *const d;
+
 };
 
-KTProxyItem::KTProxyItem(QGraphicsItem *item) : QGraphicsItem(), d(new Private)
-{
-	d->realItem = item;
-	setPos(0,0);
-}
-
-
-KTProxyItem::~KTProxyItem()
-{
-}
-
-void KTProxyItem::setItem(QGraphicsItem *item)
-{
-	d->realItem = item;
-}
-
-QRectF KTProxyItem::boundingRect() const
-{
-	if ( d->realItem )
-		return d->realItem->boundingRect();
-	
-	return QRectF(0,0, 0,0);
-}
-
-void KTProxyItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
-{
-	if( d->realItem )
-		d->realItem->paint(painter, option, widget);
-}
-
-
+#endif

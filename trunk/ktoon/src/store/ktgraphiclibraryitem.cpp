@@ -18,41 +18,63 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktproxyitem.h"
+#include "ktgraphiclibraryitem.h"
+#include "ktlibraryobject.h"
 
-struct KTProxyItem::Private 
+#include <QGraphicsPixmapItem>
+#include <QGraphicsTextItem>
+
+struct KTGraphicLibraryItem::Private
 {
-	QGraphicsItem *realItem;
+	QList<QGraphicsItem *> items;
 };
 
-KTProxyItem::KTProxyItem(QGraphicsItem *item) : QGraphicsItem(), d(new Private)
+KTGraphicLibraryItem::KTGraphicLibraryItem(KTLibraryObject *object)
+ : KTProxyItem(), d(new Private)
 {
-	d->realItem = item;
-	setPos(0,0);
+	switch(object->type())
+	{
+		case KTLibraryObject::Image:
+		{
+			QPixmap pixmap((const char **)object->data().toByteArray().data()); // FIXME
+			
+			QGraphicsPixmapItem *item = new QGraphicsPixmapItem( pixmap );
+			setItem(item);
+			
+			d->items << item;
+		}
+		break;
+		case KTLibraryObject::Item:
+		{
+			setItem( qvariant_cast<QGraphicsItem *>(object->data()) );
+		}
+		break;
+		case KTLibraryObject::Svg:
+		{
+			setItem( qvariant_cast<QGraphicsItem *>(object->data()) );
+		}
+		break;
+		case KTLibraryObject::Text:
+		{
+			QGraphicsTextItem *item = new QGraphicsTextItem(object->data().toString());
+			setItem(item);
+			
+			d->items << item;
+		}
+		break;
+		default: break;
+	}
 }
 
 
-KTProxyItem::~KTProxyItem()
+KTGraphicLibraryItem::~KTGraphicLibraryItem()
 {
-}
-
-void KTProxyItem::setItem(QGraphicsItem *item)
-{
-	d->realItem = item;
-}
-
-QRectF KTProxyItem::boundingRect() const
-{
-	if ( d->realItem )
-		return d->realItem->boundingRect();
+	qDeleteAll(d->items);
 	
-	return QRectF(0,0, 0,0);
+	delete d;
 }
 
-void KTProxyItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
-{
-	if( d->realItem )
-		d->realItem->paint(painter, option, widget);
-}
+
+
 
 
