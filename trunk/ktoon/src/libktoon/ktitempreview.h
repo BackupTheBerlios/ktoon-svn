@@ -44,7 +44,8 @@ class KTItemPreview : public QWidget
 		void paintEvent(QPaintEvent *e);
 		
 	private:
-		QGraphicsItem *m_item;
+		struct Private;
+		Private *const d;
 };
 
 #endif

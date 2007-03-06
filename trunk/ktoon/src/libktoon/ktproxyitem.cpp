@@ -18,53 +18,37 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktgraphiclibraryitem.h"
+#include "ktproxyitem.h"
 
-#include "ktlibraryobject.h"
-
-struct KTGraphicLibraryItem::Private 
+struct KTProxyItem::Private 
 {
-	KTLibraryObject *object;
 	QGraphicsItem *realItem;
 };
 
-KTGraphicLibraryItem::KTGraphicLibraryItem(KTLibraryObject *object) : QGraphicsItem(), d(new Private)
+KTProxyItem::KTProxyItem(QGraphicsItem *item) : QGraphicsItem(), d(new Private)
 {
-	d->object = object;
-	
-	if ( d->object->type() == KTLibraryObject::Item || d->object->type() == KTLibraryObject::Svg )
-	{
-		d->realItem = qvariant_cast<QGraphicsItem *>(d->object->data());
-	}
-	else
-	{
-		qFatal("UNKNOWN TYPE: IMPLEMENT ME: KTGraphicLibraryItem");
-	}
+	d->realItem = item;
+	setPos(0,0);
 }
 
 
-KTGraphicLibraryItem::~KTGraphicLibraryItem()
+KTProxyItem::~KTProxyItem()
 {
 }
 
+void KTProxyItem::setItem(QGraphicsItem *item)
+{
+	d->realItem = item;
+}
 
-QRectF KTGraphicLibraryItem::boundingRect() const
+QRectF KTProxyItem::boundingRect() const
 {
 	return d->realItem->boundingRect();
 }
 
-void KTGraphicLibraryItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
+void KTProxyItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
 	d->realItem->paint(painter, option, widget);
-}
-
-void KTGraphicLibraryItem::fromXml(const QString &xml )
-{
-}
-
-QDomElement KTGraphicLibraryItem::toXml(QDomDocument &doc) const
-{
-	return QDomElement();
 }
 
 

@@ -24,22 +24,31 @@
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 
+#include "ktproxyitem.h"
+
 #include <ddebug.h>
 
-KTItemPreview::KTItemPreview(QWidget *parent) : QWidget(parent), m_item(0)
+struct KTItemPreview::Private
 {
+	KTProxyItem *proxy;
+};
+
+KTItemPreview::KTItemPreview(QWidget *parent) : QWidget(parent), d(new Private)
+{
+	d->proxy = 0;
 }
 
 
 KTItemPreview::~KTItemPreview()
 {
+	delete d;
 }
 
 QSize KTItemPreview::sizeHint() const
 {
-	if ( m_item )
+	if ( d->proxy )
 	{
-		return m_item->boundingRect().size().toSize() + QSize(10,10);
+		return d->proxy->boundingRect().size().toSize() + QSize(10,10);
 	}
 	
 	return QWidget::sizeHint().expandedTo(QSize(100,100));
@@ -48,9 +57,11 @@ QSize KTItemPreview::sizeHint() const
 
 void KTItemPreview::render(QGraphicsItem *item)
 {
-	Q_CHECK_PTR(item);
+	if ( !d->proxy )
+		d->proxy = new KTProxyItem(item);
+	else
+		d->proxy->setItem(item);
 	
-	m_item = item;
 	update();
 }
 
@@ -59,37 +70,35 @@ void KTItemPreview::paintEvent(QPaintEvent *)
 	QPainter p(this);
 	p.setRenderHint(QPainter::Antialiasing, true);
 	
-	if ( m_item )
+	if ( d->proxy )
 	{
 		QStyleOptionGraphicsItem opt;
 		opt.state = QStyle::State_None;
 		
-		if (m_item->isEnabled())
+		if (d->proxy->isEnabled())
 			opt.state |= QStyle::State_Enabled;
 		
-		opt.exposedRect = QRectF(QPointF(0,0), m_item->boundingRect().size());
+		opt.exposedRect = QRectF(QPointF(0,0), d->proxy->boundingRect().size());
 		opt.levelOfDetail = 1;
 		
-		QMatrix matrix = m_item->sceneMatrix();
+		QMatrix matrix = d->proxy->sceneMatrix();
 		
-		QRect r(15,15, rect().width()-15 , rect().height()-15);
-		p.drawRect(r);
+// 		QRect r(15,15, rect().width()-15 , rect().height()-15);
+// 		p.drawRect(r);
 		
-		QRectF br = m_item->boundingRect();
-		double offset = qMin(br.width(), br.height());
+// 		QRectF br = d->proxy->boundingRect();
+// 		double offset = qMin(br.width(), br.height());
 		
-		matrix.translate((-m_item->pos().x()-br.center().x())+r.center().x(), (-m_item->pos().y()-br.center().y())+r.center().y());
-		matrix.scale(r.width()/offset, r.height()/offset);
+// 		matrix.translate((-d->proxy->pos().x()-br.center().x())+r.center().x(), (-d->proxy->pos().y()-br.center().y())+r.center().y());
+// 		matrix.scale(r.width()/offset, r.height()/offset);
 		
-		opt.matrix = matrix;
-		
-		// TODO: escalar y centrar
+// 		opt.matrix = matrix;
 		
 		
 		opt.palette = palette();
 		
 		p.setMatrix(matrix);
-		m_item->paint ( &p, &opt, this ); // paint isn't const...
+		d->proxy->paint ( &p, &opt, this ); // paint isn't const...
 	}
 }
 

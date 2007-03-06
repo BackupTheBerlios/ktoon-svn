@@ -23,7 +23,8 @@ HEADERS += ktgraphicalgorithm.h \
            ktitempreview.h \
            ktcompress.h  \
            ktsocketbase.h \
-           ktxmlparserbase.h
+           ktxmlparserbase.h \
+           ktproxyitem.h
 SOURCES += ktgraphicalgorithm.cpp \
            ktpaintareaproperties.cpp \
            ktgradientcreator.cpp \
@@ -38,7 +39,8 @@ SOURCES += ktgraphicalgorithm.cpp \
            ktitempreview.cpp \
            ktcompress.cpp  \
            ktsocketbase.cpp \
-           ktxmlparserbase.cpp
+           ktxmlparserbase.cpp \
+           ktproxyitem.cpp
 DLIB_DIR = ../../src/dlib
 include($$DLIB_DIR/dlib.pri)
 QUAZIP_DIR = ../../3rdparty/quazip/

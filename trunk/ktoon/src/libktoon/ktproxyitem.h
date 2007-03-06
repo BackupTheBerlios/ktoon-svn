@@ -21,25 +21,21 @@
 #define KTGRAPHICLIBRARYITEM_H
 
 #include <QGraphicsItem>
-#include <ktabstractserializable.h>
-
-class KTLibraryObject;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTGraphicLibraryItem : public QGraphicsItem, public KTAbstractSerializable
+class KTProxyItem : public QGraphicsItem
 {
 	public:
-		KTGraphicLibraryItem(KTLibraryObject *object);
-		~KTGraphicLibraryItem();
+		KTProxyItem(QGraphicsItem *item);
+		~KTProxyItem();
+		
+		void setItem(QGraphicsItem *item);
 		
 		virtual QRectF boundingRect() const;
 		virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 		
-	public:
-		virtual void fromXml(const QString &xml );
-		virtual QDomElement toXml(QDomDocument &doc) const;
 		
 	private:
 		struct Private;
