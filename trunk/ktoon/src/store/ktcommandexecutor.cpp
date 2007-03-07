@@ -117,8 +117,6 @@ bool KTCommandExecutor::moveScene(KTSceneResponse *response)
 	int newPosition = response->arg().toInt();
 	if ( m_project->moveScene( position, newPosition ) )
 	{
-// 		KTProjectRequest request = KTRequestBuilder::createSceneRequest( position, KTProjectRequest::Move, QString::number(newPosition) );
-// 		emit commandExecuted(&request, m_state);
 		emit responsed(response);
 		return true;
 		
@@ -145,8 +143,6 @@ bool KTCommandExecutor::lockScene(KTSceneResponse *response)
 	
 	scene->setLocked(lock);
 	
-// 	KTProjectRequest request = KTRequestBuilder::createSceneRequest( position, KTProjectRequest::Lock, "1");
-// 	emit commandExecuted(&request, m_state);
 	emit responsed(response);
 	return true;
 }
@@ -157,18 +153,14 @@ bool KTCommandExecutor::renameScene(KTSceneResponse *response)
 	response->setAction(KTProjectRequest::Rename);
 	int position = response->sceneIndex();
 	QString newName = response->arg().toString();
-// 	QString oldName;
 	KTScene *scene = m_project->scene(position);
 	
 	if ( !scene)
 	{
-// 		return oldName;
 		return false;
 	}
 	
 	KTProjectRequest request = KTRequestBuilder::createSceneRequest( position, KTProjectRequest::Rename, newName);
-	
-// 	oldName = scene->sceneName();
 	
 	scene->setSceneName( newName );
 	

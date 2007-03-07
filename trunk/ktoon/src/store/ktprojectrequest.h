@@ -65,39 +65,39 @@ class STORE_EXPORT KTProjectRequest
 			/**
 			 * Añade una parte, el tipo de data es nulo
 			 */
-			Add,
+			Add = 1,
 			/**
 			 * Remueve una parte, el tipo de data es nulo
 			 */
-			Remove,
+			Remove = -Add,
 			/**
 			 * Mueve una parte, el tipo de data es un entero que significa la nueva posición
 			 */
-			Move,
+			Move = 2,
 			/**
 			 * Bloquea una parte, el tipo de data es booleano.
 			 */
-			Lock,
+			Lock = 3,
 			/**
 			 * Renombra una parte, el tipo de data es una cadena de texto.
 			 */
-			Rename,
+			Rename = 4,
 			/**
 			 * Selecciona una parte, el tipo de data es nulo
 			 */
-			Select,
+			Select = 5,
 			/**
 			 * Cambia la visibilidad
 			 */
-			View,
+			View = 6,
 			
-			Group,
-			Ungroup,
+			Group = 7,
+			Ungroup = -Group,
 			
 			// Items
-			Transform,
-			Convert,
-			EditNodes
+			Transform = 8,
+			Convert = 9,
+			EditNodes = 10
 		};
 		
 		enum Part

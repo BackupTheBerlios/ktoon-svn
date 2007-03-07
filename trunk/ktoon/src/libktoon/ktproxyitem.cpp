@@ -28,7 +28,11 @@ struct KTProxyItem::Private
 KTProxyItem::KTProxyItem(QGraphicsItem *item) : QGraphicsItem(), d(new Private)
 {
 	d->realItem = item;
+	
 	setPos(0,0);
+	if( QGraphicsPathItem *path = qgraphicsitem_cast<QGraphicsPathItem *>(item) )
+	{
+	}
 }
 
 

@@ -23,6 +23,7 @@
 #include <QDomDocument>
 #include <QFile>
 #include <QTemporaryFile>
+#include <QProcess>
 
 #include <csignal>
 #include <cstdio>
@@ -259,12 +260,13 @@ void crashTrapper (int sig)
 	
 	bool isActive = true;
 	
-	QApplication* application = qApp;
-// 	if (!qApp)
+	QApplication* application = dynamic_cast<QApplication *>(QApplication::instance());
+// 	if (!application)
 	{
 		isActive = false;
 		int argc = 1;
 		char *argv[] = { CHANDLER->program().toUtf8().data(), 0  };
+		
 		application = new QApplication(argc, argv);
 	}
 	

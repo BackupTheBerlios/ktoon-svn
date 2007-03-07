@@ -72,6 +72,7 @@ struct KTNetProjectManagerHandler::Private
 	
 	QString sign;
 	bool ownPackage;
+	bool doAction;
 	
 	QTabWidget *comunicationModule;
 	
@@ -85,6 +86,7 @@ KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbst
 	d->project = 0;
 	d->params = 0;
 	d->ownPackage = false;
+	d->doAction = true;
 	
 	d->comunicationModule = new QTabWidget;
 	
@@ -125,11 +127,44 @@ void KTNetProjectManagerHandler::handleProjectRequest(const KTProjectRequest* re
 
 bool KTNetProjectManagerHandler::commandExecuted(KTProjectResponse *response)
 {
-	if ( response->mode() == KTProjectResponse::Do ) return true;
+	if( response->mode() == KTProjectResponse::Do )
+	{
+		d->doAction = true;
+		return true;
+	}
 	
+	bool inverted = false;
+	if( response->mode() == KTProjectResponse::Undo )
+	{
+		switch(response->action())
+		{
+			case KTProjectRequest::Add:
+			case KTProjectRequest::Remove:
+			{
+				response->setAction(-response->action());
+				inverted = true;
+			}
+			break;
+			case KTProjectRequest::Ungroup:
+			case KTProjectRequest::Group:
+			{
+				response->setAction(-response->action());
+				inverted = true;
+			}
+			break;
+		}
+	}
 	
 	KTProjectRequest request = KTRequestBuilder::fromResponse(response);
+	
+	if( inverted )
+	{
+		response->setAction(-response->action());
+	}
+	
 	handleProjectRequest( &request );
+	
+	d->doAction = false;
 	
 	return false;
 }
@@ -208,9 +243,9 @@ bool KTNetProjectManagerHandler::closeProject()
 }
 
 
-void KTNetProjectManagerHandler::emitRequest(KTProjectRequest *request)
+void KTNetProjectManagerHandler::emitRequest(KTProjectRequest *request, bool toStack)
 {
-	emit sendCommand( request, true );
+	emit sendCommand( request, toStack );
 }
 
 void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QString &package )
@@ -231,8 +266,8 @@ void KTNetProjectManagerHandler::handlePackage(const QString &root ,const QStrin
 				d->ownPackage = false;
 			}
 			
-			KTProjectRequest request = KTRequestBuilder::fromResponse(parser.response() );
-			emitRequest(&request);
+			KTProjectRequest request = KTRequestBuilder::fromResponse( parser.response() );
+			emitRequest(&request, d->doAction );
 		}
 		else // TODO: mostrar error
 		{

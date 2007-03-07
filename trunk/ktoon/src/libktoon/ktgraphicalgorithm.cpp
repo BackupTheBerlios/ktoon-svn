@@ -692,14 +692,14 @@ QPolygonF KTGraphicalAlgorithm::polygonFit(const QPolygonF &points)
 	
 	for(int i = 0; i < points.count(); i+=2 )
 	{
-		QPointF first = points[i];
-		QPointF second = points[i+1];
-		
 		if ( i+1 >= points.count() )
 		{
 			lines << points[i];
 			break;
 		}
+		
+		QPointF first = points[i];
+		QPointF second = points[i+1];
 		
 		lines << fillLine(first, second);
 	}

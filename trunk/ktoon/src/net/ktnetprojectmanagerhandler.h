@@ -60,7 +60,7 @@ class KTNetProjectManagerHandler : public KTAbstractProjectHandler
 		
 	private:
 		bool loadProjectFromServer(const QString &name);
-		void emitRequest(KTProjectRequest *request);
+		void emitRequest(KTProjectRequest *request, bool toStack);
 		
 		void setProject(KTProject *project);
 		
