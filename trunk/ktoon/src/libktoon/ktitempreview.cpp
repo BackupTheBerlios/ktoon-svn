@@ -83,21 +83,21 @@ void KTItemPreview::paintEvent(QPaintEvent *)
 		
 		QMatrix matrix = d->proxy->sceneMatrix();
 		
-// 		QRect r(15,15, rect().width()-15 , rect().height()-15);
+		QRect r(15,15, rect().width()-15 , rect().height()-15);
 // 		p.drawRect(r);
-		
 // 		QRectF br = d->proxy->boundingRect();
 // 		double offset = qMin(br.width(), br.height());
 		
 // 		matrix.translate((-d->proxy->pos().x()-br.center().x())+r.center().x(), (-d->proxy->pos().y()-br.center().y())+r.center().y());
-// 		matrix.scale(r.width()/offset, r.height()/offset);
+// 		scale(r.width()/offset, r.height()/offset);
 		
 // 		opt.matrix = matrix;
 		
-		
 		opt.palette = palette();
-		
 		p.setMatrix(matrix);
+		
+		p.translate( (rect().width() - opt.exposedRect.width())/2, (rect().height() - opt.exposedRect.height())/2 );
+		
 		d->proxy->paint ( &p, &opt, this ); // paint isn't const...
 	}
 }

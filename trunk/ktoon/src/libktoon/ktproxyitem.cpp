@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include "ktproxyitem.h"
+#include <QPainter>
 
 struct KTProxyItem::Private 
 {
@@ -30,9 +31,6 @@ KTProxyItem::KTProxyItem(QGraphicsItem *item) : QGraphicsItem(), d(new Private)
 	d->realItem = item;
 	
 	setPos(0,0);
-	if( QGraphicsPathItem *path = qgraphicsitem_cast<QGraphicsPathItem *>(item) )
-	{
-	}
 }
 
 
@@ -56,7 +54,14 @@ QRectF KTProxyItem::boundingRect() const
 void KTProxyItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
 {
 	if( d->realItem )
+	{
+		if( QGraphicsPathItem *path = qgraphicsitem_cast<QGraphicsPathItem *>(d->realItem) )
+		{
+			painter->translate(-path->path().boundingRect().topLeft().x(), -path->path().boundingRect().topLeft().y());
+		}
 		d->realItem->paint(painter, option, widget);
+		
+	}
 }
 
 

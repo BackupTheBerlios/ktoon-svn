@@ -33,6 +33,7 @@ class NodeGroup : public QObject
 		
 		int removeSelectedNodes();
 		
+		
 	private:
 		QList<ControlNode*> m_nodes;
 		QGraphicsItem *m_parentItem;

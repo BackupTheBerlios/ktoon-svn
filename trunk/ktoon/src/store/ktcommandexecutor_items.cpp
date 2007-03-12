@@ -416,9 +416,7 @@ bool KTCommandExecutor::transformItem(KTItemResponse *response)
 bool KTCommandExecutor::setPathItem( KTItemResponse *response )
 {
 	D_FUNCINFOX("items");
-	
 	response->setAction(KTProjectRequest::EditNodes);
-	
 	int scenePosition = response->sceneIndex();
 	int layerPosition = response->layerIndex();
 	int framePosition = response->frameIndex();
@@ -438,24 +436,23 @@ bool KTCommandExecutor::setPathItem( KTItemResponse *response )
 				QGraphicsItem *item = frame->item(position);
 				if ( item )
 				{
-// 					
 					if(qgraphicsitem_cast<QGraphicsPathItem *>(item));
 					{
 						QDomDocument orig;
 						
-						orig.appendChild(qgraphicsitem_cast<KTPathItem *>(item)->toXml(orig));
+						if(KTPathItem *ktpath = qgraphicsitem_cast<KTPathItem *>(item))
+						{
+							orig.appendChild(ktpath->toXml(orig));
+						}
 						QString current = orig.toString();
 						SHOW_VAR(current);
 						
 						QDomDocument doc;
 						doc.setContent( xml);
-						
 						KTItemFactory factory;
 						factory.loadItem(item, xml);
-						
 						emit responsed(response);
 						response->setArg(current);
-						
 						return true;
 					}
 				}

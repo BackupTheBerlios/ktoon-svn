@@ -37,6 +37,8 @@ class KTProxyItem : public QGraphicsItem
 		virtual QRectF boundingRect() const;
 		virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 		
+		enum { Type = UserType + 1 };
+		int type() const { return Type; }
 		
 	private:
 		struct Private;

@@ -53,8 +53,8 @@ class Node : public QObject, public QGraphicsItem
 		int actionNode();
 		
 		enum { Type = UserType + 1 };
-		
 		int type() const { return Type; }
+		
 		int typeNode() const;
 		
 	protected:

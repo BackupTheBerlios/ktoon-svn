@@ -15,9 +15,11 @@ NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(paren
 		QPainterPath path = tmp->sceneMatrix().map( tmp->path());
 		saveParentProperties();
 		int index = 0;
-		while(index < path.elementCount())
+		
+		while(index < path.elementCount()-1)
 		{
 			QPainterPath::Element e = path.elementAt(index);
+			
 			if(e.type == QPainterPath::CurveToDataElement)
 			{
 				if(index - 2 < 0) continue;
@@ -41,6 +43,7 @@ NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(paren
 			{
 				ControlNode *node = new ControlNode(index, this, path.elementAt(index), tmp, scene);
 				node->setRight(new ControlNode(index+1,this, path.elementAt(index+1), tmp, scene));
+				
 				index++;
 				m_nodes << node;
 				m_nodes << node->right();
@@ -52,6 +55,10 @@ NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(paren
 			}
 			index++;
 		}
+		
+		ControlNode *node = new ControlNode(path.elementCount()-1, this, path.elementAt(path.elementCount()-1), tmp, scene);
+		m_nodes << node;
+		
 	}
 	else
 	{

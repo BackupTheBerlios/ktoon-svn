@@ -145,6 +145,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 				{
 					QDomDocument doc;
 					doc.appendChild(qgraphicsitem_cast<KTPathItem *>(group->parentItem())->toXml(doc));
+					
 					KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, KTProjectRequest::EditNodes, doc.toString() );
 					group->restoreItem();
 					emit requested(&event);
