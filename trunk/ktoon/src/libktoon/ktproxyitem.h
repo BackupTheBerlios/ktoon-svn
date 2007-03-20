@@ -33,9 +33,19 @@ class KTProxyItem : public QGraphicsItem
 		~KTProxyItem();
 		
 		void setItem(QGraphicsItem *item);
+		QGraphicsItem *item() const;
 		
 		virtual QRectF boundingRect() const;
 		virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+		
+		virtual bool collidesWithItem ( const QGraphicsItem * other, Qt::ItemSelectionMode mode = Qt::IntersectsItemShape ) const;
+		virtual bool collidesWithPath ( const QPainterPath & path, Qt::ItemSelectionMode mode = Qt::IntersectsItemShape ) const;
+		virtual bool contains ( const QPointF & point ) const;
+		virtual bool isObscuredBy ( const QGraphicsItem * item ) const;
+		virtual QPainterPath opaqueArea () const;
+		
+		
+		QPainterPath shape () const;
 		
 		enum { Type = UserType + 1 };
 		int type() const { return Type; }

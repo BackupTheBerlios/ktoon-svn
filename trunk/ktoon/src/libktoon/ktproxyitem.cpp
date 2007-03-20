@@ -23,13 +23,13 @@
 
 struct KTProxyItem::Private 
 {
+	Private() : realItem(0) {}
 	QGraphicsItem *realItem;
 };
 
 KTProxyItem::KTProxyItem(QGraphicsItem *item) : QGraphicsItem(), d(new Private)
 {
-	d->realItem = item;
-	
+	setItem(item);
 	setPos(0,0);
 }
 
@@ -40,7 +40,23 @@ KTProxyItem::~KTProxyItem()
 
 void KTProxyItem::setItem(QGraphicsItem *item)
 {
+	if( d->realItem )
+	{
+		this->removeSceneEventFilter(d->realItem);
+	}
+	
 	d->realItem = item;
+	
+	if( d->realItem )
+	{
+		d->realItem->installSceneEventFilter(this);
+		this->setFlags(d->realItem->flags());
+	}
+}
+
+QGraphicsItem *KTProxyItem::item() const
+{
+	return d->realItem;
 }
 
 QRectF KTProxyItem::boundingRect() const
@@ -55,13 +71,63 @@ void KTProxyItem::paint(QPainter * painter, const QStyleOptionGraphicsItem * opt
 {
 	if( d->realItem )
 	{
-		if( QGraphicsPathItem *path = qgraphicsitem_cast<QGraphicsPathItem *>(d->realItem) )
-		{
-			painter->translate(-path->path().boundingRect().topLeft().x(), -path->path().boundingRect().topLeft().y());
-		}
 		d->realItem->paint(painter, option, widget);
 		
 	}
 }
 
+QPainterPath KTProxyItem::shape() const
+{
+	if( d->realItem)
+		return d->realItem->shape();
+	
+	return QGraphicsItem::shape();
+}
+
+bool KTProxyItem::collidesWithItem( const QGraphicsItem * other, Qt::ItemSelectionMode mode) const
+{
+	if( d->realItem)
+		return d->realItem->collidesWithItem(other, mode);
+	
+	return QGraphicsItem::collidesWithItem(other, mode);
+}
+
+
+bool KTProxyItem::collidesWithPath ( const QPainterPath & path, Qt::ItemSelectionMode mode) const
+{
+	if( d->realItem)
+		return d->realItem->collidesWithPath(path, mode);
+	
+	return QGraphicsItem::collidesWithPath(path, mode);
+}
+
+
+bool KTProxyItem::contains ( const QPointF & point ) const
+{
+	if( d->realItem)
+		return d->realItem->contains(point);
+	
+	return QGraphicsItem::contains(point);
+}
+
+
+bool KTProxyItem::isObscuredBy ( const QGraphicsItem * item ) const
+{
+	if( d->realItem)
+		return d->realItem->isObscuredBy(item);
+	
+	return QGraphicsItem::isObscuredBy(item);
+}
+
+
+QPainterPath KTProxyItem::opaqueArea () const
+{
+	if( d->realItem)
+		return d->realItem->opaqueArea();
+	
+	return QGraphicsItem::opaqueArea();
+}
+
+
+		
 

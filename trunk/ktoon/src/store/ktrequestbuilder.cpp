@@ -160,11 +160,20 @@ KTProjectRequest KTRequestBuilder::createSceneRequest(int sceneIndex, int action
 	return KTProjectRequest(doc.toString(0));
 }
 
-KTProjectRequest KTRequestBuilder::createLibraryRequest(int type, int actionId, const QVariant &arg, const QByteArray &data)
+KTProjectRequest KTRequestBuilder::createLibraryRequest(int actionId, const QVariant &arg, const QByteArray &data, int type, int sceneIndex, int layerIndex, int frameIndex)
 {
 	QDomDocument doc;
 	
 	QDomElement root = doc.createElement("request");
+	
+	QDomElement scene = doc.createElement("scene");
+	scene.setAttribute( "index", sceneIndex);
+	
+	QDomElement layer = doc.createElement("layer");
+	layer.setAttribute( "index", layerIndex);
+	
+	QDomElement frame = doc.createElement("frame");
+	frame.setAttribute( "index", frameIndex);
 	
 	QDomElement library = doc.createElement("library");
 	
@@ -178,10 +187,15 @@ KTProjectRequest KTRequestBuilder::createLibraryRequest(int type, int actionId, 
 	
 	KTRequestBuilder::appendData( doc, action, data);
 	
-	library.appendChild(action);
+	root.appendChild(action);
 	
 	library.appendChild(symbol);
+	
 	root.appendChild(library);
+	
+	root.appendChild(scene);
+	scene.appendChild(layer);
+	layer.appendChild(frame);
 	
 	doc.appendChild(root);
 	

@@ -65,11 +65,8 @@ class Node : public QObject, public QGraphicsItem
 		void mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * event );
 		
 	private:
-		TypeNode m_typeNode;
-		ActionNode m_action;
-		bool m_notChange;
-		QGraphicsItem * m_parent;
-		NodeManager *m_manager;
+		struct Private;
+		Private *const d;
 		
 };
 

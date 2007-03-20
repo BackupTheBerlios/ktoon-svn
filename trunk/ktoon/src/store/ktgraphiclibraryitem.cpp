@@ -26,6 +26,7 @@
 
 struct KTGraphicLibraryItem::Private
 {
+	QString symbolName;
 	QList<QGraphicsItem *> items;
 };
 
@@ -76,5 +77,13 @@ KTGraphicLibraryItem::~KTGraphicLibraryItem()
 
 
 
+QDomElement KTGraphicLibraryItem::toXml(QDomDocument &doc) const
+{
+	return QDomElement();
+}
+
+void KTGraphicLibraryItem::fromXml(const QString &xml)
+{
+}
 
 

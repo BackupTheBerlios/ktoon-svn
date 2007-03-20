@@ -29,6 +29,8 @@
 #include <QFileDialog>
 #include <QGraphicsItem>
 
+#include <ktrequestbuilder.h>
+
 #include <cstdlib>
 #include <ctime>
 
@@ -37,11 +39,23 @@
 
 struct KTLibraryWidget::Private
 {
+	Private()
+	{
+		currentFrame.frame = -1;
+	}
+	
 	const KTLibrary *library;
 	KTItemPreview *display;
 	KTGCTable *libraryTree;
 	int childCount;
 	QDir libraryDir;
+	
+	struct Frame
+	{
+		int scene;
+		int layer;
+		int frame;
+	} currentFrame;
 };
 
 KTLibraryWidget::KTLibraryWidget(const KTLibrary *library,QWidget *parent) : KTModuleWidgetBase(parent), d(new Private)
@@ -254,10 +268,9 @@ void KTLibraryWidget::emitSelectedComponent()
 	
 	QString symKey = d->libraryTree->currentItem()->text(0);
 	
-	// FIXME FIXME FIXME
-// 	KTProjectRequest request(KTProjectRequest::AddSymbol, KTProjectRequest::Library, "<symbol key=\""+symKey+"\" />");
+	KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::AddSymbolToProject, symKey, 0, 0, d->currentFrame.scene, d->currentFrame.layer, d->currentFrame.frame);
 	
-// 	emit requestTriggered( &request);
+	emit requestTriggered( &request);
 }
 
 void KTLibraryWidget::removeCurrentGraphic()
@@ -399,9 +412,19 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 		break;
 		default:
 		{
-			qFatal("IMPLEMENT ME");
+			qWarning("IMPLEMENT ME");
 		}
 		break;
+	}
+}
+
+void KTLibraryWidget::frameResponse(KTFrameResponse *response)
+{
+	if( response->action() == KTProjectRequest::Select )
+	{
+		d->currentFrame.frame = response->frameIndex();
+		d->currentFrame.layer = response->layerIndex();
+		d->currentFrame.scene = response->sceneIndex();
 	}
 }
 

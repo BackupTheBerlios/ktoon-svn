@@ -98,6 +98,11 @@ void KTItemPreview::paintEvent(QPaintEvent *)
 		
 		p.translate( (rect().width() - opt.exposedRect.width())/2, (rect().height() - opt.exposedRect.height())/2 );
 		
+		if( QGraphicsPathItem *path = qgraphicsitem_cast<QGraphicsPathItem *>(d->proxy->item()) )
+		{
+			p.translate(-path->path().boundingRect().topLeft().x(), -path->path().boundingRect().topLeft().y());
+		}
+		
 		d->proxy->paint ( &p, &opt, this ); // paint isn't const...
 	}
 }

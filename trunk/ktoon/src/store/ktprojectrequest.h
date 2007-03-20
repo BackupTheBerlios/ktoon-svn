@@ -97,7 +97,8 @@ class STORE_EXPORT KTProjectRequest
 			// Items
 			Transform = 8,
 			Convert = 9,
-			EditNodes = 10
+			EditNodes = 10,
+			AddSymbolToProject = 11
 		};
 		
 		enum Part

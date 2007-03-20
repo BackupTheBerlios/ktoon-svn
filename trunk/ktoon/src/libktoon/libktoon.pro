@@ -41,11 +41,19 @@ SOURCES += ktgraphicalgorithm.cpp \
            ktsocketbase.cpp \
            ktxmlparserbase.cpp \
            ktproxyitem.cpp
-DLIB_DIR = ../../src/dlib
+
+
+DLIB_DIR = "../../src/dlib"
+
 include($$DLIB_DIR/dlib.pri)
-QUAZIP_DIR = ../../3rdparty/quazip/
+
+
+QUAZIP_DIR = "../../3rdparty/quazip/"
+
 include($$QUAZIP_DIR/quazip.pri)
+
 TARGET = ktoon
+
 CONFIG += dll
 TEMPLATE = lib
 include(../../ktconfig.pri)

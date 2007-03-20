@@ -25,8 +25,11 @@
 #include "ktscene.h"
 #include "ktlayer.h"
 #include "ktframe.h"
+
 #include "ktlibrary.h"
 #include "ktlibraryobject.h"
+#include "ktgraphiclibraryitem.h"
+
 #include "ktitemfactory.h"
 
 #include "ktprojectresponse.h"
@@ -380,6 +383,65 @@ bool KTProject::createSymbol(int type, const QString &name, const QByteArray &da
 bool KTProject::removeSymbol(const QString &name)
 {
 	return d->library->removeObject(name);
+}
+
+bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int layerIndex, int frameIndex)
+{
+	dDebug() << sceneIndex << " " << layerIndex << " " << frameIndex;
+	
+	KTLibraryObject *object = d->library->findObject(name);
+	
+	KTFrame *target = 0;
+	
+	KTScene *scene = this->scene(sceneIndex);
+	
+	if(scene)
+	{
+		KTLayer *layer = scene->layer(layerIndex);
+		if( layer )
+		{
+			target = layer->frame(frameIndex);
+		}
+	}
+	
+	if(object && target)
+	{
+		switch(object->type())
+		{
+			case KTLibraryObject::Image:
+			{
+				
+			}
+			break;
+			case KTLibraryObject::Item:
+			{
+				KTGraphicLibraryItem *libraryItem = new KTGraphicLibraryItem(object);
+				target->addItem(libraryItem);
+			}
+			break;
+			case KTLibraryObject::Svg:
+			{
+			}
+			break;
+			case KTLibraryObject::Text:
+			{
+			}
+			break;
+			case KTLibraryObject::Sound:
+			{
+			}
+			break;
+		}
+		return true;
+	}
+	return false;
+}
+
+bool KTProject::removeSymbolFromProject(const QString &name, int scene, int layer, int frame)
+{
+	qFatal("Find me in ktproject.cpp");
+	
+	return false;
 }
 
 KTLibrary *KTProject::library() const

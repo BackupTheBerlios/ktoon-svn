@@ -3,8 +3,6 @@
 # Subdir relative project main directory: ./src/components/pen
 # Target is a library:  
 
-KDEV_QTVER = 4 
-
 include(../components_config.pri)
 
 CONFIG += static

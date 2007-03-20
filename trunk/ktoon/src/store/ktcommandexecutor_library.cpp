@@ -57,4 +57,20 @@ bool KTCommandExecutor::removeSymbol(KTLibraryResponse *response)
 	return false;
 }
 
+bool KTCommandExecutor::addSymbolToProject(KTLibraryResponse *response)
+{
+	if ( m_project->addSymbolToProject(response->arg().toString(), response->sceneIndex(), response->layerIndex(), response->frameIndex()) )
+	{
+		emit responsed(response);
+		return true;
+	}
+	
+	return false;
+}
+
+
+bool KTCommandExecutor::removeSymbolFromProject(KTLibraryResponse *response)
+{
+}
+
 

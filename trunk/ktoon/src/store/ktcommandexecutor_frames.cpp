@@ -227,7 +227,7 @@ bool KTCommandExecutor::selectFrame(KTFrameResponse *response)
 	int scenePos = response->sceneIndex();
 	int layerPos = response->layerIndex();
 	int position = response->frameIndex();
-	bool prioritary = response->arg().toBool();
+// 	bool prioritary = response->arg().toBool();
 	
 	KTScene *scene = m_project->scene(scenePos);
 	

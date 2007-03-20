@@ -65,6 +65,7 @@ void KTMainWindow::createGUI()
 	new DAction( QPixmap(), tr( "Import bitmap..." ), QKeySequence(), m_libraryWidget, SLOT(importBitmap()), m_actionManager, "importbitmap");
 	
 	ui4project( m_libraryWidget );
+	ui4localRequest(m_libraryWidget);
 	
 	/////////////////
 	m_scenes = new KTScenesWidget( this);
@@ -74,7 +75,7 @@ void KTMainWindow::createGUI()
 	m_actionManager->insert( view->toggleViewAction(), "show scenes");
 	
 	ui4project(m_scenes);
-	ui4handlerLocalRequest(m_scenes);
+	ui4localRequest(m_scenes);
 	connectToDisplays(m_scenes);
 	
 	/////////////////////
@@ -86,7 +87,7 @@ void KTMainWindow::createGUI()
 	addToPerspective(view->toggleViewAction(), Drawing);
 	
 	ui4project( m_exposureSheet );
-	ui4handlerLocalRequest( m_exposureSheet );
+	ui4localRequest( m_exposureSheet );
 	connectToDisplays(m_exposureSheet);
 	
 	///////////////////////
@@ -111,7 +112,7 @@ void KTMainWindow::createGUI()
 	addToPerspective(view->toggleViewAction(), Drawing);
 	
 	ui4project( m_timeLine );
-	ui4handlerLocalRequest( m_timeLine );
+	ui4localRequest( m_timeLine );
 	connectToDisplays(m_timeLine);
 	
 	

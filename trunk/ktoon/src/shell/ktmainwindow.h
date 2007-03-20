@@ -112,7 +112,7 @@ class KTMainWindow : public DTabbedMainWindow
 		
 		void ui4project(QWidget *widget);
 		void ui4paintArea(QWidget *widget);
-		void ui4handlerLocalRequest(QWidget *widget);
+		void ui4localRequest(QWidget *widget);
 		
 		
 	private:

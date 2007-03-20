@@ -51,6 +51,7 @@ class KTLibraryWidget : public KTModuleWidgetBase
 		
 	protected:
 		virtual void libraryResponse(KTLibraryResponse *response);
+		virtual void frameResponse(KTFrameResponse *response);
 		
 	private slots:
 		void addFolder(const QString &name);

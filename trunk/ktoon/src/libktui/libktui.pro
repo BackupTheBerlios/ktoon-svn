@@ -19,7 +19,6 @@ SOURCES += ktthemeselector.cpp \
            ktpreferences.cpp \
            ktworkspace.cpp \
            ktpaintareaconfig.cpp 
-KDEV_QTVER = 4
 STORE_DIR = ../../src/store
 LIBKTOON_DIR = ../../src/libktoon
 DLIB_DIR = ../../src/dlib

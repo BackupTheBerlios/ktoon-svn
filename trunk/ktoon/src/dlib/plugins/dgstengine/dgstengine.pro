@@ -5,7 +5,6 @@
 
 INSTALLS += target 
 target.path = /plugins/ 
-KDEV_QTVER = 4 
 INCLUDEPATH += ../../ 
 CONFIG += release \
           warn_on \

@@ -109,7 +109,7 @@ class KTItemResponse : public KTFrameResponse
 		int m_itemIndex;
 };
 
-class KTLibraryResponse : public KTProjectResponse
+class KTLibraryResponse : public KTFrameResponse
 {
 	public:
 		KTLibraryResponse(int part, int action);

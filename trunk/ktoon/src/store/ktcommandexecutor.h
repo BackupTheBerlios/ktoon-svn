@@ -52,13 +52,12 @@ class KTCommandExecutor : public QObject
 		bool convertItem(KTItemResponse *response);
 		bool transformItem(KTItemResponse *response);
 		bool setPathItem(KTItemResponse *response);
-		bool createSymbol(KTLibraryResponse *response);
+		
 		
 		
 		bool removeScene(KTSceneResponse *response);
 		bool removeLayer(KTLayerResponse *response);
 		bool removeFrame(KTFrameResponse *response);
-		bool removeSymbol(KTLibraryResponse *response);
 		
 		bool removeItem(KTItemResponse *response);
 		bool removeItems(KTItemResponse *response); // FIXME: remove me
@@ -87,6 +86,11 @@ class KTCommandExecutor : public QObject
 		bool setFrameVisibility(KTFrameResponse *response);
 		bool setLayerVisibility(KTLayerResponse *response);
 		bool setSceneVisibility(KTSceneResponse *response);
+		
+		bool createSymbol(KTLibraryResponse *response);
+		bool removeSymbol(KTLibraryResponse *response);
+		bool addSymbolToProject(KTLibraryResponse *response);
+		bool removeSymbolFromProject(KTLibraryResponse *response);
 		
 	signals:
 		void responsed(KTProjectResponse *response);

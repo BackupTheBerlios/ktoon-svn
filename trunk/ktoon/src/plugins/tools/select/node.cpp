@@ -39,10 +39,23 @@
 
 #define DEBUG 0
 
-Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *manager, QGraphicsItem * parent,  QGraphicsScene * scene   ) : QGraphicsItem(0, scene), m_typeNode(node), m_action(action), m_notChange(true), m_parent(parent), m_manager(manager)
+struct Node::Private
+{
+	Private(TypeNode node, ActionNode action, NodeManager *manager, QGraphicsItem * parent) : typeNode(node), action(action), notChange(false), parent(parent), manager(manager)
+	{
+	}
+	
+	TypeNode typeNode;
+	ActionNode action;
+	bool notChange;
+	QGraphicsItem * parent;
+	NodeManager *manager;
+};
+
+Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *manager, QGraphicsItem * parent,  QGraphicsScene * scene   ) : QGraphicsItem(0, scene), d(new Private(node, action, manager, parent))
 {
 	QGraphicsItem::setCursor(QCursor(Qt::PointingHandCursor ));
-// 	setParentItem(m_parent);
+// 	setParentItem(d->parent);
 	setFlag(ItemIsSelectable, false);
 	setFlag(ItemIsMovable, true);
 	
@@ -53,6 +66,7 @@ Node::Node(TypeNode node, ActionNode action, const QPointF & pos, NodeManager *m
 
 Node::~Node()
 {
+	delete d;
 }
 
 
@@ -77,7 +91,7 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 		c.setAlpha(150);
 	}
 	
-	if(m_action == Rotate)
+	if(d->action == Rotate)
 	{
 		c.setGreen(200);
 	}
@@ -88,9 +102,9 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 	//DEBUG
 #if DEBUG
 	painter->setFont( QFont( painter->font().family(), 5 ));
-	painter->drawText( br, QString::number(m_typeNode));
+	painter->drawText( br, QString::number(d->typeNode));
 #endif
-	if(m_typeNode == Center)
+	if(d->typeNode == Center)
 	{
 		painter->save();
 		painter->setPen(Qt::gray);
@@ -119,9 +133,9 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
 		
 		if(value.toBool())
 		{
-			m_parent->setSelected(true);
+			d->parent->setSelected(true);
 		}
-		m_manager->show();
+		d->manager->show();
 	}
 	return QGraphicsItem::itemChange(change, value);
 }
@@ -130,12 +144,12 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	D_FUNCINFO;
 // 	update();
-	m_manager->setPress( true);
+	d->manager->setPress( true);
 	
 	QGraphicsItem::mousePressEvent(event);
 	
 #if DEBUG
-	QRectF r = m_parent->sceneMatrix().inverted().mapRect( m_parent->sceneBoundingRect() );
+	QRectF r = d->parent->sceneMatrix().inverted().mapRect( d->parent->sceneBoundingRect() );
 	scene()->addRect(r, QPen(Qt::magenta), QBrush(QColor(100,100,200,50)));
 	scene()->update(r);
 #endif
@@ -146,25 +160,24 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	D_FUNCINFO;
 // 	update();
 	QGraphicsItem::mouseReleaseEvent(event);
-	m_parent->setSelected(true);
-	m_manager->setPress(false);
+	d->parent->setSelected(true);
+	d->manager->setPress(false);
 }
 
 void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 {
-	
-	QPointF newPos(/*mapToItem(m_parent,*/ event->scenePos())/*)*/;
-	if( m_notChange)
+	QPointF newPos(/*mapToItem(d->parent,*/ event->scenePos())/*)*/;
+	if( d->notChange)
 	{
-		m_notChange = false;
+		d->notChange = false;
 	}
 	else
 	{
-		if(m_action == Scale)
+		if(d->action == Scale)
 		{
-			QRectF rect = m_parent->sceneBoundingRect();
-			QRectF br = m_parent->sceneBoundingRect();
-			QRectF br1 = m_parent->boundingRect();
+			QRectF rect = d->parent->sceneBoundingRect();
+			QRectF br = d->parent->sceneBoundingRect();
+			QRectF br1 = d->parent->boundingRect();
 			
 			//Debug
 // 			scene()->addRect(rect, QPen(Qt::red));
@@ -172,29 +185,29 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 			//Debug
 			
 			
-			switch(m_typeNode)
+			switch(d->typeNode)
 			{
 				case TopLeft:
 				{
-					m_manager->setAnchor(br1.bottomRight());
+					d->manager->setAnchor(br1.bottomRight());
 					rect.setTopLeft( newPos );
 					break;
 				}
 				case TopRight:
 				{
-					m_manager->setAnchor( br1.bottomLeft());
+					d->manager->setAnchor( br1.bottomLeft());
 					rect.setTopRight(newPos);
 					break;
 				}
 				case BottomRight:
 				{
-					m_manager->setAnchor( br1.topLeft());
+					d->manager->setAnchor( br1.topLeft());
 					rect.setBottomRight(newPos);
 					break;
 				}
 				case BottomLeft:
 				{
-					m_manager->setAnchor( br1.topRight());
+					d->manager->setAnchor( br1.topRight());
 					rect.setBottomLeft(newPos);
 					break;
 				}
@@ -210,32 +223,32 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 			
 			if(sx > 0 && sy > 0)
 			{
-				m_manager->scale( sx,sy);
+				d->manager->scale( sx,sy);
 			}
 			else
 			{
 				if(sx > 0)
 				{
-					m_manager->scale(sx, 1);
+					d->manager->scale(sx, 1);
 				}
 				if(sy > 0)
 				{
-					m_manager->scale(1, sy);
+					d->manager->scale(1, sy);
 				}
 			}
 		}
 		else
 		{
 			
-			if(m_typeNode != Center)
+			if(d->typeNode != Center)
 			{
-// 				m_manager->setVisible(false);
+// 				d->manager->setVisible(false);
 				QPointF p1 = newPos;
-				QPointF p2 = m_parent->sceneBoundingRect().center();
-				m_manager->setAnchor( m_parent->boundingRect().center() );
+				QPointF p2 = d->parent->sceneBoundingRect().center();
+				d->manager->setAnchor( d->parent->boundingRect().center() );
 				
 				double a = (180 * KTGraphicalAlgorithm::angleForPos(p1, p2)) / M_PI;
-				m_manager->rotate(a-45 );
+				d->manager->rotate(a-45 );
 			}
 			else
 			{
@@ -244,11 +257,10 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 		}
 	}
 	
-	if(m_typeNode == Center)
+	if(d->typeNode == Center)
 	{
-		m_parent->moveBy(event->pos().x(), event->pos().y() );
+		d->parent->moveBy(event->pos().x(), event->pos().y() );
 	}
-// 	update();
 }
 
 
@@ -256,7 +268,7 @@ void Node::mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * e)
 {
 	D_FUNCINFO;
 // 	update();
-	m_manager->toggleAction();
+	d->manager->toggleAction();
 	e->setAccepted (false);
 	QGraphicsItem::mouseDoubleClickEvent(e);
 	
@@ -264,16 +276,16 @@ void Node::mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * e)
 
 int Node::typeNode() const
 {
-	return m_typeNode;
+	return d->typeNode;
 }
 
 void Node::setAction(ActionNode action)
 {
-	m_action = action;
+	d->action = action;
 	update();
 }
 
 int Node::actionNode()
 {
-	return m_action;
+	return d->action;
 }

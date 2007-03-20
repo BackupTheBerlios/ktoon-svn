@@ -167,7 +167,7 @@ void KTMainWindow::newViewDocument(const QString &title)
 		addWidget( m_viewDoc, true, Drawing);
 		connectToDisplays( m_viewDoc );
 		ui4project( m_viewDoc );
-		ui4handlerLocalRequest(m_viewDoc );
+		ui4localRequest(m_viewDoc );
 		
 		m_animationSpace = new KTWorkspace;
 		m_animationSpace->setWindowIcon(QIcon(THEME_DIR+"/icons/animation_mode.png"));
@@ -514,7 +514,7 @@ void KTMainWindow::ui4paintArea(QWidget *widget)
 	connect(widget, SIGNAL(paintAreaEventTriggered(const KTPaintAreaEvent *)), this, SLOT(createCommand(const KTPaintAreaEvent *)));
 }
 
-void KTMainWindow::ui4handlerLocalRequest(QWidget *widget)
+void KTMainWindow::ui4localRequest(QWidget *widget)
 {
 	connect(widget, SIGNAL(localRequestTriggered(const KTProjectRequest *)), m_handlerLocalRequest, SLOT(handle(const KTProjectRequest *)));
 	

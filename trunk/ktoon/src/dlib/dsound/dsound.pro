@@ -6,7 +6,6 @@
 DEFINES += DLIB_SOUND
 INSTALLS += target 
 target.path = /lib/ 
-KDEV_QTVER = 4 
 INCLUDEPATH += ../ 
 CONFIG += release \
           warn_on \

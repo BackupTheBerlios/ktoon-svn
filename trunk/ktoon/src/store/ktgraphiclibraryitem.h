@@ -22,17 +22,23 @@
 #define KTGRAPHICLIBRARYITEM_H
 
 #include <ktproxyitem.h>
+#include <ktabstractserializable.h>
+
+#include <ktglobal_store.h>
 
 class KTLibraryObject;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTGraphicLibraryItem : public KTProxyItem
+class STORE_EXPORT KTGraphicLibraryItem : public KTProxyItem, public KTAbstractSerializable
 {
 	public:
 		KTGraphicLibraryItem(KTLibraryObject *object);
 		~KTGraphicLibraryItem();
+		
+		QDomElement toXml(QDomDocument &doc) const;
+		void fromXml(const QString &xml);
 		
 	private:
 		struct Private;

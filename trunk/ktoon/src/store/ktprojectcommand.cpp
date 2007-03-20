@@ -46,12 +46,10 @@ KTProjectCommand::KTProjectCommand(KTCommandExecutor *executor, const KTProjectR
 	d->executed = false;
 	
 	KTRequestParser parser;
-	
 	if ( ! parser.parse( event->xml() ) )
 	{
 		qFatal("==> KTProjectCommand::KTProjectCommand()");
 	}
-	
 	d->response = parser.response();
 	
 	if ( !d->response ) qFatal("Unparsed response!");
@@ -676,6 +674,11 @@ void KTProjectCommand::libraryCommand(bool redo)
 				d->executor->removeSymbol(response);
 			}
 			break;
+			case KTProjectRequest::AddSymbolToProject:
+			{
+				d->executor->addSymbolToProject(response);
+			}
+			break;
 		}
 	}
 	else
@@ -690,6 +693,11 @@ void KTProjectCommand::libraryCommand(bool redo)
 			case KTProjectRequest::Remove:
 			{
 				d->executor->createSymbol(response);
+			}
+			break;
+			case KTProjectRequest::AddSymbolToProject:
+			{
+				d->executor->removeSymbolFromProject(response);
 			}
 			break;
 		}
