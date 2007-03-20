@@ -59,6 +59,11 @@ Node::~Node()
 void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *w )
 {
 	Q_UNUSED(w);
+	
+	bool antialiasing =  painter->renderHints() & QPainter::Antialiasing;
+	
+	painter->setRenderHint(QPainter::Antialiasing, false);
+	
 	QColor c;
 	
 	if (option->state & QStyle::State_Sunken)
@@ -79,7 +84,7 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 	QRectF br = boundingRect();
 
 	painter->setBrush( c );
-	painter->drawRect(br);
+	painter->drawRoundRect(br);
 	//DEBUG
 #if DEBUG
 	painter->setFont( QFont( painter->font().family(), 5 ));
@@ -93,6 +98,8 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 		painter->drawLine(br.bottomLeft(), br.topRight()  );
 		painter->restore();
 	}
+	
+	painter->setRenderHint(QPainter::Antialiasing, antialiasing);
 }
 
 QRectF Node::boundingRect() const
@@ -122,7 +129,7 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
 void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 	D_FUNCINFO;
-	update();
+// 	update();
 	m_manager->setPress( true);
 	
 	QGraphicsItem::mousePressEvent(event);
@@ -137,7 +144,7 @@ void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	D_FUNCINFO;
-	update();
+// 	update();
 	QGraphicsItem::mouseReleaseEvent(event);
 	m_parent->setSelected(true);
 	m_manager->setPress(false);
@@ -241,14 +248,14 @@ void Node::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 	{
 		m_parent->moveBy(event->pos().x(), event->pos().y() );
 	}
-	update();
+// 	update();
 }
 
 
 void Node::mouseDoubleClickEvent ( QGraphicsSceneMouseEvent * e)
 {
 	D_FUNCINFO;
-	update();
+// 	update();
 	m_manager->toggleAction();
 	e->setAccepted (false);
 	QGraphicsItem::mouseDoubleClickEvent(e);

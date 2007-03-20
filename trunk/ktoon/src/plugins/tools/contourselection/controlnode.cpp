@@ -54,6 +54,11 @@ ControlNode::~ControlNode()
 void ControlNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *w )
 {
 	Q_UNUSED(w);
+	
+	bool antialiasing =  painter->renderHints() & QPainter::Antialiasing;
+	
+	painter->setRenderHint(QPainter::Antialiasing, false);
+	
 	QColor c;
 	
 	if (option->state & QStyle::State_Sunken || option->state & QStyle::State_Selected )
@@ -99,13 +104,16 @@ void ControlNode::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 	painter->setBrush( c );
 	paintLinesToChilds(painter);
 	
-	painter->drawRect(boundingRect());
+	painter->drawRoundRect(boundingRect());
+	
+	painter->setRenderHint(QPainter::Antialiasing, antialiasing);
 }
 
 void ControlNode::paintLinesToChilds(QPainter * painter)
 {
 	QMatrix inverted = sceneMatrix().inverted();
 	painter->save();
+	
 	painter->setPen(QPen(QColor(0x8080FF)));
 	if(m_right)
 	{
@@ -207,7 +215,7 @@ QVariant ControlNode::itemChange(GraphicsItemChange change, const QVariant &valu
 
 void ControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	update();
+// 	update();
 	if(m_nodeParent)
 	{
 		setSelected(true);
@@ -241,7 +249,6 @@ void ControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void ControlNode::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	update();
 	QGraphicsItem::mouseReleaseEvent(event);
 }
 
@@ -264,7 +271,7 @@ void ControlNode::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 		}
 	}
 	setPos(event->scenePos());
-	update();
+// 	update();
 }
 
 
@@ -345,7 +352,7 @@ int ControlNode::index() const
 	return m_index;
 }
 
-void  ControlNode::repaint()
+void ControlNode::repaint()
 {
 	update();
 }
