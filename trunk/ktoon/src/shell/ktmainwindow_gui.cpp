@@ -31,8 +31,10 @@
 
 void KTMainWindow::createGUI()
 {
+// 	setDockOptions(QMainWindow::ForceTabbedDocks /*| QMainWindow::AnimatedDocks*/);
+	
 	// TODO: put setWindowIcon in each class
-	m_colorPalette = new KTColorPalette(this);
+	m_colorPalette = new KTColorPalette;
 	DToolView *view = addToolView( m_colorPalette, Qt::LeftDockWidgetArea, Drawing );
 	
 	m_actionManager->insert( view->toggleViewAction(), "show palette");
@@ -43,7 +45,7 @@ void KTMainWindow::createGUI()
 	
 	////////////////////
 	
-	m_penWidget = new KTPenWidget(this);
+	m_penWidget = new KTPenWidget;
 	view = addToolView( m_penWidget, Qt::LeftDockWidgetArea, Drawing );
 	
 	m_actionManager->insert( view->toggleViewAction(), "show pen");
@@ -53,7 +55,7 @@ void KTMainWindow::createGUI()
 	ui4paintArea( m_penWidget );
 	
 	////////////////////
-	m_libraryWidget = new KTLibraryWidget( m_projectManager->project()->library(), this );
+	m_libraryWidget = new KTLibraryWidget( m_projectManager->project()->library() );
 	
 	view = addToolView( m_libraryWidget, Qt::LeftDockWidgetArea, Drawing );
 	
@@ -68,7 +70,7 @@ void KTMainWindow::createGUI()
 	ui4localRequest(m_libraryWidget);
 	
 	/////////////////
-	m_scenes = new KTScenesWidget( this);
+	m_scenes = new KTScenesWidget;
 	
 	view = addToolView( m_scenes, Qt::RightDockWidgetArea, All );
 	
@@ -79,7 +81,7 @@ void KTMainWindow::createGUI()
 	connectToDisplays(m_scenes);
 	
 	/////////////////////
-	m_exposureSheet = new KTExposureSheet(this);
+	m_exposureSheet = new KTExposureSheet;
 	
 	view = addToolView( m_exposureSheet, Qt::RightDockWidgetArea, Drawing );
 	
@@ -104,7 +106,7 @@ void KTMainWindow::createGUI()
 	
 	
 	//////////////////////
-	m_timeLine = new KTTimeLine(this);
+	m_timeLine = new KTTimeLine;
 	
 	view = addToolView( m_timeLine, Qt::BottomDockWidgetArea, Drawing );
 	
@@ -118,7 +120,7 @@ void KTMainWindow::createGUI()
 	
 	//////////////////
 #ifdef ENABLE_KINAS
-	KinasWidget *m_scriptEditor = new KinasWidget(this);
+	KinasWidget *m_scriptEditor = new KinasWidget;
 	addToolView( m_scriptEditor, Qt::BottomDockWidgetArea, Drawing );
 #endif
 	

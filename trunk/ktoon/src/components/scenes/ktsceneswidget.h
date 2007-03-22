@@ -42,7 +42,7 @@ class KTScenesWidget : public KTModuleWidgetBase
 {
 	Q_OBJECT
 	public:
-		KTScenesWidget( QWidget *parent);
+		KTScenesWidget( QWidget *parent = 0);
 		~KTScenesWidget();
 		
 	public slots:

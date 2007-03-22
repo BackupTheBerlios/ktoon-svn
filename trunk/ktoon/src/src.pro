@@ -4,7 +4,6 @@
 # Target is a subdirs project 
 
 SUBDIRS += themes \
-           dlib \
            libktoon \
            store \
            net \ 

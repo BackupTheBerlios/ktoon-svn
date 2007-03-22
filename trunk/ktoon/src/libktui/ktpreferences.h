@@ -67,3 +67,4 @@ class KTPreferences : public DConfigurationDialog
 };
 
 #endif
+

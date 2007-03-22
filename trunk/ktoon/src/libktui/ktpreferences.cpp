@@ -144,6 +144,7 @@ void KTPreferences::GeneralPage::saveValues()
 
 class KTPreferences::FontPage : public QWidget
 {
+	Q_OBJECT;
 	public:
 		FontPage();
 		~FontPage();
@@ -171,7 +172,6 @@ QFont KTPreferences::FontPage::currentFont() const
 }
 
 
-#include "ktpreferences.moc"
 
 //--------------- CONSTRUCTOR --------------------
 
@@ -233,4 +233,5 @@ void KTPreferences::apply()
 }
 
 
+#include "ktpreferences.moc"
 
