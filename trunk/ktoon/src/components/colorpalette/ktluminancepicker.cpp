@@ -3,7 +3,7 @@
 
 #include <QPainter>
 #include <qdrawutil.h>
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 int KTLuminancePicker::y2val(int y)
 {
 	int d = height() - 2*coff - 1;

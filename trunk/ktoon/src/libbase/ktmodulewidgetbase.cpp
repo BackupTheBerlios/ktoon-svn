@@ -25,7 +25,7 @@
 #include <QBoxLayout>
 #include <QDialog>
 
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 #include <qobject.h>
 

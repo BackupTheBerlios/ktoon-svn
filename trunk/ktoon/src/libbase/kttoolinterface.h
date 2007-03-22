@@ -35,7 +35,7 @@
 
 #include "ktframe.h"
 
-#include "daction.h"
+#include <dgui/daction.h>
 
 #include "qplugin.h" // Q_EXPORT_PLUGIN
 #include "ktglobal.h"

@@ -22,7 +22,7 @@
 
 #include <QDomDocument>
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 #include "ktprojectrequest.h"
 #include "ktprojectresponse.h"

@@ -29,7 +29,7 @@
 #include <QLineEdit>
 #include <QMouseEvent>
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 #include <ktglobal.h>
 
 struct LayerItem

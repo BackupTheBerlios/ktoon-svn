@@ -25,7 +25,7 @@
 #include <QPainter>
 #include <QPushButton>
 
-#include "dimagebutton.h"
+#include <dgui/dimagebutton.h>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>

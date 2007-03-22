@@ -19,10 +19,13 @@
  ***************************************************************************/
  
 #include "ktgradientcreator.h"
-#include "ddebug.h"
-#include "dapplication.h"
+
+#include <dcore/ddebug.h>
+#include "dgui/dapplication.h"
+#include "dgui/dvhbox.h"
+
 #include <QBoxLayout>
-#include "dvhbox.h"
+
 
 
 KTGradientCreator::KTGradientCreator(QWidget *parent)

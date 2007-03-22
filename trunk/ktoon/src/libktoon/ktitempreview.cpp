@@ -26,7 +26,7 @@
 
 #include "ktproxyitem.h"
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 struct KTItemPreview::Private
 {

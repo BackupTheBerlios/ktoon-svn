@@ -21,7 +21,7 @@
 #ifndef KTAPPLICATION_H
 #define KTAPPLICATION_H
 
-#include <dapplication.h>
+#include <dgui/dapplication.h>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>

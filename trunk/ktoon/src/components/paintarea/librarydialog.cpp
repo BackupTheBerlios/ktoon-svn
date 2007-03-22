@@ -28,7 +28,7 @@
 #include <QLineEdit>
 
 #include "ktitempreview.h"
-#include "dformfactory.h"
+#include <dgui/dformfactory.h>
 
 LibraryDialog::LibraryDialog()
 	: QDialog()

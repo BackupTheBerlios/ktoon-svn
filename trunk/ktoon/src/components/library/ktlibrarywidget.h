@@ -28,7 +28,7 @@
 #include <QDir>
 
 #include "ktitempreview.h"
-#include "dimagebutton.h"
+#include <dgui/dimagebutton.h>
 
 #include "ktgctable.h"
 

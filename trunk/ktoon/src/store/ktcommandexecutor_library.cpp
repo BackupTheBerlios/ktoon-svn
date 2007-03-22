@@ -71,6 +71,7 @@ bool KTCommandExecutor::addSymbolToProject(KTLibraryResponse *response)
 
 bool KTCommandExecutor::removeSymbolFromProject(KTLibraryResponse *response)
 {
+	return false;
 }
 
 

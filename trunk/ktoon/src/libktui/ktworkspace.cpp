@@ -23,7 +23,7 @@
 #include <QMouseEvent>
 #include <QDropEvent>
 
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 #include <QLinearGradient>
 

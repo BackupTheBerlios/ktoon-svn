@@ -20,7 +20,7 @@
 
 #include "ktconnectpackage.h"
 
-#include <dmd5hash.h>
+#include <dcore/dmd5hash.h>
 /*
 <connect version="0" >
         <login>the_login</login>

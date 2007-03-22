@@ -22,7 +22,7 @@
 #include <QTextStream>
 #include <QDataStream>
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 #include "ktnetprojectmanagerhandler.h"
 

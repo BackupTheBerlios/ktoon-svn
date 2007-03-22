@@ -20,7 +20,7 @@
 
 #include "ktxmlparserbase.h"
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 struct KTXmlParserBase::Private
 {

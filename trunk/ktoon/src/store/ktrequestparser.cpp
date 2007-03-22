@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "ktrequestparser.h"
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 #include <QXmlSimpleReader>
 #include <QXmlInputSource>

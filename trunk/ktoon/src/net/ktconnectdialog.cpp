@@ -20,7 +20,6 @@
 
 #include "ktconnectdialog.h"
 
-#include "dformfactory.h"
 #include <QLineEdit>
 #include <QCheckBox>
 #include <QGridLayout>
@@ -32,7 +31,8 @@
 
 #include <QDialogButtonBox>
 
-#include <dconfig.h>
+#include <dcore/dconfig.h>
+#include <dgui/dformfactory.h>
 
 class KTConnectDialog::Private
 {

@@ -26,16 +26,16 @@
 
 #include "ktpaintareaconfig.h"
 
-#include "dglobal.h"
-#include "ddebug.h"
-#include "dapplication.h"
+#include <dcore/dglobal.h>
+#include <dcore/ddebug.h>
+#include <dgui/dapplication.h>
 
 #include <QLabel>
 #include <QLineEdit>
 #include <QComboBox>
 #include <QCheckBox>
 
-#include "dformfactory.h"
+#include <dgui/dformfactory.h>
 
 
 class KTPreferences::GeneralPage : public QWidget

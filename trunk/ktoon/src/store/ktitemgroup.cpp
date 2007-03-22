@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "ktitemgroup.h"
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 KTItemGroup::KTItemGroup(QGraphicsItem *parent , QGraphicsScene *scene) : QGraphicsItemGroup(parent, scene)
 {

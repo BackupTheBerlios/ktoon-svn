@@ -27,10 +27,10 @@
 
 #include <cmath> //abs
 
-#include "dimageeffect.h"
+#include <dcore/dimageeffect.h>
 
-#include "ddebug.h"
-#include "dglobal.h"
+#include <dcore/ddebug.h>
+#include <dcore/dglobal.h>
 
 //------------------ CONSTRUCTOR -----------------
 

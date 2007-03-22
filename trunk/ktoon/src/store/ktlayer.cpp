@@ -21,7 +21,7 @@
 #include "ktlayer.h"
 #include "ktscene.h"
 
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 #include "ktprojectloader.h"
 

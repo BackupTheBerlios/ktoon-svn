@@ -26,7 +26,7 @@
 #include "ktscene.h"
 #include "ktpackagehandler.h"
 
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 KTSaveProject::KTSaveProject() : QObject()
 {

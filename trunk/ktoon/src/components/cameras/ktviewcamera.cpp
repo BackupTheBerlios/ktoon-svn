@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "ktviewcamera.h"
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 #include <QStatusBar>
 #include <QLabel>

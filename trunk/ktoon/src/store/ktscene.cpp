@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "ktscene.h"
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 #include <QDir>
 #include <QGraphicsItem>

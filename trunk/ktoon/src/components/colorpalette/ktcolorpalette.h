@@ -26,18 +26,18 @@
 #include "ktvaluecolor.h"
 #include "ktviewcolorcells.h"
 
-#include <QComboBox>
-
-#include <QGroupBox>
-#include <QSplitter>
-
-#include "dtoolbox.h"
-#include "dvhbox.h"
 #include "ktcolorpicker.h"
 #include "ktluminancepicker.h"
-#include "ddualcolorbutton.h"
 #include "ktgradientcreator.h"
+
+#include <QComboBox>
+#include <QGroupBox>
+#include <QSplitter>
 #include <QMenu>
+
+#include <dgui/dtoolbox.h>
+#include <dgui/dvhbox.h>
+#include <dgui/ddualcolorbutton.h>
 
 
 class KTColorPalette;

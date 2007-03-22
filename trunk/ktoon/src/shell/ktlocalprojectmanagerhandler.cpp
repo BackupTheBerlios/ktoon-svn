@@ -24,7 +24,7 @@
 
 #include "ktsaveproject.h"
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 KTLocalProjectManagerHandler::KTLocalProjectManagerHandler(QObject *parent) : KTAbstractProjectHandler(parent)
 {

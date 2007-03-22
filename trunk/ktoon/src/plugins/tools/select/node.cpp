@@ -28,7 +28,7 @@
 #include <QApplication>
 
 #include <QCursor>
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 #include "nodemanager.h"
 
 #include <cmath> //atan

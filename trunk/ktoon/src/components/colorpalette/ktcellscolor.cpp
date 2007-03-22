@@ -20,7 +20,7 @@
 
 
 #include "ktcellscolor.h"
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 #include "ktpalettedocument.h"
 
 #include <QFile>

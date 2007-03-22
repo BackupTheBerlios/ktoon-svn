@@ -23,11 +23,10 @@
 #include <QFontDatabase>
 #include <QCheckBox>
 
-#include "dfontchooser.h"
+#include <dgui/dfontchooser.h>
+#include <dcore/dspellhighlighter.h>
 
-#include "dspellhighlighter.h"
-
-// #include "ddebug.h"
+// #include <dcore/ddebug.h>
 
 TextConfigurator::TextConfigurator(QWidget *parent) : QWidget(parent)
 {

@@ -20,7 +20,7 @@
 #ifndef KTDOCUMENTRULER_H
 #define KTDOCUMENTRULER_H
 
-#include <drulerbase.h>
+#include <dgui/drulerbase.h>
 
 /**
  * @author Jorge Cuadrado

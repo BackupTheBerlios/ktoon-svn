@@ -24,9 +24,8 @@
 #include <qlabel.h>
 #include <qpixmap.h>
 
-#include "dtabdialog.h"
-
-#include "danimwidget.h"
+#include <dgui/dtabdialog.h>
+#include <dgui/danimwidget.h>
 
 /**
  * @brief Class that handles the about dialog box

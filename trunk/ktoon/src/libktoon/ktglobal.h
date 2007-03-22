@@ -21,7 +21,7 @@
 #ifndef KTGLOBAL_H
 #define KTGLOBAL_H
 
-#include <dglobal.h>
+#include <dcore/dglobal.h>
 
 #define KTOON_EXPORT D_GUI_EXPORT
 

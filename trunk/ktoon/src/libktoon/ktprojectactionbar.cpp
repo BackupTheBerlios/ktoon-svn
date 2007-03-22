@@ -24,12 +24,12 @@
 #include <QVariant>
 
 #include <ktglobal.h>
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
-#include <dseparator.h>
-#include <dconfig.h>
-#include <doptionaldialog.h>
-#include <dimagebutton.h>
+#include <dgui/dseparator.h>
+#include <dcore/dconfig.h>
+#include <dgui/doptionaldialog.h>
+#include <dgui/dimagebutton.h>
 
 KTProjectActionBar::KTProjectActionBar(Actions actions, Qt::Orientation orientation, QWidget *parent) : QWidget(parent ), m_orientation(orientation), m_isAnimated(true)
 {

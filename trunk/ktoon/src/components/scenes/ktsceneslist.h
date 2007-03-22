@@ -20,7 +20,7 @@
 #ifndef KTSCENESLIST_H
 #define KTSCENESLIST_H
 
-#include "dtreelistwidget.h"
+#include <dgui/dtreelistwidget.h>
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>

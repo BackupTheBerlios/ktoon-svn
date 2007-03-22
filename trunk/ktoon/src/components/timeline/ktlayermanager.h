@@ -27,7 +27,7 @@
 #include <QScrollBar>
 #include <QButtonGroup>
 
-#include "dimagebutton.h"
+#include <dgui/dimagebutton.h>
 
 #include <QTableWidget>
 

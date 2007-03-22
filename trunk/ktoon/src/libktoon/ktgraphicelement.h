@@ -34,7 +34,7 @@
 
 #include <QPainterPath>
 
-#include "dbrushadjuster.h"
+#include "dcore/dbrushadjuster.h"
 #include "ktglobal.h"
 
 /**

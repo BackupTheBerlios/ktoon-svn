@@ -20,7 +20,7 @@
 
 #include "ktprojectcommand.h"
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 #include "ktcommandexecutor.h"
 

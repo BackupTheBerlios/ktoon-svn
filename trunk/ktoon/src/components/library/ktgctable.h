@@ -21,7 +21,7 @@
 #ifndef KTGCTABLE_H
 #define KTGCTABLE_H
 
-#include "dtreelistwidget.h"
+#include <dgui/dtreelistwidget.h>
 
 /**
  * @author David Cuadrado <krawek@toonka.com>

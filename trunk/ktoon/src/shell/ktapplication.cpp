@@ -20,9 +20,9 @@
 
 #include "ktapplication.h"
 #include "configwizard.h"
-#include "dapplicationproperties.h"
+#include <dcore/dapplicationproperties.h>
 
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 KTApplication::KTApplication(int &argc, char **argv)
  : DApplication(argc, argv)

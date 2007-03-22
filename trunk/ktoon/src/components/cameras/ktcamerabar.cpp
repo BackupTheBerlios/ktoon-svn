@@ -21,8 +21,8 @@
 #include "ktcamerabar.h"
 #include <QBoxLayout>
 
-#include <ddebug.h>
-#include <dglobal.h>
+#include <dcore/ddebug.h>
+#include <dcore/dglobal.h>
 
 KTCameraBar::KTCameraBar(QWidget *parent)
  : QFrame(parent)

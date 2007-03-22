@@ -23,7 +23,7 @@
 #include <QTextStream>
 #include <QQueue>
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 struct KTSocketBase::Private
 {

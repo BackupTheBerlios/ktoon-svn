@@ -22,10 +22,10 @@
 #ifndef KTCELLSCOLOR_H
 #define KTCELLSCOLOR_H
 
-#include "dcellview.h"
+#include <dgui/dcellview.h>
 
 /**
-	@author Jorge Cuadrado <kuadrosx@toonka.com>
+ * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
 class KTCellsColor : public DCellView
 {

@@ -9,7 +9,7 @@
 #include <QMouseEvent>
 
 #include "ktcolorpicker.h"
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 // static int pWidth = 220;
 // static int pHeight = 200;

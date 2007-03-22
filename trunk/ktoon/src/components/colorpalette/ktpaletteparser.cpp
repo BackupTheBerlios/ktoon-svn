@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "ktpaletteparser.h"
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 KTPaletteParser::KTPaletteParser()
 	: QXmlDefaultHandler(), m_paletteName(""), m_isEditable(false), m_gradient(0)

@@ -20,7 +20,7 @@
 
 #include "ktlineitem.h"
 #include "ktserializer.h"
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 KTLineItem::KTLineItem() : QGraphicsLineItem()
 {

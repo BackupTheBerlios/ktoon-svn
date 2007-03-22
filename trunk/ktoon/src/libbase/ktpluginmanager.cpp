@@ -22,8 +22,8 @@
 #include "ktfilterinterface.h"
 #include "kttoolinterface.h"
 
-#include <dglobal.h>
-#include <ddebug.h>
+#include <dcore/dglobal.h>
+#include <dcore/ddebug.h>
 
 #include <QPluginLoader>
 #include <QDir>

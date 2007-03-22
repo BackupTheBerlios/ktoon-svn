@@ -32,7 +32,7 @@
 #include <QStyle>
 #include <QStyleOptionButton>
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 KTConfigurationArea::KTConfigurationArea(QWidget *parent) : QDockWidget(parent), m_toolTipShowed(false)
 {

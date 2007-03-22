@@ -11,7 +11,7 @@
 //
 
 #include "kinaswidget.h"
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 KinasWidget::KinasWidget(QWidget *parent) : KTModuleWidgetBase(parent)
 {

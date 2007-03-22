@@ -32,8 +32,8 @@
 #include <QList>
 #include <QActionGroup>
 
-#include "dtabwidget.h"
-#include "dimagebutton.h"
+#include <dgui/dtabwidget.h>
+#include <dgui/dimagebutton.h>
 
 #include "ktprojectactionbar.h"
 /**

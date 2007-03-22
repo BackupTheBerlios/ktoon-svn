@@ -24,8 +24,8 @@
 #include "ktprojectresponse.h"
 
 
-#include <ddebug.h>
-#include <dosd.h>
+#include <dcore/ddebug.h>
+#include <dgui/dosd.h>
 
 
 #include "ktprojectcommand.h"

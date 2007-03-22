@@ -19,11 +19,11 @@
  ***************************************************************************/
 
 #include "ktgraphicelement.h"
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 #include <QPixmap>
 #include <QHash>
-#include <dalgorithm.h>
-#include <dmd5hash.h>
+#include <dcore/dalgorithm.h>
+#include <dcore/dmd5hash.h>
 #include <QFile>
 
 KTGraphicElement::KTGraphicElement()

@@ -20,8 +20,8 @@
  
 #include "genericexportplugin.h"
 
-#include <dglobal.h>
-#include <ddebug.h>
+#include <dcore/dglobal.h>
+#include <dcore/ddebug.h>
 
 #include <QImage>
 #include <QPainter>

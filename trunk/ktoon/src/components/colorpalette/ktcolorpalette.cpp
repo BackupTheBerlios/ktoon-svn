@@ -19,16 +19,16 @@
  ***************************************************************************/
  
 #include "ktcolorpalette.h"
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 #include <QBoxLayout>
 #include <QPushButton>
 #include <QLineEdit>
 #include <QFrame>
 #include <QToolTip>
-#include "dimagebutton.h"
-#include "dglobal.h"
-#include "dconfig.h"
+#include <dgui/dimagebutton.h>
+#include <dcore/dglobal.h>
+#include <dcore/dconfig.h>
 
 #include "ktpaintareaevent.h"
 

@@ -32,6 +32,11 @@ _EOH_
 	config.addModule("svg")
 	config.addModule("xml")
 	config.addModule("network")
+
+	config.addLib("-ldgui")
+	config.addLib("-ldcore")
+	config.addLib("-ldsound")
+	
 	
 	config.addDefine("VERSION=0.9+svn")
 	config.addDefine('VERSION_STR=\\\\\"0.9+svn\\\\\"')
@@ -46,8 +51,6 @@ _EOH_
 	unix.addVariable("OBJECTS_DIR", ".obj")
 	
 	config.save("ktconfig.pri")
-	config.save("src/dlib/dlibconfig.pri")
-	
 	conf.createMakefiles
 	
 rescue => err

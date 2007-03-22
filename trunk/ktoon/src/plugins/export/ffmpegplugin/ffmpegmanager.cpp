@@ -20,8 +20,8 @@
 
 #include "ffmpegmanager.h"
 
-#include "ddebug.h"
-#include "dglobal.h"
+#include <dcore/ddebug.h>
+#include <dcore/dglobal.h>
 
 #include <cstdio>
 

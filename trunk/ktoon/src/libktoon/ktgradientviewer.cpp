@@ -20,9 +20,9 @@
 
 #include "ktgradientviewer.h"
 #include <QPainter>
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
-#include "dgradientadjuster.h"
+#include "dcore/dgradientadjuster.h"
 #include <QMouseEvent>
 #include <QRectF>
 

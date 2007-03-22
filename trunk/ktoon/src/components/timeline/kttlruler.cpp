@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "kttlruler.h"
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 #include <QPainter>
 #include <QMouseEvent>

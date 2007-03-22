@@ -24,7 +24,7 @@
 #include <QFont>
 
 #include "ktsvg2qt.h"
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 KTSerializer::KTSerializer()
 {

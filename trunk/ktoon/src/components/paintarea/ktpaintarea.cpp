@@ -22,7 +22,7 @@
 
 #include "ktpaintarea.h"
 
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 #include <QGraphicsScene>
 #include <QMouseEvent>
@@ -54,7 +54,7 @@
 #include "ktlibraryobject.h"
 #include "ktrequestbuilder.h"
 
-#include "dosd.h"
+#include <dgui/dosd.h>
 
 
 #ifdef QT_OPENGL_LIB

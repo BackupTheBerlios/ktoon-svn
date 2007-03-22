@@ -25,15 +25,18 @@
 
 #include "ktgradientselector.h"
 #include "ktgradientviewer.h"
-#include "deditspinbox.h"
-#include "dimagebutton.h"
-#include "dcirclebutton.h"
+
+#include "dgui/deditspinbox.h"
+#include "dgui/dimagebutton.h"
+#include "dgui/dcirclebutton.h"
+#include "dgui/dxyspinbox.h"
+
 #include <QFrame>
 
 #include <QComboBox>
 #include <QBoxLayout>
 
-#include "dxyspinbox.h"
+
 #include "ktglobal.h"
 
 

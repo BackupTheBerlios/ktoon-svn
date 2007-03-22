@@ -27,7 +27,7 @@
 #include <QStyleOptionButton>
 #include <QApplication>
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 #include <QCursor>
 
 #include "ktpathitem.h"

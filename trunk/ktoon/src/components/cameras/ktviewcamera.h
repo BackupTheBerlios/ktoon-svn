@@ -21,13 +21,12 @@
 #ifndef KTVIEWCAMERA_H
 #define KTVIEWCAMERA_H
 
-#include "dmdiwindow.h"
+#include <dgui/dmdiwindow.h>
+#include <dgui/dcirclebuttonbar.h>
+#include <dgui/dvhbox.h>
 
-#include "dvhbox.h"
 #include "ktanimationarea.h"
 #include "ktcamerabar.h"
-
-#include "dcirclebuttonbar.h"
 
 
 class KTProjectResponse;

@@ -21,7 +21,6 @@
 #ifndef KTVIEWAREA_H
 #define KTVIEWAREA_H
 
-// #include "dmdiwindow.h"
 #include "ktdocumentruler.h"
 #include <QCursor>
 #include <QAction>
@@ -31,16 +30,17 @@
 #include <QDir>
 #include <QPluginLoader>
 #include <QSpinBox>
+#include <QMainWindow>
 
-#include "dactionmanager.h"
+#include <dgui/dactionmanager.h>
+#include <dgui/dosd.h>
+
 #include "ktfilterinterface.h"
 #include "kttoolinterface.h"
-
 #include "ktconfigurationarea.h"
-#include <QMainWindow>
 #include "ktglobal.h"
 
-#include <dosd.h>
+
 
 class KTPaintArea;
 class KTProjectRequest;

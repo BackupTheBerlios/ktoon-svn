@@ -21,7 +21,7 @@
 #include "ktframe.h"
 #include "ktlayer.h"
 
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 #include "ktitemfactory.h"
 

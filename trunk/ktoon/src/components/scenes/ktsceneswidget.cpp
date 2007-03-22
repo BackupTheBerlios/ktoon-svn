@@ -20,11 +20,11 @@
 
 #include "ktsceneswidget.h"
 
-#include "dglobal.h"
-#include "ddebug.h"
-#include "dimagebutton.h"
-#include "doptionaldialog.h"
-#include "dconfig.h"
+#include <dcore/dglobal.h>
+#include <dcore/ddebug.h>
+#include <dgui/dimagebutton.h>
+#include <dgui/doptionaldialog.h>
+#include <dcore/dconfig.h>
 
 #include <QToolTip>
 #include <QMessageBox>

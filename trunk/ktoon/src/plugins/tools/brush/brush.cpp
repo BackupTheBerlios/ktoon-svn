@@ -20,26 +20,23 @@
 
 #include "brush.h"
 #include "brush.xpm"
-#include "ddebug.h"
+
 #include <QPointF>
 #include <QKeySequence>
 #include <QGraphicsPathItem>
 #include <QPainterPath>
 #include <QMatrix>
-
-#include <daction.h>
-
-#include "dglobal.h"
-#include "ktgraphicalgorithm.h"
-
-#include "ktscene.h"
-
-
 #include <QGraphicsLineItem>
-#include <dalgorithm.h>
 
+
+#include "ktgraphicalgorithm.h"
+#include "ktscene.h"
 #include "ktrequestbuilder.h"
 
+#include <dgui/daction.h>
+#include <dcore/dalgorithm.h>
+#include <dcore/dglobal.h>
+#include <dcore/ddebug.h>
 
 Brush::Brush() : m_configurator(0), m_item(0)
 {

@@ -27,7 +27,7 @@
 #include <QScrollBar>
 #include <QHeaderView>
 
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 #include "kttlruler.h"
 #include "ktprojectrequest.h"
 

@@ -19,10 +19,10 @@
  ***************************************************************************/
 
 #include "ktexposuresheet.h"
-#include "dapplication.h"
+#include <dgui/dapplication.h>
 
-#include "ddebug.h"
-#include "doptionaldialog.h"
+#include <dcore/ddebug.h>
+#include <dgui/doptionaldialog.h>
 
 #include <QToolTip>
 #include <QPixmap>

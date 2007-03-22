@@ -35,7 +35,7 @@
 #include "ktrequestbuilder.h"
 #include "ktrequestparser.h"
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 
 class KTProjectManager::Private

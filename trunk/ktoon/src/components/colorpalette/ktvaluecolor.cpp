@@ -20,7 +20,7 @@
 #include "ktvaluecolor.h"
 #include <QHBoxLayout>
 #include <QLabel>
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 KTItemValueColor::KTItemValueColor( const QString &text, QWidget *parent ) :QFrame(parent)
 {

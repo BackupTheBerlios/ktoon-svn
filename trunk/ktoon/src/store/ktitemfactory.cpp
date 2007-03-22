@@ -21,7 +21,7 @@
 #include "ktitemfactory.h"
 #include <QGraphicsItem>
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 #include <ktsvg2qt.h>
 
 #include "ktpathitem.h"

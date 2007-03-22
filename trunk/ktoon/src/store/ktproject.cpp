@@ -20,7 +20,7 @@
 
 #include "ktproject.h"
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 #include "ktscene.h"
 #include "ktlayer.h"

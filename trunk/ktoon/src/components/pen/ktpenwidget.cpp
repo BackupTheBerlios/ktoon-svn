@@ -19,8 +19,8 @@
  ***************************************************************************/
 
 #include "ktpenwidget.h"
-#include <dglobal.h>
-#include <ddebug.h>
+#include <dcore/dglobal.h>
+#include <dcore/ddebug.h>
 
 #include "ktpaintareaevent.h"
 

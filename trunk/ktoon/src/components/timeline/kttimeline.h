@@ -25,7 +25,7 @@
 #include <QSplitter>
 
 #include <QStackedWidget>
-#include "dtabwidget.h"
+#include <dgui/dtabwidget.h>
 
 class KTLayerManager;
 class KTFramesTable;

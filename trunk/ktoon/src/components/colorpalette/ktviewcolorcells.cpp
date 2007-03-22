@@ -19,13 +19,13 @@
  ***************************************************************************/
 
 #include "ktviewcolorcells.h"
-#include "ddebug.h"
-#include "dglobal.h"
+#include <dcore/ddebug.h>
+#include <dcore/dglobal.h>
 #include <QScrollArea>
 #include <QGroupBox>
-#include "dimagebutton.h"
+#include <dgui/dimagebutton.h>
 
-#include "dconfig.h"
+#include <dcore/dconfig.h>
 
 KTViewColorCells::KTViewColorCells(QWidget *parent)
 	: QFrame(parent), m_numColorRecent(0)

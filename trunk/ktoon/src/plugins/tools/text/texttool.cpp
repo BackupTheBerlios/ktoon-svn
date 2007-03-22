@@ -24,7 +24,7 @@
 #include <QFontMetrics>
 #include <QKeySequence>
 
-#include <dglobal.h>
+#include <dcore/dglobal.h>
 #include "ktscene.h"
 
 #include "ktrequestbuilder.h"

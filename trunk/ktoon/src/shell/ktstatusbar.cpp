@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "ktstatusbar.h"
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 KTStatusBar::KTStatusBar(QWidget *parent)
  : QStatusBar(parent)

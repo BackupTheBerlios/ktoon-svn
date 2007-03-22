@@ -20,7 +20,7 @@
 
 #include "ktgctable.h"
 
-#include "dglobal.h"
+#include <dcore/dglobal.h>
 
 KTGCTable::KTGCTable(QWidget *parent)
 	: DTreeListWidget(parent), m_currentFolder(0)

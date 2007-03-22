@@ -32,8 +32,8 @@
 #include <QToolButton>
 #include <QFileDialog>
 
-#include "dglobal.h"
-#include "ddebug.h"
+#include <dcore/dglobal.h>
+#include <dcore/ddebug.h>
 
 
 KTExportWidget::KTExportWidget(const KTProject *manager, QWidget *parent) : KTModuleWidgetBase(parent), m_manager(manager), m_currentExporter(0), m_currentFormat(KTExportInterface::NONE)

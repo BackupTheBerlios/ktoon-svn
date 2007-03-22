@@ -34,14 +34,15 @@ SOURCES += main.cpp \
            configwizard.cpp \
            ktmainwindow_gui.cpp \
            ktlocalprojectmanagerhandler.cpp
+
+
+
 include(shell_config.pri)
 include(../../ktconfig.pri)
 TARGET = ../../bin/ktoon.bin
 TEMPLATE = app
 linux-g++{
-    TARGETDEPS += ../../src/dlib/dcore/libdcore.so \
-  ../../src/dlib/dgui/libdgui.so \
-  ../../src/libktoon/libktoon.so \
+    TARGETDEPS += ../../src/libktoon/libktoon.so \
   ../../src/libktui/libktui.a \
   ../../src/store/libstore.so \
   ../../src/components/pen/libpen.a \
@@ -55,3 +56,4 @@ linux-g++{
   ../../src/components/colorpalette/libcolorpalette.a \
   ../../src/components/scenes/libscenes.a
 }
+

@@ -30,10 +30,10 @@
 #include "wizard1.xpm"
 #include "wizard2.xpm"
 
-#include "ddebug.h"
-#include "dimageeffect.h"
+#include <dcore/ddebug.h>
+#include <dcore/dimageeffect.h>
 
-#include "dglobal.h"
+#include <dcore/dglobal.h>
 
 ConfigWizard::ConfigWizard() : DWizard(0)
 {

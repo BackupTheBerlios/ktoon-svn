@@ -33,8 +33,8 @@
 #include <QGridLayout>
 #include <QButtonGroup>
 
-#include "dthemedocument.h"
-#include "dvhbox.h"
+#include <dgui/dthemedocument.h>
+#include <dgui/dvhbox.h>
 
 class QCheckBox;
 

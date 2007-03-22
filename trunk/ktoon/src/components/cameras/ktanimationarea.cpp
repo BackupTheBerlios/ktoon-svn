@@ -26,9 +26,8 @@
 #include "ktprojectresponse.h"
 #include "ktgraphicobject.h"
 
-#include "ddebug.h"
-
-#include "dgradientadjuster.h"
+#include <dcore/ddebug.h>
+#include <dcore/dgradientadjuster.h>
 
 KTAnimationArea::KTAnimationArea(KTProject *project, QWidget *parent) : QFrame(parent), m_project(project), m_draw(false), m_ciclicAnimation(false), m_currentFramePosition(0), m_isRendered(false), m_currentSceneIndex(-1), m_fps(14)
 {

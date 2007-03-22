@@ -17,7 +17,6 @@ LIBUI_DIR = ../../src/libktui
 STORE_DIR = ../../src/store 
 LIBKTOON_DIR = ../../src/libktoon 
 QUAZIP_DIR = ../../3rdparty/quazip 
-DLIB_DIR = ../../src/dlib 
 LIBBASE_DIR = ../../src/libbase
 NET_DIR = ../../src/net
 
@@ -38,6 +37,6 @@ include($$LIBUI_DIR/libktui.pri)
 include($$STORE_DIR/store.pri)
 include($$LIBKTOON_DIR/libktoon.pri)
 include($$QUAZIP_DIR/quazip.pri)
-include($$DLIB_DIR/dlib.pri)
 include($$LIBBASE_DIR/libbase.pri)
 include($$NET_DIR/net.pri)
+

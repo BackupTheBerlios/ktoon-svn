@@ -32,9 +32,10 @@
 
 // KToon
 
-#include "dtipdialog.h"
-#include "ddebug.h"
-#include "dimageeffect.h"
+#include <dgui/dtipdialog.h>
+#include <dcore/ddebug.h>
+#include <dcore/dimageeffect.h>
+
 #include "ktapplication.h"
 #include "ktpluginmanager.h"
 

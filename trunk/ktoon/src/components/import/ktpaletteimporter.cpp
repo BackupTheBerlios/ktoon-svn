@@ -22,7 +22,7 @@
 #include <QFile>
 #include <QTextStream>
 
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 KTPaletteImporter::KTPaletteImporter() : m_document(0)
 {

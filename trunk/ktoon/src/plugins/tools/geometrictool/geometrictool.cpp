@@ -26,9 +26,9 @@
 #include <QPaintDevice>
 
 
-#include "dglobal.h"
-#include "dgradientadjuster.h"
-#include "ddebug.h"
+#include <dcore/dglobal.h>
+#include <dcore/dgradientadjuster.h>
+#include <dcore/ddebug.h>
 
 #include "ktrectitem.h"
 #include "ktellipseitem.h"

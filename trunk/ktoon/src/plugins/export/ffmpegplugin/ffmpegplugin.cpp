@@ -20,8 +20,8 @@
 
 #include "ffmpegplugin.h"
 
-#include "ddebug.h"
-#include "dglobal.h"
+#include <dcore/ddebug.h>
+#include <dcore/dglobal.h>
 
 #include <QImage>
 #include <QPainter>

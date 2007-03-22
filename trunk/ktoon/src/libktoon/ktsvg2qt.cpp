@@ -26,7 +26,7 @@
 #define M_PI 3.14159265358979323846
 #endif
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 KTSvg2Qt::KTSvg2Qt()
 {

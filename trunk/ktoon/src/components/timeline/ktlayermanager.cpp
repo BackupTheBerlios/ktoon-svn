@@ -20,7 +20,6 @@
 
 #include "ktlayermanager.h"
 
-#include "dapplication.h"
 #include <qlabel.h>
 #include <qlayout.h>
 
@@ -29,9 +28,9 @@
 #include <QPainter>
 #include <QItemDelegate>
 
-#include "dseparator.h"
-
-#include "ddebug.h"
+#include <dgui/dseparator.h>
+#include <dgui/dapplication.h>
+#include <dcore/ddebug.h>
 
 const int LAYER_COLUMN = 0;
 const int LOCK_COLUMN = 1;

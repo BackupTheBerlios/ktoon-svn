@@ -31,11 +31,12 @@
 #include <QTranslator>
 
 #include "ktapplication.h"
-#include "dapplicationproperties.h"
+
+#include <dcore/dapplicationproperties.h>
 
 #include "ktsplash.h"
 
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 #include "ktmainwindow.h"
 
@@ -49,7 +50,7 @@
 
 #include <dsound/daudioplayer.h>
 
-#include <dcollapsiblewidget.h>
+#include <dgui/dcollapsiblewidget.h>
 
 void usage();
 

@@ -24,10 +24,10 @@
 #include <QKeySequence>
 #include <QList>
 
-#include <daction.h>
-#include <ddebug.h>
-#include <dglobal.h>
-#include <dalgorithm.h>
+#include <dgui/daction.h>
+#include <dcore/ddebug.h>
+#include <dcore/dglobal.h>
+#include <dcore/dalgorithm.h>
 
 #include "ktgraphicalgorithm.h"
 #include "ktscene.h"

@@ -20,7 +20,7 @@
 
 #include "ktviewdocument.h"
 
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 #include <QLayout>
 #include <QStatusBar>
@@ -31,7 +31,7 @@
 #include <QTimer>
 #include <QApplication>
 
-#include <dconfig.h>
+#include <dcore/dconfig.h>
 
 #include "ktpaintareaproperties.h"
 #include "ktpluginmanager.h"

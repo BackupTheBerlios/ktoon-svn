@@ -20,11 +20,11 @@
 
 #include "ktmainwindow.h"
 
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 #include "ktapplication.h"
-#include "dcommandhistory.h"
+#include <dgui/dcommandhistory.h>
 
-#include "dtoolview.h"
+#include <dgui/dtoolview.h>
 
 #include <QKeySequence>
 #include <QTextBrowser>

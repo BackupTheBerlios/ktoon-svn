@@ -32,12 +32,14 @@
 
 
 // DLib
-#include <dglobal.h>
-#include <ddebug.h>
-#include <dseparator.h>
-#include <dcolorbutton.h>
-#include <dapplication.h>
-#include <dstylecombobox.h>
+#include <dcore/dglobal.h>
+#include <dcore/ddebug.h>
+
+#include <dgui/dseparator.h>
+
+#include <dgui/dcolorbutton.h>
+#include <dgui/dapplication.h>
+#include <dgui/dstylecombobox.h>
 
 KTThemeSelector::KTThemeSelector(QWidget *parent) : DVHBox(parent, Qt::Vertical)
 {

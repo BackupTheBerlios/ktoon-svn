@@ -1,6 +1,6 @@
 #include "nodegroup.h"
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 #include <QGraphicsPathItem>
 #include <QAbstractGraphicsShapeItem>

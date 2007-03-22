@@ -22,7 +22,7 @@
 #include <QGraphicsSceneDragDropEvent>
 #include <QMimeData>
 #include <QBrush>
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 #include <QPainter>
 #include <QPainterPath>
 #include "ktsvg2qt.h"

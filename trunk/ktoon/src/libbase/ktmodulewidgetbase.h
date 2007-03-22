@@ -29,7 +29,7 @@
 #include <QBoxLayout>
 #include <QDockWidget>
 
-#include "dosd.h"
+#include <dgui/dosd.h>
 #include "ktprojectresponse.h"
 #include "ktabstractprojectresponsehandler.h"
 #include "ktglobal.h"

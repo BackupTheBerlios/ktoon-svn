@@ -21,7 +21,7 @@
 #include "ktlibraryfolder.h"
 #include "ktlibraryobject.h"
 
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 KTLibraryFolder::KTLibraryFolder(const QString &id, QObject *parent) : QObject(parent), m_id(id)
 {

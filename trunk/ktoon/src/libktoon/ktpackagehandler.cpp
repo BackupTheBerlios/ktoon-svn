@@ -20,13 +20,13 @@
 
 #include "ktpackagehandler.h"
 
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
 
-#include "dglobal.h"
+#include "dcore/dglobal.h"
 
 #include "quazip.h"
 #include "quazipfile.h"

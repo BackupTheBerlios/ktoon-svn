@@ -28,7 +28,7 @@
 
 #include "ktprojectresponse.h"
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 KTCommandExecutor::KTCommandExecutor(KTProject *project) : QObject(project), m_project(project)
 {

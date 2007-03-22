@@ -38,8 +38,8 @@ extern "C"
 #include "crashhandler.h"
 #include "crashwidget.h"
 
-#include "ddebug.h"
-#include "dglobal.h"
+#include <dcore/ddebug.h>
+#include <dcore/dglobal.h>
 
 CrashHandler *CrashHandler::m_instance = 0;
 

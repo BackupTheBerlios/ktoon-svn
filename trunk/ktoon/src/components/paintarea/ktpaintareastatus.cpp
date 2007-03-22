@@ -26,7 +26,7 @@
 #include <QHBoxLayout>
 #include <QIntValidator>
 
-#include <dseparator.h>
+#include <dgui/dseparator.h>
 
 #include "ktviewdocument.h"
 #include "ktglobal.h"

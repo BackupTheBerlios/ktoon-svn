@@ -23,7 +23,7 @@
 #include <QPaintEngine>
 #include <QTimer>
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 KTImageDevice::KTImageDevice(QWidget *parent) : QWidget(parent)
 {

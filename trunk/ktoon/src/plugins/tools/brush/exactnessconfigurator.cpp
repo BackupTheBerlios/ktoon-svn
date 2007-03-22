@@ -26,11 +26,11 @@
 #include <QHeaderView>
 #include <QPushButton>
 
-#include <dglobal.h>
-#include <dimagebutton.h>
+#include <dcore/dglobal.h>
+#include <dgui/dimagebutton.h>
 
-#include <ddebug.h>
-#include <dconfig.h>
+#include <dcore/ddebug.h>
+#include <dcore/dconfig.h>
 
 ExactnessConfigurator::ExactnessConfigurator(QWidget *parent) :QWidget(parent)
 {

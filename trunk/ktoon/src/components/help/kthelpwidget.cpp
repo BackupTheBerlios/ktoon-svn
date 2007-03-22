@@ -14,14 +14,14 @@
 #include <qfile.h>
 #include <qmap.h>
 
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 #include <QLocale>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QHeaderView>
 
-#include "dglobal.h"
+#include <dcore/dglobal.h>
 
 KTHelpWidget::KTHelpWidget(const QString &path, QWidget *parent) : KTModuleWidgetBase(parent)
 {

@@ -18,9 +18,9 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <qfile.h>
-#include <qtextstream.h>
-#include <qimage.h>
+#include <QFile>
+#include <QTextStream>
+#include <QImage>
 
 #include <QPixmap>
 #include <QLabel>
@@ -29,10 +29,10 @@
 #include <QTextBrowser>
 
 #include "ktabout.h"
-#include "dglobal.h"
-#include "dimageeffect.h"
+#include <dcore/dglobal.h>
+#include <dcore/dimageeffect.h>
 
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 #define DEBUG_ABOUT 1
 

@@ -21,9 +21,9 @@
 #include "ktnewproject.h"
 
 #include "ktnetprojectmanagerparams.h"
-#include "dformfactory.h"
-#include "dconfig.h"
-#include "dapplication.h"
+#include <dgui/dformfactory.h>
+#include <dcore/dconfig.h>
+#include <dgui/dapplication.h>
 
 #include <QLineEdit>
 #include <QCheckBox>

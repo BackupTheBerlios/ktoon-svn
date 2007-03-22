@@ -20,13 +20,15 @@
 #ifndef KTNEWPROYECT_H
 #define KTNEWPROYECT_H
 
-#include "dwizard.h"
-#include "dxyspinbox.h"
+
 #include <QComboBox>
 #include <QSpinBox>
-#include "dtabdialog.h"
 #include <QLineEdit>
-#include "dosd.h"
+
+#include <dgui/dosd.h>
+#include <dgui/dtabdialog.h>
+#include <dgui/dwizard.h>
+#include <dgui/dxyspinbox.h>
 
 class KTProjectManagerParams;
 

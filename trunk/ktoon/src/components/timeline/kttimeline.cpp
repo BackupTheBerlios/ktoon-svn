@@ -22,8 +22,8 @@
 #include <QHeaderView>
 
 #include "kttimeline.h"
-#include "dapplication.h"
-#include "ddebug.h"
+#include <dgui/dapplication.h>
+#include <dcore/ddebug.h>
 
 #include "ktprojectrequest.h"
 

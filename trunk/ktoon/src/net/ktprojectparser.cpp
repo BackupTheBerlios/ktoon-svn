@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "ktprojectparser.h"
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 struct KTProjectParser::Private
 {

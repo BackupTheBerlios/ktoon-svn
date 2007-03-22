@@ -20,8 +20,8 @@
  
 
 #include "ktlistprojectdialog.h"
-#include "dtreelistwidget.h"
-#include "dtreewidgetsearchline.h"
+#include <dgui/dtreelistwidget.h>
+#include <dgui/dtreewidgetsearchline.h>
 
 #include <QToolButton>
 #include <QTreeWidget>

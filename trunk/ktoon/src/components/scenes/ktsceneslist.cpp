@@ -11,7 +11,7 @@
 //
 
 #include "ktsceneslist.h"
-#include "ddebug.h"
+#include <dcore/ddebug.h>
 
 #include <QTreeWidgetItem>
 

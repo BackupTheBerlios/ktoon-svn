@@ -25,7 +25,7 @@
 
 #include <ktmodulewidgetbase.h>
 
-#include <deditspinbox.h>
+#include <dgui/deditspinbox.h>
 #include <QComboBox>
 
 class KTPaintAreaEvent;

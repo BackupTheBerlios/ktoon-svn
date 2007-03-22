@@ -30,12 +30,12 @@
 #include <qlabel.h>
 #include <qradiobutton.h>
 
-#include "dfontchooser.h"
-#include "ktthemeselector.h"
+#include <dgui/dfontchooser.h>
+#include <dgui/dtabdialog.h>
+#include <dgui/dconfigurationdialog.h>
+#include <dgui/dflatbutton.h>
 
-#include "dtabdialog.h"
-#include "dconfigurationdialog.h"
-#include "dflatbutton.h"
+#include "ktthemeselector.h"
 #include "ktglobal.h"
 
 class ColorSchemePref;

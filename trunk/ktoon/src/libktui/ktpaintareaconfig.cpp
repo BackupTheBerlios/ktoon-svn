@@ -25,8 +25,8 @@
 #include <QPushButton>
 #include <QLabel>
 
-#include <dcolorbutton.h>
-#include <dconfig.h>
+#include <dgui/dcolorbutton.h>
+#include <dcore/dconfig.h>
 
 KTPaintAreaConfig::KTPaintAreaConfig(QWidget *parent) : QWidget(parent)
 {

@@ -33,8 +33,8 @@
 #include "crashwidget.h"
 #include "crashhandler.h"
 
-#include "dconfig.h"
-#include <ddebug.h>
+#include <dcore/dconfig.h>
+#include <dcore/ddebug.h>
 
 
 class TextArea : public QTextBrowser
