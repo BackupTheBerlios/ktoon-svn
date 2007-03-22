@@ -5,8 +5,8 @@
 
 DEFINES += DLIB_SOUND
 
-INSTALLS += target 
-
+INSTALLS += target  \
+headers
 target.path = /lib/ 
 
 INCLUDEPATH += ../ 
@@ -22,5 +22,9 @@ HEADERS += daudioengineiface.h \
 SOURCES += daudioplayer.cpp 
 
 include(../dlibconfig.pri)
+
+
+headers.path = /include/dsound
+headers.files += *.h
 
 

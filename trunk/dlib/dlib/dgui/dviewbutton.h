@@ -23,7 +23,7 @@
 
 #include <QToolButton>
 #include <QStyleOptionToolButton>
-#include <dideality.h>
+#include <dgui/dideality.h>
 
 class DToolView;
 

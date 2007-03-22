@@ -21,7 +21,7 @@
 #ifndef DBUTTONBAR_H
 #define DBUTTONBAR_H
 
-#include <dideality.h>
+#include <dgui/dideality.h>
 
 #include <QToolBar>
 #include <QButtonGroup>

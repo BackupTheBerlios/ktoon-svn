@@ -21,7 +21,7 @@
 #ifndef DMAINWINDOWFACTORY_H
 #define DMAINWINDOWFACTORY_H
 
-#include <dideality.h>
+#include <dgui/dideality.h>
 
 class DMainWindow;
 class QMainWindow;

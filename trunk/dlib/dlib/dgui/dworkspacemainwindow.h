@@ -20,7 +20,7 @@
 #ifndef DWORKSPACEMAINWINDOW_H
 #define DWORKSPACEMAINWINDOW_H
 
-#include <dmainwindow.h>
+#include <dgui/dmainwindow.h>
 #include <QWorkspace>
 
 /**

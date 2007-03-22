@@ -26,7 +26,7 @@
 #define KPAGEDIALOG_H
 
 #include <QDialog>
-#include <dpagewidget.h>
+#include <dgui/dpagewidget.h>
 #include <dcore/dglobal.h>
 
 /**

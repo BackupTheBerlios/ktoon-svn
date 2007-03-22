@@ -26,7 +26,7 @@
 #include <QDialog>
 #include <dcore/dglobal.h>
 
-#include "dtipdatabase.h"
+#include "dcore/dtipdatabase.h"
 
 class QCheckBox;
 class QTextBrowser;

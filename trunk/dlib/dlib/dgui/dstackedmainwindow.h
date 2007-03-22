@@ -21,7 +21,7 @@
 #ifndef DSTACKEDMAINWINDOW_H
 #define DSTACKEDMAINWINDOW_H
 
-#include <dmainwindow.h>
+#include <dgui/dmainwindow.h>
 
 #include <QHash>
 

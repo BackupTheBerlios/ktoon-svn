@@ -21,7 +21,7 @@
 #ifndef DTABBEDMAINWINDOW_H
 #define DTABBEDMAINWINDOW_H
 
-#include <dmainwindow.h>
+#include <dgui/dmainwindow.h>
 
 class QTabWidget;
 

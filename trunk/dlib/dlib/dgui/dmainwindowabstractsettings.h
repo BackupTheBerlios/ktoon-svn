@@ -22,7 +22,7 @@
 #define DMAINWINDOWABSTRACTSETTINGS_H
 
 #include <QObject>
-#include <dideality.h>
+#include <dgui/dideality.h>
 
 class DToolView;
 class DMainWindow;

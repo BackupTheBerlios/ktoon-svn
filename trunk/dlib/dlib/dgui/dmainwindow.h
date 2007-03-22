@@ -21,7 +21,7 @@
 #ifndef DMAINWINDOW_H
 #define DMAINWINDOW_H
 
-#include <dideality.h>
+#include <dgui/dideality.h>
 
 // Project begin: Aug 4 2006
 

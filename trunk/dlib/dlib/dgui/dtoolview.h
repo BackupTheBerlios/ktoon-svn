@@ -23,7 +23,7 @@
 
 #include <QDockWidget>
 #include <QIcon>
-#include <dideality.h>
+#include <dgui/dideality.h>
 
 class DViewButton;
 

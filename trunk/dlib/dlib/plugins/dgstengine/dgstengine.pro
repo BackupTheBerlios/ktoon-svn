@@ -4,8 +4,7 @@
 # Target is a library:  
 
 INSTALLS += target 
-target.path = /plugins/ 
-KDEV_QTVER = 4 
+target.path = /lib/dlib/plugins/ 
 INCLUDEPATH += ../../ 
 CONFIG += release \
           warn_on \
