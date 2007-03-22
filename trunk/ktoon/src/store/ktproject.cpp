@@ -439,7 +439,9 @@ bool KTProject::addSymbolToProject(const QString &name, int sceneIndex, int laye
 
 bool KTProject::removeSymbolFromProject(const QString &name, int scene, int layer, int frame)
 {
-	qFatal("Find me in ktproject.cpp");
+	dFatal() << "Find me in ktproject.cpp";
+	
+	
 	
 	return false;
 }

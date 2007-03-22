@@ -33,6 +33,7 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <QTreeWidgetItemIterator>
 
 #include "ktlibrary.h"
 #include "ktlibraryobject.h"
@@ -275,6 +276,13 @@ void KTLibraryWidget::emitSelectedComponent()
 
 void KTLibraryWidget::removeCurrentGraphic()
 {
+	if ( !d->libraryTree->currentItem() ) return;
+	QString symKey = d->libraryTree->currentItem()->text(0);
+	
+	KTProjectRequest request = KTRequestBuilder::createLibraryRequest(KTProjectRequest::Remove, symKey, 0, 0 );
+	
+	emit requestTriggered( &request );
+	
 // 	DCONFIG->beginGroup("Library");
 // 	bool noAsk = qvariant_cast<bool>(DCONFIG->value("RemoveWithoutAsk", false));
 // 	
@@ -410,9 +418,35 @@ void KTLibraryWidget::libraryResponse(KTLibraryResponse *response)
 			}
 		}
 		break;
+		case KTProjectRequest::Remove:
+		{
+			QString key = response->arg().toString();
+			QTreeWidgetItemIterator it(d->libraryTree);
+			while( (*it) )
+			{
+						if( key == (*it)->text(0) )
+						{
+								delete (*it);
+								break;
+						}
+						++it;
+			}
+			
+			QList<QTreeWidgetItem *> selecteds = d->libraryTree->selectedItems();
+			if( !selecteds.isEmpty() )
+			{
+				d->display->render( qvariant_cast<QGraphicsItem *>(d->library->findObject( selecteds[0]->text(0))->data() ));
+			}
+			else
+			{
+				d->display->render(0);
+			}
+			
+		}
+		break;
 		default:
 		{
-			qWarning("IMPLEMENT ME");
+			qWarning("ktlibrarywidget.cpp IMPLEMENT ME");
 		}
 		break;
 	}

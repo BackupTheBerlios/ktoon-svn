@@ -38,6 +38,7 @@ KTGradientCreator::KTGradientCreator(QWidget *parent)
 	setLayout(layout);
 	
 	QBoxLayout *selectorAndViewer = new QBoxLayout(QBoxLayout::TopToBottom);
+	
 	m_selector = new KTGradientSelector(this);
 	m_viewer = new KTGradientViewer(this);
 	

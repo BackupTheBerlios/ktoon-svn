@@ -23,6 +23,7 @@
 #include "ktprojectrequest.h"
 
 #include "ktprojectresponse.h"
+#include <QDebug>
 
 bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
 {
@@ -42,9 +43,11 @@ bool KTCommandExecutor::createSymbol(KTLibraryResponse *response)
 
 bool KTCommandExecutor::removeSymbol(KTLibraryResponse *response)
 {
-	QString xml = QString::fromLocal8Bit(response->data());
+// 	QString xml = QString::fromLocal8Bit(response->data());
 	
-	if ( m_project->removeSymbol( xml ) )
+	qDebug() << "KTCommandExecutor::removeSymbol(KTLibraryResponse *response)";
+	
+	if ( m_project->removeSymbol( response->arg().toString() ) )
 	{
 		emit responsed(response);
 		

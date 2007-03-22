@@ -103,7 +103,7 @@
 // }
 
 
-KTGradientSelector::KTGradientSelector( QWidget *parent ) : QAbstractSlider( parent ), m_currentArrowIndex(0), m_gradient(0,0,0,0), m_update(true), m_maxArrows(10)
+KTGradientSelector::KTGradientSelector( QWidget *parent ) : QAbstractSlider( parent ), m_currentArrowIndex(0), m_gradient(0,0,1,1), m_update(true), m_maxArrows(10), m_currentColor(Qt::black)
 {
 	_orientation = Qt::Horizontal;
 	init();
@@ -112,7 +112,7 @@ KTGradientSelector::KTGradientSelector( QWidget *parent ) : QAbstractSlider( par
 
 
 KTGradientSelector::KTGradientSelector( Qt::Orientation o, QWidget *parent )
-	: QAbstractSlider( parent ), m_currentArrowIndex(0), m_gradient(0,0,0,0)
+	: QAbstractSlider( parent ), m_currentArrowIndex(0), m_gradient(0,0,1,1), m_currentColor(Qt::black)
 {
 	_orientation = o;
 	init();
@@ -124,15 +124,9 @@ void KTGradientSelector::init()
 	
 	setMaximumWidth(100);
 	setMinimumWidth(100);
-
-// 	connect(this, SIGNAL(valueChanged (int)), this, SLOT(valueChange(int)));
 	
-// 	show();
+	setStops(m_gradient.stops());
 	
-	DGradientArrow *first = new DGradientArrow(calcArrowPos(1), QColor(Qt::black), this);
-// 	DGradientArrow * second= new DGradientArrow(calcArrowPos(0), QColor(Qt::white));
-	m_arrows << first ;
-// 	m_arrows << second ;
 	createGradient();
 	emit gradientChanged(  m_gradient.stops());;
 }
@@ -210,9 +204,7 @@ void KTGradientSelector::mousePressEvent( QMouseEvent *e )
 		DGradientArrow *aArrow = m_arrows[i];
 		if ( aArrow->contains(e->pos() ) )
 		{
-			
 			m_currentArrowIndex = i;
-// 			moveArrow( e->pos() );
 			select = true;
 			break;
 		}
@@ -234,8 +226,15 @@ void KTGradientSelector::mousePressEvent( QMouseEvent *e )
 		{
 			val = ( maximum() - minimum() ) * (width()-e->x())/width() + minimum();
 		}
-		
-		addArrow( calcArrowPos(val), m_arrows[m_currentArrowIndex]->color());
+		if(!m_arrows.isEmpty())
+		{
+			addArrow( calcArrowPos(val), m_arrows[m_currentArrowIndex]->color());
+		}
+		else
+		{
+// 			addArrow( calcArrowPos(val), Qt::black);
+			addArrow( calcArrowPos(val), m_currentColor);
+		}
 	}
 }
 
@@ -308,7 +307,7 @@ void KTGradientSelector::moveArrow( const QPoint &pos )
 	m_arrows[m_currentArrowIndex]->moveArrow(pos);
 	m_update = true;
 	
-	emit gradientChanged(  m_gradient.stops());
+	emit gradientChanged(m_gradient.stops());
 }
 
 QPoint KTGradientSelector::calcArrowPos( int val )
@@ -349,7 +348,18 @@ void  KTGradientSelector::createGradient()
 
 double KTGradientSelector::valueToGradient(int value) const
 {
-	const float factor = static_cast<float>( ( /*maximum ()  -*/ value ))/ maximum();
+	float factor = static_cast<float>( ( value ))/ maximum();
+	if(factor > 1.0)
+	{
+		factor = 1.0;
+	}
+	
+	if(factor < 0)
+	{
+		factor = 0;
+	}
+	
+	
 	return factor;
 }
 
@@ -374,14 +384,14 @@ void KTGradientSelector::setCurrentColor(const QColor& color)
 		DGradientArrow *arrow  = m_arrows[m_currentArrowIndex];
 		if ( arrow )
 		{
-			
 			m_arrows[m_currentArrowIndex]->setColor(color);
-			
 		}
 	}
+	
 	createGradient();
+	emit gradientChanged(m_gradient.stops());
 	repaint();
-	emit gradientChanged(  m_gradient.stops());;
+	m_currentColor = color;
 }
 
 void KTGradientSelector::setStops(const QGradientStops &stops)
@@ -392,7 +402,5 @@ void KTGradientSelector::setStops(const QGradientStops &stops)
 	{
 		addArrow( calcArrowPos( (int) (100 - (stops[i].first * 100)) ), stops[i].second );
 	}
-	
-	
 	update();
 }

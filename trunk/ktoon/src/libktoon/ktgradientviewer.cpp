@@ -130,22 +130,17 @@ void KTGradientViewer::createGradient()
 		case  QGradient::LinearGradient:
 		{
 			m_gradient = QLinearGradient(m_controlPoint->points[0], m_controlPoint->points[1]);
-			m_gradient.setStops( m_gradientStops);
-			m_gradient.setSpread(m_spread);
 			break;
 		}
 		case QGradient::RadialGradient:
 		{
 			m_gradient = QRadialGradient(m_controlPoint->points[0], m_radius, m_controlPoint->points[1] );
-			m_gradient.setStops( m_gradientStops);
-			m_gradient.setSpread(m_spread);
 			break;
 		}
 		case QGradient::ConicalGradient:
 		{
 			m_gradient = QConicalGradient(m_controlPoint->points[0], m_angle);
-			m_gradient.setStops( m_gradientStops);
-			m_gradient.setSpread(m_spread);
+
 			break;
 		}
 		default:
@@ -153,11 +148,15 @@ void KTGradientViewer::createGradient()
 			dFatal() << "Fatal error, the gradient type doesn't exists!";
 		}
 	}
+	m_gradient.setStops( m_gradientStops);
+	m_gradient.setSpread(m_spread);
+	
 }
 void KTGradientViewer::changeGradientStops( const QGradientStops& stops)
 {
 	m_gradientStops = stops;
-	update();
+	
+	repaint();
 }
 
 void KTGradientViewer::changeType(int type)

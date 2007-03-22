@@ -285,7 +285,7 @@ class KTOON_EXPORT KTGradientSelector : public QAbstractSlider
 		QList<DGradientArrow*> m_arrows;
 		bool m_update;
 		int m_maxArrows;
-		QImage m_buffer;
+		QColor m_currentColor;
 };
 
 #endif
