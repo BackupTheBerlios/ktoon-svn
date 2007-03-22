@@ -40,6 +40,10 @@
 
 #include "ktrequestbuilder.h"
 
+
+#include "ktproxyitem.h"
+
+
 ContourSelection::ContourSelection()
 {
 	

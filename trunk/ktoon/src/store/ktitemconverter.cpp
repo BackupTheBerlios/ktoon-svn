@@ -23,6 +23,7 @@
 #include "ktrectitem.h"
 #include "ktpathitem.h"
 #include "ktellipseitem.h"
+#include "ktproxyitem.h"
 
 #include <QBrush>
 #include <QPen>
@@ -69,19 +70,26 @@ KTPathItem *KTItemConverter::convertToPath(QGraphicsItem *item)
 	
 	switch(item->type() )
 	{
-		case 2:
+		case QGraphicsPathItem::Type:
 		{
 			ppath = qgraphicsitem_cast<QGraphicsPathItem *>(item)->path();
 		}
 		break;
-		case 3: // Rect
+		case QGraphicsRectItem::Type:
 		{
 			ppath.addRect( qgraphicsitem_cast<QGraphicsRectItem *>(item)->rect());
 		}
 		break;
-		case 4: // Ellipse
+		case QGraphicsEllipseItem::Type:
 		{
 			ppath.addEllipse( qgraphicsitem_cast<QGraphicsEllipseItem *>(item)->rect());
+		}
+		break;
+		case KTProxyItem::Type:
+		{
+			QGraphicsItem * data = qgraphicsitem_cast<KTProxyItem*>(item)->item();
+			data->setPos(item->scenePos());
+			return convertToPath(data);
 		}
 		break;
 		default:

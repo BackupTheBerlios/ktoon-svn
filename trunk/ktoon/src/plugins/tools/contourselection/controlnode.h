@@ -42,7 +42,7 @@ class ControlNode : public QObject, public QGraphicsItem
 		~ControlNode();
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *);
 		QRectF boundingRect() const;
-		enum { Type = UserType + 1 };
+		enum { Type = UserType + 100 };
 		
 		int type() const { return Type; }
 // 		int typeNodeEditor() const;

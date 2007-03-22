@@ -16,7 +16,7 @@ NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(paren
 		saveParentProperties();
 		int index = 0;
 		
-		while(index < path.elementCount()-1)
+		while(index < path.elementCount())
 		{
 			QPainterPath::Element e = path.elementAt(index);
 			
@@ -27,38 +27,39 @@ NodeGroup::NodeGroup(QGraphicsItem * parent, KTScene *scene): m_parentItem(paren
 				{
 					ControlNode *node = new ControlNode(index, this,  path.elementAt(index), tmp, scene);
 					QPainterPath::Element e1 = path.elementAt(index-1);
-					QPainterPath::Element e2 = path.elementAt(index+1);
 					node->setLeft(new ControlNode(index-1,this, e1, tmp, scene));
-					if(index+1 < path.elementCount() && e2.type == QPainterPath::CurveToElement)
+					
+					if(index+1 < path.elementCount() )
 					{
-						node->setRight(new ControlNode(index+1, this, e2, tmp, scene));
-						m_nodes << node->right();
-						index++;
+						QPainterPath::Element e2 = path.elementAt(index+1);
+						if(e2.type == QPainterPath::CurveToElement)
+						{
+							node->setRight(new ControlNode(index+1, this, e2, tmp, scene));
+							m_nodes << node->right();
+							index++;
+						}
 					}
 					m_nodes << node;
 					m_nodes << node->left();
 				}
 			}
-			else if( (e.type == QPainterPath::LineToElement || e.type == QPainterPath::MoveToElement ) &&  path.elementAt(index+1).type == QPainterPath::CurveToElement )
+			else if( (e.type == QPainterPath::LineToElement || e.type == QPainterPath::MoveToElement ) )
 			{
-				ControlNode *node = new ControlNode(index, this, path.elementAt(index), tmp, scene);
-				node->setRight(new ControlNode(index+1,this, path.elementAt(index+1), tmp, scene));
-				
-				index++;
-				m_nodes << node;
-				m_nodes << node->right();
-			}
-			else
-			{
-				ControlNode *node = new ControlNode(index, this, path.elementAt(index), tmp, scene);
-				m_nodes << node;
+				if(index+1 < path.elementCount())
+				{
+					if( path.elementAt(index+1).type == QPainterPath::CurveToElement )
+					{
+						ControlNode *node = new ControlNode(index, this, path.elementAt(index), tmp, scene);
+						node->setRight(new ControlNode(index+1,this, path.elementAt(index+1), tmp, scene));
+						
+						index++;
+						m_nodes << node;
+						m_nodes << node->right();
+					}
+				}
 			}
 			index++;
 		}
-		
-		ControlNode *node = new ControlNode(path.elementCount()-1, this, path.elementAt(path.elementCount()-1), tmp, scene);
-		m_nodes << node;
-		
 	}
 	else
 	{

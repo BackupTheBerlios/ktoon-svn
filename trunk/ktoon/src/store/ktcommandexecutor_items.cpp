@@ -33,6 +33,7 @@
 #include "ktrequestbuilder.h"
 #include "ktitemfactory.h"
 #include "ktprojectresponse.h"
+#include "ktproxyitem.h"
 
 #include <dcore/ddebug.h>
 
@@ -293,6 +294,42 @@ bool KTCommandExecutor::ungroupItems(KTItemResponse *response)
 	return false;
 }
 
+static QGraphicsItem * convert(QGraphicsItem *item, int toType)
+{
+	switch(toType)
+	{
+		case 2: // Path
+		{
+			KTPathItem *path = KTItemConverter::convertToPath( item );
+			return path;
+		}
+		break;
+		case 3: // Rect
+		{
+			KTRectItem *rect = KTItemConverter::convertToRect( item );
+
+			return rect;
+		}
+		break;
+		case 4: // Ellipse
+		{
+			KTEllipseItem *ellipse = KTItemConverter::convertToEllipse( item );
+			return ellipse;
+		}
+		break;
+		case KTProxyItem::Type:
+		{
+			return new KTProxyItem( item );
+		}
+		break;
+		default:
+		{
+			dWarning() << "unknown item " << toType ;
+		}
+		break;
+	}
+	return 0;
+}
 
 bool KTCommandExecutor::convertItem(KTItemResponse *response)
 {
@@ -322,48 +359,29 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
 // 					if ( ! doc.setContent( xml ) ) return false;
 // 					int toType = doc.documentElement().attribute( "type").toInt();
 					
+					dFatal() << KTProxyItem::Type << "==" << item->type();
+					
 					if ( toType == item->type() ) return false;
 					
-					scene->removeItem(item);
+					QGraphicsItem * itemConverted = convert(item, toType);
 					
-					switch(toType)
+					
+					if(itemConverted)
 					{
-						case 2: // Path
-						{
-							KTPathItem *path = KTItemConverter::convertToPath( item );
-							scene->addItem(path);
-							
-							frame->replaceItem(position, path);
-						}
-						break;
-						case 3: // Rect
-						{
-							KTRectItem *rect = KTItemConverter::convertToRect( item );
-							scene->addItem(rect);
-							
-							frame->replaceItem(position, rect);
-						}
-						break;
-						case 4: // Ellipse
-						{
-							KTEllipseItem *ellipse = KTItemConverter::convertToEllipse( item );
-							
-							scene->addItem(ellipse);
-							
-							frame->replaceItem(position, ellipse);
-						}
-						break;
 						
+						scene->removeItem(item);
+						
+						scene->addItem(itemConverted);
+						frame->replaceItem(position, itemConverted);
+						
+						response->setArg( QString::number(item->type()));
+						emit responsed(response);
+						return true;
 					}
-					response->setArg( QString::number(item->type()));
-					emit responsed(response);
-					
-					return true;
 				}
 			}
 		}
 	}
-	
 	return false;
 }
 

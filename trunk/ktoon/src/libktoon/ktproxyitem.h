@@ -47,7 +47,7 @@ class KTProxyItem : public QGraphicsItem
 		
 		QPainterPath shape () const;
 		
-		enum { Type = UserType + 1 };
+		enum { Type = UserType + 2 };
 		int type() const { return Type; }
 		
 	private:
