@@ -5,13 +5,8 @@
 
 INSTALLS += target 
 target.path = /plugins/ 
-HEADERS += contourselection.h \
-           controlnode.h \
-           nodegroup.h 
-SOURCES += contourselection.cpp \
-           controlnode.cpp \
-           nodegroup.cpp 
-
+HEADERS += contourselection.h
+SOURCES += contourselection.cpp
 KDEV_QTVER = 4
 include(../tools_config.pri)
 include(../../../../ktconfig.pri)

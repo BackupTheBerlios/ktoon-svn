@@ -36,7 +36,7 @@
 #include <QDebug>
 #include <QTimer>
 
-#include "nodegroup.h"
+#include <dgui/dnodegroup.h>
 
 #include "ktrequestbuilder.h"
 
@@ -64,7 +64,7 @@ void ContourSelection::init(QGraphicsView *view)
 	
 	foreach(QGraphicsItem *item, view->scene()->items() )
 	{
-		if(!qgraphicsitem_cast<ControlNode *>(item))
+		if(!qgraphicsitem_cast<DControlNode *>(item))
 		{
 			item->setFlags (QGraphicsItem::ItemIsSelectable /*| QGraphicsItem::ItemIsMovable*/ );
 		}
@@ -106,8 +106,8 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 	if(scene->selectedItems().count() > 0)
 	{
 		QList<QGraphicsItem *> selecteds = scene->selectedItems();
-		QList<NodeGroup *>::iterator it = m_nodeGroups.begin();
-		QList<NodeGroup *>::iterator itEnd = m_nodeGroups.end();
+		QList<DNodeGroup *>::iterator it = m_nodeGroups.begin();
+		QList<DNodeGroup *>::iterator itEnd = m_nodeGroups.end();
 		while(it != itEnd)
 		{
 			int parentIndex = scene->selectedItems().indexOf((*it)->parentItem() );
@@ -125,7 +125,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 		{
 			if(item  )
 			{
-				if(!qgraphicsitem_cast<ControlNode *>(item))
+				if(!qgraphicsitem_cast<DControlNode *>(item))
 				{
 					if( !qgraphicsitem_cast<KTPathItem*>(item) )
 					{
@@ -134,15 +134,15 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 					}
 					else
 					{
-						m_nodeGroups << new NodeGroup(item, scene);
+						m_nodeGroups << new DNodeGroup(item, scene);
 					}
 				}
 			}
 		}
 		
-		foreach(NodeGroup *group, m_nodeGroups)
+		foreach(DNodeGroup *group, m_nodeGroups)
 		{
-			if(!group->changedsNodes().isEmpty() )
+			if(!group->changedNodes().isEmpty() )
 			{
 				int position  = scene->currentFrame()->indexOf(group->parentItem());
 				if(position != -1 && qgraphicsitem_cast<QGraphicsPathItem *>(group->parentItem()))
@@ -209,7 +209,7 @@ void ContourSelection::itemResponse(const KTItemResponse *response)
 		{
 			if ( item && scene)
 			{
-				NodeGroup *node = new NodeGroup(item, scene);
+				DNodeGroup *node = new DNodeGroup(item, scene);
 				m_nodeGroups << node;
 			}
 		}
@@ -219,7 +219,7 @@ void ContourSelection::itemResponse(const KTItemResponse *response)
 			
 			if ( item )
 			{
-				foreach(NodeGroup* group, m_nodeGroups)
+				foreach(DNodeGroup* group, m_nodeGroups)
 				{
 					if(qgraphicsitem_cast<QGraphicsPathItem *>(group->parentItem()) == item)
 					{
@@ -247,7 +247,7 @@ void ContourSelection::keyPressEvent(QKeyEvent *event)
 	
 	bool deleted = false;
 	
-	foreach(NodeGroup *nodegroup, m_nodeGroups )
+	foreach(DNodeGroup *nodegroup, m_nodeGroups )
 	{
 		deleted = deleted || (nodegroup->removeSelectedNodes() > 0);
 	}
@@ -296,19 +296,12 @@ void ContourSelection::aboutToChangeTool()
 	m_nodeGroups.clear();
 }
 
-QString ContourSelection::toolToXml() const
-{
-	QDomDocument doc;
-// 	doc.appendChild(m_item->toXml( doc ));
-	return doc.toString();
-}
-
 
 void ContourSelection::syncNodes()
 {
 	
 // 	//FIXME: tratar de optimizar esto
-	foreach(NodeGroup* node, m_nodeGroups)
+	foreach(DNodeGroup* node, m_nodeGroups)
 	{
 		if(node)
 		{

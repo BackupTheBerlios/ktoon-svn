@@ -26,12 +26,12 @@
 
 #include "ktpathitem.h"
 
-#include "controlnode.h"
-#include "nodegroup.h"
+#include <dgui/dcontrolnode.h>
+#include <dgui/dnodegroup.h>
 #include "ktproject.h"
 
 
-class ControlNode;
+class DDControlNode;
 class KTItemResponse;
 
 /**
@@ -54,8 +54,6 @@ class ContourSelection : public KTToolPlugin
 		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
 		
 		
-		virtual QString toolToXml() const; //###: creo que ya no se usa.
-		
 		
 		virtual QMap<QString, DAction *>actions() const;
 		
@@ -76,7 +74,7 @@ class ContourSelection : public KTToolPlugin
 		
 	private:
 		QMap<QString, DAction *> m_actions;
-		QList<NodeGroup*> m_nodeGroups; 
+		QList<DNodeGroup*> m_nodeGroups; 
 		KTProject *m_project;
 		
 	private slots:
