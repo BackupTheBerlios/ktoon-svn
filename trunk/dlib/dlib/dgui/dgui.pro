@@ -68,7 +68,9 @@ HEADERS += danimwidget.h \
            dcommandhistory.h \
            dformvalidator.h  \
            dstackedmainwindow.h \
-           dworkspacemainwindow.h
+           dworkspacemainwindow.h \
+           dcontrolnode.h \
+           dnodegroup.h
 SOURCES += danimwidget.cpp \
            dapplication.cpp \
            dcellview.cpp \
@@ -129,7 +131,9 @@ SOURCES += danimwidget.cpp \
            dcommandhistory.cpp \
            dformvalidator.cpp  \
            dstackedmainwindow.cpp \
-           dworkspacemainwindow.cpp
+           dworkspacemainwindow.cpp \
+           dcontrolnode.cpp \
+           dnodegroup.cpp
 DEFINES += DLIB_GUI
 RESOURCES += dgui_images.qrc
 QT += xml
@@ -152,7 +156,7 @@ QT += opengl
     error("Run ./configure first!")
 }
 
-linux-g++{
+linux-g{
     TARGETDEPS += ../dcore/libdcore.so
 }
 
