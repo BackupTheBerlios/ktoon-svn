@@ -24,7 +24,7 @@
 #include <QFileInfo>
 #include <QDateTime>
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 #include "core/connection.h"
 #include "core/server.h"

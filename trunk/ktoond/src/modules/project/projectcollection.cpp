@@ -30,18 +30,18 @@
 #include "core/connection.h"
 #include "core/server.h"
 
-#include <dapplicationproperties.h>
+#include <dcore/dapplicationproperties.h>
 
 #include <QDir>
+#include <QHash>
+
 #include "global.h"
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 #include "project.h"
 #include "users/user.h"
 
-
-#include <QHash>
 #include <sproject.h>
 
 #include "database.h"

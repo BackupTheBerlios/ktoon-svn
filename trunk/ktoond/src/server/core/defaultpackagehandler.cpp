@@ -19,7 +19,7 @@
  ***************************************************************************/
  
 #include "defaultpackagehandler.h"
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 namespace Server {
 

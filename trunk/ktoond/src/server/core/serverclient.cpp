@@ -25,7 +25,7 @@
 #include <QDataStream>
 #include <QStringList>
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 namespace Server {
 

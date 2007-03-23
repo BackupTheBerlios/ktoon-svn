@@ -20,12 +20,12 @@
 
 #include <QApplication>
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 #include "core/server.h"
 #include "packagehandler.h"
 
-#include <dapplicationproperties.h>
-#include <dconfig.h>
+#include <dcore/dapplicationproperties.h>
+#include <dcore/dconfig.h>
 
 #include "base/logger.h"
 #include "base/settings.h"

@@ -24,7 +24,7 @@
 #include <QString>
 #include <QApplication>
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 #include "base/package.h"
 

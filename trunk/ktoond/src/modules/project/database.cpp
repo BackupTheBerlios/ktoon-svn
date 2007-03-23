@@ -24,7 +24,7 @@
 #include <QFile>
 #include <QTextStream>
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 #include "databaseparser.h"
 

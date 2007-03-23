@@ -23,7 +23,7 @@
 #include <QFile>
 #include <QTextStream>
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 namespace Registers {
 

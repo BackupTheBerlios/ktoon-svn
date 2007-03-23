@@ -22,7 +22,7 @@
 
 #include <QtNetwork>
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 #include "server.h"
 #include "base/logger.h"
@@ -36,8 +36,8 @@
 
 #include "users/user.h"
 
-#include "dmd5hash.h"
-#include "dalgorithm.h"
+#include <dcore/dmd5hash.h>
+#include <dcore/dalgorithm.h>
 
 #include "packages/error.h"
 

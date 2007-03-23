@@ -26,7 +26,7 @@
 #include <QQueue>
 #include <QHostAddress>
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 #include "packagehandlerbase.h"
 #include "defaultpackagehandler.h"

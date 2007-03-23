@@ -21,8 +21,8 @@
 #include "sproject.h"
 #include <ktsaveproject.h>
 
-#include <dapplicationproperties.h>
-#include <ddebug.h>
+#include <dcore/dapplicationproperties.h>
+#include <dcore/ddebug.h>
 
 struct SProject::Private
 {

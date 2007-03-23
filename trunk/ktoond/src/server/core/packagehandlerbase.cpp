@@ -19,7 +19,7 @@
  ***************************************************************************/
  
 #include "packagehandlerbase.h"
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 
 #include <QHashIterator>
@@ -32,7 +32,7 @@
 #include "base/logger.h"
 
 
-#include "dapplicationproperties.h"
+#include <dcore/dapplicationproperties.h>
 
 #include "packages/error.h"
 
