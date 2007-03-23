@@ -579,7 +579,16 @@ void KTPaintArea::projectResponse(KTProjectResponse *)
 
 void KTPaintArea::libraryResponse(KTLibraryResponse *request)
 {
-	Q_UNUSED(request);
+	switch(request->action())
+	{
+		case KTProjectRequest::AddSymbolToProject:
+		{
+			qobject_cast<KTScene *>(scene())->drawCurrentPhotogram();
+			viewport()->update(scene()->sceneRect().toRect() );
+		}
+		break;
+	}
+	
 }
 
 void KTPaintArea::drawBackground(QPainter *painter, const QRectF &rect)
@@ -593,6 +602,7 @@ void KTPaintArea::drawBackground(QPainter *painter, const QRectF &rect)
 	painter->setRenderHint(QPainter::Antialiasing, false);
 	
 	painter->setPen( QPen(QColor(0,0,0,180), 3) );
+	
 	painter->fillRect( d->drawingRect, Qt::white );
 	painter->drawRect( d->drawingRect );
 	
@@ -652,6 +662,7 @@ bool KTPaintArea::canPaint() const
 void KTPaintArea::centerDrawingArea()
 {
 // 	ensureVisible(d->drawingRect, (width() - d->drawingRect.width()) /2, (height() - d->drawingRect.height()) /2  );
+	
 	centerOn(d->drawingRect.center());
 }
 

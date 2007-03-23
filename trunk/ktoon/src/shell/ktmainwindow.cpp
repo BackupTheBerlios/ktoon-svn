@@ -508,6 +508,8 @@ void KTMainWindow::ui4project(QWidget *widget)
 	connect(widget, SIGNAL(requestTriggered(const KTProjectRequest *)), m_projectManager, SLOT(handleProjectRequest(const KTProjectRequest *)));
 	
 	connect(m_projectManager, SIGNAL(responsed( KTProjectResponse* )), widget, SLOT(handleProjectResponse(KTProjectResponse *)));
+	
+	connect(widget, SIGNAL(postPage(QWidget *)), this, SLOT(addPage(QWidget *)));
 }
 
 void KTMainWindow::ui4paintArea(QWidget *widget)
@@ -616,4 +618,10 @@ void KTMainWindow::createCommand(const KTPaintAreaEvent *event)
 		m_projectManager->undoHistory()->push(command);
 	}
 }
+
+void KTMainWindow::addPage(QWidget *widget)
+{
+	addWidget(widget);
+}
+
 

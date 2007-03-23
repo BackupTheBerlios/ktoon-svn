@@ -28,6 +28,7 @@
 #include <QGroupBox>
 #include <QFileDialog>
 #include <QGraphicsItem>
+#include <QLabel>
 
 #include <ktrequestbuilder.h>
 
@@ -37,6 +38,7 @@
 
 #include "ktlibrary.h"
 #include "ktlibraryobject.h"
+#include "ktsymboleditor.h"
 
 struct KTLibraryWidget::Private
 {
@@ -251,6 +253,10 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 				if ( object->data().canConvert<QGraphicsItem *>() )
 				{
 					d->display->render( qvariant_cast<QGraphicsItem *>(object->data()));
+					
+					KTSymbolEditor *editor = new KTSymbolEditor;
+					editor->setSymbol(object);
+					emit postPage(editor);
 				}
 			}
 			break;

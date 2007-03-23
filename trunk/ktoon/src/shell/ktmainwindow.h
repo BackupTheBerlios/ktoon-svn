@@ -160,6 +160,8 @@ class KTMainWindow : public DTabbedMainWindow
 		
 		void changePerspective(QAction *a);
 		
+		void addPage(QWidget *widget);
+		
 	private slots:
 		void messageToStatus(const QString &);
 		void preferences();
