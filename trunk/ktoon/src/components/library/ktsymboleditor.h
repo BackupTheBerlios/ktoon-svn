@@ -25,7 +25,7 @@
 class KTLibraryObject;
 
 /**
-	@author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado <krawek@gmail.com>
 */
 class KTSymbolEditor : public QMainWindow
 {
@@ -35,6 +35,10 @@ class KTSymbolEditor : public QMainWindow
 		~KTSymbolEditor();
 		
 		void setSymbol(KTLibraryObject *object);
+		
+	private slots:
+		void loadTools();
+		void selectTool();
 		
 	private:
 		struct Private;

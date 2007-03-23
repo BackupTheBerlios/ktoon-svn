@@ -22,15 +22,45 @@
 
 #include <QGraphicsView>
 #include <QGraphicsScene>
+#include <QToolBar>
+#include <QTimer>
 
 #include "ktlibraryobject.h"
+#include "ktpluginmanager.h"
+#include "kttoolplugin.h"
+
+#include <dgui/daction.h>
+
+#include <dcore/ddebug.h>
+
+
+class View : public QGraphicsView
+{
+	public:
+		View();
+		~View();
+};
+
+View::View()
+{
+}
+
+View::~View()
+{
+}
+
 
 struct KTSymbolEditor::Private
 {
-	QGraphicsView *view;
+	View *view;
 	QGraphicsScene *scene;
 	
 	KTLibraryObject *symbol;
+	
+	QToolBar *selectionTools;
+	QToolBar *fillTools;
+	QToolBar *viewTools;
+	QToolBar *brushTools;
 };
 
 KTSymbolEditor::KTSymbolEditor(QWidget *parent)
@@ -38,13 +68,27 @@ KTSymbolEditor::KTSymbolEditor(QWidget *parent)
 {
 	setWindowTitle(tr("Symbol editor"));
 	
-	d->view = new QGraphicsView;
+	d->view = new View;
 	d->view->setRenderHints(QPainter::Antialiasing);
 	
 	d->scene = new QGraphicsScene;
 	d->view->setScene(d->scene);
 	
 	setCentralWidget(d->view);
+	
+	d->brushTools = new QToolBar(tr("Brushes"));
+	addToolBar(Qt::BottomToolBarArea, d->brushTools);
+	
+	d->selectionTools = new QToolBar(tr("Selection"));
+	addToolBar(Qt::BottomToolBarArea, d->selectionTools);
+	
+	d->fillTools = new QToolBar(tr("Fill"));
+	addToolBar(Qt::BottomToolBarArea, d->fillTools);
+	
+	d->viewTools = new QToolBar(tr("View"));
+	addToolBar(Qt::BottomToolBarArea, d->viewTools);
+	
+	QTimer::singleShot(0, this, SLOT(loadTools()));
 }
 
 
@@ -60,8 +104,73 @@ void KTSymbolEditor::setSymbol(KTLibraryObject *object)
 	{
 		d->symbol = object;
 		d->scene->addItem(item);
-		
 	}
 }
 
+void KTSymbolEditor::loadTools()
+{
+	QActionGroup *group = new QActionGroup(this);
+	group->setExclusive(true);
+	
+	foreach(QObject *plugin, KTPluginManager::instance()->tools() )
+	{
+		KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(plugin);
+		
+		QStringList::iterator it;
+		QStringList keys = tool->keys();
+			
+		for (it = keys.begin(); it != keys.end(); ++it)
+		{
+			dDebug("plugins") << "*******Tool Loaded: " << *it;
+			
+			DAction *act = tool->actions()[*it];
+			if ( act )
+			{
+				connect(act, SIGNAL(triggered()), this, SLOT(selectTool()));
+				
+				switch( tool->toolType() )
+				{
+					case KTToolInterface::Selection:
+					{
+						d->selectionTools->addAction(act);
+					}
+					break;
+					case KTToolInterface::Fill:
+					{
+						d->fillTools->addAction(act);
+					}
+					break;
+					case KTToolInterface::View:
+					{
+						d->viewTools->addAction(act);
+					}
+					break;
+					case KTToolInterface::Brush:
+					{
+						d->brushTools->addAction(act);
+					}
+					break;
+				}
+				
+				group->addAction(act);
+				act->setCheckable(true);
+				act->setParent(plugin);
+			}
+		}
+	}
+}
+
+void KTSymbolEditor::selectTool()
+{
+	D_FUNCINFO;
+	DAction *action = qobject_cast<DAction *>(sender());
+	
+	if ( action )
+	{
+		KTToolPlugin *tool = qobject_cast<KTToolPlugin *>(action->parent());
+		tool->setCurrentTool( action->text() );
+		
+		
+	}
+}
 

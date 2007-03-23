@@ -17,13 +17,13 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
+
 #ifndef KTPAINTAREAROTATOR_H
 #define KTPAINTAREAROTATOR_H
 
-#include <qobject.h>
-#include <QTimer>
+#include <QObject>
 
-class KTPaintArea;
+class KTPaintAreaBase;
 
 /**
 	@author David Cuadrado <krawek@gmail.com>
@@ -32,7 +32,7 @@ class KTPaintAreaRotator : public QObject
 {
 	Q_OBJECT;
 	public:
-		KTPaintAreaRotator(QObject *parent, KTPaintArea *view);
+		KTPaintAreaRotator(QObject *parent, KTPaintAreaBase *view);
 		~KTPaintAreaRotator();
 		
 		void rotateTo(int angle);
@@ -41,10 +41,8 @@ class KTPaintAreaRotator : public QObject
 		void applyRotation();
 		
 	private:
-		int m_rotationAngle;
-		KTPaintArea *m_view;
-		
-		QTimer m_timer;
+		struct Private;
+		Private *const d;
 };
 
 #endif

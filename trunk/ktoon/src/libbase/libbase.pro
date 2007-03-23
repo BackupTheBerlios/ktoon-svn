@@ -14,11 +14,15 @@ HEADERS += ktexportinterface.h \
            ktmodulewidgetbase.h \
            ktpluginmanager.h \
            kttoolinterface.h \
-           kttoolplugin.h 
+           kttoolplugin.h  \
+           ktpaintareabase.h \
+           ktpaintarearotator.h
 SOURCES += ktexportpluginobject.cpp \
            ktmodulewidgetbase.cpp \
            ktpluginmanager.cpp \
-           kttoolplugin.cpp 
+           kttoolplugin.cpp  \
+           ktpaintareabase.cpp \
+           ktpaintarearotator.cpp
 DLIB_DIR = ../../src/dlib
 include($$DLIB_DIR/dlib.pri)
 QUAZIP_DIR = ../../3rdparty/quazip/

@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 //
-#ifndef KTPAINTAREA_H
-#define KTPAINTAREA_H
+#ifndef KTPAINTAREABASE_H
+#define KTPAINTAREABASE_H
 
-#include "ktpaintareabase.h"
-#include "ktabstractprojectresponsehandler.h"
+#include <QGraphicsView>
+#include <kttoolplugin.h>
 
 
 class QGraphicsRectItem;
@@ -38,44 +38,57 @@ class KTPaintAreaRotator;
  * Esta clase provee un area para realizar diferentes trazos
  * @author Jorge Cuadrado \<kuadrosx@toonka.com\> - David Cuadrado \<krawek@toonka.com\>
 */
-
-
-class KTPaintArea : public KTPaintAreaBase, public KTAbstractProjectResponseHandler
+class KTPaintAreaBase : public QGraphicsView
 {
 	Q_OBJECT;
 	public:
-		KTPaintArea(KTProject *project, QWidget * parent = 0);
-		~KTPaintArea();
+		KTPaintAreaBase(QWidget * parent = 0);
+		~KTPaintAreaBase();
 		
-		void setCurrentScene(int index);
+		void setAntialiasing(bool use);
+		void setUseOpenGL(bool opengl);
+		void setDrawGrid(bool draw);
+		void setTool(KTToolPlugin *tool);
 		
-	public slots:
-		void setNextFramesOnionSkinCount(int n);
-		void setPreviousFramesOnionSkinCount(int n);
+		bool drawGrid() const;
 		
-	signals:
-		void requestTriggered(const KTProjectRequest *event);
+		void scaleView(qreal scaleFactor);
 		
-	public slots:
-		void deleteItems();
-		void groupItems();
-		void ungroupItems();
-		void copyItems();
-		void pasteItems();
-		void cutItems();
+		void setRotationAngle(int angle);
 		
-		void addSelectedItemsToLibrary();
+		KTBrushManager *brushManager() const;
+		
+		QRectF drawingRect() const;
+		
+	private:
+		virtual void saveState();
+		virtual void restoreState();
 		
 	protected:
-		void frameResponse(KTFrameResponse *event);
-		void layerResponse(KTLayerResponse *event);
-		void sceneResponse(KTSceneResponse *event);
+		virtual void mousePressEvent ( QMouseEvent * event  );
+		virtual void mouseDoubleClickEvent( QMouseEvent *event);
+		virtual void mouseMoveEvent ( QMouseEvent * event );
+		virtual void mouseReleaseEvent ( QMouseEvent *event );
+		virtual void tabletEvent ( QTabletEvent * event );
+		virtual void wheelEvent( QWheelEvent *event );
+		virtual void keyPressEvent(QKeyEvent *event);
 		
-		void itemResponse(KTItemResponse *event);
-		void libraryResponse(KTLibraryResponse *request);
-		void projectResponse(KTProjectResponse *projectResponse);
 		
-		bool canPaint() const;
+	signals:
+		void cursorPosition(const QPointF &pos);
+		void requestTriggered(const KTProjectRequest *event);
+		
+	private:
+		QMouseEvent *mapToArea(QMouseEvent *event) const;
+		
+	public slots:
+		void centerDrawingArea();
+		
+	protected:
+		virtual void drawBackground(QPainter *painter, const QRectF &rect);
+		virtual void drawForeground( QPainter *painter, const QRectF &rect );
+		
+		virtual bool canPaint() const;
 		
 	private:
 		struct Private;

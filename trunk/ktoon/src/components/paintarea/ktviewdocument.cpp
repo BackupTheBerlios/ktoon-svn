@@ -78,13 +78,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
 	
 	connect(m_paintArea, SIGNAL(cursorPosition(const QPointF &)),  this,  SLOT(showPos(const QPointF &)) );
 	connect(m_paintArea, SIGNAL(requestTriggered(const KTProjectRequest* )), this, SIGNAL(requestTriggered(const KTProjectRequest *)));
-
-// 	connect( m_paintArea, SIGNAL(changedZoomFactor(double)),  this,  SLOT(updateZoomFactor(double)) );
-// 	setWindowTitle( m_title + " - " + m_document->currentScene()->sceneName() );
-// 	
-// 	m_paintArea->setScene( m_document->currentScene() );
 	
-// 	connect(m_document, SIGNAL(sceneChanged( KTScene* )) , this, SLOT(setScene( KTScene* )  ));
 	QTimer::singleShot(0, this, SLOT(loadPlugins()));
 	createActions();
 	setupEditActions();

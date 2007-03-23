@@ -17,34 +17,47 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "ktpaintarearotator.h"
-#include "ktpaintarea.h"
 
-KTPaintAreaRotator::KTPaintAreaRotator(QObject *parent, KTPaintArea *view) : QObject(parent), m_view(view)
+#include "ktpaintarearotator.h"
+#include "ktpaintareabase.h"
+
+#include <QTimer>
+
+struct KTPaintAreaRotator::Private
 {
-	connect(&m_timer, SIGNAL(timeout()), this, SLOT(applyRotation()));
+	int rotationAngle;
+	KTPaintAreaBase *view;
+	
+	QTimer timer;
+};
+
+KTPaintAreaRotator::KTPaintAreaRotator(QObject *parent, KTPaintAreaBase *view) : QObject(parent), d(new Private)
+{
+	d->view = view;
+	connect(&d->timer, SIGNAL(timeout()), this, SLOT(applyRotation()));
 }
 
 
 KTPaintAreaRotator::~KTPaintAreaRotator()
 {
+	delete d;
 }
 
 
 void KTPaintAreaRotator::rotateTo(int angle)
 {
-	m_rotationAngle = angle;
+	d->rotationAngle = angle;
 	
-	if ( !m_timer.isActive() )
+	if ( !d->timer.isActive() )
 	{
-		m_timer.start(50);
+		d->timer.start(50);
 	}
 }
 
 
 void KTPaintAreaRotator::applyRotation()
 {
-	m_view->setRotationAngle(m_rotationAngle);
-	m_timer.stop();
+	d->view->setRotationAngle(d->rotationAngle);
+	d->timer.stop();
 }
 
