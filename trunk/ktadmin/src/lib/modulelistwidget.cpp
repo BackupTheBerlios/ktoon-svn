@@ -20,9 +20,9 @@
 
 #include "modulelistwidget.h"
 
-#include <dtreelistwidget.h>
-#include <dtreewidgetsearchline.h>
-#include <ddebug.h>
+#include <dgui/dtreelistwidget.h>
+#include <dgui/dtreewidgetsearchline.h>
+#include <dcore/ddebug.h>
 
 #include <QToolButton>
 #include <QTreeWidget>

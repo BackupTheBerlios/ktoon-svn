@@ -24,8 +24,8 @@
 #include <QVBoxLayout>
 #include <QLabel>
 
-#include <dformfactory.h>
-#include <ddebug.h>
+#include <dgui/dformfactory.h>
+#include <dcore/ddebug.h>
 
 #include "packages/addproject.h"
 #include "packages/updateproject.h"

@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "updateuser.h"
-#include <dmd5hash.h>
+#include <dcore/dmd5hash.h>
 namespace Packages{
 
 struct UpdateUser::Private

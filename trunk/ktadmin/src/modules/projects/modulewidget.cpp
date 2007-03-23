@@ -20,8 +20,8 @@
 
 #include "modulewidget.h"
 
-#include <dapplicationproperties.h>
-#include <ddebug.h>
+#include <dcore/dapplicationproperties.h>
+#include <dcore/ddebug.h>
 
 
 #include <QIcon>

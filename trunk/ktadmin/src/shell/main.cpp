@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <dapplication.h>
-#include <dapplicationproperties.h>
+#include <dgui/dapplication.h>
+#include <dcore/dapplicationproperties.h>
 
 #include "mainwindow.h"
 

@@ -23,8 +23,8 @@
 #include <QVBoxLayout>
 #include <QTreeWidgetItem>
 
-#include <dformfactory.h>
-#include <ddebug.h>
+#include <dgui/dformfactory.h>
+#include <dcore/ddebug.h>
 
 #include "packages/addban.h"
 

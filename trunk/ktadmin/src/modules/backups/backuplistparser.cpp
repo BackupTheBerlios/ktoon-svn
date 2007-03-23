@@ -21,7 +21,7 @@
 #include "backuplistparser.h"
 #include <QHash>
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 
 namespace Backups {
 

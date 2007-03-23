@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "modulewidget.h"
-#include <dapplicationproperties.h>
+
 #include <QIcon>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
@@ -40,8 +40,9 @@
 #include "backuplistparser.h"
 #include "addbackupparser.h"
 
-#include <ddebug.h>
-#include <dosd.h>
+#include <dcore/ddebug.h>
+#include <dcore/dapplicationproperties.h>
+#include <dgui/dosd.h>
 
 namespace Backups {
 

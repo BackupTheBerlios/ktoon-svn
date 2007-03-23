@@ -20,7 +20,7 @@
 
 #include "socket.h"
 
-#include <ddebug.h>
+#include <dcore/ddebug.h>
 #include "manager.h"
 
 struct Socket::Private 

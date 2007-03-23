@@ -26,9 +26,9 @@
 #include <QApplication>
 #include <QToolBar>
 
-#include <dtoolview.h>
-#include <ddebug.h>
-#include <dosd.h>
+#include <dgui/dtoolview.h>
+#include <dcore/ddebug.h>
+#include <dgui/dosd.h>
 
 #include "users/modulewidget.h"
 #include "projects/modulewidget.h"

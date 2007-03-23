@@ -24,8 +24,8 @@
 #include <QTreeWidgetItem>
 #include <QHash>
 
-#include <ddebug.h>
-#include <dapplicationproperties.h>
+#include <dcore/ddebug.h>
+#include <dcore/dapplicationproperties.h>
 
 #include "package.h"
 

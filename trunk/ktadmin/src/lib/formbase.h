@@ -22,7 +22,7 @@
 
 #include <QFrame>
 #include <QDialogButtonBox>
-#include <dformvalidator.h>
+#include <dgui/dformvalidator.h>
 
 class QTreeWidgetItem;
 

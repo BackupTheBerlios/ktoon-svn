@@ -21,7 +21,7 @@
 #include "observer.h"
 // #include "noticeparser.h"
 
-#include <dosd.h>
+#include <dgui/dosd.h>
 #include <QObject>
 
 namespace Comunications {

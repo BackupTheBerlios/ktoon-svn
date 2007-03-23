@@ -19,8 +19,8 @@
  ***************************************************************************/
  
 #include "form.h"
-#include <dformfactory.h>
-#include <ddebug.h>
+#include <dgui/dformfactory.h>
+#include <dcore/ddebug.h>
 
 #include <QLineEdit>
 #include <QVBoxLayout>

@@ -25,8 +25,8 @@
 #include "package.h"
 #include "packageobserver.h"
 
-#include <ddebug.h>
-#include <dosd.h>
+#include <dcore/ddebug.h>
+#include <dgui/dosd.h>
 
 #include "packages/connect.h"
 #include "packages/ackparser.h"
