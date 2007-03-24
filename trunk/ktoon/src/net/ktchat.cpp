@@ -46,7 +46,7 @@ class KTChat::Private
 		
 };
 
-KTChat::KTChat(QWidget *parent) : QDialog(parent), d(new Private)
+KTChat::KTChat(QWidget *parent) : QWidget(parent), d(new Private)
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	QGridLayout *layout = new QGridLayout(this);

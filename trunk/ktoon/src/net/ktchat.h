@@ -21,12 +21,12 @@
 #ifndef KTCHAT_H
 #define KTCHAT_H
 
-#include <QDialog>
+#include <QWidget>
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTChat : public QDialog
+class KTChat : public QWidget
 {
 	Q_OBJECT;
 	

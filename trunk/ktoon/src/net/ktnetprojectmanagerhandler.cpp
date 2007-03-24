@@ -89,6 +89,9 @@ KTNetProjectManagerHandler::KTNetProjectManagerHandler(QObject *parent) : KTAbst
 	d->doAction = true;
 	
 	d->comunicationModule = new QTabWidget;
+	d->comunicationModule->setWindowTitle(tr("Communications"));
+	d->comunicationModule->setWindowIcon(QPixmap(THEME_DIR+"/icons/chat.png"));
+	
 	
 	d->chat = new KTChat;
 	d->comunicationModule->addTab(d->chat, tr("chat"));

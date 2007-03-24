@@ -26,7 +26,7 @@
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
 */
-class KTNotice: public QDialog
+class KTNotice: public QWidget
 {
 	Q_OBJECT
 	public:

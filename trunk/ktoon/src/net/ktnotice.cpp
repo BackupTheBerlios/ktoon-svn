@@ -45,7 +45,7 @@ class KTNotice::Private
 		QPushButton *send;
 };
 
-KTNotice::KTNotice(QWidget *parent) : QDialog(parent), d(new Private())
+KTNotice::KTNotice(QWidget *parent) : QWidget(parent), d(new Private())
 {
 	setAttribute(Qt::WA_DeleteOnClose);
 	QGridLayout *layout = new QGridLayout(this);
