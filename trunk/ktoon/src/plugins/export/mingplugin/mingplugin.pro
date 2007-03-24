@@ -12,6 +12,6 @@ CONFIG += plugin
 TEMPLATE = lib 
 HEADERS += mingplugin.h 
 SOURCES += mingplugin.cpp 
-!include(../../../../ktconfig.pri) {
-error("Please run configure first")
+!include(../../../../ktconfig.pri){
+    error("Please run configure first")
 }

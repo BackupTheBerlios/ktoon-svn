@@ -10,7 +10,8 @@ SUBDIRS += brush \
            geometrictool \
            viewtool \
            filltool \
-           erasertool 
+           erasertool  \
+           polyline
 KDEV_QTVER = 4
 CONFIG += release \
 warn_on

@@ -6,7 +6,7 @@
 SUBDIRS += themes \
            libktoon \
            store \
-           net \ 
+           net \
            libbase \
            libktui \
            components \

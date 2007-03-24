@@ -238,7 +238,6 @@ void KTPaintAreaBase::mousePressEvent ( QMouseEvent * event )
 			QGraphicsView::mousePressEvent(event);
 			
 			d->tool->begin();
-			
 			d->isDrawing = true;
 			d->tool->press(d->inputInformation, d->brushManager, sscene, this );
 		}

@@ -41,7 +41,7 @@ include(shell_config.pri)
 include(../../ktconfig.pri)
 TARGET = ../../bin/ktoon.bin
 TEMPLATE = app
-linux-g++{
+linux-g{
     TARGETDEPS += ../../src/libktoon/libktoon.so \
   ../../src/libktui/libktui.a \
   ../../src/store/libstore.so \

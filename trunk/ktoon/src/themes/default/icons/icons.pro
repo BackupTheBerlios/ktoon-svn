@@ -11,7 +11,7 @@ CONFIG += release \
 TEMPLATE = lib
 
 # little hack
-macx {
-TEMPLATE=subdirs
+macx{
+    TEMPLATE = subdirs
 }
 

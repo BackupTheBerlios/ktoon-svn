@@ -226,7 +226,6 @@ void ContourSelection::itemResponse(const KTItemResponse *response)
 						group->show();
 						group->syncNodesFromParent();
 						group->saveParentProperties();
-// 						group->parentItem()->setSelected(true);
 						break;
 					}
 				}
