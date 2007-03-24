@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "ktinputdeviceinformation.h"
-#include <QMouseEvent>
+#include <QGraphicsSceneMouseEvent>
 #include <QTabletEvent>
 
 KTInputDeviceInformation::KTInputDeviceInformation(QObject *parent) : QObject(parent)
@@ -39,7 +39,7 @@ KTInputDeviceInformation::~KTInputDeviceInformation()
 {
 }
 
-void KTInputDeviceInformation::updateFromMouseEvent(QMouseEvent *event)
+void KTInputDeviceInformation::updateFromMouseEvent(QGraphicsSceneMouseEvent *event)
 {
 	m_mouseInfo.button = event->button();
 	m_mouseInfo.buttons = event->buttons();
@@ -91,7 +91,7 @@ Qt::MouseButtons KTInputDeviceInformation::buttons() const
 }
 
 
-QPoint KTInputDeviceInformation::pos() const
+QPointF KTInputDeviceInformation::pos() const
 {
 	return m_position;
 }

@@ -39,6 +39,12 @@
 
 #include "ktscene.h"
 
+#include <QGraphicsView>
+#include "ktinputdeviceinformation.h"
+#include "ktgraphicsscene.h"
+#include "ktprojectrequest.h"
+#include "ktbrushmanager.h"
+
 EraserTool::EraserTool()
 {
 	setupActions();
@@ -73,7 +79,7 @@ void EraserTool::setupActions()
 // 	m_actions.insert(tr("Line"), action3);
 }
 
-void EraserTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void EraserTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	if(input->buttons() == Qt::LeftButton)
 	{
@@ -92,11 +98,11 @@ void EraserTool::press(const KTInputDeviceInformation *input, KTBrushManager *br
 	}
 }
 
-void EraserTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void EraserTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 }
 
-void EraserTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void EraserTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 }
 
@@ -133,7 +139,7 @@ void EraserTool::itemPressed(QGraphicsItem *item, const KTBrushManager *brush, c
 		if ( !path )
 		{
 // 			QString conv = "<convert type=\"2\" />"; // to path type
-// 			KTProjectRequest *event = new KTProjectRequest(KTProjectRequest::Convert, scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().indexOf(item), conv);
+// 			KTProjectRequest *event = new KTProjectRequest(KTProjectRequest::Convert, scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().indexOf(item), conv);
 // 			addProjectRequest(event);
 		}
 		else

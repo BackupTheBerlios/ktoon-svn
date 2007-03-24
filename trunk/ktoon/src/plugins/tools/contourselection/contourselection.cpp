@@ -32,6 +32,12 @@
 #include "ktscene.h"
 #include "ktserializer.h"
 
+#include <QGraphicsView>
+#include "ktinputdeviceinformation.h"
+#include "ktgraphicsscene.h"
+#include "ktprojectrequest.h"
+#include "ktprojectresponse.h"
+
 // #include "nodemanager.h"
 #include <QDebug>
 #include <QTimer>
@@ -76,17 +82,16 @@ QStringList ContourSelection::keys() const
 	return QStringList() << tr("ContourSelection") ;
 }
 
-void ContourSelection::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void ContourSelection::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
 	Q_UNUSED(view);
 	
-	m_project = scene->project();
-	
+	m_scene = scene;
 }
 
-void ContourSelection::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void ContourSelection::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
@@ -97,7 +102,7 @@ void ContourSelection::move(const KTInputDeviceInformation *input, KTBrushManage
 	
 }
 
-void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
@@ -129,7 +134,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 				{
 					if( !qgraphicsitem_cast<KTPathItem*>(item) )
 					{
-						KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->indexOf(item), KTProjectRequest::Convert, 2);
+						KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->indexOf(item), KTProjectRequest::Convert, 2);
 						emit requested(&event);
 					}
 					else
@@ -150,7 +155,7 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 					QDomDocument doc;
 					doc.appendChild(qgraphicsitem_cast<KTPathItem *>(group->parentItem())->toXml(doc));
 					
-					KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, KTProjectRequest::EditNodes, doc.toString() );
+					KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, KTProjectRequest::EditNodes, doc.toString() );
 					group->restoreItem();
 					emit requested(&event);
 					
@@ -174,13 +179,14 @@ void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushMan
 void ContourSelection::itemResponse(const KTItemResponse *response)
 {
 	D_FUNCINFO;
+	KTProject *project = m_scene->scene()->project();
 	QGraphicsItem *item = 0;
 	KTScene *scene = 0;
 	KTLayer *layer = 0;
 	KTFrame *frame = 0;
-	if(m_project)
+	if(project)
 	{
-		scene = m_project->scene(response->sceneIndex());
+		scene = project->scene(response->sceneIndex());
 		if ( scene )
 		{
 			layer = scene->layer( response->layerIndex() );
@@ -209,7 +215,7 @@ void ContourSelection::itemResponse(const KTItemResponse *response)
 		{
 			if ( item && scene)
 			{
-				DNodeGroup *node = new DNodeGroup(item, scene);
+				DNodeGroup *node = new DNodeGroup(item, m_scene);
 				m_nodeGroups << node;
 			}
 		}

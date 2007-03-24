@@ -33,6 +33,12 @@
 #include <dcore/dglobal.h>
 #include <dgui/daction.h>
 
+#include <QGraphicsView>
+#include "ktinputdeviceinformation.h"
+#include "ktgraphicsscene.h"
+#include "ktprojectrequest.h"
+#include "ktbrushmanager.h"
+
 struct PolyLine::Private
 {
 	bool begin;
@@ -48,7 +54,7 @@ struct PolyLine::Private
 	QMap<QString, DAction *> actions;
 	
 	KTPathItem *item;
-	KTScene *scene;
+	KTGraphicsScene *scene;
 	
 	QGraphicsLineItem *line1, *line2;
 	
@@ -94,7 +100,7 @@ QStringList PolyLine::keys() const
 	return QStringList() << tr("PolyLine") ;
 }
 
-void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	Q_UNUSED(view);
 	
@@ -118,7 +124,7 @@ void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 	
 }
 
-void PolyLine::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void PolyLine::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	Q_UNUSED(brushManager);
 	Q_UNUSED(scene);
@@ -155,7 +161,7 @@ void PolyLine::move(const KTInputDeviceInformation *input, KTBrushManager *brush
 	
 }
 
-void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	Q_UNUSED(view);
 	Q_UNUSED(input);
@@ -191,7 +197,7 @@ void PolyLine::endItem()
 		QDomDocument doc;
 		doc.appendChild(d->item->toXml( doc ));
 		
-		KTProjectRequest request = KTRequestBuilder::createItemRequest( d->scene->index(), d->scene->currentLayerIndex(), d->scene->currentFrameIndex(), d->scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString() );
+		KTProjectRequest request = KTRequestBuilder::createItemRequest( d->scene->currentSceneIndex(), d->scene->currentLayerIndex(), d->scene->currentFrameIndex(), d->scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString() );
 		
 		emit requested(&request);
 		

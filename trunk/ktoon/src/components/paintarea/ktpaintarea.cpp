@@ -219,11 +219,11 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
 		}
 	}
 	
-// 	if ( d->tool ) // FIXME
-// 	{
-// 		d->tool->itemResponse( event );
-// 		d->tool->init(this);
-// 	}
+	//if ( d->tool ) // FIXME
+	//{
+	//	d->tool->itemResponse( event );
+	//	d->tool->init(this);
+	//}
 }
 
 void KTPaintArea::projectResponse(KTProjectResponse *)

@@ -27,7 +27,15 @@
 #include <dcore/dglobal.h>
 #include "ktscene.h"
 
+#include <QGraphicsView>
+#include "ktinputdeviceinformation.h"
+#include "ktgraphicsscene.h"
+#include "ktprojectrequest.h"
+#include "ktprojectresponse.h"
+
 #include "ktrequestbuilder.h"
+
+
 
 TextTool::TextTool()
 {
@@ -44,7 +52,7 @@ QStringList TextTool::keys() const
 	return QStringList() << tr("Text");
 }
 
-void TextTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void TextTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	QList<QGraphicsItem *> items = scene->items(input->pos());
 	
@@ -63,7 +71,7 @@ void TextTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 	m_item->setPos(input->pos());
 }
 
-void TextTool::doubleClick(const KTInputDeviceInformation *input, KTScene *scene, QGraphicsView *view )
+void TextTool::doubleClick(const KTInputDeviceInformation *input, KTGraphicsScene *scene, QGraphicsView *view )
 {
 	Q_UNUSED(input);
 	Q_UNUSED(scene);
@@ -82,11 +90,11 @@ bool TextTool::itemPressed(QGraphicsItem *item)
 	return false;
 }
 
-void TextTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void TextTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 }
 
-void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	if ( m_configurator->text().isEmpty() )
 	{
@@ -110,7 +118,7 @@ void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *br
 	QDomDocument doc;
 	doc.appendChild(m_item->toXml( doc ));
 	
-	KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString()); // Adds to end
+	KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString()); // Adds to end
 	
 	emit requested(&event);
 }

@@ -28,11 +28,11 @@
 
 #include <dgui/dcontrolnode.h>
 #include <dgui/dnodegroup.h>
-#include "ktproject.h"
 
 
 class DDControlNode;
 class KTItemResponse;
+class KTGraphicsScene;
 
 /**
  * @author Jorge Cuadrado <kuadrosx@toonka.com>
@@ -49,11 +49,9 @@ class ContourSelection : public KTToolPlugin
 		
 		virtual void init(QGraphicsView *view);
 		virtual QStringList keys() const;
-		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
-		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
-		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view);
-		
-		
+		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view);
+		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view);
+		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view);
 		
 		virtual QMap<QString, DAction *>actions() const;
 		
@@ -71,11 +69,10 @@ class ContourSelection : public KTToolPlugin
 	private:
 		void setupActions();
 		
-		
 	private:
 		QMap<QString, DAction *> m_actions;
 		QList<DNodeGroup*> m_nodeGroups; 
-		KTProject *m_project;
+		KTGraphicsScene *m_scene;
 		
 	private slots:
 		void syncNodes();

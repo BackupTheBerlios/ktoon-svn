@@ -67,12 +67,9 @@ class KTPaintAreaBase : public QGraphicsView
 		
 	protected:
 		virtual void mousePressEvent ( QMouseEvent * event  );
-		virtual void mouseDoubleClickEvent( QMouseEvent *event);
 		virtual void mouseMoveEvent ( QMouseEvent * event );
-		virtual void mouseReleaseEvent ( QMouseEvent *event );
 		virtual void tabletEvent ( QTabletEvent * event );
 		virtual void wheelEvent( QWheelEvent *event );
-		virtual void keyPressEvent(QKeyEvent *event);
 		
 		
 	signals:

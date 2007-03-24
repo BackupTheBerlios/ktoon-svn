@@ -25,7 +25,7 @@
 #include <QPoint>
 #include "ktglobal.h"
 
-class QMouseEvent;
+class QGraphicsSceneMouseEvent;
 class QTabletEvent;
 
 
@@ -38,7 +38,7 @@ class KTOON_EXPORT KTInputDeviceInformation : public QObject
 		KTInputDeviceInformation(QObject *parent = 0);
 		~KTInputDeviceInformation();
 		
-		void updateFromMouseEvent(QMouseEvent *event);
+		void updateFromMouseEvent(QGraphicsSceneMouseEvent *event);
 		void updateFromTabletEvent(QTabletEvent *event);
 		
 		double pressure() const;
@@ -47,7 +47,7 @@ class KTOON_EXPORT KTInputDeviceInformation : public QObject
 		Qt::MouseButton button() const;
 		Qt::MouseButtons buttons() const;
 		
-		QPoint pos() const;
+		QPointF pos() const;
 		Qt::KeyboardModifiers keyModifiers() const;
 		
 	private:
@@ -64,7 +64,7 @@ class KTOON_EXPORT KTInputDeviceInformation : public QObject
 			Qt::MouseButtons buttons;
 		} m_mouseInfo;
 		
-		QPoint m_position;
+		QPointF m_position;
 		Qt::KeyboardModifiers m_keyModifiers;
 };
 

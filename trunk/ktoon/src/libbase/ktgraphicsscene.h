@@ -29,6 +29,8 @@
 
 class KTFrame;
 class KTScene;
+class KTToolPlugin;
+class KTBrushManager;
 
 class KTGraphicsScene : public QGraphicsScene
 {
@@ -58,6 +60,20 @@ class KTGraphicsScene : public QGraphicsScene
 		KTScene *scene() const;
 		
 		KTFrame *currentFrame();
+		
+		void setTool(KTToolPlugin *tool);
+		KTToolPlugin *currentTool() const;
+		
+		bool isDrawing() const;
+		
+		KTBrushManager *brushManager() const;
+		
+	protected:
+		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+		virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+		virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
+		virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+		virtual void keyPressEvent(QKeyEvent *keyEvent);
 		
 	private:
 		struct Private;

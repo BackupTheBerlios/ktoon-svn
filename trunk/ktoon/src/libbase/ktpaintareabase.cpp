@@ -74,12 +74,6 @@ class GLDevice : public QGLWidget
 struct KTPaintAreaBase::Private
 {
 	QGraphicsRectItem *grid;
-	KTToolPlugin *tool;
-	
-	bool isDrawing;
-	
-	KTBrushManager *brushManager;
-	KTInputDeviceInformation *inputInformation;
 	
 	QRectF drawingRect;
 	
@@ -100,15 +94,11 @@ KTPaintAreaBase::KTPaintAreaBase(QWidget * parent) : QGraphicsView(parent), d(ne
 	d->scene = new KTGraphicsScene();
 	
 	d->grid = 0;
-	d->tool = 0;
-	d->isDrawing = false;
 	
 	d->drawGrid = false;
 	d->angle = 0;
 	
-	d->brushManager = new KTBrushManager(this);
 	d->rotator = new KTPaintAreaRotator(this, this);
-	d->inputInformation = new KTInputDeviceInformation(this);
 	
 	d->drawingRect = QRectF(QPointF(0,0), QSizeF( 500, 400 ) ); // FIXME: configurable
 	
@@ -203,16 +193,14 @@ void KTPaintAreaBase::setTool(KTToolPlugin *tool )
 {
 	if ( !scene() ) return;
 	
-	if ( d->tool )
+	if ( tool )
 	{
-		d->tool->aboutToChangeTool();
-		disconnect(d->tool,SIGNAL(requested(const KTProjectRequest *)), this, SIGNAL(requestTriggered( const KTProjectRequest* )));
+		disconnect(tool,SIGNAL(requested(const KTProjectRequest *)), this, SIGNAL(requestTriggered( const KTProjectRequest* )));
 	}
 	
-	d->tool = tool;
-	d->tool->init(this);
+	d->scene->setTool(tool);
 	
-	connect(d->tool,SIGNAL(requested(const KTProjectRequest *)), this, SIGNAL(requestTriggered( const KTProjectRequest* )));
+	connect(tool,SIGNAL(requested(const KTProjectRequest *)), this, SIGNAL(requestTriggered( const KTProjectRequest* )));
 }
 
 bool KTPaintAreaBase::drawGrid() const
@@ -224,99 +212,59 @@ void KTPaintAreaBase::mousePressEvent ( QMouseEvent * event )
 {
 	if ( !canPaint() ) return;
 	
-	QMouseEvent *eventMapped = mapToArea( event );
-	
-	d->inputInformation->updateFromMouseEvent( eventMapped );
-	
-	delete eventMapped;
-	
-	if ( event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
+	if ( event->buttons() == Qt::LeftButton && !d->scene->currentFrame()->isLocked() )
 	{
-		d->isDrawing = false;
+		QGraphicsView::mousePressEvent(event);
 	}
-	else if (d->tool )
+	else if ( event->buttons() == Qt::RightButton )
 	{
-		if ( event->buttons() == Qt::LeftButton && !d->scene->currentFrame()->isLocked() )
+		QMenu *menu = new QMenu(tr("Drawing area"));
+		
+		menu->addAction(dApp->findGlobalAction("undo"));
+		menu->addAction(dApp->findGlobalAction("redo"));
+		
+		menu->addSeparator();
+		
+		QAction *cut = menu->addAction(tr("Cut"), this, SLOT(cutItems()));
+		
+		QAction *copy = menu->addAction(tr("Copy"), this, SLOT(copyItems()));
+		
+		QAction *paste = menu->addAction(tr("Paste"), this, SLOT(pasteItems()));
+		
+		menu->addSeparator();
+		QAction *del = menu->addAction(tr("Delete"), this, SLOT(deleteItems()));
+		
+		menu->addSeparator();
+		
+		menu->addAction(tr("Add to library..."), this, SLOT(addSelectedItemsToLibrary()));
+		
+		if ( scene()->selectedItems().isEmpty() )
 		{
-			QGraphicsView::mousePressEvent(event);
-			
-			d->tool->begin();
-			d->isDrawing = true;
-			d->tool->press(d->inputInformation, d->brushManager, d->scene, this );
+			del->setEnabled(false);
+			cut->setEnabled(false);
+			copy->setEnabled(false);
 		}
-		else if ( event->buttons() == Qt::RightButton )
+		
+		if ( d->copiesXml.isEmpty() )
 		{
-			QMenu *menu = new QMenu(tr("Drawing area"));
-			
-			menu->addAction(dApp->findGlobalAction("undo"));
-			menu->addAction(dApp->findGlobalAction("redo"));
-			
-			menu->addSeparator();
-			
-			QAction *cut = menu->addAction(tr("Cut"), this, SLOT(cutItems()));
-			
-			QAction *copy = menu->addAction(tr("Copy"), this, SLOT(copyItems()));
-			
-			QAction *paste = menu->addAction(tr("Paste"), this, SLOT(pasteItems()));
-			
-			menu->addSeparator();
-			QAction *del = menu->addAction(tr("Delete"), this, SLOT(deleteItems()));
-			
-			menu->addSeparator();
-			
-			/*QAction *addToLib = */menu->addAction(tr("Add to library..."), this, SLOT(addSelectedItemsToLibrary()));
-			
-			if ( scene()->selectedItems().isEmpty() )
-			{
-				del->setEnabled(false);
-				cut->setEnabled(false);
-				copy->setEnabled(false);
-			}
-			
-			if ( d->copiesXml.isEmpty() )
-			{
-				paste->setEnabled(false);
-			}
-			
-			if ( QMenu *toolMenu = d->tool->menu() )
-			{
-				menu->addSeparator();
-				menu->addMenu(toolMenu);
-			}
-			
-			menu->exec(event->globalPos());
-			
-// 			QGraphicsView::mousePressEvent(event);
+			paste->setEnabled(false);
 		}
+		
+		if ( QMenu *toolMenu = d->scene->currentTool()->menu() )
+		{
+			menu->addSeparator();
+			menu->addMenu(toolMenu);
+		}
+		menu->exec(event->globalPos());
 	}
-}
-
-
-void KTPaintAreaBase::mouseDoubleClickEvent( QMouseEvent *event)
-{
-	QGraphicsView::mouseDoubleClickEvent(event);
-	
-	QMouseEvent *eventMapped = mapToArea( event );
-	
-	d->inputInformation->updateFromMouseEvent( eventMapped );
-	
-	if (d->tool)
-	{
-		d->tool->doubleClick( d->inputInformation,  d->scene, this );
-	}
-	
-	delete eventMapped;
 }
 
 void KTPaintAreaBase::mouseMoveEvent ( QMouseEvent * event )
 {
 	if ( !canPaint()) return;
 	
-	QMouseEvent *eventMapped = mapToArea( event );
-	
-	d->inputInformation->updateFromMouseEvent( eventMapped );
 	// Rotate
-	if(  !d->isDrawing && event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
+	if( /* !d->scene->isDrawing() FIXME? && */event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
 	{
 		setUpdatesEnabled(false);
 		
@@ -340,44 +288,17 @@ void KTPaintAreaBase::mouseMoveEvent ( QMouseEvent * event )
 		
 		setUpdatesEnabled(true);
 	}
-	else if (d->tool && d->isDrawing )
+	else
 	{
-		d->tool->move(d->inputInformation, d->brushManager,  d->scene, this );
+		QGraphicsView::mouseMoveEvent(event);
 	}
 	
 	emit cursorPosition( mapToScene( event->pos() ) );
-	
-	delete eventMapped;
-	
-	QGraphicsView::mouseMoveEvent(event);
 }
 
-void KTPaintAreaBase::mouseReleaseEvent(QMouseEvent *event)
-{
-	if ( !canPaint()) return;
-	QMouseEvent *eventMapped = mapToArea( event );
-	
-	d->inputInformation->updateFromMouseEvent( eventMapped );
-	
-	if ( d->tool && d->isDrawing )
-	{
-		d->tool->release(d->inputInformation, d->brushManager,  d->scene, this );
-		
-		
-		d->tool->end();
-	}
-	
-	delete eventMapped;
-	
-	d->isDrawing = false;
-	
-	QGraphicsView::mouseReleaseEvent(event);
-}
 
 void KTPaintAreaBase::tabletEvent ( QTabletEvent * event )
 {
-	d->inputInformation->updateFromTabletEvent( event );
-	
 	QGraphicsView::tabletEvent(event );
 }
 
@@ -464,21 +385,6 @@ void KTPaintAreaBase::wheelEvent(QWheelEvent *event)
 	}
 }
 
-void KTPaintAreaBase::keyPressEvent(QKeyEvent *event)
-{
-	if ( d->tool )
-	{
-		d->tool->keyPressEvent(event);
-		
-		if ( event->isAccepted() )
-		{
-			return;
-		}
-	}
-	
-	QGraphicsView::keyPressEvent(event);
-}
-
 void KTPaintAreaBase::scaleView(qreal scaleFactor)
 {
 	qreal factor = matrix().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();
@@ -496,9 +402,8 @@ void KTPaintAreaBase::setRotationAngle(int angle)
 
 KTBrushManager *KTPaintAreaBase::brushManager() const
 {
-	return d->brushManager;
+	return d->scene->brushManager();
 }
-
 
 QRectF KTPaintAreaBase::drawingRect() const
 {

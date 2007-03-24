@@ -23,13 +23,18 @@
 #include <QGraphicsItem>
 #include <QGraphicsView>
 #include <QStyleOptionGraphicsItem>
+#include <QGraphicsSceneMouseEvent>
+#include <QKeyEvent>
 
 #include <ktscene.h>
+
 #include "ktgraphicobject.h"
 #include "ktitemgroup.h"
 #include "ktprojectloader.h"
 #include "ktitemfactory.h"
-
+#include "kttoolplugin.h"
+#include "ktinputdeviceinformation.h"
+#include "ktbrushmanager.h"
 #include "ktframe.h"
 
 #include <dcore/ddebug.h>
@@ -38,6 +43,8 @@
 
 struct KTGraphicsScene::Private
 {
+	KTToolPlugin *tool;
+	
 	KTScene *scene;
 	struct OnionSkin
 	{
@@ -51,6 +58,10 @@ struct KTGraphicsScene::Private
 		int layer;
 		int frame;
 	} framePosition;
+	
+	bool isDrawing;
+	KTBrushManager *brushManager;
+	KTInputDeviceInformation *inputInformation;
 };
 
 KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), d(new Private)
@@ -60,6 +71,13 @@ KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), d(new Private)
 	
 	d->onionSkin.next = 0;
 	d->onionSkin.previous = 0;
+	d->tool = 0;
+	d->isDrawing = false;
+	
+	
+	d->inputInformation = new KTInputDeviceInformation(this);
+	d->brushManager = new KTBrushManager(this);
+	
 }
 
 
@@ -287,6 +305,99 @@ KTScene *KTGraphicsScene::scene() const
 	return d->scene;
 }
 
+void KTGraphicsScene::setTool(KTToolPlugin *tool)
+{
+	if(d->tool)
+	{
+		d->tool->aboutToChangeTool();
+	}
+	
+	d->tool = tool;
+	d->tool->init(this);
+}
+
+KTToolPlugin *KTGraphicsScene::currentTool() const
+{
+	return d->tool;
+}
 
 
+void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+	d->inputInformation->updateFromMouseEvent(event);
+	
+	if ( event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
+	{
+		d->isDrawing = false;
+	}
+	else if (d->tool )
+	{
+		if ( event->buttons() == Qt::LeftButton && !currentFrame()->isLocked() )
+		{
+			d->tool->begin();
+			d->isDrawing = true;
+			d->tool->press(d->inputInformation, d->brushManager, this );
+		}
+	}
+}
+
+void KTGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+	d->inputInformation->updateFromMouseEvent( event );
+	
+	if (d->tool && d->isDrawing )
+	{
+		d->tool->move(d->inputInformation, d->brushManager,  this );
+	}
+}
+
+void KTGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+	d->inputInformation->updateFromMouseEvent( event );
+	
+	if ( d->tool && d->isDrawing )
+	{
+		d->tool->release(d->inputInformation, d->brushManager, this );
+		
+		
+		d->tool->end();
+	}
+	
+	d->isDrawing = false;
+}
+
+void KTGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+	d->inputInformation->updateFromMouseEvent( event );
+	
+	if (d->tool)
+	{
+		d->tool->doubleClick( d->inputInformation, this );
+	}
+}
+
+void KTGraphicsScene::keyPressEvent(QKeyEvent *event)
+{
+	if ( d->tool )
+	{
+		d->tool->keyPressEvent(event);
+		
+		if ( event->isAccepted() )
+		{
+			return;
+		}
+	}
+	
+	QGraphicsScene::keyPressEvent(event);
+}
+
+bool KTGraphicsScene::isDrawing() const
+{
+	return d->isDrawing;
+}
+
+KTBrushManager *KTGraphicsScene::brushManager() const
+{
+	return d->brushManager;
+}
 

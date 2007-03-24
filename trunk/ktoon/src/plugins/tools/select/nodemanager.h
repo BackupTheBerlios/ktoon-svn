@@ -22,8 +22,8 @@
 
 #include <QHash>
 #include <QGraphicsItem>
+#include <QGraphicsScene>
 #include "node.h"
-#include "ktscene.h"
 
 
 /**
@@ -32,7 +32,7 @@
 class NodeManager
 {
 	public:
-		NodeManager(QGraphicsItem * parent, KTScene *scene);
+		NodeManager(QGraphicsItem * parent, QGraphicsScene *scene);
 		~NodeManager();
 		void syncNodes(const QRectF &sbr);
 		void syncNodesFromParent();
@@ -64,7 +64,7 @@ class NodeManager
 		QHash<Node::TypeNode, Node *> m_nodes;
 		QGraphicsItem * m_parent;
 		
-		KTScene *m_scene;
+		QGraphicsScene *m_scene;
 		
 		
 // 		bool m_modify;

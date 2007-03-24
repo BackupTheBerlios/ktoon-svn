@@ -40,6 +40,12 @@
 
 #include "ktscene.h"
 
+#include <QGraphicsView>
+#include "ktinputdeviceinformation.h"
+#include "ktgraphicsscene.h"
+#include "ktprojectrequest.h"
+#include "ktbrushmanager.h"
+
 FillTool::FillTool()
 {
 	setupActions();
@@ -74,7 +80,7 @@ void FillTool::setupActions()
 // 	m_actions.insert(tr("Line"), action3);
 }
 
-void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	if(input->buttons() == Qt::LeftButton)
 	{
@@ -92,7 +98,7 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 					QDomDocument doc;
 					doc.appendChild(fillItem->toXml( doc ));
 		
-					KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString()); // Adds to end
+					KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString()); // Adds to end
 	
 					emit requested(&event);
 					
@@ -103,11 +109,11 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 	}
 }
 
-void FillTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void FillTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 }
 
-void FillTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void FillTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 }
 

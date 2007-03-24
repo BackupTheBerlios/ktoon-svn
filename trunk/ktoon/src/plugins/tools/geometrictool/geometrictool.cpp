@@ -37,6 +37,11 @@
 #include "ktrequestbuilder.h"
 
 #include "ktscene.h"
+#include <QGraphicsView>
+#include "ktinputdeviceinformation.h"
+#include "ktgraphicsscene.h"
+#include "ktprojectrequest.h"
+#include "ktbrushmanager.h"
 
 GeometricTool::GeometricTool()
 {
@@ -77,7 +82,7 @@ void GeometricTool::setupActions()
 	m_actions.insert(tr("Line"), action3);
 }
 
-void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
@@ -113,7 +118,7 @@ void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager 
 	}
 }
 
-void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
@@ -175,7 +180,7 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
 	}
 }
 
-void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
@@ -184,7 +189,7 @@ void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManage
 	QDomDocument doc;
 	doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_item)->toXml( doc ));
 	
-	KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString()); // Adds to end
+	KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString()); // Adds to end
 	
 	emit requested(&event);
 }

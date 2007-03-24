@@ -32,6 +32,10 @@
 #include "ktgraphicalgorithm.h"
 #include "ktscene.h"
 
+#include <QGraphicsView>
+#include "ktinputdeviceinformation.h"
+#include "ktgraphicsscene.h"
+
 #include "nodemanager.h"
 #include "ktserializer.h"
 
@@ -69,7 +73,7 @@ QStringList Select::keys() const
 	return QStringList() << tr("Select") ;
 }
 
-void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	D_FUNCINFO;
 	Q_UNUSED(brushManager);
@@ -97,11 +101,10 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 		}
 	}
 	
-	
-	m_project = scene->project();
+	m_project = scene->scene()->project();
 }
 
-void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
@@ -116,7 +119,7 @@ void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 	}
 }
 
-void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	D_FUNCINFO;
 	Q_UNUSED(input);
@@ -165,7 +168,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 					// Restore matrix
 					manager->restoreItem();
 					
-					KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, KTProjectRequest::Transform, doc.toString() );
+					KTProjectRequest event = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), position, KTProjectRequest::Transform, doc.toString() );
 					emit requested(&event);
 					
 					

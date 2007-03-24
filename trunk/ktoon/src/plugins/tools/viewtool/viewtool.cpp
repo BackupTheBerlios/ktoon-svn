@@ -35,6 +35,10 @@
 
 #include "ktscene.h"
 
+#include <QGraphicsView>
+#include "ktinputdeviceinformation.h"
+#include "ktgraphicsscene.h"
+
 ViewTool::ViewTool() : m_rect(0), m_view(0)
 {
 	setupActions();
@@ -62,7 +66,7 @@ void ViewTool::setupActions()
 	
 }
 
-void ViewTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void ViewTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 // 	if(input->buttons() == Qt::LeftButton)
 	{
@@ -71,7 +75,7 @@ void ViewTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 	}
 }
 
-void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	m_view = view;
 	if ( currentTool() == tr("Zoom") )
@@ -87,7 +91,7 @@ void ViewTool::move(const KTInputDeviceInformation *input, KTBrushManager *brush
 	}
 }
 
-void ViewTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void ViewTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	if( currentTool() == tr("Zoom"))
 	{

@@ -44,9 +44,9 @@ KTToolPlugin::~KTToolPlugin()
 	delete d;
 }
 
-void KTToolPlugin::init(QGraphicsView *view)
+void KTToolPlugin::init(KTGraphicsScene *scene)
 {
-	Q_UNUSED(view);
+	Q_UNUSED(scene);
 }
 
 void KTToolPlugin::setCurrentTool(const QString &tool)
@@ -76,7 +76,7 @@ void KTToolPlugin::itemResponse( const KTItemResponse *event)
 }
 
 
-void KTToolPlugin::doubleClick(const KTInputDeviceInformation *, KTGraphicsScene *, QGraphicsView * )
+void KTToolPlugin::doubleClick(const KTInputDeviceInformation *, KTGraphicsScene * )
 {
 }
 

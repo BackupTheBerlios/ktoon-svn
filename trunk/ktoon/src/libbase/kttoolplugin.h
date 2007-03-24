@@ -48,12 +48,12 @@ class KTOON_EXPORT KTToolPlugin : public QObject, public KTToolInterface
 		void setCurrentTool(const QString &tool);
 		QString currentTool() const;
 		
-		virtual void init(QGraphicsView *view);
+		virtual void init(KTGraphicsScene *scene);
 		
-		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view ) = 0;
-		virtual void doubleClick(const KTInputDeviceInformation *input, KTGraphicsScene *scene, QGraphicsView *view );
-		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view) = 0;
-		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view) = 0;
+		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene ) = 0;
+		virtual void doubleClick(const KTInputDeviceInformation *input, KTGraphicsScene *scene );
+		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene) = 0;
+		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene) = 0;
 		
 		virtual QMap<QString, DAction *> actions() const = 0;
 		

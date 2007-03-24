@@ -91,9 +91,6 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
 	m_configurationArea = new KTConfigurationArea;
 	addDockWidget(Qt::RightDockWidgetArea, m_configurationArea);
 	
-	
-	
-
 	createToolBar();
 	createTools();
 	
