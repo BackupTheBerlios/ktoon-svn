@@ -42,11 +42,11 @@ class EraserTool : public KTToolPlugin
 		
 		virtual QStringList keys() const;
 		
-		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view);
-		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view);
-		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view);
+		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
 		
-		void itemPressed(QGraphicsItem *item, const KTBrushManager *brush, const QPoint &pos);
+		void itemPressed(QGraphicsItem *item, const KTBrushManager *brush, const QPointF &pos);
 		
 		virtual QMap<QString, DAction *> actions() const;
 		

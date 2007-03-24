@@ -52,8 +52,11 @@ QStringList TextTool::keys() const
 	return QStringList() << tr("Text");
 }
 
-void TextTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void TextTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+	Q_UNUSED(brushManager);
+	
+	
 	QList<QGraphicsItem *> items = scene->items(input->pos());
 	
 	if ( items.count() > 0 )
@@ -71,11 +74,10 @@ void TextTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 	m_item->setPos(input->pos());
 }
 
-void TextTool::doubleClick(const KTInputDeviceInformation *input, KTGraphicsScene *scene, QGraphicsView *view )
+void TextTool::doubleClick(const KTInputDeviceInformation *input, KTGraphicsScene *scene)
 {
 	Q_UNUSED(input);
 	Q_UNUSED(scene);
-	Q_UNUSED(view);
 }
 
 bool TextTool::itemPressed(QGraphicsItem *item)
@@ -90,12 +92,19 @@ bool TextTool::itemPressed(QGraphicsItem *item)
 	return false;
 }
 
-void TextTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void TextTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+	Q_UNUSED(input);
+	Q_UNUSED(scene);
+	Q_UNUSED(scene);
+	Q_UNUSED(brushManager);
 }
 
-void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void TextTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+	Q_UNUSED(input);
+	Q_UNUSED(brushManager);
+	
 	if ( m_configurator->text().isEmpty() )
 	{
 		delete m_item;

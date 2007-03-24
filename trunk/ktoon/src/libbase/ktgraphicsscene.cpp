@@ -324,6 +324,8 @@ KTToolPlugin *KTGraphicsScene::currentTool() const
 
 void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+	QGraphicsScene::mousePressEvent(event);
+	
 	d->inputInformation->updateFromMouseEvent(event);
 	
 	if ( event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
@@ -343,6 +345,8 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 
 void KTGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
+	QGraphicsScene::mouseMoveEvent(event);
+	
 	d->inputInformation->updateFromMouseEvent( event );
 	
 	if (d->tool && d->isDrawing )
@@ -353,12 +357,13 @@ void KTGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 
 void KTGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
+	QGraphicsScene::mouseReleaseEvent(event);
+	
 	d->inputInformation->updateFromMouseEvent( event );
 	
 	if ( d->tool && d->isDrawing )
 	{
 		d->tool->release(d->inputInformation, d->brushManager, this );
-		
 		
 		d->tool->end();
 	}
@@ -368,6 +373,8 @@ void KTGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void KTGraphicsScene::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
+	QGraphicsScene::mouseDoubleClickEvent(event);
+	
 	d->inputInformation->updateFromMouseEvent( event );
 	
 	if (d->tool)

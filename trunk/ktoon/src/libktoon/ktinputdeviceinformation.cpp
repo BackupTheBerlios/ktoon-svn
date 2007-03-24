@@ -44,7 +44,7 @@ void KTInputDeviceInformation::updateFromMouseEvent(QGraphicsSceneMouseEvent *ev
 	m_mouseInfo.button = event->button();
 	m_mouseInfo.buttons = event->buttons();
 	
-	m_position = event->pos();
+	m_position = event->scenePos();
 	
 	m_keyModifiers = event->modifiers();
 	

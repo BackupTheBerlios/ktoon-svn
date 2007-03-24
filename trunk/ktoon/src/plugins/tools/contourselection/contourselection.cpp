@@ -63,16 +63,19 @@ ContourSelection::~ContourSelection()
 	
 }
 
-void ContourSelection::init(QGraphicsView *view)
+void ContourSelection::init(KTGraphicsScene *scene)
 {
 // 	m_view = view;
-	view->setDragMode (QGraphicsView::RubberBandDrag);
-	
-	foreach(QGraphicsItem *item, view->scene()->items() )
+	foreach(QGraphicsView * view, scene->views())
 	{
-		if(!qgraphicsitem_cast<DControlNode *>(item))
+		view->setDragMode (QGraphicsView::RubberBandDrag);
+		
+		foreach(QGraphicsItem *item, view->scene()->items() )
 		{
-			item->setFlags (QGraphicsItem::ItemIsSelectable /*| QGraphicsItem::ItemIsMovable*/ );
+			if(!qgraphicsitem_cast<DControlNode *>(item))
+			{
+				item->setFlags (QGraphicsItem::ItemIsSelectable /*| QGraphicsItem::ItemIsMovable*/ );
+			}
 		}
 	}
 }
@@ -82,31 +85,25 @@ QStringList ContourSelection::keys() const
 	return QStringList() << tr("ContourSelection") ;
 }
 
-void ContourSelection::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void ContourSelection::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
-	Q_UNUSED(view);
 	
 	m_scene = scene;
 }
 
-void ContourSelection::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void ContourSelection::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
 	Q_UNUSED(scene);
-	Q_UNUSED(view);
-	static int s = 0;
-	s++;
-	
 }
 
-void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void ContourSelection::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
-	Q_UNUSED(view);
 	
 	if(scene->selectedItems().count() > 0)
 	{

@@ -66,9 +66,9 @@ class KTPaintAreaBase : public QGraphicsView
 		virtual void restoreState();
 		
 	protected:
-		virtual void mousePressEvent ( QMouseEvent * event  );
-		virtual void mouseMoveEvent ( QMouseEvent * event );
-		virtual void tabletEvent ( QTabletEvent * event );
+		virtual void mousePressEvent( QMouseEvent * event  );
+		virtual void mouseMoveEvent( QMouseEvent * event );
+		virtual void tabletEvent( QTabletEvent * event );
 		virtual void wheelEvent( QWheelEvent *event );
 		
 		

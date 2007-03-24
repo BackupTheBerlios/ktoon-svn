@@ -44,12 +44,12 @@ class Brush : public KTToolPlugin
 		Brush();
 		virtual ~Brush();
 		
-		virtual void init(QGraphicsView *view);
+		virtual void init(KTGraphicsScene *scene);
 		
 		virtual QStringList keys() const;
-		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view);
-		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view);
-		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view);
+		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
+		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene);
 		
 		virtual QMap<QString, DAction *>actions() const;
 		
@@ -66,8 +66,8 @@ class Brush : public KTToolPlugin
 		
 		
 	private:
-		QPoint m_firstPoint;
-		QPoint m_oldPos;
+		QPointF m_firstPoint;
+		QPointF m_oldPos;
 		QPainterPath m_path;
 		ExactnessConfigurator * m_configurator;
 		

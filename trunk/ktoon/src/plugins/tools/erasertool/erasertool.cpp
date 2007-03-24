@@ -79,11 +79,11 @@ void EraserTool::setupActions()
 // 	m_actions.insert(tr("Line"), action3);
 }
 
-void EraserTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void EraserTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
 	if(input->buttons() == Qt::LeftButton)
 	{
-		QPoint pos = input->pos();
+		QPointF pos = input->pos();
 		
 		if ( currentTool() == tr("Eraser") )
 		{
@@ -98,11 +98,11 @@ void EraserTool::press(const KTInputDeviceInformation *input, KTBrushManager *br
 	}
 }
 
-void EraserTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void EraserTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
 }
 
-void EraserTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void EraserTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
 }
 
@@ -126,7 +126,7 @@ void EraserTool::aboutToChangeTool()
 	
 }
 
-void EraserTool::itemPressed(QGraphicsItem *item, const KTBrushManager *brush, const QPoint &pos)
+void EraserTool::itemPressed(QGraphicsItem *item, const KTBrushManager *brush, const QPointF &pos)
 {
 	QList<QGraphicsItem *> collides = item->collidingItems();
 	

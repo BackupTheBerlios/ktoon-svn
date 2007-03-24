@@ -264,10 +264,9 @@ void KTPaintAreaBase::mouseMoveEvent ( QMouseEvent * event )
 	if ( !canPaint()) return;
 	
 	// Rotate
-	if( /* !d->scene->isDrawing() FIXME? && */event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
+	if( !d->scene->isDrawing() && event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
 	{
 		setUpdatesEnabled(false);
-		
 		
 		setDragMode (QGraphicsView::NoDrag);
 		
@@ -297,7 +296,7 @@ void KTPaintAreaBase::mouseMoveEvent ( QMouseEvent * event )
 }
 
 
-void KTPaintAreaBase::tabletEvent ( QTabletEvent * event )
+void KTPaintAreaBase::tabletEvent( QTabletEvent * event )
 {
 	QGraphicsView::tabletEvent(event );
 }

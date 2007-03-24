@@ -57,9 +57,12 @@ QStringList GeometricTool::keys() const
 	return QStringList() << tr("Rectangle") << tr("Ellipse") << tr("Line");
 }
 
-void GeometricTool::init(QGraphicsView *view)
+void GeometricTool::init(KTGraphicsScene *scene)
 {
-	view->setDragMode (QGraphicsView::NoDrag);
+	foreach(QGraphicsView * view, scene->views())
+	{
+		view->setDragMode (QGraphicsView::NoDrag);
+	}
 }
 
 void GeometricTool::setupActions()
@@ -82,14 +85,14 @@ void GeometricTool::setupActions()
 	m_actions.insert(tr("Line"), action3);
 }
 
-void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
-	Q_UNUSED(view);
+	
 	if(input->buttons() == Qt::LeftButton)
 	{
-		QPoint pos = input->pos();
+		QPointF pos = input->pos();
 		
 		if ( currentTool() == tr("Rectangle") )
 		{
@@ -118,11 +121,12 @@ void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager 
 	}
 }
 
-void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
-	Q_UNUSED(view);
+	
+	
 	if (currentTool() == tr("Rectangle") )
 	{
 		m_rect = static_cast<KTRectItem *>(m_item)->rect();
@@ -180,11 +184,10 @@ void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *
 	}
 }
 
-void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void GeometricTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
-	Q_UNUSED(view);
 	Q_UNUSED(input);
 	QDomDocument doc;
 	doc.appendChild(dynamic_cast<KTAbstractSerializable *>(m_item)->toXml( doc ));

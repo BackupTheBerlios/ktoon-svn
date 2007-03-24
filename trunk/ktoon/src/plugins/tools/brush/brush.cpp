@@ -50,21 +50,27 @@ Brush::Brush() : m_configurator(0), m_item(0)
 
 Brush::~Brush()
 {
-	delete m_configurator;
-	m_configurator = 0;
+	if( m_configurator )
+	{
+		delete m_configurator;
+		m_configurator = 0;
+	}
 }
 
-void Brush::init(QGraphicsView *view)
+void Brush::init(KTGraphicsScene *scene)
 {
-	view->setDragMode ( QGraphicsView::NoDrag );
-	
-	Q_CHECK_PTR(view->scene());
-	if ( QGraphicsScene *scene = qobject_cast<QGraphicsScene *>(view->scene()) )
+	foreach(QGraphicsView * view, scene->views())
 	{
-		foreach(QGraphicsItem *item, scene->items() )
+		view->setDragMode ( QGraphicsView::NoDrag );
+		
+		Q_CHECK_PTR(view->scene());
+		if ( QGraphicsScene *scene = qobject_cast<QGraphicsScene *>(view->scene()) )
 		{
-			item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-			item->setFlag(QGraphicsItem::ItemIsMovable, false);
+			foreach(QGraphicsItem *item, scene->items() )
+			{
+				item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+				item->setFlag(QGraphicsItem::ItemIsMovable, false);
+			}
 		}
 	}
 }
@@ -74,13 +80,12 @@ QStringList Brush::keys() const
 	return QStringList() << tr("Pencil") ;
 }
 
-void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
 	// TODO: seria interesante que si el item presionado es un pixmap tratar de seguir un patron!
 	
-	Q_UNUSED(view);
-	
 	m_firstPoint = input->pos();
+	
 	m_path = QPainterPath();
 	m_path.moveTo(m_firstPoint);
 	
@@ -92,12 +97,16 @@ void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 	
 	scene->addItem( m_item );
 // 	move(event, brushManager, scene, view);
-	
 }
 
-void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-	view->setDragMode (QGraphicsView::NoDrag);
+	Q_UNUSED(brushManager);
+	foreach(QGraphicsView * view, scene->views())
+	{
+		view->setDragMode (QGraphicsView::NoDrag);
+	}
+	
 	QPainterPath path;
 	path.setFillRule ( Qt::WindingFill );
 	
@@ -119,10 +128,9 @@ void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushMan
 	m_oldPos = input->pos();
 }
 
-void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
 	Q_UNUSED(scene);
-	Q_UNUSED(view);
 	
 	double smoothness = m_configurator->exactness();
 	

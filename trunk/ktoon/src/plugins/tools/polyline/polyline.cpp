@@ -66,11 +66,13 @@ PolyLine::PolyLine(): d(new Private)
 	d->begin = false;
 	d->nodegroup = 0;
 	d->node = 0;
-	d->item =0;
+	d->item = 0;
+	
 	d->line1 = new QGraphicsLineItem(0,0,0,0);
 	d->line1->setPen ( QPen(Qt::red) );
 	d->line2 = new QGraphicsLineItem(0,0,0,0);
 	d->line2->setPen ( QPen(Qt::green) );
+	
 	setupActions();
 }
 
@@ -78,20 +80,23 @@ PolyLine::~PolyLine()
 {
 }
 
-void PolyLine::init(QGraphicsView *view)
+void PolyLine::init(KTGraphicsScene *scene)
 {
-	view->setDragMode ( QGraphicsView::NoDrag );
-	
-	Q_CHECK_PTR(view->scene());
-	if ( QGraphicsScene *scene = qobject_cast<QGraphicsScene *>(view->scene()) )
+	foreach(QGraphicsView *view,  scene->views() )
 	{
-		foreach(QGraphicsItem *item, scene->items() )
+		view->setDragMode ( QGraphicsView::NoDrag );
+		
+		Q_CHECK_PTR(view->scene());
+		if ( QGraphicsScene *sscene = qobject_cast<QGraphicsScene *>(view->scene()) )
 		{
-			item->setFlag(QGraphicsItem::ItemIsSelectable, false);
-			item->setFlag(QGraphicsItem::ItemIsMovable, false);
+			foreach(QGraphicsItem *item, scene->items() )
+			{
+				item->setFlag(QGraphicsItem::ItemIsSelectable, false);
+				item->setFlag(QGraphicsItem::ItemIsMovable, false);
+			}
+			sscene->addItem( d->line1 );
+			sscene->addItem( d->line2 );
 		}
-		scene->addItem( d->line1 );
-		scene->addItem( d->line2 );
 	}
 }
 
@@ -100,10 +105,9 @@ QStringList PolyLine::keys() const
 	return QStringList() << tr("PolyLine") ;
 }
 
-void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-	Q_UNUSED(view);
-	
+	D_FUNCINFOX("tools");
 	if(!d->item)
 	{
 		d->path = QPainterPath();
@@ -120,15 +124,17 @@ void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 	
 	d->center = input->pos();
 	d->item->setPen( brushManager->pen() );
-	
-	
 }
 
-void PolyLine::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void PolyLine::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+	D_FUNCINFOX("tools");
 	Q_UNUSED(brushManager);
 	Q_UNUSED(scene);
-	view->setDragMode (QGraphicsView::NoDrag);
+	foreach(QGraphicsView *view,  scene->views() )
+	{
+		view->setDragMode (QGraphicsView::NoDrag);
+	}
 	
 	d->mirror = d->center - ( input->pos() - d->center);
 	if(d->begin)
@@ -151,19 +157,16 @@ void PolyLine::move(const KTInputDeviceInformation *input, KTBrushManager *brush
 			}
 		}
 	}
+	
+	Q_CHECK_PTR(d->item);
 	d->item->setPath(d->path);
-	
-	
 	
 	d->line1->setLine(QLineF(d->mirror, d->center));
 	d->line2->setLine(QLineF(d->rigth, d->center));
-	
-	
 }
 
-void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void PolyLine::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-	Q_UNUSED(view);
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
 	

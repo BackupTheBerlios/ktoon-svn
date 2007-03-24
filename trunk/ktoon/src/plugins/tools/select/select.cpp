@@ -56,14 +56,17 @@ Select::~Select()
 	
 }
 
-void Select::init(QGraphicsView *view)
+void Select::init(KTGraphicsScene *scene)
 {
-	view->setDragMode (QGraphicsView::RubberBandDrag);
-	foreach(QGraphicsItem *item, view->scene()->items() )
+	foreach(QGraphicsView * view, scene->views())
 	{
-		if(!qgraphicsitem_cast<Node *>(item))
+		view->setDragMode (QGraphicsView::RubberBandDrag);
+		foreach(QGraphicsItem *item, view->scene()->items() )
 		{
-			item->setFlags (QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable );
+			if(!qgraphicsitem_cast<Node *>(item))
+			{
+				item->setFlags (QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable );
+			}
 		}
 	}
 }
@@ -73,17 +76,17 @@ QStringList Select::keys() const
 	return QStringList() << tr("Select") ;
 }
 
-void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-	D_FUNCINFO;
+	D_FUNCINFOX("tools");
 	Q_UNUSED(brushManager);
 	Q_UNUSED(scene);
-	Q_UNUSED(view);
 	
-	view->setDragMode (QGraphicsView::RubberBandDrag);
+	foreach(QGraphicsView * view, scene->views())
+	{
+		view->setDragMode (QGraphicsView::RubberBandDrag);
+	}
 	
-	
-// 	SHOW_VAR(input->pos());
 	if ( input->keyModifiers() != Qt::ControlModifier )
 	{
 		foreach(NodeManager *nodeManager, m_nodeManagers)
@@ -104,12 +107,11 @@ void Select::press(const KTInputDeviceInformation *input, KTBrushManager *brushM
 	m_project = scene->scene()->project();
 }
 
-void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
 	Q_UNUSED(scene);
-	Q_UNUSED(view);
 	
 	static int s = 0;
 	s++;
@@ -119,12 +121,12 @@ void Select::move(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 	}
 }
 
-void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
-	D_FUNCINFO;
+	D_FUNCINFOX("tools") << scene->selectedItems().count();
+	
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
-	Q_UNUSED(view);
 	
 	if(scene->selectedItems().count() > 0)
 	{
@@ -134,7 +136,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 		while(it != itEnd)
 		{
 			int parentIndex = scene->selectedItems().indexOf((*it)->parentItem() );
-// 			(*it)->beginToEdit();
+			
 			if(parentIndex != -1 )
 			{
 				selecteds.removeAt(parentIndex);
@@ -145,6 +147,7 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 			}
 			++it;
 		}
+		
 		foreach(QGraphicsItem *item, selecteds)
 		{
 			if(item && dynamic_cast<KTAbstractSerializable* > (item) )
@@ -158,7 +161,6 @@ void Select::release(const KTInputDeviceInformation *input, KTBrushManager *brus
 		{
 			if(manager->isModified())
 			{
-				
 				QDomDocument doc;
 				doc.appendChild(KTSerializer::properties( manager->parentItem(), doc ));
 				
@@ -259,7 +261,6 @@ void Select::itemResponse(const KTItemResponse *event)
 	
 	switch(event->action())
 	{
-		
 		case KTProjectRequest::Transform:
 		{
 			if ( item )
@@ -281,11 +282,12 @@ void Select::itemResponse(const KTItemResponse *event)
 
 void Select::syncNodes()
 {
+	D_FUNCINFOX("tools");
+	
 	foreach(NodeManager* node, m_nodeManagers)
 	{
 		if(node)
 		{
-			
 			node->show();
 			if(node->parentItem())
 			{

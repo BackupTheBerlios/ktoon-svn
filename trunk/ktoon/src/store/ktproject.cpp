@@ -189,11 +189,6 @@ bool KTProject::removeScene(int position)
 	{
 		d->scenes.removeAt(position);
 		
-// 		foreach(QGraphicsView *view, toRemove->views() ) // FIXME?
-// 		{
-// 			view->setScene(0);
-// 		}
-		
 		delete toRemove;
 		toRemove = 0;
 		

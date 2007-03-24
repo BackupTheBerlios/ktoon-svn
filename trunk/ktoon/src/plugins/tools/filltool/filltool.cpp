@@ -80,11 +80,11 @@ void FillTool::setupActions()
 // 	m_actions.insert(tr("Line"), action3);
 }
 
-void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
 	if(input->buttons() == Qt::LeftButton)
 	{
-		QPoint pos = input->pos();
+		QPointF pos = input->pos();
 		
 		if ( currentTool() == tr("Fill") )
 		{
@@ -109,11 +109,12 @@ void FillTool::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 	}
 }
 
-void FillTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void FillTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+	
 }
 
-void FillTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
+void FillTool::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
 }
 
