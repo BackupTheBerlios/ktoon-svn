@@ -18,74 +18,50 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "kttoolplugin.h"
+#ifndef KTGRAPHICSSCENE_H
+#define KTGRAPHICSSCENE_H
 
-#include <QGraphicsView>
+#include <QGraphicsScene>
 
-#include "ktbrushmanager.h"
-#include "ktinputdeviceinformation.h"
-#include "ktprojectresponse.h"
-#include "ktgraphicsscene.h"
+/**
+ * @author David Cuadrado \<krawek@gmail.com\>
+*/
 
-#include <dcore/ddebug.h>
+class KTFrame;
+class KTScene;
 
-struct KTToolPlugin::Private
+class KTGraphicsScene : public QGraphicsScene
 {
-	QString currentTool;
+	public:
+		KTGraphicsScene();
+		~KTGraphicsScene();
+		
+		void setCurrentFrame(int layer, int frame);
+		
+		void setCurrentScene(KTScene *scene);
+		void drawCurrentPhotogram();
+		
+		void drawItems(QPainter *painter, int numItems, QGraphicsItem *items[], const QStyleOptionGraphicsItem options[], QWidget *widget);
+		
+		void drawPhotogram(int photogram);
+		void addFrame(KTFrame *frame, double opacity = 1.0);
+		void clean();
+		int currentFrameIndex() const;
+		int currentLayerIndex() const;
+		int currentSceneIndex() const;
+		
+		void setNextOnionSkinCount(int n);
+		void setPreviousOnionSkinCount(int n);
+		
+		void setLayerVisible(int layerIndex, bool visible);
+		
+		KTScene *scene() const;
+		
+		KTFrame *currentFrame();
+		
+	private:
+		struct Private;
+		Private *const d;
 };
 
-KTToolPlugin::KTToolPlugin(QObject * parent) : QObject(parent), d(new Private)
-{
-}
-
-
-KTToolPlugin::~KTToolPlugin()
-{
-	delete d;
-}
-
-void KTToolPlugin::init(QGraphicsView *view)
-{
-	Q_UNUSED(view);
-}
-
-void KTToolPlugin::setCurrentTool(const QString &tool)
-{
-	d->currentTool = tool;
-}
-
-QString KTToolPlugin::currentTool() const
-{
-	return d->currentTool;
-}
-
-void KTToolPlugin::begin()
-{
-	dDebug("tools") << "Begin: " << d->currentTool;
-	
-}
-
-void KTToolPlugin::end()
-{
-	dDebug("tools") << "End: " << d->currentTool;
-}
-
-void KTToolPlugin::itemResponse( const KTItemResponse *event)
-{
-	Q_UNUSED(event);
-}
-
-
-void KTToolPlugin::doubleClick(const KTInputDeviceInformation *, KTGraphicsScene *, QGraphicsView * )
-{
-}
-
-void KTToolPlugin::keyPressEvent(QKeyEvent *event)
-{
-	Q_UNUSED(event);
-}
-
-QMenu *KTToolPlugin::menu() const
-{
-	return 0;
-}
+#endif

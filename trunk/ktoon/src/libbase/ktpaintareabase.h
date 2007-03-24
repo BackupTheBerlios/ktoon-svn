@@ -59,6 +59,7 @@ class KTPaintAreaBase : public QGraphicsView
 		KTBrushManager *brushManager() const;
 		
 		QRectF drawingRect() const;
+		KTGraphicsScene *graphicsScene() const;
 		
 	private:
 		virtual void saveState();

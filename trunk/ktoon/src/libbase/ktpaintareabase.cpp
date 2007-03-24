@@ -38,6 +38,7 @@
 #include "kttextitem.h"
 #include "ktpaintarearotator.h"
 #include "ktscene.h"
+#include "ktgraphicsscene.h"
 
 #include <dcore/dconfig.h>
 #include <dcore/ddebug.h>
@@ -70,7 +71,6 @@ class GLDevice : public QGLWidget
 
 #endif
 
-
 struct KTPaintAreaBase::Private
 {
 	QGraphicsRectItem *grid;
@@ -89,12 +89,16 @@ struct KTPaintAreaBase::Private
 	KTPaintAreaRotator *rotator;
 	
 	QStringList copiesXml;
+	
+	KTGraphicsScene *scene;
 };
 
 
 
 KTPaintAreaBase::KTPaintAreaBase(QWidget * parent) : QGraphicsView(parent), d(new Private)
 {
+	d->scene = new KTGraphicsScene();
+	
 	d->grid = 0;
 	d->tool = 0;
 	d->isDrawing = false;
@@ -108,7 +112,8 @@ KTPaintAreaBase::KTPaintAreaBase(QWidget * parent) : QGraphicsView(parent), d(ne
 	
 	d->drawingRect = QRectF(QPointF(0,0), QSizeF( 500, 400 ) ); // FIXME: configurable
 	
-	setScene(0);
+	d->scene->setSceneRect(d->drawingRect);
+	setScene(d->scene);
 	
 	centerDrawingArea();
 	
@@ -231,15 +236,13 @@ void KTPaintAreaBase::mousePressEvent ( QMouseEvent * event )
 	}
 	else if (d->tool )
 	{
-		KTScene *sscene = qobject_cast<KTScene *>(scene());
-		
-		if ( event->buttons() == Qt::LeftButton && !sscene->currentFrame()->isLocked() )
+		if ( event->buttons() == Qt::LeftButton && !d->scene->currentFrame()->isLocked() )
 		{
 			QGraphicsView::mousePressEvent(event);
 			
 			d->tool->begin();
 			d->isDrawing = true;
-			d->tool->press(d->inputInformation, d->brushManager, sscene, this );
+			d->tool->press(d->inputInformation, d->brushManager, d->scene, this );
 		}
 		else if ( event->buttons() == Qt::RightButton )
 		{
@@ -299,7 +302,7 @@ void KTPaintAreaBase::mouseDoubleClickEvent( QMouseEvent *event)
 	
 	if (d->tool)
 	{
-		d->tool->doubleClick( d->inputInformation,  qobject_cast<KTScene *>(scene()), this );
+		d->tool->doubleClick( d->inputInformation,  d->scene, this );
 	}
 	
 	delete eventMapped;
@@ -339,7 +342,7 @@ void KTPaintAreaBase::mouseMoveEvent ( QMouseEvent * event )
 	}
 	else if (d->tool && d->isDrawing )
 	{
-		d->tool->move(d->inputInformation, d->brushManager,  qobject_cast<KTScene *>(scene()), this );
+		d->tool->move(d->inputInformation, d->brushManager,  d->scene, this );
 	}
 	
 	emit cursorPosition( mapToScene( event->pos() ) );
@@ -358,8 +361,7 @@ void KTPaintAreaBase::mouseReleaseEvent(QMouseEvent *event)
 	
 	if ( d->tool && d->isDrawing )
 	{
-		KTScene *currentScene = qobject_cast<KTScene *>(scene());
-		d->tool->release(d->inputInformation, d->brushManager,  currentScene, this );
+		d->tool->release(d->inputInformation, d->brushManager,  d->scene, this );
 		
 		
 		d->tool->end();
@@ -425,20 +427,17 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
 
 void KTPaintAreaBase::drawForeground( QPainter *painter, const QRectF &rect )
 {
-	if ( KTScene *sscene = qobject_cast<KTScene *>(scene()) )
+	if ( KTFrame *frame = d->scene->currentFrame() )
 	{
-		if ( KTFrame *frame = sscene->currentFrame() )
+		if ( frame->isLocked() )
 		{
-			if ( frame->isLocked() )
-			{
-				painter->fillRect(rect, QColor(201,201,201, 200));
-				
-				painter->setFont(QFont("Arial", 30) );
-				QFontMetricsF fm(painter->font());
-				QString text = tr("Locked");
-				
-				painter->drawText(QPointF(sscene->sceneRect().topRight().x() - fm.width(text), (sscene->sceneRect().topRight().y() + fm.height()) / 2), text);
-			}
+			painter->fillRect(rect, QColor(201,201,201, 200));
+			
+			painter->setFont(QFont("Arial", 30) );
+			QFontMetricsF fm(painter->font());
+			QString text = tr("Locked");
+			
+			painter->drawText(QPointF(d->scene->sceneRect().topRight().x() - fm.width(text), (d->scene->sceneRect().topRight().y() + fm.height()) / 2), text);
 		}
 	}
 }
@@ -506,4 +505,8 @@ QRectF KTPaintAreaBase::drawingRect() const
 	return d->drawingRect;
 }
 
+KTGraphicsScene *KTPaintAreaBase::graphicsScene() const
+{
+	return d->scene;
+}
 

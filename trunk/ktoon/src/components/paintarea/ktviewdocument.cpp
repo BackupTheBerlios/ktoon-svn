@@ -40,6 +40,7 @@
 #include "ktpaintareaevent.h"
 #include "ktpaintareacommand.h"
 
+#include "ktbrushmanager.h"
 
 #include "ktproject.h"
 

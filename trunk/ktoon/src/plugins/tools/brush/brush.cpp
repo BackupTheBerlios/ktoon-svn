@@ -27,11 +27,14 @@
 #include <QPainterPath>
 #include <QMatrix>
 #include <QGraphicsLineItem>
+#include <QGraphicsView>
 
-
+#include "ktinputdeviceinformation.h"
+#include "ktbrushmanager.h"
 #include "ktgraphicalgorithm.h"
-#include "ktscene.h"
+#include "ktgraphicsscene.h"
 #include "ktrequestbuilder.h"
+#include "ktprojectrequest.h"
 
 #include <dgui/daction.h>
 #include <dcore/dalgorithm.h>
@@ -71,7 +74,7 @@ QStringList Brush::keys() const
 	return QStringList() << tr("Pencil") ;
 }
 
-void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	// TODO: seria interesante que si el item presionado es un pixmap tratar de seguir un patron!
 	
@@ -86,12 +89,13 @@ void Brush::press(const KTInputDeviceInformation *input, KTBrushManager *brushMa
 	m_item = new KTPathItem();
 	
 	m_item->setPen( brushManager->pen() );
+	
 	scene->addItem( m_item );
 // 	move(event, brushManager, scene, view);
 	
 }
 
-void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	view->setDragMode (QGraphicsView::NoDrag);
 	QPainterPath path;
@@ -115,7 +119,7 @@ void Brush::move(const KTInputDeviceInformation *input, KTBrushManager *brushMan
 	m_oldPos = input->pos();
 }
 
-void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view)
+void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view)
 {
 	Q_UNUSED(scene);
 	Q_UNUSED(view);
@@ -141,7 +145,7 @@ void Brush::release(const KTInputDeviceInformation *input, KTBrushManager *brush
 	QDomDocument doc;
 	doc.appendChild(m_item->toXml( doc ));
 	
-	KTProjectRequest request = KTRequestBuilder::createItemRequest( scene->index(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString() );
+	KTProjectRequest request = KTRequestBuilder::createItemRequest( scene->currentSceneIndex(), scene->currentLayerIndex(), scene->currentFrameIndex(), scene->currentFrame()->graphics().count(), KTProjectRequest::Add, doc.toString() );
 	
 	emit requested(&request);
 }

@@ -42,6 +42,7 @@
 #include "ktpaintareaevent.h"
 #include "ktpaintarearotator.h"
 #include "ktimagedevice.h"
+#include "ktgraphicsscene.h"
 
 #include "dcore/dconfig.h"
 #include "dgui/dapplication.h"
@@ -70,14 +71,13 @@ struct KTPaintArea::Private
 
 KTPaintArea::KTPaintArea(KTProject *project, QWidget * parent) : KTPaintAreaBase(parent), d(new Private)
 {
-
 	d->project = project;
 	d->currentSceneIndex = 0;
 	
 	setCurrentScene( 0 );
 	if ( scene() )
 	{
-		qobject_cast<KTScene *>(scene())->setCurrentFrame( 0, 0 );
+		graphicsScene()->setCurrentFrame( 0, 0 );
 	}
 }
 
@@ -92,39 +92,16 @@ void KTPaintArea::setCurrentScene(int index)
 	if ( sscene )
 	{
 		d->currentSceneIndex = index;
-		
-		sscene->clean();
-		
-		sscene->setItemIndexMethod(QGraphicsScene::NoIndex);
-		setScene(sscene);
-		
-		setBackgroundBrush(Qt::gray);
-		
-		sscene->setSceneRect( drawingRect() );
-		
-		if ( KTScene *prev = dynamic_cast<KTScene *>(scene()) )
-		{
-			sscene->setCurrentFrame( prev->currentFrameIndex(), prev->currentLayerIndex());
-		}
-		else
-		{
-			if ( sscene->layers().count() > 0 )
-			{
-				sscene->setCurrentFrame(0, 0);
-			}
-		}
+		graphicsScene()->setCurrentScene(sscene);
 		
 // 		if ( d->tool ) // FIXME
 // 		{
 // 			d->tool->init( this );
 // 		}
-		
-		sscene->drawCurrentPhotogram();
 	}
 	else
 	{
 		setDragMode(QGraphicsView::NoDrag);
-		setScene(0);
 	}
 }
 
@@ -138,7 +115,7 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 			
 			if ( !scene() ) return;
 			
-			KTScene *sscene = dynamic_cast<KTScene *>(scene());
+			KTGraphicsScene *sscene = graphicsScene();
 			
 			sscene->setCurrentFrame(event->layerIndex(), event->frameIndex());
 			sscene->drawPhotogram(event->frameIndex());
@@ -153,7 +130,7 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 		break;
 		case KTProjectRequest::Lock:
 		{
-			KTScene *sscene = dynamic_cast<KTScene *>(scene());
+			KTGraphicsScene *sscene = graphicsScene();
 			
 			if ( sscene->currentFrameIndex() == event->frameIndex() )
 			{
@@ -177,15 +154,15 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
 {
 	if ( !scene() ) return;
 	
-	KTScene *sscene = dynamic_cast<KTScene *>(scene());
+	KTGraphicsScene *sscene = graphicsScene();
 	if( event->action() == KTProjectRequest::View)
 	{
-		sscene->layers()[event->layerIndex()]->setVisible(event->arg().toBool());
+		sscene->setLayerVisible(event->layerIndex(), event->arg().toBool());
 	}
 	
 	if ( event->action() != KTProjectRequest::Add ||  event->action() != KTProjectRequest::Remove )
 	{
-		qobject_cast<KTScene *>(scene())->drawCurrentPhotogram();
+		graphicsScene()->drawCurrentPhotogram();
 		viewport()->update(scene()->sceneRect().toRect() );
 	}
 	
@@ -237,7 +214,7 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
 		break;
 		default:
 		{
-			qobject_cast<KTScene *>(scene())->drawCurrentPhotogram();
+			graphicsScene()->drawCurrentPhotogram();
 			viewport()->update(scene()->sceneRect().toRect() );
 		}
 	}
@@ -259,7 +236,7 @@ void KTPaintArea::libraryResponse(KTLibraryResponse *request)
 	{
 		case KTProjectRequest::AddSymbolToProject:
 		{
-			qobject_cast<KTScene *>(scene())->drawCurrentPhotogram();
+			graphicsScene()->drawCurrentPhotogram();
 			viewport()->update(scene()->sceneRect().toRect() );
 		}
 		break;
@@ -271,7 +248,7 @@ bool KTPaintArea::canPaint() const
 {
 	if ( ! scene() ) return false;
 	
-	if ( KTScene *sscene = dynamic_cast<KTScene *>(scene()) )
+	if ( KTGraphicsScene *sscene = graphicsScene() )
 	{
 		if (sscene->currentFrameIndex() >= 0 && sscene->currentLayerIndex() >= 0) return true;
 	}
@@ -288,40 +265,16 @@ void KTPaintArea::deleteItems()
 	{
 		QString strItems= "";
 		
-		KTScene* currentScene = static_cast<KTScene*>(scene());
-// 		int firstItem = -1;
+		KTGraphicsScene* currentScene = graphicsScene();
+		
 		if(currentScene)
 		{
 			foreach(QGraphicsItem *item, selecteds)
 			{
-				KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), currentScene->currentFrame()->indexOf(item), KTProjectRequest::Remove );
-				emit requestTriggered(&event);
-			}
-			
-			/*foreach(QGraphicsItem *item, selecteds)
-			{
-				int indexOfItem = currentScene->currentFrame()->indexOf(item);
-				if(indexOfItem != -1)
-				{
-					if(strItems.isEmpty())
-					{
-						strItems +="("+ QString::number(indexOfItem);
-						firstItem = indexOfItem;
-					}
-					else
-					{
-						strItems += " , "+ QString::number(indexOfItem);
-					}
-				}
-			}
-			strItems+= ")";
-			if(strItems != ")")
-			{
-				KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, KTProjectRequest::Remove, strItems );
 				
-				dDebug(2) << "Deleting frame: " << currentScene->currentFrameIndex() << "\n" << "Items: " << strItems ;
+				KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), currentScene->currentFrame()->indexOf(item), KTProjectRequest::Remove );
 				emit requestTriggered(&event);
-		}*/
+			}
 		}
 	}
 }
@@ -334,7 +287,7 @@ void KTPaintArea::groupItems()
 	{
 		QString strItems= "";
 		
-		KTScene* currentScene = static_cast<KTScene*>(scene());
+		KTGraphicsScene* currentScene = graphicsScene();
 		int firstItem = -1;
 		if(currentScene)
 		{
@@ -357,7 +310,7 @@ void KTPaintArea::groupItems()
 		}
 		if(strItems != ")")
 		{
-			KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, KTProjectRequest::Group, strItems );
+			KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), firstItem, KTProjectRequest::Group, strItems );
 			emit requestTriggered(&event);
 		}
 	}
@@ -370,12 +323,12 @@ void KTPaintArea::ungroupItems()
 	{
 // 		QString strItems= "";
 		
-		KTScene* currentScene = static_cast<KTScene*>(scene());
+		KTGraphicsScene* currentScene = graphicsScene();
 		if(currentScene)
 		{
 			foreach(QGraphicsItem *item, selecteds)
 			{
-				KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), currentScene->currentFrame()->indexOf(item), KTProjectRequest::Ungroup);
+				KTProjectRequest event = KTRequestBuilder::createItemRequest( currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), currentScene->currentFrame()->indexOf(item), KTProjectRequest::Ungroup);
 				emit requestTriggered(&event);
 			}
 		}
@@ -414,7 +367,7 @@ void KTPaintArea::copyItems()
 	QList<QGraphicsItem *> selecteds = scene()->selectedItems();
 	if(!selecteds.isEmpty())
 	{
-		KTScene* currentScene = static_cast<KTScene*>(scene());
+		KTGraphicsScene* currentScene = graphicsScene();
 // 		int firstItem = -1;
 		
 		if(currentScene)
@@ -462,11 +415,11 @@ void KTPaintArea::copyItems()
 void KTPaintArea::pasteItems()
 {
 	D_FUNCINFO;
-	KTScene* currentScene = static_cast<KTScene*>(scene());
+	KTGraphicsScene* currentScene = graphicsScene();
 	
 	foreach(QString xml, d->copiesXml)
 	{
-		KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->index(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), currentScene->currentFrame()->graphics().count(), KTProjectRequest::Add, xml);
+		KTProjectRequest event = KTRequestBuilder::createItemRequest(currentScene->currentSceneIndex(), currentScene->currentLayerIndex(), currentScene->currentFrameIndex(), currentScene->currentFrame()->graphics().count(), KTProjectRequest::Add, xml);
 		
 		emit requestTriggered(&event);
 	}
@@ -481,7 +434,7 @@ void KTPaintArea::cutItems()
 
 void KTPaintArea::setNextFramesOnionSkinCount(int n)
 {
-	if ( KTScene* currentScene = static_cast<KTScene*>(scene()) )
+	if ( KTGraphicsScene* currentScene = graphicsScene() )
 	{
 		currentScene->setNextOnionSkinCount( n );
 	}
@@ -489,7 +442,7 @@ void KTPaintArea::setNextFramesOnionSkinCount(int n)
 
 void KTPaintArea::setPreviousFramesOnionSkinCount(int n)
 {
-	if ( KTScene* currentScene = static_cast<KTScene*>(scene()) )
+	if ( KTGraphicsScene* currentScene = graphicsScene() )
 	{
 		currentScene->setPreviousOnionSkinCount( n );
 	}

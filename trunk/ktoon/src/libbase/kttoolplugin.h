@@ -21,18 +21,20 @@
 #ifndef KTTOOLPLUGIN_H
 #define KTTOOLPLUGIN_H
 
-#include <qobject.h>
+#include <QObject>
 #include "kttoolinterface.h"
-#include "ktbrushmanager.h"
-#include "ktinputdeviceinformation.h"
 
-#include "ktprojectresponse.h"
-
-#include <QGraphicsView>
 #include "ktglobal.h"
 
+class KTGraphicsScene;
+class QGraphicsView;
+class KTInputDeviceInformation;
+class KTBrushManager;
+class KTItemResponse;
+class KTProjectRequest;
+
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado \<krawek@gmail.com\>
 */
 class KTOON_EXPORT KTToolPlugin : public QObject, public KTToolInterface
 {
@@ -48,10 +50,10 @@ class KTOON_EXPORT KTToolPlugin : public QObject, public KTToolInterface
 		
 		virtual void init(QGraphicsView *view);
 		
-		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view ) = 0;
-		virtual void doubleClick(const KTInputDeviceInformation *input, KTScene *scene, QGraphicsView *view );
-		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view) = 0;
-		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTScene *scene, QGraphicsView *view) = 0;
+		virtual void press(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view ) = 0;
+		virtual void doubleClick(const KTInputDeviceInformation *input, KTGraphicsScene *scene, QGraphicsView *view );
+		virtual void move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view) = 0;
+		virtual void release(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene, QGraphicsView *view) = 0;
 		
 		virtual QMap<QString, DAction *> actions() const = 0;
 		
@@ -73,7 +75,8 @@ class KTOON_EXPORT KTToolPlugin : public QObject, public KTToolInterface
 		void end();
 		
 	private:
-		QString m_currentTool;
+		struct Private;
+		Private *const d;
 };
 
 #endif

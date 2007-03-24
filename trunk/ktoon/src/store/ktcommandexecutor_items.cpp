@@ -365,13 +365,11 @@ bool KTCommandExecutor::convertItem(KTItemResponse *response)
 					
 					QGraphicsItem * itemConverted = convert(item, toType);
 					
-					
 					if(itemConverted)
 					{
+// 						scene->removeItem(item); // FIXME?
+// 						scene->addItem(itemConverted); // FIXME?
 						
-						scene->removeItem(item);
-						
-						scene->addItem(itemConverted);
 						frame->replaceItem(position, itemConverted);
 						
 						response->setArg( QString::number(item->type()));

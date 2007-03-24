@@ -184,6 +184,7 @@ void KTAnimationArea::render() // TODO: Extend to scenes
 {
 	m_photograms.clear();
 	
+#if 0 
 	KTScene *scene = m_project->scene( m_currentSceneIndex );
 	
 	if (!scene) return;
@@ -200,7 +201,7 @@ void KTAnimationArea::render() // TODO: Extend to scenes
 	
 	while ( ! m_isRendered )
 	{
-		QGraphicsScene *scn = new QGraphicsScene(scene->sceneRect(), this);
+		QGraphicsScene *scn = new QGraphicsScene(scene->sceneRect(), this); // FIXME FIXME FIXME
 		
 		Layers::iterator layerIterator = layers.begin();
 		bool ok = true;
@@ -253,6 +254,7 @@ void KTAnimationArea::render() // TODO: Extend to scenes
 		
 		scene->drawCurrentPhotogram();
 	}
+#endif
 }
 
 int KTAnimationArea::photogramsCount() const

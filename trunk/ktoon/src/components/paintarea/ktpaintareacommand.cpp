@@ -22,6 +22,8 @@
 #include "ktpaintarea.h"
 #include "ktpaintareaevent.h"
 
+#include "ktbrushmanager.h"
+
 
 KTPaintAreaCommand::KTPaintAreaCommand(KTPaintArea *area, const KTPaintAreaEvent *event) : QUndoCommand(), m_paintArea(area)
 {

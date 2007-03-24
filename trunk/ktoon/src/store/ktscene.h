@@ -43,7 +43,7 @@ typedef QVector<KTLayer *> Layers;
  * @author David Cuadrado \<krawek@toonka.com\>
 */
 
-class STORE_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializable
+class STORE_EXPORT KTScene : public QObject, public KTAbstractSerializable
 {
 	Q_OBJECT
 	public:
@@ -106,35 +106,14 @@ class STORE_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializabl
 		 */
 		bool moveLayer(int from, int to);
 		
-		void clean();
-		
-		int currentFrameIndex() const;
-		int currentLayerIndex() const;
-		
 		int index() const;
 		int indexOf(KTLayer *layer) const;
 		
 		KTProject *project() const;
 		
 	public:
-		void setCurrentFrame(int layer, int frame);
-		void drawCurrentPhotogram();
-		void drawPhotogram(int photogram);
-		
-		KTFrame *currentFrame();
-		
-		void setNextOnionSkinCount(int n);
-		void setPreviousOnionSkinCount(int n);
-		
-	public:
 		virtual void fromXml(const QString &xml );
 		virtual QDomElement toXml(QDomDocument &doc) const;
-		
-	private:
-		void addFrame(KTFrame *frame, double opacity = 1.0);
-		
-	protected:
-		void drawItems(QPainter *painter, int numItems, QGraphicsItem *items[], const QStyleOptionGraphicsItem options[], QWidget * widget = 0 );
 		
 	private:
 		Layers m_layers;
@@ -142,20 +121,6 @@ class STORE_EXPORT KTScene : public QGraphicsScene, public KTAbstractSerializabl
 		bool m_isLocked;
 		int m_layerCount;
 		bool m_isVisible;
-		
-		struct FramePosition
-		{
-			int layer;
-			int frame;
-		} m_framePosition;
-		
-		struct OnionSkin
-		{
-			int previous;
-			int next;
-			QMap<QGraphicsItem *, double> opacityMap;
-			
-		} m_onionSkin;
 };
 
 #endif
