@@ -1,6 +1,6 @@
 
-require 'info'
-require 'extensions'
+require 'qonf/info'
+require 'qonf/extensions'
 
 module RQonf
 
@@ -59,7 +59,7 @@ class QMake
 		output
 	end
 	
-	def run(args, recur)
+	def run(args = "", recur = false)
 		options = ""
 		if recur
 			options += "-r"

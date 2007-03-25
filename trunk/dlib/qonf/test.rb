@@ -1,10 +1,10 @@
 
-require 'qmake'
-require 'detectos'
+require 'qonf/qmake'
+require 'qonf/detectos'
 require 'rexml/parsers/sax2parser'
 require 'rexml/sax2listener'
 
-require 'info'
+require 'qonf/info'
 
 module RQonf
 

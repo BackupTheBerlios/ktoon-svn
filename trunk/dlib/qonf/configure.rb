@@ -1,12 +1,14 @@
 
-require 'test'
-require 'config'
-require 'info'
-require 'qonfexception'
+require 'qonf/test'
+require 'qonf/config'
+require 'qonf/info'
+require 'qonf/qonfexception'
 
 module RQonf
 
 class Configure
+	attr_reader :qmake
+	
 	def initialize(args)
 		@tests = []
 		@testsDir = Dir.getwd
@@ -59,7 +61,6 @@ class Configure
 		
 		return if @options['prefix'].nil?
 		
-		
 		Info.info << "Updating makefiles..." << $endl
 		
 		target = File.expand_path(@options['prefix'])
@@ -67,18 +68,22 @@ class Configure
 		findMakefiles(Dir.getwd)
 		
 		@makefiles.each { |makefile|
-			newmakefile = ""
-			File.open(makefile, "r") { |f|
-				lines = f.readlines
-				
-				lines.each { |line|
-					newmakefile += "#{line.gsub( /\$\(INSTALL_ROOT\)/, target )}"
-				}
-			}
+			overrideDestdir(makefile, target)
+		}
+	end
+	
+	def overrideDestdir(makefile, destdir)
+		newmakefile = ""
+		File.open(makefile, "r") { |f|
+			lines = f.readlines
 			
-			File.open(makefile, "w") { |f|
-				f << newmakefile
+			lines.each { |line|
+				newmakefile += "#{line.gsub( /\$\(INSTALL_ROOT\)/, destdir )}"
 			}
+		}
+		
+		File.open(makefile, "w") { |f|
+			f << newmakefile
 		}
 	end
 	

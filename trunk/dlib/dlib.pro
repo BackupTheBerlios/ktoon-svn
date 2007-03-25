@@ -7,3 +7,6 @@ SUBDIRS += dlib
 CONFIG += release \
           warn_on 
 TEMPLATE = subdirs 
+
+include(qonf.pri)
+

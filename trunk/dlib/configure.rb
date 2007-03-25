@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
 
-$: << "qonf"
-
 require 'qonf/configure'
 require 'qonf/info'
+
+require 'rbconfig'
 
 begin
 	conf = RQonf::Configure.new(ARGV)
@@ -45,7 +45,17 @@ _EOH_
 	
 	config.save("dlib/dlibconfig.pri")
 	
+	File.open("qonf.pri", "w") { |file|
+		file << %@
+INSTALLS += qonf
+qonf.files += qonf/*.rb
+qonf.path += #{Config::CONFIG['sitelibdir']}/qonf\n@
+	}
+	
 	conf.createMakefiles
+	
+	conf.qmake.run
+	conf.overrideDestdir("#{Dir.getwd}/Makefile", "")
 	
 rescue => err
 	Info.error << "Configure failed. error was: #{err.message}\n"

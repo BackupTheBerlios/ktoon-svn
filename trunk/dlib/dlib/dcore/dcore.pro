@@ -28,7 +28,7 @@ HEADERS += dalgorithm.h \
            dspellhighlighter.h \
            dpathhandler.h \
            dfortunegenerator.h \
-           dxmlparserbase.h 
+           dxmlparserbase.h
 SOURCES += dalgorithm.cpp \
            dbrushadjuster.cpp \
            dconfig.cpp \
@@ -44,16 +44,14 @@ SOURCES += dalgorithm.cpp \
            dspellhighlighter.cpp \
            dpathhandler.cpp \
            dfortunegenerator.cpp \
-           dxmlparserbase.cpp 
+           dxmlparserbase.cpp
 DEFINES += DLIB_CORE
 INCLUDEPATH += ../
 MOC_DIR = .moc
 UI_DIR = .ui
 OBJECTS_DIR = .obj
-CONFIG += release \
-warn_on \
-dll
+CONFIG += release warn_on dll create_prl
 TEMPLATE = lib
 !include(../dlibconfig.pri){
-  error("Run ./configure first")
+    error("Run ./configure first")
 }
