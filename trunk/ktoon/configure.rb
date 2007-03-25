@@ -1,7 +1,5 @@
 #!/usr/bin/ruby
 
-$: << "qonf"
-
 require 'qonf/configure'
 require 'qonf/info'
 
