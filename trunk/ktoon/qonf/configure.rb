@@ -62,6 +62,7 @@ class Configure
 		
 		Info.info << "Updating makefiles..." << $endl
 		
+		target = File.expand_path(@options['prefix'])
 		@makefiles = []
 		findMakefiles(Dir.getwd)
 		
@@ -71,7 +72,7 @@ class Configure
 				lines = f.readlines
 				
 				lines.each { |line|
-					newmakefile += "#{line.gsub( /\$\(INSTALL_ROOT\)/, @options['prefix'])}"
+					newmakefile += "#{line.gsub( /\$\(INSTALL_ROOT\)/, target )}"
 				}
 			}
 			

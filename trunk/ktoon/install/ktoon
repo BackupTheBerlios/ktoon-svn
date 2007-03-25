@@ -14,7 +14,7 @@ else
 	KTOON_HOME=`dirname $LNCH`
 fi
 
-
-LD_LIBRARY_PATH="${KTOON_HOME}/lib/:$LD_LIBRARY_PATH"
+export KTOON_HOME
+export LD_LIBRARY_PATH="${KTOON_HOME}/lib/:$LD_LIBRARY_PATH"
 exec ${KTOON_HOME}/bin/ktoon.bin $*
 

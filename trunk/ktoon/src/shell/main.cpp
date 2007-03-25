@@ -140,7 +140,7 @@ int main( int argc, char ** argv )
 	
 	splash->setMessage( QObject::tr( "Loaded!" ) );
 
-	splash->finish( &mainWindow );
+// 	splash->finish( &mainWindow );
 	
 	
 	mainWindow.showMaximized();
