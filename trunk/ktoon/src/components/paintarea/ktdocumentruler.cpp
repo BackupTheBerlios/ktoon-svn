@@ -20,35 +20,78 @@
 
 #include "ktdocumentruler.h"
 
-KTDocumentRuler::KTDocumentRuler(Qt::Orientation orientation, QWidget *parent, const char *name) : DRulerBase(orientation, parent, name)
+#include <QApplication>
+
+struct KTDocumentRuler::Private
 {
+	QPointF oldPos;
+	QPoint dragStartPosition;
+};
+
+KTDocumentRuler::KTDocumentRuler(Qt::Orientation orientation, QWidget *parent, const char *name) : DRulerBase(orientation, parent, name), d( new Private)
+{
+	d->oldPos = QPointF(0.0,0.0);
 	setDrawPointer(true);
 }
 
 
 KTDocumentRuler::~KTDocumentRuler()
 {
+
 }
 
-void KTDocumentRuler::movePointers(const QPoint &pos)
+void KTDocumentRuler::mousePressEvent(QMouseEvent *event)
+{
+	if (event->button() == Qt::LeftButton)
+		d->dragStartPosition = event->pos();
+}
+
+void KTDocumentRuler::mouseMoveEvent(QMouseEvent *event)
+{
+	
+	if (!(event->buttons() & Qt::LeftButton))
+	{
+		return;
+	}
+	
+	if ((event->pos() - d->dragStartPosition).manhattanLength()	< QApplication::startDragDistance())
+	{
+		return;
+	}
+	
+	QDrag *drag = new QDrag(this);
+	QMimeData *mimeData = new QMimeData;
+	
+	QString data;
+	if(orientation() == Qt::Vertical)
+	{
+		data = "lineVertical";
+	}
+	else
+	{
+		data = "lineHorizontal";
+	}
+	mimeData->setData("text/plain", data.toAscii () );
+	drag->setMimeData(mimeData);
+
+	Qt::DropAction dropAction = drag->start(Qt::CopyAction | Qt::MoveAction);
+	DRulerBase::mouseMoveEvent(event);
+	
+}
+
+void KTDocumentRuler::movePointers(const QPointF &pos)
 {
 	if(orientation() == Qt::Horizontal)
 	{
-		if(pos.x() > 0)
-		{
-			m_pArrow[0].setX ( pos.x()-5 );
-			m_pArrow[1].setX ( pos.x() );
-			m_pArrow[2].setX ( pos.x()+5 ); 
-		}
+		m_pArrow.translate(-d->oldPos.x(), 0);
+		m_pArrow.translate(pos.x(), 0);
 	}
 	else if(orientation() == Qt::Vertical)
 	{
-		if(pos.x() > 0)
-		{
-			m_pArrow[0].setY ( pos.y()-5 );
-			m_pArrow[1].setY ( pos.y() );
-			m_pArrow[2].setY ( pos.y()+5);
-		}
+		
+		m_pArrow.translate(0, -d->oldPos.y());
+		m_pArrow.translate(0, pos.y());
 	}
+	d->oldPos = pos;
 	repaint();
 }

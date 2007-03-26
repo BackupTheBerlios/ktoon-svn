@@ -32,6 +32,8 @@ class KTScene;
 class KTToolPlugin;
 class KTBrushManager;
 
+class KTItemResponse;
+
 class KTGraphicsScene : public QGraphicsScene
 {
 	public:
@@ -68,12 +70,23 @@ class KTGraphicsScene : public QGraphicsScene
 		
 		KTBrushManager *brushManager() const;
 		
+		
+		void itemResponse(KTItemResponse *event);
+		
 	protected:
 		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 		virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 		virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent);
 		virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 		virtual void keyPressEvent(QKeyEvent *keyEvent);
+		
+		void dragLeaveEvent ( QGraphicsSceneDragDropEvent * event );
+		void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
+		void dragMoveEvent ( QGraphicsSceneDragDropEvent * event );
+		void dropEvent ( QGraphicsSceneDragDropEvent * event );
+		
+		
+		
 		
 	private:
 		struct Private;

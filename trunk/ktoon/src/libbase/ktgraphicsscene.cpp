@@ -37,9 +37,11 @@
 #include "ktbrushmanager.h"
 #include "ktframe.h"
 
+#include "ktprojectresponse.h"
+
 #include <dcore/ddebug.h>
 
-
+#include "ktlineguide.h"
 
 struct KTGraphicsScene::Private
 {
@@ -314,6 +316,7 @@ void KTGraphicsScene::setTool(KTToolPlugin *tool)
 	
 	d->tool = tool;
 	d->tool->init(this);
+	
 }
 
 KTToolPlugin *KTGraphicsScene::currentTool() const
@@ -396,6 +399,54 @@ void KTGraphicsScene::keyPressEvent(QKeyEvent *event)
 	}
 	
 	QGraphicsScene::keyPressEvent(event);
+}
+
+
+void KTGraphicsScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
+{
+	//crear linea
+	if (event->mimeData()->hasFormat("text/plain"))
+		event->acceptProposedAction();
+	
+}
+
+
+void  KTGraphicsScene::dragLeaveEvent ( QGraphicsSceneDragDropEvent * event )
+{
+	//TODO: eliminar linea
+	
+}
+
+void KTGraphicsScene::dragMoveEvent ( QGraphicsSceneDragDropEvent * event )
+{
+	
+	//TODO: mover linea
+}
+
+void KTGraphicsScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
+{
+	KTGuideLine *line;
+	if(event->mimeData()->text() == "lineVertical")
+	{
+		line  = new KTGuideLine(Qt::Vertical, this);
+		line->setPos(event->scenePos());
+	}
+	else
+	{
+		line = new KTGuideLine(Qt::Horizontal, this);
+		line->setPos(event->scenePos());
+	}
+}
+
+
+
+void KTGraphicsScene::itemResponse(KTItemResponse *event)
+{
+	if ( d->tool )
+	{
+		d->tool->init(this); //FIXME:d->tool->init(this); in itemResponse ???
+		d->tool->itemResponse(event);
+	}
 }
 
 bool KTGraphicsScene::isDrawing() const

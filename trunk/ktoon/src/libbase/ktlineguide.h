@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Jorge Cuadrado                                  *
- *   kuadrosx@toonka.com                                                     *
+ *   Copyright (C) 2007 by David Cuadrado                                  *
+ *   kruadrosx@toonka.com                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,33 +17,37 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef KTDOCUMENTRULER_H
-#define KTDOCUMENTRULER_H
+ 
+#ifndef KTGUIDELINE_H
+#define KTGUIDELINE_H
 
-#include <dgui/drulerbase.h>
+#include <QGraphicsItem>
+
 
 /**
- * @author Jorge Cuadrado
+ * @author Jorge Cuadrado \<kuadrosx@toonka.com\>
 */
-
-class KTDocumentRuler : public DRulerBase
+class KTGuideLine : public QGraphicsItem
 {
-	Q_OBJECT
 	public:
-		KTDocumentRuler(Qt::Orientation orientation=Qt::Horizontal, QWidget *parent = 0, const char *name = 0);
-		~KTDocumentRuler();
+		KTGuideLine(Qt::Orientation o, QGraphicsScene *scene);
+		~KTGuideLine();
 		
+		QRectF boundingRect() const;
+		void paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 		
 	protected:
-		void mousePressEvent(QMouseEvent *event);
-		void mouseMoveEvent(QMouseEvent *event);
-	
-	public slots:
-		void movePointers(const QPointF &pos);
+		QVariant itemChange ( GraphicsItemChange change, const QVariant & value );
+		void hoverMoveEvent ( QGraphicsSceneHoverEvent * event );
+		void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
+		
 		
 	private:
 		struct Private;
 		Private * const d;
+		
+		void syncCursor();
+		
 };
 
 #endif

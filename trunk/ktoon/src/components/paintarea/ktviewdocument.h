@@ -105,6 +105,8 @@ class KTViewDocument : public QMainWindow
 		
 		KTPaintArea *m_paintArea;
 		
+		KTDocumentRuler *verticalRuler, *horizontalRuler;
+		
 	private:
 		void createActions();
 		void setupViewActions();

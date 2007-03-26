@@ -126,7 +126,6 @@ void KTPaintAreaBase::restoreState()
 	
 	int renderHints = config->value("RenderHints", int(this->renderHints())).toInt();
 	setRenderHints(QPainter::RenderHints(renderHints));
-	
 }
 
 KTPaintAreaBase::~KTPaintAreaBase()
@@ -391,6 +390,7 @@ void KTPaintAreaBase::scaleView(qreal scaleFactor)
 		return;
 
 	scale(scaleFactor, scaleFactor);
+	
 }
 
 void KTPaintAreaBase::setRotationAngle(int angle)

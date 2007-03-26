@@ -46,6 +46,9 @@
 
 #include "ktpaintareastatus.h"
 
+#include <QFrame>
+#include <QGridLayout>
+
 
 KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWindow(parent)
 {
@@ -53,8 +56,18 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
 	
 	m_actionManager = new DActionManager(this);
 	
-	m_paintArea = new KTPaintArea(project, this);
-	setCentralWidget( m_paintArea );
+	QFrame *frame = new QFrame(this);
+	QGridLayout *layout = new QGridLayout(frame);
+	
+	
+	m_paintArea = new KTPaintArea(project, frame);
+	setCentralWidget( frame );
+	
+	layout->addWidget(m_paintArea, 1,1);
+	horizontalRuler = new KTDocumentRuler(Qt::Horizontal);
+	verticalRuler = new KTDocumentRuler(Qt::Vertical);
+	layout->addWidget(horizontalRuler, 0, 1);
+	layout->addWidget(verticalRuler, 1, 0);
 	
 	KToon::RenderType renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt()); 
 	switch(renderType)
@@ -78,6 +91,12 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
 	}
 	
 	connect(m_paintArea, SIGNAL(cursorPosition(const QPointF &)),  this,  SLOT(showPos(const QPointF &)) );
+	
+	connect(m_paintArea, SIGNAL(cursorPosition(const QPointF &)), verticalRuler, SLOT(movePointers(const QPointF&)));
+	
+	connect(m_paintArea, SIGNAL(cursorPosition(const QPointF &)), horizontalRuler, SLOT(movePointers(const QPointF&)));
+	
+	
 	connect(m_paintArea, SIGNAL(requestTriggered(const KTProjectRequest* )), this, SIGNAL(requestTriggered(const KTProjectRequest *)));
 	
 	QTimer::singleShot(0, this, SLOT(loadPlugins()));

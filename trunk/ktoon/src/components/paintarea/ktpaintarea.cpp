@@ -216,8 +216,10 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
 		{
 			graphicsScene()->drawCurrentPhotogram();
 			viewport()->update(scene()->sceneRect().toRect() );
+			
 		}
 	}
+	graphicsScene()->itemResponse(event);
 	
 	//if ( d->tool ) // FIXME
 	//{
