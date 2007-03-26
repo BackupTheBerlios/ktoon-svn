@@ -196,4 +196,8 @@ int DNodeGroup::removeSelectedNodes()
 	return count;
 }
 
+void DNodeGroup::addControlNode(DControlNode* node)
+{
+	
+}
 

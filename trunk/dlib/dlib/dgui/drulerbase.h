@@ -25,10 +25,8 @@
 #include <QResizeEvent>
 #include <QPaintEvent>
 #include <QMenu>
-#include <QPolygon>
+#include <QPolygonF>
 #include <QFrame>
-#include <QPainterPath>
-#include <QImage>
 #include <dcore/dglobal.h>
 
 #define UNITCOUNT 5
@@ -65,9 +63,9 @@ class D_GUI_EXPORT DRulerBase : public QFrame
 // 		const double unitGetRatioFromIndex(const int index);
 // 		const double pts2mm(double pts);
 // 		const double mm2pts(double mm);
-		virtual void drawScale();
+		virtual void drawScale(QPainter *painter);
 		Qt::Orientation orientation();
-		void setZeroAt(int pos);
+		void setZeroAt(const QPointF & pos);
 		
 		
 	private:
@@ -75,19 +73,16 @@ class D_GUI_EXPORT DRulerBase : public QFrame
 		Qt::Orientation m_orientation;
 		bool m_drawPointer;
 		
-		QPainterPath m_path;
 		int m_separation;
 		QMenu *m_menu;
 		enum { ChangeScaleToFive, ChangeScaleToTen  };
 		
-		void drawLine(int x1 , int y1, int x2, int y2);
 		int m_width, m_height;
 		
-		int m_zero;
+		QPointF m_zero;
 
 	protected:
-		QImage m_pScale;
-		QPolygon m_pArrow;
+		QPolygonF m_pArrow;
 		
 	signals:
 		void displayMenu(DRulerBase *, QPoint pos);
@@ -100,7 +95,7 @@ class D_GUI_EXPORT DRulerBase : public QFrame
 		virtual QSize sizeHint() const;
 		
 	public slots:
- 		virtual void movePointers(const QPoint &pos) = 0;
+ 		virtual void movePointers(const QPointF &pos) = 0;
 		void setSeparation(int sep);
 		void setDrawPointer(bool yes = true);
 		void slide(int value);

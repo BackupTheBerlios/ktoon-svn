@@ -27,40 +27,41 @@
 #include <QPaintEvent> 
 #include <QPainter>
 
-DRulerBase::DRulerBase(Qt::Orientation m_orientation, QWidget *parent, const char *name) : QFrame(parent), m_position(0), m_orientation(m_orientation), m_drawPointer(false), m_separation(100), m_zero(0), m_pArrow(3)
+DRulerBase::DRulerBase(Qt::Orientation m_orientation, QWidget *parent, const char *name) : QFrame(parent), m_position(0), m_orientation(m_orientation), m_drawPointer(false), m_separation(100), m_zero(0,0), m_pArrow(3)
 {
 	setObjectName(name);
 	
 	if(m_orientation == Qt::Horizontal)
 	{
-		m_pArrow.setPoint ( 0, 0, 0);
-		m_pArrow.setPoint ( 1, 5, 10);
-		m_pArrow.setPoint ( 2, 10, 0);
-		setMaximumHeight ( 25 );
-		setMinimumHeight ( 25 );
+		setMaximumHeight(10);
+		setMinimumHeight(20);
 		
 		m_width = width();
 		m_height = height();
-	}
-	else if(m_orientation == Qt::Vertical)
-	{
-		m_pArrow.setPoint ( 0, 0, 0);
-		m_pArrow.setPoint ( 1, 10, 5);
-		m_pArrow.setPoint ( 2, 0, 10);
-		setMaximumWidth(25);
-		setMinimumWidth(25);
 		
-// 		setMinimumHeight ( parent->height()+1000 );
+		m_pArrow << QPointF(0.0, 0.0);
+		m_pArrow << QPointF(5.0,  5.0);
+		m_pArrow << QPointF(10.0, 0.0);
+		
+		m_pArrow.translate(0,10);
+	}
+	else
+	{
+		setMaximumWidth(20);
+		setMinimumWidth(20);
+		
 		
 		m_width = height();
 		m_height =  width();
+		
+		m_pArrow << QPointF(0.0, 0.0);
+		m_pArrow << QPointF(5.0, 5.0);
+		m_pArrow << QPointF(0.0, 10.0);
+		
+		m_pArrow.translate(10,0);
 	}
 	
-	m_pScale = QImage(m_width, m_height, QImage::Format_RGB32);
-	m_pScale.fill(qRgb(255, 255, 255));
 	
-	//draw scale
-	drawScale();
 	setMouseTracking ( true );
 	
 	connect(this, SIGNAL(displayMenu(DRulerBase *, QPoint)), this, SLOT(showMenu(DRulerBase *, QPoint)));
@@ -88,92 +89,96 @@ void DRulerBase::paintEvent ( QPaintEvent * )
 //  	p.setRenderHint( QPainter::TextAntialiasing/*QPainter::Antialiasing*/);
 // 	m_pScale
 
-	p.drawImage(QPoint(0, 0), m_pScale);
+	
+	drawScale(&p);
+// 	p.drawImage(QPoint(0, 0), m_pScale);
 	p.setBrush(palette ().color(QPalette::Foreground));
 	p.drawConvexPolygon(m_pArrow);
 	p.end();
+	
 }
 
-void DRulerBase::drawScale()
+void DRulerBase::drawScale(QPainter *painter)
 {
+	painter->save();
 	QFontMetrics fm(font());
 	
-	m_pScale = QImage(width(), height(), QImage::Format_RGB32);
-	QPalette m_palette = palette ();
-	QColor aColor = m_palette.color(  QPalette::Background);
+// 	m_pScale = QImage(width(), height(), QImage::Format_RGB32);
+	QPalette m_palette = palette();
+	QColor aColor = m_palette.color( QPalette::Background);
 	
-	m_pScale.fill(aColor.rgb ());
-	
+// 	m_pScale.fill(aColor.rgb ());
 	int fact = 1;
-	if( m_orientation == Qt::Vertical )
+	int init;
+	if(m_orientation == Qt::Horizontal)
 	{
-		fact = -1;
+		painter->translate(m_zero.x(), 0);
+		init = m_zero.x();
+		
+		painter->drawLine(0,height()-1, width(),height()-1 );
 	}
-	drawLine( 0-m_zero, 0, m_width, 0);
-	drawLine( 0-m_zero, m_height*fact, m_width, m_height*fact);
+	else
+	{
+		
+		painter->drawLine(width()-1, 0, width()-1, height());
+		fact = -1;
+		painter->translate(0, m_zero.y());
+		painter->rotate(90);
+		init = m_zero.y();
+		painter->drawLine(0,height()-1, width(),height()-1 );
+		
+	}
 	
 	for(int i = 0; i < m_width; i +=10)
 	{
 		QSize sizeFont = fm.size (Qt::TextSingleLine, QString::number(i));
 		if( i % 100  == 0 )
 		{
-			drawLine ( i, m_height*fact, i, 0 );
+			painter->drawLine ( i, m_height*fact, i, 0 );
 			if(m_orientation == Qt::Vertical)
 			{
-				m_path.addText( i, m_height/2 -sizeFont.height()  , font(), QString::number(i));
+				painter->drawText( QPoint(i, m_height/2 -sizeFont.height()), QString::number(i));
 			}
 			else
 			{
-				m_path.addText( i, m_height/2, font(), QString::number(i));
+				painter->drawText( QPoint(i, m_height/2), QString::number(i));
 			}
 		}
 		else
 		{
-			drawLine ( i, m_height*fact, i, m_height*fact - m_height/4*fact );
+			painter->drawLine ( i, m_height*fact, i, m_height*fact - m_height/4*fact );
 		}
 	}
 	
-	for(int i = m_zero; i > 0 ; i -=10)
+	
+	for(int i = init; i > 0 ; i -=10)
 	{
 		QSize sizeFont = fm.size (Qt::TextSingleLine, QString::number(i));
 		if( i % 100  == 0 )
 		{
-			drawLine ( -i, m_height*fact, -i, 0 );
+			painter->drawLine ( -i, m_height*fact, -i, 0 );
 			if(m_orientation == Qt::Vertical)
 			{
-				m_path.addText( -i, m_height/2 -sizeFont.height()  , font(), QString::number(-i));
+				painter->drawText( QPoint(-i, m_height/2 -sizeFont.height()), QString::number(-i));
 			}
 			else
 			{
-				m_path.addText( -i, m_height/2, font(), QString::number(-i));
+				
+				painter->drawText( -i, m_height/2,  QString::number(-i));
 			}
 		}
 		else
 		{
-			drawLine ( -i, m_height*fact, -i, m_height*fact - m_height/4*fact );
+			painter->drawLine ( -i, m_height*fact, -i, m_height*fact - m_height/4*fact );
 		}
 	}
 	
-	QPainter p(&m_pScale);
-	p.setRenderHint(QPainter::Antialiasing, true);
-	p.setPen(palette().color(QPalette::Foreground));
+// 	QPainter p(&m_pScale);
+// 	p.setRenderHint(QPainter::Antialiasing, true);
+// 	p.setPen(palette().color(QPalette::Foreground));
 	
-	if(m_orientation == Qt::Horizontal)
-	{
-		p.translate(m_zero,0);
-		p.drawPath(m_path);
-	}
-	else
-	{
-		
-		p.save();
-		p.translate(0,m_zero);
-		p.rotate(90);
-		p.drawPath(m_path);
-		p.restore();
-	}
-	
-	m_path = QPainterPath();
+// 	m_path = QPainterPath();
+	painter->restore();
 }
 
 void DRulerBase::resizeEvent ( QResizeEvent * )
@@ -182,16 +187,14 @@ void DRulerBase::resizeEvent ( QResizeEvent * )
 	{
 		m_width = width();
 		m_height = height();
-// 		m_pScale = QImage(m_width, m_height, QImage::Format_RGB32);
 	}
 	else if(m_orientation == Qt::Vertical)
 	{
 		m_width = height();
 		m_height =  width();
-// 		m_pScale = QImage(m_height, m_width , QImage::Format_RGB32);
 	}
 
-	drawScale();
+	update();
 }
 
 void DRulerBase::mouseMoveEvent ( QMouseEvent * e )
@@ -234,7 +237,8 @@ void DRulerBase::setSeparation(int sep)
 	if ( sep > 0 && sep <= 10000 )
 	{
 		m_separation = sep;
-		drawScale();
+// 		drawScale();
+		update();
 	}
 	else
 	{
@@ -265,11 +269,6 @@ void DRulerBase::showMenu(DRulerBase *ruler, QPoint pos)
 
 
 
-void DRulerBase::drawLine(int x1 , int y1, int x2, int y2)
-{
-	m_path.moveTo(x1, y1);
-	m_path.lineTo(x2, y2);
-}
 
 void DRulerBase::slide(int value)
 {
@@ -283,10 +282,11 @@ void DRulerBase::slide(int value)
 	}
 }
 
-void DRulerBase::setZeroAt(int pos)
+void DRulerBase::setZeroAt(const QPointF & pos)
 {
 	m_zero = pos;
-	drawScale();
+	
+	update();
 }
 
 QSize DRulerBase::sizeHint() const

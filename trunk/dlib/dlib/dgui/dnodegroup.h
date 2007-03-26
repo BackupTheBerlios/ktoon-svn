@@ -34,6 +34,8 @@ class DNodeGroup : public QObject
 		
 		int removeSelectedNodes();
 		
+		void addControlNode(DControlNode* node);
+		
 		
 	private:
 		QList<DControlNode*> m_nodes;
@@ -42,7 +44,6 @@ class DNodeGroup : public QObject
 		QPointF m_pos;
 		QHash<int, QPointF > m_changedNodes;
 		QGraphicsScene *m_scene;
-		
 };
 
 #endif

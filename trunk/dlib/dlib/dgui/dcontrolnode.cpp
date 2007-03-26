@@ -168,7 +168,10 @@ QVariant DControlNode::itemChange(GraphicsItemChange change, const QVariant &val
 					m_right->moveBy(diff.x(), diff.y());
 				}
 				QPointF scenePos = m_parent->mapFromScene ( value.toPointF());
-				m_nodeGroup->moveElementTo(m_index, scenePos );
+				if(m_nodeGroup)
+				{
+					m_nodeGroup->moveElementTo(m_index, scenePos );
+				}
 			}
 		}
 		else
@@ -243,6 +246,8 @@ void DControlNode::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	
 	m_parent->setSelected( true);
 	setVisibleChilds(true);
+	
+	event->accept();
 }
 
 
@@ -271,6 +276,9 @@ void DControlNode::mouseMoveEvent ( QGraphicsSceneMouseEvent * event )
 		}
 	}
 	setPos(event->scenePos());
+	
+	event->accept();
+	
 // 	update();
 }
 
