@@ -113,12 +113,14 @@ void PolyLine::press(const KTInputDeviceInformation *input, KTBrushManager *brus
 		d->path = QPainterPath();
 		d->path.moveTo(input->pos());
 		d->item = new KTPathItem();
+		
 		scene->addItem( d->item );
 		d->begin = true;
 	}
 	else
 	{
 		d->begin = false;
+		d->path = d->item->path();
 		d->path.cubicTo(d->rigth, d->mirror, input->pos());
 	}
 	
@@ -131,6 +133,7 @@ void PolyLine::move(const KTInputDeviceInformation *input, KTBrushManager *brush
 	D_FUNCINFOX("tools");
 	Q_UNUSED(brushManager);
 	Q_UNUSED(scene);
+	
 	foreach(QGraphicsView *view,  scene->views() )
 	{
 		view->setDragMode (QGraphicsView::NoDrag);

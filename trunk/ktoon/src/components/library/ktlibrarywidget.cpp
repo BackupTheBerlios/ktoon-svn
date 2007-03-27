@@ -254,9 +254,11 @@ void KTLibraryWidget::previewItem(QTreeWidgetItem *item, int)
 				{
 					d->display->render( qvariant_cast<QGraphicsItem *>(object->data()));
 					
+#if 0 // test
 					KTSymbolEditor *editor = new KTSymbolEditor;
 					editor->setSymbol(object);
 					emit postPage(editor);
+#endif
 				}
 			}
 			break;

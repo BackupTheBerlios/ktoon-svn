@@ -331,12 +331,14 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	
 	d->inputInformation->updateFromMouseEvent(event);
 	
-	if ( event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
+	if( event->buttons() == Qt::LeftButton &&  (event->modifiers () == (Qt::ShiftModifier | Qt::ControlModifier)))
 	{
 		d->isDrawing = false;
 	}
 	else if (d->tool )
 	{
+		if( d->tool->toolType() == KTToolPlugin::Brush && event->isAccepted() ) return;
+		
 		if ( event->buttons() == Qt::LeftButton && !currentFrame()->isLocked() )
 		{
 			d->tool->begin();
