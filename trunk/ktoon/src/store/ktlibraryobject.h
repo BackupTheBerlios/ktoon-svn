@@ -50,6 +50,9 @@ class KTLibraryObject : public QObject
 		void setData(const QVariant &data);
 		QVariant data() const;
 		
+		void setSymbolName(const QString &name);
+		QString symbolName() const;
+		
 	private:
 		struct Private;
 		Private *const d;

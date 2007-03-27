@@ -56,9 +56,8 @@ class KTLibraryFolder : public QObject
 		int foldersCount() const;
 		
 	private:
-		QString m_id;
-		Folders m_folders;
-		LibraryObjects m_objects;
+		struct Private;
+		Private *const d;
 };
 
 

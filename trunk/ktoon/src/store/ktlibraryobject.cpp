@@ -25,6 +25,7 @@ struct KTLibraryObject::Private
 {
 	int type;
 	QVariant data;
+	QString symbolName;
 };
 
 KTLibraryObject::KTLibraryObject(QObject *parent) : QObject(parent), d(new Private)
@@ -60,4 +61,16 @@ int KTLibraryObject::type() const
 {
 	return d->type;
 }
+
+
+void KTLibraryObject::setSymbolName(const QString &name)
+{
+	d->symbolName = name;
+}
+
+QString KTLibraryObject::symbolName() const
+{
+	return d->symbolName;
+}
+
 

@@ -21,6 +21,8 @@
 #include "ktgraphiclibraryitem.h"
 #include "ktlibraryobject.h"
 
+#include "ktserializer.h"
+
 #include <QGraphicsPixmapItem>
 #include <QGraphicsTextItem>
 
@@ -33,6 +35,7 @@ struct KTGraphicLibraryItem::Private
 KTGraphicLibraryItem::KTGraphicLibraryItem(KTLibraryObject *object)
  : KTProxyItem(), d(new Private)
 {
+	d->symbolName = object->symbolName();
 	switch(object->type())
 	{
 		case KTLibraryObject::Image:
@@ -79,7 +82,11 @@ KTGraphicLibraryItem::~KTGraphicLibraryItem()
 
 QDomElement KTGraphicLibraryItem::toXml(QDomDocument &doc) const
 {
-	return QDomElement();
+	QDomElement library = doc.createElement("reference");
+	library.setAttribute("symbol", d->symbolName);
+	library.appendChild( KTSerializer::properties( this, doc));
+	
+	return library;
 }
 
 void KTGraphicLibraryItem::fromXml(const QString &xml)

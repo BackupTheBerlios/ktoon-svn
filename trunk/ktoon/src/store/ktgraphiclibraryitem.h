@@ -29,7 +29,7 @@
 class KTLibraryObject;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado \<krawek@gmail.com\>
 */
 class STORE_EXPORT KTGraphicLibraryItem : public KTProxyItem, public KTAbstractSerializable
 {

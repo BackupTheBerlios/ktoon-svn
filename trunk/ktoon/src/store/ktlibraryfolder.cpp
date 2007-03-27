@@ -23,20 +23,30 @@
 
 #include <dcore/ddebug.h>
 
-KTLibraryFolder::KTLibraryFolder(const QString &id, QObject *parent) : QObject(parent), m_id(id)
+struct KTLibraryFolder::Private
 {
+	QString id;
+	Folders folders;
+	LibraryObjects objects;
+};
+
+KTLibraryFolder::KTLibraryFolder(const QString &id, QObject *parent) : QObject(parent), d(new Private)
+{
+	d->id = id;
 }
 
 
 KTLibraryFolder::~KTLibraryFolder()
 {
+	delete d;
 }
 
 bool KTLibraryFolder::addObject(KTLibraryObject *object, const QString &id)
 {
-	if ( !m_objects.contains(id ) )
+	if ( !d->objects.contains(id ) )
 	{
-		m_objects.insert(id, object);
+		d->objects.insert(id, object);
+		object->setSymbolName(id);
 		object->setParent(this);
 		return true;
 	}
@@ -46,16 +56,16 @@ bool KTLibraryFolder::addObject(KTLibraryObject *object, const QString &id)
 
 bool KTLibraryFolder::removeObject(const QString &id)
 {
-	int c = m_objects.remove(id);
+	int c = d->objects.remove(id);
 	
 	return c > 0;
 }
 
 bool KTLibraryFolder::moveObject(const QString &id, KTLibraryFolder *folder)
 {
-	if ( m_objects.contains(id) )
+	if ( d->objects.contains(id) )
 	{
-		KTLibraryObject *object = m_objects[id];
+		KTLibraryObject *object = d->objects[id];
 		removeObject( id );
 		
 		folder->addObject( object, id);
@@ -68,25 +78,25 @@ bool KTLibraryFolder::moveObject(const QString &id, KTLibraryFolder *folder)
 
 void KTLibraryFolder::setId(const QString &id)
 {
-	m_id = id;
+	d->id = id;
 }
 
 QString KTLibraryFolder::id() const
 {
-	return m_id;
+	return d->id;
 }
 
 KTLibraryObject *KTLibraryFolder::findObject(const QString &id) const
 {
-	foreach ( QString oid, m_objects.keys())
+	foreach ( QString oid, d->objects.keys())
 	{
 		if ( oid == id )
 		{
-			return m_objects[oid];
+			return d->objects[oid];
 		}
 	}
 	
-	foreach ( KTLibraryFolder *folder, m_folders )
+	foreach ( KTLibraryFolder *folder, d->folders )
 	{
 		KTLibraryObject *object = folder->findObject(id);
 		
@@ -103,11 +113,11 @@ KTLibraryObject *KTLibraryFolder::findObject(const QString &id) const
 
 int KTLibraryFolder::objectsCount() const
 {
-	return m_objects.count();
+	return d->objects.count();
 }
 
 int KTLibraryFolder::foldersCount() const
 {
-	return m_folders.count();
+	return d->folders.count();
 }
 
