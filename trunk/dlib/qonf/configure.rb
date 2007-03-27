@@ -59,16 +59,27 @@ class Configure
 		Info.info << "Creating makefiles..." << $endl
 		@qmake.run("", true)
 		
-		return if @options['prefix'].nil?
+		destdir = ""
+		
+		if @options['prefix'].nil?
+			destdir = case RQonf::DetectOS.whatOS
+				when 1 # Windows
+					"/" # FIXME
+				else
+					"/usr/local"
+			end
+		else
+			destdir = File.expand_path(@options['prefix'])
+		end
 		
 		Info.info << "Updating makefiles..." << $endl
 		
-		target = File.expand_path(@options['prefix'])
+		
 		@makefiles = []
 		findMakefiles(Dir.getwd)
 		
 		@makefiles.each { |makefile|
-			overrideDestdir(makefile, target)
+			overrideDestdir(makefile, destdir)
 		}
 	end
 	
