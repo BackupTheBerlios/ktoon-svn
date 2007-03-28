@@ -121,3 +121,37 @@ int KTLibraryFolder::foldersCount() const
 	return d->folders.count();
 }
 
+Folders KTLibraryFolder::folders() const
+{
+	return d->folders;
+}
+
+LibraryObjects KTLibraryFolder::objects() const
+{
+	return d->objects;
+}
+
+void KTLibraryFolder::fromXml(const QString &xml )
+{
+}
+
+QDomElement KTLibraryFolder::toXml(QDomDocument &doc) const
+{
+	QDomElement folder = doc.createElement("folder");
+	folder.setAttribute("id", d->id);
+	
+	foreach( KTLibraryObject *object, d->objects.values())
+	{
+		folder.appendChild(object->toXml(doc));
+	}
+	
+	foreach( KTLibraryFolder *folderObject, d->folders)
+	{
+		folder.appendChild(folderObject->toXml(doc));
+	}
+	
+	return folder;
+}
+
+
+

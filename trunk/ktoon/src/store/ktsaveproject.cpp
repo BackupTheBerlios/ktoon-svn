@@ -24,6 +24,7 @@
 
 #include "ktproject.h"
 #include "ktscene.h"
+#include "ktlibrary.h"
 #include "ktpackagehandler.h"
 
 #include <dcore/ddebug.h>
@@ -52,38 +53,61 @@ bool KTSaveProject::save(const QString &fileName, const KTProject *project)
 	
 	projectDir.cd(project->projectName());
 	
-	QFile prj(projectDir.path()+"/project.ktp");
-	
-	if ( prj.open(QIODevice::WriteOnly | QIODevice::Text))
 	{
-		QTextStream ts(&prj);
+		// Save project
+		QFile prj(projectDir.path()+"/project.ktp");
 		
-		QDomDocument doc;
-		doc.appendChild(project->toXml(doc));
-		
-		ts << doc.toString();
-		
-		prj.close();
+		if ( prj.open(QIODevice::WriteOnly | QIODevice::Text))
+		{
+			QTextStream ts(&prj);
+			
+			QDomDocument doc;
+			doc.appendChild(project->toXml(doc));
+			
+			ts << doc.toString();
+			
+			prj.close();
+		}
 	}
 	
-	int index = 0;
-	foreach ( KTScene *scene, project->scenes() )
+	// Save scenes
 	{
-		QDomDocument doc;
-		doc.appendChild(scene->toXml(doc));
-		
-		
-		QFile scn(projectDir.path()+"/scene"+QString::number(index)+".kts");
-		
-		if ( scn.open(QIODevice::WriteOnly | QIODevice::Text) )
+		int index = 0;
+		foreach ( KTScene *scene, project->scenes() )
 		{
-			QTextStream st(&scn);
+			QDomDocument doc;
+			doc.appendChild(scene->toXml(doc));
 			
-			st << doc.toString();
 			
-			index += 1;
+			QFile scn(projectDir.path()+"/scene"+QString::number(index)+".kts");
 			
-			scn.close();
+			if ( scn.open(QIODevice::WriteOnly | QIODevice::Text) )
+			{
+				QTextStream st(&scn);
+				
+				st << doc.toString();
+				
+				index += 1;
+				
+				scn.close();
+			}
+		}
+	}
+	
+	{
+		// Save library
+		QFile lbr(projectDir.path()+"/library.ktl");
+		
+		if ( lbr.open(QIODevice::WriteOnly | QIODevice::Text))
+		{
+			QTextStream ts(&lbr);
+			
+			QDomDocument doc;
+			doc.appendChild(project->library()->toXml(doc));
+			
+			ts << doc.toString();
+			
+			lbr.close();
 		}
 	}
 	

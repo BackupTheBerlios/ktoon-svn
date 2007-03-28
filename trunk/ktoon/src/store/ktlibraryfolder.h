@@ -23,17 +23,20 @@
 
 #include <QObject>
 #include <QHash>
-#include "ktlibraryobject.h"
+
+#include "ktabstractserializable.h"
+#include "ktglobal_store.h"
 
 class KTLibraryFolder;
+class KTLibraryObject;
 
 typedef QList<KTLibraryFolder *> Folders;
 typedef QHash<QString, KTLibraryObject *> LibraryObjects;
 
 /**
- * @author David Cuadrado <krawek@gmail.com>
+ * @author David Cuadrado \<krawek@gmail.com\>
 */
-class KTLibraryFolder : public QObject
+class STORE_EXPORT KTLibraryFolder : public QObject, public KTAbstractSerializable
 {
 	Q_OBJECT;
 	
@@ -51,9 +54,15 @@ class KTLibraryFolder : public QObject
 		
 		KTLibraryObject *findObject(const QString &id) const;
 		
+		Folders folders() const;
+		LibraryObjects objects() const;
 		
 		int objectsCount() const;
 		int foldersCount() const;
+		
+	public:
+		virtual void fromXml(const QString &xml );
+		virtual QDomElement toXml(QDomDocument &doc) const;
 		
 	private:
 		struct Private;

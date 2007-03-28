@@ -22,12 +22,14 @@
 #define KTLIBRARY_H
 
 #include <QObject>
+
+#include "ktglobal_store.h"
 #include "ktlibraryfolder.h"
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTLibrary : public KTLibraryFolder
+class STORE_EXPORT KTLibrary : public KTLibraryFolder
 {
 	Q_OBJECT;
 	
@@ -39,6 +41,10 @@ class KTLibrary : public KTLibraryFolder
 		};
 		KTLibrary(const QString &id, QObject *parent = 0);
 		~KTLibrary();
+		
+	public:
+		virtual void fromXml(const QString &xml );
+		virtual QDomElement toXml(QDomDocument &doc) const;
 };
 
 #endif

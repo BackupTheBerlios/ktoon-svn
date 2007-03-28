@@ -24,12 +24,15 @@
 #include <QVariant>
 #include <QGraphicsItem>
 
+#include "ktabstractserializable.h"
+#include "ktglobal_store.h"
+
 class KTLibraryObject;
 
 /**
  * @author David Cuadrado <krawek@gmail.com>
 */
-class KTLibraryObject : public QObject
+class STORE_EXPORT KTLibraryObject : public QObject, public KTAbstractSerializable
 {
 	public:
 		enum Type
@@ -52,6 +55,10 @@ class KTLibraryObject : public QObject
 		
 		void setSymbolName(const QString &name);
 		QString symbolName() const;
+		
+	public:
+		virtual void fromXml(const QString &xml );
+		virtual QDomElement toXml(QDomDocument &doc) const;
 		
 	private:
 		struct Private;

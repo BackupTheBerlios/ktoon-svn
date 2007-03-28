@@ -29,4 +29,18 @@ KTLibrary::~KTLibrary()
 {
 }
 
+void KTLibrary::fromXml(const QString &xml )
+{
+}
+
+
+QDomElement KTLibrary::toXml(QDomDocument &doc) const
+{
+	QDomElement root = doc.createElement("library");
+	
+	root.appendChild(KTLibraryFolder::toXml(doc));
+	
+	return root;
+}
+
 

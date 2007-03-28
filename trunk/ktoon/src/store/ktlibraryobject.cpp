@@ -73,4 +73,33 @@ QString KTLibraryObject::symbolName() const
 	return d->symbolName;
 }
 
+void KTLibraryObject::fromXml(const QString &xml )
+{
+}
+
+QDomElement KTLibraryObject::toXml(QDomDocument &doc) const
+{
+	QDomElement object = doc.createElement("object");
+	
+	switch(d->type)
+	{
+		case Item:
+		{
+			QGraphicsItem *item = qvariant_cast<QGraphicsItem *>(d->data);
+			
+			if( item )
+			{
+				if( KTAbstractSerializable *serializable = dynamic_cast<KTAbstractSerializable *>(item) )
+				{
+					object.appendChild(serializable->toXml(doc));
+				}
+			}
+		}
+		break;
+	}
+	
+	return object;
+}
+
+
 
