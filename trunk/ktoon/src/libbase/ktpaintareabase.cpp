@@ -383,6 +383,21 @@ void KTPaintAreaBase::wheelEvent(QWheelEvent *event)
 	}
 }
 
+bool KTPaintAreaBase::viewportEvent(QEvent *e)
+{
+	bool ret = QGraphicsView::viewportEvent(e);
+	
+	if( e->type() == QEvent::Show )
+	{
+		if( d->scene->items().isEmpty() )
+		{
+			d->scene->drawCurrentPhotogram();
+		}
+	}
+	
+	return ret;
+}
+
 void KTPaintAreaBase::scaleView(qreal scaleFactor)
 {
 	qreal factor = matrix().scale(scaleFactor, scaleFactor).mapRect(QRectF(0, 0, 1, 1)).width();

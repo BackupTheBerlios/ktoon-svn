@@ -84,23 +84,8 @@ class KTOON_EXPORT KTAnimationArea : public QFrame, public KTAbstractProjectResp
 		void resizeEvent ( QResizeEvent * event );
 		
 	private:
-		QFrame *m_container;
-		QImage m_renderCamera;
-		
-		KTProject *m_project;
-		
-		bool m_draw, m_ciclicAnimation;
-		
-		int m_currentFramePosition;
-		
-		QTimer *m_timer;
-		
-		QList<QImage> m_photograms;
-		bool m_isRendered;
-		
-		int m_currentSceneIndex;
-		
-		int m_fps;
+		struct Private;
+		Private *const d;
 };
 
 #endif

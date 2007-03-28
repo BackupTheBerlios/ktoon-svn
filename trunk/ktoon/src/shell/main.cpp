@@ -94,7 +94,6 @@ int main( int argc, char ** argv )
 			QMessageBox::critical(0, QObject::tr("Missing..."), QObject::tr("You need configure the application"));
 			application.exit(-1);
 			return -1;
-			
 		}
 		
 		

@@ -71,6 +71,8 @@ class KTPaintAreaBase : public QGraphicsView
 		virtual void tabletEvent( QTabletEvent * event );
 		virtual void wheelEvent( QWheelEvent *event );
 		
+		virtual bool viewportEvent(QEvent *e);
+		
 		
 	signals:
 		void cursorPosition(const QPointF &pos);

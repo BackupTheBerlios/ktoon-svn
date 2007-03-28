@@ -76,10 +76,11 @@ KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), d(new Private)
 	d->tool = 0;
 	d->isDrawing = false;
 	
+	setBackgroundBrush(Qt::gray);
+	
 	
 	d->inputInformation = new KTInputDeviceInformation(this);
 	d->brushManager = new KTBrushManager(this);
-	
 }
 
 
@@ -108,19 +109,9 @@ void KTGraphicsScene::setCurrentFrame(int layer, int frame)
 	d->framePosition.layer = layer;
 	d->framePosition.frame = frame;
 	
-	if (! this->currentFrame() )
+	foreach(QGraphicsView *view, views() )
 	{
-		foreach(QGraphicsView *view, views() )
-		{
-			view->setDragMode(QGraphicsView::NoDrag);
-		}
-	}
-	else
-	{
-		foreach(QGraphicsView *view, views() )
-		{
-			view->setDragMode(QGraphicsView::NoDrag);
-		}
+		view->setDragMode(QGraphicsView::NoDrag);
 	}
 }
 
@@ -161,30 +152,38 @@ void KTGraphicsScene::drawPhotogram(int photogram)
 	{
 		if ( layer->isVisible() )
 		{
-			double opacityFactor = 0.5 / (double)qMin(layer->frames().count(),d->onionSkin.previous);
-			
-			double opacity = 0.6;
-			
-			for(int frameIndex = photogram-1; frameIndex > photogram-d->onionSkin.previous-1; frameIndex-- )
+			if( d->onionSkin.previous > 0 )
 			{
-				addFrame( layer->frame(frameIndex), opacity );
+				double opacityFactor = 0.5 / (double)qMin(layer->frames().count(),d->onionSkin.previous);
 				
-				opacity -= opacityFactor;
+				double opacity = 0.6;
+				
+				for(int frameIndex = photogram-1; frameIndex > photogram-d->onionSkin.previous-1; frameIndex-- )
+				{
+					addFrame( layer->frame(frameIndex), opacity );
+					
+					opacity -= opacityFactor;
+				}
 			}
 			
-			opacityFactor = 0.5 / (double)qMin(layer->frames().count(), d->onionSkin.next);
-			opacity = 0.6;
-			
-			for(int frameIndex = photogram+1; frameIndex < photogram+d->onionSkin.next+1; frameIndex++ )
+			if ( d->onionSkin.next > 0 )
 			{
-				addFrame( layer->frame(frameIndex), opacity );
+				double opacityFactor = 0.5 / (double)qMin(layer->frames().count(), d->onionSkin.next);
+				double opacity = 0.6;
 				
-				opacity -= opacityFactor;
+				for(int frameIndex = photogram+1; frameIndex < photogram+d->onionSkin.next+1; frameIndex++ )
+				{
+					addFrame( layer->frame(frameIndex), opacity );
+					
+					opacity -= opacityFactor;
+				}
 			}
 			
 			addFrame(layer->frame( photogram ));
 		}
 	}
+	
+	update();
 }
 
 void KTGraphicsScene::addFrame(KTFrame *frame, double opacity )
@@ -197,14 +196,9 @@ void KTGraphicsScene::addFrame(KTFrame *frame, double opacity )
 			QGraphicsItem *item = object->item();
 			d->onionSkin.opacityMap.insert(item, opacity);
 			
-// 			KTItemFactory factory;
-// 			QDomDocument doc;
-			
-			
 			if( ! qgraphicsitem_cast<KTItemGroup *>(item->parentItem()))
 			{
-// 				doc.appendChild(object->toXml(doc));
-// 				addItem(factory.create( doc.toString() ));
+				item->setSelected(false);
 				addItem(item);
 			}
 			
@@ -273,9 +267,6 @@ KTFrame *KTGraphicsScene::currentFrame()
 void KTGraphicsScene::setCurrentScene(KTScene *scene)
 {
 	clean();
-	setItemIndexMethod(QGraphicsScene::NoIndex);
-	
-	setBackgroundBrush(Qt::gray);
 	
 // 	if( d->scene )
 // 	{
@@ -291,7 +282,7 @@ void KTGraphicsScene::setCurrentScene(KTScene *scene)
 	
 	d->scene = scene;
 	
-	drawCurrentPhotogram();
+// 	drawCurrentPhotogram();
 }
 
 void KTGraphicsScene::setLayerVisible(int layerIndex, bool visible)
@@ -428,7 +419,7 @@ void KTGraphicsScene::dragMoveEvent ( QGraphicsSceneDragDropEvent * event )
 void KTGraphicsScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 {
 	KTGuideLine *line;
-	if(event->mimeData()->text() == "lineVertical")
+	if(event->mimeData()->text() == "lineVertical") // FIXME: typo: verticalLine!!!
 	{
 		line  = new KTGuideLine(Qt::Vertical, this);
 		line->setPos(event->scenePos());

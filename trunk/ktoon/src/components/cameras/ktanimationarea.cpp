@@ -25,20 +25,53 @@
 
 #include "ktprojectresponse.h"
 #include "ktgraphicobject.h"
+#include "ktgraphicsscene.h"
 
 #include <dcore/ddebug.h>
 #include <dcore/dgradientadjuster.h>
 
-KTAnimationArea::KTAnimationArea(KTProject *project, QWidget *parent) : QFrame(parent), m_project(project), m_draw(false), m_ciclicAnimation(false), m_currentFramePosition(0), m_isRendered(false), m_currentSceneIndex(-1), m_fps(14)
+struct KTAnimationArea::Private
 {
+	QFrame *container;
+	QImage renderCamera;
+	
+	KTProject *project;
+	
+	bool draw, ciclicAnimation;
+	
+	int currentFramePosition;
+	
+	QTimer *timer;
+	
+	QList<QImage> photograms;
+	bool isRendered;
+	
+	int currentSceneIndex;
+	
+	int fps;
+};
+
+KTAnimationArea::KTAnimationArea(KTProject *project, QWidget *parent) : QFrame(parent), d( new Private )
+{
+	d->project = project;
+	
+	d->draw = false;
+	d->ciclicAnimation = false;
+	d->isRendered = false;
+	
+	d->currentSceneIndex = -1;
+	d->currentFramePosition = -1;
+	
+	d->fps = 14;
+	
 	setAttribute(Qt::WA_StaticContents);
 
-	m_renderCamera = QImage(size(), QImage::Format_RGB32);
-	m_renderCamera.fill(qRgb(255, 255, 255));
+	d->renderCamera = QImage(size(), QImage::Format_RGB32);
+	d->renderCamera.fill(qRgb(255, 255, 255));
 	
-	m_timer = new QTimer(this);
+	d->timer = new QTimer(this);
 	
-	connect(m_timer, SIGNAL(timeout()), this, SLOT(advance()));
+	connect(d->timer, SIGNAL(timeout()), this, SLOT(advance()));
 	
 	setCurrentScene( 0 );
 }
@@ -46,15 +79,16 @@ KTAnimationArea::KTAnimationArea(KTProject *project, QWidget *parent) : QFrame(p
 
 KTAnimationArea::~KTAnimationArea()
 {
+	delete d;
 }
 
 void KTAnimationArea::setFPS(int fps)
 {
-	m_fps = fps;
+	d->fps = fps;
 	
-	if ( m_timer->isActive()  )
+	if ( d->timer->isActive()  )
 	{
-		m_timer->stop();
+		d->timer->stop();
 		play();
 	}
 }
@@ -62,27 +96,27 @@ void KTAnimationArea::setFPS(int fps)
 
 void KTAnimationArea::paintEvent(QPaintEvent *)
 {
-	if ( m_currentFramePosition >= 0 && m_currentFramePosition < m_photograms.count() )
+	if ( d->currentFramePosition >= 0 && d->currentFramePosition < d->photograms.count() )
 	{
-		m_renderCamera = m_photograms[m_currentFramePosition];
+		d->renderCamera = d->photograms[d->currentFramePosition];
 	}
 	
 	QPainter painter;
 	
 	painter.begin(this);
-	painter.drawImage(QPoint(0, 0), m_renderCamera);
+	painter.drawImage(QPoint(0, 0), d->renderCamera);
 }
 
 void KTAnimationArea::play()
 {
 	dDebug("camera") << "Playing!";
 	
-	m_draw = true;
+	d->draw = true;
 	
-	if ( m_project && !m_timer->isActive() )
+	if ( d->project && !d->timer->isActive() )
 	{
-		render();
-		m_timer->start(1000 / m_fps);
+		if( !d->isRendered ) render();
+		d->timer->start(1000 / d->fps);
 	}
 	
 // 	emit toStatusBar( tr("Playing... "), 2000 );
@@ -91,48 +125,49 @@ void KTAnimationArea::play()
 void KTAnimationArea::stop()
 {
 	dDebug("camera") << "Stopping";
-	m_timer->stop();
-// 	m_draw = false;
-	m_currentFramePosition = 0;
-// 	m_currentFrame = 0;
+	d->timer->stop();
+// 	d->draw = false;
+	d->currentFramePosition = 0;
+// 	d->currentFrame = 0;
 	repaint();
 }
 
 void KTAnimationArea::nextFrame()
 {
-	if ( ! m_isRendered ) render();
+	if ( ! d->isRendered )
+		render();
 	
-	if ( m_currentFramePosition >= m_photograms.count() ) return;
+	if ( d->currentFramePosition >= d->photograms.count() ) return;
 	
-	m_currentFramePosition += 1;
+	d->currentFramePosition += 1;
 	repaint();
 }
 
 void KTAnimationArea::previousFrame()
 {
-	if ( ! m_isRendered ) render();
+	if ( ! d->isRendered ) render();
 	
-	if ( m_currentFramePosition < 1 ) return;
-	m_currentFramePosition -= 1;
+	if ( d->currentFramePosition < 1 ) return;
+	d->currentFramePosition -= 1;
 	repaint();
 }
 
 
 void KTAnimationArea::advance()
 {
-	if ( m_project )
+	if ( d->project )
 	{
-		if (m_ciclicAnimation && m_currentFramePosition >= m_photograms.count())
+		if (d->ciclicAnimation && d->currentFramePosition >= d->photograms.count())
 		{
-			m_currentFramePosition = 0;
+			d->currentFramePosition = 0;
 		}
 		
-		if ( m_currentFramePosition < m_photograms.count() )
+		if ( d->currentFramePosition < d->photograms.count() )
 		{
 			repaint();
-			m_currentFramePosition++;
+			d->currentFramePosition++;
 		}
-		else if ( !m_ciclicAnimation)
+		else if ( !d->ciclicAnimation)
 		{
 			stop();
 		}
@@ -158,9 +193,9 @@ void KTAnimationArea::sceneResponse(KTSceneResponse *event)
 		break;
 		case KTProjectRequest::Remove:
 		{
-			if ( event->sceneIndex() == m_currentSceneIndex )
+			if ( event->sceneIndex() == d->currentSceneIndex )
 			{
-				setCurrentScene( m_currentSceneIndex-1 );
+				setCurrentScene( d->currentSceneIndex-1 );
 			}
 		}
 		break;
@@ -182,84 +217,44 @@ void KTAnimationArea::libraryResponse(KTLibraryResponse *)
 
 void KTAnimationArea::render() // TODO: Extend to scenes
 {
-	m_photograms.clear();
-	
-#if 0 
-	KTScene *scene = m_project->scene( m_currentSceneIndex );
+	KTScene *scene = d->project->scene( d->currentSceneIndex );
 	
 	if (!scene) return;
 	
-	Layers layers = scene->layers();
-	
-	int nPhotogramsRenderized = 0;
-	
-	m_isRendered = false; // TODO: for test, remove this
 	int totalPhotograms = photogramsCount();
 	
-	emit toStatusBar( tr("Rendering... "),totalPhotograms*70 );
+	emit toStatusBar( tr("Rendering... "), totalPhotograms*70 );
 	
+	KTGraphicsScene *graphicScene = new KTGraphicsScene;
+	graphicScene->setCurrentScene(scene);
+	graphicScene->setBackgroundBrush(Qt::white);
 	
-	while ( ! m_isRendered )
+	graphicScene->setSceneRect(QRectF(QPointF(0,0), QSizeF( 500, 400 ) )); // FIXME: this isn't real size
+	
+	graphicScene->drawPhotogram(0); // ###: Why whithout this don't work?
+	
+	d->photograms.clear();
+	
+	for(int nPhotogramsRenderized = 0; nPhotogramsRenderized < totalPhotograms; nPhotogramsRenderized++)
 	{
-		QGraphicsScene *scn = new QGraphicsScene(scene->sceneRect(), this); // FIXME FIXME FIXME
-		
-		Layers::iterator layerIterator = layers.begin();
-		bool ok = true;
-		
 		QImage renderized = QImage(size(), QImage::Format_RGB32);
 		renderized.fill(qRgb(255, 255, 255));
 		
 		QPainter painter(&renderized);
 		painter.setRenderHint(QPainter::Antialiasing);
 		
-		while ( layerIterator != layers.end() )
-		{
-			ok = ok && (nPhotogramsRenderized >= (*layerIterator)->frames().count()-1);
-			
-			if ( *layerIterator && nPhotogramsRenderized < (*layerIterator)->frames().count() && (*layerIterator)->isVisible() )
-			{
-				KTFrame *frame = (*layerIterator)->frames()[nPhotogramsRenderized];
-				
-				foreach(KTGraphicObject *object, frame->graphics())
-				{
-					QGraphicsItem *item = object->item();
-					item->setSelected(false);
-					scn->addItem(item);
-				}
-			}
-			++layerIterator;
-		}
+		graphicScene->drawPhotogram(nPhotogramsRenderized);
+		graphicScene->render(&painter, renderized.rect(), graphicScene->sceneRect().toRect(), Qt::IgnoreAspectRatio );
 		
-		
-		dDebug("camera") << renderized.rect() << " " << scn->sceneRect().toRect();
-		scn->render(&painter, renderized.rect(), scn->sceneRect().toRect(), Qt::IgnoreAspectRatio );
-		
-		emit progressStep( nPhotogramsRenderized, totalPhotograms);
-		m_photograms << renderized;
-		
-		
-		if (ok )
-		{
-			m_isRendered = true;
-		}
-		
-		nPhotogramsRenderized++;
-		
-		foreach(QGraphicsItem *item, scn->items())
-		{
-			scn->removeItem(item);
-		}
-		
-		delete scn;
-		
-		scene->drawCurrentPhotogram();
+		d->photograms << renderized;
 	}
-#endif
+	
+	d->isRendered = true;
 }
 
 int KTAnimationArea::photogramsCount() const
 {
-	KTScene *scene = m_project->scene( m_currentSceneIndex );
+	KTScene *scene = d->project->scene( d->currentSceneIndex );
 	
 	if (!scene) return -1;
 	
@@ -282,32 +277,35 @@ int KTAnimationArea::photogramsCount() const
 
 QSize KTAnimationArea::sizeHint() const
 {
-	return m_renderCamera.size();
+	return d->renderCamera.size();
 }
 
 
-void  KTAnimationArea::resizeEvent ( QResizeEvent * )
+void  KTAnimationArea::resizeEvent ( QResizeEvent * e)
 {
+	QFrame::resizeEvent(e);
+	
 	stop();
-	m_renderCamera = QImage(size(), QImage::Format_RGB32);
-// 	m_size = size();
-	m_renderCamera.fill(qRgb(255, 255, 255));
+	d->renderCamera = QImage(size(), QImage::Format_RGB32);
+	d->renderCamera.fill(qRgb(255, 255, 255));
+	
+	d->isRendered = false;
 	update();
 }
 
 void KTAnimationArea::setLoop(bool l)
 {
-	m_ciclicAnimation = l;
+	d->ciclicAnimation = l;
 }
 
 void KTAnimationArea::setCurrentScene(int index)
 {
-	m_currentSceneIndex = index;
+	d->currentSceneIndex = index;
 	
 }
 
 KTScene *KTAnimationArea::currentScene() const
 {
-	return m_project->scene( m_currentSceneIndex );
+	return d->project->scene( d->currentSceneIndex );
 }
 
