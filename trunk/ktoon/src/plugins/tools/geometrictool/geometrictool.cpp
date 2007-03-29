@@ -123,6 +123,7 @@ void GeometricTool::press(const KTInputDeviceInformation *input, KTBrushManager 
 
 void GeometricTool::move(const KTInputDeviceInformation *input, KTBrushManager *brushManager, KTGraphicsScene *scene)
 {
+	D_FUNCINFOX("tools");
 	Q_UNUSED(input);
 	Q_UNUSED(brushManager);
 	

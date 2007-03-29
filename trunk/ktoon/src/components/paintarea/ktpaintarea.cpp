@@ -93,11 +93,6 @@ void KTPaintArea::setCurrentScene(int index)
 	{
 		d->currentSceneIndex = index;
 		graphicsScene()->setCurrentScene(sscene);
-		
-// 		if ( d->tool ) // FIXME
-// 		{
-// 			d->tool->init( this );
-// 		}
 	}
 	else
 	{
@@ -144,10 +139,6 @@ void KTPaintArea::frameResponse(KTFrameResponse *event)
 		break;
 	}
 	
-// 	if ( d->tool ) // FIXME
-// 	{
-// 		d->tool->init( this );
-// 	}
 }
 
 void KTPaintArea::layerResponse(KTLayerResponse *event)
@@ -165,9 +156,6 @@ void KTPaintArea::layerResponse(KTLayerResponse *event)
 		graphicsScene()->drawCurrentPhotogram();
 		viewport()->update(scene()->sceneRect().toRect() );
 	}
-	
-	
-	
 }
 
 void KTPaintArea::sceneResponse(KTSceneResponse *event)
@@ -220,12 +208,6 @@ void KTPaintArea::itemResponse(KTItemResponse *event)
 		}
 	}
 	graphicsScene()->itemResponse(event);
-	
-	//if ( d->tool ) // FIXME
-	//{
-	//	d->tool->itemResponse( event );
-	//	d->tool->init(this);
-	//}
 }
 
 void KTPaintArea::projectResponse(KTProjectResponse *)

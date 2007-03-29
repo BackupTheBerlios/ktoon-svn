@@ -64,6 +64,8 @@ struct KTGraphicsScene::Private
 	bool isDrawing;
 	KTBrushManager *brushManager;
 	KTInputDeviceInformation *inputInformation;
+	
+	QList<KTGuideLine *> lines;
 };
 
 KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), d(new Private)
@@ -221,6 +223,11 @@ void KTGraphicsScene::clean()
 		{
 			removeItem(item);
 		}
+	}
+	
+	foreach(KTGuideLine *line, d->lines )
+	{
+		addItem(line);
 	}
 }
 
@@ -397,29 +404,11 @@ void KTGraphicsScene::keyPressEvent(QKeyEvent *event)
 
 void KTGraphicsScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
 {
-	//crear linea
 	if (event->mimeData()->hasFormat("text/plain"))
 		event->acceptProposedAction();
 	
-}
-
-
-void  KTGraphicsScene::dragLeaveEvent ( QGraphicsSceneDragDropEvent * event )
-{
-	//TODO: eliminar linea
-	
-}
-
-void KTGraphicsScene::dragMoveEvent ( QGraphicsSceneDragDropEvent * event )
-{
-	
-	//TODO: mover linea
-}
-
-void KTGraphicsScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
-{
-	KTGuideLine *line;
-	if(event->mimeData()->text() == "lineVertical") // FIXME: typo: verticalLine!!!
+	KTGuideLine *line = 0;
+	if(event->mimeData()->text() == "verticalLine")
 	{
 		line  = new KTGuideLine(Qt::Vertical, this);
 		line->setPos(event->scenePos());
@@ -429,6 +418,29 @@ void KTGraphicsScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 		line = new KTGuideLine(Qt::Horizontal, this);
 		line->setPos(event->scenePos());
 	}
+	if(line)
+	{
+		d->lines << line;
+	}
+}
+
+
+void  KTGraphicsScene::dragLeaveEvent ( QGraphicsSceneDragDropEvent * event )
+{
+	removeItem(d->lines.last());
+	delete d->lines.takeLast();
+}
+
+void KTGraphicsScene::dragMoveEvent ( QGraphicsSceneDragDropEvent * event )
+{
+	if(!d->lines.isEmpty())
+	{
+		d->lines.last()->setPos(event->scenePos());
+	}
+}
+
+void KTGraphicsScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
+{
 }
 
 

@@ -64,10 +64,10 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
 	setCentralWidget( frame );
 	
 	layout->addWidget(m_paintArea, 1,1);
-	horizontalRuler = new KTDocumentRuler(Qt::Horizontal);
-	verticalRuler = new KTDocumentRuler(Qt::Vertical);
-	layout->addWidget(horizontalRuler, 0, 1);
-	layout->addWidget(verticalRuler, 1, 0);
+	m_horizontalRuler = new KTDocumentRuler(Qt::Horizontal);
+	m_verticalRuler = new KTDocumentRuler(Qt::Vertical);
+	layout->addWidget(m_horizontalRuler, 0, 1);
+	layout->addWidget(m_verticalRuler, 1, 0);
 	
 	KToon::RenderType renderType = KToon::RenderType(DCONFIG->value("RenderType").toInt()); 
 	switch(renderType)
@@ -92,10 +92,13 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
 	
 	connect(m_paintArea, SIGNAL(cursorPosition(const QPointF &)),  this,  SLOT(showPos(const QPointF &)) );
 	
-	connect(m_paintArea, SIGNAL(cursorPosition(const QPointF &)), verticalRuler, SLOT(movePointers(const QPointF&)));
+	connect(m_paintArea, SIGNAL(cursorPosition(const QPointF &)), m_verticalRuler, SLOT(movePointers(const QPointF&)));
 	
-	connect(m_paintArea, SIGNAL(cursorPosition(const QPointF &)), horizontalRuler, SLOT(movePointers(const QPointF&)));
+	connect(m_paintArea, SIGNAL(cursorPosition(const QPointF &)), m_horizontalRuler, SLOT(movePointers(const QPointF&)));
 	
+	connect(m_paintArea, SIGNAL(changedZero(const QPointF&)), m_horizontalRuler, SLOT(setZeroAt(const QPointF&)));
+	
+	connect(m_paintArea, SIGNAL(changedZero(const QPointF&)), m_verticalRuler, SLOT(setZeroAt(const QPointF&)));
 	
 	connect(m_paintArea, SIGNAL(requestTriggered(const KTProjectRequest* )), this, SIGNAL(requestTriggered(const KTProjectRequest *)));
 	
@@ -104,8 +107,6 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
 	setupEditActions();
 	setupViewActions();
 	setupOrderActions();
-	
-	
 	
 	m_configurationArea = new KTConfigurationArea;
 	addDockWidget(Qt::RightDockWidgetArea, m_configurationArea);
@@ -117,6 +118,7 @@ KTViewDocument::KTViewDocument(KTProject *project, QWidget *parent ) : QMainWind
 	setStatusBar(status);
 	
 	connect(m_paintArea->brushManager(), SIGNAL(brushChanged( const QBrush& )), status, SLOT(setBrush(const QBrush &)));
+	
 	connect(m_paintArea->brushManager(), SIGNAL(penChanged( const QPen& )), status, SLOT(setPen(const QPen &)));
 }
 

@@ -20,7 +20,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-//
 #ifndef KTPAINTAREABASE_H
 #define KTPAINTAREABASE_H
 
@@ -77,6 +76,7 @@ class KTPaintAreaBase : public QGraphicsView
 	signals:
 		void cursorPosition(const QPointF &pos);
 		void requestTriggered(const KTProjectRequest *event);
+		void changedZero(const QPointF &zero);
 		
 	private:
 		QMouseEvent *mapToArea(QMouseEvent *event) const;

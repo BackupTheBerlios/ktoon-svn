@@ -341,6 +341,8 @@ void KTPaintAreaBase::drawBackground(QPainter *painter, const QRectF &rect)
 	
 	painter->setRenderHint(QPainter::Antialiasing, hasAntialiasing);
 	
+	emit changedZero(painter->matrix().map(QPointF(0,0)));
+	
 	painter->restore();
 }
 

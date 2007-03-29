@@ -65,11 +65,11 @@ void KTDocumentRuler::mouseMoveEvent(QMouseEvent *event)
 	QString data;
 	if(orientation() == Qt::Vertical)
 	{
-		data = "lineVertical";
+		data = "verticalLine";
 	}
 	else
 	{
-		data = "lineHorizontal";
+		data = "horizontalLine";
 	}
 	mimeData->setData("text/plain", data.toAscii () );
 	drag->setMimeData(mimeData);
@@ -84,14 +84,14 @@ void KTDocumentRuler::movePointers(const QPointF &pos)
 	if(orientation() == Qt::Horizontal)
 	{
 		m_pArrow.translate(-d->oldPos.x(), 0);
-		m_pArrow.translate(pos.x(), 0);
+		m_pArrow.translate(zero().x() + pos.x(), 0);
 	}
 	else if(orientation() == Qt::Vertical)
 	{
 		
 		m_pArrow.translate(0, -d->oldPos.y());
-		m_pArrow.translate(0, pos.y());
+		m_pArrow.translate(0,zero().y() + pos.y());
 	}
-	d->oldPos = pos;
+	d->oldPos = zero() + pos;
 	repaint();
 }

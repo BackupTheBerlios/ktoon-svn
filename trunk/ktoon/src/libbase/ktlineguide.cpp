@@ -26,20 +26,17 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QGraphicsView>
 #include <QDebug>
+#include <QApplication>
 
 struct KTGuideLine::Private
 {
 	Qt::Orientation orientation;
-	
-	QPointF position;
-	
 };
 
 KTGuideLine::KTGuideLine(Qt::Orientation o ,QGraphicsScene *scene): QGraphicsItem(0, scene), d(new Private)
 {
 	d->orientation = o;
 	setAcceptsHoverEvents(true);
-	setFlag ( QGraphicsItem::ItemIsMovable);
 }
 
 
@@ -59,9 +56,18 @@ QRectF KTGuideLine::boundingRect() const
 	}
 }
 
-void KTGuideLine::paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget)
+void KTGuideLine::paint( QPainter * painter, const QStyleOptionGraphicsItem * , QWidget * )
 {
-	painter->drawRect(boundingRect());
+	painter->setPen(QPen(Qt::black, 1, Qt::DashLine));
+	if(d->orientation == Qt::Vertical)
+	{
+		painter->drawLine((int)boundingRect().center().x(), 0, (int)boundingRect().center().x(), (int)boundingRect().height());
+	}
+	else
+	{
+		painter->drawLine( 0, (int)boundingRect().center().y(), (int)boundingRect().width(), (int)boundingRect().center().y());
+	}
+	
 }
 
 
@@ -81,12 +87,10 @@ QVariant KTGuideLine::itemChange( GraphicsItemChange change, const QVariant & va
 	return QGraphicsItem::itemChange(change, value );
 }
 
-void KTGuideLine::hoverMoveEvent ( QGraphicsSceneHoverEvent * event)
+void KTGuideLine::hoverMoveEvent ( QGraphicsSceneHoverEvent * )
 {
-	d->position = event->screenPos() - QPointF(1,1);
 	syncCursor();
 }
-
 
 void KTGuideLine::mouseMoveEvent ( QGraphicsSceneMouseEvent * )
 {
@@ -100,18 +104,30 @@ void KTGuideLine::syncCursor()
 	{
 		foreach(QGraphicsView *view, scene()->views())
 		{
-			globalPos = view->viewport()->mapToGlobal(mapToScene(scene()->sceneRect()).boundingRect().topLeft().toPoint());//FIXME: encontrar la posicion global verdadera
-			
+			globalPos = view->viewport()->mapToGlobal(scenePos().toPoint() + view->mapFromScene(QPointF(0,0))) ;
 		}
 	}
 	
+	double distance;
 	if(d->orientation == Qt::Vertical)
 	{
-		QCursor::setPos((int)globalPos.x()+ boundingRect().width()/2, (int)QCursor::pos().y()) ;
+		distance = globalPos.x()+ 2 - QCursor::pos().x();
 	}
 	else
 	{
-		QCursor::setPos((int)QCursor::pos().x(), (int)globalPos.y()+ boundingRect().height()/2);
+		distance = globalPos.y() + 2 - QCursor::pos().y();
+	}
+	
+	if( -QApplication::startDragDistance() < distance && distance < QApplication::startDragDistance() )
+	{
+		if(d->orientation == Qt::Vertical)
+		{
+			QCursor::setPos((int)globalPos.x()+2, (int)QCursor::pos().y()) ;
+		}
+		else
+		{
+			QCursor::setPos((int)QCursor::pos().x(), (int)globalPos.y()+2);
+		}
 	}
 }
 
