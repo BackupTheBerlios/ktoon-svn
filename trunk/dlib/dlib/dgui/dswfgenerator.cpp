@@ -21,6 +21,7 @@
 #include "dswfgenerator.h"
 
 #include <QPaintEngine>
+#include <QtDebug>
 
 #include <mingpp.h>
 
@@ -33,6 +34,7 @@ class DMingPaintEngine : public QPaintEngine
 		virtual bool begin ( QPaintDevice * pdev );
 		virtual void drawPixmap ( const QRectF & r, const QPixmap & pm, const QRectF & sr );
 		virtual void drawPolygon ( const QPointF * points, int pointCount, PolygonDrawMode mode );
+		virtual void drawPolygon ( const QPoint * points, int pointCount, PolygonDrawMode mode );
 		virtual void drawPath(const QPainterPath & path);
 		virtual bool end();
 		virtual QPaintEngine::Type type() const;
@@ -41,19 +43,31 @@ class DMingPaintEngine : public QPaintEngine
 		
 	public:
 		void nextFrame();
+		SWFDisplayItem *addToFrame(SWFBlock *item);
 		void save(const QString &filePath);
 		
 	private:
 		SWFShape *createShape();
+		void propertiesForShape(SWFShape *shape);
 		
 	private:
 		SWFMovie *m_movie;
 		QList<SWFShape *> m_shapes;
+		QList<SWFDisplayItem *> m_currentFrame;
+		
+		struct {
+			QPointF brushOrigin;
+			QBrush backgroundBrush;
+			QBrush brush;
+			QPen pen;
+		} m_state;
 };
 
-DMingPaintEngine::DMingPaintEngine() : QPaintEngine(QPaintEngine::PatternBrush | QPaintEngine::LinearGradientFill | QPaintEngine::RadialGradientFill | QPaintEngine::ConicalGradientFill | QPaintEngine::AlphaBlend | QPaintEngine::PorterDuff | QPaintEngine::PainterPaths | QPaintEngine::Antialiasing | QPaintEngine::ConstantOpacity | QPaintEngine::PaintOutsidePaintEvent)
+DMingPaintEngine::DMingPaintEngine() : QPaintEngine(QPaintEngine::PrimitiveTransform | QPaintEngine::PatternBrush | QPaintEngine::LinearGradientFill | QPaintEngine::RadialGradientFill | QPaintEngine::ConicalGradientFill | QPaintEngine::AlphaBlend | QPaintEngine::PorterDuff/* | QPaintEngine::PainterPaths*/ | QPaintEngine::Antialiasing | QPaintEngine::ConstantOpacity | QPaintEngine::PaintOutsidePaintEvent)
 {
 	Ming_init();
+	
+	Ming_useSWFVersion(7);
 	
 	m_movie = new SWFMovie;
 	
@@ -84,27 +98,40 @@ void DMingPaintEngine::drawPixmap ( const QRectF & r, const QPixmap & pm, const 
 
 void DMingPaintEngine::drawPolygon ( const QPointF * points, int pointCount, PolygonDrawMode mode )
 {
-	for(int i = 0; i < 100; i++)
+	SWFShape *shape = createShape();
+	
+	shape->movePenTo(points[0].x(), points[0].y());
+	
+	for(int i = 1; i < pointCount; i++)
 	{
-		SWFShape *shape = createShape();
-		
-		shape->setLine(1, 0, 0, 0);
-		shape->movePenTo(50,50);
-		shape->drawCircle(100);
-		
-		SWFDisplayItem *frame = m_movie->add( shape);
-		
-		frame->rotate(i*30);
-		frame->moveTo(150, 150);
+		shape->drawLineTo(points[i].x(), points[i].y());
 	}
+	
+	shape->drawLineTo(points[0].x(), points[0].y()); // FIXME: It's ok?
+	
+	addToFrame(shape);
+}
+
+void DMingPaintEngine::drawPolygon ( const QPoint *points, int pointCount, PolygonDrawMode mode )
+{
+	SWFShape *shape = createShape();
+	
+	
+	shape->setLine(1, 0, 0, 0);
+	
+	shape->movePenTo(points[0].x(), points[0].y());
+	
+	for(int i = 0; i < pointCount; i++)
+	{
+		shape->drawLineTo(points[i].x(), points[i].y());
+	}
+	
+	addToFrame(shape);
 }
 
 void DMingPaintEngine::drawPath(const QPainterPath & path)
 {
-	SWFShape *shape = createShape();
-	shape->drawCircle(100);
 	
-	m_movie->add( shape);
 }
 
 bool DMingPaintEngine::end()
@@ -119,14 +146,46 @@ QPaintEngine::Type DMingPaintEngine::type() const
 }
 
 
-void DMingPaintEngine::updateState( const QPaintEngineState & state)
+void DMingPaintEngine::updateState(const QPaintEngineState & state)
 {
+	m_state.pen = state.pen();
+	
+	m_state.brushOrigin = state.brushOrigin();
+	
+	switch( state.state() )
+	{
+		case QPaintEngine::DirtyBrush:
+		{
+			m_state.brush = state.brush();
+		}
+		break;
+		case QPaintEngine::DirtyBackground:
+		{
+			m_state.backgroundBrush = state.backgroundBrush();
+		}
+		break;
+		default: break;
+	}
 }
 
+SWFDisplayItem *DMingPaintEngine::addToFrame(SWFBlock *shape)
+{
+	SWFDisplayItem *item = m_movie->add(shape);
+	m_currentFrame << item;
+	
+	return item;
+}
 
 void DMingPaintEngine::nextFrame()
 {
 	m_movie->nextFrame();
+	
+	foreach(SWFDisplayItem *item, m_currentFrame)
+	{
+		m_movie->remove(item);
+	}
+	qDeleteAll(m_currentFrame);
+	m_currentFrame.clear();
 }
 
 void DMingPaintEngine::save(const QString &filePath)
@@ -140,7 +199,32 @@ SWFShape *DMingPaintEngine::createShape()
 	
 	m_shapes << shape;
 	
+	propertiesForShape(shape);
+	
 	return shape;
+}
+
+void DMingPaintEngine::propertiesForShape(SWFShape *shape)
+{
+	QBrush brush = m_state.brush;
+	if( brush.gradient() )
+	{
+		qFatal("NO BRUSH GRADIENT SUPPORT");
+	}
+	else if (!brush.texture().isNull() )
+	{
+		qFatal("NO BRUSH TEXTURE SUPPORT");
+	}
+	else
+	{
+		QColor brushColor = brush.color();
+		SWFFill *fill = shape->addSolidFill(brushColor.red(), brushColor.green(), brushColor.blue(), brushColor.alpha());
+		
+		fill->moveTo(m_state.brushOrigin.x(),m_state.brushOrigin.y());
+	}
+	
+	QColor penColor = m_state.pen.color();
+	shape->setLine(m_state.pen.width(), penColor.red(), penColor.green(), penColor.blue(), penColor.alpha());
 }
 
 /////////////////////////////////// DSwfGenerator //////////////////////////////////////
