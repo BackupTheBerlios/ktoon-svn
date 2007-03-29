@@ -65,8 +65,11 @@ class D_GUI_EXPORT DRulerBase : public QFrame
 // 		const double mm2pts(double mm);
 		virtual void drawScale(QPainter *painter);
 		Qt::Orientation orientation();
-		void setZeroAt(const QPointF & pos);
 		
+		QPointF zero() const ;
+		
+	public slots:
+		void setZeroAt(const QPointF & pos);
 		
 	private:
 		int m_position;

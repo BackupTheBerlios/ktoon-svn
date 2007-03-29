@@ -85,15 +85,15 @@ DRulerBase::~DRulerBase()
 void DRulerBase::paintEvent ( QPaintEvent * )
 {
 	QPainter p(this);
-
-//  	p.setRenderHint( QPainter::TextAntialiasing/*QPainter::Antialiasing*/);
-// 	m_pScale
-
 	
 	drawScale(&p);
-// 	p.drawImage(QPoint(0, 0), m_pScale);
 	p.setBrush(palette ().color(QPalette::Foreground));
+	
+	p.save();
+// 	p.translate(m_zero.x(), m_zero.y());
 	p.drawConvexPolygon(m_pArrow);
+	p.restore();
+	
 	p.end();
 	
 }
@@ -103,11 +103,7 @@ void DRulerBase::drawScale(QPainter *painter)
 	painter->save();
 	QFontMetrics fm(font());
 	
-// 	m_pScale = QImage(width(), height(), QImage::Format_RGB32);
-	QPalette m_palette = palette();
-	QColor aColor = m_palette.color( QPalette::Background);
 	
-// 	m_pScale.fill(aColor.rgb ());
 	int fact = 1;
 	int init;
 	if(m_orientation == Qt::Horizontal)
@@ -119,14 +115,12 @@ void DRulerBase::drawScale(QPainter *painter)
 	}
 	else
 	{
-		
 		painter->drawLine(width()-1, 0, width()-1, height());
 		fact = -1;
 		painter->translate(0, m_zero.y());
 		painter->rotate(90);
 		init = m_zero.y();
-		painter->drawLine(0,height()-1, width(),height()-1 );
-		
+		painter->drawLine(0, height()-1, width(), height()-1 );
 	}
 	
 	for(int i = 0; i < m_width; i +=10)
@@ -282,10 +276,15 @@ void DRulerBase::slide(int value)
 	}
 }
 
+
+QPointF DRulerBase::zero() const
+{
+	return m_zero;
+}
+
 void DRulerBase::setZeroAt(const QPointF & pos)
 {
 	m_zero = pos;
-	
 	update();
 }
 
@@ -308,6 +307,3 @@ void DRulerBase::changeScaleTo10pts()
 {
 	setSeparation( 10 );
 }
-
-
-
