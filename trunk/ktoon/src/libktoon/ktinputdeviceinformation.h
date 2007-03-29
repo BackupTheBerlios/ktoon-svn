@@ -26,6 +26,7 @@
 #include "ktglobal.h"
 
 class QGraphicsSceneMouseEvent;
+class QMouseEvent;
 class QTabletEvent;
 
 
@@ -39,6 +40,7 @@ class KTOON_EXPORT KTInputDeviceInformation : public QObject
 		~KTInputDeviceInformation();
 		
 		void updateFromMouseEvent(QGraphicsSceneMouseEvent *event);
+		void updateFromMouseEvent(QMouseEvent *event);
 		void updateFromTabletEvent(QTabletEvent *event);
 		
 		double pressure() const;
@@ -51,21 +53,8 @@ class KTOON_EXPORT KTInputDeviceInformation : public QObject
 		Qt::KeyboardModifiers keyModifiers() const;
 		
 	private:
-		struct TabletInfo
-		{
-			double pressure;
-			double rotation;
-			double tangentialPressure;
-		} m_tabletInfo;
-		
-		struct MouseInfo
-		{
-			Qt::MouseButton button;
-			Qt::MouseButtons buttons;
-		} m_mouseInfo;
-		
-		QPointF m_position;
-		Qt::KeyboardModifiers m_keyModifiers;
+		struct Private;
+		Private *const d;
 };
 
 #endif

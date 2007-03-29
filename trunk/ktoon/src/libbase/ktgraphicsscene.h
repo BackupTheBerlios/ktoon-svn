@@ -31,7 +31,7 @@ class KTFrame;
 class KTScene;
 class KTToolPlugin;
 class KTBrushManager;
-
+class QMouseEvent;
 class KTItemResponse;
 
 class KTGraphicsScene : public QGraphicsScene
@@ -73,6 +73,9 @@ class KTGraphicsScene : public QGraphicsScene
 		
 		void itemResponse(KTItemResponse *event);
 		
+		void mouseMoved(QGraphicsSceneMouseEvent *event);
+		void mouseReleased(QGraphicsSceneMouseEvent *event);
+		
 	protected:
 		virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 		virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
@@ -80,12 +83,12 @@ class KTGraphicsScene : public QGraphicsScene
 		virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 		virtual void keyPressEvent(QKeyEvent *keyEvent);
 		
-		void dragLeaveEvent ( QGraphicsSceneDragDropEvent * event );
-		void dragEnterEvent ( QGraphicsSceneDragDropEvent * event );
-		void dragMoveEvent ( QGraphicsSceneDragDropEvent * event );
-		void dropEvent ( QGraphicsSceneDragDropEvent * event );
+		virtual void dragLeaveEvent( QGraphicsSceneDragDropEvent * event );
+		virtual void dragEnterEvent( QGraphicsSceneDragDropEvent * event );
+		virtual void dragMoveEvent( QGraphicsSceneDragDropEvent * event );
+		virtual void dropEvent( QGraphicsSceneDragDropEvent * event );
 		
-		
+		virtual bool event(QEvent *e);
 		
 		
 	private:

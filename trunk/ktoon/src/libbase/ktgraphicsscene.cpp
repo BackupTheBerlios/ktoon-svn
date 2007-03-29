@@ -349,7 +349,10 @@ void KTGraphicsScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void KTGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsScene::mouseMoveEvent(event);
-	
+}
+
+void KTGraphicsScene::mouseMoved(QGraphicsSceneMouseEvent *event)
+{
 	d->inputInformation->updateFromMouseEvent( event );
 	
 	if (d->tool && d->isDrawing )
@@ -361,7 +364,10 @@ void KTGraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 void KTGraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 	QGraphicsScene::mouseReleaseEvent(event);
-	
+}
+
+void KTGraphicsScene::mouseReleased(QGraphicsSceneMouseEvent *event)
+{
 	d->inputInformation->updateFromMouseEvent( event );
 	
 	if ( d->tool && d->isDrawing )
@@ -441,8 +447,14 @@ void KTGraphicsScene::dragMoveEvent ( QGraphicsSceneDragDropEvent * event )
 
 void KTGraphicsScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 {
+	Q_UNUSED(event);
 }
 
+
+bool KTGraphicsScene::event(QEvent *e)
+{
+	return QGraphicsScene::event(e);
+}
 
 
 void KTGraphicsScene::itemResponse(KTItemResponse *event)

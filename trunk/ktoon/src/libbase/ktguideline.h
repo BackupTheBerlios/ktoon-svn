@@ -34,13 +34,15 @@ class KTLineGuide : public QGraphicsItem
 		~KTLineGuide();
 		
 		QRectF boundingRect() const;
-		void paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0 );
 		
 	protected:
-		QVariant itemChange ( GraphicsItemChange change, const QVariant & value );
-		void hoverMoveEvent ( QGraphicsSceneHoverEvent * event );
-		void mouseMoveEvent ( QGraphicsSceneMouseEvent * event );
+		QVariant itemChange(GraphicsItemChange change, const QVariant & value);
 		
+// 		void hoverEnterEvent(QGraphicsSceneHoverEvent* event);
+		void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
+		
+		bool sceneEvent(QEvent *e);
 		
 	private:
 		struct Private;

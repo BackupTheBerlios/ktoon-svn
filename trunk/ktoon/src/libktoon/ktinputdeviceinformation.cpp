@@ -20,85 +20,121 @@
 
 #include "ktinputdeviceinformation.h"
 #include <QGraphicsSceneMouseEvent>
+#include <QMouseEvent>
 #include <QTabletEvent>
 
-KTInputDeviceInformation::KTInputDeviceInformation(QObject *parent) : QObject(parent)
+
+struct KTInputDeviceInformation::Private
 {
-	m_mouseInfo.button = Qt::NoButton;
-	m_mouseInfo.buttons = Qt::NoButton;
+	struct TabletInfo
+	{
+		double pressure;
+		double rotation;
+		double tangentialPressure;
+	} tabletInfo;
 	
-	m_tabletInfo.pressure = -1;
-	m_tabletInfo.rotation = 0;
-	m_tabletInfo.tangentialPressure = -1;
+	struct MouseInfo
+	{
+		Qt::MouseButton button;
+		Qt::MouseButtons buttons;
+	} mouseInfo;
 	
-	m_keyModifiers = Qt::NoModifier;
+	QPointF position;
+	Qt::KeyboardModifiers keyModifiers;
+};
+
+KTInputDeviceInformation::KTInputDeviceInformation(QObject *parent) : QObject(parent), d(new Private)
+{
+	d->mouseInfo.button = Qt::NoButton;
+	d->mouseInfo.buttons = Qt::NoButton;
+	
+	d->tabletInfo.pressure = -1;
+	d->tabletInfo.rotation = 0;
+	d->tabletInfo.tangentialPressure = -1;
+	
+	d->keyModifiers = Qt::NoModifier;
 }
 
 
 KTInputDeviceInformation::~KTInputDeviceInformation()
 {
+	delete d;
 }
 
 void KTInputDeviceInformation::updateFromMouseEvent(QGraphicsSceneMouseEvent *event)
 {
-	m_mouseInfo.button = event->button();
-	m_mouseInfo.buttons = event->buttons();
+	d->mouseInfo.button = event->button();
+	d->mouseInfo.buttons = event->buttons();
 	
-	m_position = event->scenePos();
+	d->position = event->scenePos();
 	
-	m_keyModifiers = event->modifiers();
+	d->keyModifiers = event->modifiers();
 	
-	m_tabletInfo.pressure = -1;
-	m_tabletInfo.rotation = 0;
-	m_tabletInfo.tangentialPressure = -1;
+	d->tabletInfo.pressure = -1;
+	d->tabletInfo.rotation = 0;
+	d->tabletInfo.tangentialPressure = -1;
+}
+
+void KTInputDeviceInformation::updateFromMouseEvent(QMouseEvent *event)
+{
+	d->mouseInfo.button = event->button();
+	d->mouseInfo.buttons = event->buttons();
+	
+	d->position = event->pos();
+	
+	d->keyModifiers = event->modifiers();
+	
+	d->tabletInfo.pressure = -1;
+	d->tabletInfo.rotation = 0;
+	d->tabletInfo.tangentialPressure = -1;
 }
 
 void KTInputDeviceInformation::updateFromTabletEvent(QTabletEvent *event)
 {
-	m_tabletInfo.pressure = event->pressure();
-	m_tabletInfo.rotation = event->rotation();
-	m_tabletInfo.tangentialPressure = event->tangentialPressure();
+	d->tabletInfo.pressure = event->pressure();
+	d->tabletInfo.rotation = event->rotation();
+	d->tabletInfo.tangentialPressure = event->tangentialPressure();
 	
-	m_position = event->pos();
+	d->position = event->pos();
 	
-	m_keyModifiers = event->modifiers();
+	d->keyModifiers = event->modifiers();
 }
 
 
 double KTInputDeviceInformation::pressure() const
 {
-	return m_tabletInfo.pressure;
+	return d->tabletInfo.pressure;
 }
 
 double KTInputDeviceInformation::rotation() const
 {
-	return m_tabletInfo.rotation;
+	return d->tabletInfo.rotation;
 }
 
 double KTInputDeviceInformation::tangentialPressure() const
 {
-	return m_tabletInfo.tangentialPressure;
+	return d->tabletInfo.tangentialPressure;
 }
 
 Qt::MouseButton KTInputDeviceInformation::button() const
 {
-	return m_mouseInfo.button;
+	return d->mouseInfo.button;
 }
 
 Qt::MouseButtons KTInputDeviceInformation::buttons() const
 {
-	return m_mouseInfo.buttons;
+	return d->mouseInfo.buttons;
 }
 
 
 QPointF KTInputDeviceInformation::pos() const
 {
-	return m_position;
+	return d->position;
 }
 
 Qt::KeyboardModifiers KTInputDeviceInformation::keyModifiers() const
 {
-	return m_keyModifiers;
+	return d->keyModifiers;
 }
 
 

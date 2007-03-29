@@ -574,6 +574,13 @@ QPointF *fitCubic(QPolygonF &points,int first,int last,FitVector tHat1,FitVector
 
 QPainterPath KTGraphicalAlgorithm::bezierFit( QPolygonF &points_,float error, int from, int to)
 {
+	if( points_.count() < 3 )
+	{
+		QPainterPath ret;
+		ret.addPolygon(points_);
+		return ret;
+	}
+	
 	QPolygonF points = KTGraphicalAlgorithm::polygonFit( points_ );
 	
 	FitVector tHat1, tHat2;

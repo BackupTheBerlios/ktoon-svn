@@ -25,6 +25,7 @@
 
 #include <QGraphicsScene>
 #include <QMouseEvent>
+#include <QGraphicsSceneMouseEvent>
 #include <QGraphicsRectItem>
 #include <QPolygon>
 #include <QApplication>
@@ -289,11 +290,35 @@ void KTPaintAreaBase::mouseMoveEvent ( QMouseEvent * event )
 	else
 	{
 		QGraphicsView::mouseMoveEvent(event);
+		
+		QGraphicsSceneMouseEvent *newevent = new QGraphicsSceneMouseEvent(QEvent::GraphicsSceneMouseMove);
+		
+		newevent->setScenePos(mapToScene(event->pos()));
+		newevent->setButton(event->button());
+		newevent->setButtons(event->buttons());
+		
+		d->scene->mouseMoved(newevent);
+		
+		delete newevent;
 	}
 	
 	emit cursorPosition( mapToScene( event->pos() ) );
 }
 
+void KTPaintAreaBase::mouseReleaseEvent(QMouseEvent *event)
+{
+	QGraphicsView::mouseReleaseEvent(event);
+	
+	QGraphicsSceneMouseEvent *newevent = new QGraphicsSceneMouseEvent(QEvent::GraphicsSceneMouseMove);
+	
+	newevent->setScenePos(mapToScene(event->pos()));
+	newevent->setButton(event->button());
+	newevent->setButtons(event->buttons());
+	
+	d->scene->mouseReleased(newevent);
+	
+	delete newevent;
+}
 
 void KTPaintAreaBase::tabletEvent( QTabletEvent * event )
 {
