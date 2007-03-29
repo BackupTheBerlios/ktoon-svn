@@ -273,19 +273,10 @@ KTFrame *KTGraphicsScene::currentFrame()
 
 void KTGraphicsScene::setCurrentScene(KTScene *scene)
 {
-	clean();
+	qDeleteAll(d->lines);
+	d->lines.clear();
 	
-// 	if( d->scene )
-// 	{
-// 		setCurrentFrame( currentFrameIndex(), currentLayerIndex() );
-// 	}
-// 	else
-// 	{
-// 		if ( scene->layers().count() > 0 )
-// 		{
-// 			setCurrentFrame(0, 0);
-// 		}
-// 	}
+	clean();
 	
 	d->scene = scene;
 	
