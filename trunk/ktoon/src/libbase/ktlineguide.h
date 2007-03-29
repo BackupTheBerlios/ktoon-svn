@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef KTGUIDELINE_H
-#define KTGUIDELINE_H
+#ifndef KTLINEGUIDE_H
+#define KTLINEGUIDE_H
 
 #include <QGraphicsItem>
 
@@ -27,11 +27,11 @@
 /**
  * @author Jorge Cuadrado \<kuadrosx@toonka.com\>
 */
-class KTGuideLine : public QGraphicsItem
+class KTLineGuide : public QGraphicsItem
 {
 	public:
-		KTGuideLine(Qt::Orientation o, QGraphicsScene *scene);
-		~KTGuideLine();
+		KTLineGuide(Qt::Orientation o, QGraphicsScene *scene);
+		~KTLineGuide();
 		
 		QRectF boundingRect() const;
 		void paint( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );

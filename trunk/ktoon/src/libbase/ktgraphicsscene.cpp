@@ -41,7 +41,7 @@
 
 #include <dcore/ddebug.h>
 
-#include "ktlineguide.h"
+#include "ktguideline.h"
 
 struct KTGraphicsScene::Private
 {
@@ -65,7 +65,7 @@ struct KTGraphicsScene::Private
 	KTBrushManager *brushManager;
 	KTInputDeviceInformation *inputInformation;
 	
-	QList<KTGuideLine *> lines;
+	QList<KTLineGuide *> lines;
 };
 
 KTGraphicsScene::KTGraphicsScene() : QGraphicsScene(), d(new Private)
@@ -225,7 +225,7 @@ void KTGraphicsScene::clean()
 		}
 	}
 	
-	foreach(KTGuideLine *line, d->lines )
+	foreach(KTLineGuide *line, d->lines )
 	{
 		addItem(line);
 	}
@@ -407,15 +407,15 @@ void KTGraphicsScene::dragEnterEvent ( QGraphicsSceneDragDropEvent * event )
 	if (event->mimeData()->hasFormat("text/plain"))
 		event->acceptProposedAction();
 	
-	KTGuideLine *line = 0;
+	KTLineGuide *line = 0;
 	if(event->mimeData()->text() == "verticalLine")
 	{
-		line  = new KTGuideLine(Qt::Vertical, this);
+		line  = new KTLineGuide(Qt::Vertical, this);
 		line->setPos(event->scenePos());
 	}
 	else
 	{
-		line = new KTGuideLine(Qt::Horizontal, this);
+		line = new KTLineGuide(Qt::Horizontal, this);
 		line->setPos(event->scenePos());
 	}
 	if(line)

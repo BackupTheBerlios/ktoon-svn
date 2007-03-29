@@ -18,7 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "ktlineguide.h"
+#include "ktguideline.h"
 
 #include <QGraphicsScene>
 #include <QPainter>
@@ -28,23 +28,23 @@
 #include <QDebug>
 #include <QApplication>
 
-struct KTGuideLine::Private
+struct KTLineGuide::Private
 {
 	Qt::Orientation orientation;
 };
 
-KTGuideLine::KTGuideLine(Qt::Orientation o ,QGraphicsScene *scene): QGraphicsItem(0, scene), d(new Private)
+KTLineGuide::KTLineGuide(Qt::Orientation o ,QGraphicsScene *scene): QGraphicsItem(0, scene), d(new Private)
 {
 	d->orientation = o;
 	setAcceptsHoverEvents(true);
 }
 
 
-KTGuideLine::~KTGuideLine()
+KTLineGuide::~KTLineGuide()
 {
 }
 
-QRectF KTGuideLine::boundingRect() const
+QRectF KTLineGuide::boundingRect() const
 {
 	if(d->orientation == Qt::Vertical)
 	{
@@ -56,7 +56,7 @@ QRectF KTGuideLine::boundingRect() const
 	}
 }
 
-void KTGuideLine::paint( QPainter * painter, const QStyleOptionGraphicsItem * , QWidget * )
+void KTLineGuide::paint( QPainter * painter, const QStyleOptionGraphicsItem * , QWidget * )
 {
 	painter->setPen(QPen(Qt::black, 1, Qt::DashLine));
 	if(d->orientation == Qt::Vertical)
@@ -71,7 +71,7 @@ void KTGuideLine::paint( QPainter * painter, const QStyleOptionGraphicsItem * , 
 }
 
 
-QVariant KTGuideLine::itemChange( GraphicsItemChange change, const QVariant & value )
+QVariant KTLineGuide::itemChange( GraphicsItemChange change, const QVariant & value )
 {
 	if(change == ItemPositionChange)
 	{
@@ -87,17 +87,17 @@ QVariant KTGuideLine::itemChange( GraphicsItemChange change, const QVariant & va
 	return QGraphicsItem::itemChange(change, value );
 }
 
-void KTGuideLine::hoverMoveEvent ( QGraphicsSceneHoverEvent * )
+void KTLineGuide::hoverMoveEvent ( QGraphicsSceneHoverEvent * )
 {
 	syncCursor();
 }
 
-void KTGuideLine::mouseMoveEvent ( QGraphicsSceneMouseEvent * )
+void KTLineGuide::mouseMoveEvent ( QGraphicsSceneMouseEvent * )
 {
 	syncCursor();
 }
 
-void KTGuideLine::syncCursor()
+void KTLineGuide::syncCursor()
 {
 	QPointF globalPos;
 	if(scene())
