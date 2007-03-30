@@ -70,7 +70,7 @@ HEADERS += danimwidget.h \
            dstackedmainwindow.h \
            dworkspacemainwindow.h \
            dcontrolnode.h \
-           dnodegroup.h 
+           dnodegroup.h  
 SOURCES += danimwidget.cpp \
            dapplication.cpp \
            dcellview.cpp \
@@ -133,7 +133,7 @@ SOURCES += danimwidget.cpp \
            dstackedmainwindow.cpp \
            dworkspacemainwindow.cpp \
            dcontrolnode.cpp \
-           dnodegroup.cpp 
+           dnodegroup.cpp  
 DEFINES += DLIB_GUI
 RESOURCES += dgui_images.qrc
 QT += xml
@@ -161,9 +161,9 @@ linux-g{
 }
 
 
-contains(DEFINES, HAVE_MING) {
+contains(DEFINES, HAVE_MING){
     HEADERS += dswfgenerator.h
     SOURCES += dswfgenerator.cpp
 }
-	
+
 

@@ -21,6 +21,9 @@
 #include "dswfgenerator.h"
 
 #include <QPaintEngine>
+#include <QPainterPath>
+#include <QBuffer>
+
 #include <QtDebug>
 
 #include <mingpp.h>
@@ -63,10 +66,9 @@ class DMingPaintEngine : public QPaintEngine
 		} m_state;
 };
 
-DMingPaintEngine::DMingPaintEngine() : QPaintEngine(QPaintEngine::PrimitiveTransform | QPaintEngine::PatternBrush | QPaintEngine::LinearGradientFill | QPaintEngine::RadialGradientFill | QPaintEngine::ConicalGradientFill | QPaintEngine::AlphaBlend | QPaintEngine::PorterDuff/* | QPaintEngine::PainterPaths*/ | QPaintEngine::Antialiasing | QPaintEngine::ConstantOpacity | QPaintEngine::PaintOutsidePaintEvent)
+DMingPaintEngine::DMingPaintEngine() : QPaintEngine(QPaintEngine::PrimitiveTransform | QPaintEngine::PatternBrush | QPaintEngine::LinearGradientFill | QPaintEngine::RadialGradientFill | QPaintEngine::ConicalGradientFill | QPaintEngine::AlphaBlend | QPaintEngine::PorterDuff | QPaintEngine::PainterPaths | QPaintEngine::Antialiasing | QPaintEngine::ConstantOpacity | QPaintEngine::PaintOutsidePaintEvent)
 {
 	Ming_init();
-	
 	Ming_useSWFVersion(7);
 	
 	m_movie = new SWFMovie;
@@ -94,6 +96,19 @@ bool DMingPaintEngine::begin( QPaintDevice *pdev)
 
 void DMingPaintEngine::drawPixmap ( const QRectF & r, const QPixmap & pm, const QRectF & sr )
 {
+	QImage image = pm.toImage();
+	
+	QByteArray ba;
+	QBuffer buffer(&ba);
+	buffer.open(QIODevice::WriteOnly);
+	image.save(&buffer, "PNG");
+	
+	SWFInput input((unsigned char*) ba.data(), ba.size());
+	SWFBitmap *bitmap = new SWFBitmap( &input ); // FIXME: hay que borrar el puntero
+	
+	SWFShape *shape = createShape();
+	shape->addBitmapFill(bitmap);
+	addToFrame(shape);
 }
 
 void DMingPaintEngine::drawPolygon ( const QPointF * points, int pointCount, PolygonDrawMode mode )
@@ -131,7 +146,48 @@ void DMingPaintEngine::drawPolygon ( const QPoint *points, int pointCount, Polyg
 
 void DMingPaintEngine::drawPath(const QPainterPath & path)
 {
+	SWFShape *shape = createShape();
 	
+	shape->setLine(1, 0, 0, 0);
+	
+	QVector<QPointF> curve;
+	
+	for(int i = 0; i < path.elementCount(); i++)
+	{
+		QPainterPath::Element e = path.elementAt(i);
+		
+		qDebug() << e;
+		
+		switch(e.type)
+		{
+			case QPainterPath::MoveToElement:
+			{
+				shape->movePenTo(e.x, e.y);
+				break;
+			}
+			case QPainterPath::LineToElement:
+			{
+				shape->drawLine(e.x, e.y);
+				break;
+			}
+			case QPainterPath::CurveToDataElement:
+			{
+				curve << e;
+				if(curve.count() == 3)
+				{
+					shape->drawCubicTo(curve[0].x(),curve[0].y(), curve[1].x(), curve[1].y(), curve[2].x(), curve[2].y());
+				}
+				break;
+			}
+			case QPainterPath::CurveToElement:
+			{
+				curve.clear();
+				curve << e;
+				break;
+			}
+		}
+	}
+	addToFrame(shape);
 }
 
 bool DMingPaintEngine::end()
