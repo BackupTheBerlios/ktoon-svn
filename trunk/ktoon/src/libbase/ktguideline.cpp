@@ -31,16 +31,20 @@
 struct KTLineGuide::Private
 {
 	Qt::Orientation orientation;
+	bool enabled;
 };
 
 KTLineGuide::KTLineGuide(Qt::Orientation o ,QGraphicsScene *scene): QGraphicsItem(0, scene), d(new Private)
 {
 	d->orientation = o;
+	d->enabled = true;
 // 	setAcceptsHoverEvents(true);
 // 	setAcceptedMouseButtons(0);
 	
-	setFlag(QGraphicsItem::ItemIsFocusable, false);
+// 	setFlag(QGraphicsItem::ItemIsFocusable, false);
+	
 }
+
 
 
 KTLineGuide::~KTLineGuide()
@@ -70,9 +74,12 @@ void KTLineGuide::paint( QPainter * painter, const QStyleOptionGraphicsItem * , 
 	{
 		painter->drawLine( 0, (int)boundingRect().center().y(), (int)boundingRect().width(), (int)boundingRect().center().y());
 	}
-	
 }
 
+void KTLineGuide::setEnabledSyncCursor(bool enabled)
+{
+	d->enabled = enabled;
+}
 
 QVariant KTLineGuide::itemChange( GraphicsItemChange change, const QVariant & value )
 {
@@ -107,7 +114,14 @@ QVariant KTLineGuide::itemChange( GraphicsItemChange change, const QVariant & va
 
 void KTLineGuide::mouseMoveEvent(QGraphicsSceneMouseEvent * e)
 {
-	syncCursor();
+	if(d->enabled)
+	{
+		syncCursor();
+	}
+	else
+	{
+		setPos(e->scenePos());
+	}
 }
 
 bool KTLineGuide::sceneEvent(QEvent *e)
@@ -166,5 +180,6 @@ void KTLineGuide::syncCursor()
 			QCursor::setPos((int)QCursor::pos().x(), (int)globalPos.y()+2);
 		}
 	}
+
 }
 

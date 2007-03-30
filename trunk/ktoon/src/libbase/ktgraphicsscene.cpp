@@ -300,10 +300,26 @@ void KTGraphicsScene::setTool(KTToolPlugin *tool)
 {
 	if(d->tool)
 	{
+		if(d->tool->toolType() == KTToolPlugin::Selection )
+		{
+			foreach(KTLineGuide *line, d->lines)
+			{
+				line->setFlag( QGraphicsItem::ItemIsMovable, false );
+				line->setEnabledSyncCursor(true);
+			}
+		}
 		d->tool->aboutToChangeTool();
 	}
 	
 	d->tool = tool;
+	if(tool->toolType() == KTToolPlugin::Selection )
+	{
+		foreach(KTLineGuide *line, d->lines)
+		{
+			line->setFlag( QGraphicsItem::ItemIsMovable, true );
+			line->setEnabledSyncCursor(false);
+		}
+	}
 	d->tool->init(this);
 	
 }
@@ -439,6 +455,14 @@ void KTGraphicsScene::dragMoveEvent ( QGraphicsSceneDragDropEvent * event )
 void KTGraphicsScene::dropEvent ( QGraphicsSceneDragDropEvent * event )
 {
 	Q_UNUSED(event);
+	if(d->tool)
+	{
+		if(d->tool->toolType() == KTToolPlugin::Selection )
+		{
+			d->lines.last()->setEnabledSyncCursor(false);
+			d->lines.last()->setFlag( QGraphicsItem::ItemIsMovable, true );
+		}
+	}
 }
 
 

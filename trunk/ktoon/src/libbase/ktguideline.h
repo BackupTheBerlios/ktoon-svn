@@ -36,6 +36,8 @@ class KTLineGuide : public QGraphicsItem
 		QRectF boundingRect() const;
 		void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0 );
 		
+		void setEnabledSyncCursor(bool enabled);
+		
 	protected:
 		QVariant itemChange(GraphicsItemChange change, const QVariant & value);
 		
@@ -43,6 +45,7 @@ class KTLineGuide : public QGraphicsItem
 		void mouseMoveEvent(QGraphicsSceneMouseEvent* event);
 		
 		bool sceneEvent(QEvent *e);
+		
 		
 	private:
 		struct Private;
